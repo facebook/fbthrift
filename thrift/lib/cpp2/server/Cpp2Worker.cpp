@@ -80,7 +80,11 @@ void Cpp2Worker::onNewConnection(
             VLOG(4) << "Cpp2Worker: Routing encrypted connection for protocol "
                     << nextProtocolName;
             routingHandler->handleConnection(
-                getConnectionManager(), std::move(sock), addr, tinfo);
+                getConnectionManager(),
+                std::move(sock),
+                addr,
+                tinfo,
+                shared_from_this());
             return;
           }
         }

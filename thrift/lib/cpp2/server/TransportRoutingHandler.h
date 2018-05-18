@@ -26,6 +26,8 @@
 namespace apache {
 namespace thrift {
 
+class Cpp2Worker;
+
 /*
  * An interface used by ThriftServer to route the
  * socket to different Transports.
@@ -62,7 +64,8 @@ class TransportRoutingHandler {
       wangle::ConnectionManager* connectionManager,
       folly::AsyncTransportWrapper::UniquePtr sock,
       folly::SocketAddress const* peerAddress,
-      wangle::TransportInfo const& tinfo) = 0;
+      wangle::TransportInfo const& tinfo,
+      std::shared_ptr<Cpp2Worker> cpp2Worker) = 0;
 };
 
 } // namespace thrift

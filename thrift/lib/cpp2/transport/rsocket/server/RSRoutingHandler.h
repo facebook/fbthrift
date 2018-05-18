@@ -17,16 +17,16 @@
 #pragma once
 
 #include <thrift/lib/cpp2/server/ThriftServer.h>
-#include <thrift/lib/cpp2/transport/core/TransportRoutingHandler.h>
+#include <thrift/lib/cpp2/server/TransportRoutingHandler.h>
 
 namespace apache {
 namespace thrift {
 
+class Cpp2Worker;
+
 class RSRoutingHandler : public TransportRoutingHandler {
  public:
-  RSRoutingHandler(
-      apache::thrift::ThriftProcessor* thriftProcessor,
-      const apache::thrift::server::ServerConfigs& serverConfigs);
+  RSRoutingHandler() = default;
   virtual ~RSRoutingHandler();
   RSRoutingHandler(const RSRoutingHandler&) = delete;
   RSRoutingHandler& operator=(const RSRoutingHandler&) = delete;
@@ -38,12 +38,10 @@ class RSRoutingHandler : public TransportRoutingHandler {
       wangle::ConnectionManager* connectionManager,
       folly::AsyncTransportWrapper::UniquePtr sock,
       folly::SocketAddress const* peerAddress,
-      wangle::TransportInfo const& tinfo) override;
+      wangle::TransportInfo const& tinfo,
+      std::shared_ptr<Cpp2Worker> worker) override;
 
  private:
-  ThriftProcessor* thriftProcessor_;
-  const apache::thrift::server::ServerConfigs& serverConfigs_;
-
   std::atomic<bool> listening_{true};
 };
 } // namespace thrift

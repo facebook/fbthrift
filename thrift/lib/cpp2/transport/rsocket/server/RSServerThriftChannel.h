@@ -44,8 +44,6 @@ class RSServerThriftChannel : public ThriftChannelIf {
 
   explicit RSServerThriftChannel(folly::EventBase* evb) : evb_(evb) {}
 
-  virtual ~RSServerThriftChannel() = default;
-
   folly::EventBase* getEventBase() noexcept override {
     return evb_;
   }

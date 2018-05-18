@@ -17,6 +17,7 @@
 #include <thrift/lib/cpp2/transport/rsocket/server/RSRoutingHandler.h>
 
 #include <folly/io/async/EventBaseManager.h>
+#include <thrift/lib/cpp2/server/Cpp2Worker.h>
 #include <thrift/lib/cpp2/transport/core/ThriftProcessor.h>
 #include <thrift/lib/cpp2/transport/rsocket/server/ManagedRSocketConnection.h>
 #include <thrift/lib/cpp2/transport/rsocket/server/RSResponder.h>
@@ -25,11 +26,6 @@ using namespace rsocket;
 
 namespace apache {
 namespace thrift {
-
-RSRoutingHandler::RSRoutingHandler(
-    apache::thrift::ThriftProcessor* thriftProcessor,
-    const apache::thrift::server::ServerConfigs& serverConfigs)
-    : thriftProcessor_(thriftProcessor), serverConfigs_(serverConfigs) {}
 
 RSRoutingHandler::~RSRoutingHandler() {
   stopListening();
@@ -78,29 +74,30 @@ void RSRoutingHandler::handleConnection(
     wangle::ConnectionManager* connectionManager,
     folly::AsyncTransportWrapper::UniquePtr sock,
     folly::SocketAddress const*,
-    wangle::TransportInfo const&) {
+    wangle::TransportInfo const&,
+    std::shared_ptr<Cpp2Worker> worker) {
   if (!listening_) {
     return;
   }
 
   auto managedConnection =
-      new ManagedRSocketConnection(std::move(sock), [&](auto&) {
+      new ManagedRSocketConnection(std::move(sock), [worker](auto&) {
+        DCHECK(worker->getServer());
+        DCHECK(worker->getServer()->getCpp2Processor());
         // RSResponder will be created per client connection. It will use the
         // current Observer of the server.
-        return std::make_shared<RSResponder>(
-            thriftProcessor_,
-            folly::EventBaseManager::get()->getExistingEventBase(),
-            serverConfigs_.getObserver());
+        return std::make_shared<RSResponder>(worker);
       });
 
   connectionManager->addConnection(managedConnection);
 
-  auto observer = serverConfigs_.getObserver();
+  auto server = worker->getServer();
+  auto observer = server->getObserver();
   if (observer) {
     observer->connAccepted();
     observer->activeConnections(
         connectionManager->getNumConnections() *
-        serverConfigs_.getNumIOWorkerThreads());
+        server->getNumIOWorkerThreads());
   }
 }
 } // namespace thrift

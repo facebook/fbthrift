@@ -126,7 +126,8 @@ class PeekingManager : public wangle::ManagedConnection,
             acceptor_->getConnectionManager(),
             std::move(socket_),
             &clientAddr_,
-            tinfo_);
+            tinfo_,
+            acceptor_);
         acceptedHandler = true;
         break;
       }

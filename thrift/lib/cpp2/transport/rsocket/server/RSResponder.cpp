@@ -15,22 +15,76 @@
  */
 #include <thrift/lib/cpp2/transport/rsocket/server/RSResponder.h>
 
+#include <rsocket/internal/ScheduledSubscriber.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
+#include <thrift/lib/cpp2/transport/core/ThriftRequest.h>
 #include <thrift/lib/cpp2/transport/rsocket/server/RequestResponse.h>
 #include <thrift/lib/cpp2/transport/rsocket/server/StreamOutput.h>
-
-#include <rsocket/internal/ScheduledSubscriber.h>
 
 namespace apache {
 namespace thrift {
 
 using namespace rsocket;
 
-RSResponder::RSResponder(
-    ThriftProcessor* processor,
-    folly::EventBase* evb,
-    std::shared_ptr<apache::thrift::server::TServerObserver> observer)
-    : processor_(processor), evb_(evb), observer_(std::move(observer)) {}
+RSResponder::RSResponder(std::shared_ptr<Cpp2Worker> worker)
+    : worker_(std::move(worker)),
+      cpp2Processor_(worker_->getServer()->getCpp2Processor()),
+      threadManager_(worker_->getServer()->getThreadManager()),
+      observer_(worker_->getServer()->getObserver()),
+      serverConfigs_(worker_->getServer()) {
+  DCHECK(threadManager_);
+}
+
+void RSResponder::onThriftRequest(
+    std::unique_ptr<RequestRpcMetadata> metadata,
+    std::unique_ptr<IOBuf> payload,
+    std::shared_ptr<ThriftChannelIf> channel,
+    std::unique_ptr<Cpp2ConnContext> connContext) noexcept {
+  DCHECK(metadata);
+  DCHECK(payload);
+  DCHECK(channel);
+  DCHECK(cpp2Processor_);
+
+  bool invalidMetadata =
+      !(metadata->__isset.protocol && metadata->__isset.name &&
+        metadata->__isset.kind && metadata->__isset.seqId);
+
+  auto request = std::make_unique<ThriftRequest>(
+      *serverConfigs_,
+      channel,
+      std::move(metadata),
+      std::move(connContext),
+      [keep = cpp2Processor_](ThriftRequest*) {
+        // keep the processor as for OneWay requests, even though the client
+        // disconnects, which destroys the RSResponder, the oneway request will
+        // still execute, which will require cpp2Processor_ to be alive
+        // @see AsyncProcessor::processInThread function for more details
+        // D1006482 for furhter details.
+      });
+
+  auto evb = channel->getEventBase();
+  if (UNLIKELY(invalidMetadata)) {
+    LOG(ERROR) << "Invalid metadata object";
+    evb->runInEventBaseThread([req = std::move(request)]() {
+      req->sendErrorWrapped(
+          folly::make_exception_wrapper<TApplicationException>(
+              TApplicationException::UNSUPPORTED_CLIENT_TYPE,
+              "invalid metadata object"),
+          "corrupted metadata");
+    });
+    return;
+  }
+
+  auto protoId = request->getProtoId();
+  auto reqContext = request->getRequestContext();
+  cpp2Processor_->process(
+      std::move(request),
+      std::move(payload),
+      protoId,
+      reqContext,
+      evb,
+      threadManager_.get());
+}
 
 void RSResponder::handleRequestResponse(
     Payload request,
@@ -41,9 +95,9 @@ void RSResponder::handleRequestResponse(
   DCHECK(metadata->__isset.kind);
   DCHECK(metadata->__isset.seqId);
 
-  auto channel = std::make_shared<RequestResponse>(evb_, std::move(response));
-  processor_->onThriftRequest(
-      std::move(metadata), std::move(request.data), channel);
+  auto channel = std::make_shared<RequestResponse>(
+      worker_->getEventBase(), std::move(response));
+  onThriftRequest(std::move(metadata), std::move(request.data), channel);
 }
 
 void RSResponder::handleFireAndForget(Payload request, StreamId) {
@@ -51,8 +105,9 @@ void RSResponder::handleFireAndForget(Payload request, StreamId) {
   DCHECK(metadata->__isset.kind);
   DCHECK(metadata->__isset.seqId);
 
-  auto channel = std::make_shared<RSServerThriftChannel>(evb_);
-  processor_->onThriftRequest(
+  auto channel =
+      std::make_shared<RSServerThriftChannel>(worker_->getEventBase());
+  onThriftRequest(
       std::move(metadata), std::move(request.data), std::move(channel));
 }
 
@@ -65,9 +120,9 @@ void RSResponder::handleRequestStream(
   DCHECK(metadata->__isset.seqId);
   request.metadata.reset();
 
-  auto channel =
-      std::make_shared<StreamOutput>(evb_, streamId, std::move(response));
-  processor_->onThriftRequest(
+  auto channel = std::make_shared<StreamOutput>(
+      worker_->getEventBase(), streamId, std::move(response));
+  onThriftRequest(
       std::move(metadata), std::move(request.data), std::move(channel));
 }
 

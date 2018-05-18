@@ -37,9 +37,7 @@ class RSCompatibilityTest : public testing::Test {
 
     compatibilityTest_ = std::make_unique<TransportCompatibilityTest>();
     compatibilityTest_->addRoutingHandler(
-        std::make_unique<apache::thrift::RSRoutingHandler>(
-            compatibilityTest_->getServer()->getThriftProcessor(),
-            *compatibilityTest_->getServer()));
+        std::make_unique<apache::thrift::RSRoutingHandler>());
     compatibilityTest_->startServer();
   }
 

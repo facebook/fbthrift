@@ -77,8 +77,8 @@ int main(int argc, char** argv) {
   server->setNumCPUWorkerThreads(FLAGS_cpu_threads);
   server->setProcessorFactory(cpp2PFac);
 
-  server->addRoutingHandler(std::make_unique<apache::thrift::RSRoutingHandler>(
-      server->getThriftProcessor(), *server));
+  server->addRoutingHandler(
+      std::make_unique<apache::thrift::RSRoutingHandler>());
   server->addRoutingHandler(createHTTP2RoutingHandler(server));
 
   LOG(INFO) << "Benchmark server running on port: " << FLAGS_port;

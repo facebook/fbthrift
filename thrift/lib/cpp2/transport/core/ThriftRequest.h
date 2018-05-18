@@ -48,7 +48,8 @@ class ThriftRequest : public ResponseChannel::Request {
       const apache::thrift::server::ServerConfigs& serverConfigs,
       std::shared_ptr<ThriftChannelIf> channel,
       std::unique_ptr<RequestRpcMetadata> metadata,
-      std::unique_ptr<Cpp2ConnContext> connContext)
+      std::unique_ptr<Cpp2ConnContext> connContext,
+      folly::Function<void(ThriftRequest*)> onDestroy = nullptr)
       : serverConfigs_(serverConfigs),
         channel_(channel),
         name_(metadata->name),
@@ -60,7 +61,8 @@ class ThriftRequest : public ResponseChannel::Request {
                         : std::make_unique<Cpp2ConnContext>()),
         reqContext_(connContext_.get(), &header_),
         queueTimeout_(serverConfigs_),
-        taskTimeout_(serverConfigs_) {
+        taskTimeout_(serverConfigs_),
+        onDestroy_(std::move(onDestroy)) {
     header_.setProtocolId(static_cast<int16_t>(metadata->protocol));
     header_.setSequenceNumber(metadata->seqId);
     if (metadata->__isset.clientTimeoutMs) {
@@ -93,6 +95,9 @@ class ThriftRequest : public ResponseChannel::Request {
   virtual ~ThriftRequest() {
     // Cancel the timers before getting destroyed
     cancelTimeout();
+    if (onDestroy_) {
+      onDestroy_(this);
+    }
   }
 
   bool isActive() override {
@@ -100,6 +105,10 @@ class ThriftRequest : public ResponseChannel::Request {
   }
 
   void cancel() override {
+    if (auto onDestroy = std::move(onDestroy_)) {
+      onDestroy(this);
+    }
+
     if (active_.exchange(false)) {
       cancelTimeout();
     }
@@ -356,6 +365,8 @@ class ThriftRequest : public ResponseChannel::Request {
   QueueTimeout queueTimeout_;
   TaskTimeout taskTimeout_;
   bool responseSizeChecked_{false};
+
+  folly::Function<void(ThriftRequest*)> onDestroy_;
 };
 } // namespace thrift
 } // namespace apache

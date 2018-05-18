@@ -17,11 +17,13 @@
 #pragma once
 
 #include <proxygen/httpserver/HTTPServerOptions.h>
+#include <thrift/lib/cpp2/server/TransportRoutingHandler.h>
 #include <thrift/lib/cpp2/transport/core/ThriftProcessor.h>
-#include <thrift/lib/cpp2/transport/core/TransportRoutingHandler.h>
 
 namespace apache {
 namespace thrift {
+
+class Cpp2Worker;
 
 /*
  * This handler is used to determine if a client is talking HTTP2 and
@@ -46,7 +48,8 @@ class HTTP2RoutingHandler : public TransportRoutingHandler {
       wangle::ConnectionManager* connectionManager,
       folly::AsyncTransportWrapper::UniquePtr sock,
       folly::SocketAddress const* peerAddress,
-      wangle::TransportInfo const& tinfo) override;
+      wangle::TransportInfo const& tinfo,
+      std::shared_ptr<Cpp2Worker>) override;
 
  private:
   // HTTPServerOptions are set outside out HTTP2RoutingHandler.

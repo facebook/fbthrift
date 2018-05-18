@@ -55,8 +55,8 @@ std::shared_ptr<ThriftServer> newServer(int32_t port) {
   auto server = std::make_shared<ThriftServer>();
   server->setPort(port);
   server->setProcessorFactory(proc_factory);
-  server->addRoutingHandler(std::make_unique<apache::thrift::RSRoutingHandler>(
-      server->getThriftProcessor(), *server));
+  server->addRoutingHandler(
+      std::make_unique<apache::thrift::RSRoutingHandler>());
   server->addRoutingHandler(createHTTP2RoutingHandler(server));
   return server;
 }

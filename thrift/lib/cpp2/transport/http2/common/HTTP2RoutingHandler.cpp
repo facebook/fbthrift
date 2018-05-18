@@ -225,7 +225,8 @@ void HTTP2RoutingHandler::handleConnection(
     wangle::ConnectionManager* connectionManager,
     folly::AsyncTransportWrapper::UniquePtr sock,
     folly::SocketAddress const* peerAddress,
-    wangle::TransportInfo const& tinfo) {
+    wangle::TransportInfo const& tinfo,
+    std::shared_ptr<Cpp2Worker>) {
   // Create the DownstreamSession manager.
   auto ipConfig = proxygen::HTTPServer::IPConfig(
       *peerAddress, proxygen::HTTPServer::Protocol::HTTP2);

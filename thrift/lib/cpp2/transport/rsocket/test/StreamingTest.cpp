@@ -21,9 +21,8 @@
 #include <thrift/lib/cpp2/async/PooledRequestChannel.h>
 #include <thrift/lib/cpp2/async/RSocketClientChannel.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
-#include <thrift/lib/cpp2/transport/core/ClientConnectionIf.h>
+#include <thrift/lib/cpp2/server/TransportRoutingHandler.h>
 #include <thrift/lib/cpp2/transport/core/ThriftClient.h>
-#include <thrift/lib/cpp2/transport/core/TransportRoutingHandler.h>
 #include <thrift/lib/cpp2/transport/core/testutil/FakeServerObserver.h>
 #include <thrift/lib/cpp2/transport/core/testutil/MockCallback.h>
 #include <thrift/lib/cpp2/transport/rsocket/YarplStreamImpl.h>
@@ -90,8 +89,7 @@ class StreamingTest : public testing::Test {
     server_->setProcessorFactory(cpp2PFac);
 
     server_->addRoutingHandler(
-        std::make_unique<apache::thrift::RSRoutingHandler>(
-            server_->getThriftProcessor(), *server_));
+        std::make_unique<apache::thrift::RSRoutingHandler>());
 
     auto eventHandler = std::make_shared<TestEventHandler>();
     server_->setServerEventHandler(eventHandler);

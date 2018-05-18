@@ -18,12 +18,15 @@
 #include <folly/io/async/EventBaseManager.h>
 #include <rsocket/Payload.h>
 #include <rsocket/RSocket.h>
+#include <thrift/lib/cpp/concurrency/ThreadManager.h>
+#include <thrift/lib/cpp/server/TServerObserver.h>
+#include <thrift/lib/cpp2/async/AsyncProcessor.h>
+#include <thrift/lib/cpp2/server/Cpp2Worker.h>
+#include <thrift/lib/cpp2/server/ServerConfigs.h>
 #include <yarpl/Observable.h>
 #include <yarpl/Single.h>
 #include <yarpl/flowable/Flowables.h>
 #include <yarpl/observable/ObservableOperator.h>
-
-#include <thrift/lib/cpp2/transport/core/ThriftProcessor.h>
 
 namespace apache {
 namespace thrift {
@@ -35,10 +38,7 @@ class RSResponder : public rsocket::RSocketResponderCore {
       std::shared_ptr<yarpl::flowable::Flowable<rsocket::Payload>>;
   using SingleRef = std::shared_ptr<yarpl::single::Single<rsocket::Payload>>;
 
-  RSResponder(
-      ThriftProcessor* processor,
-      folly::EventBase* evb,
-      std::shared_ptr<apache::thrift::server::TServerObserver> observer);
+  explicit RSResponder(std::shared_ptr<Cpp2Worker> worker);
 
   virtual ~RSResponder() = default;
 
@@ -57,10 +57,19 @@ class RSResponder : public rsocket::RSocketResponderCore {
       std::shared_ptr<yarpl::flowable::Subscriber<rsocket::Payload>>
           response) noexcept override;
 
- protected:
-  ThriftProcessor* processor_;
-  folly::EventBase* evb_;
+ private:
+  void onThriftRequest(
+      std::unique_ptr<RequestRpcMetadata> metadata,
+      std::unique_ptr<folly::IOBuf> payload,
+      std::shared_ptr<ThriftChannelIf> channel,
+      std::unique_ptr<Cpp2ConnContext> connContext = nullptr) noexcept;
+
+ private:
+  std::shared_ptr<Cpp2Worker> worker_;
+  std::shared_ptr<AsyncProcessor> cpp2Processor_;
+  std::shared_ptr<apache::thrift::concurrency::ThreadManager> threadManager_;
   std::shared_ptr<apache::thrift::server::TServerObserver> observer_;
+  server::ServerConfigs* serverConfigs_;
 };
 } // namespace thrift
 } // namespace apache

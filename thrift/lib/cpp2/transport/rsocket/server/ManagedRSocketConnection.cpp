@@ -171,6 +171,10 @@ void ManagedRSocketConnection::onSetup(
 }
 
 void ManagedRSocketConnection::stop(folly::exception_wrapper ew) {
+  if (auto manager = getConnectionManager()) {
+    manager->removeConnection(this);
+  }
+
   if (auto subscriber = std::exchange(setupSubscriber_, nullptr)) {
     setupSubscriber_->onError(ew);
   }
@@ -179,10 +183,6 @@ void ManagedRSocketConnection::stop(folly::exception_wrapper ew) {
     stateMachine->close(
         std::move(ew), rsocket::StreamCompletionSignal::CONNECTION_END);
   }
-  if (auto manager = getConnectionManager()) {
-    manager->removeConnection(this);
-  }
-
   destroy();
 }
 
