@@ -18,8 +18,7 @@
 #include <rsocket/internal/ScheduledSubscriber.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 #include <thrift/lib/cpp2/transport/core/ThriftRequest.h>
-#include <thrift/lib/cpp2/transport/rsocket/server/RequestResponse.h>
-#include <thrift/lib/cpp2/transport/rsocket/server/StreamOutput.h>
+#include <thrift/lib/cpp2/transport/rsocket/server/RSThriftRequests.h>
 
 namespace apache {
 namespace thrift {
@@ -33,39 +32,16 @@ RSResponder::RSResponder(std::shared_ptr<Cpp2Worker> worker)
       observer_(worker_->getServer()->getObserver()),
       serverConfigs_(worker_->getServer()) {
   DCHECK(threadManager_);
+  DCHECK(cpp2Processor_);
 }
 
 void RSResponder::onThriftRequest(
-    std::unique_ptr<RequestRpcMetadata> metadata,
-    std::unique_ptr<IOBuf> payload,
-    std::shared_ptr<ThriftChannelIf> channel,
-    std::unique_ptr<Cpp2ConnContext> connContext) noexcept {
-  DCHECK(metadata);
-  DCHECK(payload);
-  DCHECK(channel);
-  DCHECK(cpp2Processor_);
-
-  bool invalidMetadata =
-      !(metadata->__isset.protocol && metadata->__isset.name &&
-        metadata->__isset.kind && metadata->__isset.seqId);
-
-  auto request = std::make_unique<ThriftRequest>(
-      *serverConfigs_,
-      channel,
-      std::move(metadata),
-      std::move(connContext),
-      [keep = cpp2Processor_](ThriftRequest*) {
-        // keep the processor as for OneWay requests, even though the client
-        // disconnects, which destroys the RSResponder, the oneway request will
-        // still execute, which will require cpp2Processor_ to be alive
-        // @see AsyncProcessor::processInThread function for more details
-        // D1006482 for furhter details.
-      });
-
-  auto evb = channel->getEventBase();
+    std::unique_ptr<ThriftRequestCore> request,
+    std::unique_ptr<folly::IOBuf> buf,
+    bool invalidMetadata) {
   if (UNLIKELY(invalidMetadata)) {
     LOG(ERROR) << "Invalid metadata object";
-    evb->runInEventBaseThread([req = std::move(request)]() {
+    worker_->getEventBase()->runInEventBaseThread([req = std::move(request)]() {
       req->sendErrorWrapped(
           folly::make_exception_wrapper<TApplicationException>(
               TApplicationException::UNSUPPORTED_CLIENT_TYPE,
@@ -79,10 +55,10 @@ void RSResponder::onThriftRequest(
   auto reqContext = request->getRequestContext();
   cpp2Processor_->process(
       std::move(request),
-      std::move(payload),
+      std::move(buf),
       protoId,
       reqContext,
-      evb,
+      worker_->getEventBase(),
       threadManager_.get());
 }
 
@@ -91,39 +67,75 @@ void RSResponder::handleRequestResponse(
     StreamId,
     std::shared_ptr<yarpl::single::SingleObserver<Payload>> response) noexcept {
   DCHECK(request.metadata);
-  auto metadata = RequestResponse::deserializeMetadata(*request.metadata);
+  auto metadata = detail::deserializeMetadata(*request.metadata);
   DCHECK(metadata->__isset.kind);
   DCHECK(metadata->__isset.seqId);
 
-  auto channel = std::make_shared<RequestResponse>(
-      worker_->getEventBase(), std::move(response));
-  onThriftRequest(std::move(metadata), std::move(request.data), channel);
+  bool invalidMetadata =
+      !(metadata->__isset.protocol && metadata->__isset.name &&
+        metadata->__isset.kind && metadata->__isset.seqId);
+
+  auto singleRequest = std::make_unique<RSSingleRequest>(
+      *serverConfigs_,
+      std::move(metadata),
+      nullptr,
+      worker_->getEventBase(),
+      std::move(response));
+
+  onThriftRequest(
+      std::move(singleRequest), std::move(request.data), invalidMetadata);
 }
 
 void RSResponder::handleFireAndForget(Payload request, StreamId) {
-  auto metadata = RequestResponse::deserializeMetadata(*request.metadata);
+  DCHECK(request.metadata);
+  auto metadata = detail::deserializeMetadata(*request.metadata);
   DCHECK(metadata->__isset.kind);
   DCHECK(metadata->__isset.seqId);
 
-  auto channel =
-      std::make_shared<RSServerThriftChannel>(worker_->getEventBase());
+  bool invalidMetadata =
+      !(metadata->__isset.protocol && metadata->__isset.name &&
+        metadata->__isset.kind && metadata->__isset.seqId);
+
+  auto onewayRequest = std::make_unique<RSOneWayRequest>(
+      *serverConfigs_,
+      std::move(metadata),
+      nullptr,
+      worker_->getEventBase(),
+      [keep = cpp2Processor_](RSOneWayRequest*) {
+        // keep the processor as for OneWay requests, even though the client
+        // disconnects, which destroys the RSResponder, the oneway request will
+        // still execute, which will require cpp2Processor_ to be alive
+        // @see AsyncProcessor::processInThread function for more details
+        // D1006482 for furhter details.
+      });
+
   onThriftRequest(
-      std::move(metadata), std::move(request.data), std::move(channel));
+      std::move(onewayRequest), std::move(request.data), invalidMetadata);
 }
 
 void RSResponder::handleRequestStream(
     Payload request,
-    StreamId streamId,
+    StreamId,
     std::shared_ptr<yarpl::flowable::Subscriber<Payload>> response) noexcept {
-  auto metadata = RequestResponse::deserializeMetadata(*request.metadata);
+  DCHECK(request.metadata);
+  auto metadata = detail::deserializeMetadata(*request.metadata);
   DCHECK(metadata->__isset.kind);
   DCHECK(metadata->__isset.seqId);
   request.metadata.reset();
 
-  auto channel = std::make_shared<StreamOutput>(
-      worker_->getEventBase(), streamId, std::move(response));
+  bool invalidMetadata =
+      !(metadata->__isset.protocol && metadata->__isset.name &&
+        metadata->__isset.kind && metadata->__isset.seqId);
+
+  auto streamRequest = std::make_unique<RSStreamRequest>(
+      *serverConfigs_,
+      std::move(metadata),
+      nullptr,
+      worker_->getEventBase(),
+      std::move(response));
+
   onThriftRequest(
-      std::move(metadata), std::move(request.data), std::move(channel));
+      std::move(streamRequest), std::move(request.data), invalidMetadata);
 }
 
 } // namespace thrift

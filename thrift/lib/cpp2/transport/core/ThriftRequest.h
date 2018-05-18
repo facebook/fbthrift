@@ -42,16 +42,13 @@ namespace thrift {
  * to clean up our APIs to avoid the dependency to a ResponseChannel
  * object.
  */
-class ThriftRequest : public ResponseChannel::Request {
+class ThriftRequestCore : public ResponseChannel::Request {
  public:
-  ThriftRequest(
+  ThriftRequestCore(
       const apache::thrift::server::ServerConfigs& serverConfigs,
-      std::shared_ptr<ThriftChannelIf> channel,
       std::unique_ptr<RequestRpcMetadata> metadata,
-      std::unique_ptr<Cpp2ConnContext> connContext,
-      folly::Function<void(ThriftRequest*)> onDestroy = nullptr)
+      std::unique_ptr<Cpp2ConnContext> connContext)
       : serverConfigs_(serverConfigs),
-        channel_(channel),
         name_(metadata->name),
         kind_(metadata->kind),
         seqId_(metadata->seqId),
@@ -61,8 +58,7 @@ class ThriftRequest : public ResponseChannel::Request {
                         : std::make_unique<Cpp2ConnContext>()),
         reqContext_(connContext_.get(), &header_),
         queueTimeout_(serverConfigs_),
-        taskTimeout_(serverConfigs_),
-        onDestroy_(std::move(onDestroy)) {
+        taskTimeout_(serverConfigs_) {
     header_.setProtocolId(static_cast<int16_t>(metadata->protocol));
     header_.setSequenceNumber(metadata->seqId);
     if (metadata->__isset.clientTimeoutMs) {
@@ -89,15 +85,17 @@ class ThriftRequest : public ResponseChannel::Request {
       observer->receivedRequest();
     }
 
-    scheduleTimeouts(*metadata);
+    if (metadata->__isset.queueTimeoutMs) {
+      clientQueueTimeout_ = std::chrono::milliseconds(metadata->queueTimeoutMs);
+    }
+    if (metadata->__isset.clientTimeoutMs) {
+      clientTimeout_ = std::chrono::milliseconds(metadata->clientTimeoutMs);
+    }
   }
 
-  virtual ~ThriftRequest() {
+  virtual ~ThriftRequestCore() {
     // Cancel the timers before getting destroyed
     cancelTimeout();
-    if (onDestroy_) {
-      onDestroy_(this);
-    }
   }
 
   bool isActive() override {
@@ -105,10 +103,6 @@ class ThriftRequest : public ResponseChannel::Request {
   }
 
   void cancel() override {
-    if (auto onDestroy = std::move(onDestroy_)) {
-      onDestroy(this);
-    }
-
     if (active_.exchange(false)) {
       cancelTimeout();
     }
@@ -168,8 +162,38 @@ class ThriftRequest : public ResponseChannel::Request {
     }
   }
 
-  std::shared_ptr<ThriftChannelIf> getChannel() {
-    return channel_;
+ protected:
+  virtual void sendThriftResponse(
+      std::unique_ptr<ResponseRpcMetadata> metadata,
+      std::unique_ptr<folly::IOBuf> response) noexcept = 0;
+
+  virtual void sendStreamThriftResponse(
+      std::unique_ptr<ResponseRpcMetadata> metadata,
+      std::unique_ptr<folly::IOBuf> response,
+      apache::thrift::SemiStream<std::unique_ptr<folly::IOBuf>>
+          stream) noexcept = 0;
+
+  virtual folly::EventBase* getEventBase() noexcept = 0;
+
+  void scheduleTimeouts() {
+    queueTimeout_.request_ = this;
+    taskTimeout_.request_ = this;
+    std::chrono::milliseconds queueTimeout;
+    std::chrono::milliseconds taskTimeout;
+    auto differentTimeouts = serverConfigs_.getTaskExpireTimeForRequest(
+        clientQueueTimeout_, clientTimeout_, queueTimeout, taskTimeout);
+
+    auto reqContext = getRequestContext();
+    reqContext->setRequestTimeout(taskTimeout);
+
+    if (differentTimeouts) {
+      if (queueTimeout > std::chrono::milliseconds(0)) {
+        getEventBase()->timer().scheduleTimeout(&queueTimeout_, queueTimeout);
+      }
+    }
+    if (taskTimeout > std::chrono::milliseconds(0)) {
+      getEventBase()->timer().scheduleTimeout(&taskTimeout_, taskTimeout);
+    }
   }
 
  private:
@@ -177,7 +201,7 @@ class ThriftRequest : public ResponseChannel::Request {
       std::unique_ptr<folly::IOBuf> buf,
       apache::thrift::MessageChannel::SendCallback* cb = nullptr) {
     if (checkResponseSize(*buf)) {
-      channel_->sendThriftResponse(createMetadata(), std::move(buf));
+      sendThriftResponse(createMetadata(), std::move(buf));
     } else {
       sendErrorWrappedInternal(
           folly::make_exception_wrapper<TApplicationException>(
@@ -193,7 +217,7 @@ class ThriftRequest : public ResponseChannel::Request {
       apache::thrift::SemiStream<std::unique_ptr<folly::IOBuf>> stream,
       apache::thrift::MessageChannel::SendCallback* cb = nullptr) {
     if (checkResponseSize(*buf)) {
-      channel_->sendStreamThriftResponse(
+      sendStreamThriftResponse(
           createMetadata(), std::move(buf), std::move(stream));
     } else {
       sendErrorWrappedInternal(
@@ -256,41 +280,6 @@ class ThriftRequest : public ResponseChannel::Request {
     }
   }
 
-  void scheduleTimeouts(RequestRpcMetadata& metadata) {
-    queueTimeout_.request_ = this;
-    taskTimeout_.request_ = this;
-
-    uint32_t clientQueueTimeoutMs = 0;
-    if (metadata.__isset.queueTimeoutMs) {
-      clientQueueTimeoutMs = metadata.queueTimeoutMs;
-    }
-    uint32_t clientTimeoutMs = 0;
-    if (metadata.__isset.clientTimeoutMs) {
-      clientTimeoutMs = metadata.clientTimeoutMs;
-    }
-    std::chrono::milliseconds queueTimeout;
-    std::chrono::milliseconds taskTimeout;
-    auto differentTimeouts = serverConfigs_.getTaskExpireTimeForRequest(
-        std::chrono::milliseconds(clientQueueTimeoutMs),
-        std::chrono::milliseconds(clientTimeoutMs),
-        queueTimeout,
-        taskTimeout);
-
-    auto reqContext = getRequestContext();
-    reqContext->setRequestTimeout(taskTimeout);
-
-    if (differentTimeouts) {
-      if (queueTimeout > std::chrono::milliseconds(0)) {
-        channel_->getEventBase()->timer().scheduleTimeout(
-            &queueTimeout_, queueTimeout);
-      }
-    }
-    if (taskTimeout > std::chrono::milliseconds(0)) {
-      channel_->getEventBase()->timer().scheduleTimeout(
-          &taskTimeout_, taskTimeout);
-    }
-  }
-
   bool checkResponseSize(const folly::IOBuf& buf) {
     if (responseSizeChecked_) {
       return true;
@@ -303,7 +292,7 @@ class ThriftRequest : public ResponseChannel::Request {
   }
 
   class QueueTimeout : public folly::HHWheelTimer::Callback {
-    ThriftRequest* request_;
+    ThriftRequestCore* request_;
     bool canceled_{false};
     const apache::thrift::server::ServerConfigs& serverConfigs_;
     QueueTimeout(const apache::thrift::server::ServerConfigs& serverConfigs)
@@ -323,10 +312,10 @@ class ThriftRequest : public ResponseChannel::Request {
             nullptr);
       }
     }
-    friend class ThriftRequest;
+    friend class ThriftRequestCore;
   };
   class TaskTimeout : public folly::HHWheelTimer::Callback {
-    ThriftRequest* request_;
+    ThriftRequestCore* request_;
     bool canceled_{false};
     const apache::thrift::server::ServerConfigs& serverConfigs_;
     TaskTimeout(const apache::thrift::server::ServerConfigs& serverConfigs)
@@ -346,14 +335,13 @@ class ThriftRequest : public ResponseChannel::Request {
             nullptr);
       }
     }
-    friend class ThriftRequest;
+    friend class ThriftRequestCore;
   };
   friend class QueueTimeout;
   friend class TaskTimeout;
   friend class ThriftProcessor;
 
   const apache::thrift::server::ServerConfigs& serverConfigs_;
-  std::shared_ptr<ThriftChannelIf> channel_;
   std::string name_;
   RpcKind kind_;
   int32_t seqId_;
@@ -364,9 +352,49 @@ class ThriftRequest : public ResponseChannel::Request {
 
   QueueTimeout queueTimeout_;
   TaskTimeout taskTimeout_;
+  std::chrono::milliseconds clientQueueTimeout_{0};
+  std::chrono::milliseconds clientTimeout_{0};
   bool responseSizeChecked_{false};
-
-  folly::Function<void(ThriftRequest*)> onDestroy_;
 };
+
+class ThriftRequest : public ThriftRequestCore {
+ public:
+  ThriftRequest(
+      const apache::thrift::server::ServerConfigs& serverConfigs,
+      std::shared_ptr<ThriftChannelIf> channel,
+      std::unique_ptr<RequestRpcMetadata> metadata,
+      std::unique_ptr<Cpp2ConnContext> connContext)
+      : ThriftRequestCore(
+            serverConfigs,
+            std::move(metadata),
+            std::move(connContext)),
+        channel_(std::move(channel)) {
+    scheduleTimeouts();
+  }
+
+ private:
+  void sendThriftResponse(
+      std::unique_ptr<ResponseRpcMetadata> metadata,
+      std::unique_ptr<folly::IOBuf> response) noexcept override {
+    channel_->sendThriftResponse(std::move(metadata), std::move(response));
+  }
+
+  void sendStreamThriftResponse(
+      std::unique_ptr<ResponseRpcMetadata> metadata,
+      std::unique_ptr<folly::IOBuf> response,
+      apache::thrift::SemiStream<std::unique_ptr<folly::IOBuf>>
+          stream) noexcept override {
+    channel_->sendStreamThriftResponse(
+        std::move(metadata), std::move(response), std::move(stream));
+  }
+
+  folly::EventBase* getEventBase() noexcept override {
+    return channel_->getEventBase();
+  }
+
+ private:
+  std::shared_ptr<ThriftChannelIf> channel_;
+};
+
 } // namespace thrift
 } // namespace apache

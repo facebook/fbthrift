@@ -15,18 +15,15 @@
  */
 #pragma once
 
-#include <folly/io/async/EventBaseManager.h>
-#include <rsocket/Payload.h>
 #include <rsocket/RSocket.h>
 #include <thrift/lib/cpp/concurrency/ThreadManager.h>
 #include <thrift/lib/cpp/server/TServerObserver.h>
 #include <thrift/lib/cpp2/async/AsyncProcessor.h>
 #include <thrift/lib/cpp2/server/Cpp2Worker.h>
 #include <thrift/lib/cpp2/server/ServerConfigs.h>
+#include <thrift/lib/cpp2/transport/core/ThriftRequest.h>
 #include <yarpl/Observable.h>
 #include <yarpl/Single.h>
-#include <yarpl/flowable/Flowables.h>
-#include <yarpl/observable/ObservableOperator.h>
 
 namespace apache {
 namespace thrift {
@@ -34,10 +31,6 @@ namespace thrift {
 // One instance of RSResponder per client connection.
 class RSResponder : public rsocket::RSocketResponderCore {
  public:
-  using FlowableRef =
-      std::shared_ptr<yarpl::flowable::Flowable<rsocket::Payload>>;
-  using SingleRef = std::shared_ptr<yarpl::single::Single<rsocket::Payload>>;
-
   explicit RSResponder(std::shared_ptr<Cpp2Worker> worker);
 
   virtual ~RSResponder() = default;
@@ -59,10 +52,9 @@ class RSResponder : public rsocket::RSocketResponderCore {
 
  private:
   void onThriftRequest(
-      std::unique_ptr<RequestRpcMetadata> metadata,
-      std::unique_ptr<folly::IOBuf> payload,
-      std::shared_ptr<ThriftChannelIf> channel,
-      std::unique_ptr<Cpp2ConnContext> connContext = nullptr) noexcept;
+      std::unique_ptr<ThriftRequestCore> request,
+      std::unique_ptr<folly::IOBuf> buf,
+      bool invalidMetadata);
 
  private:
   std::shared_ptr<Cpp2Worker> worker_;
