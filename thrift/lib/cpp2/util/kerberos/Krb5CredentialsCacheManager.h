@@ -19,12 +19,12 @@
 
 #include <condition_variable>
 #include <iostream>
-#include <krb5.h>
 #include <string>
 #include <thread>
 #include <unordered_map>
 #include <chrono>
 
+#include <folly/portability/Krb5.h>
 #include <folly/stats/BucketedTimeSeries.h>
 #include <folly/synchronization/RWSpinLock.h>
 #include <thrift/lib/cpp2/security/SecurityLogger.h>

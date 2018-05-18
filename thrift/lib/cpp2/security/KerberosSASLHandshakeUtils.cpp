@@ -1,4 +1,6 @@
 /*
+ * Copyright 2018-present Facebook, Inc.
+ *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -16,15 +18,11 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 #include <thrift/lib/cpp2/security/KerberosSASLHandshakeUtils.h>
 
-#include <gssapi/gssapi_generic.h>
-#include <gssapi/gssapi_krb5.h>
-#include <krb5.h>
-
-#include <folly/io/IOBuf.h>
 #include <folly/io/Cursor.h>
+#include <folly/io/IOBuf.h>
+#include <folly/portability/Krb5.h>
 
 #include <vector>
 

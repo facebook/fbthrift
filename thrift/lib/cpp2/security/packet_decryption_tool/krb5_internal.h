@@ -15,7 +15,7 @@
  */
 #pragma once
 
-#include <krb5.h>
+#include <folly/portability/Krb5.h>
 
 // The following functions and #define's are pulled from krb5 library
 // because they are not available from krb5.h.

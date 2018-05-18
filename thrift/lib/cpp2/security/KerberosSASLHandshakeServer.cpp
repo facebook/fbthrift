@@ -16,10 +16,9 @@
 
 #include <thrift/lib/cpp2/security/KerberosSASLHandshakeServer.h>
 
-#include <gssapi/gssapi_generic.h>
-#include <gssapi/gssapi_krb5.h>
-#include <folly/io/IOBuf.h>
 #include <folly/io/Cursor.h>
+#include <folly/io/IOBuf.h>
+#include <folly/portability/Krb5.h>
 
 using namespace std;
 using namespace apache::thrift;

@@ -18,9 +18,8 @@
 
 #include <assert.h>
 #include <glog/logging.h>
-#include <gssapi/gssapi_generic.h>
-#include <gssapi/gssapi_krb5.h>
-#include <krb5.h>
+
+#include <folly/portability/Krb5.h>
 
 // Proxy for older krb5 builds
 #ifndef KRB5_GC_NO_STORE

@@ -17,7 +17,6 @@
 #ifndef KRB5_CCACHE_STORE
 #define KRB5_CCACHE_STORE
 
-#include <krb5.h>
 #include <condition_variable>
 #include <iostream>
 #include <queue>
@@ -26,6 +25,7 @@
 #include <thread>
 #include <unordered_map>
 
+#include <folly/portability/Krb5.h>
 #include <folly/stats/BucketedTimeSeries.h>
 #include <thrift/lib/cpp2/security/SecurityLogger.h>
 #include <thrift/lib/cpp2/util/kerberos/Krb5Tgts.h>

@@ -25,11 +25,9 @@
 #include <memory>
 #include <functional>
 #include <iostream>
-#include <gssapi/gssapi_generic.h>
-#include <gssapi/gssapi_krb5.h>
-#include <krb5.h>
 
 #include <folly/io/IOBuf.h>
+#include <folly/portability/Krb5.h>
 #include <thrift/lib/cpp2/security/KerberosSASLHandshakeUtils.h>
 
 namespace apache { namespace thrift {

@@ -16,8 +16,9 @@
 
 #pragma once
 
-#include <krb5.h>
 #include <functional>
+
+#include <folly/portability/Krb5.h>
 
 namespace apache { namespace thrift { namespace krb5 {
 

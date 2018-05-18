@@ -16,15 +16,13 @@
 
 #include <thrift/lib/cpp2/security/KerberosSASLHandshakeClient.h>
 
-#include <gssapi/gssapi_generic.h>
-#include <gssapi/gssapi_krb5.h>
-#include <krb5.h>
 #include <stdlib.h>
 
 #include <folly/Memory.h>
 #include <folly/Singleton.h>
 #include <folly/io/Cursor.h>
 #include <folly/io/IOBuf.h>
+#include <folly/portability/Krb5.h>
 #include <thrift/lib/cpp/concurrency/Exception.h>
 #include <thrift/lib/cpp/concurrency/FunctionRunner.h>
 #include <thrift/lib/cpp/concurrency/Mutex.h>
