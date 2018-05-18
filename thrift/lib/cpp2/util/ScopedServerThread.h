@@ -23,6 +23,7 @@
 
 #include <boost/noncopyable.hpp>
 #include <memory>
+#include <string>
 
 namespace folly {
 class SocketAddress;
