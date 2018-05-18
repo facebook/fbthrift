@@ -55,11 +55,11 @@ namespace {
 class KerberosSASLHandshakeClientCleanupManager {
  public:
   KerberosSASLHandshakeClientCleanupManager() {
-    threadManager_ = concurrency::ThreadManager::newSimpleThreadManager(
+    threadManager_ = ThreadManager::newSimpleThreadManager(
         FLAGS_sasl_handshake_client_num_cleanup_threads);
-    auto threadFactory = std::make_shared<concurrency::PosixThreadFactory>(
-        concurrency::PosixThreadFactory::kDefaultPolicy,
-        concurrency::PosixThreadFactory::kDefaultPriority,
+    auto threadFactory = std::make_shared<PosixThreadFactory>(
+        PosixThreadFactory::kDefaultPolicy,
+        PosixThreadFactory::kDefaultPriority,
         2 /* stackSizeMb */);
     threadManager_->threadFactory(threadFactory);
     threadManager_->setNamePrefix("sasl-client-cleanup-thread");
@@ -70,12 +70,12 @@ class KerberosSASLHandshakeClientCleanupManager {
     threadManager_->join();
   }
 
-  std::shared_ptr<concurrency::ThreadManager> getThreadManager() {
+  std::shared_ptr<ThreadManager> getThreadManager() {
     return threadManager_;
   }
 
  private:
-  std::shared_ptr<concurrency::ThreadManager> threadManager_;
+  std::shared_ptr<ThreadManager> threadManager_;
 };
 
 // singleton instance
