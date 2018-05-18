@@ -265,6 +265,7 @@ void ThriftServer::setup() {
           << folly::EventBase::getLibeventMethod();
 
   try {
+#ifndef _WIN32
     // OpenSSL might try to write to a closed socket if the peer disconnects
     // abruptly, raising a SIGPIPE signal. By default this will terminate the
     // process, which we don't want. Hence we need to handle SIGPIPE specially.
@@ -280,6 +281,7 @@ void ThriftServer::setup() {
     sa.sa_flags = 0;
     sigemptyset(&sa.sa_mask);
     sigaction(SIGPIPE, &sa, nullptr);
+#endif
 
     if (!observer_ && apache::thrift::server::observerFactory_) {
       observer_ = apache::thrift::server::observerFactory_->getObserver();
