@@ -660,7 +660,8 @@ struct foreach_<folly::index_sequence<I...>> {
     using _ = int[];
     void(_{
         (void(f(std::integral_constant<std::size_t, I>{}, std::forward<O>(o))),
-         0)...});
+         0)...,
+        0});
   }
 };
 
