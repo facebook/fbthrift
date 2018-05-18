@@ -41,7 +41,7 @@ t_program* t_program::add_include(std::string path, std::string include_site) {
   t_program* program = new t_program(path);
 
   std::string include_prefix;
-  const auto last_slash = include_site.rfind("/");
+  const auto last_slash = include_site.find_last_of("/\\");
   if (last_slash != std::string::npos) {
     include_prefix = include_site.substr(0, last_slash);
   }
@@ -61,7 +61,7 @@ void t_program::set_include_prefix(std::string include_prefix) {
 }
 
 std::string t_program::compute_name_from_file_path(std::string path) {
-  std::string::size_type slash = path.rfind("/");
+  std::string::size_type slash = path.find_last_of("/\\");
   if (slash != std::string::npos) {
     path = path.substr(slash + 1);
   }
