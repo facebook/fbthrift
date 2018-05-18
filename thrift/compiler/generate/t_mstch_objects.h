@@ -1015,6 +1015,7 @@ class mstch_program : public mstch_base {
             {"program:constants", &mstch_program::constants},
             {"program:enums?", &mstch_program::has_enums},
             {"program:structs?", &mstch_program::has_structs},
+            {"program:services?", &mstch_program::has_services},
             {"program:typedefs?", &mstch_program::has_typedefs},
             {"program:constants?", &mstch_program::has_constants},
         });
@@ -1036,6 +1037,9 @@ class mstch_program : public mstch_base {
   mstch::node has_structs() {
     return !program_->get_structs().empty() ||
         !program_->get_xceptions().empty();
+  }
+  mstch::node has_services() {
+    return !program_->get_services().empty();
   }
   mstch::node has_typedefs() {
     return !program_->get_typedefs().empty();

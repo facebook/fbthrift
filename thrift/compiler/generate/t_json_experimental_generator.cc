@@ -229,6 +229,94 @@ class struct_json_experimental_generator : public struct_generator {
   }
 };
 
+class json_experimental_service : public mstch_service {
+ public:
+  json_experimental_service(
+      t_service const* srvc,
+      std::shared_ptr<mstch_generators const> generators,
+      std::shared_ptr<mstch_cache> cache,
+      ELEMENT_POSITION const pos)
+      : mstch_service(srvc, generators, cache, pos) {
+    register_methods(
+        this,
+        {
+            {"service:lineno", &json_experimental_service::get_lineno},
+            {"service:docstring?", &json_experimental_service::has_docstring},
+            {"service:docstring", &json_experimental_service::get_docstring},
+        });
+  }
+  mstch::node get_lineno() {
+    return service_->get_lineno();
+  }
+  mstch::node has_docstring() {
+    return service_->has_doc();
+  }
+  mstch::node get_docstring() {
+    return service_->get_doc();
+  }
+};
+
+class service_json_experimental_generator : public service_generator {
+ public:
+  service_json_experimental_generator() = default;
+  virtual ~service_json_experimental_generator() = default;
+  virtual std::shared_ptr<mstch_base> generate(
+      t_service const* srvc,
+      std::shared_ptr<mstch_generators const> generators,
+      std::shared_ptr<mstch_cache> cache,
+      ELEMENT_POSITION pos = ELEMENT_POSITION::NONE,
+      int32_t /*index*/ = 0) const override {
+    return std::make_shared<json_experimental_service>(
+        srvc, generators, cache, pos);
+  }
+};
+
+class json_experimental_function : public mstch_function {
+ public:
+  json_experimental_function(
+      t_function const* func,
+      std::shared_ptr<mstch_generators const> generators,
+      std::shared_ptr<mstch_cache> cache,
+      ELEMENT_POSITION const pos)
+      : mstch_function(func, generators, cache, pos) {
+    register_methods(
+        this,
+        {
+            {"function:lineno", &json_experimental_function::get_lineno},
+            {"function:docstring?", &json_experimental_function::has_docstring},
+            {"function:docstring", &json_experimental_function::get_docstring},
+            {"function:args?", &json_experimental_function::has_args},
+        });
+  }
+  mstch::node get_lineno() {
+    return function_->get_lineno();
+  }
+  mstch::node has_docstring() {
+    return function_->has_doc();
+  }
+  mstch::node get_docstring() {
+    return function_->get_doc();
+  }
+  mstch::node has_args() {
+    return !function_->get_arglist()->get_members().empty();
+  }
+};
+
+class function_json_experimental_generator : public function_generator {
+ public:
+  function_json_experimental_generator() = default;
+  virtual ~function_json_experimental_generator() = default;
+  virtual std::shared_ptr<mstch_base> generate(
+      t_function const* func,
+      std::shared_ptr<mstch_generators const> generators,
+      std::shared_ptr<mstch_cache> cache,
+      ELEMENT_POSITION pos = ELEMENT_POSITION::NONE,
+      int32_t /*index*/ = 0) const override {
+    return std::make_shared<json_experimental_function>(
+        func, generators, cache, pos);
+  }
+};
+
 class json_experimental_field : public mstch_field {
  public:
   json_experimental_field(
@@ -304,6 +392,10 @@ void t_json_experimental_generator::set_mstch_generators() {
       std::make_unique<struct_json_experimental_generator>());
   generators_->set_field_generator(
       std::make_unique<field_json_experimental_generator>());
+  generators_->set_service_generator(
+      std::make_unique<service_json_experimental_generator>());
+  generators_->set_function_generator(
+      std::make_unique<function_json_experimental_generator>());
 }
 } // anonymous namespace
 

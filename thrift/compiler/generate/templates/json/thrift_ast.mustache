@@ -13,6 +13,12 @@
     {{> structs}}
   },
   {{/program:structs?}}
+  {{#program:services?}}
+  "services" :
+  {
+    {{> services}}
+  },
+  {{/program:services?}}
   {{! rearrange to avoid trailing comma issue}}
   "source_path" : "{{program:normalizedIncludePrefix}}{{program:name}}",
   "py_namespace" : "{{program:py_namespace}}",
