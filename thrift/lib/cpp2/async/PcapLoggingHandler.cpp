@@ -16,10 +16,6 @@
 #include <thrift/lib/cpp2/async/PcapLoggingHandler.h>
 
 #include <fcntl.h>
-#include <net/ethernet.h>
-#include <netinet/ip.h>
-#include <netinet/ip6.h>
-#include <netinet/tcp.h>
 #include <stdlib.h>
 #include <time.h>
 
@@ -29,6 +25,8 @@
 #include <folly/FileUtil.h>
 #include <folly/MPMCQueue.h>
 #include <folly/Random.h>
+#include <folly/portability/Sockets.h>
+#include <folly/portability/Stdlib.h>
 #include <thrift/lib/cpp/async/TAsyncSSLSocket.h>
 
 // For reallllly old systems, sigh
@@ -45,8 +43,15 @@ DEFINE_bool(
     false,
     "Don't allow pcap logging to be enabled");
 
-#ifndef __APPLE__
+#ifdef __linux__
 #define THRIFT_PCAP_LOGGING_SUPPORTED 1
+#endif
+
+#ifdef THRIFT_PCAP_LOGGING_SUPPORTED
+#include <net/ethernet.h>
+#include <netinet/ip.h>
+#include <netinet/ip6.h>
+#include <netinet/tcp.h>
 #endif
 
 namespace apache {
@@ -112,14 +117,14 @@ class Headers {
  private:
   bool is6_;
   struct HeaderStruct {
-    ether_header ether;
 #ifdef THRIFT_PCAP_LOGGING_SUPPORTED
+    ether_header ether;
     union {
       iphdr ip4;
       ip6_hdr ip6;
     };
-#endif
     tcphdr tcp;
+#endif
   } read_, write_;
   PcapRecordHeader pcapHeader_;
   // Start seq nums with 0x100 because Wireshark 1.8.10 (and maybe others)
@@ -127,7 +132,9 @@ class Headers {
   // Wireshark 2.0.0 doesn't have this bug.
   uint32_t tcpSeq_ = 0x100;
   uint32_t tcpAck_ = 0x100;
+#ifdef THRIFT_PCAP_LOGGING_SUPPORTED
   void setTcpFlagsImpl(tcphdr* tcp, TcpFlags flags);
+#endif
 };
 
 Headers::Headers(
@@ -202,8 +209,8 @@ Headers::Headers(
 #endif
 }
 
-void Headers::setTcpFlagsImpl(tcphdr* tcp, Headers::TcpFlags flags) {
 #ifdef THRIFT_PCAP_LOGGING_SUPPORTED
+void Headers::setTcpFlagsImpl(tcphdr* tcp, Headers::TcpFlags flags) {
   tcp->syn = tcp->ack = tcp->fin = tcp->rst = 0;
   switch (flags) {
     case SYN:
@@ -222,12 +229,14 @@ void Headers::setTcpFlagsImpl(tcphdr* tcp, Headers::TcpFlags flags) {
       tcp->rst = tcp->ack = 1;
       break;
   }
-#endif
 }
+#endif
 
 void Headers::setTcpFlags(TcpFlags flags) {
+#ifdef THRIFT_PCAP_LOGGING_SUPPORTED
   setTcpFlagsImpl(&read_.tcp, flags);
   setTcpFlagsImpl(&write_.tcp, flags);
+#endif
 }
 
 void Headers::appendToIov(
