@@ -65,7 +65,7 @@ if(compiler_only OR build_all)
     ${MSTCH_INCLUDE_DIRS}
     ${OPENSSL_INCLUDE_DIR}
   )
-  set(THRIFT1 ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/thrift1)
+  set(THRIFT1 thrift1)
   set(THRIFT_TEMPLATES ${THRIFT_HOME}/thrift/compiler/generate/templates)
   set(THRIFTCPP2 thriftcpp2)
   include(ThriftLibrary.cmake)
