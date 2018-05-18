@@ -257,12 +257,10 @@ struct protocol_methods;
     REGISTER_SS_COMMON(Class, Type, Method, TTypeValue)    \
   }
 
-#define REGISTER_INTEGRAL(...) REGISTER_OVERLOAD(integral, __VA_ARGS__)
-REGISTER_INTEGRAL(std::int8_t, Byte, T_BYTE);
-REGISTER_INTEGRAL(std::int16_t, I16, T_I16);
-REGISTER_INTEGRAL(std::int32_t, I32, T_I32);
-REGISTER_INTEGRAL(std::int64_t, I64, T_I64);
-#undef REGISTER_INTEGRAL
+REGISTER_OVERLOAD(integral, std::int8_t, Byte, T_BYTE);
+REGISTER_OVERLOAD(integral, std::int16_t, I16, T_I16);
+REGISTER_OVERLOAD(integral, std::int32_t, I32, T_I32);
+REGISTER_OVERLOAD(integral, std::int64_t, I64, T_I64);
 
 // std::vector<bool> isn't actually a container, so
 // define a special overload which takes its specialized
@@ -280,10 +278,8 @@ struct protocol_methods<type_class::integral, bool> {
   }
 };
 
-#define REGISTER_FP(...) REGISTER_OVERLOAD(floating_point, __VA_ARGS__)
-REGISTER_FP(double, Double, T_DOUBLE);
-REGISTER_FP(float, Float, T_FLOAT);
-#undef REGISTER_FP
+REGISTER_OVERLOAD(floating_point, double, Double, T_DOUBLE);
+REGISTER_OVERLOAD(floating_point, float, Float, T_FLOAT);
 
 // TODO: might not need to specialize on std::string, but rather
 // just the string typeclass
@@ -308,12 +304,10 @@ REGISTER_OVERLOAD(string, folly::fbstring, String, T_STRING);
     }                                                            \
   }
 
-#define REGISTER_BINARY(...) REGISTER_ZC(binary, __VA_ARGS__)
-REGISTER_BINARY(std::string, Binary, T_STRING);
-REGISTER_BINARY(folly::IOBuf, Binary, T_STRING);
-REGISTER_BINARY(std::unique_ptr<folly::IOBuf>, Binary, T_STRING);
-REGISTER_BINARY(folly::fbstring, Binary, T_STRING);
-#undef REGISTER_BINARY
+REGISTER_ZC(binary, std::string, Binary, T_STRING);
+REGISTER_ZC(binary, folly::IOBuf, Binary, T_STRING);
+REGISTER_ZC(binary, std::unique_ptr<folly::IOBuf>, Binary, T_STRING);
+REGISTER_ZC(binary, folly::fbstring, Binary, T_STRING);
 #undef REGISTER_ZC // this naming sure isn't confusing, no sir
 #undef REGISTER_SS_COMMON
 #undef REGISTER_RW_COMMON
