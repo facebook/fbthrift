@@ -13,6 +13,7 @@
 #include <thrift/lib/cpp2/async/HeaderChannel.h>
 #include "src/gen-cpp2/PubSubStreamingServiceAsyncClient.h"
 #include "src/gen-cpp2/module_types.h"
+#include <thrift/lib/cpp2/async/StreamGenerator.h>
 #include <thrift/lib/cpp2/async/StreamPublisher.h>
 
 namespace folly {
@@ -81,6 +82,13 @@ class PubSubStreamingServiceSvIf : public PubSubStreamingServiceSvAsyncIf, publi
         folly::SerialExecutor::create(
             folly::getKeepAliveToken(getThreadManager())),
         std::move(onCanceled));
+  }
+  template <typename Generator>
+  auto createStreamGenerator(Generator&& generator) {
+    return apache::thrift::StreamGenerator::create(
+        folly::SerialExecutor::create(
+            folly::getKeepAliveToken(getThreadManager())),
+        std::forward<Generator>(generator));
   }
 };
 

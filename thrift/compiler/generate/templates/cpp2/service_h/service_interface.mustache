@@ -73,5 +73,12 @@
             folly::getKeepAliveToken(getThreadManager())),
         std::move(onCanceled));
   }
+  template <typename Generator>
+  auto createStreamGenerator(Generator&& generator) {
+    return apache::thrift::StreamGenerator::create(
+        folly::SerialExecutor::create(
+            folly::getKeepAliveToken(getThreadManager())),
+        std::forward<Generator>(generator));
+  }
 <%/service:any_streams?%>
 };
