@@ -317,6 +317,9 @@ class PriorityThreadManager : public ThreadManager {
   using ThreadManager::workerCount;
   virtual size_t workerCount(PRIORITY priority) = 0;
 
+  using ThreadManager::pendingTaskCount;
+  virtual size_t pendingTaskCount(PRIORITY priority) const = 0;
+
   using ThreadManager::add;
   virtual void add(PRIORITY priority,
                    std::shared_ptr<Runnable> task,

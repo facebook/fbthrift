@@ -1014,6 +1014,10 @@ class PriorityThreadManager::PriorityImplT
     return sum(&ThreadManager::pendingTaskCount);
   }
 
+  size_t pendingTaskCount(PRIORITY priority) const override {
+    return managers_[priority]->pendingTaskCount();
+  }
+
   size_t totalTaskCount() const override {
     return sum(&ThreadManager::totalTaskCount);
   }
