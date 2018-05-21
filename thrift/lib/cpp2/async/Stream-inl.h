@@ -208,7 +208,7 @@ Subscription Stream<T>::subscribe(Subscriber&& subscriber, int64_t batch) && {
           if (!(*rExecutor)) {
             return;
           }
-          (*rExecutor)->add([sharedState = std::move(sharedState)] {
+          (*rExecutor)->add([sharedState] {
             if (sharedState->canceled) {
               return;
             }
