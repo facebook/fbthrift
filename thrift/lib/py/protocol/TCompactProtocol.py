@@ -416,6 +416,7 @@ class TCompactProtocol(TProtocolBase):
 
 class TCompactProtocolFactory:
     def __init__(self):
+        # type: () -> None
         pass
 
     def getProtocol(self, trans):
