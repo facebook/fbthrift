@@ -13,7 +13,7 @@ import (
         "os"
         "strconv"
         "strings"
-        "github.com/facebook/fbthrift/thrift/lib/go/thrift"
+        "github.com/facebook/fbthrift-go"
         "module"
 )
 
