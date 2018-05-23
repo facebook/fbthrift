@@ -24,8 +24,8 @@
 #include <folly/Optional.h>
 #include <folly/String.h>
 #include <folly/portability/Unistd.h>
-#include <thrift/lib/cpp/protocol/TProtocolTypes.h>
 #include <thrift/lib/cpp/concurrency/Thread.h>
+#include <thrift/lib/cpp/protocol/TProtocolTypes.h>
 
 #include <bitset>
 #include <chrono>
@@ -58,16 +58,22 @@ enum HEADER_FLAGS {
 namespace folly {
 class IOBuf;
 class IOBufQueue;
-}
+} // namespace folly
 
-namespace apache { namespace thrift { namespace util {
+namespace apache {
+namespace thrift {
+namespace util {
 class THttpClientParser;
-}}}
+}
+} // namespace thrift
+} // namespace apache
 
-namespace apache { namespace thrift { namespace transport {
+namespace apache {
+namespace thrift {
+namespace transport {
 
-using apache::thrift::protocol::T_COMPACT_PROTOCOL;
 using apache::thrift::protocol::T_BINARY_PROTOCOL;
+using apache::thrift::protocol::T_COMPACT_PROTOCOL;
 
 /**
  * Class that will take an IOBuf and wrap it in some thrift headers.
@@ -83,7 +89,6 @@ using apache::thrift::protocol::T_BINARY_PROTOCOL;
  */
 class THeader {
  public:
-
   virtual ~THeader();
 
   enum {
@@ -92,21 +97,35 @@ class THeader {
 
   explicit THeader(int options = 0);
 
-  virtual void setClientType(CLIENT_TYPE ct) { this->clientType = ct; }
+  virtual void setClientType(CLIENT_TYPE ct) {
+    this->clientType = ct;
+  }
   // Force using specified client type when using legacy client types
   // i.e. sniffing out client type is disabled.
-  void forceClientType(bool enable) { forceClientType_ = enable; }
-  CLIENT_TYPE getClientType() const { return clientType; }
+  void forceClientType(bool enable) {
+    forceClientType_ = enable;
+  }
+  CLIENT_TYPE getClientType() const {
+    return clientType;
+  }
 
-  uint16_t getProtocolId() const { return protoId_;}
-  void setProtocolId(uint16_t protoId) { this->protoId_ = protoId; }
+  uint16_t getProtocolId() const {
+    return protoId_;
+  }
+  void setProtocolId(uint16_t protoId) {
+    this->protoId_ = protoId;
+  }
 
   int8_t getProtocolVersion() const;
-  void setProtocolVersion(uint8_t ver) { this->protoVersion = ver; }
+  void setProtocolVersion(uint8_t ver) {
+    this->protoVersion = ver;
+  }
 
   virtual void resetProtocol();
 
-  uint16_t getFlags() const { return flags_; }
+  uint16_t getFlags() const {
+    return flags_;
+  }
   void setFlags(uint16_t flags) {
     flags_ = flags;
   }
@@ -121,8 +140,8 @@ class THeader {
    * @return Just the data section in an IOBuf
    */
   std::unique_ptr<folly::IOBuf> readHeaderFormat(
-    std::unique_ptr<folly::IOBuf>,
-    StringToStringMap& persistentReadHeaders);
+      std::unique_ptr<folly::IOBuf>,
+      StringToStringMap& persistentReadHeaders);
 
   /**
    * Untransform the data based on the received header flags
@@ -133,8 +152,8 @@ class THeader {
    * @return IOBuf output data section
    */
   static std::unique_ptr<folly::IOBuf> untransform(
-    std::unique_ptr<folly::IOBuf>,
-    std::vector<uint16_t>& readTrans);
+      std::unique_ptr<folly::IOBuf>,
+      std::vector<uint16_t>& readTrans);
 
   /**
    * Transform the data based on our write transform flags
@@ -145,9 +164,9 @@ class THeader {
    * @return transformed data IOBuf
    */
   static std::unique_ptr<folly::IOBuf> transform(
-    std::unique_ptr<folly::IOBuf>,
-    std::vector<uint16_t>& writeTrans,
-    size_t minCompressBytes);
+      std::unique_ptr<folly::IOBuf>,
+      std::vector<uint16_t>& writeTrans,
+      size_t minCompressBytes);
 
   /**
    * Clone a new THeader. Metadata is copied, but not headers.
@@ -170,14 +189,21 @@ class THeader {
   void setTransforms(const std::vector<uint16_t>& trans) {
     writeTrans_ = trans;
   }
-  const std::vector<uint16_t>& getTransforms() const { return readTrans_; }
-  std::vector<uint16_t>& getWriteTransforms() { return writeTrans_; }
+  const std::vector<uint16_t>& getTransforms() const {
+    return readTrans_;
+  }
+  std::vector<uint16_t>& getWriteTransforms() {
+    return writeTrans_;
+  }
 
   // these work with write headers
   void setHeader(const std::string& key, const std::string& value);
   void setHeader(const std::string& key, std::string&& value);
-  void setHeader(const char* key, size_t keyLength, const char* value,
-                 size_t valueLength);
+  void setHeader(
+      const char* key,
+      size_t keyLength,
+      const char* value,
+      size_t valueLength);
   void setHeaders(StringToStringMap&&);
   void clearHeaders();
   bool isWriteHeadersEmpty() {
@@ -194,7 +220,9 @@ class THeader {
   // these work with read headers
   void setReadHeaders(StringToStringMap&&);
   void eraseReadHeader(const std::string& key);
-  const StringToStringMap& getHeaders() const { return readHeaders_; }
+  const StringToStringMap& getHeaders() const {
+    return readHeaders_;
+  }
 
   StringToStringMap releaseHeaders() {
     StringToStringMap headers;
@@ -213,15 +241,19 @@ class THeader {
   void setIdentity(const std::string& identity);
 
   // accessors for seqId
-  uint32_t getSequenceNumber() const { return seqId; }
-  void setSequenceNumber(uint32_t sid) { this->seqId = sid; }
+  uint32_t getSequenceNumber() const {
+    return seqId;
+  }
+  void setSequenceNumber(uint32_t sid) {
+    this->seqId = sid;
+  }
 
   enum TRANSFORMS {
     NONE = 0x00,
     ZLIB_TRANSFORM = 0x01,
-    HMAC_TRANSFORM = 0x02,         // Deprecated and no longer supported
+    HMAC_TRANSFORM = 0x02, // Deprecated and no longer supported
     SNAPPY_TRANSFORM = 0x03,
-    QLZ_TRANSFORM = 0x04,          // Deprecated and no longer supported
+    QLZ_TRANSFORM = 0x04, // Deprecated and no longer supported
     ZSTD_TRANSFORM = 0x05,
 
     // DO NOT USE. Sentinel value for enum count. Always keep as last value.
@@ -240,9 +272,9 @@ class THeader {
    * @return IOBuf chain with header _and_ data.  Data is not copied
    */
   std::unique_ptr<folly::IOBuf> addHeader(
-    std::unique_ptr<folly::IOBuf>,
-    StringToStringMap& persistentWriteHeaders,
-    bool transform=true);
+      std::unique_ptr<folly::IOBuf>,
+      StringToStringMap& persistentWriteHeaders,
+      bool transform = true);
   /**
    * Given an IOBuf Chain, remove the header.  Supports unframed (sync
    * only), framed, header, and http (sync case only).  This doesn't
@@ -261,9 +293,9 @@ class THeader {
    *                 call removeHeader again after reading needed more bytes.
    */
   std::unique_ptr<folly::IOBuf> removeHeader(
-    folly::IOBufQueue*,
-    size_t& needed,
-    StringToStringMap& persistentReadHeaders);
+      folly::IOBufQueue*,
+      size_t& needed,
+      StringToStringMap& persistentReadHeaders);
 
   void setMinCompressBytes(uint32_t bytes) {
     minCompressBytes_ = bytes;
@@ -276,8 +308,7 @@ class THeader {
   apache::thrift::concurrency::PRIORITY getCallPriority();
 
   std::chrono::milliseconds getTimeoutFromHeader(
-    const std::string header
-  ) const;
+      const std::string header) const;
 
   std::chrono::milliseconds getClientTimeout() const;
 
@@ -304,7 +335,7 @@ class THeader {
   static const uint32_t HTTP_CLIENT_MAGIC = 0x48545450; // HTTP
   static const uint32_t HTTP_GET_CLIENT_MAGIC = 0x47455420; // GET
   static const uint32_t HTTP_HEAD_CLIENT_MAGIC = 0x48454144; // HEAD
-  static const uint32_t BIG_FRAME_MAGIC = 0x42494746;  // BIGF
+  static const uint32_t BIG_FRAME_MAGIC = 0x42494746; // BIGF
 
   static const uint32_t MAX_FRAME_SIZE = 0x3FFFFFFF;
   static const std::string PRIORITY_HEADER;
@@ -320,20 +351,25 @@ class THeader {
 
   // Calls appropriate method based on client type
   // returns nullptr if Header of Unknown type
-  std::unique_ptr<folly::IOBuf> removeNonHeader(folly::IOBufQueue* queue,
-                                                size_t& needed,
-                                                CLIENT_TYPE clientType,
-                                                uint32_t sz);
+  std::unique_ptr<folly::IOBuf> removeNonHeader(
+      folly::IOBufQueue* queue,
+      size_t& needed,
+      CLIENT_TYPE clientType,
+      uint32_t sz);
 
-  template<template <class BaseProt> class ProtocolClass,
-           protocol::PROTOCOL_TYPES ProtocolID>
-  std::unique_ptr<folly::IOBuf> removeUnframed(folly::IOBufQueue* queue,
-                                               size_t& needed);
+  template <
+      template <class BaseProt> class ProtocolClass,
+      protocol::PROTOCOL_TYPES ProtocolID>
+  std::unique_ptr<folly::IOBuf> removeUnframed(
+      folly::IOBufQueue* queue,
+      size_t& needed);
   std::unique_ptr<folly::IOBuf> removeHttpServer(folly::IOBufQueue* queue);
-  std::unique_ptr<folly::IOBuf> removeHttpClient(folly::IOBufQueue* queue,
-                                                 size_t& needed);
-  std::unique_ptr<folly::IOBuf> removeFramed(uint32_t sz,
-                                             folly::IOBufQueue* queue);
+  std::unique_ptr<folly::IOBuf> removeHttpClient(
+      folly::IOBufQueue* queue,
+      size_t& needed);
+  std::unique_ptr<folly::IOBuf> removeFramed(
+      uint32_t sz,
+      folly::IOBufQueue* queue);
 
   std::unique_ptr<folly::IOBufQueue> queue_;
 
@@ -375,7 +411,7 @@ class THeader {
    * Returns the maximum number of bytes that write k/v headers can take
    */
   size_t getMaxWriteHeadersSize(
-    const StringToStringMap& persistentWriteHeaders) const;
+      const StringToStringMap& persistentWriteHeaders) const;
 
   /**
    * Returns whether the 1st byte of the protocol payload should be hadled
@@ -389,12 +425,13 @@ class THeader {
       KEYVALUE = 1,
       // for persistent header
       PKEYVALUE = 2,
-      END        // signal the end of infoIds we can handle
+      END // signal the end of infoIds we can handle
     };
   };
-
 };
 
-}}} // apache::thrift::transport
+} // namespace transport
+} // namespace thrift
+} // namespace apache
 
 #endif // #ifndef THRIFT_TRANSPORT_THEADER_H_
