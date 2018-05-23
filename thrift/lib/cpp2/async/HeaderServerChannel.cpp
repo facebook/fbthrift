@@ -139,7 +139,8 @@ HeaderServerChannel::ServerFramingHandler::removeFrame(IOBufQueue* q) {
     protInBuf = PROTOCOL_TYPES::T_BINARY_PROTOCOL;
   } else if (byte == 0x83) {
     protInBuf = PROTOCOL_TYPES::T_FROZEN2_PROTOCOL;
-  } else if (ct != THRIFT_HTTP_SERVER_TYPE) {
+  } else if (
+      ct != THRIFT_HTTP_SERVER_TYPE && ct != THRIFT_HEADER_SASL_CLIENT_TYPE) {
     LOG(ERROR) << "Received corrupted request from client: "
                << getTransportDebugString(channel_.getTransport()) << ". "
                << "Corrupted payload in header message. In message header, "
@@ -147,6 +148,9 @@ HeaderServerChannel::ServerFramingHandler::removeFrame(IOBufQueue* q) {
                << "clientType: " << folly::to<std::string>(ct) << ". "
                << "First few bytes of payload: "
                << getTHeaderPayloadString(buf.get());
+    throw TTransportException(
+        TTransportException::INVALID_STATE,
+        "Receiving corrupted request from client");
   }
 
   if (protInBuf != PROTOCOL_TYPES::T_DEBUG_PROTOCOL &&

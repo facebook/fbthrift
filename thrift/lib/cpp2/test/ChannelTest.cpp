@@ -51,7 +51,7 @@ constexpr size_t kTimingEpsilon = 1000;
 unique_ptr<IOBuf> makeTestBuf(size_t len) {
   unique_ptr<IOBuf> buf = IOBuf::create(len);
   buf->IOBuf::append(len);
-  memset(buf->writableData(), (char) (len % 127), len);
+  memset(buf->writableData(), char(0x80), len);
   return buf;
 }
 

@@ -287,7 +287,7 @@ unique_ptr<IOBuf> THeader::removeHeader(
   auto clientT = THeader::analyzeFirst32bit(sz32);
   if (clientT) {
     clientType = *clientT;
-    return THeader::removeNonHeader(queue, needed, clientType, sz32);
+    return THeader::removeNonHeader(queue, needed, *clientT, sz32);
   }
 
   size_t sz = sz32;
