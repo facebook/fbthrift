@@ -335,8 +335,6 @@ class THeader {
   std::unique_ptr<folly::IOBuf> removeFramed(uint32_t sz,
                                              folly::IOBufQueue* queue);
 
-  void setBestClientType();
-
   std::unique_ptr<folly::IOBufQueue> queue_;
 
   // Http client parser
