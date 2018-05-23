@@ -65,10 +65,10 @@ static constexpr StringPiece THRIFT_AUTH_HEADER = "thrift_auth";
 THeader::THeader(int options)
     : queue_(new folly::IOBufQueue),
       protoId_(T_COMPACT_PROTOCOL),
-      protoVersion(-1),
-      clientType(THRIFT_HEADER_CLIENT_TYPE),
+      protoVersion_(-1),
+      clientType_(THRIFT_HEADER_CLIENT_TYPE),
       forceClientType_(false),
-      seqId(0),
+      seqId_(0),
       flags_(0),
       minCompressBytes_(0),
       allowBigFrames_(options & ALLOW_BIG_FRAMES) {}
@@ -76,7 +76,7 @@ THeader::THeader(int options)
 THeader::~THeader() {}
 
 int8_t THeader::getProtocolVersion() const {
-  return protoVersion;
+  return protoVersion_;
 }
 
 bool THeader::compactFramed(uint32_t magic) {
@@ -273,12 +273,12 @@ unique_ptr<IOBuf> THeader::removeHeader(
 
   if (forceClientType_) {
     // Make sure we have read the whole frame in.
-    if (isFramed(clientType) && (sz32 > remaining)) {
+    if (isFramed(clientType_) && (sz32 > remaining)) {
       needed = sz32 - remaining;
       return nullptr;
     }
     unique_ptr<IOBuf> buf =
-        THeader::removeNonHeader(queue, needed, clientType, sz32);
+        THeader::removeNonHeader(queue, needed, clientType_, sz32);
     if (buf) {
       return buf;
     }
@@ -286,7 +286,7 @@ unique_ptr<IOBuf> THeader::removeHeader(
 
   auto clientT = THeader::analyzeFirst32bit(sz32);
   if (clientT) {
-    clientType = *clientT;
+    clientType_ = *clientT;
     return THeader::removeNonHeader(queue, needed, *clientT, sz32);
   }
 
@@ -334,14 +334,14 @@ unique_ptr<IOBuf> THeader::removeHeader(
   // Could be header format or framed. Check next uint32
   uint32_t magic = c.readBE<uint32_t>();
   remaining -= 4;
-  clientType = analyzeSecond32bit(magic);
+  clientType_ = analyzeSecond32bit(magic);
   unique_ptr<IOBuf> buf =
-      THeader::removeNonHeader(queue, needed, clientType, sz);
+      THeader::removeNonHeader(queue, needed, clientType_, sz);
   if (buf) {
     return buf;
   }
 
-  if (clientType == THRIFT_UNKNOWN_CLIENT_TYPE) {
+  if (clientType_ == THRIFT_UNKNOWN_CLIENT_TYPE) {
     throw TTransportException(
         TTransportException::BAD_ARGS,
         folly::stringPrintf(
@@ -354,7 +354,7 @@ unique_ptr<IOBuf> THeader::removeHeader(
         folly::stringPrintf("Header transport frame is too small: %zu", sz));
   }
   flags_ = magic & FLAGS_MASK;
-  seqId = c.readBE<uint32_t>();
+  seqId_ = c.readBE<uint32_t>();
 
   // Trim off the frame size.
   queue->trimStart(frameSizeBytes);
@@ -366,9 +366,9 @@ unique_ptr<IOBuf> THeader::removeHeader(
   // Correct client type if needed
   if (auth_header != getHeaders().end()) {
     if (auth_header->second == "1") {
-      clientType = THRIFT_HEADER_SASL_CLIENT_TYPE;
+      clientType_ = THRIFT_HEADER_SASL_CLIENT_TYPE;
     } else {
-      clientType = THRIFT_HEADER_CLIENT_TYPE;
+      clientType_ = THRIFT_HEADER_CLIENT_TYPE;
     }
     readHeaders_.erase(auth_header);
   }
@@ -493,7 +493,7 @@ unique_ptr<IOBuf> THeader::readHeaderFormat(
   // Untransform data section
   buf = untransform(std::move(buf), readTrans_);
 
-  if (protoId_ == T_JSON_PROTOCOL && clientType != THRIFT_HTTP_SERVER_TYPE) {
+  if (protoId_ == T_JSON_PROTOCOL && clientType_ != THRIFT_HTTP_SERVER_TYPE) {
     throw TApplicationException(
         TApplicationException::UNSUPPORTED_CLIENT_TYPE,
         "Client is trying to send JSON without HTTP");
@@ -619,8 +619,8 @@ std::unique_ptr<THeader> THeader::clone() {
   clone->setProtocolId(protoId_);
   clone->setTransforms(writeTrans_);
   clone->setMinCompressBytes(minCompressBytes_);
-  clone->setSequenceNumber(seqId);
-  clone->setClientType(clientType);
+  clone->setSequenceNumber(seqId_);
+  clone->setClientType(clientType_);
   clone->setFlags(flags_);
   clone->forceClientType(forceClientType_);
 
@@ -629,7 +629,7 @@ std::unique_ptr<THeader> THeader::clone() {
 
 void THeader::resetProtocol() {
   // Set to anything except HTTP type so we don't flush again
-  clientType = THRIFT_HEADER_CLIENT_TYPE;
+  clientType_ = THRIFT_HEADER_CLIENT_TYPE;
 }
 
 /**
@@ -737,7 +737,7 @@ string THeader::getPeerIdentity() {
 }
 
 void THeader::setIdentity(const string& identity) {
-  this->identity = identity;
+  this->identity_ = identity;
 }
 
 unique_ptr<IOBuf> THeader::addHeader(
@@ -748,21 +748,21 @@ unique_ptr<IOBuf> THeader::addHeader(
   // a copy here
   std::vector<uint16_t> writeTrans = writeTrans_;
 
-  if (clientType == THRIFT_HEADER_CLIENT_TYPE ||
-      clientType == THRIFT_HEADER_SASL_CLIENT_TYPE) {
+  if (clientType_ == THRIFT_HEADER_CLIENT_TYPE ||
+      clientType_ == THRIFT_HEADER_SASL_CLIENT_TYPE) {
     if (transform) {
       buf = THeader::transform(std::move(buf), writeTrans, minCompressBytes_);
     }
   }
   size_t chainSize = buf->computeChainDataLength();
 
-  if (protoId_ == T_JSON_PROTOCOL && clientType != THRIFT_HTTP_SERVER_TYPE) {
+  if (protoId_ == T_JSON_PROTOCOL && clientType_ != THRIFT_HTTP_SERVER_TYPE) {
     throw TTransportException(
         TTransportException::BAD_ARGS, "Trying to send JSON without HTTP");
   }
 
-  if (chainSize > MAX_FRAME_SIZE && clientType != THRIFT_HEADER_CLIENT_TYPE &&
-      clientType != THRIFT_HEADER_SASL_CLIENT_TYPE) {
+  if (chainSize > MAX_FRAME_SIZE && clientType_ != THRIFT_HEADER_CLIENT_TYPE &&
+      clientType_ != THRIFT_HEADER_SASL_CLIENT_TYPE) {
     throw TTransportException(
         TTransportException::INVALID_FRAME_SIZE,
         "Attempting to send non-header frame that is too large");
@@ -770,13 +770,13 @@ unique_ptr<IOBuf> THeader::addHeader(
 
   // Add in special flags
   // All flags must be added before any calls to getMaxWriteHeadersSize
-  if (identity.length() > 0) {
-    writeHeaders_[IDENTITY_HEADER] = identity;
+  if (identity_.length() > 0) {
+    writeHeaders_[IDENTITY_HEADER] = identity_;
     writeHeaders_[ID_VERSION_HEADER] = ID_VERSION;
   }
 
-  if (clientType == THRIFT_HEADER_CLIENT_TYPE ||
-      clientType == THRIFT_HEADER_SASL_CLIENT_TYPE) {
+  if (clientType_ == THRIFT_HEADER_CLIENT_TYPE ||
+      clientType_ == THRIFT_HEADER_SASL_CLIENT_TYPE) {
     // header size will need to be updated at the end because of varints.
     // Make it big enough here for max varint size, plus 4 for padding.
     int headerSize =
@@ -803,12 +803,12 @@ unique_ptr<IOBuf> THeader::addHeader(
     uint16_t magicN = htons(HEADER_MAGIC >> 16);
     memcpy(pkt, &magicN, sizeof(magicN));
     pkt += sizeof(magicN);
-    uint16_t flagsN = (clientType == THRIFT_HEADER_SASL_CLIENT_TYPE)
+    uint16_t flagsN = (clientType_ == THRIFT_HEADER_SASL_CLIENT_TYPE)
         ? htons(flags_ | HEADER_FLAG_SASL)
         : htons(flags_);
     memcpy(pkt, &flagsN, sizeof(flagsN));
     pkt += sizeof(flagsN);
-    uint32_t seqIdN = htonl(seqId);
+    uint32_t seqIdN = htonl(seqId_);
     memcpy(pkt, &seqIdN, sizeof(seqIdN));
     pkt += sizeof(seqIdN);
     headerSizePtr = pkt;
@@ -875,8 +875,8 @@ unique_ptr<IOBuf> THeader::addHeader(
     header->prependChain(std::move(buf));
     buf = std::move(header);
   } else if (
-      (clientType == THRIFT_FRAMED_DEPRECATED) ||
-      (clientType == THRIFT_FRAMED_COMPACT)) {
+      (clientType_ == THRIFT_FRAMED_DEPRECATED) ||
+      (clientType_ == THRIFT_FRAMED_COMPACT)) {
     uint32_t szHbo = (uint32_t)chainSize;
     uint32_t szNbo = htonl(szHbo);
 
@@ -886,12 +886,12 @@ unique_ptr<IOBuf> THeader::addHeader(
     header->prependChain(std::move(buf));
     buf = std::move(header);
   } else if (
-      clientType == THRIFT_UNFRAMED_DEPRECATED ||
-      clientType == THRIFT_UNFRAMED_COMPACT_DEPRECATED ||
-      clientType == THRIFT_HTTP_SERVER_TYPE) {
+      clientType_ == THRIFT_UNFRAMED_DEPRECATED ||
+      clientType_ == THRIFT_UNFRAMED_COMPACT_DEPRECATED ||
+      clientType_ == THRIFT_HTTP_SERVER_TYPE) {
     // We just return buf
     // TODO: IOBufize httpTransport.
-  } else if (clientType == THRIFT_HTTP_CLIENT_TYPE) {
+  } else if (clientType_ == THRIFT_HTTP_CLIENT_TYPE) {
     CHECK(httpClientParser_.get() != nullptr);
     buf = httpClientParser_->constructHeader(
         std::move(buf),
@@ -960,7 +960,7 @@ std::chrono::milliseconds THeader::getClientQueueTimeout() const {
 }
 
 void THeader::setHttpClientParser(shared_ptr<THttpClientParser> parser) {
-  CHECK(clientType == THRIFT_HTTP_CLIENT_TYPE);
+  CHECK(clientType_ == THRIFT_HTTP_CLIENT_TYPE);
   httpClientParser_ = parser;
 }
 

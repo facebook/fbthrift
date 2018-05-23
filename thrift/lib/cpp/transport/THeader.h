@@ -98,7 +98,7 @@ class THeader {
   explicit THeader(int options = 0);
 
   virtual void setClientType(CLIENT_TYPE ct) {
-    this->clientType = ct;
+    this->clientType_ = ct;
   }
   // Force using specified client type when using legacy client types
   // i.e. sniffing out client type is disabled.
@@ -106,7 +106,7 @@ class THeader {
     forceClientType_ = enable;
   }
   CLIENT_TYPE getClientType() const {
-    return clientType;
+    return clientType_;
   }
 
   uint16_t getProtocolId() const {
@@ -118,7 +118,7 @@ class THeader {
 
   int8_t getProtocolVersion() const;
   void setProtocolVersion(uint8_t ver) {
-    this->protoVersion = ver;
+    this->protoVersion_ = ver;
   }
 
   virtual void resetProtocol();
@@ -242,10 +242,10 @@ class THeader {
 
   // accessors for seqId
   uint32_t getSequenceNumber() const {
-    return seqId;
+    return seqId_;
   }
   void setSequenceNumber(uint32_t sid) {
-    this->seqId = sid;
+    this->seqId_ = sid;
   }
 
   enum TRANSFORMS {
@@ -377,12 +377,12 @@ class THeader {
   std::shared_ptr<apache::thrift::util::THttpClientParser> httpClientParser_;
 
   int16_t protoId_;
-  int8_t protoVersion;
-  CLIENT_TYPE clientType;
+  int8_t protoVersion_;
+  CLIENT_TYPE clientType_;
   bool forceClientType_;
-  uint32_t seqId;
+  uint32_t seqId_;
   uint16_t flags_;
-  std::string identity;
+  std::string identity_;
 
   std::vector<uint16_t> readTrans_;
   std::vector<uint16_t> writeTrans_;

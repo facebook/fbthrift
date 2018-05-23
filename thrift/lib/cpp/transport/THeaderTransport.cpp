@@ -79,7 +79,7 @@ void THeaderTransport::setSupportedClients(
 }
 
 uint32_t THeaderTransport::readAll(uint8_t* buf, uint32_t len) {
-  if (clientType == THRIFT_HTTP_SERVER_TYPE) {
+  if (clientType_ == THRIFT_HTTP_SERVER_TYPE) {
     return httpTransport_->read(buf, len);
   }
 
@@ -90,12 +90,12 @@ uint32_t THeaderTransport::readAll(uint8_t* buf, uint32_t len) {
 
 uint32_t THeaderTransport::readSlow(uint8_t* buf, uint32_t len) {
 
-  if (clientType == THRIFT_HTTP_SERVER_TYPE) {
+  if (clientType_ == THRIFT_HTTP_SERVER_TYPE) {
     return httpTransport_->read(buf, len);
   }
 
-  if ((clientType == THRIFT_UNFRAMED_DEPRECATED) ||
-      (clientType == THRIFT_FRAMED_COMPACT)) {
+  if ((clientType_ == THRIFT_UNFRAMED_DEPRECATED) ||
+      (clientType_ == THRIFT_FRAMED_COMPACT)) {
     return transport_->read(buf, len);
   }
 
@@ -149,7 +149,7 @@ bool THeaderTransport::readFrame(uint32_t /*minFrameSize*/) {
     }
   }
 
-  if (clientType == THRIFT_HTTP_SERVER_TYPE) {
+  if (clientType_ == THRIFT_HTTP_SERVER_TYPE) {
     // TODO: Update to use THttpParser directly instead of wrapping
     // in a THttpTransport.
     readBuf_->coalesce();
@@ -170,7 +170,7 @@ shared_ptr<TTransport> THeaderTransport::getUnderlyingInputTransport() {
 }
 
 shared_ptr<TTransport> THeaderTransport::getUnderlyingOutputTransport() {
-  if (clientType == THRIFT_HTTP_SERVER_TYPE) {
+  if (clientType_ == THRIFT_HTTP_SERVER_TYPE) {
     return httpTransport_;
   } else {
     return outTransport_;
