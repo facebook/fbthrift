@@ -308,7 +308,7 @@ class THeader {
   apache::thrift::concurrency::PRIORITY getCallPriority();
 
   std::chrono::milliseconds getTimeoutFromHeader(
-      const std::string header) const;
+      const std::string& header) const;
 
   std::chrono::milliseconds getClientTimeout() const;
 

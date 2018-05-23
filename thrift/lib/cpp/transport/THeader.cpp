@@ -928,7 +928,7 @@ apache::thrift::concurrency::PRIORITY THeader::getCallPriority() {
 }
 
 std::chrono::milliseconds THeader::getTimeoutFromHeader(
-    const std::string header) const {
+    const std::string& header) const {
   const auto& map = getHeaders();
   auto iter = map.find(header);
   if (iter != map.end()) {
