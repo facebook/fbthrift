@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Facebook, Inc.
+ * Copyright 2016-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 #ifndef SECURITY_KILL_SWITCH_POLLER_H
 #define SECURITY_KILL_SWITCH_POLLER_H
 
@@ -43,7 +42,9 @@ class SecurityKillSwitchPoller {
                                   wangle::FilePoller::fileTouchedCond());
 
  protected:
-  explicit SecurityKillSwitchPoller(bool autostart);
+  explicit SecurityKillSwitchPoller(
+      bool autostart,
+      std::chrono::seconds pollInterval = std::chrono::seconds(60));
 
   std::atomic<bool> switchEnabled_{false};
 

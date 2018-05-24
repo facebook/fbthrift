@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Facebook, Inc.
+ * Copyright 2016-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 #pragma once
 
 #include <gmock/gmock.h>
@@ -25,7 +24,7 @@ namespace thrift {
 class MockSecurityKillSwitchPoller : public SecurityKillSwitchPoller {
  public:
   explicit MockSecurityKillSwitchPoller(std::function<bool()> pollFunc)
-      : SecurityKillSwitchPoller(false) {
+      : SecurityKillSwitchPoller(false, std::chrono::seconds(1)) {
     auto yCob = [this, pollFunc]() { switchEnabled_ = pollFunc(); };
     auto condition = wangle::FilePoller::doAlwaysCond();
     poller_->addFileToTrack("no_file", yCob, nullptr, condition);

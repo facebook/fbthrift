@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Facebook, Inc.
+ * Copyright 2016-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 #include <thrift/lib/cpp2/security/SecurityKillSwitchPoller.h>
 #include <folly/Singleton.h>
 
@@ -32,8 +31,6 @@ namespace apache { namespace thrift {
 
 static constexpr std::chrono::seconds kThriftKillSwitchExpired =
     std::chrono::seconds(86400);
-static constexpr std::chrono::seconds kPollInterval =
-    std::chrono::seconds(1);
 
 using namespace std;
 using namespace folly;
@@ -41,8 +38,10 @@ using namespace folly;
 SecurityKillSwitchPoller::SecurityKillSwitchPoller()
     : SecurityKillSwitchPoller(true) {}
 
-SecurityKillSwitchPoller::SecurityKillSwitchPoller(bool autostart)
-    : poller_(std::make_unique<FilePoller>(kPollInterval)) {
+SecurityKillSwitchPoller::SecurityKillSwitchPoller(
+    bool autostart,
+    std::chrono::seconds pollInterval)
+    : poller_(std::make_unique<FilePoller>(pollInterval)) {
   auto yCob = [this]() { switchEnabled_ = true; };
   auto nCob = [this]() { switchEnabled_ = false; };
   auto condition = FilePoller::fileTouchedWithinCond(kThriftKillSwitchExpired);
