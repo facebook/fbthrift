@@ -1247,7 +1247,7 @@ cdef class ReturnService(thrift.py3.client.Client):
         if not isinstance(size, int):
             raise TypeError(f'size is not a {int !r}.')
         else:
-            <int64_t> size
+            size = <int64_t> size
         self._check_connect_future()
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
@@ -1273,7 +1273,7 @@ cdef class ReturnService(thrift.py3.client.Client):
         if not isinstance(size, int):
             raise TypeError(f'size is not a {int !r}.')
         else:
-            <int64_t> size
+            size = <int64_t> size
         self._check_connect_future()
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
@@ -1384,7 +1384,7 @@ cdef class ParamService(thrift.py3.client.Client):
         if not isinstance(param1, int):
             raise TypeError(f'param1 is not a {int !r}.')
         else:
-            <int16_t> param1
+            param1 = <int16_t> param1
         self._check_connect_future()
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
@@ -1411,11 +1411,11 @@ cdef class ParamService(thrift.py3.client.Client):
         if not isinstance(param1, int):
             raise TypeError(f'param1 is not a {int !r}.')
         else:
-            <int8_t> param1
+            param1 = <int8_t> param1
         if not isinstance(param2, int):
             raise TypeError(f'param2 is not a {int !r}.')
         else:
-            <int16_t> param2
+            param2 = <int16_t> param2
         self._check_connect_future()
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
@@ -1494,7 +1494,7 @@ cdef class ParamService(thrift.py3.client.Client):
         if not isinstance(param1, int):
             raise TypeError(f'param1 is not a {int !r}.')
         else:
-            <int32_t> param1
+            param1 = <int32_t> param1
         self._check_connect_future()
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
@@ -1591,11 +1591,11 @@ cdef class ParamService(thrift.py3.client.Client):
         if not isinstance(param1, int):
             raise TypeError(f'param1 is not a {int !r}.')
         else:
-            <int32_t> param1
+            param1 = <int32_t> param1
         if not isinstance(param2, int):
             raise TypeError(f'param2 is not a {int !r}.')
         else:
-            <int64_t> param2
+            param2 = <int64_t> param2
         self._check_connect_future()
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
@@ -1722,23 +1722,23 @@ cdef class ParamService(thrift.py3.client.Client):
         if not isinstance(param1, int):
             raise TypeError(f'param1 is not a {int !r}.')
         else:
-            <int32_t> param1
+            param1 = <int32_t> param1
         if not isinstance(param2, int):
             raise TypeError(f'param2 is not a {int !r}.')
         else:
-            <int32_t> param2
+            param2 = <int32_t> param2
         if not isinstance(param3, int):
             raise TypeError(f'param3 is not a {int !r}.')
         else:
-            <int32_t> param3
+            param3 = <int32_t> param3
         if not isinstance(param4, int):
             raise TypeError(f'param4 is not a {int !r}.')
         else:
-            <int32_t> param4
+            param4 = <int32_t> param4
         if not isinstance(param5, int):
             raise TypeError(f'param5 is not a {int !r}.')
         else:
-            <int32_t> param5
+            param5 = <int32_t> param5
         self._check_connect_future()
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
@@ -1910,7 +1910,7 @@ cdef class ParamService(thrift.py3.client.Client):
         if not isinstance(param1, int):
             raise TypeError(f'param1 is not a {int !r}.')
         else:
-            <int32_t> param1
+            param1 = <int32_t> param1
         self._check_connect_future()
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
@@ -2032,7 +2032,7 @@ cdef class ParamService(thrift.py3.client.Client):
         if not isinstance(param1, int):
             raise TypeError(f'param1 is not a {int !r}.')
         else:
-            <int16_t> param1
+            param1 = <int16_t> param1
         self._check_connect_future()
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
@@ -2083,11 +2083,11 @@ cdef class ParamService(thrift.py3.client.Client):
         if not isinstance(param1, int):
             raise TypeError(f'param1 is not a {int !r}.')
         else:
-            <int32_t> param1
+            param1 = <int32_t> param1
         if not isinstance(param2, int):
             raise TypeError(f'param2 is not a {int !r}.')
         else:
-            <int32_t> param2
+            param2 = <int32_t> param2
         self._check_connect_future()
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()

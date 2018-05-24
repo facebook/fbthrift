@@ -698,7 +698,7 @@ cdef class SimpleService(thrift.py3.client.Client):
         if not isinstance(num, int):
             raise TypeError(f'num is not a {int !r}.')
         else:
-            <int32_t> num
+            num = <int32_t> num
         self._check_connect_future()
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
@@ -812,7 +812,7 @@ cdef class SimpleService(thrift.py3.client.Client):
         if not isinstance(input, int):
             raise TypeError(f'input is not a {int !r}.')
         else:
-            <int8_t> input
+            input = <int8_t> input
         self._check_connect_future()
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
@@ -838,7 +838,7 @@ cdef class SimpleService(thrift.py3.client.Client):
         if not isinstance(input, int):
             raise TypeError(f'input is not a {int !r}.')
         else:
-            <int16_t> input
+            input = <int16_t> input
         self._check_connect_future()
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
@@ -864,7 +864,7 @@ cdef class SimpleService(thrift.py3.client.Client):
         if not isinstance(input, int):
             raise TypeError(f'input is not a {int !r}.')
         else:
-            <int64_t> input
+            input = <int64_t> input
         self._check_connect_future()
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
@@ -1260,7 +1260,7 @@ cdef class SimpleService(thrift.py3.client.Client):
         if not isinstance(n, int):
             raise TypeError(f'n is not a {int !r}.')
         else:
-            <int16_t> n
+            n = <int16_t> n
         self._check_connect_future()
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
@@ -1359,11 +1359,11 @@ cdef class SimpleService(thrift.py3.client.Client):
         if not isinstance(num_lists, int):
             raise TypeError(f'num_lists is not a {int !r}.')
         else:
-            <int16_t> num_lists
+            num_lists = <int16_t> num_lists
         if not isinstance(num_items, int):
             raise TypeError(f'num_items is not a {int !r}.')
         else:
-            <int16_t> num_items
+            num_items = <int16_t> num_items
         self._check_connect_future()
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
@@ -1530,7 +1530,7 @@ cdef class SimpleService(thrift.py3.client.Client):
         if not isinstance(key, int):
             raise TypeError(f'key is not a {int !r}.')
         else:
-            <int32_t> key
+            key = <int32_t> key
         self._check_connect_future()
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()

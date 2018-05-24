@@ -367,7 +367,7 @@ cdef class MyService(thrift.py3.client.Client):
         if not isinstance(id, int):
             raise TypeError(f'id is not a {int !r}.')
         else:
-            <int64_t> id
+            id = <int64_t> id
         self._check_connect_future()
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
@@ -393,7 +393,7 @@ cdef class MyService(thrift.py3.client.Client):
         if not isinstance(id, int):
             raise TypeError(f'id is not a {int !r}.')
         else:
-            <int64_t> id
+            id = <int64_t> id
         self._check_connect_future()
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
@@ -420,7 +420,7 @@ cdef class MyService(thrift.py3.client.Client):
         if not isinstance(id, int):
             raise TypeError(f'id is not a {int !r}.')
         else:
-            <int64_t> id
+            id = <int64_t> id
         self._check_connect_future()
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
@@ -448,7 +448,7 @@ cdef class MyService(thrift.py3.client.Client):
         if not isinstance(id, int):
             raise TypeError(f'id is not a {int !r}.')
         else:
-            <int64_t> id
+            id = <int64_t> id
         self._check_connect_future()
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
@@ -600,7 +600,7 @@ cdef class MyServiceFast(thrift.py3.client.Client):
         if not isinstance(id, int):
             raise TypeError(f'id is not a {int !r}.')
         else:
-            <int64_t> id
+            id = <int64_t> id
         self._check_connect_future()
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
@@ -626,7 +626,7 @@ cdef class MyServiceFast(thrift.py3.client.Client):
         if not isinstance(id, int):
             raise TypeError(f'id is not a {int !r}.')
         else:
-            <int64_t> id
+            id = <int64_t> id
         self._check_connect_future()
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
@@ -653,7 +653,7 @@ cdef class MyServiceFast(thrift.py3.client.Client):
         if not isinstance(id, int):
             raise TypeError(f'id is not a {int !r}.')
         else:
-            <int64_t> id
+            id = <int64_t> id
         self._check_connect_future()
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
@@ -681,7 +681,7 @@ cdef class MyServiceFast(thrift.py3.client.Client):
         if not isinstance(id, int):
             raise TypeError(f'id is not a {int !r}.')
         else:
-            <int64_t> id
+            id = <int64_t> id
         self._check_connect_future()
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()

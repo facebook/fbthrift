@@ -200,7 +200,7 @@ cdef class {{service:name}}({{#service:extends}}{{#service:externalProgram?}}{{!
             raise TypeError(f'{{field:name}} is not a {int !r}.')
         else:
             {{! inject cython int Overflow checks }}
-            <{{> types/CythonPythonType}}> {{field:name}}
+            {{field:name}} = <{{> types/CythonPythonType}}> {{field:name}}
         {{/type:integer?}}
         {{/field:type}}
         {{/function:args}}
