@@ -58,11 +58,13 @@ folly::Future<RequestChannel_ptr> createThriftChannelTCP(
     folly::Future<std::string>&& host_fut,
     const uint16_t port,
     const uint32_t connect_timeout) {
-  auto eb = folly::getEventBase();
-  return host_fut.then(eb, [=](std::string host) {
-    return apache::thrift::HeaderClientChannel::newChannel(
-        apache::thrift::async::TAsyncSocket::newSocket(
-            eb, host, port, connect_timeout));
+  return host_fut.then([=](std::string host) {
+    auto eb = folly::getEventBase();
+    return folly::via(eb, [=] {
+      return apache::thrift::HeaderClientChannel::newChannel(
+          apache::thrift::async::TAsyncSocket::newSocket(
+              eb, host, port, connect_timeout));
+    });
   });
 }
 
