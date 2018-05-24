@@ -34,6 +34,23 @@ namespace apache {
 namespace thrift {
 
 namespace detail {
+std::unique_ptr<folly::IOBuf> encodeSetupPayload(
+    const SetupParameters& setupParams) {
+  folly::IOBufQueue queue;
+  // Put version information
+  auto buf = folly::IOBuf::createCombined(sizeof(int32_t));
+  queue.append(std::move(buf));
+  folly::io::QueueAppender appender(&queue, /* do not grow */ 0);
+  appender.writeBE<uint16_t>(RSocketClientChannel::kMajorVersion);
+  appender.writeBE<uint16_t>(RSocketClientChannel::kMinorVersion);
+
+  // Put encoded setup struct
+  CompactProtocolWriter writer;
+  writer.setOutput(&queue);
+  setupParams.write(&writer);
+  return queue.move();
+}
+
 void RSConnectionStatus::setCloseCallback(CloseCallback* ccb) {
   closeCallback_ = ccb;
 }
@@ -108,6 +125,8 @@ class CountedSingleObserver : public SingleObserver<Payload> {
 
 const std::chrono::milliseconds RSocketClientChannel::kDefaultRpcTimeout =
     std::chrono::milliseconds(500);
+const uint16_t RSocketClientChannel::kMajorVersion = 0;
+const uint16_t RSocketClientChannel::kMinorVersion = 1;
 
 RSocketClientChannel::Ptr RSocketClientChannel::newChannel(
     async::TAsyncTransport::UniquePtr transport,
@@ -154,18 +173,22 @@ RSocketClientChannel::RSocketClientChannel(
       ResumeManager::makeEmpty(),
       nullptr);
 
-  SetupParameters setupParameters;
-  setupParameters.resumable = false; // Not resumable!
+  rsocket::SetupParameters rsocketSetupParams;
+  rsocketSetupParams.resumable = false;
+
+  apache::thrift::SetupParameters thriftSetupParams;
+  rsocketSetupParams.payload.metadata =
+      detail::encodeSetupPayload(thriftSetupParams);
 
   auto&& conn =
       TcpConnectionFactory::createDuplexConnectionFromSocket(std::move(socket));
   DCHECK(!conn->isFramed());
   auto&& framedConn = std::make_unique<FramedDuplexConnection>(
-      std::move(conn), setupParameters.protocolVersion);
+      std::move(conn), rsocketSetupParams.protocolVersion);
   auto transport = std::make_shared<FrameTransportImpl>(std::move(framedConn));
 
   stateMachine_->connectClient(
-      std::move(transport), std::move(setupParameters));
+      std::move(transport), std::move(rsocketSetupParams));
 }
 
 RSocketClientChannel::~RSocketClientChannel() {

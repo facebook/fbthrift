@@ -106,3 +106,9 @@ struct ResponseRpcMetadata {
   // by a field in this struct.
   3: optional map<string, string> otherMetadata;
 }
+
+// Setup parameters sent from the client to the server at the time
+// of initial connection.
+struct SetupParameters {
+  // empty
+}

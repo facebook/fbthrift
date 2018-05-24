@@ -172,6 +172,10 @@ class RSocketClientChannel : public ClientChannel, public ChannelCallbacks {
       std::unique_ptr<folly::IOBuf> buf,
       std::unique_ptr<RequestCallback> cb) noexcept;
 
+ public:
+  static const uint16_t kMajorVersion;
+  static const uint16_t kMinorVersion;
+
  private:
   // The default timeout for a Thrift RPC.
   static const std::chrono::milliseconds kDefaultRpcTimeout;

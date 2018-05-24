@@ -102,18 +102,44 @@ class ManagedRSocketConnection::SetupSubscriber
 
     VLOG(3) << "In: " << frame;
 
-    SetupParameters params;
-    frame.moveToSetupPayload(params);
+    rsocket::SetupParameters rsocketSetupParams;
+    frame.moveToSetupPayload(rsocketSetupParams);
 
-    if (serializer->protocolVersion() != params.protocolVersion) {
+    if (serializer->protocolVersion() != rsocketSetupParams.protocolVersion) {
       constexpr auto msg = "SETUP frame has invalid protocol version";
       onErr(Frame_ERROR::invalidSetup(msg));
       return;
     }
 
+    // Check the Thrift_RSocket version
+    try {
+      folly::io::Cursor cursor(rsocketSetupParams.payload.metadata.get());
+
+      int16_t majorVersion, minorVersion;
+      bool success = cursor.tryReadBE<int16_t>(majorVersion);
+      success &= cursor.tryReadBE<int16_t>(minorVersion);
+
+      if (!success || majorVersion != 0 || minorVersion != 1) {
+        constexpr auto msg =
+            "SETUP frame has invalid Thrift&RSocket protocol version";
+        onErr(Frame_ERROR::invalidSetup(msg));
+        return;
+      }
+
+      CompactProtocolReader reader;
+      reader.setInput(cursor);
+      SetupParameters thriftSetupParams;
+      // if can't read, then throws
+      thriftSetupParams.read(&reader);
+    } catch (const std::exception& e) {
+      onErr(Frame_ERROR::invalidSetup(
+          std::string("SETUP frame is invalid : ") + e.what()));
+      return;
+    }
+
     std::shared_ptr<RSResponder> responder;
     try {
-      responder = setupFunc_(params);
+      responder = setupFunc_(rsocketSetupParams);
       DCHECK_NOTNULL(responder.get());
     } catch (const std::exception& ex) {
       onErr(Frame_ERROR::rejectedSetup(ex.what()));
@@ -121,7 +147,9 @@ class ManagedRSocketConnection::SetupSubscriber
     }
 
     managed_.onSetup(
-        std::move(connection), std::move(responder), std::move(params));
+        std::move(connection),
+        std::move(responder),
+        std::move(rsocketSetupParams));
   }
 
  private:
@@ -151,7 +179,7 @@ void ManagedRSocketConnection::removeConnection() {
 void ManagedRSocketConnection::onSetup(
     std::unique_ptr<DuplexConnection> connection,
     std::shared_ptr<RSResponder> responder,
-    SetupParameters setupParams) {
+    rsocket::SetupParameters setupParams) {
   auto subscriber = std::move(setupSubscriber_);
 
   stateMachine_ = std::make_shared<RSocketStateMachine>(
@@ -176,7 +204,7 @@ void ManagedRSocketConnection::stop(folly::exception_wrapper ew) {
   }
 
   if (auto subscriber = std::exchange(setupSubscriber_, nullptr)) {
-    setupSubscriber_->onError(ew);
+    subscriber->onError(ew);
   }
   if (auto stateMachine = std::exchange(stateMachine_, nullptr)) {
     stateMachine->registerCloseCallback(nullptr);

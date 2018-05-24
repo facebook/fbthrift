@@ -56,13 +56,15 @@ bool RSRoutingHandler::canAcceptConnection(const std::vector<uint8_t>& bytes) {
         * SETUP frames have a frame type value of 0x01.
         *
         * Since the frame type is specified in only 6 bits, the value is
-        * bitshifted by << 2 before stored. Thus, SETUP becomes 0x04.
+        * bitshifted by << 2 before stored. Thus, even though SETUP frame
+        * is 0x01, it becomes 0x04. Furthermore, as METADATA flag is set
+        * it becomes 0x05.
         *
         * For more, see:
         * https://github.com/rsocket/rsocket/blob/master/Protocol.md#frame-types
         */
        // setupFrame
-       && bytes[7] == 0x04);
+       && bytes[7] == 0x05);
 }
 
 bool RSRoutingHandler::canAcceptEncryptedConnection(
