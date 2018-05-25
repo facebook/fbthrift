@@ -18,7 +18,7 @@ cimport thrift.py3.exceptions
 from thrift.py3.types import NOTSET as __NOTSET
 from thrift.py3.types cimport translate_cpp_enum_to_python
 cimport thrift.py3.std_libcpp as std_libcpp
-from thrift.py3.serializer cimport IOBuf
+from thrift.py3.serializer cimport IOBuf as __IOBuf
 from thrift.py3.serializer import Protocol
 cimport thrift.py3.serializer as serializer
 from thrift.py3.serializer import deserialize, serialize
@@ -251,7 +251,7 @@ cdef class ComplexUnion(thrift.py3.types.Union):
             serializer.JSONSerialize[cComplexUnion](deref(self._cpp_obj.get()), &c_str)
         return <bytes> c_str
 
-    cdef uint32_t _deserialize(ComplexUnion self, const IOBuf* buf, proto) except? 0:
+    cdef uint32_t _deserialize(ComplexUnion self, const __IOBuf* buf, proto) except? 0:
         cdef uint32_t needed
         self._cpp_obj = make_shared[cComplexUnion]()
         if proto is Protocol.COMPACT:
@@ -396,7 +396,7 @@ cdef class VirtualComplexUnion(thrift.py3.types.Union):
             serializer.JSONSerialize[cVirtualComplexUnion](deref(self._cpp_obj.get()), &c_str)
         return <bytes> c_str
 
-    cdef uint32_t _deserialize(VirtualComplexUnion self, const IOBuf* buf, proto) except? 0:
+    cdef uint32_t _deserialize(VirtualComplexUnion self, const __IOBuf* buf, proto) except? 0:
         cdef uint32_t needed
         self._cpp_obj = make_shared[cVirtualComplexUnion]()
         if proto is Protocol.COMPACT:

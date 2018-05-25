@@ -18,7 +18,7 @@ cimport thrift.py3.exceptions
 from thrift.py3.types import NOTSET as __NOTSET
 from thrift.py3.types cimport translate_cpp_enum_to_python
 cimport thrift.py3.std_libcpp as std_libcpp
-from thrift.py3.serializer cimport IOBuf
+from thrift.py3.serializer cimport IOBuf as __IOBuf
 from thrift.py3.serializer import Protocol
 cimport thrift.py3.serializer as serializer
 from thrift.py3.serializer import deserialize, serialize
@@ -218,7 +218,7 @@ cdef class Empty(thrift.py3.types.Struct):
             serializer.JSONSerialize[cEmpty](deref(self._cpp_obj.get()), &c_str)
         return <bytes> c_str
 
-    cdef uint32_t _deserialize(Empty self, const IOBuf* buf, proto) except? 0:
+    cdef uint32_t _deserialize(Empty self, const __IOBuf* buf, proto) except? 0:
         cdef uint32_t needed
         self._cpp_obj = make_shared[cEmpty]()
         if proto is Protocol.COMPACT:
@@ -357,7 +357,7 @@ cdef class ASimpleStruct(thrift.py3.types.Struct):
             serializer.JSONSerialize[cASimpleStruct](deref(self._cpp_obj.get()), &c_str)
         return <bytes> c_str
 
-    cdef uint32_t _deserialize(ASimpleStruct self, const IOBuf* buf, proto) except? 0:
+    cdef uint32_t _deserialize(ASimpleStruct self, const __IOBuf* buf, proto) except? 0:
         cdef uint32_t needed
         self._cpp_obj = make_shared[cASimpleStruct]()
         if proto is Protocol.COMPACT:
@@ -496,7 +496,7 @@ cdef class ASimpleStructNoexcept(thrift.py3.types.Struct):
             serializer.JSONSerialize[cASimpleStructNoexcept](deref(self._cpp_obj.get()), &c_str)
         return <bytes> c_str
 
-    cdef uint32_t _deserialize(ASimpleStructNoexcept self, const IOBuf* buf, proto) except? 0:
+    cdef uint32_t _deserialize(ASimpleStructNoexcept self, const __IOBuf* buf, proto) except? 0:
         cdef uint32_t needed
         self._cpp_obj = make_shared[cASimpleStructNoexcept]()
         if proto is Protocol.COMPACT:
@@ -855,7 +855,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
             serializer.JSONSerialize[cMyStruct](deref(self._cpp_obj.get()), &c_str)
         return <bytes> c_str
 
-    cdef uint32_t _deserialize(MyStruct self, const IOBuf* buf, proto) except? 0:
+    cdef uint32_t _deserialize(MyStruct self, const __IOBuf* buf, proto) except? 0:
         cdef uint32_t needed
         self._cpp_obj = make_shared[cMyStruct]()
         if proto is Protocol.COMPACT:
@@ -1008,7 +1008,7 @@ cdef class SimpleUnion(thrift.py3.types.Union):
             serializer.JSONSerialize[cSimpleUnion](deref(self._cpp_obj.get()), &c_str)
         return <bytes> c_str
 
-    cdef uint32_t _deserialize(SimpleUnion self, const IOBuf* buf, proto) except? 0:
+    cdef uint32_t _deserialize(SimpleUnion self, const __IOBuf* buf, proto) except? 0:
         cdef uint32_t needed
         self._cpp_obj = make_shared[cSimpleUnion]()
         if proto is Protocol.COMPACT:
@@ -1799,7 +1799,7 @@ cdef class ComplexUnion(thrift.py3.types.Union):
             serializer.JSONSerialize[cComplexUnion](deref(self._cpp_obj.get()), &c_str)
         return <bytes> c_str
 
-    cdef uint32_t _deserialize(ComplexUnion self, const IOBuf* buf, proto) except? 0:
+    cdef uint32_t _deserialize(ComplexUnion self, const __IOBuf* buf, proto) except? 0:
         cdef uint32_t needed
         self._cpp_obj = make_shared[cComplexUnion]()
         if proto is Protocol.COMPACT:
@@ -3580,7 +3580,7 @@ cdef class containerStruct(thrift.py3.types.Struct):
             serializer.JSONSerialize[ccontainerStruct](deref(self._cpp_obj.get()), &c_str)
         return <bytes> c_str
 
-    cdef uint32_t _deserialize(containerStruct self, const IOBuf* buf, proto) except? 0:
+    cdef uint32_t _deserialize(containerStruct self, const __IOBuf* buf, proto) except? 0:
         cdef uint32_t needed
         self._cpp_obj = make_shared[ccontainerStruct]()
         if proto is Protocol.COMPACT:
@@ -3808,7 +3808,7 @@ cdef class MyIncludedStruct(thrift.py3.types.Struct):
             serializer.JSONSerialize[cMyIncludedStruct](deref(self._cpp_obj.get()), &c_str)
         return <bytes> c_str
 
-    cdef uint32_t _deserialize(MyIncludedStruct self, const IOBuf* buf, proto) except? 0:
+    cdef uint32_t _deserialize(MyIncludedStruct self, const __IOBuf* buf, proto) except? 0:
         cdef uint32_t needed
         self._cpp_obj = make_shared[cMyIncludedStruct]()
         if proto is Protocol.COMPACT:
@@ -5045,7 +5045,7 @@ cdef class AnnotatedStruct(thrift.py3.types.Struct):
             serializer.JSONSerialize[cAnnotatedStruct](deref(self._cpp_obj.get()), &c_str)
         return <bytes> c_str
 
-    cdef uint32_t _deserialize(AnnotatedStruct self, const IOBuf* buf, proto) except? 0:
+    cdef uint32_t _deserialize(AnnotatedStruct self, const __IOBuf* buf, proto) except? 0:
         cdef uint32_t needed
         self._cpp_obj = make_shared[cAnnotatedStruct]()
         if proto is Protocol.COMPACT:
@@ -5214,7 +5214,7 @@ cdef class FloatStruct(thrift.py3.types.Struct):
             serializer.JSONSerialize[cFloatStruct](deref(self._cpp_obj.get()), &c_str)
         return <bytes> c_str
 
-    cdef uint32_t _deserialize(FloatStruct self, const IOBuf* buf, proto) except? 0:
+    cdef uint32_t _deserialize(FloatStruct self, const __IOBuf* buf, proto) except? 0:
         cdef uint32_t needed
         self._cpp_obj = make_shared[cFloatStruct]()
         if proto is Protocol.COMPACT:
@@ -5387,7 +5387,7 @@ cdef class FloatUnion(thrift.py3.types.Union):
             serializer.JSONSerialize[cFloatUnion](deref(self._cpp_obj.get()), &c_str)
         return <bytes> c_str
 
-    cdef uint32_t _deserialize(FloatUnion self, const IOBuf* buf, proto) except? 0:
+    cdef uint32_t _deserialize(FloatUnion self, const __IOBuf* buf, proto) except? 0:
         cdef uint32_t needed
         self._cpp_obj = make_shared[cFloatUnion]()
         if proto is Protocol.COMPACT:
@@ -5527,7 +5527,7 @@ cdef class AllRequiredNoExceptMoveCtrStruct(thrift.py3.types.Struct):
             serializer.JSONSerialize[cAllRequiredNoExceptMoveCtrStruct](deref(self._cpp_obj.get()), &c_str)
         return <bytes> c_str
 
-    cdef uint32_t _deserialize(AllRequiredNoExceptMoveCtrStruct self, const IOBuf* buf, proto) except? 0:
+    cdef uint32_t _deserialize(AllRequiredNoExceptMoveCtrStruct self, const __IOBuf* buf, proto) except? 0:
         cdef uint32_t needed
         self._cpp_obj = make_shared[cAllRequiredNoExceptMoveCtrStruct]()
         if proto is Protocol.COMPACT:

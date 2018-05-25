@@ -18,7 +18,7 @@ cimport thrift.py3.exceptions
 from thrift.py3.types import NOTSET as __NOTSET
 from thrift.py3.types cimport translate_cpp_enum_to_python
 cimport thrift.py3.std_libcpp as std_libcpp
-from thrift.py3.serializer cimport IOBuf
+from thrift.py3.serializer cimport IOBuf as __IOBuf
 from thrift.py3.serializer import Protocol
 cimport thrift.py3.serializer as serializer
 from thrift.py3.serializer import deserialize, serialize
@@ -226,7 +226,7 @@ cdef class decorated_struct(thrift.py3.types.Struct):
             serializer.JSONSerialize[cdecorated_struct](deref(self._cpp_obj.get()), &c_str)
         return <bytes> c_str
 
-    cdef uint32_t _deserialize(decorated_struct self, const IOBuf* buf, proto) except? 0:
+    cdef uint32_t _deserialize(decorated_struct self, const __IOBuf* buf, proto) except? 0:
         cdef uint32_t needed
         self._cpp_obj = make_shared[cdecorated_struct]()
         if proto is Protocol.COMPACT:
@@ -539,7 +539,7 @@ cdef class ContainerStruct(thrift.py3.types.Struct):
             serializer.JSONSerialize[cContainerStruct](deref(self._cpp_obj.get()), &c_str)
         return <bytes> c_str
 
-    cdef uint32_t _deserialize(ContainerStruct self, const IOBuf* buf, proto) except? 0:
+    cdef uint32_t _deserialize(ContainerStruct self, const __IOBuf* buf, proto) except? 0:
         cdef uint32_t needed
         self._cpp_obj = make_shared[cContainerStruct]()
         if proto is Protocol.COMPACT:
@@ -670,7 +670,7 @@ cdef class CppTypeStruct(thrift.py3.types.Struct):
             serializer.JSONSerialize[cCppTypeStruct](deref(self._cpp_obj.get()), &c_str)
         return <bytes> c_str
 
-    cdef uint32_t _deserialize(CppTypeStruct self, const IOBuf* buf, proto) except? 0:
+    cdef uint32_t _deserialize(CppTypeStruct self, const __IOBuf* buf, proto) except? 0:
         cdef uint32_t needed
         self._cpp_obj = make_shared[cCppTypeStruct]()
         if proto is Protocol.COMPACT:
@@ -809,7 +809,7 @@ cdef class VirtualStruct(thrift.py3.types.Struct):
             serializer.JSONSerialize[cVirtualStruct](deref(self._cpp_obj.get()), &c_str)
         return <bytes> c_str
 
-    cdef uint32_t _deserialize(VirtualStruct self, const IOBuf* buf, proto) except? 0:
+    cdef uint32_t _deserialize(VirtualStruct self, const __IOBuf* buf, proto) except? 0:
         cdef uint32_t needed
         self._cpp_obj = make_shared[cVirtualStruct]()
         if proto is Protocol.COMPACT:
@@ -978,7 +978,7 @@ cdef class MyStructWithForwardRefEnum(thrift.py3.types.Struct):
             serializer.JSONSerialize[cMyStructWithForwardRefEnum](deref(self._cpp_obj.get()), &c_str)
         return <bytes> c_str
 
-    cdef uint32_t _deserialize(MyStructWithForwardRefEnum self, const IOBuf* buf, proto) except? 0:
+    cdef uint32_t _deserialize(MyStructWithForwardRefEnum self, const __IOBuf* buf, proto) except? 0:
         cdef uint32_t needed
         self._cpp_obj = make_shared[cMyStructWithForwardRefEnum]()
         if proto is Protocol.COMPACT:
