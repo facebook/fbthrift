@@ -24,6 +24,7 @@
 #include <thrift/lib/cpp2/transport/core/EnvelopeUtil.h>
 #include <thrift/lib/cpp2/transport/rsocket/YarplStreamImpl.h>
 #include <thrift/lib/cpp2/transport/rsocket/client/TakeFirst.h>
+#include <thrift/lib/cpp2/transport/rsocket/gen-cpp2/Config_types.h>
 
 using namespace apache::thrift::transport;
 using namespace rsocket;
@@ -35,7 +36,7 @@ namespace thrift {
 
 namespace detail {
 std::unique_ptr<folly::IOBuf> encodeSetupPayload(
-    const SetupParameters& setupParams) {
+    const RSocketSetupParameters& setupParams) {
   folly::IOBufQueue queue;
   // Put version information
   auto buf = folly::IOBuf::createCombined(sizeof(int32_t));
@@ -176,7 +177,7 @@ RSocketClientChannel::RSocketClientChannel(
   rsocket::SetupParameters rsocketSetupParams;
   rsocketSetupParams.resumable = false;
 
-  apache::thrift::SetupParameters thriftSetupParams;
+  apache::thrift::RSocketSetupParameters thriftSetupParams;
   rsocketSetupParams.payload.metadata =
       detail::encodeSetupPayload(thriftSetupParams);
 
@@ -471,8 +472,7 @@ void RSocketClientChannel::sendSingleRequestStreamResponse(
               });
         }
         cb->onThriftResponse(
-            result.first.metadata ? RSocketClientChannel::deserializeMetadata(
-                                        *result.first.metadata)
+            result.first.metadata ? deserializeMetadata(*result.first.metadata)
                                   : std::make_unique<ResponseRpcMetadata>(),
             std::move(result.first.data),
             toStream(std::move(flowable), evb_));

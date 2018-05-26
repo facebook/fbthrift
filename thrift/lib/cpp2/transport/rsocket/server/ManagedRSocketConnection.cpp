@@ -22,6 +22,7 @@
 #include <rsocket/framing/FrameSerializer.h>
 #include <rsocket/framing/FramedDuplexConnection.h>
 #include <rsocket/transports/tcp/TcpDuplexConnection.h>
+#include <thrift/lib/cpp2/transport/rsocket/gen-cpp2/Config_types.h>
 #include <wangle/acceptor/ConnectionManager.h>
 
 namespace apache {
@@ -111,29 +112,29 @@ class ManagedRSocketConnection::SetupSubscriber
       return;
     }
 
-    // Check the Thrift_RSocket version
+    // Check the Thrift/RSocket version
+    folly::io::Cursor cursor(rsocketSetupParams.payload.metadata.get());
+
+    int16_t majorVersion, minorVersion;
+    bool success = cursor.tryReadBE<int16_t>(majorVersion);
+    success &= cursor.tryReadBE<int16_t>(minorVersion);
+
+    if (!success || majorVersion != 0 || minorVersion != 1) {
+      constexpr auto msg = "unrecognized Thrift version";
+      onErr(Frame_ERROR::invalidSetup(msg));
+      return;
+    }
+
     try {
-      folly::io::Cursor cursor(rsocketSetupParams.payload.metadata.get());
-
-      int16_t majorVersion, minorVersion;
-      bool success = cursor.tryReadBE<int16_t>(majorVersion);
-      success &= cursor.tryReadBE<int16_t>(minorVersion);
-
-      if (!success || majorVersion != 0 || minorVersion != 1) {
-        constexpr auto msg =
-            "SETUP frame has invalid Thrift&RSocket protocol version";
-        onErr(Frame_ERROR::invalidSetup(msg));
-        return;
-      }
-
       CompactProtocolReader reader;
       reader.setInput(cursor);
-      SetupParameters thriftSetupParams;
+      RSocketSetupParameters thriftSetupParams;
       // if can't read, then throws
       thriftSetupParams.read(&reader);
     } catch (const std::exception& e) {
       onErr(Frame_ERROR::invalidSetup(
-          std::string("SETUP frame is invalid : ") + e.what()));
+          std::string("SETUP frame is invalid : ") +
+          folly::exceptionStr(e).toStdString()));
       return;
     }
 
@@ -142,7 +143,7 @@ class ManagedRSocketConnection::SetupSubscriber
       responder = setupFunc_(rsocketSetupParams);
       DCHECK_NOTNULL(responder.get());
     } catch (const std::exception& ex) {
-      onErr(Frame_ERROR::rejectedSetup(ex.what()));
+      onErr(Frame_ERROR::rejectedSetup(folly::exceptionStr(ex).toStdString()));
       return;
     }
 
