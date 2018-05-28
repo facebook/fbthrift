@@ -1063,11 +1063,11 @@ namespace detail { namespace si {
 template <typename F>
 using ret = typename std::result_of<F()>::type;
 template <typename F>
-using ret_lift = typename folly::Unit::Lift<ret<F>>::type;
+using ret_lift = typename folly::lift_unit<ret<F>>::type;
 template <typename F>
 using fut_ret = typename ret<F>::value_type;
 template <typename F>
-using fut_ret_drop = typename folly::Unit::Drop<fut_ret<F>>::type;
+using fut_ret_drop = typename folly::drop_unit<fut_ret<F>>::type;
 template <typename T>
 struct action_traits_impl;
 template <typename C, typename A>
