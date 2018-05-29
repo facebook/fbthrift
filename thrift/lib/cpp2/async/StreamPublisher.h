@@ -28,6 +28,8 @@ class StreamPublisherState;
 template <typename T>
 class StreamPublisher {
  public:
+  static constexpr size_t kNoLimit = 0;
+
   ~StreamPublisher();
 
   StreamPublisher(const StreamPublisher&) = delete;
@@ -35,7 +37,8 @@ class StreamPublisher {
 
   static std::pair<Stream<T>, StreamPublisher<T>> create(
       folly::Executor::KeepAlive<folly::SequencedExecutor> executor,
-      folly::Function<void()> onCompleteOrCanceled);
+      folly::Function<void()> onCompleteOrCanceled,
+      size_t bufferSizeLimit = kNoLimit);
 
   void next(const T&) const;
   void next(T&&) const;

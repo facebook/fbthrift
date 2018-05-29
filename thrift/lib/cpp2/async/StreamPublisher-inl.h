@@ -27,8 +27,11 @@ template <typename T>
 class StreamPublisherState : public yarpl::observable::Observable<T>,
                              public yarpl::observable::Subscription {
  public:
-  explicit StreamPublisherState(folly::Function<void()> onCanceled)
-      : state_(folly::in_place, std::move(onCanceled)) {}
+  StreamPublisherState(
+      folly::Function<void()> onCanceled,
+      folly::Executor::KeepAlive<> cancelExecutor)
+      : state_(folly::in_place, std::move(onCanceled)),
+        cancelExecutor_(std::move(cancelExecutor)) {}
 
   std::shared_ptr<yarpl::observable::Subscription> subscribe(
       std::shared_ptr<yarpl::observable::Observer<T>> observer) override {
@@ -41,8 +44,9 @@ class StreamPublisherState : public yarpl::observable::Observable<T>,
   }
 
   void cancel() override {
-    canceled_ = true;
-    completeImpl();
+    auto cancelExecutor = std::exchange(cancelExecutor_, {});
+    cancelExecutor->add(
+        [self = this->ref_from_this(this)] { self->completeImpl(); });
   }
 
   void next(T&& value) {
@@ -72,7 +76,7 @@ class StreamPublisherState : public yarpl::observable::Observable<T>,
   }
 
   void release() {
-    if (!canceled_) {
+    if (cancelExecutor_) {
       LOG(FATAL) << "StreamPublisher has to be completed or canceled.";
     }
   }
@@ -96,7 +100,7 @@ class StreamPublisherState : public yarpl::observable::Observable<T>,
   };
   folly::Synchronized<State> state_;
   std::weak_ptr<yarpl::observable::Observer<T>> observer_;
-  std::atomic<bool> canceled_{false};
+  folly::Executor::KeepAlive<> cancelExecutor_;
 };
 
 template <typename T>
@@ -236,10 +240,12 @@ StreamPublisher<T>::~StreamPublisher() {
 template <typename T>
 std::pair<Stream<T>, StreamPublisher<T>> StreamPublisher<T>::create(
     folly::Executor::KeepAlive<folly::SequencedExecutor> executor,
-    folly::Function<void()> onCanceled) {
-  auto state =
-      std::make_shared<detail::StreamPublisherState<T>>(std::move(onCanceled));
-  auto flowable = state->toFlowable(yarpl::BackpressureStrategy::BUFFER);
+    folly::Function<void()> onCanceled,
+    size_t bufferSizeLimit) {
+  auto state = std::make_shared<detail::StreamPublisherState<T>>(
+      std::move(onCanceled), folly::getKeepAliveToken(executor.get()));
+  auto flowable = state->toFlowable(
+      std::make_shared<yarpl::BufferBackpressureStrategy<T>>(bufferSizeLimit));
   flowable =
       std::make_shared<detail::EagerSubscribeOperator<T>>(std::move(flowable));
   return {toStream(std::move(flowable), std::move(executor)),

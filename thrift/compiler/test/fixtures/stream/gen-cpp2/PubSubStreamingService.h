@@ -77,11 +77,12 @@ class PubSubStreamingServiceSvIf : public PubSubStreamingServiceSvAsyncIf, publi
   void async_tm_different(std::unique_ptr<apache::thrift::HandlerCallback<apache::thrift::Stream<std::string>>> callback, apache::thrift::SemiStream<int32_t> foo, int64_t firstparam) override;
   template <typename T>
   std::pair<apache::thrift::Stream<T>, apache::thrift::StreamPublisher<T>>
-  createStreamPublisher(folly::Function<void()> onCanceled) {
+  createStreamPublisher(folly::Function<void()> onCanceled, size_t bufferSizeLimit = apache::thrift::StreamPublisher<T>::kNoLimit) {
     return apache::thrift::StreamPublisher<T>::create(
         folly::SerialExecutor::create(
             folly::getKeepAliveToken(getThreadManager())),
-        std::move(onCanceled));
+        std::move(onCanceled),
+        bufferSizeLimit);
   }
   template <typename Generator>
   auto createStreamGenerator(Generator&& generator) {

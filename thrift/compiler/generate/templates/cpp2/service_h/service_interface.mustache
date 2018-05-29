@@ -67,11 +67,12 @@
 <%#service:any_streams?%>
   template <typename T>
   std::pair<apache::thrift::Stream<T>, apache::thrift::StreamPublisher<T>>
-  createStreamPublisher(folly::Function<void()> onCanceled) {
+  createStreamPublisher(folly::Function<void()> onCanceled, size_t bufferSizeLimit = apache::thrift::StreamPublisher<T>::kNoLimit) {
     return apache::thrift::StreamPublisher<T>::create(
         folly::SerialExecutor::create(
             folly::getKeepAliveToken(getThreadManager())),
-        std::move(onCanceled));
+        std::move(onCanceled),
+        bufferSizeLimit);
   }
   template <typename Generator>
   auto createStreamGenerator(Generator&& generator) {
