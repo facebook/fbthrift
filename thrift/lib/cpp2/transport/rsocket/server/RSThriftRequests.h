@@ -100,6 +100,10 @@ class RSStreamRequest : public ThriftRequestCore {
       std::shared_ptr<yarpl::flowable::Subscriber<rsocket::Payload>>
           subscriber);
 
+  bool isStream() override {
+    return true;
+  }
+
   void sendThriftResponse(
       std::unique_ptr<ResponseRpcMetadata> metadata,
       std::unique_ptr<folly::IOBuf> response) noexcept override;

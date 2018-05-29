@@ -86,6 +86,10 @@ class ResponseChannel : virtual public folly::DelayedDestruction {
 
     virtual bool isOneway() = 0;
 
+    virtual bool isStream() {
+      return false;
+    }
+
     virtual void sendReply(
         std::unique_ptr<folly::IOBuf>&&,
         MessageChannel::SendCallback* cb = nullptr) = 0;

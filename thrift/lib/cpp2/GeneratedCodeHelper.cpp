@@ -75,12 +75,16 @@ void helper<ProtocolReader, ProtocolWriter>::process_exn(
     IOBufQueue queue = helper_w<ProtocolWriter>::write_exn(
         func, &oprot, protoSeqId, nullptr, x);
     queue.append(THeader::transform(
-          queue.move(),
-          ctx->getHeader()->getWriteTransforms(),
-          ctx->getHeader()->getMinCompressBytes()));
+        queue.move(),
+        ctx->getHeader()->getWriteTransforms(),
+        ctx->getHeader()->getMinCompressBytes()));
     eb->runInEventBaseThread(
-        [ queue = move(queue), req = move(req) ]() mutable {
-          req->sendReply(queue.move());
+        [que = move(queue), request = move(req)]() mutable {
+          if (request->isStream()) {
+            request->sendStreamReply({que.move(), {}});
+          } else {
+            request->sendReply(que.move());
+          }
         });
   } else {
     LOG(ERROR) << msg << " in oneway function " << func;

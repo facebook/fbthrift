@@ -175,6 +175,14 @@ class ProxygenThriftServer : public BaseThriftServer,
         return false;
       }
 
+      bool isStream() override {
+        if (handler_) {
+          return handler_->isStream();
+        }
+
+        return false;
+      }
+
       void sendReply(
           std::unique_ptr<folly::IOBuf>&& buf, // && from ResponseChannel.h
           apache::thrift::MessageChannel::SendCallback* cb = nullptr) override {

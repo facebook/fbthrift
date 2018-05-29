@@ -152,6 +152,10 @@ class Cpp2Connection : public ResponseChannel::Callback,
       return req_->isOneway();
     }
 
+    bool isStream() override {
+      return req_->isStream();
+    }
+
     void sendReply(
         std::unique_ptr<folly::IOBuf>&& buf,
         MessageChannel::SendCallback* notUsed = nullptr) override;
