@@ -32,3 +32,13 @@ service StreamService {
 
   i32, stream i32 streamNever();
 }
+
+# OldVersion and NewVersion services will be used to test the behavior
+# when the service functions change
+service OldVersion {
+  i32 AddOne(1: i32 number);
+}
+
+service NewVersion {
+  i32 AddOne(1: i32 number);
+}

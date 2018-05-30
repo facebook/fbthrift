@@ -14,91 +14,24 @@
  * limitations under the License.
  */
 
-#include <folly/io/async/ScopedEventBaseThread.h>
-#include <gflags/gflags.h>
-#include <gmock/gmock.h>
-#include <thrift/lib/cpp/async/TAsyncSocket.h>
-#include <thrift/lib/cpp2/async/PooledRequestChannel.h>
-#include <thrift/lib/cpp2/async/RSocketClientChannel.h>
-#include <thrift/lib/cpp2/server/ThriftServer.h>
-#include <thrift/lib/cpp2/server/TransportRoutingHandler.h>
-#include <thrift/lib/cpp2/transport/core/ThriftClient.h>
-#include <thrift/lib/cpp2/transport/core/testutil/FakeServerObserver.h>
-#include <thrift/lib/cpp2/transport/core/testutil/MockCallback.h>
-#include <thrift/lib/cpp2/transport/rsocket/YarplStreamImpl.h>
-#include <thrift/lib/cpp2/transport/rsocket/server/RSRoutingHandler.h>
 #include <thrift/lib/cpp2/transport/rsocket/test/util/TestServiceMock.h>
-#include <thrift/lib/cpp2/transport/util/ConnectionManager.h>
-#include <yarpl/flowable/TestSubscriber.h>
-
-DECLARE_int32(num_client_connections);
-DECLARE_string(transport); // ConnectionManager depends on this flag.
+#include <thrift/lib/cpp2/transport/rsocket/test/util/TestUtil.h>
 
 namespace apache {
 namespace thrift {
 
-using namespace apache::thrift;
-using namespace apache::thrift::async;
-using namespace apache::thrift::transport;
-using namespace testing;
-using namespace testutil::testservice;
-using testutil::testservice::Message;
-using yarpl::flowable::TestSubscriber;
-
 // Testing transport layers for their support to Streaming
-class StreamingTest : public testing::Test {
- private:
-  // Event handler to attach to the Thrift server so we know when it is
-  // ready to serve and also so we can determine the port it is
-  // listening on.
-  class TestEventHandler : public server::TServerEventHandler {
-   public:
-    // This is a callback that is called when the Thrift server has
-    // initialized and is ready to serve RPCs.
-    void preServe(const folly::SocketAddress* address) override {
-      port_ = address->getPort();
-      baton_.post();
-    }
-
-    int32_t waitForPortAssignment() {
-      baton_.wait();
-      return port_;
-    }
-
-   private:
-    folly::Baton<> baton_;
-    int32_t port_;
-  };
-
- public:
-  StreamingTest() {
-    // override the default
-    FLAGS_transport = "rsocket"; // client's transport
-
+class StreamingTest : public TestSetup {
+ protected:
+  void SetUp() override {
     handler_ = std::make_shared<StrictMock<TestServiceMock>>();
-    auto cpp2PFac =
+    server_ = createServer(
         std::make_shared<ThriftServerAsyncProcessorFactory<TestServiceMock>>(
-            handler_);
-
-    server_ = std::make_unique<ThriftServer>();
-    observer_ = std::make_shared<FakeServerObserver>();
-    server_->setObserver(observer_);
-    server_->setPort(0);
-    server_->setNumIOWorkerThreads(numIOThreads_);
-    server_->setNumCPUWorkerThreads(numWorkerThreads_);
-    server_->setProcessorFactory(cpp2PFac);
-
-    server_->addRoutingHandler(
-        std::make_unique<apache::thrift::RSRoutingHandler>());
-
-    auto eventHandler = std::make_shared<TestEventHandler>();
-    server_->setServerEventHandler(eventHandler);
-    server_->setup();
-
-    // Get the port that the server has bound to
-    port_ = eventHandler->waitForPortAssignment();
+            handler_),
+        port_);
   }
-  virtual ~StreamingTest() {
+
+  void TearDown() override {
     if (server_) {
       server_->cleanUp();
       server_.reset();
@@ -109,19 +42,7 @@ class StreamingTest : public testing::Test {
   void connectToServer(
       folly::Function<void(std::unique_ptr<StreamServiceAsyncClient>)> callMe,
       folly::Function<void()> onDetachable = nullptr) {
-    CHECK_GT(port_, 0) << "Check if the server has started already";
-    auto channel = PooledRequestChannel::newChannel(
-        evbThread_.getEventBase(),
-        std::make_shared<folly::ScopedEventBaseThread>(),
-        [port = port_, onDetachable = std::move(onDetachable)](
-            folly::EventBase& evb) mutable {
-          auto rsocketChannel = RSocketClientChannel::newChannel(
-              TAsyncSocket::UniquePtr(new TAsyncSocket(&evb, "::1", port)));
-          if (onDetachable) {
-            rsocketChannel->setOnDetachable(std::move(onDetachable));
-          }
-          return rsocketChannel;
-        });
+    auto channel = connectToServer(port_, std::move(onDetachable));
     callMe(std::make_unique<StreamServiceAsyncClient>(std::move(channel)));
   }
 
@@ -141,18 +62,14 @@ class StreamingTest : public testing::Test {
     }
   }
 
- public:
-  std::shared_ptr<FakeServerObserver> observer_;
-  std::shared_ptr<testing::StrictMock<testutil::testservice::TestServiceMock>>
-      handler_;
+ private:
+  using TestSetup::connectToServer;
+
+ protected:
   std::unique_ptr<ThriftServer> server_;
+  std::shared_ptr<testing::StrictMock<TestServiceMock>> handler_;
+
   uint16_t port_;
-
-  int numIOThreads_{10};
-  int numWorkerThreads_{10};
-
-  folly::ScopedEventBaseThread evbThread_;
-  folly::ScopedEventBaseThread executor_;
 };
 
 TEST_F(StreamingTest, SimpleStream) {
