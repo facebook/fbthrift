@@ -32,6 +32,8 @@ class OldServiceMock : public OldVersionSvIf {
     return i + 1;
   }
 
+  void DeletedMethod() {}
+
   apache::thrift::Stream<int32_t> Range(int32_t from, int32_t length) override {
     return createStreamGenerator(
         [first = from,

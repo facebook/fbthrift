@@ -36,9 +36,13 @@ service StreamService {
 # OldVersion and NewVersion services will be used to test the behavior
 # when the service functions change
 service OldVersion {
+  // Unchanged methods
   i32 AddOne(1: i32 number);
   stream i32 Range(1: i32 from, 2: i32 length);
   i32, stream i32 RangeAndAddOne(1: i32 from, 2: i32 length, 3: i32 number);
+
+  // This method is deleted in the NewVersion
+  void DeletedMethod();
 }
 
 service NewVersion {

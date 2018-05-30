@@ -166,5 +166,21 @@ TEST_F(VersioningTest, SameResponseAndStream) {
   connectToNewServer(newLambda);
 }
 
+TEST_F(VersioningTest, DeletedMethod) {
+  connectToOldServer([](std::unique_ptr<OldVersionAsyncClient> client) {
+    client->sync_DeletedMethod();
+  });
+  connectToNewServer([](std::unique_ptr<OldVersionAsyncClient> client) {
+    try {
+      client->sync_DeletedMethod();
+    } catch (const TApplicationException& e) {
+      CHECK_EQ(
+          TApplicationException::TApplicationExceptionType::UNKNOWN_METHOD,
+          e.getType());
+      return;
+    }
+    FAIL();
+  });
+}
 } // namespace thrift
 } // namespace apache
