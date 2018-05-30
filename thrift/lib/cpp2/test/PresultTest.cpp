@@ -155,7 +155,7 @@ TEST(Presult, Presult) {
     count++;
     std::string data = "iobuf";
     auto iobuf = folly::IOBuf::wrapBuffer(folly::StringPiece(data));
-    client->future_methodIOBuf(*iobuf).then([data, &count](folly::IOBuf& res) {
+    client->future_methodIOBuf(*iobuf).then([data, &count](folly::IOBuf&& res) {
       EXPECT_EQ(folly::StringPiece(res.coalesce()).str(), data);
       count--;
     });
