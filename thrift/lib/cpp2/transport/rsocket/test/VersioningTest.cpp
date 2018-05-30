@@ -182,5 +182,40 @@ TEST_F(VersioningTest, DeletedMethod) {
     FAIL();
   });
 }
+
+TEST_F(VersioningTest, DeletedStreamMethod) {
+  connectToOldServer([](std::unique_ptr<OldVersionAsyncClient> client) {
+    client->sync_DeletedStreamMethod();
+  });
+  connectToNewServer([](std::unique_ptr<OldVersionAsyncClient> client) {
+    try {
+      client->sync_DeletedStreamMethod();
+    } catch (const TApplicationException& e) {
+      CHECK_EQ(
+          TApplicationException::TApplicationExceptionType::UNKNOWN_METHOD,
+          e.getType());
+      return;
+    }
+    FAIL();
+  });
+}
+
+TEST_F(VersioningTest, DeletedResponseAndStreamMethod) {
+  connectToOldServer([](std::unique_ptr<OldVersionAsyncClient> client) {
+    client->sync_DeletedResponseAndStreamMethod();
+  });
+  connectToNewServer([](std::unique_ptr<OldVersionAsyncClient> client) {
+    try {
+      client->sync_DeletedResponseAndStreamMethod();
+    } catch (const TApplicationException& e) {
+      CHECK_EQ(
+          TApplicationException::TApplicationExceptionType::UNKNOWN_METHOD,
+          e.getType());
+      return;
+    }
+    FAIL();
+  });
+}
+
 } // namespace thrift
 } // namespace apache

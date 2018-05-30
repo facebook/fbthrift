@@ -34,6 +34,18 @@ class OldServiceMock : public OldVersionSvIf {
 
   void DeletedMethod() {}
 
+  apache::thrift::Stream<Message> DeletedStreamMethod() {
+    return createStreamGenerator(
+        []() -> folly::Optional<Message> { return folly::none; });
+  }
+
+  apache::thrift::ResponseAndStream<Message, Message>
+  DeletedResponseAndStreamMethod() {
+    return {{}, createStreamGenerator([]() -> folly::Optional<Message> {
+              return folly::none;
+            })};
+  }
+
   apache::thrift::Stream<int32_t> Range(int32_t from, int32_t length) override {
     return createStreamGenerator(
         [first = from,

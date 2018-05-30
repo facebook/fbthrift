@@ -43,6 +43,8 @@ service OldVersion {
 
   // This method is deleted in the NewVersion
   void DeletedMethod();
+  stream Message DeletedStreamMethod();
+  Message, stream Message DeletedResponseAndStreamMethod();
 }
 
 service NewVersion {
