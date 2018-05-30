@@ -31,6 +31,25 @@ class OldServiceMock : public OldVersionSvIf {
   int32_t AddOne(int32_t i) override {
     return i + 1;
   }
+
+  apache::thrift::Stream<int32_t> Range(int32_t from, int32_t length) override {
+    return createStreamGenerator(
+        [first = from,
+         last = from + length]() mutable -> folly::Optional<int32_t> {
+          if (first >= last) {
+            return folly::none;
+          }
+          return first++;
+        });
+  }
+
+  apache::thrift::ResponseAndStream<int32_t, int32_t>
+  RangeAndAddOne(int32_t from, int32_t length, int32_t number) override {
+    return {number + 1, Range(from, length)};
+  }
+
+ protected:
+  folly::ScopedEventBaseThread executor_;
 };
 
 class NewServiceMock : public NewVersionSvIf {
@@ -40,6 +59,25 @@ class NewServiceMock : public NewVersionSvIf {
   int32_t AddOne(int32_t i) override {
     return i + 1;
   }
+
+  apache::thrift::Stream<int32_t> Range(int32_t from, int32_t length) override {
+    return createStreamGenerator(
+        [first = from,
+         last = from + length]() mutable -> folly::Optional<int32_t> {
+          if (first >= last) {
+            return folly::none;
+          }
+          return first++;
+        });
+  }
+
+  apache::thrift::ResponseAndStream<int32_t, int32_t>
+  RangeAndAddOne(int32_t from, int32_t length, int32_t number) override {
+    return {number + 1, Range(from, length)};
+  }
+
+ protected:
+  folly::ScopedEventBaseThread executor_;
 };
 } // namespace testservice
 } // namespace testutil

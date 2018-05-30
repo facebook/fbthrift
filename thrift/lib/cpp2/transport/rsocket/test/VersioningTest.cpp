@@ -106,5 +106,65 @@ TEST_F(VersioningTest, SameRequestResponse) {
   });
 }
 
+TEST_F(VersioningTest, SameStream) {
+  auto oldLambda = [this](std::unique_ptr<OldVersionAsyncClient> client) {
+    auto stream = client->sync_Range(5, 5);
+    auto subscription =
+        std::move(stream)
+            .via(&executor_)
+            .subscribe(
+                [init = 5](auto value) mutable { EXPECT_EQ(init++, value); },
+                [](auto) { FAIL(); });
+    std::move(subscription).join();
+  };
+
+  auto newLambda = [this](std::unique_ptr<NewVersionAsyncClient> client) {
+    auto stream = client->sync_Range(5, 5);
+    auto subscription =
+        std::move(stream)
+            .via(&executor_)
+            .subscribe(
+                [init = 5](auto value) mutable { EXPECT_EQ(init++, value); },
+                [](auto) { FAIL(); });
+    std::move(subscription).join();
+  };
+
+  connectToOldServer(oldLambda);
+  connectToNewServer(oldLambda);
+  connectToOldServer(newLambda);
+  connectToNewServer(newLambda);
+}
+
+TEST_F(VersioningTest, SameResponseAndStream) {
+  auto oldLambda = [this](std::unique_ptr<OldVersionAsyncClient> client) {
+    auto streamAndResponse = client->sync_RangeAndAddOne(5, 5, -2);
+    EXPECT_EQ(-1, streamAndResponse.response);
+    auto subscription =
+        std::move(streamAndResponse.stream)
+            .via(&executor_)
+            .subscribe(
+                [init = 5](auto value) mutable { EXPECT_EQ(init++, value); },
+                [](auto) { FAIL(); });
+    std::move(subscription).join();
+  };
+
+  auto newLambda = [this](std::unique_ptr<NewVersionAsyncClient> client) {
+    auto streamAndResponse = client->sync_RangeAndAddOne(5, 5, -2);
+    EXPECT_EQ(-1, streamAndResponse.response);
+    auto subscription =
+        std::move(streamAndResponse.stream)
+            .via(&executor_)
+            .subscribe(
+                [init = 5](auto value) mutable { EXPECT_EQ(init++, value); },
+                [](auto) { FAIL(); });
+    std::move(subscription).join();
+  };
+
+  connectToOldServer(oldLambda);
+  connectToNewServer(oldLambda);
+  connectToOldServer(newLambda);
+  connectToNewServer(newLambda);
+}
+
 } // namespace thrift
 } // namespace apache
