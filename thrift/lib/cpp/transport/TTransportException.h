@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Facebook, Inc.
+ * Copyright 2014-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,14 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 #ifndef _THRIFT_TRANSPORT_TTRANSPORTEXCEPTION_H_
 #define _THRIFT_TRANSPORT_TTRANSPORTEXCEPTION_H_ 1
 
-#include <string>
 #include <thrift/lib/cpp/Thrift.h>
+#include <string>
 
-namespace apache { namespace thrift { namespace transport {
+namespace apache {
+namespace thrift {
+namespace transport {
 
 /**
  * Class to encapsulate all the possible types of transport errors that may
@@ -35,47 +36,58 @@ class TTransportException : public apache::thrift::TLibraryException {
   /**
    * Error codes for the various types of exceptions.
    */
-  enum TTransportExceptionType
-  { UNKNOWN = 0
-  , NOT_OPEN = 1
-  , ALREADY_OPEN = 2
-  , TIMED_OUT = 3
-  , END_OF_FILE = 4
-  , INTERRUPTED = 5
-  , BAD_ARGS = 6
-  , CORRUPTED_DATA = 7
-  , INTERNAL_ERROR = 8
-  , NOT_SUPPORTED = 9
-  , INVALID_STATE = 10
-  , INVALID_FRAME_SIZE = 11
-  , SSL_ERROR = 12
-  , COULD_NOT_BIND = 13
-  , SASL_HANDSHAKE_TIMEOUT = 14
-  , NETWORK_ERROR = 15
-  , EARLY_DATA_REJECTED = 16
+  enum TTransportExceptionType {
+    UNKNOWN = 0,
+    NOT_OPEN = 1,
+    ALREADY_OPEN = 2,
+    TIMED_OUT = 3,
+    END_OF_FILE = 4,
+    INTERRUPTED = 5,
+    BAD_ARGS = 6,
+    CORRUPTED_DATA = 7,
+    INTERNAL_ERROR = 8,
+    NOT_SUPPORTED = 9,
+    INVALID_STATE = 10,
+    INVALID_FRAME_SIZE = 11,
+    SSL_ERROR = 12,
+    COULD_NOT_BIND = 13,
+    SASL_HANDSHAKE_TIMEOUT = 14,
+    NETWORK_ERROR = 15,
+    EARLY_DATA_REJECTED = 16
   };
 
-  TTransportException() :
-    apache::thrift::TLibraryException(),
-      type_(UNKNOWN), errno_(0), options_(0) {}
+  TTransportException()
+      : apache::thrift::TLibraryException(),
+        type_(UNKNOWN),
+        errno_(0),
+        options_(0) {}
 
-  explicit TTransportException(TTransportExceptionType type) :
-    apache::thrift::TLibraryException(),
-    type_(type), errno_(0), options_(0) {}
+  explicit TTransportException(TTransportExceptionType type)
+      : apache::thrift::TLibraryException(),
+        type_(type),
+        errno_(0),
+        options_(0) {}
 
-  explicit TTransportException(const std::string& message) :
-    apache::thrift::TLibraryException(message),
-    type_(UNKNOWN), errno_(0), options_(0) {}
+  explicit TTransportException(const std::string& message)
+      : apache::thrift::TLibraryException(message),
+        type_(UNKNOWN),
+        errno_(0),
+        options_(0) {}
 
-  TTransportException(TTransportExceptionType type, const std::string& message) :
-    apache::thrift::TLibraryException(message),
-    type_(type), errno_(0), options_(0) {}
+  TTransportException(TTransportExceptionType type, const std::string& message)
+      : apache::thrift::TLibraryException(message),
+        type_(type),
+        errno_(0),
+        options_(0) {}
 
-  TTransportException(TTransportExceptionType type,
-                      const std::string& message,
-                      int errno_copy) :
-    apache::thrift::TLibraryException(getMessage(message, errno_copy)),
-      type_(type), errno_(errno_copy), options_(0) {}
+  TTransportException(
+      TTransportExceptionType type,
+      const std::string& message,
+      int errno_copy)
+      : apache::thrift::TLibraryException(getMessage(message, errno_copy)),
+        type_(type),
+        errno_(errno_copy),
+        options_(0) {}
 
   ~TTransportException() throw() override {}
 
@@ -95,46 +107,69 @@ class TTransportException : public apache::thrift::TLibraryException {
     CHANNEL_IS_VALID = 1 << 0,
   };
 
-  int getOptions() const { return options_; }
-  void setOptions(int options) { options_ = options; }
+  int getOptions() const {
+    return options_;
+  }
+  void setOptions(int options) {
+    options_ = options;
+  }
 
   const char* what() const throw() override {
     if (message_.empty()) {
       switch (type_) {
-        case UNKNOWN        : return "TTransportException: Unknown transport exception";
-        case NOT_OPEN       : return "TTransportException: Transport not open";
-        case ALREADY_OPEN   : return "TTransportException: Transport already open";
-        case TIMED_OUT      : return "TTransportException: Timed out";
-        case END_OF_FILE    : return "TTransportException: End of file";
-        case INTERRUPTED    : return "TTransportException: Interrupted";
-        case BAD_ARGS       : return "TTransportException: Invalid arguments";
-        case CORRUPTED_DATA : return "TTransportException: Corrupted Data";
-        case INTERNAL_ERROR : return "TTransportException: Internal error";
-        case NOT_SUPPORTED  : return "TTransportException: Not supported";
-        case INVALID_STATE  : return "TTransportException: Invalid state";
-        case COULD_NOT_BIND : return "TTransportException: Could not bind";
-        case INVALID_FRAME_SIZE: return "TTransportException: Invalid frame size";
-        case SSL_ERROR      : return "TTransportException: SSL error";
-        case SASL_HANDSHAKE_TIMEOUT: return "TTransportException: SASL Handshake timeout";
-        case NETWORK_ERROR  : return "TTransportException: Network Error";
-        case EARLY_DATA_REJECTED : return "TTransportException: Early data rejected";
+        case UNKNOWN:
+          return "TTransportException: Unknown transport exception";
+        case NOT_OPEN:
+          return "TTransportException: Transport not open";
+        case ALREADY_OPEN:
+          return "TTransportException: Transport already open";
+        case TIMED_OUT:
+          return "TTransportException: Timed out";
+        case END_OF_FILE:
+          return "TTransportException: End of file";
+        case INTERRUPTED:
+          return "TTransportException: Interrupted";
+        case BAD_ARGS:
+          return "TTransportException: Invalid arguments";
+        case CORRUPTED_DATA:
+          return "TTransportException: Corrupted Data";
+        case INTERNAL_ERROR:
+          return "TTransportException: Internal error";
+        case NOT_SUPPORTED:
+          return "TTransportException: Not supported";
+        case INVALID_STATE:
+          return "TTransportException: Invalid state";
+        case COULD_NOT_BIND:
+          return "TTransportException: Could not bind";
+        case INVALID_FRAME_SIZE:
+          return "TTransportException: Invalid frame size";
+        case SSL_ERROR:
+          return "TTransportException: SSL error";
+        case SASL_HANDSHAKE_TIMEOUT:
+          return "TTransportException: SASL Handshake timeout";
+        case NETWORK_ERROR:
+          return "TTransportException: Network Error";
+        case EARLY_DATA_REJECTED:
+          return "TTransportException: Early data rejected";
 
-        default             : return "TTransportException: (Invalid exception type)";
+        default:
+          return "TTransportException: (Invalid exception type)";
       }
     } else {
       return message_.c_str();
     }
   }
 
-  int getErrno() const { return errno_; }
+  int getErrno() const {
+    return errno_;
+  }
 
  protected:
   /** Just like strerror_r but returns a C++ string object. */
   std::string strerror_s(int errno_copy);
 
   /** Return a message based on the input. */
-  static std::string getMessage(const std::string &message,
-                                int errno_copy) {
+  static std::string getMessage(const std::string& message, int errno_copy) {
     if (errno_copy != 0) {
       return message + ": " + TOutput::strerror_s(errno_copy);
     } else {
@@ -151,6 +186,8 @@ class TTransportException : public apache::thrift::TLibraryException {
   int options_;
 };
 
-}}} // apache::thrift::transport
+} // namespace transport
+} // namespace thrift
+} // namespace apache
 
 #endif // #ifndef _THRIFT_TRANSPORT_TTRANSPORTEXCEPTION_H_
