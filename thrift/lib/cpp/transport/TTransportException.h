@@ -52,6 +52,7 @@ class TTransportException : public apache::thrift::TLibraryException {
   , COULD_NOT_BIND = 13
   , SASL_HANDSHAKE_TIMEOUT = 14
   , NETWORK_ERROR = 15
+  , EARLY_DATA_REJECTED = 16
   };
 
   TTransportException() :
@@ -112,9 +113,12 @@ class TTransportException : public apache::thrift::TLibraryException {
         case NOT_SUPPORTED  : return "TTransportException: Not supported";
         case INVALID_STATE  : return "TTransportException: Invalid state";
         case COULD_NOT_BIND : return "TTransportException: Could not bind";
-        case INVALID_FRAME_SIZE:
-          return "TTransportException: Invalid frame size";
+        case INVALID_FRAME_SIZE: return "TTransportException: Invalid frame size";
         case SSL_ERROR      : return "TTransportException: SSL error";
+        case SASL_HANDSHAKE_TIMEOUT: return "TTransportException: SASL Handshake timeout";
+        case NETWORK_ERROR  : return "TTransportException: Network Error";
+        case EARLY_DATA_REJECTED : return "TTransportException: Early data rejected";
+
         default             : return "TTransportException: (Invalid exception type)";
       }
     } else {
