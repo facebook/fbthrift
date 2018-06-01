@@ -28,7 +28,15 @@ import (
 // ErrServerClosed is returned by the Serve methods after a call to Stop
 var ErrServerClosed = errors.New("thrift: Server closed")
 
-// SimpleServer is a simple, non-concurrent server for testing.
+// SimpleServer is a functional but unoptimized server that is easy to
+// understand.  In its accept loop, it performs an accept on an
+// underlying socket, wraps the socket in the ServerTransport, and
+// then spins up a gofunc to process requests.
+//
+// There is one gofunc per active connection that handles all requests
+// on the connection.  multiple simultaneous requests over a single
+// connection are not supported, as the per-connection gofunc reads
+// the request, processes it, and writes the response serially
 type SimpleServer struct {
 	processorFactory ProcessorFactory
 	*ServerOptions
@@ -152,11 +160,7 @@ func (p *SimpleServer) AcceptLoop() error {
 			return err
 		}
 		if client != nil {
-			go func() {
-				if err := p.processRequests(client); err != nil {
-					p.log.Println("error processing request:", err)
-				}
-			}()
+			go p.processRequests(client)
 		}
 	}
 }
@@ -223,16 +227,16 @@ func (p *SimpleServer) processRequests(client Transport) error {
 		defer outputTransport.Close()
 	}
 	for {
-		ok, err := processor.Process(inputProtocol, outputProtocol)
-		if err, ok := err.(TransportException); ok && err.TypeID() == END_OF_FILE {
-			return nil
-		} else if err != nil {
-			p.log.Printf("error processing request: %s", err)
-			return err
+		keepOpen, exc := Process(processor, inputProtocol, outputProtocol)
+		if exc != nil {
+			p.log.Printf("processing failure: %s", exc)
+			return exc
 		}
-		if !ok {
+		if !keepOpen {
 			break
 		}
 	}
+
+	// graceful exit.  client closed connection
 	return nil
 }

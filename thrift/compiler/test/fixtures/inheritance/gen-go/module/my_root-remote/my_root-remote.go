@@ -13,8 +13,8 @@ import (
         "os"
         "strconv"
         "strings"
-        "github.com/facebook/fbthrift-go"
-        "module"
+        thrift "github.com/facebook/fbthrift-go"
+        "../../module"
 )
 
 func Usage() {
@@ -39,7 +39,7 @@ func main() {
   _ = strconv.Atoi
   _ = math.Abs
   flag.Usage = Usage
-  flag.StringVar(&host, "h", "localhost", "Specify host and port")
+  flag.StringVar(&host, "h", "localhost", "Specify host")
   flag.IntVar(&port, "p", 9090, "Specify port")
   flag.StringVar(&protocol, "P", "binary", "Specify the protocol (binary, compact, simplejson, json)")
   flag.StringVar(&urlString, "u", "", "Specify the url")
@@ -66,7 +66,7 @@ func main() {
   cmd := flag.Arg(0)
   var err error
   if useHttp {
-    trans, err = thrift.NewHttpClient(parsedUrl.String())
+    trans, err = thrift.NewHTTPPostClient(parsedUrl.String())
   } else {
     portStr := fmt.Sprint(port)
     if strings.Contains(host, ":") {
@@ -76,7 +76,7 @@ func main() {
                    os.Exit(1)
            }
     }
-    trans, err = thrift.NewSocket(net.JoinHostPort(host, portStr))
+    trans, err = thrift.NewSocket(thrift.SocketAddr(net.JoinHostPort(host, portStr)))
     if err != nil {
       fmt.Fprintln(os.Stderr, "error resolving address:", err)
       os.Exit(1)

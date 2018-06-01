@@ -8,7 +8,7 @@ import (
 	"bytes"
 	"sync"
 	"fmt"
-	"github.com/facebook/fbthrift-go"
+	thrift "github.com/facebook/fbthrift-go"
 )
 
 // (needed to ensure safety because of naive import list construction.)
@@ -82,7 +82,6 @@ func (p *MyServiceEmptyThreadsafeClient) Threadsafe() {}
 
 type MyServiceEmptyProcessor struct {
   processorMap map[string]thrift.ProcessorFunction
-  concurrentProcessorMap map[string]thrift.ConcurrentProcessorFunction
   handler MyServiceEmpty
 }
 
@@ -90,18 +89,11 @@ func (p *MyServiceEmptyProcessor) AddToProcessorMap(key string, processor thrift
   p.processorMap[key] = processor
 }
 
-func (p *MyServiceEmptyProcessor) AddToConcurrentProcessorMap(key string, processor thrift.ConcurrentProcessorFunction) {
-  p.concurrentProcessorMap[key] = processor
-}
-
-func (p *MyServiceEmptyProcessor) GetProcessorFunction(key string) (processor thrift.ProcessorFunction, ok bool) {
-  processor, ok = p.processorMap[key]
-  return processor, ok
-}
-
-func (p *MyServiceEmptyProcessor) GetConcurrentProcessorFunction(key string) (processor thrift.ConcurrentProcessorFunction, ok bool) {
-  processor, ok = p.concurrentProcessorMap[key]
-  return processor, ok
+func (p *MyServiceEmptyProcessor) GetProcessorFunction(key string) (processor thrift.ProcessorFunction, err error) {
+  if processor, ok := p.processorMap[key]; ok {
+    return processor, nil
+  }
+  return nil, nil // generic error message will be sent
 }
 
 func (p *MyServiceEmptyProcessor) ProcessorMap() map[string]thrift.ProcessorFunction {
@@ -109,43 +101,8 @@ func (p *MyServiceEmptyProcessor) ProcessorMap() map[string]thrift.ProcessorFunc
 }
 
 func NewMyServiceEmptyProcessor(handler MyServiceEmpty) *MyServiceEmptyProcessor {
-
-  self56 := &MyServiceEmptyProcessor{handler:handler, concurrentProcessorMap:make(map[string]thrift.ConcurrentProcessorFunction),processorMap:make(map[string]thrift.ProcessorFunction)}
-return self56
-}
-
-func (p *MyServiceEmptyProcessor) Process(iprot, oprot thrift.Protocol) (success bool, err thrift.Exception) {
-  name, _, seqId, err := iprot.ReadMessageBegin()
-  if err != nil { return false, err }
-  if processor, ok := p.GetProcessorFunction(name); ok {
-    return processor.Process(seqId, iprot, oprot)
-  }
-  iprot.Skip(thrift.STRUCT)
-  iprot.ReadMessageEnd()
-  x57 := thrift.NewApplicationException(thrift.UNKNOWN_METHOD, "Unknown function " + name)
-  oprot.WriteMessageBegin(name, thrift.EXCEPTION, seqId)
-  x57.Write(oprot)
-  oprot.WriteMessageEnd()
-  oprot.Flush()
-  return false, x57
-
-}
-
-func (p *MyServiceEmptyProcessor) ProcessConcurrent(iprot, oprot thrift.Protocol, locker sync.Locker) (success bool, err thrift.Exception) {
-  name, _, seqId, err := iprot.ReadMessageBegin()
-  if err != nil { return false, err }
-  if processor, ok := p.GetConcurrentProcessorFunction(name); ok {
-    return processor.ProcessConcurrent(seqId, iprot, oprot, locker)
-  }
-  iprot.Skip(thrift.STRUCT)
-  iprot.ReadMessageEnd()
-  x57 := thrift.NewApplicationException(thrift.UNKNOWN_METHOD, "Unknown function " + name)
-  oprot.WriteMessageBegin(name, thrift.EXCEPTION, seqId)
-  x57.Write(oprot)
-  oprot.WriteMessageEnd()
-  oprot.Flush()
-  return false, x57
-
+  self56 := &MyServiceEmptyProcessor{handler:handler, processorMap:make(map[string]thrift.ProcessorFunction)}
+  return self56
 }
 
 

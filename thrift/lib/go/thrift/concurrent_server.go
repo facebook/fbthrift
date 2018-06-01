@@ -20,7 +20,7 @@
 package thrift
 
 import (
-	"context"
+	"fmt"
 	"log"
 	"runtime/debug"
 	"sync"
@@ -29,111 +29,23 @@ import (
 // ConcurrentServer is the concurrent counterpart of SimpleServer
 // It is able to process out-of-order requests on the same transport
 type ConcurrentServer struct {
-	processorFactory ConcurrentProcessorFactory
-	*ServerOptions
+	*SimpleServer
 }
 
 // NewConcurrentServer create a new NewConcurrentServer
-func NewConcurrentServer(processor ConcurrentProcessor, serverTransport ServerTransport, options ...func(*ServerOptions)) *ConcurrentServer {
-	return NewConcurrentServerFactory(NewConcurrentProcessorFactory(processor), serverTransport, options...)
-}
-
-// NewConcurrentServer2 is deprecated, use NewConcurrentServer
-func NewConcurrentServer2(processor ConcurrentProcessor, serverTransport ServerTransport) *ConcurrentServer {
-	return NewConcurrentServerFactory(NewConcurrentProcessorFactory(processor), serverTransport)
-}
-
-// NewConcurrentServer4 is deprecated, use NewConcurrentServer
-func NewConcurrentServer4(processor ConcurrentProcessor, serverTransport ServerTransport, transportFactory TransportFactory, protocolFactory ProtocolFactory) *ConcurrentServer {
-	return NewConcurrentServerFactory(NewConcurrentProcessorFactory(processor),
-		serverTransport,
-		TransportFactories(transportFactory),
-		ProtocolFactories(protocolFactory),
-	)
-}
-
-// NewConcurrentServer6 is deprecated, use NewConcurrentServer
-func NewConcurrentServer6(processor ConcurrentProcessor, serverTransport ServerTransport,
-	inputTransportFactory TransportFactory, outputTransportFactory TransportFactory,
-	inputProtocolFactory ProtocolFactory, outputProtocolFactory ProtocolFactory) *ConcurrentServer {
-	return NewConcurrentServerFactory(NewConcurrentProcessorFactory(processor),
-		serverTransport,
-		InputTransportFactory(inputTransportFactory),
-		OutputTransportFactory(outputTransportFactory),
-		InputProtocolFactory(inputProtocolFactory),
-		OutputProtocolFactory(outputProtocolFactory),
-	)
+func NewConcurrentServer(processor Processor, serverTransport ServerTransport, options ...func(*ServerOptions)) *ConcurrentServer {
+	return NewConcurrentServerFactory(NewProcessorFactory(processor), serverTransport, options...)
 }
 
 // NewConcurrentServerFactory create a new server factory
-func NewConcurrentServerFactory(processorFactory ConcurrentProcessorFactory, serverTransport ServerTransport, options ...func(*ServerOptions)) *ConcurrentServer {
+func NewConcurrentServerFactory(processorFactory ProcessorFactory, serverTransport ServerTransport, options ...func(*ServerOptions)) *ConcurrentServer {
 	serverOptions := defaultServerOptions(serverTransport)
 
 	for _, option := range options {
 		option(serverOptions)
 	}
 
-	return &ConcurrentServer{processorFactory, serverOptions}
-}
-
-// NewConcurrentServerFactory2 is deprecated, use NewConcurrentServerFactory
-func NewConcurrentServerFactory2(processorFactory ConcurrentProcessorFactory, serverTransport ServerTransport) *ConcurrentServer {
-	return NewConcurrentServerFactory(processorFactory, serverTransport)
-}
-
-// NewConcurrentServerFactory4 is deprecated, use NewConcurrentServerFactory
-func NewConcurrentServerFactory4(processorFactory ConcurrentProcessorFactory, serverTransport ServerTransport,
-	transportFactory TransportFactory, protocolFactory ProtocolFactory) *ConcurrentServer {
-	return NewConcurrentServerFactory(processorFactory, serverTransport, TransportFactories(transportFactory), ProtocolFactories(protocolFactory))
-}
-
-// NewConcurrentServerFactory6 is deprecated, use NewConcurrentServerFactory
-func NewConcurrentServerFactory6(processorFactory ConcurrentProcessorFactory, serverTransport ServerTransport,
-	inputTransportFactory TransportFactory, outputTransportFactory TransportFactory,
-	inputProtocolFactory ProtocolFactory, outputProtocolFactory ProtocolFactory) *ConcurrentServer {
-	return NewConcurrentServerFactory(
-		processorFactory,
-		serverTransport,
-		InputTransportFactory(inputTransportFactory),
-		OutputTransportFactory(outputTransportFactory),
-		InputProtocolFactory(inputProtocolFactory),
-		OutputProtocolFactory(outputProtocolFactory),
-	)
-}
-
-// ConcurrentProcessorFactory returns the processor factory of the server
-func (p *ConcurrentServer) ConcurrentProcessorFactory() ConcurrentProcessorFactory {
-	return p.processorFactory
-}
-
-// ServerTransport returns the transport of the server
-func (p *ConcurrentServer) ServerTransport() ServerTransport {
-	return p.serverTransport
-}
-
-// InputTransportFactory returns the input transport of the server
-func (p *ConcurrentServer) InputTransportFactory() TransportFactory {
-	return p.inputTransportFactory
-}
-
-// OutputTransportFactory returns the output transport of the server
-func (p *ConcurrentServer) OutputTransportFactory() TransportFactory {
-	return p.outputTransportFactory
-}
-
-// InputProtocolFactory returns the input protocol factory of the server
-func (p *ConcurrentServer) InputProtocolFactory() ProtocolFactory {
-	return p.inputProtocolFactory
-}
-
-// OutputProtocolFactory returns the output protocol factory of the server
-func (p *ConcurrentServer) OutputProtocolFactory() ProtocolFactory {
-	return p.outputProtocolFactory
-}
-
-// Listen starts listening on the transport
-func (p *ConcurrentServer) Listen() error {
-	return p.serverTransport.Listen()
+	return &ConcurrentServer{&SimpleServer{processorFactory, serverOptions}}
 }
 
 // AcceptLoop starts accepting connections from the transport
@@ -167,19 +79,6 @@ func (p *ConcurrentServer) Serve() error {
 		return err
 	}
 	return p.AcceptLoop()
-}
-
-// ServeContext is Serve that can be used with the standard library's Context
-func (p *ConcurrentServer) ServeContext(ctx context.Context) error {
-	go func() {
-		<-ctx.Done()
-		p.Stop()
-	}()
-	err := p.Serve()
-	if ctx.Err() != nil {
-		return ctx.Err()
-	}
-	return err
 }
 
 // Stop stops the accept loop
@@ -225,18 +124,69 @@ func (p *ConcurrentServer) processRequests(client Transport) error {
 		defer outputTransport.Close()
 	}
 
-	mut := sync.Mutex{}
+	// WARNING: This server implementation has a host of problems, and is included
+	// to preserve previous behavior.  If you really want a production quality thrift
+	// server, use simple server or write your own.
+	//
+	// In the concurrent server case, we wish to handle multiple concurrent requests
+	// on a single transport.  To do this, we re-implement the generated Process()
+	// function inline for greater control, then directly interact with the Read(),
+	// Run(), and Write() functionality.
+	//
+	// Note, for a very high performance server, it is unclear that this unbounded
+	// concurrency is productive for maintaining maximal throughput with good
+	// characteristics under load.
+	var writeLock sync.Mutex
 	for {
-		ok, err := processor.ProcessConcurrent(inputProtocol, outputProtocol, &mut)
-		if err, ok := err.(TransportException); ok && err.TypeID() == END_OF_FILE {
-			return nil
-		} else if err != nil {
-			log.Printf("error processing request: %s", err)
+		name, _, seqID, err := inputProtocol.ReadMessageBegin()
+		if err != nil {
+			if err, ok := err.(TransportException); ok && err.TypeID() == END_OF_FILE {
+				// connection terminated because client closed connection
+				break
+			}
 			return err
 		}
-		if !ok {
-			break
+		pfunc, err := processor.GetProcessorFunction(name)
+		if pfunc == nil || err != nil {
+			if err == nil {
+				err = fmt.Errorf("no such function: %q", name)
+			}
+			inputProtocol.Skip(STRUCT)
+			inputProtocol.ReadMessageEnd()
+			exc := NewApplicationException(UNKNOWN_METHOD, err.Error())
+
+			// protect message writing
+			writeLock.Lock()
+			defer writeLock.Unlock()
+
+			outputProtocol.WriteMessageBegin(name, EXCEPTION, seqID)
+			exc.Write(outputProtocol)
+			outputProtocol.WriteMessageEnd()
+			outputProtocol.Flush()
+			return exc
 		}
+		argStruct, err := pfunc.Read(inputProtocol)
+		if err != nil {
+			return err
+		}
+		go func() {
+			var result WritableStruct
+			result, err = pfunc.Run(argStruct)
+			// protect message writing
+			writeLock.Lock()
+			defer writeLock.Unlock()
+			if err != nil && result == nil {
+				// if the Run function generates an error, synthesize an application
+				// error
+				exc := NewApplicationException(INTERNAL_ERROR, "Internal error: "+err.Error())
+				err, result = exc, exc
+			}
+			pfunc.Write(seqID, result, outputProtocol)
+			// ignore write failures explicitly.  This emulates previous behavior
+			// we hope that the read will fail and the connection will be closed
+			// well.
+		}()
 	}
+	// graceful exit
 	return nil
 }

@@ -8,7 +8,7 @@ import (
 	"bytes"
 	"sync"
 	"fmt"
-	"github.com/facebook/fbthrift-go"
+	thrift "github.com/facebook/fbthrift-go"
 	includes0 "includes"
 
 )

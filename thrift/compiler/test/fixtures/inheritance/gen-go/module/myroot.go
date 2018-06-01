@@ -8,7 +8,7 @@ import (
 	"bytes"
 	"sync"
 	"fmt"
-	"github.com/facebook/fbthrift-go"
+	thrift "github.com/facebook/fbthrift-go"
 )
 
 // (needed to ensure safety because of naive import list construction.)
@@ -230,7 +230,6 @@ func (p *MyRootThreadsafeClient) recvDoRoot() (err error) {
 
 type MyRootProcessor struct {
   processorMap map[string]thrift.ProcessorFunction
-  concurrentProcessorMap map[string]thrift.ConcurrentProcessorFunction
   handler MyRoot
 }
 
@@ -238,18 +237,11 @@ func (p *MyRootProcessor) AddToProcessorMap(key string, processor thrift.Process
   p.processorMap[key] = processor
 }
 
-func (p *MyRootProcessor) AddToConcurrentProcessorMap(key string, processor thrift.ConcurrentProcessorFunction) {
-  p.concurrentProcessorMap[key] = processor
-}
-
-func (p *MyRootProcessor) GetProcessorFunction(key string) (processor thrift.ProcessorFunction, ok bool) {
-  processor, ok = p.processorMap[key]
-  return processor, ok
-}
-
-func (p *MyRootProcessor) GetConcurrentProcessorFunction(key string) (processor thrift.ConcurrentProcessorFunction, ok bool) {
-  processor, ok = p.concurrentProcessorMap[key]
-  return processor, ok
+func (p *MyRootProcessor) GetProcessorFunction(key string) (processor thrift.ProcessorFunction, err error) {
+  if processor, ok := p.processorMap[key]; ok {
+    return processor, nil
+  }
+  return nil, nil // generic error message will be sent
 }
 
 func (p *MyRootProcessor) ProcessorMap() map[string]thrift.ProcessorFunction {
@@ -257,125 +249,32 @@ func (p *MyRootProcessor) ProcessorMap() map[string]thrift.ProcessorFunction {
 }
 
 func NewMyRootProcessor(handler MyRoot) *MyRootProcessor {
-
-  self4 := &MyRootProcessor{handler:handler, concurrentProcessorMap:make(map[string]thrift.ConcurrentProcessorFunction),processorMap:make(map[string]thrift.ProcessorFunction)}
+  self4 := &MyRootProcessor{handler:handler, processorMap:make(map[string]thrift.ProcessorFunction)}
   self4.processorMap["do_root"] = &myRootProcessorDoRoot{handler:handler}
-  self4.concurrentProcessorMap["do_root"] = &myRootProcessorDoRoot{handler:handler}
-return self4
-}
-
-func (p *MyRootProcessor) Process(iprot, oprot thrift.Protocol) (success bool, err thrift.Exception) {
-  name, _, seqId, err := iprot.ReadMessageBegin()
-  if err != nil { return false, err }
-  if processor, ok := p.GetProcessorFunction(name); ok {
-    return processor.Process(seqId, iprot, oprot)
-  }
-  iprot.Skip(thrift.STRUCT)
-  iprot.ReadMessageEnd()
-  x5 := thrift.NewApplicationException(thrift.UNKNOWN_METHOD, "Unknown function " + name)
-  oprot.WriteMessageBegin(name, thrift.EXCEPTION, seqId)
-  x5.Write(oprot)
-  oprot.WriteMessageEnd()
-  oprot.Flush()
-  return false, x5
-
-}
-
-func (p *MyRootProcessor) ProcessConcurrent(iprot, oprot thrift.Protocol, locker sync.Locker) (success bool, err thrift.Exception) {
-  name, _, seqId, err := iprot.ReadMessageBegin()
-  if err != nil { return false, err }
-  if processor, ok := p.GetConcurrentProcessorFunction(name); ok {
-    return processor.ProcessConcurrent(seqId, iprot, oprot, locker)
-  }
-  iprot.Skip(thrift.STRUCT)
-  iprot.ReadMessageEnd()
-  x5 := thrift.NewApplicationException(thrift.UNKNOWN_METHOD, "Unknown function " + name)
-  oprot.WriteMessageBegin(name, thrift.EXCEPTION, seqId)
-  x5.Write(oprot)
-  oprot.WriteMessageEnd()
-  oprot.Flush()
-  return false, x5
-
+  return self4
 }
 
 type myRootProcessorDoRoot struct {
   handler MyRoot
 }
 
-func (p *myRootProcessorDoRoot) Process(seqId int32, iprot, oprot thrift.Protocol) (success bool, err thrift.Exception) {
+func (p *myRootProcessorDoRoot) Read(iprot thrift.Protocol) (thrift.Struct, thrift.Exception) {
   args := MyRootDoRootArgs{}
-  if err = args.Read(iprot); err != nil {
-    iprot.ReadMessageEnd()
-    x := thrift.NewApplicationException(thrift.PROTOCOL_ERROR, err.Error())
-    oprot.WriteMessageBegin("do_root", thrift.EXCEPTION, seqId)
-    x.Write(oprot)
-    oprot.WriteMessageEnd()
-    oprot.Flush()
-    return false, err
+  if err := args.Read(iprot); err != nil {
+    return nil, err
   }
-
   iprot.ReadMessageEnd()
-  result := MyRootDoRootResult{}
-  var err2 error
-  if err2 = p.handler.DoRoot(); err2 != nil {
-    x := thrift.NewApplicationException(thrift.INTERNAL_ERROR, "Internal error processing do_root: " + err2.Error())
-    oprot.WriteMessageBegin("do_root", thrift.EXCEPTION, seqId)
-    x.Write(oprot)
-    oprot.WriteMessageEnd()
-    oprot.Flush()
-    return true, err2
-  }
-  if err2 = oprot.WriteMessageBegin("do_root", thrift.REPLY, seqId); err2 != nil {
-    err = err2
-  }
-  if err2 = result.Write(oprot); err == nil && err2 != nil {
-    err = err2
-  }
-  if err2 = oprot.WriteMessageEnd(); err == nil && err2 != nil {
-    err = err2
-  }
-  if err2 = oprot.Flush(); err == nil && err2 != nil {
-    err = err2
-  }
-  if err != nil {
-    return
-  }
-  return true, err
+  return &args, nil
 }
 
-func (p *myRootProcessorDoRoot) ProcessConcurrent(seqId int32, iprot, oprot thrift.Protocol, locker sync.Locker)(success bool, err thrift.Exception) {
-  args := MyRootDoRootArgs{}
-  if err = args.Read(iprot); err != nil {
-    iprot.ReadMessageEnd()
-    x := thrift.NewApplicationException(thrift.PROTOCOL_ERROR, err.Error())
-    oprot.WriteMessageBegin("do_root", thrift.EXCEPTION, seqId)
-    x.Write(oprot)
-    oprot.WriteMessageEnd()
-    oprot.Flush()
-    return false, err
-  }
-
-  iprot.ReadMessageEnd()
-  go p.Handle(seqId, oprot, locker, &args);
-  return true, nil
-  }
-
-  func (p *myRootProcessorDoRoot) Handle(seqId int32, oprot thrift.Protocol, locker sync.Locker, args *MyRootDoRootArgs) (success bool, err thrift.Exception) {
-  result := MyRootDoRootResult{}
+func (p *myRootProcessorDoRoot) Write(seqId int32, result thrift.WritableStruct, oprot thrift.Protocol) (err thrift.Exception) {
   var err2 error
-  if err2 = p.handler.DoRoot(); err2 != nil {
-    x := thrift.NewApplicationException(thrift.INTERNAL_ERROR, "Internal error processing do_root: " + err2.Error())
-    locker.Lock()
-    defer locker.Unlock()
-    oprot.WriteMessageBegin("do_root", thrift.EXCEPTION, seqId)
-    x.Write(oprot)
-    oprot.WriteMessageEnd()
-    oprot.Flush()
-    return true, err2
+  messageType := thrift.REPLY
+  switch result.(type) {
+  case thrift.ApplicationException:
+    messageType = thrift.EXCEPTION
   }
-  locker.Lock()
-  defer locker.Unlock()
-  if err2 = oprot.WriteMessageBegin("do_root", thrift.REPLY, seqId); err2 != nil {
+  if err2 = oprot.WriteMessageBegin("do_root", messageType, seqId); err2 != nil {
     err = err2
   }
   if err2 = result.Write(oprot); err == nil && err2 != nil {
@@ -387,10 +286,18 @@ func (p *myRootProcessorDoRoot) ProcessConcurrent(seqId int32, iprot, oprot thri
   if err2 = oprot.Flush(); err == nil && err2 != nil {
     err = err2
   }
-  if err != nil {
-    return
+  return err
+}
+
+func (p *myRootProcessorDoRoot) Run(argStruct thrift.Struct) (thrift.WritableStruct, thrift.ApplicationException) {
+  if err := p.handler.DoRoot(); err != nil {
+    switch err.(type) {
+    default:
+      x := thrift.NewApplicationException(thrift.INTERNAL_ERROR, "Internal error processing do_root: " + err.Error())
+      return x, x
+    }
   }
-  return true, err
+  return nil, nil
 }
 
 

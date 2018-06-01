@@ -8,7 +8,7 @@ import (
 	"bytes"
 	"sync"
 	"fmt"
-	"github.com/facebook/fbthrift-go"
+	thrift "github.com/facebook/fbthrift-go"
 )
 
 // (needed to ensure safety because of naive import list construction.)
@@ -206,7 +206,6 @@ type MyNodeProcessor struct {
 func NewMyNodeProcessor(handler MyNode) *MyNodeProcessor {
   self10 := &MyNodeProcessor{NewMyRootProcessor(handler)}
   self10.AddToProcessorMap("do_mid", &myNodeProcessorDoMid{handler:handler})
-  self10.AddToConcurrentProcessorMap("do_mid", &myNodeProcessorDoMid{handler:handler})
   return self10
 }
 
@@ -214,80 +213,23 @@ type myNodeProcessorDoMid struct {
   handler MyNode
 }
 
-func (p *myNodeProcessorDoMid) Process(seqId int32, iprot, oprot thrift.Protocol) (success bool, err thrift.Exception) {
+func (p *myNodeProcessorDoMid) Read(iprot thrift.Protocol) (thrift.Struct, thrift.Exception) {
   args := MyNodeDoMidArgs{}
-  if err = args.Read(iprot); err != nil {
-    iprot.ReadMessageEnd()
-    x := thrift.NewApplicationException(thrift.PROTOCOL_ERROR, err.Error())
-    oprot.WriteMessageBegin("do_mid", thrift.EXCEPTION, seqId)
-    x.Write(oprot)
-    oprot.WriteMessageEnd()
-    oprot.Flush()
-    return false, err
+  if err := args.Read(iprot); err != nil {
+    return nil, err
   }
-
   iprot.ReadMessageEnd()
-  result := MyNodeDoMidResult{}
-  var err2 error
-  if err2 = p.handler.DoMid(); err2 != nil {
-    x := thrift.NewApplicationException(thrift.INTERNAL_ERROR, "Internal error processing do_mid: " + err2.Error())
-    oprot.WriteMessageBegin("do_mid", thrift.EXCEPTION, seqId)
-    x.Write(oprot)
-    oprot.WriteMessageEnd()
-    oprot.Flush()
-    return true, err2
-  }
-  if err2 = oprot.WriteMessageBegin("do_mid", thrift.REPLY, seqId); err2 != nil {
-    err = err2
-  }
-  if err2 = result.Write(oprot); err == nil && err2 != nil {
-    err = err2
-  }
-  if err2 = oprot.WriteMessageEnd(); err == nil && err2 != nil {
-    err = err2
-  }
-  if err2 = oprot.Flush(); err == nil && err2 != nil {
-    err = err2
-  }
-  if err != nil {
-    return
-  }
-  return true, err
+  return &args, nil
 }
 
-func (p *myNodeProcessorDoMid) ProcessConcurrent(seqId int32, iprot, oprot thrift.Protocol, locker sync.Locker)(success bool, err thrift.Exception) {
-  args := MyNodeDoMidArgs{}
-  if err = args.Read(iprot); err != nil {
-    iprot.ReadMessageEnd()
-    x := thrift.NewApplicationException(thrift.PROTOCOL_ERROR, err.Error())
-    oprot.WriteMessageBegin("do_mid", thrift.EXCEPTION, seqId)
-    x.Write(oprot)
-    oprot.WriteMessageEnd()
-    oprot.Flush()
-    return false, err
-  }
-
-  iprot.ReadMessageEnd()
-  go p.Handle(seqId, oprot, locker, &args);
-  return true, nil
-  }
-
-  func (p *myNodeProcessorDoMid) Handle(seqId int32, oprot thrift.Protocol, locker sync.Locker, args *MyNodeDoMidArgs) (success bool, err thrift.Exception) {
-  result := MyNodeDoMidResult{}
+func (p *myNodeProcessorDoMid) Write(seqId int32, result thrift.WritableStruct, oprot thrift.Protocol) (err thrift.Exception) {
   var err2 error
-  if err2 = p.handler.DoMid(); err2 != nil {
-    x := thrift.NewApplicationException(thrift.INTERNAL_ERROR, "Internal error processing do_mid: " + err2.Error())
-    locker.Lock()
-    defer locker.Unlock()
-    oprot.WriteMessageBegin("do_mid", thrift.EXCEPTION, seqId)
-    x.Write(oprot)
-    oprot.WriteMessageEnd()
-    oprot.Flush()
-    return true, err2
+  messageType := thrift.REPLY
+  switch result.(type) {
+  case thrift.ApplicationException:
+    messageType = thrift.EXCEPTION
   }
-  locker.Lock()
-  defer locker.Unlock()
-  if err2 = oprot.WriteMessageBegin("do_mid", thrift.REPLY, seqId); err2 != nil {
+  if err2 = oprot.WriteMessageBegin("do_mid", messageType, seqId); err2 != nil {
     err = err2
   }
   if err2 = result.Write(oprot); err == nil && err2 != nil {
@@ -299,10 +241,18 @@ func (p *myNodeProcessorDoMid) ProcessConcurrent(seqId int32, iprot, oprot thrif
   if err2 = oprot.Flush(); err == nil && err2 != nil {
     err = err2
   }
-  if err != nil {
-    return
+  return err
+}
+
+func (p *myNodeProcessorDoMid) Run(argStruct thrift.Struct) (thrift.WritableStruct, thrift.ApplicationException) {
+  if err := p.handler.DoMid(); err != nil {
+    switch err.(type) {
+    default:
+      x := thrift.NewApplicationException(thrift.INTERNAL_ERROR, "Internal error processing do_mid: " + err.Error())
+      return x, x
+    }
   }
-  return true, err
+  return nil, nil
 }
 
 

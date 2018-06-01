@@ -8,7 +8,7 @@ import (
 	"bytes"
 	"sync"
 	"fmt"
-	"github.com/facebook/fbthrift-go"
+	thrift "github.com/facebook/fbthrift-go"
 )
 
 // (needed to ensure safety because of naive import list construction.)
@@ -377,7 +377,6 @@ func (p *MyServicePrioParentThreadsafeClient) recvPong() (err error) {
 
 type MyServicePrioParentProcessor struct {
   processorMap map[string]thrift.ProcessorFunction
-  concurrentProcessorMap map[string]thrift.ConcurrentProcessorFunction
   handler MyServicePrioParent
 }
 
@@ -385,18 +384,11 @@ func (p *MyServicePrioParentProcessor) AddToProcessorMap(key string, processor t
   p.processorMap[key] = processor
 }
 
-func (p *MyServicePrioParentProcessor) AddToConcurrentProcessorMap(key string, processor thrift.ConcurrentProcessorFunction) {
-  p.concurrentProcessorMap[key] = processor
-}
-
-func (p *MyServicePrioParentProcessor) GetProcessorFunction(key string) (processor thrift.ProcessorFunction, ok bool) {
-  processor, ok = p.processorMap[key]
-  return processor, ok
-}
-
-func (p *MyServicePrioParentProcessor) GetConcurrentProcessorFunction(key string) (processor thrift.ConcurrentProcessorFunction, ok bool) {
-  processor, ok = p.concurrentProcessorMap[key]
-  return processor, ok
+func (p *MyServicePrioParentProcessor) GetProcessorFunction(key string) (processor thrift.ProcessorFunction, err error) {
+  if processor, ok := p.processorMap[key]; ok {
+    return processor, nil
+  }
+  return nil, nil // generic error message will be sent
 }
 
 func (p *MyServicePrioParentProcessor) ProcessorMap() map[string]thrift.ProcessorFunction {
@@ -404,127 +396,33 @@ func (p *MyServicePrioParentProcessor) ProcessorMap() map[string]thrift.Processo
 }
 
 func NewMyServicePrioParentProcessor(handler MyServicePrioParent) *MyServicePrioParentProcessor {
-
-  self66 := &MyServicePrioParentProcessor{handler:handler, concurrentProcessorMap:make(map[string]thrift.ConcurrentProcessorFunction),processorMap:make(map[string]thrift.ProcessorFunction)}
+  self66 := &MyServicePrioParentProcessor{handler:handler, processorMap:make(map[string]thrift.ProcessorFunction)}
   self66.processorMap["ping"] = &myServicePrioParentProcessorPing{handler:handler}
-  self66.concurrentProcessorMap["ping"] = &myServicePrioParentProcessorPing{handler:handler}
   self66.processorMap["pong"] = &myServicePrioParentProcessorPong{handler:handler}
-  self66.concurrentProcessorMap["pong"] = &myServicePrioParentProcessorPong{handler:handler}
-return self66
-}
-
-func (p *MyServicePrioParentProcessor) Process(iprot, oprot thrift.Protocol) (success bool, err thrift.Exception) {
-  name, _, seqId, err := iprot.ReadMessageBegin()
-  if err != nil { return false, err }
-  if processor, ok := p.GetProcessorFunction(name); ok {
-    return processor.Process(seqId, iprot, oprot)
-  }
-  iprot.Skip(thrift.STRUCT)
-  iprot.ReadMessageEnd()
-  x67 := thrift.NewApplicationException(thrift.UNKNOWN_METHOD, "Unknown function " + name)
-  oprot.WriteMessageBegin(name, thrift.EXCEPTION, seqId)
-  x67.Write(oprot)
-  oprot.WriteMessageEnd()
-  oprot.Flush()
-  return false, x67
-
-}
-
-func (p *MyServicePrioParentProcessor) ProcessConcurrent(iprot, oprot thrift.Protocol, locker sync.Locker) (success bool, err thrift.Exception) {
-  name, _, seqId, err := iprot.ReadMessageBegin()
-  if err != nil { return false, err }
-  if processor, ok := p.GetConcurrentProcessorFunction(name); ok {
-    return processor.ProcessConcurrent(seqId, iprot, oprot, locker)
-  }
-  iprot.Skip(thrift.STRUCT)
-  iprot.ReadMessageEnd()
-  x67 := thrift.NewApplicationException(thrift.UNKNOWN_METHOD, "Unknown function " + name)
-  oprot.WriteMessageBegin(name, thrift.EXCEPTION, seqId)
-  x67.Write(oprot)
-  oprot.WriteMessageEnd()
-  oprot.Flush()
-  return false, x67
-
+  return self66
 }
 
 type myServicePrioParentProcessorPing struct {
   handler MyServicePrioParent
 }
 
-func (p *myServicePrioParentProcessorPing) Process(seqId int32, iprot, oprot thrift.Protocol) (success bool, err thrift.Exception) {
+func (p *myServicePrioParentProcessorPing) Read(iprot thrift.Protocol) (thrift.Struct, thrift.Exception) {
   args := MyServicePrioParentPingArgs{}
-  if err = args.Read(iprot); err != nil {
-    iprot.ReadMessageEnd()
-    x := thrift.NewApplicationException(thrift.PROTOCOL_ERROR, err.Error())
-    oprot.WriteMessageBegin("ping", thrift.EXCEPTION, seqId)
-    x.Write(oprot)
-    oprot.WriteMessageEnd()
-    oprot.Flush()
-    return false, err
+  if err := args.Read(iprot); err != nil {
+    return nil, err
   }
-
   iprot.ReadMessageEnd()
-  result := MyServicePrioParentPingResult{}
-  var err2 error
-  if err2 = p.handler.Ping(); err2 != nil {
-    x := thrift.NewApplicationException(thrift.INTERNAL_ERROR, "Internal error processing ping: " + err2.Error())
-    oprot.WriteMessageBegin("ping", thrift.EXCEPTION, seqId)
-    x.Write(oprot)
-    oprot.WriteMessageEnd()
-    oprot.Flush()
-    return true, err2
-  }
-  if err2 = oprot.WriteMessageBegin("ping", thrift.REPLY, seqId); err2 != nil {
-    err = err2
-  }
-  if err2 = result.Write(oprot); err == nil && err2 != nil {
-    err = err2
-  }
-  if err2 = oprot.WriteMessageEnd(); err == nil && err2 != nil {
-    err = err2
-  }
-  if err2 = oprot.Flush(); err == nil && err2 != nil {
-    err = err2
-  }
-  if err != nil {
-    return
-  }
-  return true, err
+  return &args, nil
 }
 
-func (p *myServicePrioParentProcessorPing) ProcessConcurrent(seqId int32, iprot, oprot thrift.Protocol, locker sync.Locker)(success bool, err thrift.Exception) {
-  args := MyServicePrioParentPingArgs{}
-  if err = args.Read(iprot); err != nil {
-    iprot.ReadMessageEnd()
-    x := thrift.NewApplicationException(thrift.PROTOCOL_ERROR, err.Error())
-    oprot.WriteMessageBegin("ping", thrift.EXCEPTION, seqId)
-    x.Write(oprot)
-    oprot.WriteMessageEnd()
-    oprot.Flush()
-    return false, err
-  }
-
-  iprot.ReadMessageEnd()
-  go p.Handle(seqId, oprot, locker, &args);
-  return true, nil
-  }
-
-  func (p *myServicePrioParentProcessorPing) Handle(seqId int32, oprot thrift.Protocol, locker sync.Locker, args *MyServicePrioParentPingArgs) (success bool, err thrift.Exception) {
-  result := MyServicePrioParentPingResult{}
+func (p *myServicePrioParentProcessorPing) Write(seqId int32, result thrift.WritableStruct, oprot thrift.Protocol) (err thrift.Exception) {
   var err2 error
-  if err2 = p.handler.Ping(); err2 != nil {
-    x := thrift.NewApplicationException(thrift.INTERNAL_ERROR, "Internal error processing ping: " + err2.Error())
-    locker.Lock()
-    defer locker.Unlock()
-    oprot.WriteMessageBegin("ping", thrift.EXCEPTION, seqId)
-    x.Write(oprot)
-    oprot.WriteMessageEnd()
-    oprot.Flush()
-    return true, err2
+  messageType := thrift.REPLY
+  switch result.(type) {
+  case thrift.ApplicationException:
+    messageType = thrift.EXCEPTION
   }
-  locker.Lock()
-  defer locker.Unlock()
-  if err2 = oprot.WriteMessageBegin("ping", thrift.REPLY, seqId); err2 != nil {
+  if err2 = oprot.WriteMessageBegin("ping", messageType, seqId); err2 != nil {
     err = err2
   }
   if err2 = result.Write(oprot); err == nil && err2 != nil {
@@ -536,90 +434,41 @@ func (p *myServicePrioParentProcessorPing) ProcessConcurrent(seqId int32, iprot,
   if err2 = oprot.Flush(); err == nil && err2 != nil {
     err = err2
   }
-  if err != nil {
-    return
+  return err
+}
+
+func (p *myServicePrioParentProcessorPing) Run(argStruct thrift.Struct) (thrift.WritableStruct, thrift.ApplicationException) {
+  if err := p.handler.Ping(); err != nil {
+    switch err.(type) {
+    default:
+      x := thrift.NewApplicationException(thrift.INTERNAL_ERROR, "Internal error processing ping: " + err.Error())
+      return x, x
+    }
   }
-  return true, err
+  return nil, nil
 }
 
 type myServicePrioParentProcessorPong struct {
   handler MyServicePrioParent
 }
 
-func (p *myServicePrioParentProcessorPong) Process(seqId int32, iprot, oprot thrift.Protocol) (success bool, err thrift.Exception) {
+func (p *myServicePrioParentProcessorPong) Read(iprot thrift.Protocol) (thrift.Struct, thrift.Exception) {
   args := MyServicePrioParentPongArgs{}
-  if err = args.Read(iprot); err != nil {
-    iprot.ReadMessageEnd()
-    x := thrift.NewApplicationException(thrift.PROTOCOL_ERROR, err.Error())
-    oprot.WriteMessageBegin("pong", thrift.EXCEPTION, seqId)
-    x.Write(oprot)
-    oprot.WriteMessageEnd()
-    oprot.Flush()
-    return false, err
+  if err := args.Read(iprot); err != nil {
+    return nil, err
   }
-
   iprot.ReadMessageEnd()
-  result := MyServicePrioParentPongResult{}
-  var err2 error
-  if err2 = p.handler.Pong(); err2 != nil {
-    x := thrift.NewApplicationException(thrift.INTERNAL_ERROR, "Internal error processing pong: " + err2.Error())
-    oprot.WriteMessageBegin("pong", thrift.EXCEPTION, seqId)
-    x.Write(oprot)
-    oprot.WriteMessageEnd()
-    oprot.Flush()
-    return true, err2
-  }
-  if err2 = oprot.WriteMessageBegin("pong", thrift.REPLY, seqId); err2 != nil {
-    err = err2
-  }
-  if err2 = result.Write(oprot); err == nil && err2 != nil {
-    err = err2
-  }
-  if err2 = oprot.WriteMessageEnd(); err == nil && err2 != nil {
-    err = err2
-  }
-  if err2 = oprot.Flush(); err == nil && err2 != nil {
-    err = err2
-  }
-  if err != nil {
-    return
-  }
-  return true, err
+  return &args, nil
 }
 
-func (p *myServicePrioParentProcessorPong) ProcessConcurrent(seqId int32, iprot, oprot thrift.Protocol, locker sync.Locker)(success bool, err thrift.Exception) {
-  args := MyServicePrioParentPongArgs{}
-  if err = args.Read(iprot); err != nil {
-    iprot.ReadMessageEnd()
-    x := thrift.NewApplicationException(thrift.PROTOCOL_ERROR, err.Error())
-    oprot.WriteMessageBegin("pong", thrift.EXCEPTION, seqId)
-    x.Write(oprot)
-    oprot.WriteMessageEnd()
-    oprot.Flush()
-    return false, err
-  }
-
-  iprot.ReadMessageEnd()
-  go p.Handle(seqId, oprot, locker, &args);
-  return true, nil
-  }
-
-  func (p *myServicePrioParentProcessorPong) Handle(seqId int32, oprot thrift.Protocol, locker sync.Locker, args *MyServicePrioParentPongArgs) (success bool, err thrift.Exception) {
-  result := MyServicePrioParentPongResult{}
+func (p *myServicePrioParentProcessorPong) Write(seqId int32, result thrift.WritableStruct, oprot thrift.Protocol) (err thrift.Exception) {
   var err2 error
-  if err2 = p.handler.Pong(); err2 != nil {
-    x := thrift.NewApplicationException(thrift.INTERNAL_ERROR, "Internal error processing pong: " + err2.Error())
-    locker.Lock()
-    defer locker.Unlock()
-    oprot.WriteMessageBegin("pong", thrift.EXCEPTION, seqId)
-    x.Write(oprot)
-    oprot.WriteMessageEnd()
-    oprot.Flush()
-    return true, err2
+  messageType := thrift.REPLY
+  switch result.(type) {
+  case thrift.ApplicationException:
+    messageType = thrift.EXCEPTION
   }
-  locker.Lock()
-  defer locker.Unlock()
-  if err2 = oprot.WriteMessageBegin("pong", thrift.REPLY, seqId); err2 != nil {
+  if err2 = oprot.WriteMessageBegin("pong", messageType, seqId); err2 != nil {
     err = err2
   }
   if err2 = result.Write(oprot); err == nil && err2 != nil {
@@ -631,10 +480,18 @@ func (p *myServicePrioParentProcessorPong) ProcessConcurrent(seqId int32, iprot,
   if err2 = oprot.Flush(); err == nil && err2 != nil {
     err = err2
   }
-  if err != nil {
-    return
+  return err
+}
+
+func (p *myServicePrioParentProcessorPong) Run(argStruct thrift.Struct) (thrift.WritableStruct, thrift.ApplicationException) {
+  if err := p.handler.Pong(); err != nil {
+    switch err.(type) {
+    default:
+      x := thrift.NewApplicationException(thrift.INTERNAL_ERROR, "Internal error processing pong: " + err.Error())
+      return x, x
+    }
   }
-  return true, err
+  return nil, nil
 }
 
 

@@ -127,29 +127,23 @@ func (t *MultiplexedProcessor) RegisterProcessor(name string, processor Processo
 	t.serviceProcessorMap[name] = processor
 }
 
-func (t *MultiplexedProcessor) Process(in, out Protocol) (bool, Exception) {
-	name, typeId, seqid, err := in.ReadMessageBegin()
-	if err != nil {
-		return false, err
-	}
-	if typeId != CALL && typeId != ONEWAY {
-		return false, fmt.Errorf("Unexpected message type %v", typeId)
-	}
+// GetProcessorFunction implements the thrift.Processor interface.  It parses the
+// thrift function name to figure out which processor to route the request to and
+// returns descriptive error messages to help clients diagnose errors.
+func (t *MultiplexedProcessor) GetProcessorFunction(name string) (ProcessorFunction, error) {
 	//extract the service name
 	v := strings.SplitN(name, MULTIPLEXED_SEPARATOR, 2)
 	if len(v) != 2 {
 		if t.Defaulprocessor != nil {
-			smb := NewStoredMessageProtocol(in, name, typeId, seqid)
-			return t.Defaulprocessor.Process(smb, out)
+			return t.Defaulprocessor.GetProcessorFunction(name)
 		}
-		return false, fmt.Errorf("Service name not found in message name: %s.  Did you forget to use a MultiplexProtocol in your client?", name)
+		return nil, fmt.Errorf("Service name not found in message name: %s.  Did you forget to use a MultiplexProtocol in your client?", name)
 	}
 	actualProcessor, ok := t.serviceProcessorMap[v[0]]
 	if !ok {
-		return false, fmt.Errorf("Service name not found: %s.  Did you forget to call registerProcessor()?", v[0])
+		return nil, fmt.Errorf("Service name not found: %s.  Did you forget to call registerProcessor()?", v[0])
 	}
-	smb := NewStoredMessageProtocol(in, v[1], typeId, seqid)
-	return actualProcessor.Process(smb, out)
+	return actualProcessor.GetProcessorFunction(v[1])
 }
 
 //Protocol that use stored message for ReadMessageBegin

@@ -27,8 +27,7 @@ func NewThriftHandlerFunc(processor Processor,
 
 	return func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Add("Content-Type", "application/x-thrift")
-
 		transport := NewStreamTransport(r.Body, w)
-		processor.Process(inPfactory.GetProtocol(transport), outPfactory.GetProtocol(transport))
+		Process(processor, inPfactory.GetProtocol(transport), outPfactory.GetProtocol(transport))
 	}
 }

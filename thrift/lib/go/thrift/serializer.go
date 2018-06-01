@@ -25,6 +25,11 @@ type Serializer struct {
 	Protocol  Protocol
 }
 
+// WritableStruct is an interface used to encapsulate a message that can be written to a protocol
+type WritableStruct interface {
+	Write(p Protocol) error
+}
+
 // Struct is the interface used to encapsulate a message that can be read and written to a protocol
 type Struct interface {
 	Write(p Protocol) error
