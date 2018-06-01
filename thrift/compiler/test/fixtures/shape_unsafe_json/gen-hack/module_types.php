@@ -1022,71 +1022,71 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     return shape(
       'just_an_A' => $this->just_an_A?->__toShape(),
       'set_of_i32' => darray(Dict\fill_keys($this->set_of_i32->toValuesArray(), true)),
-      'list_of_i32' => $this->list_of_i32->toArray(),
-      'list_of_string' => $this->list_of_string->toArray(),
-      'map_of_string_to_i32' => $this->map_of_string_to_i32->toArray(),
+      'list_of_i32' => $this->list_of_i32->toVec(),
+      'list_of_string' => $this->list_of_string->toVec(),
+      'map_of_string_to_i32' => $this->map_of_string_to_i32->toDict(),
       'map_of_string_to_A' => $this->map_of_string_to_A->map(
         $_val0 ==> $_val0->__toShape(),
-      )->toArray(),
+      )->toDict(),
       'map_of_string_to_list_of_i32' => $this->map_of_string_to_list_of_i32->map(
-        $_val0 ==> $_val0->toArray(),
-      )->toArray(),
+        $_val0 ==> $_val0->toVec(),
+      )->toDict(),
       'map_of_string_to_list_of_A' => $this->map_of_string_to_list_of_A->map(
         $_val0 ==> $_val0->map(
           $_val1 ==> $_val1->__toShape(),
-        )->toArray(),
-      )->toArray(),
+        )->toVec(),
+      )->toDict(),
       'map_of_string_to_set_of_i32' => $this->map_of_string_to_set_of_i32->map(
         $_val0 ==> darray(Dict\fill_keys($_val0, true)),
-      )->toArray(),
+      )->toDict(),
       'map_of_string_to_map_of_string_to_i32' => $this->map_of_string_to_map_of_string_to_i32->map(
-        $_val0 ==> $_val0->toArray(),
-      )->toArray(),
+        $_val0 ==> $_val0->toDict(),
+      )->toDict(),
       'map_of_string_to_map_of_string_to_A' => $this->map_of_string_to_map_of_string_to_A->map(
         $_val0 ==> $_val0->map(
           $_val1 ==> $_val1->__toShape(),
-        )->toArray(),
-      )->toArray(),
+        )->toDict(),
+      )->toDict(),
       'list_of_set_of_i32' => $this->list_of_set_of_i32->map(
         $_val0 ==> darray(Dict\fill_keys($_val0, true)),
-      )->toArray(),
+      )->toVec(),
       'list_of_map_of_string_to_list_of_A' => $this->list_of_map_of_string_to_list_of_A->map(
         $_val0 ==> $_val0->map(
           $_val1 ==> $_val1->map(
             $_val2 ==> $_val2->__toShape(),
-          )->toArray(),
-        )->toArray(),
-      )->toArray(),
+          )->toVec(),
+        )->toDict(),
+      )->toVec(),
       'list_of_map_of_string_to_A' => $this->list_of_map_of_string_to_A->map(
         $_val0 ==> $_val0->map(
           $_val1 ==> $_val1->__toShape(),
-        )->toArray(),
-      )->toArray(),
+        )->toDict(),
+      )->toVec(),
       'list_of_self' => $this->list_of_self->map(
         $_val0 ==> $_val0->__toShape(),
-      )->toArray(),
+      )->toVec(),
       'map_of_string_to_self' => $this->map_of_string_to_self->map(
         $_val0 ==> $_val0->__toShape(),
-      )->toArray(),
+      )->toDict(),
       'optional_just_an_A' => $this->optional_just_an_A?->__toShape(),
       'optional_set_of_i32' => $this->optional_set_of_i32 === null ? null : darray(Dict\fill_keys(nullthrows($this->optional_set_of_i32->toValuesArray()), true)),
-      'optional_list_of_i32' => $this->optional_list_of_i32?->toArray(),
-      'optional_list_of_string' => $this->optional_list_of_string?->toArray(),
-      'optional_map_of_string_to_i32' => $this->optional_map_of_string_to_i32?->toArray(),
+      'optional_list_of_i32' => $this->optional_list_of_i32?->toVec(),
+      'optional_list_of_string' => $this->optional_list_of_string?->toVec(),
+      'optional_map_of_string_to_i32' => $this->optional_map_of_string_to_i32?->toDict(),
       'optional_map_of_string_to_A' => $this->optional_map_of_string_to_A?->map(
         $_val0 ==> $_val0->__toShape(),
-      )?->toArray(),
+      )?->toDict(),
       'optional_map_of_string_to_list_of_i32' => $this->optional_map_of_string_to_list_of_i32?->map(
-        $_val0 ==> $_val0->toArray(),
-      )?->toArray(),
+        $_val0 ==> $_val0->toVec(),
+      )?->toDict(),
       'optional_map_of_string_to_list_of_A' => $this->optional_map_of_string_to_list_of_A?->map(
         $_val0 ==> $_val0->map(
           $_val1 ==> $_val1->__toShape(),
-        )->toArray(),
-      )?->toArray(),
+        )->toVec(),
+      )?->toDict(),
       'optional_map_of_string_to_set_of_i32' => $this->optional_map_of_string_to_set_of_i32?->map(
         $_val0 ==> darray(Dict\fill_keys($_val0, true)),
-      )?->toArray(),
+      )?->toDict(),
     );
   }
 }

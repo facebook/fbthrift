@@ -1294,8 +1294,8 @@ class NestedContainers_mapList_args implements \IThriftStruct, \IThriftShapishSt
   public function __toShape(): self::TShape {
     return shape(
       'foo' => $this->foo->map(
-        $_val0 ==> $_val0->toArray(),
-      )->toArray(),
+        $_val0 ==> $_val0->toVec(),
+      )->toDict(),
     );
   }
 }
@@ -1409,7 +1409,7 @@ class NestedContainers_mapSet_args implements \IThriftStruct, \IThriftShapishStr
     return shape(
       'foo' => $this->foo->map(
         $_val0 ==> darray(Dict\fill_keys($_val0, true)),
-      )->toArray(),
+      )->toDict(),
     );
   }
 }
@@ -1525,8 +1525,8 @@ class NestedContainers_listMap_args implements \IThriftStruct, \IThriftShapishSt
   public function __toShape(): self::TShape {
     return shape(
       'foo' => $this->foo->map(
-        $_val0 ==> $_val0->toArray(),
-      )->toArray(),
+        $_val0 ==> $_val0->toDict(),
+      )->toVec(),
     );
   }
 }
@@ -1636,7 +1636,7 @@ class NestedContainers_listSet_args implements \IThriftStruct, \IThriftShapishSt
     return shape(
       'foo' => $this->foo->map(
         $_val0 ==> darray(Dict\fill_keys($_val0, true)),
-      )->toArray(),
+      )->toVec(),
     );
   }
 }
@@ -1811,10 +1811,10 @@ class NestedContainers_turtles_args implements \IThriftStruct, \IThriftShapishSt
           $_val1 ==> $_val1->map(
             $_val2 ==> $_val2->map(
               $_val3 ==> darray(Dict\fill_keys($_val3, true)),
-            )->toArray(),
-          )->toArray(),
-        )->toArray(),
-      )->toArray(),
+            )->toDict(),
+          )->toDict(),
+        )->toVec(),
+      )->toVec(),
     );
   }
 }

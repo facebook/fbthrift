@@ -486,6 +486,23 @@ class t_hack_generator : public t_oop_generator {
   }
 
   /**
+   * Return the correct toArray method to be used on a Hack Collection
+   * - If array_migration_ is set, we'll want to use toVArray / toDArray
+   * - If we're operating on a list, we'll want to use toVArray / toVec over
+   *   toDArray / toDict
+   */
+  std::string generate_to_array_method(t_type* t) {
+    if (!t->is_container()) {
+      throw std::logic_error("not a container");
+    }
+    if (array_migration_) {
+      return t->is_list() ? "toVArray" : "toDArray";
+    } else {
+      return t->is_list() ? "toVec" : "toDict";
+    }
+  }
+
+  /**
    * File streams
    */
   std::ofstream f_types_;
@@ -1629,8 +1646,8 @@ void t_hack_generator::generate_php_struct_shape_spec(
  * Then our __toShape() routine results in:
  *
  *   'map_of_string_to_list_of_i32' => $this->map_of_string_to_list_of_i32->map(
- *     $_val0 ==> $_val0->toArray(),
- *   )->toArray(),
+ *     $_val0 ==> $_val0->toVArray(),
+ *   )->toDArray(),
  *
  * And this method here will get called with
  *
@@ -1638,7 +1655,7 @@ void t_hack_generator::generate_php_struct_shape_spec(
  *
  * And returns the string:
  *
- *   "  $_val0 ==> $_val0->toArray(),"
+ *   "  $_val0 ==> $_val0->toVArray(),"
  *
  * This method operates via recursion on complex types.
  */
@@ -1662,7 +1679,7 @@ void t_hack_generator::generate_php_struct_shape_collection_value_lambda(
     val_type = get_true_type(val_type);
 
     if (!val_type->is_container() && !val_type->is_struct()) {
-      out << "$" << tmp << "->toArray()," << endl;
+      out << "$" << tmp << "->" << generate_to_array_method(t) << "()," << endl;
       return;
     }
 
@@ -1670,7 +1687,7 @@ void t_hack_generator::generate_php_struct_shape_collection_value_lambda(
     indent_up();
     generate_php_struct_shape_collection_value_lambda(out, namer, val_type);
     indent_down();
-    indent(out) << ")->toArray()," << endl;
+    indent(out) << ")->" << generate_to_array_method(t) << "()," << endl;
   }
 }
 
@@ -2309,10 +2326,10 @@ void t_hack_generator::generate_php_struct_shape_methods(
             generate_php_struct_shape_collection_value_lambda(
                 val, ngen, val_type);
             indent_down();
-            indent(val) << ")" << (nullable ? "?" : "") << "->toArray(),"
-                        << endl;
+            indent(val) << ")" << (nullable ? "?" : "") << "->"
+                        << generate_to_array_method(t) << "()," << endl;
           } else {
-            val << "->toArray()," << endl;
+            val << "->" << generate_to_array_method(t) << "()," << endl;
           }
         }
       } else {
