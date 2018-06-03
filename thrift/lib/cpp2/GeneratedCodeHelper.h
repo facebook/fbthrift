@@ -378,7 +378,7 @@ template <bool hasIsSet, typename... Args>
 class Layout<
     ThriftPresult<hasIsSet, Args...>,
     std::enable_if_t<
-        !folly::IsTriviallyCopyable<ThriftPresult<hasIsSet, Args...>>::value>>
+        !folly::is_trivially_copyable<ThriftPresult<hasIsSet, Args...>>::value>>
     : public LayoutBase, private std::tuple<Field<typename Args::ref_type>...> {
  public:
   using Base = LayoutBase;

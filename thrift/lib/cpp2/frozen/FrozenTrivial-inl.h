@@ -74,8 +74,9 @@ template <class T>
 struct IsBlitType
     : std::integral_constant<
           bool,
-          (folly::IsTriviallyCopyable<T>::value && !std::is_pointer<T>::value &&
-           !std::is_enum<T>::value && !std::is_integral<T>::value)> {};
+          (folly::is_trivially_copyable<T>::value &&
+           !std::is_pointer<T>::value && !std::is_enum<T>::value &&
+           !std::is_integral<T>::value)> {};
 
 // std::pair<trivially copyable T1, trivially copyable T2> became
 // trivially copyable too (first fixed in GCC 6.3) and conflicts with
