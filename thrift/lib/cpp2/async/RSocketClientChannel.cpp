@@ -446,7 +446,7 @@ void RSocketClientChannel::sendSingleRequestStreamResponse(
       protocolId_,
       std::chrono::milliseconds(metadata->clientTimeoutMs));
 
-  auto&& takeFirst = std::make_shared<TakeFirst>(
+  auto takeFirst = std::make_shared<TakeFirst>(
       // onRequestSent
       [callback]() mutable {
         auto cb = std::exchange(callback, nullptr);
@@ -485,6 +485,12 @@ void RSocketClientChannel::sendSingleRequestStreamResponse(
       },
       // onTerminal
       [this]() { channelCounters_.decPendingRequests(); });
+
+  callback->setTimedOut([tfw = std::weak_ptr<TakeFirst>(takeFirst)]() {
+    if (auto tfs = tfw.lock()) {
+      tfs->cancel();
+    }
+  });
 
   stateMachine_->requestStream(
       Payload(std::move(buf), serializeMetadata(*metadata)),

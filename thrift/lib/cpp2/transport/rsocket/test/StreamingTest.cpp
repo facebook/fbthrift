@@ -303,5 +303,49 @@ TEST_F(StreamingTest, ChunkTimeout) {
   });
 }
 
+TEST_F(StreamingTest, TwoRequestsOneTimesOut) {
+  folly::Promise<folly::Unit> detachablePromise;
+  auto detachableFuture = detachablePromise.getSemiFuture();
+
+  connectToServer(
+      [&, this](std::unique_ptr<StreamServiceAsyncClient> client) {
+        const auto waitForMs = std::chrono::milliseconds{100};
+
+        auto stream = client->sync_registerToMessages();
+        int32_t last = 0;
+        folly::Baton<> baton;
+        auto subscription = std::move(stream)
+                                .via(&executor_)
+                                .subscribe([&last, &baton](int32_t next) {
+                                  last = next;
+                                  baton.post();
+                                });
+
+        client->sync_sendMessage(1, false, false);
+        ASSERT_TRUE(baton.try_wait_for(std::chrono::milliseconds(100)));
+        baton.reset();
+        CHECK_EQ(last, 1);
+
+        // timeout a single request
+        callSleep(client.get(), 1, 100, true);
+
+        // Still there is one stream in the client side
+        EXPECT_FALSE(detachableFuture.wait(waitForMs).isReady());
+
+        client->sync_sendMessage(2, true, false);
+        ASSERT_TRUE(baton.try_wait_for(waitForMs));
+        baton.reset();
+        CHECK_EQ(last, 2);
+
+        std::move(subscription).join();
+
+        // All streams are cleaned up in the client side
+        EXPECT_TRUE(detachableFuture.wait(waitForMs).isReady());
+      },
+      [promise = std::move(detachablePromise)]() mutable {
+        promise.setValue(folly::unit);
+      });
+}
+
 } // namespace thrift
 } // namespace apache

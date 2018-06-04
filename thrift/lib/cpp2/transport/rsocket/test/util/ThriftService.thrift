@@ -31,6 +31,10 @@ service StreamService {
   stream i32 sleepWithoutResponse(1: i32 timeMs);
 
   i32, stream i32 streamNever();
+
+  // Simple chat scenario
+  void sendMessage(1: i32 messageId, 2: bool complete, 3: bool error);
+  stream i32 registerToMessages();
 }
 
 # OldVersion and NewVersion services will be used to test the behavior

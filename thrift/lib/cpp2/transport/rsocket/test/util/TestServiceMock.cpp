@@ -111,5 +111,31 @@ TestServiceMock::streamNever() {
   return {1, toStream(Flowable<int32_t>::never(), &executor_)};
 }
 
+void TestServiceMock::sendMessage(
+    int32_t messageId,
+    bool complete,
+    bool error) {
+  if (!messages_) {
+    throw std::runtime_error("First call registerToMessages");
+  }
+  if (messageId > 0) {
+    messages_->next(messageId);
+  }
+  if (complete) {
+    std::move(*messages_).complete();
+    messages_.reset();
+  } else if (error) {
+    std::move(*messages_).complete({std::runtime_error("error")});
+    messages_.reset();
+  }
+}
+
+apache::thrift::Stream<int32_t> TestServiceMock::registerToMessages() {
+  auto streamAndPublisher = createStreamPublisher<int32_t>([] {});
+  messages_ = std::make_unique<apache::thrift::StreamPublisher<int32_t>>(
+      std::move(streamAndPublisher.second));
+  return std::move(streamAndPublisher.first);
+}
+
 } // namespace testservice
 } // namespace testutil

@@ -79,6 +79,8 @@ class ThriftClientCallback : public folly::HHWheelTimer::Callback {
     return cb_.get();
   }
 
+  void setTimedOut(folly::Function<void()> onTimedout);
+
  protected:
   void timeoutExpired() noexcept override;
   void callbackCanceled() noexcept override;
@@ -96,6 +98,7 @@ class ThriftClientCallback : public folly::HHWheelTimer::Callback {
 
   bool active_;
   std::chrono::milliseconds timeout_;
+  folly::Function<void()> onTimedout_;
 };
 
 } // namespace thrift

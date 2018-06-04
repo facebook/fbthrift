@@ -138,11 +138,18 @@ void ThriftClientCallback::timeoutExpired() noexcept {
             apache::thrift::transport::TTransportException::TIMED_OUT),
         std::move(ctx_),
         isSecurityActive_));
+    if (auto onTimedout = std::move(onTimedout_)) {
+      onTimedout();
+    }
   }
 }
 
 void ThriftClientCallback::callbackCanceled() noexcept {
   // nothing!
+}
+
+void ThriftClientCallback::setTimedOut(folly::Function<void()> onTimedout) {
+  onTimedout_ = std::move(onTimedout);
 }
 
 } // namespace thrift

@@ -43,8 +43,13 @@ class TestServiceMock : public StreamServiceSvIf {
 
   apache::thrift::ResponseAndStream<int32_t, int32_t> streamNever() override;
 
+  void sendMessage(int32_t messageId, bool complete, bool error) override;
+  apache::thrift::Stream<int32_t> registerToMessages() override;
+
  protected:
   folly::ScopedEventBaseThread executor_;
+
+  std::unique_ptr<apache::thrift::StreamPublisher<int32_t>> messages_;
 };
 
 } // namespace testservice
