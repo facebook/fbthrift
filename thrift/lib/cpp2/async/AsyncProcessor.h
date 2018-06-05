@@ -217,9 +217,23 @@ class GeneratedAsyncProcessor : public AsyncProcessor {
       ProcessFunc processFunc,
       ChildType* childClass) {
     if (kind == apache::thrift::RpcKind::SINGLE_REQUEST_NO_RESPONSE) {
-      if (!req->isOneway()) {
+      if (!req->isOneway() && !req->isStream()) {
         req->sendReply(std::unique_ptr<folly::IOBuf>());
       }
+    }
+    if ((req->isStream() &&
+         kind != apache::thrift::RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE) ||
+        (!req->isStream() &&
+         kind == apache::thrift::RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE)) {
+      if (!req->isOneway()) {
+        req->sendErrorWrapped(
+            folly::make_exception_wrapper<TApplicationException>(
+                TApplicationException::TApplicationExceptionType::
+                    UNKNOWN_METHOD,
+                "Function kind mismatch"),
+            kRequestTypeDoesntMatchServiceFunctionType);
+      }
+      return;
     }
     auto preq = req.get();
     try {

@@ -62,6 +62,31 @@ class OldServiceMock : public OldVersionSvIf {
     return {number + 1, Range(from, length)};
   }
 
+  apache::thrift::Stream<Message> StreamToRequestResponse() override {
+    return createStreamGenerator(
+        []() -> folly::Optional<Message> { return folly::none; });
+  }
+
+  apache::thrift::ResponseAndStream<Message, Message>
+  ResponseandStreamToRequestResponse() override {
+    Message response;
+    response.message = "Message";
+    response.__isset.message = true;
+    return {std::move(response),
+            createStreamGenerator(
+                []() -> folly::Optional<Message> { return folly::none; })};
+  }
+
+  void RequestResponseToStream(Message& response) override {
+    response.message = "Message";
+    response.__isset.message = true;
+  }
+
+  void RequestResponseToResponseandStream(Message& response) override {
+    response.message = "Message";
+    response.__isset.message = true;
+  }
+
  protected:
   folly::ScopedEventBaseThread executor_;
 };
@@ -88,6 +113,31 @@ class NewServiceMock : public NewVersionSvIf {
   apache::thrift::ResponseAndStream<int32_t, int32_t>
   RangeAndAddOne(int32_t from, int32_t length, int32_t number) override {
     return {number + 1, Range(from, length)};
+  }
+
+ protected:
+  void StreamToRequestResponse() {
+    LOG(DFATAL) << "StreamToRequestResponse should not be executed";
+  }
+
+  void ResponseandStreamToRequestResponse() {
+    LOG(DFATAL) << "ResponseandStreamToRequestResponse should not be executed";
+  }
+
+  apache::thrift::Stream<Message> RequestResponseToStream() override {
+    LOG(DFATAL) << "RequestResponseToStream should not be executed";
+
+    return createStreamGenerator(
+        []() -> folly::Optional<Message> { return folly::none; });
+  }
+
+  apache::thrift::ResponseAndStream<Message, Message>
+  RequestResponseToResponseandStream() override {
+    LOG(DFATAL) << "RequestResponseToStream should not be executed";
+
+    return {Message{}, createStreamGenerator([]() -> folly::Optional<Message> {
+              return folly::none;
+            })};
   }
 
  protected:

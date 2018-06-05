@@ -114,7 +114,7 @@ TEST_F(VersioningTest, SameStream) {
             .via(&executor_)
             .subscribe(
                 [init = 5](auto value) mutable { EXPECT_EQ(init++, value); },
-                [](auto) { FAIL(); });
+                [](auto) { FAIL() << "no error is expected"; });
     std::move(subscription).join();
   };
 
@@ -125,7 +125,7 @@ TEST_F(VersioningTest, SameStream) {
             .via(&executor_)
             .subscribe(
                 [init = 5](auto value) mutable { EXPECT_EQ(init++, value); },
-                [](auto) { FAIL(); });
+                [](auto) { FAIL() << "no error is expected"; });
     std::move(subscription).join();
   };
 
@@ -144,7 +144,7 @@ TEST_F(VersioningTest, SameResponseAndStream) {
             .via(&executor_)
             .subscribe(
                 [init = 5](auto value) mutable { EXPECT_EQ(init++, value); },
-                [](auto) { FAIL(); });
+                [](auto) { FAIL() << "no error is expected"; });
     std::move(subscription).join();
   };
 
@@ -156,7 +156,7 @@ TEST_F(VersioningTest, SameResponseAndStream) {
             .via(&executor_)
             .subscribe(
                 [init = 5](auto value) mutable { EXPECT_EQ(init++, value); },
-                [](auto) { FAIL(); });
+                [](auto) { FAIL() << "no error is expected"; });
     std::move(subscription).join();
   };
 
@@ -173,13 +173,12 @@ TEST_F(VersioningTest, DeletedMethod) {
   connectToNewServer([](std::unique_ptr<OldVersionAsyncClient> client) {
     try {
       client->sync_DeletedMethod();
+      FAIL() << "Should have thrown";
     } catch (const TApplicationException& e) {
       CHECK_EQ(
           TApplicationException::TApplicationExceptionType::UNKNOWN_METHOD,
           e.getType());
-      return;
     }
-    FAIL();
   });
 }
 
@@ -190,13 +189,151 @@ TEST_F(VersioningTest, DeletedStreamMethod) {
   connectToNewServer([](std::unique_ptr<OldVersionAsyncClient> client) {
     try {
       client->sync_DeletedStreamMethod();
+      FAIL() << "Should have thrown";
     } catch (const TApplicationException& e) {
       CHECK_EQ(
           TApplicationException::TApplicationExceptionType::UNKNOWN_METHOD,
           e.getType());
-      return;
     }
-    FAIL();
+  });
+}
+
+TEST_F(VersioningTest, StreamToRequestResponse) {
+  // Old client connects to the old server, everything is fine
+  connectToOldServer([](std::unique_ptr<OldVersionAsyncClient> client) {
+    folly::ScopedEventBaseThread clientThread;
+    auto messages = client->sync_StreamToRequestResponse();
+    auto subs = std::move(messages)
+                    .via(clientThread.getEventBase())
+                    .subscribe([](Message) {});
+    std::move(subs).join();
+  });
+
+  // Old client connects to the new server, method type mismatch!
+  connectToNewServer([](std::unique_ptr<OldVersionAsyncClient> client) {
+    try {
+      client->sync_StreamToRequestResponse();
+      FAIL() << "Should have thrown";
+    } catch (const TApplicationException& e) {
+      CHECK_EQ(
+          TApplicationException::TApplicationExceptionType::UNKNOWN_METHOD,
+          e.getType());
+    }
+  });
+
+  // New client connects to the old server, method type mismatch!
+  connectToOldServer([](std::unique_ptr<NewVersionAsyncClient> client) {
+    try {
+      client->sync_StreamToRequestResponse();
+      FAIL() << "Should have thrown";
+    } catch (const TApplicationException& e) {
+      CHECK_EQ(
+          TApplicationException::TApplicationExceptionType::UNKNOWN_METHOD,
+          e.getType());
+    }
+  });
+}
+
+TEST_F(VersioningTest, ResponseandStreamToRequestResponse) {
+  // Old client connects to the old server, everything is fine
+  connectToOldServer([](std::unique_ptr<OldVersionAsyncClient> client) {
+    folly::ScopedEventBaseThread clientThread;
+    auto result = client->sync_ResponseandStreamToRequestResponse();
+    auto messages = std::move(result.stream);
+    auto subs = std::move(messages)
+                    .via(clientThread.getEventBase())
+                    .subscribe([](Message) {});
+    std::move(subs).join();
+  });
+
+  // Old client connects to the new server, method type mismatch!
+  connectToNewServer([](std::unique_ptr<OldVersionAsyncClient> client) {
+    try {
+      client->sync_ResponseandStreamToRequestResponse();
+      FAIL() << "Should have thrown";
+    } catch (const TApplicationException& e) {
+      CHECK_EQ(
+          TApplicationException::TApplicationExceptionType::UNKNOWN_METHOD,
+          e.getType());
+    }
+  });
+
+  // New client connects to the old server, method type mismatch!
+  connectToOldServer([](std::unique_ptr<NewVersionAsyncClient> client) {
+    try {
+      client->sync_ResponseandStreamToRequestResponse();
+      FAIL() << "Should have thrown";
+    } catch (const TApplicationException& e) {
+      CHECK_EQ(
+          TApplicationException::TApplicationExceptionType::UNKNOWN_METHOD,
+          e.getType());
+    }
+  });
+}
+
+TEST_F(VersioningTest, RequestResponseToStream) {
+  // Old client connects to the old server, everything is fine
+  connectToOldServer([](std::unique_ptr<OldVersionAsyncClient> client) {
+    Message result;
+    client->sync_RequestResponseToStream(result);
+  });
+
+  // Old client connects to the new server, method type mismatch!
+  connectToNewServer([](std::unique_ptr<OldVersionAsyncClient> client) {
+    try {
+      Message result;
+      client->sync_RequestResponseToStream(result);
+      FAIL() << "Should have thrown";
+    } catch (const TApplicationException& e) {
+      CHECK_EQ(
+          TApplicationException::TApplicationExceptionType::UNKNOWN_METHOD,
+          e.getType());
+    }
+  });
+
+  // New client connects to the old server, method type mismatch!
+  connectToOldServer([](std::unique_ptr<NewVersionAsyncClient> client) {
+    try {
+      client->sync_RequestResponseToStream();
+      FAIL() << "Should have thrown";
+    } catch (const TApplicationException& e) {
+      CHECK_EQ(
+          TApplicationException::TApplicationExceptionType::UNKNOWN_METHOD,
+          e.getType());
+    }
+  });
+}
+
+TEST_F(VersioningTest, RequestResponseToResponseandStream) {
+  // Old client connects to the old server, everything is fine
+  connectToOldServer([](std::unique_ptr<OldVersionAsyncClient> client) {
+    Message result;
+    client->sync_RequestResponseToResponseandStream(result);
+  });
+
+  // Old client connects to the new server, method type mismatch!
+  connectToNewServer([](std::unique_ptr<OldVersionAsyncClient> client) {
+    try {
+      Message result;
+      client->sync_RequestResponseToResponseandStream(result);
+      FAIL() << "Should have thrown";
+    } catch (const TApplicationException& e) {
+      CHECK_EQ(
+          TApplicationException::TApplicationExceptionType::UNKNOWN_METHOD,
+          e.getType());
+    }
+  });
+
+  // New client connects to the old server, method type mismatch!
+  connectToOldServer([](std::unique_ptr<NewVersionAsyncClient> client) {
+    try {
+      client->sync_RequestResponseToResponseandStream();
+      FAIL() << "Should have thrown";
+    } catch (const TApplicationException& e) {
+      CHECK_EQ(
+          TApplicationException::TApplicationExceptionType::UNKNOWN_METHOD,
+          e.getType());
+    }
   });
 }
 
@@ -207,13 +344,12 @@ TEST_F(VersioningTest, DeletedResponseAndStreamMethod) {
   connectToNewServer([](std::unique_ptr<OldVersionAsyncClient> client) {
     try {
       client->sync_DeletedResponseAndStreamMethod();
+      FAIL() << "Should have thrown";
     } catch (const TApplicationException& e) {
       CHECK_EQ(
           TApplicationException::TApplicationExceptionType::UNKNOWN_METHOD,
           e.getType());
-      return;
     }
-    FAIL();
   });
 }
 

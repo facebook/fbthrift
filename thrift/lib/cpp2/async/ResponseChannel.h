@@ -55,6 +55,7 @@ extern const std::string kResponseTooBigErrorCode;
 extern const std::string kProxyAclCheckExceptionErrorCode;
 extern const std::string kProxyOverloadedErrorCode;
 extern const std::string kProxyLoopbackErrorCode;
+extern const std::string kRequestTypeDoesntMatchServiceFunctionType;
 
 namespace apache {
 namespace thrift {

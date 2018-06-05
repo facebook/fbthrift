@@ -49,10 +49,24 @@ service OldVersion {
   void DeletedMethod();
   stream Message DeletedStreamMethod();
   Message, stream Message DeletedResponseAndStreamMethod();
+
+  // This streaming method is going to be changed to a Request&Response method
+  stream Message StreamToRequestResponse();
+
+  Message, stream Message ResponseandStreamToRequestResponse();
+
+  // This Request&Response method is going to be changed to a streaming method
+  Message RequestResponseToStream();
+
+  Message RequestResponseToResponseandStream();
 }
 
 service NewVersion {
   i32 AddOne(1: i32 number);
   stream i32 Range(1: i32 from, 2: i32 length);
   i32, stream i32 RangeAndAddOne(1: i32 from, 2: i32 length, 3: i32 number);
+  void StreamToRequestResponse();
+  void ResponseandStreamToRequestResponse();
+  stream Message RequestResponseToStream();
+  Message, stream Message RequestResponseToResponseandStream();
 }
