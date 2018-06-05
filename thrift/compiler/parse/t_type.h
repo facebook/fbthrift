@@ -111,6 +111,9 @@ class t_type : public t_annotated {
   virtual bool is_i64() const {
     return false;
   }
+  virtual bool is_any_int() const {
+    return false;
+  }
   virtual bool is_float() const {
     return false;
   }

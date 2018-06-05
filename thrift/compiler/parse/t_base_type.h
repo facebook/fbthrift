@@ -82,6 +82,10 @@ class t_base_type : public t_type {
     return base_ == TYPE_I64;
   }
 
+  bool is_any_int() const override {
+    return is_i16() || is_i32() || is_i64();
+  }
+
   bool is_float() const override {
     return base_ == TYPE_FLOAT;
   }

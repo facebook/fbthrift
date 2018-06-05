@@ -2550,13 +2550,28 @@ void t_hack_generator::_generate_php_struct_definition(
     // result structs only contain fields: success and e.
     // success is whatever type the method returns, but must be nullable
     // regardless, since if there is an exception we expect it to be null
-    bool nullable = is_result || field_is_nullable(tstruct, (*m_iter), dval);
+    bool nullable =
+        (is_result || field_is_nullable(tstruct, (*m_iter), dval)) &&
+        !(is_exception && (*m_iter)->get_name() == "code");
     string typehint = nullable || nullable_everything_ ? "?" : "";
 
     typehint += type_to_typehint(t);
     if (!is_result && !is_args) {
       generate_php_docstring(out, *m_iter);
     }
+
+    if (is_exception && (*m_iter)->get_name() == "code") {
+      if (!(t->is_any_int() || t->is_enum())) {
+        throw tstruct->get_name() +
+            "::code defined to be a non-integral type. " +
+            "code fields for Exception classes must be integral";
+      }
+      if (t->is_enum()) {
+        indent(out) << "/* HH_FIXME[4110] conflicting definition with parent */"
+                    << endl;
+      }
+    }
+
     indent(out) << "public " << typehint << " $" << (*m_iter)->get_name() << ";"
                 << endl;
   }
@@ -2618,6 +2633,15 @@ void t_hack_generator::_generate_php_struct_definition(
       dval = render_const_value(t, (*m_iter)->get_value());
     } else if (tstruct->is_union() || nullable_everything_) {
       dval = "null";
+    } else if (is_exception && (*m_iter)->get_name() == "code") {
+      if (t->is_any_int()) {
+        dval = "0";
+      } else {
+        // just use the lowest value
+        t_enum* tenum = (t_enum*)t;
+        dval = hack_name(tenum) +
+            "::" + (*(tenum->get_constants().begin()))->get_name();
+      }
     } else {
       dval = render_default_value(t);
     }
@@ -2650,9 +2674,10 @@ void t_hack_generator::_generate_php_struct_definition(
       // success is whatever type the method returns, but must be nullable
       // regardless, since if there is an exception we expect it to be null
       // TODO(ckwalsh) Extract this logic into a helper function
-      bool nullable = (dval == "null") || is_result ||
-          ((*m_iter)->get_req() == t_field::T_OPTIONAL &&
-           (*m_iter)->get_value() == nullptr);
+      bool nullable = !(is_exception && (*m_iter)->get_name() == "code") &&
+          (dval == "null" || is_result ||
+           ((*m_iter)->get_req() == t_field::T_OPTIONAL &&
+            (*m_iter)->get_value() == nullptr));
 
       if (tstruct->is_union()) {
         // Capture value from constructor and update _type field

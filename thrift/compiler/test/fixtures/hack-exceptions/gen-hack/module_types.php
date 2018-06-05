@@ -48,7 +48,8 @@ class MyException1 extends \TException implements \IThriftStruct {
    * Original thrift field:-
    * 2: enum module.MyEnum code
    */
-  public ?MyEnum $code;
+  /* HH_FIXME[4110] conflicting definition with parent */
+  public MyEnum $code;
 
   public function __construct(?string $message = null, ?MyEnum $code = null  ) {
     parent::__construct();
@@ -57,7 +58,11 @@ class MyException1 extends \TException implements \IThriftStruct {
     } else {
       $this->message = $message;
     }
-    $this->code = $code;
+    if ($code === null) {
+      $this->code = MyEnum::MyValue1;
+    } else {
+      $this->code = $code;
+    }
   }
 
   public function getName(): string {
@@ -98,7 +103,8 @@ class MyException2 extends \TException implements \IThriftStruct {
    * Original thrift field:-
    * 2: enum module.MyEnum code
    */
-  public ?MyEnum $code;
+  /* HH_FIXME[4110] conflicting definition with parent */
+  public MyEnum $code;
 
   public function __construct(?string $message = null, ?MyEnum $code = null  ) {
     parent::__construct();
@@ -107,7 +113,11 @@ class MyException2 extends \TException implements \IThriftStruct {
     } else {
       $this->message = $message;
     }
-    $this->code = $code;
+    if ($code === null) {
+      $this->code = MyEnum::MyValue1;
+    } else {
+      $this->code = $code;
+    }
   }
 
   public function getName(): string {
@@ -148,7 +158,8 @@ class MyException3 extends \TException implements \IThriftStruct {
    * Original thrift field:-
    * 2: enum module.MyEnum code
    */
-  public ?MyEnum $code;
+  /* HH_FIXME[4110] conflicting definition with parent */
+  public MyEnum $code;
 
   public function __construct(?string $message = null, ?MyEnum $code = null  ) {
     parent::__construct();
@@ -157,7 +168,11 @@ class MyException3 extends \TException implements \IThriftStruct {
     } else {
       $this->message = $message;
     }
-    $this->code = $code;
+    if ($code === null) {
+      $this->code = MyEnum::MyValue1;
+    } else {
+      $this->code = $code;
+    }
   }
 
   public function getName(): string {
@@ -198,7 +213,8 @@ class MyException4 extends \TException implements \IThriftStruct {
    * Original thrift field:-
    * 2: enum module.MyEnum code
    */
-  public ?MyEnum $code;
+  /* HH_FIXME[4110] conflicting definition with parent */
+  public MyEnum $code;
 
   public function __construct(?string $message = null, ?MyEnum $code = null  ) {
     parent::__construct();
@@ -251,7 +267,7 @@ class MyException5 extends \TException implements \IThriftStruct {
    * Original thrift field:-
    * 2: i64 code
    */
-  public ?int $code;
+  public int $code;
 
   public function __construct(?string $message = null, ?int $code = null  ) {
     parent::__construct();
@@ -260,7 +276,11 @@ class MyException5 extends \TException implements \IThriftStruct {
     } else {
       $this->message = $message;
     }
-    $this->code = $code;
+    if ($code === null) {
+      $this->code = 0;
+    } else {
+      $this->code = $code;
+    }
   }
 
   public function getName(): string {
