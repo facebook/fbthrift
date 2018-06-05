@@ -122,6 +122,7 @@ template <typename T>
 class Stream {
  public:
   static constexpr auto kNoFlowControl = std::numeric_limits<int64_t>::max();
+  static constexpr auto kDefaultBatchSize = 100;
 
   Stream() {}
 
@@ -162,7 +163,7 @@ class Stream {
       typename OnNext,
       typename = typename std::enable_if<
           folly::is_invocable<OnNext, T&&>::value>::type>
-  Subscription subscribe(OnNext&& onNext, int64_t batch = kNoFlowControl) &&;
+  Subscription subscribe(OnNext&& onNext, int64_t batch = kDefaultBatchSize) &&;
 
   template <
       typename OnNext,
@@ -173,7 +174,7 @@ class Stream {
   Subscription subscribe(
       OnNext&& onNext,
       OnError&& onError,
-      int64_t batch = kNoFlowControl) &&;
+      int64_t batch = kDefaultBatchSize) &&;
 
   template <
       typename OnNext,
@@ -187,7 +188,7 @@ class Stream {
       OnNext&& onNext,
       OnError&& onError,
       OnComplete&& onComplete,
-      int64_t batch = kNoFlowControl) &&;
+      int64_t batch = kDefaultBatchSize) &&;
 
   FOLLY_CREATE_MEMBER_INVOKE_TRAITS(onNextInvokeTraits, onNext);
   FOLLY_CREATE_MEMBER_INVOKE_TRAITS(onErrorInvokeTraits, onError);
@@ -205,7 +206,7 @@ class Stream {
       typename = void>
   Subscription subscribe(
       Subscriber&& subscriber,
-      int64_t batch = kNoFlowControl) &&;
+      int64_t batch = kDefaultBatchSize) &&;
 
   void subscribe(std::unique_ptr<SubscriberIf<T>>) &&;
 
