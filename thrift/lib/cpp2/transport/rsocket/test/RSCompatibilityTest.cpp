@@ -15,7 +15,9 @@
  */
 
 #include <gflags/gflags.h>
+#include <gtest/gtest.h>
 #include <thrift/lib/cpp2/async/RSocketClientChannel.h>
+#include <thrift/lib/cpp2/transport/core/testutil/MockCallback.h>
 #include <thrift/lib/cpp2/transport/core/testutil/TransportCompatibilityTest.h>
 #include <thrift/lib/cpp2/transport/rsocket/server/RSRoutingHandler.h>
 
@@ -68,6 +70,32 @@ TEST_F(RSCompatibilityTest, RequestResponse_UnexpectedException) {
 // Warning: This test may be flaky due to use of timeouts.
 TEST_F(RSCompatibilityTest, RequestResponse_Timeout) {
   compatibilityTest_->TestRequestResponse_Timeout();
+}
+
+TEST_F(RSCompatibilityTest, DefaultTimeoutValueTest) {
+  compatibilityTest_->connectToServer([](auto client) {
+    // Opts with no timeout value
+    RpcOptions opts;
+
+    // Ok to sleep for 100msec
+    auto cb = std::make_unique<MockCallback>(false, false);
+    client->sleep(opts, std::move(cb), 100);
+
+    /* Sleep to give time for all callbacks to be completed */
+    /* sleep override */
+    std::this_thread::sleep_for(std::chrono::milliseconds(200));
+
+    auto channel = static_cast<RSocketClientChannel*>(client->getChannel());
+    channel->setTimeout(1); // 1ms
+
+    // Now it should timeout
+    cb = std::make_unique<MockCallback>(false, true);
+    client->sleep(opts, std::move(cb), 100);
+
+    /* Sleep to give time for all callbacks to be completed */
+    /* sleep override */
+    std::this_thread::sleep_for(std::chrono::milliseconds(200));
+  });
 }
 
 TEST_F(RSCompatibilityTest, RequestResponse_Header) {

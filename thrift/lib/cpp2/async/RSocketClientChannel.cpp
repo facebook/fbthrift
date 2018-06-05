@@ -124,8 +124,7 @@ class CountedSingleObserver : public SingleObserver<Payload> {
 
 } // namespace
 
-const std::chrono::milliseconds RSocketClientChannel::kDefaultRpcTimeout =
-    std::chrono::milliseconds(500);
+constexpr std::chrono::milliseconds RSocketClientChannel::kDefaultRpcTimeout;
 const uint16_t RSocketClientChannel::kMajorVersion = 0;
 const uint16_t RSocketClientChannel::kMinorVersion = 1;
 
@@ -266,31 +265,24 @@ RSocketClientChannel::createRequestRpcMetadata(
     apache::thrift::ProtocolId protocolId,
     THeader* header) {
   auto metadata = std::make_unique<RequestRpcMetadata>();
-  metadata->protocol = protocolId;
-  metadata->__isset.protocol = true;
-  metadata->kind = kind;
-  metadata->__isset.kind = true;
+  metadata->set_protocol(protocolId);
+  metadata->set_kind(kind);
   if (!httpHost_.empty()) {
-    metadata->host = httpHost_;
-    metadata->__isset.host = true;
+    metadata->set_host(httpHost_);
   }
   if (!httpUrl_.empty()) {
-    metadata->url = httpUrl_;
-    metadata->__isset.url = true;
+    metadata->set_url(httpUrl_);
   }
   if (rpcOptions.getTimeout() > std::chrono::milliseconds(0)) {
-    metadata->clientTimeoutMs = rpcOptions.getTimeout().count();
-  } else {
-    metadata->clientTimeoutMs = kDefaultRpcTimeout.count();
+    metadata->set_clientTimeoutMs(rpcOptions.getTimeout().count());
+  } else if (timeout_.count() > 0) {
+    metadata->set_clientTimeoutMs(timeout_.count());
   }
-  metadata->__isset.clientTimeoutMs = true;
   if (rpcOptions.getQueueTimeout() > std::chrono::milliseconds(0)) {
-    metadata->queueTimeoutMs = rpcOptions.getQueueTimeout().count();
-    metadata->__isset.queueTimeoutMs = true;
+    metadata->set_queueTimeoutMs(rpcOptions.getQueueTimeout().count());
   }
   if (rpcOptions.getPriority() < concurrency::N_PRIORITIES) {
-    metadata->priority = static_cast<RpcPriority>(rpcOptions.getPriority());
-    metadata->__isset.priority = true;
+    metadata->set_priority(static_cast<RpcPriority>(rpcOptions.getPriority()));
   }
   metadata->otherMetadata = header->releaseWriteHeaders();
   auto* eh = header->getExtraWriteHeaders();
@@ -334,8 +326,7 @@ void RSocketClientChannel::sendThriftRequest(
         isSecurityActive()));
     return;
   }
-  metadata->seqId = 0;
-  metadata->__isset.seqId = true;
+  metadata->set_seqId(0);
   DCHECK(metadata->__isset.kind);
 
   if (!connectionStatus_->isConnected()) {
@@ -574,12 +565,10 @@ bool RSocketClientChannel::isSecurityActive() {
 }
 
 uint32_t RSocketClientChannel::getTimeout() {
-  // TODO: Need to inspect this functionality for RSocket
   return timeout_.count();
 }
 
 void RSocketClientChannel::setTimeout(uint32_t timeoutMs) {
-  // TODO: Need to inspect this functionality for RSocket
   timeout_ = std::chrono::milliseconds(timeoutMs);
 }
 

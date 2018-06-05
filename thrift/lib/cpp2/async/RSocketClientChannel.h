@@ -178,7 +178,8 @@ class RSocketClientChannel : public ClientChannel, public ChannelCallbacks {
 
  private:
   // The default timeout for a Thrift RPC.
-  static const std::chrono::milliseconds kDefaultRpcTimeout;
+  static constexpr std::chrono::milliseconds kDefaultRpcTimeout{
+      std::chrono::milliseconds(500)};
 
   folly::EventBase* evb_;
   bool isSecure_;
