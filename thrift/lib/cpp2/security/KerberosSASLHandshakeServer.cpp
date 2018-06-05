@@ -232,7 +232,7 @@ void KerberosSASLHandshakeServer::handleResponse(const string& msg) {
       }
       inputToken_->length = msg.length();
       inputTokenValue_ = vector<unsigned char>(msg.begin(), msg.end());
-      inputToken_->value = &inputTokenValue_[0];
+      inputToken_->value = inputTokenValue_.data();
       acceptSecurityContext();
       break;
     case CONTEXT_NEGOTIATION_COMPLETE:
