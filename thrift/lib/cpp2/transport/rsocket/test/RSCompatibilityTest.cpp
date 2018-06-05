@@ -86,7 +86,9 @@ TEST_F(RSCompatibilityTest, DefaultTimeoutValueTest) {
     std::this_thread::sleep_for(std::chrono::milliseconds(200));
 
     auto channel = static_cast<RSocketClientChannel*>(client->getChannel());
-    channel->setTimeout(1); // 1ms
+    channel->getEventBase()->runInEventBaseThreadAndWait([&]() {
+      channel->setTimeout(1); // 1ms
+    });
 
     // Now it should timeout
     cb = std::make_unique<MockCallback>(false, true);
