@@ -12,6 +12,7 @@
 #include <thrift/lib/cpp/TApplicationException.h>
 #include <thrift/lib/cpp2/async/FutureRequest.h>
 #include <folly/futures/Future.h>
+#include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
 
 #include "reflection_dep_B_types.h"
 #include "reflection_dep_C_types.h"

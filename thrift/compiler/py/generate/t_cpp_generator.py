@@ -766,6 +766,7 @@ class CppGenerator(t_generator.Generator):
         s('#include <thrift/lib/cpp/TApplicationException.h>')
         s('#include <thrift/lib/cpp2/async/FutureRequest.h>')
         s('#include <folly/futures/Future.h>')
+        s('#include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>')
         print >>self._custom_protocol_h, \
                 '#include "{0}"'.format(self._with_include_prefix(
                     self._program,
@@ -1442,7 +1443,9 @@ class CppGenerator(t_generator.Generator):
                         out('processInThread<ProtocolIn_, ProtocolOut_>' +
                           '(std::move(req), std::move(buf),' +
                           'std::move(iprot), ctx, eb, tm, pri, '
-                          + (function.oneway and 'true' or 'false') +
+                          + (function.oneway and
+                          'apache::thrift::RpcKind::SINGLE_REQUEST_NO_RESPONSE'
+                          or 'apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE') +
                           ', &{0}AsyncProcessor::process_{1}'.format(
                                   service.name, function.name) +
                           '<ProtocolIn_, ProtocolOut_>, this);')

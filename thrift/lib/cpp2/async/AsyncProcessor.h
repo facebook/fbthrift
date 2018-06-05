@@ -31,6 +31,7 @@
 #include <thrift/lib/cpp2/async/ResponseChannel.h>
 #include <thrift/lib/cpp2/protocol/Protocol.h>
 #include <thrift/lib/cpp2/server/Cpp2ConnContext.h>
+#include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
 #include <wangle/deprecated/rx/Observer.h>
 
 namespace apache {
@@ -212,10 +213,10 @@ class GeneratedAsyncProcessor : public AsyncProcessor {
       folly::EventBase* eb,
       apache::thrift::concurrency::ThreadManager* tm,
       apache::thrift::concurrency::PRIORITY pri,
-      bool oneway,
+      apache::thrift::RpcKind kind,
       ProcessFunc processFunc,
       ChildType* childClass) {
-    if (oneway) {
+    if (kind == apache::thrift::RpcKind::SINGLE_REQUEST_NO_RESPONSE) {
       if (!req->isOneway()) {
         req->sendReply(std::unique_ptr<folly::IOBuf>());
       }
@@ -237,7 +238,8 @@ class GeneratedAsyncProcessor : public AsyncProcessor {
                 }
                 // Oneway request won't be canceled if expired. see
                 // D1006482 for furhter details.  TODO: fix this
-                if (!oneway) {
+                if (kind !=
+                    apache::thrift::RpcKind::SINGLE_REQUEST_NO_RESPONSE) {
                   if (!rq->isActive()) {
                     eb->runInEventBaseThread(
                         [rq = std::move(rq)]() mutable { rq.reset(); });
@@ -254,14 +256,14 @@ class GeneratedAsyncProcessor : public AsyncProcessor {
               },
               preq,
               eb,
-              oneway),
+              kind == apache::thrift::RpcKind::SINGLE_REQUEST_NO_RESPONSE),
           0, // timeout
           0, // expiration
           true, // cancellable
           true); // numa
       req.release();
     } catch (const std::exception&) {
-      if (!oneway) {
+      if (kind != apache::thrift::RpcKind::SINGLE_REQUEST_NO_RESPONSE) {
         req->sendErrorWrapped(
             folly::make_exception_wrapper<TApplicationException>(
                 "Failed to add task to queue, too full"),

@@ -323,7 +323,7 @@ void ServiceASvNull::frozen2_mixedMethod(std::string& /*_return*/, std::unique_p
 
 void ServiceAAsyncProcessor::_processInThread_frozen2_moduleAMethod(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<apache::thrift::Frozen2ProtocolReader> iprot, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
   auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
-  processInThread<apache::thrift::Frozen2ProtocolReader, apache::thrift::Frozen2ProtocolWriter>(std::move(req), std::move(buf),std::move(iprot), ctx, eb, tm, pri, false, &ServiceAAsyncProcessor::process_frozen2_moduleAMethod, this);
+  processInThread<apache::thrift::Frozen2ProtocolReader, apache::thrift::Frozen2ProtocolWriter>(std::move(req), std::move(buf),std::move(iprot), ctx, eb, tm, pri, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &ServiceAAsyncProcessor::process_frozen2_moduleAMethod, this);
 }
 
 void ServiceAAsyncProcessor::process_frozen2_moduleAMethod(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<apache::thrift::Frozen2ProtocolReader> iprot,apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
@@ -367,7 +367,7 @@ void ServiceAAsyncProcessor::process_frozen2_moduleAMethod(std::unique_ptr<apach
 
 void ServiceAAsyncProcessor::_processInThread_frozen2_moduleBMethod(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<apache::thrift::Frozen2ProtocolReader> iprot, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
   auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
-  processInThread<apache::thrift::Frozen2ProtocolReader, apache::thrift::Frozen2ProtocolWriter>(std::move(req), std::move(buf),std::move(iprot), ctx, eb, tm, pri, false, &ServiceAAsyncProcessor::process_frozen2_moduleBMethod, this);
+  processInThread<apache::thrift::Frozen2ProtocolReader, apache::thrift::Frozen2ProtocolWriter>(std::move(req), std::move(buf),std::move(iprot), ctx, eb, tm, pri, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &ServiceAAsyncProcessor::process_frozen2_moduleBMethod, this);
 }
 
 void ServiceAAsyncProcessor::process_frozen2_moduleBMethod(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<apache::thrift::Frozen2ProtocolReader> iprot,apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
@@ -411,7 +411,7 @@ void ServiceAAsyncProcessor::process_frozen2_moduleBMethod(std::unique_ptr<apach
 
 void ServiceAAsyncProcessor::_processInThread_frozen2_i32StrDoubleMethod(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<apache::thrift::Frozen2ProtocolReader> iprot, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
   auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
-  processInThread<apache::thrift::Frozen2ProtocolReader, apache::thrift::Frozen2ProtocolWriter>(std::move(req), std::move(buf),std::move(iprot), ctx, eb, tm, pri, false, &ServiceAAsyncProcessor::process_frozen2_i32StrDoubleMethod, this);
+  processInThread<apache::thrift::Frozen2ProtocolReader, apache::thrift::Frozen2ProtocolWriter>(std::move(req), std::move(buf),std::move(iprot), ctx, eb, tm, pri, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &ServiceAAsyncProcessor::process_frozen2_i32StrDoubleMethod, this);
 }
 
 void ServiceAAsyncProcessor::process_frozen2_i32StrDoubleMethod(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<apache::thrift::Frozen2ProtocolReader> iprot,apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
@@ -456,7 +456,7 @@ void ServiceAAsyncProcessor::process_frozen2_i32StrDoubleMethod(std::unique_ptr<
 
 void ServiceAAsyncProcessor::_processInThread_frozen2_versioningMethod(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<apache::thrift::Frozen2ProtocolReader> iprot, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
   auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
-  processInThread<apache::thrift::Frozen2ProtocolReader, apache::thrift::Frozen2ProtocolWriter>(std::move(req), std::move(buf),std::move(iprot), ctx, eb, tm, pri, false, &ServiceAAsyncProcessor::process_frozen2_versioningMethod, this);
+  processInThread<apache::thrift::Frozen2ProtocolReader, apache::thrift::Frozen2ProtocolWriter>(std::move(req), std::move(buf),std::move(iprot), ctx, eb, tm, pri, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &ServiceAAsyncProcessor::process_frozen2_versioningMethod, this);
 }
 
 void ServiceAAsyncProcessor::process_frozen2_versioningMethod(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<apache::thrift::Frozen2ProtocolReader> iprot,apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
@@ -501,7 +501,7 @@ void ServiceAAsyncProcessor::process_frozen2_versioningMethod(std::unique_ptr<ap
 
 void ServiceAAsyncProcessor::_processInThread_frozen2_retI32Method(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<apache::thrift::Frozen2ProtocolReader> iprot, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
   auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
-  processInThread<apache::thrift::Frozen2ProtocolReader, apache::thrift::Frozen2ProtocolWriter>(std::move(req), std::move(buf),std::move(iprot), ctx, eb, tm, pri, false, &ServiceAAsyncProcessor::process_frozen2_retI32Method, this);
+  processInThread<apache::thrift::Frozen2ProtocolReader, apache::thrift::Frozen2ProtocolWriter>(std::move(req), std::move(buf),std::move(iprot), ctx, eb, tm, pri, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &ServiceAAsyncProcessor::process_frozen2_retI32Method, this);
 }
 
 void ServiceAAsyncProcessor::process_frozen2_retI32Method(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<apache::thrift::Frozen2ProtocolReader> iprot,apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
@@ -543,7 +543,7 @@ void ServiceAAsyncProcessor::process_frozen2_retI32Method(std::unique_ptr<apache
 
 void ServiceAAsyncProcessor::_processInThread_frozen2_retModAMethod(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<apache::thrift::Frozen2ProtocolReader> iprot, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
   auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
-  processInThread<apache::thrift::Frozen2ProtocolReader, apache::thrift::Frozen2ProtocolWriter>(std::move(req), std::move(buf),std::move(iprot), ctx, eb, tm, pri, false, &ServiceAAsyncProcessor::process_frozen2_retModAMethod, this);
+  processInThread<apache::thrift::Frozen2ProtocolReader, apache::thrift::Frozen2ProtocolWriter>(std::move(req), std::move(buf),std::move(iprot), ctx, eb, tm, pri, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &ServiceAAsyncProcessor::process_frozen2_retModAMethod, this);
 }
 
 void ServiceAAsyncProcessor::process_frozen2_retModAMethod(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<apache::thrift::Frozen2ProtocolReader> iprot,apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
@@ -585,7 +585,7 @@ void ServiceAAsyncProcessor::process_frozen2_retModAMethod(std::unique_ptr<apach
 
 void ServiceAAsyncProcessor::_processInThread_frozen2_throwMethod(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<apache::thrift::Frozen2ProtocolReader> iprot, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
   auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
-  processInThread<apache::thrift::Frozen2ProtocolReader, apache::thrift::Frozen2ProtocolWriter>(std::move(req), std::move(buf),std::move(iprot), ctx, eb, tm, pri, false, &ServiceAAsyncProcessor::process_frozen2_throwMethod, this);
+  processInThread<apache::thrift::Frozen2ProtocolReader, apache::thrift::Frozen2ProtocolWriter>(std::move(req), std::move(buf),std::move(iprot), ctx, eb, tm, pri, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &ServiceAAsyncProcessor::process_frozen2_throwMethod, this);
 }
 
 void ServiceAAsyncProcessor::process_frozen2_throwMethod(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<apache::thrift::Frozen2ProtocolReader> iprot,apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
@@ -627,7 +627,7 @@ void ServiceAAsyncProcessor::process_frozen2_throwMethod(std::unique_ptr<apache:
 
 void ServiceAAsyncProcessor::_processInThread_frozen2_multiThrowMethod(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<apache::thrift::Frozen2ProtocolReader> iprot, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
   auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
-  processInThread<apache::thrift::Frozen2ProtocolReader, apache::thrift::Frozen2ProtocolWriter>(std::move(req), std::move(buf),std::move(iprot), ctx, eb, tm, pri, false, &ServiceAAsyncProcessor::process_frozen2_multiThrowMethod, this);
+  processInThread<apache::thrift::Frozen2ProtocolReader, apache::thrift::Frozen2ProtocolWriter>(std::move(req), std::move(buf),std::move(iprot), ctx, eb, tm, pri, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &ServiceAAsyncProcessor::process_frozen2_multiThrowMethod, this);
 }
 
 void ServiceAAsyncProcessor::process_frozen2_multiThrowMethod(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<apache::thrift::Frozen2ProtocolReader> iprot,apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
@@ -669,7 +669,7 @@ void ServiceAAsyncProcessor::process_frozen2_multiThrowMethod(std::unique_ptr<ap
 
 void ServiceAAsyncProcessor::_processInThread_frozen2_i32ThrowMethod(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<apache::thrift::Frozen2ProtocolReader> iprot, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
   auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
-  processInThread<apache::thrift::Frozen2ProtocolReader, apache::thrift::Frozen2ProtocolWriter>(std::move(req), std::move(buf),std::move(iprot), ctx, eb, tm, pri, false, &ServiceAAsyncProcessor::process_frozen2_i32ThrowMethod, this);
+  processInThread<apache::thrift::Frozen2ProtocolReader, apache::thrift::Frozen2ProtocolWriter>(std::move(req), std::move(buf),std::move(iprot), ctx, eb, tm, pri, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &ServiceAAsyncProcessor::process_frozen2_i32ThrowMethod, this);
 }
 
 void ServiceAAsyncProcessor::process_frozen2_i32ThrowMethod(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<apache::thrift::Frozen2ProtocolReader> iprot,apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
@@ -712,7 +712,7 @@ void ServiceAAsyncProcessor::process_frozen2_i32ThrowMethod(std::unique_ptr<apac
 
 void ServiceAAsyncProcessor::_processInThread_frozen2_moduleAThrowMethod(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<apache::thrift::Frozen2ProtocolReader> iprot, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
   auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
-  processInThread<apache::thrift::Frozen2ProtocolReader, apache::thrift::Frozen2ProtocolWriter>(std::move(req), std::move(buf),std::move(iprot), ctx, eb, tm, pri, false, &ServiceAAsyncProcessor::process_frozen2_moduleAThrowMethod, this);
+  processInThread<apache::thrift::Frozen2ProtocolReader, apache::thrift::Frozen2ProtocolWriter>(std::move(req), std::move(buf),std::move(iprot), ctx, eb, tm, pri, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &ServiceAAsyncProcessor::process_frozen2_moduleAThrowMethod, this);
 }
 
 void ServiceAAsyncProcessor::process_frozen2_moduleAThrowMethod(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<apache::thrift::Frozen2ProtocolReader> iprot,apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
@@ -756,7 +756,7 @@ void ServiceAAsyncProcessor::process_frozen2_moduleAThrowMethod(std::unique_ptr<
 
 void ServiceAAsyncProcessor::_processInThread_frozen2_mixedMethod(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<apache::thrift::Frozen2ProtocolReader> iprot, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
   auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
-  processInThread<apache::thrift::Frozen2ProtocolReader, apache::thrift::Frozen2ProtocolWriter>(std::move(req), std::move(buf),std::move(iprot), ctx, eb, tm, pri, false, &ServiceAAsyncProcessor::process_frozen2_mixedMethod, this);
+  processInThread<apache::thrift::Frozen2ProtocolReader, apache::thrift::Frozen2ProtocolWriter>(std::move(req), std::move(buf),std::move(iprot), ctx, eb, tm, pri, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &ServiceAAsyncProcessor::process_frozen2_mixedMethod, this);
 }
 
 void ServiceAAsyncProcessor::process_frozen2_mixedMethod(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<apache::thrift::Frozen2ProtocolReader> iprot,apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
