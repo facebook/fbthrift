@@ -2565,6 +2565,10 @@ void t_hack_generator::_generate_php_struct_definition(
         throw tstruct->get_name() +
             "::code defined to be a non-integral type. " +
             "code fields for Exception classes must be integral";
+      } else if (t->is_enum() && ((t_enum*)t)->get_constants().empty()) {
+        throw "Enum " + t->get_name() +
+            " is the type for the code property of " + tstruct->get_name() +
+            ", but it has no values.";
       }
       if (t->is_enum()) {
         indent(out) << "/* HH_FIXME[4110] conflicting definition with parent */"
