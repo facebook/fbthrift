@@ -80,11 +80,13 @@ mstch::map t_mstch_pyi_generator::extend_program(const t_program& program) {
     includeNamespaces.push_back(include_ns);
   }
   auto const asyncio = cache_->parsed_options_.count("asyncio") != 0;
+  auto const json = cache_->parsed_options_.count("json") != 0;
   mstch::map result{
       {"returnTypes", get_return_types(program)},
       {"pyNamespaces", pyNamespaces},
       {"includeNamespaces", includeNamespaces},
       {"asyncio?", asyncio},
+      {"json?", json},
   };
   add_container_types(program, result);
   return result;
