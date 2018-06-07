@@ -2571,7 +2571,7 @@ void t_hack_generator::_generate_php_struct_definition(
             ", but it has no values.";
       }
       if (t->is_enum()) {
-        indent(out) << "/* HH_FIXME[4110] conflicting definition with parent */"
+        indent(out) << "/* HH_FIXME[4236] conflicting definition with parent */"
                     << endl;
       }
     }

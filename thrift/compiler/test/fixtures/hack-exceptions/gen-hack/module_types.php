@@ -48,7 +48,7 @@ class MyException1 extends \TException implements \IThriftStruct {
    * Original thrift field:-
    * 2: enum module.MyEnum code
    */
-  /* HH_FIXME[4110] conflicting definition with parent */
+  /* HH_FIXME[4236] conflicting definition with parent */
   public MyEnum $code;
 
   public function __construct(?string $message = null, ?MyEnum $code = null  ) {
@@ -103,7 +103,7 @@ class MyException2 extends \TException implements \IThriftStruct {
    * Original thrift field:-
    * 2: enum module.MyEnum code
    */
-  /* HH_FIXME[4110] conflicting definition with parent */
+  /* HH_FIXME[4236] conflicting definition with parent */
   public MyEnum $code;
 
   public function __construct(?string $message = null, ?MyEnum $code = null  ) {
@@ -158,7 +158,7 @@ class MyException3 extends \TException implements \IThriftStruct {
    * Original thrift field:-
    * 2: enum module.MyEnum code
    */
-  /* HH_FIXME[4110] conflicting definition with parent */
+  /* HH_FIXME[4236] conflicting definition with parent */
   public MyEnum $code;
 
   public function __construct(?string $message = null, ?MyEnum $code = null  ) {
@@ -213,7 +213,7 @@ class MyException4 extends \TException implements \IThriftStruct {
    * Original thrift field:-
    * 2: enum module.MyEnum code
    */
-  /* HH_FIXME[4110] conflicting definition with parent */
+  /* HH_FIXME[4236] conflicting definition with parent */
   public MyEnum $code;
 
   public function __construct(?string $message = null, ?MyEnum $code = null  ) {
