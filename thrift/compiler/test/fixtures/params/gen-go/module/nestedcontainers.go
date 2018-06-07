@@ -923,6 +923,7 @@ func (p *nestedContainersProcessorMapList) Write(seqId int32, result thrift.Writ
 
 func (p *nestedContainersProcessorMapList) Run(argStruct thrift.Struct) (thrift.WritableStruct, thrift.ApplicationException) {
   args := argStruct.(*NestedContainersMapListArgs)
+  var result NestedContainersMapListResult
   if err := p.handler.MapList(args.Foo); err != nil {
     switch err.(type) {
     default:
@@ -930,7 +931,7 @@ func (p *nestedContainersProcessorMapList) Run(argStruct thrift.Struct) (thrift.
       return x, x
     }
   }
-  return nil, nil
+  return &result, nil
 }
 
 type nestedContainersProcessorMapSet struct {
@@ -970,6 +971,7 @@ func (p *nestedContainersProcessorMapSet) Write(seqId int32, result thrift.Writa
 
 func (p *nestedContainersProcessorMapSet) Run(argStruct thrift.Struct) (thrift.WritableStruct, thrift.ApplicationException) {
   args := argStruct.(*NestedContainersMapSetArgs)
+  var result NestedContainersMapSetResult
   if err := p.handler.MapSet(args.Foo); err != nil {
     switch err.(type) {
     default:
@@ -977,7 +979,7 @@ func (p *nestedContainersProcessorMapSet) Run(argStruct thrift.Struct) (thrift.W
       return x, x
     }
   }
-  return nil, nil
+  return &result, nil
 }
 
 type nestedContainersProcessorListMap struct {
@@ -1017,6 +1019,7 @@ func (p *nestedContainersProcessorListMap) Write(seqId int32, result thrift.Writ
 
 func (p *nestedContainersProcessorListMap) Run(argStruct thrift.Struct) (thrift.WritableStruct, thrift.ApplicationException) {
   args := argStruct.(*NestedContainersListMapArgs)
+  var result NestedContainersListMapResult
   if err := p.handler.ListMap(args.Foo); err != nil {
     switch err.(type) {
     default:
@@ -1024,7 +1027,7 @@ func (p *nestedContainersProcessorListMap) Run(argStruct thrift.Struct) (thrift.
       return x, x
     }
   }
-  return nil, nil
+  return &result, nil
 }
 
 type nestedContainersProcessorListSet struct {
@@ -1064,6 +1067,7 @@ func (p *nestedContainersProcessorListSet) Write(seqId int32, result thrift.Writ
 
 func (p *nestedContainersProcessorListSet) Run(argStruct thrift.Struct) (thrift.WritableStruct, thrift.ApplicationException) {
   args := argStruct.(*NestedContainersListSetArgs)
+  var result NestedContainersListSetResult
   if err := p.handler.ListSet(args.Foo); err != nil {
     switch err.(type) {
     default:
@@ -1071,7 +1075,7 @@ func (p *nestedContainersProcessorListSet) Run(argStruct thrift.Struct) (thrift.
       return x, x
     }
   }
-  return nil, nil
+  return &result, nil
 }
 
 type nestedContainersProcessorTurtles struct {
@@ -1111,6 +1115,7 @@ func (p *nestedContainersProcessorTurtles) Write(seqId int32, result thrift.Writ
 
 func (p *nestedContainersProcessorTurtles) Run(argStruct thrift.Struct) (thrift.WritableStruct, thrift.ApplicationException) {
   args := argStruct.(*NestedContainersTurtlesArgs)
+  var result NestedContainersTurtlesResult
   if err := p.handler.Turtles(args.Foo); err != nil {
     switch err.(type) {
     default:
@@ -1118,7 +1123,7 @@ func (p *nestedContainersProcessorTurtles) Run(argStruct thrift.Struct) (thrift.
       return x, x
     }
   }
-  return nil, nil
+  return &result, nil
 }
 
 

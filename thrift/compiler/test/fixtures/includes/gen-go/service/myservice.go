@@ -479,6 +479,7 @@ func (p *myServiceProcessorQuery) Write(seqId int32, result thrift.WritableStruc
 
 func (p *myServiceProcessorQuery) Run(argStruct thrift.Struct) (thrift.WritableStruct, thrift.ApplicationException) {
   args := argStruct.(*MyServiceQueryArgs)
+  var result MyServiceQueryResult
   if err := p.handler.Query(args.S, args.I); err != nil {
     switch err.(type) {
     default:
@@ -486,7 +487,7 @@ func (p *myServiceProcessorQuery) Run(argStruct thrift.Struct) (thrift.WritableS
       return x, x
     }
   }
-  return nil, nil
+  return &result, nil
 }
 
 type myServiceProcessorHasArgDocs struct {
@@ -526,6 +527,7 @@ func (p *myServiceProcessorHasArgDocs) Write(seqId int32, result thrift.Writable
 
 func (p *myServiceProcessorHasArgDocs) Run(argStruct thrift.Struct) (thrift.WritableStruct, thrift.ApplicationException) {
   args := argStruct.(*MyServiceHasArgDocsArgs)
+  var result MyServiceHasArgDocsResult
   if err := p.handler.HasArgDocs(args.S, args.I); err != nil {
     switch err.(type) {
     default:
@@ -533,7 +535,7 @@ func (p *myServiceProcessorHasArgDocs) Run(argStruct thrift.Struct) (thrift.Writ
       return x, x
     }
   }
-  return nil, nil
+  return &result, nil
 }
 
 

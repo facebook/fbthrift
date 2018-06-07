@@ -245,6 +245,7 @@ func (p *myNodeProcessorDoMid) Write(seqId int32, result thrift.WritableStruct, 
 }
 
 func (p *myNodeProcessorDoMid) Run(argStruct thrift.Struct) (thrift.WritableStruct, thrift.ApplicationException) {
+  var result MyNodeDoMidResult
   if err := p.handler.DoMid(); err != nil {
     switch err.(type) {
     default:
@@ -252,7 +253,7 @@ func (p *myNodeProcessorDoMid) Run(argStruct thrift.Struct) (thrift.WritableStru
       return x, x
     }
   }
-  return nil, nil
+  return &result, nil
 }
 
 

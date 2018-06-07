@@ -438,6 +438,7 @@ func (p *myServicePrioParentProcessorPing) Write(seqId int32, result thrift.Writ
 }
 
 func (p *myServicePrioParentProcessorPing) Run(argStruct thrift.Struct) (thrift.WritableStruct, thrift.ApplicationException) {
+  var result MyServicePrioParentPingResult
   if err := p.handler.Ping(); err != nil {
     switch err.(type) {
     default:
@@ -445,7 +446,7 @@ func (p *myServicePrioParentProcessorPing) Run(argStruct thrift.Struct) (thrift.
       return x, x
     }
   }
-  return nil, nil
+  return &result, nil
 }
 
 type myServicePrioParentProcessorPong struct {
@@ -484,6 +485,7 @@ func (p *myServicePrioParentProcessorPong) Write(seqId int32, result thrift.Writ
 }
 
 func (p *myServicePrioParentProcessorPong) Run(argStruct thrift.Struct) (thrift.WritableStruct, thrift.ApplicationException) {
+  var result MyServicePrioParentPongResult
   if err := p.handler.Pong(); err != nil {
     switch err.(type) {
     default:
@@ -491,7 +493,7 @@ func (p *myServicePrioParentProcessorPong) Run(argStruct thrift.Struct) (thrift.
       return x, x
     }
   }
-  return nil, nil
+  return &result, nil
 }
 
 

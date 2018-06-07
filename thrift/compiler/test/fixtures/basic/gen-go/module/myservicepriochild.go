@@ -245,6 +245,7 @@ func (p *myServicePrioChildProcessorPang) Write(seqId int32, result thrift.Writa
 }
 
 func (p *myServicePrioChildProcessorPang) Run(argStruct thrift.Struct) (thrift.WritableStruct, thrift.ApplicationException) {
+  var result MyServicePrioChildPangResult
   if err := p.handler.Pang(); err != nil {
     switch err.(type) {
     default:
@@ -252,7 +253,7 @@ func (p *myServicePrioChildProcessorPang) Run(argStruct thrift.Struct) (thrift.W
       return x, x
     }
   }
-  return nil, nil
+  return &result, nil
 }
 
 

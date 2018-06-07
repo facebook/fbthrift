@@ -245,6 +245,7 @@ func (p *myLeafProcessorDoLeaf) Write(seqId int32, result thrift.WritableStruct,
 }
 
 func (p *myLeafProcessorDoLeaf) Run(argStruct thrift.Struct) (thrift.WritableStruct, thrift.ApplicationException) {
+  var result MyLeafDoLeafResult
   if err := p.handler.DoLeaf(); err != nil {
     switch err.(type) {
     default:
@@ -252,7 +253,7 @@ func (p *myLeafProcessorDoLeaf) Run(argStruct thrift.Struct) (thrift.WritableStr
       return x, x
     }
   }
-  return nil, nil
+  return &result, nil
 }
 
 

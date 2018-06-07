@@ -766,6 +766,7 @@ func (p *raiserProcessorDoBland) Write(seqId int32, result thrift.WritableStruct
 }
 
 func (p *raiserProcessorDoBland) Run(argStruct thrift.Struct) (thrift.WritableStruct, thrift.ApplicationException) {
+  var result RaiserDoBlandResult
   if err := p.handler.DoBland(); err != nil {
     switch err.(type) {
     default:
@@ -773,7 +774,7 @@ func (p *raiserProcessorDoBland) Run(argStruct thrift.Struct) (thrift.WritableSt
       return x, x
     }
   }
-  return nil, nil
+  return &result, nil
 }
 
 type raiserProcessorDoRaise struct {

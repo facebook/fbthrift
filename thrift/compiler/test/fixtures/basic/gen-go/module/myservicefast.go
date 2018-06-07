@@ -986,6 +986,7 @@ func (p *myServiceFastProcessorPing) Write(seqId int32, result thrift.WritableSt
 }
 
 func (p *myServiceFastProcessorPing) Run(argStruct thrift.Struct) (thrift.WritableStruct, thrift.ApplicationException) {
+  var result MyServiceFastPingResult
   if err := p.handler.Ping(); err != nil {
     switch err.(type) {
     default:
@@ -993,7 +994,7 @@ func (p *myServiceFastProcessorPing) Run(argStruct thrift.Struct) (thrift.Writab
       return x, x
     }
   }
-  return nil, nil
+  return &result, nil
 }
 
 type myServiceFastProcessorGetRandomData struct {
@@ -1182,6 +1183,7 @@ func (p *myServiceFastProcessorPutDataById) Write(seqId int32, result thrift.Wri
 
 func (p *myServiceFastProcessorPutDataById) Run(argStruct thrift.Struct) (thrift.WritableStruct, thrift.ApplicationException) {
   args := argStruct.(*MyServiceFastPutDataByIdArgs)
+  var result MyServiceFastPutDataByIdResult
   if err := p.handler.PutDataById(args.Id, args.Data); err != nil {
     switch err.(type) {
     default:
@@ -1189,7 +1191,7 @@ func (p *myServiceFastProcessorPutDataById) Run(argStruct thrift.Struct) (thrift
       return x, x
     }
   }
-  return nil, nil
+  return &result, nil
 }
 
 type myServiceFastProcessorLobDataById struct {

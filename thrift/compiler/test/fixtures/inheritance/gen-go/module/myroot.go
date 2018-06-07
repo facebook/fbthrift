@@ -290,6 +290,7 @@ func (p *myRootProcessorDoRoot) Write(seqId int32, result thrift.WritableStruct,
 }
 
 func (p *myRootProcessorDoRoot) Run(argStruct thrift.Struct) (thrift.WritableStruct, thrift.ApplicationException) {
+  var result MyRootDoRootResult
   if err := p.handler.DoRoot(); err != nil {
     switch err.(type) {
     default:
@@ -297,7 +298,7 @@ func (p *myRootProcessorDoRoot) Run(argStruct thrift.Struct) (thrift.WritableStr
       return x, x
     }
   }
-  return nil, nil
+  return &result, nil
 }
 
 

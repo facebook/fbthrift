@@ -3247,10 +3247,7 @@ void t_go_generator::generate_run_function(
   t_struct* exceptions = tfunction->get_xceptions();
   const vector<t_field*>& x_fields = exceptions->get_members();
 
-  bool return_result =
-      ((!tfunction->is_oneway() && !tfunction->get_returntype()->is_void()) ||
-       !x_fields.empty());
-  if (return_result) {
+  if (!tfunction->is_oneway()) {
     indent(f_service_) << "var result " << resultname << endl;
   }
   indent(f_service_) << "if ";
@@ -3321,7 +3318,7 @@ void t_go_generator::generate_run_function(
     f_service_ << endl;
   }
 
-  if (return_result) {
+  if (!tfunction->is_oneway()) {
     indent(f_service_) << "return &result, nil" << endl;
   } else {
     indent(f_service_) << "return nil, nil" << endl;
