@@ -741,17 +741,12 @@ class HandlerCallback<ResponseAndStream<Response, StreamItem>>
  protected:
   void doResult(ResultType r) {
     assert(cp_);
-    if (!r.stream) { // function returns nullptr
-      exception(
-          std::runtime_error("Should not return nullptr instead of a stream"));
-    } else {
-      auto responseAndStream =
-          cp_(this->protoSeqId_, this->ctx_.get(), std::move(r));
-      this->ctx_.reset();
-      this->sendReply(
-          std::move(responseAndStream.response),
-          std::move(responseAndStream.stream));
-    }
+    auto responseAndStream =
+        cp_(this->protoSeqId_, this->ctx_.get(), std::move(r));
+    this->ctx_.reset();
+    this->sendReply(
+        std::move(responseAndStream.response),
+        std::move(responseAndStream.stream));
   }
 
   cob_ptr cp_;
@@ -821,17 +816,12 @@ class HandlerCallback<Stream<StreamItem>> : public HandlerCallbackBase {
  protected:
   void doResult(ResultType r) {
     assert(cp_);
-    if (!r) { // function returns nullptr
-      exception(
-          std::runtime_error("Should not return nullptr instead of a stream"));
-    } else {
-      auto responseAndStream =
-          cp_(this->protoSeqId_, this->ctx_.get(), std::move(r));
-      this->ctx_.reset();
-      this->sendReply(
-          std::move(responseAndStream.response),
-          std::move(responseAndStream.stream));
-    }
+    auto responseAndStream =
+        cp_(this->protoSeqId_, this->ctx_.get(), std::move(r));
+    this->ctx_.reset();
+    this->sendReply(
+        std::move(responseAndStream.response),
+        std::move(responseAndStream.stream));
   }
 
   cob_ptr cp_;

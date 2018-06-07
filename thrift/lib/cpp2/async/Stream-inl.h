@@ -55,6 +55,9 @@ class SubscriberAdaptor : public SubscriberIf<std::unique_ptr<ValueIf>> {
 template <typename T>
 template <typename F>
 Stream<folly::invoke_result_t<F, T&&>> Stream<T>::map(F&& f) && {
+  if (!impl_) {
+    return {};
+  }
   using U = folly::invoke_result_t<F, T&&>;
   auto impl = std::move(impl_);
   return Stream<U>(
@@ -72,10 +75,15 @@ Stream<folly::invoke_result_t<F, T&&>> Stream<T>::map(F&& f) && {
 
 template <typename T>
 void Stream<T>::subscribe(std::unique_ptr<SubscriberIf<T>> subscriber) && {
-  impl_ = std::move(*impl_).subscribeVia(executor_);
-  auto impl = std::move(impl_);
-  std::move(*impl).subscribe(
-      std::make_unique<detail::SubscriberAdaptor<T>>(std::move(subscriber)));
+  if (!impl_) { // empty stream
+    subscriber->onSubscribe({});
+    subscriber->onComplete();
+  } else {
+    impl_ = std::move(*impl_).subscribeVia(executor_);
+    auto impl = std::move(impl_);
+    std::move(*impl).subscribe(
+        std::make_unique<detail::SubscriberAdaptor<T>>(std::move(subscriber)));
+  }
 }
 
 template <typename T>

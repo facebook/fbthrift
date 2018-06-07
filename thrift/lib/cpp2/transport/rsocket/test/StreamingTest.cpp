@@ -135,8 +135,15 @@ TEST_F(StreamingTest, DefaultStreamImplementation) {
 TEST_F(StreamingTest, ReturnsNullptr) {
   // User function should return a Stream, but it returns a nullptr.
   connectToServer([&](std::unique_ptr<StreamServiceAsyncClient> client) {
-    EXPECT_THROW(
-        client->sync_returnNullptr(), apache::thrift::TApplicationException);
+    bool success = false;
+    client->sync_returnNullptr()
+        .via(&executor_)
+        .subscribe(
+            [](auto) { FAIL() << "No value was expected"; },
+            [](auto ex) { FAIL() << "No error was expected: " << ex.what(); },
+            [&success]() { success = true; })
+        .join();
+    EXPECT_TRUE(success);
   });
 }
 

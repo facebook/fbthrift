@@ -1025,6 +1025,10 @@ bool is_oneway_method(
 template <typename Protocol, typename PResult, typename T>
 apache::thrift::Stream<folly::IOBufQueue> encode_stream(
     apache::thrift::Stream<T>&& stream) {
+  if (!stream) {
+    return {};
+  }
+
   return std::move(stream).map([](T&& _item) mutable {
     PResult res;
     res.template get<0>().value = const_cast<T*>(&_item);
