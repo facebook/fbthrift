@@ -85,6 +85,7 @@ class TransportCompatibilityTest {
 
   void TestRequestResponse_Simple();
   void TestRequestResponse_Sync();
+  void TestRequestResponse_Destruction();
   void TestRequestResponse_MultipleClients();
   void TestRequestResponse_ExpectedException();
   void TestRequestResponse_UnexpectedException();

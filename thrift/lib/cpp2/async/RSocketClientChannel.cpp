@@ -82,12 +82,12 @@ class CountedSingleObserver : public SingleObserver<Payload> {
  public:
   CountedSingleObserver(
       std::unique_ptr<ThriftClientCallback> callback,
-      detail::ChannelCounters* counters)
+      std::weak_ptr<detail::ChannelCounters> counters)
       : callback_(std::move(callback)), counters_(counters) {}
 
   virtual ~CountedSingleObserver() {
-    if (counters_) {
-      counters_->decPendingRequests();
+    if (auto counters = counters_.lock()) {
+      counters->decPendingRequests();
     }
   }
 
@@ -119,7 +119,7 @@ class CountedSingleObserver : public SingleObserver<Payload> {
 
  private:
   std::unique_ptr<ThriftClientCallback> callback_;
-  detail::ChannelCounters* counters_;
+  std::weak_ptr<detail::ChannelCounters> counters_;
 };
 
 } // namespace
@@ -159,11 +159,12 @@ RSocketClientChannel::RSocketClientChannel(
     : evb_(socket->getEventBase()),
       isSecure_(isSecure),
       connectionStatus_(std::make_shared<detail::RSConnectionStatus>()),
-      channelCounters_([&]() {
+      channelCounters_(std::make_shared<detail::ChannelCounters>([&]() {
+        DCHECK(!evb_ || evb_->isInEventBaseThread());
         if (isDetachable()) {
           notifyDetachable();
         }
-      }) {
+      })) {
   stateMachine_ = std::make_shared<RSocketStateMachine>(
       std::make_shared<RSocketResponder>(),
       nullptr,
@@ -339,7 +340,7 @@ void RSocketClientChannel::sendThriftRequest(
     return;
   }
 
-  if (!channelCounters_.incPendingRequests()) {
+  if (!channelCounters_->incPendingRequests()) {
     LOG_EVERY_N(ERROR, 100)
         << "max number of pending requests is exceeded x100";
 
@@ -396,7 +397,7 @@ void RSocketClientChannel::sendSingleRequestNoResponse(
 
   callback->messageSent();
 
-  channelCounters_.decPendingRequests();
+  channelCounters_->decPendingRequests();
 }
 
 void RSocketClientChannel::sendSingleRequestSingleResponse(
@@ -413,7 +414,7 @@ void RSocketClientChannel::sendSingleRequestSingleResponse(
       std::chrono::milliseconds(metadata->clientTimeoutMs));
 
   auto singleObserver = std::make_shared<CountedSingleObserver>(
-      std::move(callback), &channelCounters_);
+      std::move(callback), folly::to_weak_ptr(channelCounters_));
 
   // As we send clientTimeoutMs, queueTimeoutMs and priority values using
   // RequestRpcMetadata object, there is no need for RSocket to put them to
@@ -469,13 +470,20 @@ void RSocketClientChannel::sendSingleRequestStreamResponse(
             toStream(std::move(flowable), evb_));
       },
       // onError
-      [this, callback](folly::exception_wrapper ew) mutable {
-        channelCounters_.decPendingRequests();
+      [channelCountersWeak = folly::to_weak_ptr(channelCounters_),
+       callback](folly::exception_wrapper ew) mutable {
+        if (auto channelCounters = channelCountersWeak.lock()) {
+          channelCounters->decPendingRequests();
+        }
         auto cb = std::exchange(callback, nullptr);
         cb->onError(std::move(ew));
       },
       // onTerminal
-      [this]() { channelCounters_.decPendingRequests(); });
+      [channelCountersWeak = folly::to_weak_ptr(channelCounters_)]() {
+        if (auto channelCounters = channelCountersWeak.lock()) {
+          channelCounters->decPendingRequests();
+        }
+      });
 
   callback->setTimedOut([tfw = std::weak_ptr<TakeFirst>(takeFirst)]() {
     if (auto tfs = tfw.lock()) {
@@ -490,7 +498,7 @@ void RSocketClientChannel::sendSingleRequestStreamResponse(
 
 void RSocketClientChannel::setMaxPendingRequests(uint32_t count) {
   DCHECK(evb_ && evb_->isInEventBaseThread());
-  channelCounters_.setMaxPendingRequests(count);
+  channelCounters_->setMaxPendingRequests(count);
 }
 
 folly::EventBase* RSocketClientChannel::getEventBase() const {
@@ -529,8 +537,8 @@ bool RSocketClientChannel::good() {
 ClientChannel::SaturationStatus RSocketClientChannel::getSaturationStatus() {
   DCHECK(evb_ && evb_->isInEventBaseThread());
   return ClientChannel::SaturationStatus(
-      channelCounters_.getPendingRequests(),
-      channelCounters_.getMaxPendingRequests());
+      channelCounters_->getPendingRequests(),
+      channelCounters_->getMaxPendingRequests());
 }
 
 void RSocketClientChannel::attachEventBase(folly::EventBase* evb) {
@@ -556,7 +564,8 @@ bool RSocketClientChannel::isDetachable() {
   auto transport = getTransport();
   bool result = evb_ == nullptr || transport == nullptr ||
       stateMachine_ == nullptr ||
-      (channelCounters_.getPendingRequests() == 0 && transport->isDetachable());
+      (channelCounters_->getPendingRequests() == 0 &&
+       transport->isDetachable());
   return result;
 }
 

@@ -55,6 +55,10 @@ TEST_F(RSCompatibilityTest, RequestResponse_Sync) {
   compatibilityTest_->TestRequestResponse_Sync();
 }
 
+TEST_F(RSCompatibilityTest, RequestResponse_Destruction) {
+  compatibilityTest_->TestRequestResponse_Destruction();
+}
+
 TEST_F(RSCompatibilityTest, RequestResponse_MultipleClients) {
   compatibilityTest_->TestRequestResponse_MultipleClients();
 }

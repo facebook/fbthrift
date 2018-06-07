@@ -192,7 +192,7 @@ class RSocketClientChannel : public ClientChannel, public ChannelCallbacks {
   std::shared_ptr<rsocket::RSocketStateMachine> stateMachine_;
   std::chrono::milliseconds timeout_{RSocketClientChannel::kDefaultRpcTimeout};
 
-  apache::thrift::detail::ChannelCounters channelCounters_;
+  std::shared_ptr<apache::thrift::detail::ChannelCounters> channelCounters_;
 };
 
 } // namespace thrift

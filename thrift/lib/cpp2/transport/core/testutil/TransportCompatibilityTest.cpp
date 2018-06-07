@@ -198,11 +198,15 @@ void SampleServer<Service>::connectToServer(
       channel = RSocketClientChannel::newChannel(TAsyncSocket::UniquePtr(
           new TAsyncSocket(evbThread_.getEventBase(), FLAGS_host, port_)));
     });
-    SCOPE_EXIT {
-      evbThread_.getEventBase()->runInEventBaseThreadAndWait(
-          [channel = std::move(channel)]() { channel->closeNow(); });
-    };
-    callMe(channel, nullptr);
+    auto channelPtr = channel.get();
+    std::shared_ptr<RSocketClientChannel> destroyInEvbChannel(
+        channelPtr,
+        [channel_ = std::move(channel),
+         eventBase = evbThread_.getEventBase()](RSocketClientChannel*) mutable {
+          eventBase->runImmediatelyOrRunInEventBaseThreadAndWait(
+              [channel__ = std::move(channel_)] {});
+        });
+    callMe(std::move(destroyInEvbChannel), nullptr);
   } else if (transport == "legacy-http2") {
     // We setup legacy http2 for synchronous calls only - we do not
     // drive this event base.
@@ -313,6 +317,22 @@ void TransportCompatibilityTest::TestRequestResponse_Sync() {
     EXPECT_EQ(3, client->future_add(2).get());
     EXPECT_EQ(3, client->future_sumTwoNumbers(1, 2).get());
     EXPECT_EQ(8, client->future_add(5).get());
+  });
+}
+
+void TransportCompatibilityTest::TestRequestResponse_Destruction() {
+  connectToServer([](std::unique_ptr<TestServiceAsyncClient> client) {
+    auto future =
+        client->future_sleep(100).then([&](folly::Try<folly::Unit> t) {
+          client.reset();
+          EXPECT_TRUE(t.hasException());
+        });
+
+    auto channel = static_cast<ClientChannel*>(client->getChannel());
+    channel->getEventBase()->runInEventBaseThreadAndWait(
+        [&]() { channel->getTransport()->closeNow(); });
+
+    future.get();
   });
 }
 
