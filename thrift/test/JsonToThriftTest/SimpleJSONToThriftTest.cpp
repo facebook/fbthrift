@@ -63,7 +63,7 @@ static std::string serializeJSON(T dataStruct, string fileName = string()) {
 template <typename T>
 static void deserializeJSON(T& dataStruct, const string& json) {
   LOG(INFO) << json;
-  uint32_t numRead = 0;
+  size_t numRead = 0;
   dataStruct = SimpleJSONSerializer::deserialize<T>(json, &numRead);
   EXPECT_EQ(numRead, json.length());
 }

@@ -51,7 +51,7 @@ struct Serializer {
     return reader.getCurrentPosition();
   }
   template <class T>
-  static uint32_t deserialize(
+  static size_t deserialize(
       const folly::IOBuf* buf,
       T& obj,
       ExternalBufferSharing sharing = COPY_EXTERNAL_BUFFER) {
@@ -60,7 +60,7 @@ struct Serializer {
   }
 
   template <class T>
-  static uint32_t deserialize(
+  static size_t deserialize(
       folly::ByteRange range,
       T& obj,
       ExternalBufferSharing sharing = COPY_EXTERNAL_BUFFER) {
@@ -69,7 +69,7 @@ struct Serializer {
   }
 
   template <class T>
-  static uint32_t deserialize(
+  static size_t deserialize(
       folly::StringPiece range,
       T& obj,
       ExternalBufferSharing sharing = COPY_EXTERNAL_BUFFER) {
@@ -100,14 +100,14 @@ struct Serializer {
   }
 
   template <class T>
-  static T deserialize(const folly::IOBuf* buf, uint32_t* size = nullptr) {
+  static T deserialize(const folly::IOBuf* buf, size_t* size = nullptr) {
     return returning<T>([&](T& obj) { set(size, deserialize(buf, obj)); });
   }
 
   template <class T>
   static T deserialize(
       folly::ByteRange range,
-      uint32_t* size = nullptr,
+      size_t* size = nullptr,
       ExternalBufferSharing sharing = COPY_EXTERNAL_BUFFER) {
     return returning<T>(
         [&](T& obj) { set(size, deserialize(range, obj, sharing)); });
@@ -116,7 +116,7 @@ struct Serializer {
   template <class T>
   static T deserialize(
       folly::StringPiece range,
-      uint32_t* size = nullptr,
+      size_t* size = nullptr,
       ExternalBufferSharing sharing = COPY_EXTERNAL_BUFFER) {
     return deserialize<T>(folly::ByteRange(range), size, sharing);
   }
