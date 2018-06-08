@@ -194,6 +194,7 @@ RSocketClientChannel::RSocketClientChannel(
 
 RSocketClientChannel::~RSocketClientChannel() {
   connectionStatus_->setCloseCallback(nullptr);
+  channelCounters_->unsetOnDetachable();
   if (stateMachine_) {
     closeNow();
   }
@@ -615,6 +616,10 @@ static constexpr uint32_t kMaxPendingRequests =
 ChannelCounters::ChannelCounters(folly::Function<void()> onDetachable)
     : maxPendingRequests_(kMaxPendingRequests),
       onDetachable_(std::move(onDetachable)) {}
+
+void ChannelCounters::unsetOnDetachable() {
+  onDetachable_ = []() {};
+}
 
 void ChannelCounters::setMaxPendingRequests(uint32_t count) {
   maxPendingRequests_ = count;

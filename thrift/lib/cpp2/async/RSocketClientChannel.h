@@ -60,6 +60,8 @@ class ChannelCounters {
   bool incPendingRequests();
   void decPendingRequests();
 
+  void unsetOnDetachable();
+
  private:
   uint32_t maxPendingRequests_;
   uint32_t pendingRequests_{0u};
