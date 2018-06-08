@@ -62,6 +62,12 @@ cdef extern from "thrift/lib/cpp2/server/ThriftServer.h" \
         void setMaxConnections(uint32_t maxConnections)
         int getListenBacklog()
         void setListenBacklog(int listenBacklog)
+        void setNumIOWorkerThreads(uint32_t numIOWorkerThreads)
+        uint32_t getNumIOWorkerThreads()
+        void setNumCPUWorkerThreads(uint32_t numCPUWorkerThreads)
+        uint32_t getNumCPUWorkerThreads()
+        void setNumSSLHandshakeWorkerThreads(uint32_t nSSLHandshakeThreads)
+        uint32_t getNumSSLHandshakeWorkerThreads()
 
 cdef extern from "folly/ssl/OpenSSLCertUtils.h":
     # I need a opque id for x509 structs

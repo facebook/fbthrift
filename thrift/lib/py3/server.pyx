@@ -126,6 +126,24 @@ cdef class ThriftServer:
     def set_listen_backlog(self, listen_backlog):
         self.server.get().setListenBacklog(listen_backlog)
 
+    def set_io_worker_threads(self, num):
+        self.server.get().setNumIOWorkerThreads(num)
+
+    def get_io_worker_threads(self):
+        return self.server.get().getNumIOWorkerThreads()
+
+    def set_cpu_worker_threads(self, num):
+        self.server.get().setNumCPUWorkerThreads(num)
+
+    def get_cpu_worker_threads(self):
+        return self.server.get().getNumCPUWorkerThreads()
+
+    def set_ssl_handshake_worker_threads(self, num):
+        self.server.get().setNumSSLHandshakeWorkerThreads(num)
+
+    def get_ssl_handshake_worker_threads(self):
+        return self.server.get().getNumSSLHandshakeWorkerThreads()
+
     def set_ssl_policy(self, policy):
         cdef cSSLPolicy cPolicy
         if policy == SSLPolicy.DISABLED:
