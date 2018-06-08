@@ -3,7 +3,7 @@ from thrift.py3.types cimport Struct
 from thrift.py3.types import Struct
 from libcpp.memory cimport unique_ptr
 from libc.stdint cimport uint32_t, uint64_t
-from folly.iobuf cimport IOBuf, move, wrapBuffer
+from folly.iobuf cimport move, wrapBuffer
 from libc.string cimport const_uchar
 
 from thrift.py3.exceptions import Error

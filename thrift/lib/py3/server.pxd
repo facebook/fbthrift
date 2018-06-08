@@ -2,7 +2,7 @@ from libc.stdint cimport uint16_t, int32_t, uint32_t
 from libcpp.string cimport string
 from libcpp.map cimport map
 from libcpp.memory cimport shared_ptr, unique_ptr
-from folly.iobuf cimport IOBuf
+from folly.iobuf cimport cIOBuf
 from folly.range cimport StringPiece
 from folly cimport cFollyExecutor
 from cpython.ref cimport PyObject
@@ -70,7 +70,7 @@ cdef extern from "folly/ssl/OpenSSLCertUtils.h":
 
 cdef extern from "folly/ssl/OpenSSLCertUtils.h" \
         namespace "folly::ssl::OpenSSLCertUtils":
-    unique_ptr[IOBuf] derEncode(X509& cert)
+    unique_ptr[cIOBuf] derEncode(X509& cert)
 
 cdef extern from "thrift/lib/cpp/transport/THeader.h" namespace "apache::thrift":
     cdef cppclass THeader:
