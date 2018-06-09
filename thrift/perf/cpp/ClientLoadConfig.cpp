@@ -28,10 +28,6 @@ DEFINE_bool(header, false, "use THeaderProtocol");
 DEFINE_bool(async, false, "Use async client");
 DEFINE_bool(ssl, false, "Use SSL");
 DEFINE_bool(single_host, false, "Use Single Hosts option with Service Router");
-DEFINE_string(sasl_policy_test, "disabled",
-              "SASL policy required / permitted / disabled");
-DEFINE_string(sasl_service_tier, "",
-              "Tier name encoded in service keytab");
 DEFINE_string(key, "", "client SSL private key file");
 DEFINE_string(cert, "", "client SSL certificate file");
 DEFINE_string(trusted_ca_list, "", "file pointing to a trusted CA or list");
@@ -257,14 +253,6 @@ std::string ClientLoadConfig::server() const {
 
 uint32_t ClientLoadConfig::port() const {
   return FLAGS_port;
-}
-
-std::string ClientLoadConfig::SASLPolicy() const {
-  return FLAGS_sasl_policy_test;
-}
-
-std::string ClientLoadConfig::SASLServiceTier() const {
-  return FLAGS_sasl_service_tier;
 }
 
 std::string ClientLoadConfig::key() const {

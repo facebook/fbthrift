@@ -21,11 +21,7 @@
 #include <thrift/lib/cpp/async/TAsyncSSLSocket.h>
 #include <thrift/lib/cpp/async/TAsyncSocket.h>
 #include <thrift/lib/cpp/test/loadgen/RNG.h>
-#include <thrift/lib/cpp2/async/GssSaslClient.h>
 #include <thrift/lib/cpp2/async/HeaderClientChannel.h>
-#include <thrift/lib/cpp2/security/KerberosSASLThreadManager.h>
-#include <thrift/lib/cpp2/util/kerberos/Krb5CredentialsCacheManager.h>
-#include <thrift/lib/cpp2/util/kerberos/Krb5CredentialsCacheManagerLogger.h>
 #include <thrift/perf/cpp/ClientLoadConfig.h>
 
 using namespace boost;
@@ -79,29 +75,6 @@ std::shared_ptr<ClientWorker2::Client> ClientWorker2::createConnection() {
     headerChannel->setClientType(THRIFT_FRAMED_DEPRECATED);
   }
   headerChannel->setTimeout(kTimeout);
-  if (config->SASLPolicy() == "permitted") {
-    headerChannel->setSecurityPolicy(THRIFT_SECURITY_PERMITTED);
-  } else if (config->SASLPolicy() == "required") {
-    headerChannel->setSecurityPolicy(THRIFT_SECURITY_REQUIRED);
-  }
-
-  if (config->SASLPolicy() == "required" ||
-      config->SASLPolicy() == "permitted") {
-    static auto krb5CredentialsCacheManagerLogger =
-        std::make_shared<krb5::Krb5CredentialsCacheManagerLogger>();
-    static auto saslThreadManager =
-        std::make_shared<SaslThreadManager>(krb5CredentialsCacheManagerLogger);
-    static auto credentialsCacheManager =
-        std::make_shared<krb5::Krb5CredentialsCacheManager>(
-            krb5CredentialsCacheManagerLogger);
-    headerChannel->setSaslClient(std::unique_ptr<apache::thrift::SaslClient>(
-        new apache::thrift::GssSaslClient(socket->getEventBase())));
-    headerChannel->getSaslClient()->setSaslThreadManager(saslThreadManager);
-    headerChannel->getSaslClient()->setCredentialsCacheManager(
-        credentialsCacheManager);
-    headerChannel->getSaslClient()->setServiceIdentity(folly::sformat(
-        "{}@{}", config->SASLServiceTier(), config->getAddressHostname()));
-  }
   channel = std::move(headerChannel);
 
   return std::shared_ptr<ClientWorker2::Client>(

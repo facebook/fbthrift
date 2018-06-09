@@ -24,13 +24,9 @@
 #include <thrift/lib/cpp/protocol/THeaderProtocol.h>
 #include <thrift/lib/cpp/test/loadgen/RNG.h>
 #include <thrift/lib/cpp/test/loadgen/ScoreBoard.h>
-#include <thrift/lib/cpp2/async/GssSaslClient.h>
 #include <thrift/lib/cpp2/async/HTTPClientChannel.h>
 #include <thrift/lib/cpp2/async/HeaderClientChannel.h>
 #include <thrift/lib/cpp2/async/RequestChannel.h>
-#include <thrift/lib/cpp2/security/KerberosSASLThreadManager.h>
-#include <thrift/lib/cpp2/util/kerberos/Krb5CredentialsCacheManager.h>
-#include <thrift/lib/cpp2/util/kerberos/Krb5CredentialsCacheManagerLogger.h>
 #include <thrift/perf/cpp/ClientLoadConfig.h>
 
 #include <queue>
@@ -190,30 +186,6 @@ LoadTestClientPtr AsyncClientWorker2::createConnection() {
   }
   if (config->zlib()) {
     channel->setTransform(THeader::ZLIB_TRANSFORM);
-  }
-
-  if (config->SASLPolicy() == "permitted") {
-    channel->setSecurityPolicy(THRIFT_SECURITY_PERMITTED);
-  } else if (config->SASLPolicy() == "required") {
-    channel->setSecurityPolicy(THRIFT_SECURITY_REQUIRED);
-  }
-
-  if (config->SASLPolicy() == "required" ||
-      config->SASLPolicy() == "permitted") {
-    static auto krb5CredentialsCacheManagerLogger =
-        std::make_shared<krb5::Krb5CredentialsCacheManagerLogger>();
-    static auto saslThreadManager =
-        std::make_shared<SaslThreadManager>(krb5CredentialsCacheManagerLogger);
-    static auto credentialsCacheManager =
-        std::make_shared<krb5::Krb5CredentialsCacheManager>(
-            krb5CredentialsCacheManagerLogger);
-    channel->setSaslClient(std::unique_ptr<apache::thrift::SaslClient>(
-        new apache::thrift::GssSaslClient(socket->getEventBase())));
-    channel->getSaslClient()->setSaslThreadManager(saslThreadManager);
-    channel->getSaslClient()->setCredentialsCacheManager(
-        credentialsCacheManager);
-    channel->getSaslClient()->setServiceIdentity(folly::sformat(
-        "{}@{}", config->SASLServiceTier(), config->getAddressHostname()));
   }
 
   return std::make_shared<LoadTestAsyncClient>(std::move(channel));
