@@ -110,7 +110,7 @@ Krb5Context::Krb5Context(ContextType type)
 
   if (code) {
     std::string msg = folly::to<std::string>(
-      "Error while initialiing kerberos context: ",
+      "Error while initializing kerberos context: ",
       error_message(code));
     throw std::runtime_error(msg);
   }
@@ -125,7 +125,7 @@ Krb5Context::~Krb5Context() {
   }
 #endif
 
-  // If thread-local context is not define, we're using regular context,
+  // If thread-local context is not defined, we're using regular context,
   // so we should free to avoid leaks.
   krb5_free_context(context_);
 }
