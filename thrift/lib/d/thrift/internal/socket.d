@@ -24,7 +24,7 @@ module thrift.internal.socket;
 
 import std.conv : to;
 
-// FreeBSD and OS X return -1 and set ECONNRESET if socket was closed by
+// FreeBSD and macOS return -1 and set ECONNRESET if socket was closed by
 // the other side, we need to check for that before throwing an exception.
 version (FreeBSD) {
   enum connresetOnPeerShutdown = true;
