@@ -341,7 +341,10 @@ class ThriftRequestCore : public ResponseChannel::Request {
   friend class TaskTimeout;
   friend class ThriftProcessor;
 
+ protected:
   const apache::thrift::server::ServerConfigs& serverConfigs_;
+
+ private:
   std::string name_;
   RpcKind kind_;
   int32_t seqId_;

@@ -107,6 +107,8 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
 
   static const std::chrono::milliseconds DEFAULT_TASK_EXPIRE_TIME;
 
+  static const std::chrono::milliseconds DEFAULT_STREAM_EXPIRE_TIME;
+
   static const std::chrono::milliseconds DEFAULT_QUEUE_TIMEOUT;
 
   /// Listen backlog
@@ -152,6 +154,12 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    * (0 == infinite)
    */
   std::chrono::milliseconds taskExpireTime_ = DEFAULT_TASK_EXPIRE_TIME;
+
+  /**
+   * The time in milliseconds before a stream starves of having no request.
+   * (0 == infinite)
+   */
+  std::chrono::milliseconds streamExpireTime_ = DEFAULT_STREAM_EXPIRE_TIME;
 
   /**
    * The time we'll allow a task to wait on the queue and still perform it
@@ -661,6 +669,22 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    */
   std::chrono::milliseconds getTaskExpireTime() const {
     return taskExpireTime_;
+  }
+
+  /**
+   * Set the stream starvation time
+   *
+   */
+  void setStreamExpireTime(std::chrono::milliseconds timeout) {
+    streamExpireTime_ = timeout;
+  }
+
+  /**
+   * If there is no request for the stream for the given time period, then the
+   * stream will create timeout error.
+   */
+  std::chrono::milliseconds getStreamExpireTime() const override {
+    return streamExpireTime_;
   }
 
   /**

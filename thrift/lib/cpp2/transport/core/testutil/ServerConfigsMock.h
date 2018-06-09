@@ -57,6 +57,10 @@ class ServerConfigsMock : public ServerConfigs {
     return numIOWorkerThreads_;
   }
 
+  std::chrono::milliseconds getStreamExpireTime() const override {
+    return streamExpireTime_;
+  }
+
  public:
   uint64_t maxResponseSize_{0};
   std::chrono::milliseconds queueTimeout_{std::chrono::milliseconds(500)};
@@ -64,6 +68,7 @@ class ServerConfigsMock : public ServerConfigs {
   std::shared_ptr<apache::thrift::server::TServerObserver> observer_{
       std::make_shared<FakeServerObserver>()};
   size_t numIOWorkerThreads_{10};
+  std::chrono::milliseconds streamExpireTime_{std::chrono::minutes(1)};
 };
 
 } // namespace server

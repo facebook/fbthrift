@@ -614,7 +614,7 @@ void RSocketClientChannel::sendSingleRequestStreamResponse(
         }
       });
 
-  callback->setTimedOut([tfw = std::weak_ptr<detail::TakeFirst>(takeFirst)]() {
+  callback->setTimedOut([tfw = folly::to_weak_ptr(takeFirst)]() {
     if (auto tfs = tfw.lock()) {
       tfs->cancel();
     }

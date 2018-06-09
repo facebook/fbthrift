@@ -58,6 +58,9 @@ class ServerConfigs {
 
   // @see BaseThriftServer::getNumIOWorkerThreads function.
   virtual size_t getNumIOWorkerThreads() const = 0;
+
+  // @see BaseThriftServer::getStreamExpireTime function.
+  virtual std::chrono::milliseconds getStreamExpireTime() const = 0;
 };
 } // namespace server
 } // namespace thrift

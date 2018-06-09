@@ -20,6 +20,20 @@
 namespace apache {
 namespace thrift {
 
+namespace {
+void waitNoLeak(StreamServiceAsyncClient* client) {
+  auto deadline =
+      std::chrono::steady_clock::now() + std::chrono::milliseconds{100};
+  do {
+    std::this_thread::yield();
+    if (client->sync_instanceCount() == 0) {
+      return;
+    }
+  } while (std::chrono::steady_clock::now() < deadline);
+  CHECK(false);
+}
+} // namespace
+
 // Testing transport layers for their support to Streaming
 class StreamingTest : public TestSetup {
  protected:
@@ -155,36 +169,24 @@ TEST_F(StreamingTest, ThrowsWithResponse) {
 
 TEST_F(StreamingTest, LifeTimeTesting) {
   connectToServer([this](std::unique_ptr<StreamServiceAsyncClient> client) {
-    auto waitNoLeak = [&] {
-      auto deadline =
-          std::chrono::steady_clock::now() + std::chrono::milliseconds{100};
-      do {
-        std::this_thread::yield();
-        if (client->sync_instanceCount() == 0) {
-          return;
-        }
-      } while (std::chrono::steady_clock::now() < deadline);
-      CHECK(false);
-    };
-
     CHECK_EQ(0, client->sync_instanceCount());
 
     { // Never subscribe
       auto result = client->sync_leakCheck(0, 100);
       EXPECT_EQ(1, client->sync_instanceCount());
     }
-    waitNoLeak();
+    waitNoLeak(client.get());
 
     { // Never subscribe to the flowable
       auto result =
           toFlowable((client->sync_leakCheck(0, 100).stream).via(&executor_));
       EXPECT_EQ(1, client->sync_instanceCount());
     }
-    waitNoLeak();
+    waitNoLeak(client.get());
 
     { // Drop the result stream
       client->sync_leakCheck(0, 100);
-      waitNoLeak();
+      waitNoLeak(client.get());
     }
 
     { // Regular usage
@@ -210,7 +212,20 @@ TEST_F(StreamingTest, LifeTimeTesting) {
       }
       EXPECT_EQ(1, client->sync_instanceCount());
       subscriber->cancel();
-      waitNoLeak();
+      waitNoLeak(client.get());
+    }
+
+    { // Early cancel - no Yarpl
+      auto result = client->sync_leakCheck(0, 100);
+      EXPECT_EQ(1, client->sync_instanceCount());
+
+      auto subscription =
+          std::move(result.stream).via(&executor_).subscribe([](auto) {}, 0);
+      subscription.cancel();
+      std::move(subscription).join();
+
+      // Check that the cancellation has reached to the server safely
+      waitNoLeak(client.get());
     }
 
     { // Always alive
@@ -310,6 +325,34 @@ TEST_F(StreamingTest, ChunkTimeout) {
   });
 }
 
+TEST_F(StreamingTest, UserCantBlockIOThread) {
+  connectToServer([this](std::unique_ptr<StreamServiceAsyncClient> client) {
+    RpcOptions options;
+    options.setChunkTimeout(std::chrono::milliseconds{10});
+    auto stream = client->sync_range(options, 0, 10);
+
+    bool failed{true};
+    int count = 0;
+    auto subscription =
+        std::move(stream)
+            .via(&executor_)
+            .subscribe(
+                [&count](auto) {
+                  // sleep, so that client will be late!
+                  /* sleep override */
+                  std::this_thread::sleep_for(std::chrono::milliseconds(20));
+                  ++count;
+                },
+                [](auto) { FAIL() << "no error was expected"; },
+                [&failed]() { failed = false; });
+    std::move(subscription).join();
+    EXPECT_FALSE(failed);
+    // As there is no flow control, all of the messages will be sent from server
+    // to client without waiting the user thread.
+    EXPECT_EQ(10, count);
+  });
+}
+
 TEST_F(StreamingTest, TwoRequestsOneTimesOut) {
   folly::Promise<folly::Unit> detachablePromise;
   auto detachableFuture = detachablePromise.getSemiFuture();
@@ -352,6 +395,42 @@ TEST_F(StreamingTest, TwoRequestsOneTimesOut) {
       [promise = std::move(detachablePromise)]() mutable {
         promise.setValue(folly::unit);
       });
+}
+
+TEST_F(StreamingTest, StreamStarvationNoRequest) {
+  connectToServer([this](std::unique_ptr<StreamServiceAsyncClient> client) {
+    server_->setStreamExpireTime(std::chrono::milliseconds(10));
+
+    auto result = client->sync_leakCheck(0, 10);
+    EXPECT_EQ(1, client->sync_instanceCount());
+
+    bool failed{false};
+    int count = 0;
+    auto subscription = std::move(result.stream)
+                            .via(&executor_)
+                            .subscribe(
+                                [&count](auto) { ++count; },
+                                [&failed](auto) mutable { failed = true; },
+                                // request no item - starvation
+                                0);
+    std::move(subscription).detach();
+    waitNoLeak(client.get());
+
+    EXPECT_TRUE(failed);
+    EXPECT_EQ(0, count);
+  });
+}
+
+TEST_F(StreamingTest, StreamStarvationNoSubscribe) {
+  connectToServer([this](std::unique_ptr<StreamServiceAsyncClient> client) {
+    server_->setStreamExpireTime(std::chrono::milliseconds(10));
+
+    auto result = client->sync_leakCheck(0, 10);
+    EXPECT_EQ(1, client->sync_instanceCount());
+
+    // Did not subscribe at all
+    waitNoLeak(client.get());
+  });
 }
 
 } // namespace thrift
