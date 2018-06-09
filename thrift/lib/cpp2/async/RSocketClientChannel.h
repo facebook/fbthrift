@@ -67,6 +67,44 @@ class ChannelCounters {
   uint32_t pendingRequests_{0u};
   folly::Function<void()> onDetachable_;
 };
+
+class TakeFirst
+    : public yarpl::flowable::Flowable<std::unique_ptr<folly::IOBuf>>,
+      public yarpl::flowable::Subscriber<rsocket::Payload> {
+  using T = rsocket::Payload;
+  using U = std::unique_ptr<folly::IOBuf>;
+
+ public:
+  TakeFirst(
+      folly::Function<void()>,
+      folly::Function<void(std::pair<T, std::shared_ptr<Flowable<U>>>)>,
+      folly::Function<void(folly::exception_wrapper)>,
+      folly::Function<void()>);
+  virtual ~TakeFirst();
+
+  void cancel();
+
+ protected:
+  void subscribe(std::shared_ptr<yarpl::flowable::Subscriber<U>>) override;
+  void onSubscribe(std::shared_ptr<yarpl::flowable::Subscription>) override;
+  void onNext(T) override;
+  void onError(folly::exception_wrapper) override;
+  void onComplete() override;
+  void onTerminal();
+
+ protected:
+  folly::Function<void()> onRequestSent_;
+  folly::Function<void(std::pair<T, std::shared_ptr<Flowable<U>>>)> onResponse_;
+  folly::Function<void(folly::exception_wrapper)> onError_;
+  folly::Function<void()> onTerminal_;
+
+  bool isFirstResponse_{true};
+  bool completed_{false};
+  folly::exception_wrapper error_;
+
+  std::shared_ptr<yarpl::flowable::Subscriber<U>> subscriber_;
+  std::shared_ptr<yarpl::flowable::Subscription> subscription_;
+};
 } // namespace detail
 
 class RSocketClientChannel : public ClientChannel, public ChannelCallbacks {

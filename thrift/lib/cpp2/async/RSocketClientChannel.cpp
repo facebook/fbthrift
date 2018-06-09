@@ -23,7 +23,6 @@
 #include <thrift/lib/cpp2/async/ResponseChannel.h>
 #include <thrift/lib/cpp2/transport/core/EnvelopeUtil.h>
 #include <thrift/lib/cpp2/transport/rsocket/YarplStreamImpl.h>
-#include <thrift/lib/cpp2/transport/rsocket/client/TakeFirst.h>
 #include <thrift/lib/cpp2/transport/rsocket/gen-cpp2/Config_types.h>
 
 using namespace apache::thrift::transport;
@@ -75,6 +74,137 @@ void RSConnectionStatus::closed() {
     }
   }
 }
+
+TakeFirst::TakeFirst(
+    folly::Function<void()> onRequestSent,
+    folly::Function<void(std::pair<T, std::shared_ptr<Flowable<U>>>)>
+        onResponse,
+    folly::Function<void(folly::exception_wrapper)> onError,
+    folly::Function<void()> onTerminal)
+    : onRequestSent_(std::move(onRequestSent)),
+      onResponse_(std::move(onResponse)),
+      onError_(std::move(onError)),
+      onTerminal_(std::move(onTerminal)) {}
+
+TakeFirst::~TakeFirst() {
+  if (auto subscription = std::exchange(subscription_, nullptr)) {
+    subscription->cancel();
+  }
+}
+
+// For 'timeout' related cases
+void TakeFirst::cancel() {
+  if (auto subscription = std::exchange(subscription_, nullptr)) {
+    subscription->cancel();
+    onResponse_ = nullptr;
+    onTerminal_ = nullptr;
+    if (auto onErr = std::exchange(onError_, nullptr)) {
+      onErr(std::runtime_error("cancelled"));
+    }
+  }
+}
+
+void TakeFirst::onSubscribe(
+    std::shared_ptr<yarpl::flowable::Subscription> subscription) {
+  subscription_ = std::move(subscription);
+  if (auto onReq = std::exchange(onRequestSent_, nullptr)) {
+    onReq();
+  }
+  subscription_->request(1);
+}
+
+void TakeFirst::subscribe(
+    std::shared_ptr<yarpl::flowable::Subscriber<U>> subscriber) {
+  if (auto subscription = std::exchange(subscription_, nullptr)) {
+    subscriber_ = std::move(subscriber);
+    subscriber_->onSubscribe(std::move(subscription));
+    if (completed_) {
+      onComplete();
+    }
+    if (error_) {
+      onError(std::move(error_));
+    }
+    return;
+  }
+  throw std::logic_error("already subscribed");
+}
+
+void TakeFirst::onComplete() {
+  if (isFirstResponse_) {
+    onError(std::runtime_error("no initial response"));
+    return;
+  }
+  if (auto subscriber = std::exchange(subscriber_, nullptr)) {
+    subscriber->onComplete();
+  } else {
+    completed_ = true;
+  }
+  onTerminal();
+}
+
+void TakeFirst::onError(folly::exception_wrapper ew) {
+  if (isFirstResponse_) {
+    onResponse_ = nullptr;
+    onTerminal_ = nullptr;
+    if (auto onErr = std::exchange(onError_, nullptr)) {
+      onErr(std::move(ew));
+    }
+    return;
+  }
+
+  if (auto subscriber = std::exchange(subscriber_, nullptr)) {
+    subscriber->onError(std::move(ew));
+  } else {
+    error_ = std::move(ew);
+  }
+  onTerminal();
+}
+
+void TakeFirst::onNext(TakeFirst::T value) {
+  // Used for breaking the cycle between Subscription and Subscriber
+  // when the response Flowable is not subscribed at all.
+  class SafeFlowable : public Flowable<U> {
+   public:
+    explicit SafeFlowable(std::shared_ptr<TakeFirst> inner)
+        : inner_(std::move(inner)) {}
+
+    ~SafeFlowable() {
+      if (auto inner = std::exchange(inner_, nullptr)) {
+        inner->cancel();
+      }
+    }
+
+    void subscribe(
+        std::shared_ptr<yarpl::flowable::Subscriber<U>> subscriber) override {
+      if (auto inner = std::exchange(inner_, nullptr)) {
+        inner->subscribe(std::move(subscriber));
+        return;
+      }
+      throw std::logic_error("already subscribed");
+    }
+
+    std::shared_ptr<TakeFirst> inner_;
+  };
+
+  if (std::exchange(isFirstResponse_, false)) {
+    onError_ = nullptr;
+    if (auto onResponse = std::exchange(onResponse_, nullptr)) {
+      onResponse(std::make_pair(
+          std::move(value),
+          std::make_shared<SafeFlowable>(this->ref_from_this(this))));
+    }
+  } else {
+    DCHECK(subscriber_);
+    subscriber_->onNext(std::move(value.data));
+  }
+}
+
+void TakeFirst::onTerminal() {
+  if (auto onTerminal = std::move(onTerminal_)) {
+    onTerminal();
+  }
+}
+
 } // namespace detail
 
 namespace {
@@ -439,7 +569,7 @@ void RSocketClientChannel::sendSingleRequestStreamResponse(
       protocolId_,
       std::chrono::milliseconds(metadata->clientTimeoutMs));
 
-  auto takeFirst = std::make_shared<TakeFirst>(
+  auto takeFirst = std::make_shared<detail::TakeFirst>(
       // onRequestSent
       [callback]() mutable {
         auto cb = std::exchange(callback, nullptr);
@@ -486,7 +616,7 @@ void RSocketClientChannel::sendSingleRequestStreamResponse(
         }
       });
 
-  callback->setTimedOut([tfw = std::weak_ptr<TakeFirst>(takeFirst)]() {
+  callback->setTimedOut([tfw = std::weak_ptr<detail::TakeFirst>(takeFirst)]() {
     if (auto tfs = tfw.lock()) {
       tfs->cancel();
     }

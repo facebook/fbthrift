@@ -17,10 +17,10 @@
 #include <folly/io/async/ScopedEventBaseThread.h>
 
 #include <thrift/lib/cpp2/GeneratedCodeHelper.h>
+#include <thrift/lib/cpp2/async/RSocketClientChannel.h>
 #include <thrift/lib/cpp2/async/SemiStream.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 #include <thrift/lib/cpp2/transport/rsocket/YarplStreamImpl.h>
-#include <thrift/lib/cpp2/transport/rsocket/client/TakeFirst.h>
 #include <thrift/lib/cpp2/transport/rsocket/test/util/gen-cpp2/StreamService.h>
 #include <yarpl/flowable/TestSubscriber.h>
 
@@ -32,6 +32,7 @@ namespace thrift {
 using namespace rsocket;
 using namespace yarpl::flowable;
 using namespace testutil::testservice;
+using namespace apache::thrift::detail;
 
 namespace {
 
