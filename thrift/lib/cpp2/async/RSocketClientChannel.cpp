@@ -97,11 +97,9 @@ void TakeFirst::cancel() {
   if (auto subscription = std::exchange(subscription_, nullptr)) {
     subscription->cancel();
     onResponse_ = nullptr;
-    onTerminal_ = nullptr;
-    if (auto onErr = std::exchange(onError_, nullptr)) {
-      onErr(std::runtime_error("cancelled"));
-    }
   }
+
+  onError(std::runtime_error("cancelled"));
 }
 
 void TakeFirst::onSubscribe(

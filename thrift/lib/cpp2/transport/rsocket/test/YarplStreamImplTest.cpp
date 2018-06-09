@@ -137,6 +137,7 @@ TEST(FlowableTest, TakeFirstNormal) {
 
   folly::Baton<> baton;
   std::shared_ptr<Flowable<std::string>> flowable;
+  bool completed = false;
   auto takeFirst = std::make_shared<TakeFirst>(
       nullptr,
       [&baton, &flowable](Pair&& result) {
@@ -145,8 +146,8 @@ TEST(FlowableTest, TakeFirstNormal) {
             [](auto iobuf) { return iobuf->moveToFbString().toStdString(); });
         baton.post();
       },
-      nullptr,
-      nullptr);
+      [](auto ex) { FAIL() << "no error was expected: " << ex.what(); },
+      [&completed]() { completed = true; });
 
   combined->subscribe(takeFirst);
 
@@ -154,6 +155,7 @@ TEST(FlowableTest, TakeFirstNormal) {
   auto values = run(flowable);
   EXPECT_EQ(1, values.size());
   EXPECT_STREQ("World", values[0].c_str());
+  EXPECT_TRUE(completed);
 }
 
 TEST(FlowableTest, TakeFirstDontSubscribe) {
@@ -162,6 +164,7 @@ TEST(FlowableTest, TakeFirstDontSubscribe) {
   auto combined = a->concatWith(b);
 
   folly::Baton<> baton;
+  bool completed = false;
   auto takeFirst = std::make_shared<TakeFirst>(
       nullptr,
       [&baton](Pair&& result) {
@@ -169,12 +172,13 @@ TEST(FlowableTest, TakeFirstDontSubscribe) {
         // Do not subscribe to the `result.second`
         baton.post();
       },
-      nullptr,
-      nullptr);
+      [](auto ex) { FAIL() << "no error was expected: " << ex.what(); },
+      [&completed]() { completed = true; });
 
   combined->subscribe(std::move(takeFirst));
 
   ASSERT_TRUE(baton.timed_wait(std::chrono::seconds(1)));
+  EXPECT_TRUE(completed);
 }
 
 TEST(FlowableTest, TakeFirstNoResponse) {
@@ -188,7 +192,7 @@ TEST(FlowableTest, TakeFirstNoResponse) {
         timedOut = true;
         baton.post();
       },
-      nullptr);
+      []() { FAIL() << "onTerminal should not be called"; });
 
   Flowable<Payload>::never()->subscribe(takeFirst);
 
@@ -212,7 +216,7 @@ TEST(FlowableTest, TakeFirstErrorResponse) {
         ASSERT_STREQ(ew.what().c_str(), "std::runtime_error: error");
         baton.post();
       },
-      nullptr);
+      []() { FAIL() << "onTerminal should not be called"; });
 
   Flowable<Payload>::error(std::runtime_error("error"))->subscribe(takeFirst);
 
@@ -228,14 +232,15 @@ TEST(FlowableTest, TakeFirstStreamError) {
   auto combined = first->concatWith(error);
 
   std::shared_ptr<Flowable<int>> flowable;
+  bool completed = false;
   auto takeFirst = std::make_shared<TakeFirst>(
       nullptr,
       [&baton, &flowable](Pair&& result) {
         flowable = result.second->map([](auto) { return 1; });
         baton.post();
       },
-      nullptr,
-      nullptr);
+      [](auto ex) { FAIL() << "no error was expected: " << ex.what(); },
+      [&completed]() { completed = true; });
 
   combined->subscribe(takeFirst);
 
@@ -246,6 +251,7 @@ TEST(FlowableTest, TakeFirstStreamError) {
 
   EXPECT_TRUE(subscriber->isError());
   EXPECT_EQ(subscriber->getErrorMsg(), "error");
+  EXPECT_TRUE(completed);
 }
 
 TEST(FlowableTest, TakeFirstMultiSubscribeInner) {
@@ -260,6 +266,7 @@ TEST(FlowableTest, TakeFirstMultiSubscribeInner) {
   // First subscribe
   folly::Baton<> baton;
   std::shared_ptr<Flowable<std::unique_ptr<folly::IOBuf>>> flowable;
+  bool completed = false;
   auto takeFirst = std::make_shared<TakeFirst>(
       nullptr,
       [&baton, &flowable](Pair&& result) {
@@ -267,8 +274,8 @@ TEST(FlowableTest, TakeFirstMultiSubscribeInner) {
         flowable = result.second;
         baton.post();
       },
-      nullptr,
-      nullptr);
+      [](auto ex) { FAIL() << "no error was expected: " << ex.what(); },
+      [&completed]() { completed = true; });
 
   combined->subscribe(takeFirst);
   ASSERT_TRUE(baton.timed_wait(std::chrono::seconds(1)));
@@ -283,6 +290,7 @@ TEST(FlowableTest, TakeFirstMultiSubscribeInner) {
   auto flowable2 = flowable->map([](auto) { return 1; });
   auto subscriber = std::make_shared<TestSubscriber<int32_t>>(10);
   EXPECT_THROW(flowable2->subscribe(subscriber), std::logic_error);
+  EXPECT_TRUE(completed);
 }
 
 } // namespace thrift
