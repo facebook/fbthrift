@@ -242,6 +242,7 @@ class ComplexUnion implements \IThriftStruct, \IThriftUnion<ComplexUnionEnum> {
   }
 
   public function readFromJson(string $jsonText): void {
+    $this->_type = ComplexUnionEnum::_EMPTY_;
     $parsed = json_decode($jsonText, true);
 
     if ($parsed === null || !is_array($parsed)) {
@@ -250,9 +251,11 @@ class ComplexUnion implements \IThriftStruct, \IThriftUnion<ComplexUnionEnum> {
 
     if (idx($parsed, 'intValue') !== null) {
       $this->intValue = $parsed['intValue'];
+      $this->_type = ComplexUnionEnum::intValue;
     }    
     if (idx($parsed, 'stringValue') !== null) {
       $this->stringValue = $parsed['stringValue'];
+      $this->_type = ComplexUnionEnum::stringValue;
     }    
     if (idx($parsed, 'intListValue') !== null) {
       $_json3 = $parsed['intListValue'];
@@ -263,6 +266,7 @@ class ComplexUnion implements \IThriftStruct, \IThriftUnion<ComplexUnionEnum> {
         $_container4 []= $_elem5;
       }
       $this->intListValue = $_container4;
+      $this->_type = ComplexUnionEnum::intListValue;
     }    
     if (idx($parsed, 'stringListValue') !== null) {
       $_json9 = $parsed['stringListValue'];
@@ -273,6 +277,7 @@ class ComplexUnion implements \IThriftStruct, \IThriftUnion<ComplexUnionEnum> {
         $_container10 []= $_elem11;
       }
       $this->stringListValue = $_container10;
+      $this->_type = ComplexUnionEnum::stringListValue;
     }    
     if (idx($parsed, 'typedefValue') !== null) {
       $_json15 = $parsed['typedefValue'];
@@ -283,9 +288,11 @@ class ComplexUnion implements \IThriftStruct, \IThriftUnion<ComplexUnionEnum> {
         $_container16[$_key13] = $_value17;
       }
       $this->typedefValue = $_container16;
+      $this->_type = ComplexUnionEnum::typedefValue;
     }    
     if (idx($parsed, 'stringRef') !== null) {
       $this->stringRef = $parsed['stringRef'];
+      $this->_type = ComplexUnionEnum::stringRef;
     }    
   }
 
@@ -384,6 +391,7 @@ class VirtualComplexUnion implements \IThriftStruct, \IThriftUnion<VirtualComple
   }
 
   public function readFromJson(string $jsonText): void {
+    $this->_type = VirtualComplexUnionEnum::_EMPTY_;
     $parsed = json_decode($jsonText, true);
 
     if ($parsed === null || !is_array($parsed)) {
@@ -392,9 +400,11 @@ class VirtualComplexUnion implements \IThriftStruct, \IThriftUnion<VirtualComple
 
     if (idx($parsed, 'thingOne') !== null) {
       $this->thingOne = $parsed['thingOne'];
+      $this->_type = VirtualComplexUnionEnum::thingOne;
     }    
     if (idx($parsed, 'thingTwo') !== null) {
       $this->thingTwo = $parsed['thingTwo'];
+      $this->_type = VirtualComplexUnionEnum::thingTwo;
     }    
   }
 

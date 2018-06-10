@@ -862,6 +862,10 @@ void t_hack_generator::generate_json_reader(ofstream& out, t_struct* tstruct) {
   indent(out) << "public function readFromJson(string $jsonText): void {"
               << endl;
   indent_up();
+  if (tstruct->is_union()) {
+    indent(out) << "$this->_type = " << union_field_to_enum(tstruct, nullptr)
+                << ";" << endl;
+  }
   indent(out) << "$parsed = json_decode($jsonText, true);" << endl << endl;
 
   indent(out) << "if ($parsed === null || !is_array($parsed)) {" << endl;
@@ -877,6 +881,10 @@ void t_hack_generator::generate_json_reader(ofstream& out, t_struct* tstruct) {
     indent_up();
     generate_json_field(
         out, namer, tf, "$this->", "", "$parsed['" + tf->get_name() + "']");
+    if (tstruct->is_union()) {
+      indent(out) << "$this->_type = " << union_field_to_enum(tstruct, tf)
+                  << ";" << endl;
+    }
     indent_down();
     indent(out) << "}";
     if (tf->get_req() == t_field::T_REQUIRED) {
