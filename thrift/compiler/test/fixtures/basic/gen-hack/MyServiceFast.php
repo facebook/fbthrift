@@ -1502,7 +1502,6 @@ class MyServiceFast_getRandomData_result implements \IThriftStruct, \IThriftShap
 
     if (idx($parsed, 'success') !== null) {
       $this->success = $parsed['success'];
-      $this->success = $parsed["success"];
     }    
   }
 
@@ -1574,7 +1573,6 @@ class MyServiceFast_hasDataById_args implements \IThriftStruct, \IThriftShapishS
 
     if (idx($parsed, 'id') !== null) {
       $this->id = $parsed['id'];
-      $this->id = $parsed["id"];
     }    
   }
 
@@ -1611,7 +1609,6 @@ class MyServiceFast_hasDataById_result implements \IThriftStruct, \IThriftShapis
 
     if (idx($parsed, 'success') !== null) {
       $this->success = $parsed['success'];
-      $this->success = $parsed["success"];
     }    
   }
 
@@ -1683,7 +1680,6 @@ class MyServiceFast_getDataById_args implements \IThriftStruct, \IThriftShapishS
 
     if (idx($parsed, 'id') !== null) {
       $this->id = $parsed['id'];
-      $this->id = $parsed["id"];
     }    
   }
 
@@ -1720,7 +1716,6 @@ class MyServiceFast_getDataById_result implements \IThriftStruct, \IThriftShapis
 
     if (idx($parsed, 'success') !== null) {
       $this->success = $parsed['success'];
-      $this->success = $parsed["success"];
     }    
   }
 
@@ -1813,11 +1808,9 @@ class MyServiceFast_putDataById_args implements \IThriftStruct, \IThriftShapishS
 
     if (idx($parsed, 'id') !== null) {
       $this->id = $parsed['id'];
-      $this->id = $parsed["id"];
     }    
     if (idx($parsed, 'data') !== null) {
       $this->data = $parsed['data'];
-      $this->data = $parsed["data"];
     }    
   }
 
@@ -1937,11 +1930,9 @@ class MyServiceFast_lobDataById_args implements \IThriftStruct, \IThriftShapishS
 
     if (idx($parsed, 'id') !== null) {
       $this->id = $parsed['id'];
-      $this->id = $parsed["id"];
     }    
     if (idx($parsed, 'data') !== null) {
       $this->data = $parsed['data'];
-      $this->data = $parsed["data"];
     }    
   }
 

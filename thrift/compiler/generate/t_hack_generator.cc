@@ -877,13 +877,6 @@ void t_hack_generator::generate_json_reader(ofstream& out, t_struct* tstruct) {
     indent_up();
     generate_json_field(
         out, namer, tf, "$this->", "", "$parsed['" + tf->get_name() + "']");
-    generate_json_field(
-        out,
-        namer,
-        tf,
-        "$this->",
-        "",
-        "$parsed[" + render_string(tf->get_name()) + "]");
     indent_down();
     indent(out) << "}";
     if (tf->get_req() == t_field::T_REQUIRED) {

@@ -187,28 +187,21 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
 
     if (idx($parsed, 'MyIntField') !== null) {
       $this->MyIntField = $parsed['MyIntField'];
-      $this->MyIntField = $parsed["MyIntField"];
     }    
     if (idx($parsed, 'MyStringField') !== null) {
       $this->MyStringField = $parsed['MyStringField'];
-      $this->MyStringField = $parsed["MyStringField"];
     }    
     if (idx($parsed, 'MyDataField') !== null) {
       $_tmp0 = json_encode($parsed['MyDataField']);
       $_tmp1 = new MyDataItem();
       $_tmp1->readFromJson($_tmp0);
       $this->MyDataField = $_tmp1;
-      $_tmp2 = json_encode($parsed["MyDataField"]);
-      $_tmp3 = new MyDataItem();
-      $_tmp3->readFromJson($_tmp2);
-      $this->MyDataField = $_tmp3;
     }    
     if (idx($parsed, 'major') !== null) {
       $this->major = $parsed['major'];
-      $this->major = $parsed["major"];
     }    
     if (idx($parsed, 'myEnum') !== null) {
-      $this->myEnum = MyEnum::coerce($parsed['myEnum']);      $this->myEnum = MyEnum::coerce($parsed["myEnum"]);    }    
+      $this->myEnum = MyEnum::coerce($parsed['myEnum']);    }    
   }
 
 }

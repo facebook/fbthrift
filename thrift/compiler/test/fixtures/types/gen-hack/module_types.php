@@ -83,7 +83,6 @@ class decorated_struct implements \IThriftStruct {
 
     if (idx($parsed, 'field') !== null) {
       $this->field = $parsed['field'];
-      $this->field = $parsed["field"];
     }    
   }
 
@@ -298,7 +297,9 @@ class ContainerStruct implements \IThriftStruct {
         $_container4 []= $_elem5;
       }
       $this->fieldA = $_container4;
-      $_json10 = $parsed["fieldA"];
+    }    
+    if (idx($parsed, 'fieldB') !== null) {
+      $_json10 = $parsed['fieldB'];
       $_container11 = Vector {};
       foreach($_json10 as $_key8 => $_value9) {
         $_elem12 = 0;
@@ -310,10 +311,10 @@ class ContainerStruct implements \IThriftStruct {
         }
         $_container11 []= $_elem12;
       }
-      $this->fieldA = $_container11;
+      $this->fieldB = $_container11;
     }    
-    if (idx($parsed, 'fieldB') !== null) {
-      $_json17 = $parsed['fieldB'];
+    if (idx($parsed, 'fieldC') !== null) {
+      $_json17 = $parsed['fieldC'];
       $_container18 = Vector {};
       foreach($_json17 as $_key15 => $_value16) {
         $_elem19 = 0;
@@ -325,8 +326,10 @@ class ContainerStruct implements \IThriftStruct {
         }
         $_container18 []= $_elem19;
       }
-      $this->fieldB = $_container18;
-      $_json24 = $parsed["fieldB"];
+      $this->fieldC = $_container18;
+    }    
+    if (idx($parsed, 'fieldD') !== null) {
+      $_json24 = $parsed['fieldD'];
       $_container25 = Vector {};
       foreach($_json24 as $_key22 => $_value23) {
         $_elem26 = 0;
@@ -338,10 +341,10 @@ class ContainerStruct implements \IThriftStruct {
         }
         $_container25 []= $_elem26;
       }
-      $this->fieldB = $_container25;
+      $this->fieldD = $_container25;
     }    
-    if (idx($parsed, 'fieldC') !== null) {
-      $_json31 = $parsed['fieldC'];
+    if (idx($parsed, 'fieldE') !== null) {
+      $_json31 = $parsed['fieldE'];
       $_container32 = Vector {};
       foreach($_json31 as $_key29 => $_value30) {
         $_elem33 = 0;
@@ -353,9 +356,11 @@ class ContainerStruct implements \IThriftStruct {
         }
         $_container32 []= $_elem33;
       }
-      $this->fieldC = $_container32;
-      $_json38 = $parsed["fieldC"];
-      $_container39 = Vector {};
+      $this->fieldE = $_container32;
+    }    
+    if (idx($parsed, 'fieldF') !== null) {
+      $_json38 = $parsed['fieldF'];
+      $_container39 = Set {};
       foreach($_json38 as $_key36 => $_value37) {
         $_elem40 = 0;
         $_tmp41 = (int)$_value37;
@@ -364,129 +369,29 @@ class ContainerStruct implements \IThriftStruct {
         } else {
           $_elem40 = (int)$_tmp41;
         }
-        $_container39 []= $_elem40;
+        $_container39->add($_elem40);
       }
-      $this->fieldC = $_container39;
-    }    
-    if (idx($parsed, 'fieldD') !== null) {
-      $_json45 = $parsed['fieldD'];
-      $_container46 = Vector {};
-      foreach($_json45 as $_key43 => $_value44) {
-        $_elem47 = 0;
-        $_tmp48 = (int)$_value44;
-        if ($_tmp48 > 0x7fffffff) {
-          throw new \TProtocolException("number exceeds limit in field");
-        } else {
-          $_elem47 = (int)$_tmp48;
-        }
-        $_container46 []= $_elem47;
-      }
-      $this->fieldD = $_container46;
-      $_json52 = $parsed["fieldD"];
-      $_container53 = Vector {};
-      foreach($_json52 as $_key50 => $_value51) {
-        $_elem54 = 0;
-        $_tmp55 = (int)$_value51;
-        if ($_tmp55 > 0x7fffffff) {
-          throw new \TProtocolException("number exceeds limit in field");
-        } else {
-          $_elem54 = (int)$_tmp55;
-        }
-        $_container53 []= $_elem54;
-      }
-      $this->fieldD = $_container53;
-    }    
-    if (idx($parsed, 'fieldE') !== null) {
-      $_json59 = $parsed['fieldE'];
-      $_container60 = Vector {};
-      foreach($_json59 as $_key57 => $_value58) {
-        $_elem61 = 0;
-        $_tmp62 = (int)$_value58;
-        if ($_tmp62 > 0x7fffffff) {
-          throw new \TProtocolException("number exceeds limit in field");
-        } else {
-          $_elem61 = (int)$_tmp62;
-        }
-        $_container60 []= $_elem61;
-      }
-      $this->fieldE = $_container60;
-      $_json66 = $parsed["fieldE"];
-      $_container67 = Vector {};
-      foreach($_json66 as $_key64 => $_value65) {
-        $_elem68 = 0;
-        $_tmp69 = (int)$_value65;
-        if ($_tmp69 > 0x7fffffff) {
-          throw new \TProtocolException("number exceeds limit in field");
-        } else {
-          $_elem68 = (int)$_tmp69;
-        }
-        $_container67 []= $_elem68;
-      }
-      $this->fieldE = $_container67;
-    }    
-    if (idx($parsed, 'fieldF') !== null) {
-      $_json73 = $parsed['fieldF'];
-      $_container74 = Set {};
-      foreach($_json73 as $_key71 => $_value72) {
-        $_elem75 = 0;
-        $_tmp76 = (int)$_value72;
-        if ($_tmp76 > 0x7fffffff) {
-          throw new \TProtocolException("number exceeds limit in field");
-        } else {
-          $_elem75 = (int)$_tmp76;
-        }
-        $_container74->add($_elem75);
-      }
-      $this->fieldF = $_container74;
-      $_json80 = $parsed["fieldF"];
-      $_container81 = Set {};
-      foreach($_json80 as $_key78 => $_value79) {
-        $_elem82 = 0;
-        $_tmp83 = (int)$_value79;
-        if ($_tmp83 > 0x7fffffff) {
-          throw new \TProtocolException("number exceeds limit in field");
-        } else {
-          $_elem82 = (int)$_tmp83;
-        }
-        $_container81->add($_elem82);
-      }
-      $this->fieldF = $_container81;
+      $this->fieldF = $_container39;
     }    
     if (idx($parsed, 'fieldG') !== null) {
-      $_json87 = $parsed['fieldG'];
-      $_container88 = Map {};
-      foreach($_json87 as $_key85 => $_value86) {
-        $_value89 = '';
-        $_value89 = $_value86;
-        $_container88[$_key85] = $_value89;
+      $_json45 = $parsed['fieldG'];
+      $_container46 = Map {};
+      foreach($_json45 as $_key43 => $_value44) {
+        $_value47 = '';
+        $_value47 = $_value44;
+        $_container46[$_key43] = $_value47;
       }
-      $this->fieldG = $_container88;
-      $_json93 = $parsed["fieldG"];
-      $_container94 = Map {};
-      foreach($_json93 as $_key91 => $_value92) {
-        $_value95 = '';
-        $_value95 = $_value92;
-        $_container94[$_key91] = $_value95;
-      }
-      $this->fieldG = $_container94;
+      $this->fieldG = $_container46;
     }    
     if (idx($parsed, 'fieldH') !== null) {
-      $_json99 = $parsed['fieldH'];
-      $_container100 = Map {};
-      foreach($_json99 as $_key97 => $_value98) {
-        $_value101 = '';
-        $_value101 = $_value98;
-        $_container100[$_key97] = $_value101;
+      $_json51 = $parsed['fieldH'];
+      $_container52 = Map {};
+      foreach($_json51 as $_key49 => $_value50) {
+        $_value53 = '';
+        $_value53 = $_value50;
+        $_container52[$_key49] = $_value53;
       }
-      $this->fieldH = $_container100;
-      $_json105 = $parsed["fieldH"];
-      $_container106 = Map {};
-      foreach($_json105 as $_key103 => $_value104) {
-        $_value107 = '';
-        $_value107 = $_value104;
-        $_container106[$_key103] = $_value107;
-      }
-      $this->fieldH = $_container106;
+      $this->fieldH = $_container52;
     }    
   }
 
@@ -553,19 +458,6 @@ class CppTypeStruct implements \IThriftStruct {
         $_container4 []= $_elem5;
       }
       $this->fieldA = $_container4;
-      $_json10 = $parsed["fieldA"];
-      $_container11 = Vector {};
-      foreach($_json10 as $_key8 => $_value9) {
-        $_elem12 = 0;
-        $_tmp13 = (int)$_value9;
-        if ($_tmp13 > 0x7fffffff) {
-          throw new \TProtocolException("number exceeds limit in field");
-        } else {
-          $_elem12 = (int)$_tmp13;
-        }
-        $_container11 []= $_elem12;
-      }
-      $this->fieldA = $_container11;
     }    
   }
 
@@ -615,7 +507,6 @@ class VirtualStruct implements \IThriftStruct {
 
     if (idx($parsed, 'MyIntField') !== null) {
       $this->MyIntField = $parsed['MyIntField'];
-      $this->MyIntField = $parsed["MyIntField"];
     }    
   }
 
@@ -681,9 +572,9 @@ class MyStructWithForwardRefEnum implements \IThriftStruct {
     }
 
     if (idx($parsed, 'a') !== null) {
-      $this->a = MyForwardRefEnum::coerce($parsed['a']);      $this->a = MyForwardRefEnum::coerce($parsed["a"]);    }    
+      $this->a = MyForwardRefEnum::coerce($parsed['a']);    }    
     if (idx($parsed, 'b') !== null) {
-      $this->b = MyForwardRefEnum::coerce($parsed['b']);      $this->b = MyForwardRefEnum::coerce($parsed["b"]);    }    
+      $this->b = MyForwardRefEnum::coerce($parsed['b']);    }    
   }
 
 }

@@ -237,14 +237,6 @@ class SomeService_bounce_map_args implements \IThriftStruct {
         $_container4[$_key1] = $_value5;
       }
       $this->m = $_container4;
-      $_json9 = $parsed["m"];
-      $_container10 = Map {};
-      foreach($_json9 as $_key7 => $_value8) {
-        $_value11 = '';
-        $_value11 = $_value8;
-        $_container10[$_key7] = $_value11;
-      }
-      $this->m = $_container10;
     }    
   }
 
@@ -297,14 +289,6 @@ class SomeService_bounce_map_result implements \IThriftStruct {
         $_container4[$_key1] = $_value5;
       }
       $this->success = $_container4;
-      $_json9 = $parsed["success"];
-      $_container10 = Map {};
-      foreach($_json9 as $_key7 => $_value8) {
-        $_value11 = '';
-        $_value11 = $_value8;
-        $_container10[$_key7] = $_value11;
-      }
-      $this->success = $_container10;
     }    
   }
 
