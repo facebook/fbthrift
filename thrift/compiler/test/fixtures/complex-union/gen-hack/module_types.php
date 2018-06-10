@@ -241,6 +241,81 @@ class ComplexUnion implements \IThriftStruct, \IThriftUnion<ComplexUnionEnum> {
     return nullthrows($this->stringRef);
   }
 
+  public function readFromJson(string $jsonText): void {
+    $parsed = json_decode($jsonText, true);
+
+    if ($parsed === null || !is_array($parsed)) {
+      throw new \TProtocolException("Cannot parse the given json string.");
+    }
+
+    if (idx($parsed, 'intValue') !== null) {
+      $this->intValue = $parsed['intValue'];
+      $this->intValue = $parsed["intValue"];
+    }    
+    if (idx($parsed, 'stringValue') !== null) {
+      $this->stringValue = $parsed['stringValue'];
+      $this->stringValue = $parsed["stringValue"];
+    }    
+    if (idx($parsed, 'intListValue') !== null) {
+      $_json3 = $parsed['intListValue'];
+      $_container4 = Vector {};
+      foreach($_json3 as $_key1 => $_value2) {
+        $_elem5 = 0;
+        $_elem5 = $_value2;
+        $_container4 []= $_elem5;
+      }
+      $this->intListValue = $_container4;
+      $_json9 = $parsed["intListValue"];
+      $_container10 = Vector {};
+      foreach($_json9 as $_key7 => $_value8) {
+        $_elem11 = 0;
+        $_elem11 = $_value8;
+        $_container10 []= $_elem11;
+      }
+      $this->intListValue = $_container10;
+    }    
+    if (idx($parsed, 'stringListValue') !== null) {
+      $_json15 = $parsed['stringListValue'];
+      $_container16 = Vector {};
+      foreach($_json15 as $_key13 => $_value14) {
+        $_elem17 = '';
+        $_elem17 = $_value14;
+        $_container16 []= $_elem17;
+      }
+      $this->stringListValue = $_container16;
+      $_json21 = $parsed["stringListValue"];
+      $_container22 = Vector {};
+      foreach($_json21 as $_key19 => $_value20) {
+        $_elem23 = '';
+        $_elem23 = $_value20;
+        $_container22 []= $_elem23;
+      }
+      $this->stringListValue = $_container22;
+    }    
+    if (idx($parsed, 'typedefValue') !== null) {
+      $_json27 = $parsed['typedefValue'];
+      $_container28 = Map {};
+      foreach($_json27 as $_key25 => $_value26) {
+        $_value29 = '';
+        $_value29 = $_value26;
+        $_container28[$_key25] = $_value29;
+      }
+      $this->typedefValue = $_container28;
+      $_json33 = $parsed["typedefValue"];
+      $_container34 = Map {};
+      foreach($_json33 as $_key31 => $_value32) {
+        $_value35 = '';
+        $_value35 = $_value32;
+        $_container34[$_key31] = $_value35;
+      }
+      $this->typedefValue = $_container34;
+    }    
+    if (idx($parsed, 'stringRef') !== null) {
+      $this->stringRef = $parsed['stringRef'];
+      $this->stringRef = $parsed["stringRef"];
+    }    
+  }
+
 }
 
 enum VirtualComplexUnionEnum: int {
@@ -333,6 +408,23 @@ class VirtualComplexUnion implements \IThriftStruct, \IThriftUnion<VirtualComple
       $this->_type,
     );
     return nullthrows($this->thingTwo);
+  }
+
+  public function readFromJson(string $jsonText): void {
+    $parsed = json_decode($jsonText, true);
+
+    if ($parsed === null || !is_array($parsed)) {
+      throw new \TProtocolException("Cannot parse the given json string.");
+    }
+
+    if (idx($parsed, 'thingOne') !== null) {
+      $this->thingOne = $parsed['thingOne'];
+      $this->thingOne = $parsed["thingOne"];
+    }    
+    if (idx($parsed, 'thingTwo') !== null) {
+      $this->thingTwo = $parsed['thingTwo'];
+      $this->thingTwo = $parsed["thingTwo"];
+    }    
   }
 
 }

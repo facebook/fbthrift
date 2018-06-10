@@ -221,6 +221,33 @@ class SomeService_bounce_map_args implements \IThriftStruct {
     return 'SomeService_bounce_map_args';
   }
 
+  public function readFromJson(string $jsonText): void {
+    $parsed = json_decode($jsonText, true);
+
+    if ($parsed === null || !is_array($parsed)) {
+      throw new \TProtocolException("Cannot parse the given json string.");
+    }
+
+    if (idx($parsed, 'm') !== null) {
+      $_json3 = $parsed['m'];
+      $_container4 = Map {};
+      foreach($_json3 as $_key1 => $_value2) {
+        $_value5 = '';
+        $_value5 = $_value2;
+        $_container4[$_key1] = $_value5;
+      }
+      $this->m = $_container4;
+      $_json9 = $parsed["m"];
+      $_container10 = Map {};
+      foreach($_json9 as $_key7 => $_value8) {
+        $_value11 = '';
+        $_value11 = $_value8;
+        $_container10[$_key7] = $_value11;
+      }
+      $this->m = $_container10;
+    }    
+  }
+
 }
 
 class SomeService_bounce_map_result implements \IThriftStruct {
@@ -252,6 +279,33 @@ class SomeService_bounce_map_result implements \IThriftStruct {
 
   public function getName(): string {
     return 'SomeService_bounce_map_result';
+  }
+
+  public function readFromJson(string $jsonText): void {
+    $parsed = json_decode($jsonText, true);
+
+    if ($parsed === null || !is_array($parsed)) {
+      throw new \TProtocolException("Cannot parse the given json string.");
+    }
+
+    if (idx($parsed, 'success') !== null) {
+      $_json3 = $parsed['success'];
+      $_container4 = Map {};
+      foreach($_json3 as $_key1 => $_value2) {
+        $_value5 = '';
+        $_value5 = $_value2;
+        $_container4[$_key1] = $_value5;
+      }
+      $this->success = $_container4;
+      $_json9 = $parsed["success"];
+      $_container10 = Map {};
+      foreach($_json9 as $_key7 => $_value8) {
+        $_value11 = '';
+        $_value11 = $_value8;
+        $_container10[$_key7] = $_value11;
+      }
+      $this->success = $_container10;
+    }    
   }
 
 }

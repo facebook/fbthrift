@@ -1386,6 +1386,15 @@ class MyServiceFast_ping_args implements \IThriftStruct, \IThriftShapishStruct {
     return shape(
     );
   }
+  public function readFromJson(string $jsonText): void {
+    $parsed = json_decode($jsonText, true);
+
+    if ($parsed === null || !is_array($parsed)) {
+      throw new \TProtocolException("Cannot parse the given json string.");
+    }
+
+  }
+
 }
 
 class MyServiceFast_ping_result implements \IThriftStruct, \IThriftShapishStruct {
@@ -1402,6 +1411,15 @@ class MyServiceFast_ping_result implements \IThriftStruct, \IThriftShapishStruct
 
   public function getName(): string {
     return 'MyServiceFast_ping_result';
+  }
+
+  public function readFromJson(string $jsonText): void {
+    $parsed = json_decode($jsonText, true);
+
+    if ($parsed === null || !is_array($parsed)) {
+      throw new \TProtocolException("Cannot parse the given json string.");
+    }
+
   }
 
 }
@@ -1442,6 +1460,15 @@ class MyServiceFast_getRandomData_args implements \IThriftStruct, \IThriftShapis
     return shape(
     );
   }
+  public function readFromJson(string $jsonText): void {
+    $parsed = json_decode($jsonText, true);
+
+    if ($parsed === null || !is_array($parsed)) {
+      throw new \TProtocolException("Cannot parse the given json string.");
+    }
+
+  }
+
 }
 
 class MyServiceFast_getRandomData_result implements \IThriftStruct, \IThriftShapishStruct {
@@ -1464,6 +1491,19 @@ class MyServiceFast_getRandomData_result implements \IThriftStruct, \IThriftShap
 
   public function getName(): string {
     return 'MyServiceFast_getRandomData_result';
+  }
+
+  public function readFromJson(string $jsonText): void {
+    $parsed = json_decode($jsonText, true);
+
+    if ($parsed === null || !is_array($parsed)) {
+      throw new \TProtocolException("Cannot parse the given json string.");
+    }
+
+    if (idx($parsed, 'success') !== null) {
+      $this->success = $parsed['success'];
+      $this->success = $parsed["success"];
+    }    
   }
 
 }
@@ -1525,6 +1565,19 @@ class MyServiceFast_hasDataById_args implements \IThriftStruct, \IThriftShapishS
       'id' => $this->id,
     );
   }
+  public function readFromJson(string $jsonText): void {
+    $parsed = json_decode($jsonText, true);
+
+    if ($parsed === null || !is_array($parsed)) {
+      throw new \TProtocolException("Cannot parse the given json string.");
+    }
+
+    if (idx($parsed, 'id') !== null) {
+      $this->id = $parsed['id'];
+      $this->id = $parsed["id"];
+    }    
+  }
+
 }
 
 class MyServiceFast_hasDataById_result implements \IThriftStruct, \IThriftShapishStruct {
@@ -1547,6 +1600,19 @@ class MyServiceFast_hasDataById_result implements \IThriftStruct, \IThriftShapis
 
   public function getName(): string {
     return 'MyServiceFast_hasDataById_result';
+  }
+
+  public function readFromJson(string $jsonText): void {
+    $parsed = json_decode($jsonText, true);
+
+    if ($parsed === null || !is_array($parsed)) {
+      throw new \TProtocolException("Cannot parse the given json string.");
+    }
+
+    if (idx($parsed, 'success') !== null) {
+      $this->success = $parsed['success'];
+      $this->success = $parsed["success"];
+    }    
   }
 
 }
@@ -1608,6 +1674,19 @@ class MyServiceFast_getDataById_args implements \IThriftStruct, \IThriftShapishS
       'id' => $this->id,
     );
   }
+  public function readFromJson(string $jsonText): void {
+    $parsed = json_decode($jsonText, true);
+
+    if ($parsed === null || !is_array($parsed)) {
+      throw new \TProtocolException("Cannot parse the given json string.");
+    }
+
+    if (idx($parsed, 'id') !== null) {
+      $this->id = $parsed['id'];
+      $this->id = $parsed["id"];
+    }    
+  }
+
 }
 
 class MyServiceFast_getDataById_result implements \IThriftStruct, \IThriftShapishStruct {
@@ -1630,6 +1709,19 @@ class MyServiceFast_getDataById_result implements \IThriftStruct, \IThriftShapis
 
   public function getName(): string {
     return 'MyServiceFast_getDataById_result';
+  }
+
+  public function readFromJson(string $jsonText): void {
+    $parsed = json_decode($jsonText, true);
+
+    if ($parsed === null || !is_array($parsed)) {
+      throw new \TProtocolException("Cannot parse the given json string.");
+    }
+
+    if (idx($parsed, 'success') !== null) {
+      $this->success = $parsed['success'];
+      $this->success = $parsed["success"];
+    }    
   }
 
 }
@@ -1712,6 +1804,23 @@ class MyServiceFast_putDataById_args implements \IThriftStruct, \IThriftShapishS
       'data' => $this->data,
     );
   }
+  public function readFromJson(string $jsonText): void {
+    $parsed = json_decode($jsonText, true);
+
+    if ($parsed === null || !is_array($parsed)) {
+      throw new \TProtocolException("Cannot parse the given json string.");
+    }
+
+    if (idx($parsed, 'id') !== null) {
+      $this->id = $parsed['id'];
+      $this->id = $parsed["id"];
+    }    
+    if (idx($parsed, 'data') !== null) {
+      $this->data = $parsed['data'];
+      $this->data = $parsed["data"];
+    }    
+  }
+
 }
 
 class MyServiceFast_putDataById_result implements \IThriftStruct, \IThriftShapishStruct {
@@ -1728,6 +1837,15 @@ class MyServiceFast_putDataById_result implements \IThriftStruct, \IThriftShapis
 
   public function getName(): string {
     return 'MyServiceFast_putDataById_result';
+  }
+
+  public function readFromJson(string $jsonText): void {
+    $parsed = json_decode($jsonText, true);
+
+    if ($parsed === null || !is_array($parsed)) {
+      throw new \TProtocolException("Cannot parse the given json string.");
+    }
+
   }
 
 }
@@ -1810,5 +1928,22 @@ class MyServiceFast_lobDataById_args implements \IThriftStruct, \IThriftShapishS
       'data' => $this->data,
     );
   }
+  public function readFromJson(string $jsonText): void {
+    $parsed = json_decode($jsonText, true);
+
+    if ($parsed === null || !is_array($parsed)) {
+      throw new \TProtocolException("Cannot parse the given json string.");
+    }
+
+    if (idx($parsed, 'id') !== null) {
+      $this->id = $parsed['id'];
+      $this->id = $parsed["id"];
+    }    
+    if (idx($parsed, 'data') !== null) {
+      $this->data = $parsed['data'];
+      $this->data = $parsed["data"];
+    }    
+  }
+
 }
 

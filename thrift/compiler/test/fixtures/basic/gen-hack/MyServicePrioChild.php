@@ -318,6 +318,15 @@ class MyServicePrioChild_pang_args implements \IThriftStruct, \IThriftShapishStr
     return shape(
     );
   }
+  public function readFromJson(string $jsonText): void {
+    $parsed = json_decode($jsonText, true);
+
+    if ($parsed === null || !is_array($parsed)) {
+      throw new \TProtocolException("Cannot parse the given json string.");
+    }
+
+  }
+
 }
 
 class MyServicePrioChild_pang_result implements \IThriftStruct, \IThriftShapishStruct {
@@ -334,6 +343,15 @@ class MyServicePrioChild_pang_result implements \IThriftStruct, \IThriftShapishS
 
   public function getName(): string {
     return 'MyServicePrioChild_pang_result';
+  }
+
+  public function readFromJson(string $jsonText): void {
+    $parsed = json_decode($jsonText, true);
+
+    if ($parsed === null || !is_array($parsed)) {
+      throw new \TProtocolException("Cannot parse the given json string.");
+    }
+
   }
 
 }

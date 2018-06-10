@@ -544,6 +544,15 @@ class MyServicePrioParent_ping_args implements \IThriftStruct, \IThriftShapishSt
     return shape(
     );
   }
+  public function readFromJson(string $jsonText): void {
+    $parsed = json_decode($jsonText, true);
+
+    if ($parsed === null || !is_array($parsed)) {
+      throw new \TProtocolException("Cannot parse the given json string.");
+    }
+
+  }
+
 }
 
 class MyServicePrioParent_ping_result implements \IThriftStruct, \IThriftShapishStruct {
@@ -560,6 +569,15 @@ class MyServicePrioParent_ping_result implements \IThriftStruct, \IThriftShapish
 
   public function getName(): string {
     return 'MyServicePrioParent_ping_result';
+  }
+
+  public function readFromJson(string $jsonText): void {
+    $parsed = json_decode($jsonText, true);
+
+    if ($parsed === null || !is_array($parsed)) {
+      throw new \TProtocolException("Cannot parse the given json string.");
+    }
+
   }
 
 }
@@ -600,6 +618,15 @@ class MyServicePrioParent_pong_args implements \IThriftStruct, \IThriftShapishSt
     return shape(
     );
   }
+  public function readFromJson(string $jsonText): void {
+    $parsed = json_decode($jsonText, true);
+
+    if ($parsed === null || !is_array($parsed)) {
+      throw new \TProtocolException("Cannot parse the given json string.");
+    }
+
+  }
+
 }
 
 class MyServicePrioParent_pong_result implements \IThriftStruct, \IThriftShapishStruct {
@@ -616,6 +643,15 @@ class MyServicePrioParent_pong_result implements \IThriftStruct, \IThriftShapish
 
   public function getName(): string {
     return 'MyServicePrioParent_pong_result';
+  }
+
+  public function readFromJson(string $jsonText): void {
+    $parsed = json_decode($jsonText, true);
+
+    if ($parsed === null || !is_array($parsed)) {
+      throw new \TProtocolException("Cannot parse the given json string.");
+    }
+
   }
 
 }
