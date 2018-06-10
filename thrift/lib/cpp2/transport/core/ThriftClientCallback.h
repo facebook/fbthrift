@@ -16,13 +16,14 @@
 
 #pragma once
 
+#include <memory>
+
 #include <folly/ExceptionWrapper.h>
 #include <folly/io/IOBuf.h>
 #include <folly/io/async/EventBase.h>
 #include <thrift/lib/cpp/EventHandlerBase.h>
 #include <thrift/lib/cpp2/async/RequestChannel.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
-#include <memory>
 
 namespace apache {
 namespace thrift {

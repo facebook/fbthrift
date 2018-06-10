@@ -15,10 +15,13 @@
  */
 #include <thrift/lib/cpp2/transport/http2/common/SingleRpcChannel.h>
 
+#include <chrono>
+
+#include <glog/logging.h>
+
 #include <folly/ExceptionWrapper.h>
 #include <folly/io/IOBufQueue.h>
 #include <folly/io/async/EventBaseManager.h>
-#include <glog/logging.h>
 #include <proxygen/lib/http/HTTPHeaders.h>
 #include <proxygen/lib/http/HTTPMethod.h>
 #include <proxygen/lib/utils/Base64.h>
@@ -33,15 +36,12 @@
 #include <thrift/lib/cpp2/transport/core/ThriftProcessor.h>
 #include <thrift/lib/cpp2/transport/http2/client/H2ClientConnection.h>
 #include <thrift/lib/cpp2/transport/http2/common/H2ChannelFactory.h>
-#include <chrono>
 
 namespace apache {
 namespace thrift {
 
 using apache::thrift::protocol::TProtocolException;
 using apache::thrift::transport::TTransportException;
-using std::map;
-using std::string;
 using folly::EventBase;
 using folly::EventBaseManager;
 using folly::IOBuf;
@@ -52,6 +52,8 @@ using proxygen::HTTPTransaction;
 using proxygen::IOBufPrinter;
 using proxygen::ProxygenError;
 using proxygen::ResponseHandler;
+using std::map;
+using std::string;
 
 static constexpr folly::StringPiece RPC_KIND = "rpckind";
 

@@ -16,9 +16,10 @@
 
 #include <thrift/lib/cpp2/transport/http2/client/H2ClientConnection.h>
 
-#include <folly/Likely.h>
 #include <gflags/gflags.h>
 #include <glog/logging.h>
+
+#include <folly/Likely.h>
 #include <proxygen/lib/http/codec/HTTP1xCodec.h>
 #include <proxygen/lib/http/codec/HTTP2Codec.h>
 #include <proxygen/lib/http/codec/TransportDirection.h>
@@ -28,6 +29,7 @@
 #include <thrift/lib/cpp2/transport/core/ThriftClient.h>
 #include <thrift/lib/cpp2/transport/http2/client/ThriftTransactionHandler.h>
 #include <wangle/acceptor/TransportInfo.h>
+
 #include <algorithm>
 
 // This flag is only used on the client side.
@@ -48,9 +50,9 @@ using apache::thrift::async::TAsyncTransport;
 using apache::thrift::transport::TTransportException;
 using folly::EventBase;
 using proxygen::HTTPSessionBase;
-using proxygen::SettingsList;
 using proxygen::HTTPTransaction;
 using proxygen::HTTPUpstreamSession;
+using proxygen::SettingsList;
 using proxygen::WheelTimerInstance;
 using std::string;
 

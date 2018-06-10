@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-#include <thrift/lib/cpp2/transport/http2/common/testutil/ChannelTestFixture.h>
+#include <memory>
 
 #include <folly/io/IOBuf.h>
 #include <thrift/lib/cpp2/transport/core/testutil/CoreTestFixture.h>
 #include <thrift/lib/cpp2/transport/core/testutil/ServerConfigsMock.h>
 #include <thrift/lib/cpp2/transport/http2/common/SingleRpcChannel.h>
+#include <thrift/lib/cpp2/transport/http2/common/testutil/ChannelTestFixture.h>
 #include <thrift/lib/cpp2/transport/http2/common/testutil/FakeProcessors.h>
-#include <memory>
 
 namespace apache {
 namespace thrift {

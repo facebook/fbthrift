@@ -16,15 +16,15 @@
 
 #pragma once
 
-#include <proxygen/httpserver/RequestHandler.h>
+#include <memory>
 
 #include <folly/io/IOBuf.h>
+#include <proxygen/httpserver/RequestHandler.h>
 #include <proxygen/lib/http/HTTPConstants.h>
 #include <proxygen/lib/http/HTTPMessage.h>
 #include <proxygen/lib/http/ProxygenErrorEnum.h>
 #include <thrift/lib/cpp2/transport/core/ThriftProcessor.h>
 #include <thrift/lib/cpp2/transport/http2/common/H2Channel.h>
-#include <memory>
 
 namespace apache {
 namespace thrift {
@@ -44,8 +44,8 @@ class ThriftRequestHandler : public proxygen::RequestHandler {
 
   ~ThriftRequestHandler() override;
 
-  void onRequest(std::unique_ptr<proxygen::HTTPMessage> headers)
-      noexcept override;
+  void onRequest(
+      std::unique_ptr<proxygen::HTTPMessage> headers) noexcept override;
 
   void onBody(std::unique_ptr<folly::IOBuf> body) noexcept override;
 

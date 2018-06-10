@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-#include <folly/io/async/ScopedEventBaseThread.h>
 #include <gflags/gflags.h>
 #include <gmock/gmock.h>
+
+#include <folly/io/async/ScopedEventBaseThread.h>
 #include <thrift/lib/cpp/async/TAsyncSocket.h>
 #include <thrift/lib/cpp2/async/PooledRequestChannel.h>
 #include <thrift/lib/cpp2/async/RSocketClientChannel.h>

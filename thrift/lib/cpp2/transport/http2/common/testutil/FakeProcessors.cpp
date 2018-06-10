@@ -29,12 +29,10 @@ void EchoProcessor::onThriftRequest(
     std::unique_ptr<folly::IOBuf> payload,
     std::shared_ptr<ThriftChannelIf> channel,
     std::unique_ptr<Cpp2ConnContext> /* connContext */) noexcept {
-  evb_->runInEventBaseThread([
-    this,
-    evbMetadata = std::move(metadata),
-    evbPayload = std::move(payload),
-    evbChannel = std::move(channel)
-  ]() mutable {
+  evb_->runInEventBaseThread([this,
+                              evbMetadata = std::move(metadata),
+                              evbPayload = std::move(payload),
+                              evbChannel = std::move(channel)]() mutable {
     onThriftRequestHelper(
         std::move(evbMetadata), std::move(evbPayload), std::move(evbChannel));
   });

@@ -15,8 +15,9 @@
  */
 #pragma once
 
-#include <folly/io/async/ScopedEventBaseThread.h>
 #include <gmock/gmock.h>
+
+#include <folly/io/async/ScopedEventBaseThread.h>
 #include <thrift/lib/cpp2/transport/rsocket/test/util/gen-cpp2/StreamService.h>
 
 namespace testutil {

@@ -25,12 +25,12 @@
 namespace apache {
 namespace thrift {
 
-using std::string;
-using std::unordered_map;
 using folly::EventBase;
 using folly::EventBaseManager;
 using folly::IOBuf;
 using proxygen::HTTPMessage;
+using std::string;
+using std::unordered_map;
 
 ChannelTestFixture::ChannelTestFixture() {
   eventBase_ = std::make_unique<EventBase>();

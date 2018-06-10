@@ -16,14 +16,14 @@
 
 #pragma once
 
-#include <proxygen/httpserver/ResponseHandler.h>
+#include <memory>
+#include <string>
+#include <unordered_map>
 
 #include <folly/Executor.h>
 #include <folly/io/async/EventBase.h>
 #include <proxygen/httpserver/Mocks.h>
-#include <memory>
-#include <string>
-#include <unordered_map>
+#include <proxygen/httpserver/ResponseHandler.h>
 
 namespace apache {
 namespace thrift {
@@ -78,8 +78,8 @@ class FakeResponseHandler : public proxygen::ResponseHandler {
     CHECK(false);
   }
 
-  proxygen::ResponseHandler* newPushedResponse(proxygen::PushHandler* /*ph*/)
-      noexcept override {
+  proxygen::ResponseHandler* newPushedResponse(
+      proxygen::PushHandler* /*ph*/) noexcept override {
     // unimplemented
     CHECK(false);
   }

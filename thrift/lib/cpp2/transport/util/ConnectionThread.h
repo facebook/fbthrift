@@ -16,14 +16,16 @@
 
 #pragma once
 
-#include <folly/Synchronized.h>
-#include <folly/io/async/ScopedEventBaseThread.h>
 #include <stdint.h>
-#include <thrift/lib/cpp2/transport/core/ClientConnectionIf.h>
+
 #include <memory>
 #include <string>
 #include <unordered_map>
 #include <vector>
+
+#include <folly/Synchronized.h>
+#include <folly/io/async/ScopedEventBaseThread.h>
+#include <thrift/lib/cpp2/transport/core/ClientConnectionIf.h>
 
 namespace apache {
 namespace thrift {

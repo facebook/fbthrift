@@ -16,8 +16,9 @@
 
 #pragma once
 
-#include <folly/io/async/ScopedEventBaseThread.h>
 #include <gmock/gmock.h>
+
+#include <folly/io/async/ScopedEventBaseThread.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
 #include <thrift/lib/cpp2/server/TransportRoutingHandler.h>
 #include <thrift/lib/cpp2/transport/core/ClientConnectionIf.h>

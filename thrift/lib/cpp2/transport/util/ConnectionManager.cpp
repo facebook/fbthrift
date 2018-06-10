@@ -16,9 +16,11 @@
 
 #include <thrift/lib/cpp2/transport/util/ConnectionManager.h>
 
-#include <folly/Singleton.h>
-#include <gflags/gflags.h>
 #include <unistd.h>
+
+#include <gflags/gflags.h>
+
+#include <folly/Singleton.h>
 
 DEFINE_int32(
     num_client_connections,

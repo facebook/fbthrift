@@ -16,8 +16,9 @@
 
 #pragma once
 
-#include <thrift/lib/cpp/server/TServerObserver.h>
 #include <atomic>
+
+#include <thrift/lib/cpp/server/TServerObserver.h>
 
 namespace apache {
 namespace thrift {

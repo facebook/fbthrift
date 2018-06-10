@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-#include <folly/io/async/ScopedEventBaseThread.h>
+#include <gmock/gmock.h>
 
+#include <folly/io/async/ScopedEventBaseThread.h>
 #include <thrift/lib/cpp2/GeneratedCodeHelper.h>
 #include <thrift/lib/cpp2/async/RSocketClientChannel.h>
 #include <thrift/lib/cpp2/async/SemiStream.h>
@@ -23,8 +24,6 @@
 #include <thrift/lib/cpp2/transport/rsocket/YarplStreamImpl.h>
 #include <thrift/lib/cpp2/transport/rsocket/test/util/gen-cpp2/StreamService.h>
 #include <yarpl/flowable/TestSubscriber.h>
-
-#include <gmock/gmock.h>
 
 namespace apache {
 namespace thrift {

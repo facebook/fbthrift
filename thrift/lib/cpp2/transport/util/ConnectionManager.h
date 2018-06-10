@@ -17,12 +17,14 @@
 #pragma once
 
 #include <stdint.h>
-#include <thrift/lib/cpp2/transport/core/ClientConnectionIf.h>
-#include <thrift/lib/cpp2/transport/util/ConnectionThread.h>
+
 #include <atomic>
 #include <memory>
 #include <string>
 #include <vector>
+
+#include <thrift/lib/cpp2/transport/core/ClientConnectionIf.h>
+#include <thrift/lib/cpp2/transport/util/ConnectionThread.h>
 
 namespace apache {
 namespace thrift {

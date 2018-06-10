@@ -17,7 +17,6 @@
 #pragma once
 
 #include <thrift/lib/cpp2/transport/core/ThriftChannelIf.h>
-
 #include <thrift/lib/cpp2/transport/core/ThriftClientCallback.h>
 #include <thrift/lib/cpp2/transport/core/ThriftProcessor.h>
 

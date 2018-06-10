@@ -16,11 +16,10 @@
 
 #pragma once
 
-#include <thrift/lib/cpp2/transport/core/ClientConnectionIf.h>
-
 #include <folly/io/async/ScopedEventBaseThread.h>
 #include <thrift/lib/cpp/concurrency/ThreadManager.h>
 #include <thrift/lib/cpp2/async/AsyncProcessor.h>
+#include <thrift/lib/cpp2/transport/core/ClientConnectionIf.h>
 #include <thrift/lib/cpp2/transport/core/ThriftProcessor.h>
 
 namespace apache {

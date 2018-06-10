@@ -16,12 +16,12 @@
 
 #pragma once
 
-#include <thrift/lib/cpp2/transport/http2/common/H2Channel.h>
+#include <string>
 
 #include <folly/FixedString.h>
 #include <proxygen/lib/http/session/HTTPTransaction.h>
 #include <thrift/lib/cpp/protocol/TProtocolTypes.h>
-#include <string>
+#include <thrift/lib/cpp2/transport/http2/common/H2Channel.h>
 
 namespace apache {
 namespace thrift {

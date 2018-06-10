@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+#include <memory>
+
 #include <gtest/gtest.h>
 
 #include <folly/ExceptionWrapper.h>
@@ -24,7 +26,6 @@
 #include <thrift/lib/cpp2/transport/core/testutil/ServerConfigsMock.h>
 #include <thrift/lib/cpp2/transport/inmemory/InMemoryConnection.h>
 #include <thrift/lib/cpp2/transport/inmemory/test/gen-cpp2/Division.h>
-#include <memory>
 
 namespace apache {
 namespace thrift {

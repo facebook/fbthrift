@@ -16,9 +16,10 @@
 
 #include <thrift/lib/cpp2/transport/core/testutil/CoreTestFixture.h>
 
+#include <string>
+
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 #include <thrift/lib/cpp2/protocol/Protocol.h>
-#include <string>
 
 namespace apache {
 namespace thrift {

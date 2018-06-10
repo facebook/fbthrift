@@ -13,15 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <thrift/lib/cpp2/transport/core/testutil/TransportCompatibilityTest.h>
+#include <gflags/gflags.h>
+#include <glog/logging.h>
+#include <gtest/gtest.h>
 
 #include <folly/ScopeGuard.h>
 #include <folly/io/async/EventBase.h>
 #include <folly/io/async/ScopedEventBaseThread.h>
 #include <folly/synchronization/Baton.h>
-#include <gflags/gflags.h>
-#include <glog/logging.h>
-#include <gtest/gtest.h>
 #include <thrift/lib/cpp/async/TAsyncSSLSocket.h>
 #include <thrift/lib/cpp/async/TAsyncSocket.h>
 #include <thrift/lib/cpp/async/TAsyncTransport.h>
@@ -32,6 +31,7 @@
 #include <thrift/lib/cpp2/transport/core/ThriftClient.h>
 #include <thrift/lib/cpp2/transport/core/ThriftClientCallback.h>
 #include <thrift/lib/cpp2/transport/core/testutil/MockCallback.h>
+#include <thrift/lib/cpp2/transport/core/testutil/TransportCompatibilityTest.h>
 #include <thrift/lib/cpp2/transport/core/testutil/gen-cpp2/TestService.h>
 #include <thrift/lib/cpp2/transport/util/ConnectionManager.h>
 

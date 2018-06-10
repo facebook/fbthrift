@@ -18,6 +18,7 @@
 
 #include <gflags/gflags.h>
 #include <glog/logging.h>
+
 #include <thrift/lib/cpp2/transport/inmemory/InMemoryChannel.h>
 
 DEFINE_int32(thrift_num_cpu_threads, 1, "Number of cpu threads");

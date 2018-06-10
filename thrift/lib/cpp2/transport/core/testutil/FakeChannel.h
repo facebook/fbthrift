@@ -16,11 +16,11 @@
 
 #pragma once
 
-#include <thrift/lib/cpp2/transport/core/ThriftChannelIf.h>
+#include <glog/logging.h>
 
 #include <folly/Executor.h>
 #include <folly/io/async/EventBase.h>
-#include <glog/logging.h>
+#include <thrift/lib/cpp2/transport/core/ThriftChannelIf.h>
 
 namespace apache {
 namespace thrift {

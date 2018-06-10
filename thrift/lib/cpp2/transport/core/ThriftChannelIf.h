@@ -16,9 +16,10 @@
 
 #pragma once
 
+#include <stdint.h>
+
 #include <folly/io/IOBuf.h>
 #include <folly/io/async/EventBase.h>
-#include <stdint.h>
 #include <thrift/lib/cpp2/async/SemiStream.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
 

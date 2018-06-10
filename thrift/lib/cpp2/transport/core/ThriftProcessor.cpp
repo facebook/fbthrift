@@ -16,12 +16,14 @@
 
 #include <thrift/lib/cpp2/transport/core/ThriftProcessor.h>
 
+#include <string>
+
 #include <glog/logging.h>
+
 #include <thrift/lib/cpp/transport/THeader.h>
 #include <thrift/lib/cpp2/async/ResponseChannel.h>
 #include <thrift/lib/cpp2/server/Cpp2ConnContext.h>
 #include <thrift/lib/cpp2/transport/core/ThriftRequest.h>
-#include <string>
 
 namespace apache {
 namespace thrift {

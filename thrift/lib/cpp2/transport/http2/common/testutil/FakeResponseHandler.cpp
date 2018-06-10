@@ -22,10 +22,10 @@
 namespace apache {
 namespace thrift {
 
-using std::string;
-using std::unordered_map;
 using folly::IOBuf;
 using proxygen::HTTPMessage;
+using std::string;
+using std::unordered_map;
 
 void FakeResponseHandler::sendHeaders(HTTPMessage& msg) noexcept {
   EXPECT_TRUE(evb_->inRunningEventBaseThread());

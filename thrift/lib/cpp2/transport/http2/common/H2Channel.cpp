@@ -23,9 +23,9 @@
 namespace apache {
 namespace thrift {
 
+using proxygen::HTTPMessage;
 using std::map;
 using std::string;
-using proxygen::HTTPMessage;
 
 void H2Channel::encodeHeaders(
     const map<string, string>& source,

@@ -16,8 +16,9 @@
 
 #include <thrift/lib/cpp2/transport/core/ThriftClientCallback.h>
 
-#include <folly/io/async/Request.h>
 #include <glog/logging.h>
+
+#include <folly/io/async/Request.h>
 
 namespace apache {
 namespace thrift {

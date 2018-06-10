@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+#include <memory>
+
 #include <gtest/gtest.h>
 
 #include <folly/io/IOBuf.h>
@@ -26,7 +28,6 @@
 #include <thrift/lib/cpp2/transport/http2/common/testutil/FakeProcessors.h>
 #include <thrift/lib/cpp2/transport/http2/common/testutil/FakeResponseHandler.h>
 #include <thrift/lib/cpp2/transport/http2/server/ThriftRequestHandler.h>
-#include <memory>
 
 namespace apache {
 namespace thrift {

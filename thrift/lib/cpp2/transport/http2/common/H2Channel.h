@@ -16,12 +16,12 @@
 
 #pragma once
 
-#include <thrift/lib/cpp2/transport/core/ThriftChannelIf.h>
+#include <memory>
 
 #include <folly/io/IOBuf.h>
 #include <proxygen/httpserver/ResponseHandler.h>
 #include <proxygen/lib/http/HTTPMessage.h>
-#include <memory>
+#include <thrift/lib/cpp2/transport/core/ThriftChannelIf.h>
 
 namespace apache {
 namespace thrift {

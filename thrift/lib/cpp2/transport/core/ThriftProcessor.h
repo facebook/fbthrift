@@ -16,16 +16,18 @@
 
 #pragma once
 
+#include <stdint.h>
+
+#include <memory>
+
 #include <folly/io/IOBuf.h>
 #include <folly/io/async/ScopedEventBaseThread.h>
-#include <stdint.h>
 #include <thrift/lib/cpp/concurrency/ThreadManager.h>
 #include <thrift/lib/cpp2/async/AsyncProcessor.h>
 #include <thrift/lib/cpp2/server/Cpp2ConnContext.h>
 #include <thrift/lib/cpp2/server/ServerConfigs.h>
 #include <thrift/lib/cpp2/transport/core/ThriftChannelIf.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
-#include <memory>
 
 namespace apache {
 namespace thrift {

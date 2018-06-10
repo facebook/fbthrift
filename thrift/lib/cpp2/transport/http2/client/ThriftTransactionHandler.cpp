@@ -16,9 +16,9 @@
 
 #include <thrift/lib/cpp2/transport/http2/client/ThriftTransactionHandler.h>
 
-#include <proxygen/lib/http/ProxygenErrorEnum.h>
-
 #include <glog/logging.h>
+
+#include <proxygen/lib/http/ProxygenErrorEnum.h>
 
 namespace apache {
 namespace thrift {

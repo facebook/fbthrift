@@ -16,9 +16,14 @@
 
 #pragma once
 
-#include <folly/io/IOBuf.h>
-#include <glog/logging.h>
 #include <stdint.h>
+
+#include <memory>
+#include <string>
+
+#include <glog/logging.h>
+
+#include <folly/io/IOBuf.h>
 #include <thrift/lib/cpp/TApplicationException.h>
 #include <thrift/lib/cpp/protocol/TProtocolException.h>
 #include <thrift/lib/cpp/protocol/TProtocolTypes.h>
@@ -29,8 +34,6 @@
 #include <thrift/lib/cpp2/server/ServerConfigs.h>
 #include <thrift/lib/cpp2/transport/core/ThriftChannelIf.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
-#include <memory>
-#include <string>
 
 namespace apache {
 namespace thrift {

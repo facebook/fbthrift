@@ -16,6 +16,10 @@
 
 #pragma once
 
+#include <memory>
+#include <string>
+#include <unordered_map>
+
 #include <gtest/gtest.h>
 
 #include <folly/io/IOBuf.h>
@@ -23,9 +27,6 @@
 #include <thrift/lib/cpp2/transport/core/ThriftProcessor.h>
 #include <thrift/lib/cpp2/transport/http2/common/H2Channel.h>
 #include <thrift/lib/cpp2/transport/http2/common/testutil/FakeResponseHandler.h>
-#include <memory>
-#include <string>
-#include <unordered_map>
 
 namespace apache {
 namespace thrift {
