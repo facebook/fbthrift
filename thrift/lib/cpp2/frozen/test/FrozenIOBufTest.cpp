@@ -30,7 +30,7 @@ StringPiece testString(testRange);
 
 byte test2[]{0xFA, 0xCE, 0xB0, 0x0C};
 ByteRange test2Range(test2, sizeof(test2));
-}
+} // namespace
 
 TEST(FrozenIOBuf, Thrift2) {
   Binaries b2;

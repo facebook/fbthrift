@@ -13,15 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-namespace apache { namespace thrift { namespace frozen { namespace detail {
+namespace apache {
+namespace thrift {
+namespace frozen {
+namespace detail {
 
 /**
  * Layout specialization for enum values, simply delegates to Integer layout.
  */
-template <class T,
-          class Underlying = typename std::enable_if<
-              std::is_enum<T>::value,
-              typename std::underlying_type<T>::type>::type>
+template <
+    class T,
+    class Underlying = typename std::enable_if<
+        std::is_enum<T>::value,
+        typename std::underlying_type<T>::type>::type>
 struct EnumLayout : public PackedIntegerLayout<Underlying> {
   typedef PackedIntegerLayout<Underlying> Base;
   EnumLayout() : Base(typeid(T)) {}
@@ -31,7 +35,7 @@ struct EnumLayout : public PackedIntegerLayout<Underlying> {
   }
 
   FieldPosition layout(LayoutRoot& root, const T& o, LayoutPosition self) {
-    return Base::layout(root, static_cast<Underlying>(o),self);
+    return Base::layout(root, static_cast<Underlying>(o), self);
   }
 
   void freeze(FreezeRoot& root, const T& o, FreezePosition self) const {
@@ -57,10 +61,11 @@ struct EnumLayout : public PackedIntegerLayout<Underlying> {
     return v;
   }
 };
-}
+} // namespace detail
 
 template <class T>
-struct Layout<T,
-              typename std::enable_if<std::is_enum<
-                  T>::value>::type> : public detail::EnumLayout<T> {};
-}}}
+struct Layout<T, typename std::enable_if<std::is_enum<T>::value>::type>
+    : public detail::EnumLayout<T> {};
+} // namespace frozen
+} // namespace thrift
+} // namespace apache

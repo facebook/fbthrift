@@ -17,11 +17,10 @@
 #include <gtest/gtest.h>
 
 #include <thrift/lib/cpp2/frozen/FrozenUtil.h>
-#include <thrift/lib/cpp2/protocol/DebugProtocol.h>
-#include <thrift/lib/cpp2/protocol/Serializer.h>
-
 #include <thrift/lib/cpp2/frozen/test/gen-cpp2/Example_layouts.h>
 #include <thrift/lib/cpp2/frozen/test/gen-cpp2/Example_types_custom_protocol.h>
+#include <thrift/lib/cpp2/protocol/DebugProtocol.h>
+#include <thrift/lib/cpp2/protocol/Serializer.h>
 
 using namespace apache::thrift;
 using namespace apache::thrift::frozen;
@@ -207,8 +206,8 @@ TEST(Frozen, NoLayout) {
   EXPECT_EQ(Person1(), Layout<Person1>().view(null).thaw());
   EXPECT_EQ(Pet1(), Layout<Pet1>().view(null).thaw());
   EXPECT_EQ(std::set<int>(), Layout<std::set<int>>().view(null).thaw());
-  EXPECT_EQ((std::map<int, int>()),
-            (Layout<std::map<int, int>>().view(null).thaw()));
+  EXPECT_EQ(
+      (std::map<int, int>()), (Layout<std::map<int, int>>().view(null).thaw()));
 
   Layout<Person1> emptyPersonLayout;
   std::array<uint8_t, 100> storage;
@@ -218,7 +217,7 @@ TEST(Frozen, NoLayout) {
       LayoutException);
 }
 
-template<class T>
+template <class T>
 void testMaxLayout(const T& value) {
   auto minLayout = Layout<T>();
   auto valLayout = minLayout;
@@ -229,8 +228,7 @@ void testMaxLayout(const T& value) {
   std::array<uint8_t, 1000> storage;
   folly::MutableByteRange bytes(storage.begin(), storage.end());
   EXPECT_THROW(
-      ByteRangeFreezer::freeze(minLayout, value, bytes),
-      LayoutException);
+      ByteRangeFreezer::freeze(minLayout, value, bytes), LayoutException);
   auto f = ByteRangeFreezer::freeze(maxLayout, value, bytes);
   auto check = f.thaw();
   EXPECT_EQ(value, check);
@@ -411,8 +409,8 @@ TEST(Frozen, RangeTrivialRange) {
 }
 
 TEST(Frozen, PaddingLayout) {
-  using std::vector;
   using std::pair;
+  using std::vector;
   // The 'distance' field of the vector<double> is small and sensitive to
   // padding adjustments. If actual distances are returned in
   // layoutBytesDistance instead of worst-case distances, the below structure

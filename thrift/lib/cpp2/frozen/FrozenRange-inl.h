@@ -13,7 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-namespace apache { namespace thrift { namespace frozen {
+namespace apache {
+namespace thrift {
+namespace frozen {
 
 namespace detail {
 
@@ -143,15 +145,11 @@ struct ArrayLayout : public LayoutBase {
     itemField.clear();
   }
 
-  FROZEN_SAVE_INLINE(
-    FROZEN_SAVE_FIELD(distance)
-    FROZEN_SAVE_FIELD(count)
-    FROZEN_SAVE_FIELD(item))
+  FROZEN_SAVE_INLINE(FROZEN_SAVE_FIELD(distance) FROZEN_SAVE_FIELD(count)
+                         FROZEN_SAVE_FIELD(item))
 
-  FROZEN_LOAD_INLINE(
-    FROZEN_LOAD_FIELD(distance, 1)
-    FROZEN_LOAD_FIELD(count, 2)
-    FROZEN_LOAD_FIELD(item, 3))
+  FROZEN_LOAD_INLINE(FROZEN_LOAD_FIELD(distance, 1) FROZEN_LOAD_FIELD(count, 2)
+                         FROZEN_LOAD_FIELD(item, 3))
 
   /**
    * A view of a range, which produces views of items upon indexing or iterator
@@ -217,8 +215,12 @@ struct ArrayLayout : public LayoutBase {
       return count_;
     }
 
-    bool empty() const { return !count_; }
-    size_t size() const { return count_; }
+    bool empty() const {
+      return !count_;
+    }
+    size_t size() const {
+      return count_;
+    }
 
     folly::Range<const Item*> range() const {
       static_assert(detail::IsBlitType<Item>::value, "");
@@ -335,14 +337,18 @@ struct ArrayLayout : public LayoutBase {
     size_t count_{0};
   };
 
-  View view(ViewPosition self) const { return View(this, self); }
+  View view(ViewPosition self) const {
+    return View(this, self);
+  }
 };
 
-}
+} // namespace detail
 
 template <class T>
 struct Layout<T, typename std::enable_if<IsList<T>::value>::type>
     : public detail::ArrayLayout<T, typename T::value_type> {};
-}}}
+} // namespace frozen
+} // namespace thrift
+} // namespace apache
 
 THRIFT_DECLARE_TRAIT_TEMPLATE(IsList, std::vector)

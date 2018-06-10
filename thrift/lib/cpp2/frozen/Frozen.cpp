@@ -18,7 +18,9 @@
 #include <folly/io/Cursor.h>
 #include <folly/io/IOBuf.h>
 
-namespace apache { namespace thrift { namespace frozen {
+namespace apache {
+namespace thrift {
+namespace frozen {
 
 std::ostream& operator<<(std::ostream& os, DebugLine dl) {
   os << '\n';
@@ -102,18 +104,16 @@ FieldPosition BlockLayout::maximize() {
   return pos;
 }
 
-FieldPosition BlockLayout::layout(LayoutRoot& root,
-                                  const T& x,
-                                  LayoutPosition self) {
+FieldPosition
+BlockLayout::layout(LayoutRoot& root, const T& x, LayoutPosition self) {
   FieldPosition pos = startFieldPosition();
   FROZEN_LAYOUT_FIELD(mask);
   FROZEN_LAYOUT_FIELD(offset);
   return pos;
 }
 
-void BlockLayout::freeze(FreezeRoot& root,
-                         const T& x,
-                         FreezePosition self) const {
+void BlockLayout::freeze(FreezeRoot& root, const T& x, FreezePosition self)
+    const {
   FROZEN_FREEZE_FIELD(mask);
   FROZEN_FREEZE_FIELD(offset);
 }
@@ -136,16 +136,18 @@ size_t BufferHelpers<std::unique_ptr<folly::IOBuf>>::size(
 }
 
 void BufferHelpers<std::unique_ptr<folly::IOBuf>>::copyTo(
-    const std::unique_ptr<folly::IOBuf>& src, folly::MutableByteRange dst) {
+    const std::unique_ptr<folly::IOBuf>& src,
+    folly::MutableByteRange dst) {
   folly::io::Cursor(src.get()).pull(dst.begin(), dst.size());
 }
 
 void BufferHelpers<std::unique_ptr<folly::IOBuf>>::thawTo(
-    folly::ByteRange src, std::unique_ptr<folly::IOBuf>& dst) {
+    folly::ByteRange src,
+    std::unique_ptr<folly::IOBuf>& dst) {
   dst = folly::IOBuf::copyBuffer(src.begin(), src.size());
 }
 
 } // namespace detail
-}
-}
-}
+} // namespace frozen
+} // namespace thrift
+} // namespace apache

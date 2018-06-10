@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-namespace apache { namespace thrift { namespace frozen { namespace detail {
+namespace apache {
+namespace thrift {
+namespace frozen {
+namespace detail {
 
 /**
  * Layout specialization for boolean values. Stores a bool in 0 or 1 bits. 0
@@ -71,9 +74,11 @@ struct BoolLayout : public LayoutBase {
     return v;
   }
 };
-}
+} // namespace detail
 
 template <>
 struct Layout<bool, void> : public detail::BoolLayout {};
 
-}}}
+} // namespace frozen
+} // namespace thrift
+} // namespace apache

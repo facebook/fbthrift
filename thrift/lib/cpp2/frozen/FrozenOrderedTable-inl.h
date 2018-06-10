@@ -13,7 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-namespace apache { namespace thrift { namespace frozen {
+namespace apache {
+namespace thrift {
+namespace frozen {
 namespace detail {
 
 /**
@@ -183,8 +185,12 @@ struct SortedTableLayout : public ArrayLayout<T, Item> {
     }
   };
 
-  View view(ViewPosition self) const { return View(this, self); }
+  View view(ViewPosition self) const {
+    return View(this, self);
+  }
 };
 
-} // detail
-}}}
+} // namespace detail
+} // namespace frozen
+} // namespace thrift
+} // namespace apache

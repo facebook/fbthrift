@@ -26,13 +26,17 @@
 
 DECLARE_bool(thrift_frozen_util_disable_mlock);
 
-namespace apache { namespace thrift { namespace frozen {
+namespace apache {
+namespace thrift {
+namespace frozen {
 
 class FrozenFileForwardIncompatible : public std::runtime_error {
  public:
   explicit FrozenFileForwardIncompatible(int fileVersion);
 
-  int fileVersion() const { return fileVersion_; }
+  int fileVersion() const {
+    return fileVersion_;
+  }
   int supportedVersion() const {
     return schema::frozen_constants::kCurrentFrozenFileVersion();
   }
@@ -270,8 +274,8 @@ MappedFrozen<T> mapFrozen(std::string&& str, bool trim = true) {
 template <class T>
 [[deprecated(
     "std::string values must be passed by move with std::move(str) or "
-    "passed through non-owning StringPiece")]]
-MappedFrozen<T> mapFrozen(const std::string& str) = delete;
+    "passed through non-owning StringPiece")]] MappedFrozen<T>
+mapFrozen(const std::string& str) = delete;
 
 template <class T>
 MappedFrozen<T> mapFrozen(folly::File file) {
@@ -283,11 +287,14 @@ MappedFrozen<T> mapFrozen(folly::File file) {
 }
 
 template <class T>
-MappedFrozen<T> mapFrozen(folly::File file,
-                          folly::MemoryMapping::LockMode lockMode) {
+MappedFrozen<T> mapFrozen(
+    folly::File file,
+    folly::MemoryMapping::LockMode lockMode) {
   folly::MemoryMapping mapping(std::move(file), 0);
   mapping.mlock(lockMode);
   return mapFrozen<T>(std::move(mapping));
 }
 
-}}}
+} // namespace frozen
+} // namespace thrift
+} // namespace apache

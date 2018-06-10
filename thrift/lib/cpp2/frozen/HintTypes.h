@@ -44,7 +44,7 @@ class VectorUnpacked : public std::vector<T> {
       "Unpacked storage is only available for simple item types");
   using std::vector<T>::vector;
 };
-}
-}
-}
+} // namespace frozen
+} // namespace thrift
+} // namespace apache
 THRIFT_DECLARE_TRAIT_TEMPLATE(IsString, apache::thrift::frozen::VectorUnpacked)

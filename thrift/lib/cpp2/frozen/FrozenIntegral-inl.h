@@ -14,19 +14,22 @@
  * limitations under the License.
  */
 
-namespace apache { namespace thrift { namespace frozen {
+namespace apache {
+namespace thrift {
+namespace frozen {
 
 namespace detail {
 
-template <class T,
-          class = typename std::enable_if<std::is_integral<T>::value>::type>
+template <
+    class T,
+    class = typename std::enable_if<std::is_integral<T>::value>::type>
 size_t bitsNeeded(const T& x) {
   using UT = typename std::make_unsigned<T>::type;
   auto ux = static_cast<UT>(x);
-  return ux ? folly::findLastSet(std::is_signed<T>::value
-                                 ? static_cast<UT>(ux ^ (ux << 1))
-                                 : ux)
-            : 0;
+  return ux
+      ? folly::findLastSet(
+            std::is_signed<T>::value ? static_cast<UT>(ux ^ (ux << 1)) : ux)
+      : 0;
 }
 
 /**
@@ -97,9 +100,11 @@ struct PackedIntegerLayout : public LayoutBase {
   }
 };
 
-}
+} // namespace detail
 
 template <class T>
 struct Layout<T, typename std::enable_if<std::is_integral<T>::value>::type>
     : detail::PackedIntegerLayout<T> {};
-}}}
+} // namespace frozen
+} // namespace thrift
+} // namespace apache

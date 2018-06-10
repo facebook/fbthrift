@@ -39,14 +39,14 @@
 #include <folly/experimental/Bits.h>
 #include <folly/hash/Hash.h>
 #include <folly/lang/Bits.h>
-
 #include <thrift/lib/cpp2/frozen/FrozenMacros.h>
 #include <thrift/lib/cpp2/frozen/Traits.h>
 #include <thrift/lib/cpp2/frozen/schema/MemorySchema.h>
-
 #include <thrift/lib/thrift/gen-cpp2/frozen_types.h>
 
-namespace apache { namespace thrift { namespace frozen {
+namespace apache {
+namespace thrift {
+namespace frozen {
 /**
  *          \__  __/             \__  __/             \__  __/
  *          /_/  \_\             /_/  \_\             /_/  \_\
@@ -92,7 +92,7 @@ std::ostream& operator<<(std::ostream& os, DebugLine dl);
  * The layout position of a field within a structure.
  */
 struct FieldPosition {
-  int32_t offset;    // byte offset from owning structure's start
+  int32_t offset; // byte offset from owning structure's start
   int32_t bitOffset; // bit offset from owning structure's start
   explicit FieldPosition(int32_t _offset = 0, int32_t _bitOffset = 0)
       : offset(_offset), bitOffset(_bitOffset) {
@@ -209,7 +209,9 @@ struct LayoutBase {
    * Indicates that this layout requires no storage, so saving and freezing may
    * be skipped
    */
-  bool empty() const { return !size && !bits; }
+  bool empty() const {
+    return !size && !bits;
+  }
 
   virtual ~LayoutBase() {}
 
@@ -228,9 +230,10 @@ struct LayoutBase {
    * 'schema'. Child classes must implement.
    */
   template <typename SchemaInfo>
-  void save(typename SchemaInfo::Schema&,
-            typename SchemaInfo::Layout& layout,
-            typename SchemaInfo::Helper&) const {
+  void save(
+      typename SchemaInfo::Schema&,
+      typename SchemaInfo::Layout& layout,
+      typename SchemaInfo::Helper&) const {
     layout.setSize(size);
     layout.setBits(bits);
   }
@@ -240,8 +243,9 @@ struct LayoutBase {
    * context of 'schema'. Child classes must implement.
    */
   template <typename SchemaInfo>
-  void load(const typename SchemaInfo::Schema&,
-            const typename SchemaInfo::Layout& layout) {
+  void load(
+      const typename SchemaInfo::Schema&,
+      const typename SchemaInfo::Layout& layout) {
     size = layout.getSize();
     bits = layout.getBits();
   }
@@ -253,10 +257,11 @@ struct LayoutBase {
 
 template <class T, class = void>
 struct Layout : public LayoutBase {
-  static_assert(sizeof(T) == 0,
-                "Objects of this type cannot be frozen yet.\n"
-                "Be sure to 'frozen2' cpp option was enabled and "
-                "'#include \"..._layouts.h\"'");
+  static_assert(
+      sizeof(T) == 0,
+      "Objects of this type cannot be frozen yet.\n"
+      "Be sure to 'frozen2' cpp option was enabled and "
+      "'#include \"..._layouts.h\"'");
 };
 
 template <typename T, typename SchemaInfo = schema::SchemaInfo>
@@ -305,7 +310,8 @@ struct FieldBase {
   FieldPosition pos;
   const char* name;
 
-  explicit FieldBase(int32_t _key, const char* _name) : key(_key), name(_name) {}
+  explicit FieldBase(int32_t _key, const char* _name)
+      : key(_key), name(_name) {}
   virtual ~FieldBase() {}
 
   virtual void clear() = 0;
@@ -335,23 +341,26 @@ struct Field final : public FieldBase {
   /**
    * Clears this subtree's layout, changing the layout to 0 bytes.
    */
-  void clear() override { layout.clear(); }
+  void clear() override {
+    layout.clear();
+  }
 
   /**
    * Populates the layout information for this field from the description of
    * this field in the parent layout, identified by key.
    */
   template <typename SchemaInfo>
-  void load(const typename SchemaInfo::Schema& schema,
-            const typename SchemaInfo::Field& field) {
+  void load(
+      const typename SchemaInfo::Schema& schema,
+      const typename SchemaInfo::Field& field) {
     auto offset = field.getOffset();
     if (offset < 0) {
       pos.bitOffset = -offset;
     } else {
       pos.offset = offset;
     }
-    this->layout.template load<SchemaInfo>(schema,
-                                           schema.getLayoutForField(field));
+    this->layout.template load<SchemaInfo>(
+        schema, schema.getLayoutForField(field));
   }
 
   /**
@@ -359,9 +368,10 @@ struct Field final : public FieldBase {
    * field offset information and the information for the contained layout.
    */
   template <typename SchemaInfo>
-  void save(typename SchemaInfo::Schema& schema,
-            typename SchemaInfo::Layout& parent,
-            typename SchemaInfo::Helper& helper) const {
+  void save(
+      typename SchemaInfo::Schema& schema,
+      typename SchemaInfo::Layout& parent,
+      typename SchemaInfo::Helper& helper) const {
     if (this->layout.empty()) {
       return;
     }
@@ -477,7 +487,7 @@ FieldPosition maximizeField(FieldPosition fieldPos, Field<T, Layout>& field) {
  * accomodate all values of type T, as opposed to only a particular example
  * value.
  */
-template<class T>
+template <class T>
 Layout<T> maximumLayout() {
   Layout<T> layout;
   // layout all fields, recursively
@@ -552,10 +562,11 @@ class LayoutRoot {
    * to adjust 'field.layout'.
    */
   template <class T, class Layout, class Arg>
-  FieldPosition layoutField(LayoutPosition self,
-                            FieldPosition fieldPos,
-                            Field<T, Layout>& field,
-                            const Arg& value) {
+  FieldPosition layoutField(
+      LayoutPosition self,
+      FieldPosition fieldPos,
+      Field<T, Layout>& field,
+      const Arg& value) {
     auto& _layout = field.layout;
     bool inlineBits = _layout.size == 0;
     FieldPosition nextPos = fieldPos;
@@ -588,11 +599,12 @@ class LayoutRoot {
   }
 
   template <class T, class Layout>
-  FieldPosition layoutOptionalField(LayoutPosition self,
-                                    FieldPosition fieldPos,
-                                    Field<folly::Optional<T>, Layout>& field,
-                                    bool present,
-                                    const T& value) {
+  FieldPosition layoutOptionalField(
+      LayoutPosition self,
+      FieldPosition fieldPos,
+      Field<folly::Optional<T>, Layout>& field,
+      bool present,
+      const T& value) {
     if (present) {
       return layoutField(self, fieldPos, field, value);
     } else {
@@ -641,10 +653,12 @@ class LayoutException : public std::length_error {
  */
 class LayoutTypeMismatchException : public std::logic_error {
  public:
-  LayoutTypeMismatchException(const std::string& expected,
-                              const std::string& actual)
-      : std::logic_error("Layout for '" + expected +
-                         "' loaded from layout of '" + actual + "'") {}
+  LayoutTypeMismatchException(
+      const std::string& expected,
+      const std::string& actual)
+      : std::logic_error(
+            "Layout for '" + expected + "' loaded from layout of '" + actual +
+            "'") {}
 };
 
 /**
@@ -672,17 +686,19 @@ class FreezeRoot {
    * Freezes 'value' into a 'field' of an object located at 'self'.
    */
   template <class T, class Layout, class Arg>
-  void freezeField(FreezePosition self,
-                   const Field<T, Layout>& field,
-                   const Arg& value) {
+  void freezeField(
+      FreezePosition self,
+      const Field<T, Layout>& field,
+      const Arg& value) {
     field.layout.freeze(*this, value, self(field.pos));
   }
 
   template <class T, class Layout>
-  void freezeOptionalField(FreezePosition self,
-                           const Field<folly::Optional<T>, Layout>& field,
-                           bool present,
-                           const T& value) {
+  void freezeOptionalField(
+      FreezePosition self,
+      const Field<folly::Optional<T>, Layout>& field,
+      bool present,
+      const T& value) {
     if (present) {
       freezeField(self, field, value);
     } else {
@@ -774,7 +790,7 @@ class Bundled : public Base {
   Decayed* hold(T&& t) {
     std::unique_ptr<HolderImpl<Decayed>> holder(
         new HolderImpl<Decayed>(std::forward<T>(t)));
-    Decayed* ptr =  &holder->t_;
+    Decayed* ptr = &holder->t_;
     holdImpl(std::move(holder));
     return ptr;
   }
@@ -805,10 +821,11 @@ enum class Frozen2 { Marker };
  * Freezes an object, returning an View bundled with an owned layout and
  * storage.
  */
-template <class T,
-          class = typename std::enable_if<
-              !folly::is_trivially_copyable<T>::value>::type,
-          class Return = Bundled<typename Layout<T>::View>>
+template <
+    class T,
+    class =
+        typename std::enable_if<!folly::is_trivially_copyable<T>::value>::type,
+    class Return = Bundled<typename Layout<T>::View>>
 Return freeze(const T& x, Frozen2 = Frozen2::Marker) {
   std::unique_ptr<Layout<T>> layout(new Layout<T>);
   size_t size = LayoutRoot::layout(x, *layout);
@@ -819,7 +836,6 @@ Return freeze(const T& x, Frozen2 = Frozen2::Marker) {
   ret.hold(std::move(storage));
   return ret;
 }
-
 
 /**
  * Helper for thawing a single field from a view
@@ -834,10 +850,11 @@ void thawField(ViewPosition self, const Field<T, Layout>& f, T& out) {
  * and corresponding __isset marker.
  */
 template <class T>
-void thawField(ViewPosition self,
-               const Field<folly::Optional<T>>& f,
-               T& out,
-               bool& isset) {
+void thawField(
+    ViewPosition self,
+    const Field<folly::Optional<T>>& f,
+    T& out,
+    bool& isset) {
   folly::Optional<T> opt;
   f.layout.thaw(self(f.pos), opt);
   if (opt) {
@@ -853,20 +870,25 @@ void thawField(ViewPosition self,
  * Frozen types. Note that like raw pointers, this does not own the referenced
  * memory, it only points to it.
  */
-template<class T>
+template <class T>
 using View = typename Layout<T>::View;
 
-}}}
+} // namespace frozen
+} // namespace thrift
+} // namespace apache
 
 #include <thrift/lib/cpp2/frozen/FrozenTrivial-inl.h> // @nolint
-#include <thrift/lib/cpp2/frozen/FrozenIntegral-inl.h> // @nolint
+// depends on Trivial
 #include <thrift/lib/cpp2/frozen/FrozenBool-inl.h> // @nolint
+#include <thrift/lib/cpp2/frozen/FrozenIntegral-inl.h> // @nolint
 #include <thrift/lib/cpp2/frozen/FrozenOptional-inl.h> // @nolint
-#include <thrift/lib/cpp2/frozen/FrozenString-inl.h> // @nolint
 #include <thrift/lib/cpp2/frozen/FrozenPair-inl.h> // @nolint
 #include <thrift/lib/cpp2/frozen/FrozenRange-inl.h> // @nolint
-#include <thrift/lib/cpp2/frozen/FrozenOrderedTable-inl.h> // @nolint
+#include <thrift/lib/cpp2/frozen/FrozenString-inl.h> // @nolint
+// depends on Range
 #include <thrift/lib/cpp2/frozen/FrozenHashTable-inl.h> // @nolint
+#include <thrift/lib/cpp2/frozen/FrozenOrderedTable-inl.h> // @nolint
+// depends on Associative
 #include <thrift/lib/cpp2/frozen/FrozenAssociative-inl.h> // @nolint
 // depends on Integral
 #include <thrift/lib/cpp2/frozen/FrozenEnum-inl.h> // @nolint

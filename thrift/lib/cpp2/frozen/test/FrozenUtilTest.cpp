@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 #include <gtest/gtest.h>
-#include <thrift/lib/cpp2/frozen/FrozenUtil.h>
+
 #include <thrift/lib/cpp2/frozen/FrozenTestUtil.h>
+#include <thrift/lib/cpp2/frozen/FrozenUtil.h>
 #include <thrift/lib/cpp2/protocol/Serializer.h>
 
 using namespace apache::thrift;
@@ -59,8 +60,9 @@ TEST(FrozenUtil, FutureVersion) {
     write(tmp.fd(), schemaStr.data(), schemaStr.size());
   }
 
-  EXPECT_THROW(mapFrozen<std::string>(folly::File(tmp.fd())),
-               FrozenFileForwardIncompatible);
+  EXPECT_THROW(
+      mapFrozen<std::string>(folly::File(tmp.fd())),
+      FrozenFileForwardIncompatible);
 }
 
 TEST(FrozenUtil, FileSize) {

@@ -15,12 +15,14 @@
  */
 #pragma once
 
-#include <vector>
 #include <utility>
+#include <vector>
 
 #include <thrift/lib/cpp2/frozen/Traits.h>
 
-namespace apache { namespace thrift { namespace frozen {
+namespace apache {
+namespace thrift {
+namespace frozen {
 /*
  * Vector-backed associative types without support for lookup, strictly for
  * building large maps and sets with minimal memory. Uniqueness assumed.
@@ -28,17 +30,22 @@ namespace apache { namespace thrift { namespace frozen {
 template <class V>
 class VectorAsSet : public std::vector<V> {
   typedef std::vector<V> Base;
+
  public:
   using Base::Base;
   /**
    * Insert value into the set at unspecified location.
    */
-  void insert(const V& value) { this->push_back(value); }
-  void insert(V&& value) { this->push_back(std::move(value)); }
+  void insert(const V& value) {
+    this->push_back(value);
+  }
+  void insert(V&& value) {
+    this->push_back(std::move(value));
+  }
 
   template <class Iterator>
   void insert(Iterator begin, Iterator end) {
-    for (;begin != end; ++begin) {
+    for (; begin != end; ++begin) {
       this->insert(*begin);
     }
   }
@@ -92,11 +99,15 @@ class VectorAsHashMap : public VectorAsMap<K, V> {
   using VectorAsMap<K, V>::VectorAsMap;
 };
 
-}}}
+} // namespace frozen
+} // namespace thrift
+} // namespace apache
 
-THRIFT_DECLARE_TRAIT_TEMPLATE(IsHashMap,
-                              apache::thrift::frozen::VectorAsHashMap)
-THRIFT_DECLARE_TRAIT_TEMPLATE(IsHashSet,
-                              apache::thrift::frozen::VectorAsHashSet)
+THRIFT_DECLARE_TRAIT_TEMPLATE(
+    IsHashMap,
+    apache::thrift::frozen::VectorAsHashMap)
+THRIFT_DECLARE_TRAIT_TEMPLATE(
+    IsHashSet,
+    apache::thrift::frozen::VectorAsHashSet)
 THRIFT_DECLARE_TRAIT_TEMPLATE(IsOrderedMap, apache::thrift::frozen::VectorAsMap)
 THRIFT_DECLARE_TRAIT_TEMPLATE(IsOrderedSet, apache::thrift::frozen::VectorAsSet)

@@ -15,12 +15,14 @@
  */
 #pragma once
 
-#include <folly/hash/Hash.h>
-#include <glog/logging.h>
-#include <thrift/lib/cpp/DistinctTable.h>
-#include <thrift/lib/thrift/gen-cpp2/frozen_types.h>
 #include <cstdint>
 #include <vector>
+
+#include <glog/logging.h>
+
+#include <folly/hash/Hash.h>
+#include <thrift/lib/cpp/DistinctTable.h>
+#include <thrift/lib/thrift/gen-cpp2/frozen_types.h>
 
 #define THRIFT_DECLARE_HASH(T)           \
   namespace std {                        \
@@ -36,21 +38,30 @@
   }                                              \
   }
 
-namespace apache { namespace thrift { namespace frozen { namespace schema {
+namespace apache {
+namespace thrift {
+namespace frozen {
+namespace schema {
 
 class MemoryField;
 class MemoryLayoutBase;
 class MemoryLayout;
 class MemorySchema;
 
-}}}}
+} // namespace schema
+} // namespace frozen
+} // namespace thrift
+} // namespace apache
 
 THRIFT_DECLARE_HASH(apache::thrift::frozen::schema::MemoryField)
 THRIFT_DECLARE_HASH(apache::thrift::frozen::schema::MemoryLayoutBase)
 THRIFT_DECLARE_HASH(apache::thrift::frozen::schema::MemoryLayout)
 THRIFT_DECLARE_HASH(apache::thrift::frozen::schema::MemorySchema)
 
-namespace apache { namespace thrift { namespace frozen { namespace schema {
+namespace apache {
+namespace thrift {
+namespace frozen {
+namespace schema {
 
 // Trivially copyable, hashed bytewise.
 class MemoryField {
@@ -64,20 +75,32 @@ class MemoryField {
 
   inline bool operator==(const MemoryField& other) const {
     return id == other.id && layoutId == other.layoutId &&
-           offset == other.offset;
+        offset == other.offset;
   }
 
-  inline void setId(int16_t i) { id = i; }
+  inline void setId(int16_t i) {
+    id = i;
+  }
 
-  inline int16_t getId() const { return id; }
+  inline int16_t getId() const {
+    return id;
+  }
 
-  inline void setLayoutId(int16_t lid) { layoutId = lid; }
+  inline void setLayoutId(int16_t lid) {
+    layoutId = lid;
+  }
 
-  inline int16_t getLayoutId() const { return layoutId; }
+  inline int16_t getLayoutId() const {
+    return layoutId;
+  }
 
-  inline void setOffset(int16_t o) { offset = o; }
+  inline void setOffset(int16_t o) {
+    offset = o;
+  }
 
-  inline int16_t getOffset() const { return offset; }
+  inline int16_t getOffset() const {
+    return offset;
+  }
 
  private:
   // Thrift field index
@@ -92,27 +115,38 @@ class MemoryField {
   int16_t offset;
 };
 
-static_assert(sizeof(MemoryField) == 3 * sizeof(int16_t),
-              "Memory Field is not padded.");
+static_assert(
+    sizeof(MemoryField) == 3 * sizeof(int16_t),
+    "Memory Field is not padded.");
 
 class MemoryLayoutBase {
  public:
   MemoryLayoutBase() = default;
   virtual ~MemoryLayoutBase() = default;
 
-  inline size_t hash() const { return folly::hash::hash_combine(bits, size); }
+  inline size_t hash() const {
+    return folly::hash::hash_combine(bits, size);
+  }
 
   inline bool operator==(const MemoryLayoutBase& other) const {
     return bits == other.bits && size == other.size;
   }
 
-  inline void setSize(int32_t s) { size = s; }
+  inline void setSize(int32_t s) {
+    size = s;
+  }
 
-  inline int32_t getSize() const { return size; }
+  inline int32_t getSize() const {
+    return size;
+  }
 
-  inline void setBits(int32_t b) { bits = b; }
+  inline void setBits(int32_t b) {
+    bits = b;
+  }
 
-  inline int16_t getBits() const { return bits; }
+  inline int16_t getBits() const {
+    return bits;
+  }
 
  private:
   int32_t size;
@@ -137,7 +171,9 @@ class MemoryLayout : public MemoryLayoutBase {
     fields.push_back(std::move(field));
   }
 
-  inline const std::vector<MemoryField>& getFields() const { return fields; }
+  inline const std::vector<MemoryField>& getFields() const {
+    return fields;
+  }
 
  private:
   std::vector<MemoryField> fields;
@@ -163,7 +199,9 @@ class MemorySchema {
     rootLayout = rootId;
   }
 
-  inline int16_t getRootLayoutId() const { return rootLayout; }
+  inline int16_t getRootLayoutId() const {
+    return rootLayout;
+  }
 
   inline const MemoryLayout& getRootLayout() const {
     return layouts.at(rootLayout);
@@ -173,7 +211,9 @@ class MemorySchema {
     return layouts.at(field.getLayoutId());
   }
 
-  inline const std::vector<MemoryLayout>& getLayouts() const { return layouts; }
+  inline const std::vector<MemoryLayout>& getLayouts() const {
+    return layouts;
+  }
 
   class Helper {
     // Add helper structures here to help minimize size of schema during
@@ -204,4 +244,7 @@ struct SchemaInfo {
 void convert(Schema&& schema, MemorySchema& memSchema);
 void convert(const MemorySchema& memSchema, Schema& schema);
 
-}}}}
+} // namespace schema
+} // namespace frozen
+} // namespace thrift
+} // namespace apache

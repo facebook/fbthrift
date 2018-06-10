@@ -17,7 +17,9 @@ namespace folly {
 class IOBuf;
 }
 
-namespace apache { namespace thrift { namespace frozen {
+namespace apache {
+namespace thrift {
+namespace frozen {
 
 namespace detail {
 
@@ -27,7 +29,9 @@ struct BufferHelpers {
   static_assert(
       std::is_arithmetic<Item>::value || std::is_enum<Item>::value,
       "String storage requires simple item types");
-  static size_t size(const T& src) { return src.size(); }
+  static size_t size(const T& src) {
+    return src.size();
+  }
   static void copyTo(const T& src, folly::Range<Item*> dst) {
     std::copy(src.begin(), src.end(), reinterpret_cast<Item*>(dst.begin()));
   }
@@ -41,8 +45,9 @@ struct BufferHelpers<std::unique_ptr<folly::IOBuf>> {
   typedef uint8_t Item;
   static size_t size(const std::unique_ptr<folly::IOBuf>& src);
 
-  static void copyTo(const std::unique_ptr<folly::IOBuf>& src,
-                     folly::MutableByteRange dst);
+  static void copyTo(
+      const std::unique_ptr<folly::IOBuf>& src,
+      folly::MutableByteRange dst);
   static void thawTo(folly::ByteRange src, std::unique_ptr<folly::IOBuf>& dst);
 };
 
@@ -124,26 +129,24 @@ struct StringLayout : public LayoutBase {
     countField.clear();
   }
 
-  FROZEN_SAVE_INLINE(
-    FROZEN_SAVE_FIELD(distance)
-    FROZEN_SAVE_FIELD(count))
+  FROZEN_SAVE_INLINE(FROZEN_SAVE_FIELD(distance) FROZEN_SAVE_FIELD(count))
 
-  FROZEN_LOAD_INLINE(
-    FROZEN_LOAD_FIELD(distance, 1)
-    FROZEN_LOAD_FIELD(count, 2))
+  FROZEN_LOAD_INLINE(FROZEN_LOAD_FIELD(distance, 1) FROZEN_LOAD_FIELD(count, 2))
 
   static size_t hash(const View& v) {
     return folly::hash::fnv64_buf(v.begin(), sizeof(Item) * v.size());
   }
 };
 
-} // detail
+} // namespace detail
 
 template <class T>
 struct Layout<T, typename std::enable_if<IsString<T>::value>::type>
     : detail::StringLayout<typename std::decay<T>::type> {};
 
-}}}
+} // namespace frozen
+} // namespace thrift
+} // namespace apache
 
 THRIFT_DECLARE_TRAIT(IsString, std::string)
 THRIFT_DECLARE_TRAIT(IsString, folly::fbstring)

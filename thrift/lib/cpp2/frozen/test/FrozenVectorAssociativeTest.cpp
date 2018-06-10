@@ -138,7 +138,7 @@ TEST(FrozenVectorTypes, DistinctCheckingShouldPass) {
   EXPECT_EQ(2, fos.size());
 }
 
-template<class TestType>
+template <class TestType>
 void populate(TestType& x) {
   x.aList.push_back(1);
   x.aSet.insert(2);

@@ -13,7 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-namespace apache { namespace thrift { namespace frozen { namespace detail {
+namespace apache {
+namespace thrift {
+namespace frozen {
+namespace detail {
 
 struct Block {
   uint64_t mask = 0;
@@ -38,13 +41,9 @@ struct BlockLayout : public LayoutBase {
   void print(std::ostream& os, int level) const final;
   void clear() final;
 
-  FROZEN_SAVE_INLINE(
-    FROZEN_SAVE_FIELD(mask)
-    FROZEN_SAVE_FIELD(offset))
+  FROZEN_SAVE_INLINE(FROZEN_SAVE_FIELD(mask) FROZEN_SAVE_FIELD(offset))
 
-  FROZEN_LOAD_INLINE(
-    FROZEN_LOAD_FIELD(mask, 1)
-    FROZEN_LOAD_FIELD(offset, 2))
+  FROZEN_LOAD_INLINE(FROZEN_LOAD_FIELD(mask, 1) FROZEN_LOAD_FIELD(offset, 2))
 
   struct View : public ViewBase<View, LayoutSelf, T> {
     View() {}
@@ -61,21 +60,20 @@ struct BlockLayout : public LayoutBase {
     }
   };
 
-  View view(ViewPosition self) const { return View(this, self); }
+  View view(ViewPosition self) const {
+    return View(this, self);
+  }
 };
-}
+} // namespace detail
 
-template<>
-struct Layout<detail::Block>: detail::BlockLayout{};
+template <>
+struct Layout<detail::Block> : detail::BlockLayout {};
 
 namespace detail {
 /**
  * Layout specialization for range types which support unique hash lookup.
  */
-template <class T,
-          class Item,
-          class KeyExtractor,
-          class Key>
+template <class T, class Item, class KeyExtractor, class Key>
 struct HashTableLayout : public ArrayLayout<T, Item> {
   typedef ArrayLayout<T, Item> Base;
   Field<std::vector<Block>> sparseTableField;
@@ -83,8 +81,9 @@ struct HashTableLayout : public ArrayLayout<T, Item> {
   typedef HashTableLayout LayoutSelf;
 
   HashTableLayout()
-      : sparseTableField(4,
-                         "sparseTable") // continue field ids from ArrayLayout
+      : sparseTableField(
+            4,
+            "sparseTable") // continue field ids from ArrayLayout
   {}
 
   FieldPosition maximize() {
@@ -109,9 +108,10 @@ struct HashTableLayout : public ArrayLayout<T, Item> {
     }
   }
 
-  static void buildIndex(const T& coll,
-                         std::vector<const Item*>& index,
-                         std::vector<Block>& sparseTable) {
+  static void buildIndex(
+      const T& coll,
+      std::vector<const Item*>& index,
+      std::vector<Block>& sparseTable) {
     auto blocks = blockCount(coll.size());
     size_t buckets = blocks * Block::bits;
     sparseTable.resize(blocks);
@@ -121,7 +121,7 @@ struct HashTableLayout : public ArrayLayout<T, Item> {
           &KeyExtractor::getKey(item);
       size_t h = KeyLayout::hash(*itemKey);
       h *= 5; // spread out clumped hash values
-      for (size_t p = 0; ; h += ++p) { // quadratic probing
+      for (size_t p = 0;; h += ++p) { // quadratic probing
         size_t bucket = h % buckets;
         const Item** slot = &index[bucket];
         if (*slot) {
@@ -151,7 +151,8 @@ struct HashTableLayout : public ArrayLayout<T, Item> {
     }
   }
 
-  FieldPosition layoutItems(LayoutRoot& root,
+  FieldPosition layoutItems(
+      LayoutRoot& root,
       const T& coll,
       LayoutPosition self,
       FieldPosition pos,
@@ -174,11 +175,12 @@ struct HashTableLayout : public ArrayLayout<T, Item> {
     return pos;
   }
 
-  void freezeItems(FreezeRoot& root,
-                   const T& coll,
-                   FreezePosition self,
-                   FreezePosition write,
-                   FieldPosition writeStep) const final {
+  void freezeItems(
+      FreezeRoot& root,
+      const T& coll,
+      FreezePosition self,
+      FreezePosition write,
+      FieldPosition writeStep) const final {
     std::vector<const Item*> index;
     std::vector<Block> sparseTable;
     buildIndex(coll, index, sparseTable);
@@ -205,7 +207,7 @@ struct HashTableLayout : public ArrayLayout<T, Item> {
 
   void print(std::ostream& os, int level) const override {
     Base::print(os, level);
-    sparseTableField.print(os,  level + 1);
+    sparseTableField.print(os, level + 1);
   }
 
   void clear() final {
@@ -213,11 +215,9 @@ struct HashTableLayout : public ArrayLayout<T, Item> {
     sparseTableField.clear();
   }
 
-  FROZEN_SAVE_INLINE(
-    FROZEN_SAVE_FIELD(sparseTable))
+  FROZEN_SAVE_INLINE(FROZEN_SAVE_FIELD(sparseTable))
 
-  FROZEN_LOAD_INLINE(
-    FROZEN_LOAD_FIELD(sparseTable, 4))
+  FROZEN_LOAD_INLINE(FROZEN_LOAD_FIELD(sparseTable, 4))
 
   class View : public Base::View {
     typedef typename Layout<Key>::View KeyView;
@@ -293,6 +293,11 @@ struct HashTableLayout : public ArrayLayout<T, Item> {
     }
   };
 
-  View view(ViewPosition self) const { return View(this, self); }
+  View view(ViewPosition self) const {
+    return View(this, self);
+  }
 };
-}}}}
+} // namespace detail
+} // namespace frozen
+} // namespace thrift
+} // namespace apache

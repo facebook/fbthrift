@@ -19,10 +19,14 @@
 
 #include <folly/Conv.h>
 
-DEFINE_bool(thrift_frozen_util_disable_mlock, false,
+DEFINE_bool(
+    thrift_frozen_util_disable_mlock,
+    false,
     "Don't mlock() files mmaped by mapFrozen() call.");
 
-namespace apache { namespace thrift { namespace frozen {
+namespace apache {
+namespace thrift {
+namespace frozen {
 
 FrozenFileForwardIncompatible::FrozenFileForwardIncompatible(int fileVersion)
     : std::runtime_error(folly::to<std::string>(
@@ -101,4 +105,6 @@ void MallocFreezer::doAppendBytes(
   range = appendBuffer(padding + n);
   range.advance(padding);
 }
-}}}
+} // namespace frozen
+} // namespace thrift
+} // namespace apache

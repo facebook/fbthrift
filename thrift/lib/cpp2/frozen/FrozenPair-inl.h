@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
-namespace apache { namespace thrift { namespace frozen {
+namespace apache {
+namespace thrift {
+namespace frozen {
 
 namespace detail {
 
@@ -43,18 +45,20 @@ struct PairLayout : public LayoutBase {
     return pos;
   }
 
-  FieldPosition layout(LayoutRoot& root,
-                       const std::pair<First, Second>& o,
-                       LayoutPosition self) {
+  FieldPosition layout(
+      LayoutRoot& root,
+      const std::pair<First, Second>& o,
+      LayoutPosition self) {
     FieldPosition pos = startFieldPosition();
     pos = root.layoutField(self, pos, firstField, o.first);
     pos = root.layoutField(self, pos, secondField, o.second);
     return pos;
   }
 
-  void freeze(FreezeRoot& root,
-              const std::pair<First, Second>& o,
-              FreezePosition self) const {
+  void freeze(
+      FreezeRoot& root,
+      const std::pair<First, Second>& o,
+      FreezePosition self) const {
     root.freezeField(self, firstField, o.first);
     root.freezeField(self, secondField, o.second);
   }
@@ -65,7 +69,7 @@ struct PairLayout : public LayoutBase {
   }
 
   FROZEN_VIEW(FROZEN_VIEW_FIELD(first, FirstDecayed)
-              FROZEN_VIEW_FIELD(second, SecondDecayed))
+                  FROZEN_VIEW_FIELD(second, SecondDecayed))
 
   void print(std::ostream& os, int level) const final {
     LayoutBase::print(os, level);
@@ -79,19 +83,17 @@ struct PairLayout : public LayoutBase {
     secondField.clear();
   }
 
-  FROZEN_SAVE_INLINE(
-    FROZEN_SAVE_FIELD(first)
-    FROZEN_SAVE_FIELD(second))
+  FROZEN_SAVE_INLINE(FROZEN_SAVE_FIELD(first) FROZEN_SAVE_FIELD(second))
 
-  FROZEN_LOAD_INLINE(
-    FROZEN_LOAD_FIELD(first, 1)
-    FROZEN_LOAD_FIELD(second, 2))
+  FROZEN_LOAD_INLINE(FROZEN_LOAD_FIELD(first, 1) FROZEN_LOAD_FIELD(second, 2))
 };
 
-}
+} // namespace detail
 
 template <class First, class Second>
 struct Layout<std::pair<First, Second>>
     : public detail::PairLayout<First, Second> {};
 
-}}}
+} // namespace frozen
+} // namespace thrift
+} // namespace apache

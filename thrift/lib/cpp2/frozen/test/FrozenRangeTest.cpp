@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 #include <gtest/gtest.h>
+
 #include <thrift/lib/cpp2/frozen/FrozenUtil.h>
 
 namespace apache {
@@ -80,5 +81,5 @@ TEST(FrozenRange, FrontBack) {
   EXPECT_EQ(11, fvvi.back().front());
   EXPECT_EQ(11, fvvi.back().back());
 }
-}
-}
+} // namespace thrift
+} // namespace apache

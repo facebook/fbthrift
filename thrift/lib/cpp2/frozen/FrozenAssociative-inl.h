@@ -13,7 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-namespace apache { namespace thrift { namespace frozen {
+namespace apache {
+namespace thrift {
+namespace frozen {
 
 namespace detail {
 
@@ -69,10 +71,11 @@ struct SelfKey {
   }
 };
 
-template <class T,
-          class K,
-          class V,
-          template <class, class, class, class> class Table>
+template <
+    class T,
+    class K,
+    class V,
+    template <class, class, class, class> class Table>
 struct MapTableLayout
     : public Table<T, std::pair<const K, V>, KeyExtractor<K, V>, K> {
   typedef Table<T, std::pair<const K, V>, KeyExtractor<K, V>, K> Base;
@@ -87,8 +90,8 @@ struct MapTableLayout
     View(const LayoutSelf* layout, ViewPosition position)
         : Base::View(layout, position) {}
 
-    mapped_type getDefault(const key_type& key,
-                           mapped_type def = mapped_type()) const {
+    mapped_type getDefault(const key_type& key, mapped_type def = mapped_type())
+        const {
       auto found = this->find(key);
       if (found == this->end()) {
         return std::move(def);
@@ -114,7 +117,9 @@ struct MapTableLayout
     }
   };
 
-  View view(ViewPosition self) const { return View(this, self); }
+  View view(ViewPosition self) const {
+    return View(this, self);
+  }
 
   void print(std::ostream& os, int level) const override {
     Base::print(os, level);
@@ -131,33 +136,36 @@ struct SetTableLayout : public Table<T, V, SelfKey<V>, V> {
     os << DebugLine(level) << "...viewed as a set";
   }
 };
-}
+} // namespace detail
 
 template <class T>
 struct Layout<T, typename std::enable_if<IsOrderedMap<T>::value>::type>
-    : public detail::MapTableLayout<T,
-                                    typename T::key_type,
-                                    typename T::mapped_type,
-                                    detail::SortedTableLayout> {};
+    : public detail::MapTableLayout<
+          T,
+          typename T::key_type,
+          typename T::mapped_type,
+          detail::SortedTableLayout> {};
 
 template <class T>
 struct Layout<T, typename std::enable_if<IsOrderedSet<T>::value>::type>
-    : public detail::SetTableLayout<T,
-                                    typename T::value_type,
-                                    detail::SortedTableLayout> {};
+    : public detail::
+          SetTableLayout<T, typename T::value_type, detail::SortedTableLayout> {
+};
 template <class T>
 struct Layout<T, typename std::enable_if<IsHashMap<T>::value>::type>
-    : public detail::MapTableLayout<T,
-                                    typename T::key_type,
-                                    typename T::mapped_type,
-                                    detail::HashTableLayout> {};
+    : public detail::MapTableLayout<
+          T,
+          typename T::key_type,
+          typename T::mapped_type,
+          detail::HashTableLayout> {};
 
 template <class T>
 struct Layout<T, typename std::enable_if<IsHashSet<T>::value>::type>
-    : public detail::SetTableLayout<T,
-                                    typename T::value_type,
-                                    detail::HashTableLayout> {};
-}}}
+    : public detail::
+          SetTableLayout<T, typename T::value_type, detail::HashTableLayout> {};
+} // namespace frozen
+} // namespace thrift
+} // namespace apache
 
 THRIFT_DECLARE_TRAIT_TEMPLATE(IsHashMap, std::unordered_map)
 THRIFT_DECLARE_TRAIT_TEMPLATE(IsHashSet, std::unordered_set)

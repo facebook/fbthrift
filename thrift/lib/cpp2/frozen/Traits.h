@@ -16,25 +16,37 @@
 #pragma once
 #include <type_traits>
 
-namespace apache { namespace thrift {
+namespace apache {
+namespace thrift {
 
-template <class> struct IsString : std::false_type {};
-template <class> struct IsHashMap : std::false_type {};
-template <class> struct IsHashSet : std::false_type {};
-template <class> struct IsOrderedMap : std::false_type {};
-template <class> struct IsOrderedSet : std::false_type {};
-template <class> struct IsList : std::false_type {};
+template <class>
+struct IsString : std::false_type {};
+template <class>
+struct IsHashMap : std::false_type {};
+template <class>
+struct IsHashSet : std::false_type {};
+template <class>
+struct IsOrderedMap : std::false_type {};
+template <class>
+struct IsOrderedSet : std::false_type {};
+template <class>
+struct IsList : std::false_type {};
 
-}}
+} // namespace thrift
+} // namespace apache
 
 #define THRIFT_DECLARE_TRAIT(Trait, ...)         \
-  namespace apache { namespace thrift {          \
+  namespace apache {                             \
+  namespace thrift {                             \
   template <>                                    \
   struct Trait<__VA_ARGS__> : std::true_type {}; \
-  }}
+  }                                              \
+  }
 
 #define THRIFT_DECLARE_TRAIT_TEMPLATE(Trait, ...)         \
-  namespace apache { namespace thrift {          \
+  namespace apache {                                      \
+  namespace thrift {                                      \
   template <class... Args>                                \
   struct Trait<__VA_ARGS__<Args...>> : std::true_type {}; \
-  }}
+  }                                                       \
+  }

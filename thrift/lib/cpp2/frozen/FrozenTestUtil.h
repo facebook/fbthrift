@@ -14,10 +14,12 @@
  * limitations under the License.
  */
 #pragma once
-#include <thrift/lib/cpp2/frozen/FrozenUtil.h>
 #include <folly/experimental/TestUtil.h>
+#include <thrift/lib/cpp2/frozen/FrozenUtil.h>
 
-namespace apache { namespace thrift { namespace frozen {
+namespace apache {
+namespace thrift {
+namespace frozen {
 
 template <class T>
 folly::test::TemporaryFile freezeToTempFile(const T& value) {
@@ -26,4 +28,6 @@ folly::test::TemporaryFile freezeToTempFile(const T& value) {
   return tmp;
 }
 
-}}}
+} // namespace frozen
+} // namespace thrift
+} // namespace apache

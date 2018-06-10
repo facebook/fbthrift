@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
-namespace apache { namespace thrift { namespace frozen {
+namespace apache {
+namespace thrift {
+namespace frozen {
 
 namespace detail {
 
@@ -95,4 +97,6 @@ struct Layout<
     typename std::enable_if<
         detail::IsBlitType<T>::value && !detail::IsStdPair<T>::value>::type>
     : detail::TrivialLayout<T> {};
-}}}
+} // namespace frozen
+} // namespace thrift
+} // namespace apache

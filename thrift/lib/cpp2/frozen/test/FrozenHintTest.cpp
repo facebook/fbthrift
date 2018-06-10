@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 #include <gtest/gtest.h>
+
 #include <thrift/lib/cpp2/frozen/FrozenTestUtil.h>
 #include <thrift/lib/cpp2/frozen/HintTypes.h>
 
@@ -31,6 +32,6 @@ TEST(FrozenVectorTypes, Unpacked) {
   const int* raw = fiu.begin();
   EXPECT_EQ(raw[3], 7);
 }
-}
-}
-}
+} // namespace frozen
+} // namespace thrift
+} // namespace apache

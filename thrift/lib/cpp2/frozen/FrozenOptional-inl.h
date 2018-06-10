@@ -13,7 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-namespace apache { namespace thrift { namespace frozen {
+namespace apache {
+namespace thrift {
+namespace frozen {
 namespace detail {
 
 /**
@@ -36,9 +38,8 @@ struct OptionalLayout : public LayoutBase {
     return pos;
   }
 
-  FieldPosition layout(LayoutRoot& root,
-                       const folly::Optional<T>& o,
-                       LayoutPosition self) {
+  FieldPosition
+  layout(LayoutRoot& root, const folly::Optional<T>& o, LayoutPosition self) {
     FieldPosition pos = startFieldPosition();
     pos = root.layoutField(self, pos, issetField, o.hasValue());
     if (o) {
@@ -54,9 +55,10 @@ struct OptionalLayout : public LayoutBase {
     return pos;
   }
 
-  void freeze(FreezeRoot& root,
-              const folly::Optional<T>& o,
-              FreezePosition self) const {
+  void freeze(
+      FreezeRoot& root,
+      const folly::Optional<T>& o,
+      FreezePosition self) const {
     root.freezeField(self, issetField, o.hasValue());
     if (o) {
       root.freezeField(self, valueField, o.value());
@@ -101,17 +103,15 @@ struct OptionalLayout : public LayoutBase {
     valueField.clear();
   }
 
-  FROZEN_SAVE_INLINE(
-    FROZEN_SAVE_FIELD(isset)
-    FROZEN_SAVE_FIELD(value))
+  FROZEN_SAVE_INLINE(FROZEN_SAVE_FIELD(isset) FROZEN_SAVE_FIELD(value))
 
-  FROZEN_LOAD_INLINE(
-    FROZEN_LOAD_FIELD(isset, 1)
-    FROZEN_LOAD_FIELD(value, 2))
+  FROZEN_LOAD_INLINE(FROZEN_LOAD_FIELD(isset, 1) FROZEN_LOAD_FIELD(value, 2))
 };
-}
+} // namespace detail
 
 template <class T>
 struct Layout<folly::Optional<T>> : public detail::OptionalLayout<T> {};
 
-}}}
+} // namespace frozen
+} // namespace thrift
+} // namespace apache
