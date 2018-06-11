@@ -526,7 +526,7 @@ The endings of the dependency files are: "%.d" for those generated from
 
   * CPPFLAGS      - additional flags passed to the C-preprocessor.
 
-  * CFRAMEWORKS   - Objective-C framework to pass to linker on MacOS X.
+  * CFRAMEWORKS   - Objective-C framework to pass to linker on macOS.
 
   * LDFLAGS       - additional flags passed to the C-linker
 
