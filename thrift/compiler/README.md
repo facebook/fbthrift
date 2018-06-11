@@ -21,7 +21,7 @@ sudo apt-get install \
   libboost-all-dev
 ```
 
-### MacOSX
+### macOS
 Using [Homebrew](http://brew.sh/)
 ```
 brew install \
@@ -148,7 +148,7 @@ make test
 
 This will create a `thrift1` binary file inside the build directory.
 
-### Linux or MacOSX
+### Linux or macOS
 ```
 make install
 ```
@@ -161,7 +161,7 @@ msbuild .\INSTALL.vcxproj
 
 ## Usage
 
-### Linux or MacOSX
+### Linux or macOS
 ```
 ./thrift1 --help
 ```
