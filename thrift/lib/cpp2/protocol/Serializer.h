@@ -135,6 +135,19 @@ struct Serializer {
   }
 
   template <class T>
+  static void serialize(
+      const T& obj,
+      folly::io::QueueAppender&& out,
+      ExternalBufferSharing sharing = COPY_EXTERNAL_BUFFER) {
+    Writer writer(sharing);
+    writer.setOutput(std::move(out));
+
+    // This can be obj.write(&writer);
+    // if you don't need to support thrift1-compatibility types
+    apache::thrift::Cpp2Ops<T>::write(&writer, &obj);
+  }
+
+  template <class T>
   static void serialize(const T& obj, std::string* out) {
     folly::IOBufQueue queue(folly::IOBufQueue::cacheChainLength());
     // Okay to share any external buffers, as we'll copy them to *out

@@ -149,6 +149,10 @@ void DebugProtocolWriter::setOutput(
   out_.reset(storage, std::min(kDesiredGrowth, maxGrowth));
 }
 
+void DebugProtocolWriter::setOutput(folly::io::QueueAppender&& output) {
+  out_ = std::move(output);
+}
+
 uint32_t DebugProtocolWriter::writeMessageBegin(
     const std::string& name,
     MessageType messageType,

@@ -49,6 +49,8 @@ class DebugProtocolWriter {
       folly::IOBufQueue* queue,
       size_t maxGrowth = std::numeric_limits<size_t>::max());
 
+  void setOutput(folly::io::QueueAppender&& output);
+
   uint32_t writeMessageBegin(
       const std::string& name,
       MessageType messageType,

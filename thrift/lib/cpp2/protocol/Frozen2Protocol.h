@@ -54,6 +54,10 @@ class Frozen2ProtocolWriter {
     out_.reset(queue, std::min(maxGrowth, kDesiredGrowth));
   }
 
+  inline void setOutput(folly::io::QueueAppender&& output) {
+    out_ = std::move(output);
+  }
+
   inline uint32_t writeMessageBegin(
       const std::string& name,
       MessageType messageType,

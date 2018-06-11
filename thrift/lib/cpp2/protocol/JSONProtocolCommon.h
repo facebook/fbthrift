@@ -83,6 +83,10 @@ class JSONProtocolWriterCommon {
     out_.reset(queue, std::min(maxGrowth, kDesiredGrowth));
   }
 
+  inline void setOutput(folly::io::QueueAppender&& output) {
+    out_ = std::move(output);
+  }
+
   //  These writers are common to both json and simple-json protocols.
   inline uint32_t writeMessageBegin(
       const std::string& name,

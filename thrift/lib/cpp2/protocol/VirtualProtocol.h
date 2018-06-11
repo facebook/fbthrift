@@ -102,6 +102,8 @@ class VirtualWriterBase {
       folly::IOBufQueue* queue,
       size_t maxGrowth = std::numeric_limits<size_t>::max()) = 0;
 
+  virtual void setOutput(folly::io::QueueAppender&& output) = 0;
+
   virtual uint32_t writeMessageBegin(
       const std::string& name,
       MessageType messageType,
@@ -325,6 +327,10 @@ class VirtualWriter : public VirtualWriterBase {
       folly::IOBufQueue* queue,
       size_t maxGrowth = std::numeric_limits<size_t>::max()) override {
     protocol_.setOutput(queue, maxGrowth);
+  }
+
+  void setOutput(folly::io::QueueAppender&& output) override {
+    protocol_.setOutput(std::move(output));
   }
 
   uint32_t writeMessageBegin(

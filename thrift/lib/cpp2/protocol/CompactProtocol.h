@@ -123,6 +123,10 @@ class CompactProtocolWriter {
     out_.reset(storage, std::min(kDesiredGrowth, maxGrowth));
   }
 
+  inline void setOutput(QueueAppender&& output) {
+    out_ = std::move(output);
+  }
+
   inline uint32_t writeMessageBegin(
       const std::string& name,
       MessageType messageType,
