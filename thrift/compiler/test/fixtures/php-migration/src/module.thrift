@@ -17,4 +17,7 @@ service Bar {
 
 exception Baz {
  1: string message;
+ 2: Foo some_field;
+ 3: set<string> some_container;
+ 4: i32 code;
 }

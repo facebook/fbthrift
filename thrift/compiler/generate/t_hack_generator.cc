@@ -477,6 +477,8 @@ class t_hack_generator : public t_oop_generator {
       const std::string& key_type,
       const std::string& value_type);
 
+  bool is_base_exception_property(const t_field*);
+
  private:
   /**
    * Generate the namespace mangled string, if necessary
@@ -2466,6 +2468,13 @@ void t_hack_generator::generate_php_union_enum(
   out << "}" << endl << endl;
 }
 
+bool t_hack_generator::is_base_exception_property(const t_field* field) {
+  static const std::unordered_set<string> kBaseExceptionProperties{
+      "code", "message", "line", "file"};
+  return kBaseExceptionProperties.find(field->get_name()) !=
+      kBaseExceptionProperties.end();
+}
+
 /**
  * Generates a struct definition for a thrift data type. This is nothing in PHP
  * where the objects are all just associative arrays (unless of course we
@@ -2487,10 +2496,6 @@ void t_hack_generator::_generate_php_struct_definition(
 
   if (!is_result && !is_args && (is_exception || !generateAsTrait)) {
     generate_php_docstring(out, tstruct, is_exception);
-  }
-  if (is_exception && nullable_everything_) {
-    out << "/* HH_FIXME[4110] Client has nullable message for backwards compat */"
-        << endl;
   }
   out << (generateAsTrait ? "trait " : "class ") << hack_name(tstruct, true);
   if (generateAsTrait) {
@@ -2551,10 +2556,10 @@ void t_hack_generator::_generate_php_struct_definition(
     // result structs only contain fields: success and e.
     // success is whatever type the method returns, but must be nullable
     // regardless, since if there is an exception we expect it to be null
-    bool nullable =
-        (is_result || field_is_nullable(tstruct, (*m_iter), dval)) &&
-        !(is_exception && (*m_iter)->get_name() == "code");
-    string typehint = nullable || nullable_everything_ ? "?" : "";
+    bool nullable = (is_result || field_is_nullable(tstruct, (*m_iter), dval) ||
+                     nullable_everything_) &&
+        !(is_exception && is_base_exception_property(*m_iter));
+    string typehint = nullable ? "?" : "";
 
     typehint += type_to_typehint(t);
     if (!is_result && !is_args) {
@@ -2636,9 +2641,9 @@ void t_hack_generator::_generate_php_struct_definition(
     if ((*m_iter)->get_value() != nullptr &&
         !(t->is_struct() || t->is_xception())) {
       dval = render_const_value(t, (*m_iter)->get_value());
-    } else if (tstruct->is_union() || nullable_everything_) {
-      dval = "null";
-    } else if (is_exception && (*m_iter)->get_name() == "code") {
+    } else if (
+        is_exception &&
+        ((*m_iter)->get_name() == "code" || (*m_iter)->get_name() == "line")) {
       if (t->is_any_int()) {
         dval = "0";
       } else {
@@ -2647,12 +2652,28 @@ void t_hack_generator::_generate_php_struct_definition(
         dval = hack_name(tenum) +
             "::" + (*(tenum->get_constants().begin()))->get_name();
       }
+    } else if (
+        is_exception &&
+        ((*m_iter)->get_name() == "message" ||
+         (*m_iter)->get_name() == "file")) {
+      dval = "''";
+    } else if (tstruct->is_union() || nullable_everything_) {
+      dval = "null";
     } else {
       dval = render_default_value(t);
     }
 
     if (map_construct_) {
-      string cast = nullable_everything_ ? "" : type_to_cast(t);
+      string cast;
+      if (nullable_everything_ &&
+          !(is_exception && is_base_exception_property(*m_iter))) {
+        cast = "";
+      } else if (
+          is_exception && (*m_iter)->get_name() == "code" && t->is_enum()) {
+        cast = "(int)";
+      } else {
+        cast = type_to_cast(t);
+      }
 
       if (strict_types_) {
         out << indent() << "$this->" << (*m_iter)->get_name() << " = " << cast
@@ -2679,7 +2700,7 @@ void t_hack_generator::_generate_php_struct_definition(
       // success is whatever type the method returns, but must be nullable
       // regardless, since if there is an exception we expect it to be null
       // TODO(ckwalsh) Extract this logic into a helper function
-      bool nullable = !(is_exception && (*m_iter)->get_name() == "code") &&
+      bool nullable = !(is_exception && is_base_exception_property(*m_iter)) &&
           (dval == "null" || is_result ||
            ((*m_iter)->get_req() == t_field::T_OPTIONAL &&
             (*m_iter)->get_value() == nullptr));

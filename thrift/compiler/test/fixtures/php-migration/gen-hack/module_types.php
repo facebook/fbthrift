@@ -103,7 +103,6 @@ class Foo implements \IThriftStruct {
  * Original thrift exception:-
  * Baz
  */
-/* HH_FIXME[4110] Client has nullable message for backwards compat */
 class Baz extends \TException implements \IThriftStruct {
   use \ThriftSerializationTrait;
 
@@ -112,21 +111,60 @@ class Baz extends \TException implements \IThriftStruct {
       'var' => 'message',
       'type' => \TType::STRING,
       ],
+    2 => darray[
+      'var' => 'some_field',
+      'type' => \TType::STRUCT,
+      'class' => 'Foo',
+      ],
+    3 => darray[
+      'var' => 'some_container',
+      'type' => \TType::SET,
+      'etype' => \TType::STRING,
+      'elem' => darray[
+        'type' => \TType::STRING,
+        ],
+        'format' => 'array',
+      ],
+    4 => darray[
+      'var' => 'code',
+      'type' => \TType::I32,
+      ],
     ];
   public static Map<string, int> $_TFIELDMAP = Map {
     'message' => 1,
+    'some_field' => 2,
+    'some_container' => 3,
+    'code' => 4,
   };
-  const int STRUCTURAL_ID = 2427562471238739676;
+  const int STRUCTURAL_ID = 1663976252517274137;
   /**
    * Original thrift field:-
    * 1: string message
    */
-  public ?string $message;
+  public string $message;
+  /**
+   * Original thrift field:-
+   * 2: struct module.Foo some_field
+   */
+  public ?Foo $some_field;
+  /**
+   * Original thrift field:-
+   * 3: set<string> some_container
+   */
+  public ?darray<string, bool> $some_container;
+  /**
+   * Original thrift field:-
+   * 4: i32 code
+   */
+  public int $code;
 
   public function __construct(@\Indexish<string, mixed> $vals = darray[]) {
     // UNSAFE_BLOCK $vals is not type safe :(, and we don't cast structs (yet)
     parent::__construct();
-    $this->message = idx($vals, 'message', null);
+    $this->message = (string)idx($vals, 'message', '');
+    $this->some_field = idx($vals, 'some_field', null);
+    $this->some_container = idx($vals, 'some_container', null);
+    $this->code = (int)idx($vals, 'code', 0);
   }
 
   public function getName(): string {
