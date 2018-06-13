@@ -77,18 +77,20 @@ class TTransportException : public apache::thrift::TLibraryException {
         errno_(0),
         options_(0) {}
 
-  TTransportException(TTransportExceptionType type, const std::string& message)
-      : apache::thrift::TLibraryException(getDefaultMessage(type, message)),
+  TTransportException(TTransportExceptionType type, std::string message)
+      : apache::thrift::TLibraryException(
+            getDefaultMessage(type, std::move(message))),
         type_(type),
         errno_(0),
         options_(0) {}
 
   TTransportException(
       TTransportExceptionType type,
-      const std::string& message,
+      std::string message,
       int errno_copy)
-      : apache::thrift::TLibraryException(
-            getMessage(getDefaultMessage(type, message), errno_copy)),
+      : apache::thrift::TLibraryException(getMessage(
+            getDefaultMessage(type, std::move(message)),
+            errno_copy)),
         type_(type),
         errno_(errno_copy),
         options_(0) {}
@@ -173,23 +175,23 @@ class TTransportException : public apache::thrift::TLibraryException {
   std::string strerror_s(int errno_copy);
 
   /** Return a message based on the input. */
-  static std::string getMessage(const std::string& message, int errno_copy) {
+  static std::string getMessage(std::string&& message, int errno_copy) {
     if (errno_copy != 0) {
       return message + ": " + TOutput::strerror_s(errno_copy);
     } else {
-      return message;
+      return std::move(message);
     }
   }
 
   static std::string getDefaultMessage(
       TTransportExceptionType type,
-      const std::string& message) {
+      std::string&& message) {
     if (message.empty() &&
         static_cast<size_t>(type) >= TTransportExceptionTypeSize::value) {
       return "TTransportException: (Invalid exception type '" +
           std::to_string(type) + "')";
     } else {
-      return message;
+      return std::move(message);
     }
   }
 
