@@ -46,7 +46,6 @@ class GeneratedAsyncClient : public TClientBase {
   }
 
  protected:
-  std::unique_ptr<Cpp2ConnContext> connectionContext_;
   std::shared_ptr<RequestChannel> channel_;
 };
 

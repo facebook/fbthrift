@@ -17,11 +17,18 @@
 %><%#service:functions%><%#function:returnType%>
 template <typename Protocol_>
 void <%service:name%>AsyncClient::<%function:name%>T(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback<%function:comma%><% > service_common/function_param_list_const%>) {
-  auto header = std::make_shared<apache::thrift::transport::THeader>(apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
+  struct HeaderAndConnContext {
+    HeaderAndConnContext() : header(apache::thrift::transport::THeader::ALLOW_BIG_FRAMES) {}
+
+    apache::thrift::transport::THeader header;
+    apache::thrift::Cpp2ConnContext connContext;
+  };
+  auto headerAndConnContext = std::make_shared<HeaderAndConnContext>();
+  std::shared_ptr<apache::thrift::transport::THeader> header(headerAndConnContext, &headerAndConnContext->header);
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
-  connectionContext_->setRequestHeader(header.get());
-  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "<%service:name%>.<%function:name%>", connectionContext_.get());
+  headerAndConnContext->connContext.setRequestHeader(header.get());
+  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "<%service:name%>.<%function:name%>", &headerAndConnContext->connContext);
 <%#function:takes_stream?%>
   <%service:name%>_<%function:name%>_pargs::FieldsType args;
 <%/function:takes_stream?%>
@@ -63,7 +70,7 @@ void <%service:name%>AsyncClient::<%function:name%>T(Protocol_* prot, bool useSy
   apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), "<%function:name%>", writer, sizer, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, useSync);
 <%/function:returns_stream?%>
 <%/function:oneway?%>
-  connectionContext_->setRequestHeader(nullptr);
+  headerAndConnContext->connContext.setRequestHeader(nullptr);
 }
 
 <%/function:returnType%><%/service:functions%>

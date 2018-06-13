@@ -24,8 +24,7 @@ namespace thrift {
 // TODO: make it possible to create a connection context from a thrift channel
 GeneratedAsyncClient::GeneratedAsyncClient(
     std::shared_ptr<RequestChannel> channel)
-    : connectionContext_(std::make_unique<Cpp2ConnContext>()),
-      channel_(std::move(channel)) {}
+    : channel_(std::move(channel)) {}
 
 GeneratedAsyncClient::~GeneratedAsyncClient() {}
 
