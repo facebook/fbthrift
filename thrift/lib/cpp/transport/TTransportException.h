@@ -54,7 +54,10 @@ class TTransportException : public apache::thrift::TLibraryException {
     SASL_HANDSHAKE_TIMEOUT = 14,
     NETWORK_ERROR = 15,
     EARLY_DATA_REJECTED = 16
+    // Remember to update TTransportExceptionTypeSize if you add an entry here
   };
+
+  using TTransportExceptionTypeSize = std::integral_constant<std::size_t, 17>;
 
   TTransportException()
       : apache::thrift::TLibraryException(),
@@ -63,7 +66,7 @@ class TTransportException : public apache::thrift::TLibraryException {
         options_(0) {}
 
   explicit TTransportException(TTransportExceptionType type)
-      : apache::thrift::TLibraryException(),
+      : apache::thrift::TLibraryException(getDefaultMessage(type, "")),
         type_(type),
         errno_(0),
         options_(0) {}
@@ -75,7 +78,7 @@ class TTransportException : public apache::thrift::TLibraryException {
         options_(0) {}
 
   TTransportException(TTransportExceptionType type, const std::string& message)
-      : apache::thrift::TLibraryException(message),
+      : apache::thrift::TLibraryException(getDefaultMessage(type, message)),
         type_(type),
         errno_(0),
         options_(0) {}
@@ -84,7 +87,8 @@ class TTransportException : public apache::thrift::TLibraryException {
       TTransportExceptionType type,
       const std::string& message,
       int errno_copy)
-      : apache::thrift::TLibraryException(getMessage(message, errno_copy)),
+      : apache::thrift::TLibraryException(
+            getMessage(getDefaultMessage(type, message), errno_copy)),
         type_(type),
         errno_(errno_copy),
         options_(0) {}
@@ -172,6 +176,18 @@ class TTransportException : public apache::thrift::TLibraryException {
   static std::string getMessage(const std::string& message, int errno_copy) {
     if (errno_copy != 0) {
       return message + ": " + TOutput::strerror_s(errno_copy);
+    } else {
+      return message;
+    }
+  }
+
+  static std::string getDefaultMessage(
+      TTransportExceptionType type,
+      const std::string& message) {
+    if (message.empty() &&
+        static_cast<size_t>(type) >= TTransportExceptionTypeSize::value) {
+      return "TTransportException: (Invalid exception type '" +
+          std::to_string(type) + "')";
     } else {
       return message;
     }
