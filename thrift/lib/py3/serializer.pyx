@@ -2,9 +2,8 @@ from enum import Enum
 from thrift.py3.types cimport Struct
 from thrift.py3.types import Struct
 from libcpp.memory cimport unique_ptr
-from libc.stdint cimport uint32_t, uint64_t
-from folly.iobuf cimport move, wrapBuffer
-from libc.string cimport const_uchar
+from folly.iobuf import IOBuf
+from folly.iobuf cimport IOBuf
 
 from thrift.py3.exceptions import Error
 
@@ -22,15 +21,14 @@ def serialize(tstruct, protocol=Protocol.COMPACT):
     return cy_struct._serialize(protocol)
 
 
-def deserialize(structKlass, bytes buf, protocol=Protocol.COMPACT):
+def deserialize(structKlass, buf not None, protocol=Protocol.COMPACT):
     assert issubclass(structKlass, Struct), "Must be a py3 thrift struct class"
     assert isinstance(protocol, Protocol), "protocol must of type Protocol"
-    cdef const_uchar* c_str = buf
-    cdef uint64_t capacity = len(buf)
     cdef Struct cy_struct = <Struct> structKlass.__new__(structKlass)
-    c_buf = move(wrapBuffer(c_str, capacity))
+
+    cdef IOBuf iobuf = buf if isinstance(buf, IOBuf) else IOBuf(buf)
     try:
-        cy_struct._deserialize(c_buf.get(), protocol)
+        cy_struct._deserialize(iobuf._this, protocol)
         return cy_struct
     except Exception as e:
         raise Error.__new__(Error, *e.args) from None

@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 from enum import Enum
-from typing import TypeVar, Type
+from typing import TypeVar, Type, Union
 
 from thrift.py3.types import Struct
+from folly.iobuf import IOBuf
 
 sT = TypeVar('sT', bound=Struct)
 
@@ -19,6 +20,6 @@ def serialize(tstruct: sT, protocol: Protocol = ...) -> bytes: ...
 
 def deserialize(
     structKlass: Type[sT],
-    buf: bytes,
+    buf: Union[bytes, bytearray, IOBuf, memoryview],
     protocol: Protocol = ...
 ) -> sT: ...

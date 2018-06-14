@@ -2,7 +2,7 @@ from libcpp.memory cimport unique_ptr, shared_ptr, make_shared
 from libc.string cimport const_uchar
 from cython.operator cimport dereference as deref
 from libc.stdint cimport uint64_t
-from folly.iobuf cimport  move
+from folly.iobuf cimport from_unique_ptr as create_IOBuf
 from cpython.ref cimport PyObject
 from folly.executor cimport get_executor
 from folly.range cimport StringPiece
@@ -181,15 +181,14 @@ cdef class ConnectionContext:
     @property
     def peer_certificate(ConnectionContext self):
         cdef const_uchar* data
-        cdef unique_ptr[cIOBuf] der
         cdef shared_ptr[X509] cert
         cdef uint64_t length
         cert = self._ctx.getPeerCertificate()
         if cert.get():
-            der = move(derEncode(deref(cert.get())))
-            length = der.get().length()
-            data = der.get().data()
-            return data[:length]
+            iobuf = create_IOBuf(derEncode(deref(cert.get())))
+            if iobuf.is_chained:
+                return b''.join(iobuf)
+            return bytes(iobuf)
         return None
 
 
