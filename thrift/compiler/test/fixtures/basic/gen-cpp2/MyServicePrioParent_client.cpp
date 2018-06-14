@@ -138,7 +138,10 @@ folly::Future<folly::Unit> MyServicePrioParentAsyncClient::future_ping(apache::t
 }
 
 folly::SemiFuture<folly::Unit> MyServicePrioParentAsyncClient::semifuture_ping(apache::thrift::RpcOptions& rpcOptions) {
-  return future_ping(rpcOptions).semi();
+  auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_ping, channel_);
+  auto callback = std::move(callbackAndFuture.first);
+  ping(rpcOptions, std::move(callback));
+  return std::move(callbackAndFuture.second);
 }
 
 folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> MyServicePrioParentAsyncClient::header_future_ping(apache::thrift::RpcOptions& rpcOptions) {
@@ -150,7 +153,10 @@ folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::
 }
 
 folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> MyServicePrioParentAsyncClient::header_semifuture_ping(apache::thrift::RpcOptions& rpcOptions) {
-  return MyServicePrioParentAsyncClient::header_future_ping(rpcOptions).semi();
+  auto callbackAndFuture = makeHeaderSemiFutureCallback(recv_wrapped_ping, channel_);
+  auto callback = std::move(callbackAndFuture.first);
+  ping(rpcOptions, std::move(callback));
+  return std::move(callbackAndFuture.second);
 }
 
 void MyServicePrioParentAsyncClient::ping(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
@@ -273,7 +279,10 @@ folly::Future<folly::Unit> MyServicePrioParentAsyncClient::future_pong(apache::t
 }
 
 folly::SemiFuture<folly::Unit> MyServicePrioParentAsyncClient::semifuture_pong(apache::thrift::RpcOptions& rpcOptions) {
-  return future_pong(rpcOptions).semi();
+  auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_pong, channel_);
+  auto callback = std::move(callbackAndFuture.first);
+  pong(rpcOptions, std::move(callback));
+  return std::move(callbackAndFuture.second);
 }
 
 folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> MyServicePrioParentAsyncClient::header_future_pong(apache::thrift::RpcOptions& rpcOptions) {
@@ -285,7 +294,10 @@ folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::
 }
 
 folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> MyServicePrioParentAsyncClient::header_semifuture_pong(apache::thrift::RpcOptions& rpcOptions) {
-  return MyServicePrioParentAsyncClient::header_future_pong(rpcOptions).semi();
+  auto callbackAndFuture = makeHeaderSemiFutureCallback(recv_wrapped_pong, channel_);
+  auto callback = std::move(callbackAndFuture.first);
+  pong(rpcOptions, std::move(callback));
+  return std::move(callbackAndFuture.second);
 }
 
 void MyServicePrioParentAsyncClient::pong(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {

@@ -33,5 +33,8 @@ folly::Future<<% > types/service_type%>> <%service:name%>AsyncClient::future_<%f
 }
 
 folly::SemiFuture<<% > types/service_type%>> <%service:name%>AsyncClient::semifuture_<%function:name%>(apache::thrift::RpcOptions& rpcOptions<%function:comma%><% > service_common/function_param_list_const%>) {
-  return future_<%function:name%>(rpcOptions<%function:comma%><% > service_common/param_list%>);
+  auto callbackAndFuture = makeOneWaySemiFutureCallback(channel_);
+  auto callback = std::move(callbackAndFuture.first);
+  <%function:name%>(rpcOptions, std::move(callback)<%function:comma%><% > service_common/param_list%>);
+  return std::move(callbackAndFuture.second);
 }

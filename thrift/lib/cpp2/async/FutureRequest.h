@@ -192,5 +192,166 @@ class FutureCallback<folly::Unit> : public FutureCallbackBase<folly::Unit> {
   Processor processor_;
 };
 
+class SemiFutureCallback : public RequestCallback {
+ public:
+  template <typename Result>
+  using Processor = folly::exception_wrapper (*)(Result&, ClientReceiveState&);
+  using ProcessorVoid = folly::exception_wrapper (*)(ClientReceiveState&);
+
+  explicit SemiFutureCallback(
+      folly::Promise<ClientReceiveState>&& promise,
+      std::shared_ptr<apache::thrift::RequestChannel> channel)
+      : promise_(std::move(promise)), channel_(std::move(channel)) {}
+
+  void requestSent() override {}
+
+  void replyReceived(ClientReceiveState&& state) override {
+    promise_.setValue(std::move(state));
+  }
+
+  void requestError(ClientReceiveState&& state) override {
+    promise_.setException(std::move(state.exception()));
+  }
+
+ protected:
+  folly::Promise<ClientReceiveState> promise_;
+  std::shared_ptr<apache::thrift::RequestChannel> channel_;
+};
+
+class OneWaySemiFutureCallback : public RequestCallback {
+ public:
+  OneWaySemiFutureCallback(
+      folly::Promise<folly::Unit>&& promise,
+      std::shared_ptr<apache::thrift::RequestChannel> channel)
+      : promise_(std::move(promise)), channel_(std::move(channel)) {}
+
+  void requestSent() override {
+    promise_.setValue();
+  }
+
+  void replyReceived(ClientReceiveState&&) override {
+    CHECK(false);
+  }
+
+  void requestError(ClientReceiveState&& state) override {
+    promise_.setException(std::move(state.exception()));
+  }
+
+ protected:
+  folly::Promise<folly::Unit> promise_;
+  std::shared_ptr<apache::thrift::RequestChannel> channel_;
+};
+
+template <typename Result>
+std::pair<std::unique_ptr<SemiFutureCallback>, folly::SemiFuture<Result>>
+makeSemiFutureCallback(
+    SemiFutureCallback::Processor<Result> processor,
+    std::shared_ptr<apache::thrift::RequestChannel> channel) {
+  folly::Promise<ClientReceiveState> promise;
+  auto future = promise.getSemiFuture();
+
+  return {std::make_unique<SemiFutureCallback>(
+              std::move(promise), std::move(channel)),
+          std::move(future).deferValue([processor](ClientReceiveState&& state) {
+            CHECK(!state.isException());
+            CHECK(state.buf());
+
+            Result result;
+            auto ew = processor(result, state);
+
+            if (ew) {
+              ew.throw_exception();
+            }
+            return result;
+          })};
+}
+
+inline std::
+    pair<std::unique_ptr<SemiFutureCallback>, folly::SemiFuture<folly::Unit>>
+    makeSemiFutureCallback(
+        SemiFutureCallback::ProcessorVoid processor,
+        std::shared_ptr<apache::thrift::RequestChannel> channel) {
+  folly::Promise<ClientReceiveState> promise;
+  auto future = promise.getSemiFuture();
+
+  return {std::make_unique<SemiFutureCallback>(
+              std::move(promise), std::move(channel)),
+          std::move(future).deferValue([processor](ClientReceiveState&& state) {
+            CHECK(!state.isException());
+            CHECK(state.buf());
+
+            auto ew = processor(state);
+
+            if (ew) {
+              ew.throw_exception();
+            }
+          })};
+}
+
+template <typename Result>
+std::pair<
+    std::unique_ptr<SemiFutureCallback>,
+    folly::SemiFuture<
+        std::pair<Result, std::unique_ptr<apache::thrift::transport::THeader>>>>
+makeHeaderSemiFutureCallback(
+    SemiFutureCallback::Processor<Result> processor,
+    std::shared_ptr<apache::thrift::RequestChannel> channel) {
+  folly::Promise<ClientReceiveState> promise;
+  auto future = promise.getSemiFuture();
+
+  return {std::make_unique<SemiFutureCallback>(
+              std::move(promise), std::move(channel)),
+          std::move(future).deferValue([processor](ClientReceiveState&& state) {
+            CHECK(!state.isException());
+            CHECK(state.buf());
+
+            Result result;
+            auto ew = processor(result, state);
+
+            if (ew) {
+              ew.throw_exception();
+            }
+            return std::make_pair(std::move(result), state.extractHeader());
+          })};
+}
+
+inline std::pair<
+    std::unique_ptr<SemiFutureCallback>,
+    folly::SemiFuture<std::pair<
+        folly::Unit,
+        std::unique_ptr<apache::thrift::transport::THeader>>>>
+makeHeaderSemiFutureCallback(
+    SemiFutureCallback::ProcessorVoid processor,
+    std::shared_ptr<apache::thrift::RequestChannel> channel) {
+  folly::Promise<ClientReceiveState> promise;
+  auto future = promise.getSemiFuture();
+
+  return {std::make_unique<SemiFutureCallback>(
+              std::move(promise), std::move(channel)),
+          std::move(future).deferValue([processor](ClientReceiveState&& state) {
+            CHECK(!state.isException());
+            CHECK(state.buf());
+
+            auto ew = processor(state);
+
+            if (ew) {
+              ew.throw_exception();
+            }
+
+            return std::make_pair(folly::unit, state.extractHeader());
+          })};
+}
+
+inline std::pair<
+    std::unique_ptr<OneWaySemiFutureCallback>,
+    folly::SemiFuture<folly::Unit>>
+makeOneWaySemiFutureCallback(
+    std::shared_ptr<apache::thrift::RequestChannel> channel) {
+  folly::Promise<folly::Unit> promise;
+  auto future = promise.getSemiFuture();
+  return {std::make_unique<OneWaySemiFutureCallback>(
+              std::move(promise), std::move(channel)),
+          std::move(future)};
+}
 } // namespace thrift
 } // namespace apache

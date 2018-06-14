@@ -34,7 +34,10 @@ folly::Future<<% > types/service_type_semi%>> <%service:name%>AsyncClient::futur
 }
 
 folly::SemiFuture<<% > types/service_type_semi%>> <%service:name%>AsyncClient::semifuture_<%function:name%>(apache::thrift::RpcOptions& rpcOptions<%function:comma%><% > service_common/function_param_list_const%>) {
-  return future_<%function:name%>(rpcOptions<%function:comma%><% > service_common/param_list%>).semi();
+  auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_<%function:name%>, channel_);
+  auto callback = std::move(callbackAndFuture.first);
+  <%function:name%>(rpcOptions, std::move(callback)<%function:comma%><% > service_common/param_list%>);
+  return std::move(callbackAndFuture.second);
 }
 
 folly::Future<std::pair<<% > types/service_type_semi%>, std::unique_ptr<apache::thrift::transport::THeader>>> <%service:name%>AsyncClient::header_future_<%function:name%>(apache::thrift::RpcOptions& rpcOptions<%function:comma%><% > service_common/function_param_list_const%>) {
@@ -46,5 +49,8 @@ folly::Future<std::pair<<% > types/service_type_semi%>, std::unique_ptr<apache::
 }
 
 folly::SemiFuture<std::pair<<% > types/service_type_semi%>, std::unique_ptr<apache::thrift::transport::THeader>>> <%service:name%>AsyncClient::header_semifuture_<%function:name%>(apache::thrift::RpcOptions& rpcOptions<%function:comma%><% > service_common/function_param_list_const%>) {
-  return <%service:name%>AsyncClient::header_future_<%function:name%>(rpcOptions<%function:comma%><% > service_common/param_list%>).semi();
+  auto callbackAndFuture = makeHeaderSemiFutureCallback(recv_wrapped_<%function:name%>, channel_);
+  auto callback = std::move(callbackAndFuture.first);
+  <%function:name%>(rpcOptions, std::move(callback)<%function:comma%><% > service_common/param_list%>);
+  return std::move(callbackAndFuture.second);
 }

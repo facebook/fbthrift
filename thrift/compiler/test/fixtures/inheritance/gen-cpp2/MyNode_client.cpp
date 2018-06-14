@@ -115,7 +115,10 @@ folly::Future<folly::Unit> MyNodeAsyncClient::future_do_mid(apache::thrift::RpcO
 }
 
 folly::SemiFuture<folly::Unit> MyNodeAsyncClient::semifuture_do_mid(apache::thrift::RpcOptions& rpcOptions) {
-  return future_do_mid(rpcOptions).semi();
+  auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_do_mid, channel_);
+  auto callback = std::move(callbackAndFuture.first);
+  do_mid(rpcOptions, std::move(callback));
+  return std::move(callbackAndFuture.second);
 }
 
 folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> MyNodeAsyncClient::header_future_do_mid(apache::thrift::RpcOptions& rpcOptions) {
@@ -127,7 +130,10 @@ folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::
 }
 
 folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> MyNodeAsyncClient::header_semifuture_do_mid(apache::thrift::RpcOptions& rpcOptions) {
-  return MyNodeAsyncClient::header_future_do_mid(rpcOptions).semi();
+  auto callbackAndFuture = makeHeaderSemiFutureCallback(recv_wrapped_do_mid, channel_);
+  auto callback = std::move(callbackAndFuture.first);
+  do_mid(rpcOptions, std::move(callback));
+  return std::move(callbackAndFuture.second);
 }
 
 void MyNodeAsyncClient::do_mid(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {

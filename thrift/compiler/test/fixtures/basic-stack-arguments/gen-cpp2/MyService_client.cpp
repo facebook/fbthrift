@@ -189,7 +189,10 @@ folly::Future<bool> MyServiceAsyncClient::future_hasDataById(apache::thrift::Rpc
 }
 
 folly::SemiFuture<bool> MyServiceAsyncClient::semifuture_hasDataById(apache::thrift::RpcOptions& rpcOptions, int64_t id) {
-  return future_hasDataById(rpcOptions, id).semi();
+  auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_hasDataById, channel_);
+  auto callback = std::move(callbackAndFuture.first);
+  hasDataById(rpcOptions, std::move(callback), id);
+  return std::move(callbackAndFuture.second);
 }
 
 folly::Future<std::pair<bool, std::unique_ptr<apache::thrift::transport::THeader>>> MyServiceAsyncClient::header_future_hasDataById(apache::thrift::RpcOptions& rpcOptions, int64_t id) {
@@ -201,7 +204,10 @@ folly::Future<std::pair<bool, std::unique_ptr<apache::thrift::transport::THeader
 }
 
 folly::SemiFuture<std::pair<bool, std::unique_ptr<apache::thrift::transport::THeader>>> MyServiceAsyncClient::header_semifuture_hasDataById(apache::thrift::RpcOptions& rpcOptions, int64_t id) {
-  return MyServiceAsyncClient::header_future_hasDataById(rpcOptions, id).semi();
+  auto callbackAndFuture = makeHeaderSemiFutureCallback(recv_wrapped_hasDataById, channel_);
+  auto callback = std::move(callbackAndFuture.first);
+  hasDataById(rpcOptions, std::move(callback), id);
+  return std::move(callbackAndFuture.second);
 }
 
 void MyServiceAsyncClient::hasDataById(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, int64_t id) {
@@ -326,7 +332,10 @@ folly::Future<std::string> MyServiceAsyncClient::future_getDataById(apache::thri
 }
 
 folly::SemiFuture<std::string> MyServiceAsyncClient::semifuture_getDataById(apache::thrift::RpcOptions& rpcOptions, int64_t id) {
-  return future_getDataById(rpcOptions, id).semi();
+  auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_getDataById, channel_);
+  auto callback = std::move(callbackAndFuture.first);
+  getDataById(rpcOptions, std::move(callback), id);
+  return std::move(callbackAndFuture.second);
 }
 
 folly::Future<std::pair<std::string, std::unique_ptr<apache::thrift::transport::THeader>>> MyServiceAsyncClient::header_future_getDataById(apache::thrift::RpcOptions& rpcOptions, int64_t id) {
@@ -338,7 +347,10 @@ folly::Future<std::pair<std::string, std::unique_ptr<apache::thrift::transport::
 }
 
 folly::SemiFuture<std::pair<std::string, std::unique_ptr<apache::thrift::transport::THeader>>> MyServiceAsyncClient::header_semifuture_getDataById(apache::thrift::RpcOptions& rpcOptions, int64_t id) {
-  return MyServiceAsyncClient::header_future_getDataById(rpcOptions, id).semi();
+  auto callbackAndFuture = makeHeaderSemiFutureCallback(recv_wrapped_getDataById, channel_);
+  auto callback = std::move(callbackAndFuture.first);
+  getDataById(rpcOptions, std::move(callback), id);
+  return std::move(callbackAndFuture.second);
 }
 
 void MyServiceAsyncClient::getDataById(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, int64_t id) {
@@ -461,7 +473,10 @@ folly::Future<folly::Unit> MyServiceAsyncClient::future_putDataById(apache::thri
 }
 
 folly::SemiFuture<folly::Unit> MyServiceAsyncClient::semifuture_putDataById(apache::thrift::RpcOptions& rpcOptions, int64_t id, const std::string& data) {
-  return future_putDataById(rpcOptions, id, data).semi();
+  auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_putDataById, channel_);
+  auto callback = std::move(callbackAndFuture.first);
+  putDataById(rpcOptions, std::move(callback), id, data);
+  return std::move(callbackAndFuture.second);
 }
 
 folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> MyServiceAsyncClient::header_future_putDataById(apache::thrift::RpcOptions& rpcOptions, int64_t id, const std::string& data) {
@@ -473,7 +488,10 @@ folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::
 }
 
 folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> MyServiceAsyncClient::header_semifuture_putDataById(apache::thrift::RpcOptions& rpcOptions, int64_t id, const std::string& data) {
-  return MyServiceAsyncClient::header_future_putDataById(rpcOptions, id, data).semi();
+  auto callbackAndFuture = makeHeaderSemiFutureCallback(recv_wrapped_putDataById, channel_);
+  auto callback = std::move(callbackAndFuture.first);
+  putDataById(rpcOptions, std::move(callback), id, data);
+  return std::move(callbackAndFuture.second);
 }
 
 void MyServiceAsyncClient::putDataById(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, int64_t id, const std::string& data) {
@@ -585,7 +603,10 @@ folly::Future<folly::Unit> MyServiceAsyncClient::future_lobDataById(apache::thri
 }
 
 folly::SemiFuture<folly::Unit> MyServiceAsyncClient::semifuture_lobDataById(apache::thrift::RpcOptions& rpcOptions, int64_t id, const std::string& data) {
-  return future_lobDataById(rpcOptions, id, data);
+  auto callbackAndFuture = makeOneWaySemiFutureCallback(channel_);
+  auto callback = std::move(callbackAndFuture.first);
+  lobDataById(rpcOptions, std::move(callback), id, data);
+  return std::move(callbackAndFuture.second);
 }
 
 void MyServiceAsyncClient::lobDataById(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, int64_t id, const std::string& data) {

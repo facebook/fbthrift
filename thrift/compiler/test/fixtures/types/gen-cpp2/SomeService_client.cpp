@@ -116,7 +116,10 @@ folly::Future< ::apache::thrift::fixtures::types::SomeMap> SomeServiceAsyncClien
 }
 
 folly::SemiFuture< ::apache::thrift::fixtures::types::SomeMap> SomeServiceAsyncClient::semifuture_bounce_map(apache::thrift::RpcOptions& rpcOptions, const  ::apache::thrift::fixtures::types::SomeMap& m) {
-  return future_bounce_map(rpcOptions, m).semi();
+  auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_bounce_map, channel_);
+  auto callback = std::move(callbackAndFuture.first);
+  bounce_map(rpcOptions, std::move(callback), m);
+  return std::move(callbackAndFuture.second);
 }
 
 folly::Future<std::pair< ::apache::thrift::fixtures::types::SomeMap, std::unique_ptr<apache::thrift::transport::THeader>>> SomeServiceAsyncClient::header_future_bounce_map(apache::thrift::RpcOptions& rpcOptions, const  ::apache::thrift::fixtures::types::SomeMap& m) {
@@ -128,7 +131,10 @@ folly::Future<std::pair< ::apache::thrift::fixtures::types::SomeMap, std::unique
 }
 
 folly::SemiFuture<std::pair< ::apache::thrift::fixtures::types::SomeMap, std::unique_ptr<apache::thrift::transport::THeader>>> SomeServiceAsyncClient::header_semifuture_bounce_map(apache::thrift::RpcOptions& rpcOptions, const  ::apache::thrift::fixtures::types::SomeMap& m) {
-  return SomeServiceAsyncClient::header_future_bounce_map(rpcOptions, m).semi();
+  auto callbackAndFuture = makeHeaderSemiFutureCallback(recv_wrapped_bounce_map, channel_);
+  auto callback = std::move(callbackAndFuture.first);
+  bounce_map(rpcOptions, std::move(callback), m);
+  return std::move(callbackAndFuture.second);
 }
 
 void SomeServiceAsyncClient::bounce_map(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const  ::apache::thrift::fixtures::types::SomeMap& m) {

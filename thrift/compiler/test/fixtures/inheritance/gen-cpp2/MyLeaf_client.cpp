@@ -115,7 +115,10 @@ folly::Future<folly::Unit> MyLeafAsyncClient::future_do_leaf(apache::thrift::Rpc
 }
 
 folly::SemiFuture<folly::Unit> MyLeafAsyncClient::semifuture_do_leaf(apache::thrift::RpcOptions& rpcOptions) {
-  return future_do_leaf(rpcOptions).semi();
+  auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_do_leaf, channel_);
+  auto callback = std::move(callbackAndFuture.first);
+  do_leaf(rpcOptions, std::move(callback));
+  return std::move(callbackAndFuture.second);
 }
 
 folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> MyLeafAsyncClient::header_future_do_leaf(apache::thrift::RpcOptions& rpcOptions) {
@@ -127,7 +130,10 @@ folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::
 }
 
 folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> MyLeafAsyncClient::header_semifuture_do_leaf(apache::thrift::RpcOptions& rpcOptions) {
-  return MyLeafAsyncClient::header_future_do_leaf(rpcOptions).semi();
+  auto callbackAndFuture = makeHeaderSemiFutureCallback(recv_wrapped_do_leaf, channel_);
+  auto callback = std::move(callbackAndFuture.first);
+  do_leaf(rpcOptions, std::move(callback));
+  return std::move(callbackAndFuture.second);
 }
 
 void MyLeafAsyncClient::do_leaf(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {

@@ -247,8 +247,13 @@ TEST(ThriftServer, SemiFutureClientTest) {
   apache::thrift::ScopedServerInterfaceThread runner(handler);
 
   EventBase base;
+  ManualExecutor executor;
   auto client = runner.newClient<FutureServiceAsyncClient>(base);
-  auto future = client->semifuture_sendResponse(1).via(&base).waitVia(&base);
+  auto future = client->semifuture_sendResponse(1).via(&executor);
+  base.loop();
+  EXPECT_FALSE(future.isReady());
+  future.waitVia(&executor);
+  EXPECT_TRUE(future.isReady());
   auto value = future.value();
 
   EXPECT_EQ(value, "test1");
