@@ -118,11 +118,11 @@ cdef api void call_cy_Raiser_doBland(
     Cpp2RequestContext* ctx,
     cFollyPromise[cFollyUnit] cPromise
 ):
-    cdef RaiserInterface iface
-    iface = self
+    cdef RaiserInterface __iface
+    __iface = self
     __promise = Promise_void.create(move(cPromise))
     __context = None
-    if iface._pass_context_doBland:
+    if __iface._pass_context_doBland:
         __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         Raiser_doBland_coro(
@@ -163,11 +163,11 @@ cdef api void call_cy_Raiser_doRaise(
     Cpp2RequestContext* ctx,
     cFollyPromise[cFollyUnit] cPromise
 ):
-    cdef RaiserInterface iface
-    iface = self
+    cdef RaiserInterface __iface
+    __iface = self
     __promise = Promise_void.create(move(cPromise))
     __context = None
-    if iface._pass_context_doRaise:
+    if __iface._pass_context_doRaise:
         __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         Raiser_doRaise_coro(
@@ -212,11 +212,11 @@ cdef api void call_cy_Raiser_get200(
     Cpp2RequestContext* ctx,
     cFollyPromise[unique_ptr[string]] cPromise
 ):
-    cdef RaiserInterface iface
-    iface = self
+    cdef RaiserInterface __iface
+    __iface = self
     __promise = Promise_string.create(move(cPromise))
     __context = None
-    if iface._pass_context_get200:
+    if __iface._pass_context_get200:
         __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         Raiser_get200_coro(
@@ -257,11 +257,11 @@ cdef api void call_cy_Raiser_get500(
     Cpp2RequestContext* ctx,
     cFollyPromise[unique_ptr[string]] cPromise
 ):
-    cdef RaiserInterface iface
-    iface = self
+    cdef RaiserInterface __iface
+    __iface = self
     __promise = Promise_string.create(move(cPromise))
     __context = None
-    if iface._pass_context_get500:
+    if __iface._pass_context_get500:
         __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         Raiser_get500_coro(

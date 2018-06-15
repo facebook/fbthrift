@@ -123,12 +123,12 @@ cdef api void call_cy_NestedContainers_mapList(
     cFollyPromise[cFollyUnit] cPromise,
     unique_ptr[cmap[int32_t,vector[int32_t]]] foo
 ):
-    cdef NestedContainersInterface iface
-    iface = self
+    cdef NestedContainersInterface __iface
+    __iface = self
     __promise = Promise_void.create(move(cPromise))
     arg_foo = _module_types.Map__i32_List__i32.create(_module_types.move(foo))
     __context = None
-    if iface._pass_context_mapList:
+    if __iface._pass_context_mapList:
         __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         NestedContainers_mapList_coro(
@@ -174,12 +174,12 @@ cdef api void call_cy_NestedContainers_mapSet(
     cFollyPromise[cFollyUnit] cPromise,
     unique_ptr[cmap[int32_t,cset[int32_t]]] foo
 ):
-    cdef NestedContainersInterface iface
-    iface = self
+    cdef NestedContainersInterface __iface
+    __iface = self
     __promise = Promise_void.create(move(cPromise))
     arg_foo = _module_types.Map__i32_Set__i32.create(_module_types.move(foo))
     __context = None
-    if iface._pass_context_mapSet:
+    if __iface._pass_context_mapSet:
         __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         NestedContainers_mapSet_coro(
@@ -225,12 +225,12 @@ cdef api void call_cy_NestedContainers_listMap(
     cFollyPromise[cFollyUnit] cPromise,
     unique_ptr[vector[cmap[int32_t,int32_t]]] foo
 ):
-    cdef NestedContainersInterface iface
-    iface = self
+    cdef NestedContainersInterface __iface
+    __iface = self
     __promise = Promise_void.create(move(cPromise))
     arg_foo = _module_types.List__Map__i32_i32.create(_module_types.move(foo))
     __context = None
-    if iface._pass_context_listMap:
+    if __iface._pass_context_listMap:
         __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         NestedContainers_listMap_coro(
@@ -276,12 +276,12 @@ cdef api void call_cy_NestedContainers_listSet(
     cFollyPromise[cFollyUnit] cPromise,
     unique_ptr[vector[cset[int32_t]]] foo
 ):
-    cdef NestedContainersInterface iface
-    iface = self
+    cdef NestedContainersInterface __iface
+    __iface = self
     __promise = Promise_void.create(move(cPromise))
     arg_foo = _module_types.List__Set__i32.create(_module_types.move(foo))
     __context = None
-    if iface._pass_context_listSet:
+    if __iface._pass_context_listSet:
         __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         NestedContainers_listSet_coro(
@@ -327,12 +327,12 @@ cdef api void call_cy_NestedContainers_turtles(
     cFollyPromise[cFollyUnit] cPromise,
     unique_ptr[vector[vector[cmap[int32_t,cmap[int32_t,cset[int32_t]]]]]] foo
 ):
-    cdef NestedContainersInterface iface
-    iface = self
+    cdef NestedContainersInterface __iface
+    __iface = self
     __promise = Promise_void.create(move(cPromise))
     arg_foo = _module_types.List__List__Map__i32_Map__i32_Set__i32.create(_module_types.move(foo))
     __context = None
-    if iface._pass_context_turtles:
+    if __iface._pass_context_turtles:
         __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         NestedContainers_turtles_coro(

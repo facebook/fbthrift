@@ -87,12 +87,12 @@ cdef api void call_cy_TestService_init(
     cFollyPromise[int64_t] cPromise,
     int64_t int1
 ):
-    cdef TestServiceInterface iface
-    iface = self
+    cdef TestServiceInterface __iface
+    __iface = self
     __promise = Promise_i64.create(move(cPromise))
     arg_int1 = int1
     __context = None
-    if iface._pass_context_init:
+    if __iface._pass_context_init:
         __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         TestService_init_coro(

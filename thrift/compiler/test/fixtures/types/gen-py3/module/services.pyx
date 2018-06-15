@@ -89,12 +89,12 @@ cdef api void call_cy_SomeService_bounce_map(
     cFollyPromise[unique_ptr[_module_types.std_unordered_map[int32_t,string]]] cPromise,
     unique_ptr[_module_types.std_unordered_map[int32_t,string]] m
 ):
-    cdef SomeServiceInterface iface
-    iface = self
+    cdef SomeServiceInterface __iface
+    __iface = self
     __promise = Promise_std_unordered_map__Map__i32_string.create(move(cPromise))
     arg_m = _module_types.std_unordered_map__Map__i32_string.create(_module_types.move(m))
     __context = None
-    if iface._pass_context_bounce_map:
+    if __iface._pass_context_bounce_map:
         __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         SomeService_bounce_map_coro(

@@ -87,12 +87,12 @@ cdef api void call_cy_HsTestService_init(
     cFollyPromise[int64_t] cPromise,
     int64_t int1
 ):
-    cdef HsTestServiceInterface iface
-    iface = self
+    cdef HsTestServiceInterface __iface
+    __iface = self
     __promise = Promise_i64.create(move(cPromise))
     arg_int1 = int1
     __context = None
-    if iface._pass_context_init:
+    if __iface._pass_context_init:
         __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         HsTestService_init_coro(

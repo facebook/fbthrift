@@ -91,12 +91,12 @@ cdef api void call_cy_ExtendTestService_check(
     cFollyPromise[cbool] cPromise,
     unique_ptr[_hsmodule_types.cHsFoo] struct1
 ):
-    cdef ExtendTestServiceInterface iface
-    iface = self
+    cdef ExtendTestServiceInterface __iface
+    __iface = self
     __promise = Promise_bool.create(move(cPromise))
     arg_struct1 = _hsmodule_types.HsFoo.create(shared_ptr[_hsmodule_types.cHsFoo](struct1.release()))
     __context = None
-    if iface._pass_context_check:
+    if __iface._pass_context_check:
         __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         ExtendTestService_check_coro(

@@ -131,11 +131,11 @@ cdef api void call_cy_MyRoot_do_root(
     Cpp2RequestContext* ctx,
     cFollyPromise[cFollyUnit] cPromise
 ):
-    cdef MyRootInterface iface
-    iface = self
+    cdef MyRootInterface __iface
+    __iface = self
     __promise = Promise_void.create(move(cPromise))
     __context = None
-    if iface._pass_context_do_root:
+    if __iface._pass_context_do_root:
         __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         MyRoot_do_root_coro(
@@ -176,11 +176,11 @@ cdef api void call_cy_MyNode_do_mid(
     Cpp2RequestContext* ctx,
     cFollyPromise[cFollyUnit] cPromise
 ):
-    cdef MyNodeInterface iface
-    iface = self
+    cdef MyNodeInterface __iface
+    __iface = self
     __promise = Promise_void.create(move(cPromise))
     __context = None
-    if iface._pass_context_do_mid:
+    if __iface._pass_context_do_mid:
         __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         MyNode_do_mid_coro(
@@ -221,11 +221,11 @@ cdef api void call_cy_MyLeaf_do_leaf(
     Cpp2RequestContext* ctx,
     cFollyPromise[cFollyUnit] cPromise
 ):
-    cdef MyLeafInterface iface
-    iface = self
+    cdef MyLeafInterface __iface
+    __iface = self
     __promise = Promise_void.create(move(cPromise))
     __context = None
-    if iface._pass_context_do_leaf:
+    if __iface._pass_context_do_leaf:
         __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         MyLeaf_do_leaf_coro(

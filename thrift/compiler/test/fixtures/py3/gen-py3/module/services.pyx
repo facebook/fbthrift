@@ -687,11 +687,11 @@ cdef api void call_cy_SimpleService_get_five(
     Cpp2RequestContext* ctx,
     cFollyPromise[int32_t] cPromise
 ):
-    cdef SimpleServiceInterface iface
-    iface = self
+    cdef SimpleServiceInterface __iface
+    __iface = self
     __promise = Promise_i32.create(move(cPromise))
     __context = None
-    if iface._pass_context_get_five:
+    if __iface._pass_context_get_five:
         __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         SimpleService_get_five_coro(
@@ -733,12 +733,12 @@ cdef api void call_cy_SimpleService_add_five(
     cFollyPromise[int32_t] cPromise,
     int32_t num
 ):
-    cdef SimpleServiceInterface iface
-    iface = self
+    cdef SimpleServiceInterface __iface
+    __iface = self
     __promise = Promise_i32.create(move(cPromise))
     arg_num = num
     __context = None
-    if iface._pass_context_add_five:
+    if __iface._pass_context_add_five:
         __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         SimpleService_add_five_coro(
@@ -783,11 +783,11 @@ cdef api void call_cy_SimpleService_do_nothing(
     Cpp2RequestContext* ctx,
     cFollyPromise[cFollyUnit] cPromise
 ):
-    cdef SimpleServiceInterface iface
-    iface = self
+    cdef SimpleServiceInterface __iface
+    __iface = self
     __promise = Promise_void.create(move(cPromise))
     __context = None
-    if iface._pass_context_do_nothing:
+    if __iface._pass_context_do_nothing:
         __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         SimpleService_do_nothing_coro(
@@ -830,13 +830,13 @@ cdef api void call_cy_SimpleService_concat(
     unique_ptr[string] first,
     unique_ptr[string] second
 ):
-    cdef SimpleServiceInterface iface
-    iface = self
+    cdef SimpleServiceInterface __iface
+    __iface = self
     __promise = Promise_string.create(move(cPromise))
     arg_first = (deref(first.get())).decode('UTF-8')
     arg_second = (deref(second.get())).decode('UTF-8')
     __context = None
-    if iface._pass_context_concat:
+    if __iface._pass_context_concat:
         __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         SimpleService_concat_coro(
@@ -886,12 +886,12 @@ cdef api void call_cy_SimpleService_get_value(
     cFollyPromise[int32_t] cPromise,
     unique_ptr[_module_types.cSimpleStruct] simple_struct
 ):
-    cdef SimpleServiceInterface iface
-    iface = self
+    cdef SimpleServiceInterface __iface
+    __iface = self
     __promise = Promise_i32.create(move(cPromise))
     arg_simple_struct = _module_types.SimpleStruct.create(shared_ptr[_module_types.cSimpleStruct](simple_struct.release()))
     __context = None
-    if iface._pass_context_get_value:
+    if __iface._pass_context_get_value:
         __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         SimpleService_get_value_coro(
@@ -937,12 +937,12 @@ cdef api void call_cy_SimpleService_negate(
     cFollyPromise[cbool] cPromise,
     cbool input
 ):
-    cdef SimpleServiceInterface iface
-    iface = self
+    cdef SimpleServiceInterface __iface
+    __iface = self
     __promise = Promise_bool.create(move(cPromise))
     arg_input = input
     __context = None
-    if iface._pass_context_negate:
+    if __iface._pass_context_negate:
         __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         SimpleService_negate_coro(
@@ -988,12 +988,12 @@ cdef api void call_cy_SimpleService_tiny(
     cFollyPromise[int8_t] cPromise,
     int8_t input
 ):
-    cdef SimpleServiceInterface iface
-    iface = self
+    cdef SimpleServiceInterface __iface
+    __iface = self
     __promise = Promise_byte.create(move(cPromise))
     arg_input = input
     __context = None
-    if iface._pass_context_tiny:
+    if __iface._pass_context_tiny:
         __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         SimpleService_tiny_coro(
@@ -1039,12 +1039,12 @@ cdef api void call_cy_SimpleService_small(
     cFollyPromise[int16_t] cPromise,
     int16_t input
 ):
-    cdef SimpleServiceInterface iface
-    iface = self
+    cdef SimpleServiceInterface __iface
+    __iface = self
     __promise = Promise_i16.create(move(cPromise))
     arg_input = input
     __context = None
-    if iface._pass_context_small:
+    if __iface._pass_context_small:
         __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         SimpleService_small_coro(
@@ -1090,12 +1090,12 @@ cdef api void call_cy_SimpleService_big(
     cFollyPromise[int64_t] cPromise,
     int64_t input
 ):
-    cdef SimpleServiceInterface iface
-    iface = self
+    cdef SimpleServiceInterface __iface
+    __iface = self
     __promise = Promise_i64.create(move(cPromise))
     arg_input = input
     __context = None
-    if iface._pass_context_big:
+    if __iface._pass_context_big:
         __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         SimpleService_big_coro(
@@ -1141,12 +1141,12 @@ cdef api void call_cy_SimpleService_two(
     cFollyPromise[double] cPromise,
     double input
 ):
-    cdef SimpleServiceInterface iface
-    iface = self
+    cdef SimpleServiceInterface __iface
+    __iface = self
     __promise = Promise_double.create(move(cPromise))
     arg_input = input
     __context = None
-    if iface._pass_context_two:
+    if __iface._pass_context_two:
         __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         SimpleService_two_coro(
@@ -1191,11 +1191,11 @@ cdef api void call_cy_SimpleService_expected_exception(
     Cpp2RequestContext* ctx,
     cFollyPromise[cFollyUnit] cPromise
 ):
-    cdef SimpleServiceInterface iface
-    iface = self
+    cdef SimpleServiceInterface __iface
+    __iface = self
     __promise = Promise_void.create(move(cPromise))
     __context = None
-    if iface._pass_context_expected_exception:
+    if __iface._pass_context_expected_exception:
         __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         SimpleService_expected_exception_coro(
@@ -1238,11 +1238,11 @@ cdef api void call_cy_SimpleService_unexpected_exception(
     Cpp2RequestContext* ctx,
     cFollyPromise[int32_t] cPromise
 ):
-    cdef SimpleServiceInterface iface
-    iface = self
+    cdef SimpleServiceInterface __iface
+    __iface = self
     __promise = Promise_i32.create(move(cPromise))
     __context = None
-    if iface._pass_context_unexpected_exception:
+    if __iface._pass_context_unexpected_exception:
         __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         SimpleService_unexpected_exception_coro(
@@ -1284,12 +1284,12 @@ cdef api void call_cy_SimpleService_sum_i16_list(
     cFollyPromise[int32_t] cPromise,
     unique_ptr[vector[int16_t]] numbers
 ):
-    cdef SimpleServiceInterface iface
-    iface = self
+    cdef SimpleServiceInterface __iface
+    __iface = self
     __promise = Promise_i32.create(move(cPromise))
     arg_numbers = _module_types.List__i16.create(_module_types.move(numbers))
     __context = None
-    if iface._pass_context_sum_i16_list:
+    if __iface._pass_context_sum_i16_list:
         __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         SimpleService_sum_i16_list_coro(
@@ -1335,12 +1335,12 @@ cdef api void call_cy_SimpleService_sum_i32_list(
     cFollyPromise[int32_t] cPromise,
     unique_ptr[vector[int32_t]] numbers
 ):
-    cdef SimpleServiceInterface iface
-    iface = self
+    cdef SimpleServiceInterface __iface
+    __iface = self
     __promise = Promise_i32.create(move(cPromise))
     arg_numbers = _module_types.List__i32.create(_module_types.move(numbers))
     __context = None
-    if iface._pass_context_sum_i32_list:
+    if __iface._pass_context_sum_i32_list:
         __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         SimpleService_sum_i32_list_coro(
@@ -1386,12 +1386,12 @@ cdef api void call_cy_SimpleService_sum_i64_list(
     cFollyPromise[int32_t] cPromise,
     unique_ptr[vector[int64_t]] numbers
 ):
-    cdef SimpleServiceInterface iface
-    iface = self
+    cdef SimpleServiceInterface __iface
+    __iface = self
     __promise = Promise_i32.create(move(cPromise))
     arg_numbers = _module_types.List__i64.create(_module_types.move(numbers))
     __context = None
-    if iface._pass_context_sum_i64_list:
+    if __iface._pass_context_sum_i64_list:
         __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         SimpleService_sum_i64_list_coro(
@@ -1437,12 +1437,12 @@ cdef api void call_cy_SimpleService_concat_many(
     cFollyPromise[unique_ptr[string]] cPromise,
     unique_ptr[vector[string]] words
 ):
-    cdef SimpleServiceInterface iface
-    iface = self
+    cdef SimpleServiceInterface __iface
+    __iface = self
     __promise = Promise_string.create(move(cPromise))
     arg_words = _module_types.List__string.create(_module_types.move(words))
     __context = None
-    if iface._pass_context_concat_many:
+    if __iface._pass_context_concat_many:
         __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         SimpleService_concat_many_coro(
@@ -1488,12 +1488,12 @@ cdef api void call_cy_SimpleService_count_structs(
     cFollyPromise[int32_t] cPromise,
     unique_ptr[vector[_module_types.cSimpleStruct]] items
 ):
-    cdef SimpleServiceInterface iface
-    iface = self
+    cdef SimpleServiceInterface __iface
+    __iface = self
     __promise = Promise_i32.create(move(cPromise))
     arg_items = _module_types.List__SimpleStruct.create(_module_types.move(items))
     __context = None
-    if iface._pass_context_count_structs:
+    if __iface._pass_context_count_structs:
         __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         SimpleService_count_structs_coro(
@@ -1539,12 +1539,12 @@ cdef api void call_cy_SimpleService_sum_set(
     cFollyPromise[int32_t] cPromise,
     unique_ptr[cset[int32_t]] numbers
 ):
-    cdef SimpleServiceInterface iface
-    iface = self
+    cdef SimpleServiceInterface __iface
+    __iface = self
     __promise = Promise_i32.create(move(cPromise))
     arg_numbers = _module_types.Set__i32.create(_module_types.move(numbers))
     __context = None
-    if iface._pass_context_sum_set:
+    if __iface._pass_context_sum_set:
         __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         SimpleService_sum_set_coro(
@@ -1591,13 +1591,13 @@ cdef api void call_cy_SimpleService_contains_word(
     unique_ptr[cset[string]] words,
     unique_ptr[string] word
 ):
-    cdef SimpleServiceInterface iface
-    iface = self
+    cdef SimpleServiceInterface __iface
+    __iface = self
     __promise = Promise_bool.create(move(cPromise))
     arg_words = _module_types.Set__string.create(_module_types.move(words))
     arg_word = (deref(word.get())).decode('UTF-8')
     __context = None
-    if iface._pass_context_contains_word:
+    if __iface._pass_context_contains_word:
         __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         SimpleService_contains_word_coro(
@@ -1648,13 +1648,13 @@ cdef api void call_cy_SimpleService_get_map_value(
     unique_ptr[cmap[string,string]] words,
     unique_ptr[string] key
 ):
-    cdef SimpleServiceInterface iface
-    iface = self
+    cdef SimpleServiceInterface __iface
+    __iface = self
     __promise = Promise_string.create(move(cPromise))
     arg_words = _module_types.Map__string_string.create(_module_types.move(words))
     arg_key = (deref(key.get())).decode('UTF-8')
     __context = None
-    if iface._pass_context_get_map_value:
+    if __iface._pass_context_get_map_value:
         __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         SimpleService_get_map_value_coro(
@@ -1704,12 +1704,12 @@ cdef api void call_cy_SimpleService_map_length(
     cFollyPromise[int16_t] cPromise,
     unique_ptr[cmap[string,_module_types.cSimpleStruct]] items
 ):
-    cdef SimpleServiceInterface iface
-    iface = self
+    cdef SimpleServiceInterface __iface
+    __iface = self
     __promise = Promise_i16.create(move(cPromise))
     arg_items = _module_types.Map__string_SimpleStruct.create(_module_types.move(items))
     __context = None
-    if iface._pass_context_map_length:
+    if __iface._pass_context_map_length:
         __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         SimpleService_map_length_coro(
@@ -1755,12 +1755,12 @@ cdef api void call_cy_SimpleService_sum_map_values(
     cFollyPromise[int16_t] cPromise,
     unique_ptr[cmap[string,int16_t]] items
 ):
-    cdef SimpleServiceInterface iface
-    iface = self
+    cdef SimpleServiceInterface __iface
+    __iface = self
     __promise = Promise_i16.create(move(cPromise))
     arg_items = _module_types.Map__string_i16.create(_module_types.move(items))
     __context = None
-    if iface._pass_context_sum_map_values:
+    if __iface._pass_context_sum_map_values:
         __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         SimpleService_sum_map_values_coro(
@@ -1806,12 +1806,12 @@ cdef api void call_cy_SimpleService_complex_sum_i32(
     cFollyPromise[int32_t] cPromise,
     unique_ptr[_module_types.cComplexStruct] counter
 ):
-    cdef SimpleServiceInterface iface
-    iface = self
+    cdef SimpleServiceInterface __iface
+    __iface = self
     __promise = Promise_i32.create(move(cPromise))
     arg_counter = _module_types.ComplexStruct.create(shared_ptr[_module_types.cComplexStruct](counter.release()))
     __context = None
-    if iface._pass_context_complex_sum_i32:
+    if __iface._pass_context_complex_sum_i32:
         __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         SimpleService_complex_sum_i32_coro(
@@ -1857,12 +1857,12 @@ cdef api void call_cy_SimpleService_repeat_name(
     cFollyPromise[unique_ptr[string]] cPromise,
     unique_ptr[_module_types.cComplexStruct] counter
 ):
-    cdef SimpleServiceInterface iface
-    iface = self
+    cdef SimpleServiceInterface __iface
+    __iface = self
     __promise = Promise_string.create(move(cPromise))
     arg_counter = _module_types.ComplexStruct.create(shared_ptr[_module_types.cComplexStruct](counter.release()))
     __context = None
-    if iface._pass_context_repeat_name:
+    if __iface._pass_context_repeat_name:
         __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         SimpleService_repeat_name_coro(
@@ -1907,11 +1907,11 @@ cdef api void call_cy_SimpleService_get_struct(
     Cpp2RequestContext* ctx,
     cFollyPromise[unique_ptr[_module_types.cSimpleStruct]] cPromise
 ):
-    cdef SimpleServiceInterface iface
-    iface = self
+    cdef SimpleServiceInterface __iface
+    __iface = self
     __promise = Promise_SimpleStruct.create(move(cPromise))
     __context = None
-    if iface._pass_context_get_struct:
+    if __iface._pass_context_get_struct:
         __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         SimpleService_get_struct_coro(
@@ -1953,12 +1953,12 @@ cdef api void call_cy_SimpleService_fib(
     cFollyPromise[unique_ptr[vector[int32_t]]] cPromise,
     int16_t n
 ):
-    cdef SimpleServiceInterface iface
-    iface = self
+    cdef SimpleServiceInterface __iface
+    __iface = self
     __promise = Promise_List__i32.create(move(cPromise))
     arg_n = n
     __context = None
-    if iface._pass_context_fib:
+    if __iface._pass_context_fib:
         __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         SimpleService_fib_coro(
@@ -2005,12 +2005,12 @@ cdef api void call_cy_SimpleService_unique_words(
     cFollyPromise[unique_ptr[cset[string]]] cPromise,
     unique_ptr[vector[string]] words
 ):
-    cdef SimpleServiceInterface iface
-    iface = self
+    cdef SimpleServiceInterface __iface
+    __iface = self
     __promise = Promise_Set__string.create(move(cPromise))
     arg_words = _module_types.List__string.create(_module_types.move(words))
     __context = None
-    if iface._pass_context_unique_words:
+    if __iface._pass_context_unique_words:
         __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         SimpleService_unique_words_coro(
@@ -2057,12 +2057,12 @@ cdef api void call_cy_SimpleService_words_count(
     cFollyPromise[unique_ptr[cmap[string,int16_t]]] cPromise,
     unique_ptr[vector[string]] words
 ):
-    cdef SimpleServiceInterface iface
-    iface = self
+    cdef SimpleServiceInterface __iface
+    __iface = self
     __promise = Promise_Map__string_i16.create(move(cPromise))
     arg_words = _module_types.List__string.create(_module_types.move(words))
     __context = None
-    if iface._pass_context_words_count:
+    if __iface._pass_context_words_count:
         __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         SimpleService_words_count_coro(
@@ -2109,12 +2109,12 @@ cdef api void call_cy_SimpleService_set_enum(
     cFollyPromise[_module_types.cAnEnum] cPromise,
     _module_types.cAnEnum in_enum
 ):
-    cdef SimpleServiceInterface iface
-    iface = self
+    cdef SimpleServiceInterface __iface
+    __iface = self
     __promise = Promise_AnEnum.create(move(cPromise))
     arg_in_enum = _module_types.AnEnum(<int> in_enum)
     __context = None
-    if iface._pass_context_set_enum:
+    if __iface._pass_context_set_enum:
         __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         SimpleService_set_enum_coro(
@@ -2161,13 +2161,13 @@ cdef api void call_cy_SimpleService_list_of_lists(
     int16_t num_lists,
     int16_t num_items
 ):
-    cdef SimpleServiceInterface iface
-    iface = self
+    cdef SimpleServiceInterface __iface
+    __iface = self
     __promise = Promise_List__List__i32.create(move(cPromise))
     arg_num_lists = num_lists
     arg_num_items = num_items
     __context = None
-    if iface._pass_context_list_of_lists:
+    if __iface._pass_context_list_of_lists:
         __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         SimpleService_list_of_lists_coro(
@@ -2218,12 +2218,12 @@ cdef api void call_cy_SimpleService_word_character_frequency(
     cFollyPromise[unique_ptr[cmap[string,cmap[string,int32_t]]]] cPromise,
     unique_ptr[string] sentence
 ):
-    cdef SimpleServiceInterface iface
-    iface = self
+    cdef SimpleServiceInterface __iface
+    __iface = self
     __promise = Promise_Map__string_Map__string_i32.create(move(cPromise))
     arg_sentence = (deref(sentence.get())).decode('UTF-8')
     __context = None
-    if iface._pass_context_word_character_frequency:
+    if __iface._pass_context_word_character_frequency:
         __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         SimpleService_word_character_frequency_coro(
@@ -2270,12 +2270,12 @@ cdef api void call_cy_SimpleService_list_of_sets(
     cFollyPromise[unique_ptr[vector[cset[string]]]] cPromise,
     unique_ptr[string] some_words
 ):
-    cdef SimpleServiceInterface iface
-    iface = self
+    cdef SimpleServiceInterface __iface
+    __iface = self
     __promise = Promise_List__Set__string.create(move(cPromise))
     arg_some_words = (deref(some_words.get())).decode('UTF-8')
     __context = None
-    if iface._pass_context_list_of_sets:
+    if __iface._pass_context_list_of_sets:
         __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         SimpleService_list_of_sets_coro(
@@ -2322,12 +2322,12 @@ cdef api void call_cy_SimpleService_nested_map_argument(
     cFollyPromise[int32_t] cPromise,
     unique_ptr[cmap[string,vector[_module_types.cSimpleStruct]]] struct_map
 ):
-    cdef SimpleServiceInterface iface
-    iface = self
+    cdef SimpleServiceInterface __iface
+    __iface = self
     __promise = Promise_i32.create(move(cPromise))
     arg_struct_map = _module_types.Map__string_List__SimpleStruct.create(_module_types.move(struct_map))
     __context = None
-    if iface._pass_context_nested_map_argument:
+    if __iface._pass_context_nested_map_argument:
         __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         SimpleService_nested_map_argument_coro(
@@ -2373,12 +2373,12 @@ cdef api void call_cy_SimpleService_make_sentence(
     cFollyPromise[unique_ptr[string]] cPromise,
     unique_ptr[vector[vector[string]]] word_chars
 ):
-    cdef SimpleServiceInterface iface
-    iface = self
+    cdef SimpleServiceInterface __iface
+    __iface = self
     __promise = Promise_string.create(move(cPromise))
     arg_word_chars = _module_types.List__List__string.create(_module_types.move(word_chars))
     __context = None
-    if iface._pass_context_make_sentence:
+    if __iface._pass_context_make_sentence:
         __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         SimpleService_make_sentence_coro(
@@ -2424,12 +2424,12 @@ cdef api void call_cy_SimpleService_get_union(
     cFollyPromise[unique_ptr[cset[int32_t]]] cPromise,
     unique_ptr[vector[cset[int32_t]]] sets
 ):
-    cdef SimpleServiceInterface iface
-    iface = self
+    cdef SimpleServiceInterface __iface
+    __iface = self
     __promise = Promise_Set__i32.create(move(cPromise))
     arg_sets = _module_types.List__Set__i32.create(_module_types.move(sets))
     __context = None
-    if iface._pass_context_get_union:
+    if __iface._pass_context_get_union:
         __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         SimpleService_get_union_coro(
@@ -2476,12 +2476,12 @@ cdef api void call_cy_SimpleService_get_keys(
     cFollyPromise[unique_ptr[cset[string]]] cPromise,
     unique_ptr[vector[cmap[string,string]]] string_map
 ):
-    cdef SimpleServiceInterface iface
-    iface = self
+    cdef SimpleServiceInterface __iface
+    __iface = self
     __promise = Promise_Set__string.create(move(cPromise))
     arg_string_map = _module_types.List__Map__string_string.create(_module_types.move(string_map))
     __context = None
-    if iface._pass_context_get_keys:
+    if __iface._pass_context_get_keys:
         __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         SimpleService_get_keys_coro(
@@ -2528,12 +2528,12 @@ cdef api void call_cy_SimpleService_lookup_double(
     cFollyPromise[double] cPromise,
     int32_t key
 ):
-    cdef SimpleServiceInterface iface
-    iface = self
+    cdef SimpleServiceInterface __iface
+    __iface = self
     __promise = Promise_double.create(move(cPromise))
     arg_key = key
     __context = None
-    if iface._pass_context_lookup_double:
+    if __iface._pass_context_lookup_double:
         __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         SimpleService_lookup_double_coro(
@@ -2579,12 +2579,12 @@ cdef api void call_cy_SimpleService_retrieve_binary(
     cFollyPromise[unique_ptr[string]] cPromise,
     unique_ptr[string] something
 ):
-    cdef SimpleServiceInterface iface
-    iface = self
+    cdef SimpleServiceInterface __iface
+    __iface = self
     __promise = Promise_binary.create(move(cPromise))
     arg_something = (deref(something.get()))
     __context = None
-    if iface._pass_context_retrieve_binary:
+    if __iface._pass_context_retrieve_binary:
         __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         SimpleService_retrieve_binary_coro(
@@ -2630,12 +2630,12 @@ cdef api void call_cy_SimpleService_contain_binary(
     cFollyPromise[unique_ptr[cset[string]]] cPromise,
     unique_ptr[vector[string]] binaries
 ):
-    cdef SimpleServiceInterface iface
-    iface = self
+    cdef SimpleServiceInterface __iface
+    __iface = self
     __promise = Promise_Set__binary.create(move(cPromise))
     arg_binaries = _module_types.List__binary.create(_module_types.move(binaries))
     __context = None
-    if iface._pass_context_contain_binary:
+    if __iface._pass_context_contain_binary:
         __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         SimpleService_contain_binary_coro(
@@ -2682,12 +2682,12 @@ cdef api void call_cy_SimpleService_contain_enum(
     cFollyPromise[unique_ptr[vector[_module_types.cAnEnum]]] cPromise,
     unique_ptr[vector[_module_types.cAnEnum]] the_enum
 ):
-    cdef SimpleServiceInterface iface
-    iface = self
+    cdef SimpleServiceInterface __iface
+    __iface = self
     __promise = Promise_List__AnEnum.create(move(cPromise))
     arg_the_enum = _module_types.List__AnEnum.create(_module_types.move(the_enum))
     __context = None
-    if iface._pass_context_contain_enum:
+    if __iface._pass_context_contain_enum:
         __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         SimpleService_contain_enum_coro(
@@ -2733,11 +2733,11 @@ cdef api void call_cy_DerivedService_get_six(
     Cpp2RequestContext* ctx,
     cFollyPromise[int32_t] cPromise
 ):
-    cdef DerivedServiceInterface iface
-    iface = self
+    cdef DerivedServiceInterface __iface
+    __iface = self
     __promise = Promise_i32.create(move(cPromise))
     __context = None
-    if iface._pass_context_get_six:
+    if __iface._pass_context_get_six:
         __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         DerivedService_get_six_coro(
@@ -2778,11 +2778,11 @@ cdef api void call_cy_RederivedService_get_seven(
     Cpp2RequestContext* ctx,
     cFollyPromise[int32_t] cPromise
 ):
-    cdef RederivedServiceInterface iface
-    iface = self
+    cdef RederivedServiceInterface __iface
+    __iface = self
     __promise = Promise_i32.create(move(cPromise))
     __context = None
-    if iface._pass_context_get_seven:
+    if __iface._pass_context_get_seven:
         __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         RederivedService_get_seven_coro(

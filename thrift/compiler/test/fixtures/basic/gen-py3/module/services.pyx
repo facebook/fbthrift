@@ -290,11 +290,11 @@ cdef api void call_cy_MyService_ping(
     Cpp2RequestContext* ctx,
     cFollyPromise[cFollyUnit] cPromise
 ):
-    cdef MyServiceInterface iface
-    iface = self
+    cdef MyServiceInterface __iface
+    __iface = self
     __promise = Promise_void.create(move(cPromise))
     __context = None
-    if iface._pass_context_ping:
+    if __iface._pass_context_ping:
         __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         MyService_ping_coro(
@@ -335,11 +335,11 @@ cdef api void call_cy_MyService_getRandomData(
     Cpp2RequestContext* ctx,
     cFollyPromise[unique_ptr[string]] cPromise
 ):
-    cdef MyServiceInterface iface
-    iface = self
+    cdef MyServiceInterface __iface
+    __iface = self
     __promise = Promise_string.create(move(cPromise))
     __context = None
-    if iface._pass_context_getRandomData:
+    if __iface._pass_context_getRandomData:
         __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         MyService_getRandomData_coro(
@@ -381,12 +381,12 @@ cdef api void call_cy_MyService_hasDataById(
     cFollyPromise[cbool] cPromise,
     int64_t id
 ):
-    cdef MyServiceInterface iface
-    iface = self
+    cdef MyServiceInterface __iface
+    __iface = self
     __promise = Promise_bool.create(move(cPromise))
     arg_id = id
     __context = None
-    if iface._pass_context_hasDataById:
+    if __iface._pass_context_hasDataById:
         __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         MyService_hasDataById_coro(
@@ -432,12 +432,12 @@ cdef api void call_cy_MyService_getDataById(
     cFollyPromise[unique_ptr[string]] cPromise,
     int64_t id
 ):
-    cdef MyServiceInterface iface
-    iface = self
+    cdef MyServiceInterface __iface
+    __iface = self
     __promise = Promise_string.create(move(cPromise))
     arg_id = id
     __context = None
-    if iface._pass_context_getDataById:
+    if __iface._pass_context_getDataById:
         __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         MyService_getDataById_coro(
@@ -484,13 +484,13 @@ cdef api void call_cy_MyService_putDataById(
     int64_t id,
     unique_ptr[string] data
 ):
-    cdef MyServiceInterface iface
-    iface = self
+    cdef MyServiceInterface __iface
+    __iface = self
     __promise = Promise_void.create(move(cPromise))
     arg_id = id
     arg_data = (deref(data.get())).decode('UTF-8')
     __context = None
-    if iface._pass_context_putDataById:
+    if __iface._pass_context_putDataById:
         __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         MyService_putDataById_coro(
@@ -541,13 +541,13 @@ cdef api void call_cy_MyService_lobDataById(
     int64_t id,
     unique_ptr[string] data
 ):
-    cdef MyServiceInterface iface
-    iface = self
+    cdef MyServiceInterface __iface
+    __iface = self
     __promise = Promise_void.create(move(cPromise))
     arg_id = id
     arg_data = (deref(data.get())).decode('UTF-8')
     __context = None
-    if iface._pass_context_lobDataById:
+    if __iface._pass_context_lobDataById:
         __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         MyService_lobDataById_coro(
@@ -596,11 +596,11 @@ cdef api void call_cy_MyServiceFast_ping(
     Cpp2RequestContext* ctx,
     cFollyPromise[cFollyUnit] cPromise
 ):
-    cdef MyServiceFastInterface iface
-    iface = self
+    cdef MyServiceFastInterface __iface
+    __iface = self
     __promise = Promise_void.create(move(cPromise))
     __context = None
-    if iface._pass_context_ping:
+    if __iface._pass_context_ping:
         __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         MyServiceFast_ping_coro(
@@ -641,11 +641,11 @@ cdef api void call_cy_MyServiceFast_getRandomData(
     Cpp2RequestContext* ctx,
     cFollyPromise[unique_ptr[string]] cPromise
 ):
-    cdef MyServiceFastInterface iface
-    iface = self
+    cdef MyServiceFastInterface __iface
+    __iface = self
     __promise = Promise_string.create(move(cPromise))
     __context = None
-    if iface._pass_context_getRandomData:
+    if __iface._pass_context_getRandomData:
         __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         MyServiceFast_getRandomData_coro(
@@ -687,12 +687,12 @@ cdef api void call_cy_MyServiceFast_hasDataById(
     cFollyPromise[cbool] cPromise,
     int64_t id
 ):
-    cdef MyServiceFastInterface iface
-    iface = self
+    cdef MyServiceFastInterface __iface
+    __iface = self
     __promise = Promise_bool.create(move(cPromise))
     arg_id = id
     __context = None
-    if iface._pass_context_hasDataById:
+    if __iface._pass_context_hasDataById:
         __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         MyServiceFast_hasDataById_coro(
@@ -738,12 +738,12 @@ cdef api void call_cy_MyServiceFast_getDataById(
     cFollyPromise[unique_ptr[string]] cPromise,
     int64_t id
 ):
-    cdef MyServiceFastInterface iface
-    iface = self
+    cdef MyServiceFastInterface __iface
+    __iface = self
     __promise = Promise_string.create(move(cPromise))
     arg_id = id
     __context = None
-    if iface._pass_context_getDataById:
+    if __iface._pass_context_getDataById:
         __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         MyServiceFast_getDataById_coro(
@@ -790,13 +790,13 @@ cdef api void call_cy_MyServiceFast_putDataById(
     int64_t id,
     unique_ptr[string] data
 ):
-    cdef MyServiceFastInterface iface
-    iface = self
+    cdef MyServiceFastInterface __iface
+    __iface = self
     __promise = Promise_void.create(move(cPromise))
     arg_id = id
     arg_data = (deref(data.get())).decode('UTF-8')
     __context = None
-    if iface._pass_context_putDataById:
+    if __iface._pass_context_putDataById:
         __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         MyServiceFast_putDataById_coro(
@@ -847,13 +847,13 @@ cdef api void call_cy_MyServiceFast_lobDataById(
     int64_t id,
     unique_ptr[string] data
 ):
-    cdef MyServiceFastInterface iface
-    iface = self
+    cdef MyServiceFastInterface __iface
+    __iface = self
     __promise = Promise_void.create(move(cPromise))
     arg_id = id
     arg_data = (deref(data.get())).decode('UTF-8')
     __context = None
-    if iface._pass_context_lobDataById:
+    if __iface._pass_context_lobDataById:
         __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         MyServiceFast_lobDataById_coro(
@@ -902,11 +902,11 @@ cdef api void call_cy_MyServicePrioParent_ping(
     Cpp2RequestContext* ctx,
     cFollyPromise[cFollyUnit] cPromise
 ):
-    cdef MyServicePrioParentInterface iface
-    iface = self
+    cdef MyServicePrioParentInterface __iface
+    __iface = self
     __promise = Promise_void.create(move(cPromise))
     __context = None
-    if iface._pass_context_ping:
+    if __iface._pass_context_ping:
         __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         MyServicePrioParent_ping_coro(
@@ -947,11 +947,11 @@ cdef api void call_cy_MyServicePrioParent_pong(
     Cpp2RequestContext* ctx,
     cFollyPromise[cFollyUnit] cPromise
 ):
-    cdef MyServicePrioParentInterface iface
-    iface = self
+    cdef MyServicePrioParentInterface __iface
+    __iface = self
     __promise = Promise_void.create(move(cPromise))
     __context = None
-    if iface._pass_context_pong:
+    if __iface._pass_context_pong:
         __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         MyServicePrioParent_pong_coro(
@@ -992,11 +992,11 @@ cdef api void call_cy_MyServicePrioChild_pang(
     Cpp2RequestContext* ctx,
     cFollyPromise[cFollyUnit] cPromise
 ):
-    cdef MyServicePrioChildInterface iface
-    iface = self
+    cdef MyServicePrioChildInterface __iface
+    __iface = self
     __promise = Promise_void.create(move(cPromise))
     __context = None
-    if iface._pass_context_pang:
+    if __iface._pass_context_pang:
         __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         MyServicePrioChild_pang_coro(

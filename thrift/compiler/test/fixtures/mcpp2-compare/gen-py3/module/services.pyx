@@ -786,11 +786,11 @@ cdef api void call_cy_ReturnService_noReturn(
     Cpp2RequestContext* ctx,
     cFollyPromise[cFollyUnit] cPromise
 ):
-    cdef ReturnServiceInterface iface
-    iface = self
+    cdef ReturnServiceInterface __iface
+    __iface = self
     __promise = Promise_void.create(move(cPromise))
     __context = None
-    if iface._pass_context_noReturn:
+    if __iface._pass_context_noReturn:
         __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         ReturnService_noReturn_coro(
@@ -831,11 +831,11 @@ cdef api void call_cy_ReturnService_boolReturn(
     Cpp2RequestContext* ctx,
     cFollyPromise[cbool] cPromise
 ):
-    cdef ReturnServiceInterface iface
-    iface = self
+    cdef ReturnServiceInterface __iface
+    __iface = self
     __promise = Promise_bool.create(move(cPromise))
     __context = None
-    if iface._pass_context_boolReturn:
+    if __iface._pass_context_boolReturn:
         __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         ReturnService_boolReturn_coro(
@@ -876,11 +876,11 @@ cdef api void call_cy_ReturnService_i16Return(
     Cpp2RequestContext* ctx,
     cFollyPromise[int16_t] cPromise
 ):
-    cdef ReturnServiceInterface iface
-    iface = self
+    cdef ReturnServiceInterface __iface
+    __iface = self
     __promise = Promise_i16.create(move(cPromise))
     __context = None
-    if iface._pass_context_i16Return:
+    if __iface._pass_context_i16Return:
         __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         ReturnService_i16Return_coro(
@@ -921,11 +921,11 @@ cdef api void call_cy_ReturnService_i32Return(
     Cpp2RequestContext* ctx,
     cFollyPromise[int32_t] cPromise
 ):
-    cdef ReturnServiceInterface iface
-    iface = self
+    cdef ReturnServiceInterface __iface
+    __iface = self
     __promise = Promise_i32.create(move(cPromise))
     __context = None
-    if iface._pass_context_i32Return:
+    if __iface._pass_context_i32Return:
         __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         ReturnService_i32Return_coro(
@@ -966,11 +966,11 @@ cdef api void call_cy_ReturnService_i64Return(
     Cpp2RequestContext* ctx,
     cFollyPromise[int64_t] cPromise
 ):
-    cdef ReturnServiceInterface iface
-    iface = self
+    cdef ReturnServiceInterface __iface
+    __iface = self
     __promise = Promise_i64.create(move(cPromise))
     __context = None
-    if iface._pass_context_i64Return:
+    if __iface._pass_context_i64Return:
         __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         ReturnService_i64Return_coro(
@@ -1011,11 +1011,11 @@ cdef api void call_cy_ReturnService_floatReturn(
     Cpp2RequestContext* ctx,
     cFollyPromise[float] cPromise
 ):
-    cdef ReturnServiceInterface iface
-    iface = self
+    cdef ReturnServiceInterface __iface
+    __iface = self
     __promise = Promise_float.create(move(cPromise))
     __context = None
-    if iface._pass_context_floatReturn:
+    if __iface._pass_context_floatReturn:
         __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         ReturnService_floatReturn_coro(
@@ -1056,11 +1056,11 @@ cdef api void call_cy_ReturnService_doubleReturn(
     Cpp2RequestContext* ctx,
     cFollyPromise[double] cPromise
 ):
-    cdef ReturnServiceInterface iface
-    iface = self
+    cdef ReturnServiceInterface __iface
+    __iface = self
     __promise = Promise_double.create(move(cPromise))
     __context = None
-    if iface._pass_context_doubleReturn:
+    if __iface._pass_context_doubleReturn:
         __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         ReturnService_doubleReturn_coro(
@@ -1101,11 +1101,11 @@ cdef api void call_cy_ReturnService_stringReturn(
     Cpp2RequestContext* ctx,
     cFollyPromise[unique_ptr[string]] cPromise
 ):
-    cdef ReturnServiceInterface iface
-    iface = self
+    cdef ReturnServiceInterface __iface
+    __iface = self
     __promise = Promise_string.create(move(cPromise))
     __context = None
-    if iface._pass_context_stringReturn:
+    if __iface._pass_context_stringReturn:
         __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         ReturnService_stringReturn_coro(
@@ -1146,11 +1146,11 @@ cdef api void call_cy_ReturnService_binaryReturn(
     Cpp2RequestContext* ctx,
     cFollyPromise[unique_ptr[string]] cPromise
 ):
-    cdef ReturnServiceInterface iface
-    iface = self
+    cdef ReturnServiceInterface __iface
+    __iface = self
     __promise = Promise_binary.create(move(cPromise))
     __context = None
-    if iface._pass_context_binaryReturn:
+    if __iface._pass_context_binaryReturn:
         __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         ReturnService_binaryReturn_coro(
@@ -1191,11 +1191,11 @@ cdef api void call_cy_ReturnService_mapReturn(
     Cpp2RequestContext* ctx,
     cFollyPromise[unique_ptr[cmap[string,int64_t]]] cPromise
 ):
-    cdef ReturnServiceInterface iface
-    iface = self
+    cdef ReturnServiceInterface __iface
+    __iface = self
     __promise = Promise_Map__string_i64.create(move(cPromise))
     __context = None
-    if iface._pass_context_mapReturn:
+    if __iface._pass_context_mapReturn:
         __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         ReturnService_mapReturn_coro(
@@ -1237,11 +1237,11 @@ cdef api void call_cy_ReturnService_simpleTypedefReturn(
     Cpp2RequestContext* ctx,
     cFollyPromise[int32_t] cPromise
 ):
-    cdef ReturnServiceInterface iface
-    iface = self
+    cdef ReturnServiceInterface __iface
+    __iface = self
     __promise = Promise_i32.create(move(cPromise))
     __context = None
-    if iface._pass_context_simpleTypedefReturn:
+    if __iface._pass_context_simpleTypedefReturn:
         __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         ReturnService_simpleTypedefReturn_coro(
@@ -1282,11 +1282,11 @@ cdef api void call_cy_ReturnService_complexTypedefReturn(
     Cpp2RequestContext* ctx,
     cFollyPromise[unique_ptr[vector[cmap[_module_types.cEmpty,_module_types.cMyStruct]]]] cPromise
 ):
-    cdef ReturnServiceInterface iface
-    iface = self
+    cdef ReturnServiceInterface __iface
+    __iface = self
     __promise = Promise_List__Map__Empty_MyStruct.create(move(cPromise))
     __context = None
-    if iface._pass_context_complexTypedefReturn:
+    if __iface._pass_context_complexTypedefReturn:
         __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         ReturnService_complexTypedefReturn_coro(
@@ -1328,11 +1328,11 @@ cdef api void call_cy_ReturnService_list_mostComplexTypedefReturn(
     Cpp2RequestContext* ctx,
     cFollyPromise[unique_ptr[vector[vector[vector[cmap[_module_types.cEmpty,_module_types.cMyStruct]]]]]] cPromise
 ):
-    cdef ReturnServiceInterface iface
-    iface = self
+    cdef ReturnServiceInterface __iface
+    __iface = self
     __promise = Promise_List__List__List__Map__Empty_MyStruct.create(move(cPromise))
     __context = None
-    if iface._pass_context_list_mostComplexTypedefReturn:
+    if __iface._pass_context_list_mostComplexTypedefReturn:
         __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         ReturnService_list_mostComplexTypedefReturn_coro(
@@ -1374,11 +1374,11 @@ cdef api void call_cy_ReturnService_enumReturn(
     Cpp2RequestContext* ctx,
     cFollyPromise[_module_types.cMyEnumA] cPromise
 ):
-    cdef ReturnServiceInterface iface
-    iface = self
+    cdef ReturnServiceInterface __iface
+    __iface = self
     __promise = Promise_MyEnumA.create(move(cPromise))
     __context = None
-    if iface._pass_context_enumReturn:
+    if __iface._pass_context_enumReturn:
         __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         ReturnService_enumReturn_coro(
@@ -1419,11 +1419,11 @@ cdef api void call_cy_ReturnService_list_EnumReturn(
     Cpp2RequestContext* ctx,
     cFollyPromise[unique_ptr[vector[_module_types.cMyEnumA]]] cPromise
 ):
-    cdef ReturnServiceInterface iface
-    iface = self
+    cdef ReturnServiceInterface __iface
+    __iface = self
     __promise = Promise_List__MyEnumA.create(move(cPromise))
     __context = None
-    if iface._pass_context_list_EnumReturn:
+    if __iface._pass_context_list_EnumReturn:
         __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         ReturnService_list_EnumReturn_coro(
@@ -1465,11 +1465,11 @@ cdef api void call_cy_ReturnService_structReturn(
     Cpp2RequestContext* ctx,
     cFollyPromise[unique_ptr[_module_types.cMyStruct]] cPromise
 ):
-    cdef ReturnServiceInterface iface
-    iface = self
+    cdef ReturnServiceInterface __iface
+    __iface = self
     __promise = Promise_MyStruct.create(move(cPromise))
     __context = None
-    if iface._pass_context_structReturn:
+    if __iface._pass_context_structReturn:
         __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         ReturnService_structReturn_coro(
@@ -1510,11 +1510,11 @@ cdef api void call_cy_ReturnService_set_StructReturn(
     Cpp2RequestContext* ctx,
     cFollyPromise[unique_ptr[cset[_module_types.cMyStruct]]] cPromise
 ):
-    cdef ReturnServiceInterface iface
-    iface = self
+    cdef ReturnServiceInterface __iface
+    __iface = self
     __promise = Promise_Set__MyStruct.create(move(cPromise))
     __context = None
-    if iface._pass_context_set_StructReturn:
+    if __iface._pass_context_set_StructReturn:
         __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         ReturnService_set_StructReturn_coro(
@@ -1556,11 +1556,11 @@ cdef api void call_cy_ReturnService_unionReturn(
     Cpp2RequestContext* ctx,
     cFollyPromise[unique_ptr[_module_types.cComplexUnion]] cPromise
 ):
-    cdef ReturnServiceInterface iface
-    iface = self
+    cdef ReturnServiceInterface __iface
+    __iface = self
     __promise = Promise_ComplexUnion.create(move(cPromise))
     __context = None
-    if iface._pass_context_unionReturn:
+    if __iface._pass_context_unionReturn:
         __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         ReturnService_unionReturn_coro(
@@ -1601,11 +1601,11 @@ cdef api void call_cy_ReturnService_list_UnionReturn(
     Cpp2RequestContext* ctx,
     cFollyPromise[unique_ptr[vector[_module_types.cComplexUnion]]] cPromise
 ):
-    cdef ReturnServiceInterface iface
-    iface = self
+    cdef ReturnServiceInterface __iface
+    __iface = self
     __promise = Promise_List__ComplexUnion.create(move(cPromise))
     __context = None
-    if iface._pass_context_list_UnionReturn:
+    if __iface._pass_context_list_UnionReturn:
         __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         ReturnService_list_UnionReturn_coro(
@@ -1648,12 +1648,12 @@ cdef api void call_cy_ReturnService_readDataEb(
     cFollyPromise[unique_ptr[_module_types.folly_IOBuf]] cPromise,
     int64_t size
 ):
-    cdef ReturnServiceInterface iface
-    iface = self
+    cdef ReturnServiceInterface __iface
+    __iface = self
     __promise = Promise_folly_IOBuf__binary.create(move(cPromise))
     arg_size = size
     __context = None
-    if iface._pass_context_readDataEb:
+    if __iface._pass_context_readDataEb:
         __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         ReturnService_readDataEb_coro(
@@ -1699,12 +1699,12 @@ cdef api void call_cy_ReturnService_readData(
     cFollyPromise[unique_ptr[_module_types.std_unique_ptr_folly_IOBuf]] cPromise,
     int64_t size
 ):
-    cdef ReturnServiceInterface iface
-    iface = self
+    cdef ReturnServiceInterface __iface
+    __iface = self
     __promise = Promise_std_unique_ptr_folly_IOBuf__binary.create(move(cPromise))
     arg_size = size
     __context = None
-    if iface._pass_context_readData:
+    if __iface._pass_context_readData:
         __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         ReturnService_readData_coro(
@@ -1750,12 +1750,12 @@ cdef api void call_cy_ParamService_void_ret_i16_param(
     cFollyPromise[cFollyUnit] cPromise,
     int16_t param1
 ):
-    cdef ParamServiceInterface iface
-    iface = self
+    cdef ParamServiceInterface __iface
+    __iface = self
     __promise = Promise_void.create(move(cPromise))
     arg_param1 = param1
     __context = None
-    if iface._pass_context_void_ret_i16_param:
+    if __iface._pass_context_void_ret_i16_param:
         __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         ParamService_void_ret_i16_param_coro(
@@ -1802,13 +1802,13 @@ cdef api void call_cy_ParamService_void_ret_byte_i16_param(
     int8_t param1,
     int16_t param2
 ):
-    cdef ParamServiceInterface iface
-    iface = self
+    cdef ParamServiceInterface __iface
+    __iface = self
     __promise = Promise_void.create(move(cPromise))
     arg_param1 = param1
     arg_param2 = param2
     __context = None
-    if iface._pass_context_void_ret_byte_i16_param:
+    if __iface._pass_context_void_ret_byte_i16_param:
         __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         ParamService_void_ret_byte_i16_param_coro(
@@ -1858,12 +1858,12 @@ cdef api void call_cy_ParamService_void_ret_map_param(
     cFollyPromise[cFollyUnit] cPromise,
     unique_ptr[cmap[string,int64_t]] param1
 ):
-    cdef ParamServiceInterface iface
-    iface = self
+    cdef ParamServiceInterface __iface
+    __iface = self
     __promise = Promise_void.create(move(cPromise))
     arg_param1 = _module_types.Map__string_i64.create(_module_types.move(param1))
     __context = None
-    if iface._pass_context_void_ret_map_param:
+    if __iface._pass_context_void_ret_map_param:
         __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         ParamService_void_ret_map_param_coro(
@@ -1910,13 +1910,13 @@ cdef api void call_cy_ParamService_void_ret_map_setlist_param(
     unique_ptr[cmap[string,int64_t]] param1,
     unique_ptr[cset[vector[string]]] param2
 ):
-    cdef ParamServiceInterface iface
-    iface = self
+    cdef ParamServiceInterface __iface
+    __iface = self
     __promise = Promise_void.create(move(cPromise))
     arg_param1 = _module_types.Map__string_i64.create(_module_types.move(param1))
     arg_param2 = _module_types.Set__List__string.create(_module_types.move(param2))
     __context = None
-    if iface._pass_context_void_ret_map_setlist_param:
+    if __iface._pass_context_void_ret_map_setlist_param:
         __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         ParamService_void_ret_map_setlist_param_coro(
@@ -1966,12 +1966,12 @@ cdef api void call_cy_ParamService_void_ret_map_typedef_param(
     cFollyPromise[cFollyUnit] cPromise,
     int32_t param1
 ):
-    cdef ParamServiceInterface iface
-    iface = self
+    cdef ParamServiceInterface __iface
+    __iface = self
     __promise = Promise_void.create(move(cPromise))
     arg_param1 = param1
     __context = None
-    if iface._pass_context_void_ret_map_typedef_param:
+    if __iface._pass_context_void_ret_map_typedef_param:
         __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         ParamService_void_ret_map_typedef_param_coro(
@@ -2017,12 +2017,12 @@ cdef api void call_cy_ParamService_void_ret_enum_param(
     cFollyPromise[cFollyUnit] cPromise,
     _module_types.cMyEnumA param1
 ):
-    cdef ParamServiceInterface iface
-    iface = self
+    cdef ParamServiceInterface __iface
+    __iface = self
     __promise = Promise_void.create(move(cPromise))
     arg_param1 = _module_types.MyEnumA(<int> param1)
     __context = None
-    if iface._pass_context_void_ret_enum_param:
+    if __iface._pass_context_void_ret_enum_param:
         __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         ParamService_void_ret_enum_param_coro(
@@ -2068,12 +2068,12 @@ cdef api void call_cy_ParamService_void_ret_struct_param(
     cFollyPromise[cFollyUnit] cPromise,
     unique_ptr[_module_types.cMyStruct] param1
 ):
-    cdef ParamServiceInterface iface
-    iface = self
+    cdef ParamServiceInterface __iface
+    __iface = self
     __promise = Promise_void.create(move(cPromise))
     arg_param1 = _module_types.MyStruct.create(shared_ptr[_module_types.cMyStruct](param1.release()))
     __context = None
-    if iface._pass_context_void_ret_struct_param:
+    if __iface._pass_context_void_ret_struct_param:
         __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         ParamService_void_ret_struct_param_coro(
@@ -2119,12 +2119,12 @@ cdef api void call_cy_ParamService_void_ret_listunion_param(
     cFollyPromise[cFollyUnit] cPromise,
     unique_ptr[vector[_module_types.cComplexUnion]] param1
 ):
-    cdef ParamServiceInterface iface
-    iface = self
+    cdef ParamServiceInterface __iface
+    __iface = self
     __promise = Promise_void.create(move(cPromise))
     arg_param1 = _module_types.List__ComplexUnion.create(_module_types.move(param1))
     __context = None
-    if iface._pass_context_void_ret_listunion_param:
+    if __iface._pass_context_void_ret_listunion_param:
         __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         ParamService_void_ret_listunion_param_coro(
@@ -2171,13 +2171,13 @@ cdef api void call_cy_ParamService_bool_ret_i32_i64_param(
     int32_t param1,
     int64_t param2
 ):
-    cdef ParamServiceInterface iface
-    iface = self
+    cdef ParamServiceInterface __iface
+    __iface = self
     __promise = Promise_bool.create(move(cPromise))
     arg_param1 = param1
     arg_param2 = param2
     __context = None
-    if iface._pass_context_bool_ret_i32_i64_param:
+    if __iface._pass_context_bool_ret_i32_i64_param:
         __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         ParamService_bool_ret_i32_i64_param_coro(
@@ -2227,12 +2227,12 @@ cdef api void call_cy_ParamService_bool_ret_map_param(
     cFollyPromise[cbool] cPromise,
     unique_ptr[cmap[string,int64_t]] param1
 ):
-    cdef ParamServiceInterface iface
-    iface = self
+    cdef ParamServiceInterface __iface
+    __iface = self
     __promise = Promise_bool.create(move(cPromise))
     arg_param1 = _module_types.Map__string_i64.create(_module_types.move(param1))
     __context = None
-    if iface._pass_context_bool_ret_map_param:
+    if __iface._pass_context_bool_ret_map_param:
         __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         ParamService_bool_ret_map_param_coro(
@@ -2278,12 +2278,12 @@ cdef api void call_cy_ParamService_bool_ret_union_param(
     cFollyPromise[cbool] cPromise,
     unique_ptr[_module_types.cComplexUnion] param1
 ):
-    cdef ParamServiceInterface iface
-    iface = self
+    cdef ParamServiceInterface __iface
+    __iface = self
     __promise = Promise_bool.create(move(cPromise))
     arg_param1 = _module_types.ComplexUnion.create(shared_ptr[_module_types.cComplexUnion](param1.release()))
     __context = None
-    if iface._pass_context_bool_ret_union_param:
+    if __iface._pass_context_bool_ret_union_param:
         __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         ParamService_bool_ret_union_param_coro(
@@ -2330,13 +2330,13 @@ cdef api void call_cy_ParamService_i64_ret_float_double_param(
     float param1,
     double param2
 ):
-    cdef ParamServiceInterface iface
-    iface = self
+    cdef ParamServiceInterface __iface
+    __iface = self
     __promise = Promise_i64.create(move(cPromise))
     arg_param1 = param1
     arg_param2 = param2
     __context = None
-    if iface._pass_context_i64_ret_float_double_param:
+    if __iface._pass_context_i64_ret_float_double_param:
         __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         ParamService_i64_ret_float_double_param_coro(
@@ -2387,13 +2387,13 @@ cdef api void call_cy_ParamService_i64_ret_string_typedef_param(
     unique_ptr[string] param1,
     unique_ptr[cset[vector[vector[cmap[_module_types.cEmpty,_module_types.cMyStruct]]]]] param2
 ):
-    cdef ParamServiceInterface iface
-    iface = self
+    cdef ParamServiceInterface __iface
+    __iface = self
     __promise = Promise_i64.create(move(cPromise))
     arg_param1 = (deref(param1.get())).decode('UTF-8')
     arg_param2 = _module_types.Set__List__List__Map__Empty_MyStruct.create(_module_types.move(param2))
     __context = None
-    if iface._pass_context_i64_ret_string_typedef_param:
+    if __iface._pass_context_i64_ret_string_typedef_param:
         __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         ParamService_i64_ret_string_typedef_param_coro(
@@ -2447,8 +2447,8 @@ cdef api void call_cy_ParamService_i64_ret_i32_i32_i32_i32_i32_param(
     int32_t param4,
     int32_t param5
 ):
-    cdef ParamServiceInterface iface
-    iface = self
+    cdef ParamServiceInterface __iface
+    __iface = self
     __promise = Promise_i64.create(move(cPromise))
     arg_param1 = param1
     arg_param2 = param2
@@ -2456,7 +2456,7 @@ cdef api void call_cy_ParamService_i64_ret_i32_i32_i32_i32_i32_param(
     arg_param4 = param4
     arg_param5 = param5
     __context = None
-    if iface._pass_context_i64_ret_i32_i32_i32_i32_i32_param:
+    if __iface._pass_context_i64_ret_i32_i32_i32_i32_i32_param:
         __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         ParamService_i64_ret_i32_i32_i32_i32_i32_param_coro(
@@ -2518,12 +2518,12 @@ cdef api void call_cy_ParamService_double_ret_setstruct_param(
     cFollyPromise[double] cPromise,
     unique_ptr[cset[_module_types.cMyStruct]] param1
 ):
-    cdef ParamServiceInterface iface
-    iface = self
+    cdef ParamServiceInterface __iface
+    __iface = self
     __promise = Promise_double.create(move(cPromise))
     arg_param1 = _module_types.Set__MyStruct.create(_module_types.move(param1))
     __context = None
-    if iface._pass_context_double_ret_setstruct_param:
+    if __iface._pass_context_double_ret_setstruct_param:
         __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         ParamService_double_ret_setstruct_param_coro(
@@ -2569,12 +2569,12 @@ cdef api void call_cy_ParamService_string_ret_string_param(
     cFollyPromise[unique_ptr[string]] cPromise,
     unique_ptr[string] param1
 ):
-    cdef ParamServiceInterface iface
-    iface = self
+    cdef ParamServiceInterface __iface
+    __iface = self
     __promise = Promise_string.create(move(cPromise))
     arg_param1 = (deref(param1.get())).decode('UTF-8')
     __context = None
-    if iface._pass_context_string_ret_string_param:
+    if __iface._pass_context_string_ret_string_param:
         __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         ParamService_string_ret_string_param_coro(
@@ -2620,12 +2620,12 @@ cdef api void call_cy_ParamService_binary_ret_binary_param(
     cFollyPromise[unique_ptr[string]] cPromise,
     unique_ptr[string] param1
 ):
-    cdef ParamServiceInterface iface
-    iface = self
+    cdef ParamServiceInterface __iface
+    __iface = self
     __promise = Promise_binary.create(move(cPromise))
     arg_param1 = (deref(param1.get()))
     __context = None
-    if iface._pass_context_binary_ret_binary_param:
+    if __iface._pass_context_binary_ret_binary_param:
         __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         ParamService_binary_ret_binary_param_coro(
@@ -2671,12 +2671,12 @@ cdef api void call_cy_ParamService_map_ret_bool_param(
     cFollyPromise[unique_ptr[cmap[string,int64_t]]] cPromise,
     cbool param1
 ):
-    cdef ParamServiceInterface iface
-    iface = self
+    cdef ParamServiceInterface __iface
+    __iface = self
     __promise = Promise_Map__string_i64.create(move(cPromise))
     arg_param1 = param1
     __context = None
-    if iface._pass_context_map_ret_bool_param:
+    if __iface._pass_context_map_ret_bool_param:
         __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         ParamService_map_ret_bool_param_coro(
@@ -2724,13 +2724,13 @@ cdef api void call_cy_ParamService_list_ret_map_setlist_param(
     unique_ptr[cmap[int32_t,vector[string]]] param1,
     unique_ptr[vector[string]] param2
 ):
-    cdef ParamServiceInterface iface
-    iface = self
+    cdef ParamServiceInterface __iface
+    __iface = self
     __promise = Promise_List__bool.create(move(cPromise))
     arg_param1 = _module_types.Map__i32_List__string.create(_module_types.move(param1))
     arg_param2 = _module_types.List__string.create(_module_types.move(param2))
     __context = None
-    if iface._pass_context_list_ret_map_setlist_param:
+    if __iface._pass_context_list_ret_map_setlist_param:
         __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         ParamService_list_ret_map_setlist_param_coro(
@@ -2781,12 +2781,12 @@ cdef api void call_cy_ParamService_mapsetlistmapliststring_ret_listlistlist_para
     cFollyPromise[unique_ptr[cmap[cset[vector[int32_t]],cmap[vector[cset[string]],string]]]] cPromise,
     unique_ptr[vector[vector[vector[vector[int32_t]]]]] param1
 ):
-    cdef ParamServiceInterface iface
-    iface = self
+    cdef ParamServiceInterface __iface
+    __iface = self
     __promise = Promise_Map__Set__List__i32_Map__List__Set__string_string.create(move(cPromise))
     arg_param1 = _module_types.List__List__List__List__i32.create(_module_types.move(param1))
     __context = None
-    if iface._pass_context_mapsetlistmapliststring_ret_listlistlist_param:
+    if __iface._pass_context_mapsetlistmapliststring_ret_listlistlist_param:
         __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         ParamService_mapsetlistmapliststring_ret_listlistlist_param_coro(
@@ -2833,12 +2833,12 @@ cdef api void call_cy_ParamService_typedef_ret_i32_param(
     cFollyPromise[int32_t] cPromise,
     int32_t param1
 ):
-    cdef ParamServiceInterface iface
-    iface = self
+    cdef ParamServiceInterface __iface
+    __iface = self
     __promise = Promise_i32.create(move(cPromise))
     arg_param1 = param1
     __context = None
-    if iface._pass_context_typedef_ret_i32_param:
+    if __iface._pass_context_typedef_ret_i32_param:
         __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         ParamService_typedef_ret_i32_param_coro(
@@ -2884,12 +2884,12 @@ cdef api void call_cy_ParamService_listtypedef_ret_typedef_param(
     cFollyPromise[unique_ptr[vector[int32_t]]] cPromise,
     unique_ptr[vector[cmap[_module_types.cEmpty,_module_types.cMyStruct]]] param1
 ):
-    cdef ParamServiceInterface iface
-    iface = self
+    cdef ParamServiceInterface __iface
+    __iface = self
     __promise = Promise_List__i32.create(move(cPromise))
     arg_param1 = _module_types.List__Map__Empty_MyStruct.create(_module_types.move(param1))
     __context = None
-    if iface._pass_context_listtypedef_ret_typedef_param:
+    if __iface._pass_context_listtypedef_ret_typedef_param:
         __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         ParamService_listtypedef_ret_typedef_param_coro(
@@ -2936,12 +2936,12 @@ cdef api void call_cy_ParamService_enum_ret_double_param(
     cFollyPromise[_module_types.cMyEnumA] cPromise,
     double param1
 ):
-    cdef ParamServiceInterface iface
-    iface = self
+    cdef ParamServiceInterface __iface
+    __iface = self
     __promise = Promise_MyEnumA.create(move(cPromise))
     arg_param1 = param1
     __context = None
-    if iface._pass_context_enum_ret_double_param:
+    if __iface._pass_context_enum_ret_double_param:
         __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         ParamService_enum_ret_double_param_coro(
@@ -2988,13 +2988,13 @@ cdef api void call_cy_ParamService_enum_ret_double_enum_param(
     double param1,
     _module_types.cMyEnumA param2
 ):
-    cdef ParamServiceInterface iface
-    iface = self
+    cdef ParamServiceInterface __iface
+    __iface = self
     __promise = Promise_MyEnumA.create(move(cPromise))
     arg_param1 = param1
     arg_param2 = _module_types.MyEnumA(<int> param2)
     __context = None
-    if iface._pass_context_enum_ret_double_enum_param:
+    if __iface._pass_context_enum_ret_double_enum_param:
         __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         ParamService_enum_ret_double_enum_param_coro(
@@ -3044,12 +3044,12 @@ cdef api void call_cy_ParamService_listenum_ret_map_param(
     cFollyPromise[unique_ptr[vector[_module_types.cMyEnumA]]] cPromise,
     unique_ptr[cmap[string,int64_t]] param1
 ):
-    cdef ParamServiceInterface iface
-    iface = self
+    cdef ParamServiceInterface __iface
+    __iface = self
     __promise = Promise_List__MyEnumA.create(move(cPromise))
     arg_param1 = _module_types.Map__string_i64.create(_module_types.move(param1))
     __context = None
-    if iface._pass_context_listenum_ret_map_param:
+    if __iface._pass_context_listenum_ret_map_param:
         __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         ParamService_listenum_ret_map_param_coro(
@@ -3096,12 +3096,12 @@ cdef api void call_cy_ParamService_struct_ret_i16_param(
     cFollyPromise[unique_ptr[_module_types.cMyStruct]] cPromise,
     int16_t param1
 ):
-    cdef ParamServiceInterface iface
-    iface = self
+    cdef ParamServiceInterface __iface
+    __iface = self
     __promise = Promise_MyStruct.create(move(cPromise))
     arg_param1 = param1
     __context = None
-    if iface._pass_context_struct_ret_i16_param:
+    if __iface._pass_context_struct_ret_i16_param:
         __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         ParamService_struct_ret_i16_param_coro(
@@ -3147,12 +3147,12 @@ cdef api void call_cy_ParamService_setstruct_ret_set_param(
     cFollyPromise[unique_ptr[cset[_module_types.cMyStruct]]] cPromise,
     unique_ptr[cset[string]] param1
 ):
-    cdef ParamServiceInterface iface
-    iface = self
+    cdef ParamServiceInterface __iface
+    __iface = self
     __promise = Promise_Set__MyStruct.create(move(cPromise))
     arg_param1 = _module_types.Set__string.create(_module_types.move(param1))
     __context = None
-    if iface._pass_context_setstruct_ret_set_param:
+    if __iface._pass_context_setstruct_ret_set_param:
         __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         ParamService_setstruct_ret_set_param_coro(
@@ -3200,13 +3200,13 @@ cdef api void call_cy_ParamService_union_ret_i32_i32_param(
     int32_t param1,
     int32_t param2
 ):
-    cdef ParamServiceInterface iface
-    iface = self
+    cdef ParamServiceInterface __iface
+    __iface = self
     __promise = Promise_ComplexUnion.create(move(cPromise))
     arg_param1 = param1
     arg_param2 = param2
     __context = None
-    if iface._pass_context_union_ret_i32_i32_param:
+    if __iface._pass_context_union_ret_i32_i32_param:
         __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         ParamService_union_ret_i32_i32_param_coro(
@@ -3256,12 +3256,12 @@ cdef api void call_cy_ParamService_listunion_string_param(
     cFollyPromise[unique_ptr[vector[_module_types.cComplexUnion]]] cPromise,
     unique_ptr[string] param1
 ):
-    cdef ParamServiceInterface iface
-    iface = self
+    cdef ParamServiceInterface __iface
+    __iface = self
     __promise = Promise_List__ComplexUnion.create(move(cPromise))
     arg_param1 = (deref(param1.get())).decode('UTF-8')
     __context = None
-    if iface._pass_context_listunion_string_param:
+    if __iface._pass_context_listunion_string_param:
         __context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         ParamService_listunion_string_param_coro(
