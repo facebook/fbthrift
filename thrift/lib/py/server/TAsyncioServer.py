@@ -37,7 +37,7 @@ logger = logging.getLogger(__name__)
 @asyncio.coroutine
 def ThriftAsyncServerFactory(
     processor, *, interface=None, port=0, loop=None, nthreads=None, sock=None,
-    backlog=100
+    backlog=100, ssl=None
 ):
     """
     ThriftAsyncServerFactory(processor) -> asyncio.Server
@@ -53,6 +53,9 @@ def ThriftAsyncServerFactory(
     If not given, the default event loop is used. If `nthreads` is given, the
     default executor for the event loop is set to a thread pool of up to
     `nthreads`.
+
+    ssl is an instance of ssl.SSLContext. If None (default) or False SSL/TLS is
+    not used.
 
     Notes about the processor method handling:
 
@@ -105,6 +108,7 @@ def ThriftAsyncServerFactory(
         port,
         sock=sock,
         backlog=backlog,
+        ssl=ssl,
     )
 
     if server.sockets:
