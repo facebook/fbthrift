@@ -44,7 +44,11 @@ void MyServiceFastAsyncProcessor::process_hasDataById(std::unique_ptr<apache::th
       folly::IOBufQueue queue = serializeException("hasDataById", &prot, ctx->getProtoSeqId(), nullptr, x);
       queue.append(apache::thrift::transport::THeader::transform(queue.move(), ctx->getHeader()->getWriteTransforms(), ctx->getHeader()->getMinCompressBytes()));
       eb->runInEventBaseThread([queue = std::move(queue), req = std::move(req)]() mutable {
-        req->sendReply(queue.move());
+        if (req->isStream()) {
+          req->sendStreamReply({queue.move(), {}});
+        } else {
+          req->sendReply(queue.move());
+        }
       }
       );
       return;
@@ -110,7 +114,11 @@ void MyServiceFastAsyncProcessor::process_getDataById(std::unique_ptr<apache::th
       folly::IOBufQueue queue = serializeException("getDataById", &prot, ctx->getProtoSeqId(), nullptr, x);
       queue.append(apache::thrift::transport::THeader::transform(queue.move(), ctx->getHeader()->getWriteTransforms(), ctx->getHeader()->getMinCompressBytes()));
       eb->runInEventBaseThread([queue = std::move(queue), req = std::move(req)]() mutable {
-        req->sendReply(queue.move());
+        if (req->isStream()) {
+          req->sendStreamReply({queue.move(), {}});
+        } else {
+          req->sendReply(queue.move());
+        }
       }
       );
       return;
@@ -178,7 +186,11 @@ void MyServiceFastAsyncProcessor::process_putDataById(std::unique_ptr<apache::th
       folly::IOBufQueue queue = serializeException("putDataById", &prot, ctx->getProtoSeqId(), nullptr, x);
       queue.append(apache::thrift::transport::THeader::transform(queue.move(), ctx->getHeader()->getWriteTransforms(), ctx->getHeader()->getMinCompressBytes()));
       eb->runInEventBaseThread([queue = std::move(queue), req = std::move(req)]() mutable {
-        req->sendReply(queue.move());
+        if (req->isStream()) {
+          req->sendStreamReply({queue.move(), {}});
+        } else {
+          req->sendReply(queue.move());
+        }
       }
       );
       return;
@@ -225,7 +237,11 @@ void MyServiceFastAsyncProcessor::throw_wrapped_putDataById(std::unique_ptr<apac
 template <typename ProtocolIn_, typename ProtocolOut_>
 void MyServiceFastAsyncProcessor::process_lobDataById(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot,apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
   if (!req->isOneway()) {
-    req->sendReply(std::unique_ptr<folly::IOBuf>());
+    if (req->isStream()) {
+      req->sendStreamReply({std::unique_ptr<folly::IOBuf>(), {}});
+    } else {
+      req->sendReply(std::unique_ptr<folly::IOBuf>());
+    }
   }
   // make sure getConnectionContext is null
   // so async calls don't accidentally use it

@@ -52,7 +52,11 @@ void NestedContainersAsyncProcessor::process_mapList(std::unique_ptr<apache::thr
       folly::IOBufQueue queue = serializeException("mapList", &prot, ctx->getProtoSeqId(), nullptr, x);
       queue.append(apache::thrift::transport::THeader::transform(queue.move(), ctx->getHeader()->getWriteTransforms(), ctx->getHeader()->getMinCompressBytes()));
       eb->runInEventBaseThread([queue = std::move(queue), req = std::move(req)]() mutable {
-        req->sendReply(queue.move());
+        if (req->isStream()) {
+          req->sendStreamReply({queue.move(), {}});
+        } else {
+          req->sendReply(queue.move());
+        }
       }
       );
       return;
@@ -125,7 +129,11 @@ void NestedContainersAsyncProcessor::process_mapSet(std::unique_ptr<apache::thri
       folly::IOBufQueue queue = serializeException("mapSet", &prot, ctx->getProtoSeqId(), nullptr, x);
       queue.append(apache::thrift::transport::THeader::transform(queue.move(), ctx->getHeader()->getWriteTransforms(), ctx->getHeader()->getMinCompressBytes()));
       eb->runInEventBaseThread([queue = std::move(queue), req = std::move(req)]() mutable {
-        req->sendReply(queue.move());
+        if (req->isStream()) {
+          req->sendStreamReply({queue.move(), {}});
+        } else {
+          req->sendReply(queue.move());
+        }
       }
       );
       return;
@@ -198,7 +206,11 @@ void NestedContainersAsyncProcessor::process_listMap(std::unique_ptr<apache::thr
       folly::IOBufQueue queue = serializeException("listMap", &prot, ctx->getProtoSeqId(), nullptr, x);
       queue.append(apache::thrift::transport::THeader::transform(queue.move(), ctx->getHeader()->getWriteTransforms(), ctx->getHeader()->getMinCompressBytes()));
       eb->runInEventBaseThread([queue = std::move(queue), req = std::move(req)]() mutable {
-        req->sendReply(queue.move());
+        if (req->isStream()) {
+          req->sendStreamReply({queue.move(), {}});
+        } else {
+          req->sendReply(queue.move());
+        }
       }
       );
       return;
@@ -271,7 +283,11 @@ void NestedContainersAsyncProcessor::process_listSet(std::unique_ptr<apache::thr
       folly::IOBufQueue queue = serializeException("listSet", &prot, ctx->getProtoSeqId(), nullptr, x);
       queue.append(apache::thrift::transport::THeader::transform(queue.move(), ctx->getHeader()->getWriteTransforms(), ctx->getHeader()->getMinCompressBytes()));
       eb->runInEventBaseThread([queue = std::move(queue), req = std::move(req)]() mutable {
-        req->sendReply(queue.move());
+        if (req->isStream()) {
+          req->sendStreamReply({queue.move(), {}});
+        } else {
+          req->sendReply(queue.move());
+        }
       }
       );
       return;
@@ -344,7 +360,11 @@ void NestedContainersAsyncProcessor::process_turtles(std::unique_ptr<apache::thr
       folly::IOBufQueue queue = serializeException("turtles", &prot, ctx->getProtoSeqId(), nullptr, x);
       queue.append(apache::thrift::transport::THeader::transform(queue.move(), ctx->getHeader()->getWriteTransforms(), ctx->getHeader()->getMinCompressBytes()));
       eb->runInEventBaseThread([queue = std::move(queue), req = std::move(req)]() mutable {
-        req->sendReply(queue.move());
+        if (req->isStream()) {
+          req->sendStreamReply({queue.move(), {}});
+        } else {
+          req->sendReply(queue.move());
+        }
       }
       );
       return;

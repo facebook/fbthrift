@@ -48,7 +48,11 @@ void RaiserAsyncProcessor::process_doBland(std::unique_ptr<apache::thrift::Respo
       folly::IOBufQueue queue = serializeException("doBland", &prot, ctx->getProtoSeqId(), nullptr, x);
       queue.append(apache::thrift::transport::THeader::transform(queue.move(), ctx->getHeader()->getWriteTransforms(), ctx->getHeader()->getMinCompressBytes()));
       eb->runInEventBaseThread([queue = std::move(queue), req = std::move(req)]() mutable {
-        req->sendReply(queue.move());
+        if (req->isStream()) {
+          req->sendStreamReply({queue.move(), {}});
+        } else {
+          req->sendReply(queue.move());
+        }
       }
       );
       return;
@@ -119,7 +123,11 @@ void RaiserAsyncProcessor::process_doRaise(std::unique_ptr<apache::thrift::Respo
       folly::IOBufQueue queue = serializeException("doRaise", &prot, ctx->getProtoSeqId(), nullptr, x);
       queue.append(apache::thrift::transport::THeader::transform(queue.move(), ctx->getHeader()->getWriteTransforms(), ctx->getHeader()->getMinCompressBytes()));
       eb->runInEventBaseThread([queue = std::move(queue), req = std::move(req)]() mutable {
-        req->sendReply(queue.move());
+        if (req->isStream()) {
+          req->sendStreamReply({queue.move(), {}});
+        } else {
+          req->sendReply(queue.move());
+        }
       }
       );
       return;
@@ -206,7 +214,11 @@ void RaiserAsyncProcessor::process_get200(std::unique_ptr<apache::thrift::Respon
       folly::IOBufQueue queue = serializeException("get200", &prot, ctx->getProtoSeqId(), nullptr, x);
       queue.append(apache::thrift::transport::THeader::transform(queue.move(), ctx->getHeader()->getWriteTransforms(), ctx->getHeader()->getMinCompressBytes()));
       eb->runInEventBaseThread([queue = std::move(queue), req = std::move(req)]() mutable {
-        req->sendReply(queue.move());
+        if (req->isStream()) {
+          req->sendStreamReply({queue.move(), {}});
+        } else {
+          req->sendReply(queue.move());
+        }
       }
       );
       return;
@@ -279,7 +291,11 @@ void RaiserAsyncProcessor::process_get500(std::unique_ptr<apache::thrift::Respon
       folly::IOBufQueue queue = serializeException("get500", &prot, ctx->getProtoSeqId(), nullptr, x);
       queue.append(apache::thrift::transport::THeader::transform(queue.move(), ctx->getHeader()->getWriteTransforms(), ctx->getHeader()->getMinCompressBytes()));
       eb->runInEventBaseThread([queue = std::move(queue), req = std::move(req)]() mutable {
-        req->sendReply(queue.move());
+        if (req->isStream()) {
+          req->sendStreamReply({queue.move(), {}});
+        } else {
+          req->sendReply(queue.move());
+        }
       }
       );
       return;

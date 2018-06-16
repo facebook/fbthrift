@@ -48,7 +48,11 @@ void ExtraServiceAsyncProcessor::process_simple_function(std::unique_ptr<apache:
       folly::IOBufQueue queue = serializeException("simple_function", &prot, ctx->getProtoSeqId(), nullptr, x);
       queue.append(apache::thrift::transport::THeader::transform(queue.move(), ctx->getHeader()->getWriteTransforms(), ctx->getHeader()->getMinCompressBytes()));
       eb->runInEventBaseThread([queue = std::move(queue), req = std::move(req)]() mutable {
-        req->sendReply(queue.move());
+        if (req->isStream()) {
+          req->sendStreamReply({queue.move(), {}});
+        } else {
+          req->sendReply(queue.move());
+        }
       }
       );
       return;
@@ -112,7 +116,11 @@ void ExtraServiceAsyncProcessor::process_throws_function(std::unique_ptr<apache:
       folly::IOBufQueue queue = serializeException("throws_function", &prot, ctx->getProtoSeqId(), nullptr, x);
       queue.append(apache::thrift::transport::THeader::transform(queue.move(), ctx->getHeader()->getWriteTransforms(), ctx->getHeader()->getMinCompressBytes()));
       eb->runInEventBaseThread([queue = std::move(queue), req = std::move(req)]() mutable {
-        req->sendReply(queue.move());
+        if (req->isStream()) {
+          req->sendStreamReply({queue.move(), {}});
+        } else {
+          req->sendReply(queue.move());
+        }
       }
       );
       return;
@@ -192,7 +200,11 @@ void ExtraServiceAsyncProcessor::process_throws_function2(std::unique_ptr<apache
       folly::IOBufQueue queue = serializeException("throws_function2", &prot, ctx->getProtoSeqId(), nullptr, x);
       queue.append(apache::thrift::transport::THeader::transform(queue.move(), ctx->getHeader()->getWriteTransforms(), ctx->getHeader()->getMinCompressBytes()));
       eb->runInEventBaseThread([queue = std::move(queue), req = std::move(req)]() mutable {
-        req->sendReply(queue.move());
+        if (req->isStream()) {
+          req->sendStreamReply({queue.move(), {}});
+        } else {
+          req->sendReply(queue.move());
+        }
       }
       );
       return;
@@ -276,7 +288,11 @@ void ExtraServiceAsyncProcessor::process_throws_function3(std::unique_ptr<apache
       folly::IOBufQueue queue = serializeException("throws_function3", &prot, ctx->getProtoSeqId(), nullptr, x);
       queue.append(apache::thrift::transport::THeader::transform(queue.move(), ctx->getHeader()->getWriteTransforms(), ctx->getHeader()->getMinCompressBytes()));
       eb->runInEventBaseThread([queue = std::move(queue), req = std::move(req)]() mutable {
-        req->sendReply(queue.move());
+        if (req->isStream()) {
+          req->sendStreamReply({queue.move(), {}});
+        } else {
+          req->sendReply(queue.move());
+        }
       }
       );
       return;
@@ -341,7 +357,11 @@ void ExtraServiceAsyncProcessor::throw_wrapped_throws_function3(std::unique_ptr<
 template <typename ProtocolIn_, typename ProtocolOut_>
 void ExtraServiceAsyncProcessor::process_oneway_void_ret(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot,apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
   if (!req->isOneway()) {
-    req->sendReply(std::unique_ptr<folly::IOBuf>());
+    if (req->isStream()) {
+      req->sendStreamReply({std::unique_ptr<folly::IOBuf>(), {}});
+    } else {
+      req->sendReply(std::unique_ptr<folly::IOBuf>());
+    }
   }
   // make sure getConnectionContext is null
   // so async calls don't accidentally use it
@@ -363,7 +383,11 @@ void ExtraServiceAsyncProcessor::process_oneway_void_ret(std::unique_ptr<apache:
 template <typename ProtocolIn_, typename ProtocolOut_>
 void ExtraServiceAsyncProcessor::process_oneway_void_ret_i32_i32_i32_i32_i32_param(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot,apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
   if (!req->isOneway()) {
-    req->sendReply(std::unique_ptr<folly::IOBuf>());
+    if (req->isStream()) {
+      req->sendStreamReply({std::unique_ptr<folly::IOBuf>(), {}});
+    } else {
+      req->sendReply(std::unique_ptr<folly::IOBuf>());
+    }
   }
   // make sure getConnectionContext is null
   // so async calls don't accidentally use it
@@ -395,7 +419,11 @@ void ExtraServiceAsyncProcessor::process_oneway_void_ret_i32_i32_i32_i32_i32_par
 template <typename ProtocolIn_, typename ProtocolOut_>
 void ExtraServiceAsyncProcessor::process_oneway_void_ret_map_setlist_param(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot,apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
   if (!req->isOneway()) {
-    req->sendReply(std::unique_ptr<folly::IOBuf>());
+    if (req->isStream()) {
+      req->sendStreamReply({std::unique_ptr<folly::IOBuf>(), {}});
+    } else {
+      req->sendReply(std::unique_ptr<folly::IOBuf>());
+    }
   }
   // make sure getConnectionContext is null
   // so async calls don't accidentally use it
@@ -421,7 +449,11 @@ void ExtraServiceAsyncProcessor::process_oneway_void_ret_map_setlist_param(std::
 template <typename ProtocolIn_, typename ProtocolOut_>
 void ExtraServiceAsyncProcessor::process_oneway_void_ret_struct_param(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot,apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
   if (!req->isOneway()) {
-    req->sendReply(std::unique_ptr<folly::IOBuf>());
+    if (req->isStream()) {
+      req->sendStreamReply({std::unique_ptr<folly::IOBuf>(), {}});
+    } else {
+      req->sendReply(std::unique_ptr<folly::IOBuf>());
+    }
   }
   // make sure getConnectionContext is null
   // so async calls don't accidentally use it
@@ -445,7 +477,11 @@ void ExtraServiceAsyncProcessor::process_oneway_void_ret_struct_param(std::uniqu
 template <typename ProtocolIn_, typename ProtocolOut_>
 void ExtraServiceAsyncProcessor::process_oneway_void_ret_listunion_param(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot,apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
   if (!req->isOneway()) {
-    req->sendReply(std::unique_ptr<folly::IOBuf>());
+    if (req->isStream()) {
+      req->sendStreamReply({std::unique_ptr<folly::IOBuf>(), {}});
+    } else {
+      req->sendReply(std::unique_ptr<folly::IOBuf>());
+    }
   }
   // make sure getConnectionContext is null
   // so async calls don't accidentally use it

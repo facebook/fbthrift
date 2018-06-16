@@ -64,7 +64,11 @@ void ServiceAAsyncProcessor::process_moduleAMethod(std::unique_ptr<apache::thrif
       folly::IOBufQueue queue = serializeException("moduleAMethod", &prot, ctx->getProtoSeqId(), nullptr, x);
       queue.append(apache::thrift::transport::THeader::transform(queue.move(), ctx->getHeader()->getWriteTransforms(), ctx->getHeader()->getMinCompressBytes()));
       eb->runInEventBaseThread([queue = std::move(queue), req = std::move(req)]() mutable {
-        req->sendReply(queue.move());
+        if (req->isStream()) {
+          req->sendStreamReply({queue.move(), {}});
+        } else {
+          req->sendReply(queue.move());
+        }
       }
       );
       return;
@@ -137,7 +141,11 @@ void ServiceAAsyncProcessor::process_moduleBMethod(std::unique_ptr<apache::thrif
       folly::IOBufQueue queue = serializeException("moduleBMethod", &prot, ctx->getProtoSeqId(), nullptr, x);
       queue.append(apache::thrift::transport::THeader::transform(queue.move(), ctx->getHeader()->getWriteTransforms(), ctx->getHeader()->getMinCompressBytes()));
       eb->runInEventBaseThread([queue = std::move(queue), req = std::move(req)]() mutable {
-        req->sendReply(queue.move());
+        if (req->isStream()) {
+          req->sendStreamReply({queue.move(), {}});
+        } else {
+          req->sendReply(queue.move());
+        }
       }
       );
       return;
@@ -214,7 +222,11 @@ void ServiceAAsyncProcessor::process_i32StrDoubleMethod(std::unique_ptr<apache::
       folly::IOBufQueue queue = serializeException("i32StrDoubleMethod", &prot, ctx->getProtoSeqId(), nullptr, x);
       queue.append(apache::thrift::transport::THeader::transform(queue.move(), ctx->getHeader()->getWriteTransforms(), ctx->getHeader()->getMinCompressBytes()));
       eb->runInEventBaseThread([queue = std::move(queue), req = std::move(req)]() mutable {
-        req->sendReply(queue.move());
+        if (req->isStream()) {
+          req->sendStreamReply({queue.move(), {}});
+        } else {
+          req->sendReply(queue.move());
+        }
       }
       );
       return;
@@ -291,7 +303,11 @@ void ServiceAAsyncProcessor::process_versioningMethod(std::unique_ptr<apache::th
       folly::IOBufQueue queue = serializeException("versioningMethod", &prot, ctx->getProtoSeqId(), nullptr, x);
       queue.append(apache::thrift::transport::THeader::transform(queue.move(), ctx->getHeader()->getWriteTransforms(), ctx->getHeader()->getMinCompressBytes()));
       eb->runInEventBaseThread([queue = std::move(queue), req = std::move(req)]() mutable {
-        req->sendReply(queue.move());
+        if (req->isStream()) {
+          req->sendStreamReply({queue.move(), {}});
+        } else {
+          req->sendReply(queue.move());
+        }
       }
       );
       return;
@@ -362,7 +378,11 @@ void ServiceAAsyncProcessor::process_retI32Method(std::unique_ptr<apache::thrift
       folly::IOBufQueue queue = serializeException("retI32Method", &prot, ctx->getProtoSeqId(), nullptr, x);
       queue.append(apache::thrift::transport::THeader::transform(queue.move(), ctx->getHeader()->getWriteTransforms(), ctx->getHeader()->getMinCompressBytes()));
       eb->runInEventBaseThread([queue = std::move(queue), req = std::move(req)]() mutable {
-        req->sendReply(queue.move());
+        if (req->isStream()) {
+          req->sendStreamReply({queue.move(), {}});
+        } else {
+          req->sendReply(queue.move());
+        }
       }
       );
       return;
@@ -435,7 +455,11 @@ void ServiceAAsyncProcessor::process_retModAMethod(std::unique_ptr<apache::thrif
       folly::IOBufQueue queue = serializeException("retModAMethod", &prot, ctx->getProtoSeqId(), nullptr, x);
       queue.append(apache::thrift::transport::THeader::transform(queue.move(), ctx->getHeader()->getWriteTransforms(), ctx->getHeader()->getMinCompressBytes()));
       eb->runInEventBaseThread([queue = std::move(queue), req = std::move(req)]() mutable {
-        req->sendReply(queue.move());
+        if (req->isStream()) {
+          req->sendStreamReply({queue.move(), {}});
+        } else {
+          req->sendReply(queue.move());
+        }
       }
       );
       return;
@@ -508,7 +532,11 @@ void ServiceAAsyncProcessor::process_throwMethod(std::unique_ptr<apache::thrift:
       folly::IOBufQueue queue = serializeException("throwMethod", &prot, ctx->getProtoSeqId(), nullptr, x);
       queue.append(apache::thrift::transport::THeader::transform(queue.move(), ctx->getHeader()->getWriteTransforms(), ctx->getHeader()->getMinCompressBytes()));
       eb->runInEventBaseThread([queue = std::move(queue), req = std::move(req)]() mutable {
-        req->sendReply(queue.move());
+        if (req->isStream()) {
+          req->sendStreamReply({queue.move(), {}});
+        } else {
+          req->sendReply(queue.move());
+        }
       }
       );
       return;
@@ -589,7 +617,11 @@ void ServiceAAsyncProcessor::process_multiThrowMethod(std::unique_ptr<apache::th
       folly::IOBufQueue queue = serializeException("multiThrowMethod", &prot, ctx->getProtoSeqId(), nullptr, x);
       queue.append(apache::thrift::transport::THeader::transform(queue.move(), ctx->getHeader()->getWriteTransforms(), ctx->getHeader()->getMinCompressBytes()));
       eb->runInEventBaseThread([queue = std::move(queue), req = std::move(req)]() mutable {
-        req->sendReply(queue.move());
+        if (req->isStream()) {
+          req->sendStreamReply({queue.move(), {}});
+        } else {
+          req->sendReply(queue.move());
+        }
       }
       );
       return;
@@ -678,7 +710,11 @@ void ServiceAAsyncProcessor::process_i32ThrowMethod(std::unique_ptr<apache::thri
       folly::IOBufQueue queue = serializeException("i32ThrowMethod", &prot, ctx->getProtoSeqId(), nullptr, x);
       queue.append(apache::thrift::transport::THeader::transform(queue.move(), ctx->getHeader()->getWriteTransforms(), ctx->getHeader()->getMinCompressBytes()));
       eb->runInEventBaseThread([queue = std::move(queue), req = std::move(req)]() mutable {
-        req->sendReply(queue.move());
+        if (req->isStream()) {
+          req->sendStreamReply({queue.move(), {}});
+        } else {
+          req->sendReply(queue.move());
+        }
       }
       );
       return;
@@ -761,7 +797,11 @@ void ServiceAAsyncProcessor::process_moduleAThrowMethod(std::unique_ptr<apache::
       folly::IOBufQueue queue = serializeException("moduleAThrowMethod", &prot, ctx->getProtoSeqId(), nullptr, x);
       queue.append(apache::thrift::transport::THeader::transform(queue.move(), ctx->getHeader()->getWriteTransforms(), ctx->getHeader()->getMinCompressBytes()));
       eb->runInEventBaseThread([queue = std::move(queue), req = std::move(req)]() mutable {
-        req->sendReply(queue.move());
+        if (req->isStream()) {
+          req->sendStreamReply({queue.move(), {}});
+        } else {
+          req->sendReply(queue.move());
+        }
       }
       );
       return;
@@ -848,7 +888,11 @@ void ServiceAAsyncProcessor::process_mixedMethod(std::unique_ptr<apache::thrift:
       folly::IOBufQueue queue = serializeException("mixedMethod", &prot, ctx->getProtoSeqId(), nullptr, x);
       queue.append(apache::thrift::transport::THeader::transform(queue.move(), ctx->getHeader()->getWriteTransforms(), ctx->getHeader()->getMinCompressBytes()));
       eb->runInEventBaseThread([queue = std::move(queue), req = std::move(req)]() mutable {
-        req->sendReply(queue.move());
+        if (req->isStream()) {
+          req->sendStreamReply({queue.move(), {}});
+        } else {
+          req->sendReply(queue.move());
+        }
       }
       );
       return;

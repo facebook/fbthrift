@@ -36,7 +36,11 @@ template <typename ProtocolIn_, typename ProtocolOut_>
 void <%service:name%>AsyncProcessor::process_<%function:name%>(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot,apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
 <%#function:oneway?%><%#function:eb%>
   if (!req->isOneway()) {
-    req->sendReply(std::unique_ptr<folly::IOBuf>());
+    if (req->isStream()) {
+      req->sendStreamReply({std::unique_ptr<folly::IOBuf>(), {}});
+    } else {
+      req->sendReply(std::unique_ptr<folly::IOBuf>());
+    }
   }
 <%/function:eb%><%/function:oneway?%>
   // make sure getConnectionContext is null
@@ -82,7 +86,11 @@ void <%service:name%>AsyncProcessor::process_<%function:name%>(std::unique_ptr<a
       folly::IOBufQueue queue = serializeException("<%function:name%>", &prot, ctx->getProtoSeqId(), nullptr, x);
       queue.append(apache::thrift::transport::THeader::transform(queue.move(), ctx->getHeader()->getWriteTransforms(), ctx->getHeader()->getMinCompressBytes()));
       eb->runInEventBaseThread([queue = std::move(queue), req = std::move(req)]() mutable {
-        req->sendReply(queue.move());
+        if (req->isStream()) {
+          req->sendStreamReply({queue.move(), {}});
+        } else {
+          req->sendReply(queue.move());
+        }
       }
       );
       return;
