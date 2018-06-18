@@ -21,10 +21,12 @@
 
 #include <algorithm>
 #include <random>
-#include <thrift/lib/cpp/transport/TBufferTransports.h>
-#include <thrift/lib/cpp/transport/TShortReadTransport.h>
 
 #include <gtest/gtest.h>
+
+#include <folly/lang/Bits.h>
+#include <thrift/lib/cpp/transport/TBufferTransports.h>
+#include <thrift/lib/cpp/transport/TShortReadTransport.h>
 
 using namespace std;
 using apache::thrift::transport::TMemoryBuffer;
@@ -492,7 +494,7 @@ TEST_F(TBufferBaseTest, test_FramedTransport_Write) {
 
       int32_t frame_size = -1;
       buffer->read(reinterpret_cast<uint8_t*>(&frame_size), sizeof(frame_size));
-      frame_size = (int32_t)ntohl((uint32_t)frame_size);
+      frame_size = folly::Endian::big(frame_size);
       EXPECT_EQ(frame_size, 1<<15);
       EXPECT_EQ(dataStr.size(), (unsigned int)frame_size);
       string output = buffer->getBufferAsString();
@@ -507,7 +509,7 @@ TEST_F(TBufferBaseTest, test_FramedTransport_Read) {
     auto buffer = make_shared<TMemoryBuffer>();
     TFramedTransport trans(buffer);
     int32_t length = sizeof(data);
-    length = (int32_t)htonl((uint32_t)length);
+    length = folly::Endian::big(length);
     buffer->write(reinterpret_cast<uint8_t*>(&length), sizeof(length));
     buffer->write(data, sizeof(data));
 

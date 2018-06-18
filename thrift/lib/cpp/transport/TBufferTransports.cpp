@@ -1,4 +1,6 @@
 /*
+ * Copyright 2018-present Facebook, Inc.
+ *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -17,10 +19,11 @@
  * under the License.
  */
 
-#include <thrift/lib/cpp/transport/TBufferTransports.h>
-
-#include <cassert>
 #include <algorithm>
+#include <cassert>
+
+#include <folly/lang/Bits.h>
+#include <thrift/lib/cpp/transport/TBufferTransports.h>
 
 using std::string;
 
@@ -232,7 +235,7 @@ bool TFramedTransport::readFrame(uint32_t /*minFrameSize*/) {
     size_bytes_read += bytes_read;
   }
 
-  sz = ntohl(sz);
+  sz = folly::Endian::big(sz);
 
   if (sz > maxFrameSize_) {
     throw TTransportException("Frame size exceeded maximum");
@@ -286,7 +289,7 @@ void TFramedTransport::flush()  {
 
   // Slip the frame size into the start of the buffer.
   sz_hbo = wBase_ - (wBuf_.get() + sizeof(sz_nbo));
-  sz_nbo = (int32_t)htonl((uint32_t)(sz_hbo));
+  sz_nbo = folly::Endian::big(sz_hbo);
   memcpy(wBuf_.get(), (uint8_t*)&sz_nbo, sizeof(sz_nbo));
 
   if (sz_hbo > 0) {
