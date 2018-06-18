@@ -8910,7 +8910,7 @@ cdef class Map__List__Set__string_string:
         if not self or key is None:
             raise err
         try:
-            if and not isinstance(key, List__Set__string):
+            if not isinstance(key, List__Set__string):
                 key = List__Set__string(key)
         except Exception:
             raise err from None
@@ -8967,7 +8967,7 @@ cdef class Map__List__Set__string_string:
         if not self or key is None:
             return False
         try:
-            if and not isinstance(key, List__Set__string):
+            if not isinstance(key, List__Set__string):
                 key = List__Set__string(key)
         except Exception:
             return False
@@ -9051,7 +9051,7 @@ cdef class Map__Set__List__i32_Map__List__Set__string_string:
         if not self or key is None:
             raise err
         try:
-            if and not isinstance(key, Set__List__i32):
+            if not isinstance(key, Set__List__i32):
                 key = Set__List__i32(key)
         except Exception:
             raise err from None
@@ -9109,7 +9109,7 @@ cdef class Map__Set__List__i32_Map__List__Set__string_string:
         if not self or key is None:
             return False
         try:
-            if and not isinstance(key, Set__List__i32):
+            if not isinstance(key, Set__List__i32):
                 key = Set__List__i32(key)
         except Exception:
             return False

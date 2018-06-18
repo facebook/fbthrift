@@ -1050,7 +1050,7 @@ Set.register({{type:flat_name}})
         {{#type:keyType}}
         {{#type:container?}}
         try:
-            if and not isinstance(key, {{> types/PythonType}}):
+            if not isinstance(key, {{> types/PythonType}}):
                 key = {{> types/PythonType}}(key)
         except Exception:
             raise err from None
@@ -1117,7 +1117,7 @@ Set.register({{type:flat_name}})
         {{#type:keyType}}
         {{#type:container?}}
         try:
-            if and not isinstance(key, {{> types/PythonType}}):
+            if not isinstance(key, {{> types/PythonType}}):
                 key = {{> types/PythonType}}(key)
         except Exception:
             return False
