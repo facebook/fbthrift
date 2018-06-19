@@ -52,9 +52,32 @@ std::unique_ptr<folly::IOBuf> iobuf_from_python(
         auto* py_object = py_data->py_object;
         if (PyGILState_Check()) {
           Py_DECREF(py_object);
-        } else {
+        } else if (py_data->executor) {
           py_data->executor->add(
               [py_object]() mutable { Py_DECREF(py_object); });
+        } else {
+          /*
+            This is the last ditch effort. We don't have the GIL and we have no
+            asyncio executor.  In this case we will attempt to use the
+            pendingCall interface to cpython.  This is likely to fail under
+            heavy load due to lock contention.
+          */
+          int ret = Py_AddPendingCall(
+              [](void* userData) {
+                Py_DECREF((PyObject*)userData);
+                return 0;
+              },
+              (void*)py_object);
+          if (ret != 0) {
+            LOG(ERROR)
+                << "an IOBuf was created from a non-asyncio thread, and all attempts "
+                << "to free the underlying buffer has failed, memory has leaked!";
+          } else {
+            LOG(WARNING)
+                << "an IOBuf was created from a non-asyncio thread, and we successful "
+                << "handled cleanup but this is not a reliable interface, it will fail "
+                << "under heavy load, do not create IOBufs from non-asyncio threads. ";
+          }
         }
         delete py_data;
       },
