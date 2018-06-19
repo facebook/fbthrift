@@ -24,21 +24,24 @@ namespace apache {
 namespace thrift {
 
 template <typename T>
-template <typename F>
-SemiStream<folly::invoke_result_t<F, T&&>> SemiStream<T>::map(F&& f) && {
+template <typename F, typename EF>
+SemiStream<folly::invoke_result_t<F, T&&>> SemiStream<T>::map(
+    F&& f,
+    EF&& ef) && {
   using U = folly::invoke_result_t<F, T&&>;
 
   SemiStream<U> result;
   result.impl_ = std::move(impl_);
   result.mapFuncs_ = std::move(mapFuncs_);
   result.mapFuncs_.push_back(
-      [f = std::forward<F>(f)](std::unique_ptr<detail::ValueIf> value) mutable
-      -> std::unique_ptr<detail::ValueIf> {
-        assert(dynamic_cast<detail::Value<T>*>(value.get()));
-        auto* valuePtr = static_cast<detail::Value<T>*>(value.get());
-        return std::make_unique<detail::Value<U>>(
-            std::forward<F>(f)(std::move(valuePtr->value)));
-      });
+      {[mf = std::forward<F>(f)](std::unique_ptr<detail::ValueIf> value) mutable
+       -> std::unique_ptr<detail::ValueIf> {
+         assert(dynamic_cast<detail::Value<T>*>(value.get()));
+         auto* valuePtr = static_cast<detail::Value<T>*>(value.get());
+         return std::make_unique<detail::Value<U>>(
+             std::forward<F>(mf)(std::move(valuePtr->value)));
+       },
+       std::forward<EF>(ef)});
   return result;
 }
 
@@ -49,7 +52,8 @@ Stream<T> SemiStream<T>::via(
   auto executorPtr = executor.get();
   impl = std::move(*impl).observeVia(std::move(executor));
   for (auto& mapFunc : mapFuncs_) {
-    impl = std::move(*impl).map(std::move(mapFunc));
+    impl = std::move(*impl).map(
+        std::move(mapFunc.first), std::move(mapFunc.second));
   }
   return Stream<T>(std::move(impl), executorPtr);
 }

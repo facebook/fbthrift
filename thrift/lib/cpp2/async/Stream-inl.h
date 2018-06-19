@@ -53,8 +53,8 @@ class SubscriberAdaptor : public SubscriberIf<std::unique_ptr<ValueIf>> {
 } // namespace detail
 
 template <typename T>
-template <typename F>
-Stream<folly::invoke_result_t<F, T&&>> Stream<T>::map(F&& f) && {
+template <typename F, typename EF>
+Stream<folly::invoke_result_t<F, T&&>> Stream<T>::map(F&& f, EF&& ef) && {
   if (!impl_) {
     return {};
   }
@@ -69,7 +69,8 @@ Stream<folly::invoke_result_t<F, T&&>> Stream<T>::map(F&& f) && {
             auto* valuePtr = static_cast<detail::Value<T>*>(value.get());
             return std::make_unique<detail::Value<U>>(
                 std::forward<F>(f)(std::move(valuePtr->value)));
-          }),
+          },
+          std::forward<EF>(ef)),
       executor_);
 }
 

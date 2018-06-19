@@ -63,7 +63,9 @@ class StreamImplIf {
   virtual ~StreamImplIf() = default;
 
   virtual std::unique_ptr<StreamImplIf> map(
-      folly::Function<Value(Value)>) && = 0;
+      folly::Function<Value(Value)>,
+      folly::Function<
+          folly::exception_wrapper(folly::exception_wrapper&&)>) && = 0;
   virtual std::unique_ptr<StreamImplIf> subscribeVia(
       folly::SequencedExecutor*) && = 0;
   virtual std::unique_ptr<StreamImplIf> observeVia(
@@ -156,8 +158,13 @@ class Stream {
     return executor_;
   }
 
-  template <typename F>
-  Stream<folly::invoke_result_t<F, T&&>> map(F&&) &&;
+  template <
+      typename F,
+      typename EF =
+          folly::Function<folly::exception_wrapper(folly::exception_wrapper&&)>>
+  Stream<folly::invoke_result_t<F, T&&>> map(
+      F&&,
+      EF&& ef = [](folly::exception_wrapper&& ew) { return std::move(ew); }) &&;
 
   template <
       typename OnNext,

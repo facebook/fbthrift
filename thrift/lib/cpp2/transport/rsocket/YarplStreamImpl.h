@@ -228,10 +228,13 @@ class YarplStreamImpl : public StreamImplIf {
       std::shared_ptr<yarpl::flowable::Flowable<Value>> flowable)
       : flowable_(std::move(flowable)) {}
 
-  std::unique_ptr<StreamImplIf> map(folly::Function<Value(Value)> mapFunc) &&
+  std::unique_ptr<StreamImplIf> map(
+      folly::Function<Value(Value)> mapFunc,
+      folly::Function<folly::exception_wrapper(folly::exception_wrapper&&)>
+          errormapFunc = nullptr) &&
       override {
     return std::make_unique<YarplStreamImpl>(
-        flowable_->map(std::move(mapFunc)));
+        flowable_->map(std::move(mapFunc), std::move(errormapFunc)));
   }
   std::unique_ptr<StreamImplIf> observeVia(
       folly::Executor::KeepAlive<folly::SequencedExecutor> executor) &&

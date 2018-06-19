@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include <folly/ExceptionWrapper.h>
 #include <thrift/lib/cpp2/async/Stream.h>
 
 namespace apache {
@@ -36,8 +37,13 @@ class SemiStream {
     return (bool)impl_;
   }
 
-  template <typename F>
-  SemiStream<folly::invoke_result_t<F, T&&>> map(F&&) &&;
+  template <
+      typename F,
+      typename EF =
+          folly::Function<folly::exception_wrapper(folly::exception_wrapper&&)>>
+  SemiStream<folly::invoke_result_t<F, T&&>> map(
+      F&&,
+      EF&& ef = [](folly::exception_wrapper&& ew) { return std::move(ew); }) &&;
 
   Stream<T> via(folly::Executor::KeepAlive<folly::SequencedExecutor>) &&;
   Stream<T> via(folly::SequencedExecutor*) &&;
@@ -48,8 +54,9 @@ class SemiStream {
   friend class SemiStream;
 
   std::unique_ptr<detail::StreamImplIf> impl_;
-  std::vector<
-      folly::Function<detail::StreamImplIf::Value(detail::StreamImplIf::Value)>>
+  std::vector<std::pair<
+      folly::Function<detail::StreamImplIf::Value(detail::StreamImplIf::Value)>,
+      folly::Function<folly::exception_wrapper(folly::exception_wrapper&&)>>>
       mapFuncs_;
 };
 
