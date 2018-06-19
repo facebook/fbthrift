@@ -24,6 +24,7 @@ type MyThriftEnumType = MyThriftEnum;
  * Original thrift struct:-
  * MyThriftStruct
  */
+<<ClassAttribute>>
 class MyThriftStruct implements \IThriftStruct {
   use \ThriftSerializationTrait;
 
@@ -51,17 +52,26 @@ class MyThriftStruct implements \IThriftStruct {
    * Original thrift field:-
    * 1: string foo
    */
+  <<FieldAttribute>>
   public string $foo;
   /**
    * Original thrift field:-
    * 2: string bar
    */
-  public string $bar;
+  private string $bar;
+  <<FieldAttribute>>
+  public function get_bar(): string {
+    return $this->bar;
+  }
   /**
    * Original thrift field:-
    * 3: string baz
    */
   public string $baz;
+  <<FieldGetterAttribute>>
+  public function get_baz(): string {
+    return $this->baz;
+  }
 
   public function __construct(?string $foo = null, ?string $bar = null, ?string $baz = null  ) {
     if ($foo === null) {
@@ -118,17 +128,21 @@ class MySecondThriftStruct implements \IThriftStruct {
    * Original thrift field:-
    * 1: i64 foo
    */
-  public int $foo;
+  private int $foo;
   /**
    * Original thrift field:-
    * 2: i64 bar
    */
-  public int $bar;
+  protected int $bar;
   /**
    * Original thrift field:-
    * 3: i64 baz
    */
   public int $baz;
+  <<FieldGetterAttribute>>
+  public function get_baz(): int {
+    return $this->baz;
+  }
 
   public function __construct(?int $foo = null, ?int $bar = null, ?int $baz = null  ) {
     if ($foo === null) {

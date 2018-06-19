@@ -26,6 +26,8 @@
 #include <thrift/compiler/generate/t_oop_generator.h>
 #include <thrift/compiler/platform.h>
 
+#include "folly/Optional.h"
+
 using namespace std;
 
 /**
@@ -389,9 +391,13 @@ class t_hack_generator : public t_oop_generator {
     return tenum->annotations_.find("bitmask") != tenum->annotations_.end();
   }
 
-  string get_attributes(t_enum* tenum) {
-    auto it = tenum->annotations_.find("hack.attributes");
-    return it != tenum->annotations_.end() ? it->second : "";
+  folly::Optional<string> get_hack_annotation(
+      t_annotated* annotated,
+      const string& annotation) {
+    auto it = annotated->annotations_.find("hack." + annotation);
+    return it != annotated->annotations_.end()
+        ? folly::Optional<string>(it->second)
+        : folly::none;
   }
 
   std::string hack_namespace(const t_program* p) {
@@ -1015,18 +1021,20 @@ void t_hack_generator::generate_enum(t_enum* tenum) {
   } else if (oldenum_) {
     typehint = hack_name(tenum, true) + "Type";
     f_types_ << "newtype " << typehint << " as arraykey = int;" << endl;
-    string attributes = get_attributes(tenum);
-    if (!attributes.empty()) {
-      f_types_ << "<<" << attributes << ">>" << endl;
+    folly::Optional<string> attributes =
+        get_hack_annotation(tenum, "attributes");
+    if (attributes.hasValue()) {
+      f_types_ << "<<" << attributes.value() << ">>" << endl;
     }
     f_types_ << "final class " << hack_name(tenum, true) << " extends Enum<"
              << typehint << "> {" << endl;
   } else {
     hack_enum = true;
     typehint = hack_name(tenum, true);
-    string attributes = get_attributes(tenum);
-    if (!attributes.empty()) {
-      f_types_ << "<<" << attributes << ">>" << endl;
+    folly::Optional<string> attributes =
+        get_hack_annotation(tenum, "attributes");
+    if (attributes.hasValue()) {
+      f_types_ << "<<" << attributes.value() << ">>" << endl;
     }
     f_types_ << "enum " << hack_name(tenum, true) << " : int {" << endl;
   }
@@ -2497,6 +2505,11 @@ void t_hack_generator::_generate_php_struct_definition(
   if (!is_result && !is_args && (is_exception || !generateAsTrait)) {
     generate_php_docstring(out, tstruct, is_exception);
   }
+  folly::Optional<string> attributes =
+      get_hack_annotation(tstruct, "attributes");
+  if (attributes.hasValue()) {
+    f_types_ << "<<" << attributes.value() << ">>" << endl;
+  }
   out << (generateAsTrait ? "trait " : "class ") << hack_name(tstruct, true);
   if (generateAsTrait) {
     out << "Trait";
@@ -2566,6 +2579,12 @@ void t_hack_generator::_generate_php_struct_definition(
       generate_php_docstring(out, *m_iter);
     }
 
+    folly::Optional<string> field_attributes =
+        get_hack_annotation(t, "attributes");
+    if (field_attributes.hasValue()) {
+      indent(out) << "<<" << field_attributes.value() << ">>" << endl;
+    }
+
     if (is_exception && (*m_iter)->get_name() == "code") {
       if (!(t->is_any_int() || t->is_enum())) {
         throw tstruct->get_name() +
@@ -2584,8 +2603,39 @@ void t_hack_generator::_generate_php_struct_definition(
       }
     }
 
-    indent(out) << "public " << typehint << " $" << (*m_iter)->get_name() << ";"
-                << endl;
+    string visibility = "public";
+    folly::Optional<string> visibility_annotation =
+        get_hack_annotation(t, "visibility");
+
+    if (visibility_annotation.hasValue()) {
+      string value = visibility_annotation.value();
+      if (value == "public" || value == "protected" || value == "private") {
+        visibility = value;
+      } else {
+        throw tstruct->get_name() + "::" + (*m_iter)->get_name() +
+            " doesn't have a valid visibility (public|protected|private)";
+      }
+    }
+    indent(out) << visibility << " " << typehint << " $"
+                << (*m_iter)->get_name() << ";" << endl;
+
+    bool hackGetter =
+        t->annotations_.find("hack.getter") != t->annotations_.end();
+    folly::Optional<string> getter_attributes =
+        get_hack_annotation(t, "getter_attributes");
+    if (hackGetter) {
+      if (getter_attributes.hasValue()) {
+        indent(out) << "<<" << getter_attributes.value() << ">>" << endl;
+      }
+      indent(out) << "public function get_" << (*m_iter)->get_name()
+                  << "(): " << typehint << " {" << endl;
+      indent(indent(out)) << "return $this->" << (*m_iter)->get_name() << ";"
+                          << endl;
+      indent(out) << "}" << endl;
+    } else if (getter_attributes.hasValue()) {
+      throw tstruct->get_name() + "::" + (*m_iter)->get_name() +
+          " declares hack.getter_attributes without enabling hack.getter";
+    }
   }
 
   if (tstruct->is_union()) {
