@@ -20,3 +20,137 @@ enum MyThriftEnum : int {
 }
 type MyThriftEnumType = MyThriftEnum;
 
+/**
+ * Original thrift struct:-
+ * MyThriftStruct
+ */
+class MyThriftStruct implements \IThriftStruct {
+  use \ThriftSerializationTrait;
+
+  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
+    1 => dict[
+      'var' => 'foo',
+      'type' => \TType::STRING,
+      ],
+    2 => dict[
+      'var' => 'bar',
+      'type' => \TType::STRING,
+      ],
+    3 => dict[
+      'var' => 'baz',
+      'type' => \TType::STRING,
+      ],
+    ];
+  public static Map<string, int> $_TFIELDMAP = Map {
+    'foo' => 1,
+    'bar' => 2,
+    'baz' => 3,
+  };
+  const int STRUCTURAL_ID = 6671455975178405100;
+  /**
+   * Original thrift field:-
+   * 1: string foo
+   */
+  public string $foo;
+  /**
+   * Original thrift field:-
+   * 2: string bar
+   */
+  public string $bar;
+  /**
+   * Original thrift field:-
+   * 3: string baz
+   */
+  public string $baz;
+
+  public function __construct(?string $foo = null, ?string $bar = null, ?string $baz = null  ) {
+    if ($foo === null) {
+      $this->foo = '';
+    } else {
+      $this->foo = $foo;
+    }
+    if ($bar === null) {
+      $this->bar = '';
+    } else {
+      $this->bar = $bar;
+    }
+    if ($baz === null) {
+      $this->baz = '';
+    } else {
+      $this->baz = $baz;
+    }
+  }
+
+  public function getName(): string {
+    return 'MyThriftStruct';
+  }
+
+}
+
+/**
+ * Original thrift struct:-
+ * MySecondThriftStruct
+ */
+class MySecondThriftStruct implements \IThriftStruct {
+  use \ThriftSerializationTrait;
+
+  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
+    1 => dict[
+      'var' => 'foo',
+      'type' => \TType::I64,
+      ],
+    2 => dict[
+      'var' => 'bar',
+      'type' => \TType::I64,
+      ],
+    3 => dict[
+      'var' => 'baz',
+      'type' => \TType::I64,
+      ],
+    ];
+  public static Map<string, int> $_TFIELDMAP = Map {
+    'foo' => 1,
+    'bar' => 2,
+    'baz' => 3,
+  };
+  const int STRUCTURAL_ID = 6794548766418210124;
+  /**
+   * Original thrift field:-
+   * 1: i64 foo
+   */
+  public int $foo;
+  /**
+   * Original thrift field:-
+   * 2: i64 bar
+   */
+  public int $bar;
+  /**
+   * Original thrift field:-
+   * 3: i64 baz
+   */
+  public int $baz;
+
+  public function __construct(?int $foo = null, ?int $bar = null, ?int $baz = null  ) {
+    if ($foo === null) {
+      $this->foo = 0;
+    } else {
+      $this->foo = $foo;
+    }
+    if ($bar === null) {
+      $this->bar = 0;
+    } else {
+      $this->bar = $bar;
+    }
+    if ($baz === null) {
+      $this->baz = 0;
+    } else {
+      $this->baz = $baz;
+    }
+  }
+
+  public function getName(): string {
+    return 'MySecondThriftStruct';
+  }
+
+}
+
