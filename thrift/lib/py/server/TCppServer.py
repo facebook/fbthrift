@@ -8,7 +8,7 @@ import traceback
 from thrift.protocol.THeaderProtocol import THeaderProtocol
 from thrift.server.TServer import TServer, TConnectionContext
 from thrift.Thrift import TPriority
-from thrift.transport.THeaderTransport import THeaderTransport
+from thrift.transport.THeaderTransport import THeaderTransport, MAX_BIG_FRAME_SIZE
 from thrift.transport.TTransport import TMemoryBuffer
 
 from thrift.server.CppServerWrapper import CppServerWrapper, CppContextData, \
@@ -86,6 +86,7 @@ class _ProcessorAdapter(object):
 
             write_buf = TMemoryBuffer()
             trans = THeaderTransport(write_buf)
+            trans.set_max_frame_size(MAX_BIG_FRAME_SIZE)
             trans._THeaderTransport__client_type = client_type
             trans._THeaderTransport__write_headers = headers
             trans.set_protocol_id(protocol_type)
@@ -94,6 +95,7 @@ class _ProcessorAdapter(object):
 
             prot_buf = TMemoryBuffer(write_buf.getvalue())
             prot = THeaderProtocol(prot_buf, client_types=[client_type])
+            prot.trans.set_max_frame_size(MAX_BIG_FRAME_SIZE)
 
             ctx = TCppConnectionContext(context_data)
 
@@ -137,6 +139,7 @@ class _ProcessorAdapter(object):
 
                 read_buf = TMemoryBuffer(response)
                 trans = THeaderTransport(read_buf, client_types=[client_type])
+                trans.set_max_frame_size(MAX_BIG_FRAME_SIZE)
                 trans.readFrame(len(response))
                 callback.call(trans.cstringio_buf.read())
         except:  # noqa
