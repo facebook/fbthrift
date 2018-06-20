@@ -11,7 +11,7 @@ from libcpp cimport bool as cbool
 from libcpp.iterator cimport inserter as cinserter
 from cpython cimport bool as pbool
 from libc.stdint cimport int8_t, int16_t, int32_t, int64_t, uint32_t
-from cython.operator cimport dereference as deref, preincrement as inc
+from cython.operator cimport dereference as deref, preincrement as inc, address as ptr_address
 import thrift.py3.types
 cimport thrift.py3.types
 cimport thrift.py3.exceptions
@@ -149,7 +149,7 @@ cdef class OldStructure(thrift.py3.types.Struct):
             serializer.JSONSerialize[cOldStructure](deref(self._cpp_obj.get()), &c_str)
         return <bytes> c_str
 
-    cdef uint32_t _deserialize(OldStructure self, const __IOBuf* buf, proto) except? 0:
+    cdef uint32_t _deserialize(OldStructure self, const cIOBuf* buf, proto) except? 0:
         cdef uint32_t needed
         self._cpp_obj = make_shared[cOldStructure]()
         if proto is Protocol.COMPACT:
@@ -280,7 +280,7 @@ cdef class NewStructure(thrift.py3.types.Struct):
             serializer.JSONSerialize[cNewStructure](deref(self._cpp_obj.get()), &c_str)
         return <bytes> c_str
 
-    cdef uint32_t _deserialize(NewStructure self, const __IOBuf* buf, proto) except? 0:
+    cdef uint32_t _deserialize(NewStructure self, const cIOBuf* buf, proto) except? 0:
         cdef uint32_t needed
         self._cpp_obj = make_shared[cNewStructure]()
         if proto is Protocol.COMPACT:
@@ -411,7 +411,7 @@ cdef class NewStructure2(thrift.py3.types.Struct):
             serializer.JSONSerialize[cNewStructure2](deref(self._cpp_obj.get()), &c_str)
         return <bytes> c_str
 
-    cdef uint32_t _deserialize(NewStructure2 self, const __IOBuf* buf, proto) except? 0:
+    cdef uint32_t _deserialize(NewStructure2 self, const cIOBuf* buf, proto) except? 0:
         cdef uint32_t needed
         self._cpp_obj = make_shared[cNewStructure2]()
         if proto is Protocol.COMPACT:
@@ -594,7 +594,7 @@ cdef class NewStructureNested(thrift.py3.types.Struct):
             serializer.JSONSerialize[cNewStructureNested](deref(self._cpp_obj.get()), &c_str)
         return <bytes> c_str
 
-    cdef uint32_t _deserialize(NewStructureNested self, const __IOBuf* buf, proto) except? 0:
+    cdef uint32_t _deserialize(NewStructureNested self, const cIOBuf* buf, proto) except? 0:
         cdef uint32_t needed
         self._cpp_obj = make_shared[cNewStructureNested]()
         if proto is Protocol.COMPACT:
@@ -729,7 +729,7 @@ cdef class NewStructureNestedField(thrift.py3.types.Struct):
             serializer.JSONSerialize[cNewStructureNestedField](deref(self._cpp_obj.get()), &c_str)
         return <bytes> c_str
 
-    cdef uint32_t _deserialize(NewStructureNestedField self, const __IOBuf* buf, proto) except? 0:
+    cdef uint32_t _deserialize(NewStructureNestedField self, const cIOBuf* buf, proto) except? 0:
         cdef uint32_t needed
         self._cpp_obj = make_shared[cNewStructureNestedField]()
         if proto is Protocol.COMPACT:

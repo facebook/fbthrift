@@ -14,7 +14,8 @@ from libcpp.vector cimport vector
 from libcpp.set cimport set as cset
 from libcpp.map cimport map as cmap, pair as cpair
 from thrift.py3.exceptions cimport cTException
-from folly.iobuf cimport cIOBuf as __IOBuf
+from folly.iobuf cimport cIOBuf
+from folly.iobuf cimport IOBuf as __IOBuf
 cimport thrift.py3.exceptions
 cimport thrift.py3.types
 from folly.optional cimport cOptional
@@ -744,8 +745,8 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "some::valid::ns":
         folly_sorted_vector_set_std_string set_type
         FakeMap map_type
         std_unordered_map_std_string_containerStruct map_struct_type
-        folly_IOBuf iobuf_type
-        std_unique_ptr_folly_IOBuf iobuf_ptr
+        cIOBuf iobuf_type
+        unique_ptr[cIOBuf] iobuf_ptr
         std_list[int32_t] list_i32_template
         std_deque[string] list_string_template
         folly_sorted_vector_set[string] set_template
@@ -757,8 +758,8 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "some::valid::ns":
         Foo indirection_a
         vector[Bar] indirection_b
         cset[Baz] indirection_c
-        folly_IOBuf iobuf_type_val
-        std_unique_ptr_folly_IOBuf iobuf_ptr_val
+        cIOBuf iobuf_type_val
+        unique_ptr[cIOBuf] iobuf_ptr_val
         ccontainerStruct struct_struct
         cAnnotatedStruct__isset __isset
 
@@ -820,6 +821,8 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "some::valid::ns":
     cdef shared_ptr[ccontainerStruct] aliasing_constructor_opt_ref_type_const "std::shared_ptr<some::valid::ns::containerStruct>"(shared_ptr[cAnnotatedStruct]&, ccontainerStruct*)
     cdef shared_ptr[ccontainerStruct] aliasing_constructor_opt_ref_type_unique "std::shared_ptr<some::valid::ns::containerStruct>"(shared_ptr[cAnnotatedStruct]&, ccontainerStruct*)
     cdef shared_ptr[cset[int32_t]] aliasing_constructor_opt_ref_type_shared "std::shared_ptr<std::set<int32_t>>"(shared_ptr[cAnnotatedStruct]&, cset[int32_t]*)
+    cdef shared_ptr[std_unique_ptr_folly_IOBuf] aliasing_constructor_iobuf_ptr "std::shared_ptr<std::unique_ptr<folly::IOBuf>>"(shared_ptr[cAnnotatedStruct]&, std_unique_ptr_folly_IOBuf*)
+    cdef shared_ptr[std_unique_ptr_folly_IOBuf] aliasing_constructor_iobuf_ptr_val "std::shared_ptr<std::unique_ptr<folly::IOBuf>>"(shared_ptr[cAnnotatedStruct]&, std_unique_ptr_folly_IOBuf*)
 
 cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[cEmpty] move(unique_ptr[cEmpty])
@@ -1234,6 +1237,8 @@ cdef class AnnotatedStruct(thrift.py3.types.Struct):
     cdef folly_sorted_vector_set_std_string__Set__string __set_type
     cdef FakeMap__Map__i64_double __map_type
     cdef std_unordered_map_std_string_containerStruct__Map__string_containerStruct __map_struct_type
+    cdef __IOBuf __iobuf_type
+    cdef __IOBuf __iobuf_ptr
     cdef std_list__List__i32 __list_i32_template
     cdef std_deque__List__string __list_string_template
     cdef folly_sorted_vector_set__Set__string __set_template
@@ -1244,6 +1249,8 @@ cdef class AnnotatedStruct(thrift.py3.types.Struct):
     cdef folly_sorted_vector_map__Map__i64_string __typedef_map_template
     cdef List__Bar__double __indirection_b
     cdef Set__Baz__i32 __indirection_c
+    cdef __IOBuf __iobuf_type_val
+    cdef __IOBuf __iobuf_ptr_val
     cdef containerStruct __struct_struct
 
     @staticmethod

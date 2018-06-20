@@ -33,12 +33,22 @@ on a struct.
     }}{{#type:externalProgram?}}{{> common/ModulePath}}.{{/type:externalProgram?}}{{!
     }}const_pointer_cast((<{{> types/CythonPythonType}}?>{{field:name}})._cpp_obj){{!
   }}{{/field:shared_const_ref?}}{{!
+  }}{{#field:iobuf_ref?}}{{!
+    Special handling for iobuf
+    }}(<__IOBuf?>{{field:name}}).c_clone(){{!
+  }}{{/field:iobuf_ref?}}{{!
 }}{{/field:reference?}}{{^field:reference?}}{{!
 }}{{#type:base?}}{{!
   }}deref(c_inst).{{field:name}} = {{!
   }}{{#program:optionals?}}{{#field:optional?}}cOptional[{{> types/CythonCppType}}]({{/field:optional?}}{{/program:optionals?}}{{!
-  }}{{field:name}}{{!
-  }}{{#type:string?}}.encode('UTF-8'){{/type:string?}}{{!
+  }}{{#field:iobuf?}}{{!
+    Special handling for iobuf
+    }}deref((<__IOBuf?>{{field:name}}).c_clone()){{!
+  }}{{/field:iobuf?}}{{!
+  }}{{^field:iobuf?}}{{!
+    }}{{field:name}}{{!
+    }}{{#type:string?}}.encode('UTF-8'){{/type:string?}}{{!
+  }}{{/field:iobuf?}}{{!
   }}{{#program:optionals?}}{{#field:optional?}}){{/field:optional?}}{{/program:optionals?}}{{!
 }}{{/type:base?}}{{!
 }}{{#type:enum?}}{{!

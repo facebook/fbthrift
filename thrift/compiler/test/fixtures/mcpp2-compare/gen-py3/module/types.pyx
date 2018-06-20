@@ -11,7 +11,7 @@ from libcpp cimport bool as cbool
 from libcpp.iterator cimport inserter as cinserter
 from cpython cimport bool as pbool
 from libc.stdint cimport int8_t, int16_t, int32_t, int64_t, uint32_t
-from cython.operator cimport dereference as deref, preincrement as inc
+from cython.operator cimport dereference as deref, preincrement as inc, address as ptr_address
 import thrift.py3.types
 cimport thrift.py3.types
 cimport thrift.py3.exceptions
@@ -217,7 +217,7 @@ cdef class Empty(thrift.py3.types.Struct):
             serializer.JSONSerialize[cEmpty](deref(self._cpp_obj.get()), &c_str)
         return <bytes> c_str
 
-    cdef uint32_t _deserialize(Empty self, const __IOBuf* buf, proto) except? 0:
+    cdef uint32_t _deserialize(Empty self, const cIOBuf* buf, proto) except? 0:
         cdef uint32_t needed
         self._cpp_obj = make_shared[cEmpty]()
         if proto is Protocol.COMPACT:
@@ -356,7 +356,7 @@ cdef class ASimpleStruct(thrift.py3.types.Struct):
             serializer.JSONSerialize[cASimpleStruct](deref(self._cpp_obj.get()), &c_str)
         return <bytes> c_str
 
-    cdef uint32_t _deserialize(ASimpleStruct self, const __IOBuf* buf, proto) except? 0:
+    cdef uint32_t _deserialize(ASimpleStruct self, const cIOBuf* buf, proto) except? 0:
         cdef uint32_t needed
         self._cpp_obj = make_shared[cASimpleStruct]()
         if proto is Protocol.COMPACT:
@@ -495,7 +495,7 @@ cdef class ASimpleStructNoexcept(thrift.py3.types.Struct):
             serializer.JSONSerialize[cASimpleStructNoexcept](deref(self._cpp_obj.get()), &c_str)
         return <bytes> c_str
 
-    cdef uint32_t _deserialize(ASimpleStructNoexcept self, const __IOBuf* buf, proto) except? 0:
+    cdef uint32_t _deserialize(ASimpleStructNoexcept self, const cIOBuf* buf, proto) except? 0:
         cdef uint32_t needed
         self._cpp_obj = make_shared[cASimpleStructNoexcept]()
         if proto is Protocol.COMPACT:
@@ -854,7 +854,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
             serializer.JSONSerialize[cMyStruct](deref(self._cpp_obj.get()), &c_str)
         return <bytes> c_str
 
-    cdef uint32_t _deserialize(MyStruct self, const __IOBuf* buf, proto) except? 0:
+    cdef uint32_t _deserialize(MyStruct self, const cIOBuf* buf, proto) except? 0:
         cdef uint32_t needed
         self._cpp_obj = make_shared[cMyStruct]()
         if proto is Protocol.COMPACT:
@@ -1007,7 +1007,7 @@ cdef class SimpleUnion(thrift.py3.types.Union):
             serializer.JSONSerialize[cSimpleUnion](deref(self._cpp_obj.get()), &c_str)
         return <bytes> c_str
 
-    cdef uint32_t _deserialize(SimpleUnion self, const __IOBuf* buf, proto) except? 0:
+    cdef uint32_t _deserialize(SimpleUnion self, const cIOBuf* buf, proto) except? 0:
         cdef uint32_t needed
         self._cpp_obj = make_shared[cSimpleUnion]()
         if proto is Protocol.COMPACT:
@@ -1798,7 +1798,7 @@ cdef class ComplexUnion(thrift.py3.types.Union):
             serializer.JSONSerialize[cComplexUnion](deref(self._cpp_obj.get()), &c_str)
         return <bytes> c_str
 
-    cdef uint32_t _deserialize(ComplexUnion self, const __IOBuf* buf, proto) except? 0:
+    cdef uint32_t _deserialize(ComplexUnion self, const cIOBuf* buf, proto) except? 0:
         cdef uint32_t needed
         self._cpp_obj = make_shared[cComplexUnion]()
         if proto is Protocol.COMPACT:
@@ -3579,7 +3579,7 @@ cdef class containerStruct(thrift.py3.types.Struct):
             serializer.JSONSerialize[ccontainerStruct](deref(self._cpp_obj.get()), &c_str)
         return <bytes> c_str
 
-    cdef uint32_t _deserialize(containerStruct self, const __IOBuf* buf, proto) except? 0:
+    cdef uint32_t _deserialize(containerStruct self, const cIOBuf* buf, proto) except? 0:
         cdef uint32_t needed
         self._cpp_obj = make_shared[ccontainerStruct]()
         if proto is Protocol.COMPACT:
@@ -3807,7 +3807,7 @@ cdef class MyIncludedStruct(thrift.py3.types.Struct):
             serializer.JSONSerialize[cMyIncludedStruct](deref(self._cpp_obj.get()), &c_str)
         return <bytes> c_str
 
-    cdef uint32_t _deserialize(MyIncludedStruct self, const __IOBuf* buf, proto) except? 0:
+    cdef uint32_t _deserialize(MyIncludedStruct self, const cIOBuf* buf, proto) except? 0:
         cdef uint32_t needed
         self._cpp_obj = make_shared[cMyIncludedStruct]()
         if proto is Protocol.COMPACT:
@@ -3852,8 +3852,8 @@ cdef class AnnotatedStruct(thrift.py3.types.Struct):
         set_type=None,
         map_type=None,
         map_struct_type=None,
-        bytes iobuf_type=None,
-        bytes iobuf_ptr=None,
+        __IOBuf iobuf_type=None,
+        __IOBuf iobuf_ptr=None,
         list_i32_template=None,
         list_string_template=None,
         set_template=None,
@@ -3865,8 +3865,8 @@ cdef class AnnotatedStruct(thrift.py3.types.Struct):
         indirection_a=None,
         indirection_b=None,
         indirection_c=None,
-        bytes iobuf_type_val=None,
-        bytes iobuf_ptr_val=None,
+        __IOBuf iobuf_type_val=None,
+        __IOBuf iobuf_ptr_val=None,
         containerStruct struct_struct=None
     ):
         if base_type is not None:
@@ -4401,8 +4401,7 @@ cdef class AnnotatedStruct(thrift.py3.types.Struct):
                 iobuf_type = None
 
             if iobuf_ptr is None:
-                deref(c_inst).iobuf_ptr = _AnnotatedStruct_defaults.iobuf_ptr
-                deref(c_inst).__isset.iobuf_ptr = False
+                deref(c_inst).iobuf_ptr.reset()
                 pass
             elif iobuf_ptr is __NOTSET:
                 iobuf_ptr = None
@@ -4492,8 +4491,7 @@ cdef class AnnotatedStruct(thrift.py3.types.Struct):
                 iobuf_type_val = None
 
             if iobuf_ptr_val is None:
-                deref(c_inst).iobuf_ptr_val = _AnnotatedStruct_defaults.iobuf_ptr_val
-                deref(c_inst).__isset.iobuf_ptr_val = False
+                deref(c_inst).iobuf_ptr_val.reset()
                 pass
             elif iobuf_ptr_val is __NOTSET:
                 iobuf_ptr_val = None
@@ -4560,11 +4558,10 @@ cdef class AnnotatedStruct(thrift.py3.types.Struct):
             deref(c_inst).map_struct_type = deref(std_unordered_map_std_string_containerStruct__Map__string_containerStruct(map_struct_type)._cpp_obj)
             deref(c_inst).__isset.map_struct_type = True
         if iobuf_type is not None:
-            deref(c_inst).iobuf_type = iobuf_type
+            deref(c_inst).iobuf_type = deref((<__IOBuf?>iobuf_type).c_clone())
             deref(c_inst).__isset.iobuf_type = True
         if iobuf_ptr is not None:
-            deref(c_inst).iobuf_ptr = iobuf_ptr
-            deref(c_inst).__isset.iobuf_ptr = True
+            deref(c_inst).iobuf_ptr = (<__IOBuf?>iobuf_ptr).c_clone()
         if list_i32_template is not None:
             deref(c_inst).list_i32_template = deref(std_list__List__i32(list_i32_template)._cpp_obj)
             deref(c_inst).__isset.list_i32_template = True
@@ -4599,11 +4596,10 @@ cdef class AnnotatedStruct(thrift.py3.types.Struct):
             deref(c_inst).indirection_c = deref(Set__Baz__i32(indirection_c)._cpp_obj)
             deref(c_inst).__isset.indirection_c = True
         if iobuf_type_val is not None:
-            deref(c_inst).iobuf_type_val = iobuf_type_val
+            deref(c_inst).iobuf_type_val = deref((<__IOBuf?>iobuf_type_val).c_clone())
             deref(c_inst).__isset.iobuf_type_val = True
         if iobuf_ptr_val is not None:
-            deref(c_inst).iobuf_ptr_val = iobuf_ptr_val
-            deref(c_inst).__isset.iobuf_ptr_val = True
+            deref(c_inst).iobuf_ptr_val = (<__IOBuf?>iobuf_ptr_val).c_clone()
         if struct_struct is not None:
             deref(c_inst).struct_struct = deref((<containerStruct?> struct_struct)._cpp_obj)
             deref(c_inst).__isset.struct_struct = True
@@ -4654,7 +4650,7 @@ cdef class AnnotatedStruct(thrift.py3.types.Struct):
         yield 'struct_struct', self.struct_struct
 
     def __bool__(self):
-        return True or <bint>(deref(self._cpp_obj).cpp_unique_ref) or <bint>(deref(self._cpp_obj).cpp2_unique_ref) or <bint>(deref(self._cpp_obj).container_with_ref) or True or True or True or <bint>(deref(self._cpp_obj).opt_cpp_unique_ref) or <bint>(deref(self._cpp_obj).opt_cpp2_unique_ref) or <bint>(deref(self._cpp_obj).opt_container_with_ref) or <bint>(deref(self._cpp_obj).ref_type_unique) or <bint>(deref(self._cpp_obj).ref_type_shared) or <bint>(deref(self._cpp_obj).ref_type_const) or True or True or True or <bint>(deref(self._cpp_obj).opt_ref_type_const) or <bint>(deref(self._cpp_obj).opt_ref_type_unique) or <bint>(deref(self._cpp_obj).opt_ref_type_shared) or True or True or True or True or True or True or True or True or True or True or True or True or True or True or True or True or True or True or True or True or True
+        return True or <bint>(deref(self._cpp_obj).cpp_unique_ref) or <bint>(deref(self._cpp_obj).cpp2_unique_ref) or <bint>(deref(self._cpp_obj).container_with_ref) or True or True or True or <bint>(deref(self._cpp_obj).opt_cpp_unique_ref) or <bint>(deref(self._cpp_obj).opt_cpp2_unique_ref) or <bint>(deref(self._cpp_obj).opt_container_with_ref) or <bint>(deref(self._cpp_obj).ref_type_unique) or <bint>(deref(self._cpp_obj).ref_type_shared) or <bint>(deref(self._cpp_obj).ref_type_const) or True or True or True or <bint>(deref(self._cpp_obj).opt_ref_type_const) or <bint>(deref(self._cpp_obj).opt_ref_type_unique) or <bint>(deref(self._cpp_obj).opt_ref_type_shared) or True or True or True or True or True or True or <bint>(deref(self._cpp_obj).iobuf_ptr) or True or True or True or True or True or True or True or True or True or True or True or True or <bint>(deref(self._cpp_obj).iobuf_ptr_val) or True
 
     @staticmethod
     cdef create(shared_ptr[cAnnotatedStruct] cpp_obj):
@@ -4867,12 +4863,18 @@ cdef class AnnotatedStruct(thrift.py3.types.Struct):
     @property
     def iobuf_type(self):
 
-        return self._cpp_obj.get().iobuf_type
+        if self.__iobuf_type is None:
+            self.__iobuf_type = __IOBuf.create(ptr_address(deref(self._cpp_obj).iobuf_type), self)
+        return self.__iobuf_type
 
     @property
     def iobuf_ptr(self):
 
-        return self._cpp_obj.get().iobuf_ptr
+        if self.__iobuf_ptr is None:
+            if not deref(self._cpp_obj).iobuf_ptr:
+                return None
+            self.__iobuf_ptr = __IOBuf.create(deref(self._cpp_obj).iobuf_ptr.get(), self)
+        return self.__iobuf_ptr
 
     @property
     def list_i32_template(self):
@@ -4952,12 +4954,18 @@ cdef class AnnotatedStruct(thrift.py3.types.Struct):
     @property
     def iobuf_type_val(self):
 
-        return self._cpp_obj.get().iobuf_type_val
+        if self.__iobuf_type_val is None:
+            self.__iobuf_type_val = __IOBuf.create(ptr_address(deref(self._cpp_obj).iobuf_type_val), self)
+        return self.__iobuf_type_val
 
     @property
     def iobuf_ptr_val(self):
 
-        return self._cpp_obj.get().iobuf_ptr_val
+        if self.__iobuf_ptr_val is None:
+            if not deref(self._cpp_obj).iobuf_ptr_val:
+                return None
+            self.__iobuf_ptr_val = __IOBuf.create(deref(self._cpp_obj).iobuf_ptr_val.get(), self)
+        return self.__iobuf_ptr_val
 
     @property
     def struct_struct(self):
@@ -5044,7 +5052,7 @@ cdef class AnnotatedStruct(thrift.py3.types.Struct):
             serializer.JSONSerialize[cAnnotatedStruct](deref(self._cpp_obj.get()), &c_str)
         return <bytes> c_str
 
-    cdef uint32_t _deserialize(AnnotatedStruct self, const __IOBuf* buf, proto) except? 0:
+    cdef uint32_t _deserialize(AnnotatedStruct self, const cIOBuf* buf, proto) except? 0:
         cdef uint32_t needed
         self._cpp_obj = make_shared[cAnnotatedStruct]()
         if proto is Protocol.COMPACT:
@@ -5213,7 +5221,7 @@ cdef class FloatStruct(thrift.py3.types.Struct):
             serializer.JSONSerialize[cFloatStruct](deref(self._cpp_obj.get()), &c_str)
         return <bytes> c_str
 
-    cdef uint32_t _deserialize(FloatStruct self, const __IOBuf* buf, proto) except? 0:
+    cdef uint32_t _deserialize(FloatStruct self, const cIOBuf* buf, proto) except? 0:
         cdef uint32_t needed
         self._cpp_obj = make_shared[cFloatStruct]()
         if proto is Protocol.COMPACT:
@@ -5386,7 +5394,7 @@ cdef class FloatUnion(thrift.py3.types.Union):
             serializer.JSONSerialize[cFloatUnion](deref(self._cpp_obj.get()), &c_str)
         return <bytes> c_str
 
-    cdef uint32_t _deserialize(FloatUnion self, const __IOBuf* buf, proto) except? 0:
+    cdef uint32_t _deserialize(FloatUnion self, const cIOBuf* buf, proto) except? 0:
         cdef uint32_t needed
         self._cpp_obj = make_shared[cFloatUnion]()
         if proto is Protocol.COMPACT:
@@ -5526,7 +5534,7 @@ cdef class AllRequiredNoExceptMoveCtrStruct(thrift.py3.types.Struct):
             serializer.JSONSerialize[cAllRequiredNoExceptMoveCtrStruct](deref(self._cpp_obj.get()), &c_str)
         return <bytes> c_str
 
-    cdef uint32_t _deserialize(AllRequiredNoExceptMoveCtrStruct self, const __IOBuf* buf, proto) except? 0:
+    cdef uint32_t _deserialize(AllRequiredNoExceptMoveCtrStruct self, const cIOBuf* buf, proto) except? 0:
         cdef uint32_t needed
         self._cpp_obj = make_shared[cAllRequiredNoExceptMoveCtrStruct]()
         if proto is Protocol.COMPACT:

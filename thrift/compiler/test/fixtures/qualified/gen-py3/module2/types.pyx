@@ -11,7 +11,7 @@ from libcpp cimport bool as cbool
 from libcpp.iterator cimport inserter as cinserter
 from cpython cimport bool as pbool
 from libc.stdint cimport int8_t, int16_t, int32_t, int64_t, uint32_t
-from cython.operator cimport dereference as deref, preincrement as inc
+from cython.operator cimport dereference as deref, preincrement as inc, address as ptr_address
 import thrift.py3.types
 cimport thrift.py3.types
 cimport thrift.py3.exceptions
@@ -187,7 +187,7 @@ cdef class Struct(thrift.py3.types.Struct):
             serializer.JSONSerialize[cStruct](deref(self._cpp_obj.get()), &c_str)
         return <bytes> c_str
 
-    cdef uint32_t _deserialize(Struct self, const __IOBuf* buf, proto) except? 0:
+    cdef uint32_t _deserialize(Struct self, const cIOBuf* buf, proto) except? 0:
         cdef uint32_t needed
         self._cpp_obj = make_shared[cStruct]()
         if proto is Protocol.COMPACT:
@@ -356,7 +356,7 @@ cdef class BigStruct(thrift.py3.types.Struct):
             serializer.JSONSerialize[cBigStruct](deref(self._cpp_obj.get()), &c_str)
         return <bytes> c_str
 
-    cdef uint32_t _deserialize(BigStruct self, const __IOBuf* buf, proto) except? 0:
+    cdef uint32_t _deserialize(BigStruct self, const cIOBuf* buf, proto) except? 0:
         cdef uint32_t needed
         self._cpp_obj = make_shared[cBigStruct]()
         if proto is Protocol.COMPACT:

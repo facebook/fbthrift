@@ -36,6 +36,7 @@ cdef extern from "Python.h":
 
 
 cdef class IOBuf:
+    cdef object __weakref__
     cdef cIOBuf* _this
     cdef object _parent
     cdef object _hash

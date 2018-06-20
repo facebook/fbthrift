@@ -36,7 +36,7 @@ cdef class IOBuf:
 
     @staticmethod
     cdef IOBuf create(cIOBuf* this, object parent):
-        key = (<unsigned long>this, parent)
+        key = (<unsigned long>this, id(parent))
         cdef IOBuf inst = __cache.get(key)
         if inst is None:
             inst = <IOBuf>IOBuf.__new__(IOBuf)

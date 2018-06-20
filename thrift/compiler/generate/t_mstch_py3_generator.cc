@@ -191,13 +191,28 @@ std::string t_mstch_py3_generator::get_rename(const T& elem) {
 }
 
 mstch::map t_mstch_py3_generator::extend_field(const t_field& field) {
-  string ref_type = this->ref_type(field);
+  const auto ref_type = this->ref_type(field);
+  bool reference = ref_type != "";
+  bool is_iobuf = false;
+  bool is_iobuf_ref = false;
+
+  if (field.get_type() != nullptr) {
+    auto& resolved_type = resolve_typedef(*field.get_type());
+    string type_override = this->get_cpp_type(resolved_type);
+    if (type_override == "std::unique_ptr<folly::IOBuf>") {
+      reference = true;
+      is_iobuf_ref = true;
+    }
+    if (type_override == "folly::IOBuf") {
+      is_iobuf = true;
+    }
+  }
+
   auto req = field.get_req();
   const auto required = req == t_field::e_req::T_REQUIRED;
   const auto optional = req == t_field::e_req::T_OPTIONAL;
   const auto unqualified = !required && !optional;
   const auto hasValue = field.get_value() != nullptr;
-  const auto reference = ref_type != "";
   const auto flag_optionals = cache_->parsed_options_.count("optionals") != 0;
   const auto follyOptional = optional && flag_optionals;
   const auto hasDefaultValue =
@@ -211,10 +226,11 @@ mstch::map t_mstch_py3_generator::extend_field(const t_field& field) {
 
   mstch::map result{
       {"reference?", reference},
-      {"ref_type", ref_type},
       {"unique_ref?", (ref_type == "unique")},
       {"shared_ref?", (ref_type == "shared")},
       {"shared_const_ref?", (ref_type == "shared_const")},
+      {"iobuf?", is_iobuf},
+      {"iobuf_ref?", is_iobuf_ref},
       {"hasDefaultValue?", hasDefaultValue},
       {"requireValue?", requireValue},
       {"follyOptional?", follyOptional},
@@ -286,6 +302,10 @@ mstch::map t_mstch_py3_generator::extend_type(const t_type& type) {
   const auto hasCythonType = !type.is_container() && !type.is_enum();
   const auto cythonTypeNoneable = !is_number && hasCythonType;
 
+  bool is_iobuf =
+      (cpp_type == "folly::IOBuf" ||
+       cpp_type == "std::unique_ptr<folly::IOBuf>");
+
   mstch::map result{
       {"modulePath", modulePath},
       {"externalProgram?", externalProgram},
@@ -301,6 +321,7 @@ mstch::map t_mstch_py3_generator::extend_type(const t_type& type) {
       {"integer?", is_integer},
       {"cythonTypeNoneable?", cythonTypeNoneable},
       {"hasCythonType?", hasCythonType},
+      {"iobuf_wrapper?", is_iobuf},
   };
   return result;
 }

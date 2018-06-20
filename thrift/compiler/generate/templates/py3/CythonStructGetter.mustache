@@ -26,6 +26,9 @@ if they have been previously retrieved.
 }}if self.__{{field:name}} is None:
     if not deref(self._cpp_obj).{{field:name}}:
         return None
+    {{#field:iobuf_ref?}}
+    self.__{{field:name}} = __IOBuf.create(deref(self._cpp_obj).{{field:name}}.get(), self)
+    {{/field:iobuf_ref?}}{{^field:iobuf_ref?}}
     {{! Use an aliasing constructor since the object we're returning is still
         managed by the top-level object, possible via a unique_ptr }}
     self.__{{field:name}} = {{> types/CythonPythonType}}.create(aliasing_constructor_{{field:name}}({{!
@@ -36,17 +39,23 @@ if they have been previously retrieved.
         our underlying object.
       }}{{#field:shared_const_ref?}}<{{> types/CythonCppType}}*>{{/field:shared_const_ref?}}{{!
       }}(deref(self._cpp_obj).{{field:name}}.get())))
+    {{/field:iobuf_ref?}}
 return self.__{{field:name}}{{!
 }}{{/field:reference?}}{{!
 }}{{^field:reference?}}{{!
 }}{{#type:base?}}{{!
+  }}{{#field:iobuf?}}{{!
+  }}if self.__{{field:name}} is None:
+    self.__{{field:name}} = __IOBuf.create(ptr_address(deref(self._cpp_obj).{{field:name}}), self)
+return self.__{{field:name}}{{!
+  }}{{/field:iobuf?}}{{^field:iobuf?}}{{!
   }}return {{!
   }}{{#type:bool?}}<pbool> {{/type:bool?}}{{!
   }}{{#type:string?}}(<bytes>{{/type:string?}}{{!
   }}self._cpp_obj.get().{{field:name}}{{!
   }}{{#program:optionals?}}{{#field:optional?}}.value(){{/field:optional?}}{{/program:optionals?}}{{!
   }}{{#type:string?}}).decode('UTF-8'){{/type:string?}}{{!
-}}{{/type:base?}}{{!
+}}{{/field:iobuf?}}{{/type:base?}}{{!
 }}{{#type:enum?}}{{!
   }}return translate_cpp_enum_to_python({{!
     }}{{> types/CythonPythonType}}, {{!

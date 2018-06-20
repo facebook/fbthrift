@@ -336,35 +336,35 @@ class ReturnServiceInterface(
     def pass_context_readDataEb(
         fn: _typing.Callable[
                 [_ReturnServiceInterfaceT, RequestContext, int],
-                _typing.Awaitable[bytes]
+                _typing.Awaitable[__IOBuf]
         ]
     ) -> _typing.Callable[
         [_ReturnServiceInterfaceT, int],
-        _typing.Awaitable[bytes]
+        _typing.Awaitable[__IOBuf]
     ]: ...
 
     @abstractmethod
     async def readDataEb(
         self,
         size: int
-    ) -> bytes: ...
+    ) -> __IOBuf: ...
 
     @staticmethod
     def pass_context_readData(
         fn: _typing.Callable[
                 [_ReturnServiceInterfaceT, RequestContext, int],
-                _typing.Awaitable[bytes]
+                _typing.Awaitable[__IOBuf]
         ]
     ) -> _typing.Callable[
         [_ReturnServiceInterfaceT, int],
-        _typing.Awaitable[bytes]
+        _typing.Awaitable[__IOBuf]
     ]: ...
 
     @abstractmethod
     async def readData(
         self,
         size: int
-    ) -> bytes: ...
+    ) -> __IOBuf: ...
     pass
 
 

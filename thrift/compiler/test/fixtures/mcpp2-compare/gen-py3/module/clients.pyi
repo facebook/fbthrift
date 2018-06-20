@@ -146,13 +146,13 @@ class ReturnService(thrift.py3.client.Client):
         self,
         size: int,
         rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
-    ) -> bytes: ...
+    ) -> __IOBuf: ...
 
     async def readData(
         self,
         size: int,
         rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
-    ) -> bytes: ...
+    ) -> __IOBuf: ...
 
 
 
