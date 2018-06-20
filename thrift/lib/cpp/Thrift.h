@@ -17,11 +17,12 @@
 #ifndef THRIFT_THRIFT_H_
 #define THRIFT_THRIFT_H_
 
-#include <folly/Memory.h>
 #include <folly/Range.h>
 #include <folly/Traits.h>
 #include <folly/lang/Bits.h>
+#include <folly/portability/Sockets.h>
 #include <folly/portability/Time.h>
+
 #include <thrift/lib/cpp/thrift_config.h>
 
 #ifdef THRIFT_PLATFORM_CONFIG
