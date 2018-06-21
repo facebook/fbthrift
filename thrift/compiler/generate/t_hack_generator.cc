@@ -2301,7 +2301,7 @@ void t_hack_generator::generate_php_struct_shape_methods(
         if (arrays_) {
           if (type_has_nested_struct(t)) {
             if (nullable) {
-              val << " ? null : $this->" << (*m_iter)->get_name() << endl;
+              val << " === null ? null : $this->" << (*m_iter)->get_name() << endl;
             } else {
               val << endl;
             }
