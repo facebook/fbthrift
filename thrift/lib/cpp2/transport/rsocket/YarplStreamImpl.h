@@ -231,7 +231,7 @@ class YarplStreamImpl : public StreamImplIf {
   std::unique_ptr<StreamImplIf> map(
       folly::Function<Value(Value)> mapFunc,
       folly::Function<folly::exception_wrapper(folly::exception_wrapper&&)>
-          errormapFunc = nullptr) &&
+          errormapFunc) &&
       override {
     return std::make_unique<YarplStreamImpl>(
         flowable_->map(std::move(mapFunc), std::move(errormapFunc)));
