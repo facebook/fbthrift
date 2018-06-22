@@ -13,7 +13,7 @@ struct MyThriftStruct {
 }
 
 struct MySecondThriftStruct {
-  1: i64 foo,
-  2: i64 bar,
+  1: MyThriftEnum foo,
+  2: MyThriftStruct bar,
   3: i64 baz,
 }

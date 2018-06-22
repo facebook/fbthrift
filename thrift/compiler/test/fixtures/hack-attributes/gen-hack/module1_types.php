@@ -97,11 +97,13 @@ class MySecondThriftStruct implements \IThriftStruct {
   public static dict<int, dict<string, mixed>> $_TSPEC = dict[
     1 => dict[
       'var' => 'foo',
-      'type' => \TType::I64,
+      'type' => \TType::I32,
+      'enum' => '\test\fixtures\jsenum\MyThriftEnum',
       ],
     2 => dict[
       'var' => 'bar',
-      'type' => \TType::I64,
+      'type' => \TType::STRUCT,
+      'class' => '\test\fixtures\jsenum\MyThriftStruct',
       ],
     3 => dict[
       'var' => 'baz',
@@ -113,34 +115,26 @@ class MySecondThriftStruct implements \IThriftStruct {
     'bar' => 2,
     'baz' => 3,
   };
-  const int STRUCTURAL_ID = 6794548766418210124;
+  const int STRUCTURAL_ID = 2800971917864580212;
   /**
    * Original thrift field:-
-   * 1: i64 foo
+   * 1: enum module1.MyThriftEnum foo
    */
-  public int $foo;
+  public ?\test\fixtures\jsenum\MyThriftEnum $foo;
   /**
    * Original thrift field:-
-   * 2: i64 bar
+   * 2: struct module1.MyThriftStruct bar
    */
-  public int $bar;
+  public ?\test\fixtures\jsenum\MyThriftStruct $bar;
   /**
    * Original thrift field:-
    * 3: i64 baz
    */
   public int $baz;
 
-  public function __construct(?int $foo = null, ?int $bar = null, ?int $baz = null  ) {
-    if ($foo === null) {
-      $this->foo = 0;
-    } else {
-      $this->foo = $foo;
-    }
-    if ($bar === null) {
-      $this->bar = 0;
-    } else {
-      $this->bar = $bar;
-    }
+  public function __construct(?\test\fixtures\jsenum\MyThriftEnum $foo = null, ?\test\fixtures\jsenum\MyThriftStruct $bar = null, ?int $baz = null  ) {
+    $this->foo = $foo;
+    $this->bar = $bar;
     if ($baz === null) {
       $this->baz = 0;
     } else {
