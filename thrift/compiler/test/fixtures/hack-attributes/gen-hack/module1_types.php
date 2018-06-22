@@ -24,6 +24,7 @@ type MyThriftEnumType = MyThriftEnum;
  * Original thrift struct:-
  * MyThriftStruct
  */
+<<ClassAttribute>>
 class MyThriftStruct implements \IThriftStruct {
   use \ThriftSerializationTrait;
 
@@ -51,17 +52,26 @@ class MyThriftStruct implements \IThriftStruct {
    * Original thrift field:-
    * 1: string foo
    */
+  <<FieldAttribute>>
   public string $foo;
   /**
    * Original thrift field:-
    * 2: string bar
    */
-  public string $bar;
+  private string $bar;
+  <<FieldGetterAttribute>>
+  public function get_bar(): string {
+    return $this->bar;
+  }
   /**
    * Original thrift field:-
    * 3: string baz
    */
   public string $baz;
+  <<FieldGetterAttribute>>
+  public function get_baz(): string {
+    return $this->baz;
+  }
 
   public function __construct(?string $foo = null, ?string $bar = null, ?string $baz = null  ) {
     if ($foo === null) {
@@ -120,17 +130,25 @@ class MySecondThriftStruct implements \IThriftStruct {
    * Original thrift field:-
    * 1: enum module1.MyThriftEnum foo
    */
-  public ?\test\fixtures\jsenum\MyThriftEnum $foo;
+  private ?\test\fixtures\jsenum\MyThriftEnum $foo;
   /**
    * Original thrift field:-
    * 2: struct module1.MyThriftStruct bar
    */
-  public ?\test\fixtures\jsenum\MyThriftStruct $bar;
+  protected ?\test\fixtures\jsenum\MyThriftStruct $bar;
+  <<FieldStructGetterAttribute>>
+  public function get_bar(): ?\test\fixtures\jsenum\MyThriftStruct {
+    return $this->bar;
+  }
   /**
    * Original thrift field:-
    * 3: i64 baz
    */
   public int $baz;
+  <<FieldGetterAttribute>>
+  public function get_baz(): int {
+    return $this->baz;
+  }
 
   public function __construct(?\test\fixtures\jsenum\MyThriftEnum $foo = null, ?\test\fixtures\jsenum\MyThriftStruct $bar = null, ?int $baz = null  ) {
     $this->foo = $foo;

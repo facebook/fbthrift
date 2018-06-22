@@ -19,7 +19,7 @@
 #include <sstream>
 #include <string>
 
-#include <thrift/compiler/parse/t_doc.h>
+#include <thrift/compiler/parse/t_annotated.h>
 #include <thrift/compiler/parse/t_type.h>
 
 class t_const_value;
@@ -32,7 +32,7 @@ class t_struct;
  * a symbolic name, and a numeric identifier.
  *
  */
-class t_field : public t_doc {
+class t_field : public t_annotated {
  public:
   /**
    * Constructor for t_field
@@ -110,8 +110,6 @@ class t_field : public t_doc {
   e_req get_req() const {
     return req_;
   }
-
-  std::map<std::string, std::string> annotations_;
 
  private:
   t_type* type_;

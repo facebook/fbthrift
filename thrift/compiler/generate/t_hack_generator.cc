@@ -389,9 +389,11 @@ class t_hack_generator : public t_oop_generator {
     return tenum->annotations_.find("bitmask") != tenum->annotations_.end();
   }
 
-  string get_attributes(t_enum* tenum) {
-    auto it = tenum->annotations_.find("hack.attributes");
-    return it != tenum->annotations_.end() ? it->second : "";
+  string const* get_hack_annotation(
+      t_annotated* annotated,
+      const string& annotation) {
+    auto it = annotated->annotations_.find("hack." + annotation);
+    return it != annotated->annotations_.end() ? &it->second : nullptr;
   }
 
   std::string hack_namespace(const t_program* p) {
@@ -1015,18 +1017,18 @@ void t_hack_generator::generate_enum(t_enum* tenum) {
   } else if (oldenum_) {
     typehint = hack_name(tenum, true) + "Type";
     f_types_ << "newtype " << typehint << " as arraykey = int;" << endl;
-    string attributes = get_attributes(tenum);
-    if (!attributes.empty()) {
-      f_types_ << "<<" << attributes << ">>" << endl;
+    std::string const* attributes = get_hack_annotation(tenum, "attributes");
+    if (attributes) {
+      f_types_ << "<<" << *attributes << ">>" << endl;
     }
     f_types_ << "final class " << hack_name(tenum, true) << " extends Enum<"
              << typehint << "> {" << endl;
   } else {
     hack_enum = true;
     typehint = hack_name(tenum, true);
-    string attributes = get_attributes(tenum);
-    if (!attributes.empty()) {
-      f_types_ << "<<" << attributes << ">>" << endl;
+    std::string const* attributes = get_hack_annotation(tenum, "attributes");
+    if (attributes) {
+      f_types_ << "<<" << *attributes << ">>" << endl;
     }
     f_types_ << "enum " << hack_name(tenum, true) << " : int {" << endl;
   }
@@ -2301,7 +2303,8 @@ void t_hack_generator::generate_php_struct_shape_methods(
         if (arrays_) {
           if (type_has_nested_struct(t)) {
             if (nullable) {
-              val << " === null ? null : $this->" << (*m_iter)->get_name() << endl;
+              val << " === null ? null : $this->" << (*m_iter)->get_name()
+                  << endl;
             } else {
               val << endl;
             }
@@ -2497,6 +2500,10 @@ void t_hack_generator::_generate_php_struct_definition(
   if (!is_result && !is_args && (is_exception || !generateAsTrait)) {
     generate_php_docstring(out, tstruct, is_exception);
   }
+  std::string const* attributes = get_hack_annotation(tstruct, "attributes");
+  if (attributes) {
+    f_types_ << "<<" << *attributes << ">>" << endl;
+  }
   out << (generateAsTrait ? "trait " : "class ") << hack_name(tstruct, true);
   if (generateAsTrait) {
     out << "Trait";
@@ -2566,6 +2573,11 @@ void t_hack_generator::_generate_php_struct_definition(
       generate_php_docstring(out, *m_iter);
     }
 
+    string const* field_attributes = get_hack_annotation(*m_iter, "attributes");
+    if (field_attributes) {
+      indent(out) << "<<" << *field_attributes << ">>" << endl;
+    }
+
     if (is_exception && (*m_iter)->get_name() == "code") {
       if (!(t->is_any_int() || t->is_enum())) {
         throw tstruct->get_name() +
@@ -2584,8 +2596,40 @@ void t_hack_generator::_generate_php_struct_definition(
       }
     }
 
-    indent(out) << "public " << typehint << " $" << (*m_iter)->get_name() << ";"
-                << endl;
+    string visibility = "public";
+    string const* visibility_annotation =
+        get_hack_annotation(*m_iter, "visibility");
+
+    if (visibility_annotation) {
+      string const& value = *visibility_annotation;
+      if (value == "public" || value == "protected" || value == "private") {
+        visibility = value;
+      } else {
+        throw tstruct->get_name() + "::" + (*m_iter)->get_name() +
+            " doesn't have a valid visibility (public|protected|private)";
+      }
+    }
+
+    indent(out) << visibility << " " << typehint << " $"
+                << (*m_iter)->get_name() << ";" << endl;
+
+    bool hack_getter = (*m_iter)->annotations_.find("hack.getter") !=
+        (*m_iter)->annotations_.end();
+    string const* getter_attributes =
+        get_hack_annotation(*m_iter, "getter_attributes");
+    if (hack_getter) {
+      if (getter_attributes) {
+        indent(out) << "<<" << *getter_attributes << ">>" << endl;
+      }
+      indent(out) << "public function get_" << (*m_iter)->get_name()
+                  << "(): " << typehint << " {" << endl;
+      indent(indent(out)) << "return $this->" << (*m_iter)->get_name() << ";"
+                          << endl;
+      indent(out) << "}" << endl;
+    } else if (getter_attributes) {
+      throw tstruct->get_name() + "::" + (*m_iter)->get_name() +
+          " declares hack.getter_attributes without enabling hack.getter";
+    }
   }
 
   if (tstruct->is_union()) {
