@@ -17,6 +17,7 @@
 #include <functional>
 #include <memory>
 
+#include <folly/ScopeGuard.h>
 #include <thrift/lib/cpp/concurrency/InitThreadFactory.h>
 
 namespace apache {
@@ -30,11 +31,17 @@ class InitRunnable : public Runnable {
  public:
   explicit InitRunnable(
       std::function<void()> threadInitializer,
+      std::function<void()> threadFinalizer,
       std::shared_ptr<Runnable> runnable)
-      : threadInitializer_(std::move(threadInitializer)), runnable_(runnable) {}
+      : threadInitializer_(std::move(threadInitializer)),
+        threadFinalizer_(std::move(threadFinalizer)),
+        runnable_(runnable) {}
 
   void run() override {
     threadInitializer_();
+    SCOPE_EXIT {
+      threadFinalizer_();
+    };
     runnable_->run();
   }
 
@@ -48,6 +55,7 @@ class InitRunnable : public Runnable {
 
  private:
   std::function<void()> threadInitializer_;
+  std::function<void()> threadFinalizer_;
   std::shared_ptr<Runnable> runnable_;
 };
 
@@ -55,15 +63,16 @@ class InitRunnable : public Runnable {
 
 std::shared_ptr<Thread> InitThreadFactory::newThread(
     const std::shared_ptr<Runnable>& runnable) const {
-  return threadFactory_->newThread(
-      std::make_shared<InitRunnable>(threadInitializer_, runnable));
+  return threadFactory_->newThread(std::make_shared<InitRunnable>(
+      threadInitializer_, threadFinalizer_, runnable));
 }
 
 std::shared_ptr<Thread> InitThreadFactory::newThread(
     const std::shared_ptr<Runnable>& runnable,
     DetachState detachState) const {
   return threadFactory_->newThread(
-      std::make_shared<InitRunnable>(threadInitializer_, runnable),
+      std::make_shared<InitRunnable>(
+          threadInitializer_, threadFinalizer_, runnable),
       detachState);
 }
 

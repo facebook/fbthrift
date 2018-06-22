@@ -32,9 +32,11 @@ class InitThreadFactory : public ThreadFactory {
  public:
   explicit InitThreadFactory(
       const std::shared_ptr<ThreadFactory>& threadFactory,
-      std::function<void()>&& threadInitializer)
+      std::function<void()>&& threadInitializer,
+      std::function<void()>&& threadFinalizer = [] {})
       : threadFactory_(threadFactory),
-        threadInitializer_(std::move(threadInitializer)) {}
+        threadInitializer_(std::move(threadInitializer)),
+        threadFinalizer_(std::move(threadFinalizer)) {}
 
   std::shared_ptr<Thread> newThread(
       const std::shared_ptr<Runnable>& runnable) const override;
@@ -50,6 +52,7 @@ class InitThreadFactory : public ThreadFactory {
  private:
   std::shared_ptr<ThreadFactory> threadFactory_;
   std::function<void()> threadInitializer_{nullptr};
+  std::function<void()> threadFinalizer_{nullptr};
 };
 
 } // namespace concurrency

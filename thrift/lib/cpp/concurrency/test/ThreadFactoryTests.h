@@ -27,6 +27,7 @@
 #include <thrift/lib/cpp/thrift_config.h>
 
 #include <assert.h>
+#include <functional>
 #include <iostream>
 #include <memory>
 #include <set>
@@ -55,6 +56,17 @@ public:
 
     void run() override { std::cout << "\t\t\tHello World" << std::endl; }
 
+  };
+
+  class LambdaTask : public Runnable {
+   public:
+    LambdaTask(std::function<void()>&& lambda) : lambda_(std::move(lambda)) {}
+    void run() override {
+      lambda_();
+    }
+
+   private:
+    std::function<void()> lambda_;
   };
 
   /**
@@ -389,19 +401,40 @@ public:
   }
 
   bool initThreadFactoryTest() {
-    bool success = false;
+    using namespace apache::thrift::concurrency;
 
-    auto threadFactory =
-        std::make_shared<apache::thrift::concurrency::InitThreadFactory>(
-            std::make_shared<apache::thrift::concurrency::PosixThreadFactory>(),
-            [&success] { success = true; });
+    bool calledInitializer = false;
+    bool calledTaskBody = false;
+    bool calledFinalizer = false;
 
-    auto thr =
-        threadFactory->newThread(std::make_shared<ThreadFactoryTests::Task>());
+    auto threadFactory = std::make_shared<InitThreadFactory>(
+        std::make_shared<PosixThreadFactory>(ThreadFactory::ATTACHED),
+        [&] {
+          // thread initializer
+          assert(!calledInitializer);
+          assert(!calledTaskBody);
+          assert(!calledFinalizer);
+          calledInitializer = true;
+        },
+        [&] {
+          // thread finalizer
+          assert(calledInitializer);
+          assert(calledTaskBody);
+          assert(!calledFinalizer);
+          calledFinalizer = true;
+        });
+
+    auto thr = threadFactory->newThread(
+        std::make_shared<ThreadFactoryTests::LambdaTask>([&] {
+          assert(calledInitializer);
+          assert(!calledTaskBody);
+          assert(!calledFinalizer);
+          calledTaskBody = true;
+        }));
     thr->start();
     thr->join();
 
-    return success;
+    return calledInitializer && calledTaskBody && calledFinalizer;
   }
 };
 
