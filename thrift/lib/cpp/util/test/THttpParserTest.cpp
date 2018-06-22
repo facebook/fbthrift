@@ -15,7 +15,9 @@
  */
 
 #include <thrift/lib/cpp/util/THttpParser.h>
+#include <folly/Format.h>
 
+#include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
 namespace {
@@ -37,6 +39,31 @@ void write(
     parser.readDataAvailable(len);
   }
 }
+} // namespace
+
+TEST_F(THttpClientParserTest, too_many_headers) {
+  apache::thrift::util::THttpClientParser parser;
+  std::map<std::string, std::string> header;
+  for (int i = 0; i < 100; i++) {
+    header[folly::sformat("testing_header{}", i)] = "test_header";
+  }
+  std::map<std::string, std::string> header_persistent;
+  auto answer = std::string("{'testing': 'this is a test'}");
+  auto pre = folly::IOBuf::copyBuffer(answer.c_str(), answer.size());
+  auto buf = parser.constructHeader(
+      std::move(pre), header, header_persistent, nullptr);
+  auto fbs = buf->moveToFbString();
+  std::string output = std::string(fbs.c_str(), fbs.size());
+  for (int i = 0; i < 100; i++) {
+    std::string s = folly::sformat("testing_header{}: test_header\r\n", i);
+    EXPECT_THAT(output, ::testing::HasSubstr(s));
+  }
+  std::vector<std::string> o;
+  folly::split("\r\n", output, o);
+  if (o.at(o.size() - 1) != answer) {
+    FAIL() << folly::sformat(
+        "Final line should be {} not {}", answer, o.at(o.size() - 1));
+  }
 }
 
 TEST_F(THttpClientParserTest, read_encapsulated_status_line) {
