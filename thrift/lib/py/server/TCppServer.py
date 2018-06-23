@@ -3,6 +3,8 @@ from __future__ import division
 from __future__ import print_function
 from __future__ import unicode_literals
 
+import sys
+import threading
 import traceback
 
 from thrift.protocol.THeaderProtocol import THeaderProtocol
@@ -70,6 +72,12 @@ class _ProcessorAdapter(object):
     def call_processor(self, input, headers, client_type, protocol_type,
                        context_data, callback):
         try:
+            # TCppServer threads are not created by Python so they are
+            # missing settrace() hooks.  We need to manually set the
+            # hook here for things to work (e.g. coverage and pdb).
+            if sys.gettrace() is None and threading._trace_hook is not None:
+                sys.settrace(threading._trace_hook)
+
             # The input string has already had the header removed, but
             # the python processor will expect it to be there.  In
             # order to reconstitute the message with headers, we use
