@@ -137,5 +137,33 @@ apache::thrift::Stream<int32_t> TestServiceMock::registerToMessages() {
   return std::move(streamAndPublisher.first);
 }
 
+apache::thrift::Stream<Message> TestServiceMock::streamThrows(int32_t whichEx) {
+  if (whichEx == 0) {
+    SecondEx ex;
+    ex.set_errCode(0);
+    throw ex;
+  }
+
+  return createStreamGenerator([whichEx]() -> folly::Optional<Message> {
+    if (whichEx == 1) {
+      FirstEx ex;
+      ex.set_errMsg("FirstEx");
+      ex.set_errCode(1);
+      throw ex;
+    } else if (whichEx == 2) {
+      SecondEx ex;
+      ex.set_errCode(2);
+      throw ex;
+    } else {
+      throw std::runtime_error("random error");
+    }
+  });
+}
+
+apache::thrift::ResponseAndStream<int32_t, Message>
+TestServiceMock::responseAndStreamThrows(int32_t whichEx) {
+  return {1, streamThrows(whichEx)};
+}
+
 } // namespace testservice
 } // namespace testutil

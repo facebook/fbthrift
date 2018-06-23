@@ -126,6 +126,75 @@ class PubSubStreamingServiceAsyncClient : public apache::thrift::GeneratedAsyncC
   template <typename Protocol_>
   void normalthrowsT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, apache::thrift::Stream<int32_t> foo);
  public:
+  virtual void streamthrows(std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t foo);
+  virtual void streamthrows(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t foo);
+ private:
+  virtual void streamthrowsImpl(bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t foo);
+ public:
+  virtual apache::thrift::SemiStream<int32_t> sync_streamthrows(int32_t foo);
+  virtual apache::thrift::SemiStream<int32_t> sync_streamthrows(apache::thrift::RpcOptions& rpcOptions, int32_t foo);
+  virtual folly::Future<apache::thrift::SemiStream<int32_t>> future_streamthrows(int32_t foo);
+  virtual folly::SemiFuture<apache::thrift::SemiStream<int32_t>> semifuture_streamthrows(int32_t foo);
+  virtual folly::Future<apache::thrift::SemiStream<int32_t>> future_streamthrows(apache::thrift::RpcOptions& rpcOptions, int32_t foo);
+  virtual folly::SemiFuture<apache::thrift::SemiStream<int32_t>> semifuture_streamthrows(apache::thrift::RpcOptions& rpcOptions, int32_t foo);
+  virtual folly::Future<std::pair<apache::thrift::SemiStream<int32_t>, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_streamthrows(apache::thrift::RpcOptions& rpcOptions, int32_t foo);
+  virtual folly::SemiFuture<std::pair<apache::thrift::SemiStream<int32_t>, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_streamthrows(apache::thrift::RpcOptions& rpcOptions, int32_t foo);
+  virtual void streamthrows(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, int32_t foo);
+  static folly::exception_wrapper recv_wrapped_streamthrows(apache::thrift::SemiStream<int32_t>& _return, ::apache::thrift::ClientReceiveState& state);
+  static apache::thrift::SemiStream<int32_t> recv_streamthrows(::apache::thrift::ClientReceiveState& state);
+  // Mock friendly virtual instance method
+  virtual apache::thrift::SemiStream<int32_t> recv_instance_streamthrows(::apache::thrift::ClientReceiveState& state);
+  virtual folly::exception_wrapper recv_instance_wrapped_streamthrows(apache::thrift::SemiStream<int32_t>& _return, ::apache::thrift::ClientReceiveState& state);
+ private:
+  template <typename Protocol_>
+  void streamthrowsT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t foo);
+ public:
+  virtual void boththrows(std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t foo);
+  virtual void boththrows(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t foo);
+ private:
+  virtual void boththrowsImpl(bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t foo);
+ public:
+  virtual apache::thrift::SemiStream<int32_t> sync_boththrows(int32_t foo);
+  virtual apache::thrift::SemiStream<int32_t> sync_boththrows(apache::thrift::RpcOptions& rpcOptions, int32_t foo);
+  virtual folly::Future<apache::thrift::SemiStream<int32_t>> future_boththrows(int32_t foo);
+  virtual folly::SemiFuture<apache::thrift::SemiStream<int32_t>> semifuture_boththrows(int32_t foo);
+  virtual folly::Future<apache::thrift::SemiStream<int32_t>> future_boththrows(apache::thrift::RpcOptions& rpcOptions, int32_t foo);
+  virtual folly::SemiFuture<apache::thrift::SemiStream<int32_t>> semifuture_boththrows(apache::thrift::RpcOptions& rpcOptions, int32_t foo);
+  virtual folly::Future<std::pair<apache::thrift::SemiStream<int32_t>, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_boththrows(apache::thrift::RpcOptions& rpcOptions, int32_t foo);
+  virtual folly::SemiFuture<std::pair<apache::thrift::SemiStream<int32_t>, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_boththrows(apache::thrift::RpcOptions& rpcOptions, int32_t foo);
+  virtual void boththrows(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, int32_t foo);
+  static folly::exception_wrapper recv_wrapped_boththrows(apache::thrift::SemiStream<int32_t>& _return, ::apache::thrift::ClientReceiveState& state);
+  static apache::thrift::SemiStream<int32_t> recv_boththrows(::apache::thrift::ClientReceiveState& state);
+  // Mock friendly virtual instance method
+  virtual apache::thrift::SemiStream<int32_t> recv_instance_boththrows(::apache::thrift::ClientReceiveState& state);
+  virtual folly::exception_wrapper recv_instance_wrapped_boththrows(apache::thrift::SemiStream<int32_t>& _return, ::apache::thrift::ClientReceiveState& state);
+ private:
+  template <typename Protocol_>
+  void boththrowsT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t foo);
+ public:
+  virtual void responseandstreamthrows(std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t foo);
+  virtual void responseandstreamthrows(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t foo);
+ private:
+  virtual void responseandstreamthrowsImpl(bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t foo);
+ public:
+  virtual apache::thrift::ResponseAndSemiStream<int32_t,int32_t> sync_responseandstreamthrows(int32_t foo);
+  virtual apache::thrift::ResponseAndSemiStream<int32_t,int32_t> sync_responseandstreamthrows(apache::thrift::RpcOptions& rpcOptions, int32_t foo);
+  virtual folly::Future<apache::thrift::ResponseAndSemiStream<int32_t,int32_t>> future_responseandstreamthrows(int32_t foo);
+  virtual folly::SemiFuture<apache::thrift::ResponseAndSemiStream<int32_t,int32_t>> semifuture_responseandstreamthrows(int32_t foo);
+  virtual folly::Future<apache::thrift::ResponseAndSemiStream<int32_t,int32_t>> future_responseandstreamthrows(apache::thrift::RpcOptions& rpcOptions, int32_t foo);
+  virtual folly::SemiFuture<apache::thrift::ResponseAndSemiStream<int32_t,int32_t>> semifuture_responseandstreamthrows(apache::thrift::RpcOptions& rpcOptions, int32_t foo);
+  virtual folly::Future<std::pair<apache::thrift::ResponseAndSemiStream<int32_t,int32_t>, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_responseandstreamthrows(apache::thrift::RpcOptions& rpcOptions, int32_t foo);
+  virtual folly::SemiFuture<std::pair<apache::thrift::ResponseAndSemiStream<int32_t,int32_t>, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_responseandstreamthrows(apache::thrift::RpcOptions& rpcOptions, int32_t foo);
+  virtual void responseandstreamthrows(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, int32_t foo);
+  static folly::exception_wrapper recv_wrapped_responseandstreamthrows(apache::thrift::ResponseAndSemiStream<int32_t,int32_t>& _return, ::apache::thrift::ClientReceiveState& state);
+  static apache::thrift::ResponseAndSemiStream<int32_t,int32_t> recv_responseandstreamthrows(::apache::thrift::ClientReceiveState& state);
+  // Mock friendly virtual instance method
+  virtual apache::thrift::ResponseAndSemiStream<int32_t,int32_t> recv_instance_responseandstreamthrows(::apache::thrift::ClientReceiveState& state);
+  virtual folly::exception_wrapper recv_instance_wrapped_responseandstreamthrows(apache::thrift::ResponseAndSemiStream<int32_t,int32_t>& _return, ::apache::thrift::ClientReceiveState& state);
+ private:
+  template <typename Protocol_>
+  void responseandstreamthrowsT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t foo);
+ public:
 };
 
 } // cpp2

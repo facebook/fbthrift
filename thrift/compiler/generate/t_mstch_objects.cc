@@ -473,6 +473,14 @@ mstch::node mstch_function::exceptions() {
       cache_);
 }
 
+mstch::node mstch_function::stream_exceptions() {
+  return generate_elements(
+      function_->get_stream_xceptions()->get_members(),
+      generators_->field_generator_.get(),
+      generators_,
+      cache_);
+}
+
 mstch::node mstch_function::arg_list_without_streams() {
   auto args = function_->get_arglist();
   auto members = args->get_members();

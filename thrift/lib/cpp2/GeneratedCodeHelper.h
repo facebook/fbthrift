@@ -1022,40 +1022,103 @@ bool is_oneway_method(
     const transport::THeader* header,
     const std::unordered_set<std::string>& oneways);
 
-template <typename Protocol, typename PResult, typename T>
+template <
+    typename Protocol,
+    typename PResult,
+    typename T,
+    typename ErrorMapFunc>
 apache::thrift::Stream<folly::IOBufQueue> encode_stream(
-    apache::thrift::Stream<T>&& stream) {
+    apache::thrift::Stream<T>&& stream,
+    ErrorMapFunc exceptionMap) {
   if (!stream) {
     return {};
   }
 
-  return std::move(stream).map([](T&& _item) mutable {
-    PResult res;
-    res.template get<0>().value = const_cast<T*>(&_item);
-    res.setIsSet(0);
+  return std::move(stream).map(
+      [](T&& _item) mutable {
+        PResult res;
+        res.template get<0>().value = const_cast<T*>(&_item);
+        res.setIsSet(0);
 
-    folly::IOBufQueue queue(folly::IOBufQueue::cacheChainLength());
-    Protocol prot;
-    prot.setOutput(&queue);
+        folly::IOBufQueue queue(folly::IOBufQueue::cacheChainLength());
+        Protocol prot;
+        prot.setOutput(&queue);
 
-    res.write(&prot);
-    return queue;
-  });
+        res.write(&prot);
+        return queue;
+      },
+      [map = std::move(exceptionMap)](folly::exception_wrapper&& ew) mutable {
+        Protocol prot;
+        folly::IOBufQueue queue(folly::IOBufQueue::cacheChainLength());
+        prot.setOutput(&queue);
+        PResult res;
+        if (map(res, ew)) {
+          res.write(&prot);
+        } else {
+          TApplicationException ex(ew.what().toStdString());
+          detail::serializeExceptionBody(&prot, &ex);
+        }
+
+        auto result = queue.move();
+        return apache::thrift::detail::EncodedError(std::move(result));
+      });
 }
 
 template <typename Protocol, typename PResult, typename T>
 apache::thrift::SemiStream<T> decode_stream(
     apache::thrift::SemiStream<std::unique_ptr<folly::IOBuf>>&& stream) {
-  return std::move(stream).map([](std::unique_ptr<folly::IOBuf>&& buf) mutable {
-    PResult args;
-    T res{};
-    args.template get<0>().value = &res;
+  return std::move(stream).map(
+      [](std::unique_ptr<folly::IOBuf>&& buf) mutable {
+        PResult args;
+        T res{};
+        args.template get<0>().value = &res;
 
-    Protocol prot;
-    prot.setInput(buf.get());
-    args.read(&prot);
-    return res;
-  });
+        Protocol prot;
+        prot.setInput(buf.get());
+        args.read(&prot);
+        return res;
+      },
+      [](folly::exception_wrapper&& ew) {
+        Protocol prot;
+        folly::exception_wrapper hijacked;
+        ew.with_exception(
+            [&hijacked, &prot](apache::thrift::detail::EncodedError& err) {
+              PResult result;
+              T res{};
+              result.template get<0>().value = &res;
+
+              prot.setInput(err.encoded.get());
+              result.read(&prot);
+
+              CHECK(!result.getIsSet(0));
+
+              ac::foreach_index<PResult::size::value - 1>([&](auto index) {
+                if (!hijacked && result.getIsSet(index.value + 1)) {
+                  auto& fdata = result.template get<index.value + 1>();
+                  hijacked = folly::exception_wrapper(std::move(fdata.ref()));
+                }
+              });
+
+              if (!hijacked) {
+                // Could not decode the error. It may be a TApplicationException
+                TApplicationException x;
+                prot.setInput(err.encoded.get());
+                deserializeExceptionBody(&prot, &x);
+                hijacked = folly::exception_wrapper(std::move(x));
+              }
+            });
+
+        if (hijacked) {
+          return hijacked;
+        }
+
+        if (ew.is_compatible_with<transport::TTransportException>()) {
+          return ew;
+        }
+
+        return folly::exception_wrapper(
+            transport::TTransportException(ew.what().toStdString()));
+      });
 }
 
 } // namespace ap

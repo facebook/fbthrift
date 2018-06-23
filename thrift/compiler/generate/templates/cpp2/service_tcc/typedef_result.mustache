@@ -24,7 +24,7 @@ typedef apache::thrift::ThriftPresult<true<% > service_tcc/field_data_return%><%
 typedef apache::thrift::ThriftPResultStream<
     <%#type:extratype?%>apache::thrift::ThriftPresult<true<%#type:streamResponseType%><% > service_tcc/field_data_return%><%/type:streamResponseType%><% > service_tcc/field_data_throws%>>, <%/type:extratype?%><%!
     %><%^type:extratype?%>apache::thrift::ThriftPresult<true<% > service_tcc/field_data_throws%>>, <%/type:extratype?%>
-    apache::thrift::ThriftPresult<true<%#type:streamElemType%><% > service_tcc/field_data_return%><%/type:streamElemType%>>
+    apache::thrift::ThriftPresult<true<%#type:streamElemType%><% > service_tcc/field_data_return%><%/type:streamElemType%><% > service_tcc/field_data_stream_throws%>>
     > <%service:name%>_<%function:name%>_presult;
 <%/type:streamresponse?%>
 <%/function:oneway?%>

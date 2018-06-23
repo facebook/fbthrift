@@ -121,7 +121,7 @@ LinenoStack lineno_stack;
  * Strings identifier
  */
 %token<id>     tok_identifier
-%token<id>     tok_client
+%token<id>     tok_streamthrows
 %token<id>     tok_literal
 %token<dtext>  tok_doctext
 %token<id>     tok_st_identifier
@@ -258,7 +258,7 @@ LinenoStack lineno_stack;
 %type<tfield>    Param
 
 %type<tstruct>   Throws
-%type<tstruct>   ClientThrows
+%type<tstruct>   StreamThrows
 %type<tstructpair>   ThrowsThrows
 %type<tservice>  Extends
 %type<tbool>     Oneway
@@ -987,20 +987,20 @@ Oneway:
     }
 
 ThrowsThrows:
-  Throws ClientThrows
+  Throws StreamThrows
 		{
 			$$ = new t_structpair($1, $2);
 		}
 | Throws
 		{
-			$$ = new t_structpair($1, nullptr);
+			$$ = new t_structpair($1, new t_struct(g_program));
 		}
-| ClientThrows
-		{
-			$$ = new t_structpair(new t_struct(g_program), $1);
-		}
+| StreamThrows
+    {
+      $$ = new t_structpair(new t_struct(g_program), $1);
+    }
 |   {
-			$$ = new t_structpair(new t_struct(g_program), nullptr);
+			$$ = new t_structpair(new t_struct(g_program), new t_struct(g_program));
 		}
 
 Throws:
@@ -1009,10 +1009,10 @@ Throws:
       pdebug("Throws -> tok_throws ( FieldList )");
       $$ = $3;
     }
-ClientThrows:
-  tok_client '(' FieldList ')'
+StreamThrows:
+  tok_streamthrows '(' FieldList ')'
     {
-      pdebug("ClientThrows -> 'client throws' ( FieldList )");
+      pdebug("StreamThrows -> 'stream throws' ( FieldList )");
       $$ = $3;
     }
 

@@ -818,7 +818,10 @@ class mstch_function : public mstch_base {
             {"function:returnType", &mstch_function::return_type},
             {"function:takenStreamType", &mstch_function::taken_stream_type},
             {"function:exceptions", &mstch_function::exceptions},
+            {"function:stream_exceptions", &mstch_function::stream_exceptions},
             {"function:exceptions?", &mstch_function::has_exceptions},
+            {"function:stream_exceptions?",
+             &mstch_function::has_streamexceptions},
             {"function:args", &mstch_function::arg_list},
             {"function:comma", &mstch_function::has_args},
             {"function:eb", &mstch_function::event_based},
@@ -840,6 +843,9 @@ class mstch_function : public mstch_base {
   }
   mstch::node has_exceptions() {
     return !function_->get_xceptions()->get_members().empty();
+  }
+  mstch::node has_streamexceptions() {
+    return !function_->get_stream_xceptions()->get_members().empty();
   }
   mstch::node has_args() {
     if (!function_->get_arglist()->get_members().empty()) {
@@ -868,6 +874,7 @@ class mstch_function : public mstch_base {
 
   mstch::node return_type();
   mstch::node exceptions();
+  mstch::node stream_exceptions();
   mstch::node arg_list();
   mstch::node arg_list_without_streams();
   mstch::node any_streams();

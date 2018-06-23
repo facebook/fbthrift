@@ -151,7 +151,16 @@ void TakeFirst::onError(folly::exception_wrapper ew) {
   }
 
   if (auto subscriber = std::exchange(subscriber_, nullptr)) {
-    subscriber->onError(std::move(ew));
+    folly::exception_wrapper hijacked;
+    if (ew.with_exception([&hijacked](rsocket::ErrorWithPayload& err) {
+          hijacked =
+              folly::exception_wrapper(apache::thrift::detail::EncodedError(
+                  std::move(err.payload.data)));
+        })) {
+      subscriber->onError(std::move(hijacked));
+    } else {
+      subscriber->onError(std::move(ew));
+    }
   } else {
     error_ = std::move(ew);
   }

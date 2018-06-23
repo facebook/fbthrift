@@ -52,7 +52,7 @@ class t_function : public t_doc {
         annotations_(annotations),
         oneway_(oneway) {
     xceptions_ = new t_struct(nullptr);
-    client_xceptions_ = nullptr;
+    stream_xceptions_ = new t_struct(nullptr);
 
     if (oneway_) {
       if (returntype_ == nullptr || !returntype_->is_void()) {
@@ -68,6 +68,7 @@ class t_function : public t_doc {
    * @param name        - The symbolic name of the function
    * @param arglist     - The parameters that are passed to the functions
    * @param xceptions   - Declare the exceptions that function might throw
+   * @param stream_xceptions - Exceptions to be sent via the stream
    * @param annotations - Optional args that add more functionality
    * @param oneway      - Determines if it is a one way function
    */
@@ -76,14 +77,14 @@ class t_function : public t_doc {
       std::string name,
       t_struct* arglist,
       t_struct* xceptions,
-      t_struct* client_xceptions,
+      t_struct* stream_xceptions,
       t_type* annotations = nullptr,
       bool oneway = false)
       : returntype_(returntype),
         name_(name),
         arglist_(arglist),
         xceptions_(xceptions),
-        client_xceptions_(client_xceptions),
+        stream_xceptions_(stream_xceptions),
         annotations_(annotations),
         oneway_(oneway) {
     if (oneway_) {
@@ -96,10 +97,13 @@ class t_function : public t_doc {
       }
     }
 
-    if (client_xceptions_) {
-      if (!arglist_->get_stream_field()) {
-        throw std::string(
-            "`client throws` only valid on client -> server stream methods");
+    if (!stream_xceptions_) {
+      stream_xceptions_ = new t_struct(nullptr);
+    }
+
+    if (!stream_xceptions_->get_members().empty()) {
+      if (returntype == nullptr || !returntype->is_streamresponse()) {
+        throw std::string("`stream throws` only valid on stream methods");
       }
     }
   }
@@ -125,8 +129,8 @@ class t_function : public t_doc {
     return xceptions_;
   }
 
-  t_struct* get_client_xceptions() const {
-    return client_xceptions_;
+  t_struct* get_stream_xceptions() const {
+    return stream_xceptions_;
   }
 
   t_type* get_annotations() const {
@@ -157,7 +161,7 @@ class t_function : public t_doc {
   std::string name_;
   t_struct* arglist_;
   t_struct* xceptions_;
-  t_struct* client_xceptions_;
+  t_struct* stream_xceptions_;
   t_type* annotations_;
   bool oneway_;
 };

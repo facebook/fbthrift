@@ -245,9 +245,9 @@ bool exception_list_is_all_exceptions_validator::visit(t_service* service) {
       ss << "Non-exception type in throws list for method" << func->get_name();
       add_error(func->get_lineno(), ss.str());
     }
-    if (!validate_throws(func->get_client_xceptions())) {
+    if (!validate_throws(func->get_stream_xceptions())) {
       std::ostringstream ss;
-      ss << "Non-exception type in client throws list for method"
+      ss << "Non-exception type in stream throws list for method"
          << func->get_name();
       add_error(func->get_lineno(), ss.str());
     }

@@ -47,6 +47,10 @@ class TestServiceMock : public StreamServiceSvIf {
   void sendMessage(int32_t messageId, bool complete, bool error) override;
   apache::thrift::Stream<int32_t> registerToMessages() override;
 
+  apache::thrift::Stream<Message> streamThrows(int32_t whichEx) override;
+  apache::thrift::ResponseAndStream<int32_t, Message> responseAndStreamThrows(
+      int32_t whichEx) override;
+
  protected:
   folly::ScopedEventBaseThread executor_;
 

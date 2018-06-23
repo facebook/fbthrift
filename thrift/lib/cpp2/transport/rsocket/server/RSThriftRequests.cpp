@@ -116,7 +116,17 @@ class SubscriberAdaptor
   void onError(folly::exception_wrapper e) override {
     cancelTimeout();
     if (auto impl = std::exchange(impl_, nullptr)) {
-      impl->onError(std::move(e));
+      folly::exception_wrapper hijacked;
+      if (e.with_exception(
+              [&hijacked](apache::thrift::detail::EncodedError& err) {
+                auto errp = rsocket::ErrorWithPayload(
+                    rsocket::Payload(std::move(err.encoded)));
+                hijacked = folly::exception_wrapper(std::move(errp));
+              })) {
+        impl->onError(std::move(hijacked));
+      } else {
+        impl->onError(std::move(e));
+      }
     }
   }
 

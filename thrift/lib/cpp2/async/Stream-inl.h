@@ -18,6 +18,8 @@
 
 #include <cassert>
 
+#include <folly/io/IOBuf.h>
+
 namespace apache {
 namespace thrift {
 namespace detail {
@@ -48,6 +50,21 @@ class SubscriberAdaptor : public SubscriberIf<std::unique_ptr<ValueIf>> {
 
  private:
   std::unique_ptr<SubscriberIf<T>> impl_;
+};
+
+struct EncodedError : std::exception {
+  explicit EncodedError(std::unique_ptr<folly::IOBuf> buf)
+      : encoded(std::move(buf)) {}
+
+  EncodedError(const EncodedError& oth) : encoded(oth.encoded->clone()) {}
+  EncodedError& operator=(const EncodedError& oth) {
+    encoded = oth.encoded->clone();
+    return *this;
+  }
+  EncodedError(EncodedError&&) = default;
+  EncodedError& operator=(EncodedError&&) = default;
+
+  std::unique_ptr<folly::IOBuf> encoded;
 };
 
 } // namespace detail

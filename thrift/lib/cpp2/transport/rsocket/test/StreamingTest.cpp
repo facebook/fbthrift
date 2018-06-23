@@ -433,5 +433,118 @@ TEST_F(StreamingTest, StreamStarvationNoSubscribe) {
   });
 }
 
+TEST_F(StreamingTest, StreamThrowsKnownException) {
+  connectToServer([this](std::unique_ptr<StreamServiceAsyncClient> client) {
+    bool thrown = false;
+    auto stream = client->sync_streamThrows(1);
+    auto subscription =
+        std::move(stream)
+            .via(&executor_)
+            .subscribe(
+                [](auto) {},
+                [&thrown](folly::exception_wrapper ew) {
+                  thrown = true;
+                  EXPECT_TRUE(ew.is_compatible_with<FirstEx>());
+                  EXPECT_TRUE(ew.with_exception([](FirstEx& ex) {
+                    EXPECT_EQ(1, ex.get_errCode());
+                    EXPECT_STREQ("FirstEx", ex.get_errMsg().c_str());
+                  }));
+                });
+    std::move(subscription).join();
+    EXPECT_TRUE(thrown);
+  });
+}
+
+TEST_F(StreamingTest, StreamThrowsNonspecifiedException) {
+  connectToServer([this](std::unique_ptr<StreamServiceAsyncClient> client) {
+    bool thrown = false;
+    auto stream = client->sync_streamThrows(2);
+    auto subscription =
+        std::move(stream)
+            .via(&executor_)
+            .subscribe(
+                [](auto) {},
+                [&thrown](folly::exception_wrapper ew) {
+                  thrown = true;
+                  EXPECT_TRUE(ew.is_compatible_with<TApplicationException>());
+                  EXPECT_TRUE(ew.with_exception([](TApplicationException& ex) {
+                    EXPECT_STREQ(
+                        "testutil::testservice::SecondEx:  ::testutil::testservice::SecondEx",
+                        ex.what());
+                  }));
+                });
+    std::move(subscription).join();
+    EXPECT_TRUE(thrown);
+  });
+}
+
+TEST_F(StreamingTest, StreamThrowsRuntimeError) {
+  connectToServer([this](std::unique_ptr<StreamServiceAsyncClient> client) {
+    bool thrown = false;
+    auto stream = client->sync_streamThrows(3);
+    auto subscription =
+        std::move(stream)
+            .via(&executor_)
+            .subscribe(
+                [](auto) {},
+                [&thrown](folly::exception_wrapper ew) {
+                  thrown = true;
+                  EXPECT_TRUE(ew.is_compatible_with<TApplicationException>());
+                  EXPECT_TRUE(ew.with_exception([](TApplicationException& ex) {
+                    EXPECT_STREQ("std::runtime_error: random error", ex.what());
+                  }));
+                });
+    std::move(subscription).join();
+    EXPECT_TRUE(thrown);
+  });
+}
+
+TEST_F(StreamingTest, StreamFunctionThrowsImmediately) {
+  connectToServer([](std::unique_ptr<StreamServiceAsyncClient> client) {
+    bool thrown = false;
+    try {
+      client->sync_streamThrows(0);
+    } catch (const SecondEx& ex) {
+      thrown = true;
+    }
+    EXPECT_TRUE(thrown);
+  });
+}
+
+TEST_F(StreamingTest, ResponseAndStreamThrowsKnownException) {
+  connectToServer([this](std::unique_ptr<StreamServiceAsyncClient> client) {
+    bool thrown = false;
+    auto responseAndStream = client->sync_responseAndStreamThrows(1);
+    auto stream = std::move(responseAndStream.stream);
+    auto subscription =
+        std::move(stream)
+            .via(&executor_)
+            .subscribe(
+                [](auto) {},
+                [&thrown](folly::exception_wrapper ew) {
+                  thrown = true;
+                  EXPECT_TRUE(ew.is_compatible_with<FirstEx>());
+                  EXPECT_TRUE(ew.with_exception([](FirstEx& ex) {
+                    EXPECT_EQ(1, ex.get_errCode());
+                    EXPECT_STREQ("FirstEx", ex.get_errMsg().c_str());
+                  }));
+                });
+    std::move(subscription).join();
+    EXPECT_TRUE(thrown);
+  });
+}
+
+TEST_F(StreamingTest, ResponseAndStreamFunctionThrowsImmediately) {
+  connectToServer([](std::unique_ptr<StreamServiceAsyncClient> client) {
+    bool thrown = false;
+    try {
+      client->sync_responseAndStreamThrows(0);
+    } catch (const SecondEx& ex) {
+      thrown = true;
+    }
+    EXPECT_TRUE(thrown);
+  });
+}
+
 } // namespace thrift
 } // namespace apache

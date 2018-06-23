@@ -107,7 +107,8 @@ TEST(YarplStreamImplTest, EncodeDecode) {
   // Encode in the thread of the flowable, namely at the user's thread
   auto encodedStream =
       detail::ap::encode_stream<CompactProtocolWriter, PResult>(
-          std::move(inStream))
+          std::move(inStream),
+          [](PResult&, folly::exception_wrapper&) { return false; })
           .map([](folly::IOBufQueue&& in) mutable { return in.move(); });
 
   // No event base is involved, as this is a defered decoding

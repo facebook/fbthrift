@@ -8,6 +8,15 @@ struct Message {
 exception Error {
 }
 
+exception FirstEx {
+  1: i64 errCode
+  2: string errMsg
+}
+
+exception SecondEx {
+  1: i64 errCode
+}
+
 service StreamService {
   // Generate numbers between `from` to `to`.
   stream i32 range(1: i32 from, 2: i32 to);
@@ -35,6 +44,12 @@ service StreamService {
   // Simple chat scenario
   void sendMessage(1: i32 messageId, 2: bool complete, 3: bool error);
   stream i32 registerToMessages();
+
+  stream Message streamThrows(1: i32 whichEx)
+      throws (1: SecondEx e) stream throws (1: FirstEx e);
+
+  i32, stream Message responseAndStreamThrows(1: i32 whichEx)
+      throws (1: SecondEx e) stream throws (1: FirstEx e);
 }
 
 # OldVersion and NewVersion services will be used to test the behavior

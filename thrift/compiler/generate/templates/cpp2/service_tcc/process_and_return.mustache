@@ -182,7 +182,25 @@ folly::IOBufQueue <%service:name%>AsyncProcessor::return_<%function:name%>(int32
       <%^type:extratype?%>
   auto& _returnStream = _return;
       <%/type:extratype?%>
-  auto _encodedStream = apache::thrift::detail::ap::encode_stream<ProtocolOut_, StreamPResultType>(std::move(_returnStream));
+
+      <%#function:stream_exceptions?%>
+  auto exMap = [](StreamPResultType& res, folly::exception_wrapper ew) {
+      <%/function:stream_exceptions?%>
+      <%^function:stream_exceptions?%>
+  auto exMap = [](StreamPResultType&, folly::exception_wrapper) {
+      <%/function:stream_exceptions?%>
+      <%#function:stream_exceptions%>
+    if (ew.with_exception([&](<%#field:type%><% > common/type_namespace_cpp2%><%type:name%><%/field:type%>& e) {
+          res.get<<%field:index_plus_one%>>().ref() = e;
+          res.setIsSet(<%field:index_plus_one%>, true);
+        })) {
+      return true;
+    }
+      <%/function:stream_exceptions%>
+    return false;
+  };
+
+  auto _encodedStream = apache::thrift::detail::ap::encode_stream<ProtocolOut_, StreamPResultType>(std::move(_returnStream), std::move(exMap));
   return {serializeResponse("<%function:name%>", &prot, protoSeqId, ctx, result), std::move(_encodedStream)};
     <%/function:returns_stream?%>
   <%/type:deprecated_stream?%>
