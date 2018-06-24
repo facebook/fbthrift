@@ -35,7 +35,6 @@
 #include <thrift/lib/cpp2/async/SemiStream.h>
 #include <thrift/lib/cpp2/async/Stream.h>
 #include <thrift/lib/cpp2/protocol/Protocol.h>
-#include <thrift/lib/cpp2/protocol/Serializer.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
 #include <wangle/deprecated/rx/Subject.h>
 
