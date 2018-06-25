@@ -498,7 +498,10 @@ class StringRandomizer(CollectionTypeRandomizer, ScalarTypeRandomizer):
         for _ in sm.xrange(length):
             chars.append(chr(random.randint(*cls.ascii_range)))
 
-        return six.binary_type(''.join(chars))
+        if six.PY3:
+            return six.binary_type(''.join(chars), 'ascii')
+        else:
+            return six.binary_type(''.join(chars))
 
     def eval_seed(self, seed):
         if isinstance(seed, six.string_types):
