@@ -27,6 +27,10 @@ void waitNoLeak(StreamServiceAsyncClient* client) {
   do {
     std::this_thread::yield();
     if (client->sync_instanceCount() == 0) {
+      // There is a race between decrementing the instance count vs
+      // sending the error/complete message, so sleep a bit before returning
+      /* sleep override */
+      std::this_thread::sleep_for(std::chrono::milliseconds(10));
       return;
     }
   } while (std::chrono::steady_clock::now() < deadline);
