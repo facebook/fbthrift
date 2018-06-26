@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+#include <algorithm>
 #include <memory>
 
 #include <boost/algorithm/string/classification.hpp>
@@ -102,10 +103,16 @@ mstch::map t_mstch_pyi_generator::extend_field(const t_field& field) {
   const auto requireValue = required && !hasDefaultValue;
   // For typing, can a property getter return None, if so it needs to Optional[]
   const auto isPEP484Optional = (optional || (!hasDefaultValue && !required));
-
+  std::string capitalizedName(field.get_name());
+  std::transform(
+      capitalizedName.begin(),
+      capitalizedName.end(),
+      capitalizedName.begin(),
+      ::toupper);
   mstch::map result{
       {"requireValue?", requireValue},
       {"PEP484Optional?", isPEP484Optional},
+      {"capitalizedName", capitalizedName},
   };
   return result;
 }

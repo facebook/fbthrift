@@ -70,8 +70,13 @@ class {{struct:name}}{{#struct:exception?}}(Thrift.TException){{/struct:exceptio
     {{/struct:fields}}
 
     {{#struct:union?}}
-
     def getType(self) -> int: ...
+
+    {{#struct:fields}}
+    {{#field:type}}
+    {{field:capitalizedName}}: int = ...
+    {{/field:type}}
+    {{/struct:fields}}
 
     {{#struct:fields}}
     {{#field:type}}
