@@ -332,7 +332,7 @@ void TransportCompatibilityTest::TestRequestResponse_Destruction() {
     channel->getEventBase()->runInEventBaseThreadAndWait(
         [&]() { channel->getTransport()->closeNow(); });
 
-    future.get();
+    std::move(future).get();
   });
 }
 
@@ -426,7 +426,7 @@ void TransportCompatibilityTest::TestRequestResponse_Header() {
       apache::thrift::RpcOptions rpcOptions;
       rpcOptions.setWriteHeader("header_from_client", "2");
       auto future = client->header_future_headers(rpcOptions);
-      auto tHeader = future.get().second;
+      auto tHeader = std::move(future).get().second;
       auto keyValue = tHeader->getHeaders();
       EXPECT_NE(keyValue.end(), keyValue.find("header_from_server"));
       EXPECT_STREQ("1", keyValue.find("header_from_server")->second.c_str());
