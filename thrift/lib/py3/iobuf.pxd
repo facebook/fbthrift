@@ -23,6 +23,19 @@ cdef extern from "folly/io/IOBuf.h" namespace "folly::IOBuf":
     unique_ptr[cIOBuf] wrapBuffer(const_uchar* buf, uint64_t capacity)
 
 
+cdef extern from "folly/io/IOBufQueue.h" namespace "folly::IOBufQueue":
+    cdef cppclass cIOBufQueueOptions "folly::IOBufQueue::Options":
+        pass
+    cIOBufQueueOptions cacheChainLength()
+
+
+cdef extern from "folly/io/IOBufQueue.h" namespace "folly":
+    cdef cppclass cIOBufQueue "folly::IOBufQueue":
+        cIOBufQueue(cIOBufQueueOptions)
+        cIOBufQueue()
+        unique_ptr[cIOBuf] move()
+
+
 cdef extern from '<utility>' namespace 'std':
     unique_ptr[cIOBuf] move(unique_ptr[cIOBuf])
 

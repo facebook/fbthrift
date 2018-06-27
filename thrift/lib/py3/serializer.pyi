@@ -16,6 +16,7 @@ class Protocol(Enum):
 
 
 def serialize(tstruct: sT, protocol: Protocol = ...) -> bytes: ...
+def serialize_iobuf(tstruct: sT, protocol: Protocol = ...) -> IOBuf: ...
 
 
 def deserialize(

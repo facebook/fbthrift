@@ -1,14 +1,31 @@
 #!/usr/bin/env python3
+import asyncio
 import unittest
 import pickle
 
 from typing import Mapping
 from thrift.py3 import serialize, deserialize, Protocol, Struct, Error
+from thrift.py3.serializer import serialize_iobuf
 
 from testing.types import easy, hard, Integers
 
 
 class SerializerTests(unittest.TestCase):
+
+    def test_from_thread_pool(self) -> None:
+        control = easy(val=5, val_list=[1, 2, 3, 4])
+        loop = asyncio.get_event_loop()
+        coro = loop.run_in_executor(None, serialize, control)
+        encoded = loop.run_until_complete(coro)
+        coro = loop.run_in_executor(None, deserialize, type(control), encoded)
+        decoded = loop.run_until_complete(coro)
+        self.assertEqual(control, decoded)
+
+    def test_serialize_iobuf(self) -> None:
+        control = easy(val=5, val_list=[1, 2, 3, 4, 5])
+        iobuf = serialize_iobuf(control)
+        decoded = deserialize(type(control), iobuf)
+        self.assertEqual(control, decoded)
 
     def test_bad_deserialize(self) -> None:
         with self.assertRaises(Error):

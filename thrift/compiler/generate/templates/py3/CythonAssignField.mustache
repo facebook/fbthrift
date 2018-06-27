@@ -35,7 +35,7 @@ on a struct.
   }}{{/field:shared_const_ref?}}{{!
   }}{{#field:iobuf_ref?}}{{!
     Special handling for iobuf
-    }}(<__IOBuf?>{{field:name}}).c_clone(){{!
+    }}(<__iobuf.IOBuf?>{{field:name}}).c_clone(){{!
   }}{{/field:iobuf_ref?}}{{!
 }}{{/field:reference?}}{{^field:reference?}}{{!
 }}{{#type:base?}}{{!
@@ -43,7 +43,7 @@ on a struct.
   }}{{#program:optionals?}}{{#field:optional?}}cOptional[{{> types/CythonCppType}}]({{/field:optional?}}{{/program:optionals?}}{{!
   }}{{#field:iobuf?}}{{!
     Special handling for iobuf
-    }}deref((<__IOBuf?>{{field:name}}).c_clone()){{!
+    }}deref((<__iobuf.IOBuf?>{{field:name}}).c_clone()){{!
   }}{{/field:iobuf?}}{{!
   }}{{^field:iobuf?}}{{!
     }}{{field:name}}{{!

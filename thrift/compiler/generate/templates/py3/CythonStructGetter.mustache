@@ -27,7 +27,7 @@ if they have been previously retrieved.
     if not deref(self._cpp_obj).{{field:name}}:
         return None
     {{#field:iobuf_ref?}}
-    self.__{{field:name}} = __IOBuf.create(deref(self._cpp_obj).{{field:name}}.get(), self)
+    self.__{{field:name}} = __iobuf.IOBuf.create(deref(self._cpp_obj).{{field:name}}.get(), self)
     {{/field:iobuf_ref?}}{{^field:iobuf_ref?}}
     {{! Use an aliasing constructor since the object we're returning is still
         managed by the top-level object, possible via a unique_ptr }}
@@ -46,7 +46,7 @@ return self.__{{field:name}}{{!
 }}{{#type:base?}}{{!
   }}{{#field:iobuf?}}{{!
   }}if self.__{{field:name}} is None:
-    self.__{{field:name}} = __IOBuf.create(ptr_address(deref(self._cpp_obj).{{field:name}}), self)
+    self.__{{field:name}} = __iobuf.IOBuf.create(ptr_address(deref(self._cpp_obj).{{field:name}}), self)
 return self.__{{field:name}}{{!
   }}{{/field:iobuf?}}{{^field:iobuf?}}{{!
   }}return {{!

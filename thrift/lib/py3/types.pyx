@@ -1,4 +1,6 @@
 from enum import Enum
+from folly.iobuf import IOBuf
+
 
 __all__ = ['Struct', 'BadEnum', 'NOTSET', 'Union']
 
@@ -12,8 +14,8 @@ cdef class Struct:
     """
     Base class for all thrift structs
     """
-    cdef bytes _serialize(self, proto):
-        return b''
+    cdef IOBuf _serialize(self, proto):
+        return IOBuf(b'')
 
     cdef uint32_t _deserialize(self, const cIOBuf* buf, proto) except? 0:
         return 0
