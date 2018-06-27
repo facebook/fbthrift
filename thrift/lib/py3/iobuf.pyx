@@ -58,7 +58,7 @@ cdef class IOBuf:
         if _next == self._this:
             return None
 
-        return IOBuf.create(_next, self.parent)
+        return IOBuf.create(_next, self._parent)
 
     @property
     def prev(self):
@@ -66,7 +66,7 @@ cdef class IOBuf:
         if _prev == self._this:
             return None
 
-        return IOBuf.create(_prev, self.parent)
+        return IOBuf.create(_prev, self._parent)
 
     @property
     def is_chained(self):
