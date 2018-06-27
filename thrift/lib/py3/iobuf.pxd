@@ -17,10 +17,12 @@ cdef extern from "folly/io/IOBuf.h" namespace "folly":
         unique_ptr[cIOBuf] clone()
         cIOBuf* prev()
         cIOBuf* next()
+        void appendChain(unique_ptr[cIOBuf]&& ciobuf)
 
 
 cdef extern from "folly/io/IOBuf.h" namespace "folly::IOBuf":
     unique_ptr[cIOBuf] wrapBuffer(const_uchar* buf, uint64_t capacity)
+    unique_ptr[cIOBuf] createChain(size_t totalCapacity, size_t maxBufCapacity)
 
 
 cdef extern from "folly/io/IOBufQueue.h" namespace "folly::IOBufQueue":

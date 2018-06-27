@@ -23,6 +23,7 @@ cdef IOBuf from_unique_ptr(unique_ptr[cIOBuf] ciobuf):
     inst._ours = move(ciobuf)
     inst._parent = inst
     inst._this = inst._ours.get()
+    __cache[(<unsigned long>inst._this, id(inst))] = inst
     return inst
 
 
@@ -33,6 +34,7 @@ cdef class IOBuf:
         self._this = self._ours.get()
         self._parent = self
         self._hash = None
+        __cache[(<unsigned long>self._this, id(self))] = self
 
     @staticmethod
     cdef IOBuf create(cIOBuf* this, object parent):
@@ -111,9 +113,9 @@ cdef class IOBuf:
         "Iterates through the chain of buffers returning a memory view for each"
         yield memoryview(self, PyBUF_C_CONTIGUOUS)
         next = self.next
-        while next:
+        while next is not None and next != self:
             yield memoryview(next, PyBUF_C_CONTIGUOUS)
-            next = self.next
+            next = next.next
 
     def __hash__(self):
         if not self._hash:
