@@ -47,7 +47,7 @@ void MyUnion::readNoXfer(Protocol_* iprot) {
       {
         if (_readState.fieldType == apache::thrift::protocol::T_I32) {
           this->set_anInteger();
-          iprot->readI32(this->mutable_anInteger());
+          ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::read(*iprot, this->mutable_anInteger());
         } else {
           iprot->skip(_readState.fieldType);
         }
@@ -87,7 +87,7 @@ uint32_t MyUnion::serializedSize(Protocol_ const* prot_) const {
     case MyUnion::Type::anInteger:
     {
       xfer += prot_->serializedFieldSize("anInteger", apache::thrift::protocol::T_I32, 1);
-      xfer += prot_->serializedSizeI32(this->get_anInteger());
+      xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::serializedSize<false>(*prot_, this->get_anInteger());
       break;
     }
     case MyUnion::Type::aString:
@@ -110,7 +110,7 @@ uint32_t MyUnion::serializedSizeZC(Protocol_ const* prot_) const {
     case MyUnion::Type::anInteger:
     {
       xfer += prot_->serializedFieldSize("anInteger", apache::thrift::protocol::T_I32, 1);
-      xfer += prot_->serializedSizeI32(this->get_anInteger());
+      xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::serializedSize<false>(*prot_, this->get_anInteger());
       break;
     }
     case MyUnion::Type::aString:
@@ -133,7 +133,7 @@ uint32_t MyUnion::write(Protocol_* prot_) const {
     case MyUnion::Type::anInteger:
     {
       xfer += prot_->writeFieldBegin("anInteger", apache::thrift::protocol::T_I32, 1);
-      xfer += prot_->writeI32(this->get_anInteger());
+      xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::write(*prot_, this->get_anInteger());
       xfer += prot_->writeFieldEnd();
       break;
     }
@@ -173,7 +173,7 @@ void MyField::readNoXfer(Protocol_* iprot) {
   }
 _readField_opt_value:
   {
-    iprot->readI64(this->opt_value);
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::read(*iprot, this->opt_value);
     this->__isset.opt_value = true;
   }
 
@@ -186,7 +186,7 @@ _readField_opt_value:
   }
 _readField_value:
   {
-    iprot->readI64(this->value);
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::read(*iprot, this->value);
     this->__isset.value = true;
   }
 
@@ -199,7 +199,7 @@ _readField_value:
   }
 _readField_req_value:
   {
-    iprot->readI64(this->req_value);
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::read(*iprot, this->req_value);
     isset_req_value = true;
   }
 
@@ -269,12 +269,12 @@ uint32_t MyField::serializedSize(Protocol_ const* prot_) const {
   xfer += prot_->serializedStructSize("MyField");
   if (this->__isset.opt_value) {
     xfer += prot_->serializedFieldSize("opt_value", apache::thrift::protocol::T_I64, 1);
-    xfer += prot_->serializedSizeI64(this->opt_value);
+    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::serializedSize<false>(*prot_, this->opt_value);
   }
   xfer += prot_->serializedFieldSize("value", apache::thrift::protocol::T_I64, 2);
-  xfer += prot_->serializedSizeI64(this->value);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::serializedSize<false>(*prot_, this->value);
   xfer += prot_->serializedFieldSize("req_value", apache::thrift::protocol::T_I64, 3);
-  xfer += prot_->serializedSizeI64(this->req_value);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::serializedSize<false>(*prot_, this->req_value);
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -285,12 +285,12 @@ uint32_t MyField::serializedSizeZC(Protocol_ const* prot_) const {
   xfer += prot_->serializedStructSize("MyField");
   if (this->__isset.opt_value) {
     xfer += prot_->serializedFieldSize("opt_value", apache::thrift::protocol::T_I64, 1);
-    xfer += prot_->serializedSizeI64(this->opt_value);
+    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::serializedSize<false>(*prot_, this->opt_value);
   }
   xfer += prot_->serializedFieldSize("value", apache::thrift::protocol::T_I64, 2);
-  xfer += prot_->serializedSizeI64(this->value);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::serializedSize<false>(*prot_, this->value);
   xfer += prot_->serializedFieldSize("req_value", apache::thrift::protocol::T_I64, 3);
-  xfer += prot_->serializedSizeI64(this->req_value);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::serializedSize<false>(*prot_, this->req_value);
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -301,14 +301,14 @@ uint32_t MyField::write(Protocol_* prot_) const {
   xfer += prot_->writeStructBegin("MyField");
   if (this->__isset.opt_value) {
     xfer += prot_->writeFieldBegin("opt_value", apache::thrift::protocol::T_I64, 1);
-    xfer += prot_->writeI64(this->opt_value);
+    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::write(*prot_, this->opt_value);
     xfer += prot_->writeFieldEnd();
   }
   xfer += prot_->writeFieldBegin("value", apache::thrift::protocol::T_I64, 2);
-  xfer += prot_->writeI64(this->value);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::write(*prot_, this->value);
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldBegin("req_value", apache::thrift::protocol::T_I64, 3);
-  xfer += prot_->writeI64(this->req_value);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::write(*prot_, this->req_value);
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldStop();
   xfer += prot_->writeStructEnd();

@@ -285,6 +285,8 @@ class mstch_cpp2_type : public mstch_type {
         this,
         {
             {"type:resolves_to_base?", &mstch_cpp2_type::resolves_to_base},
+            {"type:resolves_to_integral?",
+             &mstch_cpp2_type::resolves_to_integral},
             {"type:resolves_to_base_or_enum?",
              &mstch_cpp2_type::resolves_to_base_or_enum},
             {"type:resolves_to_container?",
@@ -325,6 +327,9 @@ class mstch_cpp2_type : public mstch_type {
   }
   mstch::node resolves_to_base() {
     return resolved_type_->is_base_type();
+  }
+  mstch::node resolves_to_integral() {
+    return resolved_type_->is_byte() || resolved_type_->is_any_int();
   }
   mstch::node resolves_to_base_or_enum() {
     return resolved_type_->is_base_type() || resolved_type_->is_enum();

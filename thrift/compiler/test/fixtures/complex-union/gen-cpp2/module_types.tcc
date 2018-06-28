@@ -38,7 +38,7 @@ void ComplexUnion::readNoXfer(Protocol_* iprot) {
       {
         if (_readState.fieldType == apache::thrift::protocol::T_I64) {
           this->set_intValue();
-          iprot->readI64(this->mutable_intValue());
+          ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::read(*iprot, this->mutable_intValue());
         } else {
           iprot->skip(_readState.fieldType);
         }
@@ -121,7 +121,7 @@ uint32_t ComplexUnion::serializedSize(Protocol_ const* prot_) const {
     case ComplexUnion::Type::intValue:
     {
       xfer += prot_->serializedFieldSize("intValue", apache::thrift::protocol::T_I64, 1);
-      xfer += prot_->serializedSizeI64(this->get_intValue());
+      xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::serializedSize<false>(*prot_, this->get_intValue());
       break;
     }
     case ComplexUnion::Type::stringValue:
@@ -168,7 +168,7 @@ uint32_t ComplexUnion::serializedSizeZC(Protocol_ const* prot_) const {
     case ComplexUnion::Type::intValue:
     {
       xfer += prot_->serializedFieldSize("intValue", apache::thrift::protocol::T_I64, 1);
-      xfer += prot_->serializedSizeI64(this->get_intValue());
+      xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::serializedSize<false>(*prot_, this->get_intValue());
       break;
     }
     case ComplexUnion::Type::stringValue:
@@ -215,7 +215,7 @@ uint32_t ComplexUnion::write(Protocol_* prot_) const {
     case ComplexUnion::Type::intValue:
     {
       xfer += prot_->writeFieldBegin("intValue", apache::thrift::protocol::T_I64, 1);
-      xfer += prot_->writeI64(this->get_intValue());
+      xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::write(*prot_, this->get_intValue());
       xfer += prot_->writeFieldEnd();
       break;
     }

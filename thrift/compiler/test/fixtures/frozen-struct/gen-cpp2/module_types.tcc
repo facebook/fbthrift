@@ -43,7 +43,7 @@ void ModuleA::readNoXfer(Protocol_* iprot) {
   }
 _readField_i32Field:
   {
-    iprot->readI32(this->i32Field);
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::read(*iprot, this->i32Field);
     this->__isset.i32Field = true;
   }
 
@@ -200,7 +200,7 @@ uint32_t ModuleA::serializedSize(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("ModuleA");
   xfer += prot_->serializedFieldSize("i32Field", apache::thrift::protocol::T_I32, 1);
-  xfer += prot_->serializedSizeI32(this->i32Field);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::serializedSize<false>(*prot_, this->i32Field);
   xfer += prot_->serializedFieldSize("strField", apache::thrift::protocol::T_STRING, 2);
   xfer += prot_->serializedSizeString(this->strField);
   xfer += prot_->serializedFieldSize("listField", apache::thrift::protocol::T_LIST, 3);
@@ -220,7 +220,7 @@ uint32_t ModuleA::serializedSizeZC(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("ModuleA");
   xfer += prot_->serializedFieldSize("i32Field", apache::thrift::protocol::T_I32, 1);
-  xfer += prot_->serializedSizeI32(this->i32Field);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::serializedSize<false>(*prot_, this->i32Field);
   xfer += prot_->serializedFieldSize("strField", apache::thrift::protocol::T_STRING, 2);
   xfer += prot_->serializedSizeString(this->strField);
   xfer += prot_->serializedFieldSize("listField", apache::thrift::protocol::T_LIST, 3);
@@ -240,7 +240,7 @@ uint32_t ModuleA::write(Protocol_* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("ModuleA");
   xfer += prot_->writeFieldBegin("i32Field", apache::thrift::protocol::T_I32, 1);
-  xfer += prot_->writeI32(this->i32Field);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::write(*prot_, this->i32Field);
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldBegin("strField", apache::thrift::protocol::T_STRING, 2);
   xfer += prot_->writeString(this->strField);
@@ -283,7 +283,7 @@ void ModuleB::readNoXfer(Protocol_* iprot) {
   }
 _readField_i32Field:
   {
-    iprot->readI32(this->i32Field);
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::read(*iprot, this->i32Field);
     this->__isset.i32Field = true;
   }
 
@@ -354,7 +354,7 @@ uint32_t ModuleB::serializedSize(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("ModuleB");
   xfer += prot_->serializedFieldSize("i32Field", apache::thrift::protocol::T_I32, 1);
-  xfer += prot_->serializedSizeI32(this->i32Field);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::serializedSize<false>(*prot_, this->i32Field);
   xfer += prot_->serializedFieldSize("inclEnumB", apache::thrift::protocol::T_I32, 2);
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::some::ns::EnumB>::serializedSize<false>(*prot_, this->inclEnumB);
   xfer += prot_->serializedSizeStop();
@@ -366,7 +366,7 @@ uint32_t ModuleB::serializedSizeZC(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("ModuleB");
   xfer += prot_->serializedFieldSize("i32Field", apache::thrift::protocol::T_I32, 1);
-  xfer += prot_->serializedSizeI32(this->i32Field);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::serializedSize<false>(*prot_, this->i32Field);
   xfer += prot_->serializedFieldSize("inclEnumB", apache::thrift::protocol::T_I32, 2);
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::some::ns::EnumB>::serializedSize<false>(*prot_, this->inclEnumB);
   xfer += prot_->serializedSizeStop();
@@ -378,7 +378,7 @@ uint32_t ModuleB::write(Protocol_* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("ModuleB");
   xfer += prot_->writeFieldBegin("i32Field", apache::thrift::protocol::T_I32, 1);
-  xfer += prot_->writeI32(this->i32Field);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::write(*prot_, this->i32Field);
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldBegin("inclEnumB", apache::thrift::protocol::T_I32, 2);
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::some::ns::EnumB>::write(*prot_, this->inclEnumB);

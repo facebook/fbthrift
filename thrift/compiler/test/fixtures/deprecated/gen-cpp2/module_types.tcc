@@ -34,7 +34,7 @@ void House::readNoXfer(Protocol_* iprot) {
   }
 _readField_id:
   {
-    iprot->readI64(this->id);
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral,  ::cpp2::ColorID>::read(*iprot, this->id);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -124,7 +124,7 @@ uint32_t House::serializedSize(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("House");
   xfer += prot_->serializedFieldSize("id", apache::thrift::protocol::T_I64, 1);
-  xfer += prot_->serializedSizeI64(this->id);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral,  ::cpp2::ColorID>::serializedSize<false>(*prot_, this->id);
   xfer += prot_->serializedFieldSize("houseName", apache::thrift::protocol::T_STRING, 2);
   xfer += prot_->serializedSizeString(this->houseName);
   if (this->houseColors.hasValue()) {
@@ -140,7 +140,7 @@ uint32_t House::serializedSizeZC(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("House");
   xfer += prot_->serializedFieldSize("id", apache::thrift::protocol::T_I64, 1);
-  xfer += prot_->serializedSizeI64(this->id);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral,  ::cpp2::ColorID>::serializedSize<false>(*prot_, this->id);
   xfer += prot_->serializedFieldSize("houseName", apache::thrift::protocol::T_STRING, 2);
   xfer += prot_->serializedSizeString(this->houseName);
   if (this->houseColors.hasValue()) {
@@ -156,7 +156,7 @@ uint32_t House::write(Protocol_* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("House");
   xfer += prot_->writeFieldBegin("id", apache::thrift::protocol::T_I64, 1);
-  xfer += prot_->writeI64(this->id);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral,  ::cpp2::ColorID>::write(*prot_, this->id);
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldBegin("houseName", apache::thrift::protocol::T_STRING, 2);
   xfer += prot_->writeString(this->houseName);
@@ -192,7 +192,7 @@ void Field::readNoXfer(Protocol_* iprot) {
   }
 _readField_id:
   {
-    iprot->readI64(this->id);
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral,  ::cpp2::ColorID>::read(*iprot, this->id);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -204,7 +204,7 @@ _readField_id:
   }
 _readField_fieldType:
   {
-    iprot->readI32(this->fieldType);
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::read(*iprot, this->fieldType);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -261,9 +261,9 @@ uint32_t Field::serializedSize(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("Field");
   xfer += prot_->serializedFieldSize("id", apache::thrift::protocol::T_I64, 1);
-  xfer += prot_->serializedSizeI64(this->id);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral,  ::cpp2::ColorID>::serializedSize<false>(*prot_, this->id);
   xfer += prot_->serializedFieldSize("fieldType", apache::thrift::protocol::T_I32, 2);
-  xfer += prot_->serializedSizeI32(this->fieldType);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::serializedSize<false>(*prot_, this->fieldType);
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -273,9 +273,9 @@ uint32_t Field::serializedSizeZC(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("Field");
   xfer += prot_->serializedFieldSize("id", apache::thrift::protocol::T_I64, 1);
-  xfer += prot_->serializedSizeI64(this->id);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral,  ::cpp2::ColorID>::serializedSize<false>(*prot_, this->id);
   xfer += prot_->serializedFieldSize("fieldType", apache::thrift::protocol::T_I32, 2);
-  xfer += prot_->serializedSizeI32(this->fieldType);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::serializedSize<false>(*prot_, this->fieldType);
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -285,10 +285,10 @@ uint32_t Field::write(Protocol_* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("Field");
   xfer += prot_->writeFieldBegin("id", apache::thrift::protocol::T_I64, 1);
-  xfer += prot_->writeI64(this->id);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral,  ::cpp2::ColorID>::write(*prot_, this->id);
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldBegin("fieldType", apache::thrift::protocol::T_I32, 2);
-  xfer += prot_->writeI32(this->fieldType);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::write(*prot_, this->fieldType);
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldStop();
   xfer += prot_->writeStructEnd();

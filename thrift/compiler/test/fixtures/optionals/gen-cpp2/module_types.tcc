@@ -454,7 +454,7 @@ void Person::readNoXfer(Protocol_* iprot) {
   }
 _readField_id:
   {
-    iprot->readI64(this->id);
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral,  ::cpp2::PersonID>::read(*iprot, this->id);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -479,7 +479,7 @@ _readField_name:
 _readField_age:
   {
     this->age = int16_t();
-    iprot->readI16(this->age.value());
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int16_t>::read(*iprot, this->age.value());
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -531,7 +531,7 @@ _readField_friends:
 _readField_bestFriend:
   {
     this->bestFriend =  ::cpp2::PersonID();
-    iprot->readI64(this->bestFriend.value());
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral,  ::cpp2::PersonID>::read(*iprot, this->bestFriend.value());
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -691,12 +691,12 @@ uint32_t Person::serializedSize(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("Person");
   xfer += prot_->serializedFieldSize("id", apache::thrift::protocol::T_I64, 1);
-  xfer += prot_->serializedSizeI64(this->id);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral,  ::cpp2::PersonID>::serializedSize<false>(*prot_, this->id);
   xfer += prot_->serializedFieldSize("name", apache::thrift::protocol::T_STRING, 2);
   xfer += prot_->serializedSizeString(this->name);
   if (this->age.hasValue()) {
     xfer += prot_->serializedFieldSize("age", apache::thrift::protocol::T_I16, 3);
-    xfer += prot_->serializedSizeI16(this->age.value());
+    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int16_t>::serializedSize<false>(*prot_, this->age.value());
   }
   if (this->address.hasValue()) {
     xfer += prot_->serializedFieldSize("address", apache::thrift::protocol::T_STRING, 4);
@@ -712,7 +712,7 @@ uint32_t Person::serializedSize(Protocol_ const* prot_) const {
   }
   if (this->bestFriend.hasValue()) {
     xfer += prot_->serializedFieldSize("bestFriend", apache::thrift::protocol::T_I64, 7);
-    xfer += prot_->serializedSizeI64(this->bestFriend.value());
+    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral,  ::cpp2::PersonID>::serializedSize<false>(*prot_, this->bestFriend.value());
   }
   if (this->petNames.hasValue()) {
     xfer += prot_->serializedFieldSize("petNames", apache::thrift::protocol::T_MAP, 8);
@@ -735,12 +735,12 @@ uint32_t Person::serializedSizeZC(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("Person");
   xfer += prot_->serializedFieldSize("id", apache::thrift::protocol::T_I64, 1);
-  xfer += prot_->serializedSizeI64(this->id);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral,  ::cpp2::PersonID>::serializedSize<false>(*prot_, this->id);
   xfer += prot_->serializedFieldSize("name", apache::thrift::protocol::T_STRING, 2);
   xfer += prot_->serializedSizeString(this->name);
   if (this->age.hasValue()) {
     xfer += prot_->serializedFieldSize("age", apache::thrift::protocol::T_I16, 3);
-    xfer += prot_->serializedSizeI16(this->age.value());
+    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int16_t>::serializedSize<false>(*prot_, this->age.value());
   }
   if (this->address.hasValue()) {
     xfer += prot_->serializedFieldSize("address", apache::thrift::protocol::T_STRING, 4);
@@ -756,7 +756,7 @@ uint32_t Person::serializedSizeZC(Protocol_ const* prot_) const {
   }
   if (this->bestFriend.hasValue()) {
     xfer += prot_->serializedFieldSize("bestFriend", apache::thrift::protocol::T_I64, 7);
-    xfer += prot_->serializedSizeI64(this->bestFriend.value());
+    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral,  ::cpp2::PersonID>::serializedSize<false>(*prot_, this->bestFriend.value());
   }
   if (this->petNames.hasValue()) {
     xfer += prot_->serializedFieldSize("petNames", apache::thrift::protocol::T_MAP, 8);
@@ -779,14 +779,14 @@ uint32_t Person::write(Protocol_* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("Person");
   xfer += prot_->writeFieldBegin("id", apache::thrift::protocol::T_I64, 1);
-  xfer += prot_->writeI64(this->id);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral,  ::cpp2::PersonID>::write(*prot_, this->id);
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldBegin("name", apache::thrift::protocol::T_STRING, 2);
   xfer += prot_->writeString(this->name);
   xfer += prot_->writeFieldEnd();
   if (this->age.hasValue()) {
     xfer += prot_->writeFieldBegin("age", apache::thrift::protocol::T_I16, 3);
-    xfer += prot_->writeI16(this->age.value());
+    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int16_t>::write(*prot_, this->age.value());
     xfer += prot_->writeFieldEnd();
   }
   if (this->address.hasValue()) {
@@ -806,7 +806,7 @@ uint32_t Person::write(Protocol_* prot_) const {
   }
   if (this->bestFriend.hasValue()) {
     xfer += prot_->writeFieldBegin("bestFriend", apache::thrift::protocol::T_I64, 7);
-    xfer += prot_->writeI64(this->bestFriend.value());
+    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral,  ::cpp2::PersonID>::write(*prot_, this->bestFriend.value());
     xfer += prot_->writeFieldEnd();
   }
   if (this->petNames.hasValue()) {

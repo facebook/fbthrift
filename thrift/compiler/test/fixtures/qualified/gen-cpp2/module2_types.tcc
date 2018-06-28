@@ -173,7 +173,7 @@ _readField_s:
   }
 _readField_id:
   {
-    iprot->readI32(this->id);
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::read(*iprot, this->id);
     this->__isset.id = true;
   }
 
@@ -233,7 +233,7 @@ uint32_t BigStruct::serializedSize(Protocol_ const* prot_) const {
   xfer += prot_->serializedFieldSize("s", apache::thrift::protocol::T_STRUCT, 1);
   xfer += ::apache::thrift::Cpp2Ops<  ::module2::Struct>::serializedSize(prot_, &this->s);
   xfer += prot_->serializedFieldSize("id", apache::thrift::protocol::T_I32, 2);
-  xfer += prot_->serializedSizeI32(this->id);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::serializedSize<false>(*prot_, this->id);
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -245,7 +245,7 @@ uint32_t BigStruct::serializedSizeZC(Protocol_ const* prot_) const {
   xfer += prot_->serializedFieldSize("s", apache::thrift::protocol::T_STRUCT, 1);
   xfer += ::apache::thrift::Cpp2Ops<  ::module2::Struct>::serializedSizeZC(prot_, &this->s);
   xfer += prot_->serializedFieldSize("id", apache::thrift::protocol::T_I32, 2);
-  xfer += prot_->serializedSizeI32(this->id);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::serializedSize<false>(*prot_, this->id);
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -258,7 +258,7 @@ uint32_t BigStruct::write(Protocol_* prot_) const {
   xfer += ::apache::thrift::Cpp2Ops<  ::module2::Struct>::write(prot_, &this->s);
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldBegin("id", apache::thrift::protocol::T_I32, 2);
-  xfer += prot_->writeI32(this->id);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::write(*prot_, this->id);
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldStop();
   xfer += prot_->writeStructEnd();

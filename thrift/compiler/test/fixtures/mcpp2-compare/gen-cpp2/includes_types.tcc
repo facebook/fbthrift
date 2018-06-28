@@ -44,7 +44,7 @@ void AStruct::readNoXfer(Protocol_* iprot) {
   }
 _readField_FieldA:
   {
-    iprot->readI32(this->FieldA);
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::read(*iprot, this->FieldA);
     this->__isset.FieldA = true;
   }
 
@@ -94,7 +94,7 @@ uint32_t AStruct::serializedSize(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("AStruct");
   xfer += prot_->serializedFieldSize("FieldA", apache::thrift::protocol::T_I32, 1);
-  xfer += prot_->serializedSizeI32(this->FieldA);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::serializedSize<false>(*prot_, this->FieldA);
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -104,7 +104,7 @@ uint32_t AStruct::serializedSizeZC(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("AStruct");
   xfer += prot_->serializedFieldSize("FieldA", apache::thrift::protocol::T_I32, 1);
-  xfer += prot_->serializedSizeI32(this->FieldA);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::serializedSize<false>(*prot_, this->FieldA);
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -114,7 +114,7 @@ uint32_t AStruct::write(Protocol_* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("AStruct");
   xfer += prot_->writeFieldBegin("FieldA", apache::thrift::protocol::T_I32, 1);
-  xfer += prot_->writeI32(this->FieldA);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::write(*prot_, this->FieldA);
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldStop();
   xfer += prot_->writeStructEnd();

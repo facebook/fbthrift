@@ -262,6 +262,47 @@ REGISTER_OVERLOAD(integral, std::int16_t, I16, T_I16);
 REGISTER_OVERLOAD(integral, std::int32_t, I32, T_I32);
 REGISTER_OVERLOAD(integral, std::int64_t, I64, T_I64);
 
+// Macros for defining protocol_methods for unsigned integers
+// Need special macros due to the casts needed
+#define REGISTER_RW_UI(Class, Type, Method, TTypeValue)                \
+  constexpr static protocol::TType ttype_value = protocol::TTypeValue; \
+  using SignedType = std::make_signed_t<Type>;                         \
+  template <typename Protocol>                                         \
+  static void read(Protocol& protocol, Type& out) {                    \
+    SignedType tmp;                                                    \
+    protocol.read##Method(tmp);                                        \
+    out = folly::to_unsigned(tmp);                                     \
+  }                                                                    \
+  template <typename Protocol>                                         \
+  static std::size_t write(Protocol& protocol, Type const& in) {       \
+    return protocol.write##Method(folly::to_signed(in));               \
+  }
+
+#define REGISTER_SS_UI(Class, Type, Method, TTypeValue)                   \
+  template <bool, typename Protocol>                                      \
+  static std::size_t serializedSize(Protocol& protocol, Type const& in) { \
+    return protocol.serializedSize##Method(folly::to_signed(in));         \
+  }
+
+// stamp out specializations for unsigned integer primitive types
+// TODO: Perhaps change ttype_value to a static constexpr member function, as
+// those might instantiate faster than a constexpr objects
+#define REGISTER_UI(Class, Type, Method, TTypeValue) \
+  template <>                                        \
+  struct protocol_methods<type_class::Class, Type> { \
+    REGISTER_RW_UI(Class, Type, Method, TTypeValue)  \
+    REGISTER_SS_UI(Class, Type, Method, TTypeValue)  \
+  }
+
+REGISTER_UI(integral, std::uint8_t, Byte, T_BYTE);
+REGISTER_UI(integral, std::uint16_t, I16, T_I16);
+REGISTER_UI(integral, std::uint32_t, I32, T_I32);
+REGISTER_UI(integral, std::uint64_t, I64, T_I64);
+
+#undef REGISTER_UI
+#undef REGISTER_RW_UI
+#undef REGISTER_SS_UI
+
 // std::vector<bool> isn't actually a container, so
 // define a special overload which takes its specialized
 // proxy type

@@ -41,12 +41,17 @@ void <%struct:name%>::readNoXfer(Protocol_* iprot) {
         if (_readState.fieldType == apache::thrift::protocol::<% > module_types_tcc/struct_type%>) {
           this->set_<%field:name%>();
 <%#type:resolves_to_base?%>
+<%#type:resolves_to_integral?%>
+          ::apache::thrift::detail::pm::protocol_methods< <% > module_types_tcc/protocol_methods%>, <% > types/type%>>::read(*iprot, <%#field:cpp_ref?%>*<%/field:cpp_ref?%>this->mutable_<%field:name%>());
+<%/type:resolves_to_integral?%>
+<%^type:resolves_to_integral?%>
 <%#field:cpp_ref?%>
           iprot->read<% > module_types_tcc/struct_field_type%>((*this->mutable_<%field:name%>()));
 <%/field:cpp_ref?%>
 <%^field:cpp_ref?%>
           iprot->read<% > module_types_tcc/struct_field_type%>(this->mutable_<%field:name%>());
 <%/field:cpp_ref?%>
+<%/type:resolves_to_integral?%>
 <%/type:resolves_to_base?%>
 <%^type:resolves_to_base?%>
 <%#field:cpp_ref?%>

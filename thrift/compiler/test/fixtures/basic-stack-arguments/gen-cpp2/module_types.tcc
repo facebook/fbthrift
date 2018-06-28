@@ -43,7 +43,7 @@ void MyStruct::readNoXfer(Protocol_* iprot) {
   }
 _readField_MyIntField:
   {
-    iprot->readI64(this->MyIntField);
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::read(*iprot, this->MyIntField);
     this->__isset.MyIntField = true;
   }
 
@@ -114,7 +114,7 @@ uint32_t MyStruct::serializedSize(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("MyStruct");
   xfer += prot_->serializedFieldSize("MyIntField", apache::thrift::protocol::T_I64, 1);
-  xfer += prot_->serializedSizeI64(this->MyIntField);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::serializedSize<false>(*prot_, this->MyIntField);
   xfer += prot_->serializedFieldSize("MyStringField", apache::thrift::protocol::T_STRING, 2);
   xfer += prot_->serializedSizeString(this->MyStringField);
   xfer += prot_->serializedSizeStop();
@@ -126,7 +126,7 @@ uint32_t MyStruct::serializedSizeZC(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("MyStruct");
   xfer += prot_->serializedFieldSize("MyIntField", apache::thrift::protocol::T_I64, 1);
-  xfer += prot_->serializedSizeI64(this->MyIntField);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::serializedSize<false>(*prot_, this->MyIntField);
   xfer += prot_->serializedFieldSize("MyStringField", apache::thrift::protocol::T_STRING, 2);
   xfer += prot_->serializedSizeString(this->MyStringField);
   xfer += prot_->serializedSizeStop();
@@ -138,7 +138,7 @@ uint32_t MyStruct::write(Protocol_* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("MyStruct");
   xfer += prot_->writeFieldBegin("MyIntField", apache::thrift::protocol::T_I64, 1);
-  xfer += prot_->writeI64(this->MyIntField);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::write(*prot_, this->MyIntField);
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldBegin("MyStringField", apache::thrift::protocol::T_STRING, 2);
   xfer += prot_->writeString(this->MyStringField);

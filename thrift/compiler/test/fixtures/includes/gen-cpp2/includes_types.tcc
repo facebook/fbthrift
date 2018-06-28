@@ -34,7 +34,7 @@ void Included::readNoXfer(Protocol_* iprot) {
   }
 _readField_MyIntField:
   {
-    iprot->readI64(this->MyIntField);
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::read(*iprot, this->MyIntField);
     this->__isset.MyIntField = true;
   }
 
@@ -105,7 +105,7 @@ uint32_t Included::serializedSize(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("Included");
   xfer += prot_->serializedFieldSize("MyIntField", apache::thrift::protocol::T_I64, 1);
-  xfer += prot_->serializedSizeI64(this->MyIntField);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::serializedSize<false>(*prot_, this->MyIntField);
   xfer += prot_->serializedFieldSize("MyTransitiveField", apache::thrift::protocol::T_STRUCT, 2);
   xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::Foo>::serializedSize(prot_, &this->MyTransitiveField);
   xfer += prot_->serializedSizeStop();
@@ -117,7 +117,7 @@ uint32_t Included::serializedSizeZC(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("Included");
   xfer += prot_->serializedFieldSize("MyIntField", apache::thrift::protocol::T_I64, 1);
-  xfer += prot_->serializedSizeI64(this->MyIntField);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::serializedSize<false>(*prot_, this->MyIntField);
   xfer += prot_->serializedFieldSize("MyTransitiveField", apache::thrift::protocol::T_STRUCT, 2);
   xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::Foo>::serializedSizeZC(prot_, &this->MyTransitiveField);
   xfer += prot_->serializedSizeStop();
@@ -129,7 +129,7 @@ uint32_t Included::write(Protocol_* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("Included");
   xfer += prot_->writeFieldBegin("MyIntField", apache::thrift::protocol::T_I64, 1);
-  xfer += prot_->writeI64(this->MyIntField);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::write(*prot_, this->MyIntField);
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldBegin("MyTransitiveField", apache::thrift::protocol::T_STRUCT, 2);
   xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::Foo>::write(prot_, &this->MyTransitiveField);

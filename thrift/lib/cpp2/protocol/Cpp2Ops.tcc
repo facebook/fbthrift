@@ -206,6 +206,118 @@ class Cpp2Ops<int64_t> {
 };
 
 template <>
+class Cpp2Ops<uint8_t> {
+ public:
+  using Type = uint8_t;
+  using SignedType = std::make_signed_t<Type>;
+  static constexpr protocol::TType thriftType() {
+    return protocol::T_BYTE;
+  }
+  template <class Protocol>
+  static uint32_t write(Protocol* prot, const Type* value) {
+    return prot->writeByte(folly::to_signed(*value));
+  }
+  template <class Protocol>
+  static void read(Protocol* prot, Type* value) {
+    SignedType signedValue;
+    prot->readByte(signedValue);
+    *value = folly::to_unsigned(signedValue);
+  }
+  template <class Protocol>
+  static uint32_t serializedSize(Protocol* prot, const Type* value) {
+    return prot->serializedSizeByte(folly::to_signed(*value));
+  }
+  template <class Protocol>
+  static uint32_t serializedSizeZC(Protocol* prot, const Type* value) {
+    return prot->serializedSizeByte(folly::to_signed(*value));
+  }
+};
+
+template <>
+class Cpp2Ops<uint16_t> {
+ public:
+  using Type = uint16_t;
+  using SignedType = std::make_signed_t<Type>;
+  static constexpr protocol::TType thriftType() {
+    return protocol::T_I16;
+  }
+  template <class Protocol>
+  static uint32_t write(Protocol* prot, const Type* value) {
+    return prot->writeI16(folly::to_signed(*value));
+  }
+  template <class Protocol>
+  static void read(Protocol* prot, Type* value) {
+    SignedType signedValue;
+    prot->readI16(signedValue);
+    *value = folly::to_unsigned(signedValue);
+  }
+  template <class Protocol>
+  static uint32_t serializedSize(Protocol* prot, const Type* value) {
+    return prot->serializedSizeI16(folly::to_signed(*value));
+  }
+  template <class Protocol>
+  static uint32_t serializedSizeZC(Protocol* prot, const Type* value) {
+    return prot->serializedSizeI16(folly::to_signed(*value));
+  }
+};
+
+template <>
+class Cpp2Ops<uint32_t> {
+ public:
+  using Type = uint32_t;
+  using SignedType = std::make_signed_t<Type>;
+  static constexpr protocol::TType thriftType() {
+    return protocol::T_I32;
+  }
+  template <class Protocol>
+  static uint32_t write(Protocol* prot, const Type* value) {
+    return prot->writeI32(folly::to_signed(*value));
+  }
+  template <class Protocol>
+  static void read(Protocol* prot, Type* value) {
+    SignedType signedValue;
+    prot->readI32(signedValue);
+    *value = folly::to_unsigned(signedValue);
+  }
+  template <class Protocol>
+  static uint32_t serializedSize(Protocol* prot, const Type* value) {
+    return prot->serializedSizeI32(folly::to_signed(*value));
+  }
+  template <class Protocol>
+  static uint32_t serializedSizeZC(Protocol* prot, const Type* value) {
+    return prot->serializedSizeI32(folly::to_signed(*value));
+  }
+};
+
+template <>
+class Cpp2Ops<uint64_t> {
+ public:
+  using Type = uint64_t;
+  using SignedType = std::make_signed_t<Type>;
+  static constexpr protocol::TType thriftType() {
+    return protocol::T_I64;
+  }
+  template <class Protocol>
+  static uint32_t write(Protocol* prot, const Type* value) {
+    return prot->writeI64(folly::to_signed(*value));
+  }
+  template <class Protocol>
+  static void read(Protocol* prot, Type* value) {
+    SignedType signedValue;
+    prot->readI64(signedValue);
+    *value = folly::to_unsigned(signedValue);
+  }
+  template <class Protocol>
+  static uint32_t serializedSize(Protocol* prot, const Type* value) {
+    return prot->serializedSizeI64(folly::to_signed(*value));
+  }
+  template <class Protocol>
+  static uint32_t serializedSizeZC(Protocol* prot, const Type* value) {
+    return prot->serializedSizeI64(folly::to_signed(*value));
+  }
+};
+
+template <>
 class Cpp2Ops<bool> {
  public:
   typedef bool Type;
