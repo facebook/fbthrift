@@ -15,6 +15,9 @@
  */
 
 #include <gtest/gtest.h>
+
+#include <folly/io/async/ScopedEventBaseThread.h>
+#include <thrift/lib/cpp2/async/StreamPublisher.h>
 #include <thrift/lib/cpp2/test/gen-cpp2/DiffTypesStreamingService.h>
 #include <thrift/lib/cpp2/transport/rsocket/YarplStreamImpl.h>
 
@@ -55,4 +58,56 @@ TEST(StreamingTest, DifferentStreamClientCompiles) {
   auto subscription = std::move(result).via(&evb_).subscribe([](int32_t) {});
   subscription.cancel();
   std::move(subscription).detach();
+}
+
+TEST(StreamingTest, StreamPublisherCancellation) {
+  class SlowExecutor : public folly::SequencedExecutor {
+   public:
+    void add(folly::Func func) override {
+      impl_.add([f = std::move(func)]() mutable {
+        /* sleep override */ std::this_thread::sleep_for(
+            std::chrono::milliseconds{5});
+        f();
+      });
+    }
+
+   private:
+    folly::ScopedEventBaseThread impl_;
+  };
+  SlowExecutor executor;
+
+  auto streamAndPublisher = apache::thrift::StreamPublisher<int>::create(
+      folly::getKeepAliveToken(executor), [] {});
+
+  int count = 0;
+
+  auto subscription =
+      std::move(streamAndPublisher.first)
+          .subscribe(
+              [&count](int value) mutable { EXPECT_EQ(count++, value); },
+              apache::thrift::Stream<int>::kNoFlowControl);
+
+  /* sleep override */ std::this_thread::sleep_for(
+      std::chrono::milliseconds{100});
+
+  std::atomic<bool> stop{false};
+  std::thread publisherThread([&] {
+    for (int i = 0; !stop; ++i) {
+      streamAndPublisher.second.next(i);
+      /* sleep override */ std::this_thread::sleep_for(
+          std::chrono::milliseconds{1});
+    }
+  });
+
+  /* sleep override */ std::this_thread::sleep_for(
+      std::chrono::milliseconds{10});
+  subscription.cancel();
+  /* sleep override */ std::this_thread::sleep_for(
+      std::chrono::milliseconds{100});
+  stop = true;
+
+  std::move(subscription).join();
+  EXPECT_GT(count, 0);
+
+  publisherThread.join();
 }
