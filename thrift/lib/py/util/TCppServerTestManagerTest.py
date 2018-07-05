@@ -6,7 +6,11 @@ from __future__ import unicode_literals
 import threading
 import unittest
 
-from thrift.Thrift import TApplicationException, TPriority
+from thrift.Thrift import (
+    TApplicationException,
+    TPriority,
+    TProcessorEventHandler,
+)
 from thrift.protocol import THeaderProtocol
 from thrift.transport import TSocket
 from thrift.transport import THeaderTransport
@@ -24,14 +28,18 @@ class BaseTest(unittest.TestCase):
     def _perform_rpc(self, server, service, method, *args, **kwargs):
         # Default 5s timeout
         return self._expiring_rpc(
-            server, service, method, 5 * 1000, *args, **kwargs)
+            server, service, method, 5 * 1000, None, *args, **kwargs)
 
     # Same but with a timeout
-    def _expiring_rpc(self, server, service, method, tm, *args, **kwargs):
+    def _expiring_rpc(self, server, service, method, tm, headers,
+                      *args, **kwargs):
         host, port = server.addr()
         with TSocket.TSocket(host=host, port=port) as sock:
             sock.setTimeout(tm)
             transport = THeaderTransport.THeaderTransport(sock)
+            if headers:
+                for key, val in headers.items():
+                    transport.set_header(key, val)
             protocol = THeaderProtocol.THeaderProtocol(transport)
             client = service.Client(protocol, protocol)
             return getattr(client, method)(*args, **kwargs)
@@ -51,8 +59,62 @@ class TestTCppServerTestManager(BaseTest):
         def throwUncaughtException(self, msg):
             raise AssertionError(msg)
 
+    class HandlerWithRequestContext(TestService.Iface, TProcessorEventHandler):
+        def __init__(self, exceptions=False):
+            self.__request_context = None
+            self._response = 'not initialized'
+            self._exceptions = exceptions
+
+        def getMessage(self):
+            return self._response
+
+        def setRequestContext(self, ctx):
+            self.__request_context = ctx
+
+        def getRequestContext(self):
+            return self.__request_context
+
+        def postRead(self, *args):
+            if self._exceptions:
+                raise Exception("some failure")
+
+            ctx = self.getRequestContext()
+            headers = ctx.getHeaders()
+            self._response = "headers: %r" % headers
+
     def _perform_getDataById(self, server, val):
         return self._perform_rpc(server, TestService, 'getDataById', val)
+
+    def test_request_context_order(self):
+        handler = self.HandlerWithRequestContext()
+        processor = TestService.Processor(handler)
+        processor.setEventHandler(handler)
+
+        headers = {'fruit': 'orange'}
+
+        with TCppServerTestManager(processor) as server:
+            message = self._expiring_rpc(
+                server, TestService, 'getMessage', 1000, headers=headers)
+
+        # make sure we saw the headers in the handler's postRead
+        self.assertEqual(message, "headers: {'fruit': 'orange'}")
+
+        # make sure they were reset after the method call
+        self.assertTrue(handler.getRequestContext() is None)
+
+    def test_request_context_reset_on_exception(self):
+        handler = self.HandlerWithRequestContext(exceptions=True)
+        processor = TestService.Processor(handler)
+        processor.setEventHandler(handler)
+
+        with TCppServerTestManager(processor) as server:
+            try:
+                self._perform_getDataById(server, 7)
+            except TApplicationException:
+                pass
+
+        # make sure they were reset after the failure to readArgs
+        self.assertTrue(handler.getRequestContext() is None)
 
     def test_with_handler(self):
         handler = self.Handler({7: "hello"})
@@ -212,7 +274,8 @@ class TestTCppServerPriorities(BaseTest):
         with TCppServerTestManager(cppserver) as server:
             # Send a request to the server and return immediately
             try:
-                self._expiring_rpc(server, PriorityService, 'bestEffort', 0)
+                self._expiring_rpc(
+                    server, PriorityService, 'bestEffort', 0, None)
             except TTransportException:
                 pass
 

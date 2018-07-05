@@ -10,6 +10,7 @@ exception UserException2 {
 
 service TestService {
   string getDataById(1: i64 id)
+  string getMessage()
   bool hasDataById(1: i64 id)
   void putDataById(1: i64 id, 2: string data)
   void delDataById(1: i64 id)

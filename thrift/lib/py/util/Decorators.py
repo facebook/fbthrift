@@ -151,6 +151,7 @@ def process_method(argtype, oneway=False, twisted=False, asyncio=False):
                 fn_name,
                 server_ctx,
             )
+            set_request_context(self, iprot)
             try:
                 args = self.readArgs(iprot, handler_ctx, fn_name, argtype)
             except Exception as e:
@@ -166,11 +167,11 @@ def process_method(argtype, oneway=False, twisted=False, asyncio=False):
                 if asyncio or twisted:
                     return func(self, args, handler_ctx, seqid, oprot, fn_name)
 
-                set_request_context(self, iprot)
                 result = func(self, args, handler_ctx)
                 if not oneway:
                     self.writeReply(
                         oprot, handler_ctx, fn_name, seqid, result, server_ctx)
+            finally:
                 reset_request_context(self)
 
             _mem_after = _process_method_mem_usage()
