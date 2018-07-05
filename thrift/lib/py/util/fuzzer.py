@@ -10,15 +10,13 @@ from __future__ import unicode_literals
 import argparse
 import collections
 import imp
-import itertools
+import inspect
 import json
 import logging
 import os
 import pprint
-import random
 import sys
 import time
-import types
 
 import six
 import six.moves as sm
@@ -427,64 +425,40 @@ class Service(object):
 
     def load_methods(self):
         """Load a service's methods"""
-        service_module = self.service
 
-        method_inheritance_chain = []
-        while service_module is not None:
-            interface = service_module.Iface
-            if_attrs = [getattr(interface, a) for a in dir(interface)]
-            if_methods = {m.__name__ for m in if_attrs if
-                          isinstance(m, types.MethodType)}
-            method_inheritance_chain.append((service_module, if_methods))
-            if interface.__bases__:
-                # Can only have single inheritance in thrift
-                service_module = __import__(interface.__bases__[0].__module__,
-                                            {}, {}, ['Iface'])
-            else:
-                service_module = None
-
-        # Map method names to the module the method is defined in
-        method_to_module = {}
-
-        # Iterate starting at the top of the tree
-        for (module, if_methods) in method_inheritance_chain[::-1]:
-            for method_name in if_methods:
-                if method_name not in method_to_module:
-                    method_to_module[method_name] = module
+        # Can only have single inheritance in thrift
+        thrift_inheritance_chain = self.service.Iface.__mro__
 
         methods = {}
-        for method_name, module in six.iteritems(method_to_module):
-            args_class_name = "%s_args" % (method_name)
-            result_class_name = "%s_result" % (method_name)
+        # We iterate inheritance from parent to base so we can override
+        # parent's methods with the base's one.
+        for klass in thrift_inheritance_chain[::-1]:
+            pred = inspect.isfunction if six.PY3 else inspect.ismethod
+            klass_methods = inspect.getmembers(klass, predicate=pred)
+            module = inspect.getmodule(klass)
 
-            if hasattr(module, args_class_name):
-                args = getattr(module, args_class_name)
-            else:
-                raise AttributeError(
-                    "Method arg spec not found: %s.%s" % (
-                        module.__name__, method_name))
+            for method_name, _ in klass_methods:
+                args = getattr(module, method_name + "_args", None)
+                if args is None:
+                    continue
+                result = getattr(module, method_name + "_result", None)
 
-            if hasattr(module, result_class_name):
-                result = getattr(module, result_class_name)
-            else:
-                result = None
+                thrift_exceptions = []
+                if result is not None:
+                    for res_spec in result.thrift_spec:
+                        if res_spec is None:
+                            continue
+                        if res_spec[2] != "success":
+                            # This is an exception return type
+                            spec_args = res_spec[3]
+                            exception_type = spec_args[0]
+                            thrift_exceptions.append(exception_type)
 
-            thrift_exceptions = []
-            if result is not None:
-                for res_spec in result.thrift_spec:
-                    if res_spec is None:
-                        continue
-                    if res_spec[2] != 'success':
-                        # This is an exception return type
-                        spec_args = res_spec[3]
-                        exception_type = spec_args[0]
-                        thrift_exceptions.append(exception_type)
-
-            methods[method_name] = {
-                'args_class': args,
-                'result_spec': result,
-                'thrift_exceptions': tuple(thrift_exceptions)
-            }
+                methods[method_name] = {
+                    "args_class": args,
+                    "result_spec": result,
+                    "thrift_exceptions": tuple(thrift_exceptions),
+                }
 
         self.methods = methods
 
