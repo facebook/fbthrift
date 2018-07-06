@@ -23,6 +23,7 @@
 #include <inttypes.h>
 #include <stdio.h>
 #include <memory>
+#include <type_traits>
 
 #include <folly/init/Init.h>
 #include <folly/portability/SysTime.h>
@@ -330,28 +331,32 @@ int main(int argc, char** argv) {
     }
     printf("}\n");
 
+    auto printNumberz = [](Numberz n) {
+      printf(" = %d\n", static_cast<std::underlying_type_t<Numberz>>(n));
+    };
+
     /**
      * ENUM TEST
      */
     printf("testEnum(ONE)");
     Numberz ret = testClient.sync_testEnum(Numberz::ONE);
-    printf(" = %d\n", ret);
+    printNumberz(ret);
 
     printf("testEnum(TWO)");
     ret = testClient.sync_testEnum(Numberz::TWO);
-    printf(" = %d\n", ret);
+    printNumberz(ret);
 
     printf("testEnum(THREE)");
     ret = testClient.sync_testEnum(Numberz::THREE);
-    printf(" = %d\n", ret);
+    printNumberz(ret);
 
     printf("testEnum(FIVE)");
     ret = testClient.sync_testEnum(Numberz::FIVE);
-    printf(" = %d\n", ret);
+    printNumberz(ret);
 
     printf("testEnum(EIGHT)");
     ret = testClient.sync_testEnum(Numberz::EIGHT);
-    printf(" = %d\n", ret);
+    printNumberz(ret);
 
     /**
      * TYPEDEF TEST
@@ -399,12 +404,13 @@ int main(int argc, char** argv) {
       map<Numberz, Insanity>::const_iterator i2_iter;
       for (i2_iter = i_iter->second.begin(); i2_iter != i_iter->second.end();
            ++i2_iter) {
-        printf("%d => {", i2_iter->first);
+        printf("%d => {", static_cast<int>(i2_iter->first));
         map<Numberz, UserId> userMap = i2_iter->second.userMap;
         map<Numberz, UserId>::const_iterator um;
         printf("{");
         for (um = userMap.begin(); um != userMap.end(); ++um) {
-          printf("%d => %" PRId64 ", ", um->first, um->second);
+          printf(
+              "%d => %" PRId64 ", ", static_cast<int>(um->first), um->second);
         }
         printf("}, ");
 

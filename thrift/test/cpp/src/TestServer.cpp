@@ -26,8 +26,9 @@
 #include <thrift/test/gen-cpp2/ThriftTest.h>
 
 #include <iostream>
-#include <stdexcept>
 #include <sstream>
+#include <stdexcept>
+#include <type_traits>
 
 #include <inttypes.h>
 #include <signal.h>
@@ -52,6 +53,9 @@ using namespace apache::thrift::server;
 using namespace thrift::test;
 
 class TestHandler : public ThriftTestSvIf {
+ private:
+  using NumberzT = std::underlying_type_t<Numberz>;
+
  public:
   TestHandler() {}
 
@@ -153,7 +157,7 @@ class TestHandler : public ThriftTestSvIf {
   }
 
   Numberz testEnum(const Numberz thing) override {
-    printf("testEnum(%d)\n", thing);
+    printf("testEnum(%d)\n", static_cast<NumberzT>(thing));
     return thing;
   }
 
@@ -223,12 +227,15 @@ class TestHandler : public ThriftTestSvIf {
       for (i2_iter = i_iter->second.begin();
            i2_iter != i_iter->second.end();
            ++i2_iter) {
-        printf("%d => {", i2_iter->first);
+        printf("%d => {", static_cast<NumberzT>(i2_iter->first));
         map<Numberz, UserId> userMap = i2_iter->second.userMap;
         map<Numberz, UserId>::const_iterator um;
         printf("{");
         for (um = userMap.begin(); um != userMap.end(); ++um) {
-          printf("%d => %" PRId64 ", ", um->first, um->second);
+          printf(
+              "%d => %" PRId64 ", ",
+              static_cast<NumberzT>(um->first),
+              um->second);
         }
         printf("}, ");
 
