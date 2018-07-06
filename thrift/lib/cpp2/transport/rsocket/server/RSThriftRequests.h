@@ -32,7 +32,7 @@ std::unique_ptr<RequestRpcMetadata> deserializeMetadata(
     const folly::IOBuf& buffer);
 } // namespace detail
 
-class RSOneWayRequest : public ThriftRequestCore {
+class RSOneWayRequest final : public ThriftRequestCore {
  public:
   RSOneWayRequest(
       const apache::thrift::server::ServerConfigs& serverConfigs,
@@ -62,7 +62,7 @@ class RSOneWayRequest : public ThriftRequestCore {
   folly::Function<void(RSOneWayRequest*)> onDestroy_;
 };
 
-class RSSingleRequest : public ThriftRequestCore {
+class RSSingleRequest final : public ThriftRequestCore {
  public:
   RSSingleRequest(
       const apache::thrift::server::ServerConfigs& serverConfigs,
@@ -90,7 +90,7 @@ class RSSingleRequest : public ThriftRequestCore {
       singleObserver_;
 };
 
-class RSStreamRequest : public ThriftRequestCore {
+class RSStreamRequest final : public ThriftRequestCore {
  public:
   RSStreamRequest(
       const apache::thrift::server::ServerConfigs& serverConfigs,

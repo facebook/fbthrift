@@ -96,12 +96,12 @@ class ThriftRequestCore : public ResponseChannel::Request {
     }
   }
 
-  virtual ~ThriftRequestCore() {
+  ~ThriftRequestCore() override {
     // Cancel the timers before getting destroyed
     cancelTimeout();
   }
 
-  bool isActive() override {
+  bool isActive() final {
     return active_.load();
   }
 
@@ -111,7 +111,7 @@ class ThriftRequestCore : public ResponseChannel::Request {
     }
   }
 
-  bool isOneway() override {
+  bool isOneway() final {
     return kind_ == RpcKind::SINGLE_REQUEST_NO_RESPONSE ||
         kind_ == RpcKind::STREAMING_REQUEST_NO_RESPONSE;
   }
@@ -126,7 +126,7 @@ class ThriftRequestCore : public ResponseChannel::Request {
 
   void sendReply(
       std::unique_ptr<folly::IOBuf>&& buf,
-      apache::thrift::MessageChannel::SendCallback* cb = nullptr) override {
+      apache::thrift::MessageChannel::SendCallback* cb = nullptr) final {
     if (active_.exchange(false)) {
       cancelTimeout();
       sendReplyInternal(std::move(buf), cb);
@@ -142,7 +142,7 @@ class ThriftRequestCore : public ResponseChannel::Request {
       ResponseAndSemiStream<
           std::unique_ptr<folly::IOBuf>,
           std::unique_ptr<folly::IOBuf>>&& result,
-      MessageChannel::SendCallback* cb) override {
+      MessageChannel::SendCallback* cb) final {
     if (active_.exchange(false)) {
       cancelTimeout();
       sendReplyInternal(
@@ -158,7 +158,7 @@ class ThriftRequestCore : public ResponseChannel::Request {
   void sendErrorWrapped(
       folly::exception_wrapper ew,
       std::string exCode,
-      apache::thrift::MessageChannel::SendCallback* cb = nullptr) override {
+      apache::thrift::MessageChannel::SendCallback* cb = nullptr) final {
     if (active_.exchange(false)) {
       cancelTimeout();
       sendErrorWrappedInternal(std::move(ew), exCode, cb);
@@ -363,7 +363,7 @@ class ThriftRequestCore : public ResponseChannel::Request {
   bool responseSizeChecked_{false};
 };
 
-class ThriftRequest : public ThriftRequestCore {
+class ThriftRequest final : public ThriftRequestCore {
  public:
   ThriftRequest(
       const apache::thrift::server::ServerConfigs& serverConfigs,

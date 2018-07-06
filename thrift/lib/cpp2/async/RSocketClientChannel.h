@@ -34,7 +34,7 @@ namespace thrift {
 class RSocketClientChannel;
 
 namespace detail {
-class RSConnectionStatus : public rsocket::RSocketConnectionEvents {
+class RSConnectionStatus final : public rsocket::RSocketConnectionEvents {
  public:
   void setCloseCallback(CloseCallback* ccb);
 
@@ -68,7 +68,7 @@ class ChannelCounters {
   folly::Function<void()> onDetachable_;
 };
 
-class TakeFirst
+class TakeFirst final
     : public yarpl::flowable::Flowable<std::unique_ptr<folly::IOBuf>>,
       public yarpl::flowable::Subscriber<rsocket::Payload> {
   using T = rsocket::Payload;
@@ -107,7 +107,8 @@ class TakeFirst
 };
 } // namespace detail
 
-class RSocketClientChannel : public ClientChannel, public ChannelCallbacks {
+class RSocketClientChannel final : public ClientChannel,
+                                   public ChannelCallbacks {
  public:
   using Ptr = std::
       unique_ptr<RSocketClientChannel, folly::DelayedDestruction::Destructor>;

@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Facebook, Inc.
+ * Copyright 2015-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 #ifndef THRIFT_ASYNC_CHANNELCALLBACKS_H_
 #define THRIFT_ASYNC_CHANNELCALLBACKS_H_ 1
 
@@ -44,9 +43,9 @@ class ChannelCallbacks {
    * Deletion automatically uninstalls the timeout.
    */
   template <class Channel>
-  class TwowayCallback : public MessageChannel::SendCallback,
-                         public folly::HHWheelTimer::Callback,
-                         public folly::DelayedDestruction {
+  class TwowayCallback final : public MessageChannel::SendCallback,
+                               public folly::HHWheelTimer::Callback,
+                               public folly::DelayedDestruction {
    public:
 #define X_CHECK_STATE_EQ(state, expected) \
   CHECK_EQ(static_cast<int>(state), static_cast<int>(expected))
@@ -253,8 +252,8 @@ class ChannelCallbacks {
 #undef X_CHECK_STATE_EQ
   };
 
-  class OnewayCallback : public MessageChannel::SendCallback,
-                         public folly::DelayedDestruction {
+  class OnewayCallback final : public MessageChannel::SendCallback,
+                               public folly::DelayedDestruction {
    public:
     OnewayCallback(
         std::unique_ptr<RequestCallback> cb,

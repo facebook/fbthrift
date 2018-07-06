@@ -31,7 +31,7 @@ namespace thrift {
 /**
  * Callback object for a single response RPC.
  */
-class ThriftClientCallback : public folly::HHWheelTimer::Callback {
+class ThriftClientCallback final : public folly::HHWheelTimer::Callback {
  public:
   ThriftClientCallback(
       folly::EventBase* evb,

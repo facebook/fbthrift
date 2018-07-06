@@ -45,7 +45,7 @@ std::unique_ptr<RequestRpcMetadata> deserializeMetadata(
 } // namespace detail
 
 namespace {
-class SubscriberAdaptor
+class SubscriberAdaptor final
     : public SubscriberIf<std::unique_ptr<folly::IOBuf>>,
       public yarpl::flowable::Subscription,
       public folly::HHWheelTimer::Callback,
