@@ -60,11 +60,6 @@ extern char yytext[];
 extern FILE* yyin;
 
 /**
- * Strictness level
- */
-extern int g_strict;
-
-/**
  * A global map that holds a pointer to all programs already cached
  */
 extern std::map<std::string, t_program*> program_cache;
@@ -104,32 +99,3 @@ extern char* g_doctext;
  * The location of the last parsed doctext comment.
  */
 extern int g_doctext_lineno;
-
-/**
- * Whether or not negative field keys are accepted.
- *
- * When a field does not have a user-specified key, thrift automatically
- * assigns a negative value.  However, this is fragile since changes to the
- * file may unintentionally change the key numbering, resulting in a new
- * protocol that is not backwards compatible.
- *
- * When g_allow_neg_field_keys is enabled, users can explicitly specify
- * negative keys.  This way they can write a .thrift file with explicitly
- * specified keys that is still backwards compatible with older .thrift files
- * that did not specify key values.
- */
-extern int g_allow_neg_field_keys;
-
-/**
- * Whether or not negative enum values.
- */
-extern int g_allow_neg_enum_vals;
-
-/**
- * Whether or not 64-bit constants will generate a warning.
- *
- * Some languages don't support 64-bit constants, but many do, so we can
- * suppress this warning for projects that don't use any non-64-bit-safe
- * languages.
- */
-extern int g_allow_64bit_consts;

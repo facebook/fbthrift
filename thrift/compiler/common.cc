@@ -85,11 +85,6 @@ bool g_cpp_use_include_prefix = false;
 int g_debug = 0;
 
 /**
- * Strictness level
- */
-int g_strict = 127;
-
-/**
  * Warning level
  */
 int g_warn = 1;
@@ -108,21 +103,6 @@ char* g_doctext;
  * The location of the last parsed doctext comment.
  */
 int g_doctext_lineno;
-
-/**
- * Whether or not negative field keys are accepted.
- */
-int g_allow_neg_field_keys;
-
-/**
- * Whether or not negative enum values.
- */
-int g_allow_neg_enum_vals;
-
-/**
- * Whether or not 64-bit constants will generate a warning.
- */
-int g_allow_64bit_consts = 0;
 
 std::string compute_absolute_path(const std::string& path) {
   boost::filesystem::path abspath{path};
@@ -593,20 +573,16 @@ void parse(
 
   // Recursively parse all the include programs
   const auto& includes = params.program->get_includes();
-  // Always enable g_allow_neg_field_keys when parsing included files.
+  // Always enable allow_neg_field_keys when parsing included files.
   // This way if a thrift file has negative keys, --allow-neg-keys doesn't have
   // to be used by everyone that includes it.
-  bool main_allow_neg_keys = g_allow_neg_field_keys;
-  bool main_allow_neg_enum_vals = g_allow_neg_enum_vals;
-  g_allow_neg_enum_vals = true;
-  g_allow_neg_field_keys = true;
   for (auto included_program : includes) {
     auto incl_params = params;
     incl_params.program = included_program;
+    incl_params.allow_neg_enum_vals = true;
+    incl_params.allow_neg_field_keys = true;
     parse(std::move(incl_params), already_parsed_paths, circular_deps);
   }
-  g_allow_neg_enum_vals = main_allow_neg_enum_vals;
-  g_allow_neg_field_keys = main_allow_neg_keys;
 
   // Parse the program file
   g_parse_mode = PROGRAM;

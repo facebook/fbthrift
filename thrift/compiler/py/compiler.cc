@@ -54,12 +54,8 @@ void process(const dict& params, const object& generate_callback) {
   // we'll need these when calling c++ generators instead of the python ones
   g_debug = extract<bool>(opts.attr("debug"));
   g_warn = extract<int>(opts.attr("warn"));
-  g_strict = extract<int>(opts.attr("strict"));
   g_verbose = extract<bool>(opts.attr("verbose"));
   out_path = extract<string>(opts.attr("outputDir"));
-  g_allow_neg_field_keys = extract<bool>(opts.attr("allow_neg_keys"));
-  g_allow_neg_enum_vals = extract<bool>(opts.attr("allow_neg_enum_vals"));
-  g_allow_64bit_consts = extract<bool>(opts.attr("allow_64bit_consts"));
 
   std::vector<std::string> incl_searchpath;
 
@@ -139,6 +135,13 @@ void process(const dict& params, const object& generate_callback) {
   parsing_params.debug = (g_debug != 0);
   parsing_params.verbose = (g_verbose != 0);
   parsing_params.warn = g_warn;
+  parsing_params.strict = extract<int>(opts.attr("strict"));
+  parsing_params.allow_neg_field_keys =
+      extract<bool>(opts.attr("allow_neg_keys"));
+  parsing_params.allow_neg_enum_vals =
+      extract<bool>(opts.attr("allow_neg_enum_vals"));
+  parsing_params.allow_64bit_consts =
+      extract<bool>(opts.attr("allow_64bit_consts"));
   parsing_params.incl_searchpath = incl_searchpath;
   parse(std::move(parsing_params), already_parsed_paths);
 

@@ -634,7 +634,7 @@ EnumValue:
   tok_identifier "=" tok_int_constant
     {
       driver.debug("EnumValue -> tok_identifier = tok_int_constant");
-      if ($3 < 0 && !g_allow_neg_enum_vals) {
+      if ($3 < 0 && !driver.params.allow_neg_enum_vals) {
         driver.warning(1, "Negative value supplied for enum %s.", $1);
       }
       if ($3 < INT32_MIN || $3 > INT32_MAX) {
@@ -693,7 +693,7 @@ ConstValue:
       driver.debug("constvalue => tok_int_constant");
       $$ = new t_const_value();
       $$->set_integer($1);
-      if (!g_allow_64bit_consts && ($1 < INT32_MIN || $1 > INT32_MAX)) {
+      if (!driver.params.allow_64bit_consts && ($1 < INT32_MIN || $1 > INT32_MAX)) {
         driver.warning(1, "64-bit constant \"%" PRIi64 "\" may not work in all languages.", $1);
       }
     }
@@ -1050,7 +1050,7 @@ Field:
       driver.debug("tok_int_constant : Field -> FieldType tok_identifier");
       if ($2.auto_assigned) {
         driver.warning(1, "No field key specified for %s, resulting protocol may have conflicts or not be backwards compatible!", $5);
-        if (g_strict >= 192) {
+        if (driver.params.strict >= 192) {
           yyerror("Implicit field keys are deprecated and not allowed with -strict");
           exit(1);
         }
@@ -1084,9 +1084,9 @@ FieldIdentifier:
   tok_int_constant ":"
     {
       if ($1 <= 0) {
-        if (g_allow_neg_field_keys) {
+        if (driver.params.allow_neg_field_keys) {
           /*
-           * g_allow_neg_field_keys exists to allow users to add explicitly
+           * allow_neg_field_keys exists to allow users to add explicitly
            * specified key values to old .thrift files without breaking
            * protocol compatibility.
            */

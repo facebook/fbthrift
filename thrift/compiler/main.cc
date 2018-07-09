@@ -346,6 +346,11 @@ int main(int argc, char** argv) {
 
   std::vector<std::string> incl_searchpath;
 
+  int strict = 127;
+  bool allow_neg_field_keys = false;
+  bool allow_neg_enum_vals = false;
+  bool allow_64bit_consts = false;
+
   // Hacky parameter handling... I didn't feel like using a library sorry!
   size_t i;
   for (i = 1; i < arguments.size() - 1; ++i) {
@@ -359,18 +364,18 @@ int main(int argc, char** argv) {
     } else if (arguments[i] == "-nowarn") {
       g_warn = 0;
     } else if (arguments[i] == "-strict") {
-      g_strict = 255;
+      strict = 255;
       g_warn = 2;
     } else if (arguments[i] == "-v" || arguments[i] == "-verbose") {
       g_verbose = 1;
     } else if (arguments[i] == "-r" || arguments[i] == "-recurse") {
       gen_recurse = true;
     } else if (arguments[i] == "-allow-neg-keys") {
-      g_allow_neg_field_keys = true;
+      allow_neg_field_keys = true;
     } else if (arguments[i] == "-allow-neg-enum-vals") {
-      g_allow_neg_enum_vals = true;
+      allow_neg_enum_vals = true;
     } else if (arguments[i] == "-allow-64bit-consts") {
-      g_allow_64bit_consts = true;
+      allow_64bit_consts = true;
     } else if (arguments[i] == "-record-genfiles") {
       record_genfiles = true;
       if (i + 1 == arguments.size() - 1) {
@@ -660,6 +665,10 @@ int main(int argc, char** argv) {
   params.debug = (g_debug != 0);
   params.verbose = (g_verbose != 0);
   params.warn = g_warn;
+  params.strict = strict;
+  params.allow_neg_field_keys = allow_neg_field_keys;
+  params.allow_neg_enum_vals = allow_neg_enum_vals;
+  params.allow_64bit_consts = allow_64bit_consts;
   params.incl_searchpath = std::move(incl_searchpath);
   parse(std::move(params), already_parsed_paths);
 
