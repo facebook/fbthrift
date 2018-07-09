@@ -299,7 +299,7 @@ Program:
 
 CaptureDocText:
     {
-      if (g_parse_mode == PROGRAM) {
+      if (driver.mode == apache::thrift::parsing_mode::PROGRAM) {
         $$ = g_doctext;
         g_doctext = NULL;
       } else {
@@ -310,7 +310,7 @@ CaptureDocText:
 /* TODO(dreiss): Try to DestroyDocText in all sorts or random places. */
 DestroyDocText:
     {
-      if (g_parse_mode == PROGRAM) {
+      if (driver.mode == apache::thrift::parsing_mode::PROGRAM) {
         clear_doctext();
       }
     }
@@ -335,14 +335,14 @@ Header:
 | tok_namespace tok_identifier tok_identifier
     {
       driver.debug("Header -> tok_namespace tok_identifier tok_identifier");
-      if (g_parse_mode == PROGRAM) {
+      if (driver.mode == apache::thrift::parsing_mode::PROGRAM) {
         driver.params.program->set_namespace($2, $3);
       }
     }
 | tok_namespace tok_identifier tok_literal
     {
       driver.debug("Header -> tok_namespace tok_identifier tok_literal");
-      if (g_parse_mode == PROGRAM) {
+      if (driver.mode == apache::thrift::parsing_mode::PROGRAM) {
         driver.params.program->set_namespace($2, $3);
       }
     }
@@ -351,14 +351,14 @@ Header:
     {
       driver.warning(1, "'cpp_namespace' is deprecated. Use 'namespace cpp' instead");
       driver.debug("Header -> tok_cpp_namespace tok_identifier");
-      if (g_parse_mode == PROGRAM) {
+      if (driver.mode == apache::thrift::parsing_mode::PROGRAM) {
         driver.params.program->set_namespace("cpp", $2);
       }
     }
 | tok_cpp_include tok_literal
     {
       driver.debug("Header -> tok_cpp_include tok_literal");
-      if (g_parse_mode == PROGRAM) {
+      if (driver.mode == apache::thrift::parsing_mode::PROGRAM) {
         driver.params.program->add_cpp_include($2);
       }
     }
@@ -371,7 +371,7 @@ Header:
     {
       driver.warning(1, "'php_namespace' is deprecated. Use 'namespace php' instead");
       driver.debug("Header -> tok_php_namespace tok_identifier");
-      if (g_parse_mode == PROGRAM) {
+      if (driver.mode == apache::thrift::parsing_mode::PROGRAM) {
         driver.params.program->set_namespace("php", $2);
       }
     }
@@ -380,7 +380,7 @@ Header:
     {
       driver.warning(1, "'py_module' is deprecated. Use 'namespace py' instead");
       driver.debug("Header -> tok_py_module tok_identifier");
-      if (g_parse_mode == PROGRAM) {
+      if (driver.mode == apache::thrift::parsing_mode::PROGRAM) {
         driver.params.program->set_namespace("py", $2);
       }
     }
@@ -389,7 +389,7 @@ Header:
     {
       driver.warning(1, "'perl_package' is deprecated. Use 'namespace perl' instead");
       driver.debug("Header -> tok_perl_namespace tok_identifier");
-      if (g_parse_mode == PROGRAM) {
+      if (driver.mode == apache::thrift::parsing_mode::PROGRAM) {
         driver.params.program->set_namespace("perl", $2);
       }
     }
@@ -398,7 +398,7 @@ Header:
     {
       driver.warning(1, "'ruby_namespace' is deprecated. Use 'namespace rb' instead");
       driver.debug("Header -> tok_ruby_namespace tok_identifier");
-      if (g_parse_mode == PROGRAM) {
+      if (driver.mode == apache::thrift::parsing_mode::PROGRAM) {
         driver.params.program->set_namespace("rb", $2);
       }
     }
@@ -407,7 +407,7 @@ Header:
     {
       driver.warning(1, "'smalltalk_category' is deprecated. Use 'namespace smalltalk.category' instead");
       driver.debug("Header -> tok_smalltalk_category tok_st_identifier");
-      if (g_parse_mode == PROGRAM) {
+      if (driver.mode == apache::thrift::parsing_mode::PROGRAM) {
         driver.params.program->set_namespace("smalltalk.category", $2);
       }
     }
@@ -416,7 +416,7 @@ Header:
     {
       driver.warning(1, "'smalltalk_prefix' is deprecated. Use 'namespace smalltalk.prefix' instead");
       driver.debug("Header -> tok_smalltalk_prefix tok_identifier");
-      if (g_parse_mode == PROGRAM) {
+      if (driver.mode == apache::thrift::parsing_mode::PROGRAM) {
         driver.params.program->set_namespace("smalltalk.prefix", $2);
       }
     }
@@ -425,7 +425,7 @@ Header:
     {
       driver.warning(1, "'java_package' is deprecated. Use 'namespace java' instead");
       driver.debug("Header -> tok_java_package tok_identifier");
-      if (g_parse_mode == PROGRAM) {
+      if (driver.mode == apache::thrift::parsing_mode::PROGRAM) {
         driver.params.program->set_namespace("java", $2);
       }
     }
@@ -434,7 +434,7 @@ Header:
     {
       driver.warning(1, "'cocoa_prefix' is deprecated. Use 'namespace cocoa' instead");
       driver.debug("Header -> tok_cocoa_prefix tok_identifier");
-      if (g_parse_mode == PROGRAM) {
+      if (driver.mode == apache::thrift::parsing_mode::PROGRAM) {
         driver.params.program->set_namespace("cocoa", $2);
       }
     }
@@ -443,7 +443,7 @@ Header:
    {
      driver.warning(1, "'csharp_namespace' is deprecated. Use 'namespace csharp' instead");
      driver.debug("Header -> tok_csharp_namespace tok_identifier");
-     if (g_parse_mode == PROGRAM) {
+     if (driver.mode == apache::thrift::parsing_mode::PROGRAM) {
        driver.params.program->set_namespace("csharp", $2);
      }
    }
@@ -452,7 +452,7 @@ Include:
   tok_include tok_literal
     {
       driver.debug("Include -> tok_include tok_literal");
-      if (g_parse_mode == INCLUDES) {
+      if (driver.mode == apache::thrift::parsing_mode::INCLUDES) {
         std::string path = driver.include_file(std::string($2));
         if (!path.empty()) {
           if (program_cache.find(path) == program_cache.end()) {
@@ -481,7 +481,7 @@ Definition:
   Const
     {
       driver.debug("Definition -> Const");
-      if (g_parse_mode == PROGRAM) {
+      if (driver.mode == apache::thrift::parsing_mode::PROGRAM) {
         driver.params.program->add_const($1);
       }
       $$ = $1;
@@ -489,7 +489,7 @@ Definition:
 | TypeDefinition
     {
       driver.debug("Definition -> TypeDefinition");
-      if (g_parse_mode == PROGRAM) {
+      if (driver.mode == apache::thrift::parsing_mode::PROGRAM) {
         g_scope_cache->add_type(driver.params.program->get_name() + "." + $1->get_name(), $1);
       }
       $$ = $1;
@@ -497,7 +497,7 @@ Definition:
 | Service
     {
       driver.debug("Definition -> Service");
-      if (g_parse_mode == PROGRAM) {
+      if (driver.mode == apache::thrift::parsing_mode::PROGRAM) {
         g_scope_cache->add_service(driver.params.program->get_name() + "." + $1->get_name(), $1);
         driver.params.program->add_service($1);
       }
@@ -508,7 +508,7 @@ TypeDefinition:
   Typedef
     {
       driver.debug("TypeDefinition -> Typedef");
-      if (g_parse_mode == PROGRAM) {
+      if (driver.mode == apache::thrift::parsing_mode::PROGRAM) {
         driver.params.program->add_typedef($1);
       }
       $$ = $1;
@@ -516,7 +516,7 @@ TypeDefinition:
 | Enum
     {
       driver.debug("TypeDefinition -> Enum");
-      if (g_parse_mode == PROGRAM) {
+      if (driver.mode == apache::thrift::parsing_mode::PROGRAM) {
         driver.params.program->add_enum($1);
       }
       $$ = $1;
@@ -524,7 +524,7 @@ TypeDefinition:
 | Struct
     {
       driver.debug("TypeDefinition -> Struct");
-      if (g_parse_mode == PROGRAM) {
+      if (driver.mode == apache::thrift::parsing_mode::PROGRAM) {
         driver.params.program->add_struct($1);
       }
       $$ = $1;
@@ -532,7 +532,7 @@ TypeDefinition:
 | Xception
     {
       driver.debug("TypeDefinition -> Xception");
-      if (g_parse_mode == PROGRAM) {
+      if (driver.mode == apache::thrift::parsing_mode::PROGRAM) {
         driver.params.program->add_xception($1);
       }
       $$ = $1;
@@ -593,7 +593,7 @@ EnumDefList:
       $$ = $1;
       $$->append($2);
 
-      if (g_parse_mode == PROGRAM) {
+      if (driver.mode == apache::thrift::parsing_mode::PROGRAM) {
         t_const_value* const_val = new t_const_value($2->get_value());
         const_val->set_is_enum();
         const_val->set_enum($$);
@@ -671,7 +671,7 @@ Const:
   FieldType tok_identifier "=" ConstValue CommaOrSemicolonOptional
     {
       driver.debug("Const -> tok_const FieldType tok_identifier = ConstValue");
-      if (g_parse_mode == PROGRAM) {
+      if (driver.mode == apache::thrift::parsing_mode::PROGRAM) {
         $$ = new t_const(driver.params.program, $3, $4, $6);
         $$->set_lineno(lineno_stack.pop(LineType::kConst));
         validate_const_type($$);
@@ -720,7 +720,7 @@ ConstValue:
         t_const_value* const_value = constant->get_value();
         $$ = new t_const_value(*const_value);
       } else {
-        if (g_parse_mode == PROGRAM) {
+        if (driver.mode == apache::thrift::parsing_mode::PROGRAM) {
           driver.warning(1, "Constant strings should be quoted: %s", $1);
         }
         $$ = new t_const_value($1);
@@ -827,7 +827,7 @@ Xception:
 
       const char* annotations[] = {"message", "code"};
       for (auto& annotation: annotations) {
-        if (g_parse_mode == PROGRAM
+        if (driver.mode == apache::thrift::parsing_mode::PROGRAM
             && $$->has_field_named(annotation)
             && $$->annotations_.find(annotation) != $$->annotations_.end()
             && strcmp(annotation, $$->annotations_.find(annotation)->second.c_str()) != 0) {
@@ -839,7 +839,7 @@ Xception:
       // Check that value of "message" annotation is
       // - a valid member of struct
       // - of type STRING
-      if (g_parse_mode == PROGRAM
+      if (driver.mode == apache::thrift::parsing_mode::PROGRAM
           && $$->annotations_.find("message") != $$->annotations_.end()) {
         const std::string v = $$->annotations_.find("message")->second;
 
@@ -890,7 +890,7 @@ Extends:
     {
       driver.debug("Extends -> tok_extends tok_identifier");
       $$ = NULL;
-      if (g_parse_mode == PROGRAM) {
+      if (driver.mode == apache::thrift::parsing_mode::PROGRAM) {
         $$ = g_scope_cache->get_service($2);
         if (!$$) {
           $$ = g_scope_cache->get_service(driver.params.program->get_name() + "." + $2);
@@ -1128,7 +1128,7 @@ FieldRequiredness:
   tok_required
     {
       if (g_arglist) {
-        if (g_parse_mode == PROGRAM) {
+        if (driver.mode == apache::thrift::parsing_mode::PROGRAM) {
           driver.warning(1, "required keyword is ignored in argument lists.");
         }
         $$ = t_field::T_OPT_IN_REQ_OUT;
@@ -1139,7 +1139,7 @@ FieldRequiredness:
 | tok_optional
     {
       if (g_arglist) {
-        if (g_parse_mode == PROGRAM) {
+        if (driver.mode == apache::thrift::parsing_mode::PROGRAM) {
           driver.warning(1, "optional keyword is ignored in argument lists.");
         }
         $$ = t_field::T_OPT_IN_REQ_OUT;
@@ -1155,7 +1155,7 @@ FieldRequiredness:
 FieldValue:
   "=" ConstValue
     {
-      if (g_parse_mode == PROGRAM) {
+      if (driver.mode == apache::thrift::parsing_mode::PROGRAM) {
         $$ = $2;
       } else {
         $$ = NULL;
@@ -1206,7 +1206,7 @@ FieldType:
   tok_identifier TypeAnnotations
     {
       driver.debug("FieldType -> tok_identifier");
-      if (g_parse_mode == INCLUDES) {
+      if (driver.mode == apache::thrift::parsing_mode::INCLUDES) {
         // Ignore identifiers in include mode
         $$ = NULL;
       } else {

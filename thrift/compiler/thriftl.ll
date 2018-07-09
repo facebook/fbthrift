@@ -330,7 +330,7 @@ st_identifier ([a-zA-Z-][\.a-zA-Z_0-9-]*)
 {doctext} {
  /* This does not show up in the parse tree. */
  /* Rather, the parser will grab it out of the global. */
-  if (g_parse_mode == PROGRAM) {
+  if (driver.mode == apache::thrift::parsing_mode::PROGRAM) {
     clear_doctext();
     g_doctext = strdup(yytext + 3);
     g_doctext[strlen(g_doctext) - 2] = '\0';

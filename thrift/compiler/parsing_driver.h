@@ -38,12 +38,22 @@
 namespace apache {
 namespace thrift {
 
+enum class parsing_mode {
+  INCLUDES = 1,
+  PROGRAM = 2,
+};
+
 class parsing_driver {
  public:
   parsing_params params;
 
+  /**
+   * The parsing pass that we are on. We do different things on each pass.
+   */
+  parsing_mode mode;
+
   explicit parsing_driver(parsing_params parse_params)
-      : params(std::move(parse_params)) {
+      : params(std::move(parse_params)), mode(parsing_mode::INCLUDES) {
     // Set current dir, which is used in the include_file function
     curdir_ = directory_name(params.program->get_path());
   }

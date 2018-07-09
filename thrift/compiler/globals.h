@@ -40,12 +40,6 @@ class t_scope;
 class t_base_type;
 
 /**
- * Parsing mode, two passes up in this gin rummy!
- */
-
-enum PARSE_MODE { INCLUDES = 1, PROGRAM = 2 };
-
-/**
  * Expected to be defined by Flex/Bison
  */
 extern "C" {
@@ -84,11 +78,6 @@ extern t_base_type* g_type_float;
  * The scope that holds a cache of all g_scopes for faster compilations
  */
 extern t_scope* g_scope_cache;
-
-/**
- * The parsing pass that we are on. We do different things on each pass.
- */
-extern PARSE_MODE g_parse_mode;
 
 /**
  * The last parsed doctext comment.

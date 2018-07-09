@@ -54,11 +54,6 @@ t_base_type* g_type_float;
 t_scope* g_scope_cache;
 
 /**
- * Parsing pass
- */
-PARSE_MODE g_parse_mode;
-
-/**
  * Current directory of file being parsed
  */
 string g_curdir;
@@ -560,7 +555,7 @@ void parse(
 
   // Create new scope and scan for includes
   pverbose("Scanning %s for includes\n", path.c_str());
-  g_parse_mode = INCLUDES;
+  driver.mode = apache::thrift::parsing_mode::INCLUDES;
   try {
     yylineno = 1;
     if (parser.parse() != 0) {
@@ -585,7 +580,7 @@ void parse(
   }
 
   // Parse the program file
-  g_parse_mode = PROGRAM;
+  driver.mode = apache::thrift::parsing_mode::PROGRAM;
   g_curpath = path;
   yyin = fopen(path.c_str(), "r");
   if (yyin == 0) {
