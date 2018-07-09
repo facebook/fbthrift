@@ -344,6 +344,8 @@ int main(int argc, char** argv) {
   // Set the current path to a dummy value to make warning messages clearer.
   g_curpath = "arguments";
 
+  std::vector<std::string> incl_searchpath;
+
   // Hacky parameter handling... I didn't feel like using a library sorry!
   size_t i;
   for (i = 1; i < arguments.size() - 1; ++i) {
@@ -450,7 +452,7 @@ int main(int argc, char** argv) {
         usage();
       }
       // An argument of "-I\ asdf" is invalid and has unknown results
-      g_incl_searchpath.push_back(arguments[++i]);
+      incl_searchpath.push_back(arguments[++i]);
       continue;
     } else if (arguments[i] == "-templates") {
       if (i + 1 == arguments.size() - 1) {
@@ -654,10 +656,12 @@ int main(int argc, char** argv) {
   g_scope_cache = program->scope();
   std::set<std::string> already_parsed_paths;
   apache::thrift::parsing_params params{};
+  params.program = program;
   params.debug = (g_debug != 0);
   params.verbose = (g_verbose != 0);
   params.warn = g_warn;
-  parse(program, std::move(params), already_parsed_paths);
+  params.incl_searchpath = std::move(incl_searchpath);
+  parse(std::move(params), already_parsed_paths);
 
   // Mutate it!
   apache::thrift::compiler::mutator::mutate(program);

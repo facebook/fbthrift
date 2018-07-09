@@ -47,9 +47,20 @@ namespace thrift {
 struct parsing_params {
   // Default values are taken from the original global variables.
 
+  /**
+   * The master program parse tree. This is accessed from within the parser code
+   * to build up the program elements.
+   */
+  t_program* program;
+
   bool debug = false;
   bool verbose = false;
   int warn = 1;
+
+  /**
+   * Search path for inclusions
+   */
+  std::vector<std::string> incl_searchpath;
 };
 
 } // namespace thrift
@@ -73,11 +84,6 @@ extern string g_curpath;
  * Directory containing template files
  */
 extern string g_template_dir;
-
-/**
- * Search path for inclusions
- */
-extern vector<string> g_incl_searchpath;
 
 /**
  * Should C++ include statements use path prefixes for other thrift-generated
@@ -155,16 +161,6 @@ void pwarning(int level, const char* fmt, ...);
 [[noreturn]] void failure(const char* fmt, ...);
 
 /**
- * Gets the directory path of a filename
- */
-string directory_name(string filename);
-
-/**
- * Finds the appropriate file path for the given filename
- */
-string include_file(string filename);
-
-/**
  * Clears any previously stored doctext string.
  * Also prints a warning if we are discarding information.
  */
@@ -220,7 +216,6 @@ bool validate_throws(t_struct* throws);
  * because it should be the set of files in the direct inclusion tree.
  */
 void parse(
-    t_program* program,
     apache::thrift::parsing_params params,
     std::set<std::string>& already_parsed_paths,
     std::set<std::string> circular_deps = std::set<std::string>());

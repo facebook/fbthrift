@@ -291,7 +291,7 @@ Program:
       /*
       TODO(dreiss): Decide whether full-program doctext is worth the trouble.
       if ($1 != NULL) {
-        g_program->set_doc($1);
+        driver.params.program->set_doc($1);
       }
       */
       clear_doctext();
@@ -336,14 +336,14 @@ Header:
     {
       driver.debug("Header -> tok_namespace tok_identifier tok_identifier");
       if (g_parse_mode == PROGRAM) {
-        g_program->set_namespace($2, $3);
+        driver.params.program->set_namespace($2, $3);
       }
     }
 | tok_namespace tok_identifier tok_literal
     {
       driver.debug("Header -> tok_namespace tok_identifier tok_literal");
       if (g_parse_mode == PROGRAM) {
-        g_program->set_namespace($2, $3);
+        driver.params.program->set_namespace($2, $3);
       }
     }
 /* TODO(dreiss): Get rid of this once everyone is using the new hotness. */
@@ -352,14 +352,14 @@ Header:
       driver.warning(1, "'cpp_namespace' is deprecated. Use 'namespace cpp' instead");
       driver.debug("Header -> tok_cpp_namespace tok_identifier");
       if (g_parse_mode == PROGRAM) {
-        g_program->set_namespace("cpp", $2);
+        driver.params.program->set_namespace("cpp", $2);
       }
     }
 | tok_cpp_include tok_literal
     {
       driver.debug("Header -> tok_cpp_include tok_literal");
       if (g_parse_mode == PROGRAM) {
-        g_program->add_cpp_include($2);
+        driver.params.program->add_cpp_include($2);
       }
     }
 | tok_hs_include tok_literal
@@ -372,7 +372,7 @@ Header:
       driver.warning(1, "'php_namespace' is deprecated. Use 'namespace php' instead");
       driver.debug("Header -> tok_php_namespace tok_identifier");
       if (g_parse_mode == PROGRAM) {
-        g_program->set_namespace("php", $2);
+        driver.params.program->set_namespace("php", $2);
       }
     }
 /* TODO(dreiss): Get rid of this once everyone is using the new hotness. */
@@ -381,7 +381,7 @@ Header:
       driver.warning(1, "'py_module' is deprecated. Use 'namespace py' instead");
       driver.debug("Header -> tok_py_module tok_identifier");
       if (g_parse_mode == PROGRAM) {
-        g_program->set_namespace("py", $2);
+        driver.params.program->set_namespace("py", $2);
       }
     }
 /* TODO(dreiss): Get rid of this once everyone is using the new hotness. */
@@ -390,7 +390,7 @@ Header:
       driver.warning(1, "'perl_package' is deprecated. Use 'namespace perl' instead");
       driver.debug("Header -> tok_perl_namespace tok_identifier");
       if (g_parse_mode == PROGRAM) {
-        g_program->set_namespace("perl", $2);
+        driver.params.program->set_namespace("perl", $2);
       }
     }
 /* TODO(dreiss): Get rid of this once everyone is using the new hotness. */
@@ -399,7 +399,7 @@ Header:
       driver.warning(1, "'ruby_namespace' is deprecated. Use 'namespace rb' instead");
       driver.debug("Header -> tok_ruby_namespace tok_identifier");
       if (g_parse_mode == PROGRAM) {
-        g_program->set_namespace("rb", $2);
+        driver.params.program->set_namespace("rb", $2);
       }
     }
 /* TODO(dreiss): Get rid of this once everyone is using the new hotness. */
@@ -408,7 +408,7 @@ Header:
       driver.warning(1, "'smalltalk_category' is deprecated. Use 'namespace smalltalk.category' instead");
       driver.debug("Header -> tok_smalltalk_category tok_st_identifier");
       if (g_parse_mode == PROGRAM) {
-        g_program->set_namespace("smalltalk.category", $2);
+        driver.params.program->set_namespace("smalltalk.category", $2);
       }
     }
 /* TODO(dreiss): Get rid of this once everyone is using the new hotness. */
@@ -417,7 +417,7 @@ Header:
       driver.warning(1, "'smalltalk_prefix' is deprecated. Use 'namespace smalltalk.prefix' instead");
       driver.debug("Header -> tok_smalltalk_prefix tok_identifier");
       if (g_parse_mode == PROGRAM) {
-        g_program->set_namespace("smalltalk.prefix", $2);
+        driver.params.program->set_namespace("smalltalk.prefix", $2);
       }
     }
 /* TODO(dreiss): Get rid of this once everyone is using the new hotness. */
@@ -426,7 +426,7 @@ Header:
       driver.warning(1, "'java_package' is deprecated. Use 'namespace java' instead");
       driver.debug("Header -> tok_java_package tok_identifier");
       if (g_parse_mode == PROGRAM) {
-        g_program->set_namespace("java", $2);
+        driver.params.program->set_namespace("java", $2);
       }
     }
 /* TODO(dreiss): Get rid of this once everyone is using the new hotness. */
@@ -435,7 +435,7 @@ Header:
       driver.warning(1, "'cocoa_prefix' is deprecated. Use 'namespace cocoa' instead");
       driver.debug("Header -> tok_cocoa_prefix tok_identifier");
       if (g_parse_mode == PROGRAM) {
-        g_program->set_namespace("cocoa", $2);
+        driver.params.program->set_namespace("cocoa", $2);
       }
     }
 /* TODO(dreiss): Get rid of this once everyone is using the new hotness. */
@@ -444,7 +444,7 @@ Header:
      driver.warning(1, "'csharp_namespace' is deprecated. Use 'namespace csharp' instead");
      driver.debug("Header -> tok_csharp_namespace tok_identifier");
      if (g_parse_mode == PROGRAM) {
-       g_program->set_namespace("csharp", $2);
+       driver.params.program->set_namespace("csharp", $2);
      }
    }
 
@@ -453,12 +453,12 @@ Include:
     {
       driver.debug("Include -> tok_include tok_literal");
       if (g_parse_mode == INCLUDES) {
-        std::string path = include_file(std::string($2));
+        std::string path = driver.include_file(std::string($2));
         if (!path.empty()) {
           if (program_cache.find(path) == program_cache.end()) {
-            program_cache[path] = g_program->add_include(path, std::string($2));
+            program_cache[path] = driver.params.program->add_include(path, std::string($2));
           } else {
-            g_program->add_include(program_cache[path]);
+            driver.params.program->add_include(program_cache[path]);
           }
         }
       }
@@ -482,7 +482,7 @@ Definition:
     {
       driver.debug("Definition -> Const");
       if (g_parse_mode == PROGRAM) {
-        g_program->add_const($1);
+        driver.params.program->add_const($1);
       }
       $$ = $1;
     }
@@ -490,7 +490,7 @@ Definition:
     {
       driver.debug("Definition -> TypeDefinition");
       if (g_parse_mode == PROGRAM) {
-        g_scope_cache->add_type(g_program->get_name() + "." + $1->get_name(), $1);
+        g_scope_cache->add_type(driver.params.program->get_name() + "." + $1->get_name(), $1);
       }
       $$ = $1;
     }
@@ -498,8 +498,8 @@ Definition:
     {
       driver.debug("Definition -> Service");
       if (g_parse_mode == PROGRAM) {
-        g_scope_cache->add_service(g_program->get_name() + "." + $1->get_name(), $1);
-        g_program->add_service($1);
+        g_scope_cache->add_service(driver.params.program->get_name() + "." + $1->get_name(), $1);
+        driver.params.program->add_service($1);
       }
       $$ = $1;
     }
@@ -509,7 +509,7 @@ TypeDefinition:
     {
       driver.debug("TypeDefinition -> Typedef");
       if (g_parse_mode == PROGRAM) {
-        g_program->add_typedef($1);
+        driver.params.program->add_typedef($1);
       }
       $$ = $1;
     }
@@ -517,7 +517,7 @@ TypeDefinition:
     {
       driver.debug("TypeDefinition -> Enum");
       if (g_parse_mode == PROGRAM) {
-        g_program->add_enum($1);
+        driver.params.program->add_enum($1);
       }
       $$ = $1;
     }
@@ -525,7 +525,7 @@ TypeDefinition:
     {
       driver.debug("TypeDefinition -> Struct");
       if (g_parse_mode == PROGRAM) {
-        g_program->add_struct($1);
+        driver.params.program->add_struct($1);
       }
       $$ = $1;
     }
@@ -533,7 +533,7 @@ TypeDefinition:
     {
       driver.debug("TypeDefinition -> Xception");
       if (g_parse_mode == PROGRAM) {
-        g_program->add_xception($1);
+        driver.params.program->add_xception($1);
       }
       $$ = $1;
     }
@@ -546,7 +546,7 @@ Typedef:
   FieldType tok_identifier TypeAnnotations
     {
       driver.debug("TypeDef -> tok_typedef FieldType tok_identifier");
-      t_typedef *td = new t_typedef(g_program, $3, $4, g_scope_cache);
+      t_typedef *td = new t_typedef(driver.params.program, $3, $4, g_scope_cache);
       $$ = td;
       $$->set_lineno(lineno_stack.pop(LineType::kTypedef));
       if ($5 != NULL) {
@@ -599,20 +599,20 @@ EnumDefList:
         const_val->set_enum($$);
         const_val->set_enum_value($2);
         t_const* tconst = new t_const(
-            g_program, g_type_i32, $2->get_name(), const_val);
+            driver.params.program, g_type_i32, $2->get_name(), const_val);
 
         assert(y_enum_name != nullptr);
         string type_prefix = string(y_enum_name) + ".";
         g_scope_cache->add_constant(
-            g_program->get_name() + "." + $2->get_name(), tconst);
+            driver.params.program->get_name() + "." + $2->get_name(), tconst);
         g_scope_cache->add_constant(
-            g_program->get_name() + "." + type_prefix + $2->get_name(), tconst);
+            driver.params.program->get_name() + "." + type_prefix + $2->get_name(), tconst);
       }
     }
 |
     {
       driver.debug("EnumDefList -> ");
-      $$ = new t_enum(g_program);
+      $$ = new t_enum(driver.params.program);
       y_enum_val = -1;
     }
 
@@ -672,10 +672,10 @@ Const:
     {
       driver.debug("Const -> tok_const FieldType tok_identifier = ConstValue");
       if (g_parse_mode == PROGRAM) {
-        $$ = new t_const(g_program, $3, $4, $6);
+        $$ = new t_const(driver.params.program, $3, $4, $6);
         $$->set_lineno(lineno_stack.pop(LineType::kConst));
         validate_const_type($$);
-        g_scope_cache->add_constant(g_program->get_name() + "." + $4, $$);
+        g_scope_cache->add_constant(driver.params.program->get_name() + "." + $4, $$);
       } else {
         $$ = NULL;
       }
@@ -713,7 +713,7 @@ ConstValue:
       driver.debug("ConstValue => tok_identifier");
       t_const* constant = g_scope_cache->get_constant($1);
       if (!constant) {
-        constant = g_scope_cache->get_constant(g_program->get_name() + "." + $1);
+        constant = g_scope_cache->get_constant(driver.params.program->get_name() + "." + $1);
       }
       if (constant != nullptr) {
         // Copy const_value to perform isolated mutations
@@ -893,7 +893,7 @@ Extends:
       if (g_parse_mode == PROGRAM) {
         $$ = g_scope_cache->get_service($2);
         if (!$$) {
-          $$ = g_scope_cache->get_service(g_program->get_name() + "." + $2);
+          $$ = g_scope_cache->get_service(driver.params.program->get_name() + "." + $2);
         }
         if ($$ == NULL) {
           yyerror("Service \"%s\" has not been defined.", $2);
@@ -916,7 +916,7 @@ FunctionList:
 |
     {
       driver.debug("FunctionList -> ");
-      $$ = new t_service(g_program);
+      $$ = new t_service(driver.params.program);
     }
 
 Function:
@@ -976,7 +976,7 @@ ParamList:
 EmptyParamList:
     {
       driver.debug("EmptyParamList -> nil");
-      t_struct* paramlist = new t_struct(g_program);
+      t_struct* paramlist = new t_struct(driver.params.program);
       paramlist->set_paramlist(true);
       $$ = paramlist;
     }
@@ -1005,14 +1005,14 @@ ThrowsThrows:
 		}
 | Throws
 		{
-			$$ = new t_structpair($1, new t_struct(g_program));
+			$$ = new t_structpair($1, new t_struct(driver.params.program));
 		}
 | StreamThrows
     {
-      $$ = new t_structpair(new t_struct(g_program), $1);
+      $$ = new t_structpair(new t_struct(driver.params.program), $1);
     }
 |   {
-			$$ = new t_structpair(new t_struct(g_program), new t_struct(g_program));
+			$$ = new t_structpair(new t_struct(driver.params.program), new t_struct(driver.params.program));
 		}
 
 Throws:
@@ -1041,7 +1041,7 @@ FieldList:
 |
     {
       driver.debug("FieldList -> ");
-      $$ = new t_struct(g_program);
+      $$ = new t_struct(driver.params.program);
     }
 
 Field:
@@ -1213,7 +1213,7 @@ FieldType:
         // Lookup the identifier in the current scope
         $$ = g_scope_cache->get_type($1);
         if (!$$) {
-          $$ = g_scope_cache->get_type(g_program->get_name() + "." + $1);
+          $$ = g_scope_cache->get_type(driver.params.program->get_name() + "." + $1);
         }
         if ($$ == NULL || $2 != NULL) {
           /*
@@ -1221,7 +1221,7 @@ FieldType:
              declared.  Either way allow it and we'll figure it out
              during generation.
            */
-          $$ = new t_typedef(g_program, $1, g_scope_cache);
+          $$ = new t_typedef(driver.params.program, $1, g_scope_cache);
           if ($2 != NULL) {
             $$->annotations_ = $2->annotations_;
             delete $2;
@@ -1411,7 +1411,7 @@ TypeAnnotationList:
 |
     {
       /* Just use a dummy structure to hold the annotations. */
-      $$ = new t_struct(g_program);
+      $$ = new t_struct(driver.params.program);
     }
 
 TypeAnnotation:

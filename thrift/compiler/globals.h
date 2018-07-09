@@ -65,12 +65,6 @@ extern FILE* yyin;
 extern int g_strict;
 
 /**
- * The master program parse tree. This is accessed from within the parser code
- * to build up the program elements.
- */
-extern t_program* g_program;
-
-/**
  * A global map that holds a pointer to all programs already cached
  */
 extern std::map<std::string, t_program*> program_cache;

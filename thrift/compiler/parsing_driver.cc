@@ -22,11 +22,13 @@
 
 #include <cstdarg>
 
+#include <boost/filesystem.hpp>
+
 namespace apache {
 namespace thrift {
 
 void parsing_driver::debug(const char* fmt, ...) const {
-  if (!params_.debug) {
+  if (!params.debug) {
     return;
   }
   va_list args;
@@ -38,7 +40,7 @@ void parsing_driver::debug(const char* fmt, ...) const {
 }
 
 void parsing_driver::verbose(const char* fmt, ...) const {
-  if (!params_.verbose) {
+  if (!params.verbose) {
     return;
   }
   va_list args;
@@ -48,7 +50,7 @@ void parsing_driver::verbose(const char* fmt, ...) const {
 }
 
 void parsing_driver::warning(int level, const char* fmt, ...) const {
-  if (params_.warn < level) {
+  if (params.warn < level) {
     return;
   }
   va_list args;
@@ -67,6 +69,49 @@ void parsing_driver::warning(int level, const char* fmt, ...) const {
   va_end(args);
   fprintf(stderr, "\n");
   exit(1);
+}
+
+// TODO: This doesn't really need to be a member function. Move it somewhere
+// else (e.g. `util.{h|cc}`) once everything gets consolidated into `parse/`.
+/* static */ std::string
+    parsing_driver::directory_name(const std::string& filename) {
+  std::string::size_type slash = filename.rfind("/");
+  // No slash, just use the current directory
+  if (slash == std::string::npos) {
+    return ".";
+  }
+  return filename.substr(0, slash);
+}
+
+std::string parsing_driver::include_file(const std::string& filename) {
+  // Absolute path? Just try that
+  if (filename[0] == '/') {
+    boost::filesystem::path abspath{filename};
+    try {
+      abspath = boost::filesystem::canonical(abspath);
+      return abspath.string();
+    } catch (const boost::filesystem::filesystem_error& e) {
+      failure("Could not find file: %s. Error: %s", filename.c_str(), e.what());
+    }
+  } else { // relative path, start searching
+    // new search path with current dir global
+    vector<std::string> sp = params.incl_searchpath;
+    sp.insert(sp.begin(), curdir_);
+
+    // iterate through paths
+    vector<std::string>::iterator it;
+    for (it = sp.begin(); it != sp.end(); it++) {
+      std::string sfilename = *(it) + "/" + filename;
+      if (boost::filesystem::exists(sfilename)) {
+        return sfilename;
+      } else {
+        debug("Could not find: %s.", sfilename.c_str());
+      }
+    }
+
+    // File was not found
+    failure("Could not find include file %s", filename.c_str());
+  }
 }
 
 } // namespace thrift

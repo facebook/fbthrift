@@ -61,12 +61,14 @@ void process(const dict& params, const object& generate_callback) {
   g_allow_neg_enum_vals = extract<bool>(opts.attr("allow_neg_enum_vals"));
   g_allow_64bit_consts = extract<bool>(opts.attr("allow_64bit_consts"));
 
+  std::vector<std::string> incl_searchpath;
+
   auto e = extract<boost::python::list>(opts.attr("includeDirs"));
   if (e.check()) {
     // if it's set, push the include dirs into the global search path
     boost::python::list includes = e;
     for (it = stl_input_iterator<object>(includes); it != end; ++it) {
-      g_incl_searchpath.push_back(extract<string>(*it));
+      incl_searchpath.push_back(extract<string>(*it));
     }
   }
 
@@ -133,10 +135,12 @@ void process(const dict& params, const object& generate_callback) {
   g_scope_cache = program->scope();
   std::set<std::string> already_parsed_paths;
   apache::thrift::parsing_params parsing_params{};
+  parsing_params.program = program.get();
   parsing_params.debug = (g_debug != 0);
   parsing_params.verbose = (g_verbose != 0);
   parsing_params.warn = g_warn;
-  parse(program.get(), std::move(parsing_params), already_parsed_paths);
+  parsing_params.incl_searchpath = incl_searchpath;
+  parse(std::move(parsing_params), already_parsed_paths);
 
   // The current path is not really relevant when we are doing generation.
   // Reset the variable to make warning messages clearer.

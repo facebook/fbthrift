@@ -31,10 +31,6 @@
 
 #include THRIFTY_HH
 
-/**
- * Global program tree
- */
-t_program* g_program;
 std::map<std::string, t_program*> program_cache;
 
 /**
@@ -76,11 +72,6 @@ string g_curpath;
  * Directory containing template files
  */
 string g_template_dir;
-
-/**
- * Search path for inclusions
- */
-vector<string> g_incl_searchpath;
 
 /**
  * Should C++ include statements use path prefixes for other thrift-generated
@@ -201,40 +192,6 @@ void pwarning(int level, const char* fmt, ...) {
   va_end(args);
   fprintf(stderr, "\n");
   exit(1);
-}
-
-string directory_name(string filename) {
-  string::size_type slash = filename.rfind("/");
-  // No slash, just use the current directory
-  if (slash == string::npos) {
-    return ".";
-  }
-  return filename.substr(0, slash);
-}
-
-string include_file(string filename) {
-  // Absolute path? Just try that
-  if (filename[0] == '/') {
-    return compute_absolute_path(filename);
-  } else { // relative path, start searching
-    // new search path with current dir global
-    vector<string> sp = g_incl_searchpath;
-    sp.insert(sp.begin(), g_curdir);
-
-    // iterate through paths
-    vector<string>::iterator it;
-    for (it = sp.begin(); it != sp.end(); it++) {
-      string sfilename = *(it) + "/" + filename;
-      if (boost::filesystem::exists(sfilename)) {
-        return sfilename;
-      } else {
-        pdebug("Could not find: %s.", sfilename.c_str());
-      }
-    }
-
-    // File was not found
-    failure("Could not find include file %s", filename.c_str());
-  }
 }
 
 void clear_doctext() {
@@ -587,12 +544,11 @@ void validate_const_rec(std::string name, t_type* type, t_const_value* value) {
 }
 
 void parse(
-    t_program* program,
     apache::thrift::parsing_params params,
     std::set<std::string>& already_parsed_paths,
     std::set<std::string> circular_deps) {
   // Get scope file path
-  string path = program->get_path();
+  string path = params.program->get_path();
 
   // Fail on circular dependencies
   if (circular_deps.count(path)) {
@@ -609,8 +565,6 @@ void parse(
     already_parsed_paths.insert(path);
   }
 
-  // Set current dir global, which is used in the include_file function
-  g_curdir = directory_name(path);
   g_curpath = path;
 
   // Open the file
@@ -627,7 +581,6 @@ void parse(
   // Create new scope and scan for includes
   pverbose("Scanning %s for includes\n", path.c_str());
   g_parse_mode = INCLUDES;
-  g_program = program;
   try {
     yylineno = 1;
     if (parser.parse() != 0) {
@@ -639,7 +592,7 @@ void parse(
   fclose(yyin);
 
   // Recursively parse all the include programs
-  const auto& includes = program->get_includes();
+  const auto& includes = params.program->get_includes();
   // Always enable g_allow_neg_field_keys when parsing included files.
   // This way if a thrift file has negative keys, --allow-neg-keys doesn't have
   // to be used by everyone that includes it.
@@ -648,14 +601,15 @@ void parse(
   g_allow_neg_enum_vals = true;
   g_allow_neg_field_keys = true;
   for (auto included_program : includes) {
-    parse(included_program, params, already_parsed_paths, circular_deps);
+    auto incl_params = params;
+    incl_params.program = included_program;
+    parse(std::move(incl_params), already_parsed_paths, circular_deps);
   }
   g_allow_neg_enum_vals = main_allow_neg_enum_vals;
   g_allow_neg_field_keys = main_allow_neg_keys;
 
   // Parse the program file
   g_parse_mode = PROGRAM;
-  g_program = program;
   g_curpath = path;
   yyin = fopen(path.c_str(), "r");
   if (yyin == 0) {

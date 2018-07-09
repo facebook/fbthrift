@@ -40,7 +40,13 @@ namespace thrift {
 
 class parsing_driver {
  public:
-  explicit parsing_driver(parsing_params params) : params_(std::move(params)) {}
+  parsing_params params;
+
+  explicit parsing_driver(parsing_params parse_params)
+      : params(std::move(parse_params)) {
+    // Set current dir, which is used in the include_file function
+    curdir_ = directory_name(params.program->get_path());
+  }
 
   /**
    * Diagnostic message callbacks.
@@ -50,8 +56,18 @@ class parsing_driver {
   void warning(int level, const char* fmt, ...) const;
   [[noreturn]] void failure(const char* fmt, ...) const;
 
+  /**
+   * Gets the directory path of a filename
+   */
+  static std::string directory_name(const std::string& filename);
+
+  /**
+   * Finds the appropriate file path for the given filename
+   */
+  std::string include_file(const std::string& filename);
+
  private:
-  parsing_params params_;
+  std::string curdir_;
 };
 
 } // namespace thrift
