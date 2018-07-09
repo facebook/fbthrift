@@ -40,6 +40,21 @@
 #include <thrift/compiler/parse/t_program.h>
 #include <thrift/compiler/parse/t_scope.h>
 
+// TODO: Move to parse/ when thrift-deglobalize is complete.
+namespace apache {
+namespace thrift {
+
+struct parsing_params {
+  // Default values are taken from the original global variables.
+
+  bool debug = false;
+  bool verbose = false;
+  int warn = 1;
+};
+
+} // namespace thrift
+} // namespace apache
+
 namespace {
 using namespace std;
 }
@@ -206,6 +221,7 @@ bool validate_throws(t_struct* throws);
  */
 void parse(
     t_program* program,
+    apache::thrift::parsing_params params,
     std::set<std::string>& already_parsed_paths,
     std::set<std::string> circular_deps = std::set<std::string>());
 

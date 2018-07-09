@@ -31,6 +31,7 @@ add_library(
   compiler_base
 
   common.cc
+  parsing_driver.cc
   platform.cc
   ${FLEX_ThriftScanner_OUTPUTS}
   ${BISON_ThriftParser_OUTPUTS}

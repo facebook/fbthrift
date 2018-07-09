@@ -33,21 +33,9 @@
 #include <limits.h>
 #include <stack>
 #include <utility>
-#include "thrift/compiler/common.h"
-#include "thrift/compiler/globals.h"
-#include "thrift/compiler/parse/t_program.h"
 #include "thrift/compiler/parse/t_scope.h"
 
-/**
- * Must be included AFTER parse/t_program.h, but I can't remember why anymore
- * because I wrote this a while ago.
- *
- * Note macro expansion because this is different between OSS and internal
- * build, sigh.
- */
-#include THRIFTY_HH
-
-YY_DECL;
+#include "thrift/compiler/parsing_driver.h"
 
 /**
  * This global variable is used for automatic numbering of field indices etc.
@@ -100,9 +88,24 @@ class LinenoStack {
 LinenoStack lineno_stack;
 %}
 
+%code requires
+{
+
+namespace apache {
+namespace thrift {
+
+class parsing_driver;
+
+} // apache
+} // thrift
+
+}
+
 %define api.token.constructor
 %define api.value.type variant
 %define api.namespace {apache::thrift::yy}
+
+%param {apache::thrift::parsing_driver& driver}
 
 /**
  * Strings identifier
@@ -284,7 +287,7 @@ LinenoStack lineno_stack;
 Program:
   HeaderList DefinitionList
     {
-      pdebug("Program -> Headers DefinitionList");
+      driver.debug("Program -> Headers DefinitionList");
       /*
       TODO(dreiss): Decide whether full-program doctext is worth the trouble.
       if ($1 != NULL) {
@@ -317,28 +320,28 @@ DestroyDocText:
 HeaderList:
   HeaderList DestroyDocText Header
     {
-      pdebug("HeaderList -> HeaderList Header");
+      driver.debug("HeaderList -> HeaderList Header");
     }
 |
     {
-      pdebug("HeaderList -> ");
+      driver.debug("HeaderList -> ");
     }
 
 Header:
   Include
     {
-      pdebug("Header -> Include");
+      driver.debug("Header -> Include");
     }
 | tok_namespace tok_identifier tok_identifier
     {
-      pdebug("Header -> tok_namespace tok_identifier tok_identifier");
+      driver.debug("Header -> tok_namespace tok_identifier tok_identifier");
       if (g_parse_mode == PROGRAM) {
         g_program->set_namespace($2, $3);
       }
     }
 | tok_namespace tok_identifier tok_literal
     {
-      pdebug("Header -> tok_namespace tok_identifier tok_literal");
+      driver.debug("Header -> tok_namespace tok_identifier tok_literal");
       if (g_parse_mode == PROGRAM) {
         g_program->set_namespace($2, $3);
       }
@@ -346,28 +349,28 @@ Header:
 /* TODO(dreiss): Get rid of this once everyone is using the new hotness. */
 | tok_cpp_namespace tok_identifier
     {
-      pwarning(1, "'cpp_namespace' is deprecated. Use 'namespace cpp' instead");
-      pdebug("Header -> tok_cpp_namespace tok_identifier");
+      driver.warning(1, "'cpp_namespace' is deprecated. Use 'namespace cpp' instead");
+      driver.debug("Header -> tok_cpp_namespace tok_identifier");
       if (g_parse_mode == PROGRAM) {
         g_program->set_namespace("cpp", $2);
       }
     }
 | tok_cpp_include tok_literal
     {
-      pdebug("Header -> tok_cpp_include tok_literal");
+      driver.debug("Header -> tok_cpp_include tok_literal");
       if (g_parse_mode == PROGRAM) {
         g_program->add_cpp_include($2);
       }
     }
 | tok_hs_include tok_literal
     {
-      pdebug("Header -> tok_hs_include tok_literal");
+      driver.debug("Header -> tok_hs_include tok_literal");
       // Do nothing. This syntax is handled by the hs compiler
     }
 | tok_php_namespace tok_identifier
     {
-      pwarning(1, "'php_namespace' is deprecated. Use 'namespace php' instead");
-      pdebug("Header -> tok_php_namespace tok_identifier");
+      driver.warning(1, "'php_namespace' is deprecated. Use 'namespace php' instead");
+      driver.debug("Header -> tok_php_namespace tok_identifier");
       if (g_parse_mode == PROGRAM) {
         g_program->set_namespace("php", $2);
       }
@@ -375,8 +378,8 @@ Header:
 /* TODO(dreiss): Get rid of this once everyone is using the new hotness. */
 | tok_py_module tok_identifier
     {
-      pwarning(1, "'py_module' is deprecated. Use 'namespace py' instead");
-      pdebug("Header -> tok_py_module tok_identifier");
+      driver.warning(1, "'py_module' is deprecated. Use 'namespace py' instead");
+      driver.debug("Header -> tok_py_module tok_identifier");
       if (g_parse_mode == PROGRAM) {
         g_program->set_namespace("py", $2);
       }
@@ -384,8 +387,8 @@ Header:
 /* TODO(dreiss): Get rid of this once everyone is using the new hotness. */
 | tok_perl_package tok_identifier
     {
-      pwarning(1, "'perl_package' is deprecated. Use 'namespace perl' instead");
-      pdebug("Header -> tok_perl_namespace tok_identifier");
+      driver.warning(1, "'perl_package' is deprecated. Use 'namespace perl' instead");
+      driver.debug("Header -> tok_perl_namespace tok_identifier");
       if (g_parse_mode == PROGRAM) {
         g_program->set_namespace("perl", $2);
       }
@@ -393,8 +396,8 @@ Header:
 /* TODO(dreiss): Get rid of this once everyone is using the new hotness. */
 | tok_ruby_namespace tok_identifier
     {
-      pwarning(1, "'ruby_namespace' is deprecated. Use 'namespace rb' instead");
-      pdebug("Header -> tok_ruby_namespace tok_identifier");
+      driver.warning(1, "'ruby_namespace' is deprecated. Use 'namespace rb' instead");
+      driver.debug("Header -> tok_ruby_namespace tok_identifier");
       if (g_parse_mode == PROGRAM) {
         g_program->set_namespace("rb", $2);
       }
@@ -402,8 +405,8 @@ Header:
 /* TODO(dreiss): Get rid of this once everyone is using the new hotness. */
 | tok_smalltalk_category tok_st_identifier
     {
-      pwarning(1, "'smalltalk_category' is deprecated. Use 'namespace smalltalk.category' instead");
-      pdebug("Header -> tok_smalltalk_category tok_st_identifier");
+      driver.warning(1, "'smalltalk_category' is deprecated. Use 'namespace smalltalk.category' instead");
+      driver.debug("Header -> tok_smalltalk_category tok_st_identifier");
       if (g_parse_mode == PROGRAM) {
         g_program->set_namespace("smalltalk.category", $2);
       }
@@ -411,8 +414,8 @@ Header:
 /* TODO(dreiss): Get rid of this once everyone is using the new hotness. */
 | tok_smalltalk_prefix tok_identifier
     {
-      pwarning(1, "'smalltalk_prefix' is deprecated. Use 'namespace smalltalk.prefix' instead");
-      pdebug("Header -> tok_smalltalk_prefix tok_identifier");
+      driver.warning(1, "'smalltalk_prefix' is deprecated. Use 'namespace smalltalk.prefix' instead");
+      driver.debug("Header -> tok_smalltalk_prefix tok_identifier");
       if (g_parse_mode == PROGRAM) {
         g_program->set_namespace("smalltalk.prefix", $2);
       }
@@ -420,8 +423,8 @@ Header:
 /* TODO(dreiss): Get rid of this once everyone is using the new hotness. */
 | tok_java_package tok_identifier
     {
-      pwarning(1, "'java_package' is deprecated. Use 'namespace java' instead");
-      pdebug("Header -> tok_java_package tok_identifier");
+      driver.warning(1, "'java_package' is deprecated. Use 'namespace java' instead");
+      driver.debug("Header -> tok_java_package tok_identifier");
       if (g_parse_mode == PROGRAM) {
         g_program->set_namespace("java", $2);
       }
@@ -429,8 +432,8 @@ Header:
 /* TODO(dreiss): Get rid of this once everyone is using the new hotness. */
 | tok_cocoa_prefix tok_identifier
     {
-      pwarning(1, "'cocoa_prefix' is deprecated. Use 'namespace cocoa' instead");
-      pdebug("Header -> tok_cocoa_prefix tok_identifier");
+      driver.warning(1, "'cocoa_prefix' is deprecated. Use 'namespace cocoa' instead");
+      driver.debug("Header -> tok_cocoa_prefix tok_identifier");
       if (g_parse_mode == PROGRAM) {
         g_program->set_namespace("cocoa", $2);
       }
@@ -438,8 +441,8 @@ Header:
 /* TODO(dreiss): Get rid of this once everyone is using the new hotness. */
 | tok_csharp_namespace tok_identifier
    {
-     pwarning(1, "'csharp_namespace' is deprecated. Use 'namespace csharp' instead");
-     pdebug("Header -> tok_csharp_namespace tok_identifier");
+     driver.warning(1, "'csharp_namespace' is deprecated. Use 'namespace csharp' instead");
+     driver.debug("Header -> tok_csharp_namespace tok_identifier");
      if (g_parse_mode == PROGRAM) {
        g_program->set_namespace("csharp", $2);
      }
@@ -448,7 +451,7 @@ Header:
 Include:
   tok_include tok_literal
     {
-      pdebug("Include -> tok_include tok_literal");
+      driver.debug("Include -> tok_include tok_literal");
       if (g_parse_mode == INCLUDES) {
         std::string path = include_file(std::string($2));
         if (!path.empty()) {
@@ -464,20 +467,20 @@ Include:
 DefinitionList:
   DefinitionList CaptureDocText Definition
     {
-      pdebug("DefinitionList -> DefinitionList Definition");
+      driver.debug("DefinitionList -> DefinitionList Definition");
       if ($2 != NULL && $3 != NULL) {
         $3->set_doc($2);
       }
     }
 |
     {
-      pdebug("DefinitionList -> ");
+      driver.debug("DefinitionList -> ");
     }
 
 Definition:
   Const
     {
-      pdebug("Definition -> Const");
+      driver.debug("Definition -> Const");
       if (g_parse_mode == PROGRAM) {
         g_program->add_const($1);
       }
@@ -485,7 +488,7 @@ Definition:
     }
 | TypeDefinition
     {
-      pdebug("Definition -> TypeDefinition");
+      driver.debug("Definition -> TypeDefinition");
       if (g_parse_mode == PROGRAM) {
         g_scope_cache->add_type(g_program->get_name() + "." + $1->get_name(), $1);
       }
@@ -493,7 +496,7 @@ Definition:
     }
 | Service
     {
-      pdebug("Definition -> Service");
+      driver.debug("Definition -> Service");
       if (g_parse_mode == PROGRAM) {
         g_scope_cache->add_service(g_program->get_name() + "." + $1->get_name(), $1);
         g_program->add_service($1);
@@ -504,7 +507,7 @@ Definition:
 TypeDefinition:
   Typedef
     {
-      pdebug("TypeDefinition -> Typedef");
+      driver.debug("TypeDefinition -> Typedef");
       if (g_parse_mode == PROGRAM) {
         g_program->add_typedef($1);
       }
@@ -512,7 +515,7 @@ TypeDefinition:
     }
 | Enum
     {
-      pdebug("TypeDefinition -> Enum");
+      driver.debug("TypeDefinition -> Enum");
       if (g_parse_mode == PROGRAM) {
         g_program->add_enum($1);
       }
@@ -520,7 +523,7 @@ TypeDefinition:
     }
 | Struct
     {
-      pdebug("TypeDefinition -> Struct");
+      driver.debug("TypeDefinition -> Struct");
       if (g_parse_mode == PROGRAM) {
         g_program->add_struct($1);
       }
@@ -528,7 +531,7 @@ TypeDefinition:
     }
 | Xception
     {
-      pdebug("TypeDefinition -> Xception");
+      driver.debug("TypeDefinition -> Xception");
       if (g_parse_mode == PROGRAM) {
         g_program->add_xception($1);
       }
@@ -542,7 +545,7 @@ Typedef:
     }
   FieldType tok_identifier TypeAnnotations
     {
-      pdebug("TypeDef -> tok_typedef FieldType tok_identifier");
+      driver.debug("TypeDef -> tok_typedef FieldType tok_identifier");
       t_typedef *td = new t_typedef(g_program, $3, $4, g_scope_cache);
       $$ = td;
       $$->set_lineno(lineno_stack.pop(LineType::kTypedef));
@@ -572,7 +575,7 @@ Enum:
     }
   "{" EnumDefList "}" TypeAnnotations
     {
-      pdebug("Enum -> tok_enum tok_identifier { EnumDefList }");
+      driver.debug("Enum -> tok_enum tok_identifier { EnumDefList }");
       $$ = $6;
       $$->set_name($3);
       $$->set_lineno(lineno_stack.pop(LineType::kEnum));
@@ -586,7 +589,7 @@ Enum:
 EnumDefList:
   EnumDefList EnumDef
     {
-      pdebug("EnumDefList -> EnumDefList EnumDef");
+      driver.debug("EnumDefList -> EnumDefList EnumDef");
       $$ = $1;
       $$->append($2);
 
@@ -608,7 +611,7 @@ EnumDefList:
     }
 |
     {
-      pdebug("EnumDefList -> ");
+      driver.debug("EnumDefList -> ");
       $$ = new t_enum(g_program);
       y_enum_val = -1;
     }
@@ -616,7 +619,7 @@ EnumDefList:
 EnumDef:
   CaptureDocText EnumValue TypeAnnotations CommaOrSemicolonOptional
     {
-      pdebug("EnumDef -> EnumValue");
+      driver.debug("EnumDef -> EnumValue");
       $$ = $2;
       if ($1 != NULL) {
         $$->set_doc($1);
@@ -630,9 +633,9 @@ EnumDef:
 EnumValue:
   tok_identifier "=" tok_int_constant
     {
-      pdebug("EnumValue -> tok_identifier = tok_int_constant");
+      driver.debug("EnumValue -> tok_identifier = tok_int_constant");
       if ($3 < 0 && !g_allow_neg_enum_vals) {
-        pwarning(1, "Negative value supplied for enum %s.", $1);
+        driver.warning(1, "Negative value supplied for enum %s.", $1);
       }
       if ($3 < INT32_MIN || $3 > INT32_MAX) {
         // Note: this used to be just a warning.  However, since thrift always
@@ -640,7 +643,7 @@ EnumValue:
         // I doubt this will affect many people, but users who run into this
         // will have to update their thrift files to manually specify the
         // truncated i32 value that thrift has always been using anyway.
-        failure("64-bit value supplied for enum %s will be truncated.", $1);
+        driver.failure("64-bit value supplied for enum %s will be truncated.", $1);
       }
       y_enum_val = $3;
       $$ = new t_enum_value($1, y_enum_val);
@@ -649,9 +652,9 @@ EnumValue:
 |
   tok_identifier
     {
-      pdebug("EnumValue -> tok_identifier");
+      driver.debug("EnumValue -> tok_identifier");
       if (y_enum_val == INT32_MAX) {
-        failure("enum value overflow at enum %s", $1);
+        driver.failure("enum value overflow at enum %s", $1);
       }
       $$ = new t_enum_value($1);
 
@@ -667,7 +670,7 @@ Const:
     }
   FieldType tok_identifier "=" ConstValue CommaOrSemicolonOptional
     {
-      pdebug("Const -> tok_const FieldType tok_identifier = ConstValue");
+      driver.debug("Const -> tok_const FieldType tok_identifier = ConstValue");
       if (g_parse_mode == PROGRAM) {
         $$ = new t_const(g_program, $3, $4, $6);
         $$->set_lineno(lineno_stack.pop(LineType::kConst));
@@ -681,33 +684,33 @@ Const:
 ConstValue:
   tok_bool_constant
     {
-      pdebug("ConstValue => tok_int_constant");
+      driver.debug("ConstValue => tok_int_constant");
       $$ = new t_const_value();
       $$->set_bool($1);
     }
 |  tok_int_constant
     {
-      pdebug("constvalue => tok_int_constant");
+      driver.debug("constvalue => tok_int_constant");
       $$ = new t_const_value();
       $$->set_integer($1);
       if (!g_allow_64bit_consts && ($1 < INT32_MIN || $1 > INT32_MAX)) {
-        pwarning(1, "64-bit constant \"%" PRIi64 "\" may not work in all languages.", $1);
+        driver.warning(1, "64-bit constant \"%" PRIi64 "\" may not work in all languages.", $1);
       }
     }
 | tok_dub_constant
     {
-      pdebug("ConstValue => tok_dub_constant");
+      driver.debug("ConstValue => tok_dub_constant");
       $$ = new t_const_value();
       $$->set_double($1);
     }
 | tok_literal
     {
-      pdebug("ConstValue => tok_literal");
+      driver.debug("ConstValue => tok_literal");
       $$ = new t_const_value($1);
     }
 | tok_identifier
     {
-      pdebug("ConstValue => tok_identifier");
+      driver.debug("ConstValue => tok_identifier");
       t_const* constant = g_scope_cache->get_constant($1);
       if (!constant) {
         constant = g_scope_cache->get_constant(g_program->get_name() + "." + $1);
@@ -718,39 +721,39 @@ ConstValue:
         $$ = new t_const_value(*const_value);
       } else {
         if (g_parse_mode == PROGRAM) {
-          pwarning(1, "Constant strings should be quoted: %s", $1);
+          driver.warning(1, "Constant strings should be quoted: %s", $1);
         }
         $$ = new t_const_value($1);
       }
     }
 | ConstList
     {
-      pdebug("ConstValue => ConstList");
+      driver.debug("ConstValue => ConstList");
       $$ = $1;
     }
 | ConstMap
     {
-      pdebug("ConstValue => ConstMap");
+      driver.debug("ConstValue => ConstMap");
       $$ = $1;
     }
 
 ConstList:
   "[" ConstListContents "]"
     {
-      pdebug("ConstList => [ ConstListContents ]");
+      driver.debug("ConstList => [ ConstListContents ]");
       $$ = $2;
     }
 
 ConstListContents:
   ConstListContents ConstValue CommaOrSemicolonOptional
     {
-      pdebug("ConstListContents => ConstListContents ConstValue CommaOrSemicolonOptional");
+      driver.debug("ConstListContents => ConstListContents ConstValue CommaOrSemicolonOptional");
       $$ = $1;
       $$->add_list($2);
     }
 |
     {
-      pdebug("ConstListContents =>");
+      driver.debug("ConstListContents =>");
       $$ = new t_const_value();
       $$->set_list();
     }
@@ -758,20 +761,20 @@ ConstListContents:
 ConstMap:
   "{" ConstMapContents "}"
     {
-      pdebug("ConstMap => { ConstMapContents }");
+      driver.debug("ConstMap => { ConstMapContents }");
       $$ = $2;
     }
 
 ConstMapContents:
   ConstMapContents ConstValue ":" ConstValue CommaOrSemicolonOptional
     {
-      pdebug("ConstMapContents => ConstMapContents ConstValue CommaOrSemicolonOptional");
+      driver.debug("ConstMapContents => ConstMapContents ConstValue CommaOrSemicolonOptional");
       $$ = $1;
       $$->add_map($2, $4);
     }
 |
     {
-      pdebug("ConstMapContents =>");
+      driver.debug("ConstMapContents =>");
       $$ = new t_const_value();
       $$->set_map();
     }
@@ -793,7 +796,7 @@ Struct:
     }
   tok_identifier "{" FieldList "}" TypeAnnotations
     {
-      pdebug("Struct -> tok_struct tok_identifier { FieldList }");
+      driver.debug("Struct -> tok_struct tok_identifier { FieldList }");
       $5->set_union($1 == struct_is_union);
       $$ = $5;
       $$->set_name($3);
@@ -812,7 +815,7 @@ Xception:
     }
   tok_identifier "{" FieldList "}" TypeAnnotations
     {
-      pdebug("Xception -> tok_xception tok_identifier { FieldList }");
+      driver.debug("Xception -> tok_xception tok_identifier { FieldList }");
       $5->set_name($3);
       $5->set_xception(true);
       $$ = $5;
@@ -828,8 +831,8 @@ Xception:
             && $$->has_field_named(annotation)
             && $$->annotations_.find(annotation) != $$->annotations_.end()
             && strcmp(annotation, $$->annotations_.find(annotation)->second.c_str()) != 0) {
-          pwarning(1, "Some generators (eg. PHP) will ignore annotation '%s' "
-                      "as it is also used as field", annotation);
+          driver.warning(1, "Some generators (eg. PHP) will ignore annotation '%s' "
+                         "as it is also used as field", annotation);
         }
       }
 
@@ -841,14 +844,14 @@ Xception:
         const std::string v = $$->annotations_.find("message")->second;
 
         if (!$$->has_field_named(v.c_str())) {
-          failure("member specified as exception 'message' should be a valid"
-                  " struct member, '%s' in '%s' is not", v.c_str(), $3);
+          driver.failure("member specified as exception 'message' should be a valid"
+                         " struct member, '%s' in '%s' is not", v.c_str(), $3);
         }
 
         auto field = $$->get_field_named(v.c_str());
         if (!field->get_type()->is_string()) {
-          failure("member specified as exception 'message' should be of type "
-                  "STRING, '%s' in '%s' is not", v.c_str(), $3);
+          driver.failure("member specified as exception 'message' should be of type "
+                         "STRING, '%s' in '%s' is not", v.c_str(), $3);
         }
       }
 
@@ -862,7 +865,7 @@ Service:
     }
   tok_identifier Extends "{" FlagArgs FunctionList UnflagArgs "}" FunctionAnnotations
     {
-      pdebug("Service -> tok_service tok_identifier { FunctionList }");
+      driver.debug("Service -> tok_service tok_identifier { FunctionList }");
       $$ = $7;
       $$->set_name($3);
       $$->set_extends($4);
@@ -885,7 +888,7 @@ UnflagArgs:
 Extends:
   tok_extends tok_identifier
     {
-      pdebug("Extends -> tok_extends tok_identifier");
+      driver.debug("Extends -> tok_extends tok_identifier");
       $$ = NULL;
       if (g_parse_mode == PROGRAM) {
         $$ = g_scope_cache->get_service($2);
@@ -906,13 +909,13 @@ Extends:
 FunctionList:
   FunctionList Function
     {
-      pdebug("FunctionList -> FunctionList Function");
+      driver.debug("FunctionList -> FunctionList Function");
       $$ = $1;
       $1->add_function($2);
     }
 |
     {
-      pdebug("FunctionList -> ");
+      driver.debug("FunctionList -> ");
       $$ = new t_service(g_program);
     }
 
@@ -936,7 +939,7 @@ Function:
 MaybeStreamAndParamList:
   PubsubStreamType tok_identifier "," ParamList
   {
-    pdebug("MaybeStreamAndParamList -> PubsubStreamType tok ParamList");
+    driver.debug("MaybeStreamAndParamList -> PubsubStreamType tok ParamList");
     t_struct* paramlist = $4;
     t_field* stream_field = new t_field($1, $2, 0);
     paramlist->set_stream_field(stream_field);
@@ -944,7 +947,7 @@ MaybeStreamAndParamList:
   }
 | PubsubStreamType tok_identifier EmptyParamList
   {
-    pdebug("MaybeStreamAndParamList -> PubsubStreamType tok");
+    driver.debug("MaybeStreamAndParamList -> PubsubStreamType tok");
     t_struct* paramlist = $3;
     t_field* stream_field = new t_field($1, $2, 0);
     paramlist->set_stream_field(stream_field);
@@ -958,7 +961,7 @@ MaybeStreamAndParamList:
 ParamList:
   ParamList Param
     {
-      pdebug("ParamList -> ParamList , Param");
+      driver.debug("ParamList -> ParamList , Param");
       $$ = $1;
       if (!($$->append($2))) {
         yyerror("Parameter identifier %d for \"%s\" has already been used", $2->get_key(), $2->get_name().c_str());
@@ -972,7 +975,7 @@ ParamList:
 
 EmptyParamList:
     {
-      pdebug("EmptyParamList -> nil");
+      driver.debug("EmptyParamList -> nil");
       t_struct* paramlist = new t_struct(g_program);
       paramlist->set_paramlist(true);
       $$ = paramlist;
@@ -981,7 +984,7 @@ EmptyParamList:
 Param:
   Field
     {
-      pdebug("Param -> Field");
+      driver.debug("Param -> Field");
       $$ = $1;
     }
 
@@ -1015,20 +1018,20 @@ ThrowsThrows:
 Throws:
   tok_throws "(" FieldList ")"
     {
-      pdebug("Throws -> tok_throws ( FieldList )");
+      driver.debug("Throws -> tok_throws ( FieldList )");
       $$ = $3;
     }
 StreamThrows:
   tok_streamthrows "(" FieldList ")"
     {
-      pdebug("StreamThrows -> 'stream throws' ( FieldList )");
+      driver.debug("StreamThrows -> 'stream throws' ( FieldList )");
       $$ = $3;
     }
 
 FieldList:
   FieldList Field
     {
-      pdebug("FieldList -> FieldList , Field");
+      driver.debug("FieldList -> FieldList , Field");
       $$ = $1;
       if (!($$->append($2))) {
         yyerror("Field identifier %d for \"%s\" has already been used", $2->get_key(), $2->get_name().c_str());
@@ -1037,16 +1040,16 @@ FieldList:
     }
 |
     {
-      pdebug("FieldList -> ");
+      driver.debug("FieldList -> ");
       $$ = new t_struct(g_program);
     }
 
 Field:
   CaptureDocText FieldIdentifier FieldRequiredness FieldType tok_identifier FieldValue TypeAnnotations CommaOrSemicolonOptional
     {
-      pdebug("tok_int_constant : Field -> FieldType tok_identifier");
+      driver.debug("tok_int_constant : Field -> FieldType tok_identifier");
       if ($2.auto_assigned) {
-        pwarning(1, "No field key specified for %s, resulting protocol may have conflicts or not be backwards compatible!", $5);
+        driver.warning(1, "No field key specified for %s, resulting protocol may have conflicts or not be backwards compatible!", $5);
         if (g_strict >= 192) {
           yyerror("Implicit field keys are deprecated and not allowed with -strict");
           exit(1);
@@ -1067,7 +1070,7 @@ Field:
         for (const auto& it : $7->annotations_) {
           if (it.first == "cpp.ref" || it.first == "cpp2.ref") {
             if ($3 != t_field::T_OPTIONAL) {
-              pwarning(1, "cpp.ref field must be optional if it is recursive");
+              driver.warning(1, "cpp.ref field must be optional if it is recursive");
             }
             break;
           }
@@ -1092,8 +1095,8 @@ FieldIdentifier:
              * warn if the user-specified negative value isn't what
              * thrift would have auto-assigned.
              */
-            pwarning(1, "Negative field key (%d) differs from what would be "
-                     "auto-assigned by thrift (%d).", $1, y_field_val);
+            driver.warning(1, "Negative field key (%d) differs from what would be "
+                           "auto-assigned by thrift (%d).", $1, y_field_val);
           }
           /*
            * Leave $1 as-is, and update y_field_val to be one less than $1.
@@ -1103,8 +1106,8 @@ FieldIdentifier:
           $$.value = $1;
           $$.auto_assigned = false;
         } else {
-          pwarning(1, "Nonpositive value (%d) not allowed as a field key.",
-                   $1);
+          driver.warning(1, "Nonpositive value (%d) not allowed as a field key.",
+                         $1);
           $$.value = y_field_val--;
           $$.auto_assigned = true;
         }
@@ -1126,7 +1129,7 @@ FieldRequiredness:
     {
       if (g_arglist) {
         if (g_parse_mode == PROGRAM) {
-          pwarning(1, "required keyword is ignored in argument lists.");
+          driver.warning(1, "required keyword is ignored in argument lists.");
         }
         $$ = t_field::T_OPT_IN_REQ_OUT;
       } else {
@@ -1137,7 +1140,7 @@ FieldRequiredness:
     {
       if (g_arglist) {
         if (g_parse_mode == PROGRAM) {
-          pwarning(1, "optional keyword is ignored in argument lists.");
+          driver.warning(1, "optional keyword is ignored in argument lists.");
         }
         $$ = t_field::T_OPT_IN_REQ_OUT;
       } else {
@@ -1166,43 +1169,43 @@ FieldValue:
 FunctionType:
   PubsubStreamReturnType
     {
-      pdebug("FunctionType -> PubsubStreamReturnType");
+      driver.debug("FunctionType -> PubsubStreamReturnType");
       $$ = $1;
     }
 | FieldType
     {
-      pdebug("FunctionType -> FieldType");
+      driver.debug("FunctionType -> FieldType");
       $$ = $1;
     }
 | tok_void
     {
-      pdebug("FunctionType -> tok_void");
+      driver.debug("FunctionType -> tok_void");
       $$ = g_type_void;
     }
 
 PubsubStreamType:
   tok_stream FieldType
   {
-    pdebug("PubsubStreamType -> tok_stream FieldType");
+    driver.debug("PubsubStreamType -> tok_stream FieldType");
     $$ = new t_pubsub_stream($2);
   }
 
 PubsubStreamReturnType:
   FieldType "," tok_stream FieldType
   {
-    pdebug("PubsubStreamReturnType -> tok_stream FieldType");
+    driver.debug("PubsubStreamReturnType -> tok_stream FieldType");
     $$ = new t_stream_response($4, $1);
   }
 | tok_stream FieldType
   {
-    pdebug("PubsubStreamReturnType -> tok_stream FieldType tok_void");
+    driver.debug("PubsubStreamReturnType -> tok_stream FieldType tok_void");
     $$ = new t_stream_response($2);
   }
 
 FieldType:
   tok_identifier TypeAnnotations
     {
-      pdebug("FieldType -> tok_identifier");
+      driver.debug("FieldType -> tok_identifier");
       if (g_parse_mode == INCLUDES) {
         // Ignore identifiers in include mode
         $$ = NULL;
@@ -1228,18 +1231,18 @@ FieldType:
     }
 | BaseType
     {
-      pdebug("FieldType -> BaseType");
+      driver.debug("FieldType -> BaseType");
       $$ = $1;
     }
 | ContainerType
     {
-      pdebug("FieldType -> ContainerType");
+      driver.debug("FieldType -> ContainerType");
       $$ = $1;
     }
 
 BaseType: SimpleBaseType TypeAnnotations
     {
-      pdebug("BaseType -> SimpleBaseType TypeAnnotations");
+      driver.debug("BaseType -> SimpleBaseType TypeAnnotations");
       if ($2 != NULL) {
         $$ = new t_base_type(*static_cast<t_base_type*>($1));
         $$->annotations_ = $2->annotations_;
@@ -1252,58 +1255,58 @@ BaseType: SimpleBaseType TypeAnnotations
 SimpleBaseType:
   tok_string
     {
-      pdebug("BaseType -> tok_string");
+      driver.debug("BaseType -> tok_string");
       $$ = g_type_string;
     }
 | tok_binary
     {
-      pdebug("BaseType -> tok_binary");
+      driver.debug("BaseType -> tok_binary");
       $$ = g_type_binary;
     }
 | tok_slist
     {
-      pdebug("BaseType -> tok_slist");
+      driver.debug("BaseType -> tok_slist");
       $$ = g_type_slist;
     }
 | tok_bool
     {
-      pdebug("BaseType -> tok_bool");
+      driver.debug("BaseType -> tok_bool");
       $$ = g_type_bool;
     }
 | tok_byte
     {
-      pdebug("BaseType -> tok_byte");
+      driver.debug("BaseType -> tok_byte");
       $$ = g_type_byte;
     }
 | tok_i16
     {
-      pdebug("BaseType -> tok_i16");
+      driver.debug("BaseType -> tok_i16");
       $$ = g_type_i16;
     }
 | tok_i32
     {
-      pdebug("BaseType -> tok_i32");
+      driver.debug("BaseType -> tok_i32");
       $$ = g_type_i32;
     }
 | tok_i64
     {
-      pdebug("BaseType -> tok_i64");
+      driver.debug("BaseType -> tok_i64");
       $$ = g_type_i64;
     }
 | tok_double
     {
-      pdebug("BaseType -> tok_double");
+      driver.debug("BaseType -> tok_double");
       $$ = g_type_double;
     }
 | tok_float
     {
-      pdebug("BaseType -> tok_float");
+      driver.debug("BaseType -> tok_float");
       $$ = g_type_float;
     }
 
 ContainerType: SimpleContainerType TypeAnnotations
     {
-      pdebug("ContainerType -> SimpleContainerType TypeAnnotations");
+      driver.debug("ContainerType -> SimpleContainerType TypeAnnotations");
       $$ = $1;
       if ($2 != NULL) {
         $$->annotations_ = $2->annotations_;
@@ -1314,93 +1317,93 @@ ContainerType: SimpleContainerType TypeAnnotations
 SimpleContainerType:
   MapType
     {
-      pdebug("SimpleContainerType -> MapType");
+      driver.debug("SimpleContainerType -> MapType");
       $$ = $1;
     }
 |  HashMapType
     {
-      pdebug("SimpleContainerType -> HashMapType");
+      driver.debug("SimpleContainerType -> HashMapType");
       $$ = $1;
     }
 | SetType
     {
-      pdebug("SimpleContainerType -> SetType");
+      driver.debug("SimpleContainerType -> SetType");
       $$ = $1;
     }
 | HashSetType
     {
-      pdebug("SimpleContainerType -> HashSetType");
+      driver.debug("SimpleContainerType -> HashSetType");
       $$ = $1;
     }
 | ListType
     {
-      pdebug("SimpleContainerType -> ListType");
+      driver.debug("SimpleContainerType -> ListType");
       $$ = $1;
     }
 | StreamType
     {
-      pdebug("SimpleContainerType -> StreamType");
+      driver.debug("SimpleContainerType -> StreamType");
       $$ = $1;
     }
 
 MapType:
   tok_map "<" FieldType "," FieldType ">"
     {
-      pdebug("MapType -> tok_map<FieldType, FieldType>");
+      driver.debug("MapType -> tok_map<FieldType, FieldType>");
       $$ = new t_map($3, $5, false);
     }
 
 HashMapType:
   tok_hash_map "<" FieldType "," FieldType ">"
     {
-      pdebug("HashMapType -> tok_hash_map<FieldType, FieldType>");
+      driver.debug("HashMapType -> tok_hash_map<FieldType, FieldType>");
       $$ = new t_map($3, $5, true);
     }
 
 SetType:
   tok_set "<" FieldType ">"
     {
-      pdebug("SetType -> tok_set<FieldType>");
+      driver.debug("SetType -> tok_set<FieldType>");
       $$ = new t_set($3, false);
     }
 
 HashSetType:
   tok_hash_set "<" FieldType ">"
     {
-      pdebug("HashSetType -> tok_hash_set<FieldType>");
+      driver.debug("HashSetType -> tok_hash_set<FieldType>");
       $$ = new t_set($3, true);
     }
 
 ListType:
   tok_list "<" FieldType ">"
     {
-      pdebug("ListType -> tok_list<FieldType>");
+      driver.debug("ListType -> tok_list<FieldType>");
       $$ = new t_list($3);
     }
 
 StreamType:
   tok_stream "<" FieldType ">"
     {
-      pdebug("StreamType -> tok_stream<FieldType>");
+      driver.debug("StreamType -> tok_stream<FieldType>");
       $$ = new t_stream($3);
     }
 
 TypeAnnotations:
   "(" TypeAnnotationList ")"
     {
-      pdebug("TypeAnnotations -> ( TypeAnnotationList )");
+      driver.debug("TypeAnnotations -> ( TypeAnnotationList )");
       $$ = $2;
     }
 |
     {
-      pdebug("TypeAnnotations -> nil");
+      driver.debug("TypeAnnotations -> nil");
       $$ = NULL;
     }
 
 TypeAnnotationList:
   TypeAnnotationList TypeAnnotation
     {
-      pdebug("TypeAnnotationList -> TypeAnnotationList , TypeAnnotation");
+      driver.debug("TypeAnnotationList -> TypeAnnotationList , TypeAnnotation");
       $$ = $1;
       $$->annotations_[$2->key] = $2->val;
       delete $2;
@@ -1414,7 +1417,7 @@ TypeAnnotationList:
 TypeAnnotation:
   tok_identifier TypeAnnotationValue CommaOrSemicolonOptional
     {
-      pdebug("TypeAnnotation TypeAnnotationValue");
+      driver.debug("TypeAnnotation TypeAnnotationValue");
       $$ = new t_annotation;
       $$->key = $1;
       $$->val = $2;
@@ -1423,19 +1426,19 @@ TypeAnnotation:
 TypeAnnotationValue:
   "=" IntOrLiteral
     {
-      pdebug("TypeAnnotationValue -> = IntOrLiteral");
+      driver.debug("TypeAnnotationValue -> = IntOrLiteral");
       $$ = $2;
     }
 |
     {
-      pdebug("TypeAnnotationValue ->");
+      driver.debug("TypeAnnotationValue ->");
       $$ = strdup("1");
     }
 
 FunctionAnnotations:
   TypeAnnotations
     {
-      pdebug("FunctionAnnotations -> TypeAnnotations");
+      driver.debug("FunctionAnnotations -> TypeAnnotations");
       $$ = $1;
       if ($$ == nullptr) {
         break;
@@ -1454,22 +1457,22 @@ FunctionAnnotations:
           s += prio + "','";
         }
         s.erase(s.length() - 3);
-        failure("Bad priority '%s'. Choose one of '%s'.",
-                prio.c_str(), s.c_str());
+        driver.failure("Bad priority '%s'. Choose one of '%s'.",
+                       prio.c_str(), s.c_str());
       }
     }
 
 IntOrLiteral:
   tok_literal
     {
-      pdebug("IntOrLiteral -> tok_literal");
+      driver.debug("IntOrLiteral -> tok_literal");
       $$ = $1;
     }
 |
   tok_bool_constant
     {
       char buf[21];  // max len of int64_t as string + null terminator
-      pdebug("IntOrLiteral -> tok_bool_constant");
+      driver.debug("IntOrLiteral -> tok_bool_constant");
       sprintf(buf, "%" PRIi64, $1);
       $$ = strdup(buf);
     }
@@ -1477,7 +1480,7 @@ IntOrLiteral:
   tok_int_constant
     {
       char buf[21];  // max len of int64_t as string + null terminator
-      pdebug("IntOrLiteral -> tok_int_constant");
+      driver.debug("IntOrLiteral -> tok_int_constant");
       sprintf(buf, "%" PRIi64, $1);
       $$ = strdup(buf);
     }

@@ -34,18 +34,7 @@
 
 #include <errno.h>
 
-#include "thrift/compiler/common.h"
-#include "thrift/compiler/globals.h"
-#include "thrift/compiler/parse/t_program.h"
-
-/**
- * Must be included AFTER parse/t_program.h, but I can't remember why anymore
- * because I wrote this a while ago.
- *
- * Note macro expansion because this is different between OSS and internal
- * build, sigh.
- */
-#include THRIFTY_HH
+#include "thrift/compiler/parsing_driver.h"
 
 static void thrift_reserved_keyword(char* keyword) {
   yyerror("Cannot use reserved language keyword: \"%s\"\n", keyword);
@@ -141,7 +130,7 @@ st_identifier ([a-zA-Z-][\.a-zA-Z_0-9-]*)
     return apache::thrift::yy::parser::make_tok_char_bracket_angle_r();
   }
 
-  failure("Invalid symbol encountered.");
+  driver.failure("Invalid symbol encountered.");
 }
 
 "false"              { return apache::thrift::yy::parser::make_tok_bool_constant(0); }
@@ -202,7 +191,7 @@ st_identifier ([a-zA-Z-][\.a-zA-Z_0-9-]*)
 "required"           { return apache::thrift::yy::parser::make_tok_required();             }
 "optional"           { return apache::thrift::yy::parser::make_tok_optional();             }
 "async" {
-  pwarning(0, "\"async\" is deprecated.  It is called \"oneway\" now.\n");
+  driver.warning(0, "\"async\" is deprecated.  It is called \"oneway\" now.\n");
   return apache::thrift::yy::parser::make_tok_oneway();
 }
 

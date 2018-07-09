@@ -653,7 +653,11 @@ int main(int argc, char** argv) {
   // Parse it!
   g_scope_cache = program->scope();
   std::set<std::string> already_parsed_paths;
-  parse(program, already_parsed_paths);
+  apache::thrift::parsing_params params{};
+  params.debug = (g_debug != 0);
+  params.verbose = (g_verbose != 0);
+  params.warn = g_warn;
+  parse(program, std::move(params), already_parsed_paths);
 
   // Mutate it!
   apache::thrift::compiler::mutator::mutate(program);

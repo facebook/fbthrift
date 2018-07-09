@@ -22,11 +22,6 @@
 #include <vector>
 
 /**
- * Provide the custom yylex signature to flex.
- */
-#define YY_DECL apache::thrift::yy::parser::symbol_type yylex()
-
-/**
  * This module contains all the global variables (slap on the wrist) that are
  * shared throughout the program. The reason for this is to facilitate simple
  * interaction between the parser and the rest of the program. Before calling
