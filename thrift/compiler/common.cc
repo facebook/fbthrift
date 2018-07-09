@@ -28,6 +28,8 @@
 
 #include <thrift/compiler/platform.h>
 
+#include THRIFTY_HH
+
 /**
  * Global program tree
  */
@@ -615,13 +617,16 @@ void parse(
     failure("Could not open input file: \"%s\"", path.c_str());
   }
 
+  // Construct the parser
+  apache::thrift::yy::parser parser;
+
   // Create new scope and scan for includes
   pverbose("Scanning %s for includes\n", path.c_str());
   g_parse_mode = INCLUDES;
   g_program = program;
   try {
     yylineno = 1;
-    if (yyparse() != 0) {
+    if (parser.parse() != 0) {
       failure("Parser error during include pass.");
     }
   } catch (const string& x) {
@@ -655,7 +660,7 @@ void parse(
   pverbose("Parsing %s for types\n", path.c_str());
   yylineno = 1;
   try {
-    if (yyparse() != 0) {
+    if (parser.parse() != 0) {
       failure("Parser error during types pass.");
     }
   } catch (const string& x) {

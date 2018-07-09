@@ -8,8 +8,10 @@ set(CMAKE_INSTALL_PREFIX ${THRIFT_HOME})
 if(WIN32)
   set(FLEX_FLAGS "--wincompat")
 endif(WIN32)
+set(BISON_FLAGS "--skeleton=lalr1.cc")
 BISON_TARGET(ThriftParser thrifty.yy ${COMPILER_DIR}/thrifty.cc
-  DEFINES_FILE ${COMPILER_DIR}/thrifty.hh)
+  DEFINES_FILE ${COMPILER_DIR}/thrifty.hh
+  COMPILE_FLAGS "${BISON_FLAGS}")
 FLEX_TARGET(ThriftScanner thriftl.ll ${COMPILER_DIR}/thriftl.cc
   COMPILE_FLAGS "${FLEX_FLAGS}")
 ADD_FLEX_BISON_DEPENDENCY(ThriftScanner ThriftParser)

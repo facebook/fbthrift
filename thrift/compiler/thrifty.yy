@@ -39,6 +39,17 @@
 #include "thrift/compiler/parse/t_scope.h"
 
 /**
+ * Must be included AFTER parse/t_program.h, but I can't remember why anymore
+ * because I wrote this a while ago.
+ *
+ * Note macro expansion because this is different between OSS and internal
+ * build, sigh.
+ */
+#include THRIFTY_HH
+
+YY_DECL;
+
+/**
  * This global variable is used for automatic numbering of field indices etc.
  * when parsing the members of a struct. Field values are automatically
  * assigned starting from -1 and working their way down.
@@ -89,49 +100,40 @@ class LinenoStack {
 LinenoStack lineno_stack;
 %}
 
-/**
- * This structure is used by the parser to hold the data types associated with
- * various parse nodes.
- */
-%union {
-  char*          id;
-  int64_t        iconst;
-  double         dconst;
-  bool           tbool;
-  t_doc*         tdoc;
-  t_type*        ttype;
-  t_base_type*   tbase;
-  t_typedef*     ttypedef;
-  t_enum*        tenum;
-  t_enum_value*  tenumv;
-  t_const*       tconst;
-  t_const_value* tconstv;
-  t_struct*      tstruct;
-  t_structpair*  tstructpair;
-  t_service*     tservice;
-  t_function*    tfunction;
-  t_field*       tfield;
-  char*          dtext;
-  t_field::e_req ereq;
-  t_annotation*  tannot;
-  t_field_id     tfieldid;
-}
+%define api.token.constructor
+%define api.value.type variant
+%define api.namespace {apache::thrift::yy}
 
 /**
  * Strings identifier
  */
-%token<id>     tok_identifier
-%token<id>     tok_streamthrows
-%token<id>     tok_literal
-%token<dtext>  tok_doctext
-%token<id>     tok_st_identifier
+%token<char*>     tok_identifier
+%token<char*>     tok_literal
+%token<char*>     tok_doctext
+%token<char*>     tok_st_identifier
 
 /**
  * Constant values
  */
-%token<iconst> tok_bool_constant
-%token<iconst> tok_int_constant
-%token<dconst> tok_dub_constant
+%token<int64_t>   tok_bool_constant
+%token<int64_t>   tok_int_constant
+%token<double>    tok_dub_constant
+
+/**
+ * Characters
+ */
+%token tok_char_comma               ","
+%token tok_char_semicolon           ";"
+%token tok_char_bracket_curly_l     "{"
+%token tok_char_bracket_curly_r     "}"
+%token tok_char_equal               "="
+%token tok_char_bracket_square_l    "["
+%token tok_char_bracket_square_r    "]"
+%token tok_char_colon               ":"
+%token tok_char_bracket_round_l     "("
+%token tok_char_bracket_round_r     ")"
+%token tok_char_bracket_angle_l     "<"
+%token tok_char_bracket_angle_r     ">"
 
 /**
  * Header keywords
@@ -187,6 +189,7 @@ LinenoStack lineno_stack;
 %token tok_typedef
 %token tok_struct
 %token tok_xception
+%token tok_streamthrows
 %token tok_throws
 %token tok_extends
 %token tok_service
@@ -196,75 +199,77 @@ LinenoStack lineno_stack;
 %token tok_optional
 %token tok_union
 
+%token tok_eof 0
+
 /**
  * Grammar nodes
  */
 
-%type<ttype>     BaseType
-%type<ttype>     SimpleBaseType
-%type<ttype>     ContainerType
-%type<ttype>     SimpleContainerType
-%type<ttype>     MapType
-%type<ttype>     HashMapType
-%type<ttype>     SetType
-%type<ttype>     HashSetType
-%type<ttype>     ListType
-%type<ttype>     StreamType
+%type<t_type*>          BaseType
+%type<t_type*>          SimpleBaseType
+%type<t_type*>          ContainerType
+%type<t_type*>          SimpleContainerType
+%type<t_type*>          MapType
+%type<t_type*>          HashMapType
+%type<t_type*>          SetType
+%type<t_type*>          HashSetType
+%type<t_type*>          ListType
+%type<t_type*>          StreamType
 
-%type<tdoc>      Definition
-%type<ttype>     TypeDefinition
+%type<t_doc*>           Definition
+%type<t_type*>          TypeDefinition
 
-%type<ttypedef>  Typedef
+%type<t_typedef*>       Typedef
 
-%type<ttype>     TypeAnnotations
-%type<ttype>     TypeAnnotationList
-%type<tannot>    TypeAnnotation
-%type<id>        TypeAnnotationValue
-%type<ttype>     FunctionAnnotations
+%type<t_type*>          TypeAnnotations
+%type<t_type*>          TypeAnnotationList
+%type<t_annotation*>    TypeAnnotation
+%type<char*>            TypeAnnotationValue
+%type<t_type*>          FunctionAnnotations
 
-%type<tfield>    Field
-%type<tfieldid>  FieldIdentifier
-%type<ereq>      FieldRequiredness
-%type<ttype>     FieldType
-%type<ttype>     PubsubStreamType
-%type<ttype>     PubsubStreamReturnType
-%type<tconstv>   FieldValue
-%type<tstruct>   FieldList
+%type<t_field*>         Field
+%type<t_field_id>       FieldIdentifier
+%type<t_field::e_req>   FieldRequiredness
+%type<t_type*>          FieldType
+%type<t_type*>          PubsubStreamType
+%type<t_type*>          PubsubStreamReturnType
+%type<t_const_value*>   FieldValue
+%type<t_struct*>        FieldList
 
-%type<tenum>     Enum
-%type<tenum>     EnumDefList
-%type<tenumv>    EnumDef
-%type<tenumv>    EnumValue
+%type<t_enum*>          Enum
+%type<t_enum*>          EnumDefList
+%type<t_enum_value*>    EnumDef
+%type<t_enum_value*>    EnumValue
 
-%type<tconst>    Const
-%type<tconstv>   ConstValue
-%type<tconstv>   ConstList
-%type<tconstv>   ConstListContents
-%type<tconstv>   ConstMap
-%type<tconstv>   ConstMapContents
+%type<t_const*>         Const
+%type<t_const_value*>   ConstValue
+%type<t_const_value*>   ConstList
+%type<t_const_value*>   ConstListContents
+%type<t_const_value*>   ConstMap
+%type<t_const_value*>   ConstMapContents
 
-%type<iconst>    StructHead
-%type<tstruct>   Struct
-%type<tstruct>   Xception
-%type<tservice>  Service
+%type<int64_t>          StructHead
+%type<t_struct*>        Struct
+%type<t_struct*>        Xception
+%type<t_service*>       Service
 
-%type<tfunction> Function
-%type<ttype>     FunctionType
-%type<tservice>  FunctionList
+%type<t_function*>      Function
+%type<t_type*>          FunctionType
+%type<t_service*>       FunctionList
 
-%type<tstruct>   ParamList
-%type<tstruct>   EmptyParamList
-%type<tstruct>   MaybeStreamAndParamList
-%type<tfield>    Param
+%type<t_struct*>        ParamList
+%type<t_struct*>        EmptyParamList
+%type<t_struct*>        MaybeStreamAndParamList
+%type<t_field*>         Param
 
-%type<tstruct>   Throws
-%type<tstruct>   StreamThrows
-%type<tstructpair>   ThrowsThrows
-%type<tservice>  Extends
-%type<tbool>     Oneway
+%type<t_struct*>        Throws
+%type<t_struct*>        StreamThrows
+%type<t_structpair*>    ThrowsThrows
+%type<t_service*>       Extends
+%type<bool>             Oneway
 
-%type<dtext>     CaptureDocText
-%type<id>        IntOrLiteral
+%type<char*>            CaptureDocText
+%type<char*>            IntOrLiteral
 
 %%
 
@@ -503,6 +508,7 @@ TypeDefinition:
       if (g_parse_mode == PROGRAM) {
         g_program->add_typedef($1);
       }
+      $$ = $1;
     }
 | Enum
     {
@@ -510,6 +516,7 @@ TypeDefinition:
       if (g_parse_mode == PROGRAM) {
         g_program->add_enum($1);
       }
+      $$ = $1;
     }
 | Struct
     {
@@ -517,6 +524,7 @@ TypeDefinition:
       if (g_parse_mode == PROGRAM) {
         g_program->add_struct($1);
       }
+      $$ = $1;
     }
 | Xception
     {
@@ -524,6 +532,7 @@ TypeDefinition:
       if (g_parse_mode == PROGRAM) {
         g_program->add_xception($1);
       }
+      $$ = $1;
     }
 
 Typedef:
@@ -544,9 +553,9 @@ Typedef:
     }
 
 CommaOrSemicolonOptional:
-  ','
+  ","
     {}
-| ';'
+| ";"
     {}
 |
     {}
@@ -561,7 +570,7 @@ Enum:
       assert(y_enum_name == nullptr);
       y_enum_name = $3;
     }
-  '{' EnumDefList '}' TypeAnnotations
+  "{" EnumDefList "}" TypeAnnotations
     {
       pdebug("Enum -> tok_enum tok_identifier { EnumDefList }");
       $$ = $6;
@@ -619,7 +628,7 @@ EnumDef:
     }
 
 EnumValue:
-  tok_identifier '=' tok_int_constant
+  tok_identifier "=" tok_int_constant
     {
       pdebug("EnumValue -> tok_identifier = tok_int_constant");
       if ($3 < 0 && !g_allow_neg_enum_vals) {
@@ -656,7 +665,7 @@ Const:
     {
       lineno_stack.push(LineType::kConst, yylineno);
     }
-  FieldType tok_identifier '=' ConstValue CommaOrSemicolonOptional
+  FieldType tok_identifier "=" ConstValue CommaOrSemicolonOptional
     {
       pdebug("Const -> tok_const FieldType tok_identifier = ConstValue");
       if (g_parse_mode == PROGRAM) {
@@ -726,7 +735,7 @@ ConstValue:
     }
 
 ConstList:
-  '[' ConstListContents ']'
+  "[" ConstListContents "]"
     {
       pdebug("ConstList => [ ConstListContents ]");
       $$ = $2;
@@ -747,14 +756,14 @@ ConstListContents:
     }
 
 ConstMap:
-  '{' ConstMapContents '}'
+  "{" ConstMapContents "}"
     {
       pdebug("ConstMap => { ConstMapContents }");
       $$ = $2;
     }
 
 ConstMapContents:
-  ConstMapContents ConstValue ':' ConstValue CommaOrSemicolonOptional
+  ConstMapContents ConstValue ":" ConstValue CommaOrSemicolonOptional
     {
       pdebug("ConstMapContents => ConstMapContents ConstValue CommaOrSemicolonOptional");
       $$ = $1;
@@ -782,7 +791,7 @@ Struct:
     {
         lineno_stack.push(LineType::kStruct, yylineno);
     }
-  tok_identifier '{' FieldList '}' TypeAnnotations
+  tok_identifier "{" FieldList "}" TypeAnnotations
     {
       pdebug("Struct -> tok_struct tok_identifier { FieldList }");
       $5->set_union($1 == struct_is_union);
@@ -801,7 +810,7 @@ Xception:
     {
       lineno_stack.push(LineType::kXception, yylineno);
     }
-  tok_identifier '{' FieldList '}' TypeAnnotations
+  tok_identifier "{" FieldList "}" TypeAnnotations
     {
       pdebug("Xception -> tok_xception tok_identifier { FieldList }");
       $5->set_name($3);
@@ -851,7 +860,7 @@ Service:
     {
       lineno_stack.push(LineType::kService, yylineno);
     }
-  tok_identifier Extends '{' FlagArgs FunctionList UnflagArgs '}' FunctionAnnotations
+  tok_identifier Extends "{" FlagArgs FunctionList UnflagArgs "}" FunctionAnnotations
     {
       pdebug("Service -> tok_service tok_identifier { FunctionList }");
       $$ = $7;
@@ -908,7 +917,7 @@ FunctionList:
     }
 
 Function:
-  CaptureDocText Oneway FunctionType tok_identifier '(' MaybeStreamAndParamList ')' ThrowsThrows FunctionAnnotations CommaOrSemicolonOptional
+  CaptureDocText Oneway FunctionType tok_identifier "(" MaybeStreamAndParamList ")" ThrowsThrows FunctionAnnotations CommaOrSemicolonOptional
     {
       $6->set_name(std::string($4) + "_args");
       auto* rettype = $3;
@@ -925,7 +934,7 @@ Function:
 
 
 MaybeStreamAndParamList:
-  PubsubStreamType tok_identifier ',' ParamList
+  PubsubStreamType tok_identifier "," ParamList
   {
     pdebug("MaybeStreamAndParamList -> PubsubStreamType tok ParamList");
     t_struct* paramlist = $4;
@@ -1004,13 +1013,13 @@ ThrowsThrows:
 		}
 
 Throws:
-  tok_throws '(' FieldList ')'
+  tok_throws "(" FieldList ")"
     {
       pdebug("Throws -> tok_throws ( FieldList )");
       $$ = $3;
     }
 StreamThrows:
-  tok_streamthrows '(' FieldList ')'
+  tok_streamthrows "(" FieldList ")"
     {
       pdebug("StreamThrows -> 'stream throws' ( FieldList )");
       $$ = $3;
@@ -1069,7 +1078,7 @@ Field:
     }
 
 FieldIdentifier:
-  tok_int_constant ':'
+  tok_int_constant ":"
     {
       if ($1 <= 0) {
         if (g_allow_neg_field_keys) {
@@ -1141,7 +1150,7 @@ FieldRequiredness:
     }
 
 FieldValue:
-  '=' ConstValue
+  "=" ConstValue
     {
       if (g_parse_mode == PROGRAM) {
         $$ = $2;
@@ -1179,7 +1188,7 @@ PubsubStreamType:
   }
 
 PubsubStreamReturnType:
-  FieldType ',' tok_stream FieldType
+  FieldType "," tok_stream FieldType
   {
     pdebug("PubsubStreamReturnType -> tok_stream FieldType");
     $$ = new t_stream_response($4, $1);
@@ -1335,49 +1344,49 @@ SimpleContainerType:
     }
 
 MapType:
-  tok_map '<' FieldType ',' FieldType '>'
+  tok_map "<" FieldType "," FieldType ">"
     {
       pdebug("MapType -> tok_map<FieldType, FieldType>");
       $$ = new t_map($3, $5, false);
     }
 
 HashMapType:
-  tok_hash_map '<' FieldType ',' FieldType '>'
+  tok_hash_map "<" FieldType "," FieldType ">"
     {
       pdebug("HashMapType -> tok_hash_map<FieldType, FieldType>");
       $$ = new t_map($3, $5, true);
     }
 
 SetType:
-  tok_set '<' FieldType '>'
+  tok_set "<" FieldType ">"
     {
       pdebug("SetType -> tok_set<FieldType>");
       $$ = new t_set($3, false);
     }
 
 HashSetType:
-  tok_hash_set '<' FieldType '>'
+  tok_hash_set "<" FieldType ">"
     {
       pdebug("HashSetType -> tok_hash_set<FieldType>");
       $$ = new t_set($3, true);
     }
 
 ListType:
-  tok_list '<' FieldType '>'
+  tok_list "<" FieldType ">"
     {
       pdebug("ListType -> tok_list<FieldType>");
       $$ = new t_list($3);
     }
 
 StreamType:
-  tok_stream '<' FieldType '>'
+  tok_stream "<" FieldType ">"
     {
       pdebug("StreamType -> tok_stream<FieldType>");
       $$ = new t_stream($3);
     }
 
 TypeAnnotations:
-  '(' TypeAnnotationList ')'
+  "(" TypeAnnotationList ")"
     {
       pdebug("TypeAnnotations -> ( TypeAnnotationList )");
       $$ = $2;
@@ -1412,7 +1421,7 @@ TypeAnnotation:
     }
 
 TypeAnnotationValue:
-  '=' IntOrLiteral
+  "=" IntOrLiteral
     {
       pdebug("TypeAnnotationValue -> = IntOrLiteral");
       $$ = $2;
@@ -1474,3 +1483,16 @@ IntOrLiteral:
     }
 
 %%
+
+/**
+ * Method that will be called by the generated parser upon errors.
+ */
+void apache::thrift::yy::parser::error(std::string const& message) {
+  /**
+   * Bare-bone implementation for now. Will be replaced shortly in another diff
+   * that changes to use a parsing driver instead of global functions to
+   * coordinate lexing/parsing. See:
+   * https://www.gnu.org/software/bison/manual/html_node/Calc_002b_002b-Parsing-Driver.html
+   */
+  yyerror("%s", message.c_str());
+}
