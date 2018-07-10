@@ -57,6 +57,7 @@ def positive_int(s):
         raise argparse.ArgumentTypeError(
             "Cannot convert %s to an integer." % s)
 
+
 def prob_float(s):
     """Typechecker for probability values"""
     try:
@@ -68,6 +69,7 @@ def prob_float(s):
     except ValueError:
         raise argparse.ArgumentTypeError(
             "Cannot convert %s to a float." % s)
+
 
 class FuzzerConfiguration(object):
     """Container for Fuzzer configuration options"""
@@ -433,8 +435,14 @@ class Service(object):
     def __str__(self):
         return 'Service(%s)' % self.service.__name__
 
-    def load_methods(self):
-        """Load a service's methods"""
+    def load_methods(self, exclude_ifaces=None):
+        """Load a service's methods.
+
+        If exclude_ifaces is not None, it should be a collection and only
+        the method from thrift interfaces not included in that collection will
+        be considered."""
+
+        exclude_ifaces = exclude_ifaces or []
 
         # Can only have single inheritance in thrift
         thrift_inheritance_chain = self.service.Iface.__mro__
@@ -443,6 +451,9 @@ class Service(object):
         # We iterate inheritance from parent to base so we can override
         # parent's methods with the base's one.
         for klass in thrift_inheritance_chain[::-1]:
+            if klass in exclude_ifaces:
+                continue
+
             pred = inspect.isfunction if six.PY3 else inspect.ismethod
             klass_methods = inspect.getmembers(klass, predicate=pred)
             module = inspect.getmodule(klass)
@@ -485,6 +496,7 @@ class Service(object):
         if self.methods is None:
             raise ValueError("Service.load_methods must be "
                              "called before Service.get_methods")
+
         if include is None:
             return self.methods
 
@@ -495,6 +507,7 @@ class Service(object):
             included_methods[method_name] = self.methods[method_name]
 
         return included_methods
+
 
 class FuzzerClient(object):
     """Client wrapper used to make calls based on configuration settings"""
@@ -624,6 +637,7 @@ class FuzzerClient(object):
 
         return ret
 
+
 class Timer(object):
     def __init__(self, aggregator, category, action):
         self.aggregator = aggregator
@@ -637,6 +651,7 @@ class Timer(object):
         end_time = time.time()
         time_elapsed = end_time - self.start_time
         self.aggregator.add(self.category, self.action, time_elapsed)
+
 
 class TimeAggregator(object):
     def __init__(self):
@@ -987,15 +1002,18 @@ class FuzzTester(object):
 
         self.timer.summarize()
 
+
 def run_fuzzer(config):
     fuzzer = FuzzTester(config)
     fuzzer.run()
+
 
 def fuzz_service(service, ttypes, constants):
     """Run the tester with required modules input programmatically"""
     service = Service(ttypes, constants, service)
     config = FuzzerConfiguration(service)
     run_fuzzer(config)
+
 
 if __name__ == '__main__':
     config = FuzzerConfiguration()

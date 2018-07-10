@@ -39,3 +39,10 @@ class TestServiceWrapper(unittest.TestCase):
         self.assertEqual(len(service_methods), 2)
         self.assertIsNotNone(service_methods["lookup"])
         self.assertIsNotNone(service_methods["nested"])
+
+    def testServiceExcludeIfaces(self):
+        service = Service(None, None, TestService)
+        service.load_methods(exclude_ifaces=[TestService.Iface])
+        service_methods = service.get_methods()
+
+        self.assertEqual(len(service_methods), 0)
