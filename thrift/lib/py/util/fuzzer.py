@@ -9,7 +9,6 @@ from __future__ import unicode_literals
 
 import argparse
 import collections
-import imp
 import inspect
 import json
 import logging
@@ -33,6 +32,18 @@ from thrift.transport import TTransport, TSocket, TSSLSocket, THttpClient
 from thrift.protocol import TBinaryProtocol, TCompactProtocol, THeaderProtocol
 
 from . import randomizer
+
+if six.PY3:
+    from importlib.machinery import SourceFileLoader
+
+    def load_source(name, pathname):
+        return SourceFileLoader(name, pathname).load_module()
+else:
+    import imp
+
+    def load_source(name, pathname):
+        return imp.load_source(name, pathname)
+
 
 def positive_int(s):
     """Typechecker for positive integers"""
@@ -357,11 +368,10 @@ class FuzzerConfiguration(object):
         ttypes_path = os.path.join(parent_path, 'ttypes.py')
         constants_path = os.path.join(parent_path, 'constants.py')
 
-        imp.load_source('module', parent_path)
-        ttypes_module = imp.load_source('module.ttypes', ttypes_path)
-        constants_module = imp.load_source('module.constants', constants_path)
-        service_module = imp.load_source('module.%s' % (service_name),
-                                         service_path)
+        load_source('module', parent_path)
+        ttypes_module = load_source('module.ttypes', ttypes_path)
+        constants_module = load_source('module.constants', constants_path)
+        service_module = load_source('module.%s' % (service_name), service_path)
 
         service = Service(ttypes_module, constants_module, service_module)
         service.load_methods()
