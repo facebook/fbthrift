@@ -181,7 +181,7 @@ TEST(ThriftServer, SemiFutureExceptions) {
   EXPECT_THROW(f.value(), Xception);
 
   auto vf = client.semifuture_voidThrowing().via(&base).waitVia(&base);
-  EXPECT_THROW(vf.get(), Xception);
+  EXPECT_THROW(std::move(vf).get(), Xception);
 }
 
 TEST(ThriftServer, FutureClientTest) {

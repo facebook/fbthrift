@@ -274,7 +274,7 @@ void TransportCompatibilityTest::TestObserverSendReceiveRequests() {
     EXPECT_EQ(1, client->future_add(1).get());
 
     auto future = client->future_add(2);
-    EXPECT_EQ(3, future.get());
+    EXPECT_EQ(3, std::move(future).get());
 
     EXPECT_EQ(3, client->future_sumTwoNumbers(1, 2).get());
     EXPECT_EQ(8, client->future_add(5).get());
@@ -297,7 +297,7 @@ void TransportCompatibilityTest::TestRequestResponse_Simple() {
     EXPECT_EQ(1, client->future_add(1).get());
 
     auto future = client->future_add(2);
-    EXPECT_EQ(3, future.get());
+    EXPECT_EQ(3, std::move(future).get());
 
     EXPECT_EQ(3, client->future_sumTwoNumbers(1, 2).get());
     EXPECT_EQ(8, client->future_add(5).get());
@@ -349,7 +349,7 @@ void TransportCompatibilityTest::TestRequestResponse_MultipleClients() {
     EXPECT_LE(1, client->future_add(1).get());
 
     auto future = client->future_add(2);
-    EXPECT_LE(3, future.get());
+    EXPECT_LE(3, std::move(future).get());
 
     EXPECT_EQ(3, client->future_sumTwoNumbers(1, 2).get());
     EXPECT_LE(8, client->future_add(5).get());
@@ -502,7 +502,8 @@ void TransportCompatibilityTest::
       rpcOptions.setWriteHeader("header_from_client", "2");
       rpcOptions.setWriteHeader("unexpected_exception", "1");
       auto future = client->header_future_headers(rpcOptions);
-      EXPECT_THROW(future.get(), apache::thrift::TApplicationException);
+      EXPECT_THROW(
+          std::move(future).get(), apache::thrift::TApplicationException);
     }
 
     { // Callback

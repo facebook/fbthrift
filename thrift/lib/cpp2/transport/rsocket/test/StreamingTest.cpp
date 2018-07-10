@@ -105,7 +105,7 @@ TEST_F(StreamingTest, SimpleStream) {
 TEST_F(StreamingTest, FutureSimpleStream) {
   connectToServer([this](std::unique_ptr<StreamServiceAsyncClient> client) {
     auto futureRange = client->future_range(0, 10);
-    auto stream = futureRange.get();
+    auto stream = std::move(futureRange).get();
     auto result = std::move(stream).via(&executor_);
     int j = 0;
     auto subscription = std::move(result).subscribe(
