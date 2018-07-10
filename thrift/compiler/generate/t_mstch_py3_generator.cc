@@ -164,6 +164,7 @@ mstch::map t_mstch_py3_generator::extend_program(const t_program& program) {
   }
 
   bool optionals_setting = cache_->parsed_options_.count("optionals") != 0;
+  bool stack_arguments = cache_->parsed_options_.count("stack_arguments") != 0;
   mstch::map result{
       {"returnTypes", get_return_types(program)},
       {"cppNamespaces", cppNamespaces},
@@ -171,6 +172,7 @@ mstch::map t_mstch_py3_generator::extend_program(const t_program& program) {
       {"hasServiceFunctions?", hasServiceFunctions},
       {"includeNamespaces", includeNamespaces},
       {"optionals?", optionals_setting},
+      {"stack_arguments?", stack_arguments},
   };
   add_cpp_includes(program, result);
   add_per_type_data(program, result);

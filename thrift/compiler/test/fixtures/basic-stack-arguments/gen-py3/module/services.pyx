@@ -44,7 +44,7 @@ from module.services_wrapper cimport cMyServiceFastInterface
 
 
 cdef extern from "<utility>" namespace "std":
-    cdef cFollyPromise[unique_ptr[string]] move(cFollyPromise[unique_ptr[string]])
+    cdef cFollyPromise[string] move(cFollyPromise[string])
     cdef cFollyPromise[cbool] move(
         cFollyPromise[cbool])
     cdef cFollyPromise[cFollyUnit] move(
@@ -60,10 +60,10 @@ cdef class Promise_bool:
         return inst
 
 cdef class Promise_string:
-    cdef cFollyPromise[unique_ptr[string]] cPromise
+    cdef cFollyPromise[string] cPromise
 
     @staticmethod
-    cdef create(cFollyPromise[unique_ptr[string]] cPromise):
+    cdef create(cFollyPromise[string] cPromise):
         inst = <Promise_string>Promise_string.__new__(Promise_string)
         inst.cPromise = move(cPromise)
         return inst
@@ -237,7 +237,7 @@ async def MyService_hasDataById_coro(
 cdef api void call_cy_MyService_getDataById(
     object self,
     Cpp2RequestContext* ctx,
-    cFollyPromise[unique_ptr[string]] cPromise,
+    cFollyPromise[string] cPromise,
     int64_t id
 ):
     cdef MyServiceInterface __iface
@@ -290,13 +290,13 @@ cdef api void call_cy_MyService_putDataById(
     Cpp2RequestContext* ctx,
     cFollyPromise[cFollyUnit] cPromise,
     int64_t id,
-    unique_ptr[string] data
+    string data
 ):
     cdef MyServiceInterface __iface
     __iface = self
     __promise = Promise_void.create(move(cPromise))
     arg_id = id
-    arg_data = (deref(data.get())).decode('UTF-8')
+    arg_data = data.decode('UTF-8')
     __context = None
     if __iface._pass_context_putDataById:
         __context = RequestContext.create(ctx)
@@ -347,13 +347,13 @@ cdef api void call_cy_MyService_lobDataById(
     Cpp2RequestContext* ctx,
     cFollyPromise[cFollyUnit] cPromise,
     int64_t id,
-    unique_ptr[string] data
+    string data
 ):
     cdef MyServiceInterface __iface
     __iface = self
     __promise = Promise_void.create(move(cPromise))
     arg_id = id
-    arg_data = (deref(data.get())).decode('UTF-8')
+    arg_data = data.decode('UTF-8')
     __context = None
     if __iface._pass_context_lobDataById:
         __context = RequestContext.create(ctx)
@@ -453,7 +453,7 @@ async def MyServiceFast_hasDataById_coro(
 cdef api void call_cy_MyServiceFast_getDataById(
     object self,
     Cpp2RequestContext* ctx,
-    cFollyPromise[unique_ptr[string]] cPromise,
+    cFollyPromise[string] cPromise,
     int64_t id
 ):
     cdef MyServiceFastInterface __iface
@@ -506,13 +506,13 @@ cdef api void call_cy_MyServiceFast_putDataById(
     Cpp2RequestContext* ctx,
     cFollyPromise[cFollyUnit] cPromise,
     int64_t id,
-    unique_ptr[string] data
+    string data
 ):
     cdef MyServiceFastInterface __iface
     __iface = self
     __promise = Promise_void.create(move(cPromise))
     arg_id = id
-    arg_data = (deref(data.get())).decode('UTF-8')
+    arg_data = data.decode('UTF-8')
     __context = None
     if __iface._pass_context_putDataById:
         __context = RequestContext.create(ctx)
@@ -563,13 +563,13 @@ cdef api void call_cy_MyServiceFast_lobDataById(
     Cpp2RequestContext* ctx,
     cFollyPromise[cFollyUnit] cPromise,
     int64_t id,
-    unique_ptr[string] data
+    string data
 ):
     cdef MyServiceFastInterface __iface
     __iface = self
     __promise = Promise_void.create(move(cPromise))
     arg_id = id
-    arg_data = (deref(data.get())).decode('UTF-8')
+    arg_data = data.decode('UTF-8')
     __context = None
     if __iface._pass_context_lobDataById:
         __context = RequestContext.create(ctx)

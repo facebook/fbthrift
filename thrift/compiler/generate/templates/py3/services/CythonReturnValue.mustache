@@ -30,12 +30,14 @@ to the client.
 }}{{#type:string?}}make_unique[string](<string?> result.encode('UTF-8')){{/type:string?}}{{!
 }}{{#type:binary?}}make_unique[string](<string?> result){{/type:binary?}}{{!
 }}{{#type:struct}}{{!
-  }}make_unique[{{> types/CythonCppType}}]({{!
-  }}deref((<{{> types/CythonPythonType}}?> result)._cpp_obj)){{!
+  }}{{^program:stack_arguments?}}make_unique[{{> types/CythonCppType}}]({{/program:stack_arguments?}}{{!
+    }}deref((<{{> types/CythonPythonType}}?> result)._cpp_obj){{!
+  }}{{^program:stack_arguments?}}){{/program:stack_arguments?}}{{!
 }}{{/type:struct}}{{!
 }}{{#type:container?}}{{!
-  }}make_unique[{{> types/CythonCppType}}]({{!
-  }}deref((<{{> types/CythonPythonType}}?> result)._cpp_obj)){{!
+  }}{{^program:stack_arguments?}}make_unique[{{> types/CythonCppType}}]({{/program:stack_arguments?}}{{!
+    }}deref((<{{> types/CythonPythonType}}?> result)._cpp_obj){{!
+  }}{{^program:stack_arguments?}}){{/program:stack_arguments?}}{{!
 }}{{/type:container?}}{{!
 }}{{#type:void?}}c_unit{{/type:void?}}{{!
 }}{{#type:enum}}{{> types/CythonPythonType}}_to_cpp(result){{/type:enum}}

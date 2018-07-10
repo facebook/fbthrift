@@ -43,10 +43,10 @@ id    ]() mutable {
   return future;
 }
 
-folly::Future<std::unique_ptr<std::string>> MyServiceWrapper::future_getDataById(
+folly::Future<std::string> MyServiceWrapper::future_getDataById(
   int64_t id
 ) {
-  folly::Promise<std::unique_ptr<std::string>> promise;
+  folly::Promise<std::string> promise;
   auto future = promise.getFuture();
   auto ctx = getConnectionContext();
   folly::via(
@@ -66,7 +66,7 @@ id    ]() mutable {
 
 folly::Future<folly::Unit> MyServiceWrapper::future_putDataById(
   int64_t id,
-  std::unique_ptr<std::string> data
+  const std::string& data
 ) {
   folly::Promise<folly::Unit> promise;
   auto future = promise.getFuture();
@@ -90,7 +90,7 @@ data = std::move(data)    ]() mutable {
 
 folly::Future<folly::Unit> MyServiceWrapper::future_lobDataById(
   int64_t id,
-  std::unique_ptr<std::string> data
+  const std::string& data
 ) {
   folly::Promise<folly::Unit> promise;
   auto future = promise.getFuture();
@@ -149,10 +149,10 @@ id    ]() mutable {
   return future;
 }
 
-folly::Future<std::unique_ptr<std::string>> MyServiceFastWrapper::future_getDataById(
+folly::Future<std::string> MyServiceFastWrapper::future_getDataById(
   int64_t id
 ) {
-  folly::Promise<std::unique_ptr<std::string>> promise;
+  folly::Promise<std::string> promise;
   auto future = promise.getFuture();
   auto ctx = getConnectionContext();
   folly::via(
@@ -172,7 +172,7 @@ id    ]() mutable {
 
 folly::Future<folly::Unit> MyServiceFastWrapper::future_putDataById(
   int64_t id,
-  std::unique_ptr<std::string> data
+  const std::string& data
 ) {
   folly::Promise<folly::Unit> promise;
   auto future = promise.getFuture();
@@ -196,7 +196,7 @@ data = std::move(data)    ]() mutable {
 
 folly::Future<folly::Unit> MyServiceFastWrapper::future_lobDataById(
   int64_t id,
-  std::unique_ptr<std::string> data
+  const std::string& data
 ) {
   folly::Promise<folly::Unit> promise;
   auto future = promise.getFuture();

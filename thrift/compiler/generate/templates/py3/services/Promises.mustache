@@ -30,11 +30,22 @@ cdef extern from "<utility>" namespace "std":
 {{! binary and string both map to string, which causes an
 "ambiguous overloaded method" error.  The overhead of assuming it's
 always there is low, let's do that.}}
+{{^program:stack_arguments?}}
     cdef cFollyPromise[unique_ptr[string]] move(cFollyPromise[unique_ptr[string]])
+{{/program:stack_arguments?}}
+{{#program:stack_arguments?}}
+    cdef cFollyPromise[string] move(cFollyPromise[string])
+{{/program:stack_arguments?}}
 {{#program:returnTypes}}
     {{^type:string?}}{{^type:binary?}}
-    cdef cFollyPromise[{{>CythonFieldType}}] move(
-        cFollyPromise[{{>CythonFieldType}}])
+    cdef cFollyPromise[{{!
+            }}{{^program:stack_arguments?}}{{> services/CythonFieldType}}{{/program:stack_arguments?}}{{!
+            }}{{#program:stack_arguments?}}{{> types/CythonCppType}}{{/program:stack_arguments?}}{{!
+        }}] move(
+        cFollyPromise[{{!
+                }}{{^program:stack_arguments?}}{{> services/CythonFieldType}}{{/program:stack_arguments?}}{{!
+                }}{{#program:stack_arguments?}}{{> types/CythonCppType}}{{/program:stack_arguments?}}{{!
+            }}])
     {{/type:binary?}}{{/type:string?}}
 {{/program:returnTypes}}
 {{^program:returnTypes}}
@@ -43,10 +54,16 @@ always there is low, let's do that.}}
 {{#program:returnTypes}}
 
 cdef class Promise_{{type:flat_name}}:
-    cdef cFollyPromise[{{>CythonFieldType}}] cPromise
+    cdef cFollyPromise[{{!
+            }}{{^program:stack_arguments?}}{{> services/CythonFieldType}}{{/program:stack_arguments?}}{{!
+            }}{{#program:stack_arguments?}}{{> types/CythonCppType}}{{/program:stack_arguments?}}{{!
+        }}] cPromise
 
     @staticmethod
-    cdef create(cFollyPromise[{{>CythonFieldType}}] cPromise):
+    cdef create(cFollyPromise[{{!
+            }}{{^program:stack_arguments?}}{{> services/CythonFieldType}}{{/program:stack_arguments?}}{{!
+            }}{{#program:stack_arguments?}}{{> types/CythonCppType}}{{/program:stack_arguments?}}{{!
+        }}] cPromise):
         inst = <Promise_{{type:flat_name}}>{{!
         }}Promise_{{type:flat_name}}.__new__({{!
         }}Promise_{{type:flat_name}})

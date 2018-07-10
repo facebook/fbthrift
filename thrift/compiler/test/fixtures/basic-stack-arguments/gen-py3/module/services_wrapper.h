@@ -25,16 +25,16 @@ class MyServiceWrapper : virtual public MyServiceSvIf {
     folly::Future<bool> future_hasDataById(
         int64_t id
     ) override;
-    folly::Future<std::unique_ptr<std::string>> future_getDataById(
+    folly::Future<std::string> future_getDataById(
         int64_t id
     ) override;
     folly::Future<folly::Unit> future_putDataById(
         int64_t id,
-        std::unique_ptr<std::string> data
+        const std::string& data
     ) override;
     folly::Future<folly::Unit> future_lobDataById(
         int64_t id,
-        std::unique_ptr<std::string> data
+        const std::string& data
     ) override;
 };
 
@@ -51,16 +51,16 @@ class MyServiceFastWrapper : virtual public MyServiceFastSvIf {
     folly::Future<bool> future_hasDataById(
         int64_t id
     ) override;
-    folly::Future<std::unique_ptr<std::string>> future_getDataById(
+    folly::Future<std::string> future_getDataById(
         int64_t id
     ) override;
     folly::Future<folly::Unit> future_putDataById(
         int64_t id,
-        std::unique_ptr<std::string> data
+        const std::string& data
     ) override;
     folly::Future<folly::Unit> future_lobDataById(
         int64_t id,
-        std::unique_ptr<std::string> data
+        const std::string& data
     ) override;
 };
 

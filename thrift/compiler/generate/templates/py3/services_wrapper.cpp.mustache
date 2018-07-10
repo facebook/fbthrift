@@ -66,11 +66,20 @@ defined in ServicesCallbacks, along with appropriate arguments.
 {{/service:extends?}}
 
 {{#service:functions}}
-folly::Future<{{#function:returnType}}{{> types/CppArgType}}{{/function:returnType}}>{{!
+folly::Future<{{#function:returnType}}{{!
+        }}{{^program:stack_arguments?}}{{> types/CppArgType}}{{/program:stack_arguments?}}{{!
+        }}{{#program:stack_arguments?}}{{> types/CppValueType}}{{/program:stack_arguments?}}{{!
+    }}{{/function:returnType}}>{{!
 }} {{service:name}}Wrapper::future_{{function:name}}({{#function:args}}
-  {{#field:type}}{{> types/CppArgType}}{{/field:type}} {{field:name}}{{^last?}},{{/last?}}{{#last?}}
+  {{#field:type}}{{!
+          }}{{^program:stack_arguments?}}{{> types/CppArgType}}{{/program:stack_arguments?}}{{!
+          }}{{#program:stack_arguments?}}{{> types/CppStackArgType}}{{/program:stack_arguments?}}{{!
+      }}{{/field:type}} {{field:name}}{{^last?}},{{/last?}}{{#last?}}
 {{/last?}}{{/function:args}}) {
-  {{#function:returnType}}folly::Promise<{{>types/CppArgType}}>{{/function:returnType}} promise;
+  {{#function:returnType}}folly::Promise<{{!
+          }}{{^program:stack_arguments?}}{{> types/CppArgType}}{{/program:stack_arguments?}}{{!
+          }}{{#program:stack_arguments?}}{{> types/CppValueType}}{{/program:stack_arguments?}}{{!
+      }}{{/function:returnType}}> promise;
   auto future = promise.getFuture();
   auto ctx = getConnectionContext();
   folly::via(
