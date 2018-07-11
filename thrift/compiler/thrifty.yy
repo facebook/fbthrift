@@ -294,14 +294,14 @@ Program:
         driver.params.program->set_doc($1);
       }
       */
-      clear_doctext();
+      driver.clear_doctext();
     }
 
 CaptureDocText:
     {
       if (driver.mode == apache::thrift::parsing_mode::PROGRAM) {
-        $$ = g_doctext;
-        g_doctext = NULL;
+        $$ = driver.doctext;
+        driver.doctext = NULL;
       } else {
         $$ = NULL;
       }
@@ -311,7 +311,7 @@ CaptureDocText:
 DestroyDocText:
     {
       if (driver.mode == apache::thrift::parsing_mode::PROGRAM) {
-        clear_doctext();
+        driver.clear_doctext();
       }
     }
 

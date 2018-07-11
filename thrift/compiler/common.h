@@ -194,20 +194,6 @@ void pwarning(int level, const char* fmt, ...);
  */
 [[noreturn]] void failure(const char* fmt, ...);
 
-/**
- * Clears any previously stored doctext string.
- * Also prints a warning if we are discarding information.
- */
-void clear_doctext();
-
-/**
- * Cleans up text commonly found in doxygen-like comments
- *
- * Warning: if you mix tabs and spaces in a non-uniform way,
- * you will get what you deserve.
- */
-char* clean_up_doctext(char* doctext);
-
 /** Set to true to debug docstring parsing */
 static bool dump_docs = false;
 

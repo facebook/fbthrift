@@ -331,11 +331,11 @@ st_identifier ([a-zA-Z-][\.a-zA-Z_0-9-]*)
  /* This does not show up in the parse tree. */
  /* Rather, the parser will grab it out of the global. */
   if (driver.mode == apache::thrift::parsing_mode::PROGRAM) {
-    clear_doctext();
-    g_doctext = strdup(yytext + 3);
-    g_doctext[strlen(g_doctext) - 2] = '\0';
-    g_doctext = clean_up_doctext(g_doctext);
-    g_doctext_lineno = yylineno;
+    driver.clear_doctext();
+    driver.doctext = strdup(yytext + 3);
+    driver.doctext[strlen(driver.doctext) - 2] = '\0';
+    driver.doctext = driver.clean_up_doctext(driver.doctext);
+    driver.doctext_lineno = yylineno;
   }
 }
 

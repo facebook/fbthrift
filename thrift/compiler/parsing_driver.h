@@ -48,12 +48,25 @@ class parsing_driver {
   parsing_params params;
 
   /**
+   * The last parsed doctext comment.
+   */
+  char* doctext;
+
+  /**
+   * The location of the last parsed doctext comment.
+   */
+  int doctext_lineno;
+
+  /**
    * The parsing pass that we are on. We do different things on each pass.
    */
   parsing_mode mode;
 
   explicit parsing_driver(parsing_params parse_params)
-      : params(std::move(parse_params)), mode(parsing_mode::INCLUDES) {
+      : params(std::move(parse_params)),
+        doctext(nullptr),
+        doctext_lineno(0),
+        mode(parsing_mode::INCLUDES) {
     // Set current dir, which is used in the include_file function
     curdir_ = directory_name(params.program->get_path());
   }
@@ -95,6 +108,20 @@ class parsing_driver {
    * Check the type of a default value assigned to a field.
    */
   void validate_field_value(t_field* field, t_const_value* cv);
+
+  /**
+   * Clears any previously stored doctext string.
+   * Also prints a warning if we are discarding information.
+   */
+  void clear_doctext();
+
+  /**
+   * Cleans up text commonly found in doxygen-like comments
+   *
+   * Warning: if you mix tabs and spaces in a non-uniform way,
+   * you will get what you deserve.
+   */
+  char* clean_up_doctext(char* doctext);
 
  private:
   std::string curdir_;

@@ -78,13 +78,3 @@ extern t_base_type* g_type_float;
  * The scope that holds a cache of all g_scopes for faster compilations
  */
 extern t_scope* g_scope_cache;
-
-/**
- * The last parsed doctext comment.
- */
-extern char* g_doctext;
-
-/**
- * The location of the last parsed doctext comment.
- */
-extern int g_doctext_lineno;
