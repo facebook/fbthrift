@@ -26,9 +26,10 @@
 
 #include <stdlib.h>
 #include <sys/stat.h>
-#include <sstream>
 #include <thrift/compiler/generate/t_oop_generator.h>
+#include <thrift/compiler/parse/base_types.h>
 #include <thrift/compiler/platform.h>
+#include <sstream>
 
 using std::map;
 using std::ofstream;
@@ -38,6 +39,7 @@ using std::stringstream;
 using std::vector;
 
 using namespace std;
+using namespace apache::thrift;
 
 // static const string endl = "\n";  // avoid ostream << std::endl flushes
 static const string kFieldPrefix = "__thrift_";
@@ -1827,9 +1829,10 @@ void t_cocoa_generator::generate_cocoa_service_client_implementation(ofstream& o
   for (f_iter = functions.begin(); f_iter != functions.end(); ++f_iter) {
     string funname = (*f_iter)->get_name();
 
-    t_function send_function(g_type_void,
-                             string("send_") + (*f_iter)->get_name(),
-                             (*f_iter)->get_arglist());
+    t_function send_function(
+        void_type(),
+        string("send_") + (*f_iter)->get_name(),
+        (*f_iter)->get_arglist());
 
     string argsname = (*f_iter)->get_name() + "_args";
 

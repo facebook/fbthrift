@@ -30,8 +30,6 @@
 
 #include <thrift/compiler/py/compiler.h>
 
-unique_ptr<t_base_type> g_type_void_sptr;
-
 namespace thrift {
 namespace compiler {
 namespace py {
@@ -87,45 +85,6 @@ void process(const dict& params, const object& generate_callback) {
   }
 
   program->set_include_prefix(include_prefix);
-
-  // Initialize global types
-  // Moved this one inside BOOST_PYTHON_MODULE as we need to expose it
-  // unique_ptr<t_base_type> type_void(
-  //    new t_base_type("void",   t_base_type::TYPE_VOID));
-  unique_ptr<t_base_type> type_string(
-      new t_base_type("string", t_base_type::TYPE_STRING));
-  unique_ptr<t_base_type> type_binary(
-      new t_base_type("string", t_base_type::TYPE_STRING));
-  type_binary->set_binary(true);
-  unique_ptr<t_base_type> type_slist(
-      new t_base_type("string", t_base_type::TYPE_STRING));
-  type_slist->set_string_list(true);
-  unique_ptr<t_base_type> type_bool(
-      new t_base_type("bool", t_base_type::TYPE_BOOL));
-  unique_ptr<t_base_type> type_byte(
-      new t_base_type("byte", t_base_type::TYPE_BYTE));
-  unique_ptr<t_base_type> type_i16(
-      new t_base_type("i16", t_base_type::TYPE_I16));
-  unique_ptr<t_base_type> type_i32(
-      new t_base_type("i32", t_base_type::TYPE_I32));
-  unique_ptr<t_base_type> type_i64(
-      new t_base_type("i64", t_base_type::TYPE_I64));
-  unique_ptr<t_base_type> type_double(
-      new t_base_type("double", t_base_type::TYPE_DOUBLE));
-  unique_ptr<t_base_type> type_float(
-      new t_base_type("float", t_base_type::TYPE_FLOAT));
-  // Assign pointers to actual global variables
-  // g_type_void = type_void.get();
-  g_type_string = type_string.get();
-  g_type_binary = type_binary.get();
-  g_type_slist = type_slist.get();
-  g_type_bool = type_bool.get();
-  g_type_byte = type_byte.get();
-  g_type_i16 = type_i16.get();
-  g_type_i32 = type_i32.get();
-  g_type_i64 = type_i64.get();
-  g_type_double = type_double.get();
-  g_type_float = type_float.get();
 
   // Parse it!
   g_scope_cache = program->scope();

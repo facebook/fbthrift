@@ -29,9 +29,10 @@
 #include <sstream>
 
 #include <thrift/compiler/generate/t_oop_generator.h>
+#include <thrift/compiler/parse/base_types.h>
 #include <thrift/compiler/platform.h>
 using namespace std;
-
+using namespace apache::thrift;
 
 /**
  * Ruby code generator.
@@ -415,7 +416,7 @@ string t_rb_generator::render_const_value(
         throw "type error: " + type->get_name() + " has no field " + v_iter->first->get_string();
       }
       out << indent();
-      out << render_const_value(g_type_string, v_iter->first);
+      out << render_const_value(string_type(), v_iter->first);
       out << " => ";
       out << render_const_value(field_type, v_iter->second);
       out << "," << endl;

@@ -34,21 +34,6 @@
 std::map<std::string, t_program*> program_cache;
 
 /**
- * Global types
- */
-t_base_type* g_type_void;
-t_base_type* g_type_string;
-t_base_type* g_type_binary;
-t_base_type* g_type_slist;
-t_base_type* g_type_bool;
-t_base_type* g_type_byte;
-t_base_type* g_type_i16;
-t_base_type* g_type_i32;
-t_base_type* g_type_i64;
-t_base_type* g_type_double;
-t_base_type* g_type_float;
-
-/**
  * Global scope cache for faster compilations
  */
 t_scope* g_scope_cache;

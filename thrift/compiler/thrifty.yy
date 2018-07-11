@@ -34,6 +34,7 @@
 #include <stack>
 #include <utility>
 #include "thrift/compiler/parse/t_scope.h"
+#include "thrift/compiler/parse/base_types.h"
 
 #include "thrift/compiler/parsing_driver.h"
 
@@ -86,6 +87,7 @@ class LinenoStack {
   std::stack<std::pair<LineType, int>> stack_;
 };
 LinenoStack lineno_stack;
+
 %}
 
 %code requires
@@ -599,7 +601,7 @@ EnumDefList:
         const_val->set_enum($$);
         const_val->set_enum_value($2);
         t_const* tconst = new t_const(
-            driver.params.program, g_type_i32, $2->get_name(), const_val);
+            driver.params.program, i32_type(), $2->get_name(), const_val);
 
         assert(y_enum_name != nullptr);
         string type_prefix = string(y_enum_name) + ".";
@@ -1180,7 +1182,7 @@ FunctionType:
 | tok_void
     {
       driver.debug("FunctionType -> tok_void");
-      $$ = g_type_void;
+      $$ = void_type();
     }
 
 PubsubStreamType:
@@ -1256,52 +1258,52 @@ SimpleBaseType:
   tok_string
     {
       driver.debug("BaseType -> tok_string");
-      $$ = g_type_string;
+      $$ = string_type();
     }
 | tok_binary
     {
       driver.debug("BaseType -> tok_binary");
-      $$ = g_type_binary;
+      $$ = binary_type();
     }
 | tok_slist
     {
       driver.debug("BaseType -> tok_slist");
-      $$ = g_type_slist;
+      $$ = slist_type();
     }
 | tok_bool
     {
       driver.debug("BaseType -> tok_bool");
-      $$ = g_type_bool;
+      $$ = bool_type();
     }
 | tok_byte
     {
       driver.debug("BaseType -> tok_byte");
-      $$ = g_type_byte;
+      $$ = byte_type();
     }
 | tok_i16
     {
       driver.debug("BaseType -> tok_i16");
-      $$ = g_type_i16;
+      $$ = i16_type();
     }
 | tok_i32
     {
       driver.debug("BaseType -> tok_i32");
-      $$ = g_type_i32;
+      $$ = i32_type();
     }
 | tok_i64
     {
       driver.debug("BaseType -> tok_i64");
-      $$ = g_type_i64;
+      $$ = i64_type();
     }
 | tok_double
     {
       driver.debug("BaseType -> tok_double");
-      $$ = g_type_double;
+      $$ = double_type();
     }
 | tok_float
     {
       driver.debug("BaseType -> tok_float");
-      $$ = g_type_float;
+      $$ = float_type();
     }
 
 ContainerType: SimpleContainerType TypeAnnotations

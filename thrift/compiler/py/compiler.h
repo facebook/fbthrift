@@ -36,8 +36,6 @@ using namespace boost::python::api;
 using namespace thrift::compiler::py::conv;
 } // namespace
 
-extern unique_ptr<t_base_type> g_type_void_sptr;
-
 namespace thrift {
 namespace compiler {
 namespace py {

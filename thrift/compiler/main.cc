@@ -642,21 +642,6 @@ int main(int argc, char** argv) {
 
   program->set_include_prefix(include_prefix);
 
-  // Initialize global types
-  g_type_void = new t_base_type("void", t_base_type::TYPE_VOID);
-  g_type_string = new t_base_type("string", t_base_type::TYPE_STRING);
-  g_type_binary = new t_base_type("string", t_base_type::TYPE_STRING);
-  ((t_base_type*)g_type_binary)->set_binary(true);
-  g_type_slist = new t_base_type("string", t_base_type::TYPE_STRING);
-  ((t_base_type*)g_type_slist)->set_string_list(true);
-  g_type_bool = new t_base_type("bool", t_base_type::TYPE_BOOL);
-  g_type_byte = new t_base_type("byte", t_base_type::TYPE_BYTE);
-  g_type_i16 = new t_base_type("i16", t_base_type::TYPE_I16);
-  g_type_i32 = new t_base_type("i32", t_base_type::TYPE_I32);
-  g_type_i64 = new t_base_type("i64", t_base_type::TYPE_I64);
-  g_type_double = new t_base_type("double", t_base_type::TYPE_DOUBLE);
-  g_type_float = new t_base_type("float", t_base_type::TYPE_FLOAT);
-
   // Parse it!
   g_scope_cache = program->scope();
   std::set<std::string> already_parsed_paths;
@@ -705,21 +690,6 @@ int main(int argc, char** argv) {
     std::cerr << e.what() << std::endl;
     return 1;
   }
-
-  // Clean up. Who am I kidding... this program probably orphans heap memory
-  // all over the place, but who cares because it is about to exit and it is
-  // all referenced and used by this wacky parse tree up until now anyways.
-
-  delete program;
-  delete g_type_void;
-  delete g_type_string;
-  delete g_type_bool;
-  delete g_type_byte;
-  delete g_type_i16;
-  delete g_type_i32;
-  delete g_type_i64;
-  delete g_type_double;
-  delete g_type_float;
 
   // Finished
   if (success) {

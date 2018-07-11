@@ -24,9 +24,11 @@
 #include <vector>
 
 #include <thrift/compiler/generate/t_oop_generator.h>
+#include <thrift/compiler/parse/base_types.h>
 #include <thrift/compiler/platform.h>
 
 using namespace std;
+using namespace apache::thrift;
 
 /**
  * Hack code generator.
@@ -1273,7 +1275,7 @@ string t_hack_generator::render_const_value(
       out << indent();
       if (map_construct_) {
         if (v != nullptr) {
-          out << render_const_value(g_type_string, k);
+          out << render_const_value(string_type(), k);
           out << " => ";
           out << render_const_value((*f_iter)->get_type(), v);
           out << "," << endl;
@@ -4635,10 +4637,10 @@ void t_hack_generator::generate_deserialize_container(
   string vtype = namer("_vtype");
   string etype = namer("_etype");
 
-  t_field fsize(g_type_i32, size);
-  t_field fktype(g_type_byte, ktype);
-  t_field fvtype(g_type_byte, vtype);
-  t_field fetype(g_type_byte, etype);
+  t_field fsize(i32_type(), size);
+  t_field fktype(byte_type(), ktype);
+  t_field fvtype(byte_type(), vtype);
+  t_field fetype(byte_type(), etype);
 
   out << indent() << "$" << size << " = 0;" << endl;
 

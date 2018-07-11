@@ -59,22 +59,6 @@ extern FILE* yyin;
 extern std::map<std::string, t_program*> program_cache;
 
 /**
- * Global types for the parser to be able to reference
- */
-
-extern t_base_type* g_type_void;
-extern t_base_type* g_type_string;
-extern t_base_type* g_type_binary;
-extern t_base_type* g_type_slist;
-extern t_base_type* g_type_bool;
-extern t_base_type* g_type_byte;
-extern t_base_type* g_type_i16;
-extern t_base_type* g_type_i32;
-extern t_base_type* g_type_i64;
-extern t_base_type* g_type_double;
-extern t_base_type* g_type_float;
-
-/**
  * The scope that holds a cache of all g_scopes for faster compilations
  */
 extern t_scope* g_scope_cache;

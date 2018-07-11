@@ -342,12 +342,6 @@ BOOST_PYTHON_MODULE(frontend) {
   // Register a string vector as a python class
   class_<vector<std::string>>("string_vec")
       .def(vector_indexing_suite<vector<std::string>>());
-
-  // instantiate and expose g_type_void
-  g_type_void_sptr.reset(new t_base_type("void", t_base_type::TYPE_VOID));
-  g_type_void = g_type_void_sptr.get();
-  // TODO should we transfer ownership to python?
-  scope().attr("g_type_void") = ptr(g_type_void);
 }
 
 } // namespace py

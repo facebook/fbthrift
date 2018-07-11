@@ -23,11 +23,12 @@
 #include <vector>
 
 #include <sys/types.h>
-#include <sstream>
 #include <thrift/compiler/generate/t_oop_generator.h>
+#include <thrift/compiler/parse/base_types.h>
 #include <thrift/compiler/platform.h>
+#include <sstream>
 using namespace std;
-
+using namespace apache::thrift;
 
 /**
  * OCaml code generator.
@@ -1267,10 +1268,10 @@ void t_ocaml_generator::generate_deserialize_container(ofstream &out,
   string etype = tmp("_etype");
   string con = tmp("_con");
 
-  t_field fsize(g_type_i32, size);
-  t_field fktype(g_type_byte, ktype);
-  t_field fvtype(g_type_byte, vtype);
-  t_field fetype(g_type_byte, etype);
+  t_field fsize(i32_type(), size);
+  t_field fktype(byte_type(), ktype);
+  t_field fvtype(byte_type(), vtype);
+  t_field fetype(byte_type(), etype);
 
   out << endl;
   indent_up();

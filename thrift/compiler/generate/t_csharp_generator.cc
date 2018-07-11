@@ -25,10 +25,11 @@
 #include <stdlib.h>
 #include <sstream>
 
-#include <thrift/compiler/platform.h>
 #include <thrift/compiler/generate/t_oop_generator.h>
+#include <thrift/compiler/parse/base_types.h>
+#include <thrift/compiler/platform.h>
 using namespace std;
-
+using namespace apache::thrift;
 
 class t_csharp_generator : public t_oop_generator
 {
@@ -912,7 +913,8 @@ void t_csharp_generator::generate_service_client(t_service* tservice) {
     scope_down(f_service_);
     f_service_ << endl;
 
-    t_function send_function(g_type_void,
+    t_function send_function(
+        void_type(),
         string("send_") + (*f_iter)->get_name(),
         (*f_iter)->get_arglist());
 

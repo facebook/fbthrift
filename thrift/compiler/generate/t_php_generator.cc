@@ -20,13 +20,15 @@
 #include <iterator>
 #include <vector>
 
-#include <sstream>
 #include <stdlib.h>
 #include <sys/stat.h>
 #include <thrift/compiler/generate/t_oop_generator.h>
+#include <thrift/compiler/parse/base_types.h>
 #include <thrift/compiler/platform.h>
+#include <sstream>
 
 using namespace std;
+using namespace apache::thrift;
 /**
  * PHP code generator.
  *
@@ -1002,7 +1004,7 @@ string t_php_generator::render_const_value(
         throw "type error: " + type->get_name() + " has no field " + v_iter->first->get_string();
       }
       out << indent();
-      out << render_const_value(g_type_string, v_iter->first);
+      out << render_const_value(string_type(), v_iter->first);
       out << " => ";
       out << render_const_value(field_type, v_iter->second);
       out << "," << endl;
@@ -1350,8 +1352,8 @@ void t_php_generator::generate_php_struct_reader(ofstream& out,
 
     // Read beginning field marker
     if (binary_inline_) {
-      t_field fftype(g_type_byte, "ftype");
-      t_field ffid(g_type_i16, "fid");
+      t_field fftype(byte_type(), "ftype");
+      t_field ffid(i16_type(), "fid");
       generate_deserialize_field(out, namer, &fftype);
       out <<
         indent() << "if ($ftype == TType::STOP) {" << endl <<
@@ -1761,9 +1763,9 @@ void t_php_generator::generate_service_processor(t_service* tservice,
     endl;
 
   if (binary_inline_) {
-    t_field ffname(g_type_string, "fname");
-    t_field fmtype(g_type_byte, "mtype");
-    t_field fseqid(g_type_i32, "rseqid");
+    t_field ffname(string_type(), "fname");
+    t_field fmtype(byte_type(), "mtype");
+    t_field fseqid(i32_type(), "rseqid");
     generate_deserialize_field(f_service_, namer, &ffname, "", true);
     generate_deserialize_field(f_service_, namer, &fmtype, "", true);
     generate_deserialize_field(f_service_, namer, &fseqid, "", true);
@@ -2657,8 +2659,8 @@ void t_php_generator::_generate_service_client(
         endl;
 
       if (binary_inline_) {
-        t_field ffname(g_type_string, "fname");
-        t_field fseqid(g_type_i32, "rseqid");
+        t_field ffname(string_type(), "fname");
+        t_field fseqid(i32_type(), "rseqid");
         out <<
           indent() << "$ver = unpack('N', $this->input_->readAll(4));" << endl <<
           indent() << "$ver = $ver[1];" << endl <<
@@ -2964,10 +2966,10 @@ void t_php_generator::generate_deserialize_container(ofstream& out,
   string vtype = namer("_vtype");
   string etype = namer("_etype");
 
-  t_field fsize(g_type_i32, size);
-  t_field fktype(g_type_byte, ktype);
-  t_field fvtype(g_type_byte, vtype);
-  t_field fetype(g_type_byte, etype);
+  t_field fsize(i32_type(), size);
+  t_field fktype(byte_type(), ktype);
+  t_field fvtype(byte_type(), vtype);
+  t_field fetype(byte_type(), etype);
 
   out <<
     indent() << "$" << prefix << " = array();" << endl <<

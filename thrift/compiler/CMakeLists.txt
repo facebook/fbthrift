@@ -23,6 +23,7 @@ add_library(
   parse/t_program.cc
   parse/t_type.cc
   parse/t_typedef.cc
+  parse/base_types.cc
 )
 target_link_libraries(compiler_ast ${OPENSSL_LIBRARIES})
 

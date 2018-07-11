@@ -29,9 +29,10 @@
 
 #include <stdexcept>
 
+#include <thrift/compiler/parse/base_types.h>
 #include <thrift/compiler/platform.h>
 using namespace std;
-
+using namespace apache::thrift;
 
 /**
  * Prepares for file generation by opening up the necessary file output
@@ -2288,9 +2289,10 @@ void t_java_generator::generate_service_client(t_service* tservice) {
     scope_down(f_service_);
     f_service_ << endl;
 
-    t_function send_function(g_type_void,
-                             string("send_") + (*f_iter)->get_name(),
-                             (*f_iter)->get_arglist());
+    t_function send_function(
+        void_type(),
+        string("send_") + (*f_iter)->get_name(),
+        (*f_iter)->get_arglist());
 
     string argsname = (*f_iter)->get_name() + "_args";
 
