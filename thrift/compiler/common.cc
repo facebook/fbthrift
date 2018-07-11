@@ -39,11 +39,6 @@ std::map<std::string, t_program*> program_cache;
 t_scope* g_scope_cache;
 
 /**
- * Current directory of file being parsed
- */
-string g_curdir;
-
-/**
  * Current file being parsed
  */
 string g_curpath;
@@ -322,13 +317,4 @@ bool validate_throws(t_struct* throws) {
     }
   }
   return true;
-}
-
-// TODO: Add a description of the function
-void override_annotations(
-    std::map<std::string, std::string>& where,
-    const std::map<std::string, std::string>& from) {
-  for (const auto& kvp : from) {
-    where[kvp.first] = kvp.second;
-  }
 }

@@ -105,11 +105,6 @@ using namespace std;
 }
 
 /**
- * Current directory of file being parsed
- */
-extern string g_curdir;
-
-/**
  * Current file being parsed
  */
 extern string g_curpath;
@@ -219,9 +214,5 @@ void parse(
     apache::thrift::parsing_params params,
     std::set<std::string>& already_parsed_paths,
     std::set<std::string> circular_deps = std::set<std::string>());
-
-void override_annotations(
-    std::map<std::string, std::string>& where,
-    const std::map<std::string, std::string>& from);
 
 #endif
