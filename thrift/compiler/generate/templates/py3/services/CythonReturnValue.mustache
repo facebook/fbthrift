@@ -27,8 +27,16 @@ to the client.
 }}{{#type:i64?}}<int64_t> result{{/type:i64?}}{{!
 }}{{#type:double?}}<double> result{{/type:double?}}{{!
 }}{{#type:float?}}<float> result{{/type:float?}}{{!
-}}{{#type:string?}}make_unique[string](<string?> result.encode('UTF-8')){{/type:string?}}{{!
-}}{{#type:binary?}}make_unique[string](<string?> result){{/type:binary?}}{{!
+}}{{#type:string?}}{{!
+  }}{{^program:stack_arguments?}}make_unique[string]({{/program:stack_arguments?}}{{!
+    }}<string?> result.encode('UTF-8'){{!
+  }}{{^program:stack_arguments?}}){{/program:stack_arguments?}}{{!
+}}{{/type:string?}}{{!
+}}{{#type:binary?}}{{!
+  }}{{^program:stack_arguments?}}make_unique[string]({{/program:stack_arguments?}}{{!
+    }}<string?> result{{!
+  }}{{^program:stack_arguments?}}){{/program:stack_arguments?}}{{!
+}}{{/type:binary?}}{{!
 }}{{#type:struct}}{{!
   }}{{^program:stack_arguments?}}make_unique[{{> types/CythonCppType}}]({{/program:stack_arguments?}}{{!
     }}deref((<{{> types/CythonPythonType}}?> result)._cpp_obj){{!

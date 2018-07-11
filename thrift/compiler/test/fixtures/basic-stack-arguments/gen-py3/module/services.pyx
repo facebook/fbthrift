@@ -283,7 +283,7 @@ async def MyService_getDataById_coro(
             cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
         ))
     else:
-        promise.cPromise.setValue(make_unique[string](<string?> result.encode('UTF-8')))
+        promise.cPromise.setValue(<string?> result.encode('UTF-8'))
 
 cdef api void call_cy_MyService_putDataById(
     object self,
@@ -499,7 +499,7 @@ async def MyServiceFast_getDataById_coro(
             cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
         ))
     else:
-        promise.cPromise.setValue(make_unique[string](<string?> result.encode('UTF-8')))
+        promise.cPromise.setValue(<string?> result.encode('UTF-8'))
 
 cdef api void call_cy_MyServiceFast_putDataById(
     object self,
