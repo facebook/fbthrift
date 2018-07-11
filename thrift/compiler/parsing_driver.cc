@@ -114,5 +114,173 @@ std::string parsing_driver::include_file(const std::string& filename) {
   }
 }
 
+void parsing_driver::validate_const_rec(
+    std::string name,
+    t_type* type,
+    t_const_value* value) {
+  if (type->is_void()) {
+    throw string("type error: cannot declare a void const: " + name);
+  }
+
+  auto as_struct = dynamic_cast<t_struct*>(type);
+  assert((as_struct != nullptr) == type->is_struct());
+  if (type->is_base_type()) {
+    t_base_type::t_base tbase = ((t_base_type*)type)->get_base();
+    switch (tbase) {
+      case t_base_type::TYPE_STRING:
+        if (value->get_type() != t_const_value::CV_STRING) {
+          throw string(
+              "type error: const \"" + name + "\" was declared as string");
+        }
+        break;
+      case t_base_type::TYPE_BOOL:
+        if (value->get_type() != t_const_value::CV_BOOL &&
+            value->get_type() != t_const_value::CV_INTEGER) {
+          throw string(
+              "type error: const \"" + name + "\" was declared as bool");
+        }
+        break;
+      case t_base_type::TYPE_BYTE:
+        if (value->get_type() != t_const_value::CV_INTEGER) {
+          throw string(
+              "type error: const \"" + name + "\" was declared as byte");
+        }
+        break;
+      case t_base_type::TYPE_I16:
+        if (value->get_type() != t_const_value::CV_INTEGER) {
+          throw string(
+              "type error: const \"" + name + "\" was declared as i16");
+        }
+        break;
+      case t_base_type::TYPE_I32:
+        if (value->get_type() != t_const_value::CV_INTEGER) {
+          throw string(
+              "type error: const \"" + name + "\" was declared as i32");
+        }
+        break;
+      case t_base_type::TYPE_I64:
+        if (value->get_type() != t_const_value::CV_INTEGER) {
+          throw string(
+              "type error: const \"" + name + "\" was declared as i64");
+        }
+        break;
+      case t_base_type::TYPE_DOUBLE:
+      case t_base_type::TYPE_FLOAT:
+        if (value->get_type() != t_const_value::CV_INTEGER &&
+            value->get_type() != t_const_value::CV_DOUBLE) {
+          throw string(
+              "type error: const \"" + name + "\" was declared as double");
+        }
+        break;
+      default:
+        throw string(
+            "compiler error: no const of base type " +
+            t_base_type::t_base_name(tbase) + name);
+    }
+  } else if (type->is_enum()) {
+    if (value->get_type() != t_const_value::CV_INTEGER) {
+      throw string("type error: const \"" + name + "\" was declared as enum");
+    }
+    const auto as_enum = dynamic_cast<t_enum*>(type);
+    assert(as_enum != nullptr);
+    const auto enum_val = as_enum->find_value(value->get_integer());
+    if (enum_val == nullptr) {
+      pwarning(
+          0,
+          "type error: const \"%s\" was declared as enum \"%s\" with a value"
+          " not of that enum",
+          name.c_str(),
+          type->get_name().c_str());
+    }
+  } else if (as_struct && as_struct->is_union()) {
+    if (value->get_type() != t_const_value::CV_MAP) {
+      throw string("type error: const \"" + name + "\" was declared as union");
+    }
+    auto const& map = value->get_map();
+    if (map.size() > 1) {
+      throw string(
+          "type error: const \"" + name +
+          "\" is a union and can't "
+          "have more than one field set");
+    }
+    if (!map.empty()) {
+      if (map.front().first->get_type() != t_const_value::CV_STRING) {
+        throw string(
+            "type error: const \"" + name +
+            "\" is a union and member "
+            "names must be a string");
+      }
+      auto const& member_name = map.front().first->get_string();
+      auto const& member = as_struct->get_member(member_name);
+      if (!member) {
+        throw string(
+            "type error: no member named \"" + member_name +
+            "\" for "
+            "union const \"" +
+            name + "\"");
+      }
+    }
+  } else if (type->is_struct() || type->is_xception()) {
+    if (value->get_type() != t_const_value::CV_MAP) {
+      throw string(
+          "type error: const \"" + name + "\" was declared as " +
+          "struct/exception");
+    }
+    const vector<t_field*>& fields = ((t_struct*)type)->get_members();
+    vector<t_field*>::const_iterator f_iter;
+
+    const vector<pair<t_const_value*, t_const_value*>>& val = value->get_map();
+    vector<pair<t_const_value*, t_const_value*>>::const_iterator v_iter;
+    for (v_iter = val.begin(); v_iter != val.end(); ++v_iter) {
+      if (v_iter->first->get_type() != t_const_value::CV_STRING) {
+        throw string("type error: " + name + " struct key must be string");
+      }
+      t_type* field_type = nullptr;
+      for (f_iter = fields.begin(); f_iter != fields.end(); ++f_iter) {
+        if ((*f_iter)->get_name() == v_iter->first->get_string()) {
+          field_type = (*f_iter)->get_type();
+        }
+      }
+      if (field_type == nullptr) {
+        throw string(
+            "type error: " + type->get_name() + " has no field " +
+            v_iter->first->get_string());
+      }
+
+      validate_const_rec(
+          name + "." + v_iter->first->get_string(), field_type, v_iter->second);
+    }
+  } else if (type->is_map()) {
+    t_type* k_type = ((t_map*)type)->get_key_type();
+    t_type* v_type = ((t_map*)type)->get_val_type();
+    const vector<pair<t_const_value*, t_const_value*>>& val = value->get_map();
+    vector<pair<t_const_value*, t_const_value*>>::const_iterator v_iter;
+    for (v_iter = val.begin(); v_iter != val.end(); ++v_iter) {
+      validate_const_rec(name + "<key>", k_type, v_iter->first);
+      validate_const_rec(name + "<val>", v_type, v_iter->second);
+    }
+  } else if (type->is_list() || type->is_set()) {
+    t_type* e_type;
+    if (type->is_list()) {
+      e_type = ((t_list*)type)->get_elem_type();
+    } else {
+      e_type = ((t_set*)type)->get_elem_type();
+    }
+    const vector<t_const_value*>& val = value->get_list();
+    vector<t_const_value*>::const_iterator v_iter;
+    for (v_iter = val.begin(); v_iter != val.end(); ++v_iter) {
+      validate_const_rec(name + "<elem>", e_type, *v_iter);
+    }
+  }
+}
+
+void parsing_driver::validate_const_type(t_const* c) {
+  validate_const_rec(c->get_name(), c->get_type(), c->get_value());
+}
+
+void parsing_driver::validate_field_value(t_field* field, t_const_value* cv) {
+  validate_const_rec(field->get_name(), field->get_type(), cv);
+}
+
 } // namespace thrift
 } // namespace apache

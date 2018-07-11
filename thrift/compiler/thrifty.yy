@@ -674,7 +674,7 @@ Const:
       if (driver.mode == apache::thrift::parsing_mode::PROGRAM) {
         $$ = new t_const(driver.params.program, $3, $4, $6);
         $$->set_lineno(lineno_stack.pop(LineType::kConst));
-        validate_const_type($$);
+        driver.validate_const_type($$);
         g_scope_cache->add_constant(driver.params.program->get_name() + "." + $4, $$);
       } else {
         $$ = NULL;
@@ -1060,7 +1060,7 @@ Field:
       $$->set_req($3);
       $$->set_lineno(lineno_stack.pop(LineType::kField));
       if ($6 != NULL) {
-        validate_field_value($$, $6);
+        driver.validate_field_value($$, $6);
         $$->set_value($6);
       }
       if ($1 != NULL) {
