@@ -87,10 +87,10 @@ void process(const dict& params, const object& generate_callback) {
   program->set_include_prefix(include_prefix);
 
   // Parse it!
-  g_scope_cache = program->scope();
   std::set<std::string> already_parsed_paths;
   apache::thrift::parsing_params parsing_params{};
   parsing_params.program = program.get();
+  parsing_params.scope_cache = program.get()->scope();
   parsing_params.debug = (g_debug != 0);
   parsing_params.verbose = (g_verbose != 0);
   parsing_params.warn = g_warn;

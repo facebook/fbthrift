@@ -643,10 +643,10 @@ int main(int argc, char** argv) {
   program->set_include_prefix(include_prefix);
 
   // Parse it!
-  g_scope_cache = program->scope();
   std::set<std::string> already_parsed_paths;
   apache::thrift::parsing_params params{};
   params.program = program;
+  params.scope_cache = program->scope();
   params.debug = (g_debug != 0);
   params.verbose = (g_verbose != 0);
   params.warn = g_warn;

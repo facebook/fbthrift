@@ -50,8 +50,3 @@ extern FILE* yyin;
  * A global map that holds a pointer to all programs already cached
  */
 extern std::map<std::string, t_program*> program_cache;
-
-/**
- * The scope that holds a cache of all g_scopes for faster compilations
- */
-extern t_scope* g_scope_cache;

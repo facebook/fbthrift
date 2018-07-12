@@ -492,7 +492,7 @@ Definition:
     {
       driver.debug("Definition -> TypeDefinition");
       if (driver.mode == apache::thrift::parsing_mode::PROGRAM) {
-        g_scope_cache->add_type(driver.params.program->get_name() + "." + $1->get_name(), $1);
+        driver.params.scope_cache->add_type(driver.params.program->get_name() + "." + $1->get_name(), $1);
       }
       $$ = $1;
     }
@@ -500,7 +500,7 @@ Definition:
     {
       driver.debug("Definition -> Service");
       if (driver.mode == apache::thrift::parsing_mode::PROGRAM) {
-        g_scope_cache->add_service(driver.params.program->get_name() + "." + $1->get_name(), $1);
+        driver.params.scope_cache->add_service(driver.params.program->get_name() + "." + $1->get_name(), $1);
         driver.params.program->add_service($1);
       }
       $$ = $1;
@@ -548,7 +548,7 @@ Typedef:
   FieldType tok_identifier TypeAnnotations
     {
       driver.debug("TypeDef -> tok_typedef FieldType tok_identifier");
-      t_typedef *td = new t_typedef(driver.params.program, $3, $4, g_scope_cache);
+      t_typedef *td = new t_typedef(driver.params.program, $3, $4, driver.params.scope_cache);
       $$ = td;
       $$->set_lineno(lineno_stack.pop(LineType::kTypedef));
       if ($5 != NULL) {
@@ -605,9 +605,9 @@ EnumDefList:
 
         assert(y_enum_name != nullptr);
         string type_prefix = string(y_enum_name) + ".";
-        g_scope_cache->add_constant(
+        driver.params.scope_cache->add_constant(
             driver.params.program->get_name() + "." + $2->get_name(), tconst);
-        g_scope_cache->add_constant(
+        driver.params.scope_cache->add_constant(
             driver.params.program->get_name() + "." + type_prefix + $2->get_name(), tconst);
       }
     }
@@ -677,7 +677,7 @@ Const:
         $$ = new t_const(driver.params.program, $3, $4, $6);
         $$->set_lineno(lineno_stack.pop(LineType::kConst));
         driver.validate_const_type($$);
-        g_scope_cache->add_constant(driver.params.program->get_name() + "." + $4, $$);
+        driver.params.scope_cache->add_constant(driver.params.program->get_name() + "." + $4, $$);
       } else {
         $$ = NULL;
       }
@@ -713,9 +713,9 @@ ConstValue:
 | tok_identifier
     {
       driver.debug("ConstValue => tok_identifier");
-      t_const* constant = g_scope_cache->get_constant($1);
+      t_const* constant = driver.params.scope_cache->get_constant($1);
       if (!constant) {
-        constant = g_scope_cache->get_constant(driver.params.program->get_name() + "." + $1);
+        constant = driver.params.scope_cache->get_constant(driver.params.program->get_name() + "." + $1);
       }
       if (constant != nullptr) {
         // Copy const_value to perform isolated mutations
@@ -893,9 +893,9 @@ Extends:
       driver.debug("Extends -> tok_extends tok_identifier");
       $$ = NULL;
       if (driver.mode == apache::thrift::parsing_mode::PROGRAM) {
-        $$ = g_scope_cache->get_service($2);
+        $$ = driver.params.scope_cache->get_service($2);
         if (!$$) {
-          $$ = g_scope_cache->get_service(driver.params.program->get_name() + "." + $2);
+          $$ = driver.params.scope_cache->get_service(driver.params.program->get_name() + "." + $2);
         }
         if ($$ == NULL) {
           driver.yyerror("Service \"%s\" has not been defined.", $2);
@@ -1215,9 +1215,9 @@ FieldType:
         $$ = NULL;
       } else {
         // Lookup the identifier in the current scope
-        $$ = g_scope_cache->get_type($1);
+        $$ = driver.params.scope_cache->get_type($1);
         if (!$$) {
-          $$ = g_scope_cache->get_type(driver.params.program->get_name() + "." + $1);
+          $$ = driver.params.scope_cache->get_type(driver.params.program->get_name() + "." + $1);
         }
         if ($$ == NULL || $2 != NULL) {
           /*
@@ -1225,7 +1225,7 @@ FieldType:
              declared.  Either way allow it and we'll figure it out
              during generation.
            */
-          $$ = new t_typedef(driver.params.program, $1, g_scope_cache);
+          $$ = new t_typedef(driver.params.program, $1, driver.params.scope_cache);
           if ($2 != NULL) {
             $$->annotations_ = $2->annotations_;
             delete $2;

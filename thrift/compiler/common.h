@@ -53,6 +53,11 @@ struct parsing_params {
    */
   t_program* program;
 
+  /**
+   * Global scope cache for faster compilations
+   */
+  t_scope* scope_cache;
+
   bool debug = false;
   bool verbose = false;
   int warn = 1;

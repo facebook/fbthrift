@@ -34,11 +34,6 @@
 std::map<std::string, t_program*> program_cache;
 
 /**
- * Global scope cache for faster compilations
- */
-t_scope* g_scope_cache;
-
-/**
  * Current file being parsed
  */
 string g_curpath;
