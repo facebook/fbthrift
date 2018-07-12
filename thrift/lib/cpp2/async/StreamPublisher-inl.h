@@ -28,79 +28,118 @@ class StreamPublisherState : public yarpl::observable::Observable<T>,
                              public yarpl::observable::Subscription {
  public:
   StreamPublisherState(
-      folly::Function<void()> onCanceled,
-      folly::Executor::KeepAlive<> cancelExecutor)
-      : state_(folly::in_place, std::move(onCanceled)),
-        cancelExecutor_(std::move(cancelExecutor)) {}
+      folly::Function<void()> onCompleteOrCanceled,
+      folly::Executor::KeepAlive<> executor)
+      : state_(folly::in_place, std::move(executor)),
+        onCompleteOrCanceled_(std::move(onCompleteOrCanceled)) {}
 
   std::shared_ptr<yarpl::observable::Subscription> subscribe(
       std::shared_ptr<yarpl::observable::Observer<T>> observer) override {
-    observer_ = observer;
-    state_.wlock()->observer_ = observer;
-
     auto self = this->ref_from_this(this);
-    observer->onSubscribe(self);
+    state_.wlock()->init(std::move(observer), self);
     return self;
   }
 
   void cancel() override {
-    auto cancelExecutor = std::exchange(cancelExecutor_, {});
-    cancelExecutor->add(
-        [self = this->ref_from_this(this)] { self->completeImpl(); });
+    if (state_.wlock()->cancel()) {
+      std::exchange(onCompleteOrCanceled_, nullptr)();
+    }
   }
 
   void next(T&& value) {
-    if (auto observer = observer_.lock()) {
-      observer->onNext(std::move(value));
-    }
+    state_.rlock()->next(std::move(value));
   }
 
   void next(const T& value) {
-    if (auto observer = observer_.lock()) {
-      observer->onNext(value);
-    }
+    state_.rlock()->next(value);
   }
 
   void complete(folly::exception_wrapper e) {
-    if (auto observer = observer_.lock()) {
-      observer->onError(std::move(e));
+    if (state_.wlock()->complete(std::move(e))) {
+      std::exchange(onCompleteOrCanceled_, nullptr)();
     }
-    completeImpl();
   }
 
   void complete() {
-    if (auto observer = observer_.lock()) {
-      observer->onComplete();
+    if (state_.wlock()->complete()) {
+      std::exchange(onCompleteOrCanceled_, nullptr)();
     }
-    completeImpl();
   }
 
   void release() {
-    if (cancelExecutor_) {
+    if (onCompleteOrCanceled_) {
       LOG(FATAL) << "StreamPublisher has to be completed or canceled.";
     }
   }
 
  private:
-  void completeImpl() {
-    auto wState = state_.wlock();
-    wState->observer_ = nullptr;
-    if (auto onCompleteOrCanceled =
-            std::exchange(wState->onCompleteOrCanceled_, nullptr)) {
-      onCompleteOrCanceled();
+  class State {
+   public:
+    explicit State(folly::Executor::KeepAlive<> executor)
+        : executor_(std::move(executor)) {}
+
+    bool cancel() {
+      if (!executor_) {
+        return false;
+      }
+      executor_.reset();
+      observer_ = nullptr;
+      return true;
     }
-  }
 
-  struct State {
-    explicit State(folly::Function<void()> onCompleteOrCanceled)
-        : onCompleteOrCanceled_(std::move(onCompleteOrCanceled)) {}
+    void init(
+        std::shared_ptr<yarpl::observable::Observer<T>> observer,
+        std::shared_ptr<yarpl::observable::Subscription> subscription) {
+      DCHECK(!observer_);
+      DCHECK(executor_);
 
-    folly::Function<void()> onCompleteOrCanceled_;
+      executor_->add(
+          [observer, subscription = std::move(subscription)]() mutable {
+            observer->onSubscribe(std::move(subscription));
+          });
+      observer_ = std::move(observer);
+    }
+
+    void next(T&& value) const {
+      if (executor_) {
+        executor_->add(
+            [observer = observer_, value = std::move(value)]() mutable {
+              observer->onNext(std::move(value));
+            });
+      }
+    }
+
+    void next(const T& value) const {
+      if (executor_) {
+        executor_->add([observer = observer_, value]() mutable {
+          observer->onNext(std::move(value));
+        });
+      }
+    }
+
+    bool complete(folly::exception_wrapper e) {
+      if (executor_) {
+        executor_->add([observer = observer_, e = std::move(e)]() mutable {
+          observer->onError(std::move(e));
+        });
+      }
+      return cancel();
+    }
+
+    bool complete() {
+      if (executor_) {
+        executor_->add(
+            [observer = observer_]() mutable { observer->onComplete(); });
+      }
+      return cancel();
+    }
+
+   private:
+    folly::Executor::KeepAlive<> executor_;
     std::shared_ptr<yarpl::observable::Observer<T>> observer_;
   };
   folly::Synchronized<State> state_;
-  std::weak_ptr<yarpl::observable::Observer<T>> observer_;
-  folly::Executor::KeepAlive<> cancelExecutor_;
+  folly::Function<void()> onCompleteOrCanceled_;
 };
 
 template <typename T>
