@@ -21,6 +21,8 @@ service StreamService {
   // Generate numbers between `from` to `to`.
   stream i32 range(1: i32 from, 2: i32 to);
 
+  stream i32 slowCancellation();
+
   // As long as the client consumes, the server will send messages
   stream Message listen(1: string sender);
 

@@ -90,6 +90,18 @@ class StreamingTest : public TestSetup {
   uint16_t port_;
 };
 
+class BlockStreamingTest : public StreamingTest {
+ protected:
+  void SetUp() override {
+    handler_ = std::make_shared<StrictMock<TestServiceMock>>();
+    server_ = createServer(
+        std::make_shared<ThriftServerAsyncProcessorFactory<TestServiceMock>>(
+            handler_),
+        port_,
+        100);
+  }
+};
+
 TEST_F(StreamingTest, SimpleStream) {
   connectToServer([this](std::unique_ptr<StreamServiceAsyncClient> client) {
     auto result = client->sync_range(0, 10).via(&executor_);
@@ -547,6 +559,15 @@ TEST_F(StreamingTest, ResponseAndStreamFunctionThrowsImmediately) {
       thrown = true;
     }
     EXPECT_TRUE(thrown);
+  });
+}
+
+TEST_F(BlockStreamingTest, StreamBlockTaskQueue) {
+  connectToServer([](std::unique_ptr<StreamServiceAsyncClient> client) {
+    std::vector<apache::thrift::SemiStream<int32_t>> streams;
+    for (int ind = 0; ind < 1000; ind++) {
+      streams.push_back(client->sync_slowCancellation());
+    }
   });
 }
 

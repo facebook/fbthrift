@@ -69,7 +69,8 @@ class TestSetup : public testing::Test {
  protected:
   virtual std::unique_ptr<ThriftServer> createServer(
       std::shared_ptr<AsyncProcessorFactory>,
-      uint16_t& port);
+      uint16_t& port,
+      int maxRequests = 0);
 
   std::unique_ptr<PooledRequestChannel, folly::DelayedDestruction::Destructor>
   connectToServer(

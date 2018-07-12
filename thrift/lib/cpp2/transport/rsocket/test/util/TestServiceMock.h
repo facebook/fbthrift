@@ -28,7 +28,7 @@ class TestServiceMock : public StreamServiceSvIf {
   TestServiceMock() {}
 
   apache::thrift::Stream<int32_t> range(int32_t from, int32_t to) override;
-
+  apache::thrift::Stream<int32_t> slowCancellation() override;
   apache::thrift::Stream<Message> returnNullptr() override;
   apache::thrift::ResponseAndStream<int, Message> throwError() override;
 

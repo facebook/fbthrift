@@ -23,12 +23,16 @@ namespace thrift {
 
 std::unique_ptr<ThriftServer> TestSetup::createServer(
     std::shared_ptr<AsyncProcessorFactory> processorFactory,
-    uint16_t& port) {
+    uint16_t& port,
+    int maxRequests) {
   // override the default
   FLAGS_transport = "rsocket"; // client's transport
   observer_ = std::make_shared<FakeServerObserver>();
 
   auto server = std::make_unique<ThriftServer>();
+  if (maxRequests > 0) {
+    server->setMaxRequests(maxRequests);
+  }
   server->setObserver(observer_);
   server->setPort(0);
   server->setNumIOWorkerThreads(numIOThreads_);

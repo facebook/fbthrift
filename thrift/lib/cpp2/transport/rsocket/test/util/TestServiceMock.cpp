@@ -69,6 +69,20 @@ Stream<int32_t> TestServiceMock::range(int32_t from, int32_t to) {
   });
 }
 
+Stream<int32_t> TestServiceMock::slowCancellation() {
+  class Slow {
+   public:
+    ~Slow() {
+      /* sleep override */
+      std::this_thread::sleep_for(std::chrono::milliseconds{10});
+    }
+  };
+  return createStreamGenerator(
+      [slow = std::make_unique<Slow>()]() -> folly::Optional<int> {
+        LOG(FATAL) << "Should not be called";
+      });
+}
+
 ResponseAndStream<int32_t, int32_t> TestServiceMock::leakCheck(
     int32_t from,
     int32_t to) {
