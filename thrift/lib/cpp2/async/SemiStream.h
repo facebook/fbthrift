@@ -33,8 +33,8 @@ class SemiStream {
     }
   }
 
-  operator bool() const {
-    return (bool)impl_;
+  explicit operator bool() const {
+    return static_cast<bool>(impl_);
   }
 
   template <
