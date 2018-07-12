@@ -304,12 +304,6 @@ void profile_print_info();
 void profile_write_pprof(FILE* gen_calls_f, FILE* virtual_calls_f);
 #endif
 
-template <class ThriftContainer>
-inline void reallyClear(ThriftContainer& container) {
-  ThriftContainer emptyContainer;
-  swap(container, emptyContainer);
-}
-
 /**
  * Type-traits for defining type classes that differ by merge strategy.
  *
