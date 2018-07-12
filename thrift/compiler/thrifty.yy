@@ -457,10 +457,10 @@ Include:
       if (driver.mode == apache::thrift::parsing_mode::INCLUDES) {
         std::string path = driver.include_file(std::string($2));
         if (!path.empty()) {
-          if (program_cache.find(path) == program_cache.end()) {
-            program_cache[path] = driver.params.program->add_include(path, std::string($2));
+          if (driver.params.program_cache->find(path) == driver.params.program_cache->end()) {
+            (*driver.params.program_cache)[path] = driver.params.program->add_include(path, std::string($2));
           } else {
-            driver.params.program->add_include(program_cache[path]);
+            driver.params.program->add_include((*driver.params.program_cache)[path]);
           }
         }
       }

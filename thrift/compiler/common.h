@@ -58,6 +58,11 @@ struct parsing_params {
    */
   t_scope* scope_cache;
 
+  /**
+   * A global map that holds a pointer to all programs already cached
+   */
+  std::shared_ptr<std::map<std::string, t_program*>> program_cache;
+
   bool debug = false;
   bool verbose = false;
   int warn = 1;

@@ -15,12 +15,6 @@
  */
 #pragma once
 
-#include <map>
-#include <queue>
-#include <stack>
-#include <string>
-#include <vector>
-
 /**
  * This module contains all the global variables (slap on the wrist) that are
  * shared throughout the program. The reason for this is to facilitate simple
@@ -32,21 +26,8 @@
  */
 
 /**
- * Hooray for forward declaration of types!
- */
-
-class t_program;
-class t_scope;
-class t_base_type;
-
-/**
  * Flex utilities
  */
 extern int yylineno;
 extern char yytext[];
 extern FILE* yyin;
-
-/**
- * A global map that holds a pointer to all programs already cached
- */
-extern std::map<std::string, t_program*> program_cache;

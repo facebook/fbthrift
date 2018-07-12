@@ -31,8 +31,6 @@
 
 #include THRIFTY_HH
 
-std::map<std::string, t_program*> program_cache;
-
 /**
  * Current file being parsed
  */

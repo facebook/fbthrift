@@ -647,6 +647,7 @@ int main(int argc, char** argv) {
   apache::thrift::parsing_params params{};
   params.program = program;
   params.scope_cache = program->scope();
+  params.program_cache = std::make_shared<std::map<std::string, t_program*>>();
   params.debug = (g_debug != 0);
   params.verbose = (g_verbose != 0);
   params.warn = g_warn;

@@ -91,6 +91,8 @@ void process(const dict& params, const object& generate_callback) {
   apache::thrift::parsing_params parsing_params{};
   parsing_params.program = program.get();
   parsing_params.scope_cache = program.get()->scope();
+  parsing_params.program_cache =
+      std::make_shared<std::map<std::string, t_program*>>();
   parsing_params.debug = (g_debug != 0);
   parsing_params.verbose = (g_verbose != 0);
   parsing_params.warn = g_warn;
