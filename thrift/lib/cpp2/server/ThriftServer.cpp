@@ -511,6 +511,9 @@ void ThriftServer::cleanUp() {
 
   // Now clear all the handlers
   routingHandlers_.clear();
+
+  // Force the cred processor to stop polling if it's set up
+  tlsCredProcessor_.reset();
 }
 
 uint64_t ThriftServer::getNumDroppedConnections() const {
