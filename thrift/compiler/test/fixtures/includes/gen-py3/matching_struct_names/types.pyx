@@ -18,7 +18,7 @@ cimport thrift.py3.exceptions
 from thrift.py3.types import NOTSET as __NOTSET
 from thrift.py3.types cimport translate_cpp_enum_to_python
 cimport thrift.py3.std_libcpp as std_libcpp
-from thrift.py3.serializer import Protocol
+from thrift.py3.serializer import Protocol as __Protocol
 cimport thrift.py3.serializer as serializer
 from thrift.py3.serializer import deserialize, serialize
 import folly.iobuf as __iobuf
@@ -147,13 +147,13 @@ cdef class MyStruct(thrift.py3.types.Struct):
     cdef __iobuf.IOBuf _serialize(MyStruct self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
         cdef cMyStruct* cpp_obj = self._cpp_obj.get()
-        if proto is Protocol.COMPACT:
+        if proto is __Protocol.COMPACT:
             with nogil:
                 serializer.CompactSerialize[cMyStruct](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
-        elif proto is Protocol.BINARY:
+        elif proto is __Protocol.BINARY:
             with nogil:
                 serializer.BinarySerialize[cMyStruct](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
-        elif proto is Protocol.JSON:
+        elif proto is __Protocol.JSON:
             with nogil:
                 serializer.JSONSerialize[cMyStruct](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
         return __iobuf.from_unique_ptr(queue.move())
@@ -162,13 +162,13 @@ cdef class MyStruct(thrift.py3.types.Struct):
         cdef uint32_t needed
         self._cpp_obj = make_shared[cMyStruct]()
         cdef cMyStruct* cpp_obj = self._cpp_obj.get()
-        if proto is Protocol.COMPACT:
+        if proto is __Protocol.COMPACT:
             with nogil:
                 needed = serializer.CompactDeserialize[cMyStruct](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
-        elif proto is Protocol.BINARY:
+        elif proto is __Protocol.BINARY:
             with nogil:
                 needed = serializer.BinaryDeserialize[cMyStruct](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
-        elif proto is Protocol.JSON:
+        elif proto is __Protocol.JSON:
             with nogil:
                 needed = serializer.JSONDeserialize[cMyStruct](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
         return needed
@@ -364,13 +364,13 @@ cdef class Combo(thrift.py3.types.Struct):
     cdef __iobuf.IOBuf _serialize(Combo self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
         cdef cCombo* cpp_obj = self._cpp_obj.get()
-        if proto is Protocol.COMPACT:
+        if proto is __Protocol.COMPACT:
             with nogil:
                 serializer.CompactSerialize[cCombo](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
-        elif proto is Protocol.BINARY:
+        elif proto is __Protocol.BINARY:
             with nogil:
                 serializer.BinarySerialize[cCombo](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
-        elif proto is Protocol.JSON:
+        elif proto is __Protocol.JSON:
             with nogil:
                 serializer.JSONSerialize[cCombo](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
         return __iobuf.from_unique_ptr(queue.move())
@@ -379,13 +379,13 @@ cdef class Combo(thrift.py3.types.Struct):
         cdef uint32_t needed
         self._cpp_obj = make_shared[cCombo]()
         cdef cCombo* cpp_obj = self._cpp_obj.get()
-        if proto is Protocol.COMPACT:
+        if proto is __Protocol.COMPACT:
             with nogil:
                 needed = serializer.CompactDeserialize[cCombo](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
-        elif proto is Protocol.BINARY:
+        elif proto is __Protocol.BINARY:
             with nogil:
                 needed = serializer.BinaryDeserialize[cCombo](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
-        elif proto is Protocol.JSON:
+        elif proto is __Protocol.JSON:
             with nogil:
                 needed = serializer.JSONDeserialize[cCombo](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
         return needed

@@ -18,7 +18,7 @@ cimport thrift.py3.exceptions
 from thrift.py3.types import NOTSET as __NOTSET
 from thrift.py3.types cimport translate_cpp_enum_to_python
 cimport thrift.py3.std_libcpp as std_libcpp
-from thrift.py3.serializer import Protocol
+from thrift.py3.serializer import Protocol as __Protocol
 cimport thrift.py3.serializer as serializer
 from thrift.py3.serializer import deserialize, serialize
 import folly.iobuf as __iobuf
@@ -143,13 +143,13 @@ cdef class OldStructure(thrift.py3.types.Struct):
     cdef __iobuf.IOBuf _serialize(OldStructure self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
         cdef cOldStructure* cpp_obj = self._cpp_obj.get()
-        if proto is Protocol.COMPACT:
+        if proto is __Protocol.COMPACT:
             with nogil:
                 serializer.CompactSerialize[cOldStructure](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
-        elif proto is Protocol.BINARY:
+        elif proto is __Protocol.BINARY:
             with nogil:
                 serializer.BinarySerialize[cOldStructure](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
-        elif proto is Protocol.JSON:
+        elif proto is __Protocol.JSON:
             with nogil:
                 serializer.JSONSerialize[cOldStructure](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
         return __iobuf.from_unique_ptr(queue.move())
@@ -158,13 +158,13 @@ cdef class OldStructure(thrift.py3.types.Struct):
         cdef uint32_t needed
         self._cpp_obj = make_shared[cOldStructure]()
         cdef cOldStructure* cpp_obj = self._cpp_obj.get()
-        if proto is Protocol.COMPACT:
+        if proto is __Protocol.COMPACT:
             with nogil:
                 needed = serializer.CompactDeserialize[cOldStructure](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
-        elif proto is Protocol.BINARY:
+        elif proto is __Protocol.BINARY:
             with nogil:
                 needed = serializer.BinaryDeserialize[cOldStructure](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
-        elif proto is Protocol.JSON:
+        elif proto is __Protocol.JSON:
             with nogil:
                 needed = serializer.JSONDeserialize[cOldStructure](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
         return needed
@@ -282,13 +282,13 @@ cdef class NewStructure(thrift.py3.types.Struct):
     cdef __iobuf.IOBuf _serialize(NewStructure self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
         cdef cNewStructure* cpp_obj = self._cpp_obj.get()
-        if proto is Protocol.COMPACT:
+        if proto is __Protocol.COMPACT:
             with nogil:
                 serializer.CompactSerialize[cNewStructure](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
-        elif proto is Protocol.BINARY:
+        elif proto is __Protocol.BINARY:
             with nogil:
                 serializer.BinarySerialize[cNewStructure](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
-        elif proto is Protocol.JSON:
+        elif proto is __Protocol.JSON:
             with nogil:
                 serializer.JSONSerialize[cNewStructure](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
         return __iobuf.from_unique_ptr(queue.move())
@@ -297,13 +297,13 @@ cdef class NewStructure(thrift.py3.types.Struct):
         cdef uint32_t needed
         self._cpp_obj = make_shared[cNewStructure]()
         cdef cNewStructure* cpp_obj = self._cpp_obj.get()
-        if proto is Protocol.COMPACT:
+        if proto is __Protocol.COMPACT:
             with nogil:
                 needed = serializer.CompactDeserialize[cNewStructure](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
-        elif proto is Protocol.BINARY:
+        elif proto is __Protocol.BINARY:
             with nogil:
                 needed = serializer.BinaryDeserialize[cNewStructure](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
-        elif proto is Protocol.JSON:
+        elif proto is __Protocol.JSON:
             with nogil:
                 needed = serializer.JSONDeserialize[cNewStructure](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
         return needed
@@ -421,13 +421,13 @@ cdef class NewStructure2(thrift.py3.types.Struct):
     cdef __iobuf.IOBuf _serialize(NewStructure2 self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
         cdef cNewStructure2* cpp_obj = self._cpp_obj.get()
-        if proto is Protocol.COMPACT:
+        if proto is __Protocol.COMPACT:
             with nogil:
                 serializer.CompactSerialize[cNewStructure2](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
-        elif proto is Protocol.BINARY:
+        elif proto is __Protocol.BINARY:
             with nogil:
                 serializer.BinarySerialize[cNewStructure2](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
-        elif proto is Protocol.JSON:
+        elif proto is __Protocol.JSON:
             with nogil:
                 serializer.JSONSerialize[cNewStructure2](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
         return __iobuf.from_unique_ptr(queue.move())
@@ -436,13 +436,13 @@ cdef class NewStructure2(thrift.py3.types.Struct):
         cdef uint32_t needed
         self._cpp_obj = make_shared[cNewStructure2]()
         cdef cNewStructure2* cpp_obj = self._cpp_obj.get()
-        if proto is Protocol.COMPACT:
+        if proto is __Protocol.COMPACT:
             with nogil:
                 needed = serializer.CompactDeserialize[cNewStructure2](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
-        elif proto is Protocol.BINARY:
+        elif proto is __Protocol.BINARY:
             with nogil:
                 needed = serializer.BinaryDeserialize[cNewStructure2](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
-        elif proto is Protocol.JSON:
+        elif proto is __Protocol.JSON:
             with nogil:
                 needed = serializer.JSONDeserialize[cNewStructure2](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
         return needed
@@ -612,13 +612,13 @@ cdef class NewStructureNested(thrift.py3.types.Struct):
     cdef __iobuf.IOBuf _serialize(NewStructureNested self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
         cdef cNewStructureNested* cpp_obj = self._cpp_obj.get()
-        if proto is Protocol.COMPACT:
+        if proto is __Protocol.COMPACT:
             with nogil:
                 serializer.CompactSerialize[cNewStructureNested](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
-        elif proto is Protocol.BINARY:
+        elif proto is __Protocol.BINARY:
             with nogil:
                 serializer.BinarySerialize[cNewStructureNested](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
-        elif proto is Protocol.JSON:
+        elif proto is __Protocol.JSON:
             with nogil:
                 serializer.JSONSerialize[cNewStructureNested](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
         return __iobuf.from_unique_ptr(queue.move())
@@ -627,13 +627,13 @@ cdef class NewStructureNested(thrift.py3.types.Struct):
         cdef uint32_t needed
         self._cpp_obj = make_shared[cNewStructureNested]()
         cdef cNewStructureNested* cpp_obj = self._cpp_obj.get()
-        if proto is Protocol.COMPACT:
+        if proto is __Protocol.COMPACT:
             with nogil:
                 needed = serializer.CompactDeserialize[cNewStructureNested](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
-        elif proto is Protocol.BINARY:
+        elif proto is __Protocol.BINARY:
             with nogil:
                 needed = serializer.BinaryDeserialize[cNewStructureNested](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
-        elif proto is Protocol.JSON:
+        elif proto is __Protocol.JSON:
             with nogil:
                 needed = serializer.JSONDeserialize[cNewStructureNested](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
         return needed
@@ -755,13 +755,13 @@ cdef class NewStructureNestedField(thrift.py3.types.Struct):
     cdef __iobuf.IOBuf _serialize(NewStructureNestedField self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
         cdef cNewStructureNestedField* cpp_obj = self._cpp_obj.get()
-        if proto is Protocol.COMPACT:
+        if proto is __Protocol.COMPACT:
             with nogil:
                 serializer.CompactSerialize[cNewStructureNestedField](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
-        elif proto is Protocol.BINARY:
+        elif proto is __Protocol.BINARY:
             with nogil:
                 serializer.BinarySerialize[cNewStructureNestedField](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
-        elif proto is Protocol.JSON:
+        elif proto is __Protocol.JSON:
             with nogil:
                 serializer.JSONSerialize[cNewStructureNestedField](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
         return __iobuf.from_unique_ptr(queue.move())
@@ -770,13 +770,13 @@ cdef class NewStructureNestedField(thrift.py3.types.Struct):
         cdef uint32_t needed
         self._cpp_obj = make_shared[cNewStructureNestedField]()
         cdef cNewStructureNestedField* cpp_obj = self._cpp_obj.get()
-        if proto is Protocol.COMPACT:
+        if proto is __Protocol.COMPACT:
             with nogil:
                 needed = serializer.CompactDeserialize[cNewStructureNestedField](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
-        elif proto is Protocol.BINARY:
+        elif proto is __Protocol.BINARY:
             with nogil:
                 needed = serializer.BinaryDeserialize[cNewStructureNestedField](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
-        elif proto is Protocol.JSON:
+        elif proto is __Protocol.JSON:
             with nogil:
                 needed = serializer.JSONDeserialize[cNewStructureNestedField](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
         return needed
