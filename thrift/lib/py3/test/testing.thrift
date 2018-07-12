@@ -75,8 +75,6 @@ struct easy {
     2: I32List val_list,
     3: optional string name,
     4: Integers an_int,
-    5: optional binary bytes,
-    6: optional string str,
 }
 
 union ComplexUnion {

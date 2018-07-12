@@ -32,7 +32,6 @@ from collections import Sequence, Set, Mapping, Iterable
 import warnings
 import builtins as _builtins
 
-
 cdef object __AnimalEnumInstances = None  # Set[Animal]
 cdef object __AnimalEnumMembers = {}      # Dict[str, Animal]
 cdef object __AnimalEnumUniqueValues = dict()    # Dict[int, Animal]
@@ -422,16 +421,16 @@ cdef class Vehicle(thrift.py3.types.Struct):
                 raise TypeError(f'color is not a { Color !r}.')
 
         if None is not licensePlate is not __NOTSET:
-            if not isinstance(licensePlate, _builtins.str):
-                raise TypeError(f'licensePlate is not a { _builtins.str !r}.')
+            if not isinstance(licensePlate, str):
+                raise TypeError(f'licensePlate is not a { str !r}.')
 
         if None is not description is not __NOTSET:
-            if not isinstance(description, _builtins.str):
-                raise TypeError(f'description is not a { _builtins.str !r}.')
+            if not isinstance(description, str):
+                raise TypeError(f'description is not a { str !r}.')
 
         if None is not name is not __NOTSET:
-            if not isinstance(name, _builtins.str):
-                raise TypeError(f'name is not a { _builtins.str !r}.')
+            if not isinstance(name, str):
+                raise TypeError(f'name is not a { str !r}.')
 
         if None is not hasAC is not __NOTSET:
             if not isinstance(hasAC, bool):
@@ -721,8 +720,8 @@ cdef class Person(thrift.py3.types.Struct):
             id = <int64_t> id
 
         if None is not name is not __NOTSET:
-            if not isinstance(name, _builtins.str):
-                raise TypeError(f'name is not a { _builtins.str !r}.')
+            if not isinstance(name, str):
+                raise TypeError(f'name is not a { str !r}.')
 
         if None is not age is not __NOTSET:
             if not isinstance(age, int):
@@ -730,8 +729,8 @@ cdef class Person(thrift.py3.types.Struct):
             age = <int16_t> age
 
         if None is not address is not __NOTSET:
-            if not isinstance(address, _builtins.str):
-                raise TypeError(f'address is not a { _builtins.str !r}.')
+            if not isinstance(address, str):
+                raise TypeError(f'address is not a { str !r}.')
 
         if None is not favoriteColor is not __NOTSET:
             if not isinstance(favoriteColor, Color):
@@ -1257,8 +1256,8 @@ cdef class Map__Animal_string:
             for key, item in items.items():
                 if not isinstance(key, Animal):
                     raise TypeError(f"{key!r} is not of type Animal")
-                if not isinstance(item, _builtins.str):
-                    raise TypeError(f"{item!r} is not of type _builtins.str")
+                if not isinstance(item, str):
+                    raise TypeError(f"{item!r} is not of type str")
 
                 deref(c_inst).insert(cpair[cAnimal,string](Animal_to_cpp(key),item.encode('UTF-8')))
         return move_unique(c_inst)

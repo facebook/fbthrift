@@ -8,7 +8,6 @@
 import typing as _typing
 from thrift.py3.server import RequestContext, ServiceInterface
 from abc import abstractmethod
-import builtins as _builtins
 
 import module.types as _module_types
 
@@ -39,17 +38,17 @@ class MyServiceInterface(
     def pass_context_getRandomData(
         fn: _typing.Callable[
                 [_MyServiceInterfaceT, RequestContext],
-                _typing.Awaitable[_builtins.str]
+                _typing.Awaitable[str]
         ]
     ) -> _typing.Callable[
         [_MyServiceInterfaceT],
-        _typing.Awaitable[_builtins.str]
+        _typing.Awaitable[str]
     ]: ...
 
     @abstractmethod
     async def getRandomData(
         self
-    ) -> _builtins.str: ...
+    ) -> str: ...
 
     @staticmethod
     def pass_context_hasDataById(
@@ -72,27 +71,27 @@ class MyServiceInterface(
     def pass_context_getDataById(
         fn: _typing.Callable[
                 [_MyServiceInterfaceT, RequestContext, int],
-                _typing.Awaitable[_builtins.str]
+                _typing.Awaitable[str]
         ]
     ) -> _typing.Callable[
         [_MyServiceInterfaceT, int],
-        _typing.Awaitable[_builtins.str]
+        _typing.Awaitable[str]
     ]: ...
 
     @abstractmethod
     async def getDataById(
         self,
         id: int
-    ) -> _builtins.str: ...
+    ) -> str: ...
 
     @staticmethod
     def pass_context_putDataById(
         fn: _typing.Callable[
-                [_MyServiceInterfaceT, RequestContext, int, _builtins.str],
+                [_MyServiceInterfaceT, RequestContext, int, str],
                 _typing.Awaitable[None]
         ]
     ) -> _typing.Callable[
-        [_MyServiceInterfaceT, int, _builtins.str],
+        [_MyServiceInterfaceT, int, str],
         _typing.Awaitable[None]
     ]: ...
 
@@ -100,17 +99,17 @@ class MyServiceInterface(
     async def putDataById(
         self,
         id: int,
-        data: _builtins.str
+        data: str
     ) -> None: ...
 
     @staticmethod
     def pass_context_lobDataById(
         fn: _typing.Callable[
-                [_MyServiceInterfaceT, RequestContext, int, _builtins.str],
+                [_MyServiceInterfaceT, RequestContext, int, str],
                 _typing.Awaitable[None]
         ]
     ) -> _typing.Callable[
-        [_MyServiceInterfaceT, int, _builtins.str],
+        [_MyServiceInterfaceT, int, str],
         _typing.Awaitable[None]
     ]: ...
 
@@ -118,7 +117,7 @@ class MyServiceInterface(
     async def lobDataById(
         self,
         id: int,
-        data: _builtins.str
+        data: str
     ) -> None: ...
     pass
 
@@ -150,17 +149,17 @@ class MyServiceFastInterface(
     def pass_context_getRandomData(
         fn: _typing.Callable[
                 [_MyServiceFastInterfaceT, RequestContext],
-                _typing.Awaitable[_builtins.str]
+                _typing.Awaitable[str]
         ]
     ) -> _typing.Callable[
         [_MyServiceFastInterfaceT],
-        _typing.Awaitable[_builtins.str]
+        _typing.Awaitable[str]
     ]: ...
 
     @abstractmethod
     async def getRandomData(
         self
-    ) -> _builtins.str: ...
+    ) -> str: ...
 
     @staticmethod
     def pass_context_hasDataById(
@@ -183,27 +182,27 @@ class MyServiceFastInterface(
     def pass_context_getDataById(
         fn: _typing.Callable[
                 [_MyServiceFastInterfaceT, RequestContext, int],
-                _typing.Awaitable[_builtins.str]
+                _typing.Awaitable[str]
         ]
     ) -> _typing.Callable[
         [_MyServiceFastInterfaceT, int],
-        _typing.Awaitable[_builtins.str]
+        _typing.Awaitable[str]
     ]: ...
 
     @abstractmethod
     async def getDataById(
         self,
         id: int
-    ) -> _builtins.str: ...
+    ) -> str: ...
 
     @staticmethod
     def pass_context_putDataById(
         fn: _typing.Callable[
-                [_MyServiceFastInterfaceT, RequestContext, int, _builtins.str],
+                [_MyServiceFastInterfaceT, RequestContext, int, str],
                 _typing.Awaitable[None]
         ]
     ) -> _typing.Callable[
-        [_MyServiceFastInterfaceT, int, _builtins.str],
+        [_MyServiceFastInterfaceT, int, str],
         _typing.Awaitable[None]
     ]: ...
 
@@ -211,17 +210,17 @@ class MyServiceFastInterface(
     async def putDataById(
         self,
         id: int,
-        data: _builtins.str
+        data: str
     ) -> None: ...
 
     @staticmethod
     def pass_context_lobDataById(
         fn: _typing.Callable[
-                [_MyServiceFastInterfaceT, RequestContext, int, _builtins.str],
+                [_MyServiceFastInterfaceT, RequestContext, int, str],
                 _typing.Awaitable[None]
         ]
     ) -> _typing.Callable[
-        [_MyServiceFastInterfaceT, int, _builtins.str],
+        [_MyServiceFastInterfaceT, int, str],
         _typing.Awaitable[None]
     ]: ...
 
@@ -229,7 +228,7 @@ class MyServiceFastInterface(
     async def lobDataById(
         self,
         id: int,
-        data: _builtins.str
+        data: str
     ) -> None: ...
     pass
 

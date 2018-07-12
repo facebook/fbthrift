@@ -14,7 +14,6 @@ import typing as _typing
 
 import sys
 import itertools
-import builtins as _builtins
 
 
 class Enum(thrift.py3.types.Enum):
@@ -27,16 +26,16 @@ class Struct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typing
     def __init__(
         self, *,
         first: _typing.Optional[int]=None,
-        second: _typing.Optional[_builtins.str]=None
+        second: _typing.Optional[str]=None
     ) -> None: ...
 
     def __call__(
         self, *,
         first: _typing.Union[int, NOTSETTYPE, None]=NOTSET,
-        second: _typing.Union[_builtins.str, NOTSETTYPE, None]=NOTSET
+        second: _typing.Union[str, NOTSETTYPE, None]=NOTSET
     ) -> Struct: ...
 
-    def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['Struct'], _builtins.bytes]]: ...
+    def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['Struct'], bytes]]: ...
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Any]]: ...
     def __bool__(self) -> bool: ...
     def __hash__(self) -> int: ...
@@ -46,7 +45,7 @@ class Struct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typing
     @property
     def first(self) -> int: ...
     @property
-    def second(self) -> _builtins.str: ...
+    def second(self) -> str: ...
 
 
 _List__EnumT = _typing.TypeVar('_List__EnumT', bound=_typing.Sequence[Enum])

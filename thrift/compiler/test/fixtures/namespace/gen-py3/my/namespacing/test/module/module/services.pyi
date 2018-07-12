@@ -8,7 +8,6 @@
 import typing as _typing
 from thrift.py3.server import RequestContext, ServiceInterface
 from abc import abstractmethod
-import builtins as _builtins
 
 import my.namespacing.test.module.module.types as _my_namespacing_test_module_module_types
 

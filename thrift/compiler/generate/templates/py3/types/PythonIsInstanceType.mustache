@@ -23,8 +23,8 @@ This is for python types, suitable for isinstance check_types
 }}{{#type:integer?}}int{{/type:integer?}}{{!
     We will implicity convert int to float because no information is lost
 }}{{#type:floating_point?}}(float, int){{/type:floating_point?}}{{!
-}}{{#type:string?}}_builtins.str{{/type:string?}}{{!
-}}{{#type:binary?}}_builtins.bytes{{/type:binary?}}{{!
+}}{{#type:string?}}str{{/type:string?}}{{!
+}}{{#type:binary?}}bytes{{/type:binary?}}{{!
 }}{{#type:struct}}{{!
   }}{{#type:externalProgram?}}{{> common/ModulePath}}.{{/type:externalProgram?}}{{!
   }}{{^type:externalProgram?}}{{^program:typeContext?}}{{!

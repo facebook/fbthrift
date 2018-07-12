@@ -14,7 +14,6 @@ import typing as _typing
 
 import sys
 import itertools
-import builtins as _builtins
 
 
 _List__i32T = _typing.TypeVar('_List__i32T', bound=_typing.Sequence[int])

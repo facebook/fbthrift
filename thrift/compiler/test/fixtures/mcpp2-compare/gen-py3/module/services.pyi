@@ -8,7 +8,6 @@
 import typing as _typing
 from thrift.py3.server import RequestContext, ServiceInterface
 from abc import abstractmethod
-import builtins as _builtins
 
 import module.types as _module_types
 import includes.types as _includes_types
@@ -145,49 +144,49 @@ class ReturnServiceInterface(
     def pass_context_stringReturn(
         fn: _typing.Callable[
                 [_ReturnServiceInterfaceT, RequestContext],
-                _typing.Awaitable[_builtins.str]
+                _typing.Awaitable[str]
         ]
     ) -> _typing.Callable[
         [_ReturnServiceInterfaceT],
-        _typing.Awaitable[_builtins.str]
+        _typing.Awaitable[str]
     ]: ...
 
     @abstractmethod
     async def stringReturn(
         self
-    ) -> _builtins.str: ...
+    ) -> str: ...
 
     @staticmethod
     def pass_context_binaryReturn(
         fn: _typing.Callable[
                 [_ReturnServiceInterfaceT, RequestContext],
-                _typing.Awaitable[_builtins.bytes]
+                _typing.Awaitable[bytes]
         ]
     ) -> _typing.Callable[
         [_ReturnServiceInterfaceT],
-        _typing.Awaitable[_builtins.bytes]
+        _typing.Awaitable[bytes]
     ]: ...
 
     @abstractmethod
     async def binaryReturn(
         self
-    ) -> _builtins.bytes: ...
+    ) -> bytes: ...
 
     @staticmethod
     def pass_context_mapReturn(
         fn: _typing.Callable[
                 [_ReturnServiceInterfaceT, RequestContext],
-                _typing.Awaitable[_typing.Mapping[_builtins.str, int]]
+                _typing.Awaitable[_typing.Mapping[str, int]]
         ]
     ) -> _typing.Callable[
         [_ReturnServiceInterfaceT],
-        _typing.Awaitable[_typing.Mapping[_builtins.str, int]]
+        _typing.Awaitable[_typing.Mapping[str, int]]
     ]: ...
 
     @abstractmethod
     async def mapReturn(
         self
-    ) -> _typing.Mapping[_builtins.str, int]: ...
+    ) -> _typing.Mapping[str, int]: ...
 
     @staticmethod
     def pass_context_simpleTypedefReturn(
@@ -414,36 +413,36 @@ class ParamServiceInterface(
     @staticmethod
     def pass_context_void_ret_map_param(
         fn: _typing.Callable[
-                [_ParamServiceInterfaceT, RequestContext, _typing.Mapping[_builtins.str, int]],
+                [_ParamServiceInterfaceT, RequestContext, _typing.Mapping[str, int]],
                 _typing.Awaitable[None]
         ]
     ) -> _typing.Callable[
-        [_ParamServiceInterfaceT, _typing.Mapping[_builtins.str, int]],
+        [_ParamServiceInterfaceT, _typing.Mapping[str, int]],
         _typing.Awaitable[None]
     ]: ...
 
     @abstractmethod
     async def void_ret_map_param(
         self,
-        param1: _typing.Mapping[_builtins.str, int]
+        param1: _typing.Mapping[str, int]
     ) -> None: ...
 
     @staticmethod
     def pass_context_void_ret_map_setlist_param(
         fn: _typing.Callable[
-                [_ParamServiceInterfaceT, RequestContext, _typing.Mapping[_builtins.str, int], _typing.AbstractSet[_typing.Sequence[_builtins.str]]],
+                [_ParamServiceInterfaceT, RequestContext, _typing.Mapping[str, int], _typing.AbstractSet[_typing.Sequence[str]]],
                 _typing.Awaitable[None]
         ]
     ) -> _typing.Callable[
-        [_ParamServiceInterfaceT, _typing.Mapping[_builtins.str, int], _typing.AbstractSet[_typing.Sequence[_builtins.str]]],
+        [_ParamServiceInterfaceT, _typing.Mapping[str, int], _typing.AbstractSet[_typing.Sequence[str]]],
         _typing.Awaitable[None]
     ]: ...
 
     @abstractmethod
     async def void_ret_map_setlist_param(
         self,
-        param1: _typing.Mapping[_builtins.str, int],
-        param2: _typing.AbstractSet[_typing.Sequence[_builtins.str]]
+        param1: _typing.Mapping[str, int],
+        param2: _typing.AbstractSet[_typing.Sequence[str]]
     ) -> None: ...
 
     @staticmethod
@@ -535,18 +534,18 @@ class ParamServiceInterface(
     @staticmethod
     def pass_context_bool_ret_map_param(
         fn: _typing.Callable[
-                [_ParamServiceInterfaceT, RequestContext, _typing.Mapping[_builtins.str, int]],
+                [_ParamServiceInterfaceT, RequestContext, _typing.Mapping[str, int]],
                 _typing.Awaitable[bool]
         ]
     ) -> _typing.Callable[
-        [_ParamServiceInterfaceT, _typing.Mapping[_builtins.str, int]],
+        [_ParamServiceInterfaceT, _typing.Mapping[str, int]],
         _typing.Awaitable[bool]
     ]: ...
 
     @abstractmethod
     async def bool_ret_map_param(
         self,
-        param1: _typing.Mapping[_builtins.str, int]
+        param1: _typing.Mapping[str, int]
     ) -> bool: ...
 
     @staticmethod
@@ -587,18 +586,18 @@ class ParamServiceInterface(
     @staticmethod
     def pass_context_i64_ret_string_typedef_param(
         fn: _typing.Callable[
-                [_ParamServiceInterfaceT, RequestContext, _builtins.str, _typing.AbstractSet[_typing.Sequence[_typing.Sequence[_typing.Mapping[_module_types.Empty, _module_types.MyStruct]]]]],
+                [_ParamServiceInterfaceT, RequestContext, str, _typing.AbstractSet[_typing.Sequence[_typing.Sequence[_typing.Mapping[_module_types.Empty, _module_types.MyStruct]]]]],
                 _typing.Awaitable[int]
         ]
     ) -> _typing.Callable[
-        [_ParamServiceInterfaceT, _builtins.str, _typing.AbstractSet[_typing.Sequence[_typing.Sequence[_typing.Mapping[_module_types.Empty, _module_types.MyStruct]]]]],
+        [_ParamServiceInterfaceT, str, _typing.AbstractSet[_typing.Sequence[_typing.Sequence[_typing.Mapping[_module_types.Empty, _module_types.MyStruct]]]]],
         _typing.Awaitable[int]
     ]: ...
 
     @abstractmethod
     async def i64_ret_string_typedef_param(
         self,
-        param1: _builtins.str,
+        param1: str,
         param2: _typing.AbstractSet[_typing.Sequence[_typing.Sequence[_typing.Mapping[_module_types.Empty, _module_types.MyStruct]]]]
     ) -> int: ...
 
@@ -643,88 +642,88 @@ class ParamServiceInterface(
     @staticmethod
     def pass_context_string_ret_string_param(
         fn: _typing.Callable[
-                [_ParamServiceInterfaceT, RequestContext, _builtins.str],
-                _typing.Awaitable[_builtins.str]
+                [_ParamServiceInterfaceT, RequestContext, str],
+                _typing.Awaitable[str]
         ]
     ) -> _typing.Callable[
-        [_ParamServiceInterfaceT, _builtins.str],
-        _typing.Awaitable[_builtins.str]
+        [_ParamServiceInterfaceT, str],
+        _typing.Awaitable[str]
     ]: ...
 
     @abstractmethod
     async def string_ret_string_param(
         self,
-        param1: _builtins.str
-    ) -> _builtins.str: ...
+        param1: str
+    ) -> str: ...
 
     @staticmethod
     def pass_context_binary_ret_binary_param(
         fn: _typing.Callable[
-                [_ParamServiceInterfaceT, RequestContext, _builtins.bytes],
-                _typing.Awaitable[_builtins.bytes]
+                [_ParamServiceInterfaceT, RequestContext, bytes],
+                _typing.Awaitable[bytes]
         ]
     ) -> _typing.Callable[
-        [_ParamServiceInterfaceT, _builtins.bytes],
-        _typing.Awaitable[_builtins.bytes]
+        [_ParamServiceInterfaceT, bytes],
+        _typing.Awaitable[bytes]
     ]: ...
 
     @abstractmethod
     async def binary_ret_binary_param(
         self,
-        param1: _builtins.bytes
-    ) -> _builtins.bytes: ...
+        param1: bytes
+    ) -> bytes: ...
 
     @staticmethod
     def pass_context_map_ret_bool_param(
         fn: _typing.Callable[
                 [_ParamServiceInterfaceT, RequestContext, bool],
-                _typing.Awaitable[_typing.Mapping[_builtins.str, int]]
+                _typing.Awaitable[_typing.Mapping[str, int]]
         ]
     ) -> _typing.Callable[
         [_ParamServiceInterfaceT, bool],
-        _typing.Awaitable[_typing.Mapping[_builtins.str, int]]
+        _typing.Awaitable[_typing.Mapping[str, int]]
     ]: ...
 
     @abstractmethod
     async def map_ret_bool_param(
         self,
         param1: bool
-    ) -> _typing.Mapping[_builtins.str, int]: ...
+    ) -> _typing.Mapping[str, int]: ...
 
     @staticmethod
     def pass_context_list_ret_map_setlist_param(
         fn: _typing.Callable[
-                [_ParamServiceInterfaceT, RequestContext, _typing.Mapping[int, _typing.Sequence[_builtins.str]], _typing.Sequence[_builtins.str]],
+                [_ParamServiceInterfaceT, RequestContext, _typing.Mapping[int, _typing.Sequence[str]], _typing.Sequence[str]],
                 _typing.Awaitable[_typing.Sequence[bool]]
         ]
     ) -> _typing.Callable[
-        [_ParamServiceInterfaceT, _typing.Mapping[int, _typing.Sequence[_builtins.str]], _typing.Sequence[_builtins.str]],
+        [_ParamServiceInterfaceT, _typing.Mapping[int, _typing.Sequence[str]], _typing.Sequence[str]],
         _typing.Awaitable[_typing.Sequence[bool]]
     ]: ...
 
     @abstractmethod
     async def list_ret_map_setlist_param(
         self,
-        param1: _typing.Mapping[int, _typing.Sequence[_builtins.str]],
-        param2: _typing.Sequence[_builtins.str]
+        param1: _typing.Mapping[int, _typing.Sequence[str]],
+        param2: _typing.Sequence[str]
     ) -> _typing.Sequence[bool]: ...
 
     @staticmethod
     def pass_context_mapsetlistmapliststring_ret_listlistlist_param(
         fn: _typing.Callable[
                 [_ParamServiceInterfaceT, RequestContext, _typing.Sequence[_typing.Sequence[_typing.Sequence[_typing.Sequence[int]]]]],
-                _typing.Awaitable[_typing.Mapping[_typing.AbstractSet[_typing.Sequence[int]], _typing.Mapping[_typing.Sequence[_typing.AbstractSet[_builtins.str]], _builtins.str]]]
+                _typing.Awaitable[_typing.Mapping[_typing.AbstractSet[_typing.Sequence[int]], _typing.Mapping[_typing.Sequence[_typing.AbstractSet[str]], str]]]
         ]
     ) -> _typing.Callable[
         [_ParamServiceInterfaceT, _typing.Sequence[_typing.Sequence[_typing.Sequence[_typing.Sequence[int]]]]],
-        _typing.Awaitable[_typing.Mapping[_typing.AbstractSet[_typing.Sequence[int]], _typing.Mapping[_typing.Sequence[_typing.AbstractSet[_builtins.str]], _builtins.str]]]
+        _typing.Awaitable[_typing.Mapping[_typing.AbstractSet[_typing.Sequence[int]], _typing.Mapping[_typing.Sequence[_typing.AbstractSet[str]], str]]]
     ]: ...
 
     @abstractmethod
     async def mapsetlistmapliststring_ret_listlistlist_param(
         self,
         param1: _typing.Sequence[_typing.Sequence[_typing.Sequence[_typing.Sequence[int]]]]
-    ) -> _typing.Mapping[_typing.AbstractSet[_typing.Sequence[int]], _typing.Mapping[_typing.Sequence[_typing.AbstractSet[_builtins.str]], _builtins.str]]: ...
+    ) -> _typing.Mapping[_typing.AbstractSet[_typing.Sequence[int]], _typing.Mapping[_typing.Sequence[_typing.AbstractSet[str]], str]]: ...
 
     @staticmethod
     def pass_context_typedef_ret_i32_param(
@@ -798,18 +797,18 @@ class ParamServiceInterface(
     @staticmethod
     def pass_context_listenum_ret_map_param(
         fn: _typing.Callable[
-                [_ParamServiceInterfaceT, RequestContext, _typing.Mapping[_builtins.str, int]],
+                [_ParamServiceInterfaceT, RequestContext, _typing.Mapping[str, int]],
                 _typing.Awaitable[_typing.Sequence[_module_types.MyEnumA]]
         ]
     ) -> _typing.Callable[
-        [_ParamServiceInterfaceT, _typing.Mapping[_builtins.str, int]],
+        [_ParamServiceInterfaceT, _typing.Mapping[str, int]],
         _typing.Awaitable[_typing.Sequence[_module_types.MyEnumA]]
     ]: ...
 
     @abstractmethod
     async def listenum_ret_map_param(
         self,
-        param1: _typing.Mapping[_builtins.str, int]
+        param1: _typing.Mapping[str, int]
     ) -> _typing.Sequence[_module_types.MyEnumA]: ...
 
     @staticmethod
@@ -832,18 +831,18 @@ class ParamServiceInterface(
     @staticmethod
     def pass_context_setstruct_ret_set_param(
         fn: _typing.Callable[
-                [_ParamServiceInterfaceT, RequestContext, _typing.AbstractSet[_builtins.str]],
+                [_ParamServiceInterfaceT, RequestContext, _typing.AbstractSet[str]],
                 _typing.Awaitable[_typing.AbstractSet[_module_types.MyStruct]]
         ]
     ) -> _typing.Callable[
-        [_ParamServiceInterfaceT, _typing.AbstractSet[_builtins.str]],
+        [_ParamServiceInterfaceT, _typing.AbstractSet[str]],
         _typing.Awaitable[_typing.AbstractSet[_module_types.MyStruct]]
     ]: ...
 
     @abstractmethod
     async def setstruct_ret_set_param(
         self,
-        param1: _typing.AbstractSet[_builtins.str]
+        param1: _typing.AbstractSet[str]
     ) -> _typing.AbstractSet[_module_types.MyStruct]: ...
 
     @staticmethod
@@ -867,18 +866,18 @@ class ParamServiceInterface(
     @staticmethod
     def pass_context_listunion_string_param(
         fn: _typing.Callable[
-                [_ParamServiceInterfaceT, RequestContext, _builtins.str],
+                [_ParamServiceInterfaceT, RequestContext, str],
                 _typing.Awaitable[_typing.Sequence[_module_types.ComplexUnion]]
         ]
     ) -> _typing.Callable[
-        [_ParamServiceInterfaceT, _builtins.str],
+        [_ParamServiceInterfaceT, str],
         _typing.Awaitable[_typing.Sequence[_module_types.ComplexUnion]]
     ]: ...
 
     @abstractmethod
     async def listunion_string_param(
         self,
-        param1: _builtins.str
+        param1: str
     ) -> _typing.Sequence[_module_types.ComplexUnion]: ...
     pass
 

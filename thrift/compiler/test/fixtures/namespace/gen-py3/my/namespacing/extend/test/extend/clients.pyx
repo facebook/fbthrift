@@ -31,7 +31,6 @@ cimport cython
 
 import sys
 import types as _py_types
-import builtins as _builtins
 from asyncio import get_event_loop as asyncio_get_event_loop, shield as asyncio_shield, InvalidStateError as asyncio_InvalidStateError
 
 cimport my.namespacing.extend.test.extend.types as _my_namespacing_extend_test_extend_types

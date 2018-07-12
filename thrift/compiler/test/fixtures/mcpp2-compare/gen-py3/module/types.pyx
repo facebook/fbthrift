@@ -31,7 +31,6 @@ import itertools
 from collections import Sequence, Set, Mapping, Iterable
 import warnings
 import builtins as _builtins
-
 cimport includes.types as _includes_types
 import includes.types as _includes_types
 
@@ -1350,26 +1349,26 @@ cdef class MyStruct(thrift.py3.types.Struct):
             MyIntField = <int64_t> MyIntField
 
         if None is not MyStringField is not __NOTSET:
-            if not isinstance(MyStringField, _builtins.str):
-                raise TypeError(f'MyStringField is not a { _builtins.str !r}.')
+            if not isinstance(MyStringField, str):
+                raise TypeError(f'MyStringField is not a { str !r}.')
 
         if None is not MyStringField2 is not __NOTSET:
-            if not isinstance(MyStringField2, _builtins.str):
-                raise TypeError(f'MyStringField2 is not a { _builtins.str !r}.')
+            if not isinstance(MyStringField2, str):
+                raise TypeError(f'MyStringField2 is not a { str !r}.')
 
         if None is not MyBinaryField is not __NOTSET:
-            if not isinstance(MyBinaryField, _builtins.bytes):
-                raise TypeError(f'MyBinaryField is not a { _builtins.bytes !r}.')
+            if not isinstance(MyBinaryField, bytes):
+                raise TypeError(f'MyBinaryField is not a { bytes !r}.')
 
         if None is not MyBinaryField2 is not __NOTSET:
-            if not isinstance(MyBinaryField2, _builtins.bytes):
-                raise TypeError(f'MyBinaryField2 is not a { _builtins.bytes !r}.')
+            if not isinstance(MyBinaryField2, bytes):
+                raise TypeError(f'MyBinaryField2 is not a { bytes !r}.')
 
         if MyBinaryField3 is None:
             raise TypeError('field MyBinaryField3 is required and has no default, it can not be unset')
         if None is not MyBinaryField3 is not __NOTSET:
-            if not isinstance(MyBinaryField3, _builtins.bytes):
-                raise TypeError(f'MyBinaryField3 is not a { _builtins.bytes !r}.')
+            if not isinstance(MyBinaryField3, bytes):
+                raise TypeError(f'MyBinaryField3 is not a { bytes !r}.')
 
         inst = <MyStruct>MyStruct.__new__(MyStruct)
         inst._cpp_obj = move(MyStruct._make_instance(
@@ -1671,7 +1670,7 @@ cdef class SimpleUnion(thrift.py3.types.Union):
                     return SimpleUnion(intValue=value)
                 except OverflowError:
                     pass
-        if isinstance(value, _builtins.str):
+        if isinstance(value, str):
             return SimpleUnion(stringValue=value)
         raise ValueError(f"Unable to derive correct union field for value: {value}")
 
@@ -1929,11 +1928,11 @@ cdef class ComplexUnion(thrift.py3.types.Union):
                     return ComplexUnion(opt_intValue=value)
                 except OverflowError:
                     pass
-        if isinstance(value, _builtins.str):
+        if isinstance(value, str):
             return ComplexUnion(stringValue=value)
-        if isinstance(value, _builtins.str):
+        if isinstance(value, str):
             return ComplexUnion(req_stringValue=value)
-        if isinstance(value, _builtins.str):
+        if isinstance(value, str):
             return ComplexUnion(opt_stringValue=value)
         if isinstance(value, int):
             if not isinstance(value, pbool):
@@ -1987,11 +1986,11 @@ cdef class ComplexUnion(thrift.py3.types.Union):
             return ComplexUnion(a_union_typedef=value)
         if isinstance(value, List__Set__SimpleUnion):
             return ComplexUnion(a_union_typedef_list=value)
-        if isinstance(value, _builtins.bytes):
+        if isinstance(value, bytes):
             return ComplexUnion(MyBinaryField=value)
-        if isinstance(value, _builtins.bytes):
+        if isinstance(value, bytes):
             return ComplexUnion(MyBinaryField2=value)
-        if isinstance(value, _builtins.bytes):
+        if isinstance(value, bytes):
             return ComplexUnion(MyBinaryField3=value)
         if isinstance(value, List__binary):
             return ComplexUnion(MyBinaryListField4=value)
@@ -3217,20 +3216,20 @@ cdef class containerStruct(thrift.py3.types.Struct):
         if req_fieldB is None:
             raise TypeError('field req_fieldB is required and has no default, it can not be unset')
         if None is not fieldD is not __NOTSET:
-            if not isinstance(fieldD, _builtins.str):
-                raise TypeError(f'fieldD is not a { _builtins.str !r}.')
+            if not isinstance(fieldD, str):
+                raise TypeError(f'fieldD is not a { str !r}.')
 
         if None is not fieldE is not __NOTSET:
-            if not isinstance(fieldE, _builtins.str):
-                raise TypeError(f'fieldE is not a { _builtins.str !r}.')
+            if not isinstance(fieldE, str):
+                raise TypeError(f'fieldE is not a { str !r}.')
 
         if None is not req_fieldE is not __NOTSET:
-            if not isinstance(req_fieldE, _builtins.str):
-                raise TypeError(f'req_fieldE is not a { _builtins.str !r}.')
+            if not isinstance(req_fieldE, str):
+                raise TypeError(f'req_fieldE is not a { str !r}.')
 
         if None is not opt_fieldE is not __NOTSET:
-            if not isinstance(opt_fieldE, _builtins.str):
-                raise TypeError(f'opt_fieldE is not a { _builtins.str !r}.')
+            if not isinstance(opt_fieldE, str):
+                raise TypeError(f'opt_fieldE is not a { str !r}.')
 
         if None is not fieldI is not __NOTSET:
             if not isinstance(fieldI, bool):
@@ -3298,8 +3297,8 @@ cdef class containerStruct(thrift.py3.types.Struct):
                 raise TypeError(f'field fieldAD value: { fieldAD !r} is not of the enum type { _includes_types.AnEnum }.')
 
         if None is not fieldSD is not __NOTSET:
-            if not isinstance(fieldSD, _builtins.str):
-                raise TypeError(f'fieldSD is not a { _builtins.str !r}.')
+            if not isinstance(fieldSD, str):
+                raise TypeError(f'fieldSD is not a { str !r}.')
 
         inst = <containerStruct>containerStruct.__new__(containerStruct)
         inst._cpp_obj = move(containerStruct._make_instance(
@@ -4848,12 +4847,12 @@ cdef class AnnotatedStruct(thrift.py3.types.Struct):
             base_type = <int32_t> base_type
 
         if None is not iobuf_type is not __NOTSET:
-            if not isinstance(iobuf_type, _builtins.bytes):
-                raise TypeError(f'iobuf_type is not a { _builtins.bytes !r}.')
+            if not isinstance(iobuf_type, bytes):
+                raise TypeError(f'iobuf_type is not a { bytes !r}.')
 
         if None is not iobuf_ptr is not __NOTSET:
-            if not isinstance(iobuf_ptr, _builtins.bytes):
-                raise TypeError(f'iobuf_ptr is not a { _builtins.bytes !r}.')
+            if not isinstance(iobuf_ptr, bytes):
+                raise TypeError(f'iobuf_ptr is not a { bytes !r}.')
 
         if None is not indirection_a is not __NOTSET:
             if not isinstance(indirection_a, int):
@@ -4861,12 +4860,12 @@ cdef class AnnotatedStruct(thrift.py3.types.Struct):
             indirection_a = <int64_t> indirection_a
 
         if None is not iobuf_type_val is not __NOTSET:
-            if not isinstance(iobuf_type_val, _builtins.bytes):
-                raise TypeError(f'iobuf_type_val is not a { _builtins.bytes !r}.')
+            if not isinstance(iobuf_type_val, bytes):
+                raise TypeError(f'iobuf_type_val is not a { bytes !r}.')
 
         if None is not iobuf_ptr_val is not __NOTSET:
-            if not isinstance(iobuf_ptr_val, _builtins.bytes):
-                raise TypeError(f'iobuf_ptr_val is not a { _builtins.bytes !r}.')
+            if not isinstance(iobuf_ptr_val, bytes):
+                raise TypeError(f'iobuf_ptr_val is not a { bytes !r}.')
 
         if None is not struct_struct is not __NOTSET:
             if not isinstance(struct_struct, containerStruct):
@@ -6323,8 +6322,8 @@ cdef class Map__string_i64:
         cdef unique_ptr[cmap[string,int64_t]] c_inst = make_unique[cmap[string,int64_t]]()
         if items is not None:
             for key, item in items.items():
-                if not isinstance(key, _builtins.str):
-                    raise TypeError(f"{key!r} is not of type _builtins.str")
+                if not isinstance(key, str):
+                    raise TypeError(f"{key!r} is not of type str")
                 if not isinstance(item, int):
                     raise TypeError(f"{item!r} is not of type int")
                 item = <int64_t> item
@@ -6336,7 +6335,7 @@ cdef class Map__string_i64:
         err = KeyError(f'{key}')
         if not self or key is None:
             raise err
-        if not isinstance(key, _builtins.str):
+        if not isinstance(key, str):
             raise err
         cdef string ckey = key.encode('UTF-8')
         cdef cmap[string,int64_t].iterator iter = deref(
@@ -6387,7 +6386,7 @@ cdef class Map__string_i64:
     def __contains__(self, key):
         if not self or key is None:
             return False
-        if not isinstance(key, _builtins.str):
+        if not isinstance(key, str):
             return False
         cdef string ckey = key.encode('UTF-8')
         return deref(self._cpp_obj).count(ckey) > 0
@@ -6396,11 +6395,11 @@ cdef class Map__string_i64:
         if not self or key is None:
             return default
         try:
-            if not isinstance(key, _builtins.str):
-                key = _builtins.str(key)
+            if not isinstance(key, str):
+                key = str(key)
         except Exception:
             return default
-        if not isinstance(key, _builtins.str):
+        if not isinstance(key, str):
             return default
         if key not in self:
             return default
@@ -7591,8 +7590,8 @@ cdef class List__string:
         cdef unique_ptr[vector[string]] c_inst = make_unique[vector[string]]()
         if items is not None:
             for item in items:
-                if not isinstance(item, _builtins.str):
-                    raise TypeError(f"{item!r} is not of type _builtins.str")
+                if not isinstance(item, str):
+                    raise TypeError(f"{item!r} is not of type str")
                 deref(c_inst).push_back(item.encode('UTF-8'))
         return move_unique(c_inst)
 
@@ -7646,7 +7645,7 @@ cdef class List__string:
     def __contains__(self, item):
         if not self or item is None:
             return False
-        if not isinstance(item, _builtins.str):
+        if not isinstance(item, str):
             return False
         cdef string citem = item.encode('UTF-8')
         cdef vector[string] vec = deref(
@@ -7700,7 +7699,7 @@ cdef class List__string:
                 raise err  # past end of list
             offset_begin = start
 
-        if not isinstance(item, _builtins.str):
+        if not isinstance(item, str):
             raise err
         cdef string citem = item.encode('UTF-8')
         cdef vector[string] vec = deref(self._cpp_obj.get())
@@ -7717,7 +7716,7 @@ cdef class List__string:
     def count(self, item):
         if not self or item is None:
             return 0
-        if not isinstance(item, _builtins.str):
+        if not isinstance(item, str):
             return 0
         cdef string citem = item.encode('UTF-8')
         cdef vector[string] vec = deref(self._cpp_obj.get())
@@ -7745,7 +7744,7 @@ cdef class Set__List__string:
         if items is not None:
             for item in items:
                 if item is None:
-                    raise TypeError("None is not of type _typing.Sequence[_builtins.str]")
+                    raise TypeError("None is not of type _typing.Sequence[str]")
                 if not isinstance(item, List__string):
                     item = List__string(item)
                 deref(c_inst).insert(vector[string](deref(List__string(item)._cpp_obj.get())))
@@ -8144,7 +8143,7 @@ cdef class Map__i32_List__string:
                     raise TypeError(f"{key!r} is not of type int")
                 key = <int32_t> key
                 if item is None:
-                    raise TypeError("None is not of type _typing.Sequence[_builtins.str]")
+                    raise TypeError("None is not of type _typing.Sequence[str]")
                 if not isinstance(item, List__string):
                     item = List__string(item)
 
@@ -9296,15 +9295,15 @@ cdef class Set__string:
         cdef unique_ptr[cset[string]] c_inst = make_unique[cset[string]]()
         if items is not None:
             for item in items:
-                if not isinstance(item, _builtins.str):
-                    raise TypeError(f"{item!r} is not of type _builtins.str")
+                if not isinstance(item, str):
+                    raise TypeError(f"{item!r} is not of type str")
                 deref(c_inst).insert(item.encode('UTF-8'))
         return move_unique(c_inst)
 
     def __contains__(self, item):
         if not self or item is None:
             return False
-        if not isinstance(item, _builtins.str):
+        if not isinstance(item, str):
             return False
         return pbool(deref(self._cpp_obj).count(item.encode('UTF-8')))
 
@@ -9487,7 +9486,7 @@ cdef class List__Set__string:
         if items is not None:
             for item in items:
                 if item is None:
-                    raise TypeError("None is not of the type _typing.AbstractSet[_builtins.str]")
+                    raise TypeError("None is not of the type _typing.AbstractSet[str]")
                 if not isinstance(item, Set__string):
                     item = Set__string(item)
                 deref(c_inst).push_back(cset[string](deref(Set__string(item)._cpp_obj.get())))
@@ -9660,11 +9659,11 @@ cdef class Map__List__Set__string_string:
         if items is not None:
             for key, item in items.items():
                 if key is None:
-                    raise TypeError("None is not of type _typing.Sequence[_typing.AbstractSet[_builtins.str]]")
+                    raise TypeError("None is not of type _typing.Sequence[_typing.AbstractSet[str]]")
                 if not isinstance(key, List__Set__string):
                     key = List__Set__string(key)
-                if not isinstance(item, _builtins.str):
-                    raise TypeError(f"{item!r} is not of type _builtins.str")
+                if not isinstance(item, str):
+                    raise TypeError(f"{item!r} is not of type str")
 
                 deref(c_inst).insert(cpair[vector[cset[string]],string](vector[cset[string]](deref(List__Set__string(key)._cpp_obj.get())),item.encode('UTF-8')))
         return move_unique(c_inst)
@@ -9803,7 +9802,7 @@ cdef class Map__Set__List__i32_Map__List__Set__string_string:
                 if not isinstance(key, Set__List__i32):
                     key = Set__List__i32(key)
                 if item is None:
-                    raise TypeError("None is not of type _typing.Mapping[_typing.Sequence[_typing.AbstractSet[_builtins.str]], _builtins.str]")
+                    raise TypeError("None is not of type _typing.Mapping[_typing.Sequence[_typing.AbstractSet[str]], str]")
                 if not isinstance(item, Map__List__Set__string_string):
                     item = Map__List__Set__string_string(item)
 
@@ -9942,8 +9941,8 @@ cdef class List__binary:
         cdef unique_ptr[vector[string]] c_inst = make_unique[vector[string]]()
         if items is not None:
             for item in items:
-                if not isinstance(item, _builtins.bytes):
-                    raise TypeError(f"{item!r} is not of type _builtins.bytes")
+                if not isinstance(item, bytes):
+                    raise TypeError(f"{item!r} is not of type bytes")
                 deref(c_inst).push_back(item)
         return move_unique(c_inst)
 
@@ -9997,7 +9996,7 @@ cdef class List__binary:
     def __contains__(self, item):
         if not self or item is None:
             return False
-        if not isinstance(item, _builtins.bytes):
+        if not isinstance(item, bytes):
             return False
         cdef string citem = item
         cdef vector[string] vec = deref(
@@ -10051,7 +10050,7 @@ cdef class List__binary:
                 raise err  # past end of list
             offset_begin = start
 
-        if not isinstance(item, _builtins.bytes):
+        if not isinstance(item, bytes):
             raise err
         cdef string citem = item
         cdef vector[string] vec = deref(self._cpp_obj.get())
@@ -10068,7 +10067,7 @@ cdef class List__binary:
     def count(self, item):
         if not self or item is None:
             return 0
-        if not isinstance(item, _builtins.bytes):
+        if not isinstance(item, bytes):
             return 0
         cdef string citem = item
         cdef vector[string] vec = deref(self._cpp_obj.get())
@@ -10097,8 +10096,8 @@ cdef class Map__MyEnumA_string:
             for key, item in items.items():
                 if not isinstance(key, MyEnumA):
                     raise TypeError(f"{key!r} is not of type MyEnumA")
-                if not isinstance(item, _builtins.str):
-                    raise TypeError(f"{item!r} is not of type _builtins.str")
+                if not isinstance(item, str):
+                    raise TypeError(f"{item!r} is not of type str")
 
                 deref(c_inst).insert(cpair[cMyEnumA,string](MyEnumA_to_cpp(key),item.encode('UTF-8')))
         return move_unique(c_inst)
@@ -10412,8 +10411,8 @@ cdef class Map__string_i32:
         cdef unique_ptr[cmap[string,int32_t]] c_inst = make_unique[cmap[string,int32_t]]()
         if items is not None:
             for key, item in items.items():
-                if not isinstance(key, _builtins.str):
-                    raise TypeError(f"{key!r} is not of type _builtins.str")
+                if not isinstance(key, str):
+                    raise TypeError(f"{key!r} is not of type str")
                 if not isinstance(item, int):
                     raise TypeError(f"{item!r} is not of type int")
                 item = <int32_t> item
@@ -10425,7 +10424,7 @@ cdef class Map__string_i32:
         err = KeyError(f'{key}')
         if not self or key is None:
             raise err
-        if not isinstance(key, _builtins.str):
+        if not isinstance(key, str):
             raise err
         cdef string ckey = key.encode('UTF-8')
         cdef cmap[string,int32_t].iterator iter = deref(
@@ -10476,7 +10475,7 @@ cdef class Map__string_i32:
     def __contains__(self, key):
         if not self or key is None:
             return False
-        if not isinstance(key, _builtins.str):
+        if not isinstance(key, str):
             return False
         cdef string ckey = key.encode('UTF-8')
         return deref(self._cpp_obj).count(ckey) > 0
@@ -10485,11 +10484,11 @@ cdef class Map__string_i32:
         if not self or key is None:
             return default
         try:
-            if not isinstance(key, _builtins.str):
-                key = _builtins.str(key)
+            if not isinstance(key, str):
+                key = str(key)
         except Exception:
             return default
-        if not isinstance(key, _builtins.str):
+        if not isinstance(key, str):
             return default
         if key not in self:
             return default
@@ -11055,8 +11054,8 @@ cdef class Map__string_bool:
         cdef unique_ptr[cmap[string,cbool]] c_inst = make_unique[cmap[string,cbool]]()
         if items is not None:
             for key, item in items.items():
-                if not isinstance(key, _builtins.str):
-                    raise TypeError(f"{key!r} is not of type _builtins.str")
+                if not isinstance(key, str):
+                    raise TypeError(f"{key!r} is not of type str")
                 if not isinstance(item, bool):
                     raise TypeError(f"{item!r} is not of type bool")
 
@@ -11067,7 +11066,7 @@ cdef class Map__string_bool:
         err = KeyError(f'{key}')
         if not self or key is None:
             raise err
-        if not isinstance(key, _builtins.str):
+        if not isinstance(key, str):
             raise err
         cdef string ckey = key.encode('UTF-8')
         cdef cmap[string,cbool].iterator iter = deref(
@@ -11118,7 +11117,7 @@ cdef class Map__string_bool:
     def __contains__(self, key):
         if not self or key is None:
             return False
-        if not isinstance(key, _builtins.str):
+        if not isinstance(key, str):
             return False
         cdef string ckey = key.encode('UTF-8')
         return deref(self._cpp_obj).count(ckey) > 0
@@ -11127,11 +11126,11 @@ cdef class Map__string_bool:
         if not self or key is None:
             return default
         try:
-            if not isinstance(key, _builtins.str):
-                key = _builtins.str(key)
+            if not isinstance(key, str):
+                key = str(key)
         except Exception:
             return default
-        if not isinstance(key, _builtins.str):
+        if not isinstance(key, str):
             return default
         if key not in self:
             return default
@@ -11372,10 +11371,10 @@ cdef class Map__string_Map__string_i32:
         cdef unique_ptr[cmap[string,cmap[string,int32_t]]] c_inst = make_unique[cmap[string,cmap[string,int32_t]]]()
         if items is not None:
             for key, item in items.items():
-                if not isinstance(key, _builtins.str):
-                    raise TypeError(f"{key!r} is not of type _builtins.str")
+                if not isinstance(key, str):
+                    raise TypeError(f"{key!r} is not of type str")
                 if item is None:
-                    raise TypeError("None is not of type _typing.Mapping[_builtins.str, int]")
+                    raise TypeError("None is not of type _typing.Mapping[str, int]")
                 if not isinstance(item, Map__string_i32):
                     item = Map__string_i32(item)
 
@@ -11386,7 +11385,7 @@ cdef class Map__string_Map__string_i32:
         err = KeyError(f'{key}')
         if not self or key is None:
             raise err
-        if not isinstance(key, _builtins.str):
+        if not isinstance(key, str):
             raise err
         cdef string ckey = key.encode('UTF-8')
         cdef cmap[string,cmap[string,int32_t]].iterator iter = deref(
@@ -11438,7 +11437,7 @@ cdef class Map__string_Map__string_i32:
     def __contains__(self, key):
         if not self or key is None:
             return False
-        if not isinstance(key, _builtins.str):
+        if not isinstance(key, str):
             return False
         cdef string ckey = key.encode('UTF-8')
         return deref(self._cpp_obj).count(ckey) > 0
@@ -11447,11 +11446,11 @@ cdef class Map__string_Map__string_i32:
         if not self or key is None:
             return default
         try:
-            if not isinstance(key, _builtins.str):
-                key = _builtins.str(key)
+            if not isinstance(key, str):
+                key = str(key)
         except Exception:
             return default
-        if not isinstance(key, _builtins.str):
+        if not isinstance(key, str):
             return default
         if key not in self:
             return default
@@ -11503,10 +11502,10 @@ cdef class Map__string_Map__string_Map__string_i32:
         cdef unique_ptr[cmap[string,cmap[string,cmap[string,int32_t]]]] c_inst = make_unique[cmap[string,cmap[string,cmap[string,int32_t]]]]()
         if items is not None:
             for key, item in items.items():
-                if not isinstance(key, _builtins.str):
-                    raise TypeError(f"{key!r} is not of type _builtins.str")
+                if not isinstance(key, str):
+                    raise TypeError(f"{key!r} is not of type str")
                 if item is None:
-                    raise TypeError("None is not of type _typing.Mapping[_builtins.str, _typing.Mapping[_builtins.str, int]]")
+                    raise TypeError("None is not of type _typing.Mapping[str, _typing.Mapping[str, int]]")
                 if not isinstance(item, Map__string_Map__string_i32):
                     item = Map__string_Map__string_i32(item)
 
@@ -11517,7 +11516,7 @@ cdef class Map__string_Map__string_Map__string_i32:
         err = KeyError(f'{key}')
         if not self or key is None:
             raise err
-        if not isinstance(key, _builtins.str):
+        if not isinstance(key, str):
             raise err
         cdef string ckey = key.encode('UTF-8')
         cdef cmap[string,cmap[string,cmap[string,int32_t]]].iterator iter = deref(
@@ -11569,7 +11568,7 @@ cdef class Map__string_Map__string_Map__string_i32:
     def __contains__(self, key):
         if not self or key is None:
             return False
-        if not isinstance(key, _builtins.str):
+        if not isinstance(key, str):
             return False
         cdef string ckey = key.encode('UTF-8')
         return deref(self._cpp_obj).count(ckey) > 0
@@ -11578,11 +11577,11 @@ cdef class Map__string_Map__string_Map__string_i32:
         if not self or key is None:
             return default
         try:
-            if not isinstance(key, _builtins.str):
-                key = _builtins.str(key)
+            if not isinstance(key, str):
+                key = str(key)
         except Exception:
             return default
-        if not isinstance(key, _builtins.str):
+        if not isinstance(key, str):
             return default
         if key not in self:
             return default
@@ -11807,8 +11806,8 @@ cdef class Map__string_List__i32:
         cdef unique_ptr[cmap[string,vector[int32_t]]] c_inst = make_unique[cmap[string,vector[int32_t]]]()
         if items is not None:
             for key, item in items.items():
-                if not isinstance(key, _builtins.str):
-                    raise TypeError(f"{key!r} is not of type _builtins.str")
+                if not isinstance(key, str):
+                    raise TypeError(f"{key!r} is not of type str")
                 if item is None:
                     raise TypeError("None is not of type _typing.Sequence[int]")
                 if not isinstance(item, List__i32):
@@ -11821,7 +11820,7 @@ cdef class Map__string_List__i32:
         err = KeyError(f'{key}')
         if not self or key is None:
             raise err
-        if not isinstance(key, _builtins.str):
+        if not isinstance(key, str):
             raise err
         cdef string ckey = key.encode('UTF-8')
         cdef cmap[string,vector[int32_t]].iterator iter = deref(
@@ -11873,7 +11872,7 @@ cdef class Map__string_List__i32:
     def __contains__(self, key):
         if not self or key is None:
             return False
-        if not isinstance(key, _builtins.str):
+        if not isinstance(key, str):
             return False
         cdef string ckey = key.encode('UTF-8')
         return deref(self._cpp_obj).count(ckey) > 0
@@ -11882,11 +11881,11 @@ cdef class Map__string_List__i32:
         if not self or key is None:
             return default
         try:
-            if not isinstance(key, _builtins.str):
-                key = _builtins.str(key)
+            if not isinstance(key, str):
+                key = str(key)
         except Exception:
             return default
-        if not isinstance(key, _builtins.str):
+        if not isinstance(key, str):
             return default
         if key not in self:
             return default
@@ -12805,15 +12804,15 @@ cdef class folly_sorted_vector_set_std_string__Set__string:
         cdef unique_ptr[folly_sorted_vector_set_std_string] c_inst = make_unique[folly_sorted_vector_set_std_string]()
         if items is not None:
             for item in items:
-                if not isinstance(item, _builtins.str):
-                    raise TypeError(f"{item!r} is not of type _builtins.str")
+                if not isinstance(item, str):
+                    raise TypeError(f"{item!r} is not of type str")
                 deref(c_inst).insert(item.encode('UTF-8'))
         return move_unique(c_inst)
 
     def __contains__(self, item):
         if not self or item is None:
             return False
-        if not isinstance(item, _builtins.str):
+        if not isinstance(item, str):
             return False
         return pbool(deref(self._cpp_obj).count(item.encode('UTF-8')))
 
@@ -13122,8 +13121,8 @@ cdef class std_unordered_map_std_string_containerStruct__Map__string_containerSt
         cdef unique_ptr[std_unordered_map_std_string_containerStruct] c_inst = make_unique[std_unordered_map_std_string_containerStruct]()
         if items is not None:
             for key, item in items.items():
-                if not isinstance(key, _builtins.str):
-                    raise TypeError(f"{key!r} is not of type _builtins.str")
+                if not isinstance(key, str):
+                    raise TypeError(f"{key!r} is not of type str")
                 if not isinstance(item, containerStruct):
                     raise TypeError(f"{item!r} is not of type 'containerStruct'")
 
@@ -13134,7 +13133,7 @@ cdef class std_unordered_map_std_string_containerStruct__Map__string_containerSt
         err = KeyError(f'{key}')
         if not self or key is None:
             raise err
-        if not isinstance(key, _builtins.str):
+        if not isinstance(key, str):
             raise err
         cdef string ckey = key.encode('UTF-8')
         cdef std_unordered_map_std_string_containerStruct.iterator iter = deref(
@@ -13185,7 +13184,7 @@ cdef class std_unordered_map_std_string_containerStruct__Map__string_containerSt
     def __contains__(self, key):
         if not self or key is None:
             return False
-        if not isinstance(key, _builtins.str):
+        if not isinstance(key, str):
             return False
         cdef string ckey = key.encode('UTF-8')
         return deref(self._cpp_obj).count(ckey) > 0
@@ -13194,11 +13193,11 @@ cdef class std_unordered_map_std_string_containerStruct__Map__string_containerSt
         if not self or key is None:
             return default
         try:
-            if not isinstance(key, _builtins.str):
-                key = _builtins.str(key)
+            if not isinstance(key, str):
+                key = str(key)
         except Exception:
             return default
-        if not isinstance(key, _builtins.str):
+        if not isinstance(key, str):
             return default
         if key not in self:
             return default
@@ -13402,8 +13401,8 @@ cdef class std_deque__List__string:
         cdef unique_ptr[std_deque[string]] c_inst = make_unique[std_deque[string]]()
         if items is not None:
             for item in items:
-                if not isinstance(item, _builtins.str):
-                    raise TypeError(f"{item!r} is not of type _builtins.str")
+                if not isinstance(item, str):
+                    raise TypeError(f"{item!r} is not of type str")
                 deref(c_inst).push_back(item.encode('UTF-8'))
         return move_unique(c_inst)
 
@@ -13457,7 +13456,7 @@ cdef class std_deque__List__string:
     def __contains__(self, item):
         if not self or item is None:
             return False
-        if not isinstance(item, _builtins.str):
+        if not isinstance(item, str):
             return False
         cdef string citem = item.encode('UTF-8')
         cdef std_deque[string] vec = deref(
@@ -13511,7 +13510,7 @@ cdef class std_deque__List__string:
                 raise err  # past end of list
             offset_begin = start
 
-        if not isinstance(item, _builtins.str):
+        if not isinstance(item, str):
             raise err
         cdef string citem = item.encode('UTF-8')
         cdef std_deque[string] vec = deref(self._cpp_obj.get())
@@ -13528,7 +13527,7 @@ cdef class std_deque__List__string:
     def count(self, item):
         if not self or item is None:
             return 0
-        if not isinstance(item, _builtins.str):
+        if not isinstance(item, str):
             return 0
         cdef string citem = item.encode('UTF-8')
         cdef std_deque[string] vec = deref(self._cpp_obj.get())
@@ -13555,15 +13554,15 @@ cdef class folly_sorted_vector_set__Set__string:
         cdef unique_ptr[folly_sorted_vector_set[string]] c_inst = make_unique[folly_sorted_vector_set[string]]()
         if items is not None:
             for item in items:
-                if not isinstance(item, _builtins.str):
-                    raise TypeError(f"{item!r} is not of type _builtins.str")
+                if not isinstance(item, str):
+                    raise TypeError(f"{item!r} is not of type str")
                 deref(c_inst).insert(item.encode('UTF-8'))
         return move_unique(c_inst)
 
     def __contains__(self, item):
         if not self or item is None:
             return False
-        if not isinstance(item, _builtins.str):
+        if not isinstance(item, str):
             return False
         return pbool(deref(self._cpp_obj).count(item.encode('UTF-8')))
 
@@ -13748,8 +13747,8 @@ cdef class folly_sorted_vector_map__Map__i64_string:
                 if not isinstance(key, int):
                     raise TypeError(f"{key!r} is not of type int")
                 key = <int64_t> key
-                if not isinstance(item, _builtins.str):
-                    raise TypeError(f"{item!r} is not of type _builtins.str")
+                if not isinstance(item, str):
+                    raise TypeError(f"{item!r} is not of type str")
 
                 deref(c_inst).insert(cpair[int64_t,string](key,item.encode('UTF-8')))
         return move_unique(c_inst)
@@ -14219,8 +14218,8 @@ cdef class Map__i32_string:
                 if not isinstance(key, int):
                     raise TypeError(f"{key!r} is not of type int")
                 key = <int32_t> key
-                if not isinstance(item, _builtins.str):
-                    raise TypeError(f"{item!r} is not of type _builtins.str")
+                if not isinstance(item, str):
+                    raise TypeError(f"{item!r} is not of type str")
 
                 deref(c_inst).insert(cpair[int32_t,string](key,item.encode('UTF-8')))
         return move_unique(c_inst)
@@ -14344,7 +14343,7 @@ cdef class List__Map__string_i32:
         if items is not None:
             for item in items:
                 if item is None:
-                    raise TypeError("None is not of the type _typing.Mapping[_builtins.str, int]")
+                    raise TypeError("None is not of the type _typing.Mapping[str, int]")
                 if not isinstance(item, Map__string_i32):
                     item = Map__string_i32(item)
                 deref(c_inst).push_back(cmap[string,int32_t](deref(Map__string_i32(item)._cpp_obj.get())))
@@ -14519,8 +14518,8 @@ cdef class Map__i16_string:
                 if not isinstance(key, int):
                     raise TypeError(f"{key!r} is not of type int")
                 key = <int16_t> key
-                if not isinstance(item, _builtins.str):
-                    raise TypeError(f"{item!r} is not of type _builtins.str")
+                if not isinstance(item, str):
+                    raise TypeError(f"{item!r} is not of type str")
 
                 deref(c_inst).insert(cpair[int16_t,string](key,item.encode('UTF-8')))
         return move_unique(c_inst)
@@ -14644,7 +14643,7 @@ cdef class List__Map__i16_string:
         if items is not None:
             for item in items:
                 if item is None:
-                    raise TypeError("None is not of the type _typing.Mapping[int, _builtins.str]")
+                    raise TypeError("None is not of the type _typing.Mapping[int, str]")
                 if not isinstance(item, Map__i16_string):
                     item = Map__i16_string(item)
                 deref(c_inst).push_back(cmap[int16_t,string](deref(Map__i16_string(item)._cpp_obj.get())))
@@ -14981,7 +14980,7 @@ mostComplexTypeDef = List__List__Map__Empty_MyStruct
 IndirectionA = int
 IndirectionC = int
 IndirectionB = float
-IndirectionD = _builtins.str
+IndirectionD = str
 HashedTypedef = Map__MyEnumA_string
 CppFakeI32 = int
 FollySmallVectorI64 = folly_small_vector_int64_t_8__List__i64
@@ -14992,5 +14991,5 @@ std_list = std_list__List__i32
 std_deque = std_deque__List__string
 folly_set = folly_sorted_vector_set__Set__string
 folly_map = folly_sorted_vector_map__Map__i64_string
-IOBuf = _builtins.bytes
-IOBufPtr = _builtins.bytes
+IOBuf = bytes
+IOBufPtr = bytes

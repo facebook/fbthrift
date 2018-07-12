@@ -10,8 +10,6 @@ import thrift.py3.client
 import thrift.py3.common
 import typing as _typing
 from types import TracebackType
-import builtins as _builtins
-
 
 import module.types as _module_types
 import includes.types as _includes_types
@@ -87,17 +85,17 @@ class ReturnService(thrift.py3.client.Client):
     async def stringReturn(
         self,
         rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
-    ) -> _builtins.str: ...
+    ) -> str: ...
 
     async def binaryReturn(
         self,
         rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
-    ) -> _builtins.bytes: ...
+    ) -> bytes: ...
 
     async def mapReturn(
         self,
         rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
-    ) -> _typing.Mapping[_builtins.str, int]: ...
+    ) -> _typing.Mapping[str, int]: ...
 
     async def simpleTypedefReturn(
         self,
@@ -188,14 +186,14 @@ class ParamService(thrift.py3.client.Client):
 
     async def void_ret_map_param(
         self,
-        param1: _typing.Mapping[_builtins.str, int],
+        param1: _typing.Mapping[str, int],
         rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
     ) -> None: ...
 
     async def void_ret_map_setlist_param(
         self,
-        param1: _typing.Mapping[_builtins.str, int],
-        param2: _typing.AbstractSet[_typing.Sequence[_builtins.str]],
+        param1: _typing.Mapping[str, int],
+        param2: _typing.AbstractSet[_typing.Sequence[str]],
         rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
     ) -> None: ...
 
@@ -232,7 +230,7 @@ class ParamService(thrift.py3.client.Client):
 
     async def bool_ret_map_param(
         self,
-        param1: _typing.Mapping[_builtins.str, int],
+        param1: _typing.Mapping[str, int],
         rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
     ) -> bool: ...
 
@@ -251,7 +249,7 @@ class ParamService(thrift.py3.client.Client):
 
     async def i64_ret_string_typedef_param(
         self,
-        param1: _builtins.str,
+        param1: str,
         param2: _typing.AbstractSet[_typing.Sequence[_typing.Sequence[_typing.Mapping[_module_types.Empty, _module_types.MyStruct]]]],
         rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
     ) -> int: ...
@@ -274,26 +272,26 @@ class ParamService(thrift.py3.client.Client):
 
     async def string_ret_string_param(
         self,
-        param1: _builtins.str,
+        param1: str,
         rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
-    ) -> _builtins.str: ...
+    ) -> str: ...
 
     async def binary_ret_binary_param(
         self,
-        param1: _builtins.bytes,
+        param1: bytes,
         rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
-    ) -> _builtins.bytes: ...
+    ) -> bytes: ...
 
     async def map_ret_bool_param(
         self,
         param1: bool,
         rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
-    ) -> _typing.Mapping[_builtins.str, int]: ...
+    ) -> _typing.Mapping[str, int]: ...
 
     async def list_ret_map_setlist_param(
         self,
-        param1: _typing.Mapping[int, _typing.Sequence[_builtins.str]],
-        param2: _typing.Sequence[_builtins.str],
+        param1: _typing.Mapping[int, _typing.Sequence[str]],
+        param2: _typing.Sequence[str],
         rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
     ) -> _typing.Sequence[bool]: ...
 
@@ -301,7 +299,7 @@ class ParamService(thrift.py3.client.Client):
         self,
         param1: _typing.Sequence[_typing.Sequence[_typing.Sequence[_typing.Sequence[int]]]],
         rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
-    ) -> _typing.Mapping[_typing.AbstractSet[_typing.Sequence[int]], _typing.Mapping[_typing.Sequence[_typing.AbstractSet[_builtins.str]], _builtins.str]]: ...
+    ) -> _typing.Mapping[_typing.AbstractSet[_typing.Sequence[int]], _typing.Mapping[_typing.Sequence[_typing.AbstractSet[str]], str]]: ...
 
     async def typedef_ret_i32_param(
         self,
@@ -330,7 +328,7 @@ class ParamService(thrift.py3.client.Client):
 
     async def listenum_ret_map_param(
         self,
-        param1: _typing.Mapping[_builtins.str, int],
+        param1: _typing.Mapping[str, int],
         rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
     ) -> _typing.Sequence[_module_types.MyEnumA]: ...
 
@@ -342,7 +340,7 @@ class ParamService(thrift.py3.client.Client):
 
     async def setstruct_ret_set_param(
         self,
-        param1: _typing.AbstractSet[_builtins.str],
+        param1: _typing.AbstractSet[str],
         rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
     ) -> _typing.AbstractSet[_module_types.MyStruct]: ...
 
@@ -355,7 +353,7 @@ class ParamService(thrift.py3.client.Client):
 
     async def listunion_string_param(
         self,
-        param1: _builtins.str,
+        param1: str,
         rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
     ) -> _typing.Sequence[_module_types.ComplexUnion]: ...
 

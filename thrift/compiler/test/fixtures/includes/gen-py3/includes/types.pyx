@@ -31,7 +31,6 @@ import itertools
 from collections import Sequence, Set, Mapping, Iterable
 import warnings
 import builtins as _builtins
-
 cimport transitive.types as _transitive_types
 import transitive.types as _transitive_types
 

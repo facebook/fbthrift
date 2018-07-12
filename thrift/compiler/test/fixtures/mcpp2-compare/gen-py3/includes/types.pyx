@@ -32,7 +32,6 @@ from collections import Sequence, Set, Mapping, Iterable
 import warnings
 import builtins as _builtins
 
-
 cdef object __AnEnumEnumInstances = None  # Set[AnEnum]
 cdef object __AnEnumEnumMembers = {}      # Dict[str, AnEnum]
 cdef object __AnEnumEnumUniqueValues = dict()    # Dict[int, AnEnum]

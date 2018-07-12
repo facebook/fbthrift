@@ -10,8 +10,6 @@ import thrift.py3.client
 import thrift.py3.common
 import typing as _typing
 from types import TracebackType
-import builtins as _builtins
-
 
 import module.types as _module_types
 
@@ -41,19 +39,19 @@ class MyService(thrift.py3.client.Client):
         self,
         id: int,
         rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
-    ) -> _builtins.str: ...
+    ) -> str: ...
 
     async def putDataById(
         self,
         id: int,
-        data: _builtins.str,
+        data: str,
         rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
     ) -> None: ...
 
     async def lobDataById(
         self,
         id: int,
-        data: _builtins.str,
+        data: str,
         rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
     ) -> None: ...
 
@@ -84,19 +82,19 @@ class MyServiceFast(thrift.py3.client.Client):
         self,
         id: int,
         rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
-    ) -> _builtins.str: ...
+    ) -> str: ...
 
     async def putDataById(
         self,
         id: int,
-        data: _builtins.str,
+        data: str,
         rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
     ) -> None: ...
 
     async def lobDataById(
         self,
         id: int,
-        data: _builtins.str,
+        data: str,
         rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
     ) -> None: ...
 

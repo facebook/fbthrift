@@ -10,8 +10,6 @@ import thrift.py3.client
 import thrift.py3.common
 import typing as _typing
 from types import TracebackType
-import builtins as _builtins
-
 
 import module.types as _module_types
 
@@ -49,10 +47,10 @@ class SimpleService(thrift.py3.client.Client):
 
     async def concat(
         self,
-        first: _builtins.str,
-        second: _builtins.str,
+        first: str,
+        second: str,
         rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
-    ) -> _builtins.str: ...
+    ) -> str: ...
 
     async def get_value(
         self,
@@ -120,9 +118,9 @@ class SimpleService(thrift.py3.client.Client):
 
     async def concat_many(
         self,
-        words: _typing.Sequence[_builtins.str],
+        words: _typing.Sequence[str],
         rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
-    ) -> _builtins.str: ...
+    ) -> str: ...
 
     async def count_structs(
         self,
@@ -138,27 +136,27 @@ class SimpleService(thrift.py3.client.Client):
 
     async def contains_word(
         self,
-        words: _typing.AbstractSet[_builtins.str],
-        word: _builtins.str,
+        words: _typing.AbstractSet[str],
+        word: str,
         rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
     ) -> bool: ...
 
     async def get_map_value(
         self,
-        words: _typing.Mapping[_builtins.str, _builtins.str],
-        key: _builtins.str,
+        words: _typing.Mapping[str, str],
+        key: str,
         rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
-    ) -> _builtins.str: ...
+    ) -> str: ...
 
     async def map_length(
         self,
-        items: _typing.Mapping[_builtins.str, _module_types.SimpleStruct],
+        items: _typing.Mapping[str, _module_types.SimpleStruct],
         rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
     ) -> int: ...
 
     async def sum_map_values(
         self,
-        items: _typing.Mapping[_builtins.str, int],
+        items: _typing.Mapping[str, int],
         rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
     ) -> int: ...
 
@@ -172,7 +170,7 @@ class SimpleService(thrift.py3.client.Client):
         self,
         counter: _module_types.ComplexStruct,
         rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
-    ) -> _builtins.str: ...
+    ) -> str: ...
 
     async def get_struct(
         self,
@@ -187,15 +185,15 @@ class SimpleService(thrift.py3.client.Client):
 
     async def unique_words(
         self,
-        words: _typing.Sequence[_builtins.str],
+        words: _typing.Sequence[str],
         rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
-    ) -> _typing.AbstractSet[_builtins.str]: ...
+    ) -> _typing.AbstractSet[str]: ...
 
     async def words_count(
         self,
-        words: _typing.Sequence[_builtins.str],
+        words: _typing.Sequence[str],
         rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
-    ) -> _typing.Mapping[_builtins.str, int]: ...
+    ) -> _typing.Mapping[str, int]: ...
 
     async def set_enum(
         self,
@@ -212,27 +210,27 @@ class SimpleService(thrift.py3.client.Client):
 
     async def word_character_frequency(
         self,
-        sentence: _builtins.str,
+        sentence: str,
         rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
-    ) -> _typing.Mapping[_builtins.str, _typing.Mapping[_builtins.str, int]]: ...
+    ) -> _typing.Mapping[str, _typing.Mapping[str, int]]: ...
 
     async def list_of_sets(
         self,
-        some_words: _builtins.str,
+        some_words: str,
         rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
-    ) -> _typing.Sequence[_typing.AbstractSet[_builtins.str]]: ...
+    ) -> _typing.Sequence[_typing.AbstractSet[str]]: ...
 
     async def nested_map_argument(
         self,
-        struct_map: _typing.Mapping[_builtins.str, _typing.Sequence[_module_types.SimpleStruct]],
+        struct_map: _typing.Mapping[str, _typing.Sequence[_module_types.SimpleStruct]],
         rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
     ) -> int: ...
 
     async def make_sentence(
         self,
-        word_chars: _typing.Sequence[_typing.Sequence[_builtins.str]],
+        word_chars: _typing.Sequence[_typing.Sequence[str]],
         rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
-    ) -> _builtins.str: ...
+    ) -> str: ...
 
     async def get_union(
         self,
@@ -242,9 +240,9 @@ class SimpleService(thrift.py3.client.Client):
 
     async def get_keys(
         self,
-        string_map: _typing.Sequence[_typing.Mapping[_builtins.str, _builtins.str]],
+        string_map: _typing.Sequence[_typing.Mapping[str, str]],
         rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
-    ) -> _typing.AbstractSet[_builtins.str]: ...
+    ) -> _typing.AbstractSet[str]: ...
 
     async def lookup_double(
         self,
@@ -254,15 +252,15 @@ class SimpleService(thrift.py3.client.Client):
 
     async def retrieve_binary(
         self,
-        something: _builtins.bytes,
+        something: bytes,
         rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
-    ) -> _builtins.bytes: ...
+    ) -> bytes: ...
 
     async def contain_binary(
         self,
-        binaries: _typing.Sequence[_builtins.bytes],
+        binaries: _typing.Sequence[bytes],
         rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
-    ) -> _typing.AbstractSet[_builtins.bytes]: ...
+    ) -> _typing.AbstractSet[bytes]: ...
 
     async def contain_enum(
         self,

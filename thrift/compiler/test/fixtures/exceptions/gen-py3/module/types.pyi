@@ -14,7 +14,6 @@ import typing as _typing
 
 import sys
 import itertools
-import builtins as _builtins
 
 
 class Banal(thrift.py3.exceptions.Error, _typing.Hashable, _typing.Iterable[_typing.Tuple[str, _typing.Any]]):
@@ -33,7 +32,7 @@ class Banal(thrift.py3.exceptions.Error, _typing.Hashable, _typing.Iterable[_typ
 class Fiery(thrift.py3.exceptions.Error, _typing.Hashable, _typing.Iterable[_typing.Tuple[str, _typing.Any]]):
     def __init__(
         self, *,
-        message: _builtins.str
+        message: str
     ) -> None: ...
 
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Any]]: ...
@@ -43,6 +42,6 @@ class Fiery(thrift.py3.exceptions.Error, _typing.Hashable, _typing.Iterable[_typ
     def __lt__(self, other: 'Fiery') -> bool: ...
 
     @property
-    def message(self) -> _builtins.str: ...
+    def message(self) -> str: ...
 
 

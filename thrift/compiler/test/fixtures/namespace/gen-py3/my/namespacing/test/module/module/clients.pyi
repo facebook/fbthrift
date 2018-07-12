@@ -10,8 +10,6 @@ import thrift.py3.client
 import thrift.py3.common
 import typing as _typing
 from types import TracebackType
-import builtins as _builtins
-
 
 import my.namespacing.test.module.module.types as _my_namespacing_test_module_module_types
 

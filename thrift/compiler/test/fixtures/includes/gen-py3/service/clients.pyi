@@ -10,8 +10,6 @@ import thrift.py3.client
 import thrift.py3.common
 import typing as _typing
 from types import TracebackType
-import builtins as _builtins
-
 
 import service.types as _service_types
 import module.types as _module_types

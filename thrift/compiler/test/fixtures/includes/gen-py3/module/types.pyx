@@ -31,7 +31,6 @@ import itertools
 from collections import Sequence, Set, Mapping, Iterable
 import warnings
 import builtins as _builtins
-
 cimport includes.types as _includes_types
 import includes.types as _includes_types
 

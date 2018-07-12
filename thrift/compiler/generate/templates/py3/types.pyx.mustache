@@ -60,7 +60,6 @@ import itertools
 from collections import Sequence, Set, Mapping, Iterable
 import warnings
 import builtins as _builtins
-
 {{#program:includeNamespaces}}
 {{#hasTypes?}}
 cimport {{#includeNamespace}}{{value}}.{{/includeNamespace}}types as _{{#includeNamespace}}{{value}}_{{/includeNamespace}}types

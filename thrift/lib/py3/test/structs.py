@@ -47,11 +47,6 @@ class StructTests(unittest.TestCase):
         self.assertIsNone(x.name)
         self.assertIsNotNone(x.an_int)
 
-    def test_easy_with_builtin_names(self) -> None:
-        x = easy(str="test", bytes=b"blah")
-        self.assertEqual(x.str, "test")
-        self.assertEqual(x.bytes, b"blah")
-
     def test_call_replace_required(self) -> None:
         x = hard(
             val=5,
