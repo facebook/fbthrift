@@ -30,6 +30,8 @@
 
 #include <thrift/compiler/py/compiler.h>
 
+#include <thrift/compiler/parsing_driver.h>
+
 namespace thrift {
 namespace compiler {
 namespace py {
@@ -87,7 +89,6 @@ void process(const dict& params, const object& generate_callback) {
   program->set_include_prefix(include_prefix);
 
   // Parse it!
-  std::set<std::string> already_parsed_paths;
   apache::thrift::parsing_params parsing_params{};
   parsing_params.program = program.get();
   parsing_params.scope_cache = program.get()->scope();
@@ -104,7 +105,8 @@ void process(const dict& params, const object& generate_callback) {
   parsing_params.allow_64bit_consts =
       extract<bool>(opts.attr("allow_64bit_consts"));
   parsing_params.incl_searchpath = incl_searchpath;
-  parse(std::move(parsing_params), already_parsed_paths);
+  apache::thrift::parsing_driver driver(std::move(parsing_params));
+  driver.parse();
 
   // The current path is not really relevant when we are doing generation.
   // Reset the variable to make warning messages clearer.

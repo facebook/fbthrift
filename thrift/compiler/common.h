@@ -206,13 +206,4 @@ const t_type* get_true_type(const t_type* type);
  */
 bool validate_throws(t_struct* throws);
 
-/**
- * Parses a program. already_parsed_paths is deliberately passed by value
- * because it should be the set of files in the direct inclusion tree.
- */
-void parse(
-    apache::thrift::parsing_params params,
-    std::set<std::string>& already_parsed_paths,
-    std::set<std::string> circular_deps = std::set<std::string>());
-
 #endif

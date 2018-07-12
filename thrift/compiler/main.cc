@@ -40,6 +40,8 @@
 #include <thrift/compiler/platform.h>
 #include <thrift/compiler/validator.h>
 
+#include <thrift/compiler/parsing_driver.h>
+
 /**
  * Flags to control code generation
  */
@@ -643,7 +645,6 @@ int main(int argc, char** argv) {
   program->set_include_prefix(include_prefix);
 
   // Parse it!
-  std::set<std::string> already_parsed_paths;
   apache::thrift::parsing_params params{};
   params.program = program;
   params.scope_cache = program->scope();
@@ -656,7 +657,8 @@ int main(int argc, char** argv) {
   params.allow_neg_enum_vals = allow_neg_enum_vals;
   params.allow_64bit_consts = allow_64bit_consts;
   params.incl_searchpath = std::move(incl_searchpath);
-  parse(std::move(params), already_parsed_paths);
+  apache::thrift::parsing_driver driver{std::move(params)};
+  driver.parse();
 
   // Mutate it!
   apache::thrift::compiler::mutator::mutate(program);

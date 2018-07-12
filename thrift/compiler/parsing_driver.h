@@ -15,18 +15,11 @@
  */
 #pragma once
 
+#include <memory>
+
 #include "thrift/compiler/common.h"
 #include "thrift/compiler/globals.h"
 #include "thrift/compiler/parse/t_program.h"
-
-/**
- * Must be included AFTER parse/t_program.h, but I can't remember why anymore
- * because I wrote this a while ago.
- *
- * Note macro expansion because this is different between OSS and internal
- * build, sigh.
- */
-#include THRIFTY_HH
 
 /**
  * Provide the custom yylex signature to flex.
@@ -37,6 +30,10 @@
 
 namespace apache {
 namespace thrift {
+
+namespace yy {
+class parser;
+}
 
 enum class parsing_mode {
   INCLUDES = 1,
@@ -62,14 +59,14 @@ class parsing_driver {
    */
   parsing_mode mode;
 
-  explicit parsing_driver(parsing_params parse_params)
-      : params(std::move(parse_params)),
-        doctext(nullptr),
-        doctext_lineno(0),
-        mode(parsing_mode::INCLUDES) {
-    // Set current dir, which is used in the include_file function
-    curdir_ = directory_name(params.program->get_path());
-  }
+  explicit parsing_driver(parsing_params parse_params);
+  ~parsing_driver();
+
+  /**
+   * Parses a program. The resulted AST is stored in the t_program object passed
+   * in via params.program.
+   */
+  void parse();
 
   /**
    * Diagnostic message callbacks.
@@ -125,13 +122,11 @@ class parsing_driver {
   char* clean_up_doctext(char* doctext);
 
  private:
-  std::string curdir_;
+  std::set<std::string> already_parsed_paths_;
+  std::set<std::string> circular_deps_;
+
+  std::unique_ptr<apache::thrift::yy::parser> parser_;
 };
 
 } // namespace thrift
 } // namespace apache
-
-/**
- * Declare the custom yylex function for the parser to use.
- */
-YY_DECL;

@@ -39,6 +39,17 @@
 #include "thrift/compiler/parsing_driver.h"
 
 /**
+ * Note macro expansion because this is different between OSS and internal
+ * build, sigh.
+ */
+#include THRIFTY_HH
+
+/**
+ * Declare yylex() so we can use it.
+ */
+YY_DECL;
+
+/**
  * This global variable is used for automatic numbering of field indices etc.
  * when parsing the members of a struct. Field values are automatically
  * assigned starting from -1 and working their way down.

@@ -38,6 +38,14 @@
 
 using parsing_driver = apache::thrift::parsing_driver;
 
+/**
+ * Note macro expansion because this is different between OSS and internal
+ * build, sigh.
+ */
+#include THRIFTY_HH
+
+YY_DECL;
+
 static void thrift_reserved_keyword(parsing_driver& driver, char* keyword) {
   driver.yyerror("Cannot use reserved language keyword: \"%s\"\n", keyword);
   exit(1);

@@ -24,8 +24,105 @@
 
 #include <boost/filesystem.hpp>
 
+/**
+ * Note macro expansion because this is different between OSS and internal
+ * build, sigh.
+ */
+#include THRIFTY_HH
+
 namespace apache {
 namespace thrift {
+
+/* explicit */ parsing_driver::parsing_driver(parsing_params parse_params)
+    : params(std::move(parse_params)),
+      doctext(nullptr),
+      doctext_lineno(0),
+      mode(parsing_mode::INCLUDES),
+      parser_(new apache::thrift::yy::parser(*this)) {}
+
+/**
+ * The default destructor needs to be explicitly defined in the .cc file since
+ * it invokes the destructor of parse_ (of type unique_ptr<yy::parser>). It
+ * cannot go in the header file since yy::parser is only forward-declared there.
+ */
+parsing_driver::~parsing_driver() = default;
+
+void parsing_driver::parse() {
+  // Get scope file path
+  string path = params.program->get_path();
+
+  // Skip on already parsed files
+  if (already_parsed_paths_.count(path)) {
+    return;
+  } else {
+    already_parsed_paths_.insert(path);
+  }
+
+  g_curpath = path;
+
+  // Open the file
+  yyin = fopen(path.c_str(), "r");
+  if (yyin == 0) {
+    failure("Could not open input file: \"%s\"", path.c_str());
+  }
+
+  // Create new scope and scan for includes
+  verbose("Scanning %s for includes\n", path.c_str());
+  mode = apache::thrift::parsing_mode::INCLUDES;
+  try {
+    yylineno = 1;
+    if (parser_->parse() != 0) {
+      failure("Parser error during include pass.");
+    }
+  } catch (const string& x) {
+    failure(x.c_str());
+  }
+  fclose(yyin);
+
+  // Recursively parse all the include programs
+  const auto& includes = params.program->get_includes();
+  // Always enable allow_neg_field_keys when parsing included files.
+  // This way if a thrift file has negative keys, --allow-neg-keys doesn't have
+  // to be used by everyone that includes it.
+  auto old_params = params;
+  for (auto included_program : includes) {
+    params.program = included_program;
+    params.allow_neg_enum_vals = true;
+    params.allow_neg_field_keys = true;
+
+    circular_deps_.insert(path);
+
+    // Fail on circular dependencies
+    if (circular_deps_.count(included_program->get_path())) {
+      failure(
+          "Circular dependency found: file %s is already parsed.",
+          included_program->get_path().c_str());
+    }
+    parse();
+
+    size_t num_removed = circular_deps_.erase(path);
+    assert(num_removed == 1);
+  }
+  params = old_params;
+
+  // Parse the program file
+  mode = apache::thrift::parsing_mode::PROGRAM;
+  g_curpath = path;
+  yyin = fopen(path.c_str(), "r");
+  if (yyin == 0) {
+    failure("Could not open input file: \"%s\"", path.c_str());
+  }
+  verbose("Parsing %s for types\n", path.c_str());
+  yylineno = 1;
+  try {
+    if (parser_->parse() != 0) {
+      failure("Parser error during types pass.");
+    }
+  } catch (const string& x) {
+    failure(x.c_str());
+  }
+  fclose(yyin);
+}
 
 void parsing_driver::debug(const char* fmt, ...) const {
   if (!params.debug) {
@@ -112,7 +209,7 @@ std::string parsing_driver::include_file(const std::string& filename) {
   } else { // relative path, start searching
     // new search path with current dir global
     vector<std::string> sp = params.incl_searchpath;
-    sp.insert(sp.begin(), curdir_);
+    sp.insert(sp.begin(), directory_name(params.program->get_path()));
 
     // iterate through paths
     vector<std::string>::iterator it;
