@@ -1019,6 +1019,10 @@ class ServerInterface : public AsyncProcessorFactory {
     return tm_;
   }
 
+  folly::Executor::KeepAlive<> getBlockingThreadManager() {
+    return BlockingThreadManager::create(tm_);
+  }
+
   void setEventBase(folly::EventBase* eb) {
     folly::RequestEventBase::set(eb);
     eb_ = eb;
@@ -1040,6 +1044,55 @@ class ServerInterface : public AsyncProcessorFactory {
   }
 
  private:
+  class BlockingThreadManager : public folly::Executor {
+   public:
+    static folly::Executor::KeepAlive<> create(
+        concurrency::ThreadManager* executor) {
+      return makeKeepAlive(new BlockingThreadManager(executor));
+    }
+    void add(folly::Func f) override {
+      std::shared_ptr<apache::thrift::concurrency::Runnable> task =
+          concurrency::FunctionRunner::create(std::move(f));
+      try {
+        executor_->add(
+            std::move(task),
+            std::chrono::milliseconds(kTimeout).count(),
+            0,
+            false,
+            false);
+        return;
+      } catch (...) {
+        LOG(FATAL) << "Failed to schedule a task within timeout: "
+                   << folly::exceptionStr(std::current_exception());
+      }
+    }
+
+   private:
+    explicit BlockingThreadManager(concurrency::ThreadManager* executor)
+        : executor_(folly::getKeepAliveToken(executor)) {}
+
+    bool keepAliveAcquire() override {
+      auto keepAliveCount =
+          keepAliveCount_.fetch_add(1, std::memory_order_relaxed);
+      // We should never increment from 0
+      DCHECK(keepAliveCount > 0);
+      return true;
+    }
+
+    void keepAliveRelease() override {
+      auto keepAliveCount =
+          keepAliveCount_.fetch_sub(1, std::memory_order_acq_rel);
+      DCHECK(keepAliveCount >= 1);
+      if (keepAliveCount == 1) {
+        delete this;
+      }
+    }
+
+    static constexpr std::chrono::seconds kTimeout{30};
+    std::atomic<size_t> keepAliveCount_{1};
+    folly::Executor::KeepAlive<concurrency::ThreadManager> executor_;
+  };
+
   /**
    * This variable is only used for sync calls when in a threadpool it
    * is threadlocal, because the threadpool will probably be

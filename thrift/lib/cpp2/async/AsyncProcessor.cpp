@@ -1,4 +1,6 @@
 /*
+ * Copyright 2018-present Facebook, Inc.
+ *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -21,6 +23,7 @@
 namespace apache {
 namespace thrift {
 
+constexpr std::chrono::seconds ServerInterface::BlockingThreadManager::kTimeout;
 thread_local Cpp2RequestContext* ServerInterface::reqCtx_;
 thread_local concurrency::ThreadManager* ServerInterface::tm_;
 thread_local folly::EventBase* ServerInterface::eb_;
