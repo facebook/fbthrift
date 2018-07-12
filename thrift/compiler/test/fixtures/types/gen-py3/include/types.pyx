@@ -33,6 +33,7 @@ import warnings
 import builtins as _builtins
 
 
+
 cdef class std_unordered_map__Map__i32_string:
     def __init__(self, items=None):
         if isinstance(items, std_unordered_map__Map__i32_string):
@@ -54,8 +55,8 @@ cdef class std_unordered_map__Map__i32_string:
                 if not isinstance(key, int):
                     raise TypeError(f"{key!r} is not of type int")
                 key = <int32_t> key
-                if not isinstance(item, str):
-                    raise TypeError(f"{item!r} is not of type str")
+                if not isinstance(item, _builtins.str):
+                    raise TypeError(f"{item!r} is not of type _builtins.str")
 
                 deref(c_inst).insert(cpair[int32_t,string](key,item.encode('UTF-8')))
         return move_unique(c_inst)

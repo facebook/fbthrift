@@ -33,6 +33,7 @@ import warnings
 import builtins as _builtins
 
 
+
 cdef class List__string:
     def __init__(self, items=None):
         if isinstance(items, List__string):
@@ -51,8 +52,8 @@ cdef class List__string:
         cdef unique_ptr[vector[string]] c_inst = make_unique[vector[string]]()
         if items is not None:
             for item in items:
-                if not isinstance(item, str):
-                    raise TypeError(f"{item!r} is not of type str")
+                if not isinstance(item, _builtins.str):
+                    raise TypeError(f"{item!r} is not of type _builtins.str")
                 deref(c_inst).push_back(item.encode('UTF-8'))
         return move_unique(c_inst)
 
@@ -106,7 +107,7 @@ cdef class List__string:
     def __contains__(self, item):
         if not self or item is None:
             return False
-        if not isinstance(item, str):
+        if not isinstance(item, _builtins.str):
             return False
         cdef string citem = item.encode('UTF-8')
         cdef vector[string] vec = deref(
@@ -160,7 +161,7 @@ cdef class List__string:
                 raise err  # past end of list
             offset_begin = start
 
-        if not isinstance(item, str):
+        if not isinstance(item, _builtins.str):
             raise err
         cdef string citem = item.encode('UTF-8')
         cdef vector[string] vec = deref(self._cpp_obj.get())
@@ -177,7 +178,7 @@ cdef class List__string:
     def count(self, item):
         if not self or item is None:
             return 0
-        if not isinstance(item, str):
+        if not isinstance(item, _builtins.str):
             return 0
         cdef string citem = item.encode('UTF-8')
         cdef vector[string] vec = deref(self._cpp_obj.get())
@@ -208,7 +209,7 @@ cdef class Map__i64_List__string:
                     raise TypeError(f"{key!r} is not of type int")
                 key = <int64_t> key
                 if item is None:
-                    raise TypeError("None is not of type _typing.Sequence[str]")
+                    raise TypeError("None is not of type _typing.Sequence[_builtins.str]")
                 if not isinstance(item, List__string):
                     item = List__string(item)
 

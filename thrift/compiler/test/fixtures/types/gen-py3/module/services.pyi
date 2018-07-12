@@ -8,6 +8,7 @@
 import typing as _typing
 from thrift.py3.server import RequestContext, ServiceInterface
 from abc import abstractmethod
+import builtins as _builtins
 
 import module.types as _module_types
 import include.types as _include_types
@@ -22,19 +23,19 @@ class SomeServiceInterface(
     @staticmethod
     def pass_context_bounce_map(
         fn: _typing.Callable[
-                [_SomeServiceInterfaceT, RequestContext, _typing.Mapping[int, str]],
-                _typing.Awaitable[_typing.Mapping[int, str]]
+                [_SomeServiceInterfaceT, RequestContext, _typing.Mapping[int, _builtins.str]],
+                _typing.Awaitable[_typing.Mapping[int, _builtins.str]]
         ]
     ) -> _typing.Callable[
-        [_SomeServiceInterfaceT, _typing.Mapping[int, str]],
-        _typing.Awaitable[_typing.Mapping[int, str]]
+        [_SomeServiceInterfaceT, _typing.Mapping[int, _builtins.str]],
+        _typing.Awaitable[_typing.Mapping[int, _builtins.str]]
     ]: ...
 
     @abstractmethod
     async def bounce_map(
         self,
-        m: _typing.Mapping[int, str]
-    ) -> _typing.Mapping[int, str]: ...
+        m: _typing.Mapping[int, _builtins.str]
+    ) -> _typing.Mapping[int, _builtins.str]: ...
     pass
 
 

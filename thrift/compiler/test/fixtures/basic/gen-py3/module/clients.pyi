@@ -10,6 +10,8 @@ import thrift.py3.client
 import thrift.py3.common
 import typing as _typing
 from types import TracebackType
+import builtins as _builtins
+
 
 import module.types as _module_types
 
@@ -37,7 +39,7 @@ class MyService(thrift.py3.client.Client):
     async def getRandomData(
         self,
         rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
-    ) -> str: ...
+    ) -> _builtins.str: ...
 
     async def hasDataById(
         self,
@@ -49,19 +51,19 @@ class MyService(thrift.py3.client.Client):
         self,
         id: int,
         rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
-    ) -> str: ...
+    ) -> _builtins.str: ...
 
     async def putDataById(
         self,
         id: int,
-        data: str,
+        data: _builtins.str,
         rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
     ) -> None: ...
 
     async def lobDataById(
         self,
         id: int,
-        data: str,
+        data: _builtins.str,
         rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
     ) -> None: ...
 
@@ -90,7 +92,7 @@ class MyServiceFast(thrift.py3.client.Client):
     async def getRandomData(
         self,
         rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
-    ) -> str: ...
+    ) -> _builtins.str: ...
 
     async def hasDataById(
         self,
@@ -102,19 +104,19 @@ class MyServiceFast(thrift.py3.client.Client):
         self,
         id: int,
         rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
-    ) -> str: ...
+    ) -> _builtins.str: ...
 
     async def putDataById(
         self,
         id: int,
-        data: str,
+        data: _builtins.str,
         rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
     ) -> None: ...
 
     async def lobDataById(
         self,
         id: int,
-        data: str,
+        data: _builtins.str,
         rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
     ) -> None: ...
 

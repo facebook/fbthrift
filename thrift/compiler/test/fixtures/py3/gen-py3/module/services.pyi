@@ -8,6 +8,7 @@
 import typing as _typing
 from thrift.py3.server import RequestContext, ServiceInterface
 from abc import abstractmethod
+import builtins as _builtins
 
 import module.types as _module_types
 
@@ -70,20 +71,20 @@ class SimpleServiceInterface(
     @staticmethod
     def pass_context_concat(
         fn: _typing.Callable[
-                [_SimpleServiceInterfaceT, RequestContext, str, str],
-                _typing.Awaitable[str]
+                [_SimpleServiceInterfaceT, RequestContext, _builtins.str, _builtins.str],
+                _typing.Awaitable[_builtins.str]
         ]
     ) -> _typing.Callable[
-        [_SimpleServiceInterfaceT, str, str],
-        _typing.Awaitable[str]
+        [_SimpleServiceInterfaceT, _builtins.str, _builtins.str],
+        _typing.Awaitable[_builtins.str]
     ]: ...
 
     @abstractmethod
     async def concat(
         self,
-        first: str,
-        second: str
-    ) -> str: ...
+        first: _builtins.str,
+        second: _builtins.str
+    ) -> _builtins.str: ...
 
     @staticmethod
     def pass_context_get_value(
@@ -273,19 +274,19 @@ class SimpleServiceInterface(
     @staticmethod
     def pass_context_concat_many(
         fn: _typing.Callable[
-                [_SimpleServiceInterfaceT, RequestContext, _typing.Sequence[str]],
-                _typing.Awaitable[str]
+                [_SimpleServiceInterfaceT, RequestContext, _typing.Sequence[_builtins.str]],
+                _typing.Awaitable[_builtins.str]
         ]
     ) -> _typing.Callable[
-        [_SimpleServiceInterfaceT, _typing.Sequence[str]],
-        _typing.Awaitable[str]
+        [_SimpleServiceInterfaceT, _typing.Sequence[_builtins.str]],
+        _typing.Awaitable[_builtins.str]
     ]: ...
 
     @abstractmethod
     async def concat_many(
         self,
-        words: _typing.Sequence[str]
-    ) -> str: ...
+        words: _typing.Sequence[_builtins.str]
+    ) -> _builtins.str: ...
 
     @staticmethod
     def pass_context_count_structs(
@@ -324,71 +325,71 @@ class SimpleServiceInterface(
     @staticmethod
     def pass_context_contains_word(
         fn: _typing.Callable[
-                [_SimpleServiceInterfaceT, RequestContext, _typing.AbstractSet[str], str],
+                [_SimpleServiceInterfaceT, RequestContext, _typing.AbstractSet[_builtins.str], _builtins.str],
                 _typing.Awaitable[bool]
         ]
     ) -> _typing.Callable[
-        [_SimpleServiceInterfaceT, _typing.AbstractSet[str], str],
+        [_SimpleServiceInterfaceT, _typing.AbstractSet[_builtins.str], _builtins.str],
         _typing.Awaitable[bool]
     ]: ...
 
     @abstractmethod
     async def contains_word(
         self,
-        words: _typing.AbstractSet[str],
-        word: str
+        words: _typing.AbstractSet[_builtins.str],
+        word: _builtins.str
     ) -> bool: ...
 
     @staticmethod
     def pass_context_get_map_value(
         fn: _typing.Callable[
-                [_SimpleServiceInterfaceT, RequestContext, _typing.Mapping[str, str], str],
-                _typing.Awaitable[str]
+                [_SimpleServiceInterfaceT, RequestContext, _typing.Mapping[_builtins.str, _builtins.str], _builtins.str],
+                _typing.Awaitable[_builtins.str]
         ]
     ) -> _typing.Callable[
-        [_SimpleServiceInterfaceT, _typing.Mapping[str, str], str],
-        _typing.Awaitable[str]
+        [_SimpleServiceInterfaceT, _typing.Mapping[_builtins.str, _builtins.str], _builtins.str],
+        _typing.Awaitable[_builtins.str]
     ]: ...
 
     @abstractmethod
     async def get_map_value(
         self,
-        words: _typing.Mapping[str, str],
-        key: str
-    ) -> str: ...
+        words: _typing.Mapping[_builtins.str, _builtins.str],
+        key: _builtins.str
+    ) -> _builtins.str: ...
 
     @staticmethod
     def pass_context_map_length(
         fn: _typing.Callable[
-                [_SimpleServiceInterfaceT, RequestContext, _typing.Mapping[str, _module_types.SimpleStruct]],
+                [_SimpleServiceInterfaceT, RequestContext, _typing.Mapping[_builtins.str, _module_types.SimpleStruct]],
                 _typing.Awaitable[int]
         ]
     ) -> _typing.Callable[
-        [_SimpleServiceInterfaceT, _typing.Mapping[str, _module_types.SimpleStruct]],
+        [_SimpleServiceInterfaceT, _typing.Mapping[_builtins.str, _module_types.SimpleStruct]],
         _typing.Awaitable[int]
     ]: ...
 
     @abstractmethod
     async def map_length(
         self,
-        items: _typing.Mapping[str, _module_types.SimpleStruct]
+        items: _typing.Mapping[_builtins.str, _module_types.SimpleStruct]
     ) -> int: ...
 
     @staticmethod
     def pass_context_sum_map_values(
         fn: _typing.Callable[
-                [_SimpleServiceInterfaceT, RequestContext, _typing.Mapping[str, int]],
+                [_SimpleServiceInterfaceT, RequestContext, _typing.Mapping[_builtins.str, int]],
                 _typing.Awaitable[int]
         ]
     ) -> _typing.Callable[
-        [_SimpleServiceInterfaceT, _typing.Mapping[str, int]],
+        [_SimpleServiceInterfaceT, _typing.Mapping[_builtins.str, int]],
         _typing.Awaitable[int]
     ]: ...
 
     @abstractmethod
     async def sum_map_values(
         self,
-        items: _typing.Mapping[str, int]
+        items: _typing.Mapping[_builtins.str, int]
     ) -> int: ...
 
     @staticmethod
@@ -412,18 +413,18 @@ class SimpleServiceInterface(
     def pass_context_repeat_name(
         fn: _typing.Callable[
                 [_SimpleServiceInterfaceT, RequestContext, _module_types.ComplexStruct],
-                _typing.Awaitable[str]
+                _typing.Awaitable[_builtins.str]
         ]
     ) -> _typing.Callable[
         [_SimpleServiceInterfaceT, _module_types.ComplexStruct],
-        _typing.Awaitable[str]
+        _typing.Awaitable[_builtins.str]
     ]: ...
 
     @abstractmethod
     async def repeat_name(
         self,
         counter: _module_types.ComplexStruct
-    ) -> str: ...
+    ) -> _builtins.str: ...
 
     @staticmethod
     def pass_context_get_struct(
@@ -461,36 +462,36 @@ class SimpleServiceInterface(
     @staticmethod
     def pass_context_unique_words(
         fn: _typing.Callable[
-                [_SimpleServiceInterfaceT, RequestContext, _typing.Sequence[str]],
-                _typing.Awaitable[_typing.AbstractSet[str]]
+                [_SimpleServiceInterfaceT, RequestContext, _typing.Sequence[_builtins.str]],
+                _typing.Awaitable[_typing.AbstractSet[_builtins.str]]
         ]
     ) -> _typing.Callable[
-        [_SimpleServiceInterfaceT, _typing.Sequence[str]],
-        _typing.Awaitable[_typing.AbstractSet[str]]
+        [_SimpleServiceInterfaceT, _typing.Sequence[_builtins.str]],
+        _typing.Awaitable[_typing.AbstractSet[_builtins.str]]
     ]: ...
 
     @abstractmethod
     async def unique_words(
         self,
-        words: _typing.Sequence[str]
-    ) -> _typing.AbstractSet[str]: ...
+        words: _typing.Sequence[_builtins.str]
+    ) -> _typing.AbstractSet[_builtins.str]: ...
 
     @staticmethod
     def pass_context_words_count(
         fn: _typing.Callable[
-                [_SimpleServiceInterfaceT, RequestContext, _typing.Sequence[str]],
-                _typing.Awaitable[_typing.Mapping[str, int]]
+                [_SimpleServiceInterfaceT, RequestContext, _typing.Sequence[_builtins.str]],
+                _typing.Awaitable[_typing.Mapping[_builtins.str, int]]
         ]
     ) -> _typing.Callable[
-        [_SimpleServiceInterfaceT, _typing.Sequence[str]],
-        _typing.Awaitable[_typing.Mapping[str, int]]
+        [_SimpleServiceInterfaceT, _typing.Sequence[_builtins.str]],
+        _typing.Awaitable[_typing.Mapping[_builtins.str, int]]
     ]: ...
 
     @abstractmethod
     async def words_count(
         self,
-        words: _typing.Sequence[str]
-    ) -> _typing.Mapping[str, int]: ...
+        words: _typing.Sequence[_builtins.str]
+    ) -> _typing.Mapping[_builtins.str, int]: ...
 
     @staticmethod
     def pass_context_set_enum(
@@ -530,70 +531,70 @@ class SimpleServiceInterface(
     @staticmethod
     def pass_context_word_character_frequency(
         fn: _typing.Callable[
-                [_SimpleServiceInterfaceT, RequestContext, str],
-                _typing.Awaitable[_typing.Mapping[str, _typing.Mapping[str, int]]]
+                [_SimpleServiceInterfaceT, RequestContext, _builtins.str],
+                _typing.Awaitable[_typing.Mapping[_builtins.str, _typing.Mapping[_builtins.str, int]]]
         ]
     ) -> _typing.Callable[
-        [_SimpleServiceInterfaceT, str],
-        _typing.Awaitable[_typing.Mapping[str, _typing.Mapping[str, int]]]
+        [_SimpleServiceInterfaceT, _builtins.str],
+        _typing.Awaitable[_typing.Mapping[_builtins.str, _typing.Mapping[_builtins.str, int]]]
     ]: ...
 
     @abstractmethod
     async def word_character_frequency(
         self,
-        sentence: str
-    ) -> _typing.Mapping[str, _typing.Mapping[str, int]]: ...
+        sentence: _builtins.str
+    ) -> _typing.Mapping[_builtins.str, _typing.Mapping[_builtins.str, int]]: ...
 
     @staticmethod
     def pass_context_list_of_sets(
         fn: _typing.Callable[
-                [_SimpleServiceInterfaceT, RequestContext, str],
-                _typing.Awaitable[_typing.Sequence[_typing.AbstractSet[str]]]
+                [_SimpleServiceInterfaceT, RequestContext, _builtins.str],
+                _typing.Awaitable[_typing.Sequence[_typing.AbstractSet[_builtins.str]]]
         ]
     ) -> _typing.Callable[
-        [_SimpleServiceInterfaceT, str],
-        _typing.Awaitable[_typing.Sequence[_typing.AbstractSet[str]]]
+        [_SimpleServiceInterfaceT, _builtins.str],
+        _typing.Awaitable[_typing.Sequence[_typing.AbstractSet[_builtins.str]]]
     ]: ...
 
     @abstractmethod
     async def list_of_sets(
         self,
-        some_words: str
-    ) -> _typing.Sequence[_typing.AbstractSet[str]]: ...
+        some_words: _builtins.str
+    ) -> _typing.Sequence[_typing.AbstractSet[_builtins.str]]: ...
 
     @staticmethod
     def pass_context_nested_map_argument(
         fn: _typing.Callable[
-                [_SimpleServiceInterfaceT, RequestContext, _typing.Mapping[str, _typing.Sequence[_module_types.SimpleStruct]]],
+                [_SimpleServiceInterfaceT, RequestContext, _typing.Mapping[_builtins.str, _typing.Sequence[_module_types.SimpleStruct]]],
                 _typing.Awaitable[int]
         ]
     ) -> _typing.Callable[
-        [_SimpleServiceInterfaceT, _typing.Mapping[str, _typing.Sequence[_module_types.SimpleStruct]]],
+        [_SimpleServiceInterfaceT, _typing.Mapping[_builtins.str, _typing.Sequence[_module_types.SimpleStruct]]],
         _typing.Awaitable[int]
     ]: ...
 
     @abstractmethod
     async def nested_map_argument(
         self,
-        struct_map: _typing.Mapping[str, _typing.Sequence[_module_types.SimpleStruct]]
+        struct_map: _typing.Mapping[_builtins.str, _typing.Sequence[_module_types.SimpleStruct]]
     ) -> int: ...
 
     @staticmethod
     def pass_context_make_sentence(
         fn: _typing.Callable[
-                [_SimpleServiceInterfaceT, RequestContext, _typing.Sequence[_typing.Sequence[str]]],
-                _typing.Awaitable[str]
+                [_SimpleServiceInterfaceT, RequestContext, _typing.Sequence[_typing.Sequence[_builtins.str]]],
+                _typing.Awaitable[_builtins.str]
         ]
     ) -> _typing.Callable[
-        [_SimpleServiceInterfaceT, _typing.Sequence[_typing.Sequence[str]]],
-        _typing.Awaitable[str]
+        [_SimpleServiceInterfaceT, _typing.Sequence[_typing.Sequence[_builtins.str]]],
+        _typing.Awaitable[_builtins.str]
     ]: ...
 
     @abstractmethod
     async def make_sentence(
         self,
-        word_chars: _typing.Sequence[_typing.Sequence[str]]
-    ) -> str: ...
+        word_chars: _typing.Sequence[_typing.Sequence[_builtins.str]]
+    ) -> _builtins.str: ...
 
     @staticmethod
     def pass_context_get_union(
@@ -615,19 +616,19 @@ class SimpleServiceInterface(
     @staticmethod
     def pass_context_get_keys(
         fn: _typing.Callable[
-                [_SimpleServiceInterfaceT, RequestContext, _typing.Sequence[_typing.Mapping[str, str]]],
-                _typing.Awaitable[_typing.AbstractSet[str]]
+                [_SimpleServiceInterfaceT, RequestContext, _typing.Sequence[_typing.Mapping[_builtins.str, _builtins.str]]],
+                _typing.Awaitable[_typing.AbstractSet[_builtins.str]]
         ]
     ) -> _typing.Callable[
-        [_SimpleServiceInterfaceT, _typing.Sequence[_typing.Mapping[str, str]]],
-        _typing.Awaitable[_typing.AbstractSet[str]]
+        [_SimpleServiceInterfaceT, _typing.Sequence[_typing.Mapping[_builtins.str, _builtins.str]]],
+        _typing.Awaitable[_typing.AbstractSet[_builtins.str]]
     ]: ...
 
     @abstractmethod
     async def get_keys(
         self,
-        string_map: _typing.Sequence[_typing.Mapping[str, str]]
-    ) -> _typing.AbstractSet[str]: ...
+        string_map: _typing.Sequence[_typing.Mapping[_builtins.str, _builtins.str]]
+    ) -> _typing.AbstractSet[_builtins.str]: ...
 
     @staticmethod
     def pass_context_lookup_double(
@@ -649,36 +650,36 @@ class SimpleServiceInterface(
     @staticmethod
     def pass_context_retrieve_binary(
         fn: _typing.Callable[
-                [_SimpleServiceInterfaceT, RequestContext, bytes],
-                _typing.Awaitable[bytes]
+                [_SimpleServiceInterfaceT, RequestContext, _builtins.bytes],
+                _typing.Awaitable[_builtins.bytes]
         ]
     ) -> _typing.Callable[
-        [_SimpleServiceInterfaceT, bytes],
-        _typing.Awaitable[bytes]
+        [_SimpleServiceInterfaceT, _builtins.bytes],
+        _typing.Awaitable[_builtins.bytes]
     ]: ...
 
     @abstractmethod
     async def retrieve_binary(
         self,
-        something: bytes
-    ) -> bytes: ...
+        something: _builtins.bytes
+    ) -> _builtins.bytes: ...
 
     @staticmethod
     def pass_context_contain_binary(
         fn: _typing.Callable[
-                [_SimpleServiceInterfaceT, RequestContext, _typing.Sequence[bytes]],
-                _typing.Awaitable[_typing.AbstractSet[bytes]]
+                [_SimpleServiceInterfaceT, RequestContext, _typing.Sequence[_builtins.bytes]],
+                _typing.Awaitable[_typing.AbstractSet[_builtins.bytes]]
         ]
     ) -> _typing.Callable[
-        [_SimpleServiceInterfaceT, _typing.Sequence[bytes]],
-        _typing.Awaitable[_typing.AbstractSet[bytes]]
+        [_SimpleServiceInterfaceT, _typing.Sequence[_builtins.bytes]],
+        _typing.Awaitable[_typing.AbstractSet[_builtins.bytes]]
     ]: ...
 
     @abstractmethod
     async def contain_binary(
         self,
-        binaries: _typing.Sequence[bytes]
-    ) -> _typing.AbstractSet[bytes]: ...
+        binaries: _typing.Sequence[_builtins.bytes]
+    ) -> _typing.AbstractSet[_builtins.bytes]: ...
 
     @staticmethod
     def pass_context_contain_enum(

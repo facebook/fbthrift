@@ -8,6 +8,7 @@
 import typing as _typing
 from thrift.py3.server import RequestContext, ServiceInterface
 from abc import abstractmethod
+import builtins as _builtins
 
 import module.types as _module_types
 
@@ -54,33 +55,33 @@ class RaiserInterface(
     def pass_context_get200(
         fn: _typing.Callable[
                 [_RaiserInterfaceT, RequestContext],
-                _typing.Awaitable[str]
+                _typing.Awaitable[_builtins.str]
         ]
     ) -> _typing.Callable[
         [_RaiserInterfaceT],
-        _typing.Awaitable[str]
+        _typing.Awaitable[_builtins.str]
     ]: ...
 
     @abstractmethod
     async def get200(
         self
-    ) -> str: ...
+    ) -> _builtins.str: ...
 
     @staticmethod
     def pass_context_get500(
         fn: _typing.Callable[
                 [_RaiserInterfaceT, RequestContext],
-                _typing.Awaitable[str]
+                _typing.Awaitable[_builtins.str]
         ]
     ) -> _typing.Callable[
         [_RaiserInterfaceT],
-        _typing.Awaitable[str]
+        _typing.Awaitable[_builtins.str]
     ]: ...
 
     @abstractmethod
     async def get500(
         self
-    ) -> str: ...
+    ) -> _builtins.str: ...
     pass
 
 

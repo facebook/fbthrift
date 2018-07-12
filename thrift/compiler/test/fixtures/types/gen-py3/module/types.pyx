@@ -31,6 +31,7 @@ import itertools
 from collections import Sequence, Set, Mapping, Iterable
 import warnings
 import builtins as _builtins
+
 cimport include.types as _include_types
 import include.types as _include_types
 
@@ -354,8 +355,8 @@ cdef class decorated_struct(thrift.py3.types.Struct):
             return self
 
         if None is not field is not __NOTSET:
-            if not isinstance(field, str):
-                raise TypeError(f'field is not a { str !r}.')
+            if not isinstance(field, _builtins.str):
+                raise TypeError(f'field is not a { _builtins.str !r}.')
 
         inst = <decorated_struct>decorated_struct.__new__(decorated_struct)
         inst._cpp_obj = move(decorated_struct._make_instance(
@@ -1267,8 +1268,8 @@ cdef class std_unordered_map__Map__i32_string:
                 if not isinstance(key, int):
                     raise TypeError(f"{key!r} is not of type int")
                 key = <int32_t> key
-                if not isinstance(item, str):
-                    raise TypeError(f"{item!r} is not of type str")
+                if not isinstance(item, _builtins.str):
+                    raise TypeError(f"{item!r} is not of type _builtins.str")
 
                 deref(c_inst).insert(cpair[int32_t,string](key,item.encode('UTF-8')))
         return move_unique(c_inst)
@@ -2355,8 +2356,8 @@ cdef class folly_sorted_vector_map__Map__i32_string:
                 if not isinstance(key, int):
                     raise TypeError(f"{key!r} is not of type int")
                 key = <int32_t> key
-                if not isinstance(item, str):
-                    raise TypeError(f"{item!r} is not of type str")
+                if not isinstance(item, _builtins.str):
+                    raise TypeError(f"{item!r} is not of type _builtins.str")
 
                 deref(c_inst).insert(cpair[int32_t,string](key,item.encode('UTF-8')))
         return move_unique(c_inst)

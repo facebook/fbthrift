@@ -32,6 +32,7 @@ from collections import Sequence, Set, Mapping, Iterable
 import warnings
 import builtins as _builtins
 
+
 cdef object __EnumEnumInstances = None  # Set[Enum]
 cdef object __EnumEnumMembers = {}      # Dict[str, Enum]
 cdef object __EnumEnumUniqueValues = dict()    # Dict[int, Enum]
@@ -171,8 +172,8 @@ cdef class Struct(thrift.py3.types.Struct):
             first = <int32_t> first
 
         if None is not second is not __NOTSET:
-            if not isinstance(second, str):
-                raise TypeError(f'second is not a { str !r}.')
+            if not isinstance(second, _builtins.str):
+                raise TypeError(f'second is not a { _builtins.str !r}.')
 
         inst = <Struct>Struct.__new__(Struct)
         inst._cpp_obj = move(Struct._make_instance(

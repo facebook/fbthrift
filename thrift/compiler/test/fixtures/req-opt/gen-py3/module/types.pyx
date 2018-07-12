@@ -33,6 +33,7 @@ import warnings
 import builtins as _builtins
 
 
+
 cdef cFoo _Foo_defaults = cFoo()
 
 cdef class Foo(thrift.py3.types.Struct):
@@ -85,8 +86,8 @@ cdef class Foo(thrift.py3.types.Struct):
             myInteger = <int32_t> myInteger
 
         if None is not myString is not __NOTSET:
-            if not isinstance(myString, str):
-                raise TypeError(f'myString is not a { str !r}.')
+            if not isinstance(myString, _builtins.str):
+                raise TypeError(f'myString is not a { _builtins.str !r}.')
 
         if myNumbers is None:
             raise TypeError('field myNumbers is required and has no default, it can not be unset')

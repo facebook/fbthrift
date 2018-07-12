@@ -33,6 +33,7 @@ import warnings
 import builtins as _builtins
 
 
+
 cdef cOldStructure _OldStructure_defaults = cOldStructure()
 
 cdef class OldStructure(thrift.py3.types.Struct):

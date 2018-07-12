@@ -14,6 +14,7 @@ import typing as _typing
 
 import sys
 import itertools
+import builtins as _builtins
 import hsmodule.types as _hsmodule_types
 
 

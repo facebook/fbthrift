@@ -31,6 +31,7 @@ import itertools
 from collections import Sequence, Set, Mapping, Iterable
 import warnings
 import builtins as _builtins
+
 cimport module.types as _module_types
 import module.types as _module_types
 
@@ -60,8 +61,8 @@ cdef class MyStruct(thrift.py3.types.Struct):
             return self
 
         if None is not field is not __NOTSET:
-            if not isinstance(field, str):
-                raise TypeError(f'field is not a { str !r}.')
+            if not isinstance(field, _builtins.str):
+                raise TypeError(f'field is not a { _builtins.str !r}.')
 
         inst = <MyStruct>MyStruct.__new__(MyStruct)
         inst._cpp_obj = move(MyStruct._make_instance(

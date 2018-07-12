@@ -14,6 +14,7 @@ import typing as _typing
 
 import sys
 import itertools
+import builtins as _builtins
 
 
 class MyEnum(thrift.py3.types.Enum):
@@ -25,16 +26,16 @@ class MyStruct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typi
     def __init__(
         self, *,
         MyIntField: _typing.Optional[int]=None,
-        MyStringField: _typing.Optional[str]=None
+        MyStringField: _typing.Optional[_builtins.str]=None
     ) -> None: ...
 
     def __call__(
         self, *,
         MyIntField: _typing.Union[int, NOTSETTYPE, None]=NOTSET,
-        MyStringField: _typing.Union[str, NOTSETTYPE, None]=NOTSET
+        MyStringField: _typing.Union[_builtins.str, NOTSETTYPE, None]=NOTSET
     ) -> MyStruct: ...
 
-    def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['MyStruct'], bytes]]: ...
+    def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['MyStruct'], _builtins.bytes]]: ...
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Any]]: ...
     def __bool__(self) -> bool: ...
     def __hash__(self) -> int: ...
@@ -44,6 +45,6 @@ class MyStruct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typi
     @property
     def MyIntField(self) -> int: ...
     @property
-    def MyStringField(self) -> str: ...
+    def MyStringField(self) -> _builtins.str: ...
 
 

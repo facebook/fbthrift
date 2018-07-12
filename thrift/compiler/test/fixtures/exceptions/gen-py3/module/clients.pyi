@@ -10,6 +10,8 @@ import thrift.py3.client
 import thrift.py3.common
 import typing as _typing
 from types import TracebackType
+import builtins as _builtins
+
 
 import module.types as _module_types
 
@@ -42,10 +44,10 @@ class Raiser(thrift.py3.client.Client):
     async def get200(
         self,
         rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
-    ) -> str: ...
+    ) -> _builtins.str: ...
 
     async def get500(
         self,
         rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
-    ) -> str: ...
+    ) -> _builtins.str: ...
 

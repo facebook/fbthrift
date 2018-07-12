@@ -33,6 +33,7 @@ import warnings
 import builtins as _builtins
 
 
+
 cdef cFoo _Foo_defaults = cFoo()
 
 cdef class Foo(thrift.py3.types.Struct):

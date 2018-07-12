@@ -34,6 +34,7 @@ import builtins as _builtins
 
 
 
+
 cdef object __ComplexUnion_Union_TypeEnumMembers = None
 
 
@@ -274,7 +275,7 @@ cdef class ComplexUnion(thrift.py3.types.Union):
                     return ComplexUnion(intValue=value)
                 except OverflowError:
                     pass
-        if isinstance(value, str):
+        if isinstance(value, _builtins.str):
             return ComplexUnion(stringValue=value)
         if isinstance(value, List__i64):
             return ComplexUnion(intListValue=value)
@@ -282,7 +283,7 @@ cdef class ComplexUnion(thrift.py3.types.Union):
             return ComplexUnion(stringListValue=value)
         if isinstance(value, Map__i16_string):
             return ComplexUnion(typedefValue=value)
-        if isinstance(value, str):
+        if isinstance(value, _builtins.str):
             return ComplexUnion(stringRef=value)
         raise ValueError(f"Unable to derive correct union field for value: {value}")
 
@@ -489,9 +490,9 @@ cdef class VirtualComplexUnion(thrift.py3.types.Union):
     def fromValue(value):
         if value is None:
             return VirtualComplexUnion()
-        if isinstance(value, str):
+        if isinstance(value, _builtins.str):
             return VirtualComplexUnion(thingOne=value)
-        if isinstance(value, str):
+        if isinstance(value, _builtins.str):
             return VirtualComplexUnion(thingTwo=value)
         raise ValueError(f"Unable to derive correct union field for value: {value}")
 
@@ -790,8 +791,8 @@ cdef class List__string:
         cdef unique_ptr[vector[string]] c_inst = make_unique[vector[string]]()
         if items is not None:
             for item in items:
-                if not isinstance(item, str):
-                    raise TypeError(f"{item!r} is not of type str")
+                if not isinstance(item, _builtins.str):
+                    raise TypeError(f"{item!r} is not of type _builtins.str")
                 deref(c_inst).push_back(item.encode('UTF-8'))
         return move_unique(c_inst)
 
@@ -845,7 +846,7 @@ cdef class List__string:
     def __contains__(self, item):
         if not self or item is None:
             return False
-        if not isinstance(item, str):
+        if not isinstance(item, _builtins.str):
             return False
         cdef string citem = item.encode('UTF-8')
         cdef vector[string] vec = deref(
@@ -899,7 +900,7 @@ cdef class List__string:
                 raise err  # past end of list
             offset_begin = start
 
-        if not isinstance(item, str):
+        if not isinstance(item, _builtins.str):
             raise err
         cdef string citem = item.encode('UTF-8')
         cdef vector[string] vec = deref(self._cpp_obj.get())
@@ -916,7 +917,7 @@ cdef class List__string:
     def count(self, item):
         if not self or item is None:
             return 0
-        if not isinstance(item, str):
+        if not isinstance(item, _builtins.str):
             return 0
         cdef string citem = item.encode('UTF-8')
         cdef vector[string] vec = deref(self._cpp_obj.get())
@@ -946,8 +947,8 @@ cdef class Map__i16_string:
                 if not isinstance(key, int):
                     raise TypeError(f"{key!r} is not of type int")
                 key = <int16_t> key
-                if not isinstance(item, str):
-                    raise TypeError(f"{item!r} is not of type str")
+                if not isinstance(item, _builtins.str):
+                    raise TypeError(f"{item!r} is not of type _builtins.str")
 
                 deref(c_inst).insert(cpair[int16_t,string](key,item.encode('UTF-8')))
         return move_unique(c_inst)

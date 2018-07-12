@@ -14,13 +14,14 @@ import typing as _typing
 
 import sys
 import itertools
+import builtins as _builtins
 
 
 class Foo(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typing.Tuple[str, _typing.Any]]):
     def __init__(
         self, *,
         myInteger: int,
-        myString: _typing.Optional[str]=None,
+        myString: _typing.Optional[_builtins.str]=None,
         myBools: _typing.Optional[_typing.Sequence[bool]]=None,
         myNumbers: _typing.Sequence[int]
     ) -> None: ...
@@ -28,12 +29,12 @@ class Foo(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typing.Tu
     def __call__(
         self, *,
         myInteger: _typing.Union[int, NOTSETTYPE]=NOTSET,
-        myString: _typing.Union[str, NOTSETTYPE, None]=NOTSET,
+        myString: _typing.Union[_builtins.str, NOTSETTYPE, None]=NOTSET,
         myBools: _typing.Union[_typing.Sequence[bool], NOTSETTYPE, None]=NOTSET,
         myNumbers: _typing.Union[_typing.Sequence[int], NOTSETTYPE]=NOTSET
     ) -> Foo: ...
 
-    def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['Foo'], bytes]]: ...
+    def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['Foo'], _builtins.bytes]]: ...
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Any]]: ...
     def __bool__(self) -> bool: ...
     def __hash__(self) -> int: ...
@@ -43,7 +44,7 @@ class Foo(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typing.Tu
     @property
     def myInteger(self) -> int: ...
     @property
-    def myString(self) -> _typing.Optional[str]: ...
+    def myString(self) -> _typing.Optional[_builtins.str]: ...
     @property
     def myBools(self) -> _typing.Sequence[bool]: ...
     @property

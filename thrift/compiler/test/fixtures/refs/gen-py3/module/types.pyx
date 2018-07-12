@@ -32,6 +32,7 @@ from collections import Sequence, Set, Mapping, Iterable
 import warnings
 import builtins as _builtins
 
+
 cdef object __TypedEnumEnumInstances = None  # Set[TypedEnum]
 cdef object __TypedEnumEnumMembers = {}      # Dict[str, TypedEnum]
 cdef object __TypedEnumEnumUniqueValues = dict()    # Dict[int, TypedEnum]
@@ -247,7 +248,7 @@ cdef class MyUnion(thrift.py3.types.Union):
                     return MyUnion(anInteger=value)
                 except OverflowError:
                     pass
-        if isinstance(value, str):
+        if isinstance(value, _builtins.str):
             return MyUnion(aString=value)
         raise ValueError(f"Unable to derive correct union field for value: {value}")
 

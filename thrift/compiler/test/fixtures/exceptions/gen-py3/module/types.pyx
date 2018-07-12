@@ -33,6 +33,7 @@ import warnings
 import builtins as _builtins
 
 
+
 cdef class Banal(thrift.py3.exceptions.Error):
 
     def __init__(
