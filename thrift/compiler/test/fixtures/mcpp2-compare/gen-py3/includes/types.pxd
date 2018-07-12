@@ -28,7 +28,16 @@ cdef extern from "gen-cpp2/includes_types.h" namespace "a::different::ns":
     cAnEnum AnEnum__FIELDA "a::different::ns::AnEnum::FIELDA"
     cAnEnum AnEnum__FIELDB "a::different::ns::AnEnum::FIELDB"
 
-cdef cAnEnum AnEnum_to_cpp(value)
+
+
+
+cdef class AnEnum(thrift.py3.types.CompiledEnum):
+    pass
+
+
+cdef cAnEnum AnEnum_to_cpp(AnEnum value)
+
+
 
 cdef extern from "gen-cpp2/includes_types_custom_protocol.h" namespace "a::different::ns":
     # Forward Declaration
@@ -74,6 +83,7 @@ cdef extern from "<memory>" namespace "std" nogil:
 # Forward Definition of the cython struct
 cdef class AStruct(thrift.py3.types.Struct)
 
+
 cdef class AStruct(thrift.py3.types.Struct):
     cdef object __hash
     cdef object __weakref__
@@ -90,6 +100,7 @@ cdef class AStruct(thrift.py3.types.Struct):
 
 # Forward Definition of the cython struct
 cdef class AStructB(thrift.py3.types.Struct)
+
 
 cdef class AStructB(thrift.py3.types.Struct):
     cdef object __hash

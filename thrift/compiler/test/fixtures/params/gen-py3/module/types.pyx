@@ -5,6 +5,8 @@
 #  @generated
 #
 
+cimport cython as __cython
+from cpython.object cimport PyTypeObject
 from libcpp.memory cimport shared_ptr, make_shared, unique_ptr, make_unique
 from libcpp.string cimport string
 from libcpp cimport bool as cbool
@@ -16,7 +18,7 @@ import thrift.py3.types
 cimport thrift.py3.types
 cimport thrift.py3.exceptions
 from thrift.py3.types import NOTSET as __NOTSET
-from thrift.py3.types cimport translate_cpp_enum_to_python
+from thrift.py3.types cimport translate_cpp_enum_to_python, SetMetaClass as __SetMetaClass
 cimport thrift.py3.std_libcpp as std_libcpp
 from thrift.py3.serializer import Protocol as __Protocol
 cimport thrift.py3.serializer as serializer
@@ -27,11 +29,8 @@ from folly.optional cimport cOptional
 import sys
 import itertools
 from collections import Sequence, Set, Mapping, Iterable
-import enum as __enum
 import warnings
 import builtins as _builtins
-
-
 
 
 cdef class List__i32:

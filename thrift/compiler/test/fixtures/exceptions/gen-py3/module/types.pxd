@@ -22,6 +22,7 @@ from folly.optional cimport cOptional
 
 
 
+
 cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "cpp2":
     # Forward Declaration
     cdef cppclass cBanal "cpp2::Banal"(cTException)
@@ -64,6 +65,7 @@ cdef extern from "<memory>" namespace "std" nogil:
 # Forward Definition of the cython struct
 cdef class Banal(thrift.py3.exceptions.Error)
 
+
 cdef class Banal(thrift.py3.exceptions.Error):
     cdef object __hash
     cdef object __weakref__
@@ -79,6 +81,7 @@ cdef class Banal(thrift.py3.exceptions.Error):
 
 # Forward Definition of the cython struct
 cdef class Fiery(thrift.py3.exceptions.Error)
+
 
 cdef class Fiery(thrift.py3.exceptions.Error):
     cdef object __hash

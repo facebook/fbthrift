@@ -1,0 +1,118 @@
+{{!
+
+  Copyright 2016 Facebook, Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+}}{{!
+
+This is a template for creating compiled Enum and Flag pyx information
+
+}}
+{{#program:structs}}
+{{#struct:union?}}
+
+
+cdef object __{{struct:name}}_Union_TypeEnumMembers = None
+
+
+@__cython.internal
+@__cython.auto_pickle(False)
+cdef class __{{struct:name}}_Union_TypeMeta(type):
+    def __call__(cls, value):
+        cdef int cvalue
+        if isinstance(value, cls) and value in __{{struct:name}}_Union_TypeEnumMembers:
+            return value
+
+        if isinstance(value, int):
+            cvalue = value
+            if cvalue == 0:
+                return __{{struct:name}}Type.EMPTY
+            {{#struct:fields}}
+            elif cvalue == {{field:key}}:
+                return __{{struct:name}}Type.{{field:name}}
+            {{/struct:fields}}
+
+        raise ValueError(f'{value} is not a valid {{struct:name}}.Type')
+
+    def __getitem__(cls, name):
+        if name == "EMPTY":
+            return __{{struct:name}}Type.EMPTY
+        {{#struct:fields}}
+        elif name == "{{field:name}}":
+            return __{{struct:name}}Type.{{field:name}}
+        {{/struct:fields}}
+        raise KeyError(name)
+
+    def __iter__(cls):
+        {{#struct:fields}}
+            yield __{{struct:name}}Type.{{field:name}}
+        {{/struct:fields}}
+        {{^struct:fields}}
+            return iter(())
+        {{/struct:fields}}
+
+    def __reversed__(cls):
+        return reversed(iter(cls))
+
+    def __contains__(cls, item):
+        if not isinstance(item, cls):
+            return False
+        return item in __{{struct:name}}_Union_TypeEnumMembers
+
+    def __len__(cls):
+        return {{struct:size}}
+
+
+@__cython.final
+cdef class __{{struct:name}}Type(thrift.py3.types.CompiledEnum):
+    EMPTY = __{{struct:name}}Type.__new__(__{{struct:name}}Type, 0, "EMPTY")
+    {{#struct:fields}}
+    {{field:name}} = __{{struct:name}}Type.__new__(__{{struct:name}}Type, {{field:key}}, "{{field:name}}")
+    {{/struct:fields}}
+
+    def __cinit__(self, value, name):
+        if __{{struct:name}}_Union_TypeEnumMembers is not None:
+            raise TypeError('For Safty we have disabled __new__')
+        self.value = value
+        self.name = name
+        self.__hash = hash(name)
+        self.__str = f"{{struct:name}}.Type.{name}"
+        self.__repr = f"<{self.__str}: {value}>"
+
+    def __repr__(self):
+        return self.__repr
+
+    def __str__(self):
+        return self.__str
+
+    def __int__(self):
+        return self.value
+
+    def __eq__(self, other):
+        if not isinstance(other, __{{struct:name}}Type):
+            warnings.warn(f"comparison not supported between instances of { __{{struct:name}}Type } and {type(other)}", RuntimeWarning, stacklevel=2)
+            return False
+        return self is other
+
+    def __hash__(self):
+        return self.__hash
+
+    def __reduce__(self):
+        return __{{struct:name}}Type, (self.value,)
+
+__SetMetaClass(<PyTypeObject*> __{{struct:name}}Type, <PyTypeObject*> __{{struct:name}}_Union_TypeMeta)
+__{{struct:name}}_Union_TypeEnumMembers = set(__{{struct:name}}Type)
+
+{{/struct:union?}}
+{{/program:structs}}

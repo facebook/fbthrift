@@ -14,7 +14,6 @@ import typing as _typing
 
 import sys
 import itertools
-import enum as __enum
 
 
 class Empty(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typing.Tuple[str, _typing.Any]]):
@@ -45,9 +44,8 @@ class Nada(thrift.py3.types.Union, _typing.Hashable):
     def __repr__(self) -> str: ...
     def __lt__(self, other: 'Nada') -> bool: ...
 
-    class Type(__enum.Enum):
+    class Type(thrift.py3.types.Enum):
         EMPTY: Nada.Type = ...
-        value: int
 
     @staticmethod
     def fromValue(value: _typing.Union[]) -> Nada: ...

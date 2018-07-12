@@ -5,6 +5,8 @@
 #  @generated
 #
 
+cimport cython as __cython
+from cpython.object cimport PyTypeObject
 from libcpp.memory cimport shared_ptr, make_shared, unique_ptr, make_unique
 from libcpp.string cimport string
 from libcpp cimport bool as cbool
@@ -16,7 +18,7 @@ import thrift.py3.types
 cimport thrift.py3.types
 cimport thrift.py3.exceptions
 from thrift.py3.types import NOTSET as __NOTSET
-from thrift.py3.types cimport translate_cpp_enum_to_python
+from thrift.py3.types cimport translate_cpp_enum_to_python, SetMetaClass as __SetMetaClass
 cimport thrift.py3.std_libcpp as std_libcpp
 from thrift.py3.serializer import Protocol as __Protocol
 cimport thrift.py3.serializer as serializer
@@ -27,28 +29,100 @@ from folly.optional cimport cOptional
 import sys
 import itertools
 from collections import Sequence, Set, Mapping, Iterable
-import enum as __enum
 import warnings
 import builtins as _builtins
 
+cdef object __EnumEnumInstances = None  # Set[Enum]
+cdef object __EnumEnumMembers = {}      # Dict[str, Enum]
+cdef object __EnumEnumUniqueValues = dict()    # Dict[int, Enum]
 
-class Enum(__enum.Enum):
-    ONE = 1
-    TWO = 2
-    THREE = 3
+@__cython.internal
+@__cython.auto_pickle(False)
+cdef class __EnumMeta(type):
+    def __call__(cls, value):
+        cdef int cvalue
+        if isinstance(value, cls) and value in __EnumEnumInstances:
+            return value
+        if isinstance(value, int):
+            cvalue = value
+            if cvalue == 1:
+                return Enum.ONE
+            elif cvalue == 2:
+                return Enum.TWO
+            elif cvalue == 3:
+                return Enum.THREE
 
-    __hash__ = __enum.Enum.__hash__
+        raise ValueError(f'{value} is not a valid Enum')
 
-    def __eq__(self, other):
-        if not isinstance(other, self.__class__):
-            warnings.warn(f"comparison not supported between instances of {type(self)} and {type(other)}", RuntimeWarning, stacklevel=2)
+    def __getitem__(cls, name):
+        return __EnumEnumMembers[name]
+
+    def __iter__(cls):
+        return iter(__EnumEnumUniqueValues.values())
+
+    def __reversed__(cls):
+        return reversed(iter(cls))
+
+    def __contains__(cls, item):
+        if not isinstance(item, cls):
             return False
-        return self.value == other.value
+        return item in __EnumEnumInstances
+
+    def __len__(cls):
+        return len(__EnumEnumInstances)
+
+
+cdef __Enum_unique_instance(int value, str name):
+    inst = __EnumEnumUniqueValues.get(value)
+    if inst is None:
+        inst = __EnumEnumUniqueValues[value] = Enum.__new__(Enum, value, name)
+    __EnumEnumMembers[name] = inst
+    return inst
+
+
+@__cython.final
+cdef class Enum(thrift.py3.types.CompiledEnum):
+    ONE = __Enum_unique_instance(1, "ONE")
+    TWO = __Enum_unique_instance(2, "TWO")
+    THREE = __Enum_unique_instance(3, "THREE")
+    __members__ = thrift.py3.types.MappingProxyType(__EnumEnumMembers)
+
+    def __cinit__(self, value, name):
+        if __EnumEnumInstances is not None:
+            raise TypeError('For Safty we have disabled __new__')
+        self.value = value
+        self.name = name
+        self.__hash = hash(name)
+        self.__str = f"Enum.{name}"
+        self.__repr = f"<{self.__str}: {value}>"
+
+    def __repr__(self):
+        return self.__repr
+
+    def __str__(self):
+        return self.__str
 
     def __int__(self):
         return self.value
 
-cdef inline cEnum Enum_to_cpp(value):
+    def __eq__(self, other):
+        if not isinstance(other, Enum):
+            warnings.warn(f"comparison not supported between instances of { Enum } and {type(other)}", RuntimeWarning, stacklevel=2)
+            return False
+        return self is other
+
+    def __hash__(self):
+        return self.__hash
+
+    def __reduce__(self):
+        return Enum, (self.value,)
+
+
+__SetMetaClass(<PyTypeObject*> Enum, <PyTypeObject*> __EnumMeta)
+__EnumEnumInstances = set(__EnumEnumUniqueValues.values())
+
+
+cdef inline cEnum Enum_to_cpp(Enum value):
     cdef int cvalue = value.value
     if cvalue == 1:
         return Enum__ONE
@@ -56,7 +130,6 @@ cdef inline cEnum Enum_to_cpp(value):
         return Enum__TWO
     elif cvalue == 3:
         return Enum__THREE
-
 
 cdef cStruct _Struct_defaults = cStruct()
 

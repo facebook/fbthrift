@@ -14,15 +14,12 @@ import typing as _typing
 
 import sys
 import itertools
-import enum as __enum
 
 
-class MyEnumA(__enum.Enum, _typing.SupportsInt):
+class MyEnumA(thrift.py3.types.Enum):
     fieldA: MyEnumA = ...
     fieldB: MyEnumA = ...
     fieldC: MyEnumA = ...
-    value: int
-    def __int__(self) -> int: ...
 
 
 class SmallStruct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typing.Tuple[str, _typing.Any]]):

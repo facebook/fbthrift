@@ -191,10 +191,6 @@ cdef class {{service:name}}({{#service:extends}}{{#service:externalProgram?}}{{!
         if not isinstance({{field:name}}, {{> types/PythonType}}):
             {{field:name}} = {{> types/PythonType}}({{field:name}})
         {{/type:container?}}
-        {{#type:enum?}}
-        if not isinstance({{field:name}}, {{> types/PythonType}}):
-            raise TypeError(f'argument {{field:name}} value: { {{field:name}} !r} is not of the enum type { {{> types/PythonType}} }.')
-        {{/type:enum?}}
         {{#type:integer?}}
         if not isinstance({{field:name}}, int):
             raise TypeError(f'{{field:name}} is not a {int !r}.')

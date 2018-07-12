@@ -14,7 +14,6 @@ import typing as _typing
 
 import sys
 import itertools
-import enum as __enum
 import module0.types as _module0_types
 import module1.types as _module1_types
 

@@ -5,6 +5,8 @@
 #  @generated
 #
 
+cimport cython as __cython
+from cpython.object cimport PyTypeObject
 from libcpp.memory cimport shared_ptr, make_shared, unique_ptr, make_unique
 from libcpp.string cimport string
 from libcpp cimport bool as cbool
@@ -16,7 +18,7 @@ import thrift.py3.types
 cimport thrift.py3.types
 cimport thrift.py3.exceptions
 from thrift.py3.types import NOTSET as __NOTSET
-from thrift.py3.types cimport translate_cpp_enum_to_python
+from thrift.py3.types cimport translate_cpp_enum_to_python, SetMetaClass as __SetMetaClass
 cimport thrift.py3.std_libcpp as std_libcpp
 from thrift.py3.serializer import Protocol as __Protocol
 cimport thrift.py3.serializer as serializer
@@ -27,30 +29,106 @@ from folly.optional cimport cOptional
 import sys
 import itertools
 from collections import Sequence, Set, Mapping, Iterable
-import enum as __enum
 import warnings
 import builtins as _builtins
 
+cdef object __AnEnumEnumInstances = None  # Set[AnEnum]
+cdef object __AnEnumEnumMembers = {}      # Dict[str, AnEnum]
+cdef object __AnEnumEnumUniqueValues = dict()    # Dict[int, AnEnum]
 
-class AnEnum(__enum.Enum):
-    NOTSET = 0
-    ONE = 1
-    TWO = 2
-    THREE = 3
-    FOUR = 4
+@__cython.internal
+@__cython.auto_pickle(False)
+cdef class __AnEnumMeta(type):
+    def __call__(cls, value):
+        cdef int cvalue
+        if isinstance(value, cls) and value in __AnEnumEnumInstances:
+            return value
+        if isinstance(value, int):
+            cvalue = value
+            if cvalue == 0:
+                return AnEnum.NOTSET
+            elif cvalue == 1:
+                return AnEnum.ONE
+            elif cvalue == 2:
+                return AnEnum.TWO
+            elif cvalue == 3:
+                return AnEnum.THREE
+            elif cvalue == 4:
+                return AnEnum.FOUR
 
-    __hash__ = __enum.Enum.__hash__
+        raise ValueError(f'{value} is not a valid AnEnum')
 
-    def __eq__(self, other):
-        if not isinstance(other, self.__class__):
-            warnings.warn(f"comparison not supported between instances of {type(self)} and {type(other)}", RuntimeWarning, stacklevel=2)
+    def __getitem__(cls, name):
+        return __AnEnumEnumMembers[name]
+
+    def __iter__(cls):
+        return iter(__AnEnumEnumUniqueValues.values())
+
+    def __reversed__(cls):
+        return reversed(iter(cls))
+
+    def __contains__(cls, item):
+        if not isinstance(item, cls):
             return False
-        return self.value == other.value
+        return item in __AnEnumEnumInstances
+
+    def __len__(cls):
+        return len(__AnEnumEnumInstances)
+
+
+cdef __AnEnum_unique_instance(int value, str name):
+    inst = __AnEnumEnumUniqueValues.get(value)
+    if inst is None:
+        inst = __AnEnumEnumUniqueValues[value] = AnEnum.__new__(AnEnum, value, name)
+    __AnEnumEnumMembers[name] = inst
+    return inst
+
+
+@__cython.final
+cdef class AnEnum(thrift.py3.types.CompiledEnum):
+    NOTSET = __AnEnum_unique_instance(0, "NOTSET")
+    ONE = __AnEnum_unique_instance(1, "ONE")
+    TWO = __AnEnum_unique_instance(2, "TWO")
+    THREE = __AnEnum_unique_instance(3, "THREE")
+    FOUR = __AnEnum_unique_instance(4, "FOUR")
+    __members__ = thrift.py3.types.MappingProxyType(__AnEnumEnumMembers)
+
+    def __cinit__(self, value, name):
+        if __AnEnumEnumInstances is not None:
+            raise TypeError('For Safty we have disabled __new__')
+        self.value = value
+        self.name = name
+        self.__hash = hash(name)
+        self.__str = f"AnEnum.{name}"
+        self.__repr = f"<{self.__str}: {value}>"
+
+    def __repr__(self):
+        return self.__repr
+
+    def __str__(self):
+        return self.__str
 
     def __int__(self):
         return self.value
 
-cdef inline cAnEnum AnEnum_to_cpp(value):
+    def __eq__(self, other):
+        if not isinstance(other, AnEnum):
+            warnings.warn(f"comparison not supported between instances of { AnEnum } and {type(other)}", RuntimeWarning, stacklevel=2)
+            return False
+        return self is other
+
+    def __hash__(self):
+        return self.__hash
+
+    def __reduce__(self):
+        return AnEnum, (self.value,)
+
+
+__SetMetaClass(<PyTypeObject*> AnEnum, <PyTypeObject*> __AnEnumMeta)
+__AnEnumEnumInstances = set(__AnEnumEnumUniqueValues.values())
+
+
+cdef inline cAnEnum AnEnum_to_cpp(AnEnum value):
     cdef int cvalue = value.value
     if cvalue == 0:
         return AnEnum__NOTSET
@@ -62,26 +140,161 @@ cdef inline cAnEnum AnEnum_to_cpp(value):
         return AnEnum__THREE
     elif cvalue == 4:
         return AnEnum__FOUR
-class Flags(__enum.Flag):
-    flag_A = 1
-    flag_B = 2
-    flag_C = 4
-    flag_D = 8
+cdef object __FlagsEnumInstances = None  # Set[Flags]
+cdef object __FlagsEnumMembers = {}      # Dict[str, Flags]
+cdef object __FlagsEnumUniqueValues = dict()    # Dict[int, Flags]
+cdef object __FlagsEnumCombinations = None   # Set[Flags]
+cdef object __FlagsEnumValueMapping = None   # Mapping[Int, Flags]
 
-    __hash__ = __enum.Flag.__hash__
+@__cython.internal
+@__cython.auto_pickle(False)
+cdef class __FlagsMeta(type):
+    def __call__(cls, value):
+        cdef int cvalue
+        cdef bint invert = False
+        if isinstance(value, cls) and value in __FlagsEnumCombinations:
+            return value
+        if isinstance(value, int):
+            if value < 0:
+                invert = True
+                value = ~value
+            cvalue = value
+            if cvalue == 1:
+                return ~Flags.flag_A if invert else Flags.flag_A
+            elif cvalue == 2:
+                return ~Flags.flag_B if invert else Flags.flag_B
+            elif cvalue == 4:
+                return ~Flags.flag_C if invert else Flags.flag_C
+            elif cvalue == 8:
+                return ~Flags.flag_D if invert else Flags.flag_D
+            try:
+                item = __FlagsEnumValueMapping[value]
+                return ~item if invert else item
+            except KeyError:
+                pass  # raise below
 
-    def __eq__(self, other):
-        if not isinstance(other, self.__class__):
-            warnings.warn(f"comparison not supported between instances of {type(self)} and {type(other)}", RuntimeWarning, stacklevel=2)
+        raise ValueError(f'{value} is not a valid Flags')
+
+    def __getitem__(cls, name):
+        return __FlagsEnumMembers[name]
+
+    def __iter__(cls):
+        return iter(__FlagsEnumUniqueValues.values())
+
+    def __reversed__(cls):
+        return reversed(iter(cls))
+
+    def __contains__(cls, item):
+        if not isinstance(item, cls):
             return False
-        return self.value == other.value
+        return item in __FlagsEnumInstances
+
+    def __len__(cls):
+        return len(__FlagsEnumInstances)
+
+
+cdef __Flags_unique_instance(int value, str name):
+    inst = __FlagsEnumUniqueValues.get(value)
+    if inst is None:
+        inst = __FlagsEnumUniqueValues[value] = Flags.__new__(Flags, value, name)
+    __FlagsEnumMembers[name] = inst
+    return inst
+
+
+@__cython.final
+cdef class Flags(thrift.py3.types.Flag):
+    flag_A = __Flags_unique_instance(1, "flag_A")
+    flag_B = __Flags_unique_instance(2, "flag_B")
+    flag_C = __Flags_unique_instance(4, "flag_C")
+    flag_D = __Flags_unique_instance(8, "flag_D")
+    __members__ = thrift.py3.types.MappingProxyType(__FlagsEnumMembers)
+
+    def __cinit__(self, value, name):
+        if __FlagsEnumCombinations is not None:
+            raise TypeError('For Safty we have disabled __new__')
+        self.value = value
+        self.name = name
+        self.__hash = hash(name)
+        self.__str = f"Flags.{name}"
+        self.__repr = f"<{self.__str}: {value}>"
+
+    def __repr__(self):
+        return self.__repr
+
+    def __str__(self):
+        return self.__str
 
     def __int__(self):
         return self.value
 
-cdef inline cFlags Flags_to_cpp(value):
-    return <cFlags>(<int>value.value)
+    def __eq__(self, other):
+        if not isinstance(other, Flags):
+            warnings.warn(f"comparison not supported between instances of { Flags } and {type(other)}", RuntimeWarning, stacklevel=2)
+            return False
+        return self is other
 
+    def __hash__(self):
+        return self.__hash
+
+    def __reduce__(self):
+        return Flags, (self.value,)
+
+    def __contains__(self, other):
+        if not isinstance(other, Flags):
+            return NotImplemented
+        return other.value & self.value == other.value
+
+    def __bool__(self):
+        return bool(self.value)
+
+    def __or__(self, other):
+        if not isinstance(other, Flags):
+            return NotImplemented
+        return Flags(self.value | other.value)
+
+    def __and__(self, other):
+        if not isinstance(other, Flags):
+            return NotImplemented
+        return Flags(self.value & other.value)
+
+    def __xor__(self, other):
+        if not isinstance(other, Flags):
+            return NotImplemented
+        return Flags(self.value ^ other.value)
+
+    def __invert__(self):
+        inverted = Flags(0)
+        for m in Flags:
+            if not (m.value & self.value):
+                inverted = inverted | m
+        return Flags(inverted)
+
+
+__SetMetaClass(<PyTypeObject*> Flags, <PyTypeObject*> __FlagsMeta)
+__FlagsEnumInstances = set(__FlagsEnumUniqueValues.values())
+
+
+cdef object __MakeFlagsCombinations():
+    # Order is important
+    s = tuple(Flags)
+    combos = {p.value: p for p in s}
+    if 0 not in combos:
+        combos[0] = Flags.__new__(Flags, 0, "0")
+    for group in itertools.chain.from_iterable(itertools.combinations(s, r) for r in range(2, len(s)+1)):
+        name = '|'.join(g.name for g in group)
+        value = 0
+        for g in group:
+            value |= g.value
+        combos[value] = Flags.__new__(Flags, value, name)
+    return combos
+
+
+__FlagsEnumValueMapping = __MakeFlagsCombinations()
+__FlagsEnumCombinations = set(__FlagsEnumValueMapping.values())
+
+
+cdef inline cFlags Flags_to_cpp(Flags value):
+    return <cFlags>(<int>value.value)
 
 cdef class SimpleException(thrift.py3.exceptions.Error):
 
@@ -515,7 +728,7 @@ cdef class ComplexStruct(thrift.py3.types.Struct):
         SimpleStruct structTwo=None,
         an_integer=None,
         str name=None,
-        an_enum=None,
+        AnEnum an_enum=None,
         bytes some_bytes=None,
         str sender=None,
         str cdef_=None
@@ -524,10 +737,6 @@ cdef class ComplexStruct(thrift.py3.types.Struct):
             if not isinstance(an_integer, int):
                 raise TypeError(f'an_integer is not a { int !r}.')
             an_integer = <int32_t> an_integer
-
-        if an_enum is not None:
-            if not isinstance(an_enum, AnEnum):
-                raise TypeError(f'field an_enum value: { an_enum !r} is not of the enum type { AnEnum }.')
 
         self._cpp_obj = move(ComplexStruct._make_instance(
           NULL,

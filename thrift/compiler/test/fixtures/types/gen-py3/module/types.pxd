@@ -274,9 +274,34 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "apache::thrift::fixtur
     cMyForwardRefEnum MyForwardRefEnum__ZERO "apache::thrift::fixtures::types::MyForwardRefEnum::ZERO"
     cMyForwardRefEnum MyForwardRefEnum__NONZERO "apache::thrift::fixtures::types::MyForwardRefEnum::NONZERO"
 
-cdef chas_bitwise_ops has_bitwise_ops_to_cpp(value)
-cdef cis_unscoped is_unscoped_to_cpp(value)
-cdef cMyForwardRefEnum MyForwardRefEnum_to_cpp(value)
+
+
+
+cdef class has_bitwise_ops(thrift.py3.types.CompiledEnum):
+    pass
+
+
+cdef chas_bitwise_ops has_bitwise_ops_to_cpp(has_bitwise_ops value)
+
+
+
+
+cdef class is_unscoped(thrift.py3.types.CompiledEnum):
+    pass
+
+
+cdef cis_unscoped is_unscoped_to_cpp(is_unscoped value)
+
+
+
+
+cdef class MyForwardRefEnum(thrift.py3.types.CompiledEnum):
+    pass
+
+
+cdef cMyForwardRefEnum MyForwardRefEnum_to_cpp(MyForwardRefEnum value)
+
+
 
 cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "apache::thrift::fixtures::types":
     # Forward Declaration
@@ -385,6 +410,7 @@ cdef extern from "<memory>" namespace "std" nogil:
 # Forward Definition of the cython struct
 cdef class decorated_struct(thrift.py3.types.Struct)
 
+
 cdef class decorated_struct(thrift.py3.types.Struct):
     cdef object __hash
     cdef object __weakref__
@@ -401,6 +427,7 @@ cdef class decorated_struct(thrift.py3.types.Struct):
 
 # Forward Definition of the cython struct
 cdef class ContainerStruct(thrift.py3.types.Struct)
+
 
 cdef class ContainerStruct(thrift.py3.types.Struct):
     cdef object __hash
@@ -434,6 +461,7 @@ cdef class ContainerStruct(thrift.py3.types.Struct):
 # Forward Definition of the cython struct
 cdef class CppTypeStruct(thrift.py3.types.Struct)
 
+
 cdef class CppTypeStruct(thrift.py3.types.Struct):
     cdef object __hash
     cdef object __weakref__
@@ -452,6 +480,7 @@ cdef class CppTypeStruct(thrift.py3.types.Struct):
 # Forward Definition of the cython struct
 cdef class VirtualStruct(thrift.py3.types.Struct)
 
+
 cdef class VirtualStruct(thrift.py3.types.Struct):
     cdef object __hash
     cdef object __weakref__
@@ -468,6 +497,7 @@ cdef class VirtualStruct(thrift.py3.types.Struct):
 
 # Forward Definition of the cython struct
 cdef class MyStructWithForwardRefEnum(thrift.py3.types.Struct)
+
 
 cdef class MyStructWithForwardRefEnum(thrift.py3.types.Struct):
     cdef object __hash

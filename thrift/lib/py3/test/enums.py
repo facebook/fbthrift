@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
+import pickle
 import unittest
 
-from enum import Enum
-from thrift.py3 import serialize, deserialize, Protocol, BadEnum
-from testing.types import Color, ColorGroups, Kind, Perm, File
-from typing import cast, Type
+from thrift.py3 import serialize, deserialize, Protocol, BadEnum, Enum, Flag
+from testing.types import Color, ColorGroups, Kind, Perm, File, Shape
+from typing import cast, Type, TypeVar
+
+_E = TypeVar("_E", bound=Enum)
 
 
 class EnumTests(unittest.TestCase):
@@ -26,27 +28,6 @@ class EnumTests(unittest.TestCase):
         """The value name is None but we auto rename it to None_"""
         x = deserialize(File, b'{"name":"blah", "type":0}', Protocol.JSON)
         self.assertEqual(x.type, Kind.None_)
-
-    def test_flag_enum(self) -> None:
-        with self.assertRaises(TypeError):
-            # flags are not ints
-            File(name='/etc/motd', permissions=4)  # type: ignore
-        x = File(name='/bin/sh', permissions=Perm.read | Perm.execute)
-        self.assertIsInstance(x.permissions, Perm)
-        self.assertEqual(x.permissions, Perm.read | Perm.execute)
-        self.assertNotIsInstance(2, Perm, "Flags are not ints")
-        self.assertEqual(int(x.permissions), 5)
-        x = File(name='')
-        self.assertFalse(x.permissions)
-        self.assertIsInstance(x.permissions, Perm)
-
-    def test_flag_enum_serialization_roundtrip(self) -> None:
-        x = File(name='/dev/null', type=Kind.CHAR, permissions=Perm.read | Perm.write)
-
-        y = deserialize(File, serialize(x))
-        self.assertEqual(x, y)
-        self.assertEqual(x.permissions, Perm.read | Perm.write)
-        self.assertIsInstance(x.permissions, Perm)
 
     def test_bad_enum_in_struct(self) -> None:
         x = deserialize(File, b'{"name": "something", "type": 64}', Protocol.JSON)
@@ -132,8 +113,128 @@ class EnumTests(unittest.TestCase):
                 else:
                     self.assertBadEnum(cast(BadEnum, v), Color, 8)
 
-    def assertBadEnum(self, e: BadEnum, cls: Type[Enum], val: int) -> None:
+    def assertBadEnum(self, e: BadEnum, cls: Type[_E], val: int) -> None:
         self.assertIsInstance(e, BadEnum)
         self.assertEqual(e.value, val)
         self.assertEqual(e.enum, cls)
         self.assertEqual(int(e), val)
+
+    def test_pickle(self) -> None:
+        serialized = pickle.dumps(Color.green)
+        green = pickle.loads(serialized)
+        self.assertIs(green, Color.green)
+
+    def test_adding_member(self) -> None:
+        with self.assertRaises(TypeError):
+            Color.black = 3  # type: ignore
+
+    def test_delete(self) -> None:
+        with self.assertRaises(TypeError):
+            del Color.red
+
+    def test_bool_of_class(self) -> None:
+        self.assertTrue(bool(Color))
+
+    def test_bool_of_members(self) -> None:
+        self.assertTrue(bool(Color.blue))
+
+    def test_changing_member(self) -> None:
+        with self.assertRaises(TypeError):
+            Color.red = "lol"  # type: ignore
+
+    def test_contains(self) -> None:
+        self.assertIn(Color.blue, Color)
+        self.assertNotIn(1, Color)  # type: ignore
+
+    def test_hash(self) -> None:
+        colors = {}
+        colors[Color.red] = 0xFF0000
+        colors[Color.blue] = 0x0000FF
+        colors[Color.green] = 0x00FF00
+        self.assertEqual(colors[Color.green], 0x00FF00)
+
+    def test_enum_in_enum_out(self) -> None:
+        self.assertIs(Color(Color.blue), Color.blue)
+
+    def test_enum_value(self) -> None:
+        self.assertEqual(Color.red.value, 0)
+
+    def test_enum(self) -> None:
+        lst = list(Color)
+        self.assertEqual(len(lst), len(Color))
+        self.assertEqual(len(Color), 3)
+        self.assertEqual([Color.red, Color.blue, Color.green], lst)
+        for i, color in enumerate('red blue green'.split(), 0):
+            e = Color(i)
+            self.assertEqual(e, getattr(Color, color))
+            self.assertEqual(e.value, i)
+            self.assertNotEqual(e, i)
+            self.assertEqual(e.name, color)
+            self.assertIn(e, Color)
+            self.assertIs(type(e), Color)
+            self.assertIsInstance(e, Color)
+            self.assertEqual(str(e), 'Color.' + color)
+            self.assertEqual(int(e), i)
+            self.assertEqual(repr(e), f'<Color.{color}: {i}>')
+
+    def test_insinstance_Enum(self) -> None:
+        self.assertIsInstance(Color.red, Enum)
+        self.assertTrue(issubclass(Color, Enum))
+
+    def test_aliases(self) -> None:
+        self.assertIs(Shape.ROUND, Shape.CIRCLE)
+        self.assertIn("CIRCLE", Shape.__members__)
+        self.assertIs(Shape(1), Shape.ROUND)
+        self.assertIs(Shape["CIRCLE"], Shape.ROUND)
+
+class FlagTests(unittest.TestCase):
+
+    def test_flag_enum(self) -> None:
+        with self.assertRaises(TypeError):
+            # flags are not ints
+            File(name='/etc/motd', permissions=4)  # type: ignore
+        x = File(name='/bin/sh', permissions=Perm.read | Perm.execute)
+        self.assertIsInstance(x.permissions, Perm)
+        self.assertEqual(x.permissions, Perm.read | Perm.execute)
+        self.assertNotIsInstance(2, Perm, "Flags are not ints")
+        self.assertEqual(int(x.permissions), 5)
+        x = File(name='')
+        self.assertFalse(x.permissions)
+        self.assertIsInstance(x.permissions, Perm)
+
+    def test_flag_enum_serialization_roundtrip(self) -> None:
+        x = File(name='/dev/null', type=Kind.CHAR, permissions=Perm.read | Perm.write)
+
+        y = deserialize(File, serialize(x))
+        self.assertEqual(x, y)
+        self.assertEqual(x.permissions, Perm.read | Perm.write)
+        self.assertIsInstance(x.permissions, Perm)
+
+    def test_zero(self) -> None:
+        zero = Perm(0)
+        self.assertNotIn(zero, Perm)
+        self.assertIsInstance(zero, Perm)
+
+    def test_combination(self) -> None:
+        combo = Perm(Perm.read.value | Perm.execute.value)
+        self.assertNotIn(combo, Perm)
+        self.assertIsInstance(combo, Perm)
+        self.assertIs(combo, Perm.read | Perm.execute)
+
+    def test_invert(self) -> None:
+        x = Perm(-2)
+        self.assertIs(x, Perm.read | Perm.write)
+
+    def test_insinstance_Flag(self) -> None:
+        self.assertIsInstance(Perm.read, Flag)
+        self.assertTrue(issubclass(Perm, Flag))
+        self.assertIsInstance(Perm.read, Enum)
+        self.assertTrue(issubclass(Perm, Enum))
+
+    def test_combo_in_call(self) -> None:
+        x = Perm(7)
+        self.assertIs(x, Perm.read | Perm.write | Perm.execute)
+
+    def test_combo_repr(self) -> None:
+        x = Perm(7)
+        self.assertEqual("<Perm.read|write|execute: 7>", repr(x))

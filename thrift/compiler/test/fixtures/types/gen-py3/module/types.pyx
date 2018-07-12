@@ -5,6 +5,8 @@
 #  @generated
 #
 
+cimport cython as __cython
+from cpython.object cimport PyTypeObject
 from libcpp.memory cimport shared_ptr, make_shared, unique_ptr, make_unique
 from libcpp.string cimport string
 from libcpp cimport bool as cbool
@@ -16,7 +18,7 @@ import thrift.py3.types
 cimport thrift.py3.types
 cimport thrift.py3.exceptions
 from thrift.py3.types import NOTSET as __NOTSET
-from thrift.py3.types cimport translate_cpp_enum_to_python
+from thrift.py3.types cimport translate_cpp_enum_to_python, SetMetaClass as __SetMetaClass
 cimport thrift.py3.std_libcpp as std_libcpp
 from thrift.py3.serializer import Protocol as __Protocol
 cimport thrift.py3.serializer as serializer
@@ -27,32 +29,108 @@ from folly.optional cimport cOptional
 import sys
 import itertools
 from collections import Sequence, Set, Mapping, Iterable
-import enum as __enum
 import warnings
 import builtins as _builtins
 cimport include.types as _include_types
 import include.types as _include_types
 
+cdef object __has_bitwise_opsEnumInstances = None  # Set[has_bitwise_ops]
+cdef object __has_bitwise_opsEnumMembers = {}      # Dict[str, has_bitwise_ops]
+cdef object __has_bitwise_opsEnumUniqueValues = dict()    # Dict[int, has_bitwise_ops]
 
-class has_bitwise_ops(__enum.Enum):
-    none = 0
-    zero = 1
-    one = 2
-    two = 4
-    three = 8
+@__cython.internal
+@__cython.auto_pickle(False)
+cdef class __has_bitwise_opsMeta(type):
+    def __call__(cls, value):
+        cdef int cvalue
+        if isinstance(value, cls) and value in __has_bitwise_opsEnumInstances:
+            return value
+        if isinstance(value, int):
+            cvalue = value
+            if cvalue == 0:
+                return has_bitwise_ops.none
+            elif cvalue == 1:
+                return has_bitwise_ops.zero
+            elif cvalue == 2:
+                return has_bitwise_ops.one
+            elif cvalue == 4:
+                return has_bitwise_ops.two
+            elif cvalue == 8:
+                return has_bitwise_ops.three
 
-    __hash__ = __enum.Enum.__hash__
+        raise ValueError(f'{value} is not a valid has_bitwise_ops')
 
-    def __eq__(self, other):
-        if not isinstance(other, self.__class__):
-            warnings.warn(f"comparison not supported between instances of {type(self)} and {type(other)}", RuntimeWarning, stacklevel=2)
+    def __getitem__(cls, name):
+        return __has_bitwise_opsEnumMembers[name]
+
+    def __iter__(cls):
+        return iter(__has_bitwise_opsEnumUniqueValues.values())
+
+    def __reversed__(cls):
+        return reversed(iter(cls))
+
+    def __contains__(cls, item):
+        if not isinstance(item, cls):
             return False
-        return self.value == other.value
+        return item in __has_bitwise_opsEnumInstances
+
+    def __len__(cls):
+        return len(__has_bitwise_opsEnumInstances)
+
+
+cdef __has_bitwise_ops_unique_instance(int value, str name):
+    inst = __has_bitwise_opsEnumUniqueValues.get(value)
+    if inst is None:
+        inst = __has_bitwise_opsEnumUniqueValues[value] = has_bitwise_ops.__new__(has_bitwise_ops, value, name)
+    __has_bitwise_opsEnumMembers[name] = inst
+    return inst
+
+
+@__cython.final
+cdef class has_bitwise_ops(thrift.py3.types.CompiledEnum):
+    none = __has_bitwise_ops_unique_instance(0, "none")
+    zero = __has_bitwise_ops_unique_instance(1, "zero")
+    one = __has_bitwise_ops_unique_instance(2, "one")
+    two = __has_bitwise_ops_unique_instance(4, "two")
+    three = __has_bitwise_ops_unique_instance(8, "three")
+    __members__ = thrift.py3.types.MappingProxyType(__has_bitwise_opsEnumMembers)
+
+    def __cinit__(self, value, name):
+        if __has_bitwise_opsEnumInstances is not None:
+            raise TypeError('For Safty we have disabled __new__')
+        self.value = value
+        self.name = name
+        self.__hash = hash(name)
+        self.__str = f"has_bitwise_ops.{name}"
+        self.__repr = f"<{self.__str}: {value}>"
+
+    def __repr__(self):
+        return self.__repr
+
+    def __str__(self):
+        return self.__str
 
     def __int__(self):
         return self.value
 
-cdef inline chas_bitwise_ops has_bitwise_ops_to_cpp(value):
+    def __eq__(self, other):
+        if not isinstance(other, has_bitwise_ops):
+            warnings.warn(f"comparison not supported between instances of { has_bitwise_ops } and {type(other)}", RuntimeWarning, stacklevel=2)
+            return False
+        return self is other
+
+    def __hash__(self):
+        return self.__hash
+
+    def __reduce__(self):
+        return has_bitwise_ops, (self.value,)
+
+
+__SetMetaClass(<PyTypeObject*> has_bitwise_ops, <PyTypeObject*> __has_bitwise_opsMeta)
+__has_bitwise_opsEnumInstances = set(__has_bitwise_opsEnumUniqueValues.values())
+
+
+cdef inline chas_bitwise_ops has_bitwise_ops_to_cpp(has_bitwise_ops value):
     cdef int cvalue = value.value
     if cvalue == 0:
         return has_bitwise_ops__none
@@ -64,49 +142,192 @@ cdef inline chas_bitwise_ops has_bitwise_ops_to_cpp(value):
         return has_bitwise_ops__two
     elif cvalue == 8:
         return has_bitwise_ops__three
-class is_unscoped(__enum.Enum):
-    hello = 0
-    world = 1
+cdef object __is_unscopedEnumInstances = None  # Set[is_unscoped]
+cdef object __is_unscopedEnumMembers = {}      # Dict[str, is_unscoped]
+cdef object __is_unscopedEnumUniqueValues = dict()    # Dict[int, is_unscoped]
 
-    __hash__ = __enum.Enum.__hash__
+@__cython.internal
+@__cython.auto_pickle(False)
+cdef class __is_unscopedMeta(type):
+    def __call__(cls, value):
+        cdef int cvalue
+        if isinstance(value, cls) and value in __is_unscopedEnumInstances:
+            return value
+        if isinstance(value, int):
+            cvalue = value
+            if cvalue == 0:
+                return is_unscoped.hello
+            elif cvalue == 1:
+                return is_unscoped.world
 
-    def __eq__(self, other):
-        if not isinstance(other, self.__class__):
-            warnings.warn(f"comparison not supported between instances of {type(self)} and {type(other)}", RuntimeWarning, stacklevel=2)
+        raise ValueError(f'{value} is not a valid is_unscoped')
+
+    def __getitem__(cls, name):
+        return __is_unscopedEnumMembers[name]
+
+    def __iter__(cls):
+        return iter(__is_unscopedEnumUniqueValues.values())
+
+    def __reversed__(cls):
+        return reversed(iter(cls))
+
+    def __contains__(cls, item):
+        if not isinstance(item, cls):
             return False
-        return self.value == other.value
+        return item in __is_unscopedEnumInstances
+
+    def __len__(cls):
+        return len(__is_unscopedEnumInstances)
+
+
+cdef __is_unscoped_unique_instance(int value, str name):
+    inst = __is_unscopedEnumUniqueValues.get(value)
+    if inst is None:
+        inst = __is_unscopedEnumUniqueValues[value] = is_unscoped.__new__(is_unscoped, value, name)
+    __is_unscopedEnumMembers[name] = inst
+    return inst
+
+
+@__cython.final
+cdef class is_unscoped(thrift.py3.types.CompiledEnum):
+    hello = __is_unscoped_unique_instance(0, "hello")
+    world = __is_unscoped_unique_instance(1, "world")
+    __members__ = thrift.py3.types.MappingProxyType(__is_unscopedEnumMembers)
+
+    def __cinit__(self, value, name):
+        if __is_unscopedEnumInstances is not None:
+            raise TypeError('For Safty we have disabled __new__')
+        self.value = value
+        self.name = name
+        self.__hash = hash(name)
+        self.__str = f"is_unscoped.{name}"
+        self.__repr = f"<{self.__str}: {value}>"
+
+    def __repr__(self):
+        return self.__repr
+
+    def __str__(self):
+        return self.__str
 
     def __int__(self):
         return self.value
 
-cdef inline cis_unscoped is_unscoped_to_cpp(value):
+    def __eq__(self, other):
+        if not isinstance(other, is_unscoped):
+            warnings.warn(f"comparison not supported between instances of { is_unscoped } and {type(other)}", RuntimeWarning, stacklevel=2)
+            return False
+        return self is other
+
+    def __hash__(self):
+        return self.__hash
+
+    def __reduce__(self):
+        return is_unscoped, (self.value,)
+
+
+__SetMetaClass(<PyTypeObject*> is_unscoped, <PyTypeObject*> __is_unscopedMeta)
+__is_unscopedEnumInstances = set(__is_unscopedEnumUniqueValues.values())
+
+
+cdef inline cis_unscoped is_unscoped_to_cpp(is_unscoped value):
     cdef int cvalue = value.value
     if cvalue == 0:
         return is_unscoped__hello
     elif cvalue == 1:
         return is_unscoped__world
-class MyForwardRefEnum(__enum.Enum):
-    ZERO = 0
-    NONZERO = 12
+cdef object __MyForwardRefEnumEnumInstances = None  # Set[MyForwardRefEnum]
+cdef object __MyForwardRefEnumEnumMembers = {}      # Dict[str, MyForwardRefEnum]
+cdef object __MyForwardRefEnumEnumUniqueValues = dict()    # Dict[int, MyForwardRefEnum]
 
-    __hash__ = __enum.Enum.__hash__
+@__cython.internal
+@__cython.auto_pickle(False)
+cdef class __MyForwardRefEnumMeta(type):
+    def __call__(cls, value):
+        cdef int cvalue
+        if isinstance(value, cls) and value in __MyForwardRefEnumEnumInstances:
+            return value
+        if isinstance(value, int):
+            cvalue = value
+            if cvalue == 0:
+                return MyForwardRefEnum.ZERO
+            elif cvalue == 12:
+                return MyForwardRefEnum.NONZERO
 
-    def __eq__(self, other):
-        if not isinstance(other, self.__class__):
-            warnings.warn(f"comparison not supported between instances of {type(self)} and {type(other)}", RuntimeWarning, stacklevel=2)
+        raise ValueError(f'{value} is not a valid MyForwardRefEnum')
+
+    def __getitem__(cls, name):
+        return __MyForwardRefEnumEnumMembers[name]
+
+    def __iter__(cls):
+        return iter(__MyForwardRefEnumEnumUniqueValues.values())
+
+    def __reversed__(cls):
+        return reversed(iter(cls))
+
+    def __contains__(cls, item):
+        if not isinstance(item, cls):
             return False
-        return self.value == other.value
+        return item in __MyForwardRefEnumEnumInstances
+
+    def __len__(cls):
+        return len(__MyForwardRefEnumEnumInstances)
+
+
+cdef __MyForwardRefEnum_unique_instance(int value, str name):
+    inst = __MyForwardRefEnumEnumUniqueValues.get(value)
+    if inst is None:
+        inst = __MyForwardRefEnumEnumUniqueValues[value] = MyForwardRefEnum.__new__(MyForwardRefEnum, value, name)
+    __MyForwardRefEnumEnumMembers[name] = inst
+    return inst
+
+
+@__cython.final
+cdef class MyForwardRefEnum(thrift.py3.types.CompiledEnum):
+    ZERO = __MyForwardRefEnum_unique_instance(0, "ZERO")
+    NONZERO = __MyForwardRefEnum_unique_instance(12, "NONZERO")
+    __members__ = thrift.py3.types.MappingProxyType(__MyForwardRefEnumEnumMembers)
+
+    def __cinit__(self, value, name):
+        if __MyForwardRefEnumEnumInstances is not None:
+            raise TypeError('For Safty we have disabled __new__')
+        self.value = value
+        self.name = name
+        self.__hash = hash(name)
+        self.__str = f"MyForwardRefEnum.{name}"
+        self.__repr = f"<{self.__str}: {value}>"
+
+    def __repr__(self):
+        return self.__repr
+
+    def __str__(self):
+        return self.__str
 
     def __int__(self):
         return self.value
 
-cdef inline cMyForwardRefEnum MyForwardRefEnum_to_cpp(value):
+    def __eq__(self, other):
+        if not isinstance(other, MyForwardRefEnum):
+            warnings.warn(f"comparison not supported between instances of { MyForwardRefEnum } and {type(other)}", RuntimeWarning, stacklevel=2)
+            return False
+        return self is other
+
+    def __hash__(self):
+        return self.__hash
+
+    def __reduce__(self):
+        return MyForwardRefEnum, (self.value,)
+
+
+__SetMetaClass(<PyTypeObject*> MyForwardRefEnum, <PyTypeObject*> __MyForwardRefEnumMeta)
+__MyForwardRefEnumEnumInstances = set(__MyForwardRefEnumEnumUniqueValues.values())
+
+
+cdef inline cMyForwardRefEnum MyForwardRefEnum_to_cpp(MyForwardRefEnum value):
     cdef int cvalue = value.value
     if cvalue == 0:
         return MyForwardRefEnum__ZERO
     elif cvalue == 12:
         return MyForwardRefEnum__NONZERO
-
 
 cdef cdecorated_struct _decorated_struct_defaults = cdecorated_struct()
 
@@ -862,17 +1083,9 @@ cdef class MyStructWithForwardRefEnum(thrift.py3.types.Struct):
 
     def __init__(
         MyStructWithForwardRefEnum self, *,
-        a=None,
-        b=None
+        MyForwardRefEnum a=None,
+        MyForwardRefEnum b=None
     ):
-        if a is not None:
-            if not isinstance(a, MyForwardRefEnum):
-                raise TypeError(f'field a value: { a !r} is not of the enum type { MyForwardRefEnum }.')
-
-        if b is not None:
-            if not isinstance(b, MyForwardRefEnum):
-                raise TypeError(f'field b value: { b !r} is not of the enum type { MyForwardRefEnum }.')
-
         self._cpp_obj = move(MyStructWithForwardRefEnum._make_instance(
           NULL,
           a,

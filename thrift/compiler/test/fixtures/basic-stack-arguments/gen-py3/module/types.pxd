@@ -26,7 +26,16 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "cpp2":
     cMyEnum MyEnum__MyValue1 "cpp2::MyEnum::MyValue1"
     cMyEnum MyEnum__MyValue2 "cpp2::MyEnum::MyValue2"
 
-cdef cMyEnum MyEnum_to_cpp(value)
+
+
+
+cdef class MyEnum(thrift.py3.types.CompiledEnum):
+    pass
+
+
+cdef cMyEnum MyEnum_to_cpp(MyEnum value)
+
+
 
 cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "cpp2":
     # Forward Declaration
@@ -56,6 +65,7 @@ cdef extern from "<memory>" namespace "std" nogil:
 
 # Forward Definition of the cython struct
 cdef class MyStruct(thrift.py3.types.Struct)
+
 
 cdef class MyStruct(thrift.py3.types.Struct):
     cdef object __hash

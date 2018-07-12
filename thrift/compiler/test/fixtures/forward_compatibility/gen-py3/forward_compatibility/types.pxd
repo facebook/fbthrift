@@ -22,6 +22,7 @@ from folly.optional cimport cOptional
 
 
 
+
 cdef extern from "src/gen-cpp2/forward_compatibility_types_custom_protocol.h" namespace "cpp2":
     # Forward Declaration
     cdef cppclass cOldStructure "cpp2::OldStructure"
@@ -117,6 +118,7 @@ cdef extern from "<memory>" namespace "std" nogil:
 # Forward Definition of the cython struct
 cdef class OldStructure(thrift.py3.types.Struct)
 
+
 cdef class OldStructure(thrift.py3.types.Struct):
     cdef object __hash
     cdef object __weakref__
@@ -134,6 +136,7 @@ cdef class OldStructure(thrift.py3.types.Struct):
 
 # Forward Definition of the cython struct
 cdef class NewStructure(thrift.py3.types.Struct)
+
 
 cdef class NewStructure(thrift.py3.types.Struct):
     cdef object __hash
@@ -153,6 +156,7 @@ cdef class NewStructure(thrift.py3.types.Struct):
 # Forward Definition of the cython struct
 cdef class NewStructure2(thrift.py3.types.Struct)
 
+
 cdef class NewStructure2(thrift.py3.types.Struct):
     cdef object __hash
     cdef object __weakref__
@@ -170,6 +174,7 @@ cdef class NewStructure2(thrift.py3.types.Struct):
 
 # Forward Definition of the cython struct
 cdef class NewStructureNested(thrift.py3.types.Struct)
+
 
 cdef class NewStructureNested(thrift.py3.types.Struct):
     cdef object __hash
@@ -192,6 +197,7 @@ cdef class NewStructureNested(thrift.py3.types.Struct):
 
 # Forward Definition of the cython struct
 cdef class NewStructureNestedField(thrift.py3.types.Struct)
+
 
 cdef class NewStructureNestedField(thrift.py3.types.Struct):
     cdef object __hash

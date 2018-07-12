@@ -14,15 +14,12 @@ import typing as _typing
 
 import sys
 import itertools
-import enum as __enum
 
 
-class Animal(__enum.Enum, _typing.SupportsInt):
+class Animal(thrift.py3.types.Enum):
     DOG: Animal = ...
     CAT: Animal = ...
     TARANTULA: Animal = ...
-    value: int
-    def __int__(self) -> int: ...
 
 
 class Color(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typing.Tuple[str, _typing.Any]]):

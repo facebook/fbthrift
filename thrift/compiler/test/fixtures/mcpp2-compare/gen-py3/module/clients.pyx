@@ -1512,13 +1512,11 @@ cdef class ParamService(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     def void_ret_enum_param(
             ParamService self,
-            param1 not None,
+            _module_types.MyEnumA param1 not None,
             __RpcOptions rpc_options=None
     ):
         if rpc_options is None:
             rpc_options = <__RpcOptions>__RpcOptions.__new__(__RpcOptions)
-        if not isinstance(param1, _module_types.MyEnumA):
-            raise TypeError(f'argument param1 value: { param1 !r} is not of the enum type { _module_types.MyEnumA }.')
         self._check_connect_future()
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
@@ -1975,13 +1973,11 @@ cdef class ParamService(thrift.py3.client.Client):
     def enum_ret_double_enum_param(
             ParamService self,
             double param1,
-            param2 not None,
+            _module_types.MyEnumA param2 not None,
             __RpcOptions rpc_options=None
     ):
         if rpc_options is None:
             rpc_options = <__RpcOptions>__RpcOptions.__new__(__RpcOptions)
-        if not isinstance(param2, _module_types.MyEnumA):
-            raise TypeError(f'argument param2 value: { param2 !r} is not of the enum type { _module_types.MyEnumA }.')
         self._check_connect_future()
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()

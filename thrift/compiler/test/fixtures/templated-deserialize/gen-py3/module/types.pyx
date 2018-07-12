@@ -5,6 +5,8 @@
 #  @generated
 #
 
+cimport cython as __cython
+from cpython.object cimport PyTypeObject
 from libcpp.memory cimport shared_ptr, make_shared, unique_ptr, make_unique
 from libcpp.string cimport string
 from libcpp cimport bool as cbool
@@ -16,7 +18,7 @@ import thrift.py3.types
 cimport thrift.py3.types
 cimport thrift.py3.exceptions
 from thrift.py3.types import NOTSET as __NOTSET
-from thrift.py3.types cimport translate_cpp_enum_to_python
+from thrift.py3.types cimport translate_cpp_enum_to_python, SetMetaClass as __SetMetaClass
 cimport thrift.py3.std_libcpp as std_libcpp
 from thrift.py3.serializer import Protocol as __Protocol
 cimport thrift.py3.serializer as serializer
@@ -27,28 +29,100 @@ from folly.optional cimport cOptional
 import sys
 import itertools
 from collections import Sequence, Set, Mapping, Iterable
-import enum as __enum
 import warnings
 import builtins as _builtins
 
+cdef object __MyEnumAEnumInstances = None  # Set[MyEnumA]
+cdef object __MyEnumAEnumMembers = {}      # Dict[str, MyEnumA]
+cdef object __MyEnumAEnumUniqueValues = dict()    # Dict[int, MyEnumA]
 
-class MyEnumA(__enum.Enum):
-    fieldA = 1
-    fieldB = 2
-    fieldC = 4
+@__cython.internal
+@__cython.auto_pickle(False)
+cdef class __MyEnumAMeta(type):
+    def __call__(cls, value):
+        cdef int cvalue
+        if isinstance(value, cls) and value in __MyEnumAEnumInstances:
+            return value
+        if isinstance(value, int):
+            cvalue = value
+            if cvalue == 1:
+                return MyEnumA.fieldA
+            elif cvalue == 2:
+                return MyEnumA.fieldB
+            elif cvalue == 4:
+                return MyEnumA.fieldC
 
-    __hash__ = __enum.Enum.__hash__
+        raise ValueError(f'{value} is not a valid MyEnumA')
 
-    def __eq__(self, other):
-        if not isinstance(other, self.__class__):
-            warnings.warn(f"comparison not supported between instances of {type(self)} and {type(other)}", RuntimeWarning, stacklevel=2)
+    def __getitem__(cls, name):
+        return __MyEnumAEnumMembers[name]
+
+    def __iter__(cls):
+        return iter(__MyEnumAEnumUniqueValues.values())
+
+    def __reversed__(cls):
+        return reversed(iter(cls))
+
+    def __contains__(cls, item):
+        if not isinstance(item, cls):
             return False
-        return self.value == other.value
+        return item in __MyEnumAEnumInstances
+
+    def __len__(cls):
+        return len(__MyEnumAEnumInstances)
+
+
+cdef __MyEnumA_unique_instance(int value, str name):
+    inst = __MyEnumAEnumUniqueValues.get(value)
+    if inst is None:
+        inst = __MyEnumAEnumUniqueValues[value] = MyEnumA.__new__(MyEnumA, value, name)
+    __MyEnumAEnumMembers[name] = inst
+    return inst
+
+
+@__cython.final
+cdef class MyEnumA(thrift.py3.types.CompiledEnum):
+    fieldA = __MyEnumA_unique_instance(1, "fieldA")
+    fieldB = __MyEnumA_unique_instance(2, "fieldB")
+    fieldC = __MyEnumA_unique_instance(4, "fieldC")
+    __members__ = thrift.py3.types.MappingProxyType(__MyEnumAEnumMembers)
+
+    def __cinit__(self, value, name):
+        if __MyEnumAEnumInstances is not None:
+            raise TypeError('For Safty we have disabled __new__')
+        self.value = value
+        self.name = name
+        self.__hash = hash(name)
+        self.__str = f"MyEnumA.{name}"
+        self.__repr = f"<{self.__str}: {value}>"
+
+    def __repr__(self):
+        return self.__repr
+
+    def __str__(self):
+        return self.__str
 
     def __int__(self):
         return self.value
 
-cdef inline cMyEnumA MyEnumA_to_cpp(value):
+    def __eq__(self, other):
+        if not isinstance(other, MyEnumA):
+            warnings.warn(f"comparison not supported between instances of { MyEnumA } and {type(other)}", RuntimeWarning, stacklevel=2)
+            return False
+        return self is other
+
+    def __hash__(self):
+        return self.__hash
+
+    def __reduce__(self):
+        return MyEnumA, (self.value,)
+
+
+__SetMetaClass(<PyTypeObject*> MyEnumA, <PyTypeObject*> __MyEnumAMeta)
+__MyEnumAEnumInstances = set(__MyEnumAEnumUniqueValues.values())
+
+
+cdef inline cMyEnumA MyEnumA_to_cpp(MyEnumA value):
     cdef int cvalue = value.value
     if cvalue == 1:
         return MyEnumA__fieldA
@@ -56,7 +130,6 @@ cdef inline cMyEnumA MyEnumA_to_cpp(value):
         return MyEnumA__fieldB
     elif cvalue == 4:
         return MyEnumA__fieldC
-
 
 cdef cSmallStruct _SmallStruct_defaults = cSmallStruct()
 
@@ -255,17 +328,13 @@ cdef class containerStruct(thrift.py3.types.Struct):
         fieldN=None,
         fieldO=None,
         fieldP=None,
-        fieldQ=None,
+        MyEnumA fieldQ=None,
         fieldR=None,
         SmallStruct fieldS=None,
         SmallStruct fieldT=None,
         SmallStruct fieldU=None,
         SmallStruct fieldX=None
     ):
-        if fieldQ is not None:
-            if not isinstance(fieldQ, MyEnumA):
-                raise TypeError(f'field fieldQ value: { fieldQ !r} is not of the enum type { MyEnumA }.')
-
         self._cpp_obj = move(containerStruct._make_instance(
           NULL,
           fieldA,

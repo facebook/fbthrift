@@ -35,8 +35,25 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "py3::simple":
     cFlags Flags__flag_C "py3::simple::Flags::flag_C"
     cFlags Flags__flag_D "py3::simple::Flags::flag_D"
 
-cdef cAnEnum AnEnum_to_cpp(value)
-cdef cFlags Flags_to_cpp(value)
+
+
+
+cdef class AnEnum(thrift.py3.types.CompiledEnum):
+    pass
+
+
+cdef cAnEnum AnEnum_to_cpp(AnEnum value)
+
+
+
+
+cdef class Flags(thrift.py3.types.Flag):
+    pass
+
+
+cdef cFlags Flags_to_cpp(Flags value)
+
+
 
 cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "py3::simple":
     # Forward Declaration
@@ -123,6 +140,7 @@ cdef extern from "<memory>" namespace "std" nogil:
 # Forward Definition of the cython struct
 cdef class SimpleException(thrift.py3.exceptions.Error)
 
+
 cdef class SimpleException(thrift.py3.exceptions.Error):
     cdef object __hash
     cdef object __weakref__
@@ -139,6 +157,7 @@ cdef class SimpleException(thrift.py3.exceptions.Error):
 
 # Forward Definition of the cython struct
 cdef class SimpleStruct(thrift.py3.types.Struct)
+
 
 cdef class SimpleStruct(thrift.py3.types.Struct):
     cdef object __hash
@@ -162,6 +181,7 @@ cdef class SimpleStruct(thrift.py3.types.Struct):
 
 # Forward Definition of the cython struct
 cdef class ComplexStruct(thrift.py3.types.Struct)
+
 
 cdef class ComplexStruct(thrift.py3.types.Struct):
     cdef object __hash

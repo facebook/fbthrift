@@ -14,14 +14,11 @@ import typing as _typing
 
 import sys
 import itertools
-import enum as __enum
 
 
-class AnEnum(__enum.Enum, _typing.SupportsInt):
+class AnEnum(thrift.py3.types.Enum):
     FIELDA: AnEnum = ...
     FIELDB: AnEnum = ...
-    value: int
-    def __int__(self) -> int: ...
 
 
 class AStruct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typing.Tuple[str, _typing.Any]]):

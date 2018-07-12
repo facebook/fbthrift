@@ -72,6 +72,7 @@ class t_mstch_py3_generator : public t_mstch_generator {
   mstch::map extend_enum(const t_enum&) override;
   mstch::map extend_annotation(const annotation&) override;
   mstch::map extend_enum_value(const t_enum_value&) override;
+  mstch::map extend_struct(const t_struct&) override;
 
  protected:
   bool should_resolve_typedefs() const override {
@@ -300,8 +301,8 @@ mstch::map t_mstch_py3_generator::extend_type(const t_type& type) {
   const auto is_integer =
       type.is_byte() || type.is_i16() || type.is_i32() || type.is_i64();
   const auto is_number = is_integer || type.is_floating_point();
-  // We don't use the Cython Type for Containers, and enums are Python Only
-  const auto hasCythonType = !type.is_container() && !type.is_enum();
+  // We don't use the Cython Type for Containers
+  const auto hasCythonType = !type.is_container();
   const auto cythonTypeNoneable = !is_number && hasCythonType;
 
   bool is_iobuf =
@@ -328,10 +329,20 @@ mstch::map t_mstch_py3_generator::extend_type(const t_type& type) {
   return result;
 }
 
+mstch::map t_mstch_py3_generator::extend_struct(const t_struct& stct) {
+  mstch::map result{
+      {"size", std::to_string(stct.get_members().size())},
+  };
+  return result;
+}
+
 mstch::map t_mstch_py3_generator::extend_enum(const t_enum& enm) {
   const auto is_flags = enm.annotations_.count("py3.flags") != 0;
+  const auto duplicate_values =
+      enm.annotations_.count("thrift.duplicate_values") != 0;
   mstch::map result{
       {"flags?", is_flags},
+      {"duplicate_values?", duplicate_values},
   };
   return result;
 }

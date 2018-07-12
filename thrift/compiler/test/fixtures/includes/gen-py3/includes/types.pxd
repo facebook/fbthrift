@@ -23,6 +23,7 @@ cimport transitive.types as _transitive_types
 
 
 
+
 cdef extern from "gen-cpp2/includes_types_custom_protocol.h" namespace "cpp2":
     # Forward Declaration
     cdef cppclass cIncluded "cpp2::Included"
@@ -51,6 +52,7 @@ cdef extern from "<memory>" namespace "std" nogil:
 
 # Forward Definition of the cython struct
 cdef class Included(thrift.py3.types.Struct)
+
 
 cdef class Included(thrift.py3.types.Struct):
     cdef object __hash

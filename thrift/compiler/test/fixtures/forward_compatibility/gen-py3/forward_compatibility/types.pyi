@@ -14,7 +14,6 @@ import typing as _typing
 
 import sys
 import itertools
-import enum as __enum
 
 
 class OldStructure(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typing.Tuple[str, _typing.Any]]):

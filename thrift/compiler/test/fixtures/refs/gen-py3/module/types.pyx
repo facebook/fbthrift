@@ -5,6 +5,8 @@
 #  @generated
 #
 
+cimport cython as __cython
+from cpython.object cimport PyTypeObject
 from libcpp.memory cimport shared_ptr, make_shared, unique_ptr, make_unique
 from libcpp.string cimport string
 from libcpp cimport bool as cbool
@@ -16,7 +18,7 @@ import thrift.py3.types
 cimport thrift.py3.types
 cimport thrift.py3.exceptions
 from thrift.py3.types import NOTSET as __NOTSET
-from thrift.py3.types cimport translate_cpp_enum_to_python
+from thrift.py3.types cimport translate_cpp_enum_to_python, SetMetaClass as __SetMetaClass
 cimport thrift.py3.std_libcpp as std_libcpp
 from thrift.py3.serializer import Protocol as __Protocol
 cimport thrift.py3.serializer as serializer
@@ -27,27 +29,97 @@ from folly.optional cimport cOptional
 import sys
 import itertools
 from collections import Sequence, Set, Mapping, Iterable
-import enum as __enum
 import warnings
 import builtins as _builtins
 
+cdef object __TypedEnumEnumInstances = None  # Set[TypedEnum]
+cdef object __TypedEnumEnumMembers = {}      # Dict[str, TypedEnum]
+cdef object __TypedEnumEnumUniqueValues = dict()    # Dict[int, TypedEnum]
 
-class TypedEnum(__enum.Enum):
-    VAL1 = 0
-    VAL2 = 1
+@__cython.internal
+@__cython.auto_pickle(False)
+cdef class __TypedEnumMeta(type):
+    def __call__(cls, value):
+        cdef int cvalue
+        if isinstance(value, cls) and value in __TypedEnumEnumInstances:
+            return value
+        if isinstance(value, int):
+            cvalue = value
+            if cvalue == 0:
+                return TypedEnum.VAL1
+            elif cvalue == 1:
+                return TypedEnum.VAL2
 
-    __hash__ = __enum.Enum.__hash__
+        raise ValueError(f'{value} is not a valid TypedEnum')
 
-    def __eq__(self, other):
-        if not isinstance(other, self.__class__):
-            warnings.warn(f"comparison not supported between instances of {type(self)} and {type(other)}", RuntimeWarning, stacklevel=2)
+    def __getitem__(cls, name):
+        return __TypedEnumEnumMembers[name]
+
+    def __iter__(cls):
+        return iter(__TypedEnumEnumUniqueValues.values())
+
+    def __reversed__(cls):
+        return reversed(iter(cls))
+
+    def __contains__(cls, item):
+        if not isinstance(item, cls):
             return False
-        return self.value == other.value
+        return item in __TypedEnumEnumInstances
+
+    def __len__(cls):
+        return len(__TypedEnumEnumInstances)
+
+
+cdef __TypedEnum_unique_instance(int value, str name):
+    inst = __TypedEnumEnumUniqueValues.get(value)
+    if inst is None:
+        inst = __TypedEnumEnumUniqueValues[value] = TypedEnum.__new__(TypedEnum, value, name)
+    __TypedEnumEnumMembers[name] = inst
+    return inst
+
+
+@__cython.final
+cdef class TypedEnum(thrift.py3.types.CompiledEnum):
+    VAL1 = __TypedEnum_unique_instance(0, "VAL1")
+    VAL2 = __TypedEnum_unique_instance(1, "VAL2")
+    __members__ = thrift.py3.types.MappingProxyType(__TypedEnumEnumMembers)
+
+    def __cinit__(self, value, name):
+        if __TypedEnumEnumInstances is not None:
+            raise TypeError('For Safty we have disabled __new__')
+        self.value = value
+        self.name = name
+        self.__hash = hash(name)
+        self.__str = f"TypedEnum.{name}"
+        self.__repr = f"<{self.__str}: {value}>"
+
+    def __repr__(self):
+        return self.__repr
+
+    def __str__(self):
+        return self.__str
 
     def __int__(self):
         return self.value
 
-cdef inline cTypedEnum TypedEnum_to_cpp(value):
+    def __eq__(self, other):
+        if not isinstance(other, TypedEnum):
+            warnings.warn(f"comparison not supported between instances of { TypedEnum } and {type(other)}", RuntimeWarning, stacklevel=2)
+            return False
+        return self is other
+
+    def __hash__(self):
+        return self.__hash
+
+    def __reduce__(self):
+        return TypedEnum, (self.value,)
+
+
+__SetMetaClass(<PyTypeObject*> TypedEnum, <PyTypeObject*> __TypedEnumMeta)
+__TypedEnumEnumInstances = set(__TypedEnumEnumUniqueValues.values())
+
+
+cdef inline cTypedEnum TypedEnum_to_cpp(TypedEnum value):
     cdef int cvalue = value.value
     if cvalue == 0:
         return TypedEnum__VAL1
@@ -55,10 +127,93 @@ cdef inline cTypedEnum TypedEnum_to_cpp(value):
         return TypedEnum__VAL2
 
 
-class __MyUnionType(__enum.Enum):
-    EMPTY = <int>cMyUnion__type___EMPTY__
-    anInteger = <int>cMyUnion__type_anInteger
-    aString = <int>cMyUnion__type_aString
+cdef object __MyUnion_Union_TypeEnumMembers = None
+
+
+@__cython.internal
+@__cython.auto_pickle(False)
+cdef class __MyUnion_Union_TypeMeta(type):
+    def __call__(cls, value):
+        cdef int cvalue
+        if isinstance(value, cls) and value in __MyUnion_Union_TypeEnumMembers:
+            return value
+
+        if isinstance(value, int):
+            cvalue = value
+            if cvalue == 0:
+                return __MyUnionType.EMPTY
+            elif cvalue == 1:
+                return __MyUnionType.anInteger
+            elif cvalue == 2:
+                return __MyUnionType.aString
+
+        raise ValueError(f'{value} is not a valid MyUnion.Type')
+
+    def __getitem__(cls, name):
+        if name == "EMPTY":
+            return __MyUnionType.EMPTY
+        elif name == "anInteger":
+            return __MyUnionType.anInteger
+        elif name == "aString":
+            return __MyUnionType.aString
+        raise KeyError(name)
+
+    def __iter__(cls):
+            yield __MyUnionType.anInteger
+            yield __MyUnionType.aString
+
+    def __reversed__(cls):
+        return reversed(iter(cls))
+
+    def __contains__(cls, item):
+        if not isinstance(item, cls):
+            return False
+        return item in __MyUnion_Union_TypeEnumMembers
+
+    def __len__(cls):
+        return 2
+
+
+@__cython.final
+cdef class __MyUnionType(thrift.py3.types.CompiledEnum):
+    EMPTY = __MyUnionType.__new__(__MyUnionType, 0, "EMPTY")
+    anInteger = __MyUnionType.__new__(__MyUnionType, 1, "anInteger")
+    aString = __MyUnionType.__new__(__MyUnionType, 2, "aString")
+
+    def __cinit__(self, value, name):
+        if __MyUnion_Union_TypeEnumMembers is not None:
+            raise TypeError('For Safty we have disabled __new__')
+        self.value = value
+        self.name = name
+        self.__hash = hash(name)
+        self.__str = f"MyUnion.Type.{name}"
+        self.__repr = f"<{self.__str}: {value}>"
+
+    def __repr__(self):
+        return self.__repr
+
+    def __str__(self):
+        return self.__str
+
+    def __int__(self):
+        return self.value
+
+    def __eq__(self, other):
+        if not isinstance(other, __MyUnionType):
+            warnings.warn(f"comparison not supported between instances of { __MyUnionType } and {type(other)}", RuntimeWarning, stacklevel=2)
+            return False
+        return self is other
+
+    def __hash__(self):
+        return self.__hash
+
+    def __reduce__(self):
+        return __MyUnionType, (self.value,)
+
+__SetMetaClass(<PyTypeObject*> __MyUnionType, <PyTypeObject*> __MyUnion_Union_TypeMeta)
+__MyUnion_Union_TypeEnumMembers = set(__MyUnionType)
+
+
 
 
 cdef class MyUnion(thrift.py3.types.Union):
@@ -119,7 +274,7 @@ cdef class MyUnion(thrift.py3.types.Union):
         return move_unique(c_inst)
 
     def __bool__(self):
-        return self.type != MyUnion.Type.EMPTY
+        return self.type is not __MyUnionType.EMPTY
 
     @staticmethod
     cdef create(shared_ptr[cMyUnion] cpp_obj):
@@ -130,13 +285,13 @@ cdef class MyUnion(thrift.py3.types.Union):
 
     @property
     def anInteger(self):
-        if self.type != MyUnion.Type.anInteger:
+        if self.type.value != 1:
             raise TypeError(f'Union contains a value of type {self.type.name}, not anInteger')
         return self.value
 
     @property
     def aString(self):
-        if self.type != MyUnion.Type.aString:
+        if self.type.value != 2:
             raise TypeError(f'Union contains a value of type {self.type.name}, not aString')
         return self.value
 
@@ -154,11 +309,12 @@ cdef class MyUnion(thrift.py3.types.Union):
 
     cdef _load_cache(MyUnion self):
         self.type = MyUnion.Type(<int>(deref(self._cpp_obj).getType()))
-        if self.type == MyUnion.Type.EMPTY:
+        cdef int type = self.type.value
+        if type == 0:    # Empty
             self.value = None
-        elif self.type == MyUnion.Type.anInteger:
+        elif type == 1:
             self.value = deref(self._cpp_obj).get_anInteger()
-        elif self.type == MyUnion.Type.aString:
+        elif type == 2:
             self.value = bytes(deref(self._cpp_obj).get_aString()).decode('UTF-8')
 
     def get_type(MyUnion self):

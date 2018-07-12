@@ -22,6 +22,7 @@ from folly.optional cimport cOptional
 
 
 
+
 cdef extern from "gen-cpp2/hsmodule_types_custom_protocol.h" namespace "cpp2":
     # Forward Declaration
     cdef cppclass cHsFoo "cpp2::HsFoo"
@@ -48,6 +49,7 @@ cdef extern from "<memory>" namespace "std" nogil:
 
 # Forward Definition of the cython struct
 cdef class HsFoo(thrift.py3.types.Struct)
+
 
 cdef class HsFoo(thrift.py3.types.Struct):
     cdef object __hash

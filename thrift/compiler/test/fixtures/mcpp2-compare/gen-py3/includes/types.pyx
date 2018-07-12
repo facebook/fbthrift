@@ -5,6 +5,8 @@
 #  @generated
 #
 
+cimport cython as __cython
+from cpython.object cimport PyTypeObject
 from libcpp.memory cimport shared_ptr, make_shared, unique_ptr, make_unique
 from libcpp.string cimport string
 from libcpp cimport bool as cbool
@@ -16,7 +18,7 @@ import thrift.py3.types
 cimport thrift.py3.types
 cimport thrift.py3.exceptions
 from thrift.py3.types import NOTSET as __NOTSET
-from thrift.py3.types cimport translate_cpp_enum_to_python
+from thrift.py3.types cimport translate_cpp_enum_to_python, SetMetaClass as __SetMetaClass
 cimport thrift.py3.std_libcpp as std_libcpp
 from thrift.py3.serializer import Protocol as __Protocol
 cimport thrift.py3.serializer as serializer
@@ -27,33 +29,102 @@ from folly.optional cimport cOptional
 import sys
 import itertools
 from collections import Sequence, Set, Mapping, Iterable
-import enum as __enum
 import warnings
 import builtins as _builtins
 
+cdef object __AnEnumEnumInstances = None  # Set[AnEnum]
+cdef object __AnEnumEnumMembers = {}      # Dict[str, AnEnum]
+cdef object __AnEnumEnumUniqueValues = dict()    # Dict[int, AnEnum]
 
-class AnEnum(__enum.Enum):
-    FIELDA = 2
-    FIELDB = 4
+@__cython.internal
+@__cython.auto_pickle(False)
+cdef class __AnEnumMeta(type):
+    def __call__(cls, value):
+        cdef int cvalue
+        if isinstance(value, cls) and value in __AnEnumEnumInstances:
+            return value
+        if isinstance(value, int):
+            cvalue = value
+            if cvalue == 2:
+                return AnEnum.FIELDA
+            elif cvalue == 4:
+                return AnEnum.FIELDB
 
-    __hash__ = __enum.Enum.__hash__
+        raise ValueError(f'{value} is not a valid AnEnum')
 
-    def __eq__(self, other):
-        if not isinstance(other, self.__class__):
-            warnings.warn(f"comparison not supported between instances of {type(self)} and {type(other)}", RuntimeWarning, stacklevel=2)
+    def __getitem__(cls, name):
+        return __AnEnumEnumMembers[name]
+
+    def __iter__(cls):
+        return iter(__AnEnumEnumUniqueValues.values())
+
+    def __reversed__(cls):
+        return reversed(iter(cls))
+
+    def __contains__(cls, item):
+        if not isinstance(item, cls):
             return False
-        return self.value == other.value
+        return item in __AnEnumEnumInstances
+
+    def __len__(cls):
+        return len(__AnEnumEnumInstances)
+
+
+cdef __AnEnum_unique_instance(int value, str name):
+    inst = __AnEnumEnumUniqueValues.get(value)
+    if inst is None:
+        inst = __AnEnumEnumUniqueValues[value] = AnEnum.__new__(AnEnum, value, name)
+    __AnEnumEnumMembers[name] = inst
+    return inst
+
+
+@__cython.final
+cdef class AnEnum(thrift.py3.types.CompiledEnum):
+    FIELDA = __AnEnum_unique_instance(2, "FIELDA")
+    FIELDB = __AnEnum_unique_instance(4, "FIELDB")
+    __members__ = thrift.py3.types.MappingProxyType(__AnEnumEnumMembers)
+
+    def __cinit__(self, value, name):
+        if __AnEnumEnumInstances is not None:
+            raise TypeError('For Safty we have disabled __new__')
+        self.value = value
+        self.name = name
+        self.__hash = hash(name)
+        self.__str = f"AnEnum.{name}"
+        self.__repr = f"<{self.__str}: {value}>"
+
+    def __repr__(self):
+        return self.__repr
+
+    def __str__(self):
+        return self.__str
 
     def __int__(self):
         return self.value
 
-cdef inline cAnEnum AnEnum_to_cpp(value):
+    def __eq__(self, other):
+        if not isinstance(other, AnEnum):
+            warnings.warn(f"comparison not supported between instances of { AnEnum } and {type(other)}", RuntimeWarning, stacklevel=2)
+            return False
+        return self is other
+
+    def __hash__(self):
+        return self.__hash
+
+    def __reduce__(self):
+        return AnEnum, (self.value,)
+
+
+__SetMetaClass(<PyTypeObject*> AnEnum, <PyTypeObject*> __AnEnumMeta)
+__AnEnumEnumInstances = set(__AnEnumEnumUniqueValues.values())
+
+
+cdef inline cAnEnum AnEnum_to_cpp(AnEnum value):
     cdef int cvalue = value.value
     if cvalue == 2:
         return AnEnum__FIELDA
     elif cvalue == 4:
         return AnEnum__FIELDB
-
 
 cdef cAStruct _AStruct_defaults = cAStruct()
 

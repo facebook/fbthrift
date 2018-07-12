@@ -22,6 +22,7 @@ from folly.optional cimport cOptional
 
 
 
+
 cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "cpp2":
     # Forward Declaration
     cdef cppclass cComplexUnion "cpp2::ComplexUnion"
@@ -85,14 +86,19 @@ cdef extern from "<memory>" namespace "std" nogil:
     cdef shared_ptr[const cComplexUnion] const_pointer_cast "std::const_pointer_cast<const cpp2::ComplexUnion>"(shared_ptr[cComplexUnion])
     cdef shared_ptr[const cVirtualComplexUnion] const_pointer_cast "std::const_pointer_cast<const cpp2::VirtualComplexUnion>"(shared_ptr[cVirtualComplexUnion])
 
+cdef class __ComplexUnionType(thrift.py3.types.CompiledEnum):
+    pass
+
+
 # Forward Definition of the cython struct
 cdef class ComplexUnion(thrift.py3.types.Union)
+
 
 cdef class ComplexUnion(thrift.py3.types.Union):
     cdef object __hash
     cdef object __weakref__
     cdef shared_ptr[cComplexUnion] _cpp_obj
-    cdef readonly object type
+    cdef readonly __ComplexUnionType type
     cdef readonly object value
     cdef _load_cache(ComplexUnion self)
 
@@ -110,14 +116,19 @@ cdef class ComplexUnion(thrift.py3.types.Union):
     @staticmethod
     cdef create(shared_ptr[cComplexUnion])
 
+cdef class __VirtualComplexUnionType(thrift.py3.types.CompiledEnum):
+    pass
+
+
 # Forward Definition of the cython struct
 cdef class VirtualComplexUnion(thrift.py3.types.Union)
+
 
 cdef class VirtualComplexUnion(thrift.py3.types.Union):
     cdef object __hash
     cdef object __weakref__
     cdef shared_ptr[cVirtualComplexUnion] _cpp_obj
-    cdef readonly object type
+    cdef readonly __VirtualComplexUnionType type
     cdef readonly object value
     cdef _load_cache(VirtualComplexUnion self)
 

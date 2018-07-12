@@ -27,7 +27,16 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "cpp2":
     cAnimal Animal__CAT "cpp2::Animal::CAT"
     cAnimal Animal__TARANTULA "cpp2::Animal::TARANTULA"
 
-cdef cAnimal Animal_to_cpp(value)
+
+
+
+cdef class Animal(thrift.py3.types.CompiledEnum):
+    pass
+
+
+cdef cAnimal Animal_to_cpp(Animal value)
+
+
 
 cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "cpp2":
     # Forward Declaration
@@ -120,6 +129,7 @@ cdef extern from "<memory>" namespace "std" nogil:
 # Forward Definition of the cython struct
 cdef class Color(thrift.py3.types.Struct)
 
+
 cdef class Color(thrift.py3.types.Struct):
     cdef object __hash
     cdef object __weakref__
@@ -139,6 +149,7 @@ cdef class Color(thrift.py3.types.Struct):
 
 # Forward Definition of the cython struct
 cdef class Vehicle(thrift.py3.types.Struct)
+
 
 cdef class Vehicle(thrift.py3.types.Struct):
     cdef object __hash
@@ -161,6 +172,7 @@ cdef class Vehicle(thrift.py3.types.Struct):
 
 # Forward Definition of the cython struct
 cdef class Person(thrift.py3.types.Struct)
+
 
 cdef class Person(thrift.py3.types.Struct):
     cdef object __hash

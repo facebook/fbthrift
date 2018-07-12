@@ -18,8 +18,8 @@ except ImportError:
     pass
 
 try:
-    from thrift.py3.types import Struct, BadEnum, Union
-    __all__.extend(['Struct', 'BadEnum', 'Union'])
+    from thrift.py3.types import Struct, BadEnum, Union, Enum, Flag
+    __all__.extend(['Struct', 'BadEnum', 'Union', 'Enum', 'Flag'])
 except ImportError:
     pass
 

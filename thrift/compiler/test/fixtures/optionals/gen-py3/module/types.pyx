@@ -5,6 +5,8 @@
 #  @generated
 #
 
+cimport cython as __cython
+from cpython.object cimport PyTypeObject
 from libcpp.memory cimport shared_ptr, make_shared, unique_ptr, make_unique
 from libcpp.string cimport string
 from libcpp cimport bool as cbool
@@ -16,7 +18,7 @@ import thrift.py3.types
 cimport thrift.py3.types
 cimport thrift.py3.exceptions
 from thrift.py3.types import NOTSET as __NOTSET
-from thrift.py3.types cimport translate_cpp_enum_to_python
+from thrift.py3.types cimport translate_cpp_enum_to_python, SetMetaClass as __SetMetaClass
 cimport thrift.py3.std_libcpp as std_libcpp
 from thrift.py3.serializer import Protocol as __Protocol
 cimport thrift.py3.serializer as serializer
@@ -27,28 +29,100 @@ from folly.optional cimport cOptional
 import sys
 import itertools
 from collections import Sequence, Set, Mapping, Iterable
-import enum as __enum
 import warnings
 import builtins as _builtins
 
+cdef object __AnimalEnumInstances = None  # Set[Animal]
+cdef object __AnimalEnumMembers = {}      # Dict[str, Animal]
+cdef object __AnimalEnumUniqueValues = dict()    # Dict[int, Animal]
 
-class Animal(__enum.Enum):
-    DOG = 1
-    CAT = 2
-    TARANTULA = 3
+@__cython.internal
+@__cython.auto_pickle(False)
+cdef class __AnimalMeta(type):
+    def __call__(cls, value):
+        cdef int cvalue
+        if isinstance(value, cls) and value in __AnimalEnumInstances:
+            return value
+        if isinstance(value, int):
+            cvalue = value
+            if cvalue == 1:
+                return Animal.DOG
+            elif cvalue == 2:
+                return Animal.CAT
+            elif cvalue == 3:
+                return Animal.TARANTULA
 
-    __hash__ = __enum.Enum.__hash__
+        raise ValueError(f'{value} is not a valid Animal')
 
-    def __eq__(self, other):
-        if not isinstance(other, self.__class__):
-            warnings.warn(f"comparison not supported between instances of {type(self)} and {type(other)}", RuntimeWarning, stacklevel=2)
+    def __getitem__(cls, name):
+        return __AnimalEnumMembers[name]
+
+    def __iter__(cls):
+        return iter(__AnimalEnumUniqueValues.values())
+
+    def __reversed__(cls):
+        return reversed(iter(cls))
+
+    def __contains__(cls, item):
+        if not isinstance(item, cls):
             return False
-        return self.value == other.value
+        return item in __AnimalEnumInstances
+
+    def __len__(cls):
+        return len(__AnimalEnumInstances)
+
+
+cdef __Animal_unique_instance(int value, str name):
+    inst = __AnimalEnumUniqueValues.get(value)
+    if inst is None:
+        inst = __AnimalEnumUniqueValues[value] = Animal.__new__(Animal, value, name)
+    __AnimalEnumMembers[name] = inst
+    return inst
+
+
+@__cython.final
+cdef class Animal(thrift.py3.types.CompiledEnum):
+    DOG = __Animal_unique_instance(1, "DOG")
+    CAT = __Animal_unique_instance(2, "CAT")
+    TARANTULA = __Animal_unique_instance(3, "TARANTULA")
+    __members__ = thrift.py3.types.MappingProxyType(__AnimalEnumMembers)
+
+    def __cinit__(self, value, name):
+        if __AnimalEnumInstances is not None:
+            raise TypeError('For Safty we have disabled __new__')
+        self.value = value
+        self.name = name
+        self.__hash = hash(name)
+        self.__str = f"Animal.{name}"
+        self.__repr = f"<{self.__str}: {value}>"
+
+    def __repr__(self):
+        return self.__repr
+
+    def __str__(self):
+        return self.__str
 
     def __int__(self):
         return self.value
 
-cdef inline cAnimal Animal_to_cpp(value):
+    def __eq__(self, other):
+        if not isinstance(other, Animal):
+            warnings.warn(f"comparison not supported between instances of { Animal } and {type(other)}", RuntimeWarning, stacklevel=2)
+            return False
+        return self is other
+
+    def __hash__(self):
+        return self.__hash
+
+    def __reduce__(self):
+        return Animal, (self.value,)
+
+
+__SetMetaClass(<PyTypeObject*> Animal, <PyTypeObject*> __AnimalMeta)
+__AnimalEnumInstances = set(__AnimalEnumUniqueValues.values())
+
+
+cdef inline cAnimal Animal_to_cpp(Animal value):
     cdef int cvalue = value.value
     if cvalue == 1:
         return Animal__DOG
@@ -56,7 +130,6 @@ cdef inline cAnimal Animal_to_cpp(value):
         return Animal__CAT
     elif cvalue == 3:
         return Animal__TARANTULA
-
 
 cdef cColor _Color_defaults = cColor()
 
@@ -571,7 +644,7 @@ cdef class Person(thrift.py3.types.Struct):
         friends=None,
         bestFriend=None,
         petNames=None,
-        afraidOfAnimal=None,
+        Animal afraidOfAnimal=None,
         vehicles=None
     ):
         if id is not None:
@@ -588,10 +661,6 @@ cdef class Person(thrift.py3.types.Struct):
             if not isinstance(bestFriend, int):
                 raise TypeError(f'bestFriend is not a { int !r}.')
             bestFriend = <int64_t> bestFriend
-
-        if afraidOfAnimal is not None:
-            if not isinstance(afraidOfAnimal, Animal):
-                raise TypeError(f'field afraidOfAnimal value: { afraidOfAnimal !r} is not of the enum type { Animal }.')
 
         self._cpp_obj = move(Person._make_instance(
           NULL,

@@ -1,0 +1,217 @@
+{{!
+
+  Copyright 2016 Facebook, Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+}}{{!
+
+This is a template for creating compiled Enum and Flag pyx information
+
+}}
+{{#program:enums}}
+cdef object __{{enum:name}}EnumInstances = None  # Set[{{enum:name}}]
+cdef object __{{enum:name}}EnumMembers = {}      # Dict[str, {{enum:name}}]
+cdef object __{{enum:name}}EnumUniqueValues = dict()    # Dict[int, {{enum:name}}]
+{{#enum:flags?}}
+cdef object __{{enum:name}}EnumCombinations = None   # Set[{{enum:name}}]
+cdef object __{{enum:name}}EnumValueMapping = None   # Mapping[Int, {{enum:name}}]
+{{/enum:flags?}}
+
+@__cython.internal
+@__cython.auto_pickle(False)
+cdef class __{{enum:name}}Meta(type):
+    def __call__(cls, value):
+        cdef int cvalue
+        {{#enum:flags?}}
+        cdef bint invert = False
+        {{/enum:flags?}}
+        if isinstance(value, cls) and value in __{{enum:name}}Enum{{#enum:flags?}}Combinations{{/enum:flags?}}{{^enum:flags?}}Instances{{/enum:flags?}}:
+            return value
+        if isinstance(value, int):
+        {{#enum:flags?}}
+            if value < 0:
+                invert = True
+                value = ~value
+        {{/enum:flags?}}
+            cvalue = value
+            {{#enum:duplicate_values?}}
+            {{^enum:flags?}}
+            {{! we can't use switch optimization for duplicate values, and a big
+                if chain is probably much slower that a dict lookup.
+            }}
+            try:
+                return __{{enum:name}}EnumUniqueValues[value]
+            except KeyError:
+                pass
+            {{/enum:flags?}}
+            {{/enum:duplicate_values?}}
+            {{#enum:values}}
+            {{^enum:duplicate_values?}}
+            {{^first?}}el{{/first?}}if cvalue == {{enumValue:value}}:
+                return {{#enum:flags?}}~{{enum:name}}.{{enumValue:name}} if invert else {{/enum:flags?}}{{enum:name}}.{{enumValue:name}}
+            {{/enum:duplicate_values?}}
+            {{#last?}}
+            {{#enum:flags?}}
+            try:
+                item = __{{enum:name}}EnumValueMapping[value]
+                return ~item if invert else item
+            except KeyError:
+                pass  # raise below
+            {{/enum:flags?}}
+            {{/last?}}
+            {{/enum:values}}
+
+        raise ValueError(f'{value} is not a valid {{enum:name}}')
+
+    def __getitem__(cls, name):
+        return __{{enum:name}}EnumMembers[name]
+
+    def __iter__(cls):
+        return iter(__{{enum:name}}EnumUniqueValues.values())
+
+    def __reversed__(cls):
+        return reversed(iter(cls))
+
+    def __contains__(cls, item):
+        if not isinstance(item, cls):
+            return False
+        return item in __{{enum:name}}EnumInstances
+
+    def __len__(cls):
+        return len(__{{enum:name}}EnumInstances)
+
+
+cdef __{{enum:name}}_unique_instance(int value, str name):
+    {{! Build up __memebers__ and maintain unique value }}
+    inst = __{{enum:name}}EnumUniqueValues.get(value)
+    if inst is None:
+        inst = __{{enum:name}}EnumUniqueValues[value] = {{enum:name}}.__new__({{enum:name}}, value, name)
+    __{{enum:name}}EnumMembers[name] = inst
+    return inst
+
+
+@__cython.final
+cdef class {{enum:name}}(thrift.py3.types.{{^enum:flags?}}CompiledEnum{{/enum:flags?}}{{#enum:flags?}}Flag{{/enum:flags?}}):
+    {{#enum:values}}
+    {{enumValue:name}} = __{{enum:name}}_unique_instance({{enumValue:value}}, "{{enumValue:name}}")
+    {{/enum:values}}
+    __members__ = thrift.py3.types.MappingProxyType(__{{enum:name}}EnumMembers)
+
+    def __cinit__(self, value, name):
+        if __{{enum:name}}Enum{{#enum:flags?}}Combinations{{/enum:flags?}}{{^enum:flags?}}Instances{{/enum:flags?}} is not None:
+            raise TypeError('For Safty we have disabled __new__')
+        self.value = value
+        self.name = name
+        self.__hash = hash(name)
+        self.__str = f"{{enum:name}}.{name}"
+        self.__repr = f"<{self.__str}: {value}>"
+
+    def __repr__(self):
+        return self.__repr
+
+    def __str__(self):
+        return self.__str
+
+    def __int__(self):
+        return self.value
+
+    def __eq__(self, other):
+        if not isinstance(other, {{enum:name}}):
+            warnings.warn(f"comparison not supported between instances of { {{enum:name}} } and {type(other)}", RuntimeWarning, stacklevel=2)
+            return False
+        return self is other
+
+    def __hash__(self):
+        return self.__hash
+
+    def __reduce__(self):
+        return {{enum:name}}, (self.value,)
+{{#enum:flags?}}
+
+    def __contains__(self, other):
+        if not isinstance(other, {{enum:name}}):
+            return NotImplemented
+        return other.value & self.value == other.value
+
+    def __bool__(self):
+        return bool(self.value)
+
+    def __or__(self, other):
+        if not isinstance(other, {{enum:name}}):
+            return NotImplemented
+        return {{enum:name}}(self.value | other.value)
+
+    def __and__(self, other):
+        if not isinstance(other, {{enum:name}}):
+            return NotImplemented
+        return {{enum:name}}(self.value & other.value)
+
+    def __xor__(self, other):
+        if not isinstance(other, {{enum:name}}):
+            return NotImplemented
+        return {{enum:name}}(self.value ^ other.value)
+
+    def __invert__(self):
+        inverted = {{enum:name}}(0)
+        for m in {{enum:name}}:
+            if not (m.value & self.value):
+                inverted = inverted | m
+        return {{enum:name}}(inverted)
+{{/enum:flags?}}
+
+
+__SetMetaClass(<PyTypeObject*> {{enum:name}}, <PyTypeObject*> __{{enum:name}}Meta)
+__{{enum:name}}EnumInstances = set(__{{enum:name}}EnumUniqueValues.values())
+{{#enum:flags?}}
+
+
+cdef object __Make{{enum:name}}Combinations():
+    # Order is important
+    s = tuple({{enum:name}})
+    combos = {p.value: p for p in s}
+    if 0 not in combos:
+        combos[0] = {{enum:name}}.__new__({{enum:name}}, 0, "0")
+    for group in itertools.chain.from_iterable(itertools.combinations(s, r) for r in range(2, len(s)+1)):
+        name = '|'.join(g.name for g in group)
+        value = 0
+        for g in group:
+            value |= g.value
+        combos[value] = {{enum:name}}.__new__({{enum:name}}, value, name)
+    return combos
+
+
+__{{enum:name}}EnumValueMapping = __Make{{enum:name}}Combinations()
+__{{enum:name}}EnumCombinations = set(__{{enum:name}}EnumValueMapping.values())
+{{/enum:flags?}}
+
+
+cdef inline c{{enum:name}} {{enum:name}}_to_cpp({{enum:name}} value):
+    {{^enum:flags?}}
+    {{! We do .value once because it slow Python, and Cython will turn the
+        if/elif chain into a switch statement when the vars on both sides are
+        C ints
+    }}
+    cdef int cvalue = value.value
+    {{#enum:values}}
+    {{^first?}}el{{/first?}}if cvalue == {{enumValue:value}}:
+        return {{enum:name}}__{{enumValue:name}}
+    {{/enum:values}}
+    {{^enum:values}}
+    pass
+    {{/enum:values}}
+    {{/enum:flags?}}
+    {{#enum:flags?}}
+    return <c{{enum:name}}>(<int>value.value)
+    {{/enum:flags?}}
+{{/program:enums}}

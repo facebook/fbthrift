@@ -14,7 +14,6 @@ import typing as _typing
 
 import sys
 import itertools
-import enum as __enum
 import hsmodule.types as _hsmodule_types
 
 

@@ -5,6 +5,8 @@
 #  @generated
 #
 
+cimport cython as __cython
+from cpython.object cimport PyTypeObject
 from libcpp.memory cimport shared_ptr, make_shared, unique_ptr, make_unique
 from libcpp.string cimport string
 from libcpp cimport bool as cbool
@@ -16,7 +18,7 @@ import thrift.py3.types
 cimport thrift.py3.types
 cimport thrift.py3.exceptions
 from thrift.py3.types import NOTSET as __NOTSET
-from thrift.py3.types cimport translate_cpp_enum_to_python
+from thrift.py3.types cimport translate_cpp_enum_to_python, SetMetaClass as __SetMetaClass
 cimport thrift.py3.std_libcpp as std_libcpp
 from thrift.py3.serializer import Protocol as __Protocol
 cimport thrift.py3.serializer as serializer
@@ -27,11 +29,85 @@ from folly.optional cimport cOptional
 import sys
 import itertools
 from collections import Sequence, Set, Mapping, Iterable
-import enum as __enum
 import warnings
 import builtins as _builtins
 
 
+
+cdef object __Nada_Union_TypeEnumMembers = None
+
+
+@__cython.internal
+@__cython.auto_pickle(False)
+cdef class __Nada_Union_TypeMeta(type):
+    def __call__(cls, value):
+        cdef int cvalue
+        if isinstance(value, cls) and value in __Nada_Union_TypeEnumMembers:
+            return value
+
+        if isinstance(value, int):
+            cvalue = value
+            if cvalue == 0:
+                return __NadaType.EMPTY
+
+        raise ValueError(f'{value} is not a valid Nada.Type')
+
+    def __getitem__(cls, name):
+        if name == "EMPTY":
+            return __NadaType.EMPTY
+        raise KeyError(name)
+
+    def __iter__(cls):
+            return iter(())
+
+    def __reversed__(cls):
+        return reversed(iter(cls))
+
+    def __contains__(cls, item):
+        if not isinstance(item, cls):
+            return False
+        return item in __Nada_Union_TypeEnumMembers
+
+    def __len__(cls):
+        return 0
+
+
+@__cython.final
+cdef class __NadaType(thrift.py3.types.CompiledEnum):
+    EMPTY = __NadaType.__new__(__NadaType, 0, "EMPTY")
+
+    def __cinit__(self, value, name):
+        if __Nada_Union_TypeEnumMembers is not None:
+            raise TypeError('For Safty we have disabled __new__')
+        self.value = value
+        self.name = name
+        self.__hash = hash(name)
+        self.__str = f"Nada.Type.{name}"
+        self.__repr = f"<{self.__str}: {value}>"
+
+    def __repr__(self):
+        return self.__repr
+
+    def __str__(self):
+        return self.__str
+
+    def __int__(self):
+        return self.value
+
+    def __eq__(self, other):
+        if not isinstance(other, __NadaType):
+            warnings.warn(f"comparison not supported between instances of { __NadaType } and {type(other)}", RuntimeWarning, stacklevel=2)
+            return False
+        return self is other
+
+    def __hash__(self):
+        return self.__hash
+
+    def __reduce__(self):
+        return __NadaType, (self.value,)
+
+__SetMetaClass(<PyTypeObject*> __NadaType, <PyTypeObject*> __Nada_Union_TypeMeta)
+__Nada_Union_TypeEnumMembers = set(__NadaType)
 
 
 cdef cEmpty _Empty_defaults = cEmpty()
@@ -149,8 +225,6 @@ cdef class Empty(thrift.py3.types.Struct):
         return (deserialize, (Empty, serialize(self)))
 
 
-class __NadaType(__enum.Enum):
-    EMPTY = <int>cNada__type___EMPTY__
 
 
 cdef class Nada(thrift.py3.types.Union):
@@ -181,7 +255,7 @@ cdef class Nada(thrift.py3.types.Union):
         return move_unique(c_inst)
 
     def __bool__(self):
-        return self.type != Nada.Type.EMPTY
+        return self.type is not __NadaType.EMPTY
 
     @staticmethod
     cdef create(shared_ptr[cNada] cpp_obj):
@@ -204,7 +278,8 @@ cdef class Nada(thrift.py3.types.Union):
 
     cdef _load_cache(Nada self):
         self.type = Nada.Type(<int>(deref(self._cpp_obj).getType()))
-        if self.type == Nada.Type.EMPTY:
+        cdef int type = self.type.value
+        if type == 0:    # Empty
             self.value = None
 
     def get_type(Nada self):

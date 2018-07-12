@@ -26,7 +26,16 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "cpp2":
     cTypedEnum TypedEnum__VAL1 "cpp2::TypedEnum::VAL1"
     cTypedEnum TypedEnum__VAL2 "cpp2::TypedEnum::VAL2"
 
-cdef cTypedEnum TypedEnum_to_cpp(value)
+
+
+
+cdef class TypedEnum(thrift.py3.types.CompiledEnum):
+    pass
+
+
+cdef cTypedEnum TypedEnum_to_cpp(TypedEnum value)
+
+
 
 cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "cpp2":
     # Forward Declaration
@@ -299,14 +308,19 @@ cdef extern from "<memory>" namespace "std" nogil:
     cdef shared_ptr[const cStructWithRefTypeShared] const_pointer_cast "std::const_pointer_cast<const cpp2::StructWithRefTypeShared>"(shared_ptr[cStructWithRefTypeShared])
     cdef shared_ptr[const cStructWithRefTypeSharedConst] const_pointer_cast "std::const_pointer_cast<const cpp2::StructWithRefTypeSharedConst>"(shared_ptr[cStructWithRefTypeSharedConst])
 
+cdef class __MyUnionType(thrift.py3.types.CompiledEnum):
+    pass
+
+
 # Forward Definition of the cython struct
 cdef class MyUnion(thrift.py3.types.Union)
+
 
 cdef class MyUnion(thrift.py3.types.Union):
     cdef object __hash
     cdef object __weakref__
     cdef shared_ptr[cMyUnion] _cpp_obj
-    cdef readonly object type
+    cdef readonly __MyUnionType type
     cdef readonly object value
     cdef _load_cache(MyUnion self)
 
@@ -322,6 +336,7 @@ cdef class MyUnion(thrift.py3.types.Union):
 
 # Forward Definition of the cython struct
 cdef class MyField(thrift.py3.types.Struct)
+
 
 cdef class MyField(thrift.py3.types.Struct):
     cdef object __hash
@@ -341,6 +356,7 @@ cdef class MyField(thrift.py3.types.Struct):
 
 # Forward Definition of the cython struct
 cdef class MyStruct(thrift.py3.types.Struct)
+
 
 cdef class MyStruct(thrift.py3.types.Struct):
     cdef object __hash
@@ -364,6 +380,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
 # Forward Definition of the cython struct
 cdef class StructWithUnion(thrift.py3.types.Struct)
 
+
 cdef class StructWithUnion(thrift.py3.types.Struct):
     cdef object __hash
     cdef object __weakref__
@@ -385,6 +402,7 @@ cdef class StructWithUnion(thrift.py3.types.Struct):
 # Forward Definition of the cython struct
 cdef class RecursiveStruct(thrift.py3.types.Struct)
 
+
 cdef class RecursiveStruct(thrift.py3.types.Struct):
     cdef object __hash
     cdef object __weakref__
@@ -402,6 +420,7 @@ cdef class RecursiveStruct(thrift.py3.types.Struct):
 
 # Forward Definition of the cython struct
 cdef class StructWithContainers(thrift.py3.types.Struct)
+
 
 cdef class StructWithContainers(thrift.py3.types.Struct):
     cdef object __hash
@@ -431,6 +450,7 @@ cdef class StructWithContainers(thrift.py3.types.Struct):
 # Forward Definition of the cython struct
 cdef class StructWithSharedConst(thrift.py3.types.Struct)
 
+
 cdef class StructWithSharedConst(thrift.py3.types.Struct):
     cdef object __hash
     cdef object __weakref__
@@ -453,6 +473,7 @@ cdef class StructWithSharedConst(thrift.py3.types.Struct):
 # Forward Definition of the cython struct
 cdef class Empty(thrift.py3.types.Struct)
 
+
 cdef class Empty(thrift.py3.types.Struct):
     cdef object __hash
     cdef object __weakref__
@@ -468,6 +489,7 @@ cdef class Empty(thrift.py3.types.Struct):
 
 # Forward Definition of the cython struct
 cdef class StructWithRef(thrift.py3.types.Struct)
+
 
 cdef class StructWithRef(thrift.py3.types.Struct):
     cdef object __hash
@@ -491,6 +513,7 @@ cdef class StructWithRef(thrift.py3.types.Struct):
 # Forward Definition of the cython struct
 cdef class StructWithRefTypeUnique(thrift.py3.types.Struct)
 
+
 cdef class StructWithRefTypeUnique(thrift.py3.types.Struct):
     cdef object __hash
     cdef object __weakref__
@@ -513,6 +536,7 @@ cdef class StructWithRefTypeUnique(thrift.py3.types.Struct):
 # Forward Definition of the cython struct
 cdef class StructWithRefTypeShared(thrift.py3.types.Struct)
 
+
 cdef class StructWithRefTypeShared(thrift.py3.types.Struct):
     cdef object __hash
     cdef object __weakref__
@@ -534,6 +558,7 @@ cdef class StructWithRefTypeShared(thrift.py3.types.Struct):
 
 # Forward Definition of the cython struct
 cdef class StructWithRefTypeSharedConst(thrift.py3.types.Struct)
+
 
 cdef class StructWithRefTypeSharedConst(thrift.py3.types.Struct):
     cdef object __hash

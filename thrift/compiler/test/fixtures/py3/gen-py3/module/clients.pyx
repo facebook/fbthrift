@@ -1326,13 +1326,11 @@ cdef class SimpleService(thrift.py3.client.Client):
     @cython.always_allow_keywords(True)
     def set_enum(
             SimpleService self,
-            in_enum not None,
+            _module_types.AnEnum in_enum not None,
             __RpcOptions rpc_options=None
     ):
         if rpc_options is None:
             rpc_options = <__RpcOptions>__RpcOptions.__new__(__RpcOptions)
-        if not isinstance(in_enum, _module_types.AnEnum):
-            raise TypeError(f'argument in_enum value: { in_enum !r} is not of the enum type { _module_types.AnEnum }.')
         self._check_connect_future()
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()

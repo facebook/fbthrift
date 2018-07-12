@@ -14,7 +14,6 @@ import typing as _typing
 
 import sys
 import itertools
-import enum as __enum
 
 
 _List__stringT = _typing.TypeVar('_List__stringT', bound=_typing.Sequence[str])

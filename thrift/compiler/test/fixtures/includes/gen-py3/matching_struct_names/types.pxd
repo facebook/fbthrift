@@ -23,6 +23,7 @@ cimport module.types as _module_types
 
 
 
+
 cdef extern from "src/gen-cpp2/matching_struct_names_types_custom_protocol.h" namespace "cpp2":
     # Forward Declaration
     cdef cppclass cMyStruct "cpp2::MyStruct"
@@ -72,6 +73,7 @@ cdef extern from "<memory>" namespace "std" nogil:
 # Forward Definition of the cython struct
 cdef class MyStruct(thrift.py3.types.Struct)
 
+
 cdef class MyStruct(thrift.py3.types.Struct):
     cdef object __hash
     cdef object __weakref__
@@ -88,6 +90,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
 
 # Forward Definition of the cython struct
 cdef class Combo(thrift.py3.types.Struct)
+
 
 cdef class Combo(thrift.py3.types.Struct):
     cdef object __hash

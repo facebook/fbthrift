@@ -67,9 +67,8 @@ cdef extern from "{{program:includePrefix}}gen-cpp2/{{program:name}}_types.h"{{!
     {{/enum:values}}
 {{/program:enums}}
 
-{{#program:enums}}
-cdef c{{enum:name}} {{enum:name}}_to_cpp(value)
-{{/program:enums}}
+
+{{> types/enumDefs }}
 
 {{#program:structs}}
 {{#first?}}
@@ -152,8 +151,15 @@ cdef extern from "{{program:includePrefix}}gen-cpp2/{{program:name}}_types.h"{{!
     }}>"(shared_ptr[c{{struct:name}}]){{/program:structs}}
 
 {{#program:structs}}
+{{#struct:union?}}
+cdef class __{{struct:name}}Type(thrift.py3.types.CompiledEnum):
+    pass
+
+
+{{/struct:union?}}
 # Forward Definition of the cython struct
 cdef class {{struct:name}}({{> types/PythonStructClass}})
+
 
 cdef class {{struct:name}}({{> types/PythonStructClass}}):
     cdef object __hash
@@ -173,7 +179,7 @@ cdef class {{struct:name}}({{> types/PythonStructClass}}):
     {{/field:iobuf_ref?}}{{/field:type}}
     {{/struct:fields}}{{/struct:union?}}
     {{#struct:union?}}
-    cdef readonly object type
+    cdef readonly __{{struct:name}}Type type
     cdef readonly object value
     cdef _load_cache({{struct:name}} self)
     {{/struct:union?}}

@@ -30,7 +30,6 @@ import typing as _typing
 
 import sys
 import itertools
-import enum as __enum
 {{#program:includeNamespaces}}
 {{#hasTypes?}}
 import {{#includeNamespace}}{{value}}.{{/includeNamespace}}types as _{{#includeNamespace}}{{value}}_{{/includeNamespace}}types
@@ -42,12 +41,10 @@ import {{#extraNamespace}}{{value}}.{{/extraNamespace}}types as _{{#extraNamespa
 
 
 {{#program:enums}}
-class {{enum:name}}(__enum.{{^enum:flags?}}Enum{{/enum:flags?}}{{#enum:flags?}}Flag{{/enum:flags?}}, _typing.SupportsInt):
+class {{enum:name}}(thrift.py3.types.{{^enum:flags?}}Enum{{/enum:flags?}}{{#enum:flags?}}Flag{{/enum:flags?}}):
     {{#enum:values}}
     {{enumValue:name}}: {{enum:name}} = ...
     {{/enum:values}}
-    value: int
-    def __int__(self) -> int: ...
 
 
 {{/program:enums}}
@@ -81,12 +78,11 @@ class {{struct:name}}({{> types/PythonStructClass}}, _typing.Hashable{{^struct:u
         }}{{#field:PEP484Optional?}}]{{/field:PEP484Optional?}}: ...
     {{/struct:fields}}
     {{#struct:union?}}
-    class Type(__enum.Enum):
+    class Type(thrift.py3.types.Enum):
         EMPTY: {{struct:name}}.Type = ...
     {{#struct:fields}}
         {{field:name}}: {{struct:name}}.Type = ...
     {{/struct:fields}}
-        value: int
 
     @staticmethod
     def fromValue(value: _typing.Union[{{#struct:fields}}{{^first?}}, {{/first?}}{{#field:type}}{{> types/PEP484Type}}{{/field:type}}{{/struct:fields}}]) -> {{struct:name}}: ...

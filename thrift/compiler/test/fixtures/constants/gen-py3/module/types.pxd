@@ -36,9 +36,34 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "cpp2":
     cCompany Company__OCULUS "cpp2::Company::OCULUS"
     cCompany Company__INSTAGRAM "cpp2::Company::INSTAGRAM"
 
-cdef cEmptyEnum EmptyEnum_to_cpp(value)
-cdef cCity City_to_cpp(value)
-cdef cCompany Company_to_cpp(value)
+
+
+
+cdef class EmptyEnum(thrift.py3.types.CompiledEnum):
+    pass
+
+
+cdef cEmptyEnum EmptyEnum_to_cpp(EmptyEnum value)
+
+
+
+
+cdef class City(thrift.py3.types.CompiledEnum):
+    pass
+
+
+cdef cCity City_to_cpp(City value)
+
+
+
+
+cdef class Company(thrift.py3.types.CompiledEnum):
+    pass
+
+
+cdef cCompany Company_to_cpp(Company value)
+
+
 
 cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "cpp2":
     # Forward Declaration
@@ -213,6 +238,7 @@ cdef extern from "<memory>" namespace "std" nogil:
 # Forward Definition of the cython struct
 cdef class Internship(thrift.py3.types.Struct)
 
+
 cdef class Internship(thrift.py3.types.Struct):
     cdef object __hash
     cdef object __weakref__
@@ -232,6 +258,7 @@ cdef class Internship(thrift.py3.types.Struct):
 # Forward Definition of the cython struct
 cdef class UnEnumStruct(thrift.py3.types.Struct)
 
+
 cdef class UnEnumStruct(thrift.py3.types.Struct):
     cdef object __hash
     cdef object __weakref__
@@ -248,6 +275,7 @@ cdef class UnEnumStruct(thrift.py3.types.Struct):
 
 # Forward Definition of the cython struct
 cdef class Range(thrift.py3.types.Struct)
+
 
 cdef class Range(thrift.py3.types.Struct):
     cdef object __hash
@@ -267,6 +295,7 @@ cdef class Range(thrift.py3.types.Struct):
 # Forward Definition of the cython struct
 cdef class struct1(thrift.py3.types.Struct)
 
+
 cdef class struct1(thrift.py3.types.Struct):
     cdef object __hash
     cdef object __weakref__
@@ -284,6 +313,7 @@ cdef class struct1(thrift.py3.types.Struct):
 
 # Forward Definition of the cython struct
 cdef class struct2(thrift.py3.types.Struct)
+
 
 cdef class struct2(thrift.py3.types.Struct):
     cdef object __hash
@@ -307,6 +337,7 @@ cdef class struct2(thrift.py3.types.Struct):
 # Forward Definition of the cython struct
 cdef class struct3(thrift.py3.types.Struct)
 
+
 cdef class struct3(thrift.py3.types.Struct):
     cdef object __hash
     cdef object __weakref__
@@ -324,14 +355,19 @@ cdef class struct3(thrift.py3.types.Struct):
     @staticmethod
     cdef create(shared_ptr[cstruct3])
 
+cdef class __union1Type(thrift.py3.types.CompiledEnum):
+    pass
+
+
 # Forward Definition of the cython struct
 cdef class union1(thrift.py3.types.Union)
+
 
 cdef class union1(thrift.py3.types.Union):
     cdef object __hash
     cdef object __weakref__
     cdef shared_ptr[cunion1] _cpp_obj
-    cdef readonly object type
+    cdef readonly __union1Type type
     cdef readonly object value
     cdef _load_cache(union1 self)
 
@@ -345,14 +381,19 @@ cdef class union1(thrift.py3.types.Union):
     @staticmethod
     cdef create(shared_ptr[cunion1])
 
+cdef class __union2Type(thrift.py3.types.CompiledEnum):
+    pass
+
+
 # Forward Definition of the cython struct
 cdef class union2(thrift.py3.types.Union)
+
 
 cdef class union2(thrift.py3.types.Union):
     cdef object __hash
     cdef object __weakref__
     cdef shared_ptr[cunion2] _cpp_obj
-    cdef readonly object type
+    cdef readonly __union2Type type
     cdef readonly object value
     cdef _load_cache(union2 self)
 

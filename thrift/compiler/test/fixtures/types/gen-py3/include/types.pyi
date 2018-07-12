@@ -14,7 +14,6 @@ import typing as _typing
 
 import sys
 import itertools
-import enum as __enum
 
 
 class std_unordered_map__Map__i32_string(_typing.Mapping[int, str], _typing.Hashable):

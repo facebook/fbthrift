@@ -23,6 +23,7 @@ cimport includes.types as _includes_types
 
 
 
+
 cdef extern from "gen-cpp2/module_types_custom_protocol.h" namespace "cpp2":
     # Forward Declaration
     cdef cppclass cMyStruct "cpp2::MyStruct"
@@ -53,6 +54,7 @@ cdef extern from "<memory>" namespace "std" nogil:
 
 # Forward Definition of the cython struct
 cdef class MyStruct(thrift.py3.types.Struct)
+
 
 cdef class MyStruct(thrift.py3.types.Struct):
     cdef object __hash

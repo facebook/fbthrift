@@ -5,6 +5,8 @@
 #  @generated
 #
 
+cimport cython as __cython
+from cpython.object cimport PyTypeObject
 from libcpp.memory cimport shared_ptr, make_shared, unique_ptr, make_unique
 from libcpp.string cimport string
 from libcpp cimport bool as cbool
@@ -16,7 +18,7 @@ import thrift.py3.types
 cimport thrift.py3.types
 cimport thrift.py3.exceptions
 from thrift.py3.types import NOTSET as __NOTSET
-from thrift.py3.types cimport translate_cpp_enum_to_python
+from thrift.py3.types cimport translate_cpp_enum_to_python, SetMetaClass as __SetMetaClass
 cimport thrift.py3.std_libcpp as std_libcpp
 from thrift.py3.serializer import Protocol as __Protocol
 cimport thrift.py3.serializer as serializer
@@ -27,21 +29,210 @@ from folly.optional cimport cOptional
 import sys
 import itertools
 from collections import Sequence, Set, Mapping, Iterable
-import enum as __enum
 import warnings
 import builtins as _builtins
 
 
 
+cdef object __ComplexUnion_Union_TypeEnumMembers = None
 
-class __ComplexUnionType(__enum.Enum):
-    EMPTY = <int>cComplexUnion__type___EMPTY__
-    intValue = <int>cComplexUnion__type_intValue
-    stringValue = <int>cComplexUnion__type_stringValue
-    intListValue = <int>cComplexUnion__type_intListValue
-    stringListValue = <int>cComplexUnion__type_stringListValue
-    typedefValue = <int>cComplexUnion__type_typedefValue
-    stringRef = <int>cComplexUnion__type_stringRef
+
+@__cython.internal
+@__cython.auto_pickle(False)
+cdef class __ComplexUnion_Union_TypeMeta(type):
+    def __call__(cls, value):
+        cdef int cvalue
+        if isinstance(value, cls) and value in __ComplexUnion_Union_TypeEnumMembers:
+            return value
+
+        if isinstance(value, int):
+            cvalue = value
+            if cvalue == 0:
+                return __ComplexUnionType.EMPTY
+            elif cvalue == 1:
+                return __ComplexUnionType.intValue
+            elif cvalue == 5:
+                return __ComplexUnionType.stringValue
+            elif cvalue == 2:
+                return __ComplexUnionType.intListValue
+            elif cvalue == 3:
+                return __ComplexUnionType.stringListValue
+            elif cvalue == 9:
+                return __ComplexUnionType.typedefValue
+            elif cvalue == 14:
+                return __ComplexUnionType.stringRef
+
+        raise ValueError(f'{value} is not a valid ComplexUnion.Type')
+
+    def __getitem__(cls, name):
+        if name == "EMPTY":
+            return __ComplexUnionType.EMPTY
+        elif name == "intValue":
+            return __ComplexUnionType.intValue
+        elif name == "stringValue":
+            return __ComplexUnionType.stringValue
+        elif name == "intListValue":
+            return __ComplexUnionType.intListValue
+        elif name == "stringListValue":
+            return __ComplexUnionType.stringListValue
+        elif name == "typedefValue":
+            return __ComplexUnionType.typedefValue
+        elif name == "stringRef":
+            return __ComplexUnionType.stringRef
+        raise KeyError(name)
+
+    def __iter__(cls):
+            yield __ComplexUnionType.intValue
+            yield __ComplexUnionType.stringValue
+            yield __ComplexUnionType.intListValue
+            yield __ComplexUnionType.stringListValue
+            yield __ComplexUnionType.typedefValue
+            yield __ComplexUnionType.stringRef
+
+    def __reversed__(cls):
+        return reversed(iter(cls))
+
+    def __contains__(cls, item):
+        if not isinstance(item, cls):
+            return False
+        return item in __ComplexUnion_Union_TypeEnumMembers
+
+    def __len__(cls):
+        return 6
+
+
+@__cython.final
+cdef class __ComplexUnionType(thrift.py3.types.CompiledEnum):
+    EMPTY = __ComplexUnionType.__new__(__ComplexUnionType, 0, "EMPTY")
+    intValue = __ComplexUnionType.__new__(__ComplexUnionType, 1, "intValue")
+    stringValue = __ComplexUnionType.__new__(__ComplexUnionType, 5, "stringValue")
+    intListValue = __ComplexUnionType.__new__(__ComplexUnionType, 2, "intListValue")
+    stringListValue = __ComplexUnionType.__new__(__ComplexUnionType, 3, "stringListValue")
+    typedefValue = __ComplexUnionType.__new__(__ComplexUnionType, 9, "typedefValue")
+    stringRef = __ComplexUnionType.__new__(__ComplexUnionType, 14, "stringRef")
+
+    def __cinit__(self, value, name):
+        if __ComplexUnion_Union_TypeEnumMembers is not None:
+            raise TypeError('For Safty we have disabled __new__')
+        self.value = value
+        self.name = name
+        self.__hash = hash(name)
+        self.__str = f"ComplexUnion.Type.{name}"
+        self.__repr = f"<{self.__str}: {value}>"
+
+    def __repr__(self):
+        return self.__repr
+
+    def __str__(self):
+        return self.__str
+
+    def __int__(self):
+        return self.value
+
+    def __eq__(self, other):
+        if not isinstance(other, __ComplexUnionType):
+            warnings.warn(f"comparison not supported between instances of { __ComplexUnionType } and {type(other)}", RuntimeWarning, stacklevel=2)
+            return False
+        return self is other
+
+    def __hash__(self):
+        return self.__hash
+
+    def __reduce__(self):
+        return __ComplexUnionType, (self.value,)
+
+__SetMetaClass(<PyTypeObject*> __ComplexUnionType, <PyTypeObject*> __ComplexUnion_Union_TypeMeta)
+__ComplexUnion_Union_TypeEnumMembers = set(__ComplexUnionType)
+
+
+
+cdef object __VirtualComplexUnion_Union_TypeEnumMembers = None
+
+
+@__cython.internal
+@__cython.auto_pickle(False)
+cdef class __VirtualComplexUnion_Union_TypeMeta(type):
+    def __call__(cls, value):
+        cdef int cvalue
+        if isinstance(value, cls) and value in __VirtualComplexUnion_Union_TypeEnumMembers:
+            return value
+
+        if isinstance(value, int):
+            cvalue = value
+            if cvalue == 0:
+                return __VirtualComplexUnionType.EMPTY
+            elif cvalue == 1:
+                return __VirtualComplexUnionType.thingOne
+            elif cvalue == 2:
+                return __VirtualComplexUnionType.thingTwo
+
+        raise ValueError(f'{value} is not a valid VirtualComplexUnion.Type')
+
+    def __getitem__(cls, name):
+        if name == "EMPTY":
+            return __VirtualComplexUnionType.EMPTY
+        elif name == "thingOne":
+            return __VirtualComplexUnionType.thingOne
+        elif name == "thingTwo":
+            return __VirtualComplexUnionType.thingTwo
+        raise KeyError(name)
+
+    def __iter__(cls):
+            yield __VirtualComplexUnionType.thingOne
+            yield __VirtualComplexUnionType.thingTwo
+
+    def __reversed__(cls):
+        return reversed(iter(cls))
+
+    def __contains__(cls, item):
+        if not isinstance(item, cls):
+            return False
+        return item in __VirtualComplexUnion_Union_TypeEnumMembers
+
+    def __len__(cls):
+        return 2
+
+
+@__cython.final
+cdef class __VirtualComplexUnionType(thrift.py3.types.CompiledEnum):
+    EMPTY = __VirtualComplexUnionType.__new__(__VirtualComplexUnionType, 0, "EMPTY")
+    thingOne = __VirtualComplexUnionType.__new__(__VirtualComplexUnionType, 1, "thingOne")
+    thingTwo = __VirtualComplexUnionType.__new__(__VirtualComplexUnionType, 2, "thingTwo")
+
+    def __cinit__(self, value, name):
+        if __VirtualComplexUnion_Union_TypeEnumMembers is not None:
+            raise TypeError('For Safty we have disabled __new__')
+        self.value = value
+        self.name = name
+        self.__hash = hash(name)
+        self.__str = f"VirtualComplexUnion.Type.{name}"
+        self.__repr = f"<{self.__str}: {value}>"
+
+    def __repr__(self):
+        return self.__repr
+
+    def __str__(self):
+        return self.__str
+
+    def __int__(self):
+        return self.value
+
+    def __eq__(self, other):
+        if not isinstance(other, __VirtualComplexUnionType):
+            warnings.warn(f"comparison not supported between instances of { __VirtualComplexUnionType } and {type(other)}", RuntimeWarning, stacklevel=2)
+            return False
+        return self is other
+
+    def __hash__(self):
+        return self.__hash
+
+    def __reduce__(self):
+        return __VirtualComplexUnionType, (self.value,)
+
+__SetMetaClass(<PyTypeObject*> __VirtualComplexUnionType, <PyTypeObject*> __VirtualComplexUnion_Union_TypeMeta)
+__VirtualComplexUnion_Union_TypeEnumMembers = set(__VirtualComplexUnionType)
+
+
 
 
 cdef class ComplexUnion(thrift.py3.types.Union):
@@ -142,7 +333,7 @@ cdef class ComplexUnion(thrift.py3.types.Union):
         return move_unique(c_inst)
 
     def __bool__(self):
-        return self.type != ComplexUnion.Type.EMPTY
+        return self.type is not __ComplexUnionType.EMPTY
 
     @staticmethod
     cdef create(shared_ptr[cComplexUnion] cpp_obj):
@@ -153,37 +344,37 @@ cdef class ComplexUnion(thrift.py3.types.Union):
 
     @property
     def intValue(self):
-        if self.type != ComplexUnion.Type.intValue:
+        if self.type.value != 1:
             raise TypeError(f'Union contains a value of type {self.type.name}, not intValue')
         return self.value
 
     @property
     def stringValue(self):
-        if self.type != ComplexUnion.Type.stringValue:
+        if self.type.value != 5:
             raise TypeError(f'Union contains a value of type {self.type.name}, not stringValue')
         return self.value
 
     @property
     def intListValue(self):
-        if self.type != ComplexUnion.Type.intListValue:
+        if self.type.value != 2:
             raise TypeError(f'Union contains a value of type {self.type.name}, not intListValue')
         return self.value
 
     @property
     def stringListValue(self):
-        if self.type != ComplexUnion.Type.stringListValue:
+        if self.type.value != 3:
             raise TypeError(f'Union contains a value of type {self.type.name}, not stringListValue')
         return self.value
 
     @property
     def typedefValue(self):
-        if self.type != ComplexUnion.Type.typedefValue:
+        if self.type.value != 9:
             raise TypeError(f'Union contains a value of type {self.type.name}, not typedefValue')
         return self.value
 
     @property
     def stringRef(self):
-        if self.type != ComplexUnion.Type.stringRef:
+        if self.type.value != 14:
             raise TypeError(f'Union contains a value of type {self.type.name}, not stringRef')
         return self.value
 
@@ -201,19 +392,20 @@ cdef class ComplexUnion(thrift.py3.types.Union):
 
     cdef _load_cache(ComplexUnion self):
         self.type = ComplexUnion.Type(<int>(deref(self._cpp_obj).getType()))
-        if self.type == ComplexUnion.Type.EMPTY:
+        cdef int type = self.type.value
+        if type == 0:    # Empty
             self.value = None
-        elif self.type == ComplexUnion.Type.intValue:
+        elif type == 1:
             self.value = deref(self._cpp_obj).get_intValue()
-        elif self.type == ComplexUnion.Type.stringValue:
+        elif type == 5:
             self.value = bytes(deref(self._cpp_obj).get_stringValue()).decode('UTF-8')
-        elif self.type == ComplexUnion.Type.intListValue:
+        elif type == 2:
             self.value = List__i64.create(make_shared[vector[int64_t]](deref(self._cpp_obj).get_intListValue()))
-        elif self.type == ComplexUnion.Type.stringListValue:
+        elif type == 3:
             self.value = List__string.create(make_shared[vector[string]](deref(self._cpp_obj).get_stringListValue()))
-        elif self.type == ComplexUnion.Type.typedefValue:
+        elif type == 9:
             self.value = Map__i16_string.create(make_shared[cmap[int16_t,string]](deref(self._cpp_obj).get_typedefValue()))
-        elif self.type == ComplexUnion.Type.stringRef:
+        elif type == 14:
             if not deref(self._cpp_obj).get_stringRef():
                 self.value = None
             else:
@@ -276,10 +468,6 @@ cdef class ComplexUnion(thrift.py3.types.Union):
         return (deserialize, (ComplexUnion, serialize(self)))
 
 
-class __VirtualComplexUnionType(__enum.Enum):
-    EMPTY = <int>cVirtualComplexUnion__type___EMPTY__
-    thingOne = <int>cVirtualComplexUnion__type_thingOne
-    thingTwo = <int>cVirtualComplexUnion__type_thingTwo
 
 
 cdef class VirtualComplexUnion(thrift.py3.types.Union):
@@ -330,7 +518,7 @@ cdef class VirtualComplexUnion(thrift.py3.types.Union):
         return move_unique(c_inst)
 
     def __bool__(self):
-        return self.type != VirtualComplexUnion.Type.EMPTY
+        return self.type is not __VirtualComplexUnionType.EMPTY
 
     @staticmethod
     cdef create(shared_ptr[cVirtualComplexUnion] cpp_obj):
@@ -341,13 +529,13 @@ cdef class VirtualComplexUnion(thrift.py3.types.Union):
 
     @property
     def thingOne(self):
-        if self.type != VirtualComplexUnion.Type.thingOne:
+        if self.type.value != 1:
             raise TypeError(f'Union contains a value of type {self.type.name}, not thingOne')
         return self.value
 
     @property
     def thingTwo(self):
-        if self.type != VirtualComplexUnion.Type.thingTwo:
+        if self.type.value != 2:
             raise TypeError(f'Union contains a value of type {self.type.name}, not thingTwo')
         return self.value
 
@@ -365,11 +553,12 @@ cdef class VirtualComplexUnion(thrift.py3.types.Union):
 
     cdef _load_cache(VirtualComplexUnion self):
         self.type = VirtualComplexUnion.Type(<int>(deref(self._cpp_obj).getType()))
-        if self.type == VirtualComplexUnion.Type.EMPTY:
+        cdef int type = self.type.value
+        if type == 0:    # Empty
             self.value = None
-        elif self.type == VirtualComplexUnion.Type.thingOne:
+        elif type == 1:
             self.value = bytes(deref(self._cpp_obj).get_thingOne()).decode('UTF-8')
-        elif self.type == VirtualComplexUnion.Type.thingTwo:
+        elif type == 2:
             self.value = bytes(deref(self._cpp_obj).get_thingTwo()).decode('UTF-8')
 
     def get_type(VirtualComplexUnion self):
