@@ -89,22 +89,6 @@ std::string compute_absolute_path(const std::string& path) {
   }
 }
 
-void yyerror(const char* fmt, ...) {
-  va_list args;
-  fprintf(
-      stderr,
-      "[ERROR:%s:%d] (last token was '%s')\n",
-      g_curpath.c_str(),
-      yylineno,
-      yytext);
-
-  va_start(args, fmt);
-  vfprintf(stderr, fmt, args);
-  va_end(args);
-
-  fprintf(stderr, "\n");
-}
-
 void pdebug(const char* fmt, ...) {
   if (g_debug == 0) {
     return;

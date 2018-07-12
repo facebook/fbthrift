@@ -49,6 +49,22 @@ void parsing_driver::verbose(const char* fmt, ...) const {
   va_end(args);
 }
 
+void parsing_driver::yyerror(const char* fmt, ...) const {
+  va_list args;
+  fprintf(
+      stderr,
+      "[ERROR:%s:%d] (last token was '%s')\n",
+      g_curpath.c_str(),
+      yylineno,
+      yytext);
+
+  va_start(args, fmt);
+  vfprintf(stderr, fmt, args);
+  va_end(args);
+
+  fprintf(stderr, "\n");
+}
+
 void parsing_driver::warning(int level, const char* fmt, ...) const {
   if (params.warn < level) {
     return;

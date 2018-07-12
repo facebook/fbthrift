@@ -36,18 +36,20 @@
 
 #include "thrift/compiler/parsing_driver.h"
 
-static void thrift_reserved_keyword(char* keyword) {
-  yyerror("Cannot use reserved language keyword: \"%s\"\n", keyword);
+using parsing_driver = apache::thrift::parsing_driver;
+
+static void thrift_reserved_keyword(parsing_driver& driver, char* keyword) {
+  driver.yyerror("Cannot use reserved language keyword: \"%s\"\n", keyword);
   exit(1);
 }
 
-static void integer_overflow(char* text) {
-  yyerror("This integer is too big: \"%s\"\n", text);
+static void integer_overflow(parsing_driver& driver, char* text) {
+  driver.yyerror("This integer is too big: \"%s\"\n", text);
   exit(1);
 }
 
-static void unexpected_token(char* text) {
-  yyerror("Unexpected token in input: \"%s\"\n", text);
+static void unexpected_token(parsing_driver& driver, char* text) {
+  driver.yyerror("Unexpected token in input: \"%s\"\n", text);
   exit(1);
 }
 
@@ -141,8 +143,8 @@ st_identifier ([a-zA-Z-][\.a-zA-Z_0-9-]*)
 "cpp_include"        { return apache::thrift::yy::parser::make_tok_cpp_include();          }
 "hs_include"         { return apache::thrift::yy::parser::make_tok_hs_include();           }
 "cpp_type"           {
-  yyerror("\"cpp_type\" is no longer allowed. "
-    "Use the cpp.type annotation instead.\n");
+  driver.yyerror("\"cpp_type\" is no longer allowed. "
+                 "Use the cpp.type annotation instead.\n");
   exit(1);
 }
 "java_package"       { return apache::thrift::yy::parser::make_tok_java_package();         }
@@ -196,86 +198,86 @@ st_identifier ([a-zA-Z-][\.a-zA-Z_0-9-]*)
 }
 
 
-"abstract"           { thrift_reserved_keyword(yytext); }
-"and"                { thrift_reserved_keyword(yytext); }
-"args"               { thrift_reserved_keyword(yytext); }
-"as"                 { thrift_reserved_keyword(yytext); }
-"assert"             { thrift_reserved_keyword(yytext); }
-"auto"               { thrift_reserved_keyword(yytext); }
-"break"              { thrift_reserved_keyword(yytext); }
-"case"               { thrift_reserved_keyword(yytext); }
-"char"               { thrift_reserved_keyword(yytext); }
-"class"              { thrift_reserved_keyword(yytext); }
-"continue"           { thrift_reserved_keyword(yytext); }
-"declare"            { thrift_reserved_keyword(yytext); }
-"def"                { thrift_reserved_keyword(yytext); }
-"default"            { thrift_reserved_keyword(yytext); }
-"del"                { thrift_reserved_keyword(yytext); }
-"delete"             { thrift_reserved_keyword(yytext); }
-"do"                 { thrift_reserved_keyword(yytext); }
-"elif"               { thrift_reserved_keyword(yytext); }
-"else"               { thrift_reserved_keyword(yytext); }
-"elseif"             { thrift_reserved_keyword(yytext); }
-"except"             { thrift_reserved_keyword(yytext); }
-"exec"               { thrift_reserved_keyword(yytext); }
-"extern"             { thrift_reserved_keyword(yytext); }
-"finally"            { thrift_reserved_keyword(yytext); }
-"for"                { thrift_reserved_keyword(yytext); }
-"foreach"            { thrift_reserved_keyword(yytext); }
-"function"           { thrift_reserved_keyword(yytext); }
-"global"             { thrift_reserved_keyword(yytext); }
-"goto"               { thrift_reserved_keyword(yytext); }
-"if"                 { thrift_reserved_keyword(yytext); }
-"implements"         { thrift_reserved_keyword(yytext); }
-"import"             { thrift_reserved_keyword(yytext); }
-"in"                 { thrift_reserved_keyword(yytext); }
-"int"                { thrift_reserved_keyword(yytext); }
-"inline"             { thrift_reserved_keyword(yytext); }
-"instanceof"         { thrift_reserved_keyword(yytext); }
-"interface"          { thrift_reserved_keyword(yytext); }
-"is"                 { thrift_reserved_keyword(yytext); }
-"lambda"             { thrift_reserved_keyword(yytext); }
-"long"               { thrift_reserved_keyword(yytext); }
-"native"             { thrift_reserved_keyword(yytext); }
-"new"                { thrift_reserved_keyword(yytext); }
-"not"                { thrift_reserved_keyword(yytext); }
-"or"                 { thrift_reserved_keyword(yytext); }
-"pass"               { thrift_reserved_keyword(yytext); }
-"public"             { thrift_reserved_keyword(yytext); }
-"print"              { thrift_reserved_keyword(yytext); }
-"private"            { thrift_reserved_keyword(yytext); }
-"protected"          { thrift_reserved_keyword(yytext); }
-"raise"              { thrift_reserved_keyword(yytext); }
-"register"           { thrift_reserved_keyword(yytext); }
-"return"             { thrift_reserved_keyword(yytext); }
-"short"              { thrift_reserved_keyword(yytext); }
-"signed"             { thrift_reserved_keyword(yytext); }
-"sizeof"             { thrift_reserved_keyword(yytext); }
-"static"             { thrift_reserved_keyword(yytext); }
-"switch"             { thrift_reserved_keyword(yytext); }
-"synchronized"       { thrift_reserved_keyword(yytext); }
-"template"           { thrift_reserved_keyword(yytext); }
-"this"               { thrift_reserved_keyword(yytext); }
-"throw"              { thrift_reserved_keyword(yytext); }
-"transient"          { thrift_reserved_keyword(yytext); }
-"try"                { thrift_reserved_keyword(yytext); }
-"unsigned"           { thrift_reserved_keyword(yytext); }
-"var"                { thrift_reserved_keyword(yytext); }
-"virtual"            { thrift_reserved_keyword(yytext); }
-"volatile"           { thrift_reserved_keyword(yytext); }
-"while"              { thrift_reserved_keyword(yytext); }
-"with"               { thrift_reserved_keyword(yytext); }
-"yield"              { thrift_reserved_keyword(yytext); }
-"Object"             { thrift_reserved_keyword(yytext); }
-"Client"             { thrift_reserved_keyword(yytext); }
-"IFace"              { thrift_reserved_keyword(yytext); }
-"Processor"          { thrift_reserved_keyword(yytext); }
+"abstract"           { thrift_reserved_keyword(driver, yytext); }
+"and"                { thrift_reserved_keyword(driver, yytext); }
+"args"               { thrift_reserved_keyword(driver, yytext); }
+"as"                 { thrift_reserved_keyword(driver, yytext); }
+"assert"             { thrift_reserved_keyword(driver, yytext); }
+"auto"               { thrift_reserved_keyword(driver, yytext); }
+"break"              { thrift_reserved_keyword(driver, yytext); }
+"case"               { thrift_reserved_keyword(driver, yytext); }
+"char"               { thrift_reserved_keyword(driver, yytext); }
+"class"              { thrift_reserved_keyword(driver, yytext); }
+"continue"           { thrift_reserved_keyword(driver, yytext); }
+"declare"            { thrift_reserved_keyword(driver, yytext); }
+"def"                { thrift_reserved_keyword(driver, yytext); }
+"default"            { thrift_reserved_keyword(driver, yytext); }
+"del"                { thrift_reserved_keyword(driver, yytext); }
+"delete"             { thrift_reserved_keyword(driver, yytext); }
+"do"                 { thrift_reserved_keyword(driver, yytext); }
+"elif"               { thrift_reserved_keyword(driver, yytext); }
+"else"               { thrift_reserved_keyword(driver, yytext); }
+"elseif"             { thrift_reserved_keyword(driver, yytext); }
+"except"             { thrift_reserved_keyword(driver, yytext); }
+"exec"               { thrift_reserved_keyword(driver, yytext); }
+"extern"             { thrift_reserved_keyword(driver, yytext); }
+"finally"            { thrift_reserved_keyword(driver, yytext); }
+"for"                { thrift_reserved_keyword(driver, yytext); }
+"foreach"            { thrift_reserved_keyword(driver, yytext); }
+"function"           { thrift_reserved_keyword(driver, yytext); }
+"global"             { thrift_reserved_keyword(driver, yytext); }
+"goto"               { thrift_reserved_keyword(driver, yytext); }
+"if"                 { thrift_reserved_keyword(driver, yytext); }
+"implements"         { thrift_reserved_keyword(driver, yytext); }
+"import"             { thrift_reserved_keyword(driver, yytext); }
+"in"                 { thrift_reserved_keyword(driver, yytext); }
+"int"                { thrift_reserved_keyword(driver, yytext); }
+"inline"             { thrift_reserved_keyword(driver, yytext); }
+"instanceof"         { thrift_reserved_keyword(driver, yytext); }
+"interface"          { thrift_reserved_keyword(driver, yytext); }
+"is"                 { thrift_reserved_keyword(driver, yytext); }
+"lambda"             { thrift_reserved_keyword(driver, yytext); }
+"long"               { thrift_reserved_keyword(driver, yytext); }
+"native"             { thrift_reserved_keyword(driver, yytext); }
+"new"                { thrift_reserved_keyword(driver, yytext); }
+"not"                { thrift_reserved_keyword(driver, yytext); }
+"or"                 { thrift_reserved_keyword(driver, yytext); }
+"pass"               { thrift_reserved_keyword(driver, yytext); }
+"public"             { thrift_reserved_keyword(driver, yytext); }
+"print"              { thrift_reserved_keyword(driver, yytext); }
+"private"            { thrift_reserved_keyword(driver, yytext); }
+"protected"          { thrift_reserved_keyword(driver, yytext); }
+"raise"              { thrift_reserved_keyword(driver, yytext); }
+"register"           { thrift_reserved_keyword(driver, yytext); }
+"return"             { thrift_reserved_keyword(driver, yytext); }
+"short"              { thrift_reserved_keyword(driver, yytext); }
+"signed"             { thrift_reserved_keyword(driver, yytext); }
+"sizeof"             { thrift_reserved_keyword(driver, yytext); }
+"static"             { thrift_reserved_keyword(driver, yytext); }
+"switch"             { thrift_reserved_keyword(driver, yytext); }
+"synchronized"       { thrift_reserved_keyword(driver, yytext); }
+"template"           { thrift_reserved_keyword(driver, yytext); }
+"this"               { thrift_reserved_keyword(driver, yytext); }
+"throw"              { thrift_reserved_keyword(driver, yytext); }
+"transient"          { thrift_reserved_keyword(driver, yytext); }
+"try"                { thrift_reserved_keyword(driver, yytext); }
+"unsigned"           { thrift_reserved_keyword(driver, yytext); }
+"var"                { thrift_reserved_keyword(driver, yytext); }
+"virtual"            { thrift_reserved_keyword(driver, yytext); }
+"volatile"           { thrift_reserved_keyword(driver, yytext); }
+"while"              { thrift_reserved_keyword(driver, yytext); }
+"with"               { thrift_reserved_keyword(driver, yytext); }
+"yield"              { thrift_reserved_keyword(driver, yytext); }
+"Object"             { thrift_reserved_keyword(driver, yytext); }
+"Client"             { thrift_reserved_keyword(driver, yytext); }
+"IFace"              { thrift_reserved_keyword(driver, yytext); }
+"Processor"          { thrift_reserved_keyword(driver, yytext); }
 
 {octconstant} {
   errno = 0;
   int64_t val = strtoll(yytext+1, NULL, 8);
   if (errno == ERANGE) {
-    integer_overflow(yytext);
+    integer_overflow(driver, yytext);
   }
   return apache::thrift::yy::parser::make_tok_int_constant(val);
 }
@@ -284,7 +286,7 @@ st_identifier ([a-zA-Z-][\.a-zA-Z_0-9-]*)
   errno = 0;
   int64_t val = strtoll(yytext, NULL, 10);
   if (errno == ERANGE) {
-    integer_overflow(yytext);
+    integer_overflow(driver, yytext);
   }
   return apache::thrift::yy::parser::make_tok_int_constant(val);
 }
@@ -293,7 +295,7 @@ st_identifier ([a-zA-Z-][\.a-zA-Z_0-9-]*)
   errno = 0;
   int64_t val = strtoll(yytext+2, NULL, 16);
   if (errno == ERANGE) {
-    integer_overflow(yytext);
+    integer_overflow(driver, yytext);
   }
   return apache::thrift::yy::parser::make_tok_int_constant(val);
 }
@@ -340,7 +342,7 @@ st_identifier ([a-zA-Z-][\.a-zA-Z_0-9-]*)
 }
 
 . {
-  unexpected_token(yytext);
+  unexpected_token(driver, yytext);
 }
 
 <<EOF>> {

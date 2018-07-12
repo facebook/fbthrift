@@ -40,13 +40,6 @@ class t_scope;
 class t_base_type;
 
 /**
- * Expected to be defined by Flex/Bison
- */
-extern "C" {
-void yyerror(const char* fmt, ...);
-}
-
-/**
  * Flex utilities
  */
 extern int yylineno;

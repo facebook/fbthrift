@@ -152,16 +152,6 @@ struct t_annotation {
 std::string compute_absolute_path(const std::string& path);
 
 /**
- * Report an error to the user. This is called yyerror for historical
- * reasons (lex and yacc expect the error reporting routine to be called
- * this). Call this function to report any errors to the user.
- * yyerror takes printf style arguments.
- *
- * @param fmt C format string followed by additional arguments
- */
-void yyerror(const char* fmt, ...);
-
-/**
  * Prints a debug message from the parser.
  *
  * @param fmt C format string followed by additional arguments

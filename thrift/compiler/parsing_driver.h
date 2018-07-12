@@ -76,6 +76,7 @@ class parsing_driver {
    */
   void debug(const char* fmt, ...) const;
   void verbose(const char* fmt, ...) const;
+  void yyerror(const char* fmt, ...) const;
   void warning(int level, const char* fmt, ...) const;
   [[noreturn]] void failure(const char* fmt, ...) const;
 

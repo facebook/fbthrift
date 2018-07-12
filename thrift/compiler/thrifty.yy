@@ -898,7 +898,7 @@ Extends:
           $$ = g_scope_cache->get_service(driver.params.program->get_name() + "." + $2);
         }
         if ($$ == NULL) {
-          yyerror("Service \"%s\" has not been defined.", $2);
+          driver.yyerror("Service \"%s\" has not been defined.", $2);
           exit(1);
         }
       }
@@ -966,7 +966,8 @@ ParamList:
       driver.debug("ParamList -> ParamList , Param");
       $$ = $1;
       if (!($$->append($2))) {
-        yyerror("Parameter identifier %d for \"%s\" has already been used", $2->get_key(), $2->get_name().c_str());
+        driver.yyerror("Parameter identifier %d for \"%s\" has already been used",
+                       $2->get_key(), $2->get_name().c_str());
         exit(1);
       }
     }
@@ -1036,7 +1037,8 @@ FieldList:
       driver.debug("FieldList -> FieldList , Field");
       $$ = $1;
       if (!($$->append($2))) {
-        yyerror("Field identifier %d for \"%s\" has already been used", $2->get_key(), $2->get_name().c_str());
+        driver.yyerror("Field identifier %d for \"%s\" has already been used",
+                       $2->get_key(), $2->get_name().c_str());
         exit(1);
       }
     }
@@ -1053,7 +1055,7 @@ Field:
       if ($2.auto_assigned) {
         driver.warning(1, "No field key specified for %s, resulting protocol may have conflicts or not be backwards compatible!", $5);
         if (driver.params.strict >= 192) {
-          yyerror("Implicit field keys are deprecated and not allowed with -strict");
+          driver.yyerror("Implicit field keys are deprecated and not allowed with -strict");
           exit(1);
         }
       }
@@ -1493,11 +1495,5 @@ IntOrLiteral:
  * Method that will be called by the generated parser upon errors.
  */
 void apache::thrift::yy::parser::error(std::string const& message) {
-  /**
-   * Bare-bone implementation for now. Will be replaced shortly in another diff
-   * that changes to use a parsing driver instead of global functions to
-   * coordinate lexing/parsing. See:
-   * https://www.gnu.org/software/bison/manual/html_node/Calc_002b_002b-Parsing-Driver.html
-   */
-  yyerror("%s", message.c_str());
+  driver.yyerror("%s", message.c_str());
 }
