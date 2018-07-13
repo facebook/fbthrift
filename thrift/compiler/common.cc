@@ -32,9 +32,9 @@
 #include THRIFTY_HH
 
 /**
- * Current file being parsed
+ * Current compilation stage. One of: arguments, parse, generation
  */
-string g_curpath;
+string g_stage;
 
 /**
  * Directory containing template files
@@ -109,7 +109,7 @@ void pwarning(int level, const char* fmt, ...) {
     return;
   }
   va_list args;
-  fprintf(stderr, "[WARNING:%s] ", g_curpath.c_str());
+  fprintf(stderr, "[WARNING:%s] ", g_stage.c_str());
   va_start(args, fmt);
   vfprintf(stderr, fmt, args);
   va_end(args);
@@ -118,7 +118,7 @@ void pwarning(int level, const char* fmt, ...) {
 
 [[noreturn]] void failure(const char* fmt, ...) {
   va_list args;
-  fprintf(stderr, "[FAILURE:%s] ", g_curpath.c_str());
+  fprintf(stderr, "[FAILURE:%s] ", g_stage.c_str());
   va_start(args, fmt);
   vfprintf(stderr, fmt, args);
   va_end(args);

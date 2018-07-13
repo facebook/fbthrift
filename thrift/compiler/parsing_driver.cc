@@ -58,8 +58,6 @@ void parsing_driver::parse() {
     already_parsed_paths_.insert(path);
   }
 
-  g_curpath = path;
-
   // Open the file
   yyin = fopen(path.c_str(), "r");
   if (yyin == 0) {
@@ -86,10 +84,6 @@ void parsing_driver::parse() {
   // to be used by everyone that includes it.
   auto old_params = params;
   for (auto included_program : includes) {
-    params.program = included_program;
-    params.allow_neg_enum_vals = true;
-    params.allow_neg_field_keys = true;
-
     circular_deps_.insert(path);
 
     // Fail on circular dependencies
@@ -98,6 +92,12 @@ void parsing_driver::parse() {
           "Circular dependency found: file %s is already parsed.",
           included_program->get_path().c_str());
     }
+
+    // This must be after the previous circular include check, since the emitted
+    // error message above is supposed to reference the parent file name.
+    params.program = included_program;
+    params.allow_neg_enum_vals = true;
+    params.allow_neg_field_keys = true;
     parse();
 
     size_t num_removed = circular_deps_.erase(path);
@@ -107,7 +107,6 @@ void parsing_driver::parse() {
 
   // Parse the program file
   mode = apache::thrift::parsing_mode::PROGRAM;
-  g_curpath = path;
   yyin = fopen(path.c_str(), "r");
   if (yyin == 0) {
     failure("Could not open input file: \"%s\"", path.c_str());
@@ -151,7 +150,7 @@ void parsing_driver::yyerror(const char* fmt, ...) const {
   fprintf(
       stderr,
       "[ERROR:%s:%d] (last token was '%s')\n",
-      g_curpath.c_str(),
+      params.program->get_path().c_str(),
       yylineno,
       yytext);
 
@@ -167,7 +166,8 @@ void parsing_driver::warning(int level, const char* fmt, ...) const {
     return;
   }
   va_list args;
-  fprintf(stderr, "[WARNING:%s:%d] ", g_curpath.c_str(), yylineno);
+  fprintf(
+      stderr, "[WARNING:%s:%d] ", params.program->get_path().c_str(), yylineno);
   va_start(args, fmt);
   vfprintf(stderr, fmt, args);
   va_end(args);
@@ -176,7 +176,8 @@ void parsing_driver::warning(int level, const char* fmt, ...) const {
 
 [[noreturn]] void parsing_driver::failure(const char* fmt, ...) const {
   va_list args;
-  fprintf(stderr, "[FAILURE:%s:%d] ", g_curpath.c_str(), yylineno);
+  fprintf(
+      stderr, "[FAILURE:%s:%d] ", params.program->get_path().c_str(), yylineno);
   va_start(args, fmt);
   vfprintf(stderr, fmt, args);
   va_end(args);

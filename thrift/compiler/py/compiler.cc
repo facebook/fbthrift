@@ -88,6 +88,8 @@ void process(const dict& params, const object& generate_callback) {
 
   program->set_include_prefix(include_prefix);
 
+  g_stage = "parse";
+
   // Parse it!
   apache::thrift::parsing_params parsing_params{};
   parsing_params.program = program.get();
@@ -108,9 +110,7 @@ void process(const dict& params, const object& generate_callback) {
   apache::thrift::parsing_driver driver(std::move(parsing_params));
   driver.parse();
 
-  // The current path is not really relevant when we are doing generation.
-  // Reset the variable to make warning messages clearer.
-  g_curpath = "generation";
+  g_stage = "generation";
 
   // Generate it in python!
   // boost doesn't have the necessary prowess to handle unique_ptr or

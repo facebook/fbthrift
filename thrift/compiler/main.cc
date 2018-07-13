@@ -333,8 +333,7 @@ int main(int argc, char** argv) {
   std::string user_python_compiler;
   vector<std::string> generator_strings;
 
-  // Set the current path to a dummy value to make warning messages clearer.
-  g_curpath = "arguments";
+  g_stage = "arguments";
 
   std::vector<std::string> incl_searchpath;
 
@@ -634,6 +633,8 @@ int main(int argc, char** argv) {
 
   program->set_include_prefix(include_prefix);
 
+  g_stage = "parse";
+
   // Parse it!
   apache::thrift::parsing_params params{};
   params.program = program;
@@ -662,9 +663,7 @@ int main(int argc, char** argv) {
     return 1;
   }
 
-  // The current path is not really relevant when we are doing generation.
-  // Reset the variable to make warning messages clearer.
-  g_curpath = "generation";
+  g_stage = "generation";
 
   // Generate it!
   bool success;

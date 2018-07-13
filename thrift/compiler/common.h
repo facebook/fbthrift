@@ -112,9 +112,9 @@ using namespace std;
 }
 
 /**
- * Current file being parsed
+ * Current compilation stage. One of: arguments, parse, generation
  */
-extern string g_curpath;
+extern string g_stage;
 
 /**
  * Directory containing template files
