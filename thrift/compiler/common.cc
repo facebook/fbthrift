@@ -87,7 +87,7 @@ void pdebug(const char* fmt, ...) {
     return;
   }
   va_list args;
-  printf("[PARSE:%d] ", yylineno);
+  printf("[PARSE] ");
   va_start(args, fmt);
   vprintf(fmt, args);
   va_end(args);
@@ -109,7 +109,7 @@ void pwarning(int level, const char* fmt, ...) {
     return;
   }
   va_list args;
-  fprintf(stderr, "[WARNING:%s:%d] ", g_curpath.c_str(), yylineno);
+  fprintf(stderr, "[WARNING:%s] ", g_curpath.c_str());
   va_start(args, fmt);
   vfprintf(stderr, fmt, args);
   va_end(args);
@@ -118,7 +118,7 @@ void pwarning(int level, const char* fmt, ...) {
 
 [[noreturn]] void failure(const char* fmt, ...) {
   va_list args;
-  fprintf(stderr, "[FAILURE:%s:%d] ", g_curpath.c_str(), yylineno);
+  fprintf(stderr, "[FAILURE:%s] ", g_curpath.c_str());
   va_start(args, fmt);
   vfprintf(stderr, fmt, args);
   va_end(args);

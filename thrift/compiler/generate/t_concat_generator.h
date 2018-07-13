@@ -18,7 +18,6 @@
 #define T_CONCAT_GENERATOR_H
 
 #include <thrift/compiler/generate/t_generator.h>
-#include <thrift/compiler/globals.h>
 #include <thrift/compiler/parse/t_program.h>
 
 /**

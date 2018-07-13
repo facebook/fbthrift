@@ -24,7 +24,6 @@
 #include <unordered_set>
 
 #include <thrift/compiler/common.h>
-#include <thrift/compiler/globals.h>
 #include <thrift/compiler/parse/t_program.h>
 
 // version.h

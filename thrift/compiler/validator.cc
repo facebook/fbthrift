@@ -21,7 +21,6 @@
 #include <unordered_set>
 
 #include <thrift/compiler/common.h>
-#include <thrift/compiler/globals.h>
 
 namespace apache {
 namespace thrift {

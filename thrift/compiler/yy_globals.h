@@ -1,5 +1,5 @@
 /*
- * Copyright 2016-present Facebook, Inc.
+ * Copyright 2018-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,16 +14,6 @@
  * limitations under the License.
  */
 #pragma once
-
-/**
- * This module contains all the global variables (slap on the wrist) that are
- * shared throughout the program. The reason for this is to facilitate simple
- * interaction between the parser and the rest of the program. Before calling
- * yyparse(), the main.cc program will make necessary adjustments to these
- * global variables such that the parser does the right thing and puts entries
- * into the right containers, etc.
- *
- */
 
 /**
  * Flex utilities

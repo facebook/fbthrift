@@ -665,9 +665,6 @@ int main(int argc, char** argv) {
   // The current path is not really relevant when we are doing generation.
   // Reset the variable to make warning messages clearer.
   g_curpath = "generation";
-  // Reset yylineno for the heck of it.  Use 1 instead of 0 because
-  // That is what shows up during argument parsing.
-  yylineno = 1;
 
   // Generate it!
   bool success;

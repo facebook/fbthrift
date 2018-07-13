@@ -18,8 +18,8 @@
 #include <memory>
 
 #include "thrift/compiler/common.h"
-#include "thrift/compiler/globals.h"
 #include "thrift/compiler/parse/t_program.h"
+#include "thrift/compiler/yy_globals.h"
 
 /**
  * Provide the custom yylex signature to flex.

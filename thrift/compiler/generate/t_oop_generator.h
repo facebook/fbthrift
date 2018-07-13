@@ -25,7 +25,6 @@
 
 #include <thrift/compiler/generate/t_concat_generator.h>
 #include <thrift/compiler/generate/t_generator.h>
-#include <thrift/compiler/globals.h>
 
 #include <algorithm>
 
