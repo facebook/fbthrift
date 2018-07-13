@@ -80,7 +80,7 @@ class PubSubStreamingServiceSvIf : public PubSubStreamingServiceSvAsyncIf, publi
   createStreamPublisher(folly::Function<void()> onCanceled, size_t bufferSizeLimit = apache::thrift::StreamPublisher<T>::kNoLimit) {
     return apache::thrift::StreamPublisher<T>::create(
         folly::SerialExecutor::create(
-            folly::getKeepAliveToken(getThreadManager())),
+          getBlockingThreadManager()),
         std::move(onCanceled),
         bufferSizeLimit);
   }
@@ -88,7 +88,7 @@ class PubSubStreamingServiceSvIf : public PubSubStreamingServiceSvAsyncIf, publi
   auto createStreamGenerator(Generator&& generator) {
     return apache::thrift::StreamGenerator::create(
         folly::SerialExecutor::create(
-            folly::getKeepAliveToken(getThreadManager())),
+          getBlockingThreadManager()),
         std::forward<Generator>(generator));
   }
 };
