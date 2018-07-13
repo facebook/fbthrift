@@ -41,9 +41,6 @@ class Generator(object):
         self._tmp = 0
 
         if self.flag_lean_mean_meta_machine:
-            if 'fatal' not in self._flags:
-                self._flags['fatal'] = ''
-            self.flag_fatal = True
             if 'reflection' not in self._flags:
                 self._flags['reflection'] = ''
             self.flag_reflection = True
@@ -96,7 +93,7 @@ class Generator(object):
         self._generate_consts(program.consts)
         if self._flag('frozen2'):
             self._generate_layouts(program.objects)
-        if self.flag_fatal or self.flag_reflection:
+        if self.flag_reflection:
             self._generate_fatal(program)
         self.close_generator()
 

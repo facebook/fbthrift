@@ -134,16 +134,6 @@ bool record_genfiles = false;
   exit(1);
 }
 
-static void preprocess_cpp2_generator_strings(
-    std::string& gen_string,
-    bool& gen_py_cpp2_reflection) {
-  // Use python generator for reflection
-  if (gen_string.find("reflection") != std::string::npos ||
-      gen_string.find("fatal") != std::string::npos) {
-    gen_py_cpp2_reflection = true;
-  }
-}
-
 static bool python_generator(
     std::string& options,
     const std::string& user_python_compiler,
@@ -223,8 +213,8 @@ static bool generate_cpp2(
     std::string& gen_string,
     const std::string& user_python_compiler,
     std::vector<std::string>& arguments) {
-  bool gen_py_cpp2_reflection = false;
-  preprocess_cpp2_generator_strings(gen_string, gen_py_cpp2_reflection);
+  bool gen_py_cpp2_reflection =
+      gen_string.find("reflection") != std::string::npos;
 
   t_generator* generator =
       t_generator_registry::get_generator(program, gen_string);

@@ -98,7 +98,6 @@ class CppGenerator(t_generator.Generator):
         'implicit_templates' : 'templates are instantiated implicitly' +
                                'instead of explicitly',
         'optionals': "produce folly::Optional<...> for optional members",
-        'fatal': '(deprecated) use `reflection` instead',
         'reflection': 'generate static reflection metadata',
         'only_reflection': 'Only generate static reflection metadata',
         'lean_mean_meta_machine': 'use templated Fatal metadata based codegen',
