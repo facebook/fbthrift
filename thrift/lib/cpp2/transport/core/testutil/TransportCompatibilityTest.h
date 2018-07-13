@@ -114,6 +114,7 @@ class TransportCompatibilityTest {
 
   void TestConnectionStats();
   void TestObserverSendReceiveRequests();
+  void TestConnectionContext();
 
  protected:
   void connectToServer(

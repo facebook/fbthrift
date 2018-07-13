@@ -215,5 +215,9 @@ TEST_F(RSCompatibilityTest, ObserverSendReceiveRequests) {
   compatibilityTest_->TestObserverSendReceiveRequests();
 }
 
+TEST_F(RSCompatibilityTest, ConnectionContext) {
+  compatibilityTest_->TestConnectionContext();
+}
+
 } // namespace thrift
 } // namespace apache

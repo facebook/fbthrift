@@ -26,4 +26,6 @@ service TestService {
   void headers();
 
   string hello(1: string name);
+
+  void checkPort(1: i32 port);
 }

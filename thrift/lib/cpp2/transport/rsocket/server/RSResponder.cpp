@@ -25,14 +25,21 @@ namespace thrift {
 
 using namespace rsocket;
 
-RSResponder::RSResponder(std::shared_ptr<Cpp2Worker> worker)
+RSResponder::RSResponder(
+    std::shared_ptr<Cpp2Worker> worker,
+    const folly::SocketAddress& clientAddress)
     : worker_(std::move(worker)),
       cpp2Processor_(worker_->getServer()->getCpp2Processor()),
       threadManager_(worker_->getServer()->getThreadManager()),
       observer_(worker_->getServer()->getObserver()),
-      serverConfigs_(worker_->getServer()) {
+      serverConfigs_(worker_->getServer()),
+      clientAddress_(clientAddress) {
   DCHECK(threadManager_);
   DCHECK(cpp2Processor_);
+}
+
+std::unique_ptr<Cpp2ConnContext> RSResponder::createConnContext() const {
+  return std::make_unique<Cpp2ConnContext>(&clientAddress_);
 }
 
 void RSResponder::onThriftRequest(
@@ -78,7 +85,7 @@ void RSResponder::handleRequestResponse(
   auto singleRequest = std::make_unique<RSSingleRequest>(
       *serverConfigs_,
       std::move(metadata),
-      nullptr,
+      createConnContext(),
       worker_->getEventBase(),
       std::move(response));
 
@@ -99,7 +106,7 @@ void RSResponder::handleFireAndForget(Payload request, StreamId) {
   auto onewayRequest = std::make_unique<RSOneWayRequest>(
       *serverConfigs_,
       std::move(metadata),
-      nullptr,
+      createConnContext(),
       worker_->getEventBase(),
       [keep = cpp2Processor_](RSOneWayRequest*) {
         // keep the processor as for OneWay requests, even though the client
@@ -130,7 +137,7 @@ void RSResponder::handleRequestStream(
   auto streamRequest = std::make_unique<RSStreamRequest>(
       *serverConfigs_,
       std::move(metadata),
-      nullptr,
+      createConnContext(),
       worker_->getEventBase(),
       std::move(response));
 

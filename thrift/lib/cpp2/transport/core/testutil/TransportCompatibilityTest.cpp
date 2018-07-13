@@ -285,6 +285,23 @@ void TransportCompatibilityTest::TestObserverSendReceiveRequests() {
   });
 }
 
+void TransportCompatibilityTest::TestConnectionContext() {
+  connectToServer([this](std::unique_ptr<TestServiceAsyncClient> client) {
+    auto channel = dynamic_cast<ClientChannel*>(client->getChannel());
+    int32_t port{0};
+    channel->getEventBase()->runInEventBaseThreadAndWait([&] {
+      auto socket = dynamic_cast<TAsyncSocket*>(channel->getTransport());
+      folly::SocketAddress localAddress;
+      socket->getLocalAddress(&localAddress);
+      port = localAddress.getPort();
+    });
+    EXPECT_NE(0, port);
+
+    EXPECT_CALL(*handler_.get(), checkPort_(port));
+    client->future_checkPort(port).get();
+  });
+}
+
 void TransportCompatibilityTest::TestRequestResponse_Simple() {
   connectToServer([this](std::unique_ptr<TestServiceAsyncClient> client) {
     EXPECT_CALL(*handler_.get(), sumTwoNumbers_(1, 2)).Times(2);

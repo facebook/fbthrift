@@ -37,6 +37,7 @@ class TestServiceMock : public TestServiceSvIf {
   MOCK_METHOD2(addAfterDelay_, void(int32_t, int32_t));
   MOCK_METHOD1(onewayThrowsUnexpectedException_, void(int32_t));
   MOCK_METHOD1(hello_, std::string(const std::string&));
+  MOCK_METHOD1(checkPort_, void(int32_t));
 
   int32_t sumTwoNumbers(int32_t x, int32_t y) override;
 
@@ -55,6 +56,8 @@ class TestServiceMock : public TestServiceSvIf {
   void headers() override;
 
   void hello(std::string& result, std::unique_ptr<std::string> name) override;
+
+  void checkPort(int32_t port) override;
 
  protected:
   std::atomic<int32_t> sum{0};

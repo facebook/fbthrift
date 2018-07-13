@@ -31,7 +31,9 @@ namespace thrift {
 // One instance of RSResponder per client connection.
 class RSResponder : public rsocket::RSocketResponderCore {
  public:
-  explicit RSResponder(std::shared_ptr<Cpp2Worker> worker);
+  RSResponder(
+      std::shared_ptr<Cpp2Worker> worker,
+      const folly::SocketAddress& clientAddress);
 
   virtual ~RSResponder() = default;
 
@@ -57,11 +59,14 @@ class RSResponder : public rsocket::RSocketResponderCore {
       bool invalidMetadata);
 
  private:
+  std::unique_ptr<Cpp2ConnContext> createConnContext() const;
+
   std::shared_ptr<Cpp2Worker> worker_;
   std::shared_ptr<AsyncProcessor> cpp2Processor_;
   std::shared_ptr<apache::thrift::concurrency::ThreadManager> threadManager_;
   std::shared_ptr<apache::thrift::server::TServerObserver> observer_;
   server::ServerConfigs* serverConfigs_;
+  const folly::SocketAddress clientAddress_;
 };
 } // namespace thrift
 } // namespace apache

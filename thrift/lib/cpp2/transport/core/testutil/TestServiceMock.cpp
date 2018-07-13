@@ -104,6 +104,11 @@ void TestServiceMock::hello(
   result = "Hello, " + *name;
 }
 
+void TestServiceMock::checkPort(int32_t port) {
+  checkPort_(port);
+  CHECK_EQ(port, getConnectionContext()->getPeerAddress()->getPort());
+}
+
 IntermHeaderService::IntermHeaderService(
     std::string const& host,
     int16_t port) {

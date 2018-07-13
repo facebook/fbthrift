@@ -75,20 +75,20 @@ bool RSRoutingHandler::canAcceptEncryptedConnection(
 void RSRoutingHandler::handleConnection(
     wangle::ConnectionManager* connectionManager,
     folly::AsyncTransportWrapper::UniquePtr sock,
-    folly::SocketAddress const*,
+    folly::SocketAddress const* address,
     wangle::TransportInfo const&,
     std::shared_ptr<Cpp2Worker> worker) {
   if (!listening_) {
     return;
   }
 
-  auto managedConnection =
-      new ManagedRSocketConnection(std::move(sock), [worker](auto&) {
+  auto managedConnection = new ManagedRSocketConnection(
+      std::move(sock), [worker, clientAddress = *address](auto&) {
         DCHECK(worker->getServer());
         DCHECK(worker->getServer()->getCpp2Processor());
         // RSResponder will be created per client connection. It will use the
         // current Observer of the server.
-        return std::make_shared<RSResponder>(worker);
+        return std::make_shared<RSResponder>(worker, clientAddress);
       });
 
   connectionManager->addConnection(managedConnection);
