@@ -51,16 +51,18 @@ namespace thrift {
  * following signature:
  *
  *  void operator ()(
- *    T const &lhs,
- *    T const &rhs,
+ *    T const* lhs,
+ *    T const* rhs,
  *    folly::StringPiece path,
  *    folly::StringPiece message
  *  ) const;
  *
- *  lhs: the left-hand side mismatched field
- *  rhs: the right-hand side mismatched field
+ *  lhs: the left-hand side mismatched field or nullptr if the field is not
+ *     present in the lhs object
+ *  rhs: the right-hand side mismatched field or nullptr if the field is not
+ *     present in the rhs object
  *  path: the path in the DFS where the mismatch happened
- *  message: the message explaining the mismatch
+ *  message: a message explaining the mismatch
  *
  * @author: Marcelo Juchem <marcelo@fb.com>
  */
@@ -91,19 +93,21 @@ struct debug_output_callback {
 
   template <typename T>
   void operator()(
-      T const& lhs,
-      T const& rhs,
+      T const* lhs,
+      T const* rhs,
       folly::StringPiece path,
       folly::StringPiece message) const {
     out_ << path << ": " << message;
-    out_ << "\n"
-         << "  " << lhs_ << ":"
-         << "\n";
-    pretty_print(out_, lhs, "  ", "    ");
-    out_ << "\n"
-         << "  " << rhs_ << ":"
-         << "\n";
-    pretty_print(out_, rhs, "  ", "    ");
+    if (lhs) {
+      out_ << "\n"
+           << "  " << lhs_ << ":\n";
+      pretty_print(out_, *lhs, "  ", "    ");
+    }
+    if (rhs) {
+      out_ << "\n"
+           << "  " << rhs_ << ":\n";
+      pretty_print(out_, *rhs, "  ", "    ");
+    }
     out_ << "\n";
   }
 

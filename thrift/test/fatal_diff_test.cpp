@@ -14,22 +14,20 @@
  * limitations under the License.
  */
 
-#include <thrift/lib/cpp2/fatal/debug.h>
-#include <thrift/lib/cpp2/fatal/gmock_matching.h>
-#include <thrift/lib/cpp2/fatal/testing.h>
+#include <thrift/lib/cpp2/fatal/diff.h>
 
 #include <thrift/test/gen-cpp2/reflection_fatal_types.h>
 
+#include <folly/String.h>
 #include <gtest/gtest.h>
 
+#include <sstream>
 #include <string>
 #include <vector>
 
+using namespace test_cpp2::cpp_reflection;
 
-namespace test_cpp2 {
-namespace cpp_reflection {
-
-struct3 test_data() {
+static struct3 test_data() {
   structA a1;
   a1.a = 99;
   a1.b = "abc";
@@ -97,42 +95,20 @@ struct3 test_data() {
   return pod;
 }
 
-struct test_callback {
-  explicit test_callback(std::vector<std::string> &out): out_(out) {}
-
-  template <typename T>
-  void operator()(
-      T const*,
-      T const*,
-      folly::StringPiece path,
-      folly::StringPiece) const {
-    out_.emplace_back(path.data(), path.size());
-  }
-
-private:
-  std::vector<std::string> &out_;
-};
-
-#define TEST_IMPL(LHS, RHS, ...) \
-  do { \
-    std::vector<std::string> const expected{__VA_ARGS__}; \
-    \
-    std::vector<std::string> actual; \
-    actual.reserve(expected.size()); \
-    \
-    EXPECT_EQ( \
-      expected.empty(), \
-      (apache::thrift::debug_equals(LHS, RHS, test_callback(actual))) \
-    ); \
-    \
-    EXPECT_EQ(expected, actual); \
+#define TEST_IMPL(LHS, RHS, EXPECTED)                                \
+  do {                                                               \
+    using namespace apache::thrift;                                  \
+    auto const& expected = folly::stripLeftMargin(EXPECTED);         \
+    std::ostringstream actualStream;                                 \
+    debug_equals(LHS, RHS, make_diff_output_callback(actualStream)); \
+    EXPECT_EQ(expected, actualStream.str());                         \
   } while (false)
 
-TEST(fatal_debug, equal) {
-  TEST_IMPL(test_data(), test_data());
+TEST(fatal_diff, equal) {
+  TEST_IMPL(test_data(), test_data(), "");
 }
 
-TEST(Equal, Failure) {
+TEST(fatal_diff, Failure) {
   auto pod = test_data();
   struct3 pod1, pod2;
   pod1.fieldR["a"].c = 1;
@@ -143,87 +119,142 @@ TEST(Equal, Failure) {
   pod2.fieldR["c"].c = 3;
   pod2.fieldR["b"].c = 2;
   pod2.fieldR["a"].c = 1;
-  EXPECT_THRIFT_EQ(pod1, pod2);
-  // This is just to test that the ThriftEq matcher works:
-  using apache::thrift::ThriftEq;
-  EXPECT_THAT(pod2, ThriftEq(pod1));
+  TEST_IMPL(pod1, pod2, "");
 }
 
-TEST(fatal_debug, fieldA) {
+TEST(fatal_diff, fieldA) {
   auto pod = test_data();
   pod.fieldA = 90;
-  TEST_IMPL(pod, test_data(), "$.fieldA");
+  TEST_IMPL(pod, test_data(), R"(
+    $.fieldA:
+    - 90
+    + 141
+    )");
   pod.fieldA = 141;
-  TEST_IMPL(pod, test_data());
+  TEST_IMPL(pod, test_data(), "");
 }
 
-TEST(fatal_debug, fieldB) {
+TEST(fatal_diff, fieldB) {
   auto pod = test_data();
   pod.fieldB = "should mismatch";
-  TEST_IMPL(pod, test_data(), "$.fieldB");
+  TEST_IMPL(pod, test_data(), R"(
+    $.fieldB:
+    - "should mismatch"
+    + "this is a test"
+  )");
   pod.fieldB = "this is a test";
-  TEST_IMPL(pod, test_data());
+  TEST_IMPL(pod, test_data(), "");
 }
 
-TEST(fatal_debug, fieldC) {
+TEST(fatal_diff, fieldC) {
   auto pod = test_data();
   pod.fieldC = enum1::field2;
-  TEST_IMPL(pod, test_data(), "$.fieldC");
+  TEST_IMPL(pod, test_data(), R"(
+    $.fieldC:
+    - field2
+    + field0
+  )");
   pod.fieldC = enum1::field0;
-  TEST_IMPL(pod, test_data());
+  TEST_IMPL(pod, test_data(), "");
 }
 
-TEST(fatal_debug, fieldE) {
+TEST(fatal_diff, fieldE) {
   auto pod = test_data();
-  pod.fieldE.set_ui(5);
-  TEST_IMPL(
-      pod, test_data(), "$.fieldE.ui" /* missing */, "$.fieldE.ud" /* extra */);
   pod.fieldE.__clear();
-  TEST_IMPL(pod, test_data(), "$.fieldE.ud" /* extra */);
+  TEST_IMPL(pod, test_data(), R"(
+    $.fieldE.ud:
+    + 5.6
+  )");
+  TEST_IMPL(test_data(), pod, R"(
+    $.fieldE.ud:
+    - 5.6
+  )");
+  pod.fieldE.set_ui(5);
+  TEST_IMPL(pod, test_data(), R"(
+    $.fieldE.ui:
+    - 5
+    $.fieldE.ud:
+    + 5.6
+  )");
+  pod.fieldE.__clear();
+  TEST_IMPL(pod, test_data(), R"(
+    $.fieldE.ud:
+    + 5.6
+  )");
   pod.fieldE.set_ud(4);
-  TEST_IMPL(pod, test_data(), "$.fieldE.ud" /* changed */);
+  TEST_IMPL(pod, test_data(), R"(
+    $.fieldE.ud:
+    - 4
+    + 5.6
+  )");
   pod.fieldE.set_ud(5.6);
-  TEST_IMPL(pod, test_data());
+  TEST_IMPL(pod, test_data(), "");
 }
 
-TEST(fatal_debug, fieldH) {
+TEST(fatal_diff, fieldH) {
   auto pod = test_data();
   pod.fieldH.set_ui_2(3);
-  TEST_IMPL(pod, test_data(), "$.fieldH.ui_2" /* extra */);
+  TEST_IMPL(pod, test_data(), R"(
+    $.fieldH.ui_2:
+    - 3
+  )");
   pod.fieldH.__clear();
-  TEST_IMPL(pod, test_data());
+  TEST_IMPL(pod, test_data(), "");
 }
 
-TEST(fatal_debug, fieldI) {
+TEST(fatal_diff, fieldI) {
   auto pod = test_data();
   pod.fieldI[0] = 4;
-  TEST_IMPL(pod, test_data(), "$.fieldI[0]");
+  TEST_IMPL(pod, test_data(), R"(
+    $.fieldI[0]:
+    - 4
+    + 3
+  )");
   pod.fieldI[0] = 3;
-  TEST_IMPL(pod, test_data());
+  TEST_IMPL(pod, test_data(), "");
   pod.fieldI[2] = 10;
-  TEST_IMPL(pod, test_data(), "$.fieldI[2]");
+  TEST_IMPL(pod, test_data(), R"(
+    $.fieldI[2]:
+    - 10
+    + 7
+  )");
   pod.fieldI.push_back(11);
-  TEST_IMPL(pod, test_data(), "$.fieldI[2]", "$.fieldI[4]");
+  TEST_IMPL(pod, test_data(), R"(
+    $.fieldI[2]:
+    - 10
+    + 7
+    $.fieldI[4]:
+    - 11
+  )");
   pod.fieldI.clear();
-  TEST_IMPL(
-      pod,
-      test_data(),
-      "$.fieldI[0]",
-      "$.fieldI[1]",
-      "$.fieldI[2]",
-      "$.fieldI[3]");
+  TEST_IMPL(pod, test_data(), R"(
+    $.fieldI[0]:
+    + 3
+    $.fieldI[1]:
+    + 5
+    $.fieldI[2]:
+    + 7
+    $.fieldI[3]:
+    + 9
+  )");
 }
 
-TEST(fatal_debug, fieldM) {
+TEST(fatal_diff, fieldM) {
   auto pod = test_data();
   pod.fieldM.clear();
   TEST_IMPL(
       pod,
       test_data(),
-      "$.fieldM[2]" /* extra */,
-      "$.fieldM[4]" /* extra */,
-      "$.fieldM[6]" /* extra */,
-      "$.fieldM[8]" /* extra */);
+      R"(
+        $.fieldM[2]:
+        + 2
+        $.fieldM[4]:
+        + 4
+        $.fieldM[6]:
+        + 6
+        $.fieldM[8]:
+        + 8
+      )");
   pod.fieldM.insert(11);
   pod.fieldM.insert(12);
   pod.fieldM.insert(13);
@@ -231,27 +262,51 @@ TEST(fatal_debug, fieldM) {
   TEST_IMPL(
       pod,
       test_data(),
-      "$.fieldM[11]" /* missing */,
-      "$.fieldM[12]" /* missing */,
-      "$.fieldM[13]" /* missing */,
-      "$.fieldM[14]" /* missing */,
-      "$.fieldM[2]" /* extra */,
-      "$.fieldM[4]" /* extra */,
-      "$.fieldM[6]" /* extra */,
-      "$.fieldM[8]" /* extra */);
+      R"(
+        $.fieldM[11]:
+        - 11
+        $.fieldM[12]:
+        - 12
+        $.fieldM[13]:
+        - 13
+        $.fieldM[14]:
+        - 14
+        $.fieldM[2]:
+        + 2
+        $.fieldM[4]:
+        + 4
+        $.fieldM[6]:
+        + 6
+        $.fieldM[8]:
+        + 8
+      )");
   pod.fieldM = test_data().fieldM;
-  TEST_IMPL(pod, test_data());
+  TEST_IMPL(pod, test_data(), "");
 }
 
-TEST(fatal_debug, fieldQ) {
+TEST(fatal_diff, fieldQ) {
   auto pod = test_data();
   pod.fieldQ.clear();
   TEST_IMPL(
       pod,
       test_data(),
-      "$.fieldQ[\"a1\"]" /* extra */,
-      "$.fieldQ[\"a2\"]" /* extra */,
-      "$.fieldQ[\"a3\"]" /* extra */);
+      R"(
+        $.fieldQ["a1"]:
+        + <struct>{
+        +   a: 99,
+        +   b: "abc"
+        + }
+        $.fieldQ["a2"]:
+        + <struct>{
+        +   a: 1001,
+        +   b: "foo"
+        + }
+        $.fieldQ["a3"]:
+        + <struct>{
+        +   a: 654,
+        +   b: "bar"
+        + }
+      )");
   structA a1;
   a1.a = 1;
   a1.b = "1";
@@ -267,73 +322,124 @@ TEST(fatal_debug, fieldQ) {
   TEST_IMPL(
       pod,
       test_data(),
-      "$.fieldQ[\"A1\"]" /* missing */,
-      "$.fieldQ[\"A2\"]" /* missing */,
-      "$.fieldQ[\"A3\"]" /* missing */,
-      "$.fieldQ[\"a1\"]" /* extra */,
-      "$.fieldQ[\"a2\"]" /* extra */,
-      "$.fieldQ[\"a3\"]" /* extra */);
+      R"(
+        $.fieldQ["A1"]:
+        - <struct>{
+        -   a: 1,
+        -   b: "1"
+        - }
+        $.fieldQ["A2"]:
+        - <struct>{
+        -   a: 2,
+        -   b: "2"
+        - }
+        $.fieldQ["A3"]:
+        - <struct>{
+        -   a: 3,
+        -   b: "3"
+        - }
+        $.fieldQ["a1"]:
+        + <struct>{
+        +   a: 99,
+        +   b: "abc"
+        + }
+        $.fieldQ["a2"]:
+        + <struct>{
+        +   a: 1001,
+        +   b: "foo"
+        + }
+        $.fieldQ["a3"]:
+        + <struct>{
+        +   a: 654,
+        +   b: "bar"
+        + }
+      )");
   pod.fieldQ = test_data().fieldQ;
-  TEST_IMPL(pod, test_data());
+  TEST_IMPL(pod, test_data(), "");
 }
 
-TEST(fatal_debug, fieldG_field0) {
+TEST(fatal_diff, fieldG_field0) {
   auto pod = test_data();
   pod.fieldG.field0 = 12;
-  TEST_IMPL(pod, test_data(), "$.fieldG.field0");
+  TEST_IMPL(pod, test_data(), R"(
+    $.fieldG.field0:
+    - 12
+    + 98
+  )");
   pod.fieldG.field0 = 98;
-  TEST_IMPL(pod, test_data());
+  TEST_IMPL(pod, test_data(), "");
 }
 
-TEST(fatal_debug, fieldG_field1) {
+TEST(fatal_diff, fieldG_field1) {
   auto pod = test_data();
   pod.fieldG.field1 = "should mismatch";
-  TEST_IMPL(pod, test_data(), "$.fieldG.field1");
+  TEST_IMPL(pod, test_data(), R"(
+    $.fieldG.field1:
+    - "should mismatch"
+    + "hello, world"
+  )");
   pod.fieldG.field1 = "hello, world";
-  TEST_IMPL(pod, test_data());
+  TEST_IMPL(pod, test_data(), "");
 }
 
-TEST(fatal_debug, fieldG_field2) {
+TEST(fatal_diff, fieldG_field2) {
   auto pod = test_data();
   pod.fieldG.field2 = enum1::field1;
-  TEST_IMPL(pod, test_data(), "$.fieldG.field2");
+  TEST_IMPL(pod, test_data(), R"(
+    $.fieldG.field2:
+    - field1
+    + field2
+  )");
   pod.fieldG.field2 = enum1::field2;
-  TEST_IMPL(pod, test_data());
+  TEST_IMPL(pod, test_data(), "");
 }
 
-TEST(fatal_debug, fieldG_field5) {
+TEST(fatal_diff, fieldG_field5) {
   auto pod = test_data();
   pod.fieldG.field5.set_ui_2(5);
-  TEST_IMPL(
-      pod,
-      test_data(),
-      "$.fieldG.field5.ui_2" /* missing */,
-      "$.fieldG.field5.ue_2" /* extra */);
+  TEST_IMPL(pod, test_data(), R"(
+    $.fieldG.field5.ui_2:
+    - 5
+    $.fieldG.field5.ue_2:
+    + field1
+  )");
   pod.fieldG.field5.__clear();
-  TEST_IMPL(pod, test_data(), "$.fieldG.field5.ue_2" /* extra */);
+  TEST_IMPL(pod, test_data(), R"(
+    $.fieldG.field5.ue_2:
+    + field1
+  )");
   pod.fieldG.field5.set_ue_2(enum1::field0);
-  TEST_IMPL(pod, test_data(), "$.fieldG.field5.ue_2" /* changed */);
+  TEST_IMPL(pod, test_data(), R"(
+    $.fieldG.field5.ue_2:
+    - field0
+    + field1
+  )");
   pod.fieldG.field5.set_ue_2(enum1::field1);
-  TEST_IMPL(pod, test_data());
+  TEST_IMPL(pod, test_data(), "");
 }
 
-TEST(fatal_debug, fieldS) {
+TEST(fatal_diff, fieldS) {
   auto pod = test_data();
   pod.fieldS = {{"123", "456"}, {"abc", "ABC"}, {"ghi", "GHI"}};
-  TEST_IMPL(
-    pod,
-    test_data(),
-    "$.fieldS[\"0x676869\"]" /* missing */,
-    "$.fieldS[\"0x646566\"]" /* extra  */);
+  TEST_IMPL(pod, test_data(), R"(
+    $.fieldS["0x676869"]:
+    - "GHI"
+    $.fieldS["0x646566"]:
+    + "DEF"
+  )");
 }
 
-TEST(fatal_debug, struct_binary) {
+TEST(fatal_diff, struct_binary) {
   struct_binary lhs;
   lhs.bi = "hello";
   struct_binary rhs;
   rhs.bi = "world";
 
-  TEST_IMPL(lhs, rhs, "$.bi");
+  TEST_IMPL(lhs, rhs, R"(
+    $.bi:
+    - "hello"
+    + "world"
+  )");
 }
 
 namespace {
@@ -388,59 +494,102 @@ void ref_test() {
       Helper::template build<std::unordered_map<std::string, std::string>>();
   allDefault.aUnion = Helper::template build<unionA>();
   allDefault.anOptionalUnion = Helper::template build<unionA>();
-  TEST_IMPL(
-      allNull,
-      allDefault,
-      "$.anOptionalStruct" /* extra */,
-      "$.anOptionalList" /* extra */,
-      "$.anOptionalSet" /* extra */,
-      "$.anOptionalMap" /* extra */,
-      "$.anOptionalUnion" /* extra */);
-  TEST_IMPL(
-      allDefault,
-      allNull,
-      "$.anOptionalStruct" /* missing */,
-      "$.anOptionalList" /* missing */,
-      "$.anOptionalSet" /* missing */,
-      "$.anOptionalMap" /* missing */,
-      "$.anOptionalUnion" /* missing */);
+  TEST_IMPL(allNull, allDefault, R"(
+    $.anOptionalStruct:
+    + <struct>{
+    +   a: 0,
+    +   b: ""
+    + }
+    $.anOptionalList:
+    + <list>[]
+    $.anOptionalSet:
+    + <set>{}
+    $.anOptionalMap:
+    + <map>{}
+    $.anOptionalUnion:
+    + <variant>{}
+  )");
+  TEST_IMPL(allDefault, allNull, R"(
+    $.anOptionalStruct:
+    - <struct>{
+    -   a: 0,
+    -   b: ""
+    - }
+    $.anOptionalList:
+    - <list>[]
+    $.anOptionalSet:
+    - <set>{}
+    $.anOptionalMap:
+    - <map>{}
+    $.anOptionalUnion:
+    - <variant>{}
+  )");
 }
 
-TEST(fatal_debug, ref_unique) {
+TEST(fatal_diff, ref_unique) {
   ref_test<hasRefUnique, UniqueHelper>();
 }
 
-TEST(fatal_debug, ref_shared) {
+TEST(fatal_diff, ref_shared) {
   ref_test<hasRefShared, SharedHelper>();
 }
 
-TEST(fatal_debug, ref_shared_const) {
+TEST(fatal_diff, ref_shared_const) {
   ref_test<hasRefSharedConst, SharedConstHelper>();
 }
 
-TEST(fatal_debug, optional_members) {
+TEST(fatal_diff, optional_members) {
   struct1 field1Set;
-  field1Set.set_field1(2);
+  field1Set.set_field1("1");
   struct1 field1Unset;
   struct1 field1SetButNotIsset;
   field1SetButNotIsset.field1 = "2";
   struct1 field1SetDefault;
   field1SetDefault.__isset.field1 = true;
-  TEST_IMPL(field1Set, field1Unset, "$.field1" /* missing */);
-  TEST_IMPL(field1Unset, field1Set, "$.field1" /* extra */);
-  TEST_IMPL(field1Set, field1SetButNotIsset, "$.field1" /* missing */);
-  TEST_IMPL(field1SetButNotIsset, field1Set, "$.field1" /* extra */);
-  TEST_IMPL(field1Unset, field1SetButNotIsset);
-  TEST_IMPL(field1SetButNotIsset, field1Unset);
-  TEST_IMPL(field1Set, field1SetDefault, "$.field1" /* different */);
-  TEST_IMPL(field1SetDefault, field1Set, "$.field1" /* different */);
-  TEST_IMPL(field1SetDefault, field1SetButNotIsset, "$.field1" /* missing */);
-  TEST_IMPL(field1SetButNotIsset, field1SetDefault, "$.field1" /* extra */);
-  TEST_IMPL(field1Unset, field1SetDefault, "$.field1" /* extra */);
-  TEST_IMPL(field1SetDefault, field1Unset, "$.field1" /* missing */);
+  TEST_IMPL(field1Set, field1Unset, R"(
+    $.field1:
+    - "1"
+  )");
+  TEST_IMPL(field1Unset, field1Set, R"(
+    $.field1:
+    + "1"
+  )");
+  TEST_IMPL(field1Set, field1SetButNotIsset, R"(
+    $.field1:
+    - "1"
+  )");
+  TEST_IMPL(field1SetButNotIsset, field1Set, R"(
+    $.field1:
+    + "1"
+  )");
+  TEST_IMPL(field1Unset, field1SetButNotIsset, "");
+  TEST_IMPL(field1SetButNotIsset, field1Unset, "");
+  TEST_IMPL(field1Set, field1SetDefault, R"(
+    $.field1:
+    - "1"
+    + ""
+  )");
+  TEST_IMPL(field1SetDefault, field1Set, R"(
+    $.field1:
+    - ""
+    + "1"
+  )");
+  TEST_IMPL(field1SetDefault, field1SetButNotIsset, R"(
+    $.field1:
+    - ""
+  )");
+  TEST_IMPL(field1SetButNotIsset, field1SetDefault, R"(
+    $.field1:
+    + ""
+  )");
+  TEST_IMPL(field1Unset, field1SetDefault, R"(
+    $.field1:
+    + ""
+  )");
+  TEST_IMPL(field1SetDefault, field1Unset, R"(
+    $.field1:
+    - ""
+  )");
 }
 
 #undef TEST_IMPL
-
-} // namespace cpp_reflection
-} // namespace test_cpp2
