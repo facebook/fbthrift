@@ -19,7 +19,7 @@
  * under the License.
  */
 #include <thrift/compiler/common.h>
-#include <thrift/compiler/parsing_driver.h>
+#include <thrift/compiler/parse/parsing_driver.h>
 
 #ifdef _WIN32
 #include <windows.h> /* for GetFullPathName */
@@ -28,8 +28,6 @@
 #include <boost/filesystem.hpp>
 
 #include <thrift/compiler/platform.h>
-
-#include THRIFTY_HH
 
 /**
  * Current compilation stage. One of: arguments, parse, generation

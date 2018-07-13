@@ -9,10 +9,10 @@ if(WIN32)
   set(FLEX_FLAGS "--wincompat")
 endif(WIN32)
 set(BISON_FLAGS "--skeleton=lalr1.cc")
-BISON_TARGET(ThriftParser thrifty.yy ${COMPILER_DIR}/thrifty.cc
+BISON_TARGET(ThriftParser parse/thrifty.yy ${COMPILER_DIR}/thrifty.cc
   DEFINES_FILE ${COMPILER_DIR}/thrifty.hh
   COMPILE_FLAGS "${BISON_FLAGS}")
-FLEX_TARGET(ThriftScanner thriftl.ll ${COMPILER_DIR}/thriftl.cc
+FLEX_TARGET(ThriftScanner parse/thriftl.ll ${COMPILER_DIR}/thriftl.cc
   COMPILE_FLAGS "${FLEX_FLAGS}")
 ADD_FLEX_BISON_DEPENDENCY(ThriftScanner ThriftParser)
 
@@ -32,7 +32,7 @@ add_library(
   compiler_base
 
   common.cc
-  parsing_driver.cc
+  parse/parsing_driver.cc
   platform.cc
   ${FLEX_ThriftScanner_OUTPUTS}
   ${BISON_ThriftParser_OUTPUTS}

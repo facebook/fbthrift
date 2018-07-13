@@ -32,3 +32,11 @@ class t_annotated : public t_doc {
 
   std::map<std::string, std::string> annotations_;
 };
+
+/**
+ * Placeholder struct to return key and value of an annotation during parsing.
+ */
+struct t_annotation {
+  std::string key;
+  std::string val;
+};

@@ -30,7 +30,7 @@
 
 #include <thrift/compiler/py/compiler.h>
 
-#include <thrift/compiler/parsing_driver.h>
+#include <thrift/compiler/parse/parsing_driver.h>
 
 namespace thrift {
 namespace compiler {

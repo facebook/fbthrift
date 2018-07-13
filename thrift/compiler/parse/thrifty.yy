@@ -33,10 +33,12 @@
 #include <limits.h>
 #include <stack>
 #include <utility>
+
+#include "thrift/compiler/parse/t_annotated.h"
 #include "thrift/compiler/parse/t_scope.h"
 #include "thrift/compiler/parse/base_types.h"
 
-#include "thrift/compiler/parsing_driver.h"
+#include "thrift/compiler/parse/parsing_driver.h"
 
 /**
  * Note macro expansion because this is different between OSS and internal
@@ -615,7 +617,7 @@ EnumDefList:
             driver.params.program, i32_type(), $2->get_name(), const_val);
 
         assert(y_enum_name != nullptr);
-        string type_prefix = string(y_enum_name) + ".";
+        std::string type_prefix = std::string(y_enum_name) + ".";
         driver.params.scope_cache->add_constant(
             driver.params.program->get_name() + "." + $2->get_name(), tconst);
         driver.params.scope_cache->add_constant(

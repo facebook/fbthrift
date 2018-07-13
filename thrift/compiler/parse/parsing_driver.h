@@ -16,10 +16,12 @@
 #pragma once
 
 #include <memory>
+#include <set>
+#include <string>
 
-#include "thrift/compiler/common.h"
 #include "thrift/compiler/parse/t_program.h"
-#include "thrift/compiler/yy_globals.h"
+#include "thrift/compiler/parse/t_scope.h"
+#include "thrift/compiler/parse/yy_globals.h"
 
 /**
  * Provide the custom yylex signature to flex.
@@ -38,6 +40,69 @@ class parser;
 enum class parsing_mode {
   INCLUDES = 1,
   PROGRAM = 2,
+};
+
+struct parsing_params {
+  // Default values are taken from the original global variables.
+
+  /**
+   * The master program parse tree. This is accessed from within the parser code
+   * to build up the program elements.
+   */
+  t_program* program;
+
+  /**
+   * Global scope cache for faster compilations
+   */
+  t_scope* scope_cache;
+
+  /**
+   * A global map that holds a pointer to all programs already cached
+   */
+  std::shared_ptr<std::map<std::string, t_program*>> program_cache;
+
+  bool debug = false;
+  bool verbose = false;
+  int warn = 1;
+
+  /**
+   * Strictness level
+   */
+  int strict = 127;
+
+  /**
+   * Whether or not negative field keys are accepted.
+   *
+   * When a field does not have a user-specified key, thrift automatically
+   * assigns a negative value.  However, this is fragile since changes to the
+   * file may unintentionally change the key numbering, resulting in a new
+   * protocol that is not backwards compatible.
+   *
+   * When allow_neg_field_keys is enabled, users can explicitly specify
+   * negative keys.  This way they can write a .thrift file with explicitly
+   * specified keys that is still backwards compatible with older .thrift files
+   * that did not specify key values.
+   */
+  bool allow_neg_field_keys = false;
+
+  /**
+   * Whether or not negative enum values.
+   */
+  bool allow_neg_enum_vals = false;
+
+  /**
+   * Whether or not 64-bit constants will generate a warning.
+   *
+   * Some languages don't support 64-bit constants, but many do, so we can
+   * suppress this warning for projects that don't use any non-64-bit-safe
+   * languages.
+   */
+  bool allow_64bit_consts = false;
+
+  /**
+   * Search path for inclusions
+   */
+  std::vector<std::string> incl_searchpath;
 };
 
 class parsing_driver {

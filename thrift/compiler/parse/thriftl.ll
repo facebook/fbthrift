@@ -34,7 +34,7 @@
 
 #include <errno.h>
 
-#include "thrift/compiler/parsing_driver.h"
+#include "thrift/compiler/parse/parsing_driver.h"
 
 using parsing_driver = apache::thrift::parsing_driver;
 

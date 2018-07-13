@@ -40,7 +40,7 @@
 #include <thrift/compiler/platform.h>
 #include <thrift/compiler/validator.h>
 
-#include <thrift/compiler/parsing_driver.h>
+#include <thrift/compiler/parse/parsing_driver.h>
 
 /**
  * Flags to control code generation
