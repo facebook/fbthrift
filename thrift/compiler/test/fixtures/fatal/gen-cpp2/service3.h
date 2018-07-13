@@ -6,20 +6,16 @@
  */
 #pragma once
 
-#include <thrift/lib/cpp2/ServiceIncludes.h>
-#include <thrift/lib/cpp2/async/AsyncClient.h>
-#include <thrift/lib/cpp2/async/HeaderChannel.h>
-#include <thrift/lib/cpp/TApplicationException.h>
-#include <thrift/lib/cpp2/async/FutureRequest.h>
 #include <folly/futures/Future.h>
-#include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
-
-#include "reflection_dep_B_types.h"
-#include "reflection_dep_C_types.h"
-
+#include <thrift/lib/cpp/TApplicationException.h>
+#include <thrift/lib/cpp2/ServiceIncludes.h>
+#include <thrift/lib/cpp2/async/FutureRequest.h>
+#include <thrift/lib/cpp2/async/HeaderChannel.h>
+#include "src/gen-cpp2/service3AsyncClient.h"
+#include "src/gen-cpp2/module_types.h"
+#include "thrift/compiler/test/fixtures/fatal/gen-cpp2/reflection_dep_B_types.h"
+#include "thrift/compiler/test/fixtures/fatal/gen-cpp2/reflection_dep_C_types.h"
 #include "thrift/test/fatal_custom_types.h"
-
-#include "thrift/compiler/test/fixtures/fatal/gen-cpp2/module_types.h"
 
 namespace folly {
   class IOBuf;
@@ -170,145 +166,7 @@ class service3AsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor 
   virtual ~service3AsyncProcessor() {}
 };
 
-class service3AsyncClient : public apache::thrift::GeneratedAsyncClient {
- public:
-  using apache::thrift::GeneratedAsyncClient::GeneratedAsyncClient;
-
-  char const* getServiceName() const noexcept override {
-    return "service3";
-  }
-  virtual void methodA(std::unique_ptr<apache::thrift::RequestCallback> callback);
-  virtual void methodA(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
- private:
-  virtual void methodAImpl(bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
- public:
-  virtual void sync_methodA();
-  virtual void sync_methodA(apache::thrift::RpcOptions& rpcOptions);
-  virtual folly::Future<folly::Unit> future_methodA();
-  virtual folly::Future<folly::Unit> future_methodA(apache::thrift::RpcOptions& rpcOptions);
-  virtual folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_methodA(apache::thrift::RpcOptions& rpcOptions);
-  virtual void methodA(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback);
-  static folly::exception_wrapper recv_wrapped_methodA(::apache::thrift::ClientReceiveState& state);
-  static void recv_methodA(::apache::thrift::ClientReceiveState& state);
-  // Mock friendly virtual instance method
-  virtual void recv_instance_methodA(::apache::thrift::ClientReceiveState& state);
-  virtual folly::exception_wrapper recv_instance_wrapped_methodA(::apache::thrift::ClientReceiveState& state);
-  template <typename Protocol_>
-  void methodAT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
-  template <typename Protocol_>
-  static folly::exception_wrapper recv_wrapped_methodAT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state);
-  template <typename Protocol_>
-  static void recv_methodAT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state);
-  virtual void methodB(std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t x, const  ::test_cpp2::cpp_reflection::struct1& y, double z);
-  virtual void methodB(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t x, const  ::test_cpp2::cpp_reflection::struct1& y, double z);
- private:
-  virtual void methodBImpl(bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t x, const  ::test_cpp2::cpp_reflection::struct1& y, double z);
- public:
-  virtual void sync_methodB(int32_t x, const  ::test_cpp2::cpp_reflection::struct1& y, double z);
-  virtual void sync_methodB(apache::thrift::RpcOptions& rpcOptions, int32_t x, const  ::test_cpp2::cpp_reflection::struct1& y, double z);
-  virtual folly::Future<folly::Unit> future_methodB(int32_t x, const  ::test_cpp2::cpp_reflection::struct1& y, double z);
-  virtual folly::Future<folly::Unit> future_methodB(apache::thrift::RpcOptions& rpcOptions, int32_t x, const  ::test_cpp2::cpp_reflection::struct1& y, double z);
-  virtual folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_methodB(apache::thrift::RpcOptions& rpcOptions, int32_t x, const  ::test_cpp2::cpp_reflection::struct1& y, double z);
-  virtual void methodB(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, int32_t x, const  ::test_cpp2::cpp_reflection::struct1& y, double z);
-  static folly::exception_wrapper recv_wrapped_methodB(::apache::thrift::ClientReceiveState& state);
-  static void recv_methodB(::apache::thrift::ClientReceiveState& state);
-  // Mock friendly virtual instance method
-  virtual void recv_instance_methodB(::apache::thrift::ClientReceiveState& state);
-  virtual folly::exception_wrapper recv_instance_wrapped_methodB(::apache::thrift::ClientReceiveState& state);
-  template <typename Protocol_>
-  void methodBT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t x, const  ::test_cpp2::cpp_reflection::struct1& y, double z);
-  template <typename Protocol_>
-  static folly::exception_wrapper recv_wrapped_methodBT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state);
-  template <typename Protocol_>
-  static void recv_methodBT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state);
-  virtual void methodC(std::unique_ptr<apache::thrift::RequestCallback> callback);
-  virtual void methodC(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
- private:
-  virtual void methodCImpl(bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
- public:
-  virtual int32_t sync_methodC();
-  virtual int32_t sync_methodC(apache::thrift::RpcOptions& rpcOptions);
-  virtual folly::Future<int32_t> future_methodC();
-  virtual folly::Future<int32_t> future_methodC(apache::thrift::RpcOptions& rpcOptions);
-  virtual folly::Future<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_methodC(apache::thrift::RpcOptions& rpcOptions);
-  virtual void methodC(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback);
-  static folly::exception_wrapper recv_wrapped_methodC(int32_t& _return, ::apache::thrift::ClientReceiveState& state);
-  static int32_t recv_methodC(::apache::thrift::ClientReceiveState& state);
-  // Mock friendly virtual instance method
-  virtual int32_t recv_instance_methodC(::apache::thrift::ClientReceiveState& state);
-  virtual folly::exception_wrapper recv_instance_wrapped_methodC(int32_t& _return, ::apache::thrift::ClientReceiveState& state);
-  template <typename Protocol_>
-  void methodCT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
-  template <typename Protocol_>
-  static folly::exception_wrapper recv_wrapped_methodCT(Protocol_* prot, int32_t& _return, ::apache::thrift::ClientReceiveState& state);
-  template <typename Protocol_>
-  static int32_t recv_methodCT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state);
-  virtual void methodD(std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t i, const  ::test_cpp2::cpp_reflection::struct1& j, double k);
-  virtual void methodD(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t i, const  ::test_cpp2::cpp_reflection::struct1& j, double k);
- private:
-  virtual void methodDImpl(bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t i, const  ::test_cpp2::cpp_reflection::struct1& j, double k);
- public:
-  virtual int32_t sync_methodD(int32_t i, const  ::test_cpp2::cpp_reflection::struct1& j, double k);
-  virtual int32_t sync_methodD(apache::thrift::RpcOptions& rpcOptions, int32_t i, const  ::test_cpp2::cpp_reflection::struct1& j, double k);
-  virtual folly::Future<int32_t> future_methodD(int32_t i, const  ::test_cpp2::cpp_reflection::struct1& j, double k);
-  virtual folly::Future<int32_t> future_methodD(apache::thrift::RpcOptions& rpcOptions, int32_t i, const  ::test_cpp2::cpp_reflection::struct1& j, double k);
-  virtual folly::Future<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_methodD(apache::thrift::RpcOptions& rpcOptions, int32_t i, const  ::test_cpp2::cpp_reflection::struct1& j, double k);
-  virtual void methodD(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, int32_t i, const  ::test_cpp2::cpp_reflection::struct1& j, double k);
-  static folly::exception_wrapper recv_wrapped_methodD(int32_t& _return, ::apache::thrift::ClientReceiveState& state);
-  static int32_t recv_methodD(::apache::thrift::ClientReceiveState& state);
-  // Mock friendly virtual instance method
-  virtual int32_t recv_instance_methodD(::apache::thrift::ClientReceiveState& state);
-  virtual folly::exception_wrapper recv_instance_wrapped_methodD(int32_t& _return, ::apache::thrift::ClientReceiveState& state);
-  template <typename Protocol_>
-  void methodDT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t i, const  ::test_cpp2::cpp_reflection::struct1& j, double k);
-  template <typename Protocol_>
-  static folly::exception_wrapper recv_wrapped_methodDT(Protocol_* prot, int32_t& _return, ::apache::thrift::ClientReceiveState& state);
-  template <typename Protocol_>
-  static int32_t recv_methodDT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state);
-  virtual void methodE(std::unique_ptr<apache::thrift::RequestCallback> callback);
-  virtual void methodE(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
- private:
-  virtual void methodEImpl(bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
- public:
-  virtual void sync_methodE( ::test_cpp2::cpp_reflection::struct2& _return);
-  virtual void sync_methodE(apache::thrift::RpcOptions& rpcOptions,  ::test_cpp2::cpp_reflection::struct2& _return);
-  virtual folly::Future< ::test_cpp2::cpp_reflection::struct2> future_methodE();
-  virtual folly::Future< ::test_cpp2::cpp_reflection::struct2> future_methodE(apache::thrift::RpcOptions& rpcOptions);
-  virtual folly::Future<std::pair< ::test_cpp2::cpp_reflection::struct2, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_methodE(apache::thrift::RpcOptions& rpcOptions);
-  virtual void methodE(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback);
-  static folly::exception_wrapper recv_wrapped_methodE( ::test_cpp2::cpp_reflection::struct2& _return, ::apache::thrift::ClientReceiveState& state);
-  static void recv_methodE( ::test_cpp2::cpp_reflection::struct2& _return, ::apache::thrift::ClientReceiveState& state);
-  // Mock friendly virtual instance method
-  virtual void recv_instance_methodE( ::test_cpp2::cpp_reflection::struct2& _return, ::apache::thrift::ClientReceiveState& state);
-  virtual folly::exception_wrapper recv_instance_wrapped_methodE( ::test_cpp2::cpp_reflection::struct2& _return, ::apache::thrift::ClientReceiveState& state);
-  template <typename Protocol_>
-  void methodET(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
-  template <typename Protocol_>
-  static folly::exception_wrapper recv_wrapped_methodET(Protocol_* prot,  ::test_cpp2::cpp_reflection::struct2& _return, ::apache::thrift::ClientReceiveState& state);
-  template <typename Protocol_>
-  static void recv_methodET(Protocol_* prot,  ::test_cpp2::cpp_reflection::struct2& _return, ::apache::thrift::ClientReceiveState& state);
-  virtual void methodF(std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t l, const  ::test_cpp2::cpp_reflection::struct1& m, double n);
-  virtual void methodF(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t l, const  ::test_cpp2::cpp_reflection::struct1& m, double n);
- private:
-  virtual void methodFImpl(bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t l, const  ::test_cpp2::cpp_reflection::struct1& m, double n);
- public:
-  virtual void sync_methodF( ::test_cpp2::cpp_reflection::struct3& _return, int32_t l, const  ::test_cpp2::cpp_reflection::struct1& m, double n);
-  virtual void sync_methodF(apache::thrift::RpcOptions& rpcOptions,  ::test_cpp2::cpp_reflection::struct3& _return, int32_t l, const  ::test_cpp2::cpp_reflection::struct1& m, double n);
-  virtual folly::Future< ::test_cpp2::cpp_reflection::struct3> future_methodF(int32_t l, const  ::test_cpp2::cpp_reflection::struct1& m, double n);
-  virtual folly::Future< ::test_cpp2::cpp_reflection::struct3> future_methodF(apache::thrift::RpcOptions& rpcOptions, int32_t l, const  ::test_cpp2::cpp_reflection::struct1& m, double n);
-  virtual folly::Future<std::pair< ::test_cpp2::cpp_reflection::struct3, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_methodF(apache::thrift::RpcOptions& rpcOptions, int32_t l, const  ::test_cpp2::cpp_reflection::struct1& m, double n);
-  virtual void methodF(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, int32_t l, const  ::test_cpp2::cpp_reflection::struct1& m, double n);
-  static folly::exception_wrapper recv_wrapped_methodF( ::test_cpp2::cpp_reflection::struct3& _return, ::apache::thrift::ClientReceiveState& state);
-  static void recv_methodF( ::test_cpp2::cpp_reflection::struct3& _return, ::apache::thrift::ClientReceiveState& state);
-  // Mock friendly virtual instance method
-  virtual void recv_instance_methodF( ::test_cpp2::cpp_reflection::struct3& _return, ::apache::thrift::ClientReceiveState& state);
-  virtual folly::exception_wrapper recv_instance_wrapped_methodF( ::test_cpp2::cpp_reflection::struct3& _return, ::apache::thrift::ClientReceiveState& state);
-  template <typename Protocol_>
-  void methodFT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t l, const  ::test_cpp2::cpp_reflection::struct1& m, double n);
-  template <typename Protocol_>
-  static folly::exception_wrapper recv_wrapped_methodFT(Protocol_* prot,  ::test_cpp2::cpp_reflection::struct3& _return, ::apache::thrift::ClientReceiveState& state);
-  template <typename Protocol_>
-  static void recv_methodFT(Protocol_* prot,  ::test_cpp2::cpp_reflection::struct3& _return, ::apache::thrift::ClientReceiveState& state);
-};
-
 }} // test_cpp2::cpp_reflection
+namespace apache { namespace thrift {
+
+}} // apache::thrift

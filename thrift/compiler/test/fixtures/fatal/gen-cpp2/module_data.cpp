@@ -4,7 +4,8 @@
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  *  @generated
  */
-#include "thrift/compiler/test/fixtures/fatal/gen-cpp2/module_data.h"
+
+#include "src/gen-cpp2/module_data.h"
 
 namespace test_cpp2 { namespace cpp_reflection {
 

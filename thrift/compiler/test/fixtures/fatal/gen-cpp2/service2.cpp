@@ -4,15 +4,14 @@
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  *  @generated
  */
-#include "thrift/compiler/test/fixtures/fatal/gen-cpp2/service2.h"
+#include "src/gen-cpp2/service2.h"
+#include "src/gen-cpp2/service2.tcc"
 
-#include "thrift/compiler/test/fixtures/fatal/gen-cpp2/service2.tcc"
-
-#include <thrift/lib/cpp2/protocol/Protocol.h>
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
-namespace test_cpp2 { namespace cpp_reflection {
+#include <thrift/lib/cpp2/protocol/Protocol.h>
 
+namespace test_cpp2 { namespace cpp_reflection {
 std::unique_ptr<apache::thrift::AsyncProcessor> service2SvIf::getProcessor() {
   return std::make_unique<service2AsyncProcessor>(this);
 }
@@ -150,3 +149,6 @@ const service2AsyncProcessor::CompactProtocolProcessMap service2AsyncProcessor::
 };
 
 }} // test_cpp2::cpp_reflection
+namespace apache { namespace thrift {
+
+}} // apache::thrift

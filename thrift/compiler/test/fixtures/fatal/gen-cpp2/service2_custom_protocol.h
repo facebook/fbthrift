@@ -6,7 +6,6 @@
  */
 #pragma once
 
-
 /**
  * This header file includes the tcc files of the corresponding header file
  * and the header files of its dependent types. Include this header file
@@ -14,8 +13,7 @@
  * VirtualProtocol) to read/write thrift structs.
  */
 
-#include "thrift/compiler/test/fixtures/fatal/gen-cpp2/service2.tcc"
-
-#include "thrift/compiler/test/fixtures/fatal/gen-cpp2/module_types_custom_protocol.h"
-#include "reflection_dep_B_types_custom_protocol.h"
-#include "reflection_dep_C_types_custom_protocol.h"
+#include "src/gen-cpp2/service2.tcc"
+#include "src/gen-cpp2/module_types_custom_protocol.h"
+#include "thrift/compiler/test/fixtures/fatal/gen-cpp2/reflection_dep_B_types_custom_protocol.h"
+#include "thrift/compiler/test/fixtures/fatal/gen-cpp2/reflection_dep_C_types_custom_protocol.h"

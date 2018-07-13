@@ -4,17 +4,13 @@
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  *  @generated
  */
-#include "thrift/compiler/test/fixtures/fatal/gen-cpp2/module_types.h"
-
-#include "thrift/compiler/test/fixtures/fatal/gen-cpp2/module_types.tcc"
+#include "src/gen-cpp2/module_types.h"
+#include "src/gen-cpp2/module_types.tcc"
 
 #include <algorithm>
-
 #include <folly/Indestructible.h>
 
-#include "thrift/compiler/test/fixtures/fatal/gen-cpp2/module_data.h"
-
-
+#include "src/gen-cpp2/module_data.h"
 
 namespace test_cpp2 { namespace cpp_reflection {
 
@@ -176,7 +172,6 @@ bool union1::operator==(const union1& rhs) const {
     }
   }
 }
-
 void union1::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
   if (false) {}
   else if (_fname == "ui") {
@@ -203,19 +198,16 @@ void swap(union1& a, union1& b) {
   b = std::move(temp);
 }
 
-template uint32_t union1::read<>(apache::thrift::BinaryProtocolReader*);
+template void union1::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
 template uint32_t union1::write<>(apache::thrift::BinaryProtocolWriter*) const;
 template uint32_t union1::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
 template uint32_t union1::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-template uint32_t union1::read<>(apache::thrift::CompactProtocolReader*);
+template void union1::readNoXfer<>(apache::thrift::CompactProtocolReader*);
 template uint32_t union1::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t union1::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t union1::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 }} // test_cpp2::cpp_reflection
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace test_cpp2 { namespace cpp_reflection {
 
 void union2::__clear() {
@@ -276,7 +268,6 @@ bool union2::operator==(const union2& rhs) const {
     }
   }
 }
-
 void union2::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
   if (false) {}
   else if (_fname == "ui_2") {
@@ -303,19 +294,16 @@ void swap(union2& a, union2& b) {
   b = std::move(temp);
 }
 
-template uint32_t union2::read<>(apache::thrift::BinaryProtocolReader*);
+template void union2::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
 template uint32_t union2::write<>(apache::thrift::BinaryProtocolWriter*) const;
 template uint32_t union2::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
 template uint32_t union2::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-template uint32_t union2::read<>(apache::thrift::CompactProtocolReader*);
+template void union2::readNoXfer<>(apache::thrift::CompactProtocolReader*);
 template uint32_t union2::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t union2::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t union2::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 }} // test_cpp2::cpp_reflection
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace test_cpp2 { namespace cpp_reflection {
 
 void union3::__clear() {
@@ -376,7 +364,6 @@ bool union3::operator==(const union3& rhs) const {
     }
   }
 }
-
 void union3::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
   if (false) {}
   else if (_fname == "ui_3") {
@@ -403,25 +390,21 @@ void swap(union3& a, union3& b) {
   b = std::move(temp);
 }
 
-template uint32_t union3::read<>(apache::thrift::BinaryProtocolReader*);
+template void union3::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
 template uint32_t union3::write<>(apache::thrift::BinaryProtocolWriter*) const;
 template uint32_t union3::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
 template uint32_t union3::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-template uint32_t union3::read<>(apache::thrift::CompactProtocolReader*);
+template void union3::readNoXfer<>(apache::thrift::CompactProtocolReader*);
 template uint32_t union3::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t union3::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t union3::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 }} // test_cpp2::cpp_reflection
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace test_cpp2 { namespace cpp_reflection {
 
 structA::structA(apache::thrift::FragileConstructor, int32_t a__arg, std::string b__arg) :
     a(std::move(a__arg)),
-    b(std::move(b__arg))
- {
+    b(std::move(b__arg)) {
   __isset.a = true;
   __isset.b = true;
 }
@@ -434,13 +417,27 @@ void structA::__clear() {
 }
 
 bool structA::operator==(const structA& rhs) const {
-  if (!((a == rhs.a))) {
+  (void)rhs;
+  auto& lhs = *this;
+  if (!(lhs.a == rhs.a)) {
     return false;
   }
-  if (!((b == rhs.b))) {
+  if (!(lhs.b == rhs.b)) {
     return false;
   }
   return true;
+}
+
+bool structA::operator<(const structA& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  if (!(lhs.a == rhs.a)) {
+    return lhs.a < rhs.a;
+  }
+  if (!(lhs.b == rhs.b)) {
+    return lhs.b < rhs.b;
+  }
+  return false;
 }
 
 void structA::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
@@ -462,19 +459,16 @@ void swap(structA& a, structA& b) {
   swap(a.__isset, b.__isset);
 }
 
-template uint32_t structA::read<>(apache::thrift::BinaryProtocolReader*);
+template void structA::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
 template uint32_t structA::write<>(apache::thrift::BinaryProtocolWriter*) const;
 template uint32_t structA::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
 template uint32_t structA::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-template uint32_t structA::read<>(apache::thrift::CompactProtocolReader*);
+template void structA::readNoXfer<>(apache::thrift::CompactProtocolReader*);
 template uint32_t structA::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t structA::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t structA::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 }} // test_cpp2::cpp_reflection
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace test_cpp2 { namespace cpp_reflection {
 
 void unionA::__clear() {
@@ -544,7 +538,6 @@ bool unionA::operator==(const unionA& rhs) const {
     }
   }
 }
-
 void unionA::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
   if (false) {}
   else if (_fname == "i") {
@@ -575,25 +568,21 @@ void swap(unionA& a, unionA& b) {
   b = std::move(temp);
 }
 
-template uint32_t unionA::read<>(apache::thrift::BinaryProtocolReader*);
+template void unionA::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
 template uint32_t unionA::write<>(apache::thrift::BinaryProtocolWriter*) const;
 template uint32_t unionA::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
 template uint32_t unionA::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-template uint32_t unionA::read<>(apache::thrift::CompactProtocolReader*);
+template void unionA::readNoXfer<>(apache::thrift::CompactProtocolReader*);
 template uint32_t unionA::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t unionA::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t unionA::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 }} // test_cpp2::cpp_reflection
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace test_cpp2 { namespace cpp_reflection {
 
 structB::structB(apache::thrift::FragileConstructor, double c__arg, bool d__arg) :
     c(std::move(c__arg)),
-    d(std::move(d__arg))
- {
+    d(std::move(d__arg)) {
   __isset.c = true;
   __isset.d = true;
 }
@@ -606,13 +595,27 @@ void structB::__clear() {
 }
 
 bool structB::operator==(const structB& rhs) const {
-  if (!((c == rhs.c))) {
+  (void)rhs;
+  auto& lhs = *this;
+  if (!(lhs.c == rhs.c)) {
     return false;
   }
-  if (!((d == rhs.d))) {
+  if (!(lhs.d == rhs.d)) {
     return false;
   }
   return true;
+}
+
+bool structB::operator<(const structB& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  if (!(lhs.c == rhs.c)) {
+    return lhs.c < rhs.c;
+  }
+  if (!(lhs.d == rhs.d)) {
+    return lhs.d < rhs.d;
+  }
+  return false;
 }
 
 void structB::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
@@ -634,28 +637,27 @@ void swap(structB& a, structB& b) {
   swap(a.__isset, b.__isset);
 }
 
-template uint32_t structB::read<>(apache::thrift::BinaryProtocolReader*);
+template void structB::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
 template uint32_t structB::write<>(apache::thrift::BinaryProtocolWriter*) const;
 template uint32_t structB::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
 template uint32_t structB::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-template uint32_t structB::read<>(apache::thrift::CompactProtocolReader*);
+template void structB::readNoXfer<>(apache::thrift::CompactProtocolReader*);
 template uint32_t structB::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t structB::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t structB::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 }} // test_cpp2::cpp_reflection
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace test_cpp2 { namespace cpp_reflection {
 
 structC::structC() :
-    a(0),
-    c(0),
-    d(0),
-    e( ::test_cpp2::cpp_reflection::enum1::field0),
-    f( ::test_cpp2::cpp_reflection::enum2::field0_2)
- {}
+      a(0),
+      c(0),
+      d(0),
+      e( ::test_cpp2::cpp_reflection::enum1::field0),
+      f( ::test_cpp2::cpp_reflection::enum2::field0_2) {}
+
+
+structC::~structC() {}
 
 structC::structC(apache::thrift::FragileConstructor, int32_t a__arg, std::string b__arg, double c__arg, bool d__arg,  ::test_cpp2::cpp_reflection::enum1 e__arg,  ::test_cpp2::cpp_reflection::enum2 f__arg,  ::test_cpp2::cpp_reflection::union1 g__arg,  ::test_cpp2::cpp_reflection::unionA h__arg,  ::test_cpp2::cpp_reflection::unionA i__arg, std::vector<int32_t> j__arg, std::vector<int32_t> j1__arg, std::vector< ::test_cpp2::cpp_reflection::enum1> j2__arg, std::vector< ::test_cpp2::cpp_reflection::structA> j3__arg, std::set<int32_t> k__arg, std::set<int32_t> k1__arg, std::set< ::test_cpp2::cpp_reflection::enum2> k2__arg, std::set< ::test_cpp2::cpp_reflection::structB> k3__arg, std::map<int32_t, int32_t> l__arg, std::map<int32_t, int32_t> l1__arg, std::map<int32_t,  ::test_cpp2::cpp_reflection::enum1> l2__arg, std::map<int32_t,  ::test_cpp2::cpp_reflection::structB> l3__arg, std::map< ::test_cpp2::cpp_reflection::enum1, int32_t> m1__arg, std::map< ::test_cpp2::cpp_reflection::enum1,  ::test_cpp2::cpp_reflection::enum2> m2__arg, std::map< ::test_cpp2::cpp_reflection::enum1,  ::test_cpp2::cpp_reflection::structB> m3__arg, std::map<std::string, int32_t> n1__arg, std::map<std::string,  ::test_cpp2::cpp_reflection::enum1> n2__arg, std::map<std::string,  ::test_cpp2::cpp_reflection::structB> n3__arg, std::map< ::test_cpp2::cpp_reflection::structA, int32_t> o1__arg, std::map< ::test_cpp2::cpp_reflection::structA,  ::test_cpp2::cpp_reflection::enum1> o2__arg, std::map< ::test_cpp2::cpp_reflection::structA,  ::test_cpp2::cpp_reflection::structB> o3__arg) :
     a(std::move(a__arg)),
@@ -687,8 +689,7 @@ structC::structC(apache::thrift::FragileConstructor, int32_t a__arg, std::string
     n3(std::move(n3__arg)),
     o1(std::move(o1__arg)),
     o2(std::move(o2__arg)),
-    o3(std::move(o3__arg))
- {
+    o3(std::move(o3__arg)) {
   __isset.a = true;
   __isset.b = true;
   __isset.c = true;
@@ -756,100 +757,196 @@ void structC::__clear() {
   __isset = {};
 }
 
-structC::~structC() {}
-
 bool structC::operator==(const structC& rhs) const {
-  if (!((a == rhs.a))) {
+  (void)rhs;
+  auto& lhs = *this;
+  if (!(lhs.a == rhs.a)) {
     return false;
   }
-  if (!((b == rhs.b))) {
+  if (!(lhs.b == rhs.b)) {
     return false;
   }
-  if (!((c == rhs.c))) {
+  if (!(lhs.c == rhs.c)) {
     return false;
   }
-  if (!((d == rhs.d))) {
+  if (!(lhs.d == rhs.d)) {
     return false;
   }
-  if (!((e == rhs.e))) {
+  if (!(lhs.e == rhs.e)) {
     return false;
   }
-  if (!((f == rhs.f))) {
+  if (!(lhs.f == rhs.f)) {
     return false;
   }
-  if (!((g == rhs.g))) {
+  if (!(lhs.g == rhs.g)) {
     return false;
   }
-  if (!((h == rhs.h))) {
+  if (!(lhs.h == rhs.h)) {
     return false;
   }
-  if (!((i == rhs.i))) {
+  if (!(lhs.i == rhs.i)) {
     return false;
   }
-  if (!((j == rhs.j))) {
+  if (!(lhs.j == rhs.j)) {
     return false;
   }
-  if (!((j1 == rhs.j1))) {
+  if (!(lhs.j1 == rhs.j1)) {
     return false;
   }
-  if (!((j2 == rhs.j2))) {
+  if (!(lhs.j2 == rhs.j2)) {
     return false;
   }
-  if (!((j3 == rhs.j3))) {
+  if (!(lhs.j3 == rhs.j3)) {
     return false;
   }
-  if (!((k == rhs.k))) {
+  if (!(lhs.k == rhs.k)) {
     return false;
   }
-  if (!((k1 == rhs.k1))) {
+  if (!(lhs.k1 == rhs.k1)) {
     return false;
   }
-  if (!((k2 == rhs.k2))) {
+  if (!(lhs.k2 == rhs.k2)) {
     return false;
   }
-  if (!((k3 == rhs.k3))) {
+  if (!(lhs.k3 == rhs.k3)) {
     return false;
   }
-  if (!((l == rhs.l))) {
+  if (!(lhs.l == rhs.l)) {
     return false;
   }
-  if (!((l1 == rhs.l1))) {
+  if (!(lhs.l1 == rhs.l1)) {
     return false;
   }
-  if (!((l2 == rhs.l2))) {
+  if (!(lhs.l2 == rhs.l2)) {
     return false;
   }
-  if (!((l3 == rhs.l3))) {
+  if (!(lhs.l3 == rhs.l3)) {
     return false;
   }
-  if (!((m1 == rhs.m1))) {
+  if (!(lhs.m1 == rhs.m1)) {
     return false;
   }
-  if (!((m2 == rhs.m2))) {
+  if (!(lhs.m2 == rhs.m2)) {
     return false;
   }
-  if (!((m3 == rhs.m3))) {
+  if (!(lhs.m3 == rhs.m3)) {
     return false;
   }
-  if (!((n1 == rhs.n1))) {
+  if (!(lhs.n1 == rhs.n1)) {
     return false;
   }
-  if (!((n2 == rhs.n2))) {
+  if (!(lhs.n2 == rhs.n2)) {
     return false;
   }
-  if (!((n3 == rhs.n3))) {
+  if (!(lhs.n3 == rhs.n3)) {
     return false;
   }
-  if (!((o1 == rhs.o1))) {
+  if (!(lhs.o1 == rhs.o1)) {
     return false;
   }
-  if (!((o2 == rhs.o2))) {
+  if (!(lhs.o2 == rhs.o2)) {
     return false;
   }
-  if (!((o3 == rhs.o3))) {
+  if (!(lhs.o3 == rhs.o3)) {
     return false;
   }
   return true;
+}
+
+bool structC::operator<(const structC& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  if (!(lhs.a == rhs.a)) {
+    return lhs.a < rhs.a;
+  }
+  if (!(lhs.b == rhs.b)) {
+    return lhs.b < rhs.b;
+  }
+  if (!(lhs.c == rhs.c)) {
+    return lhs.c < rhs.c;
+  }
+  if (!(lhs.d == rhs.d)) {
+    return lhs.d < rhs.d;
+  }
+  if (!(lhs.e == rhs.e)) {
+    return lhs.e < rhs.e;
+  }
+  if (!(lhs.f == rhs.f)) {
+    return lhs.f < rhs.f;
+  }
+  if (!(lhs.g == rhs.g)) {
+    return lhs.g < rhs.g;
+  }
+  if (!(lhs.h == rhs.h)) {
+    return lhs.h < rhs.h;
+  }
+  if (!(lhs.i == rhs.i)) {
+    return lhs.i < rhs.i;
+  }
+  if (!(lhs.j == rhs.j)) {
+    return lhs.j < rhs.j;
+  }
+  if (!(lhs.j1 == rhs.j1)) {
+    return lhs.j1 < rhs.j1;
+  }
+  if (!(lhs.j2 == rhs.j2)) {
+    return lhs.j2 < rhs.j2;
+  }
+  if (!(lhs.j3 == rhs.j3)) {
+    return lhs.j3 < rhs.j3;
+  }
+  if (!(lhs.k == rhs.k)) {
+    return lhs.k < rhs.k;
+  }
+  if (!(lhs.k1 == rhs.k1)) {
+    return lhs.k1 < rhs.k1;
+  }
+  if (!(lhs.k2 == rhs.k2)) {
+    return lhs.k2 < rhs.k2;
+  }
+  if (!(lhs.k3 == rhs.k3)) {
+    return lhs.k3 < rhs.k3;
+  }
+  if (!(lhs.l == rhs.l)) {
+    return lhs.l < rhs.l;
+  }
+  if (!(lhs.l1 == rhs.l1)) {
+    return lhs.l1 < rhs.l1;
+  }
+  if (!(lhs.l2 == rhs.l2)) {
+    return lhs.l2 < rhs.l2;
+  }
+  if (!(lhs.l3 == rhs.l3)) {
+    return lhs.l3 < rhs.l3;
+  }
+  if (!(lhs.m1 == rhs.m1)) {
+    return lhs.m1 < rhs.m1;
+  }
+  if (!(lhs.m2 == rhs.m2)) {
+    return lhs.m2 < rhs.m2;
+  }
+  if (!(lhs.m3 == rhs.m3)) {
+    return lhs.m3 < rhs.m3;
+  }
+  if (!(lhs.n1 == rhs.n1)) {
+    return lhs.n1 < rhs.n1;
+  }
+  if (!(lhs.n2 == rhs.n2)) {
+    return lhs.n2 < rhs.n2;
+  }
+  if (!(lhs.n3 == rhs.n3)) {
+    return lhs.n3 < rhs.n3;
+  }
+  if (!(lhs.o1 == rhs.o1)) {
+    return lhs.o1 < rhs.o1;
+  }
+  if (!(lhs.o2 == rhs.o2)) {
+    return lhs.o2 < rhs.o2;
+  }
+  if (!(lhs.o3 == rhs.o3)) {
+    return lhs.o3 < rhs.o3;
+  }
+  return false;
 }
 
 const  ::test_cpp2::cpp_reflection::union1& structC::get_g() const& {
@@ -1203,26 +1300,25 @@ void swap(structC& a, structC& b) {
   swap(a.__isset, b.__isset);
 }
 
-template uint32_t structC::read<>(apache::thrift::BinaryProtocolReader*);
+template void structC::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
 template uint32_t structC::write<>(apache::thrift::BinaryProtocolWriter*) const;
 template uint32_t structC::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
 template uint32_t structC::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-template uint32_t structC::read<>(apache::thrift::CompactProtocolReader*);
+template void structC::readNoXfer<>(apache::thrift::CompactProtocolReader*);
 template uint32_t structC::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t structC::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t structC::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 }} // test_cpp2::cpp_reflection
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace test_cpp2 { namespace cpp_reflection {
 
 struct1::struct1() :
-    field0(0),
-    field2( ::test_cpp2::cpp_reflection::enum1::field0),
-    field3( ::test_cpp2::cpp_reflection::enum2::field0_2)
- {}
+      field0(0),
+      field2( ::test_cpp2::cpp_reflection::enum1::field0),
+      field3( ::test_cpp2::cpp_reflection::enum2::field0_2) {}
+
+
+struct1::~struct1() {}
 
 struct1::struct1(apache::thrift::FragileConstructor, int32_t field0__arg, std::string field1__arg,  ::test_cpp2::cpp_reflection::enum1 field2__arg,  ::test_cpp2::cpp_reflection::enum2 field3__arg,  ::test_cpp2::cpp_reflection::union1 field4__arg,  ::test_cpp2::cpp_reflection::union2 field5__arg) :
     field0(std::move(field0__arg)),
@@ -1230,8 +1326,7 @@ struct1::struct1(apache::thrift::FragileConstructor, int32_t field0__arg, std::s
     field2(std::move(field2__arg)),
     field3(std::move(field3__arg)),
     field4(std::move(field4__arg)),
-    field5(std::move(field5__arg))
- {
+    field5(std::move(field5__arg)) {
   __isset.field1 = true;
   __isset.field2 = true;
   __isset.field4 = true;
@@ -1249,34 +1344,72 @@ void struct1::__clear() {
   __isset = {};
 }
 
-struct1::~struct1() {}
-
 bool struct1::operator==(const struct1& rhs) const {
-  if (!((field0 == rhs.field0))) {
+  (void)rhs;
+  auto& lhs = *this;
+  if (!(lhs.field0 == rhs.field0)) {
     return false;
   }
-  if (__isset.field1 != rhs.__isset.field1) {
+  if (lhs.__isset.field1 != rhs.__isset.field1) {
     return false;
   }
-  else if (__isset.field1 && !((field1 == rhs.field1))) {
+  if (lhs.__isset.field1) {
+    if (!(lhs.field1 == rhs.field1)) {
+      return false;
+    }
+  }
+  if (!(lhs.field2 == rhs.field2)) {
     return false;
   }
-  if (!((field2 == rhs.field2))) {
+  if (!(lhs.field3 == rhs.field3)) {
     return false;
   }
-  if (!((field3 == rhs.field3))) {
+  if (lhs.__isset.field4 != rhs.__isset.field4) {
     return false;
   }
-  if (__isset.field4 != rhs.__isset.field4) {
-    return false;
+  if (lhs.__isset.field4) {
+    if (!(lhs.field4 == rhs.field4)) {
+      return false;
+    }
   }
-  else if (__isset.field4 && !((field4 == rhs.field4))) {
-    return false;
-  }
-  if (!((field5 == rhs.field5))) {
+  if (!(lhs.field5 == rhs.field5)) {
     return false;
   }
   return true;
+}
+
+bool struct1::operator<(const struct1& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  if (!(lhs.field0 == rhs.field0)) {
+    return lhs.field0 < rhs.field0;
+  }
+  if (lhs.__isset.field1 != rhs.__isset.field1) {
+    return lhs.__isset.field1 < rhs.__isset.field1;
+  }
+  if (lhs.__isset.field1) {
+    if (!(lhs.field1 == rhs.field1)) {
+      return lhs.field1 < rhs.field1;
+    }
+  }
+  if (!(lhs.field2 == rhs.field2)) {
+    return lhs.field2 < rhs.field2;
+  }
+  if (!(lhs.field3 == rhs.field3)) {
+    return lhs.field3 < rhs.field3;
+  }
+  if (lhs.__isset.field4 != rhs.__isset.field4) {
+    return lhs.__isset.field4 < rhs.__isset.field4;
+  }
+  if (lhs.__isset.field4) {
+    if (!(lhs.field4 == rhs.field4)) {
+      return lhs.field4 < rhs.field4;
+    }
+  }
+  if (!(lhs.field5 == rhs.field5)) {
+    return lhs.field5 < rhs.field5;
+  }
+  return false;
 }
 
 const  ::test_cpp2::cpp_reflection::union1* struct1::get_field4() const& {
@@ -1334,26 +1467,25 @@ void swap(struct1& a, struct1& b) {
   swap(a.__isset, b.__isset);
 }
 
-template uint32_t struct1::read<>(apache::thrift::BinaryProtocolReader*);
+template void struct1::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
 template uint32_t struct1::write<>(apache::thrift::BinaryProtocolWriter*) const;
 template uint32_t struct1::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
 template uint32_t struct1::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-template uint32_t struct1::read<>(apache::thrift::CompactProtocolReader*);
+template void struct1::readNoXfer<>(apache::thrift::CompactProtocolReader*);
 template uint32_t struct1::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t struct1::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t struct1::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 }} // test_cpp2::cpp_reflection
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace test_cpp2 { namespace cpp_reflection {
 
 struct2::struct2() :
-    fieldA(0),
-    fieldC( ::test_cpp2::cpp_reflection::enum1::field0),
-    fieldD( ::test_cpp2::cpp_reflection::enum2::field0_2)
- {}
+      fieldA(0),
+      fieldC( ::test_cpp2::cpp_reflection::enum1::field0),
+      fieldD( ::test_cpp2::cpp_reflection::enum2::field0_2) {}
+
+
+struct2::~struct2() {}
 
 struct2::struct2(apache::thrift::FragileConstructor, int32_t fieldA__arg, std::string fieldB__arg,  ::test_cpp2::cpp_reflection::enum1 fieldC__arg,  ::test_cpp2::cpp_reflection::enum2 fieldD__arg,  ::test_cpp2::cpp_reflection::union1 fieldE__arg,  ::test_cpp2::cpp_reflection::union2 fieldF__arg,  ::test_cpp2::cpp_reflection::struct1 fieldG__arg) :
     fieldA(std::move(fieldA__arg)),
@@ -1362,8 +1494,7 @@ struct2::struct2(apache::thrift::FragileConstructor, int32_t fieldA__arg, std::s
     fieldD(std::move(fieldD__arg)),
     fieldE(std::move(fieldE__arg)),
     fieldF(std::move(fieldF__arg)),
-    fieldG(std::move(fieldG__arg))
- {
+    fieldG(std::move(fieldG__arg)) {
   __isset.fieldA = true;
   __isset.fieldB = true;
   __isset.fieldC = true;
@@ -1385,31 +1516,58 @@ void struct2::__clear() {
   __isset = {};
 }
 
-struct2::~struct2() {}
-
 bool struct2::operator==(const struct2& rhs) const {
-  if (!((fieldA == rhs.fieldA))) {
+  (void)rhs;
+  auto& lhs = *this;
+  if (!(lhs.fieldA == rhs.fieldA)) {
     return false;
   }
-  if (!((fieldB == rhs.fieldB))) {
+  if (!(lhs.fieldB == rhs.fieldB)) {
     return false;
   }
-  if (!((fieldC == rhs.fieldC))) {
+  if (!(lhs.fieldC == rhs.fieldC)) {
     return false;
   }
-  if (!((fieldD == rhs.fieldD))) {
+  if (!(lhs.fieldD == rhs.fieldD)) {
     return false;
   }
-  if (!((fieldE == rhs.fieldE))) {
+  if (!(lhs.fieldE == rhs.fieldE)) {
     return false;
   }
-  if (!((fieldF == rhs.fieldF))) {
+  if (!(lhs.fieldF == rhs.fieldF)) {
     return false;
   }
-  if (!((fieldG == rhs.fieldG))) {
+  if (!(lhs.fieldG == rhs.fieldG)) {
     return false;
   }
   return true;
+}
+
+bool struct2::operator<(const struct2& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  if (!(lhs.fieldA == rhs.fieldA)) {
+    return lhs.fieldA < rhs.fieldA;
+  }
+  if (!(lhs.fieldB == rhs.fieldB)) {
+    return lhs.fieldB < rhs.fieldB;
+  }
+  if (!(lhs.fieldC == rhs.fieldC)) {
+    return lhs.fieldC < rhs.fieldC;
+  }
+  if (!(lhs.fieldD == rhs.fieldD)) {
+    return lhs.fieldD < rhs.fieldD;
+  }
+  if (!(lhs.fieldE == rhs.fieldE)) {
+    return lhs.fieldE < rhs.fieldE;
+  }
+  if (!(lhs.fieldF == rhs.fieldF)) {
+    return lhs.fieldF < rhs.fieldF;
+  }
+  if (!(lhs.fieldG == rhs.fieldG)) {
+    return lhs.fieldG < rhs.fieldG;
+  }
+  return false;
 }
 
 const  ::test_cpp2::cpp_reflection::union1& struct2::get_fieldE() const& {
@@ -1480,26 +1638,25 @@ void swap(struct2& a, struct2& b) {
   swap(a.__isset, b.__isset);
 }
 
-template uint32_t struct2::read<>(apache::thrift::BinaryProtocolReader*);
+template void struct2::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
 template uint32_t struct2::write<>(apache::thrift::BinaryProtocolWriter*) const;
 template uint32_t struct2::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
 template uint32_t struct2::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-template uint32_t struct2::read<>(apache::thrift::CompactProtocolReader*);
+template void struct2::readNoXfer<>(apache::thrift::CompactProtocolReader*);
 template uint32_t struct2::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t struct2::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t struct2::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 }} // test_cpp2::cpp_reflection
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace test_cpp2 { namespace cpp_reflection {
 
 struct3::struct3() :
-    fieldA(0),
-    fieldC( ::test_cpp2::cpp_reflection::enum1::field0),
-    fieldD( ::test_cpp2::cpp_reflection::enum2::field0_2)
- {}
+      fieldA(0),
+      fieldC( ::test_cpp2::cpp_reflection::enum1::field0),
+      fieldD( ::test_cpp2::cpp_reflection::enum2::field0_2) {}
+
+
+struct3::~struct3() {}
 
 struct3::struct3(apache::thrift::FragileConstructor, int32_t fieldA__arg, std::string fieldB__arg,  ::test_cpp2::cpp_reflection::enum1 fieldC__arg,  ::test_cpp2::cpp_reflection::enum2 fieldD__arg,  ::test_cpp2::cpp_reflection::union1 fieldE__arg,  ::test_cpp2::cpp_reflection::union2 fieldF__arg,  ::test_cpp2::cpp_reflection::struct1 fieldG__arg,  ::test_cpp2::cpp_reflection::union2 fieldH__arg, std::vector<int32_t> fieldI__arg, std::vector<std::string> fieldJ__arg, std::vector<std::string> fieldK__arg, std::vector< ::test_cpp2::cpp_reflection::structA> fieldL__arg, std::set<int32_t> fieldM__arg, std::set<std::string> fieldN__arg, std::set<std::string> fieldO__arg, std::set< ::test_cpp2::cpp_reflection::structB> fieldP__arg, std::map<std::string,  ::test_cpp2::cpp_reflection::structA> fieldQ__arg, std::map<std::string,  ::test_cpp2::cpp_reflection::structB> fieldR__arg) :
     fieldA(std::move(fieldA__arg)),
@@ -1519,8 +1676,7 @@ struct3::struct3(apache::thrift::FragileConstructor, int32_t fieldA__arg, std::s
     fieldO(std::move(fieldO__arg)),
     fieldP(std::move(fieldP__arg)),
     fieldQ(std::move(fieldQ__arg)),
-    fieldR(std::move(fieldR__arg))
- {
+    fieldR(std::move(fieldR__arg)) {
   __isset.fieldA = true;
   __isset.fieldB = true;
   __isset.fieldC = true;
@@ -1564,64 +1720,124 @@ void struct3::__clear() {
   __isset = {};
 }
 
-struct3::~struct3() {}
-
 bool struct3::operator==(const struct3& rhs) const {
-  if (!((fieldA == rhs.fieldA))) {
+  (void)rhs;
+  auto& lhs = *this;
+  if (!(lhs.fieldA == rhs.fieldA)) {
     return false;
   }
-  if (!((fieldB == rhs.fieldB))) {
+  if (!(lhs.fieldB == rhs.fieldB)) {
     return false;
   }
-  if (!((fieldC == rhs.fieldC))) {
+  if (!(lhs.fieldC == rhs.fieldC)) {
     return false;
   }
-  if (!((fieldD == rhs.fieldD))) {
+  if (!(lhs.fieldD == rhs.fieldD)) {
     return false;
   }
-  if (!((fieldE == rhs.fieldE))) {
+  if (!(lhs.fieldE == rhs.fieldE)) {
     return false;
   }
-  if (!((fieldF == rhs.fieldF))) {
+  if (!(lhs.fieldF == rhs.fieldF)) {
     return false;
   }
-  if (!((fieldG == rhs.fieldG))) {
+  if (!(lhs.fieldG == rhs.fieldG)) {
     return false;
   }
-  if (!((fieldH == rhs.fieldH))) {
+  if (!(lhs.fieldH == rhs.fieldH)) {
     return false;
   }
-  if (!((fieldI == rhs.fieldI))) {
+  if (!(lhs.fieldI == rhs.fieldI)) {
     return false;
   }
-  if (!((fieldJ == rhs.fieldJ))) {
+  if (!(lhs.fieldJ == rhs.fieldJ)) {
     return false;
   }
-  if (!((fieldK == rhs.fieldK))) {
+  if (!(lhs.fieldK == rhs.fieldK)) {
     return false;
   }
-  if (!((fieldL == rhs.fieldL))) {
+  if (!(lhs.fieldL == rhs.fieldL)) {
     return false;
   }
-  if (!((fieldM == rhs.fieldM))) {
+  if (!(lhs.fieldM == rhs.fieldM)) {
     return false;
   }
-  if (!((fieldN == rhs.fieldN))) {
+  if (!(lhs.fieldN == rhs.fieldN)) {
     return false;
   }
-  if (!((fieldO == rhs.fieldO))) {
+  if (!(lhs.fieldO == rhs.fieldO)) {
     return false;
   }
-  if (!((fieldP == rhs.fieldP))) {
+  if (!(lhs.fieldP == rhs.fieldP)) {
     return false;
   }
-  if (!((fieldQ == rhs.fieldQ))) {
+  if (!(lhs.fieldQ == rhs.fieldQ)) {
     return false;
   }
-  if (!((fieldR == rhs.fieldR))) {
+  if (!(lhs.fieldR == rhs.fieldR)) {
     return false;
   }
   return true;
+}
+
+bool struct3::operator<(const struct3& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  if (!(lhs.fieldA == rhs.fieldA)) {
+    return lhs.fieldA < rhs.fieldA;
+  }
+  if (!(lhs.fieldB == rhs.fieldB)) {
+    return lhs.fieldB < rhs.fieldB;
+  }
+  if (!(lhs.fieldC == rhs.fieldC)) {
+    return lhs.fieldC < rhs.fieldC;
+  }
+  if (!(lhs.fieldD == rhs.fieldD)) {
+    return lhs.fieldD < rhs.fieldD;
+  }
+  if (!(lhs.fieldE == rhs.fieldE)) {
+    return lhs.fieldE < rhs.fieldE;
+  }
+  if (!(lhs.fieldF == rhs.fieldF)) {
+    return lhs.fieldF < rhs.fieldF;
+  }
+  if (!(lhs.fieldG == rhs.fieldG)) {
+    return lhs.fieldG < rhs.fieldG;
+  }
+  if (!(lhs.fieldH == rhs.fieldH)) {
+    return lhs.fieldH < rhs.fieldH;
+  }
+  if (!(lhs.fieldI == rhs.fieldI)) {
+    return lhs.fieldI < rhs.fieldI;
+  }
+  if (!(lhs.fieldJ == rhs.fieldJ)) {
+    return lhs.fieldJ < rhs.fieldJ;
+  }
+  if (!(lhs.fieldK == rhs.fieldK)) {
+    return lhs.fieldK < rhs.fieldK;
+  }
+  if (!(lhs.fieldL == rhs.fieldL)) {
+    return lhs.fieldL < rhs.fieldL;
+  }
+  if (!(lhs.fieldM == rhs.fieldM)) {
+    return lhs.fieldM < rhs.fieldM;
+  }
+  if (!(lhs.fieldN == rhs.fieldN)) {
+    return lhs.fieldN < rhs.fieldN;
+  }
+  if (!(lhs.fieldO == rhs.fieldO)) {
+    return lhs.fieldO < rhs.fieldO;
+  }
+  if (!(lhs.fieldP == rhs.fieldP)) {
+    return lhs.fieldP < rhs.fieldP;
+  }
+  if (!(lhs.fieldQ == rhs.fieldQ)) {
+    return lhs.fieldQ < rhs.fieldQ;
+  }
+  if (!(lhs.fieldR == rhs.fieldR)) {
+    return lhs.fieldR < rhs.fieldR;
+  }
+  return false;
 }
 
 const  ::test_cpp2::cpp_reflection::union1& struct3::get_fieldE() const& {
@@ -1835,44 +2051,40 @@ void swap(struct3& a, struct3& b) {
   swap(a.__isset, b.__isset);
 }
 
-template uint32_t struct3::read<>(apache::thrift::BinaryProtocolReader*);
+template void struct3::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
 template uint32_t struct3::write<>(apache::thrift::BinaryProtocolWriter*) const;
 template uint32_t struct3::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
 template uint32_t struct3::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-template uint32_t struct3::read<>(apache::thrift::CompactProtocolReader*);
+template void struct3::readNoXfer<>(apache::thrift::CompactProtocolReader*);
 template uint32_t struct3::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t struct3::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t struct3::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 }} // test_cpp2::cpp_reflection
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace test_cpp2 { namespace cpp_reflection {
 
-struct4::struct4(apache::thrift::FragileConstructor, int32_t field0__arg, std::string field1__arg,  ::test_cpp2::cpp_reflection::enum1 field2__arg, std::unique_ptr< ::test_cpp2::cpp_reflection::structA> field3__arg) :
-    field0(std::move(field0__arg)),
-    field1(std::move(field1__arg)),
-    field2(std::move(field2__arg)),
-    field3(std::move(field3__arg))
- {
-  __isset.field1 = true;
-  __isset.field2 = true;
-}
-
-struct4::struct4(const struct4& src) {
-  field0 = src.field0;
-  field1 = src.field1;
-  __isset.field1 = src.__isset.field1;
-  field2 = src.field2;
-  __isset.field2 = src.__isset.field2;
-  if (src.field3) field3.reset(new  ::test_cpp2::cpp_reflection::structA(*src.field3));
+struct4::struct4(const struct4& srcObj) {
+  field0 = srcObj.field0;
+  field1 = srcObj.field1;
+  __isset.field1 = srcObj.__isset.field1;
+  field2 = srcObj.field2;
+  __isset.field2 = srcObj.__isset.field2;
+  if (srcObj.field3) field3.reset(new  ::test_cpp2::cpp_reflection::structA(*srcObj.field3));
 }
 
 struct4& struct4::operator=(const struct4& src) {
   struct4 tmp(src);
   swap(*this, tmp);
   return *this;
+}
+
+struct4::struct4(apache::thrift::FragileConstructor, int32_t field0__arg, std::string field1__arg,  ::test_cpp2::cpp_reflection::enum1 field2__arg, std::unique_ptr< ::test_cpp2::cpp_reflection::structA> field3__arg) :
+    field0(std::move(field0__arg)),
+    field1(std::move(field1__arg)),
+    field2(std::move(field2__arg)),
+    field3(std::move(field3__arg)) {
+  __isset.field1 = true;
+  __isset.field2 = true;
 }
 
 void struct4::__clear() {
@@ -1885,22 +2097,59 @@ void struct4::__clear() {
 }
 
 bool struct4::operator==(const struct4& rhs) const {
-  if (!((field0 == rhs.field0))) {
+  (void)rhs;
+  auto& lhs = *this;
+  if (!(lhs.field0 == rhs.field0)) {
     return false;
   }
-  if (__isset.field1 != rhs.__isset.field1) {
+  if (lhs.__isset.field1 != rhs.__isset.field1) {
     return false;
   }
-  else if (__isset.field1 && !((field1 == rhs.field1))) {
+  if (lhs.__isset.field1) {
+    if (!(lhs.field1 == rhs.field1)) {
+      return false;
+    }
+  }
+  if (!(lhs.field2 == rhs.field2)) {
     return false;
   }
-  if (!((field2 == rhs.field2))) {
+  if (!!lhs.field3 != !!rhs.field3) {
     return false;
   }
-  if (!(((field3 && rhs.field3 && *field3 == *rhs.field3) ||(!field3 && !rhs.field3)))) {
-    return false;
+  if (!!lhs.field3) {
+    if (lhs.field3 != rhs.field3 && !(*lhs.field3 == *rhs.field3)) {
+      return false;
+    }
   }
   return true;
+}
+
+bool struct4::operator<(const struct4& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  if (!(lhs.field0 == rhs.field0)) {
+    return lhs.field0 < rhs.field0;
+  }
+  if (lhs.__isset.field1 != rhs.__isset.field1) {
+    return lhs.__isset.field1 < rhs.__isset.field1;
+  }
+  if (lhs.__isset.field1) {
+    if (!(lhs.field1 == rhs.field1)) {
+      return lhs.field1 < rhs.field1;
+    }
+  }
+  if (!(lhs.field2 == rhs.field2)) {
+    return lhs.field2 < rhs.field2;
+  }
+  if (!!lhs.field3 != !!rhs.field3) {
+    return !!lhs.field3 < !!rhs.field3;
+  }
+  if (!!lhs.field3) {
+    if (lhs.field3 != rhs.field3 && !(*lhs.field3 == *rhs.field3)) {
+      return *lhs.field3 < *rhs.field3;
+    }
+  }
+  return false;
 }
 
 void struct4::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
@@ -1932,33 +2181,31 @@ void swap(struct4& a, struct4& b) {
   swap(a.__isset, b.__isset);
 }
 
-template uint32_t struct4::read<>(apache::thrift::BinaryProtocolReader*);
+template void struct4::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
 template uint32_t struct4::write<>(apache::thrift::BinaryProtocolWriter*) const;
 template uint32_t struct4::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
 template uint32_t struct4::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-template uint32_t struct4::read<>(apache::thrift::CompactProtocolReader*);
+template void struct4::readNoXfer<>(apache::thrift::CompactProtocolReader*);
 template uint32_t struct4::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t struct4::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t struct4::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 }} // test_cpp2::cpp_reflection
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace test_cpp2 { namespace cpp_reflection {
 
 struct5::struct5() :
-    field0(0),
-    field2( ::test_cpp2::cpp_reflection::enum1::field0)
- {}
+      field0(0),
+      field2( ::test_cpp2::cpp_reflection::enum1::field0) {}
+
+
+struct5::~struct5() {}
 
 struct5::struct5(apache::thrift::FragileConstructor, int32_t field0__arg, std::string field1__arg,  ::test_cpp2::cpp_reflection::enum1 field2__arg,  ::test_cpp2::cpp_reflection::structA field3__arg,  ::test_cpp2::cpp_reflection::structB field4__arg) :
     field0(std::move(field0__arg)),
     field1(std::move(field1__arg)),
     field2(std::move(field2__arg)),
     field3(std::move(field3__arg)),
-    field4(std::move(field4__arg))
- {
+    field4(std::move(field4__arg)) {
   __isset.field1 = true;
   __isset.field2 = true;
   __isset.field3 = true;
@@ -1975,28 +2222,56 @@ void struct5::__clear() {
   __isset = {};
 }
 
-struct5::~struct5() {}
-
 bool struct5::operator==(const struct5& rhs) const {
-  if (!((field0 == rhs.field0))) {
+  (void)rhs;
+  auto& lhs = *this;
+  if (!(lhs.field0 == rhs.field0)) {
     return false;
   }
-  if (__isset.field1 != rhs.__isset.field1) {
+  if (lhs.__isset.field1 != rhs.__isset.field1) {
     return false;
   }
-  else if (__isset.field1 && !((field1 == rhs.field1))) {
+  if (lhs.__isset.field1) {
+    if (!(lhs.field1 == rhs.field1)) {
+      return false;
+    }
+  }
+  if (!(lhs.field2 == rhs.field2)) {
     return false;
   }
-  if (!((field2 == rhs.field2))) {
+  if (!(lhs.field3 == rhs.field3)) {
     return false;
   }
-  if (!((field3 == rhs.field3))) {
-    return false;
-  }
-  if (!((field4 == rhs.field4))) {
+  if (!(lhs.field4 == rhs.field4)) {
     return false;
   }
   return true;
+}
+
+bool struct5::operator<(const struct5& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  if (!(lhs.field0 == rhs.field0)) {
+    return lhs.field0 < rhs.field0;
+  }
+  if (lhs.__isset.field1 != rhs.__isset.field1) {
+    return lhs.__isset.field1 < rhs.__isset.field1;
+  }
+  if (lhs.__isset.field1) {
+    if (!(lhs.field1 == rhs.field1)) {
+      return lhs.field1 < rhs.field1;
+    }
+  }
+  if (!(lhs.field2 == rhs.field2)) {
+    return lhs.field2 < rhs.field2;
+  }
+  if (!(lhs.field3 == rhs.field3)) {
+    return lhs.field3 < rhs.field3;
+  }
+  if (!(lhs.field4 == rhs.field4)) {
+    return lhs.field4 < rhs.field4;
+  }
+  return false;
 }
 
 const  ::test_cpp2::cpp_reflection::structA& struct5::get_field3() const& {
@@ -2049,24 +2324,20 @@ void swap(struct5& a, struct5& b) {
   swap(a.__isset, b.__isset);
 }
 
-template uint32_t struct5::read<>(apache::thrift::BinaryProtocolReader*);
+template void struct5::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
 template uint32_t struct5::write<>(apache::thrift::BinaryProtocolWriter*) const;
 template uint32_t struct5::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
 template uint32_t struct5::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-template uint32_t struct5::read<>(apache::thrift::CompactProtocolReader*);
+template void struct5::readNoXfer<>(apache::thrift::CompactProtocolReader*);
 template uint32_t struct5::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t struct5::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t struct5::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 }} // test_cpp2::cpp_reflection
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace test_cpp2 { namespace cpp_reflection {
 
 struct_binary::struct_binary(apache::thrift::FragileConstructor, std::string bi__arg) :
-    bi(std::move(bi__arg))
- {
+    bi(std::move(bi__arg)) {
   __isset.bi = true;
 }
 
@@ -2077,10 +2348,21 @@ void struct_binary::__clear() {
 }
 
 bool struct_binary::operator==(const struct_binary& rhs) const {
-  if (!(apache::thrift::StringTraits<std::string>::isEqual(bi, rhs.bi))) {
+  (void)rhs;
+  auto& lhs = *this;
+  if (!apache::thrift::StringTraits<std::string>::isEqual(lhs.bi, rhs.bi)) {
     return false;
   }
   return true;
+}
+
+bool struct_binary::operator<(const struct_binary& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  if (!apache::thrift::StringTraits<std::string>::isEqual(lhs.bi, rhs.bi)) {
+    return apache::thrift::StringTraits<std::string>::isLess(lhs.bi, rhs.bi);
+  }
+  return false;
 }
 
 void struct_binary::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
@@ -2097,26 +2379,22 @@ void swap(struct_binary& a, struct_binary& b) {
   swap(a.__isset, b.__isset);
 }
 
-template uint32_t struct_binary::read<>(apache::thrift::BinaryProtocolReader*);
+template void struct_binary::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
 template uint32_t struct_binary::write<>(apache::thrift::BinaryProtocolWriter*) const;
 template uint32_t struct_binary::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
 template uint32_t struct_binary::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-template uint32_t struct_binary::read<>(apache::thrift::CompactProtocolReader*);
+template void struct_binary::readNoXfer<>(apache::thrift::CompactProtocolReader*);
 template uint32_t struct_binary::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t struct_binary::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t struct_binary::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 }} // test_cpp2::cpp_reflection
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace test_cpp2 { namespace cpp_reflection {
 
 dep_A_struct::dep_A_struct(apache::thrift::FragileConstructor,  ::test_cpp2::cpp_reflection::dep_B_struct b__arg,  ::test_cpp2::cpp_reflection::dep_C_struct c__arg, int32_t i_a__arg) :
     b(std::move(b__arg)),
     c(std::move(c__arg)),
-    i_a(std::move(i_a__arg))
- {
+    i_a(std::move(i_a__arg)) {
   __isset.b = true;
   __isset.c = true;
   __isset.i_a = true;
@@ -2131,16 +2409,33 @@ void dep_A_struct::__clear() {
 }
 
 bool dep_A_struct::operator==(const dep_A_struct& rhs) const {
-  if (!((b == rhs.b))) {
+  (void)rhs;
+  auto& lhs = *this;
+  if (!(lhs.b == rhs.b)) {
     return false;
   }
-  if (!((c == rhs.c))) {
+  if (!(lhs.c == rhs.c)) {
     return false;
   }
-  if (!((i_a == rhs.i_a))) {
+  if (!(lhs.i_a == rhs.i_a)) {
     return false;
   }
   return true;
+}
+
+bool dep_A_struct::operator<(const dep_A_struct& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  if (!(lhs.b == rhs.b)) {
+    return lhs.b < rhs.b;
+  }
+  if (!(lhs.c == rhs.c)) {
+    return lhs.c < rhs.c;
+  }
+  if (!(lhs.i_a == rhs.i_a)) {
+    return lhs.i_a < rhs.i_a;
+  }
+  return false;
 }
 
 const  ::test_cpp2::cpp_reflection::dep_B_struct& dep_A_struct::get_b() const& {
@@ -2183,24 +2478,20 @@ void swap(dep_A_struct& a, dep_A_struct& b) {
   swap(a.__isset, b.__isset);
 }
 
-template uint32_t dep_A_struct::read<>(apache::thrift::BinaryProtocolReader*);
+template void dep_A_struct::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
 template uint32_t dep_A_struct::write<>(apache::thrift::BinaryProtocolWriter*) const;
 template uint32_t dep_A_struct::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
 template uint32_t dep_A_struct::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-template uint32_t dep_A_struct::read<>(apache::thrift::CompactProtocolReader*);
+template void dep_A_struct::readNoXfer<>(apache::thrift::CompactProtocolReader*);
 template uint32_t dep_A_struct::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t dep_A_struct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t dep_A_struct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 }} // test_cpp2::cpp_reflection
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace test_cpp2 { namespace cpp_reflection {
 
 annotated::annotated(apache::thrift::FragileConstructor, int32_t a__arg) :
-    a(std::move(a__arg))
- {
+    a(std::move(a__arg)) {
   __isset.a = true;
 }
 
@@ -2211,10 +2502,21 @@ void annotated::__clear() {
 }
 
 bool annotated::operator==(const annotated& rhs) const {
-  if (!((a == rhs.a))) {
+  (void)rhs;
+  auto& lhs = *this;
+  if (!(lhs.a == rhs.a)) {
     return false;
   }
   return true;
+}
+
+bool annotated::operator<(const annotated& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  if (!(lhs.a == rhs.a)) {
+    return lhs.a < rhs.a;
+  }
+  return false;
 }
 
 void annotated::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
@@ -2231,19 +2533,16 @@ void swap(annotated& a, annotated& b) {
   swap(a.__isset, b.__isset);
 }
 
-template uint32_t annotated::read<>(apache::thrift::BinaryProtocolReader*);
+template void annotated::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
 template uint32_t annotated::write<>(apache::thrift::BinaryProtocolWriter*) const;
 template uint32_t annotated::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
 template uint32_t annotated::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-template uint32_t annotated::read<>(apache::thrift::CompactProtocolReader*);
+template void annotated::readNoXfer<>(apache::thrift::CompactProtocolReader*);
 template uint32_t annotated::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t annotated::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t annotated::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 }} // test_cpp2::cpp_reflection
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace test_cpp2 { namespace cpp_reflection {
 
 void union_with_special_names::__clear() {
@@ -2520,7 +2819,6 @@ bool union_with_special_names::operator==(const union_with_special_names& rhs) c
     }
   }
 }
-
 void union_with_special_names::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
   if (false) {}
   else if (_fname == "get") {
@@ -2643,19 +2941,16 @@ void swap(union_with_special_names& a, union_with_special_names& b) {
   b = std::move(temp);
 }
 
-template uint32_t union_with_special_names::read<>(apache::thrift::BinaryProtocolReader*);
+template void union_with_special_names::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
 template uint32_t union_with_special_names::write<>(apache::thrift::BinaryProtocolWriter*) const;
 template uint32_t union_with_special_names::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
 template uint32_t union_with_special_names::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-template uint32_t union_with_special_names::read<>(apache::thrift::CompactProtocolReader*);
+template void union_with_special_names::readNoXfer<>(apache::thrift::CompactProtocolReader*);
 template uint32_t union_with_special_names::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t union_with_special_names::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t union_with_special_names::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 }} // test_cpp2::cpp_reflection
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace test_cpp2 { namespace cpp_reflection {
 
 struct_with_special_names::struct_with_special_names(apache::thrift::FragileConstructor, int32_t get__arg, int32_t getter__arg, int32_t lists__arg, int32_t maps__arg, int32_t name__arg, int32_t name_to_value__arg, int32_t names__arg, int32_t prefix_tree__arg, int32_t sets__arg, int32_t setter__arg, int32_t str__arg, int32_t strings__arg, int32_t type__arg, int32_t value__arg, int32_t value_to_name__arg, int32_t values__arg, int32_t id__arg, int32_t ids__arg, int32_t descriptor__arg, int32_t descriptors__arg, int32_t key__arg, int32_t keys__arg, int32_t annotation__arg, int32_t annotations__arg, int32_t member__arg, int32_t members__arg, int32_t field__arg, int32_t fields__arg) :
@@ -2686,8 +2981,7 @@ struct_with_special_names::struct_with_special_names(apache::thrift::FragileCons
     member(std::move(member__arg)),
     members(std::move(members__arg)),
     field(std::move(field__arg)),
-    fields(std::move(fields__arg))
- {
+    fields(std::move(fields__arg)) {
   __isset.get = true;
   __isset.getter = true;
   __isset.lists = true;
@@ -2752,91 +3046,183 @@ void struct_with_special_names::__clear() {
 }
 
 bool struct_with_special_names::operator==(const struct_with_special_names& rhs) const {
-  if (!((get == rhs.get))) {
+  (void)rhs;
+  auto& lhs = *this;
+  if (!(lhs.get == rhs.get)) {
     return false;
   }
-  if (!((getter == rhs.getter))) {
+  if (!(lhs.getter == rhs.getter)) {
     return false;
   }
-  if (!((lists == rhs.lists))) {
+  if (!(lhs.lists == rhs.lists)) {
     return false;
   }
-  if (!((maps == rhs.maps))) {
+  if (!(lhs.maps == rhs.maps)) {
     return false;
   }
-  if (!((name == rhs.name))) {
+  if (!(lhs.name == rhs.name)) {
     return false;
   }
-  if (!((name_to_value == rhs.name_to_value))) {
+  if (!(lhs.name_to_value == rhs.name_to_value)) {
     return false;
   }
-  if (!((names == rhs.names))) {
+  if (!(lhs.names == rhs.names)) {
     return false;
   }
-  if (!((prefix_tree == rhs.prefix_tree))) {
+  if (!(lhs.prefix_tree == rhs.prefix_tree)) {
     return false;
   }
-  if (!((sets == rhs.sets))) {
+  if (!(lhs.sets == rhs.sets)) {
     return false;
   }
-  if (!((setter == rhs.setter))) {
+  if (!(lhs.setter == rhs.setter)) {
     return false;
   }
-  if (!((str == rhs.str))) {
+  if (!(lhs.str == rhs.str)) {
     return false;
   }
-  if (!((strings == rhs.strings))) {
+  if (!(lhs.strings == rhs.strings)) {
     return false;
   }
-  if (!((type == rhs.type))) {
+  if (!(lhs.type == rhs.type)) {
     return false;
   }
-  if (!((value == rhs.value))) {
+  if (!(lhs.value == rhs.value)) {
     return false;
   }
-  if (!((value_to_name == rhs.value_to_name))) {
+  if (!(lhs.value_to_name == rhs.value_to_name)) {
     return false;
   }
-  if (!((values == rhs.values))) {
+  if (!(lhs.values == rhs.values)) {
     return false;
   }
-  if (!((id == rhs.id))) {
+  if (!(lhs.id == rhs.id)) {
     return false;
   }
-  if (!((ids == rhs.ids))) {
+  if (!(lhs.ids == rhs.ids)) {
     return false;
   }
-  if (!((descriptor == rhs.descriptor))) {
+  if (!(lhs.descriptor == rhs.descriptor)) {
     return false;
   }
-  if (!((descriptors == rhs.descriptors))) {
+  if (!(lhs.descriptors == rhs.descriptors)) {
     return false;
   }
-  if (!((key == rhs.key))) {
+  if (!(lhs.key == rhs.key)) {
     return false;
   }
-  if (!((keys == rhs.keys))) {
+  if (!(lhs.keys == rhs.keys)) {
     return false;
   }
-  if (!((annotation == rhs.annotation))) {
+  if (!(lhs.annotation == rhs.annotation)) {
     return false;
   }
-  if (!((annotations == rhs.annotations))) {
+  if (!(lhs.annotations == rhs.annotations)) {
     return false;
   }
-  if (!((member == rhs.member))) {
+  if (!(lhs.member == rhs.member)) {
     return false;
   }
-  if (!((members == rhs.members))) {
+  if (!(lhs.members == rhs.members)) {
     return false;
   }
-  if (!((field == rhs.field))) {
+  if (!(lhs.field == rhs.field)) {
     return false;
   }
-  if (!((fields == rhs.fields))) {
+  if (!(lhs.fields == rhs.fields)) {
     return false;
   }
   return true;
+}
+
+bool struct_with_special_names::operator<(const struct_with_special_names& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  if (!(lhs.get == rhs.get)) {
+    return lhs.get < rhs.get;
+  }
+  if (!(lhs.getter == rhs.getter)) {
+    return lhs.getter < rhs.getter;
+  }
+  if (!(lhs.lists == rhs.lists)) {
+    return lhs.lists < rhs.lists;
+  }
+  if (!(lhs.maps == rhs.maps)) {
+    return lhs.maps < rhs.maps;
+  }
+  if (!(lhs.name == rhs.name)) {
+    return lhs.name < rhs.name;
+  }
+  if (!(lhs.name_to_value == rhs.name_to_value)) {
+    return lhs.name_to_value < rhs.name_to_value;
+  }
+  if (!(lhs.names == rhs.names)) {
+    return lhs.names < rhs.names;
+  }
+  if (!(lhs.prefix_tree == rhs.prefix_tree)) {
+    return lhs.prefix_tree < rhs.prefix_tree;
+  }
+  if (!(lhs.sets == rhs.sets)) {
+    return lhs.sets < rhs.sets;
+  }
+  if (!(lhs.setter == rhs.setter)) {
+    return lhs.setter < rhs.setter;
+  }
+  if (!(lhs.str == rhs.str)) {
+    return lhs.str < rhs.str;
+  }
+  if (!(lhs.strings == rhs.strings)) {
+    return lhs.strings < rhs.strings;
+  }
+  if (!(lhs.type == rhs.type)) {
+    return lhs.type < rhs.type;
+  }
+  if (!(lhs.value == rhs.value)) {
+    return lhs.value < rhs.value;
+  }
+  if (!(lhs.value_to_name == rhs.value_to_name)) {
+    return lhs.value_to_name < rhs.value_to_name;
+  }
+  if (!(lhs.values == rhs.values)) {
+    return lhs.values < rhs.values;
+  }
+  if (!(lhs.id == rhs.id)) {
+    return lhs.id < rhs.id;
+  }
+  if (!(lhs.ids == rhs.ids)) {
+    return lhs.ids < rhs.ids;
+  }
+  if (!(lhs.descriptor == rhs.descriptor)) {
+    return lhs.descriptor < rhs.descriptor;
+  }
+  if (!(lhs.descriptors == rhs.descriptors)) {
+    return lhs.descriptors < rhs.descriptors;
+  }
+  if (!(lhs.key == rhs.key)) {
+    return lhs.key < rhs.key;
+  }
+  if (!(lhs.keys == rhs.keys)) {
+    return lhs.keys < rhs.keys;
+  }
+  if (!(lhs.annotation == rhs.annotation)) {
+    return lhs.annotation < rhs.annotation;
+  }
+  if (!(lhs.annotations == rhs.annotations)) {
+    return lhs.annotations < rhs.annotations;
+  }
+  if (!(lhs.member == rhs.member)) {
+    return lhs.member < rhs.member;
+  }
+  if (!(lhs.members == rhs.members)) {
+    return lhs.members < rhs.members;
+  }
+  if (!(lhs.field == rhs.field)) {
+    return lhs.field < rhs.field;
+  }
+  if (!(lhs.fields == rhs.fields)) {
+    return lhs.fields < rhs.fields;
+  }
+  return false;
 }
 
 void struct_with_special_names::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
@@ -2988,35 +3374,33 @@ void swap(struct_with_special_names& a, struct_with_special_names& b) {
   swap(a.__isset, b.__isset);
 }
 
-template uint32_t struct_with_special_names::read<>(apache::thrift::BinaryProtocolReader*);
+template void struct_with_special_names::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
 template uint32_t struct_with_special_names::write<>(apache::thrift::BinaryProtocolWriter*) const;
 template uint32_t struct_with_special_names::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
 template uint32_t struct_with_special_names::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-template uint32_t struct_with_special_names::read<>(apache::thrift::CompactProtocolReader*);
+template void struct_with_special_names::readNoXfer<>(apache::thrift::CompactProtocolReader*);
 template uint32_t struct_with_special_names::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t struct_with_special_names::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t struct_with_special_names::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 }} // test_cpp2::cpp_reflection
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace test_cpp2 { namespace cpp_reflection {
 
 struct_with_indirections::struct_with_indirections() :
-    real(0),
-    fake(0),
-    number(0),
-    result(0)
- {}
+      real(0),
+      fake(0),
+      number(0),
+      result(0) {}
+
+
+struct_with_indirections::~struct_with_indirections() {}
 
 struct_with_indirections::struct_with_indirections(apache::thrift::FragileConstructor, int32_t real__arg,  ::test_cpp2::cpp_reflection::FakeI32 fake__arg,  ::test_cpp2::cpp_reflection::HasANumber number__arg,  ::test_cpp2::cpp_reflection::HasAResult result__arg,  ::test_cpp2::cpp_reflection::HasAPhrase phrase__arg) :
     real(std::move(real__arg)),
     fake(std::move(fake__arg)),
     number(std::move(number__arg)),
     result(std::move(result__arg)),
-    phrase(std::move(phrase__arg))
- {
+    phrase(std::move(phrase__arg)) {
   __isset.real = true;
   __isset.fake = true;
   __isset.number = true;
@@ -3034,22 +3418,22 @@ void struct_with_indirections::__clear() {
   __isset = {};
 }
 
-struct_with_indirections::~struct_with_indirections() {}
-
 bool struct_with_indirections::operator==(const struct_with_indirections& rhs) const {
-  if (!((real == rhs.real))) {
+  (void)rhs;
+  auto& lhs = *this;
+  if (!(lhs.real == rhs.real)) {
     return false;
   }
-  if (!((fake == rhs.fake))) {
+  if (!(lhs.fake == rhs.fake)) {
     return false;
   }
-  if (!((number == rhs.number))) {
+  if (!(lhs.number == rhs.number)) {
     return false;
   }
-  if (!((result == rhs.result))) {
+  if (!(lhs.result == rhs.result)) {
     return false;
   }
-  if (!((phrase == rhs.phrase))) {
+  if (!(lhs.phrase == rhs.phrase)) {
     return false;
   }
   return true;
@@ -3089,19 +3473,13 @@ void swap(struct_with_indirections& a, struct_with_indirections& b) {
   swap(a.__isset, b.__isset);
 }
 
-template uint32_t struct_with_indirections::read<>(apache::thrift::BinaryProtocolReader*);
+template void struct_with_indirections::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
 template uint32_t struct_with_indirections::write<>(apache::thrift::BinaryProtocolWriter*) const;
 template uint32_t struct_with_indirections::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
 template uint32_t struct_with_indirections::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-template uint32_t struct_with_indirections::read<>(apache::thrift::CompactProtocolReader*);
+template void struct_with_indirections::readNoXfer<>(apache::thrift::CompactProtocolReader*);
 template uint32_t struct_with_indirections::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t struct_with_indirections::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t struct_with_indirections::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
-
-}} // test_cpp2::cpp_reflection
-namespace apache { namespace thrift {
-
-}} // apache::thrift
-namespace test_cpp2 { namespace cpp_reflection {
 
 }} // test_cpp2::cpp_reflection
