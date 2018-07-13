@@ -90,6 +90,7 @@ class t_mstch_py3_generator : public t_mstch_generator {
       std::initializer_list<string> tails = {});
   std::string flatten_type_name(const t_type&);
   std::string get_module_name(ModuleType module);
+  std::string get_enumSafeName(const std::string&);
   template <class T>
   std::string get_rename(const T&);
   void generate_module(const t_program&, ModuleType moduleType);
@@ -180,6 +181,10 @@ mstch::map t_mstch_py3_generator::extend_program(const t_program& program) {
   return result;
 }
 
+std::string t_mstch_py3_generator::get_enumSafeName(const std::string& name) {
+  return (name == "name" || name == "value") ? name + "_" : name;
+}
+
 template <class T>
 std::string t_mstch_py3_generator::get_rename(const T& elem) {
   auto& annotation = elem.annotations_;
@@ -226,6 +231,8 @@ mstch::map t_mstch_py3_generator::extend_field(const t_field& field) {
   const auto isPEP484Optional =
       ((!hasDefaultValue && !required) || follyOptional);
   const auto nameToUse = get_rename(field);
+  // Compiled thrift-py3 enums won't support entries named name or value
+  const auto enumSafeName = get_enumSafeName(nameToUse);
 
   mstch::map result{
       {"reference?", reference},
@@ -244,6 +251,7 @@ mstch::map t_mstch_py3_generator::extend_field(const t_field& field) {
       {"name", nameToUse},
       {"origName", field.get_name()},
       {"hasModifiedName?", (field.get_name() != nameToUse)},
+      {"enumSafeName", enumSafeName},
   };
   return result;
 }
@@ -348,11 +356,15 @@ mstch::map t_mstch_py3_generator::extend_enum(const t_enum& enm) {
 }
 
 mstch::map t_mstch_py3_generator::extend_enum_value(const t_enum_value& val) {
+  const auto name = get_rename(val);
+  // Compiled thrift-py3 enums won't support entries named name or value
+  const auto enumSafeName = get_enumSafeName(name);
   mstch::map result{
       // We replace the previously-set name on the enum value with the modified
       // name, and put the raw value in origName
-      {"name", get_rename(val)},
+      {"name", name},
       {"origName", val.get_name()},
+      {"enumSafeName", enumSafeName},
   };
   return result;
 }

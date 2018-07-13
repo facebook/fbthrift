@@ -63,6 +63,15 @@ cdef class __has_bitwise_opsMeta(type):
     def __getitem__(cls, name):
         return __has_bitwise_opsEnumMembers[name]
 
+    def __dir__(cls):
+        return ['__class__', '__doc__', '__members__', '__module__',
+        'none',
+        'zero',
+        'one',
+        'two',
+        'three',
+        ]
+
     def __iter__(cls):
         return iter(__has_bitwise_opsEnumUniqueValues.values())
 
@@ -165,6 +174,12 @@ cdef class __is_unscopedMeta(type):
     def __getitem__(cls, name):
         return __is_unscopedEnumMembers[name]
 
+    def __dir__(cls):
+        return ['__class__', '__doc__', '__members__', '__module__',
+        'hello',
+        'world',
+        ]
+
     def __iter__(cls):
         return iter(__is_unscopedEnumUniqueValues.values())
 
@@ -257,6 +272,12 @@ cdef class __MyForwardRefEnumMeta(type):
 
     def __getitem__(cls, name):
         return __MyForwardRefEnumEnumMembers[name]
+
+    def __dir__(cls):
+        return ['__class__', '__doc__', '__members__', '__module__',
+        'ZERO',
+        'NONZERO',
+        ]
 
     def __iter__(cls):
         return iter(__MyForwardRefEnumEnumUniqueValues.values())

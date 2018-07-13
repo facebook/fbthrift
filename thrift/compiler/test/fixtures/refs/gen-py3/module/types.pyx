@@ -55,6 +55,12 @@ cdef class __TypedEnumMeta(type):
     def __getitem__(cls, name):
         return __TypedEnumEnumMembers[name]
 
+    def __dir__(cls):
+        return ['__class__', '__doc__', '__members__', '__module__',
+        'VAL1',
+        'VAL2',
+        ]
+
     def __iter__(cls):
         return iter(__TypedEnumEnumUniqueValues.values())
 
@@ -158,9 +164,20 @@ cdef class __MyUnion_Union_TypeMeta(type):
             return __MyUnionType.aString
         raise KeyError(name)
 
+    def __dir__(cls):
+        return ['__class__', '__doc__', '__members__', '__module__', 'EMPTY',
+            'anInteger',
+            'aString',
+        ]
+
+    @property
+    def __members__(cls):
+        return {m.name: m for m in cls}
+
     def __iter__(cls):
-            yield __MyUnionType.anInteger
-            yield __MyUnionType.aString
+        yield __MyUnionType.EMPTY
+        yield __MyUnionType.anInteger
+        yield __MyUnionType.aString
 
     def __reversed__(cls):
         return reversed(iter(cls))
@@ -171,7 +188,7 @@ cdef class __MyUnion_Union_TypeMeta(type):
         return item in __MyUnion_Union_TypeEnumMembers
 
     def __len__(cls):
-        return 2
+        return 2+1  # For Empty
 
 
 @__cython.final

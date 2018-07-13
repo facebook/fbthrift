@@ -57,8 +57,17 @@ cdef class __Nada_Union_TypeMeta(type):
             return __NadaType.EMPTY
         raise KeyError(name)
 
+    def __dir__(cls):
+        return ['__class__', '__doc__', '__members__', '__module__', 'EMPTY',
+        ]
+
+    @property
+    def __members__(cls):
+        return {m.name: m for m in cls}
+
     def __iter__(cls):
-            return iter(())
+        yield __NadaType.EMPTY
+        return iter(())
 
     def __reversed__(cls):
         return reversed(iter(cls))
@@ -69,7 +78,7 @@ cdef class __Nada_Union_TypeMeta(type):
         return item in __Nada_Union_TypeEnumMembers
 
     def __len__(cls):
-        return 0
+        return 0+1  # For Empty
 
 
 @__cython.final

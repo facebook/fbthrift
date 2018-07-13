@@ -40,7 +40,7 @@ cdef class __{{struct:name}}_Union_TypeMeta(type):
                 return __{{struct:name}}Type.EMPTY
             {{#struct:fields}}
             elif cvalue == {{field:key}}:
-                return __{{struct:name}}Type.{{field:name}}
+                return __{{struct:name}}Type.{{field:enumSafeName}}
             {{/struct:fields}}
 
         raise ValueError(f'{value} is not a valid {{struct:name}}.Type')
@@ -50,16 +50,28 @@ cdef class __{{struct:name}}_Union_TypeMeta(type):
             return __{{struct:name}}Type.EMPTY
         {{#struct:fields}}
         elif name == "{{field:name}}":
-            return __{{struct:name}}Type.{{field:name}}
+            return __{{struct:name}}Type.{{field:enumSafeName}}
         {{/struct:fields}}
         raise KeyError(name)
 
-    def __iter__(cls):
+    def __dir__(cls):
+        return ['__class__', '__doc__', '__members__', '__module__', 'EMPTY',
         {{#struct:fields}}
-            yield __{{struct:name}}Type.{{field:name}}
+            '{{field:enumSafeName}}',
+        {{/struct:fields}}
+        ]
+
+    @property
+    def __members__(cls):
+        return {m.name: m for m in cls}
+
+    def __iter__(cls):
+        yield __{{struct:name}}Type.EMPTY
+        {{#struct:fields}}
+        yield __{{struct:name}}Type.{{field:enumSafeName}}
         {{/struct:fields}}
         {{^struct:fields}}
-            return iter(())
+        return iter(())
         {{/struct:fields}}
 
     def __reversed__(cls):
@@ -71,14 +83,14 @@ cdef class __{{struct:name}}_Union_TypeMeta(type):
         return item in __{{struct:name}}_Union_TypeEnumMembers
 
     def __len__(cls):
-        return {{struct:size}}
+        return {{struct:size}}+1  # For Empty
 
 
 @__cython.final
 cdef class __{{struct:name}}Type(thrift.py3.types.CompiledEnum):
     EMPTY = __{{struct:name}}Type.__new__(__{{struct:name}}Type, 0, "EMPTY")
     {{#struct:fields}}
-    {{field:name}} = __{{struct:name}}Type.__new__(__{{struct:name}}Type, {{field:key}}, "{{field:name}}")
+    {{field:enumSafeName}} = __{{struct:name}}Type.__new__(__{{struct:name}}Type, {{field:key}}, "{{field:enumSafeName}}")
     {{/struct:fields}}
 
     def __cinit__(self, value, name):

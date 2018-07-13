@@ -51,6 +51,10 @@ cdef class __EmptyEnumMeta(type):
     def __getitem__(cls, name):
         return __EmptyEnumEnumMembers[name]
 
+    def __dir__(cls):
+        return ['__class__', '__doc__', '__members__', '__module__',
+        ]
+
     def __iter__(cls):
         return iter(__EmptyEnumEnumUniqueValues.values())
 
@@ -142,6 +146,14 @@ cdef class __CityMeta(type):
 
     def __getitem__(cls, name):
         return __CityEnumMembers[name]
+
+    def __dir__(cls):
+        return ['__class__', '__doc__', '__members__', '__module__',
+        'NYC',
+        'MPK',
+        'SEA',
+        'LON',
+        ]
 
     def __iter__(cls):
         return iter(__CityEnumUniqueValues.values())
@@ -245,6 +257,14 @@ cdef class __CompanyMeta(type):
 
     def __getitem__(cls, name):
         return __CompanyEnumMembers[name]
+
+    def __dir__(cls):
+        return ['__class__', '__doc__', '__members__', '__module__',
+        'FACEBOOK',
+        'WHATSAPP',
+        'OCULUS',
+        'INSTAGRAM',
+        ]
 
     def __iter__(cls):
         return iter(__CompanyEnumUniqueValues.values())
@@ -355,9 +375,20 @@ cdef class __union1_Union_TypeMeta(type):
             return __union1Type.d
         raise KeyError(name)
 
+    def __dir__(cls):
+        return ['__class__', '__doc__', '__members__', '__module__', 'EMPTY',
+            'i',
+            'd',
+        ]
+
+    @property
+    def __members__(cls):
+        return {m.name: m for m in cls}
+
     def __iter__(cls):
-            yield __union1Type.i
-            yield __union1Type.d
+        yield __union1Type.EMPTY
+        yield __union1Type.i
+        yield __union1Type.d
 
     def __reversed__(cls):
         return reversed(iter(cls))
@@ -368,7 +399,7 @@ cdef class __union1_Union_TypeMeta(type):
         return item in __union1_Union_TypeEnumMembers
 
     def __len__(cls):
-        return 2
+        return 2+1  # For Empty
 
 
 @__cython.final
@@ -451,11 +482,24 @@ cdef class __union2_Union_TypeMeta(type):
             return __union2Type.u
         raise KeyError(name)
 
+    def __dir__(cls):
+        return ['__class__', '__doc__', '__members__', '__module__', 'EMPTY',
+            'i',
+            'd',
+            's',
+            'u',
+        ]
+
+    @property
+    def __members__(cls):
+        return {m.name: m for m in cls}
+
     def __iter__(cls):
-            yield __union2Type.i
-            yield __union2Type.d
-            yield __union2Type.s
-            yield __union2Type.u
+        yield __union2Type.EMPTY
+        yield __union2Type.i
+        yield __union2Type.d
+        yield __union2Type.s
+        yield __union2Type.u
 
     def __reversed__(cls):
         return reversed(iter(cls))
@@ -466,7 +510,7 @@ cdef class __union2_Union_TypeMeta(type):
         return item in __union2_Union_TypeEnumMembers
 
     def __len__(cls):
-        return 4
+        return 4+1  # For Empty
 
 
 @__cython.final

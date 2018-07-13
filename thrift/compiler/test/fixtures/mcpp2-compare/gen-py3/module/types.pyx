@@ -59,6 +59,13 @@ cdef class __MyEnumAMeta(type):
     def __getitem__(cls, name):
         return __MyEnumAEnumMembers[name]
 
+    def __dir__(cls):
+        return ['__class__', '__doc__', '__members__', '__module__',
+        'fieldA',
+        'fieldB',
+        'fieldC',
+        ]
+
     def __iter__(cls):
         return iter(__MyEnumAEnumUniqueValues.values())
 
@@ -156,6 +163,13 @@ cdef class __AnnotatedEnumMeta(type):
 
     def __getitem__(cls, name):
         return __AnnotatedEnumEnumMembers[name]
+
+    def __dir__(cls):
+        return ['__class__', '__doc__', '__members__', '__module__',
+        'FIELDA',
+        'FIELDB',
+        'FIELDC',
+        ]
 
     def __iter__(cls):
         return iter(__AnnotatedEnumEnumUniqueValues.values())
@@ -255,6 +269,13 @@ cdef class __AnnotatedEnum2Meta(type):
     def __getitem__(cls, name):
         return __AnnotatedEnum2EnumMembers[name]
 
+    def __dir__(cls):
+        return ['__class__', '__doc__', '__members__', '__module__',
+        'FIELDA',
+        'FIELDB',
+        'FIELDC',
+        ]
+
     def __iter__(cls):
         return iter(__AnnotatedEnum2EnumUniqueValues.values())
 
@@ -348,6 +369,11 @@ cdef class __MyEnumBMeta(type):
 
     def __getitem__(cls, name):
         return __MyEnumBEnumMembers[name]
+
+    def __dir__(cls):
+        return ['__class__', '__doc__', '__members__', '__module__',
+        'AField',
+        ]
 
     def __iter__(cls):
         return iter(__MyEnumBEnumUniqueValues.values())
@@ -449,9 +475,20 @@ cdef class __SimpleUnion_Union_TypeMeta(type):
             return __SimpleUnionType.stringValue
         raise KeyError(name)
 
+    def __dir__(cls):
+        return ['__class__', '__doc__', '__members__', '__module__', 'EMPTY',
+            'intValue',
+            'stringValue',
+        ]
+
+    @property
+    def __members__(cls):
+        return {m.name: m for m in cls}
+
     def __iter__(cls):
-            yield __SimpleUnionType.intValue
-            yield __SimpleUnionType.stringValue
+        yield __SimpleUnionType.EMPTY
+        yield __SimpleUnionType.intValue
+        yield __SimpleUnionType.stringValue
 
     def __reversed__(cls):
         return reversed(iter(cls))
@@ -462,7 +499,7 @@ cdef class __SimpleUnion_Union_TypeMeta(type):
         return item in __SimpleUnion_Union_TypeEnumMembers
 
     def __len__(cls):
-        return 2
+        return 2+1  # For Empty
 
 
 @__cython.final
@@ -657,39 +694,80 @@ cdef class __ComplexUnion_Union_TypeMeta(type):
             return __ComplexUnionType.excp_field
         raise KeyError(name)
 
+    def __dir__(cls):
+        return ['__class__', '__doc__', '__members__', '__module__', 'EMPTY',
+            'intValue',
+            'req_intValue',
+            'opt_intValue',
+            'stringValue',
+            'req_stringValue',
+            'opt_stringValue',
+            'intValue2',
+            'intValue3',
+            'doubelValue',
+            'boolValue',
+            'union_list',
+            'union_set',
+            'union_map',
+            'req_union_map',
+            'opt_union_map',
+            'enum_field',
+            'enum_container',
+            'a_struct',
+            'a_set_struct',
+            'a_union',
+            'req_a_union',
+            'opt_a_union',
+            'a_union_list',
+            'a_union_typedef',
+            'a_union_typedef_list',
+            'MyBinaryField',
+            'MyBinaryField2',
+            'MyBinaryField3',
+            'MyBinaryListField4',
+            'ref_field',
+            'ref_field2',
+            'excp_field',
+        ]
+
+    @property
+    def __members__(cls):
+        return {m.name: m for m in cls}
+
     def __iter__(cls):
-            yield __ComplexUnionType.intValue
-            yield __ComplexUnionType.req_intValue
-            yield __ComplexUnionType.opt_intValue
-            yield __ComplexUnionType.stringValue
-            yield __ComplexUnionType.req_stringValue
-            yield __ComplexUnionType.opt_stringValue
-            yield __ComplexUnionType.intValue2
-            yield __ComplexUnionType.intValue3
-            yield __ComplexUnionType.doubelValue
-            yield __ComplexUnionType.boolValue
-            yield __ComplexUnionType.union_list
-            yield __ComplexUnionType.union_set
-            yield __ComplexUnionType.union_map
-            yield __ComplexUnionType.req_union_map
-            yield __ComplexUnionType.opt_union_map
-            yield __ComplexUnionType.enum_field
-            yield __ComplexUnionType.enum_container
-            yield __ComplexUnionType.a_struct
-            yield __ComplexUnionType.a_set_struct
-            yield __ComplexUnionType.a_union
-            yield __ComplexUnionType.req_a_union
-            yield __ComplexUnionType.opt_a_union
-            yield __ComplexUnionType.a_union_list
-            yield __ComplexUnionType.a_union_typedef
-            yield __ComplexUnionType.a_union_typedef_list
-            yield __ComplexUnionType.MyBinaryField
-            yield __ComplexUnionType.MyBinaryField2
-            yield __ComplexUnionType.MyBinaryField3
-            yield __ComplexUnionType.MyBinaryListField4
-            yield __ComplexUnionType.ref_field
-            yield __ComplexUnionType.ref_field2
-            yield __ComplexUnionType.excp_field
+        yield __ComplexUnionType.EMPTY
+        yield __ComplexUnionType.intValue
+        yield __ComplexUnionType.req_intValue
+        yield __ComplexUnionType.opt_intValue
+        yield __ComplexUnionType.stringValue
+        yield __ComplexUnionType.req_stringValue
+        yield __ComplexUnionType.opt_stringValue
+        yield __ComplexUnionType.intValue2
+        yield __ComplexUnionType.intValue3
+        yield __ComplexUnionType.doubelValue
+        yield __ComplexUnionType.boolValue
+        yield __ComplexUnionType.union_list
+        yield __ComplexUnionType.union_set
+        yield __ComplexUnionType.union_map
+        yield __ComplexUnionType.req_union_map
+        yield __ComplexUnionType.opt_union_map
+        yield __ComplexUnionType.enum_field
+        yield __ComplexUnionType.enum_container
+        yield __ComplexUnionType.a_struct
+        yield __ComplexUnionType.a_set_struct
+        yield __ComplexUnionType.a_union
+        yield __ComplexUnionType.req_a_union
+        yield __ComplexUnionType.opt_a_union
+        yield __ComplexUnionType.a_union_list
+        yield __ComplexUnionType.a_union_typedef
+        yield __ComplexUnionType.a_union_typedef_list
+        yield __ComplexUnionType.MyBinaryField
+        yield __ComplexUnionType.MyBinaryField2
+        yield __ComplexUnionType.MyBinaryField3
+        yield __ComplexUnionType.MyBinaryListField4
+        yield __ComplexUnionType.ref_field
+        yield __ComplexUnionType.ref_field2
+        yield __ComplexUnionType.excp_field
 
     def __reversed__(cls):
         return reversed(iter(cls))
@@ -700,7 +778,7 @@ cdef class __ComplexUnion_Union_TypeMeta(type):
         return item in __ComplexUnion_Union_TypeEnumMembers
 
     def __len__(cls):
-        return 32
+        return 32+1  # For Empty
 
 
 @__cython.final
@@ -805,9 +883,20 @@ cdef class __FloatUnion_Union_TypeMeta(type):
             return __FloatUnionType.doubleSide
         raise KeyError(name)
 
+    def __dir__(cls):
+        return ['__class__', '__doc__', '__members__', '__module__', 'EMPTY',
+            'floatSide',
+            'doubleSide',
+        ]
+
+    @property
+    def __members__(cls):
+        return {m.name: m for m in cls}
+
     def __iter__(cls):
-            yield __FloatUnionType.floatSide
-            yield __FloatUnionType.doubleSide
+        yield __FloatUnionType.EMPTY
+        yield __FloatUnionType.floatSide
+        yield __FloatUnionType.doubleSide
 
     def __reversed__(cls):
         return reversed(iter(cls))
@@ -818,7 +907,7 @@ cdef class __FloatUnion_Union_TypeMeta(type):
         return item in __FloatUnion_Union_TypeEnumMembers
 
     def __len__(cls):
-        return 2
+        return 2+1  # For Empty
 
 
 @__cython.final

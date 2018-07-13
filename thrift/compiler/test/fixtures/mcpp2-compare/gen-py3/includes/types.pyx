@@ -55,6 +55,12 @@ cdef class __AnEnumMeta(type):
     def __getitem__(cls, name):
         return __AnEnumEnumMembers[name]
 
+    def __dir__(cls):
+        return ['__class__', '__doc__', '__members__', '__module__',
+        'FIELDA',
+        'FIELDB',
+        ]
+
     def __iter__(cls):
         return iter(__AnEnumEnumUniqueValues.values())
 

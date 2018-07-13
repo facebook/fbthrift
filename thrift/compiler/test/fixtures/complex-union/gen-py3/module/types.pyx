@@ -81,13 +81,28 @@ cdef class __ComplexUnion_Union_TypeMeta(type):
             return __ComplexUnionType.stringRef
         raise KeyError(name)
 
+    def __dir__(cls):
+        return ['__class__', '__doc__', '__members__', '__module__', 'EMPTY',
+            'intValue',
+            'stringValue',
+            'intListValue',
+            'stringListValue',
+            'typedefValue',
+            'stringRef',
+        ]
+
+    @property
+    def __members__(cls):
+        return {m.name: m for m in cls}
+
     def __iter__(cls):
-            yield __ComplexUnionType.intValue
-            yield __ComplexUnionType.stringValue
-            yield __ComplexUnionType.intListValue
-            yield __ComplexUnionType.stringListValue
-            yield __ComplexUnionType.typedefValue
-            yield __ComplexUnionType.stringRef
+        yield __ComplexUnionType.EMPTY
+        yield __ComplexUnionType.intValue
+        yield __ComplexUnionType.stringValue
+        yield __ComplexUnionType.intListValue
+        yield __ComplexUnionType.stringListValue
+        yield __ComplexUnionType.typedefValue
+        yield __ComplexUnionType.stringRef
 
     def __reversed__(cls):
         return reversed(iter(cls))
@@ -98,7 +113,7 @@ cdef class __ComplexUnion_Union_TypeMeta(type):
         return item in __ComplexUnion_Union_TypeEnumMembers
 
     def __len__(cls):
-        return 6
+        return 6+1  # For Empty
 
 
 @__cython.final
@@ -177,9 +192,20 @@ cdef class __VirtualComplexUnion_Union_TypeMeta(type):
             return __VirtualComplexUnionType.thingTwo
         raise KeyError(name)
 
+    def __dir__(cls):
+        return ['__class__', '__doc__', '__members__', '__module__', 'EMPTY',
+            'thingOne',
+            'thingTwo',
+        ]
+
+    @property
+    def __members__(cls):
+        return {m.name: m for m in cls}
+
     def __iter__(cls):
-            yield __VirtualComplexUnionType.thingOne
-            yield __VirtualComplexUnionType.thingTwo
+        yield __VirtualComplexUnionType.EMPTY
+        yield __VirtualComplexUnionType.thingOne
+        yield __VirtualComplexUnionType.thingTwo
 
     def __reversed__(cls):
         return reversed(iter(cls))
@@ -190,7 +216,7 @@ cdef class __VirtualComplexUnion_Union_TypeMeta(type):
         return item in __VirtualComplexUnion_Union_TypeEnumMembers
 
     def __len__(cls):
-        return 2
+        return 2+1  # For Empty
 
 
 @__cython.final

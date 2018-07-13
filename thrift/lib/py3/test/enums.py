@@ -3,13 +3,19 @@ import pickle
 import unittest
 
 from thrift.py3 import serialize, deserialize, Protocol, BadEnum, Enum, Flag
-from testing.types import Color, ColorGroups, Kind, Perm, File, Shape
+from testing.types import Color, ColorGroups, Kind, Perm, File, Shape, BadMembers
 from typing import cast, Type, TypeVar
 
 _E = TypeVar("_E", bound=Enum)
 
 
 class EnumTests(unittest.TestCase):
+
+    def test_bad_member_names(self) -> None:
+        self.assertIsInstance(BadMembers.name_, BadMembers)
+        self.assertIsInstance(BadMembers.value_, BadMembers)
+        self.assertIn("name_", BadMembers.__members__)
+        self.assertIn("value_", BadMembers.__members__)
 
     def test_normal_enum(self) -> None:
         with self.assertRaises(TypeError):

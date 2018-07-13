@@ -57,6 +57,13 @@ cdef class __AnimalMeta(type):
     def __getitem__(cls, name):
         return __AnimalEnumMembers[name]
 
+    def __dir__(cls):
+        return ['__class__', '__doc__', '__members__', '__module__',
+        'DOG',
+        'CAT',
+        'TARANTULA',
+        ]
+
     def __iter__(cls):
         return iter(__AnimalEnumUniqueValues.values())
 

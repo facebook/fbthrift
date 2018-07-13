@@ -55,6 +55,12 @@ cdef class __MyEnumMeta(type):
     def __getitem__(cls, name):
         return __MyEnumEnumMembers[name]
 
+    def __dir__(cls):
+        return ['__class__', '__doc__', '__members__', '__module__',
+        'MyValue1',
+        'MyValue2',
+        ]
+
     def __iter__(cls):
         return iter(__MyEnumEnumUniqueValues.values())
 

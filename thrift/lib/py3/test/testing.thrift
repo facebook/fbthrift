@@ -56,6 +56,11 @@ enum Kind {
     SOCK = 12,
 }
 
+enum BadMembers {
+    name = 1,
+    value = 2,
+}
+
 struct File {
     1: required string name,
     2: Perm permissions,
@@ -68,6 +73,7 @@ union Integers {
     3: i32 medium,
     4: i64 large,
     5: string unbounded,
+    6: string name,   # name is an invalid enum member name
 }
 
 struct easy {

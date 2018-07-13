@@ -61,6 +61,15 @@ cdef class __AnEnumMeta(type):
     def __getitem__(cls, name):
         return __AnEnumEnumMembers[name]
 
+    def __dir__(cls):
+        return ['__class__', '__doc__', '__members__', '__module__',
+        'NOTSET',
+        'ONE',
+        'TWO',
+        'THREE',
+        'FOUR',
+        ]
+
     def __iter__(cls):
         return iter(__AnEnumEnumUniqueValues.values())
 
@@ -177,6 +186,14 @@ cdef class __FlagsMeta(type):
 
     def __getitem__(cls, name):
         return __FlagsEnumMembers[name]
+
+    def __dir__(cls):
+        return ['__class__', '__doc__', '__members__', '__module__',
+        'flag_A',
+        'flag_B',
+        'flag_C',
+        'flag_D',
+        ]
 
     def __iter__(cls):
         return iter(__FlagsEnumUniqueValues.values())

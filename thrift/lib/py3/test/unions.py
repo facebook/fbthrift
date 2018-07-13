@@ -13,6 +13,24 @@ class UnionTests(unittest.TestCase):
     def test_hashability(self) -> None:
         hash(Integers())
 
+    def test_union_enum_dir(self) -> None:
+        contents = dir(Integers.Type)
+        self.assertEqual(len(contents), 4 + len(Integers.Type))
+        self.assertIn("__module__", contents)
+        self.assertIn("__class__", contents)
+        self.assertIn("__doc__", contents)
+        self.assertIn("__members__", contents)
+        for itype in iter(Integers.Type):
+            self.assertTrue(itype.name in contents)
+
+    def test_union_enum_members(self) -> None:
+        members = Integers.Type.__members__
+        # Alias can't happen in this enum so these should always equal
+        self.assertEqual(len(members), len(Integers.Type))
+        for type in Integers.Type:
+            self.assertIn(type.name, members)
+            self.assertIs(type, members[type.name])
+
     def test_deserialize_empty(self) -> None:
         x = deserialize(Integers, b'{}', Protocol.JSON)
         self.assertEqual(x.type, Integers.Type.EMPTY)

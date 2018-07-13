@@ -59,7 +59,7 @@ cdef class __{{enum:name}}Meta(type):
             {{#enum:values}}
             {{^enum:duplicate_values?}}
             {{^first?}}el{{/first?}}if cvalue == {{enumValue:value}}:
-                return {{#enum:flags?}}~{{enum:name}}.{{enumValue:name}} if invert else {{/enum:flags?}}{{enum:name}}.{{enumValue:name}}
+                return {{#enum:flags?}}~{{enum:name}}.{{enumValue:enumSafeName}} if invert else {{/enum:flags?}}{{enum:name}}.{{enumValue:enumSafeName}}
             {{/enum:duplicate_values?}}
             {{#last?}}
             {{#enum:flags?}}
@@ -76,6 +76,13 @@ cdef class __{{enum:name}}Meta(type):
 
     def __getitem__(cls, name):
         return __{{enum:name}}EnumMembers[name]
+
+    def __dir__(cls):
+        return ['__class__', '__doc__', '__members__', '__module__',
+        {{#enum:values}}
+        '{{enumValue:enumSafeName}}',
+        {{/enum:values}}
+        ]
 
     def __iter__(cls):
         return iter(__{{enum:name}}EnumUniqueValues.values())
@@ -104,7 +111,7 @@ cdef __{{enum:name}}_unique_instance(int value, str name):
 @__cython.final
 cdef class {{enum:name}}(thrift.py3.types.{{^enum:flags?}}CompiledEnum{{/enum:flags?}}{{#enum:flags?}}Flag{{/enum:flags?}}):
     {{#enum:values}}
-    {{enumValue:name}} = __{{enum:name}}_unique_instance({{enumValue:value}}, "{{enumValue:name}}")
+    {{enumValue:enumSafeName}} = __{{enum:name}}_unique_instance({{enumValue:value}}, "{{enumValue:enumSafeName}}")
     {{/enum:values}}
     __members__ = thrift.py3.types.MappingProxyType(__{{enum:name}}EnumMembers)
 
@@ -205,7 +212,7 @@ cdef inline c{{enum:name}} {{enum:name}}_to_cpp({{enum:name}} value):
     cdef int cvalue = value.value
     {{#enum:values}}
     {{^first?}}el{{/first?}}if cvalue == {{enumValue:value}}:
-        return {{enum:name}}__{{enumValue:name}}
+        return {{enum:name}}__{{enumValue:name}}{{! This is from cpp so not enumSafeName }}
     {{/enum:values}}
     {{^enum:values}}
     pass
