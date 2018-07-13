@@ -118,7 +118,6 @@ add_library(
   security/KerberosSASLHandshakeUtils.cpp
   security/KerberosSASLThreadManager.cpp
   security/SecurityKillSwitch.cpp
-  security/SecurityKillSwitchPoller.cpp
   server/BaseThriftServer.cpp
   server/Cpp2Connection.cpp
   server/Cpp2Worker.cpp

@@ -40,7 +40,6 @@
 #include <thrift/lib/cpp2/async/AsyncProcessor.h>
 #include <thrift/lib/cpp2/async/HeaderServerChannel.h>
 #include <thrift/lib/cpp2/async/SaslServer.h>
-#include <thrift/lib/cpp2/security/SecurityKillSwitchPoller.h>
 #include <thrift/lib/cpp2/server/BaseThriftServer.h>
 #include <thrift/lib/cpp2/server/TransportRoutingHandler.h>
 #include <thrift/lib/cpp2/transport/core/ThriftProcessor.h>
@@ -199,7 +198,6 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
 
   wangle::TLSCredProcessor& getCredProcessor();
 
-  SecurityKillSwitchPoller securityKillSwitchPoller_;
   std::unique_ptr<wangle::TLSCredProcessor> tlsCredProcessor_;
 
   std::unique_ptr<ThriftProcessor> thriftProcessor_;
@@ -497,13 +495,7 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
   }
 
   SSLPolicy getSSLPolicy() const {
-    auto policy = sslPolicy_;
-    if (policy == SSLPolicy::REQUIRED) {
-      if (securityKillSwitchPoller_.isKillSwitchEnabled()) {
-        policy = SSLPolicy::PERMITTED;
-      }
-    }
-    return policy;
+    return sslPolicy_;
   }
 
   void setSSLPolicy(SSLPolicy policy) {
