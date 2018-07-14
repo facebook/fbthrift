@@ -207,7 +207,7 @@ void ThreadManager::ImplT<SemType>::workerStarted(Worker<SemType>* worker) {
     --idleCount_;
     ++totalTaskCount_;
     shared_ptr<Thread> thread = worker->thread();
-    idMap_.insert(std::make_pair(thread->getId(), thread));
+    *isThreadManagerThread_ = true;
     initCallback = initCallback_;
     if (!namePrefix_.empty()) {
       thread->setName(folly::to<std::string>(namePrefix_, "-",
@@ -225,8 +225,6 @@ void ThreadManager::ImplT<SemType>::workerExiting(Worker<SemType>* worker) {
   Guard g(mutex_);
 
   shared_ptr<Thread> thread = worker->thread();
-  size_t numErased = idMap_.erase(thread->getId());
-  DCHECK_EQ(numErased, 1);
 
   --workerCount_;
   --totalTaskCount_;
@@ -349,9 +347,7 @@ void ThreadManager::ImplT<SemType>::removeWorkerImpl(size_t value, bool afterTas
 
 template <typename SemType>
 bool ThreadManager::ImplT<SemType>::canSleep() {
-  assert(mutex_.isLocked());
-  const Thread::id_t id = threadFactory_->getCurrentThreadId();
-  return idMap_.find(id) == idMap_.end();
+  return !(*isThreadManagerThread_);
 }
 
 template <typename SemType>
@@ -405,7 +401,7 @@ void ThreadManager::ImplT<SemType>::add(
   auto task = std::make_unique<Task>(
       std::move(value), std::chrono::milliseconds{expiration});
   auto timeout_ms = std::chrono::milliseconds{timeout};
-  auto writeSucceeded = pendingTaskCountMax_ == 0 && timeout > 0
+  auto writeSucceeded = pendingTaskCountMax_ == 0 && timeout > 0 && canSleep()
       ? tasks_.writeWithPriority(std::move(task), priority, timeout_ms)
       : tasks_.writeWithPriority(std::move(task), priority);
   if (!writeSucceeded) {

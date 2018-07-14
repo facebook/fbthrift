@@ -21,6 +21,7 @@
 
 #include <folly/DefaultKeepAliveExecutor.h>
 #include <folly/PriorityMPMCQueue.h>
+#include <folly/ThreadLocal.h>
 #include <folly/io/async/Request.h>
 #include <folly/synchronization/LifoSem.h>
 #include <folly/synchronization/SmallLocks.h>
@@ -302,7 +303,8 @@ class ThreadManager::ImplT : public ThreadManager,
   Monitor deadWorkerMonitor_;
   std::deque<shared_ptr<Thread> > deadWorkers_;
 
-  std::map<const Thread::id_t, shared_ptr<Thread> > idMap_;
+  folly::ThreadLocal<bool> isThreadManagerThread_{
+      [] { return new bool(false); }};
   std::string namePrefix_;
   uint32_t namePrefixCounter_;
 
