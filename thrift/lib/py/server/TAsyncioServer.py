@@ -37,7 +37,7 @@ logger = logging.getLogger(__name__)
 @asyncio.coroutine
 def ThriftAsyncServerFactory(
     processor, *, interface=None, port=0, loop=None, nthreads=None, sock=None,
-    backlog=100, ssl=None
+    backlog=100, ssl=None, event_handler=None
 ):
     """
     ThriftAsyncServerFactory(processor) -> asyncio.Server
@@ -56,6 +56,10 @@ def ThriftAsyncServerFactory(
 
     ssl is an instance of ssl.SSLContext. If None (default) or False SSL/TLS is
     not used.
+
+    event_handler must be a subclass of thrift.server.TServer. If None,
+    thrift.server.TServer.TServerEventHandler is used. Specify a custom handler
+    for custom event handling (e.g. handling new connections)
 
     Notes about the processor method handling:
 
@@ -100,7 +104,9 @@ def ThriftAsyncServerFactory(
         loop.set_default_executor(
             ThreadPoolExecutor(max_workers=nthreads),
         )
-    event_handler = TServerEventHandler()
+    if event_handler is None:
+        event_handler = TServerEventHandler()
+
     pfactory = ThriftServerProtocolFactory(processor, event_handler, loop)
     server = yield from loop.create_server(
         pfactory,
