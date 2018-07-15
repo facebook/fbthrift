@@ -18,6 +18,7 @@
 #include <bitset>
 #include <iostream>
 #include <iterator>
+#include <list>
 #include <memory>
 #include <type_traits>
 #include <vector>

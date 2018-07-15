@@ -17,6 +17,8 @@
  * under the License.
  */
 
+cpp_include "<list>"
+
 typedef list<i32> ( cpp.template = "std::list" ) int_linked_list
 
 struct bar {

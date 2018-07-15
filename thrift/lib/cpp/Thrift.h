@@ -20,7 +20,6 @@
 #include <folly/Range.h>
 #include <folly/Traits.h>
 #include <folly/lang/Bits.h>
-#include <folly/portability/Sockets.h>
 #include <folly/portability/Time.h>
 
 #include <thrift/lib/cpp/thrift_config.h>
@@ -39,8 +38,6 @@
 
 #include <algorithm>
 #include <exception>
-#include <iterator>
-#include <list>
 #include <map>
 #include <memory>
 #include <set>
