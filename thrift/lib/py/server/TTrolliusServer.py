@@ -45,7 +45,7 @@ logger = logging.getLogger(__name__)
 @asyncio.coroutine
 def ThriftAsyncServerFactory(
     processor, interface=None, port=0, loop=None, nthreads=None, sock=None,
-    backlog=100
+    backlog=100, event_handler=None
 ):
     if loop is None:
         loop = asyncio.get_event_loop()
@@ -63,8 +63,9 @@ def ThriftAsyncServerFactory(
         loop.set_default_executor(
             ThreadPoolExecutor(max_workers=nthreads),
         )
-    event_handler = TServerEventHandler()
-    pfactory = ThriftServerProtocolFactory(processor, event_handler, loop)
+
+    ehandler = TServerEventHandler() if event_handler is None else event_handler
+    pfactory = ThriftServerProtocolFactory(processor, ehandler, loop)
     server = yield From(loop.create_server(
         pfactory,
         interface,
@@ -75,7 +76,7 @@ def ThriftAsyncServerFactory(
 
     if server.sockets:
         for socket in server.sockets:
-            event_handler.preServe(socket.getsockname())
+            ehandler.preServe(socket.getsockname())
 
     raise Return(server)
 

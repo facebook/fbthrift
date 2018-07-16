@@ -104,10 +104,8 @@ def ThriftAsyncServerFactory(
         loop.set_default_executor(
             ThreadPoolExecutor(max_workers=nthreads),
         )
-    if event_handler is None:
-        event_handler = TServerEventHandler()
-
-    pfactory = ThriftServerProtocolFactory(processor, event_handler, loop)
+    ehandler = TServerEventHandler() if event_handler is None else event_handler
+    pfactory = ThriftServerProtocolFactory(processor, ehandler, loop)
     server = yield from loop.create_server(
         pfactory,
         interface,
@@ -119,7 +117,7 @@ def ThriftAsyncServerFactory(
 
     if server.sockets:
         for socket in server.sockets:
-            event_handler.preServe(socket.getsockname())
+            ehandler.preServe(socket.getsockname())
 
     return server
 
