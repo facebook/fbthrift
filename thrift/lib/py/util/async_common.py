@@ -440,3 +440,6 @@ class AsyncioRpcConnectionContext(TConnectionContext):
 
     def getPeerName(self):
         return self._client_socket.getpeername()
+
+    def getSockName(self):
+        return self._client_socket.getsockname()

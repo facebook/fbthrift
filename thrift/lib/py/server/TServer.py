@@ -72,6 +72,14 @@ class TRpcConnectionContext(TConnectionContext):
         """
         return self._client_socket.getPeerName()
 
+    def getSockName(self):
+        """Gets the address of the server.
+
+        Returns:
+          Same value as socket.getsockname() for the TSocket
+        """
+        return self._client_socket.getsockname()
+
 
 class TServerEventHandler:
     """Event handler base class.
