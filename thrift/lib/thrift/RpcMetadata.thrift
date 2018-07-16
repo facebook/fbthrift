@@ -15,6 +15,7 @@
  */
 
 namespace cpp2 apache.thrift
+namespace java.swift org.apache.thrift
 
 enum ProtocolId {
   // The values must match those in thrift/lib/cpp/protocol/TProtocolTypes.h
