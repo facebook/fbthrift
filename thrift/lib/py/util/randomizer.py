@@ -690,7 +690,8 @@ class StructRandomizer(BaseRandomizer):
     default_constraints = dict(BaseRandomizer.default_constraints)
     default_constraints.update({
         'p_include': 0.99,
-        'max_recursion_depth': 3
+        'max_recursion_depth': 3,
+        'per_field': {}
     })
 
     @classmethod
@@ -734,6 +735,7 @@ class StructRandomizer(BaseRandomizer):
                 'required': field_required,
                 'randomizer': field_randomizer
             }
+            field_rules[name].update(self.constraints['per_field'].get(name, {}))
 
         self._field_rules = field_rules
         self._is_union = is_union
@@ -818,6 +820,7 @@ class StructRandomizer(BaseRandomizer):
             rule = self._field_rules[field_name]
             required = rule['required']
 
+            p_include = rule.get('p_include', p_include)
             if not required and not (random.random() < p_include):
                 continue
 

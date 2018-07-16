@@ -691,7 +691,7 @@ class TestMapRandomizer(TestRandomizer, unittest.TestCase):
             self.assertIn(val, seeds)
 
 
-class TestStructRandomizer(TestRandomizer):
+class TestStructRandomizer(TestRandomizer, unittest.TestCase):
     def get_spec_args(self, ttype):
         # (ttype, thrift_spec, is_union)
         return (ttype, ttype.thrift_spec, ttype.isUnion())
@@ -704,6 +704,72 @@ class TestStructRandomizer(TestRandomizer):
             self.get_spec_args(ttype),
             constraints or {}
         )
+
+    def testNoFieldConstraints(self):
+        cls = self.__class__
+
+        constraints = {
+            'per_field': {
+                'a': {'p_include': 0.0},
+                'b': {'p_include': 0.0}
+            },
+            'p_include': 1.0,
+        }
+
+        gen = self.struct_randomizer(ttypes.StructWithOptionals, constraints)
+
+        for _ in sm.xrange(cls.iterations):
+            val = gen.generate()
+            self.assertIsNotNone(val)
+            self.assertIsNone(val.a)
+            self.assertIsNone(val.b)
+
+    def testOneTrueFieldConstraints(self):
+        cls = self.__class__
+
+        constraints = {
+            'per_field': {
+                'b': {'p_include': 0.0}
+            },
+            'p_include': 1.0,
+            'a': {'p_true': 1.0},
+        }
+
+        gen = self.struct_randomizer(ttypes.StructWithOptionals, constraints)
+
+        for _ in sm.xrange(cls.iterations):
+            val = gen.generate()
+            self.assertIsNotNone(val)
+            self.assertTrue(val.a)
+            self.assertIsNone(val.b)
+
+    def testNestedConstraints(self):
+        cls = self.__class__
+
+        constraints = {
+            'per_field': {
+                'b': {'p_include': 0.0}
+            },
+            'p_include': 1.0,
+            'a': {'p_true': 1.0},
+            'c': {
+                'p_include': 1.0,
+                'per_field': {
+                    'b': {'p_include': 0.0}
+                },
+            }
+        }
+
+        gen = self.struct_randomizer(ttypes.StructWithOptionals, constraints)
+
+        for _ in sm.xrange(cls.iterations):
+            val = gen.generate()
+            self.assertIsNotNone(val)
+            self.assertTrue(val.a)
+            self.assertIsNone(val.b)
+            self.assertIsNotNone(val.c.a)
+            self.assertIsNone(val.c.b)
+
 
 class TestUnionRandomizer(TestStructRandomizer, unittest.TestCase):
     ttype = ttypes.IntUnion

@@ -36,6 +36,17 @@ struct NestedStructs {
   3: IntUnion ints;
 }
 
+struct SimpleStruct {
+  1: i32 a;
+  2: i32 b;
+}
+
+struct StructWithOptionals {
+  1: optional bool a;
+  2: optional i32 b;
+  3: optional SimpleStruct c;
+}
+
 struct BTreeBranch {
   1: required BTree child;
   2: i16 cost;
