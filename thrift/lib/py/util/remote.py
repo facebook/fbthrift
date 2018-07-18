@@ -56,12 +56,15 @@ class RemoteClient(object):
         self.print_usage = print_usage
         self.default_port = default_port
 
-    def _print_functions(self, out):
+    def _print_functions(self, out, local_only=False):
         """Print all the functions available from this service"""
         fns_by_service_name = {svc_name: {} for svc_name in self.service_names}
         for fn in self.functions.values():
             fns_by_service_name[fn.svc_name][fn.fn_name] = fn
-        for svc_name in reversed(self.service_names):
+
+        svc_names = self.service_names[0:1] if local_only else \
+                        reversed(self.service_names)
+        for svc_name in svc_names:
             out.write('Functions in %s:\n' % (svc_name,))
             for fn_name, fn in sorted(fns_by_service_name[svc_name].items()):
                 if fn.return_type is None:
@@ -181,6 +184,15 @@ class RemoteClient(object):
                 pprint.pprint(transport.get_headers(), indent=2)
 
         self._close_client()
+
+    def process_option(self, op):
+        # help and ? are for the Remote class
+        if op == 'list-all-functions':
+            self._print_functions(sys.stdout, local_only=False)
+        elif op == 'list-functions':
+            self._print_functions(sys.stdout, local_only=True)
+        else:
+            self._exit(error_message=('unknown option --"%s"') % op)
 
     def run(self, args):
         fn_name, fn_args = self._process_args(args)
@@ -460,7 +472,7 @@ class Remote(object):
         print(usage, file=out)
 
         if help:
-            print('\nOptions:\n', file=out)
+            print('\nTransport Options:\n', file=out)
             for (short_flag, long_flag), kwargs in all_options:
                 if 'metavar' in kwargs:
                     specifier = '-%s %s, --%s %s' % (
@@ -471,6 +483,12 @@ class Remote(object):
                         short_flag, long_flag)
                 print('%-20s %s' % (specifier, kwargs.get('help', '')),
                       file=out)
+
+            print('\nService help options:\n', file=out)
+            print('--list-functions\tlist service specific functions', file=out)
+            print('--list-all-functions\tlist all functions, including the',
+                  'functions in parent class', file=out)
+
 
     @classmethod
     def _parse_options(cls, all_options, argv):
@@ -488,8 +506,7 @@ class Remote(object):
             cls._print_usage(all_options, argv, out, help=help)
 
         # Parse arguments manually. Assume any unrecognized --flag
-        # is an argument name and the immediately following
-        # argument is a corresponding string-type value.
+        # is an option for the RemoteClient class
         i = 0
         while i < len(argv) - 1:
             i += 1
@@ -502,10 +519,8 @@ class Remote(object):
                 if identifier in long_flag_args:
                     kwargs = long_flag_args[identifier]
                 else:
-                    # Unrecognized arg name - insert into unknown dict
-                    args['unknown'][identifier] = argv[i + 1]
-                    i += 1
-                    continue
+                    args.option = identifier
+                    break
             elif arg_name.startswith('-'):
                 short_id = arg_name[1:]
                 if short_id in short_flag_args:
@@ -574,10 +589,15 @@ class Remote(object):
             ttypes, argv, default_port=9090):
         all_options = cls._get_all_options()
         args, print_usage = cls._parse_options(all_options, argv)
-        client_type = cls._get_client_type(args, print_usage)
-        client = client_type(functions, service_names, service_class, ttypes,
-                             print_usage, default_port)
-        client.run(args)
+        if hasattr(args, 'option'):
+            rc = RemoteClient(functions, service_names, service_class, ttypes,
+                                print_usage, default_port)
+            rc.process_option(args.option)
+        else:
+            client_type = cls._get_client_type(args, print_usage)
+            client = client_type(functions, service_names, service_class, ttypes,
+                                 print_usage, default_port)
+            client.run(args)
 
 Remote.register_client_type(RemoteHostClient)
 Remote.register_client_type(RemoteHttpClient)
