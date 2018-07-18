@@ -56,6 +56,22 @@ SomeServiceClientWrapper::bounce_map(
   return _future;
 }
 
+folly::Future<std::map<std::string,int64_t>>
+SomeServiceClientWrapper::binary_keyed_map(
+    apache::thrift::RpcOptions& rpcOptions,
+    std::vector<int64_t> arg_r) {
+  folly::Promise<std::map<std::string,int64_t>> _promise;
+  auto _future = _promise.getFuture();
+  auto callback = std::make_unique<::thrift::py3::FutureCallback<std::map<std::string,int64_t>>>(
+    std::move(_promise), rpcOptions, async_client->recv_wrapped_binary_keyed_map, channel_);
+  async_client->binary_keyed_map(
+    rpcOptions,
+    std::move(callback),
+    arg_r
+  );
+  return _future;
+}
+
 
 } // namespace apache
 } // namespace thrift

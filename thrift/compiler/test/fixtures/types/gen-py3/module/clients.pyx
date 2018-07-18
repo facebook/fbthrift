@@ -54,6 +54,19 @@ cdef void SomeService_bounce_map_callback(
         except Exception as ex:
             pyfuture.set_exception(ex.with_traceback(None))
 
+cdef void SomeService_binary_keyed_map_callback(
+    cFollyTry[cmap[string,int64_t]]&& result,
+    PyObject* userdata
+):
+    client, pyfuture, options = <object> userdata  
+    if result.hasException():
+        pyfuture.set_exception(create_py_exception(result.exception(), <__RpcOptions>options))
+    else:
+        try:
+            pyfuture.set_result(_module_types.Map__binary_i64.create(make_shared[cmap[string,int64_t]](result.value())))
+        except Exception as ex:
+            pyfuture.set_exception(ex.with_traceback(None))
+
 
 cdef object _SomeService_annotations = _py_types.MappingProxyType({
 })
@@ -152,6 +165,30 @@ cdef class SomeService(thrift.py3.client.Client):
                 _module_types.std_unordered_map[int32_t,string](deref(_module_types.std_unordered_map__Map__i32_string(m)._cpp_obj.get())),
             ),
             SomeService_bounce_map_callback,
+            <PyObject *> __userdata
+        )
+        return asyncio_shield(__future)
+
+    @cython.always_allow_keywords(True)
+    def binary_keyed_map(
+            SomeService self,
+            r not None,
+            __RpcOptions rpc_options=None
+    ):
+        if rpc_options is None:
+            rpc_options = <__RpcOptions>__RpcOptions.__new__(__RpcOptions)
+        if not isinstance(r, _module_types.List__i64):
+            r = _module_types.List__i64(r)
+        self._check_connect_future()
+        __loop = asyncio_get_event_loop()
+        __future = __loop.create_future()
+        __userdata = (self, __future, rpc_options)
+        bridgeFutureWith[cmap[string,int64_t]](
+            self._executor,
+            deref(self._module_SomeService_client).binary_keyed_map(rpc_options._cpp_obj, 
+                vector[int64_t](deref(_module_types.List__i64(r)._cpp_obj.get())),
+            ),
+            SomeService_binary_keyed_map_callback,
             <PyObject *> __userdata
         )
         return asyncio_shield(__future)

@@ -17,6 +17,13 @@ interface SomeServiceAsyncIf extends \IThriftAsyncIf {
    *   bounce_map(1: include.SomeMap m);
    */
   public function bounce_map(Map<int, string> $m): Awaitable<Map<int, string>>;
+
+  /**
+   * Original thrift definition:-
+   * map<TBinary, i64>
+   *   binary_keyed_map(1: list<i64> r);
+   */
+  public function binary_keyed_map(\Indexish<int, int> $r): Awaitable<Map<string, int>>;
 }
 
 /**
@@ -30,6 +37,13 @@ interface SomeServiceIf extends \IThriftSyncIf {
    *   bounce_map(1: include.SomeMap m);
    */
   public function bounce_map(Map<int, string> $m): Map<int, string>;
+
+  /**
+   * Original thrift definition:-
+   * map<TBinary, i64>
+   *   binary_keyed_map(1: list<i64> r);
+   */
+  public function binary_keyed_map(\Indexish<int, int> $r): Map<string, int>;
 }
 
 /**
@@ -136,6 +150,103 @@ trait SomeServiceClientBase {
     throw $x;
   }
 
+  protected function sendImpl_binary_keyed_map(\Indexish<int, int> $r): int {
+    $currentseqid = $this->getNextSequenceID();
+    $args = new SomeService_binary_keyed_map_args(
+      new Vector($r),
+    );
+    try {
+      $this->eventHandler_->preSend('binary_keyed_map', $args, $currentseqid);
+      if ($this->output_ instanceof \TBinaryProtocolAccelerated)
+      {
+        thrift_protocol_write_binary($this->output_, 'binary_keyed_map', \TMessageType::CALL, $args, $currentseqid, $this->output_->isStrictWrite(), false);
+      }
+      else if ($this->output_ instanceof \TCompactProtocolAccelerated)
+      {
+        thrift_protocol_write_compact($this->output_, 'binary_keyed_map', \TMessageType::CALL, $args, $currentseqid, false);
+      }
+      else
+      {
+        $this->output_->writeMessageBegin('binary_keyed_map', \TMessageType::CALL, $currentseqid);
+        $args->write($this->output_);
+        $this->output_->writeMessageEnd();
+        $this->output_->getTransport()->flush();
+      }
+    } catch (\THandlerShortCircuitException $ex) {
+      switch ($ex->resultType) {
+        case \THandlerShortCircuitException::R_EXPECTED_EX:
+        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
+          $this->eventHandler_->sendError('binary_keyed_map', $args, $currentseqid, $ex->result);
+          throw $ex->result;
+        case \THandlerShortCircuitException::R_SUCCESS:
+        default:
+          $this->eventHandler_->postSend('binary_keyed_map', $args, $currentseqid);
+          return $currentseqid;
+      }
+    } catch (Exception $ex) {
+      $this->eventHandler_->sendError('binary_keyed_map', $args, $currentseqid, $ex);
+      throw $ex;
+    }
+    $this->eventHandler_->postSend('binary_keyed_map', $args, $currentseqid);
+    return $currentseqid;
+  }
+
+  protected function recvImpl_binary_keyed_map(?int $expectedsequenceid = null): Map<string, int> {
+    try {
+      $this->eventHandler_->preRecv('binary_keyed_map', $expectedsequenceid);
+      if ($this->input_ instanceof \TBinaryProtocolAccelerated) {
+        $result = thrift_protocol_read_binary($this->input_, 'SomeService_binary_keyed_map_result', $this->input_->isStrictRead());
+      } else if ($this->input_ instanceof \TCompactProtocolAccelerated)
+      {
+        $result = thrift_protocol_read_compact($this->input_, 'SomeService_binary_keyed_map_result');
+      }
+      else
+      {
+        $rseqid = 0;
+        $fname = '';
+        $mtype = 0;
+
+        $this->input_->readMessageBegin(&$fname, &$mtype, &$rseqid);
+        if ($mtype == \TMessageType::EXCEPTION) {
+          $x = new \TApplicationException();
+          $x->read($this->input_);
+          $this->input_->readMessageEnd();
+          throw $x;
+        }
+        $result = new SomeService_binary_keyed_map_result();
+        $result->read($this->input_);
+        $this->input_->readMessageEnd();
+        if ($expectedsequenceid !== null && ($rseqid != $expectedsequenceid)) {
+          throw new \TProtocolException("binary_keyed_map failed: sequence id is out of order");
+        }
+      }
+    } catch (\THandlerShortCircuitException $ex) {
+      switch ($ex->resultType) {
+        case \THandlerShortCircuitException::R_EXPECTED_EX:
+          $this->eventHandler_->recvException('binary_keyed_map', $expectedsequenceid, $ex->result);
+          throw $ex->result;
+        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
+          $this->eventHandler_->recvError('binary_keyed_map', $expectedsequenceid, $ex->result);
+          throw $ex->result;
+        case \THandlerShortCircuitException::R_SUCCESS:
+        default:
+          $this->eventHandler_->postRecv('binary_keyed_map', $expectedsequenceid, $ex->result);
+          return $ex->result;
+      }
+    } catch (Exception $ex) {
+      $this->eventHandler_->recvError('binary_keyed_map', $expectedsequenceid, $ex);
+      throw $ex;
+    }
+    if ($result->success !== null) {
+      $success = $result->success;
+      $this->eventHandler_->postRecv('binary_keyed_map', $expectedsequenceid, $success);
+      return $success;
+    }
+    $x = new \TApplicationException("binary_keyed_map failed: unknown result", \TApplicationException::MISSING_RESULT);
+    $this->eventHandler_->recvError('binary_keyed_map', $expectedsequenceid, $x);
+    throw $x;
+  }
+
 }
 
 class SomeServiceAsyncClient extends ThriftClientBase implements SomeServiceAsyncIf {
@@ -150,6 +261,17 @@ class SomeServiceAsyncClient extends ThriftClientBase implements SomeServiceAsyn
     $currentseqid = $this->sendImpl_bounce_map($m);
     await $this->asyncHandler_->genWait($currentseqid);
     return $this->recvImpl_bounce_map($currentseqid);
+  }
+
+  /**
+   * Original thrift definition:-
+   * map<TBinary, i64>
+   *   binary_keyed_map(1: list<i64> r);
+   */
+  public async function binary_keyed_map(\Indexish<int, int> $r): Awaitable<Map<string, int>> {
+    $currentseqid = $this->sendImpl_binary_keyed_map($r);
+    await $this->asyncHandler_->genWait($currentseqid);
+    return $this->recvImpl_binary_keyed_map($currentseqid);
   }
 
 }
@@ -174,12 +296,35 @@ class SomeServiceClient extends ThriftClientBase implements SomeServiceIf {
     return $this->recvImpl_bounce_map($currentseqid);
   }
 
+  <<__Deprecated('use gen_binary_keyed_map()')>>
+  public function binary_keyed_map(\Indexish<int, int> $r): Map<string, int> {
+    $currentseqid = $this->sendImpl_binary_keyed_map($r);
+    return $this->recvImpl_binary_keyed_map($currentseqid);
+  }
+
+  /**
+   * Original thrift definition:-
+   * map<TBinary, i64>
+   *   binary_keyed_map(1: list<i64> r);
+   */
+  public async function gen_binary_keyed_map(\Indexish<int, int> $r): Awaitable<Map<string, int>> {
+    $currentseqid = $this->sendImpl_binary_keyed_map($r);
+    await $this->asyncHandler_->genWait($currentseqid);
+    return $this->recvImpl_binary_keyed_map($currentseqid);
+  }
+
   /* send and recv functions */
   public function send_bounce_map(Map<int, string> $m): int {
     return $this->sendImpl_bounce_map($m);
   }
   public function recv_bounce_map(?int $expectedsequenceid = null): Map<int, string> {
     return $this->recvImpl_bounce_map($expectedsequenceid);
+  }
+  public function send_binary_keyed_map(\Indexish<int, int> $r): int {
+    return $this->sendImpl_binary_keyed_map($r);
+  }
+  public function recv_binary_keyed_map(?int $expectedsequenceid = null): Map<string, int> {
+    return $this->recvImpl_binary_keyed_map($expectedsequenceid);
   }
 }
 
@@ -285,6 +430,111 @@ class SomeService_bounce_map_result implements \IThriftStruct {
       $_container4 = Map {};
       foreach($_json3 as $_key1 => $_value2) {
         $_value5 = '';
+        $_value5 = $_value2;
+        $_container4[$_key1] = $_value5;
+      }
+      $this->success = $_container4;
+    }    
+  }
+
+}
+
+class SomeService_binary_keyed_map_args implements \IThriftStruct {
+  use \ThriftSerializationTrait;
+
+  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
+    1 => dict[
+      'var' => 'r',
+      'type' => \TType::LST,
+      'etype' => \TType::I64,
+      'elem' => dict[
+        'type' => \TType::I64,
+        ],
+        'format' => 'collection',
+      ],
+    ];
+  public static Map<string, int> $_TFIELDMAP = Map {
+    'r' => 1,
+  };
+  const int STRUCTURAL_ID = 4817436577562933873;
+  public Vector<int> $r;
+
+  public function __construct(?Vector<int> $r = null  ) {
+    if ($r === null) {
+      $this->r = Vector {};
+    } else {
+      $this->r = $r;
+    }
+  }
+
+  public function getName(): string {
+    return 'SomeService_binary_keyed_map_args';
+  }
+
+  public function readFromJson(string $jsonText): void {
+    $parsed = json_decode($jsonText, true);
+
+    if ($parsed === null || !is_array($parsed)) {
+      throw new \TProtocolException("Cannot parse the given json string.");
+    }
+
+    if (idx($parsed, 'r') !== null) {
+      $_json3 = $parsed['r'];
+      $_container4 = Vector {};
+      foreach($_json3 as $_key1 => $_value2) {
+        $_elem5 = 0;
+        $_elem5 = $_value2;
+        $_container4 []= $_elem5;
+      }
+      $this->r = $_container4;
+    }    
+  }
+
+}
+
+class SomeService_binary_keyed_map_result implements \IThriftStruct {
+  use \ThriftSerializationTrait;
+
+  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
+    0 => dict[
+      'var' => 'success',
+      'type' => \TType::MAP,
+      'ktype' => \TType::STRING,
+      'vtype' => \TType::I64,
+      'key' => dict[
+        'type' => \TType::STRING,
+      ],
+      'val' => dict[
+        'type' => \TType::I64,
+        ],
+        'format' => 'collection',
+      ],
+    ];
+  public static Map<string, int> $_TFIELDMAP = Map {
+    'success' => 0,
+  };
+  const int STRUCTURAL_ID = 5594803499509360192;
+  public ?Map<string, int> $success;
+
+  public function __construct(?Map<string, int> $success = null  ) {
+  }
+
+  public function getName(): string {
+    return 'SomeService_binary_keyed_map_result';
+  }
+
+  public function readFromJson(string $jsonText): void {
+    $parsed = json_decode($jsonText, true);
+
+    if ($parsed === null || !is_array($parsed)) {
+      throw new \TProtocolException("Cannot parse the given json string.");
+    }
+
+    if (idx($parsed, 'success') !== null) {
+      $_json3 = $parsed['success'];
+      $_container4 = Map {};
+      foreach($_json3 as $_key1 => $_value2) {
+        $_value5 = 0;
         $_value5 = $_value2;
         $_container4[$_key1] = $_value5;
       }

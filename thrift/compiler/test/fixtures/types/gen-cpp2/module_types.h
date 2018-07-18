@@ -198,7 +198,10 @@ class MyStructWithForwardRefEnum;
 }}}} // apache::thrift::fixtures::types
 // END forward_declare
 // BEGIN typedefs
+namespace apache { namespace thrift { namespace fixtures { namespace types {
+typedef std::string TBinary;
 
+}}}} // apache::thrift::fixtures::types
 // END typedefs
 // BEGIN hash_and_equal_to
 namespace std {

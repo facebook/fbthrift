@@ -48,6 +48,8 @@ cdef extern from "<utility>" namespace "std":
     cdef cFollyPromise[unique_ptr[string]] move(cFollyPromise[unique_ptr[string]])
     cdef cFollyPromise[unique_ptr[_module_types.std_unordered_map[int32_t,string]]] move(
         cFollyPromise[unique_ptr[_module_types.std_unordered_map[int32_t,string]]])
+    cdef cFollyPromise[unique_ptr[cmap[string,int64_t]]] move(
+        cFollyPromise[unique_ptr[cmap[string,int64_t]]])
 
 cdef class Promise_std_unordered_map__Map__i32_string:
     cdef cFollyPromise[unique_ptr[_module_types.std_unordered_map[int32_t,string]]] cPromise
@@ -55,6 +57,15 @@ cdef class Promise_std_unordered_map__Map__i32_string:
     @staticmethod
     cdef create(cFollyPromise[unique_ptr[_module_types.std_unordered_map[int32_t,string]]] cPromise):
         inst = <Promise_std_unordered_map__Map__i32_string>Promise_std_unordered_map__Map__i32_string.__new__(Promise_std_unordered_map__Map__i32_string)
+        inst.cPromise = move(cPromise)
+        return inst
+
+cdef class Promise_Map__binary_i64:
+    cdef cFollyPromise[unique_ptr[cmap[string,int64_t]]] cPromise
+
+    @staticmethod
+    cdef create(cFollyPromise[unique_ptr[cmap[string,int64_t]]] cPromise):
+        inst = <Promise_Map__binary_i64>Promise_Map__binary_i64.__new__(Promise_Map__binary_i64)
         inst.cPromise = move(cPromise)
         return inst
 
@@ -81,6 +92,15 @@ cdef class SomeServiceInterface(
             self,
             m):
         raise NotImplementedError("async def bounce_map is not implemented")
+
+    @staticmethod
+    def pass_context_binary_keyed_map(fn):
+        return pass_context(fn)
+
+    async def binary_keyed_map(
+            self,
+            r):
+        raise NotImplementedError("async def binary_keyed_map is not implemented")
 
 
 cdef api void call_cy_SomeService_bounce_map(
@@ -134,4 +154,56 @@ async def SomeService_bounce_map_coro(
         ))
     else:
         promise.cPromise.setValue(make_unique[_module_types.std_unordered_map[int32_t,string]](deref((<_module_types.std_unordered_map__Map__i32_string?> result)._cpp_obj)))
+
+cdef api void call_cy_SomeService_binary_keyed_map(
+    object self,
+    Cpp2RequestContext* ctx,
+    cFollyPromise[unique_ptr[cmap[string,int64_t]]] cPromise,
+    unique_ptr[vector[int64_t]] r
+):
+    cdef SomeServiceInterface __iface
+    __iface = self
+    __promise = Promise_Map__binary_i64.create(move(cPromise))
+    arg_r = _module_types.List__i64.create(_module_types.move(r))
+    __context = None
+    if __iface._pass_context_binary_keyed_map:
+        __context = RequestContext.create(ctx)
+    asyncio.get_event_loop().create_task(
+        SomeService_binary_keyed_map_coro(
+            self,
+            __context,
+            __promise,
+            arg_r
+        )
+    )
+
+async def SomeService_binary_keyed_map_coro(
+    object self,
+    object ctx,
+    Promise_Map__binary_i64 promise,
+    r
+):
+    try:
+        if ctx is not None:
+            result = await self.binary_keyed_map(ctx,
+                      r)
+        else:
+            result = await self.binary_keyed_map(
+                      r)
+        result = _module_types.Map__binary_i64(result)
+    except __ApplicationError as ex:
+        # If the handler raised an ApplicationError convert it to a C++ one
+        promise.cPromise.setException(cTApplicationException(
+            ex.type.value, ex.message.encode('UTF-8')
+        ))
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler binary_keyed_map:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(make_unique[cmap[string,int64_t]](deref((<_module_types.Map__binary_i64?> result)._cpp_obj)))
 

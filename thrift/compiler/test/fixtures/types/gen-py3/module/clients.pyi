@@ -36,3 +36,9 @@ class SomeService(thrift.py3.client.Client):
         rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
     ) -> _typing.Mapping[int, str]: ...
 
+    async def binary_keyed_map(
+        self,
+        r: _typing.Sequence[int],
+        rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
+    ) -> _typing.Mapping[bytes, int]: ...
+

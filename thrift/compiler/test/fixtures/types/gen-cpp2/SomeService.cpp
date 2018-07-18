@@ -28,7 +28,21 @@ void SomeServiceSvIf::async_tm_bounce_map(std::unique_ptr<apache::thrift::Handle
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_bounce_map(std::move(m)); });
 }
 
+void SomeServiceSvIf::binary_keyed_map(std::map< ::apache::thrift::fixtures::types::TBinary, int64_t>& /*_return*/, std::unique_ptr<std::vector<int64_t>> /*r*/) {
+  apache::thrift::detail::si::throw_app_exn_unimplemented("binary_keyed_map");
+}
+
+folly::Future<std::unique_ptr<std::map< ::apache::thrift::fixtures::types::TBinary, int64_t>>> SomeServiceSvIf::future_binary_keyed_map(std::unique_ptr<std::vector<int64_t>> r) {
+  return apache::thrift::detail::si::future_returning_uptr([&](std::map< ::apache::thrift::fixtures::types::TBinary, int64_t>& _return) { binary_keyed_map(_return, std::move(r)); });
+}
+
+void SomeServiceSvIf::async_tm_binary_keyed_map(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::map< ::apache::thrift::fixtures::types::TBinary, int64_t>>>> callback, std::unique_ptr<std::vector<int64_t>> r) {
+  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_binary_keyed_map(std::move(r)); });
+}
+
 void SomeServiceSvNull::bounce_map( ::apache::thrift::fixtures::types::SomeMap& /*_return*/, std::unique_ptr< ::apache::thrift::fixtures::types::SomeMap> /*m*/) {}
+
+void SomeServiceSvNull::binary_keyed_map(std::map< ::apache::thrift::fixtures::types::TBinary, int64_t>& /*_return*/, std::unique_ptr<std::vector<int64_t>> /*r*/) {}
 
 const char* SomeServiceAsyncProcessor::getServiceName() {
   return "SomeService";
@@ -54,6 +68,7 @@ const SomeServiceAsyncProcessor::BinaryProtocolProcessMap& SomeServiceAsyncProce
 
 const SomeServiceAsyncProcessor::BinaryProtocolProcessMap SomeServiceAsyncProcessor::binaryProcessMap_ {
   {"bounce_map", &SomeServiceAsyncProcessor::_processInThread_bounce_map<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
+  {"binary_keyed_map", &SomeServiceAsyncProcessor::_processInThread_binary_keyed_map<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
 };
 
 const SomeServiceAsyncProcessor::CompactProtocolProcessMap& SomeServiceAsyncProcessor::getCompactProtocolProcessMap() {
@@ -62,6 +77,7 @@ const SomeServiceAsyncProcessor::CompactProtocolProcessMap& SomeServiceAsyncProc
 
 const SomeServiceAsyncProcessor::CompactProtocolProcessMap SomeServiceAsyncProcessor::compactProcessMap_ {
   {"bounce_map", &SomeServiceAsyncProcessor::_processInThread_bounce_map<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
+  {"binary_keyed_map", &SomeServiceAsyncProcessor::_processInThread_binary_keyed_map<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
 };
 
 }}}} // apache::thrift::fixtures::types

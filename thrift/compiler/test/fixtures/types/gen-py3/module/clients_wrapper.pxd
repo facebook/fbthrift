@@ -35,4 +35,6 @@ cdef extern from "src/gen-py3/module/clients_wrapper.h" namespace "apache::thrif
 
     cFollyFuture[_module_types.std_unordered_map[int32_t,string]] bounce_map(cRpcOptions, 
       _module_types.std_unordered_map[int32_t,string] arg_m,)
+    cFollyFuture[cmap[string,int64_t]] binary_keyed_map(cRpcOptions, 
+      vector[int64_t] arg_r,)
 

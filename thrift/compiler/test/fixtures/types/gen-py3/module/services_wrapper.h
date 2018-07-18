@@ -27,6 +27,9 @@ class SomeServiceWrapper : virtual public SomeServiceSvIf {
     folly::Future<std::unique_ptr<std::unordered_map<int32_t,std::string>>> future_bounce_map(
         std::unique_ptr<std::unordered_map<int32_t,std::string>> m
     ) override;
+    folly::Future<std::unique_ptr<std::map<std::string,int64_t>>> future_binary_keyed_map(
+        std::unique_ptr<std::vector<int64_t>> r
+    ) override;
 };
 
 std::shared_ptr<apache::thrift::ServerInterface> SomeServiceInterface(PyObject *if_object, folly::Executor *exc);

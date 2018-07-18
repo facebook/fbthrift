@@ -524,6 +524,24 @@ cdef class std_unordered_map__Map__i32_string:
     @staticmethod
     cdef unique_ptr[std_unordered_map[int32_t,string]] _make_instance(object items) except *
 
+cdef class List__i64:
+    cdef object __hash
+    cdef object __weakref__
+    cdef shared_ptr[vector[int64_t]] _cpp_obj
+    @staticmethod
+    cdef create(shared_ptr[vector[int64_t]])
+    @staticmethod
+    cdef unique_ptr[vector[int64_t]] _make_instance(object items) except *
+
+cdef class Map__binary_i64:
+    cdef object __hash
+    cdef object __weakref__
+    cdef shared_ptr[cmap[string,int64_t]] _cpp_obj
+    @staticmethod
+    cdef create(shared_ptr[cmap[string,int64_t]])
+    @staticmethod
+    cdef unique_ptr[cmap[string,int64_t]] _make_instance(object items) except *
+
 cdef class List__i32:
     cdef object __hash
     cdef object __weakref__
@@ -599,6 +617,10 @@ cdef class std_list_int32_t__List__i32:
 cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[std_unordered_map[int32_t,string]] move(unique_ptr[std_unordered_map[int32_t,string]])
     cdef unique_ptr[std_unordered_map[int32_t,string]] move_unique "std::move"(unique_ptr[std_unordered_map[int32_t,string]])
+    cdef shared_ptr[vector[int64_t]] move(unique_ptr[vector[int64_t]])
+    cdef unique_ptr[vector[int64_t]] move_unique "std::move"(unique_ptr[vector[int64_t]])
+    cdef shared_ptr[cmap[string,int64_t]] move(unique_ptr[cmap[string,int64_t]])
+    cdef unique_ptr[cmap[string,int64_t]] move_unique "std::move"(unique_ptr[cmap[string,int64_t]])
     cdef shared_ptr[vector[int32_t]] move(unique_ptr[vector[int32_t]])
     cdef unique_ptr[vector[int32_t]] move_unique "std::move"(unique_ptr[vector[int32_t]])
     cdef shared_ptr[std_list[int32_t]] move(unique_ptr[std_list[int32_t]])
@@ -617,6 +639,10 @@ cdef extern from "<utility>" namespace "std" nogil:
     cdef unique_ptr[std_list_int32_t] move_unique "std::move"(unique_ptr[std_list_int32_t])
 cdef extern from "<memory>" namespace "std" nogil:
     cdef shared_ptr[const std_unordered_map[int32_t,string]] const_pointer_cast "std::const_pointer_cast<const std::unordered_map<int32_t,std::string>>"(shared_ptr[std_unordered_map[int32_t,string]])
+
+    cdef shared_ptr[const vector[int64_t]] const_pointer_cast "std::const_pointer_cast<const std::vector<int64_t>>"(shared_ptr[vector[int64_t]])
+
+    cdef shared_ptr[const cmap[string,int64_t]] const_pointer_cast "std::const_pointer_cast<const std::map<std::string,int64_t>>"(shared_ptr[cmap[string,int64_t]])
 
     cdef shared_ptr[const vector[int32_t]] const_pointer_cast "std::const_pointer_cast<const std::vector<int32_t>>"(shared_ptr[vector[int32_t]])
 

@@ -35,6 +35,23 @@ class SomeServiceInterface(
         self,
         m: _typing.Mapping[int, str]
     ) -> _typing.Mapping[int, str]: ...
+
+    @staticmethod
+    def pass_context_binary_keyed_map(
+        fn: _typing.Callable[
+                [_SomeServiceInterfaceT, RequestContext, _typing.Sequence[int]],
+                _typing.Awaitable[_typing.Mapping[bytes, int]]
+        ]
+    ) -> _typing.Callable[
+        [_SomeServiceInterfaceT, _typing.Sequence[int]],
+        _typing.Awaitable[_typing.Mapping[bytes, int]]
+    ]: ...
+
+    @abstractmethod
+    async def binary_keyed_map(
+        self,
+        r: _typing.Sequence[int]
+    ) -> _typing.Mapping[bytes, int]: ...
     pass
 
 

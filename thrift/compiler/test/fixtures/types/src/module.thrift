@@ -3,6 +3,8 @@ include "include.thrift"
 namespace cpp apache.thrift.fixtures.types
 namespace cpp2 apache.thrift.fixtures.types
 
+typedef binary TBinary
+
 struct decorated_struct {
   1: string field,
 } (cpp.declare_hash, cpp.declare_equal_to)
@@ -36,7 +38,8 @@ enum is_unscoped {
 } (cpp.deprecated_enum_unscoped)
 
 service SomeService {
-  include.SomeMap bounce_map(1: include.SomeMap m)
+  include.SomeMap bounce_map(1: include.SomeMap m),
+  map<TBinary, i64> binary_keyed_map(1: list<i64> r)
 }
 
 struct VirtualStruct {

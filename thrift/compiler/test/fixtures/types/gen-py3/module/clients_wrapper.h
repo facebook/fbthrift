@@ -42,6 +42,9 @@ class SomeServiceClientWrapper {
     folly::Future<std::unordered_map<int32_t,std::string>> bounce_map(
       apache::thrift::RpcOptions& rpcOptions,
       std::unordered_map<int32_t,std::string> arg_m);
+    folly::Future<std::map<std::string,int64_t>> binary_keyed_map(
+      apache::thrift::RpcOptions& rpcOptions,
+      std::vector<int64_t> arg_r);
 };
 
 
