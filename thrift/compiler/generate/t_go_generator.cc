@@ -3433,7 +3433,9 @@ void t_go_generator::generate_deserialize_field(
     out << "} else {" << endl;
     string wrap;
 
-    if (type->is_enum() || (orig_type->is_typedef() && !use_true_type)) {
+    if (((t_base_type*)type)->is_binary() && inkey) {
+      wrap = "";
+    } else if (type->is_enum() || (orig_type->is_typedef() && !use_true_type)) {
       wrap = publicize(type_name(orig_type));
     } else if (((t_base_type*)type)->get_base() == t_base_type::TYPE_BYTE) {
       wrap = "int8";

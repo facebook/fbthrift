@@ -926,8 +926,7 @@ var _key27 string
     if v, err := iprot.ReadString(); err != nil {
     return thrift.PrependError("error reading field 0: ", err)
 } else {
-    temp := TBinary(v)
-    _key27 = temp
+    _key27 = v
 }
 var _val28 int64
     if v, err := iprot.ReadI64(); err != nil {
