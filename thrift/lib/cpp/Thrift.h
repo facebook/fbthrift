@@ -58,24 +58,6 @@ struct ltstr {
 };
 
 /**
- * Marker class, for enabling CRTP-based helper functions. All user-defined
- * struct types will inherit from this type, so template functions can match any
- * of these types by using 'TStructType<ActualType>' in their signature.
- *
- * Concrete types can be obtained through __self() member function.
- */
-template<typename Self>
-struct TStructType {
-  const Self& __self() const {
-    return static_cast<const Self&>(*this);
-  }
-
-  Self& __self() {
-    return static_cast<Self&>(*this);
-  }
-};
-
-/**
  * Specialization fwd-decl in _types.h.
  * Specialization defn in _data.h.
  */
@@ -243,24 +225,6 @@ public:
   TException(const TException&) {}
   TException& operator=(const TException&) { return *this; }
   TException& operator=(TException&&) { return *this; }
-};
-
-/**
- * Marker class, for enabling CRTP-based helper functions. All user-defined
- * exception types will inherit from this type, so template functions can match
- * any of these types by using 'TExceptionType<ActualType>' in their signature.
- *
- * Concrete types can be obtained through __self() member function.
- */
-template<class Self>
-struct TExceptionType : TException {
-  const Self& __self() const {
-    return static_cast<const Self&>(*this);
-  }
-
-  Self& __self() {
-    return static_cast<Self&>(*this);
-  }
 };
 
 /**

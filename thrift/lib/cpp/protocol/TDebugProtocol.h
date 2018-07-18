@@ -249,10 +249,6 @@ public:
   template<typename T>
   typename std::enable_if<!std::is_enum<T>::value, void>::type
   write(const T& t) {
-    static_assert(
-      std::is_base_of<TStructType<T>, T>::value ||
-      std::is_base_of<TException, T>::value,
-      "Only works with legacy structs.");
     t.write(this);
   }
 
@@ -385,28 +381,6 @@ std::string ThriftDebugString(const T& ts, int32_t string_limit=0) {
   return std::string((char*)buf, (unsigned int)size);
 }
 
-template<class T>
-std::ostream& operator<<(std::ostream& os,
-                         const TStructType<T>& value) {
-  os << ThriftDebugString(value.__self());
-  return os;
-}
-
-template<class T>
-std::ostream& operator<<(std::ostream& os,
-                         const TExceptionType<T>& value) {
-  os << ThriftDebugString(value.__self());
-  return os;
-}
-
 }} // apache::thrift
-
-template <class T,
-          class Enable = typename std::enable_if<
-              std::is_base_of<apache::thrift::TStructType<T>, T>::value>::type>
-std::ostream& operator<<(std::ostream& os, const T& value) {
-  os << apache::thrift::ThriftDebugString(value);
-  return os;
-}
 
 #endif // #ifndef _THRIFT_PROTOCOL_TDEBUGPROTOCOL_H_
