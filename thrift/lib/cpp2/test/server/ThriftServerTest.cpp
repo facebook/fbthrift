@@ -23,13 +23,11 @@
 #include <gtest/gtest.h>
 
 #include <folly/Memory.h>
-#include <folly/Range.h>
 #include <folly/executors/GlobalExecutor.h>
 #include <folly/fibers/FiberManagerMap.h>
 #include <folly/io/GlobalShutdownSocketSet.h>
 #include <folly/io/async/AsyncServerSocket.h>
 #include <folly/io/async/EventBase.h>
-#include <folly/io/async/test/TestSSLServer.h>
 #include <wangle/acceptor/ServerSocketConfig.h>
 
 #include <proxygen/httpserver/HTTPServerOptions.h>
@@ -943,129 +941,4 @@ TEST(ThriftServer, SaslThreadCount) {
 
   server->setNSaslPoolThreads(30);
   EXPECT_EQ(server->getNumSaslThreadsToRun(), 30);
-}
-
-namespace {
-void doBadRequestHeaderTest(bool duplex, bool secure) {
-  auto server = std::static_pointer_cast<ThriftServer>(
-      TestThriftServerFactory<TestInterface>().create());
-  server->setDuplex(duplex);
-  if (secure) {
-    auto makeSslConfig = []() {
-      auto sslConfig = std::make_shared<wangle::SSLContextConfig>();
-      sslConfig->setCertificate(folly::kTestCert, folly::kTestKey, "");
-      sslConfig->clientCAFile = folly::kTestCA;
-      sslConfig->sessionContext = "ThriftServerTest";
-      return sslConfig;
-    };
-    server->setSSLConfig(makeSslConfig());
-  }
-  ScopedServerThread sst(std::move(server));
-
-  folly::EventBase evb;
-  auto makeClientSslContext = []() {
-    auto ctx = std::make_shared<folly::SSLContext>();
-    ctx->loadCertificate(folly::kTestCert);
-    ctx->loadPrivateKey(folly::kTestKey);
-    ctx->loadTrustedCertificates(folly::kTestCA);
-    ctx->authenticate(
-        true /* verify server cert */, false /* don't verify server name */);
-    ctx->setVerificationOption(folly::SSLContext::SSLVerifyPeerEnum::VERIFY);
-    return ctx;
-  };
-  folly::AsyncSocket::UniquePtr socket(
-      secure ? new folly::AsyncSSLSocket(makeClientSslContext(), &evb)
-             : new folly::AsyncSocket(&evb));
-  socket->connect(nullptr /* connect callback */, *sst.getAddress());
-
-  class RecordWriteSuccessCallback
-      : public folly::AsyncTransportWrapper::WriteCallback {
-   public:
-    void writeSuccess() noexcept override {
-      success_ = true;
-    }
-
-    void writeErr(
-        size_t /* bytesWritten */,
-        const folly::AsyncSocketException& /* exception */) noexcept override {
-      success_ = false;
-    }
-
-    size_t success() const {
-      return success_;
-    }
-
-   private:
-    bool success_{false};
-  };
-  RecordWriteSuccessCallback recordSuccessWriteCallback;
-
-  class CheckClosedReadCallback
-      : public folly::AsyncTransportWrapper::ReadCallback {
-   public:
-    explicit CheckClosedReadCallback(folly::AsyncSocket& socket)
-        : socket_(socket) {
-      socket_.setReadCB(this);
-    }
-
-    ~CheckClosedReadCallback() {
-      // We expect that the server closed the connection
-      EXPECT_TRUE(remoteClosed_);
-      socket_.close();
-    }
-
-    void getReadBuffer(void** bufout, size_t* lenout) override {
-      // For this test, we never do anything with the buffered data, but we
-      // still need to implement the full ReadCallback interface.
-      *bufout = buf_;
-      *lenout = sizeof(buf_);
-    }
-
-    void readDataAvailable(size_t /* len */) noexcept override {}
-
-    void readEOF() noexcept override {
-      remoteClosed_ = true;
-    }
-
-    void readErr(const folly::AsyncSocketException& ex) noexcept override {
-      ASSERT_EQ(ECONNRESET, ex.getErrno());
-      remoteClosed_ = true;
-    }
-
-   private:
-    folly::AsyncSocket& socket_;
-    char buf_[1024];
-    bool remoteClosed_{false};
-  };
-
-  EXPECT_TRUE(socket->good());
-  {
-    CheckClosedReadCallback checkClosedReadCallback_(*socket);
-    evb.runInEventBaseThread([&] {
-      constexpr folly::StringPiece kBadRequest("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
-      socket->write(
-          &recordSuccessWriteCallback, kBadRequest.data(), kBadRequest.size());
-    });
-    evb.loop();
-  }
-
-  EXPECT_TRUE(recordSuccessWriteCallback.success());
-  EXPECT_FALSE(socket->good());
-}
-} // namespace
-
-TEST(ThriftServer, BadRequestHeaderNoDuplexNoSsl) {
-  doBadRequestHeaderTest(false /* duplex */, false /* secure */);
-}
-
-TEST(ThriftServer, BadRequestHeaderDuplexNoSsl) {
-  doBadRequestHeaderTest(true /* duplex */, false /* secure */);
-}
-
-TEST(ThriftServer, BadRequestHeaderNoDuplexSsl) {
-  doBadRequestHeaderTest(false /* duplex */, true /* secure */);
-}
-
-TEST(ThriftServer, BadRequestHeaderDuplexSsl) {
-  doBadRequestHeaderTest(true /* duplex */, true /* secure */);
 }
