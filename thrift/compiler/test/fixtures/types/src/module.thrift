@@ -55,3 +55,23 @@ enum MyForwardRefEnum {
   ZERO = 0,
   NONZERO = 12,
 }
+
+struct TrivialNumeric {
+  1: i32 a,
+  2: bool b,
+}
+
+struct TrivialNestedWithDefault {
+  1: i32 z = 4,
+  2: TrivialNumeric n = {'a': 3, 'b': true},
+}
+
+struct ComplexString {
+  1: string a,
+  2: map<string, i32> b,
+}
+
+struct ComplexNestedWithDefault {
+  1: string z = '4',
+  2: ComplexString n = {'a': '3', 'b': {'a': 3}},
+}

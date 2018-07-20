@@ -122,19 +122,19 @@ func main() {
       fmt.Fprintln(os.Stderr, "BounceMap requires 1 args")
       flag.Usage()
     }
-    arg29 := flag.Arg(1)
-    mbTrans30 := thrift.NewMemoryBufferLen(len(arg29))
-    defer mbTrans30.Close()
-    _, err31 := mbTrans30.WriteString(arg29)
-    if err31 != nil { 
+    arg31 := flag.Arg(1)
+    mbTrans32 := thrift.NewMemoryBufferLen(len(arg31))
+    defer mbTrans32.Close()
+    _, err33 := mbTrans32.WriteString(arg31)
+    if err33 != nil { 
       Usage()
       return
     }
-    factory32 := thrift.NewSimpleJSONProtocolFactory()
-    jsProt33 := factory32.GetProtocol(mbTrans30)
+    factory34 := thrift.NewSimpleJSONProtocolFactory()
+    jsProt35 := factory34.GetProtocol(mbTrans32)
     containerStruct0 := module.NewSomeServiceBounceMapArgs()
-    err34 := containerStruct0.ReadField1(jsProt33)
-    if err34 != nil {
+    err36 := containerStruct0.ReadField1(jsProt35)
+    if err36 != nil {
       Usage()
       return
     }
@@ -148,19 +148,19 @@ func main() {
       fmt.Fprintln(os.Stderr, "BinaryKeyedMap requires 1 args")
       flag.Usage()
     }
-    arg35 := flag.Arg(1)
-    mbTrans36 := thrift.NewMemoryBufferLen(len(arg35))
-    defer mbTrans36.Close()
-    _, err37 := mbTrans36.WriteString(arg35)
-    if err37 != nil { 
+    arg37 := flag.Arg(1)
+    mbTrans38 := thrift.NewMemoryBufferLen(len(arg37))
+    defer mbTrans38.Close()
+    _, err39 := mbTrans38.WriteString(arg37)
+    if err39 != nil { 
       Usage()
       return
     }
-    factory38 := thrift.NewSimpleJSONProtocolFactory()
-    jsProt39 := factory38.GetProtocol(mbTrans36)
+    factory40 := thrift.NewSimpleJSONProtocolFactory()
+    jsProt41 := factory40.GetProtocol(mbTrans38)
     containerStruct0 := module.NewSomeServiceBinaryKeyedMapArgs()
-    err40 := containerStruct0.ReadField1(jsProt39)
-    if err40 != nil {
+    err42 := containerStruct0.ReadField1(jsProt41)
+    if err42 != nil {
       Usage()
       return
     }

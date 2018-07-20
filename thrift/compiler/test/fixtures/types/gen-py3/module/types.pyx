@@ -1267,6 +1267,696 @@ cdef class MyStructWithForwardRefEnum(thrift.py3.types.Struct):
         return (deserialize, (MyStructWithForwardRefEnum, serialize(self)))
 
 
+cdef cTrivialNumeric _TrivialNumeric_defaults = cTrivialNumeric()
+
+cdef class TrivialNumeric(thrift.py3.types.Struct):
+
+    def __init__(
+        TrivialNumeric self, *,
+        a=None,
+        pbool b=None
+    ):
+        if a is not None:
+            if not isinstance(a, int):
+                raise TypeError(f'a is not a { int !r}.')
+            a = <int32_t> a
+
+        self._cpp_obj = move(TrivialNumeric._make_instance(
+          NULL,
+          a,
+          b,
+        ))
+
+    def __call__(
+        TrivialNumeric self,
+        a=__NOTSET,
+        b=__NOTSET
+    ):
+        changes = any((
+            a is not __NOTSET,
+
+            b is not __NOTSET,
+        ))
+
+        if not changes:
+            return self
+
+        if None is not a is not __NOTSET:
+            if not isinstance(a, int):
+                raise TypeError(f'a is not a { int !r}.')
+            a = <int32_t> a
+
+        if None is not b is not __NOTSET:
+            if not isinstance(b, bool):
+                raise TypeError(f'b is not a { bool !r}.')
+
+        inst = <TrivialNumeric>TrivialNumeric.__new__(TrivialNumeric)
+        inst._cpp_obj = move(TrivialNumeric._make_instance(
+          self._cpp_obj.get(),
+          a,
+          b,
+        ))
+        return inst
+
+    @staticmethod
+    cdef unique_ptr[cTrivialNumeric] _make_instance(
+        cTrivialNumeric* base_instance,
+        object a,
+        object b
+    ) except *:
+        cdef unique_ptr[cTrivialNumeric] c_inst
+        if base_instance:
+            c_inst = make_unique[cTrivialNumeric](deref(base_instance))
+        else:
+            c_inst = make_unique[cTrivialNumeric]()
+
+        if base_instance:
+            # Convert None's to default value. (or unset)
+            if a is None:
+                deref(c_inst).a = _TrivialNumeric_defaults.a
+                deref(c_inst).__isset.a = False
+                pass
+            elif a is __NOTSET:
+                a = None
+
+            if b is None:
+                deref(c_inst).b = _TrivialNumeric_defaults.b
+                deref(c_inst).__isset.b = False
+                pass
+            elif b is __NOTSET:
+                b = None
+
+        if a is not None:
+            deref(c_inst).a = a
+            deref(c_inst).__isset.a = True
+        if b is not None:
+            deref(c_inst).b = b
+            deref(c_inst).__isset.b = True
+        # in C++ you don't have to call move(), but this doesn't translate
+        # into a C++ return statement, so you do here
+        return move_unique(c_inst)
+
+    def __iter__(self):
+        yield 'a', self.a
+        yield 'b', self.b
+
+    def __bool__(self):
+        return True or True
+
+    @staticmethod
+    cdef create(shared_ptr[cTrivialNumeric] cpp_obj):
+        inst = <TrivialNumeric>TrivialNumeric.__new__(TrivialNumeric)
+        inst._cpp_obj = cpp_obj
+        return inst
+
+    @property
+    def a(self):
+
+        return self._cpp_obj.get().a
+
+    @property
+    def b(self):
+
+        return <pbool> self._cpp_obj.get().b
+
+
+    def __hash__(TrivialNumeric self):
+        if not self.__hash:
+            self.__hash = hash((
+            self.a,
+            self.b,
+            ))
+        return self.__hash
+
+    def __repr__(TrivialNumeric self):
+        return f'TrivialNumeric(a={repr(self.a)}, b={repr(self.b)})'
+    def __richcmp__(self, other, op):
+        cdef int cop = op
+        if cop not in (2, 3):
+            raise TypeError("unorderable types: {}, {}".format(self, other))
+        if not (
+                isinstance(self, TrivialNumeric) and
+                isinstance(other, TrivialNumeric)):
+            if cop == 2:  # different types are never equal
+                return False
+            else:         # different types are always notequal
+                return True
+
+        cdef cTrivialNumeric cself = deref((<TrivialNumeric>self)._cpp_obj)
+        cdef cTrivialNumeric cother = deref((<TrivialNumeric>other)._cpp_obj)
+        cdef cbool cmp = cself == cother
+        if cop == 2:
+            return cmp
+        return not cmp
+
+    cdef __iobuf.IOBuf _serialize(TrivialNumeric self, proto):
+        cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
+        cdef cTrivialNumeric* cpp_obj = self._cpp_obj.get()
+        if proto is __Protocol.COMPACT:
+            with nogil:
+                serializer.CompactSerialize[cTrivialNumeric](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.BINARY:
+            with nogil:
+                serializer.BinarySerialize[cTrivialNumeric](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.JSON:
+            with nogil:
+                serializer.JSONSerialize[cTrivialNumeric](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
+        return __iobuf.from_unique_ptr(queue.move())
+
+    cdef uint32_t _deserialize(TrivialNumeric self, const __iobuf.cIOBuf* buf, proto) except? 0:
+        cdef uint32_t needed
+        self._cpp_obj = make_shared[cTrivialNumeric]()
+        cdef cTrivialNumeric* cpp_obj = self._cpp_obj.get()
+        if proto is __Protocol.COMPACT:
+            with nogil:
+                needed = serializer.CompactDeserialize[cTrivialNumeric](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.BINARY:
+            with nogil:
+                needed = serializer.BinaryDeserialize[cTrivialNumeric](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.JSON:
+            with nogil:
+                needed = serializer.JSONDeserialize[cTrivialNumeric](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
+        return needed
+
+    def __reduce__(self):
+        return (deserialize, (TrivialNumeric, serialize(self)))
+
+
+cdef cTrivialNestedWithDefault _TrivialNestedWithDefault_defaults = cTrivialNestedWithDefault()
+
+cdef class TrivialNestedWithDefault(thrift.py3.types.Struct):
+
+    def __init__(
+        TrivialNestedWithDefault self, *,
+        z=None,
+        TrivialNumeric n=None
+    ):
+        if z is not None:
+            if not isinstance(z, int):
+                raise TypeError(f'z is not a { int !r}.')
+            z = <int32_t> z
+
+        self._cpp_obj = move(TrivialNestedWithDefault._make_instance(
+          NULL,
+          z,
+          n,
+        ))
+
+    def __call__(
+        TrivialNestedWithDefault self,
+        z=__NOTSET,
+        n=__NOTSET
+    ):
+        changes = any((
+            z is not __NOTSET,
+
+            n is not __NOTSET,
+        ))
+
+        if not changes:
+            return self
+
+        if None is not z is not __NOTSET:
+            if not isinstance(z, int):
+                raise TypeError(f'z is not a { int !r}.')
+            z = <int32_t> z
+
+        if None is not n is not __NOTSET:
+            if not isinstance(n, TrivialNumeric):
+                raise TypeError(f'n is not a { TrivialNumeric !r}.')
+
+        inst = <TrivialNestedWithDefault>TrivialNestedWithDefault.__new__(TrivialNestedWithDefault)
+        inst._cpp_obj = move(TrivialNestedWithDefault._make_instance(
+          self._cpp_obj.get(),
+          z,
+          n,
+        ))
+        return inst
+
+    @staticmethod
+    cdef unique_ptr[cTrivialNestedWithDefault] _make_instance(
+        cTrivialNestedWithDefault* base_instance,
+        object z,
+        object n
+    ) except *:
+        cdef unique_ptr[cTrivialNestedWithDefault] c_inst
+        if base_instance:
+            c_inst = make_unique[cTrivialNestedWithDefault](deref(base_instance))
+        else:
+            c_inst = make_unique[cTrivialNestedWithDefault]()
+
+        if base_instance:
+            # Convert None's to default value. (or unset)
+            if z is None:
+                deref(c_inst).z = _TrivialNestedWithDefault_defaults.z
+                deref(c_inst).__isset.z = False
+                pass
+            elif z is __NOTSET:
+                z = None
+
+            if n is None:
+                deref(c_inst).n = _TrivialNestedWithDefault_defaults.n
+                deref(c_inst).__isset.n = False
+                pass
+            elif n is __NOTSET:
+                n = None
+
+        if z is not None:
+            deref(c_inst).z = z
+            deref(c_inst).__isset.z = True
+        if n is not None:
+            deref(c_inst).n = deref((<TrivialNumeric?> n)._cpp_obj)
+            deref(c_inst).__isset.n = True
+        # in C++ you don't have to call move(), but this doesn't translate
+        # into a C++ return statement, so you do here
+        return move_unique(c_inst)
+
+    def __iter__(self):
+        yield 'z', self.z
+        yield 'n', self.n
+
+    def __bool__(self):
+        return True or True
+
+    @staticmethod
+    cdef create(shared_ptr[cTrivialNestedWithDefault] cpp_obj):
+        inst = <TrivialNestedWithDefault>TrivialNestedWithDefault.__new__(TrivialNestedWithDefault)
+        inst._cpp_obj = cpp_obj
+        return inst
+
+    @property
+    def z(self):
+
+        return self._cpp_obj.get().z
+
+    @property
+    def n(self):
+
+        if self.__n is None:
+            self.__n = TrivialNumeric.create(make_shared[cTrivialNumeric](deref(self._cpp_obj).n))
+        return self.__n
+
+
+    def __hash__(TrivialNestedWithDefault self):
+        if not self.__hash:
+            self.__hash = hash((
+            self.z,
+            self.n,
+            ))
+        return self.__hash
+
+    def __repr__(TrivialNestedWithDefault self):
+        return f'TrivialNestedWithDefault(z={repr(self.z)}, n={repr(self.n)})'
+    def __richcmp__(self, other, op):
+        cdef int cop = op
+        if cop not in (2, 3):
+            raise TypeError("unorderable types: {}, {}".format(self, other))
+        if not (
+                isinstance(self, TrivialNestedWithDefault) and
+                isinstance(other, TrivialNestedWithDefault)):
+            if cop == 2:  # different types are never equal
+                return False
+            else:         # different types are always notequal
+                return True
+
+        cdef cTrivialNestedWithDefault cself = deref((<TrivialNestedWithDefault>self)._cpp_obj)
+        cdef cTrivialNestedWithDefault cother = deref((<TrivialNestedWithDefault>other)._cpp_obj)
+        cdef cbool cmp = cself == cother
+        if cop == 2:
+            return cmp
+        return not cmp
+
+    cdef __iobuf.IOBuf _serialize(TrivialNestedWithDefault self, proto):
+        cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
+        cdef cTrivialNestedWithDefault* cpp_obj = self._cpp_obj.get()
+        if proto is __Protocol.COMPACT:
+            with nogil:
+                serializer.CompactSerialize[cTrivialNestedWithDefault](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.BINARY:
+            with nogil:
+                serializer.BinarySerialize[cTrivialNestedWithDefault](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.JSON:
+            with nogil:
+                serializer.JSONSerialize[cTrivialNestedWithDefault](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
+        return __iobuf.from_unique_ptr(queue.move())
+
+    cdef uint32_t _deserialize(TrivialNestedWithDefault self, const __iobuf.cIOBuf* buf, proto) except? 0:
+        cdef uint32_t needed
+        self._cpp_obj = make_shared[cTrivialNestedWithDefault]()
+        cdef cTrivialNestedWithDefault* cpp_obj = self._cpp_obj.get()
+        if proto is __Protocol.COMPACT:
+            with nogil:
+                needed = serializer.CompactDeserialize[cTrivialNestedWithDefault](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.BINARY:
+            with nogil:
+                needed = serializer.BinaryDeserialize[cTrivialNestedWithDefault](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.JSON:
+            with nogil:
+                needed = serializer.JSONDeserialize[cTrivialNestedWithDefault](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
+        return needed
+
+    def __reduce__(self):
+        return (deserialize, (TrivialNestedWithDefault, serialize(self)))
+
+
+cdef cComplexString _ComplexString_defaults = cComplexString()
+
+cdef class ComplexString(thrift.py3.types.Struct):
+
+    def __init__(
+        ComplexString self, *,
+        str a=None,
+        b=None
+    ):
+        self._cpp_obj = move(ComplexString._make_instance(
+          NULL,
+          a,
+          b,
+        ))
+
+    def __call__(
+        ComplexString self,
+        a=__NOTSET,
+        b=__NOTSET
+    ):
+        changes = any((
+            a is not __NOTSET,
+
+            b is not __NOTSET,
+        ))
+
+        if not changes:
+            return self
+
+        if None is not a is not __NOTSET:
+            if not isinstance(a, str):
+                raise TypeError(f'a is not a { str !r}.')
+
+        inst = <ComplexString>ComplexString.__new__(ComplexString)
+        inst._cpp_obj = move(ComplexString._make_instance(
+          self._cpp_obj.get(),
+          a,
+          b,
+        ))
+        return inst
+
+    @staticmethod
+    cdef unique_ptr[cComplexString] _make_instance(
+        cComplexString* base_instance,
+        object a,
+        object b
+    ) except *:
+        cdef unique_ptr[cComplexString] c_inst
+        if base_instance:
+            c_inst = make_unique[cComplexString](deref(base_instance))
+        else:
+            c_inst = make_unique[cComplexString]()
+
+        if base_instance:
+            # Convert None's to default value. (or unset)
+            if a is None:
+                deref(c_inst).a = _ComplexString_defaults.a
+                deref(c_inst).__isset.a = False
+                pass
+            elif a is __NOTSET:
+                a = None
+
+            if b is None:
+                deref(c_inst).b = _ComplexString_defaults.b
+                deref(c_inst).__isset.b = False
+                pass
+            elif b is __NOTSET:
+                b = None
+
+        if a is not None:
+            deref(c_inst).a = a.encode('UTF-8')
+            deref(c_inst).__isset.a = True
+        if b is not None:
+            deref(c_inst).b = deref(Map__string_i32(b)._cpp_obj)
+            deref(c_inst).__isset.b = True
+        # in C++ you don't have to call move(), but this doesn't translate
+        # into a C++ return statement, so you do here
+        return move_unique(c_inst)
+
+    def __iter__(self):
+        yield 'a', self.a
+        yield 'b', self.b
+
+    def __bool__(self):
+        return True or True
+
+    @staticmethod
+    cdef create(shared_ptr[cComplexString] cpp_obj):
+        inst = <ComplexString>ComplexString.__new__(ComplexString)
+        inst._cpp_obj = cpp_obj
+        return inst
+
+    @property
+    def a(self):
+
+        return (<bytes>self._cpp_obj.get().a).decode('UTF-8')
+
+    @property
+    def b(self):
+
+        if self.__b is None:
+            self.__b = Map__string_i32.create(make_shared[cmap[string,int32_t]](deref(self._cpp_obj).b))
+        return self.__b
+
+
+    def __hash__(ComplexString self):
+        if not self.__hash:
+            self.__hash = hash((
+            self.a,
+            self.b,
+            ))
+        return self.__hash
+
+    def __repr__(ComplexString self):
+        return f'ComplexString(a={repr(self.a)}, b={repr(self.b)})'
+    def __richcmp__(self, other, op):
+        cdef int cop = op
+        if cop not in (2, 3):
+            raise TypeError("unorderable types: {}, {}".format(self, other))
+        if not (
+                isinstance(self, ComplexString) and
+                isinstance(other, ComplexString)):
+            if cop == 2:  # different types are never equal
+                return False
+            else:         # different types are always notequal
+                return True
+
+        cdef cComplexString cself = deref((<ComplexString>self)._cpp_obj)
+        cdef cComplexString cother = deref((<ComplexString>other)._cpp_obj)
+        cdef cbool cmp = cself == cother
+        if cop == 2:
+            return cmp
+        return not cmp
+
+    cdef __iobuf.IOBuf _serialize(ComplexString self, proto):
+        cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
+        cdef cComplexString* cpp_obj = self._cpp_obj.get()
+        if proto is __Protocol.COMPACT:
+            with nogil:
+                serializer.CompactSerialize[cComplexString](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.BINARY:
+            with nogil:
+                serializer.BinarySerialize[cComplexString](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.JSON:
+            with nogil:
+                serializer.JSONSerialize[cComplexString](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
+        return __iobuf.from_unique_ptr(queue.move())
+
+    cdef uint32_t _deserialize(ComplexString self, const __iobuf.cIOBuf* buf, proto) except? 0:
+        cdef uint32_t needed
+        self._cpp_obj = make_shared[cComplexString]()
+        cdef cComplexString* cpp_obj = self._cpp_obj.get()
+        if proto is __Protocol.COMPACT:
+            with nogil:
+                needed = serializer.CompactDeserialize[cComplexString](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.BINARY:
+            with nogil:
+                needed = serializer.BinaryDeserialize[cComplexString](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.JSON:
+            with nogil:
+                needed = serializer.JSONDeserialize[cComplexString](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
+        return needed
+
+    def __reduce__(self):
+        return (deserialize, (ComplexString, serialize(self)))
+
+
+cdef cComplexNestedWithDefault _ComplexNestedWithDefault_defaults = cComplexNestedWithDefault()
+
+cdef class ComplexNestedWithDefault(thrift.py3.types.Struct):
+
+    def __init__(
+        ComplexNestedWithDefault self, *,
+        str z=None,
+        ComplexString n=None
+    ):
+        self._cpp_obj = move(ComplexNestedWithDefault._make_instance(
+          NULL,
+          z,
+          n,
+        ))
+
+    def __call__(
+        ComplexNestedWithDefault self,
+        z=__NOTSET,
+        n=__NOTSET
+    ):
+        changes = any((
+            z is not __NOTSET,
+
+            n is not __NOTSET,
+        ))
+
+        if not changes:
+            return self
+
+        if None is not z is not __NOTSET:
+            if not isinstance(z, str):
+                raise TypeError(f'z is not a { str !r}.')
+
+        if None is not n is not __NOTSET:
+            if not isinstance(n, ComplexString):
+                raise TypeError(f'n is not a { ComplexString !r}.')
+
+        inst = <ComplexNestedWithDefault>ComplexNestedWithDefault.__new__(ComplexNestedWithDefault)
+        inst._cpp_obj = move(ComplexNestedWithDefault._make_instance(
+          self._cpp_obj.get(),
+          z,
+          n,
+        ))
+        return inst
+
+    @staticmethod
+    cdef unique_ptr[cComplexNestedWithDefault] _make_instance(
+        cComplexNestedWithDefault* base_instance,
+        object z,
+        object n
+    ) except *:
+        cdef unique_ptr[cComplexNestedWithDefault] c_inst
+        if base_instance:
+            c_inst = make_unique[cComplexNestedWithDefault](deref(base_instance))
+        else:
+            c_inst = make_unique[cComplexNestedWithDefault]()
+
+        if base_instance:
+            # Convert None's to default value. (or unset)
+            if z is None:
+                deref(c_inst).z = _ComplexNestedWithDefault_defaults.z
+                deref(c_inst).__isset.z = False
+                pass
+            elif z is __NOTSET:
+                z = None
+
+            if n is None:
+                deref(c_inst).n = _ComplexNestedWithDefault_defaults.n
+                deref(c_inst).__isset.n = False
+                pass
+            elif n is __NOTSET:
+                n = None
+
+        if z is not None:
+            deref(c_inst).z = z.encode('UTF-8')
+            deref(c_inst).__isset.z = True
+        if n is not None:
+            deref(c_inst).n = deref((<ComplexString?> n)._cpp_obj)
+            deref(c_inst).__isset.n = True
+        # in C++ you don't have to call move(), but this doesn't translate
+        # into a C++ return statement, so you do here
+        return move_unique(c_inst)
+
+    def __iter__(self):
+        yield 'z', self.z
+        yield 'n', self.n
+
+    def __bool__(self):
+        return True or True
+
+    @staticmethod
+    cdef create(shared_ptr[cComplexNestedWithDefault] cpp_obj):
+        inst = <ComplexNestedWithDefault>ComplexNestedWithDefault.__new__(ComplexNestedWithDefault)
+        inst._cpp_obj = cpp_obj
+        return inst
+
+    @property
+    def z(self):
+
+        return (<bytes>self._cpp_obj.get().z).decode('UTF-8')
+
+    @property
+    def n(self):
+
+        if self.__n is None:
+            self.__n = ComplexString.create(make_shared[cComplexString](deref(self._cpp_obj).n))
+        return self.__n
+
+
+    def __hash__(ComplexNestedWithDefault self):
+        if not self.__hash:
+            self.__hash = hash((
+            self.z,
+            self.n,
+            ))
+        return self.__hash
+
+    def __repr__(ComplexNestedWithDefault self):
+        return f'ComplexNestedWithDefault(z={repr(self.z)}, n={repr(self.n)})'
+    def __richcmp__(self, other, op):
+        cdef int cop = op
+        if cop not in (2, 3):
+            raise TypeError("unorderable types: {}, {}".format(self, other))
+        if not (
+                isinstance(self, ComplexNestedWithDefault) and
+                isinstance(other, ComplexNestedWithDefault)):
+            if cop == 2:  # different types are never equal
+                return False
+            else:         # different types are always notequal
+                return True
+
+        cdef cComplexNestedWithDefault cself = deref((<ComplexNestedWithDefault>self)._cpp_obj)
+        cdef cComplexNestedWithDefault cother = deref((<ComplexNestedWithDefault>other)._cpp_obj)
+        cdef cbool cmp = cself == cother
+        if cop == 2:
+            return cmp
+        return not cmp
+
+    cdef __iobuf.IOBuf _serialize(ComplexNestedWithDefault self, proto):
+        cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
+        cdef cComplexNestedWithDefault* cpp_obj = self._cpp_obj.get()
+        if proto is __Protocol.COMPACT:
+            with nogil:
+                serializer.CompactSerialize[cComplexNestedWithDefault](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.BINARY:
+            with nogil:
+                serializer.BinarySerialize[cComplexNestedWithDefault](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.JSON:
+            with nogil:
+                serializer.JSONSerialize[cComplexNestedWithDefault](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
+        return __iobuf.from_unique_ptr(queue.move())
+
+    cdef uint32_t _deserialize(ComplexNestedWithDefault self, const __iobuf.cIOBuf* buf, proto) except? 0:
+        cdef uint32_t needed
+        self._cpp_obj = make_shared[cComplexNestedWithDefault]()
+        cdef cComplexNestedWithDefault* cpp_obj = self._cpp_obj.get()
+        if proto is __Protocol.COMPACT:
+            with nogil:
+                needed = serializer.CompactDeserialize[cComplexNestedWithDefault](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.BINARY:
+            with nogil:
+                needed = serializer.BinaryDeserialize[cComplexNestedWithDefault](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.JSON:
+            with nogil:
+                needed = serializer.JSONDeserialize[cComplexNestedWithDefault](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
+        return needed
+
+    def __reduce__(self):
+        return (deserialize, (ComplexNestedWithDefault, serialize(self)))
+
+
 cdef class std_unordered_map__Map__i32_string:
     def __init__(self, items=None):
         if isinstance(items, std_unordered_map__Map__i32_string):
@@ -2916,5 +3606,132 @@ cdef class std_list_int32_t__List__i32:
 
 
 Sequence.register(std_list_int32_t__List__i32)
+
+cdef class Map__string_i32:
+    def __init__(self, items=None):
+        if isinstance(items, Map__string_i32):
+            self._cpp_obj = (<Map__string_i32> items)._cpp_obj
+        else:
+            self._cpp_obj = move(Map__string_i32._make_instance(items))
+
+    @staticmethod
+    cdef create(shared_ptr[cmap[string,int32_t]] c_items):
+        inst = <Map__string_i32>Map__string_i32.__new__(Map__string_i32)
+        inst._cpp_obj = c_items
+        return inst
+
+    @staticmethod
+    cdef unique_ptr[cmap[string,int32_t]] _make_instance(object items) except *:
+        cdef unique_ptr[cmap[string,int32_t]] c_inst = make_unique[cmap[string,int32_t]]()
+        if items is not None:
+            for key, item in items.items():
+                if not isinstance(key, str):
+                    raise TypeError(f"{key!r} is not of type str")
+                if not isinstance(item, int):
+                    raise TypeError(f"{item!r} is not of type int")
+                item = <int32_t> item
+
+                deref(c_inst).insert(cpair[string,int32_t](key.encode('UTF-8'),item))
+        return move_unique(c_inst)
+
+    def __getitem__(self, key):
+        err = KeyError(f'{key}')
+        if not self or key is None:
+            raise err
+        if not isinstance(key, str):
+            raise err
+        cdef string ckey = key.encode('UTF-8')
+        cdef cmap[string,int32_t].iterator iter = deref(
+            self._cpp_obj).find(ckey)
+        if iter == deref(self._cpp_obj).end():
+            raise err
+        cdef int32_t citem = deref(iter).second
+        return citem
+
+    def __len__(self):
+        return deref(self._cpp_obj).size()
+
+    def __iter__(self):
+        if not self:
+            raise StopIteration
+        cdef string citem
+        for pair in deref(self._cpp_obj):
+            citem = pair.first
+            yield bytes(citem).decode('UTF-8')
+
+    def __richcmp__(self, other, op):
+        cdef int cop = op
+        if cop not in (2, 3):
+            raise TypeError("unorderable types: {}, {}".format(type(self), type(other)))
+        if not (isinstance(self, Mapping) and isinstance(other, Mapping)):
+            return cop != 2
+        if (len(self) != len(other)):
+            return cop != 2
+
+        for key in self:
+            if key not in other:
+                return cop != 2
+            if other[key] != self[key]:
+                return cop != 2
+
+        return cop == 2
+
+    def __hash__(self):
+        if not self.__hash:
+            self.__hash = hash(tuple(self.items()))
+        return self.__hash
+
+    def __repr__(self):
+        if not self:
+            return 'i{}'
+        return f'i{{{", ".join(map(lambda i: f"{repr(i[0])}: {repr(i[1])}", self.items()))}}}'
+
+    def __contains__(self, key):
+        if not self or key is None:
+            return False
+        if not isinstance(key, str):
+            return False
+        cdef string ckey = key.encode('UTF-8')
+        return deref(self._cpp_obj).count(ckey) > 0
+
+    def get(self, key, default=None):
+        if not self or key is None:
+            return default
+        try:
+            if not isinstance(key, str):
+                key = str(key)
+        except Exception:
+            return default
+        if not isinstance(key, str):
+            return default
+        if key not in self:
+            return default
+        return self[key]
+
+    def keys(self):
+        return self.__iter__()
+
+    def values(self):
+        if not self:
+            raise StopIteration
+        cdef int32_t citem
+        for pair in deref(self._cpp_obj):
+            citem = pair.second
+            yield citem
+
+    def items(self):
+        if not self:
+            raise StopIteration
+        cdef string ckey
+        cdef int32_t citem
+        for pair in deref(self._cpp_obj):
+            ckey = pair.first
+            citem = pair.second
+
+            yield (ckey.decode('UTF-8'), citem)
+
+
+
+Mapping.register(Map__string_i32)
 
 TBinary = bytes

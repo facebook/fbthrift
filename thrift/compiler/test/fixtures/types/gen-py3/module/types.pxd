@@ -314,6 +314,14 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "apache
     cdef cppclass cVirtualStruct "apache::thrift::fixtures::types::VirtualStruct"
     # Forward Declaration
     cdef cppclass cMyStructWithForwardRefEnum "apache::thrift::fixtures::types::MyStructWithForwardRefEnum"
+    # Forward Declaration
+    cdef cppclass cTrivialNumeric "apache::thrift::fixtures::types::TrivialNumeric"
+    # Forward Declaration
+    cdef cppclass cTrivialNestedWithDefault "apache::thrift::fixtures::types::TrivialNestedWithDefault"
+    # Forward Declaration
+    cdef cppclass cComplexString "apache::thrift::fixtures::types::ComplexString"
+    # Forward Declaration
+    cdef cppclass cComplexNestedWithDefault "apache::thrift::fixtures::types::ComplexNestedWithDefault"
 
 cdef extern from "src/gen-cpp2/module_types.h" namespace "apache::thrift::fixtures::types":
     cdef cppclass cdecorated_struct__isset "apache::thrift::fixtures::types::decorated_struct::__isset":
@@ -382,6 +390,54 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "apache::thrift::fixtur
         cMyForwardRefEnum b
         cMyStructWithForwardRefEnum__isset __isset
 
+    cdef cppclass cTrivialNumeric__isset "apache::thrift::fixtures::types::TrivialNumeric::__isset":
+        bint a
+        bint b
+
+    cdef cppclass cTrivialNumeric "apache::thrift::fixtures::types::TrivialNumeric":
+        cTrivialNumeric() except +
+        cTrivialNumeric(const cTrivialNumeric&) except +
+        bint operator==(cTrivialNumeric&)
+        int32_t a
+        cbool b
+        cTrivialNumeric__isset __isset
+
+    cdef cppclass cTrivialNestedWithDefault__isset "apache::thrift::fixtures::types::TrivialNestedWithDefault::__isset":
+        bint z
+        bint n
+
+    cdef cppclass cTrivialNestedWithDefault "apache::thrift::fixtures::types::TrivialNestedWithDefault":
+        cTrivialNestedWithDefault() except +
+        cTrivialNestedWithDefault(const cTrivialNestedWithDefault&) except +
+        bint operator==(cTrivialNestedWithDefault&)
+        int32_t z
+        cTrivialNumeric n
+        cTrivialNestedWithDefault__isset __isset
+
+    cdef cppclass cComplexString__isset "apache::thrift::fixtures::types::ComplexString::__isset":
+        bint a
+        bint b
+
+    cdef cppclass cComplexString "apache::thrift::fixtures::types::ComplexString":
+        cComplexString() except +
+        cComplexString(const cComplexString&) except +
+        bint operator==(cComplexString&)
+        string a
+        cmap[string,int32_t] b
+        cComplexString__isset __isset
+
+    cdef cppclass cComplexNestedWithDefault__isset "apache::thrift::fixtures::types::ComplexNestedWithDefault::__isset":
+        bint z
+        bint n
+
+    cdef cppclass cComplexNestedWithDefault "apache::thrift::fixtures::types::ComplexNestedWithDefault":
+        cComplexNestedWithDefault() except +
+        cComplexNestedWithDefault(const cComplexNestedWithDefault&) except +
+        bint operator==(cComplexNestedWithDefault&)
+        string z
+        cComplexString n
+        cComplexNestedWithDefault__isset __isset
+
 
 cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[cdecorated_struct] move(unique_ptr[cdecorated_struct])
@@ -399,6 +455,18 @@ cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[cMyStructWithForwardRefEnum] move(unique_ptr[cMyStructWithForwardRefEnum])
     cdef shared_ptr[cMyStructWithForwardRefEnum] move_shared "std::move"(shared_ptr[cMyStructWithForwardRefEnum])
     cdef unique_ptr[cMyStructWithForwardRefEnum] move_unique "std::move"(unique_ptr[cMyStructWithForwardRefEnum])
+    cdef shared_ptr[cTrivialNumeric] move(unique_ptr[cTrivialNumeric])
+    cdef shared_ptr[cTrivialNumeric] move_shared "std::move"(shared_ptr[cTrivialNumeric])
+    cdef unique_ptr[cTrivialNumeric] move_unique "std::move"(unique_ptr[cTrivialNumeric])
+    cdef shared_ptr[cTrivialNestedWithDefault] move(unique_ptr[cTrivialNestedWithDefault])
+    cdef shared_ptr[cTrivialNestedWithDefault] move_shared "std::move"(shared_ptr[cTrivialNestedWithDefault])
+    cdef unique_ptr[cTrivialNestedWithDefault] move_unique "std::move"(unique_ptr[cTrivialNestedWithDefault])
+    cdef shared_ptr[cComplexString] move(unique_ptr[cComplexString])
+    cdef shared_ptr[cComplexString] move_shared "std::move"(shared_ptr[cComplexString])
+    cdef unique_ptr[cComplexString] move_unique "std::move"(unique_ptr[cComplexString])
+    cdef shared_ptr[cComplexNestedWithDefault] move(unique_ptr[cComplexNestedWithDefault])
+    cdef shared_ptr[cComplexNestedWithDefault] move_shared "std::move"(shared_ptr[cComplexNestedWithDefault])
+    cdef unique_ptr[cComplexNestedWithDefault] move_unique "std::move"(unique_ptr[cComplexNestedWithDefault])
 
 cdef extern from "<memory>" namespace "std" nogil:
     cdef shared_ptr[const cdecorated_struct] const_pointer_cast "std::const_pointer_cast<const apache::thrift::fixtures::types::decorated_struct>"(shared_ptr[cdecorated_struct])
@@ -406,6 +474,10 @@ cdef extern from "<memory>" namespace "std" nogil:
     cdef shared_ptr[const cCppTypeStruct] const_pointer_cast "std::const_pointer_cast<const apache::thrift::fixtures::types::CppTypeStruct>"(shared_ptr[cCppTypeStruct])
     cdef shared_ptr[const cVirtualStruct] const_pointer_cast "std::const_pointer_cast<const apache::thrift::fixtures::types::VirtualStruct>"(shared_ptr[cVirtualStruct])
     cdef shared_ptr[const cMyStructWithForwardRefEnum] const_pointer_cast "std::const_pointer_cast<const apache::thrift::fixtures::types::MyStructWithForwardRefEnum>"(shared_ptr[cMyStructWithForwardRefEnum])
+    cdef shared_ptr[const cTrivialNumeric] const_pointer_cast "std::const_pointer_cast<const apache::thrift::fixtures::types::TrivialNumeric>"(shared_ptr[cTrivialNumeric])
+    cdef shared_ptr[const cTrivialNestedWithDefault] const_pointer_cast "std::const_pointer_cast<const apache::thrift::fixtures::types::TrivialNestedWithDefault>"(shared_ptr[cTrivialNestedWithDefault])
+    cdef shared_ptr[const cComplexString] const_pointer_cast "std::const_pointer_cast<const apache::thrift::fixtures::types::ComplexString>"(shared_ptr[cComplexString])
+    cdef shared_ptr[const cComplexNestedWithDefault] const_pointer_cast "std::const_pointer_cast<const apache::thrift::fixtures::types::ComplexNestedWithDefault>"(shared_ptr[cComplexNestedWithDefault])
 
 # Forward Definition of the cython struct
 cdef class decorated_struct(thrift.py3.types.Struct)
@@ -514,6 +586,85 @@ cdef class MyStructWithForwardRefEnum(thrift.py3.types.Struct):
     @staticmethod
     cdef create(shared_ptr[cMyStructWithForwardRefEnum])
 
+# Forward Definition of the cython struct
+cdef class TrivialNumeric(thrift.py3.types.Struct)
+
+
+cdef class TrivialNumeric(thrift.py3.types.Struct):
+    cdef object __hash
+    cdef object __weakref__
+    cdef shared_ptr[cTrivialNumeric] _cpp_obj
+
+    @staticmethod
+    cdef unique_ptr[cTrivialNumeric] _make_instance(
+        cTrivialNumeric* base_instance,
+        object a,
+        object b
+    ) except *
+
+    @staticmethod
+    cdef create(shared_ptr[cTrivialNumeric])
+
+# Forward Definition of the cython struct
+cdef class TrivialNestedWithDefault(thrift.py3.types.Struct)
+
+
+cdef class TrivialNestedWithDefault(thrift.py3.types.Struct):
+    cdef object __hash
+    cdef object __weakref__
+    cdef shared_ptr[cTrivialNestedWithDefault] _cpp_obj
+    cdef TrivialNumeric __n
+
+    @staticmethod
+    cdef unique_ptr[cTrivialNestedWithDefault] _make_instance(
+        cTrivialNestedWithDefault* base_instance,
+        object z,
+        object n
+    ) except *
+
+    @staticmethod
+    cdef create(shared_ptr[cTrivialNestedWithDefault])
+
+# Forward Definition of the cython struct
+cdef class ComplexString(thrift.py3.types.Struct)
+
+
+cdef class ComplexString(thrift.py3.types.Struct):
+    cdef object __hash
+    cdef object __weakref__
+    cdef shared_ptr[cComplexString] _cpp_obj
+    cdef Map__string_i32 __b
+
+    @staticmethod
+    cdef unique_ptr[cComplexString] _make_instance(
+        cComplexString* base_instance,
+        object a,
+        object b
+    ) except *
+
+    @staticmethod
+    cdef create(shared_ptr[cComplexString])
+
+# Forward Definition of the cython struct
+cdef class ComplexNestedWithDefault(thrift.py3.types.Struct)
+
+
+cdef class ComplexNestedWithDefault(thrift.py3.types.Struct):
+    cdef object __hash
+    cdef object __weakref__
+    cdef shared_ptr[cComplexNestedWithDefault] _cpp_obj
+    cdef ComplexString __n
+
+    @staticmethod
+    cdef unique_ptr[cComplexNestedWithDefault] _make_instance(
+        cComplexNestedWithDefault* base_instance,
+        object z,
+        object n
+    ) except *
+
+    @staticmethod
+    cdef create(shared_ptr[cComplexNestedWithDefault])
+
 
 cdef class std_unordered_map__Map__i32_string:
     cdef object __hash
@@ -614,6 +765,15 @@ cdef class std_list_int32_t__List__i32:
     @staticmethod
     cdef unique_ptr[std_list_int32_t] _make_instance(object items) except *
 
+cdef class Map__string_i32:
+    cdef object __hash
+    cdef object __weakref__
+    cdef shared_ptr[cmap[string,int32_t]] _cpp_obj
+    @staticmethod
+    cdef create(shared_ptr[cmap[string,int32_t]])
+    @staticmethod
+    cdef unique_ptr[cmap[string,int32_t]] _make_instance(object items) except *
+
 cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[std_unordered_map[int32_t,string]] move(unique_ptr[std_unordered_map[int32_t,string]])
     cdef unique_ptr[std_unordered_map[int32_t,string]] move_unique "std::move"(unique_ptr[std_unordered_map[int32_t,string]])
@@ -637,6 +797,8 @@ cdef extern from "<utility>" namespace "std" nogil:
     cdef unique_ptr[folly_sorted_vector_map[int32_t,string]] move_unique "std::move"(unique_ptr[folly_sorted_vector_map[int32_t,string]])
     cdef shared_ptr[std_list_int32_t] move(unique_ptr[std_list_int32_t])
     cdef unique_ptr[std_list_int32_t] move_unique "std::move"(unique_ptr[std_list_int32_t])
+    cdef shared_ptr[cmap[string,int32_t]] move(unique_ptr[cmap[string,int32_t]])
+    cdef unique_ptr[cmap[string,int32_t]] move_unique "std::move"(unique_ptr[cmap[string,int32_t]])
 cdef extern from "<memory>" namespace "std" nogil:
     cdef shared_ptr[const std_unordered_map[int32_t,string]] const_pointer_cast "std::const_pointer_cast<const std::unordered_map<int32_t,std::string>>"(shared_ptr[std_unordered_map[int32_t,string]])
 
@@ -659,4 +821,6 @@ cdef extern from "<memory>" namespace "std" nogil:
     cdef shared_ptr[const folly_sorted_vector_map[int32_t,string]] const_pointer_cast "std::const_pointer_cast<const folly::sorted_vector_map<int32_t,std::string>>"(shared_ptr[folly_sorted_vector_map[int32_t,string]])
 
     cdef shared_ptr[const std_list_int32_t] const_pointer_cast "std::const_pointer_cast<const std::list<int32_t>>"(shared_ptr[std_list_int32_t])
+
+    cdef shared_ptr[const cmap[string,int32_t]] const_pointer_cast "std::const_pointer_cast<const std::map<std::string,int32_t>>"(shared_ptr[cmap[string,int32_t]])
 

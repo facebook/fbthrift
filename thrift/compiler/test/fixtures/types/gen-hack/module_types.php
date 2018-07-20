@@ -579,3 +579,302 @@ class MyStructWithForwardRefEnum implements \IThriftStruct {
 
 }
 
+/**
+ * Original thrift struct:-
+ * TrivialNumeric
+ */
+class TrivialNumeric implements \IThriftStruct {
+  use \ThriftSerializationTrait;
+
+  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
+    1 => dict[
+      'var' => 'a',
+      'type' => \TType::I32,
+      ],
+    2 => dict[
+      'var' => 'b',
+      'type' => \TType::BOOL,
+      ],
+    ];
+  public static Map<string, int> $_TFIELDMAP = Map {
+    'a' => 1,
+    'b' => 2,
+  };
+  const int STRUCTURAL_ID = 3920068475021763685;
+  /**
+   * Original thrift field:-
+   * 1: i32 a
+   */
+  public int $a;
+  /**
+   * Original thrift field:-
+   * 2: bool b
+   */
+  public bool $b;
+
+  public function __construct(?int $a = null, ?bool $b = null  ) {
+    if ($a === null) {
+      $this->a = 0;
+    } else {
+      $this->a = $a;
+    }
+    if ($b === null) {
+      $this->b = false;
+    } else {
+      $this->b = $b;
+    }
+  }
+
+  public function getName(): string {
+    return 'TrivialNumeric';
+  }
+
+  public function readFromJson(string $jsonText): void {
+    $parsed = json_decode($jsonText, true);
+
+    if ($parsed === null || !is_array($parsed)) {
+      throw new \TProtocolException("Cannot parse the given json string.");
+    }
+
+    if (idx($parsed, 'a') !== null) {
+      $_tmp0 = (int)$parsed['a'];
+      if ($_tmp0 > 0x7fffffff) {
+        throw new \TProtocolException("number exceeds limit in field");
+      } else {
+        $this->a = (int)$_tmp0;
+      }
+    }    
+    if (idx($parsed, 'b') !== null) {
+      $this->b = $parsed['b'];
+    }    
+  }
+
+}
+
+/**
+ * Original thrift struct:-
+ * TrivialNestedWithDefault
+ */
+class TrivialNestedWithDefault implements \IThriftStruct {
+  use \ThriftSerializationTrait;
+
+  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
+    1 => dict[
+      'var' => 'z',
+      'type' => \TType::I32,
+      ],
+    2 => dict[
+      'var' => 'n',
+      'type' => \TType::STRUCT,
+      'class' => 'TrivialNumeric',
+      ],
+    ];
+  public static Map<string, int> $_TFIELDMAP = Map {
+    'z' => 1,
+    'n' => 2,
+  };
+  const int STRUCTURAL_ID = 5012136746274172257;
+  /**
+   * Original thrift field:-
+   * 1: i32 z
+   */
+  public int $z;
+  /**
+   * Original thrift field:-
+   * 2: struct module.TrivialNumeric n
+   */
+  public ?TrivialNumeric $n;
+
+  public function __construct(?int $z = null, ?TrivialNumeric $n = null  ) {
+    if ($z === null) {
+      $this->z = 4;
+    } else {
+      $this->z = $z;
+    }
+    $this->n = $n;
+  }
+
+  public function getName(): string {
+    return 'TrivialNestedWithDefault';
+  }
+
+  public function readFromJson(string $jsonText): void {
+    $parsed = json_decode($jsonText, true);
+
+    if ($parsed === null || !is_array($parsed)) {
+      throw new \TProtocolException("Cannot parse the given json string.");
+    }
+
+    if (idx($parsed, 'z') !== null) {
+      $_tmp0 = (int)$parsed['z'];
+      if ($_tmp0 > 0x7fffffff) {
+        throw new \TProtocolException("number exceeds limit in field");
+      } else {
+        $this->z = (int)$_tmp0;
+      }
+    }    
+    if (idx($parsed, 'n') !== null) {
+      $_tmp1 = json_encode($parsed['n']);
+      $_tmp2 = new TrivialNumeric();
+      $_tmp2->readFromJson($_tmp1);
+      $this->n = $_tmp2;
+    }    
+  }
+
+}
+
+/**
+ * Original thrift struct:-
+ * ComplexString
+ */
+class ComplexString implements \IThriftStruct {
+  use \ThriftSerializationTrait;
+
+  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
+    1 => dict[
+      'var' => 'a',
+      'type' => \TType::STRING,
+      ],
+    2 => dict[
+      'var' => 'b',
+      'type' => \TType::MAP,
+      'ktype' => \TType::STRING,
+      'vtype' => \TType::I32,
+      'key' => dict[
+        'type' => \TType::STRING,
+      ],
+      'val' => dict[
+        'type' => \TType::I32,
+        ],
+        'format' => 'collection',
+      ],
+    ];
+  public static Map<string, int> $_TFIELDMAP = Map {
+    'a' => 1,
+    'b' => 2,
+  };
+  const int STRUCTURAL_ID = 5460740530481786095;
+  /**
+   * Original thrift field:-
+   * 1: string a
+   */
+  public string $a;
+  /**
+   * Original thrift field:-
+   * 2: map<string, i32> b
+   */
+  public Map<string, int> $b;
+
+  public function __construct(?string $a = null, ?Map<string, int> $b = null  ) {
+    if ($a === null) {
+      $this->a = '';
+    } else {
+      $this->a = $a;
+    }
+    if ($b === null) {
+      $this->b = Map {};
+    } else {
+      $this->b = $b;
+    }
+  }
+
+  public function getName(): string {
+    return 'ComplexString';
+  }
+
+  public function readFromJson(string $jsonText): void {
+    $parsed = json_decode($jsonText, true);
+
+    if ($parsed === null || !is_array($parsed)) {
+      throw new \TProtocolException("Cannot parse the given json string.");
+    }
+
+    if (idx($parsed, 'a') !== null) {
+      $this->a = $parsed['a'];
+    }    
+    if (idx($parsed, 'b') !== null) {
+      $_json3 = $parsed['b'];
+      $_container4 = Map {};
+      foreach($_json3 as $_key1 => $_value2) {
+        $_value5 = 0;
+        $_tmp6 = (int)$_value2;
+        if ($_tmp6 > 0x7fffffff) {
+          throw new \TProtocolException("number exceeds limit in field");
+        } else {
+          $_value5 = (int)$_tmp6;
+        }
+        $_container4[$_key1] = $_value5;
+      }
+      $this->b = $_container4;
+    }    
+  }
+
+}
+
+/**
+ * Original thrift struct:-
+ * ComplexNestedWithDefault
+ */
+class ComplexNestedWithDefault implements \IThriftStruct {
+  use \ThriftSerializationTrait;
+
+  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
+    1 => dict[
+      'var' => 'z',
+      'type' => \TType::STRING,
+      ],
+    2 => dict[
+      'var' => 'n',
+      'type' => \TType::STRUCT,
+      'class' => 'ComplexString',
+      ],
+    ];
+  public static Map<string, int> $_TFIELDMAP = Map {
+    'z' => 1,
+    'n' => 2,
+  };
+  const int STRUCTURAL_ID = 2913723608362321564;
+  /**
+   * Original thrift field:-
+   * 1: string z
+   */
+  public string $z;
+  /**
+   * Original thrift field:-
+   * 2: struct module.ComplexString n
+   */
+  public ?ComplexString $n;
+
+  public function __construct(?string $z = null, ?ComplexString $n = null  ) {
+    if ($z === null) {
+      $this->z = "4";
+    } else {
+      $this->z = $z;
+    }
+    $this->n = $n;
+  }
+
+  public function getName(): string {
+    return 'ComplexNestedWithDefault';
+  }
+
+  public function readFromJson(string $jsonText): void {
+    $parsed = json_decode($jsonText, true);
+
+    if ($parsed === null || !is_array($parsed)) {
+      throw new \TProtocolException("Cannot parse the given json string.");
+    }
+
+    if (idx($parsed, 'z') !== null) {
+      $this->z = $parsed['z'];
+    }    
+    if (idx($parsed, 'n') !== null) {
+      $_tmp0 = json_encode($parsed['n']);
+      $_tmp1 = new ComplexString();
+      $_tmp1->readFromJson($_tmp0);
+      $this->n = $_tmp1;
+    }    
+  }
+
+}
+

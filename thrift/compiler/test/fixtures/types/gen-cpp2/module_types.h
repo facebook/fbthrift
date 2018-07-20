@@ -195,6 +195,10 @@ class ContainerStruct;
 class CppTypeStruct;
 class VirtualStruct;
 class MyStructWithForwardRefEnum;
+class TrivialNumeric;
+class TrivialNestedWithDefault;
+class ComplexString;
+class ComplexNestedWithDefault;
 }}}} // apache::thrift::fixtures::types
 // END forward_declare
 // BEGIN typedefs
@@ -888,6 +892,511 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::apache::thrift::fixtur
 }
 
 template <> template <class Protocol> uint32_t Cpp2Ops< ::apache::thrift::fixtures::types::MyStructWithForwardRefEnum>::serializedSizeZC(Protocol const* proto,  ::apache::thrift::fixtures::types::MyStructWithForwardRefEnum const* obj) {
+  return obj->serializedSizeZC(proto);
+}
+
+}} // apache::thrift
+namespace apache { namespace thrift { namespace fixtures { namespace types {
+class TrivialNumeric final : private apache::thrift::detail::st::ComparisonOperators<TrivialNumeric> {
+ public:
+
+  TrivialNumeric() :
+      a(0),
+      b(0) {}
+  // FragileConstructor for use in initialization lists only.
+  TrivialNumeric(apache::thrift::FragileConstructor, int32_t a__arg, bool b__arg);
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  TrivialNumeric(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    TrivialNumeric(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    a = arg.move();
+    __isset.a = true;
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  TrivialNumeric(::apache::thrift::detail::argument_wrapper<2, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    TrivialNumeric(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    b = arg.move();
+    __isset.b = true;
+  }
+
+  TrivialNumeric(TrivialNumeric&&) = default;
+
+  TrivialNumeric(const TrivialNumeric&) = default;
+
+  TrivialNumeric& operator=(TrivialNumeric&&) = default;
+
+  TrivialNumeric& operator=(const TrivialNumeric&) = default;
+  void __clear();
+  int32_t a;
+  bool b;
+
+  struct __isset {
+    bool a;
+    bool b;
+  } __isset = {};
+  bool operator==(const TrivialNumeric& rhs) const;
+  bool operator<(const TrivialNumeric& rhs) const;
+
+  int32_t get_a() const {
+    return a;
+  }
+
+  int32_t& set_a(int32_t a_) {
+    a = a_;
+    __isset.a = true;
+    return a;
+  }
+
+  bool get_b() const {
+    return b;
+  }
+
+  bool& set_b(bool b_) {
+    b = b_;
+    __isset.b = true;
+    return b;
+  }
+
+  template <class Protocol_>
+  uint32_t read(Protocol_* iprot);
+  template <class Protocol_>
+  uint32_t serializedSize(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t serializedSizeZC(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t write(Protocol_* prot_) const;
+
+ private:
+  static void translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype);
+
+  template <class Protocol_>
+  void readNoXfer(Protocol_* iprot);
+
+  friend class ::apache::thrift::Cpp2Ops< TrivialNumeric >;
+};
+
+void swap(TrivialNumeric& a, TrivialNumeric& b);
+extern template void TrivialNumeric::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+extern template uint32_t TrivialNumeric::write<>(apache::thrift::BinaryProtocolWriter*) const;
+extern template uint32_t TrivialNumeric::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t TrivialNumeric::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template void TrivialNumeric::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+extern template uint32_t TrivialNumeric::write<>(apache::thrift::CompactProtocolWriter*) const;
+extern template uint32_t TrivialNumeric::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template uint32_t TrivialNumeric::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+template <class Protocol_>
+uint32_t TrivialNumeric::read(Protocol_* iprot) {
+  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
+  readNoXfer(iprot);
+  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
+}
+
+}}}} // apache::thrift::fixtures::types
+namespace apache { namespace thrift {
+
+template <> inline void Cpp2Ops< ::apache::thrift::fixtures::types::TrivialNumeric>::clear( ::apache::thrift::fixtures::types::TrivialNumeric* obj) {
+  return obj->__clear();
+}
+
+template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::apache::thrift::fixtures::types::TrivialNumeric>::thriftType() {
+  return apache::thrift::protocol::T_STRUCT;
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::apache::thrift::fixtures::types::TrivialNumeric>::write(Protocol* proto,  ::apache::thrift::fixtures::types::TrivialNumeric const* obj) {
+  return obj->write(proto);
+}
+
+template <> template <class Protocol> void Cpp2Ops< ::apache::thrift::fixtures::types::TrivialNumeric>::read(Protocol* proto,  ::apache::thrift::fixtures::types::TrivialNumeric* obj) {
+  return obj->readNoXfer(proto);
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::apache::thrift::fixtures::types::TrivialNumeric>::serializedSize(Protocol const* proto,  ::apache::thrift::fixtures::types::TrivialNumeric const* obj) {
+  return obj->serializedSize(proto);
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::apache::thrift::fixtures::types::TrivialNumeric>::serializedSizeZC(Protocol const* proto,  ::apache::thrift::fixtures::types::TrivialNumeric const* obj) {
+  return obj->serializedSizeZC(proto);
+}
+
+}} // apache::thrift
+namespace apache { namespace thrift { namespace fixtures { namespace types {
+class TrivialNestedWithDefault final : private apache::thrift::detail::st::ComparisonOperators<TrivialNestedWithDefault> {
+ public:
+
+  TrivialNestedWithDefault() :
+      z(4),
+      n( ::apache::thrift::fixtures::types::TrivialNumeric(::apache::thrift::detail::wrap_argument<1>(3), ::apache::thrift::detail::wrap_argument<2>(true))) {}
+  // FragileConstructor for use in initialization lists only.
+  TrivialNestedWithDefault(apache::thrift::FragileConstructor, int32_t z__arg,  ::apache::thrift::fixtures::types::TrivialNumeric n__arg);
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  TrivialNestedWithDefault(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    TrivialNestedWithDefault(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    z = arg.move();
+    __isset.z = true;
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  TrivialNestedWithDefault(::apache::thrift::detail::argument_wrapper<2, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    TrivialNestedWithDefault(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    n = arg.move();
+    __isset.n = true;
+  }
+
+  TrivialNestedWithDefault(TrivialNestedWithDefault&&) = default;
+
+  TrivialNestedWithDefault(const TrivialNestedWithDefault&) = default;
+
+  TrivialNestedWithDefault& operator=(TrivialNestedWithDefault&&) = default;
+
+  TrivialNestedWithDefault& operator=(const TrivialNestedWithDefault&) = default;
+  void __clear();
+  int32_t z;
+   ::apache::thrift::fixtures::types::TrivialNumeric n;
+
+  struct __isset {
+    bool z;
+    bool n;
+  } __isset = {};
+  bool operator==(const TrivialNestedWithDefault& rhs) const;
+  bool operator<(const TrivialNestedWithDefault& rhs) const;
+
+  int32_t get_z() const {
+    return z;
+  }
+
+  int32_t& set_z(int32_t z_) {
+    z = z_;
+    __isset.z = true;
+    return z;
+  }
+  const  ::apache::thrift::fixtures::types::TrivialNumeric& get_n() const&;
+   ::apache::thrift::fixtures::types::TrivialNumeric get_n() &&;
+
+  template <typename T_TrivialNestedWithDefault_n_struct_setter =  ::apache::thrift::fixtures::types::TrivialNumeric>
+   ::apache::thrift::fixtures::types::TrivialNumeric& set_n(T_TrivialNestedWithDefault_n_struct_setter&& n_) {
+    n = std::forward<T_TrivialNestedWithDefault_n_struct_setter>(n_);
+    __isset.n = true;
+    return n;
+  }
+
+  template <class Protocol_>
+  uint32_t read(Protocol_* iprot);
+  template <class Protocol_>
+  uint32_t serializedSize(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t serializedSizeZC(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t write(Protocol_* prot_) const;
+
+ private:
+  static void translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype);
+
+  template <class Protocol_>
+  void readNoXfer(Protocol_* iprot);
+
+  friend class ::apache::thrift::Cpp2Ops< TrivialNestedWithDefault >;
+};
+
+void swap(TrivialNestedWithDefault& a, TrivialNestedWithDefault& b);
+extern template void TrivialNestedWithDefault::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+extern template uint32_t TrivialNestedWithDefault::write<>(apache::thrift::BinaryProtocolWriter*) const;
+extern template uint32_t TrivialNestedWithDefault::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t TrivialNestedWithDefault::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template void TrivialNestedWithDefault::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+extern template uint32_t TrivialNestedWithDefault::write<>(apache::thrift::CompactProtocolWriter*) const;
+extern template uint32_t TrivialNestedWithDefault::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template uint32_t TrivialNestedWithDefault::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+template <class Protocol_>
+uint32_t TrivialNestedWithDefault::read(Protocol_* iprot) {
+  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
+  readNoXfer(iprot);
+  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
+}
+
+}}}} // apache::thrift::fixtures::types
+namespace apache { namespace thrift {
+
+template <> inline void Cpp2Ops< ::apache::thrift::fixtures::types::TrivialNestedWithDefault>::clear( ::apache::thrift::fixtures::types::TrivialNestedWithDefault* obj) {
+  return obj->__clear();
+}
+
+template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::apache::thrift::fixtures::types::TrivialNestedWithDefault>::thriftType() {
+  return apache::thrift::protocol::T_STRUCT;
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::apache::thrift::fixtures::types::TrivialNestedWithDefault>::write(Protocol* proto,  ::apache::thrift::fixtures::types::TrivialNestedWithDefault const* obj) {
+  return obj->write(proto);
+}
+
+template <> template <class Protocol> void Cpp2Ops< ::apache::thrift::fixtures::types::TrivialNestedWithDefault>::read(Protocol* proto,  ::apache::thrift::fixtures::types::TrivialNestedWithDefault* obj) {
+  return obj->readNoXfer(proto);
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::apache::thrift::fixtures::types::TrivialNestedWithDefault>::serializedSize(Protocol const* proto,  ::apache::thrift::fixtures::types::TrivialNestedWithDefault const* obj) {
+  return obj->serializedSize(proto);
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::apache::thrift::fixtures::types::TrivialNestedWithDefault>::serializedSizeZC(Protocol const* proto,  ::apache::thrift::fixtures::types::TrivialNestedWithDefault const* obj) {
+  return obj->serializedSizeZC(proto);
+}
+
+}} // apache::thrift
+namespace apache { namespace thrift { namespace fixtures { namespace types {
+class ComplexString final : private apache::thrift::detail::st::ComparisonOperators<ComplexString> {
+ public:
+
+  ComplexString() {}
+  // FragileConstructor for use in initialization lists only.
+  ComplexString(apache::thrift::FragileConstructor, std::string a__arg, std::map<std::string, int32_t> b__arg);
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  ComplexString(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    ComplexString(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    a = arg.move();
+    __isset.a = true;
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  ComplexString(::apache::thrift::detail::argument_wrapper<2, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    ComplexString(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    b = arg.move();
+    __isset.b = true;
+  }
+
+  ComplexString(ComplexString&&) = default;
+
+  ComplexString(const ComplexString&) = default;
+
+  ComplexString& operator=(ComplexString&&) = default;
+
+  ComplexString& operator=(const ComplexString&) = default;
+  void __clear();
+  std::string a;
+  std::map<std::string, int32_t> b;
+
+  struct __isset {
+    bool a;
+    bool b;
+  } __isset = {};
+  bool operator==(const ComplexString& rhs) const;
+  bool operator<(const ComplexString& rhs) const;
+
+  const std::string& get_a() const& {
+    return a;
+  }
+
+  std::string get_a() && {
+    return std::move(a);
+  }
+
+  template <typename T_ComplexString_a_struct_setter = std::string>
+  std::string& set_a(T_ComplexString_a_struct_setter&& a_) {
+    a = std::forward<T_ComplexString_a_struct_setter>(a_);
+    __isset.a = true;
+    return a;
+  }
+  const std::map<std::string, int32_t>& get_b() const&;
+  std::map<std::string, int32_t> get_b() &&;
+
+  template <typename T_ComplexString_b_struct_setter = std::map<std::string, int32_t>>
+  std::map<std::string, int32_t>& set_b(T_ComplexString_b_struct_setter&& b_) {
+    b = std::forward<T_ComplexString_b_struct_setter>(b_);
+    __isset.b = true;
+    return b;
+  }
+
+  template <class Protocol_>
+  uint32_t read(Protocol_* iprot);
+  template <class Protocol_>
+  uint32_t serializedSize(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t serializedSizeZC(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t write(Protocol_* prot_) const;
+
+ private:
+  static void translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype);
+
+  template <class Protocol_>
+  void readNoXfer(Protocol_* iprot);
+
+  friend class ::apache::thrift::Cpp2Ops< ComplexString >;
+};
+
+void swap(ComplexString& a, ComplexString& b);
+extern template void ComplexString::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+extern template uint32_t ComplexString::write<>(apache::thrift::BinaryProtocolWriter*) const;
+extern template uint32_t ComplexString::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t ComplexString::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template void ComplexString::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+extern template uint32_t ComplexString::write<>(apache::thrift::CompactProtocolWriter*) const;
+extern template uint32_t ComplexString::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template uint32_t ComplexString::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+template <class Protocol_>
+uint32_t ComplexString::read(Protocol_* iprot) {
+  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
+  readNoXfer(iprot);
+  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
+}
+
+}}}} // apache::thrift::fixtures::types
+namespace apache { namespace thrift {
+
+template <> inline void Cpp2Ops< ::apache::thrift::fixtures::types::ComplexString>::clear( ::apache::thrift::fixtures::types::ComplexString* obj) {
+  return obj->__clear();
+}
+
+template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::apache::thrift::fixtures::types::ComplexString>::thriftType() {
+  return apache::thrift::protocol::T_STRUCT;
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::apache::thrift::fixtures::types::ComplexString>::write(Protocol* proto,  ::apache::thrift::fixtures::types::ComplexString const* obj) {
+  return obj->write(proto);
+}
+
+template <> template <class Protocol> void Cpp2Ops< ::apache::thrift::fixtures::types::ComplexString>::read(Protocol* proto,  ::apache::thrift::fixtures::types::ComplexString* obj) {
+  return obj->readNoXfer(proto);
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::apache::thrift::fixtures::types::ComplexString>::serializedSize(Protocol const* proto,  ::apache::thrift::fixtures::types::ComplexString const* obj) {
+  return obj->serializedSize(proto);
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::apache::thrift::fixtures::types::ComplexString>::serializedSizeZC(Protocol const* proto,  ::apache::thrift::fixtures::types::ComplexString const* obj) {
+  return obj->serializedSizeZC(proto);
+}
+
+}} // apache::thrift
+namespace apache { namespace thrift { namespace fixtures { namespace types {
+class ComplexNestedWithDefault final : private apache::thrift::detail::st::ComparisonOperators<ComplexNestedWithDefault> {
+ public:
+
+  ComplexNestedWithDefault() :
+      z(apache::thrift::StringTraits< std::string>::fromStringLiteral("4")),
+      n( ::apache::thrift::fixtures::types::ComplexString(::apache::thrift::detail::wrap_argument<1>(apache::thrift::StringTraits< std::string>::fromStringLiteral("3")), ::apache::thrift::detail::wrap_argument<2>(std::initializer_list<std::pair<const std::string, int32_t>>{{apache::thrift::StringTraits< std::string>::fromStringLiteral("a"), 3}}))) {}
+  // FragileConstructor for use in initialization lists only.
+  ComplexNestedWithDefault(apache::thrift::FragileConstructor, std::string z__arg,  ::apache::thrift::fixtures::types::ComplexString n__arg);
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  ComplexNestedWithDefault(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    ComplexNestedWithDefault(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    z = arg.move();
+    __isset.z = true;
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  ComplexNestedWithDefault(::apache::thrift::detail::argument_wrapper<2, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    ComplexNestedWithDefault(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    n = arg.move();
+    __isset.n = true;
+  }
+
+  ComplexNestedWithDefault(ComplexNestedWithDefault&&) = default;
+
+  ComplexNestedWithDefault(const ComplexNestedWithDefault&) = default;
+
+  ComplexNestedWithDefault& operator=(ComplexNestedWithDefault&&) = default;
+
+  ComplexNestedWithDefault& operator=(const ComplexNestedWithDefault&) = default;
+  void __clear();
+  std::string z;
+   ::apache::thrift::fixtures::types::ComplexString n;
+
+  struct __isset {
+    bool z;
+    bool n;
+  } __isset = {};
+  bool operator==(const ComplexNestedWithDefault& rhs) const;
+  bool operator<(const ComplexNestedWithDefault& rhs) const;
+
+  const std::string& get_z() const& {
+    return z;
+  }
+
+  std::string get_z() && {
+    return std::move(z);
+  }
+
+  template <typename T_ComplexNestedWithDefault_z_struct_setter = std::string>
+  std::string& set_z(T_ComplexNestedWithDefault_z_struct_setter&& z_) {
+    z = std::forward<T_ComplexNestedWithDefault_z_struct_setter>(z_);
+    __isset.z = true;
+    return z;
+  }
+  const  ::apache::thrift::fixtures::types::ComplexString& get_n() const&;
+   ::apache::thrift::fixtures::types::ComplexString get_n() &&;
+
+  template <typename T_ComplexNestedWithDefault_n_struct_setter =  ::apache::thrift::fixtures::types::ComplexString>
+   ::apache::thrift::fixtures::types::ComplexString& set_n(T_ComplexNestedWithDefault_n_struct_setter&& n_) {
+    n = std::forward<T_ComplexNestedWithDefault_n_struct_setter>(n_);
+    __isset.n = true;
+    return n;
+  }
+
+  template <class Protocol_>
+  uint32_t read(Protocol_* iprot);
+  template <class Protocol_>
+  uint32_t serializedSize(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t serializedSizeZC(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t write(Protocol_* prot_) const;
+
+ private:
+  static void translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype);
+
+  template <class Protocol_>
+  void readNoXfer(Protocol_* iprot);
+
+  friend class ::apache::thrift::Cpp2Ops< ComplexNestedWithDefault >;
+};
+
+void swap(ComplexNestedWithDefault& a, ComplexNestedWithDefault& b);
+extern template void ComplexNestedWithDefault::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+extern template uint32_t ComplexNestedWithDefault::write<>(apache::thrift::BinaryProtocolWriter*) const;
+extern template uint32_t ComplexNestedWithDefault::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t ComplexNestedWithDefault::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template void ComplexNestedWithDefault::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+extern template uint32_t ComplexNestedWithDefault::write<>(apache::thrift::CompactProtocolWriter*) const;
+extern template uint32_t ComplexNestedWithDefault::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template uint32_t ComplexNestedWithDefault::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+template <class Protocol_>
+uint32_t ComplexNestedWithDefault::read(Protocol_* iprot) {
+  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
+  readNoXfer(iprot);
+  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
+}
+
+}}}} // apache::thrift::fixtures::types
+namespace apache { namespace thrift {
+
+template <> inline void Cpp2Ops< ::apache::thrift::fixtures::types::ComplexNestedWithDefault>::clear( ::apache::thrift::fixtures::types::ComplexNestedWithDefault* obj) {
+  return obj->__clear();
+}
+
+template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::apache::thrift::fixtures::types::ComplexNestedWithDefault>::thriftType() {
+  return apache::thrift::protocol::T_STRUCT;
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::apache::thrift::fixtures::types::ComplexNestedWithDefault>::write(Protocol* proto,  ::apache::thrift::fixtures::types::ComplexNestedWithDefault const* obj) {
+  return obj->write(proto);
+}
+
+template <> template <class Protocol> void Cpp2Ops< ::apache::thrift::fixtures::types::ComplexNestedWithDefault>::read(Protocol* proto,  ::apache::thrift::fixtures::types::ComplexNestedWithDefault* obj) {
+  return obj->readNoXfer(proto);
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::apache::thrift::fixtures::types::ComplexNestedWithDefault>::serializedSize(Protocol const* proto,  ::apache::thrift::fixtures::types::ComplexNestedWithDefault const* obj) {
+  return obj->serializedSize(proto);
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::apache::thrift::fixtures::types::ComplexNestedWithDefault>::serializedSizeZC(Protocol const* proto,  ::apache::thrift::fixtures::types::ComplexNestedWithDefault const* obj) {
   return obj->serializedSizeZC(proto);
 }
 

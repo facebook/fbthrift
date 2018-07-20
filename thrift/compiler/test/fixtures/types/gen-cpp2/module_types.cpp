@@ -509,3 +509,303 @@ template uint32_t MyStructWithForwardRefEnum::serializedSize<>(apache::thrift::C
 template uint32_t MyStructWithForwardRefEnum::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 }}}} // apache::thrift::fixtures::types
+namespace apache { namespace thrift { namespace fixtures { namespace types {
+
+TrivialNumeric::TrivialNumeric(apache::thrift::FragileConstructor, int32_t a__arg, bool b__arg) :
+    a(std::move(a__arg)),
+    b(std::move(b__arg)) {
+  __isset.a = true;
+  __isset.b = true;
+}
+
+void TrivialNumeric::__clear() {
+  // clear all fields
+  a = 0;
+  b = 0;
+  __isset = {};
+}
+
+bool TrivialNumeric::operator==(const TrivialNumeric& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  if (!(lhs.a == rhs.a)) {
+    return false;
+  }
+  if (!(lhs.b == rhs.b)) {
+    return false;
+  }
+  return true;
+}
+
+bool TrivialNumeric::operator<(const TrivialNumeric& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  if (!(lhs.a == rhs.a)) {
+    return lhs.a < rhs.a;
+  }
+  if (!(lhs.b == rhs.b)) {
+    return lhs.b < rhs.b;
+  }
+  return false;
+}
+
+void TrivialNumeric::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "a") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_I32;
+  }
+  else if (_fname == "b") {
+    fid = 2;
+    _ftype = apache::thrift::protocol::T_BOOL;
+  }
+}
+
+void swap(TrivialNumeric& a, TrivialNumeric& b) {
+  using ::std::swap;
+  swap(a.a, b.a);
+  swap(a.b, b.b);
+  swap(a.__isset, b.__isset);
+}
+
+template void TrivialNumeric::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+template uint32_t TrivialNumeric::write<>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t TrivialNumeric::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t TrivialNumeric::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+template void TrivialNumeric::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+template uint32_t TrivialNumeric::write<>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t TrivialNumeric::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t TrivialNumeric::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+}}}} // apache::thrift::fixtures::types
+namespace apache { namespace thrift { namespace fixtures { namespace types {
+
+TrivialNestedWithDefault::TrivialNestedWithDefault(apache::thrift::FragileConstructor, int32_t z__arg,  ::apache::thrift::fixtures::types::TrivialNumeric n__arg) :
+    z(std::move(z__arg)),
+    n(std::move(n__arg)) {
+  __isset.z = true;
+  __isset.n = true;
+}
+
+void TrivialNestedWithDefault::__clear() {
+  // clear all fields
+  z = 4;
+  ::apache::thrift::Cpp2Ops<  ::apache::thrift::fixtures::types::TrivialNumeric>::clear(&n);
+  __isset = {};
+}
+
+bool TrivialNestedWithDefault::operator==(const TrivialNestedWithDefault& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  if (!(lhs.z == rhs.z)) {
+    return false;
+  }
+  if (!(lhs.n == rhs.n)) {
+    return false;
+  }
+  return true;
+}
+
+bool TrivialNestedWithDefault::operator<(const TrivialNestedWithDefault& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  if (!(lhs.z == rhs.z)) {
+    return lhs.z < rhs.z;
+  }
+  if (!(lhs.n == rhs.n)) {
+    return lhs.n < rhs.n;
+  }
+  return false;
+}
+
+const  ::apache::thrift::fixtures::types::TrivialNumeric& TrivialNestedWithDefault::get_n() const& {
+  return n;
+}
+
+ ::apache::thrift::fixtures::types::TrivialNumeric TrivialNestedWithDefault::get_n() && {
+  return std::move(n);
+}
+
+void TrivialNestedWithDefault::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "z") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_I32;
+  }
+  else if (_fname == "n") {
+    fid = 2;
+    _ftype = apache::thrift::protocol::T_STRUCT;
+  }
+}
+
+void swap(TrivialNestedWithDefault& a, TrivialNestedWithDefault& b) {
+  using ::std::swap;
+  swap(a.z, b.z);
+  swap(a.n, b.n);
+  swap(a.__isset, b.__isset);
+}
+
+template void TrivialNestedWithDefault::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+template uint32_t TrivialNestedWithDefault::write<>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t TrivialNestedWithDefault::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t TrivialNestedWithDefault::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+template void TrivialNestedWithDefault::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+template uint32_t TrivialNestedWithDefault::write<>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t TrivialNestedWithDefault::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t TrivialNestedWithDefault::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+}}}} // apache::thrift::fixtures::types
+namespace apache { namespace thrift { namespace fixtures { namespace types {
+
+ComplexString::ComplexString(apache::thrift::FragileConstructor, std::string a__arg, std::map<std::string, int32_t> b__arg) :
+    a(std::move(a__arg)),
+    b(std::move(b__arg)) {
+  __isset.a = true;
+  __isset.b = true;
+}
+
+void ComplexString::__clear() {
+  // clear all fields
+  a = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
+  b.clear();
+  __isset = {};
+}
+
+bool ComplexString::operator==(const ComplexString& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  if (!(lhs.a == rhs.a)) {
+    return false;
+  }
+  if (!(lhs.b == rhs.b)) {
+    return false;
+  }
+  return true;
+}
+
+bool ComplexString::operator<(const ComplexString& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  if (!(lhs.a == rhs.a)) {
+    return lhs.a < rhs.a;
+  }
+  if (!(lhs.b == rhs.b)) {
+    return lhs.b < rhs.b;
+  }
+  return false;
+}
+
+const std::map<std::string, int32_t>& ComplexString::get_b() const& {
+  return b;
+}
+
+std::map<std::string, int32_t> ComplexString::get_b() && {
+  return std::move(b);
+}
+
+void ComplexString::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "a") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
+  else if (_fname == "b") {
+    fid = 2;
+    _ftype = apache::thrift::protocol::T_MAP;
+  }
+}
+
+void swap(ComplexString& a, ComplexString& b) {
+  using ::std::swap;
+  swap(a.a, b.a);
+  swap(a.b, b.b);
+  swap(a.__isset, b.__isset);
+}
+
+template void ComplexString::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+template uint32_t ComplexString::write<>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t ComplexString::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t ComplexString::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+template void ComplexString::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+template uint32_t ComplexString::write<>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t ComplexString::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t ComplexString::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+}}}} // apache::thrift::fixtures::types
+namespace apache { namespace thrift { namespace fixtures { namespace types {
+
+ComplexNestedWithDefault::ComplexNestedWithDefault(apache::thrift::FragileConstructor, std::string z__arg,  ::apache::thrift::fixtures::types::ComplexString n__arg) :
+    z(std::move(z__arg)),
+    n(std::move(n__arg)) {
+  __isset.z = true;
+  __isset.n = true;
+}
+
+void ComplexNestedWithDefault::__clear() {
+  // clear all fields
+  z = apache::thrift::StringTraits< std::string>::fromStringLiteral("4");
+  ::apache::thrift::Cpp2Ops<  ::apache::thrift::fixtures::types::ComplexString>::clear(&n);
+  __isset = {};
+}
+
+bool ComplexNestedWithDefault::operator==(const ComplexNestedWithDefault& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  if (!(lhs.z == rhs.z)) {
+    return false;
+  }
+  if (!(lhs.n == rhs.n)) {
+    return false;
+  }
+  return true;
+}
+
+bool ComplexNestedWithDefault::operator<(const ComplexNestedWithDefault& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  if (!(lhs.z == rhs.z)) {
+    return lhs.z < rhs.z;
+  }
+  if (!(lhs.n == rhs.n)) {
+    return lhs.n < rhs.n;
+  }
+  return false;
+}
+
+const  ::apache::thrift::fixtures::types::ComplexString& ComplexNestedWithDefault::get_n() const& {
+  return n;
+}
+
+ ::apache::thrift::fixtures::types::ComplexString ComplexNestedWithDefault::get_n() && {
+  return std::move(n);
+}
+
+void ComplexNestedWithDefault::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "z") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
+  else if (_fname == "n") {
+    fid = 2;
+    _ftype = apache::thrift::protocol::T_STRUCT;
+  }
+}
+
+void swap(ComplexNestedWithDefault& a, ComplexNestedWithDefault& b) {
+  using ::std::swap;
+  swap(a.z, b.z);
+  swap(a.n, b.n);
+  swap(a.__isset, b.__isset);
+}
+
+template void ComplexNestedWithDefault::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+template uint32_t ComplexNestedWithDefault::write<>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t ComplexNestedWithDefault::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t ComplexNestedWithDefault::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+template void ComplexNestedWithDefault::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+template uint32_t ComplexNestedWithDefault::write<>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t ComplexNestedWithDefault::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t ComplexNestedWithDefault::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+}}}} // apache::thrift::fixtures::types

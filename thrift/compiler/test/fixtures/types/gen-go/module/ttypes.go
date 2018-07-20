@@ -1006,3 +1006,510 @@ func (p *MyStructWithForwardRefEnum) String() string {
   return fmt.Sprintf("MyStructWithForwardRefEnum(%+v)", *p)
 }
 
+// Attributes:
+//  - A
+//  - B
+type TrivialNumeric struct {
+  A int32 `thrift:"a,1" db:"a" json:"a"`
+  B bool `thrift:"b,2" db:"b" json:"b"`
+}
+
+func NewTrivialNumeric() *TrivialNumeric {
+  return &TrivialNumeric{}
+}
+
+
+func (p *TrivialNumeric) GetA() int32 {
+  return p.A
+}
+
+func (p *TrivialNumeric) GetB() bool {
+  return p.B
+}
+func (p *TrivialNumeric) Read(iprot thrift.Protocol) error {
+  if _, err := iprot.ReadStructBegin(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
+  }
+
+
+  for {
+    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
+    if err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
+    }
+    if fieldTypeId == thrift.STOP { break; }
+    switch fieldId {
+    case 1:
+      if err := p.ReadField1(iprot); err != nil {
+        return err
+      }
+    case 2:
+      if err := p.ReadField2(iprot); err != nil {
+        return err
+      }
+    default:
+      if err := iprot.Skip(fieldTypeId); err != nil {
+        return err
+      }
+    }
+    if err := iprot.ReadFieldEnd(); err != nil {
+      return err
+    }
+  }
+  if err := iprot.ReadStructEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+  }
+  return nil
+}
+
+func (p *TrivialNumeric)  ReadField1(iprot thrift.Protocol) error {
+  if v, err := iprot.ReadI32(); err != nil {
+  return thrift.PrependError("error reading field 1: ", err)
+} else {
+  p.A = v
+}
+  return nil
+}
+
+func (p *TrivialNumeric)  ReadField2(iprot thrift.Protocol) error {
+  if v, err := iprot.ReadBool(); err != nil {
+  return thrift.PrependError("error reading field 2: ", err)
+} else {
+  p.B = v
+}
+  return nil
+}
+
+func (p *TrivialNumeric) Write(oprot thrift.Protocol) error {
+  if err := oprot.WriteStructBegin("TrivialNumeric"); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
+  if err := p.writeField1(oprot); err != nil { return err }
+  if err := p.writeField2(oprot); err != nil { return err }
+  if err := oprot.WriteFieldStop(); err != nil {
+    return thrift.PrependError("write field stop error: ", err) }
+  if err := oprot.WriteStructEnd(); err != nil {
+    return thrift.PrependError("write struct stop error: ", err) }
+  return nil
+}
+
+func (p *TrivialNumeric) writeField1(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("a", thrift.I32, 1); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 1:a: ", p), err) }
+  if err := oprot.WriteI32(int32(p.A)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.a (1) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 1:a: ", p), err) }
+  return err
+}
+
+func (p *TrivialNumeric) writeField2(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("b", thrift.BOOL, 2); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 2:b: ", p), err) }
+  if err := oprot.WriteBool(bool(p.B)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.b (2) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 2:b: ", p), err) }
+  return err
+}
+
+func (p *TrivialNumeric) String() string {
+  if p == nil {
+    return "<nil>"
+  }
+  return fmt.Sprintf("TrivialNumeric(%+v)", *p)
+}
+
+// Attributes:
+//  - Z
+//  - N
+type TrivialNestedWithDefault struct {
+  Z int32 `thrift:"z,1" db:"z" json:"z"`
+  N *TrivialNumeric `thrift:"n,2" db:"n" json:"n"`
+}
+
+func NewTrivialNestedWithDefault() *TrivialNestedWithDefault {
+  return &TrivialNestedWithDefault{
+Z: 4,
+}
+}
+
+
+func (p *TrivialNestedWithDefault) GetZ() int32 {
+  return p.Z
+}
+var TrivialNestedWithDefault_N_DEFAULT *TrivialNumeric = &TrivialNumeric{
+  A: 3,
+  B: true,
+}
+func (p *TrivialNestedWithDefault) GetN() *TrivialNumeric {
+  if !p.IsSetN() {
+    return TrivialNestedWithDefault_N_DEFAULT
+  }
+return p.N
+}
+func (p *TrivialNestedWithDefault) IsSetN() bool {
+  return p.N != nil
+}
+
+func (p *TrivialNestedWithDefault) Read(iprot thrift.Protocol) error {
+  if _, err := iprot.ReadStructBegin(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
+  }
+
+
+  for {
+    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
+    if err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
+    }
+    if fieldTypeId == thrift.STOP { break; }
+    switch fieldId {
+    case 1:
+      if err := p.ReadField1(iprot); err != nil {
+        return err
+      }
+    case 2:
+      if err := p.ReadField2(iprot); err != nil {
+        return err
+      }
+    default:
+      if err := iprot.Skip(fieldTypeId); err != nil {
+        return err
+      }
+    }
+    if err := iprot.ReadFieldEnd(); err != nil {
+      return err
+    }
+  }
+  if err := iprot.ReadStructEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+  }
+  return nil
+}
+
+func (p *TrivialNestedWithDefault)  ReadField1(iprot thrift.Protocol) error {
+  if v, err := iprot.ReadI32(); err != nil {
+  return thrift.PrependError("error reading field 1: ", err)
+} else {
+  p.Z = v
+}
+  return nil
+}
+
+func (p *TrivialNestedWithDefault)  ReadField2(iprot thrift.Protocol) error {
+  p.N = NewTrivialNumeric()
+  if err := p.N.Read(iprot); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", p.N), err)
+  }
+  return nil
+}
+
+func (p *TrivialNestedWithDefault) Write(oprot thrift.Protocol) error {
+  if err := oprot.WriteStructBegin("TrivialNestedWithDefault"); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
+  if err := p.writeField1(oprot); err != nil { return err }
+  if err := p.writeField2(oprot); err != nil { return err }
+  if err := oprot.WriteFieldStop(); err != nil {
+    return thrift.PrependError("write field stop error: ", err) }
+  if err := oprot.WriteStructEnd(); err != nil {
+    return thrift.PrependError("write struct stop error: ", err) }
+  return nil
+}
+
+func (p *TrivialNestedWithDefault) writeField1(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("z", thrift.I32, 1); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 1:z: ", p), err) }
+  if err := oprot.WriteI32(int32(p.Z)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.z (1) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 1:z: ", p), err) }
+  return err
+}
+
+func (p *TrivialNestedWithDefault) writeField2(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("n", thrift.STRUCT, 2); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 2:n: ", p), err) }
+  if err := p.N.Write(oprot); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T error writing struct: ", p.N), err)
+  }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 2:n: ", p), err) }
+  return err
+}
+
+func (p *TrivialNestedWithDefault) String() string {
+  if p == nil {
+    return "<nil>"
+  }
+  return fmt.Sprintf("TrivialNestedWithDefault(%+v)", *p)
+}
+
+// Attributes:
+//  - A
+//  - B
+type ComplexString struct {
+  A string `thrift:"a,1" db:"a" json:"a"`
+  B map[string]int32 `thrift:"b,2" db:"b" json:"b"`
+}
+
+func NewComplexString() *ComplexString {
+  return &ComplexString{}
+}
+
+
+func (p *ComplexString) GetA() string {
+  return p.A
+}
+
+func (p *ComplexString) GetB() map[string]int32 {
+  return p.B
+}
+func (p *ComplexString) Read(iprot thrift.Protocol) error {
+  if _, err := iprot.ReadStructBegin(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
+  }
+
+
+  for {
+    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
+    if err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
+    }
+    if fieldTypeId == thrift.STOP { break; }
+    switch fieldId {
+    case 1:
+      if err := p.ReadField1(iprot); err != nil {
+        return err
+      }
+    case 2:
+      if err := p.ReadField2(iprot); err != nil {
+        return err
+      }
+    default:
+      if err := iprot.Skip(fieldTypeId); err != nil {
+        return err
+      }
+    }
+    if err := iprot.ReadFieldEnd(); err != nil {
+      return err
+    }
+  }
+  if err := iprot.ReadStructEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+  }
+  return nil
+}
+
+func (p *ComplexString)  ReadField1(iprot thrift.Protocol) error {
+  if v, err := iprot.ReadString(); err != nil {
+  return thrift.PrependError("error reading field 1: ", err)
+} else {
+  p.A = v
+}
+  return nil
+}
+
+func (p *ComplexString)  ReadField2(iprot thrift.Protocol) error {
+  _, _, size, err := iprot.ReadMapBegin()
+  if err != nil {
+    return thrift.PrependError("error reading map begin: ", err)
+  }
+  tMap := make(map[string]int32, size)
+  p.B =  tMap
+  for i := 0; i < size; i ++ {
+var _key12 string
+    if v, err := iprot.ReadString(); err != nil {
+    return thrift.PrependError("error reading field 0: ", err)
+} else {
+    _key12 = v
+}
+var _val13 int32
+    if v, err := iprot.ReadI32(); err != nil {
+    return thrift.PrependError("error reading field 0: ", err)
+} else {
+    _val13 = v
+}
+    p.B[_key12] = _val13
+  }
+  if err := iprot.ReadMapEnd(); err != nil {
+    return thrift.PrependError("error reading map end: ", err)
+  }
+  return nil
+}
+
+func (p *ComplexString) Write(oprot thrift.Protocol) error {
+  if err := oprot.WriteStructBegin("ComplexString"); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
+  if err := p.writeField1(oprot); err != nil { return err }
+  if err := p.writeField2(oprot); err != nil { return err }
+  if err := oprot.WriteFieldStop(); err != nil {
+    return thrift.PrependError("write field stop error: ", err) }
+  if err := oprot.WriteStructEnd(); err != nil {
+    return thrift.PrependError("write struct stop error: ", err) }
+  return nil
+}
+
+func (p *ComplexString) writeField1(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("a", thrift.STRING, 1); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 1:a: ", p), err) }
+  if err := oprot.WriteString(string(p.A)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.a (1) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 1:a: ", p), err) }
+  return err
+}
+
+func (p *ComplexString) writeField2(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("b", thrift.MAP, 2); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 2:b: ", p), err) }
+  if err := oprot.WriteMapBegin(thrift.STRING, thrift.I32, len(p.B)); err != nil {
+    return thrift.PrependError("error writing map begin: ", err)
+  }
+  for k, v := range p.B {
+    if err := oprot.WriteString(string(k)); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T. (0) field write error: ", p), err) }
+    if err := oprot.WriteI32(int32(v)); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T. (0) field write error: ", p), err) }
+  }
+  if err := oprot.WriteMapEnd(); err != nil {
+    return thrift.PrependError("error writing map end: ", err)
+  }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 2:b: ", p), err) }
+  return err
+}
+
+func (p *ComplexString) String() string {
+  if p == nil {
+    return "<nil>"
+  }
+  return fmt.Sprintf("ComplexString(%+v)", *p)
+}
+
+// Attributes:
+//  - Z
+//  - N
+type ComplexNestedWithDefault struct {
+  Z string `thrift:"z,1" db:"z" json:"z"`
+  N *ComplexString `thrift:"n,2" db:"n" json:"n"`
+}
+
+func NewComplexNestedWithDefault() *ComplexNestedWithDefault {
+  return &ComplexNestedWithDefault{
+Z: "4",
+}
+}
+
+
+func (p *ComplexNestedWithDefault) GetZ() string {
+  return p.Z
+}
+var ComplexNestedWithDefault_N_DEFAULT *ComplexString = &ComplexString{
+  A: "3",
+  B: map[string]int32{
+    "a": 3,
+  },
+}
+func (p *ComplexNestedWithDefault) GetN() *ComplexString {
+  if !p.IsSetN() {
+    return ComplexNestedWithDefault_N_DEFAULT
+  }
+return p.N
+}
+func (p *ComplexNestedWithDefault) IsSetN() bool {
+  return p.N != nil
+}
+
+func (p *ComplexNestedWithDefault) Read(iprot thrift.Protocol) error {
+  if _, err := iprot.ReadStructBegin(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
+  }
+
+
+  for {
+    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
+    if err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
+    }
+    if fieldTypeId == thrift.STOP { break; }
+    switch fieldId {
+    case 1:
+      if err := p.ReadField1(iprot); err != nil {
+        return err
+      }
+    case 2:
+      if err := p.ReadField2(iprot); err != nil {
+        return err
+      }
+    default:
+      if err := iprot.Skip(fieldTypeId); err != nil {
+        return err
+      }
+    }
+    if err := iprot.ReadFieldEnd(); err != nil {
+      return err
+    }
+  }
+  if err := iprot.ReadStructEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+  }
+  return nil
+}
+
+func (p *ComplexNestedWithDefault)  ReadField1(iprot thrift.Protocol) error {
+  if v, err := iprot.ReadString(); err != nil {
+  return thrift.PrependError("error reading field 1: ", err)
+} else {
+  p.Z = v
+}
+  return nil
+}
+
+func (p *ComplexNestedWithDefault)  ReadField2(iprot thrift.Protocol) error {
+  p.N = NewComplexString()
+  if err := p.N.Read(iprot); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", p.N), err)
+  }
+  return nil
+}
+
+func (p *ComplexNestedWithDefault) Write(oprot thrift.Protocol) error {
+  if err := oprot.WriteStructBegin("ComplexNestedWithDefault"); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
+  if err := p.writeField1(oprot); err != nil { return err }
+  if err := p.writeField2(oprot); err != nil { return err }
+  if err := oprot.WriteFieldStop(); err != nil {
+    return thrift.PrependError("write field stop error: ", err) }
+  if err := oprot.WriteStructEnd(); err != nil {
+    return thrift.PrependError("write struct stop error: ", err) }
+  return nil
+}
+
+func (p *ComplexNestedWithDefault) writeField1(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("z", thrift.STRING, 1); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 1:z: ", p), err) }
+  if err := oprot.WriteString(string(p.Z)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.z (1) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 1:z: ", p), err) }
+  return err
+}
+
+func (p *ComplexNestedWithDefault) writeField2(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("n", thrift.STRUCT, 2); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 2:n: ", p), err) }
+  if err := p.N.Write(oprot); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T error writing struct: ", p.N), err)
+  }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 2:n: ", p), err) }
+  return err
+}
+
+func (p *ComplexNestedWithDefault) String() string {
+  if p == nil {
+    return "<nil>"
+  }
+  return fmt.Sprintf("ComplexNestedWithDefault(%+v)", *p)
+}
+
