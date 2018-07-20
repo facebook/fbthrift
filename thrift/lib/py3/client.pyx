@@ -10,7 +10,6 @@ from cython.operator cimport dereference as deref
 from folly.futures cimport bridgeFutureWith
 from folly cimport cFollyTry, cFollyPromise
 from folly.executor cimport get_executor
-from folly.range cimport StringPiece
 from cpython.ref cimport PyObject
 from libcpp cimport nullptr
 import asyncio
@@ -85,7 +84,7 @@ def get_client(clientKlass, *, host='::1', int port=-1, path=None, float timeout
         fspath = os.fsencode(path)
         bridgeFutureWith[cRequestChannel_ptr](
             (<Client>client)._executor,
-            createThriftChannelUnix(StringPiece(fspath, len(fspath)), _timeout),
+            createThriftChannelUnix(fspath, _timeout),
             requestchannel_callback,
             <PyObject *> client
         )

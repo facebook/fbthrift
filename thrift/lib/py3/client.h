@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 #pragma once
-
 #include <cstdint>
 #include <functional>
 
@@ -72,13 +71,16 @@ folly::Future<RequestChannel_ptr> createThriftChannelTCP(
  * Create a thrift channel by connecting to a Unix domain socket.
  */
 folly::Future<RequestChannel_ptr> createThriftChannelUnix(
-    const folly::StringPiece path,
+    const std::string path,
     const uint32_t connect_timeout) {
   auto eb = folly::getEventBase();
   return folly::via(eb, [=] {
     return apache::thrift::HeaderClientChannel::newChannel(
         apache::thrift::async::TAsyncSocket::newSocket(
-            eb, folly::SocketAddress::makeFromPath(path), connect_timeout));
+            eb,
+            folly::SocketAddress::makeFromPath(
+                folly::StringPiece(path.data(), path.size())),
+            connect_timeout));
   });
 }
 

@@ -4,7 +4,6 @@ from folly cimport (
     cFollyExecutor,
     cFollyTry
 )
-from folly.range cimport StringPiece
 from libc.stdint cimport uint16_t, uint32_t, int64_t
 from libcpp.memory cimport shared_ptr
 from libcpp.string cimport string
@@ -28,7 +27,7 @@ cdef extern from "thrift/lib/py3/client.h" namespace "thrift::py3":
     )
 
     cdef cFollyFuture[cRequestChannel_ptr] createThriftChannelUnix(
-        StringPiece path,
+        string path,
         const uint32_t connect_timeout,
     )
     cdef void destroyInEventBaseThread(cRequestChannel_ptr)

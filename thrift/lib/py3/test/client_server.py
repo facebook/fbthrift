@@ -130,16 +130,9 @@ class ClientServerTests(unittest.TestCase):
         async def inner_test(dir: Path) -> None:
             async with TestServer(path=dir / "tserver.sock") as sa:
                 assert sa.path
-                for r in range(2):
-                    try:
-                        async with get_client(TestingService, path=sa.path) as client:
-                            self.assertTrue(await client.invert(False))
-                            self.assertFalse(await client.invert(True))
-                        break
-
-                    except TransportError:
-                        if r == 1:
-                            raise
+                async with get_client(TestingService, path=sa.path) as client:
+                    self.assertTrue(await client.invert(False))
+                    self.assertFalse(await client.invert(True))
 
         with tempfile.TemporaryDirectory() as tdir:
             loop.run_until_complete(inner_test(Path(tdir)))
