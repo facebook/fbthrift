@@ -31,7 +31,7 @@ typedef list<SimpleStruct> ListOfSimpleStructs
 struct SimpleStruct {
   1: required bool is_on
   2: required byte tiny_int = 5
-  3: optional i16 small_int
+  3: optional i16 small_int = 10
   4: optional i32 nice_sized_int
   5: i64 big_int
   6: float coarse_real = 0.0
