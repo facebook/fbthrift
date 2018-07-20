@@ -39,7 +39,7 @@ cdef extern from * nogil:
         std_unordered_map() except +
         std_unordered_map(std_unordered_map&) except +
 
-        cpair[iterator, bint] insert(cpair[T, U]) except +
+        U& operator[](T&)
         iterator find(const T&)
         size_type count(const T&)
         size_type size()

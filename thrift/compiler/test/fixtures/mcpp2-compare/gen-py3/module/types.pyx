@@ -6417,7 +6417,7 @@ cdef class Map__string_i64:
                     raise TypeError(f"{item!r} is not of type int")
                 item = <int64_t> item
 
-                deref(c_inst).insert(cpair[string,int64_t](key.encode('UTF-8'),item))
+                deref(c_inst)[key.encode('UTF-8')] = item
         return move_unique(c_inst)
 
     def __getitem__(self, key):
@@ -6543,7 +6543,7 @@ cdef class Map__Empty_MyStruct:
                 if not isinstance(item, MyStruct):
                     raise TypeError(f"{item!r} is not of type 'MyStruct'")
 
-                deref(c_inst).insert(cpair[cEmpty,cMyStruct](deref((<Empty>key)._cpp_obj),deref((<MyStruct>item)._cpp_obj)))
+                deref(c_inst)[deref((<Empty>key)._cpp_obj)] = deref((<MyStruct>item)._cpp_obj)
         return move_unique(c_inst)
 
     def __getitem__(self, key):
@@ -8236,7 +8236,7 @@ cdef class Map__i32_List__string:
                 if not isinstance(item, List__string):
                     item = List__string(item)
 
-                deref(c_inst).insert(cpair[int32_t,vector[string]](key,vector[string](deref(List__string(item)._cpp_obj.get()))))
+                deref(c_inst)[key] = vector[string](deref(List__string(item)._cpp_obj.get()))
         return move_unique(c_inst)
 
     def __getitem__(self, key):
@@ -9754,7 +9754,7 @@ cdef class Map__List__Set__string_string:
                 if not isinstance(item, str):
                     raise TypeError(f"{item!r} is not of type str")
 
-                deref(c_inst).insert(cpair[vector[cset[string]],string](vector[cset[string]](deref(List__Set__string(key)._cpp_obj.get())),item.encode('UTF-8')))
+                deref(c_inst)[vector[cset[string]](deref(List__Set__string(key)._cpp_obj.get()))] = item.encode('UTF-8')
         return move_unique(c_inst)
 
     def __getitem__(self, key):
@@ -9895,7 +9895,7 @@ cdef class Map__Set__List__i32_Map__List__Set__string_string:
                 if not isinstance(item, Map__List__Set__string_string):
                     item = Map__List__Set__string_string(item)
 
-                deref(c_inst).insert(cpair[cset[vector[int32_t]],cmap[vector[cset[string]],string]](cset[vector[int32_t]](deref(Set__List__i32(key)._cpp_obj.get())),cmap[vector[cset[string]],string](deref(Map__List__Set__string_string(item)._cpp_obj.get()))))
+                deref(c_inst)[cset[vector[int32_t]](deref(Set__List__i32(key)._cpp_obj.get()))] = cmap[vector[cset[string]],string](deref(Map__List__Set__string_string(item)._cpp_obj.get()))
         return move_unique(c_inst)
 
     def __getitem__(self, key):
@@ -10188,7 +10188,7 @@ cdef class Map__MyEnumA_string:
                 if not isinstance(item, str):
                     raise TypeError(f"{item!r} is not of type str")
 
-                deref(c_inst).insert(cpair[cMyEnumA,string](MyEnumA_to_cpp(key),item.encode('UTF-8')))
+                deref(c_inst)[MyEnumA_to_cpp(key)] = item.encode('UTF-8')
         return move_unique(c_inst)
 
     def __getitem__(self, key):
@@ -10506,7 +10506,7 @@ cdef class Map__string_i32:
                     raise TypeError(f"{item!r} is not of type int")
                 item = <int32_t> item
 
-                deref(c_inst).insert(cpair[string,int32_t](key.encode('UTF-8'),item))
+                deref(c_inst)[key.encode('UTF-8')] = item
         return move_unique(c_inst)
 
     def __getitem__(self, key):
@@ -11148,7 +11148,7 @@ cdef class Map__string_bool:
                 if not isinstance(item, bool):
                     raise TypeError(f"{item!r} is not of type bool")
 
-                deref(c_inst).insert(cpair[string,cbool](key.encode('UTF-8'),item))
+                deref(c_inst)[key.encode('UTF-8')] = item
         return move_unique(c_inst)
 
     def __getitem__(self, key):
@@ -11467,7 +11467,7 @@ cdef class Map__string_Map__string_i32:
                 if not isinstance(item, Map__string_i32):
                     item = Map__string_i32(item)
 
-                deref(c_inst).insert(cpair[string,cmap[string,int32_t]](key.encode('UTF-8'),cmap[string,int32_t](deref(Map__string_i32(item)._cpp_obj.get()))))
+                deref(c_inst)[key.encode('UTF-8')] = cmap[string,int32_t](deref(Map__string_i32(item)._cpp_obj.get()))
         return move_unique(c_inst)
 
     def __getitem__(self, key):
@@ -11598,7 +11598,7 @@ cdef class Map__string_Map__string_Map__string_i32:
                 if not isinstance(item, Map__string_Map__string_i32):
                     item = Map__string_Map__string_i32(item)
 
-                deref(c_inst).insert(cpair[string,cmap[string,cmap[string,int32_t]]](key.encode('UTF-8'),cmap[string,cmap[string,int32_t]](deref(Map__string_Map__string_i32(item)._cpp_obj.get()))))
+                deref(c_inst)[key.encode('UTF-8')] = cmap[string,cmap[string,int32_t]](deref(Map__string_Map__string_i32(item)._cpp_obj.get()))
         return move_unique(c_inst)
 
     def __getitem__(self, key):
@@ -11902,7 +11902,7 @@ cdef class Map__string_List__i32:
                 if not isinstance(item, List__i32):
                     item = List__i32(item)
 
-                deref(c_inst).insert(cpair[string,vector[int32_t]](key.encode('UTF-8'),vector[int32_t](deref(List__i32(item)._cpp_obj.get()))))
+                deref(c_inst)[key.encode('UTF-8')] = vector[int32_t](deref(List__i32(item)._cpp_obj.get()))
         return move_unique(c_inst)
 
     def __getitem__(self, key):
@@ -12618,7 +12618,7 @@ cdef class Map__Bar__double_Baz__i32:
                     raise TypeError(f"{item!r} is not of type int")
                 item = <int32_t> item
 
-                deref(c_inst).insert(cpair[Bar,Baz](key,item))
+                deref(c_inst)[key] = item
         return move_unique(c_inst)
 
     def __getitem__(self, key):
@@ -13089,7 +13089,7 @@ cdef class FakeMap__Map__i64_double:
                 if not isinstance(item, (float, int)):
                     raise TypeError(f"{item!r} is not of type float")
 
-                deref(c_inst).insert(cpair[int64_t,double](key,item))
+                deref(c_inst)[key] = item
         return move_unique(c_inst)
 
     def __getitem__(self, key):
@@ -13215,7 +13215,7 @@ cdef class std_unordered_map_std_string_containerStruct__Map__string_containerSt
                 if not isinstance(item, containerStruct):
                     raise TypeError(f"{item!r} is not of type 'containerStruct'")
 
-                deref(c_inst).insert(cpair[string,ccontainerStruct](key.encode('UTF-8'),deref((<containerStruct>item)._cpp_obj)))
+                deref(c_inst)[key.encode('UTF-8')] = deref((<containerStruct>item)._cpp_obj)
         return move_unique(c_inst)
 
     def __getitem__(self, key):
@@ -13839,7 +13839,7 @@ cdef class folly_sorted_vector_map__Map__i64_string:
                 if not isinstance(item, str):
                     raise TypeError(f"{item!r} is not of type str")
 
-                deref(c_inst).insert(cpair[int64_t,string](key,item.encode('UTF-8')))
+                deref(c_inst)[key] = item.encode('UTF-8')
         return move_unique(c_inst)
 
     def __getitem__(self, key):
@@ -14310,7 +14310,7 @@ cdef class Map__i32_string:
                 if not isinstance(item, str):
                     raise TypeError(f"{item!r} is not of type str")
 
-                deref(c_inst).insert(cpair[int32_t,string](key,item.encode('UTF-8')))
+                deref(c_inst)[key] = item.encode('UTF-8')
         return move_unique(c_inst)
 
     def __getitem__(self, key):
@@ -14610,7 +14610,7 @@ cdef class Map__i16_string:
                 if not isinstance(item, str):
                     raise TypeError(f"{item!r} is not of type str")
 
-                deref(c_inst).insert(cpair[int16_t,string](key,item.encode('UTF-8')))
+                deref(c_inst)[key] = item.encode('UTF-8')
         return move_unique(c_inst)
 
     def __getitem__(self, key):

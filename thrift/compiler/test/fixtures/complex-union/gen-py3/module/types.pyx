@@ -975,7 +975,7 @@ cdef class Map__i16_string:
                 if not isinstance(item, str):
                     raise TypeError(f"{item!r} is not of type str")
 
-                deref(c_inst).insert(cpair[int16_t,string](key,item.encode('UTF-8')))
+                deref(c_inst)[key] = item.encode('UTF-8')
         return move_unique(c_inst)
 
     def __getitem__(self, key):

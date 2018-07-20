@@ -2251,7 +2251,7 @@ cdef class Map__string_i32:
                     raise TypeError(f"{item!r} is not of type int")
                 item = <int32_t> item
 
-                deref(c_inst).insert(cpair[string,int32_t](key.encode('UTF-8'),item))
+                deref(c_inst)[key.encode('UTF-8')] = item
         return move_unique(c_inst)
 
     def __getitem__(self, key):
@@ -3392,7 +3392,7 @@ cdef class Map__i32_i32:
                     raise TypeError(f"{item!r} is not of type int")
                 item = <int32_t> item
 
-                deref(c_inst).insert(cpair[int32_t,int32_t](key,item))
+                deref(c_inst)[key] = item
         return move_unique(c_inst)
 
     def __getitem__(self, key):
@@ -3519,7 +3519,7 @@ cdef class Map__i32_string:
                 if not isinstance(item, str):
                     raise TypeError(f"{item!r} is not of type str")
 
-                deref(c_inst).insert(cpair[int32_t,string](key,item.encode('UTF-8')))
+                deref(c_inst)[key] = item.encode('UTF-8')
         return move_unique(c_inst)
 
     def __getitem__(self, key):
@@ -3645,7 +3645,7 @@ cdef class Map__string_string:
                 if not isinstance(item, str):
                     raise TypeError(f"{item!r} is not of type str")
 
-                deref(c_inst).insert(cpair[string,string](key.encode('UTF-8'),item.encode('UTF-8')))
+                deref(c_inst)[key.encode('UTF-8')] = item.encode('UTF-8')
         return move_unique(c_inst)
 
     def __getitem__(self, key):

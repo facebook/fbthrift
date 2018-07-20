@@ -213,7 +213,7 @@ cdef class Map__i32_List__i32:
                 if not isinstance(item, List__i32):
                     item = List__i32(item)
 
-                deref(c_inst).insert(cpair[int32_t,vector[int32_t]](key,vector[int32_t](deref(List__i32(item)._cpp_obj.get()))))
+                deref(c_inst)[key] = vector[int32_t](deref(List__i32(item)._cpp_obj.get()))
         return move_unique(c_inst)
 
     def __getitem__(self, key):
@@ -536,7 +536,7 @@ cdef class Map__i32_Set__i32:
                 if not isinstance(item, Set__i32):
                     item = Set__i32(item)
 
-                deref(c_inst).insert(cpair[int32_t,cset[int32_t]](key,cset[int32_t](deref(Set__i32(item)._cpp_obj.get()))))
+                deref(c_inst)[key] = cset[int32_t](deref(Set__i32(item)._cpp_obj.get()))
         return move_unique(c_inst)
 
     def __getitem__(self, key):
@@ -667,7 +667,7 @@ cdef class Map__i32_i32:
                     raise TypeError(f"{item!r} is not of type int")
                 item = <int32_t> item
 
-                deref(c_inst).insert(cpair[int32_t,int32_t](key,item))
+                deref(c_inst)[key] = item
         return move_unique(c_inst)
 
     def __getitem__(self, key):
@@ -1142,7 +1142,7 @@ cdef class Map__i32_Map__i32_Set__i32:
                 if not isinstance(item, Map__i32_Set__i32):
                     item = Map__i32_Set__i32(item)
 
-                deref(c_inst).insert(cpair[int32_t,cmap[int32_t,cset[int32_t]]](key,cmap[int32_t,cset[int32_t]](deref(Map__i32_Set__i32(item)._cpp_obj.get()))))
+                deref(c_inst)[key] = cmap[int32_t,cset[int32_t]](deref(Map__i32_Set__i32(item)._cpp_obj.get()))
         return move_unique(c_inst)
 
     def __getitem__(self, key):

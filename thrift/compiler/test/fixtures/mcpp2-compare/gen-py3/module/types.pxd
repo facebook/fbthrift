@@ -129,7 +129,7 @@ cdef extern from * nogil:
         folly_sorted_vector_map() except +
         folly_sorted_vector_map(folly_sorted_vector_map&) except +
 
-        cpair[iterator, bint] insert(cpair[T, U]) except +
+        U& operator[](T&)
         iterator find(const T&)
         size_type count(const T&)
         size_type size()
@@ -230,7 +230,7 @@ cdef extern from * nogil:
         FakeMap() except +
         FakeMap(FakeMap&) except +
 
-        cpair[iterator, bint] insert(cpair[int64_t, double]) except +
+        double& operator[](int64_t&)
         iterator find(const int64_t&)
         size_type count(const int64_t&)
         size_type size()
@@ -261,7 +261,7 @@ cdef extern from * nogil:
         std_unordered_map_std_string_containerStruct() except +
         std_unordered_map_std_string_containerStruct(std_unordered_map_std_string_containerStruct&) except +
 
-        cpair[iterator, bint] insert(cpair[string, ccontainerStruct]) except +
+        ccontainerStruct& operator[](string&)
         iterator find(const string&)
         size_type count(const string&)
         size_type size()

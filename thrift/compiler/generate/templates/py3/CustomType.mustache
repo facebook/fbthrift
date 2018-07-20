@@ -111,7 +111,7 @@ cdef extern from * nogil:
         {{type:cythonCustomType}}() except +
         {{type:cythonCustomType}}({{type:cythonCustomType}}&) except +
 
-        cpair[iterator, bint] insert(cpair[{{#type:keyType}}{{> types/CythonCppType}}{{/type:keyType}}, {{#type:valueType}}{{> types/CythonCppType}}{{/type:valueType}}]) except +
+        {{#type:valueType}}{{> types/CythonCppType}}{{/type:valueType}}& operator[]({{#type:keyType}}{{> types/CythonCppType}}{{/type:keyType}}&)
         iterator find(const {{#type:keyType}}{{> types/CythonCppType}}{{/type:keyType}}&)
         size_type count(const {{#type:keyType}}{{> types/CythonCppType}}{{/type:keyType}}&)
         size_type size()

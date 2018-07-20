@@ -1981,7 +1981,7 @@ cdef class std_unordered_map__Map__i32_string:
                 if not isinstance(item, str):
                     raise TypeError(f"{item!r} is not of type str")
 
-                deref(c_inst).insert(cpair[int32_t,string](key,item.encode('UTF-8')))
+                deref(c_inst)[key] = item.encode('UTF-8')
         return move_unique(c_inst)
 
     def __getitem__(self, key):
@@ -2262,7 +2262,7 @@ cdef class Map__binary_i64:
                     raise TypeError(f"{item!r} is not of type int")
                 item = <int64_t> item
 
-                deref(c_inst).insert(cpair[string,int64_t](key,item))
+                deref(c_inst)[key] = item
         return move_unique(c_inst)
 
     def __getitem__(self, key):
@@ -3350,7 +3350,7 @@ cdef class folly_sorted_vector_map__Map__i32_string:
                 if not isinstance(item, str):
                     raise TypeError(f"{item!r} is not of type str")
 
-                deref(c_inst).insert(cpair[int32_t,string](key,item.encode('UTF-8')))
+                deref(c_inst)[key] = item.encode('UTF-8')
         return move_unique(c_inst)
 
     def __getitem__(self, key):

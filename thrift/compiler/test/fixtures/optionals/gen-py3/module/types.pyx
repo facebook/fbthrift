@@ -1266,7 +1266,7 @@ cdef class Map__Animal_string:
                 if not isinstance(item, str):
                     raise TypeError(f"{item!r} is not of type str")
 
-                deref(c_inst).insert(cpair[cAnimal,string](Animal_to_cpp(key),item.encode('UTF-8')))
+                deref(c_inst)[Animal_to_cpp(key)] = item.encode('UTF-8')
         return move_unique(c_inst)
 
     def __getitem__(self, key):

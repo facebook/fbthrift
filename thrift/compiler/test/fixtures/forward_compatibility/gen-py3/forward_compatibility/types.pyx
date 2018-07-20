@@ -808,7 +808,7 @@ cdef class Map__i16_double:
                 if not isinstance(item, (float, int)):
                     raise TypeError(f"{item!r} is not of type float")
 
-                deref(c_inst).insert(cpair[int16_t,double](key,item))
+                deref(c_inst)[key] = item
         return move_unique(c_inst)
 
     def __getitem__(self, key):
@@ -935,7 +935,7 @@ cdef class Map__i16_float:
                 if not isinstance(item, (float, int)):
                     raise TypeError(f"{item!r} is not of type float")
 
-                deref(c_inst).insert(cpair[int16_t,float](key,item))
+                deref(c_inst)[key] = item
         return move_unique(c_inst)
 
     def __getitem__(self, key):
@@ -1237,7 +1237,7 @@ cdef class Map__i16_Map__i16_float:
                 if not isinstance(item, Map__i16_float):
                     item = Map__i16_float(item)
 
-                deref(c_inst).insert(cpair[int16_t,cmap[int16_t,float]](key,cmap[int16_t,float](deref(Map__i16_float(item)._cpp_obj.get()))))
+                deref(c_inst)[key] = cmap[int16_t,float](deref(Map__i16_float(item)._cpp_obj.get()))
         return move_unique(c_inst)
 
     def __getitem__(self, key):
@@ -1565,7 +1565,7 @@ cdef class Map__i64_double:
                 if not isinstance(item, (float, int)):
                     raise TypeError(f"{item!r} is not of type float")
 
-                deref(c_inst).insert(cpair[int64_t,double](key,item))
+                deref(c_inst)[key] = item
         return move_unique(c_inst)
 
     def __getitem__(self, key):
@@ -1694,7 +1694,7 @@ cdef class Map__i16_Map__i64_double:
                 if not isinstance(item, Map__i64_double):
                     item = Map__i64_double(item)
 
-                deref(c_inst).insert(cpair[int16_t,cmap[int64_t,double]](key,cmap[int64_t,double](deref(Map__i64_double(item)._cpp_obj.get()))))
+                deref(c_inst)[key] = cmap[int64_t,double](deref(Map__i64_double(item)._cpp_obj.get()))
         return move_unique(c_inst)
 
     def __getitem__(self, key):
@@ -1826,7 +1826,7 @@ cdef class Map__i32_Map__i64_double:
                 if not isinstance(item, Map__i64_double):
                     item = Map__i64_double(item)
 
-                deref(c_inst).insert(cpair[int32_t,cmap[int64_t,double]](key,cmap[int64_t,double](deref(Map__i64_double(item)._cpp_obj.get()))))
+                deref(c_inst)[key] = cmap[int64_t,double](deref(Map__i64_double(item)._cpp_obj.get()))
         return move_unique(c_inst)
 
     def __getitem__(self, key):
@@ -2111,7 +2111,7 @@ cdef class Map__i16_List__float:
                 if not isinstance(item, List__float):
                     item = List__float(item)
 
-                deref(c_inst).insert(cpair[int16_t,vector[float]](key,vector[float](deref(List__float(item)._cpp_obj.get()))))
+                deref(c_inst)[key] = vector[float](deref(List__float(item)._cpp_obj.get()))
         return move_unique(c_inst)
 
     def __getitem__(self, key):
@@ -2243,7 +2243,7 @@ cdef class Map__i32_List__float:
                 if not isinstance(item, List__float):
                     item = List__float(item)
 
-                deref(c_inst).insert(cpair[int32_t,vector[float]](key,vector[float](deref(List__float(item)._cpp_obj.get()))))
+                deref(c_inst)[key] = vector[float](deref(List__float(item)._cpp_obj.get()))
         return move_unique(c_inst)
 
     def __getitem__(self, key):

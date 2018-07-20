@@ -997,12 +997,10 @@ Set.register({{type:flat_name}})
                 {{/type:container?}}
                 {{/type:valueType}}
 
-                deref(c_inst).insert(cpair[{{!
-                    }}{{#type:keyType}}{{> types/CythonCppType}}{{/type:keyType}},{{!
-                    }}{{#type:valueType}}{{> types/CythonCppType}}{{/type:valueType}}{{!
-                    }}]({{!
-                    }}{{#type:keyType}}{{> CythonPythonToCppKey}}{{/type:keyType}},{{!
-                    }}{{#type:valueType}}{{> CythonPythonToCppItem}}{{/type:valueType}}))
+                deref(c_inst)[{{!
+                    }}{{#type:keyType}}{{> CythonPythonToCppKey}}{{/type:keyType}}{{!
+                    }}] = {{!
+                    }}{{#type:valueType}}{{> CythonPythonToCppItem}}{{/type:valueType}}
         return move_unique(c_inst)
 
     def __getitem__(self, key):

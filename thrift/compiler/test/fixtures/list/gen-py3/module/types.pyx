@@ -212,7 +212,7 @@ cdef class Map__i64_List__string:
                 if not isinstance(item, List__string):
                     item = List__string(item)
 
-                deref(c_inst).insert(cpair[int64_t,vector[string]](key,vector[string](deref(List__string(item)._cpp_obj.get()))))
+                deref(c_inst)[key] = vector[string](deref(List__string(item)._cpp_obj.get()))
         return move_unique(c_inst)
 
     def __getitem__(self, key):

@@ -109,7 +109,7 @@ cdef extern from * nogil:
         {{type:cythonTemplate}}() except +
         {{type:cythonTemplate}}({{type:cythonTemplate}}&) except +
 
-        cpair[iterator, bint] insert(cpair[T, U]) except +
+        U& operator[](T&)
         iterator find(const T&)
         size_type count(const T&)
         size_type size()

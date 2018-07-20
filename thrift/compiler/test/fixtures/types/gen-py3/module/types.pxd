@@ -40,7 +40,7 @@ cdef extern from * nogil:
         std_unordered_map() except +
         std_unordered_map(std_unordered_map&) except +
 
-        cpair[iterator, bint] insert(cpair[T, U]) except +
+        U& operator[](T&)
         iterator find(const T&)
         size_type count(const T&)
         size_type size()
@@ -216,7 +216,7 @@ cdef extern from * nogil:
         folly_sorted_vector_map() except +
         folly_sorted_vector_map(folly_sorted_vector_map&) except +
 
-        cpair[iterator, bint] insert(cpair[T, U]) except +
+        U& operator[](T&)
         iterator find(const T&)
         size_type count(const T&)
         size_type size()
