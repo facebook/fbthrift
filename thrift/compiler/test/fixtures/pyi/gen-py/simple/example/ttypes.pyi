@@ -98,7 +98,7 @@ class SimpleStruct:
         self,
         is_on: t.Optional[bool] = ...,
         tiny_int: int = ...,
-        small_int: int = ...,
+        small_int: t.Optional[int] = ...,
         nice_sized_int: t.Optional[int] = ...,
         big_int: t.Optional[int] = ...,
         coarse_real: float = ...,
@@ -119,7 +119,7 @@ class SimpleStruct:
     @__property__
     def small_int(self) -> t.Optional[int]: ...
     @small_int.setter
-    def small_int(self, value: int) -> None: ...
+    def small_int(self, value: t.Optional[int]) -> None: ...
     @__property__
     def nice_sized_int(self) -> t.Optional[int]: ...
     @nice_sized_int.setter
