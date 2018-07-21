@@ -674,9 +674,10 @@ bool ThriftServer::isOverloaded(const THeader* header) {
     return true;
   }
 
-  if (maxRequests_ > 0) {
+  uint32_t maxRequests = getMaxRequests();
+  if (maxRequests > 0) {
     return static_cast<uint32_t>(activeRequests_ + getPendingCount()) >=
-        maxRequests_;
+        maxRequests;
   }
 
   return false;

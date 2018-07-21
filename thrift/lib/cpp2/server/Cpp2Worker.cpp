@@ -49,9 +49,10 @@ void Cpp2Worker::onNewConnection(
     wangle::SecureTransportType secureTransportType,
     const wangle::TransportInfo& tinfo) {
   auto observer = server_->getObserver();
-  if (server_->maxConnections_ > 0 &&
+  uint32_t maxConnection = server_->getMaxConnections();
+  if (maxConnection > 0 &&
       (getConnectionManager()->getNumConnections() >=
-       server_->maxConnections_ / server_->nWorkers_)) {
+       maxConnection / server_->nWorkers_)) {
     if (observer) {
       observer->connDropped();
       observer->connRejected();
