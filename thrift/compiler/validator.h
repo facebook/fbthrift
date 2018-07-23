@@ -19,7 +19,7 @@
 #include <string>
 #include <vector>
 
-#include <thrift/compiler/visitor.h>
+#include <thrift/compiler/ast/visitor.h>
 
 namespace apache {
 namespace thrift {

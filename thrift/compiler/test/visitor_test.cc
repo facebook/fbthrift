@@ -17,7 +17,7 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
-#include <thrift/compiler/visitor.h>
+#include <thrift/compiler/ast/visitor.h>
 
 using namespace apache::thrift::compiler;
 

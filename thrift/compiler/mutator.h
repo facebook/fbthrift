@@ -16,7 +16,7 @@
 
 #pragma once
 
-#include <thrift/compiler/visitor.h>
+#include <thrift/compiler/ast/visitor.h>
 
 namespace apache {
 namespace thrift {

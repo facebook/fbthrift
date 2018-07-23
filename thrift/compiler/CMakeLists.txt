@@ -99,7 +99,7 @@ add_executable(
   main.cc
   mutator.cc
   validator.cc
-  visitor.cc
+  ast/visitor.cc
 )
 target_link_libraries(
   thrift1
