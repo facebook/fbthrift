@@ -107,8 +107,7 @@ void process(const dict& params, const object& generate_callback) {
   parsing_params.allow_64bit_consts =
       extract<bool>(opts.attr("allow_64bit_consts"));
   parsing_params.incl_searchpath = incl_searchpath;
-  apache::thrift::parsing_driver driver(std::move(parsing_params));
-  driver.parse();
+  parse_and_dump_diagnostics(std::move(parsing_params));
 
   g_stage = "generation";
 

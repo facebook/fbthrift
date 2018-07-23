@@ -912,7 +912,7 @@ Extends:
         }
         if ($$ == NULL) {
           driver.yyerror("Service \"%s\" has not been defined.", $2);
-          exit(1);
+          driver.end_parsing();
         }
       }
     }
@@ -981,7 +981,7 @@ ParamList:
       if (!($$->append($2))) {
         driver.yyerror("Parameter identifier %d for \"%s\" has already been used",
                        $2->get_key(), $2->get_name().c_str());
-        exit(1);
+        driver.end_parsing();
       }
     }
 | EmptyParamList
@@ -1052,7 +1052,7 @@ FieldList:
       if (!($$->append($2))) {
         driver.yyerror("Field identifier %d for \"%s\" has already been used",
                        $2->get_key(), $2->get_name().c_str());
-        exit(1);
+        driver.end_parsing();
       }
     }
 |
@@ -1069,7 +1069,7 @@ Field:
         driver.warning(1, "No field key specified for %s, resulting protocol may have conflicts or not be backwards compatible!", $5);
         if (driver.params.strict >= 192) {
           driver.yyerror("Implicit field keys are deprecated and not allowed with -strict");
-          exit(1);
+          driver.end_parsing();
         }
       }
 

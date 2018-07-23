@@ -213,3 +213,53 @@ bool validate_throws(t_struct* throws) {
   }
   return true;
 }
+
+/**
+ * Parse with the given parameters, and dump all the diagnostic messages
+ * returned.
+ *
+ * If the parsing fails, this function will exit(1).
+ */
+void parse_and_dump_diagnostics(apache::thrift::parsing_params params) {
+  apache::thrift::parsing_driver driver{std::move(params)};
+
+  auto diagnostic_messages = driver.parse();
+
+  for (auto const& message : diagnostic_messages) {
+    switch (message.level) {
+      case apache::thrift::diagnostic_level::YY_ERROR:
+        fprintf(
+            stderr,
+            "[ERROR:%s:%d] (last token was '%s')\n%s\n",
+            message.filename.c_str(),
+            message.lineno,
+            message.last_token.c_str(),
+            message.message.c_str());
+        break;
+      case apache::thrift::diagnostic_level::WARNING:
+        fprintf(
+            stderr,
+            "[WARNING:%s:%d] %s\n",
+            message.filename.c_str(),
+            message.lineno,
+            message.message.c_str());
+        break;
+      case apache::thrift::diagnostic_level::VERBOSE:
+        fprintf(stderr, "%s", message.message.c_str());
+        break;
+      case apache::thrift::diagnostic_level::DEBUG:
+        fprintf(
+            stderr, "[PARSE:%d] %s\n", message.lineno, message.message.c_str());
+        break;
+      case apache::thrift::diagnostic_level::FAILURE:
+        fprintf(
+            stderr,
+            "[FAILURE:%s:%d] %s\n",
+            message.filename.c_str(),
+            message.lineno,
+            message.message.c_str());
+        exit(1);
+        break;
+    }
+  }
+}

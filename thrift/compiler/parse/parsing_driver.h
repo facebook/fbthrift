@@ -37,6 +37,34 @@ namespace yy {
 class parser;
 }
 
+enum class diagnostic_level {
+  FAILURE = 0,
+  YY_ERROR = 1,
+  WARNING = 2,
+  VERBOSE = 3,
+  DEBUG = 4,
+};
+
+struct diagnostic_message {
+  diagnostic_level level;
+  std::string filename;
+  int lineno;
+  std::string last_token;
+  std::string message;
+
+  diagnostic_message(
+      diagnostic_level level_,
+      std::string filename_,
+      int lineno_,
+      std::string last_token_,
+      std::string message_)
+      : level{level_},
+        filename{std::move(filename_)},
+        lineno{lineno_},
+        last_token{std::move(last_token_)},
+        message{std::move(message_)} {}
+};
+
 enum class parsing_mode {
   INCLUDES = 1,
   PROGRAM = 2,
@@ -105,6 +133,23 @@ struct parsing_params {
   std::vector<std::string> incl_searchpath;
 };
 
+// This elaborate dance is required to avoid triggering -Wformat-security in the
+// case where we have no format arguments.
+
+template <typename... Arg>
+int snprintf_with_param_pack(
+    char* str,
+    size_t size,
+    const char* fmt,
+    Arg&&... arg) {
+  return snprintf(str, size, fmt, std::forward<Arg>(arg)...);
+}
+
+template <>
+inline int snprintf_with_param_pack(char* str, size_t size, const char* fmt) {
+  return snprintf(str, size, "%s", fmt);
+}
+
 class parsing_driver {
  public:
   parsing_params params;
@@ -129,18 +174,67 @@ class parsing_driver {
 
   /**
    * Parses a program. The resulted AST is stored in the t_program object passed
-   * in via params.program.
+   * in via params.program. A vector containing diagnostic message (warnings,
+   * debug messages, etc.) is returned.
    */
-  void parse();
+  std::vector<diagnostic_message> parse();
 
   /**
    * Diagnostic message callbacks.
    */
-  void debug(const char* fmt, ...) const;
-  void verbose(const char* fmt, ...) const;
-  void yyerror(const char* fmt, ...) const;
-  void warning(int level, const char* fmt, ...) const;
-  [[noreturn]] void failure(const char* fmt, ...) const;
+  template <typename... Arg>
+  void debug(const char* fmt, Arg&&... arg) {
+    if (!params.debug) {
+      return;
+    }
+
+    auto message = construct_diagnostic_message(
+        diagnostic_level::DEBUG, fmt, std::forward<Arg>(arg)...);
+    diagnostic_messages_.push_back(std::move(message));
+  }
+
+  template <typename... Arg>
+  void verbose(const char* fmt, Arg&&... arg) {
+    if (!params.verbose) {
+      return;
+    }
+
+    auto message = construct_diagnostic_message(
+        diagnostic_level::VERBOSE, fmt, std::forward<Arg>(arg)...);
+    diagnostic_messages_.push_back(std::move(message));
+  }
+
+  template <typename... Arg>
+  void yyerror(const char* fmt, Arg&&... arg) {
+    auto message = construct_diagnostic_message(
+        diagnostic_level::YY_ERROR, fmt, std::forward<Arg>(arg)...);
+    diagnostic_messages_.push_back(std::move(message));
+  }
+
+  template <typename... Arg>
+  void warning(int level, const char* fmt, Arg&&... arg) {
+    if (params.warn < level) {
+      return;
+    }
+
+    auto message = construct_diagnostic_message(
+        diagnostic_level::WARNING, fmt, std::forward<Arg>(arg)...);
+    diagnostic_messages_.push_back(std::move(message));
+  }
+
+  // clang-format off
+  // TODO: `clang-format` incorrectly indents the function after a [[noreturn]]
+  // function for 4 extra spaces.
+  template <typename... Arg>
+  [[noreturn]] void failure(const char* fmt, Arg&&... arg) {
+    auto msg = construct_diagnostic_message(
+        diagnostic_level::FAILURE, fmt, std::forward<Arg>(arg)...);
+    diagnostic_messages_.push_back(std::move(msg));
+    end_parsing();
+  }
+
+  [[noreturn]] void end_parsing();
+  // clang-format on
 
   /**
    * Gets the directory path of a filename
@@ -191,6 +285,60 @@ class parsing_driver {
   std::set<std::string> circular_deps_;
 
   std::unique_ptr<apache::thrift::yy::parser> parser_;
+
+  std::vector<diagnostic_message> diagnostic_messages_;
+
+  /**
+   * Parse a single .thrift file. The file to parse is stored in params.program.
+   */
+  void parse_file();
+
+  template <typename... Arg>
+  diagnostic_message construct_diagnostic_message(
+      diagnostic_level level,
+      const char* fmt,
+      Arg&&... arg) {
+    const size_t buffer_size = 1024;
+    std::array<char, buffer_size> buffer;
+    std::string message;
+
+    int ret = snprintf_with_param_pack(
+        buffer.data(), buffer_size, fmt, std::forward<Arg>(arg)...);
+    if (ret < 0) {
+      // Technically we could be OOM here, so the following line would fail.
+      // But...
+      throw std::system_error(
+          errno, std::generic_category(), "In snprintf(...)");
+    }
+
+    auto full_length = static_cast<size_t>(ret);
+    if (full_length < buffer_size) {
+      message = std::string{buffer.data()};
+    } else {
+      // In the (extremely) unlikely case that the message is 1024-char or
+      // longer, we do dynamic allocation.
+      //
+      // "+ 1" for the NULL-terminator.
+      std::vector<char> dyn_buffer(static_cast<size_t>(full_length + 1), '\0');
+
+      ret = snprintf_with_param_pack(
+          dyn_buffer.data(), dyn_buffer.size(), fmt, std::forward<Arg>(arg)...);
+      if (ret < 0) {
+        throw std::system_error(
+            errno, std::generic_category(), "In second snprintf(...)");
+      }
+
+      assert(static_cast<size_t>(ret) < dyn_buffer.size());
+
+      message = std::string{dyn_buffer.data()};
+    }
+
+    return diagnostic_message{level,
+                              params.program->get_path(),
+                              yylineno,
+                              std::string{yytext},
+                              message};
+  }
 };
 
 } // namespace thrift

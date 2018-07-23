@@ -48,17 +48,17 @@ YY_DECL;
 
 static void thrift_reserved_keyword(parsing_driver& driver, char* keyword) {
   driver.yyerror("Cannot use reserved language keyword: \"%s\"\n", keyword);
-  exit(1);
+  driver.end_parsing();
 }
 
 static void integer_overflow(parsing_driver& driver, char* text) {
   driver.yyerror("This integer is too big: \"%s\"\n", text);
-  exit(1);
+  driver.end_parsing();
 }
 
 static void unexpected_token(parsing_driver& driver, char* text) {
   driver.yyerror("Unexpected token in input: \"%s\"\n", text);
-  exit(1);
+  driver.end_parsing();
 }
 
 /**
@@ -153,7 +153,7 @@ st_identifier ([a-zA-Z-][\.a-zA-Z_0-9-]*)
 "cpp_type"           {
   driver.yyerror("\"cpp_type\" is no longer allowed. "
                  "Use the cpp.type annotation instead.\n");
-  exit(1);
+  driver.end_parsing();
 }
 "java_package"       { return apache::thrift::yy::parser::make_tok_java_package();         }
 "cocoa_prefix"       { return apache::thrift::yy::parser::make_tok_cocoa_prefix();         }

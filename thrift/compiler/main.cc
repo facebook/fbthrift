@@ -648,8 +648,7 @@ int main(int argc, char** argv) {
   params.allow_neg_enum_vals = allow_neg_enum_vals;
   params.allow_64bit_consts = allow_64bit_consts;
   params.incl_searchpath = std::move(incl_searchpath);
-  apache::thrift::parsing_driver driver{std::move(params)};
-  driver.parse();
+  parse_and_dump_diagnostics(std::move(params));
 
   // Mutate it!
   apache::thrift::compiler::mutator::mutate(program);

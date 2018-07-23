@@ -33,6 +33,17 @@
 namespace apache {
 namespace thrift {
 
+namespace {
+
+class parsing_terminator : public std::runtime_error {
+ public:
+  parsing_terminator()
+      : std::runtime_error(
+            "Internal exception used to terminate the parsing process.") {}
+};
+
+} // namespace
+
 /* explicit */ parsing_driver::parsing_driver(parsing_params parse_params)
     : params(std::move(parse_params)),
       doctext(nullptr),
@@ -47,7 +58,17 @@ namespace thrift {
  */
 parsing_driver::~parsing_driver() = default;
 
-void parsing_driver::parse() {
+std::vector<diagnostic_message> parsing_driver::parse() {
+  try {
+    parse_file();
+  } catch (const parsing_terminator& e) {
+    return diagnostic_messages_;
+  }
+
+  return diagnostic_messages_;
+}
+
+void parsing_driver::parse_file() {
   // Get scope file path
   std::string path = params.program->get_path();
 
@@ -98,7 +119,7 @@ void parsing_driver::parse() {
     params.program = included_program;
     params.allow_neg_enum_vals = true;
     params.allow_neg_field_keys = true;
-    parse();
+    parse_file();
 
     size_t num_removed = circular_deps_.erase(path);
     assert(num_removed == 1);
@@ -123,67 +144,7 @@ void parsing_driver::parse() {
   fclose(yyin);
 }
 
-void parsing_driver::debug(const char* fmt, ...) const {
-  if (!params.debug) {
-    return;
-  }
-  va_list args;
-  printf("[PARSE:%d] ", yylineno);
-  va_start(args, fmt);
-  vprintf(fmt, args);
-  va_end(args);
-  printf("\n");
-}
-
-void parsing_driver::verbose(const char* fmt, ...) const {
-  if (!params.verbose) {
-    return;
-  }
-  va_list args;
-  va_start(args, fmt);
-  vprintf(fmt, args);
-  va_end(args);
-}
-
-void parsing_driver::yyerror(const char* fmt, ...) const {
-  va_list args;
-  fprintf(
-      stderr,
-      "[ERROR:%s:%d] (last token was '%s')\n",
-      params.program->get_path().c_str(),
-      yylineno,
-      yytext);
-
-  va_start(args, fmt);
-  vfprintf(stderr, fmt, args);
-  va_end(args);
-
-  fprintf(stderr, "\n");
-}
-
-void parsing_driver::warning(int level, const char* fmt, ...) const {
-  if (params.warn < level) {
-    return;
-  }
-  va_list args;
-  fprintf(
-      stderr, "[WARNING:%s:%d] ", params.program->get_path().c_str(), yylineno);
-  va_start(args, fmt);
-  vfprintf(stderr, fmt, args);
-  va_end(args);
-  fprintf(stderr, "\n");
-}
-
-[[noreturn]] void parsing_driver::failure(const char* fmt, ...) const {
-  va_list args;
-  fprintf(
-      stderr, "[FAILURE:%s:%d] ", params.program->get_path().c_str(), yylineno);
-  va_start(args, fmt);
-  vfprintf(stderr, fmt, args);
-  va_end(args);
-  fprintf(stderr, "\n");
-  exit(1);
-}
+[[noreturn]] void parsing_driver::end_parsing() { throw parsing_terminator{}; }
 
 // TODO: This doesn't really need to be a member function. Move it somewhere
 // else (e.g. `util.{h|cc}`) once everything gets consolidated into `parse/`.

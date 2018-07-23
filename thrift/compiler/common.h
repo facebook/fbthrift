@@ -34,6 +34,7 @@
 #include <set>
 #include <string>
 
+#include <thrift/compiler/parse/parsing_driver.h>
 #include <thrift/compiler/parse/t_program.h>
 #include <thrift/compiler/parse/t_scope.h>
 
@@ -124,5 +125,13 @@ const t_type* get_true_type(const t_type* type);
  * Check members of a throws block
  */
 bool validate_throws(t_struct* throws);
+
+/**
+ * Parse with the given parameters, and dump all the diagnostic messages
+ * returned.
+ *
+ * If the parsing fails, this function will exit(1).
+ */
+void parse_and_dump_diagnostics(apache::thrift::parsing_params params);
 
 #endif
