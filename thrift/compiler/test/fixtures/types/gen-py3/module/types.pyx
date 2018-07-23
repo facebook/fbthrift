@@ -3631,7 +3631,7 @@ cdef class Map__string_i32:
                     raise TypeError(f"{item!r} is not of type int")
                 item = <int32_t> item
 
-                deref(c_inst).insert(cpair[string,int32_t](key.encode('UTF-8'),item))
+                deref(c_inst)[key.encode('UTF-8')] = item
         return move_unique(c_inst)
 
     def __getitem__(self, key):
