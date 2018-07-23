@@ -220,10 +220,13 @@ bool validate_throws(t_struct* throws) {
  *
  * If the parsing fails, this function will exit(1).
  */
-void parse_and_dump_diagnostics(apache::thrift::parsing_params params) {
-  apache::thrift::parsing_driver driver{std::move(params)};
+std::unique_ptr<t_program> parse_and_dump_diagnostics(
+    std::string path,
+    apache::thrift::parsing_params params) {
+  apache::thrift::parsing_driver driver{path, std::move(params)};
 
-  auto diagnostic_messages = driver.parse();
+  std::vector<apache::thrift::diagnostic_message> diagnostic_messages;
+  auto program = driver.parse(diagnostic_messages);
 
   for (auto const& message : diagnostic_messages) {
     switch (message.level) {
@@ -258,8 +261,13 @@ void parse_and_dump_diagnostics(apache::thrift::parsing_params params) {
             message.filename.c_str(),
             message.lineno,
             message.message.c_str());
-        exit(1);
         break;
     }
   }
+
+  if (!program) {
+    exit(1);
+  }
+
+  return program;
 }

@@ -132,6 +132,8 @@ bool validate_throws(t_struct* throws);
  *
  * If the parsing fails, this function will exit(1).
  */
-void parse_and_dump_diagnostics(apache::thrift::parsing_params params);
+std::unique_ptr<t_program> parse_and_dump_diagnostics(
+    std::string path,
+    apache::thrift::parsing_params params);
 
 #endif

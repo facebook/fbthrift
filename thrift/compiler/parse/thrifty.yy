@@ -306,7 +306,7 @@ Program:
       /*
       TODO(dreiss): Decide whether full-program doctext is worth the trouble.
       if ($1 != NULL) {
-        driver.params.program->set_doc($1);
+        driver.program->set_doc($1);
       }
       */
       driver.clear_doctext();
@@ -351,14 +351,14 @@ Header:
     {
       driver.debug("Header -> tok_namespace tok_identifier tok_identifier");
       if (driver.mode == apache::thrift::parsing_mode::PROGRAM) {
-        driver.params.program->set_namespace($2, $3);
+        driver.program->set_namespace($2, $3);
       }
     }
 | tok_namespace tok_identifier tok_literal
     {
       driver.debug("Header -> tok_namespace tok_identifier tok_literal");
       if (driver.mode == apache::thrift::parsing_mode::PROGRAM) {
-        driver.params.program->set_namespace($2, $3);
+        driver.program->set_namespace($2, $3);
       }
     }
 /* TODO(dreiss): Get rid of this once everyone is using the new hotness. */
@@ -367,14 +367,14 @@ Header:
       driver.warning(1, "'cpp_namespace' is deprecated. Use 'namespace cpp' instead");
       driver.debug("Header -> tok_cpp_namespace tok_identifier");
       if (driver.mode == apache::thrift::parsing_mode::PROGRAM) {
-        driver.params.program->set_namespace("cpp", $2);
+        driver.program->set_namespace("cpp", $2);
       }
     }
 | tok_cpp_include tok_literal
     {
       driver.debug("Header -> tok_cpp_include tok_literal");
       if (driver.mode == apache::thrift::parsing_mode::PROGRAM) {
-        driver.params.program->add_cpp_include($2);
+        driver.program->add_cpp_include($2);
       }
     }
 | tok_hs_include tok_literal
@@ -387,7 +387,7 @@ Header:
       driver.warning(1, "'php_namespace' is deprecated. Use 'namespace php' instead");
       driver.debug("Header -> tok_php_namespace tok_identifier");
       if (driver.mode == apache::thrift::parsing_mode::PROGRAM) {
-        driver.params.program->set_namespace("php", $2);
+        driver.program->set_namespace("php", $2);
       }
     }
 /* TODO(dreiss): Get rid of this once everyone is using the new hotness. */
@@ -396,7 +396,7 @@ Header:
       driver.warning(1, "'py_module' is deprecated. Use 'namespace py' instead");
       driver.debug("Header -> tok_py_module tok_identifier");
       if (driver.mode == apache::thrift::parsing_mode::PROGRAM) {
-        driver.params.program->set_namespace("py", $2);
+        driver.program->set_namespace("py", $2);
       }
     }
 /* TODO(dreiss): Get rid of this once everyone is using the new hotness. */
@@ -405,7 +405,7 @@ Header:
       driver.warning(1, "'perl_package' is deprecated. Use 'namespace perl' instead");
       driver.debug("Header -> tok_perl_namespace tok_identifier");
       if (driver.mode == apache::thrift::parsing_mode::PROGRAM) {
-        driver.params.program->set_namespace("perl", $2);
+        driver.program->set_namespace("perl", $2);
       }
     }
 /* TODO(dreiss): Get rid of this once everyone is using the new hotness. */
@@ -414,7 +414,7 @@ Header:
       driver.warning(1, "'ruby_namespace' is deprecated. Use 'namespace rb' instead");
       driver.debug("Header -> tok_ruby_namespace tok_identifier");
       if (driver.mode == apache::thrift::parsing_mode::PROGRAM) {
-        driver.params.program->set_namespace("rb", $2);
+        driver.program->set_namespace("rb", $2);
       }
     }
 /* TODO(dreiss): Get rid of this once everyone is using the new hotness. */
@@ -423,7 +423,7 @@ Header:
       driver.warning(1, "'smalltalk_category' is deprecated. Use 'namespace smalltalk.category' instead");
       driver.debug("Header -> tok_smalltalk_category tok_st_identifier");
       if (driver.mode == apache::thrift::parsing_mode::PROGRAM) {
-        driver.params.program->set_namespace("smalltalk.category", $2);
+        driver.program->set_namespace("smalltalk.category", $2);
       }
     }
 /* TODO(dreiss): Get rid of this once everyone is using the new hotness. */
@@ -432,7 +432,7 @@ Header:
       driver.warning(1, "'smalltalk_prefix' is deprecated. Use 'namespace smalltalk.prefix' instead");
       driver.debug("Header -> tok_smalltalk_prefix tok_identifier");
       if (driver.mode == apache::thrift::parsing_mode::PROGRAM) {
-        driver.params.program->set_namespace("smalltalk.prefix", $2);
+        driver.program->set_namespace("smalltalk.prefix", $2);
       }
     }
 /* TODO(dreiss): Get rid of this once everyone is using the new hotness. */
@@ -441,7 +441,7 @@ Header:
       driver.warning(1, "'java_package' is deprecated. Use 'namespace java' instead");
       driver.debug("Header -> tok_java_package tok_identifier");
       if (driver.mode == apache::thrift::parsing_mode::PROGRAM) {
-        driver.params.program->set_namespace("java", $2);
+        driver.program->set_namespace("java", $2);
       }
     }
 /* TODO(dreiss): Get rid of this once everyone is using the new hotness. */
@@ -450,7 +450,7 @@ Header:
       driver.warning(1, "'cocoa_prefix' is deprecated. Use 'namespace cocoa' instead");
       driver.debug("Header -> tok_cocoa_prefix tok_identifier");
       if (driver.mode == apache::thrift::parsing_mode::PROGRAM) {
-        driver.params.program->set_namespace("cocoa", $2);
+        driver.program->set_namespace("cocoa", $2);
       }
     }
 /* TODO(dreiss): Get rid of this once everyone is using the new hotness. */
@@ -459,7 +459,7 @@ Header:
      driver.warning(1, "'csharp_namespace' is deprecated. Use 'namespace csharp' instead");
      driver.debug("Header -> tok_csharp_namespace tok_identifier");
      if (driver.mode == apache::thrift::parsing_mode::PROGRAM) {
-       driver.params.program->set_namespace("csharp", $2);
+       driver.program->set_namespace("csharp", $2);
      }
    }
 
@@ -470,10 +470,10 @@ Include:
       if (driver.mode == apache::thrift::parsing_mode::INCLUDES) {
         std::string path = driver.include_file(std::string($2));
         if (!path.empty()) {
-          if (driver.params.program_cache->find(path) == driver.params.program_cache->end()) {
-            (*driver.params.program_cache)[path] = driver.params.program->add_include(path, std::string($2));
+          if (driver.program_cache.find(path) == driver.program_cache.end()) {
+            driver.program_cache[path] = driver.program->add_include(path, std::string($2));
           } else {
-            driver.params.program->add_include((*driver.params.program_cache)[path]);
+            driver.program->add_include(driver.program_cache[path]);
           }
         }
       }
@@ -497,7 +497,7 @@ Definition:
     {
       driver.debug("Definition -> Const");
       if (driver.mode == apache::thrift::parsing_mode::PROGRAM) {
-        driver.params.program->add_const($1);
+        driver.program->add_const($1);
       }
       $$ = $1;
     }
@@ -505,7 +505,7 @@ Definition:
     {
       driver.debug("Definition -> TypeDefinition");
       if (driver.mode == apache::thrift::parsing_mode::PROGRAM) {
-        driver.params.scope_cache->add_type(driver.params.program->get_name() + "." + $1->get_name(), $1);
+        driver.scope_cache->add_type(driver.program->get_name() + "." + $1->get_name(), $1);
       }
       $$ = $1;
     }
@@ -513,8 +513,8 @@ Definition:
     {
       driver.debug("Definition -> Service");
       if (driver.mode == apache::thrift::parsing_mode::PROGRAM) {
-        driver.params.scope_cache->add_service(driver.params.program->get_name() + "." + $1->get_name(), $1);
-        driver.params.program->add_service($1);
+        driver.scope_cache->add_service(driver.program->get_name() + "." + $1->get_name(), $1);
+        driver.program->add_service($1);
       }
       $$ = $1;
     }
@@ -524,7 +524,7 @@ TypeDefinition:
     {
       driver.debug("TypeDefinition -> Typedef");
       if (driver.mode == apache::thrift::parsing_mode::PROGRAM) {
-        driver.params.program->add_typedef($1);
+        driver.program->add_typedef($1);
       }
       $$ = $1;
     }
@@ -532,7 +532,7 @@ TypeDefinition:
     {
       driver.debug("TypeDefinition -> Enum");
       if (driver.mode == apache::thrift::parsing_mode::PROGRAM) {
-        driver.params.program->add_enum($1);
+        driver.program->add_enum($1);
       }
       $$ = $1;
     }
@@ -540,7 +540,7 @@ TypeDefinition:
     {
       driver.debug("TypeDefinition -> Struct");
       if (driver.mode == apache::thrift::parsing_mode::PROGRAM) {
-        driver.params.program->add_struct($1);
+        driver.program->add_struct($1);
       }
       $$ = $1;
     }
@@ -548,7 +548,7 @@ TypeDefinition:
     {
       driver.debug("TypeDefinition -> Xception");
       if (driver.mode == apache::thrift::parsing_mode::PROGRAM) {
-        driver.params.program->add_xception($1);
+        driver.program->add_xception($1);
       }
       $$ = $1;
     }
@@ -561,7 +561,7 @@ Typedef:
   FieldType tok_identifier TypeAnnotations
     {
       driver.debug("TypeDef -> tok_typedef FieldType tok_identifier");
-      t_typedef *td = new t_typedef(driver.params.program, $3, $4, driver.params.scope_cache);
+      t_typedef *td = new t_typedef(driver.program, $3, $4, driver.scope_cache);
       $$ = td;
       $$->set_lineno(lineno_stack.pop(LineType::kTypedef));
       if ($5 != NULL) {
@@ -614,20 +614,20 @@ EnumDefList:
         const_val->set_enum($$);
         const_val->set_enum_value($2);
         t_const* tconst = new t_const(
-            driver.params.program, i32_type(), $2->get_name(), const_val);
+            driver.program, i32_type(), $2->get_name(), const_val);
 
         assert(y_enum_name != nullptr);
         std::string type_prefix = std::string(y_enum_name) + ".";
-        driver.params.scope_cache->add_constant(
-            driver.params.program->get_name() + "." + $2->get_name(), tconst);
-        driver.params.scope_cache->add_constant(
-            driver.params.program->get_name() + "." + type_prefix + $2->get_name(), tconst);
+        driver.scope_cache->add_constant(
+            driver.program->get_name() + "." + $2->get_name(), tconst);
+        driver.scope_cache->add_constant(
+            driver.program->get_name() + "." + type_prefix + $2->get_name(), tconst);
       }
     }
 |
     {
       driver.debug("EnumDefList -> ");
-      $$ = new t_enum(driver.params.program);
+      $$ = new t_enum(driver.program);
       y_enum_val = -1;
     }
 
@@ -687,10 +687,10 @@ Const:
     {
       driver.debug("Const -> tok_const FieldType tok_identifier = ConstValue");
       if (driver.mode == apache::thrift::parsing_mode::PROGRAM) {
-        $$ = new t_const(driver.params.program, $3, $4, $6);
+        $$ = new t_const(driver.program, $3, $4, $6);
         $$->set_lineno(lineno_stack.pop(LineType::kConst));
         driver.validate_const_type($$);
-        driver.params.scope_cache->add_constant(driver.params.program->get_name() + "." + $4, $$);
+        driver.scope_cache->add_constant(driver.program->get_name() + "." + $4, $$);
       } else {
         $$ = NULL;
       }
@@ -726,9 +726,9 @@ ConstValue:
 | tok_identifier
     {
       driver.debug("ConstValue => tok_identifier");
-      t_const* constant = driver.params.scope_cache->get_constant($1);
+      t_const* constant = driver.scope_cache->get_constant($1);
       if (!constant) {
-        constant = driver.params.scope_cache->get_constant(driver.params.program->get_name() + "." + $1);
+        constant = driver.scope_cache->get_constant(driver.program->get_name() + "." + $1);
       }
       if (constant != nullptr) {
         // Copy const_value to perform isolated mutations
@@ -906,9 +906,9 @@ Extends:
       driver.debug("Extends -> tok_extends tok_identifier");
       $$ = NULL;
       if (driver.mode == apache::thrift::parsing_mode::PROGRAM) {
-        $$ = driver.params.scope_cache->get_service($2);
+        $$ = driver.scope_cache->get_service($2);
         if (!$$) {
-          $$ = driver.params.scope_cache->get_service(driver.params.program->get_name() + "." + $2);
+          $$ = driver.scope_cache->get_service(driver.program->get_name() + "." + $2);
         }
         if ($$ == NULL) {
           driver.yyerror("Service \"%s\" has not been defined.", $2);
@@ -931,7 +931,7 @@ FunctionList:
 |
     {
       driver.debug("FunctionList -> ");
-      $$ = new t_service(driver.params.program);
+      $$ = new t_service(driver.program);
     }
 
 Function:
@@ -992,7 +992,7 @@ ParamList:
 EmptyParamList:
     {
       driver.debug("EmptyParamList -> nil");
-      t_struct* paramlist = new t_struct(driver.params.program);
+      t_struct* paramlist = new t_struct(driver.program);
       paramlist->set_paramlist(true);
       $$ = paramlist;
     }
@@ -1021,14 +1021,14 @@ ThrowsThrows:
 		}
 | Throws
 		{
-			$$ = new t_structpair($1, new t_struct(driver.params.program));
+			$$ = new t_structpair($1, new t_struct(driver.program));
 		}
 | StreamThrows
     {
-      $$ = new t_structpair(new t_struct(driver.params.program), $1);
+      $$ = new t_structpair(new t_struct(driver.program), $1);
     }
 |   {
-			$$ = new t_structpair(new t_struct(driver.params.program), new t_struct(driver.params.program));
+			$$ = new t_structpair(new t_struct(driver.program), new t_struct(driver.program));
 		}
 
 Throws:
@@ -1058,7 +1058,7 @@ FieldList:
 |
     {
       driver.debug("FieldList -> ");
-      $$ = new t_struct(driver.params.program);
+      $$ = new t_struct(driver.program);
     }
 
 Field:
@@ -1228,9 +1228,9 @@ FieldType:
         $$ = NULL;
       } else {
         // Lookup the identifier in the current scope
-        $$ = driver.params.scope_cache->get_type($1);
+        $$ = driver.scope_cache->get_type($1);
         if (!$$) {
-          $$ = driver.params.scope_cache->get_type(driver.params.program->get_name() + "." + $1);
+          $$ = driver.scope_cache->get_type(driver.program->get_name() + "." + $1);
         }
         if ($$ == NULL || $2 != NULL) {
           /*
@@ -1238,7 +1238,7 @@ FieldType:
              declared.  Either way allow it and we'll figure it out
              during generation.
            */
-          $$ = new t_typedef(driver.params.program, $1, driver.params.scope_cache);
+          $$ = new t_typedef(driver.program, $1, driver.scope_cache);
           if ($2 != NULL) {
             $$->annotations_ = $2->annotations_;
             delete $2;
@@ -1428,7 +1428,7 @@ TypeAnnotationList:
 |
     {
       /* Just use a dummy structure to hold the annotations. */
-      $$ = new t_struct(driver.params.program);
+      $$ = new t_struct(driver.program);
     }
 
 TypeAnnotation:

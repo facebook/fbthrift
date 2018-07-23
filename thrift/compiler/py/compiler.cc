@@ -70,8 +70,27 @@ void process(const dict& params, const object& generate_callback) {
 
   const string input_file = extract<string>(params["thrift_file"]);
 
-  // Instance of the global parse tree
-  unique_ptr<t_program> program(new t_program(input_file));
+  g_stage = "parse";
+
+  // Parse it!
+  apache::thrift::parsing_params parsing_params{};
+  parsing_params.debug = (g_debug != 0);
+  parsing_params.verbose = (g_verbose != 0);
+  parsing_params.warn = g_warn;
+  parsing_params.strict = extract<int>(opts.attr("strict"));
+  parsing_params.allow_neg_field_keys =
+      extract<bool>(opts.attr("allow_neg_keys"));
+  parsing_params.allow_neg_enum_vals =
+      extract<bool>(opts.attr("allow_neg_enum_vals"));
+  parsing_params.allow_64bit_consts =
+      extract<bool>(opts.attr("allow_64bit_consts"));
+  parsing_params.incl_searchpath = incl_searchpath;
+  unique_ptr<t_program> program{
+      parse_and_dump_diagnostics(input_file, std::move(parsing_params))};
+
+  // Generate it!
+  g_stage = "generation";
+
   if (out_path.size()) {
     program->set_out_path(out_path, false);
   }
@@ -87,29 +106,6 @@ void process(const dict& params, const object& generate_callback) {
   }
 
   program->set_include_prefix(include_prefix);
-
-  g_stage = "parse";
-
-  // Parse it!
-  apache::thrift::parsing_params parsing_params{};
-  parsing_params.program = program.get();
-  parsing_params.scope_cache = program.get()->scope();
-  parsing_params.program_cache =
-      std::make_shared<std::map<std::string, t_program*>>();
-  parsing_params.debug = (g_debug != 0);
-  parsing_params.verbose = (g_verbose != 0);
-  parsing_params.warn = g_warn;
-  parsing_params.strict = extract<int>(opts.attr("strict"));
-  parsing_params.allow_neg_field_keys =
-      extract<bool>(opts.attr("allow_neg_keys"));
-  parsing_params.allow_neg_enum_vals =
-      extract<bool>(opts.attr("allow_neg_enum_vals"));
-  parsing_params.allow_64bit_consts =
-      extract<bool>(opts.attr("allow_64bit_consts"));
-  parsing_params.incl_searchpath = incl_searchpath;
-  parse_and_dump_diagnostics(std::move(parsing_params));
-
-  g_stage = "generation";
 
   // Generate it in python!
   // boost doesn't have the necessary prowess to handle unique_ptr or

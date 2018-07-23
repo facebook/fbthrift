@@ -615,12 +615,6 @@ int main(int argc, char** argv) {
 
   std::string input_file = compute_absolute_path(arguments[i]);
 
-  // Instance of the global parse tree
-  t_program* program = new t_program(input_file);
-  if (out_path.size()) {
-    program->set_out_path(out_path, out_path_is_absolute);
-  }
-
   // Compute the cpp include prefix.
   // infer this from the filename passed in
   string input_filename = arguments[i];
@@ -631,15 +625,10 @@ int main(int argc, char** argv) {
     include_prefix = input_filename.substr(0, last_slash);
   }
 
-  program->set_include_prefix(include_prefix);
-
   g_stage = "parse";
 
   // Parse it!
   apache::thrift::parsing_params params{};
-  params.program = program;
-  params.scope_cache = program->scope();
-  params.program_cache = std::make_shared<std::map<std::string, t_program*>>();
   params.debug = (g_debug != 0);
   params.verbose = (g_verbose != 0);
   params.warn = g_warn;
@@ -648,13 +637,14 @@ int main(int argc, char** argv) {
   params.allow_neg_enum_vals = allow_neg_enum_vals;
   params.allow_64bit_consts = allow_64bit_consts;
   params.incl_searchpath = std::move(incl_searchpath);
-  parse_and_dump_diagnostics(std::move(params));
+  std::unique_ptr<t_program> program{
+      parse_and_dump_diagnostics(input_file, std::move(params))};
 
   // Mutate it!
-  apache::thrift::compiler::mutator::mutate(program);
+  apache::thrift::compiler::mutator::mutate(program.get());
 
   // Validate it!
-  auto errors = apache::thrift::compiler::validator::validate(program);
+  auto errors = apache::thrift::compiler::validator::validate(program.get());
   if (!errors.empty()) {
     for (const auto& error : errors) {
       std::cerr << error << std::endl;
@@ -662,14 +652,21 @@ int main(int argc, char** argv) {
     return 1;
   }
 
+  // Generate it!
+
   g_stage = "generation";
 
-  // Generate it!
+  if (out_path.size()) {
+    program->set_out_path(out_path, out_path_is_absolute);
+  }
+
+  program->set_include_prefix(include_prefix);
+
   bool success;
   try {
     std::set<std::string> already_generated{program->get_path()};
     success = generate(
-        program,
+        program.get(),
         generator_strings,
         already_generated,
         user_python_compiler,

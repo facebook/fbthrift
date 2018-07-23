@@ -44,12 +44,15 @@ class parsing_terminator : public std::runtime_error {
 
 } // namespace
 
-/* explicit */ parsing_driver::parsing_driver(parsing_params parse_params)
+parsing_driver::parsing_driver(std::string path, parsing_params parse_params)
     : params(std::move(parse_params)),
       doctext(nullptr),
       doctext_lineno(0),
       mode(parsing_mode::INCLUDES),
-      parser_(new apache::thrift::yy::parser(*this)) {}
+      parser_(new apache::thrift::yy::parser(*this)) {
+  program = new t_program(path);
+  scope_cache = program->scope();
+}
 
 /**
  * The default destructor needs to be explicitly defined in the .cc file since
@@ -58,19 +61,27 @@ class parsing_terminator : public std::runtime_error {
  */
 parsing_driver::~parsing_driver() = default;
 
-std::vector<diagnostic_message> parsing_driver::parse() {
+std::unique_ptr<t_program> parsing_driver::parse(
+    std::vector<diagnostic_message>& messages) {
+  std::unique_ptr<t_program> result{};
+
   try {
     parse_file();
+    result.reset(program);
   } catch (const parsing_terminator& e) {
-    return diagnostic_messages_;
+    // No need to do anything here. The purpose of the exception is simply to
+    // end the parsing process by unwinding to here.
   }
 
-  return diagnostic_messages_;
+  std::swap(messages, diagnostic_messages_);
+  diagnostic_messages_.clear();
+
+  return result;
 }
 
 void parsing_driver::parse_file() {
   // Get scope file path
-  std::string path = params.program->get_path();
+  std::string path = program->get_path();
 
   // Skip on already parsed files
   if (already_parsed_paths_.count(path)) {
@@ -99,11 +110,12 @@ void parsing_driver::parse_file() {
   fclose(yyin);
 
   // Recursively parse all the include programs
-  const auto& includes = params.program->get_includes();
+  const auto& includes = program->get_includes();
   // Always enable allow_neg_field_keys when parsing included files.
   // This way if a thrift file has negative keys, --allow-neg-keys doesn't have
   // to be used by everyone that includes it.
   auto old_params = params;
+  auto old_program = program;
   for (auto included_program : includes) {
     circular_deps_.insert(path);
 
@@ -116,7 +128,7 @@ void parsing_driver::parse_file() {
 
     // This must be after the previous circular include check, since the emitted
     // error message above is supposed to reference the parent file name.
-    params.program = included_program;
+    program = included_program;
     params.allow_neg_enum_vals = true;
     params.allow_neg_field_keys = true;
     parse_file();
@@ -125,6 +137,7 @@ void parsing_driver::parse_file() {
     assert(num_removed == 1);
   }
   params = old_params;
+  program = old_program;
 
   // Parse the program file
   mode = apache::thrift::parsing_mode::PROGRAM;
@@ -171,7 +184,7 @@ std::string parsing_driver::include_file(const std::string& filename) {
   } else { // relative path, start searching
     // new search path with current dir global
     std::vector<std::string> sp = params.incl_searchpath;
-    sp.insert(sp.begin(), directory_name(params.program->get_path()));
+    sp.insert(sp.begin(), directory_name(program->get_path()));
 
     // iterate through paths
     std::vector<std::string>::iterator it;

@@ -73,22 +73,6 @@ enum class parsing_mode {
 struct parsing_params {
   // Default values are taken from the original global variables.
 
-  /**
-   * The master program parse tree. This is accessed from within the parser code
-   * to build up the program elements.
-   */
-  t_program* program;
-
-  /**
-   * Global scope cache for faster compilations
-   */
-  t_scope* scope_cache;
-
-  /**
-   * A global map that holds a pointer to all programs already cached
-   */
-  std::shared_ptr<std::map<std::string, t_program*>> program_cache;
-
   bool debug = false;
   bool verbose = false;
   int warn = 1;
@@ -169,7 +153,23 @@ class parsing_driver {
    */
   parsing_mode mode;
 
-  explicit parsing_driver(parsing_params parse_params);
+  /**
+   * The master program parse tree. This is accessed from within the parser code
+   * to build up the program elements.
+   */
+  t_program* program;
+
+  /**
+   * Global scope cache for faster compilations
+   */
+  t_scope* scope_cache;
+
+  /**
+   * A global map that holds a pointer to all programs already cached
+   */
+  std::map<std::string, t_program*> program_cache;
+
+  parsing_driver(std::string path, parsing_params parse_params);
   ~parsing_driver();
 
   /**
@@ -177,7 +177,7 @@ class parsing_driver {
    * in via params.program. A vector containing diagnostic message (warnings,
    * debug messages, etc.) is returned.
    */
-  std::vector<diagnostic_message> parse();
+  std::unique_ptr<t_program> parse(std::vector<diagnostic_message>& messages);
 
   /**
    * Diagnostic message callbacks.
@@ -333,11 +333,8 @@ class parsing_driver {
       message = std::string{dyn_buffer.data()};
     }
 
-    return diagnostic_message{level,
-                              params.program->get_path(),
-                              yylineno,
-                              std::string{yytext},
-                              message};
+    return diagnostic_message{
+        level, program->get_path(), yylineno, std::string{yytext}, message};
   }
 };
 
