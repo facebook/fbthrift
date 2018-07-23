@@ -24,6 +24,8 @@
 
 namespace {
 
+using namespace std;
+
 // Reserved Cython / Python keywords that are not blocked by thrift grammer
 static const std::unordered_set<string> KEYWORDS = {
     "async",

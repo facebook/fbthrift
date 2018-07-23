@@ -25,6 +25,10 @@
 
 #include <thrift/compiler/ast/t_annotated.h>
 
+namespace apache {
+namespace thrift {
+namespace compiler {
+
 class t_program;
 
 /*
@@ -230,3 +234,7 @@ class t_type : public t_annotated {
   t_program* program_{nullptr};
   std::string name_;
 };
+
+} // namespace compiler
+} // namespace thrift
+} // namespace apache

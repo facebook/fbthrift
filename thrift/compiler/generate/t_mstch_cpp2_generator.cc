@@ -23,6 +23,8 @@
 
 namespace {
 
+using namespace std;
+
 bool is_reserved_macro_name(const std::string& name) {
   static const std::unordered_set<std::string> kReservedMacros({
       // The following 3 macros are pulled from 'sys/sysmacros.h' that is

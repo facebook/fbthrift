@@ -77,7 +77,7 @@ class t_java_generator : public t_oop_generator {
   void generate_union(t_struct* tunion);
   void generate_xception(t_struct* txception) override;
   void generate_service(t_service* tservice) override;
-  void generate_default_toString(ofstream&, t_struct*);
+  void generate_default_toString(std::ofstream&, t_struct*);
   void generate_toString_prettyprint(std::ofstream&);
 
   virtual void print_const_value(
@@ -100,9 +100,9 @@ class t_java_generator : public t_oop_generator {
   void generate_java_struct(t_struct* tstruct, bool is_exception);
 
   void generate_java_constructor(
-      ofstream& out,
+      std::ofstream& out,
       t_struct* tstruct,
-      const vector<t_field*>& fields);
+      const std::vector<t_field*>& fields);
   void generate_java_struct_definition(
       std::ofstream& out,
       t_struct* tstruct,
@@ -144,7 +144,7 @@ class t_java_generator : public t_oop_generator {
   std::string generate_isset_check(std::string field);
   std::string generate_setfield_check(t_field* field);
   std::string generate_setfield_check(std::string field);
-  void generate_isset_set(ofstream& out, t_field* field);
+  void generate_isset_set(std::ofstream& out, t_field* field);
   std::string isset_field_id(t_field* field);
 
   void generate_service_interface(t_service* tservice);
@@ -156,19 +156,21 @@ class t_java_generator : public t_oop_generator {
   void generate_process_function(t_service* tservice, t_function* tfunction);
 
   void generate_java_union(t_struct* tstruct);
-  void generate_union_constructor(ofstream& out, t_struct* tstruct);
-  void generate_union_getters_and_setters(ofstream& out, t_struct* tstruct);
-  void generate_union_abstract_methods(ofstream& out, t_struct* tstruct);
-  void generate_check_type(ofstream& out, t_struct* tstruct);
-  void generate_union_reader(ofstream& out, t_struct* tstruct);
-  void generate_read_value(ofstream& out, t_struct* tstruct);
-  void generate_write_value(ofstream& out, t_struct* tstruct);
-  void generate_get_field_desc(ofstream& out, t_struct* tstruct);
-  void generate_get_struct_desc(ofstream& out, t_struct* tstruct);
-  void generate_get_field_name(ofstream& out, t_struct* tstruct);
+  void generate_union_constructor(std::ofstream& out, t_struct* tstruct);
+  void generate_union_getters_and_setters(
+      std::ofstream& out,
+      t_struct* tstruct);
+  void generate_union_abstract_methods(std::ofstream& out, t_struct* tstruct);
+  void generate_check_type(std::ofstream& out, t_struct* tstruct);
+  void generate_union_reader(std::ofstream& out, t_struct* tstruct);
+  void generate_read_value(std::ofstream& out, t_struct* tstruct);
+  void generate_write_value(std::ofstream& out, t_struct* tstruct);
+  void generate_get_field_desc(std::ofstream& out, t_struct* tstruct);
+  void generate_get_struct_desc(std::ofstream& out, t_struct* tstruct);
+  void generate_get_field_name(std::ofstream& out, t_struct* tstruct);
 
-  void generate_union_comparisons(ofstream& out, t_struct* tstruct);
-  void generate_union_hashcode(ofstream& out, t_struct* tstruct);
+  void generate_union_comparisons(std::ofstream& out, t_struct* tstruct);
+  void generate_union_hashcode(std::ofstream& out, t_struct* tstruct);
 
   /**
    * Serialization constructs
@@ -241,7 +243,9 @@ class t_java_generator : public t_oop_generator {
 
   void generate_java_doc(std::ofstream& out, t_function* tdoc);
 
-  void generate_java_docstring_comment(std::ofstream& out, string contents);
+  void generate_java_docstring_comment(
+      std::ofstream& out,
+      std::string contents);
 
   bool is_comparable(t_type* type, std::vector<t_type*>* enclosing = nullptr);
   bool struct_has_all_comparable_fields(
@@ -293,9 +297,9 @@ class t_java_generator : public t_oop_generator {
       bool include_types = false);
   std::string type_to_enum(t_type* ttype);
   std::string get_enum_class_name(t_type* type);
-  void generate_struct_desc(ofstream& out, t_struct* tstruct);
-  void generate_field_descs(ofstream& out, t_struct* tstruct);
-  void generate_field_name_constants(ofstream& out, t_struct* tstruct);
+  void generate_struct_desc(std::ofstream& out, t_struct* tstruct);
+  void generate_field_descs(std::ofstream& out, t_struct* tstruct);
+  void generate_field_name_constants(std::ofstream& out, t_struct* tstruct);
 
   virtual const std::string& get_package_dir() {
     return package_dir_;

@@ -29,15 +29,19 @@
 
 #include <thrift/compiler/platform.h>
 
+namespace apache {
+namespace thrift {
+namespace compiler {
+
 /**
  * Current compilation stage. One of: arguments, parse, generation
  */
-string g_stage;
+std::string g_stage;
 
 /**
  * Directory containing template files
  */
-string g_template_dir;
+std::string g_template_dir;
 
 /**
  * Should C++ include statements use path prefixes for other thrift-generated
@@ -125,12 +129,12 @@ void pwarning(int level, const char* fmt, ...) {
 }
 
 void dump_docstrings(t_program* program) {
-  string progdoc = program->get_doc();
+  std::string progdoc = program->get_doc();
   if (!progdoc.empty()) {
     printf("Whole program doc:\n%s\n", progdoc.c_str());
   }
-  const vector<t_typedef*>& typedefs = program->get_typedefs();
-  vector<t_typedef*>::const_iterator t_iter;
+  const std::vector<t_typedef*>& typedefs = program->get_typedefs();
+  std::vector<t_typedef*>::const_iterator t_iter;
   for (t_iter = typedefs.begin(); t_iter != typedefs.end(); ++t_iter) {
     t_typedef* td = *t_iter;
     if (td->has_doc()) {
@@ -138,32 +142,32 @@ void dump_docstrings(t_program* program) {
           "typedef %s:\n%s\n", td->get_name().c_str(), td->get_doc().c_str());
     }
   }
-  const vector<t_enum*>& enums = program->get_enums();
-  vector<t_enum*>::const_iterator e_iter;
+  const std::vector<t_enum*>& enums = program->get_enums();
+  std::vector<t_enum*>::const_iterator e_iter;
   for (e_iter = enums.begin(); e_iter != enums.end(); ++e_iter) {
     t_enum* en = *e_iter;
     if (en->has_doc()) {
       printf("enum %s:\n%s\n", en->get_name().c_str(), en->get_doc().c_str());
     }
   }
-  const vector<t_const*>& consts = program->get_consts();
-  vector<t_const*>::const_iterator c_iter;
+  const std::vector<t_const*>& consts = program->get_consts();
+  std::vector<t_const*>::const_iterator c_iter;
   for (c_iter = consts.begin(); c_iter != consts.end(); ++c_iter) {
     t_const* co = *c_iter;
     if (co->has_doc()) {
       printf("const %s:\n%s\n", co->get_name().c_str(), co->get_doc().c_str());
     }
   }
-  const vector<t_struct*>& structs = program->get_structs();
-  vector<t_struct*>::const_iterator s_iter;
+  const std::vector<t_struct*>& structs = program->get_structs();
+  std::vector<t_struct*>::const_iterator s_iter;
   for (s_iter = structs.begin(); s_iter != structs.end(); ++s_iter) {
     t_struct* st = *s_iter;
     if (st->has_doc()) {
       printf("struct %s:\n%s\n", st->get_name().c_str(), st->get_doc().c_str());
     }
   }
-  const vector<t_struct*>& xceptions = program->get_xceptions();
-  vector<t_struct*>::const_iterator x_iter;
+  const std::vector<t_struct*>& xceptions = program->get_xceptions();
+  std::vector<t_struct*>::const_iterator x_iter;
   for (x_iter = xceptions.begin(); x_iter != xceptions.end(); ++x_iter) {
     t_struct* xn = *x_iter;
     if (xn->has_doc()) {
@@ -171,8 +175,8 @@ void dump_docstrings(t_program* program) {
           "xception %s:\n%s\n", xn->get_name().c_str(), xn->get_doc().c_str());
     }
   }
-  const vector<t_service*>& services = program->get_services();
-  vector<t_service*>::const_iterator v_iter;
+  const std::vector<t_service*>& services = program->get_services();
+  std::vector<t_service*>::const_iterator v_iter;
   for (v_iter = services.begin(); v_iter != services.end(); ++v_iter) {
     t_service* sv = *v_iter;
     if (sv->has_doc()) {
@@ -204,8 +208,8 @@ bool validate_throws(t_struct* throws) {
     return true;
   }
 
-  const vector<t_field*>& members = throws->get_members();
-  vector<t_field*>::const_iterator m_iter;
+  const std::vector<t_field*>& members = throws->get_members();
+  std::vector<t_field*>::const_iterator m_iter;
   for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
     if (!common_get_true_type((*m_iter)->get_type())->is_xception()) {
       return false;
@@ -271,3 +275,7 @@ std::unique_ptr<t_program> parse_and_dump_diagnostics(
 
   return program;
 }
+
+} // namespace compiler
+} // namespace thrift
+} // namespace apache

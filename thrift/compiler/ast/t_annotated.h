@@ -21,6 +21,10 @@
 
 #include <thrift/compiler/ast/t_doc.h>
 
+namespace apache {
+namespace thrift {
+namespace compiler {
+
 /**
  * class t_type
  *
@@ -40,3 +44,7 @@ struct t_annotation {
   std::string key;
   std::string val;
 };
+
+} // namespace compiler
+} // namespace thrift
+} // namespace apache

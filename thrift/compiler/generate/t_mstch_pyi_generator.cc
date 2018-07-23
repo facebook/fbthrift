@@ -24,6 +24,8 @@
 
 namespace {
 
+using namespace std;
+
 class t_mstch_pyi_generator : public t_mstch_generator {
  public:
   t_mstch_pyi_generator(

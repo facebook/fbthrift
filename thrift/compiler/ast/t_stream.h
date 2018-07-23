@@ -21,6 +21,10 @@
 #ifndef T_STREAM_H
 #define T_STREAM_H
 
+namespace apache {
+namespace thrift {
+namespace compiler {
+
 /**
  * A stream is a lightweight object type that just wraps another data type.
  *
@@ -111,5 +115,9 @@ class t_stream_response : public t_pubsub_stream {
  private:
   t_type* extra_type_;
 };
+
+} // namespace compiler
+} // namespace thrift
+} // namespace apache
 
 #endif

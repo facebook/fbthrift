@@ -18,6 +18,10 @@
 #include <string>
 #include <vector>
 
+namespace {
+using namespace apache::thrift::compiler;
+}
+
 template <typename>
 class func_signature_helper;
 

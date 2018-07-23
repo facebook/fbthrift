@@ -28,9 +28,11 @@
 #include <thrift/compiler/generate/common.h>
 #include <thrift/compiler/generate/t_oop_generator.h>
 
+using std::endl;
 using std::map;
 using std::ofstream;
 using std::ostringstream;
+using std::pair;
 using std::string;
 using std::stringstream;
 using std::vector;

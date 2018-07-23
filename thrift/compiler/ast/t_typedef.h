@@ -21,6 +21,10 @@
 #include <thrift/compiler/ast/t_scope.h>
 #include <thrift/compiler/ast/t_type.h>
 
+namespace apache {
+namespace thrift {
+namespace compiler {
+
 /**
  * A typedef is a mapping from a symbolic name to another type. In dymanically
  * typed languages (i.e. php/python) the code generator can actually usually
@@ -91,3 +95,7 @@ class t_typedef : public t_type {
   t_scope* scope_;
   bool defined_{true};
 };
+
+} // namespace compiler
+} // namespace thrift
+} // namespace apache

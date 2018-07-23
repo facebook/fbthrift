@@ -20,6 +20,10 @@
 #include <thrift/compiler/ast/t_enum_value.h>
 #include <thrift/compiler/ast/t_type.h>
 
+namespace apache {
+namespace thrift {
+namespace compiler {
+
 /**
  * An enumerated type. A list of constant objects with a name for the type.
  *
@@ -68,3 +72,7 @@ class t_enum : public t_type {
  private:
   std::vector<t_enum_value*> constants_;
 };
+
+} // namespace compiler
+} // namespace thrift
+} // namespace apache

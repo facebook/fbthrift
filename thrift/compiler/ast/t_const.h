@@ -17,6 +17,10 @@
 
 #include <thrift/compiler/ast/t_const_value.h>
 
+namespace apache {
+namespace thrift {
+namespace compiler {
+
 class t_program;
 
 /**
@@ -75,3 +79,7 @@ class t_const : public t_doc {
   std::string name_;
   t_const_value* value_;
 };
+
+} // namespace compiler
+} // namespace thrift
+} // namespace apache

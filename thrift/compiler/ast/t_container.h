@@ -22,6 +22,10 @@
 
 #include <thrift/compiler/ast/t_type.h>
 
+namespace apache {
+namespace thrift {
+namespace compiler {
+
 class t_container : public t_type {
  public:
   t_container() : cpp_name_(), has_cpp_name_(false) {}
@@ -49,5 +53,9 @@ class t_container : public t_type {
   std::string cpp_name_;
   bool has_cpp_name_;
 };
+
+} // namespace compiler
+} // namespace thrift
+} // namespace apache
 
 #endif

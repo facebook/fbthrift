@@ -25,6 +25,10 @@
 
 #include <thrift/compiler/ast/t_function.h>
 
+namespace apache {
+namespace thrift {
+namespace compiler {
+
 class t_program;
 
 /**
@@ -71,5 +75,9 @@ class t_service : public t_type {
   std::vector<t_function*> functions_;
   t_service* extends_;
 };
+
+} // namespace compiler
+} // namespace thrift
+} // namespace apache
 
 #endif

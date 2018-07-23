@@ -42,11 +42,15 @@
 #include <clocale>
 #include <sstream>
 
+using std::endl;
 using std::map;
 using std::ofstream;
 using std::ostringstream;
+using std::pair;
+using std::set;
 using std::string;
 using std::stringstream;
+using std::unordered_map;
 using std::vector;
 
 // static const string endl = "\n"; // avoid ostream << std::endl flushes

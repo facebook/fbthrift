@@ -19,6 +19,7 @@
 
 namespace apache {
 namespace thrift {
+namespace compiler {
 
 /**
  * Global types for the parser to be able to reference
@@ -37,5 +38,6 @@ t_type* i64_type();
 t_type* double_type();
 t_type* float_type();
 
+} // namespace compiler
 } // namespace thrift
 } // namespace apache

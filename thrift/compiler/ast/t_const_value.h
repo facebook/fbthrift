@@ -26,6 +26,10 @@
 #include <thrift/compiler/ast/t_enum.h>
 #include <thrift/compiler/ast/t_enum_value.h>
 
+namespace apache {
+namespace thrift {
+namespace compiler {
+
 class t_const;
 /**
  * A const value is something parsed that could be a map, set, list, struct
@@ -226,5 +230,9 @@ class t_const_value {
   t_enum const* tenum_ = nullptr;
   t_enum_value const* tenum_val_ = nullptr;
 };
+
+} // namespace compiler
+} // namespace thrift
+} // namespace apache
 
 #endif

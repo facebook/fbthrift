@@ -22,6 +22,10 @@
 
 #include <thrift/compiler/ast/t_container.h>
 
+namespace apache {
+namespace thrift {
+namespace compiler {
+
 /**
  * A list is a lightweight container type that just wraps another data type.
  *
@@ -53,5 +57,9 @@ class t_list : public t_container {
  private:
   t_type* elem_type_;
 };
+
+} // namespace compiler
+} // namespace thrift
+} // namespace apache
 
 #endif

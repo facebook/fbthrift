@@ -17,6 +17,7 @@
 
 namespace apache {
 namespace thrift {
+namespace compiler {
 
 t_type* void_type() {
   static t_base_type type{"void", t_base_type::TYPE_VOID};
@@ -81,5 +82,6 @@ t_type* float_type() {
   return &type;
 }
 
+} // namespace compiler
 } // namespace thrift
 } // namespace apache

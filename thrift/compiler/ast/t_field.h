@@ -22,6 +22,10 @@
 #include <thrift/compiler/ast/t_annotated.h>
 #include <thrift/compiler/ast/t_type.h>
 
+namespace apache {
+namespace thrift {
+namespace compiler {
+
 class t_const_value;
 class t_struct;
 
@@ -129,3 +133,7 @@ struct t_field_id {
   int64_t value;
   bool auto_assigned;
 };
+
+} // namespace compiler
+} // namespace thrift
+} // namespace apache

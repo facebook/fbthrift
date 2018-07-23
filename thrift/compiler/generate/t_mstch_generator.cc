@@ -29,6 +29,8 @@
 
 namespace {
 
+using namespace std;
+
 bool is_last_char(const string& data, char c) {
   return !data.empty() && data.back() == c;
 }

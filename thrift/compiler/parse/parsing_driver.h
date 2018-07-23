@@ -34,6 +34,9 @@
 namespace apache {
 namespace thrift {
 
+// TODO: Parsing driver should itself be moved into apache::thrift::compiler
+using namespace compiler;
+
 namespace yy {
 class parser;
 }

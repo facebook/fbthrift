@@ -149,7 +149,7 @@ class t_concat_generator : public t_generator {
    * two structures having same fields properties will have the same
    * structural ID.
    */
-  std::string generate_structural_id(const vector<t_field*>& members);
+  std::string generate_structural_id(const std::vector<t_field*>& members);
 
   /**
    * Creates a unique temporary variable name, which is just "name" with a

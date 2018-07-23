@@ -39,19 +39,19 @@
 #include <thrift/compiler/ast/t_program.h>
 #include <thrift/compiler/ast/t_scope.h>
 
-namespace {
-using namespace std;
-}
+namespace apache {
+namespace thrift {
+namespace compiler {
 
 /**
  * Current compilation stage. One of: arguments, parse, generation
  */
-extern string g_stage;
+extern std::string g_stage;
 
 /**
  * Directory containing template files
  */
-extern string g_template_dir;
+extern std::string g_template_dir;
 
 /**
  * Should C++ include statements use path prefixes for other thrift-generated
@@ -136,5 +136,9 @@ bool validate_throws(t_struct* throws);
 std::unique_ptr<t_program> parse_and_dump_diagnostics(
     std::string path,
     apache::thrift::parsing_params params);
+
+} // namespace compiler
+} // namespace thrift
+} // namespace apache
 
 #endif

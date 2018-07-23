@@ -25,6 +25,10 @@
 
 #include <thrift/compiler/ast/t_type.h>
 
+namespace apache {
+namespace thrift {
+namespace compiler {
+
 /**
  * A thrift base type, which must be one of the defined enumerated types inside
  * this definition.
@@ -165,5 +169,9 @@ class t_base_type : public t_type {
   bool string_list_;
   bool binary_;
 };
+
+} // namespace compiler
+} // namespace thrift
+} // namespace apache
 
 #endif

@@ -18,6 +18,10 @@
 
 #include <thrift/compiler/ast/t_program.h>
 
+namespace apache {
+namespace thrift {
+namespace compiler {
+
 t_type* t_typedef::get_type() const {
   if (type_ == nullptr) {
     type_ = scope_->get_type(get_program()->get_name() + "." + symbolic_);
@@ -28,3 +32,7 @@ t_type* t_typedef::get_type() const {
   }
   return type_;
 }
+
+} // namespace compiler
+} // namespace thrift
+} // namespace apache

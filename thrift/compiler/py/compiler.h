@@ -31,9 +31,11 @@
 
 namespace {
 using boost::noncopyable;
+using namespace std;
 using namespace boost::python;
 using namespace boost::python::api;
 using namespace thrift::compiler::py::conv;
+using namespace apache::thrift::compiler;
 } // namespace
 
 namespace thrift {

@@ -17,6 +17,10 @@
 
 #include <string>
 
+namespace apache {
+namespace thrift {
+namespace compiler {
+
 /**
  * class t_doc
  *
@@ -63,3 +67,7 @@ class t_doc {
   bool has_doc_{false};
   int lineno_{-1};
 };
+
+} // namespace compiler
+} // namespace thrift
+} // namespace apache

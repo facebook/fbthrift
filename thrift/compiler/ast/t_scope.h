@@ -27,6 +27,10 @@
 #include <thrift/compiler/ast/t_service.h>
 #include <thrift/compiler/ast/t_type.h>
 
+namespace apache {
+namespace thrift {
+namespace compiler {
+
 /**
  * This represents a variable scope used for looking up predefined types and
  * services. Typically, a scope is associated with a t_program. Scopes are not
@@ -80,5 +84,9 @@ class t_scope {
   // Map of names to services
   std::map<std::string, t_service*> services_;
 };
+
+} // namespace compiler
+} // namespace thrift
+} // namespace apache
 
 #endif

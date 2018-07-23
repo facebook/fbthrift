@@ -25,6 +25,8 @@ namespace compiler {
 namespace py {
 namespace conv {
 
+using namespace std;
+
 template <class T>
 struct indexPtrVec {
   indexPtrVec(char const* name) {

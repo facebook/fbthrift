@@ -20,6 +20,8 @@
 
 #include <thrift/compiler/generate/t_mstch_generator.h>
 
+using namespace std;
+
 class t_mstch_swift_generator : public t_mstch_generator {
  public:
   t_mstch_swift_generator(

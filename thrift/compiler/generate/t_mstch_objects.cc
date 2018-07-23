@@ -16,6 +16,8 @@
 
 #include <thrift/compiler/generate/t_mstch_objects.h>
 
+using namespace std;
+
 std::shared_ptr<mstch_base> enum_value_generator::generate(
     t_enum_value const* enum_value,
     std::shared_ptr<mstch_generators const> generators,

@@ -23,6 +23,8 @@
 #include <thrift/compiler/ast/t_program.h>
 #include <thrift/compiler/ast/t_type.h>
 
+using namespace apache::thrift::compiler;
+
 /**
  * Inherit from t_type to access protected declarations
  */

@@ -19,6 +19,10 @@
 
 #include <thrift/compiler/ast/t_annotated.h>
 
+namespace apache {
+namespace thrift {
+namespace compiler {
+
 /**
  * class t_enum_value
  *
@@ -74,3 +78,7 @@ class t_enum_value : public t_annotated {
   int32_t value_{0};
   bool has_value_{false};
 };
+
+} // namespace compiler
+} // namespace thrift
+} // namespace apache

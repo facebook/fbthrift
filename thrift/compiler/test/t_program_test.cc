@@ -21,6 +21,8 @@
 
 #include <thrift/compiler/ast/t_program.h>
 
+using namespace apache::thrift::compiler;
+
 /**
  * t_program functions are protected so we need
  * an inheritance to access the functions

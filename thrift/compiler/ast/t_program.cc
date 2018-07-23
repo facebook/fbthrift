@@ -21,6 +21,10 @@
 #include <utility>
 #include <vector>
 
+namespace apache {
+namespace thrift {
+namespace compiler {
+
 const std::string& t_program::get_namespace(const std::string& language) const {
   auto pos = namespaces_.find(language);
   static const auto& kEmpty = *new std::string();
@@ -71,3 +75,7 @@ std::string t_program::compute_name_from_file_path(std::string path) {
   }
   return path;
 }
+
+} // namespace compiler
+} // namespace thrift
+} // namespace apache

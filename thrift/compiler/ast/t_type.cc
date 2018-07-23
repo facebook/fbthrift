@@ -24,6 +24,10 @@
 #include <thrift/compiler/ast/endianness.h>
 #include <thrift/compiler/ast/t_program.h>
 
+namespace apache {
+namespace thrift {
+namespace compiler {
+
 constexpr size_t t_types::kTypeBits;
 constexpr uint64_t t_types::kTypeMask;
 
@@ -52,3 +56,7 @@ std::string t_type::make_full_name(const char* prefix) const {
   os << name_;
   return os.str();
 }
+
+} // namespace compiler
+} // namespace thrift
+} // namespace apache

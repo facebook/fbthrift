@@ -22,6 +22,10 @@
 
 #include <thrift/compiler/ast/t_container.h>
 
+namespace apache {
+namespace thrift {
+namespace compiler {
+
 /**
  * A set is a lightweight container type that just wraps another data type.
  *
@@ -59,5 +63,9 @@ class t_set : public t_container {
   t_type* elem_type_;
   bool is_unordered_;
 };
+
+} // namespace compiler
+} // namespace thrift
+} // namespace apache
 
 #endif

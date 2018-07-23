@@ -25,6 +25,10 @@
 #include <thrift/compiler/ast/t_field.h>
 #include <thrift/compiler/ast/t_type.h>
 
+namespace apache {
+namespace thrift {
+namespace compiler {
+
 // Forward declare that puppy
 class t_program;
 
@@ -216,3 +220,7 @@ struct t_structpair {
   t_structpair() = delete;
   t_structpair(t_struct* f, t_struct* s) : first(f), second(s) {}
 };
+
+} // namespace compiler
+} // namespace thrift
+} // namespace apache

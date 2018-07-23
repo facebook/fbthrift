@@ -34,6 +34,10 @@
 #include <thrift/compiler/ast/t_struct.h>
 #include <thrift/compiler/ast/t_typedef.h>
 
+namespace apache {
+namespace thrift {
+namespace compiler {
+
 /**
  * class t_program
  *
@@ -242,3 +246,7 @@ class t_program : public t_doc {
   std::vector<std::string> cpp_includes_;
   std::unique_ptr<t_scope> scope_{new t_scope{}};
 };
+
+} // namespace compiler
+} // namespace thrift
+} // namespace apache

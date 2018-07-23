@@ -21,6 +21,10 @@
 #include <thrift/compiler/ast/t_struct.h>
 #include <thrift/compiler/ast/t_type.h>
 
+namespace apache {
+namespace thrift {
+namespace compiler {
+
 /**
  * class t_function
  *
@@ -165,3 +169,7 @@ class t_function : public t_doc {
   t_type* annotations_;
   bool oneway_;
 };
+
+} // namespace compiler
+} // namespace thrift
+} // namespace apache
