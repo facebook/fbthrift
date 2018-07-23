@@ -23,9 +23,9 @@
 #include <map>
 #include <string>
 
-#include <thrift/compiler/parse/t_const.h>
-#include <thrift/compiler/parse/t_service.h>
-#include <thrift/compiler/parse/t_type.h>
+#include <thrift/compiler/ast/t_const.h>
+#include <thrift/compiler/ast/t_service.h>
+#include <thrift/compiler/ast/t_type.h>
 
 /**
  * This represents a variable scope used for looking up predefined types and

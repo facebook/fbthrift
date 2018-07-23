@@ -18,8 +18,8 @@
 
 #include <string>
 
-#include <thrift/compiler/parse/t_scope.h>
-#include <thrift/compiler/parse/t_type.h>
+#include <thrift/compiler/ast/t_scope.h>
+#include <thrift/compiler/ast/t_type.h>
 
 /**
  * A typedef is a mapping from a symbolic name to another type. In dymanically

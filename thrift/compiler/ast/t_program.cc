@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <thrift/compiler/parse/t_program.h>
+#include <thrift/compiler/ast/t_program.h>
 
 #include <map>
 #include <memory>

@@ -19,12 +19,12 @@
 #include <memory>
 #include <vector>
 
-#include <thrift/compiler/parse/t_const.h>
-#include <thrift/compiler/parse/t_enum.h>
-#include <thrift/compiler/parse/t_field.h>
-#include <thrift/compiler/parse/t_program.h>
-#include <thrift/compiler/parse/t_service.h>
-#include <thrift/compiler/parse/t_struct.h>
+#include <thrift/compiler/ast/t_const.h>
+#include <thrift/compiler/ast/t_enum.h>
+#include <thrift/compiler/ast/t_field.h>
+#include <thrift/compiler/ast/t_program.h>
+#include <thrift/compiler/ast/t_service.h>
+#include <thrift/compiler/ast/t_struct.h>
 
 namespace apache {
 namespace thrift {

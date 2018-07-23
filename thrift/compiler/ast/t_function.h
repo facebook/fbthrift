@@ -17,9 +17,9 @@
 
 #include <string>
 
-#include <thrift/compiler/parse/t_doc.h>
-#include <thrift/compiler/parse/t_struct.h>
-#include <thrift/compiler/parse/t_type.h>
+#include <thrift/compiler/ast/t_doc.h>
+#include <thrift/compiler/ast/t_struct.h>
+#include <thrift/compiler/ast/t_type.h>
 
 /**
  * class t_function

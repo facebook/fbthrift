@@ -16,13 +16,14 @@
 
 #include <thrift/compiler/generate/t_concat_generator.h>
 
-#include <cstdio>
 #include <cinttypes>
+#include <cstdio>
 #include <iterator>
 
 #include <openssl/sha.h>
 
-#include <thrift/compiler/parse/endianness.h>
+#include <thrift/compiler/ast/endianness.h>
+
 #include <thrift/compiler/generate/t_generator.h>
 
 using namespace std;

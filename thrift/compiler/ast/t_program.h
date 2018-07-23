@@ -21,18 +21,18 @@
 #include <utility>
 #include <vector>
 
-#include <thrift/compiler/parse/t_base_type.h>
-#include <thrift/compiler/parse/t_const.h>
-#include <thrift/compiler/parse/t_doc.h>
-#include <thrift/compiler/parse/t_enum.h>
-#include <thrift/compiler/parse/t_list.h>
-#include <thrift/compiler/parse/t_map.h>
-#include <thrift/compiler/parse/t_scope.h>
-#include <thrift/compiler/parse/t_service.h>
-#include <thrift/compiler/parse/t_set.h>
-#include <thrift/compiler/parse/t_stream.h>
-#include <thrift/compiler/parse/t_struct.h>
-#include <thrift/compiler/parse/t_typedef.h>
+#include <thrift/compiler/ast/t_base_type.h>
+#include <thrift/compiler/ast/t_const.h>
+#include <thrift/compiler/ast/t_doc.h>
+#include <thrift/compiler/ast/t_enum.h>
+#include <thrift/compiler/ast/t_list.h>
+#include <thrift/compiler/ast/t_map.h>
+#include <thrift/compiler/ast/t_scope.h>
+#include <thrift/compiler/ast/t_service.h>
+#include <thrift/compiler/ast/t_set.h>
+#include <thrift/compiler/ast/t_stream.h>
+#include <thrift/compiler/ast/t_struct.h>
+#include <thrift/compiler/ast/t_typedef.h>
 
 /**
  * class t_program

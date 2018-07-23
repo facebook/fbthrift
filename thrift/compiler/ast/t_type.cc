@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-#include <thrift/compiler/parse/t_type.h>
+#include <thrift/compiler/ast/t_type.h>
 
 #include <sstream>
 #include <string>
 
 #include <openssl/sha.h>
 
-#include <thrift/compiler/parse/endianness.h>
-#include <thrift/compiler/parse/t_program.h>
+#include <thrift/compiler/ast/endianness.h>
+#include <thrift/compiler/ast/t_program.h>
 
 constexpr size_t t_types::kTypeBits;
 constexpr uint64_t t_types::kTypeMask;

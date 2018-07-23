@@ -22,8 +22,8 @@
 #include <utility>
 #include <vector>
 
-#include <thrift/compiler/parse/t_field.h>
-#include <thrift/compiler/parse/t_type.h>
+#include <thrift/compiler/ast/t_field.h>
+#include <thrift/compiler/ast/t_type.h>
 
 // Forward declare that puppy
 class t_program;

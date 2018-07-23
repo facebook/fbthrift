@@ -17,47 +17,59 @@
  * under the License.
  */
 
-#ifndef T_SET_H
-#define T_SET_H
+#ifndef T_SERVICE_H
+#define T_SERVICE_H
 
-#include <thrift/compiler/parse/t_container.h>
+#include <algorithm>
+#include <vector>
+
+#include <thrift/compiler/ast/t_function.h>
+
+class t_program;
 
 /**
- * A set is a lightweight container type that just wraps another data type.
+ * A service consists of a set of functions.
  *
  */
-class t_set : public t_container {
+class t_service : public t_type {
  public:
-  t_set(t_type* elem_type, bool unordered)
-      : elem_type_(elem_type), is_unordered_(unordered) {}
+  explicit t_service(t_program* program) : t_type(program), extends_(nullptr) {}
 
-  t_type* get_elem_type() const {
-    return elem_type_;
-  }
-
-  bool is_set() const override {
+  bool is_service() const override {
     return true;
   }
 
-  bool is_unordered() const {
-    return is_unordered_;
+  void set_extends(t_service* extends) {
+    extends_ = extends;
   }
 
-  std::string get_full_name() const override {
-    return "set<" + elem_type_->get_full_name() + ">";
+  void add_function(t_function* func) {
+    functions_.push_back(func);
   }
 
-  std::string get_impl_full_name() const override {
-    return "set<" + elem_type_->get_impl_full_name() + ">";
+  const std::vector<t_function*>& get_functions() const {
+    return functions_;
+  }
+
+  t_service* get_extends() const {
+    return extends_;
   }
 
   TypeValue get_type_value() const override {
-    return TypeValue::TYPE_SET;
+    return TypeValue::TYPE_SERVICE;
+  }
+
+  std::string get_full_name() const override {
+    return make_full_name("service");
+  }
+
+  std::string get_impl_full_name() const override {
+    return make_full_name("service");
   }
 
  private:
-  t_type* elem_type_;
-  bool is_unordered_;
+  std::vector<t_function*> functions_;
+  t_service* extends_;
 };
 
 #endif

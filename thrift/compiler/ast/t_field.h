@@ -19,8 +19,8 @@
 #include <sstream>
 #include <string>
 
-#include <thrift/compiler/parse/t_annotated.h>
-#include <thrift/compiler/parse/t_type.h>
+#include <thrift/compiler/ast/t_annotated.h>
+#include <thrift/compiler/ast/t_type.h>
 
 class t_const_value;
 class t_struct;

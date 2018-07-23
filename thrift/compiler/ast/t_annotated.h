@@ -19,7 +19,7 @@
 #include <map>
 #include <string>
 
-#include <thrift/compiler/parse/t_doc.h>
+#include <thrift/compiler/ast/t_doc.h>
 
 /**
  * class t_type

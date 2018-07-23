@@ -19,8 +19,9 @@
 #include <set>
 #include <string>
 
-#include "thrift/compiler/parse/t_program.h"
-#include "thrift/compiler/parse/t_scope.h"
+#include "thrift/compiler/ast/t_program.h"
+#include "thrift/compiler/ast/t_scope.h"
+
 #include "thrift/compiler/parse/yy_globals.h"
 
 /**

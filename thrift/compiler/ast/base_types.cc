@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "thrift/compiler/parse/base_types.h"
+#include "thrift/compiler/ast/base_types.h"
 
 namespace apache {
 namespace thrift {

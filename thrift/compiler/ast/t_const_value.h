@@ -22,9 +22,9 @@
 #include <utility>
 #include <vector>
 
-#include <thrift/compiler/parse/t_const.h>
-#include <thrift/compiler/parse/t_enum.h>
-#include <thrift/compiler/parse/t_enum_value.h>
+#include <thrift/compiler/ast/t_const.h>
+#include <thrift/compiler/ast/t_enum.h>
+#include <thrift/compiler/ast/t_enum_value.h>
 
 class t_const;
 /**

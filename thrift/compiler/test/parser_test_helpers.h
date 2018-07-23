@@ -19,10 +19,11 @@
 #include <memory>
 #include <string>
 
-#include <thrift/compiler/parse/t_base_type.h>
-#include <thrift/compiler/parse/t_enum.h>
-#include <thrift/compiler/parse/t_function.h>
-#include <thrift/compiler/parse/t_service.h>
+#include <thrift/compiler/ast/t_base_type.h>
+#include <thrift/compiler/ast/t_enum.h>
+#include <thrift/compiler/ast/t_function.h>
+#include <thrift/compiler/ast/t_service.h>
+
 #include <thrift/compiler/test/parser_test_helpers-inl.h>
 
 /**

@@ -23,7 +23,7 @@
 #include <sstream>
 #include <string>
 
-#include <thrift/compiler/parse/t_annotated.h>
+#include <thrift/compiler/ast/t_annotated.h>
 
 class t_program;
 

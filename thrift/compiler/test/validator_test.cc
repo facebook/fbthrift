@@ -21,8 +21,8 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
-#include <thrift/compiler/parse/t_function.h>
-#include <thrift/compiler/parse/t_service.h>
+#include <thrift/compiler/ast/t_function.h>
+#include <thrift/compiler/ast/t_service.h>
 #include <thrift/compiler/test/parser_test_helpers.h>
 #include <thrift/compiler/validator.h>
 

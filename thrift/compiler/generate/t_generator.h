@@ -24,7 +24,8 @@
 #include <unordered_set>
 
 #include <thrift/compiler/common.h>
-#include <thrift/compiler/parse/t_program.h>
+
+#include <thrift/compiler/ast/t_program.h>
 
 // version.h
 #define THRIFT_VERSION "facebook"

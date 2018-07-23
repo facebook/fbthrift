@@ -35,8 +35,9 @@
 #include <string>
 
 #include <thrift/compiler/parse/parsing_driver.h>
-#include <thrift/compiler/parse/t_program.h>
-#include <thrift/compiler/parse/t_scope.h>
+
+#include <thrift/compiler/ast/t_program.h>
+#include <thrift/compiler/ast/t_scope.h>
 
 namespace {
 using namespace std;

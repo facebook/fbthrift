@@ -34,9 +34,9 @@
 #include <stack>
 #include <utility>
 
-#include "thrift/compiler/parse/t_annotated.h"
-#include "thrift/compiler/parse/t_scope.h"
-#include "thrift/compiler/parse/base_types.h"
+#include "thrift/compiler/ast/t_annotated.h"
+#include "thrift/compiler/ast/t_scope.h"
+#include "thrift/compiler/ast/base_types.h"
 
 #include "thrift/compiler/parse/parsing_driver.h"
 

@@ -15,7 +15,7 @@
  */
 #pragma once
 
-#include <thrift/compiler/parse/t_const_value.h>
+#include <thrift/compiler/ast/t_const_value.h>
 
 class t_program;
 

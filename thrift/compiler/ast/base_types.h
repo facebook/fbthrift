@@ -15,7 +15,7 @@
  */
 #pragma once
 
-#include "thrift/compiler/parse/t_base_type.h"
+#include "thrift/compiler/ast/t_base_type.h"
 
 namespace apache {
 namespace thrift {

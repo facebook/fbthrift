@@ -23,8 +23,8 @@
 #include <string>
 #include <vector>
 
+#include <thrift/compiler/ast/base_types.h>
 #include <thrift/compiler/generate/t_oop_generator.h>
-#include <thrift/compiler/parse/base_types.h>
 #include <thrift/compiler/platform.h>
 
 using namespace std;

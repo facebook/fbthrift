@@ -17,37 +17,41 @@
  * under the License.
  */
 
-#ifndef T_CONTAINER_H
-#define T_CONTAINER_H
+#ifndef T_LIST_H
+#define T_LIST_H
 
-#include <thrift/compiler/parse/t_type.h>
+#include <thrift/compiler/ast/t_container.h>
 
-class t_container : public t_type {
+/**
+ * A list is a lightweight container type that just wraps another data type.
+ *
+ */
+class t_list : public t_container {
  public:
-  t_container() : cpp_name_(), has_cpp_name_(false) {}
+  explicit t_list(t_type* elem_type) : elem_type_(elem_type) {}
 
-  ~t_container() override {}
-
-  void set_cpp_name(std::string cpp_name) {
-    cpp_name_ = cpp_name;
-    has_cpp_name_ = true;
+  t_type* get_elem_type() const {
+    return elem_type_;
   }
 
-  bool has_cpp_name() {
-    return has_cpp_name_;
-  }
-
-  std::string get_cpp_name() {
-    return cpp_name_;
-  }
-
-  bool is_container() const override {
+  bool is_list() const override {
     return true;
   }
 
+  std::string get_full_name() const override {
+    return "list<" + elem_type_->get_full_name() + ">";
+  }
+
+  std::string get_impl_full_name() const override {
+    return "list<" + elem_type_->get_impl_full_name() + ">";
+  }
+
+  TypeValue get_type_value() const override {
+    return TypeValue::TYPE_LIST;
+  }
+
  private:
-  std::string cpp_name_;
-  bool has_cpp_name_;
+  t_type* elem_type_;
 };
 
 #endif

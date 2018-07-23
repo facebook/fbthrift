@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-#include <thrift/compiler/parse/t_typedef.h>
+#include <thrift/compiler/ast/t_typedef.h>
 
-#include <thrift/compiler/parse/t_program.h>
+#include <thrift/compiler/ast/t_program.h>
 
 t_type* t_typedef::get_type() const {
   if (type_ == nullptr) {
