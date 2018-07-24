@@ -22,6 +22,7 @@
 #include <folly/DefaultKeepAliveExecutor.h>
 #include <folly/PriorityMPMCQueue.h>
 #include <folly/ThreadLocal.h>
+#include <folly/executors/Codel.h>
 #include <folly/io/async/Request.h>
 #include <folly/synchronization/LifoSem.h>
 #include <folly/synchronization/SmallLocks.h>
