@@ -356,55 +356,6 @@ inline void merge(const std::unique_ptr<T>& from, std::unique_ptr<T>& to) {
   }
 }
 
-namespace detail {
-
-template <std::intmax_t Id, typename T>
-struct argument_wrapper {
-  static_assert(
-    std::is_rvalue_reference<T&&>::value,
-    "this wrapper handles only rvalues and initializer_list"
-  );
-
-  template <typename U>
-  explicit argument_wrapper(U&& value):
-    argument_(std::forward<U>(value))
-  {
-    static_assert(
-      std::is_rvalue_reference<U&&>::value,
-      "this wrapper handles only rvalues and initializer_list"
-    );
-  }
-
-  explicit argument_wrapper(const char* str) : argument_(str) {}
-
-  T&& move() { return std::move(argument_); }
-
-private:
-  T argument_;
-};
-
-template <std::intmax_t Id, typename T>
-detail::argument_wrapper<Id, std::initializer_list<T>> wrap_argument(
-  std::initializer_list<T> value
-) {
-  return detail::argument_wrapper<Id, std::initializer_list<T>>(
-    std::move(value)
-  );
-}
-
-template <std::intmax_t Id, typename T>
-detail::argument_wrapper<Id, T&&> wrap_argument(T&& value) {
-  static_assert(std::is_rvalue_reference<T&&>::value, "internal thrift error");
-  return detail::argument_wrapper<Id, T&&>(std::forward<T>(value));
-}
-
-template <std::intmax_t Id>
-detail::argument_wrapper<Id, const char*> wrap_argument(const char* str) {
-  return detail::argument_wrapper<Id, const char*>(str);
-}
-
-} // detail
-
 }} // apache::thrift
 
 #endif // #ifndef THRIFT_THRIFT_H_

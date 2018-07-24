@@ -5362,6 +5362,7 @@ class CppGenerator(t_generator.Generator):
 
         # Include base types
         s('#include <thrift/lib/cpp2/Thrift.h>')
+        s('#include <thrift/lib/cpp2/gen/module_types_h.h')
         s('#include <thrift/lib/cpp2/protocol/Protocol.h>')
         s('#include <thrift/lib/cpp/TApplicationException.h>')
 
