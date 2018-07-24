@@ -29,6 +29,9 @@ from folly cimport (
 
 cimport folly.futures
 from folly.executor cimport get_executor
+cimport folly.iobuf as __iobuf
+import folly.iobuf as __iobuf
+from folly.iobuf cimport move as move_iobuf
 
 cimport my.namespacing.test.module.module.types as _my_namespacing_test_module_module_types
 import my.namespacing.test.module.module.types as _my_namespacing_test_module_module_types

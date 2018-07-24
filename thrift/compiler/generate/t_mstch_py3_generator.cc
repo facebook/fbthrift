@@ -90,7 +90,7 @@ class t_mstch_py3_generator : public t_mstch_generator {
   mstch::array get_py3_namespace(
       const t_program&,
       std::initializer_list<string> tails = {});
-  std::string flatten_type_name(const t_type&);
+  std::string flatten_type_name(const t_type&) const;
   std::string get_module_name(ModuleType module);
   std::string get_enumSafeName(const std::string&);
   template <class T>
@@ -101,11 +101,9 @@ class t_mstch_py3_generator : public t_mstch_generator {
   const std::vector<std::string> extensions{".pyx", ".pxd", ".pyi"};
   struct type_data {
     vector<const t_type*> containers;
-    std::set<string> container_names;
     vector<const t_type*> custom_templates;
-    std::set<string> custom_template_names;
     vector<const t_type*> custom_types;
-    std::set<string> custom_type_names;
+    std::set<string> seen_types;
     mstch::array extra_namespaces;
     std::set<string> extra_namespace_paths;
   };
@@ -122,7 +120,7 @@ class t_mstch_py3_generator : public t_mstch_generator {
   string get_cpp_type(const t_type& type) const;
   string to_cython_type(const string& cpp_type) const;
   bool is_external_program(const t_program& program) const;
-  inline const t_program& get_type_program(const t_type& type);
+  inline const t_program& get_type_program(const t_type& type) const;
 };
 
 bool t_mstch_py3_generator::is_external_program(
@@ -131,7 +129,7 @@ bool t_mstch_py3_generator::is_external_program(
 }
 
 inline const t_program& t_mstch_py3_generator::get_type_program(
-    const t_type& type) {
+    const t_type& type) const {
   auto type_program = type.get_program();
   return type_program ? *type_program : *get_program();
 }
@@ -201,22 +199,16 @@ std::string t_mstch_py3_generator::get_rename(const T& elem) {
 }
 
 mstch::map t_mstch_py3_generator::extend_field(const t_field& field) {
-  const auto ref_type = this->ref_type(field);
-  bool reference = ref_type != "";
-  bool is_iobuf = false;
-  bool is_iobuf_ref = false;
-
-  if (field.get_type() != nullptr) {
+  auto ref_type = this->ref_type(field);
+  if (ref_type == "" && field.get_type() != nullptr) {
     auto& resolved_type = resolve_typedef(*field.get_type());
     string type_override = this->get_cpp_type(resolved_type);
     if (type_override == "std::unique_ptr<folly::IOBuf>") {
-      reference = true;
-      is_iobuf_ref = true;
-    }
-    if (type_override == "folly::IOBuf") {
-      is_iobuf = true;
+      ref_type = "iobuf";
     }
   }
+
+  const bool reference = ref_type != "";
 
   auto req = field.get_req();
   const auto required = req == t_field::e_req::T_REQUIRED;
@@ -241,8 +233,7 @@ mstch::map t_mstch_py3_generator::extend_field(const t_field& field) {
       {"unique_ref?", (ref_type == "unique")},
       {"shared_ref?", (ref_type == "shared")},
       {"shared_const_ref?", (ref_type == "shared_const")},
-      {"iobuf?", is_iobuf},
-      {"iobuf_ref?", is_iobuf_ref},
+      {"iobuf_ref?", (ref_type == "iobuf")},
       {"hasDefaultValue?", hasDefaultValue},
       {"requireValue?", requireValue},
       {"follyOptional?", follyOptional},
@@ -307,17 +298,17 @@ mstch::map t_mstch_py3_generator::extend_type(const t_type& type) {
 
   string cpp_type = this->get_cpp_type(type);
   bool has_custom_type = (cpp_type != "");
-  string cython_type = this->to_cython_type(cpp_type);
   const auto is_integer =
       type.is_byte() || type.is_i16() || type.is_i32() || type.is_i64();
   const auto is_number = is_integer || type.is_floating_point();
   // We don't use the Cython Type for Containers
   const auto hasCythonType = !type.is_container();
+  string cython_type = this->to_cython_type(cpp_type);
   const auto cythonTypeNoneable = !is_number && hasCythonType;
 
-  bool is_iobuf =
-      (cpp_type == "folly::IOBuf" ||
-       cpp_type == "std::unique_ptr<folly::IOBuf>");
+  bool isIOBuf = (cpp_type == "folly::IOBuf");
+  bool isIOBufRef = (cpp_type == "std::unique_ptr<folly::IOBuf>");
+  bool hasCustomTypeBehavior = isIOBuf || isIOBufRef;
 
   mstch::map result{
       {"modulePath", modulePath},
@@ -334,7 +325,10 @@ mstch::map t_mstch_py3_generator::extend_type(const t_type& type) {
       {"integer?", is_integer},
       {"cythonTypeNoneable?", cythonTypeNoneable},
       {"hasCythonType?", hasCythonType},
-      {"iobuf_wrapper?", is_iobuf},
+      {"iobuf?", isIOBuf},
+      {"iobufRef?", isIOBufRef},
+      {"iobufWrapper?", (isIOBuf || isIOBufRef)},
+      {"hasCustomTypeBehavior?", hasCustomTypeBehavior},
   };
   return result;
 }
@@ -680,25 +674,23 @@ void t_mstch_py3_generator::visit_single_type(
     const t_type& type,
     const t_type& orig_type,
     type_data& data) {
-  if (type.is_container()) {
-    string flat_name = flatten_type_name(type);
-    if (!data.container_names.count(flat_name)) {
-      data.container_names.insert(flat_name);
+  string flat_name = flatten_type_name(type);
+  if (!data.seen_types.count(flat_name)) {
+    data.seen_types.insert(flat_name);
+
+    if (type.is_container()) {
       data.containers.push_back(&type);
     }
-  }
 
-  string cpp_template = this->get_cpp_template(type);
-  if (!this->is_default_template(cpp_template, type) &&
-      !data.custom_template_names.count(cpp_template)) {
-    data.custom_template_names.insert(cpp_template);
-    data.custom_templates.push_back(&type);
-  }
+    string cpp_template = this->get_cpp_template(type);
+    if (!this->is_default_template(cpp_template, type)) {
+      data.custom_templates.push_back(&type);
+    }
 
-  string cpp_type = this->get_cpp_type(type);
-  if (cpp_type != "" && !data.custom_type_names.count(cpp_type)) {
-    data.custom_type_names.insert(cpp_type);
-    data.custom_types.push_back(&type);
+    string cpp_type = this->get_cpp_type(type);
+    if (cpp_type != "") {
+      data.custom_types.push_back(&type);
+    }
   }
 
   // If the original type is a typedef, then add the namespace of the
@@ -719,7 +711,8 @@ void t_mstch_py3_generator::visit_single_type(
   }
 }
 
-std::string t_mstch_py3_generator::flatten_type_name(const t_type& orig_type) {
+std::string t_mstch_py3_generator::flatten_type_name(
+    const t_type& orig_type) const {
   auto& type = resolve_typedef(orig_type);
   const auto& program = get_type_program(type);
   const auto externalProgram = is_external_program(program);
@@ -733,6 +726,10 @@ std::string t_mstch_py3_generator::flatten_type_name(const t_type& orig_type) {
     if (cpp_type != "") {
       custom_prefix = this->to_cython_type(cpp_type) + "__";
     }
+  }
+
+  if (externalProgram) {
+    custom_prefix += program.get_name() + "_";
   }
 
   if (type.is_list()) {
@@ -749,8 +746,6 @@ std::string t_mstch_py3_generator::flatten_type_name(const t_type& orig_type) {
         flatten_type_name(*dynamic_cast<const t_map&>(type).get_val_type()));
   } else if (type.is_binary()) {
     return custom_prefix + "binary";
-  } else if (externalProgram) {
-    return custom_prefix + program.get_name() + '_' + type.get_name();
   } else {
     return custom_prefix + type.get_name();
   }

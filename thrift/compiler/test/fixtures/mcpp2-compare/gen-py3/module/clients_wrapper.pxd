@@ -15,6 +15,7 @@ from libcpp.string cimport string
 from libcpp.vector cimport vector
 
 from folly cimport cFollyFuture, cFollyTry, cFollyUnit
+cimport folly.iobuf as __iobuf
 from thrift.py3.common cimport cRpcOptions
 
 cimport module.types as _module_types
@@ -72,9 +73,9 @@ cdef extern from "src/gen-py3/module/clients_wrapper.h" namespace "some::valid::
     cFollyFuture[cset[_module_types.cMyStruct]] set_StructReturn(cRpcOptions, )
     cFollyFuture[_module_types.cComplexUnion] unionReturn(cRpcOptions, )
     cFollyFuture[vector[_module_types.cComplexUnion]] list_UnionReturn(cRpcOptions, )
-    cFollyFuture[_module_types.folly_IOBuf] readDataEb(cRpcOptions, 
+    cFollyFuture[__iobuf.cIOBuf] readDataEb(cRpcOptions, 
       int64_t arg_size,)
-    cFollyFuture[_module_types.std_unique_ptr_folly_IOBuf] readData(cRpcOptions, 
+    cFollyFuture[unique_ptr[__iobuf.cIOBuf]] readData(cRpcOptions, 
       int64_t arg_size,)
 
 

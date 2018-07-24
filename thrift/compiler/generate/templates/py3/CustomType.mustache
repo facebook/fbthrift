@@ -123,7 +123,7 @@ cdef extern from * nogil:
         bint empty()
 
 {{/type:map?}}
-{{^type:container?}}
+{{^type:container?}}{{^type:iobufWrapper?}}
 cdef extern from *:
     ctypedef {{> types/CythonCppBasicType}} {{type:cythonCustomType}} "{{type:cppCustomType}}"
-{{/type:container?}}
+{{/type:iobufWrapper?}}{{/type:container?}}

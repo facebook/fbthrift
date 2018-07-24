@@ -19,6 +19,13 @@
 Called specifically from types.pyx when initializing the individual attributes
 on a struct.
 
+}}{{#type:iobuf?}}{{!
+  }}deref(c_inst).{{field:name}} = deref((<__iobuf.IOBuf?>{{field:name}}).c_clone()){{!
+}}{{/type:iobuf?}}{{!
+}}{{#type:iobufRef?}}{{!
+  }}deref(c_inst).{{field:name}} = (<__iobuf.IOBuf?>{{field:name}}).c_clone(){{!
+}}{{/type:iobufRef?}}{{!
+}}{{^type:hasCustomTypeBehavior?}}{{!
 }}{{#field:reference?}}{{!
 }}deref(c_inst).{{field:name}} = {{!
   }}{{#field:unique_ref?}}{{!
@@ -33,22 +40,12 @@ on a struct.
     }}{{#type:externalProgram?}}{{> common/ModulePath}}.{{/type:externalProgram?}}{{!
     }}const_pointer_cast((<{{> types/CythonPythonType}}?>{{field:name}})._cpp_obj){{!
   }}{{/field:shared_const_ref?}}{{!
-  }}{{#field:iobuf_ref?}}{{!
-    Special handling for iobuf
-    }}(<__iobuf.IOBuf?>{{field:name}}).c_clone(){{!
-  }}{{/field:iobuf_ref?}}{{!
 }}{{/field:reference?}}{{^field:reference?}}{{!
 }}{{#type:base?}}{{!
   }}deref(c_inst).{{field:name}} = {{!
   }}{{#program:optionals?}}{{#field:optional?}}cOptional[{{> types/CythonCppType}}]({{/field:optional?}}{{/program:optionals?}}{{!
-  }}{{#field:iobuf?}}{{!
-    Special handling for iobuf
-    }}deref((<__iobuf.IOBuf?>{{field:name}}).c_clone()){{!
-  }}{{/field:iobuf?}}{{!
-  }}{{^field:iobuf?}}{{!
-    }}{{field:name}}{{!
-    }}{{#type:string?}}.encode('UTF-8'){{/type:string?}}{{!
-  }}{{/field:iobuf?}}{{!
+  }}{{field:name}}{{!
+  }}{{#type:string?}}.encode('UTF-8'){{/type:string?}}{{!
   }}{{#program:optionals?}}{{#field:optional?}}){{/field:optional?}}{{/program:optionals?}}{{!
 }}{{/type:base?}}{{!
 }}{{#type:enum?}}{{!
@@ -68,4 +65,5 @@ on a struct.
     }}{{#program:optionals?}}{{#field:optional?}}cOptional[{{> types/CythonCppType}}]({{/field:optional?}}{{/program:optionals?}}{{!
     }}deref({{> types/CythonPythonType }}({{field:name}})._cpp_obj){{!
     }}{{#program:optionals?}}{{#field:optional?}}){{/field:optional?}}{{/program:optionals?}}{{!
-}}{{/type:container?}}{{/field:reference?}}
+}}{{/type:container?}}{{/field:reference?}}{{!
+}}{{/type:hasCustomTypeBehavior?}}

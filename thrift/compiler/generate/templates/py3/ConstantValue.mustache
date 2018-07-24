@@ -63,7 +63,7 @@ file.
     }}make_shared[{{> types/CythonCppType}}](c{{constant:name}}()))
 {{/type:struct}}
 {{#type:container?}}
-{{constant:name}} = {{type:flat_name}}.create({{!
+{{constant:name}} = {{> types/CythonPythonType}}.create({{!
     }}make_shared[{{> types/CythonCppType}}](c{{constant:name}}()))
 {{/type:container?}}
 {{#type:enum}}

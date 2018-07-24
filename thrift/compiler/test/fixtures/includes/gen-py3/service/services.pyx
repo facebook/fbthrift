@@ -29,6 +29,9 @@ from folly cimport (
 
 cimport folly.futures
 from folly.executor cimport get_executor
+cimport folly.iobuf as __iobuf
+import folly.iobuf as __iobuf
+from folly.iobuf cimport move as move_iobuf
 
 cimport service.types as _service_types
 import service.types as _service_types

@@ -122,7 +122,7 @@ cdef extern from "{{program:includePrefix}}gen-cpp2/{{program:name}}_types.h"{{!
 
 {{/program:structs}}{{!
 
-}}{{#program:structs}}{{#struct:fields}}{{#field:reference?}}
+}}{{#program:structs}}{{#struct:fields}}{{#field:reference?}}{{^field:iobuf_ref?}}
     {{! Hacky workaround to get shared_ptr's aliasing constructor since it
         doesn't seem doable with Cython's template support. Note that this may
         create multiple copies of the same definition, so we have to have unambiguous
@@ -135,7 +135,7 @@ cdef extern from "{{program:includePrefix}}gen-cpp2/{{program:name}}_types.h"{{!
     }}{{#field:type}}{{> types/CppValueType}}{{/field:type}}{{!
     }}>"(shared_ptr[c{{struct:name}}]&, {{!
     }}{{#field:type}}{{> types/CythonCppType}}{{/field:type}}*)
-{{/field:reference?}}{{/struct:fields}}{{/program:structs}}
+{{/field:iobuf_ref?}}{{/field:reference?}}{{/struct:fields}}{{/program:structs}}
 
 {{#program:structs}}
 {{#first?}}cdef extern from "<utility>" namespace "std" nogil:{{/first?}}
@@ -172,11 +172,11 @@ cdef class {{struct:name}}({{> types/PythonStructClass}}):
     cdef {{> types/CythonPythonType}} __{{field:name}}
     {{/type:struct}}{{#type:container?}}
     cdef {{> types/CythonPythonType}} __{{field:name}}
-    {{/type:container?}}{{#field:iobuf?}}
+    {{/type:container?}}{{#type:iobuf?}}
     cdef __iobuf.IOBuf __{{field:name}}
-    {{/field:iobuf?}}{{#field:iobuf_ref?}}
+    {{/type:iobuf?}}{{#type:iobufRef?}}
     cdef __iobuf.IOBuf __{{field:name}}
-    {{/field:iobuf_ref?}}{{/field:type}}
+    {{/type:iobufRef?}}{{/field:type}}
     {{/struct:fields}}{{/struct:union?}}
     {{#struct:union?}}
     cdef readonly __{{struct:name}}Type type
@@ -196,7 +196,7 @@ cdef class {{struct:name}}({{> types/PythonStructClass}}):
 {{/program:structs}}
 
 {{#program:containerTypes}}
-cdef class {{type:flat_name}}:
+cdef class {{> types/CythonPythonType}}:
     cdef object __hash
     cdef object __weakref__
     cdef shared_ptr[{{> types/CythonCppType}}] _cpp_obj

@@ -27,6 +27,9 @@ from thrift.py3.common import RpcOptions as __RpcOptions
 
 from folly.futures cimport bridgeFutureWith
 from folly.executor cimport get_executor
+cimport folly.iobuf as __iobuf
+import folly.iobuf as __iobuf
+from folly.iobuf cimport move as move_iobuf
 cimport cython
 
 import sys
@@ -291,7 +294,7 @@ cdef void ReturnService_list_UnionReturn_callback(
             pyfuture.set_exception(ex.with_traceback(None))
 
 cdef void ReturnService_readDataEb_callback(
-    cFollyTry[_module_types.folly_IOBuf]&& result,
+    cFollyTry[__iobuf.cIOBuf]&& result,
     PyObject* userdata
 ):
     client, pyfuture, options = <object> userdata  
@@ -304,7 +307,7 @@ cdef void ReturnService_readDataEb_callback(
             pyfuture.set_exception(ex.with_traceback(None))
 
 cdef void ReturnService_readData_callback(
-    cFollyTry[_module_types.std_unique_ptr_folly_IOBuf]&& result,
+    cFollyTry[unique_ptr[__iobuf.cIOBuf]]&& result,
     PyObject* userdata
 ):
     client, pyfuture, options = <object> userdata  
@@ -1252,7 +1255,7 @@ cdef class ReturnService(thrift.py3.client.Client):
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
         __userdata = (self, __future, rpc_options)
-        bridgeFutureWith[_module_types.folly_IOBuf](
+        bridgeFutureWith[__iobuf.cIOBuf](
             self._executor,
             deref(self._module_ReturnService_client).readDataEb(rpc_options._cpp_obj, 
                 size,
@@ -1278,7 +1281,7 @@ cdef class ReturnService(thrift.py3.client.Client):
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
         __userdata = (self, __future, rpc_options)
-        bridgeFutureWith[_module_types.std_unique_ptr_folly_IOBuf](
+        bridgeFutureWith[unique_ptr[__iobuf.cIOBuf]](
             self._executor,
             deref(self._module_ReturnService_client).readData(rpc_options._cpp_obj, 
                 size,

@@ -141,10 +141,6 @@ cdef extern from * nogil:
         bint empty()
 
 cdef extern from *:
-    ctypedef string folly_IOBuf "folly::IOBuf"
-cdef extern from *:
-    ctypedef string std_unique_ptr_folly_IOBuf "std::unique_ptr<folly::IOBuf>"
-cdef extern from *:
     ctypedef double Bar "Bar"
 cdef extern from *:
     ctypedef int32_t Baz "Baz"
@@ -853,8 +849,6 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "some::valid::ns":
     cdef shared_ptr[ccontainerStruct] aliasing_constructor_opt_ref_type_const "std::shared_ptr<some::valid::ns::containerStruct>"(shared_ptr[cAnnotatedStruct]&, ccontainerStruct*)
     cdef shared_ptr[ccontainerStruct] aliasing_constructor_opt_ref_type_unique "std::shared_ptr<some::valid::ns::containerStruct>"(shared_ptr[cAnnotatedStruct]&, ccontainerStruct*)
     cdef shared_ptr[cset[int32_t]] aliasing_constructor_opt_ref_type_shared "std::shared_ptr<std::set<int32_t>>"(shared_ptr[cAnnotatedStruct]&, cset[int32_t]*)
-    cdef shared_ptr[std_unique_ptr_folly_IOBuf] aliasing_constructor_iobuf_ptr "std::shared_ptr<std::unique_ptr<folly::IOBuf>>"(shared_ptr[cAnnotatedStruct]&, std_unique_ptr_folly_IOBuf*)
-    cdef shared_ptr[std_unique_ptr_folly_IOBuf] aliasing_constructor_iobuf_ptr_val "std::shared_ptr<std::unique_ptr<folly::IOBuf>>"(shared_ptr[cAnnotatedStruct]&, std_unique_ptr_folly_IOBuf*)
 
 cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[cEmpty] move(unique_ptr[cEmpty])

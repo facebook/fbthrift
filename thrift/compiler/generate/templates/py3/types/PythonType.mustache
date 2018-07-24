@@ -16,7 +16,7 @@
 
 }}{{!
 
-This is for python types, used for typedefs aliases for use in python. 
+This is for python types, used for typedefs aliases for use in python.
 
 Structs and enums will be namespaced appropriately if they are either defined
 in a different thrift file, or defined in the same thrift file but this is
@@ -32,24 +32,12 @@ in the client or server source rather than the type definition source.
 }}{{#type:string?}}str{{/type:string?}}{{!
 }}{{#type:binary?}}bytes{{/type:binary?}}{{!
 }}{{#type:struct}}{{!
-  }}{{#type:externalProgram?}}{{> common/ModulePath}}.{{/type:externalProgram?}}{{!
-  }}{{^type:externalProgram?}}{{^program:typeContext?}}{{!
-    }}{{> common/ModulePath}}.{{!
-  }}{{/program:typeContext?}}{{/type:externalProgram?}}{{!
-  }}{{struct:name}}{{!
+  }}{{> types/CythonPythonType}}{{!
 }}{{/type:struct}}{{!
 }}{{#type:container?}}{{!
-  }}{{#type:externalProgram?}}{{> common/ModulePath}}.{{/type:externalProgram?}}{{!
-  }}{{^type:externalProgram?}}{{^program:typeContext?}}{{!
-    }}{{> common/ModulePath}}.{{!
-  }}{{/program:typeContext?}}{{/type:externalProgram?}}{{!
-  }}{{type:flat_name}}{{!
+  }}{{> types/CythonPythonType}}{{!
 }}{{/type:container?}}{{!
-}}{{#type:void?}}object{{/type:void?}}{{!
 }}{{#type:enum}}{{!
-  }}{{#type:externalProgram?}}{{> common/ModulePath}}.{{/type:externalProgram?}}{{!
-  }}{{^type:externalProgram?}}{{^program:typeContext?}}{{!
-    }}{{> common/ModulePath}}.{{!
-  }}{{/program:typeContext?}}{{/type:externalProgram?}}{{!
-  }}{{enum:name}}{{!
-}}{{/type:enum}}
+  }}{{> types/CythonPythonType}}{{!
+}}{{/type:enum}}{{!
+}}{{#type:void?}}object{{/type:void?}}

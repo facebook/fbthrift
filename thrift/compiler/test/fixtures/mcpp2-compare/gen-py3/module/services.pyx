@@ -29,6 +29,9 @@ from folly cimport (
 
 cimport folly.futures
 from folly.executor cimport get_executor
+cimport folly.iobuf as __iobuf
+import folly.iobuf as __iobuf
+from folly.iobuf cimport move as move_iobuf
 
 cimport module.types as _module_types
 import module.types as _module_types
@@ -250,19 +253,19 @@ cdef class Promise_List__ComplexUnion:
         return inst
 
 cdef class Promise_folly_IOBuf__binary:
-    cdef cFollyPromise[unique_ptr[_module_types.folly_IOBuf]] cPromise
+    cdef cFollyPromise[unique_ptr[__iobuf.cIOBuf]] cPromise
 
     @staticmethod
-    cdef create(cFollyPromise[unique_ptr[_module_types.folly_IOBuf]] cPromise):
+    cdef create(cFollyPromise[unique_ptr[__iobuf.cIOBuf]] cPromise):
         inst = <Promise_folly_IOBuf__binary>Promise_folly_IOBuf__binary.__new__(Promise_folly_IOBuf__binary)
         inst.cPromise = move(cPromise)
         return inst
 
 cdef class Promise_std_unique_ptr_folly_IOBuf__binary:
-    cdef cFollyPromise[unique_ptr[_module_types.std_unique_ptr_folly_IOBuf]] cPromise
+    cdef cFollyPromise[unique_ptr[unique_ptr[__iobuf.cIOBuf]]] cPromise
 
     @staticmethod
-    cdef create(cFollyPromise[unique_ptr[_module_types.std_unique_ptr_folly_IOBuf]] cPromise):
+    cdef create(cFollyPromise[unique_ptr[unique_ptr[__iobuf.cIOBuf]]] cPromise):
         inst = <Promise_std_unique_ptr_folly_IOBuf__binary>Promise_std_unique_ptr_folly_IOBuf__binary.__new__(Promise_std_unique_ptr_folly_IOBuf__binary)
         inst.cPromise = move(cPromise)
         return inst
@@ -1645,7 +1648,7 @@ async def ReturnService_list_UnionReturn_coro(
 cdef api void call_cy_ReturnService_readDataEb(
     object self,
     Cpp2RequestContext* ctx,
-    cFollyPromise[unique_ptr[_module_types.folly_IOBuf]] cPromise,
+    cFollyPromise[unique_ptr[__iobuf.cIOBuf]] cPromise,
     int64_t size
 ):
     cdef ReturnServiceInterface __iface
@@ -1696,7 +1699,7 @@ async def ReturnService_readDataEb_coro(
 cdef api void call_cy_ReturnService_readData(
     object self,
     Cpp2RequestContext* ctx,
-    cFollyPromise[unique_ptr[_module_types.std_unique_ptr_folly_IOBuf]] cPromise,
+    cFollyPromise[unique_ptr[unique_ptr[__iobuf.cIOBuf]]] cPromise,
     int64_t size
 ):
     cdef ReturnServiceInterface __iface

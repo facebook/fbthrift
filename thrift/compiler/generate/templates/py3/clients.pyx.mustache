@@ -46,6 +46,9 @@ from thrift.py3.common import RpcOptions as __RpcOptions
 
 from folly.futures cimport bridgeFutureWith
 from folly.executor cimport get_executor
+cimport folly.iobuf as __iobuf
+import folly.iobuf as __iobuf
+from folly.iobuf cimport move as move_iobuf
 cimport cython
 
 import sys

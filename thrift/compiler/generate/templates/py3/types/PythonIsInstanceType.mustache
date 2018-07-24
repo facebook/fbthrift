@@ -37,7 +37,7 @@ This is for python types, suitable for isinstance check_types
   }}{{^type:externalProgram?}}{{^program:typeContext?}}{{!
     }}{{> common/ModulePath}}.{{!
   }}{{/program:typeContext?}}{{/type:externalProgram?}}{{!
-  }}{{type:flat_name}}{{!
+  }}{{> types/CythonPythonType}}{{!
 }}{{/type:container?}}{{!
 }}{{#type:void?}}object{{/type:void?}}{{!
 }}{{#type:enum}}{{!
