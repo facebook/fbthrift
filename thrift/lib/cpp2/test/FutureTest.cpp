@@ -216,13 +216,12 @@ TEST(ThriftServer, FutureClientTest) {
   int factor = 2;
   EXPECT_GE(waitTime, factor * sentTime);
 
-  auto len = client.future_sendResponse(64).then(
-    [](folly::Try<std::string>&& response) {
-      EXPECT_TRUE(response.hasValue());
-      EXPECT_EQ(response.value(), "test64");
-      return response.value().size();
-    }
-  );
+  auto len = client.future_sendResponse(64).thenTry(
+      [](folly::Try<std::string>&& response) {
+        EXPECT_TRUE(response.hasValue());
+        EXPECT_EQ(response.value(), "test64");
+        return response.value().size();
+      });
 
   EXPECT_EQ(len.getVia(&base), 6);
 
@@ -260,7 +259,7 @@ TEST(ThriftServer, SemiFutureClientTest) {
 
   auto len = client->semifuture_sendResponse(4)
                  .via(&base)
-                 .then([](folly::Try<std::string>&& response) {
+                 .thenTry([](folly::Try<std::string>&& response) {
                    EXPECT_TRUE(response.hasValue());
                    EXPECT_EQ(response.value(), "test4");
                    return response.value().size();

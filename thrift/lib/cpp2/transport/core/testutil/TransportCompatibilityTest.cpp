@@ -340,7 +340,7 @@ void TransportCompatibilityTest::TestRequestResponse_Sync() {
 void TransportCompatibilityTest::TestRequestResponse_Destruction() {
   connectToServer([](std::unique_ptr<TestServiceAsyncClient> client) {
     auto future =
-        client->future_sleep(100).then([&](folly::Try<folly::Unit> t) {
+        client->future_sleep(100).thenTry([&](folly::Try<folly::Unit> t) {
           client.reset();
           EXPECT_TRUE(t.hasException());
         });

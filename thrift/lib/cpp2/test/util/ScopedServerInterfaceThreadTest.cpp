@@ -184,7 +184,7 @@ TEST(ScopedServerInterfaceThread, joinRequestsCancel) {
   std::thread schedulerThread([&] {
     while (!stopping) {
       via(eb.getEventBase()).then([&] {
-        cli->future_add(2000, 0).then([](folly::Try<int64_t> t) {
+        cli->future_add(2000, 0).thenTry([](folly::Try<int64_t> t) {
           if (t.hasException()) {
             LOG(INFO) << folly::exceptionStr(t.exception());
           } else {
