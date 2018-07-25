@@ -38,7 +38,10 @@ class ContextStack {
       const char* serviceName,
       const char* method,
       TConnectionContext* connectionContext)
-      : ctxs_(), handlers_(handlers), method_(method) {
+      : ctxs_(),
+        handlers_(handlers),
+        serviceName_(serviceName),
+        method_(method) {
     ctxs_.reserve(handlers->size());
     for (auto handler : *handlers) {
       ctxs_.push_back(
@@ -87,6 +90,10 @@ class ContextStack {
 
   void asyncComplete();
 
+  const char* getServiceName() {
+    return serviceName_.c_str();
+  }
+
   const char* getMethod() {
     return method_.c_str();
   }
@@ -95,6 +102,7 @@ class ContextStack {
   std::vector<void*> ctxs_;
   std::shared_ptr<std::vector<std::shared_ptr<TProcessorEventHandler>>>
       handlers_;
+  std::string serviceName_;
   std::string method_;
 };
 
