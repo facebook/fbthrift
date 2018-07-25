@@ -18,6 +18,7 @@
 #include <memory>
 #include <set>
 #include <string>
+#include <system_error>
 
 #include "thrift/compiler/ast/t_program.h"
 #include "thrift/compiler/ast/t_scope.h"
