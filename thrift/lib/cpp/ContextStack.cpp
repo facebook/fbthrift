@@ -15,11 +15,15 @@
  */
 
 #include <thrift/lib/cpp/ContextStack.h>
+#include <folly/tracing/StaticTracepoint.h>
 
 namespace apache {
 namespace thrift {
 
 void ContextStack::preWrite() {
+  FOLLY_SDT(
+      thrift, thrift_context_stack_pre_write, getServiceName(), getMethod());
+
   if (handlers_) {
     for (size_t i = 0; i < handlers_->size(); i++) {
       (*handlers_)[i]->preWrite(ctxs_[i], getMethod());
@@ -28,6 +32,12 @@ void ContextStack::preWrite() {
 }
 
 void ContextStack::onWriteData(const SerializedMessage& msg) {
+  FOLLY_SDT(
+      thrift,
+      thrift_context_stack_on_write_data,
+      getServiceName(),
+      getMethod());
+
   if (handlers_) {
     for (size_t i = 0; i < handlers_->size(); i++) {
       (*handlers_)[i]->onWriteData(ctxs_[i], getMethod(), msg);
@@ -36,6 +46,13 @@ void ContextStack::onWriteData(const SerializedMessage& msg) {
 }
 
 void ContextStack::postWrite(uint32_t bytes) {
+  FOLLY_SDT(
+      thrift,
+      thrift_context_stack_post_write,
+      getServiceName(),
+      getMethod(),
+      bytes);
+
   if (handlers_) {
     for (size_t i = 0; i < handlers_->size(); i++) {
       (*handlers_)[i]->postWrite(ctxs_[i], getMethod(), bytes);
@@ -44,6 +61,9 @@ void ContextStack::postWrite(uint32_t bytes) {
 }
 
 void ContextStack::preRead() {
+  FOLLY_SDT(
+      thrift, thrift_context_stack_pre_read, getServiceName(), getMethod());
+
   if (handlers_) {
     for (size_t i = 0; i < handlers_->size(); i++) {
       (*handlers_)[i]->preRead(ctxs_[i], getMethod());
@@ -52,6 +72,9 @@ void ContextStack::preRead() {
 }
 
 void ContextStack::onReadData(const SerializedMessage& msg) {
+  FOLLY_SDT(
+      thrift, thrift_context_stack_on_read_data, getServiceName(), getMethod());
+
   if (handlers_) {
     for (size_t i = 0; i < handlers_->size(); i++) {
       (*handlers_)[i]->onReadData(ctxs_[i], getMethod(), msg);
@@ -62,6 +85,13 @@ void ContextStack::onReadData(const SerializedMessage& msg) {
 void ContextStack::postRead(
     apache::thrift::transport::THeader* header,
     uint32_t bytes) {
+  FOLLY_SDT(
+      thrift,
+      thrift_context_stack_post_read,
+      getServiceName(),
+      getMethod(),
+      bytes);
+
   if (handlers_) {
     for (size_t i = 0; i < handlers_->size(); i++) {
       (*handlers_)[i]->postRead(ctxs_[i], getMethod(), header, bytes);
@@ -70,6 +100,12 @@ void ContextStack::postRead(
 }
 
 void ContextStack::handlerError() {
+  FOLLY_SDT(
+      thrift,
+      thrift_context_stack_handler_error,
+      getServiceName(),
+      getMethod());
+
   if (handlers_) {
     for (size_t i = 0; i < handlers_->size(); i++) {
       (*handlers_)[i]->handlerError(ctxs_[i], getMethod());
@@ -78,6 +114,12 @@ void ContextStack::handlerError() {
 }
 
 void ContextStack::handlerErrorWrapped(const folly::exception_wrapper& ew) {
+  FOLLY_SDT(
+      thrift,
+      thrift_context_stack_handler_error_wrapped,
+      getServiceName(),
+      getMethod());
+
   if (handlers_) {
     for (size_t i = 0; i < handlers_->size(); i++) {
       (*handlers_)[i]->handlerErrorWrapped(ctxs_[i], getMethod(), ew);
@@ -88,6 +130,14 @@ void ContextStack::handlerErrorWrapped(const folly::exception_wrapper& ew) {
 void ContextStack::userException(
     const std::string& ex,
     const std::string& ex_what) {
+  FOLLY_SDT(
+      thrift,
+      thrift_context_stack_user_exception,
+      getServiceName(),
+      getMethod(),
+      ex.c_str(),
+      ex_what.c_str());
+
   if (handlers_) {
     for (size_t i = 0; i < handlers_->size(); i++) {
       (*handlers_)[i]->userException(ctxs_[i], getMethod(), ex, ex_what);
@@ -98,6 +148,12 @@ void ContextStack::userException(
 void ContextStack::userExceptionWrapped(
     bool declared,
     const folly::exception_wrapper& ew) {
+  FOLLY_SDT(
+      thrift,
+      thrift_context_stack_user_exception_wrapped,
+      getServiceName(),
+      getMethod());
+
   if (handlers_) {
     for (size_t i = 0; i < handlers_->size(); i++) {
       (*handlers_)[i]->userExceptionWrapped(
@@ -107,6 +163,12 @@ void ContextStack::userExceptionWrapped(
 }
 
 void ContextStack::asyncComplete() {
+  FOLLY_SDT(
+      thrift,
+      thrift_context_stack_async_complete,
+      getServiceName(),
+      getMethod());
+
   if (handlers_) {
     for (size_t i = 0; i < handlers_->size(); i++) {
       (*handlers_)[i]->asyncComplete(ctxs_[i], getMethod());
