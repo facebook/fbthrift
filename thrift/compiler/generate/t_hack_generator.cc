@@ -1846,18 +1846,18 @@ void t_hack_generator::generate_php_struct_shape_json_conversion(
     if (!shape_unsafe_json_) {
       switch (((t_base_type*)t)->get_base()) {
         case t_base_type::TYPE_STRING:
-          indent(out) << "if (!is_string(" << shape_data << ")";
+          indent(out) << "if (!(" << shape_data << " is string)";
           if (nullable) {
-            out << " && !is_null(" << shape_data << ")";
+            out << " && " << shape_data << " is nonnull";
           }
           out << ") {" << endl;
           indent(out) << "  return null;" << endl;
           indent(out) << "}" << endl;
           return;
         case t_base_type::TYPE_BOOL:
-          indent(out) << "if (!is_bool(" << shape_data << ")";
+          indent(out) << "if (!(" << shape_data << " is bool)";
           if (nullable) {
-            out << " && !is_null(" << shape_data << ")";
+            out << " && " << shape_data << " is nonnull";
           }
           out << ") {" << endl;
           indent(out) << "  return null;" << endl;
@@ -1867,9 +1867,9 @@ void t_hack_generator::generate_php_struct_shape_json_conversion(
         case t_base_type::TYPE_I16:
         case t_base_type::TYPE_I32:
         case t_base_type::TYPE_I64:
-          indent(out) << "if (!is_int(" << shape_data << ")";
+          indent(out) << "if (!(" << shape_data << " is int)";
           if (nullable) {
-            out << " && !is_null(" << shape_data << ")";
+            out << " && " << shape_data << " is nonnull";
           }
           out << ") {" << endl;
           indent(out) << "  return null;" << endl;
@@ -1877,15 +1877,15 @@ void t_hack_generator::generate_php_struct_shape_json_conversion(
           return;
         case t_base_type::TYPE_DOUBLE:
         case t_base_type::TYPE_FLOAT:
-          indent(out) << "if (!(is_float(" << shape_data << ") || is_int("
-                      << shape_data << "))";
+          indent(out) << "if (!(" << shape_data << " is float || " << shape_data
+                      << " is int))";
           if (nullable) {
-            out << " && !is_null(" << shape_data << ")";
+            out << " && " << shape_data << " is nonnull";
           }
           out << ") {" << endl;
           indent(out) << "  return null;" << endl;
           indent(out) << "}" << endl;
-          indent(out) << "if (is_int(" << shape_data << ")) {" << endl;
+          indent(out) << "if (" << shape_data << " is int) {" << endl;
           indent(out) << "  " << shape_data << " = (float)" << shape_data << ";"
                       << endl;
           indent(out) << "}" << endl;
@@ -1898,7 +1898,7 @@ void t_hack_generator::generate_php_struct_shape_json_conversion(
     string k = "$" + namer("key");
     string v = "$" + namer("shape_data");
     if (nullable) {
-      indent(out) << "if (!is_null(" << shape_data << ")) {" << endl;
+      indent(out) << "if (" << shape_data << " is nonnull) {" << endl;
       indent_up();
     }
     if (!shape_unsafe_json_) {
@@ -1913,11 +1913,11 @@ void t_hack_generator::generate_php_struct_shape_json_conversion(
                 << " as " << k << " => " << v << ") {" << endl;
     if (!shape_unsafe_json_) {
       if (((t_base_type*)val_type)->get_base() == t_base_type::TYPE_STRING) {
-        indent(out) << "  if (!is_string(" << v << ")) {" << endl;
+        indent(out) << "  if (!(" << v << " is string)) {" << endl;
         indent(out) << "    return null;" << endl;
         indent(out) << "  }" << endl;
       } else {
-        indent(out) << "  if (!is_int(" << v << ")) {" << endl;
+        indent(out) << "  if (!(" << v << " is int)) {" << endl;
         indent(out) << "    return null;" << endl;
         indent(out) << "  }" << endl;
       }
@@ -1934,7 +1934,7 @@ void t_hack_generator::generate_php_struct_shape_json_conversion(
     string k = "$" + namer("key");
     string v = "$" + namer("value");
     if (nullable) {
-      indent(out) << "if (!is_null(" << shape_data << ")) {" << endl;
+      indent(out) << "if (" << shape_data << " is nonnull) {" << endl;
       indent_up();
     }
     if (!shape_unsafe_json_) {
@@ -1946,7 +1946,7 @@ void t_hack_generator::generate_php_struct_shape_json_conversion(
                 << " as " << k << " => " << v << ") {" << endl;
     indent_up();
     if (!shape_unsafe_json_) {
-      indent(out) << "if (!is_int(" << k << ")) {" << endl;
+      indent(out) << "if (!(" << k << " is int)) {" << endl;
       indent(out) << "  return null;" << endl;
       indent(out) << "}" << endl;
     }
@@ -1966,7 +1966,7 @@ void t_hack_generator::generate_php_struct_shape_json_conversion(
     string k = "$" + namer("key");
     string v = "$" + namer("value");
     if (nullable) {
-      indent(out) << "if (!is_null(" << shape_data << ")) {" << endl;
+      indent(out) << "if (" << shape_data << " is nonnull) {" << endl;
       indent_up();
     }
     if (!shape_unsafe_json_) {
@@ -1984,17 +1984,17 @@ void t_hack_generator::generate_php_struct_shape_json_conversion(
     }
     if (!shape_unsafe_json_) {
       if (shape_arraykeys_) {
-        indent(out) << "if (!is_string(" << k << ") && " << endl;
-        indent(out) << "    !is_int(" << k << ")) {" << endl;
+        indent(out) << "if (!(" << k << " is string) &&" << endl;
+        indent(out) << "    !(" << k << " is int)) {" << endl;
         indent(out) << "  return null;" << endl;
         indent(out) << "}" << endl;
       } else {
         if (key_is_string) {
-          indent(out) << "if (!is_string(" << k << ")) {" << endl;
+          indent(out) << "if (!(" << k << " is string)) {" << endl;
           indent(out) << "  return null;" << endl;
           indent(out) << "}" << endl;
         } else {
-          indent(out) << "if (!is_int(" << k << ")) {" << endl;
+          indent(out) << "if (!(" << k << " is int)) {" << endl;
           indent(out) << "  return null;" << endl;
           indent(out) << "}" << endl;
         }
@@ -2014,7 +2014,7 @@ void t_hack_generator::generate_php_struct_shape_json_conversion(
     string struct_type = hack_name(t);
 
     if (nullable && !shape_unsafe_json_) {
-      indent(out) << "if (!is_null(" << shape_data << ")) {" << endl;
+      indent(out) << "if (" << shape_data << " is nonnull) {" << endl;
       indent_up();
     }
     indent(out) << shape_data << " = " << struct_type
@@ -2031,9 +2031,9 @@ void t_hack_generator::generate_php_struct_shape_json_conversion(
     }
   } else if (t->is_enum()) {
     if (!shape_unsafe_json_) {
-      indent(out) << "if (!is_int(" << shape_data << ")";
+      indent(out) << "if (!(" << shape_data << " is int)";
       if (nullable) {
-        out << " && !is_null(" << shape_data << ")";
+        out << " && " << shape_data << " is nonnull";
       }
       out << ") {" << endl;
       indent(out) << "  return null;" << endl;
