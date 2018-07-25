@@ -86,6 +86,7 @@ target_link_libraries(
 add_library(
   async
 
+  ContextStack.cpp
   EventHandlerBase.cpp
   async/TAsyncSocketFactory.cpp
   async/TAsyncSSLSocketFactory.cpp

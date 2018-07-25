@@ -65,94 +65,27 @@ class ContextStack {
     }
   }
 
-  void preWrite() {
-    if (handlers_) {
-      for (size_t i = 0; i < handlers_->size(); i++) {
-        (*handlers_)[i]->preWrite(ctxs_[i], getMethod());
-      }
-    }
-  }
+  void preWrite();
 
-  void onWriteData(const SerializedMessage& msg) {
-    if (handlers_) {
-      for (size_t i = 0; i < handlers_->size(); i++) {
-        (*handlers_)[i]->onWriteData(ctxs_[i], getMethod(), msg);
-      }
-    }
-  }
+  void onWriteData(const SerializedMessage& msg);
 
-  void postWrite(uint32_t bytes) {
-    if (handlers_) {
-      for (size_t i = 0; i < handlers_->size(); i++) {
-        (*handlers_)[i]->postWrite(ctxs_[i], getMethod(), bytes);
-      }
-    }
-  }
+  void postWrite(uint32_t bytes);
 
-  void preRead() {
-    if (handlers_) {
-      for (size_t i = 0; i < handlers_->size(); i++) {
-        (*handlers_)[i]->preRead(ctxs_[i], getMethod());
-      }
-    }
-  }
+  void preRead();
 
-  void onReadData(const SerializedMessage& msg) {
-    if (handlers_) {
-      for (size_t i = 0; i < handlers_->size(); i++) {
-        (*handlers_)[i]->onReadData(ctxs_[i], getMethod(), msg);
-      }
-    }
-  }
+  void onReadData(const SerializedMessage& msg);
 
-  void postRead(apache::thrift::transport::THeader* header, uint32_t bytes) {
-    if (handlers_) {
-      for (size_t i = 0; i < handlers_->size(); i++) {
-        (*handlers_)[i]->postRead(ctxs_[i], getMethod(), header, bytes);
-      }
-    }
-  }
+  void postRead(apache::thrift::transport::THeader* header, uint32_t bytes);
 
-  void handlerError() {
-    if (handlers_) {
-      for (size_t i = 0; i < handlers_->size(); i++) {
-        (*handlers_)[i]->handlerError(ctxs_[i], getMethod());
-      }
-    }
-  }
+  void handlerError();
 
-  void handlerErrorWrapped(const folly::exception_wrapper& ew) {
-    if (handlers_) {
-      for (size_t i = 0; i < handlers_->size(); i++) {
-        (*handlers_)[i]->handlerErrorWrapped(ctxs_[i], getMethod(), ew);
-      }
-    }
-  }
+  void handlerErrorWrapped(const folly::exception_wrapper& ew);
 
-  void userException(const std::string& ex, const std::string& ex_what) {
-    if (handlers_) {
-      for (size_t i = 0; i < handlers_->size(); i++) {
-        (*handlers_)[i]->userException(ctxs_[i], getMethod(), ex, ex_what);
-      }
-    }
-  }
+  void userException(const std::string& ex, const std::string& ex_what);
 
-  void userExceptionWrapped(bool declared, const folly::exception_wrapper& ew) {
-    if (handlers_) {
-      for (size_t i = 0; i < handlers_->size(); i++) {
-        (*handlers_)[i]->userExceptionWrapped(
-            ctxs_[i], getMethod(), declared, ew);
-      }
-    }
-  }
+  void userExceptionWrapped(bool declared, const folly::exception_wrapper& ew);
 
-  void asyncComplete() {
-    if (handlers_) {
-      for (size_t i = 0; i < handlers_->size(); i++) {
-        (*handlers_)[i]->asyncComplete(ctxs_[i], getMethod());
-      }
-    }
-  }
+  void asyncComplete();
 
   const char* getMethod() {
     return method_.c_str();
