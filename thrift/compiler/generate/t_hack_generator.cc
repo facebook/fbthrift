@@ -1978,10 +1978,9 @@ void t_hack_generator::generate_php_struct_shape_json_conversion(
                 << " as " << k << " => " << v << ") {" << endl;
     indent_up();
 
-    bool key_is_string = false;
-    if (((t_base_type*)key_type)->get_base() == t_base_type::TYPE_STRING) {
-      key_is_string = true;
-    }
+    const bool key_is_string = key_type->is_base_type() &&
+        (static_cast<t_base_type*>(key_type)->get_base() ==
+         t_base_type::TYPE_STRING);
     if (!shape_unsafe_json_) {
       if (shape_arraykeys_) {
         indent(out) << "if (!(" << k << " is string) &&" << endl;
