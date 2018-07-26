@@ -737,6 +737,9 @@ cdef class Internship(thrift.py3.types.Struct):
         elif proto is __Protocol.JSON:
             with nogil:
                 serializer.JSONSerialize[cInternship](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.COMPACT_JSON:
+            with nogil:
+                serializer.CompactJSONSerialize[cInternship](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
         return __iobuf.from_unique_ptr(queue.move())
 
     cdef uint32_t _deserialize(Internship self, const __iobuf.cIOBuf* buf, proto) except? 0:
@@ -752,6 +755,9 @@ cdef class Internship(thrift.py3.types.Struct):
         elif proto is __Protocol.JSON:
             with nogil:
                 needed = serializer.JSONDeserialize[cInternship](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.COMPACT_JSON:
+            with nogil:
+                needed = serializer.CompactJSONDeserialize[cInternship](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
         return needed
 
     def __reduce__(self):
@@ -878,6 +884,9 @@ cdef class UnEnumStruct(thrift.py3.types.Struct):
         elif proto is __Protocol.JSON:
             with nogil:
                 serializer.JSONSerialize[cUnEnumStruct](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.COMPACT_JSON:
+            with nogil:
+                serializer.CompactJSONSerialize[cUnEnumStruct](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
         return __iobuf.from_unique_ptr(queue.move())
 
     cdef uint32_t _deserialize(UnEnumStruct self, const __iobuf.cIOBuf* buf, proto) except? 0:
@@ -893,6 +902,9 @@ cdef class UnEnumStruct(thrift.py3.types.Struct):
         elif proto is __Protocol.JSON:
             with nogil:
                 needed = serializer.JSONDeserialize[cUnEnumStruct](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.COMPACT_JSON:
+            with nogil:
+                needed = serializer.CompactJSONDeserialize[cUnEnumStruct](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
         return needed
 
     def __reduce__(self):
@@ -1057,6 +1069,9 @@ cdef class Range(thrift.py3.types.Struct):
         elif proto is __Protocol.JSON:
             with nogil:
                 serializer.JSONSerialize[cRange](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.COMPACT_JSON:
+            with nogil:
+                serializer.CompactJSONSerialize[cRange](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
         return __iobuf.from_unique_ptr(queue.move())
 
     cdef uint32_t _deserialize(Range self, const __iobuf.cIOBuf* buf, proto) except? 0:
@@ -1072,6 +1087,9 @@ cdef class Range(thrift.py3.types.Struct):
         elif proto is __Protocol.JSON:
             with nogil:
                 needed = serializer.JSONDeserialize[cRange](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.COMPACT_JSON:
+            with nogil:
+                needed = serializer.CompactJSONDeserialize[cRange](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
         return needed
 
     def __reduce__(self):
@@ -1232,6 +1250,9 @@ cdef class struct1(thrift.py3.types.Struct):
         elif proto is __Protocol.JSON:
             with nogil:
                 serializer.JSONSerialize[cstruct1](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.COMPACT_JSON:
+            with nogil:
+                serializer.CompactJSONSerialize[cstruct1](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
         return __iobuf.from_unique_ptr(queue.move())
 
     cdef uint32_t _deserialize(struct1 self, const __iobuf.cIOBuf* buf, proto) except? 0:
@@ -1247,6 +1268,9 @@ cdef class struct1(thrift.py3.types.Struct):
         elif proto is __Protocol.JSON:
             with nogil:
                 needed = serializer.JSONDeserialize[cstruct1](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.COMPACT_JSON:
+            with nogil:
+                needed = serializer.CompactJSONDeserialize[cstruct1](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
         return needed
 
     def __reduce__(self):
@@ -1463,6 +1487,9 @@ cdef class struct2(thrift.py3.types.Struct):
         elif proto is __Protocol.JSON:
             with nogil:
                 serializer.JSONSerialize[cstruct2](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.COMPACT_JSON:
+            with nogil:
+                serializer.CompactJSONSerialize[cstruct2](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
         return __iobuf.from_unique_ptr(queue.move())
 
     cdef uint32_t _deserialize(struct2 self, const __iobuf.cIOBuf* buf, proto) except? 0:
@@ -1478,6 +1505,9 @@ cdef class struct2(thrift.py3.types.Struct):
         elif proto is __Protocol.JSON:
             with nogil:
                 needed = serializer.JSONDeserialize[cstruct2](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.COMPACT_JSON:
+            with nogil:
+                needed = serializer.CompactJSONDeserialize[cstruct2](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
         return needed
 
     def __reduce__(self):
@@ -1668,6 +1698,9 @@ cdef class struct3(thrift.py3.types.Struct):
         elif proto is __Protocol.JSON:
             with nogil:
                 serializer.JSONSerialize[cstruct3](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.COMPACT_JSON:
+            with nogil:
+                serializer.CompactJSONSerialize[cstruct3](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
         return __iobuf.from_unique_ptr(queue.move())
 
     cdef uint32_t _deserialize(struct3 self, const __iobuf.cIOBuf* buf, proto) except? 0:
@@ -1683,6 +1716,9 @@ cdef class struct3(thrift.py3.types.Struct):
         elif proto is __Protocol.JSON:
             with nogil:
                 needed = serializer.JSONDeserialize[cstruct3](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.COMPACT_JSON:
+            with nogil:
+                needed = serializer.CompactJSONDeserialize[cstruct3](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
         return needed
 
     def __reduce__(self):
@@ -1840,6 +1876,9 @@ cdef class union1(thrift.py3.types.Union):
         elif proto is __Protocol.JSON:
             with nogil:
                 serializer.JSONSerialize[cunion1](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.COMPACT_JSON:
+            with nogil:
+                serializer.CompactJSONSerialize[cunion1](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
         return __iobuf.from_unique_ptr(queue.move())
 
     cdef uint32_t _deserialize(union1 self, const __iobuf.cIOBuf* buf, proto) except? 0:
@@ -1855,6 +1894,9 @@ cdef class union1(thrift.py3.types.Union):
         elif proto is __Protocol.JSON:
             with nogil:
                 needed = serializer.JSONDeserialize[cunion1](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.COMPACT_JSON:
+            with nogil:
+                needed = serializer.CompactJSONDeserialize[cunion1](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
         # force a cache reload since the underlying data's changed
         self._load_cache()
         return needed
@@ -2050,6 +2092,9 @@ cdef class union2(thrift.py3.types.Union):
         elif proto is __Protocol.JSON:
             with nogil:
                 serializer.JSONSerialize[cunion2](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.COMPACT_JSON:
+            with nogil:
+                serializer.CompactJSONSerialize[cunion2](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
         return __iobuf.from_unique_ptr(queue.move())
 
     cdef uint32_t _deserialize(union2 self, const __iobuf.cIOBuf* buf, proto) except? 0:
@@ -2065,6 +2110,9 @@ cdef class union2(thrift.py3.types.Union):
         elif proto is __Protocol.JSON:
             with nogil:
                 needed = serializer.JSONDeserialize[cunion2](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.COMPACT_JSON:
+            with nogil:
+                needed = serializer.CompactJSONDeserialize[cunion2](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
         # force a cache reload since the underlying data's changed
         self._load_cache()
         return needed

@@ -213,6 +213,9 @@ cdef class Empty(thrift.py3.types.Struct):
         elif proto is __Protocol.JSON:
             with nogil:
                 serializer.JSONSerialize[cEmpty](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.COMPACT_JSON:
+            with nogil:
+                serializer.CompactJSONSerialize[cEmpty](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
         return __iobuf.from_unique_ptr(queue.move())
 
     cdef uint32_t _deserialize(Empty self, const __iobuf.cIOBuf* buf, proto) except? 0:
@@ -228,6 +231,9 @@ cdef class Empty(thrift.py3.types.Struct):
         elif proto is __Protocol.JSON:
             with nogil:
                 needed = serializer.JSONDeserialize[cEmpty](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.COMPACT_JSON:
+            with nogil:
+                needed = serializer.CompactJSONDeserialize[cEmpty](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
         return needed
 
     def __reduce__(self):
@@ -325,6 +331,9 @@ cdef class Nada(thrift.py3.types.Union):
         elif proto is __Protocol.JSON:
             with nogil:
                 serializer.JSONSerialize[cNada](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.COMPACT_JSON:
+            with nogil:
+                serializer.CompactJSONSerialize[cNada](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
         return __iobuf.from_unique_ptr(queue.move())
 
     cdef uint32_t _deserialize(Nada self, const __iobuf.cIOBuf* buf, proto) except? 0:
@@ -340,6 +349,9 @@ cdef class Nada(thrift.py3.types.Union):
         elif proto is __Protocol.JSON:
             with nogil:
                 needed = serializer.JSONDeserialize[cNada](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.COMPACT_JSON:
+            with nogil:
+                needed = serializer.CompactJSONDeserialize[cNada](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
         # force a cache reload since the underlying data's changed
         self._load_cache()
         return needed

@@ -292,6 +292,9 @@ cdef class SmallStruct(thrift.py3.types.Struct):
         elif proto is __Protocol.JSON:
             with nogil:
                 serializer.JSONSerialize[cSmallStruct](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.COMPACT_JSON:
+            with nogil:
+                serializer.CompactJSONSerialize[cSmallStruct](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
         return __iobuf.from_unique_ptr(queue.move())
 
     cdef uint32_t _deserialize(SmallStruct self, const __iobuf.cIOBuf* buf, proto) except? 0:
@@ -307,6 +310,9 @@ cdef class SmallStruct(thrift.py3.types.Struct):
         elif proto is __Protocol.JSON:
             with nogil:
                 needed = serializer.JSONDeserialize[cSmallStruct](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.COMPACT_JSON:
+            with nogil:
+                needed = serializer.CompactJSONDeserialize[cSmallStruct](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
         return needed
 
     def __reduce__(self):
@@ -1003,6 +1009,9 @@ cdef class containerStruct(thrift.py3.types.Struct):
         elif proto is __Protocol.JSON:
             with nogil:
                 serializer.JSONSerialize[ccontainerStruct](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.COMPACT_JSON:
+            with nogil:
+                serializer.CompactJSONSerialize[ccontainerStruct](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
         return __iobuf.from_unique_ptr(queue.move())
 
     cdef uint32_t _deserialize(containerStruct self, const __iobuf.cIOBuf* buf, proto) except? 0:
@@ -1018,6 +1027,9 @@ cdef class containerStruct(thrift.py3.types.Struct):
         elif proto is __Protocol.JSON:
             with nogil:
                 needed = serializer.JSONDeserialize[ccontainerStruct](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.COMPACT_JSON:
+            with nogil:
+                needed = serializer.CompactJSONDeserialize[ccontainerStruct](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
         return needed
 
     def __reduce__(self):

@@ -189,6 +189,9 @@ cdef class Struct(thrift.py3.types.Struct):
         elif proto is __Protocol.JSON:
             with nogil:
                 serializer.JSONSerialize[cStruct](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.COMPACT_JSON:
+            with nogil:
+                serializer.CompactJSONSerialize[cStruct](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
         return __iobuf.from_unique_ptr(queue.move())
 
     cdef uint32_t _deserialize(Struct self, const __iobuf.cIOBuf* buf, proto) except? 0:
@@ -204,6 +207,9 @@ cdef class Struct(thrift.py3.types.Struct):
         elif proto is __Protocol.JSON:
             with nogil:
                 needed = serializer.JSONDeserialize[cStruct](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.COMPACT_JSON:
+            with nogil:
+                needed = serializer.CompactJSONDeserialize[cStruct](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
         return needed
 
     def __reduce__(self):
@@ -366,6 +372,9 @@ cdef class BigStruct(thrift.py3.types.Struct):
         elif proto is __Protocol.JSON:
             with nogil:
                 serializer.JSONSerialize[cBigStruct](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.COMPACT_JSON:
+            with nogil:
+                serializer.CompactJSONSerialize[cBigStruct](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
         return __iobuf.from_unique_ptr(queue.move())
 
     cdef uint32_t _deserialize(BigStruct self, const __iobuf.cIOBuf* buf, proto) except? 0:
@@ -381,6 +390,9 @@ cdef class BigStruct(thrift.py3.types.Struct):
         elif proto is __Protocol.JSON:
             with nogil:
                 needed = serializer.JSONDeserialize[cBigStruct](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.COMPACT_JSON:
+            with nogil:
+                needed = serializer.CompactJSONDeserialize[cBigStruct](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
         return needed
 
     def __reduce__(self):

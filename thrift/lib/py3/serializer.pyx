@@ -12,6 +12,7 @@ class Protocol(Enum):
     COMPACT = 0
     BINARY = 1
     JSON = 3
+    COMPACT_JSON = 4
 
 
 def serialize(tstruct, protocol=Protocol.COMPACT):

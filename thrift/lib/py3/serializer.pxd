@@ -16,3 +16,5 @@ cdef extern from "<thrift/lib/cpp2/protocol/Serializer.h>" nogil:
     uint32_t BinaryDeserialize "apache::thrift::BinarySerializer::deserialize"[T](const cIOBuf* buf, T& obj, cExternalBufferSharing) except+
     void JSONSerialize "apache::thrift::SimpleJSONSerializer::serialize"[T](const T& obj, cIOBufQueue* out, cExternalBufferSharing) except+
     uint32_t JSONDeserialize "apache::thrift::SimpleJSONSerializer::deserialize"[T](const cIOBuf* buf, T& obj, cExternalBufferSharing) except+
+    void CompactJSONSerialize "apache::thrift::JSONSerializer::serialize"[T](const T& obj, cIOBufQueue* out, cExternalBufferSharing) except+
+    uint32_t CompactJSONDeserialize "apache::thrift::JSONSerializer::deserialize"[T](const cIOBuf* buf, T& obj, cExternalBufferSharing) except+
