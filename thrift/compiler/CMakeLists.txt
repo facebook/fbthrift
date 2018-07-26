@@ -97,7 +97,7 @@ add_executable(
   thrift1
 
   main.cc
-  mutator.cc
+  mutator/mutator.cc
   validator/validator.cc
   ast/visitor.cc
 )

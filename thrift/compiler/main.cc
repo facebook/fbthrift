@@ -36,7 +36,7 @@
 #include <ctime>
 
 #include <thrift/compiler/generate/t_generator.h>
-#include <thrift/compiler/mutator.h>
+#include <thrift/compiler/mutator/mutator.h>
 #include <thrift/compiler/platform.h>
 #include <thrift/compiler/validator/validator.h>
 

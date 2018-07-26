@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include <thrift/compiler/mutator.h>
+#include <thrift/compiler/mutator/mutator.h>
 
 namespace apache {
 namespace thrift {
