@@ -98,7 +98,7 @@ add_executable(
 
   main.cc
   mutator.cc
-  validator.cc
+  validator/validator.cc
   ast/visitor.cc
 )
 target_link_libraries(

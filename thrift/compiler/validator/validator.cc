@@ -14,13 +14,11 @@
  * limitations under the License.
  */
 
-#include <thrift/compiler/validator.h>
+#include <thrift/compiler/validator/validator.h>
 
 #include <sstream>
 #include <unordered_map>
 #include <unordered_set>
-
-#include <thrift/compiler/common.h>
 
 namespace apache {
 namespace thrift {
@@ -257,6 +255,25 @@ bool exception_list_is_all_exceptions_validator::visit(t_service* service) {
     check_func(func);
   }
 
+  return true;
+}
+
+/**
+ * Check that all the elements of a throws block are actually exceptions.
+ */
+/* static */ bool exception_list_is_all_exceptions_validator::validate_throws(
+    t_struct* throws) {
+  if (!throws) {
+    return true;
+  }
+
+  const std::vector<t_field*>& members = throws->get_members();
+  std::vector<t_field*>::const_iterator m_iter;
+  for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
+    if (!(*m_iter)->get_type()->get_true_type()->is_xception()) {
+      return false;
+    }
+  }
   return true;
 }
 } // namespace compiler

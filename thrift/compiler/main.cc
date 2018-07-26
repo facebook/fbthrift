@@ -38,7 +38,7 @@
 #include <thrift/compiler/generate/t_generator.h>
 #include <thrift/compiler/mutator.h>
 #include <thrift/compiler/platform.h>
-#include <thrift/compiler/validator.h>
+#include <thrift/compiler/validator/validator.h>
 
 #include <thrift/compiler/parse/parsing_driver.h>
 

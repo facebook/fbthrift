@@ -187,24 +187,6 @@ void dump_docstrings(t_program* program) {
 }
 
 /**
- * Check that all the elements of a throws block are actually exceptions.
- */
-bool validate_throws(t_struct* throws) {
-  if (!throws) {
-    return true;
-  }
-
-  const std::vector<t_field*>& members = throws->get_members();
-  std::vector<t_field*>::const_iterator m_iter;
-  for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
-    if (!(*m_iter)->get_type()->get_true_type()->is_xception()) {
-      return false;
-    }
-  }
-  return true;
-}
-
-/**
  * Parse with the given parameters, and dump all the diagnostic messages
  * returned.
  *

@@ -138,6 +138,12 @@ class exception_list_is_all_exceptions_validator : virtual public validator {
   using validator::visit;
 
   bool visit(t_service* service) override;
+
+ private:
+  /**
+   * Check members of a throws block
+   */
+  static bool validate_throws(t_struct* throws);
 };
 } // namespace compiler
 } // namespace thrift

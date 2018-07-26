@@ -121,11 +121,6 @@ static bool dump_docs = false;
 void dump_docstrings(t_program* program);
 
 /**
- * Check members of a throws block
- */
-bool validate_throws(t_struct* throws);
-
-/**
  * Parse with the given parameters, and dump all the diagnostic messages
  * returned.
  *
