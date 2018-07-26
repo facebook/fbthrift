@@ -413,7 +413,7 @@ void t_py_generator::generate_json_field(
     const string& suffix_thrift,
     const string& prefix_json,
     bool generate_assignment) {
-  t_type* type = get_true_type(tfield->get_type());
+  t_type* type = tfield->get_type()->get_true_type();
 
   if (type->is_void()) {
     throw "CANNOT READ JSON FIELD WITH void TYPE: " + prefix_thrift +
@@ -581,7 +581,7 @@ void t_py_generator::generate_json_collection_element(
     const string& prefix_json) {
   string to_act_on = elem;
   string to_parse = prefix_json;
-  type = get_true_type(type);
+  type = type->get_true_type();
 
   if (type->is_base_type()) {
     t_base_type::t_base tbase = ((t_base_type*)type)->get_base();
@@ -623,7 +623,7 @@ void t_py_generator::generate_json_map_key(
     t_type* type,
     const string& parsed_key,
     const string& raw_key) {
-  type = get_true_type(type);
+  type = type->get_true_type();
   if (type->is_enum()) {
     indent(out) << parsed_key << " = int(" << raw_key << ")" << endl;
   } else if (type->is_base_type()) {
@@ -1054,7 +1054,7 @@ string t_py_generator::render_string(string value) {
 string t_py_generator::render_const_value(
     t_type* type,
     const t_const_value* value) {
-  type = get_true_type(type);
+  type = type->get_true_type();
   std::ostringstream out;
 
   if (type->is_base_type()) {
@@ -1810,7 +1810,7 @@ void t_py_generator::generate_fastproto_write(
 bool t_py_generator::has_forward_compatibility(
     const t_type* ttype,
     std::unordered_set<uint64_t>& seen) {
-  ttype = get_true_type(ttype);
+  ttype = ttype->get_true_type();
 
   auto typeId = ttype->get_type_id();
   if (seen.count(typeId) != 0) {
@@ -2650,7 +2650,7 @@ void t_py_generator::generate_service_remote(t_service* tservice) {
         }
         f_remote << "('" << thrift_type_name((*it)->get_type()) << "', '"
                  << (*it)->get_name() << "', '"
-                 << thrift_type_name(get_true_type((*it)->get_type())) << "')";
+                 << thrift_type_name((*it)->get_type()->get_true_type()) << "')";
       }
       f_remote << "]),\n";
     }
@@ -3128,7 +3128,7 @@ void t_py_generator::generate_deserialize_field(
     bool /*inclass*/,
     bool forward_compatibility,
     string actual_type) {
-  t_type* type = get_true_type(tfield->get_type());
+  t_type* type = tfield->get_type()->get_true_type();
 
   if (type->is_void()) {
     throw "CANNOT GENERATE DESERIALIZE CODE FOR void TYPE: " + prefix +
@@ -3391,7 +3391,7 @@ void t_py_generator::generate_serialize_field(
     ofstream& out,
     t_field* tfield,
     string prefix) {
-  t_type* type = get_true_type(tfield->get_type());
+  t_type* type = tfield->get_type()->get_true_type();
 
   // Do nothing for void types
   if (type->is_void()) {
@@ -3672,7 +3672,7 @@ string t_py_generator::declare_argument(
  * @param tfield The field
  */
 string t_py_generator::render_field_default_value(t_field* tfield) {
-  t_type* type = get_true_type(tfield->get_type());
+  t_type* type = tfield->get_type()->get_true_type();
   if (tfield->get_value() != nullptr) {
     return render_const_value(type, tfield->get_value());
   } else {
@@ -3755,7 +3755,7 @@ string t_py_generator::type_name(const t_type* ttype) {
  * Converts the parse type to a Python type
  */
 string t_py_generator::type_to_enum(t_type* type) {
-  type = get_true_type(type);
+  type = type->get_true_type();
 
   if (type->is_base_type()) {
     t_base_type::t_base tbase = ((t_base_type*)type)->get_base();
@@ -3796,7 +3796,7 @@ string t_py_generator::type_to_enum(t_type* type) {
 
 /** See the comment inside generate_py_struct_definition for what this is. */
 string t_py_generator::type_to_spec_args(t_type* ttype) {
-  ttype = get_true_type(ttype);
+  ttype = ttype->get_true_type();
 
   if (ttype->is_base_type()) {
     t_base_type::t_base tbase = ((t_base_type*)ttype)->get_base();

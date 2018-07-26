@@ -195,7 +195,7 @@ void t_json_generator::generate_program() {
  */
 string t_json_generator::type_to_string(t_type* type) {
   if (should_resolve_to_true_type(type)) {
-    type = get_true_type(type);
+    type = type->get_true_type();
   }
 
   if (type->is_base_type()) {
@@ -250,7 +250,7 @@ string t_json_generator::type_to_string(t_type* type) {
  */
 string t_json_generator::type_to_spec_args(t_type* ttype) {
   if (should_resolve_to_true_type(ttype)) {
-    ttype = get_true_type(ttype);
+    ttype = ttype->get_true_type();
   }
 
   if (ttype->is_base_type()) {

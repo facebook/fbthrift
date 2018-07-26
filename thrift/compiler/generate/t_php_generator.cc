@@ -428,7 +428,7 @@ void t_php_generator::generate_json_field(ofstream& out,
                                           const string& prefix_thrift,
                                           const string& suffix_thrift,
                                           const string& prefix_json) {
-  t_type* type = get_true_type(tfield->get_type());
+  t_type* type = tfield->get_type()->get_true_type();
 
   if (type->is_void()) {
     throw "CANNOT READ JSON FIELD WITH void TYPE: " +
@@ -560,7 +560,7 @@ void t_php_generator::generate_json_map_element(std::ofstream& out,
                                                 const string& key,
                                                 const string& value,
                                                 const string& prefix_thrift) {
-  t_type* keytype = get_true_type(tmap->get_key_type());
+  t_type* keytype = tmap->get_key_type()->get_true_type();
   bool succ = true;
   string error_msg = "compiler error: Thrift PHP compiler"
           "does not support complex types as the key of a map.";
@@ -957,7 +957,7 @@ string t_php_generator::render_const_value(
     t_type* type,
     const t_const_value* value) {
   std::ostringstream out;
-  type = get_true_type(type);
+  type = type->get_true_type();
   if (type->is_base_type()) {
     t_base_type::t_base tbase = ((t_base_type*)type)->get_base();
     switch (tbase) {
@@ -1079,7 +1079,7 @@ void t_php_generator::generate_php_struct(t_struct* tstruct,
 
 void t_php_generator::generate_php_type_spec(ofstream& out,
                                              t_type* t) {
-  t = get_true_type(t);
+  t = t->get_true_type();
   indent(out) << "'type' => " << type_to_enum(t) << "," << endl;
 
   if (t->is_base_type()) {
@@ -1091,8 +1091,8 @@ void t_php_generator::generate_php_type_spec(ofstream& out,
   } else if (t->is_struct() || t->is_xception()) {
     indent(out) << "'class' => '" << php_namespace(t->get_program()) << t->get_name() <<"'," << endl;
   } else if (t->is_map()) {
-    t_type* ktype = get_true_type(((t_map*)t)->get_key_type());
-    t_type* vtype = get_true_type(((t_map*)t)->get_val_type());
+    t_type* ktype = ((t_map*)t)->get_key_type()->get_true_type();
+    t_type* vtype = ((t_map*)t)->get_val_type()->get_true_type();
     indent(out) << "'ktype' => " << type_to_enum(ktype) << "," << endl;
     indent(out) << "'vtype' => " << type_to_enum(vtype) << "," << endl;
     indent(out) << "'key' => array(" << endl;
@@ -1109,9 +1109,9 @@ void t_php_generator::generate_php_type_spec(ofstream& out,
   } else if (t->is_list() || t->is_set()) {
     t_type* etype;
     if (t->is_list()) {
-      etype = get_true_type(((t_list*)t)->get_elem_type());
+      etype = ((t_list*)t)->get_elem_type()->get_true_type();
     } else {
-      etype = get_true_type(((t_set*)t)->get_elem_type());
+      etype = ((t_set*)t)->get_elem_type()->get_true_type();
     }
     indent(out) << "'etype' => " << type_to_enum(etype) <<"," << endl;
     indent(out) << "'elem' => array(" << endl;
@@ -1138,7 +1138,7 @@ void t_php_generator::generate_php_struct_spec(ofstream& out,
   const vector<t_field*>& members = tstruct->get_members();
   vector<t_field*>::const_iterator m_iter;
   for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
-    t_type* t = get_true_type((*m_iter)->get_type());
+    t_type* t = (*m_iter)->get_type()->get_true_type();
     indent(out) << (*m_iter)->get_key() << " => array(" << endl;
     indent_up();
     out <<
@@ -1153,7 +1153,7 @@ void t_php_generator::generate_php_struct_spec(ofstream& out,
 
   indent(out) << "public static $_TFIELDMAP = array(" << endl;
   for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
-    t_type* t = get_true_type((*m_iter)->get_type());
+    t_type* t = (*m_iter)->get_type()->get_true_type();
     indent(out) << "  '" << (*m_iter)->get_name() << "' => " << (*m_iter)->get_key() << "," << endl;
   }
   indent(out) << ");" << endl;
@@ -1225,7 +1225,7 @@ void t_php_generator::_generate_php_struct_definition(ofstream& out,
 
   for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
     string dval = "null";
-    t_type* t = get_true_type((*m_iter)->get_type());
+    t_type* t = (*m_iter)->get_type()->get_true_type();
 
     if (t->is_enum() && is_bitmask_enum((t_enum*) t)) {
       throw "Enum " + (((t_enum*) t)->get_name()) + "is actually a bitmask, cannot generate a field of this enum type";
@@ -1247,7 +1247,7 @@ void t_php_generator::_generate_php_struct_definition(ofstream& out,
 
   if (members.size() > 0) {
     for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
-      t_type* t = get_true_type((*m_iter)->get_type());
+      t_type* t = (*m_iter)->get_type()->get_true_type();
       if ((*m_iter)->get_value() != nullptr
           && (t->is_struct() || t->is_xception())) {
         indent(out) << "$this->" << (*m_iter)->get_name() << " = "
@@ -1540,7 +1540,7 @@ void t_php_generator::generate_php_struct_writer(ofstream& out,
     out << endl;
     indent_up();
 
-    t_type* type = get_true_type((*f_iter)->get_type());
+    t_type* type = (*f_iter)->get_type()->get_true_type();
     if (type->is_container() || type->is_struct()) {
       out <<
         indent() << "if (";
@@ -2247,7 +2247,7 @@ void t_php_generator::generate_service_rest(t_service* tservice, bool mangle) {
     const vector<t_field*>& args = (*f_iter)->get_arglist()->get_members();
     vector<t_field*>::const_iterator a_iter;
     for (a_iter = args.begin(); a_iter != args.end(); ++a_iter) {
-      t_type* atype = get_true_type((*a_iter)->get_type());
+      t_type* atype = (*a_iter)->get_type()->get_true_type();
       string cast = type_to_cast(atype);
       string req = "$request['" + (*a_iter)->get_name() + "']";
       if (atype->is_bool()) {
@@ -2795,7 +2795,7 @@ void t_php_generator::generate_deserialize_field(ofstream& out,
                                                  t_field* tfield,
                                                  string prefix,
                                                  bool inclass) {
-  t_type* type = get_true_type(tfield->get_type());
+  t_type* type = tfield->get_type()->get_true_type();
 
   if (type->is_void()) {
     throw "CANNOT GENERATE DESERIALIZE CODE FOR void TYPE: " +
@@ -3133,7 +3133,7 @@ void t_php_generator::generate_serialize_field(ofstream& out,
                                                t_name_generator& namer,
                                                t_field* tfield,
                                                string prefix) {
-  t_type* type = get_true_type(tfield->get_type());
+  t_type* type = tfield->get_type()->get_true_type();
 
   // Do nothing for void types
   if (type->is_void()) {
@@ -3411,7 +3411,7 @@ string t_php_generator::declare_field(t_field* tfield, bool init,
                                       bool obj, bool thrift) {
   string result = "$" + tfield->get_name();
   if (init) {
-    t_type* type = get_true_type(tfield->get_type());
+    t_type* type = tfield->get_type()->get_true_type();
     if (type->is_base_type()) {
       t_base_type::t_base tbase = ((t_base_type*)type)->get_base();
       switch (tbase) {
@@ -3533,7 +3533,7 @@ string t_php_generator::type_to_cast(t_type* type) {
  * Converts the parse type to a C++ enum string for the given type.
  */
 string t_php_generator ::type_to_enum(t_type* type) {
-  type = get_true_type(type);
+  type = type->get_true_type();
 
   if (type->is_base_type()) {
     t_base_type::t_base tbase = ((t_base_type*)type)->get_base();

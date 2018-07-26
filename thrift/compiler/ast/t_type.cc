@@ -15,6 +15,7 @@
  */
 
 #include <thrift/compiler/ast/t_type.h>
+#include <thrift/compiler/ast/t_typedef.h>
 
 #include <sstream>
 #include <string>
@@ -55,6 +56,14 @@ std::string t_type::make_full_name(const char* prefix) const {
   }
   os << name_;
   return os.str();
+}
+
+const t_type* t_type::get_true_type() const {
+  const t_type* type = this;
+  while (type->is_typedef()) {
+    type = static_cast<const t_typedef*>(type)->get_type();
+  }
+  return type;
 }
 
 } // namespace compiler

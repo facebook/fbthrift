@@ -247,7 +247,7 @@ class t_cocoa_generator : public t_oop_generator {
   std::string get_cocoa_property_name(t_field* tfield);
 
   bool type_can_be_null(t_type* ttype) {
-    ttype = get_true_type(ttype);
+    ttype = ttype->get_true_type();
 
     return
       ttype->is_container() ||
@@ -779,7 +779,7 @@ void t_cocoa_generator::generate_cocoa_struct_init_with_coder_method(ofstream &o
   vector<t_field*>::const_iterator m_iter;
 
   for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
-    t_type* t = get_true_type((*m_iter)->get_type());
+    t_type* t = (*m_iter)->get_type()->get_true_type();
     out << indent() << "if ([decoder containsValueForKey: @\""<< (*m_iter)->get_name() <<"\"])" << endl;
     scope_up(out);
     out << indent() << kFieldPrefix << (*m_iter)->get_name() << " = ";
@@ -847,7 +847,7 @@ void t_cocoa_generator::generate_cocoa_struct_encode_with_coder_method(ofstream 
   vector<t_field*>::const_iterator m_iter;
 
   for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
-    t_type* t = get_true_type((*m_iter)->get_type());
+    t_type* t = (*m_iter)->get_type()->get_true_type();
     out << indent() << "if ("<< kFieldPrefix << (*m_iter)->get_name() << kSetPostfix << ")" << endl;
     scope_up(out);
     //out << indent() << kFieldPrefix << (*m_iter)->get_name() << " = ";
@@ -980,7 +980,7 @@ void t_cocoa_generator::generate_cocoa_struct_implementation(ofstream &out,
     if (num_members_with_values > 0) {
       // out << "#if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)" << endl;
       for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
-        t_type* t = get_true_type((*m_iter)->get_type());
+        t_type* t = (*m_iter)->get_type()->get_true_type();
         if ((*m_iter)->get_value() != NULL) {
           print_const_value(out, "self."+(*m_iter)->get_name(), t, (*m_iter)->get_value(), false, true);
         }
@@ -1004,7 +1004,7 @@ void t_cocoa_generator::generate_cocoa_struct_implementation(ofstream &out,
     }
 
     for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
-      t_type* t = get_true_type((*m_iter)->get_type());
+      t_type* t = (*m_iter)->get_type()->get_true_type();
       out << indent() << kFieldPrefix << (*m_iter)->get_name() << " = ";
       if (type_can_be_null(t)) {
         // out << "[" << (*m_iter)->get_name() << " retain_stub];" << endl;
@@ -1036,7 +1036,7 @@ void t_cocoa_generator::generate_cocoa_struct_implementation(ofstream &out,
   //   out << "- (void) dealloc" << endl;
   //   scope_up(out);
   //   for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
-  //     t_type* t = get_true_type((*m_iter)->get_type());
+  //     t_type* t = (*m_iter)->get_type()->get_true_type();
   //     if (type_can_be_null(t)) {
   //       indent(out) << "[" << kFieldPrefix << (*m_iter)->get_name() << " release_stub];" << endl;
   //     }
@@ -1126,7 +1126,7 @@ void t_cocoa_generator::generate_cocoa_struct_reader(ofstream& out,
         // is now retaining it
         if (type_can_be_null((*f_iter)->get_type())) {
           // deserialized strings are autorelease, so don't release them
-          if (!(get_true_type((*f_iter)->get_type())->is_string())) {
+          if (!((*f_iter)->get_type()->get_true_type()->is_string())) {
             indent(out) << "[fieldValue release_stub];" << endl;
           }
         }
@@ -1350,7 +1350,7 @@ void t_cocoa_generator::generate_cocoa_struct_field_accessor_implementations(ofs
   vector<t_field*>::const_iterator f_iter;
   for (f_iter = fields.begin(); f_iter != fields.end(); ++f_iter) {
     t_field* field = *f_iter;
-    t_type* type = get_true_type(field->get_type());
+    t_type* type = field->get_type()->get_true_type();
     const std::string field_name = field->get_name();
     const std::string getter_selector = get_cocoa_property_name(field);
     std::string cap_name = getter_selector;
@@ -1439,7 +1439,7 @@ void t_cocoa_generator::generate_cocoa_struct_makeImmutable(std::ofstream& out, 
      t_type* ttype = field->get_type();
      string field_name = kFieldPrefix + field->get_name();
      if (ttype->is_typedef()) {
-       ttype = get_true_type(ttype);
+       ttype = ttype->get_true_type();
      }
      if (ttype->is_struct()) {
        out << indent() << "if (" << field_name << " && " << "![" << field_name << " isImmutable]" << ") {" << endl;
@@ -1520,7 +1520,7 @@ void t_cocoa_generator::generate_cocoa_struct_toDict(ofstream& out,
      string field_name = kFieldPrefix + field->get_name();
      string ret_equals = "ret[@\"" + field->get_name() + "\"] = ";
      if (ttype->is_typedef()) {
-       ttype = get_true_type(ttype);
+       ttype = ttype->get_true_type();
      }
 
      const bool check_for_null = ttype->is_struct() || ttype->is_string() || ttype->is_container();
@@ -1598,7 +1598,7 @@ void t_cocoa_generator::generate_cocoa_struct_mutableCopyWithZone(ofstream& out,
      t_type* ttype = field->get_type();
      string field_name = kFieldPrefix + field->get_name();
      if (ttype->is_typedef()) {
-       ttype = get_true_type(ttype);
+       ttype = ttype->get_true_type();
      }
 
      const bool check_for_null = ttype->is_struct() || ttype->is_string() || ttype->is_container();
@@ -2156,7 +2156,7 @@ void t_cocoa_generator::generate_cocoa_service_server_implementation(ofstream& o
 void t_cocoa_generator::generate_deserialize_field(ofstream& out,
                                                    t_field* tfield,
                                                    string fieldName) {
-  t_type* type = get_true_type(tfield->get_type());
+  t_type* type = tfield->get_type()->get_true_type();
 
   if (type->is_void()) {
     throw "CANNOT GENERATE DESERIALIZE CODE FOR void TYPE: " +
@@ -2300,7 +2300,7 @@ string t_cocoa_generator::containerize(t_type * ttype,
                                        string fieldName)
 {
   // FIXME - optimize here to avoid autorelease pool?
-  ttype = get_true_type(ttype);
+  ttype = ttype->get_true_type();
   if (ttype->is_enum()) {
     return "[NSNumber numberWithInt: " + fieldName + "]";
   } else if (ttype->is_base_type()) {
@@ -2351,13 +2351,13 @@ void t_cocoa_generator::generate_deserialize_map_element(ofstream& out,
     " forKey: " << containerize(keyType, key) << "];" << endl;
 
   if (type_can_be_null(keyType)) {
-    if (!(get_true_type(keyType)->is_string())) {
+    if (!(keyType->get_true_type()->is_string())) {
       indent(out) << "[" << containerize(keyType, key) << " release_stub];" << endl;
     }
   }
 
   if (type_can_be_null(valType)) {
-    if (!(get_true_type(valType)->is_string())) {
+    if (!(valType->get_true_type()->is_string())) {
       indent(out) << "[" << containerize(valType, val) << " release_stub];" << endl;
     }
   }
@@ -2380,7 +2380,7 @@ void t_cocoa_generator::generate_deserialize_set_element(ofstream& out,
 
   if (type_can_be_null(type)) {
     // deserialized strings are autorelease, so don't release them
-    if (!(get_true_type(type)->is_string())) {
+    if (!(type->get_true_type()->is_string())) {
       indent(out) << "[" << containerize(type, elem) << " release_stub];" << endl;
     }
   }
@@ -2402,7 +2402,7 @@ void t_cocoa_generator::generate_deserialize_list_element(ofstream& out,
     "[" << fieldName << " addObject: " << containerize(type, elem) << "];" << endl;
 
   if (type_can_be_null(type)) {
-    if (!(get_true_type(type)->is_string())) {
+    if (!(type->get_true_type()->is_string())) {
       indent(out) << "[" << containerize(type, elem) << " release_stub];" << endl;
     }
   }
@@ -2418,7 +2418,7 @@ void t_cocoa_generator::generate_deserialize_list_element(ofstream& out,
 void t_cocoa_generator::generate_serialize_field(ofstream& out,
                                                  t_field* tfield,
                                                  string fieldName) {
-  t_type* type = get_true_type(tfield->get_type());
+  t_type* type = tfield->get_type()->get_true_type();
 
   // Do nothing for void types
   if (type->is_void()) {
@@ -2578,7 +2578,7 @@ void t_cocoa_generator::generate_serialize_container(ofstream& out,
 string t_cocoa_generator::decontainerize(t_field * tfield,
                                          string fieldName)
 {
-  t_type * ttype = get_true_type(tfield->get_type());
+  t_type * ttype = tfield->get_type()->get_true_type();
   if (ttype->is_enum()) {
     return "[" + fieldName + " intValue]";
   } else if (ttype->is_base_type()) {
@@ -2729,7 +2729,7 @@ void t_cocoa_generator::print_const_value(
     const t_const_value* value,
     bool defval,
     bool is_property) {
-  type = get_true_type(type);
+  type = type->get_true_type();
 
   indent(out);
   if (type->is_base_type()) {
@@ -2824,7 +2824,7 @@ string t_cocoa_generator::render_const_value(
     t_type* type,
     const t_const_value* value,
     bool containerize_it) {
-  type = get_true_type(type);
+  type = type->get_true_type();
   std::ostringstream render;
 
   if (type->is_base_type()) {
@@ -2879,7 +2879,7 @@ string t_cocoa_generator::render_const_value(string name,
                                              t_type* type,
                                              t_const_value* value,
                                              bool containerize_it) {
-  type = get_true_type(type);
+  type = type->get_true_type();
   std::ostringstream render;
 
   if (type->is_base_type()) {
@@ -3085,7 +3085,7 @@ string t_cocoa_generator::argument_list(t_struct* tstruct) {
  * Converts the parse type to an Objective-C enum string for the given type.
  */
 string t_cocoa_generator::type_to_enum(t_type* type) {
-  type = get_true_type(type);
+  type = type->get_true_type();
 
   if (type->is_base_type()) {
     t_base_type::t_base tbase = ((t_base_type*)type)->get_base();
@@ -3129,7 +3129,7 @@ string t_cocoa_generator::type_to_enum(t_type* type) {
  * Returns a format string specifier for the supplied parse type.
  */
 string t_cocoa_generator::format_string_for_type(t_type* type) {
-  type = get_true_type(type);
+  type = type->get_true_type();
 
   if (type->is_base_type()) {
     t_base_type::t_base tbase = ((t_base_type*)type)->get_base();

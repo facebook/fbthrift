@@ -369,7 +369,7 @@ void t_rb_generator::generate_const(t_const* tconst) {
 string t_rb_generator::render_const_value(
     t_type* type,
     const t_const_value* value) {
-  type = get_true_type(type);
+  type = type->get_true_type();
   std::ostringstream out;
   if (type->is_base_type()) {
     t_base_type::t_base tbase = ((t_base_type*)type)->get_base();
@@ -598,7 +598,7 @@ void t_rb_generator::generate_field_data(
     const std::string& field_name,
     const t_const_value* field_value,
     bool optional) {
-  field_type = get_true_type(field_type);
+  field_type = field_type->get_true_type();
 
   // Begin this field's defn
   out << "{:type => " << type_to_enum(field_type);
@@ -1050,7 +1050,7 @@ string t_rb_generator::full_type_name(t_type* ttype) {
  * Converts the parse type to a Ruby tyoe
  */
 string t_rb_generator::type_to_enum(t_type* type) {
-  type = get_true_type(type);
+  type = type->get_true_type();
 
   if (type->is_base_type()) {
     t_base_type::t_base tbase = ((t_base_type*)type)->get_base();

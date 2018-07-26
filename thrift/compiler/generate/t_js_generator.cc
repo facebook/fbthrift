@@ -387,7 +387,7 @@ string t_js_generator::render_const_value(
     const t_const_value* value) {
   std::ostringstream out;
 
-  type = get_true_type(type);
+  type = type->get_true_type();
 
   if (type->is_base_type()) {
     t_base_type::t_base tbase = ((t_base_type*)type)->get_base();
@@ -541,7 +541,7 @@ void t_js_generator::generate_js_struct_definition(ofstream& out,
   //members with arguments
   for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
     string dval = declare_field(*m_iter,false,true);
-    t_type* t = get_true_type((*m_iter)->get_type());
+    t_type* t = (*m_iter)->get_type()->get_true_type();
     if ((*m_iter)->get_value() != nullptr && !(t->is_struct() || t->is_xception())) {
         dval = render_const_value((*m_iter)-> get_type(), (*m_iter)->get_value());
         out << indent() << "this." << (*m_iter)->get_name() << " = " << dval << ";" << endl;
@@ -555,7 +555,7 @@ void t_js_generator::generate_js_struct_definition(ofstream& out,
   if (members.size() > 0) {
 
     for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
-      t_type* t = get_true_type((*m_iter)->get_type());
+      t_type* t = (*m_iter)->get_type()->get_true_type();
       if ((*m_iter)->get_value() != nullptr && (t->is_struct() || t->is_xception())) {
         indent(out) << "this." << (*m_iter)->get_name() << " = " << render_const_value(t, (*m_iter)->get_value())  << ";" << endl;
       }
@@ -563,7 +563,7 @@ void t_js_generator::generate_js_struct_definition(ofstream& out,
 
     // Early returns for exceptions
     for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
-       t_type* t = get_true_type((*m_iter)->get_type());
+       t_type* t = (*m_iter)->get_type()->get_true_type();
        if (t->is_xception()) {
                        out << indent() <<  "if (args instanceof " << js_type_namespace(t->get_program()) << t->get_name() << ") {" << endl
                                << indent() << indent() << "this." << (*m_iter)->get_name() << " = args;" << endl
@@ -1234,7 +1234,7 @@ void t_js_generator::generate_deserialize_field(ofstream &out,
                                                   string prefix,
                                                   bool inclass) {
   (void) inclass;
-  t_type* type = get_true_type(tfield->get_type());
+  t_type* type = tfield->get_type()->get_true_type();
 
   if (type->is_void()) {
     throw "CANNOT GENERATE DESERIALIZE CODE FOR void TYPE: " +
@@ -1464,7 +1464,7 @@ void t_js_generator::generate_deserialize_list_element(ofstream &out,
 void t_js_generator::generate_serialize_field(ofstream &out,
                                                 t_field* tfield,
                                                 string prefix) {
-  t_type* type = get_true_type(tfield->get_type());
+  t_type* type = tfield->get_type()->get_true_type();
 
   // Do nothing for void types
   if (type->is_void()) {
@@ -1672,7 +1672,7 @@ string t_js_generator::declare_field(t_field* tfield, bool init, bool obj) {
   }
 
   if (init) {
-    t_type* type = get_true_type(tfield->get_type());
+    t_type* type = tfield->get_type()->get_true_type();
     if (type->is_base_type()) {
       t_base_type::t_base tbase = ((t_base_type*)type)->get_base();
       switch (tbase) {
@@ -1762,7 +1762,7 @@ string t_js_generator::argument_list(t_struct* tstruct,
  * Converts the parse type to a C++ enum string for the given type.
  */
 string t_js_generator ::type_to_enum(t_type* type) {
-  type = get_true_type(type);
+  type = type->get_true_type();
 
   if (type->is_base_type()) {
     t_base_type::t_base tbase = ((t_base_type*)type)->get_base();

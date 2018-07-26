@@ -563,7 +563,7 @@ class t_d_generator : public t_oop_generator {
    */
   string render_const_value(t_type* type, const t_const_value* value) {
     // Resolve any typedefs.
-    type = get_true_type(type);
+    type = type->get_true_type();
 
     ostringstream out;
     if (type->is_base_type()) {
@@ -781,7 +781,7 @@ class t_d_generator : public t_oop_generator {
    * allowed for AA keys without an immutable() qualifier.
    */
   bool is_immutable_type(t_type* type) const {
-    t_type* ttype = get_true_type(type);
+    t_type* ttype = type->get_true_type();
     return ttype->is_base_type() || ttype->is_enum();
   }
 

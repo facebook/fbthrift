@@ -286,7 +286,7 @@ void t_java_generator::print_const_value(
     const t_const_value* value,
     bool in_static,
     bool defval) {
-  type = get_true_type(type);
+  type = type->get_true_type();
 
   indent(out);
   if (!defval) {
@@ -382,7 +382,7 @@ string t_java_generator::render_const_value(
     string /* unused */,
     t_type* type,
     const t_const_value* value) {
-  type = get_true_type(type);
+  type = type->get_true_type();
   std::ostringstream render;
   if (type->is_base_type()) {
     t_base_type::t_base tbase = ((t_base_type*)type)->get_base();
@@ -1087,7 +1087,7 @@ void t_java_generator::generate_java_struct_definition(ofstream &out,
     "public " << tstruct->get_name() << "() {" << endl;
   indent_up();
   for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
-    t_type* t = get_true_type((*m_iter)->get_type());
+    t_type* t = (*m_iter)->get_type()->get_true_type();
     if ((*m_iter)->get_value() != nullptr) {
       print_const_value(out, "this." + (*m_iter)->get_name(), t, (*m_iter)->get_value(), true, true);
     }
@@ -1209,7 +1209,7 @@ void t_java_generator::generate_java_struct_equality(ofstream& out,
   for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
     out << endl;
 
-    t_type* t = get_true_type((*m_iter)->get_type());
+    t_type* t = (*m_iter)->get_type()->get_true_type();
     // Most existing Thrift code does not use isset or optional/required,
     // so we treat "default" fields as required.
     bool is_optional = (*m_iter)->get_req() == t_field::T_OPTIONAL;
@@ -1265,7 +1265,7 @@ void t_java_generator::generate_java_struct_equality(ofstream& out,
     for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
       out << endl;
 
-      t_type* t = get_true_type((*m_iter)->get_type());
+      t_type* t = (*m_iter)->get_type()->get_true_type();
       bool is_optional = (*m_iter)->get_req() == t_field::T_OPTIONAL;
       bool can_be_null = type_can_be_null(t);
       string name = (*m_iter)->get_name();
@@ -1655,7 +1655,7 @@ void t_java_generator::generate_generic_field_getters_setters(std::ofstream& out
   vector<t_field*>::const_iterator f_iter;
   for (f_iter = fields.begin(); f_iter != fields.end(); ++f_iter) {
     t_field* field = *f_iter;
-    t_type* type = get_true_type(field->get_type());
+    t_type* type = field->get_type()->get_true_type();
     std::string field_name = field->get_name();
     std::string cap_name = get_cap_name(field_name);
 
@@ -1736,7 +1736,7 @@ void t_java_generator::generate_generic_isset_method(std::ofstream& out, t_struc
 std::string t_java_generator::get_simple_getter_name(t_field* field) {
     std::string field_name = field->get_name();
     std::string cap_name = get_cap_name(field_name);
-    t_type* type = get_true_type(field->get_type());
+    t_type* type = field->get_type()->get_true_type();
 
     if (type->is_base_type() &&
         ((t_base_type*)type)->get_base() == t_base_type::TYPE_BOOL) {
@@ -1758,7 +1758,7 @@ void t_java_generator::generate_java_bean_boilerplate(ofstream& out,
   vector<t_field*>::const_iterator f_iter;
   for (f_iter = fields.begin(); f_iter != fields.end(); ++f_iter) {
     t_field* field = *f_iter;
-    t_type* type = get_true_type(field->get_type());
+    t_type* type = field->get_type()->get_true_type();
     std::string field_name = field->get_name();
     std::string cap_name = get_cap_name(field_name);
 
@@ -1878,7 +1878,7 @@ void t_java_generator::generate_java_struct_tostring(ofstream& out,
   for (f_iter = fields.begin(); f_iter != fields.end(); ++f_iter) {
     t_field* field = (*f_iter);
     string fname = field->get_name();
-    t_type* ftype = get_true_type(field->get_type());
+    t_type* ftype = field->get_type()->get_true_type();
 
     if (tstruct->is_union()) {
       indent(out) << "// Only print this field if it is the set field" << endl;
@@ -2039,7 +2039,7 @@ std::string t_java_generator::get_java_type_string(t_type* type) {
 }
 
 void t_java_generator::generate_field_value_meta_data(std::ofstream& out, t_type* type){
-  type = get_true_type(type);
+  type = type->get_true_type();
   out << endl;
   indent_up();
   indent_up();
@@ -2862,7 +2862,7 @@ void t_java_generator::generate_process_function(t_service* tservice,
 void t_java_generator::generate_deserialize_field(ofstream& out,
                                                   t_field* tfield,
                                                   string prefix) {
-  t_type* type = get_true_type(tfield->get_type());
+  t_type* type = tfield->get_type()->get_true_type();
 
   if (type->is_void()) {
     throw "CANNOT GENERATE DESERIALIZE CODE FOR void TYPE: " +
@@ -3096,7 +3096,7 @@ void t_java_generator::generate_deserialize_list_element(ofstream& out,
 void t_java_generator::generate_serialize_field(ofstream& out,
                                                 t_field* tfield,
                                                 string prefix) {
-  t_type* type = get_true_type(tfield->get_type());
+  t_type* type = tfield->get_type()->get_true_type();
 
   // Do nothing for void types
   if (type->is_void()) {
@@ -3300,7 +3300,7 @@ void t_java_generator::generate_serialize_list_element(ofstream& out,
  */
 string t_java_generator::type_name(t_type* ttype, bool in_container, bool in_init, bool skip_generic) {
   // In Java typedefs are just resolved to their real type
-  ttype = get_true_type(ttype);
+  ttype = ttype->get_true_type();
   string prefix;
 
   if (ttype->is_base_type()) {
@@ -3394,7 +3394,7 @@ string t_java_generator::declare_field(t_field* tfield, bool init) {
   // TODO(mcslee): do we ever need to initialize the field?
   string result = type_name(tfield->get_type()) + " " + tfield->get_name();
   if (init) {
-    t_type* ttype = get_true_type(tfield->get_type());
+    t_type* ttype = tfield->get_type()->get_true_type();
     if (ttype->is_base_type() && tfield->get_value() != nullptr) {
       ofstream dummy;
       result += " = " + render_const_value(dummy, tfield->get_name(), ttype, tfield->get_value());
@@ -3542,7 +3542,7 @@ string t_java_generator::async_argument_list(
  * Converts the parse type to a C++ enum string for the given type.
  */
 string t_java_generator::type_to_enum(t_type* type) {
-  type = get_true_type(type);
+  type = type->get_true_type();
 
   if (type->is_base_type()) {
     t_base_type::t_base tbase = ((t_base_type*)type)->get_base();
@@ -3730,7 +3730,7 @@ void t_java_generator::generate_field_name_constants(ofstream& out, t_struct* ts
 }
 
 bool t_java_generator::is_comparable(t_type* type, vector<t_type*> *enclosing) {
-  type = get_true_type(type);
+  type = type->get_true_type();
 
   if (type->is_base_type()) {
     return true;
@@ -3782,7 +3782,7 @@ bool t_java_generator::struct_has_all_comparable_fields(t_struct* tstruct, vecto
 }
 
 bool t_java_generator::type_has_naked_binary(t_type* type) {
-  type = get_true_type(type);
+  type = type->get_true_type();
 
   if (type->is_base_type()) {
     return ((t_base_type*)type)->is_binary();

@@ -527,7 +527,7 @@ string t_hs_generator::render_const_value(
   if (value == nullptr)
     return type_to_default(type);
 
-  type = get_true_type(type);
+  type = type->get_true_type();
   ostringstream out;
 
   if (type->is_base_type()) {
@@ -1153,7 +1153,7 @@ void t_hs_generator::generate_hs_typemap(ofstream& out,
       out << ",";
     }
 
-    t_type* type = get_true_type(f_iter->get_type());
+    t_type* type = f_iter->get_type()->get_true_type();
     int32_t key = f_iter->get_key();
     out << "(\"" << mname << "\",(" << key << "," << type_to_enum(type) << "))";
     first = false;
@@ -1186,7 +1186,7 @@ void t_hs_generator::generate_hs_default(ofstream& out,
       out << "," << nl;
     }
 
-    t_type* type = get_true_type(f_iter->get_type());
+    t_type* type = f_iter->get_type()->get_true_type();
     const t_const_value* value = f_iter->get_value();
     indent(out) << field_name(name, mname) << " = ";
     if (f_iter->get_req() == t_field::T_OPTIONAL ||
@@ -1920,7 +1920,7 @@ void t_hs_generator::generate_deserialize_field(ofstream &out,
 void t_hs_generator::generate_deserialize_type(ofstream &out,
                                                t_type* type,
                                                string arg) {
-  type = get_true_type(type);
+  type = type->get_true_type();
   string val = tmp("_val");
   out << "(case " << arg << " of {" << type_to_constructor(type) << " " << val << " -> ";
 
@@ -2010,7 +2010,7 @@ void t_hs_generator::generate_serialize_type(ofstream &out,
                                               t_type* type,
                                               string name) {
 
-  type = get_true_type(type);
+  type = type->get_true_type();
   // Do nothing for void types
   if (type->is_void())
     throw "CANNOT GENERATE SERIALIZE CODE FOR void TYPE";
@@ -2191,7 +2191,7 @@ string t_hs_generator::get_module_prefix(const t_program* program) const {
  * Converts the parse type to a Protocol.t_type enum
  */
 string t_hs_generator::type_to_enum(t_type* type) {
-  type = get_true_type(type);
+  type = type->get_true_type();
 
   if (type->is_base_type()) {
     t_base_type::t_base tbase = ((t_base_type*)type)->get_base();
@@ -2235,7 +2235,7 @@ string t_hs_generator::type_to_enum(t_type* type) {
  * Converts the parse type to a default value
  */
 string t_hs_generator::type_to_default(t_type* type) {
-  type = get_true_type(type);
+  type = type->get_true_type();
 
   if (type->is_base_type()) {
     t_base_type::t_base tbase = ((t_base_type*)type)->get_base();
@@ -2277,7 +2277,7 @@ string t_hs_generator::type_to_default(t_type* type) {
  * Converts the parse type to an haskell type
  */
 string t_hs_generator::render_hs_type(t_type* type, bool needs_parens) {
-  type = get_true_type(type);
+  type = type->get_true_type();
   string type_repr;
 
   if (type->is_base_type()) {
@@ -2336,7 +2336,7 @@ string t_hs_generator::render_hs_type(t_type* type, bool needs_parens) {
  * Converts the parse type to a haskell constructor
  */
 string t_hs_generator::type_to_constructor(t_type* type) {
-  type = get_true_type(type);
+  type = type->get_true_type();
 
   if (type->is_base_type()) {
     t_base_type::t_base tbase = ((t_base_type*)type)->get_base();

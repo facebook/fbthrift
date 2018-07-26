@@ -393,7 +393,7 @@ string t_android_lite_generator::package_header() {
 
 string t_android_lite_generator::type_name(t_type* ttype, bool in_container,
     bool in_init, bool skip_generic) {
-  ttype = get_true_type(ttype);
+  ttype = ttype->get_true_type();
   if (ttype->is_struct() || ttype->is_enum()) {
     string suffix = ttype->is_struct() ? "Logger" : "Enum";
     string name = capitalize(ttype->get_program()->get_name()) + suffix;
@@ -555,7 +555,7 @@ void t_android_lite_generator::output_write(t_enum* tenum, const string value,
 
 void t_android_lite_generator::output_write(t_type* ttype, const string value,
     int depth, bool needs_cast, stringstream& stream) {
-  ttype = get_true_type(ttype);
+  ttype = ttype->get_true_type();
   if (ttype->is_base_type()) {
     string thrift_name = capitalize(ttype->get_name());
     string java_name = base_type_name((t_base_type *) ttype);

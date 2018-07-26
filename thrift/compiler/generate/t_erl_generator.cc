@@ -321,7 +321,7 @@ void t_erl_generator::generate_const(t_const* tconst) {
 string t_erl_generator::render_const_value(
     t_type* type,
     const t_const_value* value) {
-  type = get_true_type(type);
+  type = type->get_true_type();
   std::ostringstream out;
 
   if (type->is_base_type()) {
@@ -714,7 +714,7 @@ void t_erl_generator::generate_function_info(t_service* /*tservice*/,
  */
 string t_erl_generator::declare_field(t_field* tfield) {  // TODO
   string result = "@" + tfield->get_name();
-  t_type* type = get_true_type(tfield->get_type());
+  t_type* type = tfield->get_type()->get_true_type();
   if (tfield->get_value() != nullptr) {
     result += " = " + render_const_value(type, tfield->get_value());
   } else {
@@ -812,7 +812,7 @@ string t_erl_generator::type_name(t_type* ttype) {
  * Converts the parse type to a Erlang "type" (macro for int constants)
  */
 string t_erl_generator::type_to_enum(t_type* type) {
-  type = get_true_type(type);
+  type = type->get_true_type();
 
   if (type->is_base_type()) {
     t_base_type::t_base tbase = ((t_base_type*)type)->get_base();
@@ -857,7 +857,7 @@ string t_erl_generator::type_to_enum(t_type* type) {
  */
 std::string t_erl_generator::generate_type_term(t_type* type,
                                                    bool expand_structs) {
-    type = get_true_type(type);
+    type = type->get_true_type();
 
 
   if (type->is_base_type()) {

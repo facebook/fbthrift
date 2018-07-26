@@ -306,7 +306,7 @@ class t_java_generator : public t_oop_generator {
   }
 
   bool type_can_be_null(t_type* ttype) {
-    ttype = get_true_type(ttype);
+    ttype = ttype->get_true_type();
 
     return ttype->is_container() || ttype->is_struct() ||
         ttype->is_xception() || ttype->is_string();

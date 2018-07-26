@@ -346,7 +346,7 @@ void t_st_generator::generate_const(t_const* tconst) {
  * validate_types method in main.cc
  */
 string t_st_generator::render_const_value(t_type* type, t_const_value* value) {
-  type = get_true_type(type);
+  type = type->get_true_type();
   std::ostringstream out;
   if (type->is_base_type()) {
     t_base_type::t_base tbase = ((t_base_type*)type)->get_base();
@@ -772,7 +772,7 @@ string t_st_generator::struct_reader(t_struct *tstruct, string clsName = "") {
 }
 
 string t_st_generator::write_val(t_type *t, string fname) {
-  t = get_true_type(t);
+  t = t->get_true_type();
 
   if (t->is_base_type()) {
     t_base_type::t_base tbase = ((t_base_type*) t)->get_base();
@@ -803,7 +803,7 @@ string t_st_generator::write_val(t_type *t, string fname) {
 }
 
 string t_st_generator::read_val(t_type *t) {
-  t = get_true_type(t);
+  t = t->get_true_type();
 
   if (t->is_base_type()) {
     return "iprot read" + capitalize(type_name(t));
@@ -1022,7 +1022,7 @@ string t_st_generator::type_name(t_type* ttype) {
 
 /* Convert t_type to Smalltalk type code */
 string t_st_generator::type_to_enum(t_type* type) {
-  type = get_true_type(type);
+  type = type->get_true_type();
 
   if (type->is_base_type()) {
     t_base_type::t_base tbase = ((t_base_type*)type)->get_base();

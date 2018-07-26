@@ -77,19 +77,6 @@ class t_generator {
     return program_->get_out_path() + out_dir_base_ + "/";
   }
 
-  /**
-   * Get the true type behind a series of typedefs.
-   */
-  static const t_type* get_true_type(const t_type* type) {
-    while (type->is_typedef()) {
-      type = (static_cast<const t_typedef*>(type))->get_type();
-    }
-    return type;
-  }
-  static t_type* get_true_type(t_type* type) {
-    return const_cast<t_type*>(get_true_type(const_cast<const t_type*>(type)));
-  }
-
  protected:
   t_program* program_;
 

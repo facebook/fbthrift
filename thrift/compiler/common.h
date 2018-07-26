@@ -120,8 +120,6 @@ static bool dump_docs = false;
  */
 void dump_docstrings(t_program* program);
 
-const t_type* get_true_type(const t_type* type);
-
 /**
  * Check members of a throws block
  */

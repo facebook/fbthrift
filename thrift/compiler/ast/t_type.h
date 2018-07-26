@@ -176,6 +176,17 @@ class t_type : public t_annotated {
   virtual uint64_t get_type_id() const;
 
   /**
+   * Resolves all typedefs (if any) to get the true type.
+   */
+  const t_type* get_true_type() const;
+
+  // TODO: make this go away. Instead use const t_type* everywhere.
+  t_type* get_true_type() {
+    return const_cast<t_type*>(
+        const_cast<const t_type*>(this)->get_true_type());
+  }
+
+  /**
    * t_type setters
    */
   virtual void set_name(const std::string& name) {
