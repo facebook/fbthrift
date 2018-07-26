@@ -33,6 +33,7 @@
 #include <thrift/lib/cpp/transport/THeader.h>
 #include <thrift/lib/cpp2/Thrift.h>
 #include <thrift/lib/cpp2/async/AsyncProcessor.h>
+#include <thrift/lib/cpp2/server/ServerAttribute.h>
 #include <thrift/lib/cpp2/server/ServerConfigs.h>
 
 namespace apache {
@@ -190,10 +191,11 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
   std::shared_ptr<apache::thrift::server::TServerObserver> observer_;
 
   // Max number of active connections
-  uint32_t maxConnections_ = 0;
+  ServerAttribute<uint32_t> maxConnections_{0};
 
   // Max active requests
-  uint32_t maxRequests_ = concurrency::ThreadManager::DEFAULT_MAX_QUEUE_SIZE;
+  ServerAttribute<uint32_t> maxRequests_{
+      concurrency::ThreadManager::DEFAULT_MAX_QUEUE_SIZE};
 
   // Track # of active requests for this server
   std::atomic<int32_t> activeRequests_{0};
@@ -246,7 +248,7 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
 
   // Max response size allowed. This is the size of the serialized and
   // transformed response, headers not included. 0 (default) means no limit.
-  uint64_t maxResponseSize_ = 0;
+  ServerAttribute<uint64_t> maxResponseSize_{0};
 
   BaseThriftServer() {}
 
@@ -346,7 +348,7 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    * @return current setting.
    */
   uint32_t getMaxConnections() const {
-    return maxConnections_;
+    return maxConnections_.get();
   }
 
   /**
@@ -354,8 +356,10 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    *
    * @param maxConnections new setting for maximum # of connections.
    */
-  void setMaxConnections(uint32_t maxConnections) {
-    maxConnections_ = maxConnections;
+  void setMaxConnections(
+      uint32_t maxConnections,
+      AttributeSource source = AttributeSource::OVERRIDE) {
+    maxConnections_.set(maxConnections, source);
   }
 
   /**
@@ -364,7 +368,7 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    * @return current setting.
    */
   uint32_t getMaxRequests() const {
-    return maxRequests_;
+    return maxRequests_.get();
   }
 
   /**
@@ -372,16 +376,20 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    *
    * @param maxRequests new setting for maximum # of active requests.
    */
-  void setMaxRequests(uint32_t maxRequests) {
-    maxRequests_ = maxRequests;
+  void setMaxRequests(
+      uint32_t maxRequests,
+      AttributeSource source = AttributeSource::OVERRIDE) {
+    maxRequests_.set(maxRequests, source);
   }
 
   uint64_t getMaxResponseSize() const override {
-    return maxResponseSize_;
+    return maxResponseSize_.get();
   }
 
-  void setMaxResponseSize(uint64_t size) {
-    maxResponseSize_ = size;
+  void setMaxResponseSize(
+      uint64_t size,
+      AttributeSource source = AttributeSource::OVERRIDE) {
+    maxResponseSize_.set(size, source);
   }
 
   /**
