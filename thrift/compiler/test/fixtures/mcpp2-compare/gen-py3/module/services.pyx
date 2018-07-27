@@ -1701,7 +1701,7 @@ async def ReturnService_readDataEb_coro(
             cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
         ))
     else:
-        promise.cPromise.setValue(make_unique[string](<string?> result))
+        promise.cPromise.setValue(((<__iobuf.IOBuf>result).c_clone()))
 
 cdef api void call_cy_ReturnService_readData(
     object self,
@@ -1752,7 +1752,7 @@ async def ReturnService_readData_coro(
             cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
         ))
     else:
-        promise.cPromise.setValue(make_unique[string](<string?> result))
+        promise.cPromise.setValue(make_unique[unique_ptr[__iobuf.cIOBuf]](((<__iobuf.IOBuf>result).c_clone())))
 
 cdef api void call_cy_ParamService_void_ret_i16_param(
     object self,

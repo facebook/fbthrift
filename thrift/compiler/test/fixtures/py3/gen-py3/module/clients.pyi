@@ -5,6 +5,7 @@
 #  @generated
 #
 
+from folly.iobuf import IOBuf as __IOBuf
 import thrift.py3.types
 import thrift.py3.client
 import thrift.py3.common

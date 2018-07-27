@@ -21,6 +21,9 @@ to create or return a Python object. For complex objects, a Python wrapper
 is initialized; for simple objects it can be returned directly. Strings need
 to be converted from unicode to binary representation.
 
+}}{{#type:iobuf?}}__iobuf.from_unique_ptr({{field:name}}.clone()){{/type:iobuf?}}{{!
+}}{{#type:iobufRef?}}__iobuf.from_unique_ptr(move_iobuf({{field:name}})){{/type:iobufRef?}}{{!
+}}{{^type:hasCustomTypeBehavior?}}{{!
 }}{{#type:bool?}}{{field:name}}{{/type:bool?}}{{!
 }}{{#type:byte?}}{{field:name}}{{/type:byte?}}{{!
 }}{{#type:i16?}}{{field:name}}{{/type:i16?}}{{!
@@ -34,4 +37,5 @@ to be converted from unicode to binary representation.
   }}make_shared[{{> types/CythonCppType}}]({{field:name}})){{/type:struct?}}{{!
 }}{{#type:container?}}{{> types/CythonPythonType}}.create({{!
   }}make_shared[{{> types/CythonCppType}}]({{field:name}})){{/type:container?}}{{!
-}}{{#type:enum?}}{{> types/CythonPythonType}}(<int> {{field:name}}){{/type:enum?}}
+}}{{#type:enum?}}{{> types/CythonPythonType}}(<int> {{field:name}}){{/type:enum?}}{{!
+}}{{/type:hasCustomTypeBehavior?}}

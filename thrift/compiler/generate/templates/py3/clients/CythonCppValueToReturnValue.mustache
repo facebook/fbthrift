@@ -19,6 +19,13 @@
 Used in cython client callbacks to convert the returned cpp value type
 to a python type.
 
+}}{{#type:iobuf?}}{{!
+  }}__iobuf.from_unique_ptr(result.value().clone()){{!
+}}{{/type:iobuf?}}{{!
+}}{{#type:iobufRef?}}{{!
+  }}__iobuf.from_unique_ptr(move_iobuf(result.value())){{!
+}}{{/type:iobufRef?}}{{!
+}}{{^type:hasCustomTypeBehavior?}}{{!
 }}{{#type:bool?}}<bint>result.value(){{/type:bool?}}{{!
 }}{{#type:byte?}}result.value(){{/type:byte?}}{{!
 }}{{#type:i16?}}result.value(){{/type:i16?}}{{!
@@ -35,4 +42,5 @@ to a python type.
   }}make_shared[{{> types/CythonCppType}}]({{!
   }}result.value())){{/type:container?}}{{!
 }}{{#type:void?}}None{{/type:void?}}{{!
-}}{{#type:enum}}{{> types/CythonPythonType}}(<int> result.value()){{/type:enum}}
+}}{{#type:enum}}{{> types/CythonPythonType}}(<int> result.value()){{/type:enum}}{{!
+}}{{/type:hasCustomTypeBehavior?}}

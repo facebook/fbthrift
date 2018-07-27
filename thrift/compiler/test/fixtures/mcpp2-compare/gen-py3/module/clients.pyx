@@ -302,7 +302,7 @@ cdef void ReturnService_readDataEb_callback(
         pyfuture.set_exception(create_py_exception(result.exception(), <__RpcOptions>options))
     else:
         try:
-            pyfuture.set_result(result.value())
+            pyfuture.set_result(__iobuf.from_unique_ptr(result.value().clone()))
         except Exception as ex:
             pyfuture.set_exception(ex.with_traceback(None))
 
@@ -315,7 +315,7 @@ cdef void ReturnService_readData_callback(
         pyfuture.set_exception(create_py_exception(result.exception(), <__RpcOptions>options))
     else:
         try:
-            pyfuture.set_result(result.value())
+            pyfuture.set_result(__iobuf.from_unique_ptr(move_iobuf(result.value())))
         except Exception as ex:
             pyfuture.set_exception(ex.with_traceback(None))
 

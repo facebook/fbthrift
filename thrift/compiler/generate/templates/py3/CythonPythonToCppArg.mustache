@@ -23,6 +23,9 @@ structures, some work is required.
 
 This template assumes that the Python object is in a variable named <field>.
 
+}}{{#type:iobuf?}}deref((<__iobuf.IOBuf>{{field:name}}).c_clone()){{/type:iobuf?}}{{!
+}}{{#type:iobufRef?}}((<__iobuf.IOBuf>{{field:name}}).c_clone()){{/type:iobufRef?}}{{!
+}}{{^type:hasCustomTypeBehavior?}}{{!
 }}{{#type:bool?}}{{field:name}}{{/type:bool?}}{{!
 }}{{#type:byte?}}{{field:name}}{{/type:byte?}}{{!
 }}{{#type:i16?}}{{field:name}}{{/type:i16?}}{{!
@@ -39,4 +42,5 @@ This template assumes that the Python object is in a variable named <field>.
   }}{{> types/CythonCppType}}({{!
   }}deref({{> types/CythonPythonType}}({{field:name}})._cpp_obj.get())){{!
 }}{{/type:container?}}{{!
-}}{{#type:enum}}{{> types/CythonPythonType}}_to_cpp({{field:name}}){{/type:enum}}
+}}{{#type:enum}}{{> types/CythonPythonType}}_to_cpp({{field:name}}){{/type:enum}}{{!
+}}{{/type:hasCustomTypeBehavior?}}

@@ -20,6 +20,16 @@ Called specifically when setting the result on a promise. It casts the Python
 value returned by the coroutine into the appropriate format to be returned
 to the client.
 
+}}{{#type:iobuf?}}{{!
+  }}{{#program:stack_arguments?}}deref{{/program:stack_arguments?}}{{!
+  }}((<__iobuf.IOBuf>result).c_clone()){{!
+}}{{/type:iobuf?}}{{!
+}}{{#type:iobufRef?}}{{!
+  }}{{^program:stack_arguments?}}make_unique[unique_ptr[__iobuf.cIOBuf]]({{/program:stack_arguments?}}{{!
+    }}((<__iobuf.IOBuf>result).c_clone()){{!
+  }}{{^program:stack_arguments?}}){{/program:stack_arguments?}}{{!
+}}{{/type:iobufRef?}}{{!
+}}{{^type:hasCustomTypeBehavior?}}{{!
 }}{{#type:bool?}}<cbool> result{{/type:bool?}}{{!
 }}{{#type:byte?}}<int8_t> result{{/type:byte?}}{{!
 }}{{#type:i16?}}<int16_t> result{{/type:i16?}}{{!
@@ -28,12 +38,12 @@ to the client.
 }}{{#type:double?}}<double> result{{/type:double?}}{{!
 }}{{#type:float?}}<float> result{{/type:float?}}{{!
 }}{{#type:string?}}{{!
-  }}{{^program:stack_arguments?}}make_unique[string]({{/program:stack_arguments?}}{{!
+  }}{{^program:stack_arguments?}}make_unique[{{> types/CythonCppType}}]({{/program:stack_arguments?}}{{!
     }}<string?> result.encode('UTF-8'){{!
   }}{{^program:stack_arguments?}}){{/program:stack_arguments?}}{{!
 }}{{/type:string?}}{{!
 }}{{#type:binary?}}{{!
-  }}{{^program:stack_arguments?}}make_unique[string]({{/program:stack_arguments?}}{{!
+  }}{{^program:stack_arguments?}}make_unique[{{> types/CythonCppType}}]({{/program:stack_arguments?}}{{!
     }}<string?> result{{!
   }}{{^program:stack_arguments?}}){{/program:stack_arguments?}}{{!
 }}{{/type:binary?}}{{!
@@ -48,4 +58,5 @@ to the client.
   }}{{^program:stack_arguments?}}){{/program:stack_arguments?}}{{!
 }}{{/type:container?}}{{!
 }}{{#type:void?}}c_unit{{/type:void?}}{{!
-}}{{#type:enum}}{{> types/CythonPythonType}}_to_cpp(result){{/type:enum}}
+}}{{#type:enum}}{{> types/CythonPythonType}}_to_cpp(result){{/type:enum}}{{!
+}}{{/type:hasCustomTypeBehavior?}}
