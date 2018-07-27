@@ -50,89 +50,96 @@ from module.services_wrapper cimport cParamServiceInterface
 
 
 cdef extern from "<utility>" namespace "std":
-    cdef cFollyPromise[unique_ptr[string]] move(cFollyPromise[unique_ptr[string]])
-    cdef cFollyPromise[cFollyUnit] move(
+    cdef cFollyPromise[cFollyUnit] move_promise_cFollyUnit "std::move"(
         cFollyPromise[cFollyUnit])
-    cdef cFollyPromise[cbool] move(
+    cdef cFollyPromise[cbool] move_promise_cbool "std::move"(
         cFollyPromise[cbool])
-    cdef cFollyPromise[int16_t] move(
+    cdef cFollyPromise[int16_t] move_promise_int16_t "std::move"(
         cFollyPromise[int16_t])
-    cdef cFollyPromise[int32_t] move(
+    cdef cFollyPromise[int32_t] move_promise_int32_t "std::move"(
         cFollyPromise[int32_t])
-    cdef cFollyPromise[int64_t] move(
+    cdef cFollyPromise[int64_t] move_promise_int64_t "std::move"(
         cFollyPromise[int64_t])
-    cdef cFollyPromise[float] move(
+    cdef cFollyPromise[float] move_promise_float "std::move"(
         cFollyPromise[float])
-    cdef cFollyPromise[double] move(
+    cdef cFollyPromise[double] move_promise_double "std::move"(
         cFollyPromise[double])
-    cdef cFollyPromise[unique_ptr[cmap[string,int64_t]]] move(
+    cdef cFollyPromise[unique_ptr[string]] move_promise_string "std::move"(
+        cFollyPromise[unique_ptr[string]])
+    cdef cFollyPromise[unique_ptr[string]] move_promise_binary "std::move"(
+        cFollyPromise[unique_ptr[string]])
+    cdef cFollyPromise[unique_ptr[cmap[string,int64_t]]] move_promise_cmap__string_int64_t "std::move"(
         cFollyPromise[unique_ptr[cmap[string,int64_t]]])
-    cdef cFollyPromise[unique_ptr[vector[cmap[_module_types.cEmpty,_module_types.cMyStruct]]]] move(
+    cdef cFollyPromise[unique_ptr[vector[cmap[_module_types.cEmpty,_module_types.cMyStruct]]]] move_promise_vector__cmap___module_types_cEmpty__module_types_cMyStruct "std::move"(
         cFollyPromise[unique_ptr[vector[cmap[_module_types.cEmpty,_module_types.cMyStruct]]]])
-    cdef cFollyPromise[unique_ptr[vector[vector[vector[cmap[_module_types.cEmpty,_module_types.cMyStruct]]]]]] move(
+    cdef cFollyPromise[unique_ptr[vector[vector[vector[cmap[_module_types.cEmpty,_module_types.cMyStruct]]]]]] move_promise_vector__vector__vector__cmap___module_types_cEmpty__module_types_cMyStruct "std::move"(
         cFollyPromise[unique_ptr[vector[vector[vector[cmap[_module_types.cEmpty,_module_types.cMyStruct]]]]]])
-    cdef cFollyPromise[_module_types.cMyEnumA] move(
+    cdef cFollyPromise[_module_types.cMyEnumA] move_promise__module_types_cMyEnumA "std::move"(
         cFollyPromise[_module_types.cMyEnumA])
-    cdef cFollyPromise[unique_ptr[vector[_module_types.cMyEnumA]]] move(
+    cdef cFollyPromise[unique_ptr[vector[_module_types.cMyEnumA]]] move_promise_vector___module_types_cMyEnumA "std::move"(
         cFollyPromise[unique_ptr[vector[_module_types.cMyEnumA]]])
-    cdef cFollyPromise[unique_ptr[_module_types.cMyStruct]] move(
+    cdef cFollyPromise[unique_ptr[_module_types.cMyStruct]] move_promise__module_types_cMyStruct "std::move"(
         cFollyPromise[unique_ptr[_module_types.cMyStruct]])
-    cdef cFollyPromise[unique_ptr[cset[_module_types.cMyStruct]]] move(
+    cdef cFollyPromise[unique_ptr[cset[_module_types.cMyStruct]]] move_promise_cset___module_types_cMyStruct "std::move"(
         cFollyPromise[unique_ptr[cset[_module_types.cMyStruct]]])
-    cdef cFollyPromise[unique_ptr[_module_types.cComplexUnion]] move(
+    cdef cFollyPromise[unique_ptr[_module_types.cComplexUnion]] move_promise__module_types_cComplexUnion "std::move"(
         cFollyPromise[unique_ptr[_module_types.cComplexUnion]])
-    cdef cFollyPromise[unique_ptr[vector[_module_types.cComplexUnion]]] move(
+    cdef cFollyPromise[unique_ptr[vector[_module_types.cComplexUnion]]] move_promise_vector___module_types_cComplexUnion "std::move"(
         cFollyPromise[unique_ptr[vector[_module_types.cComplexUnion]]])
-    cdef cFollyPromise[unique_ptr[vector[cbool]]] move(
+    cdef cFollyPromise[unique_ptr[__iobuf.cIOBuf]] move_promise___iobuf_cIOBuf "std::move"(
+        cFollyPromise[unique_ptr[__iobuf.cIOBuf]])
+    cdef cFollyPromise[unique_ptr[unique_ptr[__iobuf.cIOBuf]]] move_promise_unique_ptr__iobuf_cIOBuf "std::move"(
+        cFollyPromise[unique_ptr[unique_ptr[__iobuf.cIOBuf]]])
+    cdef cFollyPromise[unique_ptr[vector[cbool]]] move_promise_vector__cbool "std::move"(
         cFollyPromise[unique_ptr[vector[cbool]]])
-    cdef cFollyPromise[unique_ptr[cmap[cset[vector[int32_t]],cmap[vector[cset[string]],string]]]] move(
+    cdef cFollyPromise[unique_ptr[cmap[cset[vector[int32_t]],cmap[vector[cset[string]],string]]]] move_promise_cmap__cset__vector__int32_t_cmap__vector__cset__string_string "std::move"(
         cFollyPromise[unique_ptr[cmap[cset[vector[int32_t]],cmap[vector[cset[string]],string]]]])
-    cdef cFollyPromise[unique_ptr[vector[int32_t]]] move(
+    cdef cFollyPromise[unique_ptr[vector[int32_t]]] move_promise_vector__int32_t "std::move"(
         cFollyPromise[unique_ptr[vector[int32_t]]])
 
-cdef class Promise_void:
+cdef class Promise_cFollyUnit:
     cdef cFollyPromise[cFollyUnit] cPromise
 
     @staticmethod
     cdef create(cFollyPromise[cFollyUnit] cPromise):
-        inst = <Promise_void>Promise_void.__new__(Promise_void)
-        inst.cPromise = move(cPromise)
+        inst = <Promise_cFollyUnit>Promise_cFollyUnit.__new__(Promise_cFollyUnit)
+        inst.cPromise = move_promise_cFollyUnit(cPromise)
         return inst
 
-cdef class Promise_bool:
+cdef class Promise_cbool:
     cdef cFollyPromise[cbool] cPromise
 
     @staticmethod
     cdef create(cFollyPromise[cbool] cPromise):
-        inst = <Promise_bool>Promise_bool.__new__(Promise_bool)
-        inst.cPromise = move(cPromise)
+        inst = <Promise_cbool>Promise_cbool.__new__(Promise_cbool)
+        inst.cPromise = move_promise_cbool(cPromise)
         return inst
 
-cdef class Promise_i16:
+cdef class Promise_int16_t:
     cdef cFollyPromise[int16_t] cPromise
 
     @staticmethod
     cdef create(cFollyPromise[int16_t] cPromise):
-        inst = <Promise_i16>Promise_i16.__new__(Promise_i16)
-        inst.cPromise = move(cPromise)
+        inst = <Promise_int16_t>Promise_int16_t.__new__(Promise_int16_t)
+        inst.cPromise = move_promise_int16_t(cPromise)
         return inst
 
-cdef class Promise_i32:
+cdef class Promise_int32_t:
     cdef cFollyPromise[int32_t] cPromise
 
     @staticmethod
     cdef create(cFollyPromise[int32_t] cPromise):
-        inst = <Promise_i32>Promise_i32.__new__(Promise_i32)
-        inst.cPromise = move(cPromise)
+        inst = <Promise_int32_t>Promise_int32_t.__new__(Promise_int32_t)
+        inst.cPromise = move_promise_int32_t(cPromise)
         return inst
 
-cdef class Promise_i64:
+cdef class Promise_int64_t:
     cdef cFollyPromise[int64_t] cPromise
 
     @staticmethod
     cdef create(cFollyPromise[int64_t] cPromise):
-        inst = <Promise_i64>Promise_i64.__new__(Promise_i64)
-        inst.cPromise = move(cPromise)
+        inst = <Promise_int64_t>Promise_int64_t.__new__(Promise_int64_t)
+        inst.cPromise = move_promise_int64_t(cPromise)
         return inst
 
 cdef class Promise_float:
@@ -141,7 +148,7 @@ cdef class Promise_float:
     @staticmethod
     cdef create(cFollyPromise[float] cPromise):
         inst = <Promise_float>Promise_float.__new__(Promise_float)
-        inst.cPromise = move(cPromise)
+        inst.cPromise = move_promise_float(cPromise)
         return inst
 
 cdef class Promise_double:
@@ -150,7 +157,7 @@ cdef class Promise_double:
     @staticmethod
     cdef create(cFollyPromise[double] cPromise):
         inst = <Promise_double>Promise_double.__new__(Promise_double)
-        inst.cPromise = move(cPromise)
+        inst.cPromise = move_promise_double(cPromise)
         return inst
 
 cdef class Promise_string:
@@ -159,7 +166,7 @@ cdef class Promise_string:
     @staticmethod
     cdef create(cFollyPromise[unique_ptr[string]] cPromise):
         inst = <Promise_string>Promise_string.__new__(Promise_string)
-        inst.cPromise = move(cPromise)
+        inst.cPromise = move_promise_string(cPromise)
         return inst
 
 cdef class Promise_binary:
@@ -168,133 +175,133 @@ cdef class Promise_binary:
     @staticmethod
     cdef create(cFollyPromise[unique_ptr[string]] cPromise):
         inst = <Promise_binary>Promise_binary.__new__(Promise_binary)
-        inst.cPromise = move(cPromise)
+        inst.cPromise = move_promise_binary(cPromise)
         return inst
 
-cdef class Promise_Map__string_i64:
+cdef class Promise_cmap__string_int64_t:
     cdef cFollyPromise[unique_ptr[cmap[string,int64_t]]] cPromise
 
     @staticmethod
     cdef create(cFollyPromise[unique_ptr[cmap[string,int64_t]]] cPromise):
-        inst = <Promise_Map__string_i64>Promise_Map__string_i64.__new__(Promise_Map__string_i64)
-        inst.cPromise = move(cPromise)
+        inst = <Promise_cmap__string_int64_t>Promise_cmap__string_int64_t.__new__(Promise_cmap__string_int64_t)
+        inst.cPromise = move_promise_cmap__string_int64_t(cPromise)
         return inst
 
-cdef class Promise_List__Map__Empty_MyStruct:
+cdef class Promise_vector__cmap___module_types_cEmpty__module_types_cMyStruct:
     cdef cFollyPromise[unique_ptr[vector[cmap[_module_types.cEmpty,_module_types.cMyStruct]]]] cPromise
 
     @staticmethod
     cdef create(cFollyPromise[unique_ptr[vector[cmap[_module_types.cEmpty,_module_types.cMyStruct]]]] cPromise):
-        inst = <Promise_List__Map__Empty_MyStruct>Promise_List__Map__Empty_MyStruct.__new__(Promise_List__Map__Empty_MyStruct)
-        inst.cPromise = move(cPromise)
+        inst = <Promise_vector__cmap___module_types_cEmpty__module_types_cMyStruct>Promise_vector__cmap___module_types_cEmpty__module_types_cMyStruct.__new__(Promise_vector__cmap___module_types_cEmpty__module_types_cMyStruct)
+        inst.cPromise = move_promise_vector__cmap___module_types_cEmpty__module_types_cMyStruct(cPromise)
         return inst
 
-cdef class Promise_List__List__List__Map__Empty_MyStruct:
+cdef class Promise_vector__vector__vector__cmap___module_types_cEmpty__module_types_cMyStruct:
     cdef cFollyPromise[unique_ptr[vector[vector[vector[cmap[_module_types.cEmpty,_module_types.cMyStruct]]]]]] cPromise
 
     @staticmethod
     cdef create(cFollyPromise[unique_ptr[vector[vector[vector[cmap[_module_types.cEmpty,_module_types.cMyStruct]]]]]] cPromise):
-        inst = <Promise_List__List__List__Map__Empty_MyStruct>Promise_List__List__List__Map__Empty_MyStruct.__new__(Promise_List__List__List__Map__Empty_MyStruct)
-        inst.cPromise = move(cPromise)
+        inst = <Promise_vector__vector__vector__cmap___module_types_cEmpty__module_types_cMyStruct>Promise_vector__vector__vector__cmap___module_types_cEmpty__module_types_cMyStruct.__new__(Promise_vector__vector__vector__cmap___module_types_cEmpty__module_types_cMyStruct)
+        inst.cPromise = move_promise_vector__vector__vector__cmap___module_types_cEmpty__module_types_cMyStruct(cPromise)
         return inst
 
-cdef class Promise_MyEnumA:
+cdef class Promise__module_types_cMyEnumA:
     cdef cFollyPromise[_module_types.cMyEnumA] cPromise
 
     @staticmethod
     cdef create(cFollyPromise[_module_types.cMyEnumA] cPromise):
-        inst = <Promise_MyEnumA>Promise_MyEnumA.__new__(Promise_MyEnumA)
-        inst.cPromise = move(cPromise)
+        inst = <Promise__module_types_cMyEnumA>Promise__module_types_cMyEnumA.__new__(Promise__module_types_cMyEnumA)
+        inst.cPromise = move_promise__module_types_cMyEnumA(cPromise)
         return inst
 
-cdef class Promise_List__MyEnumA:
+cdef class Promise_vector___module_types_cMyEnumA:
     cdef cFollyPromise[unique_ptr[vector[_module_types.cMyEnumA]]] cPromise
 
     @staticmethod
     cdef create(cFollyPromise[unique_ptr[vector[_module_types.cMyEnumA]]] cPromise):
-        inst = <Promise_List__MyEnumA>Promise_List__MyEnumA.__new__(Promise_List__MyEnumA)
-        inst.cPromise = move(cPromise)
+        inst = <Promise_vector___module_types_cMyEnumA>Promise_vector___module_types_cMyEnumA.__new__(Promise_vector___module_types_cMyEnumA)
+        inst.cPromise = move_promise_vector___module_types_cMyEnumA(cPromise)
         return inst
 
-cdef class Promise_MyStruct:
+cdef class Promise__module_types_cMyStruct:
     cdef cFollyPromise[unique_ptr[_module_types.cMyStruct]] cPromise
 
     @staticmethod
     cdef create(cFollyPromise[unique_ptr[_module_types.cMyStruct]] cPromise):
-        inst = <Promise_MyStruct>Promise_MyStruct.__new__(Promise_MyStruct)
-        inst.cPromise = move(cPromise)
+        inst = <Promise__module_types_cMyStruct>Promise__module_types_cMyStruct.__new__(Promise__module_types_cMyStruct)
+        inst.cPromise = move_promise__module_types_cMyStruct(cPromise)
         return inst
 
-cdef class Promise_Set__MyStruct:
+cdef class Promise_cset___module_types_cMyStruct:
     cdef cFollyPromise[unique_ptr[cset[_module_types.cMyStruct]]] cPromise
 
     @staticmethod
     cdef create(cFollyPromise[unique_ptr[cset[_module_types.cMyStruct]]] cPromise):
-        inst = <Promise_Set__MyStruct>Promise_Set__MyStruct.__new__(Promise_Set__MyStruct)
-        inst.cPromise = move(cPromise)
+        inst = <Promise_cset___module_types_cMyStruct>Promise_cset___module_types_cMyStruct.__new__(Promise_cset___module_types_cMyStruct)
+        inst.cPromise = move_promise_cset___module_types_cMyStruct(cPromise)
         return inst
 
-cdef class Promise_ComplexUnion:
+cdef class Promise__module_types_cComplexUnion:
     cdef cFollyPromise[unique_ptr[_module_types.cComplexUnion]] cPromise
 
     @staticmethod
     cdef create(cFollyPromise[unique_ptr[_module_types.cComplexUnion]] cPromise):
-        inst = <Promise_ComplexUnion>Promise_ComplexUnion.__new__(Promise_ComplexUnion)
-        inst.cPromise = move(cPromise)
+        inst = <Promise__module_types_cComplexUnion>Promise__module_types_cComplexUnion.__new__(Promise__module_types_cComplexUnion)
+        inst.cPromise = move_promise__module_types_cComplexUnion(cPromise)
         return inst
 
-cdef class Promise_List__ComplexUnion:
+cdef class Promise_vector___module_types_cComplexUnion:
     cdef cFollyPromise[unique_ptr[vector[_module_types.cComplexUnion]]] cPromise
 
     @staticmethod
     cdef create(cFollyPromise[unique_ptr[vector[_module_types.cComplexUnion]]] cPromise):
-        inst = <Promise_List__ComplexUnion>Promise_List__ComplexUnion.__new__(Promise_List__ComplexUnion)
-        inst.cPromise = move(cPromise)
+        inst = <Promise_vector___module_types_cComplexUnion>Promise_vector___module_types_cComplexUnion.__new__(Promise_vector___module_types_cComplexUnion)
+        inst.cPromise = move_promise_vector___module_types_cComplexUnion(cPromise)
         return inst
 
-cdef class Promise_folly_IOBuf__binary:
+cdef class Promise___iobuf_cIOBuf:
     cdef cFollyPromise[unique_ptr[__iobuf.cIOBuf]] cPromise
 
     @staticmethod
     cdef create(cFollyPromise[unique_ptr[__iobuf.cIOBuf]] cPromise):
-        inst = <Promise_folly_IOBuf__binary>Promise_folly_IOBuf__binary.__new__(Promise_folly_IOBuf__binary)
-        inst.cPromise = move(cPromise)
+        inst = <Promise___iobuf_cIOBuf>Promise___iobuf_cIOBuf.__new__(Promise___iobuf_cIOBuf)
+        inst.cPromise = move_promise___iobuf_cIOBuf(cPromise)
         return inst
 
-cdef class Promise_std_unique_ptr_folly_IOBuf__binary:
+cdef class Promise_unique_ptr__iobuf_cIOBuf:
     cdef cFollyPromise[unique_ptr[unique_ptr[__iobuf.cIOBuf]]] cPromise
 
     @staticmethod
     cdef create(cFollyPromise[unique_ptr[unique_ptr[__iobuf.cIOBuf]]] cPromise):
-        inst = <Promise_std_unique_ptr_folly_IOBuf__binary>Promise_std_unique_ptr_folly_IOBuf__binary.__new__(Promise_std_unique_ptr_folly_IOBuf__binary)
-        inst.cPromise = move(cPromise)
+        inst = <Promise_unique_ptr__iobuf_cIOBuf>Promise_unique_ptr__iobuf_cIOBuf.__new__(Promise_unique_ptr__iobuf_cIOBuf)
+        inst.cPromise = move_promise_unique_ptr__iobuf_cIOBuf(cPromise)
         return inst
 
-cdef class Promise_List__bool:
+cdef class Promise_vector__cbool:
     cdef cFollyPromise[unique_ptr[vector[cbool]]] cPromise
 
     @staticmethod
     cdef create(cFollyPromise[unique_ptr[vector[cbool]]] cPromise):
-        inst = <Promise_List__bool>Promise_List__bool.__new__(Promise_List__bool)
-        inst.cPromise = move(cPromise)
+        inst = <Promise_vector__cbool>Promise_vector__cbool.__new__(Promise_vector__cbool)
+        inst.cPromise = move_promise_vector__cbool(cPromise)
         return inst
 
-cdef class Promise_Map__Set__List__i32_Map__List__Set__string_string:
+cdef class Promise_cmap__cset__vector__int32_t_cmap__vector__cset__string_string:
     cdef cFollyPromise[unique_ptr[cmap[cset[vector[int32_t]],cmap[vector[cset[string]],string]]]] cPromise
 
     @staticmethod
     cdef create(cFollyPromise[unique_ptr[cmap[cset[vector[int32_t]],cmap[vector[cset[string]],string]]]] cPromise):
-        inst = <Promise_Map__Set__List__i32_Map__List__Set__string_string>Promise_Map__Set__List__i32_Map__List__Set__string_string.__new__(Promise_Map__Set__List__i32_Map__List__Set__string_string)
-        inst.cPromise = move(cPromise)
+        inst = <Promise_cmap__cset__vector__int32_t_cmap__vector__cset__string_string>Promise_cmap__cset__vector__int32_t_cmap__vector__cset__string_string.__new__(Promise_cmap__cset__vector__int32_t_cmap__vector__cset__string_string)
+        inst.cPromise = move_promise_cmap__cset__vector__int32_t_cmap__vector__cset__string_string(cPromise)
         return inst
 
-cdef class Promise_List__i32:
+cdef class Promise_vector__int32_t:
     cdef cFollyPromise[unique_ptr[vector[int32_t]]] cPromise
 
     @staticmethod
     cdef create(cFollyPromise[unique_ptr[vector[int32_t]]] cPromise):
-        inst = <Promise_List__i32>Promise_List__i32.__new__(Promise_List__i32)
-        inst.cPromise = move(cPromise)
+        inst = <Promise_vector__int32_t>Promise_vector__int32_t.__new__(Promise_vector__int32_t)
+        inst.cPromise = move_promise_vector__int32_t(cPromise)
         return inst
 
 cdef object _EmptyService_annotations = _py_types.MappingProxyType({
@@ -791,7 +798,7 @@ cdef api void call_cy_ReturnService_noReturn(
 ):
     cdef ReturnServiceInterface __iface
     __iface = self
-    __promise = Promise_void.create(move(cPromise))
+    __promise = Promise_cFollyUnit.create(move_promise_cFollyUnit(cPromise))
     __context = None
     if __iface._pass_context_noReturn:
         __context = RequestContext.create(ctx)
@@ -806,7 +813,7 @@ cdef api void call_cy_ReturnService_noReturn(
 async def ReturnService_noReturn_coro(
     object self,
     object ctx,
-    Promise_void promise
+    Promise_cFollyUnit promise
 ):
     try:
         if ctx is not None:
@@ -836,7 +843,7 @@ cdef api void call_cy_ReturnService_boolReturn(
 ):
     cdef ReturnServiceInterface __iface
     __iface = self
-    __promise = Promise_bool.create(move(cPromise))
+    __promise = Promise_cbool.create(move_promise_cbool(cPromise))
     __context = None
     if __iface._pass_context_boolReturn:
         __context = RequestContext.create(ctx)
@@ -851,7 +858,7 @@ cdef api void call_cy_ReturnService_boolReturn(
 async def ReturnService_boolReturn_coro(
     object self,
     object ctx,
-    Promise_bool promise
+    Promise_cbool promise
 ):
     try:
         if ctx is not None:
@@ -881,7 +888,7 @@ cdef api void call_cy_ReturnService_i16Return(
 ):
     cdef ReturnServiceInterface __iface
     __iface = self
-    __promise = Promise_i16.create(move(cPromise))
+    __promise = Promise_int16_t.create(move_promise_int16_t(cPromise))
     __context = None
     if __iface._pass_context_i16Return:
         __context = RequestContext.create(ctx)
@@ -896,7 +903,7 @@ cdef api void call_cy_ReturnService_i16Return(
 async def ReturnService_i16Return_coro(
     object self,
     object ctx,
-    Promise_i16 promise
+    Promise_int16_t promise
 ):
     try:
         if ctx is not None:
@@ -926,7 +933,7 @@ cdef api void call_cy_ReturnService_i32Return(
 ):
     cdef ReturnServiceInterface __iface
     __iface = self
-    __promise = Promise_i32.create(move(cPromise))
+    __promise = Promise_int32_t.create(move_promise_int32_t(cPromise))
     __context = None
     if __iface._pass_context_i32Return:
         __context = RequestContext.create(ctx)
@@ -941,7 +948,7 @@ cdef api void call_cy_ReturnService_i32Return(
 async def ReturnService_i32Return_coro(
     object self,
     object ctx,
-    Promise_i32 promise
+    Promise_int32_t promise
 ):
     try:
         if ctx is not None:
@@ -971,7 +978,7 @@ cdef api void call_cy_ReturnService_i64Return(
 ):
     cdef ReturnServiceInterface __iface
     __iface = self
-    __promise = Promise_i64.create(move(cPromise))
+    __promise = Promise_int64_t.create(move_promise_int64_t(cPromise))
     __context = None
     if __iface._pass_context_i64Return:
         __context = RequestContext.create(ctx)
@@ -986,7 +993,7 @@ cdef api void call_cy_ReturnService_i64Return(
 async def ReturnService_i64Return_coro(
     object self,
     object ctx,
-    Promise_i64 promise
+    Promise_int64_t promise
 ):
     try:
         if ctx is not None:
@@ -1016,7 +1023,7 @@ cdef api void call_cy_ReturnService_floatReturn(
 ):
     cdef ReturnServiceInterface __iface
     __iface = self
-    __promise = Promise_float.create(move(cPromise))
+    __promise = Promise_float.create(move_promise_float(cPromise))
     __context = None
     if __iface._pass_context_floatReturn:
         __context = RequestContext.create(ctx)
@@ -1061,7 +1068,7 @@ cdef api void call_cy_ReturnService_doubleReturn(
 ):
     cdef ReturnServiceInterface __iface
     __iface = self
-    __promise = Promise_double.create(move(cPromise))
+    __promise = Promise_double.create(move_promise_double(cPromise))
     __context = None
     if __iface._pass_context_doubleReturn:
         __context = RequestContext.create(ctx)
@@ -1106,7 +1113,7 @@ cdef api void call_cy_ReturnService_stringReturn(
 ):
     cdef ReturnServiceInterface __iface
     __iface = self
-    __promise = Promise_string.create(move(cPromise))
+    __promise = Promise_string.create(move_promise_string(cPromise))
     __context = None
     if __iface._pass_context_stringReturn:
         __context = RequestContext.create(ctx)
@@ -1151,7 +1158,7 @@ cdef api void call_cy_ReturnService_binaryReturn(
 ):
     cdef ReturnServiceInterface __iface
     __iface = self
-    __promise = Promise_binary.create(move(cPromise))
+    __promise = Promise_binary.create(move_promise_binary(cPromise))
     __context = None
     if __iface._pass_context_binaryReturn:
         __context = RequestContext.create(ctx)
@@ -1196,7 +1203,7 @@ cdef api void call_cy_ReturnService_mapReturn(
 ):
     cdef ReturnServiceInterface __iface
     __iface = self
-    __promise = Promise_Map__string_i64.create(move(cPromise))
+    __promise = Promise_cmap__string_int64_t.create(move_promise_cmap__string_int64_t(cPromise))
     __context = None
     if __iface._pass_context_mapReturn:
         __context = RequestContext.create(ctx)
@@ -1211,7 +1218,7 @@ cdef api void call_cy_ReturnService_mapReturn(
 async def ReturnService_mapReturn_coro(
     object self,
     object ctx,
-    Promise_Map__string_i64 promise
+    Promise_cmap__string_int64_t promise
 ):
     try:
         if ctx is not None:
@@ -1242,7 +1249,7 @@ cdef api void call_cy_ReturnService_simpleTypedefReturn(
 ):
     cdef ReturnServiceInterface __iface
     __iface = self
-    __promise = Promise_i32.create(move(cPromise))
+    __promise = Promise_int32_t.create(move_promise_int32_t(cPromise))
     __context = None
     if __iface._pass_context_simpleTypedefReturn:
         __context = RequestContext.create(ctx)
@@ -1257,7 +1264,7 @@ cdef api void call_cy_ReturnService_simpleTypedefReturn(
 async def ReturnService_simpleTypedefReturn_coro(
     object self,
     object ctx,
-    Promise_i32 promise
+    Promise_int32_t promise
 ):
     try:
         if ctx is not None:
@@ -1287,7 +1294,7 @@ cdef api void call_cy_ReturnService_complexTypedefReturn(
 ):
     cdef ReturnServiceInterface __iface
     __iface = self
-    __promise = Promise_List__Map__Empty_MyStruct.create(move(cPromise))
+    __promise = Promise_vector__cmap___module_types_cEmpty__module_types_cMyStruct.create(move_promise_vector__cmap___module_types_cEmpty__module_types_cMyStruct(cPromise))
     __context = None
     if __iface._pass_context_complexTypedefReturn:
         __context = RequestContext.create(ctx)
@@ -1302,7 +1309,7 @@ cdef api void call_cy_ReturnService_complexTypedefReturn(
 async def ReturnService_complexTypedefReturn_coro(
     object self,
     object ctx,
-    Promise_List__Map__Empty_MyStruct promise
+    Promise_vector__cmap___module_types_cEmpty__module_types_cMyStruct promise
 ):
     try:
         if ctx is not None:
@@ -1333,7 +1340,7 @@ cdef api void call_cy_ReturnService_list_mostComplexTypedefReturn(
 ):
     cdef ReturnServiceInterface __iface
     __iface = self
-    __promise = Promise_List__List__List__Map__Empty_MyStruct.create(move(cPromise))
+    __promise = Promise_vector__vector__vector__cmap___module_types_cEmpty__module_types_cMyStruct.create(move_promise_vector__vector__vector__cmap___module_types_cEmpty__module_types_cMyStruct(cPromise))
     __context = None
     if __iface._pass_context_list_mostComplexTypedefReturn:
         __context = RequestContext.create(ctx)
@@ -1348,7 +1355,7 @@ cdef api void call_cy_ReturnService_list_mostComplexTypedefReturn(
 async def ReturnService_list_mostComplexTypedefReturn_coro(
     object self,
     object ctx,
-    Promise_List__List__List__Map__Empty_MyStruct promise
+    Promise_vector__vector__vector__cmap___module_types_cEmpty__module_types_cMyStruct promise
 ):
     try:
         if ctx is not None:
@@ -1379,7 +1386,7 @@ cdef api void call_cy_ReturnService_enumReturn(
 ):
     cdef ReturnServiceInterface __iface
     __iface = self
-    __promise = Promise_MyEnumA.create(move(cPromise))
+    __promise = Promise__module_types_cMyEnumA.create(move_promise__module_types_cMyEnumA(cPromise))
     __context = None
     if __iface._pass_context_enumReturn:
         __context = RequestContext.create(ctx)
@@ -1394,7 +1401,7 @@ cdef api void call_cy_ReturnService_enumReturn(
 async def ReturnService_enumReturn_coro(
     object self,
     object ctx,
-    Promise_MyEnumA promise
+    Promise__module_types_cMyEnumA promise
 ):
     try:
         if ctx is not None:
@@ -1424,7 +1431,7 @@ cdef api void call_cy_ReturnService_list_EnumReturn(
 ):
     cdef ReturnServiceInterface __iface
     __iface = self
-    __promise = Promise_List__MyEnumA.create(move(cPromise))
+    __promise = Promise_vector___module_types_cMyEnumA.create(move_promise_vector___module_types_cMyEnumA(cPromise))
     __context = None
     if __iface._pass_context_list_EnumReturn:
         __context = RequestContext.create(ctx)
@@ -1439,7 +1446,7 @@ cdef api void call_cy_ReturnService_list_EnumReturn(
 async def ReturnService_list_EnumReturn_coro(
     object self,
     object ctx,
-    Promise_List__MyEnumA promise
+    Promise_vector___module_types_cMyEnumA promise
 ):
     try:
         if ctx is not None:
@@ -1470,7 +1477,7 @@ cdef api void call_cy_ReturnService_structReturn(
 ):
     cdef ReturnServiceInterface __iface
     __iface = self
-    __promise = Promise_MyStruct.create(move(cPromise))
+    __promise = Promise__module_types_cMyStruct.create(move_promise__module_types_cMyStruct(cPromise))
     __context = None
     if __iface._pass_context_structReturn:
         __context = RequestContext.create(ctx)
@@ -1485,7 +1492,7 @@ cdef api void call_cy_ReturnService_structReturn(
 async def ReturnService_structReturn_coro(
     object self,
     object ctx,
-    Promise_MyStruct promise
+    Promise__module_types_cMyStruct promise
 ):
     try:
         if ctx is not None:
@@ -1515,7 +1522,7 @@ cdef api void call_cy_ReturnService_set_StructReturn(
 ):
     cdef ReturnServiceInterface __iface
     __iface = self
-    __promise = Promise_Set__MyStruct.create(move(cPromise))
+    __promise = Promise_cset___module_types_cMyStruct.create(move_promise_cset___module_types_cMyStruct(cPromise))
     __context = None
     if __iface._pass_context_set_StructReturn:
         __context = RequestContext.create(ctx)
@@ -1530,7 +1537,7 @@ cdef api void call_cy_ReturnService_set_StructReturn(
 async def ReturnService_set_StructReturn_coro(
     object self,
     object ctx,
-    Promise_Set__MyStruct promise
+    Promise_cset___module_types_cMyStruct promise
 ):
     try:
         if ctx is not None:
@@ -1561,7 +1568,7 @@ cdef api void call_cy_ReturnService_unionReturn(
 ):
     cdef ReturnServiceInterface __iface
     __iface = self
-    __promise = Promise_ComplexUnion.create(move(cPromise))
+    __promise = Promise__module_types_cComplexUnion.create(move_promise__module_types_cComplexUnion(cPromise))
     __context = None
     if __iface._pass_context_unionReturn:
         __context = RequestContext.create(ctx)
@@ -1576,7 +1583,7 @@ cdef api void call_cy_ReturnService_unionReturn(
 async def ReturnService_unionReturn_coro(
     object self,
     object ctx,
-    Promise_ComplexUnion promise
+    Promise__module_types_cComplexUnion promise
 ):
     try:
         if ctx is not None:
@@ -1606,7 +1613,7 @@ cdef api void call_cy_ReturnService_list_UnionReturn(
 ):
     cdef ReturnServiceInterface __iface
     __iface = self
-    __promise = Promise_List__ComplexUnion.create(move(cPromise))
+    __promise = Promise_vector___module_types_cComplexUnion.create(move_promise_vector___module_types_cComplexUnion(cPromise))
     __context = None
     if __iface._pass_context_list_UnionReturn:
         __context = RequestContext.create(ctx)
@@ -1621,7 +1628,7 @@ cdef api void call_cy_ReturnService_list_UnionReturn(
 async def ReturnService_list_UnionReturn_coro(
     object self,
     object ctx,
-    Promise_List__ComplexUnion promise
+    Promise_vector___module_types_cComplexUnion promise
 ):
     try:
         if ctx is not None:
@@ -1653,7 +1660,7 @@ cdef api void call_cy_ReturnService_readDataEb(
 ):
     cdef ReturnServiceInterface __iface
     __iface = self
-    __promise = Promise_folly_IOBuf__binary.create(move(cPromise))
+    __promise = Promise___iobuf_cIOBuf.create(move_promise___iobuf_cIOBuf(cPromise))
     arg_size = size
     __context = None
     if __iface._pass_context_readDataEb:
@@ -1670,7 +1677,7 @@ cdef api void call_cy_ReturnService_readDataEb(
 async def ReturnService_readDataEb_coro(
     object self,
     object ctx,
-    Promise_folly_IOBuf__binary promise,
+    Promise___iobuf_cIOBuf promise,
     size
 ):
     try:
@@ -1704,7 +1711,7 @@ cdef api void call_cy_ReturnService_readData(
 ):
     cdef ReturnServiceInterface __iface
     __iface = self
-    __promise = Promise_std_unique_ptr_folly_IOBuf__binary.create(move(cPromise))
+    __promise = Promise_unique_ptr__iobuf_cIOBuf.create(move_promise_unique_ptr__iobuf_cIOBuf(cPromise))
     arg_size = size
     __context = None
     if __iface._pass_context_readData:
@@ -1721,7 +1728,7 @@ cdef api void call_cy_ReturnService_readData(
 async def ReturnService_readData_coro(
     object self,
     object ctx,
-    Promise_std_unique_ptr_folly_IOBuf__binary promise,
+    Promise_unique_ptr__iobuf_cIOBuf promise,
     size
 ):
     try:
@@ -1755,7 +1762,7 @@ cdef api void call_cy_ParamService_void_ret_i16_param(
 ):
     cdef ParamServiceInterface __iface
     __iface = self
-    __promise = Promise_void.create(move(cPromise))
+    __promise = Promise_cFollyUnit.create(move_promise_cFollyUnit(cPromise))
     arg_param1 = param1
     __context = None
     if __iface._pass_context_void_ret_i16_param:
@@ -1772,7 +1779,7 @@ cdef api void call_cy_ParamService_void_ret_i16_param(
 async def ParamService_void_ret_i16_param_coro(
     object self,
     object ctx,
-    Promise_void promise,
+    Promise_cFollyUnit promise,
     param1
 ):
     try:
@@ -1807,7 +1814,7 @@ cdef api void call_cy_ParamService_void_ret_byte_i16_param(
 ):
     cdef ParamServiceInterface __iface
     __iface = self
-    __promise = Promise_void.create(move(cPromise))
+    __promise = Promise_cFollyUnit.create(move_promise_cFollyUnit(cPromise))
     arg_param1 = param1
     arg_param2 = param2
     __context = None
@@ -1826,7 +1833,7 @@ cdef api void call_cy_ParamService_void_ret_byte_i16_param(
 async def ParamService_void_ret_byte_i16_param_coro(
     object self,
     object ctx,
-    Promise_void promise,
+    Promise_cFollyUnit promise,
     param1,
     param2
 ):
@@ -1863,7 +1870,7 @@ cdef api void call_cy_ParamService_void_ret_map_param(
 ):
     cdef ParamServiceInterface __iface
     __iface = self
-    __promise = Promise_void.create(move(cPromise))
+    __promise = Promise_cFollyUnit.create(move_promise_cFollyUnit(cPromise))
     arg_param1 = _module_types.Map__string_i64.create(_module_types.move(param1))
     __context = None
     if __iface._pass_context_void_ret_map_param:
@@ -1880,7 +1887,7 @@ cdef api void call_cy_ParamService_void_ret_map_param(
 async def ParamService_void_ret_map_param_coro(
     object self,
     object ctx,
-    Promise_void promise,
+    Promise_cFollyUnit promise,
     param1
 ):
     try:
@@ -1915,7 +1922,7 @@ cdef api void call_cy_ParamService_void_ret_map_setlist_param(
 ):
     cdef ParamServiceInterface __iface
     __iface = self
-    __promise = Promise_void.create(move(cPromise))
+    __promise = Promise_cFollyUnit.create(move_promise_cFollyUnit(cPromise))
     arg_param1 = _module_types.Map__string_i64.create(_module_types.move(param1))
     arg_param2 = _module_types.Set__List__string.create(_module_types.move(param2))
     __context = None
@@ -1934,7 +1941,7 @@ cdef api void call_cy_ParamService_void_ret_map_setlist_param(
 async def ParamService_void_ret_map_setlist_param_coro(
     object self,
     object ctx,
-    Promise_void promise,
+    Promise_cFollyUnit promise,
     param1,
     param2
 ):
@@ -1971,7 +1978,7 @@ cdef api void call_cy_ParamService_void_ret_map_typedef_param(
 ):
     cdef ParamServiceInterface __iface
     __iface = self
-    __promise = Promise_void.create(move(cPromise))
+    __promise = Promise_cFollyUnit.create(move_promise_cFollyUnit(cPromise))
     arg_param1 = param1
     __context = None
     if __iface._pass_context_void_ret_map_typedef_param:
@@ -1988,7 +1995,7 @@ cdef api void call_cy_ParamService_void_ret_map_typedef_param(
 async def ParamService_void_ret_map_typedef_param_coro(
     object self,
     object ctx,
-    Promise_void promise,
+    Promise_cFollyUnit promise,
     param1
 ):
     try:
@@ -2022,7 +2029,7 @@ cdef api void call_cy_ParamService_void_ret_enum_param(
 ):
     cdef ParamServiceInterface __iface
     __iface = self
-    __promise = Promise_void.create(move(cPromise))
+    __promise = Promise_cFollyUnit.create(move_promise_cFollyUnit(cPromise))
     arg_param1 = _module_types.MyEnumA(<int> param1)
     __context = None
     if __iface._pass_context_void_ret_enum_param:
@@ -2039,7 +2046,7 @@ cdef api void call_cy_ParamService_void_ret_enum_param(
 async def ParamService_void_ret_enum_param_coro(
     object self,
     object ctx,
-    Promise_void promise,
+    Promise_cFollyUnit promise,
     param1
 ):
     try:
@@ -2073,7 +2080,7 @@ cdef api void call_cy_ParamService_void_ret_struct_param(
 ):
     cdef ParamServiceInterface __iface
     __iface = self
-    __promise = Promise_void.create(move(cPromise))
+    __promise = Promise_cFollyUnit.create(move_promise_cFollyUnit(cPromise))
     arg_param1 = _module_types.MyStruct.create(shared_ptr[_module_types.cMyStruct](param1.release()))
     __context = None
     if __iface._pass_context_void_ret_struct_param:
@@ -2090,7 +2097,7 @@ cdef api void call_cy_ParamService_void_ret_struct_param(
 async def ParamService_void_ret_struct_param_coro(
     object self,
     object ctx,
-    Promise_void promise,
+    Promise_cFollyUnit promise,
     param1
 ):
     try:
@@ -2124,7 +2131,7 @@ cdef api void call_cy_ParamService_void_ret_listunion_param(
 ):
     cdef ParamServiceInterface __iface
     __iface = self
-    __promise = Promise_void.create(move(cPromise))
+    __promise = Promise_cFollyUnit.create(move_promise_cFollyUnit(cPromise))
     arg_param1 = _module_types.List__ComplexUnion.create(_module_types.move(param1))
     __context = None
     if __iface._pass_context_void_ret_listunion_param:
@@ -2141,7 +2148,7 @@ cdef api void call_cy_ParamService_void_ret_listunion_param(
 async def ParamService_void_ret_listunion_param_coro(
     object self,
     object ctx,
-    Promise_void promise,
+    Promise_cFollyUnit promise,
     param1
 ):
     try:
@@ -2176,7 +2183,7 @@ cdef api void call_cy_ParamService_bool_ret_i32_i64_param(
 ):
     cdef ParamServiceInterface __iface
     __iface = self
-    __promise = Promise_bool.create(move(cPromise))
+    __promise = Promise_cbool.create(move_promise_cbool(cPromise))
     arg_param1 = param1
     arg_param2 = param2
     __context = None
@@ -2195,7 +2202,7 @@ cdef api void call_cy_ParamService_bool_ret_i32_i64_param(
 async def ParamService_bool_ret_i32_i64_param_coro(
     object self,
     object ctx,
-    Promise_bool promise,
+    Promise_cbool promise,
     param1,
     param2
 ):
@@ -2232,7 +2239,7 @@ cdef api void call_cy_ParamService_bool_ret_map_param(
 ):
     cdef ParamServiceInterface __iface
     __iface = self
-    __promise = Promise_bool.create(move(cPromise))
+    __promise = Promise_cbool.create(move_promise_cbool(cPromise))
     arg_param1 = _module_types.Map__string_i64.create(_module_types.move(param1))
     __context = None
     if __iface._pass_context_bool_ret_map_param:
@@ -2249,7 +2256,7 @@ cdef api void call_cy_ParamService_bool_ret_map_param(
 async def ParamService_bool_ret_map_param_coro(
     object self,
     object ctx,
-    Promise_bool promise,
+    Promise_cbool promise,
     param1
 ):
     try:
@@ -2283,7 +2290,7 @@ cdef api void call_cy_ParamService_bool_ret_union_param(
 ):
     cdef ParamServiceInterface __iface
     __iface = self
-    __promise = Promise_bool.create(move(cPromise))
+    __promise = Promise_cbool.create(move_promise_cbool(cPromise))
     arg_param1 = _module_types.ComplexUnion.create(shared_ptr[_module_types.cComplexUnion](param1.release()))
     __context = None
     if __iface._pass_context_bool_ret_union_param:
@@ -2300,7 +2307,7 @@ cdef api void call_cy_ParamService_bool_ret_union_param(
 async def ParamService_bool_ret_union_param_coro(
     object self,
     object ctx,
-    Promise_bool promise,
+    Promise_cbool promise,
     param1
 ):
     try:
@@ -2335,7 +2342,7 @@ cdef api void call_cy_ParamService_i64_ret_float_double_param(
 ):
     cdef ParamServiceInterface __iface
     __iface = self
-    __promise = Promise_i64.create(move(cPromise))
+    __promise = Promise_int64_t.create(move_promise_int64_t(cPromise))
     arg_param1 = param1
     arg_param2 = param2
     __context = None
@@ -2354,7 +2361,7 @@ cdef api void call_cy_ParamService_i64_ret_float_double_param(
 async def ParamService_i64_ret_float_double_param_coro(
     object self,
     object ctx,
-    Promise_i64 promise,
+    Promise_int64_t promise,
     param1,
     param2
 ):
@@ -2392,7 +2399,7 @@ cdef api void call_cy_ParamService_i64_ret_string_typedef_param(
 ):
     cdef ParamServiceInterface __iface
     __iface = self
-    __promise = Promise_i64.create(move(cPromise))
+    __promise = Promise_int64_t.create(move_promise_int64_t(cPromise))
     arg_param1 = (deref(param1.get())).decode('UTF-8')
     arg_param2 = _module_types.Set__List__List__Map__Empty_MyStruct.create(_module_types.move(param2))
     __context = None
@@ -2411,7 +2418,7 @@ cdef api void call_cy_ParamService_i64_ret_string_typedef_param(
 async def ParamService_i64_ret_string_typedef_param_coro(
     object self,
     object ctx,
-    Promise_i64 promise,
+    Promise_int64_t promise,
     param1,
     param2
 ):
@@ -2452,7 +2459,7 @@ cdef api void call_cy_ParamService_i64_ret_i32_i32_i32_i32_i32_param(
 ):
     cdef ParamServiceInterface __iface
     __iface = self
-    __promise = Promise_i64.create(move(cPromise))
+    __promise = Promise_int64_t.create(move_promise_int64_t(cPromise))
     arg_param1 = param1
     arg_param2 = param2
     arg_param3 = param3
@@ -2477,7 +2484,7 @@ cdef api void call_cy_ParamService_i64_ret_i32_i32_i32_i32_i32_param(
 async def ParamService_i64_ret_i32_i32_i32_i32_i32_param_coro(
     object self,
     object ctx,
-    Promise_i64 promise,
+    Promise_int64_t promise,
     param1,
     param2,
     param3,
@@ -2523,7 +2530,7 @@ cdef api void call_cy_ParamService_double_ret_setstruct_param(
 ):
     cdef ParamServiceInterface __iface
     __iface = self
-    __promise = Promise_double.create(move(cPromise))
+    __promise = Promise_double.create(move_promise_double(cPromise))
     arg_param1 = _module_types.Set__MyStruct.create(_module_types.move(param1))
     __context = None
     if __iface._pass_context_double_ret_setstruct_param:
@@ -2574,7 +2581,7 @@ cdef api void call_cy_ParamService_string_ret_string_param(
 ):
     cdef ParamServiceInterface __iface
     __iface = self
-    __promise = Promise_string.create(move(cPromise))
+    __promise = Promise_string.create(move_promise_string(cPromise))
     arg_param1 = (deref(param1.get())).decode('UTF-8')
     __context = None
     if __iface._pass_context_string_ret_string_param:
@@ -2625,7 +2632,7 @@ cdef api void call_cy_ParamService_binary_ret_binary_param(
 ):
     cdef ParamServiceInterface __iface
     __iface = self
-    __promise = Promise_binary.create(move(cPromise))
+    __promise = Promise_binary.create(move_promise_binary(cPromise))
     arg_param1 = (deref(param1.get()))
     __context = None
     if __iface._pass_context_binary_ret_binary_param:
@@ -2676,7 +2683,7 @@ cdef api void call_cy_ParamService_map_ret_bool_param(
 ):
     cdef ParamServiceInterface __iface
     __iface = self
-    __promise = Promise_Map__string_i64.create(move(cPromise))
+    __promise = Promise_cmap__string_int64_t.create(move_promise_cmap__string_int64_t(cPromise))
     arg_param1 = param1
     __context = None
     if __iface._pass_context_map_ret_bool_param:
@@ -2693,7 +2700,7 @@ cdef api void call_cy_ParamService_map_ret_bool_param(
 async def ParamService_map_ret_bool_param_coro(
     object self,
     object ctx,
-    Promise_Map__string_i64 promise,
+    Promise_cmap__string_int64_t promise,
     param1
 ):
     try:
@@ -2729,7 +2736,7 @@ cdef api void call_cy_ParamService_list_ret_map_setlist_param(
 ):
     cdef ParamServiceInterface __iface
     __iface = self
-    __promise = Promise_List__bool.create(move(cPromise))
+    __promise = Promise_vector__cbool.create(move_promise_vector__cbool(cPromise))
     arg_param1 = _module_types.Map__i32_List__string.create(_module_types.move(param1))
     arg_param2 = _module_types.List__string.create(_module_types.move(param2))
     __context = None
@@ -2748,7 +2755,7 @@ cdef api void call_cy_ParamService_list_ret_map_setlist_param(
 async def ParamService_list_ret_map_setlist_param_coro(
     object self,
     object ctx,
-    Promise_List__bool promise,
+    Promise_vector__cbool promise,
     param1,
     param2
 ):
@@ -2786,7 +2793,7 @@ cdef api void call_cy_ParamService_mapsetlistmapliststring_ret_listlistlist_para
 ):
     cdef ParamServiceInterface __iface
     __iface = self
-    __promise = Promise_Map__Set__List__i32_Map__List__Set__string_string.create(move(cPromise))
+    __promise = Promise_cmap__cset__vector__int32_t_cmap__vector__cset__string_string.create(move_promise_cmap__cset__vector__int32_t_cmap__vector__cset__string_string(cPromise))
     arg_param1 = _module_types.List__List__List__List__i32.create(_module_types.move(param1))
     __context = None
     if __iface._pass_context_mapsetlistmapliststring_ret_listlistlist_param:
@@ -2803,7 +2810,7 @@ cdef api void call_cy_ParamService_mapsetlistmapliststring_ret_listlistlist_para
 async def ParamService_mapsetlistmapliststring_ret_listlistlist_param_coro(
     object self,
     object ctx,
-    Promise_Map__Set__List__i32_Map__List__Set__string_string promise,
+    Promise_cmap__cset__vector__int32_t_cmap__vector__cset__string_string promise,
     param1
 ):
     try:
@@ -2838,7 +2845,7 @@ cdef api void call_cy_ParamService_typedef_ret_i32_param(
 ):
     cdef ParamServiceInterface __iface
     __iface = self
-    __promise = Promise_i32.create(move(cPromise))
+    __promise = Promise_int32_t.create(move_promise_int32_t(cPromise))
     arg_param1 = param1
     __context = None
     if __iface._pass_context_typedef_ret_i32_param:
@@ -2855,7 +2862,7 @@ cdef api void call_cy_ParamService_typedef_ret_i32_param(
 async def ParamService_typedef_ret_i32_param_coro(
     object self,
     object ctx,
-    Promise_i32 promise,
+    Promise_int32_t promise,
     param1
 ):
     try:
@@ -2889,7 +2896,7 @@ cdef api void call_cy_ParamService_listtypedef_ret_typedef_param(
 ):
     cdef ParamServiceInterface __iface
     __iface = self
-    __promise = Promise_List__i32.create(move(cPromise))
+    __promise = Promise_vector__int32_t.create(move_promise_vector__int32_t(cPromise))
     arg_param1 = _module_types.List__Map__Empty_MyStruct.create(_module_types.move(param1))
     __context = None
     if __iface._pass_context_listtypedef_ret_typedef_param:
@@ -2906,7 +2913,7 @@ cdef api void call_cy_ParamService_listtypedef_ret_typedef_param(
 async def ParamService_listtypedef_ret_typedef_param_coro(
     object self,
     object ctx,
-    Promise_List__i32 promise,
+    Promise_vector__int32_t promise,
     param1
 ):
     try:
@@ -2941,7 +2948,7 @@ cdef api void call_cy_ParamService_enum_ret_double_param(
 ):
     cdef ParamServiceInterface __iface
     __iface = self
-    __promise = Promise_MyEnumA.create(move(cPromise))
+    __promise = Promise__module_types_cMyEnumA.create(move_promise__module_types_cMyEnumA(cPromise))
     arg_param1 = param1
     __context = None
     if __iface._pass_context_enum_ret_double_param:
@@ -2958,7 +2965,7 @@ cdef api void call_cy_ParamService_enum_ret_double_param(
 async def ParamService_enum_ret_double_param_coro(
     object self,
     object ctx,
-    Promise_MyEnumA promise,
+    Promise__module_types_cMyEnumA promise,
     param1
 ):
     try:
@@ -2993,7 +3000,7 @@ cdef api void call_cy_ParamService_enum_ret_double_enum_param(
 ):
     cdef ParamServiceInterface __iface
     __iface = self
-    __promise = Promise_MyEnumA.create(move(cPromise))
+    __promise = Promise__module_types_cMyEnumA.create(move_promise__module_types_cMyEnumA(cPromise))
     arg_param1 = param1
     arg_param2 = _module_types.MyEnumA(<int> param2)
     __context = None
@@ -3012,7 +3019,7 @@ cdef api void call_cy_ParamService_enum_ret_double_enum_param(
 async def ParamService_enum_ret_double_enum_param_coro(
     object self,
     object ctx,
-    Promise_MyEnumA promise,
+    Promise__module_types_cMyEnumA promise,
     param1,
     param2
 ):
@@ -3049,7 +3056,7 @@ cdef api void call_cy_ParamService_listenum_ret_map_param(
 ):
     cdef ParamServiceInterface __iface
     __iface = self
-    __promise = Promise_List__MyEnumA.create(move(cPromise))
+    __promise = Promise_vector___module_types_cMyEnumA.create(move_promise_vector___module_types_cMyEnumA(cPromise))
     arg_param1 = _module_types.Map__string_i64.create(_module_types.move(param1))
     __context = None
     if __iface._pass_context_listenum_ret_map_param:
@@ -3066,7 +3073,7 @@ cdef api void call_cy_ParamService_listenum_ret_map_param(
 async def ParamService_listenum_ret_map_param_coro(
     object self,
     object ctx,
-    Promise_List__MyEnumA promise,
+    Promise_vector___module_types_cMyEnumA promise,
     param1
 ):
     try:
@@ -3101,7 +3108,7 @@ cdef api void call_cy_ParamService_struct_ret_i16_param(
 ):
     cdef ParamServiceInterface __iface
     __iface = self
-    __promise = Promise_MyStruct.create(move(cPromise))
+    __promise = Promise__module_types_cMyStruct.create(move_promise__module_types_cMyStruct(cPromise))
     arg_param1 = param1
     __context = None
     if __iface._pass_context_struct_ret_i16_param:
@@ -3118,7 +3125,7 @@ cdef api void call_cy_ParamService_struct_ret_i16_param(
 async def ParamService_struct_ret_i16_param_coro(
     object self,
     object ctx,
-    Promise_MyStruct promise,
+    Promise__module_types_cMyStruct promise,
     param1
 ):
     try:
@@ -3152,7 +3159,7 @@ cdef api void call_cy_ParamService_setstruct_ret_set_param(
 ):
     cdef ParamServiceInterface __iface
     __iface = self
-    __promise = Promise_Set__MyStruct.create(move(cPromise))
+    __promise = Promise_cset___module_types_cMyStruct.create(move_promise_cset___module_types_cMyStruct(cPromise))
     arg_param1 = _module_types.Set__string.create(_module_types.move(param1))
     __context = None
     if __iface._pass_context_setstruct_ret_set_param:
@@ -3169,7 +3176,7 @@ cdef api void call_cy_ParamService_setstruct_ret_set_param(
 async def ParamService_setstruct_ret_set_param_coro(
     object self,
     object ctx,
-    Promise_Set__MyStruct promise,
+    Promise_cset___module_types_cMyStruct promise,
     param1
 ):
     try:
@@ -3205,7 +3212,7 @@ cdef api void call_cy_ParamService_union_ret_i32_i32_param(
 ):
     cdef ParamServiceInterface __iface
     __iface = self
-    __promise = Promise_ComplexUnion.create(move(cPromise))
+    __promise = Promise__module_types_cComplexUnion.create(move_promise__module_types_cComplexUnion(cPromise))
     arg_param1 = param1
     arg_param2 = param2
     __context = None
@@ -3224,7 +3231,7 @@ cdef api void call_cy_ParamService_union_ret_i32_i32_param(
 async def ParamService_union_ret_i32_i32_param_coro(
     object self,
     object ctx,
-    Promise_ComplexUnion promise,
+    Promise__module_types_cComplexUnion promise,
     param1,
     param2
 ):
@@ -3261,7 +3268,7 @@ cdef api void call_cy_ParamService_listunion_string_param(
 ):
     cdef ParamServiceInterface __iface
     __iface = self
-    __promise = Promise_List__ComplexUnion.create(move(cPromise))
+    __promise = Promise_vector___module_types_cComplexUnion.create(move_promise_vector___module_types_cComplexUnion(cPromise))
     arg_param1 = (deref(param1.get())).decode('UTF-8')
     __context = None
     if __iface._pass_context_listunion_string_param:
@@ -3278,7 +3285,7 @@ cdef api void call_cy_ParamService_listunion_string_param(
 async def ParamService_listunion_string_param_coro(
     object self,
     object ctx,
-    Promise_List__ComplexUnion promise,
+    Promise_vector___module_types_cComplexUnion promise,
     param1
 ):
     try:

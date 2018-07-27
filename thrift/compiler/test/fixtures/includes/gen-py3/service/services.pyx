@@ -50,17 +50,16 @@ from service.services_wrapper cimport cMyServiceInterface
 
 
 cdef extern from "<utility>" namespace "std":
-    cdef cFollyPromise[unique_ptr[string]] move(cFollyPromise[unique_ptr[string]])
-    cdef cFollyPromise[cFollyUnit] move(
+    cdef cFollyPromise[cFollyUnit] move_promise_cFollyUnit "std::move"(
         cFollyPromise[cFollyUnit])
 
-cdef class Promise_void:
+cdef class Promise_cFollyUnit:
     cdef cFollyPromise[cFollyUnit] cPromise
 
     @staticmethod
     cdef create(cFollyPromise[cFollyUnit] cPromise):
-        inst = <Promise_void>Promise_void.__new__(Promise_void)
-        inst.cPromise = move(cPromise)
+        inst = <Promise_cFollyUnit>Promise_cFollyUnit.__new__(Promise_cFollyUnit)
+        inst.cPromise = move_promise_cFollyUnit(cPromise)
         return inst
 
 cdef object _MyService_annotations = _py_types.MappingProxyType({
@@ -108,7 +107,7 @@ cdef api void call_cy_MyService_query(
 ):
     cdef MyServiceInterface __iface
     __iface = self
-    __promise = Promise_void.create(move(cPromise))
+    __promise = Promise_cFollyUnit.create(move_promise_cFollyUnit(cPromise))
     arg_s = _module_types.MyStruct.create(shared_ptr[_module_types.cMyStruct](s.release()))
     arg_i = _includes_types.Included.create(shared_ptr[_includes_types.cIncluded](i.release()))
     __context = None
@@ -127,7 +126,7 @@ cdef api void call_cy_MyService_query(
 async def MyService_query_coro(
     object self,
     object ctx,
-    Promise_void promise,
+    Promise_cFollyUnit promise,
     s,
     i
 ):
@@ -165,7 +164,7 @@ cdef api void call_cy_MyService_has_arg_docs(
 ):
     cdef MyServiceInterface __iface
     __iface = self
-    __promise = Promise_void.create(move(cPromise))
+    __promise = Promise_cFollyUnit.create(move_promise_cFollyUnit(cPromise))
     arg_s = _module_types.MyStruct.create(shared_ptr[_module_types.cMyStruct](s.release()))
     arg_i = _includes_types.Included.create(shared_ptr[_includes_types.cIncluded](i.release()))
     __context = None
@@ -184,7 +183,7 @@ cdef api void call_cy_MyService_has_arg_docs(
 async def MyService_has_arg_docs_coro(
     object self,
     object ctx,
-    Promise_void promise,
+    Promise_cFollyUnit promise,
     s,
     i
 ):

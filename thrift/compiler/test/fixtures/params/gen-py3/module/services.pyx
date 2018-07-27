@@ -46,17 +46,16 @@ from module.services_wrapper cimport cNestedContainersInterface
 
 
 cdef extern from "<utility>" namespace "std":
-    cdef cFollyPromise[unique_ptr[string]] move(cFollyPromise[unique_ptr[string]])
-    cdef cFollyPromise[cFollyUnit] move(
+    cdef cFollyPromise[cFollyUnit] move_promise_cFollyUnit "std::move"(
         cFollyPromise[cFollyUnit])
 
-cdef class Promise_void:
+cdef class Promise_cFollyUnit:
     cdef cFollyPromise[cFollyUnit] cPromise
 
     @staticmethod
     cdef create(cFollyPromise[cFollyUnit] cPromise):
-        inst = <Promise_void>Promise_void.__new__(Promise_void)
-        inst.cPromise = move(cPromise)
+        inst = <Promise_cFollyUnit>Promise_cFollyUnit.__new__(Promise_cFollyUnit)
+        inst.cPromise = move_promise_cFollyUnit(cPromise)
         return inst
 
 cdef object _NestedContainers_annotations = _py_types.MappingProxyType({
@@ -128,7 +127,7 @@ cdef api void call_cy_NestedContainers_mapList(
 ):
     cdef NestedContainersInterface __iface
     __iface = self
-    __promise = Promise_void.create(move(cPromise))
+    __promise = Promise_cFollyUnit.create(move_promise_cFollyUnit(cPromise))
     arg_foo = _module_types.Map__i32_List__i32.create(_module_types.move(foo))
     __context = None
     if __iface._pass_context_mapList:
@@ -145,7 +144,7 @@ cdef api void call_cy_NestedContainers_mapList(
 async def NestedContainers_mapList_coro(
     object self,
     object ctx,
-    Promise_void promise,
+    Promise_cFollyUnit promise,
     foo
 ):
     try:
@@ -179,7 +178,7 @@ cdef api void call_cy_NestedContainers_mapSet(
 ):
     cdef NestedContainersInterface __iface
     __iface = self
-    __promise = Promise_void.create(move(cPromise))
+    __promise = Promise_cFollyUnit.create(move_promise_cFollyUnit(cPromise))
     arg_foo = _module_types.Map__i32_Set__i32.create(_module_types.move(foo))
     __context = None
     if __iface._pass_context_mapSet:
@@ -196,7 +195,7 @@ cdef api void call_cy_NestedContainers_mapSet(
 async def NestedContainers_mapSet_coro(
     object self,
     object ctx,
-    Promise_void promise,
+    Promise_cFollyUnit promise,
     foo
 ):
     try:
@@ -230,7 +229,7 @@ cdef api void call_cy_NestedContainers_listMap(
 ):
     cdef NestedContainersInterface __iface
     __iface = self
-    __promise = Promise_void.create(move(cPromise))
+    __promise = Promise_cFollyUnit.create(move_promise_cFollyUnit(cPromise))
     arg_foo = _module_types.List__Map__i32_i32.create(_module_types.move(foo))
     __context = None
     if __iface._pass_context_listMap:
@@ -247,7 +246,7 @@ cdef api void call_cy_NestedContainers_listMap(
 async def NestedContainers_listMap_coro(
     object self,
     object ctx,
-    Promise_void promise,
+    Promise_cFollyUnit promise,
     foo
 ):
     try:
@@ -281,7 +280,7 @@ cdef api void call_cy_NestedContainers_listSet(
 ):
     cdef NestedContainersInterface __iface
     __iface = self
-    __promise = Promise_void.create(move(cPromise))
+    __promise = Promise_cFollyUnit.create(move_promise_cFollyUnit(cPromise))
     arg_foo = _module_types.List__Set__i32.create(_module_types.move(foo))
     __context = None
     if __iface._pass_context_listSet:
@@ -298,7 +297,7 @@ cdef api void call_cy_NestedContainers_listSet(
 async def NestedContainers_listSet_coro(
     object self,
     object ctx,
-    Promise_void promise,
+    Promise_cFollyUnit promise,
     foo
 ):
     try:
@@ -332,7 +331,7 @@ cdef api void call_cy_NestedContainers_turtles(
 ):
     cdef NestedContainersInterface __iface
     __iface = self
-    __promise = Promise_void.create(move(cPromise))
+    __promise = Promise_cFollyUnit.create(move_promise_cFollyUnit(cPromise))
     arg_foo = _module_types.List__List__Map__i32_Map__i32_Set__i32.create(_module_types.move(foo))
     __context = None
     if __iface._pass_context_turtles:
@@ -349,7 +348,7 @@ cdef api void call_cy_NestedContainers_turtles(
 async def NestedContainers_turtles_coro(
     object self,
     object ctx,
-    Promise_void promise,
+    Promise_cFollyUnit promise,
     foo
 ):
     try:

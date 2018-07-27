@@ -47,7 +47,7 @@ cdef api void call_cy_{{service:name}}_{{function:name}}(
 ):{{! Gets called from a python Executor }}
     cdef {{service:name}}Interface __iface
     __iface = self
-    __promise = Promise_{{#function:returnType}}{{type:flat_name}}{{/function:returnType}}.create(move(cPromise))
+    __promise = Promise_{{#function:returnType}}{{> types/CythonCppTypeIdent}}{{/function:returnType}}.create(move_promise_{{#function:returnType}}{{> types/CythonCppTypeIdent}}{{/function:returnType}}(cPromise))
     {{#function:args}}
     arg_{{field:name}} = {{#field:type}}{{!
             }}{{^program:stack_arguments?}}{{> CythonCppToPython}}{{/program:stack_arguments?}}{{!
@@ -69,7 +69,11 @@ cdef api void call_cy_{{service:name}}_{{function:name}}(
 async def {{service:name}}_{{function:name}}_coro(
     object self,
     object ctx,
-    Promise_{{#function:returnType}}{{type:flat_name}}{{/function:returnType}}{{!
+    Promise_{{#function:returnType}}{{> types/CythonCppTypeIdent}}{{/function:returnType}}{{!
+
+
+
+
     }} promise{{#function:args}},
     {{field:name}}{{/function:args}}
 ):

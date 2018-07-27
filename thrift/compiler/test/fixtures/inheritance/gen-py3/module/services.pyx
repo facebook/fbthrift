@@ -48,17 +48,16 @@ from module.services_wrapper cimport cMyLeafInterface
 
 
 cdef extern from "<utility>" namespace "std":
-    cdef cFollyPromise[unique_ptr[string]] move(cFollyPromise[unique_ptr[string]])
-    cdef cFollyPromise[cFollyUnit] move(
+    cdef cFollyPromise[cFollyUnit] move_promise_cFollyUnit "std::move"(
         cFollyPromise[cFollyUnit])
 
-cdef class Promise_void:
+cdef class Promise_cFollyUnit:
     cdef cFollyPromise[cFollyUnit] cPromise
 
     @staticmethod
     cdef create(cFollyPromise[cFollyUnit] cPromise):
-        inst = <Promise_void>Promise_void.__new__(Promise_void)
-        inst.cPromise = move(cPromise)
+        inst = <Promise_cFollyUnit>Promise_cFollyUnit.__new__(Promise_cFollyUnit)
+        inst.cPromise = move_promise_cFollyUnit(cPromise)
         return inst
 
 cdef object _MyRoot_annotations = _py_types.MappingProxyType({
@@ -136,7 +135,7 @@ cdef api void call_cy_MyRoot_do_root(
 ):
     cdef MyRootInterface __iface
     __iface = self
-    __promise = Promise_void.create(move(cPromise))
+    __promise = Promise_cFollyUnit.create(move_promise_cFollyUnit(cPromise))
     __context = None
     if __iface._pass_context_do_root:
         __context = RequestContext.create(ctx)
@@ -151,7 +150,7 @@ cdef api void call_cy_MyRoot_do_root(
 async def MyRoot_do_root_coro(
     object self,
     object ctx,
-    Promise_void promise
+    Promise_cFollyUnit promise
 ):
     try:
         if ctx is not None:
@@ -181,7 +180,7 @@ cdef api void call_cy_MyNode_do_mid(
 ):
     cdef MyNodeInterface __iface
     __iface = self
-    __promise = Promise_void.create(move(cPromise))
+    __promise = Promise_cFollyUnit.create(move_promise_cFollyUnit(cPromise))
     __context = None
     if __iface._pass_context_do_mid:
         __context = RequestContext.create(ctx)
@@ -196,7 +195,7 @@ cdef api void call_cy_MyNode_do_mid(
 async def MyNode_do_mid_coro(
     object self,
     object ctx,
-    Promise_void promise
+    Promise_cFollyUnit promise
 ):
     try:
         if ctx is not None:
@@ -226,7 +225,7 @@ cdef api void call_cy_MyLeaf_do_leaf(
 ):
     cdef MyLeafInterface __iface
     __iface = self
-    __promise = Promise_void.create(move(cPromise))
+    __promise = Promise_cFollyUnit.create(move_promise_cFollyUnit(cPromise))
     __context = None
     if __iface._pass_context_do_leaf:
         __context = RequestContext.create(ctx)
@@ -241,7 +240,7 @@ cdef api void call_cy_MyLeaf_do_leaf(
 async def MyLeaf_do_leaf_coro(
     object self,
     object ctx,
-    Promise_void promise
+    Promise_cFollyUnit promise
 ):
     try:
         if ctx is not None:

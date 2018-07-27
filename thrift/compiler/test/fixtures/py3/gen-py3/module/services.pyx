@@ -48,60 +48,63 @@ from module.services_wrapper cimport cRederivedServiceInterface
 
 
 cdef extern from "<utility>" namespace "std":
-    cdef cFollyPromise[unique_ptr[string]] move(cFollyPromise[unique_ptr[string]])
-    cdef cFollyPromise[int32_t] move(
+    cdef cFollyPromise[int32_t] move_promise_int32_t "std::move"(
         cFollyPromise[int32_t])
-    cdef cFollyPromise[cFollyUnit] move(
+    cdef cFollyPromise[cFollyUnit] move_promise_cFollyUnit "std::move"(
         cFollyPromise[cFollyUnit])
-    cdef cFollyPromise[cbool] move(
+    cdef cFollyPromise[unique_ptr[string]] move_promise_string "std::move"(
+        cFollyPromise[unique_ptr[string]])
+    cdef cFollyPromise[cbool] move_promise_cbool "std::move"(
         cFollyPromise[cbool])
-    cdef cFollyPromise[int8_t] move(
+    cdef cFollyPromise[int8_t] move_promise_int8_t "std::move"(
         cFollyPromise[int8_t])
-    cdef cFollyPromise[int16_t] move(
+    cdef cFollyPromise[int16_t] move_promise_int16_t "std::move"(
         cFollyPromise[int16_t])
-    cdef cFollyPromise[int64_t] move(
+    cdef cFollyPromise[int64_t] move_promise_int64_t "std::move"(
         cFollyPromise[int64_t])
-    cdef cFollyPromise[double] move(
+    cdef cFollyPromise[double] move_promise_double "std::move"(
         cFollyPromise[double])
-    cdef cFollyPromise[unique_ptr[_module_types.cSimpleStruct]] move(
+    cdef cFollyPromise[unique_ptr[_module_types.cSimpleStruct]] move_promise__module_types_cSimpleStruct "std::move"(
         cFollyPromise[unique_ptr[_module_types.cSimpleStruct]])
-    cdef cFollyPromise[unique_ptr[vector[int32_t]]] move(
+    cdef cFollyPromise[unique_ptr[vector[int32_t]]] move_promise_vector__int32_t "std::move"(
         cFollyPromise[unique_ptr[vector[int32_t]]])
-    cdef cFollyPromise[unique_ptr[cset[string]]] move(
+    cdef cFollyPromise[unique_ptr[cset[string]]] move_promise_cset__string "std::move"(
         cFollyPromise[unique_ptr[cset[string]]])
-    cdef cFollyPromise[unique_ptr[cmap[string,int16_t]]] move(
+    cdef cFollyPromise[unique_ptr[cmap[string,int16_t]]] move_promise_cmap__string_int16_t "std::move"(
         cFollyPromise[unique_ptr[cmap[string,int16_t]]])
-    cdef cFollyPromise[_module_types.cAnEnum] move(
+    cdef cFollyPromise[_module_types.cAnEnum] move_promise__module_types_cAnEnum "std::move"(
         cFollyPromise[_module_types.cAnEnum])
-    cdef cFollyPromise[unique_ptr[vector[vector[int32_t]]]] move(
+    cdef cFollyPromise[unique_ptr[vector[vector[int32_t]]]] move_promise_vector__vector__int32_t "std::move"(
         cFollyPromise[unique_ptr[vector[vector[int32_t]]]])
-    cdef cFollyPromise[unique_ptr[cmap[string,cmap[string,int32_t]]]] move(
+    cdef cFollyPromise[unique_ptr[cmap[string,cmap[string,int32_t]]]] move_promise_cmap__string_cmap__string_int32_t "std::move"(
         cFollyPromise[unique_ptr[cmap[string,cmap[string,int32_t]]]])
-    cdef cFollyPromise[unique_ptr[vector[cset[string]]]] move(
+    cdef cFollyPromise[unique_ptr[vector[cset[string]]]] move_promise_vector__cset__string "std::move"(
         cFollyPromise[unique_ptr[vector[cset[string]]]])
-    cdef cFollyPromise[unique_ptr[cset[int32_t]]] move(
+    cdef cFollyPromise[unique_ptr[cset[int32_t]]] move_promise_cset__int32_t "std::move"(
         cFollyPromise[unique_ptr[cset[int32_t]]])
-    cdef cFollyPromise[unique_ptr[cset[string]]] move(
+    cdef cFollyPromise[unique_ptr[string]] move_promise_binary "std::move"(
+        cFollyPromise[unique_ptr[string]])
+    cdef cFollyPromise[unique_ptr[cset[string]]] move_promise_cset__binary "std::move"(
         cFollyPromise[unique_ptr[cset[string]]])
-    cdef cFollyPromise[unique_ptr[vector[_module_types.cAnEnum]]] move(
+    cdef cFollyPromise[unique_ptr[vector[_module_types.cAnEnum]]] move_promise_vector___module_types_cAnEnum "std::move"(
         cFollyPromise[unique_ptr[vector[_module_types.cAnEnum]]])
 
-cdef class Promise_i32:
+cdef class Promise_int32_t:
     cdef cFollyPromise[int32_t] cPromise
 
     @staticmethod
     cdef create(cFollyPromise[int32_t] cPromise):
-        inst = <Promise_i32>Promise_i32.__new__(Promise_i32)
-        inst.cPromise = move(cPromise)
+        inst = <Promise_int32_t>Promise_int32_t.__new__(Promise_int32_t)
+        inst.cPromise = move_promise_int32_t(cPromise)
         return inst
 
-cdef class Promise_void:
+cdef class Promise_cFollyUnit:
     cdef cFollyPromise[cFollyUnit] cPromise
 
     @staticmethod
     cdef create(cFollyPromise[cFollyUnit] cPromise):
-        inst = <Promise_void>Promise_void.__new__(Promise_void)
-        inst.cPromise = move(cPromise)
+        inst = <Promise_cFollyUnit>Promise_cFollyUnit.__new__(Promise_cFollyUnit)
+        inst.cPromise = move_promise_cFollyUnit(cPromise)
         return inst
 
 cdef class Promise_string:
@@ -110,43 +113,43 @@ cdef class Promise_string:
     @staticmethod
     cdef create(cFollyPromise[unique_ptr[string]] cPromise):
         inst = <Promise_string>Promise_string.__new__(Promise_string)
-        inst.cPromise = move(cPromise)
+        inst.cPromise = move_promise_string(cPromise)
         return inst
 
-cdef class Promise_bool:
+cdef class Promise_cbool:
     cdef cFollyPromise[cbool] cPromise
 
     @staticmethod
     cdef create(cFollyPromise[cbool] cPromise):
-        inst = <Promise_bool>Promise_bool.__new__(Promise_bool)
-        inst.cPromise = move(cPromise)
+        inst = <Promise_cbool>Promise_cbool.__new__(Promise_cbool)
+        inst.cPromise = move_promise_cbool(cPromise)
         return inst
 
-cdef class Promise_byte:
+cdef class Promise_int8_t:
     cdef cFollyPromise[int8_t] cPromise
 
     @staticmethod
     cdef create(cFollyPromise[int8_t] cPromise):
-        inst = <Promise_byte>Promise_byte.__new__(Promise_byte)
-        inst.cPromise = move(cPromise)
+        inst = <Promise_int8_t>Promise_int8_t.__new__(Promise_int8_t)
+        inst.cPromise = move_promise_int8_t(cPromise)
         return inst
 
-cdef class Promise_i16:
+cdef class Promise_int16_t:
     cdef cFollyPromise[int16_t] cPromise
 
     @staticmethod
     cdef create(cFollyPromise[int16_t] cPromise):
-        inst = <Promise_i16>Promise_i16.__new__(Promise_i16)
-        inst.cPromise = move(cPromise)
+        inst = <Promise_int16_t>Promise_int16_t.__new__(Promise_int16_t)
+        inst.cPromise = move_promise_int16_t(cPromise)
         return inst
 
-cdef class Promise_i64:
+cdef class Promise_int64_t:
     cdef cFollyPromise[int64_t] cPromise
 
     @staticmethod
     cdef create(cFollyPromise[int64_t] cPromise):
-        inst = <Promise_i64>Promise_i64.__new__(Promise_i64)
-        inst.cPromise = move(cPromise)
+        inst = <Promise_int64_t>Promise_int64_t.__new__(Promise_int64_t)
+        inst.cPromise = move_promise_int64_t(cPromise)
         return inst
 
 cdef class Promise_double:
@@ -155,88 +158,88 @@ cdef class Promise_double:
     @staticmethod
     cdef create(cFollyPromise[double] cPromise):
         inst = <Promise_double>Promise_double.__new__(Promise_double)
-        inst.cPromise = move(cPromise)
+        inst.cPromise = move_promise_double(cPromise)
         return inst
 
-cdef class Promise_SimpleStruct:
+cdef class Promise__module_types_cSimpleStruct:
     cdef cFollyPromise[unique_ptr[_module_types.cSimpleStruct]] cPromise
 
     @staticmethod
     cdef create(cFollyPromise[unique_ptr[_module_types.cSimpleStruct]] cPromise):
-        inst = <Promise_SimpleStruct>Promise_SimpleStruct.__new__(Promise_SimpleStruct)
-        inst.cPromise = move(cPromise)
+        inst = <Promise__module_types_cSimpleStruct>Promise__module_types_cSimpleStruct.__new__(Promise__module_types_cSimpleStruct)
+        inst.cPromise = move_promise__module_types_cSimpleStruct(cPromise)
         return inst
 
-cdef class Promise_List__i32:
+cdef class Promise_vector__int32_t:
     cdef cFollyPromise[unique_ptr[vector[int32_t]]] cPromise
 
     @staticmethod
     cdef create(cFollyPromise[unique_ptr[vector[int32_t]]] cPromise):
-        inst = <Promise_List__i32>Promise_List__i32.__new__(Promise_List__i32)
-        inst.cPromise = move(cPromise)
+        inst = <Promise_vector__int32_t>Promise_vector__int32_t.__new__(Promise_vector__int32_t)
+        inst.cPromise = move_promise_vector__int32_t(cPromise)
         return inst
 
-cdef class Promise_Set__string:
+cdef class Promise_cset__string:
     cdef cFollyPromise[unique_ptr[cset[string]]] cPromise
 
     @staticmethod
     cdef create(cFollyPromise[unique_ptr[cset[string]]] cPromise):
-        inst = <Promise_Set__string>Promise_Set__string.__new__(Promise_Set__string)
-        inst.cPromise = move(cPromise)
+        inst = <Promise_cset__string>Promise_cset__string.__new__(Promise_cset__string)
+        inst.cPromise = move_promise_cset__string(cPromise)
         return inst
 
-cdef class Promise_Map__string_i16:
+cdef class Promise_cmap__string_int16_t:
     cdef cFollyPromise[unique_ptr[cmap[string,int16_t]]] cPromise
 
     @staticmethod
     cdef create(cFollyPromise[unique_ptr[cmap[string,int16_t]]] cPromise):
-        inst = <Promise_Map__string_i16>Promise_Map__string_i16.__new__(Promise_Map__string_i16)
-        inst.cPromise = move(cPromise)
+        inst = <Promise_cmap__string_int16_t>Promise_cmap__string_int16_t.__new__(Promise_cmap__string_int16_t)
+        inst.cPromise = move_promise_cmap__string_int16_t(cPromise)
         return inst
 
-cdef class Promise_AnEnum:
+cdef class Promise__module_types_cAnEnum:
     cdef cFollyPromise[_module_types.cAnEnum] cPromise
 
     @staticmethod
     cdef create(cFollyPromise[_module_types.cAnEnum] cPromise):
-        inst = <Promise_AnEnum>Promise_AnEnum.__new__(Promise_AnEnum)
-        inst.cPromise = move(cPromise)
+        inst = <Promise__module_types_cAnEnum>Promise__module_types_cAnEnum.__new__(Promise__module_types_cAnEnum)
+        inst.cPromise = move_promise__module_types_cAnEnum(cPromise)
         return inst
 
-cdef class Promise_List__List__i32:
+cdef class Promise_vector__vector__int32_t:
     cdef cFollyPromise[unique_ptr[vector[vector[int32_t]]]] cPromise
 
     @staticmethod
     cdef create(cFollyPromise[unique_ptr[vector[vector[int32_t]]]] cPromise):
-        inst = <Promise_List__List__i32>Promise_List__List__i32.__new__(Promise_List__List__i32)
-        inst.cPromise = move(cPromise)
+        inst = <Promise_vector__vector__int32_t>Promise_vector__vector__int32_t.__new__(Promise_vector__vector__int32_t)
+        inst.cPromise = move_promise_vector__vector__int32_t(cPromise)
         return inst
 
-cdef class Promise_Map__string_Map__string_i32:
+cdef class Promise_cmap__string_cmap__string_int32_t:
     cdef cFollyPromise[unique_ptr[cmap[string,cmap[string,int32_t]]]] cPromise
 
     @staticmethod
     cdef create(cFollyPromise[unique_ptr[cmap[string,cmap[string,int32_t]]]] cPromise):
-        inst = <Promise_Map__string_Map__string_i32>Promise_Map__string_Map__string_i32.__new__(Promise_Map__string_Map__string_i32)
-        inst.cPromise = move(cPromise)
+        inst = <Promise_cmap__string_cmap__string_int32_t>Promise_cmap__string_cmap__string_int32_t.__new__(Promise_cmap__string_cmap__string_int32_t)
+        inst.cPromise = move_promise_cmap__string_cmap__string_int32_t(cPromise)
         return inst
 
-cdef class Promise_List__Set__string:
+cdef class Promise_vector__cset__string:
     cdef cFollyPromise[unique_ptr[vector[cset[string]]]] cPromise
 
     @staticmethod
     cdef create(cFollyPromise[unique_ptr[vector[cset[string]]]] cPromise):
-        inst = <Promise_List__Set__string>Promise_List__Set__string.__new__(Promise_List__Set__string)
-        inst.cPromise = move(cPromise)
+        inst = <Promise_vector__cset__string>Promise_vector__cset__string.__new__(Promise_vector__cset__string)
+        inst.cPromise = move_promise_vector__cset__string(cPromise)
         return inst
 
-cdef class Promise_Set__i32:
+cdef class Promise_cset__int32_t:
     cdef cFollyPromise[unique_ptr[cset[int32_t]]] cPromise
 
     @staticmethod
     cdef create(cFollyPromise[unique_ptr[cset[int32_t]]] cPromise):
-        inst = <Promise_Set__i32>Promise_Set__i32.__new__(Promise_Set__i32)
-        inst.cPromise = move(cPromise)
+        inst = <Promise_cset__int32_t>Promise_cset__int32_t.__new__(Promise_cset__int32_t)
+        inst.cPromise = move_promise_cset__int32_t(cPromise)
         return inst
 
 cdef class Promise_binary:
@@ -245,25 +248,25 @@ cdef class Promise_binary:
     @staticmethod
     cdef create(cFollyPromise[unique_ptr[string]] cPromise):
         inst = <Promise_binary>Promise_binary.__new__(Promise_binary)
-        inst.cPromise = move(cPromise)
+        inst.cPromise = move_promise_binary(cPromise)
         return inst
 
-cdef class Promise_Set__binary:
+cdef class Promise_cset__binary:
     cdef cFollyPromise[unique_ptr[cset[string]]] cPromise
 
     @staticmethod
     cdef create(cFollyPromise[unique_ptr[cset[string]]] cPromise):
-        inst = <Promise_Set__binary>Promise_Set__binary.__new__(Promise_Set__binary)
-        inst.cPromise = move(cPromise)
+        inst = <Promise_cset__binary>Promise_cset__binary.__new__(Promise_cset__binary)
+        inst.cPromise = move_promise_cset__binary(cPromise)
         return inst
 
-cdef class Promise_List__AnEnum:
+cdef class Promise_vector___module_types_cAnEnum:
     cdef cFollyPromise[unique_ptr[vector[_module_types.cAnEnum]]] cPromise
 
     @staticmethod
     cdef create(cFollyPromise[unique_ptr[vector[_module_types.cAnEnum]]] cPromise):
-        inst = <Promise_List__AnEnum>Promise_List__AnEnum.__new__(Promise_List__AnEnum)
-        inst.cPromise = move(cPromise)
+        inst = <Promise_vector___module_types_cAnEnum>Promise_vector___module_types_cAnEnum.__new__(Promise_vector___module_types_cAnEnum)
+        inst.cPromise = move_promise_vector___module_types_cAnEnum(cPromise)
         return inst
 
 cdef object _SimpleService_annotations = _py_types.MappingProxyType({
@@ -692,7 +695,7 @@ cdef api void call_cy_SimpleService_get_five(
 ):
     cdef SimpleServiceInterface __iface
     __iface = self
-    __promise = Promise_i32.create(move(cPromise))
+    __promise = Promise_int32_t.create(move_promise_int32_t(cPromise))
     __context = None
     if __iface._pass_context_get_five:
         __context = RequestContext.create(ctx)
@@ -707,7 +710,7 @@ cdef api void call_cy_SimpleService_get_five(
 async def SimpleService_get_five_coro(
     object self,
     object ctx,
-    Promise_i32 promise
+    Promise_int32_t promise
 ):
     try:
         if ctx is not None:
@@ -738,7 +741,7 @@ cdef api void call_cy_SimpleService_add_five(
 ):
     cdef SimpleServiceInterface __iface
     __iface = self
-    __promise = Promise_i32.create(move(cPromise))
+    __promise = Promise_int32_t.create(move_promise_int32_t(cPromise))
     arg_num = num
     __context = None
     if __iface._pass_context_add_five:
@@ -755,7 +758,7 @@ cdef api void call_cy_SimpleService_add_five(
 async def SimpleService_add_five_coro(
     object self,
     object ctx,
-    Promise_i32 promise,
+    Promise_int32_t promise,
     num
 ):
     try:
@@ -788,7 +791,7 @@ cdef api void call_cy_SimpleService_do_nothing(
 ):
     cdef SimpleServiceInterface __iface
     __iface = self
-    __promise = Promise_void.create(move(cPromise))
+    __promise = Promise_cFollyUnit.create(move_promise_cFollyUnit(cPromise))
     __context = None
     if __iface._pass_context_do_nothing:
         __context = RequestContext.create(ctx)
@@ -803,7 +806,7 @@ cdef api void call_cy_SimpleService_do_nothing(
 async def SimpleService_do_nothing_coro(
     object self,
     object ctx,
-    Promise_void promise
+    Promise_cFollyUnit promise
 ):
     try:
         if ctx is not None:
@@ -835,7 +838,7 @@ cdef api void call_cy_SimpleService_concat(
 ):
     cdef SimpleServiceInterface __iface
     __iface = self
-    __promise = Promise_string.create(move(cPromise))
+    __promise = Promise_string.create(move_promise_string(cPromise))
     arg_first = (deref(first.get())).decode('UTF-8')
     arg_second = (deref(second.get())).decode('UTF-8')
     __context = None
@@ -891,7 +894,7 @@ cdef api void call_cy_SimpleService_get_value(
 ):
     cdef SimpleServiceInterface __iface
     __iface = self
-    __promise = Promise_i32.create(move(cPromise))
+    __promise = Promise_int32_t.create(move_promise_int32_t(cPromise))
     arg_simple_struct = _module_types.SimpleStruct.create(shared_ptr[_module_types.cSimpleStruct](simple_struct.release()))
     __context = None
     if __iface._pass_context_get_value:
@@ -908,7 +911,7 @@ cdef api void call_cy_SimpleService_get_value(
 async def SimpleService_get_value_coro(
     object self,
     object ctx,
-    Promise_i32 promise,
+    Promise_int32_t promise,
     simple_struct
 ):
     try:
@@ -942,7 +945,7 @@ cdef api void call_cy_SimpleService_negate(
 ):
     cdef SimpleServiceInterface __iface
     __iface = self
-    __promise = Promise_bool.create(move(cPromise))
+    __promise = Promise_cbool.create(move_promise_cbool(cPromise))
     arg_input = input
     __context = None
     if __iface._pass_context_negate:
@@ -959,7 +962,7 @@ cdef api void call_cy_SimpleService_negate(
 async def SimpleService_negate_coro(
     object self,
     object ctx,
-    Promise_bool promise,
+    Promise_cbool promise,
     input
 ):
     try:
@@ -993,7 +996,7 @@ cdef api void call_cy_SimpleService_tiny(
 ):
     cdef SimpleServiceInterface __iface
     __iface = self
-    __promise = Promise_byte.create(move(cPromise))
+    __promise = Promise_int8_t.create(move_promise_int8_t(cPromise))
     arg_input = input
     __context = None
     if __iface._pass_context_tiny:
@@ -1010,7 +1013,7 @@ cdef api void call_cy_SimpleService_tiny(
 async def SimpleService_tiny_coro(
     object self,
     object ctx,
-    Promise_byte promise,
+    Promise_int8_t promise,
     input
 ):
     try:
@@ -1044,7 +1047,7 @@ cdef api void call_cy_SimpleService_small(
 ):
     cdef SimpleServiceInterface __iface
     __iface = self
-    __promise = Promise_i16.create(move(cPromise))
+    __promise = Promise_int16_t.create(move_promise_int16_t(cPromise))
     arg_input = input
     __context = None
     if __iface._pass_context_small:
@@ -1061,7 +1064,7 @@ cdef api void call_cy_SimpleService_small(
 async def SimpleService_small_coro(
     object self,
     object ctx,
-    Promise_i16 promise,
+    Promise_int16_t promise,
     input
 ):
     try:
@@ -1095,7 +1098,7 @@ cdef api void call_cy_SimpleService_big(
 ):
     cdef SimpleServiceInterface __iface
     __iface = self
-    __promise = Promise_i64.create(move(cPromise))
+    __promise = Promise_int64_t.create(move_promise_int64_t(cPromise))
     arg_input = input
     __context = None
     if __iface._pass_context_big:
@@ -1112,7 +1115,7 @@ cdef api void call_cy_SimpleService_big(
 async def SimpleService_big_coro(
     object self,
     object ctx,
-    Promise_i64 promise,
+    Promise_int64_t promise,
     input
 ):
     try:
@@ -1146,7 +1149,7 @@ cdef api void call_cy_SimpleService_two(
 ):
     cdef SimpleServiceInterface __iface
     __iface = self
-    __promise = Promise_double.create(move(cPromise))
+    __promise = Promise_double.create(move_promise_double(cPromise))
     arg_input = input
     __context = None
     if __iface._pass_context_two:
@@ -1196,7 +1199,7 @@ cdef api void call_cy_SimpleService_expected_exception(
 ):
     cdef SimpleServiceInterface __iface
     __iface = self
-    __promise = Promise_void.create(move(cPromise))
+    __promise = Promise_cFollyUnit.create(move_promise_cFollyUnit(cPromise))
     __context = None
     if __iface._pass_context_expected_exception:
         __context = RequestContext.create(ctx)
@@ -1211,7 +1214,7 @@ cdef api void call_cy_SimpleService_expected_exception(
 async def SimpleService_expected_exception_coro(
     object self,
     object ctx,
-    Promise_void promise
+    Promise_cFollyUnit promise
 ):
     try:
         if ctx is not None:
@@ -1243,7 +1246,7 @@ cdef api void call_cy_SimpleService_unexpected_exception(
 ):
     cdef SimpleServiceInterface __iface
     __iface = self
-    __promise = Promise_i32.create(move(cPromise))
+    __promise = Promise_int32_t.create(move_promise_int32_t(cPromise))
     __context = None
     if __iface._pass_context_unexpected_exception:
         __context = RequestContext.create(ctx)
@@ -1258,7 +1261,7 @@ cdef api void call_cy_SimpleService_unexpected_exception(
 async def SimpleService_unexpected_exception_coro(
     object self,
     object ctx,
-    Promise_i32 promise
+    Promise_int32_t promise
 ):
     try:
         if ctx is not None:
@@ -1289,7 +1292,7 @@ cdef api void call_cy_SimpleService_sum_i16_list(
 ):
     cdef SimpleServiceInterface __iface
     __iface = self
-    __promise = Promise_i32.create(move(cPromise))
+    __promise = Promise_int32_t.create(move_promise_int32_t(cPromise))
     arg_numbers = _module_types.List__i16.create(_module_types.move(numbers))
     __context = None
     if __iface._pass_context_sum_i16_list:
@@ -1306,7 +1309,7 @@ cdef api void call_cy_SimpleService_sum_i16_list(
 async def SimpleService_sum_i16_list_coro(
     object self,
     object ctx,
-    Promise_i32 promise,
+    Promise_int32_t promise,
     numbers
 ):
     try:
@@ -1340,7 +1343,7 @@ cdef api void call_cy_SimpleService_sum_i32_list(
 ):
     cdef SimpleServiceInterface __iface
     __iface = self
-    __promise = Promise_i32.create(move(cPromise))
+    __promise = Promise_int32_t.create(move_promise_int32_t(cPromise))
     arg_numbers = _module_types.List__i32.create(_module_types.move(numbers))
     __context = None
     if __iface._pass_context_sum_i32_list:
@@ -1357,7 +1360,7 @@ cdef api void call_cy_SimpleService_sum_i32_list(
 async def SimpleService_sum_i32_list_coro(
     object self,
     object ctx,
-    Promise_i32 promise,
+    Promise_int32_t promise,
     numbers
 ):
     try:
@@ -1391,7 +1394,7 @@ cdef api void call_cy_SimpleService_sum_i64_list(
 ):
     cdef SimpleServiceInterface __iface
     __iface = self
-    __promise = Promise_i32.create(move(cPromise))
+    __promise = Promise_int32_t.create(move_promise_int32_t(cPromise))
     arg_numbers = _module_types.List__i64.create(_module_types.move(numbers))
     __context = None
     if __iface._pass_context_sum_i64_list:
@@ -1408,7 +1411,7 @@ cdef api void call_cy_SimpleService_sum_i64_list(
 async def SimpleService_sum_i64_list_coro(
     object self,
     object ctx,
-    Promise_i32 promise,
+    Promise_int32_t promise,
     numbers
 ):
     try:
@@ -1442,7 +1445,7 @@ cdef api void call_cy_SimpleService_concat_many(
 ):
     cdef SimpleServiceInterface __iface
     __iface = self
-    __promise = Promise_string.create(move(cPromise))
+    __promise = Promise_string.create(move_promise_string(cPromise))
     arg_words = _module_types.List__string.create(_module_types.move(words))
     __context = None
     if __iface._pass_context_concat_many:
@@ -1493,7 +1496,7 @@ cdef api void call_cy_SimpleService_count_structs(
 ):
     cdef SimpleServiceInterface __iface
     __iface = self
-    __promise = Promise_i32.create(move(cPromise))
+    __promise = Promise_int32_t.create(move_promise_int32_t(cPromise))
     arg_items = _module_types.List__SimpleStruct.create(_module_types.move(items))
     __context = None
     if __iface._pass_context_count_structs:
@@ -1510,7 +1513,7 @@ cdef api void call_cy_SimpleService_count_structs(
 async def SimpleService_count_structs_coro(
     object self,
     object ctx,
-    Promise_i32 promise,
+    Promise_int32_t promise,
     items
 ):
     try:
@@ -1544,7 +1547,7 @@ cdef api void call_cy_SimpleService_sum_set(
 ):
     cdef SimpleServiceInterface __iface
     __iface = self
-    __promise = Promise_i32.create(move(cPromise))
+    __promise = Promise_int32_t.create(move_promise_int32_t(cPromise))
     arg_numbers = _module_types.Set__i32.create(_module_types.move(numbers))
     __context = None
     if __iface._pass_context_sum_set:
@@ -1561,7 +1564,7 @@ cdef api void call_cy_SimpleService_sum_set(
 async def SimpleService_sum_set_coro(
     object self,
     object ctx,
-    Promise_i32 promise,
+    Promise_int32_t promise,
     numbers
 ):
     try:
@@ -1596,7 +1599,7 @@ cdef api void call_cy_SimpleService_contains_word(
 ):
     cdef SimpleServiceInterface __iface
     __iface = self
-    __promise = Promise_bool.create(move(cPromise))
+    __promise = Promise_cbool.create(move_promise_cbool(cPromise))
     arg_words = _module_types.Set__string.create(_module_types.move(words))
     arg_word = (deref(word.get())).decode('UTF-8')
     __context = None
@@ -1615,7 +1618,7 @@ cdef api void call_cy_SimpleService_contains_word(
 async def SimpleService_contains_word_coro(
     object self,
     object ctx,
-    Promise_bool promise,
+    Promise_cbool promise,
     words,
     word
 ):
@@ -1653,7 +1656,7 @@ cdef api void call_cy_SimpleService_get_map_value(
 ):
     cdef SimpleServiceInterface __iface
     __iface = self
-    __promise = Promise_string.create(move(cPromise))
+    __promise = Promise_string.create(move_promise_string(cPromise))
     arg_words = _module_types.Map__string_string.create(_module_types.move(words))
     arg_key = (deref(key.get())).decode('UTF-8')
     __context = None
@@ -1709,7 +1712,7 @@ cdef api void call_cy_SimpleService_map_length(
 ):
     cdef SimpleServiceInterface __iface
     __iface = self
-    __promise = Promise_i16.create(move(cPromise))
+    __promise = Promise_int16_t.create(move_promise_int16_t(cPromise))
     arg_items = _module_types.Map__string_SimpleStruct.create(_module_types.move(items))
     __context = None
     if __iface._pass_context_map_length:
@@ -1726,7 +1729,7 @@ cdef api void call_cy_SimpleService_map_length(
 async def SimpleService_map_length_coro(
     object self,
     object ctx,
-    Promise_i16 promise,
+    Promise_int16_t promise,
     items
 ):
     try:
@@ -1760,7 +1763,7 @@ cdef api void call_cy_SimpleService_sum_map_values(
 ):
     cdef SimpleServiceInterface __iface
     __iface = self
-    __promise = Promise_i16.create(move(cPromise))
+    __promise = Promise_int16_t.create(move_promise_int16_t(cPromise))
     arg_items = _module_types.Map__string_i16.create(_module_types.move(items))
     __context = None
     if __iface._pass_context_sum_map_values:
@@ -1777,7 +1780,7 @@ cdef api void call_cy_SimpleService_sum_map_values(
 async def SimpleService_sum_map_values_coro(
     object self,
     object ctx,
-    Promise_i16 promise,
+    Promise_int16_t promise,
     items
 ):
     try:
@@ -1811,7 +1814,7 @@ cdef api void call_cy_SimpleService_complex_sum_i32(
 ):
     cdef SimpleServiceInterface __iface
     __iface = self
-    __promise = Promise_i32.create(move(cPromise))
+    __promise = Promise_int32_t.create(move_promise_int32_t(cPromise))
     arg_counter = _module_types.ComplexStruct.create(shared_ptr[_module_types.cComplexStruct](counter.release()))
     __context = None
     if __iface._pass_context_complex_sum_i32:
@@ -1828,7 +1831,7 @@ cdef api void call_cy_SimpleService_complex_sum_i32(
 async def SimpleService_complex_sum_i32_coro(
     object self,
     object ctx,
-    Promise_i32 promise,
+    Promise_int32_t promise,
     counter
 ):
     try:
@@ -1862,7 +1865,7 @@ cdef api void call_cy_SimpleService_repeat_name(
 ):
     cdef SimpleServiceInterface __iface
     __iface = self
-    __promise = Promise_string.create(move(cPromise))
+    __promise = Promise_string.create(move_promise_string(cPromise))
     arg_counter = _module_types.ComplexStruct.create(shared_ptr[_module_types.cComplexStruct](counter.release()))
     __context = None
     if __iface._pass_context_repeat_name:
@@ -1912,7 +1915,7 @@ cdef api void call_cy_SimpleService_get_struct(
 ):
     cdef SimpleServiceInterface __iface
     __iface = self
-    __promise = Promise_SimpleStruct.create(move(cPromise))
+    __promise = Promise__module_types_cSimpleStruct.create(move_promise__module_types_cSimpleStruct(cPromise))
     __context = None
     if __iface._pass_context_get_struct:
         __context = RequestContext.create(ctx)
@@ -1927,7 +1930,7 @@ cdef api void call_cy_SimpleService_get_struct(
 async def SimpleService_get_struct_coro(
     object self,
     object ctx,
-    Promise_SimpleStruct promise
+    Promise__module_types_cSimpleStruct promise
 ):
     try:
         if ctx is not None:
@@ -1958,7 +1961,7 @@ cdef api void call_cy_SimpleService_fib(
 ):
     cdef SimpleServiceInterface __iface
     __iface = self
-    __promise = Promise_List__i32.create(move(cPromise))
+    __promise = Promise_vector__int32_t.create(move_promise_vector__int32_t(cPromise))
     arg_n = n
     __context = None
     if __iface._pass_context_fib:
@@ -1975,7 +1978,7 @@ cdef api void call_cy_SimpleService_fib(
 async def SimpleService_fib_coro(
     object self,
     object ctx,
-    Promise_List__i32 promise,
+    Promise_vector__int32_t promise,
     n
 ):
     try:
@@ -2010,7 +2013,7 @@ cdef api void call_cy_SimpleService_unique_words(
 ):
     cdef SimpleServiceInterface __iface
     __iface = self
-    __promise = Promise_Set__string.create(move(cPromise))
+    __promise = Promise_cset__string.create(move_promise_cset__string(cPromise))
     arg_words = _module_types.List__string.create(_module_types.move(words))
     __context = None
     if __iface._pass_context_unique_words:
@@ -2027,7 +2030,7 @@ cdef api void call_cy_SimpleService_unique_words(
 async def SimpleService_unique_words_coro(
     object self,
     object ctx,
-    Promise_Set__string promise,
+    Promise_cset__string promise,
     words
 ):
     try:
@@ -2062,7 +2065,7 @@ cdef api void call_cy_SimpleService_words_count(
 ):
     cdef SimpleServiceInterface __iface
     __iface = self
-    __promise = Promise_Map__string_i16.create(move(cPromise))
+    __promise = Promise_cmap__string_int16_t.create(move_promise_cmap__string_int16_t(cPromise))
     arg_words = _module_types.List__string.create(_module_types.move(words))
     __context = None
     if __iface._pass_context_words_count:
@@ -2079,7 +2082,7 @@ cdef api void call_cy_SimpleService_words_count(
 async def SimpleService_words_count_coro(
     object self,
     object ctx,
-    Promise_Map__string_i16 promise,
+    Promise_cmap__string_int16_t promise,
     words
 ):
     try:
@@ -2114,7 +2117,7 @@ cdef api void call_cy_SimpleService_set_enum(
 ):
     cdef SimpleServiceInterface __iface
     __iface = self
-    __promise = Promise_AnEnum.create(move(cPromise))
+    __promise = Promise__module_types_cAnEnum.create(move_promise__module_types_cAnEnum(cPromise))
     arg_in_enum = _module_types.AnEnum(<int> in_enum)
     __context = None
     if __iface._pass_context_set_enum:
@@ -2131,7 +2134,7 @@ cdef api void call_cy_SimpleService_set_enum(
 async def SimpleService_set_enum_coro(
     object self,
     object ctx,
-    Promise_AnEnum promise,
+    Promise__module_types_cAnEnum promise,
     in_enum
 ):
     try:
@@ -2166,7 +2169,7 @@ cdef api void call_cy_SimpleService_list_of_lists(
 ):
     cdef SimpleServiceInterface __iface
     __iface = self
-    __promise = Promise_List__List__i32.create(move(cPromise))
+    __promise = Promise_vector__vector__int32_t.create(move_promise_vector__vector__int32_t(cPromise))
     arg_num_lists = num_lists
     arg_num_items = num_items
     __context = None
@@ -2185,7 +2188,7 @@ cdef api void call_cy_SimpleService_list_of_lists(
 async def SimpleService_list_of_lists_coro(
     object self,
     object ctx,
-    Promise_List__List__i32 promise,
+    Promise_vector__vector__int32_t promise,
     num_lists,
     num_items
 ):
@@ -2223,7 +2226,7 @@ cdef api void call_cy_SimpleService_word_character_frequency(
 ):
     cdef SimpleServiceInterface __iface
     __iface = self
-    __promise = Promise_Map__string_Map__string_i32.create(move(cPromise))
+    __promise = Promise_cmap__string_cmap__string_int32_t.create(move_promise_cmap__string_cmap__string_int32_t(cPromise))
     arg_sentence = (deref(sentence.get())).decode('UTF-8')
     __context = None
     if __iface._pass_context_word_character_frequency:
@@ -2240,7 +2243,7 @@ cdef api void call_cy_SimpleService_word_character_frequency(
 async def SimpleService_word_character_frequency_coro(
     object self,
     object ctx,
-    Promise_Map__string_Map__string_i32 promise,
+    Promise_cmap__string_cmap__string_int32_t promise,
     sentence
 ):
     try:
@@ -2275,7 +2278,7 @@ cdef api void call_cy_SimpleService_list_of_sets(
 ):
     cdef SimpleServiceInterface __iface
     __iface = self
-    __promise = Promise_List__Set__string.create(move(cPromise))
+    __promise = Promise_vector__cset__string.create(move_promise_vector__cset__string(cPromise))
     arg_some_words = (deref(some_words.get())).decode('UTF-8')
     __context = None
     if __iface._pass_context_list_of_sets:
@@ -2292,7 +2295,7 @@ cdef api void call_cy_SimpleService_list_of_sets(
 async def SimpleService_list_of_sets_coro(
     object self,
     object ctx,
-    Promise_List__Set__string promise,
+    Promise_vector__cset__string promise,
     some_words
 ):
     try:
@@ -2327,7 +2330,7 @@ cdef api void call_cy_SimpleService_nested_map_argument(
 ):
     cdef SimpleServiceInterface __iface
     __iface = self
-    __promise = Promise_i32.create(move(cPromise))
+    __promise = Promise_int32_t.create(move_promise_int32_t(cPromise))
     arg_struct_map = _module_types.Map__string_List__SimpleStruct.create(_module_types.move(struct_map))
     __context = None
     if __iface._pass_context_nested_map_argument:
@@ -2344,7 +2347,7 @@ cdef api void call_cy_SimpleService_nested_map_argument(
 async def SimpleService_nested_map_argument_coro(
     object self,
     object ctx,
-    Promise_i32 promise,
+    Promise_int32_t promise,
     struct_map
 ):
     try:
@@ -2378,7 +2381,7 @@ cdef api void call_cy_SimpleService_make_sentence(
 ):
     cdef SimpleServiceInterface __iface
     __iface = self
-    __promise = Promise_string.create(move(cPromise))
+    __promise = Promise_string.create(move_promise_string(cPromise))
     arg_word_chars = _module_types.List__List__string.create(_module_types.move(word_chars))
     __context = None
     if __iface._pass_context_make_sentence:
@@ -2429,7 +2432,7 @@ cdef api void call_cy_SimpleService_get_union(
 ):
     cdef SimpleServiceInterface __iface
     __iface = self
-    __promise = Promise_Set__i32.create(move(cPromise))
+    __promise = Promise_cset__int32_t.create(move_promise_cset__int32_t(cPromise))
     arg_sets = _module_types.List__Set__i32.create(_module_types.move(sets))
     __context = None
     if __iface._pass_context_get_union:
@@ -2446,7 +2449,7 @@ cdef api void call_cy_SimpleService_get_union(
 async def SimpleService_get_union_coro(
     object self,
     object ctx,
-    Promise_Set__i32 promise,
+    Promise_cset__int32_t promise,
     sets
 ):
     try:
@@ -2481,7 +2484,7 @@ cdef api void call_cy_SimpleService_get_keys(
 ):
     cdef SimpleServiceInterface __iface
     __iface = self
-    __promise = Promise_Set__string.create(move(cPromise))
+    __promise = Promise_cset__string.create(move_promise_cset__string(cPromise))
     arg_string_map = _module_types.List__Map__string_string.create(_module_types.move(string_map))
     __context = None
     if __iface._pass_context_get_keys:
@@ -2498,7 +2501,7 @@ cdef api void call_cy_SimpleService_get_keys(
 async def SimpleService_get_keys_coro(
     object self,
     object ctx,
-    Promise_Set__string promise,
+    Promise_cset__string promise,
     string_map
 ):
     try:
@@ -2533,7 +2536,7 @@ cdef api void call_cy_SimpleService_lookup_double(
 ):
     cdef SimpleServiceInterface __iface
     __iface = self
-    __promise = Promise_double.create(move(cPromise))
+    __promise = Promise_double.create(move_promise_double(cPromise))
     arg_key = key
     __context = None
     if __iface._pass_context_lookup_double:
@@ -2584,7 +2587,7 @@ cdef api void call_cy_SimpleService_retrieve_binary(
 ):
     cdef SimpleServiceInterface __iface
     __iface = self
-    __promise = Promise_binary.create(move(cPromise))
+    __promise = Promise_binary.create(move_promise_binary(cPromise))
     arg_something = (deref(something.get()))
     __context = None
     if __iface._pass_context_retrieve_binary:
@@ -2635,7 +2638,7 @@ cdef api void call_cy_SimpleService_contain_binary(
 ):
     cdef SimpleServiceInterface __iface
     __iface = self
-    __promise = Promise_Set__binary.create(move(cPromise))
+    __promise = Promise_cset__binary.create(move_promise_cset__binary(cPromise))
     arg_binaries = _module_types.List__binary.create(_module_types.move(binaries))
     __context = None
     if __iface._pass_context_contain_binary:
@@ -2652,7 +2655,7 @@ cdef api void call_cy_SimpleService_contain_binary(
 async def SimpleService_contain_binary_coro(
     object self,
     object ctx,
-    Promise_Set__binary promise,
+    Promise_cset__binary promise,
     binaries
 ):
     try:
@@ -2687,7 +2690,7 @@ cdef api void call_cy_SimpleService_contain_enum(
 ):
     cdef SimpleServiceInterface __iface
     __iface = self
-    __promise = Promise_List__AnEnum.create(move(cPromise))
+    __promise = Promise_vector___module_types_cAnEnum.create(move_promise_vector___module_types_cAnEnum(cPromise))
     arg_the_enum = _module_types.List__AnEnum.create(_module_types.move(the_enum))
     __context = None
     if __iface._pass_context_contain_enum:
@@ -2704,7 +2707,7 @@ cdef api void call_cy_SimpleService_contain_enum(
 async def SimpleService_contain_enum_coro(
     object self,
     object ctx,
-    Promise_List__AnEnum promise,
+    Promise_vector___module_types_cAnEnum promise,
     the_enum
 ):
     try:
@@ -2738,7 +2741,7 @@ cdef api void call_cy_DerivedService_get_six(
 ):
     cdef DerivedServiceInterface __iface
     __iface = self
-    __promise = Promise_i32.create(move(cPromise))
+    __promise = Promise_int32_t.create(move_promise_int32_t(cPromise))
     __context = None
     if __iface._pass_context_get_six:
         __context = RequestContext.create(ctx)
@@ -2753,7 +2756,7 @@ cdef api void call_cy_DerivedService_get_six(
 async def DerivedService_get_six_coro(
     object self,
     object ctx,
-    Promise_i32 promise
+    Promise_int32_t promise
 ):
     try:
         if ctx is not None:
@@ -2783,7 +2786,7 @@ cdef api void call_cy_RederivedService_get_seven(
 ):
     cdef RederivedServiceInterface __iface
     __iface = self
-    __promise = Promise_i32.create(move(cPromise))
+    __promise = Promise_int32_t.create(move_promise_int32_t(cPromise))
     __context = None
     if __iface._pass_context_get_seven:
         __context = RequestContext.create(ctx)
@@ -2798,7 +2801,7 @@ cdef api void call_cy_RederivedService_get_seven(
 async def RederivedService_get_seven_coro(
     object self,
     object ctx,
-    Promise_i32 promise
+    Promise_int32_t promise
 ):
     try:
         if ctx is not None:

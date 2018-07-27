@@ -47,19 +47,20 @@ from module.services_wrapper cimport cMyServiceFastInterface
 
 
 cdef extern from "<utility>" namespace "std":
-    cdef cFollyPromise[string] move(cFollyPromise[string])
-    cdef cFollyPromise[cbool] move(
+    cdef cFollyPromise[cbool] move_promise_cbool "std::move"(
         cFollyPromise[cbool])
-    cdef cFollyPromise[cFollyUnit] move(
+    cdef cFollyPromise[string] move_promise_string "std::move"(
+        cFollyPromise[string])
+    cdef cFollyPromise[cFollyUnit] move_promise_cFollyUnit "std::move"(
         cFollyPromise[cFollyUnit])
 
-cdef class Promise_bool:
+cdef class Promise_cbool:
     cdef cFollyPromise[cbool] cPromise
 
     @staticmethod
     cdef create(cFollyPromise[cbool] cPromise):
-        inst = <Promise_bool>Promise_bool.__new__(Promise_bool)
-        inst.cPromise = move(cPromise)
+        inst = <Promise_cbool>Promise_cbool.__new__(Promise_cbool)
+        inst.cPromise = move_promise_cbool(cPromise)
         return inst
 
 cdef class Promise_string:
@@ -68,16 +69,16 @@ cdef class Promise_string:
     @staticmethod
     cdef create(cFollyPromise[string] cPromise):
         inst = <Promise_string>Promise_string.__new__(Promise_string)
-        inst.cPromise = move(cPromise)
+        inst.cPromise = move_promise_string(cPromise)
         return inst
 
-cdef class Promise_void:
+cdef class Promise_cFollyUnit:
     cdef cFollyPromise[cFollyUnit] cPromise
 
     @staticmethod
     cdef create(cFollyPromise[cFollyUnit] cPromise):
-        inst = <Promise_void>Promise_void.__new__(Promise_void)
-        inst.cPromise = move(cPromise)
+        inst = <Promise_cFollyUnit>Promise_cFollyUnit.__new__(Promise_cFollyUnit)
+        inst.cPromise = move_promise_cFollyUnit(cPromise)
         return inst
 
 cdef object _MyService_annotations = _py_types.MappingProxyType({
@@ -194,7 +195,7 @@ cdef api void call_cy_MyService_hasDataById(
 ):
     cdef MyServiceInterface __iface
     __iface = self
-    __promise = Promise_bool.create(move(cPromise))
+    __promise = Promise_cbool.create(move_promise_cbool(cPromise))
     arg_id = id
     __context = None
     if __iface._pass_context_hasDataById:
@@ -211,7 +212,7 @@ cdef api void call_cy_MyService_hasDataById(
 async def MyService_hasDataById_coro(
     object self,
     object ctx,
-    Promise_bool promise,
+    Promise_cbool promise,
     id
 ):
     try:
@@ -245,7 +246,7 @@ cdef api void call_cy_MyService_getDataById(
 ):
     cdef MyServiceInterface __iface
     __iface = self
-    __promise = Promise_string.create(move(cPromise))
+    __promise = Promise_string.create(move_promise_string(cPromise))
     arg_id = id
     __context = None
     if __iface._pass_context_getDataById:
@@ -297,7 +298,7 @@ cdef api void call_cy_MyService_putDataById(
 ):
     cdef MyServiceInterface __iface
     __iface = self
-    __promise = Promise_void.create(move(cPromise))
+    __promise = Promise_cFollyUnit.create(move_promise_cFollyUnit(cPromise))
     arg_id = id
     arg_data = data.decode('UTF-8')
     __context = None
@@ -316,7 +317,7 @@ cdef api void call_cy_MyService_putDataById(
 async def MyService_putDataById_coro(
     object self,
     object ctx,
-    Promise_void promise,
+    Promise_cFollyUnit promise,
     id,
     data
 ):
@@ -354,7 +355,7 @@ cdef api void call_cy_MyService_lobDataById(
 ):
     cdef MyServiceInterface __iface
     __iface = self
-    __promise = Promise_void.create(move(cPromise))
+    __promise = Promise_cFollyUnit.create(move_promise_cFollyUnit(cPromise))
     arg_id = id
     arg_data = data.decode('UTF-8')
     __context = None
@@ -373,7 +374,7 @@ cdef api void call_cy_MyService_lobDataById(
 async def MyService_lobDataById_coro(
     object self,
     object ctx,
-    Promise_void promise,
+    Promise_cFollyUnit promise,
     id,
     data
 ):
@@ -410,7 +411,7 @@ cdef api void call_cy_MyServiceFast_hasDataById(
 ):
     cdef MyServiceFastInterface __iface
     __iface = self
-    __promise = Promise_bool.create(move(cPromise))
+    __promise = Promise_cbool.create(move_promise_cbool(cPromise))
     arg_id = id
     __context = None
     if __iface._pass_context_hasDataById:
@@ -427,7 +428,7 @@ cdef api void call_cy_MyServiceFast_hasDataById(
 async def MyServiceFast_hasDataById_coro(
     object self,
     object ctx,
-    Promise_bool promise,
+    Promise_cbool promise,
     id
 ):
     try:
@@ -461,7 +462,7 @@ cdef api void call_cy_MyServiceFast_getDataById(
 ):
     cdef MyServiceFastInterface __iface
     __iface = self
-    __promise = Promise_string.create(move(cPromise))
+    __promise = Promise_string.create(move_promise_string(cPromise))
     arg_id = id
     __context = None
     if __iface._pass_context_getDataById:
@@ -513,7 +514,7 @@ cdef api void call_cy_MyServiceFast_putDataById(
 ):
     cdef MyServiceFastInterface __iface
     __iface = self
-    __promise = Promise_void.create(move(cPromise))
+    __promise = Promise_cFollyUnit.create(move_promise_cFollyUnit(cPromise))
     arg_id = id
     arg_data = data.decode('UTF-8')
     __context = None
@@ -532,7 +533,7 @@ cdef api void call_cy_MyServiceFast_putDataById(
 async def MyServiceFast_putDataById_coro(
     object self,
     object ctx,
-    Promise_void promise,
+    Promise_cFollyUnit promise,
     id,
     data
 ):
@@ -570,7 +571,7 @@ cdef api void call_cy_MyServiceFast_lobDataById(
 ):
     cdef MyServiceFastInterface __iface
     __iface = self
-    __promise = Promise_void.create(move(cPromise))
+    __promise = Promise_cFollyUnit.create(move_promise_cFollyUnit(cPromise))
     arg_id = id
     arg_data = data.decode('UTF-8')
     __context = None
@@ -589,7 +590,7 @@ cdef api void call_cy_MyServiceFast_lobDataById(
 async def MyServiceFast_lobDataById_coro(
     object self,
     object ctx,
-    Promise_void promise,
+    Promise_cFollyUnit promise,
     id,
     data
 ):

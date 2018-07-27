@@ -46,7 +46,6 @@ from empty.services_wrapper cimport cNullServiceInterface
 
 
 cdef extern from "<utility>" namespace "std":
-    cdef cFollyPromise[unique_ptr[string]] move(cFollyPromise[unique_ptr[string]])
     pass
 
 cdef object _NullService_annotations = _py_types.MappingProxyType({

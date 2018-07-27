@@ -50,17 +50,16 @@ from my.namespacing.extend.test.extend.services_wrapper cimport cExtendTestServi
 
 
 cdef extern from "<utility>" namespace "std":
-    cdef cFollyPromise[unique_ptr[string]] move(cFollyPromise[unique_ptr[string]])
-    cdef cFollyPromise[cbool] move(
+    cdef cFollyPromise[cbool] move_promise_cbool "std::move"(
         cFollyPromise[cbool])
 
-cdef class Promise_bool:
+cdef class Promise_cbool:
     cdef cFollyPromise[cbool] cPromise
 
     @staticmethod
     cdef create(cFollyPromise[cbool] cPromise):
-        inst = <Promise_bool>Promise_bool.__new__(Promise_bool)
-        inst.cPromise = move(cPromise)
+        inst = <Promise_cbool>Promise_cbool.__new__(Promise_cbool)
+        inst.cPromise = move_promise_cbool(cPromise)
         return inst
 
 cdef object _ExtendTestService_annotations = _py_types.MappingProxyType({
@@ -96,7 +95,7 @@ cdef api void call_cy_ExtendTestService_check(
 ):
     cdef ExtendTestServiceInterface __iface
     __iface = self
-    __promise = Promise_bool.create(move(cPromise))
+    __promise = Promise_cbool.create(move_promise_cbool(cPromise))
     arg_struct1 = _hsmodule_types.HsFoo.create(shared_ptr[_hsmodule_types.cHsFoo](struct1.release()))
     __context = None
     if __iface._pass_context_check:
@@ -113,7 +112,7 @@ cdef api void call_cy_ExtendTestService_check(
 async def ExtendTestService_check_coro(
     object self,
     object ctx,
-    Promise_bool promise,
+    Promise_cbool promise,
     struct1
 ):
     try:

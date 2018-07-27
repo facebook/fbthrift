@@ -46,17 +46,16 @@ from my.namespacing.test.module.module.services_wrapper cimport cTestServiceInte
 
 
 cdef extern from "<utility>" namespace "std":
-    cdef cFollyPromise[unique_ptr[string]] move(cFollyPromise[unique_ptr[string]])
-    cdef cFollyPromise[int64_t] move(
+    cdef cFollyPromise[int64_t] move_promise_int64_t "std::move"(
         cFollyPromise[int64_t])
 
-cdef class Promise_i64:
+cdef class Promise_int64_t:
     cdef cFollyPromise[int64_t] cPromise
 
     @staticmethod
     cdef create(cFollyPromise[int64_t] cPromise):
-        inst = <Promise_i64>Promise_i64.__new__(Promise_i64)
-        inst.cPromise = move(cPromise)
+        inst = <Promise_int64_t>Promise_int64_t.__new__(Promise_int64_t)
+        inst.cPromise = move_promise_int64_t(cPromise)
         return inst
 
 cdef object _TestService_annotations = _py_types.MappingProxyType({
@@ -92,7 +91,7 @@ cdef api void call_cy_TestService_init(
 ):
     cdef TestServiceInterface __iface
     __iface = self
-    __promise = Promise_i64.create(move(cPromise))
+    __promise = Promise_int64_t.create(move_promise_int64_t(cPromise))
     arg_int1 = int1
     __context = None
     if __iface._pass_context_init:
@@ -109,7 +108,7 @@ cdef api void call_cy_TestService_init(
 async def TestService_init_coro(
     object self,
     object ctx,
-    Promise_i64 promise,
+    Promise_int64_t promise,
     int1
 ):
     try:

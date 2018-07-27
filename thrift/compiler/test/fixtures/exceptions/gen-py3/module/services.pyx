@@ -46,17 +46,18 @@ from module.services_wrapper cimport cRaiserInterface
 
 
 cdef extern from "<utility>" namespace "std":
-    cdef cFollyPromise[unique_ptr[string]] move(cFollyPromise[unique_ptr[string]])
-    cdef cFollyPromise[cFollyUnit] move(
+    cdef cFollyPromise[cFollyUnit] move_promise_cFollyUnit "std::move"(
         cFollyPromise[cFollyUnit])
+    cdef cFollyPromise[unique_ptr[string]] move_promise_string "std::move"(
+        cFollyPromise[unique_ptr[string]])
 
-cdef class Promise_void:
+cdef class Promise_cFollyUnit:
     cdef cFollyPromise[cFollyUnit] cPromise
 
     @staticmethod
     cdef create(cFollyPromise[cFollyUnit] cPromise):
-        inst = <Promise_void>Promise_void.__new__(Promise_void)
-        inst.cPromise = move(cPromise)
+        inst = <Promise_cFollyUnit>Promise_cFollyUnit.__new__(Promise_cFollyUnit)
+        inst.cPromise = move_promise_cFollyUnit(cPromise)
         return inst
 
 cdef class Promise_string:
@@ -65,7 +66,7 @@ cdef class Promise_string:
     @staticmethod
     cdef create(cFollyPromise[unique_ptr[string]] cPromise):
         inst = <Promise_string>Promise_string.__new__(Promise_string)
-        inst.cPromise = move(cPromise)
+        inst.cPromise = move_promise_string(cPromise)
         return inst
 
 cdef object _Raiser_annotations = _py_types.MappingProxyType({
@@ -123,7 +124,7 @@ cdef api void call_cy_Raiser_doBland(
 ):
     cdef RaiserInterface __iface
     __iface = self
-    __promise = Promise_void.create(move(cPromise))
+    __promise = Promise_cFollyUnit.create(move_promise_cFollyUnit(cPromise))
     __context = None
     if __iface._pass_context_doBland:
         __context = RequestContext.create(ctx)
@@ -138,7 +139,7 @@ cdef api void call_cy_Raiser_doBland(
 async def Raiser_doBland_coro(
     object self,
     object ctx,
-    Promise_void promise
+    Promise_cFollyUnit promise
 ):
     try:
         if ctx is not None:
@@ -168,7 +169,7 @@ cdef api void call_cy_Raiser_doRaise(
 ):
     cdef RaiserInterface __iface
     __iface = self
-    __promise = Promise_void.create(move(cPromise))
+    __promise = Promise_cFollyUnit.create(move_promise_cFollyUnit(cPromise))
     __context = None
     if __iface._pass_context_doRaise:
         __context = RequestContext.create(ctx)
@@ -183,7 +184,7 @@ cdef api void call_cy_Raiser_doRaise(
 async def Raiser_doRaise_coro(
     object self,
     object ctx,
-    Promise_void promise
+    Promise_cFollyUnit promise
 ):
     try:
         if ctx is not None:
@@ -217,7 +218,7 @@ cdef api void call_cy_Raiser_get200(
 ):
     cdef RaiserInterface __iface
     __iface = self
-    __promise = Promise_string.create(move(cPromise))
+    __promise = Promise_string.create(move_promise_string(cPromise))
     __context = None
     if __iface._pass_context_get200:
         __context = RequestContext.create(ctx)
@@ -262,7 +263,7 @@ cdef api void call_cy_Raiser_get500(
 ):
     cdef RaiserInterface __iface
     __iface = self
-    __promise = Promise_string.create(move(cPromise))
+    __promise = Promise_string.create(move_promise_string(cPromise))
     __context = None
     if __iface._pass_context_get500:
         __context = RequestContext.create(ctx)
