@@ -35,10 +35,15 @@ def gen_find_recursive_files(path):
             yield os.path.relpath(os.path.join(root, f), path)
 
 def cp_dir(source_dir, dest_dir):
-    if not os.path.isdir(dest_dir):
-        os.makedirs(dest_dir, 0o700)
     for src in gen_find_recursive_files(source_dir):
-        shutil.copy2(os.path.join(source_dir, src), dest_dir)
+        source_full_path = os.path.join(source_dir, src)
+        dest_full_path = os.path.join(dest_dir, src)
+
+        dest_dir = os.path.dirname(dest_full_path)
+        if not os.path.isdir(dest_dir):
+            os.makedirs(dest_dir, 0o700)
+
+        shutil.copy2(source_full_path, dest_full_path)
 
 class CompilerTest(unittest.TestCase):
 
@@ -124,8 +129,7 @@ class CompilerTest(unittest.TestCase):
         for lang in languages:
             # Edit lang to find correct directory
             lang = lang.rsplit('_', 1)[0] if "android_lite" in lang else lang
-            if "cpp2" not in lang:  # Remove 'mstch' if present expt in cpp2
-                lang = lang.rsplit('_', 1)[1] if "mstch_" in lang else lang
+            lang = lang.rsplit('_', 1)[1] if "mstch_" in lang else lang
             lang = 'py' if lang == 'pyi' else lang
 
             gen_code = os.path.join(self.tmp, 'gen-' + lang)
