@@ -37,7 +37,7 @@ from thrift.transport import TTransport, TSocket, TSSLSocket, THttpClient
 from thrift.transport.THeaderTransport import THeaderTransport
 from thrift.transport.TFuzzyHeaderTransport import TFuzzyHeaderTransport
 from thrift.protocol import TBinaryProtocol, TCompactProtocol, \
-    TJSONProtocol, THeaderProtocol
+    TJSONProtocol, THeaderProtocol, TSimpleJSONProtocol
 
 
 class Function(object):
@@ -68,6 +68,88 @@ def print_functions(functions, service_names, out, local_only=False):
             out.write(', '.join('%s %s' % (type, name)
                                 for type, name, true_type in fn.args))
             out.write(')\n')
+
+
+format_to_helper = {
+    "input": {},
+    "output": {},
+}
+
+
+def add_format(name, format_type):
+    lookup_table = format_to_helper[format_type]
+
+    def builder(func):
+        if name in lookup_table:
+            raise ValueError("Format name '{}' is used twice".format(name))
+        lookup_table[name] = func
+        return func
+    return builder
+
+
+def get_helper_for_format(name, format_type):
+    printer = format_to_helper[format_type].get(name)
+    if printer is None:
+        sys.stderr.write("Invalid {} format: {}\n".format(format_type, name))
+        sys.exit(os.EX_USAGE)
+    return printer
+
+
+@add_format("python", "output")
+def __python_output_printer(ret):
+    if isinstance(ret, string_types):
+        print(ret)
+    else:
+        pprint.pprint(ret, indent=2)
+
+
+def __thrift_to_json(x):
+    trans = TTransport.TMemoryBuffer()
+    proto = TSimpleJSONProtocol.TSimpleJSONProtocol(trans)
+    x.write(proto)
+    return json.loads(trans.getvalue())
+
+
+@add_format("json", "output")
+def __json_output_printer(ret):
+    """
+    Python object
+    {
+        "foo": [
+            ThriftStructB(
+                x=2
+            ),
+        ],
+        "x": ["%set is nice", 9,8,7, set("blah % blah", 4, 5, 6)],
+        "bar": ThriftStructA(
+            x=1,
+            y="b",
+            z=[1,2,3]
+        ),
+    }
+
+    <=>
+    JSON object
+    {
+        "foo": [
+            {"x": 2}
+        ],
+        "x": ["%set is nice", 9,8,7, ["blah % blah", 4, 5, 6]],
+        "bar": {
+            "x": 1,
+            "y": "b",
+            "z": [1,2,3]
+        }
+    }
+
+    There is no need to handle the type ambiguity between Json dict and
+        thrift structs, because pyremote knows what type the services want,
+        and we simply try to convert them to that type.
+
+    Also, the exact form of dictionaries produced for Thrift structs may differ
+        based across different Thrift versions.
+    """
+    print(json.dumps(ret, default=__thrift_to_json))
 
 
 class RemoteClient(object):
@@ -174,10 +256,7 @@ class RemoteClient(object):
         except Thrift.TException as e:
             ret = 'Exception:\n' + str(e)
 
-        if isinstance(ret, string_types):
-            print(ret)
-        else:
-            pprint.pprint(ret, indent=2)
+        args.output_format(ret)
 
         transport = client._iprot.trans
         if isinstance(transport, THeaderTransport):
@@ -476,6 +555,19 @@ class Remote(object):
     @classmethod
     def _parse_cmdline_options(cls, argv):
         cls.register_cmdline_options((
+            (
+                ('-ofmt', '--output-format', ),
+                {
+                    'action': 'store',
+                    'default': 'python',
+                    'type': lambda x: get_helper_for_format(x, "output"),
+                    'help': (
+                        'Change the output format for the return value. The '
+                        'default is "python", which direclty prints out strings'
+                        'and pprint() other types. Available formats: {}.'
+                    ).format(','.join(format_to_helper["output"].keys()))
+                },
+            ),
             (
                 ('--help', ),
                 {'action': 'help'},
