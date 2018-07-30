@@ -484,7 +484,7 @@ FieldPosition maximizeField(FieldPosition fieldPos, Field<T, Layout>& field) {
 
 /**
  * The maximumally sized layout for type T. That is, the layout which can
- * accomodate all values of type T, as opposed to only a particular example
+ * accommodate all values of type T, as opposed to only a particular example
  * value.
  */
 template <class T>
