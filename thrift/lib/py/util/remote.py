@@ -49,6 +49,27 @@ class Function(object):
         self.args = args
 
 
+def print_functions(functions, service_names, out, local_only=False):
+    """Print all the functions available from this thrift service"""
+    fns_by_service_name = {svc_name: {} for svc_name in service_names}
+    for fn in functions.values():
+        fns_by_service_name[fn.svc_name][fn.fn_name] = fn
+
+    svc_names = service_names[0:1] if local_only else \
+                    reversed(service_names)
+    for svc_name in svc_names:
+        out.write('Functions in %s:\n' % (svc_name,))
+        for fn_name, fn in sorted(fns_by_service_name[svc_name].items()):
+            if fn.return_type is None:
+                out.write('  oneway void ')
+            else:
+                out.write('  %s ' % (fn.return_type,))
+            out.write(fn_name + '(')
+            out.write(', '.join('%s %s' % (type, name)
+                                for type, name, true_type in fn.args))
+            out.write(')\n')
+
+
 class RemoteClient(object):
     def __init__(self, functions, service_names, service_class,
                  ttypes, print_usage, default_port):
@@ -58,26 +79,6 @@ class RemoteClient(object):
         self.ttypes = ttypes
         self.print_usage = print_usage
         self.default_port = default_port
-
-    def _print_functions(self, out, local_only=False):
-        """Print all the functions available from this service"""
-        fns_by_service_name = {svc_name: {} for svc_name in self.service_names}
-        for fn in self.functions.values():
-            fns_by_service_name[fn.svc_name][fn.fn_name] = fn
-
-        svc_names = self.service_names[0:1] if local_only else \
-                        reversed(self.service_names)
-        for svc_name in svc_names:
-            out.write('Functions in %s:\n' % (svc_name,))
-            for fn_name, fn in sorted(fns_by_service_name[svc_name].items()):
-                if fn.return_type is None:
-                    out.write('  oneway void ')
-                else:
-                    out.write('  %s ' % (fn.return_type,))
-                out.write(fn_name + '(')
-                out.write(', '.join('%s %s' % (type, name)
-                                    for type, name, true_type in fn.args))
-                out.write(')\n')
 
     def _exit(self, error_message=None, status=os.EX_USAGE, err_out=sys.stderr):
         """ Report an error, show help information, and exit the program """
@@ -89,7 +90,7 @@ class RemoteClient(object):
 
         if (self.functions is not None and
                 status in {os.EX_USAGE, os.EX_CONFIG}):
-            self._print_functions(err_out)
+            print_functions(self.functions, self.service_names, err_out)
 
         sys.exit(status)
 
@@ -505,19 +506,16 @@ class Remote(object):
     def run(cls, functions, service_names, service_class,
             ttypes, argv, default_port=9090):
         args = cls._parse_cmdline_options(argv)
-        client_type = cls._get_client_type(args)
-        client = client_type(functions, service_names, service_class, ttypes,
-                             cls.__parser.print_help, default_port)
         if args.list_all_functions and args.list_functions:
             cls._exit_usage_error(
                 'Please do not specify both --list-all-functions'
                 ' and --list-functions.'
             )
         if args.list_all_functions:
-            client._print_functions(sys.stdout, local_only=False)
+            print_functions(functions, service_names, sys.stdout, local_only=False)
             return
         if args.list_functions:
-            client._print_functions(sys.stdout, local_only=True)
+            print_functions(functions, service_names, sys.stdout, local_only=True)
             return
         if args.function_name is None:
             cls._exit_usage_error('Please specify function_name.')
@@ -529,6 +527,9 @@ class Remote(object):
                 )
             args.function_args = json.load(sys.stdin)
             args.evalargs = True
+        client_type = cls._get_client_type(args)
+        client = client_type(functions, service_names, service_class, ttypes,
+                             cls.__parser.print_help, default_port)
         client.run(args)
 
 
