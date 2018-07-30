@@ -13,8 +13,8 @@ Additional remote client types (subclasses of RemoteClient) can be
 registered with the Remote class to define different ways of specifying a
 host or communicating with the host. When registering a new client type,
 you can specify the option used to select that type (i.e., url) with the
-selector_option attribute, and you can specify additional commandline options
-with the options attribute. See the implementations of RemoteHostClient
+SELECTOR_OPTIONS attribute, and you can specify additional commandline options
+with the CMDLINE_OPTIONS attribute. See the implementations of RemoteHostClient
 and RemoteHttpClient for examples.
 """
 
@@ -23,20 +23,22 @@ from __future__ import division
 from __future__ import print_function
 from __future__ import unicode_literals
 
+import argparse
 import json
 import os
 import pprint
-from six.moves.urllib.parse import urlparse
-from six import string_types
 import sys
 import traceback
 
+from six.moves.urllib.parse import urlparse
+from six import string_types
 from thrift import Thrift
 from thrift.transport import TTransport, TSocket, TSSLSocket, THttpClient
 from thrift.transport.THeaderTransport import THeaderTransport
 from thrift.transport.TFuzzyHeaderTransport import TFuzzyHeaderTransport
 from thrift.protocol import TBinaryProtocol, TCompactProtocol, \
     TJSONProtocol, THeaderProtocol
+
 
 class Function(object):
     """Metadata for a service method"""
@@ -45,6 +47,7 @@ class Function(object):
         self.svc_name = svc_name
         self.return_type = return_type
         self.args = args
+
 
 class RemoteClient(object):
     def __init__(self, functions, service_names, service_class,
@@ -75,7 +78,6 @@ class RemoteClient(object):
                 out.write(', '.join('%s %s' % (type, name)
                                     for type, name, true_type in fn.args))
                 out.write(')\n')
-
 
     def _exit(self, error_message=None, status=os.EX_USAGE, err_out=sys.stderr):
         """ Report an error, show help information, and exit the program """
@@ -185,60 +187,52 @@ class RemoteClient(object):
 
         self._close_client()
 
-    def process_option(self, op):
-        # help and ? are for the Remote class
-        if op == 'list-all-functions':
-            self._print_functions(sys.stdout, local_only=False)
-        elif op == 'list-functions':
-            self._print_functions(sys.stdout, local_only=True)
-        else:
-            self._exit(error_message=('unknown option --"%s"') % op)
-
     def run(self, args):
         fn_name, fn_args = self._process_args(args)
         self._execute(fn_name, fn_args, args)
         self._exit(status=0)
 
+
 class RemoteTransportClient(RemoteClient):
     """Abstract class for clients with transport manually opened and closed"""
-    options = [
+    CMDLINE_OPTIONS = [
         (
-            ['f', 'framed'],
+            ('-f', '--framed'),
             {
                 'action': 'store_true',
                 'default': False,
                 'help': 'Use framed transport'
             }
         ), (
-            ['s', 'ssl'],
+            ('-s', '--ssl'),
             {
                 'action': 'store_true',
                 'default': False,
                 'help': 'Use SSL socket'
             }
         ), (
-            ['U', 'unframed'],
+            ('-U', '--unframed'),
             {
                 'action': 'store_true',
                 'default': False,
                 'help': 'Use unframed transport'
             }
         ), (
-            ['j', 'json'],
+            ('-j', '--json'),
             {
                 'action': 'store_true',
                 'default': False,
                 'help': 'Use TJSONProtocol'
             }
         ), (
-            ['c', 'compact'],
+            ('-c', '--compact'),
             {
                 'action': 'store_true',
                 'default': False,
                 'help': 'Use TCompactProtocol'
             }
         ), (
-            ['H', 'headers'],
+            ('-H', '--headers'),
             {
                 'action': 'store',
                 'metavar': 'HEADERS_DICT',
@@ -246,7 +240,7 @@ class RemoteTransportClient(RemoteClient):
                 'Python code to eval() into a dict of write headers',
             }
         ), (
-            ['I', 'stdin'],
+            ('-I', '--stdin'),
             {
                 'action': 'store_true',
                 'default': False,
@@ -254,7 +248,7 @@ class RemoteTransportClient(RemoteClient):
                 'on stdin.  Implies --evalargs.',
             }
         ), (
-            ['e', 'evalargs'],
+            ('-e', '--evalargs'),
             {
                 'action': 'store_true',
                 'default': False,
@@ -328,20 +322,20 @@ class RemoteTransportClient(RemoteClient):
             raise ValueError('invalid port: ' + parts[1])
         return (parts[0], port)
 
+
 class RemoteHostClient(RemoteTransportClient):
-    selector_option = 'host'
-    options = list(RemoteTransportClient.options)
-    options.extend([(
-        ['h', 'host'],
+    SELECTOR_OPTIONS = 'host'
+    CMDLINE_OPTIONS = list(RemoteTransportClient.CMDLINE_OPTIONS) + [(
+        ('-h', '--host'),
         {
             'action': 'store',
             'metavar': 'HOST[:PORT]',
             'help': 'The host and port to connect to'
         }
     ), (
-        ['F', 'fuzz'],
+        ('-F', '--fuzz'),
         {
-            'type': 'str',
+            'type': str,
             'nargs': '*',
             'default': None,
             'help': ('Use TFuzzyHeaderTransport to send a fuzzed message for '
@@ -349,7 +343,7 @@ class RemoteHostClient(RemoteTransportClient):
                      'message field names to fuzz after this flag. Fields: ' +
                      ', '.join(TFuzzyHeaderTransport.fuzzable_fields))
         }
-    )])
+    )]
 
     def _validate_options(self, options):
         super(RemoteHostClient, self)._validate_options(options)
@@ -371,17 +365,16 @@ class RemoteHostClient(RemoteTransportClient):
             transport = TTransport.TBufferedTransport(socket)
         return self._get_client_by_transport(options, transport, socket=socket)
 
-class RemoteHttpClient(RemoteTransportClient):
-    selector_option = 'url'
-    options = list(RemoteTransportClient.options)
 
-    options.append((
-        ['u', 'url'],
+class RemoteHttpClient(RemoteTransportClient):
+    SELECTOR_OPTIONS = 'url'
+    CMDLINE_OPTIONS = list(RemoteTransportClient.CMDLINE_OPTIONS) + [(
+        ('-u', '--url'),
         {
             'action': 'store',
             'help': 'The URL to connect to, for HTTP transport'
         }
-    ))
+    )]
 
     def _get_client(self, options):
         url = urlparse(options.url)
@@ -396,17 +389,16 @@ class RemoteHttpClient(RemoteTransportClient):
             self._exit(error_message='can only specify --url with '
                        '--unframed or --json')
 
-class RemoteUNIXDomainClient(RemoteTransportClient):
-    selector_option = 'path'
-    options = list(RemoteTransportClient.options)
 
-    options.append((
-        ['p', 'path'],
+class RemoteUNIXDomainClient(RemoteTransportClient):
+    SELECTOR_OPTIONS = 'path'
+    CMDLINE_OPTIONS = list(RemoteTransportClient.CMDLINE_OPTIONS) + [(
+        ('-p', '--path'),
         {
             'action': 'store',
             'help': 'The path of the socket to use'
         }
-    ))
+    )]
 
     def _get_client(self, options):
         socket = TSocket.TSocket(unix_socket=options.path)
@@ -415,6 +407,7 @@ class RemoteUNIXDomainClient(RemoteTransportClient):
         else:
             transport = TTransport.TBufferedTransport(socket)
         return self._get_client_by_transport(options, transport, socket=socket)
+
 
 class Namespace(object):
     def __init__(self, attrs=None):
@@ -427,8 +420,25 @@ class Namespace(object):
     def __setitem__(self, key, value):
         self.__dict__[key] = value
 
+
 class Remote(object):
-    _client_types = []
+    __client_types = set()
+    __occupied_args = {}
+    __parser = argparse.ArgumentParser(add_help=False)
+
+    @classmethod
+    def register_cmdline_options(cls, cmdline_options):
+        for args, kwargs in cmdline_options:
+            is_repeated = False
+            for arg in args:
+                if arg in cls.__occupied_args:
+                    if cls.__occupied_args[arg] != kwargs:
+                        raise ValueError('Redefinition of {}'.format(arg))
+                    is_repeated = True
+            if is_repeated:
+                continue
+            cls.__occupied_args.update({x: kwargs for x in args})
+            cls.__parser.add_argument(*args, **kwargs)
 
     @classmethod
     def register_client_type(cls, client_type):
@@ -438,166 +448,89 @@ class Remote(object):
         if client_type is RemoteClient:
             raise TypeError(('Remote client must be a strict subclass '
                              'of RemoteClient.'))
-        if not hasattr(client_type, 'selector_option'):
+        if not hasattr(client_type, 'SELECTOR_OPTIONS'):
             raise AttributeError(('Remote client must have a '
-                                  'selector_option field.'))
+                                  'SELECTOR_OPTIONS field.'))
 
-        if client_type not in cls._client_types:
-            cls._client_types.append(client_type)
-
-    @classmethod
-    def _get_all_options(cls):
-        all_options = {}
-        for client_type in cls._client_types:
-            for option in client_type.options:
-                (short_flag, long_flag), _ = option
-                # Check if we have conflicting options
-                if short_flag in all_options:
-                    (_, old_long_flag), _ = all_options[short_flag]
-                    if old_long_flag != long_flag:
-                        sys.stderr.write(('Conflicting options: (-%s, --%s), '
-                                          '(-%s, --%s)\n') % (
-                                              short_flag, old_long_flag,
-                                              short_flag, long_flag))
-                        sys.exit(os.EX_DATAERR)
-                else:
-                    all_options[short_flag] = option
-        return all_options.values()
+        cls.__client_types.add(client_type)
+        cls.register_cmdline_options(client_type.CMDLINE_OPTIONS)
 
     @classmethod
-    def _print_usage(cls, all_options, argv, out, help=False):
-        file_ = os.path.basename(argv[0])
-        usage_string = '[OPTIONS] FUNCTION [ARGS ...]'
-        usage = 'Usage: %s %s' % (file_, usage_string)
-        print(usage, file=out)
-
-        if help:
-            print('\nTransport Options:\n', file=out)
-            for (short_flag, long_flag), kwargs in all_options:
-                if 'metavar' in kwargs:
-                    specifier = '-%s %s, --%s %s' % (
-                        short_flag, kwargs['metavar'],
-                        long_flag, kwargs['metavar'])
-                else:
-                    specifier = '-%s --%s' % (
-                        short_flag, long_flag)
-                print('%-20s %s' % (specifier, kwargs.get('help', '')),
-                      file=out)
-
-            print('\nService help options:\n', file=out)
-            print('--list-functions\tlist service specific functions', file=out)
-            print('--list-all-functions\tlist all functions, including the',
-                  'functions in parent class', file=out)
-
+    def _exit_usage_error(cls, message):
+        sys.stderr.write('ERROR: ' + message + '\n')
+        cls.__parser.print_help(sys.stderr)
+        sys.exit(os.EX_USAGE)
 
     @classmethod
-    def _parse_options(cls, all_options, argv):
-        short_flag_args = {}
-        long_flag_args = {}
-
-        args = Namespace({'unknown': {}})
-
-        for (short_flag, long_flag), kwargs in all_options:
-            short_flag_args[short_flag] = (long_flag, kwargs)
-            long_flag_args[long_flag] = kwargs
-            args[long_flag] = kwargs.get('default', None)
-
-        def print_usage(out, help=False):  # Usage closure
-            cls._print_usage(all_options, argv, out, help=help)
-
-        # Parse arguments manually. Assume any unrecognized --flag
-        # is an option for the RemoteClient class
-        i = 0
-        while i < len(argv) - 1:
-            i += 1
-            arg_name = argv[i]
-            if arg_name in {'-?', '--help'}:
-                print_usage(sys.stdout, help=True)
-                sys.exit(0)
-            if arg_name.startswith('--'):
-                identifier = arg_name[2:]
-                if identifier in long_flag_args:
-                    kwargs = long_flag_args[identifier]
-                else:
-                    args.option = identifier
-                    break
-            elif arg_name.startswith('-'):
-                short_id = arg_name[1:]
-                if short_id in short_flag_args:
-                    identifier, kwargs = short_flag_args[short_id]
-                else:
-                    raise KeyError("Unrecognized flag: %s" % arg_name)
-            else:
-                # Remaining positional arguments are function name and args
-                args.function_name = arg_name
-                args.function_args = argv[i + 1:]
-                break
-            action = kwargs.get('action', 'store')
-            if action == 'store_true':
-                args[identifier] = True
-            elif action == 'store_const':
-                args[identifier] = kwargs['const']
-            else:
-                nargs = kwargs.get('nargs', 1)
-                # Take the slice of args in [i+1:j] where j is the index
-                # of the next argument identifier
-                if nargs in {'*', '+'}:
-                    # Find the next --flag
-                    j = i + 1
-                    while j < len(argv) and not argv[j].startswith('-'):
-                        j += 1
-                    if nargs == '+' and j == i + 1:
-                        raise ValueError("%s requires at least one argument" % (
-                            arg_name))
-                else:
-                    # We have an explicit number of args
-                    j = i + 1 + nargs
-                arg_list = argv[i + 1:j]
-                if nargs == 1:
-                    args[identifier] = arg_list[0]
-                else:
-                    args[identifier] = arg_list
-                i = j - 1
-        else:
-            print_usage(sys.stderr, help=True)
-            sys.exit(os.EX_USAGE)
-
-        if args.stdin:
-            if args.function_args:
-                print('error: cannot specify --stdin and arguments on the '
-                      'command line', file=sys.stderr)
-            args.function_args = json.load(sys.stdin)
-            args.evalargs = True
-
-        return args, print_usage
-
-    @classmethod
-    def _get_client_type(cls, options, print_usage):
-        matching_types = [ct for ct in cls._client_types if
-                          getattr(options, ct.selector_option) is not None]
+    def _get_client_type(cls, options):
+        matching_types = [ct for ct in cls.__client_types if
+                          getattr(options, ct.SELECTOR_OPTIONS) is not None]
         if len(matching_types) != 1:
-            sys.stderr.write('Must specify exactly one of [%s]\n' % (
-                ', '.join('--%s' % ct.selector_option
-                          for ct in cls._client_types)))
-            print_usage(sys.stderr)
-            sys.exit(os.EX_USAGE)
+            cls._exit_usage_error('Must specify exactly one of [%s]' % (
+                ', '.join('--%s' % ct.SELECTOR_OPTIONS
+                          for ct in cls.__client_types)))
         else:
             return matching_types[0]
 
     @classmethod
+    def _parse_cmdline_options(cls, argv):
+        cls.register_cmdline_options((
+            (
+                ('--help', ),
+                {'action': 'help'},
+            ),
+            (
+                ('-la', '--list-all-functions'),
+                {'action': 'store_true'},
+            ),
+            (
+                ('-l', '--list-functions', ),
+                {'action': 'store_true'},
+            ),
+            (
+                ('function_name', ),
+                {'nargs': '?', 'help': 'Name of the remote function to call'},
+            ),
+            (
+                ('function_args', ),
+                {'nargs': '*', 'help': 'Arguments for the remote function'},
+            ),
+        ))
+        try:
+            return cls.__parser.parse_args(argv[1:])
+        except BaseException:
+            sys.exit(os.EX_USAGE)
+
+    @classmethod
     def run(cls, functions, service_names, service_class,
             ttypes, argv, default_port=9090):
-        all_options = cls._get_all_options()
-        args, print_usage = cls._parse_options(all_options, argv)
-        if hasattr(args, 'option'):
-            rc = RemoteClient(functions, service_names, service_class, ttypes,
-                                print_usage, default_port)
-            rc.process_option(args.option)
-        else:
-            client_type = cls._get_client_type(args, print_usage)
-            client = client_type(functions, service_names, service_class, ttypes,
-                                 print_usage, default_port)
-            client.run(args)
+        args = cls._parse_cmdline_options(argv)
+        client_type = cls._get_client_type(args)
+        client = client_type(functions, service_names, service_class, ttypes,
+                             cls.__parser.print_help, default_port)
+        if args.list_all_functions and args.list_functions:
+            cls._exit_usage_error(
+                'Please do not specify both --list-all-functions'
+                ' and --list-functions.'
+            )
+        if args.list_all_functions:
+            client._print_functions(sys.stdout, local_only=False)
+            return
+        if args.list_functions:
+            client._print_functions(sys.stdout, local_only=True)
+            return
+        if args.function_name is None:
+            cls._exit_usage_error('Please specify function_name.')
+        if args.stdin:
+            if args.function_args:
+                cls._exit_usage_error(
+                    'Please do no specify both --stdin and '
+                    '[function_args] arguments.'
+                )
+            args.function_args = json.load(sys.stdin)
+            args.evalargs = True
+        client.run(args)
+
 
 Remote.register_client_type(RemoteHostClient)
 Remote.register_client_type(RemoteHttpClient)
