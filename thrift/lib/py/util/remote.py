@@ -74,29 +74,57 @@ format_to_helper = {
     "input": {},
     "output": {},
 }
+format_to_help_message = {
+    "input": {},
+    "output": {},
+}
 
 
-def add_format(name, format_type):
+def add_format(name, format_type, help_msg=None):
+    """
+    Decorate function to set it as a handler for the specified format and format_type
+
+    All functions with same format_type must share the same interface/signature.
+    In other cases, the signature is allowed to differ.
+    """
     lookup_table = format_to_helper[format_type]
 
     def builder(func):
         if name in lookup_table:
             raise ValueError("Format name '{}' is used twice".format(name))
         lookup_table[name] = func
+        if help_msg is not None:
+            format_to_help_message[format_type][name] = help_msg
         return func
     return builder
 
 
 def get_helper_for_format(name, format_type):
-    printer = format_to_helper[format_type].get(name)
-    if printer is None:
+    helper = format_to_helper[format_type].get(name)
+    if name == "help":
+        full_help_message = '\nDetailed help messages:\n\n' + '\n\n'.join(
+            '[{}] {}'.format(*x)
+            for x in sorted(
+                format_to_help_message[format_type].items(),
+                key=lambda x: x[0],
+            )
+        )
+        print(
+            'List of all formats: {}'.format(
+                ', '.join(format_to_helper[format_type].keys())
+            ),
+            full_help_message if format_to_help_message[format_type] else '',
+            file=sys.stderr
+        )
+        sys.exit(os.EX_USAGE)
+    if helper is None:
         sys.stderr.write("Invalid {} format: {}\n".format(format_type, name))
         sys.exit(os.EX_USAGE)
-    return printer
+    return helper
 
 
 @add_format("python", "output")
-def __python_output_printer(ret):
+def __python_output_handler(ret):
     if isinstance(ret, string_types):
         print(ret)
     else:
@@ -111,7 +139,7 @@ def __thrift_to_json(x):
 
 
 @add_format("json", "output")
-def __json_output_printer(ret):
+def __json_output_handler(ret):
     """
     Python object
     {
@@ -152,6 +180,122 @@ def __json_output_printer(ret):
     print(json.dumps(ret, default=__thrift_to_json))
 
 
+def __eval_arg(arg, thrift_types):
+    """Evaluate a commandline argument within the scope of the IF types"""
+    code_globals = {}
+    code_globals.update(thrift_types)
+    # Explicitly compile the code so that it does not inherit our
+    # __future__ directives imported above.  In particular this ensures
+    # that string literals are not treated as unicode unless explicitly
+    # qualified as such.
+    code = compile(arg, '<command_line>', 'eval', 0, 1)
+    return eval(code, code_globals)
+
+
+def __preprocess_input(fn, args, ctx):
+    if len(args) != len(fn.args):
+        sys.stderr.write(('"%s" expects %d arguments (received %d)\n')
+                         % (fn.fn_name, len(fn.args), len(args)))
+        sys.exit(os.EX_USAGE)
+
+    # Get all custom Thrift types
+    return {
+        key: getattr(ctx.ttypes, key)
+        for key in dir(ctx.ttypes)
+    }
+
+
+@add_format("python", "input", (
+    'Evaluate every string in "function_args" using eval() so '
+    'that we can support any type of data, unless we already know '
+    'the thrift function accepts that argument as a string. In that '
+    'case, we simply pass your string without eval().'
+))
+def __python_natural_input_handler(fn, args, ctx):
+    return __python_eval_input_handler(fn, [
+        repr(x) if y[2] == 'string' else x
+        for x, y in zip(args, fn.args)
+    ], ctx)
+
+
+@add_format("python_eval", "input", (
+    'Similar to "python", but we evaluate everything, including strings.'
+))
+def __python_eval_input_handler(fn, args, ctx):
+    thrift_types = __preprocess_input(fn, args, ctx)
+    fn_args = []
+    for arg in args:
+        try:
+            value = __eval_arg(arg, thrift_types)
+        except Exception:
+            traceback.print_exc(file=sys.stderr)
+            sys.stderr.write('error parsing argument "%s"' % (arg,))
+            sys.exit(os.EX_DATAERR)
+        fn_args.append(value)
+
+    return fn_args
+
+
+@add_format("python_eval_stdin", "input", (
+    'Disables the command line option "function_args", and requires '
+    'you to pass parameters from stdin. The string you passed in will '
+    'be sent to eval(). And it must produce a Python list of objects, '
+    'which represents the input argument list to the thrift function.'
+))
+def __python_stdin_input_handler(fn, args, ctx):
+    new_args = json.load(sys.stdin)
+    return __python_eval_input_handler(fn, new_args, ctx)
+
+
+@add_format("json", "input", (
+    'Please pass in only one string as "function_args". This string '
+    'is a json. Its top level must be a dictionary mapping names of '
+    'the thrift function\'s parameters to the value you want to pass '
+    'in. Make sure to represent thrift objects using the same format '
+    'as generated by pyremote (when using json output format). [Hint: '
+    'use this option with a command line tool that can operate on JSONs]'
+))
+def __json_natural_input_handler(fn, args, ctx):
+    if len(args) != 1:
+        sys.stderr.write(
+            'Error: when using "json" input format, only one cmdline argument '
+            'should be used to specify function call arguments. Store arguments '
+            'as a json list.'
+        )
+        sys.exit(os.EX_USAGE)
+    partially_decoded = json.loads(args[0])
+    if not isinstance(partially_decoded, dict):
+        sys.stderr.write(
+            "ERROR: Your json input must be a dictionary (of function arguments).\n"
+        )
+        sys.exit(os.EX_USAGE)
+    args_class = getattr(ctx.service_class, fn.fn_name + "_args", None)
+    if not args_class:
+        sys.stderr.write(
+            "ERROR: <function name>_args class is unexpected missing. Thrift "
+            "may have deprecated its usage. Please re-implement pyremote."
+        )
+        sys.exit(os.EX_USAGE)
+    args_obj = args_class()
+    args_obj.readFromJson(partially_decoded, is_text=False)
+    ans = [getattr(args_obj, arg_name, None) for _, arg_name, _ in fn.args]
+    if None in ans:
+        sys.stderr.write(
+            "ERROR: <function name>_args class is unexpected missing. Thrift "
+            "may have deprecated its usage. Please re-implement pyremote."
+        )
+        sys.exit(os.EX_USAGE)
+    return ans
+
+
+@add_format("json_stdin", "input", (
+    'Similar to "json". But this disables the command line option "function_args" '
+    'and accepts one json string from stdin.'
+))
+def __json_stdin_input_handler(fn, args, ctx):
+    return __json_natural_input_handler(fn, [sys.stdin.read()], ctx)
+
+
 class RemoteClient(object):
     def __init__(self, functions, service_names, service_class,
                  ttypes, print_usage, default_port):
@@ -189,65 +333,27 @@ class RemoteClient(object):
         """After making the method call, do any cleanup work"""
         pass
 
-    def _eval_arg(self, arg, thrift_types):
-        """Evaluate a commandline argument within the scope of the IF types"""
-        code_globals = {}
-        code_globals.update(thrift_types)
-        # Explicitly compile the code so that it does not inherit our
-        # __future__ directives imported above.  In particular this ensures
-        # that string literals are not treated as unicode unless explicitly
-        # qualified as such.
-        code = compile(arg, '<command_line>', 'eval', 0, 1)
-        return eval(code, code_globals)
-
-    def _process_fn_args(self, fn, args, eval_all=False):
-        """Proccess positional commandline args as function arguments"""
-        if len(args) != len(fn.args):
-            self._exit(error_message=('"%s" expects %d arguments '
-                       '(received %d)') % (fn.fn_name, len(fn.args), len(args)))
-
-        # Get all custom Thrift types
-        thrift_types = {}
-        for key in dir(self.ttypes):
-            thrift_types[key] = getattr(self.ttypes, key)
-
-        fn_args = []
-        for arg, arg_info in zip(args, fn.args):
-            if arg_info[2] == 'string' and not eval_all:
-                # For ease-of-use, we don't eval string arguments, simply so
-                # users don't have to wrap the arguments in quotes
-                fn_args.append(arg)
-                continue
-            try:
-                value = self._eval_arg(arg, thrift_types)
-            except Exception:
-                traceback.print_exc(file=sys.stderr)
-                self._exit(error_message='error parsing argument "%s"' % (arg,),
-                           status=os.EX_DATAERR)
-            fn_args.append(value)
-
-        return fn_args
-
-    def _process_args(self, args):
+    def _process_args(self, cmdline_args):
         """Populate instance data using commandline arguments"""
-        fn_name = args.function_name
+        fn_name = cmdline_args.function_name
         if fn_name not in self.functions:
             self._exit(error_message='Unknown function "%s"' % fn_name,
                        status=os.EX_CONFIG)
         else:
             function = self.functions[fn_name]
 
-        function_args = self._process_fn_args(function, args.function_args,
-                                              args.evalargs)
+        function_args = cmdline_args.input_format(
+            function, cmdline_args.function_args, self
+        )
 
-        self._validate_options(args)
+        self._validate_options(cmdline_args)
         return function.fn_name, function_args
 
-    def _execute(self, fn_name, fn_args, args):
+    def _execute(self, fn_name, fn_args, cmdline_args):
         """Make the requested call.
         Assumes _parse_args() and _process_args() have already been called.
         """
-        client = self._get_client(args)
+        client = self._get_client(cmdline_args)
 
         # Call the function
         method = getattr(client, fn_name)
@@ -256,7 +362,7 @@ class RemoteClient(object):
         except Thrift.TException as e:
             ret = 'Exception:\n' + str(e)
 
-        args.output_format(ret)
+        cmdline_args.output_format(ret)
 
         transport = client._iprot.trans
         if isinstance(transport, THeaderTransport):
@@ -267,9 +373,9 @@ class RemoteClient(object):
 
         self._close_client()
 
-    def run(self, args):
-        fn_name, fn_args = self._process_args(args)
-        self._execute(fn_name, fn_args, args)
+    def run(self, cmdline_args):
+        fn_name, fn_args = self._process_args(cmdline_args)
+        self._execute(fn_name, fn_args, cmdline_args)
         self._exit(status=0)
 
 
@@ -318,21 +424,6 @@ class RemoteTransportClient(RemoteClient):
                 'metavar': 'HEADERS_DICT',
                 'help':
                 'Python code to eval() into a dict of write headers',
-            }
-        ), (
-            ('-I', '--stdin'),
-            {
-                'action': 'store_true',
-                'default': False,
-                'help': 'Take function arguments as a json list of strings '
-                'on stdin.  Implies --evalargs.',
-            }
-        ), (
-            ('-e', '--evalargs'),
-            {
-                'action': 'store_true',
-                'default': False,
-                'help': 'Call eval() on all arguments, including strings',
             }
         ),
     ]
@@ -556,6 +647,20 @@ class Remote(object):
     def _parse_cmdline_options(cls, argv):
         cls.register_cmdline_options((
             (
+                ('-ifmt', '--input-format'),
+                {
+                    'action': 'store',
+                    'default': 'python',
+                    'type': lambda x: get_helper_for_format(x, "input"),
+                    'help': (
+                        'Change the format for function_args. Generally speaking, '
+                        'there are two main formats: python_* and json_*. Defaults '
+                        'to "python". Use -ifmt help for entire list of available '
+                        'formats.'
+                    ),
+                },
+            ),
+            (
                 ('-ofmt', '--output-format', ),
                 {
                     'action': 'store',
@@ -563,7 +668,7 @@ class Remote(object):
                     'type': lambda x: get_helper_for_format(x, "output"),
                     'help': (
                         'Change the output format for the return value. The '
-                        'default is "python", which direclty prints out strings'
+                        'default is "python", which direclty prints out strings '
                         'and pprint() other types. Available formats: {}.'
                     ).format(','.join(format_to_helper["output"].keys()))
                 },
@@ -586,7 +691,10 @@ class Remote(object):
             ),
             (
                 ('function_args', ),
-                {'nargs': '*', 'help': 'Arguments for the remote function'},
+                {'nargs': '*', 'help': (
+                    'Arguments for the remote function. Look at --input-format '
+                    'for more details.'
+                )},
             ),
         ))
         try:
@@ -611,14 +719,6 @@ class Remote(object):
             return
         if args.function_name is None:
             cls._exit_usage_error('Please specify function_name.')
-        if args.stdin:
-            if args.function_args:
-                cls._exit_usage_error(
-                    'Please do no specify both --stdin and '
-                    '[function_args] arguments.'
-                )
-            args.function_args = json.load(sys.stdin)
-            args.evalargs = True
         client_type = cls._get_client_type(args)
         client = client_type(functions, service_names, service_class, ttypes,
                              cls.__parser.print_help, default_port)
