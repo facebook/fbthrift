@@ -309,7 +309,7 @@ string t_js_generator::js_includes() {
  */
 string t_js_generator::render_includes() {
   if (gen_node_) {
-    const vector<t_program*>& includes = program_->get_includes();
+    const vector<t_program*>& includes = program_->get_included_programs();
     string result = "";
     for (size_t i = 0; i < includes.size(); ++i) {
       result += "var " + includes[i]->get_name() + "_ttypes = require('" + js_node_module(includes[i]) + "/" + includes[i]->get_name() + "_types')\n";

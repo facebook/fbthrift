@@ -796,7 +796,7 @@ void t_go_generator::init_generator() {
  * Renders all the imports necessary for including another Thrift program
  */
 string t_go_generator::render_includes() {
-  const vector<t_program*>& includes = program_->get_includes();
+  const vector<t_program*>& includes = program_->get_included_programs();
   string result = "";
   string unused_prot = "";
 

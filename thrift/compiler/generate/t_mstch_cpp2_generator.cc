@@ -850,7 +850,8 @@ class mstch_cpp2_service : public mstch_service {
   }
   mstch::node thrift_includes() {
     mstch::array a{};
-    for (auto const* program : service_->get_program()->get_includes()) {
+    for (auto const* program :
+         service_->get_program()->get_included_programs()) {
       const auto& program_id = program->get_path();
       if (!cache_->programs_.count(program_id)) {
         cache_->programs_[program_id] =
@@ -1016,7 +1017,7 @@ class mstch_cpp2_program : public mstch_program {
   }
   mstch::node thrift_includes() {
     mstch::array a{};
-    for (auto const* program : program_->get_includes()) {
+    for (auto const* program : program_->get_included_programs()) {
       const auto& program_id = program->get_path();
       if (!cache_->programs_.count(program_id)) {
         cache_->programs_[program_id] =

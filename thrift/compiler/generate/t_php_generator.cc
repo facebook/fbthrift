@@ -657,7 +657,7 @@ void t_php_generator::init_generator() {
 
   if (!norequires_) {
     // Include other Thrift includes
-    const vector<t_program*>& includes = program_->get_includes();
+    const vector<t_program*>& includes = program_->get_included_programs();
     for (size_t i = 0; i < includes.size(); ++i) {
       string package = includes[i]->get_name();
       string prefix = php_path(includes[i]);

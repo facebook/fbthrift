@@ -224,7 +224,7 @@ void t_erl_generator::hrl_footer(ostream& out, string /*name*/) {
  * Renders all the imports necessary for including another Thrift program
  */
 string t_erl_generator::render_includes() {
-  const vector<t_program*>& includes = program_->get_includes();
+  const vector<t_program*>& includes = program_->get_included_programs();
   string result = "";
   for (size_t i = 0; i < includes.size(); ++i) {
     result += "-include(\"" + uncapitalize(includes[i]->get_name()) + "_types.hrl\").\n";

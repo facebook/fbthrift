@@ -244,7 +244,7 @@ void t_rb_generator::init_generator() {
  * Renders all the imports necessary for including another Thrift program
  */
 string t_rb_generator::render_includes() {
-  const vector<t_program*>& includes = program_->get_includes();
+  const vector<t_program*>& includes = program_->get_included_programs();
   string result = "";
   for (size_t i = 0; i < includes.size(); ++i) {
     result += "require '" + underscore(includes[i]->get_name()) + "_types'\n";

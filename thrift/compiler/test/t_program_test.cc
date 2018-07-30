@@ -102,7 +102,7 @@ TEST(TProgram, AddInclude) {
 
   program.add_include(full_file_path_1, rel_file_path_1);
   program.add_include(full_file_path_2, full_file_path_2);
-  const auto& includes = program.get_includes();
+  const auto& includes = program.get_included_programs();
 
   auto included_names = std::vector<std::string>();
   for (auto include : includes) {

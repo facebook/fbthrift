@@ -328,7 +328,7 @@ BOOST_PYTHON_MODULE(frontend) {
           "includes",
           make_function(
               static_cast<const vector<t_program*>& (t_program::*)() const>(
-                  &t_program::get_includes),
+                  &t_program::get_included_programs),
               policy_rir()))
       .add_property(
           "cpp_includes",

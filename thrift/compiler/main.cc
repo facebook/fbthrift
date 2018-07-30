@@ -253,7 +253,7 @@ static bool generate(
     std::vector<std::string>& arguments) {
   // Oooohh, recursive code generation, hot!!
   if (gen_recurse) {
-    const vector<t_program*>& includes = program->get_includes();
+    const vector<t_program*>& includes = program->get_included_programs();
     for (const auto& include : includes) {
       if (already_generated.count(include->get_path())) {
         continue;

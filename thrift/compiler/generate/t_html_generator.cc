@@ -102,7 +102,7 @@ void t_html_generator::generate_program_toc_rows(
   }
   finished.push_back(tprog);
   generate_program_toc_row(tprog);
-  vector<t_program*> includes = tprog->get_includes();
+  vector<t_program*> includes = tprog->get_included_programs();
   for (vector<t_program*>::iterator iter = includes.begin();
        iter != includes.end(); iter++) {
     generate_program_toc_rows(*iter, finished);

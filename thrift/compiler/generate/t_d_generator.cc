@@ -108,7 +108,7 @@ class t_d_generator : public t_oop_generator {
     print_default_imports(f_types_);
 
     // Include type modules from other imported programs.
-    const vector<t_program*>& includes = program_->get_includes();
+    const vector<t_program*>& includes = program_->get_included_programs();
     for (size_t i = 0; i < includes.size(); ++i) {
       f_types_ <<
         "import " << render_package(*(includes[i])) <<
@@ -233,7 +233,7 @@ class t_d_generator : public t_oop_generator {
       "_types;" << endl;
 
     // Include type modules from other imported programs.
-    const vector<t_program*>& includes = program_->get_includes();
+    const vector<t_program*>& includes = program_->get_included_programs();
 
     for (size_t i = 0; i < includes.size(); ++i) {
       f_service <<

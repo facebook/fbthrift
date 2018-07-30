@@ -66,7 +66,7 @@ class t_mstch_pyi_generator : public t_mstch_generator {
 mstch::map t_mstch_pyi_generator::extend_program(const t_program& program) {
   const auto pyNamespaces = get_py_namespace(program, "");
   mstch::array includeNamespaces;
-  for (const auto included_program : program.get_includes()) {
+  for (const auto included_program : program.get_included_programs()) {
     if (included_program->get_path() == program.get_path()) {
       continue;
     }

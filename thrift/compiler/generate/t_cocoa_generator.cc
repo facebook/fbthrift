@@ -363,7 +363,7 @@ string t_cocoa_generator::cocoa_thrift_imports() {
   }
 
   // Include other Thrift includes
-  const vector<t_program*>& includes = program_->get_includes();
+  const vector<t_program*>& includes = program_->get_included_programs();
   for (size_t i = 0; i < includes.size(); ++i) {
     result += "#import \"" + includes[i]->get_name() + ".h\"" + "\n";
   }

@@ -323,7 +323,7 @@ string t_hs_generator::hs_autogen_comment() {
  * Prints standard thrift imports
  */
 string t_hs_generator::hs_imports() {
-  const vector<t_program*>& includes = program_->get_includes();
+  const vector<t_program*>& includes = program_->get_included_programs();
   string result = string(
       "import Prelude ( Bool(..), Enum, Float, IO, Double, String, Maybe(..),\n"
       "                 Eq, Show, Ord,\n"
@@ -1539,7 +1539,7 @@ void t_hs_generator::generate_service_fuzzer(t_service *tservice) {
         << module_prefix << capitalize(service_name_) << "_Client as Client"
         << nl;
 
-    const vector<t_program*>& includes = program_->get_includes();
+    const vector<t_program*>& includes = program_->get_included_programs();
     for (const auto& program_include : includes) {
       f_service_fuzzer_ << "import qualified "
                         << get_module_prefix(program_include)

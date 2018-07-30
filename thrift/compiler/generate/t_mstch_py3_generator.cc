@@ -144,7 +144,7 @@ mstch::map t_mstch_py3_generator::extend_program(const t_program& program) {
       });
 
   mstch::array includeNamespaces;
-  for (const auto included_program : program.get_includes()) {
+  for (const auto included_program : program.get_included_programs()) {
     if (included_program->get_path() == program.get_path()) {
       continue;
     }
@@ -583,7 +583,7 @@ void t_mstch_py3_generator::add_per_type_data(
   // Put in all the directly-referenced paths, since we don't need to repeat
   // them in extras
   data.extra_namespace_paths.insert(program.get_path());
-  for (const auto included_program : program.get_includes()) {
+  for (const auto included_program : program.get_included_programs()) {
     data.extra_namespace_paths.insert(included_program->get_path());
   }
 

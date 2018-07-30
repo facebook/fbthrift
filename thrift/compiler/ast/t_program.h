@@ -160,7 +160,7 @@ class t_program : public t_doc {
     return include_prefix_;
   }
 
-  const std::vector<t_program*>& get_includes() const {
+  const std::vector<t_program*>& get_included_programs() const {
     return includes_;
   }
 

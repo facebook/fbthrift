@@ -110,7 +110,7 @@ void parsing_driver::parse_file() {
   fclose(yyin);
 
   // Recursively parse all the include programs
-  const auto& includes = program->get_includes();
+  const auto& includes = program->get_included_programs();
   // Always enable allow_neg_field_keys when parsing included files.
   // This way if a thrift file has negative keys, --allow-neg-keys doesn't have
   // to be used by everyone that includes it.
