@@ -15,6 +15,7 @@
  */
 #pragma once
 
+#include <array>
 #include <memory>
 #include <set>
 #include <string>
