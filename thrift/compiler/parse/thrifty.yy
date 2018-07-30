@@ -711,8 +711,10 @@ ConstValue:
       driver.debug("constvalue => tok_int_constant");
       $$ = new t_const_value();
       $$->set_integer($1);
-      if (!driver.params.allow_64bit_consts && ($1 < INT32_MIN || $1 > INT32_MAX)) {
-        driver.warning(1, "64-bit constant \"%" PRIi64 "\" may not work in all languages.", $1);
+      if (driver.mode == apache::thrift::parsing_mode::PROGRAM) {
+        if (!driver.params.allow_64bit_consts && ($1 < INT32_MIN || $1 > INT32_MAX)) {
+          driver.warning(1, "64-bit constant \"%" PRIi64 "\" may not work in all languages.", $1);
+        }
       }
     }
 | tok_dub_constant
