@@ -247,6 +247,17 @@ def __python_stdin_input_handler(fn, args, ctx):
     return __python_eval_input_handler(fn, new_args, ctx)
 
 
+def __args_class_for_function(fn, service_class):
+    args_class = getattr(service_class, fn.fn_name + "_args", None)
+    if not args_class:
+        sys.stderr.write(
+            "ERROR: <function name>_args class is unexpected missing. Thrift "
+            "may have deprecated its usage. Please re-implement pyremote."
+        )
+        sys.exit(os.EX_USAGE)
+    return args_class
+
+
 @add_format("json", "input", (
     'Please pass in only one string as "function_args". This string '
     'is a json. Its top level must be a dictionary mapping names of '
@@ -269,13 +280,7 @@ def __json_natural_input_handler(fn, args, ctx):
             "ERROR: Your json input must be a dictionary (of function arguments).\n"
         )
         sys.exit(os.EX_USAGE)
-    args_class = getattr(ctx.service_class, fn.fn_name + "_args", None)
-    if not args_class:
-        sys.stderr.write(
-            "ERROR: <function name>_args class is unexpected missing. Thrift "
-            "may have deprecated its usage. Please re-implement pyremote."
-        )
-        sys.exit(os.EX_USAGE)
+    args_class = __args_class_for_function(fn, ctx.service_class)
     args_obj = args_class()
     args_obj.readFromJson(partially_decoded, is_text=False)
     ans = [getattr(args_obj, arg_name, None) for _, arg_name, _ in fn.args]
@@ -294,6 +299,52 @@ def __json_natural_input_handler(fn, args, ctx):
 ))
 def __json_stdin_input_handler(fn, args, ctx):
     return __json_natural_input_handler(fn, [sys.stdin.read()], ctx)
+
+
+def __is_thrift_struct(obj):
+    try:
+        json.dumps(obj)
+        return False
+    except BaseException:
+        return True
+
+
+def __get_template_for_struct(struct_type):
+    fields = [
+        (x[1], x[2], x[3]) for x in
+        struct_type.thrift_spec
+        if x is not None
+    ]
+    ans = {}
+    for type1, name, type2 in fields:
+        if type1 != Thrift.TType.STRUCT:
+            ans[name] = "TEMPLATE [TYPE UNKNOWN]"
+            continue
+        ans[name] = __get_template_for_struct(type2[0])
+    return ans
+
+
+def get_json_template_obj(name, functions, service_class):
+    fn = functions.get(name)
+    struct = getattr(service_class, name, None)
+    if fn is None and struct is None:
+        sys.stderr.write("ERROR: unknown structure/function: {}\n".format(name))
+        sys.exit(os.EX_USAGE)
+    if fn is not None:
+        print(
+            "Treating", name,
+            "as a function. Generating template for its arguments...",
+            file=sys.stderr,
+        )
+        ans_class = __args_class_for_function(fn, service_class)
+    elif struct is not None:
+        print(
+            "Treating", name,
+            "as a structure. Generating template for it...",
+            file=sys.stderr,
+        )
+        ans_class = struct
+    return __get_template_for_struct(ans_class)
 
 
 class RemoteClient(object):
@@ -686,6 +737,18 @@ class Remote(object):
                 {'action': 'store_true'},
             ),
             (
+                ('-g', '--generate-template'),
+                {
+                    'action': 'store',
+                    'metavar': 'THRIFT_STRUCT_OR_FUNCTION_NAME',
+                    'help': (
+                        'Generate a template for a thrift struct, OR, arguments of '
+                        'a function call. Currently it supports only json format. '
+                        'No need to specify function_name.'
+                    )
+                }
+            ),
+            (
                 ('function_name', ),
                 {'nargs': '?', 'help': 'Name of the remote function to call'},
             ),
@@ -706,10 +769,16 @@ class Remote(object):
     def run(cls, functions, service_names, service_class,
             ttypes, argv, default_port=9090):
         args = cls._parse_cmdline_options(argv)
-        if args.list_all_functions and args.list_functions:
+        conflicts = [x for x in [
+            "list_all_functions",
+            "list_functions",
+            "generate_template",
+        ] if getattr(args, x)]
+        if len(conflicts) > 1:
             cls._exit_usage_error(
-                'Please do not specify both --list-all-functions'
-                ' and --list-functions.'
+                'Please do not specify all of {} at once.'.format(
+                    ','.join(conflicts)
+                )
             )
         if args.list_all_functions:
             print_functions(functions, service_names, sys.stdout, local_only=False)
@@ -719,6 +788,12 @@ class Remote(object):
             return
         if args.function_name is None:
             cls._exit_usage_error('Please specify function_name.')
+        if args.generate_template:
+            ans = get_json_template_obj(
+                args.generate_template, functions, service_class
+            )
+            print(json.dumps(ans))
+            return
         client_type = cls._get_client_type(args)
         client = client_type(functions, service_names, service_class, ttypes,
                              cls.__parser.print_help, default_port)
