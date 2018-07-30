@@ -326,10 +326,7 @@ BOOST_PYTHON_MODULE(frontend) {
           "services", make_function(&t_program::get_services, policy_rir()))
       .add_property(
           "includes",
-          make_function(
-              static_cast<const vector<t_program*>& (t_program::*)() const>(
-                  &t_program::get_included_programs),
-              policy_rir()))
+          make_function(&t_program::get_included_programs, policy_rbv()))
       .add_property(
           "cpp_includes",
           make_function(&t_program::get_cpp_includes, policy_rir()))

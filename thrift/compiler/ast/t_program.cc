@@ -41,7 +41,8 @@ void t_program::set_out_path(std::string out_path, bool out_path_is_absolute) {
   }
 }
 
-t_program* t_program::add_include(std::string path, std::string include_site) {
+t_program*
+t_program::add_include(std::string path, std::string include_site, int lineno) {
   t_program* program = new t_program(path);
 
   std::string include_prefix;
@@ -51,7 +52,11 @@ t_program* t_program::add_include(std::string path, std::string include_site) {
   }
 
   program->set_include_prefix(include_prefix);
-  includes_.push_back(program);
+
+  auto include = new t_include{program};
+  include->set_lineno(lineno);
+  includes_.push_back(include);
+
   return program;
 }
 

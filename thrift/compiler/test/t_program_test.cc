@@ -100,8 +100,8 @@ TEST(TProgram, AddInclude) {
   const std::string full_file_path_2 = "/this/is/a/dir/" + expect_2 + ".thrift";
   const auto expect = std::vector<std::string>{expect_1, expect_2};
 
-  program.add_include(full_file_path_1, rel_file_path_1);
-  program.add_include(full_file_path_2, full_file_path_2);
+  program.add_include(full_file_path_1, rel_file_path_1, 0);
+  program.add_include(full_file_path_2, full_file_path_2, 0);
   const auto& includes = program.get_included_programs();
 
   auto included_names = std::vector<std::string>();

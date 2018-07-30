@@ -25,6 +25,7 @@
 #include <thrift/compiler/ast/t_const.h>
 #include <thrift/compiler/ast/t_doc.h>
 #include <thrift/compiler/ast/t_enum.h>
+#include <thrift/compiler/ast/t_include.h>
 #include <thrift/compiler/ast/t_list.h>
 #include <thrift/compiler/ast/t_map.h>
 #include <thrift/compiler/ast/t_scope.h>
@@ -160,8 +161,24 @@ class t_program : public t_doc {
     return include_prefix_;
   }
 
-  const std::vector<t_program*>& get_included_programs() const {
+  /**
+   * Returns a list of includes that the program contains. Each include is of
+   * type t_include*, and contains information about the program included, as
+   * well as the location of the include statement.
+   */
+  const std::vector<t_include*>& get_includes() const {
     return includes_;
+  }
+
+  /**
+   * Returns a list of programs that are included by this program.
+   */
+  std::vector<t_program*> get_included_programs() const {
+    std::vector<t_program*> included_programs;
+    for (auto include : includes_) {
+      included_programs.push_back(include->get_program());
+    }
+    return included_programs;
   }
 
   t_scope* scope() const {
@@ -201,10 +218,12 @@ class t_program : public t_doc {
    *
    * @param path         - A full thrift file path
    * @param include_site - A full or relative thrift file path
+   * @param lineno       - The line number of the include statement
    */
-  t_program* add_include(std::string path, std::string include_site);
+  t_program*
+  add_include(std::string path, std::string include_site, int lineno);
 
-  void add_include(t_program* program) {
+  void add_include(t_include* program) {
     includes_.push_back(program);
   }
 
@@ -234,13 +253,13 @@ class t_program : public t_doc {
   std::vector<t_struct*> structs_;
   std::vector<t_struct*> xceptions_;
   std::vector<t_service*> services_;
+  std::vector<t_include*> includes_;
 
   bool out_path_is_absolute_{false};
   std::string path_; // initialized in ctor init-list
   std::string name_{compute_name_from_file_path(path_)};
   std::string out_path_{"./"};
   std::string namespace_;
-  std::vector<t_program*> includes_;
   std::string include_prefix_;
   std::map<std::string, std::string> namespaces_;
   std::vector<std::string> cpp_includes_;
