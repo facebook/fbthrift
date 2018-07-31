@@ -53,123 +53,6 @@ class CppScope (Scope):
 # PrimitiveFactory and primitives
 # ---------------------------------------------------------------
 
-class Definition(Primitive):
-    def _write(self, context):
-        # TODO error in case badly formatted (str(self) doesn't contain
-        # {name})
-        fields = {}
-        if 'symbol_name' in self:
-            fields['symbol_name'] = self.symbol_name
-        if 'result_type' in self:
-            fields['result_type'] = self.result_type
-        fields['symbol_scope'] = ''
-        tpl_default_n = 0
-        tpl_default_list = []
-        while 'tpl_default_' + str(tpl_default_n) in self:
-            s = 'tpl_default_' + str(tpl_default_n)
-            tpl_default_list.append(s)
-            fields[s] = '= ' + str(getattr(self, s))
-            tpl_default_n = tpl_default_n + 1
-
-        if 'name' not in self:
-            if not self.in_header:
-                raise AttributeError('Cannot find mandatory keyword "name"'
-                                        ' inside defn: ' + repr(self))
-            txt = str(self)
-        else:
-            fields['name'] = self.name
-            fields['unqualified_name'] = self.name
-            # if we're in a class, define the {class} field to its name
-            if 'abspath' in self.parent.opts:
-                fields['class'] = self.parent.opts.abspath
-
-            txt = str(self).format(**fields)
-
-        if self.in_header:
-            context.h.double_space()
-        else:
-            context.h.line_feed()
-
-        if 'modifiers' in self:
-            txtsplit = txt.split('\n')
-            # Ensure that templates end up before static or other modifiers
-            if len(txtsplit) > 1:
-                txt = txtsplit[0] + '\n' + self.modifiers + \
-                    ' ' + "\n".join(txtsplit[1:])
-            else:
-                txt = self.modifiers + ' ' + txt
-        context.h.write(txt)
-
-        write_defn = True
-        if self.pure_virtual:
-            context.h.write(" = 0;")
-            write_defn = False
-        elif self.override:
-            context.h.write(" override")
-        elif self.default:
-            context.h.write(" = default;")
-            write_defn = False
-        elif self.delete:
-            context.h.write(" = delete;")
-            write_defn = False
-        elif self.no_except:
-            context.h.write(" noexcept")
-
-        if not self.in_header and write_defn:
-            # no custom epilogue? we'll just set our own haha
-            if 'epilogue' not in self:
-                self.epilogue = '\n\n'
-            print >>context.h, ';',
-            if not 'abspath' in self.parent.opts:
-                # We're not inside of a class so just ignore namespacing
-                # Use previously defined txt
-                pass
-            else:
-                for i in tpl_default_list:
-                    fields[i] = ''
-                fields['symbol_scope'] = self.parent.opts.abspath + '::'
-                fields['name'] = ''.join((self.parent.opts.abspath,
-                    '::', self.name))
-                txt = str(self).format(**fields)
-                if self.no_except:
-                    txt += ' noexcept'
-            decl_output = self.output or context.impl
-            # make sure this parameter is set and not assumed
-            self.in_header = False
-            # delegate writing of the implementation signature til we
-            # actually open its scope
-            self.impl_signature = txt
-        # self.in_header => write the declaration in the header as well
-        else:
-            decl_output = context.h
-        if self.init_dict:
-            if 'value' in self:
-                raise AttributeError("Can't have both value and init_dict"
-                    " in a defn. It's either a constructor"
-                    " or it has a value.")
-            init_txt = ' : \n    ' + ',\n    '.join("{0}({1})".format(*x)
-                                for x in self.init_dict.iteritems())
-            if not self.in_header:
-                decl_output.write(self.impl_signature)
-                self._opts['impl_signature'] = ''
-            decl_output.write(init_txt)
-        if 'value' in self:
-            # well, we don't have to store the self.impl_signature
-            # anymore.
-            decl_output.line_feed()
-            decl_output.write(self.impl_signature)
-            del self._opts['impl_signature']
-            decl_output.write(self.value)
-        # set its scope's output to decl_output (self.output will get
-        # passed to the scope into self.scope.opts.output.. jsyk).
-        self.output = decl_output
-
-    def enter_scope_callback(self, context, scope):
-        if not scope.opts.in_header:
-            scope.opts.output.line_feed()
-            scope.opts.output.write(scope.opts.impl_signature)
-
-
 class Class(Primitive):
     # String Format: type folly abspath::name
     # Example: class FOLLY_DEPRECATE("msg") classname::function : extrastuff
@@ -196,8 +79,6 @@ class Class(Primitive):
         # already on an empty line. If we are not then we introduce a
         # newline before the class defn
         context.h.double_space()
-        if context.impl:
-            context.impl.double_space()
         print >>context.h, self,
         # the scope of this will be written to output_h
         self.output = context.h
@@ -210,96 +91,12 @@ class Class(Primitive):
                 self.epilogue += '\n\n'
 
 
-class Label(Primitive):
-    def _write(self, context):
-        assert issubclass(self.parent.opts.type, Class), \
-            'Declaring a label not inside a class'
-        context.output.line_feed()
-        context.output.unindent(1)
-        print >>context.output, self
-        context.output.indent(1)
-
-
-class Extern(Primitive):
-    def _write(self, context):
-        context.h.line_feed()
-        context.impl.line_feed()
-        print >>context.h, "extern {0};".format(str(self)),
-        self.output = context.impl
-        print >>context.impl, str(self),
-        if 'value' in self:
-            print >>context.impl, self.value,
-        else:
-            print >>context.impl, ';',
-        # the epilogue for the scope (which will be in output_cpp)
-        self.epilogue = ";\n\n"
-
-
-class ImplOnlyStatement(Primitive):
-    def _write(self, context):
-        # set the scope's output to cpp
-        self.output = context.impl
-        self.output.line_feed()
-        self.output.write(str(self))
-        self.epilogue = ";\n\n"
-
-
-class SameLineStmt(Primitive):
-    def _write(self, context):
-        txt = ' ' + str(self)
-        context.output.write(txt)
-
-
-class Case(Primitive):
-    def _write(self, context):
-        # should assert issubclass(self.parent.opts.type, Switch), but cbb
-        # plus we don't have a 'Switch' type so maybe some other time
-        context.output.line_feed()
-        if str(self) == 'default':
-            print >>context.output, 'default:',
-        else:
-            print >>context.output, 'case {0}:'.format(str(self)),
-
-    def enter_scope_callback(self, context, scope):
-        context.output.line_feed()
-        print >>context.output, '{',
-        context.output.indent(2)
-        return dict(physical_scope=False)
-
-    def exit_scope_callback(self, context, scope):
-        context.output.line_feed()
-        if 'nobreak' not in self or not self.nobreak:
-            print >>context.output, 'break;'
-        context.output.unindent(2)
-        print >>context.output, '}',
-        return dict(physical_scope=False)
-
-
 class Statement(Primitive):
     def _write(self, context):
         txt = str(self)
         # statements always start on new lines
         context.output.line_feed()
         context.output.write(txt)
-
-
-class Catch(Primitive):
-    def _write(self, context):
-        txt = str(self)
-        context.output.line_feed()
-        context.output.unindent(2)
-        if len(txt) == 0:
-            print >> context.output, "} catch {"
-        else:
-            print >> context.output, "} catch(" + txt + ") {"
-        context.output.indent(2)
-
-    def enter_scope_callback(self, context, scope):
-        return dict(physical_scope=False)
-
-    def exit_scope_callback(self, context, scope):
-        context.output.line_feed()
-        return dict(physical_scope=False)
 
 
 class Namespace(Primitive):
@@ -332,9 +129,7 @@ class Namespace(Primitive):
 class CppPrimitiveFactory(PrimitiveFactory):
     # TODO enforce somehow that each PrimitiveFactory subclass defines a types
     # staticvar (method_name => class to instantiate with default parameters)
-    types = dict(case=Case, defn=Definition, cls=Class, label=Label,
-                 catch=Catch,
-                 extern=Extern, impl=ImplOnlyStatement, sameLine=SameLineStmt)
+    types = {'cls': Class}
 
     def namespace(self, ns):
         path = ns.split('.')
@@ -352,20 +147,10 @@ class CppPrimitiveFactory(PrimitiveFactory):
 
 class CppOutputContext(OutputContext):
 
-    def __init__(self, output_cpp, output_h, output_tcc, header_path,
-                 additional_outputs=[]):
-        self.omit_include = False
-        self._output_cpp = output_cpp
+    def __init__(self, output_h, header_path):
         self._output_h = output_h
-        self._output_tcc = output_tcc
-        self._additional_outputs = additional_outputs
         self._header_path = header_path
         outputs = [output_h]
-        if output_cpp:
-            outputs.append(output_cpp)
-        if output_tcc:
-            outputs.append(output_tcc)
-        outputs.extend(additional_outputs)
 
         for output in outputs:
             output.make_scope = create_scope_factory(CppScope, output)
@@ -378,18 +163,6 @@ class CppOutputContext(OutputContext):
     @property
     def h(self):
         return self._output_h
-
-    @property
-    def additional_outputs(self):
-        return self._additional_outputs
-
-    @property
-    def impl(self):
-        return self._output_cpp
-
-    @property
-    def tcc(self):
-        return self._output_tcc
 
     @property
     def output(self):
@@ -409,33 +182,6 @@ class CppOutputContext(OutputContext):
             scope.opts.output = self.output
             # start guard in h
             print >>self._output_h, '#pragma once\n'
-            # include h in cpp
-            if not self.omit_include:
-                if self._output_cpp:
-                    print >>self._output_cpp, '#include "{0}.h"\n'.format(
-                            self._header_path)
-            for output in self._additional_outputs:
-                print >>output, '#include "{0}.h"\n'.format(
-                    self._header_path)
-            if self._output_tcc:
-                if self._output_cpp:
-                    print >>self._output_cpp, '#include "{0}.tcc"\n'.format(
-                        self._header_path)
-                for output in self._additional_outputs:
-                    print >>output, '#include "{0}.tcc"\n'.format(
-                        self._header_path)
-                # start guard in tcc
-                print >>self._output_tcc, '#pragma once\n'
-                # include h in tcc
-                print >>self._output_tcc, '#include "{0}.h"'.format(
-                            self._header_path)
-                print >>self._output_tcc, \
-                        '#include <thrift/lib/cpp/TApplicationException.h>'
-                print >>self._output_tcc, '#include <folly/io/IOBuf.h>'
-                print >>self._output_tcc, '#include <folly/io/IOBufQueue.h>'
-                print >>self._output_tcc, \
-                        '#include <thrift/lib/cpp2/GeneratedSerializationCodeHelper.h>'
-                print >>self._output_tcc, ''
             return
 
         # set the output of the real scope's content according to the

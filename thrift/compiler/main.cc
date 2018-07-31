@@ -233,9 +233,7 @@ static bool generate_cpp2(
 
   if (gen_py_cpp2_reflection) {
     search_and_replace_args(arguments, "mstch_cpp2", "cpp2");
-
-    // reflection -> only_reflection
-    search_and_replace_args(arguments, "reflection", "only_reflection");
+    search_and_replace_args(arguments, "reflection", "");
 
     python_generator(gen_string, user_python_compiler, arguments);
   }

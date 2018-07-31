@@ -76,16 +76,10 @@ class Generator(object):
         self.init_generator()
         # Generate them all by passing each object to self._generate
         program = self.program
-        if self._flag('only_reflection'):
-          self._generate_fatal(program)
-          return
         for item in chain(program.enums, program.typedefs, \
                 program.objects, program.services):
             self._generate(item)
-        self._generate_data()
         self._generate_consts(program.consts)
-        if self.flag_reflection:
-            self._generate_fatal(program)
         self.close_generator()
 
     def init_generator(self):
@@ -97,9 +91,6 @@ class Generator(object):
     @property
     def program(self):
         return self._program
-
-    def _generate_data(self):
-        raise NotImplementedError
 
     def _generate_consts(self, constants):
         raise NotImplementedError

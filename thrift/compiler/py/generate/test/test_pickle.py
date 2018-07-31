@@ -46,34 +46,31 @@ class TestPickle(unittest.TestCase):
         sg()
         s = sg.namespace('apache.thrift').scope
         with s.cls('class A') as s1:
-            s1.label('public:')
-            with s1.defn('{name}()', name='A') as s2:
+            s1('public:')
+            with s1('A()').scope as s2:
                 s3 = s2('if (all good with ya)').scope
                 s3('some instruction;')
                 s3('some other instruction;')
                 # Referencing the scope is enough to create the scope
                 s3('while (false)').scope
             s1()
-            s1.label('private:')
+            s1('private:')
             s1('// forbidden copy constructor')
-            s1.defn('{name}(const {class}& rhs)', name='A')
+            s1('A(const A& rhs) {}')
             s1('// forbidden assignment operator')
-            s1.defn('{name}& operator = (const {class}& rhs)', name='A')
+            s1('A& operator = (const A& rhs) {}')
 
         self.assertTrue(all(child.parent is sg  for child in sg._children))
         return sg
 
     def produce_output(self, scope):
-        # create two outputs for the cpp and header, and commit this scope to
+        # create output for the header, and commit this scope to
         # the CppOutputContext that wraps them
-        bufcpp = StringIO()
         bufh = StringIO()
-        buftcc = StringIO()
-        context = CppOutputContext(IndentedOutput(bufcpp),
-            IndentedOutput(bufh), IndentedOutput(buftcc), 'test.h')
+        context = CppOutputContext(IndentedOutput(bufh), 'test.h')
         # now write it to the context
         scope.commit(context)
-        return dict(cpp=bufcpp, h=bufh)
+        return {'h': bufh}
 
     def assertBuffersEqual(self, bufs1, bufs2):
         self.assertTrue(all(bufs1[k].getvalue() == bufs2[k].getvalue() \
