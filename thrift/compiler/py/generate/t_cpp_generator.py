@@ -100,7 +100,6 @@ class CppGenerator(t_generator.Generator):
         'optionals': "produce folly::Optional<...> for optional members",
         'reflection': 'generate static reflection metadata',
         'only_reflection': 'Only generate static reflection metadata',
-        'lean_mean_meta_machine': 'use templated Fatal metadata based codegen',
         'no_getters_setters': "Don't produce get_/set_ methods",
     }
     _out_dir_base = 'gen-cpp2'
@@ -840,8 +839,6 @@ class CppGenerator(t_generator.Generator):
         if self.flag_implicit_templates:
             # Include the types.tcc file from the types header file
             s()
-            if self.flag_lean_mean_meta_machine:
-                s('#include "{0}"'.format(self._fatal_header()))
             s('#include "{0}.tcc"'.format(
                 self._with_include_prefix(self._program, service.name)))
         # Make sure file scope is closed.
@@ -3139,13 +3136,6 @@ class CppGenerator(t_generator.Generator):
         if obj.is_union:
             has_isset = False
 
-        if self.flag_lean_mean_meta_machine and not is_service_helper:
-            s = d.scope
-            with s:
-                s('return ::apache::thrift::serializer_read(*{}, *iprot);'.
-                    format(this))
-            return
-
         fields = obj.members
 
         struct_options = self._get_serialized_fields_options(obj)
@@ -3519,18 +3509,6 @@ class CppGenerator(t_generator.Generator):
 
         s = d.scope
 
-        if self.flag_lean_mean_meta_machine and not is_service_helper:
-            with s:
-                if zero_copy:
-                    s('return ::apache::thrift::'
-                      'serializer_serialized_size_zc(*{}, *prot_);'.format(
-                        this))
-                else:
-                    s('return ::apache::thrift::'
-                      'serializer_serialized_size(*{}, *prot_);'.format(
-                        this))
-            return
-
         if struct_options.has_serialized_fields:
             with s('if ({0}->{1} && '
                     'prot_->protocolType() != {0}->{2})'.format(
@@ -3662,11 +3640,6 @@ class CppGenerator(t_generator.Generator):
                        output=self._out_tcc)
 
         s = d.scope
-        if self.flag_lean_mean_meta_machine and not is_service_helper:
-            with s:
-                s("return ::apache::thrift::serializer_write(*{}, *prot_);".
-                    format(this))
-            return
 
         name = obj.name
         fields = filter(self._should_generate_field, obj.members)
@@ -5247,8 +5220,6 @@ class CppGenerator(t_generator.Generator):
         with get_global_scope(CppPrimitiveFactory, context) as sg:
             sg('#include "{0}"'.format(self._with_include_prefix(
                 self._program, name + '_types.h')))
-            if self.flag_lean_mean_meta_machine:
-                sg('#include "{0}"'.format(self._fatal_header()))
 
             sg()
             if len(ns) > 0:
@@ -5401,13 +5372,6 @@ class CppGenerator(t_generator.Generator):
         print >>types_out_impl, '#include "{}_data.h"\n'.format(
             self._with_include_prefix(self._program, name))
         print >>types_out_impl, '\n'
-
-        fatal_header = '#include "{0}"'.format(self._fatal_header())
-        if self.flag_lean_mean_meta_machine:
-            print >>types_out_impl, fatal_header
-            print >>context.custom_protocol_h, fatal_header
-            print >>types_out_tcc, fatal_header
-            print >>types_out_tcc, '#include <thrift/lib/cpp2/fatal/serializer.h>'
 
         # using directives
         s()

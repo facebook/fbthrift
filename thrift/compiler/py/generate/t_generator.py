@@ -40,11 +40,6 @@ class Generator(object):
         self._flags = flags
         self._tmp = 0
 
-        if self.flag_lean_mean_meta_machine:
-            if 'reflection' not in self._flags:
-                self._flags['reflection'] = ''
-            self.flag_reflection = True
-
     def _flag(self, flag):
         ret = self._flags.get(flag)
         return ret if ret != '' else True
