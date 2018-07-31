@@ -23,3 +23,7 @@ type SomeMap map[int32]string
 
 func SomeMapPtr(v SomeMap) *SomeMap { return &v }
 
+type SomeListOfTypeMap []map[int32]string
+
+func SomeListOfTypeMapPtr(v SomeListOfTypeMap) *SomeListOfTypeMap { return &v }
+

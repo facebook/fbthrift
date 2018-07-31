@@ -160,4 +160,178 @@ cdef class std_unordered_map__Map__i32_string:
 
 Mapping.register(std_unordered_map__Map__i32_string)
 
+cdef class List__std_unordered_map__Map__i32_string:
+    def __init__(self, items=None):
+        if isinstance(items, List__std_unordered_map__Map__i32_string):
+            self._cpp_obj = (<List__std_unordered_map__Map__i32_string> items)._cpp_obj
+        else:
+            self._cpp_obj = move(List__std_unordered_map__Map__i32_string._make_instance(items))
+
+    @staticmethod
+    cdef create(shared_ptr[vector[std_unordered_map[int32_t,string]]] c_items):
+        inst = <List__std_unordered_map__Map__i32_string>List__std_unordered_map__Map__i32_string.__new__(List__std_unordered_map__Map__i32_string)
+        inst._cpp_obj = c_items
+        return inst
+
+    @staticmethod
+    cdef unique_ptr[vector[std_unordered_map[int32_t,string]]] _make_instance(object items) except *:
+        cdef unique_ptr[vector[std_unordered_map[int32_t,string]]] c_inst = make_unique[vector[std_unordered_map[int32_t,string]]]()
+        if items is not None:
+            for item in items:
+                if item is None:
+                    raise TypeError("None is not of the type _typing.Mapping[int, str]")
+                if not isinstance(item, std_unordered_map__Map__i32_string):
+                    item = std_unordered_map__Map__i32_string(item)
+                deref(c_inst).push_back(std_unordered_map[int32_t,string](deref(std_unordered_map__Map__i32_string(item)._cpp_obj.get())))
+        return move_unique(c_inst)
+
+    def __add__(object self, object other):
+        return type(self)(itertools.chain(self, other))
+
+    def __getitem__(self, object index_obj):
+        cdef shared_ptr[vector[std_unordered_map[int32_t,string]]] c_inst
+        cdef std_unordered_map[int32_t,string] citem
+        if isinstance(index_obj, slice):
+            c_inst = make_shared[vector[std_unordered_map[int32_t,string]]]()
+            sz = deref(self._cpp_obj).size()
+            for index in range(*index_obj.indices(sz)):
+                citem = deref(self._cpp_obj.get())[index]
+                deref(c_inst).push_back(citem)
+            return List__std_unordered_map__Map__i32_string.create(c_inst)
+        else:
+            index = <int?>index_obj
+            size = len(self)
+            # Convert a negative index
+            if index < 0:
+                index = size + index
+            if index >= size or index < 0:
+                raise IndexError('list index out of range')
+            citem = deref(self._cpp_obj.get())[index]
+            return std_unordered_map__Map__i32_string.create(
+    make_shared[std_unordered_map[int32_t,string]](citem))
+
+    def __len__(self):
+        return deref(self._cpp_obj).size()
+
+    def __richcmp__(self, other, op):
+        cdef int cop = op
+        if cop not in (2, 3):
+            raise TypeError("unorderable types: {}, {}".format(type(self), type(other)))
+        if not (isinstance(self, Iterable) and isinstance(other, Iterable)):
+            return cop != 2
+        if (len(self) != len(other)):
+            return cop != 2
+
+        for one, two in zip(self, other):
+            if one != two:
+                return cop != 2
+
+        return cop == 2
+
+    def __hash__(self):
+        if not self.__hash:
+            self.__hash = hash(tuple(self))
+        return self.__hash
+
+    def __contains__(self, item):
+        if not self or item is None:
+            return False
+        try:
+            if not isinstance(item, std_unordered_map__Map__i32_string):
+                item = std_unordered_map__Map__i32_string(item)
+        except Exception:
+            return False
+        if not isinstance(item, std_unordered_map__Map__i32_string):
+            return False
+        cdef std_unordered_map[int32_t,string] citem = std_unordered_map[int32_t,string](deref(std_unordered_map__Map__i32_string(item)._cpp_obj.get()))
+        cdef vector[std_unordered_map[int32_t,string]] vec = deref(
+            self._cpp_obj.get())
+        return std_libcpp.find(vec.begin(), vec.end(), citem) != vec.end()
+
+    def __iter__(self):
+        if not self:
+            raise StopIteration
+        cdef std_unordered_map[int32_t,string] citem
+        for citem in deref(self._cpp_obj):
+            yield std_unordered_map__Map__i32_string.create(
+    make_shared[std_unordered_map[int32_t,string]](citem))
+
+    def __repr__(self):
+        if not self:
+            return 'i[]'
+        return f'i[{", ".join(map(repr, self))}]'
+
+    def __reversed__(self):
+        if not self:
+            raise StopIteration
+        cdef std_unordered_map[int32_t,string] citem
+        cdef vector[std_unordered_map[int32_t,string]] vec = deref(
+            self._cpp_obj.get())
+        cdef vector[std_unordered_map[int32_t,string]].reverse_iterator loc = vec.rbegin()
+        while loc != vec.rend():
+            citem = deref(loc)
+            yield std_unordered_map__Map__i32_string.create(
+    make_shared[std_unordered_map[int32_t,string]](citem))
+            inc(loc)
+
+    def index(self, item, start not None=__NOTSET, stop not None=__NOTSET):
+        err = ValueError(f'{item} is not in list')
+        if not self or item is None:
+            raise err
+        offset_begin = offset_end = 0
+        if stop is not __NOTSET or start is not __NOTSET:
+            # Like self[start:stop].index(item)
+            size = len(self)
+            stop = stop if stop is not __NOTSET else size
+            start = start if start is not __NOTSET else 0
+            # Convert stop to a negative position.
+            if stop > 0:
+                stop = min(stop - size, 0)
+            if stop <= -size:
+                raise err  # List would be empty
+            offset_end = -stop
+            # Convert start to always be positive
+            if start < 0:
+                start = max(size + start, 0)
+            if start >= size:
+                raise err  # past end of list
+            offset_begin = start
+
+        try:
+            if not isinstance(item, std_unordered_map__Map__i32_string):
+                item = std_unordered_map__Map__i32_string(item)
+        except Exception:
+            raise err from None
+        if not isinstance(item, std_unordered_map__Map__i32_string):
+            raise err
+        cdef std_unordered_map[int32_t,string] citem = std_unordered_map[int32_t,string](deref(std_unordered_map__Map__i32_string(item)._cpp_obj.get()))
+        cdef vector[std_unordered_map[int32_t,string]] vec = deref(self._cpp_obj.get())
+        cdef vector[std_unordered_map[int32_t,string]].iterator end = std_libcpp.prev(vec.end(), <int64_t>offset_end)
+        cdef vector[std_unordered_map[int32_t,string]].iterator loc = std_libcpp.find(
+            std_libcpp.next(vec.begin(), <int64_t>offset_begin),
+            end,
+            citem
+        )
+        if loc != end:
+            return <int64_t> std_libcpp.distance(vec.begin(), loc)
+        raise err
+
+    def count(self, item):
+        if not self or item is None:
+            return 0
+        try:
+            if not isinstance(item, std_unordered_map__Map__i32_string):
+                item = std_unordered_map__Map__i32_string(item)
+        except Exception:
+            return 0
+        if not isinstance(item, std_unordered_map__Map__i32_string):
+            return 0
+        cdef std_unordered_map[int32_t,string] citem = std_unordered_map[int32_t,string](deref(std_unordered_map__Map__i32_string(item)._cpp_obj.get()))
+        cdef vector[std_unordered_map[int32_t,string]] vec = deref(self._cpp_obj.get())
+        return <int64_t> std_libcpp.count(vec.begin(), vec.end(), citem)
+
+
+Sequence.register(List__std_unordered_map__Map__i32_string)
+
 SomeMap = std_unordered_map__Map__i32_string
+SomeListOfTypeMap = List__std_unordered_map__Map__i32_string
