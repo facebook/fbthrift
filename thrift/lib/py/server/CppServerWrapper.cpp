@@ -623,8 +623,9 @@ public:
       size_t maxQueueLen) {
     auto tm = ThreadManager::newSimpleThreadManager(
         count, pendingTaskCountMax, enableTaskStats, maxQueueLen);
-    if (!poolThreadName_.empty()) {
-      tm->setNamePrefix(poolThreadName_);
+    auto poolThreadName = getCPUWorkerThreadName();
+    if (!poolThreadName.empty()) {
+      tm->setNamePrefix(poolThreadName);
     }
 
     tm->threadFactory(std::make_shared<PosixThreadFactory>());
@@ -638,8 +639,9 @@ public:
       size_t maxQueueLen) {
     auto tm = ThreadManager::newPriorityQueueThreadManager(
         numThreads, enableTaskStats, maxQueueLen);
-    if (!poolThreadName_.empty()) {
-      tm->setNamePrefix(poolThreadName_);
+    auto poolThreadName = getCPUWorkerThreadName();
+    if (!poolThreadName.empty()) {
+      tm->setNamePrefix(poolThreadName);
     }
 
     tm->threadFactory(std::make_shared<PosixThreadFactory>());
@@ -660,8 +662,9 @@ public:
         enableTaskStats,
         maxQueueLen);
     tm->enableCodel(getEnableCodel());
-    if (!poolThreadName_.empty()) {
-      tm->setNamePrefix(poolThreadName_);
+    auto poolThreadName = getCPUWorkerThreadName();
+    if (!poolThreadName.empty()) {
+      tm->setNamePrefix(poolThreadName);
     }
 
     tm->threadFactory(std::make_shared<PosixThreadFactory>());

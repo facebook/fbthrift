@@ -129,8 +129,8 @@ ThriftServer::ThriftServer(
     const std::shared_ptr<HeaderServerChannel>& serverChannel)
     : ThriftServer() {
   serverChannel_ = serverChannel;
-  nWorkers_ = 1;
-  timeout_ = std::chrono::milliseconds(0);
+  setNumIOWorkerThreads(1);
+  setIdleTimeout(std::chrono::milliseconds(0));
 }
 
 ThriftServer::~ThriftServer() {
@@ -243,14 +243,16 @@ void ThriftServer::touchRequestTimestamp() noexcept {
 }
 
 size_t ThriftServer::getNumSaslThreadsToRun() const {
+  size_t nPoolThreads = getNumCPUWorkerThreads();
   return nSaslPoolThreads_ > 0
       ? nSaslPoolThreads_
-      : (nPoolThreads_ > 0 ? nPoolThreads_ : nWorkers_);
+      : (nPoolThreads > 0 ? nPoolThreads : getNumIOWorkerThreads());
 }
 
 void ThriftServer::setup() {
-  DCHECK_NOTNULL(cpp2Pfac_.get());
-  DCHECK_GT(nWorkers_, 0);
+  DCHECK_NOTNULL(getProcessorFactory().get());
+  auto nWorkers = getNumIOWorkerThreads();
+  DCHECK_GT(nWorkers, 0);
 
   uint32_t threadsStarted = 0;
 
@@ -336,16 +338,18 @@ void ThriftServer::setup() {
       }
     }
 
+    auto nPoolThreads = getNumCPUWorkerThreads();
     if (!threadManager_) {
-      int numThreads = nPoolThreads_ > 0 ? nPoolThreads_ : nWorkers_;
+      int numThreads = nPoolThreads > 0 ? nPoolThreads : nWorkers;
       std::shared_ptr<apache::thrift::concurrency::ThreadManager> threadManager(
           PriorityThreadManager::newPriorityThreadManager(
               numThreads,
               true /*stats*/,
               getMaxRequests() + numThreads /*maxQueueLen*/));
       threadManager->enableCodel(getEnableCodel());
-      if (!poolThreadName_.empty()) {
-        threadManager->setNamePrefix(poolThreadName_);
+      auto poolThreadName = getCPUWorkerThreadName();
+      if (!poolThreadName.empty()) {
+        threadManager->setNamePrefix(poolThreadName);
       }
       threadManager->start();
       setThreadManager(threadManager);
@@ -372,9 +376,9 @@ void ThriftServer::setup() {
     }
 
     if (!serverChannel_) {
-      ServerBootstrap::socketConfig.acceptBacklog = listenBacklog_;
+      ServerBootstrap::socketConfig.acceptBacklog = getListenBacklog();
       ServerBootstrap::socketConfig.maxNumPendingConnectionsPerWorker =
-          maxNumPendingConnectionsPerWorker_;
+          getMaxNumPendingConnectionsPerWorker();
       if (reusePort_) {
         ServerBootstrap::setReusePort(true);
       }
@@ -384,7 +388,7 @@ void ThriftServer::setup() {
       }
 
       // Resize the IO pool
-      ioThreadPool_->setNumThreads(nWorkers_);
+      ioThreadPool_->setNumThreads(nWorkers);
       if (!acceptPool_) {
         acceptPool_ = std::make_shared<folly::IOThreadPoolExecutor>(
             nAcceptors_,
@@ -392,8 +396,9 @@ void ThriftServer::setup() {
       }
 
       // Resize the SSL handshake pool
-      VLOG(1) << "Using " << nSSLHandshakeWorkers_ << " SSL handshake threads";
-      sslHandshakePool_->setNumThreads(nSSLHandshakeWorkers_);
+      size_t nSSLHandshakeWorkers = getNumSSLHandshakeWorkerThreads();
+      VLOG(1) << "Using " << nSSLHandshakeWorkers << " SSL handshake threads";
+      sslHandshakePool_->setNumThreads(nSSLHandshakeWorkers);
 
       ServerBootstrap::childHandler(
           acceptorFactory_ ? acceptorFactory_

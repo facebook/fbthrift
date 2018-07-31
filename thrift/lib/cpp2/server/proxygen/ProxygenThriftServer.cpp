@@ -321,16 +321,19 @@ void ProxygenThriftServer::serve() {
     observer_ = apache::thrift::server::observerFactory_->getObserver();
   }
 
+  auto nPoolThreads = getNumCPUWorkerThreads();
+  auto nWorkers = getNumIOWorkerThreads();
   if (!threadManager_) {
-    int numThreads = nPoolThreads_ > 0 ? nPoolThreads_ : nWorkers_;
+    int numThreads = nPoolThreads > 0 ? nPoolThreads : nWorkers;
     std::shared_ptr<apache::thrift::concurrency::ThreadManager> threadManager(
         PriorityThreadManager::newPriorityThreadManager(
             numThreads,
             true /*stats*/,
             getMaxRequests() + numThreads /*maxQueueLen*/));
     threadManager->enableCodel(getEnableCodel());
-    if (!poolThreadName_.empty()) {
-      threadManager->setNamePrefix(poolThreadName_);
+    auto poolThreadName = getCPUWorkerThreadName();
+    if (!poolThreadName.empty()) {
+      threadManager->setNamePrefix(poolThreadName);
     }
     threadManager->start();
     setThreadManager(threadManager);
@@ -356,8 +359,8 @@ void ProxygenThriftServer::serve() {
   }
 
   HTTPServerOptions options;
-  options.threads = static_cast<size_t>(nWorkers_);
-  options.idleTimeout = timeout_;
+  options.threads = static_cast<size_t>(nWorkers);
+  options.idleTimeout = getIdleTimeout();
   options.initialReceiveWindow = initialReceiveWindow_;
   options.shutdownOn = {SIGINT, SIGTERM};
   options.handlerFactories =

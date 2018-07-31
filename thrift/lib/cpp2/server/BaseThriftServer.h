@@ -98,7 +98,7 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
     }
   };
 
- protected:
+ private:
   //! Default number of worker threads (should be # of processor cores).
   static const size_t T_ASYNC_DEFAULT_WORKER_THREADS;
 
@@ -115,19 +115,11 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
   /// Listen backlog
   static const int DEFAULT_LISTEN_BACKLOG = 1024;
 
-  std::shared_ptr<server::TServerEventHandler> eventHandler_;
-
   //! Prefix for pool thread names
   std::string poolThreadName_;
 
   // Cpp2 ProcessorFactory.
   std::shared_ptr<apache::thrift::AsyncProcessorFactory> cpp2Pfac_;
-
-  //! The server's listening address
-  folly::SocketAddress address_;
-
-  //! The server's listening port
-  int port_ = -1;
 
   //! Number of io worker threads (may be set) (should be # of CPU cores)
   size_t nWorkers_ = T_ASYNC_DEFAULT_WORKER_THREADS;
@@ -138,12 +130,6 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
   //! Number of sync pool threads (may be set) (should be set to expected
   //  sync load)
   size_t nPoolThreads_ = 0;
-
-  /**
-   * The thread manager used for sync calls.
-   */
-  std::mutex threadManagerMutex_;
-  std::shared_ptr<apache::thrift::concurrency::ThreadManager> threadManager_;
 
   bool enableCodel_ = false;
 
@@ -187,9 +173,6 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
   uint32_t maxNumPendingConnectionsPerWorker_ =
       T_MAX_NUM_PENDING_CONNECTIONS_PER_WORKER;
 
-  // Notification of various server events
-  std::shared_ptr<apache::thrift::server::TServerObserver> observer_;
-
   // Max number of active connections
   ServerAttribute<uint32_t> maxConnections_{0};
 
@@ -197,11 +180,33 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
   ServerAttribute<uint32_t> maxRequests_{
       concurrency::ThreadManager::DEFAULT_MAX_QUEUE_SIZE};
 
-  // Track # of active requests for this server
-  std::atomic<int32_t> activeRequests_{0};
-
   // If it is set true, server will check and use client timeout header
   bool useClientTimeout_ = true;
+
+  // Max response size allowed. This is the size of the serialized and
+  // transformed response, headers not included. 0 (default) means no limit.
+  ServerAttribute<uint64_t> maxResponseSize_{0};
+
+ protected:
+  //! The server's listening address
+  folly::SocketAddress address_;
+
+  //! The server's listening port
+  int port_ = -1;
+
+  /**
+   * The thread manager used for sync calls.
+   */
+  std::mutex threadManagerMutex_;
+  std::shared_ptr<apache::thrift::concurrency::ThreadManager> threadManager_;
+
+  std::shared_ptr<server::TServerEventHandler> eventHandler_;
+
+  // Notification of various server events
+  std::shared_ptr<apache::thrift::server::TServerObserver> observer_;
+
+  // Track # of active requests for this server
+  std::atomic<int32_t> activeRequests_{0};
 
   std::string overloadedErrorCode_ = kOverloadedErrorCode;
   folly::Function<bool(const transport::THeader*)> isOverloaded_ =
@@ -245,10 +250,6 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
   // Flag indicating whether it is safe to mutate the server config through its
   // setters.
   std::atomic<bool> configMutable_{true};
-
-  // Max response size allowed. This is the size of the serialized and
-  // transformed response, headers not included. 0 (default) means no limit.
-  ServerAttribute<uint64_t> maxResponseSize_{0};
 
   BaseThriftServer() {}
 
@@ -598,7 +599,7 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    *
    * @return number of CPU (pool) threads
    */
-  size_t getNumCPUWorkerThreads() {
+  size_t getNumCPUWorkerThreads() const {
     return nPoolThreads_;
   }
 
@@ -660,6 +661,11 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
       std::shared_ptr<AsyncProcessorFactory> pFac) {
     CHECK(configMutable());
     cpp2Pfac_ = pFac;
+  }
+
+  std::shared_ptr<apache::thrift::AsyncProcessorFactory> getProcessorFactory()
+      const {
+    return cpp2Pfac_;
   }
 
   /**

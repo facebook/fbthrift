@@ -238,7 +238,7 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
     ioThreadPool_ = ioThreadPool;
 
     if (ioThreadPool_->numThreads() > 0) {
-      nWorkers_ = ioThreadPool_->numThreads();
+      setNumIOWorkerThreads(ioThreadPool_->numThreads());
     }
   }
 
@@ -281,7 +281,7 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
     sslHandshakePool_ = sslHandshakePool;
 
     if (sslHandshakePool_->numThreads() > 0) {
-      nSSLHandshakeWorkers_ = sslHandshakePool_->numThreads();
+      setNumSSLHandshakeWorkerThreads(sslHandshakePool_->numThreads());
     }
   }
 
@@ -791,29 +791,6 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
    */
   bool getTrackPendingIO() const {
     return trackPendingIO_;
-  }
-
-  /**
-   * Set failure injection parameters.
-   */
-  void setFailureInjection(FailureInjection fi) override {
-    failureInjection_.set(fi);
-  }
-
-  void setGetHandler(getHandlerFunc func) {
-    getHandler_ = func;
-  }
-
-  getHandlerFunc getGetHandler() {
-    return getHandler_;
-  }
-
-  void setGetHeaderHandler(GetHeaderHandlerFunc func) {
-    getHeaderHandler_ = func;
-  }
-
-  GetHeaderHandlerFunc getGetHeaderHandler() {
-    return getHeaderHandler_;
   }
 
   // client side duplex

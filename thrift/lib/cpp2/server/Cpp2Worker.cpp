@@ -52,7 +52,7 @@ void Cpp2Worker::onNewConnection(
   uint32_t maxConnection = server_->getMaxConnections();
   if (maxConnection > 0 &&
       (getConnectionManager()->getNumConnections() >=
-       maxConnection / server_->nWorkers_)) {
+       maxConnection / server_->getNumIOWorkerThreads())) {
     if (observer) {
       observer->connDropped();
       observer->connRejected();
@@ -121,7 +121,8 @@ void Cpp2Worker::handleHeader(
   if (observer) {
     observer->connAccepted();
     observer->activeConnections(
-        getConnectionManager()->getNumConnections() * server_->nWorkers_);
+        getConnectionManager()->getNumConnections() *
+        server_->getNumIOWorkerThreads());
   }
 }
 
