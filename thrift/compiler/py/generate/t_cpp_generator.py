@@ -69,9 +69,6 @@ def _map_get(map, key, default=None):
 class CompilerError(RuntimeError):
     pass
 
-SerializedFieldOptions = namedtuple('SerializedFieldOptions',
-        ['has_serialized_fields', 'keep_unknown_fields'])
-
 class CppGenerator(t_generator.Generator):
     '''
     Plain ol' c++ generator
@@ -106,10 +103,6 @@ class CppGenerator(t_generator.Generator):
         t_base.double: 'double',
         t_base.float: 'float',
     }
-
-    _serialized_fields_name = '__serialized'
-    _serialized_fields_type = 'apache::thrift::CloneableIOBuf'
-    _serialized_fields_protocol_name = '__serialized_protocol'
 
     def __init__(self, *args, **kwargs):
         # super constructor
@@ -668,10 +661,6 @@ class CppGenerator(t_generator.Generator):
         else:
             return False
 
-    def _should_generate_field(self, field):
-        return ('format' not in field.annotations or
-                field.annotations['format'] != 'serialized')
-
     def _member_default_value(self, member, explicit=False):
         t = self._get_true_type(member.type)
         rt = self._cpp_ref_type(member, self._type_name(t))
@@ -699,17 +688,6 @@ class CppGenerator(t_generator.Generator):
                 return '{rkey}<{tn}>()'.format(rkey=rkey, tn=tn)
             return '{rt}(new {tn}())'.format(rt=rt, tn=tn)
         return ''
-
-    def _get_serialized_fields_options(self, obj):
-        keep_unknown_fields = ('keep_unknown_fields' in obj.annotations and
-                               obj.annotations['keep_unknown_fields'] == '1')
-        return SerializedFieldOptions(
-            keep_unknown_fields=keep_unknown_fields,
-            has_serialized_fields=keep_unknown_fields or any(
-                    'format' in field.annotations and
-                    field.annotations['format'] == 'serialized'
-                    for field in obj.members)
-        )
 
     def _gen_union_constructor(self, s, obj, is_operator, is_move):
         i = OrderedDict()
@@ -836,13 +814,12 @@ class CppGenerator(t_generator.Generator):
         struct.acquire()
         struct.label('public:')
         # Get members
-        members = filter(self._should_generate_field, obj.members)
+        members = obj.members
         has_nonrequired_fields = any(member.req != e_req.required
                                         for member in members)
         should_generate_isset = has_nonrequired_fields and \
             ((not pointers) or read) and not obj.is_union \
             and not self.flag_optionals
-        struct_options = self._get_serialized_fields_options(obj)
 
         def is_heap_allocated(member):
             ttype = self._get_true_type(member.type)
@@ -1088,9 +1065,6 @@ class CppGenerator(t_generator.Generator):
                                             member.name)
                     if should_generate_isset:
                         out('__isset = {};')
-                    if struct_options.has_serialized_fields:
-                        out('{0}.reset();'.format(
-                            self._serialized_fields_name))
         # END if not pointers
 
         if is_virtual or is_large:
@@ -1139,15 +1113,7 @@ class CppGenerator(t_generator.Generator):
                 for member in members:
                     if self._has_isset(member):
                         ist('bool {0};'.format(member.name))
-        if struct_options.has_serialized_fields:
-            struct()
-            struct('apache::thrift::ProtocolType {0};'.format(
-                       self._serialized_fields_protocol_name))
-            struct('{0} {1};'.format(self._serialized_fields_type,
-                                     self._serialized_fields_name))
-        if ((not pointers and
-             is_comparable and
-             not struct_options.has_serialized_fields)):
+        if (not pointers and is_comparable):
             # Generate an equality testing operator.
             with struct.defn('bool {{name}}(const {0}& {1}) const'
                              .format(obj.name,
@@ -1510,14 +1476,7 @@ class CppGenerator(t_generator.Generator):
                         out('swap(a.{0}, b.{0});'.format(tfield.name))
                     if should_generate_isset:
                         out('swap(a.__isset, b.__isset);')
-                    if struct_options.has_serialized_fields:
-                        out('swap(a.{0}, b.{0});'.format(
-                                self._serialized_fields_protocol_name))
-                        out('swap(a.{0}, b.{0});'.format(
-                                self._serialized_fields_name))
-                    if not (
-                            members or should_generate_isset or
-                            struct_options.has_serialized_fields):
+                    if not (members or should_generate_isset):
                         out('(void)a;')
                         out('(void)b;')
         write_extern_templates()
@@ -1553,7 +1512,6 @@ class CppGenerator(t_generator.Generator):
 
         fields = obj.members
 
-        struct_options = self._get_serialized_fields_options(obj)
         # s = scope of the read() function
         s = d.scope
         # Declare stack tmp variables
@@ -1566,11 +1524,6 @@ class CppGenerator(t_generator.Generator):
         s()
         s('using apache::thrift::TProtocolException;')
         s()
-        # Special handling for serialized fields
-        if struct_options.has_serialized_fields:
-            s('{0}->{1} = iprot->protocolType();'.format(
-                this, self._serialized_fields_protocol_name))
-            s('std::unique_ptr<folly::IOBuf> serialized;')
         # Required variables aren't in __isset, so we need tmp vars to
         # check them.
         req_fields = ifilter(lambda field: field.req == e_req.required,
@@ -1590,10 +1543,6 @@ class CppGenerator(t_generator.Generator):
         else:
             # Loop over reading in fields
             s1 = s('while (true)').scope
-            # Save the position before the field beginning
-            if struct_options.has_serialized_fields:
-                s1('auto fbegin = iprot->getCurrentPosition();')
-                s1('bool fserialized = false;')
             # Read beginning field marker
             s1('iprot->readFieldBegin(_fname, _ftype, fid);')
             # Check for field STOP marker
@@ -1650,8 +1599,6 @@ class CppGenerator(t_generator.Generator):
         # Default case
         with s2.case('default'):
             out('iprot->skip(_ftype);')
-            if struct_options.keep_unknown_fields:
-                out('fserialized = true;')
         s2.release()  # switch
         # Read field end marker
         s1('iprot->readFieldEnd();')
@@ -1662,30 +1609,13 @@ class CppGenerator(t_generator.Generator):
                     .format(proto_ns="apache::thrift::protocol")).scope:
                 s1('using apache::thrift::protocol::TProtocolException;')
                 s1('TProtocolException::throwUnionMissingStop();')
-        if struct_options.has_serialized_fields:
-            with s1('if (fserialized)').scope:
-                out('iprot->readFromPositionAndAppend(fbegin, serialized);')
         s1.release()  # while(true)
         s('iprot->readStructEnd();')
-        # Finalize serialized fields buffer if necessary
-        if struct_options.has_serialized_fields:
-            s()
-            # Thrift is supposed to be called only with IOBuf that manage
-            # underlying buffer. Thus it's safe to store IOBuf pointing to the
-            # parts of original buffer inside the deserialized struct.
-            # Note: it might be somewhat memory inefficient as we might be
-            # pointing to a small chunk of the big buffer while keeping the
-            # entire buffer around. However, the current implementation leaves
-            # it to the application to call coalesce() on __serialized field
-            # if necessary.
-            with s('if (serialized)'):
-                out(('{0}->{1} = std::move(serialized);').format(
-                       this, self._serialized_fields_name))
         # Throw if any required fields are missing.
         # We do this after reading the struct end so that there might possibly
         # be a chance of continuing.
         s()
-        for field in filter(self._should_generate_field, fields):
+        for field in fields:
             if not field.req == e_req.required:
                 continue
             with s('if (!isset_{0.name})'.format(field)):
@@ -1919,18 +1849,8 @@ class CppGenerator(t_generator.Generator):
                     name=method,
                     output=self._out_tcc)
 
-        struct_options = self._get_serialized_fields_options(obj)
-
         s = d.scope
 
-        if struct_options.has_serialized_fields:
-            with s('if ({0}->{1} && '
-                    'prot_->protocolType() != {0}->{2})'.format(
-                        this,
-                        self._serialized_fields_name,
-                        self._serialized_fields_protocol_name)):
-                out('using apache::thrift::TProtocolException;')
-                out('throw TProtocolException(TProtocolException::BAD_VERSION);')
         s('uint32_t xfer = 0;')
         s('xfer += prot_->serializedStructSize("{0}");'.format(obj.name))
 
@@ -1940,7 +1860,7 @@ class CppGenerator(t_generator.Generator):
             s = s0('switch({0}->getType())'.format(this)).scope
 
         first = True
-        for field in filter(self._should_generate_field, obj.members):
+        for field in obj.members:
             if self._is_reference(field):
                 isset_expr_format = '{0}->{1}'
             elif self._is_optional_wrapped(field):
@@ -1997,9 +1917,6 @@ class CppGenerator(t_generator.Generator):
             s.release()
             s = s0
 
-        if struct_options.has_serialized_fields:
-            s('xfer += prot_->serializedSizeSerializedData({0}->{1});'
-                    .format(this, self._serialized_fields_name))
         s('xfer += prot_->serializedSizeStop();')
         s('return xfer;')
         s.release()
@@ -2055,18 +1972,7 @@ class CppGenerator(t_generator.Generator):
         s = d.scope
 
         name = obj.name
-        fields = filter(self._should_generate_field, obj.members)
-
-        struct_options = self._get_serialized_fields_options(obj)
-
-        if struct_options.has_serialized_fields:
-            with s('if ({0}->{1} && '
-                    'Protocol_::protocolType() != {0}->{2})'.format(
-                        this,
-                        self._serialized_fields_name,
-                        self._serialized_fields_protocol_name)).scope:
-                out('using apache::thrift::TProtocolException;')
-                out('throw TProtocolException(TProtocolException::BAD_VERSION);')
+        fields = obj.members
 
         s('uint32_t xfer = 0;')
         s('xfer += prot_->writeStructBegin("{0}");'.format(name))
@@ -2127,10 +2033,6 @@ class CppGenerator(t_generator.Generator):
             s('case ' + obj.name + '::Type::__EMPTY__:;')
             s.release()
             s = s0
-        # Flush any fields stored in serialized form
-        if struct_options.has_serialized_fields:
-            s('xfer += prot_->writeSerializedData({0}->{1});'.format(
-                this, self._serialized_fields_name))
         # Write the struct map
         s('xfer += prot_->writeFieldStop();')
         s('xfer += prot_->writeStructEnd();')
@@ -2470,7 +2372,7 @@ class CppGenerator(t_generator.Generator):
             if not value_map:
                 return ('{0}()'.format(self._type_name(t))
                         if not defining else None)
-            fields = filter(self._should_generate_field, t.as_struct.members)
+            fields = t.as_struct.members
             out_list = []
             for field in fields:
                 if field.name in value_map:
