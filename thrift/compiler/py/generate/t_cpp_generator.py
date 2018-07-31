@@ -82,7 +82,6 @@ class CppGenerator(t_generator.Generator):
     long_name = 'C++ version 2'
     supported_flags = {
         'include_prefix': 'Use full include paths in generated files.',
-        'terse_writes': 'Avoid emitting unspec fields whose values are default',
         'json': 'enable simple json protocol',
         'implicit_templates' : 'templates are instantiated implicitly' +
                                'instead of explicitly',
@@ -111,8 +110,6 @@ class CppGenerator(t_generator.Generator):
         prefix = self._flags.get('include_prefix')
         if isinstance(prefix, basestring):
             self.program.include_prefix = prefix
-        terse_writes = self._flags.get('terse_writes')
-        self.safe_terse_writes = (terse_writes == 'safe')
 
         if self.flag_json:
             self.protocols = copy.deepcopy(CppGenerator.protocols)
@@ -1880,8 +1877,6 @@ class CppGenerator(t_generator.Generator):
                 s1 = s('if ({0})'.format(isset_expr)).scope
             elif obj.is_union:
                 s1 = s.case(obj.name + '::Type::' + field.name).scope
-            elif self.flag_terse_writes and not field.req == e_req.required:
-                s1 = self._try_terse_write(field, this, s, pointers)
             else:
                 s1 = s
 
@@ -1920,46 +1915,6 @@ class CppGenerator(t_generator.Generator):
         s('xfer += prot_->serializedSizeStop();')
         s('return xfer;')
         s.release()
-
-    def _try_terse_write(self, field, this, s, pointers):
-        'Generates a terse write predicate for unspecified field, if possible'
-        t = self._get_true_type(field.type)
-        # Not possible for void/struct/exception.
-        if t.is_void or t.is_struct or t.is_xception:
-            return s
-
-        # Terse write is unsafe to use without explicitly setting default
-        # value as in PHP / Python that would change result of deserialization
-        # (comparing with the case when terse_writes is not used): field set
-        # in C++ to default value would be deserialized as null / None.
-        if self.safe_terse_writes and field.value is None:
-            return s
-
-        cmpval = (('(*' + this + '->{0})') if pointers else
-                  ('' + this + '->{0}')).format(field.name)
-
-        # For strings, containers - only support predicate if default
-        # value is empty.
-        if t.is_string:
-            if not field.value or len(field.value.string) == 0:
-                return s('if (!apache::thrift::StringTraits< {0}>::'
-                         'isEmpty({1}))'.format(
-                             self._type_name(t), cmpval)).scope
-            else:
-                return s
-
-        if t.is_container:
-            if not field.value:  # only support empty default.
-                return s('if (!{0}.empty())'.format(cmpval)).scope
-            else:
-                return s  # Otherwise, no terse_write possible
-
-        # For base type/enum, check vs. default const value.
-        if t.is_base_type or t.is_enum:
-            return s('if ({0} != {1})'.format(
-                    cmpval, self._member_default_value(field,
-                                                       explicit=True))).scope
-        return s
 
     def _generate_struct_writer(self, scope, obj, pointers=False,
                                 result=False):
@@ -2003,8 +1958,6 @@ class CppGenerator(t_generator.Generator):
                 s1 = s('if ({0})'.format(isset_expr)).scope
             elif obj.is_union:
                 s1 = s.case(obj.name + '::Type::' + field.name).scope
-            elif self.flag_terse_writes and not field.req == e_req.required:
-                s1 = self._try_terse_write(field, this, s, pointers)
             else:
                 s1 = s
             # Write field header
@@ -2257,8 +2210,6 @@ class CppGenerator(t_generator.Generator):
 
         # We're at types scope now
         scope.release()
-        with self._types_global.namespace('apache.thrift').scope:
-            self._generate_cpp2ops(False, obj, self._types_scope)
 
         # Re-enter types scope, but we can't actually re-enter a scope,
         # so let's recreate it
