@@ -82,7 +82,6 @@ class CppGenerator(t_generator.Generator):
     long_name = 'C++ version 2'
     supported_flags = {
         'include_prefix': 'Use full include paths in generated files.',
-        'json': 'enable simple json protocol',
         'implicit_templates' : 'templates are instantiated implicitly' +
                                'instead of explicitly',
         'optionals': "produce folly::Optional<...> for optional members",
@@ -110,11 +109,6 @@ class CppGenerator(t_generator.Generator):
         prefix = self._flags.get('include_prefix')
         if isinstance(prefix, basestring):
             self.program.include_prefix = prefix
-
-        if self.flag_json:
-            self.protocols = copy.deepcopy(CppGenerator.protocols)
-            self.protocols.append(
-                ("simple_json", "SimpleJSONProtocol", "T_SIMPLE_JSON_PROTOCOL"))
 
     def _base_type_name(self, tbase):
         if tbase in self._base_to_cpp_typename:
@@ -744,7 +738,7 @@ class CppGenerator(t_generator.Generator):
     def _generate_struct_complete(self, s, obj, is_exception,
                                   pointers, read, write, swap,
                                   result, has_isset=True,
-                                  to_additional=False, simplejson=True):
+                                  to_additional=False):
         self._generated_types.append(obj)
 
         def output(data):
@@ -775,8 +769,6 @@ class CppGenerator(t_generator.Generator):
         def write_extern_templates():
             if not self.flag_implicit_templates:
                 for a,b,c in self.protocols:
-                    if a == 'simple_json' and not simplejson:
-                        continue
                     output(("template uint32_t {1}::read<>"
                             "(apache::thrift::{0}Reader*)").format(
                                     b, obj.name))
@@ -2205,8 +2197,7 @@ class CppGenerator(t_generator.Generator):
                                        write=True,
                                        swap=True,
                                        result=False,
-                                       to_additional=False,
-                                       simplejson=True)
+                                       to_additional=False)
 
         # We're at types scope now
         scope.release()
