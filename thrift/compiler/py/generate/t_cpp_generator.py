@@ -3614,7 +3614,6 @@ class CppGenerator(t_generator.Generator):
 
     def _make_context(self, filename,
                       tcc=False,
-                      custom_protocol=False,
                       impl=True):
         'Convenience method to get the context and outputs for some file pair'
         # open files and instantiate outputs
@@ -3622,18 +3621,13 @@ class CppGenerator(t_generator.Generator):
         output_impl = self._write_to(filename + '.cpp') if impl else None
         output_tcc = self._write_to(filename + '.tcc') if tcc else None
         additional_outputs = []
-        custom_protocol_h = self._write_to(filename + "_custom_protocol.h") \
-                if custom_protocol else None
 
         header_path = self._with_include_prefix(self._program, filename)
 
         context = CppOutputContext(output_impl, output_h, output_tcc,
-                                   header_path, additional_outputs,
-                                   custom_protocol_h)
+                                   header_path, additional_outputs)
 
         print >>context.outputs, self._autogen_comment
-        if context.custom_protocol_h is not None:
-            print >>context.custom_protocol_h, self._autogen_comment
         return context
 
     @property
@@ -3682,8 +3676,7 @@ class CppGenerator(t_generator.Generator):
             return;
 
         # open files and instantiate outputs for types
-        context = self._make_context(name + '_types', tcc=True,
-                                     custom_protocol=True)
+        context = self._make_context(name + '_types', tcc=True)
         s = self._types_global = get_global_scope(CppPrimitiveFactory, context)
 
         self._types_out_impl = types_out_impl = context.impl
@@ -3707,9 +3700,6 @@ class CppGenerator(t_generator.Generator):
         for inc in self._program.includes:
             s('#include "{0}_types.h"' \
               .format(self._with_include_prefix(inc, inc.name)))
-            print >>context.custom_protocol_h, \
-                    '#include "{0}_types_custom_protocol.h"'.format(
-                            self._with_include_prefix(inc, inc.name))
 
         for _, b, _ in self.protocols:
             print >>types_out_tcc, \
