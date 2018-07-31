@@ -93,7 +93,6 @@ class CppGenerator(t_generator.Generator):
         'optionals': "produce folly::Optional<...> for optional members",
         'reflection': 'generate static reflection metadata',
         'only_reflection': 'Only generate static reflection metadata',
-        'no_getters_setters': "Don't produce get_/set_ methods",
     }
     _out_dir_base = 'gen-cpp2'
 
@@ -1234,8 +1233,7 @@ class CppGenerator(t_generator.Generator):
                   .format(obj.name))
 
         # generate getters/setters for structures not using folly::Optional
-        if not (obj.is_union or self.flag_optionals or
-                self.flag_no_getters_setters):
+        if not (obj.is_union or self.flag_optionals):
             for member in members:
                 # Doesn't make sense to generate getters/setters for ref fields.
                 # (There is no __isset bit for refs.)
