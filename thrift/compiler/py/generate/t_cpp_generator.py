@@ -86,7 +86,6 @@ class CppGenerator(t_generator.Generator):
     supported_flags = {
         'include_prefix': 'Use full include paths in generated files.',
         'terse_writes': 'Avoid emitting unspec fields whose values are default',
-        'frozen2': 'enable frozen structures',
         'json': 'enable simple json protocol',
         'implicit_templates' : 'templates are instantiated implicitly' +
                                'instead of explicitly',
@@ -2357,47 +2356,6 @@ class CppGenerator(t_generator.Generator):
                 out('{return_statement}obj->{method}(proto);'.
                     format(**locals()))
 
-    def _generate_frozen_layout(self, obj, s):
-        fields = sorted(obj.as_struct.members, key=lambda field: field.key)
-        type_name = self._type_name(obj)
-
-        def visitFields(fmt, fieldFmt, **kwargs):
-            return fmt.format(
-                type=type_name,
-                fields=''.join([
-                    fieldFmt.format(
-                        type=self._type_name(f.type),
-                        name=f.name,
-                        _opt='_OPT' if f.req == e_req.optional else
-                             '_REQ' if f.req == e_req.required else '',
-                        id=f.key,
-                        **kwargs) for f in fields]),
-                **kwargs)
-        s(visitFields(
-            'FROZEN_TYPE({type},{fields}{view}{save}{load});',
-            '\n  FROZEN_FIELD{_opt}({name}, {id}, {type})',
-            view=visitFields(
-                '\n  FROZEN_VIEW({fields})',
-                '\n    FROZEN_VIEW_FIELD{_opt}({name}, {type})'),
-            save=visitFields(
-                '\n  FROZEN_SAVE_INLINE({fields})',
-                '\n    FROZEN_SAVE_FIELD({name})'),
-            load=visitFields(
-                '\n  FROZEN_LOAD_INLINE({fields})',
-                '\n    FROZEN_LOAD_FIELD({name}, {id})')))
-
-        for (typeFmt, fieldFmt) in [
-                ('FROZEN_CTOR', 'FROZEN_CTOR_FIELD{_opt}({name}, {id})'),
-                ('FROZEN_MAXIMIZE', 'FROZEN_MAXIMIZE_FIELD({name})'),
-                ('FROZEN_LAYOUT', 'FROZEN_LAYOUT_FIELD{_opt}({name})'),
-                ('FROZEN_FREEZE', 'FROZEN_FREEZE_FIELD{_opt}({name})'),
-                ('FROZEN_THAW', 'FROZEN_THAW_FIELD{_opt}({name})'),
-                ('FROZEN_DEBUG', 'FROZEN_DEBUG_FIELD({name})'),
-                ('FROZEN_CLEAR', 'FROZEN_CLEAR_FIELD({name})')]:
-            s.impl(visitFields(typeFmt + '({type},{fields})',
-                               '\n  ' + fieldFmt))
-
-
     def _should_generate_hash_equal_to(self, obj):
         annotated = obj.type if obj.is_typedef else obj
         is_enum = isinstance(obj, frontend.t_enum)
@@ -2617,23 +2575,6 @@ class CppGenerator(t_generator.Generator):
             return out_prefix + '{' + ',\n'.join(outlist) + '}'
         else:
             raise TypeError('INVALID TYPE IN print_const_definition: ' + t.name)
-
-    def _generate_layouts(self, objects):
-        if not self.flag_frozen2:
-            return
-        context = self._make_context(self._program.name + '_layouts')
-        s = get_global_scope(CppPrimitiveFactory, context)
-        s('#include <thrift/lib/cpp2/frozen/Frozen.h>')
-        s('#include "{0}"'.format(self._with_include_prefix(self._program,
-            self._program.name + '_types.h')))
-        # Include other layouts
-        for inc in self._program.includes:
-            s('#include "{0}_layouts.h"'
-             .format(self._with_include_prefix(inc, inc.name)))
-        with s.namespace('apache.thrift.frozen').scope:
-            for obj in objects:
-                self._generate_frozen_layout(obj, out())
-        s.release()
 
     def _generate_consts(self, constants):
         name = self._program.name
