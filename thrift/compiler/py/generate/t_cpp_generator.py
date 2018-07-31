@@ -75,15 +75,10 @@ class CppGenerator(t_generator.Generator):
     Note: this is NOT legitimacy incarnate
     '''
 
-    # Protocols to generate type extern/explicit template instances code for.
-    protocols = [("binary", "BinaryProtocol", "T_BINARY_PROTOCOL"),
-                 ("compact", "CompactProtocol", "T_COMPACT_PROTOCOL")]
     short_name = 'cpp2'
     long_name = 'C++ version 2'
     supported_flags = {
         'include_prefix': 'Use full include paths in generated files.',
-        'implicit_templates' : 'templates are instantiated implicitly' +
-                               'instead of explicitly',
         'optionals': "produce folly::Optional<...> for optional members",
         'reflection': 'generate static reflection metadata',
         'only_reflection': 'Only generate static reflection metadata',
@@ -155,21 +150,6 @@ class CppGenerator(t_generator.Generator):
 
     def _apply_unique_ptr_hack(self, type):
         return self._cpp_ref_type(type, '') == 'std::unique_ptr<>'
-
-    def _nested_containers(self, ttype):
-        ttype = self._get_true_type(ttype)
-        if ttype.is_container:
-            if ttype.is_map:
-                tmap = ttype.as_map
-                return '_rk' + self._nested_containers(tmap.key_type) + '_rv' + self._nested_containers(tmap.value_type)
-            elif ttype.is_set:
-                tset = ttype.as_set
-                return '_r' + self._nested_containers(tset.elem_type)
-            elif ttype.is_list:
-                tlist = ttype.as_list
-                return '_r' + self._nested_containers(tlist.elem_type)
-        else:
-            return ''
 
     def _type_name(self, ttype, in_typedef=False,
                    arg=False, scope=None, unique=False, direct=False):
@@ -516,7 +496,7 @@ class CppGenerator(t_generator.Generator):
         s.acquire()
 
     def _generate_typedef(self, ttypedef):
-        # We write all of these to the types scope
+        # We emit all of these to the types scope
         scope = self._types_scope
         the_type = self._type_name(ttypedef.type, in_typedef=True, scope=scope)
         txt = 'typedef {0} {1};\n\n'.format(the_type, ttypedef.symbolic)
@@ -736,7 +716,7 @@ class CppGenerator(t_generator.Generator):
                 out(default)
 
     def _generate_struct_complete(self, s, obj, is_exception,
-                                  pointers, read, write, swap,
+                                  pointers, swap,
                                   result, has_isset=True,
                                   to_additional=False):
         self._generated_types.append(obj)
@@ -764,25 +744,6 @@ class CppGenerator(t_generator.Generator):
                 deprecated += '"\n)]] '
             return(deprecated)
 
-        # generate explicit and extern template instantiations for
-        # {Binary,Compact}Protocol
-        def write_extern_templates():
-            if not self.flag_implicit_templates:
-                for a,b,c in self.protocols:
-                    output(("template uint32_t {1}::read<>"
-                            "(apache::thrift::{0}Reader*)").format(
-                                    b, obj.name))
-
-                    output(("template uint32_t {1}::write<>"
-                            "(apache::thrift::{0}Writer*) const").format(
-                                    b, obj.name))
-                    output(("template uint32_t {1}::serializedSize<>"
-                            "(apache::thrift::{0}Writer const*)"
-                            " const").format(b, obj.name))
-                    output(("template uint32_t {1}::serializedSizeZC<>"
-                            "(apache::thrift::{0}Writer const*) const").
-                                format(b, obj.name))
-
         is_virtual = self._has_cpp_annotation(obj, 'virtual')
         extends = [
             'private apache::thrift::detail::st::ComparisonOperators<{0}>'
@@ -806,8 +767,8 @@ class CppGenerator(t_generator.Generator):
         members = obj.members
         has_nonrequired_fields = any(member.req != e_req.required
                                         for member in members)
-        should_generate_isset = has_nonrequired_fields and \
-            ((not pointers) or read) and not obj.is_union \
+        should_generate_isset = has_nonrequired_fields \
+            and not obj.is_union \
             and not self.flag_optionals
 
         def is_heap_allocated(member):
@@ -1083,7 +1044,7 @@ class CppGenerator(t_generator.Generator):
             s1(self._declare_field(
                 member,
                 pointers and not member.type.is_xception,
-                not read, False,
+                False, False,
                 self._is_optional_wrapped(member), deprecated))
 
         if s1 is not struct:
@@ -1402,15 +1363,6 @@ class CppGenerator(t_generator.Generator):
             struct()
             struct('Type getType() const { return type_; }')
 
-        if read or write:
-            struct()
-        if read:
-            self._generate_struct_reader(struct, obj, pointers)
-        if write:
-            for zc in False, True:
-                self._generate_struct_compute_length(
-                        struct, obj, pointers, result, zero_copy=zc)
-            self._generate_struct_writer(struct, obj, pointers, result)
         if is_exception:
             if 'message' in obj.annotations:
                 what = '{0}.c_str()'.format(obj.annotations['message'])
@@ -1468,733 +1420,16 @@ class CppGenerator(t_generator.Generator):
                     if not (members or should_generate_isset):
                         out('(void)a;')
                         out('(void)b;')
-        write_extern_templates()
-
-    # ======================================================================
-    # DESERIALIZATION CODE
-    # ======================================================================
-
-    def _generate_struct_reader_translate_field_name(self, scope, obj):
-        with scope.defn(
-            'void {name}('
-            'FOLLY_MAYBE_UNUSED folly::StringPiece _fname, '
-            'FOLLY_MAYBE_UNUSED int16_t& fid, '
-            'FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype)',
-            name='translateFieldName', modifiers='static') as s:
-            with s('if (false)'):
-                pass
-            for field in obj.members:
-                with s('else if (_fname == "{0}")'.format(field.name)):
-                    s('fid = {0};'.format(field.key))
-                    s('_ftype = {0};'.format(self._type_to_enum(field.type)))
-
-    def _generate_struct_reader(self, scope, obj,
-                                pointers=False, has_isset=True):
-        if self.flag_optionals:
-            has_isset = False
-        this = 'this'
-        d = scope.defn('template <class Protocol_>\n'
-                       'uint32_t {name}(Protocol_* iprot)', name='read',
-                       output=self._out_tcc)
-        if obj.is_union:
-            has_isset = False
-
-        fields = obj.members
-
-        # s = scope of the read() function
-        s = d.scope
-        # Declare stack tmp variables
-        s('auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();')
-        s('std::string _fname;')
-        s('apache::thrift::protocol::TType _ftype;')
-        s('int16_t fid;')
-        s()
-        s('iprot->readStructBegin(_fname);')
-        s()
-        s('using apache::thrift::TProtocolException;')
-        s()
-        # Required variables aren't in __isset, so we need tmp vars to
-        # check them.
-        req_fields = ifilter(lambda field: field.req == e_req.required,
-                             fields)
-        for field in req_fields:
-            s('bool isset_{0.name} = false;'.format(field))
-        s()
-
-        fields_scope = None
-        if obj.is_union:
-            # Unions only have one member set, so don't loop
-            s('iprot->readFieldBegin(_fname, _ftype, fid);')
-            s1 = s('if (_ftype == apache::thrift::protocol::T_STOP)').scope
-            s1(this + '->__clear();')
-            s1.release()
-            fields_scope = s1 = s.sameLine('else').scope
-        else:
-            # Loop over reading in fields
-            s1 = s('while (true)').scope
-            # Read beginning field marker
-            s1('iprot->readFieldBegin(_fname, _ftype, fid);')
-            # Check for field STOP marker
-            with s1('if (_ftype == apache::thrift::protocol::T_STOP)'):
-                out('break;')
-            fields_scope = s
-
-        with s1('if (iprot->kUsesFieldNames())'):
-            s1(this + '->translateFieldName(_fname, fid, _ftype);')
-
-        # Switch statement on the field we are reading
-        s2 = fields_scope('switch (fid)').scope
-        # Generate deserialization code for known cases
-        for field in fields:
-            s3 = s2.case(field.key).scope
-            if ('format' in field.annotations and
-                    field.annotations['format'] == 'serialized'):
-                s3('fserialized = true;')
-                s3('iprot->skip(_ftype);')
-                s3.release()  # "break;"
-                continue
-            s4 = s3('if (_ftype == {0})'.format(self._type_to_enum(
-                    field.type))).scope
-            with s4:
-                field_prefix = this + '->'
-                field_suffix = ''
-                if obj.is_union:
-                    s4(field_prefix + 'set_{0}();'.format(field.name))
-                    field_prefix += 'mutable_'
-                    field_suffix = '()'
-                if pointers and not field.type.is_xception:
-                    # This is only used for read pargs, so a const-cast is okay
-                    # since the struct is exposed in generated code only.
-                    self._generate_deserialize_field(
-                        s4, field,
-                        '(*const_cast<{0}*>('.format(
-                                self._type_name(field.type)) +
-                                                field_prefix,
-                                                field_suffix + '))')
-                else:
-                    self._generate_deserialize_field(s4, field, field_prefix,
-                                                     field_suffix)
-                if has_isset and self._has_isset(field):
-                    s4('{0}->__isset.{1} = true;'.format(this, field.name))
-                elif field.req == e_req.required:
-                    s4('isset_{1} = true;'.format(this, field.name))
-            with s3.sameLine('else'):
-                out('iprot->skip(_ftype);')
-                # TODO(dreiss): Make this an option when thrift structs have a
-                # common base class.
-                # s4('throw TProtocolException(TProtocolException::'
-                #    'INVALID_DATA);')
-            s3.release()  # "break;"
-        # Default case
-        with s2.case('default'):
-            out('iprot->skip(_ftype);')
-        s2.release()  # switch
-        # Read field end marker
-        s1('iprot->readFieldEnd();')
-        # Eat the stop byte that terminates union content
-        if obj.is_union:
-            s1('iprot->readFieldBegin(_fname, _ftype, fid);')
-            with s1('if (UNLIKELY(_ftype != {proto_ns}::T_STOP))'
-                    .format(proto_ns="apache::thrift::protocol")).scope:
-                s1('using apache::thrift::protocol::TProtocolException;')
-                s1('TProtocolException::throwUnionMissingStop();')
-        s1.release()  # while(true)
-        s('iprot->readStructEnd();')
-        # Throw if any required fields are missing.
-        # We do this after reading the struct end so that there might possibly
-        # be a chance of continuing.
-        s()
-        for field in fields:
-            if not field.req == e_req.required:
-                continue
-            with s('if (!isset_{0.name})'.format(field)):
-                out('TProtocolException::throwMissingRequiredField("{0}", "{1}");'
-                    .format(field.name, obj.name))
-        s('return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;')
-        s.release()  # the function
-
-    def _generate_deserialize_field(self, scope, field, prefix='', suffix=''):
-        'Deserializes a field of any type.'
-        name = prefix + field.name + self._type_access_suffix(field.type) + \
-                suffix
-        self._generate_deserialize_type(
-            scope, field.type, name, self._is_reference(field),
-            self._is_optional_wrapped(field))
-
-    def _generate_deserialize_type(self, scope, otype, name,
-                                   pointer=False, optional_wrapped=False):
-        'Deserializes a variable of any type.'
-        ttype = self._get_true_type(otype)
-        s = scope
-        if ttype.is_void:
-            raise TypeError('CANNOT GENERATE DESERIALIZE CODE FOR void TYPE: '\
-                            + name)
-
-        if ttype.is_struct or ttype.is_xception:
-            self._generate_deserialize_struct(
-                scope, otype, ttype.as_struct, name, pointer, optional_wrapped)
-        elif ttype.is_container or ttype.is_enum:
-            self._generate_templated_deserialize_container(
-                scope, otype,
-                ttype.as_container,
-                name, ttype, pointer,
-                optional_wrapped)
-        elif ttype.is_base_type:
-            if optional_wrapped:
-                # assign a new default-constructed value into the Optional
-                s('{0} = {1}();'.format(name, self._type_name(ttype)))
-            btype = ttype.as_base_type
-            base = btype.base
-            if base == t_base.void:
-                raise CompilerError("Cannot deserialize void field in a "
-                    "struct: " + name)
-            elif base == t_base.string:
-                if btype.is_binary:
-                    txt = 'readBinary({0})'
-                else:
-                    txt = 'readString({0})'
-            elif base == t_base.bool:
-                txt = 'readBool({0})'
-            elif base == t_base.byte:
-                txt = 'readByte({0})'
-            elif base == t_base.i16:
-                txt = 'readI16({0})'
-            elif base == t_base.i32:
-                txt = 'readI32({0})'
-            elif base == t_base.i64:
-                txt = 'readI64({0})'
-            elif base == t_base.double:
-                txt = 'readDouble({0})'
-            elif base == t_base.float:
-                txt = 'readFloat({0})'
-            else:
-                raise CompilerError('No C++ reader for base type ' + \
-                        btype.t_base_name(base) + name)
-            dest = name
-            if pointer:
-                dest = '(*{0})'.format(name)
-            if optional_wrapped:
-                dest += ".value()"
-            txt = 'iprot->{0};'.format(txt.format(dest))
-            s(txt)
-        else:
-            raise TypeError(("DO NOT KNOW HOW TO DESERIALIZE '{0}' "
-                             "TYPE {1}").format(name, self._type_name(ttype)))
-
-    def _generate_deserialize_struct(self, scope, otype, struct, prefix,
-                                     pointer=False, optional_wrapped=False):
-        s = scope
-        if pointer:
-            s('std::unique_ptr<{0}> ptr = std::make_unique<{0}>();'.format(
-                self._type_name(otype)))
-            s('::apache::thrift::Cpp2Ops< {0}>::read('
-                'iprot, ptr.get());'.format(self._type_name(otype)))
-            s('{0} = std::move(ptr);'.format(prefix))
-        elif optional_wrapped:
-            scope("{0} = {1}();".format(
-                prefix, self._type_name(otype)))
-            scope('::apache::thrift::Cpp2Ops< {0}>::read('
-                  'iprot, &{1}.value());'.format(
-                      self._type_name(otype), prefix))
-        else:
-            scope('::apache::thrift::Cpp2Ops< {0}>::read('
-                  'iprot, &{1});'.format(
-                      self._type_name(otype), prefix))
-
-    def _render_indirection_struct_name(self, program_name, typedef_name):
-        return 'apache_thrift_indirection_{0}_{1}'.format(
-            program_name, re.sub('[\W]+', '_', typedef_name))
-
-    def _print_indirection_set(self, indirection_set):
-        for program_name, typedef_name, indirection in indirection_set:
-            indirection_struct_name = self._render_indirection_struct_name(
-                program_name, typedef_name)
-            with self._types_scope.cls('struct {0}'.format(indirection_struct_name)) as s:
-                with s.defn(
-                        'template <typename T> static auto&& {name}(T&& x)',
-                        name='get',
-                        in_header=True):
-                    out('return std::forward<T>(x){0};'.format(indirection))
-                with s.defn(
-                        'template <typename T> static auto&& {name}(T const&& x)',
-                        name='get',
-                        in_header=True):
-                    out('return std::forward<T>(x){0};'.format(indirection))
-
-    def _render_indirection_struct(self, ttype):
-        typedef_name = ttype
-        while ttype.is_typedef:
-            ttype = ttype.type
-
-        if self._has_cpp_annotation(ttype, 'indirection'):
-            return set([(
-                self._program.name,
-                typedef_name.symbolic,
-                self._cpp_annotation(ttype, 'indirection'))])
-        if ttype.is_map:
-            return set(
-                self._render_indirection_struct(ttype.as_map.key_type) |
-                self._render_indirection_struct(ttype.as_map.value_type))
-        elif ttype.is_set:
-            return self._render_indirection_struct(ttype.as_set.elem_type)
-        elif ttype.is_list:
-            return self._render_indirection_struct(ttype.as_list.elem_type)
-
-        return set()
-
-    def _generate_indirection(self, program):
-        indirections = set()
-        for obj in program.objects:
-            for field in obj.members:
-                indirections |= self._render_indirection_struct(field.type)
-        self._print_indirection_set(indirections)
-
-    def _render_type_class_for_serialization(self, ttype, annotation=False):
-        typedef_name = ttype
-        while ttype.is_typedef:
-            ttype = ttype.type
-
-        if ttype.is_void:
-            return '::apache::thrift::type_class::nothing'
-        elif self._has_cpp_annotation(ttype, 'indirection') and not annotation:
-            return (
-                    '::apache::thrift::detail::pm::IndirectionTag<{0}, {1}>'.format(
-                    self._render_indirection_struct_name(
-                        self._program.name,
-                        typedef_name.symbolic),
-                    self._render_type_class_for_serialization(ttype, True)))
-        elif ttype.is_base_type and ttype.as_base_type.is_binary:
-            return '::apache::thrift::type_class::binary'
-        elif ttype.is_string:
-            return '::apache::thrift::type_class::string'
-        elif ttype.is_floating_point:
-            return '::apache::thrift::type_class::floating_point'
-        elif ttype.is_base_type:
-            return '::apache::thrift::type_class::integral'
-        elif ttype.is_enum:
-            return '::apache::thrift::type_class::enumeration'
-        elif ttype.is_list:
-            return '::apache::thrift::type_class::list<{0}>'.format(
-                self._render_type_class_for_serialization(ttype.as_list.elem_type))
-        elif ttype.is_map:
-            if 'forward_compatibility' not in ttype.annotations:
-                return '::apache::thrift::type_class::map<{0}, {1}>'.format(
-                    self._render_type_class_for_serialization(ttype.as_map.key_type),
-                    self._render_type_class_for_serialization(ttype.as_map.value_type))
-            else:
-                return '::apache::thrift::type_class::map_forward_compatibility<{0}, {1}>'.format(
-                    self._render_type_class_for_serialization(ttype.as_map.key_type),
-                    self._render_type_class_for_serialization(ttype.as_map.value_type))
-        elif ttype.is_set:
-            return '::apache::thrift::type_class::set<{0}>'.format(
-                self._render_type_class_for_serialization(ttype.as_set.elem_type))
-        elif ttype.is_xception:
-            return '::apache::thrift::type_class::structure'
-        elif ttype.is_struct:
-            return '::apache::thrift::type_class::structure'
-
-        return '::apache::thrift::type_class::unknown'
-
-    def _generate_templated_deserialize_container(self, scope, otype, struct,
-                                                  prefix, ttype, pointer=False,
-                                                  optional_wrapped=False):
-        s = scope
-        if pointer:
-            s('std::unique_ptr<{0}> ptr = std::make_unique<{0}>();'.format(
-                self._type_name(otype)))
-            s('::apache::thrift::detail::pm::protocol_methods'
-                    '< {0}, {1}>::read(*iprot, *ptr);'.format(
-                        self._render_type_class_for_serialization(otype),
-                        self._type_name(otype)))
-            s('{0} = std::move(ptr);'.format(prefix))
-        elif optional_wrapped:
-            s("{0} = {1}();".format(prefix, self._type_name(otype)))
-            s('::apache::thrift::detail::pm::protocol_methods'
-                    '< {0}, {1}>::read(*iprot, {2}.value());'.format(
-                        self._render_type_class_for_serialization(otype),
-                        self._type_name(otype),
-                        prefix))
-        else:
-            if not ttype.is_enum:
-                s("{0} = {1}();".format(prefix, self._type_name(otype)))
-            s('::apache::thrift::detail::pm::protocol_methods'
-                    '< {0}, {1}>::read(*iprot, {2});'.format(
-                        self._render_type_class_for_serialization(otype),
-                        self._type_name(otype),
-                        prefix))
-
-    # ======================================================================
-    # SERIALIZATION CODE
-    # ======================================================================
-
-    def _generate_struct_compute_length(self, scope, obj,
-                                        pointers=False,
-                                        result=False,
-                                        zero_copy=False):
-        method = "serializedSizeZC" if zero_copy else "serializedSize"
-        this = 'this'
-        d = scope.defn('template <class Protocol_>\n'
-                    'uint32_t {name}(Protocol_ const* prot_) const',
-                    name=method,
-                    output=self._out_tcc)
-
-        s = d.scope
-
-        s('uint32_t xfer = 0;')
-        s('xfer += prot_->serializedStructSize("{0}");'.format(obj.name))
-
-        # unions need a case statement to select which member is active
-        s0 = s
-        if obj.is_union:
-            s = s0('switch({0}->getType())'.format(this)).scope
-
-        first = True
-        for field in obj.members:
-            if self._is_reference(field):
-                isset_expr_format = '{0}->{1}'
-            elif self._is_optional_wrapped(field):
-                isset_expr_format = '{0}->{1}.hasValue()'
-            else:
-                isset_expr_format = '{0}->__isset.{1}'
-
-            isset_expr = isset_expr_format.format(this, field.name)
-
-            if result == True:
-                if first:
-                    first = False
-                    s1 = s('if ({0})'.format(isset_expr)).scope
-                else:
-                    s1 = s('else if ({0})'.format(isset_expr)).scope
-            elif field.req == e_req.optional:
-                s1 = s('if ({0})'.format(isset_expr)).scope
-            elif obj.is_union:
-                s1 = s.case(obj.name + '::Type::' + field.name).scope
-            else:
-                s1 = s
-
-            # Add the size of field header + footer
-            s1('xfer += prot_->serializedFieldSize("{0}", {1}, {2});'
-               ''.format(field.name, self._type_to_enum(field.type),
-                                field.key))
-            # Add the sizes of field contents
-            field_prefix = this + '->'
-            field_suffix = ''
-            if obj.is_union:
-                field_prefix += 'get_'
-                field_suffix = '()'
-            if pointers and not field.type.is_xception:
-                self._generate_serialize_field(
-                    s1, field,
-                    '(*const_cast<{0}*>('.format(
-                            self._type_name(field.type)) + field_prefix,
-                    field_suffix + '))',
-                    method="serializedSize",
-                    struct_method=method,
-                    binary_method=method)
-            else:
-                self._generate_serialize_field(s1, field, field_prefix,
-                                               field_suffix,
-                                               method="serializedSize",
-                                               struct_method=method,
-                                               binary_method=method)
-            if s1 is not s:
-                s1.release()  # if this->__isset.{0}
-        if s0 is not s:
-            s('case ' + obj.name + '::Type::__EMPTY__:;')
-            s.release()
-            s = s0
-
-        s('xfer += prot_->serializedSizeStop();')
-        s('return xfer;')
-        s.release()
-
-    def _generate_struct_writer(self, scope, obj, pointers=False,
-                                result=False):
-        'Generates the write function.'
-        this = 'this'
-        d = scope.defn('template <class Protocol_>\nuint32_t {name}'
-                       '(Protocol_* prot_) const', name='write',
-                       output=self._out_tcc)
-
-        s = d.scope
-
-        name = obj.name
-        fields = obj.members
-
-        s('uint32_t xfer = 0;')
-        s('xfer += prot_->writeStructBegin("{0}");'.format(name))
-
-        # unions need a case statement to select which member is active
-        s0 = s
-        if obj.is_union:
-            s = s0('switch({0}->getType())'.format(this)).scope
-
-        first = True
-        for field in fields:
-            if self._is_reference(field):
-                isset_expr_format = '{0}->{1}'
-            elif self._is_optional_wrapped(field):
-                isset_expr_format = '{0}->{1}.hasValue()'
-            else:
-                isset_expr_format = '{0}->__isset.{1}'
-
-            isset_expr = isset_expr_format.format(this, field.name)
-
-            if result == True:
-                if first:
-                    first = False
-                    s1 = s('if ({0})'.format(isset_expr)).scope
-                else:
-                    s1 = s('else if ({0})'.format(isset_expr)).scope
-            elif field.req == e_req.optional:
-                s1 = s('if ({0})'.format(isset_expr)).scope
-            elif obj.is_union:
-                s1 = s.case(obj.name + '::Type::' + field.name).scope
-            else:
-                s1 = s
-            # Write field header
-            s1('xfer += prot_->writeFieldBegin("{0}", {1}, {2});'.format(
-                field.name, self._type_to_enum(field.type), field.key))
-            # Write field contents
-            field_prefix = this + '->'
-            field_suffix = ''
-            if obj.is_union:
-                field_prefix += 'get_'
-                field_suffix = '()'
-            if pointers and not field.type.is_xception:
-                self._generate_serialize_field(
-                    s1, field,
-                    '(*const_cast<{0}*>('.format(
-                        self._type_name(field.type)) + field_prefix,
-                    field_suffix + '))')
-            else:
-                self._generate_serialize_field(s1, field, field_prefix,
-                                               field_suffix)
-            # Write field closer
-            s1('xfer += prot_->writeFieldEnd();')
-            if s1 is not s:
-                s1.release()  # if this->_isset.{0}
-        if s0 is not s:
-            s('case ' + obj.name + '::Type::__EMPTY__:;')
-            s.release()
-            s = s0
-        # Write the struct map
-        s('xfer += prot_->writeFieldStop();')
-        s('xfer += prot_->writeStructEnd();')
-        s('return xfer;')
-        s.release()  # the function
-
-    def _generate_serialize_field(self, scope, tfield, prefix='', suffix='',
-                                  method='write',
-                                  struct_method=None,
-                                  binary_method=None):
-        'Serializes a field of any type.'
-        name = prefix + tfield.name + self._type_access_suffix(tfield.type) + \
-                suffix
-        pointer = self._is_reference(tfield)
-        self._generate_serialize_type(scope, tfield.type, name,
-                                      self._is_optional_wrapped(tfield),
-                                      method,
-                                      struct_method, binary_method, pointer)
-
-    def _generate_serialize_type(self, scope, otype, name,
-                                 is_optional_wrapped,
-                                 method='write',
-                                 struct_method=None,
-                                 binary_method=None,
-                                 pointer=False):
-        'Serializes a variable of any type.'
-        ttype = self._get_true_type(otype)
-        if struct_method is None:
-            struct_method = method
-        if binary_method is None:
-            binary_method = method
-
-        val_expr = name
-        if is_optional_wrapped:
-            val_expr += ".value()"
-
-        # Do nothing for void types
-        if ttype.is_void:
-            raise TypeError('CANNOT GENERATE SERIALIZE CODE FOR void TYPE: '\
-                            + name)
-        if ttype.is_struct or ttype.is_xception:
-            self._generate_serialize_struct(scope, otype, ttype.as_struct,
-                                            val_expr,
-                                            struct_method, pointer)
-        elif ttype.is_container or ttype.is_enum:
-            self._generate_serialize_container(scope, ttype.as_container, otype,
-                                               pointer,
-                                               val_expr,
-                                               method,
-                                               struct_method=struct_method,
-                                               binary_method=binary_method)
-        elif ttype.is_base_type:
-            btype = ttype.as_base_type
-            base = btype.base
-            if base == t_base.void:
-                raise CompilerError('Cannot serialize void field in a '
-                                    'struct: ' + name)
-            elif base == t_base.string:
-                if btype.is_binary:
-                    txt = '{binary_method}Binary({name});'
-                else:
-                    txt = '{method}String({val_expr});'
-            elif base == t_base.bool:
-                txt = '{method}Bool({val_expr});'
-            elif base == t_base.byte:
-                txt = '{method}Byte({val_expr});'
-            elif base == t_base.i16:
-                txt = '{method}I16({val_expr});'
-            elif base == t_base.i32:
-                txt = '{method}I32({val_expr});'
-            elif base == t_base.i64:
-                txt = '{method}I64({val_expr});'
-            elif base == t_base.double:
-                txt = '{method}Double({val_expr});'
-            elif base == t_base.float:
-                txt = '{method}Float({val_expr});'
-            else:
-                raise CompilerError('No C++ writer for base type ' + \
-                        btype.t_base_name(base) + name)
-            if pointer:
-                val_expr = '(*{0})'.format(name)
-            txt = 'xfer += prot_->' + txt.format(name, **locals())
-            scope(txt)
-        else:
-            raise TypeError(("DO NOT KNOW HOW TO SERIALIZE '{0}' "
-                             "TYPE {1}").format(name, self._type_name(ttype)))
-
-    def _generate_serialize_struct(self, scope, otype, tstruct, prefix='',
-                                   method='write', pointer=False):
-        if pointer:
-            with scope('if ({0})'.format(prefix)):
-                out('xfer += ::apache::thrift::Cpp2Ops< {0}>::{1}('
-                    'prot_, {2}.get());'.format(
-                        self._type_name(otype),
-                        method,
-                        prefix))
-            with scope('else'):
-                if method == "serializedSize" or method == "serializedSizeZC":
-                    out('xfer += prot_->serializedStructSize(\"{0}\");'
-                        .format(tstruct.name))
-                    out('xfer += prot_->serializedSizeStop();')
-                elif method == "write":
-                    out('xfer += prot_->writeStructBegin(\"{0}\");'
-                        .format(tstruct.name))
-                    out('xfer += prot_->writeStructEnd();')
-                    out('xfer += prot_->writeFieldStop();')
-                else:
-                    assert False, method
-        else:
-            scope('xfer += ::apache::thrift::Cpp2Ops< {0}>::{1}('
-                  'prot_, &{2});'.format(
-                      self._type_name(otype),
-                      method,
-                      prefix))
-
-    def _generate_templated_serialize_container_internal(self, scope, otype,
-                                                         pointer, prefix,
-                                                         method, **kwargs):
-        templated_resolution = ""
-        if method == "serializedSize":
-            templated_resolution = "<false>"
-        elif method == "serializedSizeZC":
-            templated_resolution = "<true>"
-
-        scope('xfer += ::apache::thrift::detail::pm::protocol_methods'
-                '< {0}, {1}>::{2}{3}(*prot_, {4});'.format(
-                    self._render_type_class_for_serialization(otype),
-                    self._type_name(otype),
-                    method,
-                    templated_resolution,
-                    prefix))
-
-    def _generate_serialize_container(self, scope, ttype, otype,
-                                      pointer, prefix='', method='write',
-                                      **kwargs):
-        tte = self._type_to_enum
-
-        if pointer:
-            with scope('if ({0})'.format(prefix)):
-                prefix = '*' + prefix
-                self._generate_templated_serialize_container_internal(
-                    scope, otype,
-                    pointer, prefix,
-                    method, **kwargs)
-            with scope('else'):
-                if ttype.is_map:
-                    out('xfer += prot_->{0}MapBegin({1}, {2}, 0);'.format(
-                            method,
-                            tte(ttype.as_map.key_type),
-                            tte(ttype.as_map.value_type)))
-                    out('xfer += prot_->{0}MapEnd();'.format(method))
-                elif ttype.is_set:
-                    out('xfer += prot_->{0}SetBegin({1}, 0);'.format(
-                            method,
-                            tte(ttype.as_set.elem_type)))
-                    out('xfer += prot_->{0}SetEnd();'.format(method))
-                elif ttype.is_list:
-                    out('xfer += prot_->{0}ListBegin({1}, 0);'.format(
-                            method,
-                            tte(ttype.as_list.elem_type)))
-                    out('xfer += prot_->{0}ListEnd();'.format(method))
-        else:
-            self._generate_templated_serialize_container_internal(
-                scope, otype,
-                pointer, prefix,
-                method, **kwargs)
 
     # ======================================================================
     # GENERATE STRUCT
     # ======================================================================
 
-    def _generate_cpp2ops(self, compat, obj, scope):
-        ns = self._namespace_prefix(self._get_namespace())
-        compat_ns = ns
-        compat_full_name = compat_ns + obj.name
-        full_name = ns + obj.name
-
-        if not compat > 0:
-            with scope.defn(
-                ('template <> inline '
-                 'void Cpp2Ops<{compat_full_name}>::clear('
-                 '{full_name}* obj)'.
-                 format(**locals())), in_header=True):
-                out('return obj->__clear();')
-
-        # (method name, is void, const protocol, const object)
-        ops = (('write', False, False, True),
-               ('read', True, False, False),
-               ('serializedSize', False, True, True),
-               ('serializedSizeZC', False, True, True))
-
-        with scope.defn('template <> inline constexpr '
-                'apache::thrift::protocol::TType '
-                'Cpp2Ops<{compat_full_name}>::thriftType()'
-                .format(**locals()), in_header=True):
-            out('return apache::thrift::protocol::T_STRUCT;')
-
-        for method, method_is_void, prt_is_const, obj_is_const in ops:
-            ret_type = 'void' if method_is_void else 'uint32_t'
-            obj_const = ' const' if obj_is_const else ''
-            prt_const = ' const' if prt_is_const else ''
-            return_statement = '' if method_is_void else 'return '
-            with scope.defn(
-                ('template <> template <class Protocol> '
-                 '{ret_type} Cpp2Ops<{compat_full_name}>::{method}('
-                 'Protocol{prt_const}* proto, {full_name}{obj_const}* obj)'.
-                 format(**locals())), name=method, in_header=True):
-                out('{return_statement}obj->{method}(proto);'.
-                    format(**locals()))
-
     def _generate_cpp_struct(self, obj, is_exception=False):
-        # We write all of these to the types scope
+        # We emit all of these to the types scope
         scope = self._types_scope
         self._generate_struct_complete(scope, obj, is_exception,
                                        pointers=False,
-                                       read=True,
-                                       write=True,
                                        swap=True,
                                        result=False,
                                        to_additional=False)
@@ -3469,7 +2704,7 @@ class CppGenerator(t_generator.Generator):
         s = self._types_global = get_global_scope(CppPrimitiveFactory, context)
 
         self._types_out_impl = types_out_impl = context.impl
-        self._out_tcc = types_out_tcc = context.tcc
+        self._out_tcc = context.tcc
         self._generated_types = []
         # Enter the scope (prints guard)
         s.acquire()
@@ -3489,10 +2724,6 @@ class CppGenerator(t_generator.Generator):
         for inc in self._program.includes:
             s('#include "{0}_types.h"' \
               .format(self._with_include_prefix(inc, inc.name)))
-
-        for _, b, _ in self.protocols:
-            print >>types_out_tcc, \
-                '#include <thrift/lib/cpp2/protocol/{0}.h>'. format(b)
 
         s("#include <thrift/lib/cpp2/GeneratedHeaderHelper.h>")
         s()
@@ -3520,18 +2751,10 @@ class CppGenerator(t_generator.Generator):
         s = self._types_scope = \
                 s.namespace(self._get_namespace()).scope
         s.acquire()
-        self._generate_indirection(self._program)
 
     def close_generator(self):
         # make sure that the main types namespace is closed
         self._types_scope.release()
-
-        if self.flag_implicit_templates:
-            # Include the types.tcc file from the types header file
-            s = self._types_global
-            s()
-            s('#include "{0}_types.tcc"'.format(
-                self._with_include_prefix(self._program, self._program.name)))
 
         self._types_global.release()
 
