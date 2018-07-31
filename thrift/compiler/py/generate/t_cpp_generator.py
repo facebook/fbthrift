@@ -62,11 +62,6 @@ class OrderedDict(dict):
 def _map_get(map, key, default=None):
     return map[key] if key in map else default
 
-def _lift_unit(typ):
-    if typ == 'void':
-        return 'folly::Unit'
-    return typ
-
 # ---------------------------------------------------------------
 # Generator
 # ---------------------------------------------------------------
@@ -83,7 +78,7 @@ class CppGenerator(t_generator.Generator):
     Note: this is NOT legitimacy incarnate
     '''
 
-    # Protocols to generate client/server code for.
+    # Protocols to generate type extern/explicit template instances code for.
     protocols = [("binary", "BinaryProtocol", "T_BINARY_PROTOCOL"),
                  ("compact", "CompactProtocol", "T_COMPACT_PROTOCOL")]
     short_name = 'cpp2'
@@ -91,8 +86,6 @@ class CppGenerator(t_generator.Generator):
     supported_flags = {
         'include_prefix': 'Use full include paths in generated files.',
         'terse_writes': 'Avoid emitting unspec fields whose values are default',
-        'stack_arguments': 'Pass arguments on stack instead of heap',
-        'process_in_event_base': 'Process request in event base thread',
         'frozen2': 'enable frozen structures',
         'json': 'enable simple json protocol',
         'implicit_templates' : 'templates are instantiated implicitly' +
@@ -198,9 +191,6 @@ class CppGenerator(t_generator.Generator):
 
     def _type_name(self, ttype, in_typedef=False,
                    arg=False, scope=None, unique=False, direct=False):
-        unique = unique and not self.flag_stack_arguments
-        if ttype.is_stream:
-            ttype = ttype.as_stream.elem_type
         if ttype.is_base_type:
             # cast it
             btype = ttype.as_base_type
@@ -304,17 +294,6 @@ class CppGenerator(t_generator.Generator):
         else:
             return False
 
-    def _get_cache_key(self, f):
-        foundMember = None
-        for member in f.arglist.members:
-            if self._has_cpp_annotation(member, "cache"):
-                if foundMember is not None:
-                    raise CompilerError('Multiple cache \
-                            annotations are not allowed')
-                else:
-                    foundMember = member
-        return foundMember
-
     def _is_reference(self, f):
         return self._cpp_ref_type(f, '') is not None
 
@@ -375,55 +354,16 @@ class CppGenerator(t_generator.Generator):
                     ttype.as_base_type.base == frontend.t_base.string
 
     def _get_true_type(self, ttype):
-        'Get the true type behind a series of typedefs and streams'
-        while ttype.is_typedef or ttype.is_stream:
+        'Get the true type behind a series of typedefs'
+        while ttype.is_typedef:
             if ttype.is_typedef:
                 ttype = ttype.as_typedef.type
-            else:
-                ttype = ttype.as_stream.elem_type
         return ttype
-
-    def _is_stream_type(self, ttype):
-        while ttype.is_typedef:
-            ttype = ttype.as_typedef.type
-        return ttype.is_stream
 
     def _type_access_suffix(self, ttype):
         if not ttype.is_typedef:
             return ''
         return self._cpp_annotation(ttype.as_typedef.type, 'indirection', '')
-
-    def _gen_forward_declaration(self, tstruct):
-        out("class {0};".format(tstruct.name))
-
-    def _get_handler_callback_class(self, function):
-        if self._is_complex_type(function.returntype) and \
-                not self.flag_stack_arguments:
-            rettype = self._type_name(function.returntype)
-            rettype = 'std::unique_ptr<' + rettype + '>'
-        else:
-            rettype = self._type_name(function.returntype)
-        cb = 'StreamingHandlerCallback' if self._is_stream_type(function.returntype) \
-                else 'HandlerCallback'
-        return 'apache::thrift::{0}<{1}>'.format(cb, rettype)
-
-    def _get_presult_success(self):
-        return 'result.get<0>().value'
-    def _get_presult_success_isset(self, value_if_set=None):
-        if value_if_set is None:
-            return 'result.getIsSet(0)'
-        else:
-            return 'result.setIsSet(0, {0})'.format(value_if_set)
-    def _get_presult_exception(self, ex_idx, e):
-        return 'result.get<{0}>().ref()'.format(ex_idx)
-    def _get_presult_exception_isset(self, ex_idx, e, value_if_set=None):
-        if value_if_set is None:
-            return 'result.getIsSet({0})'.format(ex_idx)
-        else:
-            return 'result.setIsSet({0}, {1})'.format(ex_idx, value_if_set)
-    def _get_pargs_field(self, idx, f, pointer=True):
-        return 'args.get<{0}>().{1}'.format(idx,
-                'value' if pointer else 'ref()')
 
     def _generate_enum_constant_list(self, enum, constants, quote_names,
                                       include_values):
@@ -672,8 +612,7 @@ class CppGenerator(t_generator.Generator):
 
     def _generate_data(self):
         context = self._make_context(
-            self._program.name + '_data',
-            is_types_context=True)
+            self._program.name + '_data')
         sg = get_global_scope(CppPrimitiveFactory, context)
         sg('#include <array>')
         sg('#include <cstddef>')
@@ -727,1508 +666,6 @@ class CppGenerator(t_generator.Generator):
                 out('};')
         sg()
         sg.impl('\n')
-
-    # =====================================================================
-    # SERVICE INTERFACE
-    # =====================================================================
-
-    def _generate_async_client_h_shim(self, service):
-        context = self._make_context(service.name + 'AsyncClient', impl=False)
-        s = self._service_global = get_global_scope(CppPrimitiveFactory,
-                                                    context)
-        s.acquire()
-        s('// Simple wrapper header to make interoperating between mstch')
-        s('// and non mstch generated classes easier, without dependencies')
-        s('// between the client -> server and server -> client. This is')
-        s('// an internal implementation detail, and may be deleted at any')
-        s('// time.')
-        s('#include "{0}.h"'.format(
-            self._with_include_prefix(self._program, service.name)))
-        s.release()
-
-    def _generate_service(self, service):
-        self._generate_async_client_h_shim(service)
-
-        # open files and instantiate outputs
-        context = self._make_context(service.name, True, True, True)
-        self._out_tcc = context.tcc
-        self._additional_outputs = context.additional_outputs
-        self._custom_protocol_h = context.custom_protocol_h
-        s = self._service_global = get_global_scope(CppPrimitiveFactory,
-                                                    context)
-        # Enter the scope (prints guard)
-        s.acquire()
-        s('#include <thrift/lib/cpp2/ServiceIncludes.h>')
-        s('#include <thrift/lib/cpp2/async/AsyncClient.h>')
-        s('#include <thrift/lib/cpp2/async/HeaderChannel.h>')
-        s('#include <thrift/lib/cpp/TApplicationException.h>')
-        s('#include <thrift/lib/cpp2/async/FutureRequest.h>')
-        s('#include <folly/futures/Future.h>')
-        s('#include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>')
-        print >>self._custom_protocol_h, \
-                '#include "{0}"'.format(self._with_include_prefix(
-                    self._program,
-                    self._program.name + '_types_custom_protocol.h'))
-        for _, b, _ in self.protocols:
-            print >>context.additional_outputs[-1], \
-                    '#include <thrift/lib/cpp2/protocol/{0}.h>'.format(b)
-        print >>context.impl, '#include <thrift/lib/cpp2/protocol/Protocol.h>'
-        for _, b, _ in self.protocols:
-            print >>context.impl, \
-                    '#include <thrift/lib/cpp2/protocol/{0}.h>'.format(b)
-        s()
-        # Include other Thrift includes
-        for inc in self._program.includes:
-            s('#include "{0}_types.h"' \
-              .format(self._with_include_prefix(inc, inc.name)))
-            print >>self._custom_protocol_h, \
-                    '#include "{0}_types_custom_protocol.h"'.format(
-                            self._with_include_prefix(inc, inc.name))
-            if self.flag_implicit_templates:
-                print >>self._out_tcc, '#include "{0}_types.tcc"'.format(
-                    self._with_include_prefix(inc, inc.name))
-        s()
-        # Include custom headers
-        for inc in self._program.cpp_includes:
-            if inc.startswith('<'):
-                s('#include {0}'.format(inc))
-            else:
-                s('#include "{0}"'.format(inc))
-
-        if service.extends:
-            s('#include "{0}.h"'.format(
-                    self._with_include_prefix(service.extends.program,
-                                              service.extends.name)))
-            print >>self._custom_protocol_h, \
-                    '#include "{0}_custom_protocol.h"'.format(
-                            self._with_include_prefix(service.extends.program,
-                                                      service.extends.name))
-        # include our types last, which might depend on types in custom headers
-        s()
-        s('#include "{0}_types.h"'.format(
-            self._with_include_prefix(self._program, self._program.name)))
-
-        s()
-        s('namespace folly { ')
-        s('  class IOBuf;')
-        s('  class IOBufQueue;')
-        s('}')
-        s('namespace apache { namespace thrift {')
-        s('  class Cpp2RequestContext;')
-        s('  class BinaryProtocolReader;')
-        s('  class CompactProtocolReader;')
-        s('  namespace transport { class THeader; }')
-        s('}}')
-        s()
-
-        # Open namespace
-        ns = s.namespace(self._get_namespace()).scope
-        ns.acquire()
-
-        self._generate_service_helpers(service, ns)
-        self._generate_service_server_interface_async(service, ns)
-        ns('class ' + service.name + 'AsyncProcessor;')
-        self._generate_service_server_interface(service, ns)
-        self._generate_service_server_null(service, ns)
-        self._generate_processor(service, ns)
-        self._generate_service_client(service, ns)
-
-        # make sure that the main types namespace is closed
-        ns.release()
-
-        if self.flag_implicit_templates:
-            # Include the types.tcc file from the types header file
-            s()
-            s('#include "{0}.tcc"'.format(
-                self._with_include_prefix(self._program, service.name)))
-        # Make sure file scope is closed.
-        s.release()
-
-    def _get_presult_object(self, service, function):
-        result = frontend.t_struct(
-            self.program,
-            "{0}_{1}_presult".format(service.name, function.name))
-        success = frontend.t_field(function.returntype, "success", 0)
-        if not function.returntype.is_void:
-            result.append(success)
-        xs = function.xceptions
-        for field in xs.members:
-            result.append(field)
-        return result
-
-
-
-    def _generate_service_helpers(self, service, s):
-        for function in service.functions:
-            arglist = function.arglist
-            def generate_pargs(suffix, pargs):
-                flist = ['apache::thrift::FieldData<{0}, {1}, {2}{3}>'.format(
-                            arg.key,
-                            self._type_to_enum(arg.type),
-                            self._type_name(arg.type),
-                            suffix)
-                                for arg in arglist.members]
-                pargs = "{0}_{1}_{2}".format(service.name, function.name, pargs)
-                flist.insert(0, 'false')
-                fstr = ", ".join(flist)
-                print >>self._out_tcc, \
-                    'typedef apache::thrift::ThriftPresult<{0}> {1};'.format(
-                        fstr, pargs)
-            if self.flag_stack_arguments:
-                generate_pargs('', 'args')
-            generate_pargs('*', 'pargs')
-
-
-            if not function.oneway:
-                flist = ['apache::thrift::FieldData<{0}, '
-                         'apache::thrift::protocol::T_STRUCT, {1}>'.format(
-                            field.key, self._type_name(field.type))
-                                for field in function.xceptions.members]
-                if not function.returntype.is_void:
-                    type = self._type_name(function.returntype)
-                    ttype = self._type_to_enum(function.returntype)
-                    flist.insert(0, 'apache::thrift::FieldData<0, {0}, {1}*>'
-                        .format(ttype, type))
-
-                presult = "{0}_{1}_presult".format(service.name, function.name)
-                flist.insert(0, 'true')
-                fstr = ", ".join(flist)
-
-                print >>self._out_tcc, \
-                    'typedef apache::thrift::ThriftPresult<{0}> {1};'.format(
-                        fstr, presult)
-
-    def _generate_service_client(self, service, s):
-        classname = service.name + "AsyncClient"
-        if service.extends:
-            base_fullname = self._type_name(service.extends) + "AsyncClient"
-        else:
-            base_fullname = "apache::thrift::GeneratedAsyncClient"
-        base_classname = base_fullname.rsplit("::", 1)[1]
-        class_signature = (
-            'class {0} : public {1}'.format(classname, base_fullname))
-        with s.cls(class_signature):
-            out().label('public:')
-
-            out('using {0}::{1};'.format(base_fullname, base_classname))
-
-            with out().defn('char const* {name}() const noexcept',
-                    name='getServiceName',
-                    override=True,
-                    in_header=True):
-                out("return \"{0}\";".format(service.name))
-
-            # Write out all the functions
-            for function in service.functions:
-                self._generate_client_async_function(service, function)
-                self._generate_client_async_function(service, function,
-                                                     uses_rpc_options=True)
-                self._generate_client_async_function(service, function,
-                                                     uses_rpc_options=True,
-                                                     uses_sync=True)
-
-                if not self._is_stream_type(function.returntype):
-                    self._generate_client_sync_function(service, function)
-                    self._generate_client_sync_function(service, function,
-                                                        uses_rpc_options=True)
-                    self._generate_client_future_function(service, function)
-                    self._generate_client_future_function(service, function,
-                                                          uses_rpc_options=True)
-                    if not function.oneway:
-                        self._generate_client_future_function(
-                                service, function,
-                                uses_rpc_options=True, header=True)
-
-                self._generate_client_folly_function(function)
-
-                if self._is_stream_type(function.returntype):
-                    self._generate_client_streaming_function(service, function)
-                    self._generate_client_streaming_function(service, function,
-                        uses_rpc_options=True)
-
-                if not function.oneway:
-                    self._generate_recv_functions(function)
-
-                self._generate_templated_client_function(service, function)
-
-                if not function.oneway:
-                    self._generate_templated_recv_function(service, function)
-
-    def _get_async_func_name(self, function):
-        if self._is_processed_in_eb(function):
-            return 'async_eb_' + function.name
-        else:
-            return 'async_tm_' + function.name
-
-    def _generate_service_server_null(self, service, s):
-        classname = service.name + "SvNull"
-        if not service.extends:
-            class_signature = "class " + classname + " : public " + \
-                service.name + \
-                "SvIf"
-        else:
-            class_signature = "class " + classname + " : public " + \
-                service.name + "SvIf, virtual public " + \
-                self._type_name(service.extends) + "SvIf"
-        with s.cls(class_signature):
-            out().label('public:')
-            for function in service.functions:
-                if not self._is_processed_in_eb(function) and \
-                   not self._is_stream_type(function.returntype):
-                    with out().defn(
-                            self._get_process_function_signature(service,
-                                                                 function,
-                                                                 True),
-                            name=function.name,
-                            override=True):
-                        if not function.oneway and \
-                          not function.returntype.is_void and \
-                          not self._is_complex_type(function.returntype):
-                            out('return ' +
-                              self._default_value(function.returntype) + ';')
-
-    def _generate_service_server_interface_async(self, service, s):
-        classname = service.name + "SvAsyncIf"
-        class_signature = "class " + classname
-        with s.cls(class_signature):
-            out().label('public:')
-            out().defn('~{0}()'.format(classname), name=classname,
-                   modifiers='virtual',
-                   in_header=True).scope.empty()
-            for function in service.functions:
-                out().defn(self._get_process_function_signature_async(service,
-                                                                  function),
-                       name=self._get_async_func_name(function),
-                       modifiers='virtual',
-                       pure_virtual=True)
-
-                if not self._is_stream_type(function.returntype):
-                    out().defn(self._get_process_function_signature_future(
-                           service, function),
-                           name="future_" + function.name,
-                           modifiers='virtual',
-                           pure_virtual=True)
-
-    def _get_function_priority(self, service, function):
-        if function.annotations is not None and \
-                'priority' in function.annotations.annotations:
-            return function.annotations.annotations['priority']
-        elif 'priority' in service.annotations:
-            return service.annotations['priority']
-        else:
-            return 'NORMAL'
-
-    def _generate_service_server_interface(self, service, s):
-        classname = service.name + "SvIf"
-        if not service.extends:
-            class_signature = "class " + classname + " : public " + \
-                service.name + \
-                "SvAsyncIf, public apache::thrift::ServerInterface"
-        else:
-            class_signature = "class " + classname + " : public " + \
-                service.name + "SvAsyncIf, virtual public " + \
-                self._type_name(service.extends) + "SvIf"
-        with s.cls(class_signature):
-            out().label('public:')
-            out('typedef ' + service.name + 'AsyncProcessor ProcessorType;')
-            with out().defn(
-                    'std::unique_ptr<apache::thrift::AsyncProcessor>' +
-                    ' {name}()',
-                    name='getProcessor',
-                    override=True):
-                out('return std::make_unique<{klass}AsyncProcessor>(this);'
-                    .format(klass=service.name))
-            for function in service.functions:
-                if not self._is_stream_type(function.returntype):
-                    with out().defn(self._get_process_function_signature(service,
-                                                                     function,
-                                                                     True),
-                                name=function.name,
-                                modifiers='virtual'):
-                        out('apache::thrift::detail::si::'
-                            'throw_app_exn_unimplemented("{0}");'
-                            .format(function.name))
-                    self._generate_server_future_function(service, function)
-                self._generate_server_async_function(service, function)
-
-    def _generate_server_future_function(self, service, function):
-        name = "future_" + function.name
-        sig = self._get_process_function_signature_future(service, function)
-        with out().defn(sig, name=name, override=True):
-            if self.flag_stack_arguments:
-                args = [m.name for m in function.arglist.members]
-                if not self._is_complex_type(function.returntype):
-                    f = "future"
-                    c = "[&] {{ return {n}({a}); }}"
-                else:
-                    f = "future_returning"
-                    args = ["_return"] + args
-                    c = "[&]({r}& _return) {{ {n}({a}); }}"
-            else:
-                args = [
-                    "std::move({n})".format(
-                        n=m.name) if self._is_complex_type(m.type) else m.name
-                    for m in function.arglist.members
-                ]
-                if not self._is_complex_type(function.returntype):
-                    f = "future"
-                    c = "[&] {{ return {n}({a}); }}"
-                else:
-                    f = "future_returning_uptr"
-                    args = ["_return"] + args
-                    c = "[&]({r}& _return) {{ {n}({a}); }}"
-            s = "return {ns}::{f}(" + c + ");"
-            ns = "apache::thrift::detail::si"
-            r = self._type_name(function.returntype)
-            out(s.format(ns=ns, f=f, n=function.name, r=r, a=", ".join(args)))
-
-    def _generate_server_async_function_streaming(self, function):
-        out('callback->exception(folly::make_exception_wrapper<'
-            'apache::thrift::TApplicationException>('
-            '"Function {0} is unimplemented"));'.format(function.name))
-
-    def _generate_server_async_function_future(self, function):
-        if self._is_stream_type(function.returntype):
-            return self._generate_server_async_function_streaming(function)
-        stack_args = self.flag_stack_arguments
-        is_complex_type = lambda t: self._is_complex_type(t) and not stack_args
-        if self._is_processed_in_eb(function):
-            captures = ['this']
-            captures.extend(
-                '{n} = std::move({n})'.format(
-                    n=arg.name) if is_complex_type(arg.type) else arg.name
-                for arg in function.arglist.members
-            )
-            f = "async_eb_oneway" if function.oneway else "async_eb"
-            c = ('[{0}]'.format(', '.join(captures)) +
-                 "() mutable {{ return future_{n}({a}); }}")
-        else:
-            f = "async_tm_oneway" if function.oneway else "async_tm"
-            c = "[&] {{ return future_{n}({a}); }}"
-        s = "{ns}::{f}(this, std::move(callback), " + c + ");"
-        args = [
-            "std::move({n})".format(n=m.name)
-            if is_complex_type(m.type) else m.name
-            for m in function.arglist.members
-        ]
-        ns = "apache::thrift::detail::si"
-        out(s.format(ns=ns, f=f, n=function.name, a=", ".join(args)))
-
-    def _generate_server_async_function(self, service, function):
-        with out().defn(
-                self._get_process_function_signature_async(service, function),
-                name=self._get_async_func_name(function),
-                override=True):
-            self._generate_server_async_function_future(function)
-
-    def _get_process_function_signature_async(self, service, function):
-        sig = 'void {name}('
-        if function.oneway:
-            sig += 'std::unique_ptr<apache::thrift::HandlerCallbackBase>' + \
-                ' callback'
-        else:
-            sig += 'std::unique_ptr<{0}> callback'.format(
-                    self._get_handler_callback_class(function))
-
-        sig += self._argument_list(
-            function.arglist,
-            add_comma=True,
-            unique=True,
-            no_param_names=self._is_stream_type(function.returntype),
-        )
-        sig += ')'
-        return sig
-
-    def _get_process_function_signature_future(self, service, function):
-        rettype = self._type_name(function.returntype)
-        if self._is_complex_type(function.returntype) and \
-                not self.flag_stack_arguments:
-            rettype = 'std::unique_ptr<' + rettype + '>'
-        sig = 'folly::Future<' + \
-            _lift_unit(rettype) + '> {name}('
-
-        sig += self._argument_list(function.arglist, False, unique=True)
-        sig += ')'
-        return sig
-
-    def _get_process_function_signature(self, service, function,
-                                        no_param_names=False):
-        addcomma = False
-        if not function.oneway:
-            if self._is_complex_type(function.returntype):
-                sig = 'void {name}' + '({0}& {1}'.format(
-                    self._type_name(function.returntype),
-                    '/*_return*/' if no_param_names else '_return')
-                addcomma = True
-            else:
-                sig = self._type_name(function.returntype)
-                sig += ' {name}('
-        else:
-            sig = 'void {name}('
-        sig += self._argument_list(function.arglist, addcomma, unique=True,
-                                   no_param_names=no_param_names)
-        sig += ')'
-        return sig
-
-    def _generate_app_ex(self, service, errorstr, functionname, seqid, is_in_eb,
-                         s, reqCtx, err_code=None, uex_ew=None):
-        with out('if (req)'):
-            out('LOG(ERROR) << {0} << " in function {1}";'.format(
-                    errorstr, functionname))
-            code = '' if err_code is None else \
-                    'apache::thrift::TApplicationException::' \
-                    'TApplicationExceptionType::' + err_code + ', '
-            out('apache::thrift::TApplicationException x({0}{1});'.
-                format(code, errorstr))
-            if uex_ew:
-                ctx = 'ctx'
-                out('ctx->userExceptionWrapped(false, {});'.format(uex_ew))
-                out('ctx->handlerErrorWrapped({});'.format(uex_ew))
-            else:
-                ctx = 'nullptr'
-            out('folly::IOBufQueue queue = serializeException("{0}", &prot, {1}, {2}, '
-                'x);'.format(functionname, seqid, ctx))
-            out('queue.append(apache::thrift::transport::THeader::transform('
-                'queue.move(), '
-                '{0}->getHeader()->getWriteTransforms(), '
-                '{0}->getHeader()->getMinCompressBytes()));'.format(reqCtx))
-            if is_in_eb:
-                out('req->sendReply(queue.move());')
-            else:
-                with out('eb->runInEventBaseThread('
-                         '[queue = std::move(queue), '
-                         'req = std::move(req)]'
-                         '() mutable'):
-                    out('req->sendReply(queue.move());')
-                out(');')
-            out('return;')
-        with out('else'):
-            out('LOG(ERROR) << {0} << " in oneway function {1}";'.format(
-                    errorstr, functionname))
-
-    def _generate_process_function(self, service, function):
-        if function.oneway:
-            if self._is_processed_in_eb(function):
-                # Old clients may not send the special
-                # oneway id, so we need to send a fake
-                # response to them while in event base.
-                with out('if (!req->isOneway())'):
-                    out('req->sendReply(std::unique_ptr<folly::IOBuf>());')
-        out("// make sure getConnectionContext is null")
-        out("// so async calls don't accidentally use it")
-        out('iface_->setConnectionContext(nullptr);')
-        aprefix = 'uarg_'
-        if self.flag_stack_arguments:
-            out('{0}_{1}_args args;'.format(service.name, function.name))
-        else:
-            out('{0}_{1}_pargs args;'.format(service.name, function.name))
-        for idx, field in enumerate(function.arglist.members):
-            val = ""
-            t = self._get_true_type(field.type)
-            if t.is_base_type or t.is_enum:
-                val = self._member_default_value(field)
-            if self.flag_stack_arguments:
-                pass
-            elif self._is_complex_type(field.type):
-                out('std::unique_ptr<{0}> {1}(new {0}({2}));'.format(
-                        self._type_name(field.type), aprefix + field.name, val))
-                out('{0} = {1}.get();'.format(
-                        self._get_pargs_field(idx, field),
-                        aprefix + field.name))
-            else:
-                # use uniform initialization syntax to avoid most vexing parse
-                out('{0} {1}{{{2}}};'.format(
-                        self._type_name(field.type), aprefix + field.name, val))
-                out('{0} = &{1};'.format(
-                        self._get_pargs_field(idx, field),
-                        aprefix + field.name))
-        out(('std::unique_ptr<apache::thrift::' +
-           'ContextStack> c(this->getContextStack' +
-           '(this->getServiceName(), "{0}.{1}", ctx));'
-           ).format(service.name, function.name))
-        out("")
-        with out('try'):
-            out('deserializeRequest(args, buf.get(), iprot.get(), c.get());')
-        with out('catch (const std::exception& ex)'):
-            if function.oneway:
-                out('LOG(ERROR) << ex.what() << " in function noResponse";')
-                out('return;')
-            else:
-                out('ProtocolOut_ prot;')
-                self._generate_app_ex(service, 'ex.what()',
-                                      function.name, "ctx->getProtoSeqId()",
-                                      False, out, 'ctx',
-                                      'PROTOCOL_ERROR')
-        args = []
-        for idx, member in enumerate(function.arglist.members):
-            if self.flag_stack_arguments:
-                args.append(self._get_pargs_field(idx, member))
-            elif self._is_complex_type(member.type):
-                args.append("std::move({0})".format(
-                        aprefix + member.name))
-            else:
-                args.append(self._get_pargs_field(idx, member, False))
-        if function.oneway:
-            out('std::unique_ptr<apache::thrift::HandlerCallbackBase> callback(' +
-              'new apache::thrift::HandlerCallbackBase(std::move(req), ' +
-              'std::move(c), nullptr, eb, tm, ctx));')
-        else:
-            cb_class = self._get_handler_callback_class(function)
-            out(('auto callback = std::make_unique<{0}>(std::move(req), ' +
-               'std::move(c), return_{1}<ProtocolIn_,' +
-               'ProtocolOut_>, throw_wrapped_{1}<ProtocolIn_,' +
-               ' ProtocolOut_>, ctx->getProtoSeqId(),' +
-               ' eb, tm, ctx);').format(cb_class, function.name))
-        # Oneway request won't be canceled if expired. see D1006482 for
-        # further details. TODO: fix this
-        if not self._is_processed_in_eb(function) and not function.oneway:
-            with out('if (!callback->isRequestActive())'):
-                out('callback.release()->deleteInThread();')
-                out('return;')
-        args.insert(0, 'std::move(callback)')
-        out('ctx->setStartedProcessing();')
-        out('iface_->{0}({1});'.format(self._get_async_func_name(function),
-                                     ", ".join(args)))
-
-    def _generate_processor(self, service, s):
-        if not service.extends:
-            class_signature = 'class {0} : '.format(
-                service.name + 'AsyncProcessor') + \
-                'public ::apache::thrift::GeneratedAsyncProcessor'
-        else:
-            class_signature = 'class {0} : '.format(
-                service.name + 'AsyncProcessor') + \
-                'public ' + self._type_name(service.extends) + \
-                'AsyncProcessor'
-        with s.cls(class_signature):
-            out().label('public:')
-            with out().defn(
-                    'const char* {name}()',
-                    name='getServiceName',
-                    override=True):
-                out("return \"{0}\";".format(service.name))
-
-            base_of = lambda n: "{}AsyncProcessor".format(self._type_name(n))
-            base = base_of(service.extends) if service.extends else "void"
-            out('using BaseAsyncProcessor = {};'.format(base))
-
-            out('using HasFrozen2 = std::false_type;')
-
-            out().label('protected:')
-
-            out('{0}SvIf* iface_;'.format(service.name))
-            with out().defn(
-                    'folly::Optional<std::string> {name}(' +
-                    'folly::IOBuf* buf, ' +
-                    'apache::thrift::protocol::PROTOCOL_TYPES protType)',
-                    name='getCacheKey',
-                    override=True):
-                out('return apache::thrift::detail::ap::get_cache_key(' +
-                    'buf, protType, cacheKeyMap_);')
-
-            out().label('public:')
-
-            with out().defn(
-                    'void {name}(std::unique_ptr<' +
-                    'apache::thrift::ResponseChannel::Request> req, ' +
-                    'std::unique_ptr<folly::IOBuf> buf, ' +
-                    'apache::thrift::protocol::PROTOCOL_TYPES protType, ' +
-                    'apache::thrift::Cpp2RequestContext* context, ' +
-                    'folly::EventBase* eb, ' +
-                    'apache::thrift::concurrency::ThreadManager* tm)',
-                    name='process',
-                    override=True):
-                out('apache::thrift::detail::ap::process(' +
-                    'this, std::move(req), std::move(buf), protType, ' +
-                    'context, eb, tm);')
-
-            out().label('protected:')
-
-            with out().defn(
-                    'bool {name}(const folly::IOBuf* buf, ' +
-                    'const apache::thrift::transport::THeader* header)',
-                    name='isOnewayMethod',
-                    override=True):
-                out('return apache::thrift::detail::ap::is_oneway_method(' +
-                    'buf, header, onewayMethods_);')
-
-            out().label('private:')
-            oneways = out().defn('std::unordered_set<std::string> {name}',
-                                 name='onewayMethods_',
-                                 modifiers='static')
-            oneways.epilogue = ';\n'
-            with oneways:
-                out(',\n'.join('"' + function.name + '"'
-                        for function in service.functions if function.oneway))
-            cache_map_type = 'std::unordered_map<std::string, int16_t>'
-            cache_map = out().defn(cache_map_type + ' {name}',
-                    name='cacheKeyMap_',
-                    modifiers='static')
-            cache_map.epilogue = ';'
-
-            cache_member_map = {}
-            for function in service.functions:
-                cache_key = self._get_cache_key(function)
-                if cache_key is not None:
-                    if not cache_key.type.is_string:
-                        raise CompilerError('Cache annotation is only \
-                                allowed on string types')
-                    cache_member_map[function.name] = cache_key.key
-            with cache_map:
-                out(',\n'.join("{{\"{}\", {}}}".format(function, cache_key)
-                        for function, cache_key in
-                        cache_member_map.iteritems()))
-            prot = 0
-            for shortprot, protname, prottype in self.protocols:
-                if shortprot == 'simple_json':
-                    continue
-                out().label('public:')
-                out((
-                    'using {proto}ProcessFunc = ' +
-                    'ProcessFunc<{klass}AsyncProcessor, ' +
-                    'apache::thrift::{proto}Reader>;')
-                    .format(proto=protname, klass=service.name))
-                out('using {proto}ProcessMap = ProcessMap<{proto}ProcessFunc>;'
-                    .format(proto=protname))
-                map_type = '{klass}AsyncProcessor::{proto}ProcessMap' \
-                    .format(proto=protname, klass=service.name)
-                map_name = '{0}ProcessMap_'.format(shortprot)
-                with out().defn('const ' + map_type + '& {name}()',
-                                name='get{proto}ProcessMap'
-                                    .format(proto=protname),
-                                modifiers='static'):
-                    out('return {proto}ProcessMap_;'.format(proto=shortprot))
-                out().label('private:')
-                process_map = out().defn('const ' + map_type + ' {name}',
-                                         name=map_name,
-                                         modifiers='static')
-                if prot < 1:  # TODO: fix build tool to use more than 2 outputs
-                    prot = prot + 1
-                process_map.epilogue = ';\n\n'
-
-                with process_map:
-                    p = service.name + 'AsyncProcessor'
-                    r = 'apache::thrift::{prot}Reader'.format(prot=protname)
-                    w = 'apache::thrift::{prot}Writer'.format(prot=protname)
-                    for function in service.functions:
-                        n = function.name
-                        f = self._get_handler_function_name(function)
-                        fp = '&{p}::{f}<{r}, {w}>'.format(p=p, f=f, r=r, w=w)
-                        out('{{"{n}", {fp}}},'.format(n=n, fp=fp))
-
-            out().label('private:')
-            for function in service.functions:
-                if not self._is_processed_in_eb(function):
-                    with out().defn(
-                            'template <typename ProtocolIn_, '
-                            'typename ProtocolOut_>\n'
-                            'void {name}(std::unique_ptr<'
-                            'apache::thrift::ResponseChannel::Request> req, '
-                            'std::unique_ptr<folly::IOBuf> buf, '
-                            'std::unique_ptr<ProtocolIn_> iprot, '
-                            'apache::thrift::Cpp2RequestContext* ctx, '
-                            'folly::EventBase* eb, '
-                            'apache::thrift::concurrency::ThreadManager* tm'
-                            ')',
-                            name="_processInThread_{0}"
-                                .format(function.name),
-                            output=self._out_tcc):
-                        out('auto pri = iface_->getRequestPriority(ctx, '
-                            'apache::thrift::concurrency::{0});'.format(
-                                self._get_function_priority(service, function)))
-                        out('processInThread<ProtocolIn_, ProtocolOut_>' +
-                          '(std::move(req), std::move(buf),' +
-                          'std::move(iprot), ctx, eb, tm, pri, '
-                          + (function.oneway and
-                          'apache::thrift::RpcKind::SINGLE_REQUEST_NO_RESPONSE'
-                          or 'apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE') +
-                          ', &{0}AsyncProcessor::process_{1}'.format(
-                                  service.name, function.name) +
-                          '<ProtocolIn_, ProtocolOut_>, this);')
-
-                with out().defn('template <typename ProtocolIn_, ' +
-                            'typename ProtocolOut_>\n' +
-                            'void {name}(std::unique_ptr<' +
-                            'apache::thrift::ResponseChannel::Request> req, ' +
-                            'std::unique_ptr<folly::IOBuf> buf, ' +
-                            'std::unique_ptr<ProtocolIn_> iprot,' +
-                            'apache::thrift::Cpp2RequestContext* ctx,' +
-                            'folly::EventBase* eb, ' +
-                            'apache::thrift::concurrency::ThreadManager* tm)',
-                            name="process_{0}".format(function.name),
-                            output=self._out_tcc):
-                    self._generate_process_function(service, function)
-
-                if not function.oneway:
-                    args = [
-                        'int32_t protoSeqId',
-                        'apache::thrift::ContextStack* ctx']
-
-                    if not function.returntype.is_void:
-                        args.append("{0} const& _return".format(
-                                self._type_name(function.returntype)))
-
-                    with out().defn(
-                        'template <class ProtocolIn_, class ProtocolOut_>\n' +
-                                'folly::IOBufQueue {name}' + '({0})'
-                                .format(", ".join(args)),
-                                name="return_{0}".format(function.name),
-                                output=self._out_tcc,
-                                modifiers='static'):
-                        out('ProtocolOut_ prot;')
-                        out('{0}_{1}_presult result;'.format(
-                                service.name, function.name))
-                        if self._function_produces_result(function):
-                            out('{0} = const_cast<{1}*>(&_return);'.format(
-                                self._get_presult_success(),
-                                self._type_name(function.returntype)))
-                            out('{0};'.format(
-                                self._get_presult_success_isset('true')))
-                        out('return serializeResponse("{0}", '
-                          '&prot, protoSeqId, ctx, result);'
-                          .format(function.name))
-
-                def cast_xceptions(xceptions):
-                    for idx, xception in enumerate(xceptions):
-                        with out('catch (const {0}& e)'.format(
-                            self._type_name(xception.type))):
-                            ew = 'folly::exception_wrapper(ep, e)'
-                            out('ctx->userExceptionWrapped(true, {});'.format(ew))
-                            ex_idx = self._exception_idx(function, idx)
-                            out('{0} = e;'.format(
-                                self._get_presult_exception(ex_idx, xception)))
-                            out('{0};'.format(
-                                self._get_presult_exception_isset(ex_idx, xception, 'true')))
-                if not function.oneway:
-                    with out().defn(
-                        'template <class ProtocolIn_, class ProtocolOut_>\n' +
-                        'void {name}(std::unique_ptr' +
-                        '<apache::thrift::ResponseChannel::Request> req,' +
-                        'int32_t protoSeqId,' +
-                        'apache::thrift::ContextStack* ctx,' +
-                        'folly::exception_wrapper ew,' +
-                        'apache::thrift::Cpp2RequestContext* reqCtx)',
-                        name="throw_wrapped_{0}".format(function.name),
-                        modifiers='static',
-                        output=self._out_tcc
-                    ):
-                        with out('if (!ew)'):
-                            out('return;')
-
-                        out('ProtocolOut_ prot;')
-                        if len(function.xceptions.members) > 0:
-                            out('{0}_{1}_presult result;'.format(
-                                service.name, function.name))
-                        for idx, xception in enumerate(function.xceptions.members):
-                            xception_type = self._type_name(
-                                xception.type)
-                            with out('if (ew.with_exception([&]({0}& e)'.
-                                     format(xception_type)):
-                                out('ctx->userExceptionWrapped(true, ew);')
-                                ex_idx = self._exception_idx(function, idx)
-                                out('{0} = e;'.format(
-                                    self._get_presult_exception(ex_idx, xception)))
-                                out('{0};'.format(
-                                    self._get_presult_exception_isset(ex_idx, xception, 'true')))
-                            out(')) {} else ')
-                        with out(' '):
-                            self._generate_app_ex(
-                                service,
-                                'ew.what().toStdString()',
-                                function.name, "protoSeqId", True,
-                                out(), 'reqCtx', None,
-                                uex_ew='ew')
-                        if len(function.xceptions.members) > 0:
-                            out('auto queue = serializeResponse('
-                                '"{0}", &prot, protoSeqId, ctx,'
-                                ' result);'.format(function.name))
-                            out('queue.append('
-                                'apache::thrift::transport::THeader::transform('
-                                'queue.move(), '
-                                '{0}->getHeader()->getWriteTransforms(), '
-                                '{0}->getHeader()->getMinCompressBytes()));'.format('reqCtx'))
-                            out('return req->sendReply(queue.move());')
-
-
-            out().label('public:')
-            init = OrderedDict()
-            if service.extends:
-                init[self._type_name(service.extends) + 'AsyncProcessor'] = \
-                    'iface'
-            init['iface_'] = 'iface'
-            out().defn('{name}(' + service.name + 'SvIf* iface)',
-                   name=service.name + 'AsyncProcessor',
-                   init_dict=init,
-                   in_header=True).scope.empty()
-            out().defn('{name}()', name='~' + service.name + 'AsyncProcessor',
-                   in_header=True, modifiers='virtual').scope.empty()
-
-    def _get_handler_function_name(self, function):
-        if self._is_processed_in_eb(function):
-            return 'process_' + function.name
-        else:
-            return '_processInThread_' + function.name
-
-    def _generate_client_sync_function(self, service, function,
-                                       uses_rpc_options=False):
-
-        signature = self._get_sync_function_signature(function,
-                                                      uses_rpc_options)
-
-        with out().defn(signature,
-                name="sync_" + function.name,
-                modifiers='virtual',
-                output=self._additional_outputs[-1]):
-            common_args = [arg.name for arg in function.arglist.members]
-
-            if not uses_rpc_options:
-                out('::apache::thrift::RpcOptions rpcOptions;')
-                if function.returntype.is_void:
-                    args = ["rpcOptions"]
-                    args.extend(common_args)
-                    args_list = ", ".join(args)
-                    out("sync_{name}({args_list});".format(name=function.name,
-                                                         args_list=args_list))
-                elif not self._is_complex_type(function.returntype):
-                    args = ["rpcOptions"]
-                    args.extend(common_args)
-                    args_list = ", ".join(args)
-
-                    out("return sync_{name}({args_list});"
-                         .format(name=function.name, args_list=args_list))
-                else:
-                    args = ["rpcOptions", "_return"]
-                    args.extend(common_args)
-                    args_list = ", ".join(args)
-
-                    out("sync_{name}({args_list});"
-                         .format(name=function.name, args_list=args_list))
-
-            else:
-                out('apache::thrift::ClientReceiveState _returnState;')
-
-                out(
-                    "auto callback = "
-                    "std::make_unique<apache::thrift::ClientSyncCallback>("
-                    "&_returnState, {isOneWay});".format(
-                        isOneWay=(
-                            "apache::thrift::RpcKind::SINGLE_REQUEST_NO_RESPONSE"
-                            if function.oneway else
-                            "apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE"
-                        )
-                    )
-                )
-
-                args = ["true", "rpcOptions", "std::move(callback)"]
-                args.extend(common_args)
-                args_list = ", ".join(args)
-
-                out("{name}Impl({args_list});".format(name=function.name,
-                                                      args_list=args_list))
-
-                if not function.oneway:
-                    out("SCOPE_EXIT {")
-                    out("  if (_returnState.header() && "
-                            "!_returnState.header()->getHeaders().empty()) {")
-                    out("    rpcOptions.setReadHeaders("
-                            "_returnState.header()->releaseHeaders());")
-                    out("  }")
-                    out("};")
-
-                    with out("if (!_returnState.buf())"):
-                        out("assert(_returnState.exception());")
-                        out("_returnState.exception().throw_exception();")
-
-                    if not function.returntype.is_void:
-                        if not self._is_complex_type(function.returntype):
-                            out("return recv_{}(_returnState);"
-                                    .format(function.name))
-                        else:
-                            out("recv_{}(_return, _returnState);"
-                                    .format(function.name))
-                    else:
-                        out("recv_{}(_returnState);".format(function.name))
-
-    def _get_sync_function_signature(self, function, uses_rpc_options=False):
-        params = []
-
-        if uses_rpc_options:
-            params.append("apache::thrift::RpcOptions& rpcOptions")
-
-        if function.returntype.is_void:
-            return_type = "void"
-        elif not self._is_complex_type(function.returntype):
-            return_type = self._type_name(function.returntype)
-        else:
-            return_type = "void"
-            params.append(self._type_name(function.returntype) + "& _return")
-
-        param_list = ", ".join(params)
-        param_list += self._argument_list(function.arglist,
-                                          add_comma=bool(params),
-                                          unique=False)
-
-        return return_type + " {name}(" + param_list + ")"
-
-    def _generate_client_nonrpcoptions_function(self, service, function,
-                                                function_name):
-        out("::apache::thrift::RpcOptions rpcOptions;")
-        args = ["rpcOptions"]
-
-        args.extend([arg.name for arg in function.arglist.members])
-        args_list = ", ".join(args)
-
-        out("return {function}({args});"
-              .format(function=function_name, args=args_list))
-
-    def _generate_client_future_function(self, service, function,
-                                         uses_rpc_options=False, header=False):
-
-        if header:
-            function_name = "header_future_" + function.name
-        else:
-            function_name = "future_" + function.name
-        signature = self._get_future_function_signature(function,
-                                                        uses_rpc_options,
-                                                        header)
-        with out().defn(signature,
-                name=function_name,
-                modifiers='virtual',
-                output=self._additional_outputs[-1]):
-            if not uses_rpc_options:
-                self._generate_client_nonrpcoptions_function(service,
-                        function, function_name)
-            else:
-                common_args = []
-                for arg in function.arglist.members:
-                    common_args.append(arg.name)
-
-                return_type = _lift_unit(self._type_name(function.returntype))
-
-                if header:
-                    out("folly::Promise<std::pair<{type}, std::unique_ptr<apache::thrift::transport::THeader>>> _promise;"
-                            .format(type=return_type))
-                else:
-                    out("folly::Promise<{type}> _promise;"
-                            .format(type=return_type))
-
-                out("auto _future = _promise.getFuture();")
-
-                args = ["rpcOptions"]
-                end_args = []
-
-                if function.oneway:
-                    out("auto callback = "
-                        "std::make_unique<apache::thrift::OneWayFutureCallback>("
-                        "std::move(_promise), channel_);")
-
-                else:
-                    if header:
-                        future_cb_name = "HeaderFutureCallback"
-                    else:
-                        future_cb_name = "FutureCallback"
-                    out("auto callback = "
-                        "std::make_unique<apache::thrift::{future_cb}<{type}>>("
-                        "std::move(_promise), recv_wrapped_{name}, channel_);"
-                        .format(future_cb=future_cb_name,
-                                type=return_type,
-                                name=function.name))
-
-                args.append("std::move(callback)")
-                args.extend(common_args)
-                args.extend(end_args)
-                args_list = ", ".join(args)
-
-                out("{name}({args_list});".format(name=function.name,
-                                                args_list=args_list))
-
-                out("return _future;")
-
-    def _generate_client_streaming_function(self, service, function,
-                                            uses_rpc_options=False):
-
-        function_name = "observable_" + function.name
-        signature = self._get_streaming_function_signature(function,
-                                                           uses_rpc_options)
-        with out().defn(signature, name=function_name,
-                    modifiers='virtual',
-                    output=self._additional_outputs[-1]):
-            if not uses_rpc_options:
-                self._generate_client_nonrpcoptions_function(service,
-                        function, function_name)
-            else:
-                args = [arg.name for arg in function.arglist.members]
-                arglist = ", ".join(args)
-
-                return_type = self._type_name(function.returntype)
-
-                subj = self.tmp("subj")
-                out("auto {subj} = std::make_shared<wangle::Subject<{type}>>();".format(
-                    type=return_type, subj=subj))
-                out("{name}(rpcOptions, "
-                        "std::unique_ptr<apache::thrift::RequestCallback>("
-                            "new apache::thrift::FunctionReplyCallback("
-                            "[{subj}](apache::thrift::ClientReceiveState&& state) mutable {{ "
-                        "apache::thrift::clientCallbackToObservable("
-                            "state, recv_wrapped_{name}, {subj}); "
-                        "}})), {args});".format(
-                            name=function.name, subj=subj, args=arglist))
-                out("return {subj};".format(subj=subj))
-
-    def _get_streaming_function_signature(self, function, uses_rpc_options):
-        result_type = self._type_name(function.returntype)
-        return self._get_noncallback_function_signature(
-                function,
-                uses_rpc_options,
-                "wangle::ObservablePtr",
-                result_type)
-
-    def _get_future_function_signature(self, function, uses_rpc_options, header):
-        result_type = _lift_unit(self._type_name(function.returntype))
-        if header:
-            result_type = "std::pair<{0}, std::unique_ptr<apache::thrift::transport::THeader>>".format(result_type)
-        return self._get_noncallback_function_signature(
-                function, uses_rpc_options, "folly::Future", result_type)
-
-    def _get_noncallback_function_signature(
-            self, function, uses_rpc_options, ret_template, result_type):
-        params = []
-        if uses_rpc_options:
-            params.append("apache::thrift::RpcOptions& rpcOptions")
-
-        return_type = "{0}<{1}>".format(ret_template, result_type)
-
-        param_list = ", ".join(params)
-        param_list += self._argument_list(function.arglist,
-                                          add_comma=bool(params),
-                                          unique=False)
-
-        return return_type + " {name}(" + param_list + ")"
-
-    def _generate_client_async_function(self, service, function,
-                                        uses_rpc_options=False,
-                                        uses_sync=False):
-        if not uses_rpc_options:
-            signature = self._get_async_function_signature(
-                    function, uses_rpc_options=False, uses_sync=False)
-            with out().defn(signature,
-                    name=function.name,
-                    modifiers='virtual',
-                    output=self._additional_outputs[-1]):
-                out('::apache::thrift::RpcOptions rpcOptions;')
-                args = ["false", "rpcOptions", "std::move(callback)"]
-
-                args.extend([arg.name for arg in function.arglist.members])
-                args_list = ", ".join(args)
-
-                out("{name}Impl({args});".format(
-                        name=function.name, args=args_list))
-
-        elif not uses_sync:
-            signature = self._get_async_function_signature(
-                    function, uses_rpc_options=True, uses_sync=False)
-            with out().defn(signature,
-                    name=function.name,
-                    modifiers='virtual',
-                    output=self._additional_outputs[-1]):
-                args = ["false", "rpcOptions", "std::move(callback)"]
-
-                args.extend([arg.name for arg in function.arglist.members])
-                args_list = ", ".join(args)
-
-                out("{name}Impl({args});".format(
-                        name=function.name, args=args_list))
-
-        else:
-            signature = self._get_async_function_signature(
-                    function, uses_rpc_options=True, uses_sync=True,
-                    uses_callback_ptr=True)
-
-            out().label('private:')
-            with out().defn(signature,
-                    name=function.name + "Impl",
-                    modifiers='virtual',
-                    output=self._additional_outputs[-1]):
-                args = ["&writer", "useSync", "rpcOptions"]
-                args.append("std::move(callback)")
-
-                args.extend([arg.name for arg in function.arglist.members])
-                args_list = ", ".join(args)
-
-                with out("switch(getChannel()->getProtocolId())"):
-                    for key, val, prot in self.protocols:
-                        if key == 'simple_json':
-                            continue
-                        with out().case("apache::thrift::protocol::" + prot):
-                            out("apache::thrift::{0}Writer writer;".format(val))
-                            out("{name}T({args});".
-                              format(name=function.name, args=args_list))
-
-                    with out().case("default", nobreak=True):
-                        out("apache::thrift::detail::ac::throw_app_exn("
-                            '"Could not find Protocol");')
-            out().label('public:')
-
-    def _generate_templated_client_function(self, service, function):
-        signature = self._get_async_function_signature(function,
-                                                       uses_rpc_options=True,
-                                                       uses_sync=True,
-                                                       uses_template=True,
-                                                       uses_callback_ptr=True)
-
-        func_name = function.name + "T"
-
-        with out().defn(signature, name=func_name, output=self._out_tcc):
-            out("auto header = std::make_shared<apache::thrift::transport::THeader>(apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);")
-            out("header->setProtocolId(getChannel()->getProtocolId());")
-            out("header->setHeaders(rpcOptions.releaseWriteHeaders());")
-            out("connectionContext_->setRequestHeader(header.get());")
-            out("std::unique_ptr<apache::thrift::ContextStack> ctx = "
-              "this->getContextStack(this->getServiceName(), "
-              '"{0}.{1}", connectionContext_.get());'
-              .format(service.name, function.name))
-            pargs_class = "{0}_{1}_pargs".format(service.name, function.name)
-            out("{0} args;".format(pargs_class))
-
-            # Generate list of function args
-            for idx, field in enumerate(function.arglist.members):
-                rtype = self._get_true_type(field.type)
-                if rtype.is_string or rtype.is_container \
-                        or rtype.is_struct:
-                    out("{0} = const_cast<{1}*>(&{2});".format(
-                            self._get_pargs_field(idx, field),
-                            self._type_name(field.type),
-                            field.name))
-                else:
-                    out("{0} = &{1};".format(
-                        self._get_pargs_field(idx, field),
-                        field.name))
-
-            sizer = 'auto sizer = [&](Protocol_* p) ' \
-                    '{{ return args.serializedSizeZC(p); }};'
-            writer = 'auto writer = [&](Protocol_* p) ' \
-                     '{{ args.write(p); }};'
-            out(sizer.format(pargs_class))
-            out(writer.format(pargs_class))
-
-            out('apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, '
-                'std::move(callback), std::move(ctx), header, '
-                'channel_.get(), "{1}", writer, sizer, {2}, '
-                'useSync);'.format(pargs_class,
-                                     function.name,
-                                     ["false", "true"][function.oneway]))
-            out("connectionContext_->setRequestHeader(nullptr);")
-
-    def _get_async_function_signature(self,
-                                      function,
-                                      uses_rpc_options,
-                                      uses_template=False,
-                                      uses_callback_ptr=False,
-                                      uses_sync=True):
-        signature_prefix = ""
-        if uses_template:
-            signature_prefix = "template <typename Protocol_>\n"
-
-        params = []
-        if uses_template:
-            params.append("Protocol_* prot")
-
-        if uses_sync:
-            params.append("bool useSync")
-
-        if uses_rpc_options:
-            params.append("apache::thrift::RpcOptions& rpcOptions")
-
-        params.append("std::unique_ptr<apache::thrift::RequestCallback> "
-                      "callback")
-
-        param_list = ", ".join(params)
-
-        param_list += self._argument_list(function.arglist,
-                                          add_comma=bool(params),
-                                          unique=False)
-        return signature_prefix + "void {name}(" + param_list + ")"
-
-    def _generate_client_folly_function(self, function, name_prefix=""):
-        sig = ("void {name}(folly::Function<void ("
-               "::apache::thrift::ClientReceiveState&&)> callback" +
-               self._argument_list(function.arglist, True, unique=False) + ")")
-
-        args = ["std::make_unique<apache::thrift::FunctionReplyCallback>("
-                "std::move(callback))"]
-        args.extend([arg.name for arg in function.arglist.members])
-        args_list = ", ".join(args)
-
-        name = name_prefix + function.name
-
-        with out().defn(sig,
-                        name=name,
-                        modifiers="virtual",
-                        output=self._additional_outputs[-1]):
-            out("{name}({args});".format(name=function.name, args=args_list))
-
-    def _generate_throwing_recv_function(self, function, uses_template):
-        callee_name = function.name
-        if uses_template:
-            callee_name = callee_name + 'T'
-        output = None
-        if uses_template:
-            output = self._out_tcc
-        else:
-            output = self._additional_outputs[-1]
-        with out().defn(self._get_recv_function_signature(function,
-                                                          uses_template),
-                        name='recv_' + callee_name,
-                        modifiers='static',
-                        output=output):
-            simple_return = not function.returntype.is_void and \
-                not self._is_complex_type(function.returntype)
-            if simple_return:
-                out(self._type_name(function.returntype) + ' _return;')
-
-            params = []
-            if uses_template:
-                params.append('prot')
-            if not function.returntype.is_void:
-                params.append('_return')
-            params.append('state')
-            func_name = 'recv_wrapped_' + function.name
-            if uses_template:
-                func_name = func_name + 'T'
-            out('auto ew = {0}({1});'.format(func_name, ', '.join(params)))
-            with out('if (ew)'):
-                out('ew.throw_exception();')
-            if simple_return:
-                out('return _return;')
-
-    def _generate_recv_functions(self, function):
-        with out().defn(self._get_recv_function_signature(function,
-                                                          is_wrapped=True),
-                        name="recv_wrapped_" + function.name,
-                        modifiers="static",
-                        output=self._additional_outputs[-1]):
-            with out('if (state.isException())'):
-                out('return std::move(state.exception());')
-            with out('if (!state.buf())'):
-                out('return folly::make_exception_wrapper<'
-                    'apache::thrift::TApplicationException>('
-                    '"recv_ called without result");')
-            with out("switch(state.protocolId())"):
-                for key, value, prottype in self.protocols:
-                    if key == 'simple_json':
-                        continue
-                    with out().case('apache::thrift::protocol::' + prottype,
-                                    nobreak=True):
-                        out("apache::thrift::{0}Reader reader;".format(value))
-
-                        args = ["&reader"]
-
-                        if not function.returntype.is_void:
-                            args.append("_return")
-
-                        args.append("state")
-                        args_list = ", ".join(args)
-
-                        out('return recv_wrapped_' + function.name + 'T(' +
-                            args_list + ');')
-
-                with out().case("default", nobreak=True):
-                    pass
-            out('return folly::make_exception_wrapper<'
-                'apache::thrift::TApplicationException>('
-                '"Could not find Protocol");')
-
-        self._generate_throwing_recv_function(function, False)
-
-        # Most mock frameworks require your functions to be virtual instance
-        # functions. Generating a virtual instance version of recv_ so
-        # that folks wanting to mock the thrift service clients can use
-        # this function and override in their mock objects.
-        out("// Mock friendly virtual instance method")
-        with out().defn(self._get_recv_function_signature(function),
-                    name="recv_" + "instance_" + function.name,
-                    modifiers="virtual",
-                    output=self._additional_outputs[-1]):
-            params = []
-            if self._is_complex_type(function.returntype):
-                params.append('_return')
-            params.append('state')
-            if not function.oneway:
-                if not function.returntype.is_void:
-                    out("return recv_" + function.name +
-                        "(" + ", ".join(params) + ");")
-                else:
-                    out("recv_" + function.name + "(" + ", ".join(params) +
-                        ");")
-
-        with out().defn(self._get_recv_function_signature(function,
-                                                          is_wrapped=True),
-                    name="recv_instance_wrapped_" + function.name,
-                    modifiers="virtual",
-                    output=self._additional_outputs[-1]):
-            params = []
-            if not function.returntype.is_void:
-                params.append('_return')
-            params.append('state')
-            if not function.oneway:
-                out("return recv_wrapped_" + function.name +
-                    "(" + ", ".join(params) + ");")
-
-    def _generate_templated_recv_function(self, service, function):
-        sig = self._get_recv_function_signature(function,
-                                                uses_template=True,
-                                                is_wrapped=True)
-
-        with out().defn(sig,
-                    name="recv_wrapped_" + function.name + "T",
-                    modifiers="static",
-                    output=self._out_tcc):
-            with out('if (state.isException())'):
-                out('return std::move(state.exception());')
-            out("prot->setInput(state.buf());")
-            out("auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});")
-            out("apache::thrift::ContextStack* ctx = state.ctx();")
-            out("std::string _fname;")
-            out("int32_t protoSeqId = 0;")
-            out("apache::thrift::MessageType mtype;")
-            out("ctx->preRead();")
-
-            out("folly::exception_wrapper interior_ew;")
-            with out("auto caught_ew = folly::try_and_catch<"
-                     "std::exception, "
-                     "apache::thrift::TException, "
-                     "apache::thrift::protocol::TProtocolException>([&]() "):
-                out("prot->readMessageBegin(_fname, mtype, protoSeqId);")
-
-                with out("if (mtype == apache::thrift::T_EXCEPTION)"):
-                    out("apache::thrift::TApplicationException x;")
-                    out("x.read(prot);")
-                    out("prot->readMessageEnd();")
-                    out("interior_ew = folly::make_exception_wrapper<"
-                        "apache::thrift::TApplicationException>(x);")
-                    out("return; // from try_and_catch")
-
-                with out("if (mtype != apache::thrift::T_REPLY)"):
-                    out("prot->skip(apache::thrift::protocol::T_STRUCT);")
-                    out("prot->readMessageEnd();")
-                    out("interior_ew = folly::make_exception_wrapper<"
-                        "apache::thrift::TApplicationException>("
-                        "apache::thrift::TApplicationException"
-                        "::TApplicationExceptionType::INVALID_MESSAGE_TYPE);")
-                    out("return; // from try_and_catch")
-
-                with out('if (_fname.compare("' + function.name + '") != 0)'):
-                    out("prot->skip(apache::thrift::protocol::T_STRUCT);")
-                    out("prot->readMessageEnd();")
-                    out("interior_ew = folly::make_exception_wrapper<"
-                        "apache::thrift::TApplicationException>("
-                        "apache::thrift::TApplicationException"
-                        "::TApplicationExceptionType::WRONG_METHOD_NAME);")
-                    out("return; // from try_and_catch")
-                out("::apache::thrift::SerializedMessage smsg;")
-                out("smsg.protocolType = prot->protocolType();")
-                out("smsg.buffer = state.buf();")
-                out("ctx->onReadData(smsg);")
-
-                out("{0}_{1}_presult result;".format(service.name, function.name))
-
-                if not function.returntype.is_void:
-                    out("{0} = &_return;".format(
-                        self._get_presult_success()))
-
-                out("result.read(prot);")
-
-                out("prot->readMessageEnd();")
-                out('ctx->postRead(state.header(), state.buf()->length());')
-
-                if not function.returntype.is_void:
-                    with out("if ({0})".format(self._get_presult_success_isset())):
-                        out("// _return pointer has been filled")
-                        out("return; // from try_and_catch")
-                for idx, xs in enumerate(function.xceptions.members):
-                    ex_idx = self._exception_idx(function, idx)
-                    with out("if ({0})".format(
-                            self._get_presult_exception_isset(ex_idx, xs))):
-                        out("interior_ew = folly::make_exception_wrapper<"
-                                "{0}>({1});".format(
-                                self._type_name(xs.type),
-                                self._get_presult_exception(ex_idx, xs)))
-                        out("return; // from try_and_catch")
-
-                if not function.returntype.is_void:
-                    with out("else"):
-                        # else throw, no success
-                        out("interior_ew = folly::make_exception_wrapper<"
-                            "apache::thrift::TApplicationException>("
-                            "apache::thrift::TApplicationException::"
-                            "TApplicationExceptionType::MISSING_RESULT, "
-                            '"failed: unknown result");')
-                        out("return; // from try_and_catch")
-            out(");")
-            out("auto ew = interior_ew ? std::move(interior_ew) : std::move(caught_ew);")
-            with out("if (ew)"):
-                out("ctx->handlerErrorWrapped(ew);")
-            out("return ew;")
-
-        self._generate_throwing_recv_function(function, True)
-
-    def _get_recv_function_signature(self, function, uses_template=False,
-                                     is_wrapped=False):
-        signature_prefix = ""
-
-        if uses_template:
-            signature_prefix = "template <typename Protocol_>\n"
-
-        if is_wrapped:
-            signature_prefix += 'folly::exception_wrapper'
-        elif function.returntype.is_void or \
-           self._is_complex_type(function.returntype):
-            signature_prefix += "void"
-        else:
-            signature_prefix += self._type_name(function.returntype)
-
-        params = []
-        if uses_template:
-            params.append("Protocol_* prot")
-
-        if not function.returntype.is_void and (
-            self._is_complex_type(function.returntype) or is_wrapped
-        ):
-            params.append(self._type_name(function.returntype) + "& _return")
-
-        params.append("::apache::thrift::ClientReceiveState& state")
-        param_list = ", ".join(params)
-        return signature_prefix + " {name}(" + param_list + ")"
-
-    def _recv_has_void_return_type(self, function):
-        return not self._function_produces_result(function) or \
-               self._recv_uses_return_parameter(function)
-
-    def _recv_uses_return_parameter(self, function):
-        return self._function_produces_result(function) and \
-               self._is_complex_type(function.returntype)
-
-    def _function_produces_result(self, function):
-        return_type = function.returntype
-        return not return_type.is_void
-
-    def _exception_idx(self, function, idx):
-        return idx + (1 if self._function_produces_result(function) else 0)
-
-    def _argument_list(self, arglist, add_comma, unique, no_param_names=False):
-        out = ""
-        for field in arglist.members:
-            if len(out) > 0 or add_comma:
-                out += ", "
-
-            type_name = self._type_name(field.type,
-                                        arg=True, unique=unique)
-
-            field_name = "/*" + field.name + "*/" if no_param_names \
-                         else field.name
-            out += type_name + " " + field_name
-
-        return out
 
     # ======================================================================
     # STRUCT GENERATION CODE + following two sections
@@ -2349,15 +786,12 @@ class CppGenerator(t_generator.Generator):
     def _generate_struct_complete(self, s, obj, is_exception,
                                   pointers, read, write, swap,
                                   result, has_isset=True,
-                                  to_additional=False, simplejson=True,
-                                  is_service_helper=False):
+                                  to_additional=False, simplejson=True):
         self._generated_types.append(obj)
 
         def output(data):
             if to_additional:
                 print >>self._additional_outputs[-1], data + ';'
-            elif is_service_helper:
-                s.impl(data)
             else:
                 # this writes both the extern, and the explicit instantiation
                 # of the template to the .h and .cpp file, respectively
@@ -3125,8 +1559,7 @@ class CppGenerator(t_generator.Generator):
                     s('_ftype = {0};'.format(self._type_to_enum(field.type)))
 
     def _generate_struct_reader(self, scope, obj,
-                                pointers=False, has_isset=True,
-                                is_service_helper=False):
+                                pointers=False, has_isset=True):
         if self.flag_optionals:
             has_isset = False
         this = 'this'
@@ -3496,8 +1929,7 @@ class CppGenerator(t_generator.Generator):
     def _generate_struct_compute_length(self, scope, obj,
                                         pointers=False,
                                         result=False,
-                                        zero_copy=False,
-                                        is_service_helper=False):
+                                        zero_copy=False):
         method = "serializedSizeZC" if zero_copy else "serializedSize"
         this = 'this'
         d = scope.defn('template <class Protocol_>\n'
@@ -3631,8 +2063,7 @@ class CppGenerator(t_generator.Generator):
         return s
 
     def _generate_struct_writer(self, scope, obj, pointers=False,
-                                result=False,
-                                is_service_helper=False):
+                                result=False):
         'Generates the write function.'
         this = 'this'
         d = scope.defn('template <class Protocol_>\nuint32_t {name}'
@@ -4039,7 +2470,6 @@ class CppGenerator(t_generator.Generator):
         frontend.t_typedef: _generate_typedef,
         frontend.t_enum: _generate_enum,
         frontend.t_struct: _generate_object,
-        frontend.t_service: _generate_service,
     }
 
     def _generate(self, what):
@@ -4211,8 +2641,7 @@ class CppGenerator(t_generator.Generator):
         name = self._program.name
         # build the const scope
         context = self._make_context(
-            self._program.name + '_constants',
-            is_types_context=True)
+            self._program.name + '_constants')
         sg = get_global_scope(CppPrimitiveFactory, context)
         # Include the types header
         sg('#include "{0}"'.format(self._with_include_prefix(self._program,
@@ -4339,7 +2768,7 @@ class CppGenerator(t_generator.Generator):
 
         # Combo include: types
         context_cmb_types = self._make_context(
-            name + '_fatal_types', tcc=False, impl=False, is_types_context=True)
+            name + '_fatal_types', tcc=False, impl=False)
         with get_global_scope(CppPrimitiveFactory, context_cmb_types) as sg:
             for dep in self._get_fatal_type_dependencies():
                 sg('#include  "{0}_fatal_types.h"'
@@ -4670,7 +3099,7 @@ class CppGenerator(t_generator.Generator):
         ns = self._get_original_namespace()
 
         context = self._make_context(
-            name + '_fatal_enum', tcc=False, impl=False, is_types_context=True)
+            name + '_fatal_enum', tcc=False, impl=False)
         with get_global_scope(CppPrimitiveFactory, context) as sg:
             sg('#include "{0}"'.format(self._with_include_prefix(
                 self._program, name + '_types.h')))
@@ -4768,7 +3197,7 @@ class CppGenerator(t_generator.Generator):
         ns = self._get_original_namespace()
 
         context = self._make_context(
-            name + '_fatal_union', tcc=False, impl=False, is_types_context=True)
+            name + '_fatal_union', tcc=False, impl=False)
         with get_global_scope(CppPrimitiveFactory, context) as sg:
             for dep in self._get_fatal_type_dependencies():
                 sg('#include  "{0}_fatal_types.h"'
@@ -4909,7 +3338,7 @@ class CppGenerator(t_generator.Generator):
         name = self._program.name
         ns = self._get_original_namespace()
         context = self._make_context(
-            name + '_fatal_struct', tcc=False, impl=False, is_types_context=True)
+            name + '_fatal_struct', tcc=False, impl=False)
         with get_global_scope(CppPrimitiveFactory, context) as sg:
             for dep in self._get_fatal_type_dependencies():
                 sg('#include  "{0}_fatal_types.h"'
@@ -5193,8 +3622,7 @@ class CppGenerator(t_generator.Generator):
         ns = self._get_original_namespace()
 
         context = self._make_context(
-            name + '_fatal_constant', tcc=False, impl=False,
-            is_types_context=True)
+            name + '_fatal_constant', tcc=False, impl=False)
         with get_global_scope(CppPrimitiveFactory, context) as sg:
             sg('#include "{0}"'.format(self._with_include_prefix(
                 self._program, name + '_fatal_types.h')))
@@ -5247,10 +3675,8 @@ class CppGenerator(t_generator.Generator):
 
     def _make_context(self, filename,
                       tcc=False,
-                      separateclient=False,
                       custom_protocol=False,
-                      impl=True,
-                      is_types_context=False):
+                      impl=True):
         'Convenience method to get the context and outputs for some file pair'
         # open files and instantiate outputs
         output_h = self._write_to(filename + '.h')
@@ -5260,14 +3686,11 @@ class CppGenerator(t_generator.Generator):
         custom_protocol_h = self._write_to(filename + "_custom_protocol.h") \
                 if custom_protocol else None
 
-        if separateclient:
-            additional_outputs.append(self._write_to(filename + "_client.cpp"))
         header_path = self._with_include_prefix(self._program, filename)
 
         context = CppOutputContext(output_impl, output_h, output_tcc,
                                    header_path, additional_outputs,
-                                   custom_protocol_h,
-                                   is_types_context=is_types_context)
+                                   custom_protocol_h)
 
         print >>context.outputs, self._autogen_comment
         if context.custom_protocol_h is not None:
@@ -5321,8 +3744,7 @@ class CppGenerator(t_generator.Generator):
 
         # open files and instantiate outputs for types
         context = self._make_context(name + '_types', tcc=True,
-                                     custom_protocol=True,
-                                     is_types_context=True)
+                                     custom_protocol=True)
         s = self._types_global = get_global_scope(CppPrimitiveFactory, context)
 
         self._types_out_impl = types_out_impl = context.impl
@@ -5409,12 +3831,6 @@ class CppGenerator(t_generator.Generator):
             return '\n'.join('// {0}'.format(line) for line in lines)
         else:
             raise NotImplementedError
-
-    def _is_processed_in_eb(self, function):
-        if function.annotations is not None and \
-          'thread' in function.annotations.annotations:
-            return function.annotations.annotations['thread'] == 'eb'
-        return self.flag_process_in_event_base
 
 # register the generator factory
 t_generator.GeneratorFactory(CppGenerator)

@@ -79,8 +79,6 @@ class Generator(object):
         if self._flag('only_reflection'):
           self._generate_fatal(program)
           return
-        for item in program.objects:
-            self._gen_forward_declaration(item)
         for item in chain(program.enums, program.typedefs, \
                 program.objects, program.services):
             self._generate(item)

@@ -353,8 +353,7 @@ class CppPrimitiveFactory(PrimitiveFactory):
 class CppOutputContext(OutputContext):
 
     def __init__(self, output_cpp, output_h, output_tcc, header_path,
-                 additional_outputs=[], custom_protocol_h=None,
-                 is_types_context=False):
+                 additional_outputs=[], custom_protocol_h=None):
         self.omit_include = False
         self._output_cpp = output_cpp
         self._output_h = output_h
@@ -362,7 +361,6 @@ class CppOutputContext(OutputContext):
         self._additional_outputs = additional_outputs
         self._custom_protocol_h = custom_protocol_h
         self._header_path = header_path
-        self._add_common_service_includes_to_tcc = not is_types_context
         outputs = [output_h]
         if output_cpp:
             outputs.append(output_cpp)
@@ -453,15 +451,6 @@ class CppOutputContext(OutputContext):
                         '#include <thrift/lib/cpp/TApplicationException.h>'
                 print >>self._output_tcc, '#include <folly/io/IOBuf.h>'
                 print >>self._output_tcc, '#include <folly/io/IOBufQueue.h>'
-                # Make sure we don't add these into the 'types' libraries
-                # so that they can be a separate rule
-                if self._add_common_service_includes_to_tcc:
-                    print >>self._output_tcc, \
-                        '#include <thrift/lib/cpp/transport/THeader.h>'
-                    print >>self._output_tcc, \
-                        '#include <thrift/lib/cpp2/server/Cpp2ConnContext.h>'
-                    print >>self._output_tcc, \
-                        '#include <thrift/lib/cpp2/GeneratedCodeHelper.h>'
                 print >>self._output_tcc, \
                         '#include <thrift/lib/cpp2/GeneratedSerializationCodeHelper.h>'
                 print >>self._output_tcc, ''
