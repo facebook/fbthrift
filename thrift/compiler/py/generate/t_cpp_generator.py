@@ -460,8 +460,6 @@ class CppGenerator(t_generator.Generator):
             minName = sortedConstants[0].name
             maxName = sortedConstants[-1].name
 
-        self._generate_hash_equal_to(tenum)
-
         with self._types_global.namespace('apache.thrift').scope:
             out(
                 'template <> struct TEnumDataStorage<{fullName}>;'
@@ -539,19 +537,6 @@ class CppGenerator(t_generator.Generator):
         the_type = self._type_name(ttypedef.type, in_typedef=True, scope=scope)
         txt = 'typedef {0} {1};\n\n'.format(the_type, ttypedef.symbolic)
         scope(txt)
-
-        if self._should_generate_hash_equal_to(ttypedef):
-            # We're at types scope now
-            scope.release()
-
-            # std::hash and std::equal_to declarations
-            self._generate_hash_equal_to(ttypedef)
-
-            # Re-enter types scope, but we can't actually re-enter a scope,
-            # so let's recreate it
-            scope = self._types_scope = \
-                    scope.namespace(self._get_namespace()).scope
-            scope.acquire()
 
     def _declare_field(self, field, pointer=False, constant=False,
                         reference=False, optional_wrapped=False,
@@ -2356,43 +2341,6 @@ class CppGenerator(t_generator.Generator):
                 out('{return_statement}obj->{method}(proto);'.
                     format(**locals()))
 
-    def _should_generate_hash_equal_to(self, obj):
-        annotated = obj.type if obj.is_typedef else obj
-        is_enum = isinstance(obj, frontend.t_enum)
-        gen_hash = is_enum or self._has_cpp_annotation(annotated, 'declare_hash')
-        gen_equal_to = is_enum or self._has_cpp_annotation(annotated, 'declare_equal_to')
-        return gen_hash or gen_equal_to
-
-    def _generate_hash_equal_to(self, obj):
-        annotated = obj.type if obj.is_typedef else obj
-        is_enum = isinstance(obj, frontend.t_enum)
-        gen_hash = is_enum or self._has_cpp_annotation(annotated, 'declare_hash')
-        gen_equal_to = is_enum or self._has_cpp_annotation(annotated, 'declare_equal_to')
-        if gen_hash or gen_equal_to:
-            name = obj.symbolic if obj.is_typedef else obj.name
-            full_name = self._namespace_prefix(self._get_namespace()) + name
-            with self._types_global.namespace('std').scope:
-                if gen_hash:
-                    if is_enum:
-                        out(('template<> struct hash<typename {t}> '
-                             ': public apache::thrift::detail::enum_hash<typename {t}> {{}};')
-                            .format(t=full_name))
-                    else:
-                        out('template<> struct hash<typename ' + full_name + '> {')
-                        out('  size_t operator()(const ' + full_name + '&) const;')
-                        out("};")
-
-                if gen_equal_to:
-                    if is_enum:
-                        out(('template<> struct equal_to<typename {t}> '
-                             ': public apache::thrift::detail::enum_equal_to<typename {t}> {{}};')
-                            .format(t=full_name))
-                    else:
-                        out('template<> struct equal_to<typename ' + full_name + '> {')
-                        out('  bool operator()(const ' + full_name + '&,'
-                            'const ' + full_name + '&) const;')
-                        out("};")
-
     def _generate_cpp_struct(self, obj, is_exception=False):
         # We write all of these to the types scope
         scope = self._types_scope
@@ -2409,9 +2357,6 @@ class CppGenerator(t_generator.Generator):
         scope.release()
         with self._types_global.namespace('apache.thrift').scope:
             self._generate_cpp2ops(False, obj, self._types_scope)
-
-        # std::hash and std::equal_to declarations
-        self._generate_hash_equal_to(obj)
 
         # Re-enter types scope, but we can't actually re-enter a scope,
         # so let's recreate it
