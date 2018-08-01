@@ -114,7 +114,13 @@ BOOST_PYTHON_MODULE(frontend) {
           .add_property(
               "as_list", make_function(TO<t_list, t_type>, policy_rir()))
           .add_property(
-              "as_stream", make_function(TO<t_stream, t_type>, policy_rir()));
+              "as_stream", make_function(TO<t_stream, t_type>, policy_rir()))
+          .add_property(
+              "get_true_type",
+              make_function(
+                  static_cast<const t_type* (t_type::*)() const>(
+                      &t_type::get_true_type),
+                  policy_rir()));
   indexVec<uint8_t>("uint8_t_vec");
 
   // t_base_type::t_base

@@ -243,19 +243,12 @@ class CppGenerator(t_generator.Generator):
         return prefix
 
     def _is_complex_type(self, ttype):
-        ttype = self._get_true_type(ttype)
+        ttype = ttype.get_true_type
         return ttype.is_container or \
                ttype.is_struct or \
                ttype.is_xception or \
                ttype.is_base_type and \
                     ttype.as_base_type.base == frontend.t_base.string
-
-    def _get_true_type(self, ttype):
-        'Get the true type behind a series of typedefs'
-        while ttype.is_typedef:
-            if ttype.is_typedef:
-                ttype = ttype.as_typedef.type
-        return ttype
 
     def _type_access_suffix(self, ttype):
         if not ttype.is_typedef:
@@ -453,7 +446,7 @@ class CppGenerator(t_generator.Generator):
             for struct in self._program.structs:
                 for member in struct.members:
                     def traverse(type):
-                        type = self._get_true_type(type)
+                        type = type.get_true_type
                         if type.is_struct:
                             yield type
                         if type.is_enum:
