@@ -107,11 +107,8 @@ class CppGenerator(t_generator.Generator):
     def _has_cpp_annotation(self, type, key):
         return self._cpp_annotation(type, key) is not None
 
-    def _cpp_type_name(self, type, default=None, direct=False):
-        if direct and self._has_cpp_annotation(type, 'indirection'):
-            return default
-        else:
-            return self._cpp_annotation(type, 'type', default)
+    def _cpp_type_name(self, type, default=None):
+        return self._cpp_annotation(type, 'type', default)
 
     def _cpp_ref_type(self, type, name):
         # backward compatibility with 'ref' annotation
@@ -133,15 +130,12 @@ class CppGenerator(t_generator.Generator):
         # use custom pointer type
         return '{0}<{1}>'.format(ref_type, name)
 
-    def _type_name(self, ttype, in_typedef=False,
-                   arg=False, scope=None, unique=False, direct=False):
+    def _type_name(self, ttype, in_typedef=False, scope=None):
         if ttype.is_base_type:
             # cast it
             btype = ttype.as_base_type
             bname = self._base_type_name(btype.base)
-            if arg and ttype.is_string:
-                return self._reference_name(bname, unique)
-            return self._cpp_type_name(ttype, bname, direct=direct)
+            return self._cpp_type_name(ttype, bname)
         # Check for a custom overloaded C++ name
         if ttype.is_container:
             tcontainer = ttype.as_container
@@ -184,10 +178,7 @@ class CppGenerator(t_generator.Generator):
                 cname = cname + "<{0}>"
             if inner_types:
                 cname = cname.format(*inner_types)
-            if arg:
-                return self._reference_name(cname, unique)
-            else:
-                return cname
+            return cname
 
         if in_typedef and (ttype.is_struct or ttype.is_xception) and \
                 ttype.program == self._program:
@@ -203,10 +194,7 @@ class CppGenerator(t_generator.Generator):
             else:
                 tname = ttype.name
 
-        if arg and self._is_complex_type(ttype):
-            return self._reference_name(tname, unique)
-        else:
-            return tname
+        return tname
 
     def _is_reference(self, f):
         return self._cpp_ref_type(f, '') is not None
@@ -217,12 +205,6 @@ class CppGenerator(t_generator.Generator):
     def _has_isset(self, f):
         return not self._is_reference(f) and f.req != e_req.required \
             and not self._is_optional_wrapped(f)
-
-    def _reference_name(self, name, unique):
-        if unique:
-            return "std::unique_ptr<{0}>".format(name)
-        else:
-            return "const {0}&".format(name)
 
     def _get_namespace(self, program=None):
         if program == None:
@@ -241,14 +223,6 @@ class CppGenerator(t_generator.Generator):
         if len(ns) > 0:
             prefix += '::'
         return prefix
-
-    def _is_complex_type(self, ttype):
-        ttype = ttype.get_true_type
-        return ttype.is_container or \
-               ttype.is_struct or \
-               ttype.is_xception or \
-               ttype.is_base_type and \
-                    ttype.as_base_type.base == frontend.t_base.string
 
     def _type_access_suffix(self, ttype):
         if not ttype.is_typedef:
