@@ -26,6 +26,7 @@
 #include <gtest/gtest.h>
 
 #include <folly/Range.h>
+#include <folly/Traits.h>
 #include <thrift/lib/cpp2/fatal/internal/test_helpers.h>
 
 namespace apache {
@@ -80,7 +81,7 @@ void compare_elements_eq(
     auto ae = TRAITS::END(CONTAINER);                                \
     EXPECT_EQ(CONTAINER.size(), std::distance(ai, ae));              \
     using expected_type =                                            \
-        typename std::decay<decltype(*(EXPECTED).begin())>::type;    \
+        folly::remove_cvref_t<decltype(*(EXPECTED).begin())>;        \
     std::unordered_set<expected_type> const expected(                \
         (EXPECTED).begin(), (EXPECTED).end());                       \
     for (auto const ee = expected.end(); ai != ae; ++ai) {           \

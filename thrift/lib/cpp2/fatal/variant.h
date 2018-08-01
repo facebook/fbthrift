@@ -24,6 +24,7 @@
 
 #include <fatal/type/search.h>
 #include <fatal/type/transform.h>
+#include <folly/Traits.h>
 #include <thrift/lib/cpp2/fatal/reflection.h>
 
 namespace apache {
@@ -31,7 +32,7 @@ namespace thrift {
 namespace detail {
 template <typename T, typename V>
 using variant_helper =
-    typename reflect_variant<typename std::decay<V>::type>::traits;
+    typename reflect_variant<folly::remove_cvref_t<V>>::traits;
 } // namespace detail
 
 /**
@@ -206,8 +207,8 @@ auto variant_try_get(V& variant) -> decltype(std::addressof(
  * @author: Marcelo Juchem <marcelo@fb.com>
  */
 template <typename V, typename T>
-typename std::decay<T>::type& variant_set(V& variant, T&& value) {
-  using type = typename std::decay<T>::type;
+folly::remove_cvref_t<T>& variant_set(V& variant, T&& value) {
+  using type = folly::remove_cvref_t<T>;
   using by_type = typename detail::variant_helper<type, V>::by_type;
 
   by_type::template set<type>(variant, std::forward<T>(value));

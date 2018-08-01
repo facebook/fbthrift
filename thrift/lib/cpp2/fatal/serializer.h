@@ -24,6 +24,7 @@
 
 #include <fatal/type/call_traits.h>
 #include <fatal/type/trie.h>
+#include <folly/Traits.h>
 #include <thrift/lib/cpp2/GeneratedSerializationCodeHelper.h>
 #include <thrift/lib/cpp2/fatal/container_traits.h>
 #include <thrift/lib/cpp2/fatal/reflection.h>
@@ -350,9 +351,9 @@ struct protocol_methods<type_class::map<KeyClass, MappedClass>, Type> {
   constexpr static protocol::TType ttype_value = protocol::T_MAP;
 
   using key_type =
-      typename std::decay<decltype(std::declval<Type>().begin()->first)>::type;
+      folly::remove_cvref_t<decltype(std::declval<Type>().begin()->first)>;
   using mapped_type =
-      typename std::decay<decltype(std::declval<Type>().begin()->second)>::type;
+      folly::remove_cvref_t<decltype(std::declval<Type>().begin()->second)>;
 
   static_assert(
       !std::is_same<KeyClass, type_class::unknown>(),
@@ -700,7 +701,7 @@ struct protocol_methods<
           methods::ttype_value,
           descriptor::metadata::id::value);
       auto const& tmp = getter(obj);
-      using member_type = typename std::decay<decltype(tmp)>::type;
+      using member_type = folly::remove_cvref_t<decltype(tmp)>;
       xfer +=
           methods::write(protocol, detail::deref<member_type>::get_const(tmp));
       xfer += protocol.writeFieldEnd();
@@ -748,7 +749,7 @@ struct protocol_methods<
           methods::ttype_value,
           descriptor::metadata::id::value);
       auto const& tmp = getter(obj);
-      using member_type = typename std::decay<decltype(tmp)>::type;
+      using member_type = folly::remove_cvref_t<decltype(tmp)>;
       xfer += methods::template serialized_size<ZeroCopy>(
           protocol, detail::deref<member_type>::get_const(tmp));
     }
@@ -832,7 +833,7 @@ struct protocol_methods<
       using protocol_method =
           protocol_methods<typename member::type_class, typename member::type>;
 
-      using member_type = typename std::decay<decltype(getter::ref(obj))>::type;
+      using member_type = folly::remove_cvref_t<decltype(getter::ref(obj))>;
 
       if (ftype == protocol_method::ttype_value) {
         detail::mark_isset<
@@ -1055,7 +1056,7 @@ struct protocol_methods<
                  << ", id:" << Member::id::value;
 
         auto const& got = Member::getter::ref(in);
-        using member_type = typename std::decay<decltype(got)>::type;
+        using member_type = folly::remove_cvref_t<decltype(got)>;
 
         xfer += field_writer<
             Protocol,
@@ -1213,7 +1214,7 @@ struct protocol_methods<
           protocol_methods<typename Member::type_class, typename Member::type>;
 
       auto const& got = Member::getter::ref(in);
-      using member_type = typename std::decay<decltype(got)>::type;
+      using member_type = folly::remove_cvref_t<decltype(got)>;
 
       xfer += field_size<
           ZeroCopy,

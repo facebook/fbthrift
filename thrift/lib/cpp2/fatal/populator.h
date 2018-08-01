@@ -27,6 +27,7 @@
 #include <fatal/type/array.h>
 #include <fatal/type/conditional.h>
 #include <fatal/type/convert.h>
+#include <folly/Traits.h>
 #include <folly/io/Cursor.h>
 #include <thrift/lib/cpp2/fatal/container_traits.h>
 #include <thrift/lib/cpp2/fatal/reflection.h>
@@ -467,7 +468,7 @@ struct populator_methods<type_class::structure, Struct> {
           populator_methods<typename Member::type_class, typename Member::type>;
 
       auto& got = Member::getter::ref(out);
-      using member_type = typename std::decay<decltype(got)>::type;
+      using member_type = folly::remove_cvref_t<decltype(got)>;
       member_type tmp;
 
       DVLOG(3) << "populating member: "

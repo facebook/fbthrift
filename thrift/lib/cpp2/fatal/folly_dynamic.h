@@ -20,6 +20,7 @@
 #include <utility>
 
 #include <fatal/type/transform.h>
+#include <folly/Traits.h>
 #include <folly/dynamic.h>
 #include <thrift/lib/cpp2/fatal/reflection.h>
 
@@ -105,7 +106,7 @@ enum class format_adherence {
 template <typename T>
 void to_dynamic(folly::dynamic& out, T&& input, dynamic_format format) {
   using impl = detail::dynamic_converter_impl<
-      reflect_type_class<typename std::decay<T>::type>>;
+      reflect_type_class<folly::remove_cvref_t<T>>>;
 
   static_assert(
       fatal::is_complete<impl>::value, "to_dynamic: unsupported type");
@@ -149,7 +150,7 @@ void from_dynamic(
     dynamic_format format,
     format_adherence adherence = format_adherence::STRICT) {
   using impl = detail::dynamic_converter_impl<
-      reflect_type_class<typename std::decay<T>::type>>;
+      reflect_type_class<folly::remove_cvref_t<T>>>;
 
   static_assert(
       fatal::is_complete<impl>::value, "from_dynamic: unsupported type");

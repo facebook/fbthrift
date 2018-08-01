@@ -96,7 +96,7 @@ struct merge_impl<type_class::structure> {
     void operator()(fatal::indexed<MemberInfo, Index>, Src<T>& src, T& dst)
         const {
       using mgetter = typename MemberInfo::getter;
-      using mtype = typename std::decay<decltype(mgetter::ref(src))>::type;
+      using mtype = folly::remove_cvref_t<decltype(mgetter::ref(src))>;
       using merge_field = merge<typename deref<mtype>::type>;
       using mref = fatal::conditional<Move, mtype&&, const mtype&>;
       if (MemberInfo::optional::value == optionality::optional &&

@@ -150,7 +150,7 @@ class indenter {
 };
 
 template <typename OutputStream, typename Indentation>
-indenter<typename std::decay<OutputStream>::type> make_indenter(
+indenter<std::remove_reference_t<OutputStream>> make_indenter(
     OutputStream&& out,
     Indentation&& indentation,
     std::string margin = std::string()) {

@@ -96,7 +96,7 @@ struct deref<std::shared_ptr<T const>> : deref<T> {};
 template <typename T>
 using deref_t = folly::_t<deref<T>>;
 template <typename T>
-using deref_decay_t = deref_t<std::decay_t<T>>;
+using deref_inner_t = deref_t<folly::remove_cvref_t<T>>;
 
 // helper
 //
@@ -238,7 +238,7 @@ struct impl<T, type_class::structure> {
         schema_t& schema,
         datatype_t& dt) {
       using getter = typename MemberInfo::getter;
-      using type = deref_decay_t<decltype(getter::ref(std::declval<T&>()))>;
+      using type = deref_inner_t<decltype(getter::ref(std::declval<T&>()))>;
       using type_class = typename MemberInfo::type_class;
       using type_helper = helper<type, type_class>;
       using member_name = typename MemberInfo::name;
@@ -285,7 +285,7 @@ struct impl<T, type_class::variant> {
         schema_t& schema,
         datatype_t& dt) {
       typename MemberInfo::getter getter;
-      using type = deref_decay_t<decltype(getter(std::declval<T&>()))>;
+      using type = deref_inner_t<decltype(getter(std::declval<T&>()))>;
       using type_class = typename MemberInfo::metadata::type_class;
       using type_helper = helper<type, type_class>;
       using member_name = typename MemberInfo::metadata::name;

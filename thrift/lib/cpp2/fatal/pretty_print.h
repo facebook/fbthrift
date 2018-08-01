@@ -40,6 +40,8 @@
  * @author: Marcelo Juchem <marcelo@fb.com>
  */
 
+#include <folly/Traits.h>
+
 #include <thrift/lib/cpp2/fatal/internal/pretty_print-inl-pre.h>
 
 namespace apache {
@@ -60,8 +62,8 @@ void pretty_print(
     T&& what,
     std::string indentation = "  ",
     std::string margin = std::string()) {
-  using impl = detail::pretty_print_impl<
-      reflect_type_class<typename std::decay<T>::type>>;
+  using impl =
+      detail::pretty_print_impl<reflect_type_class<folly::remove_cvref_t<T>>>;
 
   auto indenter = make_indenter(out, std::move(indentation), std::move(margin));
   impl::print(indenter, std::forward<T>(what));

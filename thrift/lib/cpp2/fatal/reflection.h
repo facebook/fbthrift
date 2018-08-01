@@ -1991,7 +1991,7 @@ template <typename String>
 class thrift_string_traits_adapter {
  private:
   using orig = String;
-  using type = std::decay_t<orig>;
+  using type = folly::remove_cvref_t<orig>;
   using deco = fatal::add_const_from_t<type, orig>;
 
   using traits = thrift_string_traits<type>;
@@ -2158,7 +2158,7 @@ template <typename List>
 class thrift_list_traits_adapter {
  private:
   using orig = List;
-  using type = std::decay_t<orig>;
+  using type = folly::remove_cvref_t<orig>;
   using deco = fatal::add_const_from_t<type, orig>;
 
   using traits = thrift_list_traits<type>;
@@ -2349,7 +2349,7 @@ template <typename Set>
 class thrift_set_traits_adapter {
  private:
   using orig = Set;
-  using type = std::decay_t<orig>;
+  using type = folly::remove_cvref_t<orig>;
   using deco = fatal::add_const_from_t<type, orig>;
 
   using traits = thrift_set_traits<type>;
@@ -2583,7 +2583,7 @@ template <typename Map>
 class thrift_map_traits_adapter {
  private:
   using orig = Map;
-  using type = std::decay_t<orig>;
+  using type = folly::remove_cvref_t<orig>;
   using deco = fatal::add_const_from_t<type, orig>;
 
   using traits = thrift_map_traits<type>;

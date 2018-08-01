@@ -102,8 +102,8 @@ bool debug_equals(
     T const& lhs,
     T const& rhs,
     Callback&& callback) {
-  using impl = detail::debug_equals_impl<
-      reflect_type_class<typename std::decay<T>::type>>;
+  using impl =
+      detail::debug_equals_impl<reflect_type_class<std::remove_reference_t<T>>>;
 
   static_assert(
       fatal::is_complete<impl>::value, "debug_equals: unsupported type");

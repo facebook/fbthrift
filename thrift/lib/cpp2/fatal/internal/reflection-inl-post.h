@@ -50,8 +50,8 @@ struct isset {
 
   template <typename T>
   using kind_of = std::conditional_t<
-      is_optional<
-          std::decay_t<decltype(Getter::ref(std::declval<T const&>()))>>::value,
+      is_optional<folly::remove_cvref_t<decltype(
+          Getter::ref(std::declval<T const&>()))>>::value,
       kind<0>,
       std::conditional_t<HasIsSet && has_isset<T>::value, kind<1>, kind<2>>>;
 
