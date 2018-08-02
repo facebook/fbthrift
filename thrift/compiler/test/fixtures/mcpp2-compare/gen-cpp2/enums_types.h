@@ -212,7 +212,7 @@ class SomeStruct final : private apache::thrift::detail::st::ComparisonOperators
   SomeStruct(apache::thrift::FragileConstructor, int32_t fieldA__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    fieldA = arg.move();
+    fieldA = arg.extract();
     __isset.fieldA = true;
   }
 

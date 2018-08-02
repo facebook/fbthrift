@@ -94,19 +94,19 @@ class Color final : private apache::thrift::detail::st::ComparisonOperators<Colo
   Color(apache::thrift::FragileConstructor, double red__arg, double green__arg, double blue__arg, double alpha__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    red = arg.move();
+    red = arg.extract();
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
-    green = arg.move();
+    green = arg.extract();
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<3, _T> arg) {
-    blue = arg.move();
+    blue = arg.extract();
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<4, _T> arg) {
-    alpha = arg.move();
+    alpha = arg.extract();
   }
 
   Color(Color&&) = default;

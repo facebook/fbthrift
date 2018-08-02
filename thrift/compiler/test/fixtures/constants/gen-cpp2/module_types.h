@@ -396,11 +396,11 @@ class Range final : private apache::thrift::detail::st::ComparisonOperators<Rang
   Range(apache::thrift::FragileConstructor, int32_t min__arg, int32_t max__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    min = arg.move();
+    min = arg.extract();
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
-    max = arg.move();
+    max = arg.extract();
   }
 
   Range(Range&&) = default;
@@ -1022,11 +1022,11 @@ class union1 final : private apache::thrift::detail::st::ComparisonOperators<uni
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    set_i(arg.move());
+    set_i(arg.extract());
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
-    set_d(arg.move());
+    set_d(arg.extract());
   }
   void __clear();
 
@@ -1326,19 +1326,19 @@ class union2 final : private apache::thrift::detail::st::ComparisonOperators<uni
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    set_i(arg.move());
+    set_i(arg.extract());
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
-    set_d(arg.move());
+    set_d(arg.extract());
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<3, _T> arg) {
-    set_s(arg.move());
+    set_s(arg.extract());
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<4, _T> arg) {
-    set_u(arg.move());
+    set_u(arg.extract());
   }
   void __clear();
 

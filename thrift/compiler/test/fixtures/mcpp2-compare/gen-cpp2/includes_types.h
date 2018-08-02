@@ -89,7 +89,7 @@ class AStruct final : private apache::thrift::detail::st::ComparisonOperators<AS
   AStruct(apache::thrift::FragileConstructor, int32_t FieldA__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    FieldA = arg.move();
+    FieldA = arg.extract();
     __isset.FieldA = true;
   }
 
@@ -194,7 +194,7 @@ class AStructB final : private apache::thrift::detail::st::ComparisonOperators<A
   AStructB(apache::thrift::FragileConstructor, std::shared_ptr<const  ::a::different::ns::AStruct> FieldA__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    FieldA = std::make_shared<std::decay_t<_T>>(arg.move());
+    FieldA = std::make_shared<std::decay_t<_T>>(arg.extract());
   }
 
   AStructB(AStructB&&) = default;

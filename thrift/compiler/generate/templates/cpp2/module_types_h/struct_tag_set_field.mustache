@@ -18,16 +18,16 @@
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<<%field:key%>, _T> arg) {
 <%#field:cpp_ref_unique?%>
-    <%field:name%> = std::make_unique<std::decay_t<_T>>(arg.move());
+    <%field:name%> = std::make_unique<std::decay_t<_T>>(arg.extract());
 <%/field:cpp_ref_unique?%>
 <%#field:cpp_ref_shared?%>
-    <%field:name%> = std::make_shared<std::decay_t<_T>>(arg.move());
+    <%field:name%> = std::make_shared<std::decay_t<_T>>(arg.extract());
 <%/field:cpp_ref_shared?%>
 <%#field:cpp_ref_shared_const?%>
-    <%field:name%> = std::make_shared<std::decay_t<_T>>(arg.move());
+    <%field:name%> = std::make_shared<std::decay_t<_T>>(arg.extract());
 <%/field:cpp_ref_shared_const?%>
 <%^field:cpp_ref?%>
-    <%field:name%> = arg.move();
+    <%field:name%> = arg.extract();
 <%/field:cpp_ref?%>
 <%^field:required?%><%^field:cpp_ref?%><%#field:type%><%^type:optionals?%>
     __isset.<%field:name%> = true;

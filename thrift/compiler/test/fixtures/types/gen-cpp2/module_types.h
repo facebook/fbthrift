@@ -648,7 +648,7 @@ class VirtualStruct : private apache::thrift::detail::st::ComparisonOperators<Vi
   VirtualStruct(apache::thrift::FragileConstructor, int64_t MyIntField__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    MyIntField = arg.move();
+    MyIntField = arg.extract();
     __isset.MyIntField = true;
   }
 
@@ -872,12 +872,12 @@ class TrivialNumeric final : private apache::thrift::detail::st::ComparisonOpera
   TrivialNumeric(apache::thrift::FragileConstructor, int32_t a__arg, bool b__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    a = arg.move();
+    a = arg.extract();
     __isset.a = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
-    b = arg.move();
+    b = arg.extract();
     __isset.b = true;
   }
 
@@ -991,12 +991,12 @@ class TrivialNestedWithDefault final : private apache::thrift::detail::st::Compa
   TrivialNestedWithDefault(apache::thrift::FragileConstructor, int32_t z__arg,  ::apache::thrift::fixtures::types::TrivialNumeric n__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    z = arg.move();
+    z = arg.extract();
     __isset.z = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
-    n = arg.move();
+    n = arg.extract();
     __isset.n = true;
   }
 

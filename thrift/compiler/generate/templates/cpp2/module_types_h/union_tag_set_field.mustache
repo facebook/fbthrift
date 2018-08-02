@@ -17,6 +17,6 @@
 %><%#struct:fields%><%!
 %>  template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<<%field:key%>, _T> arg) {
-    set_<%field:name%>(arg.move());
+    set_<%field:name%>(arg.extract());
   }
 <%/struct:fields%>

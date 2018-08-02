@@ -196,7 +196,7 @@ class ModuleB final : private apache::thrift::detail::st::ComparisonOperators<Mo
   ModuleB(apache::thrift::FragileConstructor, int32_t i32Field__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    i32Field = arg.move();
+    i32Field = arg.extract();
     __isset.i32Field = true;
   }
 

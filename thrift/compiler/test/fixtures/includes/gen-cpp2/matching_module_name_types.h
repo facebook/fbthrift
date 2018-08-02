@@ -38,7 +38,7 @@ class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<M
   MyStruct(apache::thrift::FragileConstructor,  ::matching_module_name::OtherStruct OtherStructField__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    OtherStructField = arg.move();
+    OtherStructField = arg.extract();
     __isset.OtherStructField = true;
   }
 

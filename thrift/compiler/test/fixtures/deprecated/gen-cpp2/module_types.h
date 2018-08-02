@@ -140,11 +140,11 @@ class Field final : private apache::thrift::detail::st::ComparisonOperators<Fiel
   Field(apache::thrift::FragileConstructor,  ::cpp2::ColorID id__arg, int32_t fieldType__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    id = arg.move();
+    id = arg.extract();
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
-    fieldType = arg.move();
+    fieldType = arg.extract();
   }
 
   Field(Field&&) = default;

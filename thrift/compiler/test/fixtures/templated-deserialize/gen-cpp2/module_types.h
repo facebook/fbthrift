@@ -124,12 +124,12 @@ class SmallStruct final : private apache::thrift::detail::st::ComparisonOperator
   SmallStruct(apache::thrift::FragileConstructor, bool small_A__arg, int32_t small_B__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    small_A = arg.move();
+    small_A = arg.extract();
     __isset.small_A = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
-    small_B = arg.move();
+    small_B = arg.extract();
     __isset.small_B = true;
   }
 

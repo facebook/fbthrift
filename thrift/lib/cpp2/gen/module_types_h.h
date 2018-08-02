@@ -24,51 +24,47 @@ namespace apache {
 namespace thrift {
 namespace detail {
 
-template <std::intmax_t Id, typename T>
+template <std::intmax_t Id, typename Ref>
 struct argument_wrapper {
-  static_assert(
-      std::is_rvalue_reference<T&&>::value,
-      "this wrapper handles only rvalues and initializer_list");
+  explicit argument_wrapper(Ref ref) : ptr_(&ref) {}
 
-  template <typename U>
-  explicit argument_wrapper(U&& value) : argument_(std::forward<U>(value)) {
-    static_assert(
-        std::is_rvalue_reference<U&&>::value,
-        "this wrapper handles only rvalues and initializer_list");
-  }
-
-  explicit argument_wrapper(const char* str) : argument_(str) {}
-
-  T&& move() {
-    return std::move(argument_);
+  Ref extract() const {
+    return static_cast<Ref>(*ptr_);
   }
 
  private:
-  T argument_;
+  std::remove_reference_t<Ref>* ptr_;
+};
+
+template <std::intmax_t Id, typename T>
+struct argument_wrapper<Id, std::initializer_list<T>> {
+  explicit argument_wrapper(std::initializer_list<T> list) : list_(list) {}
+
+  std::initializer_list<T> extract() const {
+    return list_;
+  }
+
+ private:
+  std::initializer_list<T> list_;
 };
 
 template <std::intmax_t Id, typename T>
 argument_wrapper<Id, std::initializer_list<T>> wrap_argument(
     std::initializer_list<T> value) {
-  return argument_wrapper<Id, std::initializer_list<T>>(std::move(value));
+  return argument_wrapper<Id, std::initializer_list<T>>(
+      static_cast<std::initializer_list<T>>(value));
 }
 
 template <std::intmax_t Id, typename T>
 argument_wrapper<Id, T&&> wrap_argument(T&& value) {
-  static_assert(std::is_rvalue_reference<T&&>::value, "internal thrift error");
-  return argument_wrapper<Id, T&&>(std::forward<T>(value));
-}
-
-template <std::intmax_t Id>
-argument_wrapper<Id, const char*> wrap_argument(const char* str) {
-  return argument_wrapper<Id, const char*>(str);
+  return argument_wrapper<Id, T&&>(static_cast<T&&>(value));
 }
 
 template <typename S, std::intmax_t... Id, typename... T>
-constexpr S make_constant(argument_wrapper<Id, T>&&... arg) {
+constexpr S make_constant(argument_wrapper<Id, T>... arg) {
   using _ = int[];
   S s;
-  void(_{0, (void(s.__set_field(std::move(arg))), 0)...});
+  void(_{0, (void(s.__set_field(arg)), 0)...});
   return s;
 }
 

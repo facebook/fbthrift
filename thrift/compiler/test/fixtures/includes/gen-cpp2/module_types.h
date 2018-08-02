@@ -40,17 +40,17 @@ class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<M
   MyStruct(apache::thrift::FragileConstructor,  ::cpp2::Included MyIncludedField__arg,  ::cpp2::Included MyOtherIncludedField__arg,  ::cpp2::IncludedInt64 MyIncludedInt__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    MyIncludedField = arg.move();
+    MyIncludedField = arg.extract();
     __isset.MyIncludedField = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
-    MyOtherIncludedField = arg.move();
+    MyOtherIncludedField = arg.extract();
     __isset.MyOtherIncludedField = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<3, _T> arg) {
-    MyIncludedInt = arg.move();
+    MyIncludedInt = arg.extract();
     __isset.MyIncludedInt = true;
   }
 

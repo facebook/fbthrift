@@ -484,7 +484,7 @@ class ASimpleStruct final : private apache::thrift::detail::st::ComparisonOperat
   ASimpleStruct(apache::thrift::FragileConstructor, int64_t boolField__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    boolField = arg.move();
+    boolField = arg.extract();
     __isset.boolField = true;
   }
 
@@ -589,7 +589,7 @@ class ASimpleStructNoexcept final : private apache::thrift::detail::st::Comparis
   ASimpleStructNoexcept(apache::thrift::FragileConstructor, int64_t boolField__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    boolField = arg.move();
+    boolField = arg.extract();
     __isset.boolField = true;
   }
   ASimpleStructNoexcept(ASimpleStructNoexcept&& other) noexcept :
@@ -1057,11 +1057,11 @@ class SimpleUnion : private apache::thrift::detail::st::ComparisonOperators<Simp
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<7, _T> arg) {
-    set_intValue(arg.move());
+    set_intValue(arg.extract());
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
-    set_stringValue(arg.move());
+    set_stringValue(arg.extract());
   }
   void __clear();
 
@@ -1968,131 +1968,131 @@ class ComplexUnion final : private apache::thrift::detail::st::ComparisonOperato
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    set_intValue(arg.move());
+    set_intValue(arg.extract());
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<101, _T> arg) {
-    set_req_intValue(arg.move());
+    set_req_intValue(arg.extract());
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<201, _T> arg) {
-    set_opt_intValue(arg.move());
+    set_opt_intValue(arg.extract());
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<3, _T> arg) {
-    set_stringValue(arg.move());
+    set_stringValue(arg.extract());
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<103, _T> arg) {
-    set_req_stringValue(arg.move());
+    set_req_stringValue(arg.extract());
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<203, _T> arg) {
-    set_opt_stringValue(arg.move());
+    set_opt_stringValue(arg.extract());
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<4, _T> arg) {
-    set_intValue2(arg.move());
+    set_intValue2(arg.extract());
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<6, _T> arg) {
-    set_intValue3(arg.move());
+    set_intValue3(arg.extract());
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<7, _T> arg) {
-    set_doubelValue(arg.move());
+    set_doubelValue(arg.extract());
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<8, _T> arg) {
-    set_boolValue(arg.move());
+    set_boolValue(arg.extract());
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<9, _T> arg) {
-    set_union_list(arg.move());
+    set_union_list(arg.extract());
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<10, _T> arg) {
-    set_union_set(arg.move());
+    set_union_set(arg.extract());
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<11, _T> arg) {
-    set_union_map(arg.move());
+    set_union_map(arg.extract());
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<111, _T> arg) {
-    set_req_union_map(arg.move());
+    set_req_union_map(arg.extract());
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<211, _T> arg) {
-    set_opt_union_map(arg.move());
+    set_opt_union_map(arg.extract());
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<12, _T> arg) {
-    set_enum_field(arg.move());
+    set_enum_field(arg.extract());
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<13, _T> arg) {
-    set_enum_container(arg.move());
+    set_enum_container(arg.extract());
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<14, _T> arg) {
-    set_a_struct(arg.move());
+    set_a_struct(arg.extract());
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<15, _T> arg) {
-    set_a_set_struct(arg.move());
+    set_a_set_struct(arg.extract());
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<16, _T> arg) {
-    set_a_union(arg.move());
+    set_a_union(arg.extract());
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<116, _T> arg) {
-    set_req_a_union(arg.move());
+    set_req_a_union(arg.extract());
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<216, _T> arg) {
-    set_opt_a_union(arg.move());
+    set_opt_a_union(arg.extract());
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<17, _T> arg) {
-    set_a_union_list(arg.move());
+    set_a_union_list(arg.extract());
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<18, _T> arg) {
-    set_a_union_typedef(arg.move());
+    set_a_union_typedef(arg.extract());
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<19, _T> arg) {
-    set_a_union_typedef_list(arg.move());
+    set_a_union_typedef_list(arg.extract());
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<20, _T> arg) {
-    set_MyBinaryField(arg.move());
+    set_MyBinaryField(arg.extract());
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<21, _T> arg) {
-    set_MyBinaryField2(arg.move());
+    set_MyBinaryField2(arg.extract());
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<22, _T> arg) {
-    set_MyBinaryField3(arg.move());
+    set_MyBinaryField3(arg.extract());
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<23, _T> arg) {
-    set_MyBinaryListField4(arg.move());
+    set_MyBinaryListField4(arg.extract());
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<24, _T> arg) {
-    set_ref_field(arg.move());
+    set_ref_field(arg.extract());
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<25, _T> arg) {
-    set_ref_field2(arg.move());
+    set_ref_field2(arg.extract());
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<26, _T> arg) {
-    set_excp_field(arg.move());
+    set_excp_field(arg.extract());
   }
   void __clear();
 
@@ -5282,12 +5282,12 @@ class FloatStruct final : private apache::thrift::detail::st::ComparisonOperator
   FloatStruct(apache::thrift::FragileConstructor, float floatField__arg, double doubleField__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    floatField = arg.move();
+    floatField = arg.extract();
     __isset.floatField = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
-    doubleField = arg.move();
+    doubleField = arg.extract();
     __isset.doubleField = true;
   }
 
@@ -5503,11 +5503,11 @@ class FloatUnion final : private apache::thrift::detail::st::ComparisonOperators
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    set_floatSide(arg.move());
+    set_floatSide(arg.extract());
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
-    set_doubleSide(arg.move());
+    set_doubleSide(arg.extract());
   }
   void __clear();
 
@@ -5670,7 +5670,7 @@ class AllRequiredNoExceptMoveCtrStruct final : private apache::thrift::detail::s
   AllRequiredNoExceptMoveCtrStruct(apache::thrift::FragileConstructor, int64_t intField__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    intField = arg.move();
+    intField = arg.extract();
   }
   AllRequiredNoExceptMoveCtrStruct(AllRequiredNoExceptMoveCtrStruct&& other) noexcept :
       intField(std::move(other.intField)) {}

@@ -194,11 +194,11 @@ class MyUnion final : private apache::thrift::detail::st::ComparisonOperators<My
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    set_anInteger(arg.move());
+    set_anInteger(arg.extract());
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
-    set_aString(arg.move());
+    set_aString(arg.extract());
   }
   void __clear();
 
@@ -373,17 +373,17 @@ class MyField final : private apache::thrift::detail::st::ComparisonOperators<My
   MyField(apache::thrift::FragileConstructor, int64_t opt_value__arg, int64_t value__arg, int64_t req_value__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    opt_value = arg.move();
+    opt_value = arg.extract();
     __isset.opt_value = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
-    value = arg.move();
+    value = arg.extract();
     __isset.value = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<3, _T> arg) {
-    req_value = arg.move();
+    req_value = arg.extract();
   }
 
   MyField(MyField&&) = default;
@@ -945,15 +945,15 @@ class StructWithSharedConst final : private apache::thrift::detail::st::Comparis
   StructWithSharedConst(apache::thrift::FragileConstructor, std::shared_ptr<const  ::cpp2::MyField> opt_shared_const__arg, std::shared_ptr<const  ::cpp2::MyField> shared_const__arg, std::shared_ptr<const  ::cpp2::MyField> req_shared_const__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    opt_shared_const = std::make_shared<std::decay_t<_T>>(arg.move());
+    opt_shared_const = std::make_shared<std::decay_t<_T>>(arg.extract());
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
-    shared_const = std::make_shared<std::decay_t<_T>>(arg.move());
+    shared_const = std::make_shared<std::decay_t<_T>>(arg.extract());
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<3, _T> arg) {
-    req_shared_const = std::make_shared<std::decay_t<_T>>(arg.move());
+    req_shared_const = std::make_shared<std::decay_t<_T>>(arg.extract());
   }
 
   StructWithSharedConst(StructWithSharedConst&&) = default;
@@ -1321,15 +1321,15 @@ class StructWithRefTypeShared final : private apache::thrift::detail::st::Compar
   StructWithRefTypeShared(apache::thrift::FragileConstructor, std::shared_ptr< ::cpp2::Empty> def_field__arg, std::shared_ptr< ::cpp2::Empty> opt_field__arg, std::shared_ptr< ::cpp2::Empty> req_field__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    def_field = std::make_shared<std::decay_t<_T>>(arg.move());
+    def_field = std::make_shared<std::decay_t<_T>>(arg.extract());
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
-    opt_field = std::make_shared<std::decay_t<_T>>(arg.move());
+    opt_field = std::make_shared<std::decay_t<_T>>(arg.extract());
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<3, _T> arg) {
-    req_field = std::make_shared<std::decay_t<_T>>(arg.move());
+    req_field = std::make_shared<std::decay_t<_T>>(arg.extract());
   }
 
   StructWithRefTypeShared(StructWithRefTypeShared&&) = default;
@@ -1421,15 +1421,15 @@ class StructWithRefTypeSharedConst final : private apache::thrift::detail::st::C
   StructWithRefTypeSharedConst(apache::thrift::FragileConstructor, std::shared_ptr<const  ::cpp2::Empty> def_field__arg, std::shared_ptr<const  ::cpp2::Empty> opt_field__arg, std::shared_ptr<const  ::cpp2::Empty> req_field__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    def_field = std::make_shared<std::decay_t<_T>>(arg.move());
+    def_field = std::make_shared<std::decay_t<_T>>(arg.extract());
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
-    opt_field = std::make_shared<std::decay_t<_T>>(arg.move());
+    opt_field = std::make_shared<std::decay_t<_T>>(arg.extract());
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<3, _T> arg) {
-    req_field = std::make_shared<std::decay_t<_T>>(arg.move());
+    req_field = std::make_shared<std::decay_t<_T>>(arg.extract());
   }
 
   StructWithRefTypeSharedConst(StructWithRefTypeSharedConst&&) = default;
