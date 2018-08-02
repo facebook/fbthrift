@@ -500,8 +500,6 @@ class ComplexUnion final : private apache::thrift::detail::st::ComparisonOperato
   storage_type value_;
 
  private:
-  static void translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype);
-
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
@@ -797,8 +795,6 @@ class VirtualComplexUnion : private apache::thrift::detail::st::ComparisonOperat
   storage_type value_;
 
  private:
-  static void translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype);
-
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 

@@ -12,6 +12,44 @@
 
 #include "src/gen-cpp2/module2_data.h"
 
+
+namespace apache {
+namespace thrift {
+namespace detail {
+
+void TccStructTraits< ::module2::Struct>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "first") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_STRUCT;
+  }
+  else if (_fname == "second") {
+    fid = 2;
+    _ftype = apache::thrift::protocol::T_STRUCT;
+  }
+}
+void TccStructTraits< ::module2::BigStruct>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "s") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_STRUCT;
+  }
+  else if (_fname == "id") {
+    fid = 2;
+    _ftype = apache::thrift::protocol::T_I32;
+  }
+}
+
+} // namespace detail
+} // namespace thrift
+} // namespace apache
+
 namespace module2 {
 
 Struct::Struct(apache::thrift::FragileConstructor,  ::module0::Struct first__arg,  ::module1::Struct second__arg) :
@@ -68,17 +106,6 @@ const  ::module1::Struct& Struct::get_second() const& {
   return std::move(second);
 }
 
-void Struct::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-  else if (_fname == "first") {
-    fid = 1;
-    _ftype = apache::thrift::protocol::T_STRUCT;
-  }
-  else if (_fname == "second") {
-    fid = 2;
-    _ftype = apache::thrift::protocol::T_STRUCT;
-  }
-}
 
 void swap(Struct& a, Struct& b) {
   using ::std::swap;
@@ -145,17 +172,6 @@ const  ::module2::Struct& BigStruct::get_s() const& {
   return std::move(s);
 }
 
-void BigStruct::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-  else if (_fname == "s") {
-    fid = 1;
-    _ftype = apache::thrift::protocol::T_STRUCT;
-  }
-  else if (_fname == "id") {
-    fid = 2;
-    _ftype = apache::thrift::protocol::T_I32;
-  }
-}
 
 void swap(BigStruct& a, BigStruct& b) {
   using ::std::swap;

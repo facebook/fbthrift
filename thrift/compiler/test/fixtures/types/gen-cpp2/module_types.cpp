@@ -87,6 +87,154 @@ template <> bool TEnumTraits< ::apache::thrift::fixtures::types::MyForwardRefEnu
 }
 
 }} // apache::thrift
+
+namespace apache {
+namespace thrift {
+namespace detail {
+
+void TccStructTraits< ::apache::thrift::fixtures::types::decorated_struct>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "field") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
+}
+void TccStructTraits< ::apache::thrift::fixtures::types::ContainerStruct>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "fieldA") {
+    fid = 12;
+    _ftype = apache::thrift::protocol::T_LIST;
+  }
+  else if (_fname == "fieldB") {
+    fid = 2;
+    _ftype = apache::thrift::protocol::T_LIST;
+  }
+  else if (_fname == "fieldC") {
+    fid = 3;
+    _ftype = apache::thrift::protocol::T_LIST;
+  }
+  else if (_fname == "fieldD") {
+    fid = 4;
+    _ftype = apache::thrift::protocol::T_LIST;
+  }
+  else if (_fname == "fieldE") {
+    fid = 5;
+    _ftype = apache::thrift::protocol::T_LIST;
+  }
+  else if (_fname == "fieldF") {
+    fid = 6;
+    _ftype = apache::thrift::protocol::T_SET;
+  }
+  else if (_fname == "fieldG") {
+    fid = 7;
+    _ftype = apache::thrift::protocol::T_MAP;
+  }
+  else if (_fname == "fieldH") {
+    fid = 8;
+    _ftype = apache::thrift::protocol::T_MAP;
+  }
+}
+void TccStructTraits< ::apache::thrift::fixtures::types::CppTypeStruct>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "fieldA") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_LIST;
+  }
+}
+void TccStructTraits< ::apache::thrift::fixtures::types::VirtualStruct>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "MyIntField") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_I64;
+  }
+}
+void TccStructTraits< ::apache::thrift::fixtures::types::MyStructWithForwardRefEnum>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "a") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_I32;
+  }
+  else if (_fname == "b") {
+    fid = 2;
+    _ftype = apache::thrift::protocol::T_I32;
+  }
+}
+void TccStructTraits< ::apache::thrift::fixtures::types::TrivialNumeric>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "a") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_I32;
+  }
+  else if (_fname == "b") {
+    fid = 2;
+    _ftype = apache::thrift::protocol::T_BOOL;
+  }
+}
+void TccStructTraits< ::apache::thrift::fixtures::types::TrivialNestedWithDefault>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "z") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_I32;
+  }
+  else if (_fname == "n") {
+    fid = 2;
+    _ftype = apache::thrift::protocol::T_STRUCT;
+  }
+}
+void TccStructTraits< ::apache::thrift::fixtures::types::ComplexString>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "a") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
+  else if (_fname == "b") {
+    fid = 2;
+    _ftype = apache::thrift::protocol::T_MAP;
+  }
+}
+void TccStructTraits< ::apache::thrift::fixtures::types::ComplexNestedWithDefault>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "z") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
+  else if (_fname == "n") {
+    fid = 2;
+    _ftype = apache::thrift::protocol::T_STRUCT;
+  }
+}
+
+} // namespace detail
+} // namespace thrift
+} // namespace apache
+
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 decorated_struct::decorated_struct(apache::thrift::FragileConstructor, std::string field__arg) :
@@ -118,13 +266,6 @@ bool decorated_struct::operator<(const decorated_struct& rhs) const {
   return false;
 }
 
-void decorated_struct::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-  else if (_fname == "field") {
-    fid = 1;
-    _ftype = apache::thrift::protocol::T_STRING;
-  }
-}
 
 void swap(decorated_struct& a, decorated_struct& b) {
   using ::std::swap;
@@ -275,41 +416,6 @@ const  ::apache::thrift::fixtures::types::SomeMap& ContainerStruct::get_fieldH()
   return std::move(fieldH);
 }
 
-void ContainerStruct::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-  else if (_fname == "fieldA") {
-    fid = 12;
-    _ftype = apache::thrift::protocol::T_LIST;
-  }
-  else if (_fname == "fieldB") {
-    fid = 2;
-    _ftype = apache::thrift::protocol::T_LIST;
-  }
-  else if (_fname == "fieldC") {
-    fid = 3;
-    _ftype = apache::thrift::protocol::T_LIST;
-  }
-  else if (_fname == "fieldD") {
-    fid = 4;
-    _ftype = apache::thrift::protocol::T_LIST;
-  }
-  else if (_fname == "fieldE") {
-    fid = 5;
-    _ftype = apache::thrift::protocol::T_LIST;
-  }
-  else if (_fname == "fieldF") {
-    fid = 6;
-    _ftype = apache::thrift::protocol::T_SET;
-  }
-  else if (_fname == "fieldG") {
-    fid = 7;
-    _ftype = apache::thrift::protocol::T_MAP;
-  }
-  else if (_fname == "fieldH") {
-    fid = 8;
-    _ftype = apache::thrift::protocol::T_MAP;
-  }
-}
 
 void swap(ContainerStruct& a, ContainerStruct& b) {
   using ::std::swap;
@@ -373,13 +479,6 @@ std::list<int32_t> CppTypeStruct::get_fieldA() && {
   return std::move(fieldA);
 }
 
-void CppTypeStruct::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-  else if (_fname == "fieldA") {
-    fid = 1;
-    _ftype = apache::thrift::protocol::T_LIST;
-  }
-}
 
 void swap(CppTypeStruct& a, CppTypeStruct& b) {
   using ::std::swap;
@@ -428,13 +527,6 @@ bool VirtualStruct::operator<(const VirtualStruct& rhs) const {
   return false;
 }
 
-void VirtualStruct::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-  else if (_fname == "MyIntField") {
-    fid = 1;
-    _ftype = apache::thrift::protocol::T_I64;
-  }
-}
 
 void swap(VirtualStruct& a, VirtualStruct& b) {
   using ::std::swap;
@@ -480,17 +572,6 @@ bool MyStructWithForwardRefEnum::operator==(const MyStructWithForwardRefEnum& rh
   return true;
 }
 
-void MyStructWithForwardRefEnum::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-  else if (_fname == "a") {
-    fid = 1;
-    _ftype = apache::thrift::protocol::T_I32;
-  }
-  else if (_fname == "b") {
-    fid = 2;
-    _ftype = apache::thrift::protocol::T_I32;
-  }
-}
 
 void swap(MyStructWithForwardRefEnum& a, MyStructWithForwardRefEnum& b) {
   using ::std::swap;
@@ -549,17 +630,6 @@ bool TrivialNumeric::operator<(const TrivialNumeric& rhs) const {
   return false;
 }
 
-void TrivialNumeric::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-  else if (_fname == "a") {
-    fid = 1;
-    _ftype = apache::thrift::protocol::T_I32;
-  }
-  else if (_fname == "b") {
-    fid = 2;
-    _ftype = apache::thrift::protocol::T_BOOL;
-  }
-}
 
 void swap(TrivialNumeric& a, TrivialNumeric& b) {
   using ::std::swap;
@@ -626,17 +696,6 @@ const  ::apache::thrift::fixtures::types::TrivialNumeric& TrivialNestedWithDefau
   return std::move(n);
 }
 
-void TrivialNestedWithDefault::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-  else if (_fname == "z") {
-    fid = 1;
-    _ftype = apache::thrift::protocol::T_I32;
-  }
-  else if (_fname == "n") {
-    fid = 2;
-    _ftype = apache::thrift::protocol::T_STRUCT;
-  }
-}
 
 void swap(TrivialNestedWithDefault& a, TrivialNestedWithDefault& b) {
   using ::std::swap;
@@ -703,17 +762,6 @@ std::map<std::string, int32_t> ComplexString::get_b() && {
   return std::move(b);
 }
 
-void ComplexString::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-  else if (_fname == "a") {
-    fid = 1;
-    _ftype = apache::thrift::protocol::T_STRING;
-  }
-  else if (_fname == "b") {
-    fid = 2;
-    _ftype = apache::thrift::protocol::T_MAP;
-  }
-}
 
 void swap(ComplexString& a, ComplexString& b) {
   using ::std::swap;
@@ -780,17 +828,6 @@ const  ::apache::thrift::fixtures::types::ComplexString& ComplexNestedWithDefaul
   return std::move(n);
 }
 
-void ComplexNestedWithDefault::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-  else if (_fname == "z") {
-    fid = 1;
-    _ftype = apache::thrift::protocol::T_STRING;
-  }
-  else if (_fname == "n") {
-    fid = 2;
-    _ftype = apache::thrift::protocol::T_STRUCT;
-  }
-}
 
 void swap(ComplexNestedWithDefault& a, ComplexNestedWithDefault& b) {
   using ::std::swap;

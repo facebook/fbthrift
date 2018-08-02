@@ -9,6 +9,7 @@
 #include "src/gen-cpp2/module_types.h"
 
 #include <thrift/lib/cpp2/GeneratedSerializationCodeHelper.h>
+#include <thrift/lib/cpp2/gen/module_types_tcc.h>
 
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
@@ -41,6 +42,72 @@ namespace std {
 namespace apache { namespace thrift {
 
 }} // apache::thrift
+
+namespace apache {
+namespace thrift {
+namespace detail {
+
+template <>
+struct TccStructTraits< ::cpp2::Internship> {
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
+};
+template <>
+struct TccStructTraits< ::cpp2::UnEnumStruct> {
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
+};
+template <>
+struct TccStructTraits< ::cpp2::Range> {
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
+};
+template <>
+struct TccStructTraits< ::cpp2::struct1> {
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
+};
+template <>
+struct TccStructTraits< ::cpp2::struct2> {
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
+};
+template <>
+struct TccStructTraits< ::cpp2::struct3> {
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
+};
+template <>
+struct TccStructTraits< ::cpp2::union1> {
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
+};
+template <>
+struct TccStructTraits< ::cpp2::union2> {
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
+};
+
+} // namespace detail
+} // namespace thrift
+} // namespace apache
+
 namespace cpp2 {
 
 template <class Protocol_>
@@ -113,7 +180,7 @@ _loop:
     goto _end;
   }
   if (iprot->kUsesFieldNames()) {
-    this->translateFieldName(_readState.fieldName(), _readState.fieldId, _readState.fieldType);
+    apache::thrift::detail::TccStructTraits<Internship>::translateFieldName(_readState.fieldName(), _readState.fieldId, _readState.fieldType);
   }
 
   switch (_readState.fieldId) {
@@ -247,7 +314,7 @@ _loop:
     goto _end;
   }
   if (iprot->kUsesFieldNames()) {
-    this->translateFieldName(_readState.fieldName(), _readState.fieldId, _readState.fieldType);
+    apache::thrift::detail::TccStructTraits<UnEnumStruct>::translateFieldName(_readState.fieldName(), _readState.fieldId, _readState.fieldType);
   }
 
   switch (_readState.fieldId) {
@@ -366,7 +433,7 @@ _loop:
     goto _end;
   }
   if (iprot->kUsesFieldNames()) {
-    this->translateFieldName(_readState.fieldName(), _readState.fieldId, _readState.fieldType);
+    apache::thrift::detail::TccStructTraits<Range>::translateFieldName(_readState.fieldName(), _readState.fieldId, _readState.fieldType);
   }
 
   switch (_readState.fieldId) {
@@ -492,7 +559,7 @@ _loop:
     goto _end;
   }
   if (iprot->kUsesFieldNames()) {
-    this->translateFieldName(_readState.fieldName(), _readState.fieldId, _readState.fieldType);
+    apache::thrift::detail::TccStructTraits<struct1>::translateFieldName(_readState.fieldName(), _readState.fieldId, _readState.fieldType);
   }
 
   switch (_readState.fieldId) {
@@ -645,7 +712,7 @@ _loop:
     goto _end;
   }
   if (iprot->kUsesFieldNames()) {
-    this->translateFieldName(_readState.fieldName(), _readState.fieldId, _readState.fieldType);
+    apache::thrift::detail::TccStructTraits<struct2>::translateFieldName(_readState.fieldName(), _readState.fieldId, _readState.fieldType);
   }
 
   switch (_readState.fieldId) {
@@ -814,7 +881,7 @@ _loop:
     goto _end;
   }
   if (iprot->kUsesFieldNames()) {
-    this->translateFieldName(_readState.fieldName(), _readState.fieldId, _readState.fieldType);
+    apache::thrift::detail::TccStructTraits<struct3>::translateFieldName(_readState.fieldName(), _readState.fieldId, _readState.fieldType);
   }
 
   switch (_readState.fieldId) {
@@ -917,7 +984,7 @@ void union1::readNoXfer(Protocol_* iprot) {
     this->__clear();
   } else {
     if (iprot->kUsesFieldNames()) {
-      this->translateFieldName(_readState.fieldName(), _readState.fieldId, _readState.fieldType);
+      apache::thrift::detail::TccStructTraits<union1>::translateFieldName(_readState.fieldName(), _readState.fieldId, _readState.fieldType);
     }
     switch (_readState.fieldId) {
       case 1:
@@ -1046,7 +1113,7 @@ void union2::readNoXfer(Protocol_* iprot) {
     this->__clear();
   } else {
     if (iprot->kUsesFieldNames()) {
-      this->translateFieldName(_readState.fieldName(), _readState.fieldId, _readState.fieldType);
+      apache::thrift::detail::TccStructTraits<union2>::translateFieldName(_readState.fieldName(), _readState.fieldId, _readState.fieldType);
     }
     switch (_readState.fieldId) {
       case 1:

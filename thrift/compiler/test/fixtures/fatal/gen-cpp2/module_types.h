@@ -598,8 +598,6 @@ class union1 final : private apache::thrift::detail::st::ComparisonOperators<uni
   storage_type value_;
 
  private:
-  static void translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype);
-
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
@@ -988,8 +986,6 @@ class union2 final : private apache::thrift::detail::st::ComparisonOperators<uni
   storage_type value_;
 
  private:
-  static void translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype);
-
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
@@ -1378,8 +1374,6 @@ class union3 final : private apache::thrift::detail::st::ComparisonOperators<uni
   storage_type value_;
 
  private:
-  static void translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype);
-
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
@@ -1507,8 +1501,6 @@ class structA final : private apache::thrift::detail::st::ComparisonOperators<st
   uint32_t write(Protocol_* prot_) const;
 
  private:
-  static void translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype);
-
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
@@ -1965,8 +1957,6 @@ class unionA final : private apache::thrift::detail::st::ComparisonOperators<uni
   storage_type value_;
 
  private:
-  static void translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype);
-
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
@@ -2090,8 +2080,6 @@ class structB final : private apache::thrift::detail::st::ComparisonOperators<st
   uint32_t write(Protocol_* prot_) const;
 
  private:
-  static void translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype);
-
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
@@ -2730,8 +2718,6 @@ class structC final : private apache::thrift::detail::st::ComparisonOperators<st
   uint32_t write(Protocol_* prot_) const;
 
  private:
-  static void translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype);
-
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
@@ -2932,8 +2918,6 @@ class struct1 final : private apache::thrift::detail::st::ComparisonOperators<st
   uint32_t write(Protocol_* prot_) const;
 
  private:
-  static void translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype);
-
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
@@ -3156,8 +3140,6 @@ class struct2 final : private apache::thrift::detail::st::ComparisonOperators<st
   uint32_t write(Protocol_* prot_) const;
 
  private:
-  static void translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype);
-
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
@@ -3578,8 +3560,6 @@ class struct3 final : private apache::thrift::detail::st::ComparisonOperators<st
   uint32_t write(Protocol_* prot_) const;
 
  private:
-  static void translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype);
-
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
@@ -3731,8 +3711,6 @@ class struct4 final : private apache::thrift::detail::st::ComparisonOperators<st
   uint32_t write(Protocol_* prot_) const;
 
  private:
-  static void translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype);
-
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
@@ -3916,8 +3894,6 @@ class struct5 final : private apache::thrift::detail::st::ComparisonOperators<st
   uint32_t write(Protocol_* prot_) const;
 
  private:
-  static void translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype);
-
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
@@ -4025,8 +4001,6 @@ class struct_binary final : private apache::thrift::detail::st::ComparisonOperat
   uint32_t write(Protocol_* prot_) const;
 
  private:
-  static void translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype);
-
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
@@ -4166,8 +4140,6 @@ class dep_A_struct final : private apache::thrift::detail::st::ComparisonOperato
   uint32_t write(Protocol_* prot_) const;
 
  private:
-  static void translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype);
-
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
@@ -4271,8 +4243,6 @@ class annotated final : private apache::thrift::detail::st::ComparisonOperators<
   uint32_t write(Protocol_* prot_) const;
 
  private:
-  static void translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype);
-
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
@@ -5943,8 +5913,6 @@ class union_with_special_names final : private apache::thrift::detail::st::Compa
   storage_type value_;
 
  private:
-  static void translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype);
-
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
@@ -6588,8 +6556,6 @@ class struct_with_special_names final : private apache::thrift::detail::st::Comp
   uint32_t write(Protocol_* prot_) const;
 
  private:
-  static void translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype);
-
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
@@ -6777,8 +6743,6 @@ class struct_with_indirections final : private apache::thrift::detail::st::Compa
   uint32_t write(Protocol_* prot_) const;
 
  private:
-  static void translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype);
-
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 

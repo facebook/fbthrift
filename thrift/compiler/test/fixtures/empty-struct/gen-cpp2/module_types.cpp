@@ -12,6 +12,28 @@
 
 #include "src/gen-cpp2/module_data.h"
 
+
+namespace apache {
+namespace thrift {
+namespace detail {
+
+void TccStructTraits< ::cpp2::Empty>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+}
+void TccStructTraits< ::cpp2::Nada>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+}
+
+} // namespace detail
+} // namespace thrift
+} // namespace apache
+
 namespace cpp2 {
 
 Empty::Empty(apache::thrift::FragileConstructor) {}
@@ -32,9 +54,6 @@ bool Empty::operator<(const Empty& rhs) const {
   return false;
 }
 
-void Empty::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-}
 
 void swap(Empty& a, Empty& b) {
   using ::std::swap;
@@ -75,9 +94,6 @@ bool Nada::operator==(const Nada& rhs) const {
       return true;
     }
   }
-}
-void Nada::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
 }
 
 void swap(Nada& a, Nada& b) {

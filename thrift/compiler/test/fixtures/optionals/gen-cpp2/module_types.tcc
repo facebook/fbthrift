@@ -9,6 +9,7 @@
 #include "src/gen-cpp2/module_types.h"
 
 #include <thrift/lib/cpp2/GeneratedSerializationCodeHelper.h>
+#include <thrift/lib/cpp2/gen/module_types_tcc.h>
 
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
@@ -23,6 +24,37 @@ namespace std {
 namespace apache { namespace thrift {
 
 }} // apache::thrift
+
+namespace apache {
+namespace thrift {
+namespace detail {
+
+template <>
+struct TccStructTraits< ::cpp2::Color> {
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
+};
+template <>
+struct TccStructTraits< ::cpp2::Vehicle> {
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
+};
+template <>
+struct TccStructTraits< ::cpp2::Person> {
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
+};
+
+} // namespace detail
+} // namespace thrift
+} // namespace apache
+
 namespace cpp2 {
 
 template <class Protocol_>
@@ -100,7 +132,7 @@ _loop:
     goto _end;
   }
   if (iprot->kUsesFieldNames()) {
-    this->translateFieldName(_readState.fieldName(), _readState.fieldId, _readState.fieldType);
+    apache::thrift::detail::TccStructTraits<Color>::translateFieldName(_readState.fieldName(), _readState.fieldId, _readState.fieldType);
   }
 
   switch (_readState.fieldId) {
@@ -294,7 +326,7 @@ _loop:
     goto _end;
   }
   if (iprot->kUsesFieldNames()) {
-    this->translateFieldName(_readState.fieldName(), _readState.fieldId, _readState.fieldType);
+    apache::thrift::detail::TccStructTraits<Vehicle>::translateFieldName(_readState.fieldName(), _readState.fieldId, _readState.fieldType);
   }
 
   switch (_readState.fieldId) {
@@ -591,7 +623,7 @@ _loop:
     goto _end;
   }
   if (iprot->kUsesFieldNames()) {
-    this->translateFieldName(_readState.fieldName(), _readState.fieldId, _readState.fieldType);
+    apache::thrift::detail::TccStructTraits<Person>::translateFieldName(_readState.fieldName(), _readState.fieldId, _readState.fieldType);
   }
 
   switch (_readState.fieldId) {

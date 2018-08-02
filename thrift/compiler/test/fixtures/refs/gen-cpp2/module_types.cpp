@@ -37,6 +37,220 @@ template <> bool TEnumTraits< ::cpp2::TypedEnum>::findValue(const char* name,  :
 }
 
 }} // apache::thrift
+
+namespace apache {
+namespace thrift {
+namespace detail {
+
+void TccStructTraits< ::cpp2::MyUnion>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "anInteger") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_I32;
+  }
+  else if (_fname == "aString") {
+    fid = 2;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
+}
+void TccStructTraits< ::cpp2::MyField>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "opt_value") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_I64;
+  }
+  else if (_fname == "value") {
+    fid = 2;
+    _ftype = apache::thrift::protocol::T_I64;
+  }
+  else if (_fname == "req_value") {
+    fid = 3;
+    _ftype = apache::thrift::protocol::T_I64;
+  }
+}
+void TccStructTraits< ::cpp2::MyStruct>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "opt_ref") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_STRUCT;
+  }
+  else if (_fname == "ref") {
+    fid = 2;
+    _ftype = apache::thrift::protocol::T_STRUCT;
+  }
+  else if (_fname == "req_ref") {
+    fid = 3;
+    _ftype = apache::thrift::protocol::T_STRUCT;
+  }
+}
+void TccStructTraits< ::cpp2::StructWithUnion>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "u") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_STRUCT;
+  }
+  else if (_fname == "aDouble") {
+    fid = 2;
+    _ftype = apache::thrift::protocol::T_DOUBLE;
+  }
+  else if (_fname == "f") {
+    fid = 3;
+    _ftype = apache::thrift::protocol::T_STRUCT;
+  }
+}
+void TccStructTraits< ::cpp2::RecursiveStruct>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "mes") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_LIST;
+  }
+}
+void TccStructTraits< ::cpp2::StructWithContainers>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "list_ref") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_LIST;
+  }
+  else if (_fname == "set_ref") {
+    fid = 2;
+    _ftype = apache::thrift::protocol::T_SET;
+  }
+  else if (_fname == "map_ref") {
+    fid = 3;
+    _ftype = apache::thrift::protocol::T_MAP;
+  }
+  else if (_fname == "list_ref_unique") {
+    fid = 4;
+    _ftype = apache::thrift::protocol::T_LIST;
+  }
+  else if (_fname == "set_ref_shared") {
+    fid = 5;
+    _ftype = apache::thrift::protocol::T_SET;
+  }
+  else if (_fname == "list_ref_shared_const") {
+    fid = 6;
+    _ftype = apache::thrift::protocol::T_LIST;
+  }
+}
+void TccStructTraits< ::cpp2::StructWithSharedConst>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "opt_shared_const") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_STRUCT;
+  }
+  else if (_fname == "shared_const") {
+    fid = 2;
+    _ftype = apache::thrift::protocol::T_STRUCT;
+  }
+  else if (_fname == "req_shared_const") {
+    fid = 3;
+    _ftype = apache::thrift::protocol::T_STRUCT;
+  }
+}
+void TccStructTraits< ::cpp2::Empty>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+}
+void TccStructTraits< ::cpp2::StructWithRef>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "def_field") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_STRUCT;
+  }
+  else if (_fname == "opt_field") {
+    fid = 2;
+    _ftype = apache::thrift::protocol::T_STRUCT;
+  }
+  else if (_fname == "req_field") {
+    fid = 3;
+    _ftype = apache::thrift::protocol::T_STRUCT;
+  }
+}
+void TccStructTraits< ::cpp2::StructWithRefTypeUnique>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "def_field") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_STRUCT;
+  }
+  else if (_fname == "opt_field") {
+    fid = 2;
+    _ftype = apache::thrift::protocol::T_STRUCT;
+  }
+  else if (_fname == "req_field") {
+    fid = 3;
+    _ftype = apache::thrift::protocol::T_STRUCT;
+  }
+}
+void TccStructTraits< ::cpp2::StructWithRefTypeShared>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "def_field") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_STRUCT;
+  }
+  else if (_fname == "opt_field") {
+    fid = 2;
+    _ftype = apache::thrift::protocol::T_STRUCT;
+  }
+  else if (_fname == "req_field") {
+    fid = 3;
+    _ftype = apache::thrift::protocol::T_STRUCT;
+  }
+}
+void TccStructTraits< ::cpp2::StructWithRefTypeSharedConst>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "def_field") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_STRUCT;
+  }
+  else if (_fname == "opt_field") {
+    fid = 2;
+    _ftype = apache::thrift::protocol::T_STRUCT;
+  }
+  else if (_fname == "req_field") {
+    fid = 3;
+    _ftype = apache::thrift::protocol::T_STRUCT;
+  }
+}
+
+} // namespace detail
+} // namespace thrift
+} // namespace apache
+
 namespace cpp2 {
 
 void MyUnion::__clear() {
@@ -77,17 +291,6 @@ bool MyUnion::operator==(const MyUnion& rhs) const {
     {
       return true;
     }
-  }
-}
-void MyUnion::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-  else if (_fname == "anInteger") {
-    fid = 1;
-    _ftype = apache::thrift::protocol::T_I32;
-  }
-  else if (_fname == "aString") {
-    fid = 2;
-    _ftype = apache::thrift::protocol::T_STRING;
   }
 }
 
@@ -165,21 +368,6 @@ bool MyField::operator<(const MyField& rhs) const {
   return false;
 }
 
-void MyField::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-  else if (_fname == "opt_value") {
-    fid = 1;
-    _ftype = apache::thrift::protocol::T_I64;
-  }
-  else if (_fname == "value") {
-    fid = 2;
-    _ftype = apache::thrift::protocol::T_I64;
-  }
-  else if (_fname == "req_value") {
-    fid = 3;
-    _ftype = apache::thrift::protocol::T_I64;
-  }
-}
 
 void swap(MyField& a, MyField& b) {
   using ::std::swap;
@@ -286,21 +474,6 @@ bool MyStruct::operator<(const MyStruct& rhs) const {
   return false;
 }
 
-void MyStruct::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-  else if (_fname == "opt_ref") {
-    fid = 1;
-    _ftype = apache::thrift::protocol::T_STRUCT;
-  }
-  else if (_fname == "ref") {
-    fid = 2;
-    _ftype = apache::thrift::protocol::T_STRUCT;
-  }
-  else if (_fname == "req_ref") {
-    fid = 3;
-    _ftype = apache::thrift::protocol::T_STRUCT;
-  }
-}
 
 void swap(MyStruct& a, MyStruct& b) {
   using ::std::swap;
@@ -400,21 +573,6 @@ const  ::cpp2::MyField& StructWithUnion::get_f() const& {
   return std::move(f);
 }
 
-void StructWithUnion::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-  else if (_fname == "u") {
-    fid = 1;
-    _ftype = apache::thrift::protocol::T_STRUCT;
-  }
-  else if (_fname == "aDouble") {
-    fid = 2;
-    _ftype = apache::thrift::protocol::T_DOUBLE;
-  }
-  else if (_fname == "f") {
-    fid = 3;
-    _ftype = apache::thrift::protocol::T_STRUCT;
-  }
-}
 
 void swap(StructWithUnion& a, StructWithUnion& b) {
   using ::std::swap;
@@ -469,13 +627,6 @@ std::vector< ::cpp2::RecursiveStruct>* RecursiveStruct::get_mes() & {
   return __isset.mes ? std::addressof(mes) : nullptr;
 }
 
-void RecursiveStruct::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-  else if (_fname == "mes") {
-    fid = 1;
-    _ftype = apache::thrift::protocol::T_LIST;
-  }
-}
 
 void swap(RecursiveStruct& a, RecursiveStruct& b) {
   using ::std::swap;
@@ -648,33 +799,6 @@ bool StructWithContainers::operator<(const StructWithContainers& rhs) const {
   return false;
 }
 
-void StructWithContainers::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-  else if (_fname == "list_ref") {
-    fid = 1;
-    _ftype = apache::thrift::protocol::T_LIST;
-  }
-  else if (_fname == "set_ref") {
-    fid = 2;
-    _ftype = apache::thrift::protocol::T_SET;
-  }
-  else if (_fname == "map_ref") {
-    fid = 3;
-    _ftype = apache::thrift::protocol::T_MAP;
-  }
-  else if (_fname == "list_ref_unique") {
-    fid = 4;
-    _ftype = apache::thrift::protocol::T_LIST;
-  }
-  else if (_fname == "set_ref_shared") {
-    fid = 5;
-    _ftype = apache::thrift::protocol::T_SET;
-  }
-  else if (_fname == "list_ref_shared_const") {
-    fid = 6;
-    _ftype = apache::thrift::protocol::T_LIST;
-  }
-}
 
 void swap(StructWithContainers& a, StructWithContainers& b) {
   using ::std::swap;
@@ -772,21 +896,6 @@ bool StructWithSharedConst::operator<(const StructWithSharedConst& rhs) const {
   return false;
 }
 
-void StructWithSharedConst::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-  else if (_fname == "opt_shared_const") {
-    fid = 1;
-    _ftype = apache::thrift::protocol::T_STRUCT;
-  }
-  else if (_fname == "shared_const") {
-    fid = 2;
-    _ftype = apache::thrift::protocol::T_STRUCT;
-  }
-  else if (_fname == "req_shared_const") {
-    fid = 3;
-    _ftype = apache::thrift::protocol::T_STRUCT;
-  }
-}
 
 void swap(StructWithSharedConst& a, StructWithSharedConst& b) {
   using ::std::swap;
@@ -826,9 +935,6 @@ bool Empty::operator<(const Empty& rhs) const {
   return false;
 }
 
-void Empty::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-}
 
 void swap(Empty& a, Empty& b) {
   using ::std::swap;
@@ -930,21 +1036,6 @@ bool StructWithRef::operator<(const StructWithRef& rhs) const {
   return false;
 }
 
-void StructWithRef::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-  else if (_fname == "def_field") {
-    fid = 1;
-    _ftype = apache::thrift::protocol::T_STRUCT;
-  }
-  else if (_fname == "opt_field") {
-    fid = 2;
-    _ftype = apache::thrift::protocol::T_STRUCT;
-  }
-  else if (_fname == "req_field") {
-    fid = 3;
-    _ftype = apache::thrift::protocol::T_STRUCT;
-  }
-}
 
 void swap(StructWithRef& a, StructWithRef& b) {
   using ::std::swap;
@@ -1048,21 +1139,6 @@ bool StructWithRefTypeUnique::operator<(const StructWithRefTypeUnique& rhs) cons
   return false;
 }
 
-void StructWithRefTypeUnique::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-  else if (_fname == "def_field") {
-    fid = 1;
-    _ftype = apache::thrift::protocol::T_STRUCT;
-  }
-  else if (_fname == "opt_field") {
-    fid = 2;
-    _ftype = apache::thrift::protocol::T_STRUCT;
-  }
-  else if (_fname == "req_field") {
-    fid = 3;
-    _ftype = apache::thrift::protocol::T_STRUCT;
-  }
-}
 
 void swap(StructWithRefTypeUnique& a, StructWithRefTypeUnique& b) {
   using ::std::swap;
@@ -1154,21 +1230,6 @@ bool StructWithRefTypeShared::operator<(const StructWithRefTypeShared& rhs) cons
   return false;
 }
 
-void StructWithRefTypeShared::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-  else if (_fname == "def_field") {
-    fid = 1;
-    _ftype = apache::thrift::protocol::T_STRUCT;
-  }
-  else if (_fname == "opt_field") {
-    fid = 2;
-    _ftype = apache::thrift::protocol::T_STRUCT;
-  }
-  else if (_fname == "req_field") {
-    fid = 3;
-    _ftype = apache::thrift::protocol::T_STRUCT;
-  }
-}
 
 void swap(StructWithRefTypeShared& a, StructWithRefTypeShared& b) {
   using ::std::swap;
@@ -1260,21 +1321,6 @@ bool StructWithRefTypeSharedConst::operator<(const StructWithRefTypeSharedConst&
   return false;
 }
 
-void StructWithRefTypeSharedConst::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-  else if (_fname == "def_field") {
-    fid = 1;
-    _ftype = apache::thrift::protocol::T_STRUCT;
-  }
-  else if (_fname == "opt_field") {
-    fid = 2;
-    _ftype = apache::thrift::protocol::T_STRUCT;
-  }
-  else if (_fname == "req_field") {
-    fid = 3;
-    _ftype = apache::thrift::protocol::T_STRUCT;
-  }
-}
 
 void swap(StructWithRefTypeSharedConst& a, StructWithRefTypeSharedConst& b) {
   using ::std::swap;

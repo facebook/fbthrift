@@ -9,10 +9,35 @@
 #include "src/gen-cpp2/module_types.h"
 
 #include <thrift/lib/cpp2/GeneratedSerializationCodeHelper.h>
+#include <thrift/lib/cpp2/gen/module_types_tcc.h>
 
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 #include <thrift/lib/cpp2/protocol/ProtocolReaderStructReadState.h>
+
+
+namespace apache {
+namespace thrift {
+namespace detail {
+
+template <>
+struct TccStructTraits< ::cpp2::ComplexUnion> {
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
+};
+template <>
+struct TccStructTraits< ::cpp2::VirtualComplexUnion> {
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
+};
+
+} // namespace detail
+} // namespace thrift
+} // namespace apache
 
 namespace cpp2 {
 
@@ -31,7 +56,7 @@ void ComplexUnion::readNoXfer(Protocol_* iprot) {
     this->__clear();
   } else {
     if (iprot->kUsesFieldNames()) {
-      this->translateFieldName(_readState.fieldName(), _readState.fieldId, _readState.fieldType);
+      apache::thrift::detail::TccStructTraits<ComplexUnion>::translateFieldName(_readState.fieldName(), _readState.fieldId, _readState.fieldType);
     }
     switch (_readState.fieldId) {
       case 1:
@@ -279,7 +304,7 @@ void VirtualComplexUnion::readNoXfer(Protocol_* iprot) {
     this->__clear();
   } else {
     if (iprot->kUsesFieldNames()) {
-      this->translateFieldName(_readState.fieldName(), _readState.fieldId, _readState.fieldType);
+      apache::thrift::detail::TccStructTraits<VirtualComplexUnion>::translateFieldName(_readState.fieldName(), _readState.fieldId, _readState.fieldType);
     }
     switch (_readState.fieldId) {
       case 1:

@@ -90,8 +90,6 @@ class OldStructure final : private apache::thrift::detail::st::ComparisonOperato
   uint32_t write(Protocol_* prot_) const;
 
  private:
-  static void translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype);
-
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
@@ -197,8 +195,6 @@ class NewStructure final : private apache::thrift::detail::st::ComparisonOperato
   uint32_t write(Protocol_* prot_) const;
 
  private:
-  static void translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype);
-
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
@@ -304,8 +300,6 @@ class NewStructure2 final : private apache::thrift::detail::st::ComparisonOperat
   uint32_t write(Protocol_* prot_) const;
 
  private:
-  static void translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype);
-
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
@@ -447,8 +441,6 @@ class NewStructureNested final : private apache::thrift::detail::st::ComparisonO
   uint32_t write(Protocol_* prot_) const;
 
  private:
-  static void translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype);
-
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
@@ -554,8 +546,6 @@ class NewStructureNestedField final : private apache::thrift::detail::st::Compar
   uint32_t write(Protocol_* prot_) const;
 
  private:
-  static void translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype);
-
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 

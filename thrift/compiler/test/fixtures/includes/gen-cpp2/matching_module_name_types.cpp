@@ -12,6 +12,26 @@
 
 #include "src/gen-cpp2/matching_module_name_data.h"
 
+
+namespace apache {
+namespace thrift {
+namespace detail {
+
+void TccStructTraits< ::matching_module_name::MyStruct>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "OtherStructField") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_STRUCT;
+  }
+}
+
+} // namespace detail
+} // namespace thrift
+} // namespace apache
+
 namespace matching_module_name {
 
 MyStruct::MyStruct(apache::thrift::FragileConstructor,  ::matching_module_name::OtherStruct OtherStructField__arg) :
@@ -51,13 +71,6 @@ const  ::matching_module_name::OtherStruct& MyStruct::get_OtherStructField() con
   return std::move(OtherStructField);
 }
 
-void MyStruct::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-  else if (_fname == "OtherStructField") {
-    fid = 1;
-    _ftype = apache::thrift::protocol::T_STRUCT;
-  }
-}
 
 void swap(MyStruct& a, MyStruct& b) {
   using ::std::swap;

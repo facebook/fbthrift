@@ -20,6 +20,7 @@
 #include "<%program:include_prefix%><%program:name%>_types.h"
 
 #include <thrift/lib/cpp2/GeneratedSerializationCodeHelper.h>
+#include <thrift/lib/cpp2/gen/module_types_tcc.h>
 
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
@@ -30,6 +31,8 @@
 
 <% > common/push_and_undef_colliding_macros%>
 <% > module_types_tcc/declare_enums%>
+<% > module_types_tcc/tcc_struct_traits%>
+
 <%#program:structs%><%!
 %><% > common/namespace_cpp2_begin%>
 

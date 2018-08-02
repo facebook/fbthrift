@@ -12,6 +12,76 @@
 
 #include "src/gen-cpp2/module_data.h"
 
+
+namespace apache {
+namespace thrift {
+namespace detail {
+
+void TccStructTraits< ::some::ns::ModuleA>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "i32Field") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_I32;
+  }
+  else if (_fname == "strField") {
+    fid = 2;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
+  else if (_fname == "listField") {
+    fid = 3;
+    _ftype = apache::thrift::protocol::T_LIST;
+  }
+  else if (_fname == "mapField") {
+    fid = 4;
+    _ftype = apache::thrift::protocol::T_MAP;
+  }
+}
+void TccStructTraits< ::some::ns::ModuleB>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "i32Field") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_I32;
+  }
+}
+void TccStructTraits< ::some::ns::ExceptionA>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "code") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_I32;
+  }
+  else if (_fname == "msg") {
+    fid = 2;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
+}
+void TccStructTraits< ::some::ns::ExceptionB>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "code") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_I32;
+  }
+  else if (_fname == "msg") {
+    fid = 2;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
+}
+
+} // namespace detail
+} // namespace thrift
+} // namespace apache
+
 namespace some { namespace ns {
 
 ModuleA::ModuleA(apache::thrift::FragileConstructor, int32_t i32Field__arg, std::string strField__arg, std::vector<int16_t> listField__arg, std::map<std::string, int32_t> mapField__arg) :
@@ -86,25 +156,6 @@ std::map<std::string, int32_t> ModuleA::get_mapField() && {
   return std::move(mapField);
 }
 
-void ModuleA::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-  else if (_fname == "i32Field") {
-    fid = 1;
-    _ftype = apache::thrift::protocol::T_I32;
-  }
-  else if (_fname == "strField") {
-    fid = 2;
-    _ftype = apache::thrift::protocol::T_STRING;
-  }
-  else if (_fname == "listField") {
-    fid = 3;
-    _ftype = apache::thrift::protocol::T_LIST;
-  }
-  else if (_fname == "mapField") {
-    fid = 4;
-    _ftype = apache::thrift::protocol::T_MAP;
-  }
-}
 
 void swap(ModuleA& a, ModuleA& b) {
   using ::std::swap;
@@ -156,13 +207,6 @@ bool ModuleB::operator<(const ModuleB& rhs) const {
   return false;
 }
 
-void ModuleB::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-  else if (_fname == "i32Field") {
-    fid = 1;
-    _ftype = apache::thrift::protocol::T_I32;
-  }
-}
 
 void swap(ModuleB& a, ModuleB& b) {
   using ::std::swap;
@@ -220,17 +264,6 @@ bool ExceptionA::operator<(const ExceptionA& rhs) const {
   return false;
 }
 
-void ExceptionA::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-  else if (_fname == "code") {
-    fid = 1;
-    _ftype = apache::thrift::protocol::T_I32;
-  }
-  else if (_fname == "msg") {
-    fid = 2;
-    _ftype = apache::thrift::protocol::T_STRING;
-  }
-}
 
 void swap(ExceptionA& a, ExceptionA& b) {
   using ::std::swap;
@@ -289,17 +322,6 @@ bool ExceptionB::operator<(const ExceptionB& rhs) const {
   return false;
 }
 
-void ExceptionB::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-  else if (_fname == "code") {
-    fid = 1;
-    _ftype = apache::thrift::protocol::T_I32;
-  }
-  else if (_fname == "msg") {
-    fid = 2;
-    _ftype = apache::thrift::protocol::T_STRING;
-  }
-}
 
 void swap(ExceptionB& a, ExceptionB& b) {
   using ::std::swap;

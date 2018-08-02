@@ -12,6 +12,30 @@
 
 #include "src/gen-cpp2/include2_data.h"
 
+
+namespace apache {
+namespace thrift {
+namespace detail {
+
+void TccStructTraits< ::some::ns::IncludedB>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "i32Field") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_I32;
+  }
+  else if (_fname == "strField") {
+    fid = 2;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
+}
+
+} // namespace detail
+} // namespace thrift
+} // namespace apache
+
 namespace some { namespace ns {
 
 IncludedB::IncludedB(apache::thrift::FragileConstructor, int32_t i32Field__arg, std::string strField__arg) :
@@ -52,17 +76,6 @@ bool IncludedB::operator<(const IncludedB& rhs) const {
   return false;
 }
 
-void IncludedB::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-  else if (_fname == "i32Field") {
-    fid = 1;
-    _ftype = apache::thrift::protocol::T_I32;
-  }
-  else if (_fname == "strField") {
-    fid = 2;
-    _ftype = apache::thrift::protocol::T_STRING;
-  }
-}
 
 void swap(IncludedB& a, IncludedB& b) {
   using ::std::swap;

@@ -12,6 +12,22 @@
 
 #include "src/gen-cpp2/module_data.h"
 
+
+namespace apache {
+namespace thrift {
+namespace detail {
+
+void TccStructTraits< ::cpp2::FooEx>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+}
+
+} // namespace detail
+} // namespace thrift
+} // namespace apache
+
 namespace cpp2 {
 
 FooEx::FooEx(apache::thrift::FragileConstructor) {}
@@ -32,9 +48,6 @@ bool FooEx::operator<(const FooEx& rhs) const {
   return false;
 }
 
-void FooEx::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-}
 
 void swap(FooEx& a, FooEx& b) {
   using ::std::swap;

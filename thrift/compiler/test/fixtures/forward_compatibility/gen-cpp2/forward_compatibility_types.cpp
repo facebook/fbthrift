@@ -12,6 +12,74 @@
 
 #include "src/gen-cpp2/forward_compatibility_data.h"
 
+
+namespace apache {
+namespace thrift {
+namespace detail {
+
+void TccStructTraits< ::cpp2::OldStructure>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "features") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_MAP;
+  }
+}
+void TccStructTraits< ::cpp2::NewStructure>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "features") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_MAP;
+  }
+}
+void TccStructTraits< ::cpp2::NewStructure2>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "features") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_MAP;
+  }
+}
+void TccStructTraits< ::cpp2::NewStructureNested>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "lst") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_LIST;
+  }
+  else if (_fname == "mp") {
+    fid = 2;
+    _ftype = apache::thrift::protocol::T_MAP;
+  }
+  else if (_fname == "s") {
+    fid = 3;
+    _ftype = apache::thrift::protocol::T_SET;
+  }
+}
+void TccStructTraits< ::cpp2::NewStructureNestedField>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "f") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_STRUCT;
+  }
+}
+
+} // namespace detail
+} // namespace thrift
+} // namespace apache
+
 namespace cpp2 {
 
 OldStructure::OldStructure(apache::thrift::FragileConstructor, std::map<int16_t, double> features__arg) :
@@ -51,13 +119,6 @@ std::map<int16_t, double> OldStructure::get_features() && {
   return std::move(features);
 }
 
-void OldStructure::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-  else if (_fname == "features") {
-    fid = 1;
-    _ftype = apache::thrift::protocol::T_MAP;
-  }
-}
 
 void swap(OldStructure& a, OldStructure& b) {
   using ::std::swap;
@@ -118,13 +179,6 @@ std::map<int16_t, double> NewStructure::get_features() && {
   return std::move(features);
 }
 
-void NewStructure::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-  else if (_fname == "features") {
-    fid = 1;
-    _ftype = apache::thrift::protocol::T_MAP;
-  }
-}
 
 void swap(NewStructure& a, NewStructure& b) {
   using ::std::swap;
@@ -176,13 +230,6 @@ const  ::cpp2::FloatFeatures& NewStructure2::get_features() const& {
   return std::move(features);
 }
 
-void NewStructure2::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-  else if (_fname == "features") {
-    fid = 1;
-    _ftype = apache::thrift::protocol::T_MAP;
-  }
-}
 
 void swap(NewStructure2& a, NewStructure2& b) {
   using ::std::swap;
@@ -262,21 +309,6 @@ std::set< ::cpp2::FloatFeatures> NewStructureNested::get_s() && {
   return std::move(s);
 }
 
-void NewStructureNested::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-  else if (_fname == "lst") {
-    fid = 1;
-    _ftype = apache::thrift::protocol::T_LIST;
-  }
-  else if (_fname == "mp") {
-    fid = 2;
-    _ftype = apache::thrift::protocol::T_MAP;
-  }
-  else if (_fname == "s") {
-    fid = 3;
-    _ftype = apache::thrift::protocol::T_SET;
-  }
-}
 
 void swap(NewStructureNested& a, NewStructureNested& b) {
   using ::std::swap;
@@ -330,13 +362,6 @@ const  ::cpp2::NewStructureNested& NewStructureNestedField::get_f() const& {
   return std::move(f);
 }
 
-void NewStructureNestedField::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-  else if (_fname == "f") {
-    fid = 1;
-    _ftype = apache::thrift::protocol::T_STRUCT;
-  }
-}
 
 void swap(NewStructureNestedField& a, NewStructureNestedField& b) {
   using ::std::swap;

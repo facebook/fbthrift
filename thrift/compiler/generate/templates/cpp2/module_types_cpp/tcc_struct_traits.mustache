@@ -14,7 +14,17 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-%>void <%struct:name%>::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+%>
+
+namespace apache {
+namespace thrift {
+namespace detail {
+
+<%#program:structs%>
+void TccStructTraits<<% > common/namespace_cpp2%><%struct:name%>>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
   if (false) {}
   <%#struct:fields%><%#field:type%>
   else if (_fname == "<%field:name%>") {
@@ -23,5 +33,10 @@
   }
   <%/field:type%><%/struct:fields%>
 }
+<%/program:structs%>
+
+} // namespace detail
+} // namespace thrift
+} // namespace apache
 <%!
 %>

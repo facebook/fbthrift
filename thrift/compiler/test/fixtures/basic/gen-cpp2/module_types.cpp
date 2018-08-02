@@ -40,6 +40,48 @@ template <> bool TEnumTraits< ::cpp2::MyEnum>::findValue(const char* name,  ::cp
 }
 
 }} // apache::thrift
+
+namespace apache {
+namespace thrift {
+namespace detail {
+
+void TccStructTraits< ::cpp2::MyStruct>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "MyIntField") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_I64;
+  }
+  else if (_fname == "MyStringField") {
+    fid = 2;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
+  else if (_fname == "MyDataField") {
+    fid = 3;
+    _ftype = apache::thrift::protocol::T_STRUCT;
+  }
+  else if (_fname == "major") {
+    fid = 4;
+    _ftype = apache::thrift::protocol::T_I64;
+  }
+  else if (_fname == "myEnum") {
+    fid = 5;
+    _ftype = apache::thrift::protocol::T_I32;
+  }
+}
+void TccStructTraits< ::cpp2::MyDataItem>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+}
+
+} // namespace detail
+} // namespace thrift
+} // namespace apache
+
 namespace cpp2 {
 
 MyStruct::MyStruct() :
@@ -101,29 +143,6 @@ const  ::cpp2::MyDataItem& MyStruct::get_MyDataField() const& {
   return std::move(MyDataField);
 }
 
-void MyStruct::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-  else if (_fname == "MyIntField") {
-    fid = 1;
-    _ftype = apache::thrift::protocol::T_I64;
-  }
-  else if (_fname == "MyStringField") {
-    fid = 2;
-    _ftype = apache::thrift::protocol::T_STRING;
-  }
-  else if (_fname == "MyDataField") {
-    fid = 3;
-    _ftype = apache::thrift::protocol::T_STRUCT;
-  }
-  else if (_fname == "major") {
-    fid = 4;
-    _ftype = apache::thrift::protocol::T_I64;
-  }
-  else if (_fname == "myEnum") {
-    fid = 5;
-    _ftype = apache::thrift::protocol::T_I32;
-  }
-}
 
 void swap(MyStruct& a, MyStruct& b) {
   using ::std::swap;
@@ -165,9 +184,6 @@ bool MyDataItem::operator<(const MyDataItem& rhs) const {
   return false;
 }
 
-void MyDataItem::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-}
 
 void swap(MyDataItem& a, MyDataItem& b) {
   using ::std::swap;

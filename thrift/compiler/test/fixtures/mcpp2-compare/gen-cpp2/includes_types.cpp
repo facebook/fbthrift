@@ -37,6 +37,36 @@ template <> bool TEnumTraits< ::a::different::ns::AnEnum>::findValue(const char*
 }
 
 }} // apache::thrift
+
+namespace apache {
+namespace thrift {
+namespace detail {
+
+void TccStructTraits< ::a::different::ns::AStruct>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "FieldA") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_I32;
+  }
+}
+void TccStructTraits< ::a::different::ns::AStructB>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "FieldA") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_STRUCT;
+  }
+}
+
+} // namespace detail
+} // namespace thrift
+} // namespace apache
+
 namespace a { namespace different { namespace ns {
 
 AStruct::AStruct(apache::thrift::FragileConstructor, int32_t FieldA__arg) :
@@ -68,13 +98,6 @@ bool AStruct::operator<(const AStruct& rhs) const {
   return false;
 }
 
-void AStruct::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-  else if (_fname == "FieldA") {
-    fid = 1;
-    _ftype = apache::thrift::protocol::T_I32;
-  }
-}
 
 void swap(AStruct& a, AStruct& b) {
   using ::std::swap;
@@ -135,13 +158,6 @@ bool AStructB::operator<(const AStructB& rhs) const {
   return false;
 }
 
-void AStructB::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-  else if (_fname == "FieldA") {
-    fid = 1;
-    _ftype = apache::thrift::protocol::T_STRUCT;
-  }
-}
 
 void swap(AStructB& a, AStructB& b) {
   using ::std::swap;

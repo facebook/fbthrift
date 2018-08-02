@@ -12,6 +12,74 @@
 
 #include "src/gen-cpp2/extra_services_data.h"
 
+
+namespace apache {
+namespace thrift {
+namespace detail {
+
+void TccStructTraits< ::extra::svc::containerStruct2>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "fieldA") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_BOOL;
+  }
+  else if (_fname == "req_fieldA") {
+    fid = 101;
+    _ftype = apache::thrift::protocol::T_BOOL;
+  }
+  else if (_fname == "opt_fieldA") {
+    fid = 201;
+    _ftype = apache::thrift::protocol::T_BOOL;
+  }
+  else if (_fname == "fieldB") {
+    fid = 2;
+    _ftype = apache::thrift::protocol::T_MAP;
+  }
+  else if (_fname == "req_fieldB") {
+    fid = 102;
+    _ftype = apache::thrift::protocol::T_MAP;
+  }
+  else if (_fname == "opt_fieldB") {
+    fid = 202;
+    _ftype = apache::thrift::protocol::T_MAP;
+  }
+  else if (_fname == "fieldC") {
+    fid = 3;
+    _ftype = apache::thrift::protocol::T_SET;
+  }
+  else if (_fname == "req_fieldC") {
+    fid = 103;
+    _ftype = apache::thrift::protocol::T_SET;
+  }
+  else if (_fname == "opt_fieldC") {
+    fid = 203;
+    _ftype = apache::thrift::protocol::T_SET;
+  }
+  else if (_fname == "fieldD") {
+    fid = 4;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
+  else if (_fname == "fieldE") {
+    fid = 5;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
+  else if (_fname == "req_fieldE") {
+    fid = 105;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
+  else if (_fname == "opt_fieldE") {
+    fid = 205;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
+}
+
+} // namespace detail
+} // namespace thrift
+} // namespace apache
+
 namespace extra { namespace svc {
 
 containerStruct2::containerStruct2() :
@@ -153,61 +221,6 @@ bool containerStruct2::operator<(const containerStruct2& rhs) const {
   return false;
 }
 
-void containerStruct2::translateFieldName(FOLLY_MAYBE_UNUSED folly::StringPiece _fname, FOLLY_MAYBE_UNUSED int16_t& fid, FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-  else if (_fname == "fieldA") {
-    fid = 1;
-    _ftype = apache::thrift::protocol::T_BOOL;
-  }
-  else if (_fname == "req_fieldA") {
-    fid = 101;
-    _ftype = apache::thrift::protocol::T_BOOL;
-  }
-  else if (_fname == "opt_fieldA") {
-    fid = 201;
-    _ftype = apache::thrift::protocol::T_BOOL;
-  }
-  else if (_fname == "fieldB") {
-    fid = 2;
-    _ftype = apache::thrift::protocol::T_MAP;
-  }
-  else if (_fname == "req_fieldB") {
-    fid = 102;
-    _ftype = apache::thrift::protocol::T_MAP;
-  }
-  else if (_fname == "opt_fieldB") {
-    fid = 202;
-    _ftype = apache::thrift::protocol::T_MAP;
-  }
-  else if (_fname == "fieldC") {
-    fid = 3;
-    _ftype = apache::thrift::protocol::T_SET;
-  }
-  else if (_fname == "req_fieldC") {
-    fid = 103;
-    _ftype = apache::thrift::protocol::T_SET;
-  }
-  else if (_fname == "opt_fieldC") {
-    fid = 203;
-    _ftype = apache::thrift::protocol::T_SET;
-  }
-  else if (_fname == "fieldD") {
-    fid = 4;
-    _ftype = apache::thrift::protocol::T_STRING;
-  }
-  else if (_fname == "fieldE") {
-    fid = 5;
-    _ftype = apache::thrift::protocol::T_STRING;
-  }
-  else if (_fname == "req_fieldE") {
-    fid = 105;
-    _ftype = apache::thrift::protocol::T_STRING;
-  }
-  else if (_fname == "opt_fieldE") {
-    fid = 205;
-    _ftype = apache::thrift::protocol::T_STRING;
-  }
-}
 
 void swap(containerStruct2& a, containerStruct2& b) {
   using ::std::swap;

@@ -12,3 +12,13 @@
 
 #include "src/gen-cpp2/service_data.h"
 
+
+namespace apache {
+namespace thrift {
+namespace detail {
+
+
+} // namespace detail
+} // namespace thrift
+} // namespace apache
+

@@ -25,6 +25,8 @@
 
 <% > common/push_and_undef_colliding_macros%>
 <% > module_types_cpp/declare_enums%>
+<% > module_types_cpp/tcc_struct_traits%>
+
 <%#program:structs%><%!
 %><% > common/namespace_cpp2_begin%>
 
@@ -52,7 +54,6 @@
 
 
 <% > module_types_cpp/getters_setters%>
-<% > module_types_cpp/translate_field_name%>
 
 <% > module_types_cpp/swap%>
 <%/struct:union?%>
@@ -64,7 +65,6 @@
 <%/struct:cpp_noncomparable%>
 
 <% > module_types_cpp/union_setters%>
-<% > module_types_cpp/translate_field_name%>
 <% > module_types_cpp/union_swap%>
 <%/struct:union?%>
 
