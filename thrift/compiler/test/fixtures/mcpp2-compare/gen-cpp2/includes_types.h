@@ -87,10 +87,8 @@ class AStruct final : private apache::thrift::detail::st::ComparisonOperators<AS
       FieldA(0) {}
   // FragileConstructor for use in initialization lists only.
   AStruct(apache::thrift::FragileConstructor, int32_t FieldA__arg);
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  AStruct(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    AStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
     FieldA = arg.move();
     __isset.FieldA = true;
   }
@@ -194,11 +192,9 @@ class AStructB final : private apache::thrift::detail::st::ComparisonOperators<A
       FieldA(std::make_shared< ::a::different::ns::AStruct>()) {}
   // FragileConstructor for use in initialization lists only.
   AStructB(apache::thrift::FragileConstructor, std::shared_ptr<const  ::a::different::ns::AStruct> FieldA__arg);
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  AStructB(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    AStructB(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
-    FieldA = std::make_shared<folly::_t<std::decay<T__ThriftWrappedArgument__Ctor>>>(arg.move());
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
+    FieldA = std::make_shared<std::decay_t<_T>>(arg.move());
   }
 
   AStructB(AStructB&&) = default;

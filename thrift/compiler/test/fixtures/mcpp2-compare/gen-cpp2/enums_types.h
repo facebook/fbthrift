@@ -210,10 +210,8 @@ class SomeStruct final : private apache::thrift::detail::st::ComparisonOperators
       fieldA(0) {}
   // FragileConstructor for use in initialization lists only.
   SomeStruct(apache::thrift::FragileConstructor, int32_t fieldA__arg);
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  SomeStruct(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    SomeStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
     fieldA = arg.move();
     __isset.fieldA = true;
   }

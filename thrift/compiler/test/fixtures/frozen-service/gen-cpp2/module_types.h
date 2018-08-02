@@ -39,31 +39,23 @@ class ModuleA final : private apache::thrift::detail::st::ComparisonOperators<Mo
       i32Field(0) {}
   // FragileConstructor for use in initialization lists only.
   ModuleA(apache::thrift::FragileConstructor, int32_t i32Field__arg, std::string strField__arg, std::vector<int16_t> listField__arg, std::map<std::string, int32_t> mapField__arg);
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  ModuleA(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    ModuleA(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
     i32Field = arg.move();
     __isset.i32Field = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  ModuleA(::apache::thrift::detail::argument_wrapper<2, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    ModuleA(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
     strField = arg.move();
     __isset.strField = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  ModuleA(::apache::thrift::detail::argument_wrapper<3, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    ModuleA(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<3, _T> arg) {
     listField = arg.move();
     __isset.listField = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  ModuleA(::apache::thrift::detail::argument_wrapper<4, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    ModuleA(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<4, _T> arg) {
     mapField = arg.move();
     __isset.mapField = true;
   }
@@ -202,10 +194,8 @@ class ModuleB final : private apache::thrift::detail::st::ComparisonOperators<Mo
       i32Field(0) {}
   // FragileConstructor for use in initialization lists only.
   ModuleB(apache::thrift::FragileConstructor, int32_t i32Field__arg);
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  ModuleB(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    ModuleB(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
     i32Field = arg.move();
     __isset.i32Field = true;
   }
@@ -305,17 +295,13 @@ class ExceptionA final : private apache::thrift::detail::st::ComparisonOperators
       code(0) {}
   // FragileConstructor for use in initialization lists only.
   ExceptionA(apache::thrift::FragileConstructor, int32_t code__arg, std::string msg__arg);
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  ExceptionA(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    ExceptionA(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
     code = arg.move();
     __isset.code = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  ExceptionA(::apache::thrift::detail::argument_wrapper<2, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    ExceptionA(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
     msg = arg.move();
     __isset.msg = true;
   }
@@ -436,17 +422,13 @@ class ExceptionB final : private apache::thrift::detail::st::ComparisonOperators
       code(0) {}
   // FragileConstructor for use in initialization lists only.
   ExceptionB(apache::thrift::FragileConstructor, int32_t code__arg, std::string msg__arg);
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  ExceptionB(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    ExceptionB(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
     code = arg.move();
     __isset.code = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  ExceptionB(::apache::thrift::detail::argument_wrapper<2, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    ExceptionB(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
     msg = arg.move();
     __isset.msg = true;
   }

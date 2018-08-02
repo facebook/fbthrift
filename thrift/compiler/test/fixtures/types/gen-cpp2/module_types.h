@@ -226,10 +226,8 @@ class decorated_struct final : private apache::thrift::detail::st::ComparisonOpe
   decorated_struct() {}
   // FragileConstructor for use in initialization lists only.
   decorated_struct(apache::thrift::FragileConstructor, std::string field__arg);
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  decorated_struct(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    decorated_struct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
     field = arg.move();
     __isset.field = true;
   }
@@ -334,59 +332,43 @@ class ContainerStruct final : private apache::thrift::detail::st::ComparisonOper
 
   // FragileConstructor for use in initialization lists only.
   ContainerStruct(apache::thrift::FragileConstructor, std::vector<int32_t> fieldA__arg, std::list<int32_t> fieldB__arg, std::deque<int32_t> fieldC__arg, folly::fbvector<int32_t> fieldD__arg, folly::small_vector<int32_t> fieldE__arg, folly::sorted_vector_set<int32_t> fieldF__arg, folly::sorted_vector_map<int32_t, std::string> fieldG__arg,  ::apache::thrift::fixtures::types::SomeMap fieldH__arg);
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  ContainerStruct(::apache::thrift::detail::argument_wrapper<12, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    ContainerStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<12, _T> arg) {
     fieldA = arg.move();
     __isset.fieldA = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  ContainerStruct(::apache::thrift::detail::argument_wrapper<2, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    ContainerStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
     fieldB = arg.move();
     __isset.fieldB = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  ContainerStruct(::apache::thrift::detail::argument_wrapper<3, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    ContainerStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<3, _T> arg) {
     fieldC = arg.move();
     __isset.fieldC = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  ContainerStruct(::apache::thrift::detail::argument_wrapper<4, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    ContainerStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<4, _T> arg) {
     fieldD = arg.move();
     __isset.fieldD = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  ContainerStruct(::apache::thrift::detail::argument_wrapper<5, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    ContainerStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<5, _T> arg) {
     fieldE = arg.move();
     __isset.fieldE = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  ContainerStruct(::apache::thrift::detail::argument_wrapper<6, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    ContainerStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<6, _T> arg) {
     fieldF = arg.move();
     __isset.fieldF = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  ContainerStruct(::apache::thrift::detail::argument_wrapper<7, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    ContainerStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<7, _T> arg) {
     fieldG = arg.move();
     __isset.fieldG = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  ContainerStruct(::apache::thrift::detail::argument_wrapper<8, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    ContainerStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<8, _T> arg) {
     fieldH = arg.move();
     __isset.fieldH = true;
   }
@@ -564,10 +546,8 @@ class CppTypeStruct final : private apache::thrift::detail::st::ComparisonOperat
   CppTypeStruct() {}
   // FragileConstructor for use in initialization lists only.
   CppTypeStruct(apache::thrift::FragileConstructor, std::list<int32_t> fieldA__arg);
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  CppTypeStruct(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    CppTypeStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
     fieldA = arg.move();
     __isset.fieldA = true;
   }
@@ -666,10 +646,8 @@ class VirtualStruct : private apache::thrift::detail::st::ComparisonOperators<Vi
       MyIntField(0) {}
   // FragileConstructor for use in initialization lists only.
   VirtualStruct(apache::thrift::FragileConstructor, int64_t MyIntField__arg);
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  VirtualStruct(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    VirtualStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
     MyIntField = arg.move();
     __isset.MyIntField = true;
   }
@@ -773,17 +751,13 @@ class MyStructWithForwardRefEnum final : private apache::thrift::detail::st::Com
       b( ::apache::thrift::fixtures::types::MyForwardRefEnum::NONZERO) {}
   // FragileConstructor for use in initialization lists only.
   MyStructWithForwardRefEnum(apache::thrift::FragileConstructor,  ::apache::thrift::fixtures::types::MyForwardRefEnum a__arg,  ::apache::thrift::fixtures::types::MyForwardRefEnum b__arg);
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  MyStructWithForwardRefEnum(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    MyStructWithForwardRefEnum(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
     a = arg.move();
     __isset.a = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  MyStructWithForwardRefEnum(::apache::thrift::detail::argument_wrapper<2, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    MyStructWithForwardRefEnum(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
     b = arg.move();
     __isset.b = true;
   }
@@ -896,17 +870,13 @@ class TrivialNumeric final : private apache::thrift::detail::st::ComparisonOpera
       b(0) {}
   // FragileConstructor for use in initialization lists only.
   TrivialNumeric(apache::thrift::FragileConstructor, int32_t a__arg, bool b__arg);
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  TrivialNumeric(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    TrivialNumeric(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
     a = arg.move();
     __isset.a = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  TrivialNumeric(::apache::thrift::detail::argument_wrapper<2, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    TrivialNumeric(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
     b = arg.move();
     __isset.b = true;
   }
@@ -1016,20 +986,16 @@ class TrivialNestedWithDefault final : private apache::thrift::detail::st::Compa
 
   TrivialNestedWithDefault() :
       z(4),
-      n( ::apache::thrift::fixtures::types::TrivialNumeric(::apache::thrift::detail::wrap_argument<1>(3), ::apache::thrift::detail::wrap_argument<2>(true))) {}
+      n(::apache::thrift::detail::make_constant< ::apache::thrift::fixtures::types::TrivialNumeric>(::apache::thrift::detail::wrap_argument<1>(3), ::apache::thrift::detail::wrap_argument<2>(true))) {}
   // FragileConstructor for use in initialization lists only.
   TrivialNestedWithDefault(apache::thrift::FragileConstructor, int32_t z__arg,  ::apache::thrift::fixtures::types::TrivialNumeric n__arg);
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  TrivialNestedWithDefault(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    TrivialNestedWithDefault(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
     z = arg.move();
     __isset.z = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  TrivialNestedWithDefault(::apache::thrift::detail::argument_wrapper<2, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    TrivialNestedWithDefault(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
     n = arg.move();
     __isset.n = true;
   }
@@ -1139,17 +1105,13 @@ class ComplexString final : private apache::thrift::detail::st::ComparisonOperat
   ComplexString() {}
   // FragileConstructor for use in initialization lists only.
   ComplexString(apache::thrift::FragileConstructor, std::string a__arg, std::map<std::string, int32_t> b__arg);
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  ComplexString(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    ComplexString(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
     a = arg.move();
     __isset.a = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  ComplexString(::apache::thrift::detail::argument_wrapper<2, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    ComplexString(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
     b = arg.move();
     __isset.b = true;
   }
@@ -1263,20 +1225,16 @@ class ComplexNestedWithDefault final : private apache::thrift::detail::st::Compa
 
   ComplexNestedWithDefault() :
       z(apache::thrift::StringTraits< std::string>::fromStringLiteral("4")),
-      n( ::apache::thrift::fixtures::types::ComplexString(::apache::thrift::detail::wrap_argument<1>(apache::thrift::StringTraits< std::string>::fromStringLiteral("3")), ::apache::thrift::detail::wrap_argument<2>(std::initializer_list<std::pair<const std::string, int32_t>>{{apache::thrift::StringTraits< std::string>::fromStringLiteral("a"), 3}}))) {}
+      n(::apache::thrift::detail::make_constant< ::apache::thrift::fixtures::types::ComplexString>(::apache::thrift::detail::wrap_argument<1>(apache::thrift::StringTraits< std::string>::fromStringLiteral("3")), ::apache::thrift::detail::wrap_argument<2>(std::initializer_list<std::pair<const std::string, int32_t>>{{apache::thrift::StringTraits< std::string>::fromStringLiteral("a"), 3}}))) {}
   // FragileConstructor for use in initialization lists only.
   ComplexNestedWithDefault(apache::thrift::FragileConstructor, std::string z__arg,  ::apache::thrift::fixtures::types::ComplexString n__arg);
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  ComplexNestedWithDefault(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    ComplexNestedWithDefault(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
     z = arg.move();
     __isset.z = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  ComplexNestedWithDefault(::apache::thrift::detail::argument_wrapper<2, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    ComplexNestedWithDefault(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
     n = arg.move();
     __isset.n = true;
   }

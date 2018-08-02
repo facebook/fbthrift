@@ -122,17 +122,13 @@ class SmallStruct final : private apache::thrift::detail::st::ComparisonOperator
       small_B(0) {}
   // FragileConstructor for use in initialization lists only.
   SmallStruct(apache::thrift::FragileConstructor, bool small_A__arg, int32_t small_B__arg);
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  SmallStruct(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    SmallStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
     small_A = arg.move();
     __isset.small_A = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  SmallStruct(::apache::thrift::detail::argument_wrapper<2, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    SmallStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
     small_B = arg.move();
     __isset.small_B = true;
   }
@@ -244,154 +240,110 @@ class containerStruct final : private apache::thrift::detail::st::ComparisonOper
 
   // FragileConstructor for use in initialization lists only.
   containerStruct(apache::thrift::FragileConstructor, bool fieldA__arg, std::map<std::string, bool> fieldB__arg, std::set<int32_t> fieldC__arg, std::string fieldD__arg, std::string fieldE__arg, std::vector<std::vector<std::vector<int32_t>>> fieldF__arg, std::map<std::string, std::map<std::string, std::map<std::string, int32_t>>> fieldG__arg, std::vector<std::set<int32_t>> fieldH__arg, bool fieldI__arg, std::map<std::string, std::vector<int32_t>> fieldJ__arg, std::vector<std::vector<std::vector<std::vector<int32_t>>>> fieldK__arg, std::set<std::set<std::set<bool>>> fieldL__arg, std::map<std::set<std::vector<int32_t>>, std::map<std::vector<std::set<std::string>>, std::string>> fieldM__arg, std::vector< ::cpp2::IndirectionA> fieldN__arg, std::vector< ::cpp2::IndirectionB> fieldO__arg, std::vector< ::cpp2::IndirectionC> fieldP__arg,  ::cpp2::MyEnumA fieldQ__arg, std::unique_ptr<std::map<std::string, bool>> fieldR__arg, std::unique_ptr< ::cpp2::SmallStruct> fieldS__arg, std::shared_ptr< ::cpp2::SmallStruct> fieldT__arg, std::shared_ptr<const  ::cpp2::SmallStruct> fieldU__arg, std::unique_ptr< ::cpp2::SmallStruct> fieldX__arg);
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  containerStruct(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    containerStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
     fieldA = arg.move();
     __isset.fieldA = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  containerStruct(::apache::thrift::detail::argument_wrapper<2, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    containerStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
     fieldB = arg.move();
     __isset.fieldB = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  containerStruct(::apache::thrift::detail::argument_wrapper<3, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    containerStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<3, _T> arg) {
     fieldC = arg.move();
     __isset.fieldC = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  containerStruct(::apache::thrift::detail::argument_wrapper<4, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    containerStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<4, _T> arg) {
     fieldD = arg.move();
     __isset.fieldD = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  containerStruct(::apache::thrift::detail::argument_wrapper<5, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    containerStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<5, _T> arg) {
     fieldE = arg.move();
     __isset.fieldE = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  containerStruct(::apache::thrift::detail::argument_wrapper<6, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    containerStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<6, _T> arg) {
     fieldF = arg.move();
     __isset.fieldF = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  containerStruct(::apache::thrift::detail::argument_wrapper<7, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    containerStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<7, _T> arg) {
     fieldG = arg.move();
     __isset.fieldG = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  containerStruct(::apache::thrift::detail::argument_wrapper<8, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    containerStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<8, _T> arg) {
     fieldH = arg.move();
     __isset.fieldH = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  containerStruct(::apache::thrift::detail::argument_wrapper<9, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    containerStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<9, _T> arg) {
     fieldI = arg.move();
     __isset.fieldI = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  containerStruct(::apache::thrift::detail::argument_wrapper<10, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    containerStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<10, _T> arg) {
     fieldJ = arg.move();
     __isset.fieldJ = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  containerStruct(::apache::thrift::detail::argument_wrapper<11, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    containerStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<11, _T> arg) {
     fieldK = arg.move();
     __isset.fieldK = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  containerStruct(::apache::thrift::detail::argument_wrapper<12, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    containerStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<12, _T> arg) {
     fieldL = arg.move();
     __isset.fieldL = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  containerStruct(::apache::thrift::detail::argument_wrapper<13, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    containerStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<13, _T> arg) {
     fieldM = arg.move();
     __isset.fieldM = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  containerStruct(::apache::thrift::detail::argument_wrapper<14, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    containerStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<14, _T> arg) {
     fieldN = arg.move();
     __isset.fieldN = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  containerStruct(::apache::thrift::detail::argument_wrapper<15, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    containerStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<15, _T> arg) {
     fieldO = arg.move();
     __isset.fieldO = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  containerStruct(::apache::thrift::detail::argument_wrapper<16, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    containerStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<16, _T> arg) {
     fieldP = arg.move();
     __isset.fieldP = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  containerStruct(::apache::thrift::detail::argument_wrapper<17, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    containerStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<17, _T> arg) {
     fieldQ = arg.move();
     __isset.fieldQ = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  containerStruct(::apache::thrift::detail::argument_wrapper<18, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    containerStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
-    fieldR = std::make_unique<folly::_t<std::decay<T__ThriftWrappedArgument__Ctor>>>(arg.move());
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<18, _T> arg) {
+    fieldR = std::make_unique<std::decay_t<_T>>(arg.move());
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  containerStruct(::apache::thrift::detail::argument_wrapper<19, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    containerStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
-    fieldS = std::make_unique<folly::_t<std::decay<T__ThriftWrappedArgument__Ctor>>>(arg.move());
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<19, _T> arg) {
+    fieldS = std::make_unique<std::decay_t<_T>>(arg.move());
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  containerStruct(::apache::thrift::detail::argument_wrapper<20, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    containerStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
-    fieldT = std::make_shared<folly::_t<std::decay<T__ThriftWrappedArgument__Ctor>>>(arg.move());
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<20, _T> arg) {
+    fieldT = std::make_shared<std::decay_t<_T>>(arg.move());
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  containerStruct(::apache::thrift::detail::argument_wrapper<21, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    containerStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
-    fieldU = std::make_shared<folly::_t<std::decay<T__ThriftWrappedArgument__Ctor>>>(arg.move());
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<21, _T> arg) {
+    fieldU = std::make_shared<std::decay_t<_T>>(arg.move());
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  containerStruct(::apache::thrift::detail::argument_wrapper<23, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    containerStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
-    fieldX = std::make_unique<folly::_t<std::decay<T__ThriftWrappedArgument__Ctor>>>(arg.move());
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<23, _T> arg) {
+    fieldX = std::make_unique<std::decay_t<_T>>(arg.move());
   }
 
   containerStruct(containerStruct&&) = default;

@@ -1,6 +1,6 @@
 <%!
 
-  Copyright 2016 Facebook, Inc.
+  Copyright 2016-present Facebook, Inc.
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -65,7 +65,7 @@ class <%struct:name%> <%!
 
 <% > module_types_h/union_assign_overload%>
 
-<% > module_types_h/union_template_ctor%>
+<% > module_types_h/union_tag_set_field%>
   void __clear();
 
   <%#struct:virtual%>virtual <%/struct:virtual%>~<%struct:name%>() {
@@ -123,7 +123,7 @@ class <%struct:name%> <%!
 <%/struct:message%><%/struct:exception?%>
   // FragileConstructor for use in initialization lists only.
   <%struct:name%>(apache::thrift::FragileConstructor<% > module_types_h/fragile_ctor_param_list%>);
-<% > module_types_h/template_ctor%>
+<% > module_types_h/struct_tag_set_field%>
 <%#struct:cpp_noexcept_move_ctor%>
 <%^struct:fields?%>
   <%struct:name%>(<%struct:name%>&& other) noexcept {}

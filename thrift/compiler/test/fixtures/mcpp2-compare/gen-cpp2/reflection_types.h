@@ -36,10 +36,8 @@ class ReflectionStruct final : private apache::thrift::detail::st::ComparisonOpe
       fieldA(5) {}
   // FragileConstructor for use in initialization lists only.
   ReflectionStruct(apache::thrift::FragileConstructor, int32_t fieldA__arg);
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  ReflectionStruct(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    ReflectionStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
     fieldA = arg.move();
     __isset.fieldA = true;
   }

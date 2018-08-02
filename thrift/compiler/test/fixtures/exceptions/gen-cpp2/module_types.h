@@ -126,10 +126,8 @@ class Fiery final : private apache::thrift::detail::st::ComparisonOperators<Fier
       message(std::move(__message)) {}
   // FragileConstructor for use in initialization lists only.
   Fiery(apache::thrift::FragileConstructor, std::string message__arg);
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  Fiery(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    Fiery(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
     message = arg.move();
   }
 

@@ -410,28 +410,20 @@ class union1 final : private apache::thrift::detail::st::ComparisonOperators<uni
     }
     return *this;
   }
-  template <typename T__ThriftWrappedArgument__Ctor>
-  union1(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg):
-    type_(Type::__EMPTY__)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
     set_ui(arg.move());
   }
-  template <typename T__ThriftWrappedArgument__Ctor>
-  union1(::apache::thrift::detail::argument_wrapper<2, T__ThriftWrappedArgument__Ctor> arg):
-    type_(Type::__EMPTY__)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
     set_ud(arg.move());
   }
-  template <typename T__ThriftWrappedArgument__Ctor>
-  union1(::apache::thrift::detail::argument_wrapper<3, T__ThriftWrappedArgument__Ctor> arg):
-    type_(Type::__EMPTY__)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<3, _T> arg) {
     set_us(arg.move());
   }
-  template <typename T__ThriftWrappedArgument__Ctor>
-  union1(::apache::thrift::detail::argument_wrapper<4, T__ThriftWrappedArgument__Ctor> arg):
-    type_(Type::__EMPTY__)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<4, _T> arg) {
     set_ue(arg.move());
   }
   void __clear();
@@ -798,28 +790,20 @@ class union2 final : private apache::thrift::detail::st::ComparisonOperators<uni
     }
     return *this;
   }
-  template <typename T__ThriftWrappedArgument__Ctor>
-  union2(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg):
-    type_(Type::__EMPTY__)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
     set_ui_2(arg.move());
   }
-  template <typename T__ThriftWrappedArgument__Ctor>
-  union2(::apache::thrift::detail::argument_wrapper<2, T__ThriftWrappedArgument__Ctor> arg):
-    type_(Type::__EMPTY__)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
     set_ud_2(arg.move());
   }
-  template <typename T__ThriftWrappedArgument__Ctor>
-  union2(::apache::thrift::detail::argument_wrapper<3, T__ThriftWrappedArgument__Ctor> arg):
-    type_(Type::__EMPTY__)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<3, _T> arg) {
     set_us_2(arg.move());
   }
-  template <typename T__ThriftWrappedArgument__Ctor>
-  union2(::apache::thrift::detail::argument_wrapper<4, T__ThriftWrappedArgument__Ctor> arg):
-    type_(Type::__EMPTY__)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<4, _T> arg) {
     set_ue_2(arg.move());
   }
   void __clear();
@@ -1186,28 +1170,20 @@ class union3 final : private apache::thrift::detail::st::ComparisonOperators<uni
     }
     return *this;
   }
-  template <typename T__ThriftWrappedArgument__Ctor>
-  union3(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg):
-    type_(Type::__EMPTY__)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
     set_ui_3(arg.move());
   }
-  template <typename T__ThriftWrappedArgument__Ctor>
-  union3(::apache::thrift::detail::argument_wrapper<2, T__ThriftWrappedArgument__Ctor> arg):
-    type_(Type::__EMPTY__)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
     set_ud_3(arg.move());
   }
-  template <typename T__ThriftWrappedArgument__Ctor>
-  union3(::apache::thrift::detail::argument_wrapper<3, T__ThriftWrappedArgument__Ctor> arg):
-    type_(Type::__EMPTY__)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<3, _T> arg) {
     set_us_3(arg.move());
   }
-  template <typename T__ThriftWrappedArgument__Ctor>
-  union3(::apache::thrift::detail::argument_wrapper<4, T__ThriftWrappedArgument__Ctor> arg):
-    type_(Type::__EMPTY__)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<4, _T> arg) {
     set_ue_3(arg.move());
   }
   void __clear();
@@ -1433,17 +1409,13 @@ class structA final : private apache::thrift::detail::st::ComparisonOperators<st
       a(0) {}
   // FragileConstructor for use in initialization lists only.
   structA(apache::thrift::FragileConstructor, int32_t a__arg, std::string b__arg);
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  structA(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    structA(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
     a = arg.move();
     __isset.a = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  structA(::apache::thrift::detail::argument_wrapper<2, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    structA(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
     b = arg.move();
     __isset.b = true;
   }
@@ -1722,34 +1694,24 @@ class unionA final : private apache::thrift::detail::st::ComparisonOperators<uni
     }
     return *this;
   }
-  template <typename T__ThriftWrappedArgument__Ctor>
-  unionA(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg):
-    type_(Type::__EMPTY__)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
     set_i(arg.move());
   }
-  template <typename T__ThriftWrappedArgument__Ctor>
-  unionA(::apache::thrift::detail::argument_wrapper<2, T__ThriftWrappedArgument__Ctor> arg):
-    type_(Type::__EMPTY__)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
     set_d(arg.move());
   }
-  template <typename T__ThriftWrappedArgument__Ctor>
-  unionA(::apache::thrift::detail::argument_wrapper<3, T__ThriftWrappedArgument__Ctor> arg):
-    type_(Type::__EMPTY__)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<3, _T> arg) {
     set_s(arg.move());
   }
-  template <typename T__ThriftWrappedArgument__Ctor>
-  unionA(::apache::thrift::detail::argument_wrapper<4, T__ThriftWrappedArgument__Ctor> arg):
-    type_(Type::__EMPTY__)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<4, _T> arg) {
     set_e(arg.move());
   }
-  template <typename T__ThriftWrappedArgument__Ctor>
-  unionA(::apache::thrift::detail::argument_wrapper<5, T__ThriftWrappedArgument__Ctor> arg):
-    type_(Type::__EMPTY__)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<5, _T> arg) {
     set_a(arg.move());
   }
   void __clear();
@@ -2017,17 +1979,13 @@ class structB final : private apache::thrift::detail::st::ComparisonOperators<st
       d(0) {}
   // FragileConstructor for use in initialization lists only.
   structB(apache::thrift::FragileConstructor, double c__arg, bool d__arg);
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  structB(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    structB(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
     c = arg.move();
     __isset.c = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  structB(::apache::thrift::detail::argument_wrapper<2, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    structB(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
     d = arg.move();
     __isset.d = true;
   }
@@ -2139,213 +2097,153 @@ class structC final : private apache::thrift::detail::st::ComparisonOperators<st
 
   // FragileConstructor for use in initialization lists only.
   structC(apache::thrift::FragileConstructor, int32_t a__arg, std::string b__arg, double c__arg, bool d__arg,  ::test_cpp2::cpp_reflection::enum1 e__arg,  ::test_cpp2::cpp_reflection::enum2 f__arg,  ::test_cpp2::cpp_reflection::union1 g__arg,  ::test_cpp2::cpp_reflection::unionA h__arg,  ::test_cpp2::cpp_reflection::unionA i__arg, std::vector<int32_t> j__arg, std::vector<int32_t> j1__arg, std::vector< ::test_cpp2::cpp_reflection::enum1> j2__arg, std::vector< ::test_cpp2::cpp_reflection::structA> j3__arg, std::set<int32_t> k__arg, std::set<int32_t> k1__arg, std::set< ::test_cpp2::cpp_reflection::enum2> k2__arg, std::set< ::test_cpp2::cpp_reflection::structB> k3__arg, std::map<int32_t, int32_t> l__arg, std::map<int32_t, int32_t> l1__arg, std::map<int32_t,  ::test_cpp2::cpp_reflection::enum1> l2__arg, std::map<int32_t,  ::test_cpp2::cpp_reflection::structB> l3__arg, std::map< ::test_cpp2::cpp_reflection::enum1, int32_t> m1__arg, std::map< ::test_cpp2::cpp_reflection::enum1,  ::test_cpp2::cpp_reflection::enum2> m2__arg, std::map< ::test_cpp2::cpp_reflection::enum1,  ::test_cpp2::cpp_reflection::structB> m3__arg, std::map<std::string, int32_t> n1__arg, std::map<std::string,  ::test_cpp2::cpp_reflection::enum1> n2__arg, std::map<std::string,  ::test_cpp2::cpp_reflection::structB> n3__arg, std::map< ::test_cpp2::cpp_reflection::structA, int32_t> o1__arg, std::map< ::test_cpp2::cpp_reflection::structA,  ::test_cpp2::cpp_reflection::enum1> o2__arg, std::map< ::test_cpp2::cpp_reflection::structA,  ::test_cpp2::cpp_reflection::structB> o3__arg);
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  structC(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    structC(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
     a = arg.move();
     __isset.a = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  structC(::apache::thrift::detail::argument_wrapper<2, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    structC(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
     b = arg.move();
     __isset.b = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  structC(::apache::thrift::detail::argument_wrapper<3, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    structC(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<3, _T> arg) {
     c = arg.move();
     __isset.c = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  structC(::apache::thrift::detail::argument_wrapper<4, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    structC(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<4, _T> arg) {
     d = arg.move();
     __isset.d = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  structC(::apache::thrift::detail::argument_wrapper<5, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    structC(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<5, _T> arg) {
     e = arg.move();
     __isset.e = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  structC(::apache::thrift::detail::argument_wrapper<6, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    structC(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<6, _T> arg) {
     f = arg.move();
     __isset.f = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  structC(::apache::thrift::detail::argument_wrapper<7, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    structC(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<7, _T> arg) {
     g = arg.move();
     __isset.g = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  structC(::apache::thrift::detail::argument_wrapper<8, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    structC(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<8, _T> arg) {
     h = arg.move();
     __isset.h = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  structC(::apache::thrift::detail::argument_wrapper<9, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    structC(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<9, _T> arg) {
     i = arg.move();
     __isset.i = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  structC(::apache::thrift::detail::argument_wrapper<10, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    structC(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<10, _T> arg) {
     j = arg.move();
     __isset.j = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  structC(::apache::thrift::detail::argument_wrapper<11, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    structC(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<11, _T> arg) {
     j1 = arg.move();
     __isset.j1 = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  structC(::apache::thrift::detail::argument_wrapper<12, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    structC(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<12, _T> arg) {
     j2 = arg.move();
     __isset.j2 = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  structC(::apache::thrift::detail::argument_wrapper<13, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    structC(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<13, _T> arg) {
     j3 = arg.move();
     __isset.j3 = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  structC(::apache::thrift::detail::argument_wrapper<14, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    structC(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<14, _T> arg) {
     k = arg.move();
     __isset.k = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  structC(::apache::thrift::detail::argument_wrapper<15, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    structC(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<15, _T> arg) {
     k1 = arg.move();
     __isset.k1 = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  structC(::apache::thrift::detail::argument_wrapper<16, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    structC(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<16, _T> arg) {
     k2 = arg.move();
     __isset.k2 = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  structC(::apache::thrift::detail::argument_wrapper<17, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    structC(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<17, _T> arg) {
     k3 = arg.move();
     __isset.k3 = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  structC(::apache::thrift::detail::argument_wrapper<18, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    structC(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<18, _T> arg) {
     l = arg.move();
     __isset.l = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  structC(::apache::thrift::detail::argument_wrapper<19, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    structC(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<19, _T> arg) {
     l1 = arg.move();
     __isset.l1 = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  structC(::apache::thrift::detail::argument_wrapper<20, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    structC(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<20, _T> arg) {
     l2 = arg.move();
     __isset.l2 = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  structC(::apache::thrift::detail::argument_wrapper<21, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    structC(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<21, _T> arg) {
     l3 = arg.move();
     __isset.l3 = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  structC(::apache::thrift::detail::argument_wrapper<22, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    structC(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<22, _T> arg) {
     m1 = arg.move();
     __isset.m1 = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  structC(::apache::thrift::detail::argument_wrapper<23, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    structC(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<23, _T> arg) {
     m2 = arg.move();
     __isset.m2 = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  structC(::apache::thrift::detail::argument_wrapper<24, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    structC(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<24, _T> arg) {
     m3 = arg.move();
     __isset.m3 = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  structC(::apache::thrift::detail::argument_wrapper<25, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    structC(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<25, _T> arg) {
     n1 = arg.move();
     __isset.n1 = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  structC(::apache::thrift::detail::argument_wrapper<26, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    structC(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<26, _T> arg) {
     n2 = arg.move();
     __isset.n2 = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  structC(::apache::thrift::detail::argument_wrapper<27, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    structC(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<27, _T> arg) {
     n3 = arg.move();
     __isset.n3 = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  structC(::apache::thrift::detail::argument_wrapper<28, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    structC(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<28, _T> arg) {
     o1 = arg.move();
     __isset.o1 = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  structC(::apache::thrift::detail::argument_wrapper<29, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    structC(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<29, _T> arg) {
     o2 = arg.move();
     __isset.o2 = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  structC(::apache::thrift::detail::argument_wrapper<30, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    structC(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<30, _T> arg) {
     o3 = arg.move();
     __isset.o3 = true;
   }
@@ -2777,43 +2675,31 @@ class struct1 final : private apache::thrift::detail::st::ComparisonOperators<st
 
   // FragileConstructor for use in initialization lists only.
   struct1(apache::thrift::FragileConstructor, int32_t field0__arg, std::string field1__arg,  ::test_cpp2::cpp_reflection::enum1 field2__arg,  ::test_cpp2::cpp_reflection::enum2 field3__arg,  ::test_cpp2::cpp_reflection::union1 field4__arg,  ::test_cpp2::cpp_reflection::union2 field5__arg);
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  struct1(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    struct1(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
     field0 = arg.move();
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  struct1(::apache::thrift::detail::argument_wrapper<2, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    struct1(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
     field1 = arg.move();
     __isset.field1 = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  struct1(::apache::thrift::detail::argument_wrapper<3, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    struct1(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<3, _T> arg) {
     field2 = arg.move();
     __isset.field2 = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  struct1(::apache::thrift::detail::argument_wrapper<4, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    struct1(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<4, _T> arg) {
     field3 = arg.move();
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  struct1(::apache::thrift::detail::argument_wrapper<5, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    struct1(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<5, _T> arg) {
     field4 = arg.move();
     __isset.field4 = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  struct1(::apache::thrift::detail::argument_wrapper<6, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    struct1(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<6, _T> arg) {
     field5 = arg.move();
     __isset.field5 = true;
   }
@@ -2977,52 +2863,38 @@ class struct2 final : private apache::thrift::detail::st::ComparisonOperators<st
 
   // FragileConstructor for use in initialization lists only.
   struct2(apache::thrift::FragileConstructor, int32_t fieldA__arg, std::string fieldB__arg,  ::test_cpp2::cpp_reflection::enum1 fieldC__arg,  ::test_cpp2::cpp_reflection::enum2 fieldD__arg,  ::test_cpp2::cpp_reflection::union1 fieldE__arg,  ::test_cpp2::cpp_reflection::union2 fieldF__arg,  ::test_cpp2::cpp_reflection::struct1 fieldG__arg);
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  struct2(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    struct2(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
     fieldA = arg.move();
     __isset.fieldA = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  struct2(::apache::thrift::detail::argument_wrapper<2, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    struct2(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
     fieldB = arg.move();
     __isset.fieldB = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  struct2(::apache::thrift::detail::argument_wrapper<3, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    struct2(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<3, _T> arg) {
     fieldC = arg.move();
     __isset.fieldC = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  struct2(::apache::thrift::detail::argument_wrapper<4, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    struct2(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<4, _T> arg) {
     fieldD = arg.move();
     __isset.fieldD = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  struct2(::apache::thrift::detail::argument_wrapper<5, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    struct2(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<5, _T> arg) {
     fieldE = arg.move();
     __isset.fieldE = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  struct2(::apache::thrift::detail::argument_wrapper<6, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    struct2(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<6, _T> arg) {
     fieldF = arg.move();
     __isset.fieldF = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  struct2(::apache::thrift::detail::argument_wrapper<7, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    struct2(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<7, _T> arg) {
     fieldG = arg.move();
     __isset.fieldG = true;
   }
@@ -3199,129 +3071,93 @@ class struct3 final : private apache::thrift::detail::st::ComparisonOperators<st
 
   // FragileConstructor for use in initialization lists only.
   struct3(apache::thrift::FragileConstructor, int32_t fieldA__arg, std::string fieldB__arg,  ::test_cpp2::cpp_reflection::enum1 fieldC__arg,  ::test_cpp2::cpp_reflection::enum2 fieldD__arg,  ::test_cpp2::cpp_reflection::union1 fieldE__arg,  ::test_cpp2::cpp_reflection::union2 fieldF__arg,  ::test_cpp2::cpp_reflection::struct1 fieldG__arg,  ::test_cpp2::cpp_reflection::union2 fieldH__arg, std::vector<int32_t> fieldI__arg, std::vector<std::string> fieldJ__arg, std::vector<std::string> fieldK__arg, std::vector< ::test_cpp2::cpp_reflection::structA> fieldL__arg, std::set<int32_t> fieldM__arg, std::set<std::string> fieldN__arg, std::set<std::string> fieldO__arg, std::set< ::test_cpp2::cpp_reflection::structB> fieldP__arg, std::map<std::string,  ::test_cpp2::cpp_reflection::structA> fieldQ__arg, std::map<std::string,  ::test_cpp2::cpp_reflection::structB> fieldR__arg);
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  struct3(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    struct3(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
     fieldA = arg.move();
     __isset.fieldA = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  struct3(::apache::thrift::detail::argument_wrapper<2, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    struct3(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
     fieldB = arg.move();
     __isset.fieldB = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  struct3(::apache::thrift::detail::argument_wrapper<3, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    struct3(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<3, _T> arg) {
     fieldC = arg.move();
     __isset.fieldC = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  struct3(::apache::thrift::detail::argument_wrapper<4, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    struct3(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<4, _T> arg) {
     fieldD = arg.move();
     __isset.fieldD = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  struct3(::apache::thrift::detail::argument_wrapper<5, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    struct3(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<5, _T> arg) {
     fieldE = arg.move();
     __isset.fieldE = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  struct3(::apache::thrift::detail::argument_wrapper<6, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    struct3(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<6, _T> arg) {
     fieldF = arg.move();
     __isset.fieldF = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  struct3(::apache::thrift::detail::argument_wrapper<7, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    struct3(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<7, _T> arg) {
     fieldG = arg.move();
     __isset.fieldG = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  struct3(::apache::thrift::detail::argument_wrapper<8, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    struct3(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<8, _T> arg) {
     fieldH = arg.move();
     __isset.fieldH = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  struct3(::apache::thrift::detail::argument_wrapper<9, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    struct3(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<9, _T> arg) {
     fieldI = arg.move();
     __isset.fieldI = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  struct3(::apache::thrift::detail::argument_wrapper<10, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    struct3(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<10, _T> arg) {
     fieldJ = arg.move();
     __isset.fieldJ = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  struct3(::apache::thrift::detail::argument_wrapper<11, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    struct3(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<11, _T> arg) {
     fieldK = arg.move();
     __isset.fieldK = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  struct3(::apache::thrift::detail::argument_wrapper<12, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    struct3(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<12, _T> arg) {
     fieldL = arg.move();
     __isset.fieldL = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  struct3(::apache::thrift::detail::argument_wrapper<13, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    struct3(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<13, _T> arg) {
     fieldM = arg.move();
     __isset.fieldM = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  struct3(::apache::thrift::detail::argument_wrapper<14, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    struct3(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<14, _T> arg) {
     fieldN = arg.move();
     __isset.fieldN = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  struct3(::apache::thrift::detail::argument_wrapper<15, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    struct3(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<15, _T> arg) {
     fieldO = arg.move();
     __isset.fieldO = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  struct3(::apache::thrift::detail::argument_wrapper<16, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    struct3(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<16, _T> arg) {
     fieldP = arg.move();
     __isset.fieldP = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  struct3(::apache::thrift::detail::argument_wrapper<17, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    struct3(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<17, _T> arg) {
     fieldQ = arg.move();
     __isset.fieldQ = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  struct3(::apache::thrift::detail::argument_wrapper<18, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    struct3(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<18, _T> arg) {
     fieldR = arg.move();
     __isset.fieldR = true;
   }
@@ -3621,31 +3457,23 @@ class struct4 final : private apache::thrift::detail::st::ComparisonOperators<st
       field3(std::make_unique< ::test_cpp2::cpp_reflection::structA>()) {}
   // FragileConstructor for use in initialization lists only.
   struct4(apache::thrift::FragileConstructor, int32_t field0__arg, std::string field1__arg,  ::test_cpp2::cpp_reflection::enum1 field2__arg, std::unique_ptr< ::test_cpp2::cpp_reflection::structA> field3__arg);
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  struct4(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    struct4(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
     field0 = arg.move();
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  struct4(::apache::thrift::detail::argument_wrapper<2, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    struct4(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
     field1 = arg.move();
     __isset.field1 = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  struct4(::apache::thrift::detail::argument_wrapper<3, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    struct4(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<3, _T> arg) {
     field2 = arg.move();
     __isset.field2 = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  struct4(::apache::thrift::detail::argument_wrapper<6, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    struct4(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
-    field3 = std::make_unique<folly::_t<std::decay<T__ThriftWrappedArgument__Ctor>>>(arg.move());
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<6, _T> arg) {
+    field3 = std::make_unique<std::decay_t<_T>>(arg.move());
   }
 
   struct4(struct4&&) = default;
@@ -3770,37 +3598,27 @@ class struct5 final : private apache::thrift::detail::st::ComparisonOperators<st
 
   // FragileConstructor for use in initialization lists only.
   struct5(apache::thrift::FragileConstructor, int32_t field0__arg, std::string field1__arg,  ::test_cpp2::cpp_reflection::enum1 field2__arg,  ::test_cpp2::cpp_reflection::structA field3__arg,  ::test_cpp2::cpp_reflection::structB field4__arg);
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  struct5(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    struct5(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
     field0 = arg.move();
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  struct5(::apache::thrift::detail::argument_wrapper<2, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    struct5(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
     field1 = arg.move();
     __isset.field1 = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  struct5(::apache::thrift::detail::argument_wrapper<3, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    struct5(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<3, _T> arg) {
     field2 = arg.move();
     __isset.field2 = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  struct5(::apache::thrift::detail::argument_wrapper<4, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    struct5(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<4, _T> arg) {
     field3 = arg.move();
     __isset.field3 = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  struct5(::apache::thrift::detail::argument_wrapper<5, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    struct5(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<5, _T> arg) {
     field4 = arg.move();
     __isset.field4 = true;
   }
@@ -3952,10 +3770,8 @@ class struct_binary final : private apache::thrift::detail::st::ComparisonOperat
   struct_binary() {}
   // FragileConstructor for use in initialization lists only.
   struct_binary(apache::thrift::FragileConstructor, std::string bi__arg);
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  struct_binary(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    struct_binary(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
     bi = arg.move();
     __isset.bi = true;
   }
@@ -4060,24 +3876,18 @@ class dep_A_struct final : private apache::thrift::detail::st::ComparisonOperato
       i_a(0) {}
   // FragileConstructor for use in initialization lists only.
   dep_A_struct(apache::thrift::FragileConstructor,  ::test_cpp2::cpp_reflection::dep_B_struct b__arg,  ::test_cpp2::cpp_reflection::dep_C_struct c__arg, int32_t i_a__arg);
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  dep_A_struct(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    dep_A_struct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
     b = arg.move();
     __isset.b = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  dep_A_struct(::apache::thrift::detail::argument_wrapper<2, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    dep_A_struct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
     c = arg.move();
     __isset.c = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  dep_A_struct(::apache::thrift::detail::argument_wrapper<3, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    dep_A_struct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<3, _T> arg) {
     i_a = arg.move();
     __isset.i_a = true;
   }
@@ -4199,10 +4009,8 @@ class annotated final : private apache::thrift::detail::st::ComparisonOperators<
       a(0) {}
   // FragileConstructor for use in initialization lists only.
   annotated(apache::thrift::FragileConstructor, int32_t a__arg);
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  annotated(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    annotated(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
     a = arg.move();
     __isset.a = true;
   }
@@ -4947,172 +4755,116 @@ class union_with_special_names final : private apache::thrift::detail::st::Compa
     }
     return *this;
   }
-  template <typename T__ThriftWrappedArgument__Ctor>
-  union_with_special_names(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg):
-    type_(Type::__EMPTY__)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
     set_get(arg.move());
   }
-  template <typename T__ThriftWrappedArgument__Ctor>
-  union_with_special_names(::apache::thrift::detail::argument_wrapper<2, T__ThriftWrappedArgument__Ctor> arg):
-    type_(Type::__EMPTY__)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
     set_getter(arg.move());
   }
-  template <typename T__ThriftWrappedArgument__Ctor>
-  union_with_special_names(::apache::thrift::detail::argument_wrapper<3, T__ThriftWrappedArgument__Ctor> arg):
-    type_(Type::__EMPTY__)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<3, _T> arg) {
     set_lists(arg.move());
   }
-  template <typename T__ThriftWrappedArgument__Ctor>
-  union_with_special_names(::apache::thrift::detail::argument_wrapper<4, T__ThriftWrappedArgument__Ctor> arg):
-    type_(Type::__EMPTY__)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<4, _T> arg) {
     set_maps(arg.move());
   }
-  template <typename T__ThriftWrappedArgument__Ctor>
-  union_with_special_names(::apache::thrift::detail::argument_wrapper<5, T__ThriftWrappedArgument__Ctor> arg):
-    type_(Type::__EMPTY__)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<5, _T> arg) {
     set_name(arg.move());
   }
-  template <typename T__ThriftWrappedArgument__Ctor>
-  union_with_special_names(::apache::thrift::detail::argument_wrapper<6, T__ThriftWrappedArgument__Ctor> arg):
-    type_(Type::__EMPTY__)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<6, _T> arg) {
     set_name_to_value(arg.move());
   }
-  template <typename T__ThriftWrappedArgument__Ctor>
-  union_with_special_names(::apache::thrift::detail::argument_wrapper<7, T__ThriftWrappedArgument__Ctor> arg):
-    type_(Type::__EMPTY__)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<7, _T> arg) {
     set_names(arg.move());
   }
-  template <typename T__ThriftWrappedArgument__Ctor>
-  union_with_special_names(::apache::thrift::detail::argument_wrapper<8, T__ThriftWrappedArgument__Ctor> arg):
-    type_(Type::__EMPTY__)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<8, _T> arg) {
     set_prefix_tree(arg.move());
   }
-  template <typename T__ThriftWrappedArgument__Ctor>
-  union_with_special_names(::apache::thrift::detail::argument_wrapper<9, T__ThriftWrappedArgument__Ctor> arg):
-    type_(Type::__EMPTY__)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<9, _T> arg) {
     set_sets(arg.move());
   }
-  template <typename T__ThriftWrappedArgument__Ctor>
-  union_with_special_names(::apache::thrift::detail::argument_wrapper<10, T__ThriftWrappedArgument__Ctor> arg):
-    type_(Type::__EMPTY__)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<10, _T> arg) {
     set_setter(arg.move());
   }
-  template <typename T__ThriftWrappedArgument__Ctor>
-  union_with_special_names(::apache::thrift::detail::argument_wrapper<11, T__ThriftWrappedArgument__Ctor> arg):
-    type_(Type::__EMPTY__)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<11, _T> arg) {
     set_str(arg.move());
   }
-  template <typename T__ThriftWrappedArgument__Ctor>
-  union_with_special_names(::apache::thrift::detail::argument_wrapper<12, T__ThriftWrappedArgument__Ctor> arg):
-    type_(Type::__EMPTY__)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<12, _T> arg) {
     set_strings(arg.move());
   }
-  template <typename T__ThriftWrappedArgument__Ctor>
-  union_with_special_names(::apache::thrift::detail::argument_wrapper<13, T__ThriftWrappedArgument__Ctor> arg):
-    type_(Type::__EMPTY__)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<13, _T> arg) {
     set_type(arg.move());
   }
-  template <typename T__ThriftWrappedArgument__Ctor>
-  union_with_special_names(::apache::thrift::detail::argument_wrapper<14, T__ThriftWrappedArgument__Ctor> arg):
-    type_(Type::__EMPTY__)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<14, _T> arg) {
     set_value(arg.move());
   }
-  template <typename T__ThriftWrappedArgument__Ctor>
-  union_with_special_names(::apache::thrift::detail::argument_wrapper<15, T__ThriftWrappedArgument__Ctor> arg):
-    type_(Type::__EMPTY__)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<15, _T> arg) {
     set_value_to_name(arg.move());
   }
-  template <typename T__ThriftWrappedArgument__Ctor>
-  union_with_special_names(::apache::thrift::detail::argument_wrapper<16, T__ThriftWrappedArgument__Ctor> arg):
-    type_(Type::__EMPTY__)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<16, _T> arg) {
     set_values(arg.move());
   }
-  template <typename T__ThriftWrappedArgument__Ctor>
-  union_with_special_names(::apache::thrift::detail::argument_wrapper<17, T__ThriftWrappedArgument__Ctor> arg):
-    type_(Type::__EMPTY__)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<17, _T> arg) {
     set_id(arg.move());
   }
-  template <typename T__ThriftWrappedArgument__Ctor>
-  union_with_special_names(::apache::thrift::detail::argument_wrapper<18, T__ThriftWrappedArgument__Ctor> arg):
-    type_(Type::__EMPTY__)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<18, _T> arg) {
     set_ids(arg.move());
   }
-  template <typename T__ThriftWrappedArgument__Ctor>
-  union_with_special_names(::apache::thrift::detail::argument_wrapper<19, T__ThriftWrappedArgument__Ctor> arg):
-    type_(Type::__EMPTY__)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<19, _T> arg) {
     set_descriptor(arg.move());
   }
-  template <typename T__ThriftWrappedArgument__Ctor>
-  union_with_special_names(::apache::thrift::detail::argument_wrapper<20, T__ThriftWrappedArgument__Ctor> arg):
-    type_(Type::__EMPTY__)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<20, _T> arg) {
     set_descriptors(arg.move());
   }
-  template <typename T__ThriftWrappedArgument__Ctor>
-  union_with_special_names(::apache::thrift::detail::argument_wrapper<21, T__ThriftWrappedArgument__Ctor> arg):
-    type_(Type::__EMPTY__)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<21, _T> arg) {
     set_key(arg.move());
   }
-  template <typename T__ThriftWrappedArgument__Ctor>
-  union_with_special_names(::apache::thrift::detail::argument_wrapper<22, T__ThriftWrappedArgument__Ctor> arg):
-    type_(Type::__EMPTY__)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<22, _T> arg) {
     set_keys(arg.move());
   }
-  template <typename T__ThriftWrappedArgument__Ctor>
-  union_with_special_names(::apache::thrift::detail::argument_wrapper<23, T__ThriftWrappedArgument__Ctor> arg):
-    type_(Type::__EMPTY__)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<23, _T> arg) {
     set_annotation(arg.move());
   }
-  template <typename T__ThriftWrappedArgument__Ctor>
-  union_with_special_names(::apache::thrift::detail::argument_wrapper<24, T__ThriftWrappedArgument__Ctor> arg):
-    type_(Type::__EMPTY__)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<24, _T> arg) {
     set_annotations(arg.move());
   }
-  template <typename T__ThriftWrappedArgument__Ctor>
-  union_with_special_names(::apache::thrift::detail::argument_wrapper<25, T__ThriftWrappedArgument__Ctor> arg):
-    type_(Type::__EMPTY__)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<25, _T> arg) {
     set_member(arg.move());
   }
-  template <typename T__ThriftWrappedArgument__Ctor>
-  union_with_special_names(::apache::thrift::detail::argument_wrapper<26, T__ThriftWrappedArgument__Ctor> arg):
-    type_(Type::__EMPTY__)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<26, _T> arg) {
     set_members(arg.move());
   }
-  template <typename T__ThriftWrappedArgument__Ctor>
-  union_with_special_names(::apache::thrift::detail::argument_wrapper<27, T__ThriftWrappedArgument__Ctor> arg):
-    type_(Type::__EMPTY__)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<27, _T> arg) {
     set_field(arg.move());
   }
-  template <typename T__ThriftWrappedArgument__Ctor>
-  union_with_special_names(::apache::thrift::detail::argument_wrapper<28, T__ThriftWrappedArgument__Ctor> arg):
-    type_(Type::__EMPTY__)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<28, _T> arg) {
     set_fields(arg.move());
   }
   void __clear();
@@ -5999,199 +5751,143 @@ class struct_with_special_names final : private apache::thrift::detail::st::Comp
       fields(0) {}
   // FragileConstructor for use in initialization lists only.
   struct_with_special_names(apache::thrift::FragileConstructor, int32_t get__arg, int32_t getter__arg, int32_t lists__arg, int32_t maps__arg, int32_t name__arg, int32_t name_to_value__arg, int32_t names__arg, int32_t prefix_tree__arg, int32_t sets__arg, int32_t setter__arg, int32_t str__arg, int32_t strings__arg, int32_t type__arg, int32_t value__arg, int32_t value_to_name__arg, int32_t values__arg, int32_t id__arg, int32_t ids__arg, int32_t descriptor__arg, int32_t descriptors__arg, int32_t key__arg, int32_t keys__arg, int32_t annotation__arg, int32_t annotations__arg, int32_t member__arg, int32_t members__arg, int32_t field__arg, int32_t fields__arg);
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  struct_with_special_names(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    struct_with_special_names(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
     get = arg.move();
     __isset.get = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  struct_with_special_names(::apache::thrift::detail::argument_wrapper<2, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    struct_with_special_names(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
     getter = arg.move();
     __isset.getter = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  struct_with_special_names(::apache::thrift::detail::argument_wrapper<3, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    struct_with_special_names(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<3, _T> arg) {
     lists = arg.move();
     __isset.lists = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  struct_with_special_names(::apache::thrift::detail::argument_wrapper<4, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    struct_with_special_names(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<4, _T> arg) {
     maps = arg.move();
     __isset.maps = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  struct_with_special_names(::apache::thrift::detail::argument_wrapper<5, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    struct_with_special_names(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<5, _T> arg) {
     name = arg.move();
     __isset.name = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  struct_with_special_names(::apache::thrift::detail::argument_wrapper<6, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    struct_with_special_names(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<6, _T> arg) {
     name_to_value = arg.move();
     __isset.name_to_value = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  struct_with_special_names(::apache::thrift::detail::argument_wrapper<7, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    struct_with_special_names(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<7, _T> arg) {
     names = arg.move();
     __isset.names = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  struct_with_special_names(::apache::thrift::detail::argument_wrapper<8, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    struct_with_special_names(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<8, _T> arg) {
     prefix_tree = arg.move();
     __isset.prefix_tree = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  struct_with_special_names(::apache::thrift::detail::argument_wrapper<9, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    struct_with_special_names(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<9, _T> arg) {
     sets = arg.move();
     __isset.sets = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  struct_with_special_names(::apache::thrift::detail::argument_wrapper<10, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    struct_with_special_names(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<10, _T> arg) {
     setter = arg.move();
     __isset.setter = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  struct_with_special_names(::apache::thrift::detail::argument_wrapper<11, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    struct_with_special_names(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<11, _T> arg) {
     str = arg.move();
     __isset.str = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  struct_with_special_names(::apache::thrift::detail::argument_wrapper<12, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    struct_with_special_names(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<12, _T> arg) {
     strings = arg.move();
     __isset.strings = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  struct_with_special_names(::apache::thrift::detail::argument_wrapper<13, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    struct_with_special_names(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<13, _T> arg) {
     type = arg.move();
     __isset.type = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  struct_with_special_names(::apache::thrift::detail::argument_wrapper<14, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    struct_with_special_names(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<14, _T> arg) {
     value = arg.move();
     __isset.value = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  struct_with_special_names(::apache::thrift::detail::argument_wrapper<15, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    struct_with_special_names(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<15, _T> arg) {
     value_to_name = arg.move();
     __isset.value_to_name = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  struct_with_special_names(::apache::thrift::detail::argument_wrapper<16, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    struct_with_special_names(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<16, _T> arg) {
     values = arg.move();
     __isset.values = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  struct_with_special_names(::apache::thrift::detail::argument_wrapper<17, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    struct_with_special_names(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<17, _T> arg) {
     id = arg.move();
     __isset.id = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  struct_with_special_names(::apache::thrift::detail::argument_wrapper<18, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    struct_with_special_names(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<18, _T> arg) {
     ids = arg.move();
     __isset.ids = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  struct_with_special_names(::apache::thrift::detail::argument_wrapper<19, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    struct_with_special_names(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<19, _T> arg) {
     descriptor = arg.move();
     __isset.descriptor = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  struct_with_special_names(::apache::thrift::detail::argument_wrapper<20, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    struct_with_special_names(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<20, _T> arg) {
     descriptors = arg.move();
     __isset.descriptors = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  struct_with_special_names(::apache::thrift::detail::argument_wrapper<21, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    struct_with_special_names(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<21, _T> arg) {
     key = arg.move();
     __isset.key = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  struct_with_special_names(::apache::thrift::detail::argument_wrapper<22, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    struct_with_special_names(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<22, _T> arg) {
     keys = arg.move();
     __isset.keys = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  struct_with_special_names(::apache::thrift::detail::argument_wrapper<23, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    struct_with_special_names(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<23, _T> arg) {
     annotation = arg.move();
     __isset.annotation = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  struct_with_special_names(::apache::thrift::detail::argument_wrapper<24, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    struct_with_special_names(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<24, _T> arg) {
     annotations = arg.move();
     __isset.annotations = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  struct_with_special_names(::apache::thrift::detail::argument_wrapper<25, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    struct_with_special_names(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<25, _T> arg) {
     member = arg.move();
     __isset.member = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  struct_with_special_names(::apache::thrift::detail::argument_wrapper<26, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    struct_with_special_names(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<26, _T> arg) {
     members = arg.move();
     __isset.members = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  struct_with_special_names(::apache::thrift::detail::argument_wrapper<27, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    struct_with_special_names(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<27, _T> arg) {
     field = arg.move();
     __isset.field = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  struct_with_special_names(::apache::thrift::detail::argument_wrapper<28, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    struct_with_special_names(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<28, _T> arg) {
     fields = arg.move();
     __isset.fields = true;
   }
@@ -6615,38 +6311,28 @@ class struct_with_indirections final : private apache::thrift::detail::st::Compa
 
   // FragileConstructor for use in initialization lists only.
   struct_with_indirections(apache::thrift::FragileConstructor, int32_t real__arg,  ::test_cpp2::cpp_reflection::FakeI32 fake__arg,  ::test_cpp2::cpp_reflection::HasANumber number__arg,  ::test_cpp2::cpp_reflection::HasAResult result__arg,  ::test_cpp2::cpp_reflection::HasAPhrase phrase__arg);
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  struct_with_indirections(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    struct_with_indirections(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
     real = arg.move();
     __isset.real = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  struct_with_indirections(::apache::thrift::detail::argument_wrapper<2, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    struct_with_indirections(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
     fake = arg.move();
     __isset.fake = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  struct_with_indirections(::apache::thrift::detail::argument_wrapper<3, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    struct_with_indirections(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<3, _T> arg) {
     number = arg.move();
     __isset.number = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  struct_with_indirections(::apache::thrift::detail::argument_wrapper<4, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    struct_with_indirections(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<4, _T> arg) {
     result = arg.move();
     __isset.result = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  struct_with_indirections(::apache::thrift::detail::argument_wrapper<5, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    struct_with_indirections(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<5, _T> arg) {
     phrase = arg.move();
     __isset.phrase = true;
   }

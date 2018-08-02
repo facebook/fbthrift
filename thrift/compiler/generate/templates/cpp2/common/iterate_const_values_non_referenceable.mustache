@@ -1,6 +1,6 @@
 <%!
 
-  Copyright 2016 Facebook, Inc.
+  Copyright 2016-present Facebook, Inc.
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -70,5 +70,5 @@ Map:
 
 Struct:
 %><%#type:struct?%><%!
-    %><% > common/type_namespace_cpp2%><%type:name%>(<%#value:const_struct%><%#constant:type%><%#constant:value%>::apache::thrift::detail::wrap_argument<<%constant:index%>>(<% > common/cxx_value_prefix%><% > common/iterate_const_values%><% > common/cxx_value_suffix%>)<%^last?%>, <%/last?%><%/constant:value%><%/constant:type%><%/value:const_struct%>)<%!
+    %>::apache::thrift::detail::make_constant<<% > common/type_namespace_cpp2%><%type:name%>>(<%#value:const_struct%><%#constant:type%><%#constant:value%>::apache::thrift::detail::wrap_argument<<%constant:index%>>(<% > common/cxx_value_prefix%><% > common/iterate_const_values%><% > common/cxx_value_suffix%>)<%^last?%>, <%/last?%><%/constant:value%><%/constant:type%><%/value:const_struct%>)<%!
 %><%/type:struct?%>

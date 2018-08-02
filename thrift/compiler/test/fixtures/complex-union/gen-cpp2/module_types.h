@@ -223,40 +223,28 @@ class ComplexUnion final : private apache::thrift::detail::st::ComparisonOperato
     }
     return *this;
   }
-  template <typename T__ThriftWrappedArgument__Ctor>
-  ComplexUnion(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg):
-    type_(Type::__EMPTY__)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
     set_intValue(arg.move());
   }
-  template <typename T__ThriftWrappedArgument__Ctor>
-  ComplexUnion(::apache::thrift::detail::argument_wrapper<5, T__ThriftWrappedArgument__Ctor> arg):
-    type_(Type::__EMPTY__)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<5, _T> arg) {
     set_stringValue(arg.move());
   }
-  template <typename T__ThriftWrappedArgument__Ctor>
-  ComplexUnion(::apache::thrift::detail::argument_wrapper<2, T__ThriftWrappedArgument__Ctor> arg):
-    type_(Type::__EMPTY__)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
     set_intListValue(arg.move());
   }
-  template <typename T__ThriftWrappedArgument__Ctor>
-  ComplexUnion(::apache::thrift::detail::argument_wrapper<3, T__ThriftWrappedArgument__Ctor> arg):
-    type_(Type::__EMPTY__)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<3, _T> arg) {
     set_stringListValue(arg.move());
   }
-  template <typename T__ThriftWrappedArgument__Ctor>
-  ComplexUnion(::apache::thrift::detail::argument_wrapper<9, T__ThriftWrappedArgument__Ctor> arg):
-    type_(Type::__EMPTY__)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<9, _T> arg) {
     set_typedefValue(arg.move());
   }
-  template <typename T__ThriftWrappedArgument__Ctor>
-  ComplexUnion(::apache::thrift::detail::argument_wrapper<14, T__ThriftWrappedArgument__Ctor> arg):
-    type_(Type::__EMPTY__)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<14, _T> arg) {
     set_stringRef(arg.move());
   }
   void __clear();
@@ -658,16 +646,12 @@ class VirtualComplexUnion : private apache::thrift::detail::st::ComparisonOperat
     }
     return *this;
   }
-  template <typename T__ThriftWrappedArgument__Ctor>
-  VirtualComplexUnion(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg):
-    type_(Type::__EMPTY__)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
     set_thingOne(arg.move());
   }
-  template <typename T__ThriftWrappedArgument__Ctor>
-  VirtualComplexUnion(::apache::thrift::detail::argument_wrapper<2, T__ThriftWrappedArgument__Ctor> arg):
-    type_(Type::__EMPTY__)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
     set_thingTwo(arg.move());
   }
   void __clear();

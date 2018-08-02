@@ -47,10 +47,8 @@ class OldStructure final : private apache::thrift::detail::st::ComparisonOperato
   OldStructure() {}
   // FragileConstructor for use in initialization lists only.
   OldStructure(apache::thrift::FragileConstructor, std::map<int16_t, double> features__arg);
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  OldStructure(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    OldStructure(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
     features = arg.move();
     __isset.features = true;
   }
@@ -152,10 +150,8 @@ class NewStructure final : private apache::thrift::detail::st::ComparisonOperato
   NewStructure() {}
   // FragileConstructor for use in initialization lists only.
   NewStructure(apache::thrift::FragileConstructor, std::map<int16_t, double> features__arg);
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  NewStructure(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    NewStructure(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
     features = arg.move();
     __isset.features = true;
   }
@@ -257,10 +253,8 @@ class NewStructure2 final : private apache::thrift::detail::st::ComparisonOperat
   NewStructure2() {}
   // FragileConstructor for use in initialization lists only.
   NewStructure2(apache::thrift::FragileConstructor,  ::cpp2::FloatFeatures features__arg);
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  NewStructure2(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    NewStructure2(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
     features = arg.move();
     __isset.features = true;
   }
@@ -362,24 +356,18 @@ class NewStructureNested final : private apache::thrift::detail::st::ComparisonO
   NewStructureNested() {}
   // FragileConstructor for use in initialization lists only.
   NewStructureNested(apache::thrift::FragileConstructor, std::vector< ::cpp2::FloatFeatures> lst__arg, std::map<int16_t,  ::cpp2::FloatFeatures> mp__arg, std::set< ::cpp2::FloatFeatures> s__arg);
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  NewStructureNested(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    NewStructureNested(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
     lst = arg.move();
     __isset.lst = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  NewStructureNested(::apache::thrift::detail::argument_wrapper<2, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    NewStructureNested(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
     mp = arg.move();
     __isset.mp = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  NewStructureNested(::apache::thrift::detail::argument_wrapper<3, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    NewStructureNested(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<3, _T> arg) {
     s = arg.move();
     __isset.s = true;
   }
@@ -503,10 +491,8 @@ class NewStructureNestedField final : private apache::thrift::detail::st::Compar
   NewStructureNestedField() {}
   // FragileConstructor for use in initialization lists only.
   NewStructureNestedField(apache::thrift::FragileConstructor,  ::cpp2::NewStructureNested f__arg);
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  NewStructureNestedField(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    NewStructureNestedField(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
     f = arg.move();
     __isset.f = true;
   }

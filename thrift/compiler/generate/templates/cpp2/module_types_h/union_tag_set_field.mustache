@@ -1,6 +1,6 @@
 <%!
 
-  Copyright 2016 Facebook, Inc.
+  Copyright 2016-present Facebook, Inc.
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -15,10 +15,8 @@
   limitations under the License.
 
 %><%#struct:fields%><%!
-%>  template <typename T__ThriftWrappedArgument__Ctor>
-  <%struct:name%>(::apache::thrift::detail::argument_wrapper<<%field:key%>, T__ThriftWrappedArgument__Ctor> arg):
-    type_(Type::__EMPTY__)
-  {
+%>  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<<%field:key%>, _T> arg) {
     set_<%field:name%>(arg.move());
   }
 <%/struct:fields%>

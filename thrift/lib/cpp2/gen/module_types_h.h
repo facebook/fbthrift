@@ -64,6 +64,14 @@ argument_wrapper<Id, const char*> wrap_argument(const char* str) {
   return argument_wrapper<Id, const char*>(str);
 }
 
+template <typename S, std::intmax_t... Id, typename... T>
+constexpr S make_constant(argument_wrapper<Id, T>&&... arg) {
+  using _ = int[];
+  S s;
+  void(_{0, (void(s.__set_field(std::move(arg))), 0)...});
+  return s;
+}
+
 } // namespace detail
 } // namespace thrift
 } // namespace apache

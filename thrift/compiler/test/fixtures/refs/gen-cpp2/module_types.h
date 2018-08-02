@@ -192,16 +192,12 @@ class MyUnion final : private apache::thrift::detail::st::ComparisonOperators<My
     }
     return *this;
   }
-  template <typename T__ThriftWrappedArgument__Ctor>
-  MyUnion(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg):
-    type_(Type::__EMPTY__)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
     set_anInteger(arg.move());
   }
-  template <typename T__ThriftWrappedArgument__Ctor>
-  MyUnion(::apache::thrift::detail::argument_wrapper<2, T__ThriftWrappedArgument__Ctor> arg):
-    type_(Type::__EMPTY__)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
     set_aString(arg.move());
   }
   void __clear();
@@ -375,24 +371,18 @@ class MyField final : private apache::thrift::detail::st::ComparisonOperators<My
       req_value(0) {}
   // FragileConstructor for use in initialization lists only.
   MyField(apache::thrift::FragileConstructor, int64_t opt_value__arg, int64_t value__arg, int64_t req_value__arg);
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  MyField(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    MyField(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
     opt_value = arg.move();
     __isset.opt_value = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  MyField(::apache::thrift::detail::argument_wrapper<2, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    MyField(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
     value = arg.move();
     __isset.value = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  MyField(::apache::thrift::detail::argument_wrapper<3, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    MyField(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<3, _T> arg) {
     req_value = arg.move();
   }
 
@@ -519,23 +509,17 @@ class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<M
       req_ref(std::make_unique< ::cpp2::MyField>()) {}
   // FragileConstructor for use in initialization lists only.
   MyStruct(apache::thrift::FragileConstructor, std::unique_ptr< ::cpp2::MyField> opt_ref__arg, std::unique_ptr< ::cpp2::MyField> ref__arg, std::unique_ptr< ::cpp2::MyField> req_ref__arg);
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  MyStruct(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    MyStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
-    opt_ref = std::make_unique<folly::_t<std::decay<T__ThriftWrappedArgument__Ctor>>>(arg.move());
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
+    opt_ref = std::make_unique<std::decay_t<_T>>(arg.move());
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  MyStruct(::apache::thrift::detail::argument_wrapper<2, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    MyStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
-    ref = std::make_unique<folly::_t<std::decay<T__ThriftWrappedArgument__Ctor>>>(arg.move());
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
+    ref = std::make_unique<std::decay_t<_T>>(arg.move());
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  MyStruct(::apache::thrift::detail::argument_wrapper<3, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    MyStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
-    req_ref = std::make_unique<folly::_t<std::decay<T__ThriftWrappedArgument__Ctor>>>(arg.move());
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<3, _T> arg) {
+    req_ref = std::make_unique<std::decay_t<_T>>(arg.move());
   }
 
   MyStruct(MyStruct&&) = default;
@@ -623,23 +607,17 @@ class StructWithUnion final : private apache::thrift::detail::st::ComparisonOper
       aDouble(0) {}
   // FragileConstructor for use in initialization lists only.
   StructWithUnion(apache::thrift::FragileConstructor, std::unique_ptr< ::cpp2::MyUnion> u__arg, double aDouble__arg,  ::cpp2::MyField f__arg);
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  StructWithUnion(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    StructWithUnion(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
-    u = std::make_unique<folly::_t<std::decay<T__ThriftWrappedArgument__Ctor>>>(arg.move());
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
+    u = std::make_unique<std::decay_t<_T>>(arg.move());
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  StructWithUnion(::apache::thrift::detail::argument_wrapper<2, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    StructWithUnion(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
     aDouble = arg.move();
     __isset.aDouble = true;
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  StructWithUnion(::apache::thrift::detail::argument_wrapper<3, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    StructWithUnion(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<3, _T> arg) {
     f = arg.move();
     __isset.f = true;
   }
@@ -748,10 +726,8 @@ class RecursiveStruct final : private apache::thrift::detail::st::ComparisonOper
   RecursiveStruct() {}
   // FragileConstructor for use in initialization lists only.
   RecursiveStruct(apache::thrift::FragileConstructor, std::vector< ::cpp2::RecursiveStruct> mes__arg);
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  RecursiveStruct(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    RecursiveStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
     mes = arg.move();
     __isset.mes = true;
   }
@@ -851,41 +827,29 @@ class StructWithContainers final : private apache::thrift::detail::st::Compariso
 
   // FragileConstructor for use in initialization lists only.
   StructWithContainers(apache::thrift::FragileConstructor, std::unique_ptr<std::vector<int32_t>> list_ref__arg, std::unique_ptr<std::set<int32_t>> set_ref__arg, std::unique_ptr<std::map<int32_t, int32_t>> map_ref__arg, std::unique_ptr<std::vector<int32_t>> list_ref_unique__arg, std::shared_ptr<std::set<int32_t>> set_ref_shared__arg, std::shared_ptr<const std::vector<int32_t>> list_ref_shared_const__arg);
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  StructWithContainers(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    StructWithContainers(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
-    list_ref = std::make_unique<folly::_t<std::decay<T__ThriftWrappedArgument__Ctor>>>(arg.move());
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
+    list_ref = std::make_unique<std::decay_t<_T>>(arg.move());
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  StructWithContainers(::apache::thrift::detail::argument_wrapper<2, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    StructWithContainers(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
-    set_ref = std::make_unique<folly::_t<std::decay<T__ThriftWrappedArgument__Ctor>>>(arg.move());
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
+    set_ref = std::make_unique<std::decay_t<_T>>(arg.move());
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  StructWithContainers(::apache::thrift::detail::argument_wrapper<3, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    StructWithContainers(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
-    map_ref = std::make_unique<folly::_t<std::decay<T__ThriftWrappedArgument__Ctor>>>(arg.move());
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<3, _T> arg) {
+    map_ref = std::make_unique<std::decay_t<_T>>(arg.move());
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  StructWithContainers(::apache::thrift::detail::argument_wrapper<4, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    StructWithContainers(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
-    list_ref_unique = std::make_unique<folly::_t<std::decay<T__ThriftWrappedArgument__Ctor>>>(arg.move());
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<4, _T> arg) {
+    list_ref_unique = std::make_unique<std::decay_t<_T>>(arg.move());
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  StructWithContainers(::apache::thrift::detail::argument_wrapper<5, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    StructWithContainers(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
-    set_ref_shared = std::make_shared<folly::_t<std::decay<T__ThriftWrappedArgument__Ctor>>>(arg.move());
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<5, _T> arg) {
+    set_ref_shared = std::make_shared<std::decay_t<_T>>(arg.move());
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  StructWithContainers(::apache::thrift::detail::argument_wrapper<6, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    StructWithContainers(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
-    list_ref_shared_const = std::make_shared<folly::_t<std::decay<T__ThriftWrappedArgument__Ctor>>>(arg.move());
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<6, _T> arg) {
+    list_ref_shared_const = std::make_shared<std::decay_t<_T>>(arg.move());
   }
 
   StructWithContainers(StructWithContainers&&) = default;
@@ -979,23 +943,17 @@ class StructWithSharedConst final : private apache::thrift::detail::st::Comparis
       req_shared_const(std::make_shared< ::cpp2::MyField>()) {}
   // FragileConstructor for use in initialization lists only.
   StructWithSharedConst(apache::thrift::FragileConstructor, std::shared_ptr<const  ::cpp2::MyField> opt_shared_const__arg, std::shared_ptr<const  ::cpp2::MyField> shared_const__arg, std::shared_ptr<const  ::cpp2::MyField> req_shared_const__arg);
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  StructWithSharedConst(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    StructWithSharedConst(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
-    opt_shared_const = std::make_shared<folly::_t<std::decay<T__ThriftWrappedArgument__Ctor>>>(arg.move());
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
+    opt_shared_const = std::make_shared<std::decay_t<_T>>(arg.move());
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  StructWithSharedConst(::apache::thrift::detail::argument_wrapper<2, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    StructWithSharedConst(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
-    shared_const = std::make_shared<folly::_t<std::decay<T__ThriftWrappedArgument__Ctor>>>(arg.move());
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
+    shared_const = std::make_shared<std::decay_t<_T>>(arg.move());
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  StructWithSharedConst(::apache::thrift::detail::argument_wrapper<3, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    StructWithSharedConst(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
-    req_shared_const = std::make_shared<folly::_t<std::decay<T__ThriftWrappedArgument__Ctor>>>(arg.move());
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<3, _T> arg) {
+    req_shared_const = std::make_shared<std::decay_t<_T>>(arg.move());
   }
 
   StructWithSharedConst(StructWithSharedConst&&) = default;
@@ -1165,23 +1123,17 @@ class StructWithRef final : private apache::thrift::detail::st::ComparisonOperat
       req_field(std::make_unique< ::cpp2::Empty>()) {}
   // FragileConstructor for use in initialization lists only.
   StructWithRef(apache::thrift::FragileConstructor, std::unique_ptr< ::cpp2::Empty> def_field__arg, std::unique_ptr< ::cpp2::Empty> opt_field__arg, std::unique_ptr< ::cpp2::Empty> req_field__arg);
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  StructWithRef(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    StructWithRef(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
-    def_field = std::make_unique<folly::_t<std::decay<T__ThriftWrappedArgument__Ctor>>>(arg.move());
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
+    def_field = std::make_unique<std::decay_t<_T>>(arg.move());
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  StructWithRef(::apache::thrift::detail::argument_wrapper<2, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    StructWithRef(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
-    opt_field = std::make_unique<folly::_t<std::decay<T__ThriftWrappedArgument__Ctor>>>(arg.move());
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
+    opt_field = std::make_unique<std::decay_t<_T>>(arg.move());
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  StructWithRef(::apache::thrift::detail::argument_wrapper<3, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    StructWithRef(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
-    req_field = std::make_unique<folly::_t<std::decay<T__ThriftWrappedArgument__Ctor>>>(arg.move());
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<3, _T> arg) {
+    req_field = std::make_unique<std::decay_t<_T>>(arg.move());
   }
 
   StructWithRef(StructWithRef&&) = default;
@@ -1269,23 +1221,17 @@ class StructWithRefTypeUnique final : private apache::thrift::detail::st::Compar
       req_field(std::make_unique< ::cpp2::Empty>()) {}
   // FragileConstructor for use in initialization lists only.
   StructWithRefTypeUnique(apache::thrift::FragileConstructor, std::unique_ptr< ::cpp2::Empty> def_field__arg, std::unique_ptr< ::cpp2::Empty> opt_field__arg, std::unique_ptr< ::cpp2::Empty> req_field__arg);
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  StructWithRefTypeUnique(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    StructWithRefTypeUnique(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
-    def_field = std::make_unique<folly::_t<std::decay<T__ThriftWrappedArgument__Ctor>>>(arg.move());
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
+    def_field = std::make_unique<std::decay_t<_T>>(arg.move());
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  StructWithRefTypeUnique(::apache::thrift::detail::argument_wrapper<2, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    StructWithRefTypeUnique(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
-    opt_field = std::make_unique<folly::_t<std::decay<T__ThriftWrappedArgument__Ctor>>>(arg.move());
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
+    opt_field = std::make_unique<std::decay_t<_T>>(arg.move());
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  StructWithRefTypeUnique(::apache::thrift::detail::argument_wrapper<3, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    StructWithRefTypeUnique(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
-    req_field = std::make_unique<folly::_t<std::decay<T__ThriftWrappedArgument__Ctor>>>(arg.move());
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<3, _T> arg) {
+    req_field = std::make_unique<std::decay_t<_T>>(arg.move());
   }
 
   StructWithRefTypeUnique(StructWithRefTypeUnique&&) = default;
@@ -1373,23 +1319,17 @@ class StructWithRefTypeShared final : private apache::thrift::detail::st::Compar
       req_field(std::make_shared< ::cpp2::Empty>()) {}
   // FragileConstructor for use in initialization lists only.
   StructWithRefTypeShared(apache::thrift::FragileConstructor, std::shared_ptr< ::cpp2::Empty> def_field__arg, std::shared_ptr< ::cpp2::Empty> opt_field__arg, std::shared_ptr< ::cpp2::Empty> req_field__arg);
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  StructWithRefTypeShared(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    StructWithRefTypeShared(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
-    def_field = std::make_shared<folly::_t<std::decay<T__ThriftWrappedArgument__Ctor>>>(arg.move());
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
+    def_field = std::make_shared<std::decay_t<_T>>(arg.move());
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  StructWithRefTypeShared(::apache::thrift::detail::argument_wrapper<2, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    StructWithRefTypeShared(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
-    opt_field = std::make_shared<folly::_t<std::decay<T__ThriftWrappedArgument__Ctor>>>(arg.move());
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
+    opt_field = std::make_shared<std::decay_t<_T>>(arg.move());
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  StructWithRefTypeShared(::apache::thrift::detail::argument_wrapper<3, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    StructWithRefTypeShared(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
-    req_field = std::make_shared<folly::_t<std::decay<T__ThriftWrappedArgument__Ctor>>>(arg.move());
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<3, _T> arg) {
+    req_field = std::make_shared<std::decay_t<_T>>(arg.move());
   }
 
   StructWithRefTypeShared(StructWithRefTypeShared&&) = default;
@@ -1479,23 +1419,17 @@ class StructWithRefTypeSharedConst final : private apache::thrift::detail::st::C
       req_field(std::make_shared< ::cpp2::Empty>()) {}
   // FragileConstructor for use in initialization lists only.
   StructWithRefTypeSharedConst(apache::thrift::FragileConstructor, std::shared_ptr<const  ::cpp2::Empty> def_field__arg, std::shared_ptr<const  ::cpp2::Empty> opt_field__arg, std::shared_ptr<const  ::cpp2::Empty> req_field__arg);
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  StructWithRefTypeSharedConst(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    StructWithRefTypeSharedConst(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
-    def_field = std::make_shared<folly::_t<std::decay<T__ThriftWrappedArgument__Ctor>>>(arg.move());
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
+    def_field = std::make_shared<std::decay_t<_T>>(arg.move());
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  StructWithRefTypeSharedConst(::apache::thrift::detail::argument_wrapper<2, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    StructWithRefTypeSharedConst(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
-    opt_field = std::make_shared<folly::_t<std::decay<T__ThriftWrappedArgument__Ctor>>>(arg.move());
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
+    opt_field = std::make_shared<std::decay_t<_T>>(arg.move());
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  StructWithRefTypeSharedConst(::apache::thrift::detail::argument_wrapper<3, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    StructWithRefTypeSharedConst(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
-    req_field = std::make_shared<folly::_t<std::decay<T__ThriftWrappedArgument__Ctor>>>(arg.move());
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<3, _T> arg) {
+    req_field = std::make_shared<std::decay_t<_T>>(arg.move());
   }
 
   StructWithRefTypeSharedConst(StructWithRefTypeSharedConst&&) = default;

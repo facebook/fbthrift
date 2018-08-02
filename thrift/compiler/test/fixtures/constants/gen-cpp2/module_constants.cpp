@@ -35,19 +35,19 @@ constexpr double const module_constants::zeroDoubleValue_;
 constexpr double const module_constants::longDoubleValue_;
 
  ::cpp2::Internship const& module_constants::instagram() {
-  static folly::Indestructible< ::cpp2::Internship> const instance( ::cpp2::Internship(::apache::thrift::detail::wrap_argument<1>(12), ::apache::thrift::detail::wrap_argument<2>(apache::thrift::StringTraits< std::string>::fromStringLiteral("Software Engineer")), ::apache::thrift::detail::wrap_argument<3>( ::cpp2::Company::INSTAGRAM)));
+  static folly::Indestructible< ::cpp2::Internship> const instance(::apache::thrift::detail::make_constant< ::cpp2::Internship>(::apache::thrift::detail::wrap_argument<1>(12), ::apache::thrift::detail::wrap_argument<2>(apache::thrift::StringTraits< std::string>::fromStringLiteral("Software Engineer")), ::apache::thrift::detail::wrap_argument<3>( ::cpp2::Company::INSTAGRAM)));
   return *instance;
 }
 
 std::vector< ::cpp2::Range> const& module_constants::kRanges() {
-  static folly::Indestructible<std::vector< ::cpp2::Range>> const instance(std::initializer_list< ::cpp2::Range>{ ::cpp2::Range(::apache::thrift::detail::wrap_argument<1>(1), ::apache::thrift::detail::wrap_argument<2>(2)),
-   ::cpp2::Range(::apache::thrift::detail::wrap_argument<1>(5), ::apache::thrift::detail::wrap_argument<2>(6))});
+  static folly::Indestructible<std::vector< ::cpp2::Range>> const instance(std::initializer_list< ::cpp2::Range>{::apache::thrift::detail::make_constant< ::cpp2::Range>(::apache::thrift::detail::wrap_argument<1>(1), ::apache::thrift::detail::wrap_argument<2>(2)),
+  ::apache::thrift::detail::make_constant< ::cpp2::Range>(::apache::thrift::detail::wrap_argument<1>(5), ::apache::thrift::detail::wrap_argument<2>(6))});
   return *instance;
 }
 
 std::vector< ::cpp2::Internship> const& module_constants::internList() {
   static folly::Indestructible<std::vector< ::cpp2::Internship>> const instance(std::initializer_list< ::cpp2::Internship>{ ::cpp2::Internship(::cpp2::module_constants::instagram()),
-   ::cpp2::Internship(::apache::thrift::detail::wrap_argument<1>(10), ::apache::thrift::detail::wrap_argument<2>(apache::thrift::StringTraits< std::string>::fromStringLiteral("Sales Intern")), ::apache::thrift::detail::wrap_argument<3>( ::cpp2::Company::FACEBOOK))});
+  ::apache::thrift::detail::make_constant< ::cpp2::Internship>(::apache::thrift::detail::wrap_argument<1>(10), ::apache::thrift::detail::wrap_argument<2>(apache::thrift::StringTraits< std::string>::fromStringLiteral("Sales Intern")), ::apache::thrift::detail::wrap_argument<3>( ::cpp2::Company::FACEBOOK))});
   return *instance;
 }
 
@@ -57,31 +57,31 @@ std::vector< ::cpp2::Internship> const& module_constants::internList() {
 }
 
  ::cpp2::struct1 const& module_constants::pod_1() {
-  static folly::Indestructible< ::cpp2::struct1> const instance( ::cpp2::struct1(::apache::thrift::detail::wrap_argument<1>(10), ::apache::thrift::detail::wrap_argument<2>(apache::thrift::StringTraits< std::string>::fromStringLiteral("foo"))));
+  static folly::Indestructible< ::cpp2::struct1> const instance(::apache::thrift::detail::make_constant< ::cpp2::struct1>(::apache::thrift::detail::wrap_argument<1>(10), ::apache::thrift::detail::wrap_argument<2>(apache::thrift::StringTraits< std::string>::fromStringLiteral("foo"))));
   return *instance;
 }
 
  ::cpp2::struct2 const& module_constants::pod_2() {
-  static folly::Indestructible< ::cpp2::struct2> const instance( ::cpp2::struct2(::apache::thrift::detail::wrap_argument<1>(98), ::apache::thrift::detail::wrap_argument<2>(apache::thrift::StringTraits< std::string>::fromStringLiteral("gaz")), ::apache::thrift::detail::wrap_argument<3>( ::cpp2::struct1(::apache::thrift::detail::wrap_argument<1>(12), ::apache::thrift::detail::wrap_argument<2>(apache::thrift::StringTraits< std::string>::fromStringLiteral("bar")))), ::apache::thrift::detail::wrap_argument<4>(std::initializer_list<int32_t>{11,
+  static folly::Indestructible< ::cpp2::struct2> const instance(::apache::thrift::detail::make_constant< ::cpp2::struct2>(::apache::thrift::detail::wrap_argument<1>(98), ::apache::thrift::detail::wrap_argument<2>(apache::thrift::StringTraits< std::string>::fromStringLiteral("gaz")), ::apache::thrift::detail::wrap_argument<3>(::apache::thrift::detail::make_constant< ::cpp2::struct1>(::apache::thrift::detail::wrap_argument<1>(12), ::apache::thrift::detail::wrap_argument<2>(apache::thrift::StringTraits< std::string>::fromStringLiteral("bar")))), ::apache::thrift::detail::wrap_argument<4>(std::initializer_list<int32_t>{11,
   22,
   33})));
   return *instance;
 }
 
  ::cpp2::struct3 const& module_constants::pod_3() {
-  static folly::Indestructible< ::cpp2::struct3> const instance( ::cpp2::struct3(::apache::thrift::detail::wrap_argument<1>(apache::thrift::StringTraits< std::string>::fromStringLiteral("abc")), ::apache::thrift::detail::wrap_argument<2>(456), ::apache::thrift::detail::wrap_argument<3>( ::cpp2::struct2(::apache::thrift::detail::wrap_argument<1>(888), ::apache::thrift::detail::wrap_argument<3>( ::cpp2::struct1(::apache::thrift::detail::wrap_argument<2>(apache::thrift::StringTraits< std::string>::fromStringLiteral("gaz")))), ::apache::thrift::detail::wrap_argument<4>(std::initializer_list<int32_t>{1,
+  static folly::Indestructible< ::cpp2::struct3> const instance(::apache::thrift::detail::make_constant< ::cpp2::struct3>(::apache::thrift::detail::wrap_argument<1>(apache::thrift::StringTraits< std::string>::fromStringLiteral("abc")), ::apache::thrift::detail::wrap_argument<2>(456), ::apache::thrift::detail::wrap_argument<3>(::apache::thrift::detail::make_constant< ::cpp2::struct2>(::apache::thrift::detail::wrap_argument<1>(888), ::apache::thrift::detail::wrap_argument<3>(::apache::thrift::detail::make_constant< ::cpp2::struct1>(::apache::thrift::detail::wrap_argument<2>(apache::thrift::StringTraits< std::string>::fromStringLiteral("gaz")))), ::apache::thrift::detail::wrap_argument<4>(std::initializer_list<int32_t>{1,
   2,
   3})))));
   return *instance;
 }
 
  ::cpp2::union1 const& module_constants::u_1_1() {
-  static folly::Indestructible< ::cpp2::union1> const instance( ::cpp2::union1(::apache::thrift::detail::wrap_argument<1>(97)));
+  static folly::Indestructible< ::cpp2::union1> const instance(::apache::thrift::detail::make_constant< ::cpp2::union1>(::apache::thrift::detail::wrap_argument<1>(97)));
   return *instance;
 }
 
  ::cpp2::union1 const& module_constants::u_1_2() {
-  static folly::Indestructible< ::cpp2::union1> const instance( ::cpp2::union1(::apache::thrift::detail::wrap_argument<2>(5.6)));
+  static folly::Indestructible< ::cpp2::union1> const instance(::apache::thrift::detail::make_constant< ::cpp2::union1>(::apache::thrift::detail::wrap_argument<2>(5.6)));
   return *instance;
 }
 
@@ -91,32 +91,32 @@ std::vector< ::cpp2::Internship> const& module_constants::internList() {
 }
 
  ::cpp2::union2 const& module_constants::u_2_1() {
-  static folly::Indestructible< ::cpp2::union2> const instance( ::cpp2::union2(::apache::thrift::detail::wrap_argument<1>(51)));
+  static folly::Indestructible< ::cpp2::union2> const instance(::apache::thrift::detail::make_constant< ::cpp2::union2>(::apache::thrift::detail::wrap_argument<1>(51)));
   return *instance;
 }
 
  ::cpp2::union2 const& module_constants::u_2_2() {
-  static folly::Indestructible< ::cpp2::union2> const instance( ::cpp2::union2(::apache::thrift::detail::wrap_argument<2>(6.7)));
+  static folly::Indestructible< ::cpp2::union2> const instance(::apache::thrift::detail::make_constant< ::cpp2::union2>(::apache::thrift::detail::wrap_argument<2>(6.7)));
   return *instance;
 }
 
  ::cpp2::union2 const& module_constants::u_2_3() {
-  static folly::Indestructible< ::cpp2::union2> const instance( ::cpp2::union2(::apache::thrift::detail::wrap_argument<3>( ::cpp2::struct1(::apache::thrift::detail::wrap_argument<1>(8), ::apache::thrift::detail::wrap_argument<2>(apache::thrift::StringTraits< std::string>::fromStringLiteral("abacabb"))))));
+  static folly::Indestructible< ::cpp2::union2> const instance(::apache::thrift::detail::make_constant< ::cpp2::union2>(::apache::thrift::detail::wrap_argument<3>(::apache::thrift::detail::make_constant< ::cpp2::struct1>(::apache::thrift::detail::wrap_argument<1>(8), ::apache::thrift::detail::wrap_argument<2>(apache::thrift::StringTraits< std::string>::fromStringLiteral("abacabb"))))));
   return *instance;
 }
 
  ::cpp2::union2 const& module_constants::u_2_4() {
-  static folly::Indestructible< ::cpp2::union2> const instance( ::cpp2::union2(::apache::thrift::detail::wrap_argument<4>( ::cpp2::union1(::apache::thrift::detail::wrap_argument<1>(43)))));
+  static folly::Indestructible< ::cpp2::union2> const instance(::apache::thrift::detail::make_constant< ::cpp2::union2>(::apache::thrift::detail::wrap_argument<4>(::apache::thrift::detail::make_constant< ::cpp2::union1>(::apache::thrift::detail::wrap_argument<1>(43)))));
   return *instance;
 }
 
  ::cpp2::union2 const& module_constants::u_2_5() {
-  static folly::Indestructible< ::cpp2::union2> const instance( ::cpp2::union2(::apache::thrift::detail::wrap_argument<4>( ::cpp2::union1(::apache::thrift::detail::wrap_argument<2>(9.8)))));
+  static folly::Indestructible< ::cpp2::union2> const instance(::apache::thrift::detail::make_constant< ::cpp2::union2>(::apache::thrift::detail::wrap_argument<4>(::apache::thrift::detail::make_constant< ::cpp2::union1>(::apache::thrift::detail::wrap_argument<2>(9.8)))));
   return *instance;
 }
 
  ::cpp2::union2 const& module_constants::u_2_6() {
-  static folly::Indestructible< ::cpp2::union2> const instance( ::cpp2::union2(::apache::thrift::detail::wrap_argument<4>( ::cpp2::union1())));
+  static folly::Indestructible< ::cpp2::union2> const instance(::apache::thrift::detail::make_constant< ::cpp2::union2>(::apache::thrift::detail::wrap_argument<4>(::apache::thrift::detail::make_constant< ::cpp2::union1>())));
   return *instance;
 }
 

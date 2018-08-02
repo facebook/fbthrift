@@ -36,10 +36,8 @@ class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<M
   MyStruct() {}
   // FragileConstructor for use in initialization lists only.
   MyStruct(apache::thrift::FragileConstructor,  ::matching_module_name::OtherStruct OtherStructField__arg);
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  MyStruct(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    MyStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
     OtherStructField = arg.move();
     __isset.OtherStructField = true;
   }

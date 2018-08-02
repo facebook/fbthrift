@@ -14,7 +14,7 @@
 namespace module2 {
 
  ::module2::Struct const& module2_constants::c2() {
-  static folly::Indestructible< ::module2::Struct> const instance( ::module2::Struct(::apache::thrift::detail::wrap_argument<1>( ::module0::Struct(::module0::module0_constants::c0())), ::apache::thrift::detail::wrap_argument<2>( ::module1::Struct(::module1::module1_constants::c1()))));
+  static folly::Indestructible< ::module2::Struct> const instance(::apache::thrift::detail::make_constant< ::module2::Struct>(::apache::thrift::detail::wrap_argument<1>( ::module0::Struct(::module0::module0_constants::c0())), ::apache::thrift::detail::wrap_argument<2>( ::module1::Struct(::module1::module1_constants::c1()))));
   return *instance;
 }
 
