@@ -35,9 +35,37 @@ using namespace apache::thrift::compiler;
 // version.h
 #define THRIFT_VERSION "facebook"
 
+class t_generation_context {
+ public:
+  t_generation_context() : out_path_("./"), is_out_path_absolute_(false) {}
+
+  t_generation_context(std::string out_path, bool is_out_path_absolute)
+      : out_path_(std::move(out_path)),
+        is_out_path_absolute_(is_out_path_absolute) {
+    if (!out_path_.empty()) {
+      if (!(out_path_.back() == '/' || out_path_.back() == '\\')) {
+        out_path_.push_back('/');
+      }
+    }
+  }
+
+  const std::string& get_out_path() const {
+    return out_path_;
+  }
+
+  bool is_out_path_absolute() const {
+    return is_out_path_absolute_;
+  }
+
+ private:
+  std::string out_path_;
+  bool is_out_path_absolute_;
+};
+
 class t_generator {
  public:
-  explicit t_generator(t_program* program) : program_(program) {
+  explicit t_generator(t_program* program, t_generation_context context)
+      : program_(program), context_(std::move(context)) {
     this->program_name_ = this->get_program_name(this->program_);
   }
 
@@ -70,15 +98,17 @@ class t_generator {
    * Get the current output directory
    */
   virtual std::string get_out_dir() const {
-    if (program_->is_out_path_absolute()) {
-      return program_->get_out_path() + "/";
+    if (context_.is_out_path_absolute()) {
+      return context_.get_out_path() + "/";
     }
 
-    return program_->get_out_path() + out_dir_base_ + "/";
+    return context_.get_out_path() + out_dir_base_ + "/";
   }
 
  protected:
   t_program* program_;
+
+  t_generation_context context_;
 
   /**
    * Output type-specifc directory name ("gen-*")
@@ -116,6 +146,7 @@ class t_generator_factory {
   virtual t_generator* get_generator(
       // The program to generate.
       t_program* program,
+      t_generation_context context,
       // Note: parsed_options will not exist beyond the call to get_generator.
       const std::map<std::string, std::string>& parsed_options,
       // Note: option_string might not exist beyond the call to get_generator.
@@ -166,9 +197,10 @@ class t_generator_factory_impl : public t_generator_factory {
 
   t_generator* get_generator(
       t_program* program,
+      t_generation_context context,
       const std::map<std::string, std::string>& parsed_options,
       const std::string& option_string) override {
-    return new generator(program, parsed_options, option_string);
+    return new generator(program, context, parsed_options, option_string);
   }
 };
 
@@ -178,6 +210,7 @@ class t_generator_registry {
 
   static t_generator* get_generator(
       t_program* program,
+      t_generation_context context,
       const std::string& options);
 
   typedef std::map<std::string, t_generator_factory*> gen_map_t;

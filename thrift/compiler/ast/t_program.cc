@@ -31,16 +31,6 @@ const std::string& t_program::get_namespace(const std::string& language) const {
   return (pos != namespaces_.end() ? pos->second : kEmpty);
 }
 
-void t_program::set_out_path(std::string out_path, bool out_path_is_absolute) {
-  out_path_ = std::move(out_path);
-  out_path_is_absolute_ = out_path_is_absolute;
-  if (!out_path_.empty()) {
-    if (!(out_path_.back() == '/' || out_path_.back() == '\\')) {
-      out_path_.push_back('/');
-    }
-  }
-}
-
 t_program*
 t_program::add_include(std::string path, std::string include_site, int lineno) {
   t_program* program = new t_program(path);

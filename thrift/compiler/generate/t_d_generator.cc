@@ -66,10 +66,10 @@ class t_d_generator : public t_oop_generator {
  public:
   t_d_generator(
       t_program* program,
+      t_generation_context context,
       const std::map<string, string>& parsed_options,
       const string& option_string)
-    : t_oop_generator(program)
-  {
+      : t_oop_generator(program, std::move(context)) {
     (void) parsed_options;
     (void) option_string;
     out_dir_base_ = "gen-d";

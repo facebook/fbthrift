@@ -35,7 +35,8 @@
  */
 class t_oop_generator : public t_concat_generator {
  public:
-  t_oop_generator(t_program* program) : t_concat_generator(program) {}
+  t_oop_generator(t_program* program, t_generation_context context)
+      : t_concat_generator(program, std::move(context)) {}
 
   /**
    * Scoping, using curly braces!

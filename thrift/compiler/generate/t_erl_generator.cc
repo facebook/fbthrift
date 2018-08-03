@@ -41,10 +41,10 @@ class t_erl_generator : public t_concat_generator {
  public:
   t_erl_generator(
       t_program* program,
+      t_generation_context context,
       const std::map<std::string, std::string>& /*parsed_options*/,
       const std::string& /*option_string*/)
-    : t_concat_generator(program)
-  {
+      : t_concat_generator(program, std::move(context)) {
     program_name_[0] = tolower(program_name_[0]);
     service_name_[0] = tolower(service_name_[0]);
     out_dir_base_ = "gen-erl";

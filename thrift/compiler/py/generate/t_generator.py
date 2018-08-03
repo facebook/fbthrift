@@ -34,11 +34,16 @@ class Generator(object):
     dispatches code generation across various components.
     '''
 
-    def __init__(self, program, flags):
+    def __init__(self, program, out_path, flags):
         assert(isinstance(program, frontend.t_program))
         self._program = program
+        self._out_path = out_path
         self._flags = flags
         self._tmp = 0
+
+        if len(self._out_path) > 0:
+            if self._out_path[-1] in {"/", "\\"}:
+                self._out_path += "/"
 
     def _flag(self, flag):
         ret = self._flags.get(flag)
@@ -144,9 +149,9 @@ class GeneratorFactory:
     def supported_flags(self):
         return self._supported_flags
 
-    def get_generator(self, program, flags):
+    def get_generator(self, program, out_path, flags):
         'Instantiate the generator_class using these parameters'
-        return self._generator_class(program, flags)
+        return self._generator_class(program, out_path, flags)
 
 
 class GeneratorRegistry:
@@ -171,7 +176,7 @@ class GeneratorRegistry:
         # add it to the map
         gfmap[factory.short_name] = factory
 
-    def get_generator(self, program, language, flags):
+    def get_generator(self, program, out_path, language, flags):
         gfmap = self.generator_factory_map
         generator_factory = None
         try:
@@ -179,7 +184,7 @@ class GeneratorRegistry:
         except KeyError as e:
             raise Exception('t_generator_registry: could not get_generator '
                             'for language {0}'.format(language))
-        return generator_factory.get_generator(program, flags)
+        return generator_factory.get_generator(program, out_path, flags)
 
 # global
 registry = GeneratorRegistry()

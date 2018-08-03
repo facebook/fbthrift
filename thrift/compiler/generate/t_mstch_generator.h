@@ -30,6 +30,7 @@ class t_mstch_generator : public t_generator {
  public:
   t_mstch_generator(
       t_program* program,
+      t_generation_context context,
       boost::filesystem::path template_prefix,
       std::map<std::string, std::string> parsed_options,
       bool convert_delimiter = false);

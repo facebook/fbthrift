@@ -212,6 +212,7 @@ static void search_and_replace_args(
 
 static bool generate_cpp2(
     t_program* program,
+    t_generation_context context,
     std::string& gen_string,
     const std::string& user_python_compiler,
     std::vector<std::string>& arguments) {
@@ -219,7 +220,7 @@ static bool generate_cpp2(
       gen_string.find("reflection") != std::string::npos;
 
   t_generator* generator =
-      t_generator_registry::get_generator(program, gen_string);
+      t_generator_registry::get_generator(program, context, gen_string);
   if (generator) {
     pverbose("Generating \"%s\"\n", gen_string.c_str());
     generator->generate_program();
@@ -245,6 +246,7 @@ static bool generate_cpp2(
  */
 static bool generate(
     t_program* program,
+    t_generation_context context,
     vector<string>& generator_strings,
     std::set<std::string>& already_generated,
     const std::string& user_python_compiler,
@@ -257,12 +259,9 @@ static bool generate(
         continue;
       }
 
-      // Propogate output path from parent to child programs
-      include->set_out_path(
-          program->get_out_path(), program->is_out_path_absolute());
-
       if (!generate(
               include,
+              context,
               generator_strings,
               already_generated,
               user_python_compiler,
@@ -286,12 +285,13 @@ static bool generate(
       auto pos = gen_string.find(":");
       std::string lang = gen_string.substr(0, pos);
       if (lang.find("cpp2") != std::string::npos) {
-        generate_cpp2(program, gen_string, user_python_compiler, arguments);
+        generate_cpp2(
+            program, context, gen_string, user_python_compiler, arguments);
         continue;
       }
 
       t_generator* generator =
-          t_generator_registry::get_generator(program, gen_string);
+          t_generator_registry::get_generator(program, context, gen_string);
       if (generator) {
         pverbose("Generating \"%s\"\n", gen_string.c_str());
         generator->generate_program();
@@ -656,17 +656,17 @@ int main(int argc, char** argv) {
 
   g_stage = "generation";
 
-  if (out_path.size()) {
-    program->set_out_path(out_path, out_path_is_absolute);
-  }
-
   program->set_include_prefix(include_prefix);
 
   bool success;
   try {
+    auto generation_context = (out_path.size() > 0)
+        ? t_generation_context{out_path, out_path_is_absolute}
+        : t_generation_context{};
     std::set<std::string> already_generated{program->get_path()};
     success = generate(
         program.get(),
+        generation_context,
         generator_strings,
         already_generated,
         user_python_compiler,

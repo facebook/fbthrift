@@ -37,17 +37,21 @@ using namespace std;
  */
 class t_android_lite_generator : public t_java_generator {
   public:
-    t_android_lite_generator(
-        t_program* program,
-        const std::map<std::string, std::string>& parsed_options,
-        const std::string& option_string)
-      : t_java_generator(program, parsed_options, option_string)
-    {
-      // parse arguments
-      package_name_ = program_->get_namespace("android_lite");
-      program_name_ = capitalize(get_program()->get_name());
-      out_dir_base_ = "gen-android";
-      annotate_ = option_is_specified(parsed_options, "annotate");
+   t_android_lite_generator(
+       t_program* program,
+       t_generation_context context,
+       const std::map<std::string, std::string>& parsed_options,
+       const std::string& option_string)
+       : t_java_generator(
+             program,
+             std::move(context),
+             parsed_options,
+             option_string) {
+     // parse arguments
+     package_name_ = program_->get_namespace("android_lite");
+     program_name_ = capitalize(get_program()->get_name());
+     out_dir_base_ = "gen-android";
+     annotate_ = option_is_specified(parsed_options, "annotate");
     }
 
     void generate_consts(vector<t_const*> tconsts) override;

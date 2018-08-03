@@ -30,9 +30,10 @@ class t_mstch_pyi_generator : public t_mstch_generator {
  public:
   t_mstch_pyi_generator(
       t_program* program,
+      t_generation_context context,
       const std::map<std::string, std::string>& parsed_options,
       const std::string& /* option_string unused */)
-      : t_mstch_generator(program, "pyi", parsed_options) {
+      : t_mstch_generator(program, std::move(context), "pyi", parsed_options) {
     out_dir_base_ = "gen-py";
   }
 

@@ -22,6 +22,7 @@ class t_mstch_html_generator : public t_mstch_generator {
  public:
   t_mstch_html_generator(
       t_program* program,
+      t_generation_context context,
       const std::map<std::string, std::string>& parsed_options,
       const std::string& option_string);
 
@@ -30,9 +31,10 @@ class t_mstch_html_generator : public t_mstch_generator {
 
 t_mstch_html_generator::t_mstch_html_generator(
     t_program* program,
+    t_generation_context context,
     const std::map<std::string, std::string>& parsed_options,
     const std::string& /* option_string */)
-    : t_mstch_generator(program, "html", parsed_options) {
+    : t_mstch_generator(program, std::move(context), "html", parsed_options) {
   this->out_dir_base_ = "gen-mstch_html";
 }
 

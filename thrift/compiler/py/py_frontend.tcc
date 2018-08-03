@@ -293,10 +293,6 @@ BOOST_PYTHON_MODULE(frontend) {
 
   class_<t_program, noncopyable>("t_program", no_init)
       .add_property("path", make_function(&t_program::get_path, policy_ccr()))
-      .add_property(
-          "out_path",
-          make_function(&t_program::get_out_path, policy_ccr()),
-          &t_program::set_out_path)
       .add_property("name", make_function(&t_program::get_name, policy_ccr()))
       .add_property(
           "namespace",

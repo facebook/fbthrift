@@ -209,7 +209,7 @@ class Configuration(object):
             return
         print >>sys.stderr, msg
 
-    def generate(self, program, languages):
+    def generate(self, program, out_path, languages):
         'Oooohh, recursively generate program, hot!!'
 
         from thrift_compiler.frontend import t_program
@@ -229,7 +229,7 @@ class Configuration(object):
                         language].supported_flags:
                     self.pwarning(1, "Language {0} doesn't recognize flag {1}"\
                             .format(language, flag))
-            g = generator_registry.get_generator(program, language, flags)
+            g = generator_registry.get_generator(program, out_path, language, flags)
             if g is None:
                 self.pwarning(1, "Unable to get a generator for " \
                     "{0}:{1}".format(language, ','.join(flags)))

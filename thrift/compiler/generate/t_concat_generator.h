@@ -28,7 +28,8 @@
  */
 class t_concat_generator : public t_generator {
  public:
-  explicit t_concat_generator(t_program* program) : t_generator(program) {
+  explicit t_concat_generator(t_program* program, t_generation_context context)
+      : t_generator(program, std::move(context)) {
     tmp_ = 0;
     indent_ = 0;
     escape_['\n'] = "\\n";

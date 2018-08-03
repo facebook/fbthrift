@@ -91,10 +91,6 @@ void process(const dict& params, const object& generate_callback) {
   // Generate it!
   g_stage = "generation";
 
-  if (out_path.size()) {
-    program->set_out_path(out_path, false);
-  }
-
   // Compute the cpp include prefix.
   // infer this from the filename passed in
   const string& input_filename = input_file;
@@ -112,7 +108,8 @@ void process(const dict& params, const object& generate_callback) {
   // std::shared_ptr.
   // However our generate function will never delete the t_program object,
   // so it's safe to just give it the raw pointer
-  call<void>(generate_callback.ptr(), ptr(program.get()), to_generate);
+  call<void>(
+      generate_callback.ptr(), ptr(program.get()), out_path, to_generate);
 }
 
 bool t_program_operatorEq(const t_program* self, const t_program* rhs) {

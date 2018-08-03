@@ -38,25 +38,27 @@ using namespace apache::thrift;
  */
 class t_js_generator : public t_oop_generator {
  public:
-  t_js_generator(t_program* program,
-                const std::map<std::string, std::string>& parsed_options,
-                const std::string& option_string) :
-     t_oop_generator(program) {
-     (void) option_string;
+  t_js_generator(
+      t_program* program,
+      t_generation_context context,
+      const std::map<std::string, std::string>& parsed_options,
+      const std::string& option_string)
+      : t_oop_generator(program, std::move(context)) {
+    (void)option_string;
 
-     std::map<std::string, std::string>::const_iterator iter;
+    std::map<std::string, std::string>::const_iterator iter;
 
-     iter = parsed_options.find("node");
-     gen_node_ = (iter != parsed_options.end());
+    iter = parsed_options.find("node");
+    gen_node_ = (iter != parsed_options.end());
 
-     iter = parsed_options.find("jquery");
-     gen_jquery_ = (iter != parsed_options.end());
+    iter = parsed_options.find("jquery");
+    gen_jquery_ = (iter != parsed_options.end());
 
-     if (gen_node_) {
-       out_dir_base_ = "gen-nodejs";
-     } else {
-       out_dir_base_ = "gen-js";
-     }
+    if (gen_node_) {
+      out_dir_base_ = "gen-nodejs";
+    } else {
+      out_dir_base_ = "gen-js";
+    }
   }
 
   /**

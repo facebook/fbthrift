@@ -38,10 +38,10 @@ class t_ocaml_generator : public t_oop_generator {
  public:
   t_ocaml_generator(
       t_program* program,
+      t_generation_context context,
       const std::map<std::string, std::string>& /* parsed_options */,
       const std::string& /* option_string */)
-    : t_oop_generator(program)
-  {
+      : t_oop_generator(program, std::move(context)) {
     out_dir_base_ = "gen-ocaml";
   }
 

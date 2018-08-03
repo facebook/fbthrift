@@ -31,6 +31,7 @@ void t_generator_registry::register_generator(t_generator_factory* factory) {
 
 t_generator* t_generator_registry::get_generator(
     t_program* program,
+    t_generation_context context,
     const string& options) {
   string::size_type colon = options.find(':');
   string language = options.substr(0, colon);
@@ -64,7 +65,7 @@ t_generator* t_generator_registry::get_generator(
     return nullptr;
   }
 
-  return iter->second->get_generator(program, parsed_options, options);
+  return iter->second->get_generator(program, context, parsed_options, options);
 }
 
 t_generator_registry::gen_map_t& t_generator_registry::get_generator_map() {

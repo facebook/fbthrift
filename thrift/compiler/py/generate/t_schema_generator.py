@@ -83,7 +83,7 @@ class SchemaGenerator(t_generator.Generator):
 
     @property
     def out_dir(self):
-        return os.path.join(self._program.out_path, self._out_dir_base)
+        return os.path.join(self._out_path, self._out_dir_base)
 
     def in_out_dir(self, filename):
         return os.path.join(self.out_dir, filename)

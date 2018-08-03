@@ -26,9 +26,14 @@ class t_mstch_swift_generator : public t_mstch_generator {
  public:
   t_mstch_swift_generator(
       t_program* program,
+      t_generation_context context,
       const std::map<std::string, std::string>& parsed_options,
       const std::string& /* option_string */)
-      : t_mstch_generator(program, "java/swift", parsed_options),
+      : t_mstch_generator(
+            program,
+            std::move(context),
+            "java/swift",
+            parsed_options),
         default_package_(get_option("default_package")),
         namespace_identifier_(
             get_option("use_java_namespace") ? "java" : "java.swift") {

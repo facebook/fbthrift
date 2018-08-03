@@ -54,42 +54,6 @@ TEST(TProgram, GetNamespace) {
   EXPECT_EQ(expect_3, program.get_namespace("Non existent"));
 }
 
-TEST(TProgram, SetOutPath) {
-  auto program = t_program_fake("");
-
-  const bool absolute_path = true;
-  const bool non_absolute_path = false;
-  const std::string out_dir_1 = "";
-  const std::string out_dir_2 = ".";
-  const std::string out_dir_3 = "./";
-  const std::string out_dir_4 = "./dir";
-  const std::string out_dir_5 = "./dir/";
-  const std::string out_dir_6 = "/this/is/a/dir";
-  const std::string out_dir_7 = "/this/is/a/dir/";
-
-  const std::string expect_1 = "";
-  program.set_out_path(out_dir_1, non_absolute_path);
-  EXPECT_EQ(expect_1, program.get_out_path());
-
-  const std::string expect_2 = "./";
-  program.set_out_path(out_dir_2, non_absolute_path);
-  EXPECT_EQ(expect_2, program.get_out_path());
-  program.set_out_path(out_dir_3, non_absolute_path);
-  EXPECT_EQ(expect_2, program.get_out_path());
-
-  const std::string expect_3 = "./dir/";
-  program.set_out_path(out_dir_4, non_absolute_path);
-  EXPECT_EQ(expect_3, program.get_out_path());
-  program.set_out_path(out_dir_5, non_absolute_path);
-  EXPECT_EQ(expect_3, program.get_out_path());
-
-  const std::string expect_4 = "/this/is/a/dir/";
-  program.set_out_path(out_dir_6, absolute_path);
-  EXPECT_EQ(expect_4, program.get_out_path());
-  program.set_out_path(out_dir_7, absolute_path);
-  EXPECT_EQ(expect_4, program.get_out_path());
-}
-
 TEST(TProgram, AddInclude) {
   auto program = t_program_fake("");
 

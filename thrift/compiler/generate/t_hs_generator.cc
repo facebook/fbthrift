@@ -45,11 +45,12 @@ static const string nl = "\n";  // avoid ostream << std::endl flushes
  */
 class t_hs_generator : public t_oop_generator {
  public:
-  t_hs_generator(t_program* program,
-                 const map<string, string>& parsed_options,
-                 const string& option_string)
-    : t_oop_generator(program)
-  {
+  t_hs_generator(
+      t_program* program,
+      t_generation_context context,
+      const map<string, string>& parsed_options,
+      const string& option_string)
+      : t_oop_generator(program, std::move(context)) {
     (void) parsed_options;
     (void) option_string;
     out_dir_base_ = "gen-hs";

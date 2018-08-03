@@ -56,9 +56,10 @@ class t_mstch_py3_generator : public t_mstch_generator {
 
   t_mstch_py3_generator(
       t_program* program,
+      t_generation_context context,
       const std::map<std::string, std::string>& parsed_options,
       const std::string& /* option_string unused */)
-      : t_mstch_generator(program, "py3", parsed_options) {
+      : t_mstch_generator(program, std::move(context), "py3", parsed_options) {
     out_dir_base_ = "gen-py3";
     auto include_prefix = get_option("include_prefix");
     if (include_prefix && !include_prefix->empty()) {

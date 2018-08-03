@@ -57,10 +57,10 @@ class t_cocoa_generator : public t_oop_generator {
  public:
   t_cocoa_generator(
       t_program* program,
+      t_generation_context context,
       const std::map<std::string, std::string>& parsed_options,
       const std::string& option_string)
-    : t_oop_generator(program)
-  {
+      : t_oop_generator(program, std::move(context)) {
     (void) option_string;
     std::map<std::string, std::string>::const_iterator iter;
 

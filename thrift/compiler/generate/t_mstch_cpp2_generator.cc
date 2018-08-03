@@ -129,6 +129,7 @@ class t_mstch_cpp2_generator : public t_mstch_generator {
  public:
   t_mstch_cpp2_generator(
       t_program* program,
+      t_generation_context context,
       const std::map<std::string, std::string>& parsed_options,
       const std::string& /*option_string*/);
 
@@ -1233,9 +1234,15 @@ class program_cpp2_generator : public program_generator {
 
 t_mstch_cpp2_generator::t_mstch_cpp2_generator(
     t_program* program,
+    t_generation_context context,
     const std::map<std::string, std::string>& parsed_options,
     const std::string& /*option_string*/)
-    : t_mstch_generator(program, "cpp2", parsed_options, true) {
+    : t_mstch_generator(
+          program,
+          std::move(context),
+          "cpp2",
+          parsed_options,
+          true) {
   out_dir_base_ = "gen-cpp2";
 }
 

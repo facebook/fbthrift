@@ -45,10 +45,11 @@ void chomp_last_char(string* data, char c) {
 
 t_mstch_generator::t_mstch_generator(
     t_program* program,
+    t_generation_context context,
     boost::filesystem::path template_prefix,
     std::map<std::string, std::string> parsed_options,
     bool convert_delimiter)
-    : t_generator(program),
+    : t_generator(program, std::move(context)),
       template_dir_(g_template_dir),
       parsed_options_(std::move(parsed_options)),
       convert_delimiter_(convert_delimiter),
@@ -67,7 +68,7 @@ mstch::map t_mstch_generator::dump(const t_program& program) {
   mstch::map result{
       {"name", program.get_name()},
       {"path", program.get_path()},
-      {"outPath", program.get_out_path()},
+      {"outPath", context_.get_out_path()},
       {"namespace", program.get_namespace()},
       {"includePrefix", program.get_include_prefix()},
       {"structs", dump_elems(program.get_objects())},

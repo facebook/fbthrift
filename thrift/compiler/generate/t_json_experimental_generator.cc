@@ -28,6 +28,7 @@ class t_json_experimental_generator : public t_mstch_generator {
  public:
   t_json_experimental_generator(
       t_program* program,
+      t_generation_context context,
       const std::map<std::string, std::string>& parsed_options,
       const std::string& /*option_string*/);
 
@@ -39,9 +40,15 @@ class t_json_experimental_generator : public t_mstch_generator {
 
 t_json_experimental_generator::t_json_experimental_generator(
     t_program* program,
+    t_generation_context context,
     const std::map<std::string, std::string>& parsed_options,
     const std::string& /*option_string*/)
-    : t_mstch_generator(program, "json", parsed_options, true) {
+    : t_mstch_generator(
+          program,
+          std::move(context),
+          "json",
+          parsed_options,
+          true) {
   out_dir_base_ = "gen-json_experimental";
 }
 
