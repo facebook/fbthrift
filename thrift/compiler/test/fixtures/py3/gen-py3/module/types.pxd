@@ -19,6 +19,8 @@ cimport thrift.py3.exceptions
 cimport thrift.py3.types
 from folly.optional cimport cOptional
 
+cdef extern from *:
+    ctypedef string foo_Bar "foo::Bar"
 
 cdef extern from "src/gen-cpp2/module_types.h" namespace "py3::simple":
     cdef cppclass cAnEnum "py3::simple::AnEnum":
@@ -105,6 +107,7 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "py3::simple":
         bint some_bytes
         bint sender "from"
         bint cdef_ "cdef"
+        bint bytes_with_cpp_type
 
     cdef cppclass cComplexStruct "py3::simple::ComplexStruct":
         cComplexStruct() except +
@@ -118,6 +121,7 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "py3::simple":
         string some_bytes
         string sender "from"
         string cdef_ "cdef"
+        foo_Bar bytes_with_cpp_type
         cComplexStruct__isset __isset
 
 
@@ -200,7 +204,8 @@ cdef class ComplexStruct(thrift.py3.types.Struct):
         object an_enum,
         object some_bytes,
         object sender,
-        object cdef_
+        object cdef_,
+        object bytes_with_cpp_type
     ) except *
 
     @staticmethod

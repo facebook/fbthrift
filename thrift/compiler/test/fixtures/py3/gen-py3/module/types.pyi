@@ -103,7 +103,8 @@ class ComplexStruct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[
         an_enum: _typing.Optional[AnEnum]=None,
         some_bytes: _typing.Optional[bytes]=None,
         sender: _typing.Optional[str]=None,
-        cdef_: _typing.Optional[str]=None
+        cdef_: _typing.Optional[str]=None,
+        bytes_with_cpp_type: _typing.Optional[bytes]=None
     ) -> None: ...
 
     def __call__(
@@ -115,7 +116,8 @@ class ComplexStruct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[
         an_enum: _typing.Union[AnEnum, NOTSETTYPE, None]=NOTSET,
         some_bytes: _typing.Union[bytes, NOTSETTYPE, None]=NOTSET,
         sender: _typing.Union[str, NOTSETTYPE, None]=NOTSET,
-        cdef_: _typing.Union[str, NOTSETTYPE, None]=NOTSET
+        cdef_: _typing.Union[str, NOTSETTYPE, None]=NOTSET,
+        bytes_with_cpp_type: _typing.Union[bytes, NOTSETTYPE, None]=NOTSET
     ) -> ComplexStruct: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['ComplexStruct'], bytes]]: ...
@@ -141,6 +143,8 @@ class ComplexStruct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[
     def sender(self) -> str: ...
     @property
     def cdef_(self) -> str: ...
+    @property
+    def bytes_with_cpp_type(self) -> bytes: ...
 
 
 _List__i16T = _typing.TypeVar('_List__i16T', bound=_typing.Sequence[int])
@@ -548,3 +552,4 @@ WORD_LIST: List__string = ...
 SOME_MAP: List__Map__i32_double = ...
 DIGITS: Set__i32 = ...
 A_CONST_MAP: Map__string_SimpleStruct = ...
+foo_bar = bytes

@@ -29,6 +29,8 @@ struct SimpleStruct {
   7: float smaller_real
 }
 
+typedef binary (cpp.type = "foo::Bar") foo_bar
+
 struct ComplexStruct {
   1: SimpleStruct structOne
   2: SimpleStruct structTwo
@@ -38,6 +40,7 @@ struct ComplexStruct {
   6: binary some_bytes
   7: string from (py3.rename = "sender")
   8: string cdef
+  9: foo_bar bytes_with_cpp_type
 }
 
 const bool A_BOOL = true
