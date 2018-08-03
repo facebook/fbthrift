@@ -160,7 +160,7 @@ class ThreadManager : public virtual folly::Executor {
    * @param timeout Time to wait in milliseconds to add a task when a
    * pending-task-count is specified. Specific cases:
    * timeout = 0  : Wait forever to queue task.
-   * timeout = -1 : Return immediately if pending task count exceeds specified
+   * timeout = -1 : Throw immediately if pending task count exceeds specified
    * max
    * @param expiration when nonzero, the number of milliseconds the task is
    * valid to be run; if exceeded, the task will be dropped off the queue and
@@ -224,6 +224,8 @@ class ThreadManager : public virtual folly::Executor {
    * specified no limit on pending tasks. maxQueueLen is the maximum total
    * number of non-completed tasks ThreadManager can handle. 0 means a large
    * default.
+   *
+   * @param maxQueueLen - deprecated
    */
   template <typename SemType = folly::LifoSem>
   static std::shared_ptr<ThreadManager>
@@ -237,6 +239,8 @@ class ThreadManager : public virtual folly::Executor {
    * PriorityThreadManager, requests are still served from a single
    * thread pool. Arguments are the same as the standard threadManager,
    * except that MaxQueueLen is the max for any single priority
+   *
+   * @param maxQueueLen - deprecated
    */
   template <typename SemType = folly::LifoSem>
   static std::shared_ptr<ThreadManager>
@@ -344,6 +348,8 @@ class PriorityThreadManager : public ThreadManager {
    *
    * At least NORMAL_PRIORITY_MINIMUM_THREADS threads are created for
    * priority NORMAL.
+   *
+   * @param maxQueueLen - deprecated
    */
   template <typename SemType = folly::LifoSem>
   static std::shared_ptr<PriorityThreadManager>
@@ -356,6 +362,8 @@ class PriorityThreadManager : public ThreadManager {
   /**
    * Creates a priority-aware thread manager that uses counts[X]
    * worker threads for priority X.
+   *
+   * @param maxQueueLen - deprecated
    */
   template <typename SemType = folly::LifoSem>
   static std::shared_ptr<PriorityThreadManager>
@@ -371,6 +379,7 @@ class PriorityThreadManager : public ThreadManager {
    *
    * @param normalThreadsCount - number of threads of NORMAL priority, defaults
    *          to the number of CPUs on the system
+   * @param maxQueueLen - deprecated
    */
   template <typename SemType = folly::LifoSem>
   static std::shared_ptr<PriorityThreadManager>

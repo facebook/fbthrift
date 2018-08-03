@@ -27,6 +27,7 @@
 #include <folly/synchronization/LifoSem.h>
 #include <folly/synchronization/SmallLocks.h>
 #include <thrift/lib/cpp/concurrency/Monitor.h>
+#include <thrift/lib/cpp/concurrency/PriorityUMPMCQueue.h>
 
 namespace apache { namespace thrift { namespace concurrency {
 
@@ -100,7 +101,7 @@ class ThreadManager::ImplT : public ThreadManager,
  public:
   explicit ImplT(size_t pendingTaskCountMaxArg = 0,
                  bool enableTaskStats = false,
-                 size_t maxQueueLen = 0,
+                 size_t = 0, /* maxQueueLen deprecated */
                  size_t numPriorities = 1) :
     workerCount_(0),
     intendedWorkerCount_(0),
@@ -115,15 +116,7 @@ class ThreadManager::ImplT : public ThreadManager,
     executingTimeUs_(0),
     numTasks_(0),
     state_(ThreadManager::UNINITIALIZED),
-    tasks_(numPriorities, maxQueueLen == 0
-             ? (pendingTaskCountMax_ > 0
-                  // TODO(philipp): Fix synchronization issues between "pending"
-                  // and queuing logic.  For now, if pendingTaskCountMax_ > 0,
-                  // let's have more room in the queue to avoid issues in most
-                  // of cases.
-                  ? pendingTaskCountMax_ + 1024
-                  : ThreadManager::DEFAULT_MAX_QUEUE_SIZE)
-             : maxQueueLen),
+    tasks_(numPriorities),
     monitor_(&mutex_),
     maxMonitor_(&mutex_),
     deadWorkerMonitor_(&mutex_),
@@ -289,7 +282,7 @@ class ThreadManager::ImplT : public ThreadManager,
   ThreadManager::STATE state_;
   shared_ptr<ThreadFactory> threadFactory_;
 
-  folly::PriorityMPMCQueue<std::unique_ptr<Task>> tasks_;
+  PriorityUMPMCQueue<std::unique_ptr<Task>> tasks_;
 
   Mutex mutex_;
   // monitor_ is signaled on any of the following events:

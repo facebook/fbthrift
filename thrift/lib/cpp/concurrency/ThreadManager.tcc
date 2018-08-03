@@ -309,21 +309,14 @@ void ThreadManager::ImplT<SemType>::removeWorkerImpl(size_t value, bool afterTas
   if (afterTasks) {
     // Insert nullptr tasks onto the tasks queue to ask workers to exit
     // after all current tasks are completed
-    size_t bad = 0;
     for (size_t n = 0; n < value; ++n) {
-      if (!tasks_.write(nullptr)) {
-        LOG(ERROR) << "Can't remove worker. Increase maxQueueLen?";
-        bad++;
-        continue;
-      }
+      tasks_.write(nullptr);
       ++totalTaskCount_;
     }
     monitor_.notifyAll();
     for (size_t n = 0; n < value; ++n) {
       waitSem_.post();
     }
-    intendedWorkerCount_ += bad;
-    value -= bad;
   } else {
     // Ask threads to exit ASAP
     workersToStop_ += value;
@@ -400,15 +393,7 @@ void ThreadManager::ImplT<SemType>::add(
 
   auto task = std::make_unique<Task>(
       std::move(value), std::chrono::milliseconds{expiration});
-  auto timeout_ms = std::chrono::milliseconds{timeout};
-  auto writeSucceeded = pendingTaskCountMax_ == 0 && timeout > 0 && canSleep()
-      ? tasks_.writeWithPriority(std::move(task), priority, timeout_ms)
-      : tasks_.writeWithPriority(std::move(task), priority);
-  if (!writeSucceeded) {
-    LOG(ERROR) << "Failed to enqueue item (name prefix: " << getNamePrefix()
-               << "). Increase maxQueueLen?";
-    throw TooManyPendingTasksException();
-  }
+  tasks_.writeWithPriority(std::move(task), priority);
 
   ++totalTaskCount_;
 
@@ -439,9 +424,8 @@ bool ThreadManager::ImplT<SemType>::tryAdd(
 
   auto task = std::make_unique<Task>(std::move(value),
                                        std::chrono::milliseconds{0});
-  if (!tasks_.writeWithPriority(std::move(task), priority)) {
-    return false;
-  }
+
+  tasks_.writeWithPriority(std::move(task), priority);
 
   ++totalTaskCount_;
 

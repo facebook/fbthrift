@@ -316,58 +316,6 @@ TEST_P(SharedServerTests, LargeSendTest) {
   EXPECT_TRUE(compareIOBufChain(request.get(), response.get()));
 }
 
-TEST_P(SharedServerTests, OverloadTest) {
-  const int numThreads = 1;
-  const int queueSize = 10;
-  auto tm = concurrency::ThreadManager::newSimpleThreadManager(
-      numThreads, 0, false, queueSize);
-  tm->threadFactory(std::make_shared<concurrency::PosixThreadFactory>());
-  tm->start();
-  serverFactory->useSimpleThreadManager(false);
-  serverFactory->useThreadManager(tm);
-
-  init();
-
-  auto tval = 10000;
-  int too_full = 0;
-  int exception_headers = 0;
-  int completed = 0;
-  auto lambda = [&](ClientReceiveState&& state) {
-    std::string response;
-    auto headers = state.header()->getHeaders();
-    auto exHeader = headers.find("ex");
-    if (exHeader != headers.end()) {
-      EXPECT_EQ(kQueueOverloadedErrorCode, exHeader->second);
-      exception_headers++;
-    }
-    auto ew =
-        TestServiceAsyncClient::recv_wrapped_sendResponse(response, state);
-    if (ew) {
-      usleep(tval); // Wait for large task to finish
-      too_full++;
-    }
-
-    completed++;
-
-    if (completed == (numThreads + queueSize + 1)) {
-      base->terminateLoopSoon();
-    }
-  };
-
-  // Fill up the server's request buffer
-  client->sendResponse(lambda, tval);
-  for (int i = 0; i < numThreads + queueSize; i++) {
-    client->sendResponse(lambda, 0);
-  }
-  base->loop();
-
-  // We expect one 'too full' exception (queue size is 2, one
-  // being worked on)
-  // And three timeouts
-  EXPECT_EQ(1, too_full);
-  EXPECT_EQ(1, exception_headers);
-}
-
 TEST_P(SharedServerTests, OnewaySyncClientTest) {
   init();
 
