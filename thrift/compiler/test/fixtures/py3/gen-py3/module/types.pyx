@@ -971,7 +971,7 @@ cdef class ComplexStruct(thrift.py3.types.Struct):
             deref(c_inst).cdef_ = cdef_.encode('UTF-8')
             deref(c_inst).__isset.cdef_ = True
         if bytes_with_cpp_type is not None:
-            deref(c_inst).bytes_with_cpp_type = bytes_with_cpp_type
+            deref(c_inst).bytes_with_cpp_type = foo_Bar(move(<string>bytes_with_cpp_type))
             deref(c_inst).__isset.bytes_with_cpp_type = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
@@ -1044,7 +1044,7 @@ cdef class ComplexStruct(thrift.py3.types.Struct):
     @property
     def bytes_with_cpp_type(self):
 
-        return self._cpp_obj.get().bytes_with_cpp_type
+        return (<const char*>self._cpp_obj.get().bytes_with_cpp_type.data())[:self._cpp_obj.get().bytes_with_cpp_type.size()]
 
 
     def __hash__(ComplexStruct self):

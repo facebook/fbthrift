@@ -25,6 +25,9 @@ to a python type.
 }}{{#type:iobufRef?}}{{!
   }}__iobuf.from_unique_ptr(move_iobuf(result.value())){{!
 }}{{/type:iobufRef?}}{{!
+}}{{#type:flexibleBinary?}}{{!
+  }}(<const char*>result.value().data())[:result.value().size()]{{!
+}}{{/type:flexibleBinary?}}{{!
 }}{{^type:hasCustomTypeBehavior?}}{{!
 }}{{#type:bool?}}<bint>result.value(){{/type:bool?}}{{!
 }}{{#type:byte?}}result.value(){{/type:byte?}}{{!

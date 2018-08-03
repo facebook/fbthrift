@@ -25,6 +25,9 @@ This template assumes that the Python object is in a variable named <field>.
 
 }}{{#type:iobuf?}}deref((<__iobuf.IOBuf>{{field:name}}).c_clone()){{/type:iobuf?}}{{!
 }}{{#type:iobufRef?}}((<__iobuf.IOBuf>{{field:name}}).c_clone()){{/type:iobufRef?}}{{!
+}}{{#type:flexibleBinary?}}{{!
+  }}{{> types/CythonCppType}}(move(<string>{{field:name}})){{!
+}}{{/type:flexibleBinary?}}{{!
 }}{{^type:hasCustomTypeBehavior?}}{{!
 }}{{#type:bool?}}{{field:name}}{{/type:bool?}}{{!
 }}{{#type:byte?}}{{field:name}}{{/type:byte?}}{{!

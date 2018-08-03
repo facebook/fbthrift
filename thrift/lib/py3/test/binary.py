@@ -19,12 +19,14 @@ class BinaryTests(unittest.TestCase):
             iobuf_val=IOBuf(b'mnopqr'),
             iobuf_ptr=IOBuf(b'ghijkl'),
             fbstring=b'stuvwx',
+            nonstandard_type=b'yzabcd',
         )
         self.assertEqual(val.no_special_type, b'abcdef')
         self.assertEqual(bytes(val.iobuf_val), b'mnopqr')
         assert val.iobuf_ptr is not None
         self.assertEqual(bytes(val.iobuf_ptr), b'ghijkl')
         self.assertEqual(val.fbstring, b'stuvwx')
+        self.assertEqual(val.nonstandard_type, b'yzabcd')
 
 
 class BinaryHandler(BinaryServiceInterface):
@@ -37,11 +39,13 @@ class BinaryHandler(BinaryServiceInterface):
         assert val.iobuf_ptr is not None
         self.unit_test.assertEqual(bytes(val.iobuf_ptr), b'c3')
         self.unit_test.assertEqual(val.fbstring, b'c4')
+        self.unit_test.assertEqual(val.nonstandard_type, b'c5')
         return Binaries(
             no_special_type=b's1',
             iobuf_val=IOBuf(b's2'),
             iobuf_ptr=IOBuf(b's3'),
             fbstring=b's4',
+            nonstandard_type=b's5',
         )
 
     async def sendRecvBinary(self, val: bytes) -> bytes:
@@ -59,6 +63,10 @@ class BinaryHandler(BinaryServiceInterface):
     async def sendRecvFbstring(self, val: bytes) -> bytes:
         self.unit_test.assertEqual(val, b'cv4')
         return b'sv4'
+
+    async def sendRecvBuffer(self, val: bytes) -> bytes:
+        self.unit_test.assertEqual(val, b'cv5')
+        return b'sv5'
 
 
 class TestServer:
@@ -97,12 +105,14 @@ class ClientBinaryServerTests(unittest.TestCase):
                         iobuf_val=IOBuf(b'c2'),
                         iobuf_ptr=IOBuf(b'c3'),
                         fbstring=b'c4',
+                        nonstandard_type=b'c5',
                     ))
                     self.assertEqual(val.no_special_type, b's1')
                     self.assertEqual(bytes(val.iobuf_val), b's2')
                     assert val.iobuf_ptr is not None
                     self.assertEqual(bytes(val.iobuf_ptr), b's3')
                     self.assertEqual(val.fbstring, b's4')
+                    self.assertEqual(val.nonstandard_type, b's5')
 
                     val = await client.sendRecvBinary(b'cv1')
                     self.assertEqual(val, b'sv1')
@@ -115,5 +125,8 @@ class ClientBinaryServerTests(unittest.TestCase):
 
                     val = await client.sendRecvFbstring(b'cv4')
                     self.assertEqual(val, b'sv4')
+
+                    val = await client.sendRecvBuffer(b'cv5')
+                    self.assertEqual(val, b'sv5')
 
         loop.run_until_complete(inner_test())

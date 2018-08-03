@@ -34,6 +34,13 @@ return self.__{{field:name}}{{!
     self.__{{field:name}} = __iobuf.IOBuf.create(deref(self._cpp_obj).{{field:name}}.get(), self)
 return self.__{{field:name}}{{!
 }}{{/type:iobufRef?}}{{!
+}}{{#type:flexibleBinary?}}{{!
+  }}return (<const char*>self._cpp_obj.get().{{field:name}}{{!
+    }}{{#program:optionals?}}{{#field:optional?}}.value(){{/field:optional?}}{{/program:optionals?}}{{!
+    }}.data())[:self._cpp_obj.get().{{field:name}}{{!
+    }}{{#program:optionals?}}{{#field:optional?}}.value(){{/field:optional?}}{{/program:optionals?}}{{!
+    }}.size()]{{!
+}}{{/type:flexibleBinary?}}{{!
 }}{{^type:hasCustomTypeBehavior?}}{{!
 }}{{#field:reference?}}{{!
 }}if self.__{{field:name}} is None:

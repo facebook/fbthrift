@@ -308,7 +308,14 @@ mstch::map t_mstch_py3_generator::extend_type(const t_type& type) {
 
   bool isIOBuf = (cpp_type == "folly::IOBuf");
   bool isIOBufRef = (cpp_type == "std::unique_ptr<folly::IOBuf>");
-  bool hasCustomTypeBehavior = isIOBuf || isIOBufRef;
+  bool isFlexibleBinary =
+      (type.is_binary() && has_custom_type && !isIOBuf && !isIOBufRef);
+  // We know that folly::fbstring is completely substitutable for std::string,
+  // and it's a common-enough type to special-case:
+  if (cpp_type == "folly::fbstring" || cpp_type == "::folly::fbstring") {
+    isFlexibleBinary = false;
+  }
+  bool hasCustomTypeBehavior = isIOBuf || isIOBufRef || isFlexibleBinary;
 
   mstch::map result{
       {"modulePath", modulePath},
@@ -328,6 +335,7 @@ mstch::map t_mstch_py3_generator::extend_type(const t_type& type) {
       {"iobuf?", isIOBuf},
       {"iobufRef?", isIOBufRef},
       {"iobufWrapper?", (isIOBuf || isIOBufRef)},
+      {"flexibleBinary?", isFlexibleBinary},
       {"hasCustomTypeBehavior?", hasCustomTypeBehavior},
   };
   return result;

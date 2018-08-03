@@ -25,6 +25,9 @@ on a struct.
 }}{{#type:iobufRef?}}{{!
   }}deref(c_inst).{{field:name}} = (<__iobuf.IOBuf?>{{field:name}}).c_clone(){{!
 }}{{/type:iobufRef?}}{{!
+}}{{#type:flexibleBinary?}}{{!
+  }}deref(c_inst).{{field:name}} = {{> types/CythonCppType}}(move(<string>{{field:name}})){{!
+}}{{/type:flexibleBinary?}}{{!
 }}{{^type:hasCustomTypeBehavior?}}{{!
 }}{{#field:reference?}}{{!
 }}deref(c_inst).{{field:name}} = {{!

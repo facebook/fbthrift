@@ -1,6 +1,7 @@
 from cpython.object cimport PyTypeObject
 from folly.iobuf cimport cIOBuf, IOBuf
 from libc.stdint cimport uint32_t
+from libcpp.string cimport string
 
 cdef extern from "":
     """
@@ -40,3 +41,17 @@ cdef class BadEnum:
 
 
 cdef translate_cpp_enum_to_python(object EnumClass, int value)
+
+
+# For cpp.type'd binary values we need a "string" that cython doesn't think
+# is a string (so it doesn't generate all the string stuff)
+cdef extern from "<string>" namespace "std" nogil:
+    cdef cppclass bstring "std::basic_string<char>":
+        bstring(string&) except +
+        const char* data()
+        size_t size()
+        size_t length()
+
+
+cdef extern from "<utility>" namespace "std" nogil:
+    cdef string move(string)

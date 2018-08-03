@@ -26,6 +26,7 @@ from folly cimport (
   cFollyUnit,
   c_unit
 )
+from thrift.py3.types cimport move
 
 cimport folly.futures
 from folly.executor cimport get_executor

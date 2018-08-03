@@ -1,12 +1,16 @@
+cpp_include "thrift/lib/py3/test/BinaryTypes.h"
+
 typedef binary (cpp2.type = "folly::IOBuf") IOBuf
 typedef binary (cpp2.type = "std::unique_ptr<folly::IOBuf>") IOBufPtr
 typedef binary (cpp2.type = "folly::fbstring") fbstring_type
+typedef binary (cpp2.type = "test::Buffer") Buffer
 
 struct Binaries {
   1: binary no_special_type
   2: IOBuf iobuf_val
   3: IOBufPtr iobuf_ptr
   4: fbstring_type fbstring
+  5: Buffer nonstandard_type
 }
 
 service BinaryService {
@@ -15,4 +19,5 @@ service BinaryService {
   IOBuf sendRecvIOBuf(1: IOBuf val)
   IOBufPtr sendRecvIOBufPtr(1: IOBufPtr val)
   fbstring_type sendRecvFbstring(1: fbstring_type val)
+  Buffer sendRecvBuffer(1: Buffer val)
 }

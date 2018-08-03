@@ -17,10 +17,11 @@ from thrift.py3.exceptions cimport cTException
 cimport folly.iobuf as __iobuf
 cimport thrift.py3.exceptions
 cimport thrift.py3.types
+from thrift.py3.types cimport bstring, move
 from folly.optional cimport cOptional
 
 cdef extern from *:
-    ctypedef string foo_Bar "foo::Bar"
+    ctypedef bstring foo_Bar "foo::Bar"
 
 cdef extern from "src/gen-cpp2/module_types.h" namespace "py3::simple":
     cdef cppclass cAnEnum "py3::simple::AnEnum":

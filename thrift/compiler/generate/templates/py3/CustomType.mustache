@@ -125,5 +125,8 @@ cdef extern from * nogil:
 {{/type:map?}}
 {{^type:container?}}{{^type:iobufWrapper?}}
 cdef extern from *:
-    ctypedef {{> types/CythonCppBasicType}} {{type:cythonCustomType}} "{{type:cppCustomType}}"
+    ctypedef {{!
+    }}{{#type:flexibleBinary?}}bstring{{/type:flexibleBinary?}}{{!
+    }}{{^type:flexibleBinary?}}{{> types/CythonCppBasicType}}{{/type:flexibleBinary?}}{{!
+    }} {{type:cythonCustomType}} "{{type:cppCustomType}}"
 {{/type:iobufWrapper?}}{{/type:container?}}
