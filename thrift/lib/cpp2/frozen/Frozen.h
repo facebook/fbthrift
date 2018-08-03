@@ -34,8 +34,8 @@
 #include <folly/Memory.h>
 #include <folly/Optional.h>
 #include <folly/Range.h>
-#include <folly/container/F14Map-pre.h>
-#include <folly/container/F14Set-pre.h>
+#include <folly/container/F14Map-fwd.h>
+#include <folly/container/F14Set-fwd.h>
 #include <folly/experimental/Bits.h>
 #include <folly/hash/Hash.h>
 #include <folly/lang/Bits.h>
