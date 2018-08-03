@@ -40,12 +40,12 @@ class Struct final : private apache::thrift::detail::st::ComparisonOperators<Str
   Struct(apache::thrift::FragileConstructor,  ::module0::Struct first__arg,  ::module1::Struct second__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    first = arg.move();
+    first = arg.extract();
     __isset.first = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
-    second = arg.move();
+    second = arg.extract();
     __isset.second = true;
   }
 
@@ -156,12 +156,12 @@ class BigStruct final : private apache::thrift::detail::st::ComparisonOperators<
   BigStruct(apache::thrift::FragileConstructor,  ::module2::Struct s__arg, int32_t id__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    s = arg.move();
+    s = arg.extract();
     __isset.s = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
-    id = arg.move();
+    id = arg.extract();
     __isset.id = true;
   }
 

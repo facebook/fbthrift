@@ -1411,12 +1411,12 @@ class structA final : private apache::thrift::detail::st::ComparisonOperators<st
   structA(apache::thrift::FragileConstructor, int32_t a__arg, std::string b__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    a = arg.move();
+    a = arg.extract();
     __isset.a = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
-    b = arg.move();
+    b = arg.extract();
     __isset.b = true;
   }
 
@@ -2099,152 +2099,152 @@ class structC final : private apache::thrift::detail::st::ComparisonOperators<st
   structC(apache::thrift::FragileConstructor, int32_t a__arg, std::string b__arg, double c__arg, bool d__arg,  ::test_cpp2::cpp_reflection::enum1 e__arg,  ::test_cpp2::cpp_reflection::enum2 f__arg,  ::test_cpp2::cpp_reflection::union1 g__arg,  ::test_cpp2::cpp_reflection::unionA h__arg,  ::test_cpp2::cpp_reflection::unionA i__arg, std::vector<int32_t> j__arg, std::vector<int32_t> j1__arg, std::vector< ::test_cpp2::cpp_reflection::enum1> j2__arg, std::vector< ::test_cpp2::cpp_reflection::structA> j3__arg, std::set<int32_t> k__arg, std::set<int32_t> k1__arg, std::set< ::test_cpp2::cpp_reflection::enum2> k2__arg, std::set< ::test_cpp2::cpp_reflection::structB> k3__arg, std::map<int32_t, int32_t> l__arg, std::map<int32_t, int32_t> l1__arg, std::map<int32_t,  ::test_cpp2::cpp_reflection::enum1> l2__arg, std::map<int32_t,  ::test_cpp2::cpp_reflection::structB> l3__arg, std::map< ::test_cpp2::cpp_reflection::enum1, int32_t> m1__arg, std::map< ::test_cpp2::cpp_reflection::enum1,  ::test_cpp2::cpp_reflection::enum2> m2__arg, std::map< ::test_cpp2::cpp_reflection::enum1,  ::test_cpp2::cpp_reflection::structB> m3__arg, std::map<std::string, int32_t> n1__arg, std::map<std::string,  ::test_cpp2::cpp_reflection::enum1> n2__arg, std::map<std::string,  ::test_cpp2::cpp_reflection::structB> n3__arg, std::map< ::test_cpp2::cpp_reflection::structA, int32_t> o1__arg, std::map< ::test_cpp2::cpp_reflection::structA,  ::test_cpp2::cpp_reflection::enum1> o2__arg, std::map< ::test_cpp2::cpp_reflection::structA,  ::test_cpp2::cpp_reflection::structB> o3__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    a = arg.move();
+    a = arg.extract();
     __isset.a = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
-    b = arg.move();
+    b = arg.extract();
     __isset.b = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<3, _T> arg) {
-    c = arg.move();
+    c = arg.extract();
     __isset.c = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<4, _T> arg) {
-    d = arg.move();
+    d = arg.extract();
     __isset.d = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<5, _T> arg) {
-    e = arg.move();
+    e = arg.extract();
     __isset.e = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<6, _T> arg) {
-    f = arg.move();
+    f = arg.extract();
     __isset.f = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<7, _T> arg) {
-    g = arg.move();
+    g = arg.extract();
     __isset.g = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<8, _T> arg) {
-    h = arg.move();
+    h = arg.extract();
     __isset.h = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<9, _T> arg) {
-    i = arg.move();
+    i = arg.extract();
     __isset.i = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<10, _T> arg) {
-    j = arg.move();
+    j = arg.extract();
     __isset.j = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<11, _T> arg) {
-    j1 = arg.move();
+    j1 = arg.extract();
     __isset.j1 = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<12, _T> arg) {
-    j2 = arg.move();
+    j2 = arg.extract();
     __isset.j2 = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<13, _T> arg) {
-    j3 = arg.move();
+    j3 = arg.extract();
     __isset.j3 = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<14, _T> arg) {
-    k = arg.move();
+    k = arg.extract();
     __isset.k = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<15, _T> arg) {
-    k1 = arg.move();
+    k1 = arg.extract();
     __isset.k1 = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<16, _T> arg) {
-    k2 = arg.move();
+    k2 = arg.extract();
     __isset.k2 = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<17, _T> arg) {
-    k3 = arg.move();
+    k3 = arg.extract();
     __isset.k3 = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<18, _T> arg) {
-    l = arg.move();
+    l = arg.extract();
     __isset.l = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<19, _T> arg) {
-    l1 = arg.move();
+    l1 = arg.extract();
     __isset.l1 = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<20, _T> arg) {
-    l2 = arg.move();
+    l2 = arg.extract();
     __isset.l2 = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<21, _T> arg) {
-    l3 = arg.move();
+    l3 = arg.extract();
     __isset.l3 = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<22, _T> arg) {
-    m1 = arg.move();
+    m1 = arg.extract();
     __isset.m1 = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<23, _T> arg) {
-    m2 = arg.move();
+    m2 = arg.extract();
     __isset.m2 = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<24, _T> arg) {
-    m3 = arg.move();
+    m3 = arg.extract();
     __isset.m3 = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<25, _T> arg) {
-    n1 = arg.move();
+    n1 = arg.extract();
     __isset.n1 = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<26, _T> arg) {
-    n2 = arg.move();
+    n2 = arg.extract();
     __isset.n2 = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<27, _T> arg) {
-    n3 = arg.move();
+    n3 = arg.extract();
     __isset.n3 = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<28, _T> arg) {
-    o1 = arg.move();
+    o1 = arg.extract();
     __isset.o1 = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<29, _T> arg) {
-    o2 = arg.move();
+    o2 = arg.extract();
     __isset.o2 = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<30, _T> arg) {
-    o3 = arg.move();
+    o3 = arg.extract();
     __isset.o3 = true;
   }
 
@@ -2677,30 +2677,30 @@ class struct1 final : private apache::thrift::detail::st::ComparisonOperators<st
   struct1(apache::thrift::FragileConstructor, int32_t field0__arg, std::string field1__arg,  ::test_cpp2::cpp_reflection::enum1 field2__arg,  ::test_cpp2::cpp_reflection::enum2 field3__arg,  ::test_cpp2::cpp_reflection::union1 field4__arg,  ::test_cpp2::cpp_reflection::union2 field5__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    field0 = arg.move();
+    field0 = arg.extract();
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
-    field1 = arg.move();
+    field1 = arg.extract();
     __isset.field1 = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<3, _T> arg) {
-    field2 = arg.move();
+    field2 = arg.extract();
     __isset.field2 = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<4, _T> arg) {
-    field3 = arg.move();
+    field3 = arg.extract();
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<5, _T> arg) {
-    field4 = arg.move();
+    field4 = arg.extract();
     __isset.field4 = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<6, _T> arg) {
-    field5 = arg.move();
+    field5 = arg.extract();
     __isset.field5 = true;
   }
 
@@ -2865,37 +2865,37 @@ class struct2 final : private apache::thrift::detail::st::ComparisonOperators<st
   struct2(apache::thrift::FragileConstructor, int32_t fieldA__arg, std::string fieldB__arg,  ::test_cpp2::cpp_reflection::enum1 fieldC__arg,  ::test_cpp2::cpp_reflection::enum2 fieldD__arg,  ::test_cpp2::cpp_reflection::union1 fieldE__arg,  ::test_cpp2::cpp_reflection::union2 fieldF__arg,  ::test_cpp2::cpp_reflection::struct1 fieldG__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    fieldA = arg.move();
+    fieldA = arg.extract();
     __isset.fieldA = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
-    fieldB = arg.move();
+    fieldB = arg.extract();
     __isset.fieldB = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<3, _T> arg) {
-    fieldC = arg.move();
+    fieldC = arg.extract();
     __isset.fieldC = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<4, _T> arg) {
-    fieldD = arg.move();
+    fieldD = arg.extract();
     __isset.fieldD = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<5, _T> arg) {
-    fieldE = arg.move();
+    fieldE = arg.extract();
     __isset.fieldE = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<6, _T> arg) {
-    fieldF = arg.move();
+    fieldF = arg.extract();
     __isset.fieldF = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<7, _T> arg) {
-    fieldG = arg.move();
+    fieldG = arg.extract();
     __isset.fieldG = true;
   }
 
@@ -3073,92 +3073,92 @@ class struct3 final : private apache::thrift::detail::st::ComparisonOperators<st
   struct3(apache::thrift::FragileConstructor, int32_t fieldA__arg, std::string fieldB__arg,  ::test_cpp2::cpp_reflection::enum1 fieldC__arg,  ::test_cpp2::cpp_reflection::enum2 fieldD__arg,  ::test_cpp2::cpp_reflection::union1 fieldE__arg,  ::test_cpp2::cpp_reflection::union2 fieldF__arg,  ::test_cpp2::cpp_reflection::struct1 fieldG__arg,  ::test_cpp2::cpp_reflection::union2 fieldH__arg, std::vector<int32_t> fieldI__arg, std::vector<std::string> fieldJ__arg, std::vector<std::string> fieldK__arg, std::vector< ::test_cpp2::cpp_reflection::structA> fieldL__arg, std::set<int32_t> fieldM__arg, std::set<std::string> fieldN__arg, std::set<std::string> fieldO__arg, std::set< ::test_cpp2::cpp_reflection::structB> fieldP__arg, std::map<std::string,  ::test_cpp2::cpp_reflection::structA> fieldQ__arg, std::map<std::string,  ::test_cpp2::cpp_reflection::structB> fieldR__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    fieldA = arg.move();
+    fieldA = arg.extract();
     __isset.fieldA = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
-    fieldB = arg.move();
+    fieldB = arg.extract();
     __isset.fieldB = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<3, _T> arg) {
-    fieldC = arg.move();
+    fieldC = arg.extract();
     __isset.fieldC = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<4, _T> arg) {
-    fieldD = arg.move();
+    fieldD = arg.extract();
     __isset.fieldD = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<5, _T> arg) {
-    fieldE = arg.move();
+    fieldE = arg.extract();
     __isset.fieldE = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<6, _T> arg) {
-    fieldF = arg.move();
+    fieldF = arg.extract();
     __isset.fieldF = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<7, _T> arg) {
-    fieldG = arg.move();
+    fieldG = arg.extract();
     __isset.fieldG = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<8, _T> arg) {
-    fieldH = arg.move();
+    fieldH = arg.extract();
     __isset.fieldH = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<9, _T> arg) {
-    fieldI = arg.move();
+    fieldI = arg.extract();
     __isset.fieldI = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<10, _T> arg) {
-    fieldJ = arg.move();
+    fieldJ = arg.extract();
     __isset.fieldJ = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<11, _T> arg) {
-    fieldK = arg.move();
+    fieldK = arg.extract();
     __isset.fieldK = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<12, _T> arg) {
-    fieldL = arg.move();
+    fieldL = arg.extract();
     __isset.fieldL = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<13, _T> arg) {
-    fieldM = arg.move();
+    fieldM = arg.extract();
     __isset.fieldM = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<14, _T> arg) {
-    fieldN = arg.move();
+    fieldN = arg.extract();
     __isset.fieldN = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<15, _T> arg) {
-    fieldO = arg.move();
+    fieldO = arg.extract();
     __isset.fieldO = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<16, _T> arg) {
-    fieldP = arg.move();
+    fieldP = arg.extract();
     __isset.fieldP = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<17, _T> arg) {
-    fieldQ = arg.move();
+    fieldQ = arg.extract();
     __isset.fieldQ = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<18, _T> arg) {
-    fieldR = arg.move();
+    fieldR = arg.extract();
     __isset.fieldR = true;
   }
 
@@ -3459,21 +3459,21 @@ class struct4 final : private apache::thrift::detail::st::ComparisonOperators<st
   struct4(apache::thrift::FragileConstructor, int32_t field0__arg, std::string field1__arg,  ::test_cpp2::cpp_reflection::enum1 field2__arg, std::unique_ptr< ::test_cpp2::cpp_reflection::structA> field3__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    field0 = arg.move();
+    field0 = arg.extract();
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
-    field1 = arg.move();
+    field1 = arg.extract();
     __isset.field1 = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<3, _T> arg) {
-    field2 = arg.move();
+    field2 = arg.extract();
     __isset.field2 = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<6, _T> arg) {
-    field3 = std::make_unique<std::decay_t<_T>>(arg.move());
+    field3 = std::make_unique<std::decay_t<_T>>(arg.extract());
   }
 
   struct4(struct4&&) = default;
@@ -3600,26 +3600,26 @@ class struct5 final : private apache::thrift::detail::st::ComparisonOperators<st
   struct5(apache::thrift::FragileConstructor, int32_t field0__arg, std::string field1__arg,  ::test_cpp2::cpp_reflection::enum1 field2__arg,  ::test_cpp2::cpp_reflection::structA field3__arg,  ::test_cpp2::cpp_reflection::structB field4__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    field0 = arg.move();
+    field0 = arg.extract();
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
-    field1 = arg.move();
+    field1 = arg.extract();
     __isset.field1 = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<3, _T> arg) {
-    field2 = arg.move();
+    field2 = arg.extract();
     __isset.field2 = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<4, _T> arg) {
-    field3 = arg.move();
+    field3 = arg.extract();
     __isset.field3 = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<5, _T> arg) {
-    field4 = arg.move();
+    field4 = arg.extract();
     __isset.field4 = true;
   }
 
@@ -3772,7 +3772,7 @@ class struct_binary final : private apache::thrift::detail::st::ComparisonOperat
   struct_binary(apache::thrift::FragileConstructor, std::string bi__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    bi = arg.move();
+    bi = arg.extract();
     __isset.bi = true;
   }
 
@@ -6313,27 +6313,27 @@ class struct_with_indirections final : private apache::thrift::detail::st::Compa
   struct_with_indirections(apache::thrift::FragileConstructor, int32_t real__arg,  ::test_cpp2::cpp_reflection::FakeI32 fake__arg,  ::test_cpp2::cpp_reflection::HasANumber number__arg,  ::test_cpp2::cpp_reflection::HasAResult result__arg,  ::test_cpp2::cpp_reflection::HasAPhrase phrase__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    real = arg.move();
+    real = arg.extract();
     __isset.real = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
-    fake = arg.move();
+    fake = arg.extract();
     __isset.fake = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<3, _T> arg) {
-    number = arg.move();
+    number = arg.extract();
     __isset.number = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<4, _T> arg) {
-    result = arg.move();
+    result = arg.extract();
     __isset.result = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<5, _T> arg) {
-    phrase = arg.move();
+    phrase = arg.extract();
     __isset.phrase = true;
   }
 

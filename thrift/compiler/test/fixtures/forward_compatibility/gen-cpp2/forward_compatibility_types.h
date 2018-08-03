@@ -49,7 +49,7 @@ class OldStructure final : private apache::thrift::detail::st::ComparisonOperato
   OldStructure(apache::thrift::FragileConstructor, std::map<int16_t, double> features__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    features = arg.move();
+    features = arg.extract();
     __isset.features = true;
   }
 
@@ -152,7 +152,7 @@ class NewStructure final : private apache::thrift::detail::st::ComparisonOperato
   NewStructure(apache::thrift::FragileConstructor, std::map<int16_t, double> features__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    features = arg.move();
+    features = arg.extract();
     __isset.features = true;
   }
 
@@ -255,7 +255,7 @@ class NewStructure2 final : private apache::thrift::detail::st::ComparisonOperat
   NewStructure2(apache::thrift::FragileConstructor,  ::cpp2::FloatFeatures features__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    features = arg.move();
+    features = arg.extract();
     __isset.features = true;
   }
 
@@ -358,17 +358,17 @@ class NewStructureNested final : private apache::thrift::detail::st::ComparisonO
   NewStructureNested(apache::thrift::FragileConstructor, std::vector< ::cpp2::FloatFeatures> lst__arg, std::map<int16_t,  ::cpp2::FloatFeatures> mp__arg, std::set< ::cpp2::FloatFeatures> s__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    lst = arg.move();
+    lst = arg.extract();
     __isset.lst = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
-    mp = arg.move();
+    mp = arg.extract();
     __isset.mp = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<3, _T> arg) {
-    s = arg.move();
+    s = arg.extract();
     __isset.s = true;
   }
 
@@ -493,7 +493,7 @@ class NewStructureNestedField final : private apache::thrift::detail::st::Compar
   NewStructureNestedField(apache::thrift::FragileConstructor,  ::cpp2::NewStructureNested f__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    f = arg.move();
+    f = arg.extract();
     __isset.f = true;
   }
 

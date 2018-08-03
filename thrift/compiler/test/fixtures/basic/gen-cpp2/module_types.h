@@ -88,27 +88,27 @@ class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<M
   MyStruct(apache::thrift::FragileConstructor, int64_t MyIntField__arg, std::string MyStringField__arg,  ::cpp2::MyDataItem MyDataField__arg, int64_t major__arg,  ::cpp2::MyEnum myEnum__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    MyIntField = arg.move();
+    MyIntField = arg.extract();
     __isset.MyIntField = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
-    MyStringField = arg.move();
+    MyStringField = arg.extract();
     __isset.MyStringField = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<3, _T> arg) {
-    MyDataField = arg.move();
+    MyDataField = arg.extract();
     __isset.MyDataField = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<4, _T> arg) {
-    major = arg.move();
+    major = arg.extract();
     __isset.major = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<5, _T> arg) {
-    myEnum = arg.move();
+    myEnum = arg.extract();
     __isset.myEnum = true;
   }
 

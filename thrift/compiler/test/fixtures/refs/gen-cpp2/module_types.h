@@ -511,15 +511,15 @@ class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<M
   MyStruct(apache::thrift::FragileConstructor, std::unique_ptr< ::cpp2::MyField> opt_ref__arg, std::unique_ptr< ::cpp2::MyField> ref__arg, std::unique_ptr< ::cpp2::MyField> req_ref__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    opt_ref = std::make_unique<std::decay_t<_T>>(arg.move());
+    opt_ref = std::make_unique<std::decay_t<_T>>(arg.extract());
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
-    ref = std::make_unique<std::decay_t<_T>>(arg.move());
+    ref = std::make_unique<std::decay_t<_T>>(arg.extract());
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<3, _T> arg) {
-    req_ref = std::make_unique<std::decay_t<_T>>(arg.move());
+    req_ref = std::make_unique<std::decay_t<_T>>(arg.extract());
   }
 
   MyStruct(MyStruct&&) = default;
@@ -609,16 +609,16 @@ class StructWithUnion final : private apache::thrift::detail::st::ComparisonOper
   StructWithUnion(apache::thrift::FragileConstructor, std::unique_ptr< ::cpp2::MyUnion> u__arg, double aDouble__arg,  ::cpp2::MyField f__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    u = std::make_unique<std::decay_t<_T>>(arg.move());
+    u = std::make_unique<std::decay_t<_T>>(arg.extract());
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
-    aDouble = arg.move();
+    aDouble = arg.extract();
     __isset.aDouble = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<3, _T> arg) {
-    f = arg.move();
+    f = arg.extract();
     __isset.f = true;
   }
 
@@ -728,7 +728,7 @@ class RecursiveStruct final : private apache::thrift::detail::st::ComparisonOper
   RecursiveStruct(apache::thrift::FragileConstructor, std::vector< ::cpp2::RecursiveStruct> mes__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    mes = arg.move();
+    mes = arg.extract();
     __isset.mes = true;
   }
 
@@ -829,27 +829,27 @@ class StructWithContainers final : private apache::thrift::detail::st::Compariso
   StructWithContainers(apache::thrift::FragileConstructor, std::unique_ptr<std::vector<int32_t>> list_ref__arg, std::unique_ptr<std::set<int32_t>> set_ref__arg, std::unique_ptr<std::map<int32_t, int32_t>> map_ref__arg, std::unique_ptr<std::vector<int32_t>> list_ref_unique__arg, std::shared_ptr<std::set<int32_t>> set_ref_shared__arg, std::shared_ptr<const std::vector<int32_t>> list_ref_shared_const__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    list_ref = std::make_unique<std::decay_t<_T>>(arg.move());
+    list_ref = std::make_unique<std::decay_t<_T>>(arg.extract());
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
-    set_ref = std::make_unique<std::decay_t<_T>>(arg.move());
+    set_ref = std::make_unique<std::decay_t<_T>>(arg.extract());
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<3, _T> arg) {
-    map_ref = std::make_unique<std::decay_t<_T>>(arg.move());
+    map_ref = std::make_unique<std::decay_t<_T>>(arg.extract());
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<4, _T> arg) {
-    list_ref_unique = std::make_unique<std::decay_t<_T>>(arg.move());
+    list_ref_unique = std::make_unique<std::decay_t<_T>>(arg.extract());
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<5, _T> arg) {
-    set_ref_shared = std::make_shared<std::decay_t<_T>>(arg.move());
+    set_ref_shared = std::make_shared<std::decay_t<_T>>(arg.extract());
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<6, _T> arg) {
-    list_ref_shared_const = std::make_shared<std::decay_t<_T>>(arg.move());
+    list_ref_shared_const = std::make_shared<std::decay_t<_T>>(arg.extract());
   }
 
   StructWithContainers(StructWithContainers&&) = default;
@@ -1125,15 +1125,15 @@ class StructWithRef final : private apache::thrift::detail::st::ComparisonOperat
   StructWithRef(apache::thrift::FragileConstructor, std::unique_ptr< ::cpp2::Empty> def_field__arg, std::unique_ptr< ::cpp2::Empty> opt_field__arg, std::unique_ptr< ::cpp2::Empty> req_field__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    def_field = std::make_unique<std::decay_t<_T>>(arg.move());
+    def_field = std::make_unique<std::decay_t<_T>>(arg.extract());
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
-    opt_field = std::make_unique<std::decay_t<_T>>(arg.move());
+    opt_field = std::make_unique<std::decay_t<_T>>(arg.extract());
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<3, _T> arg) {
-    req_field = std::make_unique<std::decay_t<_T>>(arg.move());
+    req_field = std::make_unique<std::decay_t<_T>>(arg.extract());
   }
 
   StructWithRef(StructWithRef&&) = default;
@@ -1223,15 +1223,15 @@ class StructWithRefTypeUnique final : private apache::thrift::detail::st::Compar
   StructWithRefTypeUnique(apache::thrift::FragileConstructor, std::unique_ptr< ::cpp2::Empty> def_field__arg, std::unique_ptr< ::cpp2::Empty> opt_field__arg, std::unique_ptr< ::cpp2::Empty> req_field__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    def_field = std::make_unique<std::decay_t<_T>>(arg.move());
+    def_field = std::make_unique<std::decay_t<_T>>(arg.extract());
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
-    opt_field = std::make_unique<std::decay_t<_T>>(arg.move());
+    opt_field = std::make_unique<std::decay_t<_T>>(arg.extract());
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<3, _T> arg) {
-    req_field = std::make_unique<std::decay_t<_T>>(arg.move());
+    req_field = std::make_unique<std::decay_t<_T>>(arg.extract());
   }
 
   StructWithRefTypeUnique(StructWithRefTypeUnique&&) = default;

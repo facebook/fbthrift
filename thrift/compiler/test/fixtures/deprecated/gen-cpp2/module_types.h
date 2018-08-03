@@ -43,15 +43,15 @@ class House final : private apache::thrift::detail::st::ComparisonOperators<Hous
   House(apache::thrift::FragileConstructor,  ::cpp2::ColorID id__arg, std::string houseName__arg, std::set< ::cpp2::ColorID> houseColors__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    id = arg.move();
+    id = arg.extract();
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
-    houseName = arg.move();
+    houseName = arg.extract();
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<3, _T> arg) {
-    houseColors = arg.move();
+    houseColors = arg.extract();
   }
 
   House(House&&) = default;

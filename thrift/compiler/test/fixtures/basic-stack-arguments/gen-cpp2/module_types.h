@@ -84,12 +84,12 @@ class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<M
   MyStruct(apache::thrift::FragileConstructor, int64_t MyIntField__arg, std::string MyStringField__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    MyIntField = arg.move();
+    MyIntField = arg.extract();
     __isset.MyIntField = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
-    MyStringField = arg.move();
+    MyStringField = arg.extract();
     __isset.MyStringField = true;
   }
 

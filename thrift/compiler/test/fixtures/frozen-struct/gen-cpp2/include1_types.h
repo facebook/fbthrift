@@ -38,12 +38,12 @@ class IncludedA final : private apache::thrift::detail::st::ComparisonOperators<
   IncludedA(apache::thrift::FragileConstructor, int32_t i32Field__arg, std::string strField__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    i32Field = arg.move();
+    i32Field = arg.extract();
     __isset.i32Field = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
-    strField = arg.move();
+    strField = arg.extract();
     __isset.strField = true;
   }
 

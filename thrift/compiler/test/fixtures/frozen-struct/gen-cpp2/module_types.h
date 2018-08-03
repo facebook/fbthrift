@@ -86,32 +86,32 @@ class ModuleA final : private apache::thrift::detail::st::ComparisonOperators<Mo
   ModuleA(apache::thrift::FragileConstructor, int32_t i32Field__arg, std::string strField__arg, std::vector<int16_t> listField__arg, std::map<std::string, int32_t> mapField__arg,  ::some::ns::IncludedA inclAField__arg,  ::some::ns::IncludedB inclBField__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    i32Field = arg.move();
+    i32Field = arg.extract();
     __isset.i32Field = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
-    strField = arg.move();
+    strField = arg.extract();
     __isset.strField = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<3, _T> arg) {
-    listField = arg.move();
+    listField = arg.extract();
     __isset.listField = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<4, _T> arg) {
-    mapField = arg.move();
+    mapField = arg.extract();
     __isset.mapField = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<5, _T> arg) {
-    inclAField = arg.move();
+    inclAField = arg.extract();
     __isset.inclAField = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<6, _T> arg) {
-    inclBField = arg.move();
+    inclBField = arg.extract();
     __isset.inclBField = true;
   }
 
@@ -277,12 +277,12 @@ class ModuleB final : private apache::thrift::detail::st::ComparisonOperators<Mo
   ModuleB(apache::thrift::FragileConstructor, int32_t i32Field__arg,  ::some::ns::EnumB inclEnumB__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    i32Field = arg.move();
+    i32Field = arg.extract();
     __isset.i32Field = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
-    inclEnumB = arg.move();
+    inclEnumB = arg.extract();
     __isset.inclEnumB = true;
   }
 

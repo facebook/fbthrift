@@ -40,55 +40,55 @@ class containerStruct2 final : private apache::thrift::detail::st::ComparisonOpe
   containerStruct2(apache::thrift::FragileConstructor, bool fieldA__arg, bool req_fieldA__arg, bool opt_fieldA__arg, std::map<std::string, bool> fieldB__arg, std::map<std::string, bool> req_fieldB__arg, std::map<std::string, bool> opt_fieldB__arg, std::set<int32_t> fieldC__arg, std::set<int32_t> req_fieldC__arg, std::set<int32_t> opt_fieldC__arg, std::string fieldD__arg, std::string fieldE__arg, std::string req_fieldE__arg, std::string opt_fieldE__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    fieldA = arg.move();
+    fieldA = arg.extract();
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<101, _T> arg) {
-    req_fieldA = arg.move();
+    req_fieldA = arg.extract();
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<201, _T> arg) {
-    opt_fieldA = arg.move();
+    opt_fieldA = arg.extract();
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
-    fieldB = arg.move();
+    fieldB = arg.extract();
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<102, _T> arg) {
-    req_fieldB = arg.move();
+    req_fieldB = arg.extract();
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<202, _T> arg) {
-    opt_fieldB = arg.move();
+    opt_fieldB = arg.extract();
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<3, _T> arg) {
-    fieldC = arg.move();
+    fieldC = arg.extract();
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<103, _T> arg) {
-    req_fieldC = arg.move();
+    req_fieldC = arg.extract();
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<203, _T> arg) {
-    opt_fieldC = arg.move();
+    opt_fieldC = arg.extract();
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<4, _T> arg) {
-    fieldD = arg.move();
+    fieldD = arg.extract();
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<5, _T> arg) {
-    fieldE = arg.move();
+    fieldE = arg.extract();
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<105, _T> arg) {
-    req_fieldE = arg.move();
+    req_fieldE = arg.extract();
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<205, _T> arg) {
-    opt_fieldE = arg.move();
+    opt_fieldE = arg.extract();
   }
 
   containerStruct2(containerStruct2&&) = default;

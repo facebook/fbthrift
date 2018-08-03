@@ -228,7 +228,7 @@ class decorated_struct final : private apache::thrift::detail::st::ComparisonOpe
   decorated_struct(apache::thrift::FragileConstructor, std::string field__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    field = arg.move();
+    field = arg.extract();
     __isset.field = true;
   }
 
@@ -334,42 +334,42 @@ class ContainerStruct final : private apache::thrift::detail::st::ComparisonOper
   ContainerStruct(apache::thrift::FragileConstructor, std::vector<int32_t> fieldA__arg, std::list<int32_t> fieldB__arg, std::deque<int32_t> fieldC__arg, folly::fbvector<int32_t> fieldD__arg, folly::small_vector<int32_t> fieldE__arg, folly::sorted_vector_set<int32_t> fieldF__arg, folly::sorted_vector_map<int32_t, std::string> fieldG__arg,  ::apache::thrift::fixtures::types::SomeMap fieldH__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<12, _T> arg) {
-    fieldA = arg.move();
+    fieldA = arg.extract();
     __isset.fieldA = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
-    fieldB = arg.move();
+    fieldB = arg.extract();
     __isset.fieldB = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<3, _T> arg) {
-    fieldC = arg.move();
+    fieldC = arg.extract();
     __isset.fieldC = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<4, _T> arg) {
-    fieldD = arg.move();
+    fieldD = arg.extract();
     __isset.fieldD = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<5, _T> arg) {
-    fieldE = arg.move();
+    fieldE = arg.extract();
     __isset.fieldE = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<6, _T> arg) {
-    fieldF = arg.move();
+    fieldF = arg.extract();
     __isset.fieldF = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<7, _T> arg) {
-    fieldG = arg.move();
+    fieldG = arg.extract();
     __isset.fieldG = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<8, _T> arg) {
-    fieldH = arg.move();
+    fieldH = arg.extract();
     __isset.fieldH = true;
   }
 
@@ -548,7 +548,7 @@ class CppTypeStruct final : private apache::thrift::detail::st::ComparisonOperat
   CppTypeStruct(apache::thrift::FragileConstructor, std::list<int32_t> fieldA__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    fieldA = arg.move();
+    fieldA = arg.extract();
     __isset.fieldA = true;
   }
 
@@ -753,12 +753,12 @@ class MyStructWithForwardRefEnum final : private apache::thrift::detail::st::Com
   MyStructWithForwardRefEnum(apache::thrift::FragileConstructor,  ::apache::thrift::fixtures::types::MyForwardRefEnum a__arg,  ::apache::thrift::fixtures::types::MyForwardRefEnum b__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    a = arg.move();
+    a = arg.extract();
     __isset.a = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
-    b = arg.move();
+    b = arg.extract();
     __isset.b = true;
   }
 
@@ -1107,12 +1107,12 @@ class ComplexString final : private apache::thrift::detail::st::ComparisonOperat
   ComplexString(apache::thrift::FragileConstructor, std::string a__arg, std::map<std::string, int32_t> b__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    a = arg.move();
+    a = arg.extract();
     __isset.a = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
-    b = arg.move();
+    b = arg.extract();
     __isset.b = true;
   }
 
@@ -1230,12 +1230,12 @@ class ComplexNestedWithDefault final : private apache::thrift::detail::st::Compa
   ComplexNestedWithDefault(apache::thrift::FragileConstructor, std::string z__arg,  ::apache::thrift::fixtures::types::ComplexString n__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    z = arg.move();
+    z = arg.extract();
     __isset.z = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
-    n = arg.move();
+    n = arg.extract();
     __isset.n = true;
   }
 

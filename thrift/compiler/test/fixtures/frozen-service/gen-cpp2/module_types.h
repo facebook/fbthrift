@@ -41,22 +41,22 @@ class ModuleA final : private apache::thrift::detail::st::ComparisonOperators<Mo
   ModuleA(apache::thrift::FragileConstructor, int32_t i32Field__arg, std::string strField__arg, std::vector<int16_t> listField__arg, std::map<std::string, int32_t> mapField__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    i32Field = arg.move();
+    i32Field = arg.extract();
     __isset.i32Field = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
-    strField = arg.move();
+    strField = arg.extract();
     __isset.strField = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<3, _T> arg) {
-    listField = arg.move();
+    listField = arg.extract();
     __isset.listField = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<4, _T> arg) {
-    mapField = arg.move();
+    mapField = arg.extract();
     __isset.mapField = true;
   }
 
@@ -297,12 +297,12 @@ class ExceptionA final : private apache::thrift::detail::st::ComparisonOperators
   ExceptionA(apache::thrift::FragileConstructor, int32_t code__arg, std::string msg__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    code = arg.move();
+    code = arg.extract();
     __isset.code = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
-    msg = arg.move();
+    msg = arg.extract();
     __isset.msg = true;
   }
 
@@ -424,12 +424,12 @@ class ExceptionB final : private apache::thrift::detail::st::ComparisonOperators
   ExceptionB(apache::thrift::FragileConstructor, int32_t code__arg, std::string msg__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    code = arg.move();
+    code = arg.extract();
     __isset.code = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
-    msg = arg.move();
+    msg = arg.extract();
     __isset.msg = true;
   }
 

@@ -195,23 +195,23 @@ class Vehicle final : private apache::thrift::detail::st::ComparisonOperators<Ve
   Vehicle(apache::thrift::FragileConstructor,  ::cpp2::Color color__arg, std::string licensePlate__arg, std::string description__arg, std::string name__arg, bool hasAC__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    color = arg.move();
+    color = arg.extract();
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
-    licensePlate = arg.move();
+    licensePlate = arg.extract();
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<3, _T> arg) {
-    description = arg.move();
+    description = arg.extract();
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<4, _T> arg) {
-    name = arg.move();
+    name = arg.extract();
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<5, _T> arg) {
-    hasAC = arg.move();
+    hasAC = arg.extract();
   }
 
   Vehicle(Vehicle&&) = default;
@@ -304,43 +304,43 @@ class Person final : private apache::thrift::detail::st::ComparisonOperators<Per
   Person(apache::thrift::FragileConstructor,  ::cpp2::PersonID id__arg, std::string name__arg, int16_t age__arg, std::string address__arg,  ::cpp2::Color favoriteColor__arg, std::set< ::cpp2::PersonID> friends__arg,  ::cpp2::PersonID bestFriend__arg, std::map< ::cpp2::Animal, std::string> petNames__arg,  ::cpp2::Animal afraidOfAnimal__arg, std::vector< ::cpp2::Vehicle> vehicles__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    id = arg.move();
+    id = arg.extract();
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
-    name = arg.move();
+    name = arg.extract();
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<3, _T> arg) {
-    age = arg.move();
+    age = arg.extract();
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<4, _T> arg) {
-    address = arg.move();
+    address = arg.extract();
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<5, _T> arg) {
-    favoriteColor = arg.move();
+    favoriteColor = arg.extract();
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<6, _T> arg) {
-    friends = arg.move();
+    friends = arg.extract();
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<7, _T> arg) {
-    bestFriend = arg.move();
+    bestFriend = arg.extract();
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<8, _T> arg) {
-    petNames = arg.move();
+    petNames = arg.extract();
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<9, _T> arg) {
-    afraidOfAnimal = arg.move();
+    afraidOfAnimal = arg.extract();
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<10, _T> arg) {
-    vehicles = arg.move();
+    vehicles = arg.extract();
   }
 
   Person(Person&&) = default;

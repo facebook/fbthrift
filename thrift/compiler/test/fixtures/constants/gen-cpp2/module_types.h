@@ -152,16 +152,16 @@ class Internship final : private apache::thrift::detail::st::ComparisonOperators
   Internship(apache::thrift::FragileConstructor, int32_t weeks__arg, std::string title__arg,  ::cpp2::Company employer__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    weeks = arg.move();
+    weeks = arg.extract();
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
-    title = arg.move();
+    title = arg.extract();
     __isset.title = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<3, _T> arg) {
-    employer = arg.move();
+    employer = arg.extract();
     __isset.employer = true;
   }
 
@@ -294,7 +294,7 @@ class UnEnumStruct final : private apache::thrift::detail::st::ComparisonOperato
   UnEnumStruct(apache::thrift::FragileConstructor,  ::cpp2::City city__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    city = arg.move();
+    city = arg.extract();
     __isset.city = true;
   }
 
@@ -506,12 +506,12 @@ class struct1 final : private apache::thrift::detail::st::ComparisonOperators<st
   struct1(apache::thrift::FragileConstructor, int32_t a__arg, std::string b__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    a = arg.move();
+    a = arg.extract();
     __isset.a = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
-    b = arg.move();
+    b = arg.extract();
     __isset.b = true;
   }
 
@@ -629,22 +629,22 @@ class struct2 final : private apache::thrift::detail::st::ComparisonOperators<st
   struct2(apache::thrift::FragileConstructor, int32_t a__arg, std::string b__arg,  ::cpp2::struct1 c__arg, std::vector<int32_t> d__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    a = arg.move();
+    a = arg.extract();
     __isset.a = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
-    b = arg.move();
+    b = arg.extract();
     __isset.b = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<3, _T> arg) {
-    c = arg.move();
+    c = arg.extract();
     __isset.c = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<4, _T> arg) {
-    d = arg.move();
+    d = arg.extract();
     __isset.d = true;
   }
 
@@ -784,17 +784,17 @@ class struct3 final : private apache::thrift::detail::st::ComparisonOperators<st
   struct3(apache::thrift::FragileConstructor, std::string a__arg, int32_t b__arg,  ::cpp2::struct2 c__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    a = arg.move();
+    a = arg.extract();
     __isset.a = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
-    b = arg.move();
+    b = arg.extract();
     __isset.b = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<3, _T> arg) {
-    c = arg.move();
+    c = arg.extract();
     __isset.c = true;
   }
 

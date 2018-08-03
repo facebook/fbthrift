@@ -242,108 +242,108 @@ class containerStruct final : private apache::thrift::detail::st::ComparisonOper
   containerStruct(apache::thrift::FragileConstructor, bool fieldA__arg, std::map<std::string, bool> fieldB__arg, std::set<int32_t> fieldC__arg, std::string fieldD__arg, std::string fieldE__arg, std::vector<std::vector<std::vector<int32_t>>> fieldF__arg, std::map<std::string, std::map<std::string, std::map<std::string, int32_t>>> fieldG__arg, std::vector<std::set<int32_t>> fieldH__arg, bool fieldI__arg, std::map<std::string, std::vector<int32_t>> fieldJ__arg, std::vector<std::vector<std::vector<std::vector<int32_t>>>> fieldK__arg, std::set<std::set<std::set<bool>>> fieldL__arg, std::map<std::set<std::vector<int32_t>>, std::map<std::vector<std::set<std::string>>, std::string>> fieldM__arg, std::vector< ::cpp2::IndirectionA> fieldN__arg, std::vector< ::cpp2::IndirectionB> fieldO__arg, std::vector< ::cpp2::IndirectionC> fieldP__arg,  ::cpp2::MyEnumA fieldQ__arg, std::unique_ptr<std::map<std::string, bool>> fieldR__arg, std::unique_ptr< ::cpp2::SmallStruct> fieldS__arg, std::shared_ptr< ::cpp2::SmallStruct> fieldT__arg, std::shared_ptr<const  ::cpp2::SmallStruct> fieldU__arg, std::unique_ptr< ::cpp2::SmallStruct> fieldX__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    fieldA = arg.move();
+    fieldA = arg.extract();
     __isset.fieldA = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
-    fieldB = arg.move();
+    fieldB = arg.extract();
     __isset.fieldB = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<3, _T> arg) {
-    fieldC = arg.move();
+    fieldC = arg.extract();
     __isset.fieldC = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<4, _T> arg) {
-    fieldD = arg.move();
+    fieldD = arg.extract();
     __isset.fieldD = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<5, _T> arg) {
-    fieldE = arg.move();
+    fieldE = arg.extract();
     __isset.fieldE = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<6, _T> arg) {
-    fieldF = arg.move();
+    fieldF = arg.extract();
     __isset.fieldF = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<7, _T> arg) {
-    fieldG = arg.move();
+    fieldG = arg.extract();
     __isset.fieldG = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<8, _T> arg) {
-    fieldH = arg.move();
+    fieldH = arg.extract();
     __isset.fieldH = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<9, _T> arg) {
-    fieldI = arg.move();
+    fieldI = arg.extract();
     __isset.fieldI = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<10, _T> arg) {
-    fieldJ = arg.move();
+    fieldJ = arg.extract();
     __isset.fieldJ = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<11, _T> arg) {
-    fieldK = arg.move();
+    fieldK = arg.extract();
     __isset.fieldK = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<12, _T> arg) {
-    fieldL = arg.move();
+    fieldL = arg.extract();
     __isset.fieldL = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<13, _T> arg) {
-    fieldM = arg.move();
+    fieldM = arg.extract();
     __isset.fieldM = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<14, _T> arg) {
-    fieldN = arg.move();
+    fieldN = arg.extract();
     __isset.fieldN = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<15, _T> arg) {
-    fieldO = arg.move();
+    fieldO = arg.extract();
     __isset.fieldO = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<16, _T> arg) {
-    fieldP = arg.move();
+    fieldP = arg.extract();
     __isset.fieldP = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<17, _T> arg) {
-    fieldQ = arg.move();
+    fieldQ = arg.extract();
     __isset.fieldQ = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<18, _T> arg) {
-    fieldR = std::make_unique<std::decay_t<_T>>(arg.move());
+    fieldR = std::make_unique<std::decay_t<_T>>(arg.extract());
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<19, _T> arg) {
-    fieldS = std::make_unique<std::decay_t<_T>>(arg.move());
+    fieldS = std::make_unique<std::decay_t<_T>>(arg.extract());
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<20, _T> arg) {
-    fieldT = std::make_shared<std::decay_t<_T>>(arg.move());
+    fieldT = std::make_shared<std::decay_t<_T>>(arg.extract());
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<21, _T> arg) {
-    fieldU = std::make_shared<std::decay_t<_T>>(arg.move());
+    fieldU = std::make_shared<std::decay_t<_T>>(arg.extract());
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<23, _T> arg) {
-    fieldX = std::make_unique<std::decay_t<_T>>(arg.move());
+    fieldX = std::make_unique<std::decay_t<_T>>(arg.extract());
   }
 
   containerStruct(containerStruct&&) = default;

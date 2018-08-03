@@ -128,7 +128,7 @@ class Fiery final : private apache::thrift::detail::st::ComparisonOperators<Fier
   Fiery(apache::thrift::FragileConstructor, std::string message__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    message = arg.move();
+    message = arg.extract();
   }
 
   Fiery(Fiery&&) = default;
