@@ -19,7 +19,7 @@ from socket import SocketKind
 cdef object proxy_factory = None
 
 
-cdef object get_proxy_factory():
+cpdef object get_proxy_factory():
     return proxy_factory
 
 

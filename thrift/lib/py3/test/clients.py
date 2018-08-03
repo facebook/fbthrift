@@ -8,11 +8,18 @@ import unittest
 from testing.clients import TestingService
 from testing.types import I32List, Color, easy
 from thrift.py3 import TransportError, get_client, Priority, RpcOptions
+from thrift.py3.client import get_proxy_factory, install_proxy_factory
 from thrift.py3.common import WriteHeaders
 
 async def bad_client_connect() -> None:
     async with get_client(TestingService, port=1) as client:
         await client.complex_action('foo', 'bar', 9, 'baz')
+
+
+class ThriftClientTestProxy:  # noqa: B903
+
+    def __init__(self, inner) -> None:  # type: ignore
+        self.inner = inner
 
 
 class ClientTests(unittest.TestCase):
@@ -140,6 +147,18 @@ class ClientTests(unittest.TestCase):
 
         with self.assertRaises(OverflowError):
             loop.run_until_complete(client.int_sizes(one, two, three, four * 10))
+
+    def test_proxy_get_set(self) -> None:
+        # Should be empty before we assign it
+        self.assertEqual(get_proxy_factory(), None)
+
+        # Should be able to assign/get a test factory
+        install_proxy_factory(ThriftClientTestProxy)  # type: ignore
+        self.assertEqual(get_proxy_factory(), ThriftClientTestProxy)
+
+        # Should be able to unhook a factory
+        install_proxy_factory(None)
+        self.assertEqual(get_proxy_factory(), None)
 
 
 class RpcOptionsTests(unittest.TestCase):
