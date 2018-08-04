@@ -168,16 +168,6 @@ set("${file_name}-${language}-SOURCES"
   ${output_path}/gen-${language}/${file_name}_data.cpp
   ${output_path}/gen-${language}/${file_name}_types.cpp
 )
-if("${language}" STREQUAL "cpp")
-  set("${file_name}-${language}-HEADERS"
-    ${${file_name}-${language}-HEADERS}
-    ${output_path}/gen-${language}/${file_name}_reflection.h
-  )
-  set("${file_name}-${language}-SOURCES"
-    ${${file_name}-${language}-SOURCES}
-    ${output_path}/gen-${language}/${file_name}_reflection.cpp
-  )
-endif()
 foreach(service ${services})
   set("${file_name}-${language}-HEADERS"
     ${${file_name}-${language}-HEADERS}
