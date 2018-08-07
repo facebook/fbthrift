@@ -1258,17 +1258,17 @@ class NestedContainers_mapList_args implements \IThriftStruct, \IThriftShapishSt
       return null;
     }
     foreach (/* HH_IGNORE_ERROR[4110] */$shape_data['foo'] as $key0 => $value1) {
-      if (!($key0 is int)) {
+      if (!is_int($key0)) {
         return null;
       }
       if (!is_array($value1)) {
         return null;
       }
       foreach (/* HH_IGNORE_ERROR[4110] */$value1 as $key2 => $value3) {
-        if (!($key2 is int)) {
+        if (!is_int($key2)) {
           return null;
         }
-        if (!($value3 is int)) {
+        if (!is_int($value3)) {
           return null;
         }
         /* HH_IGNORE_ERROR[4005] */
@@ -1375,7 +1375,7 @@ class NestedContainers_mapSet_args implements \IThriftStruct, \IThriftShapishStr
       return null;
     }
     foreach (/* HH_IGNORE_ERROR[4110] */$shape_data['foo'] as $key0 => $value1) {
-      if (!($key0 is int)) {
+      if (!is_int($key0)) {
         return null;
       }
       if (!is_array($value1)) {
@@ -1383,7 +1383,7 @@ class NestedContainers_mapSet_args implements \IThriftStruct, \IThriftShapishStr
       }
       $the_set4 = dict[];
       foreach (/* HH_IGNORE_ERROR[4110] */ $value1 as $key2 => $shape_data3) {
-        if (!($shape_data3 is int)) {
+        if (!is_int($shape_data3)) {
           return null;
         }
         $the_set4[$shape_data3] = true;
@@ -1489,17 +1489,17 @@ class NestedContainers_listMap_args implements \IThriftStruct, \IThriftShapishSt
       return null;
     }
     foreach (/* HH_IGNORE_ERROR[4110] */$shape_data['foo'] as $key0 => $value1) {
-      if (!($key0 is int)) {
+      if (!is_int($key0)) {
         return null;
       }
       if (!is_array($value1)) {
         return null;
       }
       foreach (/* HH_IGNORE_ERROR[4110] */$value1 as $key2 => $value3) {
-        if (!($key2 is int)) {
+        if (!is_int($key2)) {
           return null;
         }
-        if (!($value3 is int)) {
+        if (!is_int($value3)) {
           return null;
         }
         /* HH_IGNORE_ERROR[4005] */
@@ -1602,7 +1602,7 @@ class NestedContainers_listSet_args implements \IThriftStruct, \IThriftShapishSt
       return null;
     }
     foreach (/* HH_IGNORE_ERROR[4110] */$shape_data['foo'] as $key0 => $value1) {
-      if (!($key0 is int)) {
+      if (!is_int($key0)) {
         return null;
       }
       if (!is_array($value1)) {
@@ -1610,7 +1610,7 @@ class NestedContainers_listSet_args implements \IThriftStruct, \IThriftShapishSt
       }
       $the_set4 = dict[];
       foreach (/* HH_IGNORE_ERROR[4110] */ $value1 as $key2 => $shape_data3) {
-        if (!($shape_data3 is int)) {
+        if (!is_int($shape_data3)) {
           return null;
         }
         $the_set4[$shape_data3] = true;
@@ -1735,28 +1735,28 @@ class NestedContainers_turtles_args implements \IThriftStruct, \IThriftShapishSt
       return null;
     }
     foreach (/* HH_IGNORE_ERROR[4110] */$shape_data['foo'] as $key0 => $value1) {
-      if (!($key0 is int)) {
+      if (!is_int($key0)) {
         return null;
       }
       if (!is_array($value1)) {
         return null;
       }
       foreach (/* HH_IGNORE_ERROR[4110] */$value1 as $key2 => $value3) {
-        if (!($key2 is int)) {
+        if (!is_int($key2)) {
           return null;
         }
         if (!is_array($value3)) {
           return null;
         }
         foreach (/* HH_IGNORE_ERROR[4110] */$value3 as $key4 => $value5) {
-          if (!($key4 is int)) {
+          if (!is_int($key4)) {
             return null;
           }
           if (!is_array($value5)) {
             return null;
           }
           foreach (/* HH_IGNORE_ERROR[4110] */$value5 as $key6 => $value7) {
-            if (!($key6 is int)) {
+            if (!is_int($key6)) {
               return null;
             }
             if (!is_array($value7)) {
@@ -1764,7 +1764,7 @@ class NestedContainers_turtles_args implements \IThriftStruct, \IThriftShapishSt
             }
             $the_set10 = dict[];
             foreach (/* HH_IGNORE_ERROR[4110] */ $value7 as $key8 => $shape_data9) {
-              if (!($shape_data9 is int)) {
+              if (!is_int($shape_data9)) {
                 return null;
               }
               $the_set10[$shape_data9] = true;

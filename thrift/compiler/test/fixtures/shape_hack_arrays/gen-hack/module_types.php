@@ -78,7 +78,7 @@ class A implements \IThriftStruct, \IThriftShapishStruct {
     if (!C\contains_key($shape_data, 'a')) {
       $shape_data['a'] = '';
     }
-    if (!($shape_data['a'] is string)) {
+    if (!is_string($shape_data['a'])) {
       return null;
     }
 
@@ -89,10 +89,10 @@ class A implements \IThriftStruct, \IThriftShapishStruct {
       return null;
     }
     foreach (/* HH_IGNORE_ERROR[4110] */$shape_data['map_of_string_to_string'] as $key0 => $value1) {
-      if (!($key0 is string)) {
+      if (!is_string($key0)) {
         return null;
       }
-      if (!($value1 is string)) {
+      if (!is_string($value1)) {
         return null;
       }
       /* HH_IGNORE_ERROR[4005] */
@@ -492,10 +492,10 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
       return null;
     }
     foreach (/* HH_IGNORE_ERROR[4110] */$shape_data['map_of_string_to_string'] as $key0 => $value1) {
-      if (!($key0 is string)) {
+      if (!is_string($key0)) {
         return null;
       }
-      if (!($value1 is string)) {
+      if (!is_string($value1)) {
         return null;
       }
       /* HH_IGNORE_ERROR[4005] */
@@ -510,10 +510,10 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
       return null;
     }
     foreach (/* HH_IGNORE_ERROR[4110] */$shape_data['map_of_string_to_i32'] as $key2 => $value3) {
-      if (!($key2 is string)) {
+      if (!is_string($key2)) {
         return null;
       }
-      if (!($value3 is int)) {
+      if (!is_int($value3)) {
         return null;
       }
       /* HH_IGNORE_ERROR[4005] */
@@ -528,7 +528,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
       return null;
     }
     foreach (/* HH_IGNORE_ERROR[4110] */$shape_data['map_of_string_to_A'] as $key4 => $value5) {
-      if (!($key4 is string)) {
+      if (!is_string($key4)) {
         return null;
       }
       $value5 = A::__jsonArrayToShape(/* HH_IGNORE_ERROR[4110] */ $value5);
@@ -547,7 +547,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
       return null;
     }
     foreach (/* HH_IGNORE_ERROR[4110] */$shape_data['map_of_string_to_self'] as $key6 => $value7) {
-      if (!($key6 is string)) {
+      if (!is_string($key6)) {
         return null;
       }
       $value7 = B::__jsonArrayToShape(/* HH_IGNORE_ERROR[4110] */ $value7);
@@ -566,14 +566,14 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
       return null;
     }
     foreach (/* HH_IGNORE_ERROR[4110] */$shape_data['map_of_string_to_list_of_A'] as $key8 => $value9) {
-      if (!($key8 is string)) {
+      if (!is_string($key8)) {
         return null;
       }
       if (!is_array($value9)) {
         return null;
       }
       foreach (/* HH_IGNORE_ERROR[4110] */$value9 as $key10 => $value11) {
-        if (!($key10 is int)) {
+        if (!is_int($key10)) {
           return null;
         }
         $value11 = A::__jsonArrayToShape(/* HH_IGNORE_ERROR[4110] */ $value11);
@@ -596,17 +596,17 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
       return null;
     }
     foreach (/* HH_IGNORE_ERROR[4110] */$shape_data['map_of_string_to_map_of_string_to_i32'] as $key12 => $value13) {
-      if (!($key12 is string)) {
+      if (!is_string($key12)) {
         return null;
       }
       if (!is_array($value13)) {
         return null;
       }
       foreach (/* HH_IGNORE_ERROR[4110] */$value13 as $key14 => $value15) {
-        if (!($key14 is string)) {
+        if (!is_string($key14)) {
           return null;
         }
-        if (!($value15 is int)) {
+        if (!is_int($value15)) {
           return null;
         }
         /* HH_IGNORE_ERROR[4005] */
@@ -625,14 +625,14 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
       return null;
     }
     foreach (/* HH_IGNORE_ERROR[4110] */$shape_data['map_of_string_to_map_of_string_to_A'] as $key16 => $value17) {
-      if (!($key16 is string)) {
+      if (!is_string($key16)) {
         return null;
       }
       if (!is_array($value17)) {
         return null;
       }
       foreach (/* HH_IGNORE_ERROR[4110] */$value17 as $key18 => $value19) {
-        if (!($key18 is string)) {
+        if (!is_string($key18)) {
           return null;
         }
         $value19 = A::__jsonArrayToShape(/* HH_IGNORE_ERROR[4110] */ $value19);
@@ -655,10 +655,10 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
       return null;
     }
     foreach (/* HH_IGNORE_ERROR[4110] */$shape_data['list_of_string'] as $key20 => $value21) {
-      if (!($key20 is int)) {
+      if (!is_int($key20)) {
         return null;
       }
-      if (!($value21 is string)) {
+      if (!is_string($value21)) {
         return null;
       }
       /* HH_IGNORE_ERROR[4005] */
@@ -673,14 +673,14 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
       return null;
     }
     foreach (/* HH_IGNORE_ERROR[4110] */$shape_data['list_of_map_of_string_to_A'] as $key22 => $value23) {
-      if (!($key22 is int)) {
+      if (!is_int($key22)) {
         return null;
       }
       if (!is_array($value23)) {
         return null;
       }
       foreach (/* HH_IGNORE_ERROR[4110] */$value23 as $key24 => $value25) {
-        if (!($key24 is string)) {
+        if (!is_string($key24)) {
           return null;
         }
         $value25 = A::__jsonArrayToShape(/* HH_IGNORE_ERROR[4110] */ $value25);
@@ -703,7 +703,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
       return null;
     }
     foreach (/* HH_IGNORE_ERROR[4110] */$shape_data['list_of_self'] as $key26 => $value27) {
-      if (!($key26 is int)) {
+      if (!is_int($key26)) {
         return null;
       }
       $value27 = B::__jsonArrayToShape(/* HH_IGNORE_ERROR[4110] */ $value27);
@@ -722,14 +722,14 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
       return null;
     }
     foreach (/* HH_IGNORE_ERROR[4110] */$shape_data['list_of_list_of_self'] as $key28 => $value29) {
-      if (!($key28 is int)) {
+      if (!is_int($key28)) {
         return null;
       }
       if (!is_array($value29)) {
         return null;
       }
       foreach (/* HH_IGNORE_ERROR[4110] */$value29 as $key30 => $value31) {
-        if (!($key30 is int)) {
+        if (!is_int($key30)) {
           return null;
         }
         $value31 = B::__jsonArrayToShape(/* HH_IGNORE_ERROR[4110] */ $value31);
@@ -752,21 +752,21 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
       return null;
     }
     foreach (/* HH_IGNORE_ERROR[4110] */$shape_data['list_of_map_of_string_to_list_of_A'] as $key32 => $value33) {
-      if (!($key32 is int)) {
+      if (!is_int($key32)) {
         return null;
       }
       if (!is_array($value33)) {
         return null;
       }
       foreach (/* HH_IGNORE_ERROR[4110] */$value33 as $key34 => $value35) {
-        if (!($key34 is string)) {
+        if (!is_string($key34)) {
           return null;
         }
         if (!is_array($value35)) {
           return null;
         }
         foreach (/* HH_IGNORE_ERROR[4110] */$value35 as $key36 => $value37) {
-          if (!($key36 is int)) {
+          if (!is_int($key36)) {
             return null;
           }
           $value37 = A::__jsonArrayToShape(/* HH_IGNORE_ERROR[4110] */ $value37);

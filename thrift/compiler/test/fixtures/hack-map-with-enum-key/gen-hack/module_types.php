@@ -78,10 +78,10 @@ class BarStruct implements \IThriftStruct, \IThriftShapishStruct {
       return null;
     }
     foreach (/* HH_IGNORE_ERROR[4110] */$shape_data['e'] as $key0 => $value1) {
-      if (!($key0 is int)) {
+      if (!is_int($key0)) {
         return null;
       }
-      if (!($value1 is int)) {
+      if (!is_int($value1)) {
         return null;
       }
       /* HH_IGNORE_ERROR[4005] */

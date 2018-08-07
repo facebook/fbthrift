@@ -121,21 +121,21 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
     if (!C\contains_key($shape_data, 'MyIntField')) {
       $shape_data['MyIntField'] = 0;
     }
-    if (!($shape_data['MyIntField'] is int)) {
+    if (!is_int($shape_data['MyIntField'])) {
       return null;
     }
 
     if (!C\contains_key($shape_data, 'MyStringField')) {
       $shape_data['MyStringField'] = '';
     }
-    if (!($shape_data['MyStringField'] is string)) {
+    if (!is_string($shape_data['MyStringField'])) {
       return null;
     }
 
     if (!C\contains_key($shape_data, 'MyDataField')) {
       $shape_data['MyDataField'] = null;
     }
-    if ($shape_data['MyDataField'] is nonnull) {
+    if (!is_null($shape_data['MyDataField'])) {
       $shape_data['MyDataField'] = MyDataItem::__jsonArrayToShape(/* HH_IGNORE_ERROR[4110] */ $shape_data['MyDataField']);
       if (is_null($shape_data['MyDataField'])) {
         return null;
@@ -145,14 +145,14 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
     if (!C\contains_key($shape_data, 'major')) {
       $shape_data['major'] = 0;
     }
-    if (!($shape_data['major'] is int)) {
+    if (!is_int($shape_data['major'])) {
       return null;
     }
 
     if (!C\contains_key($shape_data, 'myEnum')) {
       $shape_data['myEnum'] = null;
     }
-    if (!($shape_data['myEnum'] is int) && $shape_data['myEnum'] is nonnull) {
+    if (!is_int($shape_data['myEnum']) && !is_null($shape_data['myEnum'])) {
       return null;
     }
 
