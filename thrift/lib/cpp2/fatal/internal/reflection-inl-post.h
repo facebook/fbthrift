@@ -35,15 +35,17 @@ struct is_optional : std::false_type {};
 template <typename T>
 struct is_optional<folly::Optional<T>> : std::true_type {};
 
-template <typename, typename T>
-struct has_isset_ : std::false_type {};
 template <typename T>
-struct has_isset_<folly::void_t<decltype(std::declval<T>().__isset)>, T>
-    : std::true_type {};
-template <typename T>
-using has_isset = has_isset_<void, T>;
+using isset_of = decltype(std::declval<T>().__isset);
+template <typename, typename T, typename Getter>
+struct has_isset_field_ : std::false_type {};
+template <typename T, typename Getter>
+struct has_isset_field_<folly::void_t<isset_of<T>>, T, Getter>
+    : Getter::template has<isset_of<T>> {};
+template <typename T, typename Getter>
+using has_isset_field = has_isset_field_<void, T, Getter>;
 
-template <typename Owner, typename Getter, bool HasIsSet>
+template <typename Owner, typename Getter>
 struct isset {
   template <int I>
   struct kind {};
@@ -53,7 +55,7 @@ struct isset {
       is_optional<folly::remove_cvref_t<decltype(
           Getter::ref(std::declval<T const&>()))>>::value,
       kind<0>,
-      std::conditional_t<HasIsSet && has_isset<T>::value, kind<1>, kind<2>>>;
+      std::conditional_t<has_isset_field<T, Getter>::value, kind<1>, kind<2>>>;
 
   template <typename T>
   static constexpr bool check(kind<0>, T const& owner) {

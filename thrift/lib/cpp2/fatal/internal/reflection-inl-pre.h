@@ -55,7 +55,7 @@ struct getter_direct_getter<G, folly::void_t<typename G::head>> {
 template <typename G>
 using getter_direct_getter_t = folly::_t<getter_direct_getter<G>>;
 
-template <typename, typename, bool>
+template <typename, typename>
 struct isset;
 
 struct variant_member_name {
