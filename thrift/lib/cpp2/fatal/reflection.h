@@ -931,8 +931,7 @@ template <
     typename TypeClass,
     template <typename> class Pod,
     typename Annotations,
-    typename Owner,
-    bool = false>
+    typename Owner>
 struct reflected_struct_data_member {
   /**
    * A `fatal::sequence` of `char` representing the data member name as
