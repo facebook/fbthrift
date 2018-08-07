@@ -260,8 +260,7 @@ struct containerStruct2_extra_svc_extra_services__struct_unique_member_info_list
     ::apache::thrift::type_class::integral,
     thrift_fatal_impl_detail::extra_svc_extra_services__struct_unique_member_pod_list::extra_svc_extra_services_struct_member_pod_fieldA,
     ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::containerStruct2_extra_svc_extra_services__struct_unique_annotations::members::fieldA>,
-    containerStruct2,
-    true
+    containerStruct2
   >;
   using req_fieldA = ::apache::thrift::reflected_struct_data_member<
     thrift_fatal_impl_detail::extra_svc_extra_services__unique_strings_list::req_fieldA,
@@ -272,8 +271,7 @@ struct containerStruct2_extra_svc_extra_services__struct_unique_member_info_list
     ::apache::thrift::type_class::integral,
     thrift_fatal_impl_detail::extra_svc_extra_services__struct_unique_member_pod_list::extra_svc_extra_services_struct_member_pod_req_fieldA,
     ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::containerStruct2_extra_svc_extra_services__struct_unique_annotations::members::req_fieldA>,
-    containerStruct2,
-    false
+    containerStruct2
   >;
   using opt_fieldA = ::apache::thrift::reflected_struct_data_member<
     thrift_fatal_impl_detail::extra_svc_extra_services__unique_strings_list::opt_fieldA,
@@ -284,8 +282,7 @@ struct containerStruct2_extra_svc_extra_services__struct_unique_member_info_list
     ::apache::thrift::type_class::integral,
     thrift_fatal_impl_detail::extra_svc_extra_services__struct_unique_member_pod_list::extra_svc_extra_services_struct_member_pod_opt_fieldA,
     ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::containerStruct2_extra_svc_extra_services__struct_unique_annotations::members::opt_fieldA>,
-    containerStruct2,
-    false
+    containerStruct2
   >;
   using fieldB = ::apache::thrift::reflected_struct_data_member<
     thrift_fatal_impl_detail::extra_svc_extra_services__unique_strings_list::fieldB,
@@ -296,8 +293,7 @@ struct containerStruct2_extra_svc_extra_services__struct_unique_member_info_list
     ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>,
     thrift_fatal_impl_detail::extra_svc_extra_services__struct_unique_member_pod_list::extra_svc_extra_services_struct_member_pod_fieldB,
     ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::containerStruct2_extra_svc_extra_services__struct_unique_annotations::members::fieldB>,
-    containerStruct2,
-    true
+    containerStruct2
   >;
   using req_fieldB = ::apache::thrift::reflected_struct_data_member<
     thrift_fatal_impl_detail::extra_svc_extra_services__unique_strings_list::req_fieldB,
@@ -308,8 +304,7 @@ struct containerStruct2_extra_svc_extra_services__struct_unique_member_info_list
     ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>,
     thrift_fatal_impl_detail::extra_svc_extra_services__struct_unique_member_pod_list::extra_svc_extra_services_struct_member_pod_req_fieldB,
     ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::containerStruct2_extra_svc_extra_services__struct_unique_annotations::members::req_fieldB>,
-    containerStruct2,
-    false
+    containerStruct2
   >;
   using opt_fieldB = ::apache::thrift::reflected_struct_data_member<
     thrift_fatal_impl_detail::extra_svc_extra_services__unique_strings_list::opt_fieldB,
@@ -320,8 +315,7 @@ struct containerStruct2_extra_svc_extra_services__struct_unique_member_info_list
     ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>,
     thrift_fatal_impl_detail::extra_svc_extra_services__struct_unique_member_pod_list::extra_svc_extra_services_struct_member_pod_opt_fieldB,
     ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::containerStruct2_extra_svc_extra_services__struct_unique_annotations::members::opt_fieldB>,
-    containerStruct2,
-    false
+    containerStruct2
   >;
   using fieldC = ::apache::thrift::reflected_struct_data_member<
     thrift_fatal_impl_detail::extra_svc_extra_services__unique_strings_list::fieldC,
@@ -332,8 +326,7 @@ struct containerStruct2_extra_svc_extra_services__struct_unique_member_info_list
     ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>,
     thrift_fatal_impl_detail::extra_svc_extra_services__struct_unique_member_pod_list::extra_svc_extra_services_struct_member_pod_fieldC,
     ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::containerStruct2_extra_svc_extra_services__struct_unique_annotations::members::fieldC>,
-    containerStruct2,
-    true
+    containerStruct2
   >;
   using req_fieldC = ::apache::thrift::reflected_struct_data_member<
     thrift_fatal_impl_detail::extra_svc_extra_services__unique_strings_list::req_fieldC,
@@ -344,8 +337,7 @@ struct containerStruct2_extra_svc_extra_services__struct_unique_member_info_list
     ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>,
     thrift_fatal_impl_detail::extra_svc_extra_services__struct_unique_member_pod_list::extra_svc_extra_services_struct_member_pod_req_fieldC,
     ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::containerStruct2_extra_svc_extra_services__struct_unique_annotations::members::req_fieldC>,
-    containerStruct2,
-    false
+    containerStruct2
   >;
   using opt_fieldC = ::apache::thrift::reflected_struct_data_member<
     thrift_fatal_impl_detail::extra_svc_extra_services__unique_strings_list::opt_fieldC,
@@ -356,8 +348,7 @@ struct containerStruct2_extra_svc_extra_services__struct_unique_member_info_list
     ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>,
     thrift_fatal_impl_detail::extra_svc_extra_services__struct_unique_member_pod_list::extra_svc_extra_services_struct_member_pod_opt_fieldC,
     ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::containerStruct2_extra_svc_extra_services__struct_unique_annotations::members::opt_fieldC>,
-    containerStruct2,
-    false
+    containerStruct2
   >;
   using fieldD = ::apache::thrift::reflected_struct_data_member<
     thrift_fatal_impl_detail::extra_svc_extra_services__unique_strings_list::fieldD,
@@ -368,8 +359,7 @@ struct containerStruct2_extra_svc_extra_services__struct_unique_member_info_list
     ::apache::thrift::type_class::string,
     thrift_fatal_impl_detail::extra_svc_extra_services__struct_unique_member_pod_list::extra_svc_extra_services_struct_member_pod_fieldD,
     ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::containerStruct2_extra_svc_extra_services__struct_unique_annotations::members::fieldD>,
-    containerStruct2,
-    true
+    containerStruct2
   >;
   using fieldE = ::apache::thrift::reflected_struct_data_member<
     thrift_fatal_impl_detail::extra_svc_extra_services__unique_strings_list::fieldE,
@@ -380,8 +370,7 @@ struct containerStruct2_extra_svc_extra_services__struct_unique_member_info_list
     ::apache::thrift::type_class::string,
     thrift_fatal_impl_detail::extra_svc_extra_services__struct_unique_member_pod_list::extra_svc_extra_services_struct_member_pod_fieldE,
     ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::containerStruct2_extra_svc_extra_services__struct_unique_annotations::members::fieldE>,
-    containerStruct2,
-    true
+    containerStruct2
   >;
   using req_fieldE = ::apache::thrift::reflected_struct_data_member<
     thrift_fatal_impl_detail::extra_svc_extra_services__unique_strings_list::req_fieldE,
@@ -392,8 +381,7 @@ struct containerStruct2_extra_svc_extra_services__struct_unique_member_info_list
     ::apache::thrift::type_class::string,
     thrift_fatal_impl_detail::extra_svc_extra_services__struct_unique_member_pod_list::extra_svc_extra_services_struct_member_pod_req_fieldE,
     ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::containerStruct2_extra_svc_extra_services__struct_unique_annotations::members::req_fieldE>,
-    containerStruct2,
-    false
+    containerStruct2
   >;
   using opt_fieldE = ::apache::thrift::reflected_struct_data_member<
     thrift_fatal_impl_detail::extra_svc_extra_services__unique_strings_list::opt_fieldE,
@@ -404,8 +392,7 @@ struct containerStruct2_extra_svc_extra_services__struct_unique_member_info_list
     ::apache::thrift::type_class::string,
     thrift_fatal_impl_detail::extra_svc_extra_services__struct_unique_member_pod_list::extra_svc_extra_services_struct_member_pod_opt_fieldE,
     ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::containerStruct2_extra_svc_extra_services__struct_unique_annotations::members::opt_fieldE>,
-    containerStruct2,
-    false
+    containerStruct2
   >;
 };
 

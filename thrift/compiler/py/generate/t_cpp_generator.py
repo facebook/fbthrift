@@ -1008,10 +1008,7 @@ class CppGenerator(t_generator.Generator):
                                 self.fatal_detail_ns, i.name, annclsprefix,
                                 m.name))
                         # Owner
-                        cmnf('  {0},'.format(i.name))
-                        # HasIsSet
-                        cmnf('  {0}'.format(
-                            'true' if self._has_isset(m) else 'false'))
+                        cmnf('  {0}'.format(i.name))
                         cmnf('>;')
             for i, alias, ttype, ns_prefix in aliases:
                 self._set_fatal_string(i.symbolic)
@@ -1039,9 +1036,7 @@ class CppGenerator(t_generator.Generator):
                              .format(self.fatal_detail_ns, ttype.name,
                                      annclsprefix, m.name))
                         # Owner
-                        cmnf('  {0},'.format(i.symbolic))
-                        # HasIsSet
-                        cmnf('  false')
+                        cmnf('  {0}'.format(i.symbolic))
                         cmnf('>;')
 
         def render_member_list(type_name, member_list):
