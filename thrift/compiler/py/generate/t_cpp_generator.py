@@ -66,7 +66,6 @@ class CppGenerator(t_generator.Generator):
     long_name = 'C++ version 2'
     supported_flags = {
         'include_prefix': 'Use full include paths in generated files.',
-        'optionals': "produce folly::Optional<...> for optional members",
     }
     _out_dir_base = 'gen-cpp2'
 
@@ -104,31 +103,8 @@ class CppGenerator(t_generator.Generator):
             return t
         return default
 
-    def _has_cpp_annotation(self, type, key):
-        return self._cpp_annotation(type, key) is not None
-
     def _cpp_type_name(self, type, default=None):
         return self._cpp_annotation(type, 'type', default)
-
-    def _cpp_ref_type(self, type, name):
-        # backward compatibility with 'ref' annotation
-        if self._has_cpp_annotation(type, 'ref'):
-            return 'std::unique_ptr<{0}>'.format(name)
-
-        ref_type = self._cpp_annotation(type, 'ref_type')
-        if ref_type is None:
-            return None
-
-        # useful aliases
-        if ref_type == 'unique':
-            return 'std::unique_ptr<{0}>'.format(name)
-        if ref_type == 'shared':
-            return 'std::shared_ptr<{0}>'.format(name)
-        if ref_type == 'shared_const':
-            return 'std::shared_ptr<const {0}>'.format(name)
-
-        # use custom pointer type
-        return '{0}<{1}>'.format(ref_type, name)
 
     def _type_name(self, ttype, in_typedef=False, scope=None):
         if ttype.is_base_type:
@@ -195,16 +171,6 @@ class CppGenerator(t_generator.Generator):
                 tname = ttype.name
 
         return tname
-
-    def _is_reference(self, f):
-        return self._cpp_ref_type(f, '') is not None
-
-    def _is_optional_wrapped(self, f):
-        return f.req == e_req.optional and self.flag_optionals
-
-    def _has_isset(self, f):
-        return not self._is_reference(f) and f.req != e_req.required \
-            and not self._is_optional_wrapped(f)
 
     def _get_namespace(self, program=None):
         if program == None:
