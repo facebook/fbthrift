@@ -173,6 +173,7 @@ foreach(service ${services})
     ${${file_name}-${language}-HEADERS}
     ${output_path}/gen-${language}/${service}.h
     ${output_path}/gen-${language}/${service}.tcc
+    ${output_path}/gen-${language}/${service}AsyncClient.h
     ${output_path}/gen-${language}/${service}_custom_protocol.h
   )
   set("${file_name}-${language}-SOURCES"
@@ -180,15 +181,6 @@ foreach(service ${services})
     ${output_path}/gen-${language}/${service}.cpp
     ${output_path}/gen-${language}/${service}_client.cpp
   )
-  if("${language}" STREQUAL "cpp2")
-    if (NOT "${options}" MATCHES ".*(future|py_generator|compatibility|implicit_templates|terse_writes).*")
-      set("${file_name}-${language}-HEADERS"
-        ${${file_name}-${language}-HEADERS}
-        ${output_path}/gen-${language}/${service}AsyncClient.h
-      )
-    endif()
-
-  endif()
 endforeach()
 set(include_prefix_text "include_prefix=${include_prefix}")
 if(NOT "${options}" STREQUAL "")
