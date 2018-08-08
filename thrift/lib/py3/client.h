@@ -57,7 +57,7 @@ folly::Future<RequestChannel_ptr> createThriftChannelTCP(
     folly::Future<std::string>&& host_fut,
     const uint16_t port,
     const uint32_t connect_timeout) {
-  return host_fut.then([=](std::string host) {
+  return std::move(host_fut).then([=](std::string host) {
     auto eb = folly::getEventBase();
     return folly::via(eb, [=] {
       return apache::thrift::HeaderClientChannel::newChannel(
