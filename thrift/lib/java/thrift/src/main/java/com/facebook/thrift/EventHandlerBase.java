@@ -28,7 +28,7 @@ public class EventHandlerBase {
   public ArrayList<TProcessorEventHandler> handlers;
   public TProcessorEventHandler eventHandler_;
 
-  public class ContextStack {
+  public static class ContextStack {
     private ArrayList<Object> ctxs;
 
     public ContextStack(

@@ -275,7 +275,7 @@ public class THsHaServer extends TNonblockingServer {
    * an idle worker thread. It contains the input and output protocols the
    * thread's processor should use to perform the usual Thrift invocation.
    */
-  private class Invocation implements Runnable {
+  private static class Invocation implements Runnable {
 
     private final FrameBuffer frameBuffer;
 

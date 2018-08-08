@@ -192,7 +192,7 @@ public class THeaderJava extends junit.framework.TestCase {
 
   }
 
-  public class TestProcessorFactory extends TProcessorFactory {
+  public static class TestProcessorFactory extends TProcessorFactory {
     public TestProcessorFactory(TProcessor processor, TProcessorEventHandler eventHandler) {
       super(processor);
       processor.setEventHandler(eventHandler);
