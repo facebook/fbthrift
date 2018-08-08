@@ -237,20 +237,6 @@ class Cpp2RequestContext : public apache::thrift::server::TConnectionContext {
     requestTimeout_ = requestTimeout;
   }
 
-  bool isProcessingStartTimeSet() const {
-    return processingStartTime_.hasValue();
-  }
-
-  void setProcessingStartTime(
-      std::chrono::time_point<std::chrono::steady_clock> processingStartTime) {
-    processingStartTime_ = processingStartTime;
-  }
-
-  std::chrono::time_point<std::chrono::steady_clock> getProcessingStartTime()
-      const {
-    return processingStartTime_.value();
-  }
-
   void setMethodName(std::string methodName) {
     methodName_ = std::move(methodName);
   }
