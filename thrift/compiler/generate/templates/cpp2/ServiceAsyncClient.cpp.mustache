@@ -39,33 +39,33 @@
 
 <% > service_common/typedefs%>
 
-<% > service_client_cpp/templated_received%>
+<% > service_async_client_cpp/templated_received%>
 
 
 <%#service:functions%><%#function:returnType%>
-<% > service_client_cpp/function_implementation%>
+<% > service_async_client_cpp/function_implementation%>
 
 
 <%^type:deprecated_stream?%>
 <%#function:oneway?%>
 <%^type:stream?%>
-<% > service_client_cpp/oneway_sync_functions%>
+<% > service_async_client_cpp/oneway_sync_functions%>
 <%/type:stream?%>
 <%/function:oneway?%>
 <%^function:oneway?%>
-<% > service_client_cpp/sync_functions%>
+<% > service_async_client_cpp/sync_functions%>
 <%/function:oneway?%>
 
 
 <%#function:oneway?%>
-<% > service_client_cpp/oneway_future_functions%>
+<% > service_async_client_cpp/oneway_future_functions%>
 <%/function:oneway?%>
 <%^function:oneway?%>
-<% > service_client_cpp/future_functions%>
+<% > service_async_client_cpp/future_functions%>
 <%/function:oneway?%>
 <%/type:deprecated_stream?%>
 
-<% > service_client_cpp/observable_functions%>
+<% > service_async_client_cpp/observable_functions%>
 
 void <%service:name%>AsyncClient::<%function:name%>(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback<%function:comma%><% > service_common/function_param_list_const%>) {
   <%function:name%>(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback))<%function:comma%><% > service_common/param_list%>);
@@ -74,24 +74,24 @@ void <%service:name%>AsyncClient::<%function:name%>(folly::Function<void (::apac
 <%^function:oneway?%>
 <%#type:deprecated_stream?%>
   <%#type:streamElemType%>
-<% > service_client_cpp/received_wrapped%>
+<% > service_async_client_cpp/received_wrapped%>
 
 
-<% > service_client_cpp/received%>
+<% > service_async_client_cpp/received%>
 
 
-<% > service_client_cpp/received_instance%>
+<% > service_async_client_cpp/received_instance%>
 
   <%/type:streamElemType%>
 <%/type:deprecated_stream?%>
 <%^type:deprecated_stream?%>
-<% > service_client_cpp/received_wrapped%>
+<% > service_async_client_cpp/received_wrapped%>
 
 
-<% > service_client_cpp/received%>
+<% > service_async_client_cpp/received%>
 
 
-<% > service_client_cpp/received_instance%>
+<% > service_async_client_cpp/received_instance%>
 
 <%/type:deprecated_stream?%>
 <%/function:oneway?%>

@@ -179,7 +179,7 @@ foreach(service ${services})
   set("${file_name}-${language}-SOURCES"
     ${${file_name}-${language}-SOURCES}
     ${output_path}/gen-${language}/${service}.cpp
-    ${output_path}/gen-${language}/${service}_client.cpp
+    ${output_path}/gen-${language}/${service}AsyncClient.cpp
   )
 endforeach()
 set(include_prefix_text "include_prefix=${include_prefix}")
