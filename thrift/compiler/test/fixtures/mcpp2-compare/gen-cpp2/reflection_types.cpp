@@ -48,6 +48,7 @@ void ReflectionStruct::__clear() {
 bool ReflectionStruct::operator==(const ReflectionStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   if (!(lhs.fieldA == rhs.fieldA)) {
     return false;
   }
@@ -57,6 +58,7 @@ bool ReflectionStruct::operator==(const ReflectionStruct& rhs) const {
 bool ReflectionStruct::operator<(const ReflectionStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   if (!(lhs.fieldA == rhs.fieldA)) {
     return lhs.fieldA < rhs.fieldA;
   }

@@ -55,6 +55,7 @@ void IncludedA::__clear() {
 bool IncludedA::operator==(const IncludedA& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   if (!(lhs.i32Field == rhs.i32Field)) {
     return false;
   }
@@ -67,6 +68,7 @@ bool IncludedA::operator==(const IncludedA& rhs) const {
 bool IncludedA::operator<(const IncludedA& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   if (!(lhs.i32Field == rhs.i32Field)) {
     return lhs.i32Field < rhs.i32Field;
   }

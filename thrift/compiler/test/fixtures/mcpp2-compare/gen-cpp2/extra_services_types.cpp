@@ -134,6 +134,7 @@ void containerStruct2::__clear() {
 bool containerStruct2::operator==(const containerStruct2& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   if (!(lhs.fieldA == rhs.fieldA)) {
     return false;
   }
@@ -179,6 +180,7 @@ bool containerStruct2::operator==(const containerStruct2& rhs) const {
 bool containerStruct2::operator<(const containerStruct2& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   if (!(lhs.fieldA == rhs.fieldA)) {
     return lhs.fieldA < rhs.fieldA;
   }

@@ -62,6 +62,7 @@ void MyStruct::__clear() {
 bool MyStruct::operator==(const MyStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   if (!(lhs.MyIncludedField == rhs.MyIncludedField)) {
     return false;
   }

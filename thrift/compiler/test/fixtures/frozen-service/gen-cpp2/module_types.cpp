@@ -107,6 +107,7 @@ void ModuleA::__clear() {
 bool ModuleA::operator==(const ModuleA& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   if (!(lhs.i32Field == rhs.i32Field)) {
     return false;
   }
@@ -125,6 +126,7 @@ bool ModuleA::operator==(const ModuleA& rhs) const {
 bool ModuleA::operator<(const ModuleA& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   if (!(lhs.i32Field == rhs.i32Field)) {
     return lhs.i32Field < rhs.i32Field;
   }
@@ -192,6 +194,7 @@ void ModuleB::__clear() {
 bool ModuleB::operator==(const ModuleB& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   if (!(lhs.i32Field == rhs.i32Field)) {
     return false;
   }
@@ -201,6 +204,7 @@ bool ModuleB::operator==(const ModuleB& rhs) const {
 bool ModuleB::operator<(const ModuleB& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   if (!(lhs.i32Field == rhs.i32Field)) {
     return lhs.i32Field < rhs.i32Field;
   }
@@ -243,6 +247,7 @@ void ExceptionA::__clear() {
 bool ExceptionA::operator==(const ExceptionA& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   if (!(lhs.code == rhs.code)) {
     return false;
   }
@@ -255,6 +260,7 @@ bool ExceptionA::operator==(const ExceptionA& rhs) const {
 bool ExceptionA::operator<(const ExceptionA& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   if (!(lhs.code == rhs.code)) {
     return lhs.code < rhs.code;
   }
@@ -301,6 +307,7 @@ void ExceptionB::__clear() {
 bool ExceptionB::operator==(const ExceptionB& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   if (!(lhs.code == rhs.code)) {
     return false;
   }
@@ -313,6 +320,7 @@ bool ExceptionB::operator==(const ExceptionB& rhs) const {
 bool ExceptionB::operator<(const ExceptionB& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   if (!(lhs.code == rhs.code)) {
     return lhs.code < rhs.code;
   }

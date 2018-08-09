@@ -18,6 +18,7 @@
 bool <%struct:name%>::operator<(const <%struct:name%>& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
 <%#struct:fields%><%#field:type%>
 <%#field:cpp_ref?%>
   if (!!lhs.<%field:name%> != !!rhs.<%field:name%>) {

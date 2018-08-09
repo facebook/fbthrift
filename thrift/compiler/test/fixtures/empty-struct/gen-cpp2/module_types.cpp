@@ -45,12 +45,14 @@ void Empty::__clear() {
 bool Empty::operator==(const Empty& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   return true;
 }
 
 bool Empty::operator<(const Empty& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   return false;
 }
 

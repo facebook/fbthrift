@@ -69,6 +69,7 @@ void Struct::__clear() {
 bool Struct::operator==(const Struct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   if (!(lhs.first == rhs.first)) {
     return false;
   }
@@ -81,6 +82,7 @@ bool Struct::operator==(const Struct& rhs) const {
 bool Struct::operator<(const Struct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   if (!(lhs.first == rhs.first)) {
     return lhs.first < rhs.first;
   }
@@ -143,6 +145,7 @@ void BigStruct::__clear() {
 bool BigStruct::operator==(const BigStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   if (!(lhs.s == rhs.s)) {
     return false;
   }
@@ -155,6 +158,7 @@ bool BigStruct::operator==(const BigStruct& rhs) const {
 bool BigStruct::operator<(const BigStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   if (!(lhs.s == rhs.s)) {
     return lhs.s < rhs.s;
   }

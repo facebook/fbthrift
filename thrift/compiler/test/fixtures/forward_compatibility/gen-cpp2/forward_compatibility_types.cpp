@@ -96,6 +96,7 @@ void OldStructure::__clear() {
 bool OldStructure::operator==(const OldStructure& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   if (!(lhs.features == rhs.features)) {
     return false;
   }
@@ -105,6 +106,7 @@ bool OldStructure::operator==(const OldStructure& rhs) const {
 bool OldStructure::operator<(const OldStructure& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   if (!(lhs.features == rhs.features)) {
     return lhs.features < rhs.features;
   }
@@ -156,6 +158,7 @@ void NewStructure::__clear() {
 bool NewStructure::operator==(const NewStructure& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   if (!(lhs.features == rhs.features)) {
     return false;
   }
@@ -165,6 +168,7 @@ bool NewStructure::operator==(const NewStructure& rhs) const {
 bool NewStructure::operator<(const NewStructure& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   if (!(lhs.features == rhs.features)) {
     return lhs.features < rhs.features;
   }
@@ -216,6 +220,7 @@ void NewStructure2::__clear() {
 bool NewStructure2::operator==(const NewStructure2& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   if (!(lhs.features == rhs.features)) {
     return false;
   }
@@ -273,6 +278,7 @@ void NewStructureNested::__clear() {
 bool NewStructureNested::operator==(const NewStructureNested& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   if (!(lhs.lst == rhs.lst)) {
     return false;
   }
@@ -348,6 +354,7 @@ void NewStructureNestedField::__clear() {
 bool NewStructureNestedField::operator==(const NewStructureNestedField& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   if (!(lhs.f == rhs.f)) {
     return false;
   }

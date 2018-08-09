@@ -331,6 +331,7 @@ void MyField::__clear() {
 bool MyField::operator==(const MyField& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   if (lhs.__isset.opt_value != rhs.__isset.opt_value) {
     return false;
   }
@@ -351,6 +352,7 @@ bool MyField::operator==(const MyField& rhs) const {
 bool MyField::operator<(const MyField& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   if (lhs.__isset.opt_value != rhs.__isset.opt_value) {
     return lhs.__isset.opt_value < rhs.__isset.opt_value;
   }
@@ -417,6 +419,7 @@ void MyStruct::__clear() {
 bool MyStruct::operator==(const MyStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   if (!!lhs.opt_ref != !!rhs.opt_ref) {
     return false;
   }
@@ -447,6 +450,7 @@ bool MyStruct::operator==(const MyStruct& rhs) const {
 bool MyStruct::operator<(const MyStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   if (!!lhs.opt_ref != !!rhs.opt_ref) {
     return !!lhs.opt_ref < !!rhs.opt_ref;
   }
@@ -528,6 +532,7 @@ void StructWithUnion::__clear() {
 bool StructWithUnion::operator==(const StructWithUnion& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   if (!!lhs.u != !!rhs.u) {
     return false;
   }
@@ -548,6 +553,7 @@ bool StructWithUnion::operator==(const StructWithUnion& rhs) const {
 bool StructWithUnion::operator<(const StructWithUnion& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   if (!!lhs.u != !!rhs.u) {
     return !!lhs.u < !!rhs.u;
   }
@@ -608,6 +614,7 @@ void RecursiveStruct::__clear() {
 bool RecursiveStruct::operator==(const RecursiveStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   if (lhs.__isset.mes != rhs.__isset.mes) {
     return false;
   }
@@ -694,6 +701,7 @@ void StructWithContainers::__clear() {
 bool StructWithContainers::operator==(const StructWithContainers& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   if (!!lhs.list_ref != !!rhs.list_ref) {
     return false;
   }
@@ -748,6 +756,7 @@ bool StructWithContainers::operator==(const StructWithContainers& rhs) const {
 bool StructWithContainers::operator<(const StructWithContainers& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   if (!!lhs.list_ref != !!rhs.list_ref) {
     return !!lhs.list_ref < !!rhs.list_ref;
   }
@@ -839,6 +848,7 @@ void StructWithSharedConst::__clear() {
 bool StructWithSharedConst::operator==(const StructWithSharedConst& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   if (!!lhs.opt_shared_const != !!rhs.opt_shared_const) {
     return false;
   }
@@ -869,6 +879,7 @@ bool StructWithSharedConst::operator==(const StructWithSharedConst& rhs) const {
 bool StructWithSharedConst::operator<(const StructWithSharedConst& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   if (!!lhs.opt_shared_const != !!rhs.opt_shared_const) {
     return !!lhs.opt_shared_const < !!rhs.opt_shared_const;
   }
@@ -926,12 +937,14 @@ void Empty::__clear() {
 bool Empty::operator==(const Empty& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   return true;
 }
 
 bool Empty::operator<(const Empty& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   return false;
 }
 
@@ -979,6 +992,7 @@ void StructWithRef::__clear() {
 bool StructWithRef::operator==(const StructWithRef& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   if (!!lhs.def_field != !!rhs.def_field) {
     return false;
   }
@@ -1009,6 +1023,7 @@ bool StructWithRef::operator==(const StructWithRef& rhs) const {
 bool StructWithRef::operator<(const StructWithRef& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   if (!!lhs.def_field != !!rhs.def_field) {
     return !!lhs.def_field < !!rhs.def_field;
   }
@@ -1082,6 +1097,7 @@ void StructWithRefTypeUnique::__clear() {
 bool StructWithRefTypeUnique::operator==(const StructWithRefTypeUnique& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   if (!!lhs.def_field != !!rhs.def_field) {
     return false;
   }
@@ -1112,6 +1128,7 @@ bool StructWithRefTypeUnique::operator==(const StructWithRefTypeUnique& rhs) con
 bool StructWithRefTypeUnique::operator<(const StructWithRefTypeUnique& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   if (!!lhs.def_field != !!rhs.def_field) {
     return !!lhs.def_field < !!rhs.def_field;
   }
@@ -1173,6 +1190,7 @@ void StructWithRefTypeShared::__clear() {
 bool StructWithRefTypeShared::operator==(const StructWithRefTypeShared& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   if (!!lhs.def_field != !!rhs.def_field) {
     return false;
   }
@@ -1203,6 +1221,7 @@ bool StructWithRefTypeShared::operator==(const StructWithRefTypeShared& rhs) con
 bool StructWithRefTypeShared::operator<(const StructWithRefTypeShared& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   if (!!lhs.def_field != !!rhs.def_field) {
     return !!lhs.def_field < !!rhs.def_field;
   }
@@ -1264,6 +1283,7 @@ void StructWithRefTypeSharedConst::__clear() {
 bool StructWithRefTypeSharedConst::operator==(const StructWithRefTypeSharedConst& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   if (!!lhs.def_field != !!rhs.def_field) {
     return false;
   }
@@ -1294,6 +1314,7 @@ bool StructWithRefTypeSharedConst::operator==(const StructWithRefTypeSharedConst
 bool StructWithRefTypeSharedConst::operator<(const StructWithRefTypeSharedConst& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   if (!!lhs.def_field != !!rhs.def_field) {
     return !!lhs.def_field < !!rhs.def_field;
   }

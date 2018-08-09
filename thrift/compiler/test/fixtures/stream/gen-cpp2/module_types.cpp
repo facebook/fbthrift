@@ -39,12 +39,14 @@ void FooEx::__clear() {
 bool FooEx::operator==(const FooEx& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   return true;
 }
 
 bool FooEx::operator<(const FooEx& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   return false;
 }
 

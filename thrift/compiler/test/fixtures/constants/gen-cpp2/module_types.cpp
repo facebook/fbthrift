@@ -250,6 +250,7 @@ void Internship::__clear() {
 bool Internship::operator==(const Internship& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   if (!(lhs.weeks == rhs.weeks)) {
     return false;
   }
@@ -270,6 +271,7 @@ bool Internship::operator==(const Internship& rhs) const {
 bool Internship::operator<(const Internship& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   if (!(lhs.weeks == rhs.weeks)) {
     return lhs.weeks < rhs.weeks;
   }
@@ -322,6 +324,7 @@ void UnEnumStruct::__clear() {
 bool UnEnumStruct::operator==(const UnEnumStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   if (!(lhs.city == rhs.city)) {
     return false;
   }
@@ -331,6 +334,7 @@ bool UnEnumStruct::operator==(const UnEnumStruct& rhs) const {
 bool UnEnumStruct::operator<(const UnEnumStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   if (!(lhs.city == rhs.city)) {
     return lhs.city < rhs.city;
   }
@@ -369,6 +373,7 @@ void Range::__clear() {
 bool Range::operator==(const Range& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   if (!(lhs.min == rhs.min)) {
     return false;
   }
@@ -381,6 +386,7 @@ bool Range::operator==(const Range& rhs) const {
 bool Range::operator<(const Range& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   if (!(lhs.min == rhs.min)) {
     return lhs.min < rhs.min;
   }
@@ -426,6 +432,7 @@ void struct1::__clear() {
 bool struct1::operator==(const struct1& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   if (!(lhs.a == rhs.a)) {
     return false;
   }
@@ -438,6 +445,7 @@ bool struct1::operator==(const struct1& rhs) const {
 bool struct1::operator<(const struct1& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   if (!(lhs.a == rhs.a)) {
     return lhs.a < rhs.a;
   }
@@ -490,6 +498,7 @@ void struct2::__clear() {
 bool struct2::operator==(const struct2& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   if (!(lhs.a == rhs.a)) {
     return false;
   }
@@ -508,6 +517,7 @@ bool struct2::operator==(const struct2& rhs) const {
 bool struct2::operator<(const struct2& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   if (!(lhs.a == rhs.a)) {
     return lhs.a < rhs.a;
   }
@@ -581,6 +591,7 @@ void struct3::__clear() {
 bool struct3::operator==(const struct3& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   if (!(lhs.a == rhs.a)) {
     return false;
   }
@@ -596,6 +607,7 @@ bool struct3::operator==(const struct3& rhs) const {
 bool struct3::operator<(const struct3& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   if (!(lhs.a == rhs.a)) {
     return lhs.a < rhs.a;
   }

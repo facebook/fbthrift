@@ -71,6 +71,7 @@ void House::__clear() {
 bool House::operator==(const House& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   if (!(lhs.id == rhs.id)) {
     return false;
   }
@@ -116,6 +117,7 @@ void Field::__clear() {
 bool Field::operator==(const Field& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   if (!(lhs.id == rhs.id)) {
     return false;
   }

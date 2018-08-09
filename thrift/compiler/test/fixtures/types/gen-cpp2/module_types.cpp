@@ -251,6 +251,7 @@ void decorated_struct::__clear() {
 bool decorated_struct::operator==(const decorated_struct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   if (!(lhs.field == rhs.field)) {
     return false;
   }
@@ -260,6 +261,7 @@ bool decorated_struct::operator==(const decorated_struct& rhs) const {
 bool decorated_struct::operator<(const decorated_struct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   if (!(lhs.field == rhs.field)) {
     return lhs.field < rhs.field;
   }
@@ -325,6 +327,7 @@ void ContainerStruct::__clear() {
 bool ContainerStruct::operator==(const ContainerStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   if (!(lhs.fieldA == rhs.fieldA)) {
     return false;
   }
@@ -456,6 +459,7 @@ void CppTypeStruct::__clear() {
 bool CppTypeStruct::operator==(const CppTypeStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   if (!(lhs.fieldA == rhs.fieldA)) {
     return false;
   }
@@ -465,6 +469,7 @@ bool CppTypeStruct::operator==(const CppTypeStruct& rhs) const {
 bool CppTypeStruct::operator<(const CppTypeStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   if (!(lhs.fieldA == rhs.fieldA)) {
     return lhs.fieldA < rhs.fieldA;
   }
@@ -512,6 +517,7 @@ void VirtualStruct::__clear() {
 bool VirtualStruct::operator==(const VirtualStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   if (!(lhs.MyIntField == rhs.MyIntField)) {
     return false;
   }
@@ -521,6 +527,7 @@ bool VirtualStruct::operator==(const VirtualStruct& rhs) const {
 bool VirtualStruct::operator<(const VirtualStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   if (!(lhs.MyIntField == rhs.MyIntField)) {
     return lhs.MyIntField < rhs.MyIntField;
   }
@@ -563,6 +570,7 @@ void MyStructWithForwardRefEnum::__clear() {
 bool MyStructWithForwardRefEnum::operator==(const MyStructWithForwardRefEnum& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   if (!(lhs.a == rhs.a)) {
     return false;
   }
@@ -609,6 +617,7 @@ void TrivialNumeric::__clear() {
 bool TrivialNumeric::operator==(const TrivialNumeric& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   if (!(lhs.a == rhs.a)) {
     return false;
   }
@@ -621,6 +630,7 @@ bool TrivialNumeric::operator==(const TrivialNumeric& rhs) const {
 bool TrivialNumeric::operator<(const TrivialNumeric& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   if (!(lhs.a == rhs.a)) {
     return lhs.a < rhs.a;
   }
@@ -667,6 +677,7 @@ void TrivialNestedWithDefault::__clear() {
 bool TrivialNestedWithDefault::operator==(const TrivialNestedWithDefault& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   if (!(lhs.z == rhs.z)) {
     return false;
   }
@@ -679,6 +690,7 @@ bool TrivialNestedWithDefault::operator==(const TrivialNestedWithDefault& rhs) c
 bool TrivialNestedWithDefault::operator<(const TrivialNestedWithDefault& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   if (!(lhs.z == rhs.z)) {
     return lhs.z < rhs.z;
   }
@@ -733,6 +745,7 @@ void ComplexString::__clear() {
 bool ComplexString::operator==(const ComplexString& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   if (!(lhs.a == rhs.a)) {
     return false;
   }
@@ -745,6 +758,7 @@ bool ComplexString::operator==(const ComplexString& rhs) const {
 bool ComplexString::operator<(const ComplexString& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   if (!(lhs.a == rhs.a)) {
     return lhs.a < rhs.a;
   }
@@ -799,6 +813,7 @@ void ComplexNestedWithDefault::__clear() {
 bool ComplexNestedWithDefault::operator==(const ComplexNestedWithDefault& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   if (!(lhs.z == rhs.z)) {
     return false;
   }
@@ -811,6 +826,7 @@ bool ComplexNestedWithDefault::operator==(const ComplexNestedWithDefault& rhs) c
 bool ComplexNestedWithDefault::operator<(const ComplexNestedWithDefault& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   if (!(lhs.z == rhs.z)) {
     return lhs.z < rhs.z;
   }

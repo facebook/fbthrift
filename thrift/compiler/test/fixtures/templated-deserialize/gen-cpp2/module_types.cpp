@@ -174,6 +174,7 @@ void SmallStruct::__clear() {
 bool SmallStruct::operator==(const SmallStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   if (!(lhs.small_A == rhs.small_A)) {
     return false;
   }
@@ -186,6 +187,7 @@ bool SmallStruct::operator==(const SmallStruct& rhs) const {
 bool SmallStruct::operator<(const SmallStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   if (!(lhs.small_A == rhs.small_A)) {
     return lhs.small_A < rhs.small_A;
   }
@@ -361,6 +363,7 @@ void containerStruct::__clear() {
 bool containerStruct::operator==(const containerStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   if (!(lhs.fieldA == rhs.fieldA)) {
     return false;
   }

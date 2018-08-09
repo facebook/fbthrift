@@ -1108,6 +1108,7 @@ void structA::__clear() {
 bool structA::operator==(const structA& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   if (!(lhs.a == rhs.a)) {
     return false;
   }
@@ -1120,6 +1121,7 @@ bool structA::operator==(const structA& rhs) const {
 bool structA::operator<(const structA& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   if (!(lhs.a == rhs.a)) {
     return lhs.a < rhs.a;
   }
@@ -1252,6 +1254,7 @@ void structB::__clear() {
 bool structB::operator==(const structB& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   if (!(lhs.c == rhs.c)) {
     return false;
   }
@@ -1264,6 +1267,7 @@ bool structB::operator==(const structB& rhs) const {
 bool structB::operator<(const structB& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   if (!(lhs.c == rhs.c)) {
     return lhs.c < rhs.c;
   }
@@ -1404,6 +1408,7 @@ void structC::__clear() {
 bool structC::operator==(const structC& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   if (!(lhs.a == rhs.a)) {
     return false;
   }
@@ -1500,6 +1505,7 @@ bool structC::operator==(const structC& rhs) const {
 bool structC::operator<(const structC& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   if (!(lhs.a == rhs.a)) {
     return lhs.a < rhs.a;
   }
@@ -1868,6 +1874,7 @@ void struct1::__clear() {
 bool struct1::operator==(const struct1& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   if (!(lhs.field0 == rhs.field0)) {
     return false;
   }
@@ -1902,6 +1909,7 @@ bool struct1::operator==(const struct1& rhs) const {
 bool struct1::operator<(const struct1& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   if (!(lhs.field0 == rhs.field0)) {
     return lhs.field0 < rhs.field0;
   }
@@ -2013,6 +2021,7 @@ void struct2::__clear() {
 bool struct2::operator==(const struct2& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   if (!(lhs.fieldA == rhs.fieldA)) {
     return false;
   }
@@ -2040,6 +2049,7 @@ bool struct2::operator==(const struct2& rhs) const {
 bool struct2::operator<(const struct2& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   if (!(lhs.fieldA == rhs.fieldA)) {
     return lhs.fieldA < rhs.fieldA;
   }
@@ -2186,6 +2196,7 @@ void struct3::__clear() {
 bool struct3::operator==(const struct3& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   if (!(lhs.fieldA == rhs.fieldA)) {
     return false;
   }
@@ -2246,6 +2257,7 @@ bool struct3::operator==(const struct3& rhs) const {
 bool struct3::operator<(const struct3& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   if (!(lhs.fieldA == rhs.fieldA)) {
     return lhs.fieldA < rhs.fieldA;
   }
@@ -2487,6 +2499,7 @@ void struct4::__clear() {
 bool struct4::operator==(const struct4& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   if (!(lhs.field0 == rhs.field0)) {
     return false;
   }
@@ -2515,6 +2528,7 @@ bool struct4::operator==(const struct4& rhs) const {
 bool struct4::operator<(const struct4& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   if (!(lhs.field0 == rhs.field0)) {
     return lhs.field0 < rhs.field0;
   }
@@ -2594,6 +2608,7 @@ void struct5::__clear() {
 bool struct5::operator==(const struct5& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   if (!(lhs.field0 == rhs.field0)) {
     return false;
   }
@@ -2620,6 +2635,7 @@ bool struct5::operator==(const struct5& rhs) const {
 bool struct5::operator<(const struct5& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   if (!(lhs.field0 == rhs.field0)) {
     return lhs.field0 < rhs.field0;
   }
@@ -2696,6 +2712,7 @@ void struct_binary::__clear() {
 bool struct_binary::operator==(const struct_binary& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   if (!apache::thrift::StringTraits<std::string>::isEqual(lhs.bi, rhs.bi)) {
     return false;
   }
@@ -2705,6 +2722,7 @@ bool struct_binary::operator==(const struct_binary& rhs) const {
 bool struct_binary::operator<(const struct_binary& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   if (!apache::thrift::StringTraits<std::string>::isEqual(lhs.bi, rhs.bi)) {
     return apache::thrift::StringTraits<std::string>::isLess(lhs.bi, rhs.bi);
   }
@@ -2750,6 +2768,7 @@ void dep_A_struct::__clear() {
 bool dep_A_struct::operator==(const dep_A_struct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   if (!(lhs.b == rhs.b)) {
     return false;
   }
@@ -2765,6 +2784,7 @@ bool dep_A_struct::operator==(const dep_A_struct& rhs) const {
 bool dep_A_struct::operator<(const dep_A_struct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   if (!(lhs.b == rhs.b)) {
     return lhs.b < rhs.b;
   }
@@ -2828,6 +2848,7 @@ void annotated::__clear() {
 bool annotated::operator==(const annotated& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   if (!(lhs.a == rhs.a)) {
     return false;
   }
@@ -2837,6 +2858,7 @@ bool annotated::operator==(const annotated& rhs) const {
 bool annotated::operator<(const annotated& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   if (!(lhs.a == rhs.a)) {
     return lhs.a < rhs.a;
   }
@@ -3250,6 +3272,7 @@ void struct_with_special_names::__clear() {
 bool struct_with_special_names::operator==(const struct_with_special_names& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   if (!(lhs.get == rhs.get)) {
     return false;
   }
@@ -3340,6 +3363,7 @@ bool struct_with_special_names::operator==(const struct_with_special_names& rhs)
 bool struct_with_special_names::operator<(const struct_with_special_names& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   if (!(lhs.get == rhs.get)) {
     return lhs.get < rhs.get;
   }
@@ -3508,6 +3532,7 @@ void struct_with_indirections::__clear() {
 bool struct_with_indirections::operator==(const struct_with_indirections& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   if (!(lhs.real == rhs.real)) {
     return false;
   }

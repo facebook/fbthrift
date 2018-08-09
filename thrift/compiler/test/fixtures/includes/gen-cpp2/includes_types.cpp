@@ -55,6 +55,7 @@ void Included::__clear() {
 bool Included::operator==(const Included& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   if (!(lhs.MyIntField == rhs.MyIntField)) {
     return false;
   }
@@ -67,6 +68,7 @@ bool Included::operator==(const Included& rhs) const {
 bool Included::operator<(const Included& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   if (!(lhs.MyIntField == rhs.MyIntField)) {
     return lhs.MyIntField < rhs.MyIntField;
   }

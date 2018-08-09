@@ -849,12 +849,14 @@ void Empty::__clear() {
 bool Empty::operator==(const Empty& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   return true;
 }
 
 bool Empty::operator<(const Empty& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   return false;
 }
 
@@ -895,6 +897,7 @@ void ASimpleStruct::__clear() {
 bool ASimpleStruct::operator==(const ASimpleStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   if (!(lhs.boolField == rhs.boolField)) {
     return false;
   }
@@ -938,6 +941,7 @@ void ASimpleStructNoexcept::__clear() {
 bool ASimpleStructNoexcept::operator==(const ASimpleStructNoexcept& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   if (!(lhs.boolField == rhs.boolField)) {
     return false;
   }
@@ -947,6 +951,7 @@ bool ASimpleStructNoexcept::operator==(const ASimpleStructNoexcept& rhs) const {
 bool ASimpleStructNoexcept::operator<(const ASimpleStructNoexcept& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   if (!(lhs.boolField == rhs.boolField)) {
     return lhs.boolField < rhs.boolField;
   }
@@ -1034,6 +1039,7 @@ void MyStruct::__clear() {
 bool MyStruct::operator==(const MyStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   if (!(lhs.MyBoolField == rhs.MyBoolField)) {
     return false;
   }
@@ -1072,6 +1078,7 @@ bool MyStruct::operator==(const MyStruct& rhs) const {
 bool MyStruct::operator<(const MyStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   if (!(lhs.MyBoolField == rhs.MyBoolField)) {
     return lhs.MyBoolField < rhs.MyBoolField;
   }
@@ -1642,6 +1649,7 @@ void AnException::__clear() {
 bool AnException::operator==(const AnException& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   if (!(lhs.code == rhs.code)) {
     return false;
   }
@@ -1826,6 +1834,7 @@ void AnotherException::__clear() {
 bool AnotherException::operator==(const AnotherException& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   if (!(lhs.code == rhs.code)) {
     return false;
   }
@@ -1841,6 +1850,7 @@ bool AnotherException::operator==(const AnotherException& rhs) const {
 bool AnotherException::operator<(const AnotherException& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   if (!(lhs.code == rhs.code)) {
     return lhs.code < rhs.code;
   }
@@ -2073,6 +2083,7 @@ void containerStruct::__clear() {
 bool containerStruct::operator==(const containerStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   if (!(lhs.fieldA == rhs.fieldA)) {
     return false;
   }
@@ -2585,6 +2596,7 @@ void MyIncludedStruct::__clear() {
 bool MyIncludedStruct::operator==(const MyIncludedStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   if (!(lhs.MyIncludedInt == rhs.MyIncludedInt)) {
     return false;
   }
@@ -2823,6 +2835,7 @@ void AnnotatedStruct::__clear() {
 bool AnnotatedStruct::operator==(const AnnotatedStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   if (!(lhs.no_annotation == rhs.no_annotation)) {
     return false;
   }
@@ -3243,6 +3256,7 @@ void FloatStruct::__clear() {
 bool FloatStruct::operator==(const FloatStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   if (!(lhs.floatField == rhs.floatField)) {
     return false;
   }
@@ -3255,6 +3269,7 @@ bool FloatStruct::operator==(const FloatStruct& rhs) const {
 bool FloatStruct::operator<(const FloatStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   if (!(lhs.floatField == rhs.floatField)) {
     return lhs.floatField < rhs.floatField;
   }
@@ -3362,6 +3377,7 @@ void AllRequiredNoExceptMoveCtrStruct::__clear() {
 bool AllRequiredNoExceptMoveCtrStruct::operator==(const AllRequiredNoExceptMoveCtrStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   if (!(lhs.intField == rhs.intField)) {
     return false;
   }
@@ -3371,6 +3387,7 @@ bool AllRequiredNoExceptMoveCtrStruct::operator==(const AllRequiredNoExceptMoveC
 bool AllRequiredNoExceptMoveCtrStruct::operator<(const AllRequiredNoExceptMoveCtrStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   if (!(lhs.intField == rhs.intField)) {
     return lhs.intField < rhs.intField;
   }

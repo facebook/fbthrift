@@ -160,6 +160,7 @@ void Color::__clear() {
 bool Color::operator==(const Color& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   if (!(lhs.red == rhs.red)) {
     return false;
   }
@@ -178,6 +179,7 @@ bool Color::operator==(const Color& rhs) const {
 bool Color::operator<(const Color& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   if (!(lhs.red == rhs.red)) {
     return lhs.red < rhs.red;
   }
@@ -238,6 +240,7 @@ void Vehicle::__clear() {
 bool Vehicle::operator==(const Vehicle& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   if (!(lhs.color == rhs.color)) {
     return false;
   }
@@ -259,6 +262,7 @@ bool Vehicle::operator==(const Vehicle& rhs) const {
 bool Vehicle::operator<(const Vehicle& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   if (!(lhs.color == rhs.color)) {
     return lhs.color < rhs.color;
   }
@@ -334,6 +338,7 @@ void Person::__clear() {
 bool Person::operator==(const Person& rhs) const {
   (void)rhs;
   auto& lhs = *this;
+  (void)lhs;
   if (!(lhs.id == rhs.id)) {
     return false;
   }
