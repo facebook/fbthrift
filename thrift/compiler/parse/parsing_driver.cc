@@ -48,8 +48,7 @@ parsing_driver::parsing_driver(std::string path, parsing_params parse_params)
     : params(std::move(parse_params)),
       doctext(nullptr),
       doctext_lineno(0),
-      mode(parsing_mode::INCLUDES),
-      parser_(new apache::thrift::yy::parser(*this)) {
+      mode(parsing_mode::INCLUDES) {
   program = new t_program(path);
   scope_cache = program->scope();
 }
@@ -64,6 +63,15 @@ parsing_driver::~parsing_driver() = default;
 std::unique_ptr<t_program> parsing_driver::parse(
     std::vector<diagnostic_message>& messages) {
   std::unique_ptr<t_program> result{};
+
+  try {
+    scanner = std::make_unique<yy_scanner>();
+  } catch (std::system_error const&) {
+    return result;
+  }
+
+  parser_ = std::make_unique<apache::thrift::yy::parser>(
+      *this, scanner->get_scanner());
 
   try {
     parse_file();
@@ -90,24 +98,23 @@ void parsing_driver::parse_file() {
     already_parsed_paths_.insert(path);
   }
 
-  // Open the file
-  yyin = fopen(path.c_str(), "r");
-  if (yyin == 0) {
-    failure("Could not open input file: \"%s\"", path.c_str());
+  try {
+    scanner->start(path);
+    scanner->set_lineno(1);
+  } catch (std::runtime_error const& ex) {
+    failure(ex.what());
   }
 
   // Create new scope and scan for includes
   verbose("Scanning %s for includes\n", path.c_str());
   mode = apache::thrift::parsing_mode::INCLUDES;
   try {
-    yylineno = 1;
     if (parser_->parse() != 0) {
       failure("Parser error during include pass.");
     }
   } catch (const std::string& x) {
     failure(x.c_str());
   }
-  fclose(yyin);
 
   // Recursively parse all the include programs
   const auto& includes = program->get_included_programs();
@@ -140,13 +147,15 @@ void parsing_driver::parse_file() {
   program = old_program;
 
   // Parse the program file
-  mode = apache::thrift::parsing_mode::PROGRAM;
-  yyin = fopen(path.c_str(), "r");
-  if (yyin == 0) {
-    failure("Could not open input file: \"%s\"", path.c_str());
+  try {
+    scanner->start(path);
+    scanner->set_lineno(1);
+  } catch (std::runtime_error const& ex) {
+    failure(ex.what());
   }
+
+  mode = apache::thrift::parsing_mode::PROGRAM;
   verbose("Parsing %s for types\n", path.c_str());
-  yylineno = 1;
   try {
     if (parser_->parse() != 0) {
       failure("Parser error during types pass.");
@@ -154,7 +163,6 @@ void parsing_driver::parse_file() {
   } catch (const std::string& x) {
     failure(x.c_str());
   }
-  fclose(yyin);
 }
 
 [[noreturn]] void parsing_driver::end_parsing() { throw parsing_terminator{}; }

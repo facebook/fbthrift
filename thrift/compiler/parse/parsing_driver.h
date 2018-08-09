@@ -24,14 +24,14 @@
 #include "thrift/compiler/ast/t_program.h"
 #include "thrift/compiler/ast/t_scope.h"
 
-#include "thrift/compiler/parse/yy_globals.h"
+#include "thrift/compiler/parse/yy_scanner.h"
 
 /**
  * Provide the custom yylex signature to flex.
  */
 #define YY_DECL                                  \
   apache::thrift::yy::parser::symbol_type yylex( \
-      apache::thrift::parsing_driver& driver)
+      apache::thrift::parsing_driver& driver, yyscan_t yyscanner)
 
 namespace apache {
 namespace thrift {
@@ -174,6 +174,11 @@ class parsing_driver {
    * A global map that holds a pointer to all programs already cached
    */
   std::map<std::string, t_program*> program_cache;
+
+  /**
+   * The Flex lexer used by the parser.
+   */
+  std::unique_ptr<apache::thrift::yy_scanner> scanner;
 
   parsing_driver(std::string path, parsing_params parse_params);
   ~parsing_driver();
@@ -339,8 +344,11 @@ class parsing_driver {
       message = std::string{dyn_buffer.data()};
     }
 
-    return diagnostic_message{
-        level, program->get_path(), yylineno, std::string{yytext}, message};
+    return diagnostic_message{level,
+                              program->get_path(),
+                              scanner->get_lineno(),
+                              scanner->get_text(),
+                              message};
   }
 };
 

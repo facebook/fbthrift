@@ -24,6 +24,9 @@
  */
 %option noyywrap
 
+%option reentrant
+%option yylineno
+
 %{
 
 // Flex normally adds: #include <unistd.h>. This include is not supported
@@ -69,11 +72,6 @@ static void unexpected_token(parsing_driver& driver, char* text) {
 int g_scope_level = 0;
 
 %}
-
-/**
- * Provides the yylineno global, useful for debugging output
- */
-%option lex-compat
 
 /**
  * Helper definitions, comments, constants, and whatnot

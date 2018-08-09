@@ -120,7 +120,7 @@ class parsing_driver;
 %define api.value.type variant
 %define api.namespace {apache::thrift::yy}
 
-%param {apache::thrift::parsing_driver& driver}
+%param {apache::thrift::parsing_driver& driver} {yyscan_t raw_scanner}
 
 /**
  * Strings identifier
@@ -472,10 +472,10 @@ Include:
         if (!path.empty()) {
           if (driver.program_cache.find(path) == driver.program_cache.end()) {
             driver.program_cache[path] =
-              driver.program->add_include(path, std::string($2), yylineno);
+              driver.program->add_include(path, std::string($2), driver.scanner->get_lineno());
           } else {
             t_include *include = new t_include{driver.program_cache[path]};
-            include->set_lineno(yylineno);
+            include->set_lineno(driver.scanner->get_lineno());
             driver.program->add_include(include);
           }
         }
@@ -559,7 +559,7 @@ TypeDefinition:
 Typedef:
   tok_typedef
     {
-      lineno_stack.push(LineType::kTypedef, yylineno);
+      lineno_stack.push(LineType::kTypedef, driver.scanner->get_lineno());
     }
   FieldType tok_identifier TypeAnnotations
     {
@@ -584,7 +584,7 @@ CommaOrSemicolonOptional:
 Enum:
   tok_enum
     {
-      lineno_stack.push(LineType::kEnum, yylineno);
+      lineno_stack.push(LineType::kEnum, driver.scanner->get_lineno());
     }
   tok_identifier
     {
@@ -665,7 +665,7 @@ EnumValue:
       }
       y_enum_val = $3;
       $$ = new t_enum_value($1, y_enum_val);
-      $$->set_lineno(yylineno);
+      $$->set_lineno(driver.scanner->get_lineno());
     }
 |
   tok_identifier
@@ -678,13 +678,13 @@ EnumValue:
 
       ++y_enum_val;
       $$->set_value(y_enum_val);
-      $$->set_lineno(yylineno);
+      $$->set_lineno(driver.scanner->get_lineno());
     }
 
 Const:
   tok_const
     {
-      lineno_stack.push(LineType::kConst, yylineno);
+      lineno_stack.push(LineType::kConst, driver.scanner->get_lineno());
     }
   FieldType tok_identifier "=" ConstValue CommaOrSemicolonOptional
     {
@@ -812,7 +812,7 @@ StructHead:
 Struct:
   StructHead
     {
-        lineno_stack.push(LineType::kStruct, yylineno);
+        lineno_stack.push(LineType::kStruct, driver.scanner->get_lineno());
     }
   tok_identifier "{" FieldList "}" TypeAnnotations
     {
@@ -831,7 +831,7 @@ Struct:
 Xception:
   tok_xception
     {
-      lineno_stack.push(LineType::kXception, yylineno);
+      lineno_stack.push(LineType::kXception, driver.scanner->get_lineno());
     }
   tok_identifier "{" FieldList "}" TypeAnnotations
     {
@@ -881,7 +881,7 @@ Xception:
 Service:
   tok_service
     {
-      lineno_stack.push(LineType::kService, yylineno);
+      lineno_stack.push(LineType::kService, driver.scanner->get_lineno());
     }
   tok_identifier Extends "{" FlagArgs FunctionList UnflagArgs "}" FunctionAnnotations
     {
@@ -951,7 +951,7 @@ Function:
       if ($1 != NULL) {
         $$->set_doc($1);
       }
-      $$->set_lineno(yylineno);
+      $$->set_lineno(driver.scanner->get_lineno());
       y_field_val = -1;
     }
 
@@ -1137,13 +1137,13 @@ FieldIdentifier:
         $$.value = $1;
         $$.auto_assigned = false;
       }
-      lineno_stack.push(LineType::kField, yylineno);
+      lineno_stack.push(LineType::kField, driver.scanner->get_lineno());
     }
 |
     {
       $$.value = y_field_val--;
       $$.auto_assigned = true;
-      lineno_stack.push(LineType::kField, yylineno);
+      lineno_stack.push(LineType::kField, driver.scanner->get_lineno());
     }
 
 FieldRequiredness:
