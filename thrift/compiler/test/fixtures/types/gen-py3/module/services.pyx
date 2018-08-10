@@ -82,7 +82,7 @@ cdef class SomeServiceInterface(
     annotations = _SomeService_annotations
 
     def __cinit__(self):
-        self.interface_wrapper = cSomeServiceInterface(
+        self._cpp_obj = cSomeServiceInterface(
             <PyObject *> self,
             get_executor()
         )

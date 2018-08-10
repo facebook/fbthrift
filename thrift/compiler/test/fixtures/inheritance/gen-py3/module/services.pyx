@@ -71,7 +71,7 @@ cdef class MyRootInterface(
     annotations = _MyRoot_annotations
 
     def __cinit__(self):
-        self.interface_wrapper = cMyRootInterface(
+        self._cpp_obj = cMyRootInterface(
             <PyObject *> self,
             get_executor()
         )
@@ -93,7 +93,7 @@ MyRootInterface
     annotations = _MyNode_annotations
 
     def __cinit__(self):
-        self.interface_wrapper = cMyNodeInterface(
+        self._cpp_obj = cMyNodeInterface(
             <PyObject *> self,
             get_executor()
         )
@@ -115,7 +115,7 @@ MyNodeInterface
     annotations = _MyLeaf_annotations
 
     def __cinit__(self):
-        self.interface_wrapper = cMyLeafInterface(
+        self._cpp_obj = cMyLeafInterface(
             <PyObject *> self,
             get_executor()
         )

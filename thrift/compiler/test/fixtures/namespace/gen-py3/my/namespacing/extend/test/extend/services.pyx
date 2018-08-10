@@ -73,7 +73,7 @@ cdef class ExtendTestServiceInterface(
     annotations = _ExtendTestService_annotations
 
     def __cinit__(self):
-        self.interface_wrapper = cExtendTestServiceInterface(
+        self._cpp_obj = cExtendTestServiceInterface(
             <PyObject *> self,
             get_executor()
         )

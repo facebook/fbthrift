@@ -7,7 +7,7 @@
 
 from cpython.ref cimport PyObject
 from libcpp.memory cimport shared_ptr
-from thrift.py3.server cimport cServerInterface
+from thrift.py3.server cimport cServerInterface, cAsyncProcessorFactory
 from folly cimport cFollyExecutor
 
 cimport hsmodule.services_wrapper as _hsmodule_services_wrapper
@@ -32,4 +32,4 @@ cdef extern from "src/gen-py3/extend/services_wrapper.h" namespace "cpp2":
     ):
         pass
 
-    shared_ptr[cServerInterface] cExtendTestServiceInterface "cpp2::ExtendTestServiceInterface"(PyObject *if_object, cFollyExecutor* Q)
+    shared_ptr[cAsyncProcessorFactory] cExtendTestServiceInterface "cpp2::ExtendTestServiceInterface"(PyObject *if_object, cFollyExecutor* Q)

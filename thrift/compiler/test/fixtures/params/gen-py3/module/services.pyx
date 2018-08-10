@@ -69,7 +69,7 @@ cdef class NestedContainersInterface(
     annotations = _NestedContainers_annotations
 
     def __cinit__(self):
-        self.interface_wrapper = cNestedContainersInterface(
+        self._cpp_obj = cNestedContainersInterface(
             <PyObject *> self,
             get_executor()
         )

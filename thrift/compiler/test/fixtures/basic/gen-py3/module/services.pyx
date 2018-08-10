@@ -95,7 +95,7 @@ cdef class MyServiceInterface(
     annotations = _MyService_annotations
 
     def __cinit__(self):
-        self.interface_wrapper = cMyServiceInterface(
+        self._cpp_obj = cMyServiceInterface(
             <PyObject *> self,
             get_executor()
         )
@@ -163,7 +163,7 @@ cdef class MyServiceFastInterface(
     annotations = _MyServiceFast_annotations
 
     def __cinit__(self):
-        self.interface_wrapper = cMyServiceFastInterface(
+        self._cpp_obj = cMyServiceFastInterface(
             <PyObject *> self,
             get_executor()
         )
@@ -231,7 +231,7 @@ cdef class MyServiceEmptyInterface(
     annotations = _MyServiceEmpty_annotations
 
     def __cinit__(self):
-        self.interface_wrapper = cMyServiceEmptyInterface(
+        self._cpp_obj = cMyServiceEmptyInterface(
             <PyObject *> self,
             get_executor()
         )
@@ -246,7 +246,7 @@ cdef class MyServicePrioParentInterface(
     annotations = _MyServicePrioParent_annotations
 
     def __cinit__(self):
-        self.interface_wrapper = cMyServicePrioParentInterface(
+        self._cpp_obj = cMyServicePrioParentInterface(
             <PyObject *> self,
             get_executor()
         )
@@ -276,7 +276,7 @@ MyServicePrioParentInterface
     annotations = _MyServicePrioChild_annotations
 
     def __cinit__(self):
-        self.interface_wrapper = cMyServicePrioChildInterface(
+        self._cpp_obj = cMyServicePrioChildInterface(
             <PyObject *> self,
             get_executor()
         )

@@ -28,11 +28,15 @@ class SSLPolicy(Enum):
     value: int
 
 
-class ServiceInterface:
+class AsyncProcessorFactory:
+    pass
+
+
+class ServiceInterface(AsyncProcessorFactory):
     annotations: ClassVar[Mapping[str, str]] = ...
 
 
-hT = TypeVar('hT', bound=ServiceInterface)
+hT = TypeVar('hT', bound=AsyncProcessorFactory)
 
 
 class ThriftServer:

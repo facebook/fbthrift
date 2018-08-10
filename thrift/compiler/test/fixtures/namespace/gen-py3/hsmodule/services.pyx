@@ -69,7 +69,7 @@ cdef class HsTestServiceInterface(
     annotations = _HsTestService_annotations
 
     def __cinit__(self):
-        self.interface_wrapper = cHsTestServiceInterface(
+        self._cpp_obj = cHsTestServiceInterface(
             <PyObject *> self,
             get_executor()
         )

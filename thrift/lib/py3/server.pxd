@@ -51,6 +51,7 @@ cdef extern from "thrift/lib/cpp2/server/ThriftServer.h" \
         void setAddress(cfollySocketAddress& addr) nogil
         void setAddress(string ip, uint16_t port) nogil
         void setInterface(shared_ptr[cServerInterface]) nogil
+        void setProcessorFactory(shared_ptr[cAsyncProcessorFactory]) nogil
         void serve() nogil except +
         void stop() nogil except +
         void setSSLPolicy(cSSLPolicy policy) nogil
@@ -99,13 +100,17 @@ cdef extern from "thrift/lib/cpp2/server/Cpp2ConnContext.h" \
         THeader* getHeader()
 
 
-cdef class ServiceInterface:
-    cdef shared_ptr[cServerInterface] interface_wrapper
+cdef class AsyncProcessorFactory:
+    cdef shared_ptr[cAsyncProcessorFactory] _cpp_obj
+
+
+cdef class ServiceInterface(AsyncProcessorFactory):
+    pass
 
 
 cdef class ThriftServer:
     cdef shared_ptr[cThriftServer] server
-    cdef ServiceInterface handler
+    cdef AsyncProcessorFactory factory
     cdef object loop
     cdef object address_future
 

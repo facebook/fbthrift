@@ -73,7 +73,7 @@ cdef class MyServiceInterface(
     annotations = _MyService_annotations
 
     def __cinit__(self):
-        self.interface_wrapper = cMyServiceInterface(
+        self._cpp_obj = cMyServiceInterface(
             <PyObject *> self,
             get_executor()
         )

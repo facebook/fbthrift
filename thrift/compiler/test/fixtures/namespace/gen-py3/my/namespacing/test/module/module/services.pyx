@@ -69,7 +69,7 @@ cdef class TestServiceInterface(
     annotations = _TestService_annotations
 
     def __cinit__(self):
-        self.interface_wrapper = cTestServiceInterface(
+        self._cpp_obj = cTestServiceInterface(
             <PyObject *> self,
             get_executor()
         )

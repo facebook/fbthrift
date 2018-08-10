@@ -7,7 +7,7 @@
 
 from cpython.ref cimport PyObject
 from libcpp.memory cimport shared_ptr
-from thrift.py3.server cimport cServerInterface
+from thrift.py3.server cimport cServerInterface, cAsyncProcessorFactory
 from folly cimport cFollyExecutor
 
 
@@ -49,18 +49,18 @@ cdef extern from "src/gen-py3/module/services_wrapper.h" namespace "py3::simple"
     ):
         pass
 
-    shared_ptr[cServerInterface] cSimpleServiceInterface "py3::simple::SimpleServiceInterface"(PyObject *if_object, cFollyExecutor* Q)
+    shared_ptr[cAsyncProcessorFactory] cSimpleServiceInterface "py3::simple::SimpleServiceInterface"(PyObject *if_object, cFollyExecutor* Q)
     cdef cppclass cDerivedServiceWrapper "py3::simple::DerivedServiceWrapper"(
         cDerivedServiceSvIf,
         cSimpleServiceWrapper
     ):
         pass
 
-    shared_ptr[cServerInterface] cDerivedServiceInterface "py3::simple::DerivedServiceInterface"(PyObject *if_object, cFollyExecutor* Q)
+    shared_ptr[cAsyncProcessorFactory] cDerivedServiceInterface "py3::simple::DerivedServiceInterface"(PyObject *if_object, cFollyExecutor* Q)
     cdef cppclass cRederivedServiceWrapper "py3::simple::RederivedServiceWrapper"(
         cRederivedServiceSvIf,
         cDerivedServiceWrapper
     ):
         pass
 
-    shared_ptr[cServerInterface] cRederivedServiceInterface "py3::simple::RederivedServiceInterface"(PyObject *if_object, cFollyExecutor* Q)
+    shared_ptr[cAsyncProcessorFactory] cRederivedServiceInterface "py3::simple::RederivedServiceInterface"(PyObject *if_object, cFollyExecutor* Q)

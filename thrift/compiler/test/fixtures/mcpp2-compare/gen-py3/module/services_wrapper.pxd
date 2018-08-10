@@ -7,7 +7,7 @@
 
 from cpython.ref cimport PyObject
 from libcpp.memory cimport shared_ptr
-from thrift.py3.server cimport cServerInterface
+from thrift.py3.server cimport cServerInterface, cAsyncProcessorFactory
 from folly cimport cFollyExecutor
 
 
@@ -47,16 +47,16 @@ cdef extern from "src/gen-py3/module/services_wrapper.h" namespace "some::valid:
     ):
         pass
 
-    shared_ptr[cServerInterface] cEmptyServiceInterface "some::valid::ns::EmptyServiceInterface"(PyObject *if_object, cFollyExecutor* Q)
+    shared_ptr[cAsyncProcessorFactory] cEmptyServiceInterface "some::valid::ns::EmptyServiceInterface"(PyObject *if_object, cFollyExecutor* Q)
     cdef cppclass cReturnServiceWrapper "some::valid::ns::ReturnServiceWrapper"(
         cReturnServiceSvIf
     ):
         pass
 
-    shared_ptr[cServerInterface] cReturnServiceInterface "some::valid::ns::ReturnServiceInterface"(PyObject *if_object, cFollyExecutor* Q)
+    shared_ptr[cAsyncProcessorFactory] cReturnServiceInterface "some::valid::ns::ReturnServiceInterface"(PyObject *if_object, cFollyExecutor* Q)
     cdef cppclass cParamServiceWrapper "some::valid::ns::ParamServiceWrapper"(
         cParamServiceSvIf
     ):
         pass
 
-    shared_ptr[cServerInterface] cParamServiceInterface "some::valid::ns::ParamServiceInterface"(PyObject *if_object, cFollyExecutor* Q)
+    shared_ptr[cAsyncProcessorFactory] cParamServiceInterface "some::valid::ns::ParamServiceInterface"(PyObject *if_object, cFollyExecutor* Q)

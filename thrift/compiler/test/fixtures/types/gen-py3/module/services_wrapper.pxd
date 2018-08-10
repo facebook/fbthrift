@@ -7,7 +7,7 @@
 
 from cpython.ref cimport PyObject
 from libcpp.memory cimport shared_ptr
-from thrift.py3.server cimport cServerInterface
+from thrift.py3.server cimport cServerInterface, cAsyncProcessorFactory
 from folly cimport cFollyExecutor
 
 
@@ -29,4 +29,4 @@ cdef extern from "src/gen-py3/module/services_wrapper.h" namespace "apache::thri
     ):
         pass
 
-    shared_ptr[cServerInterface] cSomeServiceInterface "apache::thrift::fixtures::types::SomeServiceInterface"(PyObject *if_object, cFollyExecutor* Q)
+    shared_ptr[cAsyncProcessorFactory] cSomeServiceInterface "apache::thrift::fixtures::types::SomeServiceInterface"(PyObject *if_object, cFollyExecutor* Q)

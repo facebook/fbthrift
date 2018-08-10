@@ -280,7 +280,7 @@ cdef class SimpleServiceInterface(
     annotations = _SimpleService_annotations
 
     def __cinit__(self):
-        self.interface_wrapper = cSimpleServiceInterface(
+        self._cpp_obj = cSimpleServiceInterface(
             <PyObject *> self,
             get_executor()
         )
@@ -653,7 +653,7 @@ SimpleServiceInterface
     annotations = _DerivedService_annotations
 
     def __cinit__(self):
-        self.interface_wrapper = cDerivedServiceInterface(
+        self._cpp_obj = cDerivedServiceInterface(
             <PyObject *> self,
             get_executor()
         )
@@ -675,7 +675,7 @@ DerivedServiceInterface
     annotations = _RederivedService_annotations
 
     def __cinit__(self):
-        self.interface_wrapper = cRederivedServiceInterface(
+        self._cpp_obj = cRederivedServiceInterface(
             <PyObject *> self,
             get_executor()
         )

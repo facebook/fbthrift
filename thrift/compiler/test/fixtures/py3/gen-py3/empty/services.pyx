@@ -59,7 +59,7 @@ cdef class NullServiceInterface(
     annotations = _NullService_annotations
 
     def __cinit__(self):
-        self.interface_wrapper = cNullServiceInterface(
+        self._cpp_obj = cNullServiceInterface(
             <PyObject *> self,
             get_executor()
         )

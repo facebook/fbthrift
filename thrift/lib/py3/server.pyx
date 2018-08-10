@@ -42,8 +42,16 @@ class SSLPolicy(Enum):
     REQUIRED = <int> (SSLPolicy__REQUIRED)
 
 
-cdef class ServiceInterface:
+cdef class AsyncProcessorFactory:
     pass
+
+
+cdef class ServiceInterface(AsyncProcessorFactory):
+    def __cinit__(self, *args, **kws):
+        # Figure out which methods want context and mark them on the handler
+        for name, method in inspect.getmembers(self, inspect.iscoroutinefunction):
+            if hasattr(method, 'pass_context'):
+                setattr(self, f'_pass_context_{name}', True)
 
 
 cdef void handleAddressCallback(PyObject* future, cfollySocketAddress address):
@@ -54,17 +62,17 @@ cdef class ThriftServer:
     def __cinit__(self):
         self.server = make_shared[cThriftServer]()
 
-    def __init__(self, ServiceInterface handler, int port=0, ip=None, path=None):
+    def __init__(self, AsyncProcessorFactory handler, int port=0, ip=None, path=None):
         self.loop = asyncio.get_event_loop()
-        self.handler = handler
+        self.factory = handler
 
-        # Figure out which methods want context and mark them on the handler
-        for name, method in inspect.getmembers(handler,
-                                               inspect.iscoroutinefunction):
-            if hasattr(method, 'pass_context'):
-                setattr(handler, f'_pass_context_{name}', True)
-
-        self.server.get().setInterface(handler.interface_wrapper)
+        if handler._cpp_obj:
+            self.server.get().setProcessorFactory(handler._cpp_obj)
+        else:
+            raise RuntimeError(
+                'The handler is not valid, it has no C++ handler. Maybe its not a '
+                'generated ServiceInterface?'
+            )
         if path:
             fspath = os.fsencode(path)
             self.server.get().setAddress(
@@ -78,10 +86,6 @@ cdef class ThriftServer:
         else:
             self.server.get().setPort(port)
         self.address_future = self.loop.create_future()
-
-    async def serve(self):
-        if self.address_future.done():
-            self.address_future = self.loop.create_future()
         self.server.get().setServerEventHandler(
             make_shared[Py3ServerEventHandler](
                 get_executor(),
@@ -89,6 +93,7 @@ cdef class ThriftServer:
             )
         )
 
+    async def serve(self):
         def _serve():
             with nogil:
                 self.server.get().serve()
@@ -102,8 +107,8 @@ cdef class ThriftServer:
                 self.address_future.set_exception(e)
             raise
 
-    async def get_address(self):
-        return await self.address_future
+    def get_address(self):
+        return asyncio.shield(self.address_future)
 
     def get_active_requests(self):
         return self.server.get().getActiveRequests()
@@ -156,6 +161,7 @@ cdef class ThriftServer:
 
     def stop(self):
         self.server.get().stop()
+        self.address_future.cancel()
 
 
 cdef class ConnectionContext:

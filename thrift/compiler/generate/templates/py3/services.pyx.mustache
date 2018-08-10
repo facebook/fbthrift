@@ -102,7 +102,7 @@ cdef class {{service:name}}Interface(
     annotations = _{{service:name}}_annotations
 
     def __cinit__(self):
-        self.interface_wrapper = c{{service:name}}Interface(
+        self._cpp_obj = c{{service:name}}Interface(
             <PyObject *> self,
             get_executor()
         )

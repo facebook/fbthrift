@@ -80,7 +80,7 @@ cdef class RaiserInterface(
     annotations = _Raiser_annotations
 
     def __cinit__(self):
-        self.interface_wrapper = cRaiserInterface(
+        self._cpp_obj = cRaiserInterface(
             <PyObject *> self,
             get_executor()
         )

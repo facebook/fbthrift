@@ -315,7 +315,7 @@ cdef class EmptyServiceInterface(
     annotations = _EmptyService_annotations
 
     def __cinit__(self):
-        self.interface_wrapper = cEmptyServiceInterface(
+        self._cpp_obj = cEmptyServiceInterface(
             <PyObject *> self,
             get_executor()
         )
@@ -329,7 +329,7 @@ cdef class ReturnServiceInterface(
     annotations = _ReturnService_annotations
 
     def __cinit__(self):
-        self.interface_wrapper = cReturnServiceInterface(
+        self._cpp_obj = cReturnServiceInterface(
             <PyObject *> self,
             get_executor()
         )
@@ -513,7 +513,7 @@ cdef class ParamServiceInterface(
     annotations = _ParamService_annotations
 
     def __cinit__(self):
-        self.interface_wrapper = cParamServiceInterface(
+        self._cpp_obj = cParamServiceInterface(
             <PyObject *> self,
             get_executor()
         )
