@@ -1,4 +1,6 @@
 /*
+ * Copyright 2018-present Facebook, Inc.
+ *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -21,9 +23,6 @@
 
 // boost.python
 #include <boost/python.hpp>
-#include <boost/python/call.hpp>
-#include <boost/python/object.hpp>
-#include <boost/python/stl_iterator.hpp>
 
 // boilerplate that enables quick definition of wrappers in boost::python
 #include <thrift/compiler/common.h>
