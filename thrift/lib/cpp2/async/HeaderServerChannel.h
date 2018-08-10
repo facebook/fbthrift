@@ -1,4 +1,6 @@
 /*
+ * Copyright 2018-present Facebook, Inc.
+ *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -35,6 +37,8 @@
 
 namespace apache {
 namespace thrift {
+
+constexpr folly::StringPiece kClientLoggingHeader("client_logging_enabled");
 
 /**
  * HeaderServerChannel
@@ -97,7 +101,8 @@ class HeaderServerChannel : public ServerChannel,
   }
 
   // Interface from MessageChannel::RecvCallback
-  bool shouldSample() override;
+  server::TServerObserver::SamplingStatus shouldSample(
+      const apache::thrift::transport::THeader* header) const override;
   void messageReceived(
       std::unique_ptr<folly::IOBuf>&&,
       std::unique_ptr<apache::thrift::transport::THeader>&&,

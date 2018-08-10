@@ -312,6 +312,7 @@ HeaderServerChannel::HeaderRequest::HeaderRequest(
     : channel_(channel), header_(std::move(header)), active_(true) {
   this->buf_ = std::move(buf);
   if (sample) {
+    timestamps_.setStatus(sample->getStatus());
     timestamps_.readBegin = sample->readBegin;
     timestamps_.readEnd = sample->readEnd;
   }
@@ -497,8 +498,14 @@ void HeaderServerChannel::sendCatchupRequests(
 }
 
 // Interface from MessageChannel::RecvCallback
-bool HeaderServerChannel::shouldSample() {
-  return (sampleRate_ > 0) && ((sample_++ % sampleRate_) == 0);
+TServerObserver::SamplingStatus HeaderServerChannel::shouldSample(
+    const apache::thrift::transport::THeader* header) const {
+  bool isServerSamplingEnabled =
+      (sampleRate_ > 0) && ((sample_++ % sampleRate_) == 0);
+  bool isClientSamplingEnabled =
+      header->getHeaders().find(kClientLoggingHeader.str()) !=
+      header->getHeaders().end();
+  return SamplingStatus(isServerSamplingEnabled, isClientSamplingEnabled);
 }
 
 void HeaderServerChannel::messageReceived(

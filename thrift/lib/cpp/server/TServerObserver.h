@@ -37,8 +37,31 @@ class TServerObserver {
   TServerObserver() : sampleRate_(0) {}
   explicit TServerObserver(uint32_t sampleRate) : sampleRate_(sampleRate) {}
 
+  class SamplingStatus {
+   public:
+    SamplingStatus() noexcept : SamplingStatus(false, false) {}
+    SamplingStatus(
+        bool isServerSamplingEnabled,
+        bool isClientSamplingEnabled) noexcept
+        : isServerSamplingEnabled_(isServerSamplingEnabled),
+          isClientSamplingEnabled_(isClientSamplingEnabled) {}
+    bool isEnabled() const {
+      return isServerSamplingEnabled_ || isClientSamplingEnabled_;
+    }
+    bool isEnabledByServer() const {
+      return isServerSamplingEnabled_;
+    }
+    bool isEnabledByClient() const {
+      return isClientSamplingEnabled_;
+    }
+
+   private:
+    bool isServerSamplingEnabled_;
+    bool isClientSamplingEnabled_;
+  };
+
   class CallTimestamps {
-  public:
+   public:
     uint64_t readBegin;
     uint64_t readEnd;
     uint64_t processBegin;
@@ -56,6 +79,12 @@ class TServerObserver {
       writeBegin = writeEnd = 0;
     }
 
+    void setStatus(const SamplingStatus& status) {
+      status_ = status;
+    }
+
+   private:
+    SamplingStatus status_;
   };
 
   virtual void connAccepted() {}

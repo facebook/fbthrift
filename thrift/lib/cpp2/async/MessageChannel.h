@@ -1,4 +1,6 @@
 /*
+ * Copyright 2018-present Facebook, Inc.
+ *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -25,6 +27,7 @@
 #include <folly/ExceptionWrapper.h>
 #include <folly/io/async/DelayedDestruction.h>
 #include <thrift/lib/cpp/Thrift.h>
+#include <thrift/lib/cpp/server/TServerObserver.h>
 #include <thrift/lib/cpp/transport/THeader.h>
 
 namespace folly {
@@ -38,6 +41,8 @@ class TAsyncTransport;
 }
 } // namespace thrift
 } // namespace apache
+
+using SamplingStatus = apache::thrift::server::TServerObserver::SamplingStatus;
 
 namespace apache {
 namespace thrift {
@@ -61,13 +66,23 @@ class MessageChannel : virtual public folly::DelayedDestruction {
   class RecvCallback {
    public:
     struct sample {
+     public:
       uint64_t readBegin;
       uint64_t readEnd;
+
+      sample(SamplingStatus status) : status_(status) {}
+      SamplingStatus getStatus() const {
+        return status_;
+      }
+
+     private:
+      SamplingStatus status_;
     };
 
     virtual ~RecvCallback() {}
-    virtual bool shouldSample() {
-      return false;
+    virtual SamplingStatus shouldSample(
+        const apache::thrift::transport::THeader* /*header*/) const {
+      return SamplingStatus();
     }
     virtual void messageReceived(
         std::unique_ptr<folly::IOBuf>&&,

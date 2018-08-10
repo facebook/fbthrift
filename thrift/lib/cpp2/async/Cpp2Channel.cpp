@@ -131,9 +131,13 @@ void Cpp2Channel::read(
         bufAndHeader) {
   DestructorGuard dg(this);
 
-  if (recvCallback_ && recvCallback_->shouldSample() && !sample_) {
-    sample_.reset(new RecvCallback::sample);
-    sample_->readBegin = Util::currentTimeUsec();
+  if (recvCallback_) {
+    auto samplingStatus =
+        recvCallback_->shouldSample(bufAndHeader.second.get());
+    if (samplingStatus.isEnabledByServer()) {
+      sample_.reset(new RecvCallback::sample(samplingStatus));
+      sample_->readBegin = Util::currentTimeUsec();
+    }
   }
 
   if (!recvCallback_) {
