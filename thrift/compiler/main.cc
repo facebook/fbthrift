@@ -35,6 +35,9 @@
 #endif
 #include <ctime>
 
+#include <boost/algorithm/string/join.hpp>
+#include <boost/algorithm/string/split.hpp>
+
 #include <thrift/compiler/generate/t_generator.h>
 #include <thrift/compiler/mutator/mutator.h>
 #include <thrift/compiler/platform.h>
@@ -194,19 +197,54 @@ static bool python_generator(
   return true;
 }
 
-static void search_and_replace_args(
-    std::vector<std::string>& arguments,
-    std::string search,
-    std::string replace) {
-  for (size_t i = 0; i < arguments.size(); ++i) {
-    if (arguments[i] == "-gen") {
-      auto pos = arguments[i + 1].find(search);
-      if (pos != std::string::npos) {
-        arguments[i + 1] =
-            arguments[i + 1].replace(pos, search.size(), replace);
-      }
-      break;
+static void filter_py_cpp2_reflection_lang_argument(std::string& lang) {
+  std::set<std::string> const passthrough = {
+      "include_prefix",
+  };
+
+  auto const colon_pos = lang.find(':');
+  if (colon_pos == std::string::npos) {
+    return;
+  }
+  auto const lang_name = lang.substr(0, colon_pos);
+  if (lang_name != "cpp2" && lang_name != "mstch_cpp2") {
+    return;
+  }
+
+  auto const lang_args = lang.substr(colon_pos + 1);
+  std::vector<std::string> parts;
+  boost::algorithm::split(
+      parts, lang_args, [](auto const c) { return c == ','; });
+  std::vector<std::string> out_args;
+  for (auto const& part : parts) {
+    auto const equal_pos = part.find('=');
+    auto const arg_name = part.substr(0, equal_pos);
+    if (passthrough.count(arg_name) != 0) {
+      out_args.push_back(part);
     }
+  }
+  std::string out = "cpp2";
+  if (!out_args.empty()) {
+    out += ":";
+    out += boost::algorithm::join(out_args, ",");
+  }
+  lang = out;
+}
+
+// remove all arguments which py cpp2 reflection generator does not know
+static void filter_py_cpp2_reflection_arguments(
+    std::vector<std::string>& arguments) {
+  for (auto i = size_t(0); i < arguments.size(); ++i) {
+    auto const& arg = arguments[i];
+    if (arg != "-gen" && arg != "--gen") {
+      continue;
+    }
+
+    if (i + 1 >= arguments.size()) {
+      std::cerr << boost::algorithm::join(arguments, " ") << std::endl;
+    }
+    assert(i + 1 < arguments.size());
+    filter_py_cpp2_reflection_lang_argument(arguments[++i]);
   }
 }
 
@@ -233,10 +271,10 @@ static bool generate_cpp2(
   }
 
   if (gen_py_cpp2_reflection) {
-    search_and_replace_args(arguments, "mstch_cpp2", "cpp2");
-    search_and_replace_args(arguments, "reflection", "");
-
-    python_generator(gen_string, user_python_compiler, arguments);
+    auto py_cpp2_reflection_arguments = arguments;
+    filter_py_cpp2_reflection_arguments(py_cpp2_reflection_arguments);
+    python_generator(
+        gen_string, user_python_compiler, py_cpp2_reflection_arguments);
   }
   return true;
 }
