@@ -163,7 +163,6 @@ std::shared_ptr<Thread> NumaThreadFactory::newThread(
 
 NumaThreadManager::NumaThreadManager(size_t normalThreadsCount,
                                      bool enableTaskStats,
-                                     size_t maxQueueLen,
                                      int threadStackSize) {
   int nodes = 1;
   size_t pri_threads = 2;
@@ -180,10 +179,8 @@ NumaThreadManager::NumaThreadManager(size_t normalThreadsCount,
     normalThreadsCount -= threads;
     pri_threads = std::min(threads, pri_threads);
     managers_.push_back(PriorityThreadManager::newPriorityThreadManager(
-                          {{pri_threads, pri_threads,
-                                pri_threads, threads, pri_threads}},
-                          enableTaskStats,
-                          maxQueueLen));
+        {{pri_threads, pri_threads, pri_threads, threads, pri_threads}},
+        enableTaskStats));
     managers_[managers_.size() - 1]->threadFactory(factory);
     // If we've allocated all the threads, escape.  This may
     // mean we don't use all the numa nodes.

@@ -638,13 +638,12 @@ template <typename SemType>
 class SimpleThreadManager : public ThreadManager::ImplT<SemType> {
 
  public:
-  explicit SimpleThreadManager(size_t workerCount = 4,
-                               size_t pendingTaskCountMax = 0,
-                               bool enableTaskStats = false,
-                               size_t maxQueueLen = 0) :
-    ThreadManager::Impl(pendingTaskCountMax, enableTaskStats, maxQueueLen)
-    , workerCount_(workerCount) {
-  }
+  explicit SimpleThreadManager(
+      size_t workerCount = 4,
+      size_t pendingTaskCountMax = 0,
+      bool enableTaskStats = false)
+      : ThreadManager::Impl(pendingTaskCountMax, enableTaskStats),
+        workerCount_(workerCount) {}
 
   void start() override {
     if (this->state() == this->STARTED) {
@@ -660,12 +659,11 @@ class SimpleThreadManager : public ThreadManager::ImplT<SemType> {
 
 template <typename SemType>
 shared_ptr<ThreadManager> ThreadManager::newSimpleThreadManager(
-                                                    size_t count,
-                                                    size_t pendingTaskCountMax,
-                                                    bool enableTaskStats,
-                                                    size_t maxQueueLen) {
-  return make_shared<SimpleThreadManager<SemType>>(count, pendingTaskCountMax,
-                                          enableTaskStats, maxQueueLen);
+    size_t count,
+    size_t pendingTaskCountMax,
+    bool enableTaskStats) {
+  return make_shared<SimpleThreadManager<SemType>>(
+      count, pendingTaskCountMax, enableTaskStats);
 }
 
 template <typename SemType>
@@ -673,18 +671,14 @@ class PriorityQueueThreadManager : public ThreadManager::ImplT<SemType> {
  public:
   typedef apache::thrift::concurrency::PRIORITY PRIORITY;
   explicit PriorityQueueThreadManager(
-    size_t numThreads,
-    size_t pendingTaskCountMax = 0,
-    bool enableTaskStats = false,
-    size_t maxQueueLen = 0
-  ) :
-      ThreadManager::ImplT<SemType>(
-        pendingTaskCountMax,
-        enableTaskStats,
-        maxQueueLen,
-        N_PRIORITIES
-      ),
-      numThreads_(numThreads) {}
+      size_t numThreads,
+      size_t pendingTaskCountMax = 0,
+      bool enableTaskStats = false)
+      : ThreadManager::ImplT<SemType>(
+            pendingTaskCountMax,
+            enableTaskStats,
+            N_PRIORITIES),
+        numThreads_(numThreads) {}
 
   class PriorityFunctionRunner :
       public virtual apache::thrift::concurrency::PriorityRunnable,
@@ -799,12 +793,10 @@ static inline shared_ptr<ThreadFactory> Factory(
 
 template <typename SemType>
 shared_ptr<ThreadManager> ThreadManager::newPriorityQueueThreadManager(
-  size_t numThreads,
-  bool enableTaskStats,
-  size_t maxQueueLen
-) {
+    size_t numThreads,
+    bool enableTaskStats) {
   auto tm = make_shared<PriorityQueueThreadManager<SemType>>(
-    numThreads, /* pendingTaskCountMax = */ 0, enableTaskStats, maxQueueLen);
+      numThreads, /* pendingTaskCountMax = */ 0, enableTaskStats);
   tm->threadFactory(Factory(PosixThreadFactory::NORMAL));
   return tm;
 }
@@ -814,13 +806,14 @@ class PriorityThreadManager::PriorityImplT
     : public PriorityThreadManager,
       public folly::DefaultKeepAliveExecutor {
  public:
-  PriorityImplT(const std::array<std::pair<shared_ptr<ThreadFactory>, size_t>,
-                                 N_PRIORITIES>& factories,
-                bool enableTaskStats = false,
-                size_t maxQueueLen = 0) {
+  PriorityImplT(
+      const std::array<
+          std::pair<shared_ptr<ThreadFactory>, size_t>,
+          N_PRIORITIES>& factories,
+      bool enableTaskStats = false) {
     for (int i = 0; i < N_PRIORITIES; i++) {
       unique_ptr<ThreadManager> m(
-        new ThreadManager::ImplT<SemType>(0, enableTaskStats, maxQueueLen));
+          new ThreadManager::ImplT<SemType>(0, enableTaskStats));
       m->threadFactory(factories[i].first);
       managers_[i] = std::move(m);
       counts_[i] = factories[i].second;
@@ -1078,10 +1071,10 @@ static const size_t NORMAL_PRIORITY_MINIMUM_THREADS = 1;
 template <typename SemType>
 shared_ptr<PriorityThreadManager>
 PriorityThreadManager::newPriorityThreadManager(
-    const std::array<std::pair<shared_ptr<ThreadFactory>, size_t>,
-                     N_PRIORITIES>& factories,
-    bool enableTaskStats,
-    size_t maxQueueLen) {
+    const std::array<
+        std::pair<shared_ptr<ThreadFactory>, size_t>,
+        N_PRIORITIES>& factories,
+    bool enableTaskStats) {
   auto copy = factories;
   if (copy[PRIORITY::NORMAL].second < NORMAL_PRIORITY_MINIMUM_THREADS) {
     LOG(INFO) << "Creating minimum threads of NORMAL priority: "
@@ -1089,15 +1082,14 @@ PriorityThreadManager::newPriorityThreadManager(
     copy[PRIORITY::NORMAL].second = NORMAL_PRIORITY_MINIMUM_THREADS;
   }
   return std::make_shared<PriorityThreadManager::PriorityImplT<SemType>>(
-      copy, enableTaskStats, maxQueueLen);
+      copy, enableTaskStats);
 }
 
 template <typename SemType>
 shared_ptr<PriorityThreadManager>
 PriorityThreadManager::newPriorityThreadManager(
     const std::array<size_t, N_PRIORITIES>& counts,
-    bool enableTaskStats,
-    size_t maxQueueLen) {
+    bool enableTaskStats) {
   static_assert(N_PRIORITIES == 5, "Implementation is out-of-date");
   // Note that priorities for HIGH and IMPORTANT are the same, the difference
   // is in the number of threads.
@@ -1109,19 +1101,16 @@ PriorityThreadManager::newPriorityThreadManager(
       {Factory(PosixThreadFactory::NORMAL), counts[PRIORITY::NORMAL]},
       {Factory(PosixThreadFactory::LOW),    counts[PRIORITY::BEST_EFFORT]},
   }};
-  return newPriorityThreadManager<SemType>(
-      factories, enableTaskStats, maxQueueLen);
+  return newPriorityThreadManager<SemType>(factories, enableTaskStats);
 }
 
 template <typename SemType>
 shared_ptr<PriorityThreadManager>
 PriorityThreadManager::newPriorityThreadManager(
     size_t normalThreadsCount,
-    bool enableTaskStats,
-    size_t maxQueueLen) {
-  return newPriorityThreadManager<SemType>({{2, 2, 2, normalThreadsCount, 2}},
-                                           enableTaskStats,
-                                           maxQueueLen);
+    bool enableTaskStats) {
+  return newPriorityThreadManager<SemType>(
+      {{2, 2, 2, normalThreadsCount, 2}}, enableTaskStats);
 }
 
 }}} // apache::thrift::concurrency

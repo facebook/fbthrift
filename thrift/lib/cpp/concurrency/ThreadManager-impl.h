@@ -101,7 +101,6 @@ class ThreadManager::ImplT : public ThreadManager,
  public:
   explicit ImplT(size_t pendingTaskCountMaxArg = 0,
                  bool enableTaskStats = false,
-                 size_t = 0, /* maxQueueLen deprecated */
                  size_t numPriorities = 1) :
     workerCount_(0),
     intendedWorkerCount_(0),

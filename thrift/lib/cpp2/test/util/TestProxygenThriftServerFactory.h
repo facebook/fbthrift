@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Facebook, Inc.
+ * Copyright 2015-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,7 +37,7 @@ struct TestProxygenThriftServerFactory : public TestServerFactory {
           std::make_shared<apache::thrift::concurrency::PosixThreadFactory>();
       auto threadManager =
           apache::thrift::concurrency::ThreadManager::newSimpleThreadManager(
-              1, 5, false, 50);
+              1, 5, false);
       threadManager->threadFactory(threadFactory);
       threadManager->start();
       server->setThreadManager(threadManager);

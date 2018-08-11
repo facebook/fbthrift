@@ -327,9 +327,7 @@ void ProxygenThriftServer::serve() {
     int numThreads = nPoolThreads > 0 ? nPoolThreads : nWorkers;
     std::shared_ptr<apache::thrift::concurrency::ThreadManager> threadManager(
         PriorityThreadManager::newPriorityThreadManager(
-            numThreads,
-            true /*stats*/,
-            getMaxRequests() + numThreads /*maxQueueLen*/));
+            numThreads, true /*stats*/));
     threadManager->enableCodel(getEnableCodel());
     auto poolThreadName = getCPUWorkerThreadName();
     if (!poolThreadName.empty()) {

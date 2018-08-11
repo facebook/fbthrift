@@ -619,10 +619,9 @@ public:
   void setNewSimpleThreadManager(
       size_t count,
       size_t pendingTaskCountMax,
-      bool enableTaskStats,
-      size_t maxQueueLen) {
+      bool enableTaskStats) {
     auto tm = ThreadManager::newSimpleThreadManager(
-        count, pendingTaskCountMax, enableTaskStats, maxQueueLen);
+        count, pendingTaskCountMax, enableTaskStats);
     auto poolThreadName = getCPUWorkerThreadName();
     if (!poolThreadName.empty()) {
       tm->setNamePrefix(poolThreadName);
@@ -635,10 +634,9 @@ public:
 
   void setNewPriorityQueueThreadManager(
       size_t numThreads,
-      bool enableTaskStats,
-      size_t maxQueueLen) {
+      bool enableTaskStats) {
     auto tm = ThreadManager::newPriorityQueueThreadManager(
-        numThreads, enableTaskStats, maxQueueLen);
+        numThreads, enableTaskStats);
     auto poolThreadName = getCPUWorkerThreadName();
     if (!poolThreadName.empty()) {
       tm->setNamePrefix(poolThreadName);
@@ -656,11 +654,10 @@ public:
       size_t normal,
       size_t best_effort,
       bool enableTaskStats,
-      size_t maxQueueLen) {
+      size_t) {
     auto tm = PriorityThreadManager::newPriorityThreadManager(
         {{high_important, high, important, normal, best_effort}},
-        enableTaskStats,
-        maxQueueLen);
+        enableTaskStats);
     tm->enableCodel(getEnableCodel());
     auto poolThreadName = getCPUWorkerThreadName();
     if (!poolThreadName.empty()) {
@@ -722,14 +719,11 @@ BOOST_PYTHON_MODULE(CppServerWrapper) {
           &CppServerWrapper::setNewSimpleThreadManager,
           (arg("count"),
            arg("pendingTaskCountMax"),
-           arg("enableTaskStats") = false,
-           arg("maxQueueLen") = 0))
+           arg("enableTaskStats") = false))
       .def(
           "setNewPriorityQueueThreadManager",
           &CppServerWrapper::setNewPriorityQueueThreadManager,
-          (arg("numThreads"),
-           arg("enableTaskStats") = false,
-           arg("maxQueueLen") = 0))
+          (arg("numThreads"), arg("enableTaskStats") = false))
       .def(
           "setNewPriorityThreadManager",
           &CppServerWrapper::setNewPriorityThreadManager,

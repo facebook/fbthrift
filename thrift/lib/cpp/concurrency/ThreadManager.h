@@ -228,11 +228,10 @@ class ThreadManager : public virtual folly::Executor {
    * @param maxQueueLen - deprecated
    */
   template <typename SemType = folly::LifoSem>
-  static std::shared_ptr<ThreadManager>
-    newSimpleThreadManager(size_t count = 4,
-                           size_t pendingTaskCountMax = 0,
-                           bool enableTaskStats = false,
-                           size_t maxQueueLen = 0);
+  static std::shared_ptr<ThreadManager> newSimpleThreadManager(
+      size_t count = 4,
+      size_t pendingTaskCountMax = 0,
+      bool enableTaskStats = false);
 
   /**
    * Creates a thread manager with support for priorities. Unlike
@@ -243,12 +242,9 @@ class ThreadManager : public virtual folly::Executor {
    * @param maxQueueLen - deprecated
    */
   template <typename SemType = folly::LifoSem>
-  static std::shared_ptr<ThreadManager>
-  newPriorityQueueThreadManager(
-    size_t numThreads,
-    bool enableTaskStats = false,
-    size_t maxQueueLen = 0
-  );
+  static std::shared_ptr<ThreadManager> newPriorityQueueThreadManager(
+      size_t numThreads,
+      bool enableTaskStats = false);
 
   /**
    * Get an internal statistics.
@@ -352,12 +348,11 @@ class PriorityThreadManager : public ThreadManager {
    * @param maxQueueLen - deprecated
    */
   template <typename SemType = folly::LifoSem>
-  static std::shared_ptr<PriorityThreadManager>
-    newPriorityThreadManager(
-        const std::array<std::pair<std::shared_ptr<ThreadFactory>, size_t>,
-                         N_PRIORITIES>& counts,
-        bool enableTaskStats = false,
-        size_t maxQueueLen = 0);
+  static std::shared_ptr<PriorityThreadManager> newPriorityThreadManager(
+      const std::array<
+          std::pair<std::shared_ptr<ThreadFactory>, size_t>,
+          N_PRIORITIES>& counts,
+      bool enableTaskStats = false);
 
   /**
    * Creates a priority-aware thread manager that uses counts[X]
@@ -366,10 +361,9 @@ class PriorityThreadManager : public ThreadManager {
    * @param maxQueueLen - deprecated
    */
   template <typename SemType = folly::LifoSem>
-  static std::shared_ptr<PriorityThreadManager>
-    newPriorityThreadManager(const std::array<size_t, N_PRIORITIES>& counts,
-                             bool enableTaskStats = false,
-                             size_t maxQueueLen = 0);
+  static std::shared_ptr<PriorityThreadManager> newPriorityThreadManager(
+      const std::array<size_t, N_PRIORITIES>& counts,
+      bool enableTaskStats = false);
 
   /**
    * Creates a priority-aware thread manager that uses normalThreadsCount
@@ -382,11 +376,9 @@ class PriorityThreadManager : public ThreadManager {
    * @param maxQueueLen - deprecated
    */
   template <typename SemType = folly::LifoSem>
-  static std::shared_ptr<PriorityThreadManager>
-    newPriorityThreadManager(size_t normalThreadsCount
-                                      = sysconf(_SC_NPROCESSORS_ONLN),
-                             bool enableTaskStats = false,
-                             size_t maxQueueLen = 0);
+  static std::shared_ptr<PriorityThreadManager> newPriorityThreadManager(
+      size_t normalThreadsCount = sysconf(_SC_NPROCESSORS_ONLN),
+      bool enableTaskStats = false);
 
   template <typename SemType>
   class PriorityImplT;

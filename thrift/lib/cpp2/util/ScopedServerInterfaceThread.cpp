@@ -30,7 +30,7 @@ ScopedServerInterfaceThread::ScopedServerInterfaceThread(
     shared_ptr<AsyncProcessorFactory> apf,
     SocketAddress const& addr,
     ServerConfigCb configCb) {
-  auto tm = ThreadManager::newSimpleThreadManager(1, 5, false, 50);
+  auto tm = ThreadManager::newSimpleThreadManager(1, 5, false);
   tm->threadFactory(make_shared<PosixThreadFactory>());
   tm->start();
   auto ts = make_shared<ThriftServer>();

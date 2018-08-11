@@ -137,7 +137,7 @@ class ScopedPresetResponseServer {
 
 std::shared_ptr<BaseThriftServer> createHttpServer() {
   auto handler = std::make_shared<TestServiceHandler>();
-  auto tm = ThreadManager::newSimpleThreadManager(1, 5, false, 50);
+  auto tm = ThreadManager::newSimpleThreadManager(1, 5, false);
   tm->threadFactory(std::make_shared<PosixThreadFactory>());
   tm->start();
   auto server = std::make_shared<ProxygenThriftServer>();

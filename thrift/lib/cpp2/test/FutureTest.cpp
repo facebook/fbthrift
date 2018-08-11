@@ -281,7 +281,7 @@ TEST(ThriftServer, FutureGetOrderTest) {
   using std::chrono::steady_clock;
 
   auto thf = std::make_shared<PosixThreadFactory>();
-  auto thm = ThreadManager::newSimpleThreadManager(1, 5, false, 5);
+  auto thm = ThreadManager::newSimpleThreadManager(1, 5, false);
   thm->threadFactory(thf);
   thm->start();
   apache::thrift::TestThriftServerFactory<TestInterface> factory;

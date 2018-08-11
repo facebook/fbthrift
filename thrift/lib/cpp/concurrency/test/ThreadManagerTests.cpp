@@ -927,11 +927,8 @@ TEST_F(ThreadManagerTest, PriorityThreadManagerWorkerCount) {
 }
 
 TEST_F(ThreadManagerTest, PriorityQueueThreadManagerExecutor) {
-  auto threadManager = ThreadManager::newPriorityQueueThreadManager(
-    1,
-    true /*stats*/,
-    10
-  );
+  auto threadManager =
+      ThreadManager::newPriorityQueueThreadManager(1, true /*stats*/);
   threadManager->start();
   folly::Baton<> reqSyncBaton;
   folly::Baton<> reqDoneBaton;

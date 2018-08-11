@@ -304,8 +304,7 @@ void ThriftServer::setup() {
         saslThreadManager_ = ThreadManager::newSimpleThreadManager(
             numThreads,
             0, /* pendingTaskCountMax -- no limit */
-            false, /* enableTaskStats */
-            0 /* maxQueueLen -- large default */);
+            false /* enableTaskStats */);
         saslThreadManager_->setNamePrefix(saslThreadsNamePrefix_);
         saslThreadManager_->threadFactory(threadFactory_);
         saslThreadManager_->start();
@@ -343,9 +342,7 @@ void ThriftServer::setup() {
       int numThreads = nPoolThreads > 0 ? nPoolThreads : nWorkers;
       std::shared_ptr<apache::thrift::concurrency::ThreadManager> threadManager(
           PriorityThreadManager::newPriorityThreadManager(
-              numThreads,
-              true /*stats*/,
-              getMaxRequests() + numThreads /*maxQueueLen*/));
+              numThreads, true /*stats*/));
       threadManager->enableCodel(getEnableCodel());
       auto poolThreadName = getCPUWorkerThreadName();
       if (!poolThreadName.empty()) {
