@@ -16,6 +16,8 @@
 
 #pragma once
 
+#include <stdint.h>
+
 #include <thrift/lib/cpp/protocol/TType.h>
 
 namespace apache {

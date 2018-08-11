@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include <cstdint>
 #include <initializer_list>
 #include <type_traits>
 #include <utility>
