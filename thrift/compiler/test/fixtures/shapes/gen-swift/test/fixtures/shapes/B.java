@@ -36,6 +36,7 @@ public final class B
         @ThriftField(value=15, name="list_of_self", requiredness=Requiredness.NONE) final List<test.fixtures.shapes.B> listOfSelf,
         @ThriftField(value=16, name="map_of_string_to_self", requiredness=Requiredness.NONE) final Map<String, test.fixtures.shapes.B> mapOfStringToSelf,
         @ThriftField(value=17, name="just_an_enum", requiredness=Requiredness.NONE) final test.fixtures.shapes.Enum justAnEnum,
+        @ThriftField(value=18, name="just_a_union", requiredness=Requiredness.NONE) final test.fixtures.shapes.Union justAUnion,
         @ThriftField(value=51, name="optional_just_an_A", requiredness=Requiredness.OPTIONAL) final test.fixtures.shapes.A optionalJustAnA,
         @ThriftField(value=52, name="optional_set_of_i32", requiredness=Requiredness.OPTIONAL) final Set<Integer> optionalSetOfI32,
         @ThriftField(value=53, name="optional_list_of_i32", requiredness=Requiredness.OPTIONAL) final List<Integer> optionalListOfI32,
@@ -74,6 +75,7 @@ public final class B
         this.listOfSelf = listOfSelf;
         this.mapOfStringToSelf = mapOfStringToSelf;
         this.justAnEnum = justAnEnum;
+        this.justAUnion = justAUnion;
         this.optionalJustAnA = optionalJustAnA;
         this.optionalSetOfI32 = optionalSetOfI32;
         this.optionalListOfI32 = optionalListOfI32;
@@ -197,6 +199,12 @@ public final class B
 
         public Builder setJustAnEnum(test.fixtures.shapes.Enum justAnEnum) {
             this.justAnEnum = justAnEnum;
+            return this;
+        }
+        private test.fixtures.shapes.Union justAUnion;
+
+        public Builder setJustAUnion(test.fixtures.shapes.Union justAUnion) {
+            this.justAUnion = justAUnion;
             return this;
         }
         private test.fixtures.shapes.A optionalJustAnA;
@@ -339,6 +347,7 @@ public final class B
             this.listOfSelf = other.listOfSelf;
             this.mapOfStringToSelf = other.mapOfStringToSelf;
             this.justAnEnum = other.justAnEnum;
+            this.justAUnion = other.justAUnion;
             this.optionalJustAnA = other.optionalJustAnA;
             this.optionalSetOfI32 = other.optionalSetOfI32;
             this.optionalListOfI32 = other.optionalListOfI32;
@@ -380,6 +389,7 @@ public final class B
                 this.listOfSelf,
                 this.mapOfStringToSelf,
                 this.justAnEnum,
+                this.justAUnion,
                 this.optionalJustAnA,
                 this.optionalSetOfI32,
                 this.optionalListOfI32,
@@ -488,6 +498,11 @@ public final class B
 
     @ThriftField(value=17, name="just_an_enum", requiredness=Requiredness.NONE)
     public test.fixtures.shapes.Enum getJustAnEnum() { return justAnEnum; }
+
+    private final test.fixtures.shapes.Union justAUnion;
+
+    @ThriftField(value=18, name="just_a_union", requiredness=Requiredness.NONE)
+    public test.fixtures.shapes.Union getJustAUnion() { return justAUnion; }
 
     private final test.fixtures.shapes.A optionalJustAnA;
 
@@ -610,6 +625,7 @@ public final class B
             .add("listOfSelf", listOfSelf)
             .add("mapOfStringToSelf", mapOfStringToSelf)
             .add("justAnEnum", justAnEnum)
+            .add("justAUnion", justAUnion)
             .add("optionalJustAnA", optionalJustAnA)
             .add("optionalSetOfI32", optionalSetOfI32)
             .add("optionalListOfI32", optionalListOfI32)
@@ -662,6 +678,7 @@ public final class B
             Objects.equals(listOfSelf, other.listOfSelf) &&
             Objects.equals(mapOfStringToSelf, other.mapOfStringToSelf) &&
             Objects.equals(justAnEnum, other.justAnEnum) &&
+            Objects.equals(justAUnion, other.justAUnion) &&
             Objects.equals(optionalJustAnA, other.optionalJustAnA) &&
             Objects.equals(optionalSetOfI32, other.optionalSetOfI32) &&
             Objects.equals(optionalListOfI32, other.optionalListOfI32) &&
@@ -704,6 +721,7 @@ public final class B
             listOfSelf,
             mapOfStringToSelf,
             justAnEnum,
+            justAUnion,
             optionalJustAnA,
             optionalSetOfI32,
             optionalListOfI32,

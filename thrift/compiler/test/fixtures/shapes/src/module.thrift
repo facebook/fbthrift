@@ -5,6 +5,11 @@ enum Enum {
   ENUM = 1;
 }
 
+union Union {
+  1: i64 intValue;
+  5: string stringValue;
+}
+
 struct A {
   1: string a;
 }
@@ -27,6 +32,7 @@ struct B {
   15: list<B> list_of_self;
   16: map<string, B> map_of_string_to_self;
   17: Enum just_an_enum;
+  18: Union just_a_union;
 
   51: optional A optional_just_an_A;
   52: optional set<i32>  optional_set_of_i32;
