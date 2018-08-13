@@ -136,8 +136,15 @@ class Union implements \IThriftStruct, \IThriftUnion<\test\fixtures\UnionEnum>, 
 
   public static function __fromShape(self::TShape $shape): this {
     $me = /* HH_IGNORE_ERROR[4060] */ new static();
-    $me->intValue = Shapes::idx($shape, 'intValue');
-    $me->stringValue = Shapes::idx($shape, 'stringValue');
+    $me->_type = \test\fixtures\UnionEnum::_EMPTY_;
+    if (Shapes::idx($shape, 'intValue') !== null) {
+      $me->intValue = Shapes::idx($shape, 'intValue');
+      $me->_type = \test\fixtures\UnionEnum::intValue;
+    }
+    if (Shapes::idx($shape, 'stringValue') !== null) {
+      $me->stringValue = Shapes::idx($shape, 'stringValue');
+      $me->_type = \test\fixtures\UnionEnum::stringValue;
+    }
     return $me;
   }
 

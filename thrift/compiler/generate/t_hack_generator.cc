@@ -2121,6 +2121,10 @@ void t_hack_generator::generate_php_struct_shape_methods(
       << endl;
   indent_up();
   indent(out) << "$me = /* HH_IGNORE_ERROR[4060] */ new static();" << endl;
+  if (tstruct->is_union()) {
+    indent(out) << "$me->_type = " << union_field_to_enum(tstruct, nullptr)
+                << ";" << endl;
+  }
 
   for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
     t_type* t = (*m_iter)->get_type()->get_true_type();
@@ -2143,6 +2147,11 @@ void t_hack_generator::generate_php_struct_shape_methods(
     }
 
     stringstream val;
+
+    if (tstruct->is_union()) {
+      indent(val) << "if (" << source.str() << " !== null) {" << endl;
+      indent_up();
+    }
 
     indent(val) << "$me->" << (*m_iter)->get_name() << " = ";
     if (t->is_set()) {
@@ -2276,6 +2285,14 @@ void t_hack_generator::generate_php_struct_shape_methods(
     } else {
       val << source.str() << ";" << endl;
     }
+
+    if (tstruct->is_union()) {
+      indent(val) << "$me->_type = " << union_field_to_enum(tstruct, *m_iter)
+                  << ";" << endl;
+      indent_down();
+      indent(val) << "}" << endl;
+    }
+
     out << val.str();
   }
   indent(out) << "return $me;" << endl;
