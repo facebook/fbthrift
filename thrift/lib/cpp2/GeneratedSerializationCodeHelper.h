@@ -26,8 +26,12 @@
 
 #include <folly/Utility.h>
 #include <folly/functional/Invoke.h>
+#include <folly/io/IOBuf.h>
 
+#include <thrift/lib/cpp/protocol/TProtocolException.h>
+#include <thrift/lib/cpp/protocol/TType.h>
 #include <thrift/lib/cpp2/TypeClass.h>
+#include <thrift/lib/cpp2/protocol/Cpp2Ops.h>
 
 /**
  * Specializations of `protocol_methods` encapsulate a collection of
@@ -403,7 +407,7 @@ struct protocol_methods<type_class::list<ElemClass>, Type> {
   template <typename Protocol>
   static void read(Protocol& protocol, Type& out) {
     std::uint32_t list_size = -1;
-    TType reported_type = protocol::T_STOP;
+    protocol::TType reported_type = protocol::T_STOP;
 
     protocol.readListBegin(reported_type, list_size);
     if (protocol.kOmitsContainerSizes()) {
@@ -412,7 +416,7 @@ struct protocol_methods<type_class::list<ElemClass>, Type> {
       // (if it did set reported_type to something known)
       if (reported_type != protocol::T_STOP &&
           reported_type != elem_methods::ttype_value) {
-        TProtocolException::throwReportedTypeMismatch();
+        protocol::TProtocolException::throwReportedTypeMismatch();
       }
       for (std::uint32_t i = 0; protocol.peekList(); ++i) {
         // TODO: Grow this better (e.g. 1.5x each time)
@@ -421,7 +425,7 @@ struct protocol_methods<type_class::list<ElemClass>, Type> {
       }
     } else {
       if (reported_type != elem_methods::ttype_value) {
-        TProtocolException::throwReportedTypeMismatch();
+        protocol::TProtocolException::throwReportedTypeMismatch();
       }
       out.resize(list_size);
       for (auto&& elem : out) {
@@ -482,7 +486,7 @@ struct protocol_methods<type_class::list<ElemClass>, std::list<Type>> {
   template <typename Protocol>
   static void read(Protocol& protocol, std::list<Type>& out) {
     std::uint32_t list_size = -1;
-    TType reported_type = protocol::T_STOP;
+    protocol::TType reported_type = protocol::T_STOP;
 
     protocol.readListBegin(reported_type, list_size);
     if (protocol.kOmitsContainerSizes()) {
@@ -491,14 +495,14 @@ struct protocol_methods<type_class::list<ElemClass>, std::list<Type>> {
       // (if it did set reported_type to something known)
       if (reported_type != protocol::T_STOP &&
           reported_type != elem_methods::ttype_value) {
-        TProtocolException::throwReportedTypeMismatch();
+        protocol::TProtocolException::throwReportedTypeMismatch();
       }
       while (protocol.peekList()) {
         consume_elem(protocol, out);
       }
     } else {
       if (reported_type != elem_methods::ttype_value) {
-        TProtocolException::throwReportedTypeMismatch();
+        protocol::TProtocolException::throwReportedTypeMismatch();
       }
       while (list_size--) {
         consume_elem(protocol, out);
@@ -561,7 +565,7 @@ struct protocol_methods<type_class::set<ElemClass>, Type> {
   template <typename Protocol>
   static void read(Protocol& protocol, Type& out) {
     std::uint32_t set_size = -1;
-    TType reported_type = protocol::T_STOP;
+    protocol::TType reported_type = protocol::T_STOP;
 
     protocol.readSetBegin(reported_type, set_size);
     if (protocol.kOmitsContainerSizes()) {
@@ -570,7 +574,7 @@ struct protocol_methods<type_class::set<ElemClass>, Type> {
       }
     } else {
       if (reported_type != elem_methods::ttype_value) {
-        TProtocolException::throwReportedTypeMismatch();
+        protocol::TProtocolException::throwReportedTypeMismatch();
       }
       auto const vreader = [&protocol](auto& value) {
         elem_methods::read(protocol, value);
@@ -637,7 +641,8 @@ struct protocol_methods<type_class::map<KeyClass, MappedClass>, Type> {
   template <typename Protocol>
   static void read(Protocol& protocol, Type& out) {
     std::uint32_t map_size = -1;
-    TType rpt_key_type = protocol::T_STOP, rpt_mapped_type = protocol::T_STOP;
+    protocol::TType rpt_key_type = protocol::T_STOP,
+                    rpt_mapped_type = protocol::T_STOP;
 
     protocol.readMapBegin(rpt_key_type, rpt_mapped_type, map_size);
     if (protocol.kOmitsContainerSizes()) {
@@ -649,7 +654,7 @@ struct protocol_methods<type_class::map<KeyClass, MappedClass>, Type> {
       // the map is empty
       if (map_size > 0 && (key_methods::ttype_value != rpt_key_type ||
                            mapped_methods::ttype_value != rpt_mapped_type)) {
-        TProtocolException::throwReportedTypeMismatch();
+        protocol::TProtocolException::throwReportedTypeMismatch();
       }
       auto const kreader = [&protocol](auto& key) {
         key_methods::read(protocol, key);
@@ -697,40 +702,40 @@ namespace forward_compatibility {
 // TODO(denplusplus): remove.
 // DO NOT USE.
 template <typename Protocol_, typename T>
-void readIntegral(Protocol_& prot, TType arg_type, T& out) {
+void readIntegral(Protocol_& prot, protocol::TType arg_type, T& out) {
   switch (arg_type) {
-    case TType::T_BOOL: {
+    case protocol::TType::T_BOOL: {
       bool boolv;
       prot.readBool(boolv);
       out = static_cast<T>(boolv);
       return;
     }
-    case TType::T_BYTE: {
+    case protocol::TType::T_BYTE: {
       int8_t bytev;
       prot.readByte(bytev);
       out = static_cast<T>(bytev);
       return;
     }
-    case TType::T_I16: {
+    case protocol::TType::T_I16: {
       int16_t i16;
       prot.readI16(i16);
       out = static_cast<T>(i16);
       return;
     }
-    case TType::T_I32: {
+    case protocol::TType::T_I32: {
       int32_t i32;
       prot.readI32(i32);
       out = static_cast<T>(i32);
       return;
     }
-    case TType::T_I64: {
+    case protocol::TType::T_I64: {
       int64_t i64;
       prot.readI64(i64);
       out = static_cast<T>(i64);
       return;
     }
     default: {
-      throw TProtocolException(
+      throw protocol::TProtocolException(
           std::string("Cannot parse integral number of ") +
           std::to_string(arg_type) + " type");
     }
@@ -740,22 +745,22 @@ void readIntegral(Protocol_& prot, TType arg_type, T& out) {
 // TODO(denplusplus): remove.
 // DO NOT USE.
 template <typename Protocol_, typename T>
-void readFloatingPoint(Protocol_& prot, TType arg_type, T& out) {
+void readFloatingPoint(Protocol_& prot, protocol::TType arg_type, T& out) {
   switch (arg_type) {
-    case TType::T_DOUBLE: {
+    case protocol::TType::T_DOUBLE: {
       double dub;
       prot.readDouble(dub);
       out = static_cast<T>(dub);
       return;
     }
-    case TType::T_FLOAT: {
+    case protocol::TType::T_FLOAT: {
       float flt;
       prot.readFloat(flt);
       out = static_cast<T>(flt);
       return;
     }
     default: {
-      throw TProtocolException(
+      throw protocol::TProtocolException(
           std::string("Cannot parse floating number of ") +
           std::to_string(arg_type) + " type");
     }
@@ -764,56 +769,56 @@ void readFloatingPoint(Protocol_& prot, TType arg_type, T& out) {
 
 template <typename Protocol_, typename TypeClass_, typename TType_>
 struct ReadForwardCompatible {
-  static void read(Protocol_& prot, TType, TType_& out) {
+  static void read(Protocol_& prot, protocol::TType, TType_& out) {
     protocol_methods<TypeClass_, TType_>::read(prot, out);
   }
 };
 
 template <typename Protocol_, typename TypeClass_>
 struct ReadForwardCompatible<Protocol_, TypeClass_, bool> {
-  static void read(Protocol_& prot, TType arg_type, bool& out) {
+  static void read(Protocol_& prot, protocol::TType arg_type, bool& out) {
     forward_compatibility::readIntegral(prot, arg_type, out);
   }
 };
 
 template <typename Protocol_, typename TypeClass_>
 struct ReadForwardCompatible<Protocol_, TypeClass_, int8_t> {
-  static void read(Protocol_& prot, TType arg_type, int8_t& out) {
+  static void read(Protocol_& prot, protocol::TType arg_type, int8_t& out) {
     forward_compatibility::readIntegral(prot, arg_type, out);
   }
 };
 
 template <typename Protocol_, typename TypeClass_>
 struct ReadForwardCompatible<Protocol_, TypeClass_, int16_t> {
-  static void read(Protocol_& prot, TType arg_type, int16_t& out) {
+  static void read(Protocol_& prot, protocol::TType arg_type, int16_t& out) {
     forward_compatibility::readIntegral(prot, arg_type, out);
   }
 };
 
 template <typename Protocol_, typename TypeClass_>
 struct ReadForwardCompatible<Protocol_, TypeClass_, int32_t> {
-  static void read(Protocol_& prot, TType arg_type, int32_t& out) {
+  static void read(Protocol_& prot, protocol::TType arg_type, int32_t& out) {
     forward_compatibility::readIntegral(prot, arg_type, out);
   }
 };
 
 template <typename Protocol_, typename TypeClass_>
 struct ReadForwardCompatible<Protocol_, TypeClass_, int64_t> {
-  static void read(Protocol_& prot, TType arg_type, int64_t& out) {
+  static void read(Protocol_& prot, protocol::TType arg_type, int64_t& out) {
     forward_compatibility::readIntegral(prot, arg_type, out);
   }
 };
 
 template <typename Protocol_, typename TypeClass_>
 struct ReadForwardCompatible<Protocol_, TypeClass_, float> {
-  static void read(Protocol_& prot, TType arg_type, float& out) {
+  static void read(Protocol_& prot, protocol::TType arg_type, float& out) {
     forward_compatibility::readFloatingPoint(prot, arg_type, out);
   }
 };
 
 template <typename Protocol_, typename TypeClass_>
 struct ReadForwardCompatible<Protocol_, TypeClass_, double> {
-  static void read(Protocol_& prot, TType arg_type, double& out) {
+  static void read(Protocol_& prot, protocol::TType arg_type, double& out) {
     forward_compatibility::readFloatingPoint(prot, arg_type, out);
   }
 };
@@ -850,8 +855,8 @@ struct protocol_methods<
   template <typename Protocol>
   static void consume_elem_forward_compatible(
       Protocol& protocol,
-      TType keyType,
-      TType valueType,
+      protocol::TType keyType,
+      protocol::TType valueType,
       Type& out) {
     key_type key_tmp;
     forward_compatibility::ReadForwardCompatible<Protocol, KeyClass, key_type>::
@@ -865,7 +870,8 @@ struct protocol_methods<
   template <typename Protocol>
   static void read(Protocol& protocol, Type& out) {
     std::uint32_t map_size = -1;
-    TType rpt_key_type = protocol::T_STOP, rpt_mapped_type = protocol::T_STOP;
+    protocol::TType rpt_key_type = protocol::T_STOP,
+                    rpt_mapped_type = protocol::T_STOP;
 
     protocol.readMapBegin(rpt_key_type, rpt_mapped_type, map_size);
     if (protocol.kOmitsContainerSizes()) {
