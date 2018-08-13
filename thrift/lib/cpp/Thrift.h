@@ -30,7 +30,7 @@
 
 #include <assert.h>
 #include <sys/types.h>
-#ifdef THRIFT_HAVE_INTTYPES_H
+#if __has_include(<inttypes.h>)
 #include <inttypes.h>
 #endif
 #include <stdio.h>

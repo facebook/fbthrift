@@ -47,17 +47,6 @@
 #define THRIFT_HAVE_ALLOCA 1
 #endif
 
-/* Define to 1 if you have <alloca.h> and it should be used (not on Ultrix).
-   */
-#ifndef THRIFT_HAVE_ALLOCA_H
-#define THRIFT_HAVE_ALLOCA_H 1
-#endif
-
-/* Define to 1 if you have the <arpa/inet.h> header file. */
-#ifndef THRIFT_HAVE_ARPA_INET_H
-#define THRIFT_HAVE_ARPA_INET_H 1
-#endif
-
 /* define if the Boost library is available */
 #ifndef THRIFT_HAVE_BOOST
 #define THRIFT_HAVE_BOOST /**/
@@ -91,18 +80,8 @@
 #define THRIFT_HAVE_DECL_STRERROR_R 1
 #endif
 
-/* Define to 1 if you have the <dlfcn.h> header file. */
-#ifndef THRIFT_HAVE_DLFCN_H
-#define THRIFT_HAVE_DLFCN_H 1
-#endif
-
 /* Define to 1 if you don't have `vprintf' but do have `_doprnt.' */
 /* #undef HAVE_DOPRNT */
-
-/* Define to 1 if you have the <fcntl.h> header file. */
-#ifndef THRIFT_HAVE_FCNTL_H
-#define THRIFT_HAVE_FCNTL_H 1
-#endif
 
 /* Define to 1 if you have the `fork' function. */
 #ifndef THRIFT_HAVE_FORK
@@ -124,11 +103,6 @@
 #define THRIFT_HAVE_GETTIMEOFDAY 1
 #endif
 
-/* Define to 1 if you have the <inttypes.h> header file. */
-#ifndef THRIFT_HAVE_INTTYPES_H
-#define THRIFT_HAVE_INTTYPES_H 1
-#endif
-
 /* define if libevent is available */
 #ifndef THRIFT_HAVE_LIBEVENT
 #define THRIFT_HAVE_LIBEVENT /**/
@@ -147,11 +121,6 @@
 /* Define to 1 if you have the `glog' library (-lglog). */
 #ifndef THRIFT_HAVE_LIBGLOG
 #define THRIFT_HAVE_LIBGLOG 1
-#endif
-
-/* Define to 1 if you have the <libintl.h> header file. */
-#ifndef THRIFT_HAVE_LIBINTL_H
-#define THRIFT_HAVE_LIBINTL_H 1
 #endif
 
 /* Define to 1 if you have the `numa' library (-lnuma). */
@@ -182,30 +151,15 @@
 /* Define to 1 if you have the `socket' library (-lsocket). */
 /* #undef HAVE_LIBSOCKET */
 
-/* Define to 1 if you have the <limits.h> header file. */
-#ifndef THRIFT_HAVE_LIMITS_H
-#define THRIFT_HAVE_LIMITS_H 1
-#endif
-
 /* Define to 1 if your system has a GNU libc compatible `malloc' function, and
    to 0 otherwise. */
 #ifndef THRIFT_HAVE_MALLOC
 #define THRIFT_HAVE_MALLOC 1
 #endif
 
-/* Define to 1 if you have the <malloc.h> header file. */
-#ifndef THRIFT_HAVE_MALLOC_H
-#define THRIFT_HAVE_MALLOC_H 1
-#endif
-
 /* Define to 1 if you have the `memmove' function. */
 #ifndef THRIFT_HAVE_MEMMOVE
 #define THRIFT_HAVE_MEMMOVE 1
-#endif
-
-/* Define to 1 if you have the <memory.h> header file. */
-#ifndef THRIFT_HAVE_MEMORY_H
-#define THRIFT_HAVE_MEMORY_H 1
 #endif
 
 /* Define to 1 if you have the `memset' function. */
@@ -216,36 +170,6 @@
 /* Define to 1 if you have the `mkdir' function. */
 #ifndef THRIFT_HAVE_MKDIR
 #define THRIFT_HAVE_MKDIR 1
-#endif
-
-/* Define to 1 if you have the <netdb.h> header file. */
-#ifndef THRIFT_HAVE_NETDB_H
-#define THRIFT_HAVE_NETDB_H 1
-#endif
-
-/* Define to 1 if you have the <netinet/in.h> header file. */
-#ifndef THRIFT_HAVE_NETINET_IN_H
-#define THRIFT_HAVE_NETINET_IN_H 1
-#endif
-
-/* Define to 1 if you have the <openssl/rand.h> header file. */
-#ifndef THRIFT_HAVE_OPENSSL_RAND_H
-#define THRIFT_HAVE_OPENSSL_RAND_H 1
-#endif
-
-/* Define to 1 if you have the <openssl/ssl.h> header file. */
-#ifndef THRIFT_HAVE_OPENSSL_SSL_H
-#define THRIFT_HAVE_OPENSSL_SSL_H 1
-#endif
-
-/* Define to 1 if you have the <openssl/x509v3.h> header file. */
-#ifndef THRIFT_HAVE_OPENSSL_X509V3_H
-#define THRIFT_HAVE_OPENSSL_X509V3_H 1
-#endif
-
-/* Define to 1 if you have the <pthread.h> header file. */
-#ifndef THRIFT_HAVE_PTHREAD_H
-#define THRIFT_HAVE_PTHREAD_H 1
 #endif
 
 /* Define to 1 if the system has the type `ptrdiff_t'. */
@@ -279,11 +203,6 @@
 #define THRIFT_HAVE_SCHED_GET_PRIORITY_MIN 1
 #endif
 
-/* Define to 1 if you have the <sched.h> header file. */
-#ifndef THRIFT_HAVE_SCHED_H
-#define THRIFT_HAVE_SCHED_H 1
-#endif
-
 /* Define to 1 if you have the `select' function. */
 #ifndef THRIFT_HAVE_SELECT
 #define THRIFT_HAVE_SELECT 1
@@ -303,29 +222,9 @@
    zero-length file name argument. */
 /* #undef HAVE_STAT_EMPTY_STRING_BUG */
 
-/* Define to 1 if stdbool.h conforms to C99. */
-#ifndef THRIFT_HAVE_STDBOOL_H
-#define THRIFT_HAVE_STDBOOL_H 1
-#endif
-
 /* Define if g++ supports C++0x features. */
 #ifndef THRIFT_HAVE_STDCXX_0X
 #define THRIFT_HAVE_STDCXX_0X /**/
-#endif
-
-/* Define to 1 if you have the <stddef.h> header file. */
-#ifndef THRIFT_HAVE_STDDEF_H
-#define THRIFT_HAVE_STDDEF_H 1
-#endif
-
-/* Define to 1 if you have the <stdint.h> header file. */
-#ifndef THRIFT_HAVE_STDINT_H
-#define THRIFT_HAVE_STDINT_H 1
-#endif
-
-/* Define to 1 if you have the <stdlib.h> header file. */
-#ifndef THRIFT_HAVE_STDLIB_H
-#define THRIFT_HAVE_STDLIB_H 1
 #endif
 
 /* Define to 1 if you have the `strchr' function. */
@@ -353,18 +252,6 @@
 #define THRIFT_HAVE_STRFTIME 1
 #endif
 
-#ifndef _MSC_VER
-/* Define to 1 if you have the <strings.h> header file. */
-#ifndef THRIFT_HAVE_STRINGS_H
-#define THRIFT_HAVE_STRINGS_H 1
-#endif
-#endif
-
-/* Define to 1 if you have the <string.h> header file. */
-#ifndef THRIFT_HAVE_STRING_H
-#define THRIFT_HAVE_STRING_H 1
-#endif
-
 /* Define to 1 if you have the `strstr' function. */
 #ifndef THRIFT_HAVE_STRSTR
 #define THRIFT_HAVE_STRSTR 1
@@ -380,64 +267,7 @@
 #define THRIFT_HAVE_STRTOUL 1
 #endif
 
-/* Define to 1 if you have the <sys/param.h> header file. */
-#ifndef THRIFT_HAVE_SYS_PARAM_H
-#define THRIFT_HAVE_SYS_PARAM_H 1
-#endif
-
-/* Define to 1 if you have the <sys/poll.h> header file. */
-#ifndef THRIFT_HAVE_SYS_POLL_H
-#define THRIFT_HAVE_SYS_POLL_H 1
-#endif
-
-/* Define to 1 if you have the <sys/resource.h> header file. */
-#ifndef THRIFT_HAVE_SYS_RESOURCE_H
-#define THRIFT_HAVE_SYS_RESOURCE_H 1
-#endif
-
-/* Define to 1 if you have the <sys/select.h> header file. */
-#ifndef THRIFT_HAVE_SYS_SELECT_H
-#define THRIFT_HAVE_SYS_SELECT_H 1
-#endif
-
-/* Define to 1 if you have the <sys/socket.h> header file. */
-#ifndef THRIFT_HAVE_SYS_SOCKET_H
-#define THRIFT_HAVE_SYS_SOCKET_H 1
-#endif
-
-/* Define to 1 if you have the <sys/stat.h> header file. */
-#ifndef THRIFT_HAVE_SYS_STAT_H
-#define THRIFT_HAVE_SYS_STAT_H 1
-#endif
-
 #ifndef _MSC_VER
-/* Define to 1 if you have the <sys/time.h> header file. */
-#ifndef THRIFT_HAVE_SYS_TIME_H
-#define THRIFT_HAVE_SYS_TIME_H 1
-#endif
-#endif
-
-/* Define to 1 if you have the <sys/types.h> header file. */
-#ifndef THRIFT_HAVE_SYS_TYPES_H
-#define THRIFT_HAVE_SYS_TYPES_H 1
-#endif
-
-#ifndef _MSC_VER
-/* Define to 1 if you have the <sys/un.h> header file. */
-#ifndef THRIFT_HAVE_SYS_UN_H
-#define THRIFT_HAVE_SYS_UN_H 1
-#endif
-
-/* Define to 1 if you have <sys/wait.h> that is POSIX.1 compatible. */
-#ifndef THRIFT_HAVE_SYS_WAIT_H
-#define THRIFT_HAVE_SYS_WAIT_H 1
-#endif
-
-/* Define to 1 if you have the <unistd.h> header file. */
-#ifndef THRIFT_HAVE_UNISTD_H
-#define THRIFT_HAVE_UNISTD_H 1
-#endif
-
 /* Define to 1 if you have the `vfork' function. */
 #ifndef THRIFT_HAVE_VFORK
 #define THRIFT_HAVE_VFORK 1

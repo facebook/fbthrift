@@ -32,7 +32,7 @@
 
 #include <folly/FBString.h>
 
-#ifdef THRIFT_HAVE_ENDIAN_H
+#if __has_include(<endian.h>)
 #include <endian.h>
 #endif
 

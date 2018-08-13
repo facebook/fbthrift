@@ -35,9 +35,7 @@
 #endif
 #include <time.h>
 
-#ifdef THRIFT_HAVE_STDINT_H
 #include <stdint.h>
-#endif
 
 /**
  * T_GLOBAL_DEBUGGING_LEVEL = 0: all debugging turned off, debug macros undefined
