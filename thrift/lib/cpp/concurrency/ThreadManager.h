@@ -444,5 +444,5 @@ class ThreadManagerExecutorAdapter : public ThreadManager {
 
 }}} // apache::thrift::concurrency
 
-#include <thrift/lib/cpp/concurrency/ThreadManager.tcc>
+#include <thrift/lib/cpp/concurrency/ThreadManager-inl.h>
 #endif // #ifndef _THRIFT_CONCURRENCY_THREADMANAGER_H_
