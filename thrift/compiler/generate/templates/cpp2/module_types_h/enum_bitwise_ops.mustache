@@ -19,51 +19,27 @@
   using U = std::underlying_type_t<E>;
   return static_cast<E>(static_cast<U>(a) & static_cast<U>(b));
 }
-#if __cplusplus >= 201402L
-
 inline constexpr <%enum:name%>& operator&=(<%enum:name%>& a, <%enum:name%> b) {
   return a = a & b;
 }
-#else
-
-inline <%enum:name%>& operator&=(<%enum:name%>& a, <%enum:name%> b) {
-  return a = a & b;
-}
-#endif
 
 inline constexpr <%enum:name%> operator|(<%enum:name%> a, <%enum:name%> b) {
   using E = <%enum:name%>;
   using U = std::underlying_type_t<E>;
   return static_cast<E>(static_cast<U>(a) | static_cast<U>(b));
 }
-#if __cplusplus >= 201402L
-
 inline constexpr <%enum:name%>& operator|=(<%enum:name%>& a, <%enum:name%> b) {
   return a = a | b;
 }
-#else
-
-inline <%enum:name%>& operator|=(<%enum:name%>& a, <%enum:name%> b) {
-  return a = a | b;
-}
-#endif
 
 inline constexpr <%enum:name%> operator^(<%enum:name%> a, <%enum:name%> b) {
   using E = <%enum:name%>;
   using U = std::underlying_type_t<E>;
   return static_cast<E>(static_cast<U>(a) ^ static_cast<U>(b));
 }
-#if __cplusplus >= 201402L
-
 inline constexpr <%enum:name%>& operator^=(<%enum:name%>& a, <%enum:name%> b) {
   return a = a ^ b;
 }
-#else
-
-inline <%enum:name%>& operator^=(<%enum:name%>& a, <%enum:name%> b) {
-  return a = a ^ b;
-}
-#endif
 
 inline constexpr <%enum:name%> operator~(<%enum:name%> a) {
   using E = <%enum:name%>;
