@@ -1113,7 +1113,7 @@ apache::thrift::SemiStream<T> decode_stream(
         }
 
         if (ew.is_compatible_with<transport::TTransportException>()) {
-          return ew;
+          return std::move(ew);
         }
 
         return folly::exception_wrapper(
