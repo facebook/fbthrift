@@ -221,11 +221,7 @@ class ThreadManager : public virtual folly::Executor {
   /**
    * Creates a simple thread manager the uses count number of worker threads
    * and has a pendingTaskCountMax maximum pending tasks. The default, 0,
-   * specified no limit on pending tasks. maxQueueLen is the maximum total
-   * number of non-completed tasks ThreadManager can handle. 0 means a large
-   * default.
-   *
-   * @param maxQueueLen - deprecated
+   * specified no limit on pending tasks.
    */
   template <typename SemType = folly::LifoSem>
   static std::shared_ptr<ThreadManager> newSimpleThreadManager(
@@ -236,10 +232,7 @@ class ThreadManager : public virtual folly::Executor {
   /**
    * Creates a thread manager with support for priorities. Unlike
    * PriorityThreadManager, requests are still served from a single
-   * thread pool. Arguments are the same as the standard threadManager,
-   * except that MaxQueueLen is the max for any single priority
-   *
-   * @param maxQueueLen - deprecated
+   * thread pool.
    */
   template <typename SemType = folly::LifoSem>
   static std::shared_ptr<ThreadManager> newPriorityQueueThreadManager(
@@ -344,8 +337,6 @@ class PriorityThreadManager : public ThreadManager {
    *
    * At least NORMAL_PRIORITY_MINIMUM_THREADS threads are created for
    * priority NORMAL.
-   *
-   * @param maxQueueLen - deprecated
    */
   template <typename SemType = folly::LifoSem>
   static std::shared_ptr<PriorityThreadManager> newPriorityThreadManager(
@@ -357,8 +348,6 @@ class PriorityThreadManager : public ThreadManager {
   /**
    * Creates a priority-aware thread manager that uses counts[X]
    * worker threads for priority X.
-   *
-   * @param maxQueueLen - deprecated
    */
   template <typename SemType = folly::LifoSem>
   static std::shared_ptr<PriorityThreadManager> newPriorityThreadManager(
@@ -373,7 +362,6 @@ class PriorityThreadManager : public ThreadManager {
    *
    * @param normalThreadsCount - number of threads of NORMAL priority, defaults
    *          to the number of CPUs on the system
-   * @param maxQueueLen - deprecated
    */
   template <typename SemType = folly::LifoSem>
   static std::shared_ptr<PriorityThreadManager> newPriorityThreadManager(
