@@ -146,7 +146,7 @@ ClientLoadConfig::ClientLoadConfig()
     hints.ai_family = PF_UNSPEC;
     hints.ai_flags = AI_NUMERICHOST;
     PCHECK(
-        getaddrinfo(address_.getAddressStr().c_str(), nullptr, &hints, &res0));
+        !getaddrinfo(address_.getAddressStr().c_str(), nullptr, &hints, &res0));
 
     for (res = res0; res; res = res->ai_next) {
       if (0 ==

@@ -82,7 +82,7 @@ public class LoadTestHandler implements LoadTest.Iface  {
   }
 
   private void burnImpl(long microseconds) {
-    long end = System.nanoTime() + microseconds;
+    long end = System.nanoTime() + (microseconds * 1000);
     while (System.nanoTime() < end) {}
   }
 
