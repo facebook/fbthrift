@@ -3,11 +3,12 @@ import unittest
 
 from folly.iobuf import IOBuf
 from iobuf.types import Moo
+# pyre-ignore: T32805591
 from .iobuf_helper import get_empty_chain, make_chain
 
 class IOBufTests(unittest.TestCase):
     def test_empty_chain(self) -> None:
-        ebuf = get_empty_chain()
+        ebuf = get_empty_chain()  # pyre-ignore: T32805591
         self.assertFalse(ebuf)
         self.assertTrue(ebuf.is_chained)
         self.assertEqual(len(ebuf), 0)
@@ -18,7 +19,7 @@ class IOBufTests(unittest.TestCase):
 
     def test_chain(self) -> None:
         control = [b'facebook', b'thrift', b'python3', b'cython']
-        chain = make_chain([IOBuf(x) for x in control])
+        chain = make_chain([IOBuf(x) for x in control])  # pyre-ignore: T32805591
         self.assertTrue(chain.is_chained)
         self.assertTrue(chain)
         self.assertEqual(bytes(chain), control[0])
