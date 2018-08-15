@@ -56,4 +56,5 @@ service TestService {
   void voidResponse()
   i32 processHeader()
   IOBufPtr echoIOBuf(1: IOBuf buf)
+  void throwsHandlerException();
 }

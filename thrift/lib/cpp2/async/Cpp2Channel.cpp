@@ -134,7 +134,7 @@ void Cpp2Channel::read(
   if (recvCallback_) {
     auto samplingStatus =
         recvCallback_->shouldSample(bufAndHeader.second.get());
-    if (samplingStatus.isEnabledByServer()) {
+    if (samplingStatus.isEnabled()) {
       sample_.reset(new RecvCallback::sample(samplingStatus));
       sample_->readBegin = Util::currentTimeUsec();
     }

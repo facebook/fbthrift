@@ -69,3 +69,7 @@ int32_t TestInterface::processHeader() {
   }
   return 1;
 }
+
+void TestInterface::throwsHandlerException() {
+  throw std::runtime_error("exception");
+}

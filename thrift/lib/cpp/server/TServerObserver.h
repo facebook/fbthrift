@@ -83,6 +83,10 @@ class TServerObserver {
       status_ = status;
     }
 
+    SamplingStatus getSamplingStatus() const {
+      return status_;
+    }
+
    private:
     SamplingStatus status_;
   };

@@ -370,9 +370,8 @@ void Cpp2Connection::requestReceived(
   }
 
   server->incActiveRequests();
-  if (req->timestamps_.readBegin != 0) {
-    // Expensive operations; this happens once every
-    // TServerCounters.sampleRate
+  if (req->timestamps_.getSamplingStatus().isEnabled()) {
+    // Expensive operations; happens only when sampling is enabled
     req->timestamps_.processBegin =
         apache::thrift::concurrency::Util::currentTimeUsec();
     if (observer) {
@@ -466,9 +465,7 @@ MessageChannel::SendCallback* Cpp2Connection::Cpp2Request::prepareSendCallback(
   // implements MessageChannel::SendCallback. Callers of sendReply/sendError
   // are responsible for cleaning up their own callbacks.
   MessageChannel::SendCallback* cb = sendCallback;
-  if (req_->timestamps_.readBegin != 0) {
-    req_->timestamps_.processEnd =
-        apache::thrift::concurrency::Util::currentTimeUsec();
+  if (req_->timestamps_.getSamplingStatus().isEnabledByServer()) {
     // Cpp2Sample will delete itself when it's callback is called.
     cb = new Cpp2Sample(std::move(req_->timestamps_), observer, sendCallback);
   }
@@ -484,6 +481,7 @@ void Cpp2Connection::Cpp2Request::sendReply(
     MessageChannel::SendCallback* sendCallback) {
   if (req_->isActive()) {
     setServerHeaders();
+    markProcessEnd();
     auto observer = connection_->getWorker()->getServer()->getObserver().get();
     auto maxResponseSize =
         connection_->getWorker()->getServer()->getMaxResponseSize();
@@ -514,6 +512,7 @@ void Cpp2Connection::Cpp2Request::sendErrorWrapped(
     MessageChannel::SendCallback* sendCallback) {
   if (req_->isActive()) {
     setServerHeaders();
+    markProcessEnd();
     auto observer = connection_->getWorker()->getServer()->getObserver().get();
     req_->sendErrorWrapped(
         std::move(ew),
@@ -530,6 +529,7 @@ void Cpp2Connection::Cpp2Request::sendTimeoutResponse(
   auto observer = connection_->getWorker()->getServer()->getObserver().get();
   std::map<std::string, std::string> headers;
   setServerHeaders();
+  markProcessEnd(&headers);
   req_->sendTimeoutResponse(
       reqContext_.getMethodName(),
       reqContext_.getProtoSeqId(),
@@ -552,6 +552,49 @@ void Cpp2Connection::Cpp2Request::QueueTimeout::timeoutExpired() noexcept {
     request_->sendTimeoutResponse(
         HeaderServerChannel::HeaderRequest::TimeoutResponseType::QUEUE);
     request_->connection_->queueTimeoutExpired();
+  }
+}
+
+void Cpp2Connection::Cpp2Request::markProcessEnd(
+    std::map<std::string, std::string>* newHeaders) {
+  auto samplingStatus = req_->timestamps_.getSamplingStatus();
+  if (samplingStatus.isEnabled()) {
+    req_->timestamps_.processEnd =
+        apache::thrift::concurrency::Util::currentTimeUsec();
+    if (samplingStatus.isEnabledByClient()) {
+      // Latency headers are set after processEnd itself. Can't be
+      // done after write, since headers transform happens during write.
+      setLatencyHeaders(req_->getTimestamps(), newHeaders);
+    }
+  }
+}
+
+void Cpp2Connection::Cpp2Request::setLatencyHeaders(
+    const apache::thrift::server::TServerObserver::CallTimestamps& timestamps,
+    std::map<std::string, std::string>* newHeaders) const {
+  setLatencyHeader(
+      kReadLatencyHeader.str(),
+      folly::to<std::string>(timestamps.readEnd - timestamps.readBegin),
+      newHeaders);
+  setLatencyHeader(
+      kQueueLatencyHeader.str(),
+      folly::to<std::string>(timestamps.processBegin - timestamps.readEnd),
+      newHeaders);
+  setLatencyHeader(
+      kProcessLatencyHeader.str(),
+      folly::to<std::string>(timestamps.processEnd - timestamps.processBegin),
+      newHeaders);
+}
+
+void Cpp2Connection::Cpp2Request::setLatencyHeader(
+    const std::string& key,
+    const std::string& value,
+    std::map<std::string, std::string>* newHeaders) const {
+  // newHeaders is used timeout exceptions, where req->header cannot be mutated.
+  if (newHeaders) {
+    (*newHeaders)[key] = value;
+  } else {
+    req_->getHeader()->setHeader(key, value);
   }
 }
 

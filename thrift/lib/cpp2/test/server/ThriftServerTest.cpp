@@ -399,6 +399,143 @@ TEST(ThriftServer, LoadHeaderTest) {
   base.loop();
 }
 
+enum LatencyHeaderStatus {
+  EXPECTED,
+  NOT_EXPECTED,
+};
+
+static void validateLatencyHeaders(
+    std::map<std::string, std::string> headers,
+    LatencyHeaderStatus status) {
+  bool isHeaderExpected = (status == LatencyHeaderStatus::EXPECTED);
+  auto readLatency = folly::get_optional(headers, kReadLatencyHeader.str());
+  ASSERT_EQ(isHeaderExpected, readLatency.has_value());
+  auto queueLatency = folly::get_optional(headers, kQueueLatencyHeader.str());
+  ASSERT_EQ(isHeaderExpected, queueLatency.has_value());
+  auto processLatency =
+      folly::get_optional(headers, kProcessLatencyHeader.str());
+  ASSERT_EQ(isHeaderExpected, processLatency.has_value());
+  if (isHeaderExpected) {
+    EXPECT_GE(folly::to<int64_t>(readLatency.value()), 0);
+    EXPECT_GE(folly::to<int64_t>(queueLatency.value()), 0);
+    EXPECT_GE(folly::to<int64_t>(processLatency.value()), 0);
+  }
+}
+
+TEST(ThriftServer, LatencyHeader_LoggingDisabled) {
+  ScopedServerInterfaceThread runner(std::make_shared<TestInterface>());
+  folly::EventBase base;
+  auto client = runner.newClient<TestServiceAsyncClient>(&base);
+
+  RpcOptions rpcOptions;
+  client->sync_voidResponse(rpcOptions);
+  validateLatencyHeaders(
+      rpcOptions.getReadHeaders(), LatencyHeaderStatus::NOT_EXPECTED);
+}
+
+TEST(ThriftServer, LatencyHeader_ServerOverloaded) {
+  ScopedServerInterfaceThread runner(std::make_shared<TestInterface>());
+  folly::EventBase base;
+  auto client = runner.newClient<TestServiceAsyncClient>(&base);
+
+  // force overloaded
+  runner.getThriftServer().setIsOverloaded([](const THeader*) { return true; });
+
+  RpcOptions rpcOptions;
+  rpcOptions.setWriteHeader(kClientLoggingHeader.str(), "");
+  EXPECT_ANY_THROW(client->sync_voidResponse(rpcOptions));
+
+  // Latency headers are NOT set, when server is overloaded
+  validateLatencyHeaders(
+      rpcOptions.getReadHeaders(), LatencyHeaderStatus::NOT_EXPECTED);
+}
+
+TEST(ThriftServer, LatencyHeader_ClientTimeout) {
+  ScopedServerInterfaceThread runner(std::make_shared<TestInterface>());
+  folly::EventBase base;
+  auto client = runner.newClient<TestServiceAsyncClient>(&base);
+
+  runner.getThriftServer().setUseClientTimeout(
+      LatencyHeaderStatus::NOT_EXPECTED);
+
+  RpcOptions rpcOptions;
+  // Setup client timeout
+  rpcOptions.setTimeout(std::chrono::milliseconds(5));
+  rpcOptions.setWriteHeader(kClientLoggingHeader.str(), "");
+  std::string response;
+  EXPECT_ANY_THROW(client->sync_sendResponse(rpcOptions, response, 20000));
+
+  // Latency headers are NOT set, when client times out.
+  validateLatencyHeaders(
+      rpcOptions.getReadHeaders(), LatencyHeaderStatus::NOT_EXPECTED);
+}
+
+TEST(ThriftServer, LatencyHeader_RequestSuccess) {
+  ScopedServerInterfaceThread runner(std::make_shared<TestInterface>());
+  folly::EventBase base;
+  auto client = runner.newClient<TestServiceAsyncClient>(&base);
+
+  RpcOptions rpcOptions;
+  rpcOptions.setWriteHeader(kClientLoggingHeader.str(), "");
+  client->sync_voidResponse(rpcOptions);
+  validateLatencyHeaders(
+      rpcOptions.getReadHeaders(), LatencyHeaderStatus::EXPECTED);
+}
+
+TEST(ThriftServer, LatencyHeader_RequestFailed) {
+  ScopedServerInterfaceThread runner(std::make_shared<TestInterface>());
+  folly::EventBase base;
+  auto client = runner.newClient<TestServiceAsyncClient>(&base);
+
+  RpcOptions rpcOptions;
+  rpcOptions.setWriteHeader(kClientLoggingHeader.str(), "");
+  EXPECT_ANY_THROW(client->sync_throwsHandlerException(rpcOptions));
+
+  // Latency headers are set, when handler throws exception
+  validateLatencyHeaders(
+      rpcOptions.getReadHeaders(), LatencyHeaderStatus::EXPECTED);
+}
+
+TEST(ThriftServer, LatencyHeader_TaskExpiry) {
+  ScopedServerInterfaceThread runner(std::make_shared<TestInterface>());
+  folly::EventBase base;
+  auto client = runner.newClient<TestServiceAsyncClient>(&base);
+
+  // setup task expire timeout.
+  runner.getThriftServer().setTaskExpireTime(std::chrono::milliseconds(10));
+  runner.getThriftServer().setUseClientTimeout(false);
+
+  RpcOptions rpcOptions;
+  rpcOptions.setWriteHeader(kClientLoggingHeader.str(), "");
+  std::string response;
+  EXPECT_ANY_THROW(client->sync_sendResponse(rpcOptions, response, 30000));
+
+  // Latency headers are set, when task expires
+  validateLatencyHeaders(
+      rpcOptions.getReadHeaders(), LatencyHeaderStatus::EXPECTED);
+}
+
+TEST(ThriftServer, LatencyHeader_QueueTimeout) {
+  ScopedServerInterfaceThread runner(std::make_shared<TestInterface>());
+  folly::EventBase base;
+  auto client = runner.newClient<TestServiceAsyncClient>(&base);
+
+  // setup timeout
+  runner.getThriftServer().setQueueTimeout(std::chrono::milliseconds(5));
+
+  // Run a long request.
+  client->future_sendResponse(20000);
+
+  RpcOptions rpcOptions;
+  rpcOptions.setWriteHeader(kClientLoggingHeader.str(), "");
+  std::string response;
+  EXPECT_ANY_THROW(client->sync_sendResponse(rpcOptions, response, 1000));
+
+  // Latency headers are set, when server throws queue timeout
+  validateLatencyHeaders(
+      rpcOptions.getReadHeaders(), LatencyHeaderStatus::EXPECTED);
+}
+
 TEST(ThriftServer, ClientTimeoutTest) {
   TestThriftServerFactory<TestInterface> factory;
   auto server = factory.create();
@@ -835,7 +972,7 @@ TEST(ThriftServer, CacheAnnotation) {
   // We aren't parsing anything just want this to compile
   auto testInterface = std::unique_ptr<TestInterface>(new TestInterface);
   ExtendedTestServiceAsyncProcessor processor(testInterface.get());
-  EXPECT_FALSE(processor.getCacheKeyTest().hasValue());
+  EXPECT_FALSE(processor.getCacheKeyTest().has_value());
 }
 
 TEST(ThriftServer, IdleServerTimeout) {

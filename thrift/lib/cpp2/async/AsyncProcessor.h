@@ -244,7 +244,7 @@ class GeneratedAsyncProcessor : public AsyncProcessor {
                 auto rq =
                     std::unique_ptr<apache::thrift::ResponseChannel::Request>(
                         preq);
-                if (rq->getTimestamps().processBegin != 0) {
+                if (rq->getTimestamps().getSamplingStatus().isEnabled()) {
                   // Since this request was queued, reset the processBegin
                   // time to the actual start time, and not the queue time.
                   rq->getTimestamps().processBegin =

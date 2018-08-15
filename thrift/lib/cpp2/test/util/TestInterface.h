@@ -40,4 +40,5 @@ class TestInterface : public apache::thrift::test::TestServiceSvIf {
       std::unique_ptr<folly::IOBuf> buf) override;
 
   int32_t processHeader() override;
+  void throwsHandlerException() override;
 };
