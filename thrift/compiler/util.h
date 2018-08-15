@@ -21,6 +21,7 @@
 
 #pragma once
 
+#include <string>
 #include <utility>
 
 namespace apache {
@@ -43,6 +44,21 @@ T exchange(T& obj, U&& new_value) {
 }
 
 #endif
+
+//  strip_left_margin
+//
+//  Looks for the least indented non-whitespace-only line and removes its amount
+//  of leading whitespace from every line. Assumes leading whitespace is either
+//  all spaces or all tabs.
+//
+//  The leading line is removed if it is whitespace-only. The trailing line is
+//  kept but its content removed if it is whitespace-only.
+//
+//  Purpose: including a multiline string literal in source code, indented to
+//  the level expected from context.
+//
+//  mimic: folly::stripLeftMargin
+std::string strip_left_margin(std::string const& s);
 
 } // namespace compiler
 } // namespace thrift

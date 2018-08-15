@@ -24,6 +24,7 @@
 #include <map>
 #include <string>
 
+#include <boost/regex.hpp>
 #include <gtest/gtest.h>
 
 using namespace apache::thrift::compiler;
@@ -35,4 +36,164 @@ TEST_F(UtilTest, exchange) {
   auto old = exchange(obj, {{"world", 4}});
   EXPECT_EQ((std::map<std::string, int>{{"world", 4}}), obj);
   EXPECT_EQ((std::map<std::string, int>{{"hello", 3}}), old);
+}
+
+TEST(String, strip_left_margin_really_empty) {
+  auto input = "";
+  auto expected = "";
+  EXPECT_EQ(expected, strip_left_margin(input));
+}
+
+TEST(String, strip_left_margin_empty) {
+  auto input = R"TEXT(
+  )TEXT";
+  auto expected = "";
+  EXPECT_EQ(expected, strip_left_margin(input));
+}
+
+TEST(String, strip_left_margin_only_whitespace) {
+  //  using ~ as a marker
+  std::string input = R"TEXT(
+    ~
+  )TEXT";
+  input = boost::regex_replace(input, boost::regex("~"), "");
+  EXPECT_EQ("\n    \n  ", input);
+  auto expected = "\n";
+  EXPECT_EQ(expected, strip_left_margin(input));
+}
+
+TEST(String, strip_left_margin_only_uneven_whitespace) {
+  //  using ~ as a marker1
+  std::string input = R"TEXT(
+    ~
+      ~
+  )TEXT";
+  input = boost::regex_replace(input, boost::regex("~"), "");
+  EXPECT_EQ("\n    \n      \n  ", input);
+  auto expected = "\n\n";
+
+  EXPECT_EQ(expected, strip_left_margin(input));
+}
+
+TEST(String, strip_left_margin_one_line) {
+  auto input = R"TEXT(
+    hi there bob!
+  )TEXT";
+  auto expected = "hi there bob!\n";
+  EXPECT_EQ(expected, strip_left_margin(input));
+}
+
+TEST(String, strip_left_margin_two_lines) {
+  auto input = R"TEXT(
+    hi there bob!
+    nice weather today!
+  )TEXT";
+  auto expected = "hi there bob!\nnice weather today!\n";
+  EXPECT_EQ(expected, strip_left_margin(input));
+}
+
+TEST(String, strip_left_margin_three_lines_uneven) {
+  auto input = R"TEXT(
+      hi there bob!
+    nice weather today!
+      so long!
+  )TEXT";
+  auto expected = "  hi there bob!\nnice weather today!\n  so long!\n";
+  EXPECT_EQ(expected, strip_left_margin(input));
+}
+
+TEST(String, strip_left_margin_preceding_blank_lines) {
+  auto input = R"TEXT(
+
+
+    hi there bob!
+  )TEXT";
+  auto expected = "\n\nhi there bob!\n";
+  EXPECT_EQ(expected, strip_left_margin(input));
+}
+
+TEST(String, strip_left_margin_succeeding_blank_lines) {
+  auto input = R"TEXT(
+    hi there bob!
+
+
+  )TEXT";
+  auto expected = "hi there bob!\n\n\n";
+  EXPECT_EQ(expected, strip_left_margin(input));
+}
+
+TEST(String, strip_left_margin_interstitial_undented_whiteline) {
+  //  using ~ as a marker
+  std::string input = R"TEXT(
+      hi there bob!
+    ~
+      so long!
+  )TEXT";
+  input = boost::regex_replace(input, boost::regex(" +~"), "");
+  EXPECT_EQ("\n      hi there bob!\n\n      so long!\n  ", input);
+  auto expected = "hi there bob!\n\nso long!\n";
+  EXPECT_EQ(expected, strip_left_margin(input));
+}
+
+TEST(String, strip_left_margin_interstitial_dedented_whiteline) {
+  //  using ~ as a marker
+  std::string input = R"TEXT(
+      hi there bob!
+    ~
+      so long!
+  )TEXT";
+  input = boost::regex_replace(input, boost::regex("~"), "");
+  EXPECT_EQ("\n      hi there bob!\n    \n      so long!\n  ", input);
+  auto expected = "hi there bob!\n\nso long!\n";
+  EXPECT_EQ(expected, strip_left_margin(input));
+}
+
+TEST(String, strip_left_margin_interstitial_equidented_whiteline) {
+  //  using ~ as a marker
+  std::string input = R"TEXT(
+      hi there bob!
+      ~
+      so long!
+  )TEXT";
+  input = boost::regex_replace(input, boost::regex("~"), "");
+  EXPECT_EQ("\n      hi there bob!\n      \n      so long!\n  ", input);
+  auto expected = "hi there bob!\n\nso long!\n";
+  EXPECT_EQ(expected, strip_left_margin(input));
+}
+
+TEST(String, strip_left_margin_interstitial_indented_whiteline) {
+  //  using ~ as a marker
+  std::string input = R"TEXT(
+      hi there bob!
+        ~
+      so long!
+  )TEXT";
+  input = boost::regex_replace(input, boost::regex("~"), "");
+  EXPECT_EQ("\n      hi there bob!\n        \n      so long!\n  ", input);
+  auto expected = "hi there bob!\n  \nso long!\n";
+  EXPECT_EQ(expected, strip_left_margin(input));
+}
+
+TEST(String, strip_left_margin_no_pre_whitespace) {
+  //  using ~ as a marker
+  std::string input = R"TEXT(      hi there bob!
+        ~
+      so long!
+  )TEXT";
+  input = boost::regex_replace(input, boost::regex("~"), "");
+  EXPECT_EQ("      hi there bob!\n        \n      so long!\n  ", input);
+  auto expected = "hi there bob!\n  \nso long!\n";
+  EXPECT_EQ(expected, strip_left_margin(input));
+}
+
+TEST(String, strip_left_margin_no_post_whitespace) {
+  //  using ~ as a marker
+  std::string input = R"TEXT(
+      hi there bob!
+        ~
+      so long!  )TEXT";
+  input = boost::regex_replace(input, boost::regex("~"), "");
+  EXPECT_EQ("\n      hi there bob!\n        \n      so long!  ", input);
+  auto expected = "hi there bob!\n  \nso long!  ";
+  EXPECT_EQ(expected, strip_left_margin(input));
 }
