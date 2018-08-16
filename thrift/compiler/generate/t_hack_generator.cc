@@ -1913,7 +1913,7 @@ void t_hack_generator::generate_php_struct_shape_json_conversion(
     indent(out) << "foreach (/* HH_IGNORE_ERROR[4110] */ " << shape_data
                 << " as " << k << " => " << v << ") {" << endl;
     if (!shape_unsafe_json_) {
-      if (((t_base_type*)val_type)->get_base() == t_base_type::TYPE_STRING) {
+      if (val_type->is_string()) {
         indent(out) << "  if (!is_string(" << v << ")) {" << endl;
         indent(out) << "    return null;" << endl;
         indent(out) << "  }" << endl;
@@ -1979,9 +1979,6 @@ void t_hack_generator::generate_php_struct_shape_json_conversion(
                 << " as " << k << " => " << v << ") {" << endl;
     indent_up();
 
-    const bool key_is_string = key_type->is_base_type() &&
-        (static_cast<t_base_type*>(key_type)->get_base() ==
-         t_base_type::TYPE_STRING);
     if (!shape_unsafe_json_) {
       if (shape_arraykeys_) {
         indent(out) << "if (!is_string(" << k << ") && " << endl;
@@ -1989,7 +1986,7 @@ void t_hack_generator::generate_php_struct_shape_json_conversion(
         indent(out) << "  return null;" << endl;
         indent(out) << "}" << endl;
       } else {
-        if (key_is_string) {
+        if (key_type->is_string()) {
           indent(out) << "if (!is_string(" << k << ")) {" << endl;
           indent(out) << "  return null;" << endl;
           indent(out) << "}" << endl;
