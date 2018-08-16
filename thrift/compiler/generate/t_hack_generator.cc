@@ -2271,9 +2271,9 @@ void t_hack_generator::generate_php_struct_shape_methods(
           }
         }
         val << ";" << endl;
-        if (nullable) {
-          indent_down();
-        }
+      }
+      if (nullable) {
+        indent_down();
       }
     } else if (t->is_struct()) {
       string type = hack_name(t);

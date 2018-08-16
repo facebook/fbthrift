@@ -1595,166 +1595,166 @@ class C implements \IThriftStruct, \IThriftShapishStruct {
     $me = /* HH_IGNORE_ERROR[4060] */ new static();
     $me->map_of_string_to_string = Shapes::idx($shape, 'map_of_string_to_string') === null ? null : 
       Shapes::idx($shape, 'map_of_string_to_string');
-      $me->map_of_string_to_i32 = Shapes::idx($shape, 'map_of_string_to_i32') === null ? null : 
-        Shapes::idx($shape, 'map_of_string_to_i32');
-        $me->map_of_string_to_A = Shapes::idx($shape, 'map_of_string_to_A') === null ? null : 
-          Shapes::idx($shape, 'map_of_string_to_A')
+    $me->map_of_string_to_i32 = Shapes::idx($shape, 'map_of_string_to_i32') === null ? null : 
+      Shapes::idx($shape, 'map_of_string_to_i32');
+    $me->map_of_string_to_A = Shapes::idx($shape, 'map_of_string_to_A') === null ? null : 
+      Shapes::idx($shape, 'map_of_string_to_A')
+        |> Dict\map(
+          $$ ?? dict[],
+          $_val38 ==> $_val38
+            |> A::__fromShape($$),
+        );
+    $me->map_of_string_to_self = Shapes::idx($shape, 'map_of_string_to_self') === null ? null : 
+      Shapes::idx($shape, 'map_of_string_to_self')
+        |> Dict\map(
+          $$ ?? dict[],
+          $_val39 ==> $_val39
+            |> B::__fromShape($$),
+        );
+    $me->map_of_string_to_list_of_A = Shapes::idx($shape, 'map_of_string_to_list_of_A') === null ? null : 
+      Shapes::idx($shape, 'map_of_string_to_list_of_A')
+        |> Dict\map(
+          $$ ?? dict[],
+          $_val40 ==> $_val40
+            |> Vec\map(
+              $$ ?? vec[],
+              $_val41 ==> $_val41
+                |> A::__fromShape($$),
+            ),
+        );
+    $me->map_of_string_to_map_of_string_to_i32 = Shapes::idx($shape, 'map_of_string_to_map_of_string_to_i32') === null ? null : 
+      Shapes::idx($shape, 'map_of_string_to_map_of_string_to_i32');
+    $me->map_of_string_to_map_of_string_to_A = Shapes::idx($shape, 'map_of_string_to_map_of_string_to_A') === null ? null : 
+      Shapes::idx($shape, 'map_of_string_to_map_of_string_to_A')
+        |> Dict\map(
+          $$ ?? dict[],
+          $_val42 ==> $_val42
             |> Dict\map(
               $$ ?? dict[],
-              $_val38 ==> $_val38
+              $_val43 ==> $_val43
                 |> A::__fromShape($$),
-            );
-          $me->map_of_string_to_self = Shapes::idx($shape, 'map_of_string_to_self') === null ? null : 
-            Shapes::idx($shape, 'map_of_string_to_self')
-              |> Dict\map(
-                $$ ?? dict[],
-                $_val39 ==> $_val39
-                  |> B::__fromShape($$),
-              );
-            $me->map_of_string_to_list_of_A = Shapes::idx($shape, 'map_of_string_to_list_of_A') === null ? null : 
-              Shapes::idx($shape, 'map_of_string_to_list_of_A')
-                |> Dict\map(
-                  $$ ?? dict[],
-                  $_val40 ==> $_val40
-                    |> Vec\map(
-                      $$ ?? vec[],
-                      $_val41 ==> $_val41
-                        |> A::__fromShape($$),
-                    ),
-                );
-              $me->map_of_string_to_map_of_string_to_i32 = Shapes::idx($shape, 'map_of_string_to_map_of_string_to_i32') === null ? null : 
-                Shapes::idx($shape, 'map_of_string_to_map_of_string_to_i32');
-                $me->map_of_string_to_map_of_string_to_A = Shapes::idx($shape, 'map_of_string_to_map_of_string_to_A') === null ? null : 
-                  Shapes::idx($shape, 'map_of_string_to_map_of_string_to_A')
-                    |> Dict\map(
-                      $$ ?? dict[],
-                      $_val42 ==> $_val42
-                        |> Dict\map(
-                          $$ ?? dict[],
-                          $_val43 ==> $_val43
-                            |> A::__fromShape($$),
-                        ),
-                    );
-                  $me->list_of_string = Shapes::idx($shape, 'list_of_string') === null ? null : 
-                    Shapes::idx($shape, 'list_of_string');
-                    $me->list_of_map_of_string_to_A = Shapes::idx($shape, 'list_of_map_of_string_to_A') === null ? null : 
-                      Shapes::idx($shape, 'list_of_map_of_string_to_A')
-                        |> Vec\map(
-                          $$ ?? vec[],
-                          $_val44 ==> $_val44
-                            |> Dict\map(
-                              $$ ?? dict[],
-                              $_val45 ==> $_val45
-                                |> A::__fromShape($$),
-                            ),
-                        );
-                      $me->list_of_self = Shapes::idx($shape, 'list_of_self') === null ? null : 
-                        Shapes::idx($shape, 'list_of_self')
-                          |> Vec\map(
-                            $$ ?? vec[],
-                            $_val46 ==> $_val46
-                              |> B::__fromShape($$),
-                          );
-                        $me->list_of_list_of_self = Shapes::idx($shape, 'list_of_list_of_self') === null ? null : 
-                          Shapes::idx($shape, 'list_of_list_of_self')
-                            |> Vec\map(
-                              $$ ?? vec[],
-                              $_val47 ==> $_val47
-                                |> Vec\map(
-                                  $$ ?? vec[],
-                                  $_val48 ==> $_val48
-                                    |> B::__fromShape($$),
-                                ),
-                            );
-                          $me->list_of_map_of_string_to_list_of_A = Shapes::idx($shape, 'list_of_map_of_string_to_list_of_A') === null ? null : 
-                            Shapes::idx($shape, 'list_of_map_of_string_to_list_of_A')
-                              |> Vec\map(
-                                $$ ?? vec[],
-                                $_val49 ==> $_val49
-                                  |> Dict\map(
-                                    $$ ?? dict[],
-                                    $_val50 ==> $_val50
-                                      |> Vec\map(
-                                        $$ ?? vec[],
-                                        $_val51 ==> $_val51
-                                          |> A::__fromShape($$),
-                                      ),
-                                  ),
-                              );
-                            return $me;
-                          }
+            ),
+        );
+    $me->list_of_string = Shapes::idx($shape, 'list_of_string') === null ? null : 
+      Shapes::idx($shape, 'list_of_string');
+    $me->list_of_map_of_string_to_A = Shapes::idx($shape, 'list_of_map_of_string_to_A') === null ? null : 
+      Shapes::idx($shape, 'list_of_map_of_string_to_A')
+        |> Vec\map(
+          $$ ?? vec[],
+          $_val44 ==> $_val44
+            |> Dict\map(
+              $$ ?? dict[],
+              $_val45 ==> $_val45
+                |> A::__fromShape($$),
+            ),
+        );
+    $me->list_of_self = Shapes::idx($shape, 'list_of_self') === null ? null : 
+      Shapes::idx($shape, 'list_of_self')
+        |> Vec\map(
+          $$ ?? vec[],
+          $_val46 ==> $_val46
+            |> B::__fromShape($$),
+        );
+    $me->list_of_list_of_self = Shapes::idx($shape, 'list_of_list_of_self') === null ? null : 
+      Shapes::idx($shape, 'list_of_list_of_self')
+        |> Vec\map(
+          $$ ?? vec[],
+          $_val47 ==> $_val47
+            |> Vec\map(
+              $$ ?? vec[],
+              $_val48 ==> $_val48
+                |> B::__fromShape($$),
+            ),
+        );
+    $me->list_of_map_of_string_to_list_of_A = Shapes::idx($shape, 'list_of_map_of_string_to_list_of_A') === null ? null : 
+      Shapes::idx($shape, 'list_of_map_of_string_to_list_of_A')
+        |> Vec\map(
+          $$ ?? vec[],
+          $_val49 ==> $_val49
+            |> Dict\map(
+              $$ ?? dict[],
+              $_val50 ==> $_val50
+                |> Vec\map(
+                  $$ ?? vec[],
+                  $_val51 ==> $_val51
+                    |> A::__fromShape($$),
+                ),
+            ),
+        );
+    return $me;
+  }
 
-                          public function __toShape(): self::TShape {
-                            return shape(
-                              'map_of_string_to_string' => $this->map_of_string_to_string,
-                              'map_of_string_to_i32' => $this->map_of_string_to_i32,
-                              'map_of_string_to_A' => $this->map_of_string_to_A === null ? null : $this->map_of_string_to_A
-                                |> Dict\map(
-                                  $$ ?? dict[],
-                                  $_val0 ==> $_val0->__toShape(),
-                                ),
-                              'map_of_string_to_self' => $this->map_of_string_to_self === null ? null : $this->map_of_string_to_self
-                                |> Dict\map(
-                                  $$ ?? dict[],
-                                  $_val0 ==> $_val0->__toShape(),
-                                ),
-                              'map_of_string_to_list_of_A' => $this->map_of_string_to_list_of_A === null ? null : $this->map_of_string_to_list_of_A
-                                |> Dict\map(
-                                  $$ ?? dict[],
-                                  $_val0 ==> $_val0
-                                    |> Vec\map(
-                                      $$ ?? vec[],
-                                      $_val1 ==> $_val1->__toShape(),
-                                    ),
-                                ),
-                              'map_of_string_to_map_of_string_to_i32' => $this->map_of_string_to_map_of_string_to_i32,
-                              'map_of_string_to_map_of_string_to_A' => $this->map_of_string_to_map_of_string_to_A === null ? null : $this->map_of_string_to_map_of_string_to_A
-                                |> Dict\map(
-                                  $$ ?? dict[],
-                                  $_val0 ==> $_val0
-                                    |> Dict\map(
-                                      $$ ?? dict[],
-                                      $_val1 ==> $_val1->__toShape(),
-                                    ),
-                                ),
-                              'list_of_string' => $this->list_of_string,
-                              'list_of_map_of_string_to_A' => $this->list_of_map_of_string_to_A === null ? null : $this->list_of_map_of_string_to_A
-                                |> Vec\map(
-                                  $$ ?? vec[],
-                                  $_val0 ==> $_val0
-                                    |> Dict\map(
-                                      $$ ?? dict[],
-                                      $_val1 ==> $_val1->__toShape(),
-                                    ),
-                                ),
-                              'list_of_self' => $this->list_of_self === null ? null : $this->list_of_self
-                                |> Vec\map(
-                                  $$ ?? vec[],
-                                  $_val0 ==> $_val0->__toShape(),
-                                ),
-                              'list_of_list_of_self' => $this->list_of_list_of_self === null ? null : $this->list_of_list_of_self
-                                |> Vec\map(
-                                  $$ ?? vec[],
-                                  $_val0 ==> $_val0
-                                    |> Vec\map(
-                                      $$ ?? vec[],
-                                      $_val1 ==> $_val1->__toShape(),
-                                    ),
-                                ),
-                              'list_of_map_of_string_to_list_of_A' => $this->list_of_map_of_string_to_list_of_A === null ? null : $this->list_of_map_of_string_to_list_of_A
-                                |> Vec\map(
-                                  $$ ?? vec[],
-                                  $_val0 ==> $_val0
-                                    |> Dict\map(
-                                      $$ ?? dict[],
-                                      $_val1 ==> $_val1
-                                        |> Vec\map(
-                                          $$ ?? vec[],
-                                          $_val2 ==> $_val2->__toShape(),
-                                        ),
-                                    ),
-                                ),
-                            );
-                          }
-                        }
+  public function __toShape(): self::TShape {
+    return shape(
+      'map_of_string_to_string' => $this->map_of_string_to_string,
+      'map_of_string_to_i32' => $this->map_of_string_to_i32,
+      'map_of_string_to_A' => $this->map_of_string_to_A === null ? null : $this->map_of_string_to_A
+        |> Dict\map(
+          $$ ?? dict[],
+          $_val0 ==> $_val0->__toShape(),
+        ),
+      'map_of_string_to_self' => $this->map_of_string_to_self === null ? null : $this->map_of_string_to_self
+        |> Dict\map(
+          $$ ?? dict[],
+          $_val0 ==> $_val0->__toShape(),
+        ),
+      'map_of_string_to_list_of_A' => $this->map_of_string_to_list_of_A === null ? null : $this->map_of_string_to_list_of_A
+        |> Dict\map(
+          $$ ?? dict[],
+          $_val0 ==> $_val0
+            |> Vec\map(
+              $$ ?? vec[],
+              $_val1 ==> $_val1->__toShape(),
+            ),
+        ),
+      'map_of_string_to_map_of_string_to_i32' => $this->map_of_string_to_map_of_string_to_i32,
+      'map_of_string_to_map_of_string_to_A' => $this->map_of_string_to_map_of_string_to_A === null ? null : $this->map_of_string_to_map_of_string_to_A
+        |> Dict\map(
+          $$ ?? dict[],
+          $_val0 ==> $_val0
+            |> Dict\map(
+              $$ ?? dict[],
+              $_val1 ==> $_val1->__toShape(),
+            ),
+        ),
+      'list_of_string' => $this->list_of_string,
+      'list_of_map_of_string_to_A' => $this->list_of_map_of_string_to_A === null ? null : $this->list_of_map_of_string_to_A
+        |> Vec\map(
+          $$ ?? vec[],
+          $_val0 ==> $_val0
+            |> Dict\map(
+              $$ ?? dict[],
+              $_val1 ==> $_val1->__toShape(),
+            ),
+        ),
+      'list_of_self' => $this->list_of_self === null ? null : $this->list_of_self
+        |> Vec\map(
+          $$ ?? vec[],
+          $_val0 ==> $_val0->__toShape(),
+        ),
+      'list_of_list_of_self' => $this->list_of_list_of_self === null ? null : $this->list_of_list_of_self
+        |> Vec\map(
+          $$ ?? vec[],
+          $_val0 ==> $_val0
+            |> Vec\map(
+              $$ ?? vec[],
+              $_val1 ==> $_val1->__toShape(),
+            ),
+        ),
+      'list_of_map_of_string_to_list_of_A' => $this->list_of_map_of_string_to_list_of_A === null ? null : $this->list_of_map_of_string_to_list_of_A
+        |> Vec\map(
+          $$ ?? vec[],
+          $_val0 ==> $_val0
+            |> Dict\map(
+              $$ ?? dict[],
+              $_val1 ==> $_val1
+                |> Vec\map(
+                  $$ ?? vec[],
+                  $_val2 ==> $_val2->__toShape(),
+                ),
+            ),
+        ),
+    );
+  }
+}
 
