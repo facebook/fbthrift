@@ -110,7 +110,8 @@ class yy_scanner {
 
   std::string get_text() const {
     assert(!!scanner_);
-    return std::string{yyget_text(scanner_)};
+    char const* text = yyget_text(scanner_);
+    return (!!text) ? std::string{text} : "";
   }
 
   yyscan_t get_scanner() {
