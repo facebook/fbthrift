@@ -75,3 +75,11 @@ struct ComplexNestedWithDefault {
   1: string z = '4',
   2: ComplexString n = {'a': '3', 'b': {'a': 3}},
 }
+
+struct MinPadding {
+  1: required byte small,
+  2: required i64 big,
+  3: required i16 medium,
+  4: required i32 biggish,
+  5: required byte tiny,
+}

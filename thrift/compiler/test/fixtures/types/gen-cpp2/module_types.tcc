@@ -110,6 +110,13 @@ struct TccStructTraits< ::apache::thrift::fixtures::types::ComplexNestedWithDefa
       int16_t& fid,
       apache::thrift::protocol::TType& _ftype);
 };
+template <>
+struct TccStructTraits< ::apache::thrift::fixtures::types::MinPadding> {
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
+};
 
 } // namespace detail
 } // namespace thrift
@@ -1336,6 +1343,236 @@ uint32_t ComplexNestedWithDefault::write(Protocol_* prot_) const {
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldBegin("n", apache::thrift::protocol::T_STRUCT, 2);
   xfer += ::apache::thrift::Cpp2Ops<  ::apache::thrift::fixtures::types::ComplexString>::write(prot_, &this->n);
+  xfer += prot_->writeFieldEnd();
+  xfer += prot_->writeFieldStop();
+  xfer += prot_->writeStructEnd();
+  return xfer;
+}
+
+}}}} // apache::thrift::fixtures::types
+namespace apache { namespace thrift { namespace fixtures { namespace types {
+
+template <class Protocol_>
+void MinPadding::readNoXfer(Protocol_* iprot) {
+  apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
+
+  _readState.readStructBegin(iprot);
+
+  using apache::thrift::TProtocolException;
+
+  bool isset_small = false;
+  bool isset_big = false;
+  bool isset_medium = false;
+  bool isset_biggish = false;
+  bool isset_tiny = false;
+
+  if (UNLIKELY(!_readState.advanceToNextField(
+          iprot,
+          0,
+          1,
+          apache::thrift::protocol::T_BYTE))) {
+    goto _loop;
+  }
+_readField_small:
+  {
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int8_t>::read(*iprot, this->small);
+    isset_small = true;
+  }
+
+  if (UNLIKELY(!_readState.advanceToNextField(
+          iprot,
+          1,
+          2,
+          apache::thrift::protocol::T_I64))) {
+    goto _loop;
+  }
+_readField_big:
+  {
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::read(*iprot, this->big);
+    isset_big = true;
+  }
+
+  if (UNLIKELY(!_readState.advanceToNextField(
+          iprot,
+          2,
+          3,
+          apache::thrift::protocol::T_I16))) {
+    goto _loop;
+  }
+_readField_medium:
+  {
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int16_t>::read(*iprot, this->medium);
+    isset_medium = true;
+  }
+
+  if (UNLIKELY(!_readState.advanceToNextField(
+          iprot,
+          3,
+          4,
+          apache::thrift::protocol::T_I32))) {
+    goto _loop;
+  }
+_readField_biggish:
+  {
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::read(*iprot, this->biggish);
+    isset_biggish = true;
+  }
+
+  if (UNLIKELY(!_readState.advanceToNextField(
+          iprot,
+          4,
+          5,
+          apache::thrift::protocol::T_BYTE))) {
+    goto _loop;
+  }
+_readField_tiny:
+  {
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int8_t>::read(*iprot, this->tiny);
+    isset_tiny = true;
+  }
+
+  if (UNLIKELY(!_readState.advanceToNextField(
+          iprot,
+          5,
+          0,
+          apache::thrift::protocol::T_STOP))) {
+    goto _loop;
+  }
+
+_end:
+  _readState.readStructEnd(iprot);
+
+  if (!isset_small) {
+    TProtocolException::throwMissingRequiredField("small", "MinPadding");
+  }
+  if (!isset_big) {
+    TProtocolException::throwMissingRequiredField("big", "MinPadding");
+  }
+  if (!isset_medium) {
+    TProtocolException::throwMissingRequiredField("medium", "MinPadding");
+  }
+  if (!isset_biggish) {
+    TProtocolException::throwMissingRequiredField("biggish", "MinPadding");
+  }
+  if (!isset_tiny) {
+    TProtocolException::throwMissingRequiredField("tiny", "MinPadding");
+  }
+  return;
+
+_loop:
+  if (_readState.fieldType == apache::thrift::protocol::T_STOP) {
+    goto _end;
+  }
+  if (iprot->kUsesFieldNames()) {
+    apache::thrift::detail::TccStructTraits<MinPadding>::translateFieldName(_readState.fieldName(), _readState.fieldId, _readState.fieldType);
+  }
+
+  switch (_readState.fieldId) {
+    case 1:
+    {
+      if (LIKELY(_readState.fieldType == apache::thrift::protocol::T_BYTE)) {
+        goto _readField_small;
+      } else {
+        goto _skip;
+      }
+    }
+    case 2:
+    {
+      if (LIKELY(_readState.fieldType == apache::thrift::protocol::T_I64)) {
+        goto _readField_big;
+      } else {
+        goto _skip;
+      }
+    }
+    case 3:
+    {
+      if (LIKELY(_readState.fieldType == apache::thrift::protocol::T_I16)) {
+        goto _readField_medium;
+      } else {
+        goto _skip;
+      }
+    }
+    case 4:
+    {
+      if (LIKELY(_readState.fieldType == apache::thrift::protocol::T_I32)) {
+        goto _readField_biggish;
+      } else {
+        goto _skip;
+      }
+    }
+    case 5:
+    {
+      if (LIKELY(_readState.fieldType == apache::thrift::protocol::T_BYTE)) {
+        goto _readField_tiny;
+      } else {
+        goto _skip;
+      }
+    }
+    default:
+    {
+_skip:
+      iprot->skip(_readState.fieldType);
+      _readState.readFieldEnd(iprot);
+      _readState.readFieldBeginNoInline(iprot);
+      goto _loop;
+    }
+  }
+}
+
+template <class Protocol_>
+uint32_t MinPadding::serializedSize(Protocol_ const* prot_) const {
+  uint32_t xfer = 0;
+  xfer += prot_->serializedStructSize("MinPadding");
+  xfer += prot_->serializedFieldSize("small", apache::thrift::protocol::T_BYTE, 1);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int8_t>::serializedSize<false>(*prot_, this->small);
+  xfer += prot_->serializedFieldSize("big", apache::thrift::protocol::T_I64, 2);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::serializedSize<false>(*prot_, this->big);
+  xfer += prot_->serializedFieldSize("medium", apache::thrift::protocol::T_I16, 3);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int16_t>::serializedSize<false>(*prot_, this->medium);
+  xfer += prot_->serializedFieldSize("biggish", apache::thrift::protocol::T_I32, 4);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::serializedSize<false>(*prot_, this->biggish);
+  xfer += prot_->serializedFieldSize("tiny", apache::thrift::protocol::T_BYTE, 5);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int8_t>::serializedSize<false>(*prot_, this->tiny);
+  xfer += prot_->serializedSizeStop();
+  return xfer;
+}
+
+template <class Protocol_>
+uint32_t MinPadding::serializedSizeZC(Protocol_ const* prot_) const {
+  uint32_t xfer = 0;
+  xfer += prot_->serializedStructSize("MinPadding");
+  xfer += prot_->serializedFieldSize("small", apache::thrift::protocol::T_BYTE, 1);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int8_t>::serializedSize<false>(*prot_, this->small);
+  xfer += prot_->serializedFieldSize("big", apache::thrift::protocol::T_I64, 2);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::serializedSize<false>(*prot_, this->big);
+  xfer += prot_->serializedFieldSize("medium", apache::thrift::protocol::T_I16, 3);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int16_t>::serializedSize<false>(*prot_, this->medium);
+  xfer += prot_->serializedFieldSize("biggish", apache::thrift::protocol::T_I32, 4);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::serializedSize<false>(*prot_, this->biggish);
+  xfer += prot_->serializedFieldSize("tiny", apache::thrift::protocol::T_BYTE, 5);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int8_t>::serializedSize<false>(*prot_, this->tiny);
+  xfer += prot_->serializedSizeStop();
+  return xfer;
+}
+
+template <class Protocol_>
+uint32_t MinPadding::write(Protocol_* prot_) const {
+  uint32_t xfer = 0;
+  xfer += prot_->writeStructBegin("MinPadding");
+  xfer += prot_->writeFieldBegin("small", apache::thrift::protocol::T_BYTE, 1);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int8_t>::write(*prot_, this->small);
+  xfer += prot_->writeFieldEnd();
+  xfer += prot_->writeFieldBegin("big", apache::thrift::protocol::T_I64, 2);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::write(*prot_, this->big);
+  xfer += prot_->writeFieldEnd();
+  xfer += prot_->writeFieldBegin("medium", apache::thrift::protocol::T_I16, 3);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int16_t>::write(*prot_, this->medium);
+  xfer += prot_->writeFieldEnd();
+  xfer += prot_->writeFieldBegin("biggish", apache::thrift::protocol::T_I32, 4);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::write(*prot_, this->biggish);
+  xfer += prot_->writeFieldEnd();
+  xfer += prot_->writeFieldBegin("tiny", apache::thrift::protocol::T_BYTE, 5);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int8_t>::write(*prot_, this->tiny);
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldStop();
   xfer += prot_->writeStructEnd();

@@ -230,6 +230,32 @@ void TccStructTraits< ::apache::thrift::fixtures::types::ComplexNestedWithDefaul
     _ftype = apache::thrift::protocol::T_STRUCT;
   }
 }
+void TccStructTraits< ::apache::thrift::fixtures::types::MinPadding>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "small") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_BYTE;
+  }
+  else if (_fname == "big") {
+    fid = 2;
+    _ftype = apache::thrift::protocol::T_I64;
+  }
+  else if (_fname == "medium") {
+    fid = 3;
+    _ftype = apache::thrift::protocol::T_I16;
+  }
+  else if (_fname == "biggish") {
+    fid = 4;
+    _ftype = apache::thrift::protocol::T_I32;
+  }
+  else if (_fname == "tiny") {
+    fid = 5;
+    _ftype = apache::thrift::protocol::T_BYTE;
+  }
+}
 
 } // namespace detail
 } // namespace thrift
@@ -860,5 +886,87 @@ template void ComplexNestedWithDefault::readNoXfer<>(apache::thrift::CompactProt
 template uint32_t ComplexNestedWithDefault::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t ComplexNestedWithDefault::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t ComplexNestedWithDefault::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+}}}} // apache::thrift::fixtures::types
+namespace apache { namespace thrift { namespace fixtures { namespace types {
+
+MinPadding::MinPadding(apache::thrift::FragileConstructor, int8_t small__arg, int64_t big__arg, int16_t medium__arg, int32_t biggish__arg, int8_t tiny__arg) :
+    small(std::move(small__arg)),
+    big(std::move(big__arg)),
+    medium(std::move(medium__arg)),
+    biggish(std::move(biggish__arg)),
+    tiny(std::move(tiny__arg)) {}
+
+void MinPadding::__clear() {
+  // clear all fields
+  small = 0;
+  big = 0;
+  medium = 0;
+  biggish = 0;
+  tiny = 0;
+}
+
+bool MinPadding::operator==(const MinPadding& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  if (!(lhs.small == rhs.small)) {
+    return false;
+  }
+  if (!(lhs.big == rhs.big)) {
+    return false;
+  }
+  if (!(lhs.medium == rhs.medium)) {
+    return false;
+  }
+  if (!(lhs.biggish == rhs.biggish)) {
+    return false;
+  }
+  if (!(lhs.tiny == rhs.tiny)) {
+    return false;
+  }
+  return true;
+}
+
+bool MinPadding::operator<(const MinPadding& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  if (!(lhs.small == rhs.small)) {
+    return lhs.small < rhs.small;
+  }
+  if (!(lhs.big == rhs.big)) {
+    return lhs.big < rhs.big;
+  }
+  if (!(lhs.medium == rhs.medium)) {
+    return lhs.medium < rhs.medium;
+  }
+  if (!(lhs.biggish == rhs.biggish)) {
+    return lhs.biggish < rhs.biggish;
+  }
+  if (!(lhs.tiny == rhs.tiny)) {
+    return lhs.tiny < rhs.tiny;
+  }
+  return false;
+}
+
+
+void swap(MinPadding& a, MinPadding& b) {
+  using ::std::swap;
+  swap(a.small, b.small);
+  swap(a.big, b.big);
+  swap(a.medium, b.medium);
+  swap(a.biggish, b.biggish);
+  swap(a.tiny, b.tiny);
+}
+
+template void MinPadding::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+template uint32_t MinPadding::write<>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t MinPadding::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t MinPadding::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+template void MinPadding::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+template uint32_t MinPadding::write<>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t MinPadding::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t MinPadding::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 }}}} // apache::thrift::fixtures::types

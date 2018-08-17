@@ -323,6 +323,8 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "apache
     cdef cppclass cComplexString "apache::thrift::fixtures::types::ComplexString"
     # Forward Declaration
     cdef cppclass cComplexNestedWithDefault "apache::thrift::fixtures::types::ComplexNestedWithDefault"
+    # Forward Declaration
+    cdef cppclass cMinPadding "apache::thrift::fixtures::types::MinPadding"
 
 cdef extern from "src/gen-cpp2/module_types.h" namespace "apache::thrift::fixtures::types":
     cdef cppclass cdecorated_struct__isset "apache::thrift::fixtures::types::decorated_struct::__isset":
@@ -439,6 +441,24 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "apache::thrift::fixtur
         cComplexString n
         cComplexNestedWithDefault__isset __isset
 
+    cdef cppclass cMinPadding__isset "apache::thrift::fixtures::types::MinPadding::__isset":
+        bint small
+        bint big
+        bint medium
+        bint biggish
+        bint tiny
+
+    cdef cppclass cMinPadding "apache::thrift::fixtures::types::MinPadding":
+        cMinPadding() except +
+        cMinPadding(const cMinPadding&) except +
+        bint operator==(cMinPadding&)
+        int8_t small
+        int64_t big
+        int16_t medium
+        int32_t biggish
+        int8_t tiny
+        cMinPadding__isset __isset
+
 
 cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[cdecorated_struct] move(unique_ptr[cdecorated_struct])
@@ -468,6 +488,9 @@ cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[cComplexNestedWithDefault] move(unique_ptr[cComplexNestedWithDefault])
     cdef shared_ptr[cComplexNestedWithDefault] move_shared "std::move"(shared_ptr[cComplexNestedWithDefault])
     cdef unique_ptr[cComplexNestedWithDefault] move_unique "std::move"(unique_ptr[cComplexNestedWithDefault])
+    cdef shared_ptr[cMinPadding] move(unique_ptr[cMinPadding])
+    cdef shared_ptr[cMinPadding] move_shared "std::move"(shared_ptr[cMinPadding])
+    cdef unique_ptr[cMinPadding] move_unique "std::move"(unique_ptr[cMinPadding])
 
 cdef extern from "<memory>" namespace "std" nogil:
     cdef shared_ptr[const cdecorated_struct] const_pointer_cast "std::const_pointer_cast<const apache::thrift::fixtures::types::decorated_struct>"(shared_ptr[cdecorated_struct])
@@ -479,6 +502,7 @@ cdef extern from "<memory>" namespace "std" nogil:
     cdef shared_ptr[const cTrivialNestedWithDefault] const_pointer_cast "std::const_pointer_cast<const apache::thrift::fixtures::types::TrivialNestedWithDefault>"(shared_ptr[cTrivialNestedWithDefault])
     cdef shared_ptr[const cComplexString] const_pointer_cast "std::const_pointer_cast<const apache::thrift::fixtures::types::ComplexString>"(shared_ptr[cComplexString])
     cdef shared_ptr[const cComplexNestedWithDefault] const_pointer_cast "std::const_pointer_cast<const apache::thrift::fixtures::types::ComplexNestedWithDefault>"(shared_ptr[cComplexNestedWithDefault])
+    cdef shared_ptr[const cMinPadding] const_pointer_cast "std::const_pointer_cast<const apache::thrift::fixtures::types::MinPadding>"(shared_ptr[cMinPadding])
 
 # Forward Definition of the cython struct
 cdef class decorated_struct(thrift.py3.types.Struct)
@@ -665,6 +689,28 @@ cdef class ComplexNestedWithDefault(thrift.py3.types.Struct):
 
     @staticmethod
     cdef create(shared_ptr[cComplexNestedWithDefault])
+
+# Forward Definition of the cython struct
+cdef class MinPadding(thrift.py3.types.Struct)
+
+
+cdef class MinPadding(thrift.py3.types.Struct):
+    cdef object __hash
+    cdef object __weakref__
+    cdef shared_ptr[cMinPadding] _cpp_obj
+
+    @staticmethod
+    cdef unique_ptr[cMinPadding] _make_instance(
+        cMinPadding* base_instance,
+        object small,
+        object big,
+        object medium,
+        object biggish,
+        object tiny
+    ) except *
+
+    @staticmethod
+    cdef create(shared_ptr[cMinPadding])
 
 
 cdef class std_unordered_map__Map__i32_string:

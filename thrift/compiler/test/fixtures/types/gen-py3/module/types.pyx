@@ -2011,6 +2011,290 @@ cdef class ComplexNestedWithDefault(thrift.py3.types.Struct):
         return (deserialize, (ComplexNestedWithDefault, serialize(self)))
 
 
+cdef cMinPadding _MinPadding_defaults = cMinPadding()
+
+cdef class MinPadding(thrift.py3.types.Struct):
+
+    def __init__(
+        MinPadding self, *,
+        small,
+        big,
+        medium,
+        biggish,
+        tiny
+    ):
+        if small is not None:
+            if not isinstance(small, int):
+                raise TypeError(f'small is not a { int !r}.')
+            small = <int8_t> small
+
+        if big is not None:
+            if not isinstance(big, int):
+                raise TypeError(f'big is not a { int !r}.')
+            big = <int64_t> big
+
+        if medium is not None:
+            if not isinstance(medium, int):
+                raise TypeError(f'medium is not a { int !r}.')
+            medium = <int16_t> medium
+
+        if biggish is not None:
+            if not isinstance(biggish, int):
+                raise TypeError(f'biggish is not a { int !r}.')
+            biggish = <int32_t> biggish
+
+        if tiny is not None:
+            if not isinstance(tiny, int):
+                raise TypeError(f'tiny is not a { int !r}.')
+            tiny = <int8_t> tiny
+
+        self._cpp_obj = move(MinPadding._make_instance(
+          NULL,
+          small,
+          big,
+          medium,
+          biggish,
+          tiny,
+        ))
+
+    def __call__(
+        MinPadding self,
+        small=__NOTSET,
+        big=__NOTSET,
+        medium=__NOTSET,
+        biggish=__NOTSET,
+        tiny=__NOTSET
+    ):
+        changes = any((
+            small is not __NOTSET,
+
+            big is not __NOTSET,
+
+            medium is not __NOTSET,
+
+            biggish is not __NOTSET,
+
+            tiny is not __NOTSET,
+        ))
+
+        if not changes:
+            return self
+
+        if small is None:
+            raise TypeError('field small is required and has no default, it can not be unset')
+        if None is not small is not __NOTSET:
+            if not isinstance(small, int):
+                raise TypeError(f'small is not a { int !r}.')
+            small = <int8_t> small
+
+        if big is None:
+            raise TypeError('field big is required and has no default, it can not be unset')
+        if None is not big is not __NOTSET:
+            if not isinstance(big, int):
+                raise TypeError(f'big is not a { int !r}.')
+            big = <int64_t> big
+
+        if medium is None:
+            raise TypeError('field medium is required and has no default, it can not be unset')
+        if None is not medium is not __NOTSET:
+            if not isinstance(medium, int):
+                raise TypeError(f'medium is not a { int !r}.')
+            medium = <int16_t> medium
+
+        if biggish is None:
+            raise TypeError('field biggish is required and has no default, it can not be unset')
+        if None is not biggish is not __NOTSET:
+            if not isinstance(biggish, int):
+                raise TypeError(f'biggish is not a { int !r}.')
+            biggish = <int32_t> biggish
+
+        if tiny is None:
+            raise TypeError('field tiny is required and has no default, it can not be unset')
+        if None is not tiny is not __NOTSET:
+            if not isinstance(tiny, int):
+                raise TypeError(f'tiny is not a { int !r}.')
+            tiny = <int8_t> tiny
+
+        inst = <MinPadding>MinPadding.__new__(MinPadding)
+        inst._cpp_obj = move(MinPadding._make_instance(
+          self._cpp_obj.get(),
+          small,
+          big,
+          medium,
+          biggish,
+          tiny,
+        ))
+        return inst
+
+    @staticmethod
+    cdef unique_ptr[cMinPadding] _make_instance(
+        cMinPadding* base_instance,
+        object small,
+        object big,
+        object medium,
+        object biggish,
+        object tiny
+    ) except *:
+        cdef unique_ptr[cMinPadding] c_inst
+        if base_instance:
+            c_inst = make_unique[cMinPadding](deref(base_instance))
+        else:
+            c_inst = make_unique[cMinPadding]()
+
+        if base_instance:
+            # Convert None's to default value. (or unset)
+            if small is None:
+                pass
+            elif small is __NOTSET:
+                small = None
+
+            if big is None:
+                pass
+            elif big is __NOTSET:
+                big = None
+
+            if medium is None:
+                pass
+            elif medium is __NOTSET:
+                medium = None
+
+            if biggish is None:
+                pass
+            elif biggish is __NOTSET:
+                biggish = None
+
+            if tiny is None:
+                pass
+            elif tiny is __NOTSET:
+                tiny = None
+
+        if small is not None:
+            deref(c_inst).small = small
+        if big is not None:
+            deref(c_inst).big = big
+        if medium is not None:
+            deref(c_inst).medium = medium
+        if biggish is not None:
+            deref(c_inst).biggish = biggish
+        if tiny is not None:
+            deref(c_inst).tiny = tiny
+        # in C++ you don't have to call move(), but this doesn't translate
+        # into a C++ return statement, so you do here
+        return move_unique(c_inst)
+
+    def __iter__(self):
+        yield 'small', self.small
+        yield 'big', self.big
+        yield 'medium', self.medium
+        yield 'biggish', self.biggish
+        yield 'tiny', self.tiny
+
+    def __bool__(self):
+        return True or True or True or True or True
+
+    @staticmethod
+    cdef create(shared_ptr[cMinPadding] cpp_obj):
+        inst = <MinPadding>MinPadding.__new__(MinPadding)
+        inst._cpp_obj = cpp_obj
+        return inst
+
+    @property
+    def small(self):
+
+        return self._cpp_obj.get().small
+
+    @property
+    def big(self):
+
+        return self._cpp_obj.get().big
+
+    @property
+    def medium(self):
+
+        return self._cpp_obj.get().medium
+
+    @property
+    def biggish(self):
+
+        return self._cpp_obj.get().biggish
+
+    @property
+    def tiny(self):
+
+        return self._cpp_obj.get().tiny
+
+
+    def __hash__(MinPadding self):
+        if not self.__hash:
+            self.__hash = hash((
+            self.small,
+            self.big,
+            self.medium,
+            self.biggish,
+            self.tiny,
+            ))
+        return self.__hash
+
+    def __repr__(MinPadding self):
+        return f'MinPadding(small={repr(self.small)}, big={repr(self.big)}, medium={repr(self.medium)}, biggish={repr(self.biggish)}, tiny={repr(self.tiny)})'
+    def __richcmp__(self, other, op):
+        cdef int cop = op
+        if cop not in (2, 3):
+            raise TypeError("unorderable types: {}, {}".format(self, other))
+        if not (
+                isinstance(self, MinPadding) and
+                isinstance(other, MinPadding)):
+            if cop == 2:  # different types are never equal
+                return False
+            else:         # different types are always notequal
+                return True
+
+        cdef cMinPadding cself = deref((<MinPadding>self)._cpp_obj)
+        cdef cMinPadding cother = deref((<MinPadding>other)._cpp_obj)
+        cdef cbool cmp = cself == cother
+        if cop == 2:
+            return cmp
+        return not cmp
+
+    cdef __iobuf.IOBuf _serialize(MinPadding self, proto):
+        cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
+        cdef cMinPadding* cpp_obj = self._cpp_obj.get()
+        if proto is __Protocol.COMPACT:
+            with nogil:
+                serializer.CompactSerialize[cMinPadding](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.BINARY:
+            with nogil:
+                serializer.BinarySerialize[cMinPadding](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.JSON:
+            with nogil:
+                serializer.JSONSerialize[cMinPadding](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.COMPACT_JSON:
+            with nogil:
+                serializer.CompactJSONSerialize[cMinPadding](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
+        return __iobuf.from_unique_ptr(queue.move())
+
+    cdef uint32_t _deserialize(MinPadding self, const __iobuf.cIOBuf* buf, proto) except? 0:
+        cdef uint32_t needed
+        self._cpp_obj = make_shared[cMinPadding]()
+        cdef cMinPadding* cpp_obj = self._cpp_obj.get()
+        if proto is __Protocol.COMPACT:
+            with nogil:
+                needed = serializer.CompactDeserialize[cMinPadding](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.BINARY:
+            with nogil:
+                needed = serializer.BinaryDeserialize[cMinPadding](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.JSON:
+            with nogil:
+                needed = serializer.JSONDeserialize[cMinPadding](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.COMPACT_JSON:
+            with nogil:
+                needed = serializer.CompactJSONDeserialize[cMinPadding](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
+        return needed
+
+    def __reduce__(self):
+        return (deserialize, (MinPadding, serialize(self)))
+
+
 cdef class std_unordered_map__Map__i32_string:
     def __init__(self, items=None):
         if isinstance(items, std_unordered_map__Map__i32_string):

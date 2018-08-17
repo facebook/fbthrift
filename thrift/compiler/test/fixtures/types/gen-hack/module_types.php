@@ -878,3 +878,154 @@ class ComplexNestedWithDefault implements \IThriftStruct {
 
 }
 
+/**
+ * Original thrift struct:-
+ * MinPadding
+ */
+class MinPadding implements \IThriftStruct {
+  use \ThriftSerializationTrait;
+
+  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
+    1 => dict[
+      'var' => 'small',
+      'type' => \TType::BYTE,
+      ],
+    2 => dict[
+      'var' => 'big',
+      'type' => \TType::I64,
+      ],
+    3 => dict[
+      'var' => 'medium',
+      'type' => \TType::I16,
+      ],
+    4 => dict[
+      'var' => 'biggish',
+      'type' => \TType::I32,
+      ],
+    5 => dict[
+      'var' => 'tiny',
+      'type' => \TType::BYTE,
+      ],
+    ];
+  public static Map<string, int> $_TFIELDMAP = Map {
+    'small' => 1,
+    'big' => 2,
+    'medium' => 3,
+    'biggish' => 4,
+    'tiny' => 5,
+  };
+  const int STRUCTURAL_ID = 723753448680843528;
+  /**
+   * Original thrift field:-
+   * 1: byte small
+   */
+  public int $small;
+  /**
+   * Original thrift field:-
+   * 2: i64 big
+   */
+  public int $big;
+  /**
+   * Original thrift field:-
+   * 3: i16 medium
+   */
+  public int $medium;
+  /**
+   * Original thrift field:-
+   * 4: i32 biggish
+   */
+  public int $biggish;
+  /**
+   * Original thrift field:-
+   * 5: byte tiny
+   */
+  public int $tiny;
+
+  public function __construct(?int $small = null, ?int $big = null, ?int $medium = null, ?int $biggish = null, ?int $tiny = null  ) {
+    if ($small === null) {
+      $this->small = 0;
+    } else {
+      $this->small = $small;
+    }
+    if ($big === null) {
+      $this->big = 0;
+    } else {
+      $this->big = $big;
+    }
+    if ($medium === null) {
+      $this->medium = 0;
+    } else {
+      $this->medium = $medium;
+    }
+    if ($biggish === null) {
+      $this->biggish = 0;
+    } else {
+      $this->biggish = $biggish;
+    }
+    if ($tiny === null) {
+      $this->tiny = 0;
+    } else {
+      $this->tiny = $tiny;
+    }
+  }
+
+  public function getName(): string {
+    return 'MinPadding';
+  }
+
+  public function readFromJson(string $jsonText): void {
+    $parsed = json_decode($jsonText, true);
+
+    if ($parsed === null || !is_array($parsed)) {
+      throw new \TProtocolException("Cannot parse the given json string.");
+    }
+
+    if (idx($parsed, 'small') !== null) {
+      $_tmp0 = (int)$parsed['small'];
+      if ($_tmp0 > 0x7f) {
+        throw new \TProtocolException("number exceeds limit in field");
+      } else {
+        $this->small = (int)$_tmp0;
+      }
+    } else {
+      throw new \TProtocolException("Required field small cannot be found.");
+    }    
+    if (idx($parsed, 'big') !== null) {
+      $this->big = $parsed['big'];
+    } else {
+      throw new \TProtocolException("Required field big cannot be found.");
+    }    
+    if (idx($parsed, 'medium') !== null) {
+      $_tmp1 = (int)$parsed['medium'];
+      if ($_tmp1 > 0x7fff) {
+        throw new \TProtocolException("number exceeds limit in field");
+      } else {
+        $this->medium = (int)$_tmp1;
+      }
+    } else {
+      throw new \TProtocolException("Required field medium cannot be found.");
+    }    
+    if (idx($parsed, 'biggish') !== null) {
+      $_tmp2 = (int)$parsed['biggish'];
+      if ($_tmp2 > 0x7fffffff) {
+        throw new \TProtocolException("number exceeds limit in field");
+      } else {
+        $this->biggish = (int)$_tmp2;
+      }
+    } else {
+      throw new \TProtocolException("Required field biggish cannot be found.");
+    }    
+    if (idx($parsed, 'tiny') !== null) {
+      $_tmp3 = (int)$parsed['tiny'];
+      if ($_tmp3 > 0x7f) {
+        throw new \TProtocolException("number exceeds limit in field");
+      } else {
+        $this->tiny = (int)$_tmp3;
+      }
+    } else {
+      throw new \TProtocolException("Required field tiny cannot be found.");
+    }    
+  }
+
+}
+

@@ -176,6 +176,7 @@ class TrivialNumeric;
 class TrivialNestedWithDefault;
 class ComplexString;
 class ComplexNestedWithDefault;
+class MinPadding;
 }}}} // apache::thrift::fixtures::types
 // END forward_declare
 // BEGIN typedefs
@@ -1314,6 +1315,161 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::apache::thrift::fixtur
 }
 
 template <> template <class Protocol> uint32_t Cpp2Ops< ::apache::thrift::fixtures::types::ComplexNestedWithDefault>::serializedSizeZC(Protocol const* proto,  ::apache::thrift::fixtures::types::ComplexNestedWithDefault const* obj) {
+  return obj->serializedSizeZC(proto);
+}
+
+}} // apache::thrift
+namespace apache { namespace thrift { namespace fixtures { namespace types {
+class MinPadding final : private apache::thrift::detail::st::ComparisonOperators<MinPadding> {
+ public:
+
+  MinPadding() :
+      small(0),
+      big(0),
+      medium(0),
+      biggish(0),
+      tiny(0) {}
+  // FragileConstructor for use in initialization lists only.
+  MinPadding(apache::thrift::FragileConstructor, int8_t small__arg, int64_t big__arg, int16_t medium__arg, int32_t biggish__arg, int8_t tiny__arg);
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
+    small = arg.extract();
+  }
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
+    big = arg.extract();
+  }
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<3, _T> arg) {
+    medium = arg.extract();
+  }
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<4, _T> arg) {
+    biggish = arg.extract();
+  }
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<5, _T> arg) {
+    tiny = arg.extract();
+  }
+
+  MinPadding(MinPadding&&) = default;
+
+  MinPadding(const MinPadding&) = default;
+
+  MinPadding& operator=(MinPadding&&) = default;
+
+  MinPadding& operator=(const MinPadding&) = default;
+  void __clear();
+  int8_t small;
+  int64_t big;
+  int16_t medium;
+  int32_t biggish;
+  int8_t tiny;
+  bool operator==(const MinPadding& rhs) const;
+  bool operator<(const MinPadding& rhs) const;
+
+  int8_t get_small() const {
+    return small;
+  }
+
+  int8_t& set_small(int8_t small_) {
+    small = small_;
+    return small;
+  }
+
+  int64_t get_big() const {
+    return big;
+  }
+
+  int64_t& set_big(int64_t big_) {
+    big = big_;
+    return big;
+  }
+
+  int16_t get_medium() const {
+    return medium;
+  }
+
+  int16_t& set_medium(int16_t medium_) {
+    medium = medium_;
+    return medium;
+  }
+
+  int32_t get_biggish() const {
+    return biggish;
+  }
+
+  int32_t& set_biggish(int32_t biggish_) {
+    biggish = biggish_;
+    return biggish;
+  }
+
+  int8_t get_tiny() const {
+    return tiny;
+  }
+
+  int8_t& set_tiny(int8_t tiny_) {
+    tiny = tiny_;
+    return tiny;
+  }
+
+  template <class Protocol_>
+  uint32_t read(Protocol_* iprot);
+  template <class Protocol_>
+  uint32_t serializedSize(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t serializedSizeZC(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t write(Protocol_* prot_) const;
+
+ private:
+  template <class Protocol_>
+  void readNoXfer(Protocol_* iprot);
+
+  friend class ::apache::thrift::Cpp2Ops< MinPadding >;
+};
+
+void swap(MinPadding& a, MinPadding& b);
+extern template void MinPadding::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+extern template uint32_t MinPadding::write<>(apache::thrift::BinaryProtocolWriter*) const;
+extern template uint32_t MinPadding::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t MinPadding::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template void MinPadding::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+extern template uint32_t MinPadding::write<>(apache::thrift::CompactProtocolWriter*) const;
+extern template uint32_t MinPadding::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template uint32_t MinPadding::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+template <class Protocol_>
+uint32_t MinPadding::read(Protocol_* iprot) {
+  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
+  readNoXfer(iprot);
+  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
+}
+
+}}}} // apache::thrift::fixtures::types
+namespace apache { namespace thrift {
+
+template <> inline void Cpp2Ops< ::apache::thrift::fixtures::types::MinPadding>::clear( ::apache::thrift::fixtures::types::MinPadding* obj) {
+  return obj->__clear();
+}
+
+template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::apache::thrift::fixtures::types::MinPadding>::thriftType() {
+  return apache::thrift::protocol::T_STRUCT;
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::apache::thrift::fixtures::types::MinPadding>::write(Protocol* proto,  ::apache::thrift::fixtures::types::MinPadding const* obj) {
+  return obj->write(proto);
+}
+
+template <> template <class Protocol> void Cpp2Ops< ::apache::thrift::fixtures::types::MinPadding>::read(Protocol* proto,  ::apache::thrift::fixtures::types::MinPadding* obj) {
+  return obj->readNoXfer(proto);
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::apache::thrift::fixtures::types::MinPadding>::serializedSize(Protocol const* proto,  ::apache::thrift::fixtures::types::MinPadding const* obj) {
+  return obj->serializedSize(proto);
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::apache::thrift::fixtures::types::MinPadding>::serializedSizeZC(Protocol const* proto,  ::apache::thrift::fixtures::types::MinPadding const* obj) {
   return obj->serializedSizeZC(proto);
 }
 

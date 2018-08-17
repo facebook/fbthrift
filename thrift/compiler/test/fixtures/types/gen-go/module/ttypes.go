@@ -1513,3 +1513,233 @@ func (p *ComplexNestedWithDefault) String() string {
   return fmt.Sprintf("ComplexNestedWithDefault(%+v)", *p)
 }
 
+// Attributes:
+//  - Small
+//  - Big
+//  - Medium
+//  - Biggish
+//  - Tiny
+type MinPadding struct {
+  Small int8 `thrift:"small,1,required" db:"small" json:"small"`
+  Big int64 `thrift:"big,2,required" db:"big" json:"big"`
+  Medium int16 `thrift:"medium,3,required" db:"medium" json:"medium"`
+  Biggish int32 `thrift:"biggish,4,required" db:"biggish" json:"biggish"`
+  Tiny int8 `thrift:"tiny,5,required" db:"tiny" json:"tiny"`
+}
+
+func NewMinPadding() *MinPadding {
+  return &MinPadding{}
+}
+
+
+func (p *MinPadding) GetSmall() int8 {
+  return p.Small
+}
+
+func (p *MinPadding) GetBig() int64 {
+  return p.Big
+}
+
+func (p *MinPadding) GetMedium() int16 {
+  return p.Medium
+}
+
+func (p *MinPadding) GetBiggish() int32 {
+  return p.Biggish
+}
+
+func (p *MinPadding) GetTiny() int8 {
+  return p.Tiny
+}
+func (p *MinPadding) Read(iprot thrift.Protocol) error {
+  if _, err := iprot.ReadStructBegin(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
+  }
+
+  var issetSmall bool = false;
+  var issetBig bool = false;
+  var issetMedium bool = false;
+  var issetBiggish bool = false;
+  var issetTiny bool = false;
+
+  for {
+    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
+    if err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
+    }
+    if fieldTypeId == thrift.STOP { break; }
+    switch fieldId {
+    case 1:
+      if err := p.ReadField1(iprot); err != nil {
+        return err
+      }
+      issetSmall = true
+    case 2:
+      if err := p.ReadField2(iprot); err != nil {
+        return err
+      }
+      issetBig = true
+    case 3:
+      if err := p.ReadField3(iprot); err != nil {
+        return err
+      }
+      issetMedium = true
+    case 4:
+      if err := p.ReadField4(iprot); err != nil {
+        return err
+      }
+      issetBiggish = true
+    case 5:
+      if err := p.ReadField5(iprot); err != nil {
+        return err
+      }
+      issetTiny = true
+    default:
+      if err := iprot.Skip(fieldTypeId); err != nil {
+        return err
+      }
+    }
+    if err := iprot.ReadFieldEnd(); err != nil {
+      return err
+    }
+  }
+  if err := iprot.ReadStructEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+  }
+  if !issetSmall{
+    return thrift.NewProtocolExceptionWithType(thrift.INVALID_DATA, fmt.Errorf("Required field Small is not set"));
+  }
+  if !issetBig{
+    return thrift.NewProtocolExceptionWithType(thrift.INVALID_DATA, fmt.Errorf("Required field Big is not set"));
+  }
+  if !issetMedium{
+    return thrift.NewProtocolExceptionWithType(thrift.INVALID_DATA, fmt.Errorf("Required field Medium is not set"));
+  }
+  if !issetBiggish{
+    return thrift.NewProtocolExceptionWithType(thrift.INVALID_DATA, fmt.Errorf("Required field Biggish is not set"));
+  }
+  if !issetTiny{
+    return thrift.NewProtocolExceptionWithType(thrift.INVALID_DATA, fmt.Errorf("Required field Tiny is not set"));
+  }
+  return nil
+}
+
+func (p *MinPadding)  ReadField1(iprot thrift.Protocol) error {
+  if v, err := iprot.ReadByte(); err != nil {
+  return thrift.PrependError("error reading field 1: ", err)
+} else {
+  temp := int8(v)
+  p.Small = temp
+}
+  return nil
+}
+
+func (p *MinPadding)  ReadField2(iprot thrift.Protocol) error {
+  if v, err := iprot.ReadI64(); err != nil {
+  return thrift.PrependError("error reading field 2: ", err)
+} else {
+  p.Big = v
+}
+  return nil
+}
+
+func (p *MinPadding)  ReadField3(iprot thrift.Protocol) error {
+  if v, err := iprot.ReadI16(); err != nil {
+  return thrift.PrependError("error reading field 3: ", err)
+} else {
+  p.Medium = v
+}
+  return nil
+}
+
+func (p *MinPadding)  ReadField4(iprot thrift.Protocol) error {
+  if v, err := iprot.ReadI32(); err != nil {
+  return thrift.PrependError("error reading field 4: ", err)
+} else {
+  p.Biggish = v
+}
+  return nil
+}
+
+func (p *MinPadding)  ReadField5(iprot thrift.Protocol) error {
+  if v, err := iprot.ReadByte(); err != nil {
+  return thrift.PrependError("error reading field 5: ", err)
+} else {
+  temp := int8(v)
+  p.Tiny = temp
+}
+  return nil
+}
+
+func (p *MinPadding) Write(oprot thrift.Protocol) error {
+  if err := oprot.WriteStructBegin("MinPadding"); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
+  if err := p.writeField1(oprot); err != nil { return err }
+  if err := p.writeField2(oprot); err != nil { return err }
+  if err := p.writeField3(oprot); err != nil { return err }
+  if err := p.writeField4(oprot); err != nil { return err }
+  if err := p.writeField5(oprot); err != nil { return err }
+  if err := oprot.WriteFieldStop(); err != nil {
+    return thrift.PrependError("write field stop error: ", err) }
+  if err := oprot.WriteStructEnd(); err != nil {
+    return thrift.PrependError("write struct stop error: ", err) }
+  return nil
+}
+
+func (p *MinPadding) writeField1(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("small", thrift.BYTE, 1); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 1:small: ", p), err) }
+  if err := oprot.WriteByte(byte(p.Small)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.small (1) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 1:small: ", p), err) }
+  return err
+}
+
+func (p *MinPadding) writeField2(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("big", thrift.I64, 2); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 2:big: ", p), err) }
+  if err := oprot.WriteI64(int64(p.Big)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.big (2) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 2:big: ", p), err) }
+  return err
+}
+
+func (p *MinPadding) writeField3(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("medium", thrift.I16, 3); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 3:medium: ", p), err) }
+  if err := oprot.WriteI16(int16(p.Medium)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.medium (3) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 3:medium: ", p), err) }
+  return err
+}
+
+func (p *MinPadding) writeField4(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("biggish", thrift.I32, 4); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 4:biggish: ", p), err) }
+  if err := oprot.WriteI32(int32(p.Biggish)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.biggish (4) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 4:biggish: ", p), err) }
+  return err
+}
+
+func (p *MinPadding) writeField5(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("tiny", thrift.BYTE, 5); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 5:tiny: ", p), err) }
+  if err := oprot.WriteByte(byte(p.Tiny)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.tiny (5) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 5:tiny: ", p), err) }
+  return err
+}
+
+func (p *MinPadding) String() string {
+  if p == nil {
+    return "<nil>"
+  }
+  return fmt.Sprintf("MinPadding(%+v)", *p)
+}
+
