@@ -1,4 +1,4 @@
-include "Recursive2.thrift"
+include "thrift/test/Recursive2.thrift"
 
 namespace cpp2 apache.thrift.test
 
