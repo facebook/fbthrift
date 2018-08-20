@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include <folly/ExceptionString.h>
 #include <folly/io/Cursor.h>
 #include <thrift/lib/cpp/server/TServerObserver.h>
 #include <thrift/lib/cpp2/server/peeking/TLSHelper.h>
@@ -118,25 +119,34 @@ class PeekingManager : public wangle::ManagedConnection,
    * is able to handle the connection by peeking in the first few bytes.
    */
   void checkConnectionBytes(std::vector<uint8_t>& peekBytes) {
-    // Check for new transports
-    bool acceptedHandler = false;
-    for (auto const& handler : *server_->getRoutingHandlers()) {
-      if (handler->canAcceptConnection(peekBytes)) {
-        handler->handleConnection(
-            acceptor_->getConnectionManager(),
-            std::move(socket_),
-            &clientAddr_,
-            tinfo_,
-            acceptor_);
-        acceptedHandler = true;
-        break;
+    try {
+      // Check for new transports
+      bool acceptedHandler = false;
+      for (auto const& handler : *server_->getRoutingHandlers()) {
+        if (handler->canAcceptConnection(peekBytes)) {
+          handler->handleConnection(
+              acceptor_->getConnectionManager(),
+              std::move(socket_),
+              &clientAddr_,
+              tinfo_,
+              acceptor_);
+          acceptedHandler = true;
+          break;
+        }
       }
-    }
 
-    // Default to Header Transport
-    if (!acceptedHandler) {
-      acceptor_->handleHeader(std::move(socket_), &clientAddr_);
-      return;
+      // Default to Header Transport
+      if (!acceptedHandler) {
+        acceptor_->handleHeader(std::move(socket_), &clientAddr_);
+      }
+    } catch (const std::exception& e) {
+      LOG(ERROR) << __func__
+                 << " failed, dropping connection: " << folly::exceptionStr(e);
+      dropConnection();
+    } catch (...) {
+      LOG(ERROR) << __func__
+                 << " failed with unrecognized exception, dropping connection";
+      dropConnection();
     }
   }
 
@@ -159,7 +169,9 @@ class PeekingManager : public wangle::ManagedConnection,
   void dropConnection() override {
     peeker_ = nullptr;
     acceptor_->getConnectionManager()->removeConnection(this);
-    socket_->closeNow();
+    if (socket_) {
+      socket_->closeNow();
+    }
     destroy();
   }
 

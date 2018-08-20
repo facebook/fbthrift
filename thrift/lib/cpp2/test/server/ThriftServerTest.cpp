@@ -23,11 +23,14 @@
 #include <gtest/gtest.h>
 
 #include <folly/Memory.h>
+#include <folly/Optional.h>
+#include <folly/Range.h>
 #include <folly/executors/GlobalExecutor.h>
 #include <folly/fibers/FiberManagerMap.h>
 #include <folly/io/GlobalShutdownSocketSet.h>
 #include <folly/io/async/AsyncServerSocket.h>
 #include <folly/io/async/EventBase.h>
+#include <folly/io/async/test/TestSSLServer.h>
 #include <wangle/acceptor/ServerSocketConfig.h>
 
 #include <proxygen/httpserver/HTTPServerOptions.h>
@@ -188,8 +191,7 @@ TEST(ThriftServer, ResponseTooBigTest) {
 
 class ConnCallback : public TAsyncSocket::ConnectCallback {
  public:
-  void connectSuccess() noexcept override {
-  }
+  void connectSuccess() noexcept override {}
 
   void connectError(
       const transport::TTransportException& ex) noexcept override {
@@ -228,7 +230,7 @@ TEST(ThriftServer, CompressionServerTest) {
   TestServiceAsyncClient client(HeaderClientChannel::newChannel(socket));
 
   auto channel =
-    boost::polymorphic_downcast<HeaderClientChannel*>(client.getChannel());
+      boost::polymorphic_downcast<HeaderClientChannel*>(client.getChannel());
   channel->setTransform(apache::thrift::transport::THeader::ZLIB_TRANSFORM);
 
   std::string request(55, 'a');
@@ -272,7 +274,7 @@ TEST(ThriftServer, DefaultCompressionTest) {
   TestThriftServerFactory<TestInterface> factory;
   factory.minCompressBytes(1);
   factory.defaultWriteTransform(
-    apache::thrift::transport::THeader::ZLIB_TRANSFORM);
+      apache::thrift::transport::THeader::ZLIB_TRANSFORM);
   auto server = std::static_pointer_cast<ThriftServer>(factory.create());
   ScopedServerThread sst(server);
   folly::EventBase base;
@@ -283,23 +285,19 @@ TEST(ThriftServer, DefaultCompressionTest) {
       TAsyncSocket::newSocket(&base, *sst.getAddress()));
   TestServiceAsyncClient client(HeaderClientChannel::newChannel(socket));
   client.sendResponse(
-    std::make_unique<Callback>(
-      true, apache::thrift::transport::THeader::ZLIB_TRANSFORM
-    ),
-    64
-  );
+      std::make_unique<Callback>(
+          true, apache::thrift::transport::THeader::ZLIB_TRANSFORM),
+      64);
   base.loop();
 
   // Ensure that client transforms take precedence
   auto channel =
-    boost::polymorphic_downcast<HeaderClientChannel*>(client.getChannel());
+      boost::polymorphic_downcast<HeaderClientChannel*>(client.getChannel());
   channel->setTransform(apache::thrift::transport::THeader::SNAPPY_TRANSFORM);
   client.sendResponse(
-    std::make_unique<Callback>(
-      true, apache::thrift::transport::THeader::SNAPPY_TRANSFORM
-    ),
-    64
-  );
+      std::make_unique<Callback>(
+          true, apache::thrift::transport::THeader::SNAPPY_TRANSFORM),
+      64);
   base.loop();
 
   // Ensure that minCompressBytes still works with default transforms. We
@@ -310,7 +308,6 @@ TEST(ThriftServer, DefaultCompressionTest) {
   TestServiceAsyncClient client2(HeaderClientChannel::newChannel(socket2));
   client2.sendResponse(std::make_unique<Callback>(false, 0), 64);
   base.loop();
-
 }
 
 TEST(ThriftServer, HeaderTest) {
@@ -319,7 +316,7 @@ TEST(ThriftServer, HeaderTest) {
   ScopedServerThread sst(serv);
   folly::EventBase base;
   std::shared_ptr<TAsyncSocket> socket(
-    TAsyncSocket::newSocket(&base, *sst.getAddress()));
+      TAsyncSocket::newSocket(&base, *sst.getAddress()));
 
   TestServiceAsyncClient client(HeaderClientChannel::newChannel(socket));
 
@@ -333,16 +330,15 @@ TEST(ThriftServer, HeaderTest) {
     client.sync_processHeader(options);
     ADD_FAILURE() << "should timeout";
   } catch (const TApplicationException& e) {
-    EXPECT_EQ(e.getType(),
-              TApplicationException::TApplicationExceptionType::TIMEOUT);
+    EXPECT_EQ(
+        e.getType(), TApplicationException::TApplicationExceptionType::TIMEOUT);
   }
 }
 
 TEST(ThriftServer, LoadHeaderTest) {
   class Callback : public RequestCallback {
    public:
-    explicit Callback(bool isLoadExpected)
-        : isLoadExpected_(isLoadExpected) {}
+    explicit Callback(bool isLoadExpected) : isLoadExpected_(isLoadExpected) {}
 
    private:
     void requestSent() override {}
@@ -554,7 +550,8 @@ TEST(ThriftServer, ClientTimeoutTest) {
   int cbCall = 0;
 
   auto callback = [&cbCall, &cbCtor](
-      std::shared_ptr<TestServiceAsyncClient> client, bool& timeout) {
+                      std::shared_ptr<TestServiceAsyncClient> client,
+                      bool& timeout) {
     cbCtor++;
     return std::unique_ptr<RequestCallback>(new FunctionReplyCallback(
         [&cbCall, client, &timeout](ClientReceiveState&& state) {
@@ -572,8 +569,8 @@ TEST(ThriftServer, ClientTimeoutTest) {
           } catch (const TApplicationException& e) {
             timeout = true;
             EXPECT_EQ(TApplicationException::TIMEOUT, e.getType());
-            EXPECT_TRUE(state.header()->getFlags() &
-                HEADER_FLAG_SUPPORT_OUT_OF_ORDER);
+            EXPECT_TRUE(
+                state.header()->getFlags() & HEADER_FLAG_SUPPORT_OUT_OF_ORDER);
             return;
           }
           timeout = false;
@@ -657,7 +654,9 @@ TEST(ThriftServer, ConnectionIdleTimeoutTest) {
 
 namespace {
 class Callback : public RequestCallback {
-  void requestSent() override { ADD_FAILURE(); }
+  void requestSent() override {
+    ADD_FAILURE();
+  }
   void replyReceived(ClientReceiveState&&) override {
     ADD_FAILURE();
   }
@@ -671,7 +670,7 @@ class Callback : public RequestCallback {
         ex->what(), testing::StartsWith("transport is closed in write()"));
   }
 };
-}
+} // namespace
 
 TEST(ThriftServer, BadSendTest) {
   TestThriftServerFactory<TestInterface> factory;
@@ -696,9 +695,9 @@ TEST(ThriftServer, ResetStateTest) {
 
   // Create a server socket and bind, don't listen.  This gets us a
   // port to test with which is guaranteed to fail.
-  auto ssock = std::unique_ptr<folly::AsyncServerSocket,
-                               folly::DelayedDestruction::Destructor>(
-      new folly::AsyncServerSocket);
+  auto ssock = std::unique_ptr<
+      folly::AsyncServerSocket,
+      folly::DelayedDestruction::Destructor>(new folly::AsyncServerSocket);
   ssock->bind(0);
   EXPECT_FALSE(ssock->getAddresses().empty());
 
@@ -744,8 +743,9 @@ TEST(ThriftServer, FailureInjection) {
         EXPECT_EQ(NONE, *expected_);
       } catch (const apache::thrift::TApplicationException& ex) {
         const auto& headers = state.header()->getHeaders();
-        EXPECT_TRUE(headers.find("ex") != headers.end() &&
-                    headers.find("ex")->second == kInjectedFailureErrorCode);
+        EXPECT_TRUE(
+            headers.find("ex") != headers.end() &&
+            headers.find("ex")->second == kInjectedFailureErrorCode);
         EXPECT_EQ(ERROR, *expected_);
       } catch (...) {
         ADD_FAILURE() << "Unexpected exception thrown";
@@ -787,7 +787,9 @@ TEST(ThriftServer, FailureInjection) {
 
   auto server = std::dynamic_pointer_cast<ThriftServer>(sst.getServer().lock());
   CHECK(server);
-  SCOPE_EXIT { server->setFailureInjection(ThriftServer::FailureInjection()); };
+  SCOPE_EXIT {
+    server->setFailureInjection(ThriftServer::FailureInjection());
+  };
 
   RpcOptions rpcOptions;
   rpcOptions.setTimeout(std::chrono::milliseconds(100));
@@ -860,7 +862,9 @@ class ReadCallbackTest : public TAsyncTransport::ReadCallback {
  public:
   void getReadBuffer(void**, size_t*) override {}
   void readDataAvailable(size_t) noexcept override {}
-  void readEOF() noexcept override { eof = true; }
+  void readEOF() noexcept override {
+    eof = true;
+  }
 
   void readError(const transport::TTransportException&) noexcept override {
     eof = true;
@@ -868,7 +872,7 @@ class ReadCallbackTest : public TAsyncTransport::ReadCallback {
 
   bool eof = false;
 };
-}
+} // namespace
 
 TEST(ThriftServer, ShutdownSocketSetTest) {
   TestThriftServerFactory<TestInterface> factory;
@@ -966,7 +970,7 @@ class ExtendedTestServiceAsyncProcessor : public TestServiceAsyncProcessor {
         apache::thrift::protocol::PROTOCOL_TYPES::T_BINARY_PROTOCOL);
   }
 };
-}
+} // namespace
 
 TEST(ThriftServer, CacheAnnotation) {
   // We aren't parsing anything just want this to compile
@@ -979,7 +983,7 @@ TEST(ThriftServer, IdleServerTimeout) {
   TestThriftServerFactory<TestInterface> factory;
 
   auto server = factory.create();
-  auto thriftServer = dynamic_cast<ThriftServer *>(server.get());
+  auto thriftServer = dynamic_cast<ThriftServer*>(server.get());
   thriftServer->setIdleServerTimeout(std::chrono::milliseconds(50));
 
   ScopedServerThread scopedServer(server);
@@ -1020,14 +1024,14 @@ TEST(ThriftServer, ServerConfigTest) {
   wangle::ServerSocketConfig defaultConfig;
   // If nothing is set, expect defaults
   auto serverConfig = server.getServerSocketConfig();
-  EXPECT_EQ(serverConfig.sslHandshakeTimeout,
-            defaultConfig.sslHandshakeTimeout);
+  EXPECT_EQ(
+      serverConfig.sslHandshakeTimeout, defaultConfig.sslHandshakeTimeout);
 
   // Idle timeout of 0 with no SSL handshake set, expect it to be 0.
   server.setIdleTimeout(std::chrono::milliseconds::zero());
   serverConfig = server.getServerSocketConfig();
-  EXPECT_EQ(serverConfig.sslHandshakeTimeout,
-            std::chrono::milliseconds::zero());
+  EXPECT_EQ(
+      serverConfig.sslHandshakeTimeout, std::chrono::milliseconds::zero());
 
   // Expect the explicit to always win
   server.setSSLHandshakeTimeout(std::chrono::milliseconds(100));
@@ -1037,8 +1041,8 @@ TEST(ThriftServer, ServerConfigTest) {
   // Clear it and expect it to be zero again (due to idle timeout = 0)
   server.setSSLHandshakeTimeout(folly::none);
   serverConfig = server.getServerSocketConfig();
-  EXPECT_EQ(serverConfig.sslHandshakeTimeout,
-            std::chrono::milliseconds::zero());
+  EXPECT_EQ(
+      serverConfig.sslHandshakeTimeout, std::chrono::milliseconds::zero());
 }
 
 TEST(ThriftServer, ClientIdentityHook) {
@@ -1052,7 +1056,7 @@ TEST(ThriftServer, ClientIdentityHook) {
                   const SaslServer* /* unused */,
                   const folly::SocketAddress& /* unused */) {
     flag = true;
-    return std::unique_ptr<void, void (*)(void*)>(nullptr, [](void *){});
+    return std::unique_ptr<void, void (*)(void*)>(nullptr, [](void*) {});
   };
 
   TestThriftServerFactory<TestInterface> factory;
@@ -1078,4 +1082,129 @@ TEST(ThriftServer, SaslThreadCount) {
 
   server->setNSaslPoolThreads(30);
   EXPECT_EQ(server->getNumSaslThreadsToRun(), 30);
+}
+
+namespace {
+void doBadRequestHeaderTest(bool duplex, bool secure) {
+  auto server = std::static_pointer_cast<ThriftServer>(
+      TestThriftServerFactory<TestInterface>().create());
+  server->setDuplex(duplex);
+  if (secure) {
+    auto makeSslConfig = []() {
+      auto sslConfig = std::make_shared<wangle::SSLContextConfig>();
+      sslConfig->setCertificate(folly::kTestCert, folly::kTestKey, "");
+      sslConfig->clientCAFile = folly::kTestCA;
+      sslConfig->sessionContext = "ThriftServerTest";
+      return sslConfig;
+    };
+    server->setSSLConfig(makeSslConfig());
+  }
+  ScopedServerThread sst(std::move(server));
+
+  folly::EventBase evb;
+  auto makeClientSslContext = []() {
+    auto ctx = std::make_shared<folly::SSLContext>();
+    ctx->loadCertificate(folly::kTestCert);
+    ctx->loadPrivateKey(folly::kTestKey);
+    ctx->loadTrustedCertificates(folly::kTestCA);
+    ctx->authenticate(
+        true /* verify server cert */, false /* don't verify server name */);
+    ctx->setVerificationOption(folly::SSLContext::SSLVerifyPeerEnum::VERIFY);
+    return ctx;
+  };
+  folly::AsyncSocket::UniquePtr socket(
+      secure ? new folly::AsyncSSLSocket(makeClientSslContext(), &evb)
+             : new folly::AsyncSocket(&evb));
+  socket->connect(nullptr /* connect callback */, *sst.getAddress());
+
+  class RecordWriteSuccessCallback
+      : public folly::AsyncTransportWrapper::WriteCallback {
+   public:
+    void writeSuccess() noexcept override {
+      EXPECT_FALSE(success_);
+      success_.emplace(true);
+    }
+
+    void writeErr(
+        size_t /* bytesWritten */,
+        const folly::AsyncSocketException& /* exception */) noexcept override {
+      EXPECT_FALSE(success_);
+      success_.emplace(false);
+    }
+
+    bool success() const {
+      return success_ && *success_;
+    }
+
+   private:
+    folly::Optional<bool> success_;
+  };
+  RecordWriteSuccessCallback recordSuccessWriteCallback;
+
+  class CheckClosedReadCallback
+      : public folly::AsyncTransportWrapper::ReadCallback {
+   public:
+    explicit CheckClosedReadCallback(folly::AsyncSocket& socket)
+        : socket_(socket) {
+      socket_.setReadCB(this);
+    }
+
+    ~CheckClosedReadCallback() {
+      // We expect that the server closed the connection
+      EXPECT_TRUE(remoteClosed_);
+      socket_.close();
+    }
+
+    void getReadBuffer(void** bufout, size_t* lenout) override {
+      // For this test, we never do anything with the buffered data, but we
+      // still need to implement the full ReadCallback interface.
+      *bufout = buf_;
+      *lenout = sizeof(buf_);
+    }
+
+    void readDataAvailable(size_t /* len */) noexcept override {}
+
+    void readEOF() noexcept override {
+      remoteClosed_ = true;
+    }
+
+    void readErr(const folly::AsyncSocketException& ex) noexcept override {
+      ASSERT_EQ(ECONNRESET, ex.getErrno());
+      remoteClosed_ = true;
+    }
+
+   private:
+    folly::AsyncSocket& socket_;
+    char buf_[1024];
+    bool remoteClosed_{false};
+  };
+
+  EXPECT_TRUE(socket->good());
+  {
+    CheckClosedReadCallback checkClosedReadCallback_(*socket);
+    constexpr folly::StringPiece kBadRequest("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
+    socket->write(
+        &recordSuccessWriteCallback, kBadRequest.data(), kBadRequest.size());
+    evb.loop();
+  }
+
+  EXPECT_TRUE(recordSuccessWriteCallback.success());
+  EXPECT_FALSE(socket->good());
+}
+} // namespace
+
+TEST(ThriftServer, BadRequestHeaderNoDuplexNoSsl) {
+  doBadRequestHeaderTest(false /* duplex */, false /* secure */);
+}
+
+TEST(ThriftServer, BadRequestHeaderDuplexNoSsl) {
+  doBadRequestHeaderTest(true /* duplex */, false /* secure */);
+}
+
+TEST(ThriftServer, BadRequestHeaderNoDuplexSsl) {
+  doBadRequestHeaderTest(false /* duplex */, true /* secure */);
+}
+
+TEST(ThriftServer, BadRequestHeaderDuplexSsl) {
+  doBadRequestHeaderTest(true /* duplex */, true /* secure */);
 }

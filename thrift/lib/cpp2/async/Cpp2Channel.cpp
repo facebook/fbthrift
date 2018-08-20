@@ -264,6 +264,15 @@ void Cpp2Channel::setReceiveCallback(RecvCallback* callback) {
   } else {
     transportHandler_->detachReadCallback();
   }
+
+  // Transport might have gotten into a bad state (e.g., closed) while attaching
+  // the read callback, which itself may have tried immediately reading from the
+  // transport.
+  // Note also that the call to attachReadCallback() may have indirectly stolen
+  // transport_, which we must guard against.
+  if (transport_ && !transport_->good()) {
+    throw TTransportException("Channel is !good()");
+  }
 }
 
 } // namespace thrift
