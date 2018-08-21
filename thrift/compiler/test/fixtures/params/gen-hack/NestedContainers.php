@@ -1246,47 +1246,10 @@ class NestedContainers_mapList_args implements \IThriftStruct, \IThriftShapishSt
     return 'NestedContainers_mapList_args';
   }
 
-  public static function __jsonArrayToShape(
-    dict<arraykey, mixed> $json_data,
-  ): ?self::TShape {
-    $shape_data = $json_data;
-
-    if (!C\contains_key($shape_data, 'foo')) {
-      $shape_data['foo'] = Map {};
-    }
-    if (!is_array($shape_data['foo'])) {
-      return null;
-    }
-    foreach (/* HH_IGNORE_ERROR[4110] */$shape_data['foo'] as $key0 => $value1) {
-      if (!is_int($key0)) {
-        return null;
-      }
-      if (!is_array($value1)) {
-        return null;
-      }
-      foreach (/* HH_IGNORE_ERROR[4110] */$value1 as $key2 => $value3) {
-        if (!is_int($key2)) {
-          return null;
-        }
-        if (!is_int($value3)) {
-          return null;
-        }
-        /* HH_IGNORE_ERROR[4005] */
-        /* HH_IGNORE_ERROR[4063] */
-        $value1[$key2] = $value3;
-      }
-      /* HH_IGNORE_ERROR[4005] */
-      /* HH_IGNORE_ERROR[4063] */
-      $shape_data['foo'][$key0] = $value1;
-    }
-
-    return /* HH_IGNORE_ERROR[4110] */ $shape_data;
-  }
-
   public static function __fromShape(self::TShape $shape): this {
     $me = /* HH_IGNORE_ERROR[4060] */ new static();
     $me->foo = (new Map($shape['foo']))->map(
-      $val4 ==> (new Vector($val4)),
+      $val0 ==> (new Vector($val0)),
     );
     return $me;
   }
@@ -1363,44 +1326,10 @@ class NestedContainers_mapSet_args implements \IThriftStruct, \IThriftShapishStr
     return 'NestedContainers_mapSet_args';
   }
 
-  public static function __jsonArrayToShape(
-    dict<arraykey, mixed> $json_data,
-  ): ?self::TShape {
-    $shape_data = $json_data;
-
-    if (!C\contains_key($shape_data, 'foo')) {
-      $shape_data['foo'] = Map {};
-    }
-    if (!is_array($shape_data['foo'])) {
-      return null;
-    }
-    foreach (/* HH_IGNORE_ERROR[4110] */$shape_data['foo'] as $key0 => $value1) {
-      if (!is_int($key0)) {
-        return null;
-      }
-      if (!is_array($value1)) {
-        return null;
-      }
-      $the_set4 = dict[];
-      foreach (/* HH_IGNORE_ERROR[4110] */ $value1 as $key2 => $shape_data3) {
-        if (!is_int($shape_data3)) {
-          return null;
-        }
-        $the_set4[$shape_data3] = true;
-      }
-      $value1 = $the_set4;
-      /* HH_IGNORE_ERROR[4005] */
-      /* HH_IGNORE_ERROR[4063] */
-      $shape_data['foo'][$key0] = $value1;
-    }
-
-    return /* HH_IGNORE_ERROR[4110] */ $shape_data;
-  }
-
   public static function __fromShape(self::TShape $shape): this {
     $me = /* HH_IGNORE_ERROR[4060] */ new static();
     $me->foo = (new Map($shape['foo']))->map(
-      $val5 ==> new Set(Keyset\keys($val5)),
+      $val0 ==> new Set(Keyset\keys($val0)),
     );
     return $me;
   }
@@ -1477,47 +1406,10 @@ class NestedContainers_listMap_args implements \IThriftStruct, \IThriftShapishSt
     return 'NestedContainers_listMap_args';
   }
 
-  public static function __jsonArrayToShape(
-    dict<arraykey, mixed> $json_data,
-  ): ?self::TShape {
-    $shape_data = $json_data;
-
-    if (!C\contains_key($shape_data, 'foo')) {
-      $shape_data['foo'] = Vector {};
-    }
-    if (!is_array($shape_data['foo'])) {
-      return null;
-    }
-    foreach (/* HH_IGNORE_ERROR[4110] */$shape_data['foo'] as $key0 => $value1) {
-      if (!is_int($key0)) {
-        return null;
-      }
-      if (!is_array($value1)) {
-        return null;
-      }
-      foreach (/* HH_IGNORE_ERROR[4110] */$value1 as $key2 => $value3) {
-        if (!is_int($key2)) {
-          return null;
-        }
-        if (!is_int($value3)) {
-          return null;
-        }
-        /* HH_IGNORE_ERROR[4005] */
-        /* HH_IGNORE_ERROR[4063] */
-        $value1[$key2] = $value3;
-      }
-      /* HH_IGNORE_ERROR[4005] */
-      /* HH_IGNORE_ERROR[4063] */
-      $shape_data['foo'][$key0] = $value1;
-    }
-
-    return /* HH_IGNORE_ERROR[4110] */ $shape_data;
-  }
-
   public static function __fromShape(self::TShape $shape): this {
     $me = /* HH_IGNORE_ERROR[4060] */ new static();
     $me->foo = (new Vector($shape['foo']))->map(
-      $val4 ==> (new Map($val4)),
+      $val0 ==> (new Map($val0)),
     );
     return $me;
   }
@@ -1590,44 +1482,10 @@ class NestedContainers_listSet_args implements \IThriftStruct, \IThriftShapishSt
     return 'NestedContainers_listSet_args';
   }
 
-  public static function __jsonArrayToShape(
-    dict<arraykey, mixed> $json_data,
-  ): ?self::TShape {
-    $shape_data = $json_data;
-
-    if (!C\contains_key($shape_data, 'foo')) {
-      $shape_data['foo'] = Vector {};
-    }
-    if (!is_array($shape_data['foo'])) {
-      return null;
-    }
-    foreach (/* HH_IGNORE_ERROR[4110] */$shape_data['foo'] as $key0 => $value1) {
-      if (!is_int($key0)) {
-        return null;
-      }
-      if (!is_array($value1)) {
-        return null;
-      }
-      $the_set4 = dict[];
-      foreach (/* HH_IGNORE_ERROR[4110] */ $value1 as $key2 => $shape_data3) {
-        if (!is_int($shape_data3)) {
-          return null;
-        }
-        $the_set4[$shape_data3] = true;
-      }
-      $value1 = $the_set4;
-      /* HH_IGNORE_ERROR[4005] */
-      /* HH_IGNORE_ERROR[4063] */
-      $shape_data['foo'][$key0] = $value1;
-    }
-
-    return /* HH_IGNORE_ERROR[4110] */ $shape_data;
-  }
-
   public static function __fromShape(self::TShape $shape): this {
     $me = /* HH_IGNORE_ERROR[4060] */ new static();
     $me->foo = (new Vector($shape['foo']))->map(
-      $val5 ==> new Set(Keyset\keys($val5)),
+      $val0 ==> new Set(Keyset\keys($val0)),
     );
     return $me;
   }
@@ -1723,80 +1581,13 @@ class NestedContainers_turtles_args implements \IThriftStruct, \IThriftShapishSt
     return 'NestedContainers_turtles_args';
   }
 
-  public static function __jsonArrayToShape(
-    dict<arraykey, mixed> $json_data,
-  ): ?self::TShape {
-    $shape_data = $json_data;
-
-    if (!C\contains_key($shape_data, 'foo')) {
-      $shape_data['foo'] = Vector {};
-    }
-    if (!is_array($shape_data['foo'])) {
-      return null;
-    }
-    foreach (/* HH_IGNORE_ERROR[4110] */$shape_data['foo'] as $key0 => $value1) {
-      if (!is_int($key0)) {
-        return null;
-      }
-      if (!is_array($value1)) {
-        return null;
-      }
-      foreach (/* HH_IGNORE_ERROR[4110] */$value1 as $key2 => $value3) {
-        if (!is_int($key2)) {
-          return null;
-        }
-        if (!is_array($value3)) {
-          return null;
-        }
-        foreach (/* HH_IGNORE_ERROR[4110] */$value3 as $key4 => $value5) {
-          if (!is_int($key4)) {
-            return null;
-          }
-          if (!is_array($value5)) {
-            return null;
-          }
-          foreach (/* HH_IGNORE_ERROR[4110] */$value5 as $key6 => $value7) {
-            if (!is_int($key6)) {
-              return null;
-            }
-            if (!is_array($value7)) {
-              return null;
-            }
-            $the_set10 = dict[];
-            foreach (/* HH_IGNORE_ERROR[4110] */ $value7 as $key8 => $shape_data9) {
-              if (!is_int($shape_data9)) {
-                return null;
-              }
-              $the_set10[$shape_data9] = true;
-            }
-            $value7 = $the_set10;
-            /* HH_IGNORE_ERROR[4005] */
-            /* HH_IGNORE_ERROR[4063] */
-            $value5[$key6] = $value7;
-          }
-          /* HH_IGNORE_ERROR[4005] */
-          /* HH_IGNORE_ERROR[4063] */
-          $value3[$key4] = $value5;
-        }
-        /* HH_IGNORE_ERROR[4005] */
-        /* HH_IGNORE_ERROR[4063] */
-        $value1[$key2] = $value3;
-      }
-      /* HH_IGNORE_ERROR[4005] */
-      /* HH_IGNORE_ERROR[4063] */
-      $shape_data['foo'][$key0] = $value1;
-    }
-
-    return /* HH_IGNORE_ERROR[4110] */ $shape_data;
-  }
-
   public static function __fromShape(self::TShape $shape): this {
     $me = /* HH_IGNORE_ERROR[4060] */ new static();
     $me->foo = (new Vector($shape['foo']))->map(
-      $val11 ==> (new Vector($val11))->map(
-        $val12 ==> (new Map($val12))->map(
-          $val13 ==> (new Map($val13))->map(
-            $val14 ==> new Set(Keyset\keys($val14)),
+      $val0 ==> (new Vector($val0))->map(
+        $val1 ==> (new Map($val1))->map(
+          $val2 ==> (new Map($val2))->map(
+            $val3 ==> new Set(Keyset\keys($val3)),
           ),
         ),
       ),

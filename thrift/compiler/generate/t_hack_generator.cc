@@ -2044,60 +2044,6 @@ void t_hack_generator::generate_php_struct_shape_json_conversion(
 void t_hack_generator::generate_php_struct_shape_methods(
     std::ofstream& out,
     t_struct* tstruct) {
-  indent(out) << "public static function __jsonArrayToShape(" << endl;
-  indent(out) << "  " << generate_array_typehint("arraykey", "mixed")
-              << " $json_data," << endl;
-  indent(out) << "): ?self::TShape {" << endl;
-  indent_up();
-  indent(out) << "$shape_data = $json_data;" << endl;
-  const vector<t_field*>& members = tstruct->get_members();
-  vector<t_field*>::const_iterator m_iter;
-  t_name_generator namer;
-  for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
-    t_type* t = (*m_iter)->get_type()->get_true_type();
-
-    string dval = "";
-    // If a value was specified for the field in the thrift file, and the field
-    // is not a struct or exception, use the value as the default.
-    if ((*m_iter)->get_value() != nullptr &&
-        !(t->is_struct() || t->is_xception())) {
-      dval = render_const_value(t, (*m_iter)->get_value());
-      // Otherwise, the default value is null (or equivalent).
-    } else {
-      dval = render_default_value(t);
-    }
-
-    bool nullable =
-        field_is_nullable(tstruct, *m_iter, render_default_value(t));
-    out << endl;
-
-    // Note: default values are not currently working for non-POD types.
-    // The logic below needs to be reworked so that dval is used for nullable
-    // types (if available). See D4609418 for more information.
-    if (!shape_unsafe_json_) {
-      indent(out) << "if (!C\\contains_key($shape_data, '"
-                  << (*m_iter)->get_name() << "')) {" << endl;
-      if (nullable) {
-        indent(out) << "  $shape_data['" << (*m_iter)->get_name()
-                    << "'] = null;" << endl;
-      } else if (dval != "null") {
-        // for "optional" fields with default values:
-        indent(out) << "  $shape_data['" << (*m_iter)->get_name()
-                    << "'] = " << dval << ";" << endl;
-      } else {
-        indent(out) << "  return null;" << endl;
-      }
-      indent(out) << "}" << endl;
-    }
-    string value = "$shape_data['" + (*m_iter)->get_name() + "']";
-    generate_php_struct_shape_json_conversion(out, nullable, value, t, namer);
-  }
-  out << endl;
-  indent(out) << "return /* HH_IGNORE_ERROR[4110] */ $shape_data;" << endl;
-  indent_down();
-  indent(out) << "}" << endl;
-  out << endl;
-
   if (shape_arraykeys_) {
     indent(out) << "public static function __stringifyMapKeys<T>("
                 << (const_collections_ ? "Const" : "")
@@ -2123,6 +2069,9 @@ void t_hack_generator::generate_php_struct_shape_methods(
                 << ";" << endl;
   }
 
+  const vector<t_field*>& members = tstruct->get_members();
+  vector<t_field*>::const_iterator m_iter;
+  t_name_generator namer;
   for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
     t_type* t = (*m_iter)->get_type()->get_true_type();
 

@@ -88,47 +88,6 @@ class BarStruct implements \IThriftStruct, \IThriftShapishStruct {
     return 'BarStruct';
   }
 
-  public static function __jsonArrayToShape(
-    darray<arraykey, mixed> $json_data,
-  ): ?self::TShape {
-    $shape_data = $json_data;
-
-    if (!C\contains_key($shape_data, 'e')) {
-      $shape_data['e'] = Map {};
-    }
-    if (!is_array($shape_data['e'])) {
-      return null;
-    }
-    foreach (/* HH_IGNORE_ERROR[4110] */$shape_data['e'] as $key0 => $value1) {
-      if (!is_int($key0)) {
-        return null;
-      }
-      if (!is_int($value1)) {
-        return null;
-      }
-      /* HH_IGNORE_ERROR[4005] */
-      /* HH_IGNORE_ERROR[4063] */
-      $shape_data['e'][$key0] = $value1;
-    }
-
-    if (!C\contains_key($shape_data, 's')) {
-      $shape_data['s'] = Set {};
-    }
-    if (!is_array($shape_data['s'])) {
-      return null;
-    }
-    $the_set4 = darray[];
-    foreach (/* HH_IGNORE_ERROR[4110] */ $shape_data['s'] as $key2 => $shape_data3) {
-      if (!is_int($shape_data3)) {
-        return null;
-      }
-      $the_set4[$shape_data3] = true;
-    }
-    $shape_data['s'] = $the_set4;
-
-    return /* HH_IGNORE_ERROR[4110] */ $shape_data;
-  }
-
   public static function __fromShape(self::TShape $shape): this {
     $me = /* HH_IGNORE_ERROR[4060] */ new static();
     $me->e = (new Map($shape['e']));

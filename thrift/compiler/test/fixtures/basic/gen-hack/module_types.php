@@ -113,52 +113,6 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
     return 'MyStruct';
   }
 
-  public static function __jsonArrayToShape(
-    dict<arraykey, mixed> $json_data,
-  ): ?self::TShape {
-    $shape_data = $json_data;
-
-    if (!C\contains_key($shape_data, 'MyIntField')) {
-      $shape_data['MyIntField'] = 0;
-    }
-    if (!is_int($shape_data['MyIntField'])) {
-      return null;
-    }
-
-    if (!C\contains_key($shape_data, 'MyStringField')) {
-      $shape_data['MyStringField'] = '';
-    }
-    if (!is_string($shape_data['MyStringField'])) {
-      return null;
-    }
-
-    if (!C\contains_key($shape_data, 'MyDataField')) {
-      $shape_data['MyDataField'] = null;
-    }
-    if (!is_null($shape_data['MyDataField'])) {
-      $shape_data['MyDataField'] = MyDataItem::__jsonArrayToShape(/* HH_IGNORE_ERROR[4110] */ $shape_data['MyDataField']);
-      if (is_null($shape_data['MyDataField'])) {
-        return null;
-      }
-    }
-
-    if (!C\contains_key($shape_data, 'major')) {
-      $shape_data['major'] = 0;
-    }
-    if (!is_int($shape_data['major'])) {
-      return null;
-    }
-
-    if (!C\contains_key($shape_data, 'myEnum')) {
-      $shape_data['myEnum'] = null;
-    }
-    if (!is_int($shape_data['myEnum']) && !is_null($shape_data['myEnum'])) {
-      return null;
-    }
-
-    return /* HH_IGNORE_ERROR[4110] */ $shape_data;
-  }
-
   public static function __fromShape(self::TShape $shape): this {
     $me = /* HH_IGNORE_ERROR[4060] */ new static();
     $me->MyIntField = $shape['MyIntField'];
@@ -227,14 +181,6 @@ class MyDataItem implements \IThriftStruct, \IThriftShapishStruct {
 
   public function getName(): string {
     return 'MyDataItem';
-  }
-
-  public static function __jsonArrayToShape(
-    dict<arraykey, mixed> $json_data,
-  ): ?self::TShape {
-    $shape_data = $json_data;
-
-    return /* HH_IGNORE_ERROR[4110] */ $shape_data;
   }
 
   public static function __fromShape(self::TShape $shape): this {

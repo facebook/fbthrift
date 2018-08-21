@@ -45,15 +45,6 @@ class A implements \IThriftStruct, \IThriftShapishStruct {
     return 'A';
   }
 
-  public static function __jsonArrayToShape(
-    dict<arraykey, mixed> $json_data,
-  ): ?self::TShape {
-    $shape_data = $json_data;
-
-
-    return /* HH_IGNORE_ERROR[4110] */ $shape_data;
-  }
-
   public static function __fromShape(self::TShape $shape): this {
     $me = /* HH_IGNORE_ERROR[4060] */ new static();
     $me->a = $shape['a'];
@@ -704,241 +695,6 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     return 'B';
   }
 
-  public static function __jsonArrayToShape(
-    dict<arraykey, mixed> $json_data,
-  ): ?self::TShape {
-    $shape_data = $json_data;
-
-    $shape_data['just_an_A'] = A::__jsonArrayToShape(/* HH_IGNORE_ERROR[4110] */ $shape_data['just_an_A']);
-
-    $the_set2 = dict[];
-    foreach (/* HH_IGNORE_ERROR[4110] */ $shape_data['set_of_i32'] as $key0 => $shape_data1) {
-      $the_set2[$shape_data1] = true;
-    }
-    $shape_data['set_of_i32'] = $the_set2;
-
-    foreach (/* HH_IGNORE_ERROR[4110] */$shape_data['list_of_i32'] as $key3 => $value4) {
-      /* HH_IGNORE_ERROR[4005] */
-      /* HH_IGNORE_ERROR[4063] */
-      $shape_data['list_of_i32'][$key3] = $value4;
-    }
-
-    foreach (/* HH_IGNORE_ERROR[4110] */$shape_data['list_of_string'] as $key5 => $value6) {
-      /* HH_IGNORE_ERROR[4005] */
-      /* HH_IGNORE_ERROR[4063] */
-      $shape_data['list_of_string'][$key5] = $value6;
-    }
-
-    foreach (/* HH_IGNORE_ERROR[4110] */$shape_data['map_of_string_to_i32'] as $key7 => $value8) {
-      /* HH_IGNORE_ERROR[4005] */
-      /* HH_IGNORE_ERROR[4063] */
-      $shape_data['map_of_string_to_i32'][$key7] = $value8;
-    }
-
-    foreach (/* HH_IGNORE_ERROR[4110] */$shape_data['map_of_string_to_A'] as $key9 => $value10) {
-      $value10 = A::__jsonArrayToShape(/* HH_IGNORE_ERROR[4110] */ $value10);
-      /* HH_IGNORE_ERROR[4005] */
-      /* HH_IGNORE_ERROR[4063] */
-      $shape_data['map_of_string_to_A'][$key9] = $value10;
-    }
-
-    foreach (/* HH_IGNORE_ERROR[4110] */$shape_data['map_of_string_to_list_of_i32'] as $key11 => $value12) {
-      foreach (/* HH_IGNORE_ERROR[4110] */$value12 as $key13 => $value14) {
-        /* HH_IGNORE_ERROR[4005] */
-        /* HH_IGNORE_ERROR[4063] */
-        $value12[$key13] = $value14;
-      }
-      /* HH_IGNORE_ERROR[4005] */
-      /* HH_IGNORE_ERROR[4063] */
-      $shape_data['map_of_string_to_list_of_i32'][$key11] = $value12;
-    }
-
-    foreach (/* HH_IGNORE_ERROR[4110] */$shape_data['map_of_string_to_list_of_A'] as $key15 => $value16) {
-      foreach (/* HH_IGNORE_ERROR[4110] */$value16 as $key17 => $value18) {
-        $value18 = A::__jsonArrayToShape(/* HH_IGNORE_ERROR[4110] */ $value18);
-        /* HH_IGNORE_ERROR[4005] */
-        /* HH_IGNORE_ERROR[4063] */
-        $value16[$key17] = $value18;
-      }
-      /* HH_IGNORE_ERROR[4005] */
-      /* HH_IGNORE_ERROR[4063] */
-      $shape_data['map_of_string_to_list_of_A'][$key15] = $value16;
-    }
-
-    foreach (/* HH_IGNORE_ERROR[4110] */$shape_data['map_of_string_to_set_of_i32'] as $key19 => $value20) {
-      $the_set23 = dict[];
-      foreach (/* HH_IGNORE_ERROR[4110] */ $value20 as $key21 => $shape_data22) {
-        $the_set23[$shape_data22] = true;
-      }
-      $value20 = $the_set23;
-      /* HH_IGNORE_ERROR[4005] */
-      /* HH_IGNORE_ERROR[4063] */
-      $shape_data['map_of_string_to_set_of_i32'][$key19] = $value20;
-    }
-
-    foreach (/* HH_IGNORE_ERROR[4110] */$shape_data['map_of_string_to_map_of_string_to_i32'] as $key24 => $value25) {
-      foreach (/* HH_IGNORE_ERROR[4110] */$value25 as $key26 => $value27) {
-        /* HH_IGNORE_ERROR[4005] */
-        /* HH_IGNORE_ERROR[4063] */
-        $value25[$key26] = $value27;
-      }
-      /* HH_IGNORE_ERROR[4005] */
-      /* HH_IGNORE_ERROR[4063] */
-      $shape_data['map_of_string_to_map_of_string_to_i32'][$key24] = $value25;
-    }
-
-    foreach (/* HH_IGNORE_ERROR[4110] */$shape_data['map_of_string_to_map_of_string_to_A'] as $key28 => $value29) {
-      foreach (/* HH_IGNORE_ERROR[4110] */$value29 as $key30 => $value31) {
-        $value31 = A::__jsonArrayToShape(/* HH_IGNORE_ERROR[4110] */ $value31);
-        /* HH_IGNORE_ERROR[4005] */
-        /* HH_IGNORE_ERROR[4063] */
-        $value29[$key30] = $value31;
-      }
-      /* HH_IGNORE_ERROR[4005] */
-      /* HH_IGNORE_ERROR[4063] */
-      $shape_data['map_of_string_to_map_of_string_to_A'][$key28] = $value29;
-    }
-
-    foreach (/* HH_IGNORE_ERROR[4110] */$shape_data['list_of_set_of_i32'] as $key32 => $value33) {
-      $the_set36 = dict[];
-      foreach (/* HH_IGNORE_ERROR[4110] */ $value33 as $key34 => $shape_data35) {
-        $the_set36[$shape_data35] = true;
-      }
-      $value33 = $the_set36;
-      /* HH_IGNORE_ERROR[4005] */
-      /* HH_IGNORE_ERROR[4063] */
-      $shape_data['list_of_set_of_i32'][$key32] = $value33;
-    }
-
-    foreach (/* HH_IGNORE_ERROR[4110] */$shape_data['list_of_map_of_string_to_list_of_A'] as $key37 => $value38) {
-      foreach (/* HH_IGNORE_ERROR[4110] */$value38 as $key39 => $value40) {
-        foreach (/* HH_IGNORE_ERROR[4110] */$value40 as $key41 => $value42) {
-          $value42 = A::__jsonArrayToShape(/* HH_IGNORE_ERROR[4110] */ $value42);
-          /* HH_IGNORE_ERROR[4005] */
-          /* HH_IGNORE_ERROR[4063] */
-          $value40[$key41] = $value42;
-        }
-        /* HH_IGNORE_ERROR[4005] */
-        /* HH_IGNORE_ERROR[4063] */
-        $value38[$key39] = $value40;
-      }
-      /* HH_IGNORE_ERROR[4005] */
-      /* HH_IGNORE_ERROR[4063] */
-      $shape_data['list_of_map_of_string_to_list_of_A'][$key37] = $value38;
-    }
-
-    foreach (/* HH_IGNORE_ERROR[4110] */$shape_data['list_of_map_of_string_to_A'] as $key43 => $value44) {
-      foreach (/* HH_IGNORE_ERROR[4110] */$value44 as $key45 => $value46) {
-        $value46 = A::__jsonArrayToShape(/* HH_IGNORE_ERROR[4110] */ $value46);
-        /* HH_IGNORE_ERROR[4005] */
-        /* HH_IGNORE_ERROR[4063] */
-        $value44[$key45] = $value46;
-      }
-      /* HH_IGNORE_ERROR[4005] */
-      /* HH_IGNORE_ERROR[4063] */
-      $shape_data['list_of_map_of_string_to_A'][$key43] = $value44;
-    }
-
-    foreach (/* HH_IGNORE_ERROR[4110] */$shape_data['list_of_self'] as $key47 => $value48) {
-      $value48 = B::__jsonArrayToShape(/* HH_IGNORE_ERROR[4110] */ $value48);
-      /* HH_IGNORE_ERROR[4005] */
-      /* HH_IGNORE_ERROR[4063] */
-      $shape_data['list_of_self'][$key47] = $value48;
-    }
-
-    foreach (/* HH_IGNORE_ERROR[4110] */$shape_data['map_of_string_to_self'] as $key49 => $value50) {
-      $value50 = B::__jsonArrayToShape(/* HH_IGNORE_ERROR[4110] */ $value50);
-      /* HH_IGNORE_ERROR[4005] */
-      /* HH_IGNORE_ERROR[4063] */
-      $shape_data['map_of_string_to_self'][$key49] = $value50;
-    }
-
-    $shape_data['optional_just_an_A'] = A::__jsonArrayToShape(/* HH_IGNORE_ERROR[4110] */ $shape_data['optional_just_an_A']);
-
-    if (!is_null($shape_data['optional_set_of_i32'])) {
-      $the_set53 = dict[];
-      foreach (/* HH_IGNORE_ERROR[4110] */ $shape_data['optional_set_of_i32'] as $key51 => $shape_data52) {
-        $the_set53[$shape_data52] = true;
-      }
-      $shape_data['optional_set_of_i32'] = $the_set53;
-    }
-
-    if (!is_null($shape_data['optional_list_of_i32'])) {
-      foreach (/* HH_IGNORE_ERROR[4110] */$shape_data['optional_list_of_i32'] as $key54 => $value55) {
-        /* HH_IGNORE_ERROR[4005] */
-        /* HH_IGNORE_ERROR[4063] */
-        $shape_data['optional_list_of_i32'][$key54] = $value55;
-      }
-    }
-
-    if (!is_null($shape_data['optional_list_of_string'])) {
-      foreach (/* HH_IGNORE_ERROR[4110] */$shape_data['optional_list_of_string'] as $key56 => $value57) {
-        /* HH_IGNORE_ERROR[4005] */
-        /* HH_IGNORE_ERROR[4063] */
-        $shape_data['optional_list_of_string'][$key56] = $value57;
-      }
-    }
-
-    if (!is_null($shape_data['optional_map_of_string_to_i32'])) {
-      foreach (/* HH_IGNORE_ERROR[4110] */$shape_data['optional_map_of_string_to_i32'] as $key58 => $value59) {
-        /* HH_IGNORE_ERROR[4005] */
-        /* HH_IGNORE_ERROR[4063] */
-        $shape_data['optional_map_of_string_to_i32'][$key58] = $value59;
-      }
-    }
-
-    if (!is_null($shape_data['optional_map_of_string_to_A'])) {
-      foreach (/* HH_IGNORE_ERROR[4110] */$shape_data['optional_map_of_string_to_A'] as $key60 => $value61) {
-        $value61 = A::__jsonArrayToShape(/* HH_IGNORE_ERROR[4110] */ $value61);
-        /* HH_IGNORE_ERROR[4005] */
-        /* HH_IGNORE_ERROR[4063] */
-        $shape_data['optional_map_of_string_to_A'][$key60] = $value61;
-      }
-    }
-
-    if (!is_null($shape_data['optional_map_of_string_to_list_of_i32'])) {
-      foreach (/* HH_IGNORE_ERROR[4110] */$shape_data['optional_map_of_string_to_list_of_i32'] as $key62 => $value63) {
-        foreach (/* HH_IGNORE_ERROR[4110] */$value63 as $key64 => $value65) {
-          /* HH_IGNORE_ERROR[4005] */
-          /* HH_IGNORE_ERROR[4063] */
-          $value63[$key64] = $value65;
-        }
-        /* HH_IGNORE_ERROR[4005] */
-        /* HH_IGNORE_ERROR[4063] */
-        $shape_data['optional_map_of_string_to_list_of_i32'][$key62] = $value63;
-      }
-    }
-
-    if (!is_null($shape_data['optional_map_of_string_to_list_of_A'])) {
-      foreach (/* HH_IGNORE_ERROR[4110] */$shape_data['optional_map_of_string_to_list_of_A'] as $key66 => $value67) {
-        foreach (/* HH_IGNORE_ERROR[4110] */$value67 as $key68 => $value69) {
-          $value69 = A::__jsonArrayToShape(/* HH_IGNORE_ERROR[4110] */ $value69);
-          /* HH_IGNORE_ERROR[4005] */
-          /* HH_IGNORE_ERROR[4063] */
-          $value67[$key68] = $value69;
-        }
-        /* HH_IGNORE_ERROR[4005] */
-        /* HH_IGNORE_ERROR[4063] */
-        $shape_data['optional_map_of_string_to_list_of_A'][$key66] = $value67;
-      }
-    }
-
-    if (!is_null($shape_data['optional_map_of_string_to_set_of_i32'])) {
-      foreach (/* HH_IGNORE_ERROR[4110] */$shape_data['optional_map_of_string_to_set_of_i32'] as $key70 => $value71) {
-        $the_set74 = dict[];
-        foreach (/* HH_IGNORE_ERROR[4110] */ $value71 as $key72 => $shape_data73) {
-          $the_set74[$shape_data73] = true;
-        }
-        $value71 = $the_set74;
-        /* HH_IGNORE_ERROR[4005] */
-        /* HH_IGNORE_ERROR[4063] */
-        $shape_data['optional_map_of_string_to_set_of_i32'][$key70] = $value71;
-      }
-    }
-
-    return /* HH_IGNORE_ERROR[4110] */ $shape_data;
-  }
-
   public static function __fromShape(self::TShape $shape): this {
     $me = /* HH_IGNORE_ERROR[4060] */ new static();
     $me->just_an_A = Shapes::idx($shape, 'just_an_A') === null ? null : A::__fromShape(nullthrows(Shapes::idx($shape, 'just_an_A')));
@@ -947,47 +703,47 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     $me->list_of_string = (new Vector($shape['list_of_string']));
     $me->map_of_string_to_i32 = (new Map($shape['map_of_string_to_i32']));
     $me->map_of_string_to_A = (new Map($shape['map_of_string_to_A']))->map(
-      $val75 ==> A::__fromShape($val75),
+      $val0 ==> A::__fromShape($val0),
     );
     $me->map_of_string_to_list_of_i32 = (new Map($shape['map_of_string_to_list_of_i32']))->map(
-      $val76 ==> (new Vector($val76)),
+      $val1 ==> (new Vector($val1)),
     );
     $me->map_of_string_to_list_of_A = (new Map($shape['map_of_string_to_list_of_A']))->map(
-      $val77 ==> (new Vector($val77))->map(
-        $val78 ==> A::__fromShape($val78),
+      $val2 ==> (new Vector($val2))->map(
+        $val3 ==> A::__fromShape($val3),
       ),
     );
     $me->map_of_string_to_set_of_i32 = (new Map($shape['map_of_string_to_set_of_i32']))->map(
-      $val79 ==> new Set(Keyset\keys($val79)),
+      $val4 ==> new Set(Keyset\keys($val4)),
     );
     $me->map_of_string_to_map_of_string_to_i32 = (new Map($shape['map_of_string_to_map_of_string_to_i32']))->map(
-      $val80 ==> (new Map($val80)),
+      $val5 ==> (new Map($val5)),
     );
     $me->map_of_string_to_map_of_string_to_A = (new Map($shape['map_of_string_to_map_of_string_to_A']))->map(
-      $val81 ==> (new Map($val81))->map(
-        $val82 ==> A::__fromShape($val82),
+      $val6 ==> (new Map($val6))->map(
+        $val7 ==> A::__fromShape($val7),
       ),
     );
     $me->list_of_set_of_i32 = (new Vector($shape['list_of_set_of_i32']))->map(
-      $val83 ==> new Set(Keyset\keys($val83)),
+      $val8 ==> new Set(Keyset\keys($val8)),
     );
     $me->list_of_map_of_string_to_list_of_A = (new Vector($shape['list_of_map_of_string_to_list_of_A']))->map(
-      $val84 ==> (new Map($val84))->map(
-        $val85 ==> (new Vector($val85))->map(
-          $val86 ==> A::__fromShape($val86),
+      $val9 ==> (new Map($val9))->map(
+        $val10 ==> (new Vector($val10))->map(
+          $val11 ==> A::__fromShape($val11),
         ),
       ),
     );
     $me->list_of_map_of_string_to_A = (new Vector($shape['list_of_map_of_string_to_A']))->map(
-      $val87 ==> (new Map($val87))->map(
-        $val88 ==> A::__fromShape($val88),
+      $val12 ==> (new Map($val12))->map(
+        $val13 ==> A::__fromShape($val13),
       ),
     );
     $me->list_of_self = (new Vector($shape['list_of_self']))->map(
-      $val89 ==> B::__fromShape($val89),
+      $val14 ==> B::__fromShape($val14),
     );
     $me->map_of_string_to_self = (new Map($shape['map_of_string_to_self']))->map(
-      $val90 ==> B::__fromShape($val90),
+      $val15 ==> B::__fromShape($val15),
     );
     $me->optional_just_an_A = Shapes::idx($shape, 'optional_just_an_A') === null ? null : A::__fromShape(nullthrows(Shapes::idx($shape, 'optional_just_an_A')));
     $me->optional_set_of_i32 = Shapes::idx($shape, 'optional_set_of_i32') === null ? null : new Set(Keyset\keys(nullthrows(Shapes::idx($shape, 'optional_set_of_i32'))));
@@ -999,21 +755,21 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
       (new Map(Shapes::idx($shape, 'optional_map_of_string_to_i32')));
     $me->optional_map_of_string_to_A = Shapes::idx($shape, 'optional_map_of_string_to_A') === null ? null : 
       (new Map(Shapes::idx($shape, 'optional_map_of_string_to_A')))->map(
-        $val91 ==> A::__fromShape($val91),
+        $val16 ==> A::__fromShape($val16),
       );
     $me->optional_map_of_string_to_list_of_i32 = Shapes::idx($shape, 'optional_map_of_string_to_list_of_i32') === null ? null : 
       (new Map(Shapes::idx($shape, 'optional_map_of_string_to_list_of_i32')))->map(
-        $val92 ==> (new Vector($val92)),
+        $val17 ==> (new Vector($val17)),
       );
     $me->optional_map_of_string_to_list_of_A = Shapes::idx($shape, 'optional_map_of_string_to_list_of_A') === null ? null : 
       (new Map(Shapes::idx($shape, 'optional_map_of_string_to_list_of_A')))->map(
-        $val93 ==> (new Vector($val93))->map(
-          $val94 ==> A::__fromShape($val94),
+        $val18 ==> (new Vector($val18))->map(
+          $val19 ==> A::__fromShape($val19),
         ),
       );
     $me->optional_map_of_string_to_set_of_i32 = Shapes::idx($shape, 'optional_map_of_string_to_set_of_i32') === null ? null : 
       (new Map(Shapes::idx($shape, 'optional_map_of_string_to_set_of_i32')))->map(
-        $val95 ==> new Set(Keyset\keys($val95)),
+        $val20 ==> new Set(Keyset\keys($val20)),
       );
     return $me;
   }

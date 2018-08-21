@@ -301,14 +301,6 @@ class MyServicePrioChild_pang_args implements \IThriftStruct, \IThriftShapishStr
     return 'MyServicePrioChild_pang_args';
   }
 
-  public static function __jsonArrayToShape(
-    dict<arraykey, mixed> $json_data,
-  ): ?self::TShape {
-    $shape_data = $json_data;
-
-    return /* HH_IGNORE_ERROR[4110] */ $shape_data;
-  }
-
   public static function __fromShape(self::TShape $shape): this {
     $me = /* HH_IGNORE_ERROR[4060] */ new static();
     return $me;

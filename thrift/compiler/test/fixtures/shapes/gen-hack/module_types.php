@@ -112,28 +112,6 @@ class Union implements \IThriftStruct, \IThriftUnion<\test\fixtures\UnionEnum>, 
     return nullthrows($this->stringValue);
   }
 
-  public static function __jsonArrayToShape(
-    dict<arraykey, mixed> $json_data,
-  ): ?self::TShape {
-    $shape_data = $json_data;
-
-    if (!C\contains_key($shape_data, 'intValue')) {
-      $shape_data['intValue'] = null;
-    }
-    if (!is_int($shape_data['intValue']) && !is_null($shape_data['intValue'])) {
-      return null;
-    }
-
-    if (!C\contains_key($shape_data, 'stringValue')) {
-      $shape_data['stringValue'] = null;
-    }
-    if (!is_string($shape_data['stringValue']) && !is_null($shape_data['stringValue'])) {
-      return null;
-    }
-
-    return /* HH_IGNORE_ERROR[4110] */ $shape_data;
-  }
-
   public static function __fromShape(self::TShape $shape): this {
     $me = /* HH_IGNORE_ERROR[4060] */ new static();
     $me->_type = \test\fixtures\UnionEnum::_EMPTY_;
@@ -258,21 +236,6 @@ class A implements \IThriftStruct, \IThriftShapishStruct {
 
   public function getName(): string {
     return 'A';
-  }
-
-  public static function __jsonArrayToShape(
-    dict<arraykey, mixed> $json_data,
-  ): ?self::TShape {
-    $shape_data = $json_data;
-
-    if (!C\contains_key($shape_data, 'a')) {
-      $shape_data['a'] = '';
-    }
-    if (!is_string($shape_data['a'])) {
-      return null;
-    }
-
-    return /* HH_IGNORE_ERROR[4110] */ $shape_data;
   }
 
   public static function __fromShape(self::TShape $shape): this {
@@ -1226,763 +1189,6 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     return 'B';
   }
 
-  public static function __jsonArrayToShape(
-    dict<arraykey, mixed> $json_data,
-  ): ?self::TShape {
-    $shape_data = $json_data;
-
-    if (!C\contains_key($shape_data, 'just_an_A')) {
-      $shape_data['just_an_A'] = null;
-    }
-    if (!is_null($shape_data['just_an_A'])) {
-      $shape_data['just_an_A'] = \test\fixtures\A::__jsonArrayToShape(/* HH_IGNORE_ERROR[4110] */ $shape_data['just_an_A']);
-      if (is_null($shape_data['just_an_A'])) {
-        return null;
-      }
-    }
-
-    if (!C\contains_key($shape_data, 'set_of_i32')) {
-      $shape_data['set_of_i32'] = Set {};
-    }
-    if (!is_array($shape_data['set_of_i32'])) {
-      return null;
-    }
-    $the_set2 = dict[];
-    foreach (/* HH_IGNORE_ERROR[4110] */ $shape_data['set_of_i32'] as $key0 => $shape_data1) {
-      if (!is_int($shape_data1)) {
-        return null;
-      }
-      $the_set2[$shape_data1] = true;
-    }
-    $shape_data['set_of_i32'] = $the_set2;
-
-    if (!C\contains_key($shape_data, 'list_of_i32')) {
-      $shape_data['list_of_i32'] = Vector {};
-    }
-    if (!is_array($shape_data['list_of_i32'])) {
-      return null;
-    }
-    foreach (/* HH_IGNORE_ERROR[4110] */$shape_data['list_of_i32'] as $key3 => $value4) {
-      if (!is_int($key3)) {
-        return null;
-      }
-      if (!is_int($value4)) {
-        return null;
-      }
-      /* HH_IGNORE_ERROR[4005] */
-      /* HH_IGNORE_ERROR[4063] */
-      $shape_data['list_of_i32'][$key3] = $value4;
-    }
-
-    if (!C\contains_key($shape_data, 'list_of_string')) {
-      $shape_data['list_of_string'] = Vector {};
-    }
-    if (!is_array($shape_data['list_of_string'])) {
-      return null;
-    }
-    foreach (/* HH_IGNORE_ERROR[4110] */$shape_data['list_of_string'] as $key5 => $value6) {
-      if (!is_int($key5)) {
-        return null;
-      }
-      if (!is_string($value6)) {
-        return null;
-      }
-      /* HH_IGNORE_ERROR[4005] */
-      /* HH_IGNORE_ERROR[4063] */
-      $shape_data['list_of_string'][$key5] = $value6;
-    }
-
-    if (!C\contains_key($shape_data, 'map_of_string_to_i32')) {
-      $shape_data['map_of_string_to_i32'] = Map {};
-    }
-    if (!is_array($shape_data['map_of_string_to_i32'])) {
-      return null;
-    }
-    foreach (/* HH_IGNORE_ERROR[4110] */$shape_data['map_of_string_to_i32'] as $key7 => $value8) {
-      if (!is_string($key7)) {
-        return null;
-      }
-      if (!is_int($value8)) {
-        return null;
-      }
-      /* HH_IGNORE_ERROR[4005] */
-      /* HH_IGNORE_ERROR[4063] */
-      $shape_data['map_of_string_to_i32'][$key7] = $value8;
-    }
-
-    if (!C\contains_key($shape_data, 'map_of_string_to_A')) {
-      $shape_data['map_of_string_to_A'] = Map {};
-    }
-    if (!is_array($shape_data['map_of_string_to_A'])) {
-      return null;
-    }
-    foreach (/* HH_IGNORE_ERROR[4110] */$shape_data['map_of_string_to_A'] as $key9 => $value10) {
-      if (!is_string($key9)) {
-        return null;
-      }
-      $value10 = \test\fixtures\A::__jsonArrayToShape(/* HH_IGNORE_ERROR[4110] */ $value10);
-      if (is_null($value10)) {
-        return null;
-      }
-      /* HH_IGNORE_ERROR[4005] */
-      /* HH_IGNORE_ERROR[4063] */
-      $shape_data['map_of_string_to_A'][$key9] = $value10;
-    }
-
-    if (!C\contains_key($shape_data, 'map_of_string_to_list_of_i32')) {
-      $shape_data['map_of_string_to_list_of_i32'] = Map {};
-    }
-    if (!is_array($shape_data['map_of_string_to_list_of_i32'])) {
-      return null;
-    }
-    foreach (/* HH_IGNORE_ERROR[4110] */$shape_data['map_of_string_to_list_of_i32'] as $key11 => $value12) {
-      if (!is_string($key11)) {
-        return null;
-      }
-      if (!is_array($value12)) {
-        return null;
-      }
-      foreach (/* HH_IGNORE_ERROR[4110] */$value12 as $key13 => $value14) {
-        if (!is_int($key13)) {
-          return null;
-        }
-        if (!is_int($value14)) {
-          return null;
-        }
-        /* HH_IGNORE_ERROR[4005] */
-        /* HH_IGNORE_ERROR[4063] */
-        $value12[$key13] = $value14;
-      }
-      /* HH_IGNORE_ERROR[4005] */
-      /* HH_IGNORE_ERROR[4063] */
-      $shape_data['map_of_string_to_list_of_i32'][$key11] = $value12;
-    }
-
-    if (!C\contains_key($shape_data, 'map_of_string_to_list_of_A')) {
-      $shape_data['map_of_string_to_list_of_A'] = Map {};
-    }
-    if (!is_array($shape_data['map_of_string_to_list_of_A'])) {
-      return null;
-    }
-    foreach (/* HH_IGNORE_ERROR[4110] */$shape_data['map_of_string_to_list_of_A'] as $key15 => $value16) {
-      if (!is_string($key15)) {
-        return null;
-      }
-      if (!is_array($value16)) {
-        return null;
-      }
-      foreach (/* HH_IGNORE_ERROR[4110] */$value16 as $key17 => $value18) {
-        if (!is_int($key17)) {
-          return null;
-        }
-        $value18 = \test\fixtures\A::__jsonArrayToShape(/* HH_IGNORE_ERROR[4110] */ $value18);
-        if (is_null($value18)) {
-          return null;
-        }
-        /* HH_IGNORE_ERROR[4005] */
-        /* HH_IGNORE_ERROR[4063] */
-        $value16[$key17] = $value18;
-      }
-      /* HH_IGNORE_ERROR[4005] */
-      /* HH_IGNORE_ERROR[4063] */
-      $shape_data['map_of_string_to_list_of_A'][$key15] = $value16;
-    }
-
-    if (!C\contains_key($shape_data, 'map_of_string_to_set_of_i32')) {
-      $shape_data['map_of_string_to_set_of_i32'] = Map {};
-    }
-    if (!is_array($shape_data['map_of_string_to_set_of_i32'])) {
-      return null;
-    }
-    foreach (/* HH_IGNORE_ERROR[4110] */$shape_data['map_of_string_to_set_of_i32'] as $key19 => $value20) {
-      if (!is_string($key19)) {
-        return null;
-      }
-      if (!is_array($value20)) {
-        return null;
-      }
-      $the_set23 = dict[];
-      foreach (/* HH_IGNORE_ERROR[4110] */ $value20 as $key21 => $shape_data22) {
-        if (!is_int($shape_data22)) {
-          return null;
-        }
-        $the_set23[$shape_data22] = true;
-      }
-      $value20 = $the_set23;
-      /* HH_IGNORE_ERROR[4005] */
-      /* HH_IGNORE_ERROR[4063] */
-      $shape_data['map_of_string_to_set_of_i32'][$key19] = $value20;
-    }
-
-    if (!C\contains_key($shape_data, 'map_of_string_to_map_of_string_to_i32')) {
-      $shape_data['map_of_string_to_map_of_string_to_i32'] = Map {};
-    }
-    if (!is_array($shape_data['map_of_string_to_map_of_string_to_i32'])) {
-      return null;
-    }
-    foreach (/* HH_IGNORE_ERROR[4110] */$shape_data['map_of_string_to_map_of_string_to_i32'] as $key24 => $value25) {
-      if (!is_string($key24)) {
-        return null;
-      }
-      if (!is_array($value25)) {
-        return null;
-      }
-      foreach (/* HH_IGNORE_ERROR[4110] */$value25 as $key26 => $value27) {
-        if (!is_string($key26)) {
-          return null;
-        }
-        if (!is_int($value27)) {
-          return null;
-        }
-        /* HH_IGNORE_ERROR[4005] */
-        /* HH_IGNORE_ERROR[4063] */
-        $value25[$key26] = $value27;
-      }
-      /* HH_IGNORE_ERROR[4005] */
-      /* HH_IGNORE_ERROR[4063] */
-      $shape_data['map_of_string_to_map_of_string_to_i32'][$key24] = $value25;
-    }
-
-    if (!C\contains_key($shape_data, 'map_of_string_to_map_of_string_to_A')) {
-      $shape_data['map_of_string_to_map_of_string_to_A'] = Map {};
-    }
-    if (!is_array($shape_data['map_of_string_to_map_of_string_to_A'])) {
-      return null;
-    }
-    foreach (/* HH_IGNORE_ERROR[4110] */$shape_data['map_of_string_to_map_of_string_to_A'] as $key28 => $value29) {
-      if (!is_string($key28)) {
-        return null;
-      }
-      if (!is_array($value29)) {
-        return null;
-      }
-      foreach (/* HH_IGNORE_ERROR[4110] */$value29 as $key30 => $value31) {
-        if (!is_string($key30)) {
-          return null;
-        }
-        $value31 = \test\fixtures\A::__jsonArrayToShape(/* HH_IGNORE_ERROR[4110] */ $value31);
-        if (is_null($value31)) {
-          return null;
-        }
-        /* HH_IGNORE_ERROR[4005] */
-        /* HH_IGNORE_ERROR[4063] */
-        $value29[$key30] = $value31;
-      }
-      /* HH_IGNORE_ERROR[4005] */
-      /* HH_IGNORE_ERROR[4063] */
-      $shape_data['map_of_string_to_map_of_string_to_A'][$key28] = $value29;
-    }
-
-    if (!C\contains_key($shape_data, 'list_of_set_of_i32')) {
-      $shape_data['list_of_set_of_i32'] = Vector {};
-    }
-    if (!is_array($shape_data['list_of_set_of_i32'])) {
-      return null;
-    }
-    foreach (/* HH_IGNORE_ERROR[4110] */$shape_data['list_of_set_of_i32'] as $key32 => $value33) {
-      if (!is_int($key32)) {
-        return null;
-      }
-      if (!is_array($value33)) {
-        return null;
-      }
-      $the_set36 = dict[];
-      foreach (/* HH_IGNORE_ERROR[4110] */ $value33 as $key34 => $shape_data35) {
-        if (!is_int($shape_data35)) {
-          return null;
-        }
-        $the_set36[$shape_data35] = true;
-      }
-      $value33 = $the_set36;
-      /* HH_IGNORE_ERROR[4005] */
-      /* HH_IGNORE_ERROR[4063] */
-      $shape_data['list_of_set_of_i32'][$key32] = $value33;
-    }
-
-    if (!C\contains_key($shape_data, 'list_of_map_of_string_to_list_of_A')) {
-      $shape_data['list_of_map_of_string_to_list_of_A'] = Vector {};
-    }
-    if (!is_array($shape_data['list_of_map_of_string_to_list_of_A'])) {
-      return null;
-    }
-    foreach (/* HH_IGNORE_ERROR[4110] */$shape_data['list_of_map_of_string_to_list_of_A'] as $key37 => $value38) {
-      if (!is_int($key37)) {
-        return null;
-      }
-      if (!is_array($value38)) {
-        return null;
-      }
-      foreach (/* HH_IGNORE_ERROR[4110] */$value38 as $key39 => $value40) {
-        if (!is_string($key39)) {
-          return null;
-        }
-        if (!is_array($value40)) {
-          return null;
-        }
-        foreach (/* HH_IGNORE_ERROR[4110] */$value40 as $key41 => $value42) {
-          if (!is_int($key41)) {
-            return null;
-          }
-          $value42 = \test\fixtures\A::__jsonArrayToShape(/* HH_IGNORE_ERROR[4110] */ $value42);
-          if (is_null($value42)) {
-            return null;
-          }
-          /* HH_IGNORE_ERROR[4005] */
-          /* HH_IGNORE_ERROR[4063] */
-          $value40[$key41] = $value42;
-        }
-        /* HH_IGNORE_ERROR[4005] */
-        /* HH_IGNORE_ERROR[4063] */
-        $value38[$key39] = $value40;
-      }
-      /* HH_IGNORE_ERROR[4005] */
-      /* HH_IGNORE_ERROR[4063] */
-      $shape_data['list_of_map_of_string_to_list_of_A'][$key37] = $value38;
-    }
-
-    if (!C\contains_key($shape_data, 'list_of_map_of_string_to_A')) {
-      $shape_data['list_of_map_of_string_to_A'] = Vector {};
-    }
-    if (!is_array($shape_data['list_of_map_of_string_to_A'])) {
-      return null;
-    }
-    foreach (/* HH_IGNORE_ERROR[4110] */$shape_data['list_of_map_of_string_to_A'] as $key43 => $value44) {
-      if (!is_int($key43)) {
-        return null;
-      }
-      if (!is_array($value44)) {
-        return null;
-      }
-      foreach (/* HH_IGNORE_ERROR[4110] */$value44 as $key45 => $value46) {
-        if (!is_string($key45)) {
-          return null;
-        }
-        $value46 = \test\fixtures\A::__jsonArrayToShape(/* HH_IGNORE_ERROR[4110] */ $value46);
-        if (is_null($value46)) {
-          return null;
-        }
-        /* HH_IGNORE_ERROR[4005] */
-        /* HH_IGNORE_ERROR[4063] */
-        $value44[$key45] = $value46;
-      }
-      /* HH_IGNORE_ERROR[4005] */
-      /* HH_IGNORE_ERROR[4063] */
-      $shape_data['list_of_map_of_string_to_A'][$key43] = $value44;
-    }
-
-    if (!C\contains_key($shape_data, 'list_of_self')) {
-      $shape_data['list_of_self'] = Vector {};
-    }
-    if (!is_array($shape_data['list_of_self'])) {
-      return null;
-    }
-    foreach (/* HH_IGNORE_ERROR[4110] */$shape_data['list_of_self'] as $key47 => $value48) {
-      if (!is_int($key47)) {
-        return null;
-      }
-      $value48 = \test\fixtures\B::__jsonArrayToShape(/* HH_IGNORE_ERROR[4110] */ $value48);
-      if (is_null($value48)) {
-        return null;
-      }
-      /* HH_IGNORE_ERROR[4005] */
-      /* HH_IGNORE_ERROR[4063] */
-      $shape_data['list_of_self'][$key47] = $value48;
-    }
-
-    if (!C\contains_key($shape_data, 'map_of_string_to_self')) {
-      $shape_data['map_of_string_to_self'] = Map {};
-    }
-    if (!is_array($shape_data['map_of_string_to_self'])) {
-      return null;
-    }
-    foreach (/* HH_IGNORE_ERROR[4110] */$shape_data['map_of_string_to_self'] as $key49 => $value50) {
-      if (!is_string($key49)) {
-        return null;
-      }
-      $value50 = \test\fixtures\B::__jsonArrayToShape(/* HH_IGNORE_ERROR[4110] */ $value50);
-      if (is_null($value50)) {
-        return null;
-      }
-      /* HH_IGNORE_ERROR[4005] */
-      /* HH_IGNORE_ERROR[4063] */
-      $shape_data['map_of_string_to_self'][$key49] = $value50;
-    }
-
-    if (!C\contains_key($shape_data, 'just_an_enum')) {
-      $shape_data['just_an_enum'] = null;
-    }
-    if (!is_int($shape_data['just_an_enum']) && !is_null($shape_data['just_an_enum'])) {
-      return null;
-    }
-
-    if (!C\contains_key($shape_data, 'just_a_union')) {
-      $shape_data['just_a_union'] = null;
-    }
-    if (!is_null($shape_data['just_a_union'])) {
-      $shape_data['just_a_union'] = \test\fixtures\Union::__jsonArrayToShape(/* HH_IGNORE_ERROR[4110] */ $shape_data['just_a_union']);
-      if (is_null($shape_data['just_a_union'])) {
-        return null;
-      }
-    }
-
-    if (!C\contains_key($shape_data, 'optional_just_an_A')) {
-      $shape_data['optional_just_an_A'] = null;
-    }
-    if (!is_null($shape_data['optional_just_an_A'])) {
-      $shape_data['optional_just_an_A'] = \test\fixtures\A::__jsonArrayToShape(/* HH_IGNORE_ERROR[4110] */ $shape_data['optional_just_an_A']);
-      if (is_null($shape_data['optional_just_an_A'])) {
-        return null;
-      }
-    }
-
-    if (!C\contains_key($shape_data, 'optional_set_of_i32')) {
-      $shape_data['optional_set_of_i32'] = null;
-    }
-    if (!is_null($shape_data['optional_set_of_i32'])) {
-      if (!is_array($shape_data['optional_set_of_i32'])) {
-        return null;
-      }
-      $the_set53 = dict[];
-      foreach (/* HH_IGNORE_ERROR[4110] */ $shape_data['optional_set_of_i32'] as $key51 => $shape_data52) {
-        if (!is_int($shape_data52)) {
-          return null;
-        }
-        $the_set53[$shape_data52] = true;
-      }
-      $shape_data['optional_set_of_i32'] = $the_set53;
-    }
-
-    if (!C\contains_key($shape_data, 'optional_list_of_i32')) {
-      $shape_data['optional_list_of_i32'] = null;
-    }
-    if (!is_null($shape_data['optional_list_of_i32'])) {
-      if (!is_array($shape_data['optional_list_of_i32'])) {
-        return null;
-      }
-      foreach (/* HH_IGNORE_ERROR[4110] */$shape_data['optional_list_of_i32'] as $key54 => $value55) {
-        if (!is_int($key54)) {
-          return null;
-        }
-        if (!is_int($value55)) {
-          return null;
-        }
-        /* HH_IGNORE_ERROR[4005] */
-        /* HH_IGNORE_ERROR[4063] */
-        $shape_data['optional_list_of_i32'][$key54] = $value55;
-      }
-    }
-
-    if (!C\contains_key($shape_data, 'optional_list_of_string')) {
-      $shape_data['optional_list_of_string'] = null;
-    }
-    if (!is_null($shape_data['optional_list_of_string'])) {
-      if (!is_array($shape_data['optional_list_of_string'])) {
-        return null;
-      }
-      foreach (/* HH_IGNORE_ERROR[4110] */$shape_data['optional_list_of_string'] as $key56 => $value57) {
-        if (!is_int($key56)) {
-          return null;
-        }
-        if (!is_string($value57)) {
-          return null;
-        }
-        /* HH_IGNORE_ERROR[4005] */
-        /* HH_IGNORE_ERROR[4063] */
-        $shape_data['optional_list_of_string'][$key56] = $value57;
-      }
-    }
-
-    if (!C\contains_key($shape_data, 'optional_map_of_string_to_i32')) {
-      $shape_data['optional_map_of_string_to_i32'] = null;
-    }
-    if (!is_null($shape_data['optional_map_of_string_to_i32'])) {
-      if (!is_array($shape_data['optional_map_of_string_to_i32'])) {
-        return null;
-      }
-      foreach (/* HH_IGNORE_ERROR[4110] */$shape_data['optional_map_of_string_to_i32'] as $key58 => $value59) {
-        if (!is_string($key58)) {
-          return null;
-        }
-        if (!is_int($value59)) {
-          return null;
-        }
-        /* HH_IGNORE_ERROR[4005] */
-        /* HH_IGNORE_ERROR[4063] */
-        $shape_data['optional_map_of_string_to_i32'][$key58] = $value59;
-      }
-    }
-
-    if (!C\contains_key($shape_data, 'optional_map_of_string_to_A')) {
-      $shape_data['optional_map_of_string_to_A'] = null;
-    }
-    if (!is_null($shape_data['optional_map_of_string_to_A'])) {
-      if (!is_array($shape_data['optional_map_of_string_to_A'])) {
-        return null;
-      }
-      foreach (/* HH_IGNORE_ERROR[4110] */$shape_data['optional_map_of_string_to_A'] as $key60 => $value61) {
-        if (!is_string($key60)) {
-          return null;
-        }
-        $value61 = \test\fixtures\A::__jsonArrayToShape(/* HH_IGNORE_ERROR[4110] */ $value61);
-        if (is_null($value61)) {
-          return null;
-        }
-        /* HH_IGNORE_ERROR[4005] */
-        /* HH_IGNORE_ERROR[4063] */
-        $shape_data['optional_map_of_string_to_A'][$key60] = $value61;
-      }
-    }
-
-    if (!C\contains_key($shape_data, 'optional_map_of_string_to_list_of_i32')) {
-      $shape_data['optional_map_of_string_to_list_of_i32'] = null;
-    }
-    if (!is_null($shape_data['optional_map_of_string_to_list_of_i32'])) {
-      if (!is_array($shape_data['optional_map_of_string_to_list_of_i32'])) {
-        return null;
-      }
-      foreach (/* HH_IGNORE_ERROR[4110] */$shape_data['optional_map_of_string_to_list_of_i32'] as $key62 => $value63) {
-        if (!is_string($key62)) {
-          return null;
-        }
-        if (!is_array($value63)) {
-          return null;
-        }
-        foreach (/* HH_IGNORE_ERROR[4110] */$value63 as $key64 => $value65) {
-          if (!is_int($key64)) {
-            return null;
-          }
-          if (!is_int($value65)) {
-            return null;
-          }
-          /* HH_IGNORE_ERROR[4005] */
-          /* HH_IGNORE_ERROR[4063] */
-          $value63[$key64] = $value65;
-        }
-        /* HH_IGNORE_ERROR[4005] */
-        /* HH_IGNORE_ERROR[4063] */
-        $shape_data['optional_map_of_string_to_list_of_i32'][$key62] = $value63;
-      }
-    }
-
-    if (!C\contains_key($shape_data, 'optional_map_of_string_to_list_of_A')) {
-      $shape_data['optional_map_of_string_to_list_of_A'] = null;
-    }
-    if (!is_null($shape_data['optional_map_of_string_to_list_of_A'])) {
-      if (!is_array($shape_data['optional_map_of_string_to_list_of_A'])) {
-        return null;
-      }
-      foreach (/* HH_IGNORE_ERROR[4110] */$shape_data['optional_map_of_string_to_list_of_A'] as $key66 => $value67) {
-        if (!is_string($key66)) {
-          return null;
-        }
-        if (!is_array($value67)) {
-          return null;
-        }
-        foreach (/* HH_IGNORE_ERROR[4110] */$value67 as $key68 => $value69) {
-          if (!is_int($key68)) {
-            return null;
-          }
-          $value69 = \test\fixtures\A::__jsonArrayToShape(/* HH_IGNORE_ERROR[4110] */ $value69);
-          if (is_null($value69)) {
-            return null;
-          }
-          /* HH_IGNORE_ERROR[4005] */
-          /* HH_IGNORE_ERROR[4063] */
-          $value67[$key68] = $value69;
-        }
-        /* HH_IGNORE_ERROR[4005] */
-        /* HH_IGNORE_ERROR[4063] */
-        $shape_data['optional_map_of_string_to_list_of_A'][$key66] = $value67;
-      }
-    }
-
-    if (!C\contains_key($shape_data, 'optional_map_of_string_to_set_of_i32')) {
-      $shape_data['optional_map_of_string_to_set_of_i32'] = null;
-    }
-    if (!is_null($shape_data['optional_map_of_string_to_set_of_i32'])) {
-      if (!is_array($shape_data['optional_map_of_string_to_set_of_i32'])) {
-        return null;
-      }
-      foreach (/* HH_IGNORE_ERROR[4110] */$shape_data['optional_map_of_string_to_set_of_i32'] as $key70 => $value71) {
-        if (!is_string($key70)) {
-          return null;
-        }
-        if (!is_array($value71)) {
-          return null;
-        }
-        $the_set74 = dict[];
-        foreach (/* HH_IGNORE_ERROR[4110] */ $value71 as $key72 => $shape_data73) {
-          if (!is_int($shape_data73)) {
-            return null;
-          }
-          $the_set74[$shape_data73] = true;
-        }
-        $value71 = $the_set74;
-        /* HH_IGNORE_ERROR[4005] */
-        /* HH_IGNORE_ERROR[4063] */
-        $shape_data['optional_map_of_string_to_set_of_i32'][$key70] = $value71;
-      }
-    }
-
-    if (!C\contains_key($shape_data, 'optional_enum')) {
-      $shape_data['optional_enum'] = null;
-    }
-    if (!is_int($shape_data['optional_enum']) && !is_null($shape_data['optional_enum'])) {
-      return null;
-    }
-
-    if (!C\contains_key($shape_data, 'required_enum_with_default')) {
-      $shape_data['required_enum_with_default'] = null;
-    }
-    if (!is_int($shape_data['required_enum_with_default']) && !is_null($shape_data['required_enum_with_default'])) {
-      return null;
-    }
-
-    if (!C\contains_key($shape_data, 'string_with_default_value')) {
-      $shape_data['string_with_default_value'] = "de_fault_in_our_stars";
-    }
-    if (!is_string($shape_data['string_with_default_value'])) {
-      return null;
-    }
-
-    if (!C\contains_key($shape_data, 'i32_with_default_value')) {
-      $shape_data['i32_with_default_value'] = 1729;
-    }
-    if (!is_int($shape_data['i32_with_default_value'])) {
-      return null;
-    }
-
-    if (!C\contains_key($shape_data, 'double_with_default_value')) {
-      $shape_data['double_with_default_value'] = 3.14159;
-    }
-    if (!(is_float($shape_data['double_with_default_value']) || is_int($shape_data['double_with_default_value']))) {
-      return null;
-    }
-    if (is_int($shape_data['double_with_default_value'])) {
-      $shape_data['double_with_default_value'] = (float)$shape_data['double_with_default_value'];
-    }
-
-    if (!C\contains_key($shape_data, 'enum_with_default_value')) {
-      $shape_data['enum_with_default_value'] = null;
-    }
-    if (!is_int($shape_data['enum_with_default_value']) && !is_null($shape_data['enum_with_default_value'])) {
-      return null;
-    }
-
-    if (!C\contains_key($shape_data, 'A_with_default_value')) {
-      $shape_data['A_with_default_value'] = null;
-    }
-    if (!is_null($shape_data['A_with_default_value'])) {
-      $shape_data['A_with_default_value'] = \test\fixtures\A::__jsonArrayToShape(/* HH_IGNORE_ERROR[4110] */ $shape_data['A_with_default_value']);
-      if (is_null($shape_data['A_with_default_value'])) {
-        return null;
-      }
-    }
-
-    if (!C\contains_key($shape_data, 'set_of_i32_with_default_value')) {
-      $shape_data['set_of_i32_with_default_value'] = Set {
-      3,
-      7,
-      31,
-      127,
-    };
-    }
-    if (!is_array($shape_data['set_of_i32_with_default_value'])) {
-      return null;
-    }
-    $the_set77 = dict[];
-    foreach (/* HH_IGNORE_ERROR[4110] */ $shape_data['set_of_i32_with_default_value'] as $key75 => $shape_data76) {
-      if (!is_int($shape_data76)) {
-        return null;
-      }
-      $the_set77[$shape_data76] = true;
-    }
-    $shape_data['set_of_i32_with_default_value'] = $the_set77;
-
-    if (!C\contains_key($shape_data, 'map_of_i32_to_string_with_default_value')) {
-      $shape_data['map_of_i32_to_string_with_default_value'] = Map {
-      1 => "fish",
-      2 => "fish",
-    };
-    }
-    if (!is_array($shape_data['map_of_i32_to_string_with_default_value'])) {
-      return null;
-    }
-    foreach (/* HH_IGNORE_ERROR[4110] */$shape_data['map_of_i32_to_string_with_default_value'] as $key78 => $value79) {
-      if (!is_int($key78)) {
-        return null;
-      }
-      if (!is_string($value79)) {
-        return null;
-      }
-      /* HH_IGNORE_ERROR[4005] */
-      /* HH_IGNORE_ERROR[4063] */
-      $shape_data['map_of_i32_to_string_with_default_value'][$key78] = $value79;
-    }
-
-    if (!C\contains_key($shape_data, 'list_of_string_with_default_value')) {
-      $shape_data['list_of_string_with_default_value'] = Vector {
-      "red fish",
-      "blue fish",
-    };
-    }
-    if (!is_array($shape_data['list_of_string_with_default_value'])) {
-      return null;
-    }
-    foreach (/* HH_IGNORE_ERROR[4110] */$shape_data['list_of_string_with_default_value'] as $key80 => $value81) {
-      if (!is_int($key80)) {
-        return null;
-      }
-      if (!is_string($value81)) {
-        return null;
-      }
-      /* HH_IGNORE_ERROR[4005] */
-      /* HH_IGNORE_ERROR[4063] */
-      $shape_data['list_of_string_with_default_value'][$key80] = $value81;
-    }
-
-    if (!C\contains_key($shape_data, 'map_of_string_to_list_of_i32_with_default_value')) {
-      $shape_data['map_of_string_to_list_of_i32_with_default_value'] = Map {
-      "Jenny" => Vector {
-        8,
-        6,
-        7,
-        5,
-        3,
-        0,
-        9,
-      },
-    };
-    }
-    if (!is_array($shape_data['map_of_string_to_list_of_i32_with_default_value'])) {
-      return null;
-    }
-    foreach (/* HH_IGNORE_ERROR[4110] */$shape_data['map_of_string_to_list_of_i32_with_default_value'] as $key82 => $value83) {
-      if (!is_string($key82)) {
-        return null;
-      }
-      if (!is_array($value83)) {
-        return null;
-      }
-      foreach (/* HH_IGNORE_ERROR[4110] */$value83 as $key84 => $value85) {
-        if (!is_int($key84)) {
-          return null;
-        }
-        if (!is_int($value85)) {
-          return null;
-        }
-        /* HH_IGNORE_ERROR[4005] */
-        /* HH_IGNORE_ERROR[4063] */
-        $value83[$key84] = $value85;
-      }
-      /* HH_IGNORE_ERROR[4005] */
-      /* HH_IGNORE_ERROR[4063] */
-      $shape_data['map_of_string_to_list_of_i32_with_default_value'][$key82] = $value83;
-    }
-
-    return /* HH_IGNORE_ERROR[4110] */ $shape_data;
-  }
-
   public static function __fromShape(self::TShape $shape): this {
     $me = /* HH_IGNORE_ERROR[4060] */ new static();
     $me->just_an_A = Shapes::idx($shape, 'just_an_A') === null ? null : \test\fixtures\A::__fromShape(nullthrows(Shapes::idx($shape, 'just_an_A')));
@@ -1991,47 +1197,47 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     $me->list_of_string = (new Vector($shape['list_of_string']));
     $me->map_of_string_to_i32 = (new Map($shape['map_of_string_to_i32']));
     $me->map_of_string_to_A = (new Map($shape['map_of_string_to_A']))->map(
-      $val86 ==> \test\fixtures\A::__fromShape($val86),
+      $val0 ==> \test\fixtures\A::__fromShape($val0),
     );
     $me->map_of_string_to_list_of_i32 = (new Map($shape['map_of_string_to_list_of_i32']))->map(
-      $val87 ==> (new Vector($val87)),
+      $val1 ==> (new Vector($val1)),
     );
     $me->map_of_string_to_list_of_A = (new Map($shape['map_of_string_to_list_of_A']))->map(
-      $val88 ==> (new Vector($val88))->map(
-        $val89 ==> \test\fixtures\A::__fromShape($val89),
+      $val2 ==> (new Vector($val2))->map(
+        $val3 ==> \test\fixtures\A::__fromShape($val3),
       ),
     );
     $me->map_of_string_to_set_of_i32 = (new Map($shape['map_of_string_to_set_of_i32']))->map(
-      $val90 ==> new Set(Keyset\keys($val90)),
+      $val4 ==> new Set(Keyset\keys($val4)),
     );
     $me->map_of_string_to_map_of_string_to_i32 = (new Map($shape['map_of_string_to_map_of_string_to_i32']))->map(
-      $val91 ==> (new Map($val91)),
+      $val5 ==> (new Map($val5)),
     );
     $me->map_of_string_to_map_of_string_to_A = (new Map($shape['map_of_string_to_map_of_string_to_A']))->map(
-      $val92 ==> (new Map($val92))->map(
-        $val93 ==> \test\fixtures\A::__fromShape($val93),
+      $val6 ==> (new Map($val6))->map(
+        $val7 ==> \test\fixtures\A::__fromShape($val7),
       ),
     );
     $me->list_of_set_of_i32 = (new Vector($shape['list_of_set_of_i32']))->map(
-      $val94 ==> new Set(Keyset\keys($val94)),
+      $val8 ==> new Set(Keyset\keys($val8)),
     );
     $me->list_of_map_of_string_to_list_of_A = (new Vector($shape['list_of_map_of_string_to_list_of_A']))->map(
-      $val95 ==> (new Map($val95))->map(
-        $val96 ==> (new Vector($val96))->map(
-          $val97 ==> \test\fixtures\A::__fromShape($val97),
+      $val9 ==> (new Map($val9))->map(
+        $val10 ==> (new Vector($val10))->map(
+          $val11 ==> \test\fixtures\A::__fromShape($val11),
         ),
       ),
     );
     $me->list_of_map_of_string_to_A = (new Vector($shape['list_of_map_of_string_to_A']))->map(
-      $val98 ==> (new Map($val98))->map(
-        $val99 ==> \test\fixtures\A::__fromShape($val99),
+      $val12 ==> (new Map($val12))->map(
+        $val13 ==> \test\fixtures\A::__fromShape($val13),
       ),
     );
     $me->list_of_self = (new Vector($shape['list_of_self']))->map(
-      $val100 ==> \test\fixtures\B::__fromShape($val100),
+      $val14 ==> \test\fixtures\B::__fromShape($val14),
     );
     $me->map_of_string_to_self = (new Map($shape['map_of_string_to_self']))->map(
-      $val101 ==> \test\fixtures\B::__fromShape($val101),
+      $val15 ==> \test\fixtures\B::__fromShape($val15),
     );
     $me->just_an_enum = Shapes::idx($shape, 'just_an_enum');
     $me->just_a_union = Shapes::idx($shape, 'just_a_union') === null ? null : \test\fixtures\Union::__fromShape(nullthrows(Shapes::idx($shape, 'just_a_union')));
@@ -2045,21 +1251,21 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
       (new Map(Shapes::idx($shape, 'optional_map_of_string_to_i32')));
     $me->optional_map_of_string_to_A = Shapes::idx($shape, 'optional_map_of_string_to_A') === null ? null : 
       (new Map(Shapes::idx($shape, 'optional_map_of_string_to_A')))->map(
-        $val102 ==> \test\fixtures\A::__fromShape($val102),
+        $val16 ==> \test\fixtures\A::__fromShape($val16),
       );
     $me->optional_map_of_string_to_list_of_i32 = Shapes::idx($shape, 'optional_map_of_string_to_list_of_i32') === null ? null : 
       (new Map(Shapes::idx($shape, 'optional_map_of_string_to_list_of_i32')))->map(
-        $val103 ==> (new Vector($val103)),
+        $val17 ==> (new Vector($val17)),
       );
     $me->optional_map_of_string_to_list_of_A = Shapes::idx($shape, 'optional_map_of_string_to_list_of_A') === null ? null : 
       (new Map(Shapes::idx($shape, 'optional_map_of_string_to_list_of_A')))->map(
-        $val104 ==> (new Vector($val104))->map(
-          $val105 ==> \test\fixtures\A::__fromShape($val105),
+        $val18 ==> (new Vector($val18))->map(
+          $val19 ==> \test\fixtures\A::__fromShape($val19),
         ),
       );
     $me->optional_map_of_string_to_set_of_i32 = Shapes::idx($shape, 'optional_map_of_string_to_set_of_i32') === null ? null : 
       (new Map(Shapes::idx($shape, 'optional_map_of_string_to_set_of_i32')))->map(
-        $val106 ==> new Set(Keyset\keys($val106)),
+        $val20 ==> new Set(Keyset\keys($val20)),
       );
     $me->optional_enum = Shapes::idx($shape, 'optional_enum');
     $me->required_enum_with_default = $shape['required_enum_with_default'];
@@ -2072,7 +1278,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     $me->map_of_i32_to_string_with_default_value = (new Map($shape['map_of_i32_to_string_with_default_value']));
     $me->list_of_string_with_default_value = (new Vector($shape['list_of_string_with_default_value']));
     $me->map_of_string_to_list_of_i32_with_default_value = (new Map($shape['map_of_string_to_list_of_i32_with_default_value']))->map(
-      $val107 ==> (new Vector($val107)),
+      $val21 ==> (new Vector($val21)),
     );
     return $me;
   }

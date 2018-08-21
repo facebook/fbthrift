@@ -527,14 +527,6 @@ class MyServicePrioParent_ping_args implements \IThriftStruct, \IThriftShapishSt
     return 'MyServicePrioParent_ping_args';
   }
 
-  public static function __jsonArrayToShape(
-    dict<arraykey, mixed> $json_data,
-  ): ?self::TShape {
-    $shape_data = $json_data;
-
-    return /* HH_IGNORE_ERROR[4110] */ $shape_data;
-  }
-
   public static function __fromShape(self::TShape $shape): this {
     $me = /* HH_IGNORE_ERROR[4060] */ new static();
     return $me;
@@ -599,14 +591,6 @@ class MyServicePrioParent_pong_args implements \IThriftStruct, \IThriftShapishSt
 
   public function getName(): string {
     return 'MyServicePrioParent_pong_args';
-  }
-
-  public static function __jsonArrayToShape(
-    dict<arraykey, mixed> $json_data,
-  ): ?self::TShape {
-    $shape_data = $json_data;
-
-    return /* HH_IGNORE_ERROR[4110] */ $shape_data;
   }
 
   public static function __fromShape(self::TShape $shape): this {
