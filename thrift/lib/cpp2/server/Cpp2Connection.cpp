@@ -370,11 +370,12 @@ void Cpp2Connection::requestReceived(
   }
 
   server->incActiveRequests();
-  if (req->timestamps_.getSamplingStatus().isEnabled()) {
+  auto samplingStatus = req->timestamps_.getSamplingStatus();
+  if (samplingStatus.isEnabled()) {
     // Expensive operations; happens only when sampling is enabled
     req->timestamps_.processBegin =
         apache::thrift::concurrency::Util::currentTimeUsec();
-    if (observer) {
+    if (samplingStatus.isEnabledByServer() && observer) {
       observer->queuedRequests(threadManager_->pendingTaskCount());
       observer->activeRequests(
           server->getActiveRequests() + server->getPendingCount());
