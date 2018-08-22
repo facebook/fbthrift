@@ -121,7 +121,7 @@ class SlowSimpleServiceImpl : public virtual SimpleServiceSvIf {
     requestSem_.post();
     return folly::futures::sleep(std::chrono::milliseconds(a + b))
         .via(getEventBase())
-        .then([=] { return a + b; });
+        .thenValue([=](auto&&) { return a + b; });
   }
 
   void waitForRequest() {
@@ -142,15 +142,16 @@ TEST(ScopedServerInterfaceThread, joinRequests) {
 
   auto cli =
       via(eb.getEventBase())
-          .then([&] {
+          .thenValue([&](auto&&) {
             return ssit->newClient<SimpleServiceAsyncClient>(eb.getEventBase());
           })
           .get();
 
   folly::stop_watch<std::chrono::milliseconds> timer;
 
-  auto future =
-      via(eb.getEventBase()).then([&] { return cli->future_add(2000, 0); });
+  auto future = via(eb.getEventBase()).thenValue([&](auto&&) {
+    return cli->future_add(2000, 0);
+  });
 
   serviceImpl->waitForRequest();
   serviceImpl.reset();
@@ -173,7 +174,7 @@ TEST(ScopedServerInterfaceThread, joinRequestsCancel) {
 
   auto cli =
       via(eb.getEventBase())
-          .then([&] {
+          .thenValue([&](auto&&) {
             return ssit->newClient<SimpleServiceAsyncClient>(eb.getEventBase());
           })
           .get();
@@ -183,7 +184,7 @@ TEST(ScopedServerInterfaceThread, joinRequestsCancel) {
   std::atomic<bool> stopping{false};
   std::thread schedulerThread([&] {
     while (!stopping) {
-      via(eb.getEventBase()).then([&] {
+      via(eb.getEventBase()).thenValue([&](auto&&) {
         cli->future_add(2000, 0).thenTry([](folly::Try<int64_t> t) {
           if (t.hasException()) {
             LOG(INFO) << folly::exceptionStr(t.exception());

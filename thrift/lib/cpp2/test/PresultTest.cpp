@@ -106,7 +106,7 @@ std::shared_ptr<PresultServiceAsyncClient> getClient(const ScopedServerThread& s
 template <class F, class Arg>
 void run(int& count, F&& f, Arg&& arg) {
   count++;
-  f().then([arg, &count](const Arg& res) {
+  f().thenValue([arg, &count](const Arg& res) {
     EXPECT_EQ(arg, res);
     count--;
   });
@@ -115,9 +115,7 @@ void run(int& count, F&& f, Arg&& arg) {
 template <class F>
 void run(int& count, F&& f) {
   count++;
-  f().then([&count]() {
-    count--;
-  });
+  f().thenValue([&count](auto&&) { count--; });
 }
 
 
@@ -173,13 +171,19 @@ TEST(Presult, Presult) {
 
   count++;
   client->future_methodException(1)
-      .then([](const Struct&) { FAIL(); })
-      .onError([&count](const Exception1& e) { EXPECT_EQ(e.code, 5); count--; })
+      .thenValue([](const Struct&) { FAIL(); })
+      .onError([&count](const Exception1& e) {
+        EXPECT_EQ(e.code, 5);
+        count--;
+      })
       .onError([](const std::exception&) { FAIL(); });
   count++;
   client->future_methodException(0)
-      .then([](const Struct&) { FAIL(); })
-      .onError([&count](const Exception2& e) { EXPECT_EQ(e.message, "ex2"); count--; })
+      .thenValue([](const Struct&) { FAIL(); })
+      .onError([&count](const Exception2& e) {
+        EXPECT_EQ(e.message, "ex2");
+        count--;
+      })
       .onError([](const std::exception&) { FAIL(); });
 
   eb.loop();

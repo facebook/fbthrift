@@ -105,7 +105,7 @@ class ScopedPresetResponseServer {
         : wangle::BytesToBytesHandler(), resp_(resp) {}
 
     void read(Context* ctx, folly::IOBufQueue& /* msg */) override {
-      write(ctx, resp_->clone()).then([=] { close(ctx); });
+      write(ctx, resp_->clone()).thenValue([=](auto&&) { close(ctx); });
     }
 
    private:

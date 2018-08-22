@@ -129,7 +129,8 @@ TEST(ThriftServer, OnewayDeferredHandlerTest) {
       auto ctx = getConnectionContext();
       return folly::futures::sleep(std::chrono::milliseconds(size))
           .via(tm)
-          .then([ctx] { EXPECT_EQ("noResponse", ctx->getMethodName()); })
+          .thenValue(
+              [ctx](auto&&) { EXPECT_EQ("noResponse", ctx->getMethodName()); })
           .then([this] { done.post(); });
     }
   };
