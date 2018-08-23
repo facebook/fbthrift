@@ -1243,7 +1243,9 @@ FieldType:
              declared.  Either way allow it and we'll figure it out
              during generation.
            */
-          $$ = new t_typedef(driver.program, $1, driver.scope_cache);
+          auto td = new t_typedef(driver.program, $1, driver.scope_cache);
+          $$ = td;
+          driver.program->add_named_placeholder_typedef(td);
           if ($2 != NULL) {
             $$->annotations_ = $2->annotations_;
             delete $2;

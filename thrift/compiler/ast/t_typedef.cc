@@ -22,14 +22,17 @@ namespace apache {
 namespace thrift {
 namespace compiler {
 
+bool t_typedef::resolve_placeholder() const {
+  assert(!type_);
+  assert(!defined_);
+
+  type_ = scope_->get_type(get_program()->get_name() + "." + symbolic_);
+
+  return !!type_;
+}
+
 t_type* t_typedef::get_type() const {
-  if (type_ == nullptr) {
-    type_ = scope_->get_type(get_program()->get_name() + "." + symbolic_);
-    if (type_ == nullptr) {
-      printf("Type \"%s\" not defined\n", symbolic_.c_str());
-      exit(1);
-    }
-  }
+  assert(!!type_);
   return type_;
 }
 

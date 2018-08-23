@@ -59,6 +59,12 @@ class t_typedef : public t_type {
 
   ~t_typedef() override {}
 
+  /**
+   * For placeholder typedef only, resolve and find the actual type that the
+   * symbolic name refers to. Return true iff the type exists in the scope.
+   */
+  bool resolve_placeholder() const;
+
   t_type* get_type() const;
 
   const std::string& get_symbolic() const {

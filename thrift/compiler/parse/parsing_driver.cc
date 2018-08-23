@@ -163,6 +163,12 @@ void parsing_driver::parse_file() {
   } catch (const std::string& x) {
     failure(x.c_str());
   }
+
+  for (auto td : program->get_named_placeholder_typedefs()) {
+    if (!td->resolve_placeholder()) {
+      failure("Type \"%s\" not defined.", td->get_symbolic().c_str());
+    }
+  }
 }
 
 [[noreturn]] void parsing_driver::end_parsing() { throw parsing_terminator{}; }

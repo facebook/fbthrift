@@ -86,6 +86,9 @@ class t_program : public t_doc {
   void add_service(t_service* ts) {
     services_.push_back(ts);
   }
+  void add_named_placeholder_typedef(t_typedef* td) {
+    named_placeholder_typedefs_.push_back(td);
+  }
 
   /**
    * Get program elements
@@ -110,6 +113,9 @@ class t_program : public t_doc {
   }
   const std::vector<t_service*>& get_services() const {
     return services_;
+  }
+  const std::vector<t_typedef*>& get_named_placeholder_typedefs() const {
+    return named_placeholder_typedefs_;
   }
 
   /**
@@ -238,6 +244,7 @@ class t_program : public t_doc {
   std::vector<t_struct*> xceptions_;
   std::vector<t_service*> services_;
   std::vector<t_include*> includes_;
+  std::vector<t_typedef*> named_placeholder_typedefs_;
 
   std::string path_; // initialized in ctor init-list
   std::string name_{compute_name_from_file_path(path_)};

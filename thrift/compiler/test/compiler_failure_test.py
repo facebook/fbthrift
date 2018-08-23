@@ -170,3 +170,18 @@ class CompilerFailureTest(unittest.TestCase):
             "[FAILURE:bar.thrift:5] Circular dependency found: file "
             "foo.thrift is already parsed.\n"
         )
+
+    def test_nonexistent_type(self):
+        write_file("foo.thrift", textwrap.dedent("""\
+            struct S {
+                1: Random.Type field
+            }
+        """))
+
+        ret, out, err = self.run_thrift("foo.thrift")
+
+        self.assertEqual(ret, 1)
+        self.assertEqual(
+            err,
+            "[FAILURE:foo.thrift:4] Type \"Random.Type\" not defined.\n"
+        )
