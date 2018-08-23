@@ -28,20 +28,10 @@
 #include <thrift/lib/cpp/transport/TTransportException.h>
 #include <thrift/lib/cpp2/transport/core/ThriftClient.h>
 #include <thrift/lib/cpp2/transport/http2/client/ThriftTransactionHandler.h>
+#include <thrift/lib/cpp2/transport/http2/common/SingleRpcChannel.h>
 #include <wangle/acceptor/TransportInfo.h>
 
 #include <algorithm>
-
-// This flag is only used on the client side.
-DEFINE_uint32(
-    max_channel_version,
-    3,
-    "Maximum channel version to use for negotiation");
-
-DEFINE_uint32(
-    force_channel_version,
-    0,
-    "Set to a positive number to force this as the channel version");
 
 namespace apache {
 namespace thrift {
@@ -68,9 +58,7 @@ std::unique_ptr<ClientConnectionIf> H2ClientConnection::newHTTP2Connection(
 H2ClientConnection::H2ClientConnection(
     TAsyncTransport::UniquePtr transport,
     std::unique_ptr<proxygen::HTTPCodec> codec)
-    : evb_(transport->getEventBase()),
-      negotiatedChannelVersion_(FLAGS_force_channel_version),
-      stable_(FLAGS_force_channel_version != 0) {
+    : evb_(transport->getEventBase()) {
   DCHECK(evb_ && evb_->isInEventBaseThread());
   auto localAddress = transport->getLocalAddress();
   auto peerAddress = transport->getPeerAddress();
@@ -84,11 +72,6 @@ H2ClientConnection::H2ClientConnection(
       this);
   // TODO: Improve the way max outging streams is set
   setMaxPendingRequests(100000);
-  httpSession_->setEgressSettings(
-      {{proxygen::SettingsId::THRIFT_CHANNEL_ID_DEPRECATED,
-        std::min(kMaxSupportedChannelVersion, FLAGS_max_channel_version)},
-       {proxygen::SettingsId::THRIFT_CHANNEL_ID,
-        std::min(kMaxSupportedChannelVersion, FLAGS_max_channel_version)}});
   httpSession_->startNow();
 }
 
@@ -96,10 +79,9 @@ H2ClientConnection::~H2ClientConnection() {
   closeNow();
 }
 
-std::shared_ptr<ThriftChannelIf> H2ClientConnection::getChannel(
-    RequestRpcMetadata* metadata) {
+std::shared_ptr<ThriftChannelIf> H2ClientConnection::getChannel() {
   DCHECK(evb_ && evb_->isInEventBaseThread());
-  return channelFactory_.getChannel(negotiatedChannelVersion_, this, metadata);
+  return std::make_shared<SingleRpcChannel>(this);
 }
 
 void H2ClientConnection::setMaxPendingRequests(uint32_t num) {
@@ -144,14 +126,6 @@ HTTPTransaction* H2ClientConnection::newTransaction(H2Channel* channel) {
   handler->setChannel(
       std::dynamic_pointer_cast<H2Channel>(channel->shared_from_this()));
   return txn;
-}
-
-bool H2ClientConnection::isStable() {
-  return stable_;
-}
-
-void H2ClientConnection::setIsStable() {
-  stable_ = true;
 }
 
 TAsyncTransport* H2ClientConnection::getTransport() {
@@ -201,7 +175,6 @@ void H2ClientConnection::detachEventBase() {
     httpSession_->detachTransactions();
     httpSession_->detachThreadLocals();
   }
-  channelFactory_.closeOutstandingClient();
   evb_ = nullptr;
 }
 
@@ -213,9 +186,8 @@ bool H2ClientConnection::isDetachable() {
   // SingleRpcChannel should only detach if the number of outgoing
   // streams == 0. That's how we know there are no pending rpcs to
   // be fulfilled.
-  auto outgoingStreams = httpSession_->getNumOutgoingStreams();
   auto session_isDetachable =
-      !httpSession_ || !channelFactory_.hasOutstandingRPCs(outgoingStreams);
+      !httpSession_ || httpSession_->getNumOutgoingStreams() == 0;
   auto transport = getTransport();
   auto transport_isDetachable = !transport || transport->isDetachable();
   return transport_isDetachable && session_isDetachable;
@@ -257,29 +229,6 @@ void H2ClientConnection::onDestroy(const HTTPSessionBase&) {
   }
   closeCallbacks_.clear();
   httpSession_ = nullptr;
-}
-
-void H2ClientConnection::onSettings(
-    const HTTPSessionBase&,
-    const SettingsList& settings) {
-  if (FLAGS_force_channel_version > 0) {
-    // Do not use the negotiated settings.
-    return;
-  }
-  for (auto& setting : settings) {
-    if (setting.id == proxygen::SettingsId::THRIFT_CHANNEL_ID_DEPRECATED ||
-        setting.id == proxygen::SettingsId::THRIFT_CHANNEL_ID) {
-      negotiatedChannelVersion_ = std::min(
-          setting.value,
-          std::min(kMaxSupportedChannelVersion, FLAGS_max_channel_version));
-      VLOG(3) << "Peer channel version is " << setting.value << "; "
-              << "Negotiated channel version is " << negotiatedChannelVersion_;
-    }
-  }
-  if (negotiatedChannelVersion_ == 0) {
-    // Did not receive a channel version, assuming legacy peer.
-    negotiatedChannelVersion_ = 1;
-  }
 }
 
 } // namespace thrift

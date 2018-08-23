@@ -273,7 +273,7 @@ void ThriftClient::getChannelAndSendThriftRequest(
     std::unique_ptr<ThriftClientCallback> callback) noexcept {
   DCHECK(connection->getEventBase()->isInEventBaseThread());
   try {
-    auto channel = connection->getChannel(metadata.get());
+    auto channel = connection->getChannel();
     channel->sendThriftRequest(
         std::move(metadata), std::move(payload), std::move(callback));
   } catch (TTransportException& te) {

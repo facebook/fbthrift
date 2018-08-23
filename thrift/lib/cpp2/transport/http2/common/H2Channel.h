@@ -116,10 +116,6 @@ class H2Channel : public ThriftChannelIf {
       const proxygen::HTTPMessage& source,
       std::map<std::string, std::string>& dest) noexcept;
 
-  void maybeAddChannelVersionHeader(
-      proxygen::HTTPMessage& msg,
-      const std::string& version) noexcept;
-
   // Used to write messages to HTTP/2 on the server side.
   // Owned by H2RequestHandler.  Should not be used after
   // onH2StreamClosed() has been called.

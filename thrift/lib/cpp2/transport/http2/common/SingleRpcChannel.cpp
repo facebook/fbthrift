@@ -35,7 +35,6 @@
 #include <thrift/lib/cpp2/transport/core/ThriftClientCallback.h>
 #include <thrift/lib/cpp2/transport/core/ThriftProcessor.h>
 #include <thrift/lib/cpp2/transport/http2/client/H2ClientConnection.h>
-#include <thrift/lib/cpp2/transport/http2/common/H2ChannelFactory.h>
 
 namespace apache {
 namespace thrift {
@@ -59,18 +58,13 @@ static constexpr folly::StringPiece RPC_KIND = "rpckind";
 
 SingleRpcChannel::SingleRpcChannel(
     ResponseHandler* toHttp2,
-    ThriftProcessor* processor,
-    bool legacySupport)
-    : H2Channel(toHttp2), processor_(processor), legacySupport_(legacySupport) {
+    ThriftProcessor* processor)
+    : H2Channel(toHttp2), processor_(processor) {
   evb_ = EventBaseManager::get()->getExistingEventBase();
 }
 
-SingleRpcChannel::SingleRpcChannel(
-    H2ClientConnection* toHttp2,
-    bool legacySupport)
-    : H2Channel(toHttp2),
-      legacySupport_(legacySupport),
-      shouldMakeStable_(!toHttp2->isStable()) {
+SingleRpcChannel::SingleRpcChannel(H2ClientConnection* toHttp2)
+    : H2Channel(toHttp2) {
   evb_ = toHttp2->getEventBase();
 }
 
@@ -97,19 +91,10 @@ void SingleRpcChannel::sendThriftResponse(
   if (responseHandler_) {
     HTTPMessage msg;
     msg.setStatusCode(200);
-    if (legacySupport_) {
-      if (metadata->__isset.otherMetadata) {
-        encodeHeaders(std::move(metadata->otherMetadata), msg);
-      }
-      responseHandler_->sendHeaders(msg);
-    } else {
-      auto metadataBuf = std::make_unique<IOBufQueue>();
-      CompactProtocolWriter writer;
-      writer.setOutput(metadataBuf.get());
-      metadata->write(&writer);
-      responseHandler_->sendHeaders(msg);
-      responseHandler_->sendBody(metadataBuf->move());
+    if (metadata->__isset.otherMetadata) {
+      encodeHeaders(std::move(metadata->otherMetadata), msg);
     }
+    responseHandler_->sendHeaders(msg);
     responseHandler_->sendBody(std::move(payload));
     responseHandler_->sendEOM();
   }
@@ -154,49 +139,26 @@ void SingleRpcChannel::sendThriftRequest(
     httpTransaction_->setIdleTimeout(
         std::chrono::milliseconds(metadata->clientTimeoutMs));
   }
-  if (legacySupport_) {
-    maybeAddChannelVersionHeader(msg, "1");
-    if (metadata->__isset.clientTimeoutMs) {
-      metadata->otherMetadata[transport::THeader::CLIENT_TIMEOUT_HEADER] =
-          folly::to<string>(metadata->clientTimeoutMs);
-    }
-    if (metadata->__isset.queueTimeoutMs) {
-      DCHECK(metadata->queueTimeoutMs > 0);
-      metadata->otherMetadata[transport::THeader::QUEUE_TIMEOUT_HEADER] =
-          folly::to<string>(metadata->queueTimeoutMs);
-    }
-    if (metadata->__isset.priority) {
-      metadata->otherMetadata[transport::THeader::PRIORITY_HEADER] =
-          folly::to<string>(metadata->priority);
-    }
-    if (metadata->__isset.kind) {
-      metadata->otherMetadata[RPC_KIND.str()] =
-          folly::to<string>(metadata->kind);
-    }
-    encodeHeaders(std::move(metadata->otherMetadata), msg);
-    httpTransaction_->sendHeaders(msg);
-  } else {
-    maybeAddChannelVersionHeader(msg, "2");
-    metadata->__isset.url = false;
-    metadata->__isset.host = false;
-    if (!EnvelopeUtil::stripEnvelope(metadata.get(), payload)) {
-      LOG(ERROR) << "Unexpected problem stripping envelope";
-      auto evb = callback->getEventBase();
-      evb->runInEventBaseThread([cb = std::move(callback)]() mutable {
-        cb->onError(folly::exception_wrapper(
-            TTransportException("Unexpected problem stripping envelope")));
-      });
-      return;
-    }
-    DCHECK(metadata->__isset.protocol);
-    DCHECK(metadata->__isset.name);
-    auto metadataBuf = std::make_unique<IOBufQueue>();
-    CompactProtocolWriter writer;
-    writer.setOutput(metadataBuf.get());
-    metadata->write(&writer);
-    httpTransaction_->sendHeaders(msg);
-    httpTransaction_->sendBody(metadataBuf->move());
+
+  if (metadata->__isset.clientTimeoutMs) {
+    metadata->otherMetadata[transport::THeader::CLIENT_TIMEOUT_HEADER] =
+        folly::to<string>(metadata->clientTimeoutMs);
   }
+  if (metadata->__isset.queueTimeoutMs) {
+    DCHECK(metadata->queueTimeoutMs > 0);
+    metadata->otherMetadata[transport::THeader::QUEUE_TIMEOUT_HEADER] =
+        folly::to<string>(metadata->queueTimeoutMs);
+  }
+  if (metadata->__isset.priority) {
+    metadata->otherMetadata[transport::THeader::PRIORITY_HEADER] =
+        folly::to<string>(metadata->priority);
+  }
+  if (metadata->__isset.kind) {
+    metadata->otherMetadata[RPC_KIND.str()] = folly::to<string>(metadata->kind);
+  }
+  encodeHeaders(std::move(metadata->otherMetadata), msg);
+  httpTransaction_->sendHeaders(msg);
+
   httpTransaction_->sendBody(std::move(payload));
   httpTransaction_->sendEOM();
   // For oneway calls, we move "callback" to "callbackEvb" since we do
@@ -280,31 +242,21 @@ void SingleRpcChannel::onH2StreamClosed(ProxygenError error) noexcept {
   H2Channel::onH2StreamClosed(error);
 }
 
-void SingleRpcChannel::setNotYetStable() noexcept {
-  shouldMakeStable_ = false;
-}
-
 void SingleRpcChannel::onThriftRequest() noexcept {
   if (!contents_) {
     sendThriftErrorResponse("Proxygen stream has no body");
     return;
   }
   auto metadata = std::make_unique<RequestRpcMetadata>();
-  if (legacySupport_) {
-    if (!EnvelopeUtil::stripEnvelope(metadata.get(), contents_)) {
-      sendThriftErrorResponse("Invalid envelope: see logs for error");
-      return;
-    }
-    // Default Single Request Single Response
-    metadata->kind = RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE;
-    metadata->__isset.kind = true;
-    extractHeaderInfo(metadata.get());
-  } else {
-    CompactProtocolReader reader;
-    reader.setInput(contents_.get());
-    auto sz = metadata->read(&reader);
-    EnvelopeUtil::removePrefix(contents_, sz);
+  if (!EnvelopeUtil::stripEnvelope(metadata.get(), contents_)) {
+    sendThriftErrorResponse("Invalid envelope: see logs for error");
+    return;
   }
+  // Default Single Request Single Response
+  metadata->kind = RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE;
+  metadata->__isset.kind = true;
+  extractHeaderInfo(metadata.get());
+
   DCHECK(metadata->__isset.protocol);
   DCHECK(metadata->__isset.name);
   DCHECK(metadata->__isset.kind);
@@ -329,9 +281,6 @@ void SingleRpcChannel::onThriftRequest() noexcept {
 
 void SingleRpcChannel::onThriftResponse() noexcept {
   DCHECK(httpTransaction_);
-  if (shouldMakeStable_) {
-    h2ClientConnection_->setIsStable();
-  }
   if (!callback_) {
     return;
   }
@@ -350,19 +299,13 @@ void SingleRpcChannel::onThriftResponse() noexcept {
   }
   auto evb = callback_->getEventBase();
   auto metadata = std::make_unique<ResponseRpcMetadata>();
-  if (legacySupport_) {
-    map<string, string> headers;
-    decodeHeaders(*headers_, headers);
-    if (!headers.empty()) {
-      metadata->otherMetadata = std::move(headers);
-      metadata->__isset.otherMetadata = true;
-    }
-  } else {
-    CompactProtocolReader reader;
-    reader.setInput(contents_.get());
-    auto sz = metadata->read(&reader);
-    EnvelopeUtil::removePrefix(contents_, sz);
+  map<string, string> headers;
+  decodeHeaders(*headers_, headers);
+  if (!headers.empty()) {
+    metadata->otherMetadata = std::move(headers);
+    metadata->__isset.otherMetadata = true;
   }
+
   // We don't need to set any of the other fields in metadata currently.
   evb->runInEventBaseThread([evbCallback = std::move(callback_),
                              evbMetadata = std::move(metadata),

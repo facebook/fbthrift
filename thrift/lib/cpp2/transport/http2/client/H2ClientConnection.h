@@ -26,7 +26,6 @@
 #include <thrift/lib/cpp2/transport/core/ClientConnectionIf.h>
 #include <thrift/lib/cpp2/transport/core/ThriftClientCallback.h>
 #include <thrift/lib/cpp2/transport/http2/common/H2Channel.h>
-#include <thrift/lib/cpp2/transport/http2/common/H2ChannelFactory.h>
 
 namespace apache {
 namespace thrift {
@@ -61,8 +60,7 @@ class H2ClientConnection : public ClientConnectionIf,
   H2ClientConnection(const H2ClientConnection&) = delete;
   H2ClientConnection& operator=(const H2ClientConnection&) = delete;
 
-  std::shared_ptr<ThriftChannelIf> getChannel(
-      RequestRpcMetadata* metadata) override;
+  std::shared_ptr<ThriftChannelIf> getChannel() override;
   void setMaxPendingRequests(uint32_t num) override;
   void setCloseCallback(ThriftClient* client, CloseCallback* cb) override;
   folly::EventBase* getEventBase() const override;
@@ -86,14 +84,8 @@ class H2ClientConnection : public ClientConnectionIf,
   void closeNow() override;
   CLIENT_TYPE getClientType() override;
 
-  // begin HTTPSession::InfoCallback methods
-
+  // HTTPSession::InfoCallback method
   void onDestroy(const proxygen::HTTPSessionBase&) override;
-  void onSettings(
-      const proxygen::HTTPSessionBase&,
-      const proxygen::SettingsList& settings) override;
-
-  // end HTTPSession::InfoCallback methods
 
  private:
   H2ClientConnection(
@@ -108,16 +100,6 @@ class H2ClientConnection : public ClientConnectionIf,
   // A map of all registered CloseCallback objects keyed by the
   // ThriftClient objects that registered the callback.
   std::unordered_map<ThriftClient*, CloseCallback*> closeCallbacks_;
-
-  // The negotiated channel version - 0 means settings frame has not
-  // yet arrived and negotiation has not taken place yet.
-  uint32_t negotiatedChannelVersion_;
-
-  // This is true once negotiation has completed and we no longer have
-  // to send the channel version in the HTTP2 header.
-  bool stable_;
-
-  H2ChannelFactory channelFactory_;
 };
 
 } // namespace thrift

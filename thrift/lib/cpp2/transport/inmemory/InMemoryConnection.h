@@ -35,8 +35,7 @@ class InMemoryConnection : public ClientConnectionIf {
   InMemoryConnection(const InMemoryConnection&) = delete;
   InMemoryConnection& operator=(const InMemoryConnection&) = delete;
 
-  std::shared_ptr<ThriftChannelIf> getChannel(
-      RequestRpcMetadata* metadata) override;
+  std::shared_ptr<ThriftChannelIf> getChannel() override;
   void setMaxPendingRequests(uint32_t num) override;
   void setCloseCallback(ThriftClient* client, CloseCallback* cb) override;
   folly::EventBase* getEventBase() const override;

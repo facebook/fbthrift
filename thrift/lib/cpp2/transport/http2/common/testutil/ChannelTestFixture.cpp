@@ -46,8 +46,8 @@ void ChannelTestFixture::sendAndReceiveStream(
     unordered_map<string, string>*& outputHeaders,
     IOBuf*& outputPayload,
     bool omitEnvelope) {
-  auto channel = std::make_shared<SingleRpcChannel>(
-      responseHandler_.get(), processor, true);
+  auto channel =
+      std::make_shared<SingleRpcChannel>(responseHandler_.get(), processor);
   string payload;
   if (omitEnvelope) {
     payload = inputPayload;

@@ -50,7 +50,7 @@ class ThriftRequestHandlerTest : public testing::Test {
     // This test assumes metadata is passed in the header, so we need
     // to use SingleRpcChannel.  The second parameter 1 enables this.
     // requestHandler_ deletes itself.
-    requestHandler_ = new ThriftRequestHandler(processor_.get(), 1);
+    requestHandler_ = new ThriftRequestHandler(processor_.get());
     requestHandler_->setResponseHandler(responseHandler_.get());
   }
 

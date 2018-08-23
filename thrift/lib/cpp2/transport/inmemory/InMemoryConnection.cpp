@@ -39,8 +39,7 @@ InMemoryConnection::InMemoryConnection(
   pFac_ = pFac;
 }
 
-std::shared_ptr<ThriftChannelIf> InMemoryConnection::getChannel(
-    RequestRpcMetadata*) {
+std::shared_ptr<ThriftChannelIf> InMemoryConnection::getChannel() {
   return std::make_shared<InMemoryChannel>(
       processor_.get(), runner_.getEventBase());
 }

@@ -30,10 +30,9 @@ class SingleRpcChannel : public H2Channel {
  public:
   SingleRpcChannel(
       proxygen::ResponseHandler* toHttp2,
-      ThriftProcessor* processor,
-      bool legacySupport);
+      ThriftProcessor* processor);
 
-  SingleRpcChannel(H2ClientConnection* toHttp2, bool legacySupport);
+  explicit SingleRpcChannel(H2ClientConnection* toHttp2);
 
   virtual ~SingleRpcChannel() override;
 
@@ -81,9 +80,6 @@ class SingleRpcChannel : public H2Channel {
   // Event base on which all methods in this object must be invoked.
   folly::EventBase* evb_;
 
-  // Set to true to support the legacy HTTP2 protocol.
-  bool legacySupport_;
-
   // Transaction object for use on client side to communicate with the
   // Proxygen layer.
   proxygen::HTTPTransaction* httpTransaction_;
@@ -96,17 +92,6 @@ class SingleRpcChannel : public H2Channel {
 
   bool receivedThriftRPC_{false};
   bool receivedH2Stream_{false};
-
-  // This flag is initialized when the channel is constructed to
-  // decide whether or not the connection should be set to stable
-  // (i.e., we know that the server does not have to read the header
-  // any more to determine the channel version).  This flag is set to
-  // true if the connection is not yet stable and negotiation has
-  // completed on the client side.  If this channel completes a
-  // successful RPC, it means the server now knows that the client has
-  // completed negotiation, and so it can set the connection to be
-  // stable.
-  bool shouldMakeStable_;
 };
 
 } // namespace thrift

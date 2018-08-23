@@ -20,7 +20,6 @@
 #include <thrift/lib/cpp2/transport/core/testutil/TransportCompatibilityTest.h>
 #include <thrift/lib/cpp2/transport/http2/common/HTTP2RoutingHandler.h>
 
-DECLARE_uint32(force_channel_version);
 DECLARE_string(transport);
 
 namespace apache {
@@ -39,33 +38,10 @@ std::unique_ptr<HTTP2RoutingHandler> createHTTP2RoutingHandler(
       std::move(h2_options), server->getThriftProcessor(), *server);
 }
 
-enum ChannelType {
-  Default,
-  SingleRpc,
-  MetadataInBody,
-  MultiRpc,
-};
-
-class H2CompatibilityTest : public testing::Test,
-                            public testing::WithParamInterface<ChannelType> {
+class H2CompatibilityTest : public testing::Test {
  public:
   H2CompatibilityTest() {
     FLAGS_transport = "http2"; // client's transport
-    switch (GetParam()) {
-      case Default:
-        // Default behavior is to let the negotiation happen as normal.
-        FLAGS_force_channel_version = 0;
-        break;
-      case SingleRpc:
-        FLAGS_force_channel_version = 1;
-        break;
-      case MetadataInBody:
-        FLAGS_force_channel_version = 2;
-        break;
-      case MultiRpc:
-        FLAGS_force_channel_version = 3;
-        break;
-    }
 
     compatibilityTest_ = std::make_unique<TransportCompatibilityTest>();
     compatibilityTest_->addRoutingHandler(
@@ -77,138 +53,106 @@ class H2CompatibilityTest : public testing::Test,
   std::unique_ptr<TransportCompatibilityTest> compatibilityTest_;
 };
 
-TEST_P(H2CompatibilityTest, RequestResponse_Simple) {
+TEST_F(H2CompatibilityTest, RequestResponse_Simple) {
   compatibilityTest_->TestRequestResponse_Simple();
 }
 
-TEST_P(H2CompatibilityTest, RequestResponse_Sync) {
+TEST_F(H2CompatibilityTest, RequestResponse_Sync) {
   compatibilityTest_->TestRequestResponse_Sync();
 }
 
-TEST_P(H2CompatibilityTest, RequestResponse_MultipleClients) {
+TEST_F(H2CompatibilityTest, RequestResponse_MultipleClients) {
   compatibilityTest_->TestRequestResponse_MultipleClients();
 }
 
-TEST_P(H2CompatibilityTest, RequestResponse_ExpectedException) {
+TEST_F(H2CompatibilityTest, RequestResponse_ExpectedException) {
   compatibilityTest_->TestRequestResponse_ExpectedException();
 }
 
-TEST_P(H2CompatibilityTest, RequestResponse_UnexpectedException) {
+TEST_F(H2CompatibilityTest, RequestResponse_UnexpectedException) {
   compatibilityTest_->TestRequestResponse_UnexpectedException();
 }
 
 // Warning: This test may be flaky due to use of timeouts.
-TEST_P(H2CompatibilityTest, RequestResponse_Timeout) {
+TEST_F(H2CompatibilityTest, RequestResponse_Timeout) {
   compatibilityTest_->TestRequestResponse_Timeout();
 }
 
-TEST_P(H2CompatibilityTest, RequestResponse_Header) {
+TEST_F(H2CompatibilityTest, RequestResponse_Header) {
   compatibilityTest_->TestRequestResponse_Header();
 }
 
-TEST_P(H2CompatibilityTest, RequestResponse_Header_ExpectedException) {
+TEST_F(H2CompatibilityTest, RequestResponse_Header_ExpectedException) {
   compatibilityTest_->TestRequestResponse_Header_ExpectedException();
 }
 
-TEST_P(H2CompatibilityTest, RequestResponse_Header_UnexpectedException) {
+TEST_F(H2CompatibilityTest, RequestResponse_Header_UnexpectedException) {
   compatibilityTest_->TestRequestResponse_Header_UnexpectedException();
 }
 
-TEST_P(H2CompatibilityTest, RequestResponse_Saturation) {
-  // TODO:
-  // This tests fails for MultiRpc.  We need to fix this.
-  if (GetParam() != MultiRpc) {
-    compatibilityTest_->TestRequestResponse_Saturation();
-  }
+TEST_F(H2CompatibilityTest, RequestResponse_Saturation) {
+  compatibilityTest_->TestRequestResponse_Saturation();
 }
 
-TEST_P(H2CompatibilityTest, RequestResponse_Connection_CloseNow) {
+TEST_F(H2CompatibilityTest, RequestResponse_Connection_CloseNow) {
   compatibilityTest_->TestRequestResponse_Connection_CloseNow();
 }
 
-TEST_P(H2CompatibilityTest, RequestResponse_ServerQueueTimeout) {
-  // TODO:
-  // This test fails for Default where handshake converts legacy
-  // behavior to MultiRpcChannel after handshake is completed.
-  // Need to investigate this.
-  if (GetParam() != Default) {
-    compatibilityTest_->TestRequestResponse_ServerQueueTimeout();
-  }
+TEST_F(H2CompatibilityTest, RequestResponse_ServerQueueTimeout) {
+  compatibilityTest_->TestRequestResponse_ServerQueueTimeout();
 }
 
-TEST_P(H2CompatibilityTest, RequestResponse_ResponseSizeTooBig) {
+TEST_F(H2CompatibilityTest, RequestResponse_ResponseSizeTooBig) {
   compatibilityTest_->TestRequestResponse_ResponseSizeTooBig();
 }
 
-TEST_P(H2CompatibilityTest, Oneway_Simple) {
+TEST_F(H2CompatibilityTest, Oneway_Simple) {
   compatibilityTest_->TestOneway_Simple();
 }
 
-TEST_P(H2CompatibilityTest, Oneway_WithDelay) {
+TEST_F(H2CompatibilityTest, Oneway_WithDelay) {
   compatibilityTest_->TestOneway_WithDelay();
 }
 
-TEST_P(H2CompatibilityTest, Oneway_Saturation) {
-  // TODO:
-  // This tests fails for MultiRpc.  We need to fix this.
-  if (GetParam() != MultiRpc) {
-    compatibilityTest_->TestOneway_Saturation();
-  }
+TEST_F(H2CompatibilityTest, Oneway_Saturation) {
+  compatibilityTest_->TestOneway_Saturation();
 }
 
-TEST_P(H2CompatibilityTest, Oneway_UnexpectedException) {
+TEST_F(H2CompatibilityTest, Oneway_UnexpectedException) {
   compatibilityTest_->TestOneway_UnexpectedException();
 }
 
-TEST_P(H2CompatibilityTest, Oneway_Connection_CloseNow) {
+TEST_F(H2CompatibilityTest, Oneway_Connection_CloseNow) {
   compatibilityTest_->TestOneway_Connection_CloseNow();
 }
 
-TEST_P(H2CompatibilityTest, Oneway_ServerQueueTimeout) {
+TEST_F(H2CompatibilityTest, Oneway_ServerQueueTimeout) {
   compatibilityTest_->TestOneway_ServerQueueTimeout();
 }
 
-TEST_P(H2CompatibilityTest, RequestContextIsPreserved) {
+TEST_F(H2CompatibilityTest, RequestContextIsPreserved) {
   compatibilityTest_->TestRequestContextIsPreserved();
 }
 
-TEST_P(H2CompatibilityTest, BadPayload) {
-  // Default and SingleRpc versions don't extract metadata from the payload, so
-  // they will just send the payload to the server.
-  if (GetParam() != ChannelType::Default &&
-      GetParam() != ChannelType::SingleRpc) {
-    compatibilityTest_->TestBadPayload();
-  }
-}
-
-TEST_P(H2CompatibilityTest, EvbSwitch) {
+TEST_F(H2CompatibilityTest, EvbSwitch) {
   compatibilityTest_->TestEvbSwitch();
 }
 
-TEST_P(H2CompatibilityTest, EvbSwitch_Failure) {
+TEST_F(H2CompatibilityTest, EvbSwitch_Failure) {
   compatibilityTest_->TestEvbSwitch_Failure();
 }
 
-TEST_P(H2CompatibilityTest, CloseCallback) {
+TEST_F(H2CompatibilityTest, CloseCallback) {
   compatibilityTest_->TestCloseCallback();
 }
 
-TEST_P(H2CompatibilityTest, ConnectionStats) {
+TEST_F(H2CompatibilityTest, ConnectionStats) {
   compatibilityTest_->TestConnectionStats();
 }
 
-TEST_P(H2CompatibilityTest, ObserverSendReceiveRequests) {
+TEST_F(H2CompatibilityTest, ObserverSendReceiveRequests) {
   compatibilityTest_->TestObserverSendReceiveRequests();
 }
-
-INSTANTIATE_TEST_CASE_P(
-    WithAndWithoutMetadataInBody,
-    H2CompatibilityTest,
-    testing::Values(
-        ChannelType::Default,
-        ChannelType::SingleRpc,
-        ChannelType::MetadataInBody,
-        ChannelType::MultiRpc));
 
 } // namespace thrift
 } // namespace apache

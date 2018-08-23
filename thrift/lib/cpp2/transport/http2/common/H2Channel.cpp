@@ -18,7 +18,6 @@
 #include <folly/Range.h>
 #include <proxygen/lib/utils/Base64.h>
 #include <thrift/lib/cpp2/transport/http2/client/H2ClientConnection.h>
-#include <thrift/lib/cpp2/transport/http2/common/H2ChannelFactory.h>
 
 namespace apache {
 namespace thrift {
@@ -78,14 +77,6 @@ void H2Channel::decodeHeaders(
     }
   };
   source.getHeaders().forEach(decodeAndCopyKeyValue);
-}
-
-void H2Channel::maybeAddChannelVersionHeader(
-    HTTPMessage& msg,
-    const string& version) noexcept {
-  if (UNLIKELY(!h2ClientConnection_->isStable())) {
-    msg.getHeaders().set(kChannelVersionKey, version);
-  }
 }
 
 } // namespace thrift

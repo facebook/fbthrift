@@ -16,7 +16,7 @@
 
 #include <thrift/lib/cpp2/transport/http2/server/ThriftRequestHandler.h>
 
-#include <thrift/lib/cpp2/transport/http2/common/H2ChannelFactory.h>
+#include <thrift/lib/cpp2/transport/http2/common/SingleRpcChannel.h>
 
 namespace apache {
 namespace thrift {
@@ -27,17 +27,14 @@ using proxygen::ProxygenError;
 using proxygen::RequestHandler;
 using proxygen::UpgradeProtocol;
 
-ThriftRequestHandler::ThriftRequestHandler(
-    ThriftProcessor* processor,
-    uint32_t channelVersion)
-    : processor_(processor), channelVersion_(channelVersion) {}
+ThriftRequestHandler::ThriftRequestHandler(ThriftProcessor* processor)
+    : processor_(processor) {}
 
 ThriftRequestHandler::~ThriftRequestHandler() {}
 
 void ThriftRequestHandler::onRequest(
     std::unique_ptr<HTTPMessage> headers) noexcept {
-  channel_ =
-      H2ChannelFactory::createChannel(channelVersion_, downstream_, processor_);
+  channel_ = std::make_shared<SingleRpcChannel>(downstream_, processor_);
   channel_->onH2StreamBegin(std::move(headers));
 }
 

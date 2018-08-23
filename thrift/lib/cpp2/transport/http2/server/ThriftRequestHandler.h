@@ -38,9 +38,7 @@ namespace thrift {
  */
 class ThriftRequestHandler : public proxygen::RequestHandler {
  public:
-  explicit ThriftRequestHandler(
-      ThriftProcessor* processor,
-      uint32_t channelVersion);
+  explicit ThriftRequestHandler(ThriftProcessor* processor);
 
   ~ThriftRequestHandler() override;
 
@@ -61,8 +59,6 @@ class ThriftRequestHandler : public proxygen::RequestHandler {
   // There is a single ThriftProcessor object which is used for all requests.
   // Owned by H2ThriftServer.
   ThriftProcessor* processor_;
-  // The channel version for this request.
-  uint32_t channelVersion_;
   // The channel used with this request handler.  The request handler
   // creates the channel object.
   std::shared_ptr<H2Channel> channel_;
