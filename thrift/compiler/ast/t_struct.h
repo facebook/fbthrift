@@ -41,19 +41,10 @@ class t_struct : public t_type {
  public:
   typedef std::vector<t_field*> members_type;
 
-  explicit t_struct(t_program* program)
-      : t_type(program),
-        stream_field_(nullptr),
-        is_xception_(false),
-        is_union_(false),
-        view_parent_(nullptr) {}
+  explicit t_struct(t_program* program) : t_type(program) {}
 
   t_struct(t_program* program, const std::string& name)
-      : t_type(program, name),
-        stream_field_(nullptr),
-        is_xception_(false),
-        is_union_(false),
-        view_parent_(nullptr) {}
+      : t_type(program, name) {}
 
   void set_name(const std::string& name) override {
     name_ = name;
@@ -126,6 +117,10 @@ class t_struct : public t_type {
 
   bool is_union() const {
     return is_union_;
+  }
+
+  bool is_paramlist() const {
+    return is_paramlist_;
   }
 
   const t_field* get_field_named(const char* name) const {
@@ -204,13 +199,13 @@ class t_struct : public t_type {
   // only if is_paramlist_
   // not stored as a normal member, as it's not serialized like a normal
   // field into the pargs struct
-  t_field* stream_field_;
+  t_field* stream_field_ = nullptr;
 
-  bool is_xception_;
-  bool is_union_;
-  bool is_paramlist_;
+  bool is_xception_{false};
+  bool is_union_{false};
+  bool is_paramlist_{false};
 
-  const t_struct* view_parent_;
+  const t_struct* view_parent_ = nullptr;
 };
 
 struct t_structpair {
