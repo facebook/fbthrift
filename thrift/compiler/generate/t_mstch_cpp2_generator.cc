@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+#include <algorithm>
 #include <array>
 #include <memory>
 #include <vector>
@@ -506,6 +507,8 @@ class mstch_cpp2_struct : public mstch_struct {
             {"struct:base_field_or_struct?",
              &mstch_cpp2_struct::has_base_field_or_struct},
             {"struct:filtered_fields", &mstch_cpp2_struct::filtered_fields},
+            {"struct:fields_in_layout_order",
+             &mstch_cpp2_struct::fields_in_layout_order},
             {"struct:is_struct_orderable?",
              &mstch_cpp2_struct::is_struct_orderable},
             {"struct:fields_contain_cpp_ref?", &mstch_cpp2_struct::has_cpp_ref},
@@ -567,7 +570,7 @@ class mstch_cpp2_struct : public mstch_struct {
     // Get all containers with references
     // Remove all optional fields when optionals flag is enabled
     std::vector<t_field const*> filtered_fields;
-    for (auto const* field : strct_->get_members()) {
+    for (auto const* field : get_members_in_layout_order()) {
       if (field->get_req() == t_field::e_req::T_OPTIONAL &&
           cache_->parsed_options_.count("optionals")) {
         continue;
@@ -757,6 +760,111 @@ class mstch_cpp2_struct : public mstch_struct {
   mstch::node no_getters_setters() {
     return cache_->parsed_options_.count("no_getters_setters") != 0;
   }
+
+ protected:
+  // Computes the alignment of type on the target platform.
+  // Returns 0 if cannot compute the alignment.
+  static size_t compute_alignment(t_type const* type) {
+    switch (type->get_type_value()) {
+      case t_types::TypeValue::TYPE_BOOL:
+      case t_types::TypeValue::TYPE_BYTE:
+        return 1;
+      case t_types::TypeValue::TYPE_I16:
+        return 2;
+      case t_types::TypeValue::TYPE_I32:
+      case t_types::TypeValue::TYPE_FLOAT:
+      case t_types::TypeValue::TYPE_ENUM:
+        return 4;
+      case t_types::TypeValue::TYPE_I64:
+      case t_types::TypeValue::TYPE_DOUBLE:
+      case t_types::TypeValue::TYPE_STRING:
+      case t_types::TypeValue::TYPE_LIST:
+      case t_types::TypeValue::TYPE_SET:
+      case t_types::TypeValue::TYPE_MAP:
+        return 8;
+      case t_types::TypeValue::TYPE_STRUCT: {
+        size_t align = 1;
+        const size_t kMaxAlign = 8;
+        t_struct const* strct = static_cast<t_struct const*>(type);
+        for (auto const* member : strct->get_members()) {
+          size_t member_align = compute_alignment(member->get_type());
+          if (member_align == 0) {
+            // Unknown alignment, bail out.
+            return 0;
+          }
+          align = std::max(align, member_align);
+          if (align == kMaxAlign) {
+            // No need to continue because the struct already has the maximum
+            // alignment.
+            return align;
+          }
+        }
+        // The __isset member that is generated in the presence of non-required
+        // fields doesn't affect the alignment, because, having only bool
+        // fields, it has the alignments of 1.
+        return align;
+      }
+      default:
+        return 0;
+    }
+  }
+
+  // Returns the struct members reordered to minimize padding if the
+  // cpp.minimize_padding annotation is specified.
+  const std::vector<t_field*>& get_members_in_layout_order() {
+    auto const& members = strct_->get_members();
+    if (strct_->annotations_.find("cpp.minimize_padding") ==
+        strct_->annotations_.end()) {
+      return members;
+    }
+
+    if (members.size() == fields_in_layout_order_.size()) {
+      // Already reordered.
+      return fields_in_layout_order_;
+    }
+
+    // Compute field alignments.
+    struct FieldAlign {
+      t_field* field = nullptr;
+      size_t align = 0;
+    };
+    std::vector<FieldAlign> field_alignments;
+    field_alignments.reserve(members.size());
+    for (t_field* member : members) {
+      auto align = compute_alignment(member->get_type());
+      if (align == 0) {
+        // Unknown alignment, don't reorder anything.
+        return members;
+      }
+      field_alignments.push_back(FieldAlign{member, align});
+    }
+
+    // Sort by decreasing alignment using stable sort to avoid unnecessary
+    // reordering.
+    std::stable_sort(
+        field_alignments.begin(),
+        field_alignments.end(),
+        [](auto const& lhs, auto const& rhs) { return lhs.align > rhs.align; });
+
+    // Construct the reordered field vector.
+    fields_in_layout_order_.reserve(members.size());
+    std::transform(
+        field_alignments.begin(),
+        field_alignments.end(),
+        std::back_inserter(fields_in_layout_order_),
+        [](FieldAlign const& fa) { return fa.field; });
+    return fields_in_layout_order_;
+  }
+
+  mstch::node fields_in_layout_order() {
+    return generate_elements(
+        get_members_in_layout_order(),
+        generators_->field_generator_.get(),
+        generators_,
+        cache_);
+  }
+
+  std::vector<t_field*> fields_in_layout_order_;
 };
 
 class mstch_cpp2_function : public mstch_function {

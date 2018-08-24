@@ -1324,10 +1324,10 @@ class MinPadding final : private apache::thrift::detail::st::ComparisonOperators
  public:
 
   MinPadding() :
-      small(0),
       big(0),
-      medium(0),
       biggish(0),
+      medium(0),
+      small(0),
       tiny(0) {}
   // FragileConstructor for use in initialization lists only.
   MinPadding(apache::thrift::FragileConstructor, int8_t small__arg, int64_t big__arg, int16_t medium__arg, int32_t biggish__arg, int8_t tiny__arg);
@@ -1360,10 +1360,10 @@ class MinPadding final : private apache::thrift::detail::st::ComparisonOperators
 
   MinPadding& operator=(const MinPadding&) = default;
   void __clear();
-  int8_t small;
   int64_t big;
-  int16_t medium;
   int32_t biggish;
+  int16_t medium;
+  int8_t small;
   int8_t tiny;
   bool operator==(const MinPadding& rhs) const;
   bool operator<(const MinPadding& rhs) const;

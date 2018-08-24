@@ -82,4 +82,4 @@ struct MinPadding {
   3: required i16 medium,
   4: required i32 biggish,
   5: required byte tiny,
-}
+} (cpp.minimize_padding)

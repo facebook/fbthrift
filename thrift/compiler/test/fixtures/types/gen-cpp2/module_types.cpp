@@ -891,10 +891,10 @@ template uint32_t ComplexNestedWithDefault::serializedSizeZC<>(apache::thrift::C
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 MinPadding::MinPadding(apache::thrift::FragileConstructor, int8_t small__arg, int64_t big__arg, int16_t medium__arg, int32_t biggish__arg, int8_t tiny__arg) :
-    small(std::move(small__arg)),
     big(std::move(big__arg)),
-    medium(std::move(medium__arg)),
     biggish(std::move(biggish__arg)),
+    medium(std::move(medium__arg)),
+    small(std::move(small__arg)),
     tiny(std::move(tiny__arg)) {}
 
 void MinPadding::__clear() {

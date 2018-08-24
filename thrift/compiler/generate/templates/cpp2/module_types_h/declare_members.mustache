@@ -14,9 +14,9 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-%><%#struct:fields%><%#field:type%>
+%><%#struct:fields_in_layout_order%><%#field:type%>
   <% > types/optional_type%> <%field:name%>;
-<%/field:type%><%/struct:fields%>
+<%/field:type%><%/struct:fields_in_layout_order%>
 <%^struct:optionals?%>
 <%#struct:non_req_fields?%>
 
