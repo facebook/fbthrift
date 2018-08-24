@@ -18,7 +18,11 @@ import thrift.py3.types
 cimport thrift.py3.types
 cimport thrift.py3.exceptions
 from thrift.py3.types import NOTSET as __NOTSET
-from thrift.py3.types cimport translate_cpp_enum_to_python, SetMetaClass as __SetMetaClass
+from thrift.py3.types cimport (
+    translate_cpp_enum_to_python,
+    SetMetaClass as __SetMetaClass,
+    constant_shared_ptr
+)
 cimport thrift.py3.std_libcpp as std_libcpp
 from thrift.py3.serializer import Protocol as __Protocol
 cimport thrift.py3.serializer as serializer
@@ -318,4 +322,4 @@ cdef class Map__i64_List__string:
 
 Mapping.register(Map__i64_List__string)
 
-TEST_MAP = Map__i64_List__string.create(make_shared[cmap[int64_t,vector[string]]](cTEST_MAP()))
+TEST_MAP = Map__i64_List__string.create(constant_shared_ptr(cTEST_MAP()))

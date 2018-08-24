@@ -18,7 +18,11 @@ import thrift.py3.types
 cimport thrift.py3.types
 cimport thrift.py3.exceptions
 from thrift.py3.types import NOTSET as __NOTSET
-from thrift.py3.types cimport translate_cpp_enum_to_python, SetMetaClass as __SetMetaClass
+from thrift.py3.types cimport (
+    translate_cpp_enum_to_python,
+    SetMetaClass as __SetMetaClass,
+    constant_shared_ptr
+)
 cimport thrift.py3.std_libcpp as std_libcpp
 from thrift.py3.serializer import Protocol as __Protocol
 cimport thrift.py3.serializer as serializer
@@ -399,6 +403,6 @@ cdef class BigStruct(thrift.py3.types.Struct):
         return (deserialize, (BigStruct, serialize(self)))
 
 
-c2 = Struct.create(make_shared[cStruct](cc2()))
-c3 = Struct.create(make_shared[cStruct](cc3()))
-c4 = Struct.create(make_shared[cStruct](cc4()))
+c2 = Struct.create(constant_shared_ptr(cc2()))
+c3 = Struct.create(constant_shared_ptr(cc3()))
+c4 = Struct.create(constant_shared_ptr(cc4()))

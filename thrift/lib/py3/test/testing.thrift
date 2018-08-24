@@ -4,6 +4,8 @@ const list<i16> int_list = [
     0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
 ];
 
+const map<i16, map<i16, i16>> LocationMap = {1: {1: 1}}
+
 typedef list<i32> I32List
 typedef list<list<string>> StrList2D
 typedef map<string, i64> StrIntMap

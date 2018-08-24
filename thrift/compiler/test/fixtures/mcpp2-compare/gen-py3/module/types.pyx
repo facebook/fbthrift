@@ -18,7 +18,11 @@ import thrift.py3.types
 cimport thrift.py3.types
 cimport thrift.py3.exceptions
 from thrift.py3.types import NOTSET as __NOTSET
-from thrift.py3.types cimport translate_cpp_enum_to_python, SetMetaClass as __SetMetaClass
+from thrift.py3.types cimport (
+    translate_cpp_enum_to_python,
+    SetMetaClass as __SetMetaClass,
+    constant_shared_ptr
+)
 cimport thrift.py3.std_libcpp as std_libcpp
 from thrift.py3.serializer import Protocol as __Protocol
 cimport thrift.py3.serializer as serializer
@@ -15119,15 +15123,15 @@ a64BitInt = 1234
 aFloat = 0.1
 aDouble = 0.12
 aString = caString().decode('UTF-8')
-aList = List__bool.create(make_shared[vector[cbool]](caList()))
-anEmptyMap = Map__string_i32.create(make_shared[cmap[string,int32_t]](canEmptyMap()))
-aMap = Map__i32_string.create(make_shared[cmap[int32_t,string]](caMap()))
-aSet = Set__string.create(make_shared[cset[string]](caSet()))
-aListOfLists = List__List__i32.create(make_shared[vector[vector[int32_t]]](caListOfLists()))
-states = List__Map__string_i32.create(make_shared[vector[cmap[string,int32_t]]](cstates()))
-AConstList = List__MyEnumA.create(make_shared[vector[cMyEnumA]](cAConstList()))
+aList = List__bool.create(constant_shared_ptr(caList()))
+anEmptyMap = Map__string_i32.create(constant_shared_ptr(canEmptyMap()))
+aMap = Map__i32_string.create(constant_shared_ptr(caMap()))
+aSet = Set__string.create(constant_shared_ptr(caSet()))
+aListOfLists = List__List__i32.create(constant_shared_ptr(caListOfLists()))
+states = List__Map__string_i32.create(constant_shared_ptr(cstates()))
+AConstList = List__MyEnumA.create(constant_shared_ptr(cAConstList()))
 AnIntegerEnum2 = 2
-AnIntegerEnum2 = List__i32.create(make_shared[vector[int32_t]](cAnIntegerEnum2()))
+AnIntegerEnum2 = List__i32.create(constant_shared_ptr(cAnIntegerEnum2()))
 constEnumA = MyEnumA(<int> (cconstEnumA()))
 constEnumB = MyEnumA(<int> (cconstEnumB()))
 AStruct = _includes_types.AStruct

@@ -18,7 +18,11 @@ import thrift.py3.types
 cimport thrift.py3.types
 cimport thrift.py3.exceptions
 from thrift.py3.types import NOTSET as __NOTSET
-from thrift.py3.types cimport translate_cpp_enum_to_python, SetMetaClass as __SetMetaClass
+from thrift.py3.types cimport (
+    translate_cpp_enum_to_python,
+    SetMetaClass as __SetMetaClass,
+    constant_shared_ptr
+)
 cimport thrift.py3.std_libcpp as std_libcpp
 from thrift.py3.serializer import Protocol as __Protocol
 cimport thrift.py3.serializer as serializer
@@ -472,5 +476,5 @@ cdef class List__Enum:
 
 Sequence.register(List__Enum)
 
-c1 = Struct.create(make_shared[cStruct](cc1()))
-e1s = List__Enum.create(make_shared[vector[cEnum]](ce1s()))
+c1 = Struct.create(constant_shared_ptr(cc1()))
+e1s = List__Enum.create(constant_shared_ptr(ce1s()))

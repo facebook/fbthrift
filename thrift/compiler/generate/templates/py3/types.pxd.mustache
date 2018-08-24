@@ -220,9 +220,12 @@ cdef extern from "<memory>" namespace "std" nogil:{{/first?}}
     }}(shared_ptr[{{> types/CythonCppType}}]){{/program:moveContainerTypes}}
 
 {{#program:constants}}
-{{#first?}}cdef extern from "{{program:includePrefix}}gen-cpp2/{{program:name}}_constants.h"{{!
-}} namespace "{{#program:cppNamespaces}}{{value}}{{^last?}}::{{/last?}}{{/program:cppNamespaces}}":{{/first?}}
+{{#first?}}
+cdef extern from "{{program:includePrefix}}gen-cpp2/{{program:name}}_constants.h"{{!
+}} namespace "{{#program:cppNamespaces}}{{value}}{{^last?}}::{{/last?}}{{/program:cppNamespaces}}":
+{{/first?}}
     {{#constant:type}}
     cdef {{^type:string?}}{{> types/CythonCppType}}{{/type:string?}}{{#type:string?}}const char*{{/type:string?}} {{!
     }}c{{constant:name}} "{{#program:cppNamespaces}}{{value}}::{{/program:cppNamespaces}}{{program:name}}_constants::{{constant:name}}"{{!
-    }}{{#type:struct?}}(){{/type:struct?}}{{#type:string?}}(){{/type:string?}}{{#type:binary?}}(){{/type:binary?}}{{#type:container?}}(){{/type:container?}}{{#type:enum?}}(){{/type:enum?}}{{/constant:type}}{{/program:constants}}
+    }}{{#type:struct?}}(){{/type:struct?}}{{#type:string?}}(){{/type:string?}}{{#type:binary?}}(){{/type:binary?}}{{#type:container?}}(){{/type:container?}}{{#type:enum?}}(){{/type:enum?}}
+{{/constant:type}}{{/program:constants}}

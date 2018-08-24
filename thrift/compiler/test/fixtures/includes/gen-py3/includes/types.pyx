@@ -18,7 +18,11 @@ import thrift.py3.types
 cimport thrift.py3.types
 cimport thrift.py3.exceptions
 from thrift.py3.types import NOTSET as __NOTSET
-from thrift.py3.types cimport translate_cpp_enum_to_python, SetMetaClass as __SetMetaClass
+from thrift.py3.types cimport (
+    translate_cpp_enum_to_python,
+    SetMetaClass as __SetMetaClass,
+    constant_shared_ptr
+)
 cimport thrift.py3.std_libcpp as std_libcpp
 from thrift.py3.serializer import Protocol as __Protocol
 cimport thrift.py3.serializer as serializer
@@ -218,7 +222,7 @@ cdef class Included(thrift.py3.types.Struct):
         return (deserialize, (Included, serialize(self)))
 
 
-ExampleIncluded = Included.create(make_shared[cIncluded](cExampleIncluded()))
+ExampleIncluded = Included.create(constant_shared_ptr(cExampleIncluded()))
 IncludedConstant = 42
 IncludedInt64 = int
 TransitiveFoo = _transitive_types.Foo

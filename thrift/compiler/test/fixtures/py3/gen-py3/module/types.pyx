@@ -18,7 +18,11 @@ import thrift.py3.types
 cimport thrift.py3.types
 cimport thrift.py3.exceptions
 from thrift.py3.types import NOTSET as __NOTSET
-from thrift.py3.types cimport translate_cpp_enum_to_python, SetMetaClass as __SetMetaClass
+from thrift.py3.types cimport (
+    translate_cpp_enum_to_python,
+    SetMetaClass as __SetMetaClass,
+    constant_shared_ptr
+)
 cimport thrift.py3.std_libcpp as std_libcpp
 from thrift.py3.serializer import Protocol as __Protocol
 cimport thrift.py3.serializer as serializer
@@ -4709,9 +4713,9 @@ A_REAL_NUMBER = 3.14
 A_FAKE_NUMBER = 3.0
 A_WORD = cA_WORD().decode('UTF-8')
 SOME_BYTES = <bytes> cSOME_BYTES()
-A_STRUCT = SimpleStruct.create(make_shared[cSimpleStruct](cA_STRUCT()))
-WORD_LIST = List__string.create(make_shared[vector[string]](cWORD_LIST()))
-SOME_MAP = List__Map__i32_double.create(make_shared[vector[cmap[int32_t,double]]](cSOME_MAP()))
-DIGITS = Set__i32.create(make_shared[cset[int32_t]](cDIGITS()))
-A_CONST_MAP = Map__string_SimpleStruct.create(make_shared[cmap[string,cSimpleStruct]](cA_CONST_MAP()))
+A_STRUCT = SimpleStruct.create(constant_shared_ptr(cA_STRUCT()))
+WORD_LIST = List__string.create(constant_shared_ptr(cWORD_LIST()))
+SOME_MAP = List__Map__i32_double.create(constant_shared_ptr(cSOME_MAP()))
+DIGITS = Set__i32.create(constant_shared_ptr(cDIGITS()))
+A_CONST_MAP = Map__string_SimpleStruct.create(constant_shared_ptr(cA_CONST_MAP()))
 foo_bar = bytes

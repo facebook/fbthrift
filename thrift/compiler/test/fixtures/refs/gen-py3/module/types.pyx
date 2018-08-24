@@ -18,7 +18,11 @@ import thrift.py3.types
 cimport thrift.py3.types
 cimport thrift.py3.exceptions
 from thrift.py3.types import NOTSET as __NOTSET
-from thrift.py3.types cimport translate_cpp_enum_to_python, SetMetaClass as __SetMetaClass
+from thrift.py3.types cimport (
+    translate_cpp_enum_to_python,
+    SetMetaClass as __SetMetaClass,
+    constant_shared_ptr
+)
 cimport thrift.py3.std_libcpp as std_libcpp
 from thrift.py3.serializer import Protocol as __Protocol
 cimport thrift.py3.serializer as serializer
@@ -3263,7 +3267,7 @@ cdef class Map__i32_i32:
 
 Mapping.register(Map__i32_i32)
 
-kStructWithRef = StructWithRef.create(make_shared[cStructWithRef](ckStructWithRef()))
-kStructWithRefTypeUnique = StructWithRefTypeUnique.create(make_shared[cStructWithRefTypeUnique](ckStructWithRefTypeUnique()))
-kStructWithRefTypeShared = StructWithRefTypeShared.create(make_shared[cStructWithRefTypeShared](ckStructWithRefTypeShared()))
-kStructWithRefTypeSharedConst = StructWithRefTypeSharedConst.create(make_shared[cStructWithRefTypeSharedConst](ckStructWithRefTypeSharedConst()))
+kStructWithRef = StructWithRef.create(constant_shared_ptr(ckStructWithRef()))
+kStructWithRefTypeUnique = StructWithRefTypeUnique.create(constant_shared_ptr(ckStructWithRefTypeUnique()))
+kStructWithRefTypeShared = StructWithRefTypeShared.create(constant_shared_ptr(ckStructWithRefTypeShared()))
+kStructWithRefTypeSharedConst = StructWithRefTypeSharedConst.create(constant_shared_ptr(ckStructWithRefTypeSharedConst()))

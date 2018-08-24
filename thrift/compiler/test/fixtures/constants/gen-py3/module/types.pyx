@@ -18,7 +18,11 @@ import thrift.py3.types
 cimport thrift.py3.types
 cimport thrift.py3.exceptions
 from thrift.py3.types import NOTSET as __NOTSET
-from thrift.py3.types cimport translate_cpp_enum_to_python, SetMetaClass as __SetMetaClass
+from thrift.py3.types cimport (
+    translate_cpp_enum_to_python,
+    SetMetaClass as __SetMetaClass,
+    constant_shared_ptr
+)
 cimport thrift.py3.std_libcpp as std_libcpp
 from thrift.py3.serializer import Protocol as __Protocol
 cimport thrift.py3.serializer as serializer
@@ -3798,35 +3802,35 @@ Mapping.register(Map__string_string)
 
 myInt = 1337
 name = cname().decode('UTF-8')
-states = List__Map__string_i32.create(make_shared[vector[cmap[string,int32_t]]](cstates()))
+states = List__Map__string_i32.create(constant_shared_ptr(cstates()))
 x = 1.0
 y = 1000000.0
 z = 1000000000.0
 zeroDoubleValue = 0.0
 longDoubleValue = 0.000026
-instagram = Internship.create(make_shared[cInternship](cinstagram()))
-kRanges = List__Range.create(make_shared[vector[cRange]](ckRanges()))
-internList = List__Internship.create(make_shared[vector[cInternship]](cinternList()))
-pod_0 = struct1.create(make_shared[cstruct1](cpod_0()))
-pod_1 = struct1.create(make_shared[cstruct1](cpod_1()))
-pod_2 = struct2.create(make_shared[cstruct2](cpod_2()))
-pod_3 = struct3.create(make_shared[cstruct3](cpod_3()))
-u_1_1 = union1.create(make_shared[cunion1](cu_1_1()))
-u_1_2 = union1.create(make_shared[cunion1](cu_1_2()))
-u_1_3 = union1.create(make_shared[cunion1](cu_1_3()))
-u_2_1 = union2.create(make_shared[cunion2](cu_2_1()))
-u_2_2 = union2.create(make_shared[cunion2](cu_2_2()))
-u_2_3 = union2.create(make_shared[cunion2](cu_2_3()))
-u_2_4 = union2.create(make_shared[cunion2](cu_2_4()))
-u_2_5 = union2.create(make_shared[cunion2](cu_2_5()))
-u_2_6 = union2.create(make_shared[cunion2](cu_2_6()))
+instagram = Internship.create(constant_shared_ptr(cinstagram()))
+kRanges = List__Range.create(constant_shared_ptr(ckRanges()))
+internList = List__Internship.create(constant_shared_ptr(cinternList()))
+pod_0 = struct1.create(constant_shared_ptr(cpod_0()))
+pod_1 = struct1.create(constant_shared_ptr(cpod_1()))
+pod_2 = struct2.create(constant_shared_ptr(cpod_2()))
+pod_3 = struct3.create(constant_shared_ptr(cpod_3()))
+u_1_1 = union1.create(constant_shared_ptr(cu_1_1()))
+u_1_2 = union1.create(constant_shared_ptr(cu_1_2()))
+u_1_3 = union1.create(constant_shared_ptr(cu_1_3()))
+u_2_1 = union2.create(constant_shared_ptr(cu_2_1()))
+u_2_2 = union2.create(constant_shared_ptr(cu_2_2()))
+u_2_3 = union2.create(constant_shared_ptr(cu_2_3()))
+u_2_4 = union2.create(constant_shared_ptr(cu_2_4()))
+u_2_5 = union2.create(constant_shared_ptr(cu_2_5()))
+u_2_6 = union2.create(constant_shared_ptr(cu_2_6()))
 apostrophe = capostrophe().decode('UTF-8')
 tripleApostrophe = ctripleApostrophe().decode('UTF-8')
 quotationMark = cquotationMark().decode('UTF-8')
 backslash = cbackslash().decode('UTF-8')
 escaped_a = cescaped_a().decode('UTF-8')
-char2ascii = Map__string_i32.create(make_shared[cmap[string,int32_t]](cchar2ascii()))
-escaped_strings = List__string.create(make_shared[vector[string]](cescaped_strings()))
+char2ascii = Map__string_i32.create(constant_shared_ptr(cchar2ascii()))
+escaped_strings = List__string.create(constant_shared_ptr(cescaped_strings()))
 false_c = False
 true_c = True
 zero_byte = 0
@@ -3835,11 +3839,11 @@ zero32 = 0
 zero64 = 0
 zero_dot_zero = 0.0
 empty_string = cempty_string().decode('UTF-8')
-empty_int_list = List__i32.create(make_shared[vector[int32_t]](cempty_int_list()))
-empty_string_list = List__string.create(make_shared[vector[string]](cempty_string_list()))
-empty_int_set = Set__i32.create(make_shared[cset[int32_t]](cempty_int_set()))
-empty_string_set = Set__string.create(make_shared[cset[string]](cempty_string_set()))
-empty_int_int_map = Map__i32_i32.create(make_shared[cmap[int32_t,int32_t]](cempty_int_int_map()))
-empty_int_string_map = Map__i32_string.create(make_shared[cmap[int32_t,string]](cempty_int_string_map()))
-empty_string_int_map = Map__string_i32.create(make_shared[cmap[string,int32_t]](cempty_string_int_map()))
-empty_string_string_map = Map__string_string.create(make_shared[cmap[string,string]](cempty_string_string_map()))
+empty_int_list = List__i32.create(constant_shared_ptr(cempty_int_list()))
+empty_string_list = List__string.create(constant_shared_ptr(cempty_string_list()))
+empty_int_set = Set__i32.create(constant_shared_ptr(cempty_int_set()))
+empty_string_set = Set__string.create(constant_shared_ptr(cempty_string_set()))
+empty_int_int_map = Map__i32_i32.create(constant_shared_ptr(cempty_int_int_map()))
+empty_int_string_map = Map__i32_string.create(constant_shared_ptr(cempty_int_string_map()))
+empty_string_int_map = Map__string_i32.create(constant_shared_ptr(cempty_string_int_map()))
+empty_string_string_map = Map__string_string.create(constant_shared_ptr(cempty_string_string_map()))

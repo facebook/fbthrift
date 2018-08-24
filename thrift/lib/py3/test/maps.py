@@ -1,11 +1,13 @@
 #!/usr/bin/env python3
 import unittest
 
-from testing.types import StrIntMap, StrStrIntListMapMap, StrI32ListMap
+from testing.types import StrIntMap, StrStrIntListMapMap, StrI32ListMap, LocationMap
 from typing import List, Dict
 
 
 class MapTests(unittest.TestCase):
+    def test_recursive_const_map(self) -> None:
+        self.assertEqual(LocationMap[1][1], 1)
 
     def test_None(self) -> None:
         with self.assertRaises(TypeError):

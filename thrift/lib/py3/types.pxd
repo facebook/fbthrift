@@ -2,6 +2,7 @@ from cpython.object cimport PyTypeObject
 from folly.iobuf cimport cIOBuf, IOBuf
 from libc.stdint cimport uint32_t
 from libcpp.string cimport string
+from libcpp.memory cimport shared_ptr
 
 cdef extern from "":
     """
@@ -12,6 +13,9 @@ cdef extern from "":
         }
     """
     void SetMetaClass(PyTypeObject* t, PyTypeObject* m)
+
+cdef extern from "thrift/lib/py3/types.h" namespace "thrift::py3" nogil:
+    shared_ptr[T] constant_shared_ptr[T](T)
 
 cdef class Struct:
     cdef IOBuf _serialize(self, proto)
