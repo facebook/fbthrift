@@ -131,14 +131,15 @@ TEST_F(ValidatorTest, RepeatedNameInExtendedService) {
 
 TEST_F(ValidatorTest, RepeatedNamesInEnumValues) {
   auto tenum = create_fake_enum("foo");
+  auto tenum_ptr = tenum.get();
 
   t_program program("/path/to/file.thrift");
-  program.add_enum(tenum.get());
+  program.add_enum(std::move(tenum));
 
   t_enum_value enum_value_1("bar", 1);
   t_enum_value enum_value_2("not_bar", 2);
-  tenum->append(&enum_value_1);
-  tenum->append(&enum_value_2);
+  tenum_ptr->append(&enum_value_1);
+  tenum_ptr->append(&enum_value_2);
 
   // No errors will be found
   auto errors = run_validator<enum_value_names_uniqueness_validator>(&program);
@@ -147,7 +148,7 @@ TEST_F(ValidatorTest, RepeatedNamesInEnumValues) {
   // Add enum with repeated value
   t_enum_value enum_value_3("bar", 3);
   enum_value_3.set_lineno(1);
-  tenum->append(&enum_value_3);
+  tenum_ptr->append(&enum_value_3);
 
   // An error will be found
   const std::string expected =
@@ -160,15 +161,16 @@ TEST_F(ValidatorTest, RepeatedNamesInEnumValues) {
 
 TEST_F(ValidatorTest, DuplicatedEnumValues) {
   auto tenum = create_fake_enum("foo");
+  auto tenum_ptr = tenum.get();
 
   t_program program("/path/to/file.thrift");
-  program.add_enum(tenum.get());
+  program.add_enum(std::move(tenum));
 
   t_enum_value enum_value_1("bar", 1);
   t_enum_value enum_value_2("foo", 1);
   enum_value_2.set_lineno(1);
-  tenum->append(&enum_value_1);
-  tenum->append(&enum_value_2);
+  tenum_ptr->append(&enum_value_1);
+  tenum_ptr->append(&enum_value_2);
 
   // An error will be found
   const std::string expected =
@@ -180,23 +182,24 @@ TEST_F(ValidatorTest, DuplicatedEnumValues) {
   EXPECT_EQ(expected, errors.front());
 
   // Now check that opt-out mechanism works
-  tenum->annotations_["thrift.duplicate_values"] = "";
+  tenum_ptr->annotations_["thrift.duplicate_values"] = "";
   errors = run_validator<enum_values_uniqueness_validator>(&program);
   EXPECT_TRUE(errors.empty());
 }
 
 TEST_F(ValidatorTest, UnsetEnumValues) {
   auto tenum = create_fake_enum("Foo");
+  auto tenum_ptr = tenum.get();
 
   t_program program("/path/to/file.thrift");
-  program.add_enum(tenum.get());
+  program.add_enum(std::move(tenum));
 
   t_enum_value enum_value_1("Bar");
   t_enum_value enum_value_2("Baz");
   enum_value_1.set_lineno(2);
   enum_value_2.set_lineno(3);
-  tenum->append(&enum_value_1);
-  tenum->append(&enum_value_2);
+  tenum_ptr->append(&enum_value_1);
+  tenum_ptr->append(&enum_value_2);
 
   // An error will be found
   auto errors = run_validator<enum_values_set_validator>(&program);

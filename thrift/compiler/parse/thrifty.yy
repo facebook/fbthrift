@@ -536,7 +536,7 @@ TypeDefinition:
     {
       driver.debug("TypeDefinition -> Enum");
       if (driver.mode == apache::thrift::parsing_mode::PROGRAM) {
-        driver.program->add_enum($1);
+        driver.program->add_enum(std::unique_ptr<t_enum>($1));
       }
       $$ = $1;
     }
