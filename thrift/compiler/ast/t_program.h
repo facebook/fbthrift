@@ -83,8 +83,9 @@ class t_program : public t_doc {
     objects_.push_back(tx);
     xceptions_.push_back(tx);
   }
-  void add_service(t_service* ts) {
-    services_.push_back(ts);
+  void add_service(std::unique_ptr<t_service> ts) {
+    services_raw_.push_back(ts.get());
+    services_.push_back(std::move(ts));
   }
   void add_named_placeholder_typedef(t_typedef* td) {
     named_placeholder_typedefs_.push_back(td);
@@ -112,7 +113,7 @@ class t_program : public t_doc {
     return objects_;
   }
   const std::vector<t_service*>& get_services() const {
-    return services_;
+    return services_raw_;
   }
   const std::vector<t_typedef*>& get_named_placeholder_typedefs() const {
     return named_placeholder_typedefs_;
@@ -243,10 +244,11 @@ class t_program : public t_doc {
   std::vector<t_struct*> objects_;
   std::vector<t_struct*> structs_;
   std::vector<t_struct*> xceptions_;
-  std::vector<t_service*> services_;
+  std::vector<std::unique_ptr<t_service>> services_;
   std::vector<std::unique_ptr<t_include>> includes_;
   std::vector<t_typedef*> named_placeholder_typedefs_;
 
+  std::vector<t_service*> services_raw_;
   std::vector<t_include*> includes_raw_;
 
   std::string path_; // initialized in ctor init-list

@@ -46,9 +46,10 @@ TEST_F(InterleavedVisitorTest, mixed) {
   auto vtor = interleaved_visitor({&tv_f, &tv_t});
 
   auto program = t_program("path/to/module.thrift");
-  auto service = t_service(&program);
-  program.add_service(&service);
+  auto service = std::make_unique<t_service>(&program);
+  auto service_ptr = service.get();
+  program.add_service(std::move(service));
   vtor.traverse(&program);
   EXPECT_THAT(tv_f.visited_services, testing::ElementsAre());
-  EXPECT_THAT(tv_t.visited_services, testing::ElementsAre(&service));
+  EXPECT_THAT(tv_t.visited_services, testing::ElementsAre(service_ptr));
 }

@@ -518,7 +518,7 @@ Definition:
       driver.debug("Definition -> Service");
       if (driver.mode == apache::thrift::parsing_mode::PROGRAM) {
         driver.scope_cache->add_service(driver.program->get_name() + "." + $1->get_name(), $1);
-        driver.program->add_service($1);
+        driver.program->add_service(std::unique_ptr<t_service>($1));
       }
       $$ = $1;
     }
