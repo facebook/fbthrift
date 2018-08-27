@@ -346,6 +346,20 @@ _readField_fieldH:
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
           8,
+          9,
+          apache::thrift::protocol::T_MAP))) {
+    goto _loop;
+  }
+_readField_fieldI:
+  {
+    this->fieldI = folly::sorted_vector_map< ::apache::thrift::fixtures::types::SimpleStringAliasTwo,  ::apache::thrift::fixtures::types::SimpleStringAlias>();
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::string>, folly::sorted_vector_map< ::apache::thrift::fixtures::types::SimpleStringAliasTwo,  ::apache::thrift::fixtures::types::SimpleStringAlias>>::read(*iprot, this->fieldI);
+    this->__isset.fieldI = true;
+  }
+
+  if (UNLIKELY(!_readState.advanceToNextField(
+          iprot,
+          9,
           0,
           apache::thrift::protocol::T_STOP))) {
     goto _loop;
@@ -429,6 +443,14 @@ _loop:
         goto _skip;
       }
     }
+    case 9:
+    {
+      if (LIKELY(_readState.fieldType == apache::thrift::protocol::T_MAP)) {
+        goto _readField_fieldI;
+      } else {
+        goto _skip;
+      }
+    }
     default:
     {
 _skip:
@@ -460,6 +482,8 @@ uint32_t ContainerStruct::serializedSize(Protocol_ const* prot_) const {
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::string>, folly::sorted_vector_map<int32_t, std::string>>::serializedSize<false>(*prot_, this->fieldG);
   xfer += prot_->serializedFieldSize("fieldH", apache::thrift::protocol::T_MAP, 8);
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::string>,  ::apache::thrift::fixtures::types::SomeMap>::serializedSize<false>(*prot_, this->fieldH);
+  xfer += prot_->serializedFieldSize("fieldI", apache::thrift::protocol::T_MAP, 9);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::string>, folly::sorted_vector_map< ::apache::thrift::fixtures::types::SimpleStringAliasTwo,  ::apache::thrift::fixtures::types::SimpleStringAlias>>::serializedSize<false>(*prot_, this->fieldI);
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -484,6 +508,8 @@ uint32_t ContainerStruct::serializedSizeZC(Protocol_ const* prot_) const {
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::string>, folly::sorted_vector_map<int32_t, std::string>>::serializedSize<false>(*prot_, this->fieldG);
   xfer += prot_->serializedFieldSize("fieldH", apache::thrift::protocol::T_MAP, 8);
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::string>,  ::apache::thrift::fixtures::types::SomeMap>::serializedSize<false>(*prot_, this->fieldH);
+  xfer += prot_->serializedFieldSize("fieldI", apache::thrift::protocol::T_MAP, 9);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::string>, folly::sorted_vector_map< ::apache::thrift::fixtures::types::SimpleStringAliasTwo,  ::apache::thrift::fixtures::types::SimpleStringAlias>>::serializedSize<false>(*prot_, this->fieldI);
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -515,6 +541,9 @@ uint32_t ContainerStruct::write(Protocol_* prot_) const {
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldBegin("fieldH", apache::thrift::protocol::T_MAP, 8);
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::string>,  ::apache::thrift::fixtures::types::SomeMap>::write(*prot_, this->fieldH);
+  xfer += prot_->writeFieldEnd();
+  xfer += prot_->writeFieldBegin("fieldI", apache::thrift::protocol::T_MAP, 9);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::string>, folly::sorted_vector_map< ::apache::thrift::fixtures::types::SimpleStringAliasTwo,  ::apache::thrift::fixtures::types::SimpleStringAlias>>::write(*prot_, this->fieldI);
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldStop();
   xfer += prot_->writeStructEnd();

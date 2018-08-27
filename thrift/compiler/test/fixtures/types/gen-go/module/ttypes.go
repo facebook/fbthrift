@@ -223,6 +223,7 @@ func (p *DecoratedStruct) String() string {
 //  - FieldF
 //  - FieldG
 //  - FieldH
+//  - FieldI
 type ContainerStruct struct {
   // unused field # 1
   FieldB []int32 `thrift:"fieldB,2" db:"fieldB" json:"fieldB"`
@@ -232,7 +233,8 @@ type ContainerStruct struct {
   FieldF []int32 `thrift:"fieldF,6" db:"fieldF" json:"fieldF"`
   FieldG map[int32]string `thrift:"fieldG,7" db:"fieldG" json:"fieldG"`
   FieldH include0.SomeMap `thrift:"fieldH,8" db:"fieldH" json:"fieldH"`
-  // unused fields # 9 to 11
+  FieldI map[include0.SimpleStringAliasTwo]include0.SimpleStringAlias `thrift:"fieldI,9" db:"fieldI" json:"fieldI"`
+  // unused fields # 10 to 11
   FieldA []int32 `thrift:"fieldA,12" db:"fieldA" json:"fieldA"`
 }
 
@@ -271,6 +273,10 @@ func (p *ContainerStruct) GetFieldG() map[int32]string {
 
 func (p *ContainerStruct) GetFieldH() include0.SomeMap {
   return p.FieldH
+}
+
+func (p *ContainerStruct) GetFieldI() map[include0.SimpleStringAliasTwo]include0.SimpleStringAlias {
+  return p.FieldI
 }
 func (p *ContainerStruct) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
@@ -315,6 +321,10 @@ func (p *ContainerStruct) Read(iprot thrift.Protocol) error {
       }
     case 8:
       if err := p.ReadField8(iprot); err != nil {
+        return err
+      }
+    case 9:
+      if err := p.ReadField9(iprot); err != nil {
         return err
       }
     default:
@@ -520,6 +530,36 @@ var _val10 string
   return nil
 }
 
+func (p *ContainerStruct)  ReadField9(iprot thrift.Protocol) error {
+  _, _, size, err := iprot.ReadMapBegin()
+  if err != nil {
+    return thrift.PrependError("error reading map begin: ", err)
+  }
+  tMap := make(map[include0.SimpleStringAliasTwo]include0.SimpleStringAlias, size)
+  p.FieldI =  tMap
+  for i := 0; i < size; i ++ {
+var _key11 include0.SimpleStringAliasTwo
+    if v, err := iprot.ReadString(); err != nil {
+    return thrift.PrependError("error reading field 0: ", err)
+} else {
+    temp := include0.SimpleStringAliasTwo(v)
+    _key11 = temp
+}
+var _val12 include0.SimpleStringAlias
+    if v, err := iprot.ReadString(); err != nil {
+    return thrift.PrependError("error reading field 0: ", err)
+} else {
+    temp := include0.SimpleStringAlias(v)
+    _val12 = temp
+}
+    p.FieldI[_key11] = _val12
+  }
+  if err := iprot.ReadMapEnd(); err != nil {
+    return thrift.PrependError("error reading map end: ", err)
+  }
+  return nil
+}
+
 func (p *ContainerStruct) Write(oprot thrift.Protocol) error {
   if err := oprot.WriteStructBegin("ContainerStruct"); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
@@ -530,6 +570,7 @@ func (p *ContainerStruct) Write(oprot thrift.Protocol) error {
   if err := p.writeField6(oprot); err != nil { return err }
   if err := p.writeField7(oprot); err != nil { return err }
   if err := p.writeField8(oprot); err != nil { return err }
+  if err := p.writeField9(oprot); err != nil { return err }
   if err := p.writeField12(oprot); err != nil { return err }
   if err := oprot.WriteFieldStop(); err != nil {
     return thrift.PrependError("write field stop error: ", err) }
@@ -675,6 +716,26 @@ func (p *ContainerStruct) writeField8(oprot thrift.Protocol) (err error) {
   return err
 }
 
+func (p *ContainerStruct) writeField9(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("fieldI", thrift.MAP, 9); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 9:fieldI: ", p), err) }
+  if err := oprot.WriteMapBegin(thrift.STRING, thrift.STRING, len(p.FieldI)); err != nil {
+    return thrift.PrependError("error writing map begin: ", err)
+  }
+  for k, v := range p.FieldI {
+    if err := oprot.WriteString(string(k)); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T. (0) field write error: ", p), err) }
+    if err := oprot.WriteString(string(v)); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T. (0) field write error: ", p), err) }
+  }
+  if err := oprot.WriteMapEnd(); err != nil {
+    return thrift.PrependError("error writing map end: ", err)
+  }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 9:fieldI: ", p), err) }
+  return err
+}
+
 func (p *ContainerStruct) writeField12(oprot thrift.Protocol) (err error) {
   if err := oprot.WriteFieldBegin("fieldA", thrift.LIST, 12); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write field begin error 12:fieldA: ", p), err) }
@@ -754,13 +815,13 @@ func (p *CppTypeStruct)  ReadField1(iprot thrift.Protocol) error {
   tSlice := make([]int32, 0, size)
   p.FieldA =  tSlice
   for i := 0; i < size; i ++ {
-var _elem11 int32
+var _elem13 int32
     if v, err := iprot.ReadI32(); err != nil {
     return thrift.PrependError("error reading field 0: ", err)
 } else {
-    _elem11 = v
+    _elem13 = v
 }
-    p.FieldA = append(p.FieldA, _elem11)
+    p.FieldA = append(p.FieldA, _elem13)
   }
   if err := iprot.ReadListEnd(); err != nil {
     return thrift.PrependError("error reading list end: ", err)
@@ -1317,19 +1378,19 @@ func (p *ComplexString)  ReadField2(iprot thrift.Protocol) error {
   tMap := make(map[string]int32, size)
   p.B =  tMap
   for i := 0; i < size; i ++ {
-var _key12 string
+var _key14 string
     if v, err := iprot.ReadString(); err != nil {
     return thrift.PrependError("error reading field 0: ", err)
 } else {
-    _key12 = v
+    _key14 = v
 }
-var _val13 int32
+var _val15 int32
     if v, err := iprot.ReadI32(); err != nil {
     return thrift.PrependError("error reading field 0: ", err)
 } else {
-    _val13 = v
+    _val15 = v
 }
-    p.B[_key12] = _val13
+    p.B[_key14] = _val15
   }
   if err := iprot.ReadMapEnd(); err != nil {
     return thrift.PrependError("error reading map end: ", err)

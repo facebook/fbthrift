@@ -308,7 +308,7 @@ class ContainerStruct final : private apache::thrift::detail::st::ComparisonOper
   ContainerStruct();
 
   // FragileConstructor for use in initialization lists only.
-  ContainerStruct(apache::thrift::FragileConstructor, std::vector<int32_t> fieldA__arg, std::list<int32_t> fieldB__arg, std::deque<int32_t> fieldC__arg, folly::fbvector<int32_t> fieldD__arg, folly::small_vector<int32_t> fieldE__arg, folly::sorted_vector_set<int32_t> fieldF__arg, folly::sorted_vector_map<int32_t, std::string> fieldG__arg,  ::apache::thrift::fixtures::types::SomeMap fieldH__arg);
+  ContainerStruct(apache::thrift::FragileConstructor, std::vector<int32_t> fieldA__arg, std::list<int32_t> fieldB__arg, std::deque<int32_t> fieldC__arg, folly::fbvector<int32_t> fieldD__arg, folly::small_vector<int32_t> fieldE__arg, folly::sorted_vector_set<int32_t> fieldF__arg, folly::sorted_vector_map<int32_t, std::string> fieldG__arg,  ::apache::thrift::fixtures::types::SomeMap fieldH__arg, folly::sorted_vector_map< ::apache::thrift::fixtures::types::SimpleStringAliasTwo,  ::apache::thrift::fixtures::types::SimpleStringAlias> fieldI__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<12, _T> arg) {
     fieldA = arg.extract();
@@ -349,6 +349,11 @@ class ContainerStruct final : private apache::thrift::detail::st::ComparisonOper
     fieldH = arg.extract();
     __isset.fieldH = true;
   }
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<9, _T> arg) {
+    fieldI = arg.extract();
+    __isset.fieldI = true;
+  }
 
   ContainerStruct(ContainerStruct&&) = default;
 
@@ -369,6 +374,7 @@ class ContainerStruct final : private apache::thrift::detail::st::ComparisonOper
   folly::sorted_vector_set<int32_t> fieldF;
   folly::sorted_vector_map<int32_t, std::string> fieldG;
    ::apache::thrift::fixtures::types::SomeMap fieldH;
+  folly::sorted_vector_map< ::apache::thrift::fixtures::types::SimpleStringAliasTwo,  ::apache::thrift::fixtures::types::SimpleStringAlias> fieldI;
 
   struct __isset {
     bool fieldA;
@@ -379,6 +385,7 @@ class ContainerStruct final : private apache::thrift::detail::st::ComparisonOper
     bool fieldF;
     bool fieldG;
     bool fieldH;
+    bool fieldI;
   } __isset = {};
   bool operator==(const ContainerStruct& rhs) const;
   bool operator<(const ContainerStruct& rhs) const;
@@ -453,6 +460,15 @@ class ContainerStruct final : private apache::thrift::detail::st::ComparisonOper
     fieldH = std::forward<T_ContainerStruct_fieldH_struct_setter>(fieldH_);
     __isset.fieldH = true;
     return fieldH;
+  }
+  const folly::sorted_vector_map< ::apache::thrift::fixtures::types::SimpleStringAliasTwo,  ::apache::thrift::fixtures::types::SimpleStringAlias>& get_fieldI() const&;
+  folly::sorted_vector_map< ::apache::thrift::fixtures::types::SimpleStringAliasTwo,  ::apache::thrift::fixtures::types::SimpleStringAlias> get_fieldI() &&;
+
+  template <typename T_ContainerStruct_fieldI_struct_setter = folly::sorted_vector_map< ::apache::thrift::fixtures::types::SimpleStringAliasTwo,  ::apache::thrift::fixtures::types::SimpleStringAlias>>
+  folly::sorted_vector_map< ::apache::thrift::fixtures::types::SimpleStringAliasTwo,  ::apache::thrift::fixtures::types::SimpleStringAlias>& set_fieldI(T_ContainerStruct_fieldI_struct_setter&& fieldI_) {
+    fieldI = std::forward<T_ContainerStruct_fieldI_struct_setter>(fieldI_);
+    __isset.fieldI = true;
+    return fieldI;
   }
 
   template <class Protocol_>

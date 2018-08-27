@@ -139,6 +139,10 @@ void TccStructTraits< ::apache::thrift::fixtures::types::ContainerStruct>::trans
     fid = 8;
     _ftype = apache::thrift::protocol::T_MAP;
   }
+  else if (_fname == "fieldI") {
+    fid = 9;
+    _ftype = apache::thrift::protocol::T_MAP;
+  }
 }
 void TccStructTraits< ::apache::thrift::fixtures::types::CppTypeStruct>::translateFieldName(
     FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
@@ -318,7 +322,7 @@ ContainerStruct::ContainerStruct() {}
 
 ContainerStruct::~ContainerStruct() {}
 
-ContainerStruct::ContainerStruct(apache::thrift::FragileConstructor, std::vector<int32_t> fieldA__arg, std::list<int32_t> fieldB__arg, std::deque<int32_t> fieldC__arg, folly::fbvector<int32_t> fieldD__arg, folly::small_vector<int32_t> fieldE__arg, folly::sorted_vector_set<int32_t> fieldF__arg, folly::sorted_vector_map<int32_t, std::string> fieldG__arg,  ::apache::thrift::fixtures::types::SomeMap fieldH__arg) :
+ContainerStruct::ContainerStruct(apache::thrift::FragileConstructor, std::vector<int32_t> fieldA__arg, std::list<int32_t> fieldB__arg, std::deque<int32_t> fieldC__arg, folly::fbvector<int32_t> fieldD__arg, folly::small_vector<int32_t> fieldE__arg, folly::sorted_vector_set<int32_t> fieldF__arg, folly::sorted_vector_map<int32_t, std::string> fieldG__arg,  ::apache::thrift::fixtures::types::SomeMap fieldH__arg, folly::sorted_vector_map< ::apache::thrift::fixtures::types::SimpleStringAliasTwo,  ::apache::thrift::fixtures::types::SimpleStringAlias> fieldI__arg) :
     fieldA(std::move(fieldA__arg)),
     fieldB(std::move(fieldB__arg)),
     fieldC(std::move(fieldC__arg)),
@@ -326,7 +330,8 @@ ContainerStruct::ContainerStruct(apache::thrift::FragileConstructor, std::vector
     fieldE(std::move(fieldE__arg)),
     fieldF(std::move(fieldF__arg)),
     fieldG(std::move(fieldG__arg)),
-    fieldH(std::move(fieldH__arg)) {
+    fieldH(std::move(fieldH__arg)),
+    fieldI(std::move(fieldI__arg)) {
   __isset.fieldA = true;
   __isset.fieldB = true;
   __isset.fieldC = true;
@@ -335,6 +340,7 @@ ContainerStruct::ContainerStruct(apache::thrift::FragileConstructor, std::vector
   __isset.fieldF = true;
   __isset.fieldG = true;
   __isset.fieldH = true;
+  __isset.fieldI = true;
 }
 
 void ContainerStruct::__clear() {
@@ -347,6 +353,7 @@ void ContainerStruct::__clear() {
   fieldF.clear();
   fieldG.clear();
   fieldH.clear();
+  fieldI.clear();
   __isset = {};
 }
 
@@ -376,6 +383,9 @@ bool ContainerStruct::operator==(const ContainerStruct& rhs) const {
     return false;
   }
   if (!(lhs.fieldH == rhs.fieldH)) {
+    return false;
+  }
+  if (!(lhs.fieldI == rhs.fieldI)) {
     return false;
   }
   return true;
@@ -445,6 +455,14 @@ const  ::apache::thrift::fixtures::types::SomeMap& ContainerStruct::get_fieldH()
   return std::move(fieldH);
 }
 
+const folly::sorted_vector_map< ::apache::thrift::fixtures::types::SimpleStringAliasTwo,  ::apache::thrift::fixtures::types::SimpleStringAlias>& ContainerStruct::get_fieldI() const& {
+  return fieldI;
+}
+
+folly::sorted_vector_map< ::apache::thrift::fixtures::types::SimpleStringAliasTwo,  ::apache::thrift::fixtures::types::SimpleStringAlias> ContainerStruct::get_fieldI() && {
+  return std::move(fieldI);
+}
+
 
 void swap(ContainerStruct& a, ContainerStruct& b) {
   using ::std::swap;
@@ -456,6 +474,7 @@ void swap(ContainerStruct& a, ContainerStruct& b) {
   swap(a.fieldF, b.fieldF);
   swap(a.fieldG, b.fieldG);
   swap(a.fieldH, b.fieldH);
+  swap(a.fieldI, b.fieldI);
   swap(a.__isset, b.__isset);
 }
 

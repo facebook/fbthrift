@@ -3,3 +3,7 @@ namespace cpp2 apache.thrift.fixtures.types
 
 typedef map<i32, string> (cpp.template = "std::unordered_map") SomeMap
 typedef list<SomeMap> SomeListOfTypeMap
+
+typedef string SimpleString
+typedef SimpleString SimpleStringAlias
+typedef SimpleStringAlias SimpleStringAliasTwo

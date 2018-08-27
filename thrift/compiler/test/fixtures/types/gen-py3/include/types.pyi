@@ -49,3 +49,6 @@ class List__std_unordered_map__Map__i32_string(_typing.Sequence[_typing.Mapping[
 
 SomeMap = std_unordered_map__Map__i32_string
 SomeListOfTypeMap = List__std_unordered_map__Map__i32_string
+SimpleString = str
+SimpleStringAlias = str
+SimpleStringAliasTwo = str

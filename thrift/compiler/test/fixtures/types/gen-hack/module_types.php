@@ -176,6 +176,19 @@ class ContainerStruct implements \IThriftStruct {
         ],
         'format' => 'collection',
       ],
+    9 => dict[
+      'var' => 'fieldI',
+      'type' => \TType::MAP,
+      'ktype' => \TType::STRING,
+      'vtype' => \TType::STRING,
+      'key' => dict[
+        'type' => \TType::STRING,
+      ],
+      'val' => dict[
+        'type' => \TType::STRING,
+        ],
+        'format' => 'collection',
+      ],
     ];
   public static Map<string, int> $_TFIELDMAP = Map {
     'fieldA' => 12,
@@ -186,8 +199,9 @@ class ContainerStruct implements \IThriftStruct {
     'fieldF' => 6,
     'fieldG' => 7,
     'fieldH' => 8,
+    'fieldI' => 9,
   };
-  const int STRUCTURAL_ID = 2901459969892394021;
+  const int STRUCTURAL_ID = 3309695040305680208;
   /**
    * Original thrift field:-
    * 12: list<i32> fieldA
@@ -228,8 +242,13 @@ class ContainerStruct implements \IThriftStruct {
    * 8: map<i32, string> fieldH
    */
   public Map<int, string> $fieldH;
+  /**
+   * Original thrift field:-
+   * 9: map<string, string> fieldI
+   */
+  public Map<string, string> $fieldI;
 
-  public function __construct(?Vector<int> $fieldA = null, ?Vector<int> $fieldB = null, ?Vector<int> $fieldC = null, ?Vector<int> $fieldD = null, ?Vector<int> $fieldE = null, ?Set<int> $fieldF = null, ?Map<int, string> $fieldG = null, ?Map<int, string> $fieldH = null  ) {
+  public function __construct(?Vector<int> $fieldA = null, ?Vector<int> $fieldB = null, ?Vector<int> $fieldC = null, ?Vector<int> $fieldD = null, ?Vector<int> $fieldE = null, ?Set<int> $fieldF = null, ?Map<int, string> $fieldG = null, ?Map<int, string> $fieldH = null, ?Map<string, string> $fieldI = null  ) {
     if ($fieldA === null) {
       $this->fieldA = Vector {};
     } else {
@@ -269,6 +288,11 @@ class ContainerStruct implements \IThriftStruct {
       $this->fieldH = Map {};
     } else {
       $this->fieldH = $fieldH;
+    }
+    if ($fieldI === null) {
+      $this->fieldI = Map {};
+    } else {
+      $this->fieldI = $fieldI;
     }
   }
 
@@ -392,6 +416,16 @@ class ContainerStruct implements \IThriftStruct {
         $_container52[$_key49] = $_value53;
       }
       $this->fieldH = $_container52;
+    }    
+    if (idx($parsed, 'fieldI') !== null) {
+      $_json57 = $parsed['fieldI'];
+      $_container58 = Map {};
+      foreach($_json57 as $_key55 => $_value56) {
+        $_value59 = '';
+        $_value59 = $_value56;
+        $_container58[$_key55] = $_value59;
+      }
+      $this->fieldI = $_container58;
     }    
   }
 

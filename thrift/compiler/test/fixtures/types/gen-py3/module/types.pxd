@@ -229,6 +229,37 @@ cdef extern from * nogil:
         bint empty()
 
 cdef extern from * nogil:
+    cdef cppclass folly_sorted_vector_map "folly::sorted_vector_map"[T, U]:
+        ctypedef T key_type
+        ctypedef U mapped_type
+        ctypedef size_t size_type
+
+        cppclass iterator:
+            cpair[T, U]& operator*()
+            iterator operator++()
+            bint operator==(iterator)
+            bint operator!=(iterator)
+        cppclass reverse_iterator:
+            cpair[T, U]& operator*()
+            iterator operator++()
+            bint operator==(reverse_iterator)
+            bint operator!=(reverse_iterator)
+
+        folly_sorted_vector_map() except +
+        folly_sorted_vector_map(folly_sorted_vector_map&) except +
+
+        U& operator[](T&)
+        iterator find(const T&)
+        size_type count(const T&)
+        size_type size()
+        iterator begin()
+        iterator end()
+        reverse_iterator rbegin()
+        reverse_iterator rend()
+        void clear()
+        bint empty()
+
+cdef extern from * nogil:
     cdef cppclass std_list_int32_t "std::list<int32_t>":
         ctypedef int32_t value_type
         ctypedef size_t size_type
@@ -346,6 +377,7 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "apache::thrift::fixtur
         bint fieldF
         bint fieldG
         bint fieldH
+        bint fieldI
 
     cdef cppclass cContainerStruct "apache::thrift::fixtures::types::ContainerStruct":
         cContainerStruct() except +
@@ -359,6 +391,7 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "apache::thrift::fixtur
         folly_sorted_vector_set[int32_t] fieldF
         folly_sorted_vector_map[int32_t,string] fieldG
         std_unordered_map[int32_t,string] fieldH
+        folly_sorted_vector_map[string,string] fieldI
         cContainerStruct__isset __isset
 
     cdef cppclass cCppTypeStruct__isset "apache::thrift::fixtures::types::CppTypeStruct::__isset":
@@ -538,6 +571,7 @@ cdef class ContainerStruct(thrift.py3.types.Struct):
     cdef folly_sorted_vector_set__Set__i32 __fieldF
     cdef folly_sorted_vector_map__Map__i32_string __fieldG
     cdef std_unordered_map__Map__i32_string __fieldH
+    cdef folly_sorted_vector_map__Map__string_string __fieldI
 
     @staticmethod
     cdef unique_ptr[cContainerStruct] _make_instance(
@@ -549,7 +583,8 @@ cdef class ContainerStruct(thrift.py3.types.Struct):
         object fieldE,
         object fieldF,
         object fieldG,
-        object fieldH
+        object fieldH,
+        object fieldI
     ) except *
 
     @staticmethod
@@ -803,6 +838,15 @@ cdef class folly_sorted_vector_map__Map__i32_string:
     @staticmethod
     cdef unique_ptr[folly_sorted_vector_map[int32_t,string]] _make_instance(object items) except *
 
+cdef class folly_sorted_vector_map__Map__string_string:
+    cdef object __hash
+    cdef object __weakref__
+    cdef shared_ptr[folly_sorted_vector_map[string,string]] _cpp_obj
+    @staticmethod
+    cdef create(shared_ptr[folly_sorted_vector_map[string,string]])
+    @staticmethod
+    cdef unique_ptr[folly_sorted_vector_map[string,string]] _make_instance(object items) except *
+
 cdef class std_list_int32_t__List__i32:
     cdef object __hash
     cdef object __weakref__
@@ -842,6 +886,8 @@ cdef extern from "<utility>" namespace "std" nogil:
     cdef unique_ptr[folly_sorted_vector_set[int32_t]] move_unique "std::move"(unique_ptr[folly_sorted_vector_set[int32_t]])
     cdef shared_ptr[folly_sorted_vector_map[int32_t,string]] move(unique_ptr[folly_sorted_vector_map[int32_t,string]])
     cdef unique_ptr[folly_sorted_vector_map[int32_t,string]] move_unique "std::move"(unique_ptr[folly_sorted_vector_map[int32_t,string]])
+    cdef shared_ptr[folly_sorted_vector_map[string,string]] move(unique_ptr[folly_sorted_vector_map[string,string]])
+    cdef unique_ptr[folly_sorted_vector_map[string,string]] move_unique "std::move"(unique_ptr[folly_sorted_vector_map[string,string]])
     cdef shared_ptr[std_list_int32_t] move(unique_ptr[std_list_int32_t])
     cdef unique_ptr[std_list_int32_t] move_unique "std::move"(unique_ptr[std_list_int32_t])
     cdef shared_ptr[cmap[string,int32_t]] move(unique_ptr[cmap[string,int32_t]])
@@ -866,6 +912,8 @@ cdef extern from "<memory>" namespace "std" nogil:
     cdef shared_ptr[const folly_sorted_vector_set[int32_t]] const_pointer_cast "std::const_pointer_cast<const folly::sorted_vector_set<int32_t>>"(shared_ptr[folly_sorted_vector_set[int32_t]])
 
     cdef shared_ptr[const folly_sorted_vector_map[int32_t,string]] const_pointer_cast "std::const_pointer_cast<const folly::sorted_vector_map<int32_t,std::string>>"(shared_ptr[folly_sorted_vector_map[int32_t,string]])
+
+    cdef shared_ptr[const folly_sorted_vector_map[string,string]] const_pointer_cast "std::const_pointer_cast<const folly::sorted_vector_map<std::string,std::string>>"(shared_ptr[folly_sorted_vector_map[string,string]])
 
     cdef shared_ptr[const std_list_int32_t] const_pointer_cast "std::const_pointer_cast<const std::list<int32_t>>"(shared_ptr[std_list_int32_t])
 
