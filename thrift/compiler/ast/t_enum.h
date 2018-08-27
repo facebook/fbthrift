@@ -15,6 +15,7 @@
  */
 #pragma once
 
+#include <memory>
 #include <vector>
 
 #include <thrift/compiler/ast/t_enum_value.h>
@@ -36,18 +37,19 @@ class t_enum : public t_type {
     name_ = name;
   }
 
-  void append(t_enum_value* constant) {
-    constants_.push_back(constant);
+  void append(std::unique_ptr<t_enum_value> constant) {
+    constants_raw_.push_back(constant.get());
+    constants_.push_back(std::move(constant));
   }
 
   const std::vector<t_enum_value*>& get_constants() const {
-    return constants_;
+    return constants_raw_;
   }
 
   const t_enum_value* find_value(const int32_t enum_value) const {
-    for (const auto it : constants_) {
+    for (auto const& it : constants_) {
       if (it->get_value() == enum_value) {
-        return it;
+        return it.get();
       }
     }
     return nullptr;
@@ -70,7 +72,9 @@ class t_enum : public t_type {
   }
 
  private:
-  std::vector<t_enum_value*> constants_;
+  std::vector<std::unique_ptr<t_enum_value>> constants_;
+
+  std::vector<t_enum_value*> constants_raw_;
 };
 
 } // namespace compiler

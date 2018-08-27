@@ -136,19 +136,17 @@ TEST_F(ValidatorTest, RepeatedNamesInEnumValues) {
   t_program program("/path/to/file.thrift");
   program.add_enum(std::move(tenum));
 
-  t_enum_value enum_value_1("bar", 1);
-  t_enum_value enum_value_2("not_bar", 2);
-  tenum_ptr->append(&enum_value_1);
-  tenum_ptr->append(&enum_value_2);
+  tenum_ptr->append(std::make_unique<t_enum_value>("bar", 1));
+  tenum_ptr->append(std::make_unique<t_enum_value>("not_bar", 2));
 
   // No errors will be found
   auto errors = run_validator<enum_value_names_uniqueness_validator>(&program);
   EXPECT_TRUE(errors.empty());
 
   // Add enum with repeated value
-  t_enum_value enum_value_3("bar", 3);
-  enum_value_3.set_lineno(1);
-  tenum_ptr->append(&enum_value_3);
+  auto enum_value_3 = std::make_unique<t_enum_value>("bar", 3);
+  enum_value_3->set_lineno(1);
+  tenum_ptr->append(std::move(enum_value_3));
 
   // An error will be found
   const std::string expected =
@@ -166,11 +164,11 @@ TEST_F(ValidatorTest, DuplicatedEnumValues) {
   t_program program("/path/to/file.thrift");
   program.add_enum(std::move(tenum));
 
-  t_enum_value enum_value_1("bar", 1);
-  t_enum_value enum_value_2("foo", 1);
-  enum_value_2.set_lineno(1);
-  tenum_ptr->append(&enum_value_1);
-  tenum_ptr->append(&enum_value_2);
+  auto enum_value_1 = std::make_unique<t_enum_value>("bar", 1);
+  auto enum_value_2 = std::make_unique<t_enum_value>("foo", 1);
+  enum_value_2->set_lineno(1);
+  tenum_ptr->append(std::move(enum_value_1));
+  tenum_ptr->append(std::move(enum_value_2));
 
   // An error will be found
   const std::string expected =
@@ -194,12 +192,12 @@ TEST_F(ValidatorTest, UnsetEnumValues) {
   t_program program("/path/to/file.thrift");
   program.add_enum(std::move(tenum));
 
-  t_enum_value enum_value_1("Bar");
-  t_enum_value enum_value_2("Baz");
-  enum_value_1.set_lineno(2);
-  enum_value_2.set_lineno(3);
-  tenum_ptr->append(&enum_value_1);
-  tenum_ptr->append(&enum_value_2);
+  auto enum_value_1 = std::make_unique<t_enum_value>("Bar");
+  auto enum_value_2 = std::make_unique<t_enum_value>("Baz");
+  enum_value_1->set_lineno(2);
+  enum_value_2->set_lineno(3);
+  tenum_ptr->append(std::move(enum_value_1));
+  tenum_ptr->append(std::move(enum_value_2));
 
   // An error will be found
   auto errors = run_validator<enum_values_set_validator>(&program);

@@ -610,7 +610,7 @@ EnumDefList:
     {
       driver.debug("EnumDefList -> EnumDefList EnumDef");
       $$ = $1;
-      $$->append($2);
+      $$->append(std::unique_ptr<t_enum_value>($2));
 
       if (driver.mode == apache::thrift::parsing_mode::PROGRAM) {
         t_const_value* const_val = new t_const_value($2->get_value());
