@@ -501,7 +501,7 @@ Definition:
     {
       driver.debug("Definition -> Const");
       if (driver.mode == apache::thrift::parsing_mode::PROGRAM) {
-        driver.program->add_const($1);
+        driver.program->add_const(std::unique_ptr<t_const>($1));
       }
       $$ = $1;
     }

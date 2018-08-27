@@ -74,8 +74,9 @@ class t_program : public t_doc {
     enums_raw_.push_back(te.get());
     enums_.push_back(std::move(te));
   }
-  void add_const(t_const* tc) {
-    consts_.push_back(tc);
+  void add_const(std::unique_ptr<t_const> tc) {
+    consts_raw_.push_back(tc.get());
+    consts_.push_back(std::move(tc));
   }
   void add_struct(std::unique_ptr<t_struct> ts) {
     objects_.push_back(ts.get());
@@ -105,7 +106,7 @@ class t_program : public t_doc {
     return enums_raw_;
   }
   const std::vector<t_const*>& get_consts() const {
-    return consts_;
+    return consts_raw_;
   }
   const std::vector<t_struct*>& get_structs() const {
     return structs_raw_;
@@ -244,7 +245,7 @@ class t_program : public t_doc {
    */
   std::vector<std::unique_ptr<t_typedef>> typedefs_;
   std::vector<std::unique_ptr<t_enum>> enums_;
-  std::vector<t_const*> consts_;
+  std::vector<std::unique_ptr<t_const>> consts_;
   std::vector<t_struct*> objects_; // objects_ is non-owning since it's simply
                                    // structs_ + xceptions_
   std::vector<std::unique_ptr<t_struct>> structs_;
@@ -255,6 +256,7 @@ class t_program : public t_doc {
 
   std::vector<t_typedef*> typedefs_raw_;
   std::vector<t_enum*> enums_raw_;
+  std::vector<t_const*> consts_raw_;
   std::vector<t_struct*> structs_raw_;
   std::vector<t_struct*> xceptions_raw_;
   std::vector<t_service*> services_raw_;
