@@ -62,3 +62,14 @@ TEST(minimize_padding_test, preserve_order_if_same_sizes) {
   EXPECT_LT(offsetof(same_sizes, b), offsetof(same_sizes, c));
   EXPECT_LT(offsetof(same_sizes, c), offsetof(same_sizes, d));
 }
+
+struct reordered_ref_type {
+  std::unique_ptr<int8_t> b;
+  std::unique_ptr<int8_t> d;
+  int8_t a;
+  int8_t c;
+};
+
+TEST(minimize_padding_test, reorder_ref_type) {
+  EXPECT_EQ(sizeof(reordered_ref_type), sizeof(ref_type));
+}

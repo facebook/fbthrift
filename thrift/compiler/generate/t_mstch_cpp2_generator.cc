@@ -762,9 +762,15 @@ class mstch_cpp2_struct : public mstch_struct {
   }
 
  protected:
-  // Computes the alignment of type on the target platform.
+  // Computes the alignment of field on the target platform.
   // Returns 0 if cannot compute the alignment.
-  static size_t compute_alignment(t_type const* type) {
+  static size_t compute_alignment(t_field const* field) {
+    auto const& annotations = field->annotations_;
+    if (annotations.find("cpp.ref_type") != annotations.end() ||
+        annotations.find("cpp2.ref_type") != annotations.end()) {
+      return 8;
+    }
+    t_type const* type = field->get_type();
     switch (type->get_type_value()) {
       case t_types::TypeValue::TYPE_BOOL:
       case t_types::TypeValue::TYPE_BYTE:
@@ -787,7 +793,7 @@ class mstch_cpp2_struct : public mstch_struct {
         const size_t kMaxAlign = 8;
         t_struct const* strct = static_cast<t_struct const*>(type);
         for (auto const* member : strct->get_members()) {
-          size_t member_align = compute_alignment(member->get_type());
+          size_t member_align = compute_alignment(member);
           if (member_align == 0) {
             // Unknown alignment, bail out.
             return 0;
@@ -831,7 +837,7 @@ class mstch_cpp2_struct : public mstch_struct {
     std::vector<FieldAlign> field_alignments;
     field_alignments.reserve(members.size());
     for (t_field* member : members) {
-      auto align = compute_alignment(member->get_type());
+      auto align = compute_alignment(member);
       if (align == 0) {
         // Unknown alignment, don't reorder anything.
         return members;

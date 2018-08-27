@@ -69,3 +69,10 @@ struct same_sizes {
   3: required i32 c;
   4: required i32 d;
 } (cpp.minimize_padding)
+
+struct ref_type {
+  1: required byte a;
+  2: required byte b (cpp.ref_type = "unique");
+  3: required byte c;
+  4: required byte d (cpp2.ref_type = "unique");
+} (cpp.minimize_padding)
