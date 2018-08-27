@@ -197,8 +197,7 @@ BOOST_PYTHON_MODULE(frontend) {
       "t_struct", init<t_program*, const string&>())
       .add_property(
           "members", make_function(&t_struct::get_members, policy_reo()))
-      .add_property("is_union", &t_struct::is_union)
-      .def("append", &t_struct::append);
+      .add_property("is_union", &t_struct::is_union);
   indexPtrVec<t_struct>("t_struct_vec");
 
   // t_typedef

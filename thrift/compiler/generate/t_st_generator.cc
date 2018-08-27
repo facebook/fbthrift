@@ -867,16 +867,19 @@ void t_st_generator::generate_recv_method(t_function* function) {
   string signature = function_signature(function);
 
   t_struct result(program_, "TResult");
-  t_field success(function->get_returntype(), "success", 0);
-  result.append(&success);
+  auto success =
+      std::make_unique<t_field>(function->get_returntype(), "success", 0);
+  result.append(std::move(success));
 
   t_struct* xs = function->get_xceptions();
   const vector<t_field*>& fields = xs->get_members();
   vector<t_field*>::const_iterator f_iter;
   for (f_iter = fields.begin(); f_iter != fields.end(); ++f_iter) {
-    // duplicate the field, but call it "exception"... we don't need a dynamic name
-    t_field *exception = new t_field((*f_iter)->get_type(), "exception", (*f_iter)->get_key());
-    result.append(exception);
+    // duplicate the field, but call it "exception"... we don't need a dynamic
+    // name
+    auto exception = std::make_unique<t_field>(
+        (*f_iter)->get_type(), "exception", (*f_iter)->get_key());
+    result.append(std::move(exception));
   }
 
   st_method(f_, client_class_name(), "recv" + capitalize(funname));

@@ -18,6 +18,7 @@
 
 #include <algorithm>
 #include <cassert>
+#include <memory>
 #include <string>
 #include <utility>
 #include <vector>
@@ -39,8 +40,6 @@ class t_program;
  */
 class t_struct : public t_type {
  public:
-  typedef std::vector<t_field*> members_type;
-
   explicit t_struct(t_program* program) : t_type(program) {}
 
   t_struct(t_program* program, const std::string& name)
@@ -61,13 +60,14 @@ class t_struct : public t_type {
   t_field* get_stream_field() {
     return stream_field_;
   }
-  void set_stream_field(t_field* stream_field) {
+  void set_stream_field(std::unique_ptr<t_field> stream_field) {
     assert(is_paramlist_);
     assert(!stream_field_);
     assert(stream_field->get_type()->is_pubsub_stream());
 
-    stream_field_ = stream_field;
-    members_.insert(members_.begin(), stream_field_);
+    stream_field_ = stream_field.get();
+    members_raw_.insert(members_raw_.begin(), stream_field_);
+    members_.insert(members_.begin(), std::move(stream_field));
     members_in_id_order_.insert(members_in_id_order_.begin(), stream_field_);
   }
 
@@ -77,17 +77,17 @@ class t_struct : public t_type {
     assert(!is_union_);
   }
 
-  bool append(t_field* elem) {
+  bool append(std::unique_ptr<t_field> elem) {
     if (!members_.empty()) {
-      members_.back()->set_next(elem);
+      members_.back()->set_next(elem.get());
     }
-    members_.push_back(elem);
+    members_raw_.push_back(elem.get());
+    members_.push_back(std::move(elem));
 
-    typedef members_type::iterator iter_type;
-    std::pair<iter_type, iter_type> bounds = std::equal_range(
+    auto bounds = std::equal_range(
         members_in_id_order_.begin(),
         members_in_id_order_.end(),
-        elem,
+        members_.back().get(),
         // Comparator to sort fields in ascending order by key.
         [](const t_field* a, const t_field* b) {
           return a->get_key() < b->get_key();
@@ -95,23 +95,23 @@ class t_struct : public t_type {
     if (bounds.first != bounds.second) {
       return false;
     }
-    members_in_id_order_.insert(bounds.second, elem);
+    members_in_id_order_.insert(bounds.second, members_.back().get());
     return true;
   }
 
   const std::vector<t_field*>& get_members() const {
-    return members_;
+    return members_raw_;
   }
 
   const t_field* get_member(const std::string& name) const {
-    auto const result = std::find_if(
-        members_.begin(), members_.end(), [&name](const t_field* m) {
+    auto const result =
+        std::find_if(members_.begin(), members_.end(), [&name](auto const& m) {
           return m->get_name() == name;
         });
-    return result == members_.end() ? nullptr : *result;
+    return result == members_.end() ? nullptr : result->get();
   }
 
-  const members_type& get_sorted_members() const {
+  const std::vector<t_field*>& get_sorted_members() const {
     return members_in_id_order_;
   }
 
@@ -127,7 +127,7 @@ class t_struct : public t_type {
     assert(has_field_named(name));
     for (auto& member : members_) {
       if (member->get_name() == name) {
-        return member;
+        return member.get();
       }
     }
 
@@ -160,9 +160,8 @@ class t_struct : public t_type {
   }
 
   bool has_field_named(const char* name) const {
-    std::vector<t_field*>::const_iterator m_iter;
-    for (m_iter = members_.begin(); m_iter != members_.end(); ++m_iter) {
-      if ((*m_iter)->get_name() == name) {
+    for (auto const& member : members_) {
+      if (member->get_name() == name) {
         return true;
       }
     }
@@ -172,9 +171,8 @@ class t_struct : public t_type {
 
   bool validate_field(t_field* field) {
     int key = field->get_key();
-    std::vector<t_field*>::const_iterator m_iter;
-    for (m_iter = members_.begin(); m_iter != members_.end(); ++m_iter) {
-      if ((*m_iter)->get_key() == key) {
+    for (auto const& member : members_) {
+      if (member->get_key() == key) {
         return false;
       }
     }
@@ -194,8 +192,9 @@ class t_struct : public t_type {
   }
 
  private:
-  members_type members_;
-  members_type members_in_id_order_;
+  std::vector<std::unique_ptr<t_field>> members_;
+  std::vector<t_field*> members_raw_;
+  std::vector<t_field*> members_in_id_order_;
   // only if is_paramlist_
   // not stored as a normal member, as it's not serialized like a normal
   // field into the pargs struct
@@ -206,7 +205,7 @@ class t_struct : public t_type {
   bool is_paramlist_{false};
 
   const t_struct* view_parent_ = nullptr;
-};
+}; // namespace compiler
 
 struct t_structpair {
   t_struct* first;

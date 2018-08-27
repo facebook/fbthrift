@@ -962,16 +962,16 @@ MaybeStreamAndParamList:
   {
     driver.debug("MaybeStreamAndParamList -> PubsubStreamType tok ParamList");
     t_struct* paramlist = $4;
-    t_field* stream_field = new t_field($1, $2, 0);
-    paramlist->set_stream_field(stream_field);
+    auto stream_field = std::make_unique<t_field>($1, $2, 0);
+    paramlist->set_stream_field(std::move(stream_field));
     $$ = paramlist;
   }
 | PubsubStreamType tok_identifier EmptyParamList
   {
     driver.debug("MaybeStreamAndParamList -> PubsubStreamType tok");
     t_struct* paramlist = $3;
-    t_field* stream_field = new t_field($1, $2, 0);
-    paramlist->set_stream_field(stream_field);
+    auto stream_field = std::make_unique<t_field>($1, $2, 0);
+    paramlist->set_stream_field(std::move(stream_field));
     $$ = paramlist;
   }
 | ParamList
@@ -984,7 +984,7 @@ ParamList:
     {
       driver.debug("ParamList -> ParamList , Param");
       $$ = $1;
-      if (!($$->append($2))) {
+      if (!($$->append(std::unique_ptr<t_field>($2)))) {
         driver.yyerror("Parameter identifier %d for \"%s\" has already been used",
                        $2->get_key(), $2->get_name().c_str());
         driver.end_parsing();
@@ -1055,7 +1055,7 @@ FieldList:
     {
       driver.debug("FieldList -> FieldList , Field");
       $$ = $1;
-      if (!($$->append($2))) {
+      if (!($$->append(std::unique_ptr<t_field>($2)))) {
         driver.yyerror("Field identifier %d for \"%s\" has already been used",
                        $2->get_key(), $2->get_name().c_str());
         driver.end_parsing();

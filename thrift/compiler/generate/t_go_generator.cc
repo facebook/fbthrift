@@ -1811,11 +1811,12 @@ void t_go_generator::generate_service_helpers(t_service* tservice) {
 void t_go_generator::generate_go_function_helpers(t_function* tfunction) {
   if (!tfunction->is_oneway()) {
     t_struct result(program_, tfunction->get_name() + "_result");
-    t_field success(tfunction->get_returntype(), "success", 0);
-    success.set_req(t_field::T_OPTIONAL);
+    auto success =
+        std::make_unique<t_field>(tfunction->get_returntype(), "success", 0);
+    success->set_req(t_field::T_OPTIONAL);
 
     if (!tfunction->get_returntype()->is_void()) {
-      result.append(&success);
+      result.append(std::move(success));
     }
 
     t_struct* xs = tfunction->get_xceptions();
@@ -1823,9 +1824,9 @@ void t_go_generator::generate_go_function_helpers(t_function* tfunction) {
     vector<t_field*>::const_iterator f_iter;
 
     for (f_iter = fields.begin(); f_iter != fields.end(); ++f_iter) {
-      t_field* f = *f_iter;
-      f->set_req(t_field::T_OPTIONAL);
-      result.append(f);
+      auto new_f = (*f_iter)->clone_DO_NOT_USE();
+      new_f->set_req(t_field::T_OPTIONAL);
+      result.append(std::move(new_f));
     }
 
     generate_go_struct_definition(f_service_, &result, false, true);

@@ -56,7 +56,10 @@ class t_field : public t_annotated {
   t_field(t_type* type, std::string name, int32_t key)
       : type_(type), name_(name), key_(key) {}
 
-  t_field(const t_field&) = default;
+  t_field(const t_field&) = delete;
+  t_field& operator=(const t_field&) = delete;
+  t_field(t_field&&) = delete;
+  t_field& operator=(t_field&&) = delete;
 
   ~t_field() {}
 
@@ -113,6 +116,21 @@ class t_field : public t_annotated {
 
   e_req get_req() const {
     return req_;
+  }
+
+  /**
+   * Thrift AST nodes are meant to be non-copyable and non-movable, and should
+   * never be cloned. This method exists to grand-father specific uses in the
+   * target language generators. Do NOT add any new usage of this method.
+   */
+  std::unique_ptr<t_field> clone_DO_NOT_USE() {
+    auto clone = std::make_unique<t_field>(type_, name_, key_);
+
+    clone->value_ = value_;
+    clone->next_ = next_;
+    clone->req_ = req_;
+
+    return clone;
   }
 
  private:

@@ -3381,16 +3381,17 @@ void t_hack_generator::generate_php_function_helpers(t_function* tfunction) {
   if (!tfunction->is_oneway()) {
     t_struct result(
         program_, service_name_ + "_" + tfunction->get_name() + "_result");
-    t_field success(tfunction->get_returntype(), "success", 0);
+    auto success =
+        std::make_unique<t_field>(tfunction->get_returntype(), "success", 0);
     if (!tfunction->get_returntype()->is_void()) {
-      result.append(&success);
+      result.append(std::move(success));
     }
 
     t_struct* xs = tfunction->get_xceptions();
     const vector<t_field*>& fields = xs->get_members();
     vector<t_field*>::const_iterator f_iter;
     for (f_iter = fields.begin(); f_iter != fields.end(); ++f_iter) {
-      result.append(*f_iter);
+      result.append((*f_iter)->clone_DO_NOT_USE());
     }
 
     generate_php_struct_definition(f_service_, &result, false, true);
