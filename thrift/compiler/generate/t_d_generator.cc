@@ -23,6 +23,8 @@
 
 #include <sys/stat.h>
 
+#include <boost/filesystem.hpp>
+
 #include <thrift/compiler/platform.h>
 #include <thrift/compiler/generate/t_oop_generator.h>
 
@@ -78,19 +80,19 @@ class t_d_generator : public t_oop_generator {
  protected:
   void init_generator() override {
     // Make output directory
-    make_dir(get_out_dir().c_str());
+    boost::filesystem::create_directory(get_out_dir());
 
     string dir = program_->get_namespace("d");
     string subdir = get_out_dir();
     string::size_type loc;
     while ((loc = dir.find(".")) != string::npos) {
       subdir = subdir + "/" + dir.substr(0, loc);
-      make_dir(subdir.c_str());
+      boost::filesystem::create_directory(subdir);
       dir = dir.substr(loc+1);
     }
     if (!dir.empty()) {
       subdir = subdir + "/" + dir;
-      make_dir(subdir.c_str());
+      boost::filesystem::create_directory(subdir);
     }
 
     package_dir_ = subdir + "/";

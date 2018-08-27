@@ -16,16 +16,6 @@
 
 #pragma once
 
-/*
- * Platform independent mkdir function
- */
-int make_dir(const char* path);
-
-/*
- * Platform independent chmod function
- */
-int chmod_to_755(const char* path);
-
 namespace apache {
 namespace thrift {
 namespace compiler {

@@ -26,6 +26,9 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <sstream>
+
+#include <boost/filesystem.hpp>
+
 #include <thrift/compiler/generate/t_generator.h>
 #include <thrift/compiler/generate/t_concat_generator.h>
 #include <thrift/compiler/platform.h>
@@ -168,7 +171,7 @@ class t_erl_generator : public t_concat_generator {
  */
 void t_erl_generator::init_generator() {
   // Make output directory
-  make_dir(get_out_dir().c_str());
+  boost::filesystem::create_directory(get_out_dir());
 
   // setup export lines
   export_lines_first_ = true;

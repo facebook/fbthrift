@@ -26,6 +26,8 @@
 #include <string>
 #include <vector>
 
+#include <boost/filesystem.hpp>
+
 #include <thrift/compiler/ast/base_types.h>
 #include <thrift/compiler/generate/t_concat_generator.h>
 #include <thrift/compiler/generate/t_generator.h>
@@ -756,7 +758,7 @@ void t_py_generator::init_generator() {
   assert(package_dir_.back() == '/');
   while (true) {
     // TODO: Do better error checking here.
-    make_dir(package_dir_.c_str());
+    boost::filesystem::create_directory(package_dir_);
     std::ofstream init_py((package_dir_ + "__init__.py").c_str());
     init_py << py_autogen_comment();
     init_py.close();
@@ -2674,8 +2676,8 @@ void t_py_generator::generate_service_remote(t_service* tservice) {
   // Close the remote file
   f_remote.close();
 
-  // Make file executable, love that bitwise OR action
-  chmod_to_755(f_remote_name.c_str());
+  // Make file executable
+  mark_file_executable(f_remote_name);
 }
 
 /**
@@ -2712,7 +2714,7 @@ void t_py_generator::generate_service_fuzzer(t_service* /*tservice*/) {
            << rename_reserved_keywords(service_name_)
            << ", ttypes, constants)\n";
   f_fuzzer.close();
-  chmod_to_755(f_fuzzer_name.c_str());
+  mark_file_executable(f_fuzzer_name);
 }
 
 /**

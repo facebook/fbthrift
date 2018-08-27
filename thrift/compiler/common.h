@@ -131,6 +131,8 @@ std::unique_ptr<t_program_bundle> parse_and_dump_diagnostics(
     std::string path,
     apache::thrift::parsing_params params);
 
+void mark_file_executable(std::string const& path);
+
 } // namespace compiler
 } // namespace thrift
 } // namespace apache

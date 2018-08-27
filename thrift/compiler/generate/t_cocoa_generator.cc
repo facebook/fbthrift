@@ -24,6 +24,8 @@
 #include <vector>
 #include <assert.h>
 
+#include <boost/filesystem.hpp>
+
 #include <stdlib.h>
 #include <sys/stat.h>
 #include <thrift/compiler/ast/base_types.h>
@@ -282,7 +284,7 @@ class t_cocoa_generator : public t_oop_generator {
  */
 void t_cocoa_generator::init_generator() {
   // Make output directory
-  make_dir(get_out_dir().c_str());
+  boost::filesystem::create_directory(get_out_dir());
   cocoa_prefix_ = program_->get_namespace("cocoa");
 
   // we have a .h header file...

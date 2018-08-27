@@ -244,6 +244,12 @@ std::unique_ptr<t_program_bundle> parse_and_dump_diagnostics(
   return program;
 }
 
+void mark_file_executable(std::string const& path) {
+  namespace fs = boost::filesystem;
+  fs::permissions(
+      path, fs::add_perms | fs::owner_exe | fs::group_exe | fs::others_exe);
+}
+
 } // namespace compiler
 } // namespace thrift
 } // namespace apache

@@ -24,6 +24,8 @@
 #include <string>
 #include <vector>
 
+#include <boost/filesystem.hpp>
+
 #include <thrift/compiler/platform.h>
 #include <thrift/compiler/generate/common.h>
 #include <thrift/compiler/generate/t_oop_generator.h>
@@ -251,7 +253,7 @@ class t_hs_generator : public t_oop_generator {
 void t_hs_generator::init_generator() {
   // Make output directory
   package_dir_ = get_out_dir();
-  make_dir(package_dir_.c_str());
+  boost::filesystem::create_directory(package_dir_);
 
   string hs_namespace = program_->get_namespace("hs");
   if (!hs_namespace.empty()) {
@@ -262,7 +264,7 @@ void t_hs_generator::init_generator() {
       }
       package_dir_ += component;
       package_dir_.push_back('/');
-      make_dir(package_dir_.c_str());
+      boost::filesystem::create_directory(package_dir_);
     }
   }
 

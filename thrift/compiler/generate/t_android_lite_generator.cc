@@ -20,6 +20,8 @@
 #include <iostream>
 #include <vector>
 
+#include <boost/filesystem.hpp>
+
 #include <thrift/compiler/platform.h>
 #include <thrift/compiler/generate/t_java_generator.h>
 
@@ -167,19 +169,19 @@ string t_android_lite_generator::temp_variable(const string& prefix,
 }
 
 void t_android_lite_generator::init_generator() {
-  make_dir(get_out_dir().c_str());
+  boost::filesystem::create_directory(get_out_dir());
   string dir = package_name_;
   string subdir = get_out_dir();
   string::size_type loc;
 
   while((loc = dir.find(".")) != string::npos) {
     subdir = subdir + "/" + dir.substr(0, loc);
-    make_dir(subdir.c_str());
+    boost::filesystem::create_directory(subdir);
     dir = dir.substr(loc + 1);
   }
   if (dir.size() > 0) {
     subdir = subdir + "/" + dir;
-    make_dir(subdir.c_str());
+    boost::filesystem::create_directory(subdir);
   }
 
   package_dir_ = subdir;

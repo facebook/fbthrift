@@ -23,6 +23,8 @@
 #include <vector>
 #include <list>
 
+#include <boost/filesystem.hpp>
+
 #include <stdlib.h>
 #include <sys/stat.h>
 #include <thrift/compiler/ast/base_types.h>
@@ -261,7 +263,7 @@ class t_js_generator : public t_oop_generator {
  */
 void t_js_generator::init_generator() {
   // Make output directory
-  make_dir(get_out_dir().c_str());
+  boost::filesystem::create_directory(get_out_dir());
 
   string outdir = get_out_dir();
 

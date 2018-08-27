@@ -23,6 +23,8 @@
 #include <string>
 #include <vector>
 
+#include <boost/filesystem.hpp>
+
 #include <thrift/compiler/ast/base_types.h>
 #include <thrift/compiler/generate/t_oop_generator.h>
 #include <thrift/compiler/platform.h>
@@ -916,7 +918,7 @@ void t_hack_generator::generate_json_reader(ofstream& out, t_struct* tstruct) {
  */
 void t_hack_generator::init_generator() {
   // Make output directory
-  make_dir(get_out_dir().c_str());
+  boost::filesystem::create_directory(get_out_dir());
 
   // Make output file
   string f_types_name = get_out_dir() + program_name_ + "_types.php";

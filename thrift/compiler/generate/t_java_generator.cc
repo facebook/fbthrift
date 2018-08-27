@@ -29,6 +29,8 @@
 
 #include <stdexcept>
 
+#include <boost/filesystem.hpp>
+
 #include <thrift/compiler/ast/base_types.h>
 #include <thrift/compiler/platform.h>
 using namespace std;
@@ -42,7 +44,7 @@ using namespace apache::thrift;
  */
 void t_java_generator::init_generator() {
   // Make output directory
-  make_dir(get_out_dir().c_str());
+  boost::filesystem::create_directory(get_out_dir());
   package_name_ = program_->get_namespace("java");
 
   string dir = package_name_;
@@ -50,12 +52,12 @@ void t_java_generator::init_generator() {
   string::size_type loc;
   while ((loc = dir.find(".")) != string::npos) {
     subdir = subdir + "/" + dir.substr(0, loc);
-    make_dir(subdir.c_str());
+    boost::filesystem::create_directory(subdir);
     dir = dir.substr(loc+1);
   }
   if (dir.size() > 0) {
     subdir = subdir + "/" + dir;
-    make_dir(subdir.c_str());
+    boost::filesystem::create_directory(subdir);
   }
 
   package_dir_ = subdir;

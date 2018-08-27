@@ -23,6 +23,8 @@
 #include <vector>
 #include <list>
 
+#include <boost/filesystem.hpp>
+
 #include <stdlib.h>
 #include <thrift/compiler/ast/base_types.h>
 #include <thrift/compiler/generate/t_oop_generator.h>
@@ -231,7 +233,7 @@ class t_perl_generator : public t_oop_generator {
  */
 void t_perl_generator::init_generator() {
   // Make output directory
-  make_dir(get_out_dir().c_str());
+  boost::filesystem::create_directory(get_out_dir());
 
   string outdir = get_out_dir();
   std::list<std::string> dirs;
@@ -239,7 +241,7 @@ void t_perl_generator::init_generator() {
   std::list<std::string>::iterator it;
   for (it = dirs.begin(); it != dirs.end(); it++) {
       outdir += *it + "/";
-      make_dir(outdir.c_str());
+      boost::filesystem::create_directory(outdir);
   }
 
   // Make output file

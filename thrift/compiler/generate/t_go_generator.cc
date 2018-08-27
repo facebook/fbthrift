@@ -32,6 +32,8 @@
 #include <unordered_map>
 #include <vector>
 
+#include <boost/filesystem.hpp>
+
 #include <stdlib.h>
 #include <sys/stat.h>
 #include <sys/types.h>
@@ -738,7 +740,7 @@ void t_go_generator::init_generator() {
 
   while (true) {
     // TODO: Do better error checking here.
-    make_dir(package_dir_.c_str());
+    boost::filesystem::create_directory(package_dir_);
 
     if (module.empty()) {
       break;
@@ -777,7 +779,7 @@ void t_go_generator::init_generator() {
   for (sv_iter = services.begin(); sv_iter != services.end(); ++sv_iter) {
     string service_dir =
         package_dir_ + "/" + underscore((*sv_iter)->get_name()) + "-remote";
-    make_dir(service_dir.c_str());
+    boost::filesystem::create_directory(service_dir);
   }
 
   // Print header
@@ -3003,7 +3005,7 @@ void t_go_generator::generate_service_remote(t_service* tservice) {
   f_remote.close();
 
   // Make file executable, love that bitwise OR action
-  chmod_to_755(f_remote_name.c_str());
+  mark_file_executable(f_remote_name);
 }
 
 /**

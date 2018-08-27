@@ -24,6 +24,8 @@
 #include <vector>
 #include <map>
 
+#include <boost/filesystem.hpp>
+
 #include <sstream>
 #include <thrift/compiler/generate/t_generator.h>
 #include <thrift/compiler/generate/t_concat_generator.h>
@@ -77,21 +79,21 @@ class t_json_generator : public t_concat_generator {
  */
 void t_json_generator::generate_program() {
   // Make output directory
-  make_dir(get_out_dir().c_str());
+  boost::filesystem::create_directory(get_out_dir());
   string module_name = program_->get_namespace("json");
   string fname = get_out_dir();
   if (module_name.empty()) {
     module_name = program_->get_name();
   }
   string mangled_module_name = module_name;
-  make_dir(fname.c_str());
+  boost::filesystem::create_directory(fname);
   for (string::size_type pos = mangled_module_name.find('.');
        pos != string::npos;
        pos = mangled_module_name.find('.')) {
     fname += '/';
     fname += mangled_module_name.substr(0, pos);
     mangled_module_name.erase(0, pos+1);
-    make_dir(fname.c_str());
+    boost::filesystem::create_directory(fname);
   }
 
   fname += '/';

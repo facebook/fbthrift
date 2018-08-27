@@ -25,6 +25,8 @@
 
 #include <sstream>
 
+#include <boost/filesystem.hpp>
+
 #include <thrift/compiler/generate/t_oop_generator.h>
 #include <thrift/compiler/platform.h>
 using namespace std;
@@ -149,7 +151,7 @@ class t_st_generator : public t_oop_generator {
  */
 void t_st_generator::init_generator() {
   // Make output directory
-  make_dir(get_out_dir().c_str());
+  boost::filesystem::create_directory(get_out_dir());
 
   temporary_var = 0;
 

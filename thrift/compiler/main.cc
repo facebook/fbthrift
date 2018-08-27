@@ -37,6 +37,7 @@
 
 #include <boost/algorithm/string/join.hpp>
 #include <boost/algorithm/string/split.hpp>
+#include <boost/filesystem.hpp>
 
 #include <thrift/compiler/generate/t_generator.h>
 #include <thrift/compiler/mutator/mutator.h>
@@ -520,8 +521,9 @@ int main(int argc, char** argv) {
         // Invoker specified `-out blah`. We are supposed to output directly
         // into blah, e.g. `blah/Foo.java`. Make the directory if necessary,
         // just like how for `-o blah` we make `o/gen-java`
+        boost::system::error_code errc;
         if (stat(out_path.c_str(), &sb) < 0 && errno == ENOENT &&
-            make_dir(out_path.c_str()) < 0) {
+            (boost::filesystem::create_directory(out_path, errc), errc)) {
           fprintf(
               stderr,
               "Output directory %s is unusable: mkdir: %s\n",

@@ -28,6 +28,8 @@
 #include <sys/types.h>
 #include <sstream>
 
+#include <boost/filesystem.hpp>
+
 #include <thrift/compiler/ast/base_types.h>
 #include <thrift/compiler/generate/t_oop_generator.h>
 #include <thrift/compiler/platform.h>
@@ -215,7 +217,7 @@ class t_rb_generator : public t_oop_generator {
  */
 void t_rb_generator::init_generator() {
   // Make output directory
-  make_dir(get_out_dir().c_str());
+  boost::filesystem::create_directory(get_out_dir());
 
   // Make output file
   string f_types_name = get_out_dir()+underscore(program_name_)+"_types.rb";

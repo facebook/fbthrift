@@ -26,6 +26,9 @@
 #include <stdlib.h>
 #include <sys/stat.h>
 #include <sstream>
+
+#include <boost/filesystem.hpp>
+
 #include <thrift/compiler/generate/t_generator.h>
 #include <thrift/compiler/generate/t_concat_generator.h>
 #include <thrift/compiler/platform.h>
@@ -206,7 +209,7 @@ void t_html_generator::generate_program_toc_row(t_program* tprog) {
  */
 void t_html_generator::generate_program() {
   // Make output directory
-  make_dir(get_out_dir().c_str());
+  boost::filesystem::create_directory(get_out_dir());
   string fname = get_out_dir() + program_->get_name() + ".html";
   f_out_.open(fname.c_str());
   record_genfile(fname);

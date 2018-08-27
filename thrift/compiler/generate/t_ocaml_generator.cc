@@ -22,6 +22,8 @@
 #include <iostream>
 #include <vector>
 
+#include <boost/filesystem.hpp>
+
 #include <sys/types.h>
 #include <thrift/compiler/ast/base_types.h>
 #include <thrift/compiler/generate/t_oop_generator.h>
@@ -226,7 +228,7 @@ void t_ocaml_generator::generate_program() {
  */
 void t_ocaml_generator::init_generator() {
   // Make output directory
-  make_dir(get_out_dir().c_str());
+  boost::filesystem::create_directory(get_out_dir());
 
   // Make output file
   string f_types_name = get_out_dir()+program_name_+"_types.ml";

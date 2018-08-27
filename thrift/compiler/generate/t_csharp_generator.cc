@@ -25,9 +25,12 @@
 #include <stdlib.h>
 #include <sstream>
 
+#include <boost/filesystem.hpp>
+
 #include <thrift/compiler/ast/base_types.h>
 #include <thrift/compiler/generate/t_oop_generator.h>
 #include <thrift/compiler/platform.h>
+
 using namespace std;
 using namespace apache::thrift;
 
@@ -133,7 +136,7 @@ class t_csharp_generator : public t_oop_generator
 
 
 void t_csharp_generator::init_generator() {
-  make_dir(get_out_dir().c_str());
+  boost::filesystem::create_directory(get_out_dir());
   namespace_name_ = program_->get_namespace("csharp");
 
   string dir = namespace_name_;
@@ -142,12 +145,12 @@ void t_csharp_generator::init_generator() {
 
   while ((loc = dir.find(".")) != string::npos) {
     subdir = subdir + "/" + dir.substr(0, loc);
-    make_dir(subdir.c_str());
+    boost::filesystem::create_directory(subdir);
     dir = dir.substr(loc + 1);
   }
   if (dir.size() > 0) {
     subdir = subdir + "/" + dir;
-    make_dir(subdir.c_str());
+    boost::filesystem::create_directory(subdir);
   }
 
   namespace_dir_ = subdir;
