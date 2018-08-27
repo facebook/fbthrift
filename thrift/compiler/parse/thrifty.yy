@@ -502,6 +502,8 @@ Definition:
       driver.debug("Definition -> Const");
       if (driver.mode == apache::thrift::parsing_mode::PROGRAM) {
         driver.program->add_const(std::unique_ptr<t_const>($1));
+      } else {
+        driver.delete_at_the_end($1);
       }
       $$ = $1;
     }
@@ -519,6 +521,8 @@ Definition:
       if (driver.mode == apache::thrift::parsing_mode::PROGRAM) {
         driver.scope_cache->add_service(driver.program->get_name() + "." + $1->get_name(), $1);
         driver.program->add_service(std::unique_ptr<t_service>($1));
+      } else {
+        driver.delete_at_the_end($1);
       }
       $$ = $1;
     }
@@ -529,6 +533,8 @@ TypeDefinition:
       driver.debug("TypeDefinition -> Typedef");
       if (driver.mode == apache::thrift::parsing_mode::PROGRAM) {
         driver.program->add_typedef(std::unique_ptr<t_typedef>($1));
+      } else {
+        driver.delete_at_the_end($1);
       }
       $$ = $1;
     }
@@ -537,6 +543,8 @@ TypeDefinition:
       driver.debug("TypeDefinition -> Enum");
       if (driver.mode == apache::thrift::parsing_mode::PROGRAM) {
         driver.program->add_enum(std::unique_ptr<t_enum>($1));
+      } else {
+        driver.delete_at_the_end($1);
       }
       $$ = $1;
     }
@@ -545,6 +553,8 @@ TypeDefinition:
       driver.debug("TypeDefinition -> Struct");
       if (driver.mode == apache::thrift::parsing_mode::PROGRAM) {
         driver.program->add_struct(std::unique_ptr<t_struct>($1));
+      } else {
+        driver.delete_at_the_end($1);
       }
       $$ = $1;
     }
@@ -553,6 +563,8 @@ TypeDefinition:
       driver.debug("TypeDefinition -> Xception");
       if (driver.mode == apache::thrift::parsing_mode::PROGRAM) {
         driver.program->add_xception(std::unique_ptr<t_struct>($1));
+      } else {
+        driver.delete_at_the_end($1);
       }
       $$ = $1;
     }

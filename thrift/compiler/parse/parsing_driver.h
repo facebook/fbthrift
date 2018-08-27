@@ -296,6 +296,50 @@ class parsing_driver {
   char* clean_up_doctext(char* doctext);
 
  private:
+  class deleter {
+   public:
+    template <typename T>
+    explicit deleter(T* ptr)
+        : ptr_(ptr),
+          delete_([](const void* ptr) { delete static_cast<const T*>(ptr); }) {}
+
+    deleter(const deleter&) = delete;
+    deleter& operator=(const deleter&) = delete;
+
+    deleter(deleter&& rhs) noexcept : ptr_{rhs.ptr_}, delete_{rhs.delete_} {
+      rhs.ptr_ = nullptr;
+      rhs.delete_ = nullptr;
+    }
+
+    deleter& operator=(deleter&& rhs) {
+      std::swap(ptr_, rhs.ptr_);
+      std::swap(delete_, rhs.delete_);
+      return *this;
+    }
+
+    ~deleter() {
+      if (!!ptr_) {
+        delete_(ptr_);
+      }
+    }
+
+   private:
+    const void* ptr_;
+    void (*delete_)(const void*);
+  };
+
+  std::vector<deleter> deleters_;
+
+ public:
+  /**
+   * Hands a pointer to be deleted when the parsing driver itself destructs.
+   */
+  template <typename T>
+  void delete_at_the_end(T* ptr) {
+    deleters_.push_back(deleter{ptr});
+  }
+
+ private:
   std::set<std::string> already_parsed_paths_;
   std::set<std::string> circular_deps_;
 
