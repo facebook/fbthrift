@@ -46,7 +46,7 @@ std::unique_ptr<t_function> create_fake_function(
   }
 
   return std::unique_ptr<t_function>(new t_function(
-      signature::return_type().release(), std::move(name), args.release()));
+      signature::return_type().release(), std::move(name), std::move(args)));
 }
 
 /**

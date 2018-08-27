@@ -1126,11 +1126,10 @@ void t_js_generator::generate_service_client(t_service* tservice) {
             endl <<  js_namespace(tservice->get_program())<<service_name_ <<
             "Client.prototype.recv_" << (*f_iter)->get_name() << " = function(input,mtype,rseqid) {" << endl;
       } else {
-        t_struct noargs(program_);
-
-        t_function recv_function((*f_iter)->get_returntype(),
-                                 string("recv_") + (*f_iter)->get_name(),
-                                 &noargs);
+        t_function recv_function(
+            (*f_iter)->get_returntype(),
+            string("recv_") + (*f_iter)->get_name(),
+            std::make_unique<t_struct>(program_));
         // Open function
         f_service_ <<
             endl <<  js_namespace(tservice->get_program())<<service_name_ <<

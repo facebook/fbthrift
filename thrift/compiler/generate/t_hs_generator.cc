@@ -1377,11 +1377,12 @@ void t_hs_generator::generate_service_client(t_service* tservice) {
 
     if (!(*f_iter)->is_oneway()) {
       string resultname = capitalize((*f_iter)->get_name() + "_result");
-      t_struct noargs(program_);
 
       string recv_fn_name = string("recv_") + (*f_iter)->get_name();
-      t_function recv_function((*f_iter)->get_returntype(), recv_fn_name,
-                               &noargs);
+      t_function recv_function(
+          (*f_iter)->get_returntype(),
+          recv_fn_name,
+          std::make_unique<t_struct>(program_));
 
       // Open function
       indent(f_client_) << recv_fn_name << " ip =" << nl;

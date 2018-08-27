@@ -4066,12 +4066,11 @@ void t_hack_generator::_generate_service_client(
     if (!(*f_iter)->is_oneway()) {
       std::string resultname =
           hack_name(tservice) + "_" + (*f_iter)->get_name() + "_result";
-      t_struct noargs(program_);
 
       t_function recv_function(
           (*f_iter)->get_returntype(),
           string("recvImpl_") + (*f_iter)->get_name(),
-          &noargs);
+          std::make_unique<t_struct>(program_));
       string return_typehint = type_to_typehint((*f_iter)->get_returntype());
       // Open function
       out << endl
@@ -4348,8 +4347,6 @@ void t_hack_generator::_generate_service_client_children(
       << endl;
   indent_up();
 
-  t_struct noargs(program_);
-
   // Generate client method implementations
   vector<t_function*> functions = tservice->get_functions();
   vector<t_function*>::const_iterator f_iter;
@@ -4467,7 +4464,7 @@ void t_hack_generator::_generate_service_client_children(
         t_function recv_function(
             (*f_iter)->get_returntype(),
             string("recv_") + (*f_iter)->get_name(),
-            &noargs);
+            std::make_unique<t_struct>(program_));
         // Open function
         bool is_void = (*f_iter)->get_returntype()->is_void();
         out << indent() << "public function "

@@ -191,6 +191,33 @@ class t_struct : public t_type {
     return TypeValue::TYPE_STRUCT;
   }
 
+  /**
+   * Thrift AST nodes are meant to be non-copyable and non-movable, and should
+   * never be cloned. This method exists to grand-father specific uses in the
+   * target language generators. Do NOT add any new usage of this method.
+   */
+  std::unique_ptr<t_struct> clone_DO_NOT_USE() {
+    auto clone = std::make_unique<t_struct>(program_, name_);
+
+    clone->set_xception(is_xception_);
+    clone->set_union(is_union_);
+    clone->set_paramlist(is_paramlist_);
+
+    clone->set_view_parent(view_parent_);
+
+    for (auto const& field : members_) {
+      if (field.get() != stream_field_) {
+        clone->append(field->clone_DO_NOT_USE());
+      }
+    }
+
+    if (!!stream_field_) {
+      clone->set_stream_field(stream_field_->clone_DO_NOT_USE());
+    }
+
+    return clone;
+  }
+
  private:
   std::vector<std::unique_ptr<t_field>> members_;
   std::vector<t_field*> members_raw_;

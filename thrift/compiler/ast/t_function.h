@@ -47,16 +47,16 @@ class t_function : public t_doc {
   t_function(
       t_type* returntype,
       std::string name,
-      t_struct* arglist,
+      std::unique_ptr<t_struct> arglist,
       t_type* annotations = nullptr,
       bool oneway = false)
       : returntype_(returntype),
         name_(name),
-        arglist_(arglist),
+        arglist_(std::move(arglist)),
         annotations_(annotations),
         oneway_(oneway) {
-    xceptions_ = new t_struct(nullptr);
-    stream_xceptions_ = new t_struct(nullptr);
+    xceptions_ = std::make_unique<t_struct>(nullptr);
+    stream_xceptions_ = std::make_unique<t_struct>(nullptr);
 
     if (oneway_) {
       if (returntype_ == nullptr || !returntype_->is_void()) {
@@ -79,16 +79,16 @@ class t_function : public t_doc {
   t_function(
       t_type* returntype,
       std::string name,
-      t_struct* arglist,
-      t_struct* xceptions,
-      t_struct* stream_xceptions,
+      std::unique_ptr<t_struct> arglist,
+      std::unique_ptr<t_struct> xceptions,
+      std::unique_ptr<t_struct> stream_xceptions,
       t_type* annotations = nullptr,
       bool oneway = false)
       : returntype_(returntype),
         name_(name),
-        arglist_(arglist),
-        xceptions_(xceptions),
-        stream_xceptions_(stream_xceptions),
+        arglist_(std::move(arglist)),
+        xceptions_(std::move(xceptions)),
+        stream_xceptions_(std::move(stream_xceptions)),
         annotations_(annotations),
         oneway_(oneway) {
     if (oneway_) {
@@ -102,7 +102,7 @@ class t_function : public t_doc {
     }
 
     if (!stream_xceptions_) {
-      stream_xceptions_ = new t_struct(nullptr);
+      stream_xceptions_ = std::make_unique<t_struct>(nullptr);
     }
 
     if (!stream_xceptions_->get_members().empty()) {
@@ -126,15 +126,15 @@ class t_function : public t_doc {
   }
 
   t_struct* get_arglist() const {
-    return arglist_;
+    return arglist_.get();
   }
 
   t_struct* get_xceptions() const {
-    return xceptions_;
+    return xceptions_.get();
   }
 
   t_struct* get_stream_xceptions() const {
-    return stream_xceptions_;
+    return stream_xceptions_.get();
   }
 
   t_type* get_annotations() const {
@@ -163,9 +163,9 @@ class t_function : public t_doc {
  private:
   t_type* returntype_;
   std::string name_;
-  t_struct* arglist_;
-  t_struct* xceptions_;
-  t_struct* stream_xceptions_;
+  std::unique_ptr<t_struct> arglist_;
+  std::unique_ptr<t_struct> xceptions_;
+  std::unique_ptr<t_struct> stream_xceptions_;
   t_type* annotations_;
   bool oneway_;
 };

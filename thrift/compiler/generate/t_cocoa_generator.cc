@@ -1833,7 +1833,7 @@ void t_cocoa_generator::generate_cocoa_service_client_implementation(ofstream& o
     t_function send_function(
         void_type(),
         string("send_") + (*f_iter)->get_name(),
-        (*f_iter)->get_arglist());
+        (*f_iter)->get_arglist()->clone_DO_NOT_USE());
 
     string argsname = (*f_iter)->get_name() + "_args";
 
@@ -1889,11 +1889,12 @@ void t_cocoa_generator::generate_cocoa_service_client_implementation(ofstream& o
     out << endl;
 
     if (!(*f_iter)->is_oneway()) {
-      t_struct noargs(program_);
-      t_function recv_function((*f_iter)->get_returntype(),
-                               string("recv_") + (*f_iter)->get_name(),
-                               &noargs,
-                               (*f_iter)->get_xceptions());
+      t_function recv_function(
+          (*f_iter)->get_returntype(),
+          string("recv_") + (*f_iter)->get_name(),
+          std::make_unique<t_struct>(program_),
+          (*f_iter)->get_xceptions()->clone_DO_NOT_USE(),
+          nullptr);
       // Open function
       indent(out) <<
         "- " << function_signature(&recv_function) << endl;

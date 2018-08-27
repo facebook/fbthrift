@@ -2443,11 +2443,10 @@ void t_py_generator::generate_service_client(t_service* tservice) {
         f_service_ << indent() << "def recv_" << (*f_iter)->get_name()
                    << "(self, iprot, mtype, rseqid):" << endl;
       } else {
-        t_struct noargs(program_);
         t_function recv_function(
             (*f_iter)->get_returntype(),
             string("recv_") + (*f_iter)->get_name(),
-            &noargs);
+            std::make_unique<t_struct>(program_));
         f_service_ << indent() << "def " << function_signature(&recv_function)
                    << ":" << endl;
       }

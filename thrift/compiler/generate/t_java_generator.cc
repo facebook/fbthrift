@@ -2292,7 +2292,7 @@ void t_java_generator::generate_service_client(t_service* tservice) {
     t_function send_function(
         void_type(),
         string("send_") + (*f_iter)->get_name(),
-        (*f_iter)->get_arglist());
+        (*f_iter)->get_arglist()->clone_DO_NOT_USE());
 
     string argsname = (*f_iter)->get_name() + "_args";
 
@@ -2334,12 +2334,11 @@ void t_java_generator::generate_service_client(t_service* tservice) {
     if (!(*f_iter)->is_oneway()) {
       string resultname = (*f_iter)->get_name() + "_result";
 
-      t_struct noargs(program_);
       t_function recv_function(
           (*f_iter)->get_returntype(),
           string("recv_") + (*f_iter)->get_name(),
-          &noargs,
-          (*f_iter)->get_xceptions(),
+          std::make_unique<t_struct>(program_),
+          (*f_iter)->get_xceptions()->clone_DO_NOT_USE(),
           nullptr /* client exceptions */);
       // Open the recv function
       indent(f_service_) <<

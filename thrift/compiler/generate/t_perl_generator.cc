@@ -1182,11 +1182,11 @@ void t_perl_generator::generate_service_client(t_service* tservice) {
 
     if (!(*f_iter)->is_oneway()) {
       std::string resultname = perl_namespace(tservice->get_program()) + service_name_ + "_" + (*f_iter)->get_name() + "_result";
-      t_struct noargs(program_);
 
-      t_function recv_function((*f_iter)->get_returntype(),
-                               string("recv_") + (*f_iter)->get_name(),
-                               &noargs);
+      t_function recv_function(
+          (*f_iter)->get_returntype(),
+          string("recv_") + (*f_iter)->get_name(),
+          std::make_unique<t_struct>(program_));
       // Open function
       f_service_ <<
         endl <<

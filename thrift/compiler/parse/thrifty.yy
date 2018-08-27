@@ -946,7 +946,15 @@ Function:
       $6->set_name(std::string($4) + "_args");
       auto* rettype = $3;
       auto* arglist = $6;
-      auto* func = new t_function(rettype, $4, arglist, $8->first, $8->second, $9, $2);
+      auto* func = new t_function(
+        rettype,
+        $4,
+        std::unique_ptr<t_struct>(arglist),
+        std::unique_ptr<t_struct>($8->first),
+        std::unique_ptr<t_struct>($8->second),
+        $9,
+        $2
+      );
       $$ = func;
 
       if ($1 != NULL) {
