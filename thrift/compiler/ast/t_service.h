@@ -47,12 +47,13 @@ class t_service : public t_type {
     extends_ = extends;
   }
 
-  void add_function(t_function* func) {
-    functions_.push_back(func);
+  void add_function(std::unique_ptr<t_function> func) {
+    functions_raw_.push_back(func.get());
+    functions_.push_back(std::move(func));
   }
 
   const std::vector<t_function*>& get_functions() const {
-    return functions_;
+    return functions_raw_;
   }
 
   t_service* get_extends() const {
@@ -72,7 +73,10 @@ class t_service : public t_type {
   }
 
  private:
-  std::vector<t_function*> functions_;
+  std::vector<std::unique_ptr<t_function>> functions_;
+
+  std::vector<t_function*> functions_raw_;
+
   t_service* extends_;
 };
 

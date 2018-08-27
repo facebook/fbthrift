@@ -282,11 +282,7 @@ BOOST_PYTHON_MODULE(frontend) {
       .add_property(
           "extends", make_function(&t_service::get_extends, policy_rir()))
       .add_property(
-          "functions",
-          make_function(
-              static_cast<const vector<t_function*>& (t_service::*)() const>(
-                  &t_service::get_functions),
-              policy_rir()));
+          "functions", make_function(&t_service::get_functions, policy_rir()));
 
   indexPtrVec<t_service>("t_service_vec");
 

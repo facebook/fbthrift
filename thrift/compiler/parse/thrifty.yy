@@ -932,7 +932,7 @@ FunctionList:
     {
       driver.debug("FunctionList -> FunctionList Function");
       $$ = $1;
-      $1->add_function($2);
+      $1->add_function(std::unique_ptr<t_function>($2));
     }
 |
     {
