@@ -66,8 +66,9 @@ class t_program : public t_doc {
   /**
    * Set program elements
    */
-  void add_typedef(t_typedef* td) {
-    typedefs_.push_back(td);
+  void add_typedef(std::unique_ptr<t_typedef> td) {
+    typedefs_raw_.push_back(td.get());
+    typedefs_.push_back(std::move(td));
   }
   void add_enum(std::unique_ptr<t_enum> te) {
     enums_raw_.push_back(te.get());
@@ -98,7 +99,7 @@ class t_program : public t_doc {
    * Get program elements
    */
   const std::vector<t_typedef*>& get_typedefs() const {
-    return typedefs_;
+    return typedefs_raw_;
   }
   const std::vector<t_enum*>& get_enums() const {
     return enums_raw_;
@@ -241,7 +242,7 @@ class t_program : public t_doc {
   /**
    * Components to generate code for
    */
-  std::vector<t_typedef*> typedefs_;
+  std::vector<std::unique_ptr<t_typedef>> typedefs_;
   std::vector<std::unique_ptr<t_enum>> enums_;
   std::vector<t_const*> consts_;
   std::vector<t_struct*> objects_; // objects_ is non-owning since it's simply
@@ -252,6 +253,7 @@ class t_program : public t_doc {
   std::vector<std::unique_ptr<t_include>> includes_;
   std::vector<t_typedef*> named_placeholder_typedefs_;
 
+  std::vector<t_typedef*> typedefs_raw_;
   std::vector<t_enum*> enums_raw_;
   std::vector<t_struct*> structs_raw_;
   std::vector<t_struct*> xceptions_raw_;

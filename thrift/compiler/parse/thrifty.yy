@@ -528,7 +528,7 @@ TypeDefinition:
     {
       driver.debug("TypeDefinition -> Typedef");
       if (driver.mode == apache::thrift::parsing_mode::PROGRAM) {
-        driver.program->add_typedef($1);
+        driver.program->add_typedef(std::unique_ptr<t_typedef>($1));
       }
       $$ = $1;
     }
