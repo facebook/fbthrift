@@ -210,7 +210,7 @@ class t_program : public t_doc {
    * @param include_site - A full or relative thrift file path
    * @param lineno       - The line number of the include statement
    */
-  t_program*
+  std::unique_ptr<t_program>
   add_include(std::string path, std::string include_site, int lineno);
 
   void add_include(t_include* program) {

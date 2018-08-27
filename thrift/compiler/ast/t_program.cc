@@ -31,9 +31,9 @@ const std::string& t_program::get_namespace(const std::string& language) const {
   return (pos != namespaces_.end() ? pos->second : kEmpty);
 }
 
-t_program*
+std::unique_ptr<t_program>
 t_program::add_include(std::string path, std::string include_site, int lineno) {
-  t_program* program = new t_program(path);
+  auto program = std::make_unique<t_program>(path);
 
   std::string include_prefix;
   const auto last_slash = include_site.find_last_of("/\\");
@@ -43,7 +43,7 @@ t_program::add_include(std::string path, std::string include_site, int lineno) {
 
   program->set_include_prefix(include_prefix);
 
-  auto include = new t_include{program};
+  auto include = new t_include{program.get()};
   include->set_lineno(lineno);
   includes_.push_back(include);
 

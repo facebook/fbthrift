@@ -49,7 +49,10 @@ parsing_driver::parsing_driver(std::string path, parsing_params parse_params)
       doctext(nullptr),
       doctext_lineno(0),
       mode(parsing_mode::INCLUDES) {
-  program = new t_program(path);
+  auto root_program = std::make_unique<t_program>(path);
+  program = root_program.get();
+  program_bundle = std::make_unique<t_program_bundle>(std::move(root_program));
+
   scope_cache = program->scope();
 }
 
@@ -60,9 +63,9 @@ parsing_driver::parsing_driver(std::string path, parsing_params parse_params)
  */
 parsing_driver::~parsing_driver() = default;
 
-std::unique_ptr<t_program> parsing_driver::parse(
+std::unique_ptr<t_program_bundle> parsing_driver::parse(
     std::vector<diagnostic_message>& messages) {
-  std::unique_ptr<t_program> result{};
+  std::unique_ptr<t_program_bundle> result{};
 
   try {
     scanner = std::make_unique<yy_scanner>();
@@ -75,7 +78,7 @@ std::unique_ptr<t_program> parsing_driver::parse(
 
   try {
     parse_file();
-    result.reset(program);
+    result = std::move(program_bundle);
   } catch (const parsing_terminator& e) {
     // No need to do anything here. The purpose of the exception is simply to
     // end the parsing process by unwinding to here.

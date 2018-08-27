@@ -85,7 +85,7 @@ void process(const dict& params, const object& generate_callback) {
   parsing_params.allow_64bit_consts =
       extract<bool>(opts.attr("allow_64bit_consts"));
   parsing_params.incl_searchpath = incl_searchpath;
-  unique_ptr<t_program> program{
+  auto program_bundle{
       parse_and_dump_diagnostics(input_file, std::move(parsing_params))};
 
   // Generate it!
@@ -101,7 +101,7 @@ void process(const dict& params, const object& generate_callback) {
     include_prefix = input_filename.substr(0, last_slash);
   }
 
-  program->set_include_prefix(include_prefix);
+  program_bundle->get_root_program()->set_include_prefix(include_prefix);
 
   // Generate it in python!
   // boost doesn't have the necessary prowess to handle unique_ptr or
@@ -109,7 +109,10 @@ void process(const dict& params, const object& generate_callback) {
   // However our generate function will never delete the t_program object,
   // so it's safe to just give it the raw pointer
   call<void>(
-      generate_callback.ptr(), ptr(program.get()), out_path, to_generate);
+      generate_callback.ptr(),
+      ptr(program_bundle->get_root_program()),
+      out_path,
+      to_generate);
 }
 
 bool t_program_operatorEq(const t_program* self, const t_program* rhs) {

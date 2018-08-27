@@ -22,6 +22,7 @@
 #include <system_error>
 
 #include "thrift/compiler/ast/t_program.h"
+#include "thrift/compiler/ast/t_program_bundle.h"
 #include "thrift/compiler/ast/t_scope.h"
 
 #include "thrift/compiler/parse/yy_scanner.h"
@@ -165,6 +166,8 @@ class parsing_driver {
    */
   t_program* program;
 
+  std::unique_ptr<t_program_bundle> program_bundle;
+
   /**
    * Global scope cache for faster compilations
    */
@@ -188,7 +191,8 @@ class parsing_driver {
    * in via params.program. A vector containing diagnostic message (warnings,
    * debug messages, etc.) is returned.
    */
-  std::unique_ptr<t_program> parse(std::vector<diagnostic_message>& messages);
+  std::unique_ptr<t_program_bundle> parse(
+      std::vector<diagnostic_message>& messages);
 
   /**
    * Diagnostic message callbacks.

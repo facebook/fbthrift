@@ -675,14 +675,15 @@ int main(int argc, char** argv) {
   params.allow_neg_enum_vals = allow_neg_enum_vals;
   params.allow_64bit_consts = allow_64bit_consts;
   params.incl_searchpath = std::move(incl_searchpath);
-  std::unique_ptr<t_program> program{
+  auto program_bundle{
       parse_and_dump_diagnostics(input_file, std::move(params))};
 
   // Mutate it!
-  apache::thrift::compiler::mutator::mutate(program.get());
+  apache::thrift::compiler::mutator::mutate(program_bundle->get_root_program());
 
   // Validate it!
-  auto errors = apache::thrift::compiler::validator::validate(program.get());
+  auto errors = apache::thrift::compiler::validator::validate(
+      program_bundle->get_root_program());
   if (!errors.empty()) {
     for (const auto& error : errors) {
       std::cerr << error << std::endl;
@@ -694,16 +695,17 @@ int main(int argc, char** argv) {
 
   g_stage = "generation";
 
-  program->set_include_prefix(include_prefix);
+  program_bundle->get_root_program()->set_include_prefix(include_prefix);
 
   bool success;
   try {
     auto generation_context = (out_path.size() > 0)
         ? t_generation_context{out_path, out_path_is_absolute}
         : t_generation_context{};
-    std::set<std::string> already_generated{program->get_path()};
+    std::set<std::string> already_generated{
+        program_bundle->get_root_program()->get_path()};
     success = generate(
-        program.get(),
+        program_bundle->get_root_program(),
         generation_context,
         generator_strings,
         already_generated,

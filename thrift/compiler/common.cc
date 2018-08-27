@@ -192,7 +192,7 @@ void dump_docstrings(t_program* program) {
  *
  * If the parsing fails, this function will exit(1).
  */
-std::unique_ptr<t_program> parse_and_dump_diagnostics(
+std::unique_ptr<t_program_bundle> parse_and_dump_diagnostics(
     std::string path,
     apache::thrift::parsing_params params) {
   apache::thrift::parsing_driver driver{path, std::move(params)};

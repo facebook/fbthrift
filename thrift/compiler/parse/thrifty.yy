@@ -471,8 +471,9 @@ Include:
         std::string path = driver.include_file(std::string($2));
         if (!path.empty()) {
           if (driver.program_cache.find(path) == driver.program_cache.end()) {
-            driver.program_cache[path] =
-              driver.program->add_include(path, std::string($2), driver.scanner->get_lineno());
+            auto included_program = driver.program->add_include(path, std::string($2), driver.scanner->get_lineno());
+            driver.program_cache[path] = included_program.get();
+            driver.program_bundle->add_program(std::move(included_program));
           } else {
             t_include *include = new t_include{driver.program_cache[path]};
             include->set_lineno(driver.scanner->get_lineno());
