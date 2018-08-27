@@ -43,9 +43,10 @@ t_program::add_include(std::string path, std::string include_site, int lineno) {
 
   program->set_include_prefix(include_prefix);
 
-  auto include = new t_include{program.get()};
+  auto include = std::make_unique<t_include>(program.get());
   include->set_lineno(lineno);
-  includes_.push_back(include);
+
+  add_include(std::move(include));
 
   return program;
 }

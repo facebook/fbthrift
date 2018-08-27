@@ -165,7 +165,7 @@ class t_program : public t_doc {
    * well as the location of the include statement.
    */
   const std::vector<t_include*>& get_includes() const {
-    return includes_;
+    return includes_raw_;
   }
 
   /**
@@ -173,7 +173,7 @@ class t_program : public t_doc {
    */
   std::vector<t_program*> get_included_programs() const {
     std::vector<t_program*> included_programs;
-    for (auto include : includes_) {
+    for (auto const& include : includes_) {
       included_programs.push_back(include->get_program());
     }
     return included_programs;
@@ -213,8 +213,9 @@ class t_program : public t_doc {
   std::unique_ptr<t_program>
   add_include(std::string path, std::string include_site, int lineno);
 
-  void add_include(t_include* program) {
-    includes_.push_back(program);
+  void add_include(std::unique_ptr<t_include> include) {
+    includes_raw_.push_back(include.get());
+    includes_.push_back(std::move(include));
   }
 
   /**
@@ -243,8 +244,10 @@ class t_program : public t_doc {
   std::vector<t_struct*> structs_;
   std::vector<t_struct*> xceptions_;
   std::vector<t_service*> services_;
-  std::vector<t_include*> includes_;
+  std::vector<std::unique_ptr<t_include>> includes_;
   std::vector<t_typedef*> named_placeholder_typedefs_;
+
+  std::vector<t_include*> includes_raw_;
 
   std::string path_; // initialized in ctor init-list
   std::string name_{compute_name_from_file_path(path_)};

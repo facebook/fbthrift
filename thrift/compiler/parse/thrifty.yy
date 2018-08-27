@@ -475,9 +475,9 @@ Include:
             driver.program_cache[path] = included_program.get();
             driver.program_bundle->add_program(std::move(included_program));
           } else {
-            t_include *include = new t_include{driver.program_cache[path]};
+            auto include = std::make_unique<t_include>(driver.program_cache[path]);
             include->set_lineno(driver.scanner->get_lineno());
-            driver.program->add_include(include);
+            driver.program->add_include(std::move(include));
           }
         }
       }
