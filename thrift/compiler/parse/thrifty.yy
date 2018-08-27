@@ -544,7 +544,7 @@ TypeDefinition:
     {
       driver.debug("TypeDefinition -> Struct");
       if (driver.mode == apache::thrift::parsing_mode::PROGRAM) {
-        driver.program->add_struct($1);
+        driver.program->add_struct(std::unique_ptr<t_struct>($1));
       }
       $$ = $1;
     }
@@ -552,7 +552,7 @@ TypeDefinition:
     {
       driver.debug("TypeDefinition -> Xception");
       if (driver.mode == apache::thrift::parsing_mode::PROGRAM) {
-        driver.program->add_xception($1);
+        driver.program->add_xception(std::unique_ptr<t_struct>($1));
       }
       $$ = $1;
     }
