@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import unittest
 import math
+import copy
 
 from testing.types import (
     easy, hard, Integers, mixed, Reserved, Runtime, numerical
@@ -8,6 +9,13 @@ from testing.types import (
 
 
 class StructTests(unittest.TestCase):
+
+    def test_copy(self) -> None:
+        x = easy(val=1, an_int=Integers(small=300), name='foo', val_list=[1, 2, 3, 4])
+        dif_list = copy.copy(x.val_list)
+        self.assertEqual(x.val_list, dif_list)
+        dif_int = copy.copy(x.an_int)
+        self.assertEqual(x.an_int, dif_int)
 
     def test_hashability(self) -> None:
         hash(easy())

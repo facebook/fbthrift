@@ -300,7 +300,7 @@ cdef class MyUnion(thrift.py3.types.Union):
     @staticmethod
     cdef create(shared_ptr[cMyUnion] cpp_obj):
         inst = <MyUnion>MyUnion.__new__(MyUnion)
-        inst._cpp_obj = cpp_obj
+        inst._cpp_obj = move_shared(cpp_obj)
         inst._load_cache()
         return inst
 
@@ -340,6 +340,12 @@ cdef class MyUnion(thrift.py3.types.Union):
 
     def get_type(MyUnion self):
         return self.type
+
+    def __copy__(MyUnion self):
+        cdef shared_ptr[cMyUnion] cpp_obj = make_shared[cMyUnion](
+            deref(self._cpp_obj)
+        )
+        return MyUnion.create(move_shared(cpp_obj))
 
     def __richcmp__(self, other, op):
         cdef int cop = op
@@ -532,7 +538,7 @@ cdef class MyField(thrift.py3.types.Struct):
     @staticmethod
     cdef create(shared_ptr[cMyField] cpp_obj):
         inst = <MyField>MyField.__new__(MyField)
-        inst._cpp_obj = cpp_obj
+        inst._cpp_obj = move_shared(cpp_obj)
         return inst
 
     @property
@@ -564,6 +570,12 @@ cdef class MyField(thrift.py3.types.Struct):
 
     def __repr__(MyField self):
         return f'MyField(opt_value={repr(self.opt_value)}, value={repr(self.value)}, req_value={repr(self.req_value)})'
+    def __copy__(MyField self):
+        cdef shared_ptr[cMyField] cpp_obj = make_shared[cMyField](
+            deref(self._cpp_obj)
+        )
+        return MyField.create(move_shared(cpp_obj))
+
     def __richcmp__(self, other, op):
         cdef int cop = op
         if cop not in (2, 3):
@@ -733,7 +745,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
     @staticmethod
     cdef create(shared_ptr[cMyStruct] cpp_obj):
         inst = <MyStruct>MyStruct.__new__(MyStruct)
-        inst._cpp_obj = cpp_obj
+        inst._cpp_obj = move_shared(cpp_obj)
         return inst
 
     @property
@@ -742,7 +754,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
         if self.__opt_ref is None:
             if not deref(self._cpp_obj).opt_ref:
                 return None
-            self.__opt_ref = MyField.create(aliasing_constructor_opt_ref(self._cpp_obj, (deref(self._cpp_obj).opt_ref.get())))
+            self.__opt_ref = MyField.create(reference_shared_ptr_opt_ref(self._cpp_obj, deref(deref(self._cpp_obj).opt_ref)))
         return self.__opt_ref
 
     @property
@@ -751,7 +763,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
         if self.__ref is None:
             if not deref(self._cpp_obj).ref:
                 return None
-            self.__ref = MyField.create(aliasing_constructor_ref(self._cpp_obj, (deref(self._cpp_obj).ref.get())))
+            self.__ref = MyField.create(reference_shared_ptr_ref(self._cpp_obj, deref(deref(self._cpp_obj).ref)))
         return self.__ref
 
     @property
@@ -760,7 +772,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
         if self.__req_ref is None:
             if not deref(self._cpp_obj).req_ref:
                 return None
-            self.__req_ref = MyField.create(aliasing_constructor_req_ref(self._cpp_obj, (deref(self._cpp_obj).req_ref.get())))
+            self.__req_ref = MyField.create(reference_shared_ptr_req_ref(self._cpp_obj, deref(deref(self._cpp_obj).req_ref)))
         return self.__req_ref
 
 
@@ -775,6 +787,12 @@ cdef class MyStruct(thrift.py3.types.Struct):
 
     def __repr__(MyStruct self):
         return f'MyStruct(opt_ref={repr(self.opt_ref)}, ref={repr(self.ref)}, req_ref={repr(self.req_ref)})'
+    def __copy__(MyStruct self):
+        cdef shared_ptr[cMyStruct] cpp_obj = make_shared[cMyStruct](
+            deref(self._cpp_obj)
+        )
+        return MyStruct.create(move_shared(cpp_obj))
+
     def __richcmp__(self, other, op):
         cdef int cop = op
         if cop not in (2, 3):
@@ -950,7 +968,7 @@ cdef class StructWithUnion(thrift.py3.types.Struct):
     @staticmethod
     cdef create(shared_ptr[cStructWithUnion] cpp_obj):
         inst = <StructWithUnion>StructWithUnion.__new__(StructWithUnion)
-        inst._cpp_obj = cpp_obj
+        inst._cpp_obj = move_shared(cpp_obj)
         return inst
 
     @property
@@ -959,7 +977,7 @@ cdef class StructWithUnion(thrift.py3.types.Struct):
         if self.__u is None:
             if not deref(self._cpp_obj).u:
                 return None
-            self.__u = MyUnion.create(aliasing_constructor_u(self._cpp_obj, (deref(self._cpp_obj).u.get())))
+            self.__u = MyUnion.create(reference_shared_ptr_u(self._cpp_obj, deref(deref(self._cpp_obj).u)))
         return self.__u
 
     @property
@@ -971,7 +989,7 @@ cdef class StructWithUnion(thrift.py3.types.Struct):
     def f(self):
 
         if self.__f is None:
-            self.__f = MyField.create(make_shared[cMyField](deref(self._cpp_obj).f))
+            self.__f = MyField.create(reference_shared_ptr_f(self._cpp_obj, deref(self._cpp_obj).f))
         return self.__f
 
 
@@ -986,6 +1004,12 @@ cdef class StructWithUnion(thrift.py3.types.Struct):
 
     def __repr__(StructWithUnion self):
         return f'StructWithUnion(u={repr(self.u)}, aDouble={repr(self.aDouble)}, f={repr(self.f)})'
+    def __copy__(StructWithUnion self):
+        cdef shared_ptr[cStructWithUnion] cpp_obj = make_shared[cStructWithUnion](
+            deref(self._cpp_obj)
+        )
+        return StructWithUnion.create(move_shared(cpp_obj))
+
     def __richcmp__(self, other, op):
         cdef int cop = op
         if cop not in (2, 3):
@@ -1110,7 +1134,7 @@ cdef class RecursiveStruct(thrift.py3.types.Struct):
     @staticmethod
     cdef create(shared_ptr[cRecursiveStruct] cpp_obj):
         inst = <RecursiveStruct>RecursiveStruct.__new__(RecursiveStruct)
-        inst._cpp_obj = cpp_obj
+        inst._cpp_obj = move_shared(cpp_obj)
         return inst
 
     @property
@@ -1119,7 +1143,7 @@ cdef class RecursiveStruct(thrift.py3.types.Struct):
             return None
 
         if self.__mes is None:
-            self.__mes = List__RecursiveStruct.create(make_shared[vector[cRecursiveStruct]](deref(self._cpp_obj).mes))
+            self.__mes = List__RecursiveStruct.create(reference_shared_ptr_mes(self._cpp_obj, deref(self._cpp_obj).mes))
         return self.__mes
 
 
@@ -1132,6 +1156,12 @@ cdef class RecursiveStruct(thrift.py3.types.Struct):
 
     def __repr__(RecursiveStruct self):
         return f'RecursiveStruct(mes={repr(self.mes)})'
+    def __copy__(RecursiveStruct self):
+        cdef shared_ptr[cRecursiveStruct] cpp_obj = make_shared[cRecursiveStruct](
+            deref(self._cpp_obj)
+        )
+        return RecursiveStruct.create(move_shared(cpp_obj))
+
     def __richcmp__(self, other, op):
         cdef int cop = op
         if cop not in (2, 3):
@@ -1335,7 +1365,7 @@ cdef class StructWithContainers(thrift.py3.types.Struct):
     @staticmethod
     cdef create(shared_ptr[cStructWithContainers] cpp_obj):
         inst = <StructWithContainers>StructWithContainers.__new__(StructWithContainers)
-        inst._cpp_obj = cpp_obj
+        inst._cpp_obj = move_shared(cpp_obj)
         return inst
 
     @property
@@ -1344,7 +1374,7 @@ cdef class StructWithContainers(thrift.py3.types.Struct):
         if self.__list_ref is None:
             if not deref(self._cpp_obj).list_ref:
                 return None
-            self.__list_ref = List__i32.create(aliasing_constructor_list_ref(self._cpp_obj, (deref(self._cpp_obj).list_ref.get())))
+            self.__list_ref = List__i32.create(reference_shared_ptr_list_ref(self._cpp_obj, deref(deref(self._cpp_obj).list_ref)))
         return self.__list_ref
 
     @property
@@ -1353,7 +1383,7 @@ cdef class StructWithContainers(thrift.py3.types.Struct):
         if self.__set_ref is None:
             if not deref(self._cpp_obj).set_ref:
                 return None
-            self.__set_ref = Set__i32.create(aliasing_constructor_set_ref(self._cpp_obj, (deref(self._cpp_obj).set_ref.get())))
+            self.__set_ref = Set__i32.create(reference_shared_ptr_set_ref(self._cpp_obj, deref(deref(self._cpp_obj).set_ref)))
         return self.__set_ref
 
     @property
@@ -1362,7 +1392,7 @@ cdef class StructWithContainers(thrift.py3.types.Struct):
         if self.__map_ref is None:
             if not deref(self._cpp_obj).map_ref:
                 return None
-            self.__map_ref = Map__i32_i32.create(aliasing_constructor_map_ref(self._cpp_obj, (deref(self._cpp_obj).map_ref.get())))
+            self.__map_ref = Map__i32_i32.create(reference_shared_ptr_map_ref(self._cpp_obj, deref(deref(self._cpp_obj).map_ref)))
         return self.__map_ref
 
     @property
@@ -1371,7 +1401,7 @@ cdef class StructWithContainers(thrift.py3.types.Struct):
         if self.__list_ref_unique is None:
             if not deref(self._cpp_obj).list_ref_unique:
                 return None
-            self.__list_ref_unique = List__i32.create(aliasing_constructor_list_ref_unique(self._cpp_obj, (deref(self._cpp_obj).list_ref_unique.get())))
+            self.__list_ref_unique = List__i32.create(reference_shared_ptr_list_ref_unique(self._cpp_obj, deref(deref(self._cpp_obj).list_ref_unique)))
         return self.__list_ref_unique
 
     @property
@@ -1380,7 +1410,7 @@ cdef class StructWithContainers(thrift.py3.types.Struct):
         if self.__set_ref_shared is None:
             if not deref(self._cpp_obj).set_ref_shared:
                 return None
-            self.__set_ref_shared = Set__i32.create(aliasing_constructor_set_ref_shared(self._cpp_obj, (deref(self._cpp_obj).set_ref_shared.get())))
+            self.__set_ref_shared = Set__i32.create(reference_shared_ptr_set_ref_shared(self._cpp_obj, deref(deref(self._cpp_obj).set_ref_shared)))
         return self.__set_ref_shared
 
     @property
@@ -1389,7 +1419,7 @@ cdef class StructWithContainers(thrift.py3.types.Struct):
         if self.__list_ref_shared_const is None:
             if not deref(self._cpp_obj).list_ref_shared_const:
                 return None
-            self.__list_ref_shared_const = List__i32.create(aliasing_constructor_list_ref_shared_const(self._cpp_obj, <vector[int32_t]*>(deref(self._cpp_obj).list_ref_shared_const.get())))
+            self.__list_ref_shared_const = List__i32.create(reference_shared_ptr_list_ref_shared_const(self._cpp_obj, deref(deref(self._cpp_obj).list_ref_shared_const)))
         return self.__list_ref_shared_const
 
 
@@ -1407,6 +1437,12 @@ cdef class StructWithContainers(thrift.py3.types.Struct):
 
     def __repr__(StructWithContainers self):
         return f'StructWithContainers(list_ref={repr(self.list_ref)}, set_ref={repr(self.set_ref)}, map_ref={repr(self.map_ref)}, list_ref_unique={repr(self.list_ref_unique)}, set_ref_shared={repr(self.set_ref_shared)}, list_ref_shared_const={repr(self.list_ref_shared_const)})'
+    def __copy__(StructWithContainers self):
+        cdef shared_ptr[cStructWithContainers] cpp_obj = make_shared[cStructWithContainers](
+            deref(self._cpp_obj)
+        )
+        return StructWithContainers.create(move_shared(cpp_obj))
+
     def __richcmp__(self, other, op):
         cdef int cop = op
         if cop not in (2, 3):
@@ -1576,7 +1612,7 @@ cdef class StructWithSharedConst(thrift.py3.types.Struct):
     @staticmethod
     cdef create(shared_ptr[cStructWithSharedConst] cpp_obj):
         inst = <StructWithSharedConst>StructWithSharedConst.__new__(StructWithSharedConst)
-        inst._cpp_obj = cpp_obj
+        inst._cpp_obj = move_shared(cpp_obj)
         return inst
 
     @property
@@ -1585,7 +1621,7 @@ cdef class StructWithSharedConst(thrift.py3.types.Struct):
         if self.__opt_shared_const is None:
             if not deref(self._cpp_obj).opt_shared_const:
                 return None
-            self.__opt_shared_const = MyField.create(aliasing_constructor_opt_shared_const(self._cpp_obj, <cMyField*>(deref(self._cpp_obj).opt_shared_const.get())))
+            self.__opt_shared_const = MyField.create(reference_shared_ptr_opt_shared_const(self._cpp_obj, deref(deref(self._cpp_obj).opt_shared_const)))
         return self.__opt_shared_const
 
     @property
@@ -1594,7 +1630,7 @@ cdef class StructWithSharedConst(thrift.py3.types.Struct):
         if self.__shared_const is None:
             if not deref(self._cpp_obj).shared_const:
                 return None
-            self.__shared_const = MyField.create(aliasing_constructor_shared_const(self._cpp_obj, <cMyField*>(deref(self._cpp_obj).shared_const.get())))
+            self.__shared_const = MyField.create(reference_shared_ptr_shared_const(self._cpp_obj, deref(deref(self._cpp_obj).shared_const)))
         return self.__shared_const
 
     @property
@@ -1603,7 +1639,7 @@ cdef class StructWithSharedConst(thrift.py3.types.Struct):
         if self.__req_shared_const is None:
             if not deref(self._cpp_obj).req_shared_const:
                 return None
-            self.__req_shared_const = MyField.create(aliasing_constructor_req_shared_const(self._cpp_obj, <cMyField*>(deref(self._cpp_obj).req_shared_const.get())))
+            self.__req_shared_const = MyField.create(reference_shared_ptr_req_shared_const(self._cpp_obj, deref(deref(self._cpp_obj).req_shared_const)))
         return self.__req_shared_const
 
 
@@ -1618,6 +1654,12 @@ cdef class StructWithSharedConst(thrift.py3.types.Struct):
 
     def __repr__(StructWithSharedConst self):
         return f'StructWithSharedConst(opt_shared_const={repr(self.opt_shared_const)}, shared_const={repr(self.shared_const)}, req_shared_const={repr(self.req_shared_const)})'
+    def __copy__(StructWithSharedConst self):
+        cdef shared_ptr[cStructWithSharedConst] cpp_obj = make_shared[cStructWithSharedConst](
+            deref(self._cpp_obj)
+        )
+        return StructWithSharedConst.create(move_shared(cpp_obj))
+
     def __richcmp__(self, other, op):
         cdef int cop = op
         if cop not in (2, 3):
@@ -1726,7 +1768,7 @@ cdef class Empty(thrift.py3.types.Struct):
     @staticmethod
     cdef create(shared_ptr[cEmpty] cpp_obj):
         inst = <Empty>Empty.__new__(Empty)
-        inst._cpp_obj = cpp_obj
+        inst._cpp_obj = move_shared(cpp_obj)
         return inst
 
 
@@ -1739,6 +1781,12 @@ cdef class Empty(thrift.py3.types.Struct):
 
     def __repr__(Empty self):
         return f'Empty()'
+    def __copy__(Empty self):
+        cdef shared_ptr[cEmpty] cpp_obj = make_shared[cEmpty](
+            deref(self._cpp_obj)
+        )
+        return Empty.create(move_shared(cpp_obj))
+
     def __richcmp__(self, other, op):
         cdef int cop = op
         if cop not in (2, 3):
@@ -1908,7 +1956,7 @@ cdef class StructWithRef(thrift.py3.types.Struct):
     @staticmethod
     cdef create(shared_ptr[cStructWithRef] cpp_obj):
         inst = <StructWithRef>StructWithRef.__new__(StructWithRef)
-        inst._cpp_obj = cpp_obj
+        inst._cpp_obj = move_shared(cpp_obj)
         return inst
 
     @property
@@ -1917,7 +1965,7 @@ cdef class StructWithRef(thrift.py3.types.Struct):
         if self.__def_field is None:
             if not deref(self._cpp_obj).def_field:
                 return None
-            self.__def_field = Empty.create(aliasing_constructor_def_field(self._cpp_obj, (deref(self._cpp_obj).def_field.get())))
+            self.__def_field = Empty.create(reference_shared_ptr_def_field(self._cpp_obj, deref(deref(self._cpp_obj).def_field)))
         return self.__def_field
 
     @property
@@ -1926,7 +1974,7 @@ cdef class StructWithRef(thrift.py3.types.Struct):
         if self.__opt_field is None:
             if not deref(self._cpp_obj).opt_field:
                 return None
-            self.__opt_field = Empty.create(aliasing_constructor_opt_field(self._cpp_obj, (deref(self._cpp_obj).opt_field.get())))
+            self.__opt_field = Empty.create(reference_shared_ptr_opt_field(self._cpp_obj, deref(deref(self._cpp_obj).opt_field)))
         return self.__opt_field
 
     @property
@@ -1935,7 +1983,7 @@ cdef class StructWithRef(thrift.py3.types.Struct):
         if self.__req_field is None:
             if not deref(self._cpp_obj).req_field:
                 return None
-            self.__req_field = Empty.create(aliasing_constructor_req_field(self._cpp_obj, (deref(self._cpp_obj).req_field.get())))
+            self.__req_field = Empty.create(reference_shared_ptr_req_field(self._cpp_obj, deref(deref(self._cpp_obj).req_field)))
         return self.__req_field
 
 
@@ -1950,6 +1998,12 @@ cdef class StructWithRef(thrift.py3.types.Struct):
 
     def __repr__(StructWithRef self):
         return f'StructWithRef(def_field={repr(self.def_field)}, opt_field={repr(self.opt_field)}, req_field={repr(self.req_field)})'
+    def __copy__(StructWithRef self):
+        cdef shared_ptr[cStructWithRef] cpp_obj = make_shared[cStructWithRef](
+            deref(self._cpp_obj)
+        )
+        return StructWithRef.create(move_shared(cpp_obj))
+
     def __richcmp__(self, other, op):
         cdef int cop = op
         if cop not in (2, 3):
@@ -2119,7 +2173,7 @@ cdef class StructWithRefTypeUnique(thrift.py3.types.Struct):
     @staticmethod
     cdef create(shared_ptr[cStructWithRefTypeUnique] cpp_obj):
         inst = <StructWithRefTypeUnique>StructWithRefTypeUnique.__new__(StructWithRefTypeUnique)
-        inst._cpp_obj = cpp_obj
+        inst._cpp_obj = move_shared(cpp_obj)
         return inst
 
     @property
@@ -2128,7 +2182,7 @@ cdef class StructWithRefTypeUnique(thrift.py3.types.Struct):
         if self.__def_field is None:
             if not deref(self._cpp_obj).def_field:
                 return None
-            self.__def_field = Empty.create(aliasing_constructor_def_field(self._cpp_obj, (deref(self._cpp_obj).def_field.get())))
+            self.__def_field = Empty.create(reference_shared_ptr_def_field(self._cpp_obj, deref(deref(self._cpp_obj).def_field)))
         return self.__def_field
 
     @property
@@ -2137,7 +2191,7 @@ cdef class StructWithRefTypeUnique(thrift.py3.types.Struct):
         if self.__opt_field is None:
             if not deref(self._cpp_obj).opt_field:
                 return None
-            self.__opt_field = Empty.create(aliasing_constructor_opt_field(self._cpp_obj, (deref(self._cpp_obj).opt_field.get())))
+            self.__opt_field = Empty.create(reference_shared_ptr_opt_field(self._cpp_obj, deref(deref(self._cpp_obj).opt_field)))
         return self.__opt_field
 
     @property
@@ -2146,7 +2200,7 @@ cdef class StructWithRefTypeUnique(thrift.py3.types.Struct):
         if self.__req_field is None:
             if not deref(self._cpp_obj).req_field:
                 return None
-            self.__req_field = Empty.create(aliasing_constructor_req_field(self._cpp_obj, (deref(self._cpp_obj).req_field.get())))
+            self.__req_field = Empty.create(reference_shared_ptr_req_field(self._cpp_obj, deref(deref(self._cpp_obj).req_field)))
         return self.__req_field
 
 
@@ -2161,6 +2215,12 @@ cdef class StructWithRefTypeUnique(thrift.py3.types.Struct):
 
     def __repr__(StructWithRefTypeUnique self):
         return f'StructWithRefTypeUnique(def_field={repr(self.def_field)}, opt_field={repr(self.opt_field)}, req_field={repr(self.req_field)})'
+    def __copy__(StructWithRefTypeUnique self):
+        cdef shared_ptr[cStructWithRefTypeUnique] cpp_obj = make_shared[cStructWithRefTypeUnique](
+            deref(self._cpp_obj)
+        )
+        return StructWithRefTypeUnique.create(move_shared(cpp_obj))
+
     def __richcmp__(self, other, op):
         cdef int cop = op
         if cop not in (2, 3):
@@ -2330,7 +2390,7 @@ cdef class StructWithRefTypeShared(thrift.py3.types.Struct):
     @staticmethod
     cdef create(shared_ptr[cStructWithRefTypeShared] cpp_obj):
         inst = <StructWithRefTypeShared>StructWithRefTypeShared.__new__(StructWithRefTypeShared)
-        inst._cpp_obj = cpp_obj
+        inst._cpp_obj = move_shared(cpp_obj)
         return inst
 
     @property
@@ -2339,7 +2399,7 @@ cdef class StructWithRefTypeShared(thrift.py3.types.Struct):
         if self.__def_field is None:
             if not deref(self._cpp_obj).def_field:
                 return None
-            self.__def_field = Empty.create(aliasing_constructor_def_field(self._cpp_obj, (deref(self._cpp_obj).def_field.get())))
+            self.__def_field = Empty.create(reference_shared_ptr_def_field(self._cpp_obj, deref(deref(self._cpp_obj).def_field)))
         return self.__def_field
 
     @property
@@ -2348,7 +2408,7 @@ cdef class StructWithRefTypeShared(thrift.py3.types.Struct):
         if self.__opt_field is None:
             if not deref(self._cpp_obj).opt_field:
                 return None
-            self.__opt_field = Empty.create(aliasing_constructor_opt_field(self._cpp_obj, (deref(self._cpp_obj).opt_field.get())))
+            self.__opt_field = Empty.create(reference_shared_ptr_opt_field(self._cpp_obj, deref(deref(self._cpp_obj).opt_field)))
         return self.__opt_field
 
     @property
@@ -2357,7 +2417,7 @@ cdef class StructWithRefTypeShared(thrift.py3.types.Struct):
         if self.__req_field is None:
             if not deref(self._cpp_obj).req_field:
                 return None
-            self.__req_field = Empty.create(aliasing_constructor_req_field(self._cpp_obj, (deref(self._cpp_obj).req_field.get())))
+            self.__req_field = Empty.create(reference_shared_ptr_req_field(self._cpp_obj, deref(deref(self._cpp_obj).req_field)))
         return self.__req_field
 
 
@@ -2372,6 +2432,12 @@ cdef class StructWithRefTypeShared(thrift.py3.types.Struct):
 
     def __repr__(StructWithRefTypeShared self):
         return f'StructWithRefTypeShared(def_field={repr(self.def_field)}, opt_field={repr(self.opt_field)}, req_field={repr(self.req_field)})'
+    def __copy__(StructWithRefTypeShared self):
+        cdef shared_ptr[cStructWithRefTypeShared] cpp_obj = make_shared[cStructWithRefTypeShared](
+            deref(self._cpp_obj)
+        )
+        return StructWithRefTypeShared.create(move_shared(cpp_obj))
+
     def __richcmp__(self, other, op):
         cdef int cop = op
         if cop not in (2, 3):
@@ -2541,7 +2607,7 @@ cdef class StructWithRefTypeSharedConst(thrift.py3.types.Struct):
     @staticmethod
     cdef create(shared_ptr[cStructWithRefTypeSharedConst] cpp_obj):
         inst = <StructWithRefTypeSharedConst>StructWithRefTypeSharedConst.__new__(StructWithRefTypeSharedConst)
-        inst._cpp_obj = cpp_obj
+        inst._cpp_obj = move_shared(cpp_obj)
         return inst
 
     @property
@@ -2550,7 +2616,7 @@ cdef class StructWithRefTypeSharedConst(thrift.py3.types.Struct):
         if self.__def_field is None:
             if not deref(self._cpp_obj).def_field:
                 return None
-            self.__def_field = Empty.create(aliasing_constructor_def_field(self._cpp_obj, <cEmpty*>(deref(self._cpp_obj).def_field.get())))
+            self.__def_field = Empty.create(reference_shared_ptr_def_field(self._cpp_obj, deref(deref(self._cpp_obj).def_field)))
         return self.__def_field
 
     @property
@@ -2559,7 +2625,7 @@ cdef class StructWithRefTypeSharedConst(thrift.py3.types.Struct):
         if self.__opt_field is None:
             if not deref(self._cpp_obj).opt_field:
                 return None
-            self.__opt_field = Empty.create(aliasing_constructor_opt_field(self._cpp_obj, <cEmpty*>(deref(self._cpp_obj).opt_field.get())))
+            self.__opt_field = Empty.create(reference_shared_ptr_opt_field(self._cpp_obj, deref(deref(self._cpp_obj).opt_field)))
         return self.__opt_field
 
     @property
@@ -2568,7 +2634,7 @@ cdef class StructWithRefTypeSharedConst(thrift.py3.types.Struct):
         if self.__req_field is None:
             if not deref(self._cpp_obj).req_field:
                 return None
-            self.__req_field = Empty.create(aliasing_constructor_req_field(self._cpp_obj, <cEmpty*>(deref(self._cpp_obj).req_field.get())))
+            self.__req_field = Empty.create(reference_shared_ptr_req_field(self._cpp_obj, deref(deref(self._cpp_obj).req_field)))
         return self.__req_field
 
 
@@ -2583,6 +2649,12 @@ cdef class StructWithRefTypeSharedConst(thrift.py3.types.Struct):
 
     def __repr__(StructWithRefTypeSharedConst self):
         return f'StructWithRefTypeSharedConst(def_field={repr(self.def_field)}, opt_field={repr(self.opt_field)}, req_field={repr(self.req_field)})'
+    def __copy__(StructWithRefTypeSharedConst self):
+        cdef shared_ptr[cStructWithRefTypeSharedConst] cpp_obj = make_shared[cStructWithRefTypeSharedConst](
+            deref(self._cpp_obj)
+        )
+        return StructWithRefTypeSharedConst.create(move_shared(cpp_obj))
+
     def __richcmp__(self, other, op):
         cdef int cop = op
         if cop not in (2, 3):
@@ -2651,8 +2723,14 @@ cdef class List__RecursiveStruct:
     @staticmethod
     cdef create(shared_ptr[vector[cRecursiveStruct]] c_items):
         inst = <List__RecursiveStruct>List__RecursiveStruct.__new__(List__RecursiveStruct)
-        inst._cpp_obj = c_items
+        inst._cpp_obj = move_shared(c_items)
         return inst
+
+    def __copy__(List__RecursiveStruct self):
+        cdef shared_ptr[vector[cRecursiveStruct]] cpp_obj = make_shared[vector[cRecursiveStruct]](
+            deref(self._cpp_obj)
+        )
+        return List__RecursiveStruct.create(move_shared(cpp_obj))
 
     @staticmethod
     cdef unique_ptr[vector[cRecursiveStruct]] _make_instance(object items) except *:
@@ -2676,7 +2754,7 @@ cdef class List__RecursiveStruct:
             for index in range(*index_obj.indices(sz)):
                 citem = deref(self._cpp_obj.get())[index]
                 deref(c_inst).push_back(citem)
-            return List__RecursiveStruct.create(c_inst)
+            return List__RecursiveStruct.create(move_shared(c_inst))
         else:
             index = <int?>index_obj
             size = len(self)
@@ -2804,8 +2882,14 @@ cdef class List__i32:
     @staticmethod
     cdef create(shared_ptr[vector[int32_t]] c_items):
         inst = <List__i32>List__i32.__new__(List__i32)
-        inst._cpp_obj = c_items
+        inst._cpp_obj = move_shared(c_items)
         return inst
+
+    def __copy__(List__i32 self):
+        cdef shared_ptr[vector[int32_t]] cpp_obj = make_shared[vector[int32_t]](
+            deref(self._cpp_obj)
+        )
+        return List__i32.create(move_shared(cpp_obj))
 
     @staticmethod
     cdef unique_ptr[vector[int32_t]] _make_instance(object items) except *:
@@ -2830,7 +2914,7 @@ cdef class List__i32:
             for index in range(*index_obj.indices(sz)):
                 citem = deref(self._cpp_obj.get())[index]
                 deref(c_inst).push_back(citem)
-            return List__i32.create(c_inst)
+            return List__i32.create(move_shared(c_inst))
         else:
             index = <int?>index_obj
             size = len(self)
@@ -2958,8 +3042,14 @@ cdef class Set__i32:
     @staticmethod
     cdef create(shared_ptr[cset[int32_t]] c_items):
         inst = <Set__i32>Set__i32.__new__(Set__i32)
-        inst._cpp_obj = c_items
+        inst._cpp_obj = move_shared(c_items)
         return inst
+
+    def __copy__(Set__i32 self):
+        cdef shared_ptr[cset[int32_t]] cpp_obj = make_shared[cset[int32_t]](
+            deref(self._cpp_obj)
+        )
+        return Set__i32.create(move_shared(cpp_obj))
 
     @staticmethod
     cdef unique_ptr[cset[int32_t]] _make_instance(object items) except *:
@@ -3070,7 +3160,7 @@ cdef class Set__i32:
         for citem in deref((<Set__i32> self)._cpp_obj):
             if deref((<Set__i32> other)._cpp_obj).count(citem) > 0:
                 deref(shretval).insert(citem)
-        return Set__i32.create(shretval)
+        return Set__i32.create(move_shared(shretval))
 
     def __sub__(self, other):
         if not isinstance(self, Set__i32):
@@ -3083,7 +3173,7 @@ cdef class Set__i32:
         for citem in deref((<Set__i32> self)._cpp_obj):
             if deref((<Set__i32> other)._cpp_obj).count(citem) == 0:
                 deref(shretval).insert(citem)
-        return Set__i32.create(shretval)
+        return Set__i32.create(move_shared(shretval))
 
     def __or__(self, other):
         if not isinstance(self, Set__i32):
@@ -3097,7 +3187,7 @@ cdef class Set__i32:
                 deref(shretval).insert(citem)
         for citem in deref((<Set__i32> other)._cpp_obj):
                 deref(shretval).insert(citem)
-        return Set__i32.create(shretval)
+        return Set__i32.create(move_shared(shretval))
 
     def __xor__(self, other):
         if not isinstance(self, Set__i32):
@@ -3113,7 +3203,7 @@ cdef class Set__i32:
         for citem in deref((<Set__i32> other)._cpp_obj):
             if deref((<Set__i32> self)._cpp_obj).count(citem) == 0:
                 deref(shretval).insert(citem)
-        return Set__i32.create(shretval)
+        return Set__i32.create(move_shared(shretval))
 
     def isdisjoint(self, other):
         return len(self & other) == 0
@@ -3149,8 +3239,14 @@ cdef class Map__i32_i32:
     @staticmethod
     cdef create(shared_ptr[cmap[int32_t,int32_t]] c_items):
         inst = <Map__i32_i32>Map__i32_i32.__new__(Map__i32_i32)
-        inst._cpp_obj = c_items
+        inst._cpp_obj = move_shared(c_items)
         return inst
+
+    def __copy__(Map__i32_i32 self):
+        cdef shared_ptr[cmap[int32_t,int32_t]] cpp_obj = make_shared[cmap[int32_t,int32_t]](
+            deref(self._cpp_obj)
+        )
+        return Map__i32_i32.create(move_shared(cpp_obj))
 
     @staticmethod
     cdef unique_ptr[cmap[int32_t,int32_t]] _make_instance(object items) except *:

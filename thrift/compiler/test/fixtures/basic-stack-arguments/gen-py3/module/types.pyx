@@ -235,7 +235,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
     @staticmethod
     cdef create(shared_ptr[cMyStruct] cpp_obj):
         inst = <MyStruct>MyStruct.__new__(MyStruct)
-        inst._cpp_obj = cpp_obj
+        inst._cpp_obj = move_shared(cpp_obj)
         return inst
 
     @property
@@ -259,6 +259,12 @@ cdef class MyStruct(thrift.py3.types.Struct):
 
     def __repr__(MyStruct self):
         return f'MyStruct(MyIntField={repr(self.MyIntField)}, MyStringField={repr(self.MyStringField)})'
+    def __copy__(MyStruct self):
+        cdef shared_ptr[cMyStruct] cpp_obj = make_shared[cMyStruct](
+            deref(self._cpp_obj)
+        )
+        return MyStruct.create(move_shared(cpp_obj))
+
     def __richcmp__(self, other, op):
         cdef int cop = op
         if cop not in (2, 3):

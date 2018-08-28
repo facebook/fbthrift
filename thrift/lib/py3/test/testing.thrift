@@ -69,6 +69,10 @@ struct File {
     3: Kind type=Kind.REGULAR,
 }
 
+struct Digits {
+    1: optional list<Integers> data,
+}
+
 union Integers {
     1: byte tiny,
     2: i16 small,
@@ -76,6 +80,7 @@ union Integers {
     4: i64 large,
     5: string unbounded,
     6: string name,   # name is an invalid enum member name
+    7: Digits digits (cpp.ref="True"),
 }
 
 struct easy {

@@ -6,7 +6,7 @@
 #
 
 from libcpp.string cimport string
-from libcpp cimport bool as cbool
+from libcpp cimport bool as cbool, nullptr, nullptr_t
 from cpython cimport bool as pbool
 from libc.stdint cimport int8_t, int16_t, int32_t, int64_t
 from libcpp.memory cimport shared_ptr, unique_ptr
@@ -57,6 +57,9 @@ cdef extern from "src/gen-cpp2/module2_types.h" namespace "module2":
         int32_t id
         cBigStruct__isset __isset
 
+    cdef shared_ptr[_module0_types.cStruct] reference_shared_ptr_first "thrift::py3::reference_shared_ptr<module0::Struct>"(shared_ptr[cStruct]&, _module0_types.cStruct&)
+    cdef shared_ptr[_module1_types.cStruct] reference_shared_ptr_second "thrift::py3::reference_shared_ptr<module1::Struct>"(shared_ptr[cStruct]&, _module1_types.cStruct&)
+    cdef shared_ptr[cStruct] reference_shared_ptr_s "thrift::py3::reference_shared_ptr<module2::Struct>"(shared_ptr[cBigStruct]&, cStruct&)
 
 cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[cStruct] move(unique_ptr[cStruct])

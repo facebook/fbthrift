@@ -173,7 +173,7 @@ cdef class Empty(thrift.py3.types.Struct):
     @staticmethod
     cdef create(shared_ptr[cEmpty] cpp_obj):
         inst = <Empty>Empty.__new__(Empty)
-        inst._cpp_obj = cpp_obj
+        inst._cpp_obj = move_shared(cpp_obj)
         return inst
 
 
@@ -186,6 +186,12 @@ cdef class Empty(thrift.py3.types.Struct):
 
     def __repr__(Empty self):
         return f'Empty()'
+    def __copy__(Empty self):
+        cdef shared_ptr[cEmpty] cpp_obj = make_shared[cEmpty](
+            deref(self._cpp_obj)
+        )
+        return Empty.create(move_shared(cpp_obj))
+
     def __richcmp__(self, other, op):
         cdef int cop = op
         if cop not in (2, 3):
@@ -279,7 +285,7 @@ cdef class Nada(thrift.py3.types.Union):
     @staticmethod
     cdef create(shared_ptr[cNada] cpp_obj):
         inst = <Nada>Nada.__new__(Nada)
-        inst._cpp_obj = cpp_obj
+        inst._cpp_obj = move_shared(cpp_obj)
         inst._load_cache()
         return inst
 
@@ -303,6 +309,12 @@ cdef class Nada(thrift.py3.types.Union):
 
     def get_type(Nada self):
         return self.type
+
+    def __copy__(Nada self):
+        cdef shared_ptr[cNada] cpp_obj = make_shared[cNada](
+            deref(self._cpp_obj)
+        )
+        return Nada.create(move_shared(cpp_obj))
 
     def __richcmp__(self, other, op):
         cdef int cop = op

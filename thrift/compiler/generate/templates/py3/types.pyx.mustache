@@ -282,7 +282,7 @@ cdef class {{struct:name}}({{> types/PythonStructClass}}):
     @staticmethod
     cdef create(shared_ptr[c{{struct:name}}] cpp_obj):
         inst = <{{struct:name}}>{{struct:name}}.__new__({{struct:name}}{{#struct:exception?}}, (<bytes>deref(cpp_obj).what()).decode('utf-8'){{/struct:exception?}})
-        inst._cpp_obj = cpp_obj
+        inst._cpp_obj = move_shared(cpp_obj)
         {{#struct:exception?}}
         _builtins.Exception.__init__(inst, {{#struct:fields}}inst.{{field:name}}{{^last?}}, {{/last?}}{{/struct:fields}})
         {{/struct:exception?}}
@@ -442,7 +442,7 @@ cdef class {{struct:name}}(thrift.py3.types.Union):
     @staticmethod
     cdef create(shared_ptr[c{{struct:name}}] cpp_obj):
         inst = <{{struct:name}}>{{struct:name}}.__new__({{struct:name}})
-        inst._cpp_obj = cpp_obj
+        inst._cpp_obj = move_shared(cpp_obj)
         inst._load_cache()
         return inst
 
@@ -484,6 +484,12 @@ cdef class {{struct:name}}(thrift.py3.types.Union):
 
 {{/struct:union?}}
     {{! Below are some things that are common to structs and unions: }}
+    def __copy__({{struct:name}} self):
+        cdef shared_ptr[c{{struct:name}}] cpp_obj = make_shared[c{{struct:name}}](
+            deref(self._cpp_obj)
+        )
+        return {{struct:name}}.create(move_shared(cpp_obj))
+
     def __richcmp__(self, other, op):
         cdef int cop = op
         if cop not in (2, 3):
@@ -567,8 +573,14 @@ cdef class {{> types/CythonPythonType}}:
     @staticmethod
     cdef create(shared_ptr[{{> types/CythonCppType}}] c_items):
         inst = <{{> types/CythonPythonType}}>{{> types/CythonPythonType}}.__new__({{> types/CythonPythonType}})
-        inst._cpp_obj = c_items
+        inst._cpp_obj = move_shared(c_items)
         return inst
+
+    def __copy__({{> types/CythonPythonType}} self):
+        cdef shared_ptr[{{> types/CythonCppType}}] cpp_obj = make_shared[{{> types/CythonCppType}}](
+            deref(self._cpp_obj)
+        )
+        return {{> types/CythonPythonType}}.create(move_shared(cpp_obj))
 
 {{#type:list?}}
     @staticmethod
@@ -607,7 +619,7 @@ cdef class {{> types/CythonPythonType}}:
             for index in range(*index_obj.indices(sz)):
                 citem = deref(self._cpp_obj.get())[index]
                 deref(c_inst).push_back(citem)
-            return {{> types/CythonPythonType}}.create(c_inst)
+            return {{> types/CythonPythonType}}.create(move_shared(c_inst))
         else:
             index = <int?>index_obj
             size = len(self)
@@ -899,7 +911,7 @@ Sequence.register({{> types/CythonPythonType}})
         for citem in deref((<{{> types/CythonPythonType}}> self)._cpp_obj):
             if deref((<{{> types/CythonPythonType}}> other)._cpp_obj).count(citem) > 0:
                 deref(shretval).insert(citem)
-        return {{> types/CythonPythonType}}.create(shretval)
+        return {{> types/CythonPythonType}}.create(move_shared(shretval))
 
     def __sub__(self, other):
         if not isinstance(self, {{> types/CythonPythonType}}):
@@ -912,7 +924,7 @@ Sequence.register({{> types/CythonPythonType}})
         for citem in deref((<{{> types/CythonPythonType}}> self)._cpp_obj):
             if deref((<{{> types/CythonPythonType}}> other)._cpp_obj).count(citem) == 0:
                 deref(shretval).insert(citem)
-        return {{> types/CythonPythonType}}.create(shretval)
+        return {{> types/CythonPythonType}}.create(move_shared(shretval))
 
     def __or__(self, other):
         if not isinstance(self, {{> types/CythonPythonType}}):
@@ -926,7 +938,7 @@ Sequence.register({{> types/CythonPythonType}})
                 deref(shretval).insert(citem)
         for citem in deref((<{{> types/CythonPythonType}}> other)._cpp_obj):
                 deref(shretval).insert(citem)
-        return {{> types/CythonPythonType}}.create(shretval)
+        return {{> types/CythonPythonType}}.create(move_shared(shretval))
 
     def __xor__(self, other):
         if not isinstance(self, {{> types/CythonPythonType}}):
@@ -942,7 +954,7 @@ Sequence.register({{> types/CythonPythonType}})
         for citem in deref((<{{> types/CythonPythonType}}> other)._cpp_obj):
             if deref((<{{> types/CythonPythonType}}> self)._cpp_obj).count(citem) == 0:
                 deref(shretval).insert(citem)
-        return {{> types/CythonPythonType}}.create(shretval)
+        return {{> types/CythonPythonType}}.create(move_shared(shretval))
 
     def isdisjoint(self, other):
         return len(self & other) == 0

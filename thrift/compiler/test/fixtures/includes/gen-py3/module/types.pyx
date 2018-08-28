@@ -160,21 +160,21 @@ cdef class MyStruct(thrift.py3.types.Struct):
     @staticmethod
     cdef create(shared_ptr[cMyStruct] cpp_obj):
         inst = <MyStruct>MyStruct.__new__(MyStruct)
-        inst._cpp_obj = cpp_obj
+        inst._cpp_obj = move_shared(cpp_obj)
         return inst
 
     @property
     def MyIncludedField(self):
 
         if self.__MyIncludedField is None:
-            self.__MyIncludedField = _includes_types.Included.create(make_shared[_includes_types.cIncluded](deref(self._cpp_obj).MyIncludedField))
+            self.__MyIncludedField = _includes_types.Included.create(reference_shared_ptr_MyIncludedField(self._cpp_obj, deref(self._cpp_obj).MyIncludedField))
         return self.__MyIncludedField
 
     @property
     def MyOtherIncludedField(self):
 
         if self.__MyOtherIncludedField is None:
-            self.__MyOtherIncludedField = _includes_types.Included.create(make_shared[_includes_types.cIncluded](deref(self._cpp_obj).MyOtherIncludedField))
+            self.__MyOtherIncludedField = _includes_types.Included.create(reference_shared_ptr_MyOtherIncludedField(self._cpp_obj, deref(self._cpp_obj).MyOtherIncludedField))
         return self.__MyOtherIncludedField
 
     @property
@@ -194,6 +194,12 @@ cdef class MyStruct(thrift.py3.types.Struct):
 
     def __repr__(MyStruct self):
         return f'MyStruct(MyIncludedField={repr(self.MyIncludedField)}, MyOtherIncludedField={repr(self.MyOtherIncludedField)}, MyIncludedInt={repr(self.MyIncludedInt)})'
+    def __copy__(MyStruct self):
+        cdef shared_ptr[cMyStruct] cpp_obj = make_shared[cMyStruct](
+            deref(self._cpp_obj)
+        )
+        return MyStruct.create(move_shared(cpp_obj))
+
     def __richcmp__(self, other, op):
         cdef int cop = op
         if cop not in (2, 3):

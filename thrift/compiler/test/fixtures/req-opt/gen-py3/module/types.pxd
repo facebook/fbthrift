@@ -6,7 +6,7 @@
 #
 
 from libcpp.string cimport string
-from libcpp cimport bool as cbool
+from libcpp cimport bool as cbool, nullptr, nullptr_t
 from cpython cimport bool as pbool
 from libc.stdint cimport int8_t, int16_t, int32_t, int64_t
 from libcpp.memory cimport shared_ptr, unique_ptr
@@ -45,6 +45,8 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "cpp2":
         vector[int32_t] myNumbers
         cFoo__isset __isset
 
+    cdef shared_ptr[vector[cbool]] reference_shared_ptr_myBools "thrift::py3::reference_shared_ptr<std::vector<bool>>"(shared_ptr[cFoo]&, vector[cbool]&)
+    cdef shared_ptr[vector[int32_t]] reference_shared_ptr_myNumbers "thrift::py3::reference_shared_ptr<std::vector<int32_t>>"(shared_ptr[cFoo]&, vector[int32_t]&)
 
 cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[cFoo] move(unique_ptr[cFoo])
@@ -99,8 +101,10 @@ cdef class List__i32:
 cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[vector[cbool]] move(unique_ptr[vector[cbool]])
     cdef unique_ptr[vector[cbool]] move_unique "std::move"(unique_ptr[vector[cbool]])
+    cdef shared_ptr[vector[cbool]] move_shared "std::move"(shared_ptr[vector[cbool]])
     cdef shared_ptr[vector[int32_t]] move(unique_ptr[vector[int32_t]])
     cdef unique_ptr[vector[int32_t]] move_unique "std::move"(unique_ptr[vector[int32_t]])
+    cdef shared_ptr[vector[int32_t]] move_shared "std::move"(shared_ptr[vector[int32_t]])
 cdef extern from "<memory>" namespace "std" nogil:
     cdef shared_ptr[const vector[cbool]] const_pointer_cast "std::const_pointer_cast<const std::vector<bool>>"(shared_ptr[vector[cbool]])
 

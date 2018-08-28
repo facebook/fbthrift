@@ -6,7 +6,7 @@
 #
 
 from libcpp.string cimport string
-from libcpp cimport bool as cbool
+from libcpp cimport bool as cbool, nullptr, nullptr_t
 from cpython cimport bool as pbool
 from libc.stdint cimport int8_t, int16_t, int32_t, int64_t
 from libcpp.memory cimport shared_ptr, unique_ptr
@@ -91,6 +91,13 @@ cdef extern from "src/gen-cpp2/forward_compatibility_types.h" namespace "cpp2":
         cNewStructureNested f
         cNewStructureNestedField__isset __isset
 
+    cdef shared_ptr[cmap[int16_t,double]] reference_shared_ptr_features "thrift::py3::reference_shared_ptr<std::map<int16_t,double>>"(shared_ptr[cOldStructure]&, cmap[int16_t,double]&)
+    cdef shared_ptr[cmap[int16_t,double]] reference_shared_ptr_features "thrift::py3::reference_shared_ptr<std::map<int16_t,double>>"(shared_ptr[cNewStructure]&, cmap[int16_t,double]&)
+    cdef shared_ptr[cmap[int16_t,float]] reference_shared_ptr_features "thrift::py3::reference_shared_ptr<std::map<int16_t,float>>"(shared_ptr[cNewStructure2]&, cmap[int16_t,float]&)
+    cdef shared_ptr[vector[cmap[int16_t,float]]] reference_shared_ptr_lst "thrift::py3::reference_shared_ptr<std::vector<std::map<int16_t,float>>>"(shared_ptr[cNewStructureNested]&, vector[cmap[int16_t,float]]&)
+    cdef shared_ptr[cmap[int16_t,cmap[int16_t,float]]] reference_shared_ptr_mp "thrift::py3::reference_shared_ptr<std::map<int16_t,std::map<int16_t,float>>>"(shared_ptr[cNewStructureNested]&, cmap[int16_t,cmap[int16_t,float]]&)
+    cdef shared_ptr[cset[cmap[int16_t,float]]] reference_shared_ptr_s "thrift::py3::reference_shared_ptr<std::set<std::map<int16_t,float>>>"(shared_ptr[cNewStructureNested]&, cset[cmap[int16_t,float]]&)
+    cdef shared_ptr[cNewStructureNested] reference_shared_ptr_f "thrift::py3::reference_shared_ptr<cpp2::NewStructureNested>"(shared_ptr[cNewStructureNestedField]&, cNewStructureNested&)
 
 cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[cOldStructure] move(unique_ptr[cOldStructure])
@@ -318,26 +325,37 @@ cdef class Map__i32_List__float:
 cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[cmap[int16_t,double]] move(unique_ptr[cmap[int16_t,double]])
     cdef unique_ptr[cmap[int16_t,double]] move_unique "std::move"(unique_ptr[cmap[int16_t,double]])
+    cdef shared_ptr[cmap[int16_t,double]] move_shared "std::move"(shared_ptr[cmap[int16_t,double]])
     cdef shared_ptr[cmap[int16_t,float]] move(unique_ptr[cmap[int16_t,float]])
     cdef unique_ptr[cmap[int16_t,float]] move_unique "std::move"(unique_ptr[cmap[int16_t,float]])
+    cdef shared_ptr[cmap[int16_t,float]] move_shared "std::move"(shared_ptr[cmap[int16_t,float]])
     cdef shared_ptr[vector[cmap[int16_t,float]]] move(unique_ptr[vector[cmap[int16_t,float]]])
     cdef unique_ptr[vector[cmap[int16_t,float]]] move_unique "std::move"(unique_ptr[vector[cmap[int16_t,float]]])
+    cdef shared_ptr[vector[cmap[int16_t,float]]] move_shared "std::move"(shared_ptr[vector[cmap[int16_t,float]]])
     cdef shared_ptr[cmap[int16_t,cmap[int16_t,float]]] move(unique_ptr[cmap[int16_t,cmap[int16_t,float]]])
     cdef unique_ptr[cmap[int16_t,cmap[int16_t,float]]] move_unique "std::move"(unique_ptr[cmap[int16_t,cmap[int16_t,float]]])
+    cdef shared_ptr[cmap[int16_t,cmap[int16_t,float]]] move_shared "std::move"(shared_ptr[cmap[int16_t,cmap[int16_t,float]]])
     cdef shared_ptr[cset[cmap[int16_t,float]]] move(unique_ptr[cset[cmap[int16_t,float]]])
     cdef unique_ptr[cset[cmap[int16_t,float]]] move_unique "std::move"(unique_ptr[cset[cmap[int16_t,float]]])
+    cdef shared_ptr[cset[cmap[int16_t,float]]] move_shared "std::move"(shared_ptr[cset[cmap[int16_t,float]]])
     cdef shared_ptr[cmap[int64_t,double]] move(unique_ptr[cmap[int64_t,double]])
     cdef unique_ptr[cmap[int64_t,double]] move_unique "std::move"(unique_ptr[cmap[int64_t,double]])
+    cdef shared_ptr[cmap[int64_t,double]] move_shared "std::move"(shared_ptr[cmap[int64_t,double]])
     cdef shared_ptr[cmap[int16_t,cmap[int64_t,double]]] move(unique_ptr[cmap[int16_t,cmap[int64_t,double]]])
     cdef unique_ptr[cmap[int16_t,cmap[int64_t,double]]] move_unique "std::move"(unique_ptr[cmap[int16_t,cmap[int64_t,double]]])
+    cdef shared_ptr[cmap[int16_t,cmap[int64_t,double]]] move_shared "std::move"(shared_ptr[cmap[int16_t,cmap[int64_t,double]]])
     cdef shared_ptr[cmap[int32_t,cmap[int64_t,double]]] move(unique_ptr[cmap[int32_t,cmap[int64_t,double]]])
     cdef unique_ptr[cmap[int32_t,cmap[int64_t,double]]] move_unique "std::move"(unique_ptr[cmap[int32_t,cmap[int64_t,double]]])
+    cdef shared_ptr[cmap[int32_t,cmap[int64_t,double]]] move_shared "std::move"(shared_ptr[cmap[int32_t,cmap[int64_t,double]]])
     cdef shared_ptr[vector[float]] move(unique_ptr[vector[float]])
     cdef unique_ptr[vector[float]] move_unique "std::move"(unique_ptr[vector[float]])
+    cdef shared_ptr[vector[float]] move_shared "std::move"(shared_ptr[vector[float]])
     cdef shared_ptr[cmap[int16_t,vector[float]]] move(unique_ptr[cmap[int16_t,vector[float]]])
     cdef unique_ptr[cmap[int16_t,vector[float]]] move_unique "std::move"(unique_ptr[cmap[int16_t,vector[float]]])
+    cdef shared_ptr[cmap[int16_t,vector[float]]] move_shared "std::move"(shared_ptr[cmap[int16_t,vector[float]]])
     cdef shared_ptr[cmap[int32_t,vector[float]]] move(unique_ptr[cmap[int32_t,vector[float]]])
     cdef unique_ptr[cmap[int32_t,vector[float]]] move_unique "std::move"(unique_ptr[cmap[int32_t,vector[float]]])
+    cdef shared_ptr[cmap[int32_t,vector[float]]] move_shared "std::move"(shared_ptr[cmap[int32_t,vector[float]]])
 cdef extern from "<memory>" namespace "std" nogil:
     cdef shared_ptr[const cmap[int16_t,double]] const_pointer_cast "std::const_pointer_cast<const std::map<int16_t,double>>"(shared_ptr[cmap[int16_t,double]])
 

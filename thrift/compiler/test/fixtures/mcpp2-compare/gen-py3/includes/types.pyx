@@ -213,7 +213,7 @@ cdef class AStruct(thrift.py3.types.Struct):
     @staticmethod
     cdef create(shared_ptr[cAStruct] cpp_obj):
         inst = <AStruct>AStruct.__new__(AStruct)
-        inst._cpp_obj = cpp_obj
+        inst._cpp_obj = move_shared(cpp_obj)
         return inst
 
     @property
@@ -231,6 +231,12 @@ cdef class AStruct(thrift.py3.types.Struct):
 
     def __repr__(AStruct self):
         return f'AStruct(FieldA={repr(self.FieldA)})'
+    def __copy__(AStruct self):
+        cdef shared_ptr[cAStruct] cpp_obj = make_shared[cAStruct](
+            deref(self._cpp_obj)
+        )
+        return AStruct.create(move_shared(cpp_obj))
+
     def __richcmp__(self, other, op):
         cdef int cop = op
         if cop not in (2, 3):
@@ -358,7 +364,7 @@ cdef class AStructB(thrift.py3.types.Struct):
     @staticmethod
     cdef create(shared_ptr[cAStructB] cpp_obj):
         inst = <AStructB>AStructB.__new__(AStructB)
-        inst._cpp_obj = cpp_obj
+        inst._cpp_obj = move_shared(cpp_obj)
         return inst
 
     @property
@@ -367,7 +373,7 @@ cdef class AStructB(thrift.py3.types.Struct):
         if self.__FieldA is None:
             if not deref(self._cpp_obj).FieldA:
                 return None
-            self.__FieldA = AStruct.create(aliasing_constructor_FieldA(self._cpp_obj, <cAStruct*>(deref(self._cpp_obj).FieldA.get())))
+            self.__FieldA = AStruct.create(reference_shared_ptr_FieldA(self._cpp_obj, deref(deref(self._cpp_obj).FieldA)))
         return self.__FieldA
 
 
@@ -380,6 +386,12 @@ cdef class AStructB(thrift.py3.types.Struct):
 
     def __repr__(AStructB self):
         return f'AStructB(FieldA={repr(self.FieldA)})'
+    def __copy__(AStructB self):
+        cdef shared_ptr[cAStructB] cpp_obj = make_shared[cAStructB](
+            deref(self._cpp_obj)
+        )
+        return AStructB.create(move_shared(cpp_obj))
+
     def __richcmp__(self, other, op):
         cdef int cop = op
         if cop not in (2, 3):

@@ -47,8 +47,14 @@ cdef class std_unordered_map__Map__i32_string:
     @staticmethod
     cdef create(shared_ptr[std_unordered_map[int32_t,string]] c_items):
         inst = <std_unordered_map__Map__i32_string>std_unordered_map__Map__i32_string.__new__(std_unordered_map__Map__i32_string)
-        inst._cpp_obj = c_items
+        inst._cpp_obj = move_shared(c_items)
         return inst
+
+    def __copy__(std_unordered_map__Map__i32_string self):
+        cdef shared_ptr[std_unordered_map[int32_t,string]] cpp_obj = make_shared[std_unordered_map[int32_t,string]](
+            deref(self._cpp_obj)
+        )
+        return std_unordered_map__Map__i32_string.create(move_shared(cpp_obj))
 
     @staticmethod
     cdef unique_ptr[std_unordered_map[int32_t,string]] _make_instance(object items) except *:
@@ -174,8 +180,14 @@ cdef class List__std_unordered_map__Map__i32_string:
     @staticmethod
     cdef create(shared_ptr[vector[std_unordered_map[int32_t,string]]] c_items):
         inst = <List__std_unordered_map__Map__i32_string>List__std_unordered_map__Map__i32_string.__new__(List__std_unordered_map__Map__i32_string)
-        inst._cpp_obj = c_items
+        inst._cpp_obj = move_shared(c_items)
         return inst
+
+    def __copy__(List__std_unordered_map__Map__i32_string self):
+        cdef shared_ptr[vector[std_unordered_map[int32_t,string]]] cpp_obj = make_shared[vector[std_unordered_map[int32_t,string]]](
+            deref(self._cpp_obj)
+        )
+        return List__std_unordered_map__Map__i32_string.create(move_shared(cpp_obj))
 
     @staticmethod
     cdef unique_ptr[vector[std_unordered_map[int32_t,string]]] _make_instance(object items) except *:
@@ -201,7 +213,7 @@ cdef class List__std_unordered_map__Map__i32_string:
             for index in range(*index_obj.indices(sz)):
                 citem = deref(self._cpp_obj.get())[index]
                 deref(c_inst).push_back(citem)
-            return List__std_unordered_map__Map__i32_string.create(c_inst)
+            return List__std_unordered_map__Map__i32_string.create(move_shared(c_inst))
         else:
             index = <int?>index_obj
             size = len(self)

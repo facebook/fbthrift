@@ -6,7 +6,7 @@
 #
 
 from libcpp.string cimport string
-from libcpp cimport bool as cbool
+from libcpp cimport bool as cbool, nullptr, nullptr_t
 from cpython cimport bool as pbool
 from libc.stdint cimport int8_t, int16_t, int32_t, int64_t
 from libcpp.memory cimport shared_ptr, unique_ptr
@@ -83,8 +83,10 @@ cdef class List__std_unordered_map__Map__i32_string:
 cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[std_unordered_map[int32_t,string]] move(unique_ptr[std_unordered_map[int32_t,string]])
     cdef unique_ptr[std_unordered_map[int32_t,string]] move_unique "std::move"(unique_ptr[std_unordered_map[int32_t,string]])
+    cdef shared_ptr[std_unordered_map[int32_t,string]] move_shared "std::move"(shared_ptr[std_unordered_map[int32_t,string]])
     cdef shared_ptr[vector[std_unordered_map[int32_t,string]]] move(unique_ptr[vector[std_unordered_map[int32_t,string]]])
     cdef unique_ptr[vector[std_unordered_map[int32_t,string]]] move_unique "std::move"(unique_ptr[vector[std_unordered_map[int32_t,string]]])
+    cdef shared_ptr[vector[std_unordered_map[int32_t,string]]] move_shared "std::move"(shared_ptr[vector[std_unordered_map[int32_t,string]]])
 cdef extern from "<memory>" namespace "std" nogil:
     cdef shared_ptr[const std_unordered_map[int32_t,string]] const_pointer_cast "std::const_pointer_cast<const std::unordered_map<int32_t,std::string>>"(shared_ptr[std_unordered_map[int32_t,string]])
 

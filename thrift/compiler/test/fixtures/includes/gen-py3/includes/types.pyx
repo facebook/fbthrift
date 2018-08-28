@@ -138,7 +138,7 @@ cdef class Included(thrift.py3.types.Struct):
     @staticmethod
     cdef create(shared_ptr[cIncluded] cpp_obj):
         inst = <Included>Included.__new__(Included)
-        inst._cpp_obj = cpp_obj
+        inst._cpp_obj = move_shared(cpp_obj)
         return inst
 
     @property
@@ -150,7 +150,7 @@ cdef class Included(thrift.py3.types.Struct):
     def MyTransitiveField(self):
 
         if self.__MyTransitiveField is None:
-            self.__MyTransitiveField = _transitive_types.Foo.create(make_shared[_transitive_types.cFoo](deref(self._cpp_obj).MyTransitiveField))
+            self.__MyTransitiveField = _transitive_types.Foo.create(reference_shared_ptr_MyTransitiveField(self._cpp_obj, deref(self._cpp_obj).MyTransitiveField))
         return self.__MyTransitiveField
 
 
@@ -164,6 +164,12 @@ cdef class Included(thrift.py3.types.Struct):
 
     def __repr__(Included self):
         return f'Included(MyIntField={repr(self.MyIntField)}, MyTransitiveField={repr(self.MyTransitiveField)})'
+    def __copy__(Included self):
+        cdef shared_ptr[cIncluded] cpp_obj = make_shared[cIncluded](
+            deref(self._cpp_obj)
+        )
+        return Included.create(move_shared(cpp_obj))
+
     def __richcmp__(self, other, op):
         cdef int cop = op
         if cop not in (2, 3):

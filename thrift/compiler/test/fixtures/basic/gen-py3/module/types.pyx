@@ -307,7 +307,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
     @staticmethod
     cdef create(shared_ptr[cMyStruct] cpp_obj):
         inst = <MyStruct>MyStruct.__new__(MyStruct)
-        inst._cpp_obj = cpp_obj
+        inst._cpp_obj = move_shared(cpp_obj)
         return inst
 
     @property
@@ -324,7 +324,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
     def MyDataField(self):
 
         if self.__MyDataField is None:
-            self.__MyDataField = MyDataItem.create(make_shared[cMyDataItem](deref(self._cpp_obj).MyDataField))
+            self.__MyDataField = MyDataItem.create(reference_shared_ptr_MyDataField(self._cpp_obj, deref(self._cpp_obj).MyDataField))
         return self.__MyDataField
 
     @property
@@ -351,6 +351,12 @@ cdef class MyStruct(thrift.py3.types.Struct):
 
     def __repr__(MyStruct self):
         return f'MyStruct(MyIntField={repr(self.MyIntField)}, MyStringField={repr(self.MyStringField)}, MyDataField={repr(self.MyDataField)}, major={repr(self.major)}, myEnum={repr(self.myEnum)})'
+    def __copy__(MyStruct self):
+        cdef shared_ptr[cMyStruct] cpp_obj = make_shared[cMyStruct](
+            deref(self._cpp_obj)
+        )
+        return MyStruct.create(move_shared(cpp_obj))
+
     def __richcmp__(self, other, op):
         cdef int cop = op
         if cop not in (2, 3):
@@ -459,7 +465,7 @@ cdef class MyDataItem(thrift.py3.types.Struct):
     @staticmethod
     cdef create(shared_ptr[cMyDataItem] cpp_obj):
         inst = <MyDataItem>MyDataItem.__new__(MyDataItem)
-        inst._cpp_obj = cpp_obj
+        inst._cpp_obj = move_shared(cpp_obj)
         return inst
 
 
@@ -472,6 +478,12 @@ cdef class MyDataItem(thrift.py3.types.Struct):
 
     def __repr__(MyDataItem self):
         return f'MyDataItem()'
+    def __copy__(MyDataItem self):
+        cdef shared_ptr[cMyDataItem] cpp_obj = make_shared[cMyDataItem](
+            deref(self._cpp_obj)
+        )
+        return MyDataItem.create(move_shared(cpp_obj))
+
     def __richcmp__(self, other, op):
         cdef int cop = op
         if cop not in (2, 3):

@@ -104,14 +104,14 @@ cdef class OldStructure(thrift.py3.types.Struct):
     @staticmethod
     cdef create(shared_ptr[cOldStructure] cpp_obj):
         inst = <OldStructure>OldStructure.__new__(OldStructure)
-        inst._cpp_obj = cpp_obj
+        inst._cpp_obj = move_shared(cpp_obj)
         return inst
 
     @property
     def features(self):
 
         if self.__features is None:
-            self.__features = Map__i16_double.create(make_shared[cmap[int16_t,double]](deref(self._cpp_obj).features))
+            self.__features = Map__i16_double.create(reference_shared_ptr_features(self._cpp_obj, deref(self._cpp_obj).features))
         return self.__features
 
 
@@ -124,6 +124,12 @@ cdef class OldStructure(thrift.py3.types.Struct):
 
     def __repr__(OldStructure self):
         return f'OldStructure(features={repr(self.features)})'
+    def __copy__(OldStructure self):
+        cdef shared_ptr[cOldStructure] cpp_obj = make_shared[cOldStructure](
+            deref(self._cpp_obj)
+        )
+        return OldStructure.create(move_shared(cpp_obj))
+
     def __richcmp__(self, other, op):
         cdef int cop = op
         if cop not in (2, 3):
@@ -249,14 +255,14 @@ cdef class NewStructure(thrift.py3.types.Struct):
     @staticmethod
     cdef create(shared_ptr[cNewStructure] cpp_obj):
         inst = <NewStructure>NewStructure.__new__(NewStructure)
-        inst._cpp_obj = cpp_obj
+        inst._cpp_obj = move_shared(cpp_obj)
         return inst
 
     @property
     def features(self):
 
         if self.__features is None:
-            self.__features = Map__i16_double.create(make_shared[cmap[int16_t,double]](deref(self._cpp_obj).features))
+            self.__features = Map__i16_double.create(reference_shared_ptr_features(self._cpp_obj, deref(self._cpp_obj).features))
         return self.__features
 
 
@@ -269,6 +275,12 @@ cdef class NewStructure(thrift.py3.types.Struct):
 
     def __repr__(NewStructure self):
         return f'NewStructure(features={repr(self.features)})'
+    def __copy__(NewStructure self):
+        cdef shared_ptr[cNewStructure] cpp_obj = make_shared[cNewStructure](
+            deref(self._cpp_obj)
+        )
+        return NewStructure.create(move_shared(cpp_obj))
+
     def __richcmp__(self, other, op):
         cdef int cop = op
         if cop not in (2, 3):
@@ -394,14 +406,14 @@ cdef class NewStructure2(thrift.py3.types.Struct):
     @staticmethod
     cdef create(shared_ptr[cNewStructure2] cpp_obj):
         inst = <NewStructure2>NewStructure2.__new__(NewStructure2)
-        inst._cpp_obj = cpp_obj
+        inst._cpp_obj = move_shared(cpp_obj)
         return inst
 
     @property
     def features(self):
 
         if self.__features is None:
-            self.__features = Map__i16_float.create(make_shared[cmap[int16_t,float]](deref(self._cpp_obj).features))
+            self.__features = Map__i16_float.create(reference_shared_ptr_features(self._cpp_obj, deref(self._cpp_obj).features))
         return self.__features
 
 
@@ -414,6 +426,12 @@ cdef class NewStructure2(thrift.py3.types.Struct):
 
     def __repr__(NewStructure2 self):
         return f'NewStructure2(features={repr(self.features)})'
+    def __copy__(NewStructure2 self):
+        cdef shared_ptr[cNewStructure2] cpp_obj = make_shared[cNewStructure2](
+            deref(self._cpp_obj)
+        )
+        return NewStructure2.create(move_shared(cpp_obj))
+
     def __richcmp__(self, other, op):
         cdef int cop = op
         if cop not in (2, 3):
@@ -575,28 +593,28 @@ cdef class NewStructureNested(thrift.py3.types.Struct):
     @staticmethod
     cdef create(shared_ptr[cNewStructureNested] cpp_obj):
         inst = <NewStructureNested>NewStructureNested.__new__(NewStructureNested)
-        inst._cpp_obj = cpp_obj
+        inst._cpp_obj = move_shared(cpp_obj)
         return inst
 
     @property
     def lst(self):
 
         if self.__lst is None:
-            self.__lst = List__Map__i16_float.create(make_shared[vector[cmap[int16_t,float]]](deref(self._cpp_obj).lst))
+            self.__lst = List__Map__i16_float.create(reference_shared_ptr_lst(self._cpp_obj, deref(self._cpp_obj).lst))
         return self.__lst
 
     @property
     def mp(self):
 
         if self.__mp is None:
-            self.__mp = Map__i16_Map__i16_float.create(make_shared[cmap[int16_t,cmap[int16_t,float]]](deref(self._cpp_obj).mp))
+            self.__mp = Map__i16_Map__i16_float.create(reference_shared_ptr_mp(self._cpp_obj, deref(self._cpp_obj).mp))
         return self.__mp
 
     @property
     def s(self):
 
         if self.__s is None:
-            self.__s = Set__Map__i16_float.create(make_shared[cset[cmap[int16_t,float]]](deref(self._cpp_obj).s))
+            self.__s = Set__Map__i16_float.create(reference_shared_ptr_s(self._cpp_obj, deref(self._cpp_obj).s))
         return self.__s
 
 
@@ -611,6 +629,12 @@ cdef class NewStructureNested(thrift.py3.types.Struct):
 
     def __repr__(NewStructureNested self):
         return f'NewStructureNested(lst={repr(self.lst)}, mp={repr(self.mp)}, s={repr(self.s)})'
+    def __copy__(NewStructureNested self):
+        cdef shared_ptr[cNewStructureNested] cpp_obj = make_shared[cNewStructureNested](
+            deref(self._cpp_obj)
+        )
+        return NewStructureNested.create(move_shared(cpp_obj))
+
     def __richcmp__(self, other, op):
         cdef int cop = op
         if cop not in (2, 3):
@@ -740,14 +764,14 @@ cdef class NewStructureNestedField(thrift.py3.types.Struct):
     @staticmethod
     cdef create(shared_ptr[cNewStructureNestedField] cpp_obj):
         inst = <NewStructureNestedField>NewStructureNestedField.__new__(NewStructureNestedField)
-        inst._cpp_obj = cpp_obj
+        inst._cpp_obj = move_shared(cpp_obj)
         return inst
 
     @property
     def f(self):
 
         if self.__f is None:
-            self.__f = NewStructureNested.create(make_shared[cNewStructureNested](deref(self._cpp_obj).f))
+            self.__f = NewStructureNested.create(reference_shared_ptr_f(self._cpp_obj, deref(self._cpp_obj).f))
         return self.__f
 
 
@@ -760,6 +784,12 @@ cdef class NewStructureNestedField(thrift.py3.types.Struct):
 
     def __repr__(NewStructureNestedField self):
         return f'NewStructureNestedField(f={repr(self.f)})'
+    def __copy__(NewStructureNestedField self):
+        cdef shared_ptr[cNewStructureNestedField] cpp_obj = make_shared[cNewStructureNestedField](
+            deref(self._cpp_obj)
+        )
+        return NewStructureNestedField.create(move_shared(cpp_obj))
+
     def __richcmp__(self, other, op):
         cdef int cop = op
         if cop not in (2, 3):
@@ -828,8 +858,14 @@ cdef class Map__i16_double:
     @staticmethod
     cdef create(shared_ptr[cmap[int16_t,double]] c_items):
         inst = <Map__i16_double>Map__i16_double.__new__(Map__i16_double)
-        inst._cpp_obj = c_items
+        inst._cpp_obj = move_shared(c_items)
         return inst
+
+    def __copy__(Map__i16_double self):
+        cdef shared_ptr[cmap[int16_t,double]] cpp_obj = make_shared[cmap[int16_t,double]](
+            deref(self._cpp_obj)
+        )
+        return Map__i16_double.create(move_shared(cpp_obj))
 
     @staticmethod
     cdef unique_ptr[cmap[int16_t,double]] _make_instance(object items) except *:
@@ -955,8 +991,14 @@ cdef class Map__i16_float:
     @staticmethod
     cdef create(shared_ptr[cmap[int16_t,float]] c_items):
         inst = <Map__i16_float>Map__i16_float.__new__(Map__i16_float)
-        inst._cpp_obj = c_items
+        inst._cpp_obj = move_shared(c_items)
         return inst
+
+    def __copy__(Map__i16_float self):
+        cdef shared_ptr[cmap[int16_t,float]] cpp_obj = make_shared[cmap[int16_t,float]](
+            deref(self._cpp_obj)
+        )
+        return Map__i16_float.create(move_shared(cpp_obj))
 
     @staticmethod
     cdef unique_ptr[cmap[int16_t,float]] _make_instance(object items) except *:
@@ -1082,8 +1124,14 @@ cdef class List__Map__i16_float:
     @staticmethod
     cdef create(shared_ptr[vector[cmap[int16_t,float]]] c_items):
         inst = <List__Map__i16_float>List__Map__i16_float.__new__(List__Map__i16_float)
-        inst._cpp_obj = c_items
+        inst._cpp_obj = move_shared(c_items)
         return inst
+
+    def __copy__(List__Map__i16_float self):
+        cdef shared_ptr[vector[cmap[int16_t,float]]] cpp_obj = make_shared[vector[cmap[int16_t,float]]](
+            deref(self._cpp_obj)
+        )
+        return List__Map__i16_float.create(move_shared(cpp_obj))
 
     @staticmethod
     cdef unique_ptr[vector[cmap[int16_t,float]]] _make_instance(object items) except *:
@@ -1109,7 +1157,7 @@ cdef class List__Map__i16_float:
             for index in range(*index_obj.indices(sz)):
                 citem = deref(self._cpp_obj.get())[index]
                 deref(c_inst).push_back(citem)
-            return List__Map__i16_float.create(c_inst)
+            return List__Map__i16_float.create(move_shared(c_inst))
         else:
             index = <int?>index_obj
             size = len(self)
@@ -1255,8 +1303,14 @@ cdef class Map__i16_Map__i16_float:
     @staticmethod
     cdef create(shared_ptr[cmap[int16_t,cmap[int16_t,float]]] c_items):
         inst = <Map__i16_Map__i16_float>Map__i16_Map__i16_float.__new__(Map__i16_Map__i16_float)
-        inst._cpp_obj = c_items
+        inst._cpp_obj = move_shared(c_items)
         return inst
+
+    def __copy__(Map__i16_Map__i16_float self):
+        cdef shared_ptr[cmap[int16_t,cmap[int16_t,float]]] cpp_obj = make_shared[cmap[int16_t,cmap[int16_t,float]]](
+            deref(self._cpp_obj)
+        )
+        return Map__i16_Map__i16_float.create(move_shared(cpp_obj))
 
     @staticmethod
     cdef unique_ptr[cmap[int16_t,cmap[int16_t,float]]] _make_instance(object items) except *:
@@ -1387,8 +1441,14 @@ cdef class Set__Map__i16_float:
     @staticmethod
     cdef create(shared_ptr[cset[cmap[int16_t,float]]] c_items):
         inst = <Set__Map__i16_float>Set__Map__i16_float.__new__(Set__Map__i16_float)
-        inst._cpp_obj = c_items
+        inst._cpp_obj = move_shared(c_items)
         return inst
+
+    def __copy__(Set__Map__i16_float self):
+        cdef shared_ptr[cset[cmap[int16_t,float]]] cpp_obj = make_shared[cset[cmap[int16_t,float]]](
+            deref(self._cpp_obj)
+        )
+        return Set__Map__i16_float.create(move_shared(cpp_obj))
 
     @staticmethod
     cdef unique_ptr[cset[cmap[int16_t,float]]] _make_instance(object items) except *:
@@ -1506,7 +1566,7 @@ cdef class Set__Map__i16_float:
         for citem in deref((<Set__Map__i16_float> self)._cpp_obj):
             if deref((<Set__Map__i16_float> other)._cpp_obj).count(citem) > 0:
                 deref(shretval).insert(citem)
-        return Set__Map__i16_float.create(shretval)
+        return Set__Map__i16_float.create(move_shared(shretval))
 
     def __sub__(self, other):
         if not isinstance(self, Set__Map__i16_float):
@@ -1519,7 +1579,7 @@ cdef class Set__Map__i16_float:
         for citem in deref((<Set__Map__i16_float> self)._cpp_obj):
             if deref((<Set__Map__i16_float> other)._cpp_obj).count(citem) == 0:
                 deref(shretval).insert(citem)
-        return Set__Map__i16_float.create(shretval)
+        return Set__Map__i16_float.create(move_shared(shretval))
 
     def __or__(self, other):
         if not isinstance(self, Set__Map__i16_float):
@@ -1533,7 +1593,7 @@ cdef class Set__Map__i16_float:
                 deref(shretval).insert(citem)
         for citem in deref((<Set__Map__i16_float> other)._cpp_obj):
                 deref(shretval).insert(citem)
-        return Set__Map__i16_float.create(shretval)
+        return Set__Map__i16_float.create(move_shared(shretval))
 
     def __xor__(self, other):
         if not isinstance(self, Set__Map__i16_float):
@@ -1549,7 +1609,7 @@ cdef class Set__Map__i16_float:
         for citem in deref((<Set__Map__i16_float> other)._cpp_obj):
             if deref((<Set__Map__i16_float> self)._cpp_obj).count(citem) == 0:
                 deref(shretval).insert(citem)
-        return Set__Map__i16_float.create(shretval)
+        return Set__Map__i16_float.create(move_shared(shretval))
 
     def isdisjoint(self, other):
         return len(self & other) == 0
@@ -1585,8 +1645,14 @@ cdef class Map__i64_double:
     @staticmethod
     cdef create(shared_ptr[cmap[int64_t,double]] c_items):
         inst = <Map__i64_double>Map__i64_double.__new__(Map__i64_double)
-        inst._cpp_obj = c_items
+        inst._cpp_obj = move_shared(c_items)
         return inst
+
+    def __copy__(Map__i64_double self):
+        cdef shared_ptr[cmap[int64_t,double]] cpp_obj = make_shared[cmap[int64_t,double]](
+            deref(self._cpp_obj)
+        )
+        return Map__i64_double.create(move_shared(cpp_obj))
 
     @staticmethod
     cdef unique_ptr[cmap[int64_t,double]] _make_instance(object items) except *:
@@ -1712,8 +1778,14 @@ cdef class Map__i16_Map__i64_double:
     @staticmethod
     cdef create(shared_ptr[cmap[int16_t,cmap[int64_t,double]]] c_items):
         inst = <Map__i16_Map__i64_double>Map__i16_Map__i64_double.__new__(Map__i16_Map__i64_double)
-        inst._cpp_obj = c_items
+        inst._cpp_obj = move_shared(c_items)
         return inst
+
+    def __copy__(Map__i16_Map__i64_double self):
+        cdef shared_ptr[cmap[int16_t,cmap[int64_t,double]]] cpp_obj = make_shared[cmap[int16_t,cmap[int64_t,double]]](
+            deref(self._cpp_obj)
+        )
+        return Map__i16_Map__i64_double.create(move_shared(cpp_obj))
 
     @staticmethod
     cdef unique_ptr[cmap[int16_t,cmap[int64_t,double]]] _make_instance(object items) except *:
@@ -1844,8 +1916,14 @@ cdef class Map__i32_Map__i64_double:
     @staticmethod
     cdef create(shared_ptr[cmap[int32_t,cmap[int64_t,double]]] c_items):
         inst = <Map__i32_Map__i64_double>Map__i32_Map__i64_double.__new__(Map__i32_Map__i64_double)
-        inst._cpp_obj = c_items
+        inst._cpp_obj = move_shared(c_items)
         return inst
+
+    def __copy__(Map__i32_Map__i64_double self):
+        cdef shared_ptr[cmap[int32_t,cmap[int64_t,double]]] cpp_obj = make_shared[cmap[int32_t,cmap[int64_t,double]]](
+            deref(self._cpp_obj)
+        )
+        return Map__i32_Map__i64_double.create(move_shared(cpp_obj))
 
     @staticmethod
     cdef unique_ptr[cmap[int32_t,cmap[int64_t,double]]] _make_instance(object items) except *:
@@ -1976,8 +2054,14 @@ cdef class List__float:
     @staticmethod
     cdef create(shared_ptr[vector[float]] c_items):
         inst = <List__float>List__float.__new__(List__float)
-        inst._cpp_obj = c_items
+        inst._cpp_obj = move_shared(c_items)
         return inst
+
+    def __copy__(List__float self):
+        cdef shared_ptr[vector[float]] cpp_obj = make_shared[vector[float]](
+            deref(self._cpp_obj)
+        )
+        return List__float.create(move_shared(cpp_obj))
 
     @staticmethod
     cdef unique_ptr[vector[float]] _make_instance(object items) except *:
@@ -2001,7 +2085,7 @@ cdef class List__float:
             for index in range(*index_obj.indices(sz)):
                 citem = deref(self._cpp_obj.get())[index]
                 deref(c_inst).push_back(citem)
-            return List__float.create(c_inst)
+            return List__float.create(move_shared(c_inst))
         else:
             index = <int?>index_obj
             size = len(self)
@@ -2129,8 +2213,14 @@ cdef class Map__i16_List__float:
     @staticmethod
     cdef create(shared_ptr[cmap[int16_t,vector[float]]] c_items):
         inst = <Map__i16_List__float>Map__i16_List__float.__new__(Map__i16_List__float)
-        inst._cpp_obj = c_items
+        inst._cpp_obj = move_shared(c_items)
         return inst
+
+    def __copy__(Map__i16_List__float self):
+        cdef shared_ptr[cmap[int16_t,vector[float]]] cpp_obj = make_shared[cmap[int16_t,vector[float]]](
+            deref(self._cpp_obj)
+        )
+        return Map__i16_List__float.create(move_shared(cpp_obj))
 
     @staticmethod
     cdef unique_ptr[cmap[int16_t,vector[float]]] _make_instance(object items) except *:
@@ -2261,8 +2351,14 @@ cdef class Map__i32_List__float:
     @staticmethod
     cdef create(shared_ptr[cmap[int32_t,vector[float]]] c_items):
         inst = <Map__i32_List__float>Map__i32_List__float.__new__(Map__i32_List__float)
-        inst._cpp_obj = c_items
+        inst._cpp_obj = move_shared(c_items)
         return inst
+
+    def __copy__(Map__i32_List__float self):
+        cdef shared_ptr[cmap[int32_t,vector[float]]] cpp_obj = make_shared[cmap[int32_t,vector[float]]](
+            deref(self._cpp_obj)
+        )
+        return Map__i32_List__float.create(move_shared(cpp_obj))
 
     @staticmethod
     cdef unique_ptr[cmap[int32_t,vector[float]]] _make_instance(object items) except *:

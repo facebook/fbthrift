@@ -241,7 +241,7 @@ cdef class SmallStruct(thrift.py3.types.Struct):
     @staticmethod
     cdef create(shared_ptr[cSmallStruct] cpp_obj):
         inst = <SmallStruct>SmallStruct.__new__(SmallStruct)
-        inst._cpp_obj = cpp_obj
+        inst._cpp_obj = move_shared(cpp_obj)
         return inst
 
     @property
@@ -265,6 +265,12 @@ cdef class SmallStruct(thrift.py3.types.Struct):
 
     def __repr__(SmallStruct self):
         return f'SmallStruct(small_A={repr(self.small_A)}, small_B={repr(self.small_B)})'
+    def __copy__(SmallStruct self):
+        cdef shared_ptr[cSmallStruct] cpp_obj = make_shared[cSmallStruct](
+            deref(self._cpp_obj)
+        )
+        return SmallStruct.create(move_shared(cpp_obj))
+
     def __richcmp__(self, other, op):
         cdef int cop = op
         if cop not in (2, 3):
@@ -794,7 +800,7 @@ cdef class containerStruct(thrift.py3.types.Struct):
     @staticmethod
     cdef create(shared_ptr[ccontainerStruct] cpp_obj):
         inst = <containerStruct>containerStruct.__new__(containerStruct)
-        inst._cpp_obj = cpp_obj
+        inst._cpp_obj = move_shared(cpp_obj)
         return inst
 
     @property
@@ -806,14 +812,14 @@ cdef class containerStruct(thrift.py3.types.Struct):
     def fieldB(self):
 
         if self.__fieldB is None:
-            self.__fieldB = Map__string_bool.create(make_shared[cmap[string,cbool]](deref(self._cpp_obj).fieldB))
+            self.__fieldB = Map__string_bool.create(reference_shared_ptr_fieldB(self._cpp_obj, deref(self._cpp_obj).fieldB))
         return self.__fieldB
 
     @property
     def fieldC(self):
 
         if self.__fieldC is None:
-            self.__fieldC = Set__i32.create(make_shared[cset[int32_t]](deref(self._cpp_obj).fieldC))
+            self.__fieldC = Set__i32.create(reference_shared_ptr_fieldC(self._cpp_obj, deref(self._cpp_obj).fieldC))
         return self.__fieldC
 
     @property
@@ -830,21 +836,21 @@ cdef class containerStruct(thrift.py3.types.Struct):
     def fieldF(self):
 
         if self.__fieldF is None:
-            self.__fieldF = List__List__List__i32.create(make_shared[vector[vector[vector[int32_t]]]](deref(self._cpp_obj).fieldF))
+            self.__fieldF = List__List__List__i32.create(reference_shared_ptr_fieldF(self._cpp_obj, deref(self._cpp_obj).fieldF))
         return self.__fieldF
 
     @property
     def fieldG(self):
 
         if self.__fieldG is None:
-            self.__fieldG = Map__string_Map__string_Map__string_i32.create(make_shared[cmap[string,cmap[string,cmap[string,int32_t]]]](deref(self._cpp_obj).fieldG))
+            self.__fieldG = Map__string_Map__string_Map__string_i32.create(reference_shared_ptr_fieldG(self._cpp_obj, deref(self._cpp_obj).fieldG))
         return self.__fieldG
 
     @property
     def fieldH(self):
 
         if self.__fieldH is None:
-            self.__fieldH = List__Set__i32.create(make_shared[vector[cset[int32_t]]](deref(self._cpp_obj).fieldH))
+            self.__fieldH = List__Set__i32.create(reference_shared_ptr_fieldH(self._cpp_obj, deref(self._cpp_obj).fieldH))
         return self.__fieldH
 
     @property
@@ -856,49 +862,49 @@ cdef class containerStruct(thrift.py3.types.Struct):
     def fieldJ(self):
 
         if self.__fieldJ is None:
-            self.__fieldJ = Map__string_List__i32.create(make_shared[cmap[string,vector[int32_t]]](deref(self._cpp_obj).fieldJ))
+            self.__fieldJ = Map__string_List__i32.create(reference_shared_ptr_fieldJ(self._cpp_obj, deref(self._cpp_obj).fieldJ))
         return self.__fieldJ
 
     @property
     def fieldK(self):
 
         if self.__fieldK is None:
-            self.__fieldK = List__List__List__List__i32.create(make_shared[vector[vector[vector[vector[int32_t]]]]](deref(self._cpp_obj).fieldK))
+            self.__fieldK = List__List__List__List__i32.create(reference_shared_ptr_fieldK(self._cpp_obj, deref(self._cpp_obj).fieldK))
         return self.__fieldK
 
     @property
     def fieldL(self):
 
         if self.__fieldL is None:
-            self.__fieldL = Set__Set__Set__bool.create(make_shared[cset[cset[cset[cbool]]]](deref(self._cpp_obj).fieldL))
+            self.__fieldL = Set__Set__Set__bool.create(reference_shared_ptr_fieldL(self._cpp_obj, deref(self._cpp_obj).fieldL))
         return self.__fieldL
 
     @property
     def fieldM(self):
 
         if self.__fieldM is None:
-            self.__fieldM = Map__Set__List__i32_Map__List__Set__string_string.create(make_shared[cmap[cset[vector[int32_t]],cmap[vector[cset[string]],string]]](deref(self._cpp_obj).fieldM))
+            self.__fieldM = Map__Set__List__i32_Map__List__Set__string_string.create(reference_shared_ptr_fieldM(self._cpp_obj, deref(self._cpp_obj).fieldM))
         return self.__fieldM
 
     @property
     def fieldN(self):
 
         if self.__fieldN is None:
-            self.__fieldN = List__Foo__i64.create(make_shared[vector[Foo]](deref(self._cpp_obj).fieldN))
+            self.__fieldN = List__Foo__i64.create(reference_shared_ptr_fieldN(self._cpp_obj, deref(self._cpp_obj).fieldN))
         return self.__fieldN
 
     @property
     def fieldO(self):
 
         if self.__fieldO is None:
-            self.__fieldO = List__Bar__double.create(make_shared[vector[Bar]](deref(self._cpp_obj).fieldO))
+            self.__fieldO = List__Bar__double.create(reference_shared_ptr_fieldO(self._cpp_obj, deref(self._cpp_obj).fieldO))
         return self.__fieldO
 
     @property
     def fieldP(self):
 
         if self.__fieldP is None:
-            self.__fieldP = List__Baz__i32.create(make_shared[vector[Baz]](deref(self._cpp_obj).fieldP))
+            self.__fieldP = List__Baz__i32.create(reference_shared_ptr_fieldP(self._cpp_obj, deref(self._cpp_obj).fieldP))
         return self.__fieldP
 
     @property
@@ -912,7 +918,7 @@ cdef class containerStruct(thrift.py3.types.Struct):
         if self.__fieldR is None:
             if not deref(self._cpp_obj).fieldR:
                 return None
-            self.__fieldR = Map__string_bool.create(aliasing_constructor_fieldR(self._cpp_obj, (deref(self._cpp_obj).fieldR.get())))
+            self.__fieldR = Map__string_bool.create(reference_shared_ptr_fieldR(self._cpp_obj, deref(deref(self._cpp_obj).fieldR)))
         return self.__fieldR
 
     @property
@@ -921,7 +927,7 @@ cdef class containerStruct(thrift.py3.types.Struct):
         if self.__fieldS is None:
             if not deref(self._cpp_obj).fieldS:
                 return None
-            self.__fieldS = SmallStruct.create(aliasing_constructor_fieldS(self._cpp_obj, (deref(self._cpp_obj).fieldS.get())))
+            self.__fieldS = SmallStruct.create(reference_shared_ptr_fieldS(self._cpp_obj, deref(deref(self._cpp_obj).fieldS)))
         return self.__fieldS
 
     @property
@@ -930,7 +936,7 @@ cdef class containerStruct(thrift.py3.types.Struct):
         if self.__fieldT is None:
             if not deref(self._cpp_obj).fieldT:
                 return None
-            self.__fieldT = SmallStruct.create(aliasing_constructor_fieldT(self._cpp_obj, (deref(self._cpp_obj).fieldT.get())))
+            self.__fieldT = SmallStruct.create(reference_shared_ptr_fieldT(self._cpp_obj, deref(deref(self._cpp_obj).fieldT)))
         return self.__fieldT
 
     @property
@@ -939,7 +945,7 @@ cdef class containerStruct(thrift.py3.types.Struct):
         if self.__fieldU is None:
             if not deref(self._cpp_obj).fieldU:
                 return None
-            self.__fieldU = SmallStruct.create(aliasing_constructor_fieldU(self._cpp_obj, <cSmallStruct*>(deref(self._cpp_obj).fieldU.get())))
+            self.__fieldU = SmallStruct.create(reference_shared_ptr_fieldU(self._cpp_obj, deref(deref(self._cpp_obj).fieldU)))
         return self.__fieldU
 
     @property
@@ -948,7 +954,7 @@ cdef class containerStruct(thrift.py3.types.Struct):
         if self.__fieldX is None:
             if not deref(self._cpp_obj).fieldX:
                 return None
-            self.__fieldX = SmallStruct.create(aliasing_constructor_fieldX(self._cpp_obj, (deref(self._cpp_obj).fieldX.get())))
+            self.__fieldX = SmallStruct.create(reference_shared_ptr_fieldX(self._cpp_obj, deref(deref(self._cpp_obj).fieldX)))
         return self.__fieldX
 
 
@@ -982,6 +988,12 @@ cdef class containerStruct(thrift.py3.types.Struct):
 
     def __repr__(containerStruct self):
         return f'containerStruct(fieldA={repr(self.fieldA)}, fieldB={repr(self.fieldB)}, fieldC={repr(self.fieldC)}, fieldD={repr(self.fieldD)}, fieldE={repr(self.fieldE)}, fieldF={repr(self.fieldF)}, fieldG={repr(self.fieldG)}, fieldH={repr(self.fieldH)}, fieldI={repr(self.fieldI)}, fieldJ={repr(self.fieldJ)}, fieldK={repr(self.fieldK)}, fieldL={repr(self.fieldL)}, fieldM={repr(self.fieldM)}, fieldN={repr(self.fieldN)}, fieldO={repr(self.fieldO)}, fieldP={repr(self.fieldP)}, fieldQ={repr(self.fieldQ)}, fieldR={repr(self.fieldR)}, fieldS={repr(self.fieldS)}, fieldT={repr(self.fieldT)}, fieldU={repr(self.fieldU)}, fieldX={repr(self.fieldX)})'
+    def __copy__(containerStruct self):
+        cdef shared_ptr[ccontainerStruct] cpp_obj = make_shared[ccontainerStruct](
+            deref(self._cpp_obj)
+        )
+        return containerStruct.create(move_shared(cpp_obj))
+
     def __richcmp__(self, other, op):
         cdef int cop = op
         if cop not in (2, 3):
@@ -1050,8 +1062,14 @@ cdef class Map__string_bool:
     @staticmethod
     cdef create(shared_ptr[cmap[string,cbool]] c_items):
         inst = <Map__string_bool>Map__string_bool.__new__(Map__string_bool)
-        inst._cpp_obj = c_items
+        inst._cpp_obj = move_shared(c_items)
         return inst
+
+    def __copy__(Map__string_bool self):
+        cdef shared_ptr[cmap[string,cbool]] cpp_obj = make_shared[cmap[string,cbool]](
+            deref(self._cpp_obj)
+        )
+        return Map__string_bool.create(move_shared(cpp_obj))
 
     @staticmethod
     cdef unique_ptr[cmap[string,cbool]] _make_instance(object items) except *:
@@ -1176,8 +1194,14 @@ cdef class Set__i32:
     @staticmethod
     cdef create(shared_ptr[cset[int32_t]] c_items):
         inst = <Set__i32>Set__i32.__new__(Set__i32)
-        inst._cpp_obj = c_items
+        inst._cpp_obj = move_shared(c_items)
         return inst
+
+    def __copy__(Set__i32 self):
+        cdef shared_ptr[cset[int32_t]] cpp_obj = make_shared[cset[int32_t]](
+            deref(self._cpp_obj)
+        )
+        return Set__i32.create(move_shared(cpp_obj))
 
     @staticmethod
     cdef unique_ptr[cset[int32_t]] _make_instance(object items) except *:
@@ -1288,7 +1312,7 @@ cdef class Set__i32:
         for citem in deref((<Set__i32> self)._cpp_obj):
             if deref((<Set__i32> other)._cpp_obj).count(citem) > 0:
                 deref(shretval).insert(citem)
-        return Set__i32.create(shretval)
+        return Set__i32.create(move_shared(shretval))
 
     def __sub__(self, other):
         if not isinstance(self, Set__i32):
@@ -1301,7 +1325,7 @@ cdef class Set__i32:
         for citem in deref((<Set__i32> self)._cpp_obj):
             if deref((<Set__i32> other)._cpp_obj).count(citem) == 0:
                 deref(shretval).insert(citem)
-        return Set__i32.create(shretval)
+        return Set__i32.create(move_shared(shretval))
 
     def __or__(self, other):
         if not isinstance(self, Set__i32):
@@ -1315,7 +1339,7 @@ cdef class Set__i32:
                 deref(shretval).insert(citem)
         for citem in deref((<Set__i32> other)._cpp_obj):
                 deref(shretval).insert(citem)
-        return Set__i32.create(shretval)
+        return Set__i32.create(move_shared(shretval))
 
     def __xor__(self, other):
         if not isinstance(self, Set__i32):
@@ -1331,7 +1355,7 @@ cdef class Set__i32:
         for citem in deref((<Set__i32> other)._cpp_obj):
             if deref((<Set__i32> self)._cpp_obj).count(citem) == 0:
                 deref(shretval).insert(citem)
-        return Set__i32.create(shretval)
+        return Set__i32.create(move_shared(shretval))
 
     def isdisjoint(self, other):
         return len(self & other) == 0
@@ -1367,8 +1391,14 @@ cdef class List__i32:
     @staticmethod
     cdef create(shared_ptr[vector[int32_t]] c_items):
         inst = <List__i32>List__i32.__new__(List__i32)
-        inst._cpp_obj = c_items
+        inst._cpp_obj = move_shared(c_items)
         return inst
+
+    def __copy__(List__i32 self):
+        cdef shared_ptr[vector[int32_t]] cpp_obj = make_shared[vector[int32_t]](
+            deref(self._cpp_obj)
+        )
+        return List__i32.create(move_shared(cpp_obj))
 
     @staticmethod
     cdef unique_ptr[vector[int32_t]] _make_instance(object items) except *:
@@ -1393,7 +1423,7 @@ cdef class List__i32:
             for index in range(*index_obj.indices(sz)):
                 citem = deref(self._cpp_obj.get())[index]
                 deref(c_inst).push_back(citem)
-            return List__i32.create(c_inst)
+            return List__i32.create(move_shared(c_inst))
         else:
             index = <int?>index_obj
             size = len(self)
@@ -1521,8 +1551,14 @@ cdef class List__List__i32:
     @staticmethod
     cdef create(shared_ptr[vector[vector[int32_t]]] c_items):
         inst = <List__List__i32>List__List__i32.__new__(List__List__i32)
-        inst._cpp_obj = c_items
+        inst._cpp_obj = move_shared(c_items)
         return inst
+
+    def __copy__(List__List__i32 self):
+        cdef shared_ptr[vector[vector[int32_t]]] cpp_obj = make_shared[vector[vector[int32_t]]](
+            deref(self._cpp_obj)
+        )
+        return List__List__i32.create(move_shared(cpp_obj))
 
     @staticmethod
     cdef unique_ptr[vector[vector[int32_t]]] _make_instance(object items) except *:
@@ -1548,7 +1584,7 @@ cdef class List__List__i32:
             for index in range(*index_obj.indices(sz)):
                 citem = deref(self._cpp_obj.get())[index]
                 deref(c_inst).push_back(citem)
-            return List__List__i32.create(c_inst)
+            return List__List__i32.create(move_shared(c_inst))
         else:
             index = <int?>index_obj
             size = len(self)
@@ -1694,8 +1730,14 @@ cdef class List__List__List__i32:
     @staticmethod
     cdef create(shared_ptr[vector[vector[vector[int32_t]]]] c_items):
         inst = <List__List__List__i32>List__List__List__i32.__new__(List__List__List__i32)
-        inst._cpp_obj = c_items
+        inst._cpp_obj = move_shared(c_items)
         return inst
+
+    def __copy__(List__List__List__i32 self):
+        cdef shared_ptr[vector[vector[vector[int32_t]]]] cpp_obj = make_shared[vector[vector[vector[int32_t]]]](
+            deref(self._cpp_obj)
+        )
+        return List__List__List__i32.create(move_shared(cpp_obj))
 
     @staticmethod
     cdef unique_ptr[vector[vector[vector[int32_t]]]] _make_instance(object items) except *:
@@ -1721,7 +1763,7 @@ cdef class List__List__List__i32:
             for index in range(*index_obj.indices(sz)):
                 citem = deref(self._cpp_obj.get())[index]
                 deref(c_inst).push_back(citem)
-            return List__List__List__i32.create(c_inst)
+            return List__List__List__i32.create(move_shared(c_inst))
         else:
             index = <int?>index_obj
             size = len(self)
@@ -1867,8 +1909,14 @@ cdef class Map__string_i32:
     @staticmethod
     cdef create(shared_ptr[cmap[string,int32_t]] c_items):
         inst = <Map__string_i32>Map__string_i32.__new__(Map__string_i32)
-        inst._cpp_obj = c_items
+        inst._cpp_obj = move_shared(c_items)
         return inst
+
+    def __copy__(Map__string_i32 self):
+        cdef shared_ptr[cmap[string,int32_t]] cpp_obj = make_shared[cmap[string,int32_t]](
+            deref(self._cpp_obj)
+        )
+        return Map__string_i32.create(move_shared(cpp_obj))
 
     @staticmethod
     cdef unique_ptr[cmap[string,int32_t]] _make_instance(object items) except *:
@@ -1994,8 +2042,14 @@ cdef class Map__string_Map__string_i32:
     @staticmethod
     cdef create(shared_ptr[cmap[string,cmap[string,int32_t]]] c_items):
         inst = <Map__string_Map__string_i32>Map__string_Map__string_i32.__new__(Map__string_Map__string_i32)
-        inst._cpp_obj = c_items
+        inst._cpp_obj = move_shared(c_items)
         return inst
+
+    def __copy__(Map__string_Map__string_i32 self):
+        cdef shared_ptr[cmap[string,cmap[string,int32_t]]] cpp_obj = make_shared[cmap[string,cmap[string,int32_t]]](
+            deref(self._cpp_obj)
+        )
+        return Map__string_Map__string_i32.create(move_shared(cpp_obj))
 
     @staticmethod
     cdef unique_ptr[cmap[string,cmap[string,int32_t]]] _make_instance(object items) except *:
@@ -2125,8 +2179,14 @@ cdef class Map__string_Map__string_Map__string_i32:
     @staticmethod
     cdef create(shared_ptr[cmap[string,cmap[string,cmap[string,int32_t]]]] c_items):
         inst = <Map__string_Map__string_Map__string_i32>Map__string_Map__string_Map__string_i32.__new__(Map__string_Map__string_Map__string_i32)
-        inst._cpp_obj = c_items
+        inst._cpp_obj = move_shared(c_items)
         return inst
+
+    def __copy__(Map__string_Map__string_Map__string_i32 self):
+        cdef shared_ptr[cmap[string,cmap[string,cmap[string,int32_t]]]] cpp_obj = make_shared[cmap[string,cmap[string,cmap[string,int32_t]]]](
+            deref(self._cpp_obj)
+        )
+        return Map__string_Map__string_Map__string_i32.create(move_shared(cpp_obj))
 
     @staticmethod
     cdef unique_ptr[cmap[string,cmap[string,cmap[string,int32_t]]]] _make_instance(object items) except *:
@@ -2256,8 +2316,14 @@ cdef class List__Set__i32:
     @staticmethod
     cdef create(shared_ptr[vector[cset[int32_t]]] c_items):
         inst = <List__Set__i32>List__Set__i32.__new__(List__Set__i32)
-        inst._cpp_obj = c_items
+        inst._cpp_obj = move_shared(c_items)
         return inst
+
+    def __copy__(List__Set__i32 self):
+        cdef shared_ptr[vector[cset[int32_t]]] cpp_obj = make_shared[vector[cset[int32_t]]](
+            deref(self._cpp_obj)
+        )
+        return List__Set__i32.create(move_shared(cpp_obj))
 
     @staticmethod
     cdef unique_ptr[vector[cset[int32_t]]] _make_instance(object items) except *:
@@ -2283,7 +2349,7 @@ cdef class List__Set__i32:
             for index in range(*index_obj.indices(sz)):
                 citem = deref(self._cpp_obj.get())[index]
                 deref(c_inst).push_back(citem)
-            return List__Set__i32.create(c_inst)
+            return List__Set__i32.create(move_shared(c_inst))
         else:
             index = <int?>index_obj
             size = len(self)
@@ -2429,8 +2495,14 @@ cdef class Map__string_List__i32:
     @staticmethod
     cdef create(shared_ptr[cmap[string,vector[int32_t]]] c_items):
         inst = <Map__string_List__i32>Map__string_List__i32.__new__(Map__string_List__i32)
-        inst._cpp_obj = c_items
+        inst._cpp_obj = move_shared(c_items)
         return inst
+
+    def __copy__(Map__string_List__i32 self):
+        cdef shared_ptr[cmap[string,vector[int32_t]]] cpp_obj = make_shared[cmap[string,vector[int32_t]]](
+            deref(self._cpp_obj)
+        )
+        return Map__string_List__i32.create(move_shared(cpp_obj))
 
     @staticmethod
     cdef unique_ptr[cmap[string,vector[int32_t]]] _make_instance(object items) except *:
@@ -2560,8 +2632,14 @@ cdef class List__List__List__List__i32:
     @staticmethod
     cdef create(shared_ptr[vector[vector[vector[vector[int32_t]]]]] c_items):
         inst = <List__List__List__List__i32>List__List__List__List__i32.__new__(List__List__List__List__i32)
-        inst._cpp_obj = c_items
+        inst._cpp_obj = move_shared(c_items)
         return inst
+
+    def __copy__(List__List__List__List__i32 self):
+        cdef shared_ptr[vector[vector[vector[vector[int32_t]]]]] cpp_obj = make_shared[vector[vector[vector[vector[int32_t]]]]](
+            deref(self._cpp_obj)
+        )
+        return List__List__List__List__i32.create(move_shared(cpp_obj))
 
     @staticmethod
     cdef unique_ptr[vector[vector[vector[vector[int32_t]]]]] _make_instance(object items) except *:
@@ -2587,7 +2665,7 @@ cdef class List__List__List__List__i32:
             for index in range(*index_obj.indices(sz)):
                 citem = deref(self._cpp_obj.get())[index]
                 deref(c_inst).push_back(citem)
-            return List__List__List__List__i32.create(c_inst)
+            return List__List__List__List__i32.create(move_shared(c_inst))
         else:
             index = <int?>index_obj
             size = len(self)
@@ -2733,8 +2811,14 @@ cdef class Set__bool:
     @staticmethod
     cdef create(shared_ptr[cset[cbool]] c_items):
         inst = <Set__bool>Set__bool.__new__(Set__bool)
-        inst._cpp_obj = c_items
+        inst._cpp_obj = move_shared(c_items)
         return inst
+
+    def __copy__(Set__bool self):
+        cdef shared_ptr[cset[cbool]] cpp_obj = make_shared[cset[cbool]](
+            deref(self._cpp_obj)
+        )
+        return Set__bool.create(move_shared(cpp_obj))
 
     @staticmethod
     cdef unique_ptr[cset[cbool]] _make_instance(object items) except *:
@@ -2844,7 +2928,7 @@ cdef class Set__bool:
         for citem in deref((<Set__bool> self)._cpp_obj):
             if deref((<Set__bool> other)._cpp_obj).count(citem) > 0:
                 deref(shretval).insert(citem)
-        return Set__bool.create(shretval)
+        return Set__bool.create(move_shared(shretval))
 
     def __sub__(self, other):
         if not isinstance(self, Set__bool):
@@ -2857,7 +2941,7 @@ cdef class Set__bool:
         for citem in deref((<Set__bool> self)._cpp_obj):
             if deref((<Set__bool> other)._cpp_obj).count(citem) == 0:
                 deref(shretval).insert(citem)
-        return Set__bool.create(shretval)
+        return Set__bool.create(move_shared(shretval))
 
     def __or__(self, other):
         if not isinstance(self, Set__bool):
@@ -2871,7 +2955,7 @@ cdef class Set__bool:
                 deref(shretval).insert(citem)
         for citem in deref((<Set__bool> other)._cpp_obj):
                 deref(shretval).insert(citem)
-        return Set__bool.create(shretval)
+        return Set__bool.create(move_shared(shretval))
 
     def __xor__(self, other):
         if not isinstance(self, Set__bool):
@@ -2887,7 +2971,7 @@ cdef class Set__bool:
         for citem in deref((<Set__bool> other)._cpp_obj):
             if deref((<Set__bool> self)._cpp_obj).count(citem) == 0:
                 deref(shretval).insert(citem)
-        return Set__bool.create(shretval)
+        return Set__bool.create(move_shared(shretval))
 
     def isdisjoint(self, other):
         return len(self & other) == 0
@@ -2923,8 +3007,14 @@ cdef class Set__Set__bool:
     @staticmethod
     cdef create(shared_ptr[cset[cset[cbool]]] c_items):
         inst = <Set__Set__bool>Set__Set__bool.__new__(Set__Set__bool)
-        inst._cpp_obj = c_items
+        inst._cpp_obj = move_shared(c_items)
         return inst
+
+    def __copy__(Set__Set__bool self):
+        cdef shared_ptr[cset[cset[cbool]]] cpp_obj = make_shared[cset[cset[cbool]]](
+            deref(self._cpp_obj)
+        )
+        return Set__Set__bool.create(move_shared(cpp_obj))
 
     @staticmethod
     cdef unique_ptr[cset[cset[cbool]]] _make_instance(object items) except *:
@@ -3042,7 +3132,7 @@ cdef class Set__Set__bool:
         for citem in deref((<Set__Set__bool> self)._cpp_obj):
             if deref((<Set__Set__bool> other)._cpp_obj).count(citem) > 0:
                 deref(shretval).insert(citem)
-        return Set__Set__bool.create(shretval)
+        return Set__Set__bool.create(move_shared(shretval))
 
     def __sub__(self, other):
         if not isinstance(self, Set__Set__bool):
@@ -3055,7 +3145,7 @@ cdef class Set__Set__bool:
         for citem in deref((<Set__Set__bool> self)._cpp_obj):
             if deref((<Set__Set__bool> other)._cpp_obj).count(citem) == 0:
                 deref(shretval).insert(citem)
-        return Set__Set__bool.create(shretval)
+        return Set__Set__bool.create(move_shared(shretval))
 
     def __or__(self, other):
         if not isinstance(self, Set__Set__bool):
@@ -3069,7 +3159,7 @@ cdef class Set__Set__bool:
                 deref(shretval).insert(citem)
         for citem in deref((<Set__Set__bool> other)._cpp_obj):
                 deref(shretval).insert(citem)
-        return Set__Set__bool.create(shretval)
+        return Set__Set__bool.create(move_shared(shretval))
 
     def __xor__(self, other):
         if not isinstance(self, Set__Set__bool):
@@ -3085,7 +3175,7 @@ cdef class Set__Set__bool:
         for citem in deref((<Set__Set__bool> other)._cpp_obj):
             if deref((<Set__Set__bool> self)._cpp_obj).count(citem) == 0:
                 deref(shretval).insert(citem)
-        return Set__Set__bool.create(shretval)
+        return Set__Set__bool.create(move_shared(shretval))
 
     def isdisjoint(self, other):
         return len(self & other) == 0
@@ -3121,8 +3211,14 @@ cdef class Set__Set__Set__bool:
     @staticmethod
     cdef create(shared_ptr[cset[cset[cset[cbool]]]] c_items):
         inst = <Set__Set__Set__bool>Set__Set__Set__bool.__new__(Set__Set__Set__bool)
-        inst._cpp_obj = c_items
+        inst._cpp_obj = move_shared(c_items)
         return inst
+
+    def __copy__(Set__Set__Set__bool self):
+        cdef shared_ptr[cset[cset[cset[cbool]]]] cpp_obj = make_shared[cset[cset[cset[cbool]]]](
+            deref(self._cpp_obj)
+        )
+        return Set__Set__Set__bool.create(move_shared(cpp_obj))
 
     @staticmethod
     cdef unique_ptr[cset[cset[cset[cbool]]]] _make_instance(object items) except *:
@@ -3240,7 +3336,7 @@ cdef class Set__Set__Set__bool:
         for citem in deref((<Set__Set__Set__bool> self)._cpp_obj):
             if deref((<Set__Set__Set__bool> other)._cpp_obj).count(citem) > 0:
                 deref(shretval).insert(citem)
-        return Set__Set__Set__bool.create(shretval)
+        return Set__Set__Set__bool.create(move_shared(shretval))
 
     def __sub__(self, other):
         if not isinstance(self, Set__Set__Set__bool):
@@ -3253,7 +3349,7 @@ cdef class Set__Set__Set__bool:
         for citem in deref((<Set__Set__Set__bool> self)._cpp_obj):
             if deref((<Set__Set__Set__bool> other)._cpp_obj).count(citem) == 0:
                 deref(shretval).insert(citem)
-        return Set__Set__Set__bool.create(shretval)
+        return Set__Set__Set__bool.create(move_shared(shretval))
 
     def __or__(self, other):
         if not isinstance(self, Set__Set__Set__bool):
@@ -3267,7 +3363,7 @@ cdef class Set__Set__Set__bool:
                 deref(shretval).insert(citem)
         for citem in deref((<Set__Set__Set__bool> other)._cpp_obj):
                 deref(shretval).insert(citem)
-        return Set__Set__Set__bool.create(shretval)
+        return Set__Set__Set__bool.create(move_shared(shretval))
 
     def __xor__(self, other):
         if not isinstance(self, Set__Set__Set__bool):
@@ -3283,7 +3379,7 @@ cdef class Set__Set__Set__bool:
         for citem in deref((<Set__Set__Set__bool> other)._cpp_obj):
             if deref((<Set__Set__Set__bool> self)._cpp_obj).count(citem) == 0:
                 deref(shretval).insert(citem)
-        return Set__Set__Set__bool.create(shretval)
+        return Set__Set__Set__bool.create(move_shared(shretval))
 
     def isdisjoint(self, other):
         return len(self & other) == 0
@@ -3319,8 +3415,14 @@ cdef class Set__List__i32:
     @staticmethod
     cdef create(shared_ptr[cset[vector[int32_t]]] c_items):
         inst = <Set__List__i32>Set__List__i32.__new__(Set__List__i32)
-        inst._cpp_obj = c_items
+        inst._cpp_obj = move_shared(c_items)
         return inst
+
+    def __copy__(Set__List__i32 self):
+        cdef shared_ptr[cset[vector[int32_t]]] cpp_obj = make_shared[cset[vector[int32_t]]](
+            deref(self._cpp_obj)
+        )
+        return Set__List__i32.create(move_shared(cpp_obj))
 
     @staticmethod
     cdef unique_ptr[cset[vector[int32_t]]] _make_instance(object items) except *:
@@ -3438,7 +3540,7 @@ cdef class Set__List__i32:
         for citem in deref((<Set__List__i32> self)._cpp_obj):
             if deref((<Set__List__i32> other)._cpp_obj).count(citem) > 0:
                 deref(shretval).insert(citem)
-        return Set__List__i32.create(shretval)
+        return Set__List__i32.create(move_shared(shretval))
 
     def __sub__(self, other):
         if not isinstance(self, Set__List__i32):
@@ -3451,7 +3553,7 @@ cdef class Set__List__i32:
         for citem in deref((<Set__List__i32> self)._cpp_obj):
             if deref((<Set__List__i32> other)._cpp_obj).count(citem) == 0:
                 deref(shretval).insert(citem)
-        return Set__List__i32.create(shretval)
+        return Set__List__i32.create(move_shared(shretval))
 
     def __or__(self, other):
         if not isinstance(self, Set__List__i32):
@@ -3465,7 +3567,7 @@ cdef class Set__List__i32:
                 deref(shretval).insert(citem)
         for citem in deref((<Set__List__i32> other)._cpp_obj):
                 deref(shretval).insert(citem)
-        return Set__List__i32.create(shretval)
+        return Set__List__i32.create(move_shared(shretval))
 
     def __xor__(self, other):
         if not isinstance(self, Set__List__i32):
@@ -3481,7 +3583,7 @@ cdef class Set__List__i32:
         for citem in deref((<Set__List__i32> other)._cpp_obj):
             if deref((<Set__List__i32> self)._cpp_obj).count(citem) == 0:
                 deref(shretval).insert(citem)
-        return Set__List__i32.create(shretval)
+        return Set__List__i32.create(move_shared(shretval))
 
     def isdisjoint(self, other):
         return len(self & other) == 0
@@ -3517,8 +3619,14 @@ cdef class Set__string:
     @staticmethod
     cdef create(shared_ptr[cset[string]] c_items):
         inst = <Set__string>Set__string.__new__(Set__string)
-        inst._cpp_obj = c_items
+        inst._cpp_obj = move_shared(c_items)
         return inst
+
+    def __copy__(Set__string self):
+        cdef shared_ptr[cset[string]] cpp_obj = make_shared[cset[string]](
+            deref(self._cpp_obj)
+        )
+        return Set__string.create(move_shared(cpp_obj))
 
     @staticmethod
     cdef unique_ptr[cset[string]] _make_instance(object items) except *:
@@ -3628,7 +3736,7 @@ cdef class Set__string:
         for citem in deref((<Set__string> self)._cpp_obj):
             if deref((<Set__string> other)._cpp_obj).count(citem) > 0:
                 deref(shretval).insert(citem)
-        return Set__string.create(shretval)
+        return Set__string.create(move_shared(shretval))
 
     def __sub__(self, other):
         if not isinstance(self, Set__string):
@@ -3641,7 +3749,7 @@ cdef class Set__string:
         for citem in deref((<Set__string> self)._cpp_obj):
             if deref((<Set__string> other)._cpp_obj).count(citem) == 0:
                 deref(shretval).insert(citem)
-        return Set__string.create(shretval)
+        return Set__string.create(move_shared(shretval))
 
     def __or__(self, other):
         if not isinstance(self, Set__string):
@@ -3655,7 +3763,7 @@ cdef class Set__string:
                 deref(shretval).insert(citem)
         for citem in deref((<Set__string> other)._cpp_obj):
                 deref(shretval).insert(citem)
-        return Set__string.create(shretval)
+        return Set__string.create(move_shared(shretval))
 
     def __xor__(self, other):
         if not isinstance(self, Set__string):
@@ -3671,7 +3779,7 @@ cdef class Set__string:
         for citem in deref((<Set__string> other)._cpp_obj):
             if deref((<Set__string> self)._cpp_obj).count(citem) == 0:
                 deref(shretval).insert(citem)
-        return Set__string.create(shretval)
+        return Set__string.create(move_shared(shretval))
 
     def isdisjoint(self, other):
         return len(self & other) == 0
@@ -3707,8 +3815,14 @@ cdef class List__Set__string:
     @staticmethod
     cdef create(shared_ptr[vector[cset[string]]] c_items):
         inst = <List__Set__string>List__Set__string.__new__(List__Set__string)
-        inst._cpp_obj = c_items
+        inst._cpp_obj = move_shared(c_items)
         return inst
+
+    def __copy__(List__Set__string self):
+        cdef shared_ptr[vector[cset[string]]] cpp_obj = make_shared[vector[cset[string]]](
+            deref(self._cpp_obj)
+        )
+        return List__Set__string.create(move_shared(cpp_obj))
 
     @staticmethod
     cdef unique_ptr[vector[cset[string]]] _make_instance(object items) except *:
@@ -3734,7 +3848,7 @@ cdef class List__Set__string:
             for index in range(*index_obj.indices(sz)):
                 citem = deref(self._cpp_obj.get())[index]
                 deref(c_inst).push_back(citem)
-            return List__Set__string.create(c_inst)
+            return List__Set__string.create(move_shared(c_inst))
         else:
             index = <int?>index_obj
             size = len(self)
@@ -3880,8 +3994,14 @@ cdef class Map__List__Set__string_string:
     @staticmethod
     cdef create(shared_ptr[cmap[vector[cset[string]],string]] c_items):
         inst = <Map__List__Set__string_string>Map__List__Set__string_string.__new__(Map__List__Set__string_string)
-        inst._cpp_obj = c_items
+        inst._cpp_obj = move_shared(c_items)
         return inst
+
+    def __copy__(Map__List__Set__string_string self):
+        cdef shared_ptr[cmap[vector[cset[string]],string]] cpp_obj = make_shared[cmap[vector[cset[string]],string]](
+            deref(self._cpp_obj)
+        )
+        return Map__List__Set__string_string.create(move_shared(cpp_obj))
 
     @staticmethod
     cdef unique_ptr[cmap[vector[cset[string]],string]] _make_instance(object items) except *:
@@ -4019,8 +4139,14 @@ cdef class Map__Set__List__i32_Map__List__Set__string_string:
     @staticmethod
     cdef create(shared_ptr[cmap[cset[vector[int32_t]],cmap[vector[cset[string]],string]]] c_items):
         inst = <Map__Set__List__i32_Map__List__Set__string_string>Map__Set__List__i32_Map__List__Set__string_string.__new__(Map__Set__List__i32_Map__List__Set__string_string)
-        inst._cpp_obj = c_items
+        inst._cpp_obj = move_shared(c_items)
         return inst
+
+    def __copy__(Map__Set__List__i32_Map__List__Set__string_string self):
+        cdef shared_ptr[cmap[cset[vector[int32_t]],cmap[vector[cset[string]],string]]] cpp_obj = make_shared[cmap[cset[vector[int32_t]],cmap[vector[cset[string]],string]]](
+            deref(self._cpp_obj)
+        )
+        return Map__Set__List__i32_Map__List__Set__string_string.create(move_shared(cpp_obj))
 
     @staticmethod
     cdef unique_ptr[cmap[cset[vector[int32_t]],cmap[vector[cset[string]],string]]] _make_instance(object items) except *:
@@ -4163,8 +4289,14 @@ cdef class List__Foo__i64:
     @staticmethod
     cdef create(shared_ptr[vector[Foo]] c_items):
         inst = <List__Foo__i64>List__Foo__i64.__new__(List__Foo__i64)
-        inst._cpp_obj = c_items
+        inst._cpp_obj = move_shared(c_items)
         return inst
+
+    def __copy__(List__Foo__i64 self):
+        cdef shared_ptr[vector[Foo]] cpp_obj = make_shared[vector[Foo]](
+            deref(self._cpp_obj)
+        )
+        return List__Foo__i64.create(move_shared(cpp_obj))
 
     @staticmethod
     cdef unique_ptr[vector[Foo]] _make_instance(object items) except *:
@@ -4189,7 +4321,7 @@ cdef class List__Foo__i64:
             for index in range(*index_obj.indices(sz)):
                 citem = deref(self._cpp_obj.get())[index]
                 deref(c_inst).push_back(citem)
-            return List__Foo__i64.create(c_inst)
+            return List__Foo__i64.create(move_shared(c_inst))
         else:
             index = <int?>index_obj
             size = len(self)
@@ -4317,8 +4449,14 @@ cdef class List__Bar__double:
     @staticmethod
     cdef create(shared_ptr[vector[Bar]] c_items):
         inst = <List__Bar__double>List__Bar__double.__new__(List__Bar__double)
-        inst._cpp_obj = c_items
+        inst._cpp_obj = move_shared(c_items)
         return inst
+
+    def __copy__(List__Bar__double self):
+        cdef shared_ptr[vector[Bar]] cpp_obj = make_shared[vector[Bar]](
+            deref(self._cpp_obj)
+        )
+        return List__Bar__double.create(move_shared(cpp_obj))
 
     @staticmethod
     cdef unique_ptr[vector[Bar]] _make_instance(object items) except *:
@@ -4342,7 +4480,7 @@ cdef class List__Bar__double:
             for index in range(*index_obj.indices(sz)):
                 citem = deref(self._cpp_obj.get())[index]
                 deref(c_inst).push_back(citem)
-            return List__Bar__double.create(c_inst)
+            return List__Bar__double.create(move_shared(c_inst))
         else:
             index = <int?>index_obj
             size = len(self)
@@ -4470,8 +4608,14 @@ cdef class List__Baz__i32:
     @staticmethod
     cdef create(shared_ptr[vector[Baz]] c_items):
         inst = <List__Baz__i32>List__Baz__i32.__new__(List__Baz__i32)
-        inst._cpp_obj = c_items
+        inst._cpp_obj = move_shared(c_items)
         return inst
+
+    def __copy__(List__Baz__i32 self):
+        cdef shared_ptr[vector[Baz]] cpp_obj = make_shared[vector[Baz]](
+            deref(self._cpp_obj)
+        )
+        return List__Baz__i32.create(move_shared(cpp_obj))
 
     @staticmethod
     cdef unique_ptr[vector[Baz]] _make_instance(object items) except *:
@@ -4496,7 +4640,7 @@ cdef class List__Baz__i32:
             for index in range(*index_obj.indices(sz)):
                 citem = deref(self._cpp_obj.get())[index]
                 deref(c_inst).push_back(citem)
-            return List__Baz__i32.create(c_inst)
+            return List__Baz__i32.create(move_shared(c_inst))
         else:
             index = <int?>index_obj
             size = len(self)

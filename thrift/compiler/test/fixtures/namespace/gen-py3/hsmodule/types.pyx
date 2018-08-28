@@ -114,7 +114,7 @@ cdef class HsFoo(thrift.py3.types.Struct):
     @staticmethod
     cdef create(shared_ptr[cHsFoo] cpp_obj):
         inst = <HsFoo>HsFoo.__new__(HsFoo)
-        inst._cpp_obj = cpp_obj
+        inst._cpp_obj = move_shared(cpp_obj)
         return inst
 
     @property
@@ -132,6 +132,12 @@ cdef class HsFoo(thrift.py3.types.Struct):
 
     def __repr__(HsFoo self):
         return f'HsFoo(MyInt={repr(self.MyInt)})'
+    def __copy__(HsFoo self):
+        cdef shared_ptr[cHsFoo] cpp_obj = make_shared[cHsFoo](
+            deref(self._cpp_obj)
+        )
+        return HsFoo.create(move_shared(cpp_obj))
+
     def __richcmp__(self, other, op):
         cdef int cop = op
         if cop not in (2, 3):

@@ -6,7 +6,7 @@
 #
 
 from libcpp.string cimport string
-from libcpp cimport bool as cbool
+from libcpp cimport bool as cbool, nullptr, nullptr_t
 from cpython cimport bool as pbool
 from libc.stdint cimport int8_t, int16_t, int32_t, int64_t
 from libcpp.memory cimport shared_ptr, unique_ptr
@@ -97,6 +97,7 @@ cdef class List__Enum:
 cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[vector[cEnum]] move(unique_ptr[vector[cEnum]])
     cdef unique_ptr[vector[cEnum]] move_unique "std::move"(unique_ptr[vector[cEnum]])
+    cdef shared_ptr[vector[cEnum]] move_shared "std::move"(shared_ptr[vector[cEnum]])
 cdef extern from "<memory>" namespace "std" nogil:
     cdef shared_ptr[const vector[cEnum]] const_pointer_cast "std::const_pointer_cast<const std::vector<module0::Enum>>"(shared_ptr[vector[cEnum]])
 

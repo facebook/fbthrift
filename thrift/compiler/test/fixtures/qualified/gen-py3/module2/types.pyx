@@ -134,21 +134,21 @@ cdef class Struct(thrift.py3.types.Struct):
     @staticmethod
     cdef create(shared_ptr[cStruct] cpp_obj):
         inst = <Struct>Struct.__new__(Struct)
-        inst._cpp_obj = cpp_obj
+        inst._cpp_obj = move_shared(cpp_obj)
         return inst
 
     @property
     def first(self):
 
         if self.__first is None:
-            self.__first = _module0_types.Struct.create(make_shared[_module0_types.cStruct](deref(self._cpp_obj).first))
+            self.__first = _module0_types.Struct.create(reference_shared_ptr_first(self._cpp_obj, deref(self._cpp_obj).first))
         return self.__first
 
     @property
     def second(self):
 
         if self.__second is None:
-            self.__second = _module1_types.Struct.create(make_shared[_module1_types.cStruct](deref(self._cpp_obj).second))
+            self.__second = _module1_types.Struct.create(reference_shared_ptr_second(self._cpp_obj, deref(self._cpp_obj).second))
         return self.__second
 
 
@@ -162,6 +162,12 @@ cdef class Struct(thrift.py3.types.Struct):
 
     def __repr__(Struct self):
         return f'Struct(first={repr(self.first)}, second={repr(self.second)})'
+    def __copy__(Struct self):
+        cdef shared_ptr[cStruct] cpp_obj = make_shared[cStruct](
+            deref(self._cpp_obj)
+        )
+        return Struct.create(move_shared(cpp_obj))
+
     def __richcmp__(self, other, op):
         cdef int cop = op
         if cop not in (2, 3):
@@ -319,14 +325,14 @@ cdef class BigStruct(thrift.py3.types.Struct):
     @staticmethod
     cdef create(shared_ptr[cBigStruct] cpp_obj):
         inst = <BigStruct>BigStruct.__new__(BigStruct)
-        inst._cpp_obj = cpp_obj
+        inst._cpp_obj = move_shared(cpp_obj)
         return inst
 
     @property
     def s(self):
 
         if self.__s is None:
-            self.__s = Struct.create(make_shared[cStruct](deref(self._cpp_obj).s))
+            self.__s = Struct.create(reference_shared_ptr_s(self._cpp_obj, deref(self._cpp_obj).s))
         return self.__s
 
     @property
@@ -345,6 +351,12 @@ cdef class BigStruct(thrift.py3.types.Struct):
 
     def __repr__(BigStruct self):
         return f'BigStruct(s={repr(self.s)}, id={repr(self.id)})'
+    def __copy__(BigStruct self):
+        cdef shared_ptr[cBigStruct] cpp_obj = make_shared[cBigStruct](
+            deref(self._cpp_obj)
+        )
+        return BigStruct.create(move_shared(cpp_obj))
+
     def __richcmp__(self, other, op):
         cdef int cop = op
         if cop not in (2, 3):

@@ -6,7 +6,7 @@
 #
 
 from libcpp.string cimport string
-from libcpp cimport bool as cbool
+from libcpp cimport bool as cbool, nullptr, nullptr_t
 from cpython cimport bool as pbool
 from libc.stdint cimport int8_t, int16_t, int32_t, int64_t
 from libcpp.memory cimport shared_ptr, unique_ptr
@@ -231,31 +231,33 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "cpp2":
         shared_ptr[const cEmpty] req_field
         cStructWithRefTypeSharedConst__isset __isset
 
-    cdef shared_ptr[cMyField] aliasing_constructor_opt_ref "std::shared_ptr<cpp2::MyField>"(shared_ptr[cMyStruct]&, cMyField*)
-    cdef shared_ptr[cMyField] aliasing_constructor_ref "std::shared_ptr<cpp2::MyField>"(shared_ptr[cMyStruct]&, cMyField*)
-    cdef shared_ptr[cMyField] aliasing_constructor_req_ref "std::shared_ptr<cpp2::MyField>"(shared_ptr[cMyStruct]&, cMyField*)
-    cdef shared_ptr[cMyUnion] aliasing_constructor_u "std::shared_ptr<cpp2::MyUnion>"(shared_ptr[cStructWithUnion]&, cMyUnion*)
-    cdef shared_ptr[vector[int32_t]] aliasing_constructor_list_ref "std::shared_ptr<std::vector<int32_t>>"(shared_ptr[cStructWithContainers]&, vector[int32_t]*)
-    cdef shared_ptr[cset[int32_t]] aliasing_constructor_set_ref "std::shared_ptr<std::set<int32_t>>"(shared_ptr[cStructWithContainers]&, cset[int32_t]*)
-    cdef shared_ptr[cmap[int32_t,int32_t]] aliasing_constructor_map_ref "std::shared_ptr<std::map<int32_t,int32_t>>"(shared_ptr[cStructWithContainers]&, cmap[int32_t,int32_t]*)
-    cdef shared_ptr[vector[int32_t]] aliasing_constructor_list_ref_unique "std::shared_ptr<std::vector<int32_t>>"(shared_ptr[cStructWithContainers]&, vector[int32_t]*)
-    cdef shared_ptr[cset[int32_t]] aliasing_constructor_set_ref_shared "std::shared_ptr<std::set<int32_t>>"(shared_ptr[cStructWithContainers]&, cset[int32_t]*)
-    cdef shared_ptr[vector[int32_t]] aliasing_constructor_list_ref_shared_const "std::shared_ptr<std::vector<int32_t>>"(shared_ptr[cStructWithContainers]&, vector[int32_t]*)
-    cdef shared_ptr[cMyField] aliasing_constructor_opt_shared_const "std::shared_ptr<cpp2::MyField>"(shared_ptr[cStructWithSharedConst]&, cMyField*)
-    cdef shared_ptr[cMyField] aliasing_constructor_shared_const "std::shared_ptr<cpp2::MyField>"(shared_ptr[cStructWithSharedConst]&, cMyField*)
-    cdef shared_ptr[cMyField] aliasing_constructor_req_shared_const "std::shared_ptr<cpp2::MyField>"(shared_ptr[cStructWithSharedConst]&, cMyField*)
-    cdef shared_ptr[cEmpty] aliasing_constructor_def_field "std::shared_ptr<cpp2::Empty>"(shared_ptr[cStructWithRef]&, cEmpty*)
-    cdef shared_ptr[cEmpty] aliasing_constructor_opt_field "std::shared_ptr<cpp2::Empty>"(shared_ptr[cStructWithRef]&, cEmpty*)
-    cdef shared_ptr[cEmpty] aliasing_constructor_req_field "std::shared_ptr<cpp2::Empty>"(shared_ptr[cStructWithRef]&, cEmpty*)
-    cdef shared_ptr[cEmpty] aliasing_constructor_def_field "std::shared_ptr<cpp2::Empty>"(shared_ptr[cStructWithRefTypeUnique]&, cEmpty*)
-    cdef shared_ptr[cEmpty] aliasing_constructor_opt_field "std::shared_ptr<cpp2::Empty>"(shared_ptr[cStructWithRefTypeUnique]&, cEmpty*)
-    cdef shared_ptr[cEmpty] aliasing_constructor_req_field "std::shared_ptr<cpp2::Empty>"(shared_ptr[cStructWithRefTypeUnique]&, cEmpty*)
-    cdef shared_ptr[cEmpty] aliasing_constructor_def_field "std::shared_ptr<cpp2::Empty>"(shared_ptr[cStructWithRefTypeShared]&, cEmpty*)
-    cdef shared_ptr[cEmpty] aliasing_constructor_opt_field "std::shared_ptr<cpp2::Empty>"(shared_ptr[cStructWithRefTypeShared]&, cEmpty*)
-    cdef shared_ptr[cEmpty] aliasing_constructor_req_field "std::shared_ptr<cpp2::Empty>"(shared_ptr[cStructWithRefTypeShared]&, cEmpty*)
-    cdef shared_ptr[cEmpty] aliasing_constructor_def_field "std::shared_ptr<cpp2::Empty>"(shared_ptr[cStructWithRefTypeSharedConst]&, cEmpty*)
-    cdef shared_ptr[cEmpty] aliasing_constructor_opt_field "std::shared_ptr<cpp2::Empty>"(shared_ptr[cStructWithRefTypeSharedConst]&, cEmpty*)
-    cdef shared_ptr[cEmpty] aliasing_constructor_req_field "std::shared_ptr<cpp2::Empty>"(shared_ptr[cStructWithRefTypeSharedConst]&, cEmpty*)
+    cdef shared_ptr[cMyField] reference_shared_ptr_opt_ref "thrift::py3::reference_shared_ptr<cpp2::MyField>"(shared_ptr[cMyStruct]&, cMyField&)
+    cdef shared_ptr[cMyField] reference_shared_ptr_ref "thrift::py3::reference_shared_ptr<cpp2::MyField>"(shared_ptr[cMyStruct]&, cMyField&)
+    cdef shared_ptr[cMyField] reference_shared_ptr_req_ref "thrift::py3::reference_shared_ptr<cpp2::MyField>"(shared_ptr[cMyStruct]&, cMyField&)
+    cdef shared_ptr[cMyUnion] reference_shared_ptr_u "thrift::py3::reference_shared_ptr<cpp2::MyUnion>"(shared_ptr[cStructWithUnion]&, cMyUnion&)
+    cdef shared_ptr[cMyField] reference_shared_ptr_f "thrift::py3::reference_shared_ptr<cpp2::MyField>"(shared_ptr[cStructWithUnion]&, cMyField&)
+    cdef shared_ptr[vector[cRecursiveStruct]] reference_shared_ptr_mes "thrift::py3::reference_shared_ptr<std::vector<cpp2::RecursiveStruct>>"(shared_ptr[cRecursiveStruct]&, vector[cRecursiveStruct]&)
+    cdef shared_ptr[vector[int32_t]] reference_shared_ptr_list_ref "thrift::py3::reference_shared_ptr<std::vector<int32_t>>"(shared_ptr[cStructWithContainers]&, vector[int32_t]&)
+    cdef shared_ptr[cset[int32_t]] reference_shared_ptr_set_ref "thrift::py3::reference_shared_ptr<std::set<int32_t>>"(shared_ptr[cStructWithContainers]&, cset[int32_t]&)
+    cdef shared_ptr[cmap[int32_t,int32_t]] reference_shared_ptr_map_ref "thrift::py3::reference_shared_ptr<std::map<int32_t,int32_t>>"(shared_ptr[cStructWithContainers]&, cmap[int32_t,int32_t]&)
+    cdef shared_ptr[vector[int32_t]] reference_shared_ptr_list_ref_unique "thrift::py3::reference_shared_ptr<std::vector<int32_t>>"(shared_ptr[cStructWithContainers]&, vector[int32_t]&)
+    cdef shared_ptr[cset[int32_t]] reference_shared_ptr_set_ref_shared "thrift::py3::reference_shared_ptr<std::set<int32_t>>"(shared_ptr[cStructWithContainers]&, cset[int32_t]&)
+    cdef shared_ptr[vector[int32_t]] reference_shared_ptr_list_ref_shared_const "thrift::py3::reference_shared_ptr<std::vector<int32_t>>"(shared_ptr[cStructWithContainers]&, vector[int32_t]&)
+    cdef shared_ptr[cMyField] reference_shared_ptr_opt_shared_const "thrift::py3::reference_shared_ptr<cpp2::MyField>"(shared_ptr[cStructWithSharedConst]&, cMyField&)
+    cdef shared_ptr[cMyField] reference_shared_ptr_shared_const "thrift::py3::reference_shared_ptr<cpp2::MyField>"(shared_ptr[cStructWithSharedConst]&, cMyField&)
+    cdef shared_ptr[cMyField] reference_shared_ptr_req_shared_const "thrift::py3::reference_shared_ptr<cpp2::MyField>"(shared_ptr[cStructWithSharedConst]&, cMyField&)
+    cdef shared_ptr[cEmpty] reference_shared_ptr_def_field "thrift::py3::reference_shared_ptr<cpp2::Empty>"(shared_ptr[cStructWithRef]&, cEmpty&)
+    cdef shared_ptr[cEmpty] reference_shared_ptr_opt_field "thrift::py3::reference_shared_ptr<cpp2::Empty>"(shared_ptr[cStructWithRef]&, cEmpty&)
+    cdef shared_ptr[cEmpty] reference_shared_ptr_req_field "thrift::py3::reference_shared_ptr<cpp2::Empty>"(shared_ptr[cStructWithRef]&, cEmpty&)
+    cdef shared_ptr[cEmpty] reference_shared_ptr_def_field "thrift::py3::reference_shared_ptr<cpp2::Empty>"(shared_ptr[cStructWithRefTypeUnique]&, cEmpty&)
+    cdef shared_ptr[cEmpty] reference_shared_ptr_opt_field "thrift::py3::reference_shared_ptr<cpp2::Empty>"(shared_ptr[cStructWithRefTypeUnique]&, cEmpty&)
+    cdef shared_ptr[cEmpty] reference_shared_ptr_req_field "thrift::py3::reference_shared_ptr<cpp2::Empty>"(shared_ptr[cStructWithRefTypeUnique]&, cEmpty&)
+    cdef shared_ptr[cEmpty] reference_shared_ptr_def_field "thrift::py3::reference_shared_ptr<cpp2::Empty>"(shared_ptr[cStructWithRefTypeShared]&, cEmpty&)
+    cdef shared_ptr[cEmpty] reference_shared_ptr_opt_field "thrift::py3::reference_shared_ptr<cpp2::Empty>"(shared_ptr[cStructWithRefTypeShared]&, cEmpty&)
+    cdef shared_ptr[cEmpty] reference_shared_ptr_req_field "thrift::py3::reference_shared_ptr<cpp2::Empty>"(shared_ptr[cStructWithRefTypeShared]&, cEmpty&)
+    cdef shared_ptr[cEmpty] reference_shared_ptr_def_field "thrift::py3::reference_shared_ptr<cpp2::Empty>"(shared_ptr[cStructWithRefTypeSharedConst]&, cEmpty&)
+    cdef shared_ptr[cEmpty] reference_shared_ptr_opt_field "thrift::py3::reference_shared_ptr<cpp2::Empty>"(shared_ptr[cStructWithRefTypeSharedConst]&, cEmpty&)
+    cdef shared_ptr[cEmpty] reference_shared_ptr_req_field "thrift::py3::reference_shared_ptr<cpp2::Empty>"(shared_ptr[cStructWithRefTypeSharedConst]&, cEmpty&)
 
 cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[cMyUnion] move(unique_ptr[cMyUnion])
@@ -620,12 +622,16 @@ cdef class Map__i32_i32:
 cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[vector[cRecursiveStruct]] move(unique_ptr[vector[cRecursiveStruct]])
     cdef unique_ptr[vector[cRecursiveStruct]] move_unique "std::move"(unique_ptr[vector[cRecursiveStruct]])
+    cdef shared_ptr[vector[cRecursiveStruct]] move_shared "std::move"(shared_ptr[vector[cRecursiveStruct]])
     cdef shared_ptr[vector[int32_t]] move(unique_ptr[vector[int32_t]])
     cdef unique_ptr[vector[int32_t]] move_unique "std::move"(unique_ptr[vector[int32_t]])
+    cdef shared_ptr[vector[int32_t]] move_shared "std::move"(shared_ptr[vector[int32_t]])
     cdef shared_ptr[cset[int32_t]] move(unique_ptr[cset[int32_t]])
     cdef unique_ptr[cset[int32_t]] move_unique "std::move"(unique_ptr[cset[int32_t]])
+    cdef shared_ptr[cset[int32_t]] move_shared "std::move"(shared_ptr[cset[int32_t]])
     cdef shared_ptr[cmap[int32_t,int32_t]] move(unique_ptr[cmap[int32_t,int32_t]])
     cdef unique_ptr[cmap[int32_t,int32_t]] move_unique "std::move"(unique_ptr[cmap[int32_t,int32_t]])
+    cdef shared_ptr[cmap[int32_t,int32_t]] move_shared "std::move"(shared_ptr[cmap[int32_t,int32_t]])
 cdef extern from "<memory>" namespace "std" nogil:
     cdef shared_ptr[const vector[cRecursiveStruct]] const_pointer_cast "std::const_pointer_cast<const std::vector<cpp2::RecursiveStruct>>"(shared_ptr[vector[cRecursiveStruct]])
 

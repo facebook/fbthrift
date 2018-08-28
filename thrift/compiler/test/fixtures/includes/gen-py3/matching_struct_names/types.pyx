@@ -110,7 +110,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
     @staticmethod
     cdef create(shared_ptr[cMyStruct] cpp_obj):
         inst = <MyStruct>MyStruct.__new__(MyStruct)
-        inst._cpp_obj = cpp_obj
+        inst._cpp_obj = move_shared(cpp_obj)
         return inst
 
     @property
@@ -128,6 +128,12 @@ cdef class MyStruct(thrift.py3.types.Struct):
 
     def __repr__(MyStruct self):
         return f'MyStruct(field={repr(self.field)})'
+    def __copy__(MyStruct self):
+        cdef shared_ptr[cMyStruct] cpp_obj = make_shared[cMyStruct](
+            deref(self._cpp_obj)
+        )
+        return MyStruct.create(move_shared(cpp_obj))
+
     def __richcmp__(self, other, op):
         cdef int cop = op
         if cop not in (2, 3):
@@ -307,35 +313,35 @@ cdef class Combo(thrift.py3.types.Struct):
     @staticmethod
     cdef create(shared_ptr[cCombo] cpp_obj):
         inst = <Combo>Combo.__new__(Combo)
-        inst._cpp_obj = cpp_obj
+        inst._cpp_obj = move_shared(cpp_obj)
         return inst
 
     @property
     def listOfOurMyStructLists(self):
 
         if self.__listOfOurMyStructLists is None:
-            self.__listOfOurMyStructLists = List__List__MyStruct.create(make_shared[vector[vector[cMyStruct]]](deref(self._cpp_obj).listOfOurMyStructLists))
+            self.__listOfOurMyStructLists = List__List__MyStruct.create(reference_shared_ptr_listOfOurMyStructLists(self._cpp_obj, deref(self._cpp_obj).listOfOurMyStructLists))
         return self.__listOfOurMyStructLists
 
     @property
     def theirMyStructList(self):
 
         if self.__theirMyStructList is None:
-            self.__theirMyStructList = List__module_MyStruct.create(make_shared[vector[_module_types.cMyStruct]](deref(self._cpp_obj).theirMyStructList))
+            self.__theirMyStructList = List__module_MyStruct.create(reference_shared_ptr_theirMyStructList(self._cpp_obj, deref(self._cpp_obj).theirMyStructList))
         return self.__theirMyStructList
 
     @property
     def ourMyStructList(self):
 
         if self.__ourMyStructList is None:
-            self.__ourMyStructList = List__MyStruct.create(make_shared[vector[cMyStruct]](deref(self._cpp_obj).ourMyStructList))
+            self.__ourMyStructList = List__MyStruct.create(reference_shared_ptr_ourMyStructList(self._cpp_obj, deref(self._cpp_obj).ourMyStructList))
         return self.__ourMyStructList
 
     @property
     def listOfTheirMyStructList(self):
 
         if self.__listOfTheirMyStructList is None:
-            self.__listOfTheirMyStructList = List__List__module_MyStruct.create(make_shared[vector[vector[_module_types.cMyStruct]]](deref(self._cpp_obj).listOfTheirMyStructList))
+            self.__listOfTheirMyStructList = List__List__module_MyStruct.create(reference_shared_ptr_listOfTheirMyStructList(self._cpp_obj, deref(self._cpp_obj).listOfTheirMyStructList))
         return self.__listOfTheirMyStructList
 
 
@@ -351,6 +357,12 @@ cdef class Combo(thrift.py3.types.Struct):
 
     def __repr__(Combo self):
         return f'Combo(listOfOurMyStructLists={repr(self.listOfOurMyStructLists)}, theirMyStructList={repr(self.theirMyStructList)}, ourMyStructList={repr(self.ourMyStructList)}, listOfTheirMyStructList={repr(self.listOfTheirMyStructList)})'
+    def __copy__(Combo self):
+        cdef shared_ptr[cCombo] cpp_obj = make_shared[cCombo](
+            deref(self._cpp_obj)
+        )
+        return Combo.create(move_shared(cpp_obj))
+
     def __richcmp__(self, other, op):
         cdef int cop = op
         if cop not in (2, 3):
@@ -419,8 +431,14 @@ cdef class List__MyStruct:
     @staticmethod
     cdef create(shared_ptr[vector[cMyStruct]] c_items):
         inst = <List__MyStruct>List__MyStruct.__new__(List__MyStruct)
-        inst._cpp_obj = c_items
+        inst._cpp_obj = move_shared(c_items)
         return inst
+
+    def __copy__(List__MyStruct self):
+        cdef shared_ptr[vector[cMyStruct]] cpp_obj = make_shared[vector[cMyStruct]](
+            deref(self._cpp_obj)
+        )
+        return List__MyStruct.create(move_shared(cpp_obj))
 
     @staticmethod
     cdef unique_ptr[vector[cMyStruct]] _make_instance(object items) except *:
@@ -444,7 +462,7 @@ cdef class List__MyStruct:
             for index in range(*index_obj.indices(sz)):
                 citem = deref(self._cpp_obj.get())[index]
                 deref(c_inst).push_back(citem)
-            return List__MyStruct.create(c_inst)
+            return List__MyStruct.create(move_shared(c_inst))
         else:
             index = <int?>index_obj
             size = len(self)
@@ -572,8 +590,14 @@ cdef class List__List__MyStruct:
     @staticmethod
     cdef create(shared_ptr[vector[vector[cMyStruct]]] c_items):
         inst = <List__List__MyStruct>List__List__MyStruct.__new__(List__List__MyStruct)
-        inst._cpp_obj = c_items
+        inst._cpp_obj = move_shared(c_items)
         return inst
+
+    def __copy__(List__List__MyStruct self):
+        cdef shared_ptr[vector[vector[cMyStruct]]] cpp_obj = make_shared[vector[vector[cMyStruct]]](
+            deref(self._cpp_obj)
+        )
+        return List__List__MyStruct.create(move_shared(cpp_obj))
 
     @staticmethod
     cdef unique_ptr[vector[vector[cMyStruct]]] _make_instance(object items) except *:
@@ -599,7 +623,7 @@ cdef class List__List__MyStruct:
             for index in range(*index_obj.indices(sz)):
                 citem = deref(self._cpp_obj.get())[index]
                 deref(c_inst).push_back(citem)
-            return List__List__MyStruct.create(c_inst)
+            return List__List__MyStruct.create(move_shared(c_inst))
         else:
             index = <int?>index_obj
             size = len(self)
@@ -745,8 +769,14 @@ cdef class List__module_MyStruct:
     @staticmethod
     cdef create(shared_ptr[vector[_module_types.cMyStruct]] c_items):
         inst = <List__module_MyStruct>List__module_MyStruct.__new__(List__module_MyStruct)
-        inst._cpp_obj = c_items
+        inst._cpp_obj = move_shared(c_items)
         return inst
+
+    def __copy__(List__module_MyStruct self):
+        cdef shared_ptr[vector[_module_types.cMyStruct]] cpp_obj = make_shared[vector[_module_types.cMyStruct]](
+            deref(self._cpp_obj)
+        )
+        return List__module_MyStruct.create(move_shared(cpp_obj))
 
     @staticmethod
     cdef unique_ptr[vector[_module_types.cMyStruct]] _make_instance(object items) except *:
@@ -770,7 +800,7 @@ cdef class List__module_MyStruct:
             for index in range(*index_obj.indices(sz)):
                 citem = deref(self._cpp_obj.get())[index]
                 deref(c_inst).push_back(citem)
-            return List__module_MyStruct.create(c_inst)
+            return List__module_MyStruct.create(move_shared(c_inst))
         else:
             index = <int?>index_obj
             size = len(self)
@@ -898,8 +928,14 @@ cdef class List__List__module_MyStruct:
     @staticmethod
     cdef create(shared_ptr[vector[vector[_module_types.cMyStruct]]] c_items):
         inst = <List__List__module_MyStruct>List__List__module_MyStruct.__new__(List__List__module_MyStruct)
-        inst._cpp_obj = c_items
+        inst._cpp_obj = move_shared(c_items)
         return inst
+
+    def __copy__(List__List__module_MyStruct self):
+        cdef shared_ptr[vector[vector[_module_types.cMyStruct]]] cpp_obj = make_shared[vector[vector[_module_types.cMyStruct]]](
+            deref(self._cpp_obj)
+        )
+        return List__List__module_MyStruct.create(move_shared(cpp_obj))
 
     @staticmethod
     cdef unique_ptr[vector[vector[_module_types.cMyStruct]]] _make_instance(object items) except *:
@@ -925,7 +961,7 @@ cdef class List__List__module_MyStruct:
             for index in range(*index_obj.indices(sz)):
                 citem = deref(self._cpp_obj.get())[index]
                 deref(c_inst).push_back(citem)
-            return List__List__module_MyStruct.create(c_inst)
+            return List__List__module_MyStruct.create(move_shared(c_inst))
         else:
             index = <int?>index_obj
             size = len(self)

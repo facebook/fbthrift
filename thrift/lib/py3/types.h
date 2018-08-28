@@ -25,5 +25,10 @@ std::shared_ptr<T> constant_shared_ptr(const T& x) {
   return std::shared_ptr<T>(std::shared_ptr<T>{}, const_cast<T*>(&x));
 }
 
+template <typename T, typename S>
+std::shared_ptr<T> reference_shared_ptr(S& owner, const T& ref) {
+  return std::shared_ptr<T>(owner, const_cast<T*>(&ref));
+}
+
 } // namespace py3
 } // namespace thrift

@@ -18,7 +18,9 @@ class NOTSETTYPE(enum.Enum):
 
 NOTSET = NOTSETTYPE.token
 
-class Struct: ...
+class Struct:
+    def __copy__(self: _T) -> _T: ...
+
 class Union(Struct): ...
 
 class EnumMeta(type):

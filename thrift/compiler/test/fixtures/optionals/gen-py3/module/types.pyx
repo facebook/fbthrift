@@ -295,7 +295,7 @@ cdef class Color(thrift.py3.types.Struct):
     @staticmethod
     cdef create(shared_ptr[cColor] cpp_obj):
         inst = <Color>Color.__new__(Color)
-        inst._cpp_obj = cpp_obj
+        inst._cpp_obj = move_shared(cpp_obj)
         return inst
 
     @property
@@ -331,6 +331,12 @@ cdef class Color(thrift.py3.types.Struct):
 
     def __repr__(Color self):
         return f'Color(red={repr(self.red)}, green={repr(self.green)}, blue={repr(self.blue)}, alpha={repr(self.alpha)})'
+    def __copy__(Color self):
+        cdef shared_ptr[cColor] cpp_obj = make_shared[cColor](
+            deref(self._cpp_obj)
+        )
+        return Color.create(move_shared(cpp_obj))
+
     def __richcmp__(self, other, op):
         cdef int cop = op
         if cop not in (2, 3):
@@ -545,14 +551,14 @@ cdef class Vehicle(thrift.py3.types.Struct):
     @staticmethod
     cdef create(shared_ptr[cVehicle] cpp_obj):
         inst = <Vehicle>Vehicle.__new__(Vehicle)
-        inst._cpp_obj = cpp_obj
+        inst._cpp_obj = move_shared(cpp_obj)
         return inst
 
     @property
     def color(self):
 
         if self.__color is None:
-            self.__color = Color.create(make_shared[cColor](deref(self._cpp_obj).color))
+            self.__color = Color.create(reference_shared_ptr_color(self._cpp_obj, deref(self._cpp_obj).color))
         return self.__color
 
     @property
@@ -595,6 +601,12 @@ cdef class Vehicle(thrift.py3.types.Struct):
 
     def __repr__(Vehicle self):
         return f'Vehicle(color={repr(self.color)}, licensePlate={repr(self.licensePlate)}, description={repr(self.description)}, name={repr(self.name)}, hasAC={repr(self.hasAC)})'
+    def __copy__(Vehicle self):
+        cdef shared_ptr[cVehicle] cpp_obj = make_shared[cVehicle](
+            deref(self._cpp_obj)
+        )
+        return Vehicle.create(move_shared(cpp_obj))
+
     def __richcmp__(self, other, op):
         cdef int cop = op
         if cop not in (2, 3):
@@ -920,7 +932,7 @@ cdef class Person(thrift.py3.types.Struct):
     @staticmethod
     cdef create(shared_ptr[cPerson] cpp_obj):
         inst = <Person>Person.__new__(Person)
-        inst._cpp_obj = cpp_obj
+        inst._cpp_obj = move_shared(cpp_obj)
         return inst
 
     @property
@@ -953,7 +965,7 @@ cdef class Person(thrift.py3.types.Struct):
             return None
 
         if self.__favoriteColor is None:
-            self.__favoriteColor = Color.create(make_shared[cColor](deref(self._cpp_obj).favoriteColor))
+            self.__favoriteColor = Color.create(reference_shared_ptr_favoriteColor(self._cpp_obj, deref(self._cpp_obj).favoriteColor))
         return self.__favoriteColor
 
     @property
@@ -962,7 +974,7 @@ cdef class Person(thrift.py3.types.Struct):
             return None
 
         if self.__friends is None:
-            self.__friends = Set__i64.create(make_shared[cset[int64_t]](deref(self._cpp_obj).friends))
+            self.__friends = Set__i64.create(reference_shared_ptr_friends(self._cpp_obj, deref(self._cpp_obj).friends))
         return self.__friends
 
     @property
@@ -978,7 +990,7 @@ cdef class Person(thrift.py3.types.Struct):
             return None
 
         if self.__petNames is None:
-            self.__petNames = Map__Animal_string.create(make_shared[cmap[cAnimal,string]](deref(self._cpp_obj).petNames))
+            self.__petNames = Map__Animal_string.create(reference_shared_ptr_petNames(self._cpp_obj, deref(self._cpp_obj).petNames))
         return self.__petNames
 
     @property
@@ -994,7 +1006,7 @@ cdef class Person(thrift.py3.types.Struct):
             return None
 
         if self.__vehicles is None:
-            self.__vehicles = List__Vehicle.create(make_shared[vector[cVehicle]](deref(self._cpp_obj).vehicles))
+            self.__vehicles = List__Vehicle.create(reference_shared_ptr_vehicles(self._cpp_obj, deref(self._cpp_obj).vehicles))
         return self.__vehicles
 
 
@@ -1016,6 +1028,12 @@ cdef class Person(thrift.py3.types.Struct):
 
     def __repr__(Person self):
         return f'Person(id={repr(self.id)}, name={repr(self.name)}, age={repr(self.age)}, address={repr(self.address)}, favoriteColor={repr(self.favoriteColor)}, friends={repr(self.friends)}, bestFriend={repr(self.bestFriend)}, petNames={repr(self.petNames)}, afraidOfAnimal={repr(self.afraidOfAnimal)}, vehicles={repr(self.vehicles)})'
+    def __copy__(Person self):
+        cdef shared_ptr[cPerson] cpp_obj = make_shared[cPerson](
+            deref(self._cpp_obj)
+        )
+        return Person.create(move_shared(cpp_obj))
+
     def __richcmp__(self, other, op):
         cdef int cop = op
         if cop not in (2, 3):
@@ -1084,8 +1102,14 @@ cdef class Set__i64:
     @staticmethod
     cdef create(shared_ptr[cset[int64_t]] c_items):
         inst = <Set__i64>Set__i64.__new__(Set__i64)
-        inst._cpp_obj = c_items
+        inst._cpp_obj = move_shared(c_items)
         return inst
+
+    def __copy__(Set__i64 self):
+        cdef shared_ptr[cset[int64_t]] cpp_obj = make_shared[cset[int64_t]](
+            deref(self._cpp_obj)
+        )
+        return Set__i64.create(move_shared(cpp_obj))
 
     @staticmethod
     cdef unique_ptr[cset[int64_t]] _make_instance(object items) except *:
@@ -1196,7 +1220,7 @@ cdef class Set__i64:
         for citem in deref((<Set__i64> self)._cpp_obj):
             if deref((<Set__i64> other)._cpp_obj).count(citem) > 0:
                 deref(shretval).insert(citem)
-        return Set__i64.create(shretval)
+        return Set__i64.create(move_shared(shretval))
 
     def __sub__(self, other):
         if not isinstance(self, Set__i64):
@@ -1209,7 +1233,7 @@ cdef class Set__i64:
         for citem in deref((<Set__i64> self)._cpp_obj):
             if deref((<Set__i64> other)._cpp_obj).count(citem) == 0:
                 deref(shretval).insert(citem)
-        return Set__i64.create(shretval)
+        return Set__i64.create(move_shared(shretval))
 
     def __or__(self, other):
         if not isinstance(self, Set__i64):
@@ -1223,7 +1247,7 @@ cdef class Set__i64:
                 deref(shretval).insert(citem)
         for citem in deref((<Set__i64> other)._cpp_obj):
                 deref(shretval).insert(citem)
-        return Set__i64.create(shretval)
+        return Set__i64.create(move_shared(shretval))
 
     def __xor__(self, other):
         if not isinstance(self, Set__i64):
@@ -1239,7 +1263,7 @@ cdef class Set__i64:
         for citem in deref((<Set__i64> other)._cpp_obj):
             if deref((<Set__i64> self)._cpp_obj).count(citem) == 0:
                 deref(shretval).insert(citem)
-        return Set__i64.create(shretval)
+        return Set__i64.create(move_shared(shretval))
 
     def isdisjoint(self, other):
         return len(self & other) == 0
@@ -1275,8 +1299,14 @@ cdef class Map__Animal_string:
     @staticmethod
     cdef create(shared_ptr[cmap[cAnimal,string]] c_items):
         inst = <Map__Animal_string>Map__Animal_string.__new__(Map__Animal_string)
-        inst._cpp_obj = c_items
+        inst._cpp_obj = move_shared(c_items)
         return inst
+
+    def __copy__(Map__Animal_string self):
+        cdef shared_ptr[cmap[cAnimal,string]] cpp_obj = make_shared[cmap[cAnimal,string]](
+            deref(self._cpp_obj)
+        )
+        return Map__Animal_string.create(move_shared(cpp_obj))
 
     @staticmethod
     cdef unique_ptr[cmap[cAnimal,string]] _make_instance(object items) except *:
@@ -1401,8 +1431,14 @@ cdef class List__Vehicle:
     @staticmethod
     cdef create(shared_ptr[vector[cVehicle]] c_items):
         inst = <List__Vehicle>List__Vehicle.__new__(List__Vehicle)
-        inst._cpp_obj = c_items
+        inst._cpp_obj = move_shared(c_items)
         return inst
+
+    def __copy__(List__Vehicle self):
+        cdef shared_ptr[vector[cVehicle]] cpp_obj = make_shared[vector[cVehicle]](
+            deref(self._cpp_obj)
+        )
+        return List__Vehicle.create(move_shared(cpp_obj))
 
     @staticmethod
     cdef unique_ptr[vector[cVehicle]] _make_instance(object items) except *:
@@ -1426,7 +1462,7 @@ cdef class List__Vehicle:
             for index in range(*index_obj.indices(sz)):
                 citem = deref(self._cpp_obj.get())[index]
                 deref(c_inst).push_back(citem)
-            return List__Vehicle.create(c_inst)
+            return List__Vehicle.create(move_shared(c_inst))
         else:
             index = <int?>index_obj
             size = len(self)

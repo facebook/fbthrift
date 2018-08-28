@@ -6,7 +6,7 @@
 #
 
 from libcpp.string cimport string
-from libcpp cimport bool as cbool
+from libcpp cimport bool as cbool, nullptr, nullptr_t
 from cpython cimport bool as pbool
 from libc.stdint cimport int8_t, int16_t, int32_t, int64_t
 from libcpp.memory cimport shared_ptr, unique_ptr
@@ -124,24 +124,34 @@ cdef class List__List__Map__i32_Map__i32_Set__i32:
 cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[vector[int32_t]] move(unique_ptr[vector[int32_t]])
     cdef unique_ptr[vector[int32_t]] move_unique "std::move"(unique_ptr[vector[int32_t]])
+    cdef shared_ptr[vector[int32_t]] move_shared "std::move"(shared_ptr[vector[int32_t]])
     cdef shared_ptr[cmap[int32_t,vector[int32_t]]] move(unique_ptr[cmap[int32_t,vector[int32_t]]])
     cdef unique_ptr[cmap[int32_t,vector[int32_t]]] move_unique "std::move"(unique_ptr[cmap[int32_t,vector[int32_t]]])
+    cdef shared_ptr[cmap[int32_t,vector[int32_t]]] move_shared "std::move"(shared_ptr[cmap[int32_t,vector[int32_t]]])
     cdef shared_ptr[cset[int32_t]] move(unique_ptr[cset[int32_t]])
     cdef unique_ptr[cset[int32_t]] move_unique "std::move"(unique_ptr[cset[int32_t]])
+    cdef shared_ptr[cset[int32_t]] move_shared "std::move"(shared_ptr[cset[int32_t]])
     cdef shared_ptr[cmap[int32_t,cset[int32_t]]] move(unique_ptr[cmap[int32_t,cset[int32_t]]])
     cdef unique_ptr[cmap[int32_t,cset[int32_t]]] move_unique "std::move"(unique_ptr[cmap[int32_t,cset[int32_t]]])
+    cdef shared_ptr[cmap[int32_t,cset[int32_t]]] move_shared "std::move"(shared_ptr[cmap[int32_t,cset[int32_t]]])
     cdef shared_ptr[cmap[int32_t,int32_t]] move(unique_ptr[cmap[int32_t,int32_t]])
     cdef unique_ptr[cmap[int32_t,int32_t]] move_unique "std::move"(unique_ptr[cmap[int32_t,int32_t]])
+    cdef shared_ptr[cmap[int32_t,int32_t]] move_shared "std::move"(shared_ptr[cmap[int32_t,int32_t]])
     cdef shared_ptr[vector[cmap[int32_t,int32_t]]] move(unique_ptr[vector[cmap[int32_t,int32_t]]])
     cdef unique_ptr[vector[cmap[int32_t,int32_t]]] move_unique "std::move"(unique_ptr[vector[cmap[int32_t,int32_t]]])
+    cdef shared_ptr[vector[cmap[int32_t,int32_t]]] move_shared "std::move"(shared_ptr[vector[cmap[int32_t,int32_t]]])
     cdef shared_ptr[vector[cset[int32_t]]] move(unique_ptr[vector[cset[int32_t]]])
     cdef unique_ptr[vector[cset[int32_t]]] move_unique "std::move"(unique_ptr[vector[cset[int32_t]]])
+    cdef shared_ptr[vector[cset[int32_t]]] move_shared "std::move"(shared_ptr[vector[cset[int32_t]]])
     cdef shared_ptr[cmap[int32_t,cmap[int32_t,cset[int32_t]]]] move(unique_ptr[cmap[int32_t,cmap[int32_t,cset[int32_t]]]])
     cdef unique_ptr[cmap[int32_t,cmap[int32_t,cset[int32_t]]]] move_unique "std::move"(unique_ptr[cmap[int32_t,cmap[int32_t,cset[int32_t]]]])
+    cdef shared_ptr[cmap[int32_t,cmap[int32_t,cset[int32_t]]]] move_shared "std::move"(shared_ptr[cmap[int32_t,cmap[int32_t,cset[int32_t]]]])
     cdef shared_ptr[vector[cmap[int32_t,cmap[int32_t,cset[int32_t]]]]] move(unique_ptr[vector[cmap[int32_t,cmap[int32_t,cset[int32_t]]]]])
     cdef unique_ptr[vector[cmap[int32_t,cmap[int32_t,cset[int32_t]]]]] move_unique "std::move"(unique_ptr[vector[cmap[int32_t,cmap[int32_t,cset[int32_t]]]]])
+    cdef shared_ptr[vector[cmap[int32_t,cmap[int32_t,cset[int32_t]]]]] move_shared "std::move"(shared_ptr[vector[cmap[int32_t,cmap[int32_t,cset[int32_t]]]]])
     cdef shared_ptr[vector[vector[cmap[int32_t,cmap[int32_t,cset[int32_t]]]]]] move(unique_ptr[vector[vector[cmap[int32_t,cmap[int32_t,cset[int32_t]]]]]])
     cdef unique_ptr[vector[vector[cmap[int32_t,cmap[int32_t,cset[int32_t]]]]]] move_unique "std::move"(unique_ptr[vector[vector[cmap[int32_t,cmap[int32_t,cset[int32_t]]]]]])
+    cdef shared_ptr[vector[vector[cmap[int32_t,cmap[int32_t,cset[int32_t]]]]]] move_shared "std::move"(shared_ptr[vector[vector[cmap[int32_t,cmap[int32_t,cset[int32_t]]]]]])
 cdef extern from "<memory>" namespace "std" nogil:
     cdef shared_ptr[const vector[int32_t]] const_pointer_cast "std::const_pointer_cast<const std::vector<int32_t>>"(shared_ptr[vector[int32_t]])
 

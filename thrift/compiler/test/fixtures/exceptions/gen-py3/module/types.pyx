@@ -71,7 +71,7 @@ cdef class Banal(thrift.py3.exceptions.Error):
     @staticmethod
     cdef create(shared_ptr[cBanal] cpp_obj):
         inst = <Banal>Banal.__new__(Banal, (<bytes>deref(cpp_obj).what()).decode('utf-8'))
-        inst._cpp_obj = cpp_obj
+        inst._cpp_obj = move_shared(cpp_obj)
         _builtins.Exception.__init__(inst, )
         return inst
 
@@ -81,6 +81,12 @@ cdef class Banal(thrift.py3.exceptions.Error):
 
     def __repr__(Banal self):
         return f'Banal()'
+    def __copy__(Banal self):
+        cdef shared_ptr[cBanal] cpp_obj = make_shared[cBanal](
+            deref(self._cpp_obj)
+        )
+        return Banal.create(move_shared(cpp_obj))
+
     def __richcmp__(self, other, op):
         cdef int cop = op
         if cop not in (2, 3):
@@ -143,7 +149,7 @@ cdef class Fiery(thrift.py3.exceptions.Error):
     @staticmethod
     cdef create(shared_ptr[cFiery] cpp_obj):
         inst = <Fiery>Fiery.__new__(Fiery, (<bytes>deref(cpp_obj).what()).decode('utf-8'))
-        inst._cpp_obj = cpp_obj
+        inst._cpp_obj = move_shared(cpp_obj)
         _builtins.Exception.__init__(inst, inst.message)
         return inst
 
@@ -158,6 +164,12 @@ cdef class Fiery(thrift.py3.exceptions.Error):
 
     def __repr__(Fiery self):
         return f'Fiery(message={repr(self.message)})'
+    def __copy__(Fiery self):
+        cdef shared_ptr[cFiery] cpp_obj = make_shared[cFiery](
+            deref(self._cpp_obj)
+        )
+        return Fiery.create(move_shared(cpp_obj))
+
     def __richcmp__(self, other, op):
         cdef int cop = op
         if cop not in (2, 3):

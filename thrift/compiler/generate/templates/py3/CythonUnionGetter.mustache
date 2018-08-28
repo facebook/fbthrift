@@ -25,14 +25,9 @@ it in the self.value variable.
 else:
     {{! Use an aliasing constructor since the object we're returning is still
         managed by the top-level object, possible via a unique_ptr }}
-    self.value = {{> types/CythonPythonType}}.create(aliasing_constructor_{{field:name}}({{!
+    self.value = {{> types/CythonPythonType}}.create(reference_shared_ptr_{{field:name}}({{!
       }}self._cpp_obj, {{!
-        If this is a shared_const ref, we cast away the constness as part of
-        creating the new object (since the new object needs a plain shared_ptr).
-        This is unsafe in theory but seems ok in practice, since we never modify
-        our underlying object.
-      }}{{#field:shared_const_ref?}}<{{> types/CythonCppType}}*>{{/field:shared_const_ref?}}{{!
-      }}(deref(self._cpp_obj).get_{{field:name}}()).get())){{!
+      }}deref(deref(self._cpp_obj).get_{{field:name}}()))){{!
 }}{{/field:reference?}}{{!
 }}{{^field:reference?}}{{!
 }}{{#type:bool?}}{{!

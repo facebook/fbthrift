@@ -47,8 +47,14 @@ cdef class List__string:
     @staticmethod
     cdef create(shared_ptr[vector[string]] c_items):
         inst = <List__string>List__string.__new__(List__string)
-        inst._cpp_obj = c_items
+        inst._cpp_obj = move_shared(c_items)
         return inst
+
+    def __copy__(List__string self):
+        cdef shared_ptr[vector[string]] cpp_obj = make_shared[vector[string]](
+            deref(self._cpp_obj)
+        )
+        return List__string.create(move_shared(cpp_obj))
 
     @staticmethod
     cdef unique_ptr[vector[string]] _make_instance(object items) except *:
@@ -72,7 +78,7 @@ cdef class List__string:
             for index in range(*index_obj.indices(sz)):
                 citem = deref(self._cpp_obj.get())[index]
                 deref(c_inst).push_back(citem)
-            return List__string.create(c_inst)
+            return List__string.create(move_shared(c_inst))
         else:
             index = <int?>index_obj
             size = len(self)
@@ -200,8 +206,14 @@ cdef class Map__i64_List__string:
     @staticmethod
     cdef create(shared_ptr[cmap[int64_t,vector[string]]] c_items):
         inst = <Map__i64_List__string>Map__i64_List__string.__new__(Map__i64_List__string)
-        inst._cpp_obj = c_items
+        inst._cpp_obj = move_shared(c_items)
         return inst
+
+    def __copy__(Map__i64_List__string self):
+        cdef shared_ptr[cmap[int64_t,vector[string]]] cpp_obj = make_shared[cmap[int64_t,vector[string]]](
+            deref(self._cpp_obj)
+        )
+        return Map__i64_List__string.create(move_shared(cpp_obj))
 
     @staticmethod
     cdef unique_ptr[cmap[int64_t,vector[string]]] _make_instance(object items) except *:

@@ -6,7 +6,7 @@
 #
 
 from libcpp.string cimport string
-from libcpp cimport bool as cbool
+from libcpp cimport bool as cbool, nullptr, nullptr_t
 from cpython cimport bool as pbool
 from libc.stdint cimport int8_t, int16_t, int32_t, int64_t
 from libcpp.memory cimport shared_ptr, unique_ptr
@@ -73,7 +73,10 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "cpp2":
         const string& get_thingTwo() const
         string& set_thingTwo(const string&)
 
-    cdef shared_ptr[string] aliasing_constructor_stringRef "std::shared_ptr<std::string>"(shared_ptr[cComplexUnion]&, string*)
+    cdef shared_ptr[vector[int64_t]] reference_shared_ptr_intListValue "thrift::py3::reference_shared_ptr<std::vector<int64_t>>"(shared_ptr[cComplexUnion]&, vector[int64_t]&)
+    cdef shared_ptr[vector[string]] reference_shared_ptr_stringListValue "thrift::py3::reference_shared_ptr<std::vector<std::string>>"(shared_ptr[cComplexUnion]&, vector[string]&)
+    cdef shared_ptr[cmap[int16_t,string]] reference_shared_ptr_typedefValue "thrift::py3::reference_shared_ptr<std::map<int16_t,std::string>>"(shared_ptr[cComplexUnion]&, cmap[int16_t,string]&)
+    cdef shared_ptr[string] reference_shared_ptr_stringRef "thrift::py3::reference_shared_ptr<std::string>"(shared_ptr[cComplexUnion]&, string&)
 
 cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[cComplexUnion] move(unique_ptr[cComplexUnion])
@@ -174,10 +177,13 @@ cdef class Map__i16_string:
 cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[vector[int64_t]] move(unique_ptr[vector[int64_t]])
     cdef unique_ptr[vector[int64_t]] move_unique "std::move"(unique_ptr[vector[int64_t]])
+    cdef shared_ptr[vector[int64_t]] move_shared "std::move"(shared_ptr[vector[int64_t]])
     cdef shared_ptr[vector[string]] move(unique_ptr[vector[string]])
     cdef unique_ptr[vector[string]] move_unique "std::move"(unique_ptr[vector[string]])
+    cdef shared_ptr[vector[string]] move_shared "std::move"(shared_ptr[vector[string]])
     cdef shared_ptr[cmap[int16_t,string]] move(unique_ptr[cmap[int16_t,string]])
     cdef unique_ptr[cmap[int16_t,string]] move_unique "std::move"(unique_ptr[cmap[int16_t,string]])
+    cdef shared_ptr[cmap[int16_t,string]] move_shared "std::move"(shared_ptr[cmap[int16_t,string]])
 cdef extern from "<memory>" namespace "std" nogil:
     cdef shared_ptr[const vector[int64_t]] const_pointer_cast "std::const_pointer_cast<const std::vector<int64_t>>"(shared_ptr[vector[int64_t]])
 

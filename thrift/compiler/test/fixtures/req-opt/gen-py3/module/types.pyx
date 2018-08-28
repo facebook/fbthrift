@@ -169,7 +169,7 @@ cdef class Foo(thrift.py3.types.Struct):
     @staticmethod
     cdef create(shared_ptr[cFoo] cpp_obj):
         inst = <Foo>Foo.__new__(Foo)
-        inst._cpp_obj = cpp_obj
+        inst._cpp_obj = move_shared(cpp_obj)
         return inst
 
     @property
@@ -188,14 +188,14 @@ cdef class Foo(thrift.py3.types.Struct):
     def myBools(self):
 
         if self.__myBools is None:
-            self.__myBools = List__bool.create(make_shared[vector[cbool]](deref(self._cpp_obj).myBools))
+            self.__myBools = List__bool.create(reference_shared_ptr_myBools(self._cpp_obj, deref(self._cpp_obj).myBools))
         return self.__myBools
 
     @property
     def myNumbers(self):
 
         if self.__myNumbers is None:
-            self.__myNumbers = List__i32.create(make_shared[vector[int32_t]](deref(self._cpp_obj).myNumbers))
+            self.__myNumbers = List__i32.create(reference_shared_ptr_myNumbers(self._cpp_obj, deref(self._cpp_obj).myNumbers))
         return self.__myNumbers
 
 
@@ -211,6 +211,12 @@ cdef class Foo(thrift.py3.types.Struct):
 
     def __repr__(Foo self):
         return f'Foo(myInteger={repr(self.myInteger)}, myString={repr(self.myString)}, myBools={repr(self.myBools)}, myNumbers={repr(self.myNumbers)})'
+    def __copy__(Foo self):
+        cdef shared_ptr[cFoo] cpp_obj = make_shared[cFoo](
+            deref(self._cpp_obj)
+        )
+        return Foo.create(move_shared(cpp_obj))
+
     def __richcmp__(self, other, op):
         cdef int cop = op
         if cop not in (2, 3):
@@ -279,8 +285,14 @@ cdef class List__bool:
     @staticmethod
     cdef create(shared_ptr[vector[cbool]] c_items):
         inst = <List__bool>List__bool.__new__(List__bool)
-        inst._cpp_obj = c_items
+        inst._cpp_obj = move_shared(c_items)
         return inst
+
+    def __copy__(List__bool self):
+        cdef shared_ptr[vector[cbool]] cpp_obj = make_shared[vector[cbool]](
+            deref(self._cpp_obj)
+        )
+        return List__bool.create(move_shared(cpp_obj))
 
     @staticmethod
     cdef unique_ptr[vector[cbool]] _make_instance(object items) except *:
@@ -304,7 +316,7 @@ cdef class List__bool:
             for index in range(*index_obj.indices(sz)):
                 citem = deref(self._cpp_obj.get())[index]
                 deref(c_inst).push_back(citem)
-            return List__bool.create(c_inst)
+            return List__bool.create(move_shared(c_inst))
         else:
             index = <int?>index_obj
             size = len(self)
@@ -432,8 +444,14 @@ cdef class List__i32:
     @staticmethod
     cdef create(shared_ptr[vector[int32_t]] c_items):
         inst = <List__i32>List__i32.__new__(List__i32)
-        inst._cpp_obj = c_items
+        inst._cpp_obj = move_shared(c_items)
         return inst
+
+    def __copy__(List__i32 self):
+        cdef shared_ptr[vector[int32_t]] cpp_obj = make_shared[vector[int32_t]](
+            deref(self._cpp_obj)
+        )
+        return List__i32.create(move_shared(cpp_obj))
 
     @staticmethod
     cdef unique_ptr[vector[int32_t]] _make_instance(object items) except *:
@@ -458,7 +476,7 @@ cdef class List__i32:
             for index in range(*index_obj.indices(sz)):
                 citem = deref(self._cpp_obj.get())[index]
                 deref(c_inst).push_back(citem)
-            return List__i32.create(c_inst)
+            return List__i32.create(move_shared(c_inst))
         else:
             index = <int?>index_obj
             size = len(self)

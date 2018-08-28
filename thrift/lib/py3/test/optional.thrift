@@ -2,6 +2,7 @@ struct NoDefaults {
   1: required i64 req_field
   2: i64 unflagged_field
   3: optional i64 opt_field
+  4: optional list<string> strings
 }
 
 struct WithDefaults {

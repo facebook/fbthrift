@@ -6,7 +6,7 @@
 #
 
 from libcpp.string cimport string
-from libcpp cimport bool as cbool
+from libcpp cimport bool as cbool, nullptr, nullptr_t
 from cpython cimport bool as pbool
 from libc.stdint cimport int8_t, int16_t, int32_t, int64_t
 from libcpp.memory cimport shared_ptr, unique_ptr
@@ -125,6 +125,8 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "py3::simple":
         foo_Bar bytes_with_cpp_type
         cComplexStruct__isset __isset
 
+    cdef shared_ptr[cSimpleStruct] reference_shared_ptr_structOne "thrift::py3::reference_shared_ptr<py3::simple::SimpleStruct>"(shared_ptr[cComplexStruct]&, cSimpleStruct&)
+    cdef shared_ptr[cSimpleStruct] reference_shared_ptr_structTwo "thrift::py3::reference_shared_ptr<py3::simple::SimpleStruct>"(shared_ptr[cComplexStruct]&, cSimpleStruct&)
 
 cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[cSimpleException] move(unique_ptr[cSimpleException])
@@ -423,46 +425,67 @@ cdef class List__Map__i32_double:
 cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[vector[int16_t]] move(unique_ptr[vector[int16_t]])
     cdef unique_ptr[vector[int16_t]] move_unique "std::move"(unique_ptr[vector[int16_t]])
+    cdef shared_ptr[vector[int16_t]] move_shared "std::move"(shared_ptr[vector[int16_t]])
     cdef shared_ptr[vector[int32_t]] move(unique_ptr[vector[int32_t]])
     cdef unique_ptr[vector[int32_t]] move_unique "std::move"(unique_ptr[vector[int32_t]])
+    cdef shared_ptr[vector[int32_t]] move_shared "std::move"(shared_ptr[vector[int32_t]])
     cdef shared_ptr[vector[int64_t]] move(unique_ptr[vector[int64_t]])
     cdef unique_ptr[vector[int64_t]] move_unique "std::move"(unique_ptr[vector[int64_t]])
+    cdef shared_ptr[vector[int64_t]] move_shared "std::move"(shared_ptr[vector[int64_t]])
     cdef shared_ptr[vector[string]] move(unique_ptr[vector[string]])
     cdef unique_ptr[vector[string]] move_unique "std::move"(unique_ptr[vector[string]])
+    cdef shared_ptr[vector[string]] move_shared "std::move"(shared_ptr[vector[string]])
     cdef shared_ptr[vector[cSimpleStruct]] move(unique_ptr[vector[cSimpleStruct]])
     cdef unique_ptr[vector[cSimpleStruct]] move_unique "std::move"(unique_ptr[vector[cSimpleStruct]])
+    cdef shared_ptr[vector[cSimpleStruct]] move_shared "std::move"(shared_ptr[vector[cSimpleStruct]])
     cdef shared_ptr[cset[int32_t]] move(unique_ptr[cset[int32_t]])
     cdef unique_ptr[cset[int32_t]] move_unique "std::move"(unique_ptr[cset[int32_t]])
+    cdef shared_ptr[cset[int32_t]] move_shared "std::move"(shared_ptr[cset[int32_t]])
     cdef shared_ptr[cset[string]] move(unique_ptr[cset[string]])
     cdef unique_ptr[cset[string]] move_unique "std::move"(unique_ptr[cset[string]])
+    cdef shared_ptr[cset[string]] move_shared "std::move"(shared_ptr[cset[string]])
     cdef shared_ptr[cmap[string,string]] move(unique_ptr[cmap[string,string]])
     cdef unique_ptr[cmap[string,string]] move_unique "std::move"(unique_ptr[cmap[string,string]])
+    cdef shared_ptr[cmap[string,string]] move_shared "std::move"(shared_ptr[cmap[string,string]])
     cdef shared_ptr[cmap[string,cSimpleStruct]] move(unique_ptr[cmap[string,cSimpleStruct]])
     cdef unique_ptr[cmap[string,cSimpleStruct]] move_unique "std::move"(unique_ptr[cmap[string,cSimpleStruct]])
+    cdef shared_ptr[cmap[string,cSimpleStruct]] move_shared "std::move"(shared_ptr[cmap[string,cSimpleStruct]])
     cdef shared_ptr[cmap[string,int16_t]] move(unique_ptr[cmap[string,int16_t]])
     cdef unique_ptr[cmap[string,int16_t]] move_unique "std::move"(unique_ptr[cmap[string,int16_t]])
+    cdef shared_ptr[cmap[string,int16_t]] move_shared "std::move"(shared_ptr[cmap[string,int16_t]])
     cdef shared_ptr[vector[vector[int32_t]]] move(unique_ptr[vector[vector[int32_t]]])
     cdef unique_ptr[vector[vector[int32_t]]] move_unique "std::move"(unique_ptr[vector[vector[int32_t]]])
+    cdef shared_ptr[vector[vector[int32_t]]] move_shared "std::move"(shared_ptr[vector[vector[int32_t]]])
     cdef shared_ptr[cmap[string,int32_t]] move(unique_ptr[cmap[string,int32_t]])
     cdef unique_ptr[cmap[string,int32_t]] move_unique "std::move"(unique_ptr[cmap[string,int32_t]])
+    cdef shared_ptr[cmap[string,int32_t]] move_shared "std::move"(shared_ptr[cmap[string,int32_t]])
     cdef shared_ptr[cmap[string,cmap[string,int32_t]]] move(unique_ptr[cmap[string,cmap[string,int32_t]]])
     cdef unique_ptr[cmap[string,cmap[string,int32_t]]] move_unique "std::move"(unique_ptr[cmap[string,cmap[string,int32_t]]])
+    cdef shared_ptr[cmap[string,cmap[string,int32_t]]] move_shared "std::move"(shared_ptr[cmap[string,cmap[string,int32_t]]])
     cdef shared_ptr[vector[cset[string]]] move(unique_ptr[vector[cset[string]]])
     cdef unique_ptr[vector[cset[string]]] move_unique "std::move"(unique_ptr[vector[cset[string]]])
+    cdef shared_ptr[vector[cset[string]]] move_shared "std::move"(shared_ptr[vector[cset[string]]])
     cdef shared_ptr[cmap[string,vector[cSimpleStruct]]] move(unique_ptr[cmap[string,vector[cSimpleStruct]]])
     cdef unique_ptr[cmap[string,vector[cSimpleStruct]]] move_unique "std::move"(unique_ptr[cmap[string,vector[cSimpleStruct]]])
+    cdef shared_ptr[cmap[string,vector[cSimpleStruct]]] move_shared "std::move"(shared_ptr[cmap[string,vector[cSimpleStruct]]])
     cdef shared_ptr[vector[vector[string]]] move(unique_ptr[vector[vector[string]]])
     cdef unique_ptr[vector[vector[string]]] move_unique "std::move"(unique_ptr[vector[vector[string]]])
+    cdef shared_ptr[vector[vector[string]]] move_shared "std::move"(shared_ptr[vector[vector[string]]])
     cdef shared_ptr[vector[cset[int32_t]]] move(unique_ptr[vector[cset[int32_t]]])
     cdef unique_ptr[vector[cset[int32_t]]] move_unique "std::move"(unique_ptr[vector[cset[int32_t]]])
+    cdef shared_ptr[vector[cset[int32_t]]] move_shared "std::move"(shared_ptr[vector[cset[int32_t]]])
     cdef shared_ptr[vector[cmap[string,string]]] move(unique_ptr[vector[cmap[string,string]]])
     cdef unique_ptr[vector[cmap[string,string]]] move_unique "std::move"(unique_ptr[vector[cmap[string,string]]])
+    cdef shared_ptr[vector[cmap[string,string]]] move_shared "std::move"(shared_ptr[vector[cmap[string,string]]])
     cdef shared_ptr[vector[cAnEnum]] move(unique_ptr[vector[cAnEnum]])
     cdef unique_ptr[vector[cAnEnum]] move_unique "std::move"(unique_ptr[vector[cAnEnum]])
+    cdef shared_ptr[vector[cAnEnum]] move_shared "std::move"(shared_ptr[vector[cAnEnum]])
     cdef shared_ptr[cmap[int32_t,double]] move(unique_ptr[cmap[int32_t,double]])
     cdef unique_ptr[cmap[int32_t,double]] move_unique "std::move"(unique_ptr[cmap[int32_t,double]])
+    cdef shared_ptr[cmap[int32_t,double]] move_shared "std::move"(shared_ptr[cmap[int32_t,double]])
     cdef shared_ptr[vector[cmap[int32_t,double]]] move(unique_ptr[vector[cmap[int32_t,double]]])
     cdef unique_ptr[vector[cmap[int32_t,double]]] move_unique "std::move"(unique_ptr[vector[cmap[int32_t,double]]])
+    cdef shared_ptr[vector[cmap[int32_t,double]]] move_shared "std::move"(shared_ptr[vector[cmap[int32_t,double]]])
 cdef extern from "<memory>" namespace "std" nogil:
     cdef shared_ptr[const vector[int16_t]] const_pointer_cast "std::const_pointer_cast<const std::vector<int16_t>>"(shared_ptr[vector[int16_t]])
 

@@ -241,7 +241,7 @@ cdef class Struct(thrift.py3.types.Struct):
     @staticmethod
     cdef create(shared_ptr[cStruct] cpp_obj):
         inst = <Struct>Struct.__new__(Struct)
-        inst._cpp_obj = cpp_obj
+        inst._cpp_obj = move_shared(cpp_obj)
         return inst
 
     @property
@@ -265,6 +265,12 @@ cdef class Struct(thrift.py3.types.Struct):
 
     def __repr__(Struct self):
         return f'Struct(first={repr(self.first)}, second={repr(self.second)})'
+    def __copy__(Struct self):
+        cdef shared_ptr[cStruct] cpp_obj = make_shared[cStruct](
+            deref(self._cpp_obj)
+        )
+        return Struct.create(move_shared(cpp_obj))
+
     def __richcmp__(self, other, op):
         cdef int cop = op
         if cop not in (2, 3):
@@ -333,8 +339,14 @@ cdef class List__Enum:
     @staticmethod
     cdef create(shared_ptr[vector[cEnum]] c_items):
         inst = <List__Enum>List__Enum.__new__(List__Enum)
-        inst._cpp_obj = c_items
+        inst._cpp_obj = move_shared(c_items)
         return inst
+
+    def __copy__(List__Enum self):
+        cdef shared_ptr[vector[cEnum]] cpp_obj = make_shared[vector[cEnum]](
+            deref(self._cpp_obj)
+        )
+        return List__Enum.create(move_shared(cpp_obj))
 
     @staticmethod
     cdef unique_ptr[vector[cEnum]] _make_instance(object items) except *:
@@ -358,7 +370,7 @@ cdef class List__Enum:
             for index in range(*index_obj.indices(sz)):
                 citem = deref(self._cpp_obj.get())[index]
                 deref(c_inst).push_back(citem)
-            return List__Enum.create(c_inst)
+            return List__Enum.create(move_shared(c_inst))
         else:
             index = <int?>index_obj
             size = len(self)

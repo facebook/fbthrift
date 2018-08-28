@@ -48,14 +48,8 @@ return self.__{{field:name}}{{!
         return None
     {{! Use an aliasing constructor since the object we're returning is still
         managed by the top-level object, possible via a unique_ptr }}
-    self.__{{field:name}} = {{> types/CythonPythonType}}.create(aliasing_constructor_{{field:name}}({{!
-      }}self._cpp_obj, {{!
-        If this is a shared_const ref, we cast away the constness as part of
-        creating the new object (since the new object needs a plain shared_ptr).
-        This is unsafe in theory but seems ok in practice, since we never modify
-        our underlying object.
-      }}{{#field:shared_const_ref?}}<{{> types/CythonCppType}}*>{{/field:shared_const_ref?}}{{!
-      }}(deref(self._cpp_obj).{{field:name}}.get())))
+    self.__{{field:name}} = {{> types/CythonPythonType}}.create(reference_shared_ptr_{{field:name}}({{!
+      }}self._cpp_obj, deref(deref(self._cpp_obj).{{field:name}})))
 return self.__{{field:name}}{{!
 }}{{/field:reference?}}{{!
 }}{{^field:reference?}}{{!
@@ -67,6 +61,7 @@ return self.__{{field:name}}{{!
     }}{{#program:optionals?}}{{#field:optional?}}.value(){{/field:optional?}}{{/program:optionals?}}{{!
     }}{{#type:string?}}).decode('UTF-8'){{/type:string?}}{{!
 }}{{/type:base?}}{{!
+}}{{^type:base?}}{{!
 }}{{#type:enum?}}{{!
   }}return translate_cpp_enum_to_python({{!
     }}{{> types/CythonPythonType}}, {{!
@@ -75,23 +70,15 @@ return self.__{{field:name}}{{!
     }}{{#program:optionals?}}{{#field:optional?}}.value(){{/field:optional?}}{{/program:optionals?}}{{!
     }})){{!
 }}{{/type:enum?}}{{!
-}}{{#type:struct?}}{{!
+}}{{^type:enum?}}{{!  Structs and Containers
 }}if self.__{{field:name}} is None:
-    self.__{{field:name}} = {{> types/CythonPythonType}}.create({{!
-      }}make_shared[{{> types/CythonCppType}}]({{!
+    self.__{{field:name}} = {{> types/CythonPythonType}}.create(reference_shared_ptr_{{field:name}}({{!
+      }}self._cpp_obj, {{!
       }}deref(self._cpp_obj).{{field:name}}{{!
-      }}{{#program:optionals?}}{{#field:optional?}}.value(){{/field:optional?}}{{/program:optionals?}}{{!
+        }}{{#program:optionals?}}{{#field:optional?}}.value(){{/field:optional?}}{{/program:optionals?}}{{!
       }}))
 return self.__{{field:name}}{{!
-}}{{/type:struct?}}{{!
-}}{{#type:container?}}{{!
-}}if self.__{{field:name}} is None:
-    self.__{{field:name}} = {{> types/CythonPythonType}}.create({{!
-      }}make_shared[{{> types/CythonCppType}}]({{!
-      }}deref(self._cpp_obj).{{field:name}}{{!
-      }}{{#program:optionals?}}{{#field:optional?}}.value(){{/field:optional?}}{{/program:optionals?}}{{!
-      }}))
-return self.__{{field:name}}{{!
-}}{{/type:container?}}{{!
+}}{{/type:enum?}}{{!
+}}{{/type:base?}}{{!
 }}{{/field:reference?}}{{!
 }}{{/type:hasCustomTypeBehavior?}}

@@ -425,7 +425,7 @@ cdef class decorated_struct(thrift.py3.types.Struct):
     @staticmethod
     cdef create(shared_ptr[cdecorated_struct] cpp_obj):
         inst = <decorated_struct>decorated_struct.__new__(decorated_struct)
-        inst._cpp_obj = cpp_obj
+        inst._cpp_obj = move_shared(cpp_obj)
         return inst
 
     @property
@@ -443,6 +443,12 @@ cdef class decorated_struct(thrift.py3.types.Struct):
 
     def __repr__(decorated_struct self):
         return f'decorated_struct(field={repr(self.field)})'
+    def __copy__(decorated_struct self):
+        cdef shared_ptr[cdecorated_struct] cpp_obj = make_shared[cdecorated_struct](
+            deref(self._cpp_obj)
+        )
+        return decorated_struct.create(move_shared(cpp_obj))
+
     def __richcmp__(self, other, op):
         cdef int cop = op
         if cop not in (2, 3):
@@ -694,63 +700,63 @@ cdef class ContainerStruct(thrift.py3.types.Struct):
     @staticmethod
     cdef create(shared_ptr[cContainerStruct] cpp_obj):
         inst = <ContainerStruct>ContainerStruct.__new__(ContainerStruct)
-        inst._cpp_obj = cpp_obj
+        inst._cpp_obj = move_shared(cpp_obj)
         return inst
 
     @property
     def fieldA(self):
 
         if self.__fieldA is None:
-            self.__fieldA = List__i32.create(make_shared[vector[int32_t]](deref(self._cpp_obj).fieldA))
+            self.__fieldA = List__i32.create(reference_shared_ptr_fieldA(self._cpp_obj, deref(self._cpp_obj).fieldA))
         return self.__fieldA
 
     @property
     def fieldB(self):
 
         if self.__fieldB is None:
-            self.__fieldB = std_list__List__i32.create(make_shared[std_list[int32_t]](deref(self._cpp_obj).fieldB))
+            self.__fieldB = std_list__List__i32.create(reference_shared_ptr_fieldB(self._cpp_obj, deref(self._cpp_obj).fieldB))
         return self.__fieldB
 
     @property
     def fieldC(self):
 
         if self.__fieldC is None:
-            self.__fieldC = std_deque__List__i32.create(make_shared[std_deque[int32_t]](deref(self._cpp_obj).fieldC))
+            self.__fieldC = std_deque__List__i32.create(reference_shared_ptr_fieldC(self._cpp_obj, deref(self._cpp_obj).fieldC))
         return self.__fieldC
 
     @property
     def fieldD(self):
 
         if self.__fieldD is None:
-            self.__fieldD = folly_fbvector__List__i32.create(make_shared[folly_fbvector[int32_t]](deref(self._cpp_obj).fieldD))
+            self.__fieldD = folly_fbvector__List__i32.create(reference_shared_ptr_fieldD(self._cpp_obj, deref(self._cpp_obj).fieldD))
         return self.__fieldD
 
     @property
     def fieldE(self):
 
         if self.__fieldE is None:
-            self.__fieldE = folly_small_vector__List__i32.create(make_shared[folly_small_vector[int32_t]](deref(self._cpp_obj).fieldE))
+            self.__fieldE = folly_small_vector__List__i32.create(reference_shared_ptr_fieldE(self._cpp_obj, deref(self._cpp_obj).fieldE))
         return self.__fieldE
 
     @property
     def fieldF(self):
 
         if self.__fieldF is None:
-            self.__fieldF = folly_sorted_vector_set__Set__i32.create(make_shared[folly_sorted_vector_set[int32_t]](deref(self._cpp_obj).fieldF))
+            self.__fieldF = folly_sorted_vector_set__Set__i32.create(reference_shared_ptr_fieldF(self._cpp_obj, deref(self._cpp_obj).fieldF))
         return self.__fieldF
 
     @property
     def fieldG(self):
 
         if self.__fieldG is None:
-            self.__fieldG = folly_sorted_vector_map__Map__i32_string.create(make_shared[folly_sorted_vector_map[int32_t,string]](deref(self._cpp_obj).fieldG))
+            self.__fieldG = folly_sorted_vector_map__Map__i32_string.create(reference_shared_ptr_fieldG(self._cpp_obj, deref(self._cpp_obj).fieldG))
         return self.__fieldG
 
     @property
     def fieldH(self):
 
         if self.__fieldH is None:
-            self.__fieldH = std_unordered_map__Map__i32_string.create(make_shared[std_unordered_map[int32_t,string]](deref(self._cpp_obj).fieldH))
+            self.__fieldH = std_unordered_map__Map__i32_string.create(reference_shared_ptr_fieldH(self._cpp_obj, deref(self._cpp_obj).fieldH))
         return self.__fieldH
 
 
@@ -770,6 +776,12 @@ cdef class ContainerStruct(thrift.py3.types.Struct):
 
     def __repr__(ContainerStruct self):
         return f'ContainerStruct(fieldA={repr(self.fieldA)}, fieldB={repr(self.fieldB)}, fieldC={repr(self.fieldC)}, fieldD={repr(self.fieldD)}, fieldE={repr(self.fieldE)}, fieldF={repr(self.fieldF)}, fieldG={repr(self.fieldG)}, fieldH={repr(self.fieldH)})'
+    def __copy__(ContainerStruct self):
+        cdef shared_ptr[cContainerStruct] cpp_obj = make_shared[cContainerStruct](
+            deref(self._cpp_obj)
+        )
+        return ContainerStruct.create(move_shared(cpp_obj))
+
     def __richcmp__(self, other, op):
         cdef int cop = op
         if cop not in (2, 3):
@@ -895,14 +907,14 @@ cdef class CppTypeStruct(thrift.py3.types.Struct):
     @staticmethod
     cdef create(shared_ptr[cCppTypeStruct] cpp_obj):
         inst = <CppTypeStruct>CppTypeStruct.__new__(CppTypeStruct)
-        inst._cpp_obj = cpp_obj
+        inst._cpp_obj = move_shared(cpp_obj)
         return inst
 
     @property
     def fieldA(self):
 
         if self.__fieldA is None:
-            self.__fieldA = std_list_int32_t__List__i32.create(make_shared[std_list_int32_t](deref(self._cpp_obj).fieldA))
+            self.__fieldA = std_list_int32_t__List__i32.create(reference_shared_ptr_fieldA(self._cpp_obj, deref(self._cpp_obj).fieldA))
         return self.__fieldA
 
 
@@ -915,6 +927,12 @@ cdef class CppTypeStruct(thrift.py3.types.Struct):
 
     def __repr__(CppTypeStruct self):
         return f'CppTypeStruct(fieldA={repr(self.fieldA)})'
+    def __copy__(CppTypeStruct self):
+        cdef shared_ptr[cCppTypeStruct] cpp_obj = make_shared[cCppTypeStruct](
+            deref(self._cpp_obj)
+        )
+        return CppTypeStruct.create(move_shared(cpp_obj))
+
     def __richcmp__(self, other, op):
         cdef int cop = op
         if cop not in (2, 3):
@@ -1050,7 +1068,7 @@ cdef class VirtualStruct(thrift.py3.types.Struct):
     @staticmethod
     cdef create(shared_ptr[cVirtualStruct] cpp_obj):
         inst = <VirtualStruct>VirtualStruct.__new__(VirtualStruct)
-        inst._cpp_obj = cpp_obj
+        inst._cpp_obj = move_shared(cpp_obj)
         return inst
 
     @property
@@ -1068,6 +1086,12 @@ cdef class VirtualStruct(thrift.py3.types.Struct):
 
     def __repr__(VirtualStruct self):
         return f'VirtualStruct(MyIntField={repr(self.MyIntField)})'
+    def __copy__(VirtualStruct self):
+        cdef shared_ptr[cVirtualStruct] cpp_obj = make_shared[cVirtualStruct](
+            deref(self._cpp_obj)
+        )
+        return VirtualStruct.create(move_shared(cpp_obj))
+
     def __richcmp__(self, other, op):
         cdef int cop = op
         if cop not in (2, 3):
@@ -1219,7 +1243,7 @@ cdef class MyStructWithForwardRefEnum(thrift.py3.types.Struct):
     @staticmethod
     cdef create(shared_ptr[cMyStructWithForwardRefEnum] cpp_obj):
         inst = <MyStructWithForwardRefEnum>MyStructWithForwardRefEnum.__new__(MyStructWithForwardRefEnum)
-        inst._cpp_obj = cpp_obj
+        inst._cpp_obj = move_shared(cpp_obj)
         return inst
 
     @property
@@ -1243,6 +1267,12 @@ cdef class MyStructWithForwardRefEnum(thrift.py3.types.Struct):
 
     def __repr__(MyStructWithForwardRefEnum self):
         return f'MyStructWithForwardRefEnum(a={repr(self.a)}, b={repr(self.b)})'
+    def __copy__(MyStructWithForwardRefEnum self):
+        cdef shared_ptr[cMyStructWithForwardRefEnum] cpp_obj = make_shared[cMyStructWithForwardRefEnum](
+            deref(self._cpp_obj)
+        )
+        return MyStructWithForwardRefEnum.create(move_shared(cpp_obj))
+
     def __richcmp__(self, other, op):
         cdef int cop = op
         if cop not in (2, 3):
@@ -1400,7 +1430,7 @@ cdef class TrivialNumeric(thrift.py3.types.Struct):
     @staticmethod
     cdef create(shared_ptr[cTrivialNumeric] cpp_obj):
         inst = <TrivialNumeric>TrivialNumeric.__new__(TrivialNumeric)
-        inst._cpp_obj = cpp_obj
+        inst._cpp_obj = move_shared(cpp_obj)
         return inst
 
     @property
@@ -1424,6 +1454,12 @@ cdef class TrivialNumeric(thrift.py3.types.Struct):
 
     def __repr__(TrivialNumeric self):
         return f'TrivialNumeric(a={repr(self.a)}, b={repr(self.b)})'
+    def __copy__(TrivialNumeric self):
+        cdef shared_ptr[cTrivialNumeric] cpp_obj = make_shared[cTrivialNumeric](
+            deref(self._cpp_obj)
+        )
+        return TrivialNumeric.create(move_shared(cpp_obj))
+
     def __richcmp__(self, other, op):
         cdef int cop = op
         if cop not in (2, 3):
@@ -1581,7 +1617,7 @@ cdef class TrivialNestedWithDefault(thrift.py3.types.Struct):
     @staticmethod
     cdef create(shared_ptr[cTrivialNestedWithDefault] cpp_obj):
         inst = <TrivialNestedWithDefault>TrivialNestedWithDefault.__new__(TrivialNestedWithDefault)
-        inst._cpp_obj = cpp_obj
+        inst._cpp_obj = move_shared(cpp_obj)
         return inst
 
     @property
@@ -1593,7 +1629,7 @@ cdef class TrivialNestedWithDefault(thrift.py3.types.Struct):
     def n(self):
 
         if self.__n is None:
-            self.__n = TrivialNumeric.create(make_shared[cTrivialNumeric](deref(self._cpp_obj).n))
+            self.__n = TrivialNumeric.create(reference_shared_ptr_n(self._cpp_obj, deref(self._cpp_obj).n))
         return self.__n
 
 
@@ -1607,6 +1643,12 @@ cdef class TrivialNestedWithDefault(thrift.py3.types.Struct):
 
     def __repr__(TrivialNestedWithDefault self):
         return f'TrivialNestedWithDefault(z={repr(self.z)}, n={repr(self.n)})'
+    def __copy__(TrivialNestedWithDefault self):
+        cdef shared_ptr[cTrivialNestedWithDefault] cpp_obj = make_shared[cTrivialNestedWithDefault](
+            deref(self._cpp_obj)
+        )
+        return TrivialNestedWithDefault.create(move_shared(cpp_obj))
+
     def __richcmp__(self, other, op):
         cdef int cop = op
         if cop not in (2, 3):
@@ -1754,7 +1796,7 @@ cdef class ComplexString(thrift.py3.types.Struct):
     @staticmethod
     cdef create(shared_ptr[cComplexString] cpp_obj):
         inst = <ComplexString>ComplexString.__new__(ComplexString)
-        inst._cpp_obj = cpp_obj
+        inst._cpp_obj = move_shared(cpp_obj)
         return inst
 
     @property
@@ -1766,7 +1808,7 @@ cdef class ComplexString(thrift.py3.types.Struct):
     def b(self):
 
         if self.__b is None:
-            self.__b = Map__string_i32.create(make_shared[cmap[string,int32_t]](deref(self._cpp_obj).b))
+            self.__b = Map__string_i32.create(reference_shared_ptr_b(self._cpp_obj, deref(self._cpp_obj).b))
         return self.__b
 
 
@@ -1780,6 +1822,12 @@ cdef class ComplexString(thrift.py3.types.Struct):
 
     def __repr__(ComplexString self):
         return f'ComplexString(a={repr(self.a)}, b={repr(self.b)})'
+    def __copy__(ComplexString self):
+        cdef shared_ptr[cComplexString] cpp_obj = make_shared[cComplexString](
+            deref(self._cpp_obj)
+        )
+        return ComplexString.create(move_shared(cpp_obj))
+
     def __richcmp__(self, other, op):
         cdef int cop = op
         if cop not in (2, 3):
@@ -1931,7 +1979,7 @@ cdef class ComplexNestedWithDefault(thrift.py3.types.Struct):
     @staticmethod
     cdef create(shared_ptr[cComplexNestedWithDefault] cpp_obj):
         inst = <ComplexNestedWithDefault>ComplexNestedWithDefault.__new__(ComplexNestedWithDefault)
-        inst._cpp_obj = cpp_obj
+        inst._cpp_obj = move_shared(cpp_obj)
         return inst
 
     @property
@@ -1943,7 +1991,7 @@ cdef class ComplexNestedWithDefault(thrift.py3.types.Struct):
     def n(self):
 
         if self.__n is None:
-            self.__n = ComplexString.create(make_shared[cComplexString](deref(self._cpp_obj).n))
+            self.__n = ComplexString.create(reference_shared_ptr_n(self._cpp_obj, deref(self._cpp_obj).n))
         return self.__n
 
 
@@ -1957,6 +2005,12 @@ cdef class ComplexNestedWithDefault(thrift.py3.types.Struct):
 
     def __repr__(ComplexNestedWithDefault self):
         return f'ComplexNestedWithDefault(z={repr(self.z)}, n={repr(self.n)})'
+    def __copy__(ComplexNestedWithDefault self):
+        cdef shared_ptr[cComplexNestedWithDefault] cpp_obj = make_shared[cComplexNestedWithDefault](
+            deref(self._cpp_obj)
+        )
+        return ComplexNestedWithDefault.create(move_shared(cpp_obj))
+
     def __richcmp__(self, other, op):
         cdef int cop = op
         if cop not in (2, 3):
@@ -2199,7 +2253,7 @@ cdef class MinPadding(thrift.py3.types.Struct):
     @staticmethod
     cdef create(shared_ptr[cMinPadding] cpp_obj):
         inst = <MinPadding>MinPadding.__new__(MinPadding)
-        inst._cpp_obj = cpp_obj
+        inst._cpp_obj = move_shared(cpp_obj)
         return inst
 
     @property
@@ -2241,6 +2295,12 @@ cdef class MinPadding(thrift.py3.types.Struct):
 
     def __repr__(MinPadding self):
         return f'MinPadding(small={repr(self.small)}, big={repr(self.big)}, medium={repr(self.medium)}, biggish={repr(self.biggish)}, tiny={repr(self.tiny)})'
+    def __copy__(MinPadding self):
+        cdef shared_ptr[cMinPadding] cpp_obj = make_shared[cMinPadding](
+            deref(self._cpp_obj)
+        )
+        return MinPadding.create(move_shared(cpp_obj))
+
     def __richcmp__(self, other, op):
         cdef int cop = op
         if cop not in (2, 3):
@@ -2309,8 +2369,14 @@ cdef class std_unordered_map__Map__i32_string:
     @staticmethod
     cdef create(shared_ptr[std_unordered_map[int32_t,string]] c_items):
         inst = <std_unordered_map__Map__i32_string>std_unordered_map__Map__i32_string.__new__(std_unordered_map__Map__i32_string)
-        inst._cpp_obj = c_items
+        inst._cpp_obj = move_shared(c_items)
         return inst
+
+    def __copy__(std_unordered_map__Map__i32_string self):
+        cdef shared_ptr[std_unordered_map[int32_t,string]] cpp_obj = make_shared[std_unordered_map[int32_t,string]](
+            deref(self._cpp_obj)
+        )
+        return std_unordered_map__Map__i32_string.create(move_shared(cpp_obj))
 
     @staticmethod
     cdef unique_ptr[std_unordered_map[int32_t,string]] _make_instance(object items) except *:
@@ -2436,8 +2502,14 @@ cdef class List__i64:
     @staticmethod
     cdef create(shared_ptr[vector[int64_t]] c_items):
         inst = <List__i64>List__i64.__new__(List__i64)
-        inst._cpp_obj = c_items
+        inst._cpp_obj = move_shared(c_items)
         return inst
+
+    def __copy__(List__i64 self):
+        cdef shared_ptr[vector[int64_t]] cpp_obj = make_shared[vector[int64_t]](
+            deref(self._cpp_obj)
+        )
+        return List__i64.create(move_shared(cpp_obj))
 
     @staticmethod
     cdef unique_ptr[vector[int64_t]] _make_instance(object items) except *:
@@ -2462,7 +2534,7 @@ cdef class List__i64:
             for index in range(*index_obj.indices(sz)):
                 citem = deref(self._cpp_obj.get())[index]
                 deref(c_inst).push_back(citem)
-            return List__i64.create(c_inst)
+            return List__i64.create(move_shared(c_inst))
         else:
             index = <int?>index_obj
             size = len(self)
@@ -2590,8 +2662,14 @@ cdef class Map__binary_i64:
     @staticmethod
     cdef create(shared_ptr[cmap[string,int64_t]] c_items):
         inst = <Map__binary_i64>Map__binary_i64.__new__(Map__binary_i64)
-        inst._cpp_obj = c_items
+        inst._cpp_obj = move_shared(c_items)
         return inst
+
+    def __copy__(Map__binary_i64 self):
+        cdef shared_ptr[cmap[string,int64_t]] cpp_obj = make_shared[cmap[string,int64_t]](
+            deref(self._cpp_obj)
+        )
+        return Map__binary_i64.create(move_shared(cpp_obj))
 
     @staticmethod
     cdef unique_ptr[cmap[string,int64_t]] _make_instance(object items) except *:
@@ -2717,8 +2795,14 @@ cdef class List__i32:
     @staticmethod
     cdef create(shared_ptr[vector[int32_t]] c_items):
         inst = <List__i32>List__i32.__new__(List__i32)
-        inst._cpp_obj = c_items
+        inst._cpp_obj = move_shared(c_items)
         return inst
+
+    def __copy__(List__i32 self):
+        cdef shared_ptr[vector[int32_t]] cpp_obj = make_shared[vector[int32_t]](
+            deref(self._cpp_obj)
+        )
+        return List__i32.create(move_shared(cpp_obj))
 
     @staticmethod
     cdef unique_ptr[vector[int32_t]] _make_instance(object items) except *:
@@ -2743,7 +2827,7 @@ cdef class List__i32:
             for index in range(*index_obj.indices(sz)):
                 citem = deref(self._cpp_obj.get())[index]
                 deref(c_inst).push_back(citem)
-            return List__i32.create(c_inst)
+            return List__i32.create(move_shared(c_inst))
         else:
             index = <int?>index_obj
             size = len(self)
@@ -2871,8 +2955,14 @@ cdef class std_list__List__i32:
     @staticmethod
     cdef create(shared_ptr[std_list[int32_t]] c_items):
         inst = <std_list__List__i32>std_list__List__i32.__new__(std_list__List__i32)
-        inst._cpp_obj = c_items
+        inst._cpp_obj = move_shared(c_items)
         return inst
+
+    def __copy__(std_list__List__i32 self):
+        cdef shared_ptr[std_list[int32_t]] cpp_obj = make_shared[std_list[int32_t]](
+            deref(self._cpp_obj)
+        )
+        return std_list__List__i32.create(move_shared(cpp_obj))
 
     @staticmethod
     cdef unique_ptr[std_list[int32_t]] _make_instance(object items) except *:
@@ -2897,7 +2987,7 @@ cdef class std_list__List__i32:
             for index in range(*index_obj.indices(sz)):
                 citem = deref(self._cpp_obj.get())[index]
                 deref(c_inst).push_back(citem)
-            return std_list__List__i32.create(c_inst)
+            return std_list__List__i32.create(move_shared(c_inst))
         else:
             index = <int?>index_obj
             size = len(self)
@@ -3025,8 +3115,14 @@ cdef class std_deque__List__i32:
     @staticmethod
     cdef create(shared_ptr[std_deque[int32_t]] c_items):
         inst = <std_deque__List__i32>std_deque__List__i32.__new__(std_deque__List__i32)
-        inst._cpp_obj = c_items
+        inst._cpp_obj = move_shared(c_items)
         return inst
+
+    def __copy__(std_deque__List__i32 self):
+        cdef shared_ptr[std_deque[int32_t]] cpp_obj = make_shared[std_deque[int32_t]](
+            deref(self._cpp_obj)
+        )
+        return std_deque__List__i32.create(move_shared(cpp_obj))
 
     @staticmethod
     cdef unique_ptr[std_deque[int32_t]] _make_instance(object items) except *:
@@ -3051,7 +3147,7 @@ cdef class std_deque__List__i32:
             for index in range(*index_obj.indices(sz)):
                 citem = deref(self._cpp_obj.get())[index]
                 deref(c_inst).push_back(citem)
-            return std_deque__List__i32.create(c_inst)
+            return std_deque__List__i32.create(move_shared(c_inst))
         else:
             index = <int?>index_obj
             size = len(self)
@@ -3179,8 +3275,14 @@ cdef class folly_fbvector__List__i32:
     @staticmethod
     cdef create(shared_ptr[folly_fbvector[int32_t]] c_items):
         inst = <folly_fbvector__List__i32>folly_fbvector__List__i32.__new__(folly_fbvector__List__i32)
-        inst._cpp_obj = c_items
+        inst._cpp_obj = move_shared(c_items)
         return inst
+
+    def __copy__(folly_fbvector__List__i32 self):
+        cdef shared_ptr[folly_fbvector[int32_t]] cpp_obj = make_shared[folly_fbvector[int32_t]](
+            deref(self._cpp_obj)
+        )
+        return folly_fbvector__List__i32.create(move_shared(cpp_obj))
 
     @staticmethod
     cdef unique_ptr[folly_fbvector[int32_t]] _make_instance(object items) except *:
@@ -3205,7 +3307,7 @@ cdef class folly_fbvector__List__i32:
             for index in range(*index_obj.indices(sz)):
                 citem = deref(self._cpp_obj.get())[index]
                 deref(c_inst).push_back(citem)
-            return folly_fbvector__List__i32.create(c_inst)
+            return folly_fbvector__List__i32.create(move_shared(c_inst))
         else:
             index = <int?>index_obj
             size = len(self)
@@ -3333,8 +3435,14 @@ cdef class folly_small_vector__List__i32:
     @staticmethod
     cdef create(shared_ptr[folly_small_vector[int32_t]] c_items):
         inst = <folly_small_vector__List__i32>folly_small_vector__List__i32.__new__(folly_small_vector__List__i32)
-        inst._cpp_obj = c_items
+        inst._cpp_obj = move_shared(c_items)
         return inst
+
+    def __copy__(folly_small_vector__List__i32 self):
+        cdef shared_ptr[folly_small_vector[int32_t]] cpp_obj = make_shared[folly_small_vector[int32_t]](
+            deref(self._cpp_obj)
+        )
+        return folly_small_vector__List__i32.create(move_shared(cpp_obj))
 
     @staticmethod
     cdef unique_ptr[folly_small_vector[int32_t]] _make_instance(object items) except *:
@@ -3359,7 +3467,7 @@ cdef class folly_small_vector__List__i32:
             for index in range(*index_obj.indices(sz)):
                 citem = deref(self._cpp_obj.get())[index]
                 deref(c_inst).push_back(citem)
-            return folly_small_vector__List__i32.create(c_inst)
+            return folly_small_vector__List__i32.create(move_shared(c_inst))
         else:
             index = <int?>index_obj
             size = len(self)
@@ -3487,8 +3595,14 @@ cdef class folly_sorted_vector_set__Set__i32:
     @staticmethod
     cdef create(shared_ptr[folly_sorted_vector_set[int32_t]] c_items):
         inst = <folly_sorted_vector_set__Set__i32>folly_sorted_vector_set__Set__i32.__new__(folly_sorted_vector_set__Set__i32)
-        inst._cpp_obj = c_items
+        inst._cpp_obj = move_shared(c_items)
         return inst
+
+    def __copy__(folly_sorted_vector_set__Set__i32 self):
+        cdef shared_ptr[folly_sorted_vector_set[int32_t]] cpp_obj = make_shared[folly_sorted_vector_set[int32_t]](
+            deref(self._cpp_obj)
+        )
+        return folly_sorted_vector_set__Set__i32.create(move_shared(cpp_obj))
 
     @staticmethod
     cdef unique_ptr[folly_sorted_vector_set[int32_t]] _make_instance(object items) except *:
@@ -3599,7 +3713,7 @@ cdef class folly_sorted_vector_set__Set__i32:
         for citem in deref((<folly_sorted_vector_set__Set__i32> self)._cpp_obj):
             if deref((<folly_sorted_vector_set__Set__i32> other)._cpp_obj).count(citem) > 0:
                 deref(shretval).insert(citem)
-        return folly_sorted_vector_set__Set__i32.create(shretval)
+        return folly_sorted_vector_set__Set__i32.create(move_shared(shretval))
 
     def __sub__(self, other):
         if not isinstance(self, folly_sorted_vector_set__Set__i32):
@@ -3612,7 +3726,7 @@ cdef class folly_sorted_vector_set__Set__i32:
         for citem in deref((<folly_sorted_vector_set__Set__i32> self)._cpp_obj):
             if deref((<folly_sorted_vector_set__Set__i32> other)._cpp_obj).count(citem) == 0:
                 deref(shretval).insert(citem)
-        return folly_sorted_vector_set__Set__i32.create(shretval)
+        return folly_sorted_vector_set__Set__i32.create(move_shared(shretval))
 
     def __or__(self, other):
         if not isinstance(self, folly_sorted_vector_set__Set__i32):
@@ -3626,7 +3740,7 @@ cdef class folly_sorted_vector_set__Set__i32:
                 deref(shretval).insert(citem)
         for citem in deref((<folly_sorted_vector_set__Set__i32> other)._cpp_obj):
                 deref(shretval).insert(citem)
-        return folly_sorted_vector_set__Set__i32.create(shretval)
+        return folly_sorted_vector_set__Set__i32.create(move_shared(shretval))
 
     def __xor__(self, other):
         if not isinstance(self, folly_sorted_vector_set__Set__i32):
@@ -3642,7 +3756,7 @@ cdef class folly_sorted_vector_set__Set__i32:
         for citem in deref((<folly_sorted_vector_set__Set__i32> other)._cpp_obj):
             if deref((<folly_sorted_vector_set__Set__i32> self)._cpp_obj).count(citem) == 0:
                 deref(shretval).insert(citem)
-        return folly_sorted_vector_set__Set__i32.create(shretval)
+        return folly_sorted_vector_set__Set__i32.create(move_shared(shretval))
 
     def isdisjoint(self, other):
         return len(self & other) == 0
@@ -3678,8 +3792,14 @@ cdef class folly_sorted_vector_map__Map__i32_string:
     @staticmethod
     cdef create(shared_ptr[folly_sorted_vector_map[int32_t,string]] c_items):
         inst = <folly_sorted_vector_map__Map__i32_string>folly_sorted_vector_map__Map__i32_string.__new__(folly_sorted_vector_map__Map__i32_string)
-        inst._cpp_obj = c_items
+        inst._cpp_obj = move_shared(c_items)
         return inst
+
+    def __copy__(folly_sorted_vector_map__Map__i32_string self):
+        cdef shared_ptr[folly_sorted_vector_map[int32_t,string]] cpp_obj = make_shared[folly_sorted_vector_map[int32_t,string]](
+            deref(self._cpp_obj)
+        )
+        return folly_sorted_vector_map__Map__i32_string.create(move_shared(cpp_obj))
 
     @staticmethod
     cdef unique_ptr[folly_sorted_vector_map[int32_t,string]] _make_instance(object items) except *:
@@ -3805,8 +3925,14 @@ cdef class std_list_int32_t__List__i32:
     @staticmethod
     cdef create(shared_ptr[std_list_int32_t] c_items):
         inst = <std_list_int32_t__List__i32>std_list_int32_t__List__i32.__new__(std_list_int32_t__List__i32)
-        inst._cpp_obj = c_items
+        inst._cpp_obj = move_shared(c_items)
         return inst
+
+    def __copy__(std_list_int32_t__List__i32 self):
+        cdef shared_ptr[std_list_int32_t] cpp_obj = make_shared[std_list_int32_t](
+            deref(self._cpp_obj)
+        )
+        return std_list_int32_t__List__i32.create(move_shared(cpp_obj))
 
     @staticmethod
     cdef unique_ptr[std_list_int32_t] _make_instance(object items) except *:
@@ -3831,7 +3957,7 @@ cdef class std_list_int32_t__List__i32:
             for index in range(*index_obj.indices(sz)):
                 citem = deref(self._cpp_obj.get())[index]
                 deref(c_inst).push_back(citem)
-            return std_list_int32_t__List__i32.create(c_inst)
+            return std_list_int32_t__List__i32.create(move_shared(c_inst))
         else:
             index = <int?>index_obj
             size = len(self)
@@ -3959,8 +4085,14 @@ cdef class Map__string_i32:
     @staticmethod
     cdef create(shared_ptr[cmap[string,int32_t]] c_items):
         inst = <Map__string_i32>Map__string_i32.__new__(Map__string_i32)
-        inst._cpp_obj = c_items
+        inst._cpp_obj = move_shared(c_items)
         return inst
+
+    def __copy__(Map__string_i32 self):
+        cdef shared_ptr[cmap[string,int32_t]] cpp_obj = make_shared[cmap[string,int32_t]](
+            deref(self._cpp_obj)
+        )
+        return Map__string_i32.create(move_shared(cpp_obj))
 
     @staticmethod
     cdef unique_ptr[cmap[string,int32_t]] _make_instance(object items) except *:
