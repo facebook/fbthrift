@@ -18,10 +18,6 @@
 #include <thrift/lib/cpp/concurrency/Mutex.h>
 #include <thrift/lib/cpp/thrift_config.h>
 
-#if GOOGLE_PERFTOOLS_REGISTER_THREAD
-#  include <google/base/Profiler.h>
-#endif
-
 #include <cassert>
 #include <iostream>
 
@@ -172,9 +168,6 @@ void* PthreadThread::threadMain(void* arg) {
     return (void*)0;
   }
 
-#if GOOGLE_PERFTOOLS_REGISTER_THREAD
-  ProfilerRegisterThread();
-#endif
   // Using pthread_attr_setschedparam() at thread creation doesn't actually
   // change the new thread's priority for some reason... Other people on the
   // 'net also complain about it.  The solution is to set priority inside the
