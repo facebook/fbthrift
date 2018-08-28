@@ -21,10 +21,6 @@
 #include <thrift/compiler/common.h>
 #include <thrift/compiler/parse/parsing_driver.h>
 
-#ifdef _WIN32
-#include <windows.h> /* for GetFullPathName */
-#endif
-
 #include <boost/filesystem.hpp>
 
 #include <thrift/compiler/platform.h>
