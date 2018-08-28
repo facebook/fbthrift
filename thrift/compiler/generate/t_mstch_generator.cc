@@ -195,7 +195,7 @@ mstch::map t_mstch_generator::dump(const t_type& orig_type) {
 mstch::map t_mstch_generator::dump(const t_enum& enm) {
   mstch::map result{
       {"name", enm.get_name()},
-      {"values", dump_elems(enm.get_constants())},
+      {"values", dump_elems(enm.get_enum_values())},
       {"annotations", dump_elems(enm.annotations_)},
   };
 

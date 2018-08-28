@@ -1009,7 +1009,7 @@ void t_hack_generator::generate_typedef(t_typedef* /*ttypedef*/) {}
  * @param tenum The enumeration
  */
 void t_hack_generator::generate_enum(t_enum* tenum) {
-  vector<t_enum_value*> constants = tenum->get_constants();
+  vector<t_enum_value*> constants = tenum->get_enum_values();
   vector<t_enum_value*>::iterator c_iter;
 
   std::string typehint;
@@ -2550,7 +2550,7 @@ void t_hack_generator::_generate_php_struct_definition(
         throw tstruct->get_name() +
             "::code defined to be a non-integral type. " +
             "code fields for Exception classes must be integral";
-      } else if (t->is_enum() && ((t_enum*)t)->get_constants().empty()) {
+      } else if (t->is_enum() && ((t_enum*)t)->get_enum_values().empty()) {
         throw "Enum " + t->get_name() +
             " is the type for the code property of " + tstruct->get_name() +
             ", but it has no values.";
@@ -2663,7 +2663,7 @@ void t_hack_generator::_generate_php_struct_definition(
         // just use the lowest value
         t_enum* tenum = (t_enum*)t;
         dval = hack_name(tenum) +
-            "::" + (*(tenum->get_constants().begin()))->get_name();
+            "::" + (*(tenum->get_enum_values().begin()))->get_name();
       }
     } else if (
         is_exception &&

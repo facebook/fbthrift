@@ -410,7 +410,7 @@ void t_hs_generator::generate_typedef(t_typedef* ttypedef) {
 void t_hs_generator::generate_enum(t_enum* tenum) {
   indent(f_types_) << "data " << capitalize(tenum->get_name()) << " = ";
   indent_up();
-  vector<t_enum_value*> constants = tenum->get_constants();
+  vector<t_enum_value*> constants = tenum->get_enum_values();
   vector<t_enum_value*>::iterator c_iter;
 
   bool first = true;
@@ -567,7 +567,7 @@ string t_hs_generator::render_const_value(
 
   } else if (type->is_enum()) {
     t_enum* tenum = (t_enum*)type;
-    vector<t_enum_value*> constants = tenum->get_constants();
+    vector<t_enum_value*> constants = tenum->get_enum_values();
     vector<t_enum_value*>::iterator c_iter;
     for (auto& c_iter : constants) {
       int val = c_iter->get_value();

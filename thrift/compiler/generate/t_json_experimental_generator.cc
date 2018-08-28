@@ -122,7 +122,7 @@ class json_experimental_enum : public mstch_enum {
         });
   }
   mstch::node is_empty() {
-    return enm_->get_constants().empty();
+    return enm_->get_enum_values().empty();
   }
   mstch::node get_lineno() {
     return enm_->get_lineno();

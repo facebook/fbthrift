@@ -307,7 +307,7 @@ void t_perl_generator::generate_typedef(t_typedef* /*ttypedef*/) {}
 void t_perl_generator::generate_enum(t_enum* tenum) {
   f_types_ << "package " << perl_namespace(program_) <<tenum->get_name()<<";"<<endl;
 
-  vector<t_enum_value*> constants = tenum->get_constants();
+  vector<t_enum_value*> constants = tenum->get_enum_values();
   vector<t_enum_value*>::iterator c_iter;
   for (c_iter = constants.begin(); c_iter != constants.end(); ++c_iter) {
     int32_t value = (*c_iter)->get_value();

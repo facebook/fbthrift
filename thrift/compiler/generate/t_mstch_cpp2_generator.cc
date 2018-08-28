@@ -174,16 +174,16 @@ class mstch_cpp2_enum : public mstch_enum {
         });
   }
   mstch::node is_empty() {
-    return enm_->get_constants().empty();
+    return enm_->get_enum_values().empty();
   }
   mstch::node size() {
-    return std::to_string(enm_->get_constants().size());
+    return std::to_string(enm_->get_enum_values().size());
   }
   mstch::node min() {
-    if (!enm_->get_constants().empty()) {
+    if (!enm_->get_enum_values().empty()) {
       auto e_min = std::min_element(
-          enm_->get_constants().begin(),
-          enm_->get_constants().end(),
+          enm_->get_enum_values().begin(),
+          enm_->get_enum_values().end(),
           [](t_enum_value* a, t_enum_value* b) {
             return a->get_value() < b->get_value();
           });
@@ -192,10 +192,10 @@ class mstch_cpp2_enum : public mstch_enum {
     return mstch::node();
   }
   mstch::node max() {
-    if (!enm_->get_constants().empty()) {
+    if (!enm_->get_enum_values().empty()) {
       auto e_max = std::max_element(
-          enm_->get_constants().begin(),
-          enm_->get_constants().end(),
+          enm_->get_enum_values().begin(),
+          enm_->get_enum_values().end(),
           [](t_enum_value* a, t_enum_value* b) {
             return a->get_value() < b->get_value();
           });

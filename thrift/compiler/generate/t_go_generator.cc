@@ -943,7 +943,7 @@ void t_go_generator::generate_enum(t_enum* tenum) {
   value_mapping << indent() << "var " << tenum_name << "ToValue = map[string]"
                 << tenum_name << " {" << endl;
 
-  vector<t_enum_value*> constants = tenum->get_constants();
+  vector<t_enum_value*> constants = tenum->get_enum_values();
   vector<t_enum_value*>::iterator c_iter;
   int value = -1;
   set<int> seen;

@@ -488,7 +488,7 @@ void t_html_generator::generate_enum(t_enum* tenum) {
   f_out_ << "<h3 id=\"Enum_" << name << "\">Enumeration: " << name
 	 << "</h3>" << endl;
   print_doc(tenum);
-  vector<t_enum_value*> values = tenum->get_constants();
+  vector<t_enum_value*> values = tenum->get_enum_values();
   vector<t_enum_value*>::iterator val_iter;
   f_out_ << "<br/><table>" << endl;
   for (val_iter = values.begin(); val_iter != values.end(); ++val_iter) {

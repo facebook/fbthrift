@@ -852,7 +852,7 @@ void t_android_lite_generator::print_const_value(
 }
 
 void t_android_lite_generator::generate_enum(t_enum* tenum) {
-  const vector<t_enum_value*> e_values = tenum->get_constants();
+  const vector<t_enum_value*> e_values = tenum->get_enum_values();
   vector<t_enum_value*>::const_iterator ev_iter;
   for (ev_iter = e_values.begin(); ev_iter != e_values.end(); ++ev_iter) {
     t_enum_value* val = *ev_iter;

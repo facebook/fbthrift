@@ -168,7 +168,7 @@ bool enum_value_names_uniqueness_validator::visit(t_enum* const tenum) {
 void enum_value_names_uniqueness_validator::validate(
     t_enum const* const tenum) {
   std::unordered_set<std::string> enum_value_names;
-  for (auto const v : tenum->get_constants()) {
+  for (auto const v : tenum->get_enum_values()) {
     if (enum_value_names.count(v->get_name())) {
       add_validation_error(v->get_lineno(), v->get_name(), tenum->get_name());
     }
@@ -201,7 +201,7 @@ void enum_values_uniqueness_validator::validate(t_enum const* const tenum) {
     return;
   }
   std::unordered_map<int32_t, t_enum_value const*> enum_values;
-  for (auto v : tenum->get_constants()) {
+  for (auto v : tenum->get_enum_values()) {
     auto it = enum_values.find(v->get_value());
     if (it != enum_values.end()) {
       add_validation_error(
@@ -228,7 +228,7 @@ bool enum_values_set_validator::visit(t_enum* const tenum) {
 }
 
 void enum_values_set_validator::validate(t_enum const* const tenum) {
-  for (auto v : tenum->get_constants()) {
+  for (auto v : tenum->get_enum_values()) {
     if (!v->has_value()) {
       add_validation_error(v->get_lineno(), v->get_name(), tenum->get_name());
     }

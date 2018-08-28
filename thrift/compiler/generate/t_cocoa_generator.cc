@@ -413,7 +413,7 @@ void t_cocoa_generator::generate_enum(t_enum* tenum) {
   indent_up();
 
 
-  vector<t_enum_value*> constants = tenum->get_constants();
+  vector<t_enum_value*> constants = tenum->get_enum_values();
   vector<t_enum_value*>::iterator c_iter;
   bool first = true;
   for (c_iter = constants.begin(); c_iter != constants.end(); ++c_iter) {
@@ -497,8 +497,8 @@ void t_cocoa_generator::generate_enum_from_string_function(t_enum* tenum) {
 
   indent_up();
 
-  for (auto constant = tenum->get_constants().begin();
-       constant != tenum->get_constants().end();
+  for (auto constant = tenum->get_enum_values().begin();
+       constant != tenum->get_enum_values().end();
        ++constant) {
     string namespacedConstantName =
         cocoa_prefix_ + tenum->get_name() + "_" + (*constant)->get_name();

@@ -308,7 +308,7 @@ void t_ocaml_generator::generate_enum(t_enum* tenum) {
   indent(f_types_) << "type t = " << endl;
   indent(f_types_i_) << "type t = " << endl;
   indent_up();
-  vector<t_enum_value*> constants = tenum->get_constants();
+  vector<t_enum_value*> constants = tenum->get_enum_values();
   vector<t_enum_value*>::iterator c_iter;
   for (c_iter = constants.begin(); c_iter != constants.end(); ++c_iter) {
     string name = capitalize((*c_iter)->get_name());
@@ -394,7 +394,7 @@ string t_ocaml_generator::render_const_value(t_type* type, t_const_value* value)
     }
   } else if (type->is_enum()) {
     t_enum* tenum = (t_enum*)type;
-    vector<t_enum_value*> constants = tenum->get_constants();
+    vector<t_enum_value*> constants = tenum->get_enum_values();
     vector<t_enum_value*>::iterator c_iter;
     for (c_iter = constants.begin(); c_iter != constants.end(); ++c_iter) {
       int32_t val = (*c_iter)->get_value();

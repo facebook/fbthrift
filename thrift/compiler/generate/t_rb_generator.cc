@@ -299,7 +299,7 @@ void t_rb_generator::generate_enum(t_enum* tenum) {
     "module " << capitalize(tenum->get_name()) << endl;
   indent_up();
 
-  vector<t_enum_value*> constants = tenum->get_constants();
+  vector<t_enum_value*> constants = tenum->get_enum_values();
   vector<t_enum_value*>::iterator c_iter;
   for (c_iter = constants.begin(); c_iter != constants.end(); ++c_iter) {
     int32_t value = (*c_iter)->get_value();

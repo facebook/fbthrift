@@ -180,7 +180,7 @@ class t_d_generator : public t_oop_generator {
   }
 
   void generate_enum(t_enum* tenum) override {
-    vector<t_enum_value*> constants = tenum->get_constants();
+    vector<t_enum_value*> constants = tenum->get_enum_values();
 
     string enum_name = tenum->get_name();
     f_types_ <<

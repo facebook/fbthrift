@@ -1003,7 +1003,7 @@ void t_py_generator::generate_enum(t_enum* tenum) {
   to_string_mapping << indent() << "_VALUES_TO_NAMES = {" << endl;
   from_string_mapping << indent() << "_NAMES_TO_VALUES = {" << endl;
 
-  vector<t_enum_value*> constants = tenum->get_constants();
+  vector<t_enum_value*> constants = tenum->get_enum_values();
   vector<t_enum_value*>::iterator c_iter;
   for (c_iter = constants.begin(); c_iter != constants.end(); ++c_iter) {
     int32_t value = (*c_iter)->get_value();

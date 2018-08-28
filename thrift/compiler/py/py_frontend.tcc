@@ -223,7 +223,7 @@ BOOST_PYTHON_MODULE(frontend) {
   class_<t_enum, noncopyable, bases<t_type>>("t_enum", no_init)
       .def("find_value", &t_enum::find_value, policy_rir())
       .add_property(
-          "constants", make_function(&t_enum::get_constants, policy_rir()));
+          "enum_values", make_function(&t_enum::get_enum_values, policy_rir()));
   indexPtrVec<t_enum>("t_enum_vec");
 
   // t_const

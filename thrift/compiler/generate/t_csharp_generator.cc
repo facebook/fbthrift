@@ -205,7 +205,7 @@ void t_csharp_generator::generate_enum(t_enum* tenum) {
     "public enum " << tenum->get_name() << "\n";
   scope_up(f_enum);
 
-  vector<t_enum_value*> constants = tenum->get_constants();
+  vector<t_enum_value*> constants = tenum->get_enum_values();
   vector<t_enum_value*>::iterator c_iter;
   for (c_iter = constants.begin(); c_iter != constants.end(); ++c_iter)
   {

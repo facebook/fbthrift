@@ -194,7 +194,7 @@ void t_java_generator::generate_enum(t_enum* tenum) {
     "public class " << tenum->get_name() << " ";
   scope_up(f_enum);
 
-  vector<t_enum_value*> constants = tenum->get_constants();
+  vector<t_enum_value*> constants = tenum->get_enum_values();
   vector<t_enum_value*>::iterator c_iter;
   for (c_iter = constants.begin(); c_iter != constants.end(); ++c_iter) {
     int32_t value = (*c_iter)->get_value();

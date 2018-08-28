@@ -599,7 +599,7 @@ class CppGenerator(t_generator.Generator):
         result = {}
         order = []
         for i in program.enums:
-            self._generate_fatal_enum_traits(i.name, i.name, i.constants, sns,
+            self._generate_fatal_enum_traits(i.name, i.name, i.enum_values, sns,
                 i.annotations, i.type_id)
             string_ref = self._set_fatal_string(i.name)
             result[i.name] = (i.name, string_ref, string_ref)

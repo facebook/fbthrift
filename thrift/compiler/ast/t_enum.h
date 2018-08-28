@@ -38,16 +38,16 @@ class t_enum : public t_type {
   }
 
   void append(std::unique_ptr<t_enum_value> constant) {
-    constants_raw_.push_back(constant.get());
-    constants_.push_back(std::move(constant));
+    enum_values_raw_.push_back(constant.get());
+    enum_values_.push_back(std::move(constant));
   }
 
-  const std::vector<t_enum_value*>& get_constants() const {
-    return constants_raw_;
+  const std::vector<t_enum_value*>& get_enum_values() const {
+    return enum_values_raw_;
   }
 
   const t_enum_value* find_value(const int32_t enum_value) const {
-    for (auto const& it : constants_) {
+    for (auto const& it : enum_values_) {
       if (it->get_value() == enum_value) {
         return it.get();
       }
@@ -72,9 +72,9 @@ class t_enum : public t_type {
   }
 
  private:
-  std::vector<std::unique_ptr<t_enum_value>> constants_;
+  std::vector<std::unique_ptr<t_enum_value>> enum_values_;
 
-  std::vector<t_enum_value*> constants_raw_;
+  std::vector<t_enum_value*> enum_values_raw_;
 };
 
 } // namespace compiler

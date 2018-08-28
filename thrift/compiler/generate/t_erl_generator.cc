@@ -290,7 +290,7 @@ void t_erl_generator::generate_typedef(t_typedef* /*ttypedef*/) {
  * @param tenum The enumeration
  */
 void t_erl_generator::generate_enum(t_enum* tenum) {
-  vector<t_enum_value*> constants = tenum->get_constants();
+  vector<t_enum_value*> constants = tenum->get_enum_values();
   vector<t_enum_value*>::iterator c_iter;
 
   for (c_iter = constants.begin(); c_iter != constants.end(); ++c_iter) {

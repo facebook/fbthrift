@@ -137,7 +137,7 @@ std::shared_ptr<mstch_base> program_generator::generate(
 
 mstch::node mstch_enum::values() {
   return generate_elements(
-      enm_->get_constants(),
+      enm_->get_enum_values(),
       generators_->enum_value_generator_.get(),
       generators_,
       cache_);
