@@ -1267,7 +1267,7 @@ FieldType:
            */
           auto td = new t_typedef(driver.program, $1, driver.scope_cache);
           $$ = td;
-          driver.program->add_named_placeholder_typedef(td);
+          driver.program->add_placeholder_typedef(std::unique_ptr<t_typedef>{td});
           if ($2 != NULL) {
             $$->annotations_ = $2->annotations_;
             delete $2;

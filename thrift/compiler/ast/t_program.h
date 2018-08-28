@@ -92,8 +92,11 @@ class t_program : public t_doc {
     services_raw_.push_back(ts.get());
     services_.push_back(std::move(ts));
   }
-  void add_named_placeholder_typedef(t_typedef* td) {
-    named_placeholder_typedefs_.push_back(td);
+
+  void add_placeholder_typedef(std::unique_ptr<t_typedef> ptd) {
+    assert(!ptd->is_defined());
+    placeholder_typedefs_raw_.push_back(ptd.get());
+    placeholder_typedefs_.push_back(std::move(ptd));
   }
 
   /**
@@ -120,8 +123,8 @@ class t_program : public t_doc {
   const std::vector<t_service*>& get_services() const {
     return services_raw_;
   }
-  const std::vector<t_typedef*>& get_named_placeholder_typedefs() const {
-    return named_placeholder_typedefs_;
+  const std::vector<t_typedef*>& get_placeholder_typedefs() const {
+    return placeholder_typedefs_raw_;
   }
 
   /**
@@ -252,7 +255,11 @@ class t_program : public t_doc {
   std::vector<std::unique_ptr<t_struct>> xceptions_;
   std::vector<std::unique_ptr<t_service>> services_;
   std::vector<std::unique_ptr<t_include>> includes_;
-  std::vector<t_typedef*> named_placeholder_typedefs_;
+
+  /**
+   * A place to store placeholder typedefs so that they get destroyed.
+   */
+  std::vector<std::unique_ptr<t_typedef>> placeholder_typedefs_;
 
   std::vector<t_typedef*> typedefs_raw_;
   std::vector<t_enum*> enums_raw_;
@@ -261,6 +268,8 @@ class t_program : public t_doc {
   std::vector<t_struct*> xceptions_raw_;
   std::vector<t_service*> services_raw_;
   std::vector<t_include*> includes_raw_;
+
+  std::vector<t_typedef*> placeholder_typedefs_raw_;
 
   std::string path_; // initialized in ctor init-list
   std::string name_{compute_name_from_file_path(path_)};
