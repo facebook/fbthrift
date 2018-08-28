@@ -102,6 +102,7 @@ else:
                         ca_certs=None, keyfile=None, certfile=None,
                         disable_weaker_versions=True):
         ctx = ssl.SSLContext(ssl_version)
+        ctx.verify_mode = cert_reqs
         if certfile is not None:
             ctx.load_cert_chain(
                 certfile=certfile,
@@ -273,9 +274,10 @@ class TSSLServerSocket(TServerSocket):
     This uses the ssl module's wrap_socket() method to provide SSL
     negotiated encryption.
     """
-    SSL_VERSION = ssl.PROTOCOL_TLSv1
 
-    def __init__(self, port=9090, certfile='cert.pem', unix_socket=None):
+    def __init__(self, port=9090, ssl_version=ssl.PROTOCOL_TLSv1,
+                 cert_reqs=ssl.CERT_NONE, ca_certs=None, certfile='cert.pem',
+                 unix_socket=None):
         """Initialize a TSSLServerSocket
 
         @param certfile: The filename of the server certificate file, defaults
@@ -285,7 +287,8 @@ class TSSLServerSocket(TServerSocket):
         @type port: int
         """
         self.setCertfile(certfile)
-        self.setCertReqs(ssl.CERT_NONE, None)
+        self.setCertReqs(cert_reqs, ca_certs)
+        self.ssl_version = ssl_version
         TServerSocket.__init__(self, port, unix_socket)
 
     def setCertfile(self, certfile):
@@ -317,7 +320,7 @@ class TSSLServerSocket(TServerSocket):
             client = ssl.wrap_socket(plain_client,
                                      certfile=self.certfile,
                                      server_side=True,
-                                     ssl_version=self.SSL_VERSION,
+                                     ssl_version=self.ssl_version,
                                      cert_reqs=self.cert_reqs,
                                      ca_certs=self.ca_certs)
         except ssl.SSLError:
