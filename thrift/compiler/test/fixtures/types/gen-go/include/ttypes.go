@@ -27,15 +27,3 @@ type SomeListOfTypeMap []SomeMap
 
 func SomeListOfTypeMapPtr(v SomeListOfTypeMap) *SomeListOfTypeMap { return &v }
 
-type SimpleString string
-
-func SimpleStringPtr(v SimpleString) *SimpleString { return &v }
-
-type SimpleStringAlias SimpleString
-
-func SimpleStringAliasPtr(v SimpleStringAlias) *SimpleStringAlias { return &v }
-
-type SimpleStringAliasTwo SimpleStringAlias
-
-func SimpleStringAliasTwoPtr(v SimpleStringAliasTwo) *SimpleStringAliasTwo { return &v }
-

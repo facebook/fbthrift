@@ -339,6 +339,3 @@ Sequence.register(List__std_unordered_map__Map__i32_string)
 
 SomeMap = std_unordered_map__Map__i32_string
 SomeListOfTypeMap = List__std_unordered_map__Map__i32_string
-SimpleString = str
-SimpleStringAlias = str
-SimpleStringAliasTwo = str

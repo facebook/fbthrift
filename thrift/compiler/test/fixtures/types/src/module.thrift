@@ -18,8 +18,6 @@ struct ContainerStruct {
   6: set<i32> (cpp.template = "folly::sorted_vector_set") fieldF
   7: map<i32, string> (cpp.template = "folly::sorted_vector_map") fieldG
   8: include.SomeMap fieldH
-  9: map<include.SimpleStringAliasTwo, include.SimpleStringAlias>
-    (cpp.template = "folly::sorted_vector_map") fieldI
 }
 
 struct CppTypeStruct {

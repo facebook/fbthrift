@@ -4137,9 +4137,8 @@ string t_go_generator::type_to_enum(t_type* type) {
 string t_go_generator::type_to_go_key_type(t_type* type) {
   t_type* resolved_type = type;
 
-  if (resolved_type->is_typedef() &&
-      !((t_typedef*)resolved_type)->is_defined()) {
-    resolved_type = ((t_typedef*)resolved_type)->get_type();
+  while (resolved_type->is_typedef()) {
+    resolved_type = ((t_typedef*)resolved_type)->get_type()->get_true_type();
   }
 
   if (resolved_type->is_map() || resolved_type->is_list() ||
@@ -4171,7 +4170,7 @@ string t_go_generator::type_to_go_type_with_opt(
   string maybe_pointer(optional_field ? "*" : "");
 
   if (type->is_typedef() && !((t_typedef*)type)->is_defined()) {
-    type = ((t_typedef*)type)->get_type();
+    type = ((t_typedef*)type)->get_true_type();
   }
 
   if (type->is_base_type()) {

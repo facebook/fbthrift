@@ -514,8 +514,7 @@ cdef class ContainerStruct(thrift.py3.types.Struct):
         fieldE=None,
         fieldF=None,
         fieldG=None,
-        fieldH=None,
-        fieldI=None
+        fieldH=None
     ):
         self._cpp_obj = move(ContainerStruct._make_instance(
           NULL,
@@ -527,7 +526,6 @@ cdef class ContainerStruct(thrift.py3.types.Struct):
           fieldF,
           fieldG,
           fieldH,
-          fieldI,
         ))
 
     def __call__(
@@ -539,8 +537,7 @@ cdef class ContainerStruct(thrift.py3.types.Struct):
         fieldE=__NOTSET,
         fieldF=__NOTSET,
         fieldG=__NOTSET,
-        fieldH=__NOTSET,
-        fieldI=__NOTSET
+        fieldH=__NOTSET
     ):
         changes = any((
             fieldA is not __NOTSET,
@@ -558,8 +555,6 @@ cdef class ContainerStruct(thrift.py3.types.Struct):
             fieldG is not __NOTSET,
 
             fieldH is not __NOTSET,
-
-            fieldI is not __NOTSET,
         ))
 
         if not changes:
@@ -576,7 +571,6 @@ cdef class ContainerStruct(thrift.py3.types.Struct):
           fieldF,
           fieldG,
           fieldH,
-          fieldI,
         ))
         return inst
 
@@ -590,8 +584,7 @@ cdef class ContainerStruct(thrift.py3.types.Struct):
         object fieldE,
         object fieldF,
         object fieldG,
-        object fieldH,
-        object fieldI
+        object fieldH
     ) except *:
         cdef unique_ptr[cContainerStruct] c_inst
         if base_instance:
@@ -657,13 +650,6 @@ cdef class ContainerStruct(thrift.py3.types.Struct):
             elif fieldH is __NOTSET:
                 fieldH = None
 
-            if fieldI is None:
-                deref(c_inst).fieldI = _ContainerStruct_defaults.fieldI
-                deref(c_inst).__isset.fieldI = False
-                pass
-            elif fieldI is __NOTSET:
-                fieldI = None
-
         if fieldA is not None:
             deref(c_inst).fieldA = deref(List__i32(fieldA)._cpp_obj)
             deref(c_inst).__isset.fieldA = True
@@ -688,9 +674,6 @@ cdef class ContainerStruct(thrift.py3.types.Struct):
         if fieldH is not None:
             deref(c_inst).fieldH = deref(std_unordered_map__Map__i32_string(fieldH)._cpp_obj)
             deref(c_inst).__isset.fieldH = True
-        if fieldI is not None:
-            deref(c_inst).fieldI = deref(folly_sorted_vector_map__Map__string_string(fieldI)._cpp_obj)
-            deref(c_inst).__isset.fieldI = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
         return move_unique(c_inst)
@@ -704,10 +687,9 @@ cdef class ContainerStruct(thrift.py3.types.Struct):
         yield 'fieldF', self.fieldF
         yield 'fieldG', self.fieldG
         yield 'fieldH', self.fieldH
-        yield 'fieldI', self.fieldI
 
     def __bool__(self):
-        return True or True or True or True or True or True or True or True or True
+        return True or True or True or True or True or True or True or True
 
     @staticmethod
     cdef create(shared_ptr[cContainerStruct] cpp_obj):
@@ -771,13 +753,6 @@ cdef class ContainerStruct(thrift.py3.types.Struct):
             self.__fieldH = std_unordered_map__Map__i32_string.create(make_shared[std_unordered_map[int32_t,string]](deref(self._cpp_obj).fieldH))
         return self.__fieldH
 
-    @property
-    def fieldI(self):
-
-        if self.__fieldI is None:
-            self.__fieldI = folly_sorted_vector_map__Map__string_string.create(make_shared[folly_sorted_vector_map[string,string]](deref(self._cpp_obj).fieldI))
-        return self.__fieldI
-
 
     def __hash__(ContainerStruct self):
         if not self.__hash:
@@ -790,12 +765,11 @@ cdef class ContainerStruct(thrift.py3.types.Struct):
             self.fieldF,
             self.fieldG,
             self.fieldH,
-            self.fieldI,
             ))
         return self.__hash
 
     def __repr__(ContainerStruct self):
-        return f'ContainerStruct(fieldA={repr(self.fieldA)}, fieldB={repr(self.fieldB)}, fieldC={repr(self.fieldC)}, fieldD={repr(self.fieldD)}, fieldE={repr(self.fieldE)}, fieldF={repr(self.fieldF)}, fieldG={repr(self.fieldG)}, fieldH={repr(self.fieldH)}, fieldI={repr(self.fieldI)})'
+        return f'ContainerStruct(fieldA={repr(self.fieldA)}, fieldB={repr(self.fieldB)}, fieldC={repr(self.fieldC)}, fieldD={repr(self.fieldD)}, fieldE={repr(self.fieldE)}, fieldF={repr(self.fieldF)}, fieldG={repr(self.fieldG)}, fieldH={repr(self.fieldH)})'
     def __richcmp__(self, other, op):
         cdef int cop = op
         if cop not in (2, 3):
@@ -3820,132 +3794,6 @@ cdef class folly_sorted_vector_map__Map__i32_string:
 
 
 Mapping.register(folly_sorted_vector_map__Map__i32_string)
-
-cdef class folly_sorted_vector_map__Map__string_string:
-    def __init__(self, items=None):
-        if isinstance(items, folly_sorted_vector_map__Map__string_string):
-            self._cpp_obj = (<folly_sorted_vector_map__Map__string_string> items)._cpp_obj
-        else:
-            self._cpp_obj = move(folly_sorted_vector_map__Map__string_string._make_instance(items))
-
-    @staticmethod
-    cdef create(shared_ptr[folly_sorted_vector_map[string,string]] c_items):
-        inst = <folly_sorted_vector_map__Map__string_string>folly_sorted_vector_map__Map__string_string.__new__(folly_sorted_vector_map__Map__string_string)
-        inst._cpp_obj = c_items
-        return inst
-
-    @staticmethod
-    cdef unique_ptr[folly_sorted_vector_map[string,string]] _make_instance(object items) except *:
-        cdef unique_ptr[folly_sorted_vector_map[string,string]] c_inst = make_unique[folly_sorted_vector_map[string,string]]()
-        if items is not None:
-            for key, item in items.items():
-                if not isinstance(key, str):
-                    raise TypeError(f"{key!r} is not of type str")
-                if not isinstance(item, str):
-                    raise TypeError(f"{item!r} is not of type str")
-
-                deref(c_inst)[key.encode('UTF-8')] = item.encode('UTF-8')
-        return move_unique(c_inst)
-
-    def __getitem__(self, key):
-        err = KeyError(f'{key}')
-        if not self or key is None:
-            raise err
-        if not isinstance(key, str):
-            raise err
-        cdef string ckey = key.encode('UTF-8')
-        cdef folly_sorted_vector_map[string,string].iterator iter = deref(
-            self._cpp_obj).find(ckey)
-        if iter == deref(self._cpp_obj).end():
-            raise err
-        cdef string citem = deref(iter).second
-        return bytes(citem).decode('UTF-8')
-
-    def __len__(self):
-        return deref(self._cpp_obj).size()
-
-    def __iter__(self):
-        if not self:
-            raise StopIteration
-        cdef string citem
-        for pair in deref(self._cpp_obj):
-            citem = pair.first
-            yield bytes(citem).decode('UTF-8')
-
-    def __richcmp__(self, other, op):
-        cdef int cop = op
-        if cop not in (2, 3):
-            raise TypeError("unorderable types: {}, {}".format(type(self), type(other)))
-        if not (isinstance(self, Mapping) and isinstance(other, Mapping)):
-            return cop != 2
-        if (len(self) != len(other)):
-            return cop != 2
-
-        for key in self:
-            if key not in other:
-                return cop != 2
-            if other[key] != self[key]:
-                return cop != 2
-
-        return cop == 2
-
-    def __hash__(self):
-        if not self.__hash:
-            self.__hash = hash(tuple(self.items()))
-        return self.__hash
-
-    def __repr__(self):
-        if not self:
-            return 'i{}'
-        return f'i{{{", ".join(map(lambda i: f"{repr(i[0])}: {repr(i[1])}", self.items()))}}}'
-
-    def __contains__(self, key):
-        if not self or key is None:
-            return False
-        if not isinstance(key, str):
-            return False
-        cdef string ckey = key.encode('UTF-8')
-        return deref(self._cpp_obj).count(ckey) > 0
-
-    def get(self, key, default=None):
-        if not self or key is None:
-            return default
-        try:
-            if not isinstance(key, str):
-                key = str(key)
-        except Exception:
-            return default
-        if not isinstance(key, str):
-            return default
-        if key not in self:
-            return default
-        return self[key]
-
-    def keys(self):
-        return self.__iter__()
-
-    def values(self):
-        if not self:
-            raise StopIteration
-        cdef string citem
-        for pair in deref(self._cpp_obj):
-            citem = pair.second
-            yield bytes(citem).decode('UTF-8')
-
-    def items(self):
-        if not self:
-            raise StopIteration
-        cdef string ckey
-        cdef string citem
-        for pair in deref(self._cpp_obj):
-            ckey = pair.first
-            citem = pair.second
-
-            yield (ckey.decode('UTF-8'), bytes(citem).decode('UTF-8'))
-
-
-
-Mapping.register(folly_sorted_vector_map__Map__string_string)
 
 cdef class std_list_int32_t__List__i32:
     def __init__(self, items=None):

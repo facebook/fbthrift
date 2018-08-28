@@ -26,7 +26,7 @@ type SomeService interface {
   BounceMap(m include0.SomeMap) (r include0.SomeMap, err error)
   // Parameters:
   //  - R
-  BinaryKeyedMap(r []int64) (r map[TBinary]int64, err error)
+  BinaryKeyedMap(r []int64) (r map[string]int64, err error)
 }
 
 type SomeServiceClient struct {
@@ -108,16 +108,16 @@ func (p *SomeServiceClient) recvBounceMap() (value include0.SomeMap, err error) 
     return
   }
   if mTypeId == thrift.EXCEPTION {
-    error16 := thrift.NewApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
-    var error17 error
-    error17, err = error16.Read(iprot)
+    error14 := thrift.NewApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
+    var error15 error
+    error15, err = error14.Read(iprot)
     if err != nil {
       return
     }
     if err = iprot.ReadMessageEnd(); err != nil {
       return
     }
-    err = error17
+    err = error15
     return
   }
   if mTypeId != thrift.REPLY {
@@ -137,7 +137,7 @@ func (p *SomeServiceClient) recvBounceMap() (value include0.SomeMap, err error) 
 
 // Parameters:
 //  - R
-func (p *SomeServiceClient) BinaryKeyedMap(r []int64) (r map[TBinary]int64, err error) {
+func (p *SomeServiceClient) BinaryKeyedMap(r []int64) (r map[string]int64, err error) {
   if err = p.sendBinaryKeyedMap(r); err != nil { return }
   return p.recvBinaryKeyedMap()
 }
@@ -165,7 +165,7 @@ func (p *SomeServiceClient) sendBinaryKeyedMap(r []int64)(err error) {
 }
 
 
-func (p *SomeServiceClient) recvBinaryKeyedMap() (value map[TBinary]int64, err error) {
+func (p *SomeServiceClient) recvBinaryKeyedMap() (value map[string]int64, err error) {
   iprot := p.InputProtocol
   if iprot == nil {
     iprot = p.ProtocolFactory.GetProtocol(p.Transport)
@@ -184,16 +184,16 @@ func (p *SomeServiceClient) recvBinaryKeyedMap() (value map[TBinary]int64, err e
     return
   }
   if mTypeId == thrift.EXCEPTION {
-    error18 := thrift.NewApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
-    var error19 error
-    error19, err = error18.Read(iprot)
+    error16 := thrift.NewApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
+    var error17 error
+    error17, err = error16.Read(iprot)
     if err != nil {
       return
     }
     if err = iprot.ReadMessageEnd(); err != nil {
       return
     }
-    err = error19
+    err = error17
     return
   }
   if mTypeId != thrift.REPLY {
@@ -292,16 +292,16 @@ func (p *SomeServiceThreadsafeClient) recvBounceMap() (value include0.SomeMap, e
     return
   }
   if mTypeId == thrift.EXCEPTION {
-    error20 := thrift.NewApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
-    var error21 error
-    error21, err = error20.Read(iprot)
+    error18 := thrift.NewApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
+    var error19 error
+    error19, err = error18.Read(iprot)
     if err != nil {
       return
     }
     if err = iprot.ReadMessageEnd(); err != nil {
       return
     }
-    err = error21
+    err = error19
     return
   }
   if mTypeId != thrift.REPLY {
@@ -321,7 +321,7 @@ func (p *SomeServiceThreadsafeClient) recvBounceMap() (value include0.SomeMap, e
 
 // Parameters:
 //  - R
-func (p *SomeServiceThreadsafeClient) BinaryKeyedMap(r []int64) (r map[TBinary]int64, err error) {
+func (p *SomeServiceThreadsafeClient) BinaryKeyedMap(r []int64) (r map[string]int64, err error) {
   p.Mu.Lock()
   defer p.Mu.Unlock()
   if err = p.sendBinaryKeyedMap(r); err != nil { return }
@@ -351,7 +351,7 @@ func (p *SomeServiceThreadsafeClient) sendBinaryKeyedMap(r []int64)(err error) {
 }
 
 
-func (p *SomeServiceThreadsafeClient) recvBinaryKeyedMap() (value map[TBinary]int64, err error) {
+func (p *SomeServiceThreadsafeClient) recvBinaryKeyedMap() (value map[string]int64, err error) {
   iprot := p.InputProtocol
   if iprot == nil {
     iprot = p.ProtocolFactory.GetProtocol(p.Transport)
@@ -370,16 +370,16 @@ func (p *SomeServiceThreadsafeClient) recvBinaryKeyedMap() (value map[TBinary]in
     return
   }
   if mTypeId == thrift.EXCEPTION {
-    error22 := thrift.NewApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
-    var error23 error
-    error23, err = error22.Read(iprot)
+    error20 := thrift.NewApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
+    var error21 error
+    error21, err = error20.Read(iprot)
     if err != nil {
       return
     }
     if err = iprot.ReadMessageEnd(); err != nil {
       return
     }
-    err = error23
+    err = error21
     return
   }
   if mTypeId != thrift.REPLY {
@@ -419,10 +419,10 @@ func (p *SomeServiceProcessor) ProcessorMap() map[string]thrift.ProcessorFunctio
 }
 
 func NewSomeServiceProcessor(handler SomeService) *SomeServiceProcessor {
-  self24 := &SomeServiceProcessor{handler:handler, processorMap:make(map[string]thrift.ProcessorFunction)}
-  self24.processorMap["bounce_map"] = &someServiceProcessorBounceMap{handler:handler}
-  self24.processorMap["binary_keyed_map"] = &someServiceProcessorBinaryKeyedMap{handler:handler}
-  return self24
+  self22 := &SomeServiceProcessor{handler:handler, processorMap:make(map[string]thrift.ProcessorFunction)}
+  self22.processorMap["bounce_map"] = &someServiceProcessorBounceMap{handler:handler}
+  self22.processorMap["binary_keyed_map"] = &someServiceProcessorBinaryKeyedMap{handler:handler}
+  return self22
 }
 
 type someServiceProcessorBounceMap struct {
@@ -582,19 +582,19 @@ func (p *SomeServiceBounceMapArgs)  ReadField1(iprot thrift.Protocol) error {
   tMap := make(include0.SomeMap, size)
   p.M =  tMap
   for i := 0; i < size; i ++ {
-var _key26 int32
+var _key24 int32
     if v, err := iprot.ReadI32(); err != nil {
     return thrift.PrependError("error reading field 0: ", err)
 } else {
-    _key26 = v
+    _key24 = v
 }
-var _val27 string
+var _val25 string
     if v, err := iprot.ReadString(); err != nil {
     return thrift.PrependError("error reading field 0: ", err)
 } else {
-    _val27 = v
+    _val25 = v
 }
-    p.M[_key26] = _val27
+    p.M[_key24] = _val25
   }
   if err := iprot.ReadMapEnd(); err != nil {
     return thrift.PrependError("error reading map end: ", err)
@@ -699,19 +699,19 @@ func (p *SomeServiceBounceMapResult)  ReadField0(iprot thrift.Protocol) error {
   tMap := make(include0.SomeMap, size)
   p.Success =  tMap
   for i := 0; i < size; i ++ {
-var _key28 int32
+var _key26 int32
     if v, err := iprot.ReadI32(); err != nil {
     return thrift.PrependError("error reading field 0: ", err)
 } else {
-    _key28 = v
+    _key26 = v
 }
-var _val29 string
+var _val27 string
     if v, err := iprot.ReadString(); err != nil {
     return thrift.PrependError("error reading field 0: ", err)
 } else {
-    _val29 = v
+    _val27 = v
 }
-    p.Success[_key28] = _val29
+    p.Success[_key26] = _val27
   }
   if err := iprot.ReadMapEnd(); err != nil {
     return thrift.PrependError("error reading map end: ", err)
@@ -813,13 +813,13 @@ func (p *SomeServiceBinaryKeyedMapArgs)  ReadField1(iprot thrift.Protocol) error
   tSlice := make([]int64, 0, size)
   p.R =  tSlice
   for i := 0; i < size; i ++ {
-var _elem30 int64
+var _elem28 int64
     if v, err := iprot.ReadI64(); err != nil {
     return thrift.PrependError("error reading field 0: ", err)
 } else {
-    _elem30 = v
+    _elem28 = v
 }
-    p.R = append(p.R, _elem30)
+    p.R = append(p.R, _elem28)
   }
   if err := iprot.ReadListEnd(); err != nil {
     return thrift.PrependError("error reading list end: ", err)
@@ -866,16 +866,16 @@ func (p *SomeServiceBinaryKeyedMapArgs) String() string {
 // Attributes:
 //  - Success
 type SomeServiceBinaryKeyedMapResult struct {
-  Success map[TBinary]int64 `thrift:"success,0" db:"success" json:"success,omitempty"`
+  Success map[string]int64 `thrift:"success,0" db:"success" json:"success,omitempty"`
 }
 
 func NewSomeServiceBinaryKeyedMapResult() *SomeServiceBinaryKeyedMapResult {
   return &SomeServiceBinaryKeyedMapResult{}
 }
 
-var SomeServiceBinaryKeyedMapResult_Success_DEFAULT map[TBinary]int64
+var SomeServiceBinaryKeyedMapResult_Success_DEFAULT map[string]int64
 
-func (p *SomeServiceBinaryKeyedMapResult) GetSuccess() map[TBinary]int64 {
+func (p *SomeServiceBinaryKeyedMapResult) GetSuccess() map[string]int64 {
   return p.Success
 }
 func (p *SomeServiceBinaryKeyedMapResult) IsSetSuccess() bool {
@@ -919,22 +919,22 @@ func (p *SomeServiceBinaryKeyedMapResult)  ReadField0(iprot thrift.Protocol) err
   if err != nil {
     return thrift.PrependError("error reading map begin: ", err)
   }
-  tMap := make(map[TBinary]int64, size)
+  tMap := make(map[string]int64, size)
   p.Success =  tMap
   for i := 0; i < size; i ++ {
-var _key31 TBinary
+var _key29 string
     if v, err := iprot.ReadString(); err != nil {
     return thrift.PrependError("error reading field 0: ", err)
 } else {
-    _key31 = v
+    _key29 = v
 }
-var _val32 int64
+var _val30 int64
     if v, err := iprot.ReadI64(); err != nil {
     return thrift.PrependError("error reading field 0: ", err)
 } else {
-    _val32 = v
+    _val30 = v
 }
-    p.Success[_key31] = _val32
+    p.Success[_key29] = _val30
   }
   if err := iprot.ReadMapEnd(); err != nil {
     return thrift.PrependError("error reading map end: ", err)
