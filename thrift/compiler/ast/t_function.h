@@ -41,36 +41,6 @@ class t_function : public t_doc {
    * @param returntype  - The type of the value that will be returned
    * @param name        - The symbolic name of the function
    * @param arglist     - The parameters that are passed to the functions
-   * @param annotations - Optional args that add more functionality
-   * @param oneway      - Determines if it is a one way function
-   */
-  t_function(
-      t_type* returntype,
-      std::string name,
-      std::unique_ptr<t_struct> arglist,
-      t_type* annotations = nullptr,
-      bool oneway = false)
-      : returntype_(returntype),
-        name_(name),
-        arglist_(std::move(arglist)),
-        annotations_(annotations),
-        oneway_(oneway) {
-    xceptions_ = std::make_unique<t_struct>(nullptr);
-    stream_xceptions_ = std::make_unique<t_struct>(nullptr);
-
-    if (oneway_) {
-      if (returntype_ == nullptr || !returntype_->is_void()) {
-        throw std::string("Oneway methods must have void return type.");
-      }
-    }
-  }
-
-  /**
-   * Constructor for t_function
-   *
-   * @param returntype  - The type of the value that will be returned
-   * @param name        - The symbolic name of the function
-   * @param arglist     - The parameters that are passed to the functions
    * @param xceptions   - Declare the exceptions that function might throw
    * @param stream_xceptions - Exceptions to be sent via the stream
    * @param annotations - Optional args that add more functionality
@@ -80,16 +50,16 @@ class t_function : public t_doc {
       t_type* returntype,
       std::string name,
       std::unique_ptr<t_struct> arglist,
-      std::unique_ptr<t_struct> xceptions,
-      std::unique_ptr<t_struct> stream_xceptions,
-      t_type* annotations = nullptr,
+      std::unique_ptr<t_struct> xceptions = nullptr,
+      std::unique_ptr<t_struct> stream_xceptions = nullptr,
+      std::unique_ptr<t_type> annotations = nullptr,
       bool oneway = false)
       : returntype_(returntype),
         name_(name),
         arglist_(std::move(arglist)),
         xceptions_(std::move(xceptions)),
         stream_xceptions_(std::move(stream_xceptions)),
-        annotations_(annotations),
+        annotations_(std::move(annotations)),
         oneway_(oneway) {
     if (oneway_) {
       if (!xceptions_->get_members().empty()) {
@@ -99,6 +69,10 @@ class t_function : public t_doc {
       if (returntype_ == nullptr || !returntype_->is_void()) {
         throw std::string("Oneway methods must have void return type.");
       }
+    }
+
+    if (!xceptions_) {
+      xceptions_ = std::make_unique<t_struct>(nullptr);
     }
 
     if (!stream_xceptions_) {
@@ -138,7 +112,7 @@ class t_function : public t_doc {
   }
 
   t_type* get_annotations() const {
-    return annotations_;
+    return annotations_.get();
   }
 
   bool is_oneway() const {
@@ -166,7 +140,7 @@ class t_function : public t_doc {
   std::unique_ptr<t_struct> arglist_;
   std::unique_ptr<t_struct> xceptions_;
   std::unique_ptr<t_struct> stream_xceptions_;
-  t_type* annotations_;
+  std::unique_ptr<t_type> annotations_;
   bool oneway_;
 };
 

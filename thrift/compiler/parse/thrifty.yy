@@ -905,6 +905,7 @@ Service:
       $$->set_lineno(lineno_stack.pop(LineType::kService));
       if ($10) {
         $$->annotations_ = $10->annotations_;
+        delete $10;
       }
     }
 
@@ -964,7 +965,7 @@ Function:
         std::unique_ptr<t_struct>(arglist),
         std::unique_ptr<t_struct>($8.first),
         std::unique_ptr<t_struct>($8.second),
-        $9,
+        std::unique_ptr<t_type>($9),
         $2
       );
       $$ = func;
