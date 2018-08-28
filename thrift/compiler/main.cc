@@ -51,26 +51,6 @@ using namespace std;
 /**
  * Flags to control code generation
  */
-bool gen_cpp = false;
-bool gen_dense = false;
-bool gen_java = false;
-bool gen_javabean = false;
-bool gen_rb = false;
-bool gen_py = false;
-bool gen_py_newstyle = false;
-bool gen_php = false;
-bool gen_phpi = false;
-bool gen_phps = true;
-bool gen_phpa = false;
-bool gen_phpo = false;
-bool gen_rest = false;
-bool gen_perl = false;
-bool gen_erl = false;
-bool gen_ocaml = false;
-bool gen_hs = false;
-bool gen_cocoa = false;
-bool gen_csharp = false;
-bool gen_st = false;
 bool gen_recurse = false;
 
 ofstream genfile_file;
@@ -427,54 +407,6 @@ int main(int argc, char** argv) {
         usage();
       }
       generator_strings.push_back(arguments[++i]);
-    } else if (arguments[i] == "-dense") {
-      gen_dense = true;
-    } else if (arguments[i] == "-cpp") {
-      gen_cpp = true;
-    } else if (arguments[i] == "-javabean") {
-      gen_javabean = true;
-    } else if (arguments[i] == "-java") {
-      gen_java = true;
-    } else if (arguments[i] == "-php") {
-      gen_php = true;
-    } else if (arguments[i] == "-phpi") {
-      gen_phpi = true;
-    } else if (arguments[i] == "-phps") {
-      gen_php = true;
-      gen_phps = true;
-    } else if (arguments[i] == "-phpl") {
-      gen_php = true;
-      gen_phps = false;
-    } else if (arguments[i] == "-phpa") {
-      gen_php = true;
-      gen_phps = false;
-      gen_phpa = true;
-    } else if (arguments[i] == "-phpo") {
-      gen_php = true;
-      gen_phpo = true;
-    } else if (arguments[i] == "-rest") {
-      gen_rest = true;
-    } else if (arguments[i] == "-py") {
-      gen_py = true;
-    } else if (arguments[i] == "-pyns") {
-      gen_py = true;
-      gen_py_newstyle = true;
-    } else if (arguments[i] == "-rb") {
-      gen_rb = true;
-    } else if (arguments[i] == "-perl") {
-      gen_perl = true;
-    } else if (arguments[i] == "-erl") {
-      gen_erl = true;
-    } else if (arguments[i] == "-ocaml") {
-      gen_ocaml = true;
-    } else if (arguments[i] == "-hs") {
-      gen_hs = true;
-    } else if (arguments[i] == "-cocoa") {
-      gen_cocoa = true;
-    } else if (arguments[i] == "-st") {
-      gen_st = true;
-    } else if (arguments[i] == "-csharp") {
-      gen_csharp = true;
     } else if (arguments[i] == "-cpp_use_include_prefix") {
       g_cpp_use_include_prefix = true;
     } else if (arguments[i] == "-I") {
@@ -566,79 +498,6 @@ int main(int argc, char** argv) {
       fprintf(stderr, "!!! Unrecognized option: %s\n", arguments[i].c_str());
       usage();
     }
-  }
-
-  // TODO(dreiss): Delete these when everyone is using the new hotness.
-  if (gen_cpp) {
-    pwarning(1, "-cpp is deprecated.  Use --gen cpp");
-    string gen_string = "cpp:";
-    if (gen_dense) {
-      gen_string.append("dense,");
-    }
-    if (g_cpp_use_include_prefix) {
-      gen_string.append("include_prefix,");
-    }
-    generator_strings.push_back(gen_string);
-  }
-  if (gen_java) {
-    pwarning(1, "-java is deprecated.  Use --gen java");
-    generator_strings.push_back("java");
-  }
-  if (gen_javabean) {
-    pwarning(1, "-javabean is deprecated.  Use --gen java:beans");
-    generator_strings.push_back("java:beans");
-  }
-  if (gen_csharp) {
-    pwarning(1, "-csharp is deprecated.  Use --gen csharp");
-    generator_strings.push_back("csharp");
-  }
-  if (gen_py) {
-    pwarning(1, "-py is deprecated.  Use --gen py");
-    generator_strings.push_back("py");
-  }
-  if (gen_rb) {
-    pwarning(1, "-rb is deprecated.  Use --gen rb");
-    generator_strings.push_back("rb");
-  }
-  if (gen_perl) {
-    pwarning(1, "-perl is deprecated.  Use --gen perl");
-    generator_strings.push_back("perl");
-  }
-  if (gen_php || gen_phpi) {
-    pwarning(1, "-php is deprecated.  Use --gen php");
-    string gen_string = "php:";
-    if (gen_phpi) {
-      gen_string.append("inlined,");
-    } else if (gen_phps) {
-      gen_string.append("server,");
-    } else if (gen_phpa) {
-      gen_string.append("autoload,");
-    } else if (gen_phpo) {
-      gen_string.append("oop,");
-    } else if (gen_rest) {
-      gen_string.append("rest,");
-    }
-    generator_strings.push_back(gen_string);
-  }
-  if (gen_cocoa) {
-    pwarning(1, "-cocoa is deprecated.  Use --gen cocoa");
-    generator_strings.push_back("cocoa");
-  }
-  if (gen_erl) {
-    pwarning(1, "-erl is deprecated.  Use --gen erl");
-    generator_strings.push_back("erl");
-  }
-  if (gen_st) {
-    pwarning(1, "-st is deprecated.  Use --gen st");
-    generator_strings.push_back("st");
-  }
-  if (gen_ocaml) {
-    pwarning(1, "-ocaml is deprecated.  Use --gen ocaml");
-    generator_strings.push_back("ocaml");
-  }
-  if (gen_hs) {
-    pwarning(1, "-hs is deprecated.  Use --gen hs");
-    generator_strings.push_back("hs");
   }
 
   // You gotta generate something!
