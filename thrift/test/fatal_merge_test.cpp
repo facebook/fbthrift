@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-#include <thrift/lib/cpp2/fatal/debug.h>
-#include <thrift/lib/cpp2/fatal/merge.h>
-#include <thrift/lib/cpp2/fatal/pretty_print.h>
+#include <thrift/lib/cpp2/reflection/debug.h>
+#include <thrift/lib/cpp2/reflection/merge.h>
+#include <thrift/lib/cpp2/reflection/pretty_print.h>
 
 #include <thrift/test/gen-cpp2/fatal_merge_constants.h>
 #include <thrift/test/gen-cpp2/fatal_merge_types.h>

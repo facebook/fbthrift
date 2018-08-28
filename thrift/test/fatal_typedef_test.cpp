@@ -16,7 +16,7 @@
 
 #include <thrift/test/gen-cpp2/reflection_fatal_struct.h>
 
-#include <thrift/lib/cpp2/fatal/internal/test_helpers.h>
+#include <thrift/lib/cpp2/reflection/internal/test_helpers.h>
 
 #include <gtest/gtest.h>
 

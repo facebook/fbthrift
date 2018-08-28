@@ -206,7 +206,7 @@ class CppGenerator(t_generator.Generator):
         self.fatal_detail_ns = 'thrift_fatal_impl_detail'
         context = self._make_context(name + '_fatal')
         with get_global_scope(CppPrimitiveFactory, context) as sg:
-            sg('#include <thrift/lib/cpp2/fatal/reflection.h>')
+            sg('#include <thrift/lib/cpp2/reflection/reflection.h>')
             sg()
             sg('#include <fatal/type/list.h>')
             sg('#include <fatal/type/pair.h>')

@@ -20,7 +20,7 @@
 
 #include <folly/Utility.h>
 #include <folly/Traits.h>
-#include <thrift/lib/cpp2/fatal/internal/test_helpers.h>
+#include <thrift/lib/cpp2/reflection/internal/test_helpers.h>
 
 namespace {
 

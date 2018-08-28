@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include <thrift/lib/cpp2/fatal/pretty_print.h>
+#include <thrift/lib/cpp2/reflection/pretty_print.h>
 
 #include <folly/String.h>
 

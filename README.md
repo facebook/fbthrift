@@ -88,7 +88,7 @@ This generates a library called: `file_name-language`. That is, for `Test.thrift
 ---
 
 ## C++ Static Reflection
-Information regarding C++ Static Reflection support can be found under the [static reflection library directory](thrift/lib/cpp2/fatal/), in the corresponding [`README` file](thrift/lib/cpp2/fatal/README.md).
+Information regarding C++ Static Reflection support can be found under the [static reflection library directory](thrift/lib/cpp2/reflection/), in the corresponding [`README` file](thrift/lib/cpp2/reflection/README.md).
 
 ---
 

@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#include <thrift/lib/cpp2/fatal/container_traits.h>
-#include <thrift/lib/cpp2/fatal/traits_test_helpers.h>
+#include <thrift/lib/cpp2/reflection/container_traits.h>
+#include <thrift/lib/cpp2/reflection/traits_test_helpers.h>
 
 namespace std {
 static void PrintTo(deque<int>::iterator it, ostream* o) {

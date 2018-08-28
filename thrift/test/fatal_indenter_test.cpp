@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include <thrift/lib/cpp2/fatal/indenter.h>
+#include <thrift/lib/cpp2/reflection/indenter.h>
 
 #include <sstream>
 #include <string>

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include <thrift/lib/cpp2/fatal/diff.h>
+#include <thrift/lib/cpp2/reflection/diff.h>
 
 #include <thrift/test/gen-cpp2/reflection_fatal_types.h>
 

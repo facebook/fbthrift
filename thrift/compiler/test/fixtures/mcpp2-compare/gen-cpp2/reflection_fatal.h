@@ -6,7 +6,7 @@
  */
 #pragma once
 
-#include <thrift/lib/cpp2/fatal/reflection.h>
+#include <thrift/lib/cpp2/reflection/reflection.h>
 
 #include <fatal/type/list.h>
 #include <fatal/type/pair.h>

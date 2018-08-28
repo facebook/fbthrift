@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-#include <thrift/lib/cpp2/fatal/folly_dynamic.h>
-#include <thrift/lib/cpp2/fatal/helpers.h>
-#include <thrift/lib/cpp2/fatal/internal/test_helpers.h>
+#include <thrift/lib/cpp2/reflection/folly_dynamic.h>
+#include <thrift/lib/cpp2/reflection/helpers.h>
+#include <thrift/lib/cpp2/reflection/internal/test_helpers.h>
 
-#include <thrift/lib/cpp2/fatal/debug.h>
-#include <thrift/lib/cpp2/fatal/pretty_print.h>
 #include <thrift/lib/cpp2/protocol/Serializer.h>
+#include <thrift/lib/cpp2/reflection/debug.h>
+#include <thrift/lib/cpp2/reflection/pretty_print.h>
 #include <thrift/test/gen-cpp2/compat_fatal_types.h>
 #include <thrift/test/gen-cpp2/global_fatal_types.h>
 #include <thrift/test/gen-cpp2/reflection_fatal_types.h>

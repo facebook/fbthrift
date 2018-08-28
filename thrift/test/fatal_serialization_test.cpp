@@ -20,9 +20,9 @@
 #include <thrift/test/gen-cpp2/service_reflection_fatal_types.h>
 #include <thrift/test/gen-cpp2/service_reflection_types_custom_protocol.h>
 
-#include <thrift/lib/cpp2/fatal/serializer.h>
-#include <thrift/lib/cpp2/fatal/pretty_print.h>
-#include <thrift/lib/cpp2/fatal/internal/test_helpers.h>
+#include <thrift/lib/cpp2/reflection/internal/test_helpers.h>
+#include <thrift/lib/cpp2/reflection/pretty_print.h>
+#include <thrift/lib/cpp2/reflection/serializer.h>
 
 #include <folly/Memory.h>
 

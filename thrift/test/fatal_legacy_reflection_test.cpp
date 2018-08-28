@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-#include <thrift/lib/cpp2/fatal/legacy_reflection.h>
+#include <thrift/lib/cpp2/reflection/legacy_reflection.h>
 
 #include <gtest/gtest.h>
 
-#include <thrift/lib/cpp2/fatal/debug.h>
-#include <thrift/lib/cpp2/fatal/pretty_print.h>
+#include <thrift/lib/cpp2/reflection/debug.h>
+#include <thrift/lib/cpp2/reflection/pretty_print.h>
 #include <thrift/lib/thrift/gen-cpp2/reflection_fatal_types.h>
 #include <thrift/test/gen-cpp2/fatal_legacy_reflection_fatal_types.h>
 #include <thrift/test/gen-cpp2/fatal_legacy_reflection_types.h>

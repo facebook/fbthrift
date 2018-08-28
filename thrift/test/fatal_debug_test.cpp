@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-#include <thrift/lib/cpp2/fatal/debug.h>
-#include <thrift/lib/cpp2/fatal/gmock_matching.h>
-#include <thrift/lib/cpp2/fatal/testing.h>
+#include <thrift/lib/cpp2/reflection/debug.h>
+#include <thrift/lib/cpp2/reflection/gmock_matching.h>
+#include <thrift/lib/cpp2/reflection/testing.h>
 
 #include <thrift/test/gen-cpp2/reflection_fatal_types.h>
 

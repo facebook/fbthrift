@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-#include <thrift/lib/cpp2/fatal/flatten_getters.h>
+#include <thrift/lib/cpp2/reflection/flatten_getters.h>
 
 #include <thrift/test/gen-cpp2/reflection_fatal_types.h>
 
-#include <thrift/lib/cpp2/fatal/internal/test_helpers.h>
+#include <thrift/lib/cpp2/reflection/internal/test_helpers.h>
 
 #include <gtest/gtest.h>
 
