@@ -18,6 +18,7 @@
 #include <memory>
 #include <vector>
 
+#include <thrift/compiler/ast/t_const.h>
 #include <thrift/compiler/ast/t_enum_value.h>
 #include <thrift/compiler/ast/t_type.h>
 
@@ -37,9 +38,13 @@ class t_enum : public t_type {
     name_ = name;
   }
 
-  void append(std::unique_ptr<t_enum_value> constant) {
-    enum_values_raw_.push_back(constant.get());
-    enum_values_.push_back(std::move(constant));
+  void append(
+      std::unique_ptr<t_enum_value> enum_value,
+      std::unique_ptr<t_const> constant) {
+    enum_values_raw_.push_back(enum_value.get());
+    enum_values_.push_back(std::move(enum_value));
+
+    constants_.push_back(std::move(constant));
   }
 
   const std::vector<t_enum_value*>& get_enum_values() const {
@@ -73,6 +78,7 @@ class t_enum : public t_type {
 
  private:
   std::vector<std::unique_ptr<t_enum_value>> enum_values_;
+  std::vector<std::unique_ptr<t_const>> constants_;
 
   std::vector<t_enum_value*> enum_values_raw_;
 };

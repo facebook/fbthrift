@@ -622,22 +622,25 @@ EnumDefList:
     {
       driver.debug("EnumDefList -> EnumDefList EnumDef");
       $$ = $1;
-      $$->append(std::unique_ptr<t_enum_value>($2));
 
       if (driver.mode == apache::thrift::parsing_mode::PROGRAM) {
         t_const_value* const_val = new t_const_value($2->get_value());
         const_val->set_is_enum();
         const_val->set_enum($$);
         const_val->set_enum_value($2);
-        t_const* tconst = new t_const(
+        auto tconst = std::make_unique<t_const>(
             driver.program, i32_type(), $2->get_name(), const_val);
 
         assert(y_enum_name != nullptr);
         std::string type_prefix = std::string(y_enum_name) + ".";
         driver.scope_cache->add_constant(
-            driver.program->get_name() + "." + $2->get_name(), tconst);
+            driver.program->get_name() + "." + $2->get_name(), tconst.get());
         driver.scope_cache->add_constant(
-            driver.program->get_name() + "." + type_prefix + $2->get_name(), tconst);
+            driver.program->get_name() + "." + type_prefix + $2->get_name(), tconst.get());
+
+        $$->append(std::unique_ptr<t_enum_value>($2), std::move(tconst));
+      } else {
+        driver.delete_at_the_end($2);
       }
     }
 |

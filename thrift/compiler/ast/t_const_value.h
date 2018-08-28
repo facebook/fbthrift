@@ -19,18 +19,21 @@
 
 #include <stdint.h>
 
+#include <string>
 #include <utility>
 #include <vector>
 
-#include <thrift/compiler/ast/t_const.h>
-#include <thrift/compiler/ast/t_enum.h>
-#include <thrift/compiler/ast/t_enum_value.h>
+#include <thrift/compiler/ast/t_doc.h>
 
 namespace apache {
 namespace thrift {
 namespace compiler {
 
 class t_const;
+class t_enum;
+class t_enum_value;
+class t_type;
+
 /**
  * A const value is something parsed that could be a map, set, list, struct
  * or whatever.
