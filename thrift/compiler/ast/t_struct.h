@@ -234,14 +234,6 @@ class t_struct : public t_type {
   const t_struct* view_parent_ = nullptr;
 }; // namespace compiler
 
-struct t_structpair {
-  t_struct* first;
-  t_struct* second;
-
-  t_structpair() = delete;
-  t_structpair(t_struct* f, t_struct* s) : first(f), second(s) {}
-};
-
 } // namespace compiler
 } // namespace thrift
 } // namespace apache

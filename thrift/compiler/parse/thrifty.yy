@@ -282,7 +282,7 @@ class parsing_driver;
 
 %type<t_struct*>        Throws
 %type<t_struct*>        StreamThrows
-%type<t_structpair*>    ThrowsThrows
+%type<std::pair<t_struct*, t_struct*>>    ThrowsThrows
 %type<t_service*>       Extends
 %type<bool>             Oneway
 
@@ -962,8 +962,8 @@ Function:
         rettype,
         $4,
         std::unique_ptr<t_struct>(arglist),
-        std::unique_ptr<t_struct>($8->first),
-        std::unique_ptr<t_struct>($8->second),
+        std::unique_ptr<t_struct>($8.first),
+        std::unique_ptr<t_struct>($8.second),
         $9,
         $2
       );
@@ -1043,18 +1043,18 @@ Oneway:
 ThrowsThrows:
   Throws StreamThrows
 		{
-			$$ = new t_structpair($1, $2);
+			$$ = std::make_pair($1, $2);
 		}
 | Throws
 		{
-			$$ = new t_structpair($1, new t_struct(driver.program));
+			$$ = std::make_pair($1, new t_struct(driver.program));
 		}
 | StreamThrows
     {
-      $$ = new t_structpair(new t_struct(driver.program), $1);
+      $$ = std::make_pair(new t_struct(driver.program), $1);
     }
 |   {
-			$$ = new t_structpair(new t_struct(driver.program), new t_struct(driver.program));
+			$$ = std::make_pair(new t_struct(driver.program), new t_struct(driver.program));
 		}
 
 Throws:
