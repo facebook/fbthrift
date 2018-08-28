@@ -312,27 +312,23 @@ st_identifier ([a-zA-Z-][\.a-zA-Z_0-9-]*)
 }
 
 {identifier} {
-  const char *val = strdup(yytext);
-  return apache::thrift::yy::parser::make_tok_identifier(val);
+  return apache::thrift::yy::parser::make_tok_identifier(std::string{yytext});
 }
 
 {st_identifier} {
-  const char *val = strdup(yytext);
-  return apache::thrift::yy::parser::make_tok_st_identifier(val);
+  return apache::thrift::yy::parser::make_tok_st_identifier(std::string{yytext});
 }
 
 {dliteral} {
-  char *val = strdup(yytext+1);
-  val[strlen(val)-1] = '\0';
-  const char *const_val = val;
-  return apache::thrift::yy::parser::make_tok_literal(const_val);
+  std::string val{yytext + 1};
+  val = val.substr(0, val.length() - 1);
+  return apache::thrift::yy::parser::make_tok_literal(std::move(val));
 }
 
 {sliteral} {
-  char *val = strdup(yytext+1);
-  val[strlen(val)-1] = '\0';
-  const char *const_val = val;
-  return apache::thrift::yy::parser::make_tok_literal(const_val);
+  std::string val{yytext + 1};
+  val = val.substr(0, val.length() - 1);
+  return apache::thrift::yy::parser::make_tok_literal(std::move(val));
 }
 
 {doctext} {
