@@ -131,7 +131,7 @@ TEST(ThriftServer, OnewayDeferredHandlerTest) {
           .via(tm)
           .thenValue(
               [ctx](auto&&) { EXPECT_EQ("noResponse", ctx->getMethodName()); })
-          .then([this] { done.post(); });
+          .thenValue([this](auto&&) { done.post(); });
     }
   };
 
