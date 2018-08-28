@@ -219,5 +219,9 @@ TEST_F(RSCompatibilityTest, ConnectionContext) {
   compatibilityTest_->TestConnectionContext();
 }
 
+TEST_F(RSCompatibilityTest, ClientIdentityHook) {
+  compatibilityTest_->TestClientIdentityHook();
+}
+
 } // namespace thrift
 } // namespace apache

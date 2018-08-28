@@ -44,7 +44,7 @@ class Cpp2ConnContext : public apache::thrift::server::TConnectionContext {
  public:
   explicit Cpp2ConnContext(
       const folly::SocketAddress* address = nullptr,
-      const apache::thrift::async::TAsyncTransport* transport = nullptr,
+      const folly::AsyncTransportWrapper* transport = nullptr,
       const apache::thrift::SaslServer* sasl_server = nullptr,
       folly::EventBaseManager* manager = nullptr,
       const std::shared_ptr<RequestChannel>& duplexChannel = nullptr,
@@ -128,7 +128,7 @@ class Cpp2ConnContext : public apache::thrift::server::TConnectionContext {
     return peerIdentities_.get();
   }
 
-  const apache::thrift::async::TAsyncTransport* getTransport() const {
+  const folly::AsyncTransportWrapper* getTransport() const {
     return transport_;
   }
 
@@ -141,7 +141,7 @@ class Cpp2ConnContext : public apache::thrift::server::TConnectionContext {
   std::shared_ptr<X509> peerCert_;
   std::unique_ptr<void, void (*)(void*)> peerIdentities_;
   std::string securityProtocol_;
-  const apache::thrift::async::TAsyncTransport* transport_;
+  const folly::AsyncTransportWrapper* transport_;
 };
 
 // Request-specific context

@@ -302,6 +302,25 @@ void TransportCompatibilityTest::TestConnectionContext() {
   });
 }
 
+void TransportCompatibilityTest::TestClientIdentityHook() {
+  bool flag{false};
+  auto hook = [&flag](
+                  const folly::AsyncTransportWrapper* /* unused */,
+                  const X509* /* unused */,
+                  const SaslServer* /* unused */,
+                  const folly::SocketAddress& /* unused */) {
+    flag = true;
+    return std::unique_ptr<void, void (*)(void*)>(nullptr, [](void*) {});
+  };
+  server_->getServer()->setClientIdentityHook(std::move(hook));
+  connectToServer([&](std::unique_ptr<TestServiceAsyncClient> client) {
+    EXPECT_CALL(*handler_.get(), sumTwoNumbers_(1, 2));
+
+    EXPECT_EQ(3, client->future_sumTwoNumbers(1, 2).get());
+    EXPECT_TRUE(flag);
+  });
+}
+
 void TransportCompatibilityTest::TestRequestResponse_Simple() {
   connectToServer([this](std::unique_ptr<TestServiceAsyncClient> client) {
     EXPECT_CALL(*handler_.get(), sumTwoNumbers_(1, 2)).Times(2);

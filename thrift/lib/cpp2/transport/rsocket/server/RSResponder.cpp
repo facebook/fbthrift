@@ -27,19 +27,28 @@ using namespace rsocket;
 
 RSResponder::RSResponder(
     std::shared_ptr<Cpp2Worker> worker,
-    const folly::SocketAddress& clientAddress)
+    const folly::SocketAddress& clientAddress,
+    folly::AsyncTransportWrapper* transport)
     : worker_(std::move(worker)),
       cpp2Processor_(worker_->getServer()->getCpp2Processor()),
       threadManager_(worker_->getServer()->getThreadManager()),
       observer_(worker_->getServer()->getObserver()),
       serverConfigs_(worker_->getServer()),
-      clientAddress_(clientAddress) {
+      clientAddress_(clientAddress),
+      transport_(transport) {
   DCHECK(threadManager_);
   DCHECK(cpp2Processor_);
 }
 
 std::unique_ptr<Cpp2ConnContext> RSResponder::createConnContext() const {
-  return std::make_unique<Cpp2ConnContext>(&clientAddress_);
+  return std::make_unique<Cpp2ConnContext>(
+      &clientAddress_,
+      transport_,
+      nullptr,
+      nullptr,
+      nullptr,
+      nullptr,
+      worker_->getServer()->getClientIdentityHook());
 }
 
 void RSResponder::onThriftRequest(

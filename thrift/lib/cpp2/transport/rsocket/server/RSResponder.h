@@ -33,7 +33,8 @@ class RSResponder : public rsocket::RSocketResponderCore {
  public:
   RSResponder(
       std::shared_ptr<Cpp2Worker> worker,
-      const folly::SocketAddress& clientAddress);
+      const folly::SocketAddress& clientAddress,
+      folly::AsyncTransportWrapper* transport);
 
   virtual ~RSResponder() = default;
 
@@ -67,6 +68,7 @@ class RSResponder : public rsocket::RSocketResponderCore {
   std::shared_ptr<apache::thrift::server::TServerObserver> observer_;
   server::ServerConfigs* serverConfigs_;
   const folly::SocketAddress clientAddress_;
+  const folly::AsyncTransportWrapper* transport_;
 };
 } // namespace thrift
 } // namespace apache

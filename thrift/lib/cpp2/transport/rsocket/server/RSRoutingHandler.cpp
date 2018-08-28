@@ -82,13 +82,14 @@ void RSRoutingHandler::handleConnection(
     return;
   }
 
+  auto sockPtr = sock.get();
   auto managedConnection = new ManagedRSocketConnection(
-      std::move(sock), [worker, clientAddress = *address](auto&) {
+      std::move(sock), [sockPtr, worker, clientAddress = *address](auto&) {
         DCHECK(worker->getServer());
         DCHECK(worker->getServer()->getCpp2Processor());
         // RSResponder will be created per client connection. It will use the
         // current Observer of the server.
-        return std::make_shared<RSResponder>(worker, clientAddress);
+        return std::make_shared<RSResponder>(worker, clientAddress, sockPtr);
       });
 
   connectionManager->addConnection(managedConnection);
