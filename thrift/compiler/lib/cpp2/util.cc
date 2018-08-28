@@ -21,12 +21,40 @@
 
 #include <thrift/compiler/lib/cpp2/util.h>
 
+#include <boost/algorithm/string/join.hpp>
+#include <boost/algorithm/string/split.hpp>
+
 namespace apache {
 namespace thrift {
 namespace compiler {
 namespace cpp2 {
 
-// empty
+static bool is_dot(char const c) {
+  return c == '.';
+}
+
+std::vector<std::string> get_gen_namespace_components(
+    t_program const& program) {
+  auto const& cpp2 = program.get_namespace("cpp2");
+  auto const& cpp = program.get_namespace("cpp");
+
+  std::vector<std::string> components;
+
+  if (!cpp2.empty()) {
+    boost::algorithm::split(components, cpp2, is_dot);
+  } else if (!cpp.empty()) {
+    boost::algorithm::split(components, cpp, is_dot);
+    components.push_back("cpp2");
+  } else {
+    components.push_back("cpp2");
+  }
+
+  return components;
+}
+
+std::string get_gen_namespace(t_program const& program) {
+  return boost::algorithm::join(get_gen_namespace_components(program), "::");
+}
 
 } // namespace cpp2
 } // namespace compiler

@@ -21,6 +21,7 @@
 
 #include <thrift/compiler/generate/common.h>
 #include <thrift/compiler/generate/t_mstch_generator.h>
+#include <thrift/compiler/lib/cpp2/util.h>
 
 namespace {
 
@@ -762,16 +763,7 @@ std::string t_mstch_py3_generator::flatten_type_name(
 
 mstch::array t_mstch_py3_generator::get_cpp2_namespace(
     const t_program& program) {
-  auto cpp_namespace = program.get_namespace("cpp2");
-  if (cpp_namespace == "") {
-    cpp_namespace = program.get_namespace("cpp");
-    if (cpp_namespace == "") {
-      cpp_namespace = "cpp2";
-    } else {
-      cpp_namespace = cpp_namespace + ".cpp2";
-    }
-  }
-  vector<string> ns = split_namespace(cpp_namespace);
+  auto const ns = cpp2::get_gen_namespace_components(program);
   return dump_elems(ns);
 }
 

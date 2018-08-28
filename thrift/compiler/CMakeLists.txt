@@ -48,6 +48,19 @@ target_link_libraries(
   ${Boost_LIBRARIES}
 )
 
+# build compiler/lib
+add_library(
+  compiler_lib
+
+  lib/cpp2/util.cc
+)
+target_link_libraries(
+  compiler_lib
+
+  compiler_ast
+  ${Boost_LIBRARIES}
+)
+
 # build compiler/generate
 aux_source_directory(./generate GENERATOR_FILES)
 aux_source_directory(./generate/templates MSTCH_TEMPLATES)
@@ -61,6 +74,7 @@ target_link_libraries(
   compiler_generators
 
   compiler_base
+  compiler_lib
   ${Boost_LIBRARIES}
   ${MSTCH_LIBRARIES}
   ${OPENSSL_LIBRARIES}
@@ -121,6 +135,7 @@ install(
     thrift1
     compiler_ast
     compiler_base
+    compiler_lib
     compiler_generators
   EXPORT fbthrift-exports
   RUNTIME DESTINATION ${BIN_INSTALL_DIR}

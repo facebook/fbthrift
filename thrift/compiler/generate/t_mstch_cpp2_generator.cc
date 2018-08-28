@@ -21,6 +21,7 @@
 #include <thrift/compiler/generate/common.h>
 #include <thrift/compiler/generate/t_mstch_generator.h>
 #include <thrift/compiler/generate/t_mstch_objects.h>
+#include <thrift/compiler/lib/cpp2/util.h>
 
 namespace {
 
@@ -320,14 +321,7 @@ class mstch_cpp2_type : public mstch_type {
         });
   }
   virtual std::string get_type_namespace(t_program const* program) override {
-    auto ns = program->get_namespace("cpp2");
-    if (ns.empty()) {
-      ns = program->get_namespace("cpp");
-      if (ns.empty()) {
-        ns = "cpp2";
-      }
-    }
-    return ns;
+    return cpp2::get_gen_namespace(*program);
   }
   mstch::node resolves_to_base() {
     return resolved_type_->is_base_type();
@@ -1470,30 +1464,12 @@ void t_mstch_cpp2_generator::generate_service(t_service const* service) {
 
 std::string t_mstch_cpp2_generator::get_cpp2_namespace(
     t_program const* program) {
-  auto ns = program->get_namespace("cpp2");
-  if (ns.empty()) {
-    ns = program->get_namespace("cpp");
-    if (ns.empty()) {
-      ns = "cpp2";
-    }
-  }
-  return ns;
+  return cpp2::get_gen_namespace(*program);
 }
 
 mstch::array t_mstch_cpp2_generator::get_namespace_array(
     t_program const* program) {
-  std::vector<std::string> v;
-
-  auto ns = program->get_namespace("cpp2");
-  if (!ns.empty()) {
-    v = split_namespace(ns);
-  } else {
-    ns = program->get_namespace("cpp");
-    if (!ns.empty()) {
-      v = split_namespace(ns);
-    }
-    v.push_back("cpp2");
-  }
+  auto const v = cpp2::get_gen_namespace_components(*program);
   mstch::array a;
   for (auto it = v.begin(); it != v.end(); ++it) {
     mstch::map m;

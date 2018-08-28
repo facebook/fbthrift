@@ -27,3 +27,45 @@
 using namespace apache::thrift::compiler;
 
 class UtilTest : public testing::Test {};
+
+TEST_F(UtilTest, get_gen_namespace_components_cpp2) {
+  t_program p("path/to/program.thrift");
+  p.set_namespace("cpp2", "foo.bar");
+  p.set_namespace("cpp", "baz.foo");
+  EXPECT_THAT(
+      cpp2::get_gen_namespace_components(p),
+      testing::ElementsAreArray({"foo", "bar"}));
+}
+
+TEST_F(UtilTest, get_gen_namespace_components_cpp) {
+  t_program p("path/to/program.thrift");
+  p.set_namespace("cpp", "baz.foo");
+  EXPECT_THAT(
+      cpp2::get_gen_namespace_components(p),
+      testing::ElementsAreArray({"baz", "foo", "cpp2"}));
+}
+
+TEST_F(UtilTest, get_gen_namespace_components_none) {
+  t_program p("path/to/program.thrift");
+  EXPECT_THAT(
+      cpp2::get_gen_namespace_components(p),
+      testing::ElementsAreArray({"cpp2"}));
+}
+
+TEST_F(UtilTest, get_gen_namespace__cpp2) {
+  t_program p("path/to/program.thrift");
+  p.set_namespace("cpp2", "foo.bar");
+  p.set_namespace("cpp", "baz.foo");
+  EXPECT_EQ("foo::bar", cpp2::get_gen_namespace(p));
+}
+
+TEST_F(UtilTest, get_gen_namespace_cpp) {
+  t_program p("path/to/program.thrift");
+  p.set_namespace("cpp", "baz.foo");
+  EXPECT_EQ("baz::foo::cpp2", cpp2::get_gen_namespace(p));
+}
+
+TEST_F(UtilTest, get_gen_namespace_none) {
+  t_program p("path/to/program.thrift");
+  EXPECT_EQ("cpp2", cpp2::get_gen_namespace(p));
+}

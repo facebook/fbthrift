@@ -21,12 +21,19 @@
 
 #pragma once
 
+#include <string>
+#include <vector>
+
+#include <thrift/compiler/ast/t_program.h>
+
 namespace apache {
 namespace thrift {
 namespace compiler {
 namespace cpp2 {
 
-// empty
+std::vector<std::string> get_gen_namespace_components(t_program const& program);
+
+std::string get_gen_namespace(t_program const& program);
 
 } // namespace cpp2
 } // namespace compiler
