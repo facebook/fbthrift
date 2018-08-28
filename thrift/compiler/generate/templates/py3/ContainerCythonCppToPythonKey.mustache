@@ -33,10 +33,9 @@ ckey.
 }}{{#type:float?}}ckey{{/type:float?}}{{!
 }}{{#type:string?}}ckey.decode('UTF-8'){{/type:string?}}{{!
 }}{{#type:binary?}}ckey{{/type:binary?}}{{!
-}}{{#type:struct}}{{> types/CythonPythonType}}.create(make_shared[{{> types/CythonCppType}}](ckey)){{/type:struct}}{{!
-}}{{#type:list?}}{{> types/CythonPythonType}}.create(make_shared[{{> types/CythonCppType}}](ckey)){{/type:list?}}{{!
-}}{{#type:set?}}{{> types/CythonPythonType}}.create(make_shared[{{> types/CythonCppType}}](ckey)){{/type:set?}}{{!
-}}{{#type:map?}}{{> types/CythonPythonType}}.create(make_shared[{{> types/CythonCppType}}](ckey)){{/type:map?}}{{!
+}}{{^type:base?}}{{^type:enum?}}{{!
+    }}{{> types/CythonPythonType}}.create(ckey){{!
+}}{{/type:enum?}}{{/type:base?}}{{!
 }}{{#type:enum}}translate_cpp_enum_to_python({{!
     }}{{#type:externalProgram?}}{{> common/ModulePath}}.{{/type:externalProgram?}}{{enum:name}}, {{!
     }}<int> ckey){{/type:enum}}

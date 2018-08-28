@@ -215,7 +215,7 @@ cdef class Set__i64:
     @staticmethod
     cdef create(shared_ptr[cset[int64_t]])
     @staticmethod
-    cdef unique_ptr[cset[int64_t]] _make_instance(object items) except *
+    cdef shared_ptr[cset[int64_t]] _make_instance(object items) except *
 
 cdef class Map__Animal_string:
     cdef object __hash
@@ -224,7 +224,7 @@ cdef class Map__Animal_string:
     @staticmethod
     cdef create(shared_ptr[cmap[cAnimal,string]])
     @staticmethod
-    cdef unique_ptr[cmap[cAnimal,string]] _make_instance(object items) except *
+    cdef shared_ptr[cmap[cAnimal,string]] _make_instance(object items) except *
 
 cdef class List__Vehicle:
     cdef object __hash
@@ -233,22 +233,20 @@ cdef class List__Vehicle:
     @staticmethod
     cdef create(shared_ptr[vector[cVehicle]])
     @staticmethod
-    cdef unique_ptr[vector[cVehicle]] _make_instance(object items) except *
+    cdef shared_ptr[vector[cVehicle]] _make_instance(object items) except *
 
 cdef extern from "<utility>" namespace "std" nogil:
-    cdef shared_ptr[cset[int64_t]] move(unique_ptr[cset[int64_t]])
-    cdef unique_ptr[cset[int64_t]] move_unique "std::move"(unique_ptr[cset[int64_t]])
+    cdef shared_ptr[cset[int64_t]] move "std::move"(unique_ptr[cset[int64_t]])
     cdef shared_ptr[cset[int64_t]] move_shared "std::move"(shared_ptr[cset[int64_t]])
-    cdef shared_ptr[cmap[cAnimal,string]] move(unique_ptr[cmap[cAnimal,string]])
-    cdef unique_ptr[cmap[cAnimal,string]] move_unique "std::move"(unique_ptr[cmap[cAnimal,string]])
+    cdef shared_ptr[cmap[cAnimal,string]] move "std::move"(unique_ptr[cmap[cAnimal,string]])
     cdef shared_ptr[cmap[cAnimal,string]] move_shared "std::move"(shared_ptr[cmap[cAnimal,string]])
-    cdef shared_ptr[vector[cVehicle]] move(unique_ptr[vector[cVehicle]])
-    cdef unique_ptr[vector[cVehicle]] move_unique "std::move"(unique_ptr[vector[cVehicle]])
+    cdef shared_ptr[vector[cVehicle]] move "std::move"(unique_ptr[vector[cVehicle]])
     cdef shared_ptr[vector[cVehicle]] move_shared "std::move"(shared_ptr[vector[cVehicle]])
+cdef extern from "<utility>" nogil:
+    pass  
+    shared_ptr[cVehicle] reference_shared_ptr_List__Vehicle "thrift::py3::reference_shared_ptr<cpp2::Vehicle>"(...)
 cdef extern from "<memory>" namespace "std" nogil:
     cdef shared_ptr[const cset[int64_t]] const_pointer_cast "std::const_pointer_cast<const std::set<int64_t>>"(shared_ptr[cset[int64_t]])
-
     cdef shared_ptr[const cmap[cAnimal,string]] const_pointer_cast "std::const_pointer_cast<const std::map<cpp2::Animal,std::string>>"(shared_ptr[cmap[cAnimal,string]])
-
     cdef shared_ptr[const vector[cVehicle]] const_pointer_cast "std::const_pointer_cast<const std::vector<cpp2::Vehicle>>"(shared_ptr[vector[cVehicle]])
 

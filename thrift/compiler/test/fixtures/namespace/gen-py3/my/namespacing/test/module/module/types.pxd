@@ -69,3 +69,4 @@ cdef class Foo(thrift.py3.types.Struct):
 
 
 
+

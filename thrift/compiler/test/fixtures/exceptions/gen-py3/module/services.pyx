@@ -193,9 +193,9 @@ async def Raiser_doRaise_coro(
         else:
             result = await self.doRaise()
     except _module_types.Banal as ex:
-        promise.cPromise.setException(deref((<_module_types.Banal> ex)._cpp_obj.get()))
+        promise.cPromise.setException(deref((<_module_types.Banal> ex)._cpp_obj))
     except _module_types.Fiery as ex:
-        promise.cPromise.setException(deref((<_module_types.Fiery> ex)._cpp_obj.get()))
+        promise.cPromise.setException(deref((<_module_types.Fiery> ex)._cpp_obj))
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -287,9 +287,9 @@ async def Raiser_get500_coro(
         else:
             result = await self.get500()
     except _module_types.Fiery as ex:
-        promise.cPromise.setException(deref((<_module_types.Fiery> ex)._cpp_obj.get()))
+        promise.cPromise.setException(deref((<_module_types.Fiery> ex)._cpp_obj))
     except _module_types.Banal as ex:
-        promise.cPromise.setException(deref((<_module_types.Banal> ex)._cpp_obj.get()))
+        promise.cPromise.setException(deref((<_module_types.Banal> ex)._cpp_obj))
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(

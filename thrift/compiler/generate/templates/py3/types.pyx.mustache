@@ -50,7 +50,7 @@ from thrift.py3.types import NOTSET as __NOTSET
 from thrift.py3.types cimport (
     translate_cpp_enum_to_python,
     SetMetaClass as __SetMetaClass,
-    constant_shared_ptr
+    constant_shared_ptr,
 )
 cimport thrift.py3.std_libcpp as std_libcpp
 from thrift.py3.serializer import Protocol as __Protocol
@@ -568,7 +568,7 @@ cdef class {{> types/CythonPythonType}}:
         if isinstance(items, {{> types/CythonPythonType}}):
             self._cpp_obj = (<{{> types/CythonPythonType}}> items)._cpp_obj
         else:
-            self._cpp_obj = move({{> types/CythonPythonType}}._make_instance(items))
+            self._cpp_obj = {{> types/CythonPythonType}}._make_instance(items)
 
     @staticmethod
     cdef create(shared_ptr[{{> types/CythonCppType}}] c_items):
@@ -584,8 +584,8 @@ cdef class {{> types/CythonPythonType}}:
 
 {{#type:list?}}
     @staticmethod
-    cdef unique_ptr[{{> types/CythonCppType}}] _make_instance(object items) except *:
-        cdef unique_ptr[{{> types/CythonCppType}}] c_inst = make_unique[{{> types/CythonCppType}}]()
+    cdef shared_ptr[{{> types/CythonCppType}}] _make_instance(object items) except *:
+        cdef shared_ptr[{{> types/CythonCppType}}] c_inst = make_shared[{{> types/CythonCppType}}]()
         if items is not None:
             for item in items:
                 {{#type:listElemType}}
@@ -605,20 +605,22 @@ cdef class {{> types/CythonPythonType}}:
                 {{/type:container?}}
                 deref(c_inst).push_back({{> CythonPythonToCppItem}})
                 {{/type:listElemType}}
-        return move_unique(c_inst)
+        return c_inst
 
     def __add__(object self, object other):
         return type(self)(itertools.chain(self, other))
 
     def __getitem__(self, object index_obj):
         cdef shared_ptr[{{> types/CythonCppType}}] c_inst
-        cdef {{#type:listElemType}}{{> types/CythonCppType}}{{/type:listElemType}} citem
+        cdef {{#type:listElemType}}{{!
+            }}{{^type:base?}}{{^type:enum?}}shared_ptr[{{/type:enum?}}{{/type:base?}}{{> types/CythonCppType}}{{!
+            }}{{^type:base?}}{{^type:enum?}}]{{/type:enum?}}{{/type:base?}}{{!
+            }}{{/type:listElemType}} citem
         if isinstance(index_obj, slice):
             c_inst = make_shared[{{> types/CythonCppType}}]()
             sz = deref(self._cpp_obj).size()
             for index in range(*index_obj.indices(sz)):
-                citem = deref(self._cpp_obj.get())[index]
-                deref(c_inst).push_back(citem)
+                deref(c_inst).push_back(deref(self._cpp_obj)[index])
             return {{> types/CythonPythonType}}.create(move_shared(c_inst))
         else:
             index = <int?>index_obj
@@ -629,7 +631,9 @@ cdef class {{> types/CythonPythonType}}:
             if index >= size or index < 0:
                 raise IndexError('list index out of range')
             {{#type:listElemType}}
-            citem = deref(self._cpp_obj.get())[index]
+            citem = {{^type:base?}}{{^type:enum?}}reference_shared_ptr_{{containerType:flat_name}}(self._cpp_obj, {{/type:enum?}}{{/type:base?}}{{!
+                    }}deref(self._cpp_obj)[index]{{!
+                    }}{{^type:base?}}{{^type:enum?}}){{/type:enum?}}{{/type:base?}}
             return {{> ContainerCythonCppToPythonItem}}
             {{/type:listElemType}}
 
@@ -669,22 +673,27 @@ cdef class {{> types/CythonPythonType}}:
         {{/type:container?}}
         if not isinstance(item, {{> types/PythonType}}):
             return False
-        cdef {{> types/CythonCppType}} citem = {{> CythonPythonToCppItem}}
         {{/type:listElemType}}
-        cdef {{> types/CythonCppType}} vec = deref(
-            self._cpp_obj.get())
-        return std_libcpp.find(vec.begin(), vec.end(), citem) != vec.end()
+        return std_libcpp.find[{{>types/CythonCppType}}.iterator, {{#type:listElemType}}{{>types/CythonCppType}}](deref(self._cpp_obj).begin(), deref(self._cpp_obj).end(), {{> CythonPythonToCppItem}}) != deref(self._cpp_obj).end()
+        {{/type:listElemType}}
 
     def __iter__(self):
         if not self:
             raise StopIteration
         cdef {{#type:listElemType}}{{!
-            }}{{>types/CythonCppType}}{{!
+            }}{{^type:base?}}{{^type:enum?}}shared_ptr[{{/type:enum?}}{{/type:base?}}{{> types/CythonCppType}}{{!
+            }}{{^type:base?}}{{^type:enum?}}]{{/type:enum?}}{{/type:base?}}{{!
             }}{{/type:listElemType}} citem
-        for citem in deref(self._cpp_obj):
-            yield {{#type:listElemType}}{{!
-                }}{{> ContainerCythonCppToPythonItem}}{{!
-                }}{{/type:listElemType}}
+        cdef {{>types/CythonCppType}}.iterator loc = deref(self._cpp_obj).begin()
+        while loc != deref(self._cpp_obj).end():
+            {{#type:listElemType}}
+            citem = {{^type:base?}}{{^type:enum?}}reference_shared_ptr_{{containerType:flat_name}}(self._cpp_obj, {{/type:enum?}}{{/type:base?}}{{!
+                    }}deref(loc){{!
+                    }}{{^type:base?}}{{^type:enum?}}){{/type:enum?}}{{/type:base?}}
+            yield {{> ContainerCythonCppToPythonItem}}
+            {{/type:listElemType}}
+            inc(loc)
+
 
     def __repr__(self):
         if not self:
@@ -695,16 +704,17 @@ cdef class {{> types/CythonPythonType}}:
         if not self:
             raise StopIteration
         cdef {{#type:listElemType}}{{!
-            }}{{>types/CythonCppType}}{{!
+            }}{{^type:base?}}{{^type:enum?}}shared_ptr[{{/type:enum?}}{{/type:base?}}{{> types/CythonCppType}}{{!
+            }}{{^type:base?}}{{^type:enum?}}]{{/type:enum?}}{{/type:base?}}{{!
             }}{{/type:listElemType}} citem
-        cdef {{> types/CythonCppType}} vec = deref(
-            self._cpp_obj.get())
-        cdef {{>types/CythonCppType}}.reverse_iterator loc = vec.rbegin()
-        while loc != vec.rend():
-            citem = deref(loc)
-            yield {{#type:listElemType}}{{!
-                }}{{> ContainerCythonCppToPythonItem}}{{!
-                }}{{/type:listElemType}}
+        cdef {{>types/CythonCppType}}.reverse_iterator loc = deref(self._cpp_obj).rbegin()
+        while loc != deref(self._cpp_obj).rend():
+            {{#type:listElemType}}
+            citem = {{^type:base?}}{{^type:enum?}}reference_shared_ptr_{{containerType:flat_name}}(self._cpp_obj, {{/type:enum?}}{{/type:base?}}{{!
+                    }}deref(loc){{!
+                    }}{{^type:base?}}{{^type:enum?}}){{/type:enum?}}{{/type:base?}}
+            yield {{> ContainerCythonCppToPythonItem}}
+            {{/type:listElemType}}
             inc(loc)
 
     def index(self, item, start not None=__NOTSET, stop not None=__NOTSET):
@@ -740,19 +750,17 @@ cdef class {{> types/CythonPythonType}}:
         {{/type:container?}}
         if not isinstance(item, {{> types/PythonType}}):
             raise err
-        cdef {{> types/CythonCppType}} citem = {{> CythonPythonToCppItem}}
         {{/type:listElemType}}
-        cdef {{> types/CythonCppType}} vec = {{!
-            }}deref(self._cpp_obj.get())
-        cdef {{>types/CythonCppType}}.iterator end = std_libcpp.prev(vec.end(), <int64_t>offset_end)
+        cdef {{>types/CythonCppType}}.iterator end = std_libcpp.prev(deref(self._cpp_obj).end(), <int64_t>offset_end)
         cdef {{>types/CythonCppType}}.iterator loc = {{!
-            }}std_libcpp.find(
-            std_libcpp.next(vec.begin(), <int64_t>offset_begin),
+            }}std_libcpp.find[{{>types/CythonCppType}}.iterator, {{#type:listElemType}}{{>types/CythonCppType}}](
+            std_libcpp.next(deref(self._cpp_obj).begin(), <int64_t>offset_begin),
             end,
-            citem
+            {{> CythonPythonToCppItem}}
         )
+        {{/type:listElemType}}
         if loc != end:
-            return <int64_t> std_libcpp.distance(vec.begin(), loc)
+            return <int64_t> std_libcpp.distance(deref(self._cpp_obj).begin(), loc)
         raise err
 
     def count(self, item):
@@ -768,19 +776,18 @@ cdef class {{> types/CythonPythonType}}:
         {{/type:container?}}
         if not isinstance(item, {{> types/PythonType}}):
             return 0
-        cdef {{> types/CythonCppType}} citem = {{> CythonPythonToCppItem}}
         {{/type:listElemType}}
-        cdef {{> types/CythonCppType}} vec = {{!
-            }}deref(self._cpp_obj.get())
-        return <int64_t> std_libcpp.count(vec.begin(), vec.end(), citem)
+        return <int64_t> std_libcpp.count[{{>types/CythonCppType}}.iterator, {{#type:listElemType}}{{>types/CythonCppType}}](
+            deref(self._cpp_obj).begin(), deref(self._cpp_obj).end(), {{> CythonPythonToCppItem}})
+        {{/type:listElemType}}
 
 
 Sequence.register({{> types/CythonPythonType}})
 {{/type:list?}}
 {{#type:set?}}
     @staticmethod
-    cdef unique_ptr[{{> types/CythonCppType}}] _make_instance(object items) except *:
-        cdef unique_ptr[{{> types/CythonCppType}}] c_inst = make_unique[{{> types/CythonCppType}}]()
+    cdef shared_ptr[{{> types/CythonCppType}}] _make_instance(object items) except *:
+        cdef shared_ptr[{{> types/CythonCppType}}] c_inst = make_shared[{{> types/CythonCppType}}]()
         if items is not None:
             for item in items:
                 {{#type:setElemType}}
@@ -800,7 +807,7 @@ Sequence.register({{> types/CythonPythonType}})
                 {{/type:container?}}
                 deref(c_inst).insert({{> CythonPythonToCppItem}})
                 {{/type:setElemType}}
-        return move_unique(c_inst)
+        return c_inst
 
     def __contains__(self, item):
         if not self or item is None:
@@ -825,8 +832,19 @@ Sequence.register({{> types/CythonPythonType}})
     def __iter__(self):
         if not self:
             raise StopIteration
-        for citem in deref(self._cpp_obj):
-            yield {{#type:setElemType}}{{> ContainerCythonCppToPythonItem}}{{/type:setElemType}}
+        cdef {{#type:setElemType}}{{!
+            }}{{^type:base?}}{{^type:enum?}}shared_ptr[{{/type:enum?}}{{/type:base?}}{{> types/CythonCppType}}{{!
+            }}{{^type:base?}}{{^type:enum?}}]{{/type:enum?}}{{/type:base?}}{{!
+            }}{{/type:setElemType}} citem
+        cdef {{>types/CythonCppType}}.iterator loc = deref(self._cpp_obj).begin()
+        while loc != deref(self._cpp_obj).end():
+            {{#type:setElemType}}
+            citem = {{^type:base?}}{{^type:enum?}}reference_shared_ptr_{{containerType:flat_name}}(self._cpp_obj, {{/type:enum?}}{{/type:base?}}{{!
+                    }}deref(loc){{!
+                    }}{{^type:base?}}{{^type:enum?}}){{/type:enum?}}{{/type:base?}}
+            yield {{> ContainerCythonCppToPythonItem}}
+            {{/type:setElemType}}
+            inc(loc)
 
     def __repr__(self):
     {{=<% %>=}}
@@ -837,48 +855,61 @@ Sequence.register({{> types/CythonPythonType}})
 
     def __richcmp__(self, other, op):
         cdef int cop = op
-        cdef {{> types/CythonCppType}} cself, cother
+        cdef shared_ptr[{{> types/CythonCppType}}] cself, cother
+        cdef {{>types/CythonCppType}}.iterator loc
         cdef cbool retval
         if (isinstance(self, {{> types/CythonPythonType}}) and
                 isinstance(other, {{> types/CythonPythonType}})):
-            cself = deref((<{{> types/CythonPythonType}}> self)._cpp_obj)
-            cother = deref((<{{> types/CythonPythonType}}> other)._cpp_obj)
+            cself = (<{{> types/CythonPythonType}}> self)._cpp_obj
+            cother = (<{{> types/CythonPythonType}}> other)._cpp_obj
             # C level comparisons
             if cop == 0:    # Less Than (strict subset)
-                if not cself.size() < cother.size():
+                if not deref(cself).size() < deref(cother).size():
                     return False
-                for item in cself:
-                    if not cother.count(item):
+                loc = deref(cself).begin()
+                while loc != deref(cself).end():
+                    if not deref(cother).count(deref(loc)):
                         return False
+                    inc(loc)
                 return True
             elif cop == 1:  # Less Than or Equal To  (subset)
-                for item in cself:
-                    if not cother.count(item):
+                loc = deref(cself).begin()
+                while loc != deref(cself).end():
+                    if not deref(cother).count(deref(loc)):
                         return False
+                    inc(loc)
                 return True
             elif cop == 2:  # Equivalent
-                if cself.size() != cother.size():
+                if deref(cself).size() != deref(cother).size():
                     return False
-                for item in cself:
-                    if not cother.count(item):
+                loc = deref(cself).begin()
+                while loc != deref(cself).end():
+                    if not deref(cother).count(deref(loc)):
                         return False
+                    inc(loc)
                 return True
             elif cop == 3:  # Not Equivalent
-                for item in cself:
-                    if not cother.count(item):
+                loc = deref(cself).begin()
+                while loc != deref(cself).end():
+                    if not deref(cother).count(deref(loc)):
                         return True
-                return cself.size() != cother.size()
+                    inc(loc)
+                return deref(cself).size() != deref(cother).size()
             elif cop == 4:  # Greater Than (strict superset)
-                if not cself.size() > cother.size():
+                if not deref(cself).size() > deref(cother).size():
                     return False
-                for item in cother:
-                    if not cself.count(item):
+                loc = deref(cother).begin()
+                while loc != deref(cother).end():
+                    if not deref(cself).count(deref(loc)):
                         return False
+                    inc(loc)
                 return True
             elif cop == 5:  # Greater Than or Equal To (superset)
-                for item in cother:
-                    if not cself.count(item):
+                loc = deref(cother).begin()
+                while loc != deref(cother).end():
+                    if not deref(cself).count(deref(loc)):
                         return False
+                    inc(loc)
                 return True
 
         # Python level comparisons
@@ -908,9 +939,15 @@ Sequence.register({{> types/CythonPythonType}})
 
         cdef shared_ptr[{{> types/CythonCppType}}] shretval = \
             make_shared[{{> types/CythonCppType}}]()
-        for citem in deref((<{{> types/CythonPythonType}}> self)._cpp_obj):
-            if deref((<{{> types/CythonPythonType}}> other)._cpp_obj).count(citem) > 0:
-                deref(shretval).insert(citem)
+
+        cdef shared_ptr[{{> types/CythonCppType}}] cself = (<{{> types/CythonPythonType}}> other)._cpp_obj
+        cdef shared_ptr[{{> types/CythonCppType}}] cother = (<{{> types/CythonPythonType}}> other)._cpp_obj
+
+        cdef {{>types/CythonCppType}}.iterator loc = deref(cself).begin()
+        while loc != deref(cself).end():
+            if deref(cother).count(deref(loc)) > 0:
+                deref(shretval).insert(deref(loc))
+            inc(loc)
         return {{> types/CythonPythonType}}.create(move_shared(shretval))
 
     def __sub__(self, other):
@@ -921,9 +958,15 @@ Sequence.register({{> types/CythonPythonType}})
 
         cdef shared_ptr[{{> types/CythonCppType}}] shretval = \
             make_shared[{{> types/CythonCppType}}]()
-        for citem in deref((<{{> types/CythonPythonType}}> self)._cpp_obj):
-            if deref((<{{> types/CythonPythonType}}> other)._cpp_obj).count(citem) == 0:
-                deref(shretval).insert(citem)
+
+        cdef shared_ptr[{{> types/CythonCppType}}] cself = (<{{> types/CythonPythonType}}> other)._cpp_obj
+        cdef shared_ptr[{{> types/CythonCppType}}] cother = (<{{> types/CythonPythonType}}> other)._cpp_obj
+
+        cdef {{>types/CythonCppType}}.iterator loc = deref(cself).begin()
+        while loc != deref(cself).end():
+            if deref(cother).count(deref(loc)) == 0:
+                deref(shretval).insert(deref(loc))
+            inc(loc)
         return {{> types/CythonPythonType}}.create(move_shared(shretval))
 
     def __or__(self, other):
@@ -934,10 +977,18 @@ Sequence.register({{> types/CythonPythonType}})
 
         cdef shared_ptr[{{> types/CythonCppType}}] shretval = \
             make_shared[{{> types/CythonCppType}}]()
-        for citem in deref((<{{> types/CythonPythonType}}> self)._cpp_obj):
-                deref(shretval).insert(citem)
-        for citem in deref((<{{> types/CythonPythonType}}> other)._cpp_obj):
-                deref(shretval).insert(citem)
+
+        cdef shared_ptr[{{> types/CythonCppType}}] cself = (<{{> types/CythonPythonType}}> other)._cpp_obj
+        cdef shared_ptr[{{> types/CythonCppType}}] cother = (<{{> types/CythonPythonType}}> other)._cpp_obj
+
+        cdef {{>types/CythonCppType}}.iterator loc = deref(cself).begin()
+        while loc != deref(cself).end():
+            deref(shretval).insert(deref(loc))
+            inc(loc)
+        loc = deref(cself).begin()
+        while loc != deref(cother).end():
+            deref(shretval).insert(deref(loc))
+            inc(loc)
         return {{> types/CythonPythonType}}.create(move_shared(shretval))
 
     def __xor__(self, other):
@@ -948,12 +999,20 @@ Sequence.register({{> types/CythonPythonType}})
 
         cdef shared_ptr[{{> types/CythonCppType}}] shretval = \
             make_shared[{{> types/CythonCppType}}]()
-        for citem in deref((<{{> types/CythonPythonType}}> self)._cpp_obj):
-            if deref((<{{> types/CythonPythonType}}> other)._cpp_obj).count(citem) == 0:
-                deref(shretval).insert(citem)
-        for citem in deref((<{{> types/CythonPythonType}}> other)._cpp_obj):
-            if deref((<{{> types/CythonPythonType}}> self)._cpp_obj).count(citem) == 0:
-                deref(shretval).insert(citem)
+
+        cdef shared_ptr[{{> types/CythonCppType}}] cself = (<{{> types/CythonPythonType}}> other)._cpp_obj
+        cdef shared_ptr[{{> types/CythonCppType}}] cother = (<{{> types/CythonPythonType}}> other)._cpp_obj
+
+        cdef {{>types/CythonCppType}}.iterator loc = deref(cself).begin()
+        while loc != deref(cself).end():
+            if deref(cother).count(deref(loc)) == 0:
+                deref(shretval).insert(deref(loc))
+            inc(loc)
+        loc = deref(cself).begin()
+        while loc != deref(cother).end():
+            if deref(cself).count(deref(loc)) == 0:
+                deref(shretval).insert(deref(loc))
+            inc(loc)
         return {{> types/CythonPythonType}}.create(move_shared(shretval))
 
     def isdisjoint(self, other):
@@ -982,8 +1041,8 @@ Set.register({{> types/CythonPythonType}})
 {{/type:set?}}
 {{#type:map?}}
     @staticmethod
-    cdef unique_ptr[{{> types/CythonCppType}}] _make_instance(object items) except *:
-        cdef unique_ptr[{{> types/CythonCppType}}] c_inst = make_unique[{{> types/CythonCppType}}]()
+    cdef shared_ptr[{{> types/CythonCppType}}] _make_instance(object items) except *:
+        cdef shared_ptr[{{> types/CythonCppType}}] c_inst = make_shared[{{> types/CythonCppType}}]()
         if items is not None:
             for key, item in items.items():
                 {{#type:keyType}}
@@ -1023,7 +1082,7 @@ Set.register({{> types/CythonPythonType}})
                     }}{{#type:keyType}}{{> CythonPythonToCppKey}}{{/type:keyType}}{{!
                     }}] = {{!
                     }}{{#type:valueType}}{{> CythonPythonToCppItem}}{{/type:valueType}}
-        return move_unique(c_inst)
+        return c_inst
 
     def __getitem__(self, key):
         err = KeyError(f'{key}')
@@ -1038,16 +1097,18 @@ Set.register({{> types/CythonPythonType}})
             raise err from None
         {{/type:container?}}
         if not isinstance(key, {{> types/PythonType}}):
-            raise err
-        cdef {{> types/CythonCppType}} ckey = {{> CythonPythonToCppKey}}
+            raise err from None
         {{/type:keyType}}
         cdef {{> types/CythonCppType}}.iterator iter = deref(
-            self._cpp_obj).find(ckey)
+            self._cpp_obj).find({{#type:keyType}}{{> CythonPythonToCppKey}}{{/type:keyType}})
         if iter == deref(self._cpp_obj).end():
             raise err
         cdef {{#type:valueType}}{{!
-            }}{{> types/CythonCppType}} {{!
-            }}citem = deref(iter).second{{/type:valueType}}
+            }}{{^type:base?}}{{^type:enum?}}shared_ptr[{{/type:enum?}}{{/type:base?}}{{> types/CythonCppType}}{{!
+            }}{{^type:base?}}{{^type:enum?}}]{{/type:enum?}}{{/type:base?}}{{!
+            }} citem = {{^type:base?}}{{^type:enum?}}reference_shared_ptr_{{containerType:flat_name}}(self._cpp_obj, {{/type:enum?}}{{/type:base?}}{{!
+                }}deref(iter).second{{!
+            }}{{^type:base?}}{{^type:enum?}}){{/type:enum?}}{{/type:base?}}{{/type:valueType}}
         return {{#type:valueType}}{{!
             }}{{> ContainerCythonCppToPythonItem}}{{/type:valueType}}
 
@@ -1058,11 +1119,18 @@ Set.register({{> types/CythonPythonType}})
         if not self:
             raise StopIteration
         cdef {{#type:keyType}}{{!
-            }}{{> types/CythonCppType}}{{/type:keyType}} citem
-        for pair in deref(self._cpp_obj):
-            citem = pair.first
-            yield {{#type:keyType}}{{!
-                }}{{> ContainerCythonCppToPythonItem}}{{/type:keyType}}
+            }}{{^type:base?}}{{^type:enum?}}shared_ptr[{{/type:enum?}}{{/type:base?}}{{> types/CythonCppType}}{{!
+            }}{{^type:base?}}{{^type:enum?}}]{{/type:enum?}}{{/type:base?}}{{!
+            }}{{/type:keyType}} citem
+        cdef {{>types/CythonCppType}}.iterator loc = deref(self._cpp_obj).begin()
+        while loc != deref(self._cpp_obj).end():
+            {{#type:keyType}}
+            citem = {{^type:base?}}{{^type:enum?}}reference_shared_ptr_{{containerType:flat_name}}_key(self._cpp_obj, {{/type:enum?}}{{/type:base?}}{{!
+                    }}deref(loc).first{{!
+                    }}{{^type:base?}}{{^type:enum?}}){{/type:enum?}}{{/type:base?}}
+            yield {{> ContainerCythonCppToPythonItem}}
+            {{/type:keyType}}
+            inc(loc)
 
     def __richcmp__(self, other, op):
         cdef int cop = op
@@ -1134,29 +1202,44 @@ Set.register({{> types/CythonPythonType}})
         if not self:
             raise StopIteration
         cdef {{#type:valueType}}{{!
-          }}{{> types/CythonCppType}}{{!
+          }}{{^type:base?}}{{^type:enum?}}shared_ptr[{{/type:enum?}}{{/type:base?}}{{> types/CythonCppType}}{{!
+          }}{{^type:base?}}{{^type:enum?}}]{{/type:enum?}}{{/type:base?}}{{!
           }}{{/type:valueType}}{{!!
           }} citem
-        for pair in deref(self._cpp_obj):
-            citem = pair.second
-            yield {{#type:valueType}}{{!
-              }}{{> ContainerCythonCppToPythonItem}}{{!
-              }}{{/type:valueType}}
+        cdef {{>types/CythonCppType}}.iterator loc = deref(self._cpp_obj).begin()
+        while loc != deref(self._cpp_obj).end():
+            {{#type:valueType}}
+            citem = {{^type:base?}}{{^type:enum?}}reference_shared_ptr_{{containerType:flat_name}}(self._cpp_obj, {{/type:enum?}}{{/type:base?}}{{!
+                    }}deref(loc).second{{!
+                    }}{{^type:base?}}{{^type:enum?}}){{/type:enum?}}{{/type:base?}}
+            yield {{> ContainerCythonCppToPythonItem}}
+            {{/type:valueType}}
+            inc(loc)
 
     def items(self):
         if not self:
             raise StopIteration
         cdef {{#type:keyType}}{{!
-          }}{{> types/CythonCppType}}{{!
-          }}{{/type:keyType}}{{!
+          }}{{^type:base?}}{{^type:enum?}}shared_ptr[{{/type:enum?}}{{/type:base?}}{{> types/CythonCppType}}{{!
+            }}{{^type:base?}}{{^type:enum?}}]{{/type:enum?}}{{/type:base?}}{{!
+            }}{{/type:keyType}}{{!
           }} ckey
         cdef {{#type:valueType}}{{!
-          }}{{> types/CythonCppType}}{{!
-          }}{{/type:valueType}} citem
-        for pair in deref(self._cpp_obj):
-            ckey = pair.first
-            citem = pair.second
-
+          }}{{^type:base?}}{{^type:enum?}}shared_ptr[{{/type:enum?}}{{/type:base?}}{{> types/CythonCppType}}{{!
+            }}{{^type:base?}}{{^type:enum?}}]{{/type:enum?}}{{/type:base?}}{{!
+            }}{{/type:valueType}} citem
+        cdef {{>types/CythonCppType}}.iterator loc = deref(self._cpp_obj).begin()
+        while loc != deref(self._cpp_obj).end():
+            {{#type:keyType}}
+            ckey = {{^type:base?}}{{^type:enum?}}reference_shared_ptr_{{containerType:flat_name}}_key(self._cpp_obj, {{/type:enum?}}{{/type:base?}}{{!
+                    }}deref(loc).first{{!
+                    }}{{^type:base?}}{{^type:enum?}}){{/type:enum?}}{{/type:base?}}
+            {{/type:keyType}}
+            {{#type:valueType}}
+            citem = {{^type:base?}}{{^type:enum?}}reference_shared_ptr_{{containerType:flat_name}}(self._cpp_obj, {{/type:enum?}}{{/type:base?}}{{!
+                    }}deref(loc).second{{!
+                    }}{{^type:base?}}{{^type:enum?}}){{/type:enum?}}{{/type:base?}}
+            {{/type:valueType}}
             yield ({{!
               }}{{#type:keyType}}{{!
               }}{{> ContainerCythonCppToPythonKey}}{{!
@@ -1164,6 +1247,7 @@ Set.register({{> types/CythonPythonType}})
               }}{{#type:valueType}}{{!
               }}{{> ContainerCythonCppToPythonItem}}{{!
               }}{{/type:valueType}})
+            inc(loc)
 
 
 

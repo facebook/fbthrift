@@ -35,9 +35,9 @@ return self.__{{field:name}}{{!
 return self.__{{field:name}}{{!
 }}{{/type:iobufRef?}}{{!
 }}{{#type:flexibleBinary?}}{{!
-  }}return (<const char*>self._cpp_obj.get().{{field:name}}{{!
+  }}return (<const char*>deref(self._cpp_obj).{{field:name}}{{!
     }}{{#program:optionals?}}{{#field:optional?}}.value(){{/field:optional?}}{{/program:optionals?}}{{!
-    }}.data())[:self._cpp_obj.get().{{field:name}}{{!
+    }}.data())[:deref(self._cpp_obj).{{field:name}}{{!
     }}{{#program:optionals?}}{{#field:optional?}}.value(){{/field:optional?}}{{/program:optionals?}}{{!
     }}.size()]{{!
 }}{{/type:flexibleBinary?}}{{!
@@ -57,7 +57,7 @@ return self.__{{field:name}}{{!
   }}return {{!
     }}{{#type:bool?}}<pbool> {{/type:bool?}}{{!
     }}{{#type:string?}}(<bytes>{{/type:string?}}{{!
-    }}self._cpp_obj.get().{{field:name}}{{!
+    }}deref(self._cpp_obj).{{field:name}}{{!
     }}{{#program:optionals?}}{{#field:optional?}}.value(){{/field:optional?}}{{/program:optionals?}}{{!
     }}{{#type:string?}}).decode('UTF-8'){{/type:string?}}{{!
 }}{{/type:base?}}{{!

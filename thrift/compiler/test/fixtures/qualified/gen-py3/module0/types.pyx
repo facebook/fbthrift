@@ -21,7 +21,7 @@ from thrift.py3.types import NOTSET as __NOTSET
 from thrift.py3.types cimport (
     translate_cpp_enum_to_python,
     SetMetaClass as __SetMetaClass,
-    constant_shared_ptr
+    constant_shared_ptr,
 )
 cimport thrift.py3.std_libcpp as std_libcpp
 from thrift.py3.serializer import Protocol as __Protocol
@@ -247,12 +247,12 @@ cdef class Struct(thrift.py3.types.Struct):
     @property
     def first(self):
 
-        return self._cpp_obj.get().first
+        return deref(self._cpp_obj).first
 
     @property
     def second(self):
 
-        return (<bytes>self._cpp_obj.get().second).decode('UTF-8')
+        return (<bytes>deref(self._cpp_obj).second).decode('UTF-8')
 
 
     def __hash__(Struct self):
@@ -334,7 +334,7 @@ cdef class List__Enum:
         if isinstance(items, List__Enum):
             self._cpp_obj = (<List__Enum> items)._cpp_obj
         else:
-            self._cpp_obj = move(List__Enum._make_instance(items))
+            self._cpp_obj = List__Enum._make_instance(items)
 
     @staticmethod
     cdef create(shared_ptr[vector[cEnum]] c_items):
@@ -349,14 +349,14 @@ cdef class List__Enum:
         return List__Enum.create(move_shared(cpp_obj))
 
     @staticmethod
-    cdef unique_ptr[vector[cEnum]] _make_instance(object items) except *:
-        cdef unique_ptr[vector[cEnum]] c_inst = make_unique[vector[cEnum]]()
+    cdef shared_ptr[vector[cEnum]] _make_instance(object items) except *:
+        cdef shared_ptr[vector[cEnum]] c_inst = make_shared[vector[cEnum]]()
         if items is not None:
             for item in items:
                 if not isinstance(item, Enum):
                     raise TypeError(f"{item!r} is not of type Enum")
                 deref(c_inst).push_back(Enum_to_cpp(item))
-        return move_unique(c_inst)
+        return c_inst
 
     def __add__(object self, object other):
         return type(self)(itertools.chain(self, other))
@@ -368,8 +368,7 @@ cdef class List__Enum:
             c_inst = make_shared[vector[cEnum]]()
             sz = deref(self._cpp_obj).size()
             for index in range(*index_obj.indices(sz)):
-                citem = deref(self._cpp_obj.get())[index]
-                deref(c_inst).push_back(citem)
+                deref(c_inst).push_back(deref(self._cpp_obj)[index])
             return List__Enum.create(move_shared(c_inst))
         else:
             index = <int?>index_obj
@@ -379,7 +378,7 @@ cdef class List__Enum:
                 index = size + index
             if index >= size or index < 0:
                 raise IndexError('list index out of range')
-            citem = deref(self._cpp_obj.get())[index]
+            citem = deref(self._cpp_obj)[index]
             return translate_cpp_enum_to_python(Enum, <int> citem)
 
     def __len__(self):
@@ -410,17 +409,18 @@ cdef class List__Enum:
             return False
         if not isinstance(item, Enum):
             return False
-        cdef cEnum citem = Enum_to_cpp(item)
-        cdef vector[cEnum] vec = deref(
-            self._cpp_obj.get())
-        return std_libcpp.find(vec.begin(), vec.end(), citem) != vec.end()
+        return std_libcpp.find[vector[cEnum].iterator, cEnum](deref(self._cpp_obj).begin(), deref(self._cpp_obj).end(), Enum_to_cpp(item)) != deref(self._cpp_obj).end()
 
     def __iter__(self):
         if not self:
             raise StopIteration
         cdef cEnum citem
-        for citem in deref(self._cpp_obj):
+        cdef vector[cEnum].iterator loc = deref(self._cpp_obj).begin()
+        while loc != deref(self._cpp_obj).end():
+            citem = deref(loc)
             yield translate_cpp_enum_to_python(Enum, <int> citem)
+            inc(loc)
+
 
     def __repr__(self):
         if not self:
@@ -431,10 +431,8 @@ cdef class List__Enum:
         if not self:
             raise StopIteration
         cdef cEnum citem
-        cdef vector[cEnum] vec = deref(
-            self._cpp_obj.get())
-        cdef vector[cEnum].reverse_iterator loc = vec.rbegin()
-        while loc != vec.rend():
+        cdef vector[cEnum].reverse_iterator loc = deref(self._cpp_obj).rbegin()
+        while loc != deref(self._cpp_obj).rend():
             citem = deref(loc)
             yield translate_cpp_enum_to_python(Enum, <int> citem)
             inc(loc)
@@ -464,16 +462,13 @@ cdef class List__Enum:
 
         if not isinstance(item, Enum):
             raise err
-        cdef cEnum citem = Enum_to_cpp(item)
-        cdef vector[cEnum] vec = deref(self._cpp_obj.get())
-        cdef vector[cEnum].iterator end = std_libcpp.prev(vec.end(), <int64_t>offset_end)
-        cdef vector[cEnum].iterator loc = std_libcpp.find(
-            std_libcpp.next(vec.begin(), <int64_t>offset_begin),
+        cdef vector[cEnum].iterator end = std_libcpp.prev(deref(self._cpp_obj).end(), <int64_t>offset_end)
+        cdef vector[cEnum].iterator loc = std_libcpp.find[vector[cEnum].iterator, cEnum](
+            std_libcpp.next(deref(self._cpp_obj).begin(), <int64_t>offset_begin),
             end,
-            citem
-        )
+            Enum_to_cpp(item)        )
         if loc != end:
-            return <int64_t> std_libcpp.distance(vec.begin(), loc)
+            return <int64_t> std_libcpp.distance(deref(self._cpp_obj).begin(), loc)
         raise err
 
     def count(self, item):
@@ -481,9 +476,8 @@ cdef class List__Enum:
             return 0
         if not isinstance(item, Enum):
             return 0
-        cdef cEnum citem = Enum_to_cpp(item)
-        cdef vector[cEnum] vec = deref(self._cpp_obj.get())
-        return <int64_t> std_libcpp.count(vec.begin(), vec.end(), citem)
+        return <int64_t> std_libcpp.count[vector[cEnum].iterator, cEnum](
+            deref(self._cpp_obj).begin(), deref(self._cpp_obj).end(), Enum_to_cpp(item))
 
 
 Sequence.register(List__Enum)

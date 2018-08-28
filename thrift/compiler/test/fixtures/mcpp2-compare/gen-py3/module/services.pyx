@@ -2401,7 +2401,7 @@ cdef api void call_cy_ParamService_i64_ret_string_typedef_param(
     cdef ParamServiceInterface __iface
     __iface = self
     __promise = Promise_int64_t.create(move_promise_int64_t(cPromise))
-    arg_param1 = (deref(param1.get())).decode('UTF-8')
+    arg_param1 = (deref(param1)).decode('UTF-8')
     arg_param2 = _module_types.Set__List__List__Map__Empty_MyStruct.create(_module_types.move(param2))
     __context = None
     if __iface._pass_context_i64_ret_string_typedef_param:
@@ -2583,7 +2583,7 @@ cdef api void call_cy_ParamService_string_ret_string_param(
     cdef ParamServiceInterface __iface
     __iface = self
     __promise = Promise_string.create(move_promise_string(cPromise))
-    arg_param1 = (deref(param1.get())).decode('UTF-8')
+    arg_param1 = (deref(param1)).decode('UTF-8')
     __context = None
     if __iface._pass_context_string_ret_string_param:
         __context = RequestContext.create(ctx)
@@ -2634,7 +2634,7 @@ cdef api void call_cy_ParamService_binary_ret_binary_param(
     cdef ParamServiceInterface __iface
     __iface = self
     __promise = Promise_binary.create(move_promise_binary(cPromise))
-    arg_param1 = (deref(param1.get()))
+    arg_param1 = (deref(param1))
     __context = None
     if __iface._pass_context_binary_ret_binary_param:
         __context = RequestContext.create(ctx)
@@ -3270,7 +3270,7 @@ cdef api void call_cy_ParamService_listunion_string_param(
     cdef ParamServiceInterface __iface
     __iface = self
     __promise = Promise_vector___module_types_cComplexUnion.create(move_promise_vector___module_types_cComplexUnion(cPromise))
-    arg_param1 = (deref(param1.get())).decode('UTF-8')
+    arg_param1 = (deref(param1)).decode('UTF-8')
     __context = None
     if __iface._pass_context_listunion_string_param:
         __context = RequestContext.create(ctx)

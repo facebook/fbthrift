@@ -92,12 +92,13 @@ cdef class List__Enum:
     @staticmethod
     cdef create(shared_ptr[vector[cEnum]])
     @staticmethod
-    cdef unique_ptr[vector[cEnum]] _make_instance(object items) except *
+    cdef shared_ptr[vector[cEnum]] _make_instance(object items) except *
 
 cdef extern from "<utility>" namespace "std" nogil:
-    cdef shared_ptr[vector[cEnum]] move(unique_ptr[vector[cEnum]])
-    cdef unique_ptr[vector[cEnum]] move_unique "std::move"(unique_ptr[vector[cEnum]])
+    cdef shared_ptr[vector[cEnum]] move "std::move"(unique_ptr[vector[cEnum]])
     cdef shared_ptr[vector[cEnum]] move_shared "std::move"(shared_ptr[vector[cEnum]])
+cdef extern from "<utility>" nogil:
+    pass  
 cdef extern from "<memory>" namespace "std" nogil:
     cdef shared_ptr[const vector[cEnum]] const_pointer_cast "std::const_pointer_cast<const std::vector<module1::Enum>>"(shared_ptr[vector[cEnum]])
 

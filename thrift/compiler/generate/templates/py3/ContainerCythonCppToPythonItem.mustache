@@ -33,13 +33,8 @@ citem.
 }}{{#type:float?}}citem{{/type:float?}}{{!
 }}{{#type:string?}}bytes(citem).decode('UTF-8'){{/type:string?}}{{!
 }}{{#type:binary?}}bytes(citem){{/type:binary?}}{{!
-}}{{#type:struct}}{{> types/CythonPythonType}}.create({{!
-    }}make_shared[{{> types/CythonCppType}}](citem)){{/type:struct}}{{!
-}}{{#type:list?}}{{> types/CythonPythonType}}.create(
-    make_shared[{{> types/CythonCppType}}](citem)){{/type:list?}}{{!
-}}{{#type:set?}}{{> types/CythonPythonType}}.create(
-    make_shared[{{> types/CythonCppType}}](citem)){{/type:set?}}{{!
-}}{{#type:map?}}{{> types/CythonPythonType}}.create(
-    make_shared[{{> types/CythonCppType}}](citem)){{/type:map?}}{{!
+}}{{^type:base?}}{{^type:enum?}}{{!
+    }}{{> types/CythonPythonType}}.create(citem){{!
+}}{{/type:enum?}}{{/type:base?}}{{!
 }}{{#type:enum}}translate_cpp_enum_to_python({{!
     }}{{> types/CythonPythonType}}, <int> citem){{/type:enum}}

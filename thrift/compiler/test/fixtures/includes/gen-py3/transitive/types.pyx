@@ -21,7 +21,7 @@ from thrift.py3.types import NOTSET as __NOTSET
 from thrift.py3.types cimport (
     translate_cpp_enum_to_python,
     SetMetaClass as __SetMetaClass,
-    constant_shared_ptr
+    constant_shared_ptr,
 )
 cimport thrift.py3.std_libcpp as std_libcpp
 from thrift.py3.serializer import Protocol as __Protocol
@@ -120,7 +120,7 @@ cdef class Foo(thrift.py3.types.Struct):
     @property
     def a(self):
 
-        return self._cpp_obj.get().a
+        return deref(self._cpp_obj).a
 
 
     def __hash__(Foo self):

@@ -101,3 +101,4 @@ cdef class Fiery(thrift.py3.exceptions.Error):
 
 
 
+

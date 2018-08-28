@@ -69,3 +69,4 @@ cdef class HsFoo(thrift.py3.types.Struct):
 
 
 
+

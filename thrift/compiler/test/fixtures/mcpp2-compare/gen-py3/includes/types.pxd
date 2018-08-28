@@ -121,5 +121,6 @@ cdef class AStructB(thrift.py3.types.Struct):
 
 
 
+
 cdef extern from "gen-cpp2/includes_constants.h" namespace "a::different::ns":
     cdef int64_t cIncludedConstant "a::different::ns::includes_constants::IncludedConstant"

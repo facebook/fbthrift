@@ -1452,7 +1452,7 @@ cdef class ParamService(thrift.py3.client.Client):
         bridgeFutureWith[cFollyUnit](
             self._executor,
             deref(self._module_ParamService_client).void_ret_map_param(rpc_options._cpp_obj, 
-                cmap[string,int64_t](deref(_module_types.Map__string_i64(param1)._cpp_obj.get())),
+                deref((<_module_types.Map__string_i64>param1)._cpp_obj),
             ),
             ParamService_void_ret_map_param_callback,
             <PyObject *> __userdata
@@ -1479,8 +1479,8 @@ cdef class ParamService(thrift.py3.client.Client):
         bridgeFutureWith[cFollyUnit](
             self._executor,
             deref(self._module_ParamService_client).void_ret_map_setlist_param(rpc_options._cpp_obj, 
-                cmap[string,int64_t](deref(_module_types.Map__string_i64(param1)._cpp_obj.get())),
-                cset[vector[string]](deref(_module_types.Set__List__string(param2)._cpp_obj.get())),
+                deref((<_module_types.Map__string_i64>param1)._cpp_obj),
+                deref((<_module_types.Set__List__string>param2)._cpp_obj),
             ),
             ParamService_void_ret_map_setlist_param_callback,
             <PyObject *> __userdata
@@ -1574,7 +1574,7 @@ cdef class ParamService(thrift.py3.client.Client):
         bridgeFutureWith[cFollyUnit](
             self._executor,
             deref(self._module_ParamService_client).void_ret_listunion_param(rpc_options._cpp_obj, 
-                vector[_module_types.cComplexUnion](deref(_module_types.List__ComplexUnion(param1)._cpp_obj.get())),
+                deref((<_module_types.List__ComplexUnion>param1)._cpp_obj),
             ),
             ParamService_void_ret_listunion_param_callback,
             <PyObject *> __userdata
@@ -1630,7 +1630,7 @@ cdef class ParamService(thrift.py3.client.Client):
         bridgeFutureWith[cbool](
             self._executor,
             deref(self._module_ParamService_client).bool_ret_map_param(rpc_options._cpp_obj, 
-                cmap[string,int64_t](deref(_module_types.Map__string_i64(param1)._cpp_obj.get())),
+                deref((<_module_types.Map__string_i64>param1)._cpp_obj),
             ),
             ParamService_bool_ret_map_param_callback,
             <PyObject *> __userdata
@@ -1702,7 +1702,7 @@ cdef class ParamService(thrift.py3.client.Client):
             self._executor,
             deref(self._module_ParamService_client).i64_ret_string_typedef_param(rpc_options._cpp_obj, 
                 param1.encode('UTF-8'),
-                cset[vector[vector[cmap[_module_types.cEmpty,_module_types.cMyStruct]]]](deref(_module_types.Set__List__List__Map__Empty_MyStruct(param2)._cpp_obj.get())),
+                deref((<_module_types.Set__List__List__Map__Empty_MyStruct>param2)._cpp_obj),
             ),
             ParamService_i64_ret_string_typedef_param_callback,
             <PyObject *> __userdata
@@ -1776,7 +1776,7 @@ cdef class ParamService(thrift.py3.client.Client):
         bridgeFutureWith[double](
             self._executor,
             deref(self._module_ParamService_client).double_ret_setstruct_param(rpc_options._cpp_obj, 
-                cset[_module_types.cMyStruct](deref(_module_types.Set__MyStruct(param1)._cpp_obj.get())),
+                deref((<_module_types.Set__MyStruct>param1)._cpp_obj),
             ),
             ParamService_double_ret_setstruct_param_callback,
             <PyObject *> __userdata
@@ -1869,8 +1869,8 @@ cdef class ParamService(thrift.py3.client.Client):
         bridgeFutureWith[vector[cbool]](
             self._executor,
             deref(self._module_ParamService_client).list_ret_map_setlist_param(rpc_options._cpp_obj, 
-                cmap[int32_t,vector[string]](deref(_module_types.Map__i32_List__string(param1)._cpp_obj.get())),
-                vector[string](deref(_module_types.List__string(param2)._cpp_obj.get())),
+                deref((<_module_types.Map__i32_List__string>param1)._cpp_obj),
+                deref((<_module_types.List__string>param2)._cpp_obj),
             ),
             ParamService_list_ret_map_setlist_param_callback,
             <PyObject *> __userdata
@@ -1894,7 +1894,7 @@ cdef class ParamService(thrift.py3.client.Client):
         bridgeFutureWith[cmap[cset[vector[int32_t]],cmap[vector[cset[string]],string]]](
             self._executor,
             deref(self._module_ParamService_client).mapsetlistmapliststring_ret_listlistlist_param(rpc_options._cpp_obj, 
-                vector[vector[vector[vector[int32_t]]]](deref(_module_types.List__List__List__List__i32(param1)._cpp_obj.get())),
+                deref((<_module_types.List__List__List__List__i32>param1)._cpp_obj),
             ),
             ParamService_mapsetlistmapliststring_ret_listlistlist_param_callback,
             <PyObject *> __userdata
@@ -1944,7 +1944,7 @@ cdef class ParamService(thrift.py3.client.Client):
         bridgeFutureWith[vector[int32_t]](
             self._executor,
             deref(self._module_ParamService_client).listtypedef_ret_typedef_param(rpc_options._cpp_obj, 
-                vector[cmap[_module_types.cEmpty,_module_types.cMyStruct]](deref(_module_types.List__Map__Empty_MyStruct(param1)._cpp_obj.get())),
+                deref((<_module_types.List__Map__Empty_MyStruct>param1)._cpp_obj),
             ),
             ParamService_listtypedef_ret_typedef_param_callback,
             <PyObject *> __userdata
@@ -2014,7 +2014,7 @@ cdef class ParamService(thrift.py3.client.Client):
         bridgeFutureWith[vector[_module_types.cMyEnumA]](
             self._executor,
             deref(self._module_ParamService_client).listenum_ret_map_param(rpc_options._cpp_obj, 
-                cmap[string,int64_t](deref(_module_types.Map__string_i64(param1)._cpp_obj.get())),
+                deref((<_module_types.Map__string_i64>param1)._cpp_obj),
             ),
             ParamService_listenum_ret_map_param_callback,
             <PyObject *> __userdata
@@ -2064,7 +2064,7 @@ cdef class ParamService(thrift.py3.client.Client):
         bridgeFutureWith[cset[_module_types.cMyStruct]](
             self._executor,
             deref(self._module_ParamService_client).setstruct_ret_set_param(rpc_options._cpp_obj, 
-                cset[string](deref(_module_types.Set__string(param1)._cpp_obj.get())),
+                deref((<_module_types.Set__string>param1)._cpp_obj),
             ),
             ParamService_setstruct_ret_set_param_callback,
             <PyObject *> __userdata

@@ -21,7 +21,7 @@ from thrift.py3.types import NOTSET as __NOTSET
 from thrift.py3.types cimport (
     translate_cpp_enum_to_python,
     SetMetaClass as __SetMetaClass,
-    constant_shared_ptr
+    constant_shared_ptr,
 )
 cimport thrift.py3.std_libcpp as std_libcpp
 from thrift.py3.serializer import Protocol as __Protocol
@@ -156,7 +156,7 @@ cdef class Fiery(thrift.py3.exceptions.Error):
     @property
     def message(self):
 
-        return (<bytes>self._cpp_obj.get().message).decode('UTF-8')
+        return (<bytes>deref(self._cpp_obj).message).decode('UTF-8')
 
 
     def __hash__(Fiery self):

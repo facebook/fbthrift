@@ -21,7 +21,7 @@ from thrift.py3.types import NOTSET as __NOTSET
 from thrift.py3.types cimport (
     translate_cpp_enum_to_python,
     SetMetaClass as __SetMetaClass,
-    constant_shared_ptr
+    constant_shared_ptr,
 )
 cimport thrift.py3.std_libcpp as std_libcpp
 from thrift.py3.serializer import Protocol as __Protocol
@@ -338,7 +338,7 @@ cdef class BigStruct(thrift.py3.types.Struct):
     @property
     def id(self):
 
-        return self._cpp_obj.get().id
+        return deref(self._cpp_obj).id
 
 
     def __hash__(BigStruct self):

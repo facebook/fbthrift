@@ -621,8 +621,15 @@ void t_mstch_py3_generator::add_per_type_data(
     const auto typedef_type = typedef_def->get_type();
     visit_type(typedef_type, data);
   }
+  // Save a copy of the container flat_name for use when working with elem type
+  mstch::array containers = dump_elems(data.containers);
+  for (auto& elm : containers) {
+    boost::get<mstch::map>(elm).emplace(
+        "containerType:flat_name",
+        boost::get<mstch::map>(elm).find("type:flat_name")->second);
+  }
 
-  results.emplace("containerTypes", dump_elems(data.containers));
+  results.emplace("containerTypes", std::move(containers));
   results.emplace("customTemplates", dump_elems(data.custom_templates));
   results.emplace("customTypes", dump_elems(data.custom_types));
   // extra_namespaces is already a mstch::array, so we don't need to dump it:

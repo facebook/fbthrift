@@ -1493,7 +1493,7 @@ cdef class Map__string_i64:
     @staticmethod
     cdef create(shared_ptr[cmap[string,int64_t]])
     @staticmethod
-    cdef unique_ptr[cmap[string,int64_t]] _make_instance(object items) except *
+    cdef shared_ptr[cmap[string,int64_t]] _make_instance(object items) except *
 
 cdef class Map__Empty_MyStruct:
     cdef object __hash
@@ -1502,7 +1502,7 @@ cdef class Map__Empty_MyStruct:
     @staticmethod
     cdef create(shared_ptr[cmap[cEmpty,cMyStruct]])
     @staticmethod
-    cdef unique_ptr[cmap[cEmpty,cMyStruct]] _make_instance(object items) except *
+    cdef shared_ptr[cmap[cEmpty,cMyStruct]] _make_instance(object items) except *
 
 cdef class List__Map__Empty_MyStruct:
     cdef object __hash
@@ -1511,7 +1511,7 @@ cdef class List__Map__Empty_MyStruct:
     @staticmethod
     cdef create(shared_ptr[vector[cmap[cEmpty,cMyStruct]]])
     @staticmethod
-    cdef unique_ptr[vector[cmap[cEmpty,cMyStruct]]] _make_instance(object items) except *
+    cdef shared_ptr[vector[cmap[cEmpty,cMyStruct]]] _make_instance(object items) except *
 
 cdef class List__List__Map__Empty_MyStruct:
     cdef object __hash
@@ -1520,7 +1520,7 @@ cdef class List__List__Map__Empty_MyStruct:
     @staticmethod
     cdef create(shared_ptr[vector[vector[cmap[cEmpty,cMyStruct]]]])
     @staticmethod
-    cdef unique_ptr[vector[vector[cmap[cEmpty,cMyStruct]]]] _make_instance(object items) except *
+    cdef shared_ptr[vector[vector[cmap[cEmpty,cMyStruct]]]] _make_instance(object items) except *
 
 cdef class List__List__List__Map__Empty_MyStruct:
     cdef object __hash
@@ -1529,7 +1529,7 @@ cdef class List__List__List__Map__Empty_MyStruct:
     @staticmethod
     cdef create(shared_ptr[vector[vector[vector[cmap[cEmpty,cMyStruct]]]]])
     @staticmethod
-    cdef unique_ptr[vector[vector[vector[cmap[cEmpty,cMyStruct]]]]] _make_instance(object items) except *
+    cdef shared_ptr[vector[vector[vector[cmap[cEmpty,cMyStruct]]]]] _make_instance(object items) except *
 
 cdef class List__MyEnumA:
     cdef object __hash
@@ -1538,7 +1538,7 @@ cdef class List__MyEnumA:
     @staticmethod
     cdef create(shared_ptr[vector[cMyEnumA]])
     @staticmethod
-    cdef unique_ptr[vector[cMyEnumA]] _make_instance(object items) except *
+    cdef shared_ptr[vector[cMyEnumA]] _make_instance(object items) except *
 
 cdef class Set__MyStruct:
     cdef object __hash
@@ -1547,7 +1547,7 @@ cdef class Set__MyStruct:
     @staticmethod
     cdef create(shared_ptr[cset[cMyStruct]])
     @staticmethod
-    cdef unique_ptr[cset[cMyStruct]] _make_instance(object items) except *
+    cdef shared_ptr[cset[cMyStruct]] _make_instance(object items) except *
 
 cdef class List__ComplexUnion:
     cdef object __hash
@@ -1556,7 +1556,7 @@ cdef class List__ComplexUnion:
     @staticmethod
     cdef create(shared_ptr[vector[cComplexUnion]])
     @staticmethod
-    cdef unique_ptr[vector[cComplexUnion]] _make_instance(object items) except *
+    cdef shared_ptr[vector[cComplexUnion]] _make_instance(object items) except *
 
 cdef class List__string:
     cdef object __hash
@@ -1565,7 +1565,7 @@ cdef class List__string:
     @staticmethod
     cdef create(shared_ptr[vector[string]])
     @staticmethod
-    cdef unique_ptr[vector[string]] _make_instance(object items) except *
+    cdef shared_ptr[vector[string]] _make_instance(object items) except *
 
 cdef class Set__List__string:
     cdef object __hash
@@ -1574,7 +1574,7 @@ cdef class Set__List__string:
     @staticmethod
     cdef create(shared_ptr[cset[vector[string]]])
     @staticmethod
-    cdef unique_ptr[cset[vector[string]]] _make_instance(object items) except *
+    cdef shared_ptr[cset[vector[string]]] _make_instance(object items) except *
 
 cdef class Set__List__List__Map__Empty_MyStruct:
     cdef object __hash
@@ -1583,7 +1583,7 @@ cdef class Set__List__List__Map__Empty_MyStruct:
     @staticmethod
     cdef create(shared_ptr[cset[vector[vector[cmap[cEmpty,cMyStruct]]]]])
     @staticmethod
-    cdef unique_ptr[cset[vector[vector[cmap[cEmpty,cMyStruct]]]]] _make_instance(object items) except *
+    cdef shared_ptr[cset[vector[vector[cmap[cEmpty,cMyStruct]]]]] _make_instance(object items) except *
 
 cdef class Map__i32_List__string:
     cdef object __hash
@@ -1592,7 +1592,7 @@ cdef class Map__i32_List__string:
     @staticmethod
     cdef create(shared_ptr[cmap[int32_t,vector[string]]])
     @staticmethod
-    cdef unique_ptr[cmap[int32_t,vector[string]]] _make_instance(object items) except *
+    cdef shared_ptr[cmap[int32_t,vector[string]]] _make_instance(object items) except *
 
 cdef class List__bool:
     cdef object __hash
@@ -1601,7 +1601,7 @@ cdef class List__bool:
     @staticmethod
     cdef create(shared_ptr[vector[cbool]])
     @staticmethod
-    cdef unique_ptr[vector[cbool]] _make_instance(object items) except *
+    cdef shared_ptr[vector[cbool]] _make_instance(object items) except *
 
 cdef class List__i32:
     cdef object __hash
@@ -1610,7 +1610,7 @@ cdef class List__i32:
     @staticmethod
     cdef create(shared_ptr[vector[int32_t]])
     @staticmethod
-    cdef unique_ptr[vector[int32_t]] _make_instance(object items) except *
+    cdef shared_ptr[vector[int32_t]] _make_instance(object items) except *
 
 cdef class List__List__i32:
     cdef object __hash
@@ -1619,7 +1619,7 @@ cdef class List__List__i32:
     @staticmethod
     cdef create(shared_ptr[vector[vector[int32_t]]])
     @staticmethod
-    cdef unique_ptr[vector[vector[int32_t]]] _make_instance(object items) except *
+    cdef shared_ptr[vector[vector[int32_t]]] _make_instance(object items) except *
 
 cdef class List__List__List__i32:
     cdef object __hash
@@ -1628,7 +1628,7 @@ cdef class List__List__List__i32:
     @staticmethod
     cdef create(shared_ptr[vector[vector[vector[int32_t]]]])
     @staticmethod
-    cdef unique_ptr[vector[vector[vector[int32_t]]]] _make_instance(object items) except *
+    cdef shared_ptr[vector[vector[vector[int32_t]]]] _make_instance(object items) except *
 
 cdef class List__List__List__List__i32:
     cdef object __hash
@@ -1637,7 +1637,7 @@ cdef class List__List__List__List__i32:
     @staticmethod
     cdef create(shared_ptr[vector[vector[vector[vector[int32_t]]]]])
     @staticmethod
-    cdef unique_ptr[vector[vector[vector[vector[int32_t]]]]] _make_instance(object items) except *
+    cdef shared_ptr[vector[vector[vector[vector[int32_t]]]]] _make_instance(object items) except *
 
 cdef class Set__List__i32:
     cdef object __hash
@@ -1646,7 +1646,7 @@ cdef class Set__List__i32:
     @staticmethod
     cdef create(shared_ptr[cset[vector[int32_t]]])
     @staticmethod
-    cdef unique_ptr[cset[vector[int32_t]]] _make_instance(object items) except *
+    cdef shared_ptr[cset[vector[int32_t]]] _make_instance(object items) except *
 
 cdef class Set__string:
     cdef object __hash
@@ -1655,7 +1655,7 @@ cdef class Set__string:
     @staticmethod
     cdef create(shared_ptr[cset[string]])
     @staticmethod
-    cdef unique_ptr[cset[string]] _make_instance(object items) except *
+    cdef shared_ptr[cset[string]] _make_instance(object items) except *
 
 cdef class List__Set__string:
     cdef object __hash
@@ -1664,7 +1664,7 @@ cdef class List__Set__string:
     @staticmethod
     cdef create(shared_ptr[vector[cset[string]]])
     @staticmethod
-    cdef unique_ptr[vector[cset[string]]] _make_instance(object items) except *
+    cdef shared_ptr[vector[cset[string]]] _make_instance(object items) except *
 
 cdef class Map__List__Set__string_string:
     cdef object __hash
@@ -1673,7 +1673,7 @@ cdef class Map__List__Set__string_string:
     @staticmethod
     cdef create(shared_ptr[cmap[vector[cset[string]],string]])
     @staticmethod
-    cdef unique_ptr[cmap[vector[cset[string]],string]] _make_instance(object items) except *
+    cdef shared_ptr[cmap[vector[cset[string]],string]] _make_instance(object items) except *
 
 cdef class Map__Set__List__i32_Map__List__Set__string_string:
     cdef object __hash
@@ -1682,7 +1682,7 @@ cdef class Map__Set__List__i32_Map__List__Set__string_string:
     @staticmethod
     cdef create(shared_ptr[cmap[cset[vector[int32_t]],cmap[vector[cset[string]],string]]])
     @staticmethod
-    cdef unique_ptr[cmap[cset[vector[int32_t]],cmap[vector[cset[string]],string]]] _make_instance(object items) except *
+    cdef shared_ptr[cmap[cset[vector[int32_t]],cmap[vector[cset[string]],string]]] _make_instance(object items) except *
 
 cdef class List__binary:
     cdef object __hash
@@ -1691,7 +1691,7 @@ cdef class List__binary:
     @staticmethod
     cdef create(shared_ptr[vector[string]])
     @staticmethod
-    cdef unique_ptr[vector[string]] _make_instance(object items) except *
+    cdef shared_ptr[vector[string]] _make_instance(object items) except *
 
 cdef class Map__MyEnumA_string:
     cdef object __hash
@@ -1700,7 +1700,7 @@ cdef class Map__MyEnumA_string:
     @staticmethod
     cdef create(shared_ptr[cmap[cMyEnumA,string]])
     @staticmethod
-    cdef unique_ptr[cmap[cMyEnumA,string]] _make_instance(object items) except *
+    cdef shared_ptr[cmap[cMyEnumA,string]] _make_instance(object items) except *
 
 cdef class Set__i64:
     cdef object __hash
@@ -1709,7 +1709,7 @@ cdef class Set__i64:
     @staticmethod
     cdef create(shared_ptr[cset[int64_t]])
     @staticmethod
-    cdef unique_ptr[cset[int64_t]] _make_instance(object items) except *
+    cdef shared_ptr[cset[int64_t]] _make_instance(object items) except *
 
 cdef class Map__string_i32:
     cdef object __hash
@@ -1718,7 +1718,7 @@ cdef class Map__string_i32:
     @staticmethod
     cdef create(shared_ptr[cmap[string,int32_t]])
     @staticmethod
-    cdef unique_ptr[cmap[string,int32_t]] _make_instance(object items) except *
+    cdef shared_ptr[cmap[string,int32_t]] _make_instance(object items) except *
 
 cdef class List__SimpleUnion:
     cdef object __hash
@@ -1727,7 +1727,7 @@ cdef class List__SimpleUnion:
     @staticmethod
     cdef create(shared_ptr[vector[cSimpleUnion]])
     @staticmethod
-    cdef unique_ptr[vector[cSimpleUnion]] _make_instance(object items) except *
+    cdef shared_ptr[vector[cSimpleUnion]] _make_instance(object items) except *
 
 cdef class Set__SimpleUnion:
     cdef object __hash
@@ -1736,7 +1736,7 @@ cdef class Set__SimpleUnion:
     @staticmethod
     cdef create(shared_ptr[cset[cSimpleUnion]])
     @staticmethod
-    cdef unique_ptr[cset[cSimpleUnion]] _make_instance(object items) except *
+    cdef shared_ptr[cset[cSimpleUnion]] _make_instance(object items) except *
 
 cdef class List__Set__SimpleUnion:
     cdef object __hash
@@ -1745,7 +1745,7 @@ cdef class List__Set__SimpleUnion:
     @staticmethod
     cdef create(shared_ptr[vector[cset[cSimpleUnion]]])
     @staticmethod
-    cdef unique_ptr[vector[cset[cSimpleUnion]]] _make_instance(object items) except *
+    cdef shared_ptr[vector[cset[cSimpleUnion]]] _make_instance(object items) except *
 
 cdef class Map__string_bool:
     cdef object __hash
@@ -1754,7 +1754,7 @@ cdef class Map__string_bool:
     @staticmethod
     cdef create(shared_ptr[cmap[string,cbool]])
     @staticmethod
-    cdef unique_ptr[cmap[string,cbool]] _make_instance(object items) except *
+    cdef shared_ptr[cmap[string,cbool]] _make_instance(object items) except *
 
 cdef class Set__i32:
     cdef object __hash
@@ -1763,7 +1763,7 @@ cdef class Set__i32:
     @staticmethod
     cdef create(shared_ptr[cset[int32_t]])
     @staticmethod
-    cdef unique_ptr[cset[int32_t]] _make_instance(object items) except *
+    cdef shared_ptr[cset[int32_t]] _make_instance(object items) except *
 
 cdef class Map__string_Map__string_i32:
     cdef object __hash
@@ -1772,7 +1772,7 @@ cdef class Map__string_Map__string_i32:
     @staticmethod
     cdef create(shared_ptr[cmap[string,cmap[string,int32_t]]])
     @staticmethod
-    cdef unique_ptr[cmap[string,cmap[string,int32_t]]] _make_instance(object items) except *
+    cdef shared_ptr[cmap[string,cmap[string,int32_t]]] _make_instance(object items) except *
 
 cdef class Map__string_Map__string_Map__string_i32:
     cdef object __hash
@@ -1781,7 +1781,7 @@ cdef class Map__string_Map__string_Map__string_i32:
     @staticmethod
     cdef create(shared_ptr[cmap[string,cmap[string,cmap[string,int32_t]]]])
     @staticmethod
-    cdef unique_ptr[cmap[string,cmap[string,cmap[string,int32_t]]]] _make_instance(object items) except *
+    cdef shared_ptr[cmap[string,cmap[string,cmap[string,int32_t]]]] _make_instance(object items) except *
 
 cdef class List__Set__i32:
     cdef object __hash
@@ -1790,7 +1790,7 @@ cdef class List__Set__i32:
     @staticmethod
     cdef create(shared_ptr[vector[cset[int32_t]]])
     @staticmethod
-    cdef unique_ptr[vector[cset[int32_t]]] _make_instance(object items) except *
+    cdef shared_ptr[vector[cset[int32_t]]] _make_instance(object items) except *
 
 cdef class Map__string_List__i32:
     cdef object __hash
@@ -1799,7 +1799,7 @@ cdef class Map__string_List__i32:
     @staticmethod
     cdef create(shared_ptr[cmap[string,vector[int32_t]]])
     @staticmethod
-    cdef unique_ptr[cmap[string,vector[int32_t]]] _make_instance(object items) except *
+    cdef shared_ptr[cmap[string,vector[int32_t]]] _make_instance(object items) except *
 
 cdef class Set__bool:
     cdef object __hash
@@ -1808,7 +1808,7 @@ cdef class Set__bool:
     @staticmethod
     cdef create(shared_ptr[cset[cbool]])
     @staticmethod
-    cdef unique_ptr[cset[cbool]] _make_instance(object items) except *
+    cdef shared_ptr[cset[cbool]] _make_instance(object items) except *
 
 cdef class Set__Set__bool:
     cdef object __hash
@@ -1817,7 +1817,7 @@ cdef class Set__Set__bool:
     @staticmethod
     cdef create(shared_ptr[cset[cset[cbool]]])
     @staticmethod
-    cdef unique_ptr[cset[cset[cbool]]] _make_instance(object items) except *
+    cdef shared_ptr[cset[cset[cbool]]] _make_instance(object items) except *
 
 cdef class Set__Set__Set__bool:
     cdef object __hash
@@ -1826,7 +1826,7 @@ cdef class Set__Set__Set__bool:
     @staticmethod
     cdef create(shared_ptr[cset[cset[cset[cbool]]]])
     @staticmethod
-    cdef unique_ptr[cset[cset[cset[cbool]]]] _make_instance(object items) except *
+    cdef shared_ptr[cset[cset[cset[cbool]]]] _make_instance(object items) except *
 
 cdef class Map__Bar__double_Baz__i32:
     cdef object __hash
@@ -1835,7 +1835,7 @@ cdef class Map__Bar__double_Baz__i32:
     @staticmethod
     cdef create(shared_ptr[cmap[Bar,Baz]])
     @staticmethod
-    cdef unique_ptr[cmap[Bar,Baz]] _make_instance(object items) except *
+    cdef shared_ptr[cmap[Bar,Baz]] _make_instance(object items) except *
 
 cdef class folly_small_vector_int64_t_8__List__i64:
     cdef object __hash
@@ -1844,7 +1844,7 @@ cdef class folly_small_vector_int64_t_8__List__i64:
     @staticmethod
     cdef create(shared_ptr[folly_small_vector_int64_t_8])
     @staticmethod
-    cdef unique_ptr[folly_small_vector_int64_t_8] _make_instance(object items) except *
+    cdef shared_ptr[folly_small_vector_int64_t_8] _make_instance(object items) except *
 
 cdef class folly_sorted_vector_set_std_string__Set__string:
     cdef object __hash
@@ -1853,7 +1853,7 @@ cdef class folly_sorted_vector_set_std_string__Set__string:
     @staticmethod
     cdef create(shared_ptr[folly_sorted_vector_set_std_string])
     @staticmethod
-    cdef unique_ptr[folly_sorted_vector_set_std_string] _make_instance(object items) except *
+    cdef shared_ptr[folly_sorted_vector_set_std_string] _make_instance(object items) except *
 
 cdef class FakeMap__Map__i64_double:
     cdef object __hash
@@ -1862,7 +1862,7 @@ cdef class FakeMap__Map__i64_double:
     @staticmethod
     cdef create(shared_ptr[FakeMap])
     @staticmethod
-    cdef unique_ptr[FakeMap] _make_instance(object items) except *
+    cdef shared_ptr[FakeMap] _make_instance(object items) except *
 
 cdef class std_unordered_map_std_string_containerStruct__Map__string_containerStruct:
     cdef object __hash
@@ -1871,7 +1871,7 @@ cdef class std_unordered_map_std_string_containerStruct__Map__string_containerSt
     @staticmethod
     cdef create(shared_ptr[std_unordered_map_std_string_containerStruct])
     @staticmethod
-    cdef unique_ptr[std_unordered_map_std_string_containerStruct] _make_instance(object items) except *
+    cdef shared_ptr[std_unordered_map_std_string_containerStruct] _make_instance(object items) except *
 
 cdef class std_list__List__i32:
     cdef object __hash
@@ -1880,7 +1880,7 @@ cdef class std_list__List__i32:
     @staticmethod
     cdef create(shared_ptr[std_list[int32_t]])
     @staticmethod
-    cdef unique_ptr[std_list[int32_t]] _make_instance(object items) except *
+    cdef shared_ptr[std_list[int32_t]] _make_instance(object items) except *
 
 cdef class std_deque__List__string:
     cdef object __hash
@@ -1889,7 +1889,7 @@ cdef class std_deque__List__string:
     @staticmethod
     cdef create(shared_ptr[std_deque[string]])
     @staticmethod
-    cdef unique_ptr[std_deque[string]] _make_instance(object items) except *
+    cdef shared_ptr[std_deque[string]] _make_instance(object items) except *
 
 cdef class folly_sorted_vector_set__Set__string:
     cdef object __hash
@@ -1898,7 +1898,7 @@ cdef class folly_sorted_vector_set__Set__string:
     @staticmethod
     cdef create(shared_ptr[folly_sorted_vector_set[string]])
     @staticmethod
-    cdef unique_ptr[folly_sorted_vector_set[string]] _make_instance(object items) except *
+    cdef shared_ptr[folly_sorted_vector_set[string]] _make_instance(object items) except *
 
 cdef class folly_sorted_vector_map__Map__i64_string:
     cdef object __hash
@@ -1907,7 +1907,7 @@ cdef class folly_sorted_vector_map__Map__i64_string:
     @staticmethod
     cdef create(shared_ptr[folly_sorted_vector_map[int64_t,string]])
     @staticmethod
-    cdef unique_ptr[folly_sorted_vector_map[int64_t,string]] _make_instance(object items) except *
+    cdef shared_ptr[folly_sorted_vector_map[int64_t,string]] _make_instance(object items) except *
 
 cdef class List__Bar__double:
     cdef object __hash
@@ -1916,7 +1916,7 @@ cdef class List__Bar__double:
     @staticmethod
     cdef create(shared_ptr[vector[Bar]])
     @staticmethod
-    cdef unique_ptr[vector[Bar]] _make_instance(object items) except *
+    cdef shared_ptr[vector[Bar]] _make_instance(object items) except *
 
 cdef class Set__Baz__i32:
     cdef object __hash
@@ -1925,7 +1925,7 @@ cdef class Set__Baz__i32:
     @staticmethod
     cdef create(shared_ptr[cset[Baz]])
     @staticmethod
-    cdef unique_ptr[cset[Baz]] _make_instance(object items) except *
+    cdef shared_ptr[cset[Baz]] _make_instance(object items) except *
 
 cdef class Map__i32_string:
     cdef object __hash
@@ -1934,7 +1934,7 @@ cdef class Map__i32_string:
     @staticmethod
     cdef create(shared_ptr[cmap[int32_t,string]])
     @staticmethod
-    cdef unique_ptr[cmap[int32_t,string]] _make_instance(object items) except *
+    cdef shared_ptr[cmap[int32_t,string]] _make_instance(object items) except *
 
 cdef class List__Map__string_i32:
     cdef object __hash
@@ -1943,7 +1943,7 @@ cdef class List__Map__string_i32:
     @staticmethod
     cdef create(shared_ptr[vector[cmap[string,int32_t]]])
     @staticmethod
-    cdef unique_ptr[vector[cmap[string,int32_t]]] _make_instance(object items) except *
+    cdef shared_ptr[vector[cmap[string,int32_t]]] _make_instance(object items) except *
 
 cdef class Map__i16_string:
     cdef object __hash
@@ -1952,7 +1952,7 @@ cdef class Map__i16_string:
     @staticmethod
     cdef create(shared_ptr[cmap[int16_t,string]])
     @staticmethod
-    cdef unique_ptr[cmap[int16_t,string]] _make_instance(object items) except *
+    cdef shared_ptr[cmap[int16_t,string]] _make_instance(object items) except *
 
 cdef class List__Map__i16_string:
     cdef object __hash
@@ -1961,7 +1961,7 @@ cdef class List__Map__i16_string:
     @staticmethod
     cdef create(shared_ptr[vector[cmap[int16_t,string]]])
     @staticmethod
-    cdef unique_ptr[vector[cmap[int16_t,string]]] _make_instance(object items) except *
+    cdef shared_ptr[vector[cmap[int16_t,string]]] _make_instance(object items) except *
 
 cdef class List__MyStruct:
     cdef object __hash
@@ -1970,273 +1970,201 @@ cdef class List__MyStruct:
     @staticmethod
     cdef create(shared_ptr[vector[cMyStruct]])
     @staticmethod
-    cdef unique_ptr[vector[cMyStruct]] _make_instance(object items) except *
+    cdef shared_ptr[vector[cMyStruct]] _make_instance(object items) except *
 
 cdef extern from "<utility>" namespace "std" nogil:
-    cdef shared_ptr[cmap[string,int64_t]] move(unique_ptr[cmap[string,int64_t]])
-    cdef unique_ptr[cmap[string,int64_t]] move_unique "std::move"(unique_ptr[cmap[string,int64_t]])
+    cdef shared_ptr[cmap[string,int64_t]] move "std::move"(unique_ptr[cmap[string,int64_t]])
     cdef shared_ptr[cmap[string,int64_t]] move_shared "std::move"(shared_ptr[cmap[string,int64_t]])
-    cdef shared_ptr[cmap[cEmpty,cMyStruct]] move(unique_ptr[cmap[cEmpty,cMyStruct]])
-    cdef unique_ptr[cmap[cEmpty,cMyStruct]] move_unique "std::move"(unique_ptr[cmap[cEmpty,cMyStruct]])
+    cdef shared_ptr[cmap[cEmpty,cMyStruct]] move "std::move"(unique_ptr[cmap[cEmpty,cMyStruct]])
     cdef shared_ptr[cmap[cEmpty,cMyStruct]] move_shared "std::move"(shared_ptr[cmap[cEmpty,cMyStruct]])
-    cdef shared_ptr[vector[cmap[cEmpty,cMyStruct]]] move(unique_ptr[vector[cmap[cEmpty,cMyStruct]]])
-    cdef unique_ptr[vector[cmap[cEmpty,cMyStruct]]] move_unique "std::move"(unique_ptr[vector[cmap[cEmpty,cMyStruct]]])
+    cdef shared_ptr[vector[cmap[cEmpty,cMyStruct]]] move "std::move"(unique_ptr[vector[cmap[cEmpty,cMyStruct]]])
     cdef shared_ptr[vector[cmap[cEmpty,cMyStruct]]] move_shared "std::move"(shared_ptr[vector[cmap[cEmpty,cMyStruct]]])
-    cdef shared_ptr[vector[vector[cmap[cEmpty,cMyStruct]]]] move(unique_ptr[vector[vector[cmap[cEmpty,cMyStruct]]]])
-    cdef unique_ptr[vector[vector[cmap[cEmpty,cMyStruct]]]] move_unique "std::move"(unique_ptr[vector[vector[cmap[cEmpty,cMyStruct]]]])
+    cdef shared_ptr[vector[vector[cmap[cEmpty,cMyStruct]]]] move "std::move"(unique_ptr[vector[vector[cmap[cEmpty,cMyStruct]]]])
     cdef shared_ptr[vector[vector[cmap[cEmpty,cMyStruct]]]] move_shared "std::move"(shared_ptr[vector[vector[cmap[cEmpty,cMyStruct]]]])
-    cdef shared_ptr[vector[vector[vector[cmap[cEmpty,cMyStruct]]]]] move(unique_ptr[vector[vector[vector[cmap[cEmpty,cMyStruct]]]]])
-    cdef unique_ptr[vector[vector[vector[cmap[cEmpty,cMyStruct]]]]] move_unique "std::move"(unique_ptr[vector[vector[vector[cmap[cEmpty,cMyStruct]]]]])
+    cdef shared_ptr[vector[vector[vector[cmap[cEmpty,cMyStruct]]]]] move "std::move"(unique_ptr[vector[vector[vector[cmap[cEmpty,cMyStruct]]]]])
     cdef shared_ptr[vector[vector[vector[cmap[cEmpty,cMyStruct]]]]] move_shared "std::move"(shared_ptr[vector[vector[vector[cmap[cEmpty,cMyStruct]]]]])
-    cdef shared_ptr[vector[cMyEnumA]] move(unique_ptr[vector[cMyEnumA]])
-    cdef unique_ptr[vector[cMyEnumA]] move_unique "std::move"(unique_ptr[vector[cMyEnumA]])
+    cdef shared_ptr[vector[cMyEnumA]] move "std::move"(unique_ptr[vector[cMyEnumA]])
     cdef shared_ptr[vector[cMyEnumA]] move_shared "std::move"(shared_ptr[vector[cMyEnumA]])
-    cdef shared_ptr[cset[cMyStruct]] move(unique_ptr[cset[cMyStruct]])
-    cdef unique_ptr[cset[cMyStruct]] move_unique "std::move"(unique_ptr[cset[cMyStruct]])
+    cdef shared_ptr[cset[cMyStruct]] move "std::move"(unique_ptr[cset[cMyStruct]])
     cdef shared_ptr[cset[cMyStruct]] move_shared "std::move"(shared_ptr[cset[cMyStruct]])
-    cdef shared_ptr[vector[cComplexUnion]] move(unique_ptr[vector[cComplexUnion]])
-    cdef unique_ptr[vector[cComplexUnion]] move_unique "std::move"(unique_ptr[vector[cComplexUnion]])
+    cdef shared_ptr[vector[cComplexUnion]] move "std::move"(unique_ptr[vector[cComplexUnion]])
     cdef shared_ptr[vector[cComplexUnion]] move_shared "std::move"(shared_ptr[vector[cComplexUnion]])
-    cdef shared_ptr[vector[string]] move(unique_ptr[vector[string]])
-    cdef unique_ptr[vector[string]] move_unique "std::move"(unique_ptr[vector[string]])
+    cdef shared_ptr[vector[string]] move "std::move"(unique_ptr[vector[string]])
     cdef shared_ptr[vector[string]] move_shared "std::move"(shared_ptr[vector[string]])
-    cdef shared_ptr[cset[vector[string]]] move(unique_ptr[cset[vector[string]]])
-    cdef unique_ptr[cset[vector[string]]] move_unique "std::move"(unique_ptr[cset[vector[string]]])
+    cdef shared_ptr[cset[vector[string]]] move "std::move"(unique_ptr[cset[vector[string]]])
     cdef shared_ptr[cset[vector[string]]] move_shared "std::move"(shared_ptr[cset[vector[string]]])
-    cdef shared_ptr[cset[vector[vector[cmap[cEmpty,cMyStruct]]]]] move(unique_ptr[cset[vector[vector[cmap[cEmpty,cMyStruct]]]]])
-    cdef unique_ptr[cset[vector[vector[cmap[cEmpty,cMyStruct]]]]] move_unique "std::move"(unique_ptr[cset[vector[vector[cmap[cEmpty,cMyStruct]]]]])
+    cdef shared_ptr[cset[vector[vector[cmap[cEmpty,cMyStruct]]]]] move "std::move"(unique_ptr[cset[vector[vector[cmap[cEmpty,cMyStruct]]]]])
     cdef shared_ptr[cset[vector[vector[cmap[cEmpty,cMyStruct]]]]] move_shared "std::move"(shared_ptr[cset[vector[vector[cmap[cEmpty,cMyStruct]]]]])
-    cdef shared_ptr[cmap[int32_t,vector[string]]] move(unique_ptr[cmap[int32_t,vector[string]]])
-    cdef unique_ptr[cmap[int32_t,vector[string]]] move_unique "std::move"(unique_ptr[cmap[int32_t,vector[string]]])
+    cdef shared_ptr[cmap[int32_t,vector[string]]] move "std::move"(unique_ptr[cmap[int32_t,vector[string]]])
     cdef shared_ptr[cmap[int32_t,vector[string]]] move_shared "std::move"(shared_ptr[cmap[int32_t,vector[string]]])
-    cdef shared_ptr[vector[cbool]] move(unique_ptr[vector[cbool]])
-    cdef unique_ptr[vector[cbool]] move_unique "std::move"(unique_ptr[vector[cbool]])
+    cdef shared_ptr[vector[cbool]] move "std::move"(unique_ptr[vector[cbool]])
     cdef shared_ptr[vector[cbool]] move_shared "std::move"(shared_ptr[vector[cbool]])
-    cdef shared_ptr[vector[int32_t]] move(unique_ptr[vector[int32_t]])
-    cdef unique_ptr[vector[int32_t]] move_unique "std::move"(unique_ptr[vector[int32_t]])
+    cdef shared_ptr[vector[int32_t]] move "std::move"(unique_ptr[vector[int32_t]])
     cdef shared_ptr[vector[int32_t]] move_shared "std::move"(shared_ptr[vector[int32_t]])
-    cdef shared_ptr[vector[vector[int32_t]]] move(unique_ptr[vector[vector[int32_t]]])
-    cdef unique_ptr[vector[vector[int32_t]]] move_unique "std::move"(unique_ptr[vector[vector[int32_t]]])
+    cdef shared_ptr[vector[vector[int32_t]]] move "std::move"(unique_ptr[vector[vector[int32_t]]])
     cdef shared_ptr[vector[vector[int32_t]]] move_shared "std::move"(shared_ptr[vector[vector[int32_t]]])
-    cdef shared_ptr[vector[vector[vector[int32_t]]]] move(unique_ptr[vector[vector[vector[int32_t]]]])
-    cdef unique_ptr[vector[vector[vector[int32_t]]]] move_unique "std::move"(unique_ptr[vector[vector[vector[int32_t]]]])
+    cdef shared_ptr[vector[vector[vector[int32_t]]]] move "std::move"(unique_ptr[vector[vector[vector[int32_t]]]])
     cdef shared_ptr[vector[vector[vector[int32_t]]]] move_shared "std::move"(shared_ptr[vector[vector[vector[int32_t]]]])
-    cdef shared_ptr[vector[vector[vector[vector[int32_t]]]]] move(unique_ptr[vector[vector[vector[vector[int32_t]]]]])
-    cdef unique_ptr[vector[vector[vector[vector[int32_t]]]]] move_unique "std::move"(unique_ptr[vector[vector[vector[vector[int32_t]]]]])
+    cdef shared_ptr[vector[vector[vector[vector[int32_t]]]]] move "std::move"(unique_ptr[vector[vector[vector[vector[int32_t]]]]])
     cdef shared_ptr[vector[vector[vector[vector[int32_t]]]]] move_shared "std::move"(shared_ptr[vector[vector[vector[vector[int32_t]]]]])
-    cdef shared_ptr[cset[vector[int32_t]]] move(unique_ptr[cset[vector[int32_t]]])
-    cdef unique_ptr[cset[vector[int32_t]]] move_unique "std::move"(unique_ptr[cset[vector[int32_t]]])
+    cdef shared_ptr[cset[vector[int32_t]]] move "std::move"(unique_ptr[cset[vector[int32_t]]])
     cdef shared_ptr[cset[vector[int32_t]]] move_shared "std::move"(shared_ptr[cset[vector[int32_t]]])
-    cdef shared_ptr[cset[string]] move(unique_ptr[cset[string]])
-    cdef unique_ptr[cset[string]] move_unique "std::move"(unique_ptr[cset[string]])
+    cdef shared_ptr[cset[string]] move "std::move"(unique_ptr[cset[string]])
     cdef shared_ptr[cset[string]] move_shared "std::move"(shared_ptr[cset[string]])
-    cdef shared_ptr[vector[cset[string]]] move(unique_ptr[vector[cset[string]]])
-    cdef unique_ptr[vector[cset[string]]] move_unique "std::move"(unique_ptr[vector[cset[string]]])
+    cdef shared_ptr[vector[cset[string]]] move "std::move"(unique_ptr[vector[cset[string]]])
     cdef shared_ptr[vector[cset[string]]] move_shared "std::move"(shared_ptr[vector[cset[string]]])
-    cdef shared_ptr[cmap[vector[cset[string]],string]] move(unique_ptr[cmap[vector[cset[string]],string]])
-    cdef unique_ptr[cmap[vector[cset[string]],string]] move_unique "std::move"(unique_ptr[cmap[vector[cset[string]],string]])
+    cdef shared_ptr[cmap[vector[cset[string]],string]] move "std::move"(unique_ptr[cmap[vector[cset[string]],string]])
     cdef shared_ptr[cmap[vector[cset[string]],string]] move_shared "std::move"(shared_ptr[cmap[vector[cset[string]],string]])
-    cdef shared_ptr[cmap[cset[vector[int32_t]],cmap[vector[cset[string]],string]]] move(unique_ptr[cmap[cset[vector[int32_t]],cmap[vector[cset[string]],string]]])
-    cdef unique_ptr[cmap[cset[vector[int32_t]],cmap[vector[cset[string]],string]]] move_unique "std::move"(unique_ptr[cmap[cset[vector[int32_t]],cmap[vector[cset[string]],string]]])
+    cdef shared_ptr[cmap[cset[vector[int32_t]],cmap[vector[cset[string]],string]]] move "std::move"(unique_ptr[cmap[cset[vector[int32_t]],cmap[vector[cset[string]],string]]])
     cdef shared_ptr[cmap[cset[vector[int32_t]],cmap[vector[cset[string]],string]]] move_shared "std::move"(shared_ptr[cmap[cset[vector[int32_t]],cmap[vector[cset[string]],string]]])
-    cdef shared_ptr[cmap[cMyEnumA,string]] move(unique_ptr[cmap[cMyEnumA,string]])
-    cdef unique_ptr[cmap[cMyEnumA,string]] move_unique "std::move"(unique_ptr[cmap[cMyEnumA,string]])
+    cdef shared_ptr[cmap[cMyEnumA,string]] move "std::move"(unique_ptr[cmap[cMyEnumA,string]])
     cdef shared_ptr[cmap[cMyEnumA,string]] move_shared "std::move"(shared_ptr[cmap[cMyEnumA,string]])
-    cdef shared_ptr[cset[int64_t]] move(unique_ptr[cset[int64_t]])
-    cdef unique_ptr[cset[int64_t]] move_unique "std::move"(unique_ptr[cset[int64_t]])
+    cdef shared_ptr[cset[int64_t]] move "std::move"(unique_ptr[cset[int64_t]])
     cdef shared_ptr[cset[int64_t]] move_shared "std::move"(shared_ptr[cset[int64_t]])
-    cdef shared_ptr[cmap[string,int32_t]] move(unique_ptr[cmap[string,int32_t]])
-    cdef unique_ptr[cmap[string,int32_t]] move_unique "std::move"(unique_ptr[cmap[string,int32_t]])
+    cdef shared_ptr[cmap[string,int32_t]] move "std::move"(unique_ptr[cmap[string,int32_t]])
     cdef shared_ptr[cmap[string,int32_t]] move_shared "std::move"(shared_ptr[cmap[string,int32_t]])
-    cdef shared_ptr[vector[cSimpleUnion]] move(unique_ptr[vector[cSimpleUnion]])
-    cdef unique_ptr[vector[cSimpleUnion]] move_unique "std::move"(unique_ptr[vector[cSimpleUnion]])
+    cdef shared_ptr[vector[cSimpleUnion]] move "std::move"(unique_ptr[vector[cSimpleUnion]])
     cdef shared_ptr[vector[cSimpleUnion]] move_shared "std::move"(shared_ptr[vector[cSimpleUnion]])
-    cdef shared_ptr[cset[cSimpleUnion]] move(unique_ptr[cset[cSimpleUnion]])
-    cdef unique_ptr[cset[cSimpleUnion]] move_unique "std::move"(unique_ptr[cset[cSimpleUnion]])
+    cdef shared_ptr[cset[cSimpleUnion]] move "std::move"(unique_ptr[cset[cSimpleUnion]])
     cdef shared_ptr[cset[cSimpleUnion]] move_shared "std::move"(shared_ptr[cset[cSimpleUnion]])
-    cdef shared_ptr[vector[cset[cSimpleUnion]]] move(unique_ptr[vector[cset[cSimpleUnion]]])
-    cdef unique_ptr[vector[cset[cSimpleUnion]]] move_unique "std::move"(unique_ptr[vector[cset[cSimpleUnion]]])
+    cdef shared_ptr[vector[cset[cSimpleUnion]]] move "std::move"(unique_ptr[vector[cset[cSimpleUnion]]])
     cdef shared_ptr[vector[cset[cSimpleUnion]]] move_shared "std::move"(shared_ptr[vector[cset[cSimpleUnion]]])
-    cdef shared_ptr[cmap[string,cbool]] move(unique_ptr[cmap[string,cbool]])
-    cdef unique_ptr[cmap[string,cbool]] move_unique "std::move"(unique_ptr[cmap[string,cbool]])
+    cdef shared_ptr[cmap[string,cbool]] move "std::move"(unique_ptr[cmap[string,cbool]])
     cdef shared_ptr[cmap[string,cbool]] move_shared "std::move"(shared_ptr[cmap[string,cbool]])
-    cdef shared_ptr[cset[int32_t]] move(unique_ptr[cset[int32_t]])
-    cdef unique_ptr[cset[int32_t]] move_unique "std::move"(unique_ptr[cset[int32_t]])
+    cdef shared_ptr[cset[int32_t]] move "std::move"(unique_ptr[cset[int32_t]])
     cdef shared_ptr[cset[int32_t]] move_shared "std::move"(shared_ptr[cset[int32_t]])
-    cdef shared_ptr[cmap[string,cmap[string,int32_t]]] move(unique_ptr[cmap[string,cmap[string,int32_t]]])
-    cdef unique_ptr[cmap[string,cmap[string,int32_t]]] move_unique "std::move"(unique_ptr[cmap[string,cmap[string,int32_t]]])
+    cdef shared_ptr[cmap[string,cmap[string,int32_t]]] move "std::move"(unique_ptr[cmap[string,cmap[string,int32_t]]])
     cdef shared_ptr[cmap[string,cmap[string,int32_t]]] move_shared "std::move"(shared_ptr[cmap[string,cmap[string,int32_t]]])
-    cdef shared_ptr[cmap[string,cmap[string,cmap[string,int32_t]]]] move(unique_ptr[cmap[string,cmap[string,cmap[string,int32_t]]]])
-    cdef unique_ptr[cmap[string,cmap[string,cmap[string,int32_t]]]] move_unique "std::move"(unique_ptr[cmap[string,cmap[string,cmap[string,int32_t]]]])
+    cdef shared_ptr[cmap[string,cmap[string,cmap[string,int32_t]]]] move "std::move"(unique_ptr[cmap[string,cmap[string,cmap[string,int32_t]]]])
     cdef shared_ptr[cmap[string,cmap[string,cmap[string,int32_t]]]] move_shared "std::move"(shared_ptr[cmap[string,cmap[string,cmap[string,int32_t]]]])
-    cdef shared_ptr[vector[cset[int32_t]]] move(unique_ptr[vector[cset[int32_t]]])
-    cdef unique_ptr[vector[cset[int32_t]]] move_unique "std::move"(unique_ptr[vector[cset[int32_t]]])
+    cdef shared_ptr[vector[cset[int32_t]]] move "std::move"(unique_ptr[vector[cset[int32_t]]])
     cdef shared_ptr[vector[cset[int32_t]]] move_shared "std::move"(shared_ptr[vector[cset[int32_t]]])
-    cdef shared_ptr[cmap[string,vector[int32_t]]] move(unique_ptr[cmap[string,vector[int32_t]]])
-    cdef unique_ptr[cmap[string,vector[int32_t]]] move_unique "std::move"(unique_ptr[cmap[string,vector[int32_t]]])
+    cdef shared_ptr[cmap[string,vector[int32_t]]] move "std::move"(unique_ptr[cmap[string,vector[int32_t]]])
     cdef shared_ptr[cmap[string,vector[int32_t]]] move_shared "std::move"(shared_ptr[cmap[string,vector[int32_t]]])
-    cdef shared_ptr[cset[cbool]] move(unique_ptr[cset[cbool]])
-    cdef unique_ptr[cset[cbool]] move_unique "std::move"(unique_ptr[cset[cbool]])
+    cdef shared_ptr[cset[cbool]] move "std::move"(unique_ptr[cset[cbool]])
     cdef shared_ptr[cset[cbool]] move_shared "std::move"(shared_ptr[cset[cbool]])
-    cdef shared_ptr[cset[cset[cbool]]] move(unique_ptr[cset[cset[cbool]]])
-    cdef unique_ptr[cset[cset[cbool]]] move_unique "std::move"(unique_ptr[cset[cset[cbool]]])
+    cdef shared_ptr[cset[cset[cbool]]] move "std::move"(unique_ptr[cset[cset[cbool]]])
     cdef shared_ptr[cset[cset[cbool]]] move_shared "std::move"(shared_ptr[cset[cset[cbool]]])
-    cdef shared_ptr[cset[cset[cset[cbool]]]] move(unique_ptr[cset[cset[cset[cbool]]]])
-    cdef unique_ptr[cset[cset[cset[cbool]]]] move_unique "std::move"(unique_ptr[cset[cset[cset[cbool]]]])
+    cdef shared_ptr[cset[cset[cset[cbool]]]] move "std::move"(unique_ptr[cset[cset[cset[cbool]]]])
     cdef shared_ptr[cset[cset[cset[cbool]]]] move_shared "std::move"(shared_ptr[cset[cset[cset[cbool]]]])
-    cdef shared_ptr[cmap[Bar,Baz]] move(unique_ptr[cmap[Bar,Baz]])
-    cdef unique_ptr[cmap[Bar,Baz]] move_unique "std::move"(unique_ptr[cmap[Bar,Baz]])
+    cdef shared_ptr[cmap[Bar,Baz]] move "std::move"(unique_ptr[cmap[Bar,Baz]])
     cdef shared_ptr[cmap[Bar,Baz]] move_shared "std::move"(shared_ptr[cmap[Bar,Baz]])
-    cdef shared_ptr[folly_small_vector_int64_t_8] move(unique_ptr[folly_small_vector_int64_t_8])
-    cdef unique_ptr[folly_small_vector_int64_t_8] move_unique "std::move"(unique_ptr[folly_small_vector_int64_t_8])
+    cdef shared_ptr[folly_small_vector_int64_t_8] move "std::move"(unique_ptr[folly_small_vector_int64_t_8])
     cdef shared_ptr[folly_small_vector_int64_t_8] move_shared "std::move"(shared_ptr[folly_small_vector_int64_t_8])
-    cdef shared_ptr[folly_sorted_vector_set_std_string] move(unique_ptr[folly_sorted_vector_set_std_string])
-    cdef unique_ptr[folly_sorted_vector_set_std_string] move_unique "std::move"(unique_ptr[folly_sorted_vector_set_std_string])
+    cdef shared_ptr[folly_sorted_vector_set_std_string] move "std::move"(unique_ptr[folly_sorted_vector_set_std_string])
     cdef shared_ptr[folly_sorted_vector_set_std_string] move_shared "std::move"(shared_ptr[folly_sorted_vector_set_std_string])
-    cdef shared_ptr[FakeMap] move(unique_ptr[FakeMap])
-    cdef unique_ptr[FakeMap] move_unique "std::move"(unique_ptr[FakeMap])
+    cdef shared_ptr[FakeMap] move "std::move"(unique_ptr[FakeMap])
     cdef shared_ptr[FakeMap] move_shared "std::move"(shared_ptr[FakeMap])
-    cdef shared_ptr[std_unordered_map_std_string_containerStruct] move(unique_ptr[std_unordered_map_std_string_containerStruct])
-    cdef unique_ptr[std_unordered_map_std_string_containerStruct] move_unique "std::move"(unique_ptr[std_unordered_map_std_string_containerStruct])
+    cdef shared_ptr[std_unordered_map_std_string_containerStruct] move "std::move"(unique_ptr[std_unordered_map_std_string_containerStruct])
     cdef shared_ptr[std_unordered_map_std_string_containerStruct] move_shared "std::move"(shared_ptr[std_unordered_map_std_string_containerStruct])
-    cdef shared_ptr[std_list[int32_t]] move(unique_ptr[std_list[int32_t]])
-    cdef unique_ptr[std_list[int32_t]] move_unique "std::move"(unique_ptr[std_list[int32_t]])
+    cdef shared_ptr[std_list[int32_t]] move "std::move"(unique_ptr[std_list[int32_t]])
     cdef shared_ptr[std_list[int32_t]] move_shared "std::move"(shared_ptr[std_list[int32_t]])
-    cdef shared_ptr[std_deque[string]] move(unique_ptr[std_deque[string]])
-    cdef unique_ptr[std_deque[string]] move_unique "std::move"(unique_ptr[std_deque[string]])
+    cdef shared_ptr[std_deque[string]] move "std::move"(unique_ptr[std_deque[string]])
     cdef shared_ptr[std_deque[string]] move_shared "std::move"(shared_ptr[std_deque[string]])
-    cdef shared_ptr[folly_sorted_vector_set[string]] move(unique_ptr[folly_sorted_vector_set[string]])
-    cdef unique_ptr[folly_sorted_vector_set[string]] move_unique "std::move"(unique_ptr[folly_sorted_vector_set[string]])
+    cdef shared_ptr[folly_sorted_vector_set[string]] move "std::move"(unique_ptr[folly_sorted_vector_set[string]])
     cdef shared_ptr[folly_sorted_vector_set[string]] move_shared "std::move"(shared_ptr[folly_sorted_vector_set[string]])
-    cdef shared_ptr[folly_sorted_vector_map[int64_t,string]] move(unique_ptr[folly_sorted_vector_map[int64_t,string]])
-    cdef unique_ptr[folly_sorted_vector_map[int64_t,string]] move_unique "std::move"(unique_ptr[folly_sorted_vector_map[int64_t,string]])
+    cdef shared_ptr[folly_sorted_vector_map[int64_t,string]] move "std::move"(unique_ptr[folly_sorted_vector_map[int64_t,string]])
     cdef shared_ptr[folly_sorted_vector_map[int64_t,string]] move_shared "std::move"(shared_ptr[folly_sorted_vector_map[int64_t,string]])
-    cdef shared_ptr[vector[Bar]] move(unique_ptr[vector[Bar]])
-    cdef unique_ptr[vector[Bar]] move_unique "std::move"(unique_ptr[vector[Bar]])
+    cdef shared_ptr[vector[Bar]] move "std::move"(unique_ptr[vector[Bar]])
     cdef shared_ptr[vector[Bar]] move_shared "std::move"(shared_ptr[vector[Bar]])
-    cdef shared_ptr[cset[Baz]] move(unique_ptr[cset[Baz]])
-    cdef unique_ptr[cset[Baz]] move_unique "std::move"(unique_ptr[cset[Baz]])
+    cdef shared_ptr[cset[Baz]] move "std::move"(unique_ptr[cset[Baz]])
     cdef shared_ptr[cset[Baz]] move_shared "std::move"(shared_ptr[cset[Baz]])
-    cdef shared_ptr[cmap[int32_t,string]] move(unique_ptr[cmap[int32_t,string]])
-    cdef unique_ptr[cmap[int32_t,string]] move_unique "std::move"(unique_ptr[cmap[int32_t,string]])
+    cdef shared_ptr[cmap[int32_t,string]] move "std::move"(unique_ptr[cmap[int32_t,string]])
     cdef shared_ptr[cmap[int32_t,string]] move_shared "std::move"(shared_ptr[cmap[int32_t,string]])
-    cdef shared_ptr[vector[cmap[string,int32_t]]] move(unique_ptr[vector[cmap[string,int32_t]]])
-    cdef unique_ptr[vector[cmap[string,int32_t]]] move_unique "std::move"(unique_ptr[vector[cmap[string,int32_t]]])
+    cdef shared_ptr[vector[cmap[string,int32_t]]] move "std::move"(unique_ptr[vector[cmap[string,int32_t]]])
     cdef shared_ptr[vector[cmap[string,int32_t]]] move_shared "std::move"(shared_ptr[vector[cmap[string,int32_t]]])
-    cdef shared_ptr[cmap[int16_t,string]] move(unique_ptr[cmap[int16_t,string]])
-    cdef unique_ptr[cmap[int16_t,string]] move_unique "std::move"(unique_ptr[cmap[int16_t,string]])
+    cdef shared_ptr[cmap[int16_t,string]] move "std::move"(unique_ptr[cmap[int16_t,string]])
     cdef shared_ptr[cmap[int16_t,string]] move_shared "std::move"(shared_ptr[cmap[int16_t,string]])
-    cdef shared_ptr[vector[cmap[int16_t,string]]] move(unique_ptr[vector[cmap[int16_t,string]]])
-    cdef unique_ptr[vector[cmap[int16_t,string]]] move_unique "std::move"(unique_ptr[vector[cmap[int16_t,string]]])
+    cdef shared_ptr[vector[cmap[int16_t,string]]] move "std::move"(unique_ptr[vector[cmap[int16_t,string]]])
     cdef shared_ptr[vector[cmap[int16_t,string]]] move_shared "std::move"(shared_ptr[vector[cmap[int16_t,string]]])
-    cdef shared_ptr[vector[cMyStruct]] move(unique_ptr[vector[cMyStruct]])
-    cdef unique_ptr[vector[cMyStruct]] move_unique "std::move"(unique_ptr[vector[cMyStruct]])
+    cdef shared_ptr[vector[cMyStruct]] move "std::move"(unique_ptr[vector[cMyStruct]])
     cdef shared_ptr[vector[cMyStruct]] move_shared "std::move"(shared_ptr[vector[cMyStruct]])
+cdef extern from "<utility>" nogil:
+    pass  
+    shared_ptr[cEmpty] reference_shared_ptr_Map__Empty_MyStruct_key "thrift::py3::reference_shared_ptr<some::valid::ns::Empty>"(...)
+    shared_ptr[cMyStruct] reference_shared_ptr_Map__Empty_MyStruct "thrift::py3::reference_shared_ptr<some::valid::ns::MyStruct>"(...)
+    shared_ptr[cmap[cEmpty,cMyStruct]] reference_shared_ptr_List__Map__Empty_MyStruct "thrift::py3::reference_shared_ptr<std::map<some::valid::ns::Empty,some::valid::ns::MyStruct>>"(...)
+    shared_ptr[vector[cmap[cEmpty,cMyStruct]]] reference_shared_ptr_List__List__Map__Empty_MyStruct "thrift::py3::reference_shared_ptr<std::vector<std::map<some::valid::ns::Empty,some::valid::ns::MyStruct>>>"(...)
+    shared_ptr[vector[vector[cmap[cEmpty,cMyStruct]]]] reference_shared_ptr_List__List__List__Map__Empty_MyStruct "thrift::py3::reference_shared_ptr<std::vector<std::vector<std::map<some::valid::ns::Empty,some::valid::ns::MyStruct>>>>"(...)
+    shared_ptr[cMyStruct] reference_shared_ptr_Set__MyStruct "thrift::py3::reference_shared_ptr<some::valid::ns::MyStruct>"(...)
+    shared_ptr[cComplexUnion] reference_shared_ptr_List__ComplexUnion "thrift::py3::reference_shared_ptr<some::valid::ns::ComplexUnion>"(...)
+    shared_ptr[vector[string]] reference_shared_ptr_Set__List__string "thrift::py3::reference_shared_ptr<std::vector<std::string>>"(...)
+    shared_ptr[vector[vector[cmap[cEmpty,cMyStruct]]]] reference_shared_ptr_Set__List__List__Map__Empty_MyStruct "thrift::py3::reference_shared_ptr<std::vector<std::vector<std::map<some::valid::ns::Empty,some::valid::ns::MyStruct>>>>"(...)
+    shared_ptr[vector[string]] reference_shared_ptr_Map__i32_List__string "thrift::py3::reference_shared_ptr<std::vector<std::string>>"(...)
+    shared_ptr[vector[int32_t]] reference_shared_ptr_List__List__i32 "thrift::py3::reference_shared_ptr<std::vector<int32_t>>"(...)
+    shared_ptr[vector[vector[int32_t]]] reference_shared_ptr_List__List__List__i32 "thrift::py3::reference_shared_ptr<std::vector<std::vector<int32_t>>>"(...)
+    shared_ptr[vector[vector[vector[int32_t]]]] reference_shared_ptr_List__List__List__List__i32 "thrift::py3::reference_shared_ptr<std::vector<std::vector<std::vector<int32_t>>>>"(...)
+    shared_ptr[vector[int32_t]] reference_shared_ptr_Set__List__i32 "thrift::py3::reference_shared_ptr<std::vector<int32_t>>"(...)
+    shared_ptr[cset[string]] reference_shared_ptr_List__Set__string "thrift::py3::reference_shared_ptr<std::set<std::string>>"(...)
+    shared_ptr[vector[cset[string]]] reference_shared_ptr_Map__List__Set__string_string_key "thrift::py3::reference_shared_ptr<std::vector<std::set<std::string>>>"(...)
+    shared_ptr[cset[vector[int32_t]]] reference_shared_ptr_Map__Set__List__i32_Map__List__Set__string_string_key "thrift::py3::reference_shared_ptr<std::set<std::vector<int32_t>>>"(...)
+    shared_ptr[cmap[vector[cset[string]],string]] reference_shared_ptr_Map__Set__List__i32_Map__List__Set__string_string "thrift::py3::reference_shared_ptr<std::map<std::vector<std::set<std::string>>,std::string>>"(...)
+    shared_ptr[cSimpleUnion] reference_shared_ptr_List__SimpleUnion "thrift::py3::reference_shared_ptr<some::valid::ns::SimpleUnion>"(...)
+    shared_ptr[cSimpleUnion] reference_shared_ptr_Set__SimpleUnion "thrift::py3::reference_shared_ptr<some::valid::ns::SimpleUnion>"(...)
+    shared_ptr[cset[cSimpleUnion]] reference_shared_ptr_List__Set__SimpleUnion "thrift::py3::reference_shared_ptr<std::set<some::valid::ns::SimpleUnion>>"(...)
+    shared_ptr[cmap[string,int32_t]] reference_shared_ptr_Map__string_Map__string_i32 "thrift::py3::reference_shared_ptr<std::map<std::string,int32_t>>"(...)
+    shared_ptr[cmap[string,cmap[string,int32_t]]] reference_shared_ptr_Map__string_Map__string_Map__string_i32 "thrift::py3::reference_shared_ptr<std::map<std::string,std::map<std::string,int32_t>>>"(...)
+    shared_ptr[cset[int32_t]] reference_shared_ptr_List__Set__i32 "thrift::py3::reference_shared_ptr<std::set<int32_t>>"(...)
+    shared_ptr[vector[int32_t]] reference_shared_ptr_Map__string_List__i32 "thrift::py3::reference_shared_ptr<std::vector<int32_t>>"(...)
+    shared_ptr[cset[cbool]] reference_shared_ptr_Set__Set__bool "thrift::py3::reference_shared_ptr<std::set<bool>>"(...)
+    shared_ptr[cset[cset[cbool]]] reference_shared_ptr_Set__Set__Set__bool "thrift::py3::reference_shared_ptr<std::set<std::set<bool>>>"(...)
+    shared_ptr[ccontainerStruct] reference_shared_ptr_std_unordered_map_std_string_containerStruct__Map__string_containerStruct "thrift::py3::reference_shared_ptr<some::valid::ns::containerStruct>"(...)
+    shared_ptr[cmap[string,int32_t]] reference_shared_ptr_List__Map__string_i32 "thrift::py3::reference_shared_ptr<std::map<std::string,int32_t>>"(...)
+    shared_ptr[cmap[int16_t,string]] reference_shared_ptr_List__Map__i16_string "thrift::py3::reference_shared_ptr<std::map<int16_t,std::string>>"(...)
+    shared_ptr[cMyStruct] reference_shared_ptr_List__MyStruct "thrift::py3::reference_shared_ptr<some::valid::ns::MyStruct>"(...)
 cdef extern from "<memory>" namespace "std" nogil:
     cdef shared_ptr[const cmap[string,int64_t]] const_pointer_cast "std::const_pointer_cast<const std::map<std::string,int64_t>>"(shared_ptr[cmap[string,int64_t]])
-
     cdef shared_ptr[const cmap[cEmpty,cMyStruct]] const_pointer_cast "std::const_pointer_cast<const std::map<some::valid::ns::Empty,some::valid::ns::MyStruct>>"(shared_ptr[cmap[cEmpty,cMyStruct]])
-
     cdef shared_ptr[const vector[cmap[cEmpty,cMyStruct]]] const_pointer_cast "std::const_pointer_cast<const std::vector<std::map<some::valid::ns::Empty,some::valid::ns::MyStruct>>>"(shared_ptr[vector[cmap[cEmpty,cMyStruct]]])
-
     cdef shared_ptr[const vector[vector[cmap[cEmpty,cMyStruct]]]] const_pointer_cast "std::const_pointer_cast<const std::vector<std::vector<std::map<some::valid::ns::Empty,some::valid::ns::MyStruct>>>>"(shared_ptr[vector[vector[cmap[cEmpty,cMyStruct]]]])
-
     cdef shared_ptr[const vector[vector[vector[cmap[cEmpty,cMyStruct]]]]] const_pointer_cast "std::const_pointer_cast<const std::vector<std::vector<std::vector<std::map<some::valid::ns::Empty,some::valid::ns::MyStruct>>>>>"(shared_ptr[vector[vector[vector[cmap[cEmpty,cMyStruct]]]]])
-
     cdef shared_ptr[const vector[cMyEnumA]] const_pointer_cast "std::const_pointer_cast<const std::vector<some::valid::ns::MyEnumA>>"(shared_ptr[vector[cMyEnumA]])
-
     cdef shared_ptr[const cset[cMyStruct]] const_pointer_cast "std::const_pointer_cast<const std::set<some::valid::ns::MyStruct>>"(shared_ptr[cset[cMyStruct]])
-
     cdef shared_ptr[const vector[cComplexUnion]] const_pointer_cast "std::const_pointer_cast<const std::vector<some::valid::ns::ComplexUnion>>"(shared_ptr[vector[cComplexUnion]])
-
     cdef shared_ptr[const vector[string]] const_pointer_cast "std::const_pointer_cast<const std::vector<std::string>>"(shared_ptr[vector[string]])
-
     cdef shared_ptr[const cset[vector[string]]] const_pointer_cast "std::const_pointer_cast<const std::set<std::vector<std::string>>>"(shared_ptr[cset[vector[string]]])
-
     cdef shared_ptr[const cset[vector[vector[cmap[cEmpty,cMyStruct]]]]] const_pointer_cast "std::const_pointer_cast<const std::set<std::vector<std::vector<std::map<some::valid::ns::Empty,some::valid::ns::MyStruct>>>>>"(shared_ptr[cset[vector[vector[cmap[cEmpty,cMyStruct]]]]])
-
     cdef shared_ptr[const cmap[int32_t,vector[string]]] const_pointer_cast "std::const_pointer_cast<const std::map<int32_t,std::vector<std::string>>>"(shared_ptr[cmap[int32_t,vector[string]]])
-
     cdef shared_ptr[const vector[cbool]] const_pointer_cast "std::const_pointer_cast<const std::vector<bool>>"(shared_ptr[vector[cbool]])
-
     cdef shared_ptr[const vector[int32_t]] const_pointer_cast "std::const_pointer_cast<const std::vector<int32_t>>"(shared_ptr[vector[int32_t]])
-
     cdef shared_ptr[const vector[vector[int32_t]]] const_pointer_cast "std::const_pointer_cast<const std::vector<std::vector<int32_t>>>"(shared_ptr[vector[vector[int32_t]]])
-
     cdef shared_ptr[const vector[vector[vector[int32_t]]]] const_pointer_cast "std::const_pointer_cast<const std::vector<std::vector<std::vector<int32_t>>>>"(shared_ptr[vector[vector[vector[int32_t]]]])
-
     cdef shared_ptr[const vector[vector[vector[vector[int32_t]]]]] const_pointer_cast "std::const_pointer_cast<const std::vector<std::vector<std::vector<std::vector<int32_t>>>>>"(shared_ptr[vector[vector[vector[vector[int32_t]]]]])
-
     cdef shared_ptr[const cset[vector[int32_t]]] const_pointer_cast "std::const_pointer_cast<const std::set<std::vector<int32_t>>>"(shared_ptr[cset[vector[int32_t]]])
-
     cdef shared_ptr[const cset[string]] const_pointer_cast "std::const_pointer_cast<const std::set<std::string>>"(shared_ptr[cset[string]])
-
     cdef shared_ptr[const vector[cset[string]]] const_pointer_cast "std::const_pointer_cast<const std::vector<std::set<std::string>>>"(shared_ptr[vector[cset[string]]])
-
     cdef shared_ptr[const cmap[vector[cset[string]],string]] const_pointer_cast "std::const_pointer_cast<const std::map<std::vector<std::set<std::string>>,std::string>>"(shared_ptr[cmap[vector[cset[string]],string]])
-
     cdef shared_ptr[const cmap[cset[vector[int32_t]],cmap[vector[cset[string]],string]]] const_pointer_cast "std::const_pointer_cast<const std::map<std::set<std::vector<int32_t>>,std::map<std::vector<std::set<std::string>>,std::string>>>"(shared_ptr[cmap[cset[vector[int32_t]],cmap[vector[cset[string]],string]]])
-
     cdef shared_ptr[const cmap[cMyEnumA,string]] const_pointer_cast "std::const_pointer_cast<const std::map<some::valid::ns::MyEnumA,std::string>>"(shared_ptr[cmap[cMyEnumA,string]])
-
     cdef shared_ptr[const cset[int64_t]] const_pointer_cast "std::const_pointer_cast<const std::set<int64_t>>"(shared_ptr[cset[int64_t]])
-
     cdef shared_ptr[const cmap[string,int32_t]] const_pointer_cast "std::const_pointer_cast<const std::map<std::string,int32_t>>"(shared_ptr[cmap[string,int32_t]])
-
     cdef shared_ptr[const vector[cSimpleUnion]] const_pointer_cast "std::const_pointer_cast<const std::vector<some::valid::ns::SimpleUnion>>"(shared_ptr[vector[cSimpleUnion]])
-
     cdef shared_ptr[const cset[cSimpleUnion]] const_pointer_cast "std::const_pointer_cast<const std::set<some::valid::ns::SimpleUnion>>"(shared_ptr[cset[cSimpleUnion]])
-
     cdef shared_ptr[const vector[cset[cSimpleUnion]]] const_pointer_cast "std::const_pointer_cast<const std::vector<std::set<some::valid::ns::SimpleUnion>>>"(shared_ptr[vector[cset[cSimpleUnion]]])
-
     cdef shared_ptr[const cmap[string,cbool]] const_pointer_cast "std::const_pointer_cast<const std::map<std::string,bool>>"(shared_ptr[cmap[string,cbool]])
-
     cdef shared_ptr[const cset[int32_t]] const_pointer_cast "std::const_pointer_cast<const std::set<int32_t>>"(shared_ptr[cset[int32_t]])
-
     cdef shared_ptr[const cmap[string,cmap[string,int32_t]]] const_pointer_cast "std::const_pointer_cast<const std::map<std::string,std::map<std::string,int32_t>>>"(shared_ptr[cmap[string,cmap[string,int32_t]]])
-
     cdef shared_ptr[const cmap[string,cmap[string,cmap[string,int32_t]]]] const_pointer_cast "std::const_pointer_cast<const std::map<std::string,std::map<std::string,std::map<std::string,int32_t>>>>"(shared_ptr[cmap[string,cmap[string,cmap[string,int32_t]]]])
-
     cdef shared_ptr[const vector[cset[int32_t]]] const_pointer_cast "std::const_pointer_cast<const std::vector<std::set<int32_t>>>"(shared_ptr[vector[cset[int32_t]]])
-
     cdef shared_ptr[const cmap[string,vector[int32_t]]] const_pointer_cast "std::const_pointer_cast<const std::map<std::string,std::vector<int32_t>>>"(shared_ptr[cmap[string,vector[int32_t]]])
-
     cdef shared_ptr[const cset[cbool]] const_pointer_cast "std::const_pointer_cast<const std::set<bool>>"(shared_ptr[cset[cbool]])
-
     cdef shared_ptr[const cset[cset[cbool]]] const_pointer_cast "std::const_pointer_cast<const std::set<std::set<bool>>>"(shared_ptr[cset[cset[cbool]]])
-
     cdef shared_ptr[const cset[cset[cset[cbool]]]] const_pointer_cast "std::const_pointer_cast<const std::set<std::set<std::set<bool>>>>"(shared_ptr[cset[cset[cset[cbool]]]])
-
     cdef shared_ptr[const cmap[Bar,Baz]] const_pointer_cast "std::const_pointer_cast<const std::map<Bar,Baz>>"(shared_ptr[cmap[Bar,Baz]])
-
     cdef shared_ptr[const folly_small_vector_int64_t_8] const_pointer_cast "std::const_pointer_cast<const folly::small_vector<int64_t, 8 /* maxInline */>>"(shared_ptr[folly_small_vector_int64_t_8])
-
     cdef shared_ptr[const folly_sorted_vector_set_std_string] const_pointer_cast "std::const_pointer_cast<const folly::sorted_vector_set<std::string>>"(shared_ptr[folly_sorted_vector_set_std_string])
-
     cdef shared_ptr[const FakeMap] const_pointer_cast "std::const_pointer_cast<const FakeMap>"(shared_ptr[FakeMap])
-
     cdef shared_ptr[const std_unordered_map_std_string_containerStruct] const_pointer_cast "std::const_pointer_cast<const std::unordered_map<std::string, containerStruct>>"(shared_ptr[std_unordered_map_std_string_containerStruct])
-
     cdef shared_ptr[const std_list[int32_t]] const_pointer_cast "std::const_pointer_cast<const std::list<int32_t>>"(shared_ptr[std_list[int32_t]])
-
     cdef shared_ptr[const std_deque[string]] const_pointer_cast "std::const_pointer_cast<const std::deque<std::string>>"(shared_ptr[std_deque[string]])
-
     cdef shared_ptr[const folly_sorted_vector_set[string]] const_pointer_cast "std::const_pointer_cast<const folly::sorted_vector_set<std::string>>"(shared_ptr[folly_sorted_vector_set[string]])
-
     cdef shared_ptr[const folly_sorted_vector_map[int64_t,string]] const_pointer_cast "std::const_pointer_cast<const folly::sorted_vector_map<int64_t,std::string>>"(shared_ptr[folly_sorted_vector_map[int64_t,string]])
-
     cdef shared_ptr[const vector[Bar]] const_pointer_cast "std::const_pointer_cast<const std::vector<Bar>>"(shared_ptr[vector[Bar]])
-
     cdef shared_ptr[const cset[Baz]] const_pointer_cast "std::const_pointer_cast<const std::set<Baz>>"(shared_ptr[cset[Baz]])
-
     cdef shared_ptr[const cmap[int32_t,string]] const_pointer_cast "std::const_pointer_cast<const std::map<int32_t,std::string>>"(shared_ptr[cmap[int32_t,string]])
-
     cdef shared_ptr[const vector[cmap[string,int32_t]]] const_pointer_cast "std::const_pointer_cast<const std::vector<std::map<std::string,int32_t>>>"(shared_ptr[vector[cmap[string,int32_t]]])
-
     cdef shared_ptr[const cmap[int16_t,string]] const_pointer_cast "std::const_pointer_cast<const std::map<int16_t,std::string>>"(shared_ptr[cmap[int16_t,string]])
-
     cdef shared_ptr[const vector[cmap[int16_t,string]]] const_pointer_cast "std::const_pointer_cast<const std::vector<std::map<int16_t,std::string>>>"(shared_ptr[vector[cmap[int16_t,string]]])
-
     cdef shared_ptr[const vector[cMyStruct]] const_pointer_cast "std::const_pointer_cast<const std::vector<some::valid::ns::MyStruct>>"(shared_ptr[vector[cMyStruct]])
 
 cdef extern from "src/gen-cpp2/module_constants.h" namespace "some::valid::ns":

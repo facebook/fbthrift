@@ -69,5 +69,6 @@ cdef class Foo(thrift.py3.types.Struct):
 
 
 
+
 cdef extern from "gen-cpp2/transitive_constants.h" namespace "cpp2":
     cdef cFoo cExampleFoo "cpp2::transitive_constants::ExampleFoo"()

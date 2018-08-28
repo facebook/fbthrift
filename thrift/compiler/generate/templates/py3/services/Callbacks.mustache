@@ -92,7 +92,7 @@ async def {{service:name}}_{{function:name}}_coro(
     {{#function:exceptions}}
     {{#field:type}}
     except {{> types/CythonPythonType}} as ex:
-        promise.cPromise.setException(deref((<{{> types/CythonPythonType}}> ex)._cpp_obj.get()))
+        promise.cPromise.setException(deref((<{{> types/CythonPythonType}}> ex)._cpp_obj))
     {{/field:type}}
     {{/function:exceptions}}
     except __ApplicationError as ex:

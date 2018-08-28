@@ -38,7 +38,7 @@ cdef class List__string:
     @staticmethod
     cdef create(shared_ptr[vector[string]])
     @staticmethod
-    cdef unique_ptr[vector[string]] _make_instance(object items) except *
+    cdef shared_ptr[vector[string]] _make_instance(object items) except *
 
 cdef class Map__i64_List__string:
     cdef object __hash
@@ -47,18 +47,18 @@ cdef class Map__i64_List__string:
     @staticmethod
     cdef create(shared_ptr[cmap[int64_t,vector[string]]])
     @staticmethod
-    cdef unique_ptr[cmap[int64_t,vector[string]]] _make_instance(object items) except *
+    cdef shared_ptr[cmap[int64_t,vector[string]]] _make_instance(object items) except *
 
 cdef extern from "<utility>" namespace "std" nogil:
-    cdef shared_ptr[vector[string]] move(unique_ptr[vector[string]])
-    cdef unique_ptr[vector[string]] move_unique "std::move"(unique_ptr[vector[string]])
+    cdef shared_ptr[vector[string]] move "std::move"(unique_ptr[vector[string]])
     cdef shared_ptr[vector[string]] move_shared "std::move"(shared_ptr[vector[string]])
-    cdef shared_ptr[cmap[int64_t,vector[string]]] move(unique_ptr[cmap[int64_t,vector[string]]])
-    cdef unique_ptr[cmap[int64_t,vector[string]]] move_unique "std::move"(unique_ptr[cmap[int64_t,vector[string]]])
+    cdef shared_ptr[cmap[int64_t,vector[string]]] move "std::move"(unique_ptr[cmap[int64_t,vector[string]]])
     cdef shared_ptr[cmap[int64_t,vector[string]]] move_shared "std::move"(shared_ptr[cmap[int64_t,vector[string]]])
+cdef extern from "<utility>" nogil:
+    pass  
+    shared_ptr[vector[string]] reference_shared_ptr_Map__i64_List__string "thrift::py3::reference_shared_ptr<std::vector<std::string>>"(...)
 cdef extern from "<memory>" namespace "std" nogil:
     cdef shared_ptr[const vector[string]] const_pointer_cast "std::const_pointer_cast<const std::vector<std::string>>"(shared_ptr[vector[string]])
-
     cdef shared_ptr[const cmap[int64_t,vector[string]]] const_pointer_cast "std::const_pointer_cast<const std::map<int64_t,std::vector<std::string>>>"(shared_ptr[cmap[int64_t,vector[string]]])
 
 cdef extern from "src/gen-cpp2/module_constants.h" namespace "cpp2":

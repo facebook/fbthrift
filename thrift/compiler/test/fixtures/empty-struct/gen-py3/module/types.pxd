@@ -106,3 +106,4 @@ cdef class Nada(thrift.py3.types.Union):
 
 
 
+

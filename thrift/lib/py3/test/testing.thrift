@@ -169,6 +169,10 @@ union ReservedUnion {
   3: string ok,
 }
 
+struct EdgeCaseStruct {
+  1: map<Reserved, list<i64>> reservedValues,
+}
+
 service TestingService {
     string getName()
     oneway void shutdown()

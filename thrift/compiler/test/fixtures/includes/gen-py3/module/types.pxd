@@ -80,3 +80,4 @@ cdef class MyStruct(thrift.py3.types.Struct):
 
 
 
+

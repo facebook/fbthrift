@@ -69,7 +69,7 @@ cdef class std_unordered_map__Map__i32_string:
     @staticmethod
     cdef create(shared_ptr[std_unordered_map[int32_t,string]])
     @staticmethod
-    cdef unique_ptr[std_unordered_map[int32_t,string]] _make_instance(object items) except *
+    cdef shared_ptr[std_unordered_map[int32_t,string]] _make_instance(object items) except *
 
 cdef class List__std_unordered_map__Map__i32_string:
     cdef object __hash
@@ -78,17 +78,17 @@ cdef class List__std_unordered_map__Map__i32_string:
     @staticmethod
     cdef create(shared_ptr[vector[std_unordered_map[int32_t,string]]])
     @staticmethod
-    cdef unique_ptr[vector[std_unordered_map[int32_t,string]]] _make_instance(object items) except *
+    cdef shared_ptr[vector[std_unordered_map[int32_t,string]]] _make_instance(object items) except *
 
 cdef extern from "<utility>" namespace "std" nogil:
-    cdef shared_ptr[std_unordered_map[int32_t,string]] move(unique_ptr[std_unordered_map[int32_t,string]])
-    cdef unique_ptr[std_unordered_map[int32_t,string]] move_unique "std::move"(unique_ptr[std_unordered_map[int32_t,string]])
+    cdef shared_ptr[std_unordered_map[int32_t,string]] move "std::move"(unique_ptr[std_unordered_map[int32_t,string]])
     cdef shared_ptr[std_unordered_map[int32_t,string]] move_shared "std::move"(shared_ptr[std_unordered_map[int32_t,string]])
-    cdef shared_ptr[vector[std_unordered_map[int32_t,string]]] move(unique_ptr[vector[std_unordered_map[int32_t,string]]])
-    cdef unique_ptr[vector[std_unordered_map[int32_t,string]]] move_unique "std::move"(unique_ptr[vector[std_unordered_map[int32_t,string]]])
+    cdef shared_ptr[vector[std_unordered_map[int32_t,string]]] move "std::move"(unique_ptr[vector[std_unordered_map[int32_t,string]]])
     cdef shared_ptr[vector[std_unordered_map[int32_t,string]]] move_shared "std::move"(shared_ptr[vector[std_unordered_map[int32_t,string]]])
+cdef extern from "<utility>" nogil:
+    pass  
+    shared_ptr[std_unordered_map[int32_t,string]] reference_shared_ptr_List__std_unordered_map__Map__i32_string "thrift::py3::reference_shared_ptr<std::unordered_map<int32_t,std::string>>"(...)
 cdef extern from "<memory>" namespace "std" nogil:
     cdef shared_ptr[const std_unordered_map[int32_t,string]] const_pointer_cast "std::const_pointer_cast<const std::unordered_map<int32_t,std::string>>"(shared_ptr[std_unordered_map[int32_t,string]])
-
     cdef shared_ptr[const vector[std_unordered_map[int32_t,string]]] const_pointer_cast "std::const_pointer_cast<const std::vector<std::unordered_map<int32_t,std::string>>>"(shared_ptr[vector[std_unordered_map[int32_t,string]]])
 

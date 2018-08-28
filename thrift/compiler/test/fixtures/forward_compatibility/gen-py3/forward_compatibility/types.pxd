@@ -230,7 +230,7 @@ cdef class Map__i16_double:
     @staticmethod
     cdef create(shared_ptr[cmap[int16_t,double]])
     @staticmethod
-    cdef unique_ptr[cmap[int16_t,double]] _make_instance(object items) except *
+    cdef shared_ptr[cmap[int16_t,double]] _make_instance(object items) except *
 
 cdef class Map__i16_float:
     cdef object __hash
@@ -239,7 +239,7 @@ cdef class Map__i16_float:
     @staticmethod
     cdef create(shared_ptr[cmap[int16_t,float]])
     @staticmethod
-    cdef unique_ptr[cmap[int16_t,float]] _make_instance(object items) except *
+    cdef shared_ptr[cmap[int16_t,float]] _make_instance(object items) except *
 
 cdef class List__Map__i16_float:
     cdef object __hash
@@ -248,7 +248,7 @@ cdef class List__Map__i16_float:
     @staticmethod
     cdef create(shared_ptr[vector[cmap[int16_t,float]]])
     @staticmethod
-    cdef unique_ptr[vector[cmap[int16_t,float]]] _make_instance(object items) except *
+    cdef shared_ptr[vector[cmap[int16_t,float]]] _make_instance(object items) except *
 
 cdef class Map__i16_Map__i16_float:
     cdef object __hash
@@ -257,7 +257,7 @@ cdef class Map__i16_Map__i16_float:
     @staticmethod
     cdef create(shared_ptr[cmap[int16_t,cmap[int16_t,float]]])
     @staticmethod
-    cdef unique_ptr[cmap[int16_t,cmap[int16_t,float]]] _make_instance(object items) except *
+    cdef shared_ptr[cmap[int16_t,cmap[int16_t,float]]] _make_instance(object items) except *
 
 cdef class Set__Map__i16_float:
     cdef object __hash
@@ -266,7 +266,7 @@ cdef class Set__Map__i16_float:
     @staticmethod
     cdef create(shared_ptr[cset[cmap[int16_t,float]]])
     @staticmethod
-    cdef unique_ptr[cset[cmap[int16_t,float]]] _make_instance(object items) except *
+    cdef shared_ptr[cset[cmap[int16_t,float]]] _make_instance(object items) except *
 
 cdef class Map__i64_double:
     cdef object __hash
@@ -275,7 +275,7 @@ cdef class Map__i64_double:
     @staticmethod
     cdef create(shared_ptr[cmap[int64_t,double]])
     @staticmethod
-    cdef unique_ptr[cmap[int64_t,double]] _make_instance(object items) except *
+    cdef shared_ptr[cmap[int64_t,double]] _make_instance(object items) except *
 
 cdef class Map__i16_Map__i64_double:
     cdef object __hash
@@ -284,7 +284,7 @@ cdef class Map__i16_Map__i64_double:
     @staticmethod
     cdef create(shared_ptr[cmap[int16_t,cmap[int64_t,double]]])
     @staticmethod
-    cdef unique_ptr[cmap[int16_t,cmap[int64_t,double]]] _make_instance(object items) except *
+    cdef shared_ptr[cmap[int16_t,cmap[int64_t,double]]] _make_instance(object items) except *
 
 cdef class Map__i32_Map__i64_double:
     cdef object __hash
@@ -293,7 +293,7 @@ cdef class Map__i32_Map__i64_double:
     @staticmethod
     cdef create(shared_ptr[cmap[int32_t,cmap[int64_t,double]]])
     @staticmethod
-    cdef unique_ptr[cmap[int32_t,cmap[int64_t,double]]] _make_instance(object items) except *
+    cdef shared_ptr[cmap[int32_t,cmap[int64_t,double]]] _make_instance(object items) except *
 
 cdef class List__float:
     cdef object __hash
@@ -302,7 +302,7 @@ cdef class List__float:
     @staticmethod
     cdef create(shared_ptr[vector[float]])
     @staticmethod
-    cdef unique_ptr[vector[float]] _make_instance(object items) except *
+    cdef shared_ptr[vector[float]] _make_instance(object items) except *
 
 cdef class Map__i16_List__float:
     cdef object __hash
@@ -311,7 +311,7 @@ cdef class Map__i16_List__float:
     @staticmethod
     cdef create(shared_ptr[cmap[int16_t,vector[float]]])
     @staticmethod
-    cdef unique_ptr[cmap[int16_t,vector[float]]] _make_instance(object items) except *
+    cdef shared_ptr[cmap[int16_t,vector[float]]] _make_instance(object items) except *
 
 cdef class Map__i32_List__float:
     cdef object __hash
@@ -320,62 +320,50 @@ cdef class Map__i32_List__float:
     @staticmethod
     cdef create(shared_ptr[cmap[int32_t,vector[float]]])
     @staticmethod
-    cdef unique_ptr[cmap[int32_t,vector[float]]] _make_instance(object items) except *
+    cdef shared_ptr[cmap[int32_t,vector[float]]] _make_instance(object items) except *
 
 cdef extern from "<utility>" namespace "std" nogil:
-    cdef shared_ptr[cmap[int16_t,double]] move(unique_ptr[cmap[int16_t,double]])
-    cdef unique_ptr[cmap[int16_t,double]] move_unique "std::move"(unique_ptr[cmap[int16_t,double]])
+    cdef shared_ptr[cmap[int16_t,double]] move "std::move"(unique_ptr[cmap[int16_t,double]])
     cdef shared_ptr[cmap[int16_t,double]] move_shared "std::move"(shared_ptr[cmap[int16_t,double]])
-    cdef shared_ptr[cmap[int16_t,float]] move(unique_ptr[cmap[int16_t,float]])
-    cdef unique_ptr[cmap[int16_t,float]] move_unique "std::move"(unique_ptr[cmap[int16_t,float]])
+    cdef shared_ptr[cmap[int16_t,float]] move "std::move"(unique_ptr[cmap[int16_t,float]])
     cdef shared_ptr[cmap[int16_t,float]] move_shared "std::move"(shared_ptr[cmap[int16_t,float]])
-    cdef shared_ptr[vector[cmap[int16_t,float]]] move(unique_ptr[vector[cmap[int16_t,float]]])
-    cdef unique_ptr[vector[cmap[int16_t,float]]] move_unique "std::move"(unique_ptr[vector[cmap[int16_t,float]]])
+    cdef shared_ptr[vector[cmap[int16_t,float]]] move "std::move"(unique_ptr[vector[cmap[int16_t,float]]])
     cdef shared_ptr[vector[cmap[int16_t,float]]] move_shared "std::move"(shared_ptr[vector[cmap[int16_t,float]]])
-    cdef shared_ptr[cmap[int16_t,cmap[int16_t,float]]] move(unique_ptr[cmap[int16_t,cmap[int16_t,float]]])
-    cdef unique_ptr[cmap[int16_t,cmap[int16_t,float]]] move_unique "std::move"(unique_ptr[cmap[int16_t,cmap[int16_t,float]]])
+    cdef shared_ptr[cmap[int16_t,cmap[int16_t,float]]] move "std::move"(unique_ptr[cmap[int16_t,cmap[int16_t,float]]])
     cdef shared_ptr[cmap[int16_t,cmap[int16_t,float]]] move_shared "std::move"(shared_ptr[cmap[int16_t,cmap[int16_t,float]]])
-    cdef shared_ptr[cset[cmap[int16_t,float]]] move(unique_ptr[cset[cmap[int16_t,float]]])
-    cdef unique_ptr[cset[cmap[int16_t,float]]] move_unique "std::move"(unique_ptr[cset[cmap[int16_t,float]]])
+    cdef shared_ptr[cset[cmap[int16_t,float]]] move "std::move"(unique_ptr[cset[cmap[int16_t,float]]])
     cdef shared_ptr[cset[cmap[int16_t,float]]] move_shared "std::move"(shared_ptr[cset[cmap[int16_t,float]]])
-    cdef shared_ptr[cmap[int64_t,double]] move(unique_ptr[cmap[int64_t,double]])
-    cdef unique_ptr[cmap[int64_t,double]] move_unique "std::move"(unique_ptr[cmap[int64_t,double]])
+    cdef shared_ptr[cmap[int64_t,double]] move "std::move"(unique_ptr[cmap[int64_t,double]])
     cdef shared_ptr[cmap[int64_t,double]] move_shared "std::move"(shared_ptr[cmap[int64_t,double]])
-    cdef shared_ptr[cmap[int16_t,cmap[int64_t,double]]] move(unique_ptr[cmap[int16_t,cmap[int64_t,double]]])
-    cdef unique_ptr[cmap[int16_t,cmap[int64_t,double]]] move_unique "std::move"(unique_ptr[cmap[int16_t,cmap[int64_t,double]]])
+    cdef shared_ptr[cmap[int16_t,cmap[int64_t,double]]] move "std::move"(unique_ptr[cmap[int16_t,cmap[int64_t,double]]])
     cdef shared_ptr[cmap[int16_t,cmap[int64_t,double]]] move_shared "std::move"(shared_ptr[cmap[int16_t,cmap[int64_t,double]]])
-    cdef shared_ptr[cmap[int32_t,cmap[int64_t,double]]] move(unique_ptr[cmap[int32_t,cmap[int64_t,double]]])
-    cdef unique_ptr[cmap[int32_t,cmap[int64_t,double]]] move_unique "std::move"(unique_ptr[cmap[int32_t,cmap[int64_t,double]]])
+    cdef shared_ptr[cmap[int32_t,cmap[int64_t,double]]] move "std::move"(unique_ptr[cmap[int32_t,cmap[int64_t,double]]])
     cdef shared_ptr[cmap[int32_t,cmap[int64_t,double]]] move_shared "std::move"(shared_ptr[cmap[int32_t,cmap[int64_t,double]]])
-    cdef shared_ptr[vector[float]] move(unique_ptr[vector[float]])
-    cdef unique_ptr[vector[float]] move_unique "std::move"(unique_ptr[vector[float]])
+    cdef shared_ptr[vector[float]] move "std::move"(unique_ptr[vector[float]])
     cdef shared_ptr[vector[float]] move_shared "std::move"(shared_ptr[vector[float]])
-    cdef shared_ptr[cmap[int16_t,vector[float]]] move(unique_ptr[cmap[int16_t,vector[float]]])
-    cdef unique_ptr[cmap[int16_t,vector[float]]] move_unique "std::move"(unique_ptr[cmap[int16_t,vector[float]]])
+    cdef shared_ptr[cmap[int16_t,vector[float]]] move "std::move"(unique_ptr[cmap[int16_t,vector[float]]])
     cdef shared_ptr[cmap[int16_t,vector[float]]] move_shared "std::move"(shared_ptr[cmap[int16_t,vector[float]]])
-    cdef shared_ptr[cmap[int32_t,vector[float]]] move(unique_ptr[cmap[int32_t,vector[float]]])
-    cdef unique_ptr[cmap[int32_t,vector[float]]] move_unique "std::move"(unique_ptr[cmap[int32_t,vector[float]]])
+    cdef shared_ptr[cmap[int32_t,vector[float]]] move "std::move"(unique_ptr[cmap[int32_t,vector[float]]])
     cdef shared_ptr[cmap[int32_t,vector[float]]] move_shared "std::move"(shared_ptr[cmap[int32_t,vector[float]]])
+cdef extern from "<utility>" nogil:
+    pass  
+    shared_ptr[cmap[int16_t,float]] reference_shared_ptr_List__Map__i16_float "thrift::py3::reference_shared_ptr<std::map<int16_t,float>>"(...)
+    shared_ptr[cmap[int16_t,float]] reference_shared_ptr_Map__i16_Map__i16_float "thrift::py3::reference_shared_ptr<std::map<int16_t,float>>"(...)
+    shared_ptr[cmap[int16_t,float]] reference_shared_ptr_Set__Map__i16_float "thrift::py3::reference_shared_ptr<std::map<int16_t,float>>"(...)
+    shared_ptr[cmap[int64_t,double]] reference_shared_ptr_Map__i16_Map__i64_double "thrift::py3::reference_shared_ptr<std::map<int64_t,double>>"(...)
+    shared_ptr[cmap[int64_t,double]] reference_shared_ptr_Map__i32_Map__i64_double "thrift::py3::reference_shared_ptr<std::map<int64_t,double>>"(...)
+    shared_ptr[vector[float]] reference_shared_ptr_Map__i16_List__float "thrift::py3::reference_shared_ptr<std::vector<float>>"(...)
+    shared_ptr[vector[float]] reference_shared_ptr_Map__i32_List__float "thrift::py3::reference_shared_ptr<std::vector<float>>"(...)
 cdef extern from "<memory>" namespace "std" nogil:
     cdef shared_ptr[const cmap[int16_t,double]] const_pointer_cast "std::const_pointer_cast<const std::map<int16_t,double>>"(shared_ptr[cmap[int16_t,double]])
-
     cdef shared_ptr[const cmap[int16_t,float]] const_pointer_cast "std::const_pointer_cast<const std::map<int16_t,float>>"(shared_ptr[cmap[int16_t,float]])
-
     cdef shared_ptr[const vector[cmap[int16_t,float]]] const_pointer_cast "std::const_pointer_cast<const std::vector<std::map<int16_t,float>>>"(shared_ptr[vector[cmap[int16_t,float]]])
-
     cdef shared_ptr[const cmap[int16_t,cmap[int16_t,float]]] const_pointer_cast "std::const_pointer_cast<const std::map<int16_t,std::map<int16_t,float>>>"(shared_ptr[cmap[int16_t,cmap[int16_t,float]]])
-
     cdef shared_ptr[const cset[cmap[int16_t,float]]] const_pointer_cast "std::const_pointer_cast<const std::set<std::map<int16_t,float>>>"(shared_ptr[cset[cmap[int16_t,float]]])
-
     cdef shared_ptr[const cmap[int64_t,double]] const_pointer_cast "std::const_pointer_cast<const std::map<int64_t,double>>"(shared_ptr[cmap[int64_t,double]])
-
     cdef shared_ptr[const cmap[int16_t,cmap[int64_t,double]]] const_pointer_cast "std::const_pointer_cast<const std::map<int16_t,std::map<int64_t,double>>>"(shared_ptr[cmap[int16_t,cmap[int64_t,double]]])
-
     cdef shared_ptr[const cmap[int32_t,cmap[int64_t,double]]] const_pointer_cast "std::const_pointer_cast<const std::map<int32_t,std::map<int64_t,double>>>"(shared_ptr[cmap[int32_t,cmap[int64_t,double]]])
-
     cdef shared_ptr[const vector[float]] const_pointer_cast "std::const_pointer_cast<const std::vector<float>>"(shared_ptr[vector[float]])
-
     cdef shared_ptr[const cmap[int16_t,vector[float]]] const_pointer_cast "std::const_pointer_cast<const std::map<int16_t,std::vector<float>>>"(shared_ptr[cmap[int16_t,vector[float]]])
-
     cdef shared_ptr[const cmap[int32_t,vector[float]]] const_pointer_cast "std::const_pointer_cast<const std::map<int32_t,std::vector<float>>>"(shared_ptr[cmap[int32_t,vector[float]]])
 

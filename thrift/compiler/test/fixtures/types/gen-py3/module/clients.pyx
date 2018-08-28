@@ -166,7 +166,7 @@ cdef class SomeService(thrift.py3.client.Client):
         bridgeFutureWith[_module_types.std_unordered_map[int32_t,string]](
             self._executor,
             deref(self._module_SomeService_client).bounce_map(rpc_options._cpp_obj, 
-                _module_types.std_unordered_map[int32_t,string](deref(_module_types.std_unordered_map__Map__i32_string(m)._cpp_obj.get())),
+                deref((<_module_types.std_unordered_map__Map__i32_string>m)._cpp_obj),
             ),
             SomeService_bounce_map_callback,
             <PyObject *> __userdata
@@ -190,7 +190,7 @@ cdef class SomeService(thrift.py3.client.Client):
         bridgeFutureWith[cmap[string,int64_t]](
             self._executor,
             deref(self._module_SomeService_client).binary_keyed_map(rpc_options._cpp_obj, 
-                vector[int64_t](deref(_module_types.List__i64(r)._cpp_obj.get())),
+                deref((<_module_types.List__i64>r)._cpp_obj),
             ),
             SomeService_binary_keyed_map_callback,
             <PyObject *> __userdata

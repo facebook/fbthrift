@@ -840,8 +840,8 @@ cdef api void call_cy_SimpleService_concat(
     cdef SimpleServiceInterface __iface
     __iface = self
     __promise = Promise_string.create(move_promise_string(cPromise))
-    arg_first = (deref(first.get())).decode('UTF-8')
-    arg_second = (deref(second.get())).decode('UTF-8')
+    arg_first = (deref(first)).decode('UTF-8')
+    arg_second = (deref(second)).decode('UTF-8')
     __context = None
     if __iface._pass_context_concat:
         __context = RequestContext.create(ctx)
@@ -1223,7 +1223,7 @@ async def SimpleService_expected_exception_coro(
         else:
             result = await self.expected_exception()
     except _module_types.SimpleException as ex:
-        promise.cPromise.setException(deref((<_module_types.SimpleException> ex)._cpp_obj.get()))
+        promise.cPromise.setException(deref((<_module_types.SimpleException> ex)._cpp_obj))
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -1602,7 +1602,7 @@ cdef api void call_cy_SimpleService_contains_word(
     __iface = self
     __promise = Promise_cbool.create(move_promise_cbool(cPromise))
     arg_words = _module_types.Set__string.create(_module_types.move(words))
-    arg_word = (deref(word.get())).decode('UTF-8')
+    arg_word = (deref(word)).decode('UTF-8')
     __context = None
     if __iface._pass_context_contains_word:
         __context = RequestContext.create(ctx)
@@ -1659,7 +1659,7 @@ cdef api void call_cy_SimpleService_get_map_value(
     __iface = self
     __promise = Promise_string.create(move_promise_string(cPromise))
     arg_words = _module_types.Map__string_string.create(_module_types.move(words))
-    arg_key = (deref(key.get())).decode('UTF-8')
+    arg_key = (deref(key)).decode('UTF-8')
     __context = None
     if __iface._pass_context_get_map_value:
         __context = RequestContext.create(ctx)
@@ -2228,7 +2228,7 @@ cdef api void call_cy_SimpleService_word_character_frequency(
     cdef SimpleServiceInterface __iface
     __iface = self
     __promise = Promise_cmap__string_cmap__string_int32_t.create(move_promise_cmap__string_cmap__string_int32_t(cPromise))
-    arg_sentence = (deref(sentence.get())).decode('UTF-8')
+    arg_sentence = (deref(sentence)).decode('UTF-8')
     __context = None
     if __iface._pass_context_word_character_frequency:
         __context = RequestContext.create(ctx)
@@ -2280,7 +2280,7 @@ cdef api void call_cy_SimpleService_list_of_sets(
     cdef SimpleServiceInterface __iface
     __iface = self
     __promise = Promise_vector__cset__string.create(move_promise_vector__cset__string(cPromise))
-    arg_some_words = (deref(some_words.get())).decode('UTF-8')
+    arg_some_words = (deref(some_words)).decode('UTF-8')
     __context = None
     if __iface._pass_context_list_of_sets:
         __context = RequestContext.create(ctx)
@@ -2589,7 +2589,7 @@ cdef api void call_cy_SimpleService_retrieve_binary(
     cdef SimpleServiceInterface __iface
     __iface = self
     __promise = Promise_binary.create(move_promise_binary(cPromise))
-    arg_something = (deref(something.get()))
+    arg_something = (deref(something))
     __context = None
     if __iface._pass_context_retrieve_binary:
         __context = RequestContext.create(ctx)

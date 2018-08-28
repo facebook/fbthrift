@@ -38,7 +38,6 @@ key, include the parallel CythonPythonToCppKey file instead.
   }}deref((<{{> types/CythonPythonType}}>item)._cpp_obj){{!
 }}{{/type:struct}}{{!
 }}{{#type:container?}}{{!
-  }}{{> types/CythonCppType}}({{!
-  }}deref({{> types/CythonPythonType}}(item)._cpp_obj.get())){{!
+  }}deref((<{{> types/CythonPythonType}}>item)._cpp_obj){{!
 }}{{/type:container?}}{{!
 }}{{#type:enum}}{{> types/CythonPythonType}}_to_cpp(item){{/type:enum}}

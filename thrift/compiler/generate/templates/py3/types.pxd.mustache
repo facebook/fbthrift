@@ -203,14 +203,49 @@ cdef class {{> types/CythonPythonType}}:
     @staticmethod
     cdef create(shared_ptr[{{> types/CythonCppType}}])
     @staticmethod
-    cdef unique_ptr[{{> types/CythonCppType}}] _make_instance(object items) except *
+    cdef shared_ptr[{{> types/CythonCppType}}] _make_instance(object items) except *
 
 {{/program:containerTypes}}{{#program:moveContainerTypes}}
 {{#first?}}cdef extern from "<utility>" namespace "std" nogil:{{/first?}}
-    cdef shared_ptr[{{> types/CythonCppType}}] move(unique_ptr[{{> types/CythonCppType}}])
-    cdef unique_ptr[{{> types/CythonCppType}}] move_unique "std::move"(unique_ptr[{{> types/CythonCppType}}])
+    cdef shared_ptr[{{> types/CythonCppType}}] move "std::move"(unique_ptr[{{> types/CythonCppType}}])
     cdef shared_ptr[{{> types/CythonCppType}}] move_shared "std::move"(shared_ptr[{{> types/CythonCppType}}]){{!
-}}{{/program:moveContainerTypes}}{{!
+}}{{/program:moveContainerTypes}}
+{{#program:containerTypes}}
+{{#first?}}
+cdef extern from "<utility>" nogil:
+    pass  {{! incase we have no containers in containers }}
+{{/first?}}
+{{#type:list?}}
+{{#type:listElemType}}
+{{^type:base?}}{{^type:enum?}}
+    shared_ptr[{{> types/CythonCppType}}] reference_shared_ptr_{{containerType:flat_name}} {{!
+    }}"thrift::py3::reference_shared_ptr<{{> types/CppValueType}}>"(...)
+{{/type:enum?}}{{/type:base?}}
+{{/type:listElemType}}
+{{/type:list?}}
+{{#type:set?}}
+{{#type:setElemType}}
+{{^type:base?}}{{^type:enum?}}
+    shared_ptr[{{> types/CythonCppType}}] reference_shared_ptr_{{containerType:flat_name}} {{!
+    }}"thrift::py3::reference_shared_ptr<{{> types/CppValueType}}>"(...)
+{{/type:enum?}}{{/type:base?}}
+{{/type:setElemType}}
+{{/type:set?}}
+{{#type:map?}}
+{{#type:keyType}}
+{{^type:base?}}{{^type:enum?}}
+    shared_ptr[{{> types/CythonCppType}}] reference_shared_ptr_{{containerType:flat_name}}_key {{!
+    }}"thrift::py3::reference_shared_ptr<{{> types/CppValueType}}>"(...)
+{{/type:enum?}}{{/type:base?}}
+{{/type:keyType}}
+{{#type:valueType}}
+{{^type:base?}}{{^type:enum?}}
+    shared_ptr[{{> types/CythonCppType}}] reference_shared_ptr_{{containerType:flat_name}} {{!
+    }}"thrift::py3::reference_shared_ptr<{{> types/CppValueType}}>"(...)
+{{/type:enum?}}{{/type:base?}}
+{{/type:valueType}}
+{{/type:map?}}{{!
+}}{{/program:containerTypes}}{{!
 
 }}{{#program:moveContainerTypes}}
 {{#first?}}
