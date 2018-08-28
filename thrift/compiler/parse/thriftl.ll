@@ -148,11 +148,6 @@ st_identifier ([a-zA-Z-][\.a-zA-Z_0-9-]*)
 "cpp_namespace"      { return apache::thrift::yy::parser::make_tok_cpp_namespace();        }
 "cpp_include"        { return apache::thrift::yy::parser::make_tok_cpp_include();          }
 "hs_include"         { return apache::thrift::yy::parser::make_tok_hs_include();           }
-"cpp_type"           {
-  driver.yyerror("\"cpp_type\" is no longer allowed. "
-                 "Use the cpp.type annotation instead.\n");
-  driver.end_parsing();
-}
 "java_package"       { return apache::thrift::yy::parser::make_tok_java_package();         }
 "cocoa_prefix"       { return apache::thrift::yy::parser::make_tok_cocoa_prefix();         }
 "csharp_namespace"   { return apache::thrift::yy::parser::make_tok_csharp_namespace();     }
@@ -198,10 +193,6 @@ st_identifier ([a-zA-Z-][\.a-zA-Z_0-9-]*)
 "const"              { return apache::thrift::yy::parser::make_tok_const();                }
 "required"           { return apache::thrift::yy::parser::make_tok_required();             }
 "optional"           { return apache::thrift::yy::parser::make_tok_optional();             }
-"async" {
-  driver.warning(0, "\"async\" is deprecated.  It is called \"oneway\" now.\n");
-  return apache::thrift::yy::parser::make_tok_oneway();
-}
 
 
 "abstract"           { thrift_reserved_keyword(driver, yytext); }
