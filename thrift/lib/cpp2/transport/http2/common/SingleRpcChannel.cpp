@@ -222,9 +222,10 @@ void SingleRpcChannel::onH2StreamClosed(ProxygenError error) noexcept {
           std::make_unique<TTransportException>(TTransportException::TIMED_OUT);
     } else {
       // Some unknown error.
-      LOG(ERROR) << "Network error before call completion";
       ex = std::make_unique<TTransportException>(
-          TTransportException::NETWORK_ERROR);
+          TTransportException::NETWORK_ERROR,
+          folly::to<std::string>(
+              "ProxygenError ", proxygen::getErrorString(error)));
     }
     // We assume that the connection is still valid.  If not, we will
     // get an error the next time we try to create a new transaction
@@ -284,6 +285,21 @@ void SingleRpcChannel::onThriftResponse() noexcept {
   if (!callback_) {
     return;
   }
+
+  auto statusCode = headers_->getStatusCode();
+  if (statusCode != 100 && statusCode != 200) {
+    auto evb = callback_->getEventBase();
+    auto exWrapper = folly::make_exception_wrapper<TTransportException>(
+        TTransportException::UNKNOWN,
+        folly::to<std::string>(
+            "Bad status: ", statusCode, " ", headers_->getStatusMessage()));
+    evb->runInEventBaseThread([evbCallback = std::move(callback_),
+                               exw = std::move(exWrapper)]() mutable {
+      evbCallback->onError(std::move(exw));
+    });
+    return;
+  }
+
   // TODO: contents_ should never be empty. For some reason, once the number
   // of queries starts going past 1.5MQPS, this contents_ will not get set.
   // For now, just drop if contents_ is null. However, this should be
@@ -293,7 +309,7 @@ void SingleRpcChannel::onThriftResponse() noexcept {
     auto evb = callback_->getEventBase();
     evb->runInEventBaseThread([evbCallback = std::move(callback_)]() mutable {
       evbCallback->onError(folly::make_exception_wrapper<TTransportException>(
-          TTransportException::NETWORK_ERROR));
+          TTransportException::END_OF_FILE, "No content"));
     });
     return;
   }
