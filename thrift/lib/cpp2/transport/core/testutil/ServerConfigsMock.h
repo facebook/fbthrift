@@ -49,10 +49,6 @@ class ServerConfigsMock : public ServerConfigs {
     return observer_;
   }
 
-  void setNumIOWorkerThreads(size_t numIOWorkerThreads) override {
-    numIOWorkerThreads_ = numIOWorkerThreads;
-  }
-
   size_t getNumIOWorkerThreads() const override {
     return numIOWorkerThreads_;
   }

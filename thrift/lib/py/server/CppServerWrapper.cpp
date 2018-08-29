@@ -40,15 +40,16 @@
 #include <wangle/ssl/SSLContextConfig.h>
 
 using namespace apache::thrift;
+using apache::thrift::BaseThriftServer;
 using apache::thrift::concurrency::PosixThreadFactory;
 using apache::thrift::concurrency::ThreadManager;
-using apache::thrift::transport::THeader;
+using apache::thrift::server::TConnectionContext;
 using apache::thrift::server::TServerEventHandler;
 using apache::thrift::server::TServerObserver;
-using apache::thrift::server::TConnectionContext;
+using apache::thrift::transport::THeader;
 using folly::SSLContext;
-using wangle::SSLContextConfig;
 using wangle::SSLCacheOptions;
+using wangle::SSLContextConfig;
 using namespace boost::python;
 
 namespace {
@@ -682,6 +683,21 @@ public:
 
   void setWorkersJoinTimeout(int seconds) {
     ThriftServer::setWorkersJoinTimeout(std::chrono::seconds(seconds));
+  }
+
+  void setNumIOWorkerThreads(size_t numIOWorkerThreads) {
+    BaseThriftServer::setNumIOWorkerThreads(
+        numIOWorkerThreads, AttributeSource::OVERRIDE);
+  }
+
+  void setListenBacklog(int listenBacklog) {
+    BaseThriftServer::setListenBacklog(
+        listenBacklog, AttributeSource::OVERRIDE);
+  }
+
+  void setMaxConnections(uint32_t maxConnections) {
+    BaseThriftServer::setMaxConnections(
+        maxConnections, AttributeSource::OVERRIDE);
   }
 };
 

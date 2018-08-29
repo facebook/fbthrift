@@ -116,13 +116,13 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
   static const int DEFAULT_LISTEN_BACKLOG = 1024;
 
   //! Prefix for pool thread names
-  std::string poolThreadName_;
+  ServerAttribute<std::string> poolThreadName_{""};
 
   // Cpp2 ProcessorFactory.
   std::shared_ptr<apache::thrift::AsyncProcessorFactory> cpp2Pfac_;
 
   //! Number of io worker threads (may be set) (should be # of CPU cores)
-  size_t nWorkers_ = T_ASYNC_DEFAULT_WORKER_THREADS;
+  ServerAttribute<size_t> nWorkers_{T_ASYNC_DEFAULT_WORKER_THREADS};
 
   //! Number of SSL handshake worker threads (may be set)
   size_t nSSLHandshakeWorkers_ = 0;
@@ -165,13 +165,13 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    * implementation, and it may be further limited or even ignored on some
    * systems. See manpage for listen(2) for details.
    */
-  int listenBacklog_ = DEFAULT_LISTEN_BACKLOG;
+  ServerAttribute<int> listenBacklog_{DEFAULT_LISTEN_BACKLOG};
 
   /**
    * The maximum number of pending connections each io worker thread can hold.
    */
-  uint32_t maxNumPendingConnectionsPerWorker_ =
-      T_MAX_NUM_PENDING_CONNECTIONS_PER_WORKER;
+  ServerAttribute<uint32_t> maxNumPendingConnectionsPerWorker_{
+      T_MAX_NUM_PENDING_CONNECTIONS_PER_WORKER};
 
   // Max number of active connections
   ServerAttribute<uint32_t> maxConnections_{0};
@@ -181,7 +181,7 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
       concurrency::ThreadManager::DEFAULT_MAX_QUEUE_SIZE};
 
   // If it is set true, server will check and use client timeout header
-  bool useClientTimeout_ = true;
+  ServerAttribute<bool> useClientTimeout_{true};
 
   // Max response size allowed. This is the size of the serialized and
   // transformed response, headers not included. 0 (default) means no limit.
@@ -282,7 +282,7 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    * @return current setting.
    */
   const std::string& getCPUWorkerThreadName() const {
-    return poolThreadName_;
+    return poolThreadName_.get();
   }
 
   /**
@@ -302,8 +302,10 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    *
    * @param cpuWorkerThreadName thread name prefix
    */
-  void setCPUWorkerThreadName(const std::string& cpuWorkerThreadName) {
-    poolThreadName_ = cpuWorkerThreadName;
+  void setCPUWorkerThreadName(
+      const std::string& cpuWorkerThreadName,
+      AttributeSource source = AttributeSource::OVERRIDE) {
+    poolThreadName_.set(cpuWorkerThreadName, source);
   }
 
   /**
@@ -412,11 +414,13 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
   }
 
   bool getUseClientTimeout() const {
-    return useClientTimeout_;
+    return useClientTimeout_.get();
   }
 
-  void setUseClientTimeout(bool useClientTimeout) {
-    useClientTimeout_ = useClientTimeout;
+  void setUseClientTimeout(
+      bool useClientTimeout,
+      AttributeSource source = AttributeSource::OVERRIDE) {
+    useClientTimeout_.set(useClientTimeout, source);
   }
 
   virtual bool isOverloaded(
@@ -495,7 +499,7 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    * hold.
    */
   uint32_t getMaxNumPendingConnectionsPerWorker() const {
-    return maxNumPendingConnectionsPerWorker_;
+    return maxNumPendingConnectionsPerWorker_.get();
   }
   /**
    * Set the maximum number of pending connections each io worker thread can
@@ -503,9 +507,11 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    * are more than such number of unprocessed connections in that queue. If
    * every io worker thread's queue is full the connection will be dropped.
    */
-  void setMaxNumPendingConnectionsPerWorker(uint32_t num) {
+  void setMaxNumPendingConnectionsPerWorker(
+      uint32_t num,
+      AttributeSource source = AttributeSource::OVERRIDE) {
     CHECK(configMutable());
-    maxNumPendingConnectionsPerWorker_ = num;
+    maxNumPendingConnectionsPerWorker_.set(num, source);
   }
 
   /**
@@ -536,9 +542,11 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    *
    * @param number of IO worker threads
    */
-  void setNumIOWorkerThreads(size_t numIOWorkerThreads) override {
+  void setNumIOWorkerThreads(
+      size_t numIOWorkerThreads,
+      AttributeSource source = AttributeSource::OVERRIDE) {
     CHECK(configMutable());
-    nWorkers_ = numIOWorkerThreads;
+    nWorkers_.set(numIOWorkerThreads, source);
   }
 
   /**
@@ -557,7 +565,7 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    * @return number of IO worker threads
    */
   size_t getNumIOWorkerThreads() const override {
-    return nWorkers_;
+    return nWorkers_.get();
   }
 
   /**
@@ -757,8 +765,11 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    * Set the listen backlog. Refer to the comment on listenBacklog_ member for
    * details.
    */
-  void setListenBacklog(int listenBacklog) {
-    listenBacklog_ = listenBacklog;
+  void setListenBacklog(
+      int listenBacklog,
+      AttributeSource source = AttributeSource::OVERRIDE) {
+    CHECK(configMutable());
+    listenBacklog_.set(listenBacklog, source);
   }
 
   /**
@@ -767,7 +778,7 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    * @return listen backlog.
    */
   int getListenBacklog() const {
-    return listenBacklog_;
+    return listenBacklog_.get();
   }
 
   void setOverloadedErrorCode(const std::string& errorCode) {
