@@ -326,10 +326,11 @@ st_identifier ([a-zA-Z-][\.a-zA-Z_0-9-]*)
  /* This does not show up in the parse tree. */
  /* Rather, the parser will grab it out of the global. */
   if (driver.mode == apache::thrift::parsing_mode::PROGRAM) {
+    std::string doctext{yytext + 3};
+    doctext = doctext.substr(0, doctext.length() - 2);
+
     driver.clear_doctext();
-    driver.doctext = strdup(yytext + 3);
-    driver.doctext[strlen(driver.doctext) - 2] = '\0';
-    driver.doctext = driver.clean_up_doctext(driver.doctext);
+    driver.doctext = driver.clean_up_doctext(doctext);
     driver.doctext_lineno = yylineno;
   }
 }

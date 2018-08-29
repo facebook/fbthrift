@@ -21,6 +21,8 @@
 #include <string>
 #include <system_error>
 
+#include <boost/optional.hpp>
+
 #include "thrift/compiler/ast/t_program.h"
 #include "thrift/compiler/ast/t_program_bundle.h"
 #include "thrift/compiler/ast/t_scope.h"
@@ -148,7 +150,7 @@ class parsing_driver {
   /**
    * The last parsed doctext comment.
    */
-  char* doctext;
+  boost::optional<std::string> doctext;
 
   /**
    * The location of the last parsed doctext comment.
@@ -293,7 +295,7 @@ class parsing_driver {
    * Warning: if you mix tabs and spaces in a non-uniform way,
    * you will get what you deserve.
    */
-  char* clean_up_doctext(char* doctext);
+  boost::optional<std::string> clean_up_doctext(std::string docstring);
 
  private:
   class deleter {

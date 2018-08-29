@@ -46,7 +46,7 @@ class parsing_terminator : public std::runtime_error {
 
 parsing_driver::parsing_driver(std::string path, parsing_params parse_params)
     : params(std::move(parse_params)),
-      doctext(nullptr),
+      doctext(boost::none),
       doctext_lineno(0),
       mode(parsing_mode::INCLUDES) {
   auto root_program = std::make_unique<t_program>(path);
@@ -394,16 +394,16 @@ void parsing_driver::validate_field_value(t_field* field, t_const_value* cv) {
 }
 
 void parsing_driver::clear_doctext() {
-  if (doctext != nullptr) {
+  if (doctext) {
     warning(2, "Uncaptured doctext at on line %d.", doctext_lineno);
   }
-  free(doctext);
-  doctext = nullptr;
+
+  doctext = boost::none;
 }
 
-char* parsing_driver::clean_up_doctext(char* doctext) {
+boost::optional<std::string> parsing_driver::clean_up_doctext(
+    std::string docstring) {
   // Convert to C++ string, and remove Windows's carriage returns.
-  std::string docstring = doctext;
   docstring.erase(
       remove(docstring.begin(), docstring.end(), '\r'), docstring.end());
 
@@ -428,7 +428,7 @@ char* parsing_driver::clean_up_doctext(char* doctext) {
 
   // A very profound docstring.
   if (lines.empty()) {
-    return nullptr;
+    return boost::none;
   }
 
   // Clear leading whitespace from the first line.
@@ -523,9 +523,7 @@ char* parsing_driver::clean_up_doctext(char* doctext) {
     docstring += '\n';
   }
 
-  assert(docstring.length() <= strlen(doctext));
-  strcpy(doctext, docstring.c_str());
-  return doctext;
+  return docstring;
 }
 
 } // namespace thrift

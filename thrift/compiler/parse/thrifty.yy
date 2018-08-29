@@ -34,6 +34,8 @@
 #include <stack>
 #include <utility>
 
+#include <boost/optional.hpp>
+
 #include "thrift/compiler/ast/t_annotated.h"
 #include "thrift/compiler/ast/t_scope.h"
 #include "thrift/compiler/ast/base_types.h"
@@ -127,7 +129,8 @@ class parsing_driver;
  */
 %token<std::string>     tok_identifier
 %token<std::string>     tok_literal
-%token<char*>           tok_doctext
+%token<boost::optional<std::string>>
+                        tok_doctext
 %token<std::string>     tok_st_identifier
 
 /**
@@ -286,7 +289,8 @@ class parsing_driver;
 %type<t_service*>       Extends
 %type<bool>             Oneway
 
-%type<char*>            CaptureDocText
+%type<boost::optional<std::string>>
+                        CaptureDocText
 %type<std::string>      IntOrLiteral
 
 %%
@@ -316,9 +320,9 @@ CaptureDocText:
     {
       if (driver.mode == apache::thrift::parsing_mode::PROGRAM) {
         $$ = driver.doctext;
-        driver.doctext = NULL;
+        driver.doctext = boost::none;
       } else {
-        $$ = NULL;
+        $$ = boost::none;
       }
     }
 
@@ -487,8 +491,8 @@ DefinitionList:
   DefinitionList CaptureDocText Definition
     {
       driver.debug("DefinitionList -> DefinitionList Definition");
-      if ($2 != NULL && $3 != NULL) {
-        $3->set_doc($2);
+      if (($3 != NULL) && $2) {
+        $3->set_doc(std::string{*$2});
       }
     }
 |
@@ -657,8 +661,8 @@ EnumDef:
     {
       driver.debug("EnumDef -> EnumValue");
       $$ = $2;
-      if ($1 != NULL) {
-        $$->set_doc($1);
+      if ($1) {
+        $$->set_doc(std::string{*$1});
       }
       if ($3 != NULL) {
         $$->annotations_ = $3->annotations_;
@@ -983,8 +987,8 @@ Function:
       );
       $$ = func;
 
-      if ($1 != NULL) {
-        $$->set_doc($1);
+      if ($1) {
+        $$->set_doc(std::string{*$1});
       }
       $$->set_lineno(driver.scanner->get_lineno());
       y_field_val = -1;
@@ -1120,8 +1124,8 @@ Field:
         driver.validate_field_value($$, $6);
         $$->set_value(std::unique_ptr<t_const_value>($6));
       }
-      if ($1 != NULL) {
-        $$->set_doc($1);
+      if ($1) {
+        $$->set_doc(std::string{*$1});
       }
       if ($7 != NULL) {
         for (const auto& it : $7->annotations_) {
