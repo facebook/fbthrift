@@ -99,6 +99,10 @@ class t_program : public t_doc {
     placeholder_typedefs_.push_back(std::move(ptd));
   }
 
+  void add_unnamed_type(std::unique_ptr<t_type> ut) {
+    unnamed_types_.push_back(std::move(ut));
+  }
+
   /**
    * Get program elements
    */
@@ -257,9 +261,11 @@ class t_program : public t_doc {
   std::vector<std::unique_ptr<t_include>> includes_;
 
   /**
-   * A place to store placeholder typedefs so that they get destroyed.
+   * A place to store unnamed types so that they can be kept alive for the
+   * duration of the program's lifetime, and subsequently destroyed.
    */
   std::vector<std::unique_ptr<t_typedef>> placeholder_typedefs_;
+  std::vector<std::unique_ptr<t_type>> unnamed_types_;
 
   std::vector<t_typedef*> typedefs_raw_;
   std::vector<t_enum*> enums_raw_;

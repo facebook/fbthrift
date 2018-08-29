@@ -1249,19 +1249,40 @@ PubsubStreamType:
   tok_stream FieldType
   {
     driver.debug("PubsubStreamType -> tok_stream FieldType");
+
     $$ = new t_pubsub_stream($2);
+
+    if (driver.mode == apache::thrift::parsing_mode::INCLUDES) {
+      driver.delete_at_the_end($$);
+    } else {
+      driver.program->add_unnamed_type(std::unique_ptr<t_type>{$$});
+    }
   }
 
 PubsubStreamReturnType:
   FieldType "," tok_stream FieldType
   {
     driver.debug("PubsubStreamReturnType -> tok_stream FieldType");
+
     $$ = new t_stream_response($4, $1);
+
+    if (driver.mode == apache::thrift::parsing_mode::INCLUDES) {
+      driver.delete_at_the_end($$);
+    } else {
+      driver.program->add_unnamed_type(std::unique_ptr<t_type>{$$});
+    }
   }
 | tok_stream FieldType
   {
     driver.debug("PubsubStreamReturnType -> tok_stream FieldType tok_void");
+
     $$ = new t_stream_response($2);
+
+    if (driver.mode == apache::thrift::parsing_mode::INCLUDES) {
+      driver.delete_at_the_end($$);
+    } else {
+      driver.program->add_unnamed_type(std::unique_ptr<t_type>{$$});
+    }
   }
 
 FieldType:
@@ -1271,6 +1292,8 @@ FieldType:
       if (driver.mode == apache::thrift::parsing_mode::INCLUDES) {
         // Ignore identifiers in include mode
         $$ = NULL;
+
+        delete $2;
       } else {
         // Lookup the identifier in the current scope
         $$ = driver.scope_cache->get_type($1);
@@ -1301,7 +1324,14 @@ FieldType:
 | ContainerType
     {
       driver.debug("FieldType -> ContainerType");
+
       $$ = $1;
+
+      if (driver.mode == apache::thrift::parsing_mode::INCLUDES) {
+        driver.delete_at_the_end($$);
+      } else {
+        driver.program->add_unnamed_type(std::unique_ptr<t_type>{$$});
+      }
     }
 
 BaseType: SimpleBaseType TypeAnnotations
@@ -1311,6 +1341,12 @@ BaseType: SimpleBaseType TypeAnnotations
         $$ = new t_base_type(*static_cast<t_base_type*>($1));
         $$->annotations_ = $2->annotations_;
         delete $2;
+
+        if (driver.mode == apache::thrift::parsing_mode::INCLUDES) {
+          driver.delete_at_the_end($$);
+        } else {
+          driver.program->add_unnamed_type(std::unique_ptr<t_type>{$$});
+        }
       } else {
         $$ = $1;
       }
