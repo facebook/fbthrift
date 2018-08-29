@@ -112,7 +112,6 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
 
   //! The folly::EventBase currently driving serve().  NULL when not serving.
   std::atomic<folly::EventBase*> serveEventBase_{nullptr};
-  folly::HHWheelTimer::UniquePtr serverTimer_;
   folly::Optional<IdleServerAction> idleServer_;
   std::chrono::milliseconds idleServerTimeout_ = std::chrono::milliseconds(0);
   folly::Optional<std::chrono::milliseconds> sslHandshakeTimeout_;

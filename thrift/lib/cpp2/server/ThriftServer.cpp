@@ -259,8 +259,8 @@ void ThriftServer::setup() {
   // Initialize event base for this thread, ensure event_init() is called
   serveEventBase_ = eventBaseManager_->getEventBase();
   if (idleServerTimeout_.count() > 0) {
-    serverTimer_ = folly::HHWheelTimer::newTimer(serveEventBase_);
-    idleServer_.emplace(*this, *serverTimer_, idleServerTimeout_);
+    idleServer_.emplace(
+        *this, serveEventBase_.load()->timer(), idleServerTimeout_);
   }
   // Print some libevent stats
   VLOG(1) << "libevent " << folly::EventBase::getLibeventVersion() << " method "
@@ -498,6 +498,7 @@ void ThriftServer::cleanUp() {
 
   // It is users duty to make sure that setup() call
   // should have returned before doing this cleanup
+  idleServer_.clear();
   serveEventBase_ = nullptr;
   stopListening();
 
@@ -580,6 +581,7 @@ void ThriftServer::handleSetupFailure(void) {
   ServerBootstrap::stop();
 
   // avoid crash on stop()
+  idleServer_.clear();
   serveEventBase_ = nullptr;
 }
 
