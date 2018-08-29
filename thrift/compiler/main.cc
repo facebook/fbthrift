@@ -448,39 +448,27 @@ int main(int argc, char** argv) {
         }
       }
 
-      struct stat sb;
       if (out_path_is_absolute) {
         // Invoker specified `-out blah`. We are supposed to output directly
         // into blah, e.g. `blah/Foo.java`. Make the directory if necessary,
         // just like how for `-o blah` we make `o/gen-java`
         boost::system::error_code errc;
-        if (stat(out_path.c_str(), &sb) < 0 && errno == ENOENT &&
-            (boost::filesystem::create_directory(out_path, errc), errc)) {
+        boost::filesystem::create_directory(out_path, errc);
+        if (errc) {
           fprintf(
               stderr,
-              "Output directory %s is unusable: mkdir: %s\n",
-              out_path.c_str(),
-              strerror(errno));
+              "Output path %s is unusable or not a directory\n",
+              out_path.c_str());
           return -1;
         }
       }
-      if (stat(out_path.c_str(), &sb) < 0) {
+      if (!boost::filesystem::is_directory(out_path)) {
         fprintf(
             stderr,
-            "Output directory %s is unusable: %s\n",
-            out_path.c_str(),
-            strerror(errno));
-        return -1;
-      }
-#ifndef _WIN32
-      if (!S_ISDIR(sb.st_mode)) {
-        fprintf(
-            stderr,
-            "Output directory %s exists but is not a directory\n",
+            "Output path %s is unusable or not a directory\n",
             out_path.c_str());
         return -1;
       }
-#endif
       continue;
     } else if (arguments[i] == "-python-compiler") {
       if (i + 1 == arguments.size() - 1) {
