@@ -35,7 +35,6 @@
 #include <boost/filesystem.hpp>
 
 #include <stdlib.h>
-#include <sys/stat.h>
 #include <sys/types.h>
 #include <thrift/compiler/generate/t_concat_generator.h>
 #include <thrift/compiler/generate/t_generator.h>

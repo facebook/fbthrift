@@ -24,7 +24,6 @@
 #include <map>
 
 #include <stdlib.h>
-#include <sys/stat.h>
 #include <sstream>
 
 #include <boost/filesystem.hpp>

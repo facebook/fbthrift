@@ -21,7 +21,6 @@
 #ifndef THRIFT_COMPILER_COMMON_
 #define THRIFT_COMPILER_COMMON_ 1
 
-#include <sys/stat.h>
 #include <sys/types.h>
 
 #include <algorithm>

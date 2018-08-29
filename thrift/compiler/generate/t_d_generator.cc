@@ -21,8 +21,6 @@
 #include <string>
 #include <vector>
 
-#include <sys/stat.h>
-
 #include <boost/filesystem.hpp>
 
 #include <thrift/compiler/platform.h>
