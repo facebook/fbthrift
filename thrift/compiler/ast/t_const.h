@@ -15,6 +15,8 @@
  */
 #pragma once
 
+#include <memory>
+
 #include <thrift/compiler/ast/t_const_value.h>
 
 namespace apache {
@@ -46,11 +48,11 @@ class t_const : public t_doc {
       t_program* program,
       t_type* type,
       std::string name,
-      t_const_value* value)
-      : program_(program), type_(type), name_(name), value_(value) {
+      std::unique_ptr<t_const_value> value)
+      : program_(program), type_(type), name_(name), value_(std::move(value)) {
     // value->get_owner() is set when rhs is referencing another constant.
-    if (value && value->get_owner() == nullptr) {
-      value->set_owner(this);
+    if (value_ && value_->get_owner() == nullptr) {
+      value_->set_owner(this);
     }
   }
 
@@ -70,14 +72,15 @@ class t_const : public t_doc {
   }
 
   t_const_value* get_value() const {
-    return value_;
+    return value_.get();
   }
 
  private:
   t_program* program_;
   t_type* type_;
   std::string name_;
-  t_const_value* value_;
+
+  std::unique_ptr<t_const_value> value_;
 };
 
 } // namespace compiler

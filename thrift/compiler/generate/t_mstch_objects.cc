@@ -417,7 +417,7 @@ mstch::node mstch_const_value::const_struct() {
           nullptr,
           strct->get_member(member.first->get_string())->get_type(),
           "",
-          member.second));
+          member.second->clone()));
       idx.push_back(strct->get_member(member.first->get_string())->get_key());
     }
   }

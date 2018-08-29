@@ -624,12 +624,14 @@ EnumDefList:
       $$ = $1;
 
       if (driver.mode == apache::thrift::parsing_mode::PROGRAM) {
-        t_const_value* const_val = new t_const_value($2->get_value());
+        auto const_val = std::make_unique<t_const_value>($2->get_value());
+
         const_val->set_is_enum();
         const_val->set_enum($$);
         const_val->set_enum_value($2);
+
         auto tconst = std::make_unique<t_const>(
-            driver.program, i32_type(), $2->get_name(), const_val);
+            driver.program, i32_type(), $2->get_name(), std::move(const_val));
 
         assert(y_enum_name != nullptr);
         std::string type_prefix = std::string(y_enum_name) + ".";
@@ -706,11 +708,12 @@ Const:
     {
       driver.debug("Const -> tok_const FieldType tok_identifier = ConstValue");
       if (driver.mode == apache::thrift::parsing_mode::PROGRAM) {
-        $$ = new t_const(driver.program, $3, $4, $6);
+        $$ = new t_const(driver.program, $3, $4, std::unique_ptr<t_const_value>($6));
         $$->set_lineno(lineno_stack.pop(LineType::kConst));
         driver.validate_const_type($$);
         driver.scope_cache->add_constant(driver.program->get_name() + "." + $4, $$);
       } else {
+        delete $6;
         $$ = NULL;
       }
     }
@@ -754,7 +757,14 @@ ConstValue:
       if (constant != nullptr) {
         // Copy const_value to perform isolated mutations
         t_const_value* const_value = constant->get_value();
-        $$ = new t_const_value(*const_value);
+        $$ = const_value->clone().release();
+
+        // We only want to clone the value, while discarding all real type
+        // information.
+        $$->set_ttype(nullptr);
+        $$->set_is_enum(false);
+        $$->set_enum(nullptr);
+        $$->set_enum_value(nullptr);
       } else {
         if (driver.mode == apache::thrift::parsing_mode::PROGRAM) {
           driver.warning(1, "Constant strings should be quoted: %s", $1.c_str());
@@ -785,7 +795,7 @@ ConstListContents:
     {
       driver.debug("ConstListContents => ConstListContents ConstValue CommaOrSemicolonOptional");
       $$ = $1;
-      $$->add_list($2);
+      $$->add_list(std::unique_ptr<t_const_value>($2));
     }
 |
     {
@@ -806,7 +816,7 @@ ConstMapContents:
     {
       driver.debug("ConstMapContents => ConstMapContents ConstValue CommaOrSemicolonOptional");
       $$ = $1;
-      $$->add_map($2, $4);
+      $$->add_map(std::unique_ptr<t_const_value>($2), std::unique_ptr<t_const_value>($4));
     }
 |
     {
@@ -1108,7 +1118,7 @@ Field:
       $$->set_lineno(lineno_stack.pop(LineType::kField));
       if ($6 != NULL) {
         driver.validate_field_value($$, $6);
-        $$->set_value($6);
+        $$->set_value(std::unique_ptr<t_const_value>($6));
       }
       if ($1 != NULL) {
         $$->set_doc($1);
@@ -1205,6 +1215,7 @@ FieldValue:
       if (driver.mode == apache::thrift::parsing_mode::PROGRAM) {
         $$ = $2;
       } else {
+        delete $2;
         $$ = NULL;
       }
     }

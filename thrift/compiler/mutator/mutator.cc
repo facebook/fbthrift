@@ -127,7 +127,8 @@ static void match_type_with_const_value(
         throw std::runtime_error(
             std::string("type error: no matching constant: ") + str);
       }
-      *value = *constant->get_value();
+      auto value_copy = constant->get_value()->clone();
+      value->assign(std::move(*value_copy));
     }
     if (enm->find_value(value->get_integer())) {
       value->set_enum_value(enm->find_value(value->get_integer()));

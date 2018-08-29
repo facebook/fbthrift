@@ -16,17 +16,18 @@
 
 #pragma once
 
+#include <memory>
 #include <sstream>
 #include <string>
 
 #include <thrift/compiler/ast/t_annotated.h>
+#include <thrift/compiler/ast/t_const_value.h>
 #include <thrift/compiler/ast/t_type.h>
 
 namespace apache {
 namespace thrift {
 namespace compiler {
 
-class t_const_value;
 class t_struct;
 
 /**
@@ -75,8 +76,8 @@ class t_field : public t_annotated {
   /**
    * t_field setters
    */
-  void set_value(t_const_value* value) {
-    value_ = value;
+  void set_value(std::unique_ptr<t_const_value> value) {
+    value_ = std::move(value);
   }
 
   void set_req(e_req req) {
@@ -103,11 +104,11 @@ class t_field : public t_annotated {
   }
 
   const t_const_value* get_value() const {
-    return value_;
+    return value_.get();
   }
 
   t_const_value* get_value() {
-    return value_;
+    return value_.get();
   }
 
   t_field* get_next() const {
@@ -126,7 +127,10 @@ class t_field : public t_annotated {
   std::unique_ptr<t_field> clone_DO_NOT_USE() {
     auto clone = std::make_unique<t_field>(type_, name_, key_);
 
-    clone->value_ = value_;
+    if (!!value_) {
+      clone->value_ = value_->clone();
+    }
+
     clone->next_ = next_;
     clone->req_ = req_;
 
@@ -137,7 +141,7 @@ class t_field : public t_annotated {
   t_type* type_;
   std::string name_;
   int32_t key_{0};
-  t_const_value* value_{nullptr};
+  std::unique_ptr<t_const_value> value_{nullptr};
   t_field* next_{nullptr};
 
   e_req req_{T_OPT_IN_REQ_OUT};
