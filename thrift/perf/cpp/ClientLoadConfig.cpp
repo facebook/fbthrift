@@ -136,7 +136,7 @@ ClientLoadConfig::ClientLoadConfig()
   address_.setFromHostPort(FLAGS_server.c_str(), FLAGS_port);
   if (FLAGS_server == "127.0.0.1") {
     char hostname[HOST_NAME_MAX + 1];
-    PCHECK(gethostname(hostname, sizeof(hostname)));
+    PCHECK(!gethostname(hostname, sizeof(hostname)));
     addressHostname_ = hostname;
   } else {
     struct addrinfo hints, *res, *res0;
