@@ -104,6 +104,7 @@ class EagerSubscribeOnOperator
             return;
           }
           DCHECK(state == State::HAS_SUBSCRIBER);
+          FOLLY_FALLTHROUGH;
         case State::HAS_SUBSCRIBER:
           SuperSubscription::onCompleteImpl();
           return;
@@ -128,6 +129,7 @@ class EagerSubscribeOnOperator
             return;
           }
           DCHECK(state == State::HAS_SUBSCRIBER);
+          FOLLY_FALLTHROUGH;
         case State::HAS_SUBSCRIBER:
           SuperSubscription::onErrorImpl(std::move(error_));
           return;
@@ -150,6 +152,7 @@ class EagerSubscribeOnOperator
             return;
           }
           DCHECK(state == State::HAS_SUBSCRIBER);
+          FOLLY_FALLTHROUGH;
         case State::HAS_SUBSCRIBER:
           SuperSubscription::onSubscribeImpl();
           return;
