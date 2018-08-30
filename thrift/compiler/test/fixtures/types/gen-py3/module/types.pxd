@@ -801,6 +801,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
     cdef object __weakref__
     cdef shared_ptr[cMyStruct] _cpp_obj
     cdef MyDataItem __data
+    cdef __MyStruct_eq(MyStruct self, MyStruct other)
 
     @staticmethod
     cdef unique_ptr[cMyStruct] _make_instance(
@@ -822,6 +823,7 @@ cdef class MyDataItem(thrift.py3.types.Struct):
     cdef object __hash
     cdef object __weakref__
     cdef shared_ptr[cMyDataItem] _cpp_obj
+    cdef __MyDataItem_eq(MyDataItem self, MyDataItem other)
 
     @staticmethod
     cdef unique_ptr[cMyDataItem] _make_instance(

@@ -4,12 +4,19 @@ import math
 import copy
 
 from testing.types import (
-    easy, hard, Integers, mixed, Reserved, Runtime, numerical, Color
+    easy,
+    hard,
+    Integers,
+    mixed,
+    Reserved,
+    Runtime,
+    numerical,
+    Color,
+    SlowCompare,
 )
 
 
 class StructTests(unittest.TestCase):
-
     def test_copy(self) -> None:
         x = easy(val=1, an_int=Integers(small=300), name='foo', val_list=[1, 2, 3, 4])
         dif_list = copy.copy(x.val_list)
@@ -22,10 +29,10 @@ class StructTests(unittest.TestCase):
 
     def test_optional_struct_creation(self) -> None:
         with self.assertRaises(TypeError):
-            easy(1, [1, 1], 'test', Integers(tiny=1))  # type: ignore
+            easy(1, [1, 1], "test", Integers(tiny=1))  # type: ignore
         easy(val=1, an_int=Integers(small=500))
         with self.assertRaises(TypeError):
-            easy(name=b'binary')  # type: ignore
+            easy(name=b"binary")  # type: ignore
         # Only Required Fields don't accept None
         easy(val=5, an_int=None)
 
@@ -40,8 +47,8 @@ class StructTests(unittest.TestCase):
             hard(val=1, val_list=[1, 2])  # type: ignore
 
     def test_call_replace(self) -> None:
-        x = easy(val=1, an_int=Integers(small=300), name='foo')
-        y = x(name='bar')
+        x = easy(val=1, an_int=Integers(small=300), name="foo")
+        y = x(name="bar")
         self.assertNotEqual(x.name, y.name)
         z = y(an_int=None, val=4)
         self.assertNotEqual(x.an_int, z.an_int)
@@ -61,7 +68,7 @@ class StructTests(unittest.TestCase):
             val_list=[1, 2],
             name="something",
             an_int=Integers(small=1),
-            other='non default',
+            other="non default",
         )
         y = x(other=None)
         self.assertEqual(y.other, "some default")
@@ -108,10 +115,10 @@ class StructTests(unittest.TestCase):
             Runtime(enum_val=2)  # type: ignore
 
         with self.assertRaises(TypeError):
-            x(int_list_val=['foo', 'bar', 'baz'])  # type: ignore
+            x(int_list_val=["foo", "bar", "baz"])  # type: ignore
 
         with self.assertRaises(TypeError):
-            Runtime(int_list_val=['foo', 'bar', 'baz'])  # type: ignore
+            Runtime(int_list_val=["foo", "bar", "baz"])  # type: ignore
 
     def test_reserved(self) -> None:
         x = Reserved(from_="hello", nonlocal_=3, ok="bye", is_cpdef=True)
@@ -129,9 +136,16 @@ class StructTests(unittest.TestCase):
         self.assertGreaterEqual(y, x)
         self.assertEquals([x, y], sorted([y, x]))
 
+    def test_noncomparable(self) -> None:
+        x = SlowCompare(field1="text", field2=10, field3=Color.red)
+        y = x(field3=Color.blue)
+        x2 = SlowCompare(field1="text", field2=10, field3=Color.red)
+
+        self.assertEqual(x, x2)
+        self.assertNotEqual(x, y)
+
 
 class NumericalConversionsTests(unittest.TestCase):
-
     def test_overflow(self) -> None:
         with self.assertRaises(OverflowError):
             numerical(req_float_val=5, req_int_val=2 ** 63 - 1)

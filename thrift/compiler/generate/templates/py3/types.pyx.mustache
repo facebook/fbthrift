@@ -329,6 +329,19 @@ cdef class {{struct:name}}({{> types/PythonStructClass}}):
         {{#struct:exception?}}
         return super().__hash__()
         {{/struct:exception?}}
+    {{#struct:cpp_noncomparable}}
+
+    cdef __{{struct:name}}_eq({{struct:name}} self, {{struct:name}} other):
+        {{#struct:fields}}
+        {{^first?}}el{{/first?}}if self.{{field:name}} != other.{{field:name}}:
+            return False
+        {{/struct:fields}}
+        {{^struct:fields}}
+        if id(self) != id(other):
+            return False
+        {{/struct:fields}}
+        return True
+    {{/struct:cpp_noncomparable}}
 
     def __repr__({{struct:name}} self):
         return f'{{struct:name}}({{#struct:fields}}{{field:name}}={repr(self.{{field:name}})}{{^last?}}, {{/last?}}{{/struct:fields}})'
@@ -462,6 +475,11 @@ cdef class {{struct:name}}(thrift.py3.types.Union):
                 self.value,
             ))
         return self.__hash
+    {{#struct:cpp_noncomparable}}
+
+    cdef __{{struct:name}}_eq({{struct:name}} self, {{struct:name}} other):
+        return self.type == other.type and self.value == other.value
+    {{/struct:cpp_noncomparable}}
 
     def __repr__({{struct:name}} self):
         return f'{{struct:name}}(type={self.type.name}, value={self.value!r})'
@@ -505,9 +523,9 @@ cdef class {{struct:name}}(thrift.py3.types.Union):
         {{#struct:cpp_noncomparable}}
         {{! There are no comparable ops on C++ class so we do default py_object behavior }}
         if cop == Py_EQ:
-            return self is other
+            return self.__{{struct:name}}_eq(other)
         elif cop == Py_NE:
-            return self is not other
+            return not self.__{{struct:name}}_eq(other)
         {{/struct:cpp_noncomparable}}
         {{^struct:cpp_noncomparable}}
         cdef c{{struct:name}} cself = deref((<{{struct:name}}>self)._cpp_obj)

@@ -173,6 +173,12 @@ struct EdgeCaseStruct {
   1: map<Reserved, list<i64>> reservedValues,
 }
 
+struct SlowCompare {
+  1: string field1,
+  2: i32 field2,
+  3: Color field3,
+} (cpp2.noncomparable)
+
 service TestingService {
     string getName()
     oneway void shutdown()

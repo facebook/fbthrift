@@ -2628,6 +2628,17 @@ cdef class MyStruct(thrift.py3.types.Struct):
             ))
         return self.__hash
 
+    cdef __MyStruct_eq(MyStruct self, MyStruct other):
+        if self.MyIntField != other.MyIntField:
+            return False
+        elif self.MyStringField != other.MyStringField:
+            return False
+        elif self.major != other.major:
+            return False
+        elif self.data != other.data:
+            return False
+        return True
+
     def __repr__(MyStruct self):
         return f'MyStruct(MyIntField={repr(self.MyIntField)}, MyStringField={repr(self.MyStringField)}, major={repr(self.major)}, data={repr(self.data)})'
     def __copy__(MyStruct self):
@@ -2649,9 +2660,9 @@ cdef class MyStruct(thrift.py3.types.Struct):
                 return NotImplemented
 
         if cop == Py_EQ:
-            return self is other
+            return self.__MyStruct_eq(other)
         elif cop == Py_NE:
-            return self is not other
+            return not self.__MyStruct_eq(other)
         else:
             return NotImplemented
 
@@ -2755,6 +2766,11 @@ cdef class MyDataItem(thrift.py3.types.Struct):
             ))
         return self.__hash
 
+    cdef __MyDataItem_eq(MyDataItem self, MyDataItem other):
+        if id(self) != id(other):
+            return False
+        return True
+
     def __repr__(MyDataItem self):
         return f'MyDataItem()'
     def __copy__(MyDataItem self):
@@ -2776,9 +2792,9 @@ cdef class MyDataItem(thrift.py3.types.Struct):
                 return NotImplemented
 
         if cop == Py_EQ:
-            return self is other
+            return self.__MyDataItem_eq(other)
         elif cop == Py_NE:
-            return self is not other
+            return not self.__MyDataItem_eq(other)
         else:
             return NotImplemented
 
