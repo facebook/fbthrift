@@ -325,6 +325,10 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "apache
     cdef cppclass cComplexNestedWithDefault "apache::thrift::fixtures::types::ComplexNestedWithDefault"
     # Forward Declaration
     cdef cppclass cMinPadding "apache::thrift::fixtures::types::MinPadding"
+    # Forward Declaration
+    cdef cppclass cMyStruct "apache::thrift::fixtures::types::MyStruct"
+    # Forward Declaration
+    cdef cppclass cMyDataItem "apache::thrift::fixtures::types::MyDataItem"
 
 cdef extern from "src/gen-cpp2/module_types.h" namespace "apache::thrift::fixtures::types":
     cdef cppclass cdecorated_struct__isset "apache::thrift::fixtures::types::decorated_struct::__isset":
@@ -491,6 +495,29 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "apache::thrift::fixtur
         int8_t tiny
         cMinPadding__isset __isset
 
+    cdef cppclass cMyStruct__isset "apache::thrift::fixtures::types::MyStruct::__isset":
+        bint MyIntField
+        bint MyStringField
+        bint major
+        bint data
+
+    cdef cppclass cMyStruct "apache::thrift::fixtures::types::MyStruct":
+        cMyStruct() except +
+        cMyStruct(const cMyStruct&) except +
+        int64_t MyIntField
+        string MyStringField
+        int64_t major
+        cMyDataItem data
+        cMyStruct__isset __isset
+
+    cdef cppclass cMyDataItem__isset "apache::thrift::fixtures::types::MyDataItem::__isset":
+        pass
+
+    cdef cppclass cMyDataItem "apache::thrift::fixtures::types::MyDataItem":
+        cMyDataItem() except +
+        cMyDataItem(const cMyDataItem&) except +
+        cMyDataItem__isset __isset
+
     cdef shared_ptr[vector[int32_t]] reference_shared_ptr_fieldA "thrift::py3::reference_shared_ptr<std::vector<int32_t>>"(shared_ptr[cContainerStruct]&, vector[int32_t]&)
     cdef shared_ptr[std_list[int32_t]] reference_shared_ptr_fieldB "thrift::py3::reference_shared_ptr<std::list<int32_t>>"(shared_ptr[cContainerStruct]&, std_list[int32_t]&)
     cdef shared_ptr[std_deque[int32_t]] reference_shared_ptr_fieldC "thrift::py3::reference_shared_ptr<std::deque<int32_t>>"(shared_ptr[cContainerStruct]&, std_deque[int32_t]&)
@@ -503,6 +530,7 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "apache::thrift::fixtur
     cdef shared_ptr[cTrivialNumeric] reference_shared_ptr_n "thrift::py3::reference_shared_ptr<apache::thrift::fixtures::types::TrivialNumeric>"(shared_ptr[cTrivialNestedWithDefault]&, cTrivialNumeric&)
     cdef shared_ptr[cmap[string,int32_t]] reference_shared_ptr_b "thrift::py3::reference_shared_ptr<std::map<std::string,int32_t>>"(shared_ptr[cComplexString]&, cmap[string,int32_t]&)
     cdef shared_ptr[cComplexString] reference_shared_ptr_n "thrift::py3::reference_shared_ptr<apache::thrift::fixtures::types::ComplexString>"(shared_ptr[cComplexNestedWithDefault]&, cComplexString&)
+    cdef shared_ptr[cMyDataItem] reference_shared_ptr_data "thrift::py3::reference_shared_ptr<apache::thrift::fixtures::types::MyDataItem>"(shared_ptr[cMyStruct]&, cMyDataItem&)
 
 cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[cdecorated_struct] move(unique_ptr[cdecorated_struct])
@@ -535,6 +563,12 @@ cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[cMinPadding] move(unique_ptr[cMinPadding])
     cdef shared_ptr[cMinPadding] move_shared "std::move"(shared_ptr[cMinPadding])
     cdef unique_ptr[cMinPadding] move_unique "std::move"(unique_ptr[cMinPadding])
+    cdef shared_ptr[cMyStruct] move(unique_ptr[cMyStruct])
+    cdef shared_ptr[cMyStruct] move_shared "std::move"(shared_ptr[cMyStruct])
+    cdef unique_ptr[cMyStruct] move_unique "std::move"(unique_ptr[cMyStruct])
+    cdef shared_ptr[cMyDataItem] move(unique_ptr[cMyDataItem])
+    cdef shared_ptr[cMyDataItem] move_shared "std::move"(shared_ptr[cMyDataItem])
+    cdef unique_ptr[cMyDataItem] move_unique "std::move"(unique_ptr[cMyDataItem])
 
 cdef extern from "<memory>" namespace "std" nogil:
     cdef shared_ptr[const cdecorated_struct] const_pointer_cast "std::const_pointer_cast<const apache::thrift::fixtures::types::decorated_struct>"(shared_ptr[cdecorated_struct])
@@ -547,6 +581,8 @@ cdef extern from "<memory>" namespace "std" nogil:
     cdef shared_ptr[const cComplexString] const_pointer_cast "std::const_pointer_cast<const apache::thrift::fixtures::types::ComplexString>"(shared_ptr[cComplexString])
     cdef shared_ptr[const cComplexNestedWithDefault] const_pointer_cast "std::const_pointer_cast<const apache::thrift::fixtures::types::ComplexNestedWithDefault>"(shared_ptr[cComplexNestedWithDefault])
     cdef shared_ptr[const cMinPadding] const_pointer_cast "std::const_pointer_cast<const apache::thrift::fixtures::types::MinPadding>"(shared_ptr[cMinPadding])
+    cdef shared_ptr[const cMyStruct] const_pointer_cast "std::const_pointer_cast<const apache::thrift::fixtures::types::MyStruct>"(shared_ptr[cMyStruct])
+    cdef shared_ptr[const cMyDataItem] const_pointer_cast "std::const_pointer_cast<const apache::thrift::fixtures::types::MyDataItem>"(shared_ptr[cMyDataItem])
 
 # Forward Definition of the cython struct
 cdef class decorated_struct(thrift.py3.types.Struct)
@@ -755,6 +791,45 @@ cdef class MinPadding(thrift.py3.types.Struct):
 
     @staticmethod
     cdef create(shared_ptr[cMinPadding])
+
+# Forward Definition of the cython struct
+cdef class MyStruct(thrift.py3.types.Struct)
+
+
+cdef class MyStruct(thrift.py3.types.Struct):
+    cdef object __hash
+    cdef object __weakref__
+    cdef shared_ptr[cMyStruct] _cpp_obj
+    cdef MyDataItem __data
+
+    @staticmethod
+    cdef unique_ptr[cMyStruct] _make_instance(
+        cMyStruct* base_instance,
+        object MyIntField,
+        object MyStringField,
+        object major,
+        object data
+    ) except *
+
+    @staticmethod
+    cdef create(shared_ptr[cMyStruct])
+
+# Forward Definition of the cython struct
+cdef class MyDataItem(thrift.py3.types.Struct)
+
+
+cdef class MyDataItem(thrift.py3.types.Struct):
+    cdef object __hash
+    cdef object __weakref__
+    cdef shared_ptr[cMyDataItem] _cpp_obj
+
+    @staticmethod
+    cdef unique_ptr[cMyDataItem] _make_instance(
+        cMyDataItem* base_instance
+    ) except *
+
+    @staticmethod
+    cdef create(shared_ptr[cMyDataItem])
 
 
 cdef class std_unordered_map__Map__i32_string:

@@ -12,6 +12,9 @@
 
 #include "src/gen-cpp2/module_data.h"
 
+#pragma push_macro("major")
+#undef major
+
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 const _has_bitwise_ops_EnumMapFactory::ValuesToNamesMapType _has_bitwise_ops_VALUES_TO_NAMES = _has_bitwise_ops_EnumMapFactory::makeValuesToNamesMap();
@@ -255,6 +258,34 @@ void TccStructTraits< ::apache::thrift::fixtures::types::MinPadding>::translateF
     fid = 5;
     _ftype = apache::thrift::protocol::T_BYTE;
   }
+}
+void TccStructTraits< ::apache::thrift::fixtures::types::MyStruct>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "MyIntField") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_I64;
+  }
+  else if (_fname == "MyStringField") {
+    fid = 2;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
+  else if (_fname == "major") {
+    fid = 3;
+    _ftype = apache::thrift::protocol::T_I64;
+  }
+  else if (_fname == "data") {
+    fid = 4;
+    _ftype = apache::thrift::protocol::T_STRUCT;
+  }
+}
+void TccStructTraits< ::apache::thrift::fixtures::types::MyDataItem>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
 }
 
 } // namespace detail
@@ -970,3 +1001,83 @@ template uint32_t MinPadding::serializedSize<>(apache::thrift::CompactProtocolWr
 template uint32_t MinPadding::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 }}}} // apache::thrift::fixtures::types
+namespace apache { namespace thrift { namespace fixtures { namespace types {
+
+MyStruct::MyStruct(apache::thrift::FragileConstructor, int64_t MyIntField__arg, std::string MyStringField__arg, int64_t major__arg,  ::apache::thrift::fixtures::types::MyDataItem data__arg) :
+    MyIntField(std::move(MyIntField__arg)),
+    MyStringField(std::move(MyStringField__arg)),
+    major(std::move(major__arg)),
+    data(std::move(data__arg)) {
+  __isset.MyIntField = true;
+  __isset.MyStringField = true;
+  __isset.major = true;
+  __isset.data = true;
+}
+
+void MyStruct::__clear() {
+  // clear all fields
+  MyIntField = 0;
+  MyStringField = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
+  major = 0;
+  __isset = {};
+}
+
+
+
+const  ::apache::thrift::fixtures::types::MyDataItem& MyStruct::get_data() const& {
+  return data;
+}
+
+ ::apache::thrift::fixtures::types::MyDataItem MyStruct::get_data() && {
+  return std::move(data);
+}
+
+
+void swap(MyStruct& a, MyStruct& b) {
+  using ::std::swap;
+  swap(a.MyIntField, b.MyIntField);
+  swap(a.MyStringField, b.MyStringField);
+  swap(a.major, b.major);
+  swap(a.data, b.data);
+  swap(a.__isset, b.__isset);
+}
+
+template void MyStruct::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+template uint32_t MyStruct::write<>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t MyStruct::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t MyStruct::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+template void MyStruct::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+template uint32_t MyStruct::write<>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t MyStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t MyStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+}}}} // apache::thrift::fixtures::types
+namespace apache { namespace thrift { namespace fixtures { namespace types {
+
+MyDataItem::MyDataItem(apache::thrift::FragileConstructor) {}
+
+void MyDataItem::__clear() {
+  // clear all fields
+}
+
+
+
+
+void swap(MyDataItem& a, MyDataItem& b) {
+  using ::std::swap;
+  (void)a;
+  (void)b;
+}
+
+template void MyDataItem::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+template uint32_t MyDataItem::write<>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t MyDataItem::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t MyDataItem::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+template void MyDataItem::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+template uint32_t MyDataItem::write<>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t MyDataItem::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t MyDataItem::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+}}}} // apache::thrift::fixtures::types
+
+#pragma pop_macro("major")

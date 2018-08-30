@@ -12,6 +12,9 @@
 #include <thrift/lib/cpp2/protocol/Protocol.h>
 
 #include "thrift/compiler/test/fixtures/types/gen-cpp2/include_types.h"
+#pragma push_macro("major")
+#undef major
+
 
 // BEGIN declare_enums
 namespace apache { namespace thrift { namespace fixtures { namespace types {
@@ -177,6 +180,8 @@ class TrivialNestedWithDefault;
 class ComplexString;
 class ComplexNestedWithDefault;
 class MinPadding;
+class MyStruct;
+class MyDataItem;
 }}}} // apache::thrift::fixtures::types
 // END forward_declare
 // BEGIN typedefs
@@ -1474,3 +1479,238 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::apache::thrift::fixtur
 }
 
 }} // apache::thrift
+namespace apache { namespace thrift { namespace fixtures { namespace types {
+class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<MyStruct> {
+ public:
+
+  MyStruct() :
+      MyIntField(0),
+      major(0) {}
+  // FragileConstructor for use in initialization lists only.
+  MyStruct(apache::thrift::FragileConstructor, int64_t MyIntField__arg, std::string MyStringField__arg, int64_t major__arg,  ::apache::thrift::fixtures::types::MyDataItem data__arg);
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
+    MyIntField = arg.extract();
+    __isset.MyIntField = true;
+  }
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
+    MyStringField = arg.extract();
+    __isset.MyStringField = true;
+  }
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<3, _T> arg) {
+    major = arg.extract();
+    __isset.major = true;
+  }
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<4, _T> arg) {
+    data = arg.extract();
+    __isset.data = true;
+  }
+
+  MyStruct(MyStruct&&) = default;
+
+  MyStruct(const MyStruct&) = default;
+
+  MyStruct& operator=(MyStruct&&) = default;
+
+  MyStruct& operator=(const MyStruct&) = default;
+  void __clear();
+  int64_t MyIntField;
+  std::string MyStringField;
+  int64_t major;
+   ::apache::thrift::fixtures::types::MyDataItem data;
+
+  struct __isset {
+    bool MyIntField;
+    bool MyStringField;
+    bool major;
+    bool data;
+  } __isset = {};
+
+  int64_t get_MyIntField() const {
+    return MyIntField;
+  }
+
+  int64_t& set_MyIntField(int64_t MyIntField_) {
+    MyIntField = MyIntField_;
+    __isset.MyIntField = true;
+    return MyIntField;
+  }
+
+  const std::string& get_MyStringField() const& {
+    return MyStringField;
+  }
+
+  std::string get_MyStringField() && {
+    return std::move(MyStringField);
+  }
+
+  template <typename T_MyStruct_MyStringField_struct_setter = std::string>
+  std::string& set_MyStringField(T_MyStruct_MyStringField_struct_setter&& MyStringField_) {
+    MyStringField = std::forward<T_MyStruct_MyStringField_struct_setter>(MyStringField_);
+    __isset.MyStringField = true;
+    return MyStringField;
+  }
+
+  int64_t get_major() const {
+    return major;
+  }
+
+  int64_t& set_major(int64_t major_) {
+    major = major_;
+    __isset.major = true;
+    return major;
+  }
+  const  ::apache::thrift::fixtures::types::MyDataItem& get_data() const&;
+   ::apache::thrift::fixtures::types::MyDataItem get_data() &&;
+
+  template <typename T_MyStruct_data_struct_setter =  ::apache::thrift::fixtures::types::MyDataItem>
+   ::apache::thrift::fixtures::types::MyDataItem& set_data(T_MyStruct_data_struct_setter&& data_) {
+    data = std::forward<T_MyStruct_data_struct_setter>(data_);
+    __isset.data = true;
+    return data;
+  }
+
+  template <class Protocol_>
+  uint32_t read(Protocol_* iprot);
+  template <class Protocol_>
+  uint32_t serializedSize(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t serializedSizeZC(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t write(Protocol_* prot_) const;
+
+ private:
+  template <class Protocol_>
+  void readNoXfer(Protocol_* iprot);
+
+  friend class ::apache::thrift::Cpp2Ops< MyStruct >;
+};
+
+void swap(MyStruct& a, MyStruct& b);
+extern template void MyStruct::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+extern template uint32_t MyStruct::write<>(apache::thrift::BinaryProtocolWriter*) const;
+extern template uint32_t MyStruct::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t MyStruct::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template void MyStruct::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+extern template uint32_t MyStruct::write<>(apache::thrift::CompactProtocolWriter*) const;
+extern template uint32_t MyStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template uint32_t MyStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+template <class Protocol_>
+uint32_t MyStruct::read(Protocol_* iprot) {
+  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
+  readNoXfer(iprot);
+  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
+}
+
+}}}} // apache::thrift::fixtures::types
+namespace apache { namespace thrift {
+
+template <> inline void Cpp2Ops< ::apache::thrift::fixtures::types::MyStruct>::clear( ::apache::thrift::fixtures::types::MyStruct* obj) {
+  return obj->__clear();
+}
+
+template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::apache::thrift::fixtures::types::MyStruct>::thriftType() {
+  return apache::thrift::protocol::T_STRUCT;
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::apache::thrift::fixtures::types::MyStruct>::write(Protocol* proto,  ::apache::thrift::fixtures::types::MyStruct const* obj) {
+  return obj->write(proto);
+}
+
+template <> template <class Protocol> void Cpp2Ops< ::apache::thrift::fixtures::types::MyStruct>::read(Protocol* proto,  ::apache::thrift::fixtures::types::MyStruct* obj) {
+  return obj->readNoXfer(proto);
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::apache::thrift::fixtures::types::MyStruct>::serializedSize(Protocol const* proto,  ::apache::thrift::fixtures::types::MyStruct const* obj) {
+  return obj->serializedSize(proto);
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::apache::thrift::fixtures::types::MyStruct>::serializedSizeZC(Protocol const* proto,  ::apache::thrift::fixtures::types::MyStruct const* obj) {
+  return obj->serializedSizeZC(proto);
+}
+
+}} // apache::thrift
+namespace apache { namespace thrift { namespace fixtures { namespace types {
+class MyDataItem final : private apache::thrift::detail::st::ComparisonOperators<MyDataItem> {
+ public:
+
+  MyDataItem() {}
+  // FragileConstructor for use in initialization lists only.
+  MyDataItem(apache::thrift::FragileConstructor);
+
+  MyDataItem(MyDataItem&&) = default;
+
+  MyDataItem(const MyDataItem&) = default;
+
+  MyDataItem& operator=(MyDataItem&&) = default;
+
+  MyDataItem& operator=(const MyDataItem&) = default;
+  void __clear();
+
+  template <class Protocol_>
+  uint32_t read(Protocol_* iprot);
+  template <class Protocol_>
+  uint32_t serializedSize(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t serializedSizeZC(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t write(Protocol_* prot_) const;
+
+ private:
+  template <class Protocol_>
+  void readNoXfer(Protocol_* iprot);
+
+  friend class ::apache::thrift::Cpp2Ops< MyDataItem >;
+};
+
+void swap(MyDataItem& a, MyDataItem& b);
+extern template void MyDataItem::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+extern template uint32_t MyDataItem::write<>(apache::thrift::BinaryProtocolWriter*) const;
+extern template uint32_t MyDataItem::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t MyDataItem::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template void MyDataItem::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+extern template uint32_t MyDataItem::write<>(apache::thrift::CompactProtocolWriter*) const;
+extern template uint32_t MyDataItem::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template uint32_t MyDataItem::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+template <class Protocol_>
+uint32_t MyDataItem::read(Protocol_* iprot) {
+  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
+  readNoXfer(iprot);
+  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
+}
+
+}}}} // apache::thrift::fixtures::types
+namespace apache { namespace thrift {
+
+template <> inline void Cpp2Ops< ::apache::thrift::fixtures::types::MyDataItem>::clear( ::apache::thrift::fixtures::types::MyDataItem* obj) {
+  return obj->__clear();
+}
+
+template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::apache::thrift::fixtures::types::MyDataItem>::thriftType() {
+  return apache::thrift::protocol::T_STRUCT;
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::apache::thrift::fixtures::types::MyDataItem>::write(Protocol* proto,  ::apache::thrift::fixtures::types::MyDataItem const* obj) {
+  return obj->write(proto);
+}
+
+template <> template <class Protocol> void Cpp2Ops< ::apache::thrift::fixtures::types::MyDataItem>::read(Protocol* proto,  ::apache::thrift::fixtures::types::MyDataItem* obj) {
+  return obj->readNoXfer(proto);
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::apache::thrift::fixtures::types::MyDataItem>::serializedSize(Protocol const* proto,  ::apache::thrift::fixtures::types::MyDataItem const* obj) {
+  return obj->serializedSize(proto);
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::apache::thrift::fixtures::types::MyDataItem>::serializedSizeZC(Protocol const* proto,  ::apache::thrift::fixtures::types::MyDataItem const* obj) {
+  return obj->serializedSizeZC(proto);
+}
+
+}} // apache::thrift
+
+#pragma pop_macro("major")

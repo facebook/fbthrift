@@ -15,6 +15,9 @@
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 #include <thrift/lib/cpp2/protocol/ProtocolReaderStructReadState.h>
 
+#pragma push_macro("major")
+#undef major
+
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 }}}} // apache::thrift::fixtures::types
@@ -112,6 +115,20 @@ struct TccStructTraits< ::apache::thrift::fixtures::types::ComplexNestedWithDefa
 };
 template <>
 struct TccStructTraits< ::apache::thrift::fixtures::types::MinPadding> {
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
+};
+template <>
+struct TccStructTraits< ::apache::thrift::fixtures::types::MyStruct> {
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
+};
+template <>
+struct TccStructTraits< ::apache::thrift::fixtures::types::MyDataItem> {
   static void translateFieldName(
       folly::StringPiece _fname,
       int16_t& fid,
@@ -1580,3 +1597,256 @@ uint32_t MinPadding::write(Protocol_* prot_) const {
 }
 
 }}}} // apache::thrift::fixtures::types
+namespace apache { namespace thrift { namespace fixtures { namespace types {
+
+template <class Protocol_>
+void MyStruct::readNoXfer(Protocol_* iprot) {
+  apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
+
+  _readState.readStructBegin(iprot);
+
+  using apache::thrift::TProtocolException;
+
+
+  if (UNLIKELY(!_readState.advanceToNextField(
+          iprot,
+          0,
+          1,
+          apache::thrift::protocol::T_I64))) {
+    goto _loop;
+  }
+_readField_MyIntField:
+  {
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::read(*iprot, this->MyIntField);
+    this->__isset.MyIntField = true;
+  }
+
+  if (UNLIKELY(!_readState.advanceToNextField(
+          iprot,
+          1,
+          2,
+          apache::thrift::protocol::T_STRING))) {
+    goto _loop;
+  }
+_readField_MyStringField:
+  {
+    iprot->readString(this->MyStringField);
+    this->__isset.MyStringField = true;
+  }
+
+  if (UNLIKELY(!_readState.advanceToNextField(
+          iprot,
+          2,
+          3,
+          apache::thrift::protocol::T_I64))) {
+    goto _loop;
+  }
+_readField_major:
+  {
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::read(*iprot, this->major);
+    this->__isset.major = true;
+  }
+
+  if (UNLIKELY(!_readState.advanceToNextField(
+          iprot,
+          3,
+          4,
+          apache::thrift::protocol::T_STRUCT))) {
+    goto _loop;
+  }
+_readField_data:
+  {
+    ::apache::thrift::Cpp2Ops<  ::apache::thrift::fixtures::types::MyDataItem>::read(iprot, &this->data);
+    this->__isset.data = true;
+  }
+
+  if (UNLIKELY(!_readState.advanceToNextField(
+          iprot,
+          4,
+          0,
+          apache::thrift::protocol::T_STOP))) {
+    goto _loop;
+  }
+
+_end:
+  _readState.readStructEnd(iprot);
+
+  return;
+
+_loop:
+  if (_readState.fieldType == apache::thrift::protocol::T_STOP) {
+    goto _end;
+  }
+  if (iprot->kUsesFieldNames()) {
+    apache::thrift::detail::TccStructTraits<MyStruct>::translateFieldName(_readState.fieldName(), _readState.fieldId, _readState.fieldType);
+  }
+
+  switch (_readState.fieldId) {
+    case 1:
+    {
+      if (LIKELY(_readState.fieldType == apache::thrift::protocol::T_I64)) {
+        goto _readField_MyIntField;
+      } else {
+        goto _skip;
+      }
+    }
+    case 2:
+    {
+      if (LIKELY(_readState.fieldType == apache::thrift::protocol::T_STRING)) {
+        goto _readField_MyStringField;
+      } else {
+        goto _skip;
+      }
+    }
+    case 3:
+    {
+      if (LIKELY(_readState.fieldType == apache::thrift::protocol::T_I64)) {
+        goto _readField_major;
+      } else {
+        goto _skip;
+      }
+    }
+    case 4:
+    {
+      if (LIKELY(_readState.fieldType == apache::thrift::protocol::T_STRUCT)) {
+        goto _readField_data;
+      } else {
+        goto _skip;
+      }
+    }
+    default:
+    {
+_skip:
+      iprot->skip(_readState.fieldType);
+      _readState.readFieldEnd(iprot);
+      _readState.readFieldBeginNoInline(iprot);
+      goto _loop;
+    }
+  }
+}
+
+template <class Protocol_>
+uint32_t MyStruct::serializedSize(Protocol_ const* prot_) const {
+  uint32_t xfer = 0;
+  xfer += prot_->serializedStructSize("MyStruct");
+  xfer += prot_->serializedFieldSize("MyIntField", apache::thrift::protocol::T_I64, 1);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::serializedSize<false>(*prot_, this->MyIntField);
+  xfer += prot_->serializedFieldSize("MyStringField", apache::thrift::protocol::T_STRING, 2);
+  xfer += prot_->serializedSizeString(this->MyStringField);
+  xfer += prot_->serializedFieldSize("major", apache::thrift::protocol::T_I64, 3);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::serializedSize<false>(*prot_, this->major);
+  xfer += prot_->serializedFieldSize("data", apache::thrift::protocol::T_STRUCT, 4);
+  xfer += ::apache::thrift::Cpp2Ops<  ::apache::thrift::fixtures::types::MyDataItem>::serializedSize(prot_, &this->data);
+  xfer += prot_->serializedSizeStop();
+  return xfer;
+}
+
+template <class Protocol_>
+uint32_t MyStruct::serializedSizeZC(Protocol_ const* prot_) const {
+  uint32_t xfer = 0;
+  xfer += prot_->serializedStructSize("MyStruct");
+  xfer += prot_->serializedFieldSize("MyIntField", apache::thrift::protocol::T_I64, 1);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::serializedSize<false>(*prot_, this->MyIntField);
+  xfer += prot_->serializedFieldSize("MyStringField", apache::thrift::protocol::T_STRING, 2);
+  xfer += prot_->serializedSizeString(this->MyStringField);
+  xfer += prot_->serializedFieldSize("major", apache::thrift::protocol::T_I64, 3);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::serializedSize<false>(*prot_, this->major);
+  xfer += prot_->serializedFieldSize("data", apache::thrift::protocol::T_STRUCT, 4);
+  xfer += ::apache::thrift::Cpp2Ops<  ::apache::thrift::fixtures::types::MyDataItem>::serializedSizeZC(prot_, &this->data);
+  xfer += prot_->serializedSizeStop();
+  return xfer;
+}
+
+template <class Protocol_>
+uint32_t MyStruct::write(Protocol_* prot_) const {
+  uint32_t xfer = 0;
+  xfer += prot_->writeStructBegin("MyStruct");
+  xfer += prot_->writeFieldBegin("MyIntField", apache::thrift::protocol::T_I64, 1);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::write(*prot_, this->MyIntField);
+  xfer += prot_->writeFieldEnd();
+  xfer += prot_->writeFieldBegin("MyStringField", apache::thrift::protocol::T_STRING, 2);
+  xfer += prot_->writeString(this->MyStringField);
+  xfer += prot_->writeFieldEnd();
+  xfer += prot_->writeFieldBegin("major", apache::thrift::protocol::T_I64, 3);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::write(*prot_, this->major);
+  xfer += prot_->writeFieldEnd();
+  xfer += prot_->writeFieldBegin("data", apache::thrift::protocol::T_STRUCT, 4);
+  xfer += ::apache::thrift::Cpp2Ops<  ::apache::thrift::fixtures::types::MyDataItem>::write(prot_, &this->data);
+  xfer += prot_->writeFieldEnd();
+  xfer += prot_->writeFieldStop();
+  xfer += prot_->writeStructEnd();
+  return xfer;
+}
+
+}}}} // apache::thrift::fixtures::types
+namespace apache { namespace thrift { namespace fixtures { namespace types {
+
+template <class Protocol_>
+void MyDataItem::readNoXfer(Protocol_* iprot) {
+  apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
+
+  _readState.readStructBegin(iprot);
+
+  using apache::thrift::TProtocolException;
+
+
+  if (UNLIKELY(!_readState.advanceToNextField(
+          iprot,
+          0,
+          0,
+          apache::thrift::protocol::T_STOP))) {
+    goto _loop;
+  }
+
+_end:
+  _readState.readStructEnd(iprot);
+
+  return;
+
+_loop:
+  if (_readState.fieldType == apache::thrift::protocol::T_STOP) {
+    goto _end;
+  }
+  if (iprot->kUsesFieldNames()) {
+    apache::thrift::detail::TccStructTraits<MyDataItem>::translateFieldName(_readState.fieldName(), _readState.fieldId, _readState.fieldType);
+  }
+
+  switch (_readState.fieldId) {
+    default:
+    {
+      iprot->skip(_readState.fieldType);
+      _readState.readFieldEnd(iprot);
+      _readState.readFieldBeginNoInline(iprot);
+      goto _loop;
+    }
+  }
+}
+
+template <class Protocol_>
+uint32_t MyDataItem::serializedSize(Protocol_ const* prot_) const {
+  uint32_t xfer = 0;
+  xfer += prot_->serializedStructSize("MyDataItem");
+  xfer += prot_->serializedSizeStop();
+  return xfer;
+}
+
+template <class Protocol_>
+uint32_t MyDataItem::serializedSizeZC(Protocol_ const* prot_) const {
+  uint32_t xfer = 0;
+  xfer += prot_->serializedStructSize("MyDataItem");
+  xfer += prot_->serializedSizeStop();
+  return xfer;
+}
+
+template <class Protocol_>
+uint32_t MyDataItem::write(Protocol_* prot_) const {
+  uint32_t xfer = 0;
+  xfer += prot_->writeStructBegin("MyDataItem");
+  xfer += prot_->writeFieldStop();
+  xfer += prot_->writeStructEnd();
+  return xfer;
+}
+
+}}}} // apache::thrift::fixtures::types
+
+#pragma pop_macro("major")

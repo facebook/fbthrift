@@ -2443,6 +2443,384 @@ cdef class MinPadding(thrift.py3.types.Struct):
         return (deserialize, (MinPadding, serialize(self)))
 
 
+cdef cMyStruct _MyStruct_defaults = cMyStruct()
+
+cdef class MyStruct(thrift.py3.types.Struct):
+
+    def __init__(
+        MyStruct self, *,
+        MyIntField=None,
+        str MyStringField=None,
+        major=None,
+        MyDataItem data=None
+    ):
+        if MyIntField is not None:
+            if not isinstance(MyIntField, int):
+                raise TypeError(f'MyIntField is not a { int !r}.')
+            MyIntField = <int64_t> MyIntField
+
+        if major is not None:
+            if not isinstance(major, int):
+                raise TypeError(f'major is not a { int !r}.')
+            major = <int64_t> major
+
+        self._cpp_obj = move(MyStruct._make_instance(
+          NULL,
+          MyIntField,
+          MyStringField,
+          major,
+          data,
+        ))
+
+    def __call__(
+        MyStruct self,
+        MyIntField=__NOTSET,
+        MyStringField=__NOTSET,
+        major=__NOTSET,
+        data=__NOTSET
+    ):
+        changes = any((
+            MyIntField is not __NOTSET,
+
+            MyStringField is not __NOTSET,
+
+            major is not __NOTSET,
+
+            data is not __NOTSET,
+        ))
+
+        if not changes:
+            return self
+
+        if None is not MyIntField is not __NOTSET:
+            if not isinstance(MyIntField, int):
+                raise TypeError(f'MyIntField is not a { int !r}.')
+            MyIntField = <int64_t> MyIntField
+
+        if None is not MyStringField is not __NOTSET:
+            if not isinstance(MyStringField, str):
+                raise TypeError(f'MyStringField is not a { str !r}.')
+
+        if None is not major is not __NOTSET:
+            if not isinstance(major, int):
+                raise TypeError(f'major is not a { int !r}.')
+            major = <int64_t> major
+
+        if None is not data is not __NOTSET:
+            if not isinstance(data, MyDataItem):
+                raise TypeError(f'data is not a { MyDataItem !r}.')
+
+        inst = <MyStruct>MyStruct.__new__(MyStruct)
+        inst._cpp_obj = move(MyStruct._make_instance(
+          self._cpp_obj.get(),
+          MyIntField,
+          MyStringField,
+          major,
+          data,
+        ))
+        return inst
+
+    @staticmethod
+    cdef unique_ptr[cMyStruct] _make_instance(
+        cMyStruct* base_instance,
+        object MyIntField,
+        object MyStringField,
+        object major,
+        object data
+    ) except *:
+        cdef unique_ptr[cMyStruct] c_inst
+        if base_instance:
+            c_inst = make_unique[cMyStruct](deref(base_instance))
+        else:
+            c_inst = make_unique[cMyStruct]()
+
+        if base_instance:
+            # Convert None's to default value. (or unset)
+            if MyIntField is None:
+                deref(c_inst).MyIntField = _MyStruct_defaults.MyIntField
+                deref(c_inst).__isset.MyIntField = False
+                pass
+            elif MyIntField is __NOTSET:
+                MyIntField = None
+
+            if MyStringField is None:
+                deref(c_inst).MyStringField = _MyStruct_defaults.MyStringField
+                deref(c_inst).__isset.MyStringField = False
+                pass
+            elif MyStringField is __NOTSET:
+                MyStringField = None
+
+            if major is None:
+                deref(c_inst).major = _MyStruct_defaults.major
+                deref(c_inst).__isset.major = False
+                pass
+            elif major is __NOTSET:
+                major = None
+
+            if data is None:
+                deref(c_inst).data = _MyStruct_defaults.data
+                deref(c_inst).__isset.data = False
+                pass
+            elif data is __NOTSET:
+                data = None
+
+        if MyIntField is not None:
+            deref(c_inst).MyIntField = MyIntField
+            deref(c_inst).__isset.MyIntField = True
+        if MyStringField is not None:
+            deref(c_inst).MyStringField = MyStringField.encode('UTF-8')
+            deref(c_inst).__isset.MyStringField = True
+        if major is not None:
+            deref(c_inst).major = major
+            deref(c_inst).__isset.major = True
+        if data is not None:
+            deref(c_inst).data = deref((<MyDataItem?> data)._cpp_obj)
+            deref(c_inst).__isset.data = True
+        # in C++ you don't have to call move(), but this doesn't translate
+        # into a C++ return statement, so you do here
+        return move_unique(c_inst)
+
+    def __iter__(self):
+        yield 'MyIntField', self.MyIntField
+        yield 'MyStringField', self.MyStringField
+        yield 'major', self.major
+        yield 'data', self.data
+
+    def __bool__(self):
+        return True or True or True or True
+
+    @staticmethod
+    cdef create(shared_ptr[cMyStruct] cpp_obj):
+        inst = <MyStruct>MyStruct.__new__(MyStruct)
+        inst._cpp_obj = move_shared(cpp_obj)
+        return inst
+
+    @property
+    def MyIntField(self):
+
+        return deref(self._cpp_obj).MyIntField
+
+    @property
+    def MyStringField(self):
+
+        return (<bytes>deref(self._cpp_obj).MyStringField).decode('UTF-8')
+
+    @property
+    def major(self):
+
+        return deref(self._cpp_obj).major
+
+    @property
+    def data(self):
+
+        if self.__data is None:
+            self.__data = MyDataItem.create(reference_shared_ptr_data(self._cpp_obj, deref(self._cpp_obj).data))
+        return self.__data
+
+
+    def __hash__(MyStruct self):
+        if not self.__hash:
+            self.__hash = hash((
+            self.MyIntField,
+            self.MyStringField,
+            self.major,
+            self.data,
+            ))
+        return self.__hash
+
+    def __repr__(MyStruct self):
+        return f'MyStruct(MyIntField={repr(self.MyIntField)}, MyStringField={repr(self.MyStringField)}, major={repr(self.major)}, data={repr(self.data)})'
+    def __copy__(MyStruct self):
+        cdef shared_ptr[cMyStruct] cpp_obj = make_shared[cMyStruct](
+            deref(self._cpp_obj)
+        )
+        return MyStruct.create(move_shared(cpp_obj))
+
+    def __richcmp__(self, other, op):
+        cdef int cop = op
+        if not (
+                isinstance(self, MyStruct) and
+                isinstance(other, MyStruct)):
+            if cop == Py_EQ:  # different types are never equal
+                return False
+            elif cop == Py_NE:  # different types are always notequal
+                return True
+            else:
+                return NotImplemented
+
+        if cop == Py_EQ:
+            return self is other
+        elif cop == Py_NE:
+            return self is not other
+        else:
+            return NotImplemented
+
+    cdef __iobuf.IOBuf _serialize(MyStruct self, proto):
+        cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
+        cdef cMyStruct* cpp_obj = self._cpp_obj.get()
+        if proto is __Protocol.COMPACT:
+            with nogil:
+                serializer.CompactSerialize[cMyStruct](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.BINARY:
+            with nogil:
+                serializer.BinarySerialize[cMyStruct](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.JSON:
+            with nogil:
+                serializer.JSONSerialize[cMyStruct](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.COMPACT_JSON:
+            with nogil:
+                serializer.CompactJSONSerialize[cMyStruct](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
+        return __iobuf.from_unique_ptr(queue.move())
+
+    cdef uint32_t _deserialize(MyStruct self, const __iobuf.cIOBuf* buf, proto) except? 0:
+        cdef uint32_t needed
+        self._cpp_obj = make_shared[cMyStruct]()
+        cdef cMyStruct* cpp_obj = self._cpp_obj.get()
+        if proto is __Protocol.COMPACT:
+            with nogil:
+                needed = serializer.CompactDeserialize[cMyStruct](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.BINARY:
+            with nogil:
+                needed = serializer.BinaryDeserialize[cMyStruct](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.JSON:
+            with nogil:
+                needed = serializer.JSONDeserialize[cMyStruct](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.COMPACT_JSON:
+            with nogil:
+                needed = serializer.CompactJSONDeserialize[cMyStruct](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
+        return needed
+
+    def __reduce__(self):
+        return (deserialize, (MyStruct, serialize(self)))
+
+
+cdef cMyDataItem _MyDataItem_defaults = cMyDataItem()
+
+cdef class MyDataItem(thrift.py3.types.Struct):
+
+    def __init__(
+        MyDataItem self, *
+    ):
+        self._cpp_obj = move(MyDataItem._make_instance(
+          NULL,
+        ))
+
+    def __call__(
+        MyDataItem self
+    ):
+        changes = any((        ))
+
+        if not changes:
+            return self
+        inst = <MyDataItem>MyDataItem.__new__(MyDataItem)
+        inst._cpp_obj = move(MyDataItem._make_instance(
+          self._cpp_obj.get(),
+        ))
+        return inst
+
+    @staticmethod
+    cdef unique_ptr[cMyDataItem] _make_instance(
+        cMyDataItem* base_instance
+    ) except *:
+        cdef unique_ptr[cMyDataItem] c_inst
+        if base_instance:
+            c_inst = make_unique[cMyDataItem](deref(base_instance))
+        else:
+            c_inst = make_unique[cMyDataItem]()
+
+        if base_instance:
+            # Convert None's to default value. (or unset)
+            pass
+        # in C++ you don't have to call move(), but this doesn't translate
+        # into a C++ return statement, so you do here
+        return move_unique(c_inst)
+
+    def __iter__(self):
+        return iter(())
+
+    def __bool__(self):
+        return True
+
+    @staticmethod
+    cdef create(shared_ptr[cMyDataItem] cpp_obj):
+        inst = <MyDataItem>MyDataItem.__new__(MyDataItem)
+        inst._cpp_obj = move_shared(cpp_obj)
+        return inst
+
+
+    def __hash__(MyDataItem self):
+        if not self.__hash:
+            self.__hash = hash((
+            type(self)   # Hash the class there are no fields
+            ))
+        return self.__hash
+
+    def __repr__(MyDataItem self):
+        return f'MyDataItem()'
+    def __copy__(MyDataItem self):
+        cdef shared_ptr[cMyDataItem] cpp_obj = make_shared[cMyDataItem](
+            deref(self._cpp_obj)
+        )
+        return MyDataItem.create(move_shared(cpp_obj))
+
+    def __richcmp__(self, other, op):
+        cdef int cop = op
+        if not (
+                isinstance(self, MyDataItem) and
+                isinstance(other, MyDataItem)):
+            if cop == Py_EQ:  # different types are never equal
+                return False
+            elif cop == Py_NE:  # different types are always notequal
+                return True
+            else:
+                return NotImplemented
+
+        if cop == Py_EQ:
+            return self is other
+        elif cop == Py_NE:
+            return self is not other
+        else:
+            return NotImplemented
+
+    cdef __iobuf.IOBuf _serialize(MyDataItem self, proto):
+        cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
+        cdef cMyDataItem* cpp_obj = self._cpp_obj.get()
+        if proto is __Protocol.COMPACT:
+            with nogil:
+                serializer.CompactSerialize[cMyDataItem](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.BINARY:
+            with nogil:
+                serializer.BinarySerialize[cMyDataItem](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.JSON:
+            with nogil:
+                serializer.JSONSerialize[cMyDataItem](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.COMPACT_JSON:
+            with nogil:
+                serializer.CompactJSONSerialize[cMyDataItem](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
+        return __iobuf.from_unique_ptr(queue.move())
+
+    cdef uint32_t _deserialize(MyDataItem self, const __iobuf.cIOBuf* buf, proto) except? 0:
+        cdef uint32_t needed
+        self._cpp_obj = make_shared[cMyDataItem]()
+        cdef cMyDataItem* cpp_obj = self._cpp_obj.get()
+        if proto is __Protocol.COMPACT:
+            with nogil:
+                needed = serializer.CompactDeserialize[cMyDataItem](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.BINARY:
+            with nogil:
+                needed = serializer.BinaryDeserialize[cMyDataItem](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.JSON:
+            with nogil:
+                needed = serializer.JSONDeserialize[cMyDataItem](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.COMPACT_JSON:
+            with nogil:
+                needed = serializer.CompactJSONDeserialize[cMyDataItem](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
+        return needed
+
+    def __reduce__(self):
+        return (deserialize, (MyDataItem, serialize(self)))
+
+
 cdef class std_unordered_map__Map__i32_string:
     def __init__(self, items=None):
         if isinstance(items, std_unordered_map__Map__i32_string):

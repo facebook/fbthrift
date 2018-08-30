@@ -83,3 +83,12 @@ struct MinPadding {
   4: required i32 biggish,
   5: required byte tiny,
 } (cpp.minimize_padding)
+
+struct MyStruct {
+  1: i64 MyIntField,
+  2: string MyStringField,
+  3: i64 major,
+  4: MyDataItem data,
+} (cpp2.noncomparable)
+
+struct MyDataItem {} (cpp2.noncomparable)

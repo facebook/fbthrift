@@ -1029,3 +1029,137 @@ class MinPadding implements \IThriftStruct {
 
 }
 
+/**
+ * Original thrift struct:-
+ * MyStruct
+ */
+class MyStruct implements \IThriftStruct {
+  use \ThriftSerializationTrait;
+
+  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
+    1 => dict[
+      'var' => 'MyIntField',
+      'type' => \TType::I64,
+      ],
+    2 => dict[
+      'var' => 'MyStringField',
+      'type' => \TType::STRING,
+      ],
+    3 => dict[
+      'var' => 'major',
+      'type' => \TType::I64,
+      ],
+    4 => dict[
+      'var' => 'data',
+      'type' => \TType::STRUCT,
+      'class' => 'MyDataItem',
+      ],
+    ];
+  public static Map<string, int> $_TFIELDMAP = Map {
+    'MyIntField' => 1,
+    'MyStringField' => 2,
+    'major' => 3,
+    'data' => 4,
+  };
+  const int STRUCTURAL_ID = 5516071879051135479;
+  /**
+   * Original thrift field:-
+   * 1: i64 MyIntField
+   */
+  public int $MyIntField;
+  /**
+   * Original thrift field:-
+   * 2: string MyStringField
+   */
+  public string $MyStringField;
+  /**
+   * Original thrift field:-
+   * 3: i64 major
+   */
+  public int $major;
+  /**
+   * Original thrift field:-
+   * 4: struct module.MyDataItem data
+   */
+  public ?MyDataItem $data;
+
+  public function __construct(?int $MyIntField = null, ?string $MyStringField = null, ?int $major = null, ?MyDataItem $data = null  ) {
+    if ($MyIntField === null) {
+      $this->MyIntField = 0;
+    } else {
+      $this->MyIntField = $MyIntField;
+    }
+    if ($MyStringField === null) {
+      $this->MyStringField = '';
+    } else {
+      $this->MyStringField = $MyStringField;
+    }
+    if ($major === null) {
+      $this->major = 0;
+    } else {
+      $this->major = $major;
+    }
+    $this->data = $data;
+  }
+
+  public function getName(): string {
+    return 'MyStruct';
+  }
+
+  public function readFromJson(string $jsonText): void {
+    $parsed = json_decode($jsonText, true);
+
+    if ($parsed === null || !is_array($parsed)) {
+      throw new \TProtocolException("Cannot parse the given json string.");
+    }
+
+    if (idx($parsed, 'MyIntField') !== null) {
+      $this->MyIntField = $parsed['MyIntField'];
+    }    
+    if (idx($parsed, 'MyStringField') !== null) {
+      $this->MyStringField = $parsed['MyStringField'];
+    }    
+    if (idx($parsed, 'major') !== null) {
+      $this->major = $parsed['major'];
+    }    
+    if (idx($parsed, 'data') !== null) {
+      $_tmp0 = json_encode($parsed['data']);
+      $_tmp1 = new MyDataItem();
+      $_tmp1->readFromJson($_tmp0);
+      $this->data = $_tmp1;
+    }    
+  }
+
+}
+
+/**
+ * Original thrift struct:-
+ * MyDataItem
+ */
+class MyDataItem implements \IThriftStruct {
+  use \ThriftSerializationTrait;
+
+  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
+    ];
+  public static Map<string, int> $_TFIELDMAP = Map {
+  };
+  const int STRUCTURAL_ID = 957977401221134810;
+
+  public function __construct(  ) {
+  }
+
+  public function getName(): string {
+    return 'MyDataItem';
+  }
+
+  public function readFromJson(string $jsonText): void {
+    $parsed = json_decode($jsonText, true);
+
+    if ($parsed === null || !is_array($parsed)) {
+      throw new \TProtocolException("Cannot parse the given json string.");
+    }
+
+  }
+
+}
+
