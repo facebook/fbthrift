@@ -38,6 +38,10 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "cpp2":
         cBanal() except +
         cBanal(const cBanal&) except +
         bint operator==(cBanal&)
+        bint operator<(cBanal&)
+        bint operator>(cBanal&)
+        bint operator<=(cBanal&)
+        bint operator>=(cBanal&)
         cBanal__isset __isset
 
     cdef cppclass cFiery__isset "cpp2::Fiery::__isset":
@@ -47,6 +51,10 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "cpp2":
         cFiery() except +
         cFiery(const cFiery&) except +
         bint operator==(cFiery&)
+        bint operator<(cFiery&)
+        bint operator>(cFiery&)
+        bint operator<=(cFiery&)
+        bint operator>=(cFiery&)
         string message
         cFiery__isset __isset
 

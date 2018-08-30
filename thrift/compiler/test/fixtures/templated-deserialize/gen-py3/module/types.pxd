@@ -60,6 +60,10 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "cpp2":
         cSmallStruct() except +
         cSmallStruct(const cSmallStruct&) except +
         bint operator==(cSmallStruct&)
+        bint operator<(cSmallStruct&)
+        bint operator>(cSmallStruct&)
+        bint operator<=(cSmallStruct&)
+        bint operator>=(cSmallStruct&)
         cbool small_A
         int32_t small_B
         cSmallStruct__isset __isset

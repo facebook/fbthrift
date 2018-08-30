@@ -46,3 +46,12 @@ class MapTests(unittest.TestCase):
         hash(StrI32ListMap())
         x = StrStrIntListMapMap({'foo': StrI32ListMap()})
         hash(x['foo'])
+
+    def test_equality(self) -> None:
+        x = StrIntMap({'foo': 5, 'bar': 4})
+        y = StrIntMap({'foo': 4, 'bar': 5})
+        self.assertNotEqual(x, y)
+        y = StrIntMap({'foo': 5, 'bar': 4})
+        self.assertEqual(x, y)
+        self.assertEqual(x, x)
+        self.assertEqual(y, y)

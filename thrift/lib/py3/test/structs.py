@@ -4,7 +4,7 @@ import math
 import copy
 
 from testing.types import (
-    easy, hard, Integers, mixed, Reserved, Runtime, numerical
+    easy, hard, Integers, mixed, Reserved, Runtime, numerical, Color
 )
 
 
@@ -119,6 +119,15 @@ class StructTests(unittest.TestCase):
         self.assertEqual(x.nonlocal_, 3)
         self.assertEqual(x.ok, "bye")
         self.assertEqual(x.is_cpdef, True)
+
+    def test_ordering(self) -> None:
+        x = Runtime(bool_val=False, enum_val=Color.red, int_list_val=[64, 128])
+        y = x(bool_val=True)
+        self.assertLess(x, y)
+        self.assertLessEqual(x, y)
+        self.assertGreater(y, x)
+        self.assertGreaterEqual(y, x)
+        self.assertEquals([x, y], sorted([y, x]))
 
 
 class NumericalConversionsTests(unittest.TestCase):

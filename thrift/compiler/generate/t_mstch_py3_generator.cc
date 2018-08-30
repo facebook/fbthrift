@@ -123,6 +123,7 @@ class t_mstch_py3_generator : public t_mstch_generator {
   string to_cython_type(const string& cpp_type) const;
   bool is_external_program(const t_program& program) const;
   inline const t_program& get_type_program(const t_type& type) const;
+  bool is_struct_orderable(const t_struct& stct) const;
 };
 
 bool t_mstch_py3_generator::is_external_program(
@@ -346,8 +347,16 @@ mstch::map t_mstch_py3_generator::extend_type(const t_type& type) {
 mstch::map t_mstch_py3_generator::extend_struct(const t_struct& stct) {
   mstch::map result{
       {"size", std::to_string(stct.get_members().size())},
+      {"is_struct_orderable?", is_struct_orderable(stct)},
+      {"cpp_noncomparable",
+       bool(stct.annotations_.count("cpp2.noncomparable"))},
   };
   return result;
+} // namespace
+
+bool t_mstch_py3_generator::is_struct_orderable(const t_struct& stct) const {
+  return cpp2::is_orderable(stct) &&
+      !stct.annotations_.count("no_default_comparators");
 }
 
 mstch::map t_mstch_py3_generator::extend_enum(const t_enum& enm) {

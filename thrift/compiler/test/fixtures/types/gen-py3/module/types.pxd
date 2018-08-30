@@ -334,6 +334,10 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "apache::thrift::fixtur
         cdecorated_struct() except +
         cdecorated_struct(const cdecorated_struct&) except +
         bint operator==(cdecorated_struct&)
+        bint operator<(cdecorated_struct&)
+        bint operator>(cdecorated_struct&)
+        bint operator<=(cdecorated_struct&)
+        bint operator>=(cdecorated_struct&)
         string field
         cdecorated_struct__isset __isset
 
@@ -368,6 +372,10 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "apache::thrift::fixtur
         cCppTypeStruct() except +
         cCppTypeStruct(const cCppTypeStruct&) except +
         bint operator==(cCppTypeStruct&)
+        bint operator<(cCppTypeStruct&)
+        bint operator>(cCppTypeStruct&)
+        bint operator<=(cCppTypeStruct&)
+        bint operator>=(cCppTypeStruct&)
         std_list_int32_t fieldA
         cCppTypeStruct__isset __isset
 
@@ -378,6 +386,10 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "apache::thrift::fixtur
         cVirtualStruct() except +
         cVirtualStruct(const cVirtualStruct&) except +
         bint operator==(cVirtualStruct&)
+        bint operator<(cVirtualStruct&)
+        bint operator>(cVirtualStruct&)
+        bint operator<=(cVirtualStruct&)
+        bint operator>=(cVirtualStruct&)
         int64_t MyIntField
         cVirtualStruct__isset __isset
 
@@ -401,6 +413,10 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "apache::thrift::fixtur
         cTrivialNumeric() except +
         cTrivialNumeric(const cTrivialNumeric&) except +
         bint operator==(cTrivialNumeric&)
+        bint operator<(cTrivialNumeric&)
+        bint operator>(cTrivialNumeric&)
+        bint operator<=(cTrivialNumeric&)
+        bint operator>=(cTrivialNumeric&)
         int32_t a
         cbool b
         cTrivialNumeric__isset __isset
@@ -413,6 +429,10 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "apache::thrift::fixtur
         cTrivialNestedWithDefault() except +
         cTrivialNestedWithDefault(const cTrivialNestedWithDefault&) except +
         bint operator==(cTrivialNestedWithDefault&)
+        bint operator<(cTrivialNestedWithDefault&)
+        bint operator>(cTrivialNestedWithDefault&)
+        bint operator<=(cTrivialNestedWithDefault&)
+        bint operator>=(cTrivialNestedWithDefault&)
         int32_t z
         cTrivialNumeric n
         cTrivialNestedWithDefault__isset __isset
@@ -425,6 +445,10 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "apache::thrift::fixtur
         cComplexString() except +
         cComplexString(const cComplexString&) except +
         bint operator==(cComplexString&)
+        bint operator<(cComplexString&)
+        bint operator>(cComplexString&)
+        bint operator<=(cComplexString&)
+        bint operator>=(cComplexString&)
         string a
         cmap[string,int32_t] b
         cComplexString__isset __isset
@@ -437,6 +461,10 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "apache::thrift::fixtur
         cComplexNestedWithDefault() except +
         cComplexNestedWithDefault(const cComplexNestedWithDefault&) except +
         bint operator==(cComplexNestedWithDefault&)
+        bint operator<(cComplexNestedWithDefault&)
+        bint operator>(cComplexNestedWithDefault&)
+        bint operator<=(cComplexNestedWithDefault&)
+        bint operator>=(cComplexNestedWithDefault&)
         string z
         cComplexString n
         cComplexNestedWithDefault__isset __isset
@@ -452,6 +480,10 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "apache::thrift::fixtur
         cMinPadding() except +
         cMinPadding(const cMinPadding&) except +
         bint operator==(cMinPadding&)
+        bint operator<(cMinPadding&)
+        bint operator>(cMinPadding&)
+        bint operator<=(cMinPadding&)
+        bint operator>=(cMinPadding&)
         int8_t small
         int64_t big
         int16_t medium

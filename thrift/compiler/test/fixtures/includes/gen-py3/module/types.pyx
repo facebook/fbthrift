@@ -6,7 +6,7 @@
 #
 
 cimport cython as __cython
-from cpython.object cimport PyTypeObject
+from cpython.object cimport PyTypeObject, Py_LT, Py_LE, Py_EQ, Py_NE, Py_GT, Py_GE
 from libcpp.memory cimport shared_ptr, make_shared, unique_ptr, make_unique
 from libcpp.string cimport string
 from libcpp cimport bool as cbool
@@ -202,22 +202,24 @@ cdef class MyStruct(thrift.py3.types.Struct):
 
     def __richcmp__(self, other, op):
         cdef int cop = op
-        if cop not in (2, 3):
-            raise TypeError("unorderable types: {}, {}".format(self, other))
         if not (
                 isinstance(self, MyStruct) and
                 isinstance(other, MyStruct)):
-            if cop == 2:  # different types are never equal
+            if cop == Py_EQ:  # different types are never equal
                 return False
-            else:         # different types are always notequal
+            elif cop == Py_NE:  # different types are always notequal
                 return True
+            else:
+                return NotImplemented
 
         cdef cMyStruct cself = deref((<MyStruct>self)._cpp_obj)
         cdef cMyStruct cother = deref((<MyStruct>other)._cpp_obj)
-        cdef cbool cmp = cself == cother
-        if cop == 2:
-            return cmp
-        return not cmp
+        if cop == Py_EQ:
+            return cself == cother
+        elif cop == Py_NE:
+            return not (cself == cother)
+        else:
+            return NotImplemented
 
     cdef __iobuf.IOBuf _serialize(MyStruct self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())

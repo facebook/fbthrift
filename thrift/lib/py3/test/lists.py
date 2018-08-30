@@ -6,7 +6,6 @@ from testing.types import int_list, I32List, StrList2D, easy
 
 
 class ListTests(unittest.TestCase):
-
     def test_negative_indexes(self) -> None:
         length = len(int_list)
         for i in range(length):
@@ -20,10 +19,10 @@ class ListTests(unittest.TestCase):
             I32List([None, None, None])  # type: ignore
 
     def test_list_creation_with_list_items(self) -> None:
-        a = ['one', 'two', 'three']
-        b = ['cyan', 'magenta', 'yellow']
-        c = ['foo', 'bar', 'baz']
-        d = ['I', 'II', 'III']
+        a = ["one", "two", "three"]
+        b = ["cyan", "magenta", "yellow"]
+        c = ["foo", "bar", "baz"]
+        d = ["I", "II", "III"]
         StrList2D([a, b, c, d])
         with self.assertRaises(TypeError):
             StrList2D([a, [None]])  # type: ignore
@@ -46,7 +45,7 @@ class ListTests(unittest.TestCase):
     def test_list_creation(self) -> None:
         I32List(range(10))
         with self.assertRaises(TypeError):
-            I32List([1, 'b', 'c', 'four'])  # type: ignore
+            I32List([1, "b", "c", "four"])  # type: ignore
 
     def test_hashability(self) -> None:
         hash(easy().val_list)
@@ -72,3 +71,24 @@ class ListTests(unittest.TestCase):
         self.assertEqual(x[:5], y[:5])
         self.assertEqual(x[:0], y[:0])
         self.assertEqual(x[-5:-1], y[-5:-1])
+
+    def test_comparisons(self) -> None:
+        x = I32List([1, 2, 3, 4])
+        y = I32List([1, 2, 3, 4, 5])
+        z = I32List([1, 2, 3, 1, 10])
+
+        self.assertLess(x, y)
+        self.assertLess(z, x)
+        self.assertLess(z, y)
+        self.assertNotEqual(z, y)
+        self.assertNotEqual(x, y)
+        self.assertNotEqual(z, x)
+        self.assertGreater(y, x)
+        self.assertGreater(x, z)
+        self.assertGreaterEqual(x, z)
+        self.assertLessEqual(x, y)
+
+        x2 = I32List([1, 2, 3, 4])
+        self.assertEqual(x, x2)
+        self.assertLessEqual(x, x2)
+        self.assertGreaterEqual(x, x2)

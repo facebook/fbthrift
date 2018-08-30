@@ -67,6 +67,10 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "cpp2":
         cVirtualComplexUnion() except +
         cVirtualComplexUnion(const cVirtualComplexUnion&) except +
         bint operator==(cVirtualComplexUnion&)
+        bint operator<(cVirtualComplexUnion&)
+        bint operator>(cVirtualComplexUnion&)
+        bint operator<=(cVirtualComplexUnion&)
+        bint operator>=(cVirtualComplexUnion&)
         cVirtualComplexUnion__type getType() const
         const string& get_thingOne() const
         string& set_thingOne(const string&)

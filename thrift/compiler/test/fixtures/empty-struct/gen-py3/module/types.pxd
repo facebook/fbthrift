@@ -38,6 +38,10 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "cpp2":
         cEmpty() except +
         cEmpty(const cEmpty&) except +
         bint operator==(cEmpty&)
+        bint operator<(cEmpty&)
+        bint operator>(cEmpty&)
+        bint operator<=(cEmpty&)
+        bint operator>=(cEmpty&)
         cEmpty__isset __isset
 
     cdef enum cNada__type "cpp2::Nada::Type":
@@ -47,6 +51,10 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "cpp2":
         cNada() except +
         cNada(const cNada&) except +
         bint operator==(cNada&)
+        bint operator<(cNada&)
+        bint operator>(cNada&)
+        bint operator<=(cNada&)
+        bint operator>=(cNada&)
         cNada__type getType() const
 
 

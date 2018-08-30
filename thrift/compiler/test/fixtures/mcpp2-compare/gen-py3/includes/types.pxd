@@ -54,6 +54,10 @@ cdef extern from "gen-cpp2/includes_types.h" namespace "a::different::ns":
         cAStruct() except +
         cAStruct(const cAStruct&) except +
         bint operator==(cAStruct&)
+        bint operator<(cAStruct&)
+        bint operator>(cAStruct&)
+        bint operator<=(cAStruct&)
+        bint operator>=(cAStruct&)
         int32_t FieldA
         cAStruct__isset __isset
 
@@ -64,6 +68,10 @@ cdef extern from "gen-cpp2/includes_types.h" namespace "a::different::ns":
         cAStructB() except +
         cAStructB(const cAStructB&) except +
         bint operator==(cAStructB&)
+        bint operator<(cAStructB&)
+        bint operator>(cAStructB&)
+        bint operator<=(cAStructB&)
+        bint operator>=(cAStructB&)
         shared_ptr[const cAStruct] FieldA
         cAStructB__isset __isset
 

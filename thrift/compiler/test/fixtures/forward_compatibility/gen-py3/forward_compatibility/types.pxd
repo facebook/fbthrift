@@ -44,6 +44,10 @@ cdef extern from "src/gen-cpp2/forward_compatibility_types.h" namespace "cpp2":
         cOldStructure() except +
         cOldStructure(const cOldStructure&) except +
         bint operator==(cOldStructure&)
+        bint operator<(cOldStructure&)
+        bint operator>(cOldStructure&)
+        bint operator<=(cOldStructure&)
+        bint operator>=(cOldStructure&)
         cmap[int16_t,double] features
         cOldStructure__isset __isset
 
@@ -54,6 +58,10 @@ cdef extern from "src/gen-cpp2/forward_compatibility_types.h" namespace "cpp2":
         cNewStructure() except +
         cNewStructure(const cNewStructure&) except +
         bint operator==(cNewStructure&)
+        bint operator<(cNewStructure&)
+        bint operator>(cNewStructure&)
+        bint operator<=(cNewStructure&)
+        bint operator>=(cNewStructure&)
         cmap[int16_t,double] features
         cNewStructure__isset __isset
 

@@ -6,7 +6,7 @@
 #
 
 cimport cython as __cython
-from cpython.object cimport PyTypeObject
+from cpython.object cimport PyTypeObject, Py_LT, Py_LE, Py_EQ, Py_NE, Py_GT, Py_GE
 from libcpp.memory cimport shared_ptr, make_shared, unique_ptr, make_unique
 from libcpp.string cimport string
 from libcpp cimport bool as cbool
@@ -451,22 +451,32 @@ cdef class decorated_struct(thrift.py3.types.Struct):
 
     def __richcmp__(self, other, op):
         cdef int cop = op
-        if cop not in (2, 3):
-            raise TypeError("unorderable types: {}, {}".format(self, other))
         if not (
                 isinstance(self, decorated_struct) and
                 isinstance(other, decorated_struct)):
-            if cop == 2:  # different types are never equal
+            if cop == Py_EQ:  # different types are never equal
                 return False
-            else:         # different types are always notequal
+            elif cop == Py_NE:  # different types are always notequal
                 return True
+            else:
+                return NotImplemented
 
         cdef cdecorated_struct cself = deref((<decorated_struct>self)._cpp_obj)
         cdef cdecorated_struct cother = deref((<decorated_struct>other)._cpp_obj)
-        cdef cbool cmp = cself == cother
-        if cop == 2:
-            return cmp
-        return not cmp
+        if cop == Py_EQ:
+            return cself == cother
+        elif cop == Py_NE:
+            return not (cself == cother)
+        elif cop == Py_LT:
+            return cself < cother
+        elif cop == Py_LE:
+            return cself <= cother
+        elif cop == Py_GT:
+            return cself > cother
+        elif cop == Py_GE:
+            return cself >= cother
+        else:
+            return NotImplemented
 
     cdef __iobuf.IOBuf _serialize(decorated_struct self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
@@ -784,22 +794,24 @@ cdef class ContainerStruct(thrift.py3.types.Struct):
 
     def __richcmp__(self, other, op):
         cdef int cop = op
-        if cop not in (2, 3):
-            raise TypeError("unorderable types: {}, {}".format(self, other))
         if not (
                 isinstance(self, ContainerStruct) and
                 isinstance(other, ContainerStruct)):
-            if cop == 2:  # different types are never equal
+            if cop == Py_EQ:  # different types are never equal
                 return False
-            else:         # different types are always notequal
+            elif cop == Py_NE:  # different types are always notequal
                 return True
+            else:
+                return NotImplemented
 
         cdef cContainerStruct cself = deref((<ContainerStruct>self)._cpp_obj)
         cdef cContainerStruct cother = deref((<ContainerStruct>other)._cpp_obj)
-        cdef cbool cmp = cself == cother
-        if cop == 2:
-            return cmp
-        return not cmp
+        if cop == Py_EQ:
+            return cself == cother
+        elif cop == Py_NE:
+            return not (cself == cother)
+        else:
+            return NotImplemented
 
     cdef __iobuf.IOBuf _serialize(ContainerStruct self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
@@ -935,22 +947,32 @@ cdef class CppTypeStruct(thrift.py3.types.Struct):
 
     def __richcmp__(self, other, op):
         cdef int cop = op
-        if cop not in (2, 3):
-            raise TypeError("unorderable types: {}, {}".format(self, other))
         if not (
                 isinstance(self, CppTypeStruct) and
                 isinstance(other, CppTypeStruct)):
-            if cop == 2:  # different types are never equal
+            if cop == Py_EQ:  # different types are never equal
                 return False
-            else:         # different types are always notequal
+            elif cop == Py_NE:  # different types are always notequal
                 return True
+            else:
+                return NotImplemented
 
         cdef cCppTypeStruct cself = deref((<CppTypeStruct>self)._cpp_obj)
         cdef cCppTypeStruct cother = deref((<CppTypeStruct>other)._cpp_obj)
-        cdef cbool cmp = cself == cother
-        if cop == 2:
-            return cmp
-        return not cmp
+        if cop == Py_EQ:
+            return cself == cother
+        elif cop == Py_NE:
+            return not (cself == cother)
+        elif cop == Py_LT:
+            return cself < cother
+        elif cop == Py_LE:
+            return cself <= cother
+        elif cop == Py_GT:
+            return cself > cother
+        elif cop == Py_GE:
+            return cself >= cother
+        else:
+            return NotImplemented
 
     cdef __iobuf.IOBuf _serialize(CppTypeStruct self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
@@ -1094,22 +1116,32 @@ cdef class VirtualStruct(thrift.py3.types.Struct):
 
     def __richcmp__(self, other, op):
         cdef int cop = op
-        if cop not in (2, 3):
-            raise TypeError("unorderable types: {}, {}".format(self, other))
         if not (
                 isinstance(self, VirtualStruct) and
                 isinstance(other, VirtualStruct)):
-            if cop == 2:  # different types are never equal
+            if cop == Py_EQ:  # different types are never equal
                 return False
-            else:         # different types are always notequal
+            elif cop == Py_NE:  # different types are always notequal
                 return True
+            else:
+                return NotImplemented
 
         cdef cVirtualStruct cself = deref((<VirtualStruct>self)._cpp_obj)
         cdef cVirtualStruct cother = deref((<VirtualStruct>other)._cpp_obj)
-        cdef cbool cmp = cself == cother
-        if cop == 2:
-            return cmp
-        return not cmp
+        if cop == Py_EQ:
+            return cself == cother
+        elif cop == Py_NE:
+            return not (cself == cother)
+        elif cop == Py_LT:
+            return cself < cother
+        elif cop == Py_LE:
+            return cself <= cother
+        elif cop == Py_GT:
+            return cself > cother
+        elif cop == Py_GE:
+            return cself >= cother
+        else:
+            return NotImplemented
 
     cdef __iobuf.IOBuf _serialize(VirtualStruct self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
@@ -1275,22 +1307,24 @@ cdef class MyStructWithForwardRefEnum(thrift.py3.types.Struct):
 
     def __richcmp__(self, other, op):
         cdef int cop = op
-        if cop not in (2, 3):
-            raise TypeError("unorderable types: {}, {}".format(self, other))
         if not (
                 isinstance(self, MyStructWithForwardRefEnum) and
                 isinstance(other, MyStructWithForwardRefEnum)):
-            if cop == 2:  # different types are never equal
+            if cop == Py_EQ:  # different types are never equal
                 return False
-            else:         # different types are always notequal
+            elif cop == Py_NE:  # different types are always notequal
                 return True
+            else:
+                return NotImplemented
 
         cdef cMyStructWithForwardRefEnum cself = deref((<MyStructWithForwardRefEnum>self)._cpp_obj)
         cdef cMyStructWithForwardRefEnum cother = deref((<MyStructWithForwardRefEnum>other)._cpp_obj)
-        cdef cbool cmp = cself == cother
-        if cop == 2:
-            return cmp
-        return not cmp
+        if cop == Py_EQ:
+            return cself == cother
+        elif cop == Py_NE:
+            return not (cself == cother)
+        else:
+            return NotImplemented
 
     cdef __iobuf.IOBuf _serialize(MyStructWithForwardRefEnum self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
@@ -1462,22 +1496,32 @@ cdef class TrivialNumeric(thrift.py3.types.Struct):
 
     def __richcmp__(self, other, op):
         cdef int cop = op
-        if cop not in (2, 3):
-            raise TypeError("unorderable types: {}, {}".format(self, other))
         if not (
                 isinstance(self, TrivialNumeric) and
                 isinstance(other, TrivialNumeric)):
-            if cop == 2:  # different types are never equal
+            if cop == Py_EQ:  # different types are never equal
                 return False
-            else:         # different types are always notequal
+            elif cop == Py_NE:  # different types are always notequal
                 return True
+            else:
+                return NotImplemented
 
         cdef cTrivialNumeric cself = deref((<TrivialNumeric>self)._cpp_obj)
         cdef cTrivialNumeric cother = deref((<TrivialNumeric>other)._cpp_obj)
-        cdef cbool cmp = cself == cother
-        if cop == 2:
-            return cmp
-        return not cmp
+        if cop == Py_EQ:
+            return cself == cother
+        elif cop == Py_NE:
+            return not (cself == cother)
+        elif cop == Py_LT:
+            return cself < cother
+        elif cop == Py_LE:
+            return cself <= cother
+        elif cop == Py_GT:
+            return cself > cother
+        elif cop == Py_GE:
+            return cself >= cother
+        else:
+            return NotImplemented
 
     cdef __iobuf.IOBuf _serialize(TrivialNumeric self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
@@ -1651,22 +1695,32 @@ cdef class TrivialNestedWithDefault(thrift.py3.types.Struct):
 
     def __richcmp__(self, other, op):
         cdef int cop = op
-        if cop not in (2, 3):
-            raise TypeError("unorderable types: {}, {}".format(self, other))
         if not (
                 isinstance(self, TrivialNestedWithDefault) and
                 isinstance(other, TrivialNestedWithDefault)):
-            if cop == 2:  # different types are never equal
+            if cop == Py_EQ:  # different types are never equal
                 return False
-            else:         # different types are always notequal
+            elif cop == Py_NE:  # different types are always notequal
                 return True
+            else:
+                return NotImplemented
 
         cdef cTrivialNestedWithDefault cself = deref((<TrivialNestedWithDefault>self)._cpp_obj)
         cdef cTrivialNestedWithDefault cother = deref((<TrivialNestedWithDefault>other)._cpp_obj)
-        cdef cbool cmp = cself == cother
-        if cop == 2:
-            return cmp
-        return not cmp
+        if cop == Py_EQ:
+            return cself == cother
+        elif cop == Py_NE:
+            return not (cself == cother)
+        elif cop == Py_LT:
+            return cself < cother
+        elif cop == Py_LE:
+            return cself <= cother
+        elif cop == Py_GT:
+            return cself > cother
+        elif cop == Py_GE:
+            return cself >= cother
+        else:
+            return NotImplemented
 
     cdef __iobuf.IOBuf _serialize(TrivialNestedWithDefault self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
@@ -1830,22 +1884,32 @@ cdef class ComplexString(thrift.py3.types.Struct):
 
     def __richcmp__(self, other, op):
         cdef int cop = op
-        if cop not in (2, 3):
-            raise TypeError("unorderable types: {}, {}".format(self, other))
         if not (
                 isinstance(self, ComplexString) and
                 isinstance(other, ComplexString)):
-            if cop == 2:  # different types are never equal
+            if cop == Py_EQ:  # different types are never equal
                 return False
-            else:         # different types are always notequal
+            elif cop == Py_NE:  # different types are always notequal
                 return True
+            else:
+                return NotImplemented
 
         cdef cComplexString cself = deref((<ComplexString>self)._cpp_obj)
         cdef cComplexString cother = deref((<ComplexString>other)._cpp_obj)
-        cdef cbool cmp = cself == cother
-        if cop == 2:
-            return cmp
-        return not cmp
+        if cop == Py_EQ:
+            return cself == cother
+        elif cop == Py_NE:
+            return not (cself == cother)
+        elif cop == Py_LT:
+            return cself < cother
+        elif cop == Py_LE:
+            return cself <= cother
+        elif cop == Py_GT:
+            return cself > cother
+        elif cop == Py_GE:
+            return cself >= cother
+        else:
+            return NotImplemented
 
     cdef __iobuf.IOBuf _serialize(ComplexString self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
@@ -2013,22 +2077,32 @@ cdef class ComplexNestedWithDefault(thrift.py3.types.Struct):
 
     def __richcmp__(self, other, op):
         cdef int cop = op
-        if cop not in (2, 3):
-            raise TypeError("unorderable types: {}, {}".format(self, other))
         if not (
                 isinstance(self, ComplexNestedWithDefault) and
                 isinstance(other, ComplexNestedWithDefault)):
-            if cop == 2:  # different types are never equal
+            if cop == Py_EQ:  # different types are never equal
                 return False
-            else:         # different types are always notequal
+            elif cop == Py_NE:  # different types are always notequal
                 return True
+            else:
+                return NotImplemented
 
         cdef cComplexNestedWithDefault cself = deref((<ComplexNestedWithDefault>self)._cpp_obj)
         cdef cComplexNestedWithDefault cother = deref((<ComplexNestedWithDefault>other)._cpp_obj)
-        cdef cbool cmp = cself == cother
-        if cop == 2:
-            return cmp
-        return not cmp
+        if cop == Py_EQ:
+            return cself == cother
+        elif cop == Py_NE:
+            return not (cself == cother)
+        elif cop == Py_LT:
+            return cself < cother
+        elif cop == Py_LE:
+            return cself <= cother
+        elif cop == Py_GT:
+            return cself > cother
+        elif cop == Py_GE:
+            return cself >= cother
+        else:
+            return NotImplemented
 
     cdef __iobuf.IOBuf _serialize(ComplexNestedWithDefault self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
@@ -2303,22 +2377,32 @@ cdef class MinPadding(thrift.py3.types.Struct):
 
     def __richcmp__(self, other, op):
         cdef int cop = op
-        if cop not in (2, 3):
-            raise TypeError("unorderable types: {}, {}".format(self, other))
         if not (
                 isinstance(self, MinPadding) and
                 isinstance(other, MinPadding)):
-            if cop == 2:  # different types are never equal
+            if cop == Py_EQ:  # different types are never equal
                 return False
-            else:         # different types are always notequal
+            elif cop == Py_NE:  # different types are always notequal
                 return True
+            else:
+                return NotImplemented
 
         cdef cMinPadding cself = deref((<MinPadding>self)._cpp_obj)
         cdef cMinPadding cother = deref((<MinPadding>other)._cpp_obj)
-        cdef cbool cmp = cself == cother
-        if cop == 2:
-            return cmp
-        return not cmp
+        if cop == Py_EQ:
+            return cself == cother
+        elif cop == Py_NE:
+            return not (cself == cother)
+        elif cop == Py_LT:
+            return cself < cother
+        elif cop == Py_LE:
+            return cself <= cother
+        elif cop == Py_GT:
+            return cself > cother
+        elif cop == Py_GE:
+            return cself >= cother
+        else:
+            return NotImplemented
 
     cdef __iobuf.IOBuf _serialize(MinPadding self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
@@ -2418,22 +2502,22 @@ cdef class std_unordered_map__Map__i32_string:
             yield citem
             inc(loc)
 
-    def __richcmp__(self, other, op):
-        cdef int cop = op
-        if cop not in (2, 3):
-            raise TypeError("unorderable types: {}, {}".format(type(self), type(other)))
+    def __eq__(self, other):
         if not (isinstance(self, Mapping) and isinstance(other, Mapping)):
-            return cop != 2
-        if (len(self) != len(other)):
-            return cop != 2
+            return False
+        if len(self) != len(other):
+            return False
 
         for key in self:
             if key not in other:
-                return cop != 2
+                return False
             if other[key] != self[key]:
-                return cop != 2
+                return False
 
-        return cop == 2
+        return True
+
+    def __ne__(self, other):
+        return not self.__eq__(other)
 
     def __hash__(self):
         if not self.__hash:
@@ -2552,20 +2636,25 @@ cdef class List__i64:
     def __len__(self):
         return deref(self._cpp_obj).size()
 
-    def __richcmp__(self, other, op):
-        cdef int cop = op
-        if cop not in (2, 3):
-            raise TypeError("unorderable types: {}, {}".format(type(self), type(other)))
-        if not (isinstance(self, Iterable) and isinstance(other, Iterable)):
-            return cop != 2
-        if (len(self) != len(other)):
-            return cop != 2
+    def __eq__(self, other):
+        return thrift.py3.types.list_compare(self, other, Py_EQ)
 
-        for one, two in zip(self, other):
-            if one != two:
-                return cop != 2
+    def __ne__(self, other):
+        return not thrift.py3.types.list_compare(self, other, Py_EQ)
 
-        return cop == 2
+    def __lt__(self, other):
+        return thrift.py3.types.list_compare(self, other, Py_LT)
+
+    def __gt__(self, other):
+        return thrift.py3.types.list_compare(other, self, Py_LT)
+
+    def __le__(self, other):
+        result = thrift.py3.types.list_compare(other, self, Py_LT)
+        return not result if result is not NotImplemented else NotImplemented
+
+    def __ge__(self, other):
+        result = thrift.py3.types.list_compare(self, other, Py_LT)
+        return not result if result is not NotImplemented else NotImplemented
 
     def __hash__(self):
         if not self.__hash:
@@ -2709,22 +2798,22 @@ cdef class Map__binary_i64:
             yield bytes(citem)
             inc(loc)
 
-    def __richcmp__(self, other, op):
-        cdef int cop = op
-        if cop not in (2, 3):
-            raise TypeError("unorderable types: {}, {}".format(type(self), type(other)))
+    def __eq__(self, other):
         if not (isinstance(self, Mapping) and isinstance(other, Mapping)):
-            return cop != 2
-        if (len(self) != len(other)):
-            return cop != 2
+            return False
+        if len(self) != len(other):
+            return False
 
         for key in self:
             if key not in other:
-                return cop != 2
+                return False
             if other[key] != self[key]:
-                return cop != 2
+                return False
 
-        return cop == 2
+        return True
+
+    def __ne__(self, other):
+        return not self.__eq__(other)
 
     def __hash__(self):
         if not self.__hash:
@@ -2843,20 +2932,25 @@ cdef class List__i32:
     def __len__(self):
         return deref(self._cpp_obj).size()
 
-    def __richcmp__(self, other, op):
-        cdef int cop = op
-        if cop not in (2, 3):
-            raise TypeError("unorderable types: {}, {}".format(type(self), type(other)))
-        if not (isinstance(self, Iterable) and isinstance(other, Iterable)):
-            return cop != 2
-        if (len(self) != len(other)):
-            return cop != 2
+    def __eq__(self, other):
+        return thrift.py3.types.list_compare(self, other, Py_EQ)
 
-        for one, two in zip(self, other):
-            if one != two:
-                return cop != 2
+    def __ne__(self, other):
+        return not thrift.py3.types.list_compare(self, other, Py_EQ)
 
-        return cop == 2
+    def __lt__(self, other):
+        return thrift.py3.types.list_compare(self, other, Py_LT)
+
+    def __gt__(self, other):
+        return thrift.py3.types.list_compare(other, self, Py_LT)
+
+    def __le__(self, other):
+        result = thrift.py3.types.list_compare(other, self, Py_LT)
+        return not result if result is not NotImplemented else NotImplemented
+
+    def __ge__(self, other):
+        result = thrift.py3.types.list_compare(self, other, Py_LT)
+        return not result if result is not NotImplemented else NotImplemented
 
     def __hash__(self):
         if not self.__hash:
@@ -2997,20 +3091,25 @@ cdef class std_list__List__i32:
     def __len__(self):
         return deref(self._cpp_obj).size()
 
-    def __richcmp__(self, other, op):
-        cdef int cop = op
-        if cop not in (2, 3):
-            raise TypeError("unorderable types: {}, {}".format(type(self), type(other)))
-        if not (isinstance(self, Iterable) and isinstance(other, Iterable)):
-            return cop != 2
-        if (len(self) != len(other)):
-            return cop != 2
+    def __eq__(self, other):
+        return thrift.py3.types.list_compare(self, other, Py_EQ)
 
-        for one, two in zip(self, other):
-            if one != two:
-                return cop != 2
+    def __ne__(self, other):
+        return not thrift.py3.types.list_compare(self, other, Py_EQ)
 
-        return cop == 2
+    def __lt__(self, other):
+        return thrift.py3.types.list_compare(self, other, Py_LT)
+
+    def __gt__(self, other):
+        return thrift.py3.types.list_compare(other, self, Py_LT)
+
+    def __le__(self, other):
+        result = thrift.py3.types.list_compare(other, self, Py_LT)
+        return not result if result is not NotImplemented else NotImplemented
+
+    def __ge__(self, other):
+        result = thrift.py3.types.list_compare(self, other, Py_LT)
+        return not result if result is not NotImplemented else NotImplemented
 
     def __hash__(self):
         if not self.__hash:
@@ -3151,20 +3250,25 @@ cdef class std_deque__List__i32:
     def __len__(self):
         return deref(self._cpp_obj).size()
 
-    def __richcmp__(self, other, op):
-        cdef int cop = op
-        if cop not in (2, 3):
-            raise TypeError("unorderable types: {}, {}".format(type(self), type(other)))
-        if not (isinstance(self, Iterable) and isinstance(other, Iterable)):
-            return cop != 2
-        if (len(self) != len(other)):
-            return cop != 2
+    def __eq__(self, other):
+        return thrift.py3.types.list_compare(self, other, Py_EQ)
 
-        for one, two in zip(self, other):
-            if one != two:
-                return cop != 2
+    def __ne__(self, other):
+        return not thrift.py3.types.list_compare(self, other, Py_EQ)
 
-        return cop == 2
+    def __lt__(self, other):
+        return thrift.py3.types.list_compare(self, other, Py_LT)
+
+    def __gt__(self, other):
+        return thrift.py3.types.list_compare(other, self, Py_LT)
+
+    def __le__(self, other):
+        result = thrift.py3.types.list_compare(other, self, Py_LT)
+        return not result if result is not NotImplemented else NotImplemented
+
+    def __ge__(self, other):
+        result = thrift.py3.types.list_compare(self, other, Py_LT)
+        return not result if result is not NotImplemented else NotImplemented
 
     def __hash__(self):
         if not self.__hash:
@@ -3305,20 +3409,25 @@ cdef class folly_fbvector__List__i32:
     def __len__(self):
         return deref(self._cpp_obj).size()
 
-    def __richcmp__(self, other, op):
-        cdef int cop = op
-        if cop not in (2, 3):
-            raise TypeError("unorderable types: {}, {}".format(type(self), type(other)))
-        if not (isinstance(self, Iterable) and isinstance(other, Iterable)):
-            return cop != 2
-        if (len(self) != len(other)):
-            return cop != 2
+    def __eq__(self, other):
+        return thrift.py3.types.list_compare(self, other, Py_EQ)
 
-        for one, two in zip(self, other):
-            if one != two:
-                return cop != 2
+    def __ne__(self, other):
+        return not thrift.py3.types.list_compare(self, other, Py_EQ)
 
-        return cop == 2
+    def __lt__(self, other):
+        return thrift.py3.types.list_compare(self, other, Py_LT)
+
+    def __gt__(self, other):
+        return thrift.py3.types.list_compare(other, self, Py_LT)
+
+    def __le__(self, other):
+        result = thrift.py3.types.list_compare(other, self, Py_LT)
+        return not result if result is not NotImplemented else NotImplemented
+
+    def __ge__(self, other):
+        result = thrift.py3.types.list_compare(self, other, Py_LT)
+        return not result if result is not NotImplemented else NotImplemented
 
     def __hash__(self):
         if not self.__hash:
@@ -3459,20 +3568,25 @@ cdef class folly_small_vector__List__i32:
     def __len__(self):
         return deref(self._cpp_obj).size()
 
-    def __richcmp__(self, other, op):
-        cdef int cop = op
-        if cop not in (2, 3):
-            raise TypeError("unorderable types: {}, {}".format(type(self), type(other)))
-        if not (isinstance(self, Iterable) and isinstance(other, Iterable)):
-            return cop != 2
-        if (len(self) != len(other)):
-            return cop != 2
+    def __eq__(self, other):
+        return thrift.py3.types.list_compare(self, other, Py_EQ)
 
-        for one, two in zip(self, other):
-            if one != two:
-                return cop != 2
+    def __ne__(self, other):
+        return not thrift.py3.types.list_compare(self, other, Py_EQ)
 
-        return cop == 2
+    def __lt__(self, other):
+        return thrift.py3.types.list_compare(self, other, Py_LT)
+
+    def __gt__(self, other):
+        return thrift.py3.types.list_compare(other, self, Py_LT)
+
+    def __le__(self, other):
+        result = thrift.py3.types.list_compare(other, self, Py_LT)
+        return not result if result is not NotImplemented else NotImplemented
+
+    def __ge__(self, other):
+        result = thrift.py3.types.list_compare(self, other, Py_LT)
+        return not result if result is not NotImplemented else NotImplemented
 
     def __hash__(self):
         if not self.__hash:
@@ -3617,13 +3731,12 @@ cdef class folly_sorted_vector_set__Set__i32:
         cdef int cop = op
         cdef shared_ptr[folly_sorted_vector_set[int32_t]] cself, cother
         cdef folly_sorted_vector_set[int32_t].iterator loc
-        cdef cbool retval
         if (isinstance(self, folly_sorted_vector_set__Set__i32) and
                 isinstance(other, folly_sorted_vector_set__Set__i32)):
             cself = (<folly_sorted_vector_set__Set__i32> self)._cpp_obj
             cother = (<folly_sorted_vector_set__Set__i32> other)._cpp_obj
             # C level comparisons
-            if cop == 0:    # Less Than (strict subset)
+            if cop == Py_LT:    # Less Than (strict subset)
                 if not deref(cself).size() < deref(cother).size():
                     return False
                 loc = deref(cself).begin()
@@ -3632,14 +3745,14 @@ cdef class folly_sorted_vector_set__Set__i32:
                         return False
                     inc(loc)
                 return True
-            elif cop == 1:  # Less Than or Equal To  (subset)
+            elif cop == Py_LE:  # Less Than or Equal To  (subset)
                 loc = deref(cself).begin()
                 while loc != deref(cself).end():
                     if not deref(cother).count(deref(loc)):
                         return False
                     inc(loc)
                 return True
-            elif cop == 2:  # Equivalent
+            elif cop == Py_EQ:  # Equivalent
                 if deref(cself).size() != deref(cother).size():
                     return False
                 loc = deref(cself).begin()
@@ -3648,14 +3761,14 @@ cdef class folly_sorted_vector_set__Set__i32:
                         return False
                     inc(loc)
                 return True
-            elif cop == 3:  # Not Equivalent
+            elif cop == Py_NE:  # Not Equivalent
                 loc = deref(cself).begin()
                 while loc != deref(cself).end():
                     if not deref(cother).count(deref(loc)):
                         return True
                     inc(loc)
                 return deref(cself).size() != deref(cother).size()
-            elif cop == 4:  # Greater Than (strict superset)
+            elif cop == Py_GT:  # Greater Than (strict superset)
                 if not deref(cself).size() > deref(cother).size():
                     return False
                 loc = deref(cother).begin()
@@ -3664,7 +3777,7 @@ cdef class folly_sorted_vector_set__Set__i32:
                         return False
                     inc(loc)
                 return True
-            elif cop == 5:  # Greater Than or Equal To (superset)
+            elif cop == Py_GE:  # Greater Than or Equal To (superset)
                 loc = deref(cother).begin()
                 while loc != deref(cother).end():
                     if not deref(cself).count(deref(loc)):
@@ -3673,17 +3786,17 @@ cdef class folly_sorted_vector_set__Set__i32:
                 return True
 
         # Python level comparisons
-        if cop == 0:
+        if cop == Py_LT:
             return Set.__lt__(self, other)
-        elif cop == 1:
+        elif cop == Py_LE:
             return Set.__le__(self, other)
-        elif cop == 2:
+        elif cop == Py_EQ:
             return Set.__eq__(self, other)
-        elif cop == 3:
+        elif cop == Py_NE:
             return Set.__ne__(self, other)
-        elif cop == 4:
+        elif cop == Py_GT:
             return Set.__gt__(self, other)
-        elif cop == 5:
+        elif cop == Py_GE:
             return Set.__ge__(self, other)
 
     def __hash__(self):
@@ -3858,22 +3971,22 @@ cdef class folly_sorted_vector_map__Map__i32_string:
             yield citem
             inc(loc)
 
-    def __richcmp__(self, other, op):
-        cdef int cop = op
-        if cop not in (2, 3):
-            raise TypeError("unorderable types: {}, {}".format(type(self), type(other)))
+    def __eq__(self, other):
         if not (isinstance(self, Mapping) and isinstance(other, Mapping)):
-            return cop != 2
-        if (len(self) != len(other)):
-            return cop != 2
+            return False
+        if len(self) != len(other):
+            return False
 
         for key in self:
             if key not in other:
-                return cop != 2
+                return False
             if other[key] != self[key]:
-                return cop != 2
+                return False
 
-        return cop == 2
+        return True
+
+    def __ne__(self, other):
+        return not self.__eq__(other)
 
     def __hash__(self):
         if not self.__hash:
@@ -3992,20 +4105,25 @@ cdef class std_list_int32_t__List__i32:
     def __len__(self):
         return deref(self._cpp_obj).size()
 
-    def __richcmp__(self, other, op):
-        cdef int cop = op
-        if cop not in (2, 3):
-            raise TypeError("unorderable types: {}, {}".format(type(self), type(other)))
-        if not (isinstance(self, Iterable) and isinstance(other, Iterable)):
-            return cop != 2
-        if (len(self) != len(other)):
-            return cop != 2
+    def __eq__(self, other):
+        return thrift.py3.types.list_compare(self, other, Py_EQ)
 
-        for one, two in zip(self, other):
-            if one != two:
-                return cop != 2
+    def __ne__(self, other):
+        return not thrift.py3.types.list_compare(self, other, Py_EQ)
 
-        return cop == 2
+    def __lt__(self, other):
+        return thrift.py3.types.list_compare(self, other, Py_LT)
+
+    def __gt__(self, other):
+        return thrift.py3.types.list_compare(other, self, Py_LT)
+
+    def __le__(self, other):
+        result = thrift.py3.types.list_compare(other, self, Py_LT)
+        return not result if result is not NotImplemented else NotImplemented
+
+    def __ge__(self, other):
+        result = thrift.py3.types.list_compare(self, other, Py_LT)
+        return not result if result is not NotImplemented else NotImplemented
 
     def __hash__(self):
         if not self.__hash:
@@ -4149,22 +4267,22 @@ cdef class Map__string_i32:
             yield bytes(citem).decode('UTF-8')
             inc(loc)
 
-    def __richcmp__(self, other, op):
-        cdef int cop = op
-        if cop not in (2, 3):
-            raise TypeError("unorderable types: {}, {}".format(type(self), type(other)))
+    def __eq__(self, other):
         if not (isinstance(self, Mapping) and isinstance(other, Mapping)):
-            return cop != 2
-        if (len(self) != len(other)):
-            return cop != 2
+            return False
+        if len(self) != len(other):
+            return False
 
         for key in self:
             if key not in other:
-                return cop != 2
+                return False
             if other[key] != self[key]:
-                return cop != 2
+                return False
 
-        return cop == 2
+        return True
+
+    def __ne__(self, other):
+        return not self.__eq__(other)
 
     def __hash__(self):
         if not self.__hash:

@@ -105,7 +105,15 @@ cdef extern from "{{program:includePrefix}}gen-cpp2/{{program:name}}_types.h"{{!
     cdef cppclass c{{struct:name}} "{{#program:cppNamespaces}}{{value}}::{{/program:cppNamespaces}}{{struct:name}}"{{#struct:exception?}}(cTException){{/struct:exception?}}:
         c{{struct:name}}() except +
         c{{struct:name}}(const c{{struct:name}}&) except +
+        {{^struct:cpp_noncomparable}}
         bint operator==(c{{struct:name}}&)
+        {{#struct:is_struct_orderable?}}
+        bint operator<(c{{struct:name}}&)
+        bint operator>(c{{struct:name}}&)
+        bint operator<=(c{{struct:name}}&)
+        bint operator>=(c{{struct:name}}&)
+        {{/struct:is_struct_orderable?}}
+        {{/struct:cpp_noncomparable}}
     {{^struct:union?}}
     {{#struct:fields}}
         {{#field:type}}{{> types/CythonCppStructFieldType}}{{/field:type}} {{field:name}}{{#field:hasModifiedName?}} "{{field:origName}}"{{/field:hasModifiedName?}}

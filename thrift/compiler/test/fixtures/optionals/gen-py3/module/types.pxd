@@ -58,6 +58,10 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "cpp2":
         cColor() except +
         cColor(const cColor&) except +
         bint operator==(cColor&)
+        bint operator<(cColor&)
+        bint operator>(cColor&)
+        bint operator<=(cColor&)
+        bint operator>=(cColor&)
         double red
         double green
         double blue
@@ -75,6 +79,10 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "cpp2":
         cVehicle() except +
         cVehicle(const cVehicle&) except +
         bint operator==(cVehicle&)
+        bint operator<(cVehicle&)
+        bint operator>(cVehicle&)
+        bint operator<=(cVehicle&)
+        bint operator>=(cVehicle&)
         cColor color
         string licensePlate
         string description

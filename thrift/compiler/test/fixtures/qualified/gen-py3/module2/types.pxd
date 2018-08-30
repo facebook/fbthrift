@@ -41,6 +41,10 @@ cdef extern from "src/gen-cpp2/module2_types.h" namespace "module2":
         cStruct() except +
         cStruct(const cStruct&) except +
         bint operator==(cStruct&)
+        bint operator<(cStruct&)
+        bint operator>(cStruct&)
+        bint operator<=(cStruct&)
+        bint operator>=(cStruct&)
         _module0_types.cStruct first
         _module1_types.cStruct second
         cStruct__isset __isset
@@ -53,6 +57,10 @@ cdef extern from "src/gen-cpp2/module2_types.h" namespace "module2":
         cBigStruct() except +
         cBigStruct(const cBigStruct&) except +
         bint operator==(cBigStruct&)
+        bint operator<(cBigStruct&)
+        bint operator>(cBigStruct&)
+        bint operator<=(cBigStruct&)
+        bint operator>=(cBigStruct&)
         cStruct s
         int32_t id
         cBigStruct__isset __isset

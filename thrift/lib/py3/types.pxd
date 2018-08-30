@@ -1,8 +1,9 @@
-from cpython.object cimport PyTypeObject
+from cpython.object cimport PyTypeObject, Py_LT, Py_EQ
 from folly.iobuf cimport cIOBuf, IOBuf
 from libc.stdint cimport uint32_t
 from libcpp.string cimport string
 from libcpp.memory cimport shared_ptr
+from collections import Iterable
 
 cdef extern from "":
     """
@@ -59,3 +60,27 @@ cdef extern from "<string>" namespace "std" nogil:
 
 cdef extern from "<utility>" namespace "std" nogil:
     cdef string move(string)
+
+
+cdef inline object list_compare(object first, object second, int op):
+    """ Take either Py_EQ or Py_LT, everything else is derived """
+    if not (isinstance(first, Iterable) and isinstance(second, Iterable)):
+        if op == Py_EQ:
+            return False
+        else:
+            return NotImplemented
+
+    if op == Py_EQ:
+        if len(first) != len(second):
+            return False
+
+    for x, y in zip(first, second):
+        if x != y:
+            if op == Py_LT:
+                return x < y
+            else:
+                return False
+
+    if op == Py_LT:
+        return len(first) < len(second)
+    return True

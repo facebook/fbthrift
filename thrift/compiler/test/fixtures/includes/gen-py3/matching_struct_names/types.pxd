@@ -39,6 +39,10 @@ cdef extern from "src/gen-cpp2/matching_struct_names_types.h" namespace "cpp2":
         cMyStruct() except +
         cMyStruct(const cMyStruct&) except +
         bint operator==(cMyStruct&)
+        bint operator<(cMyStruct&)
+        bint operator>(cMyStruct&)
+        bint operator<=(cMyStruct&)
+        bint operator>=(cMyStruct&)
         string field
         cMyStruct__isset __isset
 

@@ -74,6 +74,10 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "py3::simple":
         cSimpleException() except +
         cSimpleException(const cSimpleException&) except +
         bint operator==(cSimpleException&)
+        bint operator<(cSimpleException&)
+        bint operator>(cSimpleException&)
+        bint operator<=(cSimpleException&)
+        bint operator>=(cSimpleException&)
         int16_t err_code
         cSimpleException__isset __isset
 
@@ -90,6 +94,10 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "py3::simple":
         cSimpleStruct() except +
         cSimpleStruct(const cSimpleStruct&) except +
         bint operator==(cSimpleStruct&)
+        bint operator<(cSimpleStruct&)
+        bint operator>(cSimpleStruct&)
+        bint operator<=(cSimpleStruct&)
+        bint operator>=(cSimpleStruct&)
         cbool is_on
         int8_t tiny_int
         int16_t small_int

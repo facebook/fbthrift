@@ -6,7 +6,7 @@
 #
 
 cimport cython as __cython
-from cpython.object cimport PyTypeObject
+from cpython.object cimport PyTypeObject, Py_LT, Py_LE, Py_EQ, Py_NE, Py_GT, Py_GE
 from libcpp.memory cimport shared_ptr, make_shared, unique_ptr, make_unique
 from libcpp.string cimport string
 from libcpp cimport bool as cbool
@@ -89,22 +89,32 @@ cdef class Banal(thrift.py3.exceptions.Error):
 
     def __richcmp__(self, other, op):
         cdef int cop = op
-        if cop not in (2, 3):
-            raise TypeError("unorderable types: {}, {}".format(self, other))
         if not (
                 isinstance(self, Banal) and
                 isinstance(other, Banal)):
-            if cop == 2:  # different types are never equal
+            if cop == Py_EQ:  # different types are never equal
                 return False
-            else:         # different types are always notequal
+            elif cop == Py_NE:  # different types are always notequal
                 return True
+            else:
+                return NotImplemented
 
         cdef cBanal cself = deref((<Banal>self)._cpp_obj)
         cdef cBanal cother = deref((<Banal>other)._cpp_obj)
-        cdef cbool cmp = cself == cother
-        if cop == 2:
-            return cmp
-        return not cmp
+        if cop == Py_EQ:
+            return cself == cother
+        elif cop == Py_NE:
+            return not (cself == cother)
+        elif cop == Py_LT:
+            return cself < cother
+        elif cop == Py_LE:
+            return cself <= cother
+        elif cop == Py_GT:
+            return cself > cother
+        elif cop == Py_GE:
+            return cself >= cother
+        else:
+            return NotImplemented
 
 
 
@@ -172,22 +182,32 @@ cdef class Fiery(thrift.py3.exceptions.Error):
 
     def __richcmp__(self, other, op):
         cdef int cop = op
-        if cop not in (2, 3):
-            raise TypeError("unorderable types: {}, {}".format(self, other))
         if not (
                 isinstance(self, Fiery) and
                 isinstance(other, Fiery)):
-            if cop == 2:  # different types are never equal
+            if cop == Py_EQ:  # different types are never equal
                 return False
-            else:         # different types are always notequal
+            elif cop == Py_NE:  # different types are always notequal
                 return True
+            else:
+                return NotImplemented
 
         cdef cFiery cself = deref((<Fiery>self)._cpp_obj)
         cdef cFiery cother = deref((<Fiery>other)._cpp_obj)
-        cdef cbool cmp = cself == cother
-        if cop == 2:
-            return cmp
-        return not cmp
+        if cop == Py_EQ:
+            return cself == cother
+        elif cop == Py_NE:
+            return not (cself == cother)
+        elif cop == Py_LT:
+            return cself < cother
+        elif cop == Py_LE:
+            return cself <= cother
+        elif cop == Py_GT:
+            return cself > cother
+        elif cop == Py_GE:
+            return cself >= cother
+        else:
+            return NotImplemented
 
 
 

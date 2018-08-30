@@ -36,6 +36,10 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "cpp2":
         cFoo() except +
         cFoo(const cFoo&) except +
         bint operator==(cFoo&)
+        bint operator<(cFoo&)
+        bint operator>(cFoo&)
+        bint operator<=(cFoo&)
+        bint operator>=(cFoo&)
         int64_t MyInt
         cFoo__isset __isset
 

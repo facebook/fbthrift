@@ -70,6 +70,10 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "cpp2":
         cMyDataItem() except +
         cMyDataItem(const cMyDataItem&) except +
         bint operator==(cMyDataItem&)
+        bint operator<(cMyDataItem&)
+        bint operator>(cMyDataItem&)
+        bint operator<=(cMyDataItem&)
+        bint operator>=(cMyDataItem&)
         cMyDataItem__isset __isset
 
     cdef shared_ptr[cMyDataItem] reference_shared_ptr_MyDataField "thrift::py3::reference_shared_ptr<cpp2::MyDataItem>"(shared_ptr[cMyStruct]&, cMyDataItem&)

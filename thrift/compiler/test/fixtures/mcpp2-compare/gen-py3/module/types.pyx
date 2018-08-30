@@ -6,7 +6,7 @@
 #
 
 cimport cython as __cython
-from cpython.object cimport PyTypeObject
+from cpython.object cimport PyTypeObject, Py_LT, Py_LE, Py_EQ, Py_NE, Py_GT, Py_GE
 from libcpp.memory cimport shared_ptr, make_shared, unique_ptr, make_unique
 from libcpp.string cimport string
 from libcpp cimport bool as cbool
@@ -1025,22 +1025,32 @@ cdef class Empty(thrift.py3.types.Struct):
 
     def __richcmp__(self, other, op):
         cdef int cop = op
-        if cop not in (2, 3):
-            raise TypeError("unorderable types: {}, {}".format(self, other))
         if not (
                 isinstance(self, Empty) and
                 isinstance(other, Empty)):
-            if cop == 2:  # different types are never equal
+            if cop == Py_EQ:  # different types are never equal
                 return False
-            else:         # different types are always notequal
+            elif cop == Py_NE:  # different types are always notequal
                 return True
+            else:
+                return NotImplemented
 
         cdef cEmpty cself = deref((<Empty>self)._cpp_obj)
         cdef cEmpty cother = deref((<Empty>other)._cpp_obj)
-        cdef cbool cmp = cself == cother
-        if cop == 2:
-            return cmp
-        return not cmp
+        if cop == Py_EQ:
+            return cself == cother
+        elif cop == Py_NE:
+            return not (cself == cother)
+        elif cop == Py_LT:
+            return cself < cother
+        elif cop == Py_LE:
+            return cself <= cother
+        elif cop == Py_GT:
+            return cself > cother
+        elif cop == Py_GE:
+            return cself >= cother
+        else:
+            return NotImplemented
 
     cdef __iobuf.IOBuf _serialize(Empty self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
@@ -1184,22 +1194,24 @@ cdef class ASimpleStruct(thrift.py3.types.Struct):
 
     def __richcmp__(self, other, op):
         cdef int cop = op
-        if cop not in (2, 3):
-            raise TypeError("unorderable types: {}, {}".format(self, other))
         if not (
                 isinstance(self, ASimpleStruct) and
                 isinstance(other, ASimpleStruct)):
-            if cop == 2:  # different types are never equal
+            if cop == Py_EQ:  # different types are never equal
                 return False
-            else:         # different types are always notequal
+            elif cop == Py_NE:  # different types are always notequal
                 return True
+            else:
+                return NotImplemented
 
         cdef cASimpleStruct cself = deref((<ASimpleStruct>self)._cpp_obj)
         cdef cASimpleStruct cother = deref((<ASimpleStruct>other)._cpp_obj)
-        cdef cbool cmp = cself == cother
-        if cop == 2:
-            return cmp
-        return not cmp
+        if cop == Py_EQ:
+            return cself == cother
+        elif cop == Py_NE:
+            return not (cself == cother)
+        else:
+            return NotImplemented
 
     cdef __iobuf.IOBuf _serialize(ASimpleStruct self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
@@ -1343,22 +1355,32 @@ cdef class ASimpleStructNoexcept(thrift.py3.types.Struct):
 
     def __richcmp__(self, other, op):
         cdef int cop = op
-        if cop not in (2, 3):
-            raise TypeError("unorderable types: {}, {}".format(self, other))
         if not (
                 isinstance(self, ASimpleStructNoexcept) and
                 isinstance(other, ASimpleStructNoexcept)):
-            if cop == 2:  # different types are never equal
+            if cop == Py_EQ:  # different types are never equal
                 return False
-            else:         # different types are always notequal
+            elif cop == Py_NE:  # different types are always notequal
                 return True
+            else:
+                return NotImplemented
 
         cdef cASimpleStructNoexcept cself = deref((<ASimpleStructNoexcept>self)._cpp_obj)
         cdef cASimpleStructNoexcept cother = deref((<ASimpleStructNoexcept>other)._cpp_obj)
-        cdef cbool cmp = cself == cother
-        if cop == 2:
-            return cmp
-        return not cmp
+        if cop == Py_EQ:
+            return cself == cother
+        elif cop == Py_NE:
+            return not (cself == cother)
+        elif cop == Py_LT:
+            return cself < cother
+        elif cop == Py_LE:
+            return cself <= cother
+        elif cop == Py_GT:
+            return cself > cother
+        elif cop == Py_GE:
+            return cself >= cother
+        else:
+            return NotImplemented
 
     cdef __iobuf.IOBuf _serialize(ASimpleStructNoexcept self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
@@ -1722,22 +1744,32 @@ cdef class MyStruct(thrift.py3.types.Struct):
 
     def __richcmp__(self, other, op):
         cdef int cop = op
-        if cop not in (2, 3):
-            raise TypeError("unorderable types: {}, {}".format(self, other))
         if not (
                 isinstance(self, MyStruct) and
                 isinstance(other, MyStruct)):
-            if cop == 2:  # different types are never equal
+            if cop == Py_EQ:  # different types are never equal
                 return False
-            else:         # different types are always notequal
+            elif cop == Py_NE:  # different types are always notequal
                 return True
+            else:
+                return NotImplemented
 
         cdef cMyStruct cself = deref((<MyStruct>self)._cpp_obj)
         cdef cMyStruct cother = deref((<MyStruct>other)._cpp_obj)
-        cdef cbool cmp = cself == cother
-        if cop == 2:
-            return cmp
-        return not cmp
+        if cop == Py_EQ:
+            return cself == cother
+        elif cop == Py_NE:
+            return not (cself == cother)
+        elif cop == Py_LT:
+            return cself < cother
+        elif cop == Py_LE:
+            return cself <= cother
+        elif cop == Py_GT:
+            return cself > cother
+        elif cop == Py_GE:
+            return cself >= cother
+        else:
+            return NotImplemented
 
     cdef __iobuf.IOBuf _serialize(MyStruct self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
@@ -1892,22 +1924,32 @@ cdef class SimpleUnion(thrift.py3.types.Union):
 
     def __richcmp__(self, other, op):
         cdef int cop = op
-        if cop not in (2, 3):
-            raise TypeError("unorderable types: {}, {}".format(self, other))
         if not (
                 isinstance(self, SimpleUnion) and
                 isinstance(other, SimpleUnion)):
-            if cop == 2:  # different types are never equal
+            if cop == Py_EQ:  # different types are never equal
                 return False
-            else:         # different types are always notequal
+            elif cop == Py_NE:  # different types are always notequal
                 return True
+            else:
+                return NotImplemented
 
         cdef cSimpleUnion cself = deref((<SimpleUnion>self)._cpp_obj)
         cdef cSimpleUnion cother = deref((<SimpleUnion>other)._cpp_obj)
-        cdef cbool cmp = cself == cother
-        if cop == 2:
-            return cmp
-        return not cmp
+        if cop == Py_EQ:
+            return cself == cother
+        elif cop == Py_NE:
+            return not (cself == cother)
+        elif cop == Py_LT:
+            return cself < cother
+        elif cop == Py_LE:
+            return cself <= cother
+        elif cop == Py_GT:
+            return cself > cother
+        elif cop == Py_GE:
+            return cself >= cother
+        else:
+            return NotImplemented
 
     cdef __iobuf.IOBuf _serialize(SimpleUnion self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
@@ -2664,22 +2706,24 @@ cdef class ComplexUnion(thrift.py3.types.Union):
 
     def __richcmp__(self, other, op):
         cdef int cop = op
-        if cop not in (2, 3):
-            raise TypeError("unorderable types: {}, {}".format(self, other))
         if not (
                 isinstance(self, ComplexUnion) and
                 isinstance(other, ComplexUnion)):
-            if cop == 2:  # different types are never equal
+            if cop == Py_EQ:  # different types are never equal
                 return False
-            else:         # different types are always notequal
+            elif cop == Py_NE:  # different types are always notequal
                 return True
+            else:
+                return NotImplemented
 
         cdef cComplexUnion cself = deref((<ComplexUnion>self)._cpp_obj)
         cdef cComplexUnion cother = deref((<ComplexUnion>other)._cpp_obj)
-        cdef cbool cmp = cself == cother
-        if cop == 2:
-            return cmp
-        return not cmp
+        if cop == Py_EQ:
+            return cself == cother
+        elif cop == Py_NE:
+            return not (cself == cother)
+        else:
+            return NotImplemented
 
     cdef __iobuf.IOBuf _serialize(ComplexUnion self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
@@ -2986,22 +3030,24 @@ cdef class AnException(thrift.py3.exceptions.Error):
 
     def __richcmp__(self, other, op):
         cdef int cop = op
-        if cop not in (2, 3):
-            raise TypeError("unorderable types: {}, {}".format(self, other))
         if not (
                 isinstance(self, AnException) and
                 isinstance(other, AnException)):
-            if cop == 2:  # different types are never equal
+            if cop == Py_EQ:  # different types are never equal
                 return False
-            else:         # different types are always notequal
+            elif cop == Py_NE:  # different types are always notequal
                 return True
+            else:
+                return NotImplemented
 
         cdef cAnException cself = deref((<AnException>self)._cpp_obj)
         cdef cAnException cother = deref((<AnException>other)._cpp_obj)
-        cdef cbool cmp = cself == cother
-        if cop == 2:
-            return cmp
-        return not cmp
+        if cop == Py_EQ:
+            return cself == cother
+        elif cop == Py_NE:
+            return not (cself == cother)
+        else:
+            return NotImplemented
 
 
 
@@ -3103,22 +3149,32 @@ cdef class AnotherException(thrift.py3.exceptions.Error):
 
     def __richcmp__(self, other, op):
         cdef int cop = op
-        if cop not in (2, 3):
-            raise TypeError("unorderable types: {}, {}".format(self, other))
         if not (
                 isinstance(self, AnotherException) and
                 isinstance(other, AnotherException)):
-            if cop == 2:  # different types are never equal
+            if cop == Py_EQ:  # different types are never equal
                 return False
-            else:         # different types are always notequal
+            elif cop == Py_NE:  # different types are always notequal
                 return True
+            else:
+                return NotImplemented
 
         cdef cAnotherException cself = deref((<AnotherException>self)._cpp_obj)
         cdef cAnotherException cother = deref((<AnotherException>other)._cpp_obj)
-        cdef cbool cmp = cself == cother
-        if cop == 2:
-            return cmp
-        return not cmp
+        if cop == Py_EQ:
+            return cself == cother
+        elif cop == Py_NE:
+            return not (cself == cother)
+        elif cop == Py_LT:
+            return cself < cother
+        elif cop == Py_LE:
+            return cself <= cother
+        elif cop == Py_GT:
+            return cself > cother
+        elif cop == Py_GE:
+            return cself >= cother
+        else:
+            return NotImplemented
 
 
 
@@ -4445,22 +4501,24 @@ cdef class containerStruct(thrift.py3.types.Struct):
 
     def __richcmp__(self, other, op):
         cdef int cop = op
-        if cop not in (2, 3):
-            raise TypeError("unorderable types: {}, {}".format(self, other))
         if not (
                 isinstance(self, containerStruct) and
                 isinstance(other, containerStruct)):
-            if cop == 2:  # different types are never equal
+            if cop == Py_EQ:  # different types are never equal
                 return False
-            else:         # different types are always notequal
+            elif cop == Py_NE:  # different types are always notequal
                 return True
+            else:
+                return NotImplemented
 
         cdef ccontainerStruct cself = deref((<containerStruct>self)._cpp_obj)
         cdef ccontainerStruct cother = deref((<containerStruct>other)._cpp_obj)
-        cdef cbool cmp = cself == cother
-        if cop == 2:
-            return cmp
-        return not cmp
+        if cop == Py_EQ:
+            return cself == cother
+        elif cop == Py_NE:
+            return not (cself == cother)
+        else:
+            return NotImplemented
 
     cdef __iobuf.IOBuf _serialize(containerStruct self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
@@ -4693,22 +4751,24 @@ cdef class MyIncludedStruct(thrift.py3.types.Struct):
 
     def __richcmp__(self, other, op):
         cdef int cop = op
-        if cop not in (2, 3):
-            raise TypeError("unorderable types: {}, {}".format(self, other))
         if not (
                 isinstance(self, MyIncludedStruct) and
                 isinstance(other, MyIncludedStruct)):
-            if cop == 2:  # different types are never equal
+            if cop == Py_EQ:  # different types are never equal
                 return False
-            else:         # different types are always notequal
+            elif cop == Py_NE:  # different types are always notequal
                 return True
+            else:
+                return NotImplemented
 
         cdef cMyIncludedStruct cself = deref((<MyIncludedStruct>self)._cpp_obj)
         cdef cMyIncludedStruct cother = deref((<MyIncludedStruct>other)._cpp_obj)
-        cdef cbool cmp = cself == cother
-        if cop == 2:
-            return cmp
-        return not cmp
+        if cop == Py_EQ:
+            return cself == cother
+        elif cop == Py_NE:
+            return not (cself == cother)
+        else:
+            return NotImplemented
 
     cdef __iobuf.IOBuf _serialize(MyIncludedStruct self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
@@ -5958,22 +6018,24 @@ cdef class AnnotatedStruct(thrift.py3.types.Struct):
 
     def __richcmp__(self, other, op):
         cdef int cop = op
-        if cop not in (2, 3):
-            raise TypeError("unorderable types: {}, {}".format(self, other))
         if not (
                 isinstance(self, AnnotatedStruct) and
                 isinstance(other, AnnotatedStruct)):
-            if cop == 2:  # different types are never equal
+            if cop == Py_EQ:  # different types are never equal
                 return False
-            else:         # different types are always notequal
+            elif cop == Py_NE:  # different types are always notequal
                 return True
+            else:
+                return NotImplemented
 
         cdef cAnnotatedStruct cself = deref((<AnnotatedStruct>self)._cpp_obj)
         cdef cAnnotatedStruct cother = deref((<AnnotatedStruct>other)._cpp_obj)
-        cdef cbool cmp = cself == cother
-        if cop == 2:
-            return cmp
-        return not cmp
+        if cop == Py_EQ:
+            return cself == cother
+        elif cop == Py_NE:
+            return not (cself == cother)
+        else:
+            return NotImplemented
 
     cdef __iobuf.IOBuf _serialize(AnnotatedStruct self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
@@ -6147,22 +6209,32 @@ cdef class FloatStruct(thrift.py3.types.Struct):
 
     def __richcmp__(self, other, op):
         cdef int cop = op
-        if cop not in (2, 3):
-            raise TypeError("unorderable types: {}, {}".format(self, other))
         if not (
                 isinstance(self, FloatStruct) and
                 isinstance(other, FloatStruct)):
-            if cop == 2:  # different types are never equal
+            if cop == Py_EQ:  # different types are never equal
                 return False
-            else:         # different types are always notequal
+            elif cop == Py_NE:  # different types are always notequal
                 return True
+            else:
+                return NotImplemented
 
         cdef cFloatStruct cself = deref((<FloatStruct>self)._cpp_obj)
         cdef cFloatStruct cother = deref((<FloatStruct>other)._cpp_obj)
-        cdef cbool cmp = cself == cother
-        if cop == 2:
-            return cmp
-        return not cmp
+        if cop == Py_EQ:
+            return cself == cother
+        elif cop == Py_NE:
+            return not (cself == cother)
+        elif cop == Py_LT:
+            return cself < cother
+        elif cop == Py_LE:
+            return cself <= cother
+        elif cop == Py_GT:
+            return cself > cother
+        elif cop == Py_GE:
+            return cself >= cother
+        else:
+            return NotImplemented
 
     cdef __iobuf.IOBuf _serialize(FloatStruct self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
@@ -6337,22 +6409,32 @@ cdef class FloatUnion(thrift.py3.types.Union):
 
     def __richcmp__(self, other, op):
         cdef int cop = op
-        if cop not in (2, 3):
-            raise TypeError("unorderable types: {}, {}".format(self, other))
         if not (
                 isinstance(self, FloatUnion) and
                 isinstance(other, FloatUnion)):
-            if cop == 2:  # different types are never equal
+            if cop == Py_EQ:  # different types are never equal
                 return False
-            else:         # different types are always notequal
+            elif cop == Py_NE:  # different types are always notequal
                 return True
+            else:
+                return NotImplemented
 
         cdef cFloatUnion cself = deref((<FloatUnion>self)._cpp_obj)
         cdef cFloatUnion cother = deref((<FloatUnion>other)._cpp_obj)
-        cdef cbool cmp = cself == cother
-        if cop == 2:
-            return cmp
-        return not cmp
+        if cop == Py_EQ:
+            return cself == cother
+        elif cop == Py_NE:
+            return not (cself == cother)
+        elif cop == Py_LT:
+            return cself < cother
+        elif cop == Py_LE:
+            return cself <= cother
+        elif cop == Py_GT:
+            return cself > cother
+        elif cop == Py_GE:
+            return cself >= cother
+        else:
+            return NotImplemented
 
     cdef __iobuf.IOBuf _serialize(FloatUnion self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
@@ -6497,22 +6579,32 @@ cdef class AllRequiredNoExceptMoveCtrStruct(thrift.py3.types.Struct):
 
     def __richcmp__(self, other, op):
         cdef int cop = op
-        if cop not in (2, 3):
-            raise TypeError("unorderable types: {}, {}".format(self, other))
         if not (
                 isinstance(self, AllRequiredNoExceptMoveCtrStruct) and
                 isinstance(other, AllRequiredNoExceptMoveCtrStruct)):
-            if cop == 2:  # different types are never equal
+            if cop == Py_EQ:  # different types are never equal
                 return False
-            else:         # different types are always notequal
+            elif cop == Py_NE:  # different types are always notequal
                 return True
+            else:
+                return NotImplemented
 
         cdef cAllRequiredNoExceptMoveCtrStruct cself = deref((<AllRequiredNoExceptMoveCtrStruct>self)._cpp_obj)
         cdef cAllRequiredNoExceptMoveCtrStruct cother = deref((<AllRequiredNoExceptMoveCtrStruct>other)._cpp_obj)
-        cdef cbool cmp = cself == cother
-        if cop == 2:
-            return cmp
-        return not cmp
+        if cop == Py_EQ:
+            return cself == cother
+        elif cop == Py_NE:
+            return not (cself == cother)
+        elif cop == Py_LT:
+            return cself < cother
+        elif cop == Py_LE:
+            return cself <= cother
+        elif cop == Py_GT:
+            return cself > cother
+        elif cop == Py_GE:
+            return cself >= cother
+        else:
+            return NotImplemented
 
     cdef __iobuf.IOBuf _serialize(AllRequiredNoExceptMoveCtrStruct self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
@@ -6612,22 +6704,22 @@ cdef class Map__string_i64:
             yield bytes(citem).decode('UTF-8')
             inc(loc)
 
-    def __richcmp__(self, other, op):
-        cdef int cop = op
-        if cop not in (2, 3):
-            raise TypeError("unorderable types: {}, {}".format(type(self), type(other)))
+    def __eq__(self, other):
         if not (isinstance(self, Mapping) and isinstance(other, Mapping)):
-            return cop != 2
-        if (len(self) != len(other)):
-            return cop != 2
+            return False
+        if len(self) != len(other):
+            return False
 
         for key in self:
             if key not in other:
-                return cop != 2
+                return False
             if other[key] != self[key]:
-                return cop != 2
+                return False
 
-        return cop == 2
+        return True
+
+    def __ne__(self, other):
+        return not self.__eq__(other)
 
     def __hash__(self):
         if not self.__hash:
@@ -6748,22 +6840,22 @@ cdef class Map__Empty_MyStruct:
             yield Empty.create(citem)
             inc(loc)
 
-    def __richcmp__(self, other, op):
-        cdef int cop = op
-        if cop not in (2, 3):
-            raise TypeError("unorderable types: {}, {}".format(type(self), type(other)))
+    def __eq__(self, other):
         if not (isinstance(self, Mapping) and isinstance(other, Mapping)):
-            return cop != 2
-        if (len(self) != len(other)):
-            return cop != 2
+            return False
+        if len(self) != len(other):
+            return False
 
         for key in self:
             if key not in other:
-                return cop != 2
+                return False
             if other[key] != self[key]:
-                return cop != 2
+                return False
 
-        return cop == 2
+        return True
+
+    def __ne__(self, other):
+        return not self.__eq__(other)
 
     def __hash__(self):
         if not self.__hash:
@@ -6883,20 +6975,25 @@ cdef class List__Map__Empty_MyStruct:
     def __len__(self):
         return deref(self._cpp_obj).size()
 
-    def __richcmp__(self, other, op):
-        cdef int cop = op
-        if cop not in (2, 3):
-            raise TypeError("unorderable types: {}, {}".format(type(self), type(other)))
-        if not (isinstance(self, Iterable) and isinstance(other, Iterable)):
-            return cop != 2
-        if (len(self) != len(other)):
-            return cop != 2
+    def __eq__(self, other):
+        return thrift.py3.types.list_compare(self, other, Py_EQ)
 
-        for one, two in zip(self, other):
-            if one != two:
-                return cop != 2
+    def __ne__(self, other):
+        return not thrift.py3.types.list_compare(self, other, Py_EQ)
 
-        return cop == 2
+    def __lt__(self, other):
+        return thrift.py3.types.list_compare(self, other, Py_LT)
+
+    def __gt__(self, other):
+        return thrift.py3.types.list_compare(other, self, Py_LT)
+
+    def __le__(self, other):
+        result = thrift.py3.types.list_compare(other, self, Py_LT)
+        return not result if result is not NotImplemented else NotImplemented
+
+    def __ge__(self, other):
+        result = thrift.py3.types.list_compare(self, other, Py_LT)
+        return not result if result is not NotImplemented else NotImplemented
 
     def __hash__(self):
         if not self.__hash:
@@ -7053,20 +7150,25 @@ cdef class List__List__Map__Empty_MyStruct:
     def __len__(self):
         return deref(self._cpp_obj).size()
 
-    def __richcmp__(self, other, op):
-        cdef int cop = op
-        if cop not in (2, 3):
-            raise TypeError("unorderable types: {}, {}".format(type(self), type(other)))
-        if not (isinstance(self, Iterable) and isinstance(other, Iterable)):
-            return cop != 2
-        if (len(self) != len(other)):
-            return cop != 2
+    def __eq__(self, other):
+        return thrift.py3.types.list_compare(self, other, Py_EQ)
 
-        for one, two in zip(self, other):
-            if one != two:
-                return cop != 2
+    def __ne__(self, other):
+        return not thrift.py3.types.list_compare(self, other, Py_EQ)
 
-        return cop == 2
+    def __lt__(self, other):
+        return thrift.py3.types.list_compare(self, other, Py_LT)
+
+    def __gt__(self, other):
+        return thrift.py3.types.list_compare(other, self, Py_LT)
+
+    def __le__(self, other):
+        result = thrift.py3.types.list_compare(other, self, Py_LT)
+        return not result if result is not NotImplemented else NotImplemented
+
+    def __ge__(self, other):
+        result = thrift.py3.types.list_compare(self, other, Py_LT)
+        return not result if result is not NotImplemented else NotImplemented
 
     def __hash__(self):
         if not self.__hash:
@@ -7223,20 +7325,25 @@ cdef class List__List__List__Map__Empty_MyStruct:
     def __len__(self):
         return deref(self._cpp_obj).size()
 
-    def __richcmp__(self, other, op):
-        cdef int cop = op
-        if cop not in (2, 3):
-            raise TypeError("unorderable types: {}, {}".format(type(self), type(other)))
-        if not (isinstance(self, Iterable) and isinstance(other, Iterable)):
-            return cop != 2
-        if (len(self) != len(other)):
-            return cop != 2
+    def __eq__(self, other):
+        return thrift.py3.types.list_compare(self, other, Py_EQ)
 
-        for one, two in zip(self, other):
-            if one != two:
-                return cop != 2
+    def __ne__(self, other):
+        return not thrift.py3.types.list_compare(self, other, Py_EQ)
 
-        return cop == 2
+    def __lt__(self, other):
+        return thrift.py3.types.list_compare(self, other, Py_LT)
+
+    def __gt__(self, other):
+        return thrift.py3.types.list_compare(other, self, Py_LT)
+
+    def __le__(self, other):
+        result = thrift.py3.types.list_compare(other, self, Py_LT)
+        return not result if result is not NotImplemented else NotImplemented
+
+    def __ge__(self, other):
+        result = thrift.py3.types.list_compare(self, other, Py_LT)
+        return not result if result is not NotImplemented else NotImplemented
 
     def __hash__(self):
         if not self.__hash:
@@ -7391,20 +7498,25 @@ cdef class List__MyEnumA:
     def __len__(self):
         return deref(self._cpp_obj).size()
 
-    def __richcmp__(self, other, op):
-        cdef int cop = op
-        if cop not in (2, 3):
-            raise TypeError("unorderable types: {}, {}".format(type(self), type(other)))
-        if not (isinstance(self, Iterable) and isinstance(other, Iterable)):
-            return cop != 2
-        if (len(self) != len(other)):
-            return cop != 2
+    def __eq__(self, other):
+        return thrift.py3.types.list_compare(self, other, Py_EQ)
 
-        for one, two in zip(self, other):
-            if one != two:
-                return cop != 2
+    def __ne__(self, other):
+        return not thrift.py3.types.list_compare(self, other, Py_EQ)
 
-        return cop == 2
+    def __lt__(self, other):
+        return thrift.py3.types.list_compare(self, other, Py_LT)
+
+    def __gt__(self, other):
+        return thrift.py3.types.list_compare(other, self, Py_LT)
+
+    def __le__(self, other):
+        result = thrift.py3.types.list_compare(other, self, Py_LT)
+        return not result if result is not NotImplemented else NotImplemented
+
+    def __ge__(self, other):
+        result = thrift.py3.types.list_compare(self, other, Py_LT)
+        return not result if result is not NotImplemented else NotImplemented
 
     def __hash__(self):
         if not self.__hash:
@@ -7548,13 +7660,12 @@ cdef class Set__MyStruct:
         cdef int cop = op
         cdef shared_ptr[cset[cMyStruct]] cself, cother
         cdef cset[cMyStruct].iterator loc
-        cdef cbool retval
         if (isinstance(self, Set__MyStruct) and
                 isinstance(other, Set__MyStruct)):
             cself = (<Set__MyStruct> self)._cpp_obj
             cother = (<Set__MyStruct> other)._cpp_obj
             # C level comparisons
-            if cop == 0:    # Less Than (strict subset)
+            if cop == Py_LT:    # Less Than (strict subset)
                 if not deref(cself).size() < deref(cother).size():
                     return False
                 loc = deref(cself).begin()
@@ -7563,14 +7674,14 @@ cdef class Set__MyStruct:
                         return False
                     inc(loc)
                 return True
-            elif cop == 1:  # Less Than or Equal To  (subset)
+            elif cop == Py_LE:  # Less Than or Equal To  (subset)
                 loc = deref(cself).begin()
                 while loc != deref(cself).end():
                     if not deref(cother).count(deref(loc)):
                         return False
                     inc(loc)
                 return True
-            elif cop == 2:  # Equivalent
+            elif cop == Py_EQ:  # Equivalent
                 if deref(cself).size() != deref(cother).size():
                     return False
                 loc = deref(cself).begin()
@@ -7579,14 +7690,14 @@ cdef class Set__MyStruct:
                         return False
                     inc(loc)
                 return True
-            elif cop == 3:  # Not Equivalent
+            elif cop == Py_NE:  # Not Equivalent
                 loc = deref(cself).begin()
                 while loc != deref(cself).end():
                     if not deref(cother).count(deref(loc)):
                         return True
                     inc(loc)
                 return deref(cself).size() != deref(cother).size()
-            elif cop == 4:  # Greater Than (strict superset)
+            elif cop == Py_GT:  # Greater Than (strict superset)
                 if not deref(cself).size() > deref(cother).size():
                     return False
                 loc = deref(cother).begin()
@@ -7595,7 +7706,7 @@ cdef class Set__MyStruct:
                         return False
                     inc(loc)
                 return True
-            elif cop == 5:  # Greater Than or Equal To (superset)
+            elif cop == Py_GE:  # Greater Than or Equal To (superset)
                 loc = deref(cother).begin()
                 while loc != deref(cother).end():
                     if not deref(cself).count(deref(loc)):
@@ -7604,17 +7715,17 @@ cdef class Set__MyStruct:
                 return True
 
         # Python level comparisons
-        if cop == 0:
+        if cop == Py_LT:
             return Set.__lt__(self, other)
-        elif cop == 1:
+        elif cop == Py_LE:
             return Set.__le__(self, other)
-        elif cop == 2:
+        elif cop == Py_EQ:
             return Set.__eq__(self, other)
-        elif cop == 3:
+        elif cop == Py_NE:
             return Set.__ne__(self, other)
-        elif cop == 4:
+        elif cop == Py_GT:
             return Set.__gt__(self, other)
-        elif cop == 5:
+        elif cop == Py_GE:
             return Set.__ge__(self, other)
 
     def __hash__(self):
@@ -7785,20 +7896,25 @@ cdef class List__ComplexUnion:
     def __len__(self):
         return deref(self._cpp_obj).size()
 
-    def __richcmp__(self, other, op):
-        cdef int cop = op
-        if cop not in (2, 3):
-            raise TypeError("unorderable types: {}, {}".format(type(self), type(other)))
-        if not (isinstance(self, Iterable) and isinstance(other, Iterable)):
-            return cop != 2
-        if (len(self) != len(other)):
-            return cop != 2
+    def __eq__(self, other):
+        return thrift.py3.types.list_compare(self, other, Py_EQ)
 
-        for one, two in zip(self, other):
-            if one != two:
-                return cop != 2
+    def __ne__(self, other):
+        return not thrift.py3.types.list_compare(self, other, Py_EQ)
 
-        return cop == 2
+    def __lt__(self, other):
+        return thrift.py3.types.list_compare(self, other, Py_LT)
+
+    def __gt__(self, other):
+        return thrift.py3.types.list_compare(other, self, Py_LT)
+
+    def __le__(self, other):
+        result = thrift.py3.types.list_compare(other, self, Py_LT)
+        return not result if result is not NotImplemented else NotImplemented
+
+    def __ge__(self, other):
+        result = thrift.py3.types.list_compare(self, other, Py_LT)
+        return not result if result is not NotImplemented else NotImplemented
 
     def __hash__(self):
         if not self.__hash:
@@ -7938,20 +8054,25 @@ cdef class List__string:
     def __len__(self):
         return deref(self._cpp_obj).size()
 
-    def __richcmp__(self, other, op):
-        cdef int cop = op
-        if cop not in (2, 3):
-            raise TypeError("unorderable types: {}, {}".format(type(self), type(other)))
-        if not (isinstance(self, Iterable) and isinstance(other, Iterable)):
-            return cop != 2
-        if (len(self) != len(other)):
-            return cop != 2
+    def __eq__(self, other):
+        return thrift.py3.types.list_compare(self, other, Py_EQ)
 
-        for one, two in zip(self, other):
-            if one != two:
-                return cop != 2
+    def __ne__(self, other):
+        return not thrift.py3.types.list_compare(self, other, Py_EQ)
 
-        return cop == 2
+    def __lt__(self, other):
+        return thrift.py3.types.list_compare(self, other, Py_LT)
+
+    def __gt__(self, other):
+        return thrift.py3.types.list_compare(other, self, Py_LT)
+
+    def __le__(self, other):
+        result = thrift.py3.types.list_compare(other, self, Py_LT)
+        return not result if result is not NotImplemented else NotImplemented
+
+    def __ge__(self, other):
+        result = thrift.py3.types.list_compare(self, other, Py_LT)
+        return not result if result is not NotImplemented else NotImplemented
 
     def __hash__(self):
         if not self.__hash:
@@ -8102,13 +8223,12 @@ cdef class Set__List__string:
         cdef int cop = op
         cdef shared_ptr[cset[vector[string]]] cself, cother
         cdef cset[vector[string]].iterator loc
-        cdef cbool retval
         if (isinstance(self, Set__List__string) and
                 isinstance(other, Set__List__string)):
             cself = (<Set__List__string> self)._cpp_obj
             cother = (<Set__List__string> other)._cpp_obj
             # C level comparisons
-            if cop == 0:    # Less Than (strict subset)
+            if cop == Py_LT:    # Less Than (strict subset)
                 if not deref(cself).size() < deref(cother).size():
                     return False
                 loc = deref(cself).begin()
@@ -8117,14 +8237,14 @@ cdef class Set__List__string:
                         return False
                     inc(loc)
                 return True
-            elif cop == 1:  # Less Than or Equal To  (subset)
+            elif cop == Py_LE:  # Less Than or Equal To  (subset)
                 loc = deref(cself).begin()
                 while loc != deref(cself).end():
                     if not deref(cother).count(deref(loc)):
                         return False
                     inc(loc)
                 return True
-            elif cop == 2:  # Equivalent
+            elif cop == Py_EQ:  # Equivalent
                 if deref(cself).size() != deref(cother).size():
                     return False
                 loc = deref(cself).begin()
@@ -8133,14 +8253,14 @@ cdef class Set__List__string:
                         return False
                     inc(loc)
                 return True
-            elif cop == 3:  # Not Equivalent
+            elif cop == Py_NE:  # Not Equivalent
                 loc = deref(cself).begin()
                 while loc != deref(cself).end():
                     if not deref(cother).count(deref(loc)):
                         return True
                     inc(loc)
                 return deref(cself).size() != deref(cother).size()
-            elif cop == 4:  # Greater Than (strict superset)
+            elif cop == Py_GT:  # Greater Than (strict superset)
                 if not deref(cself).size() > deref(cother).size():
                     return False
                 loc = deref(cother).begin()
@@ -8149,7 +8269,7 @@ cdef class Set__List__string:
                         return False
                     inc(loc)
                 return True
-            elif cop == 5:  # Greater Than or Equal To (superset)
+            elif cop == Py_GE:  # Greater Than or Equal To (superset)
                 loc = deref(cother).begin()
                 while loc != deref(cother).end():
                     if not deref(cself).count(deref(loc)):
@@ -8158,17 +8278,17 @@ cdef class Set__List__string:
                 return True
 
         # Python level comparisons
-        if cop == 0:
+        if cop == Py_LT:
             return Set.__lt__(self, other)
-        elif cop == 1:
+        elif cop == Py_LE:
             return Set.__le__(self, other)
-        elif cop == 2:
+        elif cop == Py_EQ:
             return Set.__eq__(self, other)
-        elif cop == 3:
+        elif cop == Py_NE:
             return Set.__ne__(self, other)
-        elif cop == 4:
+        elif cop == Py_GT:
             return Set.__gt__(self, other)
-        elif cop == 5:
+        elif cop == Py_GE:
             return Set.__ge__(self, other)
 
     def __hash__(self):
@@ -8350,13 +8470,12 @@ cdef class Set__List__List__Map__Empty_MyStruct:
         cdef int cop = op
         cdef shared_ptr[cset[vector[vector[cmap[cEmpty,cMyStruct]]]]] cself, cother
         cdef cset[vector[vector[cmap[cEmpty,cMyStruct]]]].iterator loc
-        cdef cbool retval
         if (isinstance(self, Set__List__List__Map__Empty_MyStruct) and
                 isinstance(other, Set__List__List__Map__Empty_MyStruct)):
             cself = (<Set__List__List__Map__Empty_MyStruct> self)._cpp_obj
             cother = (<Set__List__List__Map__Empty_MyStruct> other)._cpp_obj
             # C level comparisons
-            if cop == 0:    # Less Than (strict subset)
+            if cop == Py_LT:    # Less Than (strict subset)
                 if not deref(cself).size() < deref(cother).size():
                     return False
                 loc = deref(cself).begin()
@@ -8365,14 +8484,14 @@ cdef class Set__List__List__Map__Empty_MyStruct:
                         return False
                     inc(loc)
                 return True
-            elif cop == 1:  # Less Than or Equal To  (subset)
+            elif cop == Py_LE:  # Less Than or Equal To  (subset)
                 loc = deref(cself).begin()
                 while loc != deref(cself).end():
                     if not deref(cother).count(deref(loc)):
                         return False
                     inc(loc)
                 return True
-            elif cop == 2:  # Equivalent
+            elif cop == Py_EQ:  # Equivalent
                 if deref(cself).size() != deref(cother).size():
                     return False
                 loc = deref(cself).begin()
@@ -8381,14 +8500,14 @@ cdef class Set__List__List__Map__Empty_MyStruct:
                         return False
                     inc(loc)
                 return True
-            elif cop == 3:  # Not Equivalent
+            elif cop == Py_NE:  # Not Equivalent
                 loc = deref(cself).begin()
                 while loc != deref(cself).end():
                     if not deref(cother).count(deref(loc)):
                         return True
                     inc(loc)
                 return deref(cself).size() != deref(cother).size()
-            elif cop == 4:  # Greater Than (strict superset)
+            elif cop == Py_GT:  # Greater Than (strict superset)
                 if not deref(cself).size() > deref(cother).size():
                     return False
                 loc = deref(cother).begin()
@@ -8397,7 +8516,7 @@ cdef class Set__List__List__Map__Empty_MyStruct:
                         return False
                     inc(loc)
                 return True
-            elif cop == 5:  # Greater Than or Equal To (superset)
+            elif cop == Py_GE:  # Greater Than or Equal To (superset)
                 loc = deref(cother).begin()
                 while loc != deref(cother).end():
                     if not deref(cself).count(deref(loc)):
@@ -8406,17 +8525,17 @@ cdef class Set__List__List__Map__Empty_MyStruct:
                 return True
 
         # Python level comparisons
-        if cop == 0:
+        if cop == Py_LT:
             return Set.__lt__(self, other)
-        elif cop == 1:
+        elif cop == Py_LE:
             return Set.__le__(self, other)
-        elif cop == 2:
+        elif cop == Py_EQ:
             return Set.__eq__(self, other)
-        elif cop == 3:
+        elif cop == Py_NE:
             return Set.__ne__(self, other)
-        elif cop == 4:
+        elif cop == Py_GT:
             return Set.__gt__(self, other)
-        elif cop == 5:
+        elif cop == Py_GE:
             return Set.__ge__(self, other)
 
     def __hash__(self):
@@ -8593,22 +8712,22 @@ cdef class Map__i32_List__string:
             yield citem
             inc(loc)
 
-    def __richcmp__(self, other, op):
-        cdef int cop = op
-        if cop not in (2, 3):
-            raise TypeError("unorderable types: {}, {}".format(type(self), type(other)))
+    def __eq__(self, other):
         if not (isinstance(self, Mapping) and isinstance(other, Mapping)):
-            return cop != 2
-        if (len(self) != len(other)):
-            return cop != 2
+            return False
+        if len(self) != len(other):
+            return False
 
         for key in self:
             if key not in other:
-                return cop != 2
+                return False
             if other[key] != self[key]:
-                return cop != 2
+                return False
 
-        return cop == 2
+        return True
+
+    def __ne__(self, other):
+        return not self.__eq__(other)
 
     def __hash__(self):
         if not self.__hash:
@@ -8726,20 +8845,25 @@ cdef class List__bool:
     def __len__(self):
         return deref(self._cpp_obj).size()
 
-    def __richcmp__(self, other, op):
-        cdef int cop = op
-        if cop not in (2, 3):
-            raise TypeError("unorderable types: {}, {}".format(type(self), type(other)))
-        if not (isinstance(self, Iterable) and isinstance(other, Iterable)):
-            return cop != 2
-        if (len(self) != len(other)):
-            return cop != 2
+    def __eq__(self, other):
+        return thrift.py3.types.list_compare(self, other, Py_EQ)
 
-        for one, two in zip(self, other):
-            if one != two:
-                return cop != 2
+    def __ne__(self, other):
+        return not thrift.py3.types.list_compare(self, other, Py_EQ)
 
-        return cop == 2
+    def __lt__(self, other):
+        return thrift.py3.types.list_compare(self, other, Py_LT)
+
+    def __gt__(self, other):
+        return thrift.py3.types.list_compare(other, self, Py_LT)
+
+    def __le__(self, other):
+        result = thrift.py3.types.list_compare(other, self, Py_LT)
+        return not result if result is not NotImplemented else NotImplemented
+
+    def __ge__(self, other):
+        result = thrift.py3.types.list_compare(self, other, Py_LT)
+        return not result if result is not NotImplemented else NotImplemented
 
     def __hash__(self):
         if not self.__hash:
@@ -8880,20 +9004,25 @@ cdef class List__i32:
     def __len__(self):
         return deref(self._cpp_obj).size()
 
-    def __richcmp__(self, other, op):
-        cdef int cop = op
-        if cop not in (2, 3):
-            raise TypeError("unorderable types: {}, {}".format(type(self), type(other)))
-        if not (isinstance(self, Iterable) and isinstance(other, Iterable)):
-            return cop != 2
-        if (len(self) != len(other)):
-            return cop != 2
+    def __eq__(self, other):
+        return thrift.py3.types.list_compare(self, other, Py_EQ)
 
-        for one, two in zip(self, other):
-            if one != two:
-                return cop != 2
+    def __ne__(self, other):
+        return not thrift.py3.types.list_compare(self, other, Py_EQ)
 
-        return cop == 2
+    def __lt__(self, other):
+        return thrift.py3.types.list_compare(self, other, Py_LT)
+
+    def __gt__(self, other):
+        return thrift.py3.types.list_compare(other, self, Py_LT)
+
+    def __le__(self, other):
+        result = thrift.py3.types.list_compare(other, self, Py_LT)
+        return not result if result is not NotImplemented else NotImplemented
+
+    def __ge__(self, other):
+        result = thrift.py3.types.list_compare(self, other, Py_LT)
+        return not result if result is not NotImplemented else NotImplemented
 
     def __hash__(self):
         if not self.__hash:
@@ -9035,20 +9164,25 @@ cdef class List__List__i32:
     def __len__(self):
         return deref(self._cpp_obj).size()
 
-    def __richcmp__(self, other, op):
-        cdef int cop = op
-        if cop not in (2, 3):
-            raise TypeError("unorderable types: {}, {}".format(type(self), type(other)))
-        if not (isinstance(self, Iterable) and isinstance(other, Iterable)):
-            return cop != 2
-        if (len(self) != len(other)):
-            return cop != 2
+    def __eq__(self, other):
+        return thrift.py3.types.list_compare(self, other, Py_EQ)
 
-        for one, two in zip(self, other):
-            if one != two:
-                return cop != 2
+    def __ne__(self, other):
+        return not thrift.py3.types.list_compare(self, other, Py_EQ)
 
-        return cop == 2
+    def __lt__(self, other):
+        return thrift.py3.types.list_compare(self, other, Py_LT)
+
+    def __gt__(self, other):
+        return thrift.py3.types.list_compare(other, self, Py_LT)
+
+    def __le__(self, other):
+        result = thrift.py3.types.list_compare(other, self, Py_LT)
+        return not result if result is not NotImplemented else NotImplemented
+
+    def __ge__(self, other):
+        result = thrift.py3.types.list_compare(self, other, Py_LT)
+        return not result if result is not NotImplemented else NotImplemented
 
     def __hash__(self):
         if not self.__hash:
@@ -9205,20 +9339,25 @@ cdef class List__List__List__i32:
     def __len__(self):
         return deref(self._cpp_obj).size()
 
-    def __richcmp__(self, other, op):
-        cdef int cop = op
-        if cop not in (2, 3):
-            raise TypeError("unorderable types: {}, {}".format(type(self), type(other)))
-        if not (isinstance(self, Iterable) and isinstance(other, Iterable)):
-            return cop != 2
-        if (len(self) != len(other)):
-            return cop != 2
+    def __eq__(self, other):
+        return thrift.py3.types.list_compare(self, other, Py_EQ)
 
-        for one, two in zip(self, other):
-            if one != two:
-                return cop != 2
+    def __ne__(self, other):
+        return not thrift.py3.types.list_compare(self, other, Py_EQ)
 
-        return cop == 2
+    def __lt__(self, other):
+        return thrift.py3.types.list_compare(self, other, Py_LT)
+
+    def __gt__(self, other):
+        return thrift.py3.types.list_compare(other, self, Py_LT)
+
+    def __le__(self, other):
+        result = thrift.py3.types.list_compare(other, self, Py_LT)
+        return not result if result is not NotImplemented else NotImplemented
+
+    def __ge__(self, other):
+        result = thrift.py3.types.list_compare(self, other, Py_LT)
+        return not result if result is not NotImplemented else NotImplemented
 
     def __hash__(self):
         if not self.__hash:
@@ -9375,20 +9514,25 @@ cdef class List__List__List__List__i32:
     def __len__(self):
         return deref(self._cpp_obj).size()
 
-    def __richcmp__(self, other, op):
-        cdef int cop = op
-        if cop not in (2, 3):
-            raise TypeError("unorderable types: {}, {}".format(type(self), type(other)))
-        if not (isinstance(self, Iterable) and isinstance(other, Iterable)):
-            return cop != 2
-        if (len(self) != len(other)):
-            return cop != 2
+    def __eq__(self, other):
+        return thrift.py3.types.list_compare(self, other, Py_EQ)
 
-        for one, two in zip(self, other):
-            if one != two:
-                return cop != 2
+    def __ne__(self, other):
+        return not thrift.py3.types.list_compare(self, other, Py_EQ)
 
-        return cop == 2
+    def __lt__(self, other):
+        return thrift.py3.types.list_compare(self, other, Py_LT)
+
+    def __gt__(self, other):
+        return thrift.py3.types.list_compare(other, self, Py_LT)
+
+    def __le__(self, other):
+        result = thrift.py3.types.list_compare(other, self, Py_LT)
+        return not result if result is not NotImplemented else NotImplemented
+
+    def __ge__(self, other):
+        result = thrift.py3.types.list_compare(self, other, Py_LT)
+        return not result if result is not NotImplemented else NotImplemented
 
     def __hash__(self):
         if not self.__hash:
@@ -9554,13 +9698,12 @@ cdef class Set__List__i32:
         cdef int cop = op
         cdef shared_ptr[cset[vector[int32_t]]] cself, cother
         cdef cset[vector[int32_t]].iterator loc
-        cdef cbool retval
         if (isinstance(self, Set__List__i32) and
                 isinstance(other, Set__List__i32)):
             cself = (<Set__List__i32> self)._cpp_obj
             cother = (<Set__List__i32> other)._cpp_obj
             # C level comparisons
-            if cop == 0:    # Less Than (strict subset)
+            if cop == Py_LT:    # Less Than (strict subset)
                 if not deref(cself).size() < deref(cother).size():
                     return False
                 loc = deref(cself).begin()
@@ -9569,14 +9712,14 @@ cdef class Set__List__i32:
                         return False
                     inc(loc)
                 return True
-            elif cop == 1:  # Less Than or Equal To  (subset)
+            elif cop == Py_LE:  # Less Than or Equal To  (subset)
                 loc = deref(cself).begin()
                 while loc != deref(cself).end():
                     if not deref(cother).count(deref(loc)):
                         return False
                     inc(loc)
                 return True
-            elif cop == 2:  # Equivalent
+            elif cop == Py_EQ:  # Equivalent
                 if deref(cself).size() != deref(cother).size():
                     return False
                 loc = deref(cself).begin()
@@ -9585,14 +9728,14 @@ cdef class Set__List__i32:
                         return False
                     inc(loc)
                 return True
-            elif cop == 3:  # Not Equivalent
+            elif cop == Py_NE:  # Not Equivalent
                 loc = deref(cself).begin()
                 while loc != deref(cself).end():
                     if not deref(cother).count(deref(loc)):
                         return True
                     inc(loc)
                 return deref(cself).size() != deref(cother).size()
-            elif cop == 4:  # Greater Than (strict superset)
+            elif cop == Py_GT:  # Greater Than (strict superset)
                 if not deref(cself).size() > deref(cother).size():
                     return False
                 loc = deref(cother).begin()
@@ -9601,7 +9744,7 @@ cdef class Set__List__i32:
                         return False
                     inc(loc)
                 return True
-            elif cop == 5:  # Greater Than or Equal To (superset)
+            elif cop == Py_GE:  # Greater Than or Equal To (superset)
                 loc = deref(cother).begin()
                 while loc != deref(cother).end():
                     if not deref(cself).count(deref(loc)):
@@ -9610,17 +9753,17 @@ cdef class Set__List__i32:
                 return True
 
         # Python level comparisons
-        if cop == 0:
+        if cop == Py_LT:
             return Set.__lt__(self, other)
-        elif cop == 1:
+        elif cop == Py_LE:
             return Set.__le__(self, other)
-        elif cop == 2:
+        elif cop == Py_EQ:
             return Set.__eq__(self, other)
-        elif cop == 3:
+        elif cop == Py_NE:
             return Set.__ne__(self, other)
-        elif cop == 4:
+        elif cop == Py_GT:
             return Set.__gt__(self, other)
-        elif cop == 5:
+        elif cop == Py_GE:
             return Set.__ge__(self, other)
 
     def __hash__(self):
@@ -9795,13 +9938,12 @@ cdef class Set__string:
         cdef int cop = op
         cdef shared_ptr[cset[string]] cself, cother
         cdef cset[string].iterator loc
-        cdef cbool retval
         if (isinstance(self, Set__string) and
                 isinstance(other, Set__string)):
             cself = (<Set__string> self)._cpp_obj
             cother = (<Set__string> other)._cpp_obj
             # C level comparisons
-            if cop == 0:    # Less Than (strict subset)
+            if cop == Py_LT:    # Less Than (strict subset)
                 if not deref(cself).size() < deref(cother).size():
                     return False
                 loc = deref(cself).begin()
@@ -9810,14 +9952,14 @@ cdef class Set__string:
                         return False
                     inc(loc)
                 return True
-            elif cop == 1:  # Less Than or Equal To  (subset)
+            elif cop == Py_LE:  # Less Than or Equal To  (subset)
                 loc = deref(cself).begin()
                 while loc != deref(cself).end():
                     if not deref(cother).count(deref(loc)):
                         return False
                     inc(loc)
                 return True
-            elif cop == 2:  # Equivalent
+            elif cop == Py_EQ:  # Equivalent
                 if deref(cself).size() != deref(cother).size():
                     return False
                 loc = deref(cself).begin()
@@ -9826,14 +9968,14 @@ cdef class Set__string:
                         return False
                     inc(loc)
                 return True
-            elif cop == 3:  # Not Equivalent
+            elif cop == Py_NE:  # Not Equivalent
                 loc = deref(cself).begin()
                 while loc != deref(cself).end():
                     if not deref(cother).count(deref(loc)):
                         return True
                     inc(loc)
                 return deref(cself).size() != deref(cother).size()
-            elif cop == 4:  # Greater Than (strict superset)
+            elif cop == Py_GT:  # Greater Than (strict superset)
                 if not deref(cself).size() > deref(cother).size():
                     return False
                 loc = deref(cother).begin()
@@ -9842,7 +9984,7 @@ cdef class Set__string:
                         return False
                     inc(loc)
                 return True
-            elif cop == 5:  # Greater Than or Equal To (superset)
+            elif cop == Py_GE:  # Greater Than or Equal To (superset)
                 loc = deref(cother).begin()
                 while loc != deref(cother).end():
                     if not deref(cself).count(deref(loc)):
@@ -9851,17 +9993,17 @@ cdef class Set__string:
                 return True
 
         # Python level comparisons
-        if cop == 0:
+        if cop == Py_LT:
             return Set.__lt__(self, other)
-        elif cop == 1:
+        elif cop == Py_LE:
             return Set.__le__(self, other)
-        elif cop == 2:
+        elif cop == Py_EQ:
             return Set.__eq__(self, other)
-        elif cop == 3:
+        elif cop == Py_NE:
             return Set.__ne__(self, other)
-        elif cop == 4:
+        elif cop == Py_GT:
             return Set.__gt__(self, other)
-        elif cop == 5:
+        elif cop == Py_GE:
             return Set.__ge__(self, other)
 
     def __hash__(self):
@@ -10034,20 +10176,25 @@ cdef class List__Set__string:
     def __len__(self):
         return deref(self._cpp_obj).size()
 
-    def __richcmp__(self, other, op):
-        cdef int cop = op
-        if cop not in (2, 3):
-            raise TypeError("unorderable types: {}, {}".format(type(self), type(other)))
-        if not (isinstance(self, Iterable) and isinstance(other, Iterable)):
-            return cop != 2
-        if (len(self) != len(other)):
-            return cop != 2
+    def __eq__(self, other):
+        return thrift.py3.types.list_compare(self, other, Py_EQ)
 
-        for one, two in zip(self, other):
-            if one != two:
-                return cop != 2
+    def __ne__(self, other):
+        return not thrift.py3.types.list_compare(self, other, Py_EQ)
 
-        return cop == 2
+    def __lt__(self, other):
+        return thrift.py3.types.list_compare(self, other, Py_LT)
+
+    def __gt__(self, other):
+        return thrift.py3.types.list_compare(other, self, Py_LT)
+
+    def __le__(self, other):
+        result = thrift.py3.types.list_compare(other, self, Py_LT)
+        return not result if result is not NotImplemented else NotImplemented
+
+    def __ge__(self, other):
+        result = thrift.py3.types.list_compare(self, other, Py_LT)
+        return not result if result is not NotImplemented else NotImplemented
 
     def __hash__(self):
         if not self.__hash:
@@ -10212,22 +10359,22 @@ cdef class Map__List__Set__string_string:
             yield List__Set__string.create(citem)
             inc(loc)
 
-    def __richcmp__(self, other, op):
-        cdef int cop = op
-        if cop not in (2, 3):
-            raise TypeError("unorderable types: {}, {}".format(type(self), type(other)))
+    def __eq__(self, other):
         if not (isinstance(self, Mapping) and isinstance(other, Mapping)):
-            return cop != 2
-        if (len(self) != len(other)):
-            return cop != 2
+            return False
+        if len(self) != len(other):
+            return False
 
         for key in self:
             if key not in other:
-                return cop != 2
+                return False
             if other[key] != self[key]:
-                return cop != 2
+                return False
 
-        return cop == 2
+        return True
+
+    def __ne__(self, other):
+        return not self.__eq__(other)
 
     def __hash__(self):
         if not self.__hash:
@@ -10362,22 +10509,22 @@ cdef class Map__Set__List__i32_Map__List__Set__string_string:
             yield Set__List__i32.create(citem)
             inc(loc)
 
-    def __richcmp__(self, other, op):
-        cdef int cop = op
-        if cop not in (2, 3):
-            raise TypeError("unorderable types: {}, {}".format(type(self), type(other)))
+    def __eq__(self, other):
         if not (isinstance(self, Mapping) and isinstance(other, Mapping)):
-            return cop != 2
-        if (len(self) != len(other)):
-            return cop != 2
+            return False
+        if len(self) != len(other):
+            return False
 
         for key in self:
             if key not in other:
-                return cop != 2
+                return False
             if other[key] != self[key]:
-                return cop != 2
+                return False
 
-        return cop == 2
+        return True
+
+    def __ne__(self, other):
+        return not self.__eq__(other)
 
     def __hash__(self):
         if not self.__hash:
@@ -10500,20 +10647,25 @@ cdef class List__binary:
     def __len__(self):
         return deref(self._cpp_obj).size()
 
-    def __richcmp__(self, other, op):
-        cdef int cop = op
-        if cop not in (2, 3):
-            raise TypeError("unorderable types: {}, {}".format(type(self), type(other)))
-        if not (isinstance(self, Iterable) and isinstance(other, Iterable)):
-            return cop != 2
-        if (len(self) != len(other)):
-            return cop != 2
+    def __eq__(self, other):
+        return thrift.py3.types.list_compare(self, other, Py_EQ)
 
-        for one, two in zip(self, other):
-            if one != two:
-                return cop != 2
+    def __ne__(self, other):
+        return not thrift.py3.types.list_compare(self, other, Py_EQ)
 
-        return cop == 2
+    def __lt__(self, other):
+        return thrift.py3.types.list_compare(self, other, Py_LT)
+
+    def __gt__(self, other):
+        return thrift.py3.types.list_compare(other, self, Py_LT)
+
+    def __le__(self, other):
+        result = thrift.py3.types.list_compare(other, self, Py_LT)
+        return not result if result is not NotImplemented else NotImplemented
+
+    def __ge__(self, other):
+        result = thrift.py3.types.list_compare(self, other, Py_LT)
+        return not result if result is not NotImplemented else NotImplemented
 
     def __hash__(self):
         if not self.__hash:
@@ -10656,22 +10808,22 @@ cdef class Map__MyEnumA_string:
             yield translate_cpp_enum_to_python(MyEnumA, <int> citem)
             inc(loc)
 
-    def __richcmp__(self, other, op):
-        cdef int cop = op
-        if cop not in (2, 3):
-            raise TypeError("unorderable types: {}, {}".format(type(self), type(other)))
+    def __eq__(self, other):
         if not (isinstance(self, Mapping) and isinstance(other, Mapping)):
-            return cop != 2
-        if (len(self) != len(other)):
-            return cop != 2
+            return False
+        if len(self) != len(other):
+            return False
 
         for key in self:
             if key not in other:
-                return cop != 2
+                return False
             if other[key] != self[key]:
-                return cop != 2
+                return False
 
-        return cop == 2
+        return True
+
+    def __ne__(self, other):
+        return not self.__eq__(other)
 
     def __hash__(self):
         if not self.__hash:
@@ -10794,13 +10946,12 @@ cdef class Set__i64:
         cdef int cop = op
         cdef shared_ptr[cset[int64_t]] cself, cother
         cdef cset[int64_t].iterator loc
-        cdef cbool retval
         if (isinstance(self, Set__i64) and
                 isinstance(other, Set__i64)):
             cself = (<Set__i64> self)._cpp_obj
             cother = (<Set__i64> other)._cpp_obj
             # C level comparisons
-            if cop == 0:    # Less Than (strict subset)
+            if cop == Py_LT:    # Less Than (strict subset)
                 if not deref(cself).size() < deref(cother).size():
                     return False
                 loc = deref(cself).begin()
@@ -10809,14 +10960,14 @@ cdef class Set__i64:
                         return False
                     inc(loc)
                 return True
-            elif cop == 1:  # Less Than or Equal To  (subset)
+            elif cop == Py_LE:  # Less Than or Equal To  (subset)
                 loc = deref(cself).begin()
                 while loc != deref(cself).end():
                     if not deref(cother).count(deref(loc)):
                         return False
                     inc(loc)
                 return True
-            elif cop == 2:  # Equivalent
+            elif cop == Py_EQ:  # Equivalent
                 if deref(cself).size() != deref(cother).size():
                     return False
                 loc = deref(cself).begin()
@@ -10825,14 +10976,14 @@ cdef class Set__i64:
                         return False
                     inc(loc)
                 return True
-            elif cop == 3:  # Not Equivalent
+            elif cop == Py_NE:  # Not Equivalent
                 loc = deref(cself).begin()
                 while loc != deref(cself).end():
                     if not deref(cother).count(deref(loc)):
                         return True
                     inc(loc)
                 return deref(cself).size() != deref(cother).size()
-            elif cop == 4:  # Greater Than (strict superset)
+            elif cop == Py_GT:  # Greater Than (strict superset)
                 if not deref(cself).size() > deref(cother).size():
                     return False
                 loc = deref(cother).begin()
@@ -10841,7 +10992,7 @@ cdef class Set__i64:
                         return False
                     inc(loc)
                 return True
-            elif cop == 5:  # Greater Than or Equal To (superset)
+            elif cop == Py_GE:  # Greater Than or Equal To (superset)
                 loc = deref(cother).begin()
                 while loc != deref(cother).end():
                     if not deref(cself).count(deref(loc)):
@@ -10850,17 +11001,17 @@ cdef class Set__i64:
                 return True
 
         # Python level comparisons
-        if cop == 0:
+        if cop == Py_LT:
             return Set.__lt__(self, other)
-        elif cop == 1:
+        elif cop == Py_LE:
             return Set.__le__(self, other)
-        elif cop == 2:
+        elif cop == Py_EQ:
             return Set.__eq__(self, other)
-        elif cop == 3:
+        elif cop == Py_NE:
             return Set.__ne__(self, other)
-        elif cop == 4:
+        elif cop == Py_GT:
             return Set.__gt__(self, other)
-        elif cop == 5:
+        elif cop == Py_GE:
             return Set.__ge__(self, other)
 
     def __hash__(self):
@@ -11035,22 +11186,22 @@ cdef class Map__string_i32:
             yield bytes(citem).decode('UTF-8')
             inc(loc)
 
-    def __richcmp__(self, other, op):
-        cdef int cop = op
-        if cop not in (2, 3):
-            raise TypeError("unorderable types: {}, {}".format(type(self), type(other)))
+    def __eq__(self, other):
         if not (isinstance(self, Mapping) and isinstance(other, Mapping)):
-            return cop != 2
-        if (len(self) != len(other)):
-            return cop != 2
+            return False
+        if len(self) != len(other):
+            return False
 
         for key in self:
             if key not in other:
-                return cop != 2
+                return False
             if other[key] != self[key]:
-                return cop != 2
+                return False
 
-        return cop == 2
+        return True
+
+    def __ne__(self, other):
+        return not self.__eq__(other)
 
     def __hash__(self):
         if not self.__hash:
@@ -11168,20 +11319,25 @@ cdef class List__SimpleUnion:
     def __len__(self):
         return deref(self._cpp_obj).size()
 
-    def __richcmp__(self, other, op):
-        cdef int cop = op
-        if cop not in (2, 3):
-            raise TypeError("unorderable types: {}, {}".format(type(self), type(other)))
-        if not (isinstance(self, Iterable) and isinstance(other, Iterable)):
-            return cop != 2
-        if (len(self) != len(other)):
-            return cop != 2
+    def __eq__(self, other):
+        return thrift.py3.types.list_compare(self, other, Py_EQ)
 
-        for one, two in zip(self, other):
-            if one != two:
-                return cop != 2
+    def __ne__(self, other):
+        return not thrift.py3.types.list_compare(self, other, Py_EQ)
 
-        return cop == 2
+    def __lt__(self, other):
+        return thrift.py3.types.list_compare(self, other, Py_LT)
+
+    def __gt__(self, other):
+        return thrift.py3.types.list_compare(other, self, Py_LT)
+
+    def __le__(self, other):
+        result = thrift.py3.types.list_compare(other, self, Py_LT)
+        return not result if result is not NotImplemented else NotImplemented
+
+    def __ge__(self, other):
+        result = thrift.py3.types.list_compare(self, other, Py_LT)
+        return not result if result is not NotImplemented else NotImplemented
 
     def __hash__(self):
         if not self.__hash:
@@ -11325,13 +11481,12 @@ cdef class Set__SimpleUnion:
         cdef int cop = op
         cdef shared_ptr[cset[cSimpleUnion]] cself, cother
         cdef cset[cSimpleUnion].iterator loc
-        cdef cbool retval
         if (isinstance(self, Set__SimpleUnion) and
                 isinstance(other, Set__SimpleUnion)):
             cself = (<Set__SimpleUnion> self)._cpp_obj
             cother = (<Set__SimpleUnion> other)._cpp_obj
             # C level comparisons
-            if cop == 0:    # Less Than (strict subset)
+            if cop == Py_LT:    # Less Than (strict subset)
                 if not deref(cself).size() < deref(cother).size():
                     return False
                 loc = deref(cself).begin()
@@ -11340,14 +11495,14 @@ cdef class Set__SimpleUnion:
                         return False
                     inc(loc)
                 return True
-            elif cop == 1:  # Less Than or Equal To  (subset)
+            elif cop == Py_LE:  # Less Than or Equal To  (subset)
                 loc = deref(cself).begin()
                 while loc != deref(cself).end():
                     if not deref(cother).count(deref(loc)):
                         return False
                     inc(loc)
                 return True
-            elif cop == 2:  # Equivalent
+            elif cop == Py_EQ:  # Equivalent
                 if deref(cself).size() != deref(cother).size():
                     return False
                 loc = deref(cself).begin()
@@ -11356,14 +11511,14 @@ cdef class Set__SimpleUnion:
                         return False
                     inc(loc)
                 return True
-            elif cop == 3:  # Not Equivalent
+            elif cop == Py_NE:  # Not Equivalent
                 loc = deref(cself).begin()
                 while loc != deref(cself).end():
                     if not deref(cother).count(deref(loc)):
                         return True
                     inc(loc)
                 return deref(cself).size() != deref(cother).size()
-            elif cop == 4:  # Greater Than (strict superset)
+            elif cop == Py_GT:  # Greater Than (strict superset)
                 if not deref(cself).size() > deref(cother).size():
                     return False
                 loc = deref(cother).begin()
@@ -11372,7 +11527,7 @@ cdef class Set__SimpleUnion:
                         return False
                     inc(loc)
                 return True
-            elif cop == 5:  # Greater Than or Equal To (superset)
+            elif cop == Py_GE:  # Greater Than or Equal To (superset)
                 loc = deref(cother).begin()
                 while loc != deref(cother).end():
                     if not deref(cself).count(deref(loc)):
@@ -11381,17 +11536,17 @@ cdef class Set__SimpleUnion:
                 return True
 
         # Python level comparisons
-        if cop == 0:
+        if cop == Py_LT:
             return Set.__lt__(self, other)
-        elif cop == 1:
+        elif cop == Py_LE:
             return Set.__le__(self, other)
-        elif cop == 2:
+        elif cop == Py_EQ:
             return Set.__eq__(self, other)
-        elif cop == 3:
+        elif cop == Py_NE:
             return Set.__ne__(self, other)
-        elif cop == 4:
+        elif cop == Py_GT:
             return Set.__gt__(self, other)
-        elif cop == 5:
+        elif cop == Py_GE:
             return Set.__ge__(self, other)
 
     def __hash__(self):
@@ -11564,20 +11719,25 @@ cdef class List__Set__SimpleUnion:
     def __len__(self):
         return deref(self._cpp_obj).size()
 
-    def __richcmp__(self, other, op):
-        cdef int cop = op
-        if cop not in (2, 3):
-            raise TypeError("unorderable types: {}, {}".format(type(self), type(other)))
-        if not (isinstance(self, Iterable) and isinstance(other, Iterable)):
-            return cop != 2
-        if (len(self) != len(other)):
-            return cop != 2
+    def __eq__(self, other):
+        return thrift.py3.types.list_compare(self, other, Py_EQ)
 
-        for one, two in zip(self, other):
-            if one != two:
-                return cop != 2
+    def __ne__(self, other):
+        return not thrift.py3.types.list_compare(self, other, Py_EQ)
 
-        return cop == 2
+    def __lt__(self, other):
+        return thrift.py3.types.list_compare(self, other, Py_LT)
+
+    def __gt__(self, other):
+        return thrift.py3.types.list_compare(other, self, Py_LT)
+
+    def __le__(self, other):
+        result = thrift.py3.types.list_compare(other, self, Py_LT)
+        return not result if result is not NotImplemented else NotImplemented
+
+    def __ge__(self, other):
+        result = thrift.py3.types.list_compare(self, other, Py_LT)
+        return not result if result is not NotImplemented else NotImplemented
 
     def __hash__(self):
         if not self.__hash:
@@ -11735,22 +11895,22 @@ cdef class Map__string_bool:
             yield bytes(citem).decode('UTF-8')
             inc(loc)
 
-    def __richcmp__(self, other, op):
-        cdef int cop = op
-        if cop not in (2, 3):
-            raise TypeError("unorderable types: {}, {}".format(type(self), type(other)))
+    def __eq__(self, other):
         if not (isinstance(self, Mapping) and isinstance(other, Mapping)):
-            return cop != 2
-        if (len(self) != len(other)):
-            return cop != 2
+            return False
+        if len(self) != len(other):
+            return False
 
         for key in self:
             if key not in other:
-                return cop != 2
+                return False
             if other[key] != self[key]:
-                return cop != 2
+                return False
 
-        return cop == 2
+        return True
+
+    def __ne__(self, other):
+        return not self.__eq__(other)
 
     def __hash__(self):
         if not self.__hash:
@@ -11873,13 +12033,12 @@ cdef class Set__i32:
         cdef int cop = op
         cdef shared_ptr[cset[int32_t]] cself, cother
         cdef cset[int32_t].iterator loc
-        cdef cbool retval
         if (isinstance(self, Set__i32) and
                 isinstance(other, Set__i32)):
             cself = (<Set__i32> self)._cpp_obj
             cother = (<Set__i32> other)._cpp_obj
             # C level comparisons
-            if cop == 0:    # Less Than (strict subset)
+            if cop == Py_LT:    # Less Than (strict subset)
                 if not deref(cself).size() < deref(cother).size():
                     return False
                 loc = deref(cself).begin()
@@ -11888,14 +12047,14 @@ cdef class Set__i32:
                         return False
                     inc(loc)
                 return True
-            elif cop == 1:  # Less Than or Equal To  (subset)
+            elif cop == Py_LE:  # Less Than or Equal To  (subset)
                 loc = deref(cself).begin()
                 while loc != deref(cself).end():
                     if not deref(cother).count(deref(loc)):
                         return False
                     inc(loc)
                 return True
-            elif cop == 2:  # Equivalent
+            elif cop == Py_EQ:  # Equivalent
                 if deref(cself).size() != deref(cother).size():
                     return False
                 loc = deref(cself).begin()
@@ -11904,14 +12063,14 @@ cdef class Set__i32:
                         return False
                     inc(loc)
                 return True
-            elif cop == 3:  # Not Equivalent
+            elif cop == Py_NE:  # Not Equivalent
                 loc = deref(cself).begin()
                 while loc != deref(cself).end():
                     if not deref(cother).count(deref(loc)):
                         return True
                     inc(loc)
                 return deref(cself).size() != deref(cother).size()
-            elif cop == 4:  # Greater Than (strict superset)
+            elif cop == Py_GT:  # Greater Than (strict superset)
                 if not deref(cself).size() > deref(cother).size():
                     return False
                 loc = deref(cother).begin()
@@ -11920,7 +12079,7 @@ cdef class Set__i32:
                         return False
                     inc(loc)
                 return True
-            elif cop == 5:  # Greater Than or Equal To (superset)
+            elif cop == Py_GE:  # Greater Than or Equal To (superset)
                 loc = deref(cother).begin()
                 while loc != deref(cother).end():
                     if not deref(cself).count(deref(loc)):
@@ -11929,17 +12088,17 @@ cdef class Set__i32:
                 return True
 
         # Python level comparisons
-        if cop == 0:
+        if cop == Py_LT:
             return Set.__lt__(self, other)
-        elif cop == 1:
+        elif cop == Py_LE:
             return Set.__le__(self, other)
-        elif cop == 2:
+        elif cop == Py_EQ:
             return Set.__eq__(self, other)
-        elif cop == 3:
+        elif cop == Py_NE:
             return Set.__ne__(self, other)
-        elif cop == 4:
+        elif cop == Py_GT:
             return Set.__gt__(self, other)
-        elif cop == 5:
+        elif cop == Py_GE:
             return Set.__ge__(self, other)
 
     def __hash__(self):
@@ -12115,22 +12274,22 @@ cdef class Map__string_Map__string_i32:
             yield bytes(citem).decode('UTF-8')
             inc(loc)
 
-    def __richcmp__(self, other, op):
-        cdef int cop = op
-        if cop not in (2, 3):
-            raise TypeError("unorderable types: {}, {}".format(type(self), type(other)))
+    def __eq__(self, other):
         if not (isinstance(self, Mapping) and isinstance(other, Mapping)):
-            return cop != 2
-        if (len(self) != len(other)):
-            return cop != 2
+            return False
+        if len(self) != len(other):
+            return False
 
         for key in self:
             if key not in other:
-                return cop != 2
+                return False
             if other[key] != self[key]:
-                return cop != 2
+                return False
 
-        return cop == 2
+        return True
+
+    def __ne__(self, other):
+        return not self.__eq__(other)
 
     def __hash__(self):
         if not self.__hash:
@@ -12253,22 +12412,22 @@ cdef class Map__string_Map__string_Map__string_i32:
             yield bytes(citem).decode('UTF-8')
             inc(loc)
 
-    def __richcmp__(self, other, op):
-        cdef int cop = op
-        if cop not in (2, 3):
-            raise TypeError("unorderable types: {}, {}".format(type(self), type(other)))
+    def __eq__(self, other):
         if not (isinstance(self, Mapping) and isinstance(other, Mapping)):
-            return cop != 2
-        if (len(self) != len(other)):
-            return cop != 2
+            return False
+        if len(self) != len(other):
+            return False
 
         for key in self:
             if key not in other:
-                return cop != 2
+                return False
             if other[key] != self[key]:
-                return cop != 2
+                return False
 
-        return cop == 2
+        return True
+
+    def __ne__(self, other):
+        return not self.__eq__(other)
 
     def __hash__(self):
         if not self.__hash:
@@ -12388,20 +12547,25 @@ cdef class List__Set__i32:
     def __len__(self):
         return deref(self._cpp_obj).size()
 
-    def __richcmp__(self, other, op):
-        cdef int cop = op
-        if cop not in (2, 3):
-            raise TypeError("unorderable types: {}, {}".format(type(self), type(other)))
-        if not (isinstance(self, Iterable) and isinstance(other, Iterable)):
-            return cop != 2
-        if (len(self) != len(other)):
-            return cop != 2
+    def __eq__(self, other):
+        return thrift.py3.types.list_compare(self, other, Py_EQ)
 
-        for one, two in zip(self, other):
-            if one != two:
-                return cop != 2
+    def __ne__(self, other):
+        return not thrift.py3.types.list_compare(self, other, Py_EQ)
 
-        return cop == 2
+    def __lt__(self, other):
+        return thrift.py3.types.list_compare(self, other, Py_LT)
+
+    def __gt__(self, other):
+        return thrift.py3.types.list_compare(other, self, Py_LT)
+
+    def __le__(self, other):
+        result = thrift.py3.types.list_compare(other, self, Py_LT)
+        return not result if result is not NotImplemented else NotImplemented
+
+    def __ge__(self, other):
+        result = thrift.py3.types.list_compare(self, other, Py_LT)
+        return not result if result is not NotImplemented else NotImplemented
 
     def __hash__(self):
         if not self.__hash:
@@ -12561,22 +12725,22 @@ cdef class Map__string_List__i32:
             yield bytes(citem).decode('UTF-8')
             inc(loc)
 
-    def __richcmp__(self, other, op):
-        cdef int cop = op
-        if cop not in (2, 3):
-            raise TypeError("unorderable types: {}, {}".format(type(self), type(other)))
+    def __eq__(self, other):
         if not (isinstance(self, Mapping) and isinstance(other, Mapping)):
-            return cop != 2
-        if (len(self) != len(other)):
-            return cop != 2
+            return False
+        if len(self) != len(other):
+            return False
 
         for key in self:
             if key not in other:
-                return cop != 2
+                return False
             if other[key] != self[key]:
-                return cop != 2
+                return False
 
-        return cop == 2
+        return True
+
+    def __ne__(self, other):
+        return not self.__eq__(other)
 
     def __hash__(self):
         if not self.__hash:
@@ -12698,13 +12862,12 @@ cdef class Set__bool:
         cdef int cop = op
         cdef shared_ptr[cset[cbool]] cself, cother
         cdef cset[cbool].iterator loc
-        cdef cbool retval
         if (isinstance(self, Set__bool) and
                 isinstance(other, Set__bool)):
             cself = (<Set__bool> self)._cpp_obj
             cother = (<Set__bool> other)._cpp_obj
             # C level comparisons
-            if cop == 0:    # Less Than (strict subset)
+            if cop == Py_LT:    # Less Than (strict subset)
                 if not deref(cself).size() < deref(cother).size():
                     return False
                 loc = deref(cself).begin()
@@ -12713,14 +12876,14 @@ cdef class Set__bool:
                         return False
                     inc(loc)
                 return True
-            elif cop == 1:  # Less Than or Equal To  (subset)
+            elif cop == Py_LE:  # Less Than or Equal To  (subset)
                 loc = deref(cself).begin()
                 while loc != deref(cself).end():
                     if not deref(cother).count(deref(loc)):
                         return False
                     inc(loc)
                 return True
-            elif cop == 2:  # Equivalent
+            elif cop == Py_EQ:  # Equivalent
                 if deref(cself).size() != deref(cother).size():
                     return False
                 loc = deref(cself).begin()
@@ -12729,14 +12892,14 @@ cdef class Set__bool:
                         return False
                     inc(loc)
                 return True
-            elif cop == 3:  # Not Equivalent
+            elif cop == Py_NE:  # Not Equivalent
                 loc = deref(cself).begin()
                 while loc != deref(cself).end():
                     if not deref(cother).count(deref(loc)):
                         return True
                     inc(loc)
                 return deref(cself).size() != deref(cother).size()
-            elif cop == 4:  # Greater Than (strict superset)
+            elif cop == Py_GT:  # Greater Than (strict superset)
                 if not deref(cself).size() > deref(cother).size():
                     return False
                 loc = deref(cother).begin()
@@ -12745,7 +12908,7 @@ cdef class Set__bool:
                         return False
                     inc(loc)
                 return True
-            elif cop == 5:  # Greater Than or Equal To (superset)
+            elif cop == Py_GE:  # Greater Than or Equal To (superset)
                 loc = deref(cother).begin()
                 while loc != deref(cother).end():
                     if not deref(cself).count(deref(loc)):
@@ -12754,17 +12917,17 @@ cdef class Set__bool:
                 return True
 
         # Python level comparisons
-        if cop == 0:
+        if cop == Py_LT:
             return Set.__lt__(self, other)
-        elif cop == 1:
+        elif cop == Py_LE:
             return Set.__le__(self, other)
-        elif cop == 2:
+        elif cop == Py_EQ:
             return Set.__eq__(self, other)
-        elif cop == 3:
+        elif cop == Py_NE:
             return Set.__ne__(self, other)
-        elif cop == 4:
+        elif cop == Py_GT:
             return Set.__gt__(self, other)
-        elif cop == 5:
+        elif cop == Py_GE:
             return Set.__ge__(self, other)
 
     def __hash__(self):
@@ -12946,13 +13109,12 @@ cdef class Set__Set__bool:
         cdef int cop = op
         cdef shared_ptr[cset[cset[cbool]]] cself, cother
         cdef cset[cset[cbool]].iterator loc
-        cdef cbool retval
         if (isinstance(self, Set__Set__bool) and
                 isinstance(other, Set__Set__bool)):
             cself = (<Set__Set__bool> self)._cpp_obj
             cother = (<Set__Set__bool> other)._cpp_obj
             # C level comparisons
-            if cop == 0:    # Less Than (strict subset)
+            if cop == Py_LT:    # Less Than (strict subset)
                 if not deref(cself).size() < deref(cother).size():
                     return False
                 loc = deref(cself).begin()
@@ -12961,14 +13123,14 @@ cdef class Set__Set__bool:
                         return False
                     inc(loc)
                 return True
-            elif cop == 1:  # Less Than or Equal To  (subset)
+            elif cop == Py_LE:  # Less Than or Equal To  (subset)
                 loc = deref(cself).begin()
                 while loc != deref(cself).end():
                     if not deref(cother).count(deref(loc)):
                         return False
                     inc(loc)
                 return True
-            elif cop == 2:  # Equivalent
+            elif cop == Py_EQ:  # Equivalent
                 if deref(cself).size() != deref(cother).size():
                     return False
                 loc = deref(cself).begin()
@@ -12977,14 +13139,14 @@ cdef class Set__Set__bool:
                         return False
                     inc(loc)
                 return True
-            elif cop == 3:  # Not Equivalent
+            elif cop == Py_NE:  # Not Equivalent
                 loc = deref(cself).begin()
                 while loc != deref(cself).end():
                     if not deref(cother).count(deref(loc)):
                         return True
                     inc(loc)
                 return deref(cself).size() != deref(cother).size()
-            elif cop == 4:  # Greater Than (strict superset)
+            elif cop == Py_GT:  # Greater Than (strict superset)
                 if not deref(cself).size() > deref(cother).size():
                     return False
                 loc = deref(cother).begin()
@@ -12993,7 +13155,7 @@ cdef class Set__Set__bool:
                         return False
                     inc(loc)
                 return True
-            elif cop == 5:  # Greater Than or Equal To (superset)
+            elif cop == Py_GE:  # Greater Than or Equal To (superset)
                 loc = deref(cother).begin()
                 while loc != deref(cother).end():
                     if not deref(cself).count(deref(loc)):
@@ -13002,17 +13164,17 @@ cdef class Set__Set__bool:
                 return True
 
         # Python level comparisons
-        if cop == 0:
+        if cop == Py_LT:
             return Set.__lt__(self, other)
-        elif cop == 1:
+        elif cop == Py_LE:
             return Set.__le__(self, other)
-        elif cop == 2:
+        elif cop == Py_EQ:
             return Set.__eq__(self, other)
-        elif cop == 3:
+        elif cop == Py_NE:
             return Set.__ne__(self, other)
-        elif cop == 4:
+        elif cop == Py_GT:
             return Set.__gt__(self, other)
-        elif cop == 5:
+        elif cop == Py_GE:
             return Set.__ge__(self, other)
 
     def __hash__(self):
@@ -13194,13 +13356,12 @@ cdef class Set__Set__Set__bool:
         cdef int cop = op
         cdef shared_ptr[cset[cset[cset[cbool]]]] cself, cother
         cdef cset[cset[cset[cbool]]].iterator loc
-        cdef cbool retval
         if (isinstance(self, Set__Set__Set__bool) and
                 isinstance(other, Set__Set__Set__bool)):
             cself = (<Set__Set__Set__bool> self)._cpp_obj
             cother = (<Set__Set__Set__bool> other)._cpp_obj
             # C level comparisons
-            if cop == 0:    # Less Than (strict subset)
+            if cop == Py_LT:    # Less Than (strict subset)
                 if not deref(cself).size() < deref(cother).size():
                     return False
                 loc = deref(cself).begin()
@@ -13209,14 +13370,14 @@ cdef class Set__Set__Set__bool:
                         return False
                     inc(loc)
                 return True
-            elif cop == 1:  # Less Than or Equal To  (subset)
+            elif cop == Py_LE:  # Less Than or Equal To  (subset)
                 loc = deref(cself).begin()
                 while loc != deref(cself).end():
                     if not deref(cother).count(deref(loc)):
                         return False
                     inc(loc)
                 return True
-            elif cop == 2:  # Equivalent
+            elif cop == Py_EQ:  # Equivalent
                 if deref(cself).size() != deref(cother).size():
                     return False
                 loc = deref(cself).begin()
@@ -13225,14 +13386,14 @@ cdef class Set__Set__Set__bool:
                         return False
                     inc(loc)
                 return True
-            elif cop == 3:  # Not Equivalent
+            elif cop == Py_NE:  # Not Equivalent
                 loc = deref(cself).begin()
                 while loc != deref(cself).end():
                     if not deref(cother).count(deref(loc)):
                         return True
                     inc(loc)
                 return deref(cself).size() != deref(cother).size()
-            elif cop == 4:  # Greater Than (strict superset)
+            elif cop == Py_GT:  # Greater Than (strict superset)
                 if not deref(cself).size() > deref(cother).size():
                     return False
                 loc = deref(cother).begin()
@@ -13241,7 +13402,7 @@ cdef class Set__Set__Set__bool:
                         return False
                     inc(loc)
                 return True
-            elif cop == 5:  # Greater Than or Equal To (superset)
+            elif cop == Py_GE:  # Greater Than or Equal To (superset)
                 loc = deref(cother).begin()
                 while loc != deref(cother).end():
                     if not deref(cself).count(deref(loc)):
@@ -13250,17 +13411,17 @@ cdef class Set__Set__Set__bool:
                 return True
 
         # Python level comparisons
-        if cop == 0:
+        if cop == Py_LT:
             return Set.__lt__(self, other)
-        elif cop == 1:
+        elif cop == Py_LE:
             return Set.__le__(self, other)
-        elif cop == 2:
+        elif cop == Py_EQ:
             return Set.__eq__(self, other)
-        elif cop == 3:
+        elif cop == Py_NE:
             return Set.__ne__(self, other)
-        elif cop == 4:
+        elif cop == Py_GT:
             return Set.__gt__(self, other)
-        elif cop == 5:
+        elif cop == Py_GE:
             return Set.__ge__(self, other)
 
     def __hash__(self):
@@ -13435,22 +13596,22 @@ cdef class Map__Bar__double_Baz__i32:
             yield citem
             inc(loc)
 
-    def __richcmp__(self, other, op):
-        cdef int cop = op
-        if cop not in (2, 3):
-            raise TypeError("unorderable types: {}, {}".format(type(self), type(other)))
+    def __eq__(self, other):
         if not (isinstance(self, Mapping) and isinstance(other, Mapping)):
-            return cop != 2
-        if (len(self) != len(other)):
-            return cop != 2
+            return False
+        if len(self) != len(other):
+            return False
 
         for key in self:
             if key not in other:
-                return cop != 2
+                return False
             if other[key] != self[key]:
-                return cop != 2
+                return False
 
-        return cop == 2
+        return True
+
+    def __ne__(self, other):
+        return not self.__eq__(other)
 
     def __hash__(self):
         if not self.__hash:
@@ -13569,20 +13730,25 @@ cdef class folly_small_vector_int64_t_8__List__i64:
     def __len__(self):
         return deref(self._cpp_obj).size()
 
-    def __richcmp__(self, other, op):
-        cdef int cop = op
-        if cop not in (2, 3):
-            raise TypeError("unorderable types: {}, {}".format(type(self), type(other)))
-        if not (isinstance(self, Iterable) and isinstance(other, Iterable)):
-            return cop != 2
-        if (len(self) != len(other)):
-            return cop != 2
+    def __eq__(self, other):
+        return thrift.py3.types.list_compare(self, other, Py_EQ)
 
-        for one, two in zip(self, other):
-            if one != two:
-                return cop != 2
+    def __ne__(self, other):
+        return not thrift.py3.types.list_compare(self, other, Py_EQ)
 
-        return cop == 2
+    def __lt__(self, other):
+        return thrift.py3.types.list_compare(self, other, Py_LT)
+
+    def __gt__(self, other):
+        return thrift.py3.types.list_compare(other, self, Py_LT)
+
+    def __le__(self, other):
+        result = thrift.py3.types.list_compare(other, self, Py_LT)
+        return not result if result is not NotImplemented else NotImplemented
+
+    def __ge__(self, other):
+        result = thrift.py3.types.list_compare(self, other, Py_LT)
+        return not result if result is not NotImplemented else NotImplemented
 
     def __hash__(self):
         if not self.__hash:
@@ -13726,13 +13892,12 @@ cdef class folly_sorted_vector_set_std_string__Set__string:
         cdef int cop = op
         cdef shared_ptr[folly_sorted_vector_set_std_string] cself, cother
         cdef folly_sorted_vector_set_std_string.iterator loc
-        cdef cbool retval
         if (isinstance(self, folly_sorted_vector_set_std_string__Set__string) and
                 isinstance(other, folly_sorted_vector_set_std_string__Set__string)):
             cself = (<folly_sorted_vector_set_std_string__Set__string> self)._cpp_obj
             cother = (<folly_sorted_vector_set_std_string__Set__string> other)._cpp_obj
             # C level comparisons
-            if cop == 0:    # Less Than (strict subset)
+            if cop == Py_LT:    # Less Than (strict subset)
                 if not deref(cself).size() < deref(cother).size():
                     return False
                 loc = deref(cself).begin()
@@ -13741,14 +13906,14 @@ cdef class folly_sorted_vector_set_std_string__Set__string:
                         return False
                     inc(loc)
                 return True
-            elif cop == 1:  # Less Than or Equal To  (subset)
+            elif cop == Py_LE:  # Less Than or Equal To  (subset)
                 loc = deref(cself).begin()
                 while loc != deref(cself).end():
                     if not deref(cother).count(deref(loc)):
                         return False
                     inc(loc)
                 return True
-            elif cop == 2:  # Equivalent
+            elif cop == Py_EQ:  # Equivalent
                 if deref(cself).size() != deref(cother).size():
                     return False
                 loc = deref(cself).begin()
@@ -13757,14 +13922,14 @@ cdef class folly_sorted_vector_set_std_string__Set__string:
                         return False
                     inc(loc)
                 return True
-            elif cop == 3:  # Not Equivalent
+            elif cop == Py_NE:  # Not Equivalent
                 loc = deref(cself).begin()
                 while loc != deref(cself).end():
                     if not deref(cother).count(deref(loc)):
                         return True
                     inc(loc)
                 return deref(cself).size() != deref(cother).size()
-            elif cop == 4:  # Greater Than (strict superset)
+            elif cop == Py_GT:  # Greater Than (strict superset)
                 if not deref(cself).size() > deref(cother).size():
                     return False
                 loc = deref(cother).begin()
@@ -13773,7 +13938,7 @@ cdef class folly_sorted_vector_set_std_string__Set__string:
                         return False
                     inc(loc)
                 return True
-            elif cop == 5:  # Greater Than or Equal To (superset)
+            elif cop == Py_GE:  # Greater Than or Equal To (superset)
                 loc = deref(cother).begin()
                 while loc != deref(cother).end():
                     if not deref(cself).count(deref(loc)):
@@ -13782,17 +13947,17 @@ cdef class folly_sorted_vector_set_std_string__Set__string:
                 return True
 
         # Python level comparisons
-        if cop == 0:
+        if cop == Py_LT:
             return Set.__lt__(self, other)
-        elif cop == 1:
+        elif cop == Py_LE:
             return Set.__le__(self, other)
-        elif cop == 2:
+        elif cop == Py_EQ:
             return Set.__eq__(self, other)
-        elif cop == 3:
+        elif cop == Py_NE:
             return Set.__ne__(self, other)
-        elif cop == 4:
+        elif cop == Py_GT:
             return Set.__gt__(self, other)
-        elif cop == 5:
+        elif cop == Py_GE:
             return Set.__ge__(self, other)
 
     def __hash__(self):
@@ -13967,22 +14132,22 @@ cdef class FakeMap__Map__i64_double:
             yield citem
             inc(loc)
 
-    def __richcmp__(self, other, op):
-        cdef int cop = op
-        if cop not in (2, 3):
-            raise TypeError("unorderable types: {}, {}".format(type(self), type(other)))
+    def __eq__(self, other):
         if not (isinstance(self, Mapping) and isinstance(other, Mapping)):
-            return cop != 2
-        if (len(self) != len(other)):
-            return cop != 2
+            return False
+        if len(self) != len(other):
+            return False
 
         for key in self:
             if key not in other:
-                return cop != 2
+                return False
             if other[key] != self[key]:
-                return cop != 2
+                return False
 
-        return cop == 2
+        return True
+
+    def __ne__(self, other):
+        return not self.__eq__(other)
 
     def __hash__(self):
         if not self.__hash:
@@ -14103,22 +14268,22 @@ cdef class std_unordered_map_std_string_containerStruct__Map__string_containerSt
             yield bytes(citem).decode('UTF-8')
             inc(loc)
 
-    def __richcmp__(self, other, op):
-        cdef int cop = op
-        if cop not in (2, 3):
-            raise TypeError("unorderable types: {}, {}".format(type(self), type(other)))
+    def __eq__(self, other):
         if not (isinstance(self, Mapping) and isinstance(other, Mapping)):
-            return cop != 2
-        if (len(self) != len(other)):
-            return cop != 2
+            return False
+        if len(self) != len(other):
+            return False
 
         for key in self:
             if key not in other:
-                return cop != 2
+                return False
             if other[key] != self[key]:
-                return cop != 2
+                return False
 
-        return cop == 2
+        return True
+
+    def __ne__(self, other):
+        return not self.__eq__(other)
 
     def __hash__(self):
         if not self.__hash:
@@ -14237,20 +14402,25 @@ cdef class std_list__List__i32:
     def __len__(self):
         return deref(self._cpp_obj).size()
 
-    def __richcmp__(self, other, op):
-        cdef int cop = op
-        if cop not in (2, 3):
-            raise TypeError("unorderable types: {}, {}".format(type(self), type(other)))
-        if not (isinstance(self, Iterable) and isinstance(other, Iterable)):
-            return cop != 2
-        if (len(self) != len(other)):
-            return cop != 2
+    def __eq__(self, other):
+        return thrift.py3.types.list_compare(self, other, Py_EQ)
 
-        for one, two in zip(self, other):
-            if one != two:
-                return cop != 2
+    def __ne__(self, other):
+        return not thrift.py3.types.list_compare(self, other, Py_EQ)
 
-        return cop == 2
+    def __lt__(self, other):
+        return thrift.py3.types.list_compare(self, other, Py_LT)
+
+    def __gt__(self, other):
+        return thrift.py3.types.list_compare(other, self, Py_LT)
+
+    def __le__(self, other):
+        result = thrift.py3.types.list_compare(other, self, Py_LT)
+        return not result if result is not NotImplemented else NotImplemented
+
+    def __ge__(self, other):
+        result = thrift.py3.types.list_compare(self, other, Py_LT)
+        return not result if result is not NotImplemented else NotImplemented
 
     def __hash__(self):
         if not self.__hash:
@@ -14390,20 +14560,25 @@ cdef class std_deque__List__string:
     def __len__(self):
         return deref(self._cpp_obj).size()
 
-    def __richcmp__(self, other, op):
-        cdef int cop = op
-        if cop not in (2, 3):
-            raise TypeError("unorderable types: {}, {}".format(type(self), type(other)))
-        if not (isinstance(self, Iterable) and isinstance(other, Iterable)):
-            return cop != 2
-        if (len(self) != len(other)):
-            return cop != 2
+    def __eq__(self, other):
+        return thrift.py3.types.list_compare(self, other, Py_EQ)
 
-        for one, two in zip(self, other):
-            if one != two:
-                return cop != 2
+    def __ne__(self, other):
+        return not thrift.py3.types.list_compare(self, other, Py_EQ)
 
-        return cop == 2
+    def __lt__(self, other):
+        return thrift.py3.types.list_compare(self, other, Py_LT)
+
+    def __gt__(self, other):
+        return thrift.py3.types.list_compare(other, self, Py_LT)
+
+    def __le__(self, other):
+        result = thrift.py3.types.list_compare(other, self, Py_LT)
+        return not result if result is not NotImplemented else NotImplemented
+
+    def __ge__(self, other):
+        result = thrift.py3.types.list_compare(self, other, Py_LT)
+        return not result if result is not NotImplemented else NotImplemented
 
     def __hash__(self):
         if not self.__hash:
@@ -14547,13 +14722,12 @@ cdef class folly_sorted_vector_set__Set__string:
         cdef int cop = op
         cdef shared_ptr[folly_sorted_vector_set[string]] cself, cother
         cdef folly_sorted_vector_set[string].iterator loc
-        cdef cbool retval
         if (isinstance(self, folly_sorted_vector_set__Set__string) and
                 isinstance(other, folly_sorted_vector_set__Set__string)):
             cself = (<folly_sorted_vector_set__Set__string> self)._cpp_obj
             cother = (<folly_sorted_vector_set__Set__string> other)._cpp_obj
             # C level comparisons
-            if cop == 0:    # Less Than (strict subset)
+            if cop == Py_LT:    # Less Than (strict subset)
                 if not deref(cself).size() < deref(cother).size():
                     return False
                 loc = deref(cself).begin()
@@ -14562,14 +14736,14 @@ cdef class folly_sorted_vector_set__Set__string:
                         return False
                     inc(loc)
                 return True
-            elif cop == 1:  # Less Than or Equal To  (subset)
+            elif cop == Py_LE:  # Less Than or Equal To  (subset)
                 loc = deref(cself).begin()
                 while loc != deref(cself).end():
                     if not deref(cother).count(deref(loc)):
                         return False
                     inc(loc)
                 return True
-            elif cop == 2:  # Equivalent
+            elif cop == Py_EQ:  # Equivalent
                 if deref(cself).size() != deref(cother).size():
                     return False
                 loc = deref(cself).begin()
@@ -14578,14 +14752,14 @@ cdef class folly_sorted_vector_set__Set__string:
                         return False
                     inc(loc)
                 return True
-            elif cop == 3:  # Not Equivalent
+            elif cop == Py_NE:  # Not Equivalent
                 loc = deref(cself).begin()
                 while loc != deref(cself).end():
                     if not deref(cother).count(deref(loc)):
                         return True
                     inc(loc)
                 return deref(cself).size() != deref(cother).size()
-            elif cop == 4:  # Greater Than (strict superset)
+            elif cop == Py_GT:  # Greater Than (strict superset)
                 if not deref(cself).size() > deref(cother).size():
                     return False
                 loc = deref(cother).begin()
@@ -14594,7 +14768,7 @@ cdef class folly_sorted_vector_set__Set__string:
                         return False
                     inc(loc)
                 return True
-            elif cop == 5:  # Greater Than or Equal To (superset)
+            elif cop == Py_GE:  # Greater Than or Equal To (superset)
                 loc = deref(cother).begin()
                 while loc != deref(cother).end():
                     if not deref(cself).count(deref(loc)):
@@ -14603,17 +14777,17 @@ cdef class folly_sorted_vector_set__Set__string:
                 return True
 
         # Python level comparisons
-        if cop == 0:
+        if cop == Py_LT:
             return Set.__lt__(self, other)
-        elif cop == 1:
+        elif cop == Py_LE:
             return Set.__le__(self, other)
-        elif cop == 2:
+        elif cop == Py_EQ:
             return Set.__eq__(self, other)
-        elif cop == 3:
+        elif cop == Py_NE:
             return Set.__ne__(self, other)
-        elif cop == 4:
+        elif cop == Py_GT:
             return Set.__gt__(self, other)
-        elif cop == 5:
+        elif cop == Py_GE:
             return Set.__ge__(self, other)
 
     def __hash__(self):
@@ -14788,22 +14962,22 @@ cdef class folly_sorted_vector_map__Map__i64_string:
             yield citem
             inc(loc)
 
-    def __richcmp__(self, other, op):
-        cdef int cop = op
-        if cop not in (2, 3):
-            raise TypeError("unorderable types: {}, {}".format(type(self), type(other)))
+    def __eq__(self, other):
         if not (isinstance(self, Mapping) and isinstance(other, Mapping)):
-            return cop != 2
-        if (len(self) != len(other)):
-            return cop != 2
+            return False
+        if len(self) != len(other):
+            return False
 
         for key in self:
             if key not in other:
-                return cop != 2
+                return False
             if other[key] != self[key]:
-                return cop != 2
+                return False
 
-        return cop == 2
+        return True
+
+    def __ne__(self, other):
+        return not self.__eq__(other)
 
     def __hash__(self):
         if not self.__hash:
@@ -14921,20 +15095,25 @@ cdef class List__Bar__double:
     def __len__(self):
         return deref(self._cpp_obj).size()
 
-    def __richcmp__(self, other, op):
-        cdef int cop = op
-        if cop not in (2, 3):
-            raise TypeError("unorderable types: {}, {}".format(type(self), type(other)))
-        if not (isinstance(self, Iterable) and isinstance(other, Iterable)):
-            return cop != 2
-        if (len(self) != len(other)):
-            return cop != 2
+    def __eq__(self, other):
+        return thrift.py3.types.list_compare(self, other, Py_EQ)
 
-        for one, two in zip(self, other):
-            if one != two:
-                return cop != 2
+    def __ne__(self, other):
+        return not thrift.py3.types.list_compare(self, other, Py_EQ)
 
-        return cop == 2
+    def __lt__(self, other):
+        return thrift.py3.types.list_compare(self, other, Py_LT)
+
+    def __gt__(self, other):
+        return thrift.py3.types.list_compare(other, self, Py_LT)
+
+    def __le__(self, other):
+        result = thrift.py3.types.list_compare(other, self, Py_LT)
+        return not result if result is not NotImplemented else NotImplemented
+
+    def __ge__(self, other):
+        result = thrift.py3.types.list_compare(self, other, Py_LT)
+        return not result if result is not NotImplemented else NotImplemented
 
     def __hash__(self):
         if not self.__hash:
@@ -15079,13 +15258,12 @@ cdef class Set__Baz__i32:
         cdef int cop = op
         cdef shared_ptr[cset[Baz]] cself, cother
         cdef cset[Baz].iterator loc
-        cdef cbool retval
         if (isinstance(self, Set__Baz__i32) and
                 isinstance(other, Set__Baz__i32)):
             cself = (<Set__Baz__i32> self)._cpp_obj
             cother = (<Set__Baz__i32> other)._cpp_obj
             # C level comparisons
-            if cop == 0:    # Less Than (strict subset)
+            if cop == Py_LT:    # Less Than (strict subset)
                 if not deref(cself).size() < deref(cother).size():
                     return False
                 loc = deref(cself).begin()
@@ -15094,14 +15272,14 @@ cdef class Set__Baz__i32:
                         return False
                     inc(loc)
                 return True
-            elif cop == 1:  # Less Than or Equal To  (subset)
+            elif cop == Py_LE:  # Less Than or Equal To  (subset)
                 loc = deref(cself).begin()
                 while loc != deref(cself).end():
                     if not deref(cother).count(deref(loc)):
                         return False
                     inc(loc)
                 return True
-            elif cop == 2:  # Equivalent
+            elif cop == Py_EQ:  # Equivalent
                 if deref(cself).size() != deref(cother).size():
                     return False
                 loc = deref(cself).begin()
@@ -15110,14 +15288,14 @@ cdef class Set__Baz__i32:
                         return False
                     inc(loc)
                 return True
-            elif cop == 3:  # Not Equivalent
+            elif cop == Py_NE:  # Not Equivalent
                 loc = deref(cself).begin()
                 while loc != deref(cself).end():
                     if not deref(cother).count(deref(loc)):
                         return True
                     inc(loc)
                 return deref(cself).size() != deref(cother).size()
-            elif cop == 4:  # Greater Than (strict superset)
+            elif cop == Py_GT:  # Greater Than (strict superset)
                 if not deref(cself).size() > deref(cother).size():
                     return False
                 loc = deref(cother).begin()
@@ -15126,7 +15304,7 @@ cdef class Set__Baz__i32:
                         return False
                     inc(loc)
                 return True
-            elif cop == 5:  # Greater Than or Equal To (superset)
+            elif cop == Py_GE:  # Greater Than or Equal To (superset)
                 loc = deref(cother).begin()
                 while loc != deref(cother).end():
                     if not deref(cself).count(deref(loc)):
@@ -15135,17 +15313,17 @@ cdef class Set__Baz__i32:
                 return True
 
         # Python level comparisons
-        if cop == 0:
+        if cop == Py_LT:
             return Set.__lt__(self, other)
-        elif cop == 1:
+        elif cop == Py_LE:
             return Set.__le__(self, other)
-        elif cop == 2:
+        elif cop == Py_EQ:
             return Set.__eq__(self, other)
-        elif cop == 3:
+        elif cop == Py_NE:
             return Set.__ne__(self, other)
-        elif cop == 4:
+        elif cop == Py_GT:
             return Set.__gt__(self, other)
-        elif cop == 5:
+        elif cop == Py_GE:
             return Set.__ge__(self, other)
 
     def __hash__(self):
@@ -15320,22 +15498,22 @@ cdef class Map__i32_string:
             yield citem
             inc(loc)
 
-    def __richcmp__(self, other, op):
-        cdef int cop = op
-        if cop not in (2, 3):
-            raise TypeError("unorderable types: {}, {}".format(type(self), type(other)))
+    def __eq__(self, other):
         if not (isinstance(self, Mapping) and isinstance(other, Mapping)):
-            return cop != 2
-        if (len(self) != len(other)):
-            return cop != 2
+            return False
+        if len(self) != len(other):
+            return False
 
         for key in self:
             if key not in other:
-                return cop != 2
+                return False
             if other[key] != self[key]:
-                return cop != 2
+                return False
 
-        return cop == 2
+        return True
+
+    def __ne__(self, other):
+        return not self.__eq__(other)
 
     def __hash__(self):
         if not self.__hash:
@@ -15455,20 +15633,25 @@ cdef class List__Map__string_i32:
     def __len__(self):
         return deref(self._cpp_obj).size()
 
-    def __richcmp__(self, other, op):
-        cdef int cop = op
-        if cop not in (2, 3):
-            raise TypeError("unorderable types: {}, {}".format(type(self), type(other)))
-        if not (isinstance(self, Iterable) and isinstance(other, Iterable)):
-            return cop != 2
-        if (len(self) != len(other)):
-            return cop != 2
+    def __eq__(self, other):
+        return thrift.py3.types.list_compare(self, other, Py_EQ)
 
-        for one, two in zip(self, other):
-            if one != two:
-                return cop != 2
+    def __ne__(self, other):
+        return not thrift.py3.types.list_compare(self, other, Py_EQ)
 
-        return cop == 2
+    def __lt__(self, other):
+        return thrift.py3.types.list_compare(self, other, Py_LT)
+
+    def __gt__(self, other):
+        return thrift.py3.types.list_compare(other, self, Py_LT)
+
+    def __le__(self, other):
+        result = thrift.py3.types.list_compare(other, self, Py_LT)
+        return not result if result is not NotImplemented else NotImplemented
+
+    def __ge__(self, other):
+        result = thrift.py3.types.list_compare(self, other, Py_LT)
+        return not result if result is not NotImplemented else NotImplemented
 
     def __hash__(self):
         if not self.__hash:
@@ -15627,22 +15810,22 @@ cdef class Map__i16_string:
             yield citem
             inc(loc)
 
-    def __richcmp__(self, other, op):
-        cdef int cop = op
-        if cop not in (2, 3):
-            raise TypeError("unorderable types: {}, {}".format(type(self), type(other)))
+    def __eq__(self, other):
         if not (isinstance(self, Mapping) and isinstance(other, Mapping)):
-            return cop != 2
-        if (len(self) != len(other)):
-            return cop != 2
+            return False
+        if len(self) != len(other):
+            return False
 
         for key in self:
             if key not in other:
-                return cop != 2
+                return False
             if other[key] != self[key]:
-                return cop != 2
+                return False
 
-        return cop == 2
+        return True
+
+    def __ne__(self, other):
+        return not self.__eq__(other)
 
     def __hash__(self):
         if not self.__hash:
@@ -15762,20 +15945,25 @@ cdef class List__Map__i16_string:
     def __len__(self):
         return deref(self._cpp_obj).size()
 
-    def __richcmp__(self, other, op):
-        cdef int cop = op
-        if cop not in (2, 3):
-            raise TypeError("unorderable types: {}, {}".format(type(self), type(other)))
-        if not (isinstance(self, Iterable) and isinstance(other, Iterable)):
-            return cop != 2
-        if (len(self) != len(other)):
-            return cop != 2
+    def __eq__(self, other):
+        return thrift.py3.types.list_compare(self, other, Py_EQ)
 
-        for one, two in zip(self, other):
-            if one != two:
-                return cop != 2
+    def __ne__(self, other):
+        return not thrift.py3.types.list_compare(self, other, Py_EQ)
 
-        return cop == 2
+    def __lt__(self, other):
+        return thrift.py3.types.list_compare(self, other, Py_LT)
+
+    def __gt__(self, other):
+        return thrift.py3.types.list_compare(other, self, Py_LT)
+
+    def __le__(self, other):
+        result = thrift.py3.types.list_compare(other, self, Py_LT)
+        return not result if result is not NotImplemented else NotImplemented
+
+    def __ge__(self, other):
+        result = thrift.py3.types.list_compare(self, other, Py_LT)
+        return not result if result is not NotImplemented else NotImplemented
 
     def __hash__(self):
         if not self.__hash:
@@ -15930,20 +16118,25 @@ cdef class List__MyStruct:
     def __len__(self):
         return deref(self._cpp_obj).size()
 
-    def __richcmp__(self, other, op):
-        cdef int cop = op
-        if cop not in (2, 3):
-            raise TypeError("unorderable types: {}, {}".format(type(self), type(other)))
-        if not (isinstance(self, Iterable) and isinstance(other, Iterable)):
-            return cop != 2
-        if (len(self) != len(other)):
-            return cop != 2
+    def __eq__(self, other):
+        return thrift.py3.types.list_compare(self, other, Py_EQ)
 
-        for one, two in zip(self, other):
-            if one != two:
-                return cop != 2
+    def __ne__(self, other):
+        return not thrift.py3.types.list_compare(self, other, Py_EQ)
 
-        return cop == 2
+    def __lt__(self, other):
+        return thrift.py3.types.list_compare(self, other, Py_LT)
+
+    def __gt__(self, other):
+        return thrift.py3.types.list_compare(other, self, Py_LT)
+
+    def __le__(self, other):
+        result = thrift.py3.types.list_compare(other, self, Py_LT)
+        return not result if result is not NotImplemented else NotImplemented
+
+    def __ge__(self, other):
+        result = thrift.py3.types.list_compare(self, other, Py_LT)
+        return not result if result is not NotImplemented else NotImplemented
 
     def __hash__(self):
         if not self.__hash:

@@ -94,6 +94,10 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "cpp2":
         cInternship() except +
         cInternship(const cInternship&) except +
         bint operator==(cInternship&)
+        bint operator<(cInternship&)
+        bint operator>(cInternship&)
+        bint operator<=(cInternship&)
+        bint operator>=(cInternship&)
         int32_t weeks
         string title
         cCompany employer
@@ -106,6 +110,10 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "cpp2":
         cUnEnumStruct() except +
         cUnEnumStruct(const cUnEnumStruct&) except +
         bint operator==(cUnEnumStruct&)
+        bint operator<(cUnEnumStruct&)
+        bint operator>(cUnEnumStruct&)
+        bint operator<=(cUnEnumStruct&)
+        bint operator>=(cUnEnumStruct&)
         cCity city
         cUnEnumStruct__isset __isset
 
@@ -117,6 +125,10 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "cpp2":
         cRange() except +
         cRange(const cRange&) except +
         bint operator==(cRange&)
+        bint operator<(cRange&)
+        bint operator>(cRange&)
+        bint operator<=(cRange&)
+        bint operator>=(cRange&)
         int32_t min
         int32_t max
         cRange__isset __isset
@@ -129,6 +141,10 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "cpp2":
         cstruct1() except +
         cstruct1(const cstruct1&) except +
         bint operator==(cstruct1&)
+        bint operator<(cstruct1&)
+        bint operator>(cstruct1&)
+        bint operator<=(cstruct1&)
+        bint operator>=(cstruct1&)
         int32_t a
         string b
         cstruct1__isset __isset
@@ -143,6 +159,10 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "cpp2":
         cstruct2() except +
         cstruct2(const cstruct2&) except +
         bint operator==(cstruct2&)
+        bint operator<(cstruct2&)
+        bint operator>(cstruct2&)
+        bint operator<=(cstruct2&)
+        bint operator>=(cstruct2&)
         int32_t a
         string b
         cstruct1 c
@@ -158,6 +178,10 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "cpp2":
         cstruct3() except +
         cstruct3(const cstruct3&) except +
         bint operator==(cstruct3&)
+        bint operator<(cstruct3&)
+        bint operator>(cstruct3&)
+        bint operator<=(cstruct3&)
+        bint operator>=(cstruct3&)
         string a
         int32_t b
         cstruct2 c
@@ -172,6 +196,10 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "cpp2":
         cunion1() except +
         cunion1(const cunion1&) except +
         bint operator==(cunion1&)
+        bint operator<(cunion1&)
+        bint operator>(cunion1&)
+        bint operator<=(cunion1&)
+        bint operator>=(cunion1&)
         cunion1__type getType() const
         const int32_t& get_i() const
         int32_t& set_i(const int32_t&)
@@ -189,6 +217,10 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "cpp2":
         cunion2() except +
         cunion2(const cunion2&) except +
         bint operator==(cunion2&)
+        bint operator<(cunion2&)
+        bint operator>(cunion2&)
+        bint operator<=(cunion2&)
+        bint operator>=(cunion2&)
         cunion2__type getType() const
         const int32_t& get_i() const
         int32_t& set_i(const int32_t&)

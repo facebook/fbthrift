@@ -368,6 +368,10 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "some::valid::ns":
         cEmpty() except +
         cEmpty(const cEmpty&) except +
         bint operator==(cEmpty&)
+        bint operator<(cEmpty&)
+        bint operator>(cEmpty&)
+        bint operator<=(cEmpty&)
+        bint operator>=(cEmpty&)
         cEmpty__isset __isset
 
     cdef cppclass cASimpleStruct__isset "some::valid::ns::ASimpleStruct::__isset":
@@ -387,6 +391,10 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "some::valid::ns":
         cASimpleStructNoexcept() except +
         cASimpleStructNoexcept(const cASimpleStructNoexcept&) except +
         bint operator==(cASimpleStructNoexcept&)
+        bint operator<(cASimpleStructNoexcept&)
+        bint operator>(cASimpleStructNoexcept&)
+        bint operator<=(cASimpleStructNoexcept&)
+        bint operator>=(cASimpleStructNoexcept&)
         int64_t boolField
         cASimpleStructNoexcept__isset __isset
 
@@ -405,6 +413,10 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "some::valid::ns":
         cMyStruct() except +
         cMyStruct(const cMyStruct&) except +
         bint operator==(cMyStruct&)
+        bint operator<(cMyStruct&)
+        bint operator>(cMyStruct&)
+        bint operator<=(cMyStruct&)
+        bint operator>=(cMyStruct&)
         cbool MyBoolField
         int64_t MyIntField
         string MyStringField
@@ -425,6 +437,10 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "some::valid::ns":
         cSimpleUnion() except +
         cSimpleUnion(const cSimpleUnion&) except +
         bint operator==(cSimpleUnion&)
+        bint operator<(cSimpleUnion&)
+        bint operator>(cSimpleUnion&)
+        bint operator<=(cSimpleUnion&)
+        bint operator>=(cSimpleUnion&)
         cSimpleUnion__type getType() const
         const int64_t& get_intValue() const
         int64_t& set_intValue(const int64_t&)
@@ -583,6 +599,10 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "some::valid::ns":
         cAnotherException() except +
         cAnotherException(const cAnotherException&) except +
         bint operator==(cAnotherException&)
+        bint operator<(cAnotherException&)
+        bint operator>(cAnotherException&)
+        bint operator<=(cAnotherException&)
+        bint operator>=(cAnotherException&)
         int32_t code
         int32_t req_code
         string message
@@ -800,6 +820,10 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "some::valid::ns":
         cFloatStruct() except +
         cFloatStruct(const cFloatStruct&) except +
         bint operator==(cFloatStruct&)
+        bint operator<(cFloatStruct&)
+        bint operator>(cFloatStruct&)
+        bint operator<=(cFloatStruct&)
+        bint operator>=(cFloatStruct&)
         float floatField
         double doubleField
         cFloatStruct__isset __isset
@@ -813,6 +837,10 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "some::valid::ns":
         cFloatUnion() except +
         cFloatUnion(const cFloatUnion&) except +
         bint operator==(cFloatUnion&)
+        bint operator<(cFloatUnion&)
+        bint operator>(cFloatUnion&)
+        bint operator<=(cFloatUnion&)
+        bint operator>=(cFloatUnion&)
         cFloatUnion__type getType() const
         const float& get_floatSide() const
         float& set_floatSide(const float&)
@@ -826,6 +854,10 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "some::valid::ns":
         cAllRequiredNoExceptMoveCtrStruct() except +
         cAllRequiredNoExceptMoveCtrStruct(const cAllRequiredNoExceptMoveCtrStruct&) except +
         bint operator==(cAllRequiredNoExceptMoveCtrStruct&)
+        bint operator<(cAllRequiredNoExceptMoveCtrStruct&)
+        bint operator>(cAllRequiredNoExceptMoveCtrStruct&)
+        bint operator<=(cAllRequiredNoExceptMoveCtrStruct&)
+        bint operator>=(cAllRequiredNoExceptMoveCtrStruct&)
         int64_t intField
         cAllRequiredNoExceptMoveCtrStruct__isset __isset
 

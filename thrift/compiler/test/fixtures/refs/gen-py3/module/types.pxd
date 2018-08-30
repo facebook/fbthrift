@@ -74,6 +74,10 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "cpp2":
         cMyUnion() except +
         cMyUnion(const cMyUnion&) except +
         bint operator==(cMyUnion&)
+        bint operator<(cMyUnion&)
+        bint operator>(cMyUnion&)
+        bint operator<=(cMyUnion&)
+        bint operator>=(cMyUnion&)
         cMyUnion__type getType() const
         const int32_t& get_anInteger() const
         int32_t& set_anInteger(const int32_t&)
@@ -89,6 +93,10 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "cpp2":
         cMyField() except +
         cMyField(const cMyField&) except +
         bint operator==(cMyField&)
+        bint operator<(cMyField&)
+        bint operator>(cMyField&)
+        bint operator<=(cMyField&)
+        bint operator>=(cMyField&)
         int64_t opt_value
         int64_t value
         int64_t req_value
@@ -103,6 +111,10 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "cpp2":
         cMyStruct() except +
         cMyStruct(const cMyStruct&) except +
         bint operator==(cMyStruct&)
+        bint operator<(cMyStruct&)
+        bint operator>(cMyStruct&)
+        bint operator<=(cMyStruct&)
+        bint operator>=(cMyStruct&)
         unique_ptr[cMyField] opt_ref
         unique_ptr[cMyField] ref
         unique_ptr[cMyField] req_ref
@@ -117,6 +129,10 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "cpp2":
         cStructWithUnion() except +
         cStructWithUnion(const cStructWithUnion&) except +
         bint operator==(cStructWithUnion&)
+        bint operator<(cStructWithUnion&)
+        bint operator>(cStructWithUnion&)
+        bint operator<=(cStructWithUnion&)
+        bint operator>=(cStructWithUnion&)
         unique_ptr[cMyUnion] u
         double aDouble
         cMyField f
@@ -144,6 +160,10 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "cpp2":
         cStructWithContainers() except +
         cStructWithContainers(const cStructWithContainers&) except +
         bint operator==(cStructWithContainers&)
+        bint operator<(cStructWithContainers&)
+        bint operator>(cStructWithContainers&)
+        bint operator<=(cStructWithContainers&)
+        bint operator>=(cStructWithContainers&)
         unique_ptr[vector[int32_t]] list_ref
         unique_ptr[cset[int32_t]] set_ref
         unique_ptr[cmap[int32_t,int32_t]] map_ref
@@ -161,6 +181,10 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "cpp2":
         cStructWithSharedConst() except +
         cStructWithSharedConst(const cStructWithSharedConst&) except +
         bint operator==(cStructWithSharedConst&)
+        bint operator<(cStructWithSharedConst&)
+        bint operator>(cStructWithSharedConst&)
+        bint operator<=(cStructWithSharedConst&)
+        bint operator>=(cStructWithSharedConst&)
         shared_ptr[const cMyField] opt_shared_const
         shared_ptr[const cMyField] shared_const
         shared_ptr[const cMyField] req_shared_const
@@ -173,6 +197,10 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "cpp2":
         cEmpty() except +
         cEmpty(const cEmpty&) except +
         bint operator==(cEmpty&)
+        bint operator<(cEmpty&)
+        bint operator>(cEmpty&)
+        bint operator<=(cEmpty&)
+        bint operator>=(cEmpty&)
         cEmpty__isset __isset
 
     cdef cppclass cStructWithRef__isset "cpp2::StructWithRef::__isset":
@@ -184,6 +212,10 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "cpp2":
         cStructWithRef() except +
         cStructWithRef(const cStructWithRef&) except +
         bint operator==(cStructWithRef&)
+        bint operator<(cStructWithRef&)
+        bint operator>(cStructWithRef&)
+        bint operator<=(cStructWithRef&)
+        bint operator>=(cStructWithRef&)
         unique_ptr[cEmpty] def_field
         unique_ptr[cEmpty] opt_field
         unique_ptr[cEmpty] req_field
@@ -198,6 +230,10 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "cpp2":
         cStructWithRefTypeUnique() except +
         cStructWithRefTypeUnique(const cStructWithRefTypeUnique&) except +
         bint operator==(cStructWithRefTypeUnique&)
+        bint operator<(cStructWithRefTypeUnique&)
+        bint operator>(cStructWithRefTypeUnique&)
+        bint operator<=(cStructWithRefTypeUnique&)
+        bint operator>=(cStructWithRefTypeUnique&)
         unique_ptr[cEmpty] def_field
         unique_ptr[cEmpty] opt_field
         unique_ptr[cEmpty] req_field
@@ -212,6 +248,10 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "cpp2":
         cStructWithRefTypeShared() except +
         cStructWithRefTypeShared(const cStructWithRefTypeShared&) except +
         bint operator==(cStructWithRefTypeShared&)
+        bint operator<(cStructWithRefTypeShared&)
+        bint operator>(cStructWithRefTypeShared&)
+        bint operator<=(cStructWithRefTypeShared&)
+        bint operator>=(cStructWithRefTypeShared&)
         shared_ptr[cEmpty] def_field
         shared_ptr[cEmpty] opt_field
         shared_ptr[cEmpty] req_field
@@ -226,6 +266,10 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "cpp2":
         cStructWithRefTypeSharedConst() except +
         cStructWithRefTypeSharedConst(const cStructWithRefTypeSharedConst&) except +
         bint operator==(cStructWithRefTypeSharedConst&)
+        bint operator<(cStructWithRefTypeSharedConst&)
+        bint operator>(cStructWithRefTypeSharedConst&)
+        bint operator<=(cStructWithRefTypeSharedConst&)
+        bint operator>=(cStructWithRefTypeSharedConst&)
         shared_ptr[const cEmpty] def_field
         shared_ptr[const cEmpty] opt_field
         shared_ptr[const cEmpty] req_field
