@@ -25,6 +25,7 @@
 #include <vector>
 
 #include <thrift/compiler/ast/t_program.h>
+#include <thrift/compiler/ast/t_type.h>
 
 namespace apache {
 namespace thrift {
@@ -34,6 +35,13 @@ namespace cpp2 {
 std::vector<std::string> get_gen_namespace_components(t_program const& program);
 
 std::string get_gen_namespace(t_program const& program);
+
+/*
+ * This determines if a type can be ordered.
+ * If the type is using any annotation for cpp2.type or cpp2.template
+ * its not considered orderable, and we don't need to generate operator< methods
+ */
+bool is_orderable(t_type const& type);
 
 } // namespace cpp2
 } // namespace compiler

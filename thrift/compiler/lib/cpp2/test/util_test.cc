@@ -21,8 +21,13 @@
 
 #include <thrift/compiler/lib/cpp2/util.h>
 
+#include <memory>
+
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
+
+#include <thrift/compiler/ast/t_base_type.h>
+#include <thrift/compiler/ast/t_field.h>
 
 using namespace apache::thrift::compiler;
 
@@ -68,4 +73,23 @@ TEST_F(UtilTest, get_gen_namespace_cpp) {
 TEST_F(UtilTest, get_gen_namespace_none) {
   t_program p("path/to/program.thrift");
   EXPECT_EQ("cpp2", cpp2::get_gen_namespace(p));
+}
+
+TEST_F(UtilTest, is_orderable_set_template) {
+  t_base_type e("element", t_base_type::TYPE_DOUBLE);
+  t_set t(&e, false);
+  t.annotations_["cpp2.template"] = "blah";
+  t_program p("path/to/program.thrift");
+  t_struct s(&p, "struct_name");
+  s.append(std::make_unique<t_field>(&t, "set_field", 1));
+  EXPECT_FALSE(cpp2::is_orderable(t));
+  EXPECT_FALSE(cpp2::is_orderable(s));
+}
+
+TEST_F(UtilTest, is_orderable_struct) {
+  t_program p("path/to/program.thrift");
+  t_struct s(&p, "struct_name");
+  t_base_type t("field_name", t_base_type::TYPE_STRING);
+  s.append(std::make_unique<t_field>(&t, "field_name", 1));
+  EXPECT_TRUE(cpp2::is_orderable(s));
 }

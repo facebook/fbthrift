@@ -598,46 +598,8 @@ class mstch_cpp2_struct : public mstch_struct {
         generators_,
         cache_);
   }
-  bool is_orderable(t_type const* type) {
-    auto has_disqualifying_annotation = [](auto t) {
-      static std::vector<std::string> const keys = {
-          "cpp.template",
-          "cpp2.template",
-          "cpp.type",
-          "cpp2.type",
-      };
-      return std::any_of(keys.begin(), keys.end(), [&](auto key) {
-        return t->annotations_.count(key);
-      });
-    };
-    if (type->is_base_type()) {
-      return true;
-    }
-    if (type->is_enum()) {
-      return true;
-    }
-    if (type->is_struct() || type->is_xception()) {
-      auto& members = dynamic_cast<t_struct const*>(type)->get_members();
-      return std::all_of(members.begin(), members.end(), [&](auto f) {
-        return this->is_orderable(f->get_type());
-      });
-    }
-    if (type->is_list()) {
-      return is_orderable(dynamic_cast<t_list const*>(type)->get_elem_type());
-    }
-    if (type->is_set()) {
-      return !has_disqualifying_annotation(type) &&
-          is_orderable(dynamic_cast<t_set const*>(type)->get_elem_type());
-    }
-    if (type->is_map()) {
-      return !has_disqualifying_annotation(type) &&
-          is_orderable(dynamic_cast<t_map const*>(type)->get_key_type()) &&
-          is_orderable(dynamic_cast<t_map const*>(type)->get_val_type());
-    }
-    return false;
-  }
   mstch::node is_struct_orderable() {
-    return is_orderable(strct_) &&
+    return cpp2::is_orderable(*strct_) &&
         !strct_->annotations_.count("no_default_comparators");
   }
   mstch::node has_cpp_ref() {

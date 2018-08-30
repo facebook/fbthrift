@@ -19,10 +19,16 @@
  * under the License.
  */
 
+#include <algorithm>
+
 #include <thrift/compiler/lib/cpp2/util.h>
 
 #include <boost/algorithm/string/join.hpp>
 #include <boost/algorithm/string/split.hpp>
+#include <thrift/compiler/ast/t_list.h>
+#include <thrift/compiler/ast/t_map.h>
+#include <thrift/compiler/ast/t_set.h>
+#include <thrift/compiler/ast/t_struct.h>
 
 namespace apache {
 namespace thrift {
@@ -54,6 +60,46 @@ std::vector<std::string> get_gen_namespace_components(
 
 std::string get_gen_namespace(t_program const& program) {
   return boost::algorithm::join(get_gen_namespace_components(program), "::");
+}
+
+bool is_orderable(t_type const& type) {
+  auto has_disqualifying_annotation = [](auto& t) {
+    static auto const& keys = *new std::vector<std::string>{
+        "cpp.template",
+        "cpp2.template",
+        "cpp.type",
+        "cpp2.type",
+    };
+    return std::any_of(keys.begin(), keys.end(), [&](auto key) {
+      return t.annotations_.count(key);
+    });
+  };
+  // TODO: Consider why typedef is not resolved in this method
+  if (type.is_base_type()) {
+    return true;
+  }
+  if (type.is_enum()) {
+    return true;
+  }
+  if (type.is_struct() || type.is_xception()) {
+    auto& members = dynamic_cast<t_struct const&>(type).get_members();
+    return std::all_of(members.begin(), members.end(), [&](auto f) {
+      return is_orderable(*(f->get_type()));
+    });
+  }
+  if (type.is_list()) {
+    return is_orderable(*(dynamic_cast<t_list const&>(type).get_elem_type()));
+  }
+  if (type.is_set()) {
+    return !has_disqualifying_annotation(type) &&
+        is_orderable(*(dynamic_cast<t_set const&>(type).get_elem_type()));
+  }
+  if (type.is_map()) {
+    return !has_disqualifying_annotation(type) &&
+        is_orderable(*(dynamic_cast<t_map const&>(type).get_key_type())) &&
+        is_orderable(*(dynamic_cast<t_map const&>(type).get_val_type()));
+  }
+  return false;
 }
 
 } // namespace cpp2
