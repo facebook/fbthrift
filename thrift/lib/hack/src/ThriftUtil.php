@@ -1,7 +1,18 @@
 <?hh // strict
 
+/**
+* Copyright (c) 2006- Facebook
+* Distributed under the Thrift Software License
+*
+* See accompanying file LICENSE or visit the Thrift site at:
+* http://developers.facebook.com/thrift/
+*
+* @package thrift
+*/
+
 abstract final class ThriftUtil {
-  public static function mapDict<Tk, Tv1, Tv2>(
+
+  public static function mapDict<Tk as arraykey, Tv1, Tv2>(
     KeyedTraversable<Tk, Tv1> $traversable,
     (function(Tv1): Tv2) $value_func,
   ): dict<Tk, Tv2> {
@@ -31,6 +42,17 @@ abstract final class ThriftUtil {
     foreach ($traversable as $value) {
       $result[] = $value_func($value);
     }
+    return $result;
+  }
+
+  public static function toDArray<Tk, Tv>(
+    KeyedTraversable<Tk, Tv> $traversable,
+  ): darray<Tk, Tv> {
+    $result = darray[];
+    foreach ($traversable as $key => $value) {
+      $result[HH\array_key_cast($key)] = $value;
+    }
+    /* HH_IGNORE_ERROR[4110] maintain lie */
     return $result;
   }
 }

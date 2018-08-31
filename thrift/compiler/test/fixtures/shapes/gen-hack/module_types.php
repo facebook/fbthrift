@@ -1286,74 +1286,99 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
   public function __toShape(): self::TShape {
     return shape(
       'just_an_A' => $this->just_an_A?->__toShape(),
-      'set_of_i32' => darray(Dict\fill_keys($this->set_of_i32->toValuesArray(), true)),
-      'list_of_i32' => $this->list_of_i32->toVec(),
-      'list_of_string' => $this->list_of_string->toVec(),
-      'map_of_string_to_i32' => $this->map_of_string_to_i32->toDict(),
+      'set_of_i32' => ThriftUtil::toDArray(Dict\fill_keys($this->set_of_i32->toValuesArray(), true)),
+      'list_of_i32' => vec($this->list_of_i32),
+      'list_of_string' => vec($this->list_of_string),
+      'map_of_string_to_i32' => dict($this->map_of_string_to_i32),
       'map_of_string_to_A' => $this->map_of_string_to_A->map(
         $_val0 ==> $_val0->__toShape(),
-      )->toDict(),
+      )
+        |> dict($$),
       'map_of_string_to_list_of_i32' => $this->map_of_string_to_list_of_i32->map(
-        $_val0 ==> $_val0->toVec(),
-      )->toDict(),
+        $_val0 ==> vec($_val0),
+      )
+        |> dict($$),
       'map_of_string_to_list_of_A' => $this->map_of_string_to_list_of_A->map(
         $_val0 ==> $_val0->map(
           $_val1 ==> $_val1->__toShape(),
-        )->toVec(),
-      )->toDict(),
+        )
+          |> vec($$),
+      )
+        |> dict($$),
       'map_of_string_to_set_of_i32' => $this->map_of_string_to_set_of_i32->map(
-        $_val0 ==> darray(Dict\fill_keys($_val0, true)),
-      )->toDict(),
+        $_val0 ==> ThriftUtil::toDArray(Dict\fill_keys($_val0, true)),
+      )
+        |> dict($$),
       'map_of_string_to_map_of_string_to_i32' => $this->map_of_string_to_map_of_string_to_i32->map(
-        $_val0 ==> $_val0->toDict(),
-      )->toDict(),
+        $_val0 ==> dict($_val0),
+      )
+        |> dict($$),
       'map_of_string_to_map_of_string_to_A' => $this->map_of_string_to_map_of_string_to_A->map(
         $_val0 ==> $_val0->map(
           $_val1 ==> $_val1->__toShape(),
-        )->toDict(),
-      )->toDict(),
+        )
+          |> dict($$),
+      )
+        |> dict($$),
       'list_of_set_of_i32' => $this->list_of_set_of_i32->map(
-        $_val0 ==> darray(Dict\fill_keys($_val0, true)),
-      )->toVec(),
+        $_val0 ==> ThriftUtil::toDArray(Dict\fill_keys($_val0, true)),
+      )
+        |> vec($$),
       'list_of_map_of_string_to_list_of_A' => $this->list_of_map_of_string_to_list_of_A->map(
         $_val0 ==> $_val0->map(
           $_val1 ==> $_val1->map(
             $_val2 ==> $_val2->__toShape(),
-          )->toVec(),
-        )->toDict(),
-      )->toVec(),
+          )
+            |> vec($$),
+        )
+          |> dict($$),
+      )
+        |> vec($$),
       'list_of_map_of_string_to_A' => $this->list_of_map_of_string_to_A->map(
         $_val0 ==> $_val0->map(
           $_val1 ==> $_val1->__toShape(),
-        )->toDict(),
-      )->toVec(),
+        )
+          |> dict($$),
+      )
+        |> vec($$),
       'list_of_self' => $this->list_of_self->map(
         $_val0 ==> $_val0->__toShape(),
-      )->toVec(),
+      )
+        |> vec($$),
       'map_of_string_to_self' => $this->map_of_string_to_self->map(
         $_val0 ==> $_val0->__toShape(),
-      )->toDict(),
+      )
+        |> dict($$),
       'just_an_enum' => $this->just_an_enum,
       'just_a_union' => $this->just_a_union?->__toShape(),
       'optional_just_an_A' => $this->optional_just_an_A?->__toShape(),
-      'optional_set_of_i32' => $this->optional_set_of_i32 === null ? null : darray(Dict\fill_keys(nullthrows($this->optional_set_of_i32->toValuesArray()), true)),
-      'optional_list_of_i32' => $this->optional_list_of_i32?->toVec(),
-      'optional_list_of_string' => $this->optional_list_of_string?->toVec(),
-      'optional_map_of_string_to_i32' => $this->optional_map_of_string_to_i32?->toDict(),
+      'optional_set_of_i32' => $this->optional_set_of_i32
+        |> $$ === null ? null : ThriftUtil::toDArray(Dict\fill_keys($$->toValuesArray(), true)),
+      'optional_list_of_i32' => $this->optional_list_of_i32
+        |> $$ === null ? null : vec($$),
+      'optional_list_of_string' => $this->optional_list_of_string
+        |> $$ === null ? null : vec($$),
+      'optional_map_of_string_to_i32' => $this->optional_map_of_string_to_i32
+        |> $$ === null ? null : dict($$),
       'optional_map_of_string_to_A' => $this->optional_map_of_string_to_A?->map(
         $_val0 ==> $_val0->__toShape(),
-      )?->toDict(),
+      )
+        |> $$ === null ? null : dict($$),
       'optional_map_of_string_to_list_of_i32' => $this->optional_map_of_string_to_list_of_i32?->map(
-        $_val0 ==> $_val0->toVec(),
-      )?->toDict(),
+        $_val0 ==> vec($_val0),
+      )
+        |> $$ === null ? null : dict($$),
       'optional_map_of_string_to_list_of_A' => $this->optional_map_of_string_to_list_of_A?->map(
         $_val0 ==> $_val0->map(
           $_val1 ==> $_val1->__toShape(),
-        )->toVec(),
-      )?->toDict(),
+        )
+          |> vec($$),
+      )
+        |> $$ === null ? null : dict($$),
       'optional_map_of_string_to_set_of_i32' => $this->optional_map_of_string_to_set_of_i32?->map(
-        $_val0 ==> darray(Dict\fill_keys($_val0, true)),
-      )?->toDict(),
+        $_val0 ==> ThriftUtil::toDArray(Dict\fill_keys($_val0, true)),
+      )
+        |> $$ === null ? null : dict($$),
       'optional_enum' => $this->optional_enum,
       'required_enum_with_default' => $this->required_enum_with_default,
       'string_with_default_value' => $this->string_with_default_value,
@@ -1361,12 +1386,13 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
       'double_with_default_value' => $this->double_with_default_value,
       'enum_with_default_value' => $this->enum_with_default_value,
       'A_with_default_value' => $this->A_with_default_value?->__toShape(),
-      'set_of_i32_with_default_value' => darray(Dict\fill_keys($this->set_of_i32_with_default_value->toValuesArray(), true)),
-      'map_of_i32_to_string_with_default_value' => $this->map_of_i32_to_string_with_default_value->toDict(),
-      'list_of_string_with_default_value' => $this->list_of_string_with_default_value->toVec(),
+      'set_of_i32_with_default_value' => ThriftUtil::toDArray(Dict\fill_keys($this->set_of_i32_with_default_value->toValuesArray(), true)),
+      'map_of_i32_to_string_with_default_value' => dict($this->map_of_i32_to_string_with_default_value),
+      'list_of_string_with_default_value' => vec($this->list_of_string_with_default_value),
       'map_of_string_to_list_of_i32_with_default_value' => $this->map_of_string_to_list_of_i32_with_default_value->map(
-        $_val0 ==> $_val0->toVec(),
-      )->toDict(),
+        $_val0 ==> vec($_val0),
+      )
+        |> dict($$),
     );
   }
   public function read(\TProtocol $input): int {
