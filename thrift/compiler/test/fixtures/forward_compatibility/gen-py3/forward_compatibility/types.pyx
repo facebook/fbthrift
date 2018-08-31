@@ -1610,7 +1610,7 @@ cdef class Set__Map__i16_float:
         cdef shared_ptr[cset[cmap[int16_t,float]]] shretval = \
             make_shared[cset[cmap[int16_t,float]]]()
 
-        cdef shared_ptr[cset[cmap[int16_t,float]]] cself = (<Set__Map__i16_float> other)._cpp_obj
+        cdef shared_ptr[cset[cmap[int16_t,float]]] cself = (<Set__Map__i16_float> self)._cpp_obj
         cdef shared_ptr[cset[cmap[int16_t,float]]] cother = (<Set__Map__i16_float> other)._cpp_obj
 
         cdef cset[cmap[int16_t,float]].iterator loc = deref(cself).begin()
@@ -1629,7 +1629,7 @@ cdef class Set__Map__i16_float:
         cdef shared_ptr[cset[cmap[int16_t,float]]] shretval = \
             make_shared[cset[cmap[int16_t,float]]]()
 
-        cdef shared_ptr[cset[cmap[int16_t,float]]] cself = (<Set__Map__i16_float> other)._cpp_obj
+        cdef shared_ptr[cset[cmap[int16_t,float]]] cself = (<Set__Map__i16_float> self)._cpp_obj
         cdef shared_ptr[cset[cmap[int16_t,float]]] cother = (<Set__Map__i16_float> other)._cpp_obj
 
         cdef cset[cmap[int16_t,float]].iterator loc = deref(cself).begin()
@@ -1648,7 +1648,7 @@ cdef class Set__Map__i16_float:
         cdef shared_ptr[cset[cmap[int16_t,float]]] shretval = \
             make_shared[cset[cmap[int16_t,float]]]()
 
-        cdef shared_ptr[cset[cmap[int16_t,float]]] cself = (<Set__Map__i16_float> other)._cpp_obj
+        cdef shared_ptr[cset[cmap[int16_t,float]]] cself = (<Set__Map__i16_float> self)._cpp_obj
         cdef shared_ptr[cset[cmap[int16_t,float]]] cother = (<Set__Map__i16_float> other)._cpp_obj
 
         cdef cset[cmap[int16_t,float]].iterator loc = deref(cself).begin()
@@ -1670,7 +1670,7 @@ cdef class Set__Map__i16_float:
         cdef shared_ptr[cset[cmap[int16_t,float]]] shretval = \
             make_shared[cset[cmap[int16_t,float]]]()
 
-        cdef shared_ptr[cset[cmap[int16_t,float]]] cself = (<Set__Map__i16_float> other)._cpp_obj
+        cdef shared_ptr[cset[cmap[int16_t,float]]] cself = (<Set__Map__i16_float> self)._cpp_obj
         cdef shared_ptr[cset[cmap[int16_t,float]]] cother = (<Set__Map__i16_float> other)._cpp_obj
 
         cdef cset[cmap[int16_t,float]].iterator loc = deref(cself).begin()

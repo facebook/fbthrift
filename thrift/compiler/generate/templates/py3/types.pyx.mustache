@@ -983,7 +983,7 @@ Sequence.register({{> types/CythonPythonType}})
         cdef shared_ptr[{{> types/CythonCppType}}] shretval = \
             make_shared[{{> types/CythonCppType}}]()
 
-        cdef shared_ptr[{{> types/CythonCppType}}] cself = (<{{> types/CythonPythonType}}> other)._cpp_obj
+        cdef shared_ptr[{{> types/CythonCppType}}] cself = (<{{> types/CythonPythonType}}> self)._cpp_obj
         cdef shared_ptr[{{> types/CythonCppType}}] cother = (<{{> types/CythonPythonType}}> other)._cpp_obj
 
         cdef {{>types/CythonCppType}}.iterator loc = deref(cself).begin()
@@ -1002,7 +1002,7 @@ Sequence.register({{> types/CythonPythonType}})
         cdef shared_ptr[{{> types/CythonCppType}}] shretval = \
             make_shared[{{> types/CythonCppType}}]()
 
-        cdef shared_ptr[{{> types/CythonCppType}}] cself = (<{{> types/CythonPythonType}}> other)._cpp_obj
+        cdef shared_ptr[{{> types/CythonCppType}}] cself = (<{{> types/CythonPythonType}}> self)._cpp_obj
         cdef shared_ptr[{{> types/CythonCppType}}] cother = (<{{> types/CythonPythonType}}> other)._cpp_obj
 
         cdef {{>types/CythonCppType}}.iterator loc = deref(cself).begin()
@@ -1021,7 +1021,7 @@ Sequence.register({{> types/CythonPythonType}})
         cdef shared_ptr[{{> types/CythonCppType}}] shretval = \
             make_shared[{{> types/CythonCppType}}]()
 
-        cdef shared_ptr[{{> types/CythonCppType}}] cself = (<{{> types/CythonPythonType}}> other)._cpp_obj
+        cdef shared_ptr[{{> types/CythonCppType}}] cself = (<{{> types/CythonPythonType}}> self)._cpp_obj
         cdef shared_ptr[{{> types/CythonCppType}}] cother = (<{{> types/CythonPythonType}}> other)._cpp_obj
 
         cdef {{>types/CythonCppType}}.iterator loc = deref(cself).begin()
@@ -1043,7 +1043,7 @@ Sequence.register({{> types/CythonPythonType}})
         cdef shared_ptr[{{> types/CythonCppType}}] shretval = \
             make_shared[{{> types/CythonCppType}}]()
 
-        cdef shared_ptr[{{> types/CythonCppType}}] cself = (<{{> types/CythonPythonType}}> other)._cpp_obj
+        cdef shared_ptr[{{> types/CythonCppType}}] cself = (<{{> types/CythonPythonType}}> self)._cpp_obj
         cdef shared_ptr[{{> types/CythonCppType}}] cother = (<{{> types/CythonPythonType}}> other)._cpp_obj
 
         cdef {{>types/CythonCppType}}.iterator loc = deref(cself).begin()

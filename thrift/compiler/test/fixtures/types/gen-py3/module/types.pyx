@@ -4207,7 +4207,7 @@ cdef class folly_sorted_vector_set__Set__i32:
         cdef shared_ptr[folly_sorted_vector_set[int32_t]] shretval = \
             make_shared[folly_sorted_vector_set[int32_t]]()
 
-        cdef shared_ptr[folly_sorted_vector_set[int32_t]] cself = (<folly_sorted_vector_set__Set__i32> other)._cpp_obj
+        cdef shared_ptr[folly_sorted_vector_set[int32_t]] cself = (<folly_sorted_vector_set__Set__i32> self)._cpp_obj
         cdef shared_ptr[folly_sorted_vector_set[int32_t]] cother = (<folly_sorted_vector_set__Set__i32> other)._cpp_obj
 
         cdef folly_sorted_vector_set[int32_t].iterator loc = deref(cself).begin()
@@ -4226,7 +4226,7 @@ cdef class folly_sorted_vector_set__Set__i32:
         cdef shared_ptr[folly_sorted_vector_set[int32_t]] shretval = \
             make_shared[folly_sorted_vector_set[int32_t]]()
 
-        cdef shared_ptr[folly_sorted_vector_set[int32_t]] cself = (<folly_sorted_vector_set__Set__i32> other)._cpp_obj
+        cdef shared_ptr[folly_sorted_vector_set[int32_t]] cself = (<folly_sorted_vector_set__Set__i32> self)._cpp_obj
         cdef shared_ptr[folly_sorted_vector_set[int32_t]] cother = (<folly_sorted_vector_set__Set__i32> other)._cpp_obj
 
         cdef folly_sorted_vector_set[int32_t].iterator loc = deref(cself).begin()
@@ -4245,7 +4245,7 @@ cdef class folly_sorted_vector_set__Set__i32:
         cdef shared_ptr[folly_sorted_vector_set[int32_t]] shretval = \
             make_shared[folly_sorted_vector_set[int32_t]]()
 
-        cdef shared_ptr[folly_sorted_vector_set[int32_t]] cself = (<folly_sorted_vector_set__Set__i32> other)._cpp_obj
+        cdef shared_ptr[folly_sorted_vector_set[int32_t]] cself = (<folly_sorted_vector_set__Set__i32> self)._cpp_obj
         cdef shared_ptr[folly_sorted_vector_set[int32_t]] cother = (<folly_sorted_vector_set__Set__i32> other)._cpp_obj
 
         cdef folly_sorted_vector_set[int32_t].iterator loc = deref(cself).begin()
@@ -4267,7 +4267,7 @@ cdef class folly_sorted_vector_set__Set__i32:
         cdef shared_ptr[folly_sorted_vector_set[int32_t]] shretval = \
             make_shared[folly_sorted_vector_set[int32_t]]()
 
-        cdef shared_ptr[folly_sorted_vector_set[int32_t]] cself = (<folly_sorted_vector_set__Set__i32> other)._cpp_obj
+        cdef shared_ptr[folly_sorted_vector_set[int32_t]] cself = (<folly_sorted_vector_set__Set__i32> self)._cpp_obj
         cdef shared_ptr[folly_sorted_vector_set[int32_t]] cother = (<folly_sorted_vector_set__Set__i32> other)._cpp_obj
 
         cdef folly_sorted_vector_set[int32_t].iterator loc = deref(cself).begin()

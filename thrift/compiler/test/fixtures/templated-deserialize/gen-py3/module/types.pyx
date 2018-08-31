@@ -1342,7 +1342,7 @@ cdef class Set__i32:
         cdef shared_ptr[cset[int32_t]] shretval = \
             make_shared[cset[int32_t]]()
 
-        cdef shared_ptr[cset[int32_t]] cself = (<Set__i32> other)._cpp_obj
+        cdef shared_ptr[cset[int32_t]] cself = (<Set__i32> self)._cpp_obj
         cdef shared_ptr[cset[int32_t]] cother = (<Set__i32> other)._cpp_obj
 
         cdef cset[int32_t].iterator loc = deref(cself).begin()
@@ -1361,7 +1361,7 @@ cdef class Set__i32:
         cdef shared_ptr[cset[int32_t]] shretval = \
             make_shared[cset[int32_t]]()
 
-        cdef shared_ptr[cset[int32_t]] cself = (<Set__i32> other)._cpp_obj
+        cdef shared_ptr[cset[int32_t]] cself = (<Set__i32> self)._cpp_obj
         cdef shared_ptr[cset[int32_t]] cother = (<Set__i32> other)._cpp_obj
 
         cdef cset[int32_t].iterator loc = deref(cself).begin()
@@ -1380,7 +1380,7 @@ cdef class Set__i32:
         cdef shared_ptr[cset[int32_t]] shretval = \
             make_shared[cset[int32_t]]()
 
-        cdef shared_ptr[cset[int32_t]] cself = (<Set__i32> other)._cpp_obj
+        cdef shared_ptr[cset[int32_t]] cself = (<Set__i32> self)._cpp_obj
         cdef shared_ptr[cset[int32_t]] cother = (<Set__i32> other)._cpp_obj
 
         cdef cset[int32_t].iterator loc = deref(cself).begin()
@@ -1402,7 +1402,7 @@ cdef class Set__i32:
         cdef shared_ptr[cset[int32_t]] shretval = \
             make_shared[cset[int32_t]]()
 
-        cdef shared_ptr[cset[int32_t]] cself = (<Set__i32> other)._cpp_obj
+        cdef shared_ptr[cset[int32_t]] cself = (<Set__i32> self)._cpp_obj
         cdef shared_ptr[cset[int32_t]] cother = (<Set__i32> other)._cpp_obj
 
         cdef cset[int32_t].iterator loc = deref(cself).begin()
@@ -2992,7 +2992,7 @@ cdef class Set__bool:
         cdef shared_ptr[cset[cbool]] shretval = \
             make_shared[cset[cbool]]()
 
-        cdef shared_ptr[cset[cbool]] cself = (<Set__bool> other)._cpp_obj
+        cdef shared_ptr[cset[cbool]] cself = (<Set__bool> self)._cpp_obj
         cdef shared_ptr[cset[cbool]] cother = (<Set__bool> other)._cpp_obj
 
         cdef cset[cbool].iterator loc = deref(cself).begin()
@@ -3011,7 +3011,7 @@ cdef class Set__bool:
         cdef shared_ptr[cset[cbool]] shretval = \
             make_shared[cset[cbool]]()
 
-        cdef shared_ptr[cset[cbool]] cself = (<Set__bool> other)._cpp_obj
+        cdef shared_ptr[cset[cbool]] cself = (<Set__bool> self)._cpp_obj
         cdef shared_ptr[cset[cbool]] cother = (<Set__bool> other)._cpp_obj
 
         cdef cset[cbool].iterator loc = deref(cself).begin()
@@ -3030,7 +3030,7 @@ cdef class Set__bool:
         cdef shared_ptr[cset[cbool]] shretval = \
             make_shared[cset[cbool]]()
 
-        cdef shared_ptr[cset[cbool]] cself = (<Set__bool> other)._cpp_obj
+        cdef shared_ptr[cset[cbool]] cself = (<Set__bool> self)._cpp_obj
         cdef shared_ptr[cset[cbool]] cother = (<Set__bool> other)._cpp_obj
 
         cdef cset[cbool].iterator loc = deref(cself).begin()
@@ -3052,7 +3052,7 @@ cdef class Set__bool:
         cdef shared_ptr[cset[cbool]] shretval = \
             make_shared[cset[cbool]]()
 
-        cdef shared_ptr[cset[cbool]] cself = (<Set__bool> other)._cpp_obj
+        cdef shared_ptr[cset[cbool]] cself = (<Set__bool> self)._cpp_obj
         cdef shared_ptr[cset[cbool]] cother = (<Set__bool> other)._cpp_obj
 
         cdef cset[cbool].iterator loc = deref(cself).begin()
@@ -3239,7 +3239,7 @@ cdef class Set__Set__bool:
         cdef shared_ptr[cset[cset[cbool]]] shretval = \
             make_shared[cset[cset[cbool]]]()
 
-        cdef shared_ptr[cset[cset[cbool]]] cself = (<Set__Set__bool> other)._cpp_obj
+        cdef shared_ptr[cset[cset[cbool]]] cself = (<Set__Set__bool> self)._cpp_obj
         cdef shared_ptr[cset[cset[cbool]]] cother = (<Set__Set__bool> other)._cpp_obj
 
         cdef cset[cset[cbool]].iterator loc = deref(cself).begin()
@@ -3258,7 +3258,7 @@ cdef class Set__Set__bool:
         cdef shared_ptr[cset[cset[cbool]]] shretval = \
             make_shared[cset[cset[cbool]]]()
 
-        cdef shared_ptr[cset[cset[cbool]]] cself = (<Set__Set__bool> other)._cpp_obj
+        cdef shared_ptr[cset[cset[cbool]]] cself = (<Set__Set__bool> self)._cpp_obj
         cdef shared_ptr[cset[cset[cbool]]] cother = (<Set__Set__bool> other)._cpp_obj
 
         cdef cset[cset[cbool]].iterator loc = deref(cself).begin()
@@ -3277,7 +3277,7 @@ cdef class Set__Set__bool:
         cdef shared_ptr[cset[cset[cbool]]] shretval = \
             make_shared[cset[cset[cbool]]]()
 
-        cdef shared_ptr[cset[cset[cbool]]] cself = (<Set__Set__bool> other)._cpp_obj
+        cdef shared_ptr[cset[cset[cbool]]] cself = (<Set__Set__bool> self)._cpp_obj
         cdef shared_ptr[cset[cset[cbool]]] cother = (<Set__Set__bool> other)._cpp_obj
 
         cdef cset[cset[cbool]].iterator loc = deref(cself).begin()
@@ -3299,7 +3299,7 @@ cdef class Set__Set__bool:
         cdef shared_ptr[cset[cset[cbool]]] shretval = \
             make_shared[cset[cset[cbool]]]()
 
-        cdef shared_ptr[cset[cset[cbool]]] cself = (<Set__Set__bool> other)._cpp_obj
+        cdef shared_ptr[cset[cset[cbool]]] cself = (<Set__Set__bool> self)._cpp_obj
         cdef shared_ptr[cset[cset[cbool]]] cother = (<Set__Set__bool> other)._cpp_obj
 
         cdef cset[cset[cbool]].iterator loc = deref(cself).begin()
@@ -3486,7 +3486,7 @@ cdef class Set__Set__Set__bool:
         cdef shared_ptr[cset[cset[cset[cbool]]]] shretval = \
             make_shared[cset[cset[cset[cbool]]]]()
 
-        cdef shared_ptr[cset[cset[cset[cbool]]]] cself = (<Set__Set__Set__bool> other)._cpp_obj
+        cdef shared_ptr[cset[cset[cset[cbool]]]] cself = (<Set__Set__Set__bool> self)._cpp_obj
         cdef shared_ptr[cset[cset[cset[cbool]]]] cother = (<Set__Set__Set__bool> other)._cpp_obj
 
         cdef cset[cset[cset[cbool]]].iterator loc = deref(cself).begin()
@@ -3505,7 +3505,7 @@ cdef class Set__Set__Set__bool:
         cdef shared_ptr[cset[cset[cset[cbool]]]] shretval = \
             make_shared[cset[cset[cset[cbool]]]]()
 
-        cdef shared_ptr[cset[cset[cset[cbool]]]] cself = (<Set__Set__Set__bool> other)._cpp_obj
+        cdef shared_ptr[cset[cset[cset[cbool]]]] cself = (<Set__Set__Set__bool> self)._cpp_obj
         cdef shared_ptr[cset[cset[cset[cbool]]]] cother = (<Set__Set__Set__bool> other)._cpp_obj
 
         cdef cset[cset[cset[cbool]]].iterator loc = deref(cself).begin()
@@ -3524,7 +3524,7 @@ cdef class Set__Set__Set__bool:
         cdef shared_ptr[cset[cset[cset[cbool]]]] shretval = \
             make_shared[cset[cset[cset[cbool]]]]()
 
-        cdef shared_ptr[cset[cset[cset[cbool]]]] cself = (<Set__Set__Set__bool> other)._cpp_obj
+        cdef shared_ptr[cset[cset[cset[cbool]]]] cself = (<Set__Set__Set__bool> self)._cpp_obj
         cdef shared_ptr[cset[cset[cset[cbool]]]] cother = (<Set__Set__Set__bool> other)._cpp_obj
 
         cdef cset[cset[cset[cbool]]].iterator loc = deref(cself).begin()
@@ -3546,7 +3546,7 @@ cdef class Set__Set__Set__bool:
         cdef shared_ptr[cset[cset[cset[cbool]]]] shretval = \
             make_shared[cset[cset[cset[cbool]]]]()
 
-        cdef shared_ptr[cset[cset[cset[cbool]]]] cself = (<Set__Set__Set__bool> other)._cpp_obj
+        cdef shared_ptr[cset[cset[cset[cbool]]]] cself = (<Set__Set__Set__bool> self)._cpp_obj
         cdef shared_ptr[cset[cset[cset[cbool]]]] cother = (<Set__Set__Set__bool> other)._cpp_obj
 
         cdef cset[cset[cset[cbool]]].iterator loc = deref(cself).begin()
@@ -3733,7 +3733,7 @@ cdef class Set__List__i32:
         cdef shared_ptr[cset[vector[int32_t]]] shretval = \
             make_shared[cset[vector[int32_t]]]()
 
-        cdef shared_ptr[cset[vector[int32_t]]] cself = (<Set__List__i32> other)._cpp_obj
+        cdef shared_ptr[cset[vector[int32_t]]] cself = (<Set__List__i32> self)._cpp_obj
         cdef shared_ptr[cset[vector[int32_t]]] cother = (<Set__List__i32> other)._cpp_obj
 
         cdef cset[vector[int32_t]].iterator loc = deref(cself).begin()
@@ -3752,7 +3752,7 @@ cdef class Set__List__i32:
         cdef shared_ptr[cset[vector[int32_t]]] shretval = \
             make_shared[cset[vector[int32_t]]]()
 
-        cdef shared_ptr[cset[vector[int32_t]]] cself = (<Set__List__i32> other)._cpp_obj
+        cdef shared_ptr[cset[vector[int32_t]]] cself = (<Set__List__i32> self)._cpp_obj
         cdef shared_ptr[cset[vector[int32_t]]] cother = (<Set__List__i32> other)._cpp_obj
 
         cdef cset[vector[int32_t]].iterator loc = deref(cself).begin()
@@ -3771,7 +3771,7 @@ cdef class Set__List__i32:
         cdef shared_ptr[cset[vector[int32_t]]] shretval = \
             make_shared[cset[vector[int32_t]]]()
 
-        cdef shared_ptr[cset[vector[int32_t]]] cself = (<Set__List__i32> other)._cpp_obj
+        cdef shared_ptr[cset[vector[int32_t]]] cself = (<Set__List__i32> self)._cpp_obj
         cdef shared_ptr[cset[vector[int32_t]]] cother = (<Set__List__i32> other)._cpp_obj
 
         cdef cset[vector[int32_t]].iterator loc = deref(cself).begin()
@@ -3793,7 +3793,7 @@ cdef class Set__List__i32:
         cdef shared_ptr[cset[vector[int32_t]]] shretval = \
             make_shared[cset[vector[int32_t]]]()
 
-        cdef shared_ptr[cset[vector[int32_t]]] cself = (<Set__List__i32> other)._cpp_obj
+        cdef shared_ptr[cset[vector[int32_t]]] cself = (<Set__List__i32> self)._cpp_obj
         cdef shared_ptr[cset[vector[int32_t]]] cother = (<Set__List__i32> other)._cpp_obj
 
         cdef cset[vector[int32_t]].iterator loc = deref(cself).begin()
@@ -3973,7 +3973,7 @@ cdef class Set__string:
         cdef shared_ptr[cset[string]] shretval = \
             make_shared[cset[string]]()
 
-        cdef shared_ptr[cset[string]] cself = (<Set__string> other)._cpp_obj
+        cdef shared_ptr[cset[string]] cself = (<Set__string> self)._cpp_obj
         cdef shared_ptr[cset[string]] cother = (<Set__string> other)._cpp_obj
 
         cdef cset[string].iterator loc = deref(cself).begin()
@@ -3992,7 +3992,7 @@ cdef class Set__string:
         cdef shared_ptr[cset[string]] shretval = \
             make_shared[cset[string]]()
 
-        cdef shared_ptr[cset[string]] cself = (<Set__string> other)._cpp_obj
+        cdef shared_ptr[cset[string]] cself = (<Set__string> self)._cpp_obj
         cdef shared_ptr[cset[string]] cother = (<Set__string> other)._cpp_obj
 
         cdef cset[string].iterator loc = deref(cself).begin()
@@ -4011,7 +4011,7 @@ cdef class Set__string:
         cdef shared_ptr[cset[string]] shretval = \
             make_shared[cset[string]]()
 
-        cdef shared_ptr[cset[string]] cself = (<Set__string> other)._cpp_obj
+        cdef shared_ptr[cset[string]] cself = (<Set__string> self)._cpp_obj
         cdef shared_ptr[cset[string]] cother = (<Set__string> other)._cpp_obj
 
         cdef cset[string].iterator loc = deref(cself).begin()
@@ -4033,7 +4033,7 @@ cdef class Set__string:
         cdef shared_ptr[cset[string]] shretval = \
             make_shared[cset[string]]()
 
-        cdef shared_ptr[cset[string]] cself = (<Set__string> other)._cpp_obj
+        cdef shared_ptr[cset[string]] cself = (<Set__string> self)._cpp_obj
         cdef shared_ptr[cset[string]] cother = (<Set__string> other)._cpp_obj
 
         cdef cset[string].iterator loc = deref(cself).begin()

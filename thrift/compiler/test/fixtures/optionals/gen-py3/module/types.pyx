@@ -1256,7 +1256,7 @@ cdef class Set__i64:
         cdef shared_ptr[cset[int64_t]] shretval = \
             make_shared[cset[int64_t]]()
 
-        cdef shared_ptr[cset[int64_t]] cself = (<Set__i64> other)._cpp_obj
+        cdef shared_ptr[cset[int64_t]] cself = (<Set__i64> self)._cpp_obj
         cdef shared_ptr[cset[int64_t]] cother = (<Set__i64> other)._cpp_obj
 
         cdef cset[int64_t].iterator loc = deref(cself).begin()
@@ -1275,7 +1275,7 @@ cdef class Set__i64:
         cdef shared_ptr[cset[int64_t]] shretval = \
             make_shared[cset[int64_t]]()
 
-        cdef shared_ptr[cset[int64_t]] cself = (<Set__i64> other)._cpp_obj
+        cdef shared_ptr[cset[int64_t]] cself = (<Set__i64> self)._cpp_obj
         cdef shared_ptr[cset[int64_t]] cother = (<Set__i64> other)._cpp_obj
 
         cdef cset[int64_t].iterator loc = deref(cself).begin()
@@ -1294,7 +1294,7 @@ cdef class Set__i64:
         cdef shared_ptr[cset[int64_t]] shretval = \
             make_shared[cset[int64_t]]()
 
-        cdef shared_ptr[cset[int64_t]] cself = (<Set__i64> other)._cpp_obj
+        cdef shared_ptr[cset[int64_t]] cself = (<Set__i64> self)._cpp_obj
         cdef shared_ptr[cset[int64_t]] cother = (<Set__i64> other)._cpp_obj
 
         cdef cset[int64_t].iterator loc = deref(cself).begin()
@@ -1316,7 +1316,7 @@ cdef class Set__i64:
         cdef shared_ptr[cset[int64_t]] shretval = \
             make_shared[cset[int64_t]]()
 
-        cdef shared_ptr[cset[int64_t]] cself = (<Set__i64> other)._cpp_obj
+        cdef shared_ptr[cset[int64_t]] cself = (<Set__i64> self)._cpp_obj
         cdef shared_ptr[cset[int64_t]] cother = (<Set__i64> other)._cpp_obj
 
         cdef cset[int64_t].iterator loc = deref(cself).begin()
