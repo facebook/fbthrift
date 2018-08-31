@@ -13,6 +13,7 @@ typedef map<string, I32List> StrI32ListMap
 typedef map<string, StrI32ListMap> StrStrIntListMapMap
 typedef set<I32List> SetI32Lists
 typedef set<SetI32Lists> SetSetI32Lists
+typedef set<i32> SetI32
 typedef bool Bool
 typedef i64 TimeStamp
 typedef byte Byte

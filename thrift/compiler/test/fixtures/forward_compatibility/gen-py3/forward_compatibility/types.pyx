@@ -1655,7 +1655,7 @@ cdef class Set__Map__i16_float:
         while loc != deref(cself).end():
             deref(shretval).insert(deref(loc))
             inc(loc)
-        loc = deref(cself).begin()
+        loc = deref(cother).begin()
         while loc != deref(cother).end():
             deref(shretval).insert(deref(loc))
             inc(loc)
@@ -1678,7 +1678,7 @@ cdef class Set__Map__i16_float:
             if deref(cother).count(deref(loc)) == 0:
                 deref(shretval).insert(deref(loc))
             inc(loc)
-        loc = deref(cself).begin()
+        loc = deref(cother).begin()
         while loc != deref(cother).end():
             if deref(cself).count(deref(loc)) == 0:
                 deref(shretval).insert(deref(loc))

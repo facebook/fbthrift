@@ -2146,7 +2146,7 @@ cdef class Set__i32:
         while loc != deref(cself).end():
             deref(shretval).insert(deref(loc))
             inc(loc)
-        loc = deref(cself).begin()
+        loc = deref(cother).begin()
         while loc != deref(cother).end():
             deref(shretval).insert(deref(loc))
             inc(loc)
@@ -2169,7 +2169,7 @@ cdef class Set__i32:
             if deref(cother).count(deref(loc)) == 0:
                 deref(shretval).insert(deref(loc))
             inc(loc)
-        loc = deref(cself).begin()
+        loc = deref(cother).begin()
         while loc != deref(cother).end():
             if deref(cself).count(deref(loc)) == 0:
                 deref(shretval).insert(deref(loc))
@@ -2386,7 +2386,7 @@ cdef class Set__string:
         while loc != deref(cself).end():
             deref(shretval).insert(deref(loc))
             inc(loc)
-        loc = deref(cself).begin()
+        loc = deref(cother).begin()
         while loc != deref(cother).end():
             deref(shretval).insert(deref(loc))
             inc(loc)
@@ -2409,7 +2409,7 @@ cdef class Set__string:
             if deref(cother).count(deref(loc)) == 0:
                 deref(shretval).insert(deref(loc))
             inc(loc)
-        loc = deref(cself).begin()
+        loc = deref(cother).begin()
         while loc != deref(cother).end():
             if deref(cself).count(deref(loc)) == 0:
                 deref(shretval).insert(deref(loc))
@@ -4481,7 +4481,7 @@ cdef class Set__binary:
         while loc != deref(cself).end():
             deref(shretval).insert(deref(loc))
             inc(loc)
-        loc = deref(cself).begin()
+        loc = deref(cother).begin()
         while loc != deref(cother).end():
             deref(shretval).insert(deref(loc))
             inc(loc)
@@ -4504,7 +4504,7 @@ cdef class Set__binary:
             if deref(cother).count(deref(loc)) == 0:
                 deref(shretval).insert(deref(loc))
             inc(loc)
-        loc = deref(cself).begin()
+        loc = deref(cother).begin()
         while loc != deref(cother).end():
             if deref(cself).count(deref(loc)) == 0:
                 deref(shretval).insert(deref(loc))

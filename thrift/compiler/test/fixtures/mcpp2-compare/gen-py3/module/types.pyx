@@ -7787,7 +7787,7 @@ cdef class Set__MyStruct:
         while loc != deref(cself).end():
             deref(shretval).insert(deref(loc))
             inc(loc)
-        loc = deref(cself).begin()
+        loc = deref(cother).begin()
         while loc != deref(cother).end():
             deref(shretval).insert(deref(loc))
             inc(loc)
@@ -7810,7 +7810,7 @@ cdef class Set__MyStruct:
             if deref(cother).count(deref(loc)) == 0:
                 deref(shretval).insert(deref(loc))
             inc(loc)
-        loc = deref(cself).begin()
+        loc = deref(cother).begin()
         while loc != deref(cother).end():
             if deref(cself).count(deref(loc)) == 0:
                 deref(shretval).insert(deref(loc))
@@ -8350,7 +8350,7 @@ cdef class Set__List__string:
         while loc != deref(cself).end():
             deref(shretval).insert(deref(loc))
             inc(loc)
-        loc = deref(cself).begin()
+        loc = deref(cother).begin()
         while loc != deref(cother).end():
             deref(shretval).insert(deref(loc))
             inc(loc)
@@ -8373,7 +8373,7 @@ cdef class Set__List__string:
             if deref(cother).count(deref(loc)) == 0:
                 deref(shretval).insert(deref(loc))
             inc(loc)
-        loc = deref(cself).begin()
+        loc = deref(cother).begin()
         while loc != deref(cother).end():
             if deref(cself).count(deref(loc)) == 0:
                 deref(shretval).insert(deref(loc))
@@ -8597,7 +8597,7 @@ cdef class Set__List__List__Map__Empty_MyStruct:
         while loc != deref(cself).end():
             deref(shretval).insert(deref(loc))
             inc(loc)
-        loc = deref(cself).begin()
+        loc = deref(cother).begin()
         while loc != deref(cother).end():
             deref(shretval).insert(deref(loc))
             inc(loc)
@@ -8620,7 +8620,7 @@ cdef class Set__List__List__Map__Empty_MyStruct:
             if deref(cother).count(deref(loc)) == 0:
                 deref(shretval).insert(deref(loc))
             inc(loc)
-        loc = deref(cself).begin()
+        loc = deref(cother).begin()
         while loc != deref(cother).end():
             if deref(cself).count(deref(loc)) == 0:
                 deref(shretval).insert(deref(loc))
@@ -9825,7 +9825,7 @@ cdef class Set__List__i32:
         while loc != deref(cself).end():
             deref(shretval).insert(deref(loc))
             inc(loc)
-        loc = deref(cself).begin()
+        loc = deref(cother).begin()
         while loc != deref(cother).end():
             deref(shretval).insert(deref(loc))
             inc(loc)
@@ -9848,7 +9848,7 @@ cdef class Set__List__i32:
             if deref(cother).count(deref(loc)) == 0:
                 deref(shretval).insert(deref(loc))
             inc(loc)
-        loc = deref(cself).begin()
+        loc = deref(cother).begin()
         while loc != deref(cother).end():
             if deref(cself).count(deref(loc)) == 0:
                 deref(shretval).insert(deref(loc))
@@ -10065,7 +10065,7 @@ cdef class Set__string:
         while loc != deref(cself).end():
             deref(shretval).insert(deref(loc))
             inc(loc)
-        loc = deref(cself).begin()
+        loc = deref(cother).begin()
         while loc != deref(cother).end():
             deref(shretval).insert(deref(loc))
             inc(loc)
@@ -10088,7 +10088,7 @@ cdef class Set__string:
             if deref(cother).count(deref(loc)) == 0:
                 deref(shretval).insert(deref(loc))
             inc(loc)
-        loc = deref(cself).begin()
+        loc = deref(cother).begin()
         while loc != deref(cother).end():
             if deref(cself).count(deref(loc)) == 0:
                 deref(shretval).insert(deref(loc))
@@ -11073,7 +11073,7 @@ cdef class Set__i64:
         while loc != deref(cself).end():
             deref(shretval).insert(deref(loc))
             inc(loc)
-        loc = deref(cself).begin()
+        loc = deref(cother).begin()
         while loc != deref(cother).end():
             deref(shretval).insert(deref(loc))
             inc(loc)
@@ -11096,7 +11096,7 @@ cdef class Set__i64:
             if deref(cother).count(deref(loc)) == 0:
                 deref(shretval).insert(deref(loc))
             inc(loc)
-        loc = deref(cself).begin()
+        loc = deref(cother).begin()
         while loc != deref(cother).end():
             if deref(cself).count(deref(loc)) == 0:
                 deref(shretval).insert(deref(loc))
@@ -11608,7 +11608,7 @@ cdef class Set__SimpleUnion:
         while loc != deref(cself).end():
             deref(shretval).insert(deref(loc))
             inc(loc)
-        loc = deref(cself).begin()
+        loc = deref(cother).begin()
         while loc != deref(cother).end():
             deref(shretval).insert(deref(loc))
             inc(loc)
@@ -11631,7 +11631,7 @@ cdef class Set__SimpleUnion:
             if deref(cother).count(deref(loc)) == 0:
                 deref(shretval).insert(deref(loc))
             inc(loc)
-        loc = deref(cself).begin()
+        loc = deref(cother).begin()
         while loc != deref(cother).end():
             if deref(cself).count(deref(loc)) == 0:
                 deref(shretval).insert(deref(loc))
@@ -12160,7 +12160,7 @@ cdef class Set__i32:
         while loc != deref(cself).end():
             deref(shretval).insert(deref(loc))
             inc(loc)
-        loc = deref(cself).begin()
+        loc = deref(cother).begin()
         while loc != deref(cother).end():
             deref(shretval).insert(deref(loc))
             inc(loc)
@@ -12183,7 +12183,7 @@ cdef class Set__i32:
             if deref(cother).count(deref(loc)) == 0:
                 deref(shretval).insert(deref(loc))
             inc(loc)
-        loc = deref(cself).begin()
+        loc = deref(cother).begin()
         while loc != deref(cother).end():
             if deref(cself).count(deref(loc)) == 0:
                 deref(shretval).insert(deref(loc))
@@ -12989,7 +12989,7 @@ cdef class Set__bool:
         while loc != deref(cself).end():
             deref(shretval).insert(deref(loc))
             inc(loc)
-        loc = deref(cself).begin()
+        loc = deref(cother).begin()
         while loc != deref(cother).end():
             deref(shretval).insert(deref(loc))
             inc(loc)
@@ -13012,7 +13012,7 @@ cdef class Set__bool:
             if deref(cother).count(deref(loc)) == 0:
                 deref(shretval).insert(deref(loc))
             inc(loc)
-        loc = deref(cself).begin()
+        loc = deref(cother).begin()
         while loc != deref(cother).end():
             if deref(cself).count(deref(loc)) == 0:
                 deref(shretval).insert(deref(loc))
@@ -13236,7 +13236,7 @@ cdef class Set__Set__bool:
         while loc != deref(cself).end():
             deref(shretval).insert(deref(loc))
             inc(loc)
-        loc = deref(cself).begin()
+        loc = deref(cother).begin()
         while loc != deref(cother).end():
             deref(shretval).insert(deref(loc))
             inc(loc)
@@ -13259,7 +13259,7 @@ cdef class Set__Set__bool:
             if deref(cother).count(deref(loc)) == 0:
                 deref(shretval).insert(deref(loc))
             inc(loc)
-        loc = deref(cself).begin()
+        loc = deref(cother).begin()
         while loc != deref(cother).end():
             if deref(cself).count(deref(loc)) == 0:
                 deref(shretval).insert(deref(loc))
@@ -13483,7 +13483,7 @@ cdef class Set__Set__Set__bool:
         while loc != deref(cself).end():
             deref(shretval).insert(deref(loc))
             inc(loc)
-        loc = deref(cself).begin()
+        loc = deref(cother).begin()
         while loc != deref(cother).end():
             deref(shretval).insert(deref(loc))
             inc(loc)
@@ -13506,7 +13506,7 @@ cdef class Set__Set__Set__bool:
             if deref(cother).count(deref(loc)) == 0:
                 deref(shretval).insert(deref(loc))
             inc(loc)
-        loc = deref(cself).begin()
+        loc = deref(cother).begin()
         while loc != deref(cother).end():
             if deref(cself).count(deref(loc)) == 0:
                 deref(shretval).insert(deref(loc))
@@ -14019,7 +14019,7 @@ cdef class folly_sorted_vector_set_std_string__Set__string:
         while loc != deref(cself).end():
             deref(shretval).insert(deref(loc))
             inc(loc)
-        loc = deref(cself).begin()
+        loc = deref(cother).begin()
         while loc != deref(cother).end():
             deref(shretval).insert(deref(loc))
             inc(loc)
@@ -14042,7 +14042,7 @@ cdef class folly_sorted_vector_set_std_string__Set__string:
             if deref(cother).count(deref(loc)) == 0:
                 deref(shretval).insert(deref(loc))
             inc(loc)
-        loc = deref(cself).begin()
+        loc = deref(cother).begin()
         while loc != deref(cother).end():
             if deref(cself).count(deref(loc)) == 0:
                 deref(shretval).insert(deref(loc))
@@ -14849,7 +14849,7 @@ cdef class folly_sorted_vector_set__Set__string:
         while loc != deref(cself).end():
             deref(shretval).insert(deref(loc))
             inc(loc)
-        loc = deref(cself).begin()
+        loc = deref(cother).begin()
         while loc != deref(cother).end():
             deref(shretval).insert(deref(loc))
             inc(loc)
@@ -14872,7 +14872,7 @@ cdef class folly_sorted_vector_set__Set__string:
             if deref(cother).count(deref(loc)) == 0:
                 deref(shretval).insert(deref(loc))
             inc(loc)
-        loc = deref(cself).begin()
+        loc = deref(cother).begin()
         while loc != deref(cother).end():
             if deref(cself).count(deref(loc)) == 0:
                 deref(shretval).insert(deref(loc))
@@ -15385,7 +15385,7 @@ cdef class Set__Baz__i32:
         while loc != deref(cself).end():
             deref(shretval).insert(deref(loc))
             inc(loc)
-        loc = deref(cself).begin()
+        loc = deref(cother).begin()
         while loc != deref(cother).end():
             deref(shretval).insert(deref(loc))
             inc(loc)
@@ -15408,7 +15408,7 @@ cdef class Set__Baz__i32:
             if deref(cother).count(deref(loc)) == 0:
                 deref(shretval).insert(deref(loc))
             inc(loc)
-        loc = deref(cself).begin()
+        loc = deref(cother).begin()
         while loc != deref(cother).end():
             if deref(cself).count(deref(loc)) == 0:
                 deref(shretval).insert(deref(loc))
