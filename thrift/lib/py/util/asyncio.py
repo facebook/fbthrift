@@ -39,7 +39,8 @@ def create_client(
         sock=None,
         loop=None,
         timeouts=None,
-        client_type=None
+        client_type=None,
+        ssl=None,
 ):
     """
     create an asyncio thrift client and return an async context
@@ -78,6 +79,7 @@ def create_client(
         host=host,
         port=port,
         sock=sock,
+        ssl=ssl,
     )
     return async_protocol_manager(coro)
 
