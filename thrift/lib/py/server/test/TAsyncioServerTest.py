@@ -16,7 +16,7 @@ from thrift.server.TAsyncioServer import (
     ThriftClientProtocolFactory,
     ThriftHeaderClientProtocol,
 )
-from thrift.server.test.handler import (
+from .handler import (
     AsyncCalculatorHandler,
     AsyncSleepHandler,
 )

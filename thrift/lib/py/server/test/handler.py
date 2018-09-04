@@ -11,7 +11,6 @@ except Exception:
 from thrift_asyncio.tutorial import Calculator as AsyncCalculator
 from thrift_asyncio.sleep import Sleep as AsyncSleep
 from thrift_asyncio.sleep.ttypes import OverflowResult
-from tutorial import Calculator
 
 
 class AsyncCalculatorHandler(AsyncCalculator.Iface):
@@ -24,18 +23,6 @@ class AsyncCalculatorHandler(AsyncCalculator.Iface):
         return 0
 
     @asyncio.coroutine
-    def zip(self):
-        print('zip')
-
-
-class CalculatorHandler(Calculator.Iface):
-
-    def add(self, n1, n2):
-        return 42
-
-    def calculate(self, logid, work):
-        return 0
-
     def zip(self):
         print('zip')
 
