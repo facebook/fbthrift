@@ -9,15 +9,8 @@ from thrift.Thrift import TProcessor
 
 class TestAsyncioServer(TestCase):
     async def test_factory(self):
-        class it:
-            def __init__(self, server):
-                self.server = server
-
-            def __iter__(self):
-                return self
-
-            def __next__(self):
-                raise StopIteration(self.server)
+        async def wrap(value):
+            return value
 
         with patch(
             "thrift.server.TAsyncioServer.ThriftServerProtocolFactory"
@@ -31,7 +24,7 @@ class TestAsyncioServer(TestCase):
             server.sockets = [sock]
             # Weird custom iterator object in order to inject the return value
             # of the "yield from" statement in ThriftAsyncServerFactory.
-            loop.create_server.return_value = it(server)
+            loop.create_server.return_value = wrap(server)
 
             await ThriftAsyncServerFactory(
                 processor, loop=loop, event_handler=event_handler

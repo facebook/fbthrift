@@ -34,8 +34,7 @@ logger = logging.getLogger(__name__)
 #
 
 
-@asyncio.coroutine
-def ThriftAsyncServerFactory(
+async def ThriftAsyncServerFactory(
     processor, *, interface=None, port=0, loop=None, nthreads=None, sock=None,
     backlog=100, ssl=None, event_handler=None
 ):
@@ -66,7 +65,7 @@ def ThriftAsyncServerFactory(
     1. By default all methods are executed synchronously on the event loop.
        This can lead to poor performance if a single run takes long to process.
 
-    2. Mark coroutines with @asyncio.coroutine if you wish to use "yield from"
+    2. Mark coroutines with `async def` if you wish to use `await`
        to call async services, schedule tasks with customized executors, etc.
 
     3. Mark methods with @run_on_thread if you wish to run them on the thread
@@ -106,7 +105,7 @@ def ThriftAsyncServerFactory(
         )
     ehandler = TServerEventHandler() if event_handler is None else event_handler
     pfactory = ThriftServerProtocolFactory(processor, ehandler, loop)
-    server = yield from loop.create_server(
+    server = await loop.create_server(
         pfactory,
         interface,
         port,
@@ -136,8 +135,7 @@ class ThriftHeaderServerProtocol(FramedProtocol):
         self.server_event_handler = server_event_handler
         self.server_context = None
 
-    @asyncio.coroutine
-    def message_received(self, frame):
+    async def message_received(self, frame):
         # Note: we are using a single `prot` for in and out so that
         # we can support legacy clients that only understand FRAMED.
         # The discovery of what the client supports happens in iprot's
@@ -146,7 +144,7 @@ class ThriftHeaderServerProtocol(FramedProtocol):
         prot = THeaderProtocol(buf)
 
         try:
-            yield from self.processor.process(
+            await self.processor.process(
                 prot, prot, self.server_context,
             )
             msg = buf.getvalue()
@@ -196,18 +194,16 @@ def ThriftClientProtocolFactory(
 
 
 class SenderTransport(WrappedTransport):
-    @asyncio.coroutine
-    def _send(self):
+    async def _send(self):
         while True:
-            msg = yield from self._queue.get()
+            msg = await self._queue.get()
             self._clean_producers()
             self._trans.write(msg)
 
 
 class ThriftHeaderClientProtocol(ThriftHeaderClientProtocolBase):
-    @asyncio.coroutine
-    def timeout_task(self, fname, seqid, delay):
-        yield from asyncio.sleep(delay, loop=self.loop)
+    async def timeout_task(self, fname, seqid, delay):
+        await asyncio.sleep(delay, loop=self.loop)
         self._handle_timeout(fname, seqid)
 
     def wrapAsyncioTransport(self, asyncio_transport):
