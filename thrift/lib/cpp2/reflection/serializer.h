@@ -540,23 +540,9 @@ struct deref<PtrType, enable_if_smart_pointer<PtrType>> {
 
 } // namespace detail
 
-// specialization for variants (Thrift unions) which don't have Fatal
-// metadata generated
-template <typename Union>
-struct protocol_methods<
-    type_class::variant,
-    Union,
-    typename std::enable_if<
-        !apache::thrift::is_reflectable_union<Union>::value>::type>
-    : detail::legacy_fallback_methods<Union, protocol::T_STRUCT> {};
-
 // specialization for variants (Thrift unions)
 template <typename Union>
-struct protocol_methods<
-    type_class::variant,
-    Union,
-    typename std::enable_if<
-        apache::thrift::is_reflectable_union<Union>::value>::type> {
+struct protocol_methods<type_class::variant, Union> {
   constexpr static protocol::TType ttype_value = protocol::T_STRUCT; // overlaps
 
   using traits = fatal::variant_traits<Union>;
@@ -769,22 +755,9 @@ struct protocol_methods<
   }
 };
 
-// specialization for structs, from IDLs without fatal metadata
-template <typename Struct>
-struct protocol_methods<
-    type_class::structure,
-    Struct,
-    typename std::enable_if<
-        !apache::thrift::is_reflectable_struct<Struct>::value>::type>
-    : public detail::legacy_fallback_methods<Struct, protocol::T_STRUCT> {};
-
 // specialization for structs
 template <typename Struct>
-struct protocol_methods<
-    type_class::structure,
-    Struct,
-    typename std::enable_if<
-        apache::thrift::is_reflectable_struct<Struct>::value>::type> {
+struct protocol_methods<type_class::structure, Struct> {
   constexpr static protocol::TType ttype_value = protocol::T_STRUCT;
 
  private:
