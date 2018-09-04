@@ -15,7 +15,7 @@ export SOURCE_JAR=$(ls target/thrift-*.jar|grep sources)
 export CMD="mvn org.apache.maven.plugins:maven-deploy-plugin:2.7:deploy-file \
   -DgroupId=com.facebook -DartifactId=thrift -Dversion=$AUTO_ARTIFACT_VERSION -Dpackaging=jar \
   -Dfile=$JAR -Dsource=$SOURCE_JAR -DpomFile=target/pom.xml \
-  -Durl=http://nexus.vip.facebook.com:8181/nexus/content/repositories/libs-releases-local \
+  -Durl=https://maven.thefacebook.com/nexus/content/repositories/libs-releases-local \
   -DrepositoryId=libs-releases-local"
 
 echo executing $CMD
