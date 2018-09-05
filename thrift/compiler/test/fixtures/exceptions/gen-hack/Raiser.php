@@ -23,7 +23,8 @@ interface RaiserAsyncIf extends \IThriftAsyncIf {
    * void
    *   doRaise()
    *   throws (1: Banal b,
-   *           2: Fiery f);
+   *           2: Fiery f,
+   *           3: Serious s);
    */
   public function doRaise(): Awaitable<void>;
 
@@ -39,7 +40,8 @@ interface RaiserAsyncIf extends \IThriftAsyncIf {
    * string
    *   get500()
    *   throws (1: Fiery f,
-   *           2: Banal b);
+   *           2: Banal b,
+   *           3: Serious s);
    */
   public function get500(): Awaitable<string>;
 }
@@ -61,7 +63,8 @@ interface RaiserIf extends \IThriftSyncIf {
    * void
    *   doRaise()
    *   throws (1: Banal b,
-   *           2: Fiery f);
+   *           2: Fiery f,
+   *           3: Serious s);
    */
   public function doRaise(): void;
 
@@ -77,7 +80,8 @@ interface RaiserIf extends \IThriftSyncIf {
    * string
    *   get500()
    *   throws (1: Fiery f,
-   *           2: Banal b);
+   *           2: Banal b,
+   *           3: Serious s);
    */
   public function get500(): string;
 }
@@ -272,6 +276,11 @@ return;
     }
     if ($result->f !== null) {
       $x = $result->f;
+      $this->eventHandler_->recvException('doRaise', $expectedsequenceid, $x);
+      throw $x;
+    }
+    if ($result->s !== null) {
+      $x = $result->s;
       $this->eventHandler_->recvException('doRaise', $expectedsequenceid, $x);
       throw $x;
     }
@@ -476,6 +485,11 @@ return;
       $this->eventHandler_->recvException('get500', $expectedsequenceid, $x);
       throw $x;
     }
+    if ($result->s !== null) {
+      $x = $result->s;
+      $this->eventHandler_->recvException('get500', $expectedsequenceid, $x);
+      throw $x;
+    }
     $x = new \TApplicationException("get500 failed: unknown result", \TApplicationException::MISSING_RESULT);
     $this->eventHandler_->recvError('get500', $expectedsequenceid, $x);
     throw $x;
@@ -502,7 +516,8 @@ class RaiserAsyncClient extends ThriftClientBase implements RaiserAsyncIf {
    * void
    *   doRaise()
    *   throws (1: Banal b,
-   *           2: Fiery f);
+   *           2: Fiery f,
+   *           3: Serious s);
    */
   public async function doRaise(): Awaitable<void> {
     $currentseqid = $this->sendImpl_doRaise();
@@ -526,7 +541,8 @@ class RaiserAsyncClient extends ThriftClientBase implements RaiserAsyncIf {
    * string
    *   get500()
    *   throws (1: Fiery f,
-   *           2: Banal b);
+   *           2: Banal b,
+   *           3: Serious s);
    */
   public async function get500(): Awaitable<string> {
     $currentseqid = $this->sendImpl_get500();
@@ -567,7 +583,8 @@ class RaiserClient extends ThriftClientBase implements RaiserIf {
    * void
    *   doRaise()
    *   throws (1: Banal b,
-   *           2: Fiery f);
+   *           2: Fiery f,
+   *           3: Serious s);
    */
   public async function gen_doRaise(): Awaitable<void> {
     $currentseqid = $this->sendImpl_doRaise();
@@ -603,7 +620,8 @@ class RaiserClient extends ThriftClientBase implements RaiserIf {
    * string
    *   get500()
    *   throws (1: Fiery f,
-   *           2: Banal b);
+   *           2: Banal b,
+   *           3: Serious s);
    */
   public async function gen_get500(): Awaitable<string> {
     $currentseqid = $this->sendImpl_get500();
@@ -708,16 +726,23 @@ class Raiser_doRaise_result implements \IThriftStruct {
       'type' => \TType::STRUCT,
       'class' => 'Fiery',
       ],
+    3 => dict[
+      'var' => 's',
+      'type' => \TType::STRUCT,
+      'class' => 'Serious',
+      ],
     ];
   public static Map<string, int> $_TFIELDMAP = Map {
     'b' => 1,
     'f' => 2,
+    's' => 3,
   };
-  const int STRUCTURAL_ID = 4627148532195051457;
+  const int STRUCTURAL_ID = 1991614683033939916;
   public ?Banal $b;
   public ?Fiery $f;
+  public ?Serious $s;
 
-  public function __construct(?Banal $b = null, ?Fiery $f = null  ) {
+  public function __construct(?Banal $b = null, ?Fiery $f = null, ?Serious $s = null  ) {
   }
 
   public function getName(): string {
@@ -804,18 +829,25 @@ class Raiser_get500_result implements \IThriftStruct {
       'type' => \TType::STRUCT,
       'class' => 'Banal',
       ],
+    3 => dict[
+      'var' => 's',
+      'type' => \TType::STRUCT,
+      'class' => 'Serious',
+      ],
     ];
   public static Map<string, int> $_TFIELDMAP = Map {
     'success' => 0,
     'f' => 1,
     'b' => 2,
+    's' => 3,
   };
-  const int STRUCTURAL_ID = 5466967913262095245;
+  const int STRUCTURAL_ID = 6147773747560615508;
   public ?string $success;
   public ?Fiery $f;
   public ?Banal $b;
+  public ?Serious $s;
 
-  public function __construct(?string $success = null, ?Fiery $f = null, ?Banal $b = null  ) {
+  public function __construct(?string $success = null, ?Fiery $f = null, ?Banal $b = null, ?Serious $s = null  ) {
   }
 
   public function getName(): string {

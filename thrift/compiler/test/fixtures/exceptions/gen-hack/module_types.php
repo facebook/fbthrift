@@ -67,3 +67,37 @@ class Fiery extends \TException implements \IThriftStruct {
 
 }
 
+/**
+ * Original thrift exception:-
+ * Serious
+ */
+class Serious extends \TException implements \IThriftStruct {
+  use \ThriftSerializationTrait;
+
+  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
+    1 => dict[
+      'var' => 'sonnet',
+      'type' => \TType::STRING,
+      ],
+    ];
+  public static Map<string, int> $_TFIELDMAP = Map {
+    'sonnet' => 1,
+  };
+  const int STRUCTURAL_ID = 7572301088987666687;
+  /**
+   * Original thrift field:-
+   * 1: string sonnet
+   */
+  public ?string $sonnet;
+
+  public function __construct(?string $sonnet = null  ) {
+    parent::__construct();
+    $this->sonnet = $sonnet;
+  }
+
+  public function getName(): string {
+    return 'Serious';
+  }
+
+}
+

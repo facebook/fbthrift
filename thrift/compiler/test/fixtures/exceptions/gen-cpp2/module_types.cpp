@@ -33,6 +33,16 @@ void TccStructTraits< ::cpp2::Fiery>::translateFieldName(
     _ftype = apache::thrift::protocol::T_STRING;
   }
 }
+void TccStructTraits< ::cpp2::Serious>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "sonnet") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
+}
 
 } // namespace detail
 } // namespace thrift
@@ -121,5 +131,65 @@ template void Fiery::readNoXfer<>(apache::thrift::CompactProtocolReader*);
 template uint32_t Fiery::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t Fiery::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t Fiery::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+} // cpp2
+namespace cpp2 {
+
+Serious::Serious(apache::thrift::FragileConstructor, std::string sonnet__arg) :
+    sonnet(std::move(sonnet__arg)) {
+  __isset.sonnet = true;
+}
+
+void Serious::__clear() {
+  // clear all fields
+  sonnet = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
+  __isset = {};
+}
+
+bool Serious::operator==(const Serious& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  if (lhs.__isset.sonnet != rhs.__isset.sonnet) {
+    return false;
+  }
+  if (lhs.__isset.sonnet) {
+    if (!(lhs.sonnet == rhs.sonnet)) {
+      return false;
+    }
+  }
+  return true;
+}
+
+bool Serious::operator<(const Serious& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  if (lhs.__isset.sonnet != rhs.__isset.sonnet) {
+    return lhs.__isset.sonnet < rhs.__isset.sonnet;
+  }
+  if (lhs.__isset.sonnet) {
+    if (!(lhs.sonnet == rhs.sonnet)) {
+      return lhs.sonnet < rhs.sonnet;
+    }
+  }
+  return false;
+}
+
+
+void swap(Serious& a, Serious& b) {
+  using ::std::swap;
+  swap(a.sonnet, b.sonnet);
+  swap(a.__isset, b.__isset);
+}
+
+template void Serious::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+template uint32_t Serious::write<>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t Serious::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t Serious::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+template void Serious::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+template uint32_t Serious::write<>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t Serious::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t Serious::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 } // cpp2

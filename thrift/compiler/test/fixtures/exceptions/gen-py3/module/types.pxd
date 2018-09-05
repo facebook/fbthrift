@@ -29,6 +29,8 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "cpp2":
     cdef cppclass cBanal "cpp2::Banal"(cTException)
     # Forward Declaration
     cdef cppclass cFiery "cpp2::Fiery"(cTException)
+    # Forward Declaration
+    cdef cppclass cSerious "cpp2::Serious"(cTException)
 
 cdef extern from "src/gen-cpp2/module_types.h" namespace "cpp2":
     cdef cppclass cBanal__isset "cpp2::Banal::__isset":
@@ -58,6 +60,20 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "cpp2":
         string message
         cFiery__isset __isset
 
+    cdef cppclass cSerious__isset "cpp2::Serious::__isset":
+        bint sonnet
+
+    cdef cppclass cSerious "cpp2::Serious"(cTException):
+        cSerious() except +
+        cSerious(const cSerious&) except +
+        bint operator==(cSerious&)
+        bint operator<(cSerious&)
+        bint operator>(cSerious&)
+        bint operator<=(cSerious&)
+        bint operator>=(cSerious&)
+        string sonnet
+        cSerious__isset __isset
+
 
 cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[cBanal] move(unique_ptr[cBanal])
@@ -66,10 +82,14 @@ cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[cFiery] move(unique_ptr[cFiery])
     cdef shared_ptr[cFiery] move_shared "std::move"(shared_ptr[cFiery])
     cdef unique_ptr[cFiery] move_unique "std::move"(unique_ptr[cFiery])
+    cdef shared_ptr[cSerious] move(unique_ptr[cSerious])
+    cdef shared_ptr[cSerious] move_shared "std::move"(shared_ptr[cSerious])
+    cdef unique_ptr[cSerious] move_unique "std::move"(unique_ptr[cSerious])
 
 cdef extern from "<memory>" namespace "std" nogil:
     cdef shared_ptr[const cBanal] const_pointer_cast "std::const_pointer_cast<const cpp2::Banal>"(shared_ptr[cBanal])
     cdef shared_ptr[const cFiery] const_pointer_cast "std::const_pointer_cast<const cpp2::Fiery>"(shared_ptr[cFiery])
+    cdef shared_ptr[const cSerious] const_pointer_cast "std::const_pointer_cast<const cpp2::Serious>"(shared_ptr[cSerious])
 
 # Forward Definition of the cython struct
 cdef class Banal(thrift.py3.exceptions.Error)
@@ -105,6 +125,24 @@ cdef class Fiery(thrift.py3.exceptions.Error):
 
     @staticmethod
     cdef create(shared_ptr[cFiery])
+
+# Forward Definition of the cython struct
+cdef class Serious(thrift.py3.exceptions.Error)
+
+
+cdef class Serious(thrift.py3.exceptions.Error):
+    cdef object __hash
+    cdef object __weakref__
+    cdef shared_ptr[cSerious] _cpp_obj
+
+    @staticmethod
+    cdef unique_ptr[cSerious] _make_instance(
+        cSerious* base_instance,
+        object sonnet
+    ) except *
+
+    @staticmethod
+    cdef create(shared_ptr[cSerious])
 
 
 

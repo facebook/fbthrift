@@ -278,6 +278,7 @@ class doRaise_result:
   Attributes:
    - b
    - f
+   - s
   """
 
   thrift_spec = None
@@ -314,6 +315,12 @@ class doRaise_result:
           self.f.read(iprot)
         else:
           iprot.skip(ftype)
+      elif fid == 3:
+        if ftype == TType.STRUCT:
+          self.s = Serious()
+          self.s.read(iprot)
+        else:
+          iprot.skip(ftype)
       else:
         iprot.skip(ftype)
       iprot.readFieldEnd()
@@ -339,6 +346,10 @@ class doRaise_result:
       oprot.writeFieldBegin('f', TType.STRUCT, 2)
       self.f.write(oprot)
       oprot.writeFieldEnd()
+    if self.s != None:
+      oprot.writeFieldBegin('s', TType.STRUCT, 3)
+      self.s.write(oprot)
+      oprot.writeFieldEnd()
     oprot.writeFieldStop()
     oprot.writeStructEnd()
 
@@ -353,6 +364,10 @@ class doRaise_result:
       value = pprint.pformat(self.f, indent=0)
       value = padding.join(value.splitlines(True))
       L.append('    f=%s' % (value))
+    if self.s is not None:
+      value = pprint.pformat(self.s, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    s=%s' % (value))
     return "%s(%s)" % (self.__class__.__name__, "\n" + ",\n".join(L) if L else '')
 
   def __eq__(self, other):
@@ -373,6 +388,7 @@ doRaise_result.thrift_spec = (
   None, # 0
   (1, TType.STRUCT, 'b', [Banal, Banal.thrift_spec, False], None, 2, ), # 1
   (2, TType.STRUCT, 'f', [Fiery, Fiery.thrift_spec, False], None, 2, ), # 2
+  (3, TType.STRUCT, 's', [Serious, Serious.thrift_spec, False], None, 2, ), # 3
 )
 
 doRaise_result.thrift_struct_annotations = {
@@ -380,15 +396,17 @@ doRaise_result.thrift_struct_annotations = {
 doRaise_result.thrift_field_annotations = {
 }
 
-def doRaise_result__init__(self, b=None, f=None,):
+def doRaise_result__init__(self, b=None, f=None, s=None,):
   self.b = b
   self.f = f
+  self.s = s
 
 doRaise_result.__init__ = doRaise_result__init__
 
 def doRaise_result__setstate__(self, state):
   state.setdefault('b', None)
   state.setdefault('f', None)
+  state.setdefault('s', None)
   self.__dict__ = state
 
 doRaise_result.__getstate__ = lambda self: self.__dict__.copy()
@@ -641,6 +659,7 @@ class get500_result:
    - success
    - f
    - b
+   - s
   """
 
   thrift_spec = None
@@ -682,6 +701,12 @@ class get500_result:
           self.b.read(iprot)
         else:
           iprot.skip(ftype)
+      elif fid == 3:
+        if ftype == TType.STRUCT:
+          self.s = Serious()
+          self.s.read(iprot)
+        else:
+          iprot.skip(ftype)
       else:
         iprot.skip(ftype)
       iprot.readFieldEnd()
@@ -711,6 +736,10 @@ class get500_result:
       oprot.writeFieldBegin('b', TType.STRUCT, 2)
       self.b.write(oprot)
       oprot.writeFieldEnd()
+    if self.s != None:
+      oprot.writeFieldBegin('s', TType.STRUCT, 3)
+      self.s.write(oprot)
+      oprot.writeFieldEnd()
     oprot.writeFieldStop()
     oprot.writeStructEnd()
 
@@ -729,6 +758,10 @@ class get500_result:
       value = pprint.pformat(self.b, indent=0)
       value = padding.join(value.splitlines(True))
       L.append('    b=%s' % (value))
+    if self.s is not None:
+      value = pprint.pformat(self.s, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    s=%s' % (value))
     return "%s(%s)" % (self.__class__.__name__, "\n" + ",\n".join(L) if L else '')
 
   def __eq__(self, other):
@@ -749,6 +782,7 @@ get500_result.thrift_spec = (
   (0, TType.STRING, 'success', True, None, 2, ), # 0
   (1, TType.STRUCT, 'f', [Fiery, Fiery.thrift_spec, False], None, 2, ), # 1
   (2, TType.STRUCT, 'b', [Banal, Banal.thrift_spec, False], None, 2, ), # 2
+  (3, TType.STRUCT, 's', [Serious, Serious.thrift_spec, False], None, 2, ), # 3
 )
 
 get500_result.thrift_struct_annotations = {
@@ -756,10 +790,11 @@ get500_result.thrift_struct_annotations = {
 get500_result.thrift_field_annotations = {
 }
 
-def get500_result__init__(self, success=None, f=None, b=None,):
+def get500_result__init__(self, success=None, f=None, b=None, s=None,):
   self.success = success
   self.f = f
   self.b = b
+  self.s = s
 
 get500_result.__init__ = get500_result__init__
 
@@ -767,6 +802,7 @@ def get500_result__setstate__(self, state):
   state.setdefault('success', None)
   state.setdefault('f', None)
   state.setdefault('b', None)
+  state.setdefault('s', None)
   self.__dict__ = state
 
 get500_result.__getstate__ = lambda self: self.__dict__.copy()
@@ -835,6 +871,8 @@ class Client(Iface):
       raise result.b
     if result.f != None:
       raise result.f
+    if result.s != None:
+      raise result.s
     return
 
   def get200(self, ):
@@ -889,6 +927,8 @@ class Client(Iface):
       raise result.f
     if result.b != None:
       raise result.b
+    if result.s != None:
+      raise result.s
     raise TApplicationException(TApplicationException.MISSING_RESULT, "get500 failed: unknown result");
 
 
@@ -939,6 +979,9 @@ class Processor(Iface, TProcessor):
     except Fiery as exc1:
       self._event_handler.handlerException(handler_ctx, 'doRaise', exc1)
       result.f = exc1
+    except Serious as exc2:
+      self._event_handler.handlerException(handler_ctx, 'doRaise', exc2)
+      result.s = exc2
     except:
       ex = sys.exc_info()[1]
       self._event_handler.handlerError(handler_ctx, 'doRaise', ex)
@@ -967,6 +1010,9 @@ class Processor(Iface, TProcessor):
     except Banal as exc1:
       self._event_handler.handlerException(handler_ctx, 'get500', exc1)
       result.b = exc1
+    except Serious as exc2:
+      self._event_handler.handlerException(handler_ctx, 'get500', exc2)
+      result.s = exc2
     except:
       ex = sys.exc_info()[1]
       self._event_handler.handlerError(handler_ctx, 'get500', ex)
@@ -1022,6 +1068,9 @@ class ContextProcessor(ContextIface, TProcessor):
     except Fiery as exc1:
       self._event_handler.handlerException(handler_ctx, 'doRaise', exc1)
       result.f = exc1
+    except Serious as exc2:
+      self._event_handler.handlerException(handler_ctx, 'doRaise', exc2)
+      result.s = exc2
     except:
       ex = sys.exc_info()[1]
       self._event_handler.handlerError(handler_ctx, 'doRaise', ex)
@@ -1050,6 +1099,9 @@ class ContextProcessor(ContextIface, TProcessor):
     except Banal as exc1:
       self._event_handler.handlerException(handler_ctx, 'get500', exc1)
       result.b = exc1
+    except Serious as exc2:
+      self._event_handler.handlerException(handler_ctx, 'get500', exc2)
+      result.s = exc2
     except:
       ex = sys.exc_info()[1]
       self._event_handler.handlerError(handler_ctx, 'get500', ex)

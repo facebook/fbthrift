@@ -30,11 +30,11 @@ public class Raiser {
 
     public void doBland() throws TException;
 
-    public void doRaise() throws Banal, Fiery, TException;
+    public void doRaise() throws Banal, Fiery, Serious, TException;
 
     public String get200() throws TException;
 
-    public String get500() throws Fiery, Banal, TException;
+    public String get500() throws Fiery, Banal, Serious, TException;
 
   }
 
@@ -120,7 +120,7 @@ public class Raiser {
       return;
     }
 
-    public void doRaise() throws Banal, Fiery, TException
+    public void doRaise() throws Banal, Fiery, Serious, TException
     {
       ContextStack ctx = getContextStack("Raiser.doRaise", null);
       this.setContextStack(ctx);
@@ -141,7 +141,7 @@ public class Raiser {
       return;
     }
 
-    public void recv_doRaise() throws Banal, Fiery, TException
+    public void recv_doRaise() throws Banal, Fiery, Serious, TException
     {
       ContextStack ctx = super.getContextStack();
       long bytes;
@@ -163,6 +163,9 @@ public class Raiser {
       }
       if (result.f != null) {
         throw result.f;
+      }
+      if (result.s != null) {
+        throw result.s;
       }
       return;
     }
@@ -211,7 +214,7 @@ public class Raiser {
       throw new TApplicationException(TApplicationException.MISSING_RESULT, "get200 failed: unknown result");
     }
 
-    public String get500() throws Fiery, Banal, TException
+    public String get500() throws Fiery, Banal, Serious, TException
     {
       ContextStack ctx = getContextStack("Raiser.get500", null);
       this.setContextStack(ctx);
@@ -232,7 +235,7 @@ public class Raiser {
       return;
     }
 
-    public String recv_get500() throws Fiery, Banal, TException
+    public String recv_get500() throws Fiery, Banal, Serious, TException
     {
       ContextStack ctx = super.getContextStack();
       long bytes;
@@ -257,6 +260,9 @@ public class Raiser {
       }
       if (result.b != null) {
         throw result.b;
+      }
+      if (result.s != null) {
+        throw result.s;
       }
       throw new TApplicationException(TApplicationException.MISSING_RESULT, "get500 failed: unknown result");
     }
@@ -327,7 +333,7 @@ public class Raiser {
         prot.writeMessageEnd();
       }
 
-      public void getResult() throws Banal, Fiery, TException {
+      public void getResult() throws Banal, Fiery, Serious, TException {
         if (getState() != State.RESPONSE_READ) {
           throw new IllegalStateException("Method call not finished!");
         }
@@ -385,7 +391,7 @@ public class Raiser {
         prot.writeMessageEnd();
       }
 
-      public String getResult() throws Fiery, Banal, TException {
+      public String getResult() throws Fiery, Banal, Serious, TException {
         if (getState() != State.RESPONSE_READ) {
           throw new IllegalStateException("Method call not finished!");
         }
@@ -478,6 +484,9 @@ public class Raiser {
         } catch (Fiery f) {
           result.f = f;
           event_handler_.declaredUserException(handler_ctx, "Raiser.doRaise", f);
+        } catch (Serious s) {
+          result.s = s;
+          event_handler_.declaredUserException(handler_ctx, "Raiser.doRaise", s);
         } catch (Throwable th) {
           LOGGER.error("Internal error processing Raiser.doRaise", th);
           event_handler_.handlerError(handler_ctx, "Raiser.doRaise", th);
@@ -539,6 +548,9 @@ public class Raiser {
         } catch (Banal b) {
           result.b = b;
           event_handler_.declaredUserException(handler_ctx, "Raiser.get500", b);
+        } catch (Serious s) {
+          result.s = s;
+          event_handler_.declaredUserException(handler_ctx, "Raiser.get500", s);
         } catch (Throwable th) {
           LOGGER.error("Internal error processing Raiser.get500", th);
           event_handler_.handlerError(handler_ctx, "Raiser.get500", th);
@@ -1037,11 +1049,14 @@ String space = prettyPrint ? " " : "";
     private static final TStruct STRUCT_DESC = new TStruct("doRaise_result");
     private static final TField B_FIELD_DESC = new TField("b", TType.STRUCT, (short)1);
     private static final TField F_FIELD_DESC = new TField("f", TType.STRUCT, (short)2);
+    private static final TField S_FIELD_DESC = new TField("s", TType.STRUCT, (short)3);
 
     public Banal b;
     public Fiery f;
+    public Serious s;
     public static final int B = 1;
     public static final int F = 2;
+    public static final int S = 3;
     public static boolean DEFAULT_PRETTY_PRINT = true;
 
     // isset id assignments
@@ -1052,6 +1067,8 @@ String space = prettyPrint ? " " : "";
       tmpMetaDataMap.put(B, new FieldMetaData("b", TFieldRequirementType.DEFAULT, 
           new FieldValueMetaData(TType.STRUCT)));
       tmpMetaDataMap.put(F, new FieldMetaData("f", TFieldRequirementType.DEFAULT, 
+          new FieldValueMetaData(TType.STRUCT)));
+      tmpMetaDataMap.put(S, new FieldMetaData("s", TFieldRequirementType.DEFAULT, 
           new FieldValueMetaData(TType.STRUCT)));
       metaDataMap = Collections.unmodifiableMap(tmpMetaDataMap);
     }
@@ -1065,11 +1082,13 @@ String space = prettyPrint ? " " : "";
 
     public doRaise_result(
       Banal b,
-      Fiery f)
+      Fiery f,
+      Serious s)
     {
       this();
       this.b = b;
       this.f = f;
+      this.s = s;
     }
 
     /**
@@ -1081,6 +1100,9 @@ String space = prettyPrint ? " " : "";
       }
       if (other.isSetF()) {
         this.f = TBaseHelper.deepCopy(other.f);
+      }
+      if (other.isSetS()) {
+        this.s = TBaseHelper.deepCopy(other.s);
       }
     }
 
@@ -1141,6 +1163,30 @@ String space = prettyPrint ? " " : "";
       }
     }
 
+    public Serious  getS() {
+      return this.s;
+    }
+
+    public doRaise_result setS(Serious s) {
+      this.s = s;
+      return this;
+    }
+
+    public void unsetS() {
+      this.s = null;
+    }
+
+    // Returns true if field s is set (has been assigned a value) and false otherwise
+    public boolean isSetS() {
+      return this.s != null;
+    }
+
+    public void setSIsSet(boolean value) {
+      if (!value) {
+        this.s = null;
+      }
+    }
+
     public void setFieldValue(int fieldID, Object value) {
       switch (fieldID) {
       case B:
@@ -1159,6 +1205,14 @@ String space = prettyPrint ? " " : "";
         }
         break;
 
+      case S:
+        if (value == null) {
+          unsetS();
+        } else {
+          setS((Serious)value);
+        }
+        break;
+
       default:
         throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
       }
@@ -1172,6 +1226,9 @@ String space = prettyPrint ? " " : "";
       case F:
         return getF();
 
+      case S:
+        return getS();
+
       default:
         throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
       }
@@ -1184,6 +1241,8 @@ String space = prettyPrint ? " " : "";
         return isSetB();
       case F:
         return isSetF();
+      case S:
+        return isSetS();
       default:
         throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
       }
@@ -1222,6 +1281,15 @@ String space = prettyPrint ? " " : "";
           return false;
       }
 
+      boolean this_present_s = true && this.isSetS();
+      boolean that_present_s = true && that.isSetS();
+      if (this_present_s || that_present_s) {
+        if (!(this_present_s && that_present_s))
+          return false;
+        if (!TBaseHelper.equalsNobinary(this.s, that.s))
+          return false;
+      }
+
       return true;
     }
 
@@ -1257,6 +1325,14 @@ String space = prettyPrint ? " " : "";
               TProtocolUtil.skip(iprot, field.type);
             }
             break;
+          case S:
+            if (field.type == TType.STRUCT) {
+              this.s = new Serious();
+              this.s.read(iprot);
+            } else { 
+              TProtocolUtil.skip(iprot, field.type);
+            }
+            break;
           default:
             TProtocolUtil.skip(iprot, field.type);
             break;
@@ -1280,6 +1356,10 @@ String space = prettyPrint ? " " : "";
       } else if (this.isSetF()) {
         oprot.writeFieldBegin(F_FIELD_DESC);
         this.f.write(oprot);
+        oprot.writeFieldEnd();
+      } else if (this.isSetS()) {
+        oprot.writeFieldBegin(S_FIELD_DESC);
+        this.s.write(oprot);
         oprot.writeFieldEnd();
       }
       oprot.writeFieldStop();
@@ -1326,6 +1406,17 @@ String space = prettyPrint ? " " : "";
         sb.append("null");
       } else {
         sb.append(TBaseHelper.toString(this. getF(), indent + 1, prettyPrint));
+      }
+      first = false;
+      if (!first) sb.append("," + newLine);
+      sb.append(indentStr);
+      sb.append("s");
+      sb.append(space);
+      sb.append(":").append(space);
+      if (this. getS() == null) {
+        sb.append("null");
+      } else {
+        sb.append(TBaseHelper.toString(this. getS(), indent + 1, prettyPrint));
       }
       first = false;
       sb.append(newLine + TBaseHelper.reduceIndent(indentStr));
@@ -1909,13 +2000,16 @@ String space = prettyPrint ? " " : "";
     private static final TField SUCCESS_FIELD_DESC = new TField("success", TType.STRING, (short)0);
     private static final TField F_FIELD_DESC = new TField("f", TType.STRUCT, (short)1);
     private static final TField B_FIELD_DESC = new TField("b", TType.STRUCT, (short)2);
+    private static final TField S_FIELD_DESC = new TField("s", TType.STRUCT, (short)3);
 
     public String success;
     public Fiery f;
     public Banal b;
+    public Serious s;
     public static final int SUCCESS = 0;
     public static final int F = 1;
     public static final int B = 2;
+    public static final int S = 3;
     public static boolean DEFAULT_PRETTY_PRINT = true;
 
     // isset id assignments
@@ -1928,6 +2022,8 @@ String space = prettyPrint ? " " : "";
       tmpMetaDataMap.put(F, new FieldMetaData("f", TFieldRequirementType.DEFAULT, 
           new FieldValueMetaData(TType.STRUCT)));
       tmpMetaDataMap.put(B, new FieldMetaData("b", TFieldRequirementType.DEFAULT, 
+          new FieldValueMetaData(TType.STRUCT)));
+      tmpMetaDataMap.put(S, new FieldMetaData("s", TFieldRequirementType.DEFAULT, 
           new FieldValueMetaData(TType.STRUCT)));
       metaDataMap = Collections.unmodifiableMap(tmpMetaDataMap);
     }
@@ -1942,12 +2038,14 @@ String space = prettyPrint ? " " : "";
     public get500_result(
       String success,
       Fiery f,
-      Banal b)
+      Banal b,
+      Serious s)
     {
       this();
       this.success = success;
       this.f = f;
       this.b = b;
+      this.s = s;
     }
 
     /**
@@ -1962,6 +2060,9 @@ String space = prettyPrint ? " " : "";
       }
       if (other.isSetB()) {
         this.b = TBaseHelper.deepCopy(other.b);
+      }
+      if (other.isSetS()) {
+        this.s = TBaseHelper.deepCopy(other.s);
       }
     }
 
@@ -2046,6 +2147,30 @@ String space = prettyPrint ? " " : "";
       }
     }
 
+    public Serious  getS() {
+      return this.s;
+    }
+
+    public get500_result setS(Serious s) {
+      this.s = s;
+      return this;
+    }
+
+    public void unsetS() {
+      this.s = null;
+    }
+
+    // Returns true if field s is set (has been assigned a value) and false otherwise
+    public boolean isSetS() {
+      return this.s != null;
+    }
+
+    public void setSIsSet(boolean value) {
+      if (!value) {
+        this.s = null;
+      }
+    }
+
     public void setFieldValue(int fieldID, Object value) {
       switch (fieldID) {
       case SUCCESS:
@@ -2072,6 +2197,14 @@ String space = prettyPrint ? " " : "";
         }
         break;
 
+      case S:
+        if (value == null) {
+          unsetS();
+        } else {
+          setS((Serious)value);
+        }
+        break;
+
       default:
         throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
       }
@@ -2088,6 +2221,9 @@ String space = prettyPrint ? " " : "";
       case B:
         return getB();
 
+      case S:
+        return getS();
+
       default:
         throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
       }
@@ -2102,6 +2238,8 @@ String space = prettyPrint ? " " : "";
         return isSetF();
       case B:
         return isSetB();
+      case S:
+        return isSetS();
       default:
         throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
       }
@@ -2149,6 +2287,15 @@ String space = prettyPrint ? " " : "";
           return false;
       }
 
+      boolean this_present_s = true && this.isSetS();
+      boolean that_present_s = true && that.isSetS();
+      if (this_present_s || that_present_s) {
+        if (!(this_present_s && that_present_s))
+          return false;
+        if (!TBaseHelper.equalsNobinary(this.s, that.s))
+          return false;
+      }
+
       return true;
     }
 
@@ -2191,6 +2338,14 @@ String space = prettyPrint ? " " : "";
               TProtocolUtil.skip(iprot, field.type);
             }
             break;
+          case S:
+            if (field.type == TType.STRUCT) {
+              this.s = new Serious();
+              this.s.read(iprot);
+            } else { 
+              TProtocolUtil.skip(iprot, field.type);
+            }
+            break;
           default:
             TProtocolUtil.skip(iprot, field.type);
             break;
@@ -2218,6 +2373,10 @@ String space = prettyPrint ? " " : "";
       } else if (this.isSetB()) {
         oprot.writeFieldBegin(B_FIELD_DESC);
         this.b.write(oprot);
+        oprot.writeFieldEnd();
+      } else if (this.isSetS()) {
+        oprot.writeFieldBegin(S_FIELD_DESC);
+        this.s.write(oprot);
         oprot.writeFieldEnd();
       }
       oprot.writeFieldStop();
@@ -2275,6 +2434,17 @@ String space = prettyPrint ? " " : "";
         sb.append("null");
       } else {
         sb.append(TBaseHelper.toString(this. getB(), indent + 1, prettyPrint));
+      }
+      first = false;
+      if (!first) sb.append("," + newLine);
+      sb.append(indentStr);
+      sb.append("s");
+      sb.append(space);
+      sb.append(":").append(space);
+      if (this. getS() == null) {
+        sb.append("null");
+      } else {
+        sb.append(TBaseHelper.toString(this. getS(), indent + 1, prettyPrint));
       }
       first = false;
       sb.append(newLine + TBaseHelper.reduceIndent(indentStr));

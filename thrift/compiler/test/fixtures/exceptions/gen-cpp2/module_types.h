@@ -22,6 +22,7 @@
 namespace cpp2 {
 class Banal;
 class Fiery;
+class Serious;
 } // cpp2
 // END forward_declare
 // BEGIN typedefs
@@ -218,6 +219,122 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::Fiery>::serializ
 }
 
 template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::Fiery>::serializedSizeZC(Protocol const* proto,  ::cpp2::Fiery const* obj) {
+  return obj->serializedSizeZC(proto);
+}
+
+}} // apache::thrift
+namespace cpp2 {
+class Serious final : private apache::thrift::detail::st::ComparisonOperators<Serious>, public apache::thrift::TException {
+ public:
+
+  Serious() {}
+
+  explicit Serious(const std::string& __message) :
+      sonnet(__message) {}
+
+  explicit Serious(std::string&& __message) :
+      sonnet(std::move(__message)) {}
+  // FragileConstructor for use in initialization lists only.
+  Serious(apache::thrift::FragileConstructor, std::string sonnet__arg);
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
+    sonnet = arg.extract();
+    __isset.sonnet = true;
+  }
+
+  Serious(Serious&&) = default;
+
+  Serious(const Serious&) = default;
+
+  Serious& operator=(Serious&&) = default;
+
+  Serious& operator=(const Serious&) = default;
+  void __clear();
+  std::string sonnet;
+
+  struct __isset {
+    bool sonnet;
+  } __isset = {};
+  bool operator==(const Serious& rhs) const;
+  bool operator<(const Serious& rhs) const;
+
+  const std::string* get_sonnet() const& {
+    return __isset.sonnet ? std::addressof(sonnet) : nullptr;
+  }
+
+  std::string* get_sonnet() & {
+    return __isset.sonnet ? std::addressof(sonnet) : nullptr;
+  }
+  std::string* get_sonnet() && = delete;
+
+  template <typename T_Serious_sonnet_struct_setter = std::string>
+  std::string& set_sonnet(T_Serious_sonnet_struct_setter&& sonnet_) {
+    sonnet = std::forward<T_Serious_sonnet_struct_setter>(sonnet_);
+    __isset.sonnet = true;
+    return sonnet;
+  }
+
+  template <class Protocol_>
+  uint32_t read(Protocol_* iprot);
+  template <class Protocol_>
+  uint32_t serializedSize(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t serializedSizeZC(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t write(Protocol_* prot_) const;
+
+  const char* what() const noexcept override {
+    return sonnet.c_str();
+  }
+
+ private:
+  template <class Protocol_>
+  void readNoXfer(Protocol_* iprot);
+
+  friend class ::apache::thrift::Cpp2Ops< Serious >;
+};
+
+void swap(Serious& a, Serious& b);
+extern template void Serious::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+extern template uint32_t Serious::write<>(apache::thrift::BinaryProtocolWriter*) const;
+extern template uint32_t Serious::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t Serious::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template void Serious::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+extern template uint32_t Serious::write<>(apache::thrift::CompactProtocolWriter*) const;
+extern template uint32_t Serious::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template uint32_t Serious::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+template <class Protocol_>
+uint32_t Serious::read(Protocol_* iprot) {
+  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
+  readNoXfer(iprot);
+  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
+}
+
+} // cpp2
+namespace apache { namespace thrift {
+
+template <> inline void Cpp2Ops< ::cpp2::Serious>::clear( ::cpp2::Serious* obj) {
+  return obj->__clear();
+}
+
+template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::cpp2::Serious>::thriftType() {
+  return apache::thrift::protocol::T_STRUCT;
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::Serious>::write(Protocol* proto,  ::cpp2::Serious const* obj) {
+  return obj->write(proto);
+}
+
+template <> template <class Protocol> void Cpp2Ops< ::cpp2::Serious>::read(Protocol* proto,  ::cpp2::Serious* obj) {
+  return obj->readNoXfer(proto);
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::Serious>::serializedSize(Protocol const* proto,  ::cpp2::Serious const* obj) {
+  return obj->serializedSize(proto);
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::Serious>::serializedSizeZC(Protocol const* proto,  ::cpp2::Serious const* obj) {
   return obj->serializedSizeZC(proto);
 }
 

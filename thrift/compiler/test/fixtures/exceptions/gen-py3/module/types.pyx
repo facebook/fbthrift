@@ -211,3 +211,97 @@ cdef class Fiery(thrift.py3.exceptions.Error):
 
 
 
+cdef class Serious(thrift.py3.exceptions.Error):
+
+    def __init__(
+        Serious self,
+        str sonnet=None
+    ):
+        self._cpp_obj = move(Serious._make_instance(
+          NULL,
+          sonnet,
+        ))
+        _builtins.Exception.__init__(self, self.sonnet)
+
+
+    @staticmethod
+    cdef unique_ptr[cSerious] _make_instance(
+        cSerious* base_instance,
+        object sonnet
+    ) except *:
+        cdef unique_ptr[cSerious] c_inst
+        if base_instance:
+            c_inst = make_unique[cSerious](deref(base_instance))
+        else:
+            c_inst = make_unique[cSerious]()
+
+        if sonnet is not None:
+            deref(c_inst).sonnet = sonnet.encode('UTF-8')
+            deref(c_inst).__isset.sonnet = True
+        # in C++ you don't have to call move(), but this doesn't translate
+        # into a C++ return statement, so you do here
+        return move_unique(c_inst)
+
+    def __iter__(self):
+        yield 'sonnet', self.sonnet
+
+    def __bool__(self):
+        return deref(self._cpp_obj).__isset.sonnet
+
+    @staticmethod
+    cdef create(shared_ptr[cSerious] cpp_obj):
+        inst = <Serious>Serious.__new__(Serious, (<bytes>deref(cpp_obj).what()).decode('utf-8'))
+        inst._cpp_obj = move_shared(cpp_obj)
+        _builtins.Exception.__init__(inst, inst.sonnet)
+        return inst
+
+    @property
+    def sonnet(self):
+        if not deref(self._cpp_obj).__isset.sonnet:
+            return None
+
+        return (<bytes>deref(self._cpp_obj).sonnet).decode('UTF-8')
+
+
+    def __hash__(Serious self):
+        return super().__hash__()
+
+    def __repr__(Serious self):
+        return f'Serious(sonnet={repr(self.sonnet)})'
+    def __copy__(Serious self):
+        cdef shared_ptr[cSerious] cpp_obj = make_shared[cSerious](
+            deref(self._cpp_obj)
+        )
+        return Serious.create(move_shared(cpp_obj))
+
+    def __richcmp__(self, other, op):
+        cdef int cop = op
+        if not (
+                isinstance(self, Serious) and
+                isinstance(other, Serious)):
+            if cop == Py_EQ:  # different types are never equal
+                return False
+            elif cop == Py_NE:  # different types are always notequal
+                return True
+            else:
+                return NotImplemented
+
+        cdef cSerious cself = deref((<Serious>self)._cpp_obj)
+        cdef cSerious cother = deref((<Serious>other)._cpp_obj)
+        if cop == Py_EQ:
+            return cself == cother
+        elif cop == Py_NE:
+            return not (cself == cother)
+        elif cop == Py_LT:
+            return cself < cother
+        elif cop == Py_LE:
+            return cself <= cother
+        elif cop == Py_GT:
+            return cself > cother
+        elif cop == Py_GE:
+            return cself >= cother
+        else:
+            return NotImplemented
+
+
+

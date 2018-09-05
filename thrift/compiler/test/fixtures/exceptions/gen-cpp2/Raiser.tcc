@@ -20,11 +20,11 @@ namespace cpp2 {
 typedef apache::thrift::ThriftPresult<false> Raiser_doBland_pargs;
 typedef apache::thrift::ThriftPresult<true> Raiser_doBland_presult;
 typedef apache::thrift::ThriftPresult<false> Raiser_doRaise_pargs;
-typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<1, apache::thrift::protocol::T_STRUCT,  ::cpp2::Banal>, apache::thrift::FieldData<2, apache::thrift::protocol::T_STRUCT,  ::cpp2::Fiery>> Raiser_doRaise_presult;
+typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<1, apache::thrift::protocol::T_STRUCT,  ::cpp2::Banal>, apache::thrift::FieldData<2, apache::thrift::protocol::T_STRUCT,  ::cpp2::Fiery>, apache::thrift::FieldData<3, apache::thrift::protocol::T_STRUCT,  ::cpp2::Serious>> Raiser_doRaise_presult;
 typedef apache::thrift::ThriftPresult<false> Raiser_get200_pargs;
 typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, apache::thrift::protocol::T_STRING, std::string*>> Raiser_get200_presult;
 typedef apache::thrift::ThriftPresult<false> Raiser_get500_pargs;
-typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, apache::thrift::protocol::T_STRING, std::string*>, apache::thrift::FieldData<1, apache::thrift::protocol::T_STRUCT,  ::cpp2::Fiery>, apache::thrift::FieldData<2, apache::thrift::protocol::T_STRUCT,  ::cpp2::Banal>> Raiser_get500_presult;
+typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, apache::thrift::protocol::T_STRING, std::string*>, apache::thrift::FieldData<1, apache::thrift::protocol::T_STRUCT,  ::cpp2::Fiery>, apache::thrift::FieldData<2, apache::thrift::protocol::T_STRUCT,  ::cpp2::Banal>, apache::thrift::FieldData<3, apache::thrift::protocol::T_STRUCT,  ::cpp2::Serious>> Raiser_get500_presult;
 template <typename ProtocolIn_, typename ProtocolOut_>
 void RaiserAsyncProcessor::_processInThread_doBland(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
   auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
@@ -169,6 +169,12 @@ void RaiserAsyncProcessor::throw_wrapped_doRaise(std::unique_ptr<apache::thrift:
     ctx->userExceptionWrapped(true, ew);
     result.get<1>().ref() = e;
     result.setIsSet(1, true);
+  }
+  )) {} else
+  if (ew.with_exception([&]( ::cpp2::Serious& e) {
+    ctx->userExceptionWrapped(true, ew);
+    result.get<2>().ref() = e;
+    result.setIsSet(2, true);
   }
   )) {} else
    {
@@ -339,6 +345,12 @@ void RaiserAsyncProcessor::throw_wrapped_get500(std::unique_ptr<apache::thrift::
     ctx->userExceptionWrapped(true, ew);
     result.get<2>().ref() = e;
     result.setIsSet(2, true);
+  }
+  )) {} else
+  if (ew.with_exception([&]( ::cpp2::Serious& e) {
+    ctx->userExceptionWrapped(true, ew);
+    result.get<3>().ref() = e;
+    result.setIsSet(3, true);
   }
   )) {} else
    {

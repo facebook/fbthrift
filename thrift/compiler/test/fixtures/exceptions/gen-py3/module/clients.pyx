@@ -65,6 +65,8 @@ cdef void Raiser_doRaise_callback(
         pyfuture.set_exception(_module_types.Banal.create(try_make_shared_exception[_module_types.cBanal](result.exception())))
     elif result.hasException[_module_types.cFiery]():
         pyfuture.set_exception(_module_types.Fiery.create(try_make_shared_exception[_module_types.cFiery](result.exception())))
+    elif result.hasException[_module_types.cSerious]():
+        pyfuture.set_exception(_module_types.Serious.create(try_make_shared_exception[_module_types.cSerious](result.exception())))
     elif result.hasException():
         pyfuture.set_exception(create_py_exception(result.exception(), <__RpcOptions>options))
     else:
@@ -95,6 +97,8 @@ cdef void Raiser_get500_callback(
         pyfuture.set_exception(_module_types.Fiery.create(try_make_shared_exception[_module_types.cFiery](result.exception())))
     elif result.hasException[_module_types.cBanal]():
         pyfuture.set_exception(_module_types.Banal.create(try_make_shared_exception[_module_types.cBanal](result.exception())))
+    elif result.hasException[_module_types.cSerious]():
+        pyfuture.set_exception(_module_types.Serious.create(try_make_shared_exception[_module_types.cSerious](result.exception())))
     elif result.hasException():
         pyfuture.set_exception(create_py_exception(result.exception(), <__RpcOptions>options))
     else:

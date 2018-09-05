@@ -201,6 +201,9 @@ func (p *RaiserClient) recvDoRaise() (err error) {
   } else   if result.F != nil {
     err = result.F
     return 
+  } else   if result.S != nil {
+    err = result.S
+    return 
   }
   return
 }
@@ -352,6 +355,9 @@ func (p *RaiserClient) recvGet500() (value string, err error) {
     return 
   } else   if result.B != nil {
     err = result.B
+    return 
+  } else   if result.S != nil {
+    err = result.S
     return 
   }
   value = result.GetSuccess()
@@ -539,6 +545,9 @@ func (p *RaiserThreadsafeClient) recvDoRaise() (err error) {
   } else   if result.F != nil {
     err = result.F
     return 
+  } else   if result.S != nil {
+    err = result.S
+    return 
   }
   return
 }
@@ -695,6 +704,9 @@ func (p *RaiserThreadsafeClient) recvGet500() (value string, err error) {
   } else   if result.B != nil {
     err = result.B
     return 
+  } else   if result.S != nil {
+    err = result.S
+    return 
   }
   value = result.GetSuccess()
   return
@@ -800,6 +812,9 @@ func (p *raiserProcessorDoRaise) Write(seqId int32, result thrift.WritableStruct
   case *Fiery:
     msg := RaiserDoRaiseResult{F: v}
     result = &msg
+  case *Serious:
+    msg := RaiserDoRaiseResult{S: v}
+    result = &msg
   case thrift.ApplicationException:
     messageType = thrift.EXCEPTION
   }
@@ -826,6 +841,8 @@ func (p *raiserProcessorDoRaise) Run(argStruct thrift.Struct) (thrift.WritableSt
       result.B = v
     case *Fiery:
       result.F = v
+    case *Serious:
+      result.S = v
     default:
       x := thrift.NewApplicationException(thrift.INTERNAL_ERROR, "Internal error processing doRaise: " + err.Error())
       return x, x
@@ -906,6 +923,9 @@ func (p *raiserProcessorGet500) Write(seqId int32, result thrift.WritableStruct,
   case *Banal:
     msg := RaiserGet500Result{B: v}
     result = &msg
+  case *Serious:
+    msg := RaiserGet500Result{S: v}
+    result = &msg
   case thrift.ApplicationException:
     messageType = thrift.EXCEPTION
   }
@@ -932,6 +952,8 @@ func (p *raiserProcessorGet500) Run(argStruct thrift.Struct) (thrift.WritableStr
       result.F = v
     case *Banal:
       result.B = v
+    case *Serious:
+      result.S = v
     default:
       x := thrift.NewApplicationException(thrift.INTERNAL_ERROR, "Internal error processing get500: " + err.Error())
       return x, x
@@ -1095,9 +1117,11 @@ func (p *RaiserDoRaiseArgs) String() string {
 // Attributes:
 //  - B
 //  - F
+//  - S
 type RaiserDoRaiseResult struct {
   B *Banal `thrift:"b,1" db:"b" json:"b,omitempty"`
   F *Fiery `thrift:"f,2" db:"f" json:"f,omitempty"`
+  S *Serious `thrift:"s,3" db:"s" json:"s,omitempty"`
 }
 
 func NewRaiserDoRaiseResult() *RaiserDoRaiseResult {
@@ -1118,12 +1142,23 @@ func (p *RaiserDoRaiseResult) GetF() *Fiery {
   }
 return p.F
 }
+var RaiserDoRaiseResult_S_DEFAULT *Serious
+func (p *RaiserDoRaiseResult) GetS() *Serious {
+  if !p.IsSetS() {
+    return RaiserDoRaiseResult_S_DEFAULT
+  }
+return p.S
+}
 func (p *RaiserDoRaiseResult) IsSetB() bool {
   return p.B != nil
 }
 
 func (p *RaiserDoRaiseResult) IsSetF() bool {
   return p.F != nil
+}
+
+func (p *RaiserDoRaiseResult) IsSetS() bool {
+  return p.S != nil
 }
 
 func (p *RaiserDoRaiseResult) Read(iprot thrift.Protocol) error {
@@ -1145,6 +1180,10 @@ func (p *RaiserDoRaiseResult) Read(iprot thrift.Protocol) error {
       }
     case 2:
       if err := p.ReadField2(iprot); err != nil {
+        return err
+      }
+    case 3:
+      if err := p.ReadField3(iprot); err != nil {
         return err
       }
     default:
@@ -1178,11 +1217,20 @@ func (p *RaiserDoRaiseResult)  ReadField2(iprot thrift.Protocol) error {
   return nil
 }
 
+func (p *RaiserDoRaiseResult)  ReadField3(iprot thrift.Protocol) error {
+  p.S = NewSerious()
+  if err := p.S.Read(iprot); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", p.S), err)
+  }
+  return nil
+}
+
 func (p *RaiserDoRaiseResult) Write(oprot thrift.Protocol) error {
   if err := oprot.WriteStructBegin("doRaise_result"); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
   if err := p.writeField1(oprot); err != nil { return err }
   if err := p.writeField2(oprot); err != nil { return err }
+  if err := p.writeField3(oprot); err != nil { return err }
   if err := oprot.WriteFieldStop(); err != nil {
     return thrift.PrependError("write field stop error: ", err) }
   if err := oprot.WriteStructEnd(); err != nil {
@@ -1212,6 +1260,19 @@ func (p *RaiserDoRaiseResult) writeField2(oprot thrift.Protocol) (err error) {
     }
     if err := oprot.WriteFieldEnd(); err != nil {
       return thrift.PrependError(fmt.Sprintf("%T write field end error 2:f: ", p), err) }
+  }
+  return err
+}
+
+func (p *RaiserDoRaiseResult) writeField3(oprot thrift.Protocol) (err error) {
+  if p.IsSetS() {
+    if err := oprot.WriteFieldBegin("s", thrift.STRUCT, 3); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T write field begin error 3:s: ", p), err) }
+    if err := p.S.Write(oprot); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T error writing struct: ", p.S), err)
+    }
+    if err := oprot.WriteFieldEnd(); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T write field end error 3:s: ", p), err) }
   }
   return err
 }
@@ -1417,10 +1478,12 @@ func (p *RaiserGet500Args) String() string {
 //  - Success
 //  - F
 //  - B
+//  - S
 type RaiserGet500Result struct {
   Success *string `thrift:"success,0" db:"success" json:"success,omitempty"`
   F *Fiery `thrift:"f,1" db:"f" json:"f,omitempty"`
   B *Banal `thrift:"b,2" db:"b" json:"b,omitempty"`
+  S *Serious `thrift:"s,3" db:"s" json:"s,omitempty"`
 }
 
 func NewRaiserGet500Result() *RaiserGet500Result {
@@ -1448,6 +1511,13 @@ func (p *RaiserGet500Result) GetB() *Banal {
   }
 return p.B
 }
+var RaiserGet500Result_S_DEFAULT *Serious
+func (p *RaiserGet500Result) GetS() *Serious {
+  if !p.IsSetS() {
+    return RaiserGet500Result_S_DEFAULT
+  }
+return p.S
+}
 func (p *RaiserGet500Result) IsSetSuccess() bool {
   return p.Success != nil
 }
@@ -1458,6 +1528,10 @@ func (p *RaiserGet500Result) IsSetF() bool {
 
 func (p *RaiserGet500Result) IsSetB() bool {
   return p.B != nil
+}
+
+func (p *RaiserGet500Result) IsSetS() bool {
+  return p.S != nil
 }
 
 func (p *RaiserGet500Result) Read(iprot thrift.Protocol) error {
@@ -1483,6 +1557,10 @@ func (p *RaiserGet500Result) Read(iprot thrift.Protocol) error {
       }
     case 2:
       if err := p.ReadField2(iprot); err != nil {
+        return err
+      }
+    case 3:
+      if err := p.ReadField3(iprot); err != nil {
         return err
       }
     default:
@@ -1525,12 +1603,21 @@ func (p *RaiserGet500Result)  ReadField2(iprot thrift.Protocol) error {
   return nil
 }
 
+func (p *RaiserGet500Result)  ReadField3(iprot thrift.Protocol) error {
+  p.S = NewSerious()
+  if err := p.S.Read(iprot); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", p.S), err)
+  }
+  return nil
+}
+
 func (p *RaiserGet500Result) Write(oprot thrift.Protocol) error {
   if err := oprot.WriteStructBegin("get500_result"); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
   if err := p.writeField0(oprot); err != nil { return err }
   if err := p.writeField1(oprot); err != nil { return err }
   if err := p.writeField2(oprot); err != nil { return err }
+  if err := p.writeField3(oprot); err != nil { return err }
   if err := oprot.WriteFieldStop(); err != nil {
     return thrift.PrependError("write field stop error: ", err) }
   if err := oprot.WriteStructEnd(); err != nil {
@@ -1572,6 +1659,19 @@ func (p *RaiserGet500Result) writeField2(oprot thrift.Protocol) (err error) {
     }
     if err := oprot.WriteFieldEnd(); err != nil {
       return thrift.PrependError(fmt.Sprintf("%T write field end error 2:b: ", p), err) }
+  }
+  return err
+}
+
+func (p *RaiserGet500Result) writeField3(oprot thrift.Protocol) (err error) {
+  if p.IsSetS() {
+    if err := oprot.WriteFieldBegin("s", thrift.STRUCT, 3); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T write field begin error 3:s: ", p), err) }
+    if err := p.S.Write(oprot); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T error writing struct: ", p.S), err)
+    }
+    if err := oprot.WriteFieldEnd(); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T write field end error 3:s: ", p), err) }
   }
   return err
 }

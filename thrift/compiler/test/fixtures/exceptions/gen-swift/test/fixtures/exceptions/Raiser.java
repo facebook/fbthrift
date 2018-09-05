@@ -27,10 +27,11 @@ public interface Raiser
         @ThriftMethod(value = "doRaise",
                       exception = { 
                           @ThriftException(type=test.fixtures.exceptions.Banal.class, id=1),
-                          @ThriftException(type=test.fixtures.exceptions.Fiery.class, id=2)
+                          @ThriftException(type=test.fixtures.exceptions.Fiery.class, id=2),
+                          @ThriftException(type=test.fixtures.exceptions.Serious.class, id=3)
                       })
         ListenableFuture<Void> doRaise(
-        ) throws test.fixtures.exceptions.Banal, test.fixtures.exceptions.Fiery;
+        ) throws test.fixtures.exceptions.Banal, test.fixtures.exceptions.Fiery, test.fixtures.exceptions.Serious;
 
         @ThriftMethod(value = "get200")
         ListenableFuture<String> get200(
@@ -39,10 +40,11 @@ public interface Raiser
         @ThriftMethod(value = "get500",
                       exception = { 
                           @ThriftException(type=test.fixtures.exceptions.Fiery.class, id=1),
-                          @ThriftException(type=test.fixtures.exceptions.Banal.class, id=2)
+                          @ThriftException(type=test.fixtures.exceptions.Banal.class, id=2),
+                          @ThriftException(type=test.fixtures.exceptions.Serious.class, id=3)
                       })
         ListenableFuture<String> get500(
-        ) throws test.fixtures.exceptions.Fiery, test.fixtures.exceptions.Banal;
+        ) throws test.fixtures.exceptions.Fiery, test.fixtures.exceptions.Banal, test.fixtures.exceptions.Serious;
     }
     @ThriftMethod(value = "doBland")
     void doBland(
@@ -52,10 +54,11 @@ public interface Raiser
     @ThriftMethod(value = "doRaise",
                   exception = { 
                       @ThriftException(type=test.fixtures.exceptions.Banal.class, id=1),
-                      @ThriftException(type=test.fixtures.exceptions.Fiery.class, id=2)
+                      @ThriftException(type=test.fixtures.exceptions.Fiery.class, id=2),
+                      @ThriftException(type=test.fixtures.exceptions.Serious.class, id=3)
                   })
     void doRaise(
-    ) throws test.fixtures.exceptions.Banal, test.fixtures.exceptions.Fiery;
+    ) throws test.fixtures.exceptions.Banal, test.fixtures.exceptions.Fiery, test.fixtures.exceptions.Serious;
 
 
     @ThriftMethod(value = "get200")
@@ -66,9 +69,10 @@ public interface Raiser
     @ThriftMethod(value = "get500",
                   exception = { 
                       @ThriftException(type=test.fixtures.exceptions.Fiery.class, id=1),
-                      @ThriftException(type=test.fixtures.exceptions.Banal.class, id=2)
+                      @ThriftException(type=test.fixtures.exceptions.Banal.class, id=2),
+                      @ThriftException(type=test.fixtures.exceptions.Serious.class, id=3)
                   })
     String get500(
-    ) throws test.fixtures.exceptions.Fiery, test.fixtures.exceptions.Banal;
+    ) throws test.fixtures.exceptions.Fiery, test.fixtures.exceptions.Banal, test.fixtures.exceptions.Serious;
 
 }
