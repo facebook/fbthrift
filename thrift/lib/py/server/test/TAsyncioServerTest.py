@@ -5,6 +5,7 @@ import functools
 import socket
 import threading
 import unittest
+from unittest.mock import Mock
 
 from contextlib import contextmanager
 from thrift_asyncio.tutorial import Calculator
@@ -15,6 +16,7 @@ from thrift.server.TAsyncioServer import (
     ThriftAsyncServerFactory,
     ThriftClientProtocolFactory,
     ThriftHeaderClientProtocol,
+    ThriftHeaderServerProtocol,
 )
 from .handler import (
     AsyncCalculatorHandler,
@@ -24,9 +26,17 @@ from thrift.transport.TTransport import TTransportException
 from thrift.Thrift import TApplicationException
 
 
-def server_loop_runner(loop, sock, handler):
+def server_loop_runner(
+    loop, sock, handler, protocol_factory=None
+):
     return loop.run_until_complete(
-        ThriftAsyncServerFactory(handler, port=None, loop=loop, sock=sock),
+        ThriftAsyncServerFactory(
+            handler,
+            port=None,
+            loop=loop,
+            sock=sock,
+            protocol_factory=protocol_factory,
+        ),
     )
 
 
@@ -339,3 +349,23 @@ class TAsyncioServerTest(unittest.TestCase):
             TApplicationException, 'Call to echo timed out'
         ):
             loop.run_until_complete(test_echo_timeout(sock, loop))
+
+    def test_custom_protocol_factory(self):
+        loop = asyncio.get_event_loop()
+        sock = socket.socket()
+        wrapper_protocol = None
+
+        def wrapper_protocol_factory(*args, **kwargs):
+            nonlocal wrapper_protocol
+            wrapper_protocol = Mock(wraps=ThriftHeaderServerProtocol(*args, **kwargs))
+            return wrapper_protocol
+
+        server_loop_runner(
+            loop, sock, AsyncCalculatorHandler(), wrapper_protocol_factory
+        )
+        add_result = loop.run_until_complete(
+            test_server_with_client(sock, loop)
+        )
+        self.assertEqual(42, add_result)
+        wrapper_protocol.connection_made.assert_called_once()
+        wrapper_protocol.data_received.assert_called()

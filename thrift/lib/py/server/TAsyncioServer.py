@@ -36,7 +36,7 @@ logger = logging.getLogger(__name__)
 
 async def ThriftAsyncServerFactory(
     processor, *, interface=None, port=0, loop=None, nthreads=None, sock=None,
-    backlog=100, ssl=None, event_handler=None
+    backlog=100, ssl=None, event_handler=None, protocol_factory=None
 ):
     """
     ThriftAsyncServerFactory(processor) -> asyncio.Server
@@ -59,6 +59,13 @@ async def ThriftAsyncServerFactory(
     event_handler must be a subclass of thrift.server.TServer. If None,
     thrift.server.TServer.TServerEventHandler is used. Specify a custom handler
     for custom event handling (e.g. handling new connections)
+
+    protocol_factory is a function that takes a triplet of
+    (processor, event_handler, loop=None) and returns a `asyncio.Protocol` instance
+    that will be passed to a call to `asyncio.create_server`. processor will be a
+    subclass of `TProcessor`, event_handler will be a subclass of `TServer`, and
+    loop is an `Optional[asyncio.AbstractEventLoop]`. If protocol_factory is None
+    `ThriftHeaderServerProtocol` is used.
 
     Notes about the processor method handling:
 
@@ -104,7 +111,8 @@ async def ThriftAsyncServerFactory(
             ThreadPoolExecutor(max_workers=nthreads),
         )
     ehandler = TServerEventHandler() if event_handler is None else event_handler
-    pfactory = ThriftServerProtocolFactory(processor, ehandler, loop)
+    protocol_factory = protocol_factory or ThriftHeaderServerProtocol
+    pfactory = functools.partial(protocol_factory, processor, ehandler, loop)
     server = await loop.create_server(
         pfactory,
         interface,
