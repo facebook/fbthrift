@@ -65,6 +65,11 @@ class Fiery extends \TException implements \IThriftStruct {
     return 'Fiery';
   }
 
+  <<__Override>>
+  public function getMessage(): string {
+    return $this->message;
+  }
+
 }
 
 /**
@@ -97,6 +102,11 @@ class Serious extends \TException implements \IThriftStruct {
 
   public function getName(): string {
     return 'Serious';
+  }
+
+  <<__Override>>
+  public function getMessage(): string {
+    return $this->sonnet ?? '';
   }
 
 }

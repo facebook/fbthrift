@@ -2771,6 +2771,20 @@ void t_hack_generator::_generate_php_struct_definition(
   if (tstruct->is_union()) {
     generate_php_union_methods(out, tstruct);
   }
+  if (is_exception) {
+    auto message_annotation = tstruct->annotations_.find("message");
+    if (message_annotation != tstruct->annotations_.end()) {
+      auto message_field = tstruct->get_member(message_annotation->second);
+      out << indent() << "<<__Override>>" << endl
+          << indent() << "public function getMessage(): string {" << endl
+          << indent() << "  return $this->" << message_field->get_name();
+      if (message_field->get_req() != t_field::T_REQUIRED) {
+        out << " ?? ''";
+      }
+      out << ";" << endl << indent() << "}" << endl << endl;
+    }
+  }
+
   if (shapes_ && !is_exception && !is_result) {
     generate_php_struct_shape_methods(out, tstruct);
   }
