@@ -171,6 +171,9 @@ class ThriftHeaderServerProtocol(FramedProtocol):
             self.transport.close()
 
     def connection_made(self, transport):
+        self.upgrade_transport(transport)
+
+    def upgrade_transport(self, transport):
         self.transport = transport
         socket = self.transport.get_extra_info("socket")
         if socket is not None:
