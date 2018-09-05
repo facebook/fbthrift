@@ -66,6 +66,10 @@ else:
                                 'thrift/compiler/generate/templates/templates/templates')
 templates = ascend_find_dir(exe, templatesRel)
 thrift = ascend_find_exe(exe, thriftRel)
+if thrift is None:
+    sys.stderr.write(
+        "error: cannot find the Thrift compiler ({})\n".format(thriftRel))
+    sys.exit(1)
 fixtureDir = ascend_find_dir(exe, 'thrift/compiler/test/fixtures')
 fixtureNames = [sys.argv[2]] if len(sys.argv) > 2 else sorted([
     f
