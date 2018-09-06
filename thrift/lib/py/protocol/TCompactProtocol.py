@@ -324,7 +324,7 @@ class TCompactProtocol(TProtocolBase):
         if not (self.__version <= self.VERSION and
                 self.__version >= self.VERSION_LOW):
             raise TProtocolException(TProtocolException.BAD_VERSION,
-                'Bad version: %d (expect %d)' % (version, self.VERSION))
+                'Bad version: %d (expect %d)' % (self.__version, self.VERSION))
         seqid = self.__readVarint()
         name = self.__readString()
         return (name, type, seqid)
