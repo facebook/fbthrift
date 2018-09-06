@@ -1972,3 +1972,86 @@ func (p *MyDataItem) String() string {
   return fmt.Sprintf("MyDataItem(%+v)", *p)
 }
 
+// Attributes:
+//  - Foo
+type Renaming struct {
+  Foo int64 `thrift:"foo,1" db:"foo" json:"foo"`
+}
+
+func NewRenaming() *Renaming {
+  return &Renaming{}
+}
+
+
+func (p *Renaming) GetFoo() int64 {
+  return p.Foo
+}
+func (p *Renaming) Read(iprot thrift.Protocol) error {
+  if _, err := iprot.ReadStructBegin(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
+  }
+
+
+  for {
+    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
+    if err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
+    }
+    if fieldTypeId == thrift.STOP { break; }
+    switch fieldId {
+    case 1:
+      if err := p.ReadField1(iprot); err != nil {
+        return err
+      }
+    default:
+      if err := iprot.Skip(fieldTypeId); err != nil {
+        return err
+      }
+    }
+    if err := iprot.ReadFieldEnd(); err != nil {
+      return err
+    }
+  }
+  if err := iprot.ReadStructEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+  }
+  return nil
+}
+
+func (p *Renaming)  ReadField1(iprot thrift.Protocol) error {
+  if v, err := iprot.ReadI64(); err != nil {
+  return thrift.PrependError("error reading field 1: ", err)
+} else {
+  p.Foo = v
+}
+  return nil
+}
+
+func (p *Renaming) Write(oprot thrift.Protocol) error {
+  if err := oprot.WriteStructBegin("Renaming"); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
+  if err := p.writeField1(oprot); err != nil { return err }
+  if err := oprot.WriteFieldStop(); err != nil {
+    return thrift.PrependError("write field stop error: ", err) }
+  if err := oprot.WriteStructEnd(); err != nil {
+    return thrift.PrependError("write struct stop error: ", err) }
+  return nil
+}
+
+func (p *Renaming) writeField1(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("foo", thrift.I64, 1); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 1:foo: ", p), err) }
+  if err := oprot.WriteI64(int64(p.Foo)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.foo (1) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 1:foo: ", p), err) }
+  return err
+}
+
+func (p *Renaming) String() string {
+  if p == nil {
+    return "<nil>"
+  }
+  return fmt.Sprintf("Renaming(%+v)", *p)
+}
+

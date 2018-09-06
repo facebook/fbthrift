@@ -182,6 +182,7 @@ class ComplexNestedWithDefault;
 class MinPadding;
 class MyStruct;
 class MyDataItem;
+class Renaming;
 }}}} // apache::thrift::fixtures::types
 // END forward_declare
 // BEGIN typedefs
@@ -1708,6 +1709,107 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::apache::thrift::fixtur
 }
 
 template <> template <class Protocol> uint32_t Cpp2Ops< ::apache::thrift::fixtures::types::MyDataItem>::serializedSizeZC(Protocol const* proto,  ::apache::thrift::fixtures::types::MyDataItem const* obj) {
+  return obj->serializedSizeZC(proto);
+}
+
+}} // apache::thrift
+namespace apache { namespace thrift { namespace fixtures { namespace types {
+class Renaming final : private apache::thrift::detail::st::ComparisonOperators<Renaming> {
+ public:
+
+  Renaming() :
+      foo(0) {}
+  // FragileConstructor for use in initialization lists only.
+  Renaming(apache::thrift::FragileConstructor, int64_t foo__arg);
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
+    foo = arg.extract();
+    __isset.foo = true;
+  }
+
+  Renaming(Renaming&&) = default;
+
+  Renaming(const Renaming&) = default;
+
+  Renaming& operator=(Renaming&&) = default;
+
+  Renaming& operator=(const Renaming&) = default;
+  void __clear();
+  int64_t foo;
+
+  struct __isset {
+    bool foo;
+  } __isset = {};
+  bool operator==(const Renaming& rhs) const;
+  bool operator<(const Renaming& rhs) const;
+
+  int64_t get_foo() const {
+    return foo;
+  }
+
+  int64_t& set_foo(int64_t foo_) {
+    foo = foo_;
+    __isset.foo = true;
+    return foo;
+  }
+
+  template <class Protocol_>
+  uint32_t read(Protocol_* iprot);
+  template <class Protocol_>
+  uint32_t serializedSize(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t serializedSizeZC(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t write(Protocol_* prot_) const;
+
+ private:
+  template <class Protocol_>
+  void readNoXfer(Protocol_* iprot);
+
+  friend class ::apache::thrift::Cpp2Ops< Renaming >;
+};
+
+void swap(Renaming& a, Renaming& b);
+extern template void Renaming::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+extern template uint32_t Renaming::write<>(apache::thrift::BinaryProtocolWriter*) const;
+extern template uint32_t Renaming::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t Renaming::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template void Renaming::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+extern template uint32_t Renaming::write<>(apache::thrift::CompactProtocolWriter*) const;
+extern template uint32_t Renaming::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template uint32_t Renaming::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+template <class Protocol_>
+uint32_t Renaming::read(Protocol_* iprot) {
+  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
+  readNoXfer(iprot);
+  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
+}
+
+}}}} // apache::thrift::fixtures::types
+namespace apache { namespace thrift {
+
+template <> inline void Cpp2Ops< ::apache::thrift::fixtures::types::Renaming>::clear( ::apache::thrift::fixtures::types::Renaming* obj) {
+  return obj->__clear();
+}
+
+template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::apache::thrift::fixtures::types::Renaming>::thriftType() {
+  return apache::thrift::protocol::T_STRUCT;
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::apache::thrift::fixtures::types::Renaming>::write(Protocol* proto,  ::apache::thrift::fixtures::types::Renaming const* obj) {
+  return obj->write(proto);
+}
+
+template <> template <class Protocol> void Cpp2Ops< ::apache::thrift::fixtures::types::Renaming>::read(Protocol* proto,  ::apache::thrift::fixtures::types::Renaming* obj) {
+  return obj->readNoXfer(proto);
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::apache::thrift::fixtures::types::Renaming>::serializedSize(Protocol const* proto,  ::apache::thrift::fixtures::types::Renaming const* obj) {
+  return obj->serializedSize(proto);
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::apache::thrift::fixtures::types::Renaming>::serializedSizeZC(Protocol const* proto,  ::apache::thrift::fixtures::types::Renaming const* obj) {
   return obj->serializedSizeZC(proto);
 }
 

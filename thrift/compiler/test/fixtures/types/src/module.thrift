@@ -92,3 +92,7 @@ struct MyStruct {
 } (cpp2.noncomparable)
 
 struct MyDataItem {} (cpp2.noncomparable)
+
+struct Renaming {
+  1: i64 foo,
+}

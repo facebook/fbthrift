@@ -1163,3 +1163,52 @@ class MyDataItem implements \IThriftStruct {
 
 }
 
+/**
+ * Original thrift struct:-
+ * Renaming
+ */
+class Renaming implements \IThriftStruct {
+  use \ThriftSerializationTrait;
+
+  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
+    1 => dict[
+      'var' => 'foo',
+      'type' => \TType::I64,
+      ],
+    ];
+  public static Map<string, int> $_TFIELDMAP = Map {
+    'foo' => 1,
+  };
+  const int STRUCTURAL_ID = 2811793053530639830;
+  /**
+   * Original thrift field:-
+   * 1: i64 foo
+   */
+  public int $foo;
+
+  public function __construct(?int $foo = null  ) {
+    if ($foo === null) {
+      $this->foo = 0;
+    } else {
+      $this->foo = $foo;
+    }
+  }
+
+  public function getName(): string {
+    return 'Renaming';
+  }
+
+  public function readFromJson(string $jsonText): void {
+    $parsed = json_decode($jsonText, true);
+
+    if ($parsed === null || !is_array($parsed)) {
+      throw new \TProtocolException("Cannot parse the given json string.");
+    }
+
+    if (idx($parsed, 'foo') !== null) {
+      $this->foo = $parsed['foo'];
+    }    
+  }
+
+}
+

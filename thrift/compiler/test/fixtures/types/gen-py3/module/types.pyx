@@ -2837,6 +2837,175 @@ cdef class MyDataItem(thrift.py3.types.Struct):
         return (deserialize, (MyDataItem, serialize(self)))
 
 
+cdef cRenaming _Renaming_defaults = cRenaming()
+
+cdef class Renaming(thrift.py3.types.Struct):
+
+    def __init__(
+        Renaming self, *,
+        foo=None
+    ):
+        if foo is not None:
+            if not isinstance(foo, int):
+                raise TypeError(f'foo is not a { int !r}.')
+            foo = <int64_t> foo
+
+        self._cpp_obj = move(Renaming._make_instance(
+          NULL,
+          foo,
+        ))
+
+    def __call__(
+        Renaming self,
+        foo=__NOTSET
+    ):
+        changes = any((
+            foo is not __NOTSET,
+        ))
+
+        if not changes:
+            return self
+
+        if None is not foo is not __NOTSET:
+            if not isinstance(foo, int):
+                raise TypeError(f'foo is not a { int !r}.')
+            foo = <int64_t> foo
+
+        inst = <Renaming>Renaming.__new__(Renaming)
+        inst._cpp_obj = move(Renaming._make_instance(
+          self._cpp_obj.get(),
+          foo,
+        ))
+        return inst
+
+    @staticmethod
+    cdef unique_ptr[cRenaming] _make_instance(
+        cRenaming* base_instance,
+        object foo
+    ) except *:
+        cdef unique_ptr[cRenaming] c_inst
+        if base_instance:
+            c_inst = make_unique[cRenaming](deref(base_instance))
+        else:
+            c_inst = make_unique[cRenaming]()
+
+        if base_instance:
+            # Convert None's to default value. (or unset)
+            if foo is None:
+                deref(c_inst).foo = _Renaming_defaults.foo
+                deref(c_inst).__isset.foo = False
+                pass
+            elif foo is __NOTSET:
+                foo = None
+
+        if foo is not None:
+            deref(c_inst).foo = foo
+            deref(c_inst).__isset.foo = True
+        # in C++ you don't have to call move(), but this doesn't translate
+        # into a C++ return statement, so you do here
+        return move_unique(c_inst)
+
+    def __iter__(self):
+        yield 'foo', self.foo
+
+    def __bool__(self):
+        return True
+
+    @staticmethod
+    cdef create(shared_ptr[cRenaming] cpp_obj):
+        inst = <Renaming>Renaming.__new__(Renaming)
+        inst._cpp_obj = move_shared(cpp_obj)
+        return inst
+
+    @property
+    def foo(self):
+
+        return deref(self._cpp_obj).foo
+
+
+    def __hash__(Renaming self):
+        if not self.__hash:
+            self.__hash = hash((
+            self.foo,
+            ))
+        return self.__hash
+
+    def __repr__(Renaming self):
+        return f'Renaming(foo={repr(self.foo)})'
+    def __copy__(Renaming self):
+        cdef shared_ptr[cRenaming] cpp_obj = make_shared[cRenaming](
+            deref(self._cpp_obj)
+        )
+        return Renaming.create(move_shared(cpp_obj))
+
+    def __richcmp__(self, other, op):
+        cdef int cop = op
+        if not (
+                isinstance(self, Renaming) and
+                isinstance(other, Renaming)):
+            if cop == Py_EQ:  # different types are never equal
+                return False
+            elif cop == Py_NE:  # different types are always notequal
+                return True
+            else:
+                return NotImplemented
+
+        cdef cRenaming cself = deref((<Renaming>self)._cpp_obj)
+        cdef cRenaming cother = deref((<Renaming>other)._cpp_obj)
+        if cop == Py_EQ:
+            return cself == cother
+        elif cop == Py_NE:
+            return not (cself == cother)
+        elif cop == Py_LT:
+            return cself < cother
+        elif cop == Py_LE:
+            return cself <= cother
+        elif cop == Py_GT:
+            return cself > cother
+        elif cop == Py_GE:
+            return cself >= cother
+        else:
+            return NotImplemented
+
+    cdef __iobuf.IOBuf _serialize(Renaming self, proto):
+        cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
+        cdef cRenaming* cpp_obj = self._cpp_obj.get()
+        if proto is __Protocol.COMPACT:
+            with nogil:
+                serializer.CompactSerialize[cRenaming](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.BINARY:
+            with nogil:
+                serializer.BinarySerialize[cRenaming](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.JSON:
+            with nogil:
+                serializer.JSONSerialize[cRenaming](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.COMPACT_JSON:
+            with nogil:
+                serializer.CompactJSONSerialize[cRenaming](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
+        return __iobuf.from_unique_ptr(queue.move())
+
+    cdef uint32_t _deserialize(Renaming self, const __iobuf.cIOBuf* buf, proto) except? 0:
+        cdef uint32_t needed
+        self._cpp_obj = make_shared[cRenaming]()
+        cdef cRenaming* cpp_obj = self._cpp_obj.get()
+        if proto is __Protocol.COMPACT:
+            with nogil:
+                needed = serializer.CompactDeserialize[cRenaming](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.BINARY:
+            with nogil:
+                needed = serializer.BinaryDeserialize[cRenaming](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.JSON:
+            with nogil:
+                needed = serializer.JSONDeserialize[cRenaming](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.COMPACT_JSON:
+            with nogil:
+                needed = serializer.CompactJSONDeserialize[cRenaming](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
+        return needed
+
+    def __reduce__(self):
+        return (deserialize, (Renaming, serialize(self)))
+
+
 cdef class std_unordered_map__Map__i32_string:
     def __init__(self, items=None):
         if isinstance(items, std_unordered_map__Map__i32_string):

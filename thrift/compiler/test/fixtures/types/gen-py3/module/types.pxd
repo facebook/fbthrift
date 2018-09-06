@@ -329,6 +329,8 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "apache
     cdef cppclass cMyStruct "apache::thrift::fixtures::types::MyStruct"
     # Forward Declaration
     cdef cppclass cMyDataItem "apache::thrift::fixtures::types::MyDataItem"
+    # Forward Declaration
+    cdef cppclass cRenaming "apache::thrift::fixtures::types::Renaming"
 
 cdef extern from "src/gen-cpp2/module_types.h" namespace "apache::thrift::fixtures::types":
     cdef cppclass cdecorated_struct__isset "apache::thrift::fixtures::types::decorated_struct::__isset":
@@ -518,6 +520,20 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "apache::thrift::fixtur
         cMyDataItem(const cMyDataItem&) except +
         cMyDataItem__isset __isset
 
+    cdef cppclass cRenaming__isset "apache::thrift::fixtures::types::Renaming::__isset":
+        bint foo
+
+    cdef cppclass cRenaming "apache::thrift::fixtures::types::Renaming":
+        cRenaming() except +
+        cRenaming(const cRenaming&) except +
+        bint operator==(cRenaming&)
+        bint operator<(cRenaming&)
+        bint operator>(cRenaming&)
+        bint operator<=(cRenaming&)
+        bint operator>=(cRenaming&)
+        int64_t foo
+        cRenaming__isset __isset
+
     cdef shared_ptr[vector[int32_t]] reference_shared_ptr_fieldA "thrift::py3::reference_shared_ptr<std::vector<int32_t>>"(shared_ptr[cContainerStruct]&, vector[int32_t]&)
     cdef shared_ptr[std_list[int32_t]] reference_shared_ptr_fieldB "thrift::py3::reference_shared_ptr<std::list<int32_t>>"(shared_ptr[cContainerStruct]&, std_list[int32_t]&)
     cdef shared_ptr[std_deque[int32_t]] reference_shared_ptr_fieldC "thrift::py3::reference_shared_ptr<std::deque<int32_t>>"(shared_ptr[cContainerStruct]&, std_deque[int32_t]&)
@@ -569,6 +585,9 @@ cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[cMyDataItem] move(unique_ptr[cMyDataItem])
     cdef shared_ptr[cMyDataItem] move_shared "std::move"(shared_ptr[cMyDataItem])
     cdef unique_ptr[cMyDataItem] move_unique "std::move"(unique_ptr[cMyDataItem])
+    cdef shared_ptr[cRenaming] move(unique_ptr[cRenaming])
+    cdef shared_ptr[cRenaming] move_shared "std::move"(shared_ptr[cRenaming])
+    cdef unique_ptr[cRenaming] move_unique "std::move"(unique_ptr[cRenaming])
 
 cdef extern from "<memory>" namespace "std" nogil:
     cdef shared_ptr[const cdecorated_struct] const_pointer_cast "std::const_pointer_cast<const apache::thrift::fixtures::types::decorated_struct>"(shared_ptr[cdecorated_struct])
@@ -583,6 +602,7 @@ cdef extern from "<memory>" namespace "std" nogil:
     cdef shared_ptr[const cMinPadding] const_pointer_cast "std::const_pointer_cast<const apache::thrift::fixtures::types::MinPadding>"(shared_ptr[cMinPadding])
     cdef shared_ptr[const cMyStruct] const_pointer_cast "std::const_pointer_cast<const apache::thrift::fixtures::types::MyStruct>"(shared_ptr[cMyStruct])
     cdef shared_ptr[const cMyDataItem] const_pointer_cast "std::const_pointer_cast<const apache::thrift::fixtures::types::MyDataItem>"(shared_ptr[cMyDataItem])
+    cdef shared_ptr[const cRenaming] const_pointer_cast "std::const_pointer_cast<const apache::thrift::fixtures::types::Renaming>"(shared_ptr[cRenaming])
 
 # Forward Definition of the cython struct
 cdef class decorated_struct(thrift.py3.types.Struct)
@@ -832,6 +852,24 @@ cdef class MyDataItem(thrift.py3.types.Struct):
 
     @staticmethod
     cdef create(shared_ptr[cMyDataItem])
+
+# Forward Definition of the cython struct
+cdef class Renaming(thrift.py3.types.Struct)
+
+
+cdef class Renaming(thrift.py3.types.Struct):
+    cdef object __hash
+    cdef object __weakref__
+    cdef shared_ptr[cRenaming] _cpp_obj
+
+    @staticmethod
+    cdef unique_ptr[cRenaming] _make_instance(
+        cRenaming* base_instance,
+        object foo
+    ) except *
+
+    @staticmethod
+    cdef create(shared_ptr[cRenaming])
 
 
 cdef class std_unordered_map__Map__i32_string:

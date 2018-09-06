@@ -287,6 +287,16 @@ void TccStructTraits< ::apache::thrift::fixtures::types::MyDataItem>::translateF
     FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
   if (false) {}
 }
+void TccStructTraits< ::apache::thrift::fixtures::types::Renaming>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "foo") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_I64;
+  }
+}
 
 } // namespace detail
 } // namespace thrift
@@ -1077,6 +1087,56 @@ template void MyDataItem::readNoXfer<>(apache::thrift::CompactProtocolReader*);
 template uint32_t MyDataItem::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t MyDataItem::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t MyDataItem::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+}}}} // apache::thrift::fixtures::types
+namespace apache { namespace thrift { namespace fixtures { namespace types {
+
+Renaming::Renaming(apache::thrift::FragileConstructor, int64_t foo__arg) :
+    foo(std::move(foo__arg)) {
+  __isset.foo = true;
+}
+
+void Renaming::__clear() {
+  // clear all fields
+  foo = 0;
+  __isset = {};
+}
+
+bool Renaming::operator==(const Renaming& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  if (!(lhs.foo == rhs.foo)) {
+    return false;
+  }
+  return true;
+}
+
+bool Renaming::operator<(const Renaming& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  if (!(lhs.foo == rhs.foo)) {
+    return lhs.foo < rhs.foo;
+  }
+  return false;
+}
+
+
+void swap(Renaming& a, Renaming& b) {
+  using ::std::swap;
+  swap(a.foo, b.foo);
+  swap(a.__isset, b.__isset);
+}
+
+template void Renaming::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+template uint32_t Renaming::write<>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t Renaming::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t Renaming::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+template void Renaming::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+template uint32_t Renaming::write<>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t Renaming::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t Renaming::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 }}}} // apache::thrift::fixtures::types
 
