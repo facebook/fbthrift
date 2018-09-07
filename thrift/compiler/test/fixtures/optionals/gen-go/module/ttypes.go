@@ -54,7 +54,7 @@ func AnimalFromString(s string) (Animal, error) {
 
 func AnimalPtr(v Animal) *Animal { return &v }
 
-type PersonID int64
+type PersonID = int64
 
 func PersonIDPtr(v PersonID) *PersonID { return &v }
 

@@ -19,7 +19,7 @@ var _ = bytes.Equal
 
 var GoUnusedProtection__ int;
 
-type ContainerTypedef map[int16]string
+type ContainerTypedef = map[int16]string
 
 func ContainerTypedefPtr(v ContainerTypedef) *ContainerTypedef { return &v }
 

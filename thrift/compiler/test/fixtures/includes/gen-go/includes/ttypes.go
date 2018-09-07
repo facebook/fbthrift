@@ -22,7 +22,7 @@ var _ = bytes.Equal
 var _ = transitive0.GoUnusedProtection__
 var GoUnusedProtection__ int;
 
-type IncludedInt64 int64
+type IncludedInt64 = int64
 
 func IncludedInt64Ptr(v IncludedInt64) *IncludedInt64 { return &v }
 

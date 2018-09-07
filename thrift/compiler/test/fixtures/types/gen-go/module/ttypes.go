@@ -127,7 +127,7 @@ func MyForwardRefEnumFromString(s string) (MyForwardRefEnum, error) {
 
 func MyForwardRefEnumPtr(v MyForwardRefEnum) *MyForwardRefEnum { return &v }
 
-type TBinary []byte
+type TBinary = []byte
 
 func TBinaryPtr(v TBinary) *TBinary { return &v }
 

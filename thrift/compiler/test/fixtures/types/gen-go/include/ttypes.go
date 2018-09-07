@@ -19,11 +19,11 @@ var _ = bytes.Equal
 
 var GoUnusedProtection__ int;
 
-type SomeMap map[int32]string
+type SomeMap = map[int32]string
 
 func SomeMapPtr(v SomeMap) *SomeMap { return &v }
 
-type SomeListOfTypeMap []SomeMap
+type SomeListOfTypeMap = []SomeMap
 
 func SomeListOfTypeMapPtr(v SomeListOfTypeMap) *SomeListOfTypeMap { return &v }
 
