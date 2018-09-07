@@ -54,6 +54,15 @@ cdef class ServiceInterface(AsyncProcessorFactory):
                 setattr(self, f'_pass_context_{name}', True)
 
 
+def getServiceName(ServiceInterface svc not None):
+    processor = deref(svc._cpp_obj).getProcessor()
+    gen_proc = dynamic_cast_gen(processor.get())
+    if not gen_proc:
+        raise TypeError('processor was not a GeneratedAsyncProcessor')
+    cdef const char* name = gen_proc.getServiceName()
+    return (<bytes>name).decode('utf-8')
+
+
 cdef void handleAddressCallback(PyObject* future, cfollySocketAddress address):
     (<object>future).set_result(_get_SocketAddress(&address))
 

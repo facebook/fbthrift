@@ -6,7 +6,7 @@ import unittest
 from testing.services import TestingServiceInterface
 from testing.types import easy, Color
 from thrift.py3 import RequestContext, ThriftServer
-from thrift.py3.server import SocketAddress
+from thrift.py3.server import SocketAddress, getServiceName
 from typing import Sequence
 
 
@@ -41,6 +41,10 @@ class Handler(TestingServiceInterface):
 
 
 class ServicesTests(unittest.TestCase):
+
+    def test_get_service_name(self) -> None:
+        h = Handler()
+        self.assertEqual(getServiceName(h), 'TestingService')
 
     def test_get_address(self) -> None:
         loop = asyncio.get_event_loop()

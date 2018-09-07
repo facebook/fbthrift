@@ -27,13 +27,21 @@ cdef extern from "thrift/lib/py3/server.h" namespace "thrift::py3":
 
 cdef extern from "thrift/lib/cpp2/async/AsyncProcessor.h" \
         namespace "apache::thrift":
+    cdef cppclass cAsyncProcessor "apache::thrift::AsyncProcessor":
+        pass
+
+    cdef cppclass cGeneratedAsyncProcessor "apache::thrift::GeneratedAsyncProcessor"(cAsyncProcessor):
+        const char* getServiceName()
+
     cdef cppclass cAsyncProcessorFactory \
             "apache::thrift::AsyncProcessorFactory":
-        pass
+        unique_ptr[cAsyncProcessor] getProcessor()
 
     cdef cppclass cServerInterface \
             "apache::thrift::ServerInterface"(cAsyncProcessorFactory):
         pass
+
+    cdef cGeneratedAsyncProcessor* dynamic_cast_gen "dynamic_cast<apache::thrift::GeneratedAsyncProcessor*>"(...)
 
 cdef extern from "thrift/lib/cpp2/server/ThriftServer.h" \
         namespace "apache::thrift":
