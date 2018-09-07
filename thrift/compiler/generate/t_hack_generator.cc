@@ -2773,7 +2773,8 @@ void t_hack_generator::_generate_php_struct_definition(
   }
   if (is_exception) {
     auto message_annotation = tstruct->annotations_.find("message");
-    if (message_annotation != tstruct->annotations_.end()) {
+    if (message_annotation != tstruct->annotations_.end() &&
+        message_annotation->second != "message") {
       auto message_field = tstruct->get_member(message_annotation->second);
       out << indent() << "<<__Override>>" << endl
           << indent() << "public function getMessage(): string {" << endl

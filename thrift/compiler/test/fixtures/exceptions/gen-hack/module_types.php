@@ -65,11 +65,6 @@ class Fiery extends \TException implements \IThriftStruct {
     return 'Fiery';
   }
 
-  <<__Override>>
-  public function getMessage(): string {
-    return $this->message;
-  }
-
 }
 
 /**
