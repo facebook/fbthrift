@@ -535,9 +535,17 @@ void ThriftServer::stop() {
 }
 
 void ThriftServer::stopListening() {
-  for (auto& socket : getSockets()) {
+  auto sockets = getSockets();
+  std::atomic<size_t> remaining(1 + sockets.size());
+  folly::Baton<> done;
+
+  auto defer_wait = folly::makeGuard([&] { done.wait(); });
+  auto maybe_post = [&] { --remaining ? void() : done.post(); };
+  maybe_post();
+  for (auto& socket : sockets) {
     // Stop accepting new connections
-    socket->getEventBase()->runInEventBaseThreadAndWait([&]() {
+    auto eb = socket->getEventBase();
+    eb->runInEventBaseThread([&, g = folly::makeGuard(maybe_post)] {
       socket->pauseAccepting();
 
       // Close the listening socket. This will also cause the workers to stop.
