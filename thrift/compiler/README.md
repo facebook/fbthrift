@@ -65,7 +65,7 @@ brew install \
  [System.Environment]::SetEnvironmentVariable("PATH", "$env:Path;C\local\win_flex_bison", [System.EnvironmentVariableTarget]::Machine)
  ```
 
-### Non-packed Depdendencies
+### Non-packed Dependencies
 - [Mustache](https://mustache.github.io/) (Logic-less templates)
 ```
 mkdir -p ~/tmp/mstch
