@@ -17,7 +17,7 @@
 %><%#service:functions%><%#function:returnType%>
 <%^function:eb%>
 template <typename ProtocolIn_, typename ProtocolOut_>
-void <%service:name%>AsyncProcessor::_processInThread_<%function:name%>(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
+void <%service:name%>AsyncProcessor::_processInThread_<%function:name%>(std::unique_ptr<apache::thrift::ResponseChannelRequest> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
   auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::<%function:priority%>);
 <%^function:oneway?%>
   <%^function:returns_stream?%>
@@ -33,7 +33,7 @@ void <%service:name%>AsyncProcessor::_processInThread_<%function:name%>(std::uni
 }
 <%/function:eb%>
 template <typename ProtocolIn_, typename ProtocolOut_>
-void <%service:name%>AsyncProcessor::process_<%function:name%>(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot,apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
+void <%service:name%>AsyncProcessor::process_<%function:name%>(std::unique_ptr<apache::thrift::ResponseChannelRequest> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot,apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
 <%#function:oneway?%><%#function:eb%>
   if (!req->isOneway()) {
     if (req->isStream()) {
@@ -218,7 +218,7 @@ folly::IOBufQueue <%service:name%>AsyncProcessor::return_<%function:name%>(int32
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-void <%service:name%>AsyncProcessor::throw_wrapped_<%function:name%>(std::unique_ptr<apache::thrift::ResponseChannel::Request> req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx) {
+void <%service:name%>AsyncProcessor::throw_wrapped_<%function:name%>(std::unique_ptr<apache::thrift::ResponseChannelRequest> req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx) {
   if (!ew) {
     return;
   }

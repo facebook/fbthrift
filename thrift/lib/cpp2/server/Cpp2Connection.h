@@ -71,7 +71,7 @@ class Cpp2Connection : public ResponseChannel::Callback,
   ~Cpp2Connection() override;
 
   // ResponseChannel callbacks
-  void requestReceived(std::unique_ptr<ResponseChannel::Request>&&) override;
+  void requestReceived(std::unique_ptr<ResponseChannelRequest>&&) override;
   void channelClosed(folly::exception_wrapper&&) override;
 
   void start() {
@@ -124,7 +124,7 @@ class Cpp2Connection : public ResponseChannel::Callback,
    * a) To have task timeouts for all requests,
    * b) To ensure the channel is not destroyed before callback is called
    */
-  class Cpp2Request : public ResponseChannel::Request {
+  class Cpp2Request : public ResponseChannelRequest {
    public:
     friend class Cpp2Connection;
 
@@ -142,7 +142,7 @@ class Cpp2Connection : public ResponseChannel::Callback,
     friend class TaskTimeout;
 
     Cpp2Request(
-        std::unique_ptr<ResponseChannel::Request> req,
+        std::unique_ptr<ResponseChannelRequest> req,
         std::shared_ptr<Cpp2Connection> con);
 
     // Delegates to wrapped request.
@@ -235,7 +235,7 @@ class Cpp2Connection : public ResponseChannel::Callback,
 
   void removeRequest(Cpp2Request* req);
   void killRequest(
-      ResponseChannel::Request& req,
+      ResponseChannelRequest& req,
       TApplicationException::TApplicationExceptionType reason,
       const std::string& errorCode,
       const char* comment);

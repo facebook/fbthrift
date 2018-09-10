@@ -45,7 +45,7 @@ namespace thrift {
  * to clean up our APIs to avoid the dependency to a ResponseChannel
  * object.
  */
-class ThriftRequestCore : public ResponseChannel::Request {
+class ThriftRequestCore : public ResponseChannelRequest {
  public:
   ThriftRequestCore(
       const apache::thrift::server::ServerConfigs& serverConfigs,

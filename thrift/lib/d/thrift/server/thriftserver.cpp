@@ -25,7 +25,7 @@ using namespace apache::thrift::transport;
 // D defined funcs
 class ThriftServerInterface {
  public:
-  virtual void process(ResponseChannel::Request* req,
+  virtual void process(ResponseChannelRequest* req,
                        folly::EventBase* eb,
                        unsigned char* data, size_t len, char protType);
  private:
@@ -38,7 +38,7 @@ class DProcessor : public AsyncProcessor {
   explicit DProcessor(ThriftServerInterface* iface) : iface_(iface) {}
 
   void process(
-      std::unique_ptr<ResponseChannel::Request> req,
+      std::unique_ptr<ResponseChannelRequest> req,
       std::unique_ptr<folly::IOBuf> buf,
       protocol::PROTOCOL_TYPES protType,
       Cpp2RequestContext*,
@@ -129,12 +129,12 @@ void thriftserver_setInterface(
 }
 
 void thriftserver_sendReply(
-  ResponseChannel::Request* req, folly::EventBase* eb,
+  ResponseChannelRequest* req, folly::EventBase* eb,
   const char* bytes, size_t len) {
 
   auto buf = folly::IOBuf::copyBuffer(bytes, len);
   eb->runInEventBaseThread([
-    req = std::unique_ptr<ResponseChannel::Request>(req),
+    req = std::unique_ptr<ResponseChannelRequest>(req),
     buf = std::move(buf)
   ] () mutable {
     req->sendReply(std::move(buf));
@@ -142,7 +142,7 @@ void thriftserver_sendReply(
   });
 }
 
-void thriftserver_freeRequest(ResponseChannel::Request* req) {
+void thriftserver_freeRequest(ResponseChannelRequest* req) {
   delete req;
 }
 

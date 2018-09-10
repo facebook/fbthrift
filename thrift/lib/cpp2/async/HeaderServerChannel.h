@@ -119,7 +119,7 @@ class HeaderServerChannel : public ServerChannel,
       MessageChannel::SendCallback* cb,
       apache::thrift::transport::THeader* header);
 
-  class HeaderRequest : public Request {
+  class HeaderRequest : public ResponseChannelRequest {
    public:
     HeaderRequest(
         HeaderServerChannel* channel,

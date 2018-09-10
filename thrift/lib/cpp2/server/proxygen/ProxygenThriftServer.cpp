@@ -114,7 +114,7 @@ void ProxygenThriftServer::ThriftRequestHandler::onEOM() noexcept {
   connCtx_ = std::make_shared<apache::thrift::Cpp2ConnContext>(
       &msg_->getClientAddress(), nullptr, nullptr, nullptr, nullptr);
 
-  buf_ = body_->clone(); // for apache::thrift::ResponseChannel::Request
+  buf_ = body_->clone(); // for apache::thrift::ResponseChannelRequest
 
   // Set up timeouts
   std::chrono::milliseconds queueTimeout;
@@ -137,7 +137,7 @@ void ProxygenThriftServer::ThriftRequestHandler::onEOM() noexcept {
 
   request_ = new ProxygenRequest(this, header_, connCtx_, reqCtx_);
   auto req =
-      std::unique_ptr<apache::thrift::ResponseChannel::Request>(request_);
+      std::unique_ptr<apache::thrift::ResponseChannelRequest>(request_);
   auto protoId = static_cast<apache::thrift::protocol::PROTOCOL_TYPES>(
       header_->getProtocolId());
   if (!apache::thrift::detail::ap::deserializeMessageBegin(

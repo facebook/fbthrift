@@ -234,7 +234,7 @@ bool Cpp2Connection::pending() {
 }
 
 void Cpp2Connection::killRequest(
-    ResponseChannel::Request& req,
+    ResponseChannelRequest& req,
     TApplicationException::TApplicationExceptionType reason,
     const std::string& errorCode,
     const char* comment) {
@@ -275,7 +275,7 @@ void Cpp2Connection::killRequest(
 
 // Response Channel callbacks
 void Cpp2Connection::requestReceived(
-    unique_ptr<ResponseChannel::Request>&& req) {
+    unique_ptr<ResponseChannelRequest>&& req) {
   auto reqCtx = std::make_shared<folly::RequestContext>();
   auto handler = worker_->getServer()->getEventHandler();
   if (handler) {
@@ -387,7 +387,7 @@ void Cpp2Connection::requestReceived(
   unique_ptr<folly::IOBuf> buf = hreq->extractBuf();
 
   Cpp2Request* t2r = new Cpp2Request(std::move(req), this_);
-  auto up2r = std::unique_ptr<ResponseChannel::Request>(t2r);
+  auto up2r = std::unique_ptr<ResponseChannelRequest>(t2r);
   activeRequests_.insert(t2r);
   ++worker_->activeRequests_;
 
@@ -450,7 +450,7 @@ void Cpp2Connection::removeRequest(Cpp2Request* req) {
 }
 
 Cpp2Connection::Cpp2Request::Cpp2Request(
-    std::unique_ptr<ResponseChannel::Request> req,
+    std::unique_ptr<ResponseChannelRequest> req,
     std::shared_ptr<Cpp2Connection> con)
     : req_(static_cast<HeaderServerChannel::HeaderRequest*>(req.release())),
       connection_(con),

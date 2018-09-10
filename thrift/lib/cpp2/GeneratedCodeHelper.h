@@ -858,7 +858,7 @@ struct helper {
       const char* func,
       const TApplicationException::TApplicationExceptionType type,
       const std::string& msg,
-      std::unique_ptr<ResponseChannel::Request> req,
+      std::unique_ptr<ResponseChannelRequest> req,
       Cpp2RequestContext* ctx,
       folly::EventBase* eb,
       int32_t protoSeqId);
@@ -883,7 +883,7 @@ typename std::enable_if<is_root_async_processor<Processor>::value>::type
 process_missing(
     Processor*,
     const std::string& fname,
-    std::unique_ptr<ResponseChannel::Request> req,
+    std::unique_ptr<ResponseChannelRequest> req,
     std::unique_ptr<folly::IOBuf>,
     Cpp2RequestContext* ctx,
     folly::EventBase* eb,
@@ -901,7 +901,7 @@ typename std::enable_if<!is_root_async_processor<Processor>::value>::type
 process_missing(
     Processor* processor,
     const std::string& /*fname*/,
-    std::unique_ptr<ResponseChannel::Request> req,
+    std::unique_ptr<ResponseChannelRequest> req,
     std::unique_ptr<folly::IOBuf> buf,
     Cpp2RequestContext* ctx,
     folly::EventBase* eb,
@@ -914,7 +914,7 @@ process_missing(
 
 bool deserializeMessageBegin(
     protocol::PROTOCOL_TYPES protType,
-    std::unique_ptr<ResponseChannel::Request>& req,
+    std::unique_ptr<ResponseChannelRequest>& req,
     folly::IOBuf* buf,
     Cpp2RequestContext* ctx,
     folly::EventBase* eb);
@@ -925,7 +925,7 @@ void process_pmap(
     const typename GeneratedAsyncProcessor::ProcessMap<
         GeneratedAsyncProcessor::ProcessFunc<
             Processor, ProtocolReader>>& pmap,
-    std::unique_ptr<ResponseChannel::Request> req,
+    std::unique_ptr<ResponseChannelRequest> req,
     std::unique_ptr<folly::IOBuf> buf,
     Cpp2RequestContext* ctx,
     folly::EventBase* eb,
@@ -951,7 +951,7 @@ void process_pmap(
 template <class Processor, typename... Args>
 typename std::enable_if<!Processor::HasFrozen2::value>::type process_frozen(
     Processor*,
-    std::unique_ptr<ResponseChannel::Request> req,
+    std::unique_ptr<ResponseChannelRequest> req,
     std::unique_ptr<folly::IOBuf>,
     Cpp2RequestContext* ctx,
     folly::EventBase* eb,
@@ -969,7 +969,7 @@ typename std::enable_if<!Processor::HasFrozen2::value>::type process_frozen(
 template <class Processor>
 typename std::enable_if<Processor::HasFrozen2::value>::type process_frozen(
     Processor* processor,
-    std::unique_ptr<ResponseChannel::Request> req,
+    std::unique_ptr<ResponseChannelRequest> req,
     std::unique_ptr<folly::IOBuf> buf,
     Cpp2RequestContext* ctx,
     folly::EventBase* eb,
@@ -983,7 +983,7 @@ typename std::enable_if<Processor::HasFrozen2::value>::type process_frozen(
 template <class Processor>
 void process(
     Processor* processor,
-    std::unique_ptr<ResponseChannel::Request> req,
+    std::unique_ptr<ResponseChannelRequest> req,
     std::unique_ptr<folly::IOBuf> buf,
     protocol::PROTOCOL_TYPES protType,
     Cpp2RequestContext* ctx,

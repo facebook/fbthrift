@@ -60,6 +60,60 @@ extern const std::string kRequestTypeDoesntMatchServiceFunctionType;
 namespace apache {
 namespace thrift {
 
+class ResponseChannelRequest {
+ public:
+  folly::IOBuf* getBuf() {
+    return buf_.get();
+  }
+  std::unique_ptr<folly::IOBuf> extractBuf() {
+    return std::move(buf_);
+  }
+
+  SemiStream<std::unique_ptr<folly::IOBuf>> extractStream() {
+    return std::move(stream_);
+  }
+
+  virtual bool isActive() = 0;
+
+  virtual void cancel() = 0;
+
+  virtual bool isOneway() = 0;
+
+  virtual bool isStream() {
+    return false;
+  }
+
+  virtual void sendReply(
+      std::unique_ptr<folly::IOBuf>&&,
+      MessageChannel::SendCallback* cb = nullptr) = 0;
+
+  virtual void sendStreamReply(
+      ResponseAndSemiStream<
+          std::unique_ptr<folly::IOBuf>,
+          std::unique_ptr<folly::IOBuf>>&&,
+      MessageChannel::SendCallback* = nullptr) {
+    throw std::logic_error("unimplemented");
+  }
+
+  virtual void sendErrorWrapped(
+      folly::exception_wrapper ex,
+      std::string exCode,
+      MessageChannel::SendCallback* cb = nullptr) = 0;
+
+  virtual ~ResponseChannelRequest() {}
+
+  virtual apache::thrift::server::TServerObserver::CallTimestamps&
+  getTimestamps() {
+    return timestamps_;
+  }
+
+  apache::thrift::server::TServerObserver::CallTimestamps timestamps_;
+
+ protected:
+  std::unique_ptr<folly::IOBuf> buf_;
+  SemiStream<std::unique_ptr<folly::IOBuf>> stream_;
+};
+
 /**
  * ResponseChannel defines an asynchronous API for servers.
  */
@@ -68,63 +122,9 @@ class ResponseChannel : virtual public folly::DelayedDestruction {
   static const uint32_t ONEWAY_REQUEST_ID =
       std::numeric_limits<uint32_t>::max();
 
-  class Request {
-   public:
-    folly::IOBuf* getBuf() {
-      return buf_.get();
-    }
-    std::unique_ptr<folly::IOBuf> extractBuf() {
-      return std::move(buf_);
-    }
-
-    SemiStream<std::unique_ptr<folly::IOBuf>> extractStream() {
-      return std::move(stream_);
-    }
-
-    virtual bool isActive() = 0;
-
-    virtual void cancel() = 0;
-
-    virtual bool isOneway() = 0;
-
-    virtual bool isStream() {
-      return false;
-    }
-
-    virtual void sendReply(
-        std::unique_ptr<folly::IOBuf>&&,
-        MessageChannel::SendCallback* cb = nullptr) = 0;
-
-    virtual void sendStreamReply(
-        ResponseAndSemiStream<
-            std::unique_ptr<folly::IOBuf>,
-            std::unique_ptr<folly::IOBuf>>&&,
-        MessageChannel::SendCallback* = nullptr) {
-      throw std::logic_error("unimplemented");
-    }
-
-    virtual void sendErrorWrapped(
-        folly::exception_wrapper ex,
-        std::string exCode,
-        MessageChannel::SendCallback* cb = nullptr) = 0;
-
-    virtual ~Request() {}
-
-    virtual apache::thrift::server::TServerObserver::CallTimestamps&
-    getTimestamps() {
-      return timestamps_;
-    }
-
-    apache::thrift::server::TServerObserver::CallTimestamps timestamps_;
-
-   protected:
-    std::unique_ptr<folly::IOBuf> buf_;
-    SemiStream<std::unique_ptr<folly::IOBuf>> stream_;
-  };
-
   class Callback {
    public:
-    virtual void requestReceived(std::unique_ptr<Request>&&) = 0;
+    virtual void requestReceived(std::unique_ptr<ResponseChannelRequest>&&) = 0;
 
     /**
      * reason is empty if closed due to EOF, or a pointer to an exception

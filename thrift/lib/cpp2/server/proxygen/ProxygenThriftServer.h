@@ -81,7 +81,7 @@ class ProxygenThriftServer : public BaseThriftServer,
   };
 
   class ThriftRequestHandler : public proxygen::RequestHandler,
-                               public apache::thrift::ResponseChannel::Request {
+                               public apache::thrift::ResponseChannelRequest {
    public:
     explicit ThriftRequestHandler(
         ThriftRequestHandlerFactory* worker,
@@ -115,7 +115,7 @@ class ProxygenThriftServer : public BaseThriftServer,
 
     void onError(proxygen::ProxygenError err) noexcept override;
 
-    // apache::thrift::ResponseChannel::Request
+    // apache::thrift::ResponseChannelRequest
     bool isActive() override {
       return active_;
     }
@@ -135,7 +135,7 @@ class ProxygenThriftServer : public BaseThriftServer,
         std::string exCode,
         apache::thrift::MessageChannel::SendCallback* cb = nullptr) override;
 
-    class ProxygenRequest : public apache::thrift::ResponseChannel::Request {
+    class ProxygenRequest : public apache::thrift::ResponseChannelRequest {
      public:
       explicit ProxygenRequest(
           ThriftRequestHandler* handler,

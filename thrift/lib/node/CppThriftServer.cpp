@@ -135,7 +135,7 @@ class ThriftServerCallback : public node::ObjectWrap {
 
   static void setRequest(
       Local<Object> arg,
-      std::unique_ptr<apache::thrift::ResponseChannel::Request> req,
+      std::unique_ptr<apache::thrift::ResponseChannelRequest> req,
       apache::thrift::Cpp2RequestContext* reqCtx,
       folly::EventBase* base) {
     auto obj = ObjectWrap::Unwrap<ThriftServerCallback>(arg);
@@ -145,7 +145,7 @@ class ThriftServerCallback : public node::ObjectWrap {
   }
 
  private:
-  std::unique_ptr<apache::thrift::ResponseChannel::Request> req_;
+  std::unique_ptr<apache::thrift::ResponseChannelRequest> req_;
   folly::EventBase* eb_;
   apache::thrift::Cpp2RequestContext* reqCtx_;
 };
@@ -161,7 +161,7 @@ class NodeProcessor : public apache::thrift::AsyncProcessor {
       , iface_(iface) {}
 
   void process(
-      std::unique_ptr<apache::thrift::ResponseChannel::Request> req,
+      std::unique_ptr<apache::thrift::ResponseChannelRequest> req,
       std::unique_ptr<folly::IOBuf> buf,
       apache::thrift::protocol::PROTOCOL_TYPES,
       apache::thrift::Cpp2RequestContext* context,

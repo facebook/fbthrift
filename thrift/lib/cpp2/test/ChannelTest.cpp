@@ -312,7 +312,7 @@ class ResponseCallback
       , request_(0)
       , requestBytes_(0) {}
 
-  void requestReceived(unique_ptr<ResponseChannel::Request>&& req) override {
+  void requestReceived(unique_ptr<ResponseChannelRequest>&& req) override {
     request_++;
     requestBytes_ += req->getBuf()->computeChainDataLength();
     if (req->isOneway()) {
@@ -913,7 +913,7 @@ class InOrderTest
       TestRequestCallback::replyReceived(std::move(state));
     }
 
-    void requestReceived(unique_ptr<ResponseChannel::Request>&& req) {
+    void requestReceived(unique_ptr<ResponseChannelRequest>&& req) {
       c_->request_++;
       c_->requestBytes_ += req->getBuf()->computeChainDataLength();
       if (c_->firstbuf_) {
@@ -960,7 +960,7 @@ class InOrderTest
   }
 
  private:
-  std::unique_ptr<ResponseChannel::Request> firstbuf_;
+  std::unique_ptr<ResponseChannelRequest> firstbuf_;
   size_t len_;
 };
 
@@ -995,7 +995,7 @@ public:
    BadSeqIdTest* c_;
   };
 
-  void requestReceived(unique_ptr<ResponseChannel::Request>&& req) override {
+  void requestReceived(unique_ptr<ResponseChannelRequest>&& req) override {
     request_++;
     requestBytes_ += req->getBuf()->computeChainDataLength();
     if (req->isOneway()) {
@@ -1099,7 +1099,7 @@ public:
     EXPECT_EQ(securityEndTime_, 0);
   }
 
-  void requestReceived(unique_ptr<ResponseChannel::Request>&& req) override {
+  void requestReceived(unique_ptr<ResponseChannelRequest>&& req) override {
     request_++;
     requestBytes_ += req->getBuf()->computeChainDataLength();
     // Don't respond, let it time out
@@ -1182,7 +1182,7 @@ public:
     EXPECT_EQ(securityEndTime_, 0);
   }
 
-  void requestReceived(unique_ptr<ResponseChannel::Request>&& req) override {
+  void requestReceived(unique_ptr<ResponseChannelRequest>&& req) override {
     if (request_ == 0) {
       request_++;
       requestBytes_ += req->getBuf()->computeChainDataLength();
@@ -1322,7 +1322,7 @@ class InvalidResponseCallback : public ResponseChannel::Callback {
     return *this;
   }
 
-  void requestReceived(unique_ptr<ResponseChannel::Request>&& req) override;
+  void requestReceived(unique_ptr<ResponseChannelRequest>&& req) override;
   void channelClosed(folly::exception_wrapper&&) override {}
 
  protected:
@@ -1406,7 +1406,7 @@ class ClientCloseOnErrorTest
 };
 
 void InvalidResponseCallback::requestReceived(
-    unique_ptr<ResponseChannel::Request>&& req) {
+    unique_ptr<ResponseChannelRequest>&& req) {
   request_++;
   requestBytes_ += req->getBuf()->computeChainDataLength();
   if (closeSocketInResponse_) {

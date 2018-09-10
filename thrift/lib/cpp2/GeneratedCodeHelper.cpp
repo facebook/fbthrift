@@ -64,7 +64,7 @@ void helper<ProtocolReader, ProtocolWriter>::process_exn(
     const char* func,
     const TApplicationException::TApplicationExceptionType type,
     const string& msg,
-    unique_ptr<ResponseChannel::Request> req,
+    unique_ptr<ResponseChannelRequest> req,
     Cpp2RequestContext* ctx,
     EventBase* eb,
     int32_t protoSeqId) {
@@ -98,7 +98,7 @@ template struct helper<Frozen2ProtocolReader, Frozen2ProtocolWriter>;
 template <class ProtocolReader>
 static
 bool deserializeMessageBegin(
-    std::unique_ptr<ResponseChannel::Request>& req,
+    std::unique_ptr<ResponseChannelRequest>& req,
     folly::IOBuf* buf,
     Cpp2RequestContext* ctx,
     folly::EventBase* eb) {
@@ -136,7 +136,7 @@ bool deserializeMessageBegin(
 
 bool deserializeMessageBegin(
     protocol::PROTOCOL_TYPES protType,
-    std::unique_ptr<ResponseChannel::Request>& req,
+    std::unique_ptr<ResponseChannelRequest>& req,
     folly::IOBuf* buf,
     Cpp2RequestContext* ctx,
     folly::EventBase* eb) {

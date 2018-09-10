@@ -214,7 +214,7 @@ public:
 
   // Create a task and add it to thread manager's queue. Essentially the same
   // as GeneratedAsyncProcessor's processInThread method.
-  void process(std::unique_ptr<ResponseChannel::Request> req,
+  void process(std::unique_ptr<ResponseChannelRequest> req,
                std::unique_ptr<folly::IOBuf> buf,
                apache::thrift::protocol::PROTOCOL_TYPES protType,
                Cpp2RequestContext* context,
@@ -232,7 +232,7 @@ public:
       tm->add(std::make_shared<apache::thrift::PriorityEventTask>(
           priority,
           [=, buf = std::move(buf)]() mutable {
-            auto req_up = std::unique_ptr<ResponseChannel::Request>(preq);
+            auto req_up = std::unique_ptr<ResponseChannelRequest>(preq);
 
             SCOPE_EXIT {
               eb->runInEventBaseThread(
