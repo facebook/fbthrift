@@ -18,7 +18,8 @@
 #define THRIFT_TRANSPORT_TBUFFERTRANSPORTS_H_ 1
 
 #include <cstring>
-#include <boost/scoped_array.hpp>
+#include <memory>
+
 #include <folly/Likely.h>
 #include <folly/io/IOBuf.h>
 
@@ -306,8 +307,8 @@ class TBufferedTransport
   uint32_t wBufResetSize_;
   uint32_t wBufResetEveryN_;
   uint32_t wBufResetCount_;
-  boost::scoped_array<uint8_t> rBuf_;
-  boost::scoped_array<uint8_t> wBuf_;
+  std::unique_ptr<uint8_t[]> rBuf_;
+  std::unique_ptr<uint8_t[]> wBuf_;
 };
 
 
@@ -466,8 +467,8 @@ class TFramedTransport
   uint32_t wBufResetEveryN_;
   uint32_t wBufResetCount_;
   uint32_t maxFrameSize_;
-  boost::scoped_array<uint8_t> rBuf_;
-  boost::scoped_array<uint8_t> wBuf_;
+  std::unique_ptr<uint8_t[]> rBuf_;
+  std::unique_ptr<uint8_t[]> wBuf_;
 };
 
 /**
