@@ -19,7 +19,6 @@
 #include <cstdint>
 #include <initializer_list>
 #include <type_traits>
-#include <utility>
 
 namespace apache {
 namespace thrift {
@@ -52,8 +51,7 @@ struct argument_wrapper<Id, std::initializer_list<T>> {
 template <std::intmax_t Id, typename T>
 argument_wrapper<Id, std::initializer_list<T>> wrap_argument(
     std::initializer_list<T> value) {
-  return argument_wrapper<Id, std::initializer_list<T>>(
-      static_cast<std::initializer_list<T>>(value));
+  return argument_wrapper<Id, std::initializer_list<T>>(value);
 }
 
 template <std::intmax_t Id, typename T>
