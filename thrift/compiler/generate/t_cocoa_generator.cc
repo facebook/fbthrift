@@ -527,6 +527,11 @@ void t_cocoa_generator::generate_enum_from_string_function(t_enum* tenum) {
  * everything in for consistency.
  */
 void t_cocoa_generator::generate_consts(std::vector<t_const*> consts) {
+  // don't create constants class if no constants are present
+  if (consts.empty()) {
+    return;
+  }
+
   std::ostringstream const_interface;
   string constants_class_name = cocoa_prefix_ + program_name_ + "Constants";
 
@@ -563,22 +568,30 @@ void t_cocoa_generator::generate_consts(std::vector<t_const*> consts) {
 
   f_impl_ << "@implementation " << constants_class_name << endl;
 
-  // initialize complex constants when the class is loaded
-  f_impl_ << "+ (void) initialize ";
-  scope_up(f_impl_);
-
-  for (c_iter = consts.begin(); c_iter != consts.end(); ++c_iter) {
-    if ((*c_iter)->get_type()->is_container() ||
-        (*c_iter)->get_type()->is_struct()) {
-      print_const_value(f_impl_,
-           cocoa_prefix_+(*c_iter)->get_name(),
-           (*c_iter)->get_type(),
-           (*c_iter)->get_value(),
-           false, false);
-      f_impl_ << ";" << endl;
+  // check if initialize method is needed to initialize complex constants
+  // when the class is initialized
+  bool should_have_initialize = std::any_of(
+    consts.begin(), consts.end(), [](t_const *c){
+      return c->get_type()->is_container() || c->get_type()->is_struct();
     }
+  );
+  if (should_have_initialize) {
+    f_impl_ << "+ (void) initialize ";
+    scope_up(f_impl_);
+
+    for (c_iter = consts.begin(); c_iter != consts.end(); ++c_iter) {
+      if ((*c_iter)->get_type()->is_container() ||
+          (*c_iter)->get_type()->is_struct()) {
+        print_const_value(f_impl_,
+            cocoa_prefix_+(*c_iter)->get_name(),
+            (*c_iter)->get_type(),
+            (*c_iter)->get_value(),
+            false, false);
+        f_impl_ << ";" << endl;
+      }
+    }
+    scope_down(f_impl_);
   }
-  scope_down(f_impl_);
 
   // getter method for each constant
   for (c_iter = consts.begin(); c_iter != consts.end(); ++c_iter) {
