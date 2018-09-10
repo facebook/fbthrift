@@ -52,40 +52,40 @@ def read_lines(path):
 
 exe = os.path.join(os.getcwd(), sys.argv[0])
 buck_out = 'buck-out/gen'
-buildDir = sys.argv[1] if len(sys.argv) > 1 else buck_out
-thriftRel = os.path.join(buildDir, 'thrift/compiler/thrift')
-if buildDir == buck_out:
-    templatesRel = subprocess.check_output([
+build_dir = sys.argv[1] if len(sys.argv) > 1 else buck_out
+thrift_rel = os.path.join(build_dir, 'thrift/compiler/thrift')
+if build_dir == buck_out:
+    templates_rel = subprocess.check_output([
         'buck',
         'targets',
         '--show-output',
         '//thrift/compiler/generate/templates:templates',
     ]).split()[1]
 else:
-    templatesRel = os.path.join(buildDir,
-                                'thrift/compiler/generate/templates/templates/templates')
-templates = ascend_find_dir(exe, templatesRel)
-thrift = ascend_find_exe(exe, thriftRel)
+    templates_rel = os.path.join(
+        build_dir, 'thrift/compiler/generate/templates/templates/templates')
+templates = ascend_find_dir(exe, templates_rel)
+thrift = ascend_find_exe(exe, thrift_rel)
 if thrift is None:
     sys.stderr.write(
-        "error: cannot find the Thrift compiler ({})\n".format(thriftRel))
+        "error: cannot find the Thrift compiler ({})\n".format(thrift_rel))
     sys.exit(1)
-fixtureDir = ascend_find_dir(exe, 'thrift/compiler/test/fixtures')
-fixtureNames = [sys.argv[2]] if len(sys.argv) > 2 else sorted([
+fixture_dir = ascend_find_dir(exe, 'thrift/compiler/test/fixtures')
+fixture_names = [sys.argv[2]] if len(sys.argv) > 2 else sorted([
     f
-    for f in os.listdir(fixtureDir)
-    if os.path.isfile(os.path.join(fixtureDir, f, 'cmd'))
+    for f in os.listdir(fixture_dir)
+    if os.path.isfile(os.path.join(fixture_dir, f, 'cmd'))
 ])
 
 processes = []
-hasErrors = False
+has_errors = False
 
-msgFormat = "Building fixture {{0:>{w}}}/{{1}}: {{2}}".format(
-    w=len(str(len(fixtureNames))))
-for name, index in zip(fixtureNames, range(len(fixtureNames))):
-    msg = msgFormat.format(index + 1, len(fixtureNames), name)
+msg_format = "Building fixture {{0:>{w}}}/{{1}}: {{2}}".format(
+    w=len(str(len(fixture_names))))
+for name, index in zip(fixture_names, range(len(fixture_names))):
+    msg = msg_format.format(index + 1, len(fixture_names), name)
     print(msg, file=sys.stderr)
-    cwd = os.path.join(fixtureDir, name)
+    cwd = os.path.join(fixture_dir, name)
     for fn in set(os.listdir(cwd)) - set(['cmd', 'src']):
         if fn.startswith('.'):
             continue
@@ -122,8 +122,8 @@ for p in processes:
     out, err = p.communicate()
     sys.stdout.write(out.decode(sys.stdout.encoding))
     if p.returncode != 0:
-        hasErrors = True
+        has_errors = True
         sys.stderr.write(err.decode(sys.stderr.encoding))
 
 
-sys.exit(int(hasErrors))
+sys.exit(int(has_errors))
