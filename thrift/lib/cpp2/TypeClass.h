@@ -77,39 +77,19 @@ namespace type_class {
    * Represents all list implementations.
    */
   template <typename ValueTypeClass>
-  struct list {
-    /**
-     * The type class of the elements of this container.
-     */
-    using value_type_class = ValueTypeClass;
-  };
+  struct list {};
 
   /**
    * Represents all set implementations.
    */
   template <typename ValueTypeClass>
-  struct set {
-    /**
-     * The type class of the elements of this container.
-     */
-    using value_type_class = ValueTypeClass;
-  };
+  struct set {};
 
   /**
    * Represents all map implementations.
    */
   template <typename KeyTypeClass, typename MappedTypeClass>
-  struct map {
-    /**
-     * The type class of the keys of this container.
-     */
-    using key_type_class = KeyTypeClass;
-
-    /**
-     * The type class of the mapped elements of this container.
-     */
-    using mapped_type_class = MappedTypeClass;
-  };
+  struct map {};
 
   /**
    * Represents all map implementations, which are forward compatible.
@@ -117,17 +97,7 @@ namespace type_class {
    * TODO(@denpluplus, by 11/4/2017) Remove.
    */
   template <typename KeyTypeClass, typename MappedTypeClass>
-  struct map_forward_compatibility {
-    /**
-     * The type class of the keys of this container.
-     */
-    using key_type_class = KeyTypeClass;
-
-    /**
-     * The type class of the mapped elements of this container.
-     */
-    using mapped_type_class = MappedTypeClass;
-  };
+  struct map_forward_compatibility {};
 } // type_class
 
 namespace detail {
