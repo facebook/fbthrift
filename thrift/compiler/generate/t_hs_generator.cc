@@ -25,7 +25,6 @@
 
 #include <boost/filesystem.hpp>
 
-#include <thrift/compiler/platform.h>
 #include <thrift/compiler/generate/common.h>
 #include <thrift/compiler/generate/t_oop_generator.h>
 

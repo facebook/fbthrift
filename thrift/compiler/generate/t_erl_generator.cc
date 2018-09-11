@@ -30,7 +30,6 @@
 
 #include <thrift/compiler/generate/t_generator.h>
 #include <thrift/compiler/generate/t_concat_generator.h>
-#include <thrift/compiler/platform.h>
 
 using namespace std;
 

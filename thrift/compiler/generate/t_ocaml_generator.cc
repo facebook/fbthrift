@@ -27,7 +27,6 @@
 #include <sys/types.h>
 #include <thrift/compiler/ast/base_types.h>
 #include <thrift/compiler/generate/t_oop_generator.h>
-#include <thrift/compiler/platform.h>
 #include <sstream>
 using namespace std;
 using namespace apache::thrift;

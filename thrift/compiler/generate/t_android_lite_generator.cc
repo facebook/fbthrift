@@ -22,7 +22,6 @@
 
 #include <boost/filesystem.hpp>
 
-#include <thrift/compiler/platform.h>
 #include <thrift/compiler/generate/t_java_generator.h>
 
 using namespace std;

@@ -38,7 +38,6 @@
 #include <sys/types.h>
 #include <thrift/compiler/generate/t_concat_generator.h>
 #include <thrift/compiler/generate/t_generator.h>
-#include <thrift/compiler/platform.h>
 #include <algorithm>
 #include <clocale>
 #include <sstream>

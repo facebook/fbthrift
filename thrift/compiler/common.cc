@@ -23,8 +23,6 @@
 
 #include <boost/filesystem.hpp>
 
-#include <thrift/compiler/platform.h>
-
 namespace apache {
 namespace thrift {
 namespace compiler {
