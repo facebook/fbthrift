@@ -42,7 +42,7 @@ void <%struct:name%>::readNoXfer(Protocol_* iprot) {
           this->set_<%field:name%>();
 <%#type:resolves_to_base?%>
 <%#type:resolves_to_integral?%>
-          ::apache::thrift::detail::pm::protocol_methods< <% > module_types_tcc/protocol_methods%>, <% > types/type%>>::read(*iprot, <%#field:cpp_ref?%>*<%/field:cpp_ref?%>this->mutable_<%field:name%>());
+          ::apache::thrift::detail::pm::protocol_methods< <% > common/type_class%>, <% > types/type%>>::read(*iprot, <%#field:cpp_ref?%>*<%/field:cpp_ref?%>this->mutable_<%field:name%>());
 <%/type:resolves_to_integral?%>
 <%^type:resolves_to_integral?%>
 <%#field:cpp_ref?%>
@@ -61,7 +61,7 @@ void <%struct:name%>::readNoXfer(Protocol_* iprot) {
 <%^type:enum?%>
           this->mutable_<%field:name%>() = <% > types/type%>();
 <%/type:enum?%>
-          ::apache::thrift::detail::pm::protocol_methods< <% > module_types_tcc/protocol_methods%>, <% > types/type%>>::read(*iprot, <%#field:cpp_ref?%>*ptr<%/field:cpp_ref?%><%^field:cpp_ref?%>this->mutable_<%field:name%>()<%/field:cpp_ref?%>);
+          ::apache::thrift::detail::pm::protocol_methods< <% > common/type_class%>, <% > types/type%>>::read(*iprot, <%#field:cpp_ref?%>*ptr<%/field:cpp_ref?%><%^field:cpp_ref?%>this->mutable_<%field:name%>()<%/field:cpp_ref?%>);
 <%/type:resolves_to_container_or_enum?%>
 <%#type:struct?%>
           ::apache::thrift::Cpp2Ops< <% > types/type%>>::read(iprot, <%#field:cpp_ref?%>ptr.get()<%/field:cpp_ref?%><%^field:cpp_ref?%>&this->mutable_<%field:name%>()<%/field:cpp_ref?%>);

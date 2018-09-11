@@ -18,14 +18,14 @@
 %>this-><%field:name%> = <% > types/type%>();<%!
 %><%#type:resolves_to_base?%><%!
 %><%#type:resolves_to_integral?%>
-::apache::thrift::detail::pm::protocol_methods< <% > module_types_tcc/protocol_methods%>, <% > types/type%>>::read(*iprot, this-><%field:name%>.value());<%!
+::apache::thrift::detail::pm::protocol_methods< <% > common/type_class%>, <% > types/type%>>::read(*iprot, this-><%field:name%>.value());<%!
 %><%/type:resolves_to_integral?%><%!
 %><%^type:resolves_to_integral?%>
 iprot->read<% > module_types_tcc/struct_field_type%>(this-><%field:name%>.value()<%type:cpp_indirection%>);<%!
 %><%/type:resolves_to_integral?%><%!
 %><%/type:resolves_to_base?%><%!
 %><%#type:resolves_to_container_or_enum?%>
-::apache::thrift::detail::pm::protocol_methods< <% > module_types_tcc/protocol_methods%>, <% > types/type%>>::read(*iprot, this-><%field:name%>.value());<%!
+::apache::thrift::detail::pm::protocol_methods< <% > common/type_class%>, <% > types/type%>>::read(*iprot, this-><%field:name%>.value());<%!
 %><%/type:resolves_to_container_or_enum?%><%!
 %><%#type:struct?%>
 ::apache::thrift::Cpp2Ops< <% > types/type%>>::read(iprot, &this-><%field:name%>.value());<%!
@@ -36,14 +36,14 @@ iprot->read<% > module_types_tcc/struct_field_type%>(this-><%field:name%>.value(
 %>std::unique_ptr<<% > types/type%>> ptr = std::make_unique<<% > types/type%>>();<%!
 %><%#type:resolves_to_base?%><%!
 %><%#type:resolves_to_integral?%>
-::apache::thrift::detail::pm::protocol_methods< <% > module_types_tcc/protocol_methods%>, <% > types/type%>>::read(*iprot, *ptr);<%!
+::apache::thrift::detail::pm::protocol_methods< <% > common/type_class%>, <% > types/type%>>::read(*iprot, *ptr);<%!
 %><%/type:resolves_to_integral?%><%!
 %><%^type:resolves_to_integral?%>
 iprot->read<% > module_types_tcc/struct_field_type%>((*this-><%field:name%><%type:cpp_indirection%>));<%!
 %><%/type:resolves_to_integral?%><%!
 %><%/type:resolves_to_base?%><%!
 %><%#type:resolves_to_container_or_enum?%>
-::apache::thrift::detail::pm::protocol_methods< <% > module_types_tcc/protocol_methods%>, <% > types/type%>>::read(*iprot, *ptr);<%!
+::apache::thrift::detail::pm::protocol_methods< <% > common/type_class%>, <% > types/type%>>::read(*iprot, *ptr);<%!
 %><%/type:resolves_to_container_or_enum?%><%!
 %><%#type:struct?%>
 ::apache::thrift::Cpp2Ops< <% > types/type%>>::read(iprot, ptr.get());<%!
@@ -54,7 +54,7 @@ this-><%field:name%> = std::move(ptr);<%!
 %><%^field:cpp_ref?%><%^field:optionals?%><%!
 %><%#type:resolves_to_base?%><%!
 %><%#type:resolves_to_integral?%><%!
-%>::apache::thrift::detail::pm::protocol_methods< <% > module_types_tcc/protocol_methods%>, <% > types/type%>>::read(*iprot, this-><%field:name%>);<%!
+%>::apache::thrift::detail::pm::protocol_methods< <% > common/type_class%>, <% > types/type%>>::read(*iprot, this-><%field:name%>);<%!
 %><%/type:resolves_to_integral?%><%!
 %><%^type:resolves_to_integral?%><%!
 %>iprot->read<% > module_types_tcc/struct_field_type%>(this-><%field:name%><%type:cpp_indirection%>);<%!
@@ -64,7 +64,7 @@ this-><%field:name%> = std::move(ptr);<%!
 %><%^type:enum?%><%!
 %>this-><%field:name%> = <% > types/type%>();
 <%/type:enum?%>
-::apache::thrift::detail::pm::protocol_methods< <% > module_types_tcc/protocol_methods%>, <% > types/type%>>::read(*iprot, this-><%field:name%>);<%!
+::apache::thrift::detail::pm::protocol_methods< <% > common/type_class%>, <% > types/type%>>::read(*iprot, this-><%field:name%>);<%!
 %><%/type:resolves_to_container_or_enum?%><%!
 %><%#type:struct?%><%!
 %>::apache::thrift::Cpp2Ops< <% > types/type%>>::read(iprot, &this-><%field:name%>);<%!

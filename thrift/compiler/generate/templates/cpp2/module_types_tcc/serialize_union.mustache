@@ -30,7 +30,7 @@ uint32_t <%struct:name%>::serializedSize(Protocol_ const* prot_) const {
       xfer += prot_->serializedFieldSize("<%field:name%>", apache::thrift::protocol::<% > module_types_tcc/struct_type%>, <%field:key%>);
 <%#type:resolves_to_base?%>
 <%#type:resolves_to_integral?%>
-<%#field:cpp_ref?%>  <%/field:cpp_ref?%>      xfer += ::apache::thrift::detail::pm::protocol_methods< <% > module_types_tcc/protocol_methods%>, <% > types/type%>>::serializedSize<false>(*prot_, <%#field:cpp_ref?%>*<%/field:cpp_ref?%>this->get_<%field:name%>());
+<%#field:cpp_ref?%>  <%/field:cpp_ref?%>      xfer += ::apache::thrift::detail::pm::protocol_methods< <% > common/type_class%>, <% > types/type%>>::serializedSize<false>(*prot_, <%#field:cpp_ref?%>*<%/field:cpp_ref?%>this->get_<%field:name%>());
 <%/type:resolves_to_integral?%>
 <%^type:resolves_to_integral?%>
 <%#field:cpp_ref?%>
@@ -46,7 +46,7 @@ uint32_t <%struct:name%>::serializedSize(Protocol_ const* prot_) const {
       if (this->get_<%field:name%>()) {
 <%/field:cpp_ref?%>
 <%#type:resolves_to_container_or_enum?%>
-<%#field:cpp_ref?%>  <%/field:cpp_ref?%>      xfer += ::apache::thrift::detail::pm::protocol_methods< <% > module_types_tcc/protocol_methods%>, <% > types/type%>>::serializedSize<false>(*prot_, <%#field:cpp_ref?%>*<%/field:cpp_ref?%>this->get_<%field:name%>());
+<%#field:cpp_ref?%>  <%/field:cpp_ref?%>      xfer += ::apache::thrift::detail::pm::protocol_methods< <% > common/type_class%>, <% > types/type%>>::serializedSize<false>(*prot_, <%#field:cpp_ref?%>*<%/field:cpp_ref?%>this->get_<%field:name%>());
 <%/type:resolves_to_container_or_enum?%>
 <%#type:struct?%>
 <%#field:cpp_ref?%>  <%/field:cpp_ref?%>      xfer += ::apache::thrift::Cpp2Ops< <% > types/type%>>::serializedSize(prot_, <%^field:cpp_ref?%>&<%/field:cpp_ref?%>this->get_<%field:name%>()<%#field:cpp_ref?%>.get()<%/field:cpp_ref?%>);
@@ -88,7 +88,7 @@ uint32_t <%struct:name%>::serializedSizeZC(Protocol_ const* prot_) const {
       xfer += prot_->serializedFieldSize("<%field:name%>", apache::thrift::protocol::<% > module_types_tcc/struct_type%>, <%field:key%>);
 <%#type:resolves_to_base?%>
 <%#type:resolves_to_integral?%>
-<%#field:cpp_ref?%>  <%/field:cpp_ref?%>      xfer += ::apache::thrift::detail::pm::protocol_methods< <% > module_types_tcc/protocol_methods%>, <% > types/type%>>::serializedSize<false>(*prot_, <%#field:cpp_ref?%>*<%/field:cpp_ref?%>this->get_<%field:name%>());
+<%#field:cpp_ref?%>  <%/field:cpp_ref?%>      xfer += ::apache::thrift::detail::pm::protocol_methods< <% > common/type_class%>, <% > types/type%>>::serializedSize<false>(*prot_, <%#field:cpp_ref?%>*<%/field:cpp_ref?%>this->get_<%field:name%>());
 <%/type:resolves_to_integral?%>
 <%^type:resolves_to_integral?%>
 <%#field:cpp_ref?%>
@@ -104,7 +104,7 @@ uint32_t <%struct:name%>::serializedSizeZC(Protocol_ const* prot_) const {
       if (this->get_<%field:name%>()) {
 <%/field:cpp_ref?%>
 <%#type:resolves_to_container_or_enum?%>
-<%#field:cpp_ref?%>  <%/field:cpp_ref?%>      xfer += ::apache::thrift::detail::pm::protocol_methods< <% > module_types_tcc/protocol_methods%>, <% > types/type%>>::serializedSize<false>(*prot_, <%#field:cpp_ref?%>*<%/field:cpp_ref?%>this->get_<%field:name%>());
+<%#field:cpp_ref?%>  <%/field:cpp_ref?%>      xfer += ::apache::thrift::detail::pm::protocol_methods< <% > common/type_class%>, <% > types/type%>>::serializedSize<false>(*prot_, <%#field:cpp_ref?%>*<%/field:cpp_ref?%>this->get_<%field:name%>());
 <%/type:resolves_to_container_or_enum?%>
 <%#type:struct?%>
 <%#field:cpp_ref?%>  <%/field:cpp_ref?%>      xfer += ::apache::thrift::Cpp2Ops< <% > types/type%>>::serializedSizeZC(prot_, <%^field:cpp_ref?%>&<%/field:cpp_ref?%>this->get_<%field:name%>()<%#field:cpp_ref?%>.get()<%/field:cpp_ref?%>);
@@ -146,7 +146,7 @@ uint32_t <%struct:name%>::write(Protocol_* prot_) const {
       xfer += prot_->writeFieldBegin("<%field:name%>", apache::thrift::protocol::<% > module_types_tcc/struct_type%>, <%field:key%>);
 <%#type:resolves_to_base?%>
 <%#type:resolves_to_integral?%>
-<%#field:cpp_ref?%>  <%/field:cpp_ref?%>      xfer += ::apache::thrift::detail::pm::protocol_methods< <% > module_types_tcc/protocol_methods%>, <% > types/type%>>::write(*prot_, <%#field:cpp_ref?%>*<%/field:cpp_ref?%>this->get_<%field:name%>());
+<%#field:cpp_ref?%>  <%/field:cpp_ref?%>      xfer += ::apache::thrift::detail::pm::protocol_methods< <% > common/type_class%>, <% > types/type%>>::write(*prot_, <%#field:cpp_ref?%>*<%/field:cpp_ref?%>this->get_<%field:name%>());
 <%/type:resolves_to_integral?%>
 <%^type:resolves_to_integral?%>
 <%#field:cpp_ref?%>
@@ -162,7 +162,7 @@ uint32_t <%struct:name%>::write(Protocol_* prot_) const {
       if (this->get_<%field:name%>()) {
 <%/field:cpp_ref?%>
 <%#type:resolves_to_container_or_enum?%>
-<%#field:cpp_ref?%>  <%/field:cpp_ref?%>      xfer += ::apache::thrift::detail::pm::protocol_methods< <% > module_types_tcc/protocol_methods%>, <% > types/type%>>::write(*prot_, <%#field:cpp_ref?%>*<%/field:cpp_ref?%>this->get_<%field:name%>());
+<%#field:cpp_ref?%>  <%/field:cpp_ref?%>      xfer += ::apache::thrift::detail::pm::protocol_methods< <% > common/type_class%>, <% > types/type%>>::write(*prot_, <%#field:cpp_ref?%>*<%/field:cpp_ref?%>this->get_<%field:name%>());
 <%/type:resolves_to_container_or_enum?%>
 <%#type:struct?%>
 <%#field:cpp_ref?%>  <%/field:cpp_ref?%>      xfer += ::apache::thrift::Cpp2Ops< <% > types/type%>>::write(prot_, <%^field:cpp_ref?%>&<%/field:cpp_ref?%>this->get_<%field:name%>()<%#field:cpp_ref?%>.get()<%/field:cpp_ref?%>);
