@@ -213,7 +213,7 @@ class MyUnion final : private apache::thrift::detail::st::ComparisonOperators<My
     ~storage_type() {}
   } ;
   bool operator==(const MyUnion& rhs) const;
-  bool operator < (const MyUnion& rhs) const;
+  bool operator<(const MyUnion& rhs) const;
 
   int32_t& set_anInteger(int32_t t = int32_t()) {
     __clear();

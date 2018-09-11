@@ -1202,21 +1202,20 @@ bool SimpleUnion::operator==(const SimpleUnion& rhs) const {
   }
 }
 
-bool SimpleUnion::operator < (const SimpleUnion& rhs) const {
-  if (type_ != rhs.type_) { return type_ < rhs.type_; }
-  switch(type_) {
+bool SimpleUnion::operator<(const SimpleUnion& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  if (lhs.type_ != rhs.type_) {
+    return lhs.type_ < rhs.type_;
+  }
+  switch (lhs.type_) {
     case Type::intValue:
-    {
-      return value_.intValue < rhs.value_.intValue;
-    }
+      return lhs.value_.intValue < rhs.value_.intValue;
     case Type::stringValue:
-    {
-      return value_.stringValue < rhs.value_.stringValue;
-    }
+      return lhs.value_.stringValue < rhs.value_.stringValue;
     default:
-    {
       return false;
-    }
   }
 }
 
@@ -3362,21 +3361,20 @@ bool FloatUnion::operator==(const FloatUnion& rhs) const {
   }
 }
 
-bool FloatUnion::operator < (const FloatUnion& rhs) const {
-  if (type_ != rhs.type_) { return type_ < rhs.type_; }
-  switch(type_) {
+bool FloatUnion::operator<(const FloatUnion& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  if (lhs.type_ != rhs.type_) {
+    return lhs.type_ < rhs.type_;
+  }
+  switch (lhs.type_) {
     case Type::floatSide:
-    {
-      return value_.floatSide < rhs.value_.floatSide;
-    }
+      return lhs.value_.floatSide < rhs.value_.floatSide;
     case Type::doubleSide:
-    {
-      return value_.doubleSide < rhs.value_.doubleSide;
-    }
+      return lhs.value_.doubleSide < rhs.value_.doubleSide;
     default:
-    {
       return false;
-    }
   }
 }
 

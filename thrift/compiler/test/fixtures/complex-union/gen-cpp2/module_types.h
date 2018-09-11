@@ -264,7 +264,7 @@ class ComplexUnion final : private apache::thrift::detail::st::ComparisonOperato
     ~storage_type() {}
   } ;
   bool operator==(const ComplexUnion& rhs) const;
-  bool operator < (const ComplexUnion& rhs) const;
+  bool operator<(const ComplexUnion& rhs) const;
 
   int64_t& set_intValue(int64_t t = int64_t()) {
     __clear();
@@ -668,7 +668,7 @@ class VirtualComplexUnion : private apache::thrift::detail::st::ComparisonOperat
     ~storage_type() {}
   } ;
   bool operator==(const VirtualComplexUnion& rhs) const;
-  bool operator < (const VirtualComplexUnion& rhs) const;
+  bool operator<(const VirtualComplexUnion& rhs) const;
 
   std::string& set_thingOne(std::string const &t) {
     __clear();

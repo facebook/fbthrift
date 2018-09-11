@@ -919,29 +919,24 @@ bool union1::operator==(const union1& rhs) const {
   }
 }
 
-bool union1::operator < (const union1& rhs) const {
-  if (type_ != rhs.type_) { return type_ < rhs.type_; }
-  switch(type_) {
+bool union1::operator<(const union1& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  if (lhs.type_ != rhs.type_) {
+    return lhs.type_ < rhs.type_;
+  }
+  switch (lhs.type_) {
     case Type::ui:
-    {
-      return value_.ui < rhs.value_.ui;
-    }
+      return lhs.value_.ui < rhs.value_.ui;
     case Type::ud:
-    {
-      return value_.ud < rhs.value_.ud;
-    }
+      return lhs.value_.ud < rhs.value_.ud;
     case Type::us:
-    {
-      return value_.us < rhs.value_.us;
-    }
+      return lhs.value_.us < rhs.value_.us;
     case Type::ue:
-    {
-      return value_.ue < rhs.value_.ue;
-    }
+      return lhs.value_.ue < rhs.value_.ue;
     default:
-    {
       return false;
-    }
   }
 }
 
@@ -1022,29 +1017,24 @@ bool union2::operator==(const union2& rhs) const {
   }
 }
 
-bool union2::operator < (const union2& rhs) const {
-  if (type_ != rhs.type_) { return type_ < rhs.type_; }
-  switch(type_) {
+bool union2::operator<(const union2& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  if (lhs.type_ != rhs.type_) {
+    return lhs.type_ < rhs.type_;
+  }
+  switch (lhs.type_) {
     case Type::ui_2:
-    {
-      return value_.ui_2 < rhs.value_.ui_2;
-    }
+      return lhs.value_.ui_2 < rhs.value_.ui_2;
     case Type::ud_2:
-    {
-      return value_.ud_2 < rhs.value_.ud_2;
-    }
+      return lhs.value_.ud_2 < rhs.value_.ud_2;
     case Type::us_2:
-    {
-      return value_.us_2 < rhs.value_.us_2;
-    }
+      return lhs.value_.us_2 < rhs.value_.us_2;
     case Type::ue_2:
-    {
-      return value_.ue_2 < rhs.value_.ue_2;
-    }
+      return lhs.value_.ue_2 < rhs.value_.ue_2;
     default:
-    {
       return false;
-    }
   }
 }
 
@@ -1125,29 +1115,24 @@ bool union3::operator==(const union3& rhs) const {
   }
 }
 
-bool union3::operator < (const union3& rhs) const {
-  if (type_ != rhs.type_) { return type_ < rhs.type_; }
-  switch(type_) {
+bool union3::operator<(const union3& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  if (lhs.type_ != rhs.type_) {
+    return lhs.type_ < rhs.type_;
+  }
+  switch (lhs.type_) {
     case Type::ui_3:
-    {
-      return value_.ui_3 < rhs.value_.ui_3;
-    }
+      return lhs.value_.ui_3 < rhs.value_.ui_3;
     case Type::ud_3:
-    {
-      return value_.ud_3 < rhs.value_.ud_3;
-    }
+      return lhs.value_.ud_3 < rhs.value_.ud_3;
     case Type::us_3:
-    {
-      return value_.us_3 < rhs.value_.us_3;
-    }
+      return lhs.value_.us_3 < rhs.value_.us_3;
     case Type::ue_3:
-    {
-      return value_.ue_3 < rhs.value_.ue_3;
-    }
+      return lhs.value_.ue_3 < rhs.value_.ue_3;
     default:
-    {
       return false;
-    }
   }
 }
 
@@ -1297,33 +1282,26 @@ bool unionA::operator==(const unionA& rhs) const {
   }
 }
 
-bool unionA::operator < (const unionA& rhs) const {
-  if (type_ != rhs.type_) { return type_ < rhs.type_; }
-  switch(type_) {
+bool unionA::operator<(const unionA& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  if (lhs.type_ != rhs.type_) {
+    return lhs.type_ < rhs.type_;
+  }
+  switch (lhs.type_) {
     case Type::i:
-    {
-      return value_.i < rhs.value_.i;
-    }
+      return lhs.value_.i < rhs.value_.i;
     case Type::d:
-    {
-      return value_.d < rhs.value_.d;
-    }
+      return lhs.value_.d < rhs.value_.d;
     case Type::s:
-    {
-      return value_.s < rhs.value_.s;
-    }
+      return lhs.value_.s < rhs.value_.s;
     case Type::e:
-    {
-      return value_.e < rhs.value_.e;
-    }
+      return lhs.value_.e < rhs.value_.e;
     case Type::a:
-    {
-      return value_.a < rhs.value_.a;
-    }
+      return lhs.value_.a < rhs.value_.a;
     default:
-    {
       return false;
-    }
   }
 }
 
@@ -3267,125 +3245,72 @@ bool union_with_special_names::operator==(const union_with_special_names& rhs) c
   }
 }
 
-bool union_with_special_names::operator < (const union_with_special_names& rhs) const {
-  if (type_ != rhs.type_) { return type_ < rhs.type_; }
-  switch(type_) {
+bool union_with_special_names::operator<(const union_with_special_names& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  if (lhs.type_ != rhs.type_) {
+    return lhs.type_ < rhs.type_;
+  }
+  switch (lhs.type_) {
     case Type::get:
-    {
-      return value_.get < rhs.value_.get;
-    }
+      return lhs.value_.get < rhs.value_.get;
     case Type::getter:
-    {
-      return value_.getter < rhs.value_.getter;
-    }
+      return lhs.value_.getter < rhs.value_.getter;
     case Type::lists:
-    {
-      return value_.lists < rhs.value_.lists;
-    }
+      return lhs.value_.lists < rhs.value_.lists;
     case Type::maps:
-    {
-      return value_.maps < rhs.value_.maps;
-    }
+      return lhs.value_.maps < rhs.value_.maps;
     case Type::name:
-    {
-      return value_.name < rhs.value_.name;
-    }
+      return lhs.value_.name < rhs.value_.name;
     case Type::name_to_value:
-    {
-      return value_.name_to_value < rhs.value_.name_to_value;
-    }
+      return lhs.value_.name_to_value < rhs.value_.name_to_value;
     case Type::names:
-    {
-      return value_.names < rhs.value_.names;
-    }
+      return lhs.value_.names < rhs.value_.names;
     case Type::prefix_tree:
-    {
-      return value_.prefix_tree < rhs.value_.prefix_tree;
-    }
+      return lhs.value_.prefix_tree < rhs.value_.prefix_tree;
     case Type::sets:
-    {
-      return value_.sets < rhs.value_.sets;
-    }
+      return lhs.value_.sets < rhs.value_.sets;
     case Type::setter:
-    {
-      return value_.setter < rhs.value_.setter;
-    }
+      return lhs.value_.setter < rhs.value_.setter;
     case Type::str:
-    {
-      return value_.str < rhs.value_.str;
-    }
+      return lhs.value_.str < rhs.value_.str;
     case Type::strings:
-    {
-      return value_.strings < rhs.value_.strings;
-    }
+      return lhs.value_.strings < rhs.value_.strings;
     case Type::type:
-    {
-      return value_.type < rhs.value_.type;
-    }
+      return lhs.value_.type < rhs.value_.type;
     case Type::value:
-    {
-      return value_.value < rhs.value_.value;
-    }
+      return lhs.value_.value < rhs.value_.value;
     case Type::value_to_name:
-    {
-      return value_.value_to_name < rhs.value_.value_to_name;
-    }
+      return lhs.value_.value_to_name < rhs.value_.value_to_name;
     case Type::values:
-    {
-      return value_.values < rhs.value_.values;
-    }
+      return lhs.value_.values < rhs.value_.values;
     case Type::id:
-    {
-      return value_.id < rhs.value_.id;
-    }
+      return lhs.value_.id < rhs.value_.id;
     case Type::ids:
-    {
-      return value_.ids < rhs.value_.ids;
-    }
+      return lhs.value_.ids < rhs.value_.ids;
     case Type::descriptor:
-    {
-      return value_.descriptor < rhs.value_.descriptor;
-    }
+      return lhs.value_.descriptor < rhs.value_.descriptor;
     case Type::descriptors:
-    {
-      return value_.descriptors < rhs.value_.descriptors;
-    }
+      return lhs.value_.descriptors < rhs.value_.descriptors;
     case Type::key:
-    {
-      return value_.key < rhs.value_.key;
-    }
+      return lhs.value_.key < rhs.value_.key;
     case Type::keys:
-    {
-      return value_.keys < rhs.value_.keys;
-    }
+      return lhs.value_.keys < rhs.value_.keys;
     case Type::annotation:
-    {
-      return value_.annotation < rhs.value_.annotation;
-    }
+      return lhs.value_.annotation < rhs.value_.annotation;
     case Type::annotations:
-    {
-      return value_.annotations < rhs.value_.annotations;
-    }
+      return lhs.value_.annotations < rhs.value_.annotations;
     case Type::member:
-    {
-      return value_.member < rhs.value_.member;
-    }
+      return lhs.value_.member < rhs.value_.member;
     case Type::members:
-    {
-      return value_.members < rhs.value_.members;
-    }
+      return lhs.value_.members < rhs.value_.members;
     case Type::field:
-    {
-      return value_.field < rhs.value_.field;
-    }
+      return lhs.value_.field < rhs.value_.field;
     case Type::fields:
-    {
-      return value_.fields < rhs.value_.fields;
-    }
+      return lhs.value_.fields < rhs.value_.fields;
     default:
-    {
       return false;
-    }
   }
 }
 

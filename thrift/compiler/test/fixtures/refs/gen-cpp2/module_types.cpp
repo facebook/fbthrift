@@ -294,21 +294,20 @@ bool MyUnion::operator==(const MyUnion& rhs) const {
   }
 }
 
-bool MyUnion::operator < (const MyUnion& rhs) const {
-  if (type_ != rhs.type_) { return type_ < rhs.type_; }
-  switch(type_) {
+bool MyUnion::operator<(const MyUnion& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  if (lhs.type_ != rhs.type_) {
+    return lhs.type_ < rhs.type_;
+  }
+  switch (lhs.type_) {
     case Type::anInteger:
-    {
-      return value_.anInteger < rhs.value_.anInteger;
-    }
+      return lhs.value_.anInteger < rhs.value_.anInteger;
     case Type::aString:
-    {
-      return value_.aString < rhs.value_.aString;
-    }
+      return lhs.value_.aString < rhs.value_.aString;
     default:
-    {
       return false;
-    }
   }
 }
 

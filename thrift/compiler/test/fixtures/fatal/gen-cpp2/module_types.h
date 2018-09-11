@@ -441,7 +441,7 @@ class union1 final : private apache::thrift::detail::st::ComparisonOperators<uni
     ~storage_type() {}
   } ;
   bool operator==(const union1& rhs) const;
-  bool operator < (const union1& rhs) const;
+  bool operator<(const union1& rhs) const;
 
   int32_t& set_ui(int32_t t = int32_t()) {
     __clear();
@@ -796,7 +796,7 @@ class union2 final : private apache::thrift::detail::st::ComparisonOperators<uni
     ~storage_type() {}
   } ;
   bool operator==(const union2& rhs) const;
-  bool operator < (const union2& rhs) const;
+  bool operator<(const union2& rhs) const;
 
   int32_t& set_ui_2(int32_t t = int32_t()) {
     __clear();
@@ -1151,7 +1151,7 @@ class union3 final : private apache::thrift::detail::st::ComparisonOperators<uni
     ~storage_type() {}
   } ;
   bool operator==(const union3& rhs) const;
-  bool operator < (const union3& rhs) const;
+  bool operator<(const union3& rhs) const;
 
   int32_t& set_ui_3(int32_t t = int32_t()) {
     __clear();
@@ -1655,7 +1655,7 @@ class unionA final : private apache::thrift::detail::st::ComparisonOperators<uni
     ~storage_type() {}
   } ;
   bool operator==(const unionA& rhs) const;
-  bool operator < (const unionA& rhs) const;
+  bool operator<(const unionA& rhs) const;
 
   int32_t& set_i(int32_t t = int32_t()) {
     __clear();
@@ -4802,7 +4802,7 @@ class union_with_special_names final : private apache::thrift::detail::st::Compa
     ~storage_type() {}
   } ;
   bool operator==(const union_with_special_names& rhs) const;
-  bool operator < (const union_with_special_names& rhs) const;
+  bool operator<(const union_with_special_names& rhs) const;
 
   int32_t& set_get(int32_t t = int32_t()) {
     __clear();

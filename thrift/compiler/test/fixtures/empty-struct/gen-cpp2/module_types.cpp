@@ -98,13 +98,16 @@ bool Nada::operator==(const Nada& rhs) const {
   }
 }
 
-bool Nada::operator < (const Nada& rhs) const {
-  if (type_ != rhs.type_) { return type_ < rhs.type_; }
-  switch(type_) {
+bool Nada::operator<(const Nada& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  if (lhs.type_ != rhs.type_) {
+    return lhs.type_ < rhs.type_;
+  }
+  switch (lhs.type_) {
     default:
-    {
       return false;
-    }
   }
 }
 

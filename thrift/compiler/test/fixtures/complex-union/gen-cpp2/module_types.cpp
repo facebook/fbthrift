@@ -204,21 +204,20 @@ bool VirtualComplexUnion::operator==(const VirtualComplexUnion& rhs) const {
   }
 }
 
-bool VirtualComplexUnion::operator < (const VirtualComplexUnion& rhs) const {
-  if (type_ != rhs.type_) { return type_ < rhs.type_; }
-  switch(type_) {
+bool VirtualComplexUnion::operator<(const VirtualComplexUnion& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  if (lhs.type_ != rhs.type_) {
+    return lhs.type_ < rhs.type_;
+  }
+  switch (lhs.type_) {
     case Type::thingOne:
-    {
-      return value_.thingOne < rhs.value_.thingOne;
-    }
+      return lhs.value_.thingOne < rhs.value_.thingOne;
     case Type::thingTwo:
-    {
-      return value_.thingTwo < rhs.value_.thingTwo;
-    }
+      return lhs.value_.thingTwo < rhs.value_.thingTwo;
     default:
-    {
       return false;
-    }
   }
 }
 

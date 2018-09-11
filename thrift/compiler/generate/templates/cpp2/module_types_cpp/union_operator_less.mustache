@@ -15,18 +15,19 @@
   limitations under the License.
 
 %>
-bool <%struct:name%>::operator < (const <%struct:name%>& rhs) const {
-  if (type_ != rhs.type_) { return type_ < rhs.type_; }
-  switch(type_) {
+bool <%struct:name%>::operator<(const <%struct:name%>& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  if (lhs.type_ != rhs.type_) {
+    return lhs.type_ < rhs.type_;
+  }
+  switch (lhs.type_) {
 <%#struct:fields%>
     case Type::<%field:name%>:
-    {
-      return value_.<%field:name%> < rhs.value_.<%field:name%>;
-    }
+      return lhs.value_.<%field:name%> < rhs.value_.<%field:name%>;
 <%/struct:fields%>
     default:
-    {
       return false;
-    }
   }
 }

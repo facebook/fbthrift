@@ -185,7 +185,7 @@ class Nada final : private apache::thrift::detail::st::ComparisonOperators<Nada>
     ~storage_type() {}
   } ;
   bool operator==(const Nada& rhs) const;
-  bool operator < (const Nada& rhs) const;
+  bool operator<(const Nada& rhs) const;
 
   Type getType() const { return type_; }
 

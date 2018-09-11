@@ -1041,7 +1041,7 @@ class union1 final : private apache::thrift::detail::st::ComparisonOperators<uni
     ~storage_type() {}
   } ;
   bool operator==(const union1& rhs) const;
-  bool operator < (const union1& rhs) const;
+  bool operator<(const union1& rhs) const;
 
   int32_t& set_i(int32_t t = int32_t()) {
     __clear();
@@ -1338,7 +1338,7 @@ class union2 final : private apache::thrift::detail::st::ComparisonOperators<uni
     ~storage_type() {}
   } ;
   bool operator==(const union2& rhs) const;
-  bool operator < (const union2& rhs) const;
+  bool operator<(const union2& rhs) const;
 
   int32_t& set_i(int32_t t = int32_t()) {
     __clear();

@@ -690,21 +690,20 @@ bool union1::operator==(const union1& rhs) const {
   }
 }
 
-bool union1::operator < (const union1& rhs) const {
-  if (type_ != rhs.type_) { return type_ < rhs.type_; }
-  switch(type_) {
+bool union1::operator<(const union1& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  if (lhs.type_ != rhs.type_) {
+    return lhs.type_ < rhs.type_;
+  }
+  switch (lhs.type_) {
     case Type::i:
-    {
-      return value_.i < rhs.value_.i;
-    }
+      return lhs.value_.i < rhs.value_.i;
     case Type::d:
-    {
-      return value_.d < rhs.value_.d;
-    }
+      return lhs.value_.d < rhs.value_.d;
     default:
-    {
       return false;
-    }
   }
 }
 
@@ -785,29 +784,24 @@ bool union2::operator==(const union2& rhs) const {
   }
 }
 
-bool union2::operator < (const union2& rhs) const {
-  if (type_ != rhs.type_) { return type_ < rhs.type_; }
-  switch(type_) {
+bool union2::operator<(const union2& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  if (lhs.type_ != rhs.type_) {
+    return lhs.type_ < rhs.type_;
+  }
+  switch (lhs.type_) {
     case Type::i:
-    {
-      return value_.i < rhs.value_.i;
-    }
+      return lhs.value_.i < rhs.value_.i;
     case Type::d:
-    {
-      return value_.d < rhs.value_.d;
-    }
+      return lhs.value_.d < rhs.value_.d;
     case Type::s:
-    {
-      return value_.s < rhs.value_.s;
-    }
+      return lhs.value_.s < rhs.value_.s;
     case Type::u:
-    {
-      return value_.u < rhs.value_.u;
-    }
+      return lhs.value_.u < rhs.value_.u;
     default:
-    {
       return false;
-    }
   }
 }
 

@@ -1029,7 +1029,7 @@ class SimpleUnion : private apache::thrift::detail::st::ComparisonOperators<Simp
     ~storage_type() {}
   } ;
   bool operator==(const SimpleUnion& rhs) const;
-  bool operator < (const SimpleUnion& rhs) const;
+  bool operator<(const SimpleUnion& rhs) const;
 
   int64_t& set_intValue(int64_t t = int64_t()) {
     __clear();
@@ -2072,7 +2072,7 @@ class ComplexUnion final : private apache::thrift::detail::st::ComparisonOperato
     ~storage_type() {}
   } ;
   bool operator==(const ComplexUnion& rhs) const;
-  bool operator < (const ComplexUnion& rhs) const;
+  bool operator<(const ComplexUnion& rhs) const;
 
   int64_t& set_intValue(int64_t t = int64_t()) {
     __clear();
@@ -5457,7 +5457,7 @@ class FloatUnion final : private apache::thrift::detail::st::ComparisonOperators
     ~storage_type() {}
   } ;
   bool operator==(const FloatUnion& rhs) const;
-  bool operator < (const FloatUnion& rhs) const;
+  bool operator<(const FloatUnion& rhs) const;
 
   float& set_floatSide(float t = float()) {
     __clear();
