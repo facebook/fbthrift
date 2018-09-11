@@ -1041,24 +1041,7 @@ class union1 final : private apache::thrift::detail::st::ComparisonOperators<uni
     ~storage_type() {}
   } ;
   bool operator==(const union1& rhs) const;
-
-  bool operator < (const union1& rhs) const {
-    if (type_ != rhs.type_) { return type_ < rhs.type_; }
-    switch(type_) {
-      case Type::i:
-      {
-        return value_.i < rhs.value_.i;
-      }
-      case Type::d:
-      {
-        return value_.d < rhs.value_.d;
-      }
-      default:
-      {
-        return false;
-      }
-    }
-  }
+  bool operator < (const union1& rhs) const;
 
   int32_t& set_i(int32_t t = int32_t()) {
     __clear();
@@ -1355,32 +1338,7 @@ class union2 final : private apache::thrift::detail::st::ComparisonOperators<uni
     ~storage_type() {}
   } ;
   bool operator==(const union2& rhs) const;
-
-  bool operator < (const union2& rhs) const {
-    if (type_ != rhs.type_) { return type_ < rhs.type_; }
-    switch(type_) {
-      case Type::i:
-      {
-        return value_.i < rhs.value_.i;
-      }
-      case Type::d:
-      {
-        return value_.d < rhs.value_.d;
-      }
-      case Type::s:
-      {
-        return value_.s < rhs.value_.s;
-      }
-      case Type::u:
-      {
-        return value_.u < rhs.value_.u;
-      }
-      default:
-      {
-        return false;
-      }
-    }
-  }
+  bool operator < (const union2& rhs) const;
 
   int32_t& set_i(int32_t t = int32_t()) {
     __clear();

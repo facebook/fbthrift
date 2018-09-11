@@ -1029,24 +1029,7 @@ class SimpleUnion : private apache::thrift::detail::st::ComparisonOperators<Simp
     ~storage_type() {}
   } ;
   bool operator==(const SimpleUnion& rhs) const;
-
-  bool operator < (const SimpleUnion& rhs) const {
-    if (type_ != rhs.type_) { return type_ < rhs.type_; }
-    switch(type_) {
-      case Type::intValue:
-      {
-        return value_.intValue < rhs.value_.intValue;
-      }
-      case Type::stringValue:
-      {
-        return value_.stringValue < rhs.value_.stringValue;
-      }
-      default:
-      {
-        return false;
-      }
-    }
-  }
+  bool operator < (const SimpleUnion& rhs) const;
 
   int64_t& set_intValue(int64_t t = int64_t()) {
     __clear();
@@ -5474,24 +5457,7 @@ class FloatUnion final : private apache::thrift::detail::st::ComparisonOperators
     ~storage_type() {}
   } ;
   bool operator==(const FloatUnion& rhs) const;
-
-  bool operator < (const FloatUnion& rhs) const {
-    if (type_ != rhs.type_) { return type_ < rhs.type_; }
-    switch(type_) {
-      case Type::floatSide:
-      {
-        return value_.floatSide < rhs.value_.floatSide;
-      }
-      case Type::doubleSide:
-      {
-        return value_.doubleSide < rhs.value_.doubleSide;
-      }
-      default:
-      {
-        return false;
-      }
-    }
-  }
+  bool operator < (const FloatUnion& rhs) const;
 
   float& set_floatSide(float t = float()) {
     __clear();

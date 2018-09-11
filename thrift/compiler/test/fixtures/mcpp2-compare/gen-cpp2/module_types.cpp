@@ -1202,6 +1202,24 @@ bool SimpleUnion::operator==(const SimpleUnion& rhs) const {
   }
 }
 
+bool SimpleUnion::operator < (const SimpleUnion& rhs) const {
+  if (type_ != rhs.type_) { return type_ < rhs.type_; }
+  switch(type_) {
+    case Type::intValue:
+    {
+      return value_.intValue < rhs.value_.intValue;
+    }
+    case Type::stringValue:
+    {
+      return value_.stringValue < rhs.value_.stringValue;
+    }
+    default:
+    {
+      return false;
+    }
+  }
+}
+
 void swap(SimpleUnion& a, SimpleUnion& b) {
   SimpleUnion temp(std::move(a));
   a = std::move(b);
@@ -3340,6 +3358,24 @@ bool FloatUnion::operator==(const FloatUnion& rhs) const {
     default:
     {
       return true;
+    }
+  }
+}
+
+bool FloatUnion::operator < (const FloatUnion& rhs) const {
+  if (type_ != rhs.type_) { return type_ < rhs.type_; }
+  switch(type_) {
+    case Type::floatSide:
+    {
+      return value_.floatSide < rhs.value_.floatSide;
+    }
+    case Type::doubleSide:
+    {
+      return value_.doubleSide < rhs.value_.doubleSide;
+    }
+    default:
+    {
+      return false;
     }
   }
 }

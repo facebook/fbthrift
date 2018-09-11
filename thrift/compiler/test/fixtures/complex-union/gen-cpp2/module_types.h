@@ -668,24 +668,7 @@ class VirtualComplexUnion : private apache::thrift::detail::st::ComparisonOperat
     ~storage_type() {}
   } ;
   bool operator==(const VirtualComplexUnion& rhs) const;
-
-  bool operator < (const VirtualComplexUnion& rhs) const {
-    if (type_ != rhs.type_) { return type_ < rhs.type_; }
-    switch(type_) {
-      case Type::thingOne:
-      {
-        return value_.thingOne < rhs.value_.thingOne;
-      }
-      case Type::thingTwo:
-      {
-        return value_.thingTwo < rhs.value_.thingTwo;
-      }
-      default:
-      {
-        return false;
-      }
-    }
-  }
+  bool operator < (const VirtualComplexUnion& rhs) const;
 
   std::string& set_thingOne(std::string const &t) {
     __clear();

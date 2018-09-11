@@ -690,6 +690,24 @@ bool union1::operator==(const union1& rhs) const {
   }
 }
 
+bool union1::operator < (const union1& rhs) const {
+  if (type_ != rhs.type_) { return type_ < rhs.type_; }
+  switch(type_) {
+    case Type::i:
+    {
+      return value_.i < rhs.value_.i;
+    }
+    case Type::d:
+    {
+      return value_.d < rhs.value_.d;
+    }
+    default:
+    {
+      return false;
+    }
+  }
+}
+
 void swap(union1& a, union1& b) {
   union1 temp(std::move(a));
   a = std::move(b);
@@ -763,6 +781,32 @@ bool union2::operator==(const union2& rhs) const {
     default:
     {
       return true;
+    }
+  }
+}
+
+bool union2::operator < (const union2& rhs) const {
+  if (type_ != rhs.type_) { return type_ < rhs.type_; }
+  switch(type_) {
+    case Type::i:
+    {
+      return value_.i < rhs.value_.i;
+    }
+    case Type::d:
+    {
+      return value_.d < rhs.value_.d;
+    }
+    case Type::s:
+    {
+      return value_.s < rhs.value_.s;
+    }
+    case Type::u:
+    {
+      return value_.u < rhs.value_.u;
+    }
+    default:
+    {
+      return false;
     }
   }
 }

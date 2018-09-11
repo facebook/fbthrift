@@ -204,6 +204,24 @@ bool VirtualComplexUnion::operator==(const VirtualComplexUnion& rhs) const {
   }
 }
 
+bool VirtualComplexUnion::operator < (const VirtualComplexUnion& rhs) const {
+  if (type_ != rhs.type_) { return type_ < rhs.type_; }
+  switch(type_) {
+    case Type::thingOne:
+    {
+      return value_.thingOne < rhs.value_.thingOne;
+    }
+    case Type::thingTwo:
+    {
+      return value_.thingTwo < rhs.value_.thingTwo;
+    }
+    default:
+    {
+      return false;
+    }
+  }
+}
+
 void swap(VirtualComplexUnion& a, VirtualComplexUnion& b) {
   VirtualComplexUnion temp(std::move(a));
   a = std::move(b);

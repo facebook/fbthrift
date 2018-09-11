@@ -441,32 +441,7 @@ class union1 final : private apache::thrift::detail::st::ComparisonOperators<uni
     ~storage_type() {}
   } ;
   bool operator==(const union1& rhs) const;
-
-  bool operator < (const union1& rhs) const {
-    if (type_ != rhs.type_) { return type_ < rhs.type_; }
-    switch(type_) {
-      case Type::ui:
-      {
-        return value_.ui < rhs.value_.ui;
-      }
-      case Type::ud:
-      {
-        return value_.ud < rhs.value_.ud;
-      }
-      case Type::us:
-      {
-        return value_.us < rhs.value_.us;
-      }
-      case Type::ue:
-      {
-        return value_.ue < rhs.value_.ue;
-      }
-      default:
-      {
-        return false;
-      }
-    }
-  }
+  bool operator < (const union1& rhs) const;
 
   int32_t& set_ui(int32_t t = int32_t()) {
     __clear();
@@ -821,32 +796,7 @@ class union2 final : private apache::thrift::detail::st::ComparisonOperators<uni
     ~storage_type() {}
   } ;
   bool operator==(const union2& rhs) const;
-
-  bool operator < (const union2& rhs) const {
-    if (type_ != rhs.type_) { return type_ < rhs.type_; }
-    switch(type_) {
-      case Type::ui_2:
-      {
-        return value_.ui_2 < rhs.value_.ui_2;
-      }
-      case Type::ud_2:
-      {
-        return value_.ud_2 < rhs.value_.ud_2;
-      }
-      case Type::us_2:
-      {
-        return value_.us_2 < rhs.value_.us_2;
-      }
-      case Type::ue_2:
-      {
-        return value_.ue_2 < rhs.value_.ue_2;
-      }
-      default:
-      {
-        return false;
-      }
-    }
-  }
+  bool operator < (const union2& rhs) const;
 
   int32_t& set_ui_2(int32_t t = int32_t()) {
     __clear();
@@ -1201,32 +1151,7 @@ class union3 final : private apache::thrift::detail::st::ComparisonOperators<uni
     ~storage_type() {}
   } ;
   bool operator==(const union3& rhs) const;
-
-  bool operator < (const union3& rhs) const {
-    if (type_ != rhs.type_) { return type_ < rhs.type_; }
-    switch(type_) {
-      case Type::ui_3:
-      {
-        return value_.ui_3 < rhs.value_.ui_3;
-      }
-      case Type::ud_3:
-      {
-        return value_.ud_3 < rhs.value_.ud_3;
-      }
-      case Type::us_3:
-      {
-        return value_.us_3 < rhs.value_.us_3;
-      }
-      case Type::ue_3:
-      {
-        return value_.ue_3 < rhs.value_.ue_3;
-      }
-      default:
-      {
-        return false;
-      }
-    }
-  }
+  bool operator < (const union3& rhs) const;
 
   int32_t& set_ui_3(int32_t t = int32_t()) {
     __clear();
@@ -1730,36 +1655,7 @@ class unionA final : private apache::thrift::detail::st::ComparisonOperators<uni
     ~storage_type() {}
   } ;
   bool operator==(const unionA& rhs) const;
-
-  bool operator < (const unionA& rhs) const {
-    if (type_ != rhs.type_) { return type_ < rhs.type_; }
-    switch(type_) {
-      case Type::i:
-      {
-        return value_.i < rhs.value_.i;
-      }
-      case Type::d:
-      {
-        return value_.d < rhs.value_.d;
-      }
-      case Type::s:
-      {
-        return value_.s < rhs.value_.s;
-      }
-      case Type::e:
-      {
-        return value_.e < rhs.value_.e;
-      }
-      case Type::a:
-      {
-        return value_.a < rhs.value_.a;
-      }
-      default:
-      {
-        return false;
-      }
-    }
-  }
+  bool operator < (const unionA& rhs) const;
 
   int32_t& set_i(int32_t t = int32_t()) {
     __clear();
@@ -4906,128 +4802,7 @@ class union_with_special_names final : private apache::thrift::detail::st::Compa
     ~storage_type() {}
   } ;
   bool operator==(const union_with_special_names& rhs) const;
-
-  bool operator < (const union_with_special_names& rhs) const {
-    if (type_ != rhs.type_) { return type_ < rhs.type_; }
-    switch(type_) {
-      case Type::get:
-      {
-        return value_.get < rhs.value_.get;
-      }
-      case Type::getter:
-      {
-        return value_.getter < rhs.value_.getter;
-      }
-      case Type::lists:
-      {
-        return value_.lists < rhs.value_.lists;
-      }
-      case Type::maps:
-      {
-        return value_.maps < rhs.value_.maps;
-      }
-      case Type::name:
-      {
-        return value_.name < rhs.value_.name;
-      }
-      case Type::name_to_value:
-      {
-        return value_.name_to_value < rhs.value_.name_to_value;
-      }
-      case Type::names:
-      {
-        return value_.names < rhs.value_.names;
-      }
-      case Type::prefix_tree:
-      {
-        return value_.prefix_tree < rhs.value_.prefix_tree;
-      }
-      case Type::sets:
-      {
-        return value_.sets < rhs.value_.sets;
-      }
-      case Type::setter:
-      {
-        return value_.setter < rhs.value_.setter;
-      }
-      case Type::str:
-      {
-        return value_.str < rhs.value_.str;
-      }
-      case Type::strings:
-      {
-        return value_.strings < rhs.value_.strings;
-      }
-      case Type::type:
-      {
-        return value_.type < rhs.value_.type;
-      }
-      case Type::value:
-      {
-        return value_.value < rhs.value_.value;
-      }
-      case Type::value_to_name:
-      {
-        return value_.value_to_name < rhs.value_.value_to_name;
-      }
-      case Type::values:
-      {
-        return value_.values < rhs.value_.values;
-      }
-      case Type::id:
-      {
-        return value_.id < rhs.value_.id;
-      }
-      case Type::ids:
-      {
-        return value_.ids < rhs.value_.ids;
-      }
-      case Type::descriptor:
-      {
-        return value_.descriptor < rhs.value_.descriptor;
-      }
-      case Type::descriptors:
-      {
-        return value_.descriptors < rhs.value_.descriptors;
-      }
-      case Type::key:
-      {
-        return value_.key < rhs.value_.key;
-      }
-      case Type::keys:
-      {
-        return value_.keys < rhs.value_.keys;
-      }
-      case Type::annotation:
-      {
-        return value_.annotation < rhs.value_.annotation;
-      }
-      case Type::annotations:
-      {
-        return value_.annotations < rhs.value_.annotations;
-      }
-      case Type::member:
-      {
-        return value_.member < rhs.value_.member;
-      }
-      case Type::members:
-      {
-        return value_.members < rhs.value_.members;
-      }
-      case Type::field:
-      {
-        return value_.field < rhs.value_.field;
-      }
-      case Type::fields:
-      {
-        return value_.fields < rhs.value_.fields;
-      }
-      default:
-      {
-        return false;
-      }
-    }
-  }
+  bool operator < (const union_with_special_names& rhs) const;
 
   int32_t& set_get(int32_t t = int32_t()) {
     __clear();

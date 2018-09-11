@@ -294,6 +294,24 @@ bool MyUnion::operator==(const MyUnion& rhs) const {
   }
 }
 
+bool MyUnion::operator < (const MyUnion& rhs) const {
+  if (type_ != rhs.type_) { return type_ < rhs.type_; }
+  switch(type_) {
+    case Type::anInteger:
+    {
+      return value_.anInteger < rhs.value_.anInteger;
+    }
+    case Type::aString:
+    {
+      return value_.aString < rhs.value_.aString;
+    }
+    default:
+    {
+      return false;
+    }
+  }
+}
+
 void swap(MyUnion& a, MyUnion& b) {
   MyUnion temp(std::move(a));
   a = std::move(b);

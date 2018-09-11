@@ -98,6 +98,16 @@ bool Nada::operator==(const Nada& rhs) const {
   }
 }
 
+bool Nada::operator < (const Nada& rhs) const {
+  if (type_ != rhs.type_) { return type_ < rhs.type_; }
+  switch(type_) {
+    default:
+    {
+      return false;
+    }
+  }
+}
+
 void swap(Nada& a, Nada& b) {
   Nada temp(std::move(a));
   a = std::move(b);
