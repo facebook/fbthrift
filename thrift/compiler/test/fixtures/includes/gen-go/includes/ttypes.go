@@ -39,7 +39,9 @@ type Included struct {
 }
 
 func NewIncluded() *Included {
-  return &Included{}
+  return &Included{
+MyTransitiveField: transitive0.NewFoo(),
+}
 }
 
 

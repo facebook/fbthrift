@@ -618,7 +618,9 @@ type Struct2 struct {
 }
 
 func NewStruct2() *Struct2 {
-  return &Struct2{}
+  return &Struct2{
+C: NewStruct1(),
+}
 }
 
 
@@ -817,7 +819,9 @@ type Struct3 struct {
 }
 
 func NewStruct3() *Struct3 {
-  return &Struct3{}
+  return &Struct3{
+C: NewStruct2(),
+}
 }
 
 

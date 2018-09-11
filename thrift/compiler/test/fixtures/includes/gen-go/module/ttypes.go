@@ -34,6 +34,10 @@ type MyStruct struct {
 
 func NewMyStruct() *MyStruct {
   return &MyStruct{
+MyIncludedField: includes0.NewIncluded(),
+
+MyOtherIncludedField: includes0.NewIncluded(),
+
 MyIncludedInt: 42,
 }
 }

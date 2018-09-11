@@ -1130,6 +1130,8 @@ type TrivialNestedWithDefault struct {
 func NewTrivialNestedWithDefault() *TrivialNestedWithDefault {
   return &TrivialNestedWithDefault{
 Z: 4,
+
+N: NewTrivialNumeric(),
 }
 }
 
@@ -1397,6 +1399,8 @@ type ComplexNestedWithDefault struct {
 func NewComplexNestedWithDefault() *ComplexNestedWithDefault {
   return &ComplexNestedWithDefault{
 Z: "4",
+
+N: NewComplexString(),
 }
 }
 

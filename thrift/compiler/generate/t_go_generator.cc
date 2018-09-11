@@ -1197,8 +1197,18 @@ void t_go_generator::generate_go_struct_initializer(
   for (vector<t_field*>::const_iterator m_iter = members.begin();
        m_iter != members.end();
        ++m_iter) {
+    t_type* ttype = (*m_iter)->get_type();
     bool pointer_field = is_pointer_field(*m_iter);
+    bool struct_field =
+        ttype->is_struct() && !(dynamic_cast<t_struct*>(ttype)->is_union());
     string publicized_name;
+    string module;
+    if (auto&& program = ttype->get_program()) {
+      if (program != program_) {
+        module = package_identifiers[get_real_go_module(program)] + ".";
+      }
+    }
+
     const t_const_value* def_value;
     get_publicized_name_and_def_value(*m_iter, &publicized_name, &def_value);
     if (!pointer_field && def_value != nullptr &&
@@ -1207,6 +1217,11 @@ void t_go_generator::generate_go_struct_initializer(
           << indent() << publicized_name << ": "
           << render_field_initial_value(
                  *m_iter, (*m_iter)->get_name(), pointer_field)
+          << "," << endl;
+    } else if (struct_field && (*m_iter)->get_req() != t_field::T_OPTIONAL) {
+      out << endl
+          << indent() << publicized_name << ": " << module << "New"
+          << publicize(ttype->get_name()) << "()"
           << "," << endl;
     }
   }
