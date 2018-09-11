@@ -78,7 +78,7 @@ class <%struct:name%> <%!
 
 <%^struct:cpp_noncomparable%>
 <% > module_types_h/eq_overload%>
-<% > module_types_h/union_lt_overload%>
+<% > module_types_h/union_operator_less%>
 <%/struct:cpp_noncomparable%>
 <% > module_types_h/union_setters%>
 
@@ -184,7 +184,7 @@ class <%struct:name%> <%!
 <%/struct:fields?%>
 <%^struct:cpp_noncomparable%>
 <% > module_types_h/eq_overload%>
-<% > module_types_h/lt_overload%>
+<% > module_types_h/struct_operator_less%>
 <%/struct:cpp_noncomparable%>
 <%#struct:fields?%><%^struct:optionals?%><%^struct:no_getters_setters?%>
 <% > module_types_h/getters_setters%>
