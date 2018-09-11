@@ -15,6 +15,8 @@
  */
 #include <thrift/lib/cpp2/async/PooledRequestChannel.h>
 
+#include <thrift/lib/cpp2/async/FutureRequest.h>
+
 #include <folly/futures/Future.h>
 
 namespace apache {
@@ -23,7 +25,7 @@ namespace thrift {
 uint16_t PooledRequestChannel::getProtocolId() {
   folly::call_once(protocolIdInitFlag_, [&] {
     auto evb = executor_->getEventBase();
-    evb->runInEventBaseThreadAndWait(
+    evb->runImmediatelyOrRunInEventBaseThreadAndWait(
         [&] { protocolId_ = impl(*evb).getProtocolId(); });
   });
 
@@ -146,8 +148,10 @@ uint32_t PooledRequestChannel::sendRequest(
     std::unique_ptr<ContextStack> ctx,
     std::unique_ptr<folly::IOBuf> buf,
     std::shared_ptr<transport::THeader> header) {
-  cob = std::make_unique<ExecutorRequestCallback>(
-      std::move(cob), getKeepAliveToken(callbackExecutor_));
+  if (!dynamic_cast<SemiFutureCallback*>(cob.get())) {
+    cob = std::make_unique<ExecutorRequestCallback>(
+        std::move(cob), getKeepAliveToken(callbackExecutor_));
+  }
   sendRequestImpl(
       RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
       options,
@@ -164,8 +168,10 @@ uint32_t PooledRequestChannel::sendOnewayRequest(
     std::unique_ptr<ContextStack> ctx,
     std::unique_ptr<folly::IOBuf> buf,
     std::shared_ptr<transport::THeader> header) {
-  cob = std::make_unique<ExecutorRequestCallback>(
-      std::move(cob), getKeepAliveToken(callbackExecutor_));
+  if (!dynamic_cast<SemiFutureCallback*>(cob.get())) {
+    cob = std::make_unique<ExecutorRequestCallback>(
+        std::move(cob), getKeepAliveToken(callbackExecutor_));
+  }
   sendRequestImpl(
       RpcKind::SINGLE_REQUEST_NO_RESPONSE,
       options,
@@ -182,8 +188,10 @@ uint32_t PooledRequestChannel::sendStreamRequest(
     std::unique_ptr<ContextStack> ctx,
     std::unique_ptr<folly::IOBuf> buf,
     std::shared_ptr<transport::THeader> header) {
-  cob = std::make_unique<ExecutorRequestCallback>(
-      std::move(cob), getKeepAliveToken(callbackExecutor_));
+  if (!dynamic_cast<SemiFutureCallback*>(cob.get())) {
+    cob = std::make_unique<ExecutorRequestCallback>(
+        std::move(cob), getKeepAliveToken(callbackExecutor_));
+  }
   sendRequestImpl(
       RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE,
       options,
