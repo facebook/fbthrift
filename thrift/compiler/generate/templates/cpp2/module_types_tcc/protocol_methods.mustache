@@ -15,8 +15,7 @@
   limitations under the License.
 
 %><%#type:cpp_indirection%><%!
-  %>::apache::thrift::detail::pm::IndirectionTag<<% > common/type_namespace_cpp2%>apache_thrift_indirection_module_<%type:name%>, <%!
-%><%/type:cpp_indirection%><%!
+  %>::apache::thrift::detail::indirection_tag<<%/type:cpp_indirection%><%!
 
 %>::apache::thrift::type_class::<%!
 %><%#type:binary?%>binary<%/type:binary?%><%!
@@ -47,5 +46,6 @@
 %><%/type:forward_compatibility?%><%/type:map?%><%!
 
 %><%#type:cpp_indirection%><%!
-  %>><%!
+  %>, <% > common/type_namespace_cpp2%>apache_thrift_indirection_module_<%type:name%><%!
+%>><%!
 %><%/type:cpp_indirection%>

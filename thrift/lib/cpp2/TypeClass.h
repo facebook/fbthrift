@@ -130,4 +130,11 @@ namespace type_class {
   };
 } // type_class
 
+namespace detail {
+/*
+ * A placeholder tag type for indicating indirection.
+ */
+template <typename TypeClass, typename Indirection>
+struct indirection_tag;
+} // namespace detail
 }}

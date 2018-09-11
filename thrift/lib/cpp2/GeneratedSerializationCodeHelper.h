@@ -227,9 +227,6 @@ deserialize_known_length_set(
   }
 }
 
-template <typename Indirection, typename TypeClass>
-struct IndirectionTag;
-
 /*
  * Primitive Types Specialization
  */
@@ -937,8 +934,8 @@ struct protocol_methods<
 /*
  * Struct with Indirection Specialization
  */
-template <typename Indirection, typename ElemClass, typename Type>
-struct protocol_methods<IndirectionTag<Indirection, ElemClass>, Type> {
+template <typename ElemClass, typename Indirection, typename Type>
+struct protocol_methods<indirection_tag<ElemClass, Indirection>, Type> {
   using indirection = Indirection;
   using elem_type = std::remove_reference_t<decltype(
       indirection::template get(std::declval<Type&>()))>;
