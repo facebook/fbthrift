@@ -44,6 +44,7 @@ using namespace apache::thrift;
 // static const string endl = "\n";  // avoid ostream << std::endl flushes
 static const string kFieldPrefix = "__thrift_";
 static const string kStructInheritanceRootObjectName = "TBaseStruct";
+static const string kExceptionInheritanceRootObjectName = "TBaseException";
 static const string kSetPostfix = "_set";
 static const string kToStringPostfix = "ToString";
 static const string kFromStringPostfix = "FromString";
@@ -350,7 +351,7 @@ std::string t_cocoa_generator::custom_thrift_marker()
 string t_cocoa_generator::cocoa_thrift_imports() {
   string systemImports[] = { "TProtocol", "TApplicationException",
     "TProtocolException", "TProtocolUtil", "TProcessor", "TObjective-C",
-    "TBase", kStructInheritanceRootObjectName,
+    "TBase", kStructInheritanceRootObjectName
   };
 
   string result = "";
@@ -1459,7 +1460,7 @@ void t_cocoa_generator::generate_cocoa_struct_makeImmutable(std::ofstream& out, 
        indent_up();
        out << indent() << "for (id item in " << field_name << ") {" << endl;
        indent_up();
-       out << indent() << "if ([item isKindOfClass:[TBaseStruct class]]) {[((TBaseStruct*)item) makeImmutable];}" << endl;
+       out << indent() << "if ([item isKindOfClass:[" << kStructInheritanceRootObjectName << " class]]) {[((" << kStructInheritanceRootObjectName << "*)item) makeImmutable];}" << endl;
        // TODO:: can item be a list / map / set, in which case need to do [copy] on it
        indent_down();
        out << indent() << "}" << endl;
@@ -1473,7 +1474,7 @@ void t_cocoa_generator::generate_cocoa_struct_makeImmutable(std::ofstream& out, 
        out << indent() << "for (NSString* k in " << field_name << ") {" << endl;
        indent_up();
        out << indent() << "id item = " << field_name << "[k];" << endl;
-       out << indent() << "if ([item isKindOfClass:[TBaseStruct class]]) {[((TBaseStruct*)item) makeImmutable];}" << endl;
+       out << indent() << "if ([item isKindOfClass:[" << kStructInheritanceRootObjectName << " class]]) {[((" << kStructInheritanceRootObjectName << "*)item) makeImmutable];}" << endl;
        // TODO:: can item be a list / map / set, in which case need to do [copy] on it
        indent_down();
        out << indent() << "}" << endl;
@@ -1548,7 +1549,7 @@ void t_cocoa_generator::generate_cocoa_struct_toDict(ofstream& out,
        out << indent() << "NSMutableArray* a = [NSMutableArray array];" << endl;
        out << indent() << "for (id item in " << field_name << ") {" << endl;
        indent_up();
-       out << indent() << "if ([item isKindOfClass:[TBaseStruct class]]) {[a addObject:[item toDict]];}" << endl;
+       out << indent() << "if ([item isKindOfClass:[" << kStructInheritanceRootObjectName <<" class]]) {[a addObject:[item toDict]];}" << endl;
        out << indent() << "else {[a addObject:item];}" << endl;
        indent_down();
        out << indent() << "}" << endl;
@@ -1559,7 +1560,7 @@ void t_cocoa_generator::generate_cocoa_struct_toDict(ofstream& out,
        out << indent() << "for (NSString* k in " << field_name << ") {" << endl;
        indent_up();
        out << indent() << "id item = " << field_name << "[k];" << endl;
-       out << indent() << "if ([item isKindOfClass:[TBaseStruct class]]) {d[k] = [item toDict];}" << endl;
+       out << indent() << "if ([item isKindOfClass:[" << kStructInheritanceRootObjectName << " class]]) {d[k] = [item toDict];}" << endl;
        out << indent() << "else {d[k] = item;}" << endl;
        indent_down();
        out << indent() << "}" << endl;
