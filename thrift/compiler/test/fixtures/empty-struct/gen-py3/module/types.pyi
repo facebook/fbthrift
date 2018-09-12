@@ -16,6 +16,9 @@ import sys
 import itertools
 
 
+__property__ = property
+
+
 class Empty(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typing.Tuple[str, _typing.Any]]):
     def __init__(
         self, 
@@ -55,9 +58,9 @@ class Nada(thrift.py3.types.Union, _typing.Hashable):
 
     @staticmethod
     def fromValue(value: _typing.Union[]) -> Nada: ...
-    @property
+    @__property__
     def value(self) -> _typing.Union[]: ...
-    @property
+    @__property__
     def type(self) -> "Nada.Type": ...
     def get_type(self) -> "Nada.Type": ...
 

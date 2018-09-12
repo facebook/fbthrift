@@ -16,6 +16,9 @@ import sys
 import itertools
 
 
+__property__ = property
+
+
 class OldStructure(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typing.Tuple[str, _typing.Any]]):
     def __init__(
         self, *,
@@ -37,7 +40,7 @@ class OldStructure(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_
     def __le__(self, other: 'OldStructure') -> bool: ...
     def __ge__(self, other: 'OldStructure') -> bool: ...
 
-    @property
+    @__property__
     def features(self) -> _typing.Mapping[int, float]: ...
 
 
@@ -62,7 +65,7 @@ class NewStructure(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_
     def __le__(self, other: 'NewStructure') -> bool: ...
     def __ge__(self, other: 'NewStructure') -> bool: ...
 
-    @property
+    @__property__
     def features(self) -> _typing.Mapping[int, float]: ...
 
 
@@ -83,7 +86,7 @@ class NewStructure2(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[
     def __hash__(self) -> int: ...
     def __repr__(self) -> str: ...
 
-    @property
+    @__property__
     def features(self) -> _typing.Mapping[int, float]: ...
 
 
@@ -108,11 +111,11 @@ class NewStructureNested(thrift.py3.types.Struct, _typing.Hashable, _typing.Iter
     def __hash__(self) -> int: ...
     def __repr__(self) -> str: ...
 
-    @property
+    @__property__
     def lst(self) -> _typing.Sequence[_typing.Mapping[int, float]]: ...
-    @property
+    @__property__
     def mp(self) -> _typing.Mapping[int, _typing.Mapping[int, float]]: ...
-    @property
+    @__property__
     def s(self) -> _typing.AbstractSet[_typing.Mapping[int, float]]: ...
 
 
@@ -133,7 +136,7 @@ class NewStructureNestedField(thrift.py3.types.Struct, _typing.Hashable, _typing
     def __hash__(self) -> int: ...
     def __repr__(self) -> str: ...
 
-    @property
+    @__property__
     def f(self) -> 'NewStructureNested': ...
 
 

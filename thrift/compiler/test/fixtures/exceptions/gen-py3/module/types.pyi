@@ -16,6 +16,9 @@ import sys
 import itertools
 
 
+__property__ = property
+
+
 class Banal(thrift.py3.exceptions.Error, _typing.Hashable, _typing.Iterable[_typing.Tuple[str, _typing.Any]]):
     def __init__(
         self, 
@@ -47,7 +50,7 @@ class Fiery(thrift.py3.exceptions.Error, _typing.Hashable, _typing.Iterable[_typ
     def __le__(self, other: 'Fiery') -> bool: ...
     def __ge__(self, other: 'Fiery') -> bool: ...
 
-    @property
+    @__property__
     def message(self) -> str: ...
 
 
@@ -66,7 +69,7 @@ class Serious(thrift.py3.exceptions.Error, _typing.Hashable, _typing.Iterable[_t
     def __le__(self, other: 'Serious') -> bool: ...
     def __ge__(self, other: 'Serious') -> bool: ...
 
-    @property
+    @__property__
     def sonnet(self) -> _typing.Optional[str]: ...
 
 

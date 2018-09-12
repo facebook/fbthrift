@@ -17,6 +17,9 @@ import itertools
 import includes.types as _includes_types
 
 
+__property__ = property
+
+
 class MyStruct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typing.Tuple[str, _typing.Any]]):
     def __init__(
         self, *,
@@ -38,11 +41,11 @@ class MyStruct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typi
     def __hash__(self) -> int: ...
     def __repr__(self) -> str: ...
 
-    @property
+    @__property__
     def MyIncludedField(self) -> _includes_types.Included: ...
-    @property
+    @__property__
     def MyOtherIncludedField(self) -> _includes_types.Included: ...
-    @property
+    @__property__
     def MyIncludedInt(self) -> int: ...
 
 

@@ -18,6 +18,9 @@ import module0.types as _module0_types
 import module1.types as _module1_types
 
 
+__property__ = property
+
+
 class Struct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typing.Tuple[str, _typing.Any]]):
     def __init__(
         self, *,
@@ -41,9 +44,9 @@ class Struct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typing
     def __le__(self, other: 'Struct') -> bool: ...
     def __ge__(self, other: 'Struct') -> bool: ...
 
-    @property
+    @__property__
     def first(self) -> _module0_types.Struct: ...
-    @property
+    @__property__
     def second(self) -> _module1_types.Struct: ...
 
 
@@ -70,9 +73,9 @@ class BigStruct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typ
     def __le__(self, other: 'BigStruct') -> bool: ...
     def __ge__(self, other: 'BigStruct') -> bool: ...
 
-    @property
+    @__property__
     def s(self) -> 'Struct': ...
-    @property
+    @__property__
     def id(self) -> int: ...
 
 

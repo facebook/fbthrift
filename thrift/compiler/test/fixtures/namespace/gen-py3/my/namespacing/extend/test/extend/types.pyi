@@ -17,3 +17,6 @@ import itertools
 import hsmodule.types as _hsmodule_types
 
 
+__property__ = property
+
+

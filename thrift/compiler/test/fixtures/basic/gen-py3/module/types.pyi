@@ -16,6 +16,9 @@ import sys
 import itertools
 
 
+__property__ = property
+
+
 class MyEnum(thrift.py3.types.Enum):
     MyValue1: MyEnum = ...
     MyValue2: MyEnum = ...
@@ -46,15 +49,15 @@ class MyStruct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typi
     def __hash__(self) -> int: ...
     def __repr__(self) -> str: ...
 
-    @property
+    @__property__
     def MyIntField(self) -> int: ...
-    @property
+    @__property__
     def MyStringField(self) -> str: ...
-    @property
+    @__property__
     def MyDataField(self) -> 'MyDataItem': ...
-    @property
+    @__property__
     def major(self) -> int: ...
-    @property
+    @__property__
     def myEnum(self) -> MyEnum: ...
 
 

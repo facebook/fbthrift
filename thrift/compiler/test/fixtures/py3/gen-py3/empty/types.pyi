@@ -16,3 +16,6 @@ import sys
 import itertools
 
 
+__property__ = property
+
+

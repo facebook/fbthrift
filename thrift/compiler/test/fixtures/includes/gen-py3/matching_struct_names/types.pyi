@@ -17,6 +17,9 @@ import itertools
 import module.types as _module_types
 
 
+__property__ = property
+
+
 class MyStruct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typing.Tuple[str, _typing.Any]]):
     def __init__(
         self, *,
@@ -38,7 +41,7 @@ class MyStruct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typi
     def __le__(self, other: 'MyStruct') -> bool: ...
     def __ge__(self, other: 'MyStruct') -> bool: ...
 
-    @property
+    @__property__
     def field(self) -> str: ...
 
 
@@ -65,13 +68,13 @@ class Combo(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typing.
     def __hash__(self) -> int: ...
     def __repr__(self) -> str: ...
 
-    @property
+    @__property__
     def listOfOurMyStructLists(self) -> _typing.Sequence[_typing.Sequence['MyStruct']]: ...
-    @property
+    @__property__
     def theirMyStructList(self) -> _typing.Sequence[_module_types.MyStruct]: ...
-    @property
+    @__property__
     def ourMyStructList(self) -> _typing.Sequence['MyStruct']: ...
-    @property
+    @__property__
     def listOfTheirMyStructList(self) -> _typing.Sequence[_typing.Sequence[_module_types.MyStruct]]: ...
 
 

@@ -16,6 +16,9 @@ import sys
 import itertools
 
 
+__property__ = property
+
+
 class AnEnum(thrift.py3.types.Enum):
     FIELDA: AnEnum = ...
     FIELDB: AnEnum = ...
@@ -42,7 +45,7 @@ class AStruct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typin
     def __le__(self, other: 'AStruct') -> bool: ...
     def __ge__(self, other: 'AStruct') -> bool: ...
 
-    @property
+    @__property__
     def FieldA(self) -> int: ...
 
 
@@ -67,7 +70,7 @@ class AStructB(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typi
     def __le__(self, other: 'AStructB') -> bool: ...
     def __ge__(self, other: 'AStructB') -> bool: ...
 
-    @property
+    @__property__
     def FieldA(self) -> _typing.Optional['AStruct']: ...
 
 

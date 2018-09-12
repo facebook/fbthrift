@@ -16,6 +16,9 @@ import sys
 import itertools
 
 
+__property__ = property
+
+
 class Enum(thrift.py3.types.Enum):
     ONE: Enum = ...
     TWO: Enum = ...
@@ -45,9 +48,9 @@ class Struct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typing
     def __le__(self, other: 'Struct') -> bool: ...
     def __ge__(self, other: 'Struct') -> bool: ...
 
-    @property
+    @__property__
     def first(self) -> int: ...
-    @property
+    @__property__
     def second(self) -> str: ...
 
 

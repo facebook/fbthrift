@@ -17,6 +17,9 @@ import itertools
 import transitive.types as _transitive_types
 
 
+__property__ = property
+
+
 class Included(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typing.Tuple[str, _typing.Any]]):
     def __init__(
         self, *,
@@ -40,9 +43,9 @@ class Included(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typi
     def __le__(self, other: 'Included') -> bool: ...
     def __ge__(self, other: 'Included') -> bool: ...
 
-    @property
+    @__property__
     def MyIntField(self) -> int: ...
-    @property
+    @__property__
     def MyTransitiveField(self) -> _transitive_types.Foo: ...
 
 

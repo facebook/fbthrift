@@ -40,6 +40,9 @@ import {{#extraNamespace}}{{value}}.{{/extraNamespace}}types as _{{#extraNamespa
 {{/program:extraNamespaces}}
 
 
+__property__ = property
+
+
 {{#program:enums}}
 class {{enum:name}}(thrift.py3.types.{{^enum:flags?}}Enum{{/enum:flags?}}{{#enum:flags?}}Flag{{/enum:flags?}}):
     {{#enum:values}}
@@ -77,7 +80,7 @@ class {{struct:name}}({{> types/PythonStructClass}}, _typing.Hashable{{^struct:u
     {{/struct:is_struct_orderable?}}
 
     {{#struct:fields}}
-    @property
+    @__property__
     def {{field:name}}(self) -> {{#field:PEP484Optional?}}_typing.Optional[{{/field:PEP484Optional?}}{{!
         }}{{#field:type}}{{> types/PEP484Type}}{{/field:type}}{{!
         }}{{#field:PEP484Optional?}}]{{/field:PEP484Optional?}}: ...
@@ -91,9 +94,9 @@ class {{struct:name}}({{> types/PythonStructClass}}, _typing.Hashable{{^struct:u
 
     @staticmethod
     def fromValue(value: _typing.Union[{{#struct:fields}}{{^first?}}, {{/first?}}{{#field:type}}{{> types/PEP484Type}}{{/field:type}}{{/struct:fields}}]) -> {{struct:name}}: ...
-    @property
+    @__property__
     def value(self) -> _typing.Union[{{#struct:fields}}{{^first?}}, {{/first?}}{{#field:type}}{{> types/PEP484Type}}{{/field:type}}{{/struct:fields}}]: ...
-    @property
+    @__property__
     def type(self) -> "{{struct:name}}.Type": ...
     def get_type(self) -> "{{struct:name}}.Type": ...
     {{/struct:union?}}

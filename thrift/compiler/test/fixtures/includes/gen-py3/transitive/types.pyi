@@ -16,6 +16,9 @@ import sys
 import itertools
 
 
+__property__ = property
+
+
 class Foo(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typing.Tuple[str, _typing.Any]]):
     def __init__(
         self, *,
@@ -37,7 +40,7 @@ class Foo(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typing.Tu
     def __le__(self, other: 'Foo') -> bool: ...
     def __ge__(self, other: 'Foo') -> bool: ...
 
-    @property
+    @__property__
     def a(self) -> int: ...
 
 

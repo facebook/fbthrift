@@ -16,6 +16,9 @@ import sys
 import itertools
 
 
+__property__ = property
+
+
 class std_unordered_map__Map__i32_string(_typing.Mapping[int, str], _typing.Hashable):
     def __init__(self, items: _typing.Mapping[int, str]=None) -> None: ...
     def __repr__(self) -> str: ...
