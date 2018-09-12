@@ -19,7 +19,7 @@ class Iface: ...  # EmptyService
     # Clients do return Futures but lsp requires us to say they are both Awaitable
     # You can cast the result of a Client if you need Future
 
-class Client(Iface, t.ContextManager): ...  # EmptyService
+class Client(Iface, t.ContextManager[Client]): ...  # EmptyService
 
 class Processor(Iface, Thrift.TProcessor):  # EmptyService
     def __init__(self, handler: Iface) -> None:

@@ -60,7 +60,7 @@ class Iface{{!
     }}: ...
     {{/service:functions}}
 
-class Client(Iface, t.ContextManager):{{^service:functions}} ...{{/service:functions}}  # {{service:name}}
+class Client(Iface, t.ContextManager[Client]):{{^service:functions}} ...{{/service:functions}}  # {{service:name}}
     {{#service:functions}}
     def send_{{function:name}}(self{{#function:args}}, {{!
     }}{{field:name}}: {{#field:type}}{{> common/OptionalFieldType}}{{/field:type}} = ...{{!

@@ -15,7 +15,7 @@ from simple.example.ttypes import *
 
 class Iface: ...  # EmptyService
 
-class Client(Iface, t.ContextManager): ...  # EmptyService
+class Client(Iface, t.ContextManager[Client]): ...  # EmptyService
 
 class Processor(Iface, Thrift.TProcessor):  # EmptyService
     def __init__(self, handler: Iface) -> None:
