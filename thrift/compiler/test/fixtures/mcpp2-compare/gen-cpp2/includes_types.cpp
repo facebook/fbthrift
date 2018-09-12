@@ -129,7 +129,6 @@ AStructB::AStructB(apache::thrift::FragileConstructor, std::shared_ptr<const  ::
 void AStructB::__clear() {
   // clear all fields
   if (FieldA) FieldA.reset(new typename decltype(FieldA)::element_type());
-  __isset = {};
 }
 
 bool AStructB::operator==(const AStructB& rhs) const {
@@ -166,7 +165,6 @@ bool AStructB::operator<(const AStructB& rhs) const {
 void swap(AStructB& a, AStructB& b) {
   using ::std::swap;
   swap(a.FieldA, b.FieldA);
-  swap(a.__isset, b.__isset);
 }
 
 template void AStructB::readNoXfer<>(apache::thrift::BinaryProtocolReader*);

@@ -100,7 +100,7 @@ void <%struct:name%>::__clear() {
 <%/type:non_empty_struct?%>
 <%/field:optionals?%>
 <%/field:type%><%/struct:fields%>
-<%^struct:optionals?%><%#struct:non_req_fields?%>
+<%#struct:isset_fields?%>
   __isset = {};
-<%/struct:non_req_fields?%><%/struct:optionals?%>
+<%/struct:isset_fields?%>
 }

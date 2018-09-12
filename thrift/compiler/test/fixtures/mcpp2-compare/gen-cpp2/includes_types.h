@@ -206,9 +206,6 @@ class AStructB final : private apache::thrift::detail::st::ComparisonOperators<A
   AStructB& operator=(const AStructB&) = default;
   void __clear();
   std::shared_ptr<const  ::a::different::ns::AStruct> FieldA;
-
-  struct __isset {
-  } __isset = {};
   bool operator==(const AStructB& rhs) const;
   bool operator<(const AStructB& rhs) const;
 

@@ -430,7 +430,6 @@ void MyStruct::__clear() {
   opt_ref.reset();
   if (ref) ::apache::thrift::Cpp2Ops<  ::cpp2::MyField>::clear(ref.get());
   if (req_ref) ::apache::thrift::Cpp2Ops<  ::cpp2::MyField>::clear(req_ref.get());
-  __isset = {};
 }
 
 bool MyStruct::operator==(const MyStruct& rhs) const {
@@ -501,7 +500,6 @@ void swap(MyStruct& a, MyStruct& b) {
   swap(a.opt_ref, b.opt_ref);
   swap(a.ref, b.ref);
   swap(a.req_ref, b.req_ref);
-  swap(a.__isset, b.__isset);
 }
 
 template void MyStruct::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -712,7 +710,6 @@ void StructWithContainers::__clear() {
   list_ref_unique.reset(new typename decltype(list_ref_unique)::element_type());
   set_ref_shared.reset(new typename decltype(set_ref_shared)::element_type());
   list_ref_shared_const.reset(new typename decltype(list_ref_shared_const)::element_type());
-  __isset = {};
 }
 
 bool StructWithContainers::operator==(const StructWithContainers& rhs) const {
@@ -834,7 +831,6 @@ void swap(StructWithContainers& a, StructWithContainers& b) {
   swap(a.list_ref_unique, b.list_ref_unique);
   swap(a.set_ref_shared, b.set_ref_shared);
   swap(a.list_ref_shared_const, b.list_ref_shared_const);
-  swap(a.__isset, b.__isset);
 }
 
 template void StructWithContainers::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -859,7 +855,6 @@ void StructWithSharedConst::__clear() {
   opt_shared_const.reset();
   if (shared_const) shared_const.reset(new typename decltype(shared_const)::element_type());
   if (req_shared_const) req_shared_const.reset(new typename decltype(req_shared_const)::element_type());
-  __isset = {};
 }
 
 bool StructWithSharedConst::operator==(const StructWithSharedConst& rhs) const {
@@ -930,7 +925,6 @@ void swap(StructWithSharedConst& a, StructWithSharedConst& b) {
   swap(a.opt_shared_const, b.opt_shared_const);
   swap(a.shared_const, b.shared_const);
   swap(a.req_shared_const, b.req_shared_const);
-  swap(a.__isset, b.__isset);
 }
 
 template void StructWithSharedConst::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -1003,7 +997,6 @@ StructWithRef::StructWithRef(apache::thrift::FragileConstructor, std::unique_ptr
 
 void StructWithRef::__clear() {
   // clear all fields
-  __isset = {};
 }
 
 bool StructWithRef::operator==(const StructWithRef& rhs) const {
@@ -1074,7 +1067,6 @@ void swap(StructWithRef& a, StructWithRef& b) {
   swap(a.def_field, b.def_field);
   swap(a.opt_field, b.opt_field);
   swap(a.req_field, b.req_field);
-  swap(a.__isset, b.__isset);
 }
 
 template void StructWithRef::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -1108,7 +1100,6 @@ StructWithRefTypeUnique::StructWithRefTypeUnique(apache::thrift::FragileConstruc
 
 void StructWithRefTypeUnique::__clear() {
   // clear all fields
-  __isset = {};
 }
 
 bool StructWithRefTypeUnique::operator==(const StructWithRefTypeUnique& rhs) const {
@@ -1179,7 +1170,6 @@ void swap(StructWithRefTypeUnique& a, StructWithRefTypeUnique& b) {
   swap(a.def_field, b.def_field);
   swap(a.opt_field, b.opt_field);
   swap(a.req_field, b.req_field);
-  swap(a.__isset, b.__isset);
 }
 
 template void StructWithRefTypeUnique::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -1201,7 +1191,6 @@ StructWithRefTypeShared::StructWithRefTypeShared(apache::thrift::FragileConstruc
 
 void StructWithRefTypeShared::__clear() {
   // clear all fields
-  __isset = {};
 }
 
 bool StructWithRefTypeShared::operator==(const StructWithRefTypeShared& rhs) const {
@@ -1272,7 +1261,6 @@ void swap(StructWithRefTypeShared& a, StructWithRefTypeShared& b) {
   swap(a.def_field, b.def_field);
   swap(a.opt_field, b.opt_field);
   swap(a.req_field, b.req_field);
-  swap(a.__isset, b.__isset);
 }
 
 template void StructWithRefTypeShared::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -1294,7 +1282,6 @@ StructWithRefTypeSharedConst::StructWithRefTypeSharedConst(apache::thrift::Fragi
 
 void StructWithRefTypeSharedConst::__clear() {
   // clear all fields
-  __isset = {};
 }
 
 bool StructWithRefTypeSharedConst::operator==(const StructWithRefTypeSharedConst& rhs) const {
@@ -1365,7 +1352,6 @@ void swap(StructWithRefTypeSharedConst& a, StructWithRefTypeSharedConst& b) {
   swap(a.def_field, b.def_field);
   swap(a.opt_field, b.opt_field);
   swap(a.req_field, b.req_field);
-  swap(a.__isset, b.__isset);
 }
 
 template void StructWithRefTypeSharedConst::readNoXfer<>(apache::thrift::BinaryProtocolReader*);

@@ -17,13 +17,11 @@
 %><%#struct:fields_in_layout_order%><%#field:type%>
   <% > types/optional_type%> <%field:name%>;
 <%/field:type%><%/struct:fields_in_layout_order%>
-<%^struct:optionals?%>
-<%#struct:non_req_fields?%>
+<%#struct:isset_fields?%>
 
   struct __isset {
 <%#struct:isset_fields%>
     bool <%field:name%>;
 <%/struct:isset_fields%>
   } __isset = {};
-<%/struct:non_req_fields?%>
-<%/struct:optionals?%>
+<%/struct:isset_fields?%>

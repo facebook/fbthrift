@@ -664,6 +664,9 @@ class mstch_cpp2_struct : public mstch_struct {
         });
   }
   mstch::node has_isset_fields() {
+    if (cache_->parsed_options_.count("optionals") != 0) {
+      return false;
+    }
     for (const auto* field : strct_->get_members()) {
       if (field->get_req() != t_field::e_req::T_REQUIRED &&
           !field->annotations_.count("cpp.ref") &&

@@ -514,9 +514,6 @@ class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<M
   std::unique_ptr< ::cpp2::MyField> opt_ref;
   std::unique_ptr< ::cpp2::MyField> ref;
   std::unique_ptr< ::cpp2::MyField> req_ref;
-
-  struct __isset {
-  } __isset = {};
   bool operator==(const MyStruct& rhs) const;
   bool operator<(const MyStruct& rhs) const;
 
@@ -850,9 +847,6 @@ class StructWithContainers final : private apache::thrift::detail::st::Compariso
   std::unique_ptr<std::vector<int32_t>> list_ref_unique;
   std::shared_ptr<std::set<int32_t>> set_ref_shared;
   std::shared_ptr<const std::vector<int32_t>> list_ref_shared_const;
-
-  struct __isset {
-  } __isset = {};
   bool operator==(const StructWithContainers& rhs) const;
   bool operator<(const StructWithContainers& rhs) const;
 
@@ -950,9 +944,6 @@ class StructWithSharedConst final : private apache::thrift::detail::st::Comparis
   std::shared_ptr<const  ::cpp2::MyField> opt_shared_const;
   std::shared_ptr<const  ::cpp2::MyField> shared_const;
   std::shared_ptr<const  ::cpp2::MyField> req_shared_const;
-
-  struct __isset {
-  } __isset = {};
   bool operator==(const StructWithSharedConst& rhs) const;
   bool operator<(const StructWithSharedConst& rhs) const;
 
@@ -1128,9 +1119,6 @@ class StructWithRef final : private apache::thrift::detail::st::ComparisonOperat
   std::unique_ptr< ::cpp2::Empty> def_field;
   std::unique_ptr< ::cpp2::Empty> opt_field;
   std::unique_ptr< ::cpp2::Empty> req_field;
-
-  struct __isset {
-  } __isset = {};
   bool operator==(const StructWithRef& rhs) const;
   bool operator<(const StructWithRef& rhs) const;
 
@@ -1226,9 +1214,6 @@ class StructWithRefTypeUnique final : private apache::thrift::detail::st::Compar
   std::unique_ptr< ::cpp2::Empty> def_field;
   std::unique_ptr< ::cpp2::Empty> opt_field;
   std::unique_ptr< ::cpp2::Empty> req_field;
-
-  struct __isset {
-  } __isset = {};
   bool operator==(const StructWithRefTypeUnique& rhs) const;
   bool operator<(const StructWithRefTypeUnique& rhs) const;
 
@@ -1326,9 +1311,6 @@ class StructWithRefTypeShared final : private apache::thrift::detail::st::Compar
   std::shared_ptr< ::cpp2::Empty> def_field;
   std::shared_ptr< ::cpp2::Empty> opt_field;
   std::shared_ptr< ::cpp2::Empty> req_field;
-
-  struct __isset {
-  } __isset = {};
   bool operator==(const StructWithRefTypeShared& rhs) const;
   bool operator<(const StructWithRefTypeShared& rhs) const;
 
@@ -1426,9 +1408,6 @@ class StructWithRefTypeSharedConst final : private apache::thrift::detail::st::C
   std::shared_ptr<const  ::cpp2::Empty> def_field;
   std::shared_ptr<const  ::cpp2::Empty> opt_field;
   std::shared_ptr<const  ::cpp2::Empty> req_field;
-
-  struct __isset {
-  } __isset = {};
   bool operator==(const StructWithRefTypeSharedConst& rhs) const;
   bool operator<(const StructWithRefTypeSharedConst& rhs) const;
 
