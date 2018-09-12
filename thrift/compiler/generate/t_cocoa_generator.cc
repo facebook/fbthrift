@@ -358,6 +358,7 @@ string t_cocoa_generator::cocoa_thrift_imports() {
       "TObjective-C",
       "TBase",
       kStructInheritanceRootObjectName,
+      kExceptionInheritanceRootObjectName,
   };
 
   string result = "";
@@ -649,7 +650,7 @@ void t_cocoa_generator::generate_cocoa_struct_interface(ofstream &out,
   out << "@interface " << cocoa_prefix_ << tstruct->get_name() << " : ";
 
   if (is_exception) {
-    out << "NSException ";
+    out << kExceptionInheritanceRootObjectName;
   } else {
     out << kStructInheritanceRootObjectName;
   }
