@@ -421,6 +421,7 @@ void ThriftServer::setup() {
       for (auto& socket : getSockets()) {
         socket->setShutdownSocketSet(wShutdownSocketSet_);
         socket->setAcceptRateAdjustSpeed(acceptRateAdjustSpeed_);
+        socket->setTosReflect(tosReflect_);
       }
 
       // Notify handler of the preServe event

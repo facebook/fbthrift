@@ -205,6 +205,8 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
   friend class Cpp2Connection;
   friend class Cpp2Worker;
 
+  bool tosReflect_{false};
+
  public:
   ThriftServer();
 
@@ -598,6 +600,20 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
   void setAcceptRateAdjustSpeed(double speed) {
     CHECK(configMutable());
     acceptRateAdjustSpeed_ = speed;
+  }
+
+  /**
+   * Enable/Disable TOS reflection on the server socket
+   */
+  void setTosReflect(bool enable) {
+    tosReflect_ = enable;
+  }
+
+  /**
+   * Get TOS reflection setting for the server socket
+   */
+  bool getTosReflect() {
+    return (tosReflect_);
   }
 
   /**
