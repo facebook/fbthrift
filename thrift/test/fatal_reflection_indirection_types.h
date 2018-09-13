@@ -18,19 +18,25 @@
 
 #include <cstdint>
 
+#include <boost/operators.hpp>
+
 namespace reflection_indirection {
 
 using CppFakeI32 = std::int32_t;
 
-struct CppHasANumber {
+struct CppHasANumber : private boost::totally_ordered<CppHasANumber> {
   std::int32_t number{};
   CppHasANumber() {}
   explicit CppHasANumber(std::int32_t number_) : number(number_) {}
-  bool operator==(CppHasANumber that) const { return number == that.number; }
-  bool operator!=(CppHasANumber that) const { return number != that.number; }
+  bool operator==(CppHasANumber that) const {
+    return number == that.number;
+  }
+  bool operator<(CppHasANumber that) const {
+    return number < that.number;
+  }
 };
 
-class CppHasAResult {
+class CppHasAResult : private boost::totally_ordered<CppHasAResult> {
  public:
   class Foo {
    public:
@@ -50,8 +56,12 @@ class CppHasAResult {
     return *::new (this) CppHasAResult(that);
   }
 
-  bool operator==(CppHasAResult that) const { return result_ == that.result_; }
-  bool operator!=(CppHasAResult that) const { return result_ != that.result_; }
+  bool operator==(CppHasAResult that) const {
+    return result_ == that.result_;
+  }
+  bool operator<(CppHasAResult that) const {
+    return result_ < that.result_;
+  }
 
   Foo& foo() & { return foo_; }
   Foo&& foo() && { return static_cast<Foo&&>(foo_); }
@@ -62,11 +72,15 @@ class CppHasAResult {
   Foo foo_{result_};
 };
 
-struct CppHasAPhrase {
+struct CppHasAPhrase : private boost::totally_ordered<CppHasAPhrase> {
   std::string phrase{};
   CppHasAPhrase() {}
   explicit CppHasAPhrase(std::string phrase_) : phrase(std::move(phrase_)) {}
-  bool operator==(CppHasAPhrase that) const { return phrase == that.phrase; }
-  bool operator!=(CppHasAPhrase that) const { return phrase != that.phrase; }
+  bool operator==(CppHasAPhrase that) const {
+    return phrase == that.phrase;
+  }
+  bool operator<(CppHasAPhrase that) const {
+    return phrase < that.phrase;
+  }
 };
 }
