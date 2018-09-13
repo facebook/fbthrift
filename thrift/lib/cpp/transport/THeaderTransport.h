@@ -1,4 +1,6 @@
 /*
+ * Copyright 2018-present Facebook, Inc.
+ *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -16,7 +18,6 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 #ifndef THRIFT_TRANSPORT_THEADERTRANSPORT_H_
 #define THRIFT_TRANSPORT_THEADERTRANSPORT_H_ 1
 
@@ -35,7 +36,6 @@
 #include <folly/portability/Unistd.h>
 
 #include <bitset>
-#include <boost/scoped_array.hpp>
 
 namespace apache { namespace thrift { namespace transport {
 
