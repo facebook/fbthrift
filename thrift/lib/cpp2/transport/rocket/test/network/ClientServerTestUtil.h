@@ -67,6 +67,8 @@ class RocketTestClient {
       Payload request,
       std::chrono::milliseconds timeout = std::chrono::milliseconds(250));
 
+  folly::Try<void> sendRequestFnfSync(Payload request);
+
  private:
   folly::ScopedEventBaseThread evbThread_;
   folly::EventBase& evb_;

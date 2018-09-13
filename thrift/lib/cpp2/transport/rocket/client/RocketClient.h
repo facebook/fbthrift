@@ -65,6 +65,8 @@ class RocketClient : public folly::DelayedDestruction,
       Payload&& request,
       std::chrono::milliseconds timeout);
 
+  void sendRequestFnfSync(Payload&& request);
+
   void scheduleWrite(RequestContext& ctx);
 
   // WriteCallback implementation

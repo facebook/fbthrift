@@ -143,6 +143,16 @@ Payload RocketClient::sendRequestResponseSync(
   return ctx.waitForResponse(timeout);
 }
 
+void RocketClient::sendRequestFnfSync(Payload&& request) {
+  RequestContext ctx(
+      RequestFnfFrame(makeStreamId(), std::move(request)),
+      queue_,
+      !std::exchange(setupFrameSent_, true) /* setupFrameNeeded */
+  );
+  scheduleWrite(ctx);
+  return ctx.waitForWriteToComplete();
+}
+
 void RocketClient::scheduleWrite(RequestContext& ctx) {
   if (state_ != ConnectionState::CONNECTED) {
     folly::throw_exception(transport::TTransportException(

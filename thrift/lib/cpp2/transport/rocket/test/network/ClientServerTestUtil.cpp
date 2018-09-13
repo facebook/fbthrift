@@ -171,6 +171,23 @@ folly::Try<Payload> RocketTestClient::sendRequestResponseSync(
   return response;
 }
 
+folly::Try<void> RocketTestClient::sendRequestFnfSync(Payload request) {
+  folly::Try<void> response;
+  folly::fibers::Baton baton;
+
+  evb_.runInEventBaseThread([&] {
+    fm_.addTaskFinally(
+        [&] { return client_->sendRequestFnfSync(std::move(request)); },
+        [&](folly::Try<void>&& r) {
+          response = std::move(r);
+          baton.post();
+        });
+  });
+
+  baton.wait();
+  return response;
+}
+
 } // namespace test
 } // namespace rocket
 } // namespace thrift

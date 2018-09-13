@@ -247,3 +247,18 @@ TEST_F(RocketClientTest, RocketClientEventBaseDestruction) {
   evb.reset();
   EXPECT_EQ(nullptr, client->getTransportWrapper());
 }
+
+/**
+ * REQUEST_FNF tests
+ */
+TEST_F(RocketClientTest, RequestFnfBasic) {
+  withClient([](RocketTestClient& client) {
+    constexpr folly::StringPiece kMetadata("metadata");
+    constexpr folly::StringPiece kData("test_request");
+
+    auto reply = client.sendRequestFnfSync(
+        Payload::makeFromMetadataAndData(kMetadata, kData));
+
+    EXPECT_TRUE(reply.hasValue());
+  });
+}
