@@ -161,7 +161,7 @@ TEST(ScopedServerInterfaceThread, joinRequests) {
   EXPECT_GE(timer.elapsed().count(), 2000);
   EXPECT_EQ(2000, std::move(future).get());
 
-  via(eb.getEventBase()).then([cli = std::move(cli)] {});
+  via(eb.getEventBase()).thenValue([cli = std::move(cli)](auto&&) {});
 }
 
 TEST(ScopedServerInterfaceThread, joinRequestsCancel) {
@@ -207,5 +207,5 @@ TEST(ScopedServerInterfaceThread, joinRequestsCancel) {
   stopping = true;
   schedulerThread.join();
 
-  via(eb.getEventBase()).then([cli = std::move(cli)] {});
+  via(eb.getEventBase()).thenValue([cli = std::move(cli)](auto&&) {});
 }

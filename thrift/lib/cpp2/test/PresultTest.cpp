@@ -153,20 +153,22 @@ TEST(Presult, Presult) {
     count++;
     std::string data = "iobuf";
     auto iobuf = folly::IOBuf::wrapBuffer(folly::StringPiece(data));
-    client->future_methodIOBuf(*iobuf).then([data, &count](folly::IOBuf&& res) {
-      EXPECT_EQ(folly::StringPiece(res.coalesce()).str(), data);
-      count--;
-    });
+    client->future_methodIOBuf(*iobuf).thenValue(
+        [data, &count](folly::IOBuf&& res) {
+          EXPECT_EQ(folly::StringPiece(res.coalesce()).str(), data);
+          count--;
+        });
   }
 
   {
     count++;
     std::string data = "iobufptr";
     auto iobuf = folly::IOBuf::wrapBuffer(folly::StringPiece(data));
-    client->future_methodIOBufPtr(std::move(iobuf)).then([data, &count](std::unique_ptr<folly::IOBuf> res) {
-      EXPECT_EQ(folly::StringPiece(res->coalesce()).str(), data);
-      count--;
-    });
+    client->future_methodIOBufPtr(std::move(iobuf))
+        .thenValue([data, &count](std::unique_ptr<folly::IOBuf> res) {
+          EXPECT_EQ(folly::StringPiece(res->coalesce()).str(), data);
+          count--;
+        });
   }
 
   count++;
