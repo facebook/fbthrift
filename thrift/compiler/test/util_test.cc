@@ -197,3 +197,53 @@ TEST(String, strip_left_margin_no_post_whitespace) {
   auto expected = "hi there bob!\n  \nso long!  ";
   EXPECT_EQ(expected, strip_left_margin(input));
 }
+
+TEST_F(UtilTest, scope_guard_empty) {
+  make_scope_guard([] {});
+}
+
+TEST_F(UtilTest, scope_guard_full) {
+  size_t called = 0;
+  {
+    auto g = make_scope_guard([&] { ++called; });
+    EXPECT_EQ(0, called);
+  }
+  EXPECT_EQ(1, called);
+}
+
+TEST_F(UtilTest, scope_guard_full_move_ctor) {
+  size_t called = 0;
+  {
+    auto g = make_scope_guard([&] { ++called; });
+    EXPECT_EQ(0, called);
+    auto gg = std::move(g);
+    EXPECT_EQ(0, called);
+  }
+  EXPECT_EQ(1, called);
+}
+
+TEST_F(UtilTest, scope_guard_full_dismiss) {
+  size_t called = 0;
+  {
+    auto g = make_scope_guard([&] { ++called; });
+    EXPECT_EQ(0, called);
+    g.dismiss();
+    EXPECT_EQ(0, called);
+  }
+  EXPECT_EQ(0, called);
+}
+
+TEST_F(UtilTest, scope_guard_full_supports_move_only) {
+  size_t called = 0;
+  {
+    make_scope_guard([&, p = std::make_unique<int>(3)] { called += *p; });
+  }
+  EXPECT_EQ(3, called);
+}
+
+TEST_F(UtilTest, scope_guard_throws_death) {
+  static constexpr auto msg = "some secret text that no one knows";
+  auto func = [=] { throw std::runtime_error(msg); };
+  EXPECT_NO_THROW(make_scope_guard(func).dismiss()) << "sanity check";
+  EXPECT_DEATH(make_scope_guard(func), msg);
+}
