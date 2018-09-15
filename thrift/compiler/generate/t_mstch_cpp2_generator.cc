@@ -127,6 +127,20 @@ bool same_types(const t_type* a, const t_type* b) {
   return true;
 }
 
+class cpp2_generator_context {
+ public:
+  static cpp2_generator_context create(t_program const* const program) {
+    cpp2_generator_context ctx(program);
+    return ctx;
+  }
+
+  cpp2_generator_context(cpp2_generator_context&&) = default;
+  cpp2_generator_context& operator=(cpp2_generator_context&&) = default;
+
+ private:
+  explicit cpp2_generator_context(t_program const*) {}
+};
+
 class t_mstch_cpp2_generator : public t_mstch_generator {
  public:
   t_mstch_cpp2_generator(
@@ -148,6 +162,8 @@ class t_mstch_cpp2_generator : public t_mstch_generator {
   void generate_constants(t_program const* program);
   void generate_structs(t_program const* program);
   void generate_service(t_service const* service);
+
+  std::shared_ptr<cpp2_generator_context> context_;
 };
 
 class mstch_cpp2_enum : public mstch_enum {
@@ -492,8 +508,10 @@ class mstch_cpp2_struct : public mstch_struct {
       t_struct const* strct,
       std::shared_ptr<mstch_generators const> generators,
       std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION const pos)
-      : mstch_struct(strct, generators, cache, pos) {
+      ELEMENT_POSITION const pos,
+      std::shared_ptr<cpp2_generator_context> context)
+      : mstch_struct(strct, generators, cache, pos),
+        context_(std::move(context)) {
     register_methods(
         this,
         {
@@ -828,6 +846,8 @@ class mstch_cpp2_struct : public mstch_struct {
         generators_,
         cache_);
   }
+
+  std::shared_ptr<cpp2_generator_context> context_;
 
   std::vector<t_field*> fields_in_layout_order_;
 };
@@ -1223,7 +1243,9 @@ class function_cpp2_generator : public function_generator {
 
 class struct_cpp2_generator : public struct_generator {
  public:
-  struct_cpp2_generator() = default;
+  explicit struct_cpp2_generator(
+      std::shared_ptr<cpp2_generator_context> context)
+      : context_(std::move(context)) {}
   virtual ~struct_cpp2_generator() = default;
   virtual std::shared_ptr<mstch_base> generate(
       t_struct const* strct,
@@ -1231,8 +1253,12 @@ class struct_cpp2_generator : public struct_generator {
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos = ELEMENT_POSITION::NONE,
       int32_t /*index*/ = 0) const override {
-    return std::make_shared<mstch_cpp2_struct>(strct, generators, cache, pos);
+    return std::make_shared<mstch_cpp2_struct>(
+        strct, generators, cache, pos, context_);
   }
+
+ private:
+  std::shared_ptr<cpp2_generator_context> context_;
 };
 
 class service_cpp2_generator : public service_generator {
@@ -1315,7 +1341,9 @@ t_mstch_cpp2_generator::t_mstch_cpp2_generator(
           std::move(context),
           "cpp2",
           parsed_options,
-          true) {
+          true),
+      context_(std::make_shared<cpp2_generator_context>(
+          cpp2_generator_context::create(program))) {
   out_dir_base_ = "gen-cpp2";
 }
 
@@ -1339,7 +1367,8 @@ void t_mstch_cpp2_generator::set_mstch_generators() {
   generators_->set_field_generator(std::make_unique<field_cpp2_generator>());
   generators_->set_function_generator(
       std::make_unique<function_cpp2_generator>());
-  generators_->set_struct_generator(std::make_unique<struct_cpp2_generator>());
+  generators_->set_struct_generator(
+      std::make_unique<struct_cpp2_generator>(context_));
   generators_->set_service_generator(
       std::make_unique<service_cpp2_generator>());
   generators_->set_const_generator(std::make_unique<const_cpp2_generator>());
