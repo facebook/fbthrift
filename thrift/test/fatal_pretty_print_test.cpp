@@ -720,14 +720,24 @@ TEST(fatal_pretty_print, optional_member) {
   const char* expectedStr = R"(
     <struct>{
       field0: 0,
-      field1: ")"
-                            "\x4"
-                            R"(",
+      field1: "\004",
       field2: field0,
       field3: field0_2,
       field5: <variant>{}
     })";
   TEST_IMPL(adjust(expectedStr), v);
 }
+
+TEST(fatal_pretty_print, escape_strings) {
+  structA s;
+  s.set_b("foo\nbar");
+  const char* expectedStr = R"(
+    <struct>{
+      a: 0,
+      b: "foo\nbar"
+    })";
+  TEST_IMPL(adjust(expectedStr), s);
+}
+
 } // namespace cpp_reflection
 } // namespace test_cpp2

@@ -19,6 +19,7 @@
 #include <fatal/type/enum.h>
 #include <fatal/type/search.h>
 #include <fatal/type/variant_traits.h>
+#include <folly/String.h>
 #include <thrift/lib/cpp2/reflection/container_traits.h>
 
 namespace apache {
@@ -218,7 +219,7 @@ template <>
 struct pretty_print_impl<type_class::string> {
   template <typename OutputStream, typename T>
   static void print(OutputStream& out, T const& what) {
-    out << '"' << what << '"';
+    out << '"' << folly::cEscape<T>(what) << '"';
   }
 };
 
