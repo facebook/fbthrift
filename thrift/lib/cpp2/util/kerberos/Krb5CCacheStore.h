@@ -25,11 +25,11 @@
 #include <thread>
 #include <unordered_map>
 
-#include <folly/portability/Krb5.h>
 #include <folly/stats/BucketedTimeSeries.h>
 #include <thrift/lib/cpp2/security/SecurityLogger.h>
 #include <thrift/lib/cpp2/util/kerberos/Krb5Tgts.h>
 #include <thrift/lib/cpp2/util/kerberos/Krb5Util.h>
+#include <thrift/lib/cpp2/util/kerberos/PossiblyTerminatingKerberos.h>
 
 #include <folly/SharedMutex.h>
 

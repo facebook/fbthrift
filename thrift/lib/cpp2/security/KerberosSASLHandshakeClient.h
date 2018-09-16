@@ -23,13 +23,13 @@
 #include <iostream>
 
 #include <folly/io/IOBuf.h>
-#include <folly/portability/Krb5.h>
 #include <thrift/lib/cpp2/security/KerberosSASLHandshakeUtils.h>
 #include <thrift/lib/cpp2/security/KerberosSASLThreadManager.h>
 #include <thrift/lib/cpp2/security/SecurityLogger.h>
 #include <thrift/lib/cpp2/util/kerberos/Krb5CredentialsCacheManager.h>
 #include <thrift/lib/cpp2/util/kerberos/Krb5OlderVersionStubs.h>
 #include <thrift/lib/cpp2/util/kerberos/Krb5Util.h>
+#include <thrift/lib/cpp2/util/kerberos/PossiblyTerminatingKerberos.h>
 
 namespace apache { namespace thrift {
 

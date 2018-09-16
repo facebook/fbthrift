@@ -23,8 +23,8 @@
 #include <string>
 #include <unordered_map>
 
-#include <folly/portability/Krb5.h>
 #include <thrift/lib/cpp2/util/kerberos/Krb5Util.h>
+#include <thrift/lib/cpp2/util/kerberos/PossiblyTerminatingKerberos.h>
 
 namespace apache { namespace thrift { namespace krb5 {
 

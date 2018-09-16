@@ -27,8 +27,8 @@
 #include <iostream>
 
 #include <folly/io/IOBuf.h>
-#include <folly/portability/Krb5.h>
 #include <thrift/lib/cpp2/security/KerberosSASLHandshakeUtils.h>
+#include <thrift/lib/cpp2/util/kerberos/PossiblyTerminatingKerberos.h>
 
 namespace apache { namespace thrift {
 

@@ -17,7 +17,7 @@
 #ifndef KRB5_OLDER_VERSION_STUBS
 #define KRB5_OLDER_VERSION_STUBS
 
-#include <folly/portability/Krb5.h>
+#include <thrift/lib/cpp2/util/kerberos/PossiblyTerminatingKerberos.h>
 
 // Proxy for older krb5 builds
 #ifndef KRB5_GC_NO_STORE

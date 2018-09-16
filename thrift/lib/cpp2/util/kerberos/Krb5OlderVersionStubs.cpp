@@ -19,8 +19,6 @@
 #include <assert.h>
 #include <glog/logging.h>
 
-#include <folly/portability/Krb5.h>
-
 // Proxy for older krb5 builds
 #ifndef KRB5_GC_NO_STORE
 extern "C" OM_uint32 gss_krb5_import_cred(

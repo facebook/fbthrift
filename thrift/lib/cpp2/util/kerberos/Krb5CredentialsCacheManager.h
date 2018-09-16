@@ -24,13 +24,13 @@
 #include <unordered_map>
 #include <chrono>
 
-#include <folly/portability/Krb5.h>
 #include <folly/stats/BucketedTimeSeries.h>
 #include <folly/synchronization/RWSpinLock.h>
 #include <thrift/lib/cpp2/security/SecurityLogger.h>
 #include <thrift/lib/cpp2/util/kerberos/Krb5CCacheStore.h>
 #include <thrift/lib/cpp2/util/kerberos/Krb5CredentialsCacheManagerLogger.h>
 #include <thrift/lib/cpp2/util/kerberos/Krb5Util.h>
+#include <thrift/lib/cpp2/util/kerberos/PossiblyTerminatingKerberos.h>
 
 namespace apache { namespace thrift { namespace krb5 {
 

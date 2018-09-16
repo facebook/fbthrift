@@ -29,8 +29,8 @@
 
 #include <folly/Conv.h>
 #include <folly/Memory.h>
-#include <folly/portability/Krb5.h>
 #include <thrift/lib/cpp2/util/kerberos/Krb5OlderVersionStubs.h>
+#include <thrift/lib/cpp2/util/kerberos/PossiblyTerminatingKerberos.h>
 
 namespace std {
 
