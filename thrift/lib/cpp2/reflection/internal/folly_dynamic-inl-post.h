@@ -21,6 +21,7 @@
 #include <fatal/type/enum.h>
 #include <fatal/type/search.h>
 #include <fatal/type/variant_traits.h>
+#include <thrift/lib/cpp/Thrift.h>
 #include <thrift/lib/cpp2/reflection/container_traits.h>
 
 namespace apache {
@@ -33,7 +34,7 @@ struct dynamic_converter_impl<type_class::enumeration> {
   static void to(folly::dynamic& out, T const& input, dynamic_format format) {
     switch (format) {
       case dynamic_format::PORTABLE: {
-        auto const s = fatal::enum_to_string(input);
+        auto const s = TEnumTraits<T>::findName(input);
         if (!s) {
           throw std::invalid_argument("invalid enum value");
         }
@@ -51,7 +52,10 @@ struct dynamic_converter_impl<type_class::enumeration> {
   template <typename T>
   static void from_portable(T& out, folly::dynamic const& input) {
     auto const& value = input.asString();
-    out = fatal::enum_traits<T>::parse(value.begin(), value.end());
+
+    if (!TEnumTraits<T>::findValue(value.c_str(), &out)) {
+      throw std::invalid_argument("unrecognized enum value");
+    }
   }
 
   template <typename T>
