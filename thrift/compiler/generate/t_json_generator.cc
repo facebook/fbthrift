@@ -29,6 +29,7 @@
 #include <sstream>
 #include <thrift/compiler/generate/t_generator.h>
 #include <thrift/compiler/generate/t_concat_generator.h>
+#include <thrift/compiler/util.h>
 using namespace std;
 
 
@@ -340,7 +341,7 @@ void t_json_generator::print_const_value(const t_const_value* tvalue) {
     f_out_ << tvalue->get_double();
     break;
   case t_const_value::CV_STRING:
-    f_out_ << "\"" << tvalue->get_string() << "\"";
+    json_quote_ascii(f_out_, tvalue->get_string());
     break;
   case t_const_value::CV_BOOL:
     f_out_ << (tvalue->get_bool() ? "true" : "false");
