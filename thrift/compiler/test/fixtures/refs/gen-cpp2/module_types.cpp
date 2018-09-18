@@ -246,6 +246,16 @@ void TccStructTraits< ::cpp2::StructWithRefTypeSharedConst>::translateFieldName(
     _ftype = apache::thrift::protocol::T_STRUCT;
   }
 }
+void TccStructTraits< ::cpp2::StructWithRefAndAnnotCppNoexceptMoveCtor>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "def_field") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_STRUCT;
+  }
+}
 
 } // namespace detail
 } // namespace thrift
@@ -1362,5 +1372,60 @@ template void StructWithRefTypeSharedConst::readNoXfer<>(apache::thrift::Compact
 template uint32_t StructWithRefTypeSharedConst::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t StructWithRefTypeSharedConst::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t StructWithRefTypeSharedConst::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+} // cpp2
+namespace cpp2 {
+
+StructWithRefAndAnnotCppNoexceptMoveCtor::StructWithRefAndAnnotCppNoexceptMoveCtor(apache::thrift::FragileConstructor, std::unique_ptr< ::cpp2::Empty> def_field__arg) :
+    def_field(std::move(def_field__arg)) {}
+
+void StructWithRefAndAnnotCppNoexceptMoveCtor::__clear() {
+  // clear all fields
+}
+
+bool StructWithRefAndAnnotCppNoexceptMoveCtor::operator==(const StructWithRefAndAnnotCppNoexceptMoveCtor& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  if (!!lhs.def_field != !!rhs.def_field) {
+    return false;
+  }
+  if (!!lhs.def_field) {
+    if (lhs.def_field != rhs.def_field && !(*lhs.def_field == *rhs.def_field)) {
+      return false;
+    }
+  }
+  return true;
+}
+
+bool StructWithRefAndAnnotCppNoexceptMoveCtor::operator<(const StructWithRefAndAnnotCppNoexceptMoveCtor& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  if (!!lhs.def_field != !!rhs.def_field) {
+    return !!lhs.def_field < !!rhs.def_field;
+  }
+  if (!!lhs.def_field) {
+    if (lhs.def_field != rhs.def_field && !(*lhs.def_field == *rhs.def_field)) {
+      return *lhs.def_field < *rhs.def_field;
+    }
+  }
+  return false;
+}
+
+
+void swap(StructWithRefAndAnnotCppNoexceptMoveCtor& a, StructWithRefAndAnnotCppNoexceptMoveCtor& b) {
+  using ::std::swap;
+  swap(a.def_field, b.def_field);
+}
+
+template void StructWithRefAndAnnotCppNoexceptMoveCtor::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+template uint32_t StructWithRefAndAnnotCppNoexceptMoveCtor::write<>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t StructWithRefAndAnnotCppNoexceptMoveCtor::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t StructWithRefAndAnnotCppNoexceptMoveCtor::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+template void StructWithRefAndAnnotCppNoexceptMoveCtor::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+template uint32_t StructWithRefAndAnnotCppNoexceptMoveCtor::write<>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t StructWithRefAndAnnotCppNoexceptMoveCtor::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t StructWithRefAndAnnotCppNoexceptMoveCtor::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 } // cpp2

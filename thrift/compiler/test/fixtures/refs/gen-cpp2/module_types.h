@@ -78,6 +78,7 @@ class StructWithRef;
 class StructWithRefTypeUnique;
 class StructWithRefTypeShared;
 class StructWithRefTypeSharedConst;
+class StructWithRefAndAnnotCppNoexceptMoveCtor;
 } // cpp2
 // END forward_declare
 // BEGIN typedefs
@@ -1468,6 +1469,90 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::StructWithRefTyp
 }
 
 template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::StructWithRefTypeSharedConst>::serializedSizeZC(Protocol const* proto,  ::cpp2::StructWithRefTypeSharedConst const* obj) {
+  return obj->serializedSizeZC(proto);
+}
+
+}} // apache::thrift
+namespace cpp2 {
+class StructWithRefAndAnnotCppNoexceptMoveCtor final : private apache::thrift::detail::st::ComparisonOperators<StructWithRefAndAnnotCppNoexceptMoveCtor> {
+ public:
+
+  StructWithRefAndAnnotCppNoexceptMoveCtor() :
+      def_field(std::make_unique< ::cpp2::Empty>()) {}
+  // FragileConstructor for use in initialization lists only.
+  StructWithRefAndAnnotCppNoexceptMoveCtor(apache::thrift::FragileConstructor, std::unique_ptr< ::cpp2::Empty> def_field__arg);
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
+    def_field = std::make_unique<std::decay_t<_T>>(arg.extract());
+  }
+  StructWithRefAndAnnotCppNoexceptMoveCtor(StructWithRefAndAnnotCppNoexceptMoveCtor&& other) noexcept :
+      def_field(std::move(other.def_field)) {}
+  StructWithRefAndAnnotCppNoexceptMoveCtor(const StructWithRefAndAnnotCppNoexceptMoveCtor& src);
+
+  StructWithRefAndAnnotCppNoexceptMoveCtor& operator=(StructWithRefAndAnnotCppNoexceptMoveCtor&&) = default;
+  StructWithRefAndAnnotCppNoexceptMoveCtor& operator=(const StructWithRefAndAnnotCppNoexceptMoveCtor& src);
+  void __clear();
+  std::unique_ptr< ::cpp2::Empty> def_field;
+  bool operator==(const StructWithRefAndAnnotCppNoexceptMoveCtor& rhs) const;
+  bool operator<(const StructWithRefAndAnnotCppNoexceptMoveCtor& rhs) const;
+
+  template <class Protocol_>
+  uint32_t read(Protocol_* iprot);
+  template <class Protocol_>
+  uint32_t serializedSize(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t serializedSizeZC(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t write(Protocol_* prot_) const;
+
+ private:
+  template <class Protocol_>
+  void readNoXfer(Protocol_* iprot);
+
+  friend class ::apache::thrift::Cpp2Ops< StructWithRefAndAnnotCppNoexceptMoveCtor >;
+};
+
+void swap(StructWithRefAndAnnotCppNoexceptMoveCtor& a, StructWithRefAndAnnotCppNoexceptMoveCtor& b);
+extern template void StructWithRefAndAnnotCppNoexceptMoveCtor::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+extern template uint32_t StructWithRefAndAnnotCppNoexceptMoveCtor::write<>(apache::thrift::BinaryProtocolWriter*) const;
+extern template uint32_t StructWithRefAndAnnotCppNoexceptMoveCtor::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t StructWithRefAndAnnotCppNoexceptMoveCtor::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template void StructWithRefAndAnnotCppNoexceptMoveCtor::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+extern template uint32_t StructWithRefAndAnnotCppNoexceptMoveCtor::write<>(apache::thrift::CompactProtocolWriter*) const;
+extern template uint32_t StructWithRefAndAnnotCppNoexceptMoveCtor::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template uint32_t StructWithRefAndAnnotCppNoexceptMoveCtor::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+template <class Protocol_>
+uint32_t StructWithRefAndAnnotCppNoexceptMoveCtor::read(Protocol_* iprot) {
+  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
+  readNoXfer(iprot);
+  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
+}
+
+} // cpp2
+namespace apache { namespace thrift {
+
+template <> inline void Cpp2Ops< ::cpp2::StructWithRefAndAnnotCppNoexceptMoveCtor>::clear( ::cpp2::StructWithRefAndAnnotCppNoexceptMoveCtor* obj) {
+  return obj->__clear();
+}
+
+template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::cpp2::StructWithRefAndAnnotCppNoexceptMoveCtor>::thriftType() {
+  return apache::thrift::protocol::T_STRUCT;
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::StructWithRefAndAnnotCppNoexceptMoveCtor>::write(Protocol* proto,  ::cpp2::StructWithRefAndAnnotCppNoexceptMoveCtor const* obj) {
+  return obj->write(proto);
+}
+
+template <> template <class Protocol> void Cpp2Ops< ::cpp2::StructWithRefAndAnnotCppNoexceptMoveCtor>::read(Protocol* proto,  ::cpp2::StructWithRefAndAnnotCppNoexceptMoveCtor* obj) {
+  return obj->readNoXfer(proto);
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::StructWithRefAndAnnotCppNoexceptMoveCtor>::serializedSize(Protocol const* proto,  ::cpp2::StructWithRefAndAnnotCppNoexceptMoveCtor const* obj) {
+  return obj->serializedSize(proto);
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::StructWithRefAndAnnotCppNoexceptMoveCtor>::serializedSizeZC(Protocol const* proto,  ::cpp2::StructWithRefAndAnnotCppNoexceptMoveCtor const* obj) {
   return obj->serializedSizeZC(proto);
 }
 

@@ -113,6 +113,13 @@ struct TccStructTraits< ::cpp2::StructWithRefTypeSharedConst> {
       int16_t& fid,
       apache::thrift::protocol::TType& _ftype);
 };
+template <>
+struct TccStructTraits< ::cpp2::StructWithRefAndAnnotCppNoexceptMoveCtor> {
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
+};
 
 } // namespace detail
 } // namespace thrift
@@ -2448,6 +2455,124 @@ uint32_t StructWithRefTypeSharedConst::write(Protocol_* prot_) const {
   xfer += prot_->writeFieldBegin("req_field", apache::thrift::protocol::T_STRUCT, 3);
   if (this->req_field) {
     xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::Empty>::write(prot_, this->req_field.get());
+  }
+  else {
+    xfer += prot_->writeStructBegin("Empty");
+    xfer += prot_->writeStructEnd();
+    xfer += prot_->writeFieldStop();
+  }
+  xfer += prot_->writeFieldEnd();
+  xfer += prot_->writeFieldStop();
+  xfer += prot_->writeStructEnd();
+  return xfer;
+}
+
+} // cpp2
+namespace cpp2 {
+
+template <class Protocol_>
+void StructWithRefAndAnnotCppNoexceptMoveCtor::readNoXfer(Protocol_* iprot) {
+  apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
+
+  _readState.readStructBegin(iprot);
+
+  using apache::thrift::TProtocolException;
+
+
+  if (UNLIKELY(!_readState.advanceToNextField(
+          iprot,
+          0,
+          1,
+          apache::thrift::protocol::T_STRUCT))) {
+    goto _loop;
+  }
+_readField_def_field:
+  {
+    std::unique_ptr< ::cpp2::Empty> ptr = std::make_unique< ::cpp2::Empty>();
+    ::apache::thrift::Cpp2Ops<  ::cpp2::Empty>::read(iprot, ptr.get());
+    this->def_field = std::move(ptr);
+  }
+
+  if (UNLIKELY(!_readState.advanceToNextField(
+          iprot,
+          1,
+          0,
+          apache::thrift::protocol::T_STOP))) {
+    goto _loop;
+  }
+
+_end:
+  _readState.readStructEnd(iprot);
+
+  return;
+
+_loop:
+  if (_readState.fieldType == apache::thrift::protocol::T_STOP) {
+    goto _end;
+  }
+  if (iprot->kUsesFieldNames()) {
+    apache::thrift::detail::TccStructTraits<StructWithRefAndAnnotCppNoexceptMoveCtor>::translateFieldName(_readState.fieldName(), _readState.fieldId, _readState.fieldType);
+  }
+
+  switch (_readState.fieldId) {
+    case 1:
+    {
+      if (LIKELY(_readState.fieldType == apache::thrift::protocol::T_STRUCT)) {
+        goto _readField_def_field;
+      } else {
+        goto _skip;
+      }
+    }
+    default:
+    {
+_skip:
+      iprot->skip(_readState.fieldType);
+      _readState.readFieldEnd(iprot);
+      _readState.readFieldBeginNoInline(iprot);
+      goto _loop;
+    }
+  }
+}
+
+template <class Protocol_>
+uint32_t StructWithRefAndAnnotCppNoexceptMoveCtor::serializedSize(Protocol_ const* prot_) const {
+  uint32_t xfer = 0;
+  xfer += prot_->serializedStructSize("StructWithRefAndAnnotCppNoexceptMoveCtor");
+  xfer += prot_->serializedFieldSize("def_field", apache::thrift::protocol::T_STRUCT, 1);
+  if (this->def_field) {
+    xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::Empty>::serializedSize(prot_, this->def_field.get());
+  }
+  else {
+    xfer += prot_->serializedStructSize("Empty");
+    xfer += prot_->serializedSizeStop();
+  }
+  xfer += prot_->serializedSizeStop();
+  return xfer;
+}
+
+template <class Protocol_>
+uint32_t StructWithRefAndAnnotCppNoexceptMoveCtor::serializedSizeZC(Protocol_ const* prot_) const {
+  uint32_t xfer = 0;
+  xfer += prot_->serializedStructSize("StructWithRefAndAnnotCppNoexceptMoveCtor");
+  xfer += prot_->serializedFieldSize("def_field", apache::thrift::protocol::T_STRUCT, 1);
+  if (this->def_field) {
+    xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::Empty>::serializedSizeZC(prot_, this->def_field.get());
+  }
+  else {
+    xfer += prot_->serializedStructSize("Empty");
+    xfer += prot_->serializedSizeStop();
+  }
+  xfer += prot_->serializedSizeStop();
+  return xfer;
+}
+
+template <class Protocol_>
+uint32_t StructWithRefAndAnnotCppNoexceptMoveCtor::write(Protocol_* prot_) const {
+  uint32_t xfer = 0;
+  xfer += prot_->writeStructBegin("StructWithRefAndAnnotCppNoexceptMoveCtor");
+  xfer += prot_->writeFieldBegin("def_field", apache::thrift::protocol::T_STRUCT, 1);
+  if (this->def_field) {
+    xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::Empty>::write(prot_, this->def_field.get());
   }
   else {
     xfer += prot_->writeStructBegin("Empty");

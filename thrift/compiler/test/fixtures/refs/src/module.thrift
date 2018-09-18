@@ -99,3 +99,7 @@ const StructWithRefTypeSharedConst kStructWithRefTypeSharedConst = {
   "opt_field": {},
   "req_field": {},
 }
+
+struct StructWithRefAndAnnotCppNoexceptMoveCtor {
+  1: Empty def_field (cpp.ref),
+} (cpp.noexcept_move_ctor)

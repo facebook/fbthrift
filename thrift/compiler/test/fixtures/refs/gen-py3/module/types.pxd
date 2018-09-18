@@ -63,6 +63,8 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "cpp2":
     cdef cppclass cStructWithRefTypeShared "cpp2::StructWithRefTypeShared"
     # Forward Declaration
     cdef cppclass cStructWithRefTypeSharedConst "cpp2::StructWithRefTypeSharedConst"
+    # Forward Declaration
+    cdef cppclass cStructWithRefAndAnnotCppNoexceptMoveCtor "cpp2::StructWithRefAndAnnotCppNoexceptMoveCtor"
 
 cdef extern from "src/gen-cpp2/module_types.h" namespace "cpp2":
     cdef enum cMyUnion__type "cpp2::MyUnion::Type":
@@ -275,6 +277,20 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "cpp2":
         shared_ptr[const cEmpty] req_field
         cStructWithRefTypeSharedConst__isset __isset
 
+    cdef cppclass cStructWithRefAndAnnotCppNoexceptMoveCtor__isset "cpp2::StructWithRefAndAnnotCppNoexceptMoveCtor::__isset":
+        bint def_field
+
+    cdef cppclass cStructWithRefAndAnnotCppNoexceptMoveCtor "cpp2::StructWithRefAndAnnotCppNoexceptMoveCtor":
+        cStructWithRefAndAnnotCppNoexceptMoveCtor() except +
+        cStructWithRefAndAnnotCppNoexceptMoveCtor(const cStructWithRefAndAnnotCppNoexceptMoveCtor&) except +
+        bint operator==(cStructWithRefAndAnnotCppNoexceptMoveCtor&)
+        bint operator<(cStructWithRefAndAnnotCppNoexceptMoveCtor&)
+        bint operator>(cStructWithRefAndAnnotCppNoexceptMoveCtor&)
+        bint operator<=(cStructWithRefAndAnnotCppNoexceptMoveCtor&)
+        bint operator>=(cStructWithRefAndAnnotCppNoexceptMoveCtor&)
+        unique_ptr[cEmpty] def_field
+        cStructWithRefAndAnnotCppNoexceptMoveCtor__isset __isset
+
     cdef shared_ptr[cMyField] reference_shared_ptr_opt_ref "thrift::py3::reference_shared_ptr<cpp2::MyField>"(shared_ptr[cMyStruct]&, cMyField&)
     cdef shared_ptr[cMyField] reference_shared_ptr_ref "thrift::py3::reference_shared_ptr<cpp2::MyField>"(shared_ptr[cMyStruct]&, cMyField&)
     cdef shared_ptr[cMyField] reference_shared_ptr_req_ref "thrift::py3::reference_shared_ptr<cpp2::MyField>"(shared_ptr[cMyStruct]&, cMyField&)
@@ -302,6 +318,7 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "cpp2":
     cdef shared_ptr[cEmpty] reference_shared_ptr_def_field "thrift::py3::reference_shared_ptr<cpp2::Empty>"(shared_ptr[cStructWithRefTypeSharedConst]&, cEmpty&)
     cdef shared_ptr[cEmpty] reference_shared_ptr_opt_field "thrift::py3::reference_shared_ptr<cpp2::Empty>"(shared_ptr[cStructWithRefTypeSharedConst]&, cEmpty&)
     cdef shared_ptr[cEmpty] reference_shared_ptr_req_field "thrift::py3::reference_shared_ptr<cpp2::Empty>"(shared_ptr[cStructWithRefTypeSharedConst]&, cEmpty&)
+    cdef shared_ptr[cEmpty] reference_shared_ptr_def_field "thrift::py3::reference_shared_ptr<cpp2::Empty>"(shared_ptr[cStructWithRefAndAnnotCppNoexceptMoveCtor]&, cEmpty&)
 
 cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[cMyUnion] move(unique_ptr[cMyUnion])
@@ -340,6 +357,9 @@ cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[cStructWithRefTypeSharedConst] move(unique_ptr[cStructWithRefTypeSharedConst])
     cdef shared_ptr[cStructWithRefTypeSharedConst] move_shared "std::move"(shared_ptr[cStructWithRefTypeSharedConst])
     cdef unique_ptr[cStructWithRefTypeSharedConst] move_unique "std::move"(unique_ptr[cStructWithRefTypeSharedConst])
+    cdef shared_ptr[cStructWithRefAndAnnotCppNoexceptMoveCtor] move(unique_ptr[cStructWithRefAndAnnotCppNoexceptMoveCtor])
+    cdef shared_ptr[cStructWithRefAndAnnotCppNoexceptMoveCtor] move_shared "std::move"(shared_ptr[cStructWithRefAndAnnotCppNoexceptMoveCtor])
+    cdef unique_ptr[cStructWithRefAndAnnotCppNoexceptMoveCtor] move_unique "std::move"(unique_ptr[cStructWithRefAndAnnotCppNoexceptMoveCtor])
 
 cdef extern from "<memory>" namespace "std" nogil:
     cdef shared_ptr[const cMyUnion] const_pointer_cast "std::const_pointer_cast<const cpp2::MyUnion>"(shared_ptr[cMyUnion])
@@ -354,6 +374,7 @@ cdef extern from "<memory>" namespace "std" nogil:
     cdef shared_ptr[const cStructWithRefTypeUnique] const_pointer_cast "std::const_pointer_cast<const cpp2::StructWithRefTypeUnique>"(shared_ptr[cStructWithRefTypeUnique])
     cdef shared_ptr[const cStructWithRefTypeShared] const_pointer_cast "std::const_pointer_cast<const cpp2::StructWithRefTypeShared>"(shared_ptr[cStructWithRefTypeShared])
     cdef shared_ptr[const cStructWithRefTypeSharedConst] const_pointer_cast "std::const_pointer_cast<const cpp2::StructWithRefTypeSharedConst>"(shared_ptr[cStructWithRefTypeSharedConst])
+    cdef shared_ptr[const cStructWithRefAndAnnotCppNoexceptMoveCtor] const_pointer_cast "std::const_pointer_cast<const cpp2::StructWithRefAndAnnotCppNoexceptMoveCtor>"(shared_ptr[cStructWithRefAndAnnotCppNoexceptMoveCtor])
 
 cdef class __MyUnionType(thrift.py3.types.CompiledEnum):
     pass
@@ -625,6 +646,25 @@ cdef class StructWithRefTypeSharedConst(thrift.py3.types.Struct):
 
     @staticmethod
     cdef create(shared_ptr[cStructWithRefTypeSharedConst])
+
+# Forward Definition of the cython struct
+cdef class StructWithRefAndAnnotCppNoexceptMoveCtor(thrift.py3.types.Struct)
+
+
+cdef class StructWithRefAndAnnotCppNoexceptMoveCtor(thrift.py3.types.Struct):
+    cdef object __hash
+    cdef object __weakref__
+    cdef shared_ptr[cStructWithRefAndAnnotCppNoexceptMoveCtor] _cpp_obj
+    cdef Empty __def_field
+
+    @staticmethod
+    cdef unique_ptr[cStructWithRefAndAnnotCppNoexceptMoveCtor] _make_instance(
+        cStructWithRefAndAnnotCppNoexceptMoveCtor* base_instance,
+        object def_field
+    ) except *
+
+    @staticmethod
+    cdef create(shared_ptr[cStructWithRefAndAnnotCppNoexceptMoveCtor])
 
 
 cdef class List__RecursiveStruct:

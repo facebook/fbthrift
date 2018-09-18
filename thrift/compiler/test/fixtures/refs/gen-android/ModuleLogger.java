@@ -373,6 +373,19 @@ public class ModuleLogger {
         break;
       }
       
+      case StructWithRefAndAnnotCppNoexceptMoveCtor: {
+        oprot.writeStructBegin(new TStruct("StructWithRefAndAnnotCppNoexceptMoveCtor"));
+        if (mMap.containsKey(Module.StructWithRefAndAnnotCppNoexceptMoveCtor_def_field) && mMap.get(Module.StructWithRefAndAnnotCppNoexceptMoveCtor_def_field) != null) {
+          writeFieldBegin(oprot, Module.StructWithRefAndAnnotCppNoexceptMoveCtor_def_field);
+          ((ModuleLogger) mMap.get(Module.StructWithRefAndAnnotCppNoexceptMoveCtor_def_field)).write(oprot);
+          oprot.writeFieldEnd();
+        }
+      
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
+        break;
+      }
+      
       
     }
   }

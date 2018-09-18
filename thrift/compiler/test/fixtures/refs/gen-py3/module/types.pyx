@@ -2825,6 +2825,171 @@ cdef class StructWithRefTypeSharedConst(thrift.py3.types.Struct):
         return (deserialize, (StructWithRefTypeSharedConst, serialize(self)))
 
 
+cdef cStructWithRefAndAnnotCppNoexceptMoveCtor _StructWithRefAndAnnotCppNoexceptMoveCtor_defaults = cStructWithRefAndAnnotCppNoexceptMoveCtor()
+
+cdef class StructWithRefAndAnnotCppNoexceptMoveCtor(thrift.py3.types.Struct):
+
+    def __init__(
+        StructWithRefAndAnnotCppNoexceptMoveCtor self, *,
+        Empty def_field=None
+    ):
+        self._cpp_obj = move(StructWithRefAndAnnotCppNoexceptMoveCtor._make_instance(
+          NULL,
+          def_field,
+        ))
+
+    def __call__(
+        StructWithRefAndAnnotCppNoexceptMoveCtor self,
+        def_field=__NOTSET
+    ):
+        changes = any((
+            def_field is not __NOTSET,
+        ))
+
+        if not changes:
+            return self
+
+        if None is not def_field is not __NOTSET:
+            if not isinstance(def_field, Empty):
+                raise TypeError(f'def_field is not a { Empty !r}.')
+
+        inst = <StructWithRefAndAnnotCppNoexceptMoveCtor>StructWithRefAndAnnotCppNoexceptMoveCtor.__new__(StructWithRefAndAnnotCppNoexceptMoveCtor)
+        inst._cpp_obj = move(StructWithRefAndAnnotCppNoexceptMoveCtor._make_instance(
+          self._cpp_obj.get(),
+          def_field,
+        ))
+        return inst
+
+    @staticmethod
+    cdef unique_ptr[cStructWithRefAndAnnotCppNoexceptMoveCtor] _make_instance(
+        cStructWithRefAndAnnotCppNoexceptMoveCtor* base_instance,
+        object def_field
+    ) except *:
+        cdef unique_ptr[cStructWithRefAndAnnotCppNoexceptMoveCtor] c_inst
+        if base_instance:
+            c_inst = make_unique[cStructWithRefAndAnnotCppNoexceptMoveCtor](deref(base_instance))
+        else:
+            c_inst = make_unique[cStructWithRefAndAnnotCppNoexceptMoveCtor]()
+
+        if base_instance:
+            # Convert None's to default value. (or unset)
+            if def_field is None:
+                deref(c_inst).def_field.reset()
+                pass
+            elif def_field is __NOTSET:
+                def_field = None
+
+        if def_field is not None:
+            deref(c_inst).def_field = make_unique[cEmpty](deref((<Empty?>def_field)._cpp_obj))
+        # in C++ you don't have to call move(), but this doesn't translate
+        # into a C++ return statement, so you do here
+        return move_unique(c_inst)
+
+    def __iter__(self):
+        yield 'def_field', self.def_field
+
+    def __bool__(self):
+        return <bint>(deref(self._cpp_obj).def_field)
+
+    @staticmethod
+    cdef create(shared_ptr[cStructWithRefAndAnnotCppNoexceptMoveCtor] cpp_obj):
+        inst = <StructWithRefAndAnnotCppNoexceptMoveCtor>StructWithRefAndAnnotCppNoexceptMoveCtor.__new__(StructWithRefAndAnnotCppNoexceptMoveCtor)
+        inst._cpp_obj = move_shared(cpp_obj)
+        return inst
+
+    @property
+    def def_field(self):
+
+        if self.__def_field is None:
+            if not deref(self._cpp_obj).def_field:
+                return None
+            self.__def_field = Empty.create(reference_shared_ptr_def_field(self._cpp_obj, deref(deref(self._cpp_obj).def_field)))
+        return self.__def_field
+
+
+    def __hash__(StructWithRefAndAnnotCppNoexceptMoveCtor self):
+        if not self.__hash:
+            self.__hash = hash((
+            self.def_field,
+            ))
+        return self.__hash
+
+    def __repr__(StructWithRefAndAnnotCppNoexceptMoveCtor self):
+        return f'StructWithRefAndAnnotCppNoexceptMoveCtor(def_field={repr(self.def_field)})'
+    def __copy__(StructWithRefAndAnnotCppNoexceptMoveCtor self):
+        cdef shared_ptr[cStructWithRefAndAnnotCppNoexceptMoveCtor] cpp_obj = make_shared[cStructWithRefAndAnnotCppNoexceptMoveCtor](
+            deref(self._cpp_obj)
+        )
+        return StructWithRefAndAnnotCppNoexceptMoveCtor.create(move_shared(cpp_obj))
+
+    def __richcmp__(self, other, op):
+        cdef int cop = op
+        if not (
+                isinstance(self, StructWithRefAndAnnotCppNoexceptMoveCtor) and
+                isinstance(other, StructWithRefAndAnnotCppNoexceptMoveCtor)):
+            if cop == Py_EQ:  # different types are never equal
+                return False
+            elif cop == Py_NE:  # different types are always notequal
+                return True
+            else:
+                return NotImplemented
+
+        cdef cStructWithRefAndAnnotCppNoexceptMoveCtor cself = deref((<StructWithRefAndAnnotCppNoexceptMoveCtor>self)._cpp_obj)
+        cdef cStructWithRefAndAnnotCppNoexceptMoveCtor cother = deref((<StructWithRefAndAnnotCppNoexceptMoveCtor>other)._cpp_obj)
+        if cop == Py_EQ:
+            return cself == cother
+        elif cop == Py_NE:
+            return not (cself == cother)
+        elif cop == Py_LT:
+            return cself < cother
+        elif cop == Py_LE:
+            return cself <= cother
+        elif cop == Py_GT:
+            return cself > cother
+        elif cop == Py_GE:
+            return cself >= cother
+        else:
+            return NotImplemented
+
+    cdef __iobuf.IOBuf _serialize(StructWithRefAndAnnotCppNoexceptMoveCtor self, proto):
+        cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
+        cdef cStructWithRefAndAnnotCppNoexceptMoveCtor* cpp_obj = self._cpp_obj.get()
+        if proto is __Protocol.COMPACT:
+            with nogil:
+                serializer.CompactSerialize[cStructWithRefAndAnnotCppNoexceptMoveCtor](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.BINARY:
+            with nogil:
+                serializer.BinarySerialize[cStructWithRefAndAnnotCppNoexceptMoveCtor](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.JSON:
+            with nogil:
+                serializer.JSONSerialize[cStructWithRefAndAnnotCppNoexceptMoveCtor](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.COMPACT_JSON:
+            with nogil:
+                serializer.CompactJSONSerialize[cStructWithRefAndAnnotCppNoexceptMoveCtor](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
+        return __iobuf.from_unique_ptr(queue.move())
+
+    cdef uint32_t _deserialize(StructWithRefAndAnnotCppNoexceptMoveCtor self, const __iobuf.cIOBuf* buf, proto) except? 0:
+        cdef uint32_t needed
+        self._cpp_obj = make_shared[cStructWithRefAndAnnotCppNoexceptMoveCtor]()
+        cdef cStructWithRefAndAnnotCppNoexceptMoveCtor* cpp_obj = self._cpp_obj.get()
+        if proto is __Protocol.COMPACT:
+            with nogil:
+                needed = serializer.CompactDeserialize[cStructWithRefAndAnnotCppNoexceptMoveCtor](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.BINARY:
+            with nogil:
+                needed = serializer.BinaryDeserialize[cStructWithRefAndAnnotCppNoexceptMoveCtor](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.JSON:
+            with nogil:
+                needed = serializer.JSONDeserialize[cStructWithRefAndAnnotCppNoexceptMoveCtor](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.COMPACT_JSON:
+            with nogil:
+                needed = serializer.CompactJSONDeserialize[cStructWithRefAndAnnotCppNoexceptMoveCtor](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
+        return needed
+
+    def __reduce__(self):
+        return (deserialize, (StructWithRefAndAnnotCppNoexceptMoveCtor, serialize(self)))
+
+
 cdef class List__RecursiveStruct:
     def __init__(self, items=None):
         if isinstance(items, List__RecursiveStruct):
