@@ -91,6 +91,13 @@ class t_go_generator : public t_concat_generator {
     if (iter != parsed_options.end()) {
       package_flag = (iter->second);
     }
+
+    iter = parsed_options.find("use_context");
+    if (iter != parsed_options.end()) {
+      gen_use_context_ = true;
+    } else {
+      gen_use_context_ = false;
+    }
   }
 
   /**
@@ -312,6 +319,7 @@ class t_go_generator : public t_concat_generator {
  private:
   std::string gen_package_prefix_;
   std::string gen_thrift_import_;
+  bool gen_use_context_;
 
   /**
    * File streams
@@ -865,6 +873,7 @@ string t_go_generator::go_imports_begin() {
   return string(
       "import (\n"
       "\t\"bytes\"\n"
+      "\t\"context\"\n"
       "\t\"sync\"\n"
       "\t\"fmt\"\n"
       "\tthrift \"" +
@@ -885,7 +894,8 @@ string t_go_generator::go_imports_end() {
       "var _ = thrift.ZERO\n"
       "var _ = fmt.Printf\n"
       "var _ = sync.Mutex{}\n"
-      "var _ = bytes.Equal\n\n");
+      "var _ = bytes.Equal\n"
+      "var _ = context.Context\n\n");
 }
 
 /**
@@ -3249,9 +3259,13 @@ void t_go_generator::generate_run_function(
       publicize(tfunction->get_name());
   string argsname = publicize(tfunction->get_name() + "_args", true);
   string resultname = publicize(tfunction->get_name() + "_result", true);
-  f_service_ << indent() << "func (p *" << processorName
-             << ") Run(argStruct thrift.Struct) "
-             << "(thrift.WritableStruct, thrift.ApplicationException) {"
+  f_service_ << indent() << "func (p *" << processorName << ") ";
+  if (gen_use_context_) {
+    f_service_ << "RunContext(ctx context.Context, argStruct thrift.Struct)";
+  } else {
+    f_service_ << "Run(argStruct thrift.Struct)";
+  }
+  f_service_ << " (thrift.WritableStruct, thrift.ApplicationException) {"
              << endl;
   indent_up();
   t_struct* arg_struct = tfunction->get_arglist();
@@ -3276,6 +3290,9 @@ void t_go_generator::generate_run_function(
 
   // Generate the function call
   f_service_ << "err := p.handler." << publicize(tfunction->get_name()) << "(";
+  if (gen_use_context_) {
+    f_service_ << "ctx" << (fields.empty() ? "" : ", ");
+  }
   bool first = true;
   vector<t_field*>::const_iterator f_iter;
   for (f_iter = fields.begin(); f_iter != fields.end(); ++f_iter) {
@@ -4030,7 +4047,12 @@ string t_go_generator::function_signature_if(
     bool addError) {
   // TODO(mcslee): Nitpicky, no ',' if argument_list is empty
   string signature = publicize(prefix + tfunction->get_name()) + "(";
-  signature += argument_list(tfunction->get_arglist()) + ") (";
+  string args = argument_list(tfunction->get_arglist());
+  if (gen_use_context_) {
+    signature += "ctx context.Context";
+    signature += args.length() > 0 ? ", " : "";
+  }
+  signature += args + ") (";
   t_type* ret = tfunction->get_returntype();
   t_struct* exceptions = tfunction->get_xceptions();
   string errs = argument_list(exceptions);

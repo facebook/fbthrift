@@ -6,6 +6,7 @@ package module
 
 import (
 	"bytes"
+	"context"
 	"sync"
 	"fmt"
 	thrift "github.com/facebook/fbthrift-go"
@@ -16,6 +17,7 @@ var _ = thrift.ZERO
 var _ = fmt.Printf
 var _ = sync.Mutex{}
 var _ = bytes.Equal
+var _ = context.Context
 
 var GoUnusedProtection__ int;
 

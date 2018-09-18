@@ -6,6 +6,7 @@ package matching_names
 
 import (
 	"bytes"
+	"context"
 	"sync"
 	"fmt"
 	thrift "github.com/facebook/fbthrift-go"
@@ -18,6 +19,7 @@ var _ = thrift.ZERO
 var _ = fmt.Printf
 var _ = sync.Mutex{}
 var _ = bytes.Equal
+var _ = context.Context
 
 var _ = IncludesAlso0.GoUnusedProtection__
 var GoUnusedProtection__ int;
