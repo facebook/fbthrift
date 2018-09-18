@@ -1376,6 +1376,16 @@ template uint32_t StructWithRefTypeSharedConst::serializedSizeZC<>(apache::thrif
 } // cpp2
 namespace cpp2 {
 
+StructWithRefAndAnnotCppNoexceptMoveCtor::StructWithRefAndAnnotCppNoexceptMoveCtor(const StructWithRefAndAnnotCppNoexceptMoveCtor& srcObj) {
+  if (srcObj.def_field) def_field.reset(new  ::cpp2::Empty(*srcObj.def_field));
+}
+
+StructWithRefAndAnnotCppNoexceptMoveCtor& StructWithRefAndAnnotCppNoexceptMoveCtor::operator=(const StructWithRefAndAnnotCppNoexceptMoveCtor& src) {
+  StructWithRefAndAnnotCppNoexceptMoveCtor tmp(src);
+  swap(*this, tmp);
+  return *this;
+}
+
 StructWithRefAndAnnotCppNoexceptMoveCtor::StructWithRefAndAnnotCppNoexceptMoveCtor(apache::thrift::FragileConstructor, std::unique_ptr< ::cpp2::Empty> def_field__arg) :
     def_field(std::move(def_field__arg)) {}
 

@@ -44,3 +44,7 @@ struct BasicRefs {
 struct BasicRefsShared {
   1: HasInt def_field (cpp.ref_type = "shared"),
 }
+
+struct BasicRefsAnnotCppNoexceptMoveCtor {
+  1: HasInt def_field (cpp.ref),
+} (cpp.noexcept_move_ctor)
