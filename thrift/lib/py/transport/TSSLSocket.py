@@ -85,8 +85,12 @@ else:
         if version is None:
             return
 
-        blacklist = [ssl.PROTOCOL_SSLv2, ssl.PROTOCOL_SSLv3, ssl.PROTOCOL_TLSv1]
+        blacklist = [ssl.PROTOCOL_TLSv1]
 
+        if hasattr(ssl, 'PROTOCOL_SSLv2'):
+            blacklist.append(ssl.PROTOCOL_SSLv2)
+        if hasattr(ssl, 'PROTOCOL_SSLv3'):
+            blacklist.append(ssl.PROTOCOL_SSLv3)
         if hasattr(ssl, 'PROTOCOL_TLSv1_1'):
             blacklist.append(ssl.PROTOCOL_TLSv1_1)
 
