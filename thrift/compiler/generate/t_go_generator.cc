@@ -895,7 +895,7 @@ string t_go_generator::go_imports_end() {
       "var _ = fmt.Printf\n"
       "var _ = sync.Mutex{}\n"
       "var _ = bytes.Equal\n"
-      "var _ = context.Context\n\n");
+      "var _ = context.Background\n\n");
 }
 
 /**

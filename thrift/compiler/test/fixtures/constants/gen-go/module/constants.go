@@ -17,7 +17,7 @@ var _ = thrift.ZERO
 var _ = fmt.Printf
 var _ = sync.Mutex{}
 var _ = bytes.Equal
-var _ = context.Context
+var _ = context.Background
 
 const MyInt = 1337
 const Name = "Mark Zuckerberg"

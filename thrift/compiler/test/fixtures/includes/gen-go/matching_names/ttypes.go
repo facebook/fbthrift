@@ -19,7 +19,7 @@ var _ = thrift.ZERO
 var _ = fmt.Printf
 var _ = sync.Mutex{}
 var _ = bytes.Equal
-var _ = context.Context
+var _ = context.Background
 
 var _ = IncludesAlso0.GoUnusedProtection__
 var GoUnusedProtection__ int;
