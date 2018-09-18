@@ -21,6 +21,7 @@
 
 #pragma once
 
+#include <iosfwd>
 #include <string>
 #include <type_traits>
 #include <utility>
@@ -60,6 +61,11 @@ T exchange(T& obj, U&& new_value) {
 //
 //  mimic: folly::stripLeftMargin
 std::string strip_left_margin(std::string const& s);
+
+//  json_quote_ascii
+//
+//  Emits a json quoted-string given an input ascii string.
+std::ostream& json_quote_ascii(std::ostream& o, std::string const& s);
 
 namespace detail {
 

@@ -21,6 +21,8 @@
 
 #include <thrift/compiler/util.h>
 
+#include <ostream>
+
 #include <boost/algorithm/string/join.hpp>
 #include <boost/algorithm/string/split.hpp>
 
@@ -68,6 +70,35 @@ std::string strip_left_margin(std::string const& s) {
 
   // step: join
   return boost::algorithm::join(lines, "\n");
+}
+
+std::ostream& json_quote_ascii(std::ostream& o, std::string const& s) {
+  o << "\"";
+  for (char const c : s) {
+    switch (c) {
+      // clang-format off
+      case '"':  o << "\\\""; break;
+      case '\\': o << "\\\\"; break;
+      case '\b': o << "\\b";  break;
+      case '\f': o << "\\f";  break;
+      case '\n': o << "\\n";  break;
+      case '\r': o << "\\r";  break;
+      // clang-format on
+      default: {
+        uint8_t const b = uint8_t(c);
+        if (!(b >= 0x20 && b < 0x80)) {
+          constexpr auto const hex = "0123456789abcdef";
+          auto const c1 = char(hex[(b >> 4) & 0x0f]);
+          auto const c0 = char(hex[(b >> 0) & 0x0f]);
+          o << "\\u00" << c1 << c0;
+        } else {
+          o << c;
+        }
+      }
+    }
+  }
+  o << "\"";
+  return o;
 }
 
 } // namespace compiler

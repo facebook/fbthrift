@@ -22,6 +22,7 @@
 #include <thrift/compiler/util.h>
 
 #include <map>
+#include <sstream>
 #include <string>
 
 #include <boost/regex.hpp>
@@ -196,6 +197,14 @@ TEST(String, strip_left_margin_no_post_whitespace) {
   EXPECT_EQ("\n      hi there bob!\n        \n      so long!  ", input);
   auto expected = "hi there bob!\n  \nso long!  ";
   EXPECT_EQ(expected, strip_left_margin(input));
+}
+
+TEST_F(UtilTest, json_quote_ascii) {
+  auto const input = "the\bquick\"brown\nfox\001jumps\201over";
+  auto const expected = "\"the\\bquick\\\"brown\\nfox\\u0001jumps\\u0081over\"";
+  std::ostringstream actual;
+  json_quote_ascii(actual, input);
+  EXPECT_EQ(expected, actual.str());
 }
 
 TEST_F(UtilTest, scope_guard_empty) {
