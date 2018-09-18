@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+#include <thrift/test/gen-cpp2/structs_terse_types.h>
 #include <thrift/test/gen-cpp2/structs_types.h>
 
 #include <gtest/gtest.h>
@@ -22,6 +23,11 @@ using namespace apache::thrift::test;
 using namespace folly;
 
 class StructTest : public testing::Test {};
+
+TEST_F(StructTest, compilation_terse_writes_refs_shared) {
+  BasicRefsSharedTerseWrites a;
+  (void)a;
+}
 
 TEST_F(StructTest, copy_ctor_refs_annot_cpp_noexcept_move_ctor) {
   {

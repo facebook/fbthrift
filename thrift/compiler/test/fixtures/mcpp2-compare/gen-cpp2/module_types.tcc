@@ -4524,7 +4524,7 @@ uint32_t MyIncludedStruct::serializedSize(Protocol_ const* prot_) const {
   }
   xfer += prot_->serializedFieldSize("MyIncludedStruct", apache::thrift::protocol::T_STRUCT, 2);
   xfer += ::apache::thrift::Cpp2Ops<  ::some::valid::ns::AStruct>::serializedSize(prot_, &this->MyIncludedStruct);
-  if (!this->ARefField.empty()) {
+  if (this->ARefField) {
     xfer += prot_->serializedFieldSize("ARefField", apache::thrift::protocol::T_STRUCT, 3);
     if (this->ARefField) {
       xfer += ::apache::thrift::Cpp2Ops<  ::some::valid::ns::AStruct>::serializedSize(prot_, this->ARefField.get());
@@ -4550,7 +4550,7 @@ uint32_t MyIncludedStruct::serializedSizeZC(Protocol_ const* prot_) const {
   }
   xfer += prot_->serializedFieldSize("MyIncludedStruct", apache::thrift::protocol::T_STRUCT, 2);
   xfer += ::apache::thrift::Cpp2Ops<  ::some::valid::ns::AStruct>::serializedSizeZC(prot_, &this->MyIncludedStruct);
-  if (!this->ARefField.empty()) {
+  if (this->ARefField) {
     xfer += prot_->serializedFieldSize("ARefField", apache::thrift::protocol::T_STRUCT, 3);
     if (this->ARefField) {
       xfer += ::apache::thrift::Cpp2Ops<  ::some::valid::ns::AStruct>::serializedSizeZC(prot_, this->ARefField.get());
@@ -4578,7 +4578,7 @@ uint32_t MyIncludedStruct::write(Protocol_* prot_) const {
   xfer += prot_->writeFieldBegin("MyIncludedStruct", apache::thrift::protocol::T_STRUCT, 2);
   xfer += ::apache::thrift::Cpp2Ops<  ::some::valid::ns::AStruct>::write(prot_, &this->MyIncludedStruct);
   xfer += prot_->writeFieldEnd();
-  if (!this->ARefField.empty()) {
+  if (this->ARefField) {
     xfer += prot_->writeFieldBegin("ARefField", apache::thrift::protocol::T_STRUCT, 3);
     if (this->ARefField) {
       xfer += ::apache::thrift::Cpp2Ops<  ::some::valid::ns::AStruct>::write(prot_, this->ARefField.get());
@@ -5551,7 +5551,7 @@ uint32_t AnnotatedStruct::serializedSize(Protocol_ const* prot_) const {
   xfer += prot_->serializedStructSize("AnnotatedStruct");
   xfer += prot_->serializedFieldSize("no_annotation", apache::thrift::protocol::T_STRUCT, 1);
   xfer += ::apache::thrift::Cpp2Ops<  ::some::valid::ns::containerStruct>::serializedSize(prot_, &this->no_annotation);
-  if (!this->cpp_unique_ref.empty()) {
+  if (this->cpp_unique_ref) {
     xfer += prot_->serializedFieldSize("cpp_unique_ref", apache::thrift::protocol::T_STRUCT, 2);
     if (this->cpp_unique_ref) {
       xfer += ::apache::thrift::Cpp2Ops<  ::some::valid::ns::containerStruct>::serializedSize(prot_, this->cpp_unique_ref.get());
@@ -5561,7 +5561,7 @@ uint32_t AnnotatedStruct::serializedSize(Protocol_ const* prot_) const {
     xfer += prot_->serializedSizeStop();
   }
   }
-  if (!this->cpp2_unique_ref.empty()) {
+  if (this->cpp2_unique_ref) {
     xfer += prot_->serializedFieldSize("cpp2_unique_ref", apache::thrift::protocol::T_STRUCT, 3);
     if (this->cpp2_unique_ref) {
       xfer += ::apache::thrift::Cpp2Ops<  ::some::valid::ns::containerStruct>::serializedSize(prot_, this->cpp2_unique_ref.get());
@@ -5571,7 +5571,7 @@ uint32_t AnnotatedStruct::serializedSize(Protocol_ const* prot_) const {
     xfer += prot_->serializedSizeStop();
   }
   }
-  if (!this->container_with_ref.empty()) {
+  if (this->container_with_ref) {
   if (!this->container_with_ref.empty()) {
     xfer += prot_->serializedFieldSize("container_with_ref", apache::thrift::protocol::T_MAP, 4);
     if (this->container_with_ref) {
@@ -5636,7 +5636,7 @@ uint32_t AnnotatedStruct::serializedSize(Protocol_ const* prot_) const {
       xfer += prot_->serializedSizeSetEnd();
     }
   }
-  if (!this->ref_type_unique.empty()) {
+  if (this->ref_type_unique) {
     xfer += prot_->serializedFieldSize("ref_type_unique", apache::thrift::protocol::T_STRUCT, 11);
     if (this->ref_type_unique) {
       xfer += ::apache::thrift::Cpp2Ops<  ::some::valid::ns::containerStruct>::serializedSize(prot_, this->ref_type_unique.get());
@@ -5654,7 +5654,7 @@ uint32_t AnnotatedStruct::serializedSize(Protocol_ const* prot_) const {
     xfer += prot_->serializedStructSize("containerStruct");
     xfer += prot_->serializedSizeStop();
   }
-  if (!this->ref_type_const.empty()) {
+  if (this->ref_type_const) {
   if (!this->ref_type_const.empty()) {
     xfer += prot_->serializedFieldSize("ref_type_const", apache::thrift::protocol::T_MAP, 13);
     if (this->ref_type_const) {
@@ -5811,7 +5811,7 @@ uint32_t AnnotatedStruct::serializedSizeZC(Protocol_ const* prot_) const {
   xfer += prot_->serializedStructSize("AnnotatedStruct");
   xfer += prot_->serializedFieldSize("no_annotation", apache::thrift::protocol::T_STRUCT, 1);
   xfer += ::apache::thrift::Cpp2Ops<  ::some::valid::ns::containerStruct>::serializedSizeZC(prot_, &this->no_annotation);
-  if (!this->cpp_unique_ref.empty()) {
+  if (this->cpp_unique_ref) {
     xfer += prot_->serializedFieldSize("cpp_unique_ref", apache::thrift::protocol::T_STRUCT, 2);
     if (this->cpp_unique_ref) {
       xfer += ::apache::thrift::Cpp2Ops<  ::some::valid::ns::containerStruct>::serializedSizeZC(prot_, this->cpp_unique_ref.get());
@@ -5821,7 +5821,7 @@ uint32_t AnnotatedStruct::serializedSizeZC(Protocol_ const* prot_) const {
     xfer += prot_->serializedSizeStop();
   }
   }
-  if (!this->cpp2_unique_ref.empty()) {
+  if (this->cpp2_unique_ref) {
     xfer += prot_->serializedFieldSize("cpp2_unique_ref", apache::thrift::protocol::T_STRUCT, 3);
     if (this->cpp2_unique_ref) {
       xfer += ::apache::thrift::Cpp2Ops<  ::some::valid::ns::containerStruct>::serializedSizeZC(prot_, this->cpp2_unique_ref.get());
@@ -5831,7 +5831,7 @@ uint32_t AnnotatedStruct::serializedSizeZC(Protocol_ const* prot_) const {
     xfer += prot_->serializedSizeStop();
   }
   }
-  if (!this->container_with_ref.empty()) {
+  if (this->container_with_ref) {
   if (!this->container_with_ref.empty()) {
     xfer += prot_->serializedFieldSize("container_with_ref", apache::thrift::protocol::T_MAP, 4);
     if (this->container_with_ref) {
@@ -5896,7 +5896,7 @@ uint32_t AnnotatedStruct::serializedSizeZC(Protocol_ const* prot_) const {
       xfer += prot_->serializedSizeSetEnd();
     }
   }
-  if (!this->ref_type_unique.empty()) {
+  if (this->ref_type_unique) {
     xfer += prot_->serializedFieldSize("ref_type_unique", apache::thrift::protocol::T_STRUCT, 11);
     if (this->ref_type_unique) {
       xfer += ::apache::thrift::Cpp2Ops<  ::some::valid::ns::containerStruct>::serializedSizeZC(prot_, this->ref_type_unique.get());
@@ -5914,7 +5914,7 @@ uint32_t AnnotatedStruct::serializedSizeZC(Protocol_ const* prot_) const {
     xfer += prot_->serializedStructSize("containerStruct");
     xfer += prot_->serializedSizeStop();
   }
-  if (!this->ref_type_const.empty()) {
+  if (this->ref_type_const) {
   if (!this->ref_type_const.empty()) {
     xfer += prot_->serializedFieldSize("ref_type_const", apache::thrift::protocol::T_MAP, 13);
     if (this->ref_type_const) {
@@ -6072,7 +6072,7 @@ uint32_t AnnotatedStruct::write(Protocol_* prot_) const {
   xfer += prot_->writeFieldBegin("no_annotation", apache::thrift::protocol::T_STRUCT, 1);
   xfer += ::apache::thrift::Cpp2Ops<  ::some::valid::ns::containerStruct>::write(prot_, &this->no_annotation);
   xfer += prot_->writeFieldEnd();
-  if (!this->cpp_unique_ref.empty()) {
+  if (this->cpp_unique_ref) {
     xfer += prot_->writeFieldBegin("cpp_unique_ref", apache::thrift::protocol::T_STRUCT, 2);
     if (this->cpp_unique_ref) {
       xfer += ::apache::thrift::Cpp2Ops<  ::some::valid::ns::containerStruct>::write(prot_, this->cpp_unique_ref.get());
@@ -6084,7 +6084,7 @@ uint32_t AnnotatedStruct::write(Protocol_* prot_) const {
     }
     xfer += prot_->writeFieldEnd();
   }
-  if (!this->cpp2_unique_ref.empty()) {
+  if (this->cpp2_unique_ref) {
     xfer += prot_->writeFieldBegin("cpp2_unique_ref", apache::thrift::protocol::T_STRUCT, 3);
     if (this->cpp2_unique_ref) {
       xfer += ::apache::thrift::Cpp2Ops<  ::some::valid::ns::containerStruct>::write(prot_, this->cpp2_unique_ref.get());
@@ -6096,7 +6096,7 @@ uint32_t AnnotatedStruct::write(Protocol_* prot_) const {
     }
     xfer += prot_->writeFieldEnd();
   }
-  if (!this->container_with_ref.empty()) {
+  if (this->container_with_ref) {
   if (!this->container_with_ref.empty()) {
     xfer += prot_->writeFieldBegin("container_with_ref", apache::thrift::protocol::T_MAP, 4);
     if (this->container_with_ref) {
@@ -6172,7 +6172,7 @@ uint32_t AnnotatedStruct::write(Protocol_* prot_) const {
     }
     xfer += prot_->writeFieldEnd();
   }
-  if (!this->ref_type_unique.empty()) {
+  if (this->ref_type_unique) {
     xfer += prot_->writeFieldBegin("ref_type_unique", apache::thrift::protocol::T_STRUCT, 11);
     if (this->ref_type_unique) {
       xfer += ::apache::thrift::Cpp2Ops<  ::some::valid::ns::containerStruct>::write(prot_, this->ref_type_unique.get());
@@ -6194,7 +6194,7 @@ uint32_t AnnotatedStruct::write(Protocol_* prot_) const {
     xfer += prot_->writeFieldStop();
   }
   xfer += prot_->writeFieldEnd();
-  if (!this->ref_type_const.empty()) {
+  if (this->ref_type_const) {
   if (!this->ref_type_const.empty()) {
     xfer += prot_->writeFieldBegin("ref_type_const", apache::thrift::protocol::T_MAP, 13);
     if (this->ref_type_const) {

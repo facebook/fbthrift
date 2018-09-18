@@ -15,7 +15,7 @@
   limitations under the License.
 
 %><%#field:cpp_ref?%>
-  if (!this-><%field:name%>.empty()) {
+  if (this-><%field:name%>) {
 <%/field:cpp_ref?%>
 <%#type:resolves_to_container?%>
   if (!this-><%field:name%>.empty()) {
