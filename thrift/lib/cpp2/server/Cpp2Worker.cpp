@@ -72,7 +72,8 @@ void Cpp2Worker::onNewConnection(
           tinfo,
           server_);
       peekingManager->start(std::move(sock), server_->getObserver());
-    } break;
+      break;
+    }
     case wangle::SecureTransportType::TLS:
       // Use the announced protocol to determine the correct handler
       if (!nextProtocolName.empty()) {

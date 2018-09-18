@@ -39,7 +39,8 @@ struct dynamic_converter_impl<type_class::enumeration> {
           throw std::invalid_argument("invalid enum value");
         }
         out = s;
-      } break;
+        break;
+      }
       case dynamic_format::JSON_1:
         out = static_cast<typename fatal::enum_traits<T>::int_type>(input);
         break;

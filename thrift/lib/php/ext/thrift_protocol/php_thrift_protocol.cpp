@@ -435,7 +435,7 @@ void binary_deserialize(int8_t thrift_typeID, PHPInputTransport& transport, zval
       }
       binary_deserialize_spec(return_value, transport, Z_ARRVAL_P(spec));
       return;
-    } break;
+    }
     case T_BOOL: {
       uint8_t c;
       transport.readBytes(&c, 1);

@@ -60,14 +60,16 @@ class EnvelopeUtil {
           reader.setInput(payload.get());
           reader.readMessageBegin(metadata->name, mtype, seqId);
           sz = reader.getCurrentPosition().getCurrentPosition();
-        } break;
+          break;
+        }
         case 0x82: {
           metadata->protocol = ProtocolId::COMPACT;
           CompactProtocolReader reader;
           reader.setInput(payload.get());
           reader.readMessageBegin(metadata->name, mtype, seqId);
           sz = reader.getCurrentPosition().getCurrentPosition();
-        } break;
+          break;
+        }
         // TODO: Add Frozen2 case.
         default:
           LOG(ERROR) << "Unknown protocol: " << protByte;
