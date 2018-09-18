@@ -81,6 +81,13 @@ bool is_implicit_ref(const t_type* type) {
 bool is_cpp_ref(const t_field* f) {
   return f->annotations_.count("cpp.ref") ||
       f->annotations_.count("cpp2.ref") ||
+      f->annotations_.count("cpp.ref_type") ||
+      f->annotations_.count("cpp2.ref_type") || is_implicit_ref(f->get_type());
+}
+
+bool is_cpp_ref_unique_either(const t_field* f) {
+  return f->annotations_.count("cpp.ref") ||
+      f->annotations_.count("cpp2.ref") ||
       (f->annotations_.count("cpp.ref_type") &&
        f->annotations_.at("cpp.ref_type") == "unique") ||
       (f->annotations_.count("cpp2.ref_type") &&
@@ -498,7 +505,8 @@ class mstch_cpp2_field : public mstch_field {
     return cache_->parsed_options_.count("terse_writes") != 0 &&
         field_->get_req() != t_field::e_req::T_OPTIONAL &&
         field_->get_req() != t_field::e_req::T_REQUIRED &&
-        (is_cpp_ref(field_) || (!t->is_struct() && !t->is_xception()));
+        (is_cpp_ref_unique_either(field_) ||
+         (!t->is_struct() && !t->is_xception()));
   }
 };
 
@@ -524,6 +532,8 @@ class mstch_cpp2_struct : public mstch_struct {
             {"struct:is_struct_orderable?",
              &mstch_cpp2_struct::is_struct_orderable},
             {"struct:fields_contain_cpp_ref?", &mstch_cpp2_struct::has_cpp_ref},
+            {"struct:fields_contain_cpp_ref_unique_either?",
+             &mstch_cpp2_struct::has_cpp_ref_unique_either},
             {"struct:cpp_methods", &mstch_cpp2_struct::cpp_methods},
             {"struct:cpp_declare_hash", &mstch_cpp2_struct::cpp_declare_hash},
             {"struct:cpp_declare_equal_to",
@@ -623,6 +633,14 @@ class mstch_cpp2_struct : public mstch_struct {
   mstch::node has_cpp_ref() {
     for (auto const* f : strct_->get_members()) {
       if (is_cpp_ref(f)) {
+        return true;
+      }
+    }
+    return false;
+  }
+  mstch::node has_cpp_ref_unique_either() {
+    for (auto const* f : strct_->get_members()) {
+      if (is_cpp_ref_unique_either(f)) {
         return true;
       }
     }

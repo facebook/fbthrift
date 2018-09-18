@@ -33,14 +33,14 @@
 
 <%^struct:union?%>
 <%^struct:cpp_noncopyable%>
-<%#struct:fields_contain_cpp_ref?%>
+<%#struct:fields_contain_cpp_ref_unique_either?%>
 <% > module_types_cpp/copy_ctor%>
 
 
 <% > module_types_cpp/assign_overload%>
 
 
-<%/struct:fields_contain_cpp_ref?%>
+<%/struct:fields_contain_cpp_ref_unique_either?%>
 <%/struct:cpp_noncopyable%>
 <% > module_types_cpp/declare_members%>
 
