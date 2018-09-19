@@ -84,13 +84,13 @@ class TException extends Exception {
             $xfer += $key->read($input);
             break;
           case TType::MAP:
-            $xfer += $this->_readMap($key, $kspec, $input);
+            $xfer += $this->_readMap(&$key, $kspec, $input);
             break;
           case TType::LST:
-            $xfer += $this->_readList($key, $kspec, $input, false);
+            $xfer += $this->_readList(&$key, $kspec, $input, false);
             break;
           case TType::SET:
-            $xfer += $this->_readList($key, $kspec, $input, true);
+            $xfer += $this->_readList(&$key, $kspec, $input, true);
             break;
         }
       }
@@ -104,13 +104,13 @@ class TException extends Exception {
             $xfer += $val->read($input);
             break;
           case TType::MAP:
-            $xfer += $this->_readMap($val, $vspec, $input);
+            $xfer += $this->_readMap(&$val, $vspec, $input);
             break;
           case TType::LST:
-            $xfer += $this->_readList($val, $vspec, $input, false);
+            $xfer += $this->_readList(&$val, $vspec, $input, false);
             break;
           case TType::SET:
-            $xfer += $this->_readList($val, $vspec, $input, true);
+            $xfer += $this->_readList(&$val, $vspec, $input, true);
             break;
         }
       }
@@ -150,13 +150,13 @@ class TException extends Exception {
             $xfer += $elem->read($input);
             break;
           case TType::MAP:
-            $xfer += $this->_readMap($elem, $espec, $input);
+            $xfer += $this->_readMap(&$elem, $espec, $input);
             break;
           case TType::LST:
-            $xfer += $this->_readList($elem, $espec, $input, false);
+            $xfer += $this->_readList(&$elem, $espec, $input, false);
             break;
           case TType::SET:
-            $xfer += $this->_readList($elem, $espec, $input, true);
+            $xfer += $this->_readList(&$elem, $espec, $input, true);
             break;
         }
       }
@@ -201,15 +201,15 @@ class TException extends Exception {
                 $xfer += $this->$var->read($input);
                 break;
               case TType::MAP:
-                $xfer += $this->_readMap($this->$var, $fspec, $input);
+                $xfer += $this->_readMap(&$this->$var, $fspec, $input);
                 break;
               case TType::LST:
                 $xfer +=
-                  $this->_readList($this->$var, $fspec, $input, false);
+                  $this->_readList(&$this->$var, $fspec, $input, false);
                 break;
               case TType::SET:
                 $xfer +=
-                  $this->_readList($this->$var, $fspec, $input, true);
+                  $this->_readList(&$this->$var, $fspec, $input, true);
                 break;
             }
           }

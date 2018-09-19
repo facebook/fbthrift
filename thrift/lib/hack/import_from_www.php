@@ -180,7 +180,7 @@ class ImportThriftLibFromWWW {
         }
 
         if (!$includes->isEmpty()) {
-          sort($includes);
+          sort(&$includes);
           $hacklib = 'require_once ($GLOBALS["HACKLIB_ROOT"]);';
           $thrift_root_path = '__DIR__';
 

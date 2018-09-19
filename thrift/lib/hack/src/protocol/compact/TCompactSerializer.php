@@ -52,9 +52,9 @@ class TCompactSerializer extends TProtocolSerializer {
       }
       $unused_name = $unused_type = $unused_seqid = null;
       $protocol->readMessageBegin(
-        $unused_name,
-        $unused_type,
-        $unused_seqid,
+        &$unused_name,
+        &$unused_type,
+        &$unused_seqid,
       );
     } else {
       $object->write($protocol);

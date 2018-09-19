@@ -289,16 +289,16 @@ class TSocket extends TTransport
       $handle = @pfsockopen(
         $this->host_,
         $this->port_,
-        $this->errno_,
-        $this->errstr_,
+        &$this->errno_,
+        &$this->errstr_,
         $this->sendTimeout_ / 1000.0,
       );
     } else {
       $handle = @fsockopen(
         $this->host_,
         $this->port_,
-        $this->errno_,
-        $this->errstr_,
+        &$this->errno_,
+        &$this->errstr_,
         $this->sendTimeout_ / 1000.0,
       );
     }
@@ -323,7 +323,7 @@ class TSocket extends TTransport
     // IPv6 is returned [2401:db00:20:702c:face:0:7:0]:port
     // or when stream_socket_get_name is buggy it is
     // 2401:db00:20:702c:face:0:7:0:port
-    $this->lport_ = end(explode(":", $sock_name));
+    $this->lport_ = end(&explode(":", $sock_name));
 
     stream_set_timeout($this->handle_, 0, $this->sendTimeout_ * 1000);
     $this->sendTimeoutSet_ = true;
@@ -394,7 +394,7 @@ class TSocket extends TTransport
     }
 
     $excpt = array();
-    $ret = stream_select($read, $write, $excpt, 0, 0);
+    $ret = stream_select(&$read, &$write, &$excpt, 0, 0);
     if ($ret === false) {
       $error = 'TSocket: stream_select failed on socket.';
       if ($this->debug_) {

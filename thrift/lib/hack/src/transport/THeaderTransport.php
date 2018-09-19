@@ -303,7 +303,7 @@ class THeaderTransport extends TFramedTransport
     int &$index,
     int $limit,
   ): string {
-    $str_sz = $this->readVarint($data, $index);
+    $str_sz = $this->readVarint($data, &$index);
     if ($str_sz + $index > $limit) {
       throw new TTransportException(
         'String read too long',
@@ -333,8 +333,8 @@ class THeaderTransport extends TFramedTransport
     }
     $end_of_header = $index + $header_size;
 
-    $this->protoId_ = $this->readVarint($data, $index);
-    $numHeaders = $this->readVarint($data, $index);
+    $this->protoId_ = $this->readVarint($data, &$index);
+    $numHeaders = $this->readVarint($data, &$index);
     if ($this->protoId_ === 1 &&
         $this->clientType_ !== self::HTTP_CLIENT_TYPE) {
       throw new TTransportException(
@@ -345,7 +345,7 @@ class THeaderTransport extends TFramedTransport
 
     // Read in the headers.  Data for each header varies.
     for ($i = 0; $i < $numHeaders; $i++) {
-      $transId = $this->readVarint($data, $index);
+      $transId = $this->readVarint($data, &$index);
       switch ($transId) {
         case self::ZLIB_TRANSFORM:
         case self::SNAPPY_TRANSFORM:
@@ -372,13 +372,13 @@ class THeaderTransport extends TFramedTransport
     // Read the info headers
     $this->readHeaders = Map {};
     while ($index < $end_of_header) {
-      $infoId = $this->readVarint($data, $index);
+      $infoId = $this->readVarint($data, &$index);
       switch ($infoId) {
         case self::INFO_KEYVALUE:
-          $num_keys = $this->readVarint($data, $index);
+          $num_keys = $this->readVarint($data, &$index);
           for ($i = 0; $i < $num_keys; $i++) {
-            $strKey = $this->readString($data, $index, $end_of_header);
-            $strValue = $this->readString($data, $index, $end_of_header);
+            $strKey = $this->readString($data, &$index, $end_of_header);
+            $strValue = $this->readString($data, &$index, $end_of_header);
             $this->readHeaders[$strKey] = $strValue;
           }
           break;

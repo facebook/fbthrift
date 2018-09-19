@@ -10,7 +10,7 @@ trait ThriftUnionSerializationTrait implements \IThriftStruct {
       $protocol,
       $this,
       /* HH_IGNORE_ERROR[4053] every thrift union has a _type field */
-      $this->_type
+      &$this->_type
     );
   }
 

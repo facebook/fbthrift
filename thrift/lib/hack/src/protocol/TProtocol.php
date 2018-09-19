@@ -209,26 +209,26 @@ abstract class TProtocol {
     $_ref = null;
     switch ($type) {
       case TType::BOOL:
-        return $this->readBool($_ref);
+        return $this->readBool(&$_ref);
       case TType::BYTE:
-        return $this->readByte($_ref);
+        return $this->readByte(&$_ref);
       case TType::I16:
-        return $this->readI16($_ref);
+        return $this->readI16(&$_ref);
       case TType::I32:
-        return $this->readI32($_ref);
+        return $this->readI32(&$_ref);
       case TType::I64:
-        return $this->readI64($_ref);
+        return $this->readI64(&$_ref);
       case TType::DOUBLE:
-        return $this->readDouble($_ref);
+        return $this->readDouble(&$_ref);
       case TType::FLOAT:
-        return $this->readFloat($_ref);
+        return $this->readFloat(&$_ref);
       case TType::STRING:
-        return $this->readString($_ref);
+        return $this->readString(&$_ref);
       case TType::STRUCT: {
-          $result = $this->readStructBegin($_ref);
+          $result = $this->readStructBegin(&$_ref);
           while (true) {
             $ftype = null;
-            $result += $this->readFieldBegin($_ref, $ftype, $_ref);
+            $result += $this->readFieldBegin(&$_ref, &$ftype, &$_ref);
             if ($ftype == TType::STOP) {
               break;
             }
@@ -242,7 +242,7 @@ abstract class TProtocol {
           $keyType = null;
           $valType = null;
           $size = 0;
-          $result = $this->readMapBegin($keyType, $valType, $size);
+          $result = $this->readMapBegin(&$keyType, &$valType, &$size);
           for ($i = 0; $size === null || $i < $size; $i++) {
             if ($size === null && !$this->readMapHasNext()) {
               break;
@@ -256,7 +256,7 @@ abstract class TProtocol {
       case TType::SET: {
           $elemType = null;
           $size = 0;
-          $result = $this->readSetBegin($elemType, $size);
+          $result = $this->readSetBegin(&$elemType, &$size);
           for ($i = 0; $size === null || $i < $size; $i++) {
             if ($size === null && !$this->readSetHasNext()) {
               break;
@@ -269,7 +269,7 @@ abstract class TProtocol {
       case TType::LST: {
           $elemType = null;
           $size = 0;
-          $result = $this->readListBegin($elemType, $size);
+          $result = $this->readListBegin(&$elemType, &$size);
           for ($i = 0; $size === null || $i < $size; $i++) {
             if ($size === null && !$this->readSetHasNext()) {
               break;

@@ -23,7 +23,7 @@ abstract class ThriftAsyncProcessor extends ThriftProcessorBase
     $fname = '';
     $mtype = 0;
 
-    $input->readMessageBegin($fname, $mtype, $rseqid);
+    $input->readMessageBegin(&$fname, &$mtype, &$rseqid);
     $methodname = 'process_'.$fname;
     if (!method_exists($this, $methodname)) {
       $handler_ctx = $this->eventHandler_->getHandlerContext($fname);

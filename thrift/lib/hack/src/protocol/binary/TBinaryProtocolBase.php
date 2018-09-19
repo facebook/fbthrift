@@ -305,7 +305,7 @@ abstract class TBinaryProtocolBase extends TProtocol {
 
   public function readMessageBegin(&$name, &$type, &$seqid) {
     $sz = 0;
-    $result = $this->readI32($sz);
+    $result = $this->readI32(&$sz);
     if ($sz < 0) {
       $version = $sz & self::VERSION_MASK;
       if ($version != self::VERSION_1) {
@@ -315,7 +315,7 @@ abstract class TBinaryProtocolBase extends TProtocol {
         );
       }
       $type = $sz & 0x000000ff;
-      $result += $this->readString($name) + $this->readI32($seqid);
+      $result += $this->readString(&$name) + $this->readI32(&$seqid);
     } else {
       if ($this->strictRead_) {
         throw new TProtocolException(
@@ -334,7 +334,7 @@ abstract class TBinaryProtocolBase extends TProtocol {
         }
         // Handle pre-versioned input
         $name = $this->trans_->readAll($sz);
-        $result += $sz + $this->readByte($type) + $this->readI32($seqid);
+        $result += $sz + $this->readByte(&$type) + $this->readI32(&$seqid);
       }
     }
     $this->sequenceID = $seqid;
@@ -356,12 +356,12 @@ abstract class TBinaryProtocolBase extends TProtocol {
   }
 
   public function readFieldBegin(&$name, &$fieldType, &$fieldId) {
-    $result = $this->readByte($fieldType);
+    $result = $this->readByte(&$fieldType);
     if ($fieldType == TType::STOP) {
       $fieldId = 0;
       return $result;
     }
-    $result += $this->readI16($fieldId);
+    $result += $this->readI16(&$fieldId);
     return $result;
   }
 
@@ -371,9 +371,9 @@ abstract class TBinaryProtocolBase extends TProtocol {
 
   public function readMapBegin(&$keyType, &$valType, &$size) {
     return
-      $this->readByte($keyType) +
-      $this->readByte($valType) +
-      $this->readI32($size);
+      $this->readByte(&$keyType) +
+      $this->readByte(&$valType) +
+      $this->readI32(&$size);
   }
 
   public function readMapEnd() {
@@ -381,7 +381,7 @@ abstract class TBinaryProtocolBase extends TProtocol {
   }
 
   public function readListBegin(&$elemType, &$size) {
-    return $this->readByte($elemType) + $this->readI32($size);
+    return $this->readByte(&$elemType) + $this->readI32(&$size);
   }
 
   public function readListEnd() {
@@ -389,7 +389,7 @@ abstract class TBinaryProtocolBase extends TProtocol {
   }
 
   public function readSetBegin(&$elemType, &$size) {
-    return $this->readByte($elemType) + $this->readI32($size);
+    return $this->readByte(&$elemType) + $this->readI32(&$size);
   }
 
   public function readSetEnd() {
@@ -515,7 +515,7 @@ abstract class TBinaryProtocolBase extends TProtocol {
 
   public function readString(&$value) {
     $len = 0;
-    $result = $this->readI32($len);
+    $result = $this->readI32(&$len);
     if ($len) {
       $value = $this->trans_->readAll($len);
     } else {

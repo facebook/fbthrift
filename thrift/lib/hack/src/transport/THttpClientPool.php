@@ -99,7 +99,7 @@ class THttpClientPool extends THttpClient {
    */
   public function flush(): void {
     if ($this->randomize_) {
-      shuffle($this->servers_);
+      shuffle(&$this->servers_);
     }
 
     foreach ($this->servers_ as $server) {

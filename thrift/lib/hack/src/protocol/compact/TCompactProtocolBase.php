@@ -172,7 +172,7 @@ abstract class TCompactProtocolBase extends TProtocol {
   }
 
   public function writeStructEnd() {
-    $old_values = array_pop($this->structs);
+    $old_values = array_pop(&$this->structs);
     $this->state = $old_values[0];
     $this->lastFid = $old_values[1];
     return 0;
@@ -242,7 +242,7 @@ abstract class TCompactProtocolBase extends TProtocol {
   }
 
   public function writeCollectionEnd() {
-    $this->state = array_pop($this->containers);
+    $this->state = array_pop(&$this->containers);
     return 0;
   }
 
@@ -331,7 +331,7 @@ abstract class TCompactProtocolBase extends TProtocol {
   }
 
   public function readFieldBegin(&$name, &$field_type, &$field_id) {
-    $result = $this->readUByte($field_type);
+    $result = $this->readUByte(&$field_type);
     $delta = $field_type >> 4;
     $field_type = $field_type & 0x0f;
 
@@ -342,7 +342,7 @@ abstract class TCompactProtocolBase extends TProtocol {
     }
 
     if ($delta == 0) {
-      $result += $this->readI16($field_id);
+      $result += $this->readI16(&$field_id);
     } else {
       $field_id = $this->lastFid + $delta;
     }
@@ -383,19 +383,19 @@ abstract class TCompactProtocolBase extends TProtocol {
   }
 
   public function readZigZag(&$value) {
-    $result = $this->readVarint($value);
+    $result = $this->readVarint(&$value);
     $value = $this->fromZigZag($value);
     return $result;
   }
 
   public function readMessageBegin(&$name, &$type, &$seqid) {
     $protoId = 0;
-    $result = $this->readUByte($protoId);
+    $result = $this->readUByte(&$protoId);
     if ($protoId != self::PROTOCOL_ID) {
       throw new TProtocolException('Bad protocol id in TCompact message');
     }
     $verType = 0;
-    $result += $this->readUByte($verType);
+    $result += $this->readUByte(&$verType);
     $type =
       ($verType & self::TYPE_MASK) >>
       self::TYPE_SHIFT_AMOUNT;
@@ -404,8 +404,8 @@ abstract class TCompactProtocolBase extends TProtocol {
           $this->version >= self::VERSION_LOW)) {
       throw new TProtocolException('Bad version in TCompact message');
     }
-    $result += $this->readVarint($seqid);
-    $result += $this->readString($name);
+    $result += $this->readVarint(&$seqid);
+    $result += $this->readString(&$name);
 
     return $result;
   }
@@ -423,7 +423,7 @@ abstract class TCompactProtocolBase extends TProtocol {
   }
 
   public function readStructEnd() {
-    $last = array_pop($this->structs);
+    $last = array_pop(&$this->structs);
     $this->state = $last[0];
     $this->lastFid = $last[1];
     return 0;
@@ -431,11 +431,11 @@ abstract class TCompactProtocolBase extends TProtocol {
 
   public function readCollectionBegin(&$type, &$size) {
     $sizeType = 0;
-    $result = $this->readUByte($sizeType);
+    $result = $this->readUByte(&$sizeType);
     $size = $sizeType >> 4;
     $type = $this->getTType($sizeType);
     if ($size == 15) {
-      $result += $this->readVarint($size);
+      $result += $this->readVarint(&$size);
     }
     $this->containers[] = $this->state;
     $this->state = self::STATE_CONTAINER_READ;
@@ -444,10 +444,10 @@ abstract class TCompactProtocolBase extends TProtocol {
   }
 
   public function readMapBegin(&$key_type, &$val_type, &$size) {
-    $result = $this->readVarint($size);
+    $result = $this->readVarint(&$size);
     $types = 0;
     if ($size > 0) {
-      $result += $this->readUByte($types);
+      $result += $this->readUByte(&$types);
     }
     $val_type = $this->getTType($types);
     $key_type = $this->getTType($types >> 4);
@@ -458,7 +458,7 @@ abstract class TCompactProtocolBase extends TProtocol {
   }
 
   public function readCollectionEnd() {
-    $this->state = array_pop($this->containers);
+    $this->state = array_pop(&$this->containers);
     return 0;
   }
 
@@ -467,7 +467,7 @@ abstract class TCompactProtocolBase extends TProtocol {
   }
 
   public function readListBegin(&$elem_type, &$size) {
-    return $this->readCollectionBegin($elem_type, $size);
+    return $this->readCollectionBegin(&$elem_type, &$size);
   }
 
   public function readListEnd() {
@@ -475,7 +475,7 @@ abstract class TCompactProtocolBase extends TProtocol {
   }
 
   public function readSetBegin(&$elem_type, &$size) {
-    return $this->readCollectionBegin($elem_type, $size);
+    return $this->readCollectionBegin(&$elem_type, &$size);
   }
 
   public function readSetEnd() {
@@ -487,7 +487,7 @@ abstract class TCompactProtocolBase extends TProtocol {
       $value = $this->boolValue;
       return 0;
     } else if ($this->state == self::STATE_CONTAINER_READ) {
-      $result = $this->readByte($value);
+      $result = $this->readByte(&$value);
       $value = $value == self::COMPACT_TRUE;
       return $result;
     } else {
@@ -496,11 +496,11 @@ abstract class TCompactProtocolBase extends TProtocol {
   }
 
   public function readI16(&$value) {
-    return $this->readZigZag($value);
+    return $this->readZigZag(&$value);
   }
 
   public function readI32(&$value) {
-    return $this->readZigZag($value);
+    return $this->readZigZag(&$value);
   }
 
   public function readDouble(&$value) {
@@ -523,7 +523,7 @@ abstract class TCompactProtocolBase extends TProtocol {
 
   public function readString(&$value) {
     $len = 0;
-    $result = $this->readVarint($len);
+    $result = $this->readVarint(&$len);
     if ($len) {
       $value = $this->trans_->readAll($len);
     } else {

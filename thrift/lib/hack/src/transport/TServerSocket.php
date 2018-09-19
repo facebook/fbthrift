@@ -38,8 +38,8 @@ class TServerSocket {
       $errstr = '';
       $this->handle = stream_socket_server(
         'tcp://'.$addr.':'.$this->port,
-        $errno,
-        $errstr,
+        &$errno,
+        &$errstr,
         STREAM_SERVER_BIND | STREAM_SERVER_LISTEN,
       );
       if ($this->handle !== false) {
