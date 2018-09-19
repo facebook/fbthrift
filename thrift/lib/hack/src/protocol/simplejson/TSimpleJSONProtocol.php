@@ -193,47 +193,47 @@ class TSimpleJSONProtocol extends TProtocol {
     $ctx = $this->getContext();
     $ret = $ctx->writeSeparator();
     $value = (string) $value;
-    $sb = new StringBuffer();
-    $sb->append('"');
+    $sb = '';
+    $sb .= '"';
     $len = strlen($value);
     for ($i = 0; $i < $len; $i++) {
       $c = $value[$i];
       $ord = ord($c);
       switch ($ord) {
         case 8:
-          $sb->append('\b');
+          $sb .= '\b';
           break;
         case 9:
-          $sb->append('\t');
+          $sb .= '\t';
           break;
         case 10:
-          $sb->append('\n');
+          $sb .= '\n';
           break;
         case 12:
-          $sb->append('\f');
+          $sb .= '\f';
           break;
         case 13:
-          $sb->append('\r');
+          $sb .= '\r';
           break;
         case 34:
           // "
         case 92:
           // \
-          $sb->append('\\');
-          $sb->append($c);
+          $sb .= '\\';
+          $sb .= $c;
           break;
         default:
           if ($ord < 32 || $ord > 126) {
-            $sb->append('\\u00');
-            $sb->append(bin2hex($c));
+            $sb .= '\\u00';
+            $sb .= bin2hex($c);
           } else {
-            $sb->append($c);
+            $sb .= $c;
           }
           break;
       }
     }
-    $sb->append('"');
-    $enc = $sb->detach();
+    $sb .= '"';
+    $enc = $sb;
     $this->trans_->write($enc);
 
     return $ret + strlen($enc);
@@ -504,7 +504,7 @@ class TSimpleJSONProtocol extends TProtocol {
     }
     $this->expectChar('"', $peek, $start);
     $count = $peek ? 1 : 0;
-    $sb = new StringBuffer();
+    $sb = '';
     $reading = true;
     while ($reading) {
       $c = $this->bufTrans->peek(1, $start + $count);
@@ -518,44 +518,42 @@ class TSimpleJSONProtocol extends TProtocol {
           switch ($c) {
             case '\\':
               $count++;
-              $sb->append('\\');
+              $sb .= '\\';
               break;
             case '"':
               $count++;
-              $sb->append('"');
+              $sb .= '"';
               break;
             case 'b':
               $count++;
-              $sb->append(chr(0x08));
+              $sb .= chr(0x08);
               break;
             case '/':
               $count++;
-              $sb->append('/');
+              $sb .= '/';
               break;
             case 'f':
               $count++;
-              $sb->append("\f");
+              $sb .= "\f";
               break;
             case 'n':
               $count++;
-              $sb->append("\n");
+              $sb .= "\n";
               break;
             case 'r':
               $count++;
-              $sb->append("\r");
+              $sb .= "\r";
               break;
             case 't':
               $count++;
-              $sb->append("\t");
+              $sb .= "\t";
               break;
             case 'u':
               $count++;
               $this->expectChar('0', true, $start + $count);
               $this->expectChar('0', true, $start + $count + 1);
               $count += 2;
-              $sb->append(
-                hex2bin($this->bufTrans->peek(2, $start + $count)),
-              );
+              $sb .= hex2bin($this->bufTrans->peek(2, $start + $count));
               $count += 2;
               break;
             default:
@@ -571,7 +569,7 @@ class TSimpleJSONProtocol extends TProtocol {
           break;
         default:
           $count++;
-          $sb->append($c);
+          $sb .= $c;
           break;
       }
     }
@@ -581,7 +579,7 @@ class TSimpleJSONProtocol extends TProtocol {
     }
 
     $this->expectChar('"', $peek, $start + $count);
-    return Pair {$sb->detach(), $count + 1};
+    return Pair {$sb, $count + 1};
   }
 
   private function skipWhitespace(bool $peek = false, int $start = 0): int {
