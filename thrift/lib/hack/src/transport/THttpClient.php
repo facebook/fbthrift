@@ -57,7 +57,7 @@ class THttpClient extends TTransport implements IThriftRemoteConn {
    *
    * @var resource
    */
-  protected string $data_;
+  protected mixed $data_;
 
   /**
    * Error message
@@ -270,7 +270,7 @@ class THttpClient extends TTransport implements IThriftRemoteConn {
         TTransportException::UNKNOWN,
       );
     }
-    return $data;
+    return (string) $data;
   }
 
   /**
