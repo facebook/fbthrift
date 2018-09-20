@@ -374,9 +374,9 @@ class t_hack_generator : public t_oop_generator {
   type_to_typehint(t_type* ttype, bool nullable = false, bool shape = false);
   std::string type_to_param_typehint(t_type* ttype, bool nullable = false);
 
-  std::string union_enum_name(t_struct* tstruct) {
+  std::string union_enum_name(t_struct* tstruct, bool decl = false) {
     // <StructName>Type
-    return hack_name(tstruct) + "Enum";
+    return hack_name(tstruct, decl) + "Enum";
   }
 
   std::string union_field_to_enum(t_struct* tstruct, t_field* tfield) {
@@ -2113,7 +2113,7 @@ void t_hack_generator::generate_php_struct_shape_methods(
       if (arraysets_ || arrays_) {
         val << source.str() << ";" << endl;
       } else {
-        val << "new Set(Keyset\\keys(" << (nullable ? "nullthrows(" : "")
+        val << "new Set(Keyset\\keys(" << (nullable ? "\\nullthrows(" : "")
             << source.str() << (nullable ? ")" : "") << "));" << endl;
       }
     } else if (t->is_map() || t->is_list()) {
@@ -2232,7 +2232,7 @@ void t_hack_generator::generate_php_struct_shape_methods(
       if (nullable) {
         val << source.str() << " === null ? null : ";
       }
-      val << type << "::__fromShape(" << (nullable ? "nullthrows(" : "")
+      val << type << "::__fromShape(" << (nullable ? "\\nullthrows(" : "")
           << source.str() << (nullable ? ")" : "") << ");" << endl;
     } else {
       val << source.str() << ";" << endl;
@@ -2424,7 +2424,7 @@ void t_hack_generator::generate_php_union_methods(
     indent(out) << "$this->_type," << endl;
     indent_down();
     indent(out) << ");" << endl;
-    indent(out) << "return nullthrows($this->" << fieldName << ");" << endl;
+    indent(out) << "return \\nullthrows($this->" << fieldName << ");" << endl;
     indent_down();
     indent(out) << "}" << endl << endl;
   }
@@ -2441,7 +2441,7 @@ void t_hack_generator::generate_php_union_enum(
   const vector<t_field*>& members = tstruct->get_members();
   vector<t_field*>::const_iterator m_iter;
 
-  out << "enum " << union_enum_name(tstruct) << ": int {" << endl;
+  out << "enum " << union_enum_name(tstruct, true) << ": int {" << endl;
 
   indent_up();
   // If no member is set
@@ -3248,13 +3248,13 @@ void t_hack_generator::generate_process_function(
              << endl
              << indent()
              << "if ($input instanceof \\TBinaryProtocolAccelerated) {" << endl
-             << indent() << "  $args = thrift_protocol_read_binary_struct("
+             << indent() << "  $args = \\thrift_protocol_read_binary_struct("
              << "$input, '" << argsname << "');" << endl
              << indent()
              << "} else if ($input instanceof \\TCompactProtocolAccelerated) {"
              << endl
              << indent()
-             << "  $args = thrift_protocol_read_compact_struct($input, '"
+             << "  $args = \\thrift_protocol_read_compact_struct($input, '"
              << argsname << "');" << endl
              << indent() << "} else {" << endl
              << indent() << "  $args = new " << argsname << "();" << endl
@@ -3324,7 +3324,7 @@ void t_hack_generator::generate_process_function(
     }
   }
   f_service_
-      << indent() << "} catch (Exception $ex) {" << endl
+      << indent() << "} catch (\\Exception $ex) {" << endl
       << indent() << "  $reply_type = \\TMessageType::EXCEPTION;" << endl
       << indent() << "  $this->eventHandler_->handlerError($handler_ctx, '"
       << fn_name << "', $ex);" << endl
@@ -3348,7 +3348,7 @@ void t_hack_generator::generate_process_function(
              << "if ($output instanceof \\TBinaryProtocolAccelerated)" << endl;
   scope_up(f_service_);
 
-  f_service_ << indent() << "thrift_protocol_write_binary($output, '"
+  f_service_ << indent() << "\\thrift_protocol_write_binary($output, '"
              << tfunction->get_name()
              << "', $reply_type, $result, $seqid, $output->isStrictWrite());"
              << endl;
@@ -3359,7 +3359,7 @@ void t_hack_generator::generate_process_function(
              << endl;
   scope_up(f_service_);
 
-  f_service_ << indent() << "thrift_protocol_write_compact($output, '"
+  f_service_ << indent() << "\\thrift_protocol_write_compact($output, '"
              << tfunction->get_name() << "', $reply_type, $result, $seqid);"
              << endl;
 
@@ -3960,7 +3960,7 @@ void t_hack_generator::_generate_service_client(
 
   string long_name = php_servicename_mangle(mangle, tservice);
   out << "trait " << long_name << "ClientBase {" << endl
-      << "  require extends ThriftClientBase;" << endl
+      << "  require extends \\ThriftClientBase;" << endl
       << endl;
   indent_up();
 
@@ -4023,7 +4023,7 @@ void t_hack_generator::_generate_service_client(
         << endl;
     scope_up(out);
 
-    out << indent() << "thrift_protocol_write_binary($this->output_, '"
+    out << indent() << "\\thrift_protocol_write_binary($this->output_, '"
         << (*f_iter)->get_name() << "', "
         << "\\TMessageType::CALL, $args, $currentseqid, "
         << "$this->output_->isStrictWrite(), "
@@ -4035,7 +4035,7 @@ void t_hack_generator::_generate_service_client(
         << endl;
     scope_up(out);
 
-    out << indent() << "thrift_protocol_write_compact($this->output_, '"
+    out << indent() << "\\thrift_protocol_write_compact($this->output_, '"
         << (*f_iter)->get_name() << "', "
         << "\\TMessageType::CALL, $args, $currentseqid, "
         << ((*f_iter)->is_oneway() ? "true" : "false") << ");" << endl;
@@ -4081,7 +4081,7 @@ void t_hack_generator::_generate_service_client(
         << indent() << "    return $currentseqid;" << endl
         << indent() << "}" << endl;
     indent_down();
-    indent(out) << "} catch (Exception $ex) {" << endl;
+    indent(out) << "} catch (\\Exception $ex) {" << endl;
     indent_up();
     out << indent() << "$this->eventHandler_->sendError('"
         << (*f_iter)->get_name() << "', $args, $currentseqid, $ex);" << endl
@@ -4128,7 +4128,7 @@ void t_hack_generator::_generate_service_client(
 
       indent_up();
 
-      out << indent() << "$result = thrift_protocol_read_binary("
+      out << indent() << "$result = \\thrift_protocol_read_binary("
           << "$this->input_, '" << resultname
           << "', $this->input_->isStrictRead());" << endl;
 
@@ -4139,7 +4139,7 @@ void t_hack_generator::_generate_service_client(
           << endl;
       scope_up(out);
       out << indent()
-          << "$result = thrift_protocol_read_compact($this->input_, '"
+          << "$result = \\thrift_protocol_read_compact($this->input_, '"
           << resultname << "');" << endl;
       scope_down(out);
 
@@ -4203,7 +4203,7 @@ void t_hack_generator::_generate_service_client(
       }
       out << ";" << endl << indent() << "}" << endl;
       indent_down();
-      out << indent() << "} catch (Exception $ex) {" << endl;
+      out << indent() << "} catch (\\Exception $ex) {" << endl;
       indent_up();
       out << indent() << "$this->eventHandler_->recvError('"
           << (*f_iter)->get_name() << "', $expectedsequenceid, $ex);" << endl
@@ -4366,7 +4366,7 @@ void t_hack_generator::_generate_service_client_children(
     bool async) {
   string long_name = php_servicename_mangle(mangle, tservice);
   string suffix = (async ? "Async" : "");
-  string extends = "ThriftClientBase";
+  string extends = "\\ThriftClientBase";
   bool root = tservice->get_extends() == nullptr;
   bool first = true;
   if (!root) {
