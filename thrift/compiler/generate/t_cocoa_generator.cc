@@ -1539,7 +1539,11 @@ void t_cocoa_generator::generate_cocoa_struct_toDict(ofstream& out,
      else if (ttype->is_base_type() || ttype->is_enum()) {
        out << indent() <<  ret_equals << "@(" << field_name << ");" << endl;
        if (ttype->is_enum()) {
-         string ToStringFunctionName = cocoa_prefix_ + ttype->get_name() + kToStringPostfix;
+         const t_program* program = ttype->get_program();
+         string ToStringFunctionName = program
+             ? (program->get_namespace("cocoa") + ttype->get_name() +
+                kToStringPostfix)
+             : cocoa_prefix_ + ttype->get_name() + kToStringPostfix;
          out << indent() <<  "ret[@\"" + field->get_name() + "_str\"] = "
                          << ToStringFunctionName << "(" << field_name << ");" << endl;
        }
@@ -2653,7 +2657,7 @@ void t_cocoa_generator::generate_serialize_list_element(ofstream& out,
  * @return Java type name, i.e. HashMap<Key,Value>
  */
 string t_cocoa_generator::type_name(t_type* ttype, bool class_ref) {
-  if (ttype->is_typedef()) {
+  if (ttype->is_typedef() || ttype->is_enum()) {
     const t_program* program = ttype->get_program();
     return program ? (program->get_namespace("cocoa") + ttype->get_name()) : ttype->get_name();
   }
@@ -2661,8 +2665,6 @@ string t_cocoa_generator::type_name(t_type* ttype, bool class_ref) {
   string result;
   if (ttype->is_base_type()) {
     return base_type_name((t_base_type*)ttype);
-  } else if (ttype->is_enum()) {
-    return cocoa_prefix_ + ttype->get_name();
   } else if (ttype->is_map()) {
     result = "TBaseStructDictionary";
   } else if (ttype->is_set()) {
@@ -2672,11 +2674,8 @@ string t_cocoa_generator::type_name(t_type* ttype, bool class_ref) {
   } else {
     // Check for prefix
     const t_program* program = ttype->get_program();
-    if (program != NULL) {
-      result = program->get_namespace("cocoa") + ttype->get_name();
-    } else {
-      result = ttype->get_name();
-    }
+    result = program ? (program->get_namespace("cocoa") + ttype->get_name())
+                     : ttype->get_name();
   }
 
   if (!class_ref) {
