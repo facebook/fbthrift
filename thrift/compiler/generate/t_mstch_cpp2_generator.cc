@@ -545,7 +545,6 @@ class mstch_cpp2_struct : public mstch_struct {
             {"struct:virtual", &mstch_cpp2_struct::cpp_virtual},
             {"struct:message", &mstch_cpp2_struct::message},
             {"struct:struct_list", &mstch_cpp2_struct::struct_list},
-            {"struct:non_req_fields?", &mstch_cpp2_struct::has_non_req_fields},
             {"struct:isset_fields?", &mstch_cpp2_struct::has_isset_fields},
             {"struct:isset_fields", &mstch_cpp2_struct::isset_fields},
             {"struct:optionals?", &mstch_cpp2_struct::optionals},
@@ -690,14 +689,6 @@ class mstch_cpp2_struct : public mstch_struct {
       a.push_back(m);
     }
     return a;
-  }
-  mstch::node has_non_req_fields() {
-    return std::any_of(
-        strct_->get_members().begin(),
-        strct_->get_members().end(),
-        [](const auto* field) {
-          return field->get_req() != t_field::e_req::T_REQUIRED;
-        });
   }
   mstch::node has_isset_fields() {
     if (cache_->parsed_options_.count("optionals") != 0) {
