@@ -298,7 +298,8 @@ TEST_F(StreamingTest, OnDetachable) {
       [&](std::unique_ptr<StreamServiceAsyncClient> client) {
         const auto timeout = std::chrono::milliseconds{100};
         auto stream = client->sync_range(0, 10);
-        EXPECT_FALSE(detachableFuture.wait(timeout).isReady());
+        std::this_thread::sleep_for(timeout);
+        EXPECT_FALSE(detachableFuture.isReady());
 
         folly::Baton<> done;
 
@@ -309,7 +310,7 @@ TEST_F(StreamingTest, OnDetachable) {
                 [&done]() { done.post(); });
 
         EXPECT_TRUE(done.try_wait_for(timeout));
-        EXPECT_TRUE(detachableFuture.wait(timeout).isReady());
+        EXPECT_TRUE(std::move(detachableFuture).wait(timeout));
       },
       [promise = std::move(detachablePromise)]() mutable {
         promise.setValue(folly::unit);
@@ -396,7 +397,8 @@ TEST_F(StreamingTest, TwoRequestsOneTimesOut) {
         callSleep(client.get(), 1, 100, true);
 
         // Still there is one stream in the client side
-        EXPECT_FALSE(detachableFuture.wait(waitForMs).isReady());
+        std::this_thread::sleep_for(waitForMs);
+        EXPECT_FALSE(detachableFuture.isReady());
 
         client->sync_sendMessage(2, true, false);
         ASSERT_TRUE(baton.try_wait_for(waitForMs));
@@ -406,7 +408,7 @@ TEST_F(StreamingTest, TwoRequestsOneTimesOut) {
         std::move(subscription).join();
 
         // All streams are cleaned up in the client side
-        EXPECT_TRUE(detachableFuture.wait(waitForMs).isReady());
+        EXPECT_TRUE(std::move(detachableFuture).wait(waitForMs));
       },
       [promise = std::move(detachablePromise)]() mutable {
         promise.setValue(folly::unit);
