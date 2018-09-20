@@ -198,7 +198,7 @@ std::shared_ptr<yarpl::flowable::Flowable<rsocket::Payload>> toFlowableInternal(
 RSOneWayRequest::RSOneWayRequest(
     const apache::thrift::server::ServerConfigs& serverConfigs,
     std::unique_ptr<RequestRpcMetadata> metadata,
-    std::unique_ptr<Cpp2ConnContext> connContext,
+    std::shared_ptr<Cpp2ConnContext> connContext,
     folly::EventBase* evb,
     folly::Function<void(RSOneWayRequest*)> onDestroy)
     : ThriftRequestCore(
@@ -243,7 +243,7 @@ void RSOneWayRequest::cancel() {
 RSSingleRequest::RSSingleRequest(
     const apache::thrift::server::ServerConfigs& serverConfigs,
     std::unique_ptr<RequestRpcMetadata> metadata,
-    std::unique_ptr<Cpp2ConnContext> connContext,
+    std::shared_ptr<Cpp2ConnContext> connContext,
     folly::EventBase* evb,
     std::shared_ptr<yarpl::single::SingleObserver<rsocket::Payload>>
         singleObserver)
@@ -282,7 +282,7 @@ folly::EventBase* RSSingleRequest::getEventBase() noexcept {
 RSStreamRequest::RSStreamRequest(
     const apache::thrift::server::ServerConfigs& serverConfigs,
     std::unique_ptr<RequestRpcMetadata> metadata,
-    std::unique_ptr<Cpp2ConnContext> connContext,
+    std::shared_ptr<Cpp2ConnContext> connContext,
     folly::EventBase* evb,
     std::shared_ptr<yarpl::flowable::Subscriber<rsocket::Payload>> subscriber)
     : ThriftRequestCore(

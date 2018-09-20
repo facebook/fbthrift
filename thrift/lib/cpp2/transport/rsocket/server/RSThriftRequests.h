@@ -37,7 +37,7 @@ class RSOneWayRequest final : public ThriftRequestCore {
   RSOneWayRequest(
       const apache::thrift::server::ServerConfigs& serverConfigs,
       std::unique_ptr<RequestRpcMetadata> metadata,
-      std::unique_ptr<Cpp2ConnContext> connContext,
+      std::shared_ptr<Cpp2ConnContext> connContext,
       folly::EventBase* evb,
       folly::Function<void(RSOneWayRequest*)> onDestroy);
 
@@ -67,7 +67,7 @@ class RSSingleRequest final : public ThriftRequestCore {
   RSSingleRequest(
       const apache::thrift::server::ServerConfigs& serverConfigs,
       std::unique_ptr<RequestRpcMetadata> metadata,
-      std::unique_ptr<Cpp2ConnContext> connContext,
+      std::shared_ptr<Cpp2ConnContext> connContext,
       folly::EventBase* evb,
       std::shared_ptr<yarpl::single::SingleObserver<rsocket::Payload>>
           singleObserver);
@@ -95,7 +95,7 @@ class RSStreamRequest final : public ThriftRequestCore {
   RSStreamRequest(
       const apache::thrift::server::ServerConfigs& serverConfigs,
       std::unique_ptr<RequestRpcMetadata> metadata,
-      std::unique_ptr<Cpp2ConnContext> connContext,
+      std::shared_ptr<Cpp2ConnContext> connContext,
       folly::EventBase* evb,
       std::shared_ptr<yarpl::flowable::Subscriber<rsocket::Payload>>
           subscriber);

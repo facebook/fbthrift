@@ -60,7 +60,7 @@ class RSResponder : public rsocket::RSocketResponderCore {
       bool invalidMetadata);
 
  private:
-  std::unique_ptr<Cpp2ConnContext> createConnContext() const;
+  std::shared_ptr<Cpp2ConnContext> createConnContext();
 
   std::shared_ptr<Cpp2Worker> worker_;
   std::shared_ptr<AsyncProcessor> cpp2Processor_;
@@ -69,6 +69,7 @@ class RSResponder : public rsocket::RSocketResponderCore {
   server::ServerConfigs* serverConfigs_;
   const folly::SocketAddress clientAddress_;
   const folly::AsyncTransportWrapper* transport_;
+  std::shared_ptr<Cpp2ConnContext> connContext_;
 };
 } // namespace thrift
 } // namespace apache

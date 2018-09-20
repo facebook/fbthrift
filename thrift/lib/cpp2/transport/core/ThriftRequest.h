@@ -51,6 +51,15 @@ class ThriftRequestCore : public ResponseChannelRequest {
       const apache::thrift::server::ServerConfigs& serverConfigs,
       std::unique_ptr<RequestRpcMetadata> metadata,
       std::unique_ptr<Cpp2ConnContext> connContext)
+      : ThriftRequestCore(
+            serverConfigs,
+            std::move(metadata),
+            std::shared_ptr<Cpp2ConnContext>(std::move(connContext))) {}
+
+  ThriftRequestCore(
+      const apache::thrift::server::ServerConfigs& serverConfigs,
+      std::unique_ptr<RequestRpcMetadata> metadata,
+      std::shared_ptr<Cpp2ConnContext> connContext)
       : serverConfigs_(serverConfigs),
         name_(metadata->name),
         kind_(metadata->kind),
@@ -58,7 +67,7 @@ class ThriftRequestCore : public ResponseChannelRequest {
         active_(true),
         connContext_(
             connContext ? std::move(connContext)
-                        : std::make_unique<Cpp2ConnContext>()),
+                        : std::make_shared<Cpp2ConnContext>()),
         reqContext_(connContext_.get(), &header_),
         queueTimeout_(serverConfigs_),
         taskTimeout_(serverConfigs_) {
@@ -353,7 +362,7 @@ class ThriftRequestCore : public ResponseChannelRequest {
   int32_t seqId_;
   std::atomic<bool> active_;
   transport::THeader header_;
-  std::unique_ptr<Cpp2ConnContext> connContext_;
+  std::shared_ptr<Cpp2ConnContext> connContext_;
   Cpp2RequestContext reqContext_;
 
   QueueTimeout queueTimeout_;

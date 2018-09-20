@@ -40,15 +40,18 @@ RSResponder::RSResponder(
   DCHECK(cpp2Processor_);
 }
 
-std::unique_ptr<Cpp2ConnContext> RSResponder::createConnContext() const {
-  return std::make_unique<Cpp2ConnContext>(
-      &clientAddress_,
-      transport_,
-      nullptr,
-      nullptr,
-      nullptr,
-      nullptr,
-      worker_->getServer()->getClientIdentityHook());
+std::shared_ptr<Cpp2ConnContext> RSResponder::createConnContext() {
+  if (connContext_ == nullptr) {
+    connContext_ = std::make_shared<Cpp2ConnContext>(
+        &clientAddress_,
+        transport_,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        worker_->getServer()->getClientIdentityHook());
+  }
+  return connContext_;
 }
 
 void RSResponder::onThriftRequest(
