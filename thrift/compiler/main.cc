@@ -29,7 +29,7 @@
  */
 
 #ifdef _WIN32
-#include <process.h>
+#include <process.h> // @manual
 #else
 #include <unistd.h>
 #endif
