@@ -22,6 +22,7 @@
 #include <thrift/compiler/util.h>
 
 #include <ostream>
+#include <vector>
 
 #include <boost/algorithm/string/join.hpp>
 #include <boost/algorithm/string/split.hpp>
