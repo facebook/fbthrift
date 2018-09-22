@@ -3706,6 +3706,28 @@ bool struct_with_indirections::operator==(const struct_with_indirections& rhs) c
   return true;
 }
 
+bool struct_with_indirections::operator<(const struct_with_indirections& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  if (!(lhs.real == rhs.real)) {
+    return lhs.real < rhs.real;
+  }
+  if (!(lhs.fake == rhs.fake)) {
+    return lhs.fake < rhs.fake;
+  }
+  if (!(lhs.number == rhs.number)) {
+    return lhs.number < rhs.number;
+  }
+  if (!(lhs.result == rhs.result)) {
+    return lhs.result < rhs.result;
+  }
+  if (!(lhs.phrase == rhs.phrase)) {
+    return lhs.phrase < rhs.phrase;
+  }
+  return false;
+}
+
 
 void swap(struct_with_indirections& a, struct_with_indirections& b) {
   using ::std::swap;

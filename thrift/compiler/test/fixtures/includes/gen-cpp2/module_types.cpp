@@ -75,6 +75,22 @@ bool MyStruct::operator==(const MyStruct& rhs) const {
   return true;
 }
 
+bool MyStruct::operator<(const MyStruct& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  if (!(lhs.MyIncludedField == rhs.MyIncludedField)) {
+    return lhs.MyIncludedField < rhs.MyIncludedField;
+  }
+  if (!(lhs.MyOtherIncludedField == rhs.MyOtherIncludedField)) {
+    return lhs.MyOtherIncludedField < rhs.MyOtherIncludedField;
+  }
+  if (!(lhs.MyIncludedInt == rhs.MyIncludedInt)) {
+    return lhs.MyIncludedInt < rhs.MyIncludedInt;
+  }
+  return false;
+}
+
 const  ::cpp2::Included& MyStruct::get_MyIncludedField() const& {
   return MyIncludedField;
 }

@@ -145,6 +145,31 @@ bool ComplexUnion::operator==(const ComplexUnion& rhs) const {
   }
 }
 
+bool ComplexUnion::operator<(const ComplexUnion& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  if (lhs.type_ != rhs.type_) {
+    return lhs.type_ < rhs.type_;
+  }
+  switch (lhs.type_) {
+    case Type::intValue:
+      return lhs.value_.intValue < rhs.value_.intValue;
+    case Type::stringValue:
+      return lhs.value_.stringValue < rhs.value_.stringValue;
+    case Type::intListValue:
+      return lhs.value_.intListValue < rhs.value_.intListValue;
+    case Type::stringListValue:
+      return lhs.value_.stringListValue < rhs.value_.stringListValue;
+    case Type::typedefValue:
+      return lhs.value_.typedefValue < rhs.value_.typedefValue;
+    case Type::stringRef:
+      return lhs.value_.stringRef < rhs.value_.stringRef;
+    default:
+      return false;
+  }
+}
+
 void swap(ComplexUnion& a, ComplexUnion& b) {
   ComplexUnion temp(std::move(a));
   a = std::move(b);

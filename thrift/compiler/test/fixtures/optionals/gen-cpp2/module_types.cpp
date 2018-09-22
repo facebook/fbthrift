@@ -372,6 +372,43 @@ bool Person::operator==(const Person& rhs) const {
   return true;
 }
 
+bool Person::operator<(const Person& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  if (!(lhs.id == rhs.id)) {
+    return lhs.id < rhs.id;
+  }
+  if (!(lhs.name == rhs.name)) {
+    return lhs.name < rhs.name;
+  }
+  if (!(lhs.age == rhs.age)) {
+    return lhs.age < rhs.age;
+  }
+  if (!(lhs.address == rhs.address)) {
+    return lhs.address < rhs.address;
+  }
+  if (!(lhs.favoriteColor == rhs.favoriteColor)) {
+    return lhs.favoriteColor < rhs.favoriteColor;
+  }
+  if (!(lhs.friends == rhs.friends)) {
+    return lhs.friends < rhs.friends;
+  }
+  if (!(lhs.bestFriend == rhs.bestFriend)) {
+    return lhs.bestFriend < rhs.bestFriend;
+  }
+  if (!(lhs.petNames == rhs.petNames)) {
+    return lhs.petNames < rhs.petNames;
+  }
+  if (!(lhs.afraidOfAnimal == rhs.afraidOfAnimal)) {
+    return lhs.afraidOfAnimal < rhs.afraidOfAnimal;
+  }
+  if (!(lhs.vehicles == rhs.vehicles)) {
+    return lhs.vehicles < rhs.vehicles;
+  }
+  return false;
+}
+
 
 void swap(Person& a, Person& b) {
   using ::std::swap;

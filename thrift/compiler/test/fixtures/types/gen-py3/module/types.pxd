@@ -407,6 +407,10 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "apache::thrift::fixtur
         cMyStructWithForwardRefEnum() except +
         cMyStructWithForwardRefEnum(const cMyStructWithForwardRefEnum&) except +
         bint operator==(cMyStructWithForwardRefEnum&)
+        bint operator<(cMyStructWithForwardRefEnum&)
+        bint operator>(cMyStructWithForwardRefEnum&)
+        bint operator<=(cMyStructWithForwardRefEnum&)
+        bint operator>=(cMyStructWithForwardRefEnum&)
         cMyForwardRefEnum a
         cMyForwardRefEnum b
         cMyStructWithForwardRefEnum__isset __isset

@@ -486,6 +486,10 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "some::valid::ns":
         cComplexUnion() except +
         cComplexUnion(const cComplexUnion&) except +
         bint operator==(cComplexUnion&)
+        bint operator<(cComplexUnion&)
+        bint operator>(cComplexUnion&)
+        bint operator<=(cComplexUnion&)
+        bint operator>=(cComplexUnion&)
         cComplexUnion__type getType() const
         const int64_t& get_intValue() const
         int64_t& set_intValue(const int64_t&)
@@ -573,6 +577,10 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "some::valid::ns":
         cAnException() except +
         cAnException(const cAnException&) except +
         bint operator==(cAnException&)
+        bint operator<(cAnException&)
+        bint operator>(cAnException&)
+        bint operator<=(cAnException&)
+        bint operator>=(cAnException&)
         int32_t code
         int32_t req_code
         string message2
@@ -660,6 +668,10 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "some::valid::ns":
         ccontainerStruct() except +
         ccontainerStruct(const ccontainerStruct&) except +
         bint operator==(ccontainerStruct&)
+        bint operator<(ccontainerStruct&)
+        bint operator>(ccontainerStruct&)
+        bint operator<=(ccontainerStruct&)
+        bint operator>=(ccontainerStruct&)
         cbool fieldA
         cbool req_fieldA
         cbool opt_fieldA
@@ -718,6 +730,10 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "some::valid::ns":
         cMyIncludedStruct() except +
         cMyIncludedStruct(const cMyIncludedStruct&) except +
         bint operator==(cMyIncludedStruct&)
+        bint operator<(cMyIncludedStruct&)
+        bint operator>(cMyIncludedStruct&)
+        bint operator<=(cMyIncludedStruct&)
+        bint operator>=(cMyIncludedStruct&)
         int64_t MyIncludedInt
         _includes_types.cAStruct MyIncludedStruct
         unique_ptr[_includes_types.cAStruct] ARefField

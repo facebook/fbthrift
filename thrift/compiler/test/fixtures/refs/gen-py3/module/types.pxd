@@ -147,6 +147,10 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "cpp2":
         cRecursiveStruct() except +
         cRecursiveStruct(const cRecursiveStruct&) except +
         bint operator==(cRecursiveStruct&)
+        bint operator<(cRecursiveStruct&)
+        bint operator>(cRecursiveStruct&)
+        bint operator<=(cRecursiveStruct&)
+        bint operator>=(cRecursiveStruct&)
         vector[cRecursiveStruct] mes
         cRecursiveStruct__isset __isset
 

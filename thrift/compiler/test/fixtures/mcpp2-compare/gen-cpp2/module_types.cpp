@@ -1552,6 +1552,83 @@ bool ComplexUnion::operator==(const ComplexUnion& rhs) const {
   }
 }
 
+bool ComplexUnion::operator<(const ComplexUnion& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  if (lhs.type_ != rhs.type_) {
+    return lhs.type_ < rhs.type_;
+  }
+  switch (lhs.type_) {
+    case Type::intValue:
+      return lhs.value_.intValue < rhs.value_.intValue;
+    case Type::req_intValue:
+      return lhs.value_.req_intValue < rhs.value_.req_intValue;
+    case Type::opt_intValue:
+      return lhs.value_.opt_intValue < rhs.value_.opt_intValue;
+    case Type::stringValue:
+      return lhs.value_.stringValue < rhs.value_.stringValue;
+    case Type::req_stringValue:
+      return lhs.value_.req_stringValue < rhs.value_.req_stringValue;
+    case Type::opt_stringValue:
+      return lhs.value_.opt_stringValue < rhs.value_.opt_stringValue;
+    case Type::intValue2:
+      return lhs.value_.intValue2 < rhs.value_.intValue2;
+    case Type::intValue3:
+      return lhs.value_.intValue3 < rhs.value_.intValue3;
+    case Type::doubelValue:
+      return lhs.value_.doubelValue < rhs.value_.doubelValue;
+    case Type::boolValue:
+      return lhs.value_.boolValue < rhs.value_.boolValue;
+    case Type::union_list:
+      return lhs.value_.union_list < rhs.value_.union_list;
+    case Type::union_set:
+      return lhs.value_.union_set < rhs.value_.union_set;
+    case Type::union_map:
+      return lhs.value_.union_map < rhs.value_.union_map;
+    case Type::req_union_map:
+      return lhs.value_.req_union_map < rhs.value_.req_union_map;
+    case Type::opt_union_map:
+      return lhs.value_.opt_union_map < rhs.value_.opt_union_map;
+    case Type::enum_field:
+      return lhs.value_.enum_field < rhs.value_.enum_field;
+    case Type::enum_container:
+      return lhs.value_.enum_container < rhs.value_.enum_container;
+    case Type::a_struct:
+      return lhs.value_.a_struct < rhs.value_.a_struct;
+    case Type::a_set_struct:
+      return lhs.value_.a_set_struct < rhs.value_.a_set_struct;
+    case Type::a_union:
+      return lhs.value_.a_union < rhs.value_.a_union;
+    case Type::req_a_union:
+      return lhs.value_.req_a_union < rhs.value_.req_a_union;
+    case Type::opt_a_union:
+      return lhs.value_.opt_a_union < rhs.value_.opt_a_union;
+    case Type::a_union_list:
+      return lhs.value_.a_union_list < rhs.value_.a_union_list;
+    case Type::a_union_typedef:
+      return lhs.value_.a_union_typedef < rhs.value_.a_union_typedef;
+    case Type::a_union_typedef_list:
+      return lhs.value_.a_union_typedef_list < rhs.value_.a_union_typedef_list;
+    case Type::MyBinaryField:
+      return lhs.value_.MyBinaryField < rhs.value_.MyBinaryField;
+    case Type::MyBinaryField2:
+      return lhs.value_.MyBinaryField2 < rhs.value_.MyBinaryField2;
+    case Type::MyBinaryField3:
+      return lhs.value_.MyBinaryField3 < rhs.value_.MyBinaryField3;
+    case Type::MyBinaryListField4:
+      return lhs.value_.MyBinaryListField4 < rhs.value_.MyBinaryListField4;
+    case Type::ref_field:
+      return lhs.value_.ref_field < rhs.value_.ref_field;
+    case Type::ref_field2:
+      return lhs.value_.ref_field2 < rhs.value_.ref_field2;
+    case Type::excp_field:
+      return lhs.value_.excp_field < rhs.value_.excp_field;
+    default:
+      return false;
+  }
+}
+
 std::unique_ptr< ::some::valid::ns::MyStruct>& ComplexUnion::set_ref_field( ::some::valid::ns::MyStruct const &t) {
   __clear();
   type_ = Type::ref_field;
@@ -1713,6 +1790,58 @@ bool AnException::operator==(const AnException& rhs) const {
     return false;
   }
   return true;
+}
+
+bool AnException::operator<(const AnException& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  if (!(lhs.code == rhs.code)) {
+    return lhs.code < rhs.code;
+  }
+  if (!(lhs.req_code == rhs.req_code)) {
+    return lhs.req_code < rhs.req_code;
+  }
+  if (!(lhs.message2 == rhs.message2)) {
+    return lhs.message2 < rhs.message2;
+  }
+  if (!(lhs.req_message == rhs.req_message)) {
+    return lhs.req_message < rhs.req_message;
+  }
+  if (!(lhs.exception_list == rhs.exception_list)) {
+    return lhs.exception_list < rhs.exception_list;
+  }
+  if (!(lhs.exception_set == rhs.exception_set)) {
+    return lhs.exception_set < rhs.exception_set;
+  }
+  if (!(lhs.exception_map == rhs.exception_map)) {
+    return lhs.exception_map < rhs.exception_map;
+  }
+  if (!(lhs.req_exception_map == rhs.req_exception_map)) {
+    return lhs.req_exception_map < rhs.req_exception_map;
+  }
+  if (!(lhs.enum_field == rhs.enum_field)) {
+    return lhs.enum_field < rhs.enum_field;
+  }
+  if (!(lhs.enum_container == rhs.enum_container)) {
+    return lhs.enum_container < rhs.enum_container;
+  }
+  if (!(lhs.a_struct == rhs.a_struct)) {
+    return lhs.a_struct < rhs.a_struct;
+  }
+  if (!(lhs.a_set_struct == rhs.a_set_struct)) {
+    return lhs.a_set_struct < rhs.a_set_struct;
+  }
+  if (!(lhs.a_union_list == rhs.a_union_list)) {
+    return lhs.a_union_list < rhs.a_union_list;
+  }
+  if (!(lhs.union_typedef == rhs.union_typedef)) {
+    return lhs.union_typedef < rhs.union_typedef;
+  }
+  if (!(lhs.a_union_typedef_list == rhs.a_union_typedef_list)) {
+    return lhs.a_union_typedef_list < rhs.a_union_typedef_list;
+  }
+  return false;
 }
 
 const std::vector<int32_t>& AnException::get_exception_list() const& {
@@ -2277,6 +2406,186 @@ bool containerStruct::operator==(const containerStruct& rhs) const {
   return true;
 }
 
+bool containerStruct::operator<(const containerStruct& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  if (!(lhs.fieldA == rhs.fieldA)) {
+    return lhs.fieldA < rhs.fieldA;
+  }
+  if (!(lhs.req_fieldA == rhs.req_fieldA)) {
+    return lhs.req_fieldA < rhs.req_fieldA;
+  }
+  if (lhs.__isset.opt_fieldA != rhs.__isset.opt_fieldA) {
+    return lhs.__isset.opt_fieldA < rhs.__isset.opt_fieldA;
+  }
+  if (lhs.__isset.opt_fieldA) {
+    if (!(lhs.opt_fieldA == rhs.opt_fieldA)) {
+      return lhs.opt_fieldA < rhs.opt_fieldA;
+    }
+  }
+  if (!(lhs.fieldB == rhs.fieldB)) {
+    return lhs.fieldB < rhs.fieldB;
+  }
+  if (!(lhs.req_fieldB == rhs.req_fieldB)) {
+    return lhs.req_fieldB < rhs.req_fieldB;
+  }
+  if (lhs.__isset.opt_fieldB != rhs.__isset.opt_fieldB) {
+    return lhs.__isset.opt_fieldB < rhs.__isset.opt_fieldB;
+  }
+  if (lhs.__isset.opt_fieldB) {
+    if (!(lhs.opt_fieldB == rhs.opt_fieldB)) {
+      return lhs.opt_fieldB < rhs.opt_fieldB;
+    }
+  }
+  if (!(lhs.fieldC == rhs.fieldC)) {
+    return lhs.fieldC < rhs.fieldC;
+  }
+  if (!(lhs.req_fieldC == rhs.req_fieldC)) {
+    return lhs.req_fieldC < rhs.req_fieldC;
+  }
+  if (lhs.__isset.opt_fieldC != rhs.__isset.opt_fieldC) {
+    return lhs.__isset.opt_fieldC < rhs.__isset.opt_fieldC;
+  }
+  if (lhs.__isset.opt_fieldC) {
+    if (!(lhs.opt_fieldC == rhs.opt_fieldC)) {
+      return lhs.opt_fieldC < rhs.opt_fieldC;
+    }
+  }
+  if (!(lhs.fieldD == rhs.fieldD)) {
+    return lhs.fieldD < rhs.fieldD;
+  }
+  if (!(lhs.fieldE == rhs.fieldE)) {
+    return lhs.fieldE < rhs.fieldE;
+  }
+  if (!(lhs.req_fieldE == rhs.req_fieldE)) {
+    return lhs.req_fieldE < rhs.req_fieldE;
+  }
+  if (lhs.__isset.opt_fieldE != rhs.__isset.opt_fieldE) {
+    return lhs.__isset.opt_fieldE < rhs.__isset.opt_fieldE;
+  }
+  if (lhs.__isset.opt_fieldE) {
+    if (!(lhs.opt_fieldE == rhs.opt_fieldE)) {
+      return lhs.opt_fieldE < rhs.opt_fieldE;
+    }
+  }
+  if (!(lhs.fieldF == rhs.fieldF)) {
+    return lhs.fieldF < rhs.fieldF;
+  }
+  if (!(lhs.fieldG == rhs.fieldG)) {
+    return lhs.fieldG < rhs.fieldG;
+  }
+  if (!(lhs.fieldH == rhs.fieldH)) {
+    return lhs.fieldH < rhs.fieldH;
+  }
+  if (!(lhs.fieldI == rhs.fieldI)) {
+    return lhs.fieldI < rhs.fieldI;
+  }
+  if (!(lhs.fieldJ == rhs.fieldJ)) {
+    return lhs.fieldJ < rhs.fieldJ;
+  }
+  if (!(lhs.fieldK == rhs.fieldK)) {
+    return lhs.fieldK < rhs.fieldK;
+  }
+  if (!(lhs.fieldL == rhs.fieldL)) {
+    return lhs.fieldL < rhs.fieldL;
+  }
+  if (!(lhs.fieldM == rhs.fieldM)) {
+    return lhs.fieldM < rhs.fieldM;
+  }
+  if (!(lhs.fieldN == rhs.fieldN)) {
+    return lhs.fieldN < rhs.fieldN;
+  }
+  if (!(lhs.fieldO == rhs.fieldO)) {
+    return lhs.fieldO < rhs.fieldO;
+  }
+  if (!(lhs.fieldP == rhs.fieldP)) {
+    return lhs.fieldP < rhs.fieldP;
+  }
+  if (!(lhs.fieldQ == rhs.fieldQ)) {
+    return lhs.fieldQ < rhs.fieldQ;
+  }
+  if (!(lhs.fieldR == rhs.fieldR)) {
+    return lhs.fieldR < rhs.fieldR;
+  }
+  if (!(lhs.req_fieldR == rhs.req_fieldR)) {
+    return lhs.req_fieldR < rhs.req_fieldR;
+  }
+  if (lhs.__isset.opt_fieldR != rhs.__isset.opt_fieldR) {
+    return lhs.__isset.opt_fieldR < rhs.__isset.opt_fieldR;
+  }
+  if (lhs.__isset.opt_fieldR) {
+    if (!(lhs.opt_fieldR == rhs.opt_fieldR)) {
+      return lhs.opt_fieldR < rhs.opt_fieldR;
+    }
+  }
+  if (!(lhs.fieldS == rhs.fieldS)) {
+    return lhs.fieldS < rhs.fieldS;
+  }
+  if (!(lhs.fieldT == rhs.fieldT)) {
+    return lhs.fieldT < rhs.fieldT;
+  }
+  if (!(lhs.fieldU == rhs.fieldU)) {
+    return lhs.fieldU < rhs.fieldU;
+  }
+  if (!(lhs.fieldV == rhs.fieldV)) {
+    return lhs.fieldV < rhs.fieldV;
+  }
+  if (!(lhs.req_fieldV == rhs.req_fieldV)) {
+    return lhs.req_fieldV < rhs.req_fieldV;
+  }
+  if (lhs.__isset.opt_fieldV != rhs.__isset.opt_fieldV) {
+    return lhs.__isset.opt_fieldV < rhs.__isset.opt_fieldV;
+  }
+  if (lhs.__isset.opt_fieldV) {
+    if (!(lhs.opt_fieldV == rhs.opt_fieldV)) {
+      return lhs.opt_fieldV < rhs.opt_fieldV;
+    }
+  }
+  if (!(lhs.fieldW == rhs.fieldW)) {
+    return lhs.fieldW < rhs.fieldW;
+  }
+  if (!(lhs.fieldX == rhs.fieldX)) {
+    return lhs.fieldX < rhs.fieldX;
+  }
+  if (!(lhs.req_fieldX == rhs.req_fieldX)) {
+    return lhs.req_fieldX < rhs.req_fieldX;
+  }
+  if (lhs.__isset.opt_fieldX != rhs.__isset.opt_fieldX) {
+    return lhs.__isset.opt_fieldX < rhs.__isset.opt_fieldX;
+  }
+  if (lhs.__isset.opt_fieldX) {
+    if (!(lhs.opt_fieldX == rhs.opt_fieldX)) {
+      return lhs.opt_fieldX < rhs.opt_fieldX;
+    }
+  }
+  if (!(lhs.fieldY == rhs.fieldY)) {
+    return lhs.fieldY < rhs.fieldY;
+  }
+  if (!(lhs.fieldZ == rhs.fieldZ)) {
+    return lhs.fieldZ < rhs.fieldZ;
+  }
+  if (!(lhs.fieldAA == rhs.fieldAA)) {
+    return lhs.fieldAA < rhs.fieldAA;
+  }
+  if (!(lhs.fieldAB == rhs.fieldAB)) {
+    return lhs.fieldAB < rhs.fieldAB;
+  }
+  if (!(lhs.fieldAC == rhs.fieldAC)) {
+    return lhs.fieldAC < rhs.fieldAC;
+  }
+  if (!(lhs.fieldAD == rhs.fieldAD)) {
+    return lhs.fieldAD < rhs.fieldAD;
+  }
+  if (!(lhs.fieldAE == rhs.fieldAE)) {
+    return lhs.fieldAE < rhs.fieldAE;
+  }
+  if (!(lhs.fieldSD == rhs.fieldSD)) {
+    return lhs.fieldSD < rhs.fieldSD;
+  }
+  return false;
+}
+
 const std::map<std::string, bool>& containerStruct::get_fieldB() const& {
   return fieldB;
 }
@@ -2632,6 +2941,30 @@ bool MyIncludedStruct::operator==(const MyIncludedStruct& rhs) const {
     return false;
   }
   return true;
+}
+
+bool MyIncludedStruct::operator<(const MyIncludedStruct& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  if (!(lhs.MyIncludedInt == rhs.MyIncludedInt)) {
+    return lhs.MyIncludedInt < rhs.MyIncludedInt;
+  }
+  if (!(lhs.MyIncludedStruct == rhs.MyIncludedStruct)) {
+    return lhs.MyIncludedStruct < rhs.MyIncludedStruct;
+  }
+  if (!!lhs.ARefField != !!rhs.ARefField) {
+    return !!lhs.ARefField < !!rhs.ARefField;
+  }
+  if (!!lhs.ARefField) {
+    if (lhs.ARefField != rhs.ARefField && !(*lhs.ARefField == *rhs.ARefField)) {
+      return *lhs.ARefField < *rhs.ARefField;
+    }
+  }
+  if (!(lhs.ARequiredField == rhs.ARequiredField)) {
+    return lhs.ARequiredField < rhs.ARequiredField;
+  }
+  return false;
 }
 
 const  ::some::valid::ns::AStruct& MyIncludedStruct::get_MyIncludedStruct() const& {

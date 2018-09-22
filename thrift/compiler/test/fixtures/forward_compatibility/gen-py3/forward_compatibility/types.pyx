@@ -470,6 +470,14 @@ cdef class NewStructure2(thrift.py3.types.Struct):
             return cself == cother
         elif cop == Py_NE:
             return not (cself == cother)
+        elif cop == Py_LT:
+            return cself < cother
+        elif cop == Py_LE:
+            return cself <= cother
+        elif cop == Py_GT:
+            return cself > cother
+        elif cop == Py_GE:
+            return cself >= cother
         else:
             return NotImplemented
 
@@ -675,6 +683,14 @@ cdef class NewStructureNested(thrift.py3.types.Struct):
             return cself == cother
         elif cop == Py_NE:
             return not (cself == cother)
+        elif cop == Py_LT:
+            return cself < cother
+        elif cop == Py_LE:
+            return cself <= cother
+        elif cop == Py_GT:
+            return cself > cother
+        elif cop == Py_GE:
+            return cself >= cother
         else:
             return NotImplemented
 
@@ -832,6 +848,14 @@ cdef class NewStructureNestedField(thrift.py3.types.Struct):
             return cself == cother
         elif cop == Py_NE:
             return not (cself == cother)
+        elif cop == Py_LT:
+            return cself < cother
+        elif cop == Py_LE:
+            return cself <= cother
+        elif cop == Py_GT:
+            return cself > cother
+        elif cop == Py_GE:
+            return cself >= cother
         else:
             return NotImplemented
 

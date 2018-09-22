@@ -2722,6 +2722,14 @@ cdef class ComplexUnion(thrift.py3.types.Union):
             return cself == cother
         elif cop == Py_NE:
             return not (cself == cother)
+        elif cop == Py_LT:
+            return cself < cother
+        elif cop == Py_LE:
+            return cself <= cother
+        elif cop == Py_GT:
+            return cself > cother
+        elif cop == Py_GE:
+            return cself >= cother
         else:
             return NotImplemented
 
@@ -3046,6 +3054,14 @@ cdef class AnException(thrift.py3.exceptions.Error):
             return cself == cother
         elif cop == Py_NE:
             return not (cself == cother)
+        elif cop == Py_LT:
+            return cself < cother
+        elif cop == Py_LE:
+            return cself <= cother
+        elif cop == Py_GT:
+            return cself > cother
+        elif cop == Py_GE:
+            return cself >= cother
         else:
             return NotImplemented
 
@@ -4517,6 +4533,14 @@ cdef class containerStruct(thrift.py3.types.Struct):
             return cself == cother
         elif cop == Py_NE:
             return not (cself == cother)
+        elif cop == Py_LT:
+            return cself < cother
+        elif cop == Py_LE:
+            return cself <= cother
+        elif cop == Py_GT:
+            return cself > cother
+        elif cop == Py_GE:
+            return cself >= cother
         else:
             return NotImplemented
 
@@ -4767,6 +4791,14 @@ cdef class MyIncludedStruct(thrift.py3.types.Struct):
             return cself == cother
         elif cop == Py_NE:
             return not (cself == cother)
+        elif cop == Py_LT:
+            return cself < cother
+        elif cop == Py_LE:
+            return cself <= cother
+        elif cop == Py_GT:
+            return cself > cother
+        elif cop == Py_GE:
+            return cself >= cother
         else:
             return NotImplemented
 

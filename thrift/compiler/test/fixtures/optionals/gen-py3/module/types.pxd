@@ -106,6 +106,10 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "cpp2":
         cPerson() except +
         cPerson(const cPerson&) except +
         bint operator==(cPerson&)
+        bint operator<(cPerson&)
+        bint operator>(cPerson&)
+        bint operator<=(cPerson&)
+        bint operator>=(cPerson&)
         int64_t id
         string name
         int16_t age

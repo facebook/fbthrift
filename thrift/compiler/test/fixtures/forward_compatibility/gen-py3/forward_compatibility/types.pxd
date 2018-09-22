@@ -72,6 +72,10 @@ cdef extern from "src/gen-cpp2/forward_compatibility_types.h" namespace "cpp2":
         cNewStructure2() except +
         cNewStructure2(const cNewStructure2&) except +
         bint operator==(cNewStructure2&)
+        bint operator<(cNewStructure2&)
+        bint operator>(cNewStructure2&)
+        bint operator<=(cNewStructure2&)
+        bint operator>=(cNewStructure2&)
         cmap[int16_t,float] features
         cNewStructure2__isset __isset
 
@@ -84,6 +88,10 @@ cdef extern from "src/gen-cpp2/forward_compatibility_types.h" namespace "cpp2":
         cNewStructureNested() except +
         cNewStructureNested(const cNewStructureNested&) except +
         bint operator==(cNewStructureNested&)
+        bint operator<(cNewStructureNested&)
+        bint operator>(cNewStructureNested&)
+        bint operator<=(cNewStructureNested&)
+        bint operator>=(cNewStructureNested&)
         vector[cmap[int16_t,float]] lst
         cmap[int16_t,cmap[int16_t,float]] mp
         cset[cmap[int16_t,float]] s
@@ -96,6 +104,10 @@ cdef extern from "src/gen-cpp2/forward_compatibility_types.h" namespace "cpp2":
         cNewStructureNestedField() except +
         cNewStructureNestedField(const cNewStructureNestedField&) except +
         bint operator==(cNewStructureNestedField&)
+        bint operator<(cNewStructureNestedField&)
+        bint operator>(cNewStructureNestedField&)
+        bint operator<=(cNewStructureNestedField&)
+        bint operator>=(cNewStructureNestedField&)
         cNewStructureNested f
         cNewStructureNestedField__isset __isset
 

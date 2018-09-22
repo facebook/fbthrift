@@ -1072,6 +1072,14 @@ cdef class Person(thrift.py3.types.Struct):
             return cself == cother
         elif cop == Py_NE:
             return not (cself == cother)
+        elif cop == Py_LT:
+            return cself < cother
+        elif cop == Py_LE:
+            return cself <= cother
+        elif cop == Py_GT:
+            return cself > cother
+        elif cop == Py_GE:
+            return cself >= cother
         else:
             return NotImplemented
 

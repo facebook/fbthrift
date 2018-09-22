@@ -20,8 +20,10 @@
  */
 
 #include <algorithm>
+#include <unordered_set>
 
 #include <thrift/compiler/lib/cpp2/util.h>
+#include <thrift/compiler/util.h>
 
 #include <boost/algorithm/string/join.hpp>
 #include <boost/algorithm/string/split.hpp>
@@ -62,7 +64,9 @@ std::string get_gen_namespace(t_program const& program) {
   return boost::algorithm::join(get_gen_namespace_components(program), "::");
 }
 
-bool is_orderable(t_type const& type) {
+static bool is_orderable(
+    std::unordered_set<t_type const*>& seen,
+    t_type const& type) {
   auto has_disqualifying_annotation = [](auto& t) {
     static auto const& keys = *new std::vector<std::string>{
         "cpp.template",
@@ -74,6 +78,10 @@ bool is_orderable(t_type const& type) {
       return t.annotations_.count(key);
     });
   };
+  if (!seen.insert(&type).second) {
+    return true;
+  }
+  auto g = make_scope_guard([&] { seen.erase(&type); });
   // TODO: Consider why typedef is not resolved in this method
   if (type.is_base_type()) {
     return true;
@@ -81,25 +89,39 @@ bool is_orderable(t_type const& type) {
   if (type.is_enum()) {
     return true;
   }
+  if (type.is_typedef()) {
+    auto const& real = *type.get_true_type();
+    auto const& next = *(dynamic_cast<t_typedef const&>(type).get_type());
+    return is_orderable(seen, next) &&
+        (!(real.is_set() || real.is_map()) ||
+         !has_disqualifying_annotation(type));
+  }
   if (type.is_struct() || type.is_xception()) {
     auto& members = dynamic_cast<t_struct const&>(type).get_members();
     return std::all_of(members.begin(), members.end(), [&](auto f) {
-      return is_orderable(*(f->get_type()));
+      return is_orderable(seen, *(f->get_type()));
     });
   }
   if (type.is_list()) {
-    return is_orderable(*(dynamic_cast<t_list const&>(type).get_elem_type()));
+    return is_orderable(
+        seen, *(dynamic_cast<t_list const&>(type).get_elem_type()));
   }
   if (type.is_set()) {
     return !has_disqualifying_annotation(type) &&
-        is_orderable(*(dynamic_cast<t_set const&>(type).get_elem_type()));
+        is_orderable(seen, *(dynamic_cast<t_set const&>(type).get_elem_type()));
   }
   if (type.is_map()) {
     return !has_disqualifying_annotation(type) &&
-        is_orderable(*(dynamic_cast<t_map const&>(type).get_key_type())) &&
-        is_orderable(*(dynamic_cast<t_map const&>(type).get_val_type()));
+        is_orderable(
+            seen, *(dynamic_cast<t_map const&>(type).get_key_type())) &&
+        is_orderable(seen, *(dynamic_cast<t_map const&>(type).get_val_type()));
   }
   return false;
+}
+
+bool is_orderable(t_type const& type) {
+  std::unordered_set<t_type const*> seen;
+  return is_orderable(seen, type);
 }
 
 } // namespace cpp2

@@ -56,6 +56,10 @@ cdef extern from "src/gen-cpp2/matching_struct_names_types.h" namespace "cpp2":
         cCombo() except +
         cCombo(const cCombo&) except +
         bint operator==(cCombo&)
+        bint operator<(cCombo&)
+        bint operator>(cCombo&)
+        bint operator<=(cCombo&)
+        bint operator>=(cCombo&)
         vector[vector[cMyStruct]] listOfOurMyStructLists
         vector[_module_types.cMyStruct] theirMyStructList
         vector[cMyStruct] ourMyStructList

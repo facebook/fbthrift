@@ -122,6 +122,10 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "py3::simple":
         cComplexStruct() except +
         cComplexStruct(const cComplexStruct&) except +
         bint operator==(cComplexStruct&)
+        bint operator<(cComplexStruct&)
+        bint operator>(cComplexStruct&)
+        bint operator<=(cComplexStruct&)
+        bint operator>=(cComplexStruct&)
         cSimpleStruct structOne
         cSimpleStruct structTwo
         int32_t an_integer

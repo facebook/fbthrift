@@ -651,6 +651,21 @@ bool RecursiveStruct::operator==(const RecursiveStruct& rhs) const {
   return true;
 }
 
+bool RecursiveStruct::operator<(const RecursiveStruct& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  if (lhs.__isset.mes != rhs.__isset.mes) {
+    return lhs.__isset.mes < rhs.__isset.mes;
+  }
+  if (lhs.__isset.mes) {
+    if (!(lhs.mes == rhs.mes)) {
+      return lhs.mes < rhs.mes;
+    }
+  }
+  return false;
+}
+
 const std::vector< ::cpp2::RecursiveStruct>* RecursiveStruct::get_mes() const& {
   return __isset.mes ? std::addressof(mes) : nullptr;
 }

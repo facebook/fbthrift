@@ -458,6 +458,104 @@ bool containerStruct::operator==(const containerStruct& rhs) const {
   return true;
 }
 
+bool containerStruct::operator<(const containerStruct& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  if (!(lhs.fieldA == rhs.fieldA)) {
+    return lhs.fieldA < rhs.fieldA;
+  }
+  if (!(lhs.fieldB == rhs.fieldB)) {
+    return lhs.fieldB < rhs.fieldB;
+  }
+  if (!(lhs.fieldC == rhs.fieldC)) {
+    return lhs.fieldC < rhs.fieldC;
+  }
+  if (!(lhs.fieldD == rhs.fieldD)) {
+    return lhs.fieldD < rhs.fieldD;
+  }
+  if (!(lhs.fieldE == rhs.fieldE)) {
+    return lhs.fieldE < rhs.fieldE;
+  }
+  if (!(lhs.fieldF == rhs.fieldF)) {
+    return lhs.fieldF < rhs.fieldF;
+  }
+  if (!(lhs.fieldG == rhs.fieldG)) {
+    return lhs.fieldG < rhs.fieldG;
+  }
+  if (!(lhs.fieldH == rhs.fieldH)) {
+    return lhs.fieldH < rhs.fieldH;
+  }
+  if (!(lhs.fieldI == rhs.fieldI)) {
+    return lhs.fieldI < rhs.fieldI;
+  }
+  if (!(lhs.fieldJ == rhs.fieldJ)) {
+    return lhs.fieldJ < rhs.fieldJ;
+  }
+  if (!(lhs.fieldK == rhs.fieldK)) {
+    return lhs.fieldK < rhs.fieldK;
+  }
+  if (!(lhs.fieldL == rhs.fieldL)) {
+    return lhs.fieldL < rhs.fieldL;
+  }
+  if (!(lhs.fieldM == rhs.fieldM)) {
+    return lhs.fieldM < rhs.fieldM;
+  }
+  if (!(lhs.fieldN == rhs.fieldN)) {
+    return lhs.fieldN < rhs.fieldN;
+  }
+  if (!(lhs.fieldO == rhs.fieldO)) {
+    return lhs.fieldO < rhs.fieldO;
+  }
+  if (!(lhs.fieldP == rhs.fieldP)) {
+    return lhs.fieldP < rhs.fieldP;
+  }
+  if (!(lhs.fieldQ == rhs.fieldQ)) {
+    return lhs.fieldQ < rhs.fieldQ;
+  }
+  if (!!lhs.fieldR != !!rhs.fieldR) {
+    return !!lhs.fieldR < !!rhs.fieldR;
+  }
+  if (!!lhs.fieldR) {
+    if (lhs.fieldR != rhs.fieldR && !(*lhs.fieldR == *rhs.fieldR)) {
+      return *lhs.fieldR < *rhs.fieldR;
+    }
+  }
+  if (!!lhs.fieldS != !!rhs.fieldS) {
+    return !!lhs.fieldS < !!rhs.fieldS;
+  }
+  if (!!lhs.fieldS) {
+    if (lhs.fieldS != rhs.fieldS && !(*lhs.fieldS == *rhs.fieldS)) {
+      return *lhs.fieldS < *rhs.fieldS;
+    }
+  }
+  if (!!lhs.fieldT != !!rhs.fieldT) {
+    return !!lhs.fieldT < !!rhs.fieldT;
+  }
+  if (!!lhs.fieldT) {
+    if (lhs.fieldT != rhs.fieldT && !(*lhs.fieldT == *rhs.fieldT)) {
+      return *lhs.fieldT < *rhs.fieldT;
+    }
+  }
+  if (!!lhs.fieldU != !!rhs.fieldU) {
+    return !!lhs.fieldU < !!rhs.fieldU;
+  }
+  if (!!lhs.fieldU) {
+    if (lhs.fieldU != rhs.fieldU && !(*lhs.fieldU == *rhs.fieldU)) {
+      return *lhs.fieldU < *rhs.fieldU;
+    }
+  }
+  if (!!lhs.fieldX != !!rhs.fieldX) {
+    return !!lhs.fieldX < !!rhs.fieldX;
+  }
+  if (!!lhs.fieldX) {
+    if (lhs.fieldX != rhs.fieldX && !(*lhs.fieldX == *rhs.fieldX)) {
+      return *lhs.fieldX < *rhs.fieldX;
+    }
+  }
+  return false;
+}
+
 const std::map<std::string, bool>& containerStruct::get_fieldB() const& {
   return fieldB;
 }

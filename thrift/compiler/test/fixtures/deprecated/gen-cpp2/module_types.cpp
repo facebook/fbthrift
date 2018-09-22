@@ -84,6 +84,22 @@ bool House::operator==(const House& rhs) const {
   return true;
 }
 
+bool House::operator<(const House& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  if (!(lhs.id == rhs.id)) {
+    return lhs.id < rhs.id;
+  }
+  if (!(lhs.houseName == rhs.houseName)) {
+    return lhs.houseName < rhs.houseName;
+  }
+  if (!(lhs.houseColors == rhs.houseColors)) {
+    return lhs.houseColors < rhs.houseColors;
+  }
+  return false;
+}
+
 
 void swap(House& a, House& b) {
   using ::std::swap;
@@ -125,6 +141,19 @@ bool Field::operator==(const Field& rhs) const {
     return false;
   }
   return true;
+}
+
+bool Field::operator<(const Field& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  if (!(lhs.id == rhs.id)) {
+    return lhs.id < rhs.id;
+  }
+  if (!(lhs.fieldType == rhs.fieldType)) {
+    return lhs.fieldType < rhs.fieldType;
+  }
+  return false;
 }
 
 

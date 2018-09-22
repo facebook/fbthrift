@@ -96,6 +96,10 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "cpp2":
         ccontainerStruct() except +
         ccontainerStruct(const ccontainerStruct&) except +
         bint operator==(ccontainerStruct&)
+        bint operator<(ccontainerStruct&)
+        bint operator>(ccontainerStruct&)
+        bint operator<=(ccontainerStruct&)
+        bint operator>=(ccontainerStruct&)
         cbool fieldA
         cmap[string,cbool] fieldB
         cset[int32_t] fieldC

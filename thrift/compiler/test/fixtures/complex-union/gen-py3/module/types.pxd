@@ -44,6 +44,10 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "cpp2":
         cComplexUnion() except +
         cComplexUnion(const cComplexUnion&) except +
         bint operator==(cComplexUnion&)
+        bint operator<(cComplexUnion&)
+        bint operator>(cComplexUnion&)
+        bint operator<=(cComplexUnion&)
+        bint operator>=(cComplexUnion&)
         cComplexUnion__type getType() const
         const int64_t& get_intValue() const
         int64_t& set_intValue(const int64_t&)

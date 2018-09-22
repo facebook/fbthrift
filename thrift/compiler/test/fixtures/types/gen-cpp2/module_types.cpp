@@ -647,6 +647,19 @@ bool MyStructWithForwardRefEnum::operator==(const MyStructWithForwardRefEnum& rh
   return true;
 }
 
+bool MyStructWithForwardRefEnum::operator<(const MyStructWithForwardRefEnum& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  if (!(lhs.a == rhs.a)) {
+    return lhs.a < rhs.a;
+  }
+  if (!(lhs.b == rhs.b)) {
+    return lhs.b < rhs.b;
+  }
+  return false;
+}
+
 
 void swap(MyStructWithForwardRefEnum& a, MyStructWithForwardRefEnum& b) {
   using ::std::swap;

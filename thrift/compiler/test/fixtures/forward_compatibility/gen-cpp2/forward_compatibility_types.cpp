@@ -227,6 +227,16 @@ bool NewStructure2::operator==(const NewStructure2& rhs) const {
   return true;
 }
 
+bool NewStructure2::operator<(const NewStructure2& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  if (!(lhs.features == rhs.features)) {
+    return lhs.features < rhs.features;
+  }
+  return false;
+}
+
 const  ::cpp2::FloatFeatures& NewStructure2::get_features() const& {
   return features;
 }
@@ -289,6 +299,22 @@ bool NewStructureNested::operator==(const NewStructureNested& rhs) const {
     return false;
   }
   return true;
+}
+
+bool NewStructureNested::operator<(const NewStructureNested& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  if (!(lhs.lst == rhs.lst)) {
+    return lhs.lst < rhs.lst;
+  }
+  if (!(lhs.mp == rhs.mp)) {
+    return lhs.mp < rhs.mp;
+  }
+  if (!(lhs.s == rhs.s)) {
+    return lhs.s < rhs.s;
+  }
+  return false;
 }
 
 const std::vector< ::cpp2::FloatFeatures>& NewStructureNested::get_lst() const& {
@@ -359,6 +385,16 @@ bool NewStructureNestedField::operator==(const NewStructureNestedField& rhs) con
     return false;
   }
   return true;
+}
+
+bool NewStructureNestedField::operator<(const NewStructureNestedField& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  if (!(lhs.f == rhs.f)) {
+    return lhs.f < rhs.f;
+  }
+  return false;
 }
 
 const  ::cpp2::NewStructureNested& NewStructureNestedField::get_f() const& {

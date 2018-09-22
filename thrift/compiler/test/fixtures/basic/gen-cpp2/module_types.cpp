@@ -136,6 +136,28 @@ bool MyStruct::operator==(const MyStruct& rhs) const {
   return true;
 }
 
+bool MyStruct::operator<(const MyStruct& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  if (!(lhs.MyIntField == rhs.MyIntField)) {
+    return lhs.MyIntField < rhs.MyIntField;
+  }
+  if (!(lhs.MyStringField == rhs.MyStringField)) {
+    return lhs.MyStringField < rhs.MyStringField;
+  }
+  if (!(lhs.MyDataField == rhs.MyDataField)) {
+    return lhs.MyDataField < rhs.MyDataField;
+  }
+  if (!(lhs.major == rhs.major)) {
+    return lhs.major < rhs.major;
+  }
+  if (!(lhs.myEnum == rhs.myEnum)) {
+    return lhs.myEnum < rhs.myEnum;
+  }
+  return false;
+}
+
 const  ::cpp2::MyDataItem& MyStruct::get_MyDataField() const& {
   return MyDataField;
 }
