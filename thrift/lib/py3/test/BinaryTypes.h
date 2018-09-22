@@ -17,12 +17,14 @@
 
 #include <string>
 
+#include <boost/operators.hpp>
+
 #include <folly/Range.h>
 #include <folly/io/IOBuf.h>
 
 namespace test {
 
-class Buffer {
+class Buffer : boost::totally_ordered<Buffer> {
  public:
   Buffer() {
     buf_.unshare();
@@ -61,13 +63,10 @@ class Buffer {
     return *this;
   }
   bool operator==(const Buffer& that) const {
-    if (this == &that) {
-      return true;
-    } else if (buf_.length() != that.buf_.length()) {
-      return false;
-    } else {
-      return memcmp(buf_.data(), that.buf_.data(), buf_.length()) == 0;
-    }
+    return folly::IOBufEqualTo{}(buf_, that.buf_);
+  }
+  bool operator<(const Buffer& that) const {
+    return folly::IOBufLess{}(buf_, that.buf_);
   }
   operator folly::ByteRange() const {
     return folly::ByteRange(buf_.data(), buf_.length());
