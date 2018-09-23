@@ -1264,7 +1264,7 @@ class NestedContainers_mapList_args implements \IThriftStruct, \IThriftShapishSt
   }
 }
 
-class NestedContainers_mapList_result implements \IThriftStruct, \IThriftShapishStruct {
+class NestedContainers_mapList_result implements \IThriftStruct {
   use \ThriftSerializationTrait;
 
   public static dict<int, dict<string, mixed>> $_TSPEC = dict[
@@ -1345,7 +1345,7 @@ class NestedContainers_mapSet_args implements \IThriftStruct, \IThriftShapishStr
   }
 }
 
-class NestedContainers_mapSet_result implements \IThriftStruct, \IThriftShapishStruct {
+class NestedContainers_mapSet_result implements \IThriftStruct {
   use \ThriftSerializationTrait;
 
   public static dict<int, dict<string, mixed>> $_TSPEC = dict[
@@ -1426,7 +1426,7 @@ class NestedContainers_listMap_args implements \IThriftStruct, \IThriftShapishSt
   }
 }
 
-class NestedContainers_listMap_result implements \IThriftStruct, \IThriftShapishStruct {
+class NestedContainers_listMap_result implements \IThriftStruct {
   use \ThriftSerializationTrait;
 
   public static dict<int, dict<string, mixed>> $_TSPEC = dict[
@@ -1503,7 +1503,7 @@ class NestedContainers_listSet_args implements \IThriftStruct, \IThriftShapishSt
   }
 }
 
-class NestedContainers_listSet_result implements \IThriftStruct, \IThriftShapishStruct {
+class NestedContainers_listSet_result implements \IThriftStruct {
   use \ThriftSerializationTrait;
 
   public static dict<int, dict<string, mixed>> $_TSPEC = dict[
@@ -1618,7 +1618,7 @@ class NestedContainers_turtles_args implements \IThriftStruct, \IThriftShapishSt
   }
 }
 
-class NestedContainers_turtles_result implements \IThriftStruct, \IThriftShapishStruct {
+class NestedContainers_turtles_result implements \IThriftStruct {
   use \ThriftSerializationTrait;
 
   public static dict<int, dict<string, mixed>> $_TSPEC = dict[

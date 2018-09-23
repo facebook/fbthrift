@@ -2499,7 +2499,9 @@ void t_hack_generator::_generate_php_struct_definition(
     out << ", \\IThriftUnion<" << union_enum_name(tstruct) << ">";
   }
 
-  if (shapes_) {
+  bool gen_shapes = shapes_ && !is_exception && !is_result;
+
+  if (gen_shapes) {
     out << ", \\IThriftShapishStruct";
   }
 
@@ -2521,7 +2523,7 @@ void t_hack_generator::_generate_php_struct_definition(
   generate_php_struct_struct_trait(out, tstruct);
   generate_php_struct_spec(out, tstruct);
 
-  if (shapes_ && !is_exception && !is_result) {
+  if (gen_shapes) {
     generate_php_struct_shape_spec(out, tstruct);
   }
 
@@ -2785,7 +2787,7 @@ void t_hack_generator::_generate_php_struct_definition(
     }
   }
 
-  if (shapes_ && !is_exception && !is_result) {
+  if (gen_shapes) {
     generate_php_struct_shape_methods(out, tstruct);
   }
   if (generate_legacy_read_write_) {

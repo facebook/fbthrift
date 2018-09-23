@@ -321,7 +321,7 @@ class MyServicePrioChild_pang_args implements \IThriftStruct, \IThriftShapishStr
 
 }
 
-class MyServicePrioChild_pang_result implements \IThriftStruct, \IThriftShapishStruct {
+class MyServicePrioChild_pang_result implements \IThriftStruct {
   use \ThriftSerializationTrait;
 
   public static dict<int, dict<string, mixed>> $_TSPEC = dict[

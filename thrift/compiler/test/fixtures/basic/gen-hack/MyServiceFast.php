@@ -1389,7 +1389,7 @@ class MyServiceFast_ping_args implements \IThriftStruct, \IThriftShapishStruct {
 
 }
 
-class MyServiceFast_ping_result implements \IThriftStruct, \IThriftShapishStruct {
+class MyServiceFast_ping_result implements \IThriftStruct {
   use \ThriftSerializationTrait;
 
   public static dict<int, dict<string, mixed>> $_TSPEC = dict[
@@ -1455,7 +1455,7 @@ class MyServiceFast_getRandomData_args implements \IThriftStruct, \IThriftShapis
 
 }
 
-class MyServiceFast_getRandomData_result implements \IThriftStruct, \IThriftShapishStruct {
+class MyServiceFast_getRandomData_result implements \IThriftStruct {
   use \ThriftSerializationTrait;
 
   public static dict<int, dict<string, mixed>> $_TSPEC = dict[
@@ -1547,7 +1547,7 @@ class MyServiceFast_hasDataById_args implements \IThriftStruct, \IThriftShapishS
 
 }
 
-class MyServiceFast_hasDataById_result implements \IThriftStruct, \IThriftShapishStruct {
+class MyServiceFast_hasDataById_result implements \IThriftStruct {
   use \ThriftSerializationTrait;
 
   public static dict<int, dict<string, mixed>> $_TSPEC = dict[
@@ -1639,7 +1639,7 @@ class MyServiceFast_getDataById_args implements \IThriftStruct, \IThriftShapishS
 
 }
 
-class MyServiceFast_getDataById_result implements \IThriftStruct, \IThriftShapishStruct {
+class MyServiceFast_getDataById_result implements \IThriftStruct {
   use \ThriftSerializationTrait;
 
   public static dict<int, dict<string, mixed>> $_TSPEC = dict[
@@ -1748,7 +1748,7 @@ class MyServiceFast_putDataById_args implements \IThriftStruct, \IThriftShapishS
 
 }
 
-class MyServiceFast_putDataById_result implements \IThriftStruct, \IThriftShapishStruct {
+class MyServiceFast_putDataById_result implements \IThriftStruct {
   use \ThriftSerializationTrait;
 
   public static dict<int, dict<string, mixed>> $_TSPEC = dict[

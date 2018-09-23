@@ -547,7 +547,7 @@ class MyServicePrioParent_ping_args implements \IThriftStruct, \IThriftShapishSt
 
 }
 
-class MyServicePrioParent_ping_result implements \IThriftStruct, \IThriftShapishStruct {
+class MyServicePrioParent_ping_result implements \IThriftStruct {
   use \ThriftSerializationTrait;
 
   public static dict<int, dict<string, mixed>> $_TSPEC = dict[
@@ -613,7 +613,7 @@ class MyServicePrioParent_pong_args implements \IThriftStruct, \IThriftShapishSt
 
 }
 
-class MyServicePrioParent_pong_result implements \IThriftStruct, \IThriftShapishStruct {
+class MyServicePrioParent_pong_result implements \IThriftStruct {
   use \ThriftSerializationTrait;
 
   public static dict<int, dict<string, mixed>> $_TSPEC = dict[
