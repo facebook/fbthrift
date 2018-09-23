@@ -5100,7 +5100,7 @@ string t_hack_generator::argument_list(
     }
     if (typehints) {
       // If a field is not sent to a thrift server, the value is null :(
-      t_type* ftype = (*f_iter)->get_type();
+      t_type* ftype = (*f_iter)->get_type()->get_true_type();
       bool nullable = !no_nullables_ ||
           (ftype->is_enum() &&
            ((*f_iter)->get_value() == nullptr ||
