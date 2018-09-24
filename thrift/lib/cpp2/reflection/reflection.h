@@ -54,7 +54,7 @@ namespace thrift {
  * there are three simple but necessary steps:
  *
  *  - enable code generation for `cpp2` as the target language;
- *  - enable `fatal` as one of the `thrift_cpp2_options` flags;
+ *  - enable `reflection` as one of the `thrift_cpp2_options` flags;
  *  - include the appropriate file containing the metadata (say your module is
  *    defined in `some_dir/Module.thrift`, corresponding files can be included
  *    from `some_dir/gen-cpp2/`):
