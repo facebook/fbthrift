@@ -93,35 +93,36 @@ bool is_orderable(
   if (type.is_enum()) {
     return true;
   }
+  bool result = false;
+  auto g2 = make_scope_guard([&] { memo[&type] = result; });
   if (type.is_typedef()) {
     auto const& real = [&]() -> auto&& {
       return *type.get_true_type();
     };
     auto const& next = *(dynamic_cast<t_typedef const&>(type).get_type());
-    return memo[&type] = is_orderable(seen, memo, next) &&
+    return result = is_orderable(seen, memo, next) &&
         (!(real().is_set() || real().is_map()) ||
          !has_disqualifying_annotation(type));
   }
   if (type.is_struct() || type.is_xception()) {
     auto& members = dynamic_cast<t_struct const&>(type).get_members();
-    return memo[&type] =
-               std::all_of(members.begin(), members.end(), [&](auto f) {
-                 return is_orderable(seen, memo, *(f->get_type()));
-               });
+    return result = std::all_of(members.begin(), members.end(), [&](auto f) {
+             return is_orderable(seen, memo, *(f->get_type()));
+           });
   }
   if (type.is_list()) {
-    return memo[&type] = is_orderable(
+    return result = is_orderable(
                seen,
                memo,
                *(dynamic_cast<t_list const&>(type).get_elem_type()));
   }
   if (type.is_set()) {
-    return memo[&type] = !has_disqualifying_annotation(type) &&
+    return result = !has_disqualifying_annotation(type) &&
         is_orderable(
                seen, memo, *(dynamic_cast<t_set const&>(type).get_elem_type()));
   }
   if (type.is_map()) {
-    return memo[&type] = !has_disqualifying_annotation(type) &&
+    return result = !has_disqualifying_annotation(type) &&
         is_orderable(
                seen,
                memo,
