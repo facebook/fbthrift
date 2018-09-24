@@ -20,6 +20,8 @@
 #include <initializer_list>
 #include <type_traits>
 
+#include "thrift/lib/cpp2/gen/field_ref.h"
+
 namespace apache {
 namespace thrift {
 namespace detail {

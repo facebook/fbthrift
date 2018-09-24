@@ -208,6 +208,14 @@ class Internship final : private apache::thrift::detail::st::ComparisonOperators
     return title;
   }
 
+  THRIFT_NOLINK ::apache::thrift::optional_field_ref<const  ::cpp2::Company> employer_ref() const& {
+    return {employer, __isset.employer};
+  }
+
+  THRIFT_NOLINK ::apache::thrift::optional_field_ref< ::cpp2::Company> employer_ref() & {
+    return {employer, __isset.employer};
+  }
+
   const  ::cpp2::Company* get_employer() const& {
     return __isset.employer ? std::addressof(employer) : nullptr;
   }

@@ -389,6 +389,14 @@ class MyField final : private apache::thrift::detail::st::ComparisonOperators<My
   bool operator==(const MyField& rhs) const;
   bool operator<(const MyField& rhs) const;
 
+  THRIFT_NOLINK ::apache::thrift::optional_field_ref<const int64_t> opt_value_ref() const& {
+    return {opt_value, __isset.opt_value};
+  }
+
+  THRIFT_NOLINK ::apache::thrift::optional_field_ref<int64_t> opt_value_ref() & {
+    return {opt_value, __isset.opt_value};
+  }
+
   const int64_t* get_opt_value() const& {
     return __isset.opt_value ? std::addressof(opt_value) : nullptr;
   }
@@ -728,6 +736,14 @@ class RecursiveStruct final : private apache::thrift::detail::st::ComparisonOper
   } __isset = {};
   bool operator==(const RecursiveStruct& rhs) const;
   bool operator<(const RecursiveStruct& rhs) const;
+
+  THRIFT_NOLINK ::apache::thrift::optional_field_ref<const std::vector< ::cpp2::RecursiveStruct>> mes_ref() const& {
+    return {mes, __isset.mes};
+  }
+
+  THRIFT_NOLINK ::apache::thrift::optional_field_ref<std::vector< ::cpp2::RecursiveStruct>> mes_ref() & {
+    return {mes, __isset.mes};
+  }
   const std::vector< ::cpp2::RecursiveStruct>* get_mes() const&;
   std::vector< ::cpp2::RecursiveStruct>* get_mes() &;
   std::vector< ::cpp2::RecursiveStruct>* get_mes() && = delete;

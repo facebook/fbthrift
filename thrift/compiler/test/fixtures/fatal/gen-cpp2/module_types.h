@@ -2636,6 +2636,14 @@ class struct1 final : private apache::thrift::detail::st::ComparisonOperators<st
     return field0;
   }
 
+  THRIFT_NOLINK ::apache::thrift::optional_field_ref<const std::string> field1_ref() const& {
+    return {field1, __isset.field1};
+  }
+
+  THRIFT_NOLINK ::apache::thrift::optional_field_ref<std::string> field1_ref() & {
+    return {field1, __isset.field1};
+  }
+
   const std::string* get_field1() const& {
     return __isset.field1 ? std::addressof(field1) : nullptr;
   }
@@ -2669,6 +2677,14 @@ class struct1 final : private apache::thrift::detail::st::ComparisonOperators<st
    ::test_cpp2::cpp_reflection::enum2& set_field3( ::test_cpp2::cpp_reflection::enum2 field3_) {
     field3 = field3_;
     return field3;
+  }
+
+  THRIFT_NOLINK ::apache::thrift::optional_field_ref<const  ::test_cpp2::cpp_reflection::union1> field4_ref() const& {
+    return {field4, __isset.field4};
+  }
+
+  THRIFT_NOLINK ::apache::thrift::optional_field_ref< ::test_cpp2::cpp_reflection::union1> field4_ref() & {
+    return {field4, __isset.field4};
   }
   const  ::test_cpp2::cpp_reflection::union1* get_field4() const&;
    ::test_cpp2::cpp_reflection::union1* get_field4() &;
@@ -3399,6 +3415,14 @@ class struct4 final : private apache::thrift::detail::st::ComparisonOperators<st
     return field0;
   }
 
+  THRIFT_NOLINK ::apache::thrift::optional_field_ref<const std::string> field1_ref() const& {
+    return {field1, __isset.field1};
+  }
+
+  THRIFT_NOLINK ::apache::thrift::optional_field_ref<std::string> field1_ref() & {
+    return {field1, __isset.field1};
+  }
+
   const std::string* get_field1() const& {
     return __isset.field1 ? std::addressof(field1) : nullptr;
   }
@@ -3552,6 +3576,14 @@ class struct5 final : private apache::thrift::detail::st::ComparisonOperators<st
   int32_t& set_field0(int32_t field0_) {
     field0 = field0_;
     return field0;
+  }
+
+  THRIFT_NOLINK ::apache::thrift::optional_field_ref<const std::string> field1_ref() const& {
+    return {field1, __isset.field1};
+  }
+
+  THRIFT_NOLINK ::apache::thrift::optional_field_ref<std::string> field1_ref() & {
+    return {field1, __isset.field1};
   }
 
   const std::string* get_field1() const& {
