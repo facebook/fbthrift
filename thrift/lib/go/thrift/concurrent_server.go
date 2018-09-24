@@ -20,6 +20,7 @@
 package thrift
 
 import (
+	"context"
 	"fmt"
 	"log"
 	"runtime/debug"
@@ -39,58 +40,25 @@ func NewConcurrentServer(processor Processor, serverTransport ServerTransport, o
 
 // NewConcurrentServerFactory create a new server factory
 func NewConcurrentServerFactory(processorFactory ProcessorFactory, serverTransport ServerTransport, options ...func(*ServerOptions)) *ConcurrentServer {
-	serverOptions := defaultServerOptions(serverTransport)
+	return NewConcurrentServerFactoryContext(NewProcessorFactoryContextAdapter(processorFactory), serverTransport, options...)
+}
 
-	for _, option := range options {
-		option(serverOptions)
+// NewConcurrentServerContext is a version of the ConcurrentServer that supports contexts.
+func NewConcurrentServerContext(processor ProcessorContext, serverTransport ServerTransport, options ...func(*ServerOptions)) *ConcurrentServer {
+	return NewConcurrentServerFactoryContext(NewProcessorFactoryContext(processor), serverTransport, options...)
+}
+
+// NewConcurrentServerFactoryContext is a version of the ConcurrentServerFactory that supports contexts.
+func NewConcurrentServerFactoryContext(processorFactory ProcessorFactoryContext, serverTransport ServerTransport, options ...func(*ServerOptions)) *ConcurrentServer {
+	srv := &ConcurrentServer{
+		SimpleServer: NewSimpleServerFactoryContext(processorFactory, serverTransport, options...),
 	}
-
-	return &ConcurrentServer{&SimpleServer{processorFactory, serverOptions}}
+	srv.SimpleServer.configurableRequestProcessor = srv.processRequests
+	return srv
 }
 
-// AcceptLoop starts accepting connections from the transport
-// This loops forever until Stop() is called or on error
-func (p *ConcurrentServer) AcceptLoop() error {
-	for {
-		client, err := p.serverTransport.Accept()
-		if err != nil {
-			select {
-			case <-p.quit:
-				return ErrServerClosed
-			default:
-			}
-			return err
-		}
-		if client != nil {
-			go func() {
-				if err := p.processRequests(client); err != nil {
-					log.Println("error processing request:", err)
-				}
-			}()
-		}
-	}
-}
-
-// Serve starts listening on the transport and accepting new connections
-// This loops forever until Stop() is called or on error
-func (p *ConcurrentServer) Serve() error {
-	err := p.Listen()
-	if err != nil {
-		return err
-	}
-	return p.AcceptLoop()
-}
-
-// Stop stops the accept loop
-// This will block if the accept loop is not yet started
-func (p *ConcurrentServer) Stop() error {
-	p.quit <- struct{}{}
-	p.serverTransport.Interrupt()
-	return nil
-}
-
-func (p *ConcurrentServer) processRequests(client Transport) error {
-	processor := p.processorFactory.Geprocessor(client)
+func (p *ConcurrentServer) processRequests(ctx context.Context, client Transport) error {
+	processor := p.processorFactoryContext.GetProcessorContext(client)
 	var (
 		inputTransport, outputTransport Transport
 		inputProtocol, outputProtocol   Protocol
@@ -146,7 +114,7 @@ func (p *ConcurrentServer) processRequests(client Transport) error {
 			}
 			return err
 		}
-		pfunc, err := processor.GetProcessorFunction(name)
+		pfunc, err := processor.GetProcessorFunctionContext(name)
 		if pfunc == nil || err != nil {
 			if err == nil {
 				err = fmt.Errorf("no such function: %q", name)
@@ -171,7 +139,7 @@ func (p *ConcurrentServer) processRequests(client Transport) error {
 		}
 		go func() {
 			var result WritableStruct
-			result, err = pfunc.Run(argStruct)
+			result, err = pfunc.RunContext(ctx, argStruct)
 			// protect message writing
 			writeLock.Lock()
 			defer writeLock.Unlock()

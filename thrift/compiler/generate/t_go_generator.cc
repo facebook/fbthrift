@@ -95,6 +95,7 @@ class t_go_generator : public t_concat_generator {
     iter = parsed_options.find("use_context");
     if (iter != parsed_options.end()) {
       gen_use_context_ = true;
+      gen_processor_func_ = "thrift.ProcessorFunctionContext";
     } else {
       gen_use_context_ = false;
     }
@@ -296,7 +297,7 @@ class t_go_generator : public t_concat_generator {
   std::string function_signature_if(
       t_function* tfunction,
       std::string prefix = "",
-      bool addError = false);
+      bool useContext = false);
   std::string argument_list(t_struct* tstruct);
   std::string type_to_enum(t_type* ttype);
   std::string type_to_go_type(t_type* ttype);
@@ -319,6 +320,7 @@ class t_go_generator : public t_concat_generator {
  private:
   std::string gen_package_prefix_;
   std::string gen_thrift_import_;
+  std::string gen_processor_func_ = "thrift.ProcessorFunction";
   bool gen_use_context_;
 
   /**
@@ -1892,7 +1894,8 @@ void t_go_generator::generate_service_interface(t_service* tservice) {
 
     for (f_iter = functions.begin(); f_iter != functions.end(); ++f_iter) {
       generate_go_docstring(f_service_, (*f_iter));
-      f_service_ << indent() << function_signature_if(*f_iter, "", true)
+      f_service_ << indent()
+                 << function_signature_if(*f_iter, "", gen_use_context_)
                  << endl;
     }
   }
@@ -2018,7 +2021,7 @@ void t_go_generator::generate_service_client(t_service* tservice) {
     // Open function
     generate_go_docstring(f_service_, (*f_iter));
     f_service_ << indent() << "func (p *" << serviceName << "Client) "
-               << function_signature_if(*f_iter, "", true) << " {" << endl;
+               << function_signature_if(*f_iter, "", false) << " {" << endl;
     indent_up();
     /*
     f_service_ <<
@@ -2329,7 +2332,7 @@ void t_go_generator::generate_service_client_threadsafe(t_service* tservice) {
     // Open function
     generate_go_docstring(f_service_, (*f_iter));
     f_service_ << indent() << "func (p *" << serviceName << "Client) "
-               << function_signature_if(*f_iter, "", true) << " {" << endl;
+               << function_signature_if(*f_iter, "", false) << " {" << endl;
     indent_up();
     /*
     f_service_ <<
@@ -3067,20 +3070,20 @@ void t_go_generator::generate_service_server(t_service* tservice) {
   if (extends_processor.empty()) {
     f_service_ << indent() << "type " << serviceName << "Processor struct {"
                << endl;
-    f_service_ << indent()
-               << "  processorMap map[string]thrift.ProcessorFunction" << endl;
+    f_service_ << indent() << "  processorMap map[string]"
+               << gen_processor_func_ << endl;
     f_service_ << indent() << "  handler " << serviceName << endl;
     f_service_ << indent() << "}" << endl << endl;
 
-    f_service_
-        << indent() << "func (p *" << serviceName
-        << "Processor) AddToProcessorMap(key string, processor thrift.ProcessorFunction) {"
-        << endl;
+    f_service_ << indent() << "func (p *" << serviceName
+               << "Processor) AddToProcessorMap(key string, processor "
+               << gen_processor_func_ << ") {" << endl;
     f_service_ << indent() << "  p.processorMap[key] = processor" << endl;
     f_service_ << indent() << "}" << endl << endl;
     f_service_ << indent() << "func (p *" << serviceName
                << "Processor) GetProcessorFunction(key string) "
-               << "(processor thrift.ProcessorFunction, err error) {" << endl;
+               << "(processor " << gen_processor_func_ << ", err error) {"
+               << endl;
     indent_up();
     f_service_ << indent() << "if processor, ok := p.processorMap[key]; ok {"
                << endl;
@@ -3091,18 +3094,17 @@ void t_go_generator::generate_service_server(t_service* tservice) {
                << endl;
     indent_down();
     f_service_ << indent() << "}" << endl << endl;
-    f_service_
-        << indent() << "func (p *" << serviceName
-        << "Processor) ProcessorMap() map[string]thrift.ProcessorFunction {"
-        << endl;
+    f_service_ << indent() << "func (p *" << serviceName
+               << "Processor) ProcessorMap() map[string]" << gen_processor_func_
+               << " {" << endl;
     f_service_ << indent() << "  return p.processorMap" << endl;
     f_service_ << indent() << "}" << endl << endl;
     f_service_ << indent() << "func New" << serviceName << "Processor(handler "
                << serviceName << ") *" << serviceName << "Processor {" << endl;
     f_service_ << indent() << "  " << self << " := &" << serviceName
                << "Processor{handler:handler, "
-                  "processorMap:make(map[string]thrift.ProcessorFunction)}"
-               << endl;
+                  "processorMap:make(map[string]"
+               << gen_processor_func_ << ")}" << endl;
 
     indent_up();
     for (f_iter = functions.begin(); f_iter != functions.end(); ++f_iter) {
@@ -4044,32 +4046,22 @@ string t_go_generator::function_signature(
 string t_go_generator::function_signature_if(
     t_function* tfunction,
     string prefix,
-    bool addError) {
-  // TODO(mcslee): Nitpicky, no ',' if argument_list is empty
+    bool useContext) {
   string signature = publicize(prefix + tfunction->get_name()) + "(";
   string args = argument_list(tfunction->get_arglist());
-  if (gen_use_context_) {
+  if (useContext) {
     signature += "ctx context.Context";
     signature += args.length() > 0 ? ", " : "";
   }
   signature += args + ") (";
   t_type* ret = tfunction->get_returntype();
-  t_struct* exceptions = tfunction->get_xceptions();
-  string errs = argument_list(exceptions);
 
   if (!ret->is_void()) {
-    signature += "r " + type_to_go_type(ret);
-
-    if (addError || errs.size() == 0) {
-      signature += ", ";
-    }
+    signature += "r " + type_to_go_type(ret) + ", ";
   }
 
-  if (addError) {
-    signature += "err error";
-  }
+  signature += "err error)";
 
-  signature += ")";
   return signature;
 }
 

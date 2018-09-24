@@ -31,3 +31,14 @@ func NewThriftHandlerFunc(processor Processor,
 		Process(processor, inPfactory.GetProtocol(transport), outPfactory.GetProtocol(transport))
 	}
 }
+
+// NewThriftHandlerContextFunc is a function that create a ready to use Apache Thrift Handler function
+func NewThriftHandlerContextFunc(processor ProcessorContext,
+	inPfactory, outPfactory ProtocolFactory) func(w http.ResponseWriter, r *http.Request) {
+
+	return func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Add("Content-Type", "application/x-thrift")
+		transport := NewStreamTransport(r.Body, w)
+		ProcessContext(r.Context(), processor, inPfactory.GetProtocol(transport), outPfactory.GetProtocol(transport))
+	}
+}

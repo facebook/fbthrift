@@ -20,6 +20,7 @@
 package thrift
 
 import (
+	"context"
 	"fmt"
 )
 
@@ -57,6 +58,53 @@ type ProcessorFunction interface {
 // A framework could be written outside of the thrift library but would need to
 // duplicate this logic.
 func Process(processor Processor, iprot, oprot Protocol) (keepOpen bool, exc Exception) {
+	return ProcessContext(context.Background(), NewProcessorContextAdapter(processor), iprot, oprot)
+}
+
+// ProcessorContext is a Processor that supports contexts.
+type ProcessorContext interface {
+	GetProcessorFunctionContext(name string) (ProcessorFunctionContext, error)
+}
+
+// NewProcessorContextAdapter creates a ProcessorContext from a regular Processor.
+func NewProcessorContextAdapter(p Processor) ProcessorContext {
+	return &ctxProcessorAdapter{p}
+}
+
+type ctxProcessorAdapter struct {
+	Processor
+}
+
+func (p ctxProcessorAdapter) GetProcessorFunctionContext(name string) (ProcessorFunctionContext, error) {
+	f, err := p.Processor.GetProcessorFunction(name)
+	if err != nil {
+		return nil, err
+	}
+	return NewProcessorFunctionContextAdapter(f), nil
+}
+
+// ProcessorFunctionContext is a ProcessorFunction that supports contexts.
+type ProcessorFunctionContext interface {
+	Read(iprot Protocol) (Struct, Exception)
+	RunContext(ctx context.Context, args Struct) (WritableStruct, ApplicationException)
+	Write(seqID int32, result WritableStruct, oprot Protocol) Exception
+}
+
+// NewProcessorFunctionContextAdapter creates a ProcessorFunctionContext from a regular ProcessorFunction.
+func NewProcessorFunctionContextAdapter(p ProcessorFunction) ProcessorFunctionContext {
+	return &ctxProcessorFunctionAdapter{p}
+}
+
+type ctxProcessorFunctionAdapter struct {
+	ProcessorFunction
+}
+
+func (p ctxProcessorFunctionAdapter) RunContext(ctx context.Context, args Struct) (WritableStruct, ApplicationException) {
+	return p.ProcessorFunction.Run(args)
+}
+
+// ProcessContext is a Process that supports contexts.
+func ProcessContext(ctx context.Context, processor ProcessorContext, iprot, oprot Protocol) (keepOpen bool, ext Exception) {
 	name, messageType, seqID, rerr := iprot.ReadMessageBegin()
 	if rerr != nil {
 		if err, ok := rerr.(TransportException); ok && err.TypeID() == END_OF_FILE {
@@ -66,14 +114,14 @@ func Process(processor Processor, iprot, oprot Protocol) (keepOpen bool, exc Exc
 		return false, rerr
 	}
 	var err ApplicationException
-	var pfunc ProcessorFunction
+	var pfunc ProcessorFunctionContext
 	if messageType != CALL && messageType != ONEWAY {
 		// case one: invalid message type
 		err = NewApplicationException(UNKNOWN_METHOD, fmt.Sprintf("unexpected message type: %d", messageType))
 		// error should be sent, connection should stay open if successful
 	}
 	if err == nil {
-		pf, e2 := processor.GetProcessorFunction(name)
+		pf, e2 := processor.GetProcessorFunctionContext(name)
 		if pf == nil {
 			if e2 == nil {
 				err = NewApplicationException(UNKNOWN_METHOD, fmt.Sprintf("no such function: %q", name))
@@ -118,7 +166,7 @@ func Process(processor Processor, iprot, oprot Protocol) (keepOpen bool, exc Exc
 		return false, e2
 	}
 	var result WritableStruct
-	result, err = pfunc.Run(argStruct)
+	result, err = pfunc.RunContext(ctx, argStruct)
 
 	// for ONEWAY messages, never send a response
 	if messageType == CALL {

@@ -23,7 +23,7 @@ import "context"
 
 // Server is a thrift server
 type Server interface {
-	ProcessorFactory() ProcessorFactory
+	ProcessorFactoryContext() ProcessorFactoryContext
 	ServerTransport() ServerTransport
 	InputTransportFactory() TransportFactory
 	OutputTransportFactory() TransportFactory

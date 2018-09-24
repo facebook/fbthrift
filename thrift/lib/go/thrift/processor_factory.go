@@ -19,21 +19,22 @@
 
 package thrift
 
-// The default processor factory just returns a singleton
-// instance.
+// ProcessorFactory is the default processor factory which returns
+// a singleton instance.
 type ProcessorFactory interface {
-	Geprocessor(trans Transport) Processor
+	GetProcessor(trans Transport) Processor
 }
 
 type processorFactory struct {
 	processor Processor
 }
 
+// NewProcessorFactory returns a ProcessorFactory.
 func NewProcessorFactory(p Processor) ProcessorFactory {
 	return &processorFactory{processor: p}
 }
 
-func (p *processorFactory) Geprocessor(trans Transport) Processor {
+func (p *processorFactory) GetProcessor(trans Transport) Processor {
 	return p.processor
 }
 
@@ -55,4 +56,35 @@ func NewProcessorFunctionFactory(p ProcessorFunction) ProcessorFunctionFactory {
 
 func (p *processorFunctionFactory) GetProcessorFunction(trans Transport) ProcessorFunction {
 	return p.processor
+}
+
+// ProcessorFactoryContext is a ProcessorFactory that supports contexts.
+type ProcessorFactoryContext interface {
+	GetProcessorContext(trans Transport) ProcessorContext
+}
+
+type processorFactoryContext struct {
+	processorContext ProcessorContext
+}
+
+// NewProcessorFactoryContext returns a ProcessorFactoryContext.
+func NewProcessorFactoryContext(p ProcessorContext) ProcessorFactoryContext {
+	return &processorFactoryContext{processorContext: p}
+}
+
+func (p *processorFactoryContext) GetProcessorContext(trans Transport) ProcessorContext {
+	return p.processorContext
+}
+
+// NewProcessorFactoryContextAdapter creates a ProcessorFactoryContext from a regular ProcessorFactory.
+func NewProcessorFactoryContextAdapter(p ProcessorFactory) ProcessorFactoryContext {
+	return &ctxProcessorFactoryAdapter{p}
+}
+
+type ctxProcessorFactoryAdapter struct {
+	ProcessorFactory
+}
+
+func (p ctxProcessorFactoryAdapter) GetProcessorContext(trans Transport) ProcessorContext {
+	return NewProcessorContextAdapter(p.ProcessorFactory.GetProcessor(trans))
 }
