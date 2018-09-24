@@ -144,8 +144,16 @@ class cpp2_generator_context {
   cpp2_generator_context(cpp2_generator_context&&) = default;
   cpp2_generator_context& operator=(cpp2_generator_context&&) = default;
 
+  bool is_orderable(t_type const& type) {
+    std::unordered_set<t_type const*> seen;
+    auto& memo = is_orderable_memo_;
+    return cpp2::is_orderable(seen, memo, type);
+  }
+
  private:
   explicit cpp2_generator_context(t_program const*) {}
+
+  std::unordered_map<t_type const*, bool> is_orderable_memo_;
 };
 
 class t_mstch_cpp2_generator : public t_mstch_generator {
@@ -626,7 +634,7 @@ class mstch_cpp2_struct : public mstch_struct {
         cache_);
   }
   mstch::node is_struct_orderable() {
-    return cpp2::is_orderable(*strct_) &&
+    return context_->is_orderable(*strct_) &&
         !strct_->annotations_.count("no_default_comparators");
   }
   mstch::node has_cpp_ref() {

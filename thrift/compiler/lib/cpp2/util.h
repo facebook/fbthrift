@@ -22,6 +22,8 @@
 #pragma once
 
 #include <string>
+#include <unordered_map>
+#include <unordered_set>
 #include <vector>
 
 #include <thrift/compiler/ast/t_program.h>
@@ -41,6 +43,10 @@ std::string get_gen_namespace(t_program const& program);
  * If the type is using any annotation for cpp2.type or cpp2.template
  * its not considered orderable, and we don't need to generate operator< methods
  */
+bool is_orderable(
+    std::unordered_set<t_type const*>& seen,
+    std::unordered_map<t_type const*, bool>& memo,
+    t_type const& type);
 bool is_orderable(t_type const& type);
 
 } // namespace cpp2
