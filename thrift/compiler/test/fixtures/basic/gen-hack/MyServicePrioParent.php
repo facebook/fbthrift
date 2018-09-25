@@ -51,7 +51,7 @@ interface MyServicePrioParentIf extends \IThriftSyncIf {
  * MyServicePrioParent
  */
 trait MyServicePrioParentClientBase {
-  require extends ThriftClientBase;
+  require extends \ThriftClientBase;
 
   protected function sendImpl_ping(): int {
     $currentseqid = $this->getNextSequenceID();
@@ -61,11 +61,11 @@ trait MyServicePrioParentClientBase {
       $this->eventHandler_->preSend('ping', $args, $currentseqid);
       if ($this->output_ instanceof \TBinaryProtocolAccelerated)
       {
-        thrift_protocol_write_binary($this->output_, 'ping', \TMessageType::CALL, $args, $currentseqid, $this->output_->isStrictWrite(), false);
+        \thrift_protocol_write_binary($this->output_, 'ping', \TMessageType::CALL, $args, $currentseqid, $this->output_->isStrictWrite(), false);
       }
       else if ($this->output_ instanceof \TCompactProtocolAccelerated)
       {
-        thrift_protocol_write_compact($this->output_, 'ping', \TMessageType::CALL, $args, $currentseqid, false);
+        \thrift_protocol_write_compact($this->output_, 'ping', \TMessageType::CALL, $args, $currentseqid, false);
       }
       else
       {
@@ -85,7 +85,7 @@ trait MyServicePrioParentClientBase {
           $this->eventHandler_->postSend('ping', $args, $currentseqid);
           return $currentseqid;
       }
-    } catch (Exception $ex) {
+    } catch (\Exception $ex) {
       $this->eventHandler_->sendError('ping', $args, $currentseqid, $ex);
       throw $ex;
     }
@@ -97,10 +97,10 @@ trait MyServicePrioParentClientBase {
     try {
       $this->eventHandler_->preRecv('ping', $expectedsequenceid);
       if ($this->input_ instanceof \TBinaryProtocolAccelerated) {
-        $result = thrift_protocol_read_binary($this->input_, 'MyServicePrioParent_ping_result', $this->input_->isStrictRead());
+        $result = \thrift_protocol_read_binary($this->input_, 'MyServicePrioParent_ping_result', $this->input_->isStrictRead());
       } else if ($this->input_ instanceof \TCompactProtocolAccelerated)
       {
-        $result = thrift_protocol_read_compact($this->input_, 'MyServicePrioParent_ping_result');
+        $result = \thrift_protocol_read_compact($this->input_, 'MyServicePrioParent_ping_result');
       }
       else
       {
@@ -135,7 +135,7 @@ trait MyServicePrioParentClientBase {
           $this->eventHandler_->postRecv('ping', $expectedsequenceid, $ex->result);
           return;
       }
-    } catch (Exception $ex) {
+    } catch (\Exception $ex) {
       $this->eventHandler_->recvError('ping', $expectedsequenceid, $ex);
       throw $ex;
     }
@@ -151,11 +151,11 @@ return;
       $this->eventHandler_->preSend('pong', $args, $currentseqid);
       if ($this->output_ instanceof \TBinaryProtocolAccelerated)
       {
-        thrift_protocol_write_binary($this->output_, 'pong', \TMessageType::CALL, $args, $currentseqid, $this->output_->isStrictWrite(), false);
+        \thrift_protocol_write_binary($this->output_, 'pong', \TMessageType::CALL, $args, $currentseqid, $this->output_->isStrictWrite(), false);
       }
       else if ($this->output_ instanceof \TCompactProtocolAccelerated)
       {
-        thrift_protocol_write_compact($this->output_, 'pong', \TMessageType::CALL, $args, $currentseqid, false);
+        \thrift_protocol_write_compact($this->output_, 'pong', \TMessageType::CALL, $args, $currentseqid, false);
       }
       else
       {
@@ -175,7 +175,7 @@ return;
           $this->eventHandler_->postSend('pong', $args, $currentseqid);
           return $currentseqid;
       }
-    } catch (Exception $ex) {
+    } catch (\Exception $ex) {
       $this->eventHandler_->sendError('pong', $args, $currentseqid, $ex);
       throw $ex;
     }
@@ -187,10 +187,10 @@ return;
     try {
       $this->eventHandler_->preRecv('pong', $expectedsequenceid);
       if ($this->input_ instanceof \TBinaryProtocolAccelerated) {
-        $result = thrift_protocol_read_binary($this->input_, 'MyServicePrioParent_pong_result', $this->input_->isStrictRead());
+        $result = \thrift_protocol_read_binary($this->input_, 'MyServicePrioParent_pong_result', $this->input_->isStrictRead());
       } else if ($this->input_ instanceof \TCompactProtocolAccelerated)
       {
-        $result = thrift_protocol_read_compact($this->input_, 'MyServicePrioParent_pong_result');
+        $result = \thrift_protocol_read_compact($this->input_, 'MyServicePrioParent_pong_result');
       }
       else
       {
@@ -225,7 +225,7 @@ return;
           $this->eventHandler_->postRecv('pong', $expectedsequenceid, $ex->result);
           return;
       }
-    } catch (Exception $ex) {
+    } catch (\Exception $ex) {
       $this->eventHandler_->recvError('pong', $expectedsequenceid, $ex);
       throw $ex;
     }
@@ -235,7 +235,7 @@ return;
 
 }
 
-class MyServicePrioParentAsyncClient extends ThriftClientBase implements MyServicePrioParentAsyncIf {
+class MyServicePrioParentAsyncClient extends \ThriftClientBase implements MyServicePrioParentAsyncIf {
   use MyServicePrioParentClientBase;
 
   /**
@@ -262,7 +262,7 @@ class MyServicePrioParentAsyncClient extends ThriftClientBase implements MyServi
 
 }
 
-class MyServicePrioParentClient extends ThriftClientBase implements MyServicePrioParentIf {
+class MyServicePrioParentClient extends \ThriftClientBase implements MyServicePrioParentIf {
   use MyServicePrioParentClientBase;
 
   <<__Deprecated('use gen_ping()')>>
@@ -323,9 +323,9 @@ abstract class MyServicePrioParentAsyncProcessorBase extends ThriftAsyncProcesso
     $this->eventHandler_->preRead($handler_ctx, 'ping', dict[]);
 
     if ($input instanceof \TBinaryProtocolAccelerated) {
-      $args = thrift_protocol_read_binary_struct($input, 'MyServicePrioParent_ping_args');
+      $args = \thrift_protocol_read_binary_struct($input, 'MyServicePrioParent_ping_args');
     } else if ($input instanceof \TCompactProtocolAccelerated) {
-      $args = thrift_protocol_read_compact_struct($input, 'MyServicePrioParent_ping_args');
+      $args = \thrift_protocol_read_compact_struct($input, 'MyServicePrioParent_ping_args');
     } else {
       $args = new MyServicePrioParent_ping_args();
       $args->read($input);
@@ -337,7 +337,7 @@ abstract class MyServicePrioParentAsyncProcessorBase extends ThriftAsyncProcesso
       $this->eventHandler_->preExec($handler_ctx, 'ping', $args);
       await $this->handler->ping();
       $this->eventHandler_->postExec($handler_ctx, 'ping', $result);
-    } catch (Exception $ex) {
+    } catch (\Exception $ex) {
       $reply_type = \TMessageType::EXCEPTION;
       $this->eventHandler_->handlerError($handler_ctx, 'ping', $ex);
       $result = new \TApplicationException($ex->getMessage()."\n".$ex->getTraceAsString());
@@ -345,11 +345,11 @@ abstract class MyServicePrioParentAsyncProcessorBase extends ThriftAsyncProcesso
     $this->eventHandler_->preWrite($handler_ctx, 'ping', $result);
     if ($output instanceof \TBinaryProtocolAccelerated)
     {
-      thrift_protocol_write_binary($output, 'ping', $reply_type, $result, $seqid, $output->isStrictWrite());
+      \thrift_protocol_write_binary($output, 'ping', $reply_type, $result, $seqid, $output->isStrictWrite());
     }
     else if ($output instanceof \TCompactProtocolAccelerated)
     {
-      thrift_protocol_write_compact($output, 'ping', $reply_type, $result, $seqid);
+      \thrift_protocol_write_compact($output, 'ping', $reply_type, $result, $seqid);
     }
     else
     {
@@ -367,9 +367,9 @@ abstract class MyServicePrioParentAsyncProcessorBase extends ThriftAsyncProcesso
     $this->eventHandler_->preRead($handler_ctx, 'pong', dict[]);
 
     if ($input instanceof \TBinaryProtocolAccelerated) {
-      $args = thrift_protocol_read_binary_struct($input, 'MyServicePrioParent_pong_args');
+      $args = \thrift_protocol_read_binary_struct($input, 'MyServicePrioParent_pong_args');
     } else if ($input instanceof \TCompactProtocolAccelerated) {
-      $args = thrift_protocol_read_compact_struct($input, 'MyServicePrioParent_pong_args');
+      $args = \thrift_protocol_read_compact_struct($input, 'MyServicePrioParent_pong_args');
     } else {
       $args = new MyServicePrioParent_pong_args();
       $args->read($input);
@@ -381,7 +381,7 @@ abstract class MyServicePrioParentAsyncProcessorBase extends ThriftAsyncProcesso
       $this->eventHandler_->preExec($handler_ctx, 'pong', $args);
       await $this->handler->pong();
       $this->eventHandler_->postExec($handler_ctx, 'pong', $result);
-    } catch (Exception $ex) {
+    } catch (\Exception $ex) {
       $reply_type = \TMessageType::EXCEPTION;
       $this->eventHandler_->handlerError($handler_ctx, 'pong', $ex);
       $result = new \TApplicationException($ex->getMessage()."\n".$ex->getTraceAsString());
@@ -389,11 +389,11 @@ abstract class MyServicePrioParentAsyncProcessorBase extends ThriftAsyncProcesso
     $this->eventHandler_->preWrite($handler_ctx, 'pong', $result);
     if ($output instanceof \TBinaryProtocolAccelerated)
     {
-      thrift_protocol_write_binary($output, 'pong', $reply_type, $result, $seqid, $output->isStrictWrite());
+      \thrift_protocol_write_binary($output, 'pong', $reply_type, $result, $seqid, $output->isStrictWrite());
     }
     else if ($output instanceof \TCompactProtocolAccelerated)
     {
-      thrift_protocol_write_compact($output, 'pong', $reply_type, $result, $seqid);
+      \thrift_protocol_write_compact($output, 'pong', $reply_type, $result, $seqid);
     }
     else
     {
@@ -418,9 +418,9 @@ abstract class MyServicePrioParentSyncProcessorBase extends ThriftSyncProcessor 
     $this->eventHandler_->preRead($handler_ctx, 'ping', dict[]);
 
     if ($input instanceof \TBinaryProtocolAccelerated) {
-      $args = thrift_protocol_read_binary_struct($input, 'MyServicePrioParent_ping_args');
+      $args = \thrift_protocol_read_binary_struct($input, 'MyServicePrioParent_ping_args');
     } else if ($input instanceof \TCompactProtocolAccelerated) {
-      $args = thrift_protocol_read_compact_struct($input, 'MyServicePrioParent_ping_args');
+      $args = \thrift_protocol_read_compact_struct($input, 'MyServicePrioParent_ping_args');
     } else {
       $args = new MyServicePrioParent_ping_args();
       $args->read($input);
@@ -432,7 +432,7 @@ abstract class MyServicePrioParentSyncProcessorBase extends ThriftSyncProcessor 
       $this->eventHandler_->preExec($handler_ctx, 'ping', $args);
       $this->handler->ping();
       $this->eventHandler_->postExec($handler_ctx, 'ping', $result);
-    } catch (Exception $ex) {
+    } catch (\Exception $ex) {
       $reply_type = \TMessageType::EXCEPTION;
       $this->eventHandler_->handlerError($handler_ctx, 'ping', $ex);
       $result = new \TApplicationException($ex->getMessage()."\n".$ex->getTraceAsString());
@@ -440,11 +440,11 @@ abstract class MyServicePrioParentSyncProcessorBase extends ThriftSyncProcessor 
     $this->eventHandler_->preWrite($handler_ctx, 'ping', $result);
     if ($output instanceof \TBinaryProtocolAccelerated)
     {
-      thrift_protocol_write_binary($output, 'ping', $reply_type, $result, $seqid, $output->isStrictWrite());
+      \thrift_protocol_write_binary($output, 'ping', $reply_type, $result, $seqid, $output->isStrictWrite());
     }
     else if ($output instanceof \TCompactProtocolAccelerated)
     {
-      thrift_protocol_write_compact($output, 'ping', $reply_type, $result, $seqid);
+      \thrift_protocol_write_compact($output, 'ping', $reply_type, $result, $seqid);
     }
     else
     {
@@ -462,9 +462,9 @@ abstract class MyServicePrioParentSyncProcessorBase extends ThriftSyncProcessor 
     $this->eventHandler_->preRead($handler_ctx, 'pong', dict[]);
 
     if ($input instanceof \TBinaryProtocolAccelerated) {
-      $args = thrift_protocol_read_binary_struct($input, 'MyServicePrioParent_pong_args');
+      $args = \thrift_protocol_read_binary_struct($input, 'MyServicePrioParent_pong_args');
     } else if ($input instanceof \TCompactProtocolAccelerated) {
-      $args = thrift_protocol_read_compact_struct($input, 'MyServicePrioParent_pong_args');
+      $args = \thrift_protocol_read_compact_struct($input, 'MyServicePrioParent_pong_args');
     } else {
       $args = new MyServicePrioParent_pong_args();
       $args->read($input);
@@ -476,7 +476,7 @@ abstract class MyServicePrioParentSyncProcessorBase extends ThriftSyncProcessor 
       $this->eventHandler_->preExec($handler_ctx, 'pong', $args);
       $this->handler->pong();
       $this->eventHandler_->postExec($handler_ctx, 'pong', $result);
-    } catch (Exception $ex) {
+    } catch (\Exception $ex) {
       $reply_type = \TMessageType::EXCEPTION;
       $this->eventHandler_->handlerError($handler_ctx, 'pong', $ex);
       $result = new \TApplicationException($ex->getMessage()."\n".$ex->getTraceAsString());
@@ -484,11 +484,11 @@ abstract class MyServicePrioParentSyncProcessorBase extends ThriftSyncProcessor 
     $this->eventHandler_->preWrite($handler_ctx, 'pong', $result);
     if ($output instanceof \TBinaryProtocolAccelerated)
     {
-      thrift_protocol_write_binary($output, 'pong', $reply_type, $result, $seqid, $output->isStrictWrite());
+      \thrift_protocol_write_binary($output, 'pong', $reply_type, $result, $seqid, $output->isStrictWrite());
     }
     else if ($output instanceof \TCompactProtocolAccelerated)
     {
-      thrift_protocol_write_compact($output, 'pong', $reply_type, $result, $seqid);
+      \thrift_protocol_write_compact($output, 'pong', $reply_type, $result, $seqid);
     }
     else
     {

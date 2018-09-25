@@ -117,7 +117,7 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
     $me = /* HH_IGNORE_ERROR[4060] */ new static();
     $me->MyIntField = $shape['MyIntField'];
     $me->MyStringField = $shape['MyStringField'];
-    $me->MyDataField = Shapes::idx($shape, 'MyDataField') === null ? null : MyDataItem::__fromShape(nullthrows(Shapes::idx($shape, 'MyDataField')));
+    $me->MyDataField = Shapes::idx($shape, 'MyDataField') === null ? null : MyDataItem::__fromShape(\nullthrows(Shapes::idx($shape, 'MyDataField')));
     $me->major = $shape['major'];
     $me->myEnum = Shapes::idx($shape, 'myEnum');
     return $me;

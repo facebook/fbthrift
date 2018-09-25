@@ -17,7 +17,7 @@ enum Enum : int {
 }
 type EnumType = Enum;
 
-enum \test\fixtures\UnionEnum: int {
+enum UnionEnum: int {
   _EMPTY_ = 0;
   intValue = 1;
   stringValue = 5;
@@ -94,7 +94,7 @@ class Union implements \IThriftStruct, \IThriftUnion<\test\fixtures\UnionEnum>, 
       'get_intValue called on an instance of Union whose current type is %s',
       $this->_type,
     );
-    return nullthrows($this->intValue);
+    return \nullthrows($this->intValue);
   }
 
   public function set_stringValue(string $stringValue): this {
@@ -109,7 +109,7 @@ class Union implements \IThriftStruct, \IThriftUnion<\test\fixtures\UnionEnum>, 
       'get_stringValue called on an instance of Union whose current type is %s',
       $this->_type,
     );
-    return nullthrows($this->stringValue);
+    return \nullthrows($this->stringValue);
   }
 
   public static function __fromShape(self::TShape $shape): this {
@@ -1191,7 +1191,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
 
   public static function __fromShape(self::TShape $shape): this {
     $me = /* HH_IGNORE_ERROR[4060] */ new static();
-    $me->just_an_A = Shapes::idx($shape, 'just_an_A') === null ? null : \test\fixtures\A::__fromShape(nullthrows(Shapes::idx($shape, 'just_an_A')));
+    $me->just_an_A = Shapes::idx($shape, 'just_an_A') === null ? null : \test\fixtures\A::__fromShape(\nullthrows(Shapes::idx($shape, 'just_an_A')));
     $me->set_of_i32 = new Set(Keyset\keys($shape['set_of_i32']));
     $me->list_of_i32 = (new Vector($shape['list_of_i32']));
     $me->list_of_string = (new Vector($shape['list_of_string']));
@@ -1240,9 +1240,9 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
       $val15 ==> \test\fixtures\B::__fromShape($val15),
     );
     $me->just_an_enum = Shapes::idx($shape, 'just_an_enum');
-    $me->just_a_union = Shapes::idx($shape, 'just_a_union') === null ? null : \test\fixtures\Union::__fromShape(nullthrows(Shapes::idx($shape, 'just_a_union')));
-    $me->optional_just_an_A = Shapes::idx($shape, 'optional_just_an_A') === null ? null : \test\fixtures\A::__fromShape(nullthrows(Shapes::idx($shape, 'optional_just_an_A')));
-    $me->optional_set_of_i32 = Shapes::idx($shape, 'optional_set_of_i32') === null ? null : new Set(Keyset\keys(nullthrows(Shapes::idx($shape, 'optional_set_of_i32'))));
+    $me->just_a_union = Shapes::idx($shape, 'just_a_union') === null ? null : \test\fixtures\Union::__fromShape(\nullthrows(Shapes::idx($shape, 'just_a_union')));
+    $me->optional_just_an_A = Shapes::idx($shape, 'optional_just_an_A') === null ? null : \test\fixtures\A::__fromShape(\nullthrows(Shapes::idx($shape, 'optional_just_an_A')));
+    $me->optional_set_of_i32 = Shapes::idx($shape, 'optional_set_of_i32') === null ? null : new Set(Keyset\keys(\nullthrows(Shapes::idx($shape, 'optional_set_of_i32'))));
     $me->optional_list_of_i32 = Shapes::idx($shape, 'optional_list_of_i32') === null ? null : 
       (new Vector(Shapes::idx($shape, 'optional_list_of_i32')));
     $me->optional_list_of_string = Shapes::idx($shape, 'optional_list_of_string') === null ? null : 
@@ -1273,7 +1273,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     $me->i32_with_default_value = $shape['i32_with_default_value'];
     $me->double_with_default_value = $shape['double_with_default_value'];
     $me->enum_with_default_value = Shapes::idx($shape, 'enum_with_default_value');
-    $me->A_with_default_value = Shapes::idx($shape, 'A_with_default_value') === null ? null : \test\fixtures\A::__fromShape(nullthrows(Shapes::idx($shape, 'A_with_default_value')));
+    $me->A_with_default_value = Shapes::idx($shape, 'A_with_default_value') === null ? null : \test\fixtures\A::__fromShape(\nullthrows(Shapes::idx($shape, 'A_with_default_value')));
     $me->set_of_i32_with_default_value = new Set(Keyset\keys($shape['set_of_i32_with_default_value']));
     $me->map_of_i32_to_string_with_default_value = (new Map($shape['map_of_i32_to_string_with_default_value']));
     $me->list_of_string_with_default_value = (new Vector($shape['list_of_string_with_default_value']));

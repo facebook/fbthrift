@@ -748,7 +748,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
 
   public static function __fromShape(self::TShape $shape): this {
     $me = /* HH_IGNORE_ERROR[4060] */ new static();
-    $me->just_an_A = Shapes::idx($shape, 'just_an_A') === null ? null : A::__fromShape(nullthrows(Shapes::idx($shape, 'just_an_A')));
+    $me->just_an_A = Shapes::idx($shape, 'just_an_A') === null ? null : A::__fromShape(\nullthrows(Shapes::idx($shape, 'just_an_A')));
     $me->set_of_i32 = new Set(Keyset\keys($shape['set_of_i32']));
     $me->list_of_i32 = (new Vector($shape['list_of_i32']));
     $me->list_of_string = (new Vector($shape['list_of_string']));
@@ -797,8 +797,8 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
       $val15 ==> B::__fromShape($val15),
     );
     $me->just_an_enum = Shapes::idx($shape, 'just_an_enum');
-    $me->optional_just_an_A = Shapes::idx($shape, 'optional_just_an_A') === null ? null : A::__fromShape(nullthrows(Shapes::idx($shape, 'optional_just_an_A')));
-    $me->optional_set_of_i32 = Shapes::idx($shape, 'optional_set_of_i32') === null ? null : new Set(Keyset\keys(nullthrows(Shapes::idx($shape, 'optional_set_of_i32'))));
+    $me->optional_just_an_A = Shapes::idx($shape, 'optional_just_an_A') === null ? null : A::__fromShape(\nullthrows(Shapes::idx($shape, 'optional_just_an_A')));
+    $me->optional_set_of_i32 = Shapes::idx($shape, 'optional_set_of_i32') === null ? null : new Set(Keyset\keys(\nullthrows(Shapes::idx($shape, 'optional_set_of_i32'))));
     $me->optional_list_of_i32 = Shapes::idx($shape, 'optional_list_of_i32') === null ? null : 
       (new Vector(Shapes::idx($shape, 'optional_list_of_i32')));
     $me->optional_list_of_string = Shapes::idx($shape, 'optional_list_of_string') === null ? null : 

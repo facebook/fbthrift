@@ -39,7 +39,7 @@ interface BarIf extends \IThriftSyncIf {
  * Bar
  */
 trait BarClientBase {
-  require extends ThriftClientBase;
+  require extends \ThriftClientBase;
 
   protected function sendImpl_baz(keyset<int> $a, \Indexish<int, \Indexish<int, keyset<string>>> $b): int {
     $currentseqid = $this->getNextSequenceID();
@@ -53,11 +53,11 @@ trait BarClientBase {
       $this->eventHandler_->preSend('baz', $args, $currentseqid);
       if ($this->output_ instanceof \TBinaryProtocolAccelerated)
       {
-        thrift_protocol_write_binary($this->output_, 'baz', \TMessageType::CALL, $args, $currentseqid, $this->output_->isStrictWrite(), false);
+        \thrift_protocol_write_binary($this->output_, 'baz', \TMessageType::CALL, $args, $currentseqid, $this->output_->isStrictWrite(), false);
       }
       else if ($this->output_ instanceof \TCompactProtocolAccelerated)
       {
-        thrift_protocol_write_compact($this->output_, 'baz', \TMessageType::CALL, $args, $currentseqid, false);
+        \thrift_protocol_write_compact($this->output_, 'baz', \TMessageType::CALL, $args, $currentseqid, false);
       }
       else
       {
@@ -77,7 +77,7 @@ trait BarClientBase {
           $this->eventHandler_->postSend('baz', $args, $currentseqid);
           return $currentseqid;
       }
-    } catch (Exception $ex) {
+    } catch (\Exception $ex) {
       $this->eventHandler_->sendError('baz', $args, $currentseqid, $ex);
       throw $ex;
     }
@@ -89,10 +89,10 @@ trait BarClientBase {
     try {
       $this->eventHandler_->preRecv('baz', $expectedsequenceid);
       if ($this->input_ instanceof \TBinaryProtocolAccelerated) {
-        $result = thrift_protocol_read_binary($this->input_, 'Bar_baz_result', $this->input_->isStrictRead());
+        $result = \thrift_protocol_read_binary($this->input_, 'Bar_baz_result', $this->input_->isStrictRead());
       } else if ($this->input_ instanceof \TCompactProtocolAccelerated)
       {
-        $result = thrift_protocol_read_compact($this->input_, 'Bar_baz_result');
+        $result = \thrift_protocol_read_compact($this->input_, 'Bar_baz_result');
       }
       else
       {
@@ -127,7 +127,7 @@ trait BarClientBase {
           $this->eventHandler_->postRecv('baz', $expectedsequenceid, $ex->result);
           return $ex->result;
       }
-    } catch (Exception $ex) {
+    } catch (\Exception $ex) {
       $this->eventHandler_->recvError('baz', $expectedsequenceid, $ex);
       throw $ex;
     }
@@ -143,7 +143,7 @@ trait BarClientBase {
 
 }
 
-class BarAsyncClient extends ThriftClientBase implements BarAsyncIf {
+class BarAsyncClient extends \ThriftClientBase implements BarAsyncIf {
   use BarClientBase;
 
   /**
@@ -160,7 +160,7 @@ class BarAsyncClient extends ThriftClientBase implements BarAsyncIf {
 
 }
 
-class BarClient extends ThriftClientBase implements BarIf {
+class BarClient extends \ThriftClientBase implements BarIf {
   use BarClientBase;
 
   <<__Deprecated('use gen_baz()')>>

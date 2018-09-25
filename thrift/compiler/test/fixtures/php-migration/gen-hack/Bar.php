@@ -45,7 +45,7 @@ interface BarIf extends \IThriftSyncIf {
  * Bar
  */
 trait BarClientBase {
-  require extends ThriftClientBase;
+  require extends \ThriftClientBase;
 
   protected function sendImpl_baz(?darray<int, bool> $a, ?\Indexish<int, \Indexish<int, darray<string, bool>>> $b, ?int $c, ?Foo $d, ?int $e): int {
     $currentseqid = $this->getNextSequenceID();
@@ -62,11 +62,11 @@ trait BarClientBase {
       $this->eventHandler_->preSend('baz', $args, $currentseqid);
       if ($this->output_ instanceof \TBinaryProtocolAccelerated)
       {
-        thrift_protocol_write_binary($this->output_, 'baz', \TMessageType::CALL, $args, $currentseqid, $this->output_->isStrictWrite(), false);
+        \thrift_protocol_write_binary($this->output_, 'baz', \TMessageType::CALL, $args, $currentseqid, $this->output_->isStrictWrite(), false);
       }
       else if ($this->output_ instanceof \TCompactProtocolAccelerated)
       {
-        thrift_protocol_write_compact($this->output_, 'baz', \TMessageType::CALL, $args, $currentseqid, false);
+        \thrift_protocol_write_compact($this->output_, 'baz', \TMessageType::CALL, $args, $currentseqid, false);
       }
       else
       {
@@ -86,7 +86,7 @@ trait BarClientBase {
           $this->eventHandler_->postSend('baz', $args, $currentseqid);
           return $currentseqid;
       }
-    } catch (Exception $ex) {
+    } catch (\Exception $ex) {
       $this->eventHandler_->sendError('baz', $args, $currentseqid, $ex);
       throw $ex;
     }
@@ -98,10 +98,10 @@ trait BarClientBase {
     try {
       $this->eventHandler_->preRecv('baz', $expectedsequenceid);
       if ($this->input_ instanceof \TBinaryProtocolAccelerated) {
-        $result = thrift_protocol_read_binary($this->input_, 'Bar_baz_result', $this->input_->isStrictRead());
+        $result = \thrift_protocol_read_binary($this->input_, 'Bar_baz_result', $this->input_->isStrictRead());
       } else if ($this->input_ instanceof \TCompactProtocolAccelerated)
       {
-        $result = thrift_protocol_read_compact($this->input_, 'Bar_baz_result');
+        $result = \thrift_protocol_read_compact($this->input_, 'Bar_baz_result');
       }
       else
       {
@@ -136,7 +136,7 @@ trait BarClientBase {
           $this->eventHandler_->postRecv('baz', $expectedsequenceid, $ex->result);
           return $ex->result;
       }
-    } catch (Exception $ex) {
+    } catch (\Exception $ex) {
       $this->eventHandler_->recvError('baz', $expectedsequenceid, $ex);
       throw $ex;
     }
@@ -152,7 +152,7 @@ trait BarClientBase {
 
 }
 
-class BarAsyncClient extends ThriftClientBase implements BarAsyncIf {
+class BarAsyncClient extends \ThriftClientBase implements BarAsyncIf {
   use BarClientBase;
 
   /**
@@ -172,7 +172,7 @@ class BarAsyncClient extends ThriftClientBase implements BarAsyncIf {
 
 }
 
-class BarClient extends ThriftClientBase implements BarIf {
+class BarClient extends \ThriftClientBase implements BarIf {
   use BarClientBase;
 
   <<__Deprecated('use gen_baz()')>>
@@ -214,9 +214,9 @@ abstract class BarAsyncProcessorBase extends ThriftAsyncProcessor {
     $this->eventHandler_->preRead($handler_ctx, 'baz', darray[]);
 
     if ($input instanceof \TBinaryProtocolAccelerated) {
-      $args = thrift_protocol_read_binary_struct($input, 'Bar_baz_args');
+      $args = \thrift_protocol_read_binary_struct($input, 'Bar_baz_args');
     } else if ($input instanceof \TCompactProtocolAccelerated) {
-      $args = thrift_protocol_read_compact_struct($input, 'Bar_baz_args');
+      $args = \thrift_protocol_read_compact_struct($input, 'Bar_baz_args');
     } else {
       $args = new Bar_baz_args();
       $args->read($input);
@@ -228,7 +228,7 @@ abstract class BarAsyncProcessorBase extends ThriftAsyncProcessor {
       $this->eventHandler_->preExec($handler_ctx, 'baz', $args);
       $result->success = await $this->handler->baz($args->a, $args->b, $args->c, $args->d, $args->e);
       $this->eventHandler_->postExec($handler_ctx, 'baz', $result);
-    } catch (Exception $ex) {
+    } catch (\Exception $ex) {
       $reply_type = \TMessageType::EXCEPTION;
       $this->eventHandler_->handlerError($handler_ctx, 'baz', $ex);
       $result = new \TApplicationException($ex->getMessage()."\n".$ex->getTraceAsString());
@@ -236,11 +236,11 @@ abstract class BarAsyncProcessorBase extends ThriftAsyncProcessor {
     $this->eventHandler_->preWrite($handler_ctx, 'baz', $result);
     if ($output instanceof \TBinaryProtocolAccelerated)
     {
-      thrift_protocol_write_binary($output, 'baz', $reply_type, $result, $seqid, $output->isStrictWrite());
+      \thrift_protocol_write_binary($output, 'baz', $reply_type, $result, $seqid, $output->isStrictWrite());
     }
     else if ($output instanceof \TCompactProtocolAccelerated)
     {
-      thrift_protocol_write_compact($output, 'baz', $reply_type, $result, $seqid);
+      \thrift_protocol_write_compact($output, 'baz', $reply_type, $result, $seqid);
     }
     else
     {
@@ -265,9 +265,9 @@ abstract class BarSyncProcessorBase extends ThriftSyncProcessor {
     $this->eventHandler_->preRead($handler_ctx, 'baz', darray[]);
 
     if ($input instanceof \TBinaryProtocolAccelerated) {
-      $args = thrift_protocol_read_binary_struct($input, 'Bar_baz_args');
+      $args = \thrift_protocol_read_binary_struct($input, 'Bar_baz_args');
     } else if ($input instanceof \TCompactProtocolAccelerated) {
-      $args = thrift_protocol_read_compact_struct($input, 'Bar_baz_args');
+      $args = \thrift_protocol_read_compact_struct($input, 'Bar_baz_args');
     } else {
       $args = new Bar_baz_args();
       $args->read($input);
@@ -279,7 +279,7 @@ abstract class BarSyncProcessorBase extends ThriftSyncProcessor {
       $this->eventHandler_->preExec($handler_ctx, 'baz', $args);
       $result->success = $this->handler->baz($args->a, $args->b, $args->c, $args->d, $args->e);
       $this->eventHandler_->postExec($handler_ctx, 'baz', $result);
-    } catch (Exception $ex) {
+    } catch (\Exception $ex) {
       $reply_type = \TMessageType::EXCEPTION;
       $this->eventHandler_->handlerError($handler_ctx, 'baz', $ex);
       $result = new \TApplicationException($ex->getMessage()."\n".$ex->getTraceAsString());
@@ -287,11 +287,11 @@ abstract class BarSyncProcessorBase extends ThriftSyncProcessor {
     $this->eventHandler_->preWrite($handler_ctx, 'baz', $result);
     if ($output instanceof \TBinaryProtocolAccelerated)
     {
-      thrift_protocol_write_binary($output, 'baz', $reply_type, $result, $seqid, $output->isStrictWrite());
+      \thrift_protocol_write_binary($output, 'baz', $reply_type, $result, $seqid, $output->isStrictWrite());
     }
     else if ($output instanceof \TCompactProtocolAccelerated)
     {
-      thrift_protocol_write_compact($output, 'baz', $reply_type, $result, $seqid);
+      \thrift_protocol_write_compact($output, 'baz', $reply_type, $result, $seqid);
     }
     else
     {

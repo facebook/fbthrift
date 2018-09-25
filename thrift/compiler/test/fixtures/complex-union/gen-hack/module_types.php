@@ -163,7 +163,7 @@ class ComplexUnion implements \IThriftStruct, \IThriftUnion<ComplexUnionEnum> {
       'get_intValue called on an instance of ComplexUnion whose current type is %s',
       $this->_type,
     );
-    return nullthrows($this->intValue);
+    return \nullthrows($this->intValue);
   }
 
   public function set_stringValue(string $stringValue): this {
@@ -178,7 +178,7 @@ class ComplexUnion implements \IThriftStruct, \IThriftUnion<ComplexUnionEnum> {
       'get_stringValue called on an instance of ComplexUnion whose current type is %s',
       $this->_type,
     );
-    return nullthrows($this->stringValue);
+    return \nullthrows($this->stringValue);
   }
 
   public function set_intListValue(Vector<int> $intListValue): this {
@@ -193,7 +193,7 @@ class ComplexUnion implements \IThriftStruct, \IThriftUnion<ComplexUnionEnum> {
       'get_intListValue called on an instance of ComplexUnion whose current type is %s',
       $this->_type,
     );
-    return nullthrows($this->intListValue);
+    return \nullthrows($this->intListValue);
   }
 
   public function set_stringListValue(Vector<string> $stringListValue): this {
@@ -208,7 +208,7 @@ class ComplexUnion implements \IThriftStruct, \IThriftUnion<ComplexUnionEnum> {
       'get_stringListValue called on an instance of ComplexUnion whose current type is %s',
       $this->_type,
     );
-    return nullthrows($this->stringListValue);
+    return \nullthrows($this->stringListValue);
   }
 
   public function set_typedefValue(Map<int, string> $typedefValue): this {
@@ -223,7 +223,7 @@ class ComplexUnion implements \IThriftStruct, \IThriftUnion<ComplexUnionEnum> {
       'get_typedefValue called on an instance of ComplexUnion whose current type is %s',
       $this->_type,
     );
-    return nullthrows($this->typedefValue);
+    return \nullthrows($this->typedefValue);
   }
 
   public function set_stringRef(string $stringRef): this {
@@ -238,7 +238,7 @@ class ComplexUnion implements \IThriftStruct, \IThriftUnion<ComplexUnionEnum> {
       'get_stringRef called on an instance of ComplexUnion whose current type is %s',
       $this->_type,
     );
-    return nullthrows($this->stringRef);
+    return \nullthrows($this->stringRef);
   }
 
   public function readFromJson(string $jsonText): void {
@@ -372,7 +372,7 @@ class VirtualComplexUnion implements \IThriftStruct, \IThriftUnion<VirtualComple
       'get_thingOne called on an instance of VirtualComplexUnion whose current type is %s',
       $this->_type,
     );
-    return nullthrows($this->thingOne);
+    return \nullthrows($this->thingOne);
   }
 
   public function set_thingTwo(string $thingTwo): this {
@@ -387,7 +387,7 @@ class VirtualComplexUnion implements \IThriftStruct, \IThriftUnion<VirtualComple
       'get_thingTwo called on an instance of VirtualComplexUnion whose current type is %s',
       $this->_type,
     );
-    return nullthrows($this->thingTwo);
+    return \nullthrows($this->thingTwo);
   }
 
   public function readFromJson(string $jsonText): void {

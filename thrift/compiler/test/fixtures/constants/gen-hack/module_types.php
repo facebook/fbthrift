@@ -466,7 +466,7 @@ class union1 implements \IThriftStruct, \IThriftUnion<union1Enum> {
       'get_i called on an instance of union1 whose current type is %s',
       $this->_type,
     );
-    return nullthrows($this->i);
+    return \nullthrows($this->i);
   }
 
   public function set_d(float $d): this {
@@ -481,7 +481,7 @@ class union1 implements \IThriftStruct, \IThriftUnion<union1Enum> {
       'get_d called on an instance of union1 whose current type is %s',
       $this->_type,
     );
-    return nullthrows($this->d);
+    return \nullthrows($this->d);
   }
 
 }
@@ -594,7 +594,7 @@ class union2 implements \IThriftStruct, \IThriftUnion<union2Enum> {
       'get_i called on an instance of union2 whose current type is %s',
       $this->_type,
     );
-    return nullthrows($this->i);
+    return \nullthrows($this->i);
   }
 
   public function set_d(float $d): this {
@@ -609,7 +609,7 @@ class union2 implements \IThriftStruct, \IThriftUnion<union2Enum> {
       'get_d called on an instance of union2 whose current type is %s',
       $this->_type,
     );
-    return nullthrows($this->d);
+    return \nullthrows($this->d);
   }
 
   public function set_s(struct1 $s): this {
@@ -624,7 +624,7 @@ class union2 implements \IThriftStruct, \IThriftUnion<union2Enum> {
       'get_s called on an instance of union2 whose current type is %s',
       $this->_type,
     );
-    return nullthrows($this->s);
+    return \nullthrows($this->s);
   }
 
   public function set_u(union1 $u): this {
@@ -639,7 +639,7 @@ class union2 implements \IThriftStruct, \IThriftUnion<union2Enum> {
       'get_u called on an instance of union2 whose current type is %s',
       $this->_type,
     );
-    return nullthrows($this->u);
+    return \nullthrows($this->u);
   }
 
 }

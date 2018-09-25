@@ -51,7 +51,7 @@ interface SomeServiceIf extends \IThriftSyncIf {
  * SomeService
  */
 trait SomeServiceClientBase {
-  require extends ThriftClientBase;
+  require extends \ThriftClientBase;
 
   protected function sendImpl_bounce_map(Map<int, string> $m): int {
     $currentseqid = $this->getNextSequenceID();
@@ -62,11 +62,11 @@ trait SomeServiceClientBase {
       $this->eventHandler_->preSend('bounce_map', $args, $currentseqid);
       if ($this->output_ instanceof \TBinaryProtocolAccelerated)
       {
-        thrift_protocol_write_binary($this->output_, 'bounce_map', \TMessageType::CALL, $args, $currentseqid, $this->output_->isStrictWrite(), false);
+        \thrift_protocol_write_binary($this->output_, 'bounce_map', \TMessageType::CALL, $args, $currentseqid, $this->output_->isStrictWrite(), false);
       }
       else if ($this->output_ instanceof \TCompactProtocolAccelerated)
       {
-        thrift_protocol_write_compact($this->output_, 'bounce_map', \TMessageType::CALL, $args, $currentseqid, false);
+        \thrift_protocol_write_compact($this->output_, 'bounce_map', \TMessageType::CALL, $args, $currentseqid, false);
       }
       else
       {
@@ -86,7 +86,7 @@ trait SomeServiceClientBase {
           $this->eventHandler_->postSend('bounce_map', $args, $currentseqid);
           return $currentseqid;
       }
-    } catch (Exception $ex) {
+    } catch (\Exception $ex) {
       $this->eventHandler_->sendError('bounce_map', $args, $currentseqid, $ex);
       throw $ex;
     }
@@ -98,10 +98,10 @@ trait SomeServiceClientBase {
     try {
       $this->eventHandler_->preRecv('bounce_map', $expectedsequenceid);
       if ($this->input_ instanceof \TBinaryProtocolAccelerated) {
-        $result = thrift_protocol_read_binary($this->input_, 'SomeService_bounce_map_result', $this->input_->isStrictRead());
+        $result = \thrift_protocol_read_binary($this->input_, 'SomeService_bounce_map_result', $this->input_->isStrictRead());
       } else if ($this->input_ instanceof \TCompactProtocolAccelerated)
       {
-        $result = thrift_protocol_read_compact($this->input_, 'SomeService_bounce_map_result');
+        $result = \thrift_protocol_read_compact($this->input_, 'SomeService_bounce_map_result');
       }
       else
       {
@@ -136,7 +136,7 @@ trait SomeServiceClientBase {
           $this->eventHandler_->postRecv('bounce_map', $expectedsequenceid, $ex->result);
           return $ex->result;
       }
-    } catch (Exception $ex) {
+    } catch (\Exception $ex) {
       $this->eventHandler_->recvError('bounce_map', $expectedsequenceid, $ex);
       throw $ex;
     }
@@ -159,11 +159,11 @@ trait SomeServiceClientBase {
       $this->eventHandler_->preSend('binary_keyed_map', $args, $currentseqid);
       if ($this->output_ instanceof \TBinaryProtocolAccelerated)
       {
-        thrift_protocol_write_binary($this->output_, 'binary_keyed_map', \TMessageType::CALL, $args, $currentseqid, $this->output_->isStrictWrite(), false);
+        \thrift_protocol_write_binary($this->output_, 'binary_keyed_map', \TMessageType::CALL, $args, $currentseqid, $this->output_->isStrictWrite(), false);
       }
       else if ($this->output_ instanceof \TCompactProtocolAccelerated)
       {
-        thrift_protocol_write_compact($this->output_, 'binary_keyed_map', \TMessageType::CALL, $args, $currentseqid, false);
+        \thrift_protocol_write_compact($this->output_, 'binary_keyed_map', \TMessageType::CALL, $args, $currentseqid, false);
       }
       else
       {
@@ -183,7 +183,7 @@ trait SomeServiceClientBase {
           $this->eventHandler_->postSend('binary_keyed_map', $args, $currentseqid);
           return $currentseqid;
       }
-    } catch (Exception $ex) {
+    } catch (\Exception $ex) {
       $this->eventHandler_->sendError('binary_keyed_map', $args, $currentseqid, $ex);
       throw $ex;
     }
@@ -195,10 +195,10 @@ trait SomeServiceClientBase {
     try {
       $this->eventHandler_->preRecv('binary_keyed_map', $expectedsequenceid);
       if ($this->input_ instanceof \TBinaryProtocolAccelerated) {
-        $result = thrift_protocol_read_binary($this->input_, 'SomeService_binary_keyed_map_result', $this->input_->isStrictRead());
+        $result = \thrift_protocol_read_binary($this->input_, 'SomeService_binary_keyed_map_result', $this->input_->isStrictRead());
       } else if ($this->input_ instanceof \TCompactProtocolAccelerated)
       {
-        $result = thrift_protocol_read_compact($this->input_, 'SomeService_binary_keyed_map_result');
+        $result = \thrift_protocol_read_compact($this->input_, 'SomeService_binary_keyed_map_result');
       }
       else
       {
@@ -233,7 +233,7 @@ trait SomeServiceClientBase {
           $this->eventHandler_->postRecv('binary_keyed_map', $expectedsequenceid, $ex->result);
           return $ex->result;
       }
-    } catch (Exception $ex) {
+    } catch (\Exception $ex) {
       $this->eventHandler_->recvError('binary_keyed_map', $expectedsequenceid, $ex);
       throw $ex;
     }
@@ -249,7 +249,7 @@ trait SomeServiceClientBase {
 
 }
 
-class SomeServiceAsyncClient extends ThriftClientBase implements SomeServiceAsyncIf {
+class SomeServiceAsyncClient extends \ThriftClientBase implements SomeServiceAsyncIf {
   use SomeServiceClientBase;
 
   /**
@@ -276,7 +276,7 @@ class SomeServiceAsyncClient extends ThriftClientBase implements SomeServiceAsyn
 
 }
 
-class SomeServiceClient extends ThriftClientBase implements SomeServiceIf {
+class SomeServiceClient extends \ThriftClientBase implements SomeServiceIf {
   use SomeServiceClientBase;
 
   <<__Deprecated('use gen_bounce_map()')>>

@@ -37,7 +37,7 @@ interface MyServicePrioChildIf extends MyServicePrioParentIf {
  * MyServicePrioChild
  */
 trait MyServicePrioChildClientBase {
-  require extends ThriftClientBase;
+  require extends \ThriftClientBase;
 
   protected function sendImpl_pang(): int {
     $currentseqid = $this->getNextSequenceID();
@@ -47,11 +47,11 @@ trait MyServicePrioChildClientBase {
       $this->eventHandler_->preSend('pang', $args, $currentseqid);
       if ($this->output_ instanceof \TBinaryProtocolAccelerated)
       {
-        thrift_protocol_write_binary($this->output_, 'pang', \TMessageType::CALL, $args, $currentseqid, $this->output_->isStrictWrite(), false);
+        \thrift_protocol_write_binary($this->output_, 'pang', \TMessageType::CALL, $args, $currentseqid, $this->output_->isStrictWrite(), false);
       }
       else if ($this->output_ instanceof \TCompactProtocolAccelerated)
       {
-        thrift_protocol_write_compact($this->output_, 'pang', \TMessageType::CALL, $args, $currentseqid, false);
+        \thrift_protocol_write_compact($this->output_, 'pang', \TMessageType::CALL, $args, $currentseqid, false);
       }
       else
       {
@@ -71,7 +71,7 @@ trait MyServicePrioChildClientBase {
           $this->eventHandler_->postSend('pang', $args, $currentseqid);
           return $currentseqid;
       }
-    } catch (Exception $ex) {
+    } catch (\Exception $ex) {
       $this->eventHandler_->sendError('pang', $args, $currentseqid, $ex);
       throw $ex;
     }
@@ -83,10 +83,10 @@ trait MyServicePrioChildClientBase {
     try {
       $this->eventHandler_->preRecv('pang', $expectedsequenceid);
       if ($this->input_ instanceof \TBinaryProtocolAccelerated) {
-        $result = thrift_protocol_read_binary($this->input_, 'MyServicePrioChild_pang_result', $this->input_->isStrictRead());
+        $result = \thrift_protocol_read_binary($this->input_, 'MyServicePrioChild_pang_result', $this->input_->isStrictRead());
       } else if ($this->input_ instanceof \TCompactProtocolAccelerated)
       {
-        $result = thrift_protocol_read_compact($this->input_, 'MyServicePrioChild_pang_result');
+        $result = \thrift_protocol_read_compact($this->input_, 'MyServicePrioChild_pang_result');
       }
       else
       {
@@ -121,7 +121,7 @@ trait MyServicePrioChildClientBase {
           $this->eventHandler_->postRecv('pang', $expectedsequenceid, $ex->result);
           return;
       }
-    } catch (Exception $ex) {
+    } catch (\Exception $ex) {
       $this->eventHandler_->recvError('pang', $expectedsequenceid, $ex);
       throw $ex;
     }
@@ -185,9 +185,9 @@ abstract class MyServicePrioChildAsyncProcessorBase extends MyServicePrioParentA
     $this->eventHandler_->preRead($handler_ctx, 'pang', dict[]);
 
     if ($input instanceof \TBinaryProtocolAccelerated) {
-      $args = thrift_protocol_read_binary_struct($input, 'MyServicePrioChild_pang_args');
+      $args = \thrift_protocol_read_binary_struct($input, 'MyServicePrioChild_pang_args');
     } else if ($input instanceof \TCompactProtocolAccelerated) {
-      $args = thrift_protocol_read_compact_struct($input, 'MyServicePrioChild_pang_args');
+      $args = \thrift_protocol_read_compact_struct($input, 'MyServicePrioChild_pang_args');
     } else {
       $args = new MyServicePrioChild_pang_args();
       $args->read($input);
@@ -199,7 +199,7 @@ abstract class MyServicePrioChildAsyncProcessorBase extends MyServicePrioParentA
       $this->eventHandler_->preExec($handler_ctx, 'pang', $args);
       await $this->handler->pang();
       $this->eventHandler_->postExec($handler_ctx, 'pang', $result);
-    } catch (Exception $ex) {
+    } catch (\Exception $ex) {
       $reply_type = \TMessageType::EXCEPTION;
       $this->eventHandler_->handlerError($handler_ctx, 'pang', $ex);
       $result = new \TApplicationException($ex->getMessage()."\n".$ex->getTraceAsString());
@@ -207,11 +207,11 @@ abstract class MyServicePrioChildAsyncProcessorBase extends MyServicePrioParentA
     $this->eventHandler_->preWrite($handler_ctx, 'pang', $result);
     if ($output instanceof \TBinaryProtocolAccelerated)
     {
-      thrift_protocol_write_binary($output, 'pang', $reply_type, $result, $seqid, $output->isStrictWrite());
+      \thrift_protocol_write_binary($output, 'pang', $reply_type, $result, $seqid, $output->isStrictWrite());
     }
     else if ($output instanceof \TCompactProtocolAccelerated)
     {
-      thrift_protocol_write_compact($output, 'pang', $reply_type, $result, $seqid);
+      \thrift_protocol_write_compact($output, 'pang', $reply_type, $result, $seqid);
     }
     else
     {
@@ -236,9 +236,9 @@ abstract class MyServicePrioChildSyncProcessorBase extends MyServicePrioParentSy
     $this->eventHandler_->preRead($handler_ctx, 'pang', dict[]);
 
     if ($input instanceof \TBinaryProtocolAccelerated) {
-      $args = thrift_protocol_read_binary_struct($input, 'MyServicePrioChild_pang_args');
+      $args = \thrift_protocol_read_binary_struct($input, 'MyServicePrioChild_pang_args');
     } else if ($input instanceof \TCompactProtocolAccelerated) {
-      $args = thrift_protocol_read_compact_struct($input, 'MyServicePrioChild_pang_args');
+      $args = \thrift_protocol_read_compact_struct($input, 'MyServicePrioChild_pang_args');
     } else {
       $args = new MyServicePrioChild_pang_args();
       $args->read($input);
@@ -250,7 +250,7 @@ abstract class MyServicePrioChildSyncProcessorBase extends MyServicePrioParentSy
       $this->eventHandler_->preExec($handler_ctx, 'pang', $args);
       $this->handler->pang();
       $this->eventHandler_->postExec($handler_ctx, 'pang', $result);
-    } catch (Exception $ex) {
+    } catch (\Exception $ex) {
       $reply_type = \TMessageType::EXCEPTION;
       $this->eventHandler_->handlerError($handler_ctx, 'pang', $ex);
       $result = new \TApplicationException($ex->getMessage()."\n".$ex->getTraceAsString());
@@ -258,11 +258,11 @@ abstract class MyServicePrioChildSyncProcessorBase extends MyServicePrioParentSy
     $this->eventHandler_->preWrite($handler_ctx, 'pang', $result);
     if ($output instanceof \TBinaryProtocolAccelerated)
     {
-      thrift_protocol_write_binary($output, 'pang', $reply_type, $result, $seqid, $output->isStrictWrite());
+      \thrift_protocol_write_binary($output, 'pang', $reply_type, $result, $seqid, $output->isStrictWrite());
     }
     else if ($output instanceof \TCompactProtocolAccelerated)
     {
-      thrift_protocol_write_compact($output, 'pang', $reply_type, $result, $seqid);
+      \thrift_protocol_write_compact($output, 'pang', $reply_type, $result, $seqid);
     }
     else
     {
