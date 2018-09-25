@@ -1,14 +1,5 @@
 <?hh
-
-/**
-* Copyright (c) 2006- Facebook
-* Distributed under the Thrift Software License
-*
-* See accompanying file LICENSE or visit the Thrift site at:
-* http://developers.facebook.com/thrift/
-*
-* @package thrift.protocol.compact
-*/
+// Copyright 2004-present Facebook. All Rights Reserved.
 
 /**
  * Compact implementation of the Thrift protocol.
@@ -49,8 +40,13 @@ abstract class TCompactProtocolBase extends TProtocol {
   const TYPE_MASK = 0xe0;
   const TYPE_SHIFT_AMOUNT = 5;
 
+  const I16_MIN = -(1 << 15);
+  const I16_MAX = (1 << 15) - 1;
+  const I32_MIN = -(1 << 31);
+  const I32_MAX = (1 << 31) - 1;
+
   protected static
-    $ctypes = array(
+    $ctypes = darray[
       TType::STOP => self::COMPACT_STOP,
       TType::BOOL => self::COMPACT_TRUE, // used for collection
       TType::BYTE => self::COMPACT_BYTE,
@@ -64,10 +60,10 @@ abstract class TCompactProtocolBase extends TProtocol {
       TType::LST => self::COMPACT_LIST,
       TType::SET => self::COMPACT_SET,
       TType::MAP => self::COMPACT_MAP,
-    );
+    ];
 
   protected static
-    $ttypes = array(
+    $ttypes = darray[
       self::COMPACT_STOP => TType::STOP,
       self::COMPACT_TRUE => TType::BOOL, // used for collection
       self::COMPACT_FALSE => TType::BOOL,
@@ -82,18 +78,24 @@ abstract class TCompactProtocolBase extends TProtocol {
       self::COMPACT_LIST => TType::LST,
       self::COMPACT_SET => TType::SET,
       self::COMPACT_MAP => TType::MAP,
-    );
+    ];
 
   protected $state = self::STATE_CLEAR;
   protected $lastFid = 0;
   protected $boolFid = null;
   protected $boolValue = null;
-  protected $structs = array();
-  protected $containers = array();
+  protected $structs = varray[];
+  protected $containers = varray[];
   protected $version = self::VERSION;
 
   public function setWriteVersion($ver) {
     $this->version = $ver;
+  }
+
+  public function checkRange($value, $min, $max) {
+    if ($value < $min || $value > $max) {
+      throw new TProtocolException("Value is out of range");
+    }
   }
 
   // Some varint / zigzag helper methods
@@ -147,6 +149,7 @@ abstract class TCompactProtocolBase extends TProtocol {
     parent::__construct($trans);
   }
 
+  <<__Override>>
   public function writeMessageBegin($name, $type, $seqid) {
     $written =
       $this->writeUByte(self::PROTOCOL_ID) +
@@ -159,25 +162,29 @@ abstract class TCompactProtocolBase extends TProtocol {
     return $written;
   }
 
+  <<__Override>>
   public function writeMessageEnd() {
     $this->state = self::STATE_CLEAR;
     return 0;
   }
 
+  <<__Override>>
   public function writeStructBegin($name) {
-    $this->structs[] = array($this->state, $this->lastFid);
+    $this->structs[] = varray[$this->state, $this->lastFid];
     $this->state = self::STATE_FIELD_WRITE;
     $this->lastFid = 0;
     return 0;
   }
 
+  <<__Override>>
   public function writeStructEnd() {
-    $old_values = array_pop($this->structs);
+    $old_values = array_pop(&$this->structs);
     $this->state = $old_values[0];
     $this->lastFid = $old_values[1];
     return 0;
   }
 
+  <<__Override>>
   public function writeFieldStop() {
     return $this->writeByte(0);
   }
@@ -194,6 +201,7 @@ abstract class TCompactProtocolBase extends TProtocol {
     return $written;
   }
 
+  <<__Override>>
   public function writeFieldBegin($field_name, $field_type, $field_id) {
     if ($field_type == TType::BOOL) {
       $this->state = self::STATE_BOOL_WRITE;
@@ -205,6 +213,7 @@ abstract class TCompactProtocolBase extends TProtocol {
     }
   }
 
+  <<__Override>>
   public function writeFieldEnd() {
     $this->state = self::STATE_FIELD_WRITE;
     return 0;
@@ -225,6 +234,7 @@ abstract class TCompactProtocolBase extends TProtocol {
     return $written;
   }
 
+  <<__Override>>
   public function writeMapBegin($key_type, $val_type, $size) {
     $written = 0;
     if ($size == 0) {
@@ -242,30 +252,36 @@ abstract class TCompactProtocolBase extends TProtocol {
   }
 
   public function writeCollectionEnd() {
-    $this->state = array_pop($this->containers);
+    $this->state = array_pop(&$this->containers);
     return 0;
   }
 
+  <<__Override>>
   public function writeMapEnd() {
     return $this->writeCollectionEnd();
   }
 
+  <<__Override>>
   public function writeListBegin($elem_type, $size) {
     return $this->writeCollectionBegin($elem_type, $size);
   }
 
+  <<__Override>>
   public function writeListEnd() {
     return $this->writeCollectionEnd();
   }
 
+  <<__Override>>
   public function writeSetBegin($elem_type, $size) {
     return $this->writeCollectionBegin($elem_type, $size);
   }
 
+  <<__Override>>
   public function writeSetEnd() {
     return $this->writeCollectionEnd();
   }
 
+  <<__Override>>
   public function writeBool($value) {
     if ($this->state == self::STATE_BOOL_WRITE) {
       $ctype = self::COMPACT_FALSE;
@@ -284,6 +300,7 @@ abstract class TCompactProtocolBase extends TProtocol {
     }
   }
 
+  <<__Override>>
   public function writeByte($value) {
     $this->trans_->write(chr($value));
     return 1;
@@ -294,16 +311,21 @@ abstract class TCompactProtocolBase extends TProtocol {
     return 1;
   }
 
+  <<__Override>>
   public function writeI16($value) {
+    $this->checkRange($value, self::I16_MIN, self::I16_MAX);
     $thing = $this->toZigZag($value, 16);
     return $this->writeVarint($thing);
   }
 
+  <<__Override>>
   public function writeI32($value) {
+    $this->checkRange($value, self::I32_MIN, self::I32_MAX);
     $thing = $this->toZigZag($value, 32);
     return $this->writeVarint($thing);
   }
 
+  <<__Override>>
   public function writeDouble($value) {
     $data = pack('d', $value);
     if ($this->version >= self::VERSION_DOUBLE_BE) {
@@ -313,6 +335,7 @@ abstract class TCompactProtocolBase extends TProtocol {
     return 8;
   }
 
+  <<__Override>>
   public function writeFloat($value) {
     $data = pack('f', $value);
     $data = strrev($data);
@@ -320,6 +343,7 @@ abstract class TCompactProtocolBase extends TProtocol {
     return 4;
   }
 
+  <<__Override>>
   public function writeString($value) {
     $value = (string) $value;
     $len = strlen($value);
@@ -330,8 +354,9 @@ abstract class TCompactProtocolBase extends TProtocol {
     return $result + $len;
   }
 
+  <<__Override>>
   public function readFieldBegin(&$name, &$field_type, &$field_id) {
-    $result = $this->readUByte($field_type);
+    $result = $this->readUByte(&$field_type);
     $delta = $field_type >> 4;
     $field_type = $field_type & 0x0f;
 
@@ -342,7 +367,7 @@ abstract class TCompactProtocolBase extends TProtocol {
     }
 
     if ($delta == 0) {
-      $result += $this->readI16($field_id);
+      $result += $this->readI16(&$field_id);
     } else {
       $field_id = $this->lastFid + $delta;
     }
@@ -362,6 +387,7 @@ abstract class TCompactProtocolBase extends TProtocol {
     return $result;
   }
 
+  <<__Override>>
   public function readFieldEnd() {
     $this->state = self::STATE_FIELD_READ;
     return 0;
@@ -373,6 +399,7 @@ abstract class TCompactProtocolBase extends TProtocol {
     return 1;
   }
 
+  <<__Override>>
   public function readByte(&$value) {
     $data = $this->trans_->readAll(1);
     $value = ord($data);
@@ -383,19 +410,20 @@ abstract class TCompactProtocolBase extends TProtocol {
   }
 
   public function readZigZag(&$value) {
-    $result = $this->readVarint($value);
+    $result = $this->readVarint(&$value);
     $value = $this->fromZigZag($value);
     return $result;
   }
 
+  <<__Override>>
   public function readMessageBegin(&$name, &$type, &$seqid) {
     $protoId = 0;
-    $result = $this->readUByte($protoId);
+    $result = $this->readUByte(&$protoId);
     if ($protoId != self::PROTOCOL_ID) {
       throw new TProtocolException('Bad protocol id in TCompact message');
     }
     $verType = 0;
-    $result += $this->readUByte($verType);
+    $result += $this->readUByte(&$verType);
     $type =
       ($verType & self::TYPE_MASK) >>
       self::TYPE_SHIFT_AMOUNT;
@@ -404,26 +432,29 @@ abstract class TCompactProtocolBase extends TProtocol {
           $this->version >= self::VERSION_LOW)) {
       throw new TProtocolException('Bad version in TCompact message');
     }
-    $result += $this->readVarint($seqid);
-    $result += $this->readString($name);
+    $result += $this->readVarint(&$seqid);
+    $result += $this->readString(&$name);
 
     return $result;
   }
 
+  <<__Override>>
   public function readMessageEnd() {
     return 0;
   }
 
+  <<__Override>>
   public function readStructBegin(&$name) {
     $name = ''; // unused
-    $this->structs[] = array($this->state, $this->lastFid);
+    $this->structs[] = varray[$this->state, $this->lastFid];
     $this->state = self::STATE_FIELD_READ;
     $this->lastFid = 0;
     return 0;
   }
 
+  <<__Override>>
   public function readStructEnd() {
-    $last = array_pop($this->structs);
+    $last = array_pop(&$this->structs);
     $this->state = $last[0];
     $this->lastFid = $last[1];
     return 0;
@@ -431,11 +462,11 @@ abstract class TCompactProtocolBase extends TProtocol {
 
   public function readCollectionBegin(&$type, &$size) {
     $sizeType = 0;
-    $result = $this->readUByte($sizeType);
+    $result = $this->readUByte(&$sizeType);
     $size = $sizeType >> 4;
     $type = $this->getTType($sizeType);
     if ($size == 15) {
-      $result += $this->readVarint($size);
+      $result += $this->readVarint(&$size);
     }
     $this->containers[] = $this->state;
     $this->state = self::STATE_CONTAINER_READ;
@@ -443,11 +474,12 @@ abstract class TCompactProtocolBase extends TProtocol {
     return $result;
   }
 
+  <<__Override>>
   public function readMapBegin(&$key_type, &$val_type, &$size) {
-    $result = $this->readVarint($size);
+    $result = $this->readVarint(&$size);
     $types = 0;
     if ($size > 0) {
-      $result += $this->readUByte($types);
+      $result += $this->readUByte(&$types);
     }
     $val_type = $this->getTType($types);
     $key_type = $this->getTType($types >> 4);
@@ -458,36 +490,42 @@ abstract class TCompactProtocolBase extends TProtocol {
   }
 
   public function readCollectionEnd() {
-    $this->state = array_pop($this->containers);
+    $this->state = array_pop(&$this->containers);
     return 0;
   }
 
+  <<__Override>>
   public function readMapEnd() {
     return $this->readCollectionEnd();
   }
 
+  <<__Override>>
   public function readListBegin(&$elem_type, &$size) {
-    return $this->readCollectionBegin($elem_type, $size);
+    return $this->readCollectionBegin(&$elem_type, &$size);
   }
 
+  <<__Override>>
   public function readListEnd() {
     return $this->readCollectionEnd();
   }
 
+  <<__Override>>
   public function readSetBegin(&$elem_type, &$size) {
-    return $this->readCollectionBegin($elem_type, $size);
+    return $this->readCollectionBegin(&$elem_type, &$size);
   }
 
+  <<__Override>>
   public function readSetEnd() {
     return $this->readCollectionEnd();
   }
 
+  <<__Override>>
   public function readBool(&$value) {
     if ($this->state == self::STATE_BOOL_READ) {
       $value = $this->boolValue;
       return 0;
     } else if ($this->state == self::STATE_CONTAINER_READ) {
-      $result = $this->readByte($value);
+      $result = $this->readByte(&$value);
       $value = $value == self::COMPACT_TRUE;
       return $result;
     } else {
@@ -495,14 +533,17 @@ abstract class TCompactProtocolBase extends TProtocol {
     }
   }
 
+  <<__Override>>
   public function readI16(&$value) {
-    return $this->readZigZag($value);
+    return $this->readZigZag(&$value);
   }
 
+  <<__Override>>
   public function readI32(&$value) {
-    return $this->readZigZag($value);
+    return $this->readZigZag(&$value);
   }
 
+  <<__Override>>
   public function readDouble(&$value) {
     $data = $this->trans_->readAll(8);
     if ($this->version >= self::VERSION_DOUBLE_BE) {
@@ -513,6 +554,7 @@ abstract class TCompactProtocolBase extends TProtocol {
     return 8;
   }
 
+  <<__Override>>
   public function readFloat(&$value) {
     $data = $this->trans_->readAll(4);
     $data = strrev($data);
@@ -521,9 +563,10 @@ abstract class TCompactProtocolBase extends TProtocol {
     return 4;
   }
 
+  <<__Override>>
   public function readString(&$value) {
     $len = 0;
-    $result = $this->readVarint($len);
+    $result = $this->readVarint(&$len);
     if ($len) {
       $value = $this->trans_->readAll($len);
     } else {
@@ -542,6 +585,7 @@ abstract class TCompactProtocolBase extends TProtocol {
 
   // Read and write I64 as two 32 bit numbers $hi and $lo
 
+  <<__Override>>
   public function readI64(&$value) {
     // Read varint from wire
     $hi = 0;
@@ -549,7 +593,7 @@ abstract class TCompactProtocolBase extends TProtocol {
 
     $idx = 0;
     $shift = 0;
-    $arr = array();
+    $arr = darray[];
 
     while (true) {
       $x = $this->trans_->readAll(1);
@@ -636,6 +680,7 @@ abstract class TCompactProtocolBase extends TProtocol {
     return $idx;
   }
 
+  <<__Override>>
   public function writeI64($value) {
     // If we are in an I32 range, use the easy method below.
     if (($value > 4294967296) || ($value < -4294967296)) {

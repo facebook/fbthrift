@@ -48,6 +48,10 @@ abstract class TCompactProtocolBase extends TProtocol {
   const PROTOCOL_ID = 0x82;
   const TYPE_MASK = 0xe0;
   const TYPE_SHIFT_AMOUNT = 5;
+  const I16_MIN = -2 ** 15;
+  const I16_MAX = 2 ** 15 - 1;
+  const I32_MIN = -2 ** 31;
+  const I32_MAX = 2 ** 31 - 1;
   protected static
     $ctypes = array(
       TType::STOP => self::COMPACT_STOP,
@@ -96,6 +100,11 @@ abstract class TCompactProtocolBase extends TProtocol {
   }
   public function fromZigZag($n) {
     return ($n >> 1) ^ (-($n & 1));
+  }
+  public function checkRange($value, $min, $max) {
+    if ($value < $min || $value > $max) {
+      throw new TProtocolException("Value is out of range");
+    }
   }
   public function getVarint($data) {
     $out = "";
@@ -262,10 +271,12 @@ abstract class TCompactProtocolBase extends TProtocol {
     return 1;
   }
   public function writeI16($value) {
+    $this->checkRange($value, self::I16_MIN, self::I16_MAX);
     $thing = $this->toZigZag($value, 16);
     return $this->writeVarint($thing);
   }
   public function writeI32($value) {
+    $this->checkRange($value, self::I32_MIN, self::I32_MAX);
     $thing = $this->toZigZag($value, 32);
     return $this->writeVarint($thing);
   }
