@@ -294,11 +294,6 @@ cdef class Map__i64_List__string:
     def get(self, key, default=None):
         if not self or key is None:
             return default
-        try:
-            if not isinstance(key, int):
-                key = int(key)
-        except Exception:
-            return default
         if not isinstance(key, int):
             return default
         if key not in self:

@@ -9,6 +9,7 @@ const map<i16, map<i16, i16>> LocationMap = {1: {1: 1}}
 typedef list<i32> I32List
 typedef list<list<string>> StrList2D
 typedef map<string, i64> StrIntMap
+typedef map<string, string> StrStrMap
 typedef map<string, I32List> StrI32ListMap
 typedef map<string, StrI32ListMap> StrStrIntListMapMap
 typedef set<I32List> SetI32Lists

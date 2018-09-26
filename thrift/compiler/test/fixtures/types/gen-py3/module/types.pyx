@@ -3111,11 +3111,6 @@ cdef class std_unordered_map__Map__i32_string:
     def get(self, key, default=None):
         if not self or key is None:
             return default
-        try:
-            if not isinstance(key, int):
-                key = int(key)
-        except Exception:
-            return default
         if not isinstance(key, int):
             return default
         if key not in self:
@@ -3406,11 +3401,6 @@ cdef class Map__binary_i64:
 
     def get(self, key, default=None):
         if not self or key is None:
-            return default
-        try:
-            if not isinstance(key, bytes):
-                key = bytes(key)
-        except Exception:
             return default
         if not isinstance(key, bytes):
             return default
@@ -4580,11 +4570,6 @@ cdef class folly_sorted_vector_map__Map__i32_string:
     def get(self, key, default=None):
         if not self or key is None:
             return default
-        try:
-            if not isinstance(key, int):
-                key = int(key)
-        except Exception:
-            return default
         if not isinstance(key, int):
             return default
         if key not in self:
@@ -4875,11 +4860,6 @@ cdef class Map__string_i32:
 
     def get(self, key, default=None):
         if not self or key is None:
-            return default
-        try:
-            if not isinstance(key, str):
-                key = str(key)
-        except Exception:
             return default
         if not isinstance(key, str):
             return default

@@ -134,11 +134,6 @@ cdef class std_unordered_map__Map__i32_string:
     def get(self, key, default=None):
         if not self or key is None:
             return default
-        try:
-            if not isinstance(key, int):
-                key = int(key)
-        except Exception:
-            return default
         if not isinstance(key, int):
             return default
         if key not in self:

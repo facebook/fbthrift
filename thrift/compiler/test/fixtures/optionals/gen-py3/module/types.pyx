@@ -1459,11 +1459,6 @@ cdef class Map__Animal_string:
     def get(self, key, default=None):
         if not self or key is None:
             return default
-        try:
-            if not isinstance(key, Animal):
-                key = Animal(key)
-        except Exception:
-            return default
         if not isinstance(key, Animal):
             return default
         if key not in self:

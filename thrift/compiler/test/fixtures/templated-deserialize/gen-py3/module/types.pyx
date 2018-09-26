@@ -1168,11 +1168,6 @@ cdef class Map__string_bool:
     def get(self, key, default=None):
         if not self or key is None:
             return default
-        try:
-            if not isinstance(key, str):
-                key = str(key)
-        except Exception:
-            return default
         if not isinstance(key, str):
             return default
         if key not in self:
@@ -2055,11 +2050,6 @@ cdef class Map__string_i32:
     def get(self, key, default=None):
         if not self or key is None:
             return default
-        try:
-            if not isinstance(key, str):
-                key = str(key)
-        except Exception:
-            return default
         if not isinstance(key, str):
             return default
         if key not in self:
@@ -2193,11 +2183,6 @@ cdef class Map__string_Map__string_i32:
     def get(self, key, default=None):
         if not self or key is None:
             return default
-        try:
-            if not isinstance(key, str):
-                key = str(key)
-        except Exception:
-            return default
         if not isinstance(key, str):
             return default
         if key not in self:
@@ -2330,11 +2315,6 @@ cdef class Map__string_Map__string_Map__string_i32:
 
     def get(self, key, default=None):
         if not self or key is None:
-            return default
-        try:
-            if not isinstance(key, str):
-                key = str(key)
-        except Exception:
             return default
         if not isinstance(key, str):
             return default
@@ -2643,11 +2623,6 @@ cdef class Map__string_List__i32:
 
     def get(self, key, default=None):
         if not self or key is None:
-            return default
-        try:
-            if not isinstance(key, str):
-                key = str(key)
-        except Exception:
             return default
         if not isinstance(key, str):
             return default

@@ -1226,11 +1226,13 @@ Set.register({{> types/CythonPythonType}})
             return default
         {{! Convert the key once }}
         {{#type:keyType}}
+        {{#type:container?}}
         try:
             if not isinstance(key, {{> types/PythonType}}):
                 key = {{> types/PythonType}}(key)
         except Exception:
             return default
+        {{/type:container?}}
         if not isinstance(key, {{> types/PythonType}}):
             return default
         {{/type:keyType}}

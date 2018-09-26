@@ -995,11 +995,6 @@ cdef class Map__i16_double:
     def get(self, key, default=None):
         if not self or key is None:
             return default
-        try:
-            if not isinstance(key, int):
-                key = int(key)
-        except Exception:
-            return default
         if not isinstance(key, int):
             return default
         if key not in self:
@@ -1131,11 +1126,6 @@ cdef class Map__i16_float:
 
     def get(self, key, default=None):
         if not self or key is None:
-            return default
-        try:
-            if not isinstance(key, int):
-                key = int(key)
-        except Exception:
             return default
         if not isinstance(key, int):
             return default
@@ -1445,11 +1435,6 @@ cdef class Map__i16_Map__i16_float:
 
     def get(self, key, default=None):
         if not self or key is None:
-            return default
-        try:
-            if not isinstance(key, int):
-                key = int(key)
-        except Exception:
             return default
         if not isinstance(key, int):
             return default
@@ -1830,11 +1815,6 @@ cdef class Map__i64_double:
     def get(self, key, default=None):
         if not self or key is None:
             return default
-        try:
-            if not isinstance(key, int):
-                key = int(key)
-        except Exception:
-            return default
         if not isinstance(key, int):
             return default
         if key not in self:
@@ -1969,11 +1949,6 @@ cdef class Map__i16_Map__i64_double:
     def get(self, key, default=None):
         if not self or key is None:
             return default
-        try:
-            if not isinstance(key, int):
-                key = int(key)
-        except Exception:
-            return default
         if not isinstance(key, int):
             return default
         if key not in self:
@@ -2107,11 +2082,6 @@ cdef class Map__i32_Map__i64_double:
 
     def get(self, key, default=None):
         if not self or key is None:
-            return default
-        try:
-            if not isinstance(key, int):
-                key = int(key)
-        except Exception:
             return default
         if not isinstance(key, int):
             return default
@@ -2405,11 +2375,6 @@ cdef class Map__i16_List__float:
     def get(self, key, default=None):
         if not self or key is None:
             return default
-        try:
-            if not isinstance(key, int):
-                key = int(key)
-        except Exception:
-            return default
         if not isinstance(key, int):
             return default
         if key not in self:
@@ -2543,11 +2508,6 @@ cdef class Map__i32_List__float:
 
     def get(self, key, default=None):
         if not self or key is None:
-            return default
-        try:
-            if not isinstance(key, int):
-                key = int(key)
-        except Exception:
             return default
         if not isinstance(key, int):
             return default
