@@ -27,27 +27,45 @@ namespace thrift {
 
 namespace detail {
 
-template <typename C>
-using push_back_result = decltype(
-    std::declval<C&>().push_back(std::declval<typename C::value_type>()));
+template <
+    typename C,
+    typename T = decltype(
+        std::declval<C&>().push_back(std::declval<typename C::value_type>()))>
+struct push_back_result {
+  using type = T;
+};
 
-template <typename C>
-using insert_key_result =
-    decltype(std::declval<C&>().insert(std::declval<typename C::key_type>()));
+template <
+    typename C,
+    typename T = decltype(
+        std::declval<C&>().insert(std::declval<typename C::key_type>()))>
+struct insert_key_result {
+  using type = T;
+};
 
-template <typename C>
-using subscript_key_result =
-    decltype(std::declval<C&>()[std::declval<typename C::key_type>()]);
+template <
+    typename C,
+    typename T =
+        decltype(std::declval<C&>()[std::declval<typename C::key_type>()])>
+struct subscript_key_result {
+  using type = T;
+};
 
-template <typename C>
-using reserve_result =
-    decltype(std::declval<C&>().reserve(std::declval<typename C::size_type>()));
+template <
+    typename C,
+    typename T = decltype(
+        std::declval<C&>().reserve(std::declval<typename C::size_type>()))>
+struct reserve_result {
+  using type = T;
+};
+
 template <typename C, typename = void>
 struct Reserver {
   static void reserve(C&, typename C::size_type) {}
 };
+
 template <typename C>
-struct Reserver<C, folly::void_t<reserve_result<C>>> {
+struct Reserver<C, folly::void_t<typename reserve_result<C>::type>> {
   static void reserve(C& container, typename C::size_type size) {
     container.reserve(size);
   }
@@ -446,7 +464,7 @@ void readIntoVector(Protocol* prot, std::vector<bool>& vec) {
 } // namespace detail
 
 template <class L>
-class Cpp2Ops<L, folly::void_t<detail::push_back_result<L>>> {
+class Cpp2Ops<L, folly::void_t<typename detail::push_back_result<L>::type>> {
  public:
   typedef L Type;
   static constexpr protocol::TType thriftType() {
@@ -501,7 +519,7 @@ class Cpp2Ops<L, folly::void_t<detail::push_back_result<L>>> {
 };
 
 template <class S>
-class Cpp2Ops<S, folly::void_t<detail::insert_key_result<S>>> {
+class Cpp2Ops<S, folly::void_t<typename detail::insert_key_result<S>::type>> {
  public:
   typedef S Type;
   static constexpr protocol::TType thriftType() {
@@ -560,7 +578,9 @@ class Cpp2Ops<S, folly::void_t<detail::insert_key_result<S>>> {
 };
 
 template <class M>
-class Cpp2Ops<M, folly::void_t<detail::subscript_key_result<M>>> {
+class Cpp2Ops<
+    M,
+    folly::void_t<typename detail::subscript_key_result<M>::type>> {
  public:
   typedef M Type;
   static constexpr protocol::TType thriftType() {
