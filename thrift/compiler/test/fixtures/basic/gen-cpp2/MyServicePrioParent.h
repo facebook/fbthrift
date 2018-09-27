@@ -32,8 +32,10 @@ class MyServicePrioParentSvAsyncIf {
   virtual ~MyServicePrioParentSvAsyncIf() {}
   virtual void async_tm_ping(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) = 0;
   virtual folly::Future<folly::Unit> future_ping() = 0;
+  virtual folly::SemiFuture<folly::Unit> semifuture_ping() = 0;
   virtual void async_tm_pong(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) = 0;
   virtual folly::Future<folly::Unit> future_pong() = 0;
+  virtual folly::SemiFuture<folly::Unit> semifuture_pong() = 0;
 };
 
 class MyServicePrioParentAsyncProcessor;
@@ -44,9 +46,11 @@ class MyServicePrioParentSvIf : public MyServicePrioParentSvAsyncIf, public apac
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
   virtual void ping();
   folly::Future<folly::Unit> future_ping() override;
+  folly::SemiFuture<folly::Unit> semifuture_ping() override;
   void async_tm_ping(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) override;
   virtual void pong();
   folly::Future<folly::Unit> future_pong() override;
+  folly::SemiFuture<folly::Unit> semifuture_pong() override;
   void async_tm_pong(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) override;
 };
 

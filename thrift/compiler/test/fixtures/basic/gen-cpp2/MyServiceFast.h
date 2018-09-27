@@ -32,16 +32,22 @@ class MyServiceFastSvAsyncIf {
   virtual ~MyServiceFastSvAsyncIf() {}
   virtual void async_eb_ping(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) = 0;
   virtual folly::Future<folly::Unit> future_ping() = 0;
+  virtual folly::SemiFuture<folly::Unit> semifuture_ping() = 0;
   virtual void async_eb_getRandomData(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::string>>> callback) = 0;
   virtual folly::Future<std::unique_ptr<std::string>> future_getRandomData() = 0;
+  virtual folly::SemiFuture<std::unique_ptr<std::string>> semifuture_getRandomData() = 0;
   virtual void async_eb_hasDataById(std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback, int64_t id) = 0;
   virtual folly::Future<bool> future_hasDataById(int64_t id) = 0;
+  virtual folly::SemiFuture<bool> semifuture_hasDataById(int64_t id) = 0;
   virtual void async_eb_getDataById(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::string>>> callback, int64_t id) = 0;
   virtual folly::Future<std::unique_ptr<std::string>> future_getDataById(int64_t id) = 0;
+  virtual folly::SemiFuture<std::unique_ptr<std::string>> semifuture_getDataById(int64_t id) = 0;
   virtual void async_eb_putDataById(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, int64_t id, std::unique_ptr<std::string> data) = 0;
   virtual folly::Future<folly::Unit> future_putDataById(int64_t id, std::unique_ptr<std::string> data) = 0;
+  virtual folly::SemiFuture<folly::Unit> semifuture_putDataById(int64_t id, std::unique_ptr<std::string> data) = 0;
   virtual void async_eb_lobDataById(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback, int64_t id, std::unique_ptr<std::string> data) = 0;
   virtual folly::Future<folly::Unit> future_lobDataById(int64_t id, std::unique_ptr<std::string> data) = 0;
+  virtual folly::SemiFuture<folly::Unit> semifuture_lobDataById(int64_t id, std::unique_ptr<std::string> data) = 0;
 };
 
 class MyServiceFastAsyncProcessor;
@@ -52,21 +58,27 @@ class MyServiceFastSvIf : public MyServiceFastSvAsyncIf, public apache::thrift::
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
   virtual void ping();
   folly::Future<folly::Unit> future_ping() override;
+  folly::SemiFuture<folly::Unit> semifuture_ping() override;
   void async_eb_ping(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) override;
   virtual void getRandomData(std::string& /*_return*/);
   folly::Future<std::unique_ptr<std::string>> future_getRandomData() override;
+  folly::SemiFuture<std::unique_ptr<std::string>> semifuture_getRandomData() override;
   void async_eb_getRandomData(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::string>>> callback) override;
   virtual bool hasDataById(int64_t /*id*/);
   folly::Future<bool> future_hasDataById(int64_t id) override;
+  folly::SemiFuture<bool> semifuture_hasDataById(int64_t id) override;
   void async_eb_hasDataById(std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback, int64_t id) override;
   virtual void getDataById(std::string& /*_return*/, int64_t /*id*/);
   folly::Future<std::unique_ptr<std::string>> future_getDataById(int64_t id) override;
+  folly::SemiFuture<std::unique_ptr<std::string>> semifuture_getDataById(int64_t id) override;
   void async_eb_getDataById(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::string>>> callback, int64_t id) override;
   virtual void putDataById(int64_t /*id*/, std::unique_ptr<std::string> /*data*/);
   folly::Future<folly::Unit> future_putDataById(int64_t id, std::unique_ptr<std::string> data) override;
+  folly::SemiFuture<folly::Unit> semifuture_putDataById(int64_t id, std::unique_ptr<std::string> data) override;
   void async_eb_putDataById(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, int64_t id, std::unique_ptr<std::string> data) override;
   virtual void lobDataById(int64_t /*id*/, std::unique_ptr<std::string> /*data*/);
   folly::Future<folly::Unit> future_lobDataById(int64_t id, std::unique_ptr<std::string> data) override;
+  folly::SemiFuture<folly::Unit> semifuture_lobDataById(int64_t id, std::unique_ptr<std::string> data) override;
   void async_eb_lobDataById(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback, int64_t id, std::unique_ptr<std::string> data) override;
 };
 

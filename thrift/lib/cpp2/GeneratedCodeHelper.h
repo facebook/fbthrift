@@ -1146,10 +1146,19 @@ using action_traits = action_traits_impl<decltype(&F::operator())>;
 template <typename F>
 using arg = typename action_traits<F>::arg_type;
 
+template <typename T>
+folly::Future<T> future(
+    folly::SemiFuture<T>&& future,
+    folly::Executor* executor) {
+  if (future.isReady()) {
+    return std::move(future).toUnsafeFuture();
+  }
+  return std::move(future).via(executor);
+}
+
 template <class F>
-folly::Future<ret_lift<F>>
-future(F&& f) {
-  return folly::makeFutureWith(std::forward<F>(f));
+folly::SemiFuture<ret_lift<F>> semifuture(F&& f) {
+  return folly::makeSemiFutureWith(std::forward<F>(f));
 }
 
 template <class F>
@@ -1161,11 +1170,8 @@ returning(F&& f) {
 }
 
 template <class F>
-folly::Future<arg<F>>
-future_returning(F&& f) {
-  return future([&]() {
-      return returning(std::forward<F>(f));
-  });
+folly::SemiFuture<arg<F>> semifuture_returning(F&& f) {
+  return semifuture([&]() { return returning(std::forward<F>(f)); });
 }
 
 template <class F>
@@ -1177,11 +1183,8 @@ returning_uptr(F&& f) {
 }
 
 template <class F>
-folly::Future<std::unique_ptr<arg<F>>>
-future_returning_uptr(F&& f) {
-  return future([&]() {
-      return returning_uptr(std::forward<F>(f));
-  });
+folly::SemiFuture<std::unique_ptr<arg<F>>> semifuture_returning_uptr(F&& f) {
+  return semifuture([&]() { return returning_uptr(std::forward<F>(f)); });
 }
 
 using CallbackBase = HandlerCallbackBase;

@@ -33,6 +33,7 @@ class MyServicePrioChildSvAsyncIf {
   virtual ~MyServicePrioChildSvAsyncIf() {}
   virtual void async_tm_pang(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) = 0;
   virtual folly::Future<folly::Unit> future_pang() = 0;
+  virtual folly::SemiFuture<folly::Unit> semifuture_pang() = 0;
 };
 
 class MyServicePrioChildAsyncProcessor;
@@ -43,6 +44,7 @@ class MyServicePrioChildSvIf : public MyServicePrioChildSvAsyncIf, virtual publi
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
   virtual void pang();
   folly::Future<folly::Unit> future_pang() override;
+  folly::SemiFuture<folly::Unit> semifuture_pang() override;
   void async_tm_pang(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) override;
 };
 

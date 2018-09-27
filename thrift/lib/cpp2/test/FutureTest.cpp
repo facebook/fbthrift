@@ -93,6 +93,15 @@ class TestInterface : public FutureServiceSvIf {
     return makeFuture<std::unique_ptr<std::string>>(std::move(req));
   }
 
+  SemiFuture<std::unique_ptr<std::string>> semifuture_echoRequestSlow(
+      std::unique_ptr<std::string> req,
+      int64_t sleepMs) override {
+    return folly::futures::sleep(std::chrono::milliseconds{sleepMs})
+        .semi()
+        .deferValue(
+            [req = std::move(req)](auto&&) mutable { return std::move(req); });
+  }
+
   Future<int> future_throwing() override {
     Promise<int> p;
     auto f = p.getFuture();
@@ -366,4 +375,23 @@ TEST(ThriftServer, FutureHeaderClientTest) {
 
   const auto& headers = future.value().second->getHeaders();
   EXPECT_EQ(get_default(headers, "header_from_server"), "1");
+}
+
+TEST(ThriftServer, SemiFutureServerTest) {
+  auto handler = std::make_shared<TestInterface>();
+  apache::thrift::ScopedServerInterfaceThread runner(handler);
+
+  EventBase base;
+  ManualExecutor executor;
+  auto client = runner.newClient<FutureServiceAsyncClient>(base);
+
+  auto startTime = std::chrono::steady_clock::now();
+
+  auto request = "request";
+  auto response =
+      client->semifuture_echoRequestSlow(request, 100).via(&base).getVia(&base);
+  EXPECT_EQ(request, response);
+  EXPECT_GE(
+      std::chrono::steady_clock::now() - startTime,
+      std::chrono::milliseconds{100});
 }

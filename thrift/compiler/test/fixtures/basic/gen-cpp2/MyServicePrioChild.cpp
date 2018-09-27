@@ -21,7 +21,11 @@ void MyServicePrioChildSvIf::pang() {
 }
 
 folly::Future<folly::Unit> MyServicePrioChildSvIf::future_pang() {
-  return apache::thrift::detail::si::future([&] { return pang(); });
+  return apache::thrift::detail::si::future(semifuture_pang(), getThreadManager());
+}
+
+folly::SemiFuture<folly::Unit> MyServicePrioChildSvIf::semifuture_pang() {
+  return apache::thrift::detail::si::semifuture([&] { return pang(); });
 }
 
 void MyServicePrioChildSvIf::async_tm_pang(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) {

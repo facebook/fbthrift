@@ -21,7 +21,11 @@ bool ExtraServiceSvIf::simple_function() {
 }
 
 folly::Future<bool> ExtraServiceSvIf::future_simple_function() {
-  return apache::thrift::detail::si::future([&] { return simple_function(); });
+  return apache::thrift::detail::si::future(semifuture_simple_function(), getThreadManager());
+}
+
+folly::SemiFuture<bool> ExtraServiceSvIf::semifuture_simple_function() {
+  return apache::thrift::detail::si::semifuture([&] { return simple_function(); });
 }
 
 void ExtraServiceSvIf::async_eb_simple_function(std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback) {
@@ -33,7 +37,11 @@ void ExtraServiceSvIf::throws_function() {
 }
 
 folly::Future<folly::Unit> ExtraServiceSvIf::future_throws_function() {
-  return apache::thrift::detail::si::future([&] { return throws_function(); });
+  return apache::thrift::detail::si::future(semifuture_throws_function(), getThreadManager());
+}
+
+folly::SemiFuture<folly::Unit> ExtraServiceSvIf::semifuture_throws_function() {
+  return apache::thrift::detail::si::semifuture([&] { return throws_function(); });
 }
 
 void ExtraServiceSvIf::async_eb_throws_function(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) {
@@ -45,7 +53,11 @@ bool ExtraServiceSvIf::throws_function2(bool /*param1*/) {
 }
 
 folly::Future<bool> ExtraServiceSvIf::future_throws_function2(bool param1) {
-  return apache::thrift::detail::si::future([&] { return throws_function2(param1); });
+  return apache::thrift::detail::si::future(semifuture_throws_function2(param1), getThreadManager());
+}
+
+folly::SemiFuture<bool> ExtraServiceSvIf::semifuture_throws_function2(bool param1) {
+  return apache::thrift::detail::si::semifuture([&] { return throws_function2(param1); });
 }
 
 void ExtraServiceSvIf::async_eb_throws_function2(std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback, bool param1) {
@@ -57,7 +69,11 @@ void ExtraServiceSvIf::throws_function3(std::map<int32_t, std::string>& /*_retur
 }
 
 folly::Future<std::map<int32_t, std::string>> ExtraServiceSvIf::future_throws_function3(bool param1, const std::string& param2) {
-  return apache::thrift::detail::si::future_returning([&](std::map<int32_t, std::string>& _return) { throws_function3(_return, param1, param2); });
+  return apache::thrift::detail::si::future(semifuture_throws_function3(param1, param2), getThreadManager());
+}
+
+folly::SemiFuture<std::map<int32_t, std::string>> ExtraServiceSvIf::semifuture_throws_function3(bool param1, const std::string& param2) {
+  return apache::thrift::detail::si::semifuture_returning([&](std::map<int32_t, std::string>& _return) { throws_function3(_return, param1, param2); });
 }
 
 void ExtraServiceSvIf::async_eb_throws_function3(std::unique_ptr<apache::thrift::HandlerCallback<std::map<int32_t, std::string>>> callback, bool param1, const std::string& param2) {
@@ -69,7 +85,11 @@ void ExtraServiceSvIf::oneway_void_ret() {
 }
 
 folly::Future<folly::Unit> ExtraServiceSvIf::future_oneway_void_ret() {
-  return apache::thrift::detail::si::future([&] { return oneway_void_ret(); });
+  return apache::thrift::detail::si::future(semifuture_oneway_void_ret(), getThreadManager());
+}
+
+folly::SemiFuture<folly::Unit> ExtraServiceSvIf::semifuture_oneway_void_ret() {
+  return apache::thrift::detail::si::semifuture([&] { return oneway_void_ret(); });
 }
 
 void ExtraServiceSvIf::async_eb_oneway_void_ret(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback) {
@@ -81,7 +101,11 @@ void ExtraServiceSvIf::oneway_void_ret_i32_i32_i32_i32_i32_param(int32_t /*param
 }
 
 folly::Future<folly::Unit> ExtraServiceSvIf::future_oneway_void_ret_i32_i32_i32_i32_i32_param(int32_t param1, int32_t param2, int32_t param3, int32_t param4, int32_t param5) {
-  return apache::thrift::detail::si::future([&] { return oneway_void_ret_i32_i32_i32_i32_i32_param(param1, param2, param3, param4, param5); });
+  return apache::thrift::detail::si::future(semifuture_oneway_void_ret_i32_i32_i32_i32_i32_param(param1, param2, param3, param4, param5), getThreadManager());
+}
+
+folly::SemiFuture<folly::Unit> ExtraServiceSvIf::semifuture_oneway_void_ret_i32_i32_i32_i32_i32_param(int32_t param1, int32_t param2, int32_t param3, int32_t param4, int32_t param5) {
+  return apache::thrift::detail::si::semifuture([&] { return oneway_void_ret_i32_i32_i32_i32_i32_param(param1, param2, param3, param4, param5); });
 }
 
 void ExtraServiceSvIf::async_eb_oneway_void_ret_i32_i32_i32_i32_i32_param(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback, int32_t param1, int32_t param2, int32_t param3, int32_t param4, int32_t param5) {
@@ -93,7 +117,11 @@ void ExtraServiceSvIf::oneway_void_ret_map_setlist_param(const std::map<std::str
 }
 
 folly::Future<folly::Unit> ExtraServiceSvIf::future_oneway_void_ret_map_setlist_param(const std::map<std::string, int64_t>& param1, const std::set<std::vector<std::string>>& param2) {
-  return apache::thrift::detail::si::future([&] { return oneway_void_ret_map_setlist_param(param1, param2); });
+  return apache::thrift::detail::si::future(semifuture_oneway_void_ret_map_setlist_param(param1, param2), getThreadManager());
+}
+
+folly::SemiFuture<folly::Unit> ExtraServiceSvIf::semifuture_oneway_void_ret_map_setlist_param(const std::map<std::string, int64_t>& param1, const std::set<std::vector<std::string>>& param2) {
+  return apache::thrift::detail::si::semifuture([&] { return oneway_void_ret_map_setlist_param(param1, param2); });
 }
 
 void ExtraServiceSvIf::async_eb_oneway_void_ret_map_setlist_param(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback, const std::map<std::string, int64_t>& param1, const std::set<std::vector<std::string>>& param2) {
@@ -105,7 +133,11 @@ void ExtraServiceSvIf::oneway_void_ret_struct_param(const  ::some::valid::ns::My
 }
 
 folly::Future<folly::Unit> ExtraServiceSvIf::future_oneway_void_ret_struct_param(const  ::some::valid::ns::MyStruct& param1) {
-  return apache::thrift::detail::si::future([&] { return oneway_void_ret_struct_param(param1); });
+  return apache::thrift::detail::si::future(semifuture_oneway_void_ret_struct_param(param1), getThreadManager());
+}
+
+folly::SemiFuture<folly::Unit> ExtraServiceSvIf::semifuture_oneway_void_ret_struct_param(const  ::some::valid::ns::MyStruct& param1) {
+  return apache::thrift::detail::si::semifuture([&] { return oneway_void_ret_struct_param(param1); });
 }
 
 void ExtraServiceSvIf::async_eb_oneway_void_ret_struct_param(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback, const  ::some::valid::ns::MyStruct& param1) {
@@ -117,7 +149,11 @@ void ExtraServiceSvIf::oneway_void_ret_listunion_param(const std::vector< ::some
 }
 
 folly::Future<folly::Unit> ExtraServiceSvIf::future_oneway_void_ret_listunion_param(const std::vector< ::some::valid::ns::ComplexUnion>& param1) {
-  return apache::thrift::detail::si::future([&] { return oneway_void_ret_listunion_param(param1); });
+  return apache::thrift::detail::si::future(semifuture_oneway_void_ret_listunion_param(param1), getThreadManager());
+}
+
+folly::SemiFuture<folly::Unit> ExtraServiceSvIf::semifuture_oneway_void_ret_listunion_param(const std::vector< ::some::valid::ns::ComplexUnion>& param1) {
+  return apache::thrift::detail::si::semifuture([&] { return oneway_void_ret_listunion_param(param1); });
 }
 
 void ExtraServiceSvIf::async_eb_oneway_void_ret_listunion_param(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback, const std::vector< ::some::valid::ns::ComplexUnion>& param1) {

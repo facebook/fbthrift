@@ -21,7 +21,11 @@ void MyLeafSvIf::do_leaf() {
 }
 
 folly::Future<folly::Unit> MyLeafSvIf::future_do_leaf() {
-  return apache::thrift::detail::si::future([&] { return do_leaf(); });
+  return apache::thrift::detail::si::future(semifuture_do_leaf(), getThreadManager());
+}
+
+folly::SemiFuture<folly::Unit> MyLeafSvIf::semifuture_do_leaf() {
+  return apache::thrift::detail::si::semifuture([&] { return do_leaf(); });
 }
 
 void MyLeafSvIf::async_tm_do_leaf(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) {

@@ -32,6 +32,7 @@ class MyRootSvAsyncIf {
   virtual ~MyRootSvAsyncIf() {}
   virtual void async_tm_do_root(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) = 0;
   virtual folly::Future<folly::Unit> future_do_root() = 0;
+  virtual folly::SemiFuture<folly::Unit> semifuture_do_root() = 0;
 };
 
 class MyRootAsyncProcessor;
@@ -42,6 +43,7 @@ class MyRootSvIf : public MyRootSvAsyncIf, public apache::thrift::ServerInterfac
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
   virtual void do_root();
   folly::Future<folly::Unit> future_do_root() override;
+  folly::SemiFuture<folly::Unit> semifuture_do_root() override;
   void async_tm_do_root(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) override;
 };
 

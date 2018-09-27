@@ -33,6 +33,7 @@ class MyNodeSvAsyncIf {
   virtual ~MyNodeSvAsyncIf() {}
   virtual void async_tm_do_mid(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) = 0;
   virtual folly::Future<folly::Unit> future_do_mid() = 0;
+  virtual folly::SemiFuture<folly::Unit> semifuture_do_mid() = 0;
 };
 
 class MyNodeAsyncProcessor;
@@ -43,6 +44,7 @@ class MyNodeSvIf : public MyNodeSvAsyncIf, virtual public  ::cpp2::MyRootSvIf {
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
   virtual void do_mid();
   folly::Future<folly::Unit> future_do_mid() override;
+  folly::SemiFuture<folly::Unit> semifuture_do_mid() override;
   void async_tm_do_mid(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) override;
 };
 

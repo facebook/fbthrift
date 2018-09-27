@@ -32,6 +32,7 @@ class CSvAsyncIf {
   virtual ~CSvAsyncIf() {}
   virtual void async_tm_f(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) = 0;
   virtual folly::Future<folly::Unit> future_f() = 0;
+  virtual folly::SemiFuture<folly::Unit> semifuture_f() = 0;
 };
 
 class CAsyncProcessor;
@@ -42,6 +43,7 @@ class CSvIf : public CSvAsyncIf, public apache::thrift::ServerInterface {
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
   virtual void f();
   folly::Future<folly::Unit> future_f() override;
+  folly::SemiFuture<folly::Unit> semifuture_f() override;
   void async_tm_f(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) override;
 };
 

@@ -32,12 +32,16 @@ class RaiserSvAsyncIf {
   virtual ~RaiserSvAsyncIf() {}
   virtual void async_tm_doBland(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) = 0;
   virtual folly::Future<folly::Unit> future_doBland() = 0;
+  virtual folly::SemiFuture<folly::Unit> semifuture_doBland() = 0;
   virtual void async_tm_doRaise(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) = 0;
   virtual folly::Future<folly::Unit> future_doRaise() = 0;
+  virtual folly::SemiFuture<folly::Unit> semifuture_doRaise() = 0;
   virtual void async_tm_get200(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::string>>> callback) = 0;
   virtual folly::Future<std::unique_ptr<std::string>> future_get200() = 0;
+  virtual folly::SemiFuture<std::unique_ptr<std::string>> semifuture_get200() = 0;
   virtual void async_tm_get500(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::string>>> callback) = 0;
   virtual folly::Future<std::unique_ptr<std::string>> future_get500() = 0;
+  virtual folly::SemiFuture<std::unique_ptr<std::string>> semifuture_get500() = 0;
 };
 
 class RaiserAsyncProcessor;
@@ -48,15 +52,19 @@ class RaiserSvIf : public RaiserSvAsyncIf, public apache::thrift::ServerInterfac
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
   virtual void doBland();
   folly::Future<folly::Unit> future_doBland() override;
+  folly::SemiFuture<folly::Unit> semifuture_doBland() override;
   void async_tm_doBland(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) override;
   virtual void doRaise();
   folly::Future<folly::Unit> future_doRaise() override;
+  folly::SemiFuture<folly::Unit> semifuture_doRaise() override;
   void async_tm_doRaise(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) override;
   virtual void get200(std::string& /*_return*/);
   folly::Future<std::unique_ptr<std::string>> future_get200() override;
+  folly::SemiFuture<std::unique_ptr<std::string>> semifuture_get200() override;
   void async_tm_get200(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::string>>> callback) override;
   virtual void get500(std::string& /*_return*/);
   folly::Future<std::unique_ptr<std::string>> future_get500() override;
+  folly::SemiFuture<std::unique_ptr<std::string>> semifuture_get500() override;
   void async_tm_get500(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::string>>> callback) override;
 };
 

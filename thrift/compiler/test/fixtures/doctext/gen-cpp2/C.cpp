@@ -21,7 +21,11 @@ void CSvIf::f() {
 }
 
 folly::Future<folly::Unit> CSvIf::future_f() {
-  return apache::thrift::detail::si::future([&] { return f(); });
+  return apache::thrift::detail::si::future(semifuture_f(), getThreadManager());
+}
+
+folly::SemiFuture<folly::Unit> CSvIf::semifuture_f() {
+  return apache::thrift::detail::si::semifuture([&] { return f(); });
 }
 
 void CSvIf::async_tm_f(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) {

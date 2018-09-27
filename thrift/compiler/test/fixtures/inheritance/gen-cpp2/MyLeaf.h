@@ -33,6 +33,7 @@ class MyLeafSvAsyncIf {
   virtual ~MyLeafSvAsyncIf() {}
   virtual void async_tm_do_leaf(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) = 0;
   virtual folly::Future<folly::Unit> future_do_leaf() = 0;
+  virtual folly::SemiFuture<folly::Unit> semifuture_do_leaf() = 0;
 };
 
 class MyLeafAsyncProcessor;
@@ -43,6 +44,7 @@ class MyLeafSvIf : public MyLeafSvAsyncIf, virtual public  ::cpp2::MyNodeSvIf {
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
   virtual void do_leaf();
   folly::Future<folly::Unit> future_do_leaf() override;
+  folly::SemiFuture<folly::Unit> semifuture_do_leaf() override;
   void async_tm_do_leaf(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) override;
 };
 

@@ -21,7 +21,11 @@ bool MyServiceSvIf::hasDataById(int64_t /*id*/) {
 }
 
 folly::Future<bool> MyServiceSvIf::future_hasDataById(int64_t id) {
-  return apache::thrift::detail::si::future([&] { return hasDataById(id); });
+  return apache::thrift::detail::si::future(semifuture_hasDataById(id), getThreadManager());
+}
+
+folly::SemiFuture<bool> MyServiceSvIf::semifuture_hasDataById(int64_t id) {
+  return apache::thrift::detail::si::semifuture([&] { return hasDataById(id); });
 }
 
 void MyServiceSvIf::async_tm_hasDataById(std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback, int64_t id) {
@@ -33,7 +37,11 @@ void MyServiceSvIf::getDataById(std::string& /*_return*/, int64_t /*id*/) {
 }
 
 folly::Future<std::string> MyServiceSvIf::future_getDataById(int64_t id) {
-  return apache::thrift::detail::si::future_returning([&](std::string& _return) { getDataById(_return, id); });
+  return apache::thrift::detail::si::future(semifuture_getDataById(id), getThreadManager());
+}
+
+folly::SemiFuture<std::string> MyServiceSvIf::semifuture_getDataById(int64_t id) {
+  return apache::thrift::detail::si::semifuture_returning([&](std::string& _return) { getDataById(_return, id); });
 }
 
 void MyServiceSvIf::async_tm_getDataById(std::unique_ptr<apache::thrift::HandlerCallback<std::string>> callback, int64_t id) {
@@ -45,7 +53,11 @@ void MyServiceSvIf::putDataById(int64_t /*id*/, const std::string& /*data*/) {
 }
 
 folly::Future<folly::Unit> MyServiceSvIf::future_putDataById(int64_t id, const std::string& data) {
-  return apache::thrift::detail::si::future([&] { return putDataById(id, data); });
+  return apache::thrift::detail::si::future(semifuture_putDataById(id, data), getThreadManager());
+}
+
+folly::SemiFuture<folly::Unit> MyServiceSvIf::semifuture_putDataById(int64_t id, const std::string& data) {
+  return apache::thrift::detail::si::semifuture([&] { return putDataById(id, data); });
 }
 
 void MyServiceSvIf::async_tm_putDataById(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, int64_t id, const std::string& data) {
@@ -57,7 +69,11 @@ void MyServiceSvIf::lobDataById(int64_t /*id*/, const std::string& /*data*/) {
 }
 
 folly::Future<folly::Unit> MyServiceSvIf::future_lobDataById(int64_t id, const std::string& data) {
-  return apache::thrift::detail::si::future([&] { return lobDataById(id, data); });
+  return apache::thrift::detail::si::future(semifuture_lobDataById(id, data), getThreadManager());
+}
+
+folly::SemiFuture<folly::Unit> MyServiceSvIf::semifuture_lobDataById(int64_t id, const std::string& data) {
+  return apache::thrift::detail::si::semifuture([&] { return lobDataById(id, data); });
 }
 
 void MyServiceSvIf::async_tm_lobDataById(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback, int64_t id, const std::string& data) {

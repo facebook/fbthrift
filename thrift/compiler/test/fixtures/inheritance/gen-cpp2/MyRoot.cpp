@@ -21,7 +21,11 @@ void MyRootSvIf::do_root() {
 }
 
 folly::Future<folly::Unit> MyRootSvIf::future_do_root() {
-  return apache::thrift::detail::si::future([&] { return do_root(); });
+  return apache::thrift::detail::si::future(semifuture_do_root(), getThreadManager());
+}
+
+folly::SemiFuture<folly::Unit> MyRootSvIf::semifuture_do_root() {
+  return apache::thrift::detail::si::semifuture([&] { return do_root(); });
 }
 
 void MyRootSvIf::async_tm_do_root(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) {

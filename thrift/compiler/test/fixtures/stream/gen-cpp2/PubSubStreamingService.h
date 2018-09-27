@@ -34,18 +34,25 @@ class PubSubStreamingServiceSvAsyncIf {
   virtual ~PubSubStreamingServiceSvAsyncIf() {}
   virtual void async_tm_returnstream(std::unique_ptr<apache::thrift::HandlerCallback<apache::thrift::Stream<int32_t>>> callback, int32_t i32_from, int32_t i32_to) = 0;
   virtual folly::Future<apache::thrift::Stream<int32_t>> future_returnstream(int32_t i32_from, int32_t i32_to) = 0;
+  virtual folly::SemiFuture<apache::thrift::Stream<int32_t>> semifuture_returnstream(int32_t i32_from, int32_t i32_to) = 0;
   virtual void async_tm_takesstream(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, apache::thrift::SemiStream<int32_t> instream, int32_t other_param) = 0;
   virtual folly::Future<folly::Unit> future_takesstream(apache::thrift::SemiStream<int32_t> instream, int32_t other_param) = 0;
+  virtual folly::SemiFuture<folly::Unit> semifuture_takesstream(apache::thrift::SemiStream<int32_t> instream, int32_t other_param) = 0;
   virtual void async_tm_different(std::unique_ptr<apache::thrift::HandlerCallback<apache::thrift::Stream<std::string>>> callback, apache::thrift::SemiStream<int32_t> foo, int64_t firstparam) = 0;
   virtual folly::Future<apache::thrift::Stream<std::string>> future_different(apache::thrift::SemiStream<int32_t> foo, int64_t firstparam) = 0;
+  virtual folly::SemiFuture<apache::thrift::Stream<std::string>> semifuture_different(apache::thrift::SemiStream<int32_t> foo, int64_t firstparam) = 0;
   virtual void async_tm_normalthrows(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, apache::thrift::SemiStream<int32_t> foo) = 0;
   virtual folly::Future<folly::Unit> future_normalthrows(apache::thrift::SemiStream<int32_t> foo) = 0;
+  virtual folly::SemiFuture<folly::Unit> semifuture_normalthrows(apache::thrift::SemiStream<int32_t> foo) = 0;
   virtual void async_tm_streamthrows(std::unique_ptr<apache::thrift::HandlerCallback<apache::thrift::Stream<int32_t>>> callback, int32_t foo) = 0;
   virtual folly::Future<apache::thrift::Stream<int32_t>> future_streamthrows(int32_t foo) = 0;
+  virtual folly::SemiFuture<apache::thrift::Stream<int32_t>> semifuture_streamthrows(int32_t foo) = 0;
   virtual void async_tm_boththrows(std::unique_ptr<apache::thrift::HandlerCallback<apache::thrift::Stream<int32_t>>> callback, int32_t foo) = 0;
   virtual folly::Future<apache::thrift::Stream<int32_t>> future_boththrows(int32_t foo) = 0;
+  virtual folly::SemiFuture<apache::thrift::Stream<int32_t>> semifuture_boththrows(int32_t foo) = 0;
   virtual void async_tm_responseandstreamthrows(std::unique_ptr<apache::thrift::HandlerCallback<apache::thrift::ResponseAndStream<int32_t,int32_t>>> callback, int32_t foo) = 0;
   virtual folly::Future<apache::thrift::ResponseAndStream<int32_t,int32_t>> future_responseandstreamthrows(int32_t foo) = 0;
+  virtual folly::SemiFuture<apache::thrift::ResponseAndStream<int32_t,int32_t>> semifuture_responseandstreamthrows(int32_t foo) = 0;
 };
 
 class PubSubStreamingServiceAsyncProcessor;
@@ -56,24 +63,31 @@ class PubSubStreamingServiceSvIf : public PubSubStreamingServiceSvAsyncIf, publi
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
   virtual apache::thrift::Stream<int32_t> returnstream(int32_t /*i32_from*/, int32_t /*i32_to*/);
   folly::Future<apache::thrift::Stream<int32_t>> future_returnstream(int32_t i32_from, int32_t i32_to) override;
+  folly::SemiFuture<apache::thrift::Stream<int32_t>> semifuture_returnstream(int32_t i32_from, int32_t i32_to) override;
   void async_tm_returnstream(std::unique_ptr<apache::thrift::HandlerCallback<apache::thrift::Stream<int32_t>>> callback, int32_t i32_from, int32_t i32_to) override;
   virtual void takesstream(apache::thrift::SemiStream<int32_t> /*instream*/, int32_t /*other_param*/);
   folly::Future<folly::Unit> future_takesstream(apache::thrift::SemiStream<int32_t> instream, int32_t other_param) override;
+  folly::SemiFuture<folly::Unit> semifuture_takesstream(apache::thrift::SemiStream<int32_t> instream, int32_t other_param) override;
   void async_tm_takesstream(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, apache::thrift::SemiStream<int32_t> instream, int32_t other_param) override;
   virtual apache::thrift::Stream<std::string> different(apache::thrift::SemiStream<int32_t> /*foo*/, int64_t /*firstparam*/);
   folly::Future<apache::thrift::Stream<std::string>> future_different(apache::thrift::SemiStream<int32_t> foo, int64_t firstparam) override;
+  folly::SemiFuture<apache::thrift::Stream<std::string>> semifuture_different(apache::thrift::SemiStream<int32_t> foo, int64_t firstparam) override;
   void async_tm_different(std::unique_ptr<apache::thrift::HandlerCallback<apache::thrift::Stream<std::string>>> callback, apache::thrift::SemiStream<int32_t> foo, int64_t firstparam) override;
   virtual void normalthrows(apache::thrift::SemiStream<int32_t> /*foo*/);
   folly::Future<folly::Unit> future_normalthrows(apache::thrift::SemiStream<int32_t> foo) override;
+  folly::SemiFuture<folly::Unit> semifuture_normalthrows(apache::thrift::SemiStream<int32_t> foo) override;
   void async_tm_normalthrows(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, apache::thrift::SemiStream<int32_t> foo) override;
   virtual apache::thrift::Stream<int32_t> streamthrows(int32_t /*foo*/);
   folly::Future<apache::thrift::Stream<int32_t>> future_streamthrows(int32_t foo) override;
+  folly::SemiFuture<apache::thrift::Stream<int32_t>> semifuture_streamthrows(int32_t foo) override;
   void async_tm_streamthrows(std::unique_ptr<apache::thrift::HandlerCallback<apache::thrift::Stream<int32_t>>> callback, int32_t foo) override;
   virtual apache::thrift::Stream<int32_t> boththrows(int32_t /*foo*/);
   folly::Future<apache::thrift::Stream<int32_t>> future_boththrows(int32_t foo) override;
+  folly::SemiFuture<apache::thrift::Stream<int32_t>> semifuture_boththrows(int32_t foo) override;
   void async_tm_boththrows(std::unique_ptr<apache::thrift::HandlerCallback<apache::thrift::Stream<int32_t>>> callback, int32_t foo) override;
   virtual apache::thrift::ResponseAndStream<int32_t,int32_t> responseandstreamthrows(int32_t /*foo*/);
   folly::Future<apache::thrift::ResponseAndStream<int32_t,int32_t>> future_responseandstreamthrows(int32_t foo) override;
+  folly::SemiFuture<apache::thrift::ResponseAndStream<int32_t,int32_t>> semifuture_responseandstreamthrows(int32_t foo) override;
   void async_tm_responseandstreamthrows(std::unique_ptr<apache::thrift::HandlerCallback<apache::thrift::ResponseAndStream<int32_t,int32_t>>> callback, int32_t foo) override;
   template <typename T>
   std::pair<apache::thrift::Stream<T>, apache::thrift::StreamPublisher<T>>
