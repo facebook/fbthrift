@@ -44,9 +44,3 @@ exampleExample exampleExampleFromString(NSString *str, int fallbackValue)
   return mapping[str] ? [mapping[str] intValue] : fallbackValue;
 }
 
-
-@implementation examplemoduleConstants
-+ (void) initialize {
-}
-@end
-

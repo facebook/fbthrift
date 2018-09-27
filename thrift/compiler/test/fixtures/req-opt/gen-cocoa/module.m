@@ -22,12 +22,6 @@
 
 #import "module.h"
 
-
-@implementation examplemoduleConstants
-+ (void) initialize {
-}
-@end
-
 @implementation exampleFoo
 
 - (instancetype) init

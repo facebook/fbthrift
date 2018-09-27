@@ -29,6 +29,4 @@ NSString* exampleExampleToString(const exampleExample value);
 
 exampleExample exampleExampleFromString(NSString *str, int fallbackValue);
 
-@interface examplemoduleConstants : TBaseStruct {
-}
-@end
+

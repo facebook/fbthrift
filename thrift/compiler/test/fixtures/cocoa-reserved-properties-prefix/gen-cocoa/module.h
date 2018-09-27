@@ -41,6 +41,4 @@
 - (BOOL) descriptionIsSet;
 @end
 
-@interface examplemoduleConstants : TBaseStruct {
-}
-@end
+

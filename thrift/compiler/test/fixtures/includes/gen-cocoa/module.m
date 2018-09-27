@@ -23,12 +23,6 @@
 
 #import "module.h"
 
-
-@implementation moduleConstants
-+ (void) initialize {
-}
-@end
-
 @implementation MyStruct
 
 - (instancetype) init

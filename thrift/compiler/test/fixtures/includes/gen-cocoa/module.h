@@ -46,6 +46,4 @@
 - (BOOL) MyIncludedIntIsSet;
 @end
 
-@interface moduleConstants : TBaseStruct {
-}
-@end
+
