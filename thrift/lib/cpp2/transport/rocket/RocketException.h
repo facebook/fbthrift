@@ -16,6 +16,7 @@
 #pragma once
 
 #include <exception>
+#include <memory>
 #include <utility>
 
 #include <folly/io/IOBuf.h>
@@ -31,8 +32,13 @@ class RocketException : public std::exception {
   explicit RocketException(ErrorCode errorCode)
       : rsocketErrorCode_(errorCode) {}
 
-  RocketException(ErrorCode errorCode, folly::IOBuf&& errorData)
+  RocketException(ErrorCode errorCode, std::unique_ptr<folly::IOBuf> errorData)
       : rsocketErrorCode_(errorCode), errorData_(std::move(errorData)) {}
+
+  RocketException(RocketException&&) = default;
+  RocketException(const RocketException& other)
+      : rsocketErrorCode_(other.rsocketErrorCode_),
+        errorData_(other.errorData_ ? other.errorData_->clone() : nullptr) {}
 
   ErrorCode getErrorCode() const noexcept {
     return rsocketErrorCode_;
@@ -42,13 +48,13 @@ class RocketException : public std::exception {
     return "RocketException";
   }
 
-  folly::IOBuf moveErrorData() {
+  std::unique_ptr<folly::IOBuf> moveErrorData() {
     return std::move(errorData_);
   }
 
  private:
   ErrorCode rsocketErrorCode_{ErrorCode::RESERVED};
-  folly::IOBuf errorData_;
+  std::unique_ptr<folly::IOBuf> errorData_;
 };
 
 } // namespace rocket

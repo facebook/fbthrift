@@ -110,7 +110,7 @@ TEST_F(RocketClientTest, RequestResponseBasic) {
         Payload::makeFromMetadataAndData(kMetadata, kData));
 
     EXPECT_TRUE(reply.hasValue());
-    EXPECT_EQ(kData, getRange(reply->data()));
+    EXPECT_EQ(kData, getRange(*reply->data()));
     EXPECT_TRUE(reply->metadata());
     EXPECT_EQ(kMetadata, getRange(*reply->metadata()));
   });
@@ -151,7 +151,7 @@ TEST_F(RocketClientTest, RequestResponseLargeMetadata) {
     EXPECT_TRUE(reply.hasValue());
     EXPECT_TRUE(reply->hasNonemptyMetadata());
     EXPECT_EQ(expectedMetadata, getRange(*reply->metadata()));
-    EXPECT_EQ(data, getRange(reply->data()));
+    EXPECT_EQ(data, getRange(*reply->data()));
   });
 }
 
@@ -173,7 +173,7 @@ TEST_F(RocketClientTest, RequestResponseLargeData) {
     EXPECT_TRUE(reply.hasValue());
     EXPECT_TRUE(reply->hasNonemptyMetadata());
     EXPECT_EQ(kMetadata, getRange(*reply->metadata()));
-    EXPECT_EQ(expectedData, getRange(reply->data()));
+    EXPECT_EQ(expectedData, getRange(*reply->data()));
   });
 }
 
@@ -203,7 +203,7 @@ TEST_F(RocketClientTest, RequestResponseEmptyData) {
     EXPECT_TRUE(reply.hasValue());
     EXPECT_TRUE(reply->hasNonemptyMetadata());
     EXPECT_EQ(kMetadata, getRange(*reply->metadata()));
-    EXPECT_TRUE(reply->data().empty());
+    EXPECT_TRUE(reply->data()->empty());
   });
 }
 

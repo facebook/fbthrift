@@ -17,11 +17,11 @@
 #pragma once
 
 #include <limits>
+#include <memory>
 #include <stdexcept>
 #include <utility>
 
 #include <folly/CPortability.h>
-#include <folly/Optional.h>
 #include <folly/Range.h>
 #include <folly/lang/Exception.h>
 
@@ -39,7 +39,7 @@ class Serializer;
 
 class SetupFrame {
  public:
-  explicit SetupFrame(folly::IOBuf&& frame);
+  explicit SetupFrame(std::unique_ptr<folly::IOBuf> frame);
 
   explicit SetupFrame(Payload&& payload) : payload_(std::move(payload)) {}
 
@@ -84,7 +84,7 @@ class SetupFrame {
 
 class RequestResponseFrame {
  public:
-  explicit RequestResponseFrame(folly::IOBuf&& frame);
+  explicit RequestResponseFrame(std::unique_ptr<folly::IOBuf> frame);
 
   RequestResponseFrame(StreamId streamId, Payload&& payload)
       : streamId_(streamId), payload_(std::move(payload)) {}
@@ -128,7 +128,7 @@ class RequestResponseFrame {
 
 class RequestFnfFrame {
  public:
-  explicit RequestFnfFrame(folly::IOBuf&& frame);
+  explicit RequestFnfFrame(std::unique_ptr<folly::IOBuf> frame);
 
   RequestFnfFrame(StreamId streamId, Payload&& payload)
       : streamId_(streamId), payload_(std::move(payload)) {}
@@ -172,7 +172,7 @@ class RequestFnfFrame {
 
 class RequestStreamFrame {
  public:
-  explicit RequestStreamFrame(folly::IOBuf&& frame);
+  explicit RequestStreamFrame(std::unique_ptr<folly::IOBuf> frame);
 
   RequestStreamFrame(
       StreamId streamId,
@@ -230,7 +230,7 @@ class RequestStreamFrame {
 
 class RequestNFrame {
  public:
-  explicit RequestNFrame(folly::IOBuf&& frame);
+  explicit RequestNFrame(std::unique_ptr<folly::IOBuf> frame);
 
   RequestNFrame(StreamId streamId, int32_t n)
       : streamId_(streamId), requestN_(n) {
@@ -264,7 +264,7 @@ class RequestNFrame {
 
 class CancelFrame {
  public:
-  explicit CancelFrame(folly::IOBuf&& frame);
+  explicit CancelFrame(std::unique_ptr<folly::IOBuf> frame);
 
   explicit CancelFrame(StreamId streamId) : streamId_(streamId) {}
 
@@ -288,7 +288,7 @@ class CancelFrame {
 
 class PayloadFrame {
  public:
-  explicit PayloadFrame(folly::IOBuf&& frame);
+  explicit PayloadFrame(std::unique_ptr<folly::IOBuf> frame);
 
   PayloadFrame(StreamId streamId, Payload&& payload, Flags flags)
       : streamId_(streamId), flags_(flags), payload_(std::move(payload)) {}
@@ -338,7 +338,7 @@ class PayloadFrame {
 
 class ErrorFrame {
  public:
-  explicit ErrorFrame(folly::IOBuf&& frame);
+  explicit ErrorFrame(std::unique_ptr<folly::IOBuf> frame);
 
   ErrorFrame(StreamId streamId, ErrorCode errorCode, Payload&& payload)
       : streamId_(streamId),

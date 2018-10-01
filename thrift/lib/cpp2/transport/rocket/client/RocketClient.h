@@ -135,11 +135,11 @@ class RocketClient : public folly::DelayedDestruction,
     return rid;
   }
 
-  void handleFrame(folly::IOBuf&& frame);
+  void handleFrame(std::unique_ptr<folly::IOBuf> frame);
   void handleRequestResponseFrame(
       RequestContext& ctx,
       FrameType frameType,
-      folly::IOBuf&& frame);
+      std::unique_ptr<folly::IOBuf> frame);
 
   void writeScheduledRequestsToSocket() noexcept;
 

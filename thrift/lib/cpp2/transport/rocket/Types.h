@@ -21,7 +21,6 @@
 #include <memory>
 #include <utility>
 
-#include <folly/Optional.h>
 #include <folly/Range.h>
 #include <folly/io/IOBuf.h>
 
@@ -57,7 +56,7 @@ std::ostream& operator<<(std::ostream& os, StreamId streamId);
 
 class Payload {
  public:
-  Payload() = default;
+  Payload() = delete;
 
   Payload(const Payload&) = delete;
   Payload& operator=(const Payload&) = delete;
@@ -69,20 +68,15 @@ class Payload {
 
   // Force user code to be explicit about the order in which metadata and data
   // are being passed by making non-default constructors private.
-  static Payload makeFromData(folly::IOBuf&& data) noexcept {
+  static Payload makeFromData(std::unique_ptr<folly::IOBuf> data) {
     return Payload(std::move(data));
   }
   static Payload makeFromData(folly::ByteRange data) {
     return Payload(data);
   }
   static Payload makeFromMetadataAndData(
-      folly::IOBuf&& metadata,
-      folly::IOBuf&& data) noexcept {
-    return Payload(std::move(metadata), std::move(data));
-  }
-  static Payload makeFromMetadataAndData(
-      folly::Optional<folly::IOBuf>&& metadata,
-      folly::IOBuf&& data) noexcept {
+      std::unique_ptr<folly::IOBuf> metadata,
+      std::unique_ptr<folly::IOBuf> data) {
     return Payload(std::move(metadata), std::move(data));
   }
   static Payload makeFromMetadataAndData(
@@ -91,13 +85,13 @@ class Payload {
     return Payload(metadata, data);
   }
 
-  const folly::IOBuf& data() const& {
-    return data_;
+  const folly::IOBuf* data() const& {
+    return data_.get();
   }
-  folly::IOBuf& data() & {
-    return data_;
+  folly::IOBuf* data() & {
+    return data_.get();
   }
-  folly::IOBuf data() && {
+  std::unique_ptr<folly::IOBuf> data() && {
     return std::move(data_);
   }
 
@@ -110,24 +104,24 @@ class Payload {
     return metadata_ && !metadata_->empty();
   }
 
-  const folly::Optional<folly::IOBuf>& metadata() const& {
+  const folly::IOBuf* metadata() const& {
+    return metadata_.get();
+  }
+  std::unique_ptr<folly::IOBuf>& metadata() & {
     return metadata_;
   }
-  folly::Optional<folly::IOBuf>& metadata() & {
-    return metadata_;
-  }
-  folly::Optional<folly::IOBuf> metadata() && {
+  std::unique_ptr<folly::IOBuf> metadata() && {
     return std::move(metadata_);
   }
 
   size_t metadataAndDataSize() const {
-    return data_.computeChainDataLength() +
+    return data_->computeChainDataLength() +
         (hasNonemptyMetadata() ? metadata_->computeChainDataLength() : 0ull);
   }
 
   size_t serializedSize() const {
     constexpr size_t kBytesForMetadataSize = 3;
-    return data_.computeChainDataLength() +
+    return data_->computeChainDataLength() +
         (hasNonemptyMetadata()
              ? (kBytesForMetadataSize + metadata_->computeChainDataLength())
              : 0ull);
@@ -136,25 +130,27 @@ class Payload {
   void append(Payload&& other);
 
  private:
-  folly::IOBuf data_;
+  // Note that unless data_ has been explicitly been moved out via the
+  // rvalue-ref data() overload, data_ is non-null.
+  std::unique_ptr<folly::IOBuf> data_;
   // Possible optimization: if payloads will commonly have metadata, then we can
   // maintain a single IOBuf containing both metadata and data, which are always
   // contiguous in memory.
-  folly::Optional<folly::IOBuf> metadata_;
+  std::unique_ptr<folly::IOBuf> metadata_;
 
-  explicit Payload(folly::IOBuf&& data) noexcept : data_(std::move(data)) {}
-  Payload(folly::IOBuf&& metadata, folly::IOBuf&& data) noexcept
-      : data_(std::move(data)), metadata_(std::move(metadata)) {}
+  explicit Payload(std::unique_ptr<folly::IOBuf> data)
+      : data_(data ? std::move(data) : std::make_unique<folly::IOBuf>()) {}
   Payload(
-      folly::Optional<folly::IOBuf>&& metadata,
-      folly::IOBuf&& data) noexcept
-      : data_(std::move(data)), metadata_(std::move(metadata)) {}
+      std::unique_ptr<folly::IOBuf> metadata,
+      std::unique_ptr<folly::IOBuf> data)
+      : data_(data ? std::move(data) : std::make_unique<folly::IOBuf>()),
+        metadata_(std::move(metadata)) {}
 
   explicit Payload(folly::ByteRange data)
-      : data_(folly::IOBuf(folly::IOBuf::CopyBufferOp(), data)) {}
+      : data_(folly::IOBuf::copyBuffer(data)) {}
   Payload(folly::ByteRange metadata, folly::ByteRange data)
-      : data_(folly::IOBuf(folly::IOBuf::CopyBufferOp(), data)),
-        metadata_(folly::in_place, folly::IOBuf::CopyBufferOp(), metadata) {}
+      : data_(folly::IOBuf::copyBuffer(data)),
+        metadata_(folly::IOBuf::copyBuffer(metadata)) {}
 };
 
 } // namespace rocket

@@ -135,7 +135,7 @@ void RequestContext::onErrorFrame(ErrorFrame&& errorFrame) {
 
   responsePayload_ =
       folly::Try<Payload>(folly::make_exception_wrapper<RocketException>(
-          errorFrame.errorCode(), std::move(errorFrame.payload().data())));
+          errorFrame.errorCode(), std::move(errorFrame.payload()).data()));
 
   queue_.markAsResponded(*this);
 }
@@ -158,8 +158,7 @@ SetupFrame makeSetupFrame() {
   RSocketSetupParameters setupParams;
   setupParams.write(&compactProtocolWriter);
 
-  return SetupFrame(
-      Payload::makeFromMetadataAndData(std::move(*queue.move()), {}));
+  return SetupFrame(Payload::makeFromMetadataAndData(queue.move(), {}));
 }
 } // namespace detail
 

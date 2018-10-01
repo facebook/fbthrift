@@ -87,13 +87,13 @@ std::shared_ptr<RocketClient> RocketClient::create(
       DelayedDestruction::Destructor());
 }
 
-void RocketClient::handleFrame(folly::IOBuf&& frame) {
+void RocketClient::handleFrame(std::unique_ptr<folly::IOBuf> frame) {
   DestructorGuard dg(this);
 
   // Entire payloads may be chained, but the parser ensures each fragment is
   // coalesced.
-  DCHECK(!frame.isChained());
-  folly::io::Cursor cursor(&frame);
+  DCHECK(!frame->isChained());
+  folly::io::Cursor cursor(frame.get());
 
   const auto streamId = readStreamId(cursor);
   FrameType frameType;
@@ -102,7 +102,7 @@ void RocketClient::handleFrame(folly::IOBuf&& frame) {
   if (UNLIKELY(frameType == FrameType::ERROR && streamId == StreamId{0})) {
     ErrorFrame errorFrame(std::move(frame));
     return close(folly::make_exception_wrapper<RocketException>(
-        errorFrame.errorCode(), std::move(errorFrame.payload().data())));
+        errorFrame.errorCode(), std::move(errorFrame.payload()).data()));
   }
 
   if (auto* ctx = queue_.getRequestResponseContext(streamId)) {
@@ -114,7 +114,7 @@ void RocketClient::handleFrame(folly::IOBuf&& frame) {
 void RocketClient::handleRequestResponseFrame(
     RequestContext& ctx,
     FrameType frameType,
-    folly::IOBuf&& frame) {
+    std::unique_ptr<folly::IOBuf> frame) {
   switch (frameType) {
     case FrameType::PAYLOAD:
       return ctx.onPayloadFrame(PayloadFrame(std::move(frame)));

@@ -27,23 +27,20 @@ void Payload::append(Payload&& other) {
   // fragmented) metadata arrives first, then the actual data.
   // If we are appending a payload that has metadata, then the current payload
   // should not have data.
-  DCHECK(!other.hasNonemptyMetadata() || data_.empty());
+  DCHECK(!other.hasNonemptyMetadata() || data_->empty());
 
   if (other.metadata_) {
     if (metadata_) {
-      metadata_->prependChain(std::make_unique<folly::IOBuf>(*other.metadata_));
+      metadata_->prependChain(std::move(other.metadata_));
     } else {
       metadata_ = std::move(other.metadata_);
     }
   }
 
-  if (!other.data_.empty()) {
-    if (!data_.empty()) {
-      data_.prependChain(
-          std::make_unique<folly::IOBuf>(std::move(other.data_)));
-    } else {
-      data_ = std::move(other.data_);
-    }
+  if (data_->empty()) {
+    data_ = std::move(other.data_);
+  } else {
+    data_->prependChain(std::move(other.data_));
   }
 }
 

@@ -29,8 +29,8 @@ size_t Serializer::writePayload(const Payload& p) {
     nwritten += writeFrameOrMetadataSize(metadataSize);
     nwritten += write(*p.metadata());
   }
-  if (!p.data().empty()) {
-    nwritten += write(p.data());
+  if (!p.data()->empty()) {
+    nwritten += write(*p.data());
   }
   return nwritten;
 }
