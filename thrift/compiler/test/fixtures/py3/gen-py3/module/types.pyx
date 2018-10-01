@@ -4,8 +4,8 @@
 # DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
 #  @generated
 #
-
 cimport cython as __cython
+from cpython.bytes cimport PyBytes_AsStringAndSize
 from cpython.object cimport PyTypeObject, Py_LT, Py_LE, Py_EQ, Py_NE, Py_GT, Py_GE
 from libcpp.memory cimport shared_ptr, make_shared, unique_ptr, make_unique
 from libcpp.string cimport string
@@ -330,6 +330,7 @@ cdef class SimpleException(thrift.py3.exceptions.Error):
 
         self._cpp_obj = move(SimpleException._make_instance(
           NULL,
+          NULL,
           err_code,
         ))
         _builtins.Exception.__init__(self, self.err_code)
@@ -338,7 +339,8 @@ cdef class SimpleException(thrift.py3.exceptions.Error):
     @staticmethod
     cdef unique_ptr[cSimpleException] _make_instance(
         cSimpleException* base_instance,
-        object err_code
+        bint* __isNOTSET,
+        object err_code 
     ) except *:
         cdef unique_ptr[cSimpleException] c_inst
         if base_instance:
@@ -458,6 +460,7 @@ cdef class SimpleStruct(thrift.py3.types.Struct):
 
         self._cpp_obj = move(SimpleStruct._make_instance(
           NULL,
+          NULL,
           is_on,
           tiny_int,
           small_int,
@@ -477,60 +480,85 @@ cdef class SimpleStruct(thrift.py3.types.Struct):
         real=__NOTSET,
         smaller_real=__NOTSET
     ):
-        changes = any((
-            is_on is not __NOTSET,
+        ___NOTSET = __NOTSET  # Cheaper for larger structs
+        cdef bint[7] __isNOTSET  # so make_instance is typed
 
-            tiny_int is not __NOTSET,
-
-            small_int is not __NOTSET,
-
-            nice_sized_int is not __NOTSET,
-
-            big_int is not __NOTSET,
-
-            real is not __NOTSET,
-
-            smaller_real is not __NOTSET,
-        ))
+        changes = False
+        if is_on is ___NOTSET:
+            __isNOTSET[0] = True
+            is_on = None
+        else:
+            changes = True
+        if tiny_int is ___NOTSET:
+            __isNOTSET[1] = True
+            tiny_int = None
+        else:
+            changes = True
+        if small_int is ___NOTSET:
+            __isNOTSET[2] = True
+            small_int = None
+        else:
+            changes = True
+        if nice_sized_int is ___NOTSET:
+            __isNOTSET[3] = True
+            nice_sized_int = None
+        else:
+            changes = True
+        if big_int is ___NOTSET:
+            __isNOTSET[4] = True
+            big_int = None
+        else:
+            changes = True
+        if real is ___NOTSET:
+            __isNOTSET[5] = True
+            real = None
+        else:
+            changes = True
+        if smaller_real is ___NOTSET:
+            __isNOTSET[6] = True
+            smaller_real = None
+        else:
+            changes = True
 
         if not changes:
             return self
 
-        if None is not is_on is not __NOTSET:
+        if is_on is not None:
             if not isinstance(is_on, bool):
                 raise TypeError(f'is_on is not a { bool !r}.')
 
-        if None is not tiny_int is not __NOTSET:
+        if tiny_int is not None:
             if not isinstance(tiny_int, int):
                 raise TypeError(f'tiny_int is not a { int !r}.')
             tiny_int = <int8_t> tiny_int
 
-        if None is not small_int is not __NOTSET:
+        if small_int is not None:
             if not isinstance(small_int, int):
                 raise TypeError(f'small_int is not a { int !r}.')
             small_int = <int16_t> small_int
 
-        if None is not nice_sized_int is not __NOTSET:
+        if nice_sized_int is not None:
             if not isinstance(nice_sized_int, int):
                 raise TypeError(f'nice_sized_int is not a { int !r}.')
             nice_sized_int = <int32_t> nice_sized_int
 
-        if None is not big_int is not __NOTSET:
+        if big_int is not None:
             if not isinstance(big_int, int):
                 raise TypeError(f'big_int is not a { int !r}.')
             big_int = <int64_t> big_int
 
-        if None is not real is not __NOTSET:
+        if real is not None:
             if not isinstance(real, (float, int)):
                 raise TypeError(f'real is not a { float !r}.')
 
-        if None is not smaller_real is not __NOTSET:
+        if smaller_real is not None:
             if not isinstance(smaller_real, (float, int)):
                 raise TypeError(f'smaller_real is not a { float !r}.')
 
         inst = <SimpleStruct>SimpleStruct.__new__(SimpleStruct)
         inst._cpp_obj = move(SimpleStruct._make_instance(
           self._cpp_obj.get(),
+          __isNOTSET,
           is_on,
           tiny_int,
           small_int,
@@ -544,13 +572,14 @@ cdef class SimpleStruct(thrift.py3.types.Struct):
     @staticmethod
     cdef unique_ptr[cSimpleStruct] _make_instance(
         cSimpleStruct* base_instance,
-        object is_on,
-        object tiny_int,
-        object small_int,
-        object nice_sized_int,
-        object big_int,
-        object real,
-        object smaller_real
+        bint* __isNOTSET,
+        pbool is_on ,
+        object tiny_int ,
+        object small_int ,
+        object nice_sized_int ,
+        object big_int ,
+        object real ,
+        object smaller_real 
     ) except *:
         cdef unique_ptr[cSimpleStruct] c_inst
         if base_instance:
@@ -560,54 +589,40 @@ cdef class SimpleStruct(thrift.py3.types.Struct):
 
         if base_instance:
             # Convert None's to default value. (or unset)
-            if is_on is None:
+            if not __isNOTSET[0] and is_on is None:
                 deref(c_inst).is_on = _SimpleStruct_defaults.is_on
                 deref(c_inst).__isset.is_on = False
                 pass
-            elif is_on is __NOTSET:
-                is_on = None
 
-            if tiny_int is None:
+            if not __isNOTSET[1] and tiny_int is None:
                 deref(c_inst).tiny_int = _SimpleStruct_defaults.tiny_int
                 deref(c_inst).__isset.tiny_int = False
                 pass
-            elif tiny_int is __NOTSET:
-                tiny_int = None
 
-            if small_int is None:
+            if not __isNOTSET[2] and small_int is None:
                 deref(c_inst).small_int = _SimpleStruct_defaults.small_int
                 deref(c_inst).__isset.small_int = False
                 pass
-            elif small_int is __NOTSET:
-                small_int = None
 
-            if nice_sized_int is None:
+            if not __isNOTSET[3] and nice_sized_int is None:
                 deref(c_inst).nice_sized_int = _SimpleStruct_defaults.nice_sized_int
                 deref(c_inst).__isset.nice_sized_int = False
                 pass
-            elif nice_sized_int is __NOTSET:
-                nice_sized_int = None
 
-            if big_int is None:
+            if not __isNOTSET[4] and big_int is None:
                 deref(c_inst).big_int = _SimpleStruct_defaults.big_int
                 deref(c_inst).__isset.big_int = False
                 pass
-            elif big_int is __NOTSET:
-                big_int = None
 
-            if real is None:
+            if not __isNOTSET[5] and real is None:
                 deref(c_inst).real = _SimpleStruct_defaults.real
                 deref(c_inst).__isset.real = False
                 pass
-            elif real is __NOTSET:
-                real = None
 
-            if smaller_real is None:
+            if not __isNOTSET[6] and smaller_real is None:
                 deref(c_inst).smaller_real = _SimpleStruct_defaults.smaller_real
                 deref(c_inst).__isset.smaller_real = False
                 pass
-            elif smaller_real is __NOTSET:
-                smaller_real = None
 
         if is_on is not None:
             deref(c_inst).is_on = is_on
@@ -800,6 +815,7 @@ cdef class ComplexStruct(thrift.py3.types.Struct):
 
         self._cpp_obj = move(ComplexStruct._make_instance(
           NULL,
+          NULL,
           structOne,
           structTwo,
           an_integer,
@@ -823,69 +839,100 @@ cdef class ComplexStruct(thrift.py3.types.Struct):
         cdef_=__NOTSET,
         bytes_with_cpp_type=__NOTSET
     ):
-        changes = any((
-            structOne is not __NOTSET,
+        ___NOTSET = __NOTSET  # Cheaper for larger structs
+        cdef bint[9] __isNOTSET  # so make_instance is typed
 
-            structTwo is not __NOTSET,
-
-            an_integer is not __NOTSET,
-
-            name is not __NOTSET,
-
-            an_enum is not __NOTSET,
-
-            some_bytes is not __NOTSET,
-
-            sender is not __NOTSET,
-
-            cdef_ is not __NOTSET,
-
-            bytes_with_cpp_type is not __NOTSET,
-        ))
+        changes = False
+        if structOne is ___NOTSET:
+            __isNOTSET[0] = True
+            structOne = None
+        else:
+            changes = True
+        if structTwo is ___NOTSET:
+            __isNOTSET[1] = True
+            structTwo = None
+        else:
+            changes = True
+        if an_integer is ___NOTSET:
+            __isNOTSET[2] = True
+            an_integer = None
+        else:
+            changes = True
+        if name is ___NOTSET:
+            __isNOTSET[3] = True
+            name = None
+        else:
+            changes = True
+        if an_enum is ___NOTSET:
+            __isNOTSET[4] = True
+            an_enum = None
+        else:
+            changes = True
+        if some_bytes is ___NOTSET:
+            __isNOTSET[5] = True
+            some_bytes = None
+        else:
+            changes = True
+        if sender is ___NOTSET:
+            __isNOTSET[6] = True
+            sender = None
+        else:
+            changes = True
+        if cdef_ is ___NOTSET:
+            __isNOTSET[7] = True
+            cdef_ = None
+        else:
+            changes = True
+        if bytes_with_cpp_type is ___NOTSET:
+            __isNOTSET[8] = True
+            bytes_with_cpp_type = None
+        else:
+            changes = True
 
         if not changes:
             return self
 
-        if None is not structOne is not __NOTSET:
+        if structOne is not None:
             if not isinstance(structOne, SimpleStruct):
                 raise TypeError(f'structOne is not a { SimpleStruct !r}.')
 
-        if None is not structTwo is not __NOTSET:
+        if structTwo is not None:
             if not isinstance(structTwo, SimpleStruct):
                 raise TypeError(f'structTwo is not a { SimpleStruct !r}.')
 
-        if None is not an_integer is not __NOTSET:
+        if an_integer is not None:
             if not isinstance(an_integer, int):
                 raise TypeError(f'an_integer is not a { int !r}.')
             an_integer = <int32_t> an_integer
 
-        if None is not name is not __NOTSET:
+        if name is not None:
             if not isinstance(name, str):
                 raise TypeError(f'name is not a { str !r}.')
 
-        if None is not an_enum is not __NOTSET:
+        if an_enum is not None:
             if not isinstance(an_enum, AnEnum):
                 raise TypeError(f'field an_enum value: { an_enum !r} is not of the enum type { AnEnum }.')
 
-        if None is not some_bytes is not __NOTSET:
+        if some_bytes is not None:
             if not isinstance(some_bytes, bytes):
                 raise TypeError(f'some_bytes is not a { bytes !r}.')
 
-        if None is not sender is not __NOTSET:
+        if sender is not None:
             if not isinstance(sender, str):
                 raise TypeError(f'sender is not a { str !r}.')
 
-        if None is not cdef_ is not __NOTSET:
+        if cdef_ is not None:
             if not isinstance(cdef_, str):
                 raise TypeError(f'cdef_ is not a { str !r}.')
 
-        if None is not bytes_with_cpp_type is not __NOTSET:
+        if bytes_with_cpp_type is not None:
             if not isinstance(bytes_with_cpp_type, bytes):
                 raise TypeError(f'bytes_with_cpp_type is not a { bytes !r}.')
 
         inst = <ComplexStruct>ComplexStruct.__new__(ComplexStruct)
         inst._cpp_obj = move(ComplexStruct._make_instance(
           self._cpp_obj.get(),
+          __isNOTSET,
           structOne,
           structTwo,
           an_integer,
@@ -901,15 +948,16 @@ cdef class ComplexStruct(thrift.py3.types.Struct):
     @staticmethod
     cdef unique_ptr[cComplexStruct] _make_instance(
         cComplexStruct* base_instance,
-        object structOne,
-        object structTwo,
-        object an_integer,
-        object name,
-        object an_enum,
-        object some_bytes,
-        object sender,
-        object cdef_,
-        object bytes_with_cpp_type
+        bint* __isNOTSET,
+        SimpleStruct structOne ,
+        SimpleStruct structTwo ,
+        object an_integer ,
+        str name ,
+        AnEnum an_enum ,
+        bytes some_bytes ,
+        str sender ,
+        str cdef_ ,
+        bytes bytes_with_cpp_type 
     ) except *:
         cdef unique_ptr[cComplexStruct] c_inst
         if base_instance:
@@ -919,68 +967,50 @@ cdef class ComplexStruct(thrift.py3.types.Struct):
 
         if base_instance:
             # Convert None's to default value. (or unset)
-            if structOne is None:
+            if not __isNOTSET[0] and structOne is None:
                 deref(c_inst).structOne = _ComplexStruct_defaults.structOne
                 deref(c_inst).__isset.structOne = False
                 pass
-            elif structOne is __NOTSET:
-                structOne = None
 
-            if structTwo is None:
+            if not __isNOTSET[1] and structTwo is None:
                 deref(c_inst).structTwo = _ComplexStruct_defaults.structTwo
                 deref(c_inst).__isset.structTwo = False
                 pass
-            elif structTwo is __NOTSET:
-                structTwo = None
 
-            if an_integer is None:
+            if not __isNOTSET[2] and an_integer is None:
                 deref(c_inst).an_integer = _ComplexStruct_defaults.an_integer
                 deref(c_inst).__isset.an_integer = False
                 pass
-            elif an_integer is __NOTSET:
-                an_integer = None
 
-            if name is None:
+            if not __isNOTSET[3] and name is None:
                 deref(c_inst).name = _ComplexStruct_defaults.name
                 deref(c_inst).__isset.name = False
                 pass
-            elif name is __NOTSET:
-                name = None
 
-            if an_enum is None:
+            if not __isNOTSET[4] and an_enum is None:
                 deref(c_inst).an_enum = _ComplexStruct_defaults.an_enum
                 deref(c_inst).__isset.an_enum = False
                 pass
-            elif an_enum is __NOTSET:
-                an_enum = None
 
-            if some_bytes is None:
+            if not __isNOTSET[5] and some_bytes is None:
                 deref(c_inst).some_bytes = _ComplexStruct_defaults.some_bytes
                 deref(c_inst).__isset.some_bytes = False
                 pass
-            elif some_bytes is __NOTSET:
-                some_bytes = None
 
-            if sender is None:
+            if not __isNOTSET[6] and sender is None:
                 deref(c_inst).sender = _ComplexStruct_defaults.sender
                 deref(c_inst).__isset.sender = False
                 pass
-            elif sender is __NOTSET:
-                sender = None
 
-            if cdef_ is None:
+            if not __isNOTSET[7] and cdef_ is None:
                 deref(c_inst).cdef_ = _ComplexStruct_defaults.cdef_
                 deref(c_inst).__isset.cdef_ = False
                 pass
-            elif cdef_ is __NOTSET:
-                cdef_ = None
 
-            if bytes_with_cpp_type is None:
+            if not __isNOTSET[8] and bytes_with_cpp_type is None:
                 deref(c_inst).bytes_with_cpp_type = _ComplexStruct_defaults.bytes_with_cpp_type
                 deref(c_inst).__isset.bytes_with_cpp_type = False
                 pass
-            elif bytes_with_cpp_type is __NOTSET:
-                bytes_with_cpp_type = None
 
         if structOne is not None:
             deref(c_inst).structOne = deref((<SimpleStruct?> structOne)._cpp_obj)
@@ -992,19 +1022,19 @@ cdef class ComplexStruct(thrift.py3.types.Struct):
             deref(c_inst).an_integer = an_integer
             deref(c_inst).__isset.an_integer = True
         if name is not None:
-            deref(c_inst).name = name.encode('UTF-8')
+            deref(c_inst).name = thrift.py3.types.move(thrift.py3.types.bytes_to_string(name.encode('utf-8')))
             deref(c_inst).__isset.name = True
         if an_enum is not None:
             deref(c_inst).an_enum = AnEnum_to_cpp(an_enum)
             deref(c_inst).__isset.an_enum = True
         if some_bytes is not None:
-            deref(c_inst).some_bytes = some_bytes
+            deref(c_inst).some_bytes = thrift.py3.types.move(thrift.py3.types.bytes_to_string(some_bytes))
             deref(c_inst).__isset.some_bytes = True
         if sender is not None:
-            deref(c_inst).sender = sender.encode('UTF-8')
+            deref(c_inst).sender = thrift.py3.types.move(thrift.py3.types.bytes_to_string(sender.encode('utf-8')))
             deref(c_inst).__isset.sender = True
         if cdef_ is not None:
-            deref(c_inst).cdef_ = cdef_.encode('UTF-8')
+            deref(c_inst).cdef_ = thrift.py3.types.move(thrift.py3.types.bytes_to_string(cdef_.encode('utf-8')))
             deref(c_inst).__isset.cdef_ = True
         if bytes_with_cpp_type is not None:
             deref(c_inst).bytes_with_cpp_type = foo_Bar(move(<string>bytes_with_cpp_type))

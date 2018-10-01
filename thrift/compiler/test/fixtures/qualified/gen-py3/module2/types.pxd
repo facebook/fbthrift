@@ -95,8 +95,9 @@ cdef class Struct(thrift.py3.types.Struct):
     @staticmethod
     cdef unique_ptr[cStruct] _make_instance(
         cStruct* base_instance,
-        object first,
-        object second
+        bint* __isNOTSET,
+        _module0_types.Struct first,
+        _module1_types.Struct second
     ) except *
 
     @staticmethod
@@ -115,7 +116,8 @@ cdef class BigStruct(thrift.py3.types.Struct):
     @staticmethod
     cdef unique_ptr[cBigStruct] _make_instance(
         cBigStruct* base_instance,
-        object s,
+        bint* __isNOTSET,
+        Struct s,
         object id
     ) except *
 

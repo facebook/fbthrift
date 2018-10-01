@@ -4,8 +4,8 @@
 # DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
 #  @generated
 #
-
 cimport cython as __cython
+from cpython.bytes cimport PyBytes_AsStringAndSize
 from cpython.object cimport PyTypeObject, Py_LT, Py_LE, Py_EQ, Py_NE, Py_GT, Py_GE
 from libcpp.memory cimport shared_ptr, make_shared, unique_ptr, make_unique
 from libcpp.string cimport string
@@ -160,6 +160,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
 
         self._cpp_obj = move(MyStruct._make_instance(
           NULL,
+          NULL,
           MyIntField,
           MyStringField,
           MyDataField,
@@ -175,46 +176,65 @@ cdef class MyStruct(thrift.py3.types.Struct):
         major=__NOTSET,
         myEnum=__NOTSET
     ):
-        changes = any((
-            MyIntField is not __NOTSET,
+        ___NOTSET = __NOTSET  # Cheaper for larger structs
+        cdef bint[5] __isNOTSET  # so make_instance is typed
 
-            MyStringField is not __NOTSET,
-
-            MyDataField is not __NOTSET,
-
-            major is not __NOTSET,
-
-            myEnum is not __NOTSET,
-        ))
+        changes = False
+        if MyIntField is ___NOTSET:
+            __isNOTSET[0] = True
+            MyIntField = None
+        else:
+            changes = True
+        if MyStringField is ___NOTSET:
+            __isNOTSET[1] = True
+            MyStringField = None
+        else:
+            changes = True
+        if MyDataField is ___NOTSET:
+            __isNOTSET[2] = True
+            MyDataField = None
+        else:
+            changes = True
+        if major is ___NOTSET:
+            __isNOTSET[3] = True
+            major = None
+        else:
+            changes = True
+        if myEnum is ___NOTSET:
+            __isNOTSET[4] = True
+            myEnum = None
+        else:
+            changes = True
 
         if not changes:
             return self
 
-        if None is not MyIntField is not __NOTSET:
+        if MyIntField is not None:
             if not isinstance(MyIntField, int):
                 raise TypeError(f'MyIntField is not a { int !r}.')
             MyIntField = <int64_t> MyIntField
 
-        if None is not MyStringField is not __NOTSET:
+        if MyStringField is not None:
             if not isinstance(MyStringField, str):
                 raise TypeError(f'MyStringField is not a { str !r}.')
 
-        if None is not MyDataField is not __NOTSET:
+        if MyDataField is not None:
             if not isinstance(MyDataField, MyDataItem):
                 raise TypeError(f'MyDataField is not a { MyDataItem !r}.')
 
-        if None is not major is not __NOTSET:
+        if major is not None:
             if not isinstance(major, int):
                 raise TypeError(f'major is not a { int !r}.')
             major = <int64_t> major
 
-        if None is not myEnum is not __NOTSET:
+        if myEnum is not None:
             if not isinstance(myEnum, MyEnum):
                 raise TypeError(f'field myEnum value: { myEnum !r} is not of the enum type { MyEnum }.')
 
         inst = <MyStruct>MyStruct.__new__(MyStruct)
         inst._cpp_obj = move(MyStruct._make_instance(
           self._cpp_obj.get(),
+          __isNOTSET,
           MyIntField,
           MyStringField,
           MyDataField,
@@ -226,11 +246,12 @@ cdef class MyStruct(thrift.py3.types.Struct):
     @staticmethod
     cdef unique_ptr[cMyStruct] _make_instance(
         cMyStruct* base_instance,
-        object MyIntField,
-        object MyStringField,
-        object MyDataField,
-        object major,
-        object myEnum
+        bint* __isNOTSET,
+        object MyIntField ,
+        str MyStringField ,
+        MyDataItem MyDataField ,
+        object major ,
+        MyEnum myEnum 
     ) except *:
         cdef unique_ptr[cMyStruct] c_inst
         if base_instance:
@@ -240,46 +261,36 @@ cdef class MyStruct(thrift.py3.types.Struct):
 
         if base_instance:
             # Convert None's to default value. (or unset)
-            if MyIntField is None:
+            if not __isNOTSET[0] and MyIntField is None:
                 deref(c_inst).MyIntField = _MyStruct_defaults.MyIntField
                 deref(c_inst).__isset.MyIntField = False
                 pass
-            elif MyIntField is __NOTSET:
-                MyIntField = None
 
-            if MyStringField is None:
+            if not __isNOTSET[1] and MyStringField is None:
                 deref(c_inst).MyStringField = _MyStruct_defaults.MyStringField
                 deref(c_inst).__isset.MyStringField = False
                 pass
-            elif MyStringField is __NOTSET:
-                MyStringField = None
 
-            if MyDataField is None:
+            if not __isNOTSET[2] and MyDataField is None:
                 deref(c_inst).MyDataField = _MyStruct_defaults.MyDataField
                 deref(c_inst).__isset.MyDataField = False
                 pass
-            elif MyDataField is __NOTSET:
-                MyDataField = None
 
-            if major is None:
+            if not __isNOTSET[3] and major is None:
                 deref(c_inst).major = _MyStruct_defaults.major
                 deref(c_inst).__isset.major = False
                 pass
-            elif major is __NOTSET:
-                major = None
 
-            if myEnum is None:
+            if not __isNOTSET[4] and myEnum is None:
                 deref(c_inst).myEnum = _MyStruct_defaults.myEnum
                 deref(c_inst).__isset.myEnum = False
                 pass
-            elif myEnum is __NOTSET:
-                myEnum = None
 
         if MyIntField is not None:
             deref(c_inst).MyIntField = MyIntField
             deref(c_inst).__isset.MyIntField = True
         if MyStringField is not None:
-            deref(c_inst).MyStringField = MyStringField.encode('UTF-8')
+            deref(c_inst).MyStringField = thrift.py3.types.move(thrift.py3.types.bytes_to_string(MyStringField.encode('utf-8')))
             deref(c_inst).__isset.MyStringField = True
         if MyDataField is not None:
             deref(c_inst).MyDataField = deref((<MyDataItem?> MyDataField)._cpp_obj)
@@ -434,24 +445,18 @@ cdef class MyDataItem(thrift.py3.types.Struct):
     ):
         self._cpp_obj = move(MyDataItem._make_instance(
           NULL,
+          NULL,
         ))
 
     def __call__(
         MyDataItem self
     ):
-        changes = any((        ))
-
-        if not changes:
-            return self
-        inst = <MyDataItem>MyDataItem.__new__(MyDataItem)
-        inst._cpp_obj = move(MyDataItem._make_instance(
-          self._cpp_obj.get(),
-        ))
-        return inst
+        return self
 
     @staticmethod
     cdef unique_ptr[cMyDataItem] _make_instance(
-        cMyDataItem* base_instance
+        cMyDataItem* base_instance,
+        bint* __isNOTSET
     ) except *:
         cdef unique_ptr[cMyDataItem] c_inst
         if base_instance:

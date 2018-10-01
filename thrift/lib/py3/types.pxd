@@ -1,3 +1,4 @@
+from cpython.bytes cimport PyBytes_AsStringAndSize
 from cpython.object cimport PyTypeObject, Py_LT, Py_EQ
 from folly.iobuf cimport cIOBuf, IOBuf
 from libc.stdint cimport uint32_t
@@ -84,3 +85,10 @@ cdef inline object list_compare(object first, object second, int op):
     if op == Py_LT:
         return len(first) < len(second)
     return True
+
+
+cdef inline string bytes_to_string(bytes b) except*:
+    cdef Py_ssize_t length
+    cdef char* data
+    PyBytes_AsStringAndSize(b, &data, &length)
+    return move(string(data, length))  # there is a temp because string can raise

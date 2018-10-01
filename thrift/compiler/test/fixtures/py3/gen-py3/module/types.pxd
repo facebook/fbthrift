@@ -168,6 +168,7 @@ cdef class SimpleException(thrift.py3.exceptions.Error):
     @staticmethod
     cdef unique_ptr[cSimpleException] _make_instance(
         cSimpleException* base_instance,
+        bint* __isNOTSET,
         object err_code
     ) except *
 
@@ -186,7 +187,8 @@ cdef class SimpleStruct(thrift.py3.types.Struct):
     @staticmethod
     cdef unique_ptr[cSimpleStruct] _make_instance(
         cSimpleStruct* base_instance,
-        object is_on,
+        bint* __isNOTSET,
+        pbool is_on,
         object tiny_int,
         object small_int,
         object nice_sized_int,
@@ -212,15 +214,16 @@ cdef class ComplexStruct(thrift.py3.types.Struct):
     @staticmethod
     cdef unique_ptr[cComplexStruct] _make_instance(
         cComplexStruct* base_instance,
-        object structOne,
-        object structTwo,
+        bint* __isNOTSET,
+        SimpleStruct structOne,
+        SimpleStruct structTwo,
         object an_integer,
-        object name,
-        object an_enum,
-        object some_bytes,
-        object sender,
-        object cdef_,
-        object bytes_with_cpp_type
+        str name,
+        AnEnum an_enum,
+        bytes some_bytes,
+        str sender,
+        str cdef_,
+        bytes bytes_with_cpp_type
     ) except *
 
     @staticmethod

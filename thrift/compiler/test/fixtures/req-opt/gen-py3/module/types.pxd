@@ -74,8 +74,9 @@ cdef class Foo(thrift.py3.types.Struct):
     @staticmethod
     cdef unique_ptr[cFoo] _make_instance(
         cFoo* base_instance,
+        bint* __isNOTSET,
         object myInteger,
-        object myString,
+        str myString,
         object myBools,
         object myNumbers
     ) except *

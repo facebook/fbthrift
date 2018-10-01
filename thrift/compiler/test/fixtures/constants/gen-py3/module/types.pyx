@@ -4,8 +4,8 @@
 # DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
 #  @generated
 #
-
 cimport cython as __cython
+from cpython.bytes cimport PyBytes_AsStringAndSize
 from cpython.object cimport PyTypeObject, Py_LT, Py_LE, Py_EQ, Py_NE, Py_GT, Py_GE
 from libcpp.memory cimport shared_ptr, make_shared, unique_ptr, make_unique
 from libcpp.string cimport string
@@ -576,6 +576,7 @@ cdef class Internship(thrift.py3.types.Struct):
 
         self._cpp_obj = move(Internship._make_instance(
           NULL,
+          NULL,
           weeks,
           title,
           employer,
@@ -587,35 +588,48 @@ cdef class Internship(thrift.py3.types.Struct):
         title=__NOTSET,
         employer=__NOTSET
     ):
-        changes = any((
-            weeks is not __NOTSET,
+        ___NOTSET = __NOTSET  # Cheaper for larger structs
+        cdef bint[3] __isNOTSET  # so make_instance is typed
 
-            title is not __NOTSET,
-
-            employer is not __NOTSET,
-        ))
+        changes = False
+        if weeks is ___NOTSET:
+            __isNOTSET[0] = True
+            weeks = None
+        else:
+            changes = True
+        if title is ___NOTSET:
+            __isNOTSET[1] = True
+            title = None
+        else:
+            changes = True
+        if employer is ___NOTSET:
+            __isNOTSET[2] = True
+            employer = None
+        else:
+            changes = True
 
         if not changes:
             return self
 
-        if weeks is None:
+        if not __isNOTSET[0] and weeks is None:
             raise TypeError('field weeks is required and has no default, it can not be unset')
-        if None is not weeks is not __NOTSET:
+        if weeks is not None:
             if not isinstance(weeks, int):
                 raise TypeError(f'weeks is not a { int !r}.')
             weeks = <int32_t> weeks
 
-        if None is not title is not __NOTSET:
+        if title is not None:
             if not isinstance(title, str):
                 raise TypeError(f'title is not a { str !r}.')
 
-        if None is not employer is not __NOTSET:
+        if employer is not None:
             if not isinstance(employer, Company):
                 raise TypeError(f'field employer value: { employer !r} is not of the enum type { Company }.')
 
         inst = <Internship>Internship.__new__(Internship)
         inst._cpp_obj = move(Internship._make_instance(
           self._cpp_obj.get(),
+          __isNOTSET,
           weeks,
           title,
           employer,
@@ -625,9 +639,10 @@ cdef class Internship(thrift.py3.types.Struct):
     @staticmethod
     cdef unique_ptr[cInternship] _make_instance(
         cInternship* base_instance,
-        object weeks,
-        object title,
-        object employer
+        bint* __isNOTSET,
+        object weeks ,
+        str title ,
+        Company employer 
     ) except *:
         cdef unique_ptr[cInternship] c_inst
         if base_instance:
@@ -637,28 +652,22 @@ cdef class Internship(thrift.py3.types.Struct):
 
         if base_instance:
             # Convert None's to default value. (or unset)
-            if weeks is None:
+            if not __isNOTSET[0] and weeks is None:
                 pass
-            elif weeks is __NOTSET:
-                weeks = None
 
-            if title is None:
+            if not __isNOTSET[1] and title is None:
                 deref(c_inst).title = _Internship_defaults.title
                 deref(c_inst).__isset.title = False
                 pass
-            elif title is __NOTSET:
-                title = None
 
-            if employer is None:
+            if not __isNOTSET[2] and employer is None:
                 deref(c_inst).__isset.employer = False
                 pass
-            elif employer is __NOTSET:
-                employer = None
 
         if weeks is not None:
             deref(c_inst).weeks = weeks
         if title is not None:
-            deref(c_inst).title = title.encode('UTF-8')
+            deref(c_inst).title = thrift.py3.types.move(thrift.py3.types.bytes_to_string(title.encode('utf-8')))
             deref(c_inst).__isset.title = True
         if employer is not None:
             deref(c_inst).employer = Company_to_cpp(employer)
@@ -794,6 +803,7 @@ cdef class UnEnumStruct(thrift.py3.types.Struct):
     ):
         self._cpp_obj = move(UnEnumStruct._make_instance(
           NULL,
+          NULL,
           city,
         ))
 
@@ -801,20 +811,27 @@ cdef class UnEnumStruct(thrift.py3.types.Struct):
         UnEnumStruct self,
         city=__NOTSET
     ):
-        changes = any((
-            city is not __NOTSET,
-        ))
+        ___NOTSET = __NOTSET  # Cheaper for larger structs
+        cdef bint[1] __isNOTSET  # so make_instance is typed
+
+        changes = False
+        if city is ___NOTSET:
+            __isNOTSET[0] = True
+            city = None
+        else:
+            changes = True
 
         if not changes:
             return self
 
-        if None is not city is not __NOTSET:
+        if city is not None:
             if not isinstance(city, City):
                 raise TypeError(f'field city value: { city !r} is not of the enum type { City }.')
 
         inst = <UnEnumStruct>UnEnumStruct.__new__(UnEnumStruct)
         inst._cpp_obj = move(UnEnumStruct._make_instance(
           self._cpp_obj.get(),
+          __isNOTSET,
           city,
         ))
         return inst
@@ -822,7 +839,8 @@ cdef class UnEnumStruct(thrift.py3.types.Struct):
     @staticmethod
     cdef unique_ptr[cUnEnumStruct] _make_instance(
         cUnEnumStruct* base_instance,
-        object city
+        bint* __isNOTSET,
+        City city 
     ) except *:
         cdef unique_ptr[cUnEnumStruct] c_inst
         if base_instance:
@@ -832,12 +850,10 @@ cdef class UnEnumStruct(thrift.py3.types.Struct):
 
         if base_instance:
             # Convert None's to default value. (or unset)
-            if city is None:
+            if not __isNOTSET[0] and city is None:
                 deref(c_inst).city = _UnEnumStruct_defaults.city
                 deref(c_inst).__isset.city = False
                 pass
-            elif city is __NOTSET:
-                city = None
 
         if city is not None:
             deref(c_inst).city = City_to_cpp(city)
@@ -968,6 +984,7 @@ cdef class Range(thrift.py3.types.Struct):
 
         self._cpp_obj = move(Range._make_instance(
           NULL,
+          NULL,
           min,
           max,
         ))
@@ -977,25 +994,34 @@ cdef class Range(thrift.py3.types.Struct):
         min=__NOTSET,
         max=__NOTSET
     ):
-        changes = any((
-            min is not __NOTSET,
+        ___NOTSET = __NOTSET  # Cheaper for larger structs
+        cdef bint[2] __isNOTSET  # so make_instance is typed
 
-            max is not __NOTSET,
-        ))
+        changes = False
+        if min is ___NOTSET:
+            __isNOTSET[0] = True
+            min = None
+        else:
+            changes = True
+        if max is ___NOTSET:
+            __isNOTSET[1] = True
+            max = None
+        else:
+            changes = True
 
         if not changes:
             return self
 
-        if min is None:
+        if not __isNOTSET[0] and min is None:
             raise TypeError('field min is required and has no default, it can not be unset')
-        if None is not min is not __NOTSET:
+        if min is not None:
             if not isinstance(min, int):
                 raise TypeError(f'min is not a { int !r}.')
             min = <int32_t> min
 
-        if max is None:
+        if not __isNOTSET[1] and max is None:
             raise TypeError('field max is required and has no default, it can not be unset')
-        if None is not max is not __NOTSET:
+        if max is not None:
             if not isinstance(max, int):
                 raise TypeError(f'max is not a { int !r}.')
             max = <int32_t> max
@@ -1003,6 +1029,7 @@ cdef class Range(thrift.py3.types.Struct):
         inst = <Range>Range.__new__(Range)
         inst._cpp_obj = move(Range._make_instance(
           self._cpp_obj.get(),
+          __isNOTSET,
           min,
           max,
         ))
@@ -1011,8 +1038,9 @@ cdef class Range(thrift.py3.types.Struct):
     @staticmethod
     cdef unique_ptr[cRange] _make_instance(
         cRange* base_instance,
-        object min,
-        object max
+        bint* __isNOTSET,
+        object min ,
+        object max 
     ) except *:
         cdef unique_ptr[cRange] c_inst
         if base_instance:
@@ -1022,15 +1050,11 @@ cdef class Range(thrift.py3.types.Struct):
 
         if base_instance:
             # Convert None's to default value. (or unset)
-            if min is None:
+            if not __isNOTSET[0] and min is None:
                 pass
-            elif min is __NOTSET:
-                min = None
 
-            if max is None:
+            if not __isNOTSET[1] and max is None:
                 pass
-            elif max is __NOTSET:
-                max = None
 
         if min is not None:
             deref(c_inst).min = min
@@ -1164,6 +1188,7 @@ cdef class struct1(thrift.py3.types.Struct):
 
         self._cpp_obj = move(struct1._make_instance(
           NULL,
+          NULL,
           a,
           b,
         ))
@@ -1173,27 +1198,37 @@ cdef class struct1(thrift.py3.types.Struct):
         a=__NOTSET,
         b=__NOTSET
     ):
-        changes = any((
-            a is not __NOTSET,
+        ___NOTSET = __NOTSET  # Cheaper for larger structs
+        cdef bint[2] __isNOTSET  # so make_instance is typed
 
-            b is not __NOTSET,
-        ))
+        changes = False
+        if a is ___NOTSET:
+            __isNOTSET[0] = True
+            a = None
+        else:
+            changes = True
+        if b is ___NOTSET:
+            __isNOTSET[1] = True
+            b = None
+        else:
+            changes = True
 
         if not changes:
             return self
 
-        if None is not a is not __NOTSET:
+        if a is not None:
             if not isinstance(a, int):
                 raise TypeError(f'a is not a { int !r}.')
             a = <int32_t> a
 
-        if None is not b is not __NOTSET:
+        if b is not None:
             if not isinstance(b, str):
                 raise TypeError(f'b is not a { str !r}.')
 
         inst = <struct1>struct1.__new__(struct1)
         inst._cpp_obj = move(struct1._make_instance(
           self._cpp_obj.get(),
+          __isNOTSET,
           a,
           b,
         ))
@@ -1202,8 +1237,9 @@ cdef class struct1(thrift.py3.types.Struct):
     @staticmethod
     cdef unique_ptr[cstruct1] _make_instance(
         cstruct1* base_instance,
-        object a,
-        object b
+        bint* __isNOTSET,
+        object a ,
+        str b 
     ) except *:
         cdef unique_ptr[cstruct1] c_inst
         if base_instance:
@@ -1213,25 +1249,21 @@ cdef class struct1(thrift.py3.types.Struct):
 
         if base_instance:
             # Convert None's to default value. (or unset)
-            if a is None:
+            if not __isNOTSET[0] and a is None:
                 deref(c_inst).a = _struct1_defaults.a
                 deref(c_inst).__isset.a = False
                 pass
-            elif a is __NOTSET:
-                a = None
 
-            if b is None:
+            if not __isNOTSET[1] and b is None:
                 deref(c_inst).b = _struct1_defaults.b
                 deref(c_inst).__isset.b = False
                 pass
-            elif b is __NOTSET:
-                b = None
 
         if a is not None:
             deref(c_inst).a = a
             deref(c_inst).__isset.a = True
         if b is not None:
-            deref(c_inst).b = b.encode('UTF-8')
+            deref(c_inst).b = thrift.py3.types.move(thrift.py3.types.bytes_to_string(b.encode('utf-8')))
             deref(c_inst).__isset.b = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
@@ -1363,6 +1395,7 @@ cdef class struct2(thrift.py3.types.Struct):
 
         self._cpp_obj = move(struct2._make_instance(
           NULL,
+          NULL,
           a,
           b,
           c,
@@ -1376,35 +1409,51 @@ cdef class struct2(thrift.py3.types.Struct):
         c=__NOTSET,
         d=__NOTSET
     ):
-        changes = any((
-            a is not __NOTSET,
+        ___NOTSET = __NOTSET  # Cheaper for larger structs
+        cdef bint[4] __isNOTSET  # so make_instance is typed
 
-            b is not __NOTSET,
-
-            c is not __NOTSET,
-
-            d is not __NOTSET,
-        ))
+        changes = False
+        if a is ___NOTSET:
+            __isNOTSET[0] = True
+            a = None
+        else:
+            changes = True
+        if b is ___NOTSET:
+            __isNOTSET[1] = True
+            b = None
+        else:
+            changes = True
+        if c is ___NOTSET:
+            __isNOTSET[2] = True
+            c = None
+        else:
+            changes = True
+        if d is ___NOTSET:
+            __isNOTSET[3] = True
+            d = None
+        else:
+            changes = True
 
         if not changes:
             return self
 
-        if None is not a is not __NOTSET:
+        if a is not None:
             if not isinstance(a, int):
                 raise TypeError(f'a is not a { int !r}.')
             a = <int32_t> a
 
-        if None is not b is not __NOTSET:
+        if b is not None:
             if not isinstance(b, str):
                 raise TypeError(f'b is not a { str !r}.')
 
-        if None is not c is not __NOTSET:
+        if c is not None:
             if not isinstance(c, struct1):
                 raise TypeError(f'c is not a { struct1 !r}.')
 
         inst = <struct2>struct2.__new__(struct2)
         inst._cpp_obj = move(struct2._make_instance(
           self._cpp_obj.get(),
+          __isNOTSET,
           a,
           b,
           c,
@@ -1415,10 +1464,11 @@ cdef class struct2(thrift.py3.types.Struct):
     @staticmethod
     cdef unique_ptr[cstruct2] _make_instance(
         cstruct2* base_instance,
-        object a,
-        object b,
-        object c,
-        object d
+        bint* __isNOTSET,
+        object a ,
+        str b ,
+        struct1 c ,
+        object d 
     ) except *:
         cdef unique_ptr[cstruct2] c_inst
         if base_instance:
@@ -1428,39 +1478,31 @@ cdef class struct2(thrift.py3.types.Struct):
 
         if base_instance:
             # Convert None's to default value. (or unset)
-            if a is None:
+            if not __isNOTSET[0] and a is None:
                 deref(c_inst).a = _struct2_defaults.a
                 deref(c_inst).__isset.a = False
                 pass
-            elif a is __NOTSET:
-                a = None
 
-            if b is None:
+            if not __isNOTSET[1] and b is None:
                 deref(c_inst).b = _struct2_defaults.b
                 deref(c_inst).__isset.b = False
                 pass
-            elif b is __NOTSET:
-                b = None
 
-            if c is None:
+            if not __isNOTSET[2] and c is None:
                 deref(c_inst).c = _struct2_defaults.c
                 deref(c_inst).__isset.c = False
                 pass
-            elif c is __NOTSET:
-                c = None
 
-            if d is None:
+            if not __isNOTSET[3] and d is None:
                 deref(c_inst).d = _struct2_defaults.d
                 deref(c_inst).__isset.d = False
                 pass
-            elif d is __NOTSET:
-                d = None
 
         if a is not None:
             deref(c_inst).a = a
             deref(c_inst).__isset.a = True
         if b is not None:
-            deref(c_inst).b = b.encode('UTF-8')
+            deref(c_inst).b = thrift.py3.types.move(thrift.py3.types.bytes_to_string(b.encode('utf-8')))
             deref(c_inst).__isset.b = True
         if c is not None:
             deref(c_inst).c = deref((<struct1?> c)._cpp_obj)
@@ -1615,6 +1657,7 @@ cdef class struct3(thrift.py3.types.Struct):
 
         self._cpp_obj = move(struct3._make_instance(
           NULL,
+          NULL,
           a,
           b,
           c,
@@ -1626,33 +1669,46 @@ cdef class struct3(thrift.py3.types.Struct):
         b=__NOTSET,
         c=__NOTSET
     ):
-        changes = any((
-            a is not __NOTSET,
+        ___NOTSET = __NOTSET  # Cheaper for larger structs
+        cdef bint[3] __isNOTSET  # so make_instance is typed
 
-            b is not __NOTSET,
-
-            c is not __NOTSET,
-        ))
+        changes = False
+        if a is ___NOTSET:
+            __isNOTSET[0] = True
+            a = None
+        else:
+            changes = True
+        if b is ___NOTSET:
+            __isNOTSET[1] = True
+            b = None
+        else:
+            changes = True
+        if c is ___NOTSET:
+            __isNOTSET[2] = True
+            c = None
+        else:
+            changes = True
 
         if not changes:
             return self
 
-        if None is not a is not __NOTSET:
+        if a is not None:
             if not isinstance(a, str):
                 raise TypeError(f'a is not a { str !r}.')
 
-        if None is not b is not __NOTSET:
+        if b is not None:
             if not isinstance(b, int):
                 raise TypeError(f'b is not a { int !r}.')
             b = <int32_t> b
 
-        if None is not c is not __NOTSET:
+        if c is not None:
             if not isinstance(c, struct2):
                 raise TypeError(f'c is not a { struct2 !r}.')
 
         inst = <struct3>struct3.__new__(struct3)
         inst._cpp_obj = move(struct3._make_instance(
           self._cpp_obj.get(),
+          __isNOTSET,
           a,
           b,
           c,
@@ -1662,9 +1718,10 @@ cdef class struct3(thrift.py3.types.Struct):
     @staticmethod
     cdef unique_ptr[cstruct3] _make_instance(
         cstruct3* base_instance,
-        object a,
-        object b,
-        object c
+        bint* __isNOTSET,
+        str a ,
+        object b ,
+        struct2 c 
     ) except *:
         cdef unique_ptr[cstruct3] c_inst
         if base_instance:
@@ -1674,29 +1731,23 @@ cdef class struct3(thrift.py3.types.Struct):
 
         if base_instance:
             # Convert None's to default value. (or unset)
-            if a is None:
+            if not __isNOTSET[0] and a is None:
                 deref(c_inst).a = _struct3_defaults.a
                 deref(c_inst).__isset.a = False
                 pass
-            elif a is __NOTSET:
-                a = None
 
-            if b is None:
+            if not __isNOTSET[1] and b is None:
                 deref(c_inst).b = _struct3_defaults.b
                 deref(c_inst).__isset.b = False
                 pass
-            elif b is __NOTSET:
-                b = None
 
-            if c is None:
+            if not __isNOTSET[2] and c is None:
                 deref(c_inst).c = _struct3_defaults.c
                 deref(c_inst).__isset.c = False
                 pass
-            elif c is __NOTSET:
-                c = None
 
         if a is not None:
-            deref(c_inst).a = a.encode('UTF-8')
+            deref(c_inst).a = thrift.py3.types.move(thrift.py3.types.bytes_to_string(a.encode('utf-8')))
             deref(c_inst).__isset.a = True
         if b is not None:
             deref(c_inst).b = b
@@ -1879,8 +1930,8 @@ cdef class union1(thrift.py3.types.Union):
     @staticmethod
     cdef unique_ptr[cunion1] _make_instance(
         cunion1* base_instance,
-        i,
-        d
+        object i,
+        object d
     ) except *:
         cdef unique_ptr[cunion1] c_inst = make_unique[cunion1]()
         cdef bint any_set = False
@@ -2083,10 +2134,10 @@ cdef class union2(thrift.py3.types.Union):
     @staticmethod
     cdef unique_ptr[cunion2] _make_instance(
         cunion2* base_instance,
-        i,
-        d,
-        s,
-        u
+        object i,
+        object d,
+        struct1 s,
+        union1 u
     ) except *:
         cdef unique_ptr[cunion2] c_inst = make_unique[cunion2]()
         cdef bint any_set = False

@@ -4,8 +4,8 @@
 # DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
 #  @generated
 #
-
 cimport cython as __cython
+from cpython.bytes cimport PyBytes_AsStringAndSize
 from cpython.object cimport PyTypeObject, Py_LT, Py_LE, Py_EQ, Py_NE, Py_GT, Py_GE
 from libcpp.memory cimport shared_ptr, make_shared, unique_ptr, make_unique
 from libcpp.string cimport string
@@ -49,6 +49,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
     ):
         self._cpp_obj = move(MyStruct._make_instance(
           NULL,
+          NULL,
           field,
         ))
 
@@ -56,20 +57,27 @@ cdef class MyStruct(thrift.py3.types.Struct):
         MyStruct self,
         field=__NOTSET
     ):
-        changes = any((
-            field is not __NOTSET,
-        ))
+        ___NOTSET = __NOTSET  # Cheaper for larger structs
+        cdef bint[1] __isNOTSET  # so make_instance is typed
+
+        changes = False
+        if field is ___NOTSET:
+            __isNOTSET[0] = True
+            field = None
+        else:
+            changes = True
 
         if not changes:
             return self
 
-        if None is not field is not __NOTSET:
+        if field is not None:
             if not isinstance(field, str):
                 raise TypeError(f'field is not a { str !r}.')
 
         inst = <MyStruct>MyStruct.__new__(MyStruct)
         inst._cpp_obj = move(MyStruct._make_instance(
           self._cpp_obj.get(),
+          __isNOTSET,
           field,
         ))
         return inst
@@ -77,7 +85,8 @@ cdef class MyStruct(thrift.py3.types.Struct):
     @staticmethod
     cdef unique_ptr[cMyStruct] _make_instance(
         cMyStruct* base_instance,
-        object field
+        bint* __isNOTSET,
+        str field 
     ) except *:
         cdef unique_ptr[cMyStruct] c_inst
         if base_instance:
@@ -87,15 +96,13 @@ cdef class MyStruct(thrift.py3.types.Struct):
 
         if base_instance:
             # Convert None's to default value. (or unset)
-            if field is None:
+            if not __isNOTSET[0] and field is None:
                 deref(c_inst).field = _MyStruct_defaults.field
                 deref(c_inst).__isset.field = False
                 pass
-            elif field is __NOTSET:
-                field = None
 
         if field is not None:
-            deref(c_inst).field = field.encode('UTF-8')
+            deref(c_inst).field = thrift.py3.types.move(thrift.py3.types.bytes_to_string(field.encode('utf-8')))
             deref(c_inst).__isset.field = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
@@ -215,6 +222,7 @@ cdef class Combo(thrift.py3.types.Struct):
     ):
         self._cpp_obj = move(Combo._make_instance(
           NULL,
+          NULL,
           listOfOurMyStructLists,
           theirMyStructList,
           ourMyStructList,
@@ -228,15 +236,30 @@ cdef class Combo(thrift.py3.types.Struct):
         ourMyStructList=__NOTSET,
         listOfTheirMyStructList=__NOTSET
     ):
-        changes = any((
-            listOfOurMyStructLists is not __NOTSET,
+        ___NOTSET = __NOTSET  # Cheaper for larger structs
+        cdef bint[4] __isNOTSET  # so make_instance is typed
 
-            theirMyStructList is not __NOTSET,
-
-            ourMyStructList is not __NOTSET,
-
-            listOfTheirMyStructList is not __NOTSET,
-        ))
+        changes = False
+        if listOfOurMyStructLists is ___NOTSET:
+            __isNOTSET[0] = True
+            listOfOurMyStructLists = None
+        else:
+            changes = True
+        if theirMyStructList is ___NOTSET:
+            __isNOTSET[1] = True
+            theirMyStructList = None
+        else:
+            changes = True
+        if ourMyStructList is ___NOTSET:
+            __isNOTSET[2] = True
+            ourMyStructList = None
+        else:
+            changes = True
+        if listOfTheirMyStructList is ___NOTSET:
+            __isNOTSET[3] = True
+            listOfTheirMyStructList = None
+        else:
+            changes = True
 
         if not changes:
             return self
@@ -244,6 +267,7 @@ cdef class Combo(thrift.py3.types.Struct):
         inst = <Combo>Combo.__new__(Combo)
         inst._cpp_obj = move(Combo._make_instance(
           self._cpp_obj.get(),
+          __isNOTSET,
           listOfOurMyStructLists,
           theirMyStructList,
           ourMyStructList,
@@ -254,10 +278,11 @@ cdef class Combo(thrift.py3.types.Struct):
     @staticmethod
     cdef unique_ptr[cCombo] _make_instance(
         cCombo* base_instance,
-        object listOfOurMyStructLists,
-        object theirMyStructList,
-        object ourMyStructList,
-        object listOfTheirMyStructList
+        bint* __isNOTSET,
+        object listOfOurMyStructLists ,
+        object theirMyStructList ,
+        object ourMyStructList ,
+        object listOfTheirMyStructList 
     ) except *:
         cdef unique_ptr[cCombo] c_inst
         if base_instance:
@@ -267,33 +292,25 @@ cdef class Combo(thrift.py3.types.Struct):
 
         if base_instance:
             # Convert None's to default value. (or unset)
-            if listOfOurMyStructLists is None:
+            if not __isNOTSET[0] and listOfOurMyStructLists is None:
                 deref(c_inst).listOfOurMyStructLists = _Combo_defaults.listOfOurMyStructLists
                 deref(c_inst).__isset.listOfOurMyStructLists = False
                 pass
-            elif listOfOurMyStructLists is __NOTSET:
-                listOfOurMyStructLists = None
 
-            if theirMyStructList is None:
+            if not __isNOTSET[1] and theirMyStructList is None:
                 deref(c_inst).theirMyStructList = _Combo_defaults.theirMyStructList
                 deref(c_inst).__isset.theirMyStructList = False
                 pass
-            elif theirMyStructList is __NOTSET:
-                theirMyStructList = None
 
-            if ourMyStructList is None:
+            if not __isNOTSET[2] and ourMyStructList is None:
                 deref(c_inst).ourMyStructList = _Combo_defaults.ourMyStructList
                 deref(c_inst).__isset.ourMyStructList = False
                 pass
-            elif ourMyStructList is __NOTSET:
-                ourMyStructList = None
 
-            if listOfTheirMyStructList is None:
+            if not __isNOTSET[3] and listOfTheirMyStructList is None:
                 deref(c_inst).listOfTheirMyStructList = _Combo_defaults.listOfTheirMyStructList
                 deref(c_inst).__isset.listOfTheirMyStructList = False
                 pass
-            elif listOfTheirMyStructList is __NOTSET:
-                listOfTheirMyStructList = None
 
         if listOfOurMyStructLists is not None:
             deref(c_inst).listOfOurMyStructLists = deref(List__List__MyStruct(listOfOurMyStructLists)._cpp_obj)

@@ -64,6 +64,7 @@ cdef class HsFoo(thrift.py3.types.Struct):
     @staticmethod
     cdef unique_ptr[cHsFoo] _make_instance(
         cHsFoo* base_instance,
+        bint* __isNOTSET,
         object MyInt
     ) except *
 

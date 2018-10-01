@@ -73,8 +73,9 @@ cdef class MyStruct(thrift.py3.types.Struct):
     @staticmethod
     cdef unique_ptr[cMyStruct] _make_instance(
         cMyStruct* base_instance,
-        object MyIncludedField,
-        object MyOtherIncludedField,
+        bint* __isNOTSET,
+        _includes_types.Included MyIncludedField,
+        _includes_types.Included MyOtherIncludedField,
         object MyIncludedInt
     ) except *
 

@@ -4,8 +4,8 @@
 # DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
 #  @generated
 #
-
 cimport cython as __cython
+from cpython.bytes cimport PyBytes_AsStringAndSize
 from cpython.object cimport PyTypeObject, Py_LT, Py_LE, Py_EQ, Py_NE, Py_GT, Py_GE
 from libcpp.memory cimport shared_ptr, make_shared, unique_ptr, make_unique
 from libcpp.string cimport string
@@ -158,6 +158,7 @@ cdef class SmallStruct(thrift.py3.types.Struct):
 
         self._cpp_obj = move(SmallStruct._make_instance(
           NULL,
+          NULL,
           small_A,
           small_B,
         ))
@@ -167,20 +168,29 @@ cdef class SmallStruct(thrift.py3.types.Struct):
         small_A=__NOTSET,
         small_B=__NOTSET
     ):
-        changes = any((
-            small_A is not __NOTSET,
+        ___NOTSET = __NOTSET  # Cheaper for larger structs
+        cdef bint[2] __isNOTSET  # so make_instance is typed
 
-            small_B is not __NOTSET,
-        ))
+        changes = False
+        if small_A is ___NOTSET:
+            __isNOTSET[0] = True
+            small_A = None
+        else:
+            changes = True
+        if small_B is ___NOTSET:
+            __isNOTSET[1] = True
+            small_B = None
+        else:
+            changes = True
 
         if not changes:
             return self
 
-        if None is not small_A is not __NOTSET:
+        if small_A is not None:
             if not isinstance(small_A, bool):
                 raise TypeError(f'small_A is not a { bool !r}.')
 
-        if None is not small_B is not __NOTSET:
+        if small_B is not None:
             if not isinstance(small_B, int):
                 raise TypeError(f'small_B is not a { int !r}.')
             small_B = <int32_t> small_B
@@ -188,6 +198,7 @@ cdef class SmallStruct(thrift.py3.types.Struct):
         inst = <SmallStruct>SmallStruct.__new__(SmallStruct)
         inst._cpp_obj = move(SmallStruct._make_instance(
           self._cpp_obj.get(),
+          __isNOTSET,
           small_A,
           small_B,
         ))
@@ -196,8 +207,9 @@ cdef class SmallStruct(thrift.py3.types.Struct):
     @staticmethod
     cdef unique_ptr[cSmallStruct] _make_instance(
         cSmallStruct* base_instance,
-        object small_A,
-        object small_B
+        bint* __isNOTSET,
+        pbool small_A ,
+        object small_B 
     ) except *:
         cdef unique_ptr[cSmallStruct] c_inst
         if base_instance:
@@ -207,19 +219,15 @@ cdef class SmallStruct(thrift.py3.types.Struct):
 
         if base_instance:
             # Convert None's to default value. (or unset)
-            if small_A is None:
+            if not __isNOTSET[0] and small_A is None:
                 deref(c_inst).small_A = _SmallStruct_defaults.small_A
                 deref(c_inst).__isset.small_A = False
                 pass
-            elif small_A is __NOTSET:
-                small_A = None
 
-            if small_B is None:
+            if not __isNOTSET[1] and small_B is None:
                 deref(c_inst).small_B = _SmallStruct_defaults.small_B
                 deref(c_inst).__isset.small_B = False
                 pass
-            elif small_B is __NOTSET:
-                small_B = None
 
         if small_A is not None:
             deref(c_inst).small_A = small_A
@@ -370,6 +378,7 @@ cdef class containerStruct(thrift.py3.types.Struct):
     ):
         self._cpp_obj = move(containerStruct._make_instance(
           NULL,
+          NULL,
           fieldA,
           fieldB,
           fieldC,
@@ -419,94 +428,164 @@ cdef class containerStruct(thrift.py3.types.Struct):
         fieldU=__NOTSET,
         fieldX=__NOTSET
     ):
-        changes = any((
-            fieldA is not __NOTSET,
+        ___NOTSET = __NOTSET  # Cheaper for larger structs
+        cdef bint[22] __isNOTSET  # so make_instance is typed
 
-            fieldB is not __NOTSET,
-
-            fieldC is not __NOTSET,
-
-            fieldD is not __NOTSET,
-
-            fieldE is not __NOTSET,
-
-            fieldF is not __NOTSET,
-
-            fieldG is not __NOTSET,
-
-            fieldH is not __NOTSET,
-
-            fieldI is not __NOTSET,
-
-            fieldJ is not __NOTSET,
-
-            fieldK is not __NOTSET,
-
-            fieldL is not __NOTSET,
-
-            fieldM is not __NOTSET,
-
-            fieldN is not __NOTSET,
-
-            fieldO is not __NOTSET,
-
-            fieldP is not __NOTSET,
-
-            fieldQ is not __NOTSET,
-
-            fieldR is not __NOTSET,
-
-            fieldS is not __NOTSET,
-
-            fieldT is not __NOTSET,
-
-            fieldU is not __NOTSET,
-
-            fieldX is not __NOTSET,
-        ))
+        changes = False
+        if fieldA is ___NOTSET:
+            __isNOTSET[0] = True
+            fieldA = None
+        else:
+            changes = True
+        if fieldB is ___NOTSET:
+            __isNOTSET[1] = True
+            fieldB = None
+        else:
+            changes = True
+        if fieldC is ___NOTSET:
+            __isNOTSET[2] = True
+            fieldC = None
+        else:
+            changes = True
+        if fieldD is ___NOTSET:
+            __isNOTSET[3] = True
+            fieldD = None
+        else:
+            changes = True
+        if fieldE is ___NOTSET:
+            __isNOTSET[4] = True
+            fieldE = None
+        else:
+            changes = True
+        if fieldF is ___NOTSET:
+            __isNOTSET[5] = True
+            fieldF = None
+        else:
+            changes = True
+        if fieldG is ___NOTSET:
+            __isNOTSET[6] = True
+            fieldG = None
+        else:
+            changes = True
+        if fieldH is ___NOTSET:
+            __isNOTSET[7] = True
+            fieldH = None
+        else:
+            changes = True
+        if fieldI is ___NOTSET:
+            __isNOTSET[8] = True
+            fieldI = None
+        else:
+            changes = True
+        if fieldJ is ___NOTSET:
+            __isNOTSET[9] = True
+            fieldJ = None
+        else:
+            changes = True
+        if fieldK is ___NOTSET:
+            __isNOTSET[10] = True
+            fieldK = None
+        else:
+            changes = True
+        if fieldL is ___NOTSET:
+            __isNOTSET[11] = True
+            fieldL = None
+        else:
+            changes = True
+        if fieldM is ___NOTSET:
+            __isNOTSET[12] = True
+            fieldM = None
+        else:
+            changes = True
+        if fieldN is ___NOTSET:
+            __isNOTSET[13] = True
+            fieldN = None
+        else:
+            changes = True
+        if fieldO is ___NOTSET:
+            __isNOTSET[14] = True
+            fieldO = None
+        else:
+            changes = True
+        if fieldP is ___NOTSET:
+            __isNOTSET[15] = True
+            fieldP = None
+        else:
+            changes = True
+        if fieldQ is ___NOTSET:
+            __isNOTSET[16] = True
+            fieldQ = None
+        else:
+            changes = True
+        if fieldR is ___NOTSET:
+            __isNOTSET[17] = True
+            fieldR = None
+        else:
+            changes = True
+        if fieldS is ___NOTSET:
+            __isNOTSET[18] = True
+            fieldS = None
+        else:
+            changes = True
+        if fieldT is ___NOTSET:
+            __isNOTSET[19] = True
+            fieldT = None
+        else:
+            changes = True
+        if fieldU is ___NOTSET:
+            __isNOTSET[20] = True
+            fieldU = None
+        else:
+            changes = True
+        if fieldX is ___NOTSET:
+            __isNOTSET[21] = True
+            fieldX = None
+        else:
+            changes = True
 
         if not changes:
             return self
 
-        if None is not fieldA is not __NOTSET:
+        if fieldA is not None:
             if not isinstance(fieldA, bool):
                 raise TypeError(f'fieldA is not a { bool !r}.')
 
-        if None is not fieldD is not __NOTSET:
+        if fieldD is not None:
             if not isinstance(fieldD, str):
                 raise TypeError(f'fieldD is not a { str !r}.')
 
-        if None is not fieldE is not __NOTSET:
+        if fieldE is not None:
             if not isinstance(fieldE, str):
                 raise TypeError(f'fieldE is not a { str !r}.')
 
-        if None is not fieldI is not __NOTSET:
+        if fieldI is not None:
             if not isinstance(fieldI, bool):
                 raise TypeError(f'fieldI is not a { bool !r}.')
 
-        if None is not fieldQ is not __NOTSET:
+        if fieldQ is not None:
             if not isinstance(fieldQ, MyEnumA):
                 raise TypeError(f'field fieldQ value: { fieldQ !r} is not of the enum type { MyEnumA }.')
 
-        if None is not fieldS is not __NOTSET:
+        if fieldS is not None:
             if not isinstance(fieldS, SmallStruct):
                 raise TypeError(f'fieldS is not a { SmallStruct !r}.')
 
-        if None is not fieldT is not __NOTSET:
+        if fieldT is not None:
             if not isinstance(fieldT, SmallStruct):
                 raise TypeError(f'fieldT is not a { SmallStruct !r}.')
 
-        if None is not fieldU is not __NOTSET:
+        if fieldU is not None:
             if not isinstance(fieldU, SmallStruct):
                 raise TypeError(f'fieldU is not a { SmallStruct !r}.')
 
-        if None is not fieldX is not __NOTSET:
+        if fieldX is not None:
             if not isinstance(fieldX, SmallStruct):
                 raise TypeError(f'fieldX is not a { SmallStruct !r}.')
 
         inst = <containerStruct>containerStruct.__new__(containerStruct)
         inst._cpp_obj = move(containerStruct._make_instance(
           self._cpp_obj.get(),
+          __isNOTSET,
           fieldA,
           fieldB,
           fieldC,
@@ -535,28 +614,29 @@ cdef class containerStruct(thrift.py3.types.Struct):
     @staticmethod
     cdef unique_ptr[ccontainerStruct] _make_instance(
         ccontainerStruct* base_instance,
-        object fieldA,
-        object fieldB,
-        object fieldC,
-        object fieldD,
-        object fieldE,
-        object fieldF,
-        object fieldG,
-        object fieldH,
-        object fieldI,
-        object fieldJ,
-        object fieldK,
-        object fieldL,
-        object fieldM,
-        object fieldN,
-        object fieldO,
-        object fieldP,
-        object fieldQ,
-        object fieldR,
-        object fieldS,
-        object fieldT,
-        object fieldU,
-        object fieldX
+        bint* __isNOTSET,
+        pbool fieldA ,
+        object fieldB ,
+        object fieldC ,
+        str fieldD ,
+        str fieldE ,
+        object fieldF ,
+        object fieldG ,
+        object fieldH ,
+        pbool fieldI ,
+        object fieldJ ,
+        object fieldK ,
+        object fieldL ,
+        object fieldM ,
+        object fieldN ,
+        object fieldO ,
+        object fieldP ,
+        MyEnumA fieldQ ,
+        object fieldR ,
+        SmallStruct fieldS ,
+        SmallStruct fieldT ,
+        SmallStruct fieldU ,
+        SmallStruct fieldX 
     ) except *:
         cdef unique_ptr[ccontainerStruct] c_inst
         if base_instance:
@@ -566,154 +646,110 @@ cdef class containerStruct(thrift.py3.types.Struct):
 
         if base_instance:
             # Convert None's to default value. (or unset)
-            if fieldA is None:
+            if not __isNOTSET[0] and fieldA is None:
                 deref(c_inst).fieldA = _containerStruct_defaults.fieldA
                 deref(c_inst).__isset.fieldA = False
                 pass
-            elif fieldA is __NOTSET:
-                fieldA = None
 
-            if fieldB is None:
+            if not __isNOTSET[1] and fieldB is None:
                 deref(c_inst).fieldB = _containerStruct_defaults.fieldB
                 deref(c_inst).__isset.fieldB = False
                 pass
-            elif fieldB is __NOTSET:
-                fieldB = None
 
-            if fieldC is None:
+            if not __isNOTSET[2] and fieldC is None:
                 deref(c_inst).fieldC = _containerStruct_defaults.fieldC
                 deref(c_inst).__isset.fieldC = False
                 pass
-            elif fieldC is __NOTSET:
-                fieldC = None
 
-            if fieldD is None:
+            if not __isNOTSET[3] and fieldD is None:
                 deref(c_inst).fieldD = _containerStruct_defaults.fieldD
                 deref(c_inst).__isset.fieldD = False
                 pass
-            elif fieldD is __NOTSET:
-                fieldD = None
 
-            if fieldE is None:
+            if not __isNOTSET[4] and fieldE is None:
                 deref(c_inst).fieldE = _containerStruct_defaults.fieldE
                 deref(c_inst).__isset.fieldE = False
                 pass
-            elif fieldE is __NOTSET:
-                fieldE = None
 
-            if fieldF is None:
+            if not __isNOTSET[5] and fieldF is None:
                 deref(c_inst).fieldF = _containerStruct_defaults.fieldF
                 deref(c_inst).__isset.fieldF = False
                 pass
-            elif fieldF is __NOTSET:
-                fieldF = None
 
-            if fieldG is None:
+            if not __isNOTSET[6] and fieldG is None:
                 deref(c_inst).fieldG = _containerStruct_defaults.fieldG
                 deref(c_inst).__isset.fieldG = False
                 pass
-            elif fieldG is __NOTSET:
-                fieldG = None
 
-            if fieldH is None:
+            if not __isNOTSET[7] and fieldH is None:
                 deref(c_inst).fieldH = _containerStruct_defaults.fieldH
                 deref(c_inst).__isset.fieldH = False
                 pass
-            elif fieldH is __NOTSET:
-                fieldH = None
 
-            if fieldI is None:
+            if not __isNOTSET[8] and fieldI is None:
                 deref(c_inst).fieldI = _containerStruct_defaults.fieldI
                 deref(c_inst).__isset.fieldI = False
                 pass
-            elif fieldI is __NOTSET:
-                fieldI = None
 
-            if fieldJ is None:
+            if not __isNOTSET[9] and fieldJ is None:
                 deref(c_inst).fieldJ = _containerStruct_defaults.fieldJ
                 deref(c_inst).__isset.fieldJ = False
                 pass
-            elif fieldJ is __NOTSET:
-                fieldJ = None
 
-            if fieldK is None:
+            if not __isNOTSET[10] and fieldK is None:
                 deref(c_inst).fieldK = _containerStruct_defaults.fieldK
                 deref(c_inst).__isset.fieldK = False
                 pass
-            elif fieldK is __NOTSET:
-                fieldK = None
 
-            if fieldL is None:
+            if not __isNOTSET[11] and fieldL is None:
                 deref(c_inst).fieldL = _containerStruct_defaults.fieldL
                 deref(c_inst).__isset.fieldL = False
                 pass
-            elif fieldL is __NOTSET:
-                fieldL = None
 
-            if fieldM is None:
+            if not __isNOTSET[12] and fieldM is None:
                 deref(c_inst).fieldM = _containerStruct_defaults.fieldM
                 deref(c_inst).__isset.fieldM = False
                 pass
-            elif fieldM is __NOTSET:
-                fieldM = None
 
-            if fieldN is None:
+            if not __isNOTSET[13] and fieldN is None:
                 deref(c_inst).fieldN = _containerStruct_defaults.fieldN
                 deref(c_inst).__isset.fieldN = False
                 pass
-            elif fieldN is __NOTSET:
-                fieldN = None
 
-            if fieldO is None:
+            if not __isNOTSET[14] and fieldO is None:
                 deref(c_inst).fieldO = _containerStruct_defaults.fieldO
                 deref(c_inst).__isset.fieldO = False
                 pass
-            elif fieldO is __NOTSET:
-                fieldO = None
 
-            if fieldP is None:
+            if not __isNOTSET[15] and fieldP is None:
                 deref(c_inst).fieldP = _containerStruct_defaults.fieldP
                 deref(c_inst).__isset.fieldP = False
                 pass
-            elif fieldP is __NOTSET:
-                fieldP = None
 
-            if fieldQ is None:
+            if not __isNOTSET[16] and fieldQ is None:
                 deref(c_inst).fieldQ = _containerStruct_defaults.fieldQ
                 deref(c_inst).__isset.fieldQ = False
                 pass
-            elif fieldQ is __NOTSET:
-                fieldQ = None
 
-            if fieldR is None:
+            if not __isNOTSET[17] and fieldR is None:
                 deref(c_inst).fieldR.reset()
                 pass
-            elif fieldR is __NOTSET:
-                fieldR = None
 
-            if fieldS is None:
+            if not __isNOTSET[18] and fieldS is None:
                 deref(c_inst).fieldS.reset()
                 pass
-            elif fieldS is __NOTSET:
-                fieldS = None
 
-            if fieldT is None:
+            if not __isNOTSET[19] and fieldT is None:
                 deref(c_inst).fieldT.reset()
                 pass
-            elif fieldT is __NOTSET:
-                fieldT = None
 
-            if fieldU is None:
+            if not __isNOTSET[20] and fieldU is None:
                 deref(c_inst).fieldU.reset()
                 pass
-            elif fieldU is __NOTSET:
-                fieldU = None
 
-            if fieldX is None:
+            if not __isNOTSET[21] and fieldX is None:
                 deref(c_inst).fieldX.reset()
                 pass
-            elif fieldX is __NOTSET:
-                fieldX = None
 
         if fieldA is not None:
             deref(c_inst).fieldA = fieldA
@@ -725,10 +761,10 @@ cdef class containerStruct(thrift.py3.types.Struct):
             deref(c_inst).fieldC = deref(Set__i32(fieldC)._cpp_obj)
             deref(c_inst).__isset.fieldC = True
         if fieldD is not None:
-            deref(c_inst).fieldD = fieldD.encode('UTF-8')
+            deref(c_inst).fieldD = thrift.py3.types.move(thrift.py3.types.bytes_to_string(fieldD.encode('utf-8')))
             deref(c_inst).__isset.fieldD = True
         if fieldE is not None:
-            deref(c_inst).fieldE = fieldE.encode('UTF-8')
+            deref(c_inst).fieldE = thrift.py3.types.move(thrift.py3.types.bytes_to_string(fieldE.encode('utf-8')))
             deref(c_inst).__isset.fieldE = True
         if fieldF is not None:
             deref(c_inst).fieldF = deref(List__List__List__i32(fieldF)._cpp_obj)

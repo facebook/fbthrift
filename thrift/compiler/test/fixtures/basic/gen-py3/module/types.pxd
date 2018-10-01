@@ -107,11 +107,12 @@ cdef class MyStruct(thrift.py3.types.Struct):
     @staticmethod
     cdef unique_ptr[cMyStruct] _make_instance(
         cMyStruct* base_instance,
+        bint* __isNOTSET,
         object MyIntField,
-        object MyStringField,
-        object MyDataField,
+        str MyStringField,
+        MyDataItem MyDataField,
         object major,
-        object myEnum
+        MyEnum myEnum
     ) except *
 
     @staticmethod
@@ -128,7 +129,8 @@ cdef class MyDataItem(thrift.py3.types.Struct):
 
     @staticmethod
     cdef unique_ptr[cMyDataItem] _make_instance(
-        cMyDataItem* base_instance
+        cMyDataItem* base_instance,
+        bint* __isNOTSET
     ) except *
 
     @staticmethod
