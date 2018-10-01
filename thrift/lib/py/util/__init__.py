@@ -41,7 +41,7 @@ def create_client(client_klass, host=None, port=None, client_type=None):
     sock = TSocket(host=host, port=port)
     protocol = THeaderProtocol(
         sock,
-        client_types=client_type,  # We accept the same as our inital send_
+        client_types=[client_type] if client_type else None,  # We accept the same as our inital send_
         client_type=client_type  # Used for the inital send_
     )
     sock.open()
