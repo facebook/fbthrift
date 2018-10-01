@@ -24,6 +24,7 @@
 #include <folly/Conv.h>
 #include <folly/Optional.h>
 #include <folly/SocketAddress.h>
+#include <folly/fibers/Baton.h>
 #include <folly/fibers/FiberManager.h>
 #include <folly/fibers/FiberManagerMap.h>
 #include <folly/io/IOBuf.h>
@@ -35,6 +36,7 @@
 #include <yarpl/Flowable.h>
 #include <yarpl/Single.h>
 
+#include <thrift/lib/cpp2/async/Stream.h>
 #include <thrift/lib/cpp2/transport/rocket/Types.h>
 #include <thrift/lib/cpp2/transport/rocket/client/RocketClient.h>
 
@@ -51,6 +53,10 @@ namespace {
 class RsocketTestServerResponder : public rsocket::RSocketResponder {
  public:
   std::shared_ptr<Single<rsocket::Payload>> handleRequestResponse(
+      rsocket::Payload request,
+      uint32_t) final;
+
+  std::shared_ptr<Flowable<rsocket::Payload>> handleRequestStream(
       rsocket::Payload request,
       uint32_t) final;
 };
@@ -106,6 +112,42 @@ RsocketTestServerResponder::handleRequestResponse(
         subscriber->onSubscribe(SingleSubscriptions::empty());
         subscriber->onSuccess(std::move(responsePayload));
       });
+}
+
+std::shared_ptr<Flowable<rsocket::Payload>>
+RsocketTestServerResponder::handleRequestStream(
+    rsocket::Payload request,
+    uint32_t /* streamId */) {
+  DCHECK(request.data);
+  auto data = folly::StringPiece(request.data->coalesce());
+
+  if (data.removePrefix("error:application")) {
+    return Flowable<rsocket::Payload>::create(
+        [](Subscriber<rsocket::Payload>& subscriber,
+           int64_t /* requested */) mutable {
+          subscriber.onError(folly::make_exception_wrapper<std::runtime_error>(
+              "Application error occurred"));
+        });
+  }
+
+  size_t n = 500;
+  if (data.removePrefix("generate:")) {
+    n = folly::to<size_t>(data);
+  }
+
+  auto gen = [request = std::move(request), n, i = static_cast<size_t>(0)](
+                 Subscriber<rsocket::Payload>& subscriber,
+                 int64_t requested) mutable {
+    while (requested-- > 0 && i < n) {
+      subscriber.onNext(rsocket::Payload(
+          folly::to<std::string>(i), folly::to<std::string>("metadata:", i)));
+      ++i;
+    }
+    if (i == n) {
+      subscriber.onComplete();
+    }
+  };
+  return Flowable<rsocket::Payload>::create(std::move(gen));
 }
 } // namespace
 
@@ -186,6 +228,20 @@ folly::Try<void> RocketTestClient::sendRequestFnfSync(Payload request) {
 
   baton.wait();
   return response;
+}
+
+folly::Try<SemiStream<Payload>> RocketTestClient::sendRequestStreamSync(
+    Payload request) {
+  folly::Try<SemiStream<Payload>> stream;
+
+  evb_.runInEventBaseThreadAndWait([&] {
+    stream = folly::makeTryWith([&] {
+      return SemiStream<Payload>(
+          toStream<Payload>(client_->createStream(std::move(request)), &evb_));
+    });
+  });
+
+  return stream;
 }
 
 } // namespace test

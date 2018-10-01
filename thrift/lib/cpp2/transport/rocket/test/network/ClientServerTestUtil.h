@@ -22,6 +22,8 @@
 #include <folly/Try.h>
 #include <folly/io/async/ScopedEventBaseThread.h>
 
+#include <thrift/lib/cpp2/async/SemiStream.h>
+#include <thrift/lib/cpp2/async/Stream.h>
 #include <thrift/lib/cpp2/transport/rocket/Types.h>
 
 namespace folly {
@@ -68,6 +70,8 @@ class RocketTestClient {
       std::chrono::milliseconds timeout = std::chrono::milliseconds(250));
 
   folly::Try<void> sendRequestFnfSync(Payload request);
+
+  folly::Try<SemiStream<Payload>> sendRequestStreamSync(Payload request);
 
  private:
   folly::ScopedEventBaseThread evbThread_;

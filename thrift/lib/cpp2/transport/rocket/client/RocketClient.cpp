@@ -27,6 +27,8 @@
 #include <folly/Format.h>
 #include <folly/Likely.h>
 #include <folly/Try.h>
+#include <folly/fibers/FiberManager.h>
+#include <folly/fibers/FiberManagerMap.h>
 #include <folly/io/Cursor.h>
 #include <folly/io/IOBuf.h>
 #include <folly/io/async/DelayedDestruction.h>
@@ -37,6 +39,7 @@
 #include <thrift/lib/cpp2/transport/rocket/RocketException.h>
 #include <thrift/lib/cpp2/transport/rocket/Types.h>
 #include <thrift/lib/cpp2/transport/rocket/client/RequestContext.h>
+#include <thrift/lib/cpp2/transport/rocket/client/RocketClientFlowable.h>
 #include <thrift/lib/cpp2/transport/rocket/framing/Frames.h>
 #include <thrift/lib/cpp2/transport/rocket/framing/Util.h>
 
@@ -51,7 +54,8 @@ class OnEventBaseDestructionCallback : public folly::EventBase::LoopCallback {
       : client_(client) {}
   ~OnEventBaseDestructionCallback() final = default;
   void runLoopCallback() noexcept final {
-    client_.closeNow();
+    client_.closeNow(folly::make_exception_wrapper<std::runtime_error>(
+        "Destroying EventBase"));
   }
 
  private:
@@ -63,6 +67,7 @@ RocketClient::RocketClient(
     folly::EventBase& evb,
     folly::AsyncTransportWrapper::UniquePtr socket)
     : evb_(&evb),
+      fm_(&folly::fibers::getFiberManager(*evb_)),
       socket_(std::move(socket)),
       writeLoopCallback_(*this),
       eventBaseDestructionCallback_(
@@ -73,10 +78,12 @@ RocketClient::RocketClient(
 }
 
 RocketClient::~RocketClient() {
-  closeNow();
+  closeNow(folly::make_exception_wrapper<std::runtime_error>(
+      "Destroying RocketClient"));
   eventBaseDestructionCallback_.reset();
   // All outstanding request contexts should have be cleaned up after closeNow()
   DCHECK(!queue_.hasInflightRequests());
+  DCHECK(streams_.empty());
 }
 
 std::shared_ptr<RocketClient> RocketClient::create(
@@ -109,6 +116,11 @@ void RocketClient::handleFrame(std::unique_ptr<folly::IOBuf> frame) {
     DCHECK(ctx->isRequestResponse());
     return handleRequestResponseFrame(*ctx, frameType, std::move(frame));
   }
+
+  if (auto* stream = getStreamById(streamId)) {
+    DCHECK(!stream->requestStreamPayload);
+    return handleStreamFrame(*stream->flowable, frameType, std::move(frame));
+  }
 }
 
 void RocketClient::handleRequestResponseFrame(
@@ -121,6 +133,29 @@ void RocketClient::handleRequestResponseFrame(
 
     case FrameType::ERROR:
       return ctx.onErrorFrame(ErrorFrame(std::move(frame)));
+
+    default:
+      close(folly::make_exception_wrapper<transport::TTransportException>(
+          transport::TTransportException::TTransportExceptionType::
+              NETWORK_ERROR,
+          folly::to<std::string>(
+              "Client attempting to handle unhandleable frame type: ",
+              static_cast<uint8_t>(frameType))));
+  }
+}
+
+void RocketClient::handleStreamFrame(
+    RocketClientFlowable& stream,
+    FrameType frameType,
+    std::unique_ptr<folly::IOBuf> frame) {
+  switch (frameType) {
+    case FrameType::PAYLOAD:
+      stream.onPayloadFrame(PayloadFrame(std::move(frame)));
+      break;
+
+    case FrameType::ERROR:
+      stream.onErrorFrame(ErrorFrame(std::move(frame)));
+      break;
 
     default:
       close(folly::make_exception_wrapper<transport::TTransportException>(
@@ -151,6 +186,63 @@ void RocketClient::sendRequestFnfSync(Payload&& request) {
   );
   scheduleWrite(ctx);
   return ctx.waitForWriteToComplete();
+}
+
+std::shared_ptr<RocketClientFlowable> RocketClient::createStream(
+    Payload&& request) {
+  const auto streamId = makeStreamId();
+  auto flowable = std::make_shared<RocketClientFlowable>(streamId, *this);
+  streams_.emplace(
+      streamId,
+      StreamWrapper{std::make_unique<Payload>(std::move(request)), flowable});
+  return flowable;
+}
+
+void RocketClient::sendRequestNSync(StreamId streamId, int32_t n) {
+  if (UNLIKELY(n <= 0)) {
+    return;
+  }
+
+  auto* stream = getStreamById(streamId);
+  if (!stream) {
+    return;
+  }
+
+  if (stream->requestStreamPayload) {
+    RequestContext ctx(
+        RequestStreamFrame(
+            streamId, std::move(*stream->requestStreamPayload), n),
+        queue_,
+        !std::exchange(setupFrameSent_, true) /* setupFrameNeeded */);
+    stream->requestStreamPayload.reset();
+    scheduleWrite(ctx);
+    return ctx.waitForWriteToComplete();
+  }
+
+  RequestContext ctx(
+      RequestNFrame(streamId, n), queue_, false /* setupFrameNeeded */);
+  scheduleWrite(ctx);
+  return ctx.waitForWriteToComplete();
+}
+
+void RocketClient::sendCancelSync(StreamId streamId) {
+  RequestContext ctx(
+      CancelFrame(streamId), queue_, false /* setupFrameNeeded */);
+  scheduleWrite(ctx);
+  streams_.erase(streamId);
+  return ctx.waitForWriteToComplete();
+}
+
+void RocketClient::sendRequestN(StreamId streamId, int32_t n) {
+  fm_->addTask([this, streamId, n, keepAlive = shared_from_this()] {
+    sendRequestNSync(streamId, n);
+  });
+}
+
+void RocketClient::cancelStream(StreamId streamId) {
+  fm_->addTask([this, streamId, keepAlive = shared_from_this()] {
+    sendCancelSync(streamId);
+  });
 }
 
 void RocketClient::scheduleWrite(RequestContext& ctx) {
@@ -224,12 +316,18 @@ void RocketClient::writeErr(
       ex.what())));
 }
 
-void RocketClient::closeNow() noexcept {
+void RocketClient::closeNow(folly::exception_wrapper ew) noexcept {
   DestructorGuard dg(this);
 
   if (socket_) {
     socket_->closeNow();
     socket_.reset();
+  }
+
+  for (auto it = streams_.begin(); it != streams_.end();) {
+    auto& streamWrapper = it->second;
+    streamWrapper.flowable->onError(ew);
+    it = streams_.erase(it);
   }
 }
 
@@ -256,13 +354,18 @@ void RocketClient::close(folly::exception_wrapper ew) noexcept {
       if (!queue_.hasInflightRequests()) {
         queue_.failAllScheduledWrites(ew);
         state_ = ConnectionState::CLOSED;
-        closeNow();
+        closeNow(std::move(ew));
       }
       return;
 
     case ConnectionState::CLOSED:
       LOG(FATAL) << "close() called on an already CLOSED connection";
   };
+}
+
+RocketClient::StreamWrapper* RocketClient::getStreamById(StreamId streamId) {
+  auto it = streams_.find(streamId);
+  return it != streams_.end() ? &it->second : nullptr;
 }
 
 } // namespace rocket

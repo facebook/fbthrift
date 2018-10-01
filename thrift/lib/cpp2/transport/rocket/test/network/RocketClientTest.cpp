@@ -28,6 +28,7 @@
 #include <folly/Try.h>
 #include <folly/io/async/AsyncSocket.h>
 #include <folly/io/async/EventBase.h>
+#include <folly/io/async/ScopedEventBaseThread.h>
 
 #include <thrift/lib/cpp/transport/TTransportException.h>
 #include <thrift/lib/cpp2/transport/rocket/RocketException.h>
@@ -92,9 +93,14 @@ class RocketClientTest : public testing::Test {
     f(*client_);
   }
 
+  folly::EventBase* getUserExecutor() const {
+    return userExecutor_.getEventBase();
+  }
+
  protected:
   std::unique_ptr<RsocketTestServer> server_;
   std::unique_ptr<RocketTestClient> client_;
+  folly::ScopedEventBaseThread userExecutor_;
 };
 } // namespace
 
@@ -261,4 +267,169 @@ TEST_F(RocketClientTest, RequestFnfBasic) {
 
     EXPECT_TRUE(reply.hasValue());
   });
+}
+
+/**
+ * REQUEST_STREAM tests
+ */
+TEST_F(RocketClientTest, RequestStreamBasic) {
+  withClient([this](RocketTestClient& client) {
+    constexpr size_t kNumRequestedPayloads = 200;
+    constexpr folly::StringPiece kMetadata("metadata");
+    const auto data =
+        folly::to<std::string>("generate:", kNumRequestedPayloads);
+
+    auto stream = client.sendRequestStreamSync(
+        Payload::makeFromMetadataAndData(kMetadata, folly::StringPiece{data}));
+    EXPECT_TRUE(stream.hasValue());
+
+    size_t received = 0;
+    auto subscription =
+        std::move(*stream)
+            .via(getUserExecutor())
+            .subscribe(
+                [&received](Payload&& payload) {
+                  const auto x = folly::to<size_t>(getRange(*payload.data()));
+                  EXPECT_EQ(received++, x);
+                },
+                [](auto ew) { FAIL() << ew.what(); });
+
+    std::move(subscription).join();
+    EXPECT_EQ(kNumRequestedPayloads, received);
+  });
+}
+
+TEST_F(RocketClientTest, RequestStreamError) {
+  withClient([this](RocketTestClient& client) {
+    constexpr folly::StringPiece kMetadata("metadata");
+    constexpr folly::StringPiece kData("error:application");
+
+    auto stream = client.sendRequestStreamSync(
+        Payload::makeFromMetadataAndData(kMetadata, kData));
+    EXPECT_TRUE(stream.hasValue());
+
+    size_t received = 0;
+    bool error = false;
+    auto subscription =
+        std::move(*stream)
+            .via(getUserExecutor())
+            .subscribe(
+                [&received](Payload&& payload) {
+                  const auto x = folly::to<size_t>(getRange(*payload.data()));
+                  LOG(INFO) << "Here: " << x;
+                  EXPECT_EQ(received++, x);
+                },
+                [&error](auto ew) {
+                  error = true;
+                  expectRocketExceptionType(
+                      ErrorCode::APPLICATION_ERROR, std::move(ew));
+                });
+
+    std::move(subscription).join();
+    EXPECT_TRUE(error);
+    EXPECT_EQ(0, received);
+  });
+}
+
+TEST_F(RocketClientTest, RequestStreamSmallInitialRequestN) {
+  withClient([this](RocketTestClient& client) {
+    constexpr size_t kNumRequestedPayloads = 200;
+    constexpr folly::StringPiece kMetadata("metadata");
+    const auto data =
+        folly::to<std::string>("generate:", kNumRequestedPayloads);
+
+    auto stream = client.sendRequestStreamSync(
+        Payload::makeFromMetadataAndData(kMetadata, folly::StringPiece{data}));
+    EXPECT_TRUE(stream.hasValue());
+
+    size_t received = 0;
+    auto subscription =
+        std::move(*stream)
+            .via(getUserExecutor())
+            .subscribe(
+                [&received](Payload&& payload) {
+                  const auto x = folly::to<size_t>(getRange(*payload.data()));
+                  EXPECT_EQ(received++, x);
+                },
+                [](auto ew) { FAIL() << ew.what(); },
+                5 /* batch size */);
+
+    std::move(subscription).join();
+    EXPECT_EQ(kNumRequestedPayloads, received);
+  });
+}
+
+TEST_F(RocketClientTest, RequestStreamCancelSubscription) {
+  withClient([this](RocketTestClient& client) {
+    // Open an essentially infinite stream and ensure stream is able to be
+    // canceled within a reasonable amount of time.
+    constexpr size_t kNumRequestedPayloads =
+        std::numeric_limits<int32_t>::max();
+    constexpr folly::StringPiece kMetadata("metadata");
+    const auto data =
+        folly::to<std::string>("generate:", kNumRequestedPayloads);
+
+    auto stream = client.sendRequestStreamSync(
+        Payload::makeFromMetadataAndData(kMetadata, folly::StringPiece{data}));
+    EXPECT_TRUE(stream.hasValue());
+
+    size_t received = 0;
+    auto subscription =
+        std::move(*stream)
+            .via(getUserExecutor())
+            .subscribe(
+                [&received](Payload&& payload) {
+                  const auto x = folly::to<size_t>(getRange(*payload.data()));
+                  EXPECT_EQ(received++, x);
+                },
+                [](auto ew) { FAIL() << ew.what(); });
+
+    subscription.cancel();
+    std::move(subscription).join();
+    EXPECT_LT(received, kNumRequestedPayloads);
+  });
+}
+
+TEST_F(RocketClientTest, RequestStreamNeverSubscribe) {
+  withClient([](RocketTestClient& client) {
+    constexpr size_t kNumRequestedPayloads = 200;
+    constexpr folly::StringPiece kMetadata("metadata");
+    const auto data =
+        folly::to<std::string>("generate:", kNumRequestedPayloads);
+
+    {
+      auto stream =
+          client.sendRequestStreamSync(Payload::makeFromMetadataAndData(
+              kMetadata, folly::StringPiece{data}));
+      EXPECT_TRUE(stream.hasValue());
+    }
+  });
+}
+
+TEST_F(RocketClientTest, RequestStreamCloseClient) {
+  constexpr size_t kNumRequestedPayloads = 200;
+  constexpr folly::StringPiece kMetadata("metadata");
+  const auto data = folly::to<std::string>("generate:", kNumRequestedPayloads);
+
+  auto stream = client_->sendRequestStreamSync(
+      Payload::makeFromMetadataAndData(kMetadata, folly::StringPiece{data}));
+  EXPECT_TRUE(stream.hasValue());
+
+  bool onErrorCalled = false;
+  auto subscription =
+      std::move(*stream)
+          .via(getUserExecutor())
+          .subscribe(
+              [](Payload&&) {},
+              [&](auto ew) {
+                onErrorCalled = true;
+                expectTransportExceptionType(
+                    TTransportException::TTransportExceptionType::NOT_OPEN,
+                    std::move(ew));
+              });
+
+  client_.reset();
+
+  std::move(subscription).join();
+  EXPECT_TRUE(onErrorCalled);
 }

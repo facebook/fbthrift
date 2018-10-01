@@ -19,11 +19,11 @@
 #include <chrono>
 #include <memory>
 #include <string>
+#include <unordered_map>
 
 #include <glog/logging.h>
 
 #include <folly/ExceptionWrapper.h>
-#include <folly/Function.h>
 #include <folly/SocketAddress.h>
 #include <folly/Try.h>
 #include <folly/io/async/AsyncSocket.h>
@@ -35,10 +35,15 @@
 #include <thrift/lib/cpp2/transport/rocket/Types.h>
 #include <thrift/lib/cpp2/transport/rocket/client/RequestContext.h>
 #include <thrift/lib/cpp2/transport/rocket/client/RequestContextQueue.h>
+#include <thrift/lib/cpp2/transport/rocket/client/RocketClientFlowable.h>
 #include <thrift/lib/cpp2/transport/rocket/framing/Parser.h>
 
 namespace folly {
 class IOBuf;
+
+namespace fibers {
+class FiberManager;
+} // namespace fibers
 } // namespace folly
 
 namespace apache {
@@ -67,6 +72,11 @@ class RocketClient : public folly::DelayedDestruction,
 
   void sendRequestFnfSync(Payload&& request);
 
+  // Note that createStream is non-blocking.
+  std::shared_ptr<RocketClientFlowable> createStream(Payload&& request);
+  void sendRequestN(StreamId streamId, int32_t n);
+  void cancelStream(StreamId streamId);
+
   void scheduleWrite(RequestContext& ctx);
 
   // WriteCallback implementation
@@ -77,7 +87,7 @@ class RocketClient : public folly::DelayedDestruction,
 
   // Hard close: stop reading from socket and abort all in-progress writes
   // immediately.
-  void closeNow() noexcept;
+  void closeNow(folly::exception_wrapper ew) noexcept;
 
   // Initiate shutdown, but not as hard as closeNow(). Pending writes buffered
   // up within AsyncSocket will still have a chance to complete (all the way to
@@ -95,6 +105,7 @@ class RocketClient : public folly::DelayedDestruction,
 
  private:
   folly::EventBase* evb_;
+  folly::fibers::FiberManager* fm_;
   folly::AsyncTransportWrapper::UniquePtr socket_;
   StreamId nextStreamId_{1};
   bool setupFrameSent_{false};
@@ -107,6 +118,18 @@ class RocketClient : public folly::DelayedDestruction,
   ConnectionState state_{ConnectionState::CONNECTED};
 
   RequestContextQueue queue_;
+
+  struct StreamWrapper {
+    StreamWrapper(
+        std::unique_ptr<Payload> payload,
+        std::shared_ptr<RocketClientFlowable> f)
+        : requestStreamPayload(std::move(payload)), flowable(std::move(f)) {}
+
+    std::unique_ptr<Payload> requestStreamPayload;
+    const std::shared_ptr<RocketClientFlowable> flowable;
+  };
+  using StreamMap = std::unordered_map<StreamId, StreamWrapper>;
+  StreamMap streams_;
 
   Parser<RocketClient> parser_{*this};
 
@@ -128,6 +151,9 @@ class RocketClient : public folly::DelayedDestruction,
       folly::EventBase& evb,
       folly::AsyncTransportWrapper::UniquePtr socket);
 
+  void sendRequestNSync(StreamId streamId, int32_t n);
+  void sendCancelSync(StreamId streamId);
+
   StreamId makeStreamId() {
     const StreamId rid = nextStreamId_;
     // rsocket protocol specifies that clients must generate odd stream IDs
@@ -135,9 +161,15 @@ class RocketClient : public folly::DelayedDestruction,
     return rid;
   }
 
+  StreamWrapper* getStreamById(StreamId streamId);
+
   void handleFrame(std::unique_ptr<folly::IOBuf> frame);
   void handleRequestResponseFrame(
       RequestContext& ctx,
+      FrameType frameType,
+      std::unique_ptr<folly::IOBuf> frame);
+  void handleStreamFrame(
+      RocketClientFlowable& stream,
       FrameType frameType,
       std::unique_ptr<folly::IOBuf> frame);
 
