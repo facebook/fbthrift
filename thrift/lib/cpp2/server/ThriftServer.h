@@ -323,7 +323,8 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
   int32_t getPendingCount() const;
 
   bool isOverloaded(
-      const apache::thrift::transport::THeader* header = nullptr) override;
+      const apache::thrift::transport::THeader* header = nullptr,
+      const std::string* = nullptr) override;
 
   int64_t getRequestLoad() override;
   std::string getLoadInfo(int64_t load) override;

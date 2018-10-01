@@ -352,7 +352,12 @@ void Cpp2Connection::requestReceived(
   if (server->getTrackPendingIO()) {
     worker_->computePendingCount();
   }
-  if (server->isOverloaded(hreq->getHeader())) {
+
+  auto protoId = static_cast<apache::thrift::protocol::PROTOCOL_TYPES>(
+      hreq->getHeader()->getProtocolId());
+  auto methodName =
+      apache::thrift::detail::ap::deserializeMethodName(req, protoId);
+  if (server->isOverloaded(hreq->getHeader(), &methodName)) {
     killRequest(
         *req,
         TApplicationException::TApplicationExceptionType::LOADSHEDDING,
@@ -360,6 +365,7 @@ void Cpp2Connection::requestReceived(
         "loadshedding request");
     return;
   }
+
   if (worker_->stopping_) {
     killRequest(
         *req,
@@ -412,9 +418,6 @@ void Cpp2Connection::requestReceived(
   reqContext->setRequestTimeout(taskTimeout);
 
   try {
-    auto protoId = static_cast<apache::thrift::protocol::PROTOCOL_TYPES>(
-        hreq->getHeader()->getProtocolId());
-
     if (!apache::thrift::detail::ap::deserializeMessageBegin(
             protoId, up2r, buf.get(), reqContext, worker_->getEventBase())) {
       return;

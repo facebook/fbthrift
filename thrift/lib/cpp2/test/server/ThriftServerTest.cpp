@@ -56,6 +56,7 @@ using namespace apache::thrift::test;
 using namespace apache::thrift::util;
 using namespace apache::thrift::async;
 using namespace apache::thrift::transport;
+using std::string;
 
 DECLARE_int32(thrift_cpp2_protocol_reader_string_limit);
 
@@ -387,7 +388,10 @@ TEST(ThriftServer, LoadHeaderTest) {
     RpcOptions customLoadOptions;
     // force overloaded
     runner.getThriftServer().setIsOverloaded(
-        [](const THeader*) { return true; });
+        [](const THeader*, const string* method) {
+          EXPECT_EQ("voidResponse", *method);
+          return true;
+        });
     runner.getThriftServer().setGetLoad([](const std::string&) { return 1; });
     customLoadOptions.setWriteHeader(Cpp2Connection::loadHeader, "foo");
     client->voidResponse(customLoadOptions, std::make_unique<Callback>(true));
@@ -436,7 +440,11 @@ TEST(ThriftServer, LatencyHeader_ServerOverloaded) {
   auto client = runner.newClient<TestServiceAsyncClient>(&base);
 
   // force overloaded
-  runner.getThriftServer().setIsOverloaded([](const THeader*) { return true; });
+  runner.getThriftServer().setIsOverloaded(
+      [](const THeader*, const string* method) {
+        EXPECT_EQ("voidResponse", *method);
+        return true;
+      });
 
   RpcOptions rpcOptions;
   rpcOptions.setWriteHeader(kClientLoggingHeader.str(), "");

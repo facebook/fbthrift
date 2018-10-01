@@ -919,6 +919,10 @@ bool deserializeMessageBegin(
     Cpp2RequestContext* ctx,
     folly::EventBase* eb);
 
+std::string deserializeMethodName(
+    std::unique_ptr<ResponseChannelRequest>& req,
+    protocol::PROTOCOL_TYPES protType);
+
 template <class ProtocolReader, class Processor>
 void process_pmap(
     Processor* proc,

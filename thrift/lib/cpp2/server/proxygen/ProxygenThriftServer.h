@@ -255,7 +255,8 @@ class ProxygenThriftServer : public BaseThriftServer,
   };
 
   bool isOverloaded(
-      const apache::thrift::transport::THeader* header = nullptr) override;
+      const apache::thrift::transport::THeader* header = nullptr,
+      const std::string* method = nullptr) override;
 
   /**
    * Get the number of connections dropped by the AsyncServerSocket

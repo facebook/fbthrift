@@ -50,6 +50,9 @@ typedef std::function<void(
     const folly::SocketAddress*)>
     GetHeaderHandlerFunc;
 
+typedef folly::Function<bool(const transport::THeader*, const std::string*)>
+    IsOverloadedFunc;
+
 template <typename T>
 class ThriftServerAsyncProcessorFactory : public AsyncProcessorFactory {
  public:
@@ -209,8 +212,8 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
   std::atomic<int32_t> activeRequests_{0};
 
   std::string overloadedErrorCode_ = kOverloadedErrorCode;
-  folly::Function<bool(const transport::THeader*)> isOverloaded_ =
-      [](const transport::THeader*) { return false; };
+  IsOverloadedFunc isOverloaded_ = [](const transport::THeader*,
+                                      const std::string*) { return false; };
   std::function<int64_t(const std::string&)> getLoad_;
 
   enum class InjectedFailure { NONE, ERROR, DROP, DISCONNECT };
@@ -424,7 +427,8 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
   }
 
   virtual bool isOverloaded(
-      const apache::thrift::transport::THeader* header = nullptr) = 0;
+      const apache::thrift::transport::THeader* header = nullptr,
+      const std::string* method = nullptr) = 0;
 
   // Get load of the server.
   int64_t getLoad(const std::string& counter = "", bool check_custom = true);
@@ -789,9 +793,7 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
     return overloadedErrorCode_;
   }
 
-  void setIsOverloaded(
-      folly::Function<bool(const apache::thrift::transport::THeader*)>
-          isOverloaded) {
+  void setIsOverloaded(IsOverloadedFunc isOverloaded) {
     isOverloaded_ = std::move(isOverloaded);
   }
 

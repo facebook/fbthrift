@@ -155,6 +155,35 @@ bool deserializeMessageBegin(
   }
 }
 
+std::string deserializeMethodName(
+    std::unique_ptr<ResponseChannelRequest>& req,
+    protocol::PROTOCOL_TYPES protType) {
+  std::string fname;
+  apache::thrift::MessageType mtype;
+  int32_t seqid = 0;
+  try {
+    switch (protType) {
+      case protocol::T_COMPACT_PROTOCOL: {
+        CompactProtocolReader iprot;
+        iprot.setInput(req->getBuf());
+        iprot.readMessageBegin(fname, mtype, seqid);
+        break;
+      }
+      case protocol::T_BINARY_PROTOCOL: {
+        BinaryProtocolReader iprot;
+        iprot.setInput(req->getBuf());
+        iprot.readMessageBegin(fname, mtype, seqid);
+        break;
+      }
+      default:
+        break;
+    }
+  } catch (const TException& ex) {
+    LOG(ERROR) << "received invalid message from client: " << ex.what();
+  }
+  return fname;
+}
+
 template <class ProtocolReader>
 static
 Optional<string> get_cache_key(
