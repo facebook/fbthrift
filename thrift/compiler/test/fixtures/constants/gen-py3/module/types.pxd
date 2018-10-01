@@ -285,10 +285,9 @@ cdef class Internship(thrift.py3.types.Struct):
     @staticmethod
     cdef unique_ptr[cInternship] _make_instance(
         cInternship* base_instance,
-        bint* __isNOTSET,
         object weeks,
-        str title,
-        Company employer
+        object title,
+        object employer
     ) except *
 
     @staticmethod
@@ -306,8 +305,7 @@ cdef class UnEnumStruct(thrift.py3.types.Struct):
     @staticmethod
     cdef unique_ptr[cUnEnumStruct] _make_instance(
         cUnEnumStruct* base_instance,
-        bint* __isNOTSET,
-        City city
+        object city
     ) except *
 
     @staticmethod
@@ -325,7 +323,6 @@ cdef class Range(thrift.py3.types.Struct):
     @staticmethod
     cdef unique_ptr[cRange] _make_instance(
         cRange* base_instance,
-        bint* __isNOTSET,
         object min,
         object max
     ) except *
@@ -345,9 +342,8 @@ cdef class struct1(thrift.py3.types.Struct):
     @staticmethod
     cdef unique_ptr[cstruct1] _make_instance(
         cstruct1* base_instance,
-        bint* __isNOTSET,
         object a,
-        str b
+        object b
     ) except *
 
     @staticmethod
@@ -367,10 +363,9 @@ cdef class struct2(thrift.py3.types.Struct):
     @staticmethod
     cdef unique_ptr[cstruct2] _make_instance(
         cstruct2* base_instance,
-        bint* __isNOTSET,
         object a,
-        str b,
-        struct1 c,
+        object b,
+        object c,
         object d
     ) except *
 
@@ -390,10 +385,9 @@ cdef class struct3(thrift.py3.types.Struct):
     @staticmethod
     cdef unique_ptr[cstruct3] _make_instance(
         cstruct3* base_instance,
-        bint* __isNOTSET,
-        str a,
+        object a,
         object b,
-        struct2 c
+        object c
     ) except *
 
     @staticmethod
@@ -446,8 +440,8 @@ cdef class union2(thrift.py3.types.Union):
         cunion2* base_instance,
         object i,
         object d,
-        struct1 s,
-        union1 u
+        object s,
+        object u
     ) except *
 
     @staticmethod

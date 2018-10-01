@@ -65,19 +65,6 @@ enum BadMembers {
     value = 2,
 }
 
-struct StringBucket {
-    1: string one,
-    2: optional string two,
-    3: optional string three,
-    4: optional string four,
-    5: optional string five,
-    6: optional string six,
-    7: optional string seven,
-    8: optional string eight,
-    9: optional string nine,
-    10: optional string ten,
-}
-
 struct File {
     1: required string name,
     2: Perm permissions,

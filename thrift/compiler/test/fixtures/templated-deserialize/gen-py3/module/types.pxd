@@ -166,8 +166,7 @@ cdef class SmallStruct(thrift.py3.types.Struct):
     @staticmethod
     cdef unique_ptr[cSmallStruct] _make_instance(
         cSmallStruct* base_instance,
-        bint* __isNOTSET,
-        pbool small_A,
+        object small_A,
         object small_B
     ) except *
 
@@ -203,16 +202,15 @@ cdef class containerStruct(thrift.py3.types.Struct):
     @staticmethod
     cdef unique_ptr[ccontainerStruct] _make_instance(
         ccontainerStruct* base_instance,
-        bint* __isNOTSET,
-        pbool fieldA,
+        object fieldA,
         object fieldB,
         object fieldC,
-        str fieldD,
-        str fieldE,
+        object fieldD,
+        object fieldE,
         object fieldF,
         object fieldG,
         object fieldH,
-        pbool fieldI,
+        object fieldI,
         object fieldJ,
         object fieldK,
         object fieldL,
@@ -220,12 +218,12 @@ cdef class containerStruct(thrift.py3.types.Struct):
         object fieldN,
         object fieldO,
         object fieldP,
-        MyEnumA fieldQ,
+        object fieldQ,
         object fieldR,
-        SmallStruct fieldS,
-        SmallStruct fieldT,
-        SmallStruct fieldU,
-        SmallStruct fieldX
+        object fieldS,
+        object fieldT,
+        object fieldU,
+        object fieldX
     ) except *
 
     @staticmethod

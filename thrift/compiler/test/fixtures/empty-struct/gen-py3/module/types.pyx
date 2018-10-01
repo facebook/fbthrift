@@ -4,8 +4,8 @@
 # DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
 #  @generated
 #
+
 cimport cython as __cython
-from cpython.bytes cimport PyBytes_AsStringAndSize
 from cpython.object cimport PyTypeObject, Py_LT, Py_LE, Py_EQ, Py_NE, Py_GT, Py_GE
 from libcpp.memory cimport shared_ptr, make_shared, unique_ptr, make_unique
 from libcpp.string cimport string
@@ -132,18 +132,24 @@ cdef class Empty(thrift.py3.types.Struct):
     ):
         self._cpp_obj = move(Empty._make_instance(
           NULL,
-          NULL,
         ))
 
     def __call__(
         Empty self
     ):
-        return self
+        changes = any((        ))
+
+        if not changes:
+            return self
+        inst = <Empty>Empty.__new__(Empty)
+        inst._cpp_obj = move(Empty._make_instance(
+          self._cpp_obj.get(),
+        ))
+        return inst
 
     @staticmethod
     cdef unique_ptr[cEmpty] _make_instance(
-        cEmpty* base_instance,
-        bint* __isNOTSET
+        cEmpty* base_instance
     ) except *:
         cdef unique_ptr[cEmpty] c_inst
         if base_instance:

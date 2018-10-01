@@ -95,8 +95,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
     @staticmethod
     cdef unique_ptr[cMyStruct] _make_instance(
         cMyStruct* base_instance,
-        bint* __isNOTSET,
-        str field
+        object field
     ) except *
 
     @staticmethod
@@ -118,7 +117,6 @@ cdef class Combo(thrift.py3.types.Struct):
     @staticmethod
     cdef unique_ptr[cCombo] _make_instance(
         cCombo* base_instance,
-        bint* __isNOTSET,
         object listOfOurMyStructLists,
         object theirMyStructList,
         object ourMyStructList,

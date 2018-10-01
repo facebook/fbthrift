@@ -156,7 +156,6 @@ cdef class OldStructure(thrift.py3.types.Struct):
     @staticmethod
     cdef unique_ptr[cOldStructure] _make_instance(
         cOldStructure* base_instance,
-        bint* __isNOTSET,
         object features
     ) except *
 
@@ -176,7 +175,6 @@ cdef class NewStructure(thrift.py3.types.Struct):
     @staticmethod
     cdef unique_ptr[cNewStructure] _make_instance(
         cNewStructure* base_instance,
-        bint* __isNOTSET,
         object features
     ) except *
 
@@ -196,7 +194,6 @@ cdef class NewStructure2(thrift.py3.types.Struct):
     @staticmethod
     cdef unique_ptr[cNewStructure2] _make_instance(
         cNewStructure2* base_instance,
-        bint* __isNOTSET,
         object features
     ) except *
 
@@ -218,7 +215,6 @@ cdef class NewStructureNested(thrift.py3.types.Struct):
     @staticmethod
     cdef unique_ptr[cNewStructureNested] _make_instance(
         cNewStructureNested* base_instance,
-        bint* __isNOTSET,
         object lst,
         object mp,
         object s
@@ -240,8 +236,7 @@ cdef class NewStructureNestedField(thrift.py3.types.Struct):
     @staticmethod
     cdef unique_ptr[cNewStructureNestedField] _make_instance(
         cNewStructureNestedField* base_instance,
-        bint* __isNOTSET,
-        NewStructureNested f
+        object f
     ) except *
 
     @staticmethod

@@ -620,8 +620,7 @@ cdef class decorated_struct(thrift.py3.types.Struct):
     @staticmethod
     cdef unique_ptr[cdecorated_struct] _make_instance(
         cdecorated_struct* base_instance,
-        bint* __isNOTSET,
-        str field
+        object field
     ) except *
 
     @staticmethod
@@ -647,7 +646,6 @@ cdef class ContainerStruct(thrift.py3.types.Struct):
     @staticmethod
     cdef unique_ptr[cContainerStruct] _make_instance(
         cContainerStruct* base_instance,
-        bint* __isNOTSET,
         object fieldA,
         object fieldB,
         object fieldC,
@@ -674,7 +672,6 @@ cdef class CppTypeStruct(thrift.py3.types.Struct):
     @staticmethod
     cdef unique_ptr[cCppTypeStruct] _make_instance(
         cCppTypeStruct* base_instance,
-        bint* __isNOTSET,
         object fieldA
     ) except *
 
@@ -693,7 +690,6 @@ cdef class VirtualStruct(thrift.py3.types.Struct):
     @staticmethod
     cdef unique_ptr[cVirtualStruct] _make_instance(
         cVirtualStruct* base_instance,
-        bint* __isNOTSET,
         object MyIntField
     ) except *
 
@@ -712,9 +708,8 @@ cdef class MyStructWithForwardRefEnum(thrift.py3.types.Struct):
     @staticmethod
     cdef unique_ptr[cMyStructWithForwardRefEnum] _make_instance(
         cMyStructWithForwardRefEnum* base_instance,
-        bint* __isNOTSET,
-        MyForwardRefEnum a,
-        MyForwardRefEnum b
+        object a,
+        object b
     ) except *
 
     @staticmethod
@@ -732,9 +727,8 @@ cdef class TrivialNumeric(thrift.py3.types.Struct):
     @staticmethod
     cdef unique_ptr[cTrivialNumeric] _make_instance(
         cTrivialNumeric* base_instance,
-        bint* __isNOTSET,
         object a,
-        pbool b
+        object b
     ) except *
 
     @staticmethod
@@ -753,9 +747,8 @@ cdef class TrivialNestedWithDefault(thrift.py3.types.Struct):
     @staticmethod
     cdef unique_ptr[cTrivialNestedWithDefault] _make_instance(
         cTrivialNestedWithDefault* base_instance,
-        bint* __isNOTSET,
         object z,
-        TrivialNumeric n
+        object n
     ) except *
 
     @staticmethod
@@ -774,8 +767,7 @@ cdef class ComplexString(thrift.py3.types.Struct):
     @staticmethod
     cdef unique_ptr[cComplexString] _make_instance(
         cComplexString* base_instance,
-        bint* __isNOTSET,
-        str a,
+        object a,
         object b
     ) except *
 
@@ -795,9 +787,8 @@ cdef class ComplexNestedWithDefault(thrift.py3.types.Struct):
     @staticmethod
     cdef unique_ptr[cComplexNestedWithDefault] _make_instance(
         cComplexNestedWithDefault* base_instance,
-        bint* __isNOTSET,
-        str z,
-        ComplexString n
+        object z,
+        object n
     ) except *
 
     @staticmethod
@@ -815,7 +806,6 @@ cdef class MinPadding(thrift.py3.types.Struct):
     @staticmethod
     cdef unique_ptr[cMinPadding] _make_instance(
         cMinPadding* base_instance,
-        bint* __isNOTSET,
         object small,
         object big,
         object medium,
@@ -840,11 +830,10 @@ cdef class MyStruct(thrift.py3.types.Struct):
     @staticmethod
     cdef unique_ptr[cMyStruct] _make_instance(
         cMyStruct* base_instance,
-        bint* __isNOTSET,
         object MyIntField,
-        str MyStringField,
+        object MyStringField,
         object major,
-        MyDataItem data
+        object data
     ) except *
 
     @staticmethod
@@ -862,8 +851,7 @@ cdef class MyDataItem(thrift.py3.types.Struct):
 
     @staticmethod
     cdef unique_ptr[cMyDataItem] _make_instance(
-        cMyDataItem* base_instance,
-        bint* __isNOTSET
+        cMyDataItem* base_instance
     ) except *
 
     @staticmethod
@@ -881,7 +869,6 @@ cdef class Renaming(thrift.py3.types.Struct):
     @staticmethod
     cdef unique_ptr[cRenaming] _make_instance(
         cRenaming* base_instance,
-        bint* __isNOTSET,
         object foo
     ) except *
 

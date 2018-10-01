@@ -4,8 +4,8 @@
 # DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
 #  @generated
 #
+
 cimport cython as __cython
-from cpython.bytes cimport PyBytes_AsStringAndSize
 from cpython.object cimport PyTypeObject, Py_LT, Py_LE, Py_EQ, Py_NE, Py_GT, Py_GE
 from libcpp.memory cimport shared_ptr, make_shared, unique_ptr, make_unique
 from libcpp.string cimport string
@@ -319,12 +319,12 @@ cdef class ComplexUnion(thrift.py3.types.Union):
     @staticmethod
     cdef unique_ptr[cComplexUnion] _make_instance(
         cComplexUnion* base_instance,
-        object intValue,
-        str stringValue,
-        object intListValue,
-        object stringListValue,
-        object typedefValue,
-        str stringRef
+        intValue,
+        stringValue,
+        intListValue,
+        stringListValue,
+        typedefValue,
+        stringRef
     ) except *:
         cdef unique_ptr[cComplexUnion] c_inst = make_unique[cComplexUnion]()
         cdef bint any_set = False
@@ -550,8 +550,8 @@ cdef class VirtualComplexUnion(thrift.py3.types.Union):
     @staticmethod
     cdef unique_ptr[cVirtualComplexUnion] _make_instance(
         cVirtualComplexUnion* base_instance,
-        str thingOne,
-        str thingTwo
+        thingOne,
+        thingTwo
     ) except *:
         cdef unique_ptr[cVirtualComplexUnion] c_inst = make_unique[cVirtualComplexUnion]()
         cdef bint any_set = False

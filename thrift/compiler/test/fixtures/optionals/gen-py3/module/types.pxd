@@ -156,7 +156,6 @@ cdef class Color(thrift.py3.types.Struct):
     @staticmethod
     cdef unique_ptr[cColor] _make_instance(
         cColor* base_instance,
-        bint* __isNOTSET,
         object red,
         object green,
         object blue,
@@ -179,12 +178,11 @@ cdef class Vehicle(thrift.py3.types.Struct):
     @staticmethod
     cdef unique_ptr[cVehicle] _make_instance(
         cVehicle* base_instance,
-        bint* __isNOTSET,
-        Color color,
-        str licensePlate,
-        str description,
-        str name,
-        pbool hasAC
+        object color,
+        object licensePlate,
+        object description,
+        object name,
+        object hasAC
     ) except *
 
     @staticmethod
@@ -206,16 +204,15 @@ cdef class Person(thrift.py3.types.Struct):
     @staticmethod
     cdef unique_ptr[cPerson] _make_instance(
         cPerson* base_instance,
-        bint* __isNOTSET,
         object id,
-        str name,
+        object name,
         object age,
-        str address,
-        Color favoriteColor,
+        object address,
+        object favoriteColor,
         object friends,
         object bestFriend,
         object petNames,
-        Animal afraidOfAnimal,
+        object afraidOfAnimal,
         object vehicles
     ) except *
 

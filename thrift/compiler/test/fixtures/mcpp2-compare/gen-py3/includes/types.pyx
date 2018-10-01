@@ -4,8 +4,8 @@
 # DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
 #  @generated
 #
+
 cimport cython as __cython
-from cpython.bytes cimport PyBytes_AsStringAndSize
 from cpython.object cimport PyTypeObject, Py_LT, Py_LE, Py_EQ, Py_NE, Py_GT, Py_GE
 from libcpp.memory cimport shared_ptr, make_shared, unique_ptr, make_unique
 from libcpp.string cimport string
@@ -151,7 +151,6 @@ cdef class AStruct(thrift.py3.types.Struct):
 
         self._cpp_obj = move(AStruct._make_instance(
           NULL,
-          NULL,
           FieldA,
         ))
 
@@ -159,20 +158,14 @@ cdef class AStruct(thrift.py3.types.Struct):
         AStruct self,
         FieldA=__NOTSET
     ):
-        ___NOTSET = __NOTSET  # Cheaper for larger structs
-        cdef bint[1] __isNOTSET  # so make_instance is typed
-
-        changes = False
-        if FieldA is ___NOTSET:
-            __isNOTSET[0] = True
-            FieldA = None
-        else:
-            changes = True
+        changes = any((
+            FieldA is not __NOTSET,
+        ))
 
         if not changes:
             return self
 
-        if FieldA is not None:
+        if None is not FieldA is not __NOTSET:
             if not isinstance(FieldA, int):
                 raise TypeError(f'FieldA is not a { int !r}.')
             FieldA = <int32_t> FieldA
@@ -180,7 +173,6 @@ cdef class AStruct(thrift.py3.types.Struct):
         inst = <AStruct>AStruct.__new__(AStruct)
         inst._cpp_obj = move(AStruct._make_instance(
           self._cpp_obj.get(),
-          __isNOTSET,
           FieldA,
         ))
         return inst
@@ -188,8 +180,7 @@ cdef class AStruct(thrift.py3.types.Struct):
     @staticmethod
     cdef unique_ptr[cAStruct] _make_instance(
         cAStruct* base_instance,
-        bint* __isNOTSET,
-        object FieldA 
+        object FieldA
     ) except *:
         cdef unique_ptr[cAStruct] c_inst
         if base_instance:
@@ -199,10 +190,12 @@ cdef class AStruct(thrift.py3.types.Struct):
 
         if base_instance:
             # Convert None's to default value. (or unset)
-            if not __isNOTSET[0] and FieldA is None:
+            if FieldA is None:
                 deref(c_inst).FieldA = _AStruct_defaults.FieldA
                 deref(c_inst).__isset.FieldA = False
                 pass
+            elif FieldA is __NOTSET:
+                FieldA = None
 
         if FieldA is not None:
             deref(c_inst).FieldA = FieldA
@@ -322,7 +315,6 @@ cdef class AStructB(thrift.py3.types.Struct):
     ):
         self._cpp_obj = move(AStructB._make_instance(
           NULL,
-          NULL,
           FieldA,
         ))
 
@@ -330,27 +322,20 @@ cdef class AStructB(thrift.py3.types.Struct):
         AStructB self,
         FieldA=__NOTSET
     ):
-        ___NOTSET = __NOTSET  # Cheaper for larger structs
-        cdef bint[1] __isNOTSET  # so make_instance is typed
-
-        changes = False
-        if FieldA is ___NOTSET:
-            __isNOTSET[0] = True
-            FieldA = None
-        else:
-            changes = True
+        changes = any((
+            FieldA is not __NOTSET,
+        ))
 
         if not changes:
             return self
 
-        if FieldA is not None:
+        if None is not FieldA is not __NOTSET:
             if not isinstance(FieldA, AStruct):
                 raise TypeError(f'FieldA is not a { AStruct !r}.')
 
         inst = <AStructB>AStructB.__new__(AStructB)
         inst._cpp_obj = move(AStructB._make_instance(
           self._cpp_obj.get(),
-          __isNOTSET,
           FieldA,
         ))
         return inst
@@ -358,8 +343,7 @@ cdef class AStructB(thrift.py3.types.Struct):
     @staticmethod
     cdef unique_ptr[cAStructB] _make_instance(
         cAStructB* base_instance,
-        bint* __isNOTSET,
-        AStruct FieldA 
+        object FieldA
     ) except *:
         cdef unique_ptr[cAStructB] c_inst
         if base_instance:
@@ -369,9 +353,11 @@ cdef class AStructB(thrift.py3.types.Struct):
 
         if base_instance:
             # Convert None's to default value. (or unset)
-            if not __isNOTSET[0] and FieldA is None:
+            if FieldA is None:
                 deref(c_inst).FieldA.reset()
                 pass
+            elif FieldA is __NOTSET:
+                FieldA = None
 
         if FieldA is not None:
             deref(c_inst).FieldA = const_pointer_cast((<AStruct?>FieldA)._cpp_obj)

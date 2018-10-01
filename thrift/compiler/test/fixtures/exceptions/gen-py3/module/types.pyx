@@ -4,8 +4,8 @@
 # DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
 #  @generated
 #
+
 cimport cython as __cython
-from cpython.bytes cimport PyBytes_AsStringAndSize
 from cpython.object cimport PyTypeObject, Py_LT, Py_LE, Py_EQ, Py_NE, Py_GT, Py_GE
 from libcpp.memory cimport shared_ptr, make_shared, unique_ptr, make_unique
 from libcpp.string cimport string
@@ -44,15 +44,13 @@ cdef class Banal(thrift.py3.exceptions.Error):
     ):
         self._cpp_obj = move(Banal._make_instance(
           NULL,
-          NULL,
         ))
         _builtins.Exception.__init__(self, )
 
 
     @staticmethod
     cdef unique_ptr[cBanal] _make_instance(
-        cBanal* base_instance,
-        bint* __isNOTSET
+        cBanal* base_instance
     ) except *:
         cdef unique_ptr[cBanal] c_inst
         if base_instance:
@@ -130,7 +128,6 @@ cdef class Fiery(thrift.py3.exceptions.Error):
             raise TypeError("__init__() needs required argument 'message'")
         self._cpp_obj = move(Fiery._make_instance(
           NULL,
-          NULL,
           message,
         ))
         _builtins.Exception.__init__(self, self.message)
@@ -139,8 +136,7 @@ cdef class Fiery(thrift.py3.exceptions.Error):
     @staticmethod
     cdef unique_ptr[cFiery] _make_instance(
         cFiery* base_instance,
-        bint* __isNOTSET,
-        str message 
+        object message
     ) except *:
         cdef unique_ptr[cFiery] c_inst
         if base_instance:
@@ -149,7 +145,7 @@ cdef class Fiery(thrift.py3.exceptions.Error):
             c_inst = make_unique[cFiery]()
 
         if message is not None:
-            deref(c_inst).message = thrift.py3.types.move(thrift.py3.types.bytes_to_string(message.encode('utf-8')))
+            deref(c_inst).message = message.encode('UTF-8')
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
         return move_unique(c_inst)
@@ -223,7 +219,6 @@ cdef class Serious(thrift.py3.exceptions.Error):
     ):
         self._cpp_obj = move(Serious._make_instance(
           NULL,
-          NULL,
           sonnet,
         ))
         _builtins.Exception.__init__(self, self.sonnet)
@@ -232,8 +227,7 @@ cdef class Serious(thrift.py3.exceptions.Error):
     @staticmethod
     cdef unique_ptr[cSerious] _make_instance(
         cSerious* base_instance,
-        bint* __isNOTSET,
-        str sonnet 
+        object sonnet
     ) except *:
         cdef unique_ptr[cSerious] c_inst
         if base_instance:
@@ -242,7 +236,7 @@ cdef class Serious(thrift.py3.exceptions.Error):
             c_inst = make_unique[cSerious]()
 
         if sonnet is not None:
-            deref(c_inst).sonnet = thrift.py3.types.move(thrift.py3.types.bytes_to_string(sonnet.encode('utf-8')))
+            deref(c_inst).sonnet = sonnet.encode('UTF-8')
             deref(c_inst).__isset.sonnet = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here

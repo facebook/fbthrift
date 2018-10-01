@@ -102,8 +102,7 @@ cdef class Banal(thrift.py3.exceptions.Error):
 
     @staticmethod
     cdef unique_ptr[cBanal] _make_instance(
-        cBanal* base_instance,
-        bint* __isNOTSET
+        cBanal* base_instance
     ) except *
 
     @staticmethod
@@ -121,8 +120,7 @@ cdef class Fiery(thrift.py3.exceptions.Error):
     @staticmethod
     cdef unique_ptr[cFiery] _make_instance(
         cFiery* base_instance,
-        bint* __isNOTSET,
-        str message
+        object message
     ) except *
 
     @staticmethod
@@ -140,8 +138,7 @@ cdef class Serious(thrift.py3.exceptions.Error):
     @staticmethod
     cdef unique_ptr[cSerious] _make_instance(
         cSerious* base_instance,
-        bint* __isNOTSET,
-        str sonnet
+        object sonnet
     ) except *
 
     @staticmethod

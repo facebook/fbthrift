@@ -4,8 +4,8 @@
 # DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
 #  @generated
 #
+
 cimport cython as __cython
-from cpython.bytes cimport PyBytes_AsStringAndSize
 from cpython.object cimport PyTypeObject, Py_LT, Py_LE, Py_EQ, Py_NE, Py_GT, Py_GE
 from libcpp.memory cimport shared_ptr, make_shared, unique_ptr, make_unique
 from libcpp.string cimport string
@@ -55,7 +55,6 @@ cdef class Foo(thrift.py3.types.Struct):
 
         self._cpp_obj = move(Foo._make_instance(
           NULL,
-          NULL,
           myInteger,
           myString,
           myBools,
@@ -69,51 +68,35 @@ cdef class Foo(thrift.py3.types.Struct):
         myBools=__NOTSET,
         myNumbers=__NOTSET
     ):
-        ___NOTSET = __NOTSET  # Cheaper for larger structs
-        cdef bint[4] __isNOTSET  # so make_instance is typed
+        changes = any((
+            myInteger is not __NOTSET,
 
-        changes = False
-        if myInteger is ___NOTSET:
-            __isNOTSET[0] = True
-            myInteger = None
-        else:
-            changes = True
-        if myString is ___NOTSET:
-            __isNOTSET[1] = True
-            myString = None
-        else:
-            changes = True
-        if myBools is ___NOTSET:
-            __isNOTSET[2] = True
-            myBools = None
-        else:
-            changes = True
-        if myNumbers is ___NOTSET:
-            __isNOTSET[3] = True
-            myNumbers = None
-        else:
-            changes = True
+            myString is not __NOTSET,
+
+            myBools is not __NOTSET,
+
+            myNumbers is not __NOTSET,
+        ))
 
         if not changes:
             return self
 
-        if not __isNOTSET[0] and myInteger is None:
+        if myInteger is None:
             raise TypeError('field myInteger is required and has no default, it can not be unset')
-        if myInteger is not None:
+        if None is not myInteger is not __NOTSET:
             if not isinstance(myInteger, int):
                 raise TypeError(f'myInteger is not a { int !r}.')
             myInteger = <int32_t> myInteger
 
-        if myString is not None:
+        if None is not myString is not __NOTSET:
             if not isinstance(myString, str):
                 raise TypeError(f'myString is not a { str !r}.')
 
-        if not __isNOTSET[3] and myNumbers is None:
+        if myNumbers is None:
             raise TypeError('field myNumbers is required and has no default, it can not be unset')
         inst = <Foo>Foo.__new__(Foo)
         inst._cpp_obj = move(Foo._make_instance(
           self._cpp_obj.get(),
-          __isNOTSET,
           myInteger,
           myString,
           myBools,
@@ -124,11 +107,10 @@ cdef class Foo(thrift.py3.types.Struct):
     @staticmethod
     cdef unique_ptr[cFoo] _make_instance(
         cFoo* base_instance,
-        bint* __isNOTSET,
-        object myInteger ,
-        str myString ,
-        object myBools ,
-        object myNumbers 
+        object myInteger,
+        object myString,
+        object myBools,
+        object myNumbers
     ) except *:
         cdef unique_ptr[cFoo] c_inst
         if base_instance:
@@ -138,25 +120,33 @@ cdef class Foo(thrift.py3.types.Struct):
 
         if base_instance:
             # Convert None's to default value. (or unset)
-            if not __isNOTSET[0] and myInteger is None:
+            if myInteger is None:
                 pass
+            elif myInteger is __NOTSET:
+                myInteger = None
 
-            if not __isNOTSET[1] and myString is None:
+            if myString is None:
                 deref(c_inst).__isset.myString = False
                 pass
+            elif myString is __NOTSET:
+                myString = None
 
-            if not __isNOTSET[2] and myBools is None:
+            if myBools is None:
                 deref(c_inst).myBools = _Foo_defaults.myBools
                 deref(c_inst).__isset.myBools = False
                 pass
+            elif myBools is __NOTSET:
+                myBools = None
 
-            if not __isNOTSET[3] and myNumbers is None:
+            if myNumbers is None:
                 pass
+            elif myNumbers is __NOTSET:
+                myNumbers = None
 
         if myInteger is not None:
             deref(c_inst).myInteger = myInteger
         if myString is not None:
-            deref(c_inst).myString = thrift.py3.types.move(thrift.py3.types.bytes_to_string(myString.encode('utf-8')))
+            deref(c_inst).myString = myString.encode('UTF-8')
             deref(c_inst).__isset.myString = True
         if myBools is not None:
             deref(c_inst).myBools = deref(List__bool(myBools)._cpp_obj)

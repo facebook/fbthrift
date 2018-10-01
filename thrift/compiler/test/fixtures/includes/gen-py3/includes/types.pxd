@@ -69,9 +69,8 @@ cdef class Included(thrift.py3.types.Struct):
     @staticmethod
     cdef unique_ptr[cIncluded] _make_instance(
         cIncluded* base_instance,
-        bint* __isNOTSET,
         object MyIntField,
-        _transitive_types.Foo MyTransitiveField
+        object MyTransitiveField
     ) except *
 
     @staticmethod
