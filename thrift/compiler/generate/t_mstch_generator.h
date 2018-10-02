@@ -208,8 +208,6 @@ class t_mstch_generator : public t_generator {
 
   std::unique_ptr<std::string> get_option(const std::string& key);
 
-  const t_type& resolve_typedef(const t_type& type) const;
-
  private:
   std::map<std::string, std::string> template_map_{};
   bool convert_delimiter_;

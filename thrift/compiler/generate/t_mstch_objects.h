@@ -281,13 +281,6 @@ class mstch_base : public mstch::object {
         pos_ == ELEMENT_POSITION::FIRST_AND_LAST;
   }
 
-  static t_type const* resolve_typedef(t_type const* type) {
-    while (type->is_typedef()) {
-      type = dynamic_cast<t_typedef const*>(type)->get_type();
-    }
-    return type;
-  }
-
   static ELEMENT_POSITION element_position(size_t index, size_t length) {
     ELEMENT_POSITION pos = ELEMENT_POSITION::NONE;
     if (index == 0) {
@@ -565,7 +558,7 @@ class mstch_type : public mstch_base {
       ELEMENT_POSITION pos)
       : mstch_base(generators, cache, pos),
         type_(type),
-        resolved_type_(resolve_typedef(type)) {
+        resolved_type_(type->get_true_type()) {
     register_methods(
         this,
         {

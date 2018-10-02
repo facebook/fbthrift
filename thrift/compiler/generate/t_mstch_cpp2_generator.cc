@@ -72,7 +72,7 @@ std::string const& get_cpp_template(const t_type* type) {
 }
 
 bool is_implicit_ref(const t_type* type) {
-  auto const* resolved_typedef = mstch_const::resolve_typedef(type);
+  auto const* resolved_typedef = type->get_true_type();
   return resolved_typedef != nullptr && resolved_typedef->is_binary() &&
       get_cpp_type(resolved_typedef).find("std::unique_ptr") != string::npos &&
       get_cpp_type(resolved_typedef).find("folly::IOBuf") != string::npos;
@@ -105,8 +105,8 @@ bool same_types(const t_type* a, const t_type* b) {
     return false;
   }
 
-  const auto* resolved_a = mstch_base::resolve_typedef(a);
-  const auto* resolved_b = mstch_base::resolve_typedef(b);
+  const auto* resolved_a = a->get_true_type();
+  const auto* resolved_b = b->get_true_type();
 
   if (resolved_a->get_type_value() != resolved_b->get_type_value()) {
     return false;
@@ -515,7 +515,7 @@ class mstch_cpp2_field : public mstch_field {
   mstch::node terse_writes() {
     // Add terse writes for unqualified fields when comparison is cheap:
     // (e.g. i32/i64, empty strings/list/map)
-    auto t = resolve_typedef(field_->get_type());
+    auto t = field_->get_type()->get_true_type();
     return cache_->parsed_options_.count("terse_writes") != 0 &&
         field_->get_req() != t_field::e_req::T_OPTIONAL &&
         field_->get_req() != t_field::e_req::T_REQUIRED &&
@@ -569,7 +569,7 @@ class mstch_cpp2_struct : public mstch_struct {
   }
   mstch::node getters_setters() {
     for (auto const* field : strct_->get_members()) {
-      auto const* resolved_typedef = resolve_typedef(field->get_type());
+      auto const* resolved_typedef = field->get_type()->get_true_type();
       if (resolved_typedef->is_base_type() || resolved_typedef->is_enum() ||
           resolved_typedef->is_struct() ||
           field->get_req() == t_field::e_req::T_OPTIONAL) {
@@ -580,7 +580,7 @@ class mstch_cpp2_struct : public mstch_struct {
   }
   mstch::node has_base_field_or_struct() {
     for (auto const* field : strct_->get_members()) {
-      auto const* resolved_typedef = resolve_typedef(field->get_type());
+      auto const* resolved_typedef = field->get_type()->get_true_type();
       if (resolved_typedef->is_base_type() || resolved_typedef->is_enum() ||
           resolved_typedef->is_struct() ||
           field->annotations_.count("cpp.ref") ||
@@ -610,7 +610,7 @@ class mstch_cpp2_struct : public mstch_struct {
           cache_->parsed_options_.count("optionals")) {
         continue;
       }
-      const t_type* type = resolve_typedef(field->get_type());
+      const t_type* type = field->get_type()->get_true_type();
       if ((type->is_base_type() && !type->is_string()) ||
           (type->is_string() && field->get_value() != nullptr) ||
           (type->is_container() && field->get_value() != nullptr &&
@@ -749,7 +749,7 @@ class mstch_cpp2_struct : public mstch_struct {
       return false;
     }
     for (auto const* field : strct_->get_members()) {
-      auto const* resolved_typedef = resolve_typedef(field->get_type());
+      auto const* resolved_typedef = field->get_type()->get_true_type();
       if (is_cpp_ref(field) || resolved_typedef->is_string() ||
           resolved_typedef->is_container()) {
         return true;

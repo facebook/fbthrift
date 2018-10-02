@@ -126,7 +126,7 @@ mstch::map t_mstch_generator::dump(const t_field& field, int32_t index) {
 
 mstch::map t_mstch_generator::dump(const t_type& orig_type) {
   const t_type& type =
-      should_resolve_typedefs() ? resolve_typedef(orig_type) : orig_type;
+      should_resolve_typedefs() ? *orig_type.get_true_type() : orig_type;
 
   mstch::map result{
       {"name", type.get_name()},
@@ -486,14 +486,6 @@ std::unique_ptr<std::string> t_mstch_generator::get_option(
     return nullptr;
   }
   return std::unique_ptr<std::string>(new std::string(itr->second));
-}
-
-const t_type& t_mstch_generator::resolve_typedef(const t_type& type) const {
-  auto t = &type;
-  while (t->is_typedef()) {
-    t = dynamic_cast<const t_typedef*>(t)->get_type();
-  }
-  return *t;
 }
 
 mstch::map t_mstch_generator::prepend_prefix(

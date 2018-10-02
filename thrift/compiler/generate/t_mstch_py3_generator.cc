@@ -204,7 +204,7 @@ std::string t_mstch_py3_generator::get_rename(const T& elem) {
 mstch::map t_mstch_py3_generator::extend_field(const t_field& field) {
   auto ref_type = this->ref_type(field);
   if (ref_type == "" && field.get_type() != nullptr) {
-    auto& resolved_type = resolve_typedef(*field.get_type());
+    auto& resolved_type = *field.get_type()->get_true_type();
     string type_override = this->get_cpp_type(resolved_type);
     if (type_override == "std::unique_ptr<folly::IOBuf>") {
       ref_type = "iobuf";
@@ -677,7 +677,7 @@ void t_mstch_py3_generator::add_cpp_includes(
 }
 
 void t_mstch_py3_generator::visit_type(t_type* orig_type, type_data& data) {
-  auto type = &resolve_typedef(*orig_type);
+  auto type = orig_type->get_true_type();
 
   if (type->is_list()) {
     const auto elem_type = dynamic_cast<const t_list*>(type)->get_elem_type();
@@ -739,7 +739,7 @@ void t_mstch_py3_generator::visit_single_type(
 
 std::string t_mstch_py3_generator::flatten_type_name(
     const t_type& orig_type) const {
-  auto& type = resolve_typedef(orig_type);
+  auto& type = *orig_type.get_true_type();
   const auto& program = get_type_program(type);
   const auto externalProgram = is_external_program(program);
 
