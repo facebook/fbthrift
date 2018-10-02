@@ -133,12 +133,14 @@ class ThriftSerializationHelper {
         $field_id = $object::$_TFIELDMAP[$field_name];
       }
 
+      $field_name_tmp = $object->$field_name;
       $xfer += self::readStructHelper(
         $protocol,
         $tspec[$field_id]['type'],
-        &$object->$field_name,
+        &$field_name_tmp,
         $tspec[$field_id]
       );
+      $object->$field_name = $field_name_tmp;
       $union_enum = $union_enum_name::coerce($object::$_TFIELDMAP[$field_name]);
       $xfer += $protocol->readFieldEnd();
     }
