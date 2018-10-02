@@ -55,7 +55,14 @@ There are several key goals for these components:
 ### Dependencies
 Please install the following dependencies before building Facebook Thrift:
 
-**System**: [Flex](https://www.gnu.org/software/flex), [Bison](https://www.gnu.org/software/bison), [Krb5](https://web.mit.edu/kerberos), [Zlib](https://zlib.net), [PThreads](https://computing.llnl.gov/tutorials/pthreads). *macOS*: [OpenSSLv1.0.2g](https://www.openssl.org)
+**System**:
+[Flex](https://www.gnu.org/software/flex),
+[Bison](https://www.gnu.org/software/bison),
+[Boost](https://www.boost.org),
+[Krb5](https://web.mit.edu/kerberos),
+[OpenSSLv1.0.2g](https://www.openssl.org),
+[PThreads](https://computing.llnl.gov/tutorials/pthreads),
+[Zlib](https://zlib.net).
 
 **External**: [Double Conversion](https://github.com/google/double-conversion), [GFlags](https://github.com/gflags/gflags), [GLog](https://github.com/google/glog), [Mstch](https://github.com/no1msd/mstch)
 
