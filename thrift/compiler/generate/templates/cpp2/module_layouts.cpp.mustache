@@ -23,31 +23,31 @@ namespace apache { namespace thrift { namespace frozen {
 <%#program:structs%>
 FROZEN_CTOR(<% > common/namespace_cpp2%><%struct:name%>,<%!
 %><%#struct:fields%>
-  FROZEN_CTOR_FIELD<% > common/field_suffix%>(<%field:name%>, <%field:key%>)<%!
+  FROZEN_CTOR_FIELD<% > common/field_suffix%>(<%field:cpp_name%>, <%field:key%>)<%!
 %><%/struct:fields%>)
 FROZEN_MAXIMIZE(<% > common/namespace_cpp2%><%struct:name%>,<%!
 %><%#struct:fields%>
-  FROZEN_MAXIMIZE_FIELD(<%field:name%>)<%!
+  FROZEN_MAXIMIZE_FIELD(<%field:cpp_name%>)<%!
 %><%/struct:fields%>)
 FROZEN_LAYOUT(<% > common/namespace_cpp2%><%struct:name%>,<%!
 %><%#struct:fields%>
-  FROZEN_LAYOUT_FIELD<% > common/field_suffix%>(<%field:name%>)<%!
+  FROZEN_LAYOUT_FIELD<% > common/field_suffix%>(<%field:cpp_name%>)<%!
 %><%/struct:fields%>)
 FROZEN_FREEZE(<% > common/namespace_cpp2%><%struct:name%>,<%!
 %><%#struct:fields%>
-  FROZEN_FREEZE_FIELD<% > common/field_suffix%>(<%field:name%>)<%!
+  FROZEN_FREEZE_FIELD<% > common/field_suffix%>(<%field:cpp_name%>)<%!
 %><%/struct:fields%>)
 FROZEN_THAW(<% > common/namespace_cpp2%><%struct:name%>,<%!
 %><%#struct:fields%>
-  FROZEN_THAW_FIELD<% > common/field_suffix%>(<%field:name%>)<%!
+  FROZEN_THAW_FIELD<% > common/field_suffix%>(<%field:cpp_name%>)<%!
 %><%/struct:fields%>)
 FROZEN_DEBUG(<% > common/namespace_cpp2%><%struct:name%>,<%!
 %><%#struct:fields%>
-  FROZEN_DEBUG_FIELD(<%field:name%>)<%!
+  FROZEN_DEBUG_FIELD(<%field:cpp_name%>)<%!
 %><%/struct:fields%>)
 FROZEN_CLEAR(<% > common/namespace_cpp2%><%struct:name%>,<%!
 %><%#struct:fields%>
-  FROZEN_CLEAR_FIELD(<%field:name%>)<%!
+  FROZEN_CLEAR_FIELD(<%field:cpp_name%>)<%!
 %><%/struct:fields%>)
 <%/program:structs%>
 

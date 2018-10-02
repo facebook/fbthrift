@@ -55,16 +55,16 @@ void <%service:name%>AsyncProcessor::process_<%function:name%>(std::unique_ptr<a
 <%#function:args_without_streams%><%#field:type%>
 <%^type:resolves_to_complex_return?%>
 <%^type:enum?%>
-  <% > types/type%> uarg_<%field:name%>{0};
+  <% > types/type%> uarg_<%field:cpp_name%>{0};
 <%/type:enum?%>
 <%#type:enum?%>
-  <% > types/type%> uarg_<%field:name%>{static_cast<<% > types/type%>>(0)};
+  <% > types/type%> uarg_<%field:cpp_name%>{static_cast<<% > types/type%>>(0)};
 <%/type:enum?%>
-  args.get<<%field:index%>>().value = &uarg_<%field:name%>;
+  args.get<<%field:index%>>().value = &uarg_<%field:cpp_name%>;
 <%/type:resolves_to_complex_return?%>
 <%#type:resolves_to_complex_return?%>
-  auto uarg_<%field:name%> = std::make_unique<<% > types/type%>>();
-  args.get<<%field:index%>>().value = uarg_<%field:name%>.get();
+  auto uarg_<%field:cpp_name%> = std::make_unique<<% > types/type%>>();
+  args.get<<%field:index%>>().value = uarg_<%field:cpp_name%>.get();
 <%/type:resolves_to_complex_return?%>
 <%/field:type%><%/function:args_without_streams%>
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "<%service:name%>.<%function:name%>", ctx));

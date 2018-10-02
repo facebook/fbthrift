@@ -15,20 +15,20 @@
   limitations under the License.
 
 %><%#field:optionals?%><%!
-%>this-><%field:name%> = <% > types/type%>();<%!
+%>this-><%field:cpp_name%> = <% > types/type%>();<%!
 %><%#type:resolves_to_base?%><%!
 %><%#type:resolves_to_integral?%>
-::apache::thrift::detail::pm::protocol_methods< <% > common/type_class%>, <% > types/type%>>::read(*iprot, this-><%field:name%>.value());<%!
+::apache::thrift::detail::pm::protocol_methods< <% > common/type_class%>, <% > types/type%>>::read(*iprot, this-><%field:cpp_name%>.value());<%!
 %><%/type:resolves_to_integral?%><%!
 %><%^type:resolves_to_integral?%>
-iprot->read<% > module_types_tcc/struct_field_type%>(this-><%field:name%>.value()<%type:cpp_indirection%>);<%!
+iprot->read<% > module_types_tcc/struct_field_type%>(this-><%field:cpp_name%>.value()<%type:cpp_indirection%>);<%!
 %><%/type:resolves_to_integral?%><%!
 %><%/type:resolves_to_base?%><%!
 %><%#type:resolves_to_container_or_enum?%>
-::apache::thrift::detail::pm::protocol_methods< <% > common/type_class%>, <% > types/type%>>::read(*iprot, this-><%field:name%>.value());<%!
+::apache::thrift::detail::pm::protocol_methods< <% > common/type_class%>, <% > types/type%>>::read(*iprot, this-><%field:cpp_name%>.value());<%!
 %><%/type:resolves_to_container_or_enum?%><%!
 %><%#type:struct?%>
-::apache::thrift::Cpp2Ops< <% > types/type%>>::read(iprot, &this-><%field:name%>.value());<%!
+::apache::thrift::Cpp2Ops< <% > types/type%>>::read(iprot, &this-><%field:cpp_name%>.value());<%!
 %><%/type:struct?%><%!
 %><%/field:optionals?%><%!
 
@@ -39,7 +39,7 @@ iprot->read<% > module_types_tcc/struct_field_type%>(this-><%field:name%>.value(
 ::apache::thrift::detail::pm::protocol_methods< <% > common/type_class%>, <% > types/type%>>::read(*iprot, *ptr);<%!
 %><%/type:resolves_to_integral?%><%!
 %><%^type:resolves_to_integral?%>
-iprot->read<% > module_types_tcc/struct_field_type%>((*this-><%field:name%><%type:cpp_indirection%>));<%!
+iprot->read<% > module_types_tcc/struct_field_type%>((*this-><%field:cpp_name%><%type:cpp_indirection%>));<%!
 %><%/type:resolves_to_integral?%><%!
 %><%/type:resolves_to_base?%><%!
 %><%#type:resolves_to_container_or_enum?%>
@@ -48,32 +48,32 @@ iprot->read<% > module_types_tcc/struct_field_type%>((*this-><%field:name%><%typ
 %><%#type:struct?%>
 ::apache::thrift::Cpp2Ops< <% > types/type%>>::read(iprot, ptr.get());<%!
 %><%/type:struct?%>
-this-><%field:name%> = std::move(ptr);<%!
+this-><%field:cpp_name%> = std::move(ptr);<%!
 %><%/field:cpp_ref?%><%!
 
 %><%^field:cpp_ref?%><%^field:optionals?%><%!
 %><%#type:resolves_to_base?%><%!
 %><%#type:resolves_to_integral?%><%!
-%>::apache::thrift::detail::pm::protocol_methods< <% > common/type_class%>, <% > types/type%>>::read(*iprot, this-><%field:name%>);<%!
+%>::apache::thrift::detail::pm::protocol_methods< <% > common/type_class%>, <% > types/type%>>::read(*iprot, this-><%field:cpp_name%>);<%!
 %><%/type:resolves_to_integral?%><%!
 %><%^type:resolves_to_integral?%><%!
-%>iprot->read<% > module_types_tcc/struct_field_type%>(this-><%field:name%><%type:cpp_indirection%>);<%!
+%>iprot->read<% > module_types_tcc/struct_field_type%>(this-><%field:cpp_name%><%type:cpp_indirection%>);<%!
 %><%/type:resolves_to_integral?%><%!
 %><%/type:resolves_to_base?%><%!
 %><%#type:resolves_to_container_or_enum?%><%!
 %><%^type:enum?%><%!
-%>this-><%field:name%> = <% > types/type%>();
+%>this-><%field:cpp_name%> = <% > types/type%>();
 <%/type:enum?%>
-::apache::thrift::detail::pm::protocol_methods< <% > common/type_class%>, <% > types/type%>>::read(*iprot, this-><%field:name%>);<%!
+::apache::thrift::detail::pm::protocol_methods< <% > common/type_class%>, <% > types/type%>>::read(*iprot, this-><%field:cpp_name%>);<%!
 %><%/type:resolves_to_container_or_enum?%><%!
 %><%#type:struct?%><%!
-%>::apache::thrift::Cpp2Ops< <% > types/type%>>::read(iprot, &this-><%field:name%>);<%!
+%>::apache::thrift::Cpp2Ops< <% > types/type%>>::read(iprot, &this-><%field:cpp_name%>);<%!
 %><%/type:struct?%><%!
 %><%/field:optionals?%><%/field:cpp_ref?%><%!
 
 %><%#field:required?%>
-isset_<%field:name%> = true;<%!
+isset_<%field:cpp_name%> = true;<%!
 %><%/field:required?%><%!
 %><%^field:required?%><%^struct:optionals?%><%^field:cpp_ref?%>
-this->__isset.<%field:name%> = true;<%!
+this->__isset.<%field:cpp_name%> = true;<%!
 %><%/field:cpp_ref?%><%/struct:optionals?%><%/field:required?%>

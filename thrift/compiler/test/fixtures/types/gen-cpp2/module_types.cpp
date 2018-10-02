@@ -1104,14 +1104,14 @@ template uint32_t MyDataItem::serializedSizeZC<>(apache::thrift::CompactProtocol
 }}}} // apache::thrift::fixtures::types
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 
-Renaming::Renaming(apache::thrift::FragileConstructor, int64_t foo__arg) :
-    foo(std::move(foo__arg)) {
-  __isset.foo = true;
+Renaming::Renaming(apache::thrift::FragileConstructor, int64_t bar__arg) :
+    bar(std::move(bar__arg)) {
+  __isset.bar = true;
 }
 
 void Renaming::__clear() {
   // clear all fields
-  foo = 0;
+  bar = 0;
   __isset = {};
 }
 
@@ -1119,7 +1119,7 @@ bool Renaming::operator==(const Renaming& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.foo == rhs.foo)) {
+  if (!(lhs.bar == rhs.bar)) {
     return false;
   }
   return true;
@@ -1129,8 +1129,8 @@ bool Renaming::operator<(const Renaming& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.foo == rhs.foo)) {
-    return lhs.foo < rhs.foo;
+  if (!(lhs.bar == rhs.bar)) {
+    return lhs.bar < rhs.bar;
   }
   return false;
 }
@@ -1138,7 +1138,7 @@ bool Renaming::operator<(const Renaming& rhs) const {
 
 void swap(Renaming& a, Renaming& b) {
   using ::std::swap;
-  swap(a.foo, b.foo);
+  swap(a.bar, b.bar);
   swap(a.__isset, b.__isset);
 }
 

@@ -19,9 +19,9 @@
   if (type_ == Type::__EMPTY__) { return; }
   switch(type_) {
 <%#struct:fields%>
-    case Type::<%field:name%>:
+    case Type::<%field:cpp_name%>:
     {
-      destruct(value_.<%field:name%>);
+      destruct(value_.<%field:cpp_name%>);
       break;
     }
 <%/struct:fields%>

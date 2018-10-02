@@ -16,7 +16,7 @@
 
 %><%struct:name%>::<%struct:name%>(<%struct:name%>&& other) noexcept :
 <%#struct:fields%>
-    <%field:name%>(std::move(other.<%field:name%>))<%^last?%>,<%/last?%><%!
+    <%field:cpp_name%>(std::move(other.<%field:cpp_name%>))<%^last?%>,<%/last?%><%!
       %><%#last?%><%#struct:isset_fields?%>,<%/struct:isset_fields?%><%!
         %><%^struct:isset_fields?%> {}<%/struct:isset_fields?%><%/last?%>
 <%/struct:fields%>

@@ -41,7 +41,7 @@ struct apache_thrift_fixtures_types_module__struct_unique_data_member_getters_li
   FATAL_DATA_MEMBER_GETTER(MyStringField, MyStringField);
   FATAL_DATA_MEMBER_GETTER(major, major);
   FATAL_DATA_MEMBER_GETTER(data, data);
-  FATAL_DATA_MEMBER_GETTER(foo, foo);
+  FATAL_DATA_MEMBER_GETTER(bar, bar);
 };
 
 struct apache_thrift_fixtures_types_module__struct_unique_member_pod_list {
@@ -179,8 +179,8 @@ struct apache_thrift_fixtures_types_module__struct_unique_member_pod_list {
 
   template <typename T_apache_thrift_fixtures_types_module_struct_member_pod>
 
-  struct apache_thrift_fixtures_types_module_struct_member_pod_foo {
-    T_apache_thrift_fixtures_types_module_struct_member_pod foo;
+  struct apache_thrift_fixtures_types_module_struct_member_pod_bar {
+    T_apache_thrift_fixtures_types_module_struct_member_pod bar;
   };
 
 };
@@ -1111,7 +1111,7 @@ struct MyDataItem_apache_thrift_fixtures_types_module__struct_unique_member_info
 
 class Renaming_apache_thrift_fixtures_types_module__struct_unique_annotations {
   class Renaming_apache_thrift_fixtures_types_module__struct_unique_annotations_members {
-    class Renaming_apache_thrift_fixtures_types_module__struct_unique_annotations_members_foo {
+    class Renaming_apache_thrift_fixtures_types_module__struct_unique_annotations_members_bar {
       public:
       using keys = void;
       using values = void;
@@ -1119,7 +1119,7 @@ class Renaming_apache_thrift_fixtures_types_module__struct_unique_annotations {
       >;
     };
     public:
-    using foo = ::apache::thrift::reflected_annotations<Renaming_apache_thrift_fixtures_types_module__struct_unique_annotations_members_foo>;
+    using bar = ::apache::thrift::reflected_annotations<Renaming_apache_thrift_fixtures_types_module__struct_unique_annotations_members_bar>;
   };
 
   class annotations {
@@ -1137,15 +1137,15 @@ class Renaming_apache_thrift_fixtures_types_module__struct_unique_annotations {
 };
 
 struct Renaming_apache_thrift_fixtures_types_module__struct_unique_member_info_list {
-  using foo = ::apache::thrift::reflected_struct_data_member<
-    thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__unique_strings_list::foo,
+  using bar = ::apache::thrift::reflected_struct_data_member<
+    thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__unique_strings_list::bar,
     int64_t,
     1,
     ::apache::thrift::optionality::required_of_writer,
-    thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__struct_unique_data_member_getters_list::foo,
+    thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__struct_unique_data_member_getters_list::bar,
     ::apache::thrift::type_class::integral,
-    thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__struct_unique_member_pod_list::apache_thrift_fixtures_types_module_struct_member_pod_foo,
-    ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::Renaming_apache_thrift_fixtures_types_module__struct_unique_annotations::members::foo>,
+    thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__struct_unique_member_pod_list::apache_thrift_fixtures_types_module_struct_member_pod_bar,
+    ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::Renaming_apache_thrift_fixtures_types_module__struct_unique_annotations::members::bar>,
     Renaming
   >;
 };
@@ -1342,7 +1342,7 @@ THRIFT_REGISTER_STRUCT_TRAITS(
   thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__unique_strings_list::Renaming,
   thrift_fatal_impl_detail::Renaming_apache_thrift_fixtures_types_module__struct_unique_member_info_list,
   ::fatal::list<
-      thrift_fatal_impl_detail::Renaming_apache_thrift_fixtures_types_module__struct_unique_member_info_list::foo
+      thrift_fatal_impl_detail::Renaming_apache_thrift_fixtures_types_module__struct_unique_member_info_list::bar
   >,
   thrift_fatal_impl_detail::Renaming_apache_thrift_fixtures_types_module__struct_unique_annotations::members,
   ::apache::thrift::detail::type_common_metadata_impl<

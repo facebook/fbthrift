@@ -20,13 +20,13 @@
     if (rhs.type_ == Type::__EMPTY__) { return *this; }
     switch (rhs.type_) {
 <%#struct:fields%>
-      case Type::<%field:name%>:
+      case Type::<%field:cpp_name%>:
       {
 <%#field:cpp_ref?%>
-        set_<%field:name%>(std::move(*rhs.value_.<%field:name%>));
+        set_<%field:cpp_name%>(std::move(*rhs.value_.<%field:cpp_name%>));
 <%/field:cpp_ref?%>
 <%^field:cpp_ref?%>
-        set_<%field:name%>(std::move(rhs.value_.<%field:name%>));
+        set_<%field:cpp_name%>(std::move(rhs.value_.<%field:cpp_name%>));
 <%/field:cpp_ref?%>
         break;
       }
@@ -47,13 +47,13 @@
     if (rhs.type_ == Type::__EMPTY__) { return *this; }
     switch (rhs.type_) {
 <%#struct:fields%>
-      case Type::<%field:name%>:
+      case Type::<%field:cpp_name%>:
       {
 <%#field:cpp_ref?%>
-        set_<%field:name%>(*rhs.value_.<%field:name%>);
+        set_<%field:cpp_name%>(*rhs.value_.<%field:cpp_name%>);
 <%/field:cpp_ref?%>
 <%^field:cpp_ref?%>
-        set_<%field:name%>(rhs.value_.<%field:name%>);
+        set_<%field:cpp_name%>(rhs.value_.<%field:cpp_name%>);
 <%/field:cpp_ref?%>
         break;
       }

@@ -49,6 +49,11 @@ from thrift_compiler.generate.t_output import IndentedOutput
 def _map_get(map, key, default=None):
     return map[key] if key in map else default
 
+
+def _cpp_name(field):
+    annotations = field.annotations
+    return annotations['cpp.name'] if 'cpp.name' in annotations else field.name
+
 # ---------------------------------------------------------------
 # Generator
 # ---------------------------------------------------------------
@@ -492,6 +497,7 @@ class CppGenerator(t_generator.Generator):
         annotation_keys = []
         black_list = [
             'cpp.methods',
+            'cpp.name',
             'cpp.ref',
             'cpp.ref_type',
             'cpp.template',
@@ -618,29 +624,31 @@ class CppGenerator(t_generator.Generator):
                 strcls = '{0}__struct_unique_strings_list'.format(name)
                 with t.cls('struct {0}'.format(strcls)):
                     for i in members:
-                        cseq = self._set_fatal_string(i.name)
-                        t('using {0} = {1};'.format(i.name, cseq))
+                        cpp_name = _cpp_name(i)
+                        cseq = self._set_fatal_string(cpp_name)
+                        t('using {0} = {1};'.format(cpp_name, cseq))
                 t()
                 mbmclsprefix = '{0}__struct_enum_members_'.format(name)
                 for i in members:
-                    with t.cls('struct {0}{1}'.format(mbmclsprefix, i.name)):
-                        t('using name = {0}::{1};'.format(strcls, i.name))
+                    cpp_name = _cpp_name(i)
+                    with t.cls('struct {0}{1}'.format(mbmclsprefix, cpp_name)):
+                        t('using name = {0}::{1};'.format(strcls, cpp_name))
                         t(('using value = std::integral_constant<type'
-                            ', type::{0}>;').format(i.name))
+                            ', type::{0}>;').format(cpp_name))
                         self._render_fatal_annotations(
                             i.annotations, 'annotations', t)
                 t()
                 mbmcls = '{0}__struct_enum_members'.format(name)
                 with t.cls('struct {0}'.format(mbmcls)):
                     for i in members:
-                        t('using {0} = {1}{0};'.format(i.name, mbmclsprefix))
+                        t('using {0} = {1}{0};'.format(_cpp_name(i), mbmclsprefix))
                 t()
                 t('using member = {0};'.format(mbmcls))
                 t()
                 t('using fields = ::fatal::list<')
                 for idx, i in enumerate(members):
                     t('    member::{0}{1}'
-                        .format(i.name, ',' if idx + 1 < len(members) else ''))
+                        .format(_cpp_name(i), ',' if idx + 1 < len(members) else ''))
                 t('>;')
                 t()
                 self._render_fatal_annotations(annotations, 'annotations', t)
@@ -652,7 +660,7 @@ class CppGenerator(t_generator.Generator):
                 member_values = []
                 for i in members:
                     if guaranteed_unique or i.value not in member_values:
-                        member_names.append(i.name)
+                        member_names.append(_cpp_name(i))
                         member_values.append(i.value)
                 for i in member_names:
                     t('    case type::{0}: return "{0}";'.format(i))
@@ -877,9 +885,10 @@ class CppGenerator(t_generator.Generator):
                     continue
                 self._set_fatal_string(i.name)
                 for m in i.members:
-                    self._set_fatal_string(m.name)
-                    if m.name not in members:
-                        members.append(m.name)
+                    cpp_name = _cpp_name(m)
+                    self._set_fatal_string(cpp_name)
+                    if cpp_name not in members:
+                        members.append(cpp_name)
             with detail.cls('struct {0}'.format(dtmclsprefix)).scope as dtm:
                 for i in members:
                     dtm('FATAL_DATA_MEMBER_GETTER({0}, {0});'.format(i))
@@ -922,12 +931,12 @@ class CppGenerator(t_generator.Generator):
                         for m in i.members:
                             self._render_fatal_annotations(
                                 m.annotations, '{0}_{1}'.format(
-                                    members_class, m.name), cmann)
+                                    members_class, _cpp_name(m)), cmann)
                         cmann('public:')
                         for m in i.members:
                             cmann(('using {0} = ::apache::thrift::'
                                 'reflected_annotations<{1}_{0}>;').format(
-                                    m.name, members_class))
+                                    _cpp_name(m), members_class))
                     self._render_fatal_annotations(i.annotations,
                         'annotations', cann)
                     cann('public:')
@@ -938,11 +947,12 @@ class CppGenerator(t_generator.Generator):
                 with detail.cls(('struct {0}_{1}').format(
                         i.name, mnfclsprefix)).scope as cmnf:
                     for m in i.members:
+                        cpp_name = _cpp_name(m)
                         cmnf(('using {0} = '
                             '::apache::thrift::reflected_struct_data_member<')
-                            .format(m.name))
+                            .format(cpp_name))
                         cmnf('')
-                        cmnf('  {0},'.format(self._get_fatal_string_id(m.name)))
+                        cmnf('  {0},'.format(self._get_fatal_string_id(cpp_name)))
                         cmnf('  {0},'.format(self._type_name(m.type)))
                         cmnf('  {0},'.format(m.key))
                         cmnf('  ::apache::thrift::optionality::{0},'.format(
@@ -951,28 +961,28 @@ class CppGenerator(t_generator.Generator):
                             cmnf('  ::apache::thrift::detail::'
                                  'chained_data_member_getter<')
                             cmnf('    {0}::{1}::{2},'.format(
-                                self.fatal_detail_ns, dtmclsprefix, m.name))
+                                self.fatal_detail_ns, dtmclsprefix, cpp_name))
                             cmnf('    ::apache::thrift::detail::'
                                  'reflection_indirection_getter<')
                             cmnf('      {0}::{1}_{2}::{3}'.format(
                                 self.fatal_detail_ns,
                                 i.name,
                                 indclsprefix,
-                                m.name))
+                                cpp_name))
                             cmnf('    >')
                             cmnf('  >,')
                         else:
                             cmnf('  {0}::{1}::{2},'.format(
-                                self.fatal_detail_ns, dtmclsprefix, m.name))
+                                self.fatal_detail_ns, dtmclsprefix, cpp_name))
                         cmnf('  {0},'.format(
                             self._render_fatal_type_class(m.type)))
                         cmnf('  {0}::{1}::{2}_{3}_struct_member_pod_{4},'
                             .format(self.fatal_detail_ns, mpdclsprefix,
-                                safe_ns, name, m.name))
+                                safe_ns, name, cpp_name))
                         cmnf('  ::apache::thrift::reflected_annotations<'
                              '{0}::{1}_{2}::members::{3}>,'.format(
                                 self.fatal_detail_ns, i.name, annclsprefix,
-                                m.name))
+                                cpp_name))
                         # Owner
                         cmnf('  {0}'.format(i.name))
                         cmnf('>;')
@@ -981,26 +991,27 @@ class CppGenerator(t_generator.Generator):
                 with detail.cls(('struct {0}_{1}').format(
                         i.symbolic, mnfclsprefix)).scope as cmnf:
                     for m in ttype.members:
+                        cpp_name = _cpp_name(m)
                         cmnf(('using {0} = '
                               '::apache::thrift::reflected_struct_data_member<')
-                              .format(m.name))
+                              .format(cpp_name))
                         cmnf('')
-                        cmnf('  {0},'.format(self._get_fatal_string_id(m.name)))
+                        cmnf('  {0},'.format(self._get_fatal_string_id(cpp_name)))
                         cmnf('  decltype(static_cast<{0} *>(nullptr)->{1}),'
-                             .format(i.symbolic, m.name))
+                             .format(i.symbolic, cpp_name))
                         cmnf('  {0},'.format(m.key))
                         cmnf('  ::apache::thrift::optionality::required,')
                         cmnf('  {0}::{1}::{2},'.format(
-                             self.fatal_detail_ns, dtmclsprefix, m.name))
+                             self.fatal_detail_ns, dtmclsprefix, cpp_name))
                         cmnf('  {0},'.format(
                              self._render_fatal_type_class(m.type)))
                         cmnf('  {0}::{1}::{2}_{3}_struct_member_pod_{4},'
                              .format(self.fatal_detail_ns, mpdclsprefix,
-                                     safe_ns, name, m.name))
+                                     safe_ns, name, cpp_name))
                         cmnf('  ::apache::thrift::reflected_annotations<'
                              '{0}::{1}_{2}::members::{3}>,'
                              .format(self.fatal_detail_ns, ttype.name,
-                                     annclsprefix, m.name))
+                                     annclsprefix, cpp_name))
                         # Owner
                         cmnf('  {0}'.format(i.symbolic))
                         cmnf('>;')
@@ -1035,7 +1046,7 @@ class CppGenerator(t_generator.Generator):
                 self.fatal_detail_ns, i.name, annclsprefix)
             for midx, m in enumerate(i.members):
                 sns('      {0}::{1}_{2}::{3}{4}'.format(
-                    self.fatal_detail_ns, i.name, mnfclsprefix, m.name,
+                    self.fatal_detail_ns, i.name, mnfclsprefix, _cpp_name(m),
                     ',' if midx + 1 < len(i.members) else ''))
             sns('  >,')
             # MembersAnnotations
@@ -1076,7 +1087,7 @@ class CppGenerator(t_generator.Generator):
                 for midx, m in enumerate(ttype.members):
                     detail('      {0}{1}::{2}_{3}::{4}{5}'.format(
                            ns_prefix, self.fatal_detail_ns,
-                           i.symbolic, mnfclsprefix, m.name,
+                           i.symbolic, mnfclsprefix, _cpp_name(m),
                            ',' if midx + 1 < len(ttype.members) else ''))
                 detail('  >,')
                 # MembersAnnotations

@@ -21,14 +21,14 @@
 <%struct:name%>::<%struct:name%>(apache::thrift::FragileConstructor<% > module_types_h/fragile_ctor_param_list%>) :
 <%#struct:fields_in_layout_order%>
 <%#struct:optionals?%>
-    <%field:name%>(std::move(<%field:name%>__arg))<%^last?%>,<%/last?%><%#last?%> {}<%/last?%>
+    <%field:cpp_name%>(std::move(<%field:cpp_name%>__arg))<%^last?%>,<%/last?%><%#last?%> {}<%/last?%>
 <%/struct:optionals?%>
 <%^struct:optionals?%>
-    <%field:name%>(std::move(<%field:name%>__arg))<%#last?%> {<%^struct:isset_fields?%>}<%/struct:isset_fields?%><%/last?%><%^last?%>,<%/last?%>
+    <%field:cpp_name%>(std::move(<%field:cpp_name%>__arg))<%#last?%> {<%^struct:isset_fields?%>}<%/struct:isset_fields?%><%/last?%><%^last?%>,<%/last?%>
 <%/struct:optionals?%>
 <%/struct:fields_in_layout_order%>
 <%#struct:isset_fields%><%^struct:optionals?%>
-  __isset.<%field:name%> = true;
+  __isset.<%field:cpp_name%> = true;
 <%#last?%>
 }
 <%/last?%>

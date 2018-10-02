@@ -32,69 +32,69 @@ void <%struct:name%>::__clear() {
   // clear all fields
 <%#struct:fields%><%#field:type%>
 <%#field:optionals?%>
-  <%field:name%>.clear();
+  <%field:cpp_name%>.clear();
 <%/field:optionals?%>
 <%^field:optionals?%>
 <%#type:resolves_to_base_or_enum?%>
 <%#field:value%>
 <%^type:enum?%>
-  <%field:name%><%type:cpp_indirection%> = <% > common/cxx_value_prefix%><% > common/iterate_const_values%><% > common/cxx_value_suffix%>;
+  <%field:cpp_name%><%type:cpp_indirection%> = <% > common/cxx_value_prefix%><% > common/iterate_const_values%><% > common/cxx_value_suffix%>;
 <%/type:enum?%>
 <%#type:enum?%>
 <%#value:enum?%>
-  <%field:name%><%type:cpp_indirection%> = <% > common/cxx_value_prefix%><% > common/iterate_const_values%><% > common/cxx_value_suffix%>;
+  <%field:cpp_name%><%type:cpp_indirection%> = <% > common/cxx_value_prefix%><% > common/iterate_const_values%><% > common/cxx_value_suffix%>;
 <%/value:enum?%>
 <%^value:enum?%><%#field:enum_has_value%>
-  <%field:name%><%type:cpp_indirection%> = <% > common/type_namespace_cpp2%><%type:name%>::<%enumValue:name%>;
+  <%field:cpp_name%><%type:cpp_indirection%> = <% > common/type_namespace_cpp2%><%type:name%>::<%enumValue:name%>;
 <%/field:enum_has_value%><%/value:enum?%>
 <%^value:enum?%><%^field:enum_has_value%>
-  <%field:name%><%type:cpp_indirection%> = static_cast<<% > common/type_namespace_cpp2%><%type:name%>>(<% > common/const_value%>);
+  <%field:cpp_name%><%type:cpp_indirection%> = static_cast<<% > common/type_namespace_cpp2%><%type:name%>>(<% > common/const_value%>);
 <%/field:enum_has_value%><%/value:enum?%>
 <%/type:enum?%>
 <%/field:value%>
 <%^field:value%>
-  <%field:name%><%type:cpp_indirection%> = <% > module_types_cpp/unset_values%>;
+  <%field:cpp_name%><%type:cpp_indirection%> = <% > module_types_cpp/unset_values%>;
 <%/field:value%>
 <%/type:resolves_to_base_or_enum?%>
 <%#type:resolves_to_container?%>
 <%#field:cpp_ref?%>
 <%^field:optional?%>
-  <%field:name%>.reset(new typename decltype(<%field:name%>)::element_type());
+  <%field:cpp_name%>.reset(new typename decltype(<%field:cpp_name%>)::element_type());
 <%/field:optional?%>
 <%#field:optional?%>
-  <%field:name%>.reset();
+  <%field:cpp_name%>.reset();
 <%/field:optional?%>
 <%/field:cpp_ref?%>
 <%^field:cpp_ref?%>
-  <%field:name%>.clear();
+  <%field:cpp_name%>.clear();
 <%/field:cpp_ref?%>
 <%/type:resolves_to_container?%>
 <%#type:non_empty_struct?%>
 <%^field:cpp_ref?%>
-  ::apache::thrift::Cpp2Ops< <% > types/type%>>::clear(&<%field:name%>);
+  ::apache::thrift::Cpp2Ops< <% > types/type%>>::clear(&<%field:cpp_name%>);
 <%/field:cpp_ref?%>
 <%#field:cpp_ref_unique?%>
 <%^field:optional?%>
-  if (<%field:name%>) ::apache::thrift::Cpp2Ops< <% > types/type%>>::clear(<%field:name%>.get());
+  if (<%field:cpp_name%>) ::apache::thrift::Cpp2Ops< <% > types/type%>>::clear(<%field:cpp_name%>.get());
 <%/field:optional?%>
 <%#field:optional?%>
-  <%field:name%>.reset();
+  <%field:cpp_name%>.reset();
 <%/field:optional?%>
 <%/field:cpp_ref_unique?%>
 <%#field:cpp_ref_shared?%>
 <%^field:optional?%>
-  if (<%field:name%>) ::apache::thrift::Cpp2Ops< <% > types/type%>>::clear(<%field:name%>.get());
+  if (<%field:cpp_name%>) ::apache::thrift::Cpp2Ops< <% > types/type%>>::clear(<%field:cpp_name%>.get());
 <%/field:optional?%>
 <%#field:optional?%>
-  <%field:name%>.reset();
+  <%field:cpp_name%>.reset();
 <%/field:optional?%>
 <%/field:cpp_ref_shared?%>
 <%#field:cpp_ref_shared_const?%>
 <%^field:optional?%>
-  if (<%field:name%>) <%field:name%>.reset(new typename decltype(<%field:name%>)::element_type());
+  if (<%field:cpp_name%>) <%field:cpp_name%>.reset(new typename decltype(<%field:cpp_name%>)::element_type());
 <%/field:optional?%>
 <%#field:optional?%>
-  <%field:name%>.reset();
+  <%field:cpp_name%>.reset();
 <%/field:optional?%>
 <%/field:cpp_ref_shared_const?%>
 <%/type:non_empty_struct?%>

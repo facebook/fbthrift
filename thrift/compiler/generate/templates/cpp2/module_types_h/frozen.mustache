@@ -21,10 +21,10 @@ struct Frozen<<% > common/namespace_cpp2%><%struct:name%>, void> {
 <%#struct:fields%>
 <%#field:type%>
 <%#type:bool?%>
-  bool <%field:name%> : 1;
+  bool <%field:cpp_name%> : 1;
 <%/type:bool?%>
 <%^type:bool?%>
-  typename Freezer<<% > types/type%>>::FrozenType <%field:name%>;
+  typename Freezer<<% > types/type%>>::FrozenType <%field:cpp_name%>;
 <%/type:bool?%>
 <%/field:type%>
 <%/struct:fields%>
@@ -32,7 +32,7 @@ struct Frozen<<% > common/namespace_cpp2%><%struct:name%>, void> {
 <%#struct:isset_fields?%>
   struct __isset {
 <%#struct:isset_fields%>
-    bool <%field:name%> : 1;
+    bool <%field:cpp_name%> : 1;
 <%/struct:isset_fields%>
   } __isset = {};
 <%/struct:isset_fields?%>

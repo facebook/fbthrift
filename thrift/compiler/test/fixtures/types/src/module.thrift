@@ -94,5 +94,5 @@ struct MyStruct {
 struct MyDataItem {} (cpp2.noncomparable)
 
 struct Renaming {
-  1: i64 foo,
+  1: i64 foo (cpp.name = 'bar'),
 }

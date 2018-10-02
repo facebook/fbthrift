@@ -18,18 +18,18 @@
   %><%^first?%>, <%/first?%><%!
 %><%#type:resolves_to_complex_return?%><%!
 %><%#type:stack_arguments?%><%!
-  %><%field:name%><%!
+  %><%field:cpp_name%><%!
 %><%/type:stack_arguments?%><%!
 %><%^type:stack_arguments?%><%!
-  %>std::move(<%field:name%>)<%!
+  %>std::move(<%field:cpp_name%>)<%!
 %><%/type:stack_arguments?%><%!
 %><%/type:resolves_to_complex_return?%><%!
 %><%^type:resolves_to_complex_return?%><%!
   %><%#type:resolves_to_stream?%><%!
-    %>std::move(<%field:name%>)<%!
+    %>std::move(<%field:cpp_name%>)<%!
   %><%/type:resolves_to_stream?%><%!
   %><%^type:resolves_to_stream?%><%!
-    %><%field:name%><%!
+    %><%field:cpp_name%><%!
   %><%/type:resolves_to_stream?%><%!
 %><%/type:resolves_to_complex_return?%><%!
 %><%/field:type%><%/function:args%>

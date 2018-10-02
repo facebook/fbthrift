@@ -24,8 +24,8 @@ bool <%struct:name%>::operator<(const <%struct:name%>& rhs) const {
   }
   switch (lhs.type_) {
 <%#struct:fields%>
-    case Type::<%field:name%>:
-      return lhs.value_.<%field:name%> < rhs.value_.<%field:name%>;
+    case Type::<%field:cpp_name%>:
+      return lhs.value_.<%field:cpp_name%> < rhs.value_.<%field:cpp_name%>;
 <%/struct:fields%>
     default:
       return false;

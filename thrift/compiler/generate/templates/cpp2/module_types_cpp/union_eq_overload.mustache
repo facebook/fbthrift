@@ -20,13 +20,13 @@ bool <%struct:name%>::operator==(const <%struct:name%>& rhs) const {
   if (type_ != rhs.type_) { return false; }
   switch(type_) {
 <%#struct:fields%>
-    case Type::<%field:name%>:
+    case Type::<%field:cpp_name%>:
     {
 <%#field:cpp_ref?%>
-      return *value_.<%field:name%> == *rhs.value_.<%field:name%>;
+      return *value_.<%field:cpp_name%> == *rhs.value_.<%field:cpp_name%>;
 <%/field:cpp_ref?%>
 <%^field:cpp_ref?%>
-      return value_.<%field:name%> == rhs.value_.<%field:name%>;
+      return value_.<%field:cpp_name%> == rhs.value_.<%field:cpp_name%>;
 <%/field:cpp_ref?%>
     }
 <%/struct:fields%>

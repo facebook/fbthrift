@@ -17,17 +17,17 @@
 %><%struct:name%>::<%struct:name%>(const <%struct:name%>& srcObj) {
 <%#struct:fields%><%#field:type%>
 <%^field:cpp_ref_unique_either?%>
-  <%field:name%> = srcObj.<%field:name%>;
+  <%field:cpp_name%> = srcObj.<%field:cpp_name%>;
 <%/field:cpp_ref_unique_either?%>
 <%#field:cpp_ref_unique_either?%>
-  if (srcObj.<%field:name%>) <%#field:cpp_ref_unique?%><%!
-    %><%field:name%>.reset(new <% > types/type%>(*srcObj.<%field:name%>));
+  if (srcObj.<%field:cpp_name%>) <%#field:cpp_ref_unique?%><%!
+    %><%field:cpp_name%>.reset(new <% > types/type%>(*srcObj.<%field:cpp_name%>));
 <%/field:cpp_ref_unique?%><%^field:cpp_ref_unique?%><%!
-    %><%field:name%> = srcObj.<%field:name%><%#type:optionals?%>.value()<%/type:optionals?%>->clone();
+    %><%field:cpp_name%> = srcObj.<%field:cpp_name%><%#type:optionals?%>.value()<%/type:optionals?%>->clone();
 <%/field:cpp_ref_unique?%>
 <%/field:cpp_ref_unique_either?%>
 <%^type:optionals?%><%^field:cpp_ref?%><%^field:required?%>
-  __isset.<%field:name%> = srcObj.__isset.<%field:name%>;
+  __isset.<%field:cpp_name%> = srcObj.__isset.<%field:cpp_name%>;
 <%/field:required?%><%/field:cpp_ref?%><%/type:optionals?%>
 <%/field:type%><%/struct:fields%>
 }

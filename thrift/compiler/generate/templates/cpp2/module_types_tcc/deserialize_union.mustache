@@ -24,7 +24,7 @@ void <%struct:name%>::readNoXfer(Protocol_* iprot) {
   using apache::thrift::TProtocolException;
 
 <%#struct:fields%><%#field:required?%>
-  bool isset_<%field:name%> = false;
+  bool isset_<%field:cpp_name%> = false;
 <%/field:required?%><%/struct:fields%>
 
   _readState.readFieldBegin(iprot);
@@ -39,17 +39,17 @@ void <%struct:name%>::readNoXfer(Protocol_* iprot) {
       case <%field:key%>:
       {
         if (_readState.fieldType == apache::thrift::protocol::<% > module_types_tcc/struct_type%>) {
-          this->set_<%field:name%>();
+          this->set_<%field:cpp_name%>();
 <%#type:resolves_to_base?%>
 <%#type:resolves_to_integral?%>
-          ::apache::thrift::detail::pm::protocol_methods< <% > common/type_class%>, <% > types/type%>>::read(*iprot, <%#field:cpp_ref?%>*<%/field:cpp_ref?%>this->mutable_<%field:name%>());
+          ::apache::thrift::detail::pm::protocol_methods< <% > common/type_class%>, <% > types/type%>>::read(*iprot, <%#field:cpp_ref?%>*<%/field:cpp_ref?%>this->mutable_<%field:cpp_name%>());
 <%/type:resolves_to_integral?%>
 <%^type:resolves_to_integral?%>
 <%#field:cpp_ref?%>
-          iprot->read<% > module_types_tcc/struct_field_type%>((*this->mutable_<%field:name%>()));
+          iprot->read<% > module_types_tcc/struct_field_type%>((*this->mutable_<%field:cpp_name%>()));
 <%/field:cpp_ref?%>
 <%^field:cpp_ref?%>
-          iprot->read<% > module_types_tcc/struct_field_type%>(this->mutable_<%field:name%>());
+          iprot->read<% > module_types_tcc/struct_field_type%>(this->mutable_<%field:cpp_name%>());
 <%/field:cpp_ref?%>
 <%/type:resolves_to_integral?%>
 <%/type:resolves_to_base?%>
@@ -59,19 +59,19 @@ void <%struct:name%>::readNoXfer(Protocol_* iprot) {
 <%/field:cpp_ref?%>
 <%#type:resolves_to_container_or_enum?%>
 <%^type:enum?%>
-          this->mutable_<%field:name%>() = <% > types/type%>();
+          this->mutable_<%field:cpp_name%>() = <% > types/type%>();
 <%/type:enum?%>
-          ::apache::thrift::detail::pm::protocol_methods< <% > common/type_class%>, <% > types/type%>>::read(*iprot, <%#field:cpp_ref?%>*ptr<%/field:cpp_ref?%><%^field:cpp_ref?%>this->mutable_<%field:name%>()<%/field:cpp_ref?%>);
+          ::apache::thrift::detail::pm::protocol_methods< <% > common/type_class%>, <% > types/type%>>::read(*iprot, <%#field:cpp_ref?%>*ptr<%/field:cpp_ref?%><%^field:cpp_ref?%>this->mutable_<%field:cpp_name%>()<%/field:cpp_ref?%>);
 <%/type:resolves_to_container_or_enum?%>
 <%#type:struct?%>
-          ::apache::thrift::Cpp2Ops< <% > types/type%>>::read(iprot, <%#field:cpp_ref?%>ptr.get()<%/field:cpp_ref?%><%^field:cpp_ref?%>&this->mutable_<%field:name%>()<%/field:cpp_ref?%>);
+          ::apache::thrift::Cpp2Ops< <% > types/type%>>::read(iprot, <%#field:cpp_ref?%>ptr.get()<%/field:cpp_ref?%><%^field:cpp_ref?%>&this->mutable_<%field:cpp_name%>()<%/field:cpp_ref?%>);
 <%/type:struct?%>
 <%#field:cpp_ref?%>
-          this->mutable_<%field:name%>() = std::move(ptr);
+          this->mutable_<%field:cpp_name%>() = std::move(ptr);
 <%/field:cpp_ref?%>
 <%/type:resolves_to_base?%>
 <%#field:required?%>
-          isset_<%field:name%> = true;
+          isset_<%field:cpp_name%> = true;
 <%/field:required?%>
         } else {
           iprot->skip(_readState.fieldType);
@@ -95,7 +95,7 @@ void <%struct:name%>::readNoXfer(Protocol_* iprot) {
   _readState.readStructEnd(iprot);
 
 <%#struct:fields%><%#field:required?%>
-  if (!isset_<%field:name%>) {
+  if (!isset_<%field:cpp_name%>) {
     TProtocolException::throwMissingRequiredField("<%field:name%>", "<%struct:name%>");
   }
 <%/field:required?%><%/struct:fields%>

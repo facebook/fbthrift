@@ -15,17 +15,17 @@
   limitations under the License.
 
 %><%#field:cpp_ref?%>
-  if (this-><%field:name%>) {
+  if (this-><%field:cpp_name%>) {
 <%/field:cpp_ref?%>
 <%#type:resolves_to_container?%>
-  if (!this-><%field:name%>.empty()) {
+  if (!this-><%field:cpp_name%>.empty()) {
 <%/type:resolves_to_container?%>
 <%#type:string_or_binary?%>
-  if (!apache::thrift::StringTraits< <%#type:cpp_custom_type%><%type:cpp_custom_type%><%/type:cpp_custom_type%><%^type:cpp_custom_type%>std::string<%/type:cpp_custom_type%>>::isEmpty(this-><%field:name%>)) {
+  if (!apache::thrift::StringTraits< <%#type:cpp_custom_type%><%type:cpp_custom_type%><%/type:cpp_custom_type%><%^type:cpp_custom_type%>std::string<%/type:cpp_custom_type%>>::isEmpty(this-><%field:cpp_name%>)) {
 <%/type:string_or_binary?%>
 <%^field:cpp_ref?%><%^type:resolves_to_container?%><%^type:string_or_binary?%>
 <%#field:value%>
-  if (this-><%field:name%> != <%!
+  if (this-><%field:cpp_name%> != <%!
 %><%^type:enum?%><%!
   %><% > common/cxx_value_prefix%><% > common/iterate_const_values%><% > common/cxx_value_suffix%><%!
 %><%/type:enum?%><%!
@@ -37,6 +37,6 @@
 %>) {
 <%/field:value%>
 <%^field:value%>
-  if (this-><%field:name%> != <% > module_types_cpp/unset_values%>) {
+  if (this-><%field:cpp_name%> != <% > module_types_cpp/unset_values%>) {
 <%/field:value%>
 <%/type:string_or_binary?%><%/type:resolves_to_container?%><%/field:cpp_ref?%>

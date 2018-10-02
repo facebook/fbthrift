@@ -15,13 +15,13 @@
   limitations under the License.
 
 %><%#struct:fields_in_layout_order%><%#field:type%>
-  <% > types/optional_type%> <%field:name%>;
+  <% > types/optional_type%> <%field:cpp_name%>;
 <%/field:type%><%/struct:fields_in_layout_order%>
 <%#struct:isset_fields?%>
 
   struct __isset {
 <%#struct:isset_fields%>
-    bool <%field:name%>;
+    bool <%field:cpp_name%>;
 <%/struct:isset_fields%>
   } __isset = {};
 <%/struct:isset_fields?%>

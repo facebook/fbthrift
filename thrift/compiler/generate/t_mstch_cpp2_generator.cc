@@ -454,6 +454,7 @@ class mstch_cpp2_field : public mstch_field {
     register_methods(
         this,
         {
+            {"field:cpp_name", &mstch_cpp2_field::cpp_name},
             {"field:cpp_ref?", &mstch_cpp2_field::cpp_ref},
             {"field:cpp_ref_unique?", &mstch_cpp2_field::cpp_ref_unique},
             {"field:cpp_ref_unique_either?",
@@ -465,6 +466,11 @@ class mstch_cpp2_field : public mstch_field {
             {"field:optionals?", &mstch_cpp2_field::optionals},
             {"field:terse_writes?", &mstch_cpp2_field::terse_writes},
         });
+  }
+  mstch::node cpp_name() {
+    auto name = field_->annotations_.find("cpp.name");
+    return name != field_->annotations_.end() ? name->second
+                                              : field_->get_name();
   }
   mstch::node cpp_ref() {
     return has_annotation("cpp.ref") || has_annotation("cpp2.ref") ||

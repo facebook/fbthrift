@@ -44,7 +44,6 @@ struct apache_thrift_fixtures_types_module__unique_strings_list {
   using two = ::fatal::sequence<char, 't', 'w', 'o'>;
   using tiny = ::fatal::sequence<char, 't', 'i', 'n', 'y'>;
   using field = ::fatal::sequence<char, 'f', 'i', 'e', 'l', 'd'>;
-  using foo = ::fatal::sequence<char, 'f', 'o', 'o'>;
   using NONZERO = ::fatal::sequence<char, 'N', 'O', 'N', 'Z', 'E', 'R', 'O'>;
   using is_unscoped = ::fatal::sequence<char, 'i', 's', '_', 'u', 'n', 's', 'c', 'o', 'p', 'e', 'd'>;
   using apache__thrift__fixtures__types = ::fatal::sequence<char, 'a', 'p', 'a', 'c', 'h', 'e', ':', ':', 't', 'h', 'r', 'i', 'f', 't', ':', ':', 'f', 'i', 'x', 't', 'u', 'r', 'e', 's', ':', ':', 't', 'y', 'p', 'e', 's'>;
@@ -65,6 +64,7 @@ struct apache_thrift_fixtures_types_module__unique_strings_list {
   using cpp_declare_bitwise_ops = ::fatal::sequence<char, 'c', 'p', 'p', '.', 'd', 'e', 'c', 'l', 'a', 'r', 'e', '_', 'b', 'i', 't', 'w', 'i', 's', 'e', '_', 'o', 'p', 's'>;
   using none = ::fatal::sequence<char, 'n', 'o', 'n', 'e'>;
   using b = ::fatal::sequence<char, 'b'>;
+  using bar = ::fatal::sequence<char, 'b', 'a', 'r'>;
   using MyForwardRefEnum = ::fatal::sequence<char, 'M', 'y', 'F', 'o', 'r', 'w', 'a', 'r', 'd', 'R', 'e', 'f', 'E', 'n', 'u', 'm'>;
   using CppTypeStruct = ::fatal::sequence<char, 'C', 'p', 'p', 'T', 'y', 'p', 'e', 'S', 't', 'r', 'u', 'c', 't'>;
   using cpp_virtual = ::fatal::sequence<char, 'c', 'p', 'p', '.', 'v', 'i', 'r', 't', 'u', 'a', 'l'>;

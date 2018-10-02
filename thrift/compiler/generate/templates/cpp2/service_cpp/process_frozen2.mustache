@@ -84,11 +84,11 @@ void <%service:name%>AsyncProcessor::process_frozen2_<%function:name%>(std::uniq
   std::shared_ptr<folly::IOBuf> shared_buf_ptr = std::move(buf);
 <%#function:args%><%#field:type%>
 <%#type:resolves_to_base_or_enum?%>
-  auto <%field:name%>_view_ptr = std::make_unique<apache::thrift::frozen::Layout<<% > types/type%>>::View>(mapped.get<<%field:index%>>());
+  auto <%field:cpp_name%>_view_ptr = std::make_unique<apache::thrift::frozen::Layout<<% > types/type%>>::View>(mapped.get<<%field:index%>>());
 <%/type:resolves_to_base_or_enum?%>
 <%^type:resolves_to_base_or_enum?%>
-  auto <%field:name%>_view_ptr = std::make_unique<apache::thrift::frozen::MappedFrozen<<% > types/type%>>>(mapped.get<<%field:index%>>());
-  <%field:name%>_view_ptr->hold(shared_buf_ptr);
+  auto <%field:cpp_name%>_view_ptr = std::make_unique<apache::thrift::frozen::MappedFrozen<<% > types/type%>>>(mapped.get<<%field:index%>>());
+  <%field:cpp_name%>_view_ptr->hold(shared_buf_ptr);
 <%/type:resolves_to_base_or_enum?%>
 <%/field:type%><%/function:args%>
   iface_->frozen2_<%#function:eb%>async_eb<%/function:eb%><%^function:eb%>async_tm<%/function:eb%>_<%function:name%>(std::move(callback)<% > service_tcc/frozen2_get_args_ref%>);

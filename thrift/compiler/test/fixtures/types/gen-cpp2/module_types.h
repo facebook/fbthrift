@@ -1718,13 +1718,13 @@ class Renaming final : private apache::thrift::detail::st::ComparisonOperators<R
  public:
 
   Renaming() :
-      foo(0) {}
+      bar(0) {}
   // FragileConstructor for use in initialization lists only.
-  Renaming(apache::thrift::FragileConstructor, int64_t foo__arg);
+  Renaming(apache::thrift::FragileConstructor, int64_t bar__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    foo = arg.extract();
-    __isset.foo = true;
+    bar = arg.extract();
+    __isset.bar = true;
   }
 
   Renaming(Renaming&&) = default;
@@ -1735,22 +1735,22 @@ class Renaming final : private apache::thrift::detail::st::ComparisonOperators<R
 
   Renaming& operator=(const Renaming&) = default;
   void __clear();
-  int64_t foo;
+  int64_t bar;
 
   struct __isset {
-    bool foo;
+    bool bar;
   } __isset = {};
   bool operator==(const Renaming& rhs) const;
   bool operator<(const Renaming& rhs) const;
 
-  int64_t get_foo() const {
-    return foo;
+  int64_t get_bar() const {
+    return bar;
   }
 
-  int64_t& set_foo(int64_t foo_) {
-    foo = foo_;
-    __isset.foo = true;
-    return foo;
+  int64_t& set_bar(int64_t bar_) {
+    bar = bar_;
+    __isset.bar = true;
+    return bar;
   }
 
   template <class Protocol_>

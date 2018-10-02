@@ -1873,10 +1873,10 @@ void Renaming::readNoXfer(Protocol_* iprot) {
           apache::thrift::protocol::T_I64))) {
     goto _loop;
   }
-_readField_foo:
+_readField_bar:
   {
-    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::read(*iprot, this->foo);
-    this->__isset.foo = true;
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::read(*iprot, this->bar);
+    this->__isset.bar = true;
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -1904,7 +1904,7 @@ _loop:
     case 1:
     {
       if (LIKELY(_readState.fieldType == apache::thrift::protocol::T_I64)) {
-        goto _readField_foo;
+        goto _readField_bar;
       } else {
         goto _skip;
       }
@@ -1925,7 +1925,7 @@ uint32_t Renaming::serializedSize(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("Renaming");
   xfer += prot_->serializedFieldSize("foo", apache::thrift::protocol::T_I64, 1);
-  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::serializedSize<false>(*prot_, this->foo);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::serializedSize<false>(*prot_, this->bar);
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -1935,7 +1935,7 @@ uint32_t Renaming::serializedSizeZC(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("Renaming");
   xfer += prot_->serializedFieldSize("foo", apache::thrift::protocol::T_I64, 1);
-  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::serializedSize<false>(*prot_, this->foo);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::serializedSize<false>(*prot_, this->bar);
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -1945,7 +1945,7 @@ uint32_t Renaming::write(Protocol_* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("Renaming");
   xfer += prot_->writeFieldBegin("foo", apache::thrift::protocol::T_I64, 1);
-  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::write(*prot_, this->foo);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::write(*prot_, this->bar);
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldStop();
   xfer += prot_->writeStructEnd();

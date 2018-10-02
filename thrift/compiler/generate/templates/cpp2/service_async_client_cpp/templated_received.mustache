@@ -37,10 +37,10 @@ void <%service:name%>AsyncClient::<%function:name%>T(Protocol_* prot, bool useSy
 <%/function:takes_stream?%>
 <%#function:args_without_streams%><%#field:type%>
 <%^type:resolves_to_complex_return?%>
-  args.get<<%field:index%>>().value = &<%field:name%>;
+  args.get<<%field:index%>>().value = &<%field:cpp_name%>;
 <%/type:resolves_to_complex_return?%>
 <%#type:resolves_to_complex_return?%>
-  args.get<<%field:index%>>().value = const_cast<<% > types/type%>*>(&<%field:name%>);
+  args.get<<%field:index%>>().value = const_cast<<% > types/type%>*>(&<%field:cpp_name%>);
 <%/type:resolves_to_complex_return?%>
 <%/field:type%><%/function:args_without_streams%><%!
 
