@@ -144,7 +144,7 @@ ThriftServer::~ThriftServer() {
     duplexWorker_->drainAllConnections();
 
     LOG_IF(ERROR, !duplexWorker_.unique())
-        << activeRequests_ << " active Requests while in destructing"
+        << getActiveRequests() << " active Requests while in destructing"
         << " duplex ThriftServer. Consider using startDuplex & stopDuplex";
   }
 
@@ -691,7 +691,7 @@ bool ThriftServer::isOverloaded(
 
   uint32_t maxRequests = getMaxRequests();
   if (maxRequests > 0) {
-    return static_cast<uint32_t>(activeRequests_ + getPendingCount()) >=
+    return static_cast<uint32_t>(getActiveRequests() + getPendingCount()) >=
         maxRequests;
   }
 
@@ -699,7 +699,7 @@ bool ThriftServer::isOverloaded(
 }
 
 int64_t ThriftServer::getRequestLoad() {
-  return activeRequests_ + getPendingCount();
+  return getActiveRequests() + getPendingCount();
 }
 
 std::string ThriftServer::getLoadInfo(int64_t load) {
@@ -716,7 +716,7 @@ std::string ThriftServer::getLoadInfo(int64_t load) {
   std::stringstream stream;
 
   stream << workerFactory->getNamePrefix() << " load is: " << load
-         << "% requests, " << activeRequests_ << " active reqs, "
+         << "% requests, " << getActiveRequests() << " active reqs, "
          << getPendingCount() << " pending reqs";
 
   return stream.str();

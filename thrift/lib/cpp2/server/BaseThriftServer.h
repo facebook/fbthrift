@@ -193,6 +193,9 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
   // transformed response, headers not included. 0 (default) means no limit.
   ServerAttribute<uint64_t> maxResponseSize_{0};
 
+  // Track # of active requests for this server
+  std::atomic<int32_t> activeRequests_{0};
+
  protected:
   //! The server's listening address
   folly::SocketAddress address_;
@@ -210,9 +213,6 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
 
   // Notification of various server events
   std::shared_ptr<apache::thrift::server::TServerObserver> observer_;
-
-  // Track # of active requests for this server
-  std::atomic<int32_t> activeRequests_{0};
 
   std::string overloadedErrorCode_ = kOverloadedErrorCode;
   IsOverloadedFunc isOverloaded_ = [](const transport::THeader*,
@@ -408,15 +408,15 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    * no current thrift server does even close to this QPS.
    */
   void incActiveRequests(int32_t numRequests = 1) {
-    activeRequests_ += numRequests;
+    activeRequests_.fetch_add(numRequests, std::memory_order_relaxed);
   }
 
   void decActiveRequests(int32_t numRequests = 1) {
-    activeRequests_ -= numRequests;
+    activeRequests_.fetch_sub(numRequests, std::memory_order_relaxed);
   }
 
   int32_t getActiveRequests() const {
-    return activeRequests_;
+    return activeRequests_.load(std::memory_order_relaxed);
   }
 
   bool getUseClientTimeout() const {
