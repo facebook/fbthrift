@@ -114,6 +114,8 @@ class t_mstch_py3_generator : public t_mstch_generator {
       const t_type& type,
       const t_type& orig_type,
       type_data& data);
+  bool is_folly_optional(const t_field& field) const;
+  bool has_default_value(const t_field& field) const;
   string ref_type(const t_field& field) const;
   string get_cpp_template(const t_type& type) const;
   string to_cython_template(const string& cpp_template) const;
@@ -203,25 +205,13 @@ std::string t_mstch_py3_generator::get_rename(const T& elem) {
 
 mstch::map t_mstch_py3_generator::extend_field(const t_field& field) {
   auto ref_type = this->ref_type(field);
-  if (ref_type == "" && field.get_type() != nullptr) {
-    auto& resolved_type = *field.get_type()->get_true_type();
-    string type_override = this->get_cpp_type(resolved_type);
-    if (type_override == "std::unique_ptr<folly::IOBuf>") {
-      ref_type = "iobuf";
-    }
-  }
-
   const bool reference = ref_type != "";
 
   auto req = field.get_req();
   const auto required = req == t_field::e_req::T_REQUIRED;
-  const auto optional = req == t_field::e_req::T_OPTIONAL;
-  const auto unqualified = !required && !optional;
-  const auto hasValue = field.get_value() != nullptr;
   const auto flag_optionals = cache_->parsed_options_.count("optionals") != 0;
-  const auto follyOptional = optional && flag_optionals;
-  const auto hasDefaultValue =
-      !follyOptional && !reference && (hasValue || unqualified);
+  const auto follyOptional = is_folly_optional(field);
+  const auto hasDefaultValue = has_default_value(field);
   const auto requireValue = required && !hasDefaultValue;
   const auto isset = !flag_optionals && !reference && !required;
   // For typing, can a property getter return None, if so it needs to Optional[]
@@ -252,6 +242,20 @@ mstch::map t_mstch_py3_generator::extend_field(const t_field& field) {
   return result;
 }
 
+bool t_mstch_py3_generator::is_folly_optional(const t_field& field) const {
+  const auto flag_optionals = cache_->parsed_options_.count("optionals") != 0;
+  return field.get_req() == t_field::e_req::T_OPTIONAL && flag_optionals;
+}
+
+bool t_mstch_py3_generator::has_default_value(const t_field& field) const {
+  auto req = field.get_req();
+  const auto unqualified =
+      req != t_field::e_req::T_REQUIRED && req != t_field::e_req::T_OPTIONAL;
+  const auto hasValue = field.get_value() != nullptr;
+  return !is_folly_optional(field) && ref_type(field) == "" &&
+      (hasValue || unqualified);
+}
+
 // TODO: This needs to mirror the behavior of t_cpp_generator::cpp_ref_type
 // but it's not obvious how to get there
 string t_mstch_py3_generator::ref_type(const t_field& field) const {
@@ -267,7 +271,12 @@ string t_mstch_py3_generator::ref_type(const t_field& field) const {
     it = annotations.find("cpp2.ref_type");
   }
 
-  if (it == annotations.end()) {
+  if (it == annotations.end() && field.get_type() != nullptr) {
+    auto& resolved_type = *field.get_type()->get_true_type();
+    string type_override = this->get_cpp_type(resolved_type);
+    if (type_override == "std::unique_ptr<folly::IOBuf>") {
+      return "iobuf";
+    }
     return "";
   }
 
