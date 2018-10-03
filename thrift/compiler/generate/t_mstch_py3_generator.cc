@@ -126,6 +126,7 @@ class t_mstch_py3_generator : public t_mstch_generator {
   bool is_external_program(const t_program& program) const;
   inline const t_program& get_type_program(const t_type& type) const;
   bool is_struct_orderable(const t_struct& stct) const;
+  bool is_always_set(const t_struct& strct) const;
 };
 
 bool t_mstch_py3_generator::is_external_program(
@@ -357,6 +358,7 @@ mstch::map t_mstch_py3_generator::extend_struct(const t_struct& stct) {
   mstch::map result{
       {"size", std::to_string(stct.get_members().size())},
       {"is_struct_orderable?", is_struct_orderable(stct)},
+      {"is_always_set?", is_always_set(stct)},
       {"cpp_noncomparable",
        bool(stct.annotations_.count("cpp2.noncomparable"))},
   };
@@ -366,6 +368,14 @@ mstch::map t_mstch_py3_generator::extend_struct(const t_struct& stct) {
 bool t_mstch_py3_generator::is_struct_orderable(const t_struct& stct) const {
   return cpp2::is_orderable(stct) &&
       !stct.annotations_.count("no_default_comparators");
+}
+
+bool t_mstch_py3_generator::is_always_set(const t_struct& strct) const {
+  const auto& members = strct.get_members();
+  return std::any_of(members.begin(), members.end(), [this](const auto* field) {
+    return field->get_req() == t_field::e_req::T_REQUIRED ||
+        has_default_value(*field);
+  });
 }
 
 mstch::map t_mstch_py3_generator::extend_enum(const t_enum& enm) {

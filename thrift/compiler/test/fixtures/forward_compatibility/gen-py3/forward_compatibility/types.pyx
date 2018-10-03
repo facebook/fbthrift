@@ -618,7 +618,7 @@ cdef class NewStructureNested(thrift.py3.types.Struct):
         yield 's', self.s
 
     def __bool__(self):
-        return True or True or True
+        return True
 
     @staticmethod
     cdef create(shared_ptr[cNewStructureNested] cpp_obj):

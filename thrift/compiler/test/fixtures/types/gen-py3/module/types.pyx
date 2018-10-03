@@ -705,7 +705,7 @@ cdef class ContainerStruct(thrift.py3.types.Struct):
         yield 'fieldH', self.fieldH
 
     def __bool__(self):
-        return True or True or True or True or True or True or True or True
+        return True
 
     @staticmethod
     cdef create(shared_ptr[cContainerStruct] cpp_obj):
@@ -1270,7 +1270,7 @@ cdef class MyStructWithForwardRefEnum(thrift.py3.types.Struct):
         yield 'b', self.b
 
     def __bool__(self):
-        return True or True
+        return True
 
     @staticmethod
     cdef create(shared_ptr[cMyStructWithForwardRefEnum] cpp_obj):
@@ -1467,7 +1467,7 @@ cdef class TrivialNumeric(thrift.py3.types.Struct):
         yield 'b', self.b
 
     def __bool__(self):
-        return True or True
+        return True
 
     @staticmethod
     cdef create(shared_ptr[cTrivialNumeric] cpp_obj):
@@ -1664,7 +1664,7 @@ cdef class TrivialNestedWithDefault(thrift.py3.types.Struct):
         yield 'n', self.n
 
     def __bool__(self):
-        return True or True
+        return True
 
     @staticmethod
     cdef create(shared_ptr[cTrivialNestedWithDefault] cpp_obj):
@@ -1853,7 +1853,7 @@ cdef class ComplexString(thrift.py3.types.Struct):
         yield 'b', self.b
 
     def __bool__(self):
-        return True or True
+        return True
 
     @staticmethod
     cdef create(shared_ptr[cComplexString] cpp_obj):
@@ -2046,7 +2046,7 @@ cdef class ComplexNestedWithDefault(thrift.py3.types.Struct):
         yield 'n', self.n
 
     def __bool__(self):
-        return True or True
+        return True
 
     @staticmethod
     cdef create(shared_ptr[cComplexNestedWithDefault] cpp_obj):
@@ -2330,7 +2330,7 @@ cdef class MinPadding(thrift.py3.types.Struct):
         yield 'tiny', self.tiny
 
     def __bool__(self):
-        return True or True or True or True or True
+        return True
 
     @staticmethod
     cdef create(shared_ptr[cMinPadding] cpp_obj):
@@ -2595,7 +2595,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
         yield 'data', self.data
 
     def __bool__(self):
-        return True or True or True or True
+        return True
 
     @staticmethod
     cdef create(shared_ptr[cMyStruct] cpp_obj):

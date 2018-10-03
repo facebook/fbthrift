@@ -302,7 +302,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
         yield 'myEnum', self.myEnum
 
     def __bool__(self):
-        return True or True or True or True or True
+        return True
 
     @staticmethod
     cdef create(shared_ptr[cMyStruct] cpp_obj):

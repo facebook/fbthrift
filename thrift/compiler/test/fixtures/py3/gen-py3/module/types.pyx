@@ -644,7 +644,7 @@ cdef class SimpleStruct(thrift.py3.types.Struct):
         yield 'smaller_real', self.smaller_real
 
     def __bool__(self):
-        return True or True or True or True or True or True or True
+        return True
 
     @staticmethod
     cdef create(shared_ptr[cSimpleStruct] cpp_obj):
@@ -1025,7 +1025,7 @@ cdef class ComplexStruct(thrift.py3.types.Struct):
         yield 'bytes_with_cpp_type', self.bytes_with_cpp_type
 
     def __bool__(self):
-        return True or True or True or True or True or True or True or True or True
+        return True
 
     @staticmethod
     cdef create(shared_ptr[cComplexStruct] cpp_obj):

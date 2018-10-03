@@ -236,7 +236,7 @@ cdef class Struct(thrift.py3.types.Struct):
         yield 'second', self.second
 
     def __bool__(self):
-        return True or True
+        return True
 
     @staticmethod
     cdef create(shared_ptr[cStruct] cpp_obj):

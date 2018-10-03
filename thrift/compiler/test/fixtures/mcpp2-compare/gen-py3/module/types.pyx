@@ -1659,7 +1659,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
         yield 'MyMapEnumAndInt', self.MyMapEnumAndInt
 
     def __bool__(self):
-        return True or True or True or True or True or deref(self._cpp_obj).__isset.MyBinaryField2 or True or True or True
+        return True
 
     @staticmethod
     cdef create(shared_ptr[cMyStruct] cpp_obj):
@@ -2920,7 +2920,7 @@ cdef class AnException(thrift.py3.exceptions.Error):
         yield 'a_union_typedef_list', self.a_union_typedef_list
 
     def __bool__(self):
-        return True or True or True or True or True or True or True or True or True or True or True or True or True or True or True
+        return True
 
     @staticmethod
     cdef create(shared_ptr[cAnException] cpp_obj):
@@ -3127,7 +3127,7 @@ cdef class AnotherException(thrift.py3.exceptions.Error):
         yield 'message', self.message
 
     def __bool__(self):
-        return True or True or True
+        return True
 
     @staticmethod
     cdef create(shared_ptr[cAnotherException] cpp_obj):
@@ -4150,7 +4150,7 @@ cdef class containerStruct(thrift.py3.types.Struct):
         yield 'fieldSD', self.fieldSD
 
     def __bool__(self):
-        return True or True or deref(self._cpp_obj).__isset.opt_fieldA or True or True or deref(self._cpp_obj).__isset.opt_fieldB or True or True or True or True or True or True or True or True or True or True or True or True or True or True or True or True or True or True or True or True or True or True or True or True or True or True or True or deref(self._cpp_obj).__isset.opt_fieldV or True or True or True or deref(self._cpp_obj).__isset.opt_fieldX or True or True or True or True or True or True or True or True
+        return True
 
     @staticmethod
     cdef create(shared_ptr[ccontainerStruct] cpp_obj):
@@ -4718,7 +4718,7 @@ cdef class MyIncludedStruct(thrift.py3.types.Struct):
         yield 'ARequiredField', self.ARequiredField
 
     def __bool__(self):
-        return True or True or <bint>(deref(self._cpp_obj).ARefField) or True
+        return True
 
     @staticmethod
     cdef create(shared_ptr[cMyIncludedStruct] cpp_obj):
@@ -5669,7 +5669,7 @@ cdef class AnnotatedStruct(thrift.py3.types.Struct):
         yield 'struct_struct', self.struct_struct
 
     def __bool__(self):
-        return True or <bint>(deref(self._cpp_obj).cpp_unique_ref) or <bint>(deref(self._cpp_obj).cpp2_unique_ref) or <bint>(deref(self._cpp_obj).container_with_ref) or True or True or True or <bint>(deref(self._cpp_obj).opt_cpp_unique_ref) or <bint>(deref(self._cpp_obj).opt_cpp2_unique_ref) or <bint>(deref(self._cpp_obj).opt_container_with_ref) or <bint>(deref(self._cpp_obj).ref_type_unique) or <bint>(deref(self._cpp_obj).ref_type_shared) or <bint>(deref(self._cpp_obj).ref_type_const) or True or True or True or <bint>(deref(self._cpp_obj).opt_ref_type_const) or <bint>(deref(self._cpp_obj).opt_ref_type_unique) or <bint>(deref(self._cpp_obj).opt_ref_type_shared) or True or True or True or True or True or True or <bint>(deref(self._cpp_obj).iobuf_ptr) or True or True or True or True or True or True or True or True or True or True or True or True or <bint>(deref(self._cpp_obj).iobuf_ptr_val) or True
+        return True
 
     @staticmethod
     cdef create(shared_ptr[cAnnotatedStruct] cpp_obj):
@@ -6204,7 +6204,7 @@ cdef class FloatStruct(thrift.py3.types.Struct):
         yield 'doubleField', self.doubleField
 
     def __bool__(self):
-        return True or True
+        return True
 
     @staticmethod
     cdef create(shared_ptr[cFloatStruct] cpp_obj):

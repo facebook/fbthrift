@@ -262,22 +262,21 @@ cdef class {{struct:name}}({{> types/PythonStructClass}}):
         {{/struct:fields}}
 
     def __bool__(self):
-        return {{#struct:fields}}{{!
-            }}{{#field:required?}}True{{/field:required?}}{{!
-            }}{{^field:required?}}{{!
+        return {{#struct:is_always_set?}}True{{/struct:is_always_set?}}{{!
+            }}{{^struct:is_always_set?}}{{!
+            }}{{#struct:fields}}{{!
             }}{{#field:follyOptional?}}{{!
             }}deref(self._cpp_obj).{{field:name}}.has_value(){{!
             }}{{/field:follyOptional?}}{{!
-            }}{{#field:hasDefaultValue?}}True{{/field:hasDefaultValue?}}{{!
             }}{{^field:follyOptional?}}{{!
             }}{{^field:hasDefaultValue?}}{{!
             }}{{#field:isset?}}deref(self._cpp_obj).__isset.{{field:name}}{{/field:isset?}}{{!
             }}{{#field:reference?}}<bint>(deref(self._cpp_obj).{{field:name}}){{/field:reference?}}{{!
             }}{{/field:hasDefaultValue?}}{{!
             }}{{/field:follyOptional?}}{{!
-            }}{{/field:required?}}{{!
             }}{{^last?}} or {{/last?}}{{/struct:fields}}{{!
-            }}{{^struct:fields}}True{{/struct:fields}}
+            }}{{^struct:fields}}True{{/struct:fields}}{{!
+            }}{{/struct:is_always_set?}}
 
     @staticmethod
     cdef create(shared_ptr[c{{struct:name}}] cpp_obj):

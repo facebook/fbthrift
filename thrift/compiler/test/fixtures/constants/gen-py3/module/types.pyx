@@ -673,7 +673,7 @@ cdef class Internship(thrift.py3.types.Struct):
         yield 'employer', self.employer
 
     def __bool__(self):
-        return True or True or deref(self._cpp_obj).__isset.employer
+        return True
 
     @staticmethod
     cdef create(shared_ptr[cInternship] cpp_obj):
@@ -1045,7 +1045,7 @@ cdef class Range(thrift.py3.types.Struct):
         yield 'max', self.max
 
     def __bool__(self):
-        return True or True
+        return True
 
     @staticmethod
     cdef create(shared_ptr[cRange] cpp_obj):
@@ -1242,7 +1242,7 @@ cdef class struct1(thrift.py3.types.Struct):
         yield 'b', self.b
 
     def __bool__(self):
-        return True or True
+        return True
 
     @staticmethod
     cdef create(shared_ptr[cstruct1] cpp_obj):
@@ -1479,7 +1479,7 @@ cdef class struct2(thrift.py3.types.Struct):
         yield 'd', self.d
 
     def __bool__(self):
-        return True or True or True or True
+        return True
 
     @staticmethod
     cdef create(shared_ptr[cstruct2] cpp_obj):
@@ -1714,7 +1714,7 @@ cdef class struct3(thrift.py3.types.Struct):
         yield 'c', self.c
 
     def __bool__(self):
-        return True or True or True
+        return True
 
     @staticmethod
     cdef create(shared_ptr[cstruct3] cpp_obj):

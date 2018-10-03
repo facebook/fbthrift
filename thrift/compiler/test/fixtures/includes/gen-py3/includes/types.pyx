@@ -133,7 +133,7 @@ cdef class Included(thrift.py3.types.Struct):
         yield 'MyTransitiveField', self.MyTransitiveField
 
     def __bool__(self):
-        return True or True
+        return True
 
     @staticmethod
     cdef create(shared_ptr[cIncluded] cpp_obj):

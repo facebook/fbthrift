@@ -290,7 +290,7 @@ cdef class Color(thrift.py3.types.Struct):
         yield 'alpha', self.alpha
 
     def __bool__(self):
-        return True or True or True or True
+        return True
 
     @staticmethod
     cdef create(shared_ptr[cColor] cpp_obj):
@@ -556,7 +556,7 @@ cdef class Vehicle(thrift.py3.types.Struct):
         yield 'hasAC', self.hasAC
 
     def __bool__(self):
-        return True or deref(self._cpp_obj).__isset.licensePlate or deref(self._cpp_obj).__isset.description or deref(self._cpp_obj).__isset.name or True
+        return True
 
     @staticmethod
     cdef create(shared_ptr[cVehicle] cpp_obj):
@@ -947,7 +947,7 @@ cdef class Person(thrift.py3.types.Struct):
         yield 'vehicles', self.vehicles
 
     def __bool__(self):
-        return True or True or deref(self._cpp_obj).__isset.age or deref(self._cpp_obj).__isset.address or deref(self._cpp_obj).__isset.favoriteColor or deref(self._cpp_obj).__isset.friends or deref(self._cpp_obj).__isset.bestFriend or deref(self._cpp_obj).__isset.petNames or deref(self._cpp_obj).__isset.afraidOfAnimal or deref(self._cpp_obj).__isset.vehicles
+        return True
 
     @staticmethod
     cdef create(shared_ptr[cPerson] cpp_obj):

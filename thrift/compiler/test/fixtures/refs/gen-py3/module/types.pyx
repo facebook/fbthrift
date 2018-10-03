@@ -543,7 +543,7 @@ cdef class MyField(thrift.py3.types.Struct):
         yield 'req_value', self.req_value
 
     def __bool__(self):
-        return deref(self._cpp_obj).__isset.opt_value or True or True
+        return True
 
     @staticmethod
     cdef create(shared_ptr[cMyField] cpp_obj):
@@ -760,7 +760,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
         yield 'req_ref', self.req_ref
 
     def __bool__(self):
-        return <bint>(deref(self._cpp_obj).opt_ref) or <bint>(deref(self._cpp_obj).ref) or True
+        return True
 
     @staticmethod
     cdef create(shared_ptr[cMyStruct] cpp_obj):
@@ -993,7 +993,7 @@ cdef class StructWithUnion(thrift.py3.types.Struct):
         yield 'f', self.f
 
     def __bool__(self):
-        return <bint>(deref(self._cpp_obj).u) or True or True
+        return True
 
     @staticmethod
     cdef create(shared_ptr[cStructWithUnion] cpp_obj):
@@ -1667,7 +1667,7 @@ cdef class StructWithSharedConst(thrift.py3.types.Struct):
         yield 'req_shared_const', self.req_shared_const
 
     def __bool__(self):
-        return <bint>(deref(self._cpp_obj).opt_shared_const) or <bint>(deref(self._cpp_obj).shared_const) or True
+        return True
 
     @staticmethod
     cdef create(shared_ptr[cStructWithSharedConst] cpp_obj):
@@ -2031,7 +2031,7 @@ cdef class StructWithRef(thrift.py3.types.Struct):
         yield 'req_field', self.req_field
 
     def __bool__(self):
-        return <bint>(deref(self._cpp_obj).def_field) or <bint>(deref(self._cpp_obj).opt_field) or True
+        return True
 
     @staticmethod
     cdef create(shared_ptr[cStructWithRef] cpp_obj):
@@ -2258,7 +2258,7 @@ cdef class StructWithRefTypeUnique(thrift.py3.types.Struct):
         yield 'req_field', self.req_field
 
     def __bool__(self):
-        return <bint>(deref(self._cpp_obj).def_field) or <bint>(deref(self._cpp_obj).opt_field) or True
+        return True
 
     @staticmethod
     cdef create(shared_ptr[cStructWithRefTypeUnique] cpp_obj):
@@ -2485,7 +2485,7 @@ cdef class StructWithRefTypeShared(thrift.py3.types.Struct):
         yield 'req_field', self.req_field
 
     def __bool__(self):
-        return <bint>(deref(self._cpp_obj).def_field) or <bint>(deref(self._cpp_obj).opt_field) or True
+        return True
 
     @staticmethod
     cdef create(shared_ptr[cStructWithRefTypeShared] cpp_obj):
@@ -2712,7 +2712,7 @@ cdef class StructWithRefTypeSharedConst(thrift.py3.types.Struct):
         yield 'req_field', self.req_field
 
     def __bool__(self):
-        return <bint>(deref(self._cpp_obj).def_field) or <bint>(deref(self._cpp_obj).opt_field) or True
+        return True
 
     @staticmethod
     cdef create(shared_ptr[cStructWithRefTypeSharedConst] cpp_obj):

@@ -164,7 +164,7 @@ cdef class Foo(thrift.py3.types.Struct):
         yield 'myNumbers', self.myNumbers
 
     def __bool__(self):
-        return True or deref(self._cpp_obj).__isset.myString or True or True
+        return True
 
     @staticmethod
     cdef create(shared_ptr[cFoo] cpp_obj):

@@ -236,7 +236,7 @@ cdef class SmallStruct(thrift.py3.types.Struct):
         yield 'small_B', self.small_B
 
     def __bool__(self):
-        return True or True
+        return True
 
     @staticmethod
     cdef create(shared_ptr[cSmallStruct] cpp_obj):
@@ -805,7 +805,7 @@ cdef class containerStruct(thrift.py3.types.Struct):
         yield 'fieldX', self.fieldX
 
     def __bool__(self):
-        return True or True or True or True or True or True or True or True or True or True or True or True or True or True or True or True or True or <bint>(deref(self._cpp_obj).fieldR) or <bint>(deref(self._cpp_obj).fieldS) or <bint>(deref(self._cpp_obj).fieldT) or <bint>(deref(self._cpp_obj).fieldU) or <bint>(deref(self._cpp_obj).fieldX)
+        return True
 
     @staticmethod
     cdef create(shared_ptr[ccontainerStruct] cpp_obj):
