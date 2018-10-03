@@ -374,7 +374,7 @@ bool t_mstch_py3_generator::is_always_set(const t_struct& strct) const {
   const auto& members = strct.get_members();
   return std::any_of(members.begin(), members.end(), [this](const auto* field) {
     return field->get_req() == t_field::e_req::T_REQUIRED ||
-        has_default_value(*field);
+        this->has_default_value(*field);
   });
 }
 
