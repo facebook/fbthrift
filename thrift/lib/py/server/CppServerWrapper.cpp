@@ -604,12 +604,12 @@ public:
 
   void setIdleTimeout(int timeout) {
     std::chrono::milliseconds ms(timeout);
-    ThriftServer::setIdleTimeout(ms);
+    ThriftServer::setIdleTimeout(ms, AttributeSource::OVERRIDE);
   }
 
   void setTaskExpireTime(int timeout) {
     std::chrono::milliseconds ms(timeout);
-    ThriftServer::setTaskExpireTime(ms);
+    ThriftServer::setTaskExpireTime(ms, AttributeSource::OVERRIDE);
   }
 
   void setCppServerEventHandler(object serverEventHandler) {
@@ -698,6 +698,24 @@ public:
   void setMaxConnections(uint32_t maxConnections) {
     BaseThriftServer::setMaxConnections(
         maxConnections, AttributeSource::OVERRIDE);
+  }
+
+  void setNumCPUWorkerThreads(size_t numCPUWorkerThreads) {
+    BaseThriftServer::setNumCPUWorkerThreads(
+        numCPUWorkerThreads, AttributeSource::OVERRIDE);
+  }
+
+  void setNPoolThreads(size_t nPoolThreads) {
+    BaseThriftServer::setNPoolThreads(nPoolThreads, AttributeSource::OVERRIDE);
+  }
+
+  void setNumSSLHandshakeWorkerThreads(size_t nSSLHandshakeThreads) {
+    BaseThriftServer::setNumSSLHandshakeWorkerThreads(
+        nSSLHandshakeThreads, AttributeSource::OVERRIDE);
+  }
+
+  void setEnableCodel(bool enableCodel) {
+    BaseThriftServer::setEnableCodel(enableCodel, AttributeSource::OVERRIDE);
   }
 };
 

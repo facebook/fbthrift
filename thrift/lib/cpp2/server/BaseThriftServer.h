@@ -128,34 +128,37 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
   ServerAttribute<size_t> nWorkers_{T_ASYNC_DEFAULT_WORKER_THREADS};
 
   //! Number of SSL handshake worker threads (may be set)
-  size_t nSSLHandshakeWorkers_ = 0;
+  ServerAttribute<size_t> nSSLHandshakeWorkers_{0};
 
   //! Number of sync pool threads (may be set) (should be set to expected
   //  sync load)
-  size_t nPoolThreads_ = 0;
+  ServerAttribute<size_t> nPoolThreads_{0};
 
-  bool enableCodel_ = false;
+  ServerAttribute<bool> enableCodel_{false};
 
   //! Milliseconds we'll wait for data to appear (0 = infinity)
-  std::chrono::milliseconds timeout_ = DEFAULT_TIMEOUT;
+  ServerAttribute<std::chrono::milliseconds> timeout_{DEFAULT_TIMEOUT};
 
   /**
    * The time in milliseconds before an unperformed task expires
    * (0 == infinite)
    */
-  std::chrono::milliseconds taskExpireTime_ = DEFAULT_TASK_EXPIRE_TIME;
+  ServerAttribute<std::chrono::milliseconds> taskExpireTime_{
+      DEFAULT_TASK_EXPIRE_TIME};
 
   /**
    * The time in milliseconds before a stream starves of having no request.
    * (0 == infinite)
    */
-  std::chrono::milliseconds streamExpireTime_ = DEFAULT_STREAM_EXPIRE_TIME;
+  ServerAttribute<std::chrono::milliseconds> streamExpireTime_{
+      DEFAULT_STREAM_EXPIRE_TIME};
 
   /**
    * The time we'll allow a task to wait on the queue and still perform it
    * (0 == infinite)
    */
-  std::chrono::milliseconds queueTimeout_ = DEFAULT_QUEUE_TIMEOUT;
+  ServerAttribute<std::chrono::milliseconds> queueTimeout_{
+      DEFAULT_QUEUE_TIMEOUT};
 
   /**
    * The number of incoming connections the TCP stack will buffer up while
@@ -528,7 +531,7 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    *  @return number of milliseconds, or 0 if no timeout set.
    */
   std::chrono::milliseconds getIdleTimeout() const {
-    return timeout_;
+    return timeout_.get();
   }
 
   /** Set maximum number of milliseconds we'll wait for data (0 = infinity).
@@ -536,9 +539,11 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    *
    *  @param timeout number of milliseconds, or 0 to disable timeouts.
    */
-  void setIdleTimeout(std::chrono::milliseconds timeout) {
+  void setIdleTimeout(
+      std::chrono::milliseconds timeout,
+      AttributeSource source = AttributeSource::OVERRIDE) {
     CHECK(configMutable());
-    timeout_ = timeout;
+    timeout_.set(timeout, source);
   }
 
   /**
@@ -588,11 +593,13 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    *
    * @param number of CPU (pool) threads
    */
-  void setNumCPUWorkerThreads(size_t numCPUWorkerThreads) {
+  void setNumCPUWorkerThreads(
+      size_t numCPUWorkerThreads,
+      AttributeSource source = AttributeSource::OVERRIDE) {
     CHECK(configMutable());
     CHECK(!threadManager_);
 
-    nPoolThreads_ = numCPUWorkerThreads;
+    nPoolThreads_.set(numCPUWorkerThreads, source);
   }
 
   /**
@@ -602,8 +609,10 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    *
    * @param number of CPU (pool) threads
    */
-  inline void setNPoolThreads(size_t nPoolThreads) {
-    setNumCPUWorkerThreads(nPoolThreads);
+  inline void setNPoolThreads(
+      size_t nPoolThreads,
+      AttributeSource source = AttributeSource::OVERRIDE) {
+    setNumCPUWorkerThreads(nPoolThreads, source);
   }
 
   /**
@@ -612,7 +621,7 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    * @return number of CPU (pool) threads
    */
   size_t getNumCPUWorkerThreads() const {
-    return nPoolThreads_;
+    return nPoolThreads_.get();
   }
 
   /**
@@ -628,28 +637,32 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
   /**
    * Set the number of SSL handshake worker threads.
    */
-  void setNumSSLHandshakeWorkerThreads(size_t nSSLHandshakeThreads) {
+  void setNumSSLHandshakeWorkerThreads(
+      size_t nSSLHandshakeThreads,
+      AttributeSource source = AttributeSource::OVERRIDE) {
     CHECK(configMutable());
-    nSSLHandshakeWorkers_ = nSSLHandshakeThreads;
+    nSSLHandshakeWorkers_.set(nSSLHandshakeThreads, source);
   }
 
   /**
    * Get the number of threads used to perform SSL handshakes
    */
   size_t getNumSSLHandshakeWorkerThreads() const {
-    return nSSLHandshakeWorkers_;
+    return nSSLHandshakeWorkers_.get();
   }
 
   /**
    * Codel queuing timeout - limit queueing time before overload
    * http://en.wikipedia.org/wiki/CoDel
    */
-  void setEnableCodel(bool enableCodel) {
-    enableCodel_ = enableCodel;
+  void setEnableCodel(
+      bool enableCodel,
+      AttributeSource source = AttributeSource::OVERRIDE) {
+    enableCodel_.set(enableCodel, source);
   }
 
   bool getEnableCodel() {
-    return enableCodel_;
+    return enableCodel_.get();
   }
 
   /**
@@ -684,8 +697,10 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    * Set the task expire time
    *
    */
-  void setTaskExpireTime(std::chrono::milliseconds timeout) {
-    taskExpireTime_ = timeout;
+  void setTaskExpireTime(
+      std::chrono::milliseconds timeout,
+      AttributeSource source = AttributeSource::OVERRIDE) {
+    taskExpireTime_.set(timeout, source);
   }
 
   /**
@@ -694,15 +709,17 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    * @return task expire time
    */
   std::chrono::milliseconds getTaskExpireTime() const {
-    return taskExpireTime_;
+    return taskExpireTime_.get();
   }
 
   /**
    * Set the stream starvation time
    *
    */
-  void setStreamExpireTime(std::chrono::milliseconds timeout) {
-    streamExpireTime_ = timeout;
+  void setStreamExpireTime(
+      std::chrono::milliseconds timeout,
+      AttributeSource source = AttributeSource::OVERRIDE) {
+    streamExpireTime_.set(timeout, source);
   }
 
   /**
@@ -710,7 +727,7 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    * stream will create timeout error.
    */
   std::chrono::milliseconds getStreamExpireTime() const override {
-    return streamExpireTime_;
+    return streamExpireTime_.get();
   }
 
   /**
@@ -721,8 +738,10 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    *
    * @return queue timeout
    */
-  void setQueueTimeout(std::chrono::milliseconds timeout) {
-    queueTimeout_ = timeout;
+  void setQueueTimeout(
+      std::chrono::milliseconds timeout,
+      AttributeSource source = AttributeSource::OVERRIDE) {
+    queueTimeout_.set(timeout, source);
   }
 
   /**
@@ -731,7 +750,7 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    * @return queue timeout
    */
   std::chrono::milliseconds getQueueTimeout() const {
-    return queueTimeout_;
+    return queueTimeout_.get();
   }
 
   /**
