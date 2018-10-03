@@ -13,6 +13,7 @@ from testing.types import (
     numerical,
     Color,
     SlowCompare,
+    Optionals
 )
 
 
@@ -61,6 +62,13 @@ class StructTests(unittest.TestCase):
         self.assertIsNotNone(x.val_list)
         self.assertIsNone(x.name)
         self.assertIsNotNone(x.an_int)
+
+    def test_call_replace_container(self) -> None:
+        x = Optionals(values=['a', 'b', 'c'])
+        z = x(values=['b', 'c'])
+        self.assertEqual(z.values, ['b', 'c'])
+        y = z(values=None)
+        self.assertIsNone(y.values)
 
     def test_call_replace_required(self) -> None:
         x = hard(

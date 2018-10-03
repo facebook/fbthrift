@@ -4,8 +4,8 @@
 # DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
 #  @generated
 #
-
 cimport cython as __cython
+from cpython.bytes cimport PyBytes_AsStringAndSize
 from cpython.object cimport PyTypeObject, Py_LT, Py_LE, Py_EQ, Py_NE, Py_GT, Py_GE
 from libcpp.memory cimport shared_ptr, make_shared, unique_ptr, make_unique
 from libcpp.string cimport string
@@ -55,6 +55,7 @@ cdef class Included(thrift.py3.types.Struct):
 
         self._cpp_obj = move(Included._make_instance(
           NULL,
+          NULL,
           MyIntField,
           MyTransitiveField,
         ))
@@ -64,27 +65,41 @@ cdef class Included(thrift.py3.types.Struct):
         MyIntField=__NOTSET,
         MyTransitiveField=__NOTSET
     ):
-        changes = any((
-            MyIntField is not __NOTSET,
+        ___NOTSET = __NOTSET  # Cheaper for larger structs
+        cdef bint[2] __isNOTSET  # so make_instance is typed
 
-            MyTransitiveField is not __NOTSET,
-        ))
+        changes = False
+        if MyIntField is ___NOTSET:
+            __isNOTSET[0] = True
+            MyIntField = None
+        else:
+            __isNOTSET[0] = False
+            changes = True
+
+        if MyTransitiveField is ___NOTSET:
+            __isNOTSET[1] = True
+            MyTransitiveField = None
+        else:
+            __isNOTSET[1] = False
+            changes = True
+
 
         if not changes:
             return self
 
-        if None is not MyIntField is not __NOTSET:
+        if MyIntField is not None:
             if not isinstance(MyIntField, int):
                 raise TypeError(f'MyIntField is not a { int !r}.')
             MyIntField = <int64_t> MyIntField
 
-        if None is not MyTransitiveField is not __NOTSET:
+        if MyTransitiveField is not None:
             if not isinstance(MyTransitiveField, _transitive_types.Foo):
                 raise TypeError(f'MyTransitiveField is not a { _transitive_types.Foo !r}.')
 
         inst = <Included>Included.__new__(Included)
         inst._cpp_obj = move(Included._make_instance(
           self._cpp_obj.get(),
+          __isNOTSET,
           MyIntField,
           MyTransitiveField,
         ))
@@ -93,8 +108,9 @@ cdef class Included(thrift.py3.types.Struct):
     @staticmethod
     cdef unique_ptr[cIncluded] _make_instance(
         cIncluded* base_instance,
-        object MyIntField,
-        object MyTransitiveField
+        bint* __isNOTSET,
+        object MyIntField ,
+        _transitive_types.Foo MyTransitiveField 
     ) except *:
         cdef unique_ptr[cIncluded] c_inst
         if base_instance:
@@ -104,19 +120,15 @@ cdef class Included(thrift.py3.types.Struct):
 
         if base_instance:
             # Convert None's to default value. (or unset)
-            if MyIntField is None:
+            if not __isNOTSET[0] and MyIntField is None:
                 deref(c_inst).MyIntField = _Included_defaults.MyIntField
                 deref(c_inst).__isset.MyIntField = False
                 pass
-            elif MyIntField is __NOTSET:
-                MyIntField = None
 
-            if MyTransitiveField is None:
+            if not __isNOTSET[1] and MyTransitiveField is None:
                 deref(c_inst).MyTransitiveField = _Included_defaults.MyTransitiveField
                 deref(c_inst).__isset.MyTransitiveField = False
                 pass
-            elif MyTransitiveField is __NOTSET:
-                MyTransitiveField = None
 
         if MyIntField is not None:
             deref(c_inst).MyIntField = MyIntField

@@ -101,6 +101,7 @@ cdef class AStruct(thrift.py3.types.Struct):
     @staticmethod
     cdef unique_ptr[cAStruct] _make_instance(
         cAStruct* base_instance,
+        bint* __isNOTSET,
         object FieldA
     ) except *
 
@@ -120,7 +121,8 @@ cdef class AStructB(thrift.py3.types.Struct):
     @staticmethod
     cdef unique_ptr[cAStructB] _make_instance(
         cAStructB* base_instance,
-        object FieldA
+        bint* __isNOTSET,
+        AStruct FieldA
     ) except *
 
     @staticmethod

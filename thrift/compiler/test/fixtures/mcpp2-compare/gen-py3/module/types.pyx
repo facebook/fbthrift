@@ -4,8 +4,8 @@
 # DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
 #  @generated
 #
-
 cimport cython as __cython
+from cpython.bytes cimport PyBytes_AsStringAndSize
 from cpython.object cimport PyTypeObject, Py_LT, Py_LE, Py_EQ, Py_NE, Py_GT, Py_GE
 from libcpp.memory cimport shared_ptr, make_shared, unique_ptr, make_unique
 from libcpp.string cimport string
@@ -963,24 +963,18 @@ cdef class Empty(thrift.py3.types.Struct):
     ):
         self._cpp_obj = move(Empty._make_instance(
           NULL,
+          NULL,
         ))
 
     def __call__(
         Empty self
     ):
-        changes = any((        ))
-
-        if not changes:
-            return self
-        inst = <Empty>Empty.__new__(Empty)
-        inst._cpp_obj = move(Empty._make_instance(
-          self._cpp_obj.get(),
-        ))
-        return inst
+        return self
 
     @staticmethod
     cdef unique_ptr[cEmpty] _make_instance(
-        cEmpty* base_instance
+        cEmpty* base_instance,
+        bint* __isNOTSET
     ) except *:
         cdef unique_ptr[cEmpty] c_inst
         if base_instance:
@@ -1106,6 +1100,7 @@ cdef class ASimpleStruct(thrift.py3.types.Struct):
 
         self._cpp_obj = move(ASimpleStruct._make_instance(
           NULL,
+          NULL,
           boolField,
         ))
 
@@ -1113,14 +1108,22 @@ cdef class ASimpleStruct(thrift.py3.types.Struct):
         ASimpleStruct self,
         boolField=__NOTSET
     ):
-        changes = any((
-            boolField is not __NOTSET,
-        ))
+        ___NOTSET = __NOTSET  # Cheaper for larger structs
+        cdef bint[1] __isNOTSET  # so make_instance is typed
+
+        changes = False
+        if boolField is ___NOTSET:
+            __isNOTSET[0] = True
+            boolField = None
+        else:
+            __isNOTSET[0] = False
+            changes = True
+
 
         if not changes:
             return self
 
-        if None is not boolField is not __NOTSET:
+        if boolField is not None:
             if not isinstance(boolField, int):
                 raise TypeError(f'boolField is not a { int !r}.')
             boolField = <int64_t> boolField
@@ -1128,6 +1131,7 @@ cdef class ASimpleStruct(thrift.py3.types.Struct):
         inst = <ASimpleStruct>ASimpleStruct.__new__(ASimpleStruct)
         inst._cpp_obj = move(ASimpleStruct._make_instance(
           self._cpp_obj.get(),
+          __isNOTSET,
           boolField,
         ))
         return inst
@@ -1135,7 +1139,8 @@ cdef class ASimpleStruct(thrift.py3.types.Struct):
     @staticmethod
     cdef unique_ptr[cASimpleStruct] _make_instance(
         cASimpleStruct* base_instance,
-        object boolField
+        bint* __isNOTSET,
+        object boolField 
     ) except *:
         cdef unique_ptr[cASimpleStruct] c_inst
         if base_instance:
@@ -1145,12 +1150,10 @@ cdef class ASimpleStruct(thrift.py3.types.Struct):
 
         if base_instance:
             # Convert None's to default value. (or unset)
-            if boolField is None:
+            if not __isNOTSET[0] and boolField is None:
                 deref(c_inst).boolField = _ASimpleStruct_defaults.boolField
                 deref(c_inst).__isset.boolField = False
                 pass
-            elif boolField is __NOTSET:
-                boolField = None
 
         if boolField is not None:
             deref(c_inst).boolField = boolField
@@ -1267,6 +1270,7 @@ cdef class ASimpleStructNoexcept(thrift.py3.types.Struct):
 
         self._cpp_obj = move(ASimpleStructNoexcept._make_instance(
           NULL,
+          NULL,
           boolField,
         ))
 
@@ -1274,14 +1278,22 @@ cdef class ASimpleStructNoexcept(thrift.py3.types.Struct):
         ASimpleStructNoexcept self,
         boolField=__NOTSET
     ):
-        changes = any((
-            boolField is not __NOTSET,
-        ))
+        ___NOTSET = __NOTSET  # Cheaper for larger structs
+        cdef bint[1] __isNOTSET  # so make_instance is typed
+
+        changes = False
+        if boolField is ___NOTSET:
+            __isNOTSET[0] = True
+            boolField = None
+        else:
+            __isNOTSET[0] = False
+            changes = True
+
 
         if not changes:
             return self
 
-        if None is not boolField is not __NOTSET:
+        if boolField is not None:
             if not isinstance(boolField, int):
                 raise TypeError(f'boolField is not a { int !r}.')
             boolField = <int64_t> boolField
@@ -1289,6 +1301,7 @@ cdef class ASimpleStructNoexcept(thrift.py3.types.Struct):
         inst = <ASimpleStructNoexcept>ASimpleStructNoexcept.__new__(ASimpleStructNoexcept)
         inst._cpp_obj = move(ASimpleStructNoexcept._make_instance(
           self._cpp_obj.get(),
+          __isNOTSET,
           boolField,
         ))
         return inst
@@ -1296,7 +1309,8 @@ cdef class ASimpleStructNoexcept(thrift.py3.types.Struct):
     @staticmethod
     cdef unique_ptr[cASimpleStructNoexcept] _make_instance(
         cASimpleStructNoexcept* base_instance,
-        object boolField
+        bint* __isNOTSET,
+        object boolField 
     ) except *:
         cdef unique_ptr[cASimpleStructNoexcept] c_inst
         if base_instance:
@@ -1306,12 +1320,10 @@ cdef class ASimpleStructNoexcept(thrift.py3.types.Struct):
 
         if base_instance:
             # Convert None's to default value. (or unset)
-            if boolField is None:
+            if not __isNOTSET[0] and boolField is None:
                 deref(c_inst).boolField = _ASimpleStructNoexcept_defaults.boolField
                 deref(c_inst).__isset.boolField = False
                 pass
-            elif boolField is __NOTSET:
-                boolField = None
 
         if boolField is not None:
             deref(c_inst).boolField = boolField
@@ -1444,6 +1456,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
 
         self._cpp_obj = move(MyStruct._make_instance(
           NULL,
+          NULL,
           MyBoolField,
           MyIntField,
           MyStringField,
@@ -1467,63 +1480,112 @@ cdef class MyStruct(thrift.py3.types.Struct):
         MyBinaryListField4=__NOTSET,
         MyMapEnumAndInt=__NOTSET
     ):
-        changes = any((
-            MyBoolField is not __NOTSET,
+        ___NOTSET = __NOTSET  # Cheaper for larger structs
+        cdef bint[9] __isNOTSET  # so make_instance is typed
 
-            MyIntField is not __NOTSET,
+        changes = False
+        if MyBoolField is ___NOTSET:
+            __isNOTSET[0] = True
+            MyBoolField = None
+        else:
+            __isNOTSET[0] = False
+            changes = True
 
-            MyStringField is not __NOTSET,
+        if MyIntField is ___NOTSET:
+            __isNOTSET[1] = True
+            MyIntField = None
+        else:
+            __isNOTSET[1] = False
+            changes = True
 
-            MyStringField2 is not __NOTSET,
+        if MyStringField is ___NOTSET:
+            __isNOTSET[2] = True
+            MyStringField = None
+        else:
+            __isNOTSET[2] = False
+            changes = True
 
-            MyBinaryField is not __NOTSET,
+        if MyStringField2 is ___NOTSET:
+            __isNOTSET[3] = True
+            MyStringField2 = None
+        else:
+            __isNOTSET[3] = False
+            changes = True
 
-            MyBinaryField2 is not __NOTSET,
+        if MyBinaryField is ___NOTSET:
+            __isNOTSET[4] = True
+            MyBinaryField = None
+        else:
+            __isNOTSET[4] = False
+            changes = True
 
-            MyBinaryField3 is not __NOTSET,
+        if MyBinaryField2 is ___NOTSET:
+            __isNOTSET[5] = True
+            MyBinaryField2 = None
+        else:
+            __isNOTSET[5] = False
+            changes = True
 
-            MyBinaryListField4 is not __NOTSET,
+        if MyBinaryField3 is ___NOTSET:
+            __isNOTSET[6] = True
+            MyBinaryField3 = None
+        else:
+            __isNOTSET[6] = False
+            changes = True
 
-            MyMapEnumAndInt is not __NOTSET,
-        ))
+        if MyBinaryListField4 is ___NOTSET:
+            __isNOTSET[7] = True
+            MyBinaryListField4 = None
+        else:
+            __isNOTSET[7] = False
+            changes = True
+
+        if MyMapEnumAndInt is ___NOTSET:
+            __isNOTSET[8] = True
+            MyMapEnumAndInt = None
+        else:
+            __isNOTSET[8] = False
+            changes = True
+
 
         if not changes:
             return self
 
-        if None is not MyBoolField is not __NOTSET:
+        if MyBoolField is not None:
             if not isinstance(MyBoolField, bool):
                 raise TypeError(f'MyBoolField is not a { bool !r}.')
 
-        if None is not MyIntField is not __NOTSET:
+        if MyIntField is not None:
             if not isinstance(MyIntField, int):
                 raise TypeError(f'MyIntField is not a { int !r}.')
             MyIntField = <int64_t> MyIntField
 
-        if None is not MyStringField is not __NOTSET:
+        if MyStringField is not None:
             if not isinstance(MyStringField, str):
                 raise TypeError(f'MyStringField is not a { str !r}.')
 
-        if None is not MyStringField2 is not __NOTSET:
+        if MyStringField2 is not None:
             if not isinstance(MyStringField2, str):
                 raise TypeError(f'MyStringField2 is not a { str !r}.')
 
-        if None is not MyBinaryField is not __NOTSET:
+        if MyBinaryField is not None:
             if not isinstance(MyBinaryField, bytes):
                 raise TypeError(f'MyBinaryField is not a { bytes !r}.')
 
-        if None is not MyBinaryField2 is not __NOTSET:
+        if MyBinaryField2 is not None:
             if not isinstance(MyBinaryField2, bytes):
                 raise TypeError(f'MyBinaryField2 is not a { bytes !r}.')
 
-        if MyBinaryField3 is None:
+        if not __isNOTSET[6] and MyBinaryField3 is None:
             raise TypeError('field MyBinaryField3 is required and has no default, it can not be unset')
-        if None is not MyBinaryField3 is not __NOTSET:
+        if MyBinaryField3 is not None:
             if not isinstance(MyBinaryField3, bytes):
                 raise TypeError(f'MyBinaryField3 is not a { bytes !r}.')
 
         inst = <MyStruct>MyStruct.__new__(MyStruct)
         inst._cpp_obj = move(MyStruct._make_instance(
           self._cpp_obj.get(),
+          __isNOTSET,
           MyBoolField,
           MyIntField,
           MyStringField,
@@ -1539,15 +1601,16 @@ cdef class MyStruct(thrift.py3.types.Struct):
     @staticmethod
     cdef unique_ptr[cMyStruct] _make_instance(
         cMyStruct* base_instance,
-        object MyBoolField,
-        object MyIntField,
-        object MyStringField,
-        object MyStringField2,
-        object MyBinaryField,
-        object MyBinaryField2,
-        object MyBinaryField3,
-        object MyBinaryListField4,
-        object MyMapEnumAndInt
+        bint* __isNOTSET,
+        pbool MyBoolField ,
+        object MyIntField ,
+        str MyStringField ,
+        str MyStringField2 ,
+        bytes MyBinaryField ,
+        bytes MyBinaryField2 ,
+        bytes MyBinaryField3 ,
+        object MyBinaryListField4 ,
+        object MyMapEnumAndInt 
     ) except *:
         cdef unique_ptr[cMyStruct] c_inst
         if base_instance:
@@ -1557,65 +1620,47 @@ cdef class MyStruct(thrift.py3.types.Struct):
 
         if base_instance:
             # Convert None's to default value. (or unset)
-            if MyBoolField is None:
+            if not __isNOTSET[0] and MyBoolField is None:
                 deref(c_inst).MyBoolField = _MyStruct_defaults.MyBoolField
                 deref(c_inst).__isset.MyBoolField = False
                 pass
-            elif MyBoolField is __NOTSET:
-                MyBoolField = None
 
-            if MyIntField is None:
+            if not __isNOTSET[1] and MyIntField is None:
                 deref(c_inst).MyIntField = _MyStruct_defaults.MyIntField
                 deref(c_inst).__isset.MyIntField = False
                 pass
-            elif MyIntField is __NOTSET:
-                MyIntField = None
 
-            if MyStringField is None:
+            if not __isNOTSET[2] and MyStringField is None:
                 deref(c_inst).MyStringField = _MyStruct_defaults.MyStringField
                 deref(c_inst).__isset.MyStringField = False
                 pass
-            elif MyStringField is __NOTSET:
-                MyStringField = None
 
-            if MyStringField2 is None:
+            if not __isNOTSET[3] and MyStringField2 is None:
                 deref(c_inst).MyStringField2 = _MyStruct_defaults.MyStringField2
                 deref(c_inst).__isset.MyStringField2 = False
                 pass
-            elif MyStringField2 is __NOTSET:
-                MyStringField2 = None
 
-            if MyBinaryField is None:
+            if not __isNOTSET[4] and MyBinaryField is None:
                 deref(c_inst).MyBinaryField = _MyStruct_defaults.MyBinaryField
                 deref(c_inst).__isset.MyBinaryField = False
                 pass
-            elif MyBinaryField is __NOTSET:
-                MyBinaryField = None
 
-            if MyBinaryField2 is None:
+            if not __isNOTSET[5] and MyBinaryField2 is None:
                 deref(c_inst).__isset.MyBinaryField2 = False
                 pass
-            elif MyBinaryField2 is __NOTSET:
-                MyBinaryField2 = None
 
-            if MyBinaryField3 is None:
+            if not __isNOTSET[6] and MyBinaryField3 is None:
                 pass
-            elif MyBinaryField3 is __NOTSET:
-                MyBinaryField3 = None
 
-            if MyBinaryListField4 is None:
+            if not __isNOTSET[7] and MyBinaryListField4 is None:
                 deref(c_inst).MyBinaryListField4 = _MyStruct_defaults.MyBinaryListField4
                 deref(c_inst).__isset.MyBinaryListField4 = False
                 pass
-            elif MyBinaryListField4 is __NOTSET:
-                MyBinaryListField4 = None
 
-            if MyMapEnumAndInt is None:
+            if not __isNOTSET[8] and MyMapEnumAndInt is None:
                 deref(c_inst).MyMapEnumAndInt = _MyStruct_defaults.MyMapEnumAndInt
                 deref(c_inst).__isset.MyMapEnumAndInt = False
                 pass
-            elif MyMapEnumAndInt is __NOTSET:
-                MyMapEnumAndInt = None
 
         if MyBoolField is not None:
             deref(c_inst).MyBoolField = MyBoolField
@@ -1624,19 +1669,19 @@ cdef class MyStruct(thrift.py3.types.Struct):
             deref(c_inst).MyIntField = MyIntField
             deref(c_inst).__isset.MyIntField = True
         if MyStringField is not None:
-            deref(c_inst).MyStringField = MyStringField.encode('UTF-8')
+            deref(c_inst).MyStringField = thrift.py3.types.move(thrift.py3.types.bytes_to_string(MyStringField.encode('utf-8')))
             deref(c_inst).__isset.MyStringField = True
         if MyStringField2 is not None:
-            deref(c_inst).MyStringField2 = MyStringField2.encode('UTF-8')
+            deref(c_inst).MyStringField2 = thrift.py3.types.move(thrift.py3.types.bytes_to_string(MyStringField2.encode('utf-8')))
             deref(c_inst).__isset.MyStringField2 = True
         if MyBinaryField is not None:
-            deref(c_inst).MyBinaryField = MyBinaryField
+            deref(c_inst).MyBinaryField = thrift.py3.types.move(thrift.py3.types.bytes_to_string(MyBinaryField))
             deref(c_inst).__isset.MyBinaryField = True
         if MyBinaryField2 is not None:
-            deref(c_inst).MyBinaryField2 = MyBinaryField2
+            deref(c_inst).MyBinaryField2 = thrift.py3.types.move(thrift.py3.types.bytes_to_string(MyBinaryField2))
             deref(c_inst).__isset.MyBinaryField2 = True
         if MyBinaryField3 is not None:
-            deref(c_inst).MyBinaryField3 = MyBinaryField3
+            deref(c_inst).MyBinaryField3 = thrift.py3.types.move(thrift.py3.types.bytes_to_string(MyBinaryField3))
         if MyBinaryListField4 is not None:
             deref(c_inst).MyBinaryListField4 = deref(List__binary(MyBinaryListField4)._cpp_obj)
             deref(c_inst).__isset.MyBinaryListField4 = True
@@ -1850,8 +1895,8 @@ cdef class SimpleUnion(thrift.py3.types.Union):
     @staticmethod
     cdef unique_ptr[cSimpleUnion] _make_instance(
         cSimpleUnion* base_instance,
-        intValue,
-        stringValue
+        object intValue,
+        str stringValue
     ) except *:
         cdef unique_ptr[cSimpleUnion] c_inst = make_unique[cSimpleUnion]()
         cdef bint any_set = False
@@ -2206,38 +2251,38 @@ cdef class ComplexUnion(thrift.py3.types.Union):
     @staticmethod
     cdef unique_ptr[cComplexUnion] _make_instance(
         cComplexUnion* base_instance,
-        intValue,
-        req_intValue,
-        opt_intValue,
-        stringValue,
-        req_stringValue,
-        opt_stringValue,
-        intValue2,
-        intValue3,
-        doubelValue,
-        boolValue,
-        union_list,
-        union_set,
-        union_map,
-        req_union_map,
-        opt_union_map,
-        enum_field,
-        enum_container,
-        a_struct,
-        a_set_struct,
-        a_union,
-        req_a_union,
-        opt_a_union,
-        a_union_list,
-        a_union_typedef,
-        a_union_typedef_list,
-        MyBinaryField,
-        MyBinaryField2,
-        MyBinaryField3,
-        MyBinaryListField4,
-        ref_field,
-        ref_field2,
-        excp_field
+        object intValue,
+        object req_intValue,
+        object opt_intValue,
+        str stringValue,
+        str req_stringValue,
+        str opt_stringValue,
+        object intValue2,
+        object intValue3,
+        object doubelValue,
+        pbool boolValue,
+        object union_list,
+        object union_set,
+        object union_map,
+        object req_union_map,
+        object opt_union_map,
+        MyEnumA enum_field,
+        object enum_container,
+        MyStruct a_struct,
+        object a_set_struct,
+        SimpleUnion a_union,
+        SimpleUnion req_a_union,
+        SimpleUnion opt_a_union,
+        object a_union_list,
+        object a_union_typedef,
+        object a_union_typedef_list,
+        bytes MyBinaryField,
+        bytes MyBinaryField2,
+        bytes MyBinaryField3,
+        object MyBinaryListField4,
+        MyStruct ref_field,
+        MyStruct ref_field2,
+        AnException excp_field
     ) except *:
         cdef unique_ptr[cComplexUnion] c_inst = make_unique[cComplexUnion]()
         cdef bint any_set = False
@@ -2812,6 +2857,7 @@ cdef class AnException(thrift.py3.exceptions.Error):
 
         self._cpp_obj = move(AnException._make_instance(
           NULL,
+          NULL,
           code,
           req_code,
           message2,
@@ -2834,21 +2880,22 @@ cdef class AnException(thrift.py3.exceptions.Error):
     @staticmethod
     cdef unique_ptr[cAnException] _make_instance(
         cAnException* base_instance,
-        object code,
-        object req_code,
-        object message2,
-        object req_message,
-        object exception_list,
-        object exception_set,
-        object exception_map,
-        object req_exception_map,
-        object enum_field,
-        object enum_container,
-        object a_struct,
-        object a_set_struct,
-        object a_union_list,
-        object union_typedef,
-        object a_union_typedef_list
+        bint* __isNOTSET,
+        object code ,
+        object req_code ,
+        str message2 ,
+        str req_message ,
+        object exception_list ,
+        object exception_set ,
+        object exception_map ,
+        object req_exception_map ,
+        MyEnumA enum_field ,
+        object enum_container ,
+        MyStruct a_struct ,
+        object a_set_struct ,
+        object a_union_list ,
+        object union_typedef ,
+        object a_union_typedef_list 
     ) except *:
         cdef unique_ptr[cAnException] c_inst
         if base_instance:
@@ -2862,10 +2909,10 @@ cdef class AnException(thrift.py3.exceptions.Error):
         if req_code is not None:
             deref(c_inst).req_code = req_code
         if message2 is not None:
-            deref(c_inst).message2 = message2.encode('UTF-8')
+            deref(c_inst).message2 = thrift.py3.types.move(thrift.py3.types.bytes_to_string(message2.encode('utf-8')))
             deref(c_inst).__isset.message2 = True
         if req_message is not None:
-            deref(c_inst).req_message = req_message.encode('UTF-8')
+            deref(c_inst).req_message = thrift.py3.types.move(thrift.py3.types.bytes_to_string(req_message.encode('utf-8')))
         if exception_list is not None:
             deref(c_inst).exception_list = deref(List__i32(exception_list)._cpp_obj)
             deref(c_inst).__isset.exception_list = True
@@ -3089,6 +3136,7 @@ cdef class AnotherException(thrift.py3.exceptions.Error):
 
         self._cpp_obj = move(AnotherException._make_instance(
           NULL,
+          NULL,
           code,
           req_code,
           message,
@@ -3099,9 +3147,10 @@ cdef class AnotherException(thrift.py3.exceptions.Error):
     @staticmethod
     cdef unique_ptr[cAnotherException] _make_instance(
         cAnotherException* base_instance,
-        object code,
-        object req_code,
-        object message
+        bint* __isNOTSET,
+        object code ,
+        object req_code ,
+        str message 
     ) except *:
         cdef unique_ptr[cAnotherException] c_inst
         if base_instance:
@@ -3115,7 +3164,7 @@ cdef class AnotherException(thrift.py3.exceptions.Error):
         if req_code is not None:
             deref(c_inst).req_code = req_code
         if message is not None:
-            deref(c_inst).message = message.encode('UTF-8')
+            deref(c_inst).message = thrift.py3.types.move(thrift.py3.types.bytes_to_string(message.encode('utf-8')))
             deref(c_inst).__isset.message = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
@@ -3254,6 +3303,7 @@ cdef class containerStruct(thrift.py3.types.Struct):
 
         self._cpp_obj = move(containerStruct._make_instance(
           NULL,
+          NULL,
           fieldA,
           req_fieldA,
           opt_fieldA,
@@ -3351,207 +3401,441 @@ cdef class containerStruct(thrift.py3.types.Struct):
         fieldAE=__NOTSET,
         fieldSD=__NOTSET
     ):
-        changes = any((
-            fieldA is not __NOTSET,
+        ___NOTSET = __NOTSET  # Cheaper for larger structs
+        cdef bint[46] __isNOTSET  # so make_instance is typed
 
-            req_fieldA is not __NOTSET,
+        changes = False
+        if fieldA is ___NOTSET:
+            __isNOTSET[0] = True
+            fieldA = None
+        else:
+            __isNOTSET[0] = False
+            changes = True
 
-            opt_fieldA is not __NOTSET,
+        if req_fieldA is ___NOTSET:
+            __isNOTSET[1] = True
+            req_fieldA = None
+        else:
+            __isNOTSET[1] = False
+            changes = True
 
-            fieldB is not __NOTSET,
+        if opt_fieldA is ___NOTSET:
+            __isNOTSET[2] = True
+            opt_fieldA = None
+        else:
+            __isNOTSET[2] = False
+            changes = True
 
-            req_fieldB is not __NOTSET,
+        if fieldB is ___NOTSET:
+            __isNOTSET[3] = True
+            fieldB = None
+        else:
+            __isNOTSET[3] = False
+            changes = True
 
-            opt_fieldB is not __NOTSET,
+        if req_fieldB is ___NOTSET:
+            __isNOTSET[4] = True
+            req_fieldB = None
+        else:
+            __isNOTSET[4] = False
+            changes = True
 
-            fieldC is not __NOTSET,
+        if opt_fieldB is ___NOTSET:
+            __isNOTSET[5] = True
+            opt_fieldB = None
+        else:
+            __isNOTSET[5] = False
+            changes = True
 
-            req_fieldC is not __NOTSET,
+        if fieldC is ___NOTSET:
+            __isNOTSET[6] = True
+            fieldC = None
+        else:
+            __isNOTSET[6] = False
+            changes = True
 
-            opt_fieldC is not __NOTSET,
+        if req_fieldC is ___NOTSET:
+            __isNOTSET[7] = True
+            req_fieldC = None
+        else:
+            __isNOTSET[7] = False
+            changes = True
 
-            fieldD is not __NOTSET,
+        if opt_fieldC is ___NOTSET:
+            __isNOTSET[8] = True
+            opt_fieldC = None
+        else:
+            __isNOTSET[8] = False
+            changes = True
 
-            fieldE is not __NOTSET,
+        if fieldD is ___NOTSET:
+            __isNOTSET[9] = True
+            fieldD = None
+        else:
+            __isNOTSET[9] = False
+            changes = True
 
-            req_fieldE is not __NOTSET,
+        if fieldE is ___NOTSET:
+            __isNOTSET[10] = True
+            fieldE = None
+        else:
+            __isNOTSET[10] = False
+            changes = True
 
-            opt_fieldE is not __NOTSET,
+        if req_fieldE is ___NOTSET:
+            __isNOTSET[11] = True
+            req_fieldE = None
+        else:
+            __isNOTSET[11] = False
+            changes = True
 
-            fieldF is not __NOTSET,
+        if opt_fieldE is ___NOTSET:
+            __isNOTSET[12] = True
+            opt_fieldE = None
+        else:
+            __isNOTSET[12] = False
+            changes = True
 
-            fieldG is not __NOTSET,
+        if fieldF is ___NOTSET:
+            __isNOTSET[13] = True
+            fieldF = None
+        else:
+            __isNOTSET[13] = False
+            changes = True
 
-            fieldH is not __NOTSET,
+        if fieldG is ___NOTSET:
+            __isNOTSET[14] = True
+            fieldG = None
+        else:
+            __isNOTSET[14] = False
+            changes = True
 
-            fieldI is not __NOTSET,
+        if fieldH is ___NOTSET:
+            __isNOTSET[15] = True
+            fieldH = None
+        else:
+            __isNOTSET[15] = False
+            changes = True
 
-            fieldJ is not __NOTSET,
+        if fieldI is ___NOTSET:
+            __isNOTSET[16] = True
+            fieldI = None
+        else:
+            __isNOTSET[16] = False
+            changes = True
 
-            fieldK is not __NOTSET,
+        if fieldJ is ___NOTSET:
+            __isNOTSET[17] = True
+            fieldJ = None
+        else:
+            __isNOTSET[17] = False
+            changes = True
 
-            fieldL is not __NOTSET,
+        if fieldK is ___NOTSET:
+            __isNOTSET[18] = True
+            fieldK = None
+        else:
+            __isNOTSET[18] = False
+            changes = True
 
-            fieldM is not __NOTSET,
+        if fieldL is ___NOTSET:
+            __isNOTSET[19] = True
+            fieldL = None
+        else:
+            __isNOTSET[19] = False
+            changes = True
 
-            fieldN is not __NOTSET,
+        if fieldM is ___NOTSET:
+            __isNOTSET[20] = True
+            fieldM = None
+        else:
+            __isNOTSET[20] = False
+            changes = True
 
-            fieldO is not __NOTSET,
+        if fieldN is ___NOTSET:
+            __isNOTSET[21] = True
+            fieldN = None
+        else:
+            __isNOTSET[21] = False
+            changes = True
 
-            fieldP is not __NOTSET,
+        if fieldO is ___NOTSET:
+            __isNOTSET[22] = True
+            fieldO = None
+        else:
+            __isNOTSET[22] = False
+            changes = True
 
-            fieldQ is not __NOTSET,
+        if fieldP is ___NOTSET:
+            __isNOTSET[23] = True
+            fieldP = None
+        else:
+            __isNOTSET[23] = False
+            changes = True
 
-            fieldR is not __NOTSET,
+        if fieldQ is ___NOTSET:
+            __isNOTSET[24] = True
+            fieldQ = None
+        else:
+            __isNOTSET[24] = False
+            changes = True
 
-            req_fieldR is not __NOTSET,
+        if fieldR is ___NOTSET:
+            __isNOTSET[25] = True
+            fieldR = None
+        else:
+            __isNOTSET[25] = False
+            changes = True
 
-            opt_fieldR is not __NOTSET,
+        if req_fieldR is ___NOTSET:
+            __isNOTSET[26] = True
+            req_fieldR = None
+        else:
+            __isNOTSET[26] = False
+            changes = True
 
-            fieldS is not __NOTSET,
+        if opt_fieldR is ___NOTSET:
+            __isNOTSET[27] = True
+            opt_fieldR = None
+        else:
+            __isNOTSET[27] = False
+            changes = True
 
-            fieldT is not __NOTSET,
+        if fieldS is ___NOTSET:
+            __isNOTSET[28] = True
+            fieldS = None
+        else:
+            __isNOTSET[28] = False
+            changes = True
 
-            fieldU is not __NOTSET,
+        if fieldT is ___NOTSET:
+            __isNOTSET[29] = True
+            fieldT = None
+        else:
+            __isNOTSET[29] = False
+            changes = True
 
-            fieldV is not __NOTSET,
+        if fieldU is ___NOTSET:
+            __isNOTSET[30] = True
+            fieldU = None
+        else:
+            __isNOTSET[30] = False
+            changes = True
 
-            req_fieldV is not __NOTSET,
+        if fieldV is ___NOTSET:
+            __isNOTSET[31] = True
+            fieldV = None
+        else:
+            __isNOTSET[31] = False
+            changes = True
 
-            opt_fieldV is not __NOTSET,
+        if req_fieldV is ___NOTSET:
+            __isNOTSET[32] = True
+            req_fieldV = None
+        else:
+            __isNOTSET[32] = False
+            changes = True
 
-            fieldW is not __NOTSET,
+        if opt_fieldV is ___NOTSET:
+            __isNOTSET[33] = True
+            opt_fieldV = None
+        else:
+            __isNOTSET[33] = False
+            changes = True
 
-            fieldX is not __NOTSET,
+        if fieldW is ___NOTSET:
+            __isNOTSET[34] = True
+            fieldW = None
+        else:
+            __isNOTSET[34] = False
+            changes = True
 
-            req_fieldX is not __NOTSET,
+        if fieldX is ___NOTSET:
+            __isNOTSET[35] = True
+            fieldX = None
+        else:
+            __isNOTSET[35] = False
+            changes = True
 
-            opt_fieldX is not __NOTSET,
+        if req_fieldX is ___NOTSET:
+            __isNOTSET[36] = True
+            req_fieldX = None
+        else:
+            __isNOTSET[36] = False
+            changes = True
 
-            fieldY is not __NOTSET,
+        if opt_fieldX is ___NOTSET:
+            __isNOTSET[37] = True
+            opt_fieldX = None
+        else:
+            __isNOTSET[37] = False
+            changes = True
 
-            fieldZ is not __NOTSET,
+        if fieldY is ___NOTSET:
+            __isNOTSET[38] = True
+            fieldY = None
+        else:
+            __isNOTSET[38] = False
+            changes = True
 
-            fieldAA is not __NOTSET,
+        if fieldZ is ___NOTSET:
+            __isNOTSET[39] = True
+            fieldZ = None
+        else:
+            __isNOTSET[39] = False
+            changes = True
 
-            fieldAB is not __NOTSET,
+        if fieldAA is ___NOTSET:
+            __isNOTSET[40] = True
+            fieldAA = None
+        else:
+            __isNOTSET[40] = False
+            changes = True
 
-            fieldAC is not __NOTSET,
+        if fieldAB is ___NOTSET:
+            __isNOTSET[41] = True
+            fieldAB = None
+        else:
+            __isNOTSET[41] = False
+            changes = True
 
-            fieldAD is not __NOTSET,
+        if fieldAC is ___NOTSET:
+            __isNOTSET[42] = True
+            fieldAC = None
+        else:
+            __isNOTSET[42] = False
+            changes = True
 
-            fieldAE is not __NOTSET,
+        if fieldAD is ___NOTSET:
+            __isNOTSET[43] = True
+            fieldAD = None
+        else:
+            __isNOTSET[43] = False
+            changes = True
 
-            fieldSD is not __NOTSET,
-        ))
+        if fieldAE is ___NOTSET:
+            __isNOTSET[44] = True
+            fieldAE = None
+        else:
+            __isNOTSET[44] = False
+            changes = True
+
+        if fieldSD is ___NOTSET:
+            __isNOTSET[45] = True
+            fieldSD = None
+        else:
+            __isNOTSET[45] = False
+            changes = True
+
 
         if not changes:
             return self
 
-        if None is not fieldA is not __NOTSET:
+        if fieldA is not None:
             if not isinstance(fieldA, bool):
                 raise TypeError(f'fieldA is not a { bool !r}.')
 
-        if req_fieldA is None:
+        if not __isNOTSET[1] and req_fieldA is None:
             raise TypeError('field req_fieldA is required and has no default, it can not be unset')
-        if None is not req_fieldA is not __NOTSET:
+        if req_fieldA is not None:
             if not isinstance(req_fieldA, bool):
                 raise TypeError(f'req_fieldA is not a { bool !r}.')
 
-        if None is not opt_fieldA is not __NOTSET:
+        if opt_fieldA is not None:
             if not isinstance(opt_fieldA, bool):
                 raise TypeError(f'opt_fieldA is not a { bool !r}.')
 
-        if req_fieldB is None:
+        if not __isNOTSET[4] and req_fieldB is None:
             raise TypeError('field req_fieldB is required and has no default, it can not be unset')
-        if None is not fieldD is not __NOTSET:
+        if fieldD is not None:
             if not isinstance(fieldD, str):
                 raise TypeError(f'fieldD is not a { str !r}.')
 
-        if None is not fieldE is not __NOTSET:
+        if fieldE is not None:
             if not isinstance(fieldE, str):
                 raise TypeError(f'fieldE is not a { str !r}.')
 
-        if None is not req_fieldE is not __NOTSET:
+        if req_fieldE is not None:
             if not isinstance(req_fieldE, str):
                 raise TypeError(f'req_fieldE is not a { str !r}.')
 
-        if None is not opt_fieldE is not __NOTSET:
+        if opt_fieldE is not None:
             if not isinstance(opt_fieldE, str):
                 raise TypeError(f'opt_fieldE is not a { str !r}.')
 
-        if None is not fieldI is not __NOTSET:
+        if fieldI is not None:
             if not isinstance(fieldI, bool):
                 raise TypeError(f'fieldI is not a { bool !r}.')
 
-        if None is not fieldN is not __NOTSET:
+        if fieldN is not None:
             if not isinstance(fieldN, int):
                 raise TypeError(f'fieldN is not a { int !r}.')
             fieldN = <int32_t> fieldN
 
-        if None is not fieldQ is not __NOTSET:
+        if fieldQ is not None:
             if not isinstance(fieldQ, MyEnumA):
                 raise TypeError(f'field fieldQ value: { fieldQ !r} is not of the enum type { MyEnumA }.')
 
-        if None is not fieldR is not __NOTSET:
+        if fieldR is not None:
             if not isinstance(fieldR, MyEnumA):
                 raise TypeError(f'field fieldR value: { fieldR !r} is not of the enum type { MyEnumA }.')
 
-        if None is not req_fieldR is not __NOTSET:
+        if req_fieldR is not None:
             if not isinstance(req_fieldR, MyEnumA):
                 raise TypeError(f'field req_fieldR value: { req_fieldR !r} is not of the enum type { MyEnumA }.')
 
-        if None is not opt_fieldR is not __NOTSET:
+        if opt_fieldR is not None:
             if not isinstance(opt_fieldR, MyEnumA):
                 raise TypeError(f'field opt_fieldR value: { opt_fieldR !r} is not of the enum type { MyEnumA }.')
 
-        if None is not fieldS is not __NOTSET:
+        if fieldS is not None:
             if not isinstance(fieldS, MyEnumA):
                 raise TypeError(f'field fieldS value: { fieldS !r} is not of the enum type { MyEnumA }.')
 
-        if None is not fieldV is not __NOTSET:
+        if fieldV is not None:
             if not isinstance(fieldV, MyStruct):
                 raise TypeError(f'fieldV is not a { MyStruct !r}.')
 
-        if req_fieldV is None:
+        if not __isNOTSET[32] and req_fieldV is None:
             raise TypeError('field req_fieldV is required and has no default, it can not be unset')
-        if None is not req_fieldV is not __NOTSET:
+        if req_fieldV is not None:
             if not isinstance(req_fieldV, MyStruct):
                 raise TypeError(f'req_fieldV is not a { MyStruct !r}.')
 
-        if None is not opt_fieldV is not __NOTSET:
+        if opt_fieldV is not None:
             if not isinstance(opt_fieldV, MyStruct):
                 raise TypeError(f'opt_fieldV is not a { MyStruct !r}.')
 
-        if None is not fieldX is not __NOTSET:
+        if fieldX is not None:
             if not isinstance(fieldX, ComplexUnion):
                 raise TypeError(f'fieldX is not a { ComplexUnion !r}.')
 
-        if req_fieldX is None:
+        if not __isNOTSET[36] and req_fieldX is None:
             raise TypeError('field req_fieldX is required and has no default, it can not be unset')
-        if None is not req_fieldX is not __NOTSET:
+        if req_fieldX is not None:
             if not isinstance(req_fieldX, ComplexUnion):
                 raise TypeError(f'req_fieldX is not a { ComplexUnion !r}.')
 
-        if None is not opt_fieldX is not __NOTSET:
+        if opt_fieldX is not None:
             if not isinstance(opt_fieldX, ComplexUnion):
                 raise TypeError(f'opt_fieldX is not a { ComplexUnion !r}.')
 
-        if None is not fieldAC is not __NOTSET:
+        if fieldAC is not None:
             if not isinstance(fieldAC, MyEnumB):
                 raise TypeError(f'field fieldAC value: { fieldAC !r} is not of the enum type { MyEnumB }.')
 
-        if None is not fieldAD is not __NOTSET:
+        if fieldAD is not None:
             if not isinstance(fieldAD, _includes_types.AnEnum):
                 raise TypeError(f'field fieldAD value: { fieldAD !r} is not of the enum type { _includes_types.AnEnum }.')
 
-        if None is not fieldSD is not __NOTSET:
+        if fieldSD is not None:
             if not isinstance(fieldSD, str):
                 raise TypeError(f'fieldSD is not a { str !r}.')
 
         inst = <containerStruct>containerStruct.__new__(containerStruct)
         inst._cpp_obj = move(containerStruct._make_instance(
           self._cpp_obj.get(),
+          __isNOTSET,
           fieldA,
           req_fieldA,
           opt_fieldA,
@@ -3604,52 +3888,53 @@ cdef class containerStruct(thrift.py3.types.Struct):
     @staticmethod
     cdef unique_ptr[ccontainerStruct] _make_instance(
         ccontainerStruct* base_instance,
-        object fieldA,
-        object req_fieldA,
-        object opt_fieldA,
-        object fieldB,
-        object req_fieldB,
-        object opt_fieldB,
-        object fieldC,
-        object req_fieldC,
-        object opt_fieldC,
-        object fieldD,
-        object fieldE,
-        object req_fieldE,
-        object opt_fieldE,
-        object fieldF,
-        object fieldG,
-        object fieldH,
-        object fieldI,
-        object fieldJ,
-        object fieldK,
-        object fieldL,
-        object fieldM,
-        object fieldN,
-        object fieldO,
-        object fieldP,
-        object fieldQ,
-        object fieldR,
-        object req_fieldR,
-        object opt_fieldR,
-        object fieldS,
-        object fieldT,
-        object fieldU,
-        object fieldV,
-        object req_fieldV,
-        object opt_fieldV,
-        object fieldW,
-        object fieldX,
-        object req_fieldX,
-        object opt_fieldX,
-        object fieldY,
-        object fieldZ,
-        object fieldAA,
-        object fieldAB,
-        object fieldAC,
-        object fieldAD,
-        object fieldAE,
-        object fieldSD
+        bint* __isNOTSET,
+        pbool fieldA ,
+        pbool req_fieldA ,
+        pbool opt_fieldA ,
+        object fieldB ,
+        object req_fieldB ,
+        object opt_fieldB ,
+        object fieldC ,
+        object req_fieldC ,
+        object opt_fieldC ,
+        str fieldD ,
+        str fieldE ,
+        str req_fieldE ,
+        str opt_fieldE ,
+        object fieldF ,
+        object fieldG ,
+        object fieldH ,
+        pbool fieldI ,
+        object fieldJ ,
+        object fieldK ,
+        object fieldL ,
+        object fieldM ,
+        object fieldN ,
+        object fieldO ,
+        object fieldP ,
+        MyEnumA fieldQ ,
+        MyEnumA fieldR ,
+        MyEnumA req_fieldR ,
+        MyEnumA opt_fieldR ,
+        MyEnumA fieldS ,
+        object fieldT ,
+        object fieldU ,
+        MyStruct fieldV ,
+        MyStruct req_fieldV ,
+        MyStruct opt_fieldV ,
+        object fieldW ,
+        ComplexUnion fieldX ,
+        ComplexUnion req_fieldX ,
+        ComplexUnion opt_fieldX ,
+        object fieldY ,
+        object fieldZ ,
+        object fieldAA ,
+        object fieldAB ,
+        MyEnumB fieldAC ,
+        _includes_types.AnEnum fieldAD ,
+        object fieldAE ,
+        str fieldSD 
     ) except *:
         cdef unique_ptr[ccontainerStruct] c_inst
         if base_instance:
@@ -3659,312 +3944,220 @@ cdef class containerStruct(thrift.py3.types.Struct):
 
         if base_instance:
             # Convert None's to default value. (or unset)
-            if fieldA is None:
+            if not __isNOTSET[0] and fieldA is None:
                 deref(c_inst).fieldA = _containerStruct_defaults.fieldA
                 deref(c_inst).__isset.fieldA = False
                 pass
-            elif fieldA is __NOTSET:
-                fieldA = None
 
-            if req_fieldA is None:
+            if not __isNOTSET[1] and req_fieldA is None:
                 pass
-            elif req_fieldA is __NOTSET:
-                req_fieldA = None
 
-            if opt_fieldA is None:
+            if not __isNOTSET[2] and opt_fieldA is None:
                 deref(c_inst).__isset.opt_fieldA = False
                 pass
-            elif opt_fieldA is __NOTSET:
-                opt_fieldA = None
 
-            if fieldB is None:
+            if not __isNOTSET[3] and fieldB is None:
                 deref(c_inst).fieldB = _containerStruct_defaults.fieldB
                 deref(c_inst).__isset.fieldB = False
                 pass
-            elif fieldB is __NOTSET:
-                fieldB = None
 
-            if req_fieldB is None:
+            if not __isNOTSET[4] and req_fieldB is None:
                 pass
-            elif req_fieldB is __NOTSET:
-                req_fieldB = None
 
-            if opt_fieldB is None:
+            if not __isNOTSET[5] and opt_fieldB is None:
                 deref(c_inst).__isset.opt_fieldB = False
                 pass
-            elif opt_fieldB is __NOTSET:
-                opt_fieldB = None
 
-            if fieldC is None:
+            if not __isNOTSET[6] and fieldC is None:
                 deref(c_inst).fieldC = _containerStruct_defaults.fieldC
                 deref(c_inst).__isset.fieldC = False
                 pass
-            elif fieldC is __NOTSET:
-                fieldC = None
 
-            if req_fieldC is None:
+            if not __isNOTSET[7] and req_fieldC is None:
                 deref(c_inst).req_fieldC = _containerStruct_defaults.req_fieldC
                 pass
-            elif req_fieldC is __NOTSET:
-                req_fieldC = None
 
-            if opt_fieldC is None:
+            if not __isNOTSET[8] and opt_fieldC is None:
                 deref(c_inst).opt_fieldC = _containerStruct_defaults.opt_fieldC
                 deref(c_inst).__isset.opt_fieldC = False
                 pass
-            elif opt_fieldC is __NOTSET:
-                opt_fieldC = None
 
-            if fieldD is None:
+            if not __isNOTSET[9] and fieldD is None:
                 deref(c_inst).fieldD = _containerStruct_defaults.fieldD
                 deref(c_inst).__isset.fieldD = False
                 pass
-            elif fieldD is __NOTSET:
-                fieldD = None
 
-            if fieldE is None:
+            if not __isNOTSET[10] and fieldE is None:
                 deref(c_inst).fieldE = _containerStruct_defaults.fieldE
                 deref(c_inst).__isset.fieldE = False
                 pass
-            elif fieldE is __NOTSET:
-                fieldE = None
 
-            if req_fieldE is None:
+            if not __isNOTSET[11] and req_fieldE is None:
                 deref(c_inst).req_fieldE = _containerStruct_defaults.req_fieldE
                 pass
-            elif req_fieldE is __NOTSET:
-                req_fieldE = None
 
-            if opt_fieldE is None:
+            if not __isNOTSET[12] and opt_fieldE is None:
                 deref(c_inst).opt_fieldE = _containerStruct_defaults.opt_fieldE
                 deref(c_inst).__isset.opt_fieldE = False
                 pass
-            elif opt_fieldE is __NOTSET:
-                opt_fieldE = None
 
-            if fieldF is None:
+            if not __isNOTSET[13] and fieldF is None:
                 deref(c_inst).fieldF = _containerStruct_defaults.fieldF
                 deref(c_inst).__isset.fieldF = False
                 pass
-            elif fieldF is __NOTSET:
-                fieldF = None
 
-            if fieldG is None:
+            if not __isNOTSET[14] and fieldG is None:
                 deref(c_inst).fieldG = _containerStruct_defaults.fieldG
                 deref(c_inst).__isset.fieldG = False
                 pass
-            elif fieldG is __NOTSET:
-                fieldG = None
 
-            if fieldH is None:
+            if not __isNOTSET[15] and fieldH is None:
                 deref(c_inst).fieldH = _containerStruct_defaults.fieldH
                 deref(c_inst).__isset.fieldH = False
                 pass
-            elif fieldH is __NOTSET:
-                fieldH = None
 
-            if fieldI is None:
+            if not __isNOTSET[16] and fieldI is None:
                 deref(c_inst).fieldI = _containerStruct_defaults.fieldI
                 deref(c_inst).__isset.fieldI = False
                 pass
-            elif fieldI is __NOTSET:
-                fieldI = None
 
-            if fieldJ is None:
+            if not __isNOTSET[17] and fieldJ is None:
                 deref(c_inst).fieldJ = _containerStruct_defaults.fieldJ
                 deref(c_inst).__isset.fieldJ = False
                 pass
-            elif fieldJ is __NOTSET:
-                fieldJ = None
 
-            if fieldK is None:
+            if not __isNOTSET[18] and fieldK is None:
                 deref(c_inst).fieldK = _containerStruct_defaults.fieldK
                 deref(c_inst).__isset.fieldK = False
                 pass
-            elif fieldK is __NOTSET:
-                fieldK = None
 
-            if fieldL is None:
+            if not __isNOTSET[19] and fieldL is None:
                 deref(c_inst).fieldL = _containerStruct_defaults.fieldL
                 deref(c_inst).__isset.fieldL = False
                 pass
-            elif fieldL is __NOTSET:
-                fieldL = None
 
-            if fieldM is None:
+            if not __isNOTSET[20] and fieldM is None:
                 deref(c_inst).fieldM = _containerStruct_defaults.fieldM
                 deref(c_inst).__isset.fieldM = False
                 pass
-            elif fieldM is __NOTSET:
-                fieldM = None
 
-            if fieldN is None:
+            if not __isNOTSET[21] and fieldN is None:
                 deref(c_inst).fieldN = _containerStruct_defaults.fieldN
                 deref(c_inst).__isset.fieldN = False
                 pass
-            elif fieldN is __NOTSET:
-                fieldN = None
 
-            if fieldO is None:
+            if not __isNOTSET[22] and fieldO is None:
                 deref(c_inst).fieldO = _containerStruct_defaults.fieldO
                 deref(c_inst).__isset.fieldO = False
                 pass
-            elif fieldO is __NOTSET:
-                fieldO = None
 
-            if fieldP is None:
+            if not __isNOTSET[23] and fieldP is None:
                 deref(c_inst).fieldP = _containerStruct_defaults.fieldP
                 deref(c_inst).__isset.fieldP = False
                 pass
-            elif fieldP is __NOTSET:
-                fieldP = None
 
-            if fieldQ is None:
+            if not __isNOTSET[24] and fieldQ is None:
                 deref(c_inst).fieldQ = _containerStruct_defaults.fieldQ
                 deref(c_inst).__isset.fieldQ = False
                 pass
-            elif fieldQ is __NOTSET:
-                fieldQ = None
 
-            if fieldR is None:
+            if not __isNOTSET[25] and fieldR is None:
                 deref(c_inst).fieldR = _containerStruct_defaults.fieldR
                 deref(c_inst).__isset.fieldR = False
                 pass
-            elif fieldR is __NOTSET:
-                fieldR = None
 
-            if req_fieldR is None:
+            if not __isNOTSET[26] and req_fieldR is None:
                 deref(c_inst).req_fieldR = _containerStruct_defaults.req_fieldR
                 pass
-            elif req_fieldR is __NOTSET:
-                req_fieldR = None
 
-            if opt_fieldR is None:
+            if not __isNOTSET[27] and opt_fieldR is None:
                 deref(c_inst).opt_fieldR = _containerStruct_defaults.opt_fieldR
                 deref(c_inst).__isset.opt_fieldR = False
                 pass
-            elif opt_fieldR is __NOTSET:
-                opt_fieldR = None
 
-            if fieldS is None:
+            if not __isNOTSET[28] and fieldS is None:
                 deref(c_inst).fieldS = _containerStruct_defaults.fieldS
                 deref(c_inst).__isset.fieldS = False
                 pass
-            elif fieldS is __NOTSET:
-                fieldS = None
 
-            if fieldT is None:
+            if not __isNOTSET[29] and fieldT is None:
                 deref(c_inst).fieldT = _containerStruct_defaults.fieldT
                 deref(c_inst).__isset.fieldT = False
                 pass
-            elif fieldT is __NOTSET:
-                fieldT = None
 
-            if fieldU is None:
+            if not __isNOTSET[30] and fieldU is None:
                 deref(c_inst).fieldU = _containerStruct_defaults.fieldU
                 deref(c_inst).__isset.fieldU = False
                 pass
-            elif fieldU is __NOTSET:
-                fieldU = None
 
-            if fieldV is None:
+            if not __isNOTSET[31] and fieldV is None:
                 deref(c_inst).fieldV = _containerStruct_defaults.fieldV
                 deref(c_inst).__isset.fieldV = False
                 pass
-            elif fieldV is __NOTSET:
-                fieldV = None
 
-            if req_fieldV is None:
+            if not __isNOTSET[32] and req_fieldV is None:
                 pass
-            elif req_fieldV is __NOTSET:
-                req_fieldV = None
 
-            if opt_fieldV is None:
+            if not __isNOTSET[33] and opt_fieldV is None:
                 deref(c_inst).__isset.opt_fieldV = False
                 pass
-            elif opt_fieldV is __NOTSET:
-                opt_fieldV = None
 
-            if fieldW is None:
+            if not __isNOTSET[34] and fieldW is None:
                 deref(c_inst).fieldW = _containerStruct_defaults.fieldW
                 deref(c_inst).__isset.fieldW = False
                 pass
-            elif fieldW is __NOTSET:
-                fieldW = None
 
-            if fieldX is None:
+            if not __isNOTSET[35] and fieldX is None:
                 deref(c_inst).fieldX = _containerStruct_defaults.fieldX
                 deref(c_inst).__isset.fieldX = False
                 pass
-            elif fieldX is __NOTSET:
-                fieldX = None
 
-            if req_fieldX is None:
+            if not __isNOTSET[36] and req_fieldX is None:
                 pass
-            elif req_fieldX is __NOTSET:
-                req_fieldX = None
 
-            if opt_fieldX is None:
+            if not __isNOTSET[37] and opt_fieldX is None:
                 deref(c_inst).__isset.opt_fieldX = False
                 pass
-            elif opt_fieldX is __NOTSET:
-                opt_fieldX = None
 
-            if fieldY is None:
+            if not __isNOTSET[38] and fieldY is None:
                 deref(c_inst).fieldY = _containerStruct_defaults.fieldY
                 deref(c_inst).__isset.fieldY = False
                 pass
-            elif fieldY is __NOTSET:
-                fieldY = None
 
-            if fieldZ is None:
+            if not __isNOTSET[39] and fieldZ is None:
                 deref(c_inst).fieldZ = _containerStruct_defaults.fieldZ
                 deref(c_inst).__isset.fieldZ = False
                 pass
-            elif fieldZ is __NOTSET:
-                fieldZ = None
 
-            if fieldAA is None:
+            if not __isNOTSET[40] and fieldAA is None:
                 deref(c_inst).fieldAA = _containerStruct_defaults.fieldAA
                 deref(c_inst).__isset.fieldAA = False
                 pass
-            elif fieldAA is __NOTSET:
-                fieldAA = None
 
-            if fieldAB is None:
+            if not __isNOTSET[41] and fieldAB is None:
                 deref(c_inst).fieldAB = _containerStruct_defaults.fieldAB
                 deref(c_inst).__isset.fieldAB = False
                 pass
-            elif fieldAB is __NOTSET:
-                fieldAB = None
 
-            if fieldAC is None:
+            if not __isNOTSET[42] and fieldAC is None:
                 deref(c_inst).fieldAC = _containerStruct_defaults.fieldAC
                 deref(c_inst).__isset.fieldAC = False
                 pass
-            elif fieldAC is __NOTSET:
-                fieldAC = None
 
-            if fieldAD is None:
+            if not __isNOTSET[43] and fieldAD is None:
                 deref(c_inst).fieldAD = _containerStruct_defaults.fieldAD
                 deref(c_inst).__isset.fieldAD = False
                 pass
-            elif fieldAD is __NOTSET:
-                fieldAD = None
 
-            if fieldAE is None:
+            if not __isNOTSET[44] and fieldAE is None:
                 deref(c_inst).fieldAE = _containerStruct_defaults.fieldAE
                 deref(c_inst).__isset.fieldAE = False
                 pass
-            elif fieldAE is __NOTSET:
-                fieldAE = None
 
-            if fieldSD is None:
+            if not __isNOTSET[45] and fieldSD is None:
                 deref(c_inst).fieldSD = _containerStruct_defaults.fieldSD
                 deref(c_inst).__isset.fieldSD = False
                 pass
-            elif fieldSD is __NOTSET:
-                fieldSD = None
 
         if fieldA is not None:
             deref(c_inst).fieldA = fieldA
@@ -3991,15 +4184,15 @@ cdef class containerStruct(thrift.py3.types.Struct):
             deref(c_inst).opt_fieldC = deref(Set__i32(opt_fieldC)._cpp_obj)
             deref(c_inst).__isset.opt_fieldC = True
         if fieldD is not None:
-            deref(c_inst).fieldD = fieldD.encode('UTF-8')
+            deref(c_inst).fieldD = thrift.py3.types.move(thrift.py3.types.bytes_to_string(fieldD.encode('utf-8')))
             deref(c_inst).__isset.fieldD = True
         if fieldE is not None:
-            deref(c_inst).fieldE = fieldE.encode('UTF-8')
+            deref(c_inst).fieldE = thrift.py3.types.move(thrift.py3.types.bytes_to_string(fieldE.encode('utf-8')))
             deref(c_inst).__isset.fieldE = True
         if req_fieldE is not None:
-            deref(c_inst).req_fieldE = req_fieldE.encode('UTF-8')
+            deref(c_inst).req_fieldE = thrift.py3.types.move(thrift.py3.types.bytes_to_string(req_fieldE.encode('utf-8')))
         if opt_fieldE is not None:
-            deref(c_inst).opt_fieldE = opt_fieldE.encode('UTF-8')
+            deref(c_inst).opt_fieldE = thrift.py3.types.move(thrift.py3.types.bytes_to_string(opt_fieldE.encode('utf-8')))
             deref(c_inst).__isset.opt_fieldE = True
         if fieldF is not None:
             deref(c_inst).fieldF = deref(List__List__i32(fieldF)._cpp_obj)
@@ -4095,7 +4288,7 @@ cdef class containerStruct(thrift.py3.types.Struct):
             deref(c_inst).fieldAE = deref(Map__string_i32(fieldAE)._cpp_obj)
             deref(c_inst).__isset.fieldAE = True
         if fieldSD is not None:
-            deref(c_inst).fieldSD = fieldSD.encode('UTF-8')
+            deref(c_inst).fieldSD = thrift.py3.types.move(thrift.py3.types.bytes_to_string(fieldSD.encode('utf-8')))
             deref(c_inst).__isset.fieldSD = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
@@ -4601,6 +4794,7 @@ cdef class MyIncludedStruct(thrift.py3.types.Struct):
 
         self._cpp_obj = move(MyIncludedStruct._make_instance(
           NULL,
+          NULL,
           MyIncludedInt,
           MyIncludedStruct,
           ARefField,
@@ -4614,41 +4808,65 @@ cdef class MyIncludedStruct(thrift.py3.types.Struct):
         ARefField=__NOTSET,
         ARequiredField=__NOTSET
     ):
-        changes = any((
-            MyIncludedInt is not __NOTSET,
+        ___NOTSET = __NOTSET  # Cheaper for larger structs
+        cdef bint[4] __isNOTSET  # so make_instance is typed
 
-            MyIncludedStruct is not __NOTSET,
+        changes = False
+        if MyIncludedInt is ___NOTSET:
+            __isNOTSET[0] = True
+            MyIncludedInt = None
+        else:
+            __isNOTSET[0] = False
+            changes = True
 
-            ARefField is not __NOTSET,
+        if MyIncludedStruct is ___NOTSET:
+            __isNOTSET[1] = True
+            MyIncludedStruct = None
+        else:
+            __isNOTSET[1] = False
+            changes = True
 
-            ARequiredField is not __NOTSET,
-        ))
+        if ARefField is ___NOTSET:
+            __isNOTSET[2] = True
+            ARefField = None
+        else:
+            __isNOTSET[2] = False
+            changes = True
+
+        if ARequiredField is ___NOTSET:
+            __isNOTSET[3] = True
+            ARequiredField = None
+        else:
+            __isNOTSET[3] = False
+            changes = True
+
 
         if not changes:
             return self
 
-        if None is not MyIncludedInt is not __NOTSET:
+        if MyIncludedInt is not None:
             if not isinstance(MyIncludedInt, int):
                 raise TypeError(f'MyIncludedInt is not a { int !r}.')
             MyIncludedInt = <int64_t> MyIncludedInt
 
-        if None is not MyIncludedStruct is not __NOTSET:
+        if MyIncludedStruct is not None:
             if not isinstance(MyIncludedStruct, _includes_types.AStruct):
                 raise TypeError(f'MyIncludedStruct is not a { _includes_types.AStruct !r}.')
 
-        if None is not ARefField is not __NOTSET:
+        if ARefField is not None:
             if not isinstance(ARefField, _includes_types.AStruct):
                 raise TypeError(f'ARefField is not a { _includes_types.AStruct !r}.')
 
-        if ARequiredField is None:
+        if not __isNOTSET[3] and ARequiredField is None:
             raise TypeError('field ARequiredField is required and has no default, it can not be unset')
-        if None is not ARequiredField is not __NOTSET:
+        if ARequiredField is not None:
             if not isinstance(ARequiredField, _includes_types.AStruct):
                 raise TypeError(f'ARequiredField is not a { _includes_types.AStruct !r}.')
 
         inst = <MyIncludedStruct>MyIncludedStruct.__new__(MyIncludedStruct)
         inst._cpp_obj = move(MyIncludedStruct._make_instance(
           self._cpp_obj.get(),
+          __isNOTSET,
           MyIncludedInt,
           MyIncludedStruct,
           ARefField,
@@ -4659,10 +4877,11 @@ cdef class MyIncludedStruct(thrift.py3.types.Struct):
     @staticmethod
     cdef unique_ptr[cMyIncludedStruct] _make_instance(
         cMyIncludedStruct* base_instance,
-        object MyIncludedInt,
-        object MyIncludedStruct,
-        object ARefField,
-        object ARequiredField
+        bint* __isNOTSET,
+        object MyIncludedInt ,
+        _includes_types.AStruct MyIncludedStruct ,
+        _includes_types.AStruct ARefField ,
+        _includes_types.AStruct ARequiredField 
     ) except *:
         cdef unique_ptr[cMyIncludedStruct] c_inst
         if base_instance:
@@ -4672,30 +4891,22 @@ cdef class MyIncludedStruct(thrift.py3.types.Struct):
 
         if base_instance:
             # Convert None's to default value. (or unset)
-            if MyIncludedInt is None:
+            if not __isNOTSET[0] and MyIncludedInt is None:
                 deref(c_inst).MyIncludedInt = _MyIncludedStruct_defaults.MyIncludedInt
                 deref(c_inst).__isset.MyIncludedInt = False
                 pass
-            elif MyIncludedInt is __NOTSET:
-                MyIncludedInt = None
 
-            if MyIncludedStruct is None:
+            if not __isNOTSET[1] and MyIncludedStruct is None:
                 deref(c_inst).MyIncludedStruct = _MyIncludedStruct_defaults.MyIncludedStruct
                 deref(c_inst).__isset.MyIncludedStruct = False
                 pass
-            elif MyIncludedStruct is __NOTSET:
-                MyIncludedStruct = None
 
-            if ARefField is None:
+            if not __isNOTSET[2] and ARefField is None:
                 deref(c_inst).ARefField.reset()
                 pass
-            elif ARefField is __NOTSET:
-                ARefField = None
 
-            if ARequiredField is None:
+            if not __isNOTSET[3] and ARequiredField is None:
                 pass
-            elif ARequiredField is __NOTSET:
-                ARequiredField = None
 
         if MyIncludedInt is not None:
             deref(c_inst).MyIncludedInt = MyIncludedInt
@@ -4900,6 +5111,7 @@ cdef class AnnotatedStruct(thrift.py3.types.Struct):
 
         self._cpp_obj = move(AnnotatedStruct._make_instance(
           NULL,
+          NULL,
           no_annotation,
           cpp_unique_ref,
           cpp2_unique_ref,
@@ -4985,188 +5197,392 @@ cdef class AnnotatedStruct(thrift.py3.types.Struct):
         iobuf_ptr_val=__NOTSET,
         struct_struct=__NOTSET
     ):
-        changes = any((
-            no_annotation is not __NOTSET,
+        ___NOTSET = __NOTSET  # Cheaper for larger structs
+        cdef bint[40] __isNOTSET  # so make_instance is typed
 
-            cpp_unique_ref is not __NOTSET,
+        changes = False
+        if no_annotation is ___NOTSET:
+            __isNOTSET[0] = True
+            no_annotation = None
+        else:
+            __isNOTSET[0] = False
+            changes = True
 
-            cpp2_unique_ref is not __NOTSET,
+        if cpp_unique_ref is ___NOTSET:
+            __isNOTSET[1] = True
+            cpp_unique_ref = None
+        else:
+            __isNOTSET[1] = False
+            changes = True
 
-            container_with_ref is not __NOTSET,
+        if cpp2_unique_ref is ___NOTSET:
+            __isNOTSET[2] = True
+            cpp2_unique_ref = None
+        else:
+            __isNOTSET[2] = False
+            changes = True
 
-            req_cpp_unique_ref is not __NOTSET,
+        if container_with_ref is ___NOTSET:
+            __isNOTSET[3] = True
+            container_with_ref = None
+        else:
+            __isNOTSET[3] = False
+            changes = True
 
-            req_cpp2_unique_ref is not __NOTSET,
+        if req_cpp_unique_ref is ___NOTSET:
+            __isNOTSET[4] = True
+            req_cpp_unique_ref = None
+        else:
+            __isNOTSET[4] = False
+            changes = True
 
-            req_container_with_ref is not __NOTSET,
+        if req_cpp2_unique_ref is ___NOTSET:
+            __isNOTSET[5] = True
+            req_cpp2_unique_ref = None
+        else:
+            __isNOTSET[5] = False
+            changes = True
 
-            opt_cpp_unique_ref is not __NOTSET,
+        if req_container_with_ref is ___NOTSET:
+            __isNOTSET[6] = True
+            req_container_with_ref = None
+        else:
+            __isNOTSET[6] = False
+            changes = True
 
-            opt_cpp2_unique_ref is not __NOTSET,
+        if opt_cpp_unique_ref is ___NOTSET:
+            __isNOTSET[7] = True
+            opt_cpp_unique_ref = None
+        else:
+            __isNOTSET[7] = False
+            changes = True
 
-            opt_container_with_ref is not __NOTSET,
+        if opt_cpp2_unique_ref is ___NOTSET:
+            __isNOTSET[8] = True
+            opt_cpp2_unique_ref = None
+        else:
+            __isNOTSET[8] = False
+            changes = True
 
-            ref_type_unique is not __NOTSET,
+        if opt_container_with_ref is ___NOTSET:
+            __isNOTSET[9] = True
+            opt_container_with_ref = None
+        else:
+            __isNOTSET[9] = False
+            changes = True
 
-            ref_type_shared is not __NOTSET,
+        if ref_type_unique is ___NOTSET:
+            __isNOTSET[10] = True
+            ref_type_unique = None
+        else:
+            __isNOTSET[10] = False
+            changes = True
 
-            ref_type_const is not __NOTSET,
+        if ref_type_shared is ___NOTSET:
+            __isNOTSET[11] = True
+            ref_type_shared = None
+        else:
+            __isNOTSET[11] = False
+            changes = True
 
-            req_ref_type_shared is not __NOTSET,
+        if ref_type_const is ___NOTSET:
+            __isNOTSET[12] = True
+            ref_type_const = None
+        else:
+            __isNOTSET[12] = False
+            changes = True
 
-            req_ref_type_const is not __NOTSET,
+        if req_ref_type_shared is ___NOTSET:
+            __isNOTSET[13] = True
+            req_ref_type_shared = None
+        else:
+            __isNOTSET[13] = False
+            changes = True
 
-            req_ref_type_unique is not __NOTSET,
+        if req_ref_type_const is ___NOTSET:
+            __isNOTSET[14] = True
+            req_ref_type_const = None
+        else:
+            __isNOTSET[14] = False
+            changes = True
 
-            opt_ref_type_const is not __NOTSET,
+        if req_ref_type_unique is ___NOTSET:
+            __isNOTSET[15] = True
+            req_ref_type_unique = None
+        else:
+            __isNOTSET[15] = False
+            changes = True
 
-            opt_ref_type_unique is not __NOTSET,
+        if opt_ref_type_const is ___NOTSET:
+            __isNOTSET[16] = True
+            opt_ref_type_const = None
+        else:
+            __isNOTSET[16] = False
+            changes = True
 
-            opt_ref_type_shared is not __NOTSET,
+        if opt_ref_type_unique is ___NOTSET:
+            __isNOTSET[17] = True
+            opt_ref_type_unique = None
+        else:
+            __isNOTSET[17] = False
+            changes = True
 
-            base_type is not __NOTSET,
+        if opt_ref_type_shared is ___NOTSET:
+            __isNOTSET[18] = True
+            opt_ref_type_shared = None
+        else:
+            __isNOTSET[18] = False
+            changes = True
 
-            list_type is not __NOTSET,
+        if base_type is ___NOTSET:
+            __isNOTSET[19] = True
+            base_type = None
+        else:
+            __isNOTSET[19] = False
+            changes = True
 
-            set_type is not __NOTSET,
+        if list_type is ___NOTSET:
+            __isNOTSET[20] = True
+            list_type = None
+        else:
+            __isNOTSET[20] = False
+            changes = True
 
-            map_type is not __NOTSET,
+        if set_type is ___NOTSET:
+            __isNOTSET[21] = True
+            set_type = None
+        else:
+            __isNOTSET[21] = False
+            changes = True
 
-            map_struct_type is not __NOTSET,
+        if map_type is ___NOTSET:
+            __isNOTSET[22] = True
+            map_type = None
+        else:
+            __isNOTSET[22] = False
+            changes = True
 
-            iobuf_type is not __NOTSET,
+        if map_struct_type is ___NOTSET:
+            __isNOTSET[23] = True
+            map_struct_type = None
+        else:
+            __isNOTSET[23] = False
+            changes = True
 
-            iobuf_ptr is not __NOTSET,
+        if iobuf_type is ___NOTSET:
+            __isNOTSET[24] = True
+            iobuf_type = None
+        else:
+            __isNOTSET[24] = False
+            changes = True
 
-            list_i32_template is not __NOTSET,
+        if iobuf_ptr is ___NOTSET:
+            __isNOTSET[25] = True
+            iobuf_ptr = None
+        else:
+            __isNOTSET[25] = False
+            changes = True
 
-            list_string_template is not __NOTSET,
+        if list_i32_template is ___NOTSET:
+            __isNOTSET[26] = True
+            list_i32_template = None
+        else:
+            __isNOTSET[26] = False
+            changes = True
 
-            set_template is not __NOTSET,
+        if list_string_template is ___NOTSET:
+            __isNOTSET[27] = True
+            list_string_template = None
+        else:
+            __isNOTSET[27] = False
+            changes = True
 
-            map_template is not __NOTSET,
+        if set_template is ___NOTSET:
+            __isNOTSET[28] = True
+            set_template = None
+        else:
+            __isNOTSET[28] = False
+            changes = True
 
-            typedef_list_template is not __NOTSET,
+        if map_template is ___NOTSET:
+            __isNOTSET[29] = True
+            map_template = None
+        else:
+            __isNOTSET[29] = False
+            changes = True
 
-            typedef_deque_template is not __NOTSET,
+        if typedef_list_template is ___NOTSET:
+            __isNOTSET[30] = True
+            typedef_list_template = None
+        else:
+            __isNOTSET[30] = False
+            changes = True
 
-            typedef_set_template is not __NOTSET,
+        if typedef_deque_template is ___NOTSET:
+            __isNOTSET[31] = True
+            typedef_deque_template = None
+        else:
+            __isNOTSET[31] = False
+            changes = True
 
-            typedef_map_template is not __NOTSET,
+        if typedef_set_template is ___NOTSET:
+            __isNOTSET[32] = True
+            typedef_set_template = None
+        else:
+            __isNOTSET[32] = False
+            changes = True
 
-            indirection_a is not __NOTSET,
+        if typedef_map_template is ___NOTSET:
+            __isNOTSET[33] = True
+            typedef_map_template = None
+        else:
+            __isNOTSET[33] = False
+            changes = True
 
-            indirection_b is not __NOTSET,
+        if indirection_a is ___NOTSET:
+            __isNOTSET[34] = True
+            indirection_a = None
+        else:
+            __isNOTSET[34] = False
+            changes = True
 
-            indirection_c is not __NOTSET,
+        if indirection_b is ___NOTSET:
+            __isNOTSET[35] = True
+            indirection_b = None
+        else:
+            __isNOTSET[35] = False
+            changes = True
 
-            iobuf_type_val is not __NOTSET,
+        if indirection_c is ___NOTSET:
+            __isNOTSET[36] = True
+            indirection_c = None
+        else:
+            __isNOTSET[36] = False
+            changes = True
 
-            iobuf_ptr_val is not __NOTSET,
+        if iobuf_type_val is ___NOTSET:
+            __isNOTSET[37] = True
+            iobuf_type_val = None
+        else:
+            __isNOTSET[37] = False
+            changes = True
 
-            struct_struct is not __NOTSET,
-        ))
+        if iobuf_ptr_val is ___NOTSET:
+            __isNOTSET[38] = True
+            iobuf_ptr_val = None
+        else:
+            __isNOTSET[38] = False
+            changes = True
+
+        if struct_struct is ___NOTSET:
+            __isNOTSET[39] = True
+            struct_struct = None
+        else:
+            __isNOTSET[39] = False
+            changes = True
+
 
         if not changes:
             return self
 
-        if None is not no_annotation is not __NOTSET:
+        if no_annotation is not None:
             if not isinstance(no_annotation, containerStruct):
                 raise TypeError(f'no_annotation is not a { containerStruct !r}.')
 
-        if None is not cpp_unique_ref is not __NOTSET:
+        if cpp_unique_ref is not None:
             if not isinstance(cpp_unique_ref, containerStruct):
                 raise TypeError(f'cpp_unique_ref is not a { containerStruct !r}.')
 
-        if None is not cpp2_unique_ref is not __NOTSET:
+        if cpp2_unique_ref is not None:
             if not isinstance(cpp2_unique_ref, containerStruct):
                 raise TypeError(f'cpp2_unique_ref is not a { containerStruct !r}.')
 
-        if req_cpp_unique_ref is None:
+        if not __isNOTSET[4] and req_cpp_unique_ref is None:
             raise TypeError('field req_cpp_unique_ref is required and has no default, it can not be unset')
-        if None is not req_cpp_unique_ref is not __NOTSET:
+        if req_cpp_unique_ref is not None:
             if not isinstance(req_cpp_unique_ref, containerStruct):
                 raise TypeError(f'req_cpp_unique_ref is not a { containerStruct !r}.')
 
-        if req_cpp2_unique_ref is None:
+        if not __isNOTSET[5] and req_cpp2_unique_ref is None:
             raise TypeError('field req_cpp2_unique_ref is required and has no default, it can not be unset')
-        if None is not req_cpp2_unique_ref is not __NOTSET:
+        if req_cpp2_unique_ref is not None:
             if not isinstance(req_cpp2_unique_ref, containerStruct):
                 raise TypeError(f'req_cpp2_unique_ref is not a { containerStruct !r}.')
 
-        if req_container_with_ref is None:
+        if not __isNOTSET[6] and req_container_with_ref is None:
             raise TypeError('field req_container_with_ref is required and has no default, it can not be unset')
-        if None is not opt_cpp_unique_ref is not __NOTSET:
+        if opt_cpp_unique_ref is not None:
             if not isinstance(opt_cpp_unique_ref, containerStruct):
                 raise TypeError(f'opt_cpp_unique_ref is not a { containerStruct !r}.')
 
-        if None is not opt_cpp2_unique_ref is not __NOTSET:
+        if opt_cpp2_unique_ref is not None:
             if not isinstance(opt_cpp2_unique_ref, containerStruct):
                 raise TypeError(f'opt_cpp2_unique_ref is not a { containerStruct !r}.')
 
-        if None is not ref_type_unique is not __NOTSET:
+        if ref_type_unique is not None:
             if not isinstance(ref_type_unique, containerStruct):
                 raise TypeError(f'ref_type_unique is not a { containerStruct !r}.')
 
-        if None is not ref_type_shared is not __NOTSET:
+        if ref_type_shared is not None:
             if not isinstance(ref_type_shared, containerStruct):
                 raise TypeError(f'ref_type_shared is not a { containerStruct !r}.')
 
-        if req_ref_type_shared is None:
+        if not __isNOTSET[13] and req_ref_type_shared is None:
             raise TypeError('field req_ref_type_shared is required and has no default, it can not be unset')
-        if None is not req_ref_type_shared is not __NOTSET:
+        if req_ref_type_shared is not None:
             if not isinstance(req_ref_type_shared, containerStruct):
                 raise TypeError(f'req_ref_type_shared is not a { containerStruct !r}.')
 
-        if req_ref_type_const is None:
+        if not __isNOTSET[14] and req_ref_type_const is None:
             raise TypeError('field req_ref_type_const is required and has no default, it can not be unset')
-        if None is not req_ref_type_const is not __NOTSET:
+        if req_ref_type_const is not None:
             if not isinstance(req_ref_type_const, containerStruct):
                 raise TypeError(f'req_ref_type_const is not a { containerStruct !r}.')
 
-        if req_ref_type_unique is None:
+        if not __isNOTSET[15] and req_ref_type_unique is None:
             raise TypeError('field req_ref_type_unique is required and has no default, it can not be unset')
-        if None is not opt_ref_type_const is not __NOTSET:
+        if opt_ref_type_const is not None:
             if not isinstance(opt_ref_type_const, containerStruct):
                 raise TypeError(f'opt_ref_type_const is not a { containerStruct !r}.')
 
-        if None is not opt_ref_type_unique is not __NOTSET:
+        if opt_ref_type_unique is not None:
             if not isinstance(opt_ref_type_unique, containerStruct):
                 raise TypeError(f'opt_ref_type_unique is not a { containerStruct !r}.')
 
-        if None is not base_type is not __NOTSET:
+        if base_type is not None:
             if not isinstance(base_type, int):
                 raise TypeError(f'base_type is not a { int !r}.')
             base_type = <int32_t> base_type
 
-        if None is not iobuf_type is not __NOTSET:
+        if iobuf_type is not None:
             if not isinstance(iobuf_type, bytes):
                 raise TypeError(f'iobuf_type is not a { bytes !r}.')
 
-        if None is not iobuf_ptr is not __NOTSET:
+        if iobuf_ptr is not None:
             if not isinstance(iobuf_ptr, bytes):
                 raise TypeError(f'iobuf_ptr is not a { bytes !r}.')
 
-        if None is not indirection_a is not __NOTSET:
+        if indirection_a is not None:
             if not isinstance(indirection_a, int):
                 raise TypeError(f'indirection_a is not a { int !r}.')
             indirection_a = <int64_t> indirection_a
 
-        if None is not iobuf_type_val is not __NOTSET:
+        if iobuf_type_val is not None:
             if not isinstance(iobuf_type_val, bytes):
                 raise TypeError(f'iobuf_type_val is not a { bytes !r}.')
 
-        if None is not iobuf_ptr_val is not __NOTSET:
+        if iobuf_ptr_val is not None:
             if not isinstance(iobuf_ptr_val, bytes):
                 raise TypeError(f'iobuf_ptr_val is not a { bytes !r}.')
 
-        if None is not struct_struct is not __NOTSET:
+        if struct_struct is not None:
             if not isinstance(struct_struct, containerStruct):
                 raise TypeError(f'struct_struct is not a { containerStruct !r}.')
 
         inst = <AnnotatedStruct>AnnotatedStruct.__new__(AnnotatedStruct)
         inst._cpp_obj = move(AnnotatedStruct._make_instance(
           self._cpp_obj.get(),
+          __isNOTSET,
           no_annotation,
           cpp_unique_ref,
           cpp2_unique_ref,
@@ -5213,46 +5629,47 @@ cdef class AnnotatedStruct(thrift.py3.types.Struct):
     @staticmethod
     cdef unique_ptr[cAnnotatedStruct] _make_instance(
         cAnnotatedStruct* base_instance,
-        object no_annotation,
-        object cpp_unique_ref,
-        object cpp2_unique_ref,
-        object container_with_ref,
-        object req_cpp_unique_ref,
-        object req_cpp2_unique_ref,
-        object req_container_with_ref,
-        object opt_cpp_unique_ref,
-        object opt_cpp2_unique_ref,
-        object opt_container_with_ref,
-        object ref_type_unique,
-        object ref_type_shared,
-        object ref_type_const,
-        object req_ref_type_shared,
-        object req_ref_type_const,
-        object req_ref_type_unique,
-        object opt_ref_type_const,
-        object opt_ref_type_unique,
-        object opt_ref_type_shared,
-        object base_type,
-        object list_type,
-        object set_type,
-        object map_type,
-        object map_struct_type,
-        object iobuf_type,
-        object iobuf_ptr,
-        object list_i32_template,
-        object list_string_template,
-        object set_template,
-        object map_template,
-        object typedef_list_template,
-        object typedef_deque_template,
-        object typedef_set_template,
-        object typedef_map_template,
-        object indirection_a,
-        object indirection_b,
-        object indirection_c,
-        object iobuf_type_val,
-        object iobuf_ptr_val,
-        object struct_struct
+        bint* __isNOTSET,
+        containerStruct no_annotation ,
+        containerStruct cpp_unique_ref ,
+        containerStruct cpp2_unique_ref ,
+        object container_with_ref ,
+        containerStruct req_cpp_unique_ref ,
+        containerStruct req_cpp2_unique_ref ,
+        object req_container_with_ref ,
+        containerStruct opt_cpp_unique_ref ,
+        containerStruct opt_cpp2_unique_ref ,
+        object opt_container_with_ref ,
+        containerStruct ref_type_unique ,
+        containerStruct ref_type_shared ,
+        object ref_type_const ,
+        containerStruct req_ref_type_shared ,
+        containerStruct req_ref_type_const ,
+        object req_ref_type_unique ,
+        containerStruct opt_ref_type_const ,
+        containerStruct opt_ref_type_unique ,
+        object opt_ref_type_shared ,
+        object base_type ,
+        object list_type ,
+        object set_type ,
+        object map_type ,
+        object map_struct_type ,
+        __iobuf.IOBuf iobuf_type ,
+        __iobuf.IOBuf iobuf_ptr ,
+        object list_i32_template ,
+        object list_string_template ,
+        object set_template ,
+        object map_template ,
+        object typedef_list_template ,
+        object typedef_deque_template ,
+        object typedef_set_template ,
+        object typedef_map_template ,
+        object indirection_a ,
+        object indirection_b ,
+        object indirection_c ,
+        __iobuf.IOBuf iobuf_type_val ,
+        __iobuf.IOBuf iobuf_ptr_val ,
+        containerStruct struct_struct 
     ) except *:
         cdef unique_ptr[cAnnotatedStruct] c_inst
         if base_instance:
@@ -5262,265 +5679,185 @@ cdef class AnnotatedStruct(thrift.py3.types.Struct):
 
         if base_instance:
             # Convert None's to default value. (or unset)
-            if no_annotation is None:
+            if not __isNOTSET[0] and no_annotation is None:
                 deref(c_inst).no_annotation = _AnnotatedStruct_defaults.no_annotation
                 deref(c_inst).__isset.no_annotation = False
                 pass
-            elif no_annotation is __NOTSET:
-                no_annotation = None
 
-            if cpp_unique_ref is None:
+            if not __isNOTSET[1] and cpp_unique_ref is None:
                 deref(c_inst).cpp_unique_ref.reset()
                 pass
-            elif cpp_unique_ref is __NOTSET:
-                cpp_unique_ref = None
 
-            if cpp2_unique_ref is None:
+            if not __isNOTSET[2] and cpp2_unique_ref is None:
                 deref(c_inst).cpp2_unique_ref.reset()
                 pass
-            elif cpp2_unique_ref is __NOTSET:
-                cpp2_unique_ref = None
 
-            if container_with_ref is None:
+            if not __isNOTSET[3] and container_with_ref is None:
                 deref(c_inst).container_with_ref.reset()
                 pass
-            elif container_with_ref is __NOTSET:
-                container_with_ref = None
 
-            if req_cpp_unique_ref is None:
+            if not __isNOTSET[4] and req_cpp_unique_ref is None:
                 deref(c_inst).req_cpp_unique_ref.reset()
                 pass
-            elif req_cpp_unique_ref is __NOTSET:
-                req_cpp_unique_ref = None
 
-            if req_cpp2_unique_ref is None:
+            if not __isNOTSET[5] and req_cpp2_unique_ref is None:
                 deref(c_inst).req_cpp2_unique_ref.reset()
                 pass
-            elif req_cpp2_unique_ref is __NOTSET:
-                req_cpp2_unique_ref = None
 
-            if req_container_with_ref is None:
+            if not __isNOTSET[6] and req_container_with_ref is None:
                 deref(c_inst).req_container_with_ref.reset()
                 pass
-            elif req_container_with_ref is __NOTSET:
-                req_container_with_ref = None
 
-            if opt_cpp_unique_ref is None:
+            if not __isNOTSET[7] and opt_cpp_unique_ref is None:
                 deref(c_inst).opt_cpp_unique_ref.reset()
                 pass
-            elif opt_cpp_unique_ref is __NOTSET:
-                opt_cpp_unique_ref = None
 
-            if opt_cpp2_unique_ref is None:
+            if not __isNOTSET[8] and opt_cpp2_unique_ref is None:
                 deref(c_inst).opt_cpp2_unique_ref.reset()
                 pass
-            elif opt_cpp2_unique_ref is __NOTSET:
-                opt_cpp2_unique_ref = None
 
-            if opt_container_with_ref is None:
+            if not __isNOTSET[9] and opt_container_with_ref is None:
                 deref(c_inst).opt_container_with_ref.reset()
                 pass
-            elif opt_container_with_ref is __NOTSET:
-                opt_container_with_ref = None
 
-            if ref_type_unique is None:
+            if not __isNOTSET[10] and ref_type_unique is None:
                 deref(c_inst).ref_type_unique.reset()
                 pass
-            elif ref_type_unique is __NOTSET:
-                ref_type_unique = None
 
-            if ref_type_shared is None:
+            if not __isNOTSET[11] and ref_type_shared is None:
                 deref(c_inst).ref_type_shared.reset()
                 pass
-            elif ref_type_shared is __NOTSET:
-                ref_type_shared = None
 
-            if ref_type_const is None:
+            if not __isNOTSET[12] and ref_type_const is None:
                 deref(c_inst).ref_type_const.reset()
                 pass
-            elif ref_type_const is __NOTSET:
-                ref_type_const = None
 
-            if req_ref_type_shared is None:
+            if not __isNOTSET[13] and req_ref_type_shared is None:
                 deref(c_inst).req_ref_type_shared.reset()
                 pass
-            elif req_ref_type_shared is __NOTSET:
-                req_ref_type_shared = None
 
-            if req_ref_type_const is None:
+            if not __isNOTSET[14] and req_ref_type_const is None:
                 deref(c_inst).req_ref_type_const.reset()
                 pass
-            elif req_ref_type_const is __NOTSET:
-                req_ref_type_const = None
 
-            if req_ref_type_unique is None:
+            if not __isNOTSET[15] and req_ref_type_unique is None:
                 deref(c_inst).req_ref_type_unique.reset()
                 pass
-            elif req_ref_type_unique is __NOTSET:
-                req_ref_type_unique = None
 
-            if opt_ref_type_const is None:
+            if not __isNOTSET[16] and opt_ref_type_const is None:
                 deref(c_inst).opt_ref_type_const.reset()
                 pass
-            elif opt_ref_type_const is __NOTSET:
-                opt_ref_type_const = None
 
-            if opt_ref_type_unique is None:
+            if not __isNOTSET[17] and opt_ref_type_unique is None:
                 deref(c_inst).opt_ref_type_unique.reset()
                 pass
-            elif opt_ref_type_unique is __NOTSET:
-                opt_ref_type_unique = None
 
-            if opt_ref_type_shared is None:
+            if not __isNOTSET[18] and opt_ref_type_shared is None:
                 deref(c_inst).opt_ref_type_shared.reset()
                 pass
-            elif opt_ref_type_shared is __NOTSET:
-                opt_ref_type_shared = None
 
-            if base_type is None:
+            if not __isNOTSET[19] and base_type is None:
                 deref(c_inst).base_type = _AnnotatedStruct_defaults.base_type
                 deref(c_inst).__isset.base_type = False
                 pass
-            elif base_type is __NOTSET:
-                base_type = None
 
-            if list_type is None:
+            if not __isNOTSET[20] and list_type is None:
                 deref(c_inst).list_type = _AnnotatedStruct_defaults.list_type
                 deref(c_inst).__isset.list_type = False
                 pass
-            elif list_type is __NOTSET:
-                list_type = None
 
-            if set_type is None:
+            if not __isNOTSET[21] and set_type is None:
                 deref(c_inst).set_type = _AnnotatedStruct_defaults.set_type
                 deref(c_inst).__isset.set_type = False
                 pass
-            elif set_type is __NOTSET:
-                set_type = None
 
-            if map_type is None:
+            if not __isNOTSET[22] and map_type is None:
                 deref(c_inst).map_type = _AnnotatedStruct_defaults.map_type
                 deref(c_inst).__isset.map_type = False
                 pass
-            elif map_type is __NOTSET:
-                map_type = None
 
-            if map_struct_type is None:
+            if not __isNOTSET[23] and map_struct_type is None:
                 deref(c_inst).map_struct_type = _AnnotatedStruct_defaults.map_struct_type
                 deref(c_inst).__isset.map_struct_type = False
                 pass
-            elif map_struct_type is __NOTSET:
-                map_struct_type = None
 
-            if iobuf_type is None:
+            if not __isNOTSET[24] and iobuf_type is None:
                 deref(c_inst).iobuf_type = _AnnotatedStruct_defaults.iobuf_type
                 deref(c_inst).__isset.iobuf_type = False
                 pass
-            elif iobuf_type is __NOTSET:
-                iobuf_type = None
 
-            if iobuf_ptr is None:
+            if not __isNOTSET[25] and iobuf_ptr is None:
                 deref(c_inst).iobuf_ptr.reset()
                 pass
-            elif iobuf_ptr is __NOTSET:
-                iobuf_ptr = None
 
-            if list_i32_template is None:
+            if not __isNOTSET[26] and list_i32_template is None:
                 deref(c_inst).list_i32_template = _AnnotatedStruct_defaults.list_i32_template
                 deref(c_inst).__isset.list_i32_template = False
                 pass
-            elif list_i32_template is __NOTSET:
-                list_i32_template = None
 
-            if list_string_template is None:
+            if not __isNOTSET[27] and list_string_template is None:
                 deref(c_inst).list_string_template = _AnnotatedStruct_defaults.list_string_template
                 deref(c_inst).__isset.list_string_template = False
                 pass
-            elif list_string_template is __NOTSET:
-                list_string_template = None
 
-            if set_template is None:
+            if not __isNOTSET[28] and set_template is None:
                 deref(c_inst).set_template = _AnnotatedStruct_defaults.set_template
                 deref(c_inst).__isset.set_template = False
                 pass
-            elif set_template is __NOTSET:
-                set_template = None
 
-            if map_template is None:
+            if not __isNOTSET[29] and map_template is None:
                 deref(c_inst).map_template = _AnnotatedStruct_defaults.map_template
                 deref(c_inst).__isset.map_template = False
                 pass
-            elif map_template is __NOTSET:
-                map_template = None
 
-            if typedef_list_template is None:
+            if not __isNOTSET[30] and typedef_list_template is None:
                 deref(c_inst).typedef_list_template = _AnnotatedStruct_defaults.typedef_list_template
                 deref(c_inst).__isset.typedef_list_template = False
                 pass
-            elif typedef_list_template is __NOTSET:
-                typedef_list_template = None
 
-            if typedef_deque_template is None:
+            if not __isNOTSET[31] and typedef_deque_template is None:
                 deref(c_inst).typedef_deque_template = _AnnotatedStruct_defaults.typedef_deque_template
                 deref(c_inst).__isset.typedef_deque_template = False
                 pass
-            elif typedef_deque_template is __NOTSET:
-                typedef_deque_template = None
 
-            if typedef_set_template is None:
+            if not __isNOTSET[32] and typedef_set_template is None:
                 deref(c_inst).typedef_set_template = _AnnotatedStruct_defaults.typedef_set_template
                 deref(c_inst).__isset.typedef_set_template = False
                 pass
-            elif typedef_set_template is __NOTSET:
-                typedef_set_template = None
 
-            if typedef_map_template is None:
+            if not __isNOTSET[33] and typedef_map_template is None:
                 deref(c_inst).typedef_map_template = _AnnotatedStruct_defaults.typedef_map_template
                 deref(c_inst).__isset.typedef_map_template = False
                 pass
-            elif typedef_map_template is __NOTSET:
-                typedef_map_template = None
 
-            if indirection_a is None:
+            if not __isNOTSET[34] and indirection_a is None:
                 deref(c_inst).indirection_a = _AnnotatedStruct_defaults.indirection_a
                 deref(c_inst).__isset.indirection_a = False
                 pass
-            elif indirection_a is __NOTSET:
-                indirection_a = None
 
-            if indirection_b is None:
+            if not __isNOTSET[35] and indirection_b is None:
                 deref(c_inst).indirection_b = _AnnotatedStruct_defaults.indirection_b
                 deref(c_inst).__isset.indirection_b = False
                 pass
-            elif indirection_b is __NOTSET:
-                indirection_b = None
 
-            if indirection_c is None:
+            if not __isNOTSET[36] and indirection_c is None:
                 deref(c_inst).indirection_c = _AnnotatedStruct_defaults.indirection_c
                 deref(c_inst).__isset.indirection_c = False
                 pass
-            elif indirection_c is __NOTSET:
-                indirection_c = None
 
-            if iobuf_type_val is None:
+            if not __isNOTSET[37] and iobuf_type_val is None:
                 deref(c_inst).iobuf_type_val = _AnnotatedStruct_defaults.iobuf_type_val
                 deref(c_inst).__isset.iobuf_type_val = False
                 pass
-            elif iobuf_type_val is __NOTSET:
-                iobuf_type_val = None
 
-            if iobuf_ptr_val is None:
+            if not __isNOTSET[38] and iobuf_ptr_val is None:
                 deref(c_inst).iobuf_ptr_val.reset()
                 pass
-            elif iobuf_ptr_val is __NOTSET:
-                iobuf_ptr_val = None
 
-            if struct_struct is None:
+            if not __isNOTSET[39] and struct_struct is None:
                 deref(c_inst).struct_struct = _AnnotatedStruct_defaults.struct_struct
                 deref(c_inst).__isset.struct_struct = False
                 pass
-            elif struct_struct is __NOTSET:
-                struct_struct = None
 
         if no_annotation is not None:
             deref(c_inst).no_annotation = deref((<containerStruct?> no_annotation)._cpp_obj)
@@ -6127,6 +6464,7 @@ cdef class FloatStruct(thrift.py3.types.Struct):
 
         self._cpp_obj = move(FloatStruct._make_instance(
           NULL,
+          NULL,
           floatField,
           doubleField,
         ))
@@ -6136,26 +6474,40 @@ cdef class FloatStruct(thrift.py3.types.Struct):
         floatField=__NOTSET,
         doubleField=__NOTSET
     ):
-        changes = any((
-            floatField is not __NOTSET,
+        ___NOTSET = __NOTSET  # Cheaper for larger structs
+        cdef bint[2] __isNOTSET  # so make_instance is typed
 
-            doubleField is not __NOTSET,
-        ))
+        changes = False
+        if floatField is ___NOTSET:
+            __isNOTSET[0] = True
+            floatField = None
+        else:
+            __isNOTSET[0] = False
+            changes = True
+
+        if doubleField is ___NOTSET:
+            __isNOTSET[1] = True
+            doubleField = None
+        else:
+            __isNOTSET[1] = False
+            changes = True
+
 
         if not changes:
             return self
 
-        if None is not floatField is not __NOTSET:
+        if floatField is not None:
             if not isinstance(floatField, (float, int)):
                 raise TypeError(f'floatField is not a { float !r}.')
 
-        if None is not doubleField is not __NOTSET:
+        if doubleField is not None:
             if not isinstance(doubleField, (float, int)):
                 raise TypeError(f'doubleField is not a { float !r}.')
 
         inst = <FloatStruct>FloatStruct.__new__(FloatStruct)
         inst._cpp_obj = move(FloatStruct._make_instance(
           self._cpp_obj.get(),
+          __isNOTSET,
           floatField,
           doubleField,
         ))
@@ -6164,8 +6516,9 @@ cdef class FloatStruct(thrift.py3.types.Struct):
     @staticmethod
     cdef unique_ptr[cFloatStruct] _make_instance(
         cFloatStruct* base_instance,
-        object floatField,
-        object doubleField
+        bint* __isNOTSET,
+        object floatField ,
+        object doubleField 
     ) except *:
         cdef unique_ptr[cFloatStruct] c_inst
         if base_instance:
@@ -6175,19 +6528,15 @@ cdef class FloatStruct(thrift.py3.types.Struct):
 
         if base_instance:
             # Convert None's to default value. (or unset)
-            if floatField is None:
+            if not __isNOTSET[0] and floatField is None:
                 deref(c_inst).floatField = _FloatStruct_defaults.floatField
                 deref(c_inst).__isset.floatField = False
                 pass
-            elif floatField is __NOTSET:
-                floatField = None
 
-            if doubleField is None:
+            if not __isNOTSET[1] and doubleField is None:
                 deref(c_inst).doubleField = _FloatStruct_defaults.doubleField
                 deref(c_inst).__isset.doubleField = False
                 pass
-            elif doubleField is __NOTSET:
-                doubleField = None
 
         if floatField is not None:
             deref(c_inst).floatField = floatField
@@ -6367,8 +6716,8 @@ cdef class FloatUnion(thrift.py3.types.Union):
     @staticmethod
     cdef unique_ptr[cFloatUnion] _make_instance(
         cFloatUnion* base_instance,
-        floatSide,
-        doubleSide
+        object floatSide,
+        object doubleSide
     ) except *:
         cdef unique_ptr[cFloatUnion] c_inst = make_unique[cFloatUnion]()
         cdef bint any_set = False
@@ -6524,6 +6873,7 @@ cdef class AllRequiredNoExceptMoveCtrStruct(thrift.py3.types.Struct):
 
         self._cpp_obj = move(AllRequiredNoExceptMoveCtrStruct._make_instance(
           NULL,
+          NULL,
           intField,
         ))
 
@@ -6531,16 +6881,24 @@ cdef class AllRequiredNoExceptMoveCtrStruct(thrift.py3.types.Struct):
         AllRequiredNoExceptMoveCtrStruct self,
         intField=__NOTSET
     ):
-        changes = any((
-            intField is not __NOTSET,
-        ))
+        ___NOTSET = __NOTSET  # Cheaper for larger structs
+        cdef bint[1] __isNOTSET  # so make_instance is typed
+
+        changes = False
+        if intField is ___NOTSET:
+            __isNOTSET[0] = True
+            intField = None
+        else:
+            __isNOTSET[0] = False
+            changes = True
+
 
         if not changes:
             return self
 
-        if intField is None:
+        if not __isNOTSET[0] and intField is None:
             raise TypeError('field intField is required and has no default, it can not be unset')
-        if None is not intField is not __NOTSET:
+        if intField is not None:
             if not isinstance(intField, int):
                 raise TypeError(f'intField is not a { int !r}.')
             intField = <int64_t> intField
@@ -6548,6 +6906,7 @@ cdef class AllRequiredNoExceptMoveCtrStruct(thrift.py3.types.Struct):
         inst = <AllRequiredNoExceptMoveCtrStruct>AllRequiredNoExceptMoveCtrStruct.__new__(AllRequiredNoExceptMoveCtrStruct)
         inst._cpp_obj = move(AllRequiredNoExceptMoveCtrStruct._make_instance(
           self._cpp_obj.get(),
+          __isNOTSET,
           intField,
         ))
         return inst
@@ -6555,7 +6914,8 @@ cdef class AllRequiredNoExceptMoveCtrStruct(thrift.py3.types.Struct):
     @staticmethod
     cdef unique_ptr[cAllRequiredNoExceptMoveCtrStruct] _make_instance(
         cAllRequiredNoExceptMoveCtrStruct* base_instance,
-        object intField
+        bint* __isNOTSET,
+        object intField 
     ) except *:
         cdef unique_ptr[cAllRequiredNoExceptMoveCtrStruct] c_inst
         if base_instance:
@@ -6565,10 +6925,8 @@ cdef class AllRequiredNoExceptMoveCtrStruct(thrift.py3.types.Struct):
 
         if base_instance:
             # Convert None's to default value. (or unset)
-            if intField is None:
+            if not __isNOTSET[0] and intField is None:
                 pass
-            elif intField is __NOTSET:
-                intField = None
 
         if intField is not None:
             deref(c_inst).intField = intField

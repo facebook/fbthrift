@@ -118,11 +118,11 @@ cdef class ComplexUnion(thrift.py3.types.Union):
     cdef unique_ptr[cComplexUnion] _make_instance(
         cComplexUnion* base_instance,
         object intValue,
-        object stringValue,
+        str stringValue,
         object intListValue,
         object stringListValue,
         object typedefValue,
-        object stringRef
+        str stringRef
     ) except *
 
     @staticmethod
@@ -147,8 +147,8 @@ cdef class VirtualComplexUnion(thrift.py3.types.Union):
     @staticmethod
     cdef unique_ptr[cVirtualComplexUnion] _make_instance(
         cVirtualComplexUnion* base_instance,
-        object thingOne,
-        object thingTwo
+        str thingOne,
+        str thingTwo
     ) except *
 
     @staticmethod

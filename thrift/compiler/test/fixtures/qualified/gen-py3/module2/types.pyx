@@ -4,8 +4,8 @@
 # DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
 #  @generated
 #
-
 cimport cython as __cython
+from cpython.bytes cimport PyBytes_AsStringAndSize
 from cpython.object cimport PyTypeObject, Py_LT, Py_LE, Py_EQ, Py_NE, Py_GT, Py_GE
 from libcpp.memory cimport shared_ptr, make_shared, unique_ptr, make_unique
 from libcpp.string cimport string
@@ -52,6 +52,7 @@ cdef class Struct(thrift.py3.types.Struct):
     ):
         self._cpp_obj = move(Struct._make_instance(
           NULL,
+          NULL,
           first,
           second,
         ))
@@ -61,26 +62,40 @@ cdef class Struct(thrift.py3.types.Struct):
         first=__NOTSET,
         second=__NOTSET
     ):
-        changes = any((
-            first is not __NOTSET,
+        ___NOTSET = __NOTSET  # Cheaper for larger structs
+        cdef bint[2] __isNOTSET  # so make_instance is typed
 
-            second is not __NOTSET,
-        ))
+        changes = False
+        if first is ___NOTSET:
+            __isNOTSET[0] = True
+            first = None
+        else:
+            __isNOTSET[0] = False
+            changes = True
+
+        if second is ___NOTSET:
+            __isNOTSET[1] = True
+            second = None
+        else:
+            __isNOTSET[1] = False
+            changes = True
+
 
         if not changes:
             return self
 
-        if None is not first is not __NOTSET:
+        if first is not None:
             if not isinstance(first, _module0_types.Struct):
                 raise TypeError(f'first is not a { _module0_types.Struct !r}.')
 
-        if None is not second is not __NOTSET:
+        if second is not None:
             if not isinstance(second, _module1_types.Struct):
                 raise TypeError(f'second is not a { _module1_types.Struct !r}.')
 
         inst = <Struct>Struct.__new__(Struct)
         inst._cpp_obj = move(Struct._make_instance(
           self._cpp_obj.get(),
+          __isNOTSET,
           first,
           second,
         ))
@@ -89,8 +104,9 @@ cdef class Struct(thrift.py3.types.Struct):
     @staticmethod
     cdef unique_ptr[cStruct] _make_instance(
         cStruct* base_instance,
-        object first,
-        object second
+        bint* __isNOTSET,
+        _module0_types.Struct first ,
+        _module1_types.Struct second 
     ) except *:
         cdef unique_ptr[cStruct] c_inst
         if base_instance:
@@ -100,19 +116,15 @@ cdef class Struct(thrift.py3.types.Struct):
 
         if base_instance:
             # Convert None's to default value. (or unset)
-            if first is None:
+            if not __isNOTSET[0] and first is None:
                 deref(c_inst).first = _Struct_defaults.first
                 deref(c_inst).__isset.first = False
                 pass
-            elif first is __NOTSET:
-                first = None
 
-            if second is None:
+            if not __isNOTSET[1] and second is None:
                 deref(c_inst).second = _Struct_defaults.second
                 deref(c_inst).__isset.second = False
                 pass
-            elif second is __NOTSET:
-                second = None
 
         if first is not None:
             deref(c_inst).first = deref((<_module0_types.Struct?> first)._cpp_obj)
@@ -252,6 +264,7 @@ cdef class BigStruct(thrift.py3.types.Struct):
 
         self._cpp_obj = move(BigStruct._make_instance(
           NULL,
+          NULL,
           s,
           id,
         ))
@@ -261,20 +274,33 @@ cdef class BigStruct(thrift.py3.types.Struct):
         s=__NOTSET,
         id=__NOTSET
     ):
-        changes = any((
-            s is not __NOTSET,
+        ___NOTSET = __NOTSET  # Cheaper for larger structs
+        cdef bint[2] __isNOTSET  # so make_instance is typed
 
-            id is not __NOTSET,
-        ))
+        changes = False
+        if s is ___NOTSET:
+            __isNOTSET[0] = True
+            s = None
+        else:
+            __isNOTSET[0] = False
+            changes = True
+
+        if id is ___NOTSET:
+            __isNOTSET[1] = True
+            id = None
+        else:
+            __isNOTSET[1] = False
+            changes = True
+
 
         if not changes:
             return self
 
-        if None is not s is not __NOTSET:
+        if s is not None:
             if not isinstance(s, Struct):
                 raise TypeError(f's is not a { Struct !r}.')
 
-        if None is not id is not __NOTSET:
+        if id is not None:
             if not isinstance(id, int):
                 raise TypeError(f'id is not a { int !r}.')
             id = <int32_t> id
@@ -282,6 +308,7 @@ cdef class BigStruct(thrift.py3.types.Struct):
         inst = <BigStruct>BigStruct.__new__(BigStruct)
         inst._cpp_obj = move(BigStruct._make_instance(
           self._cpp_obj.get(),
+          __isNOTSET,
           s,
           id,
         ))
@@ -290,8 +317,9 @@ cdef class BigStruct(thrift.py3.types.Struct):
     @staticmethod
     cdef unique_ptr[cBigStruct] _make_instance(
         cBigStruct* base_instance,
-        object s,
-        object id
+        bint* __isNOTSET,
+        Struct s ,
+        object id 
     ) except *:
         cdef unique_ptr[cBigStruct] c_inst
         if base_instance:
@@ -301,19 +329,15 @@ cdef class BigStruct(thrift.py3.types.Struct):
 
         if base_instance:
             # Convert None's to default value. (or unset)
-            if s is None:
+            if not __isNOTSET[0] and s is None:
                 deref(c_inst).s = _BigStruct_defaults.s
                 deref(c_inst).__isset.s = False
                 pass
-            elif s is __NOTSET:
-                s = None
 
-            if id is None:
+            if not __isNOTSET[1] and id is None:
                 deref(c_inst).id = _BigStruct_defaults.id
                 deref(c_inst).__isset.id = False
                 pass
-            elif id is __NOTSET:
-                id = None
 
         if s is not None:
             deref(c_inst).s = deref((<Struct?> s)._cpp_obj)

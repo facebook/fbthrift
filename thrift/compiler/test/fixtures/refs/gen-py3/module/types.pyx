@@ -4,8 +4,8 @@
 # DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
 #  @generated
 #
-
 cimport cython as __cython
+from cpython.bytes cimport PyBytes_AsStringAndSize
 from cpython.object cimport PyTypeObject, Py_LT, Py_LE, Py_EQ, Py_NE, Py_GT, Py_GE
 from libcpp.memory cimport shared_ptr, make_shared, unique_ptr, make_unique
 from libcpp.string cimport string
@@ -275,8 +275,8 @@ cdef class MyUnion(thrift.py3.types.Union):
     @staticmethod
     cdef unique_ptr[cMyUnion] _make_instance(
         cMyUnion* base_instance,
-        anInteger,
-        aString
+        object anInteger,
+        str aString
     ) except *:
         cdef unique_ptr[cMyUnion] c_inst = make_unique[cMyUnion]()
         cdef bint any_set = False
@@ -444,6 +444,7 @@ cdef class MyField(thrift.py3.types.Struct):
 
         self._cpp_obj = move(MyField._make_instance(
           NULL,
+          NULL,
           opt_value,
           value,
           req_value,
@@ -455,30 +456,48 @@ cdef class MyField(thrift.py3.types.Struct):
         value=__NOTSET,
         req_value=__NOTSET
     ):
-        changes = any((
-            opt_value is not __NOTSET,
+        ___NOTSET = __NOTSET  # Cheaper for larger structs
+        cdef bint[3] __isNOTSET  # so make_instance is typed
 
-            value is not __NOTSET,
+        changes = False
+        if opt_value is ___NOTSET:
+            __isNOTSET[0] = True
+            opt_value = None
+        else:
+            __isNOTSET[0] = False
+            changes = True
 
-            req_value is not __NOTSET,
-        ))
+        if value is ___NOTSET:
+            __isNOTSET[1] = True
+            value = None
+        else:
+            __isNOTSET[1] = False
+            changes = True
+
+        if req_value is ___NOTSET:
+            __isNOTSET[2] = True
+            req_value = None
+        else:
+            __isNOTSET[2] = False
+            changes = True
+
 
         if not changes:
             return self
 
-        if None is not opt_value is not __NOTSET:
+        if opt_value is not None:
             if not isinstance(opt_value, int):
                 raise TypeError(f'opt_value is not a { int !r}.')
             opt_value = <int64_t> opt_value
 
-        if None is not value is not __NOTSET:
+        if value is not None:
             if not isinstance(value, int):
                 raise TypeError(f'value is not a { int !r}.')
             value = <int64_t> value
 
-        if req_value is None:
+        if not __isNOTSET[2] and req_value is None:
             raise TypeError('field req_value is required and has no default, it can not be unset')
-        if None is not req_value is not __NOTSET:
+        if req_value is not None:
             if not isinstance(req_value, int):
                 raise TypeError(f'req_value is not a { int !r}.')
             req_value = <int64_t> req_value
@@ -486,6 +505,7 @@ cdef class MyField(thrift.py3.types.Struct):
         inst = <MyField>MyField.__new__(MyField)
         inst._cpp_obj = move(MyField._make_instance(
           self._cpp_obj.get(),
+          __isNOTSET,
           opt_value,
           value,
           req_value,
@@ -495,9 +515,10 @@ cdef class MyField(thrift.py3.types.Struct):
     @staticmethod
     cdef unique_ptr[cMyField] _make_instance(
         cMyField* base_instance,
-        object opt_value,
-        object value,
-        object req_value
+        bint* __isNOTSET,
+        object opt_value ,
+        object value ,
+        object req_value 
     ) except *:
         cdef unique_ptr[cMyField] c_inst
         if base_instance:
@@ -507,23 +528,17 @@ cdef class MyField(thrift.py3.types.Struct):
 
         if base_instance:
             # Convert None's to default value. (or unset)
-            if opt_value is None:
+            if not __isNOTSET[0] and opt_value is None:
                 deref(c_inst).__isset.opt_value = False
                 pass
-            elif opt_value is __NOTSET:
-                opt_value = None
 
-            if value is None:
+            if not __isNOTSET[1] and value is None:
                 deref(c_inst).value = _MyField_defaults.value
                 deref(c_inst).__isset.value = False
                 pass
-            elif value is __NOTSET:
-                value = None
 
-            if req_value is None:
+            if not __isNOTSET[2] and req_value is None:
                 pass
-            elif req_value is __NOTSET:
-                req_value = None
 
         if opt_value is not None:
             deref(c_inst).opt_value = opt_value
@@ -666,6 +681,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
     ):
         self._cpp_obj = move(MyStruct._make_instance(
           NULL,
+          NULL,
           opt_ref,
           ref,
           req_ref,
@@ -677,34 +693,53 @@ cdef class MyStruct(thrift.py3.types.Struct):
         ref=__NOTSET,
         req_ref=__NOTSET
     ):
-        changes = any((
-            opt_ref is not __NOTSET,
+        ___NOTSET = __NOTSET  # Cheaper for larger structs
+        cdef bint[3] __isNOTSET  # so make_instance is typed
 
-            ref is not __NOTSET,
+        changes = False
+        if opt_ref is ___NOTSET:
+            __isNOTSET[0] = True
+            opt_ref = None
+        else:
+            __isNOTSET[0] = False
+            changes = True
 
-            req_ref is not __NOTSET,
-        ))
+        if ref is ___NOTSET:
+            __isNOTSET[1] = True
+            ref = None
+        else:
+            __isNOTSET[1] = False
+            changes = True
+
+        if req_ref is ___NOTSET:
+            __isNOTSET[2] = True
+            req_ref = None
+        else:
+            __isNOTSET[2] = False
+            changes = True
+
 
         if not changes:
             return self
 
-        if None is not opt_ref is not __NOTSET:
+        if opt_ref is not None:
             if not isinstance(opt_ref, MyField):
                 raise TypeError(f'opt_ref is not a { MyField !r}.')
 
-        if None is not ref is not __NOTSET:
+        if ref is not None:
             if not isinstance(ref, MyField):
                 raise TypeError(f'ref is not a { MyField !r}.')
 
-        if req_ref is None:
+        if not __isNOTSET[2] and req_ref is None:
             raise TypeError('field req_ref is required and has no default, it can not be unset')
-        if None is not req_ref is not __NOTSET:
+        if req_ref is not None:
             if not isinstance(req_ref, MyField):
                 raise TypeError(f'req_ref is not a { MyField !r}.')
 
         inst = <MyStruct>MyStruct.__new__(MyStruct)
         inst._cpp_obj = move(MyStruct._make_instance(
           self._cpp_obj.get(),
+          __isNOTSET,
           opt_ref,
           ref,
           req_ref,
@@ -714,9 +749,10 @@ cdef class MyStruct(thrift.py3.types.Struct):
     @staticmethod
     cdef unique_ptr[cMyStruct] _make_instance(
         cMyStruct* base_instance,
-        object opt_ref,
-        object ref,
-        object req_ref
+        bint* __isNOTSET,
+        MyField opt_ref ,
+        MyField ref ,
+        MyField req_ref 
     ) except *:
         cdef unique_ptr[cMyStruct] c_inst
         if base_instance:
@@ -726,23 +762,17 @@ cdef class MyStruct(thrift.py3.types.Struct):
 
         if base_instance:
             # Convert None's to default value. (or unset)
-            if opt_ref is None:
+            if not __isNOTSET[0] and opt_ref is None:
                 deref(c_inst).opt_ref.reset()
                 pass
-            elif opt_ref is __NOTSET:
-                opt_ref = None
 
-            if ref is None:
+            if not __isNOTSET[1] and ref is None:
                 deref(c_inst).ref.reset()
                 pass
-            elif ref is __NOTSET:
-                ref = None
 
-            if req_ref is None:
+            if not __isNOTSET[2] and req_ref is None:
                 deref(c_inst).req_ref.reset()
                 pass
-            elif req_ref is __NOTSET:
-                req_ref = None
 
         if opt_ref is not None:
             deref(c_inst).opt_ref = make_unique[cMyField](deref((<MyField?>opt_ref)._cpp_obj))
@@ -897,6 +927,7 @@ cdef class StructWithUnion(thrift.py3.types.Struct):
 
         self._cpp_obj = move(StructWithUnion._make_instance(
           NULL,
+          NULL,
           u,
           aDouble,
           f,
@@ -908,32 +939,51 @@ cdef class StructWithUnion(thrift.py3.types.Struct):
         aDouble=__NOTSET,
         f=__NOTSET
     ):
-        changes = any((
-            u is not __NOTSET,
+        ___NOTSET = __NOTSET  # Cheaper for larger structs
+        cdef bint[3] __isNOTSET  # so make_instance is typed
 
-            aDouble is not __NOTSET,
+        changes = False
+        if u is ___NOTSET:
+            __isNOTSET[0] = True
+            u = None
+        else:
+            __isNOTSET[0] = False
+            changes = True
 
-            f is not __NOTSET,
-        ))
+        if aDouble is ___NOTSET:
+            __isNOTSET[1] = True
+            aDouble = None
+        else:
+            __isNOTSET[1] = False
+            changes = True
+
+        if f is ___NOTSET:
+            __isNOTSET[2] = True
+            f = None
+        else:
+            __isNOTSET[2] = False
+            changes = True
+
 
         if not changes:
             return self
 
-        if None is not u is not __NOTSET:
+        if u is not None:
             if not isinstance(u, MyUnion):
                 raise TypeError(f'u is not a { MyUnion !r}.')
 
-        if None is not aDouble is not __NOTSET:
+        if aDouble is not None:
             if not isinstance(aDouble, (float, int)):
                 raise TypeError(f'aDouble is not a { float !r}.')
 
-        if None is not f is not __NOTSET:
+        if f is not None:
             if not isinstance(f, MyField):
                 raise TypeError(f'f is not a { MyField !r}.')
 
         inst = <StructWithUnion>StructWithUnion.__new__(StructWithUnion)
         inst._cpp_obj = move(StructWithUnion._make_instance(
           self._cpp_obj.get(),
+          __isNOTSET,
           u,
           aDouble,
           f,
@@ -943,9 +993,10 @@ cdef class StructWithUnion(thrift.py3.types.Struct):
     @staticmethod
     cdef unique_ptr[cStructWithUnion] _make_instance(
         cStructWithUnion* base_instance,
-        object u,
-        object aDouble,
-        object f
+        bint* __isNOTSET,
+        MyUnion u ,
+        object aDouble ,
+        MyField f 
     ) except *:
         cdef unique_ptr[cStructWithUnion] c_inst
         if base_instance:
@@ -955,25 +1006,19 @@ cdef class StructWithUnion(thrift.py3.types.Struct):
 
         if base_instance:
             # Convert None's to default value. (or unset)
-            if u is None:
+            if not __isNOTSET[0] and u is None:
                 deref(c_inst).u.reset()
                 pass
-            elif u is __NOTSET:
-                u = None
 
-            if aDouble is None:
+            if not __isNOTSET[1] and aDouble is None:
                 deref(c_inst).aDouble = _StructWithUnion_defaults.aDouble
                 deref(c_inst).__isset.aDouble = False
                 pass
-            elif aDouble is __NOTSET:
-                aDouble = None
 
-            if f is None:
+            if not __isNOTSET[2] and f is None:
                 deref(c_inst).f = _StructWithUnion_defaults.f
                 deref(c_inst).__isset.f = False
                 pass
-            elif f is __NOTSET:
-                f = None
 
         if u is not None:
             deref(c_inst).u = make_unique[cMyUnion](deref((<MyUnion?>u)._cpp_obj))
@@ -1118,6 +1163,7 @@ cdef class RecursiveStruct(thrift.py3.types.Struct):
     ):
         self._cpp_obj = move(RecursiveStruct._make_instance(
           NULL,
+          NULL,
           mes,
         ))
 
@@ -1125,9 +1171,17 @@ cdef class RecursiveStruct(thrift.py3.types.Struct):
         RecursiveStruct self,
         mes=__NOTSET
     ):
-        changes = any((
-            mes is not __NOTSET,
-        ))
+        ___NOTSET = __NOTSET  # Cheaper for larger structs
+        cdef bint[1] __isNOTSET  # so make_instance is typed
+
+        changes = False
+        if mes is ___NOTSET:
+            __isNOTSET[0] = True
+            mes = None
+        else:
+            __isNOTSET[0] = False
+            changes = True
+
 
         if not changes:
             return self
@@ -1135,6 +1189,7 @@ cdef class RecursiveStruct(thrift.py3.types.Struct):
         inst = <RecursiveStruct>RecursiveStruct.__new__(RecursiveStruct)
         inst._cpp_obj = move(RecursiveStruct._make_instance(
           self._cpp_obj.get(),
+          __isNOTSET,
           mes,
         ))
         return inst
@@ -1142,7 +1197,8 @@ cdef class RecursiveStruct(thrift.py3.types.Struct):
     @staticmethod
     cdef unique_ptr[cRecursiveStruct] _make_instance(
         cRecursiveStruct* base_instance,
-        object mes
+        bint* __isNOTSET,
+        object mes 
     ) except *:
         cdef unique_ptr[cRecursiveStruct] c_inst
         if base_instance:
@@ -1152,11 +1208,9 @@ cdef class RecursiveStruct(thrift.py3.types.Struct):
 
         if base_instance:
             # Convert None's to default value. (or unset)
-            if mes is None:
+            if not __isNOTSET[0] and mes is None:
                 deref(c_inst).__isset.mes = False
                 pass
-            elif mes is __NOTSET:
-                mes = None
 
         if mes is not None:
             deref(c_inst).mes = deref(List__RecursiveStruct(mes)._cpp_obj)
@@ -1285,6 +1339,7 @@ cdef class StructWithContainers(thrift.py3.types.Struct):
     ):
         self._cpp_obj = move(StructWithContainers._make_instance(
           NULL,
+          NULL,
           list_ref,
           set_ref,
           map_ref,
@@ -1302,19 +1357,52 @@ cdef class StructWithContainers(thrift.py3.types.Struct):
         set_ref_shared=__NOTSET,
         list_ref_shared_const=__NOTSET
     ):
-        changes = any((
-            list_ref is not __NOTSET,
+        ___NOTSET = __NOTSET  # Cheaper for larger structs
+        cdef bint[6] __isNOTSET  # so make_instance is typed
 
-            set_ref is not __NOTSET,
+        changes = False
+        if list_ref is ___NOTSET:
+            __isNOTSET[0] = True
+            list_ref = None
+        else:
+            __isNOTSET[0] = False
+            changes = True
 
-            map_ref is not __NOTSET,
+        if set_ref is ___NOTSET:
+            __isNOTSET[1] = True
+            set_ref = None
+        else:
+            __isNOTSET[1] = False
+            changes = True
 
-            list_ref_unique is not __NOTSET,
+        if map_ref is ___NOTSET:
+            __isNOTSET[2] = True
+            map_ref = None
+        else:
+            __isNOTSET[2] = False
+            changes = True
 
-            set_ref_shared is not __NOTSET,
+        if list_ref_unique is ___NOTSET:
+            __isNOTSET[3] = True
+            list_ref_unique = None
+        else:
+            __isNOTSET[3] = False
+            changes = True
 
-            list_ref_shared_const is not __NOTSET,
-        ))
+        if set_ref_shared is ___NOTSET:
+            __isNOTSET[4] = True
+            set_ref_shared = None
+        else:
+            __isNOTSET[4] = False
+            changes = True
+
+        if list_ref_shared_const is ___NOTSET:
+            __isNOTSET[5] = True
+            list_ref_shared_const = None
+        else:
+            __isNOTSET[5] = False
+            changes = True
+
 
         if not changes:
             return self
@@ -1322,6 +1410,7 @@ cdef class StructWithContainers(thrift.py3.types.Struct):
         inst = <StructWithContainers>StructWithContainers.__new__(StructWithContainers)
         inst._cpp_obj = move(StructWithContainers._make_instance(
           self._cpp_obj.get(),
+          __isNOTSET,
           list_ref,
           set_ref,
           map_ref,
@@ -1334,12 +1423,13 @@ cdef class StructWithContainers(thrift.py3.types.Struct):
     @staticmethod
     cdef unique_ptr[cStructWithContainers] _make_instance(
         cStructWithContainers* base_instance,
-        object list_ref,
-        object set_ref,
-        object map_ref,
-        object list_ref_unique,
-        object set_ref_shared,
-        object list_ref_shared_const
+        bint* __isNOTSET,
+        object list_ref ,
+        object set_ref ,
+        object map_ref ,
+        object list_ref_unique ,
+        object set_ref_shared ,
+        object list_ref_shared_const 
     ) except *:
         cdef unique_ptr[cStructWithContainers] c_inst
         if base_instance:
@@ -1349,41 +1439,29 @@ cdef class StructWithContainers(thrift.py3.types.Struct):
 
         if base_instance:
             # Convert None's to default value. (or unset)
-            if list_ref is None:
+            if not __isNOTSET[0] and list_ref is None:
                 deref(c_inst).list_ref.reset()
                 pass
-            elif list_ref is __NOTSET:
-                list_ref = None
 
-            if set_ref is None:
+            if not __isNOTSET[1] and set_ref is None:
                 deref(c_inst).set_ref.reset()
                 pass
-            elif set_ref is __NOTSET:
-                set_ref = None
 
-            if map_ref is None:
+            if not __isNOTSET[2] and map_ref is None:
                 deref(c_inst).map_ref.reset()
                 pass
-            elif map_ref is __NOTSET:
-                map_ref = None
 
-            if list_ref_unique is None:
+            if not __isNOTSET[3] and list_ref_unique is None:
                 deref(c_inst).list_ref_unique.reset()
                 pass
-            elif list_ref_unique is __NOTSET:
-                list_ref_unique = None
 
-            if set_ref_shared is None:
+            if not __isNOTSET[4] and set_ref_shared is None:
                 deref(c_inst).set_ref_shared.reset()
                 pass
-            elif set_ref_shared is __NOTSET:
-                set_ref_shared = None
 
-            if list_ref_shared_const is None:
+            if not __isNOTSET[5] and list_ref_shared_const is None:
                 deref(c_inst).list_ref_shared_const.reset()
                 pass
-            elif list_ref_shared_const is __NOTSET:
-                list_ref_shared_const = None
 
         if list_ref is not None:
             deref(c_inst).list_ref = make_unique[vector[int32_t]](deref((<List__i32?>list_ref)._cpp_obj))
@@ -1573,6 +1651,7 @@ cdef class StructWithSharedConst(thrift.py3.types.Struct):
     ):
         self._cpp_obj = move(StructWithSharedConst._make_instance(
           NULL,
+          NULL,
           opt_shared_const,
           shared_const,
           req_shared_const,
@@ -1584,34 +1663,53 @@ cdef class StructWithSharedConst(thrift.py3.types.Struct):
         shared_const=__NOTSET,
         req_shared_const=__NOTSET
     ):
-        changes = any((
-            opt_shared_const is not __NOTSET,
+        ___NOTSET = __NOTSET  # Cheaper for larger structs
+        cdef bint[3] __isNOTSET  # so make_instance is typed
 
-            shared_const is not __NOTSET,
+        changes = False
+        if opt_shared_const is ___NOTSET:
+            __isNOTSET[0] = True
+            opt_shared_const = None
+        else:
+            __isNOTSET[0] = False
+            changes = True
 
-            req_shared_const is not __NOTSET,
-        ))
+        if shared_const is ___NOTSET:
+            __isNOTSET[1] = True
+            shared_const = None
+        else:
+            __isNOTSET[1] = False
+            changes = True
+
+        if req_shared_const is ___NOTSET:
+            __isNOTSET[2] = True
+            req_shared_const = None
+        else:
+            __isNOTSET[2] = False
+            changes = True
+
 
         if not changes:
             return self
 
-        if None is not opt_shared_const is not __NOTSET:
+        if opt_shared_const is not None:
             if not isinstance(opt_shared_const, MyField):
                 raise TypeError(f'opt_shared_const is not a { MyField !r}.')
 
-        if None is not shared_const is not __NOTSET:
+        if shared_const is not None:
             if not isinstance(shared_const, MyField):
                 raise TypeError(f'shared_const is not a { MyField !r}.')
 
-        if req_shared_const is None:
+        if not __isNOTSET[2] and req_shared_const is None:
             raise TypeError('field req_shared_const is required and has no default, it can not be unset')
-        if None is not req_shared_const is not __NOTSET:
+        if req_shared_const is not None:
             if not isinstance(req_shared_const, MyField):
                 raise TypeError(f'req_shared_const is not a { MyField !r}.')
 
         inst = <StructWithSharedConst>StructWithSharedConst.__new__(StructWithSharedConst)
         inst._cpp_obj = move(StructWithSharedConst._make_instance(
           self._cpp_obj.get(),
+          __isNOTSET,
           opt_shared_const,
           shared_const,
           req_shared_const,
@@ -1621,9 +1719,10 @@ cdef class StructWithSharedConst(thrift.py3.types.Struct):
     @staticmethod
     cdef unique_ptr[cStructWithSharedConst] _make_instance(
         cStructWithSharedConst* base_instance,
-        object opt_shared_const,
-        object shared_const,
-        object req_shared_const
+        bint* __isNOTSET,
+        MyField opt_shared_const ,
+        MyField shared_const ,
+        MyField req_shared_const 
     ) except *:
         cdef unique_ptr[cStructWithSharedConst] c_inst
         if base_instance:
@@ -1633,23 +1732,17 @@ cdef class StructWithSharedConst(thrift.py3.types.Struct):
 
         if base_instance:
             # Convert None's to default value. (or unset)
-            if opt_shared_const is None:
+            if not __isNOTSET[0] and opt_shared_const is None:
                 deref(c_inst).opt_shared_const.reset()
                 pass
-            elif opt_shared_const is __NOTSET:
-                opt_shared_const = None
 
-            if shared_const is None:
+            if not __isNOTSET[1] and shared_const is None:
                 deref(c_inst).shared_const.reset()
                 pass
-            elif shared_const is __NOTSET:
-                shared_const = None
 
-            if req_shared_const is None:
+            if not __isNOTSET[2] and req_shared_const is None:
                 deref(c_inst).req_shared_const.reset()
                 pass
-            elif req_shared_const is __NOTSET:
-                req_shared_const = None
 
         if opt_shared_const is not None:
             deref(c_inst).opt_shared_const = const_pointer_cast((<MyField?>opt_shared_const)._cpp_obj)
@@ -1797,24 +1890,18 @@ cdef class Empty(thrift.py3.types.Struct):
     ):
         self._cpp_obj = move(Empty._make_instance(
           NULL,
+          NULL,
         ))
 
     def __call__(
         Empty self
     ):
-        changes = any((        ))
-
-        if not changes:
-            return self
-        inst = <Empty>Empty.__new__(Empty)
-        inst._cpp_obj = move(Empty._make_instance(
-          self._cpp_obj.get(),
-        ))
-        return inst
+        return self
 
     @staticmethod
     cdef unique_ptr[cEmpty] _make_instance(
-        cEmpty* base_instance
+        cEmpty* base_instance,
+        bint* __isNOTSET
     ) except *:
         cdef unique_ptr[cEmpty] c_inst
         if base_instance:
@@ -1937,6 +2024,7 @@ cdef class StructWithRef(thrift.py3.types.Struct):
     ):
         self._cpp_obj = move(StructWithRef._make_instance(
           NULL,
+          NULL,
           def_field,
           opt_field,
           req_field,
@@ -1948,34 +2036,53 @@ cdef class StructWithRef(thrift.py3.types.Struct):
         opt_field=__NOTSET,
         req_field=__NOTSET
     ):
-        changes = any((
-            def_field is not __NOTSET,
+        ___NOTSET = __NOTSET  # Cheaper for larger structs
+        cdef bint[3] __isNOTSET  # so make_instance is typed
 
-            opt_field is not __NOTSET,
+        changes = False
+        if def_field is ___NOTSET:
+            __isNOTSET[0] = True
+            def_field = None
+        else:
+            __isNOTSET[0] = False
+            changes = True
 
-            req_field is not __NOTSET,
-        ))
+        if opt_field is ___NOTSET:
+            __isNOTSET[1] = True
+            opt_field = None
+        else:
+            __isNOTSET[1] = False
+            changes = True
+
+        if req_field is ___NOTSET:
+            __isNOTSET[2] = True
+            req_field = None
+        else:
+            __isNOTSET[2] = False
+            changes = True
+
 
         if not changes:
             return self
 
-        if None is not def_field is not __NOTSET:
+        if def_field is not None:
             if not isinstance(def_field, Empty):
                 raise TypeError(f'def_field is not a { Empty !r}.')
 
-        if None is not opt_field is not __NOTSET:
+        if opt_field is not None:
             if not isinstance(opt_field, Empty):
                 raise TypeError(f'opt_field is not a { Empty !r}.')
 
-        if req_field is None:
+        if not __isNOTSET[2] and req_field is None:
             raise TypeError('field req_field is required and has no default, it can not be unset')
-        if None is not req_field is not __NOTSET:
+        if req_field is not None:
             if not isinstance(req_field, Empty):
                 raise TypeError(f'req_field is not a { Empty !r}.')
 
         inst = <StructWithRef>StructWithRef.__new__(StructWithRef)
         inst._cpp_obj = move(StructWithRef._make_instance(
           self._cpp_obj.get(),
+          __isNOTSET,
           def_field,
           opt_field,
           req_field,
@@ -1985,9 +2092,10 @@ cdef class StructWithRef(thrift.py3.types.Struct):
     @staticmethod
     cdef unique_ptr[cStructWithRef] _make_instance(
         cStructWithRef* base_instance,
-        object def_field,
-        object opt_field,
-        object req_field
+        bint* __isNOTSET,
+        Empty def_field ,
+        Empty opt_field ,
+        Empty req_field 
     ) except *:
         cdef unique_ptr[cStructWithRef] c_inst
         if base_instance:
@@ -1997,23 +2105,17 @@ cdef class StructWithRef(thrift.py3.types.Struct):
 
         if base_instance:
             # Convert None's to default value. (or unset)
-            if def_field is None:
+            if not __isNOTSET[0] and def_field is None:
                 deref(c_inst).def_field.reset()
                 pass
-            elif def_field is __NOTSET:
-                def_field = None
 
-            if opt_field is None:
+            if not __isNOTSET[1] and opt_field is None:
                 deref(c_inst).opt_field.reset()
                 pass
-            elif opt_field is __NOTSET:
-                opt_field = None
 
-            if req_field is None:
+            if not __isNOTSET[2] and req_field is None:
                 deref(c_inst).req_field.reset()
                 pass
-            elif req_field is __NOTSET:
-                req_field = None
 
         if def_field is not None:
             deref(c_inst).def_field = make_unique[cEmpty](deref((<Empty?>def_field)._cpp_obj))
@@ -2164,6 +2266,7 @@ cdef class StructWithRefTypeUnique(thrift.py3.types.Struct):
     ):
         self._cpp_obj = move(StructWithRefTypeUnique._make_instance(
           NULL,
+          NULL,
           def_field,
           opt_field,
           req_field,
@@ -2175,34 +2278,53 @@ cdef class StructWithRefTypeUnique(thrift.py3.types.Struct):
         opt_field=__NOTSET,
         req_field=__NOTSET
     ):
-        changes = any((
-            def_field is not __NOTSET,
+        ___NOTSET = __NOTSET  # Cheaper for larger structs
+        cdef bint[3] __isNOTSET  # so make_instance is typed
 
-            opt_field is not __NOTSET,
+        changes = False
+        if def_field is ___NOTSET:
+            __isNOTSET[0] = True
+            def_field = None
+        else:
+            __isNOTSET[0] = False
+            changes = True
 
-            req_field is not __NOTSET,
-        ))
+        if opt_field is ___NOTSET:
+            __isNOTSET[1] = True
+            opt_field = None
+        else:
+            __isNOTSET[1] = False
+            changes = True
+
+        if req_field is ___NOTSET:
+            __isNOTSET[2] = True
+            req_field = None
+        else:
+            __isNOTSET[2] = False
+            changes = True
+
 
         if not changes:
             return self
 
-        if None is not def_field is not __NOTSET:
+        if def_field is not None:
             if not isinstance(def_field, Empty):
                 raise TypeError(f'def_field is not a { Empty !r}.')
 
-        if None is not opt_field is not __NOTSET:
+        if opt_field is not None:
             if not isinstance(opt_field, Empty):
                 raise TypeError(f'opt_field is not a { Empty !r}.')
 
-        if req_field is None:
+        if not __isNOTSET[2] and req_field is None:
             raise TypeError('field req_field is required and has no default, it can not be unset')
-        if None is not req_field is not __NOTSET:
+        if req_field is not None:
             if not isinstance(req_field, Empty):
                 raise TypeError(f'req_field is not a { Empty !r}.')
 
         inst = <StructWithRefTypeUnique>StructWithRefTypeUnique.__new__(StructWithRefTypeUnique)
         inst._cpp_obj = move(StructWithRefTypeUnique._make_instance(
           self._cpp_obj.get(),
+          __isNOTSET,
           def_field,
           opt_field,
           req_field,
@@ -2212,9 +2334,10 @@ cdef class StructWithRefTypeUnique(thrift.py3.types.Struct):
     @staticmethod
     cdef unique_ptr[cStructWithRefTypeUnique] _make_instance(
         cStructWithRefTypeUnique* base_instance,
-        object def_field,
-        object opt_field,
-        object req_field
+        bint* __isNOTSET,
+        Empty def_field ,
+        Empty opt_field ,
+        Empty req_field 
     ) except *:
         cdef unique_ptr[cStructWithRefTypeUnique] c_inst
         if base_instance:
@@ -2224,23 +2347,17 @@ cdef class StructWithRefTypeUnique(thrift.py3.types.Struct):
 
         if base_instance:
             # Convert None's to default value. (or unset)
-            if def_field is None:
+            if not __isNOTSET[0] and def_field is None:
                 deref(c_inst).def_field.reset()
                 pass
-            elif def_field is __NOTSET:
-                def_field = None
 
-            if opt_field is None:
+            if not __isNOTSET[1] and opt_field is None:
                 deref(c_inst).opt_field.reset()
                 pass
-            elif opt_field is __NOTSET:
-                opt_field = None
 
-            if req_field is None:
+            if not __isNOTSET[2] and req_field is None:
                 deref(c_inst).req_field.reset()
                 pass
-            elif req_field is __NOTSET:
-                req_field = None
 
         if def_field is not None:
             deref(c_inst).def_field = make_unique[cEmpty](deref((<Empty?>def_field)._cpp_obj))
@@ -2391,6 +2508,7 @@ cdef class StructWithRefTypeShared(thrift.py3.types.Struct):
     ):
         self._cpp_obj = move(StructWithRefTypeShared._make_instance(
           NULL,
+          NULL,
           def_field,
           opt_field,
           req_field,
@@ -2402,34 +2520,53 @@ cdef class StructWithRefTypeShared(thrift.py3.types.Struct):
         opt_field=__NOTSET,
         req_field=__NOTSET
     ):
-        changes = any((
-            def_field is not __NOTSET,
+        ___NOTSET = __NOTSET  # Cheaper for larger structs
+        cdef bint[3] __isNOTSET  # so make_instance is typed
 
-            opt_field is not __NOTSET,
+        changes = False
+        if def_field is ___NOTSET:
+            __isNOTSET[0] = True
+            def_field = None
+        else:
+            __isNOTSET[0] = False
+            changes = True
 
-            req_field is not __NOTSET,
-        ))
+        if opt_field is ___NOTSET:
+            __isNOTSET[1] = True
+            opt_field = None
+        else:
+            __isNOTSET[1] = False
+            changes = True
+
+        if req_field is ___NOTSET:
+            __isNOTSET[2] = True
+            req_field = None
+        else:
+            __isNOTSET[2] = False
+            changes = True
+
 
         if not changes:
             return self
 
-        if None is not def_field is not __NOTSET:
+        if def_field is not None:
             if not isinstance(def_field, Empty):
                 raise TypeError(f'def_field is not a { Empty !r}.')
 
-        if None is not opt_field is not __NOTSET:
+        if opt_field is not None:
             if not isinstance(opt_field, Empty):
                 raise TypeError(f'opt_field is not a { Empty !r}.')
 
-        if req_field is None:
+        if not __isNOTSET[2] and req_field is None:
             raise TypeError('field req_field is required and has no default, it can not be unset')
-        if None is not req_field is not __NOTSET:
+        if req_field is not None:
             if not isinstance(req_field, Empty):
                 raise TypeError(f'req_field is not a { Empty !r}.')
 
         inst = <StructWithRefTypeShared>StructWithRefTypeShared.__new__(StructWithRefTypeShared)
         inst._cpp_obj = move(StructWithRefTypeShared._make_instance(
           self._cpp_obj.get(),
+          __isNOTSET,
           def_field,
           opt_field,
           req_field,
@@ -2439,9 +2576,10 @@ cdef class StructWithRefTypeShared(thrift.py3.types.Struct):
     @staticmethod
     cdef unique_ptr[cStructWithRefTypeShared] _make_instance(
         cStructWithRefTypeShared* base_instance,
-        object def_field,
-        object opt_field,
-        object req_field
+        bint* __isNOTSET,
+        Empty def_field ,
+        Empty opt_field ,
+        Empty req_field 
     ) except *:
         cdef unique_ptr[cStructWithRefTypeShared] c_inst
         if base_instance:
@@ -2451,23 +2589,17 @@ cdef class StructWithRefTypeShared(thrift.py3.types.Struct):
 
         if base_instance:
             # Convert None's to default value. (or unset)
-            if def_field is None:
+            if not __isNOTSET[0] and def_field is None:
                 deref(c_inst).def_field.reset()
                 pass
-            elif def_field is __NOTSET:
-                def_field = None
 
-            if opt_field is None:
+            if not __isNOTSET[1] and opt_field is None:
                 deref(c_inst).opt_field.reset()
                 pass
-            elif opt_field is __NOTSET:
-                opt_field = None
 
-            if req_field is None:
+            if not __isNOTSET[2] and req_field is None:
                 deref(c_inst).req_field.reset()
                 pass
-            elif req_field is __NOTSET:
-                req_field = None
 
         if def_field is not None:
             deref(c_inst).def_field = (<Empty?>def_field)._cpp_obj
@@ -2618,6 +2750,7 @@ cdef class StructWithRefTypeSharedConst(thrift.py3.types.Struct):
     ):
         self._cpp_obj = move(StructWithRefTypeSharedConst._make_instance(
           NULL,
+          NULL,
           def_field,
           opt_field,
           req_field,
@@ -2629,34 +2762,53 @@ cdef class StructWithRefTypeSharedConst(thrift.py3.types.Struct):
         opt_field=__NOTSET,
         req_field=__NOTSET
     ):
-        changes = any((
-            def_field is not __NOTSET,
+        ___NOTSET = __NOTSET  # Cheaper for larger structs
+        cdef bint[3] __isNOTSET  # so make_instance is typed
 
-            opt_field is not __NOTSET,
+        changes = False
+        if def_field is ___NOTSET:
+            __isNOTSET[0] = True
+            def_field = None
+        else:
+            __isNOTSET[0] = False
+            changes = True
 
-            req_field is not __NOTSET,
-        ))
+        if opt_field is ___NOTSET:
+            __isNOTSET[1] = True
+            opt_field = None
+        else:
+            __isNOTSET[1] = False
+            changes = True
+
+        if req_field is ___NOTSET:
+            __isNOTSET[2] = True
+            req_field = None
+        else:
+            __isNOTSET[2] = False
+            changes = True
+
 
         if not changes:
             return self
 
-        if None is not def_field is not __NOTSET:
+        if def_field is not None:
             if not isinstance(def_field, Empty):
                 raise TypeError(f'def_field is not a { Empty !r}.')
 
-        if None is not opt_field is not __NOTSET:
+        if opt_field is not None:
             if not isinstance(opt_field, Empty):
                 raise TypeError(f'opt_field is not a { Empty !r}.')
 
-        if req_field is None:
+        if not __isNOTSET[2] and req_field is None:
             raise TypeError('field req_field is required and has no default, it can not be unset')
-        if None is not req_field is not __NOTSET:
+        if req_field is not None:
             if not isinstance(req_field, Empty):
                 raise TypeError(f'req_field is not a { Empty !r}.')
 
         inst = <StructWithRefTypeSharedConst>StructWithRefTypeSharedConst.__new__(StructWithRefTypeSharedConst)
         inst._cpp_obj = move(StructWithRefTypeSharedConst._make_instance(
           self._cpp_obj.get(),
+          __isNOTSET,
           def_field,
           opt_field,
           req_field,
@@ -2666,9 +2818,10 @@ cdef class StructWithRefTypeSharedConst(thrift.py3.types.Struct):
     @staticmethod
     cdef unique_ptr[cStructWithRefTypeSharedConst] _make_instance(
         cStructWithRefTypeSharedConst* base_instance,
-        object def_field,
-        object opt_field,
-        object req_field
+        bint* __isNOTSET,
+        Empty def_field ,
+        Empty opt_field ,
+        Empty req_field 
     ) except *:
         cdef unique_ptr[cStructWithRefTypeSharedConst] c_inst
         if base_instance:
@@ -2678,23 +2831,17 @@ cdef class StructWithRefTypeSharedConst(thrift.py3.types.Struct):
 
         if base_instance:
             # Convert None's to default value. (or unset)
-            if def_field is None:
+            if not __isNOTSET[0] and def_field is None:
                 deref(c_inst).def_field.reset()
                 pass
-            elif def_field is __NOTSET:
-                def_field = None
 
-            if opt_field is None:
+            if not __isNOTSET[1] and opt_field is None:
                 deref(c_inst).opt_field.reset()
                 pass
-            elif opt_field is __NOTSET:
-                opt_field = None
 
-            if req_field is None:
+            if not __isNOTSET[2] and req_field is None:
                 deref(c_inst).req_field.reset()
                 pass
-            elif req_field is __NOTSET:
-                req_field = None
 
         if def_field is not None:
             deref(c_inst).def_field = const_pointer_cast((<Empty?>def_field)._cpp_obj)
@@ -2843,6 +2990,7 @@ cdef class StructWithRefAndAnnotCppNoexceptMoveCtor(thrift.py3.types.Struct):
     ):
         self._cpp_obj = move(StructWithRefAndAnnotCppNoexceptMoveCtor._make_instance(
           NULL,
+          NULL,
           def_field,
         ))
 
@@ -2850,20 +2998,29 @@ cdef class StructWithRefAndAnnotCppNoexceptMoveCtor(thrift.py3.types.Struct):
         StructWithRefAndAnnotCppNoexceptMoveCtor self,
         def_field=__NOTSET
     ):
-        changes = any((
-            def_field is not __NOTSET,
-        ))
+        ___NOTSET = __NOTSET  # Cheaper for larger structs
+        cdef bint[1] __isNOTSET  # so make_instance is typed
+
+        changes = False
+        if def_field is ___NOTSET:
+            __isNOTSET[0] = True
+            def_field = None
+        else:
+            __isNOTSET[0] = False
+            changes = True
+
 
         if not changes:
             return self
 
-        if None is not def_field is not __NOTSET:
+        if def_field is not None:
             if not isinstance(def_field, Empty):
                 raise TypeError(f'def_field is not a { Empty !r}.')
 
         inst = <StructWithRefAndAnnotCppNoexceptMoveCtor>StructWithRefAndAnnotCppNoexceptMoveCtor.__new__(StructWithRefAndAnnotCppNoexceptMoveCtor)
         inst._cpp_obj = move(StructWithRefAndAnnotCppNoexceptMoveCtor._make_instance(
           self._cpp_obj.get(),
+          __isNOTSET,
           def_field,
         ))
         return inst
@@ -2871,7 +3028,8 @@ cdef class StructWithRefAndAnnotCppNoexceptMoveCtor(thrift.py3.types.Struct):
     @staticmethod
     cdef unique_ptr[cStructWithRefAndAnnotCppNoexceptMoveCtor] _make_instance(
         cStructWithRefAndAnnotCppNoexceptMoveCtor* base_instance,
-        object def_field
+        bint* __isNOTSET,
+        Empty def_field 
     ) except *:
         cdef unique_ptr[cStructWithRefAndAnnotCppNoexceptMoveCtor] c_inst
         if base_instance:
@@ -2881,11 +3039,9 @@ cdef class StructWithRefAndAnnotCppNoexceptMoveCtor(thrift.py3.types.Struct):
 
         if base_instance:
             # Convert None's to default value. (or unset)
-            if def_field is None:
+            if not __isNOTSET[0] and def_field is None:
                 deref(c_inst).def_field.reset()
                 pass
-            elif def_field is __NOTSET:
-                def_field = None
 
         if def_field is not None:
             deref(c_inst).def_field = make_unique[cEmpty](deref((<Empty?>def_field)._cpp_obj))

@@ -197,8 +197,17 @@ cdef class {{struct:name}}({{> types/PythonStructClass}}):
 
     @staticmethod
     cdef unique_ptr[c{{struct:name}}] _make_instance(
-        c{{struct:name}}* base_instance{{#struct:fields}},
-        object {{field:name}}{{/struct:fields}}
+        c{{struct:name}}* base_instance{{^struct:union?}},
+        bint* __isNOTSET{{/struct:union?}}{{#struct:fields}},
+        {{#field:type}}{{!
+            }}{{#type:cythonTypeNoneable?}}{{!
+                }}{{> types/CythonPythonType}} {{!
+            }}{{/type:cythonTypeNoneable?}}{{!
+            }}{{^type:cythonTypeNoneable?}}{{!
+                }}object {{!
+            }}{{/type:cythonTypeNoneable?}}{{!
+            }}{{field:name}}{{!
+        }}{{/field:type}}{{/struct:fields}}
     ) except *
 
     @staticmethod

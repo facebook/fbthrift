@@ -1045,7 +1045,8 @@ cdef class Empty(thrift.py3.types.Struct):
 
     @staticmethod
     cdef unique_ptr[cEmpty] _make_instance(
-        cEmpty* base_instance
+        cEmpty* base_instance,
+        bint* __isNOTSET
     ) except *
 
     @staticmethod
@@ -1063,6 +1064,7 @@ cdef class ASimpleStruct(thrift.py3.types.Struct):
     @staticmethod
     cdef unique_ptr[cASimpleStruct] _make_instance(
         cASimpleStruct* base_instance,
+        bint* __isNOTSET,
         object boolField
     ) except *
 
@@ -1081,6 +1083,7 @@ cdef class ASimpleStructNoexcept(thrift.py3.types.Struct):
     @staticmethod
     cdef unique_ptr[cASimpleStructNoexcept] _make_instance(
         cASimpleStructNoexcept* base_instance,
+        bint* __isNOTSET,
         object boolField
     ) except *
 
@@ -1101,13 +1104,14 @@ cdef class MyStruct(thrift.py3.types.Struct):
     @staticmethod
     cdef unique_ptr[cMyStruct] _make_instance(
         cMyStruct* base_instance,
-        object MyBoolField,
+        bint* __isNOTSET,
+        pbool MyBoolField,
         object MyIntField,
-        object MyStringField,
-        object MyStringField2,
-        object MyBinaryField,
-        object MyBinaryField2,
-        object MyBinaryField3,
+        str MyStringField,
+        str MyStringField2,
+        bytes MyBinaryField,
+        bytes MyBinaryField2,
+        bytes MyBinaryField3,
         object MyBinaryListField4,
         object MyMapEnumAndInt
     ) except *
@@ -1135,7 +1139,7 @@ cdef class SimpleUnion(thrift.py3.types.Union):
     cdef unique_ptr[cSimpleUnion] _make_instance(
         cSimpleUnion* base_instance,
         object intValue,
-        object stringValue
+        str stringValue
     ) except *
 
     @staticmethod
@@ -1163,35 +1167,35 @@ cdef class ComplexUnion(thrift.py3.types.Union):
         object intValue,
         object req_intValue,
         object opt_intValue,
-        object stringValue,
-        object req_stringValue,
-        object opt_stringValue,
+        str stringValue,
+        str req_stringValue,
+        str opt_stringValue,
         object intValue2,
         object intValue3,
         object doubelValue,
-        object boolValue,
+        pbool boolValue,
         object union_list,
         object union_set,
         object union_map,
         object req_union_map,
         object opt_union_map,
-        object enum_field,
+        MyEnumA enum_field,
         object enum_container,
-        object a_struct,
+        MyStruct a_struct,
         object a_set_struct,
-        object a_union,
-        object req_a_union,
-        object opt_a_union,
+        SimpleUnion a_union,
+        SimpleUnion req_a_union,
+        SimpleUnion opt_a_union,
         object a_union_list,
         object a_union_typedef,
         object a_union_typedef_list,
-        object MyBinaryField,
-        object MyBinaryField2,
-        object MyBinaryField3,
+        bytes MyBinaryField,
+        bytes MyBinaryField2,
+        bytes MyBinaryField3,
         object MyBinaryListField4,
-        object ref_field,
-        object ref_field2,
-        object excp_field
+        MyStruct ref_field,
+        MyStruct ref_field2,
+        AnException excp_field
     ) except *
 
     @staticmethod
@@ -1219,17 +1223,18 @@ cdef class AnException(thrift.py3.exceptions.Error):
     @staticmethod
     cdef unique_ptr[cAnException] _make_instance(
         cAnException* base_instance,
+        bint* __isNOTSET,
         object code,
         object req_code,
-        object message2,
-        object req_message,
+        str message2,
+        str req_message,
         object exception_list,
         object exception_set,
         object exception_map,
         object req_exception_map,
-        object enum_field,
+        MyEnumA enum_field,
         object enum_container,
-        object a_struct,
+        MyStruct a_struct,
         object a_set_struct,
         object a_union_list,
         object union_typedef,
@@ -1251,9 +1256,10 @@ cdef class AnotherException(thrift.py3.exceptions.Error):
     @staticmethod
     cdef unique_ptr[cAnotherException] _make_instance(
         cAnotherException* base_instance,
+        bint* __isNOTSET,
         object code,
         object req_code,
-        object message
+        str message
     ) except *
 
     @staticmethod
@@ -1300,23 +1306,24 @@ cdef class containerStruct(thrift.py3.types.Struct):
     @staticmethod
     cdef unique_ptr[ccontainerStruct] _make_instance(
         ccontainerStruct* base_instance,
-        object fieldA,
-        object req_fieldA,
-        object opt_fieldA,
+        bint* __isNOTSET,
+        pbool fieldA,
+        pbool req_fieldA,
+        pbool opt_fieldA,
         object fieldB,
         object req_fieldB,
         object opt_fieldB,
         object fieldC,
         object req_fieldC,
         object opt_fieldC,
-        object fieldD,
-        object fieldE,
-        object req_fieldE,
-        object opt_fieldE,
+        str fieldD,
+        str fieldE,
+        str req_fieldE,
+        str opt_fieldE,
         object fieldF,
         object fieldG,
         object fieldH,
-        object fieldI,
+        pbool fieldI,
         object fieldJ,
         object fieldK,
         object fieldL,
@@ -1324,28 +1331,28 @@ cdef class containerStruct(thrift.py3.types.Struct):
         object fieldN,
         object fieldO,
         object fieldP,
-        object fieldQ,
-        object fieldR,
-        object req_fieldR,
-        object opt_fieldR,
-        object fieldS,
+        MyEnumA fieldQ,
+        MyEnumA fieldR,
+        MyEnumA req_fieldR,
+        MyEnumA opt_fieldR,
+        MyEnumA fieldS,
         object fieldT,
         object fieldU,
-        object fieldV,
-        object req_fieldV,
-        object opt_fieldV,
+        MyStruct fieldV,
+        MyStruct req_fieldV,
+        MyStruct opt_fieldV,
         object fieldW,
-        object fieldX,
-        object req_fieldX,
-        object opt_fieldX,
+        ComplexUnion fieldX,
+        ComplexUnion req_fieldX,
+        ComplexUnion opt_fieldX,
         object fieldY,
         object fieldZ,
         object fieldAA,
         object fieldAB,
-        object fieldAC,
-        object fieldAD,
+        MyEnumB fieldAC,
+        _includes_types.AnEnum fieldAD,
         object fieldAE,
-        object fieldSD
+        str fieldSD
     ) except *
 
     @staticmethod
@@ -1366,10 +1373,11 @@ cdef class MyIncludedStruct(thrift.py3.types.Struct):
     @staticmethod
     cdef unique_ptr[cMyIncludedStruct] _make_instance(
         cMyIncludedStruct* base_instance,
+        bint* __isNOTSET,
         object MyIncludedInt,
-        object MyIncludedStruct,
-        object ARefField,
-        object ARequiredField
+        _includes_types.AStruct MyIncludedStruct,
+        _includes_types.AStruct ARefField,
+        _includes_types.AStruct ARequiredField
     ) except *
 
     @staticmethod
@@ -1425,32 +1433,33 @@ cdef class AnnotatedStruct(thrift.py3.types.Struct):
     @staticmethod
     cdef unique_ptr[cAnnotatedStruct] _make_instance(
         cAnnotatedStruct* base_instance,
-        object no_annotation,
-        object cpp_unique_ref,
-        object cpp2_unique_ref,
+        bint* __isNOTSET,
+        containerStruct no_annotation,
+        containerStruct cpp_unique_ref,
+        containerStruct cpp2_unique_ref,
         object container_with_ref,
-        object req_cpp_unique_ref,
-        object req_cpp2_unique_ref,
+        containerStruct req_cpp_unique_ref,
+        containerStruct req_cpp2_unique_ref,
         object req_container_with_ref,
-        object opt_cpp_unique_ref,
-        object opt_cpp2_unique_ref,
+        containerStruct opt_cpp_unique_ref,
+        containerStruct opt_cpp2_unique_ref,
         object opt_container_with_ref,
-        object ref_type_unique,
-        object ref_type_shared,
+        containerStruct ref_type_unique,
+        containerStruct ref_type_shared,
         object ref_type_const,
-        object req_ref_type_shared,
-        object req_ref_type_const,
+        containerStruct req_ref_type_shared,
+        containerStruct req_ref_type_const,
         object req_ref_type_unique,
-        object opt_ref_type_const,
-        object opt_ref_type_unique,
+        containerStruct opt_ref_type_const,
+        containerStruct opt_ref_type_unique,
         object opt_ref_type_shared,
         object base_type,
         object list_type,
         object set_type,
         object map_type,
         object map_struct_type,
-        object iobuf_type,
-        object iobuf_ptr,
+        __iobuf.IOBuf iobuf_type,
+        __iobuf.IOBuf iobuf_ptr,
         object list_i32_template,
         object list_string_template,
         object set_template,
@@ -1462,9 +1471,9 @@ cdef class AnnotatedStruct(thrift.py3.types.Struct):
         object indirection_a,
         object indirection_b,
         object indirection_c,
-        object iobuf_type_val,
-        object iobuf_ptr_val,
-        object struct_struct
+        __iobuf.IOBuf iobuf_type_val,
+        __iobuf.IOBuf iobuf_ptr_val,
+        containerStruct struct_struct
     ) except *
 
     @staticmethod
@@ -1482,6 +1491,7 @@ cdef class FloatStruct(thrift.py3.types.Struct):
     @staticmethod
     cdef unique_ptr[cFloatStruct] _make_instance(
         cFloatStruct* base_instance,
+        bint* __isNOTSET,
         object floatField,
         object doubleField
     ) except *
@@ -1527,6 +1537,7 @@ cdef class AllRequiredNoExceptMoveCtrStruct(thrift.py3.types.Struct):
     @staticmethod
     cdef unique_ptr[cAllRequiredNoExceptMoveCtrStruct] _make_instance(
         cAllRequiredNoExceptMoveCtrStruct* base_instance,
+        bint* __isNOTSET,
         object intField
     ) except *
 

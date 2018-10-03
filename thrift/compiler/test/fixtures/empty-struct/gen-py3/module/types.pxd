@@ -81,7 +81,8 @@ cdef class Empty(thrift.py3.types.Struct):
 
     @staticmethod
     cdef unique_ptr[cEmpty] _make_instance(
-        cEmpty* base_instance
+        cEmpty* base_instance,
+        bint* __isNOTSET
     ) except *
 
     @staticmethod

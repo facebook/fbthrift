@@ -4,8 +4,8 @@
 # DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
 #  @generated
 #
-
 cimport cython as __cython
+from cpython.bytes cimport PyBytes_AsStringAndSize
 from cpython.object cimport PyTypeObject, Py_LT, Py_LE, Py_EQ, Py_NE, Py_GT, Py_GE
 from libcpp.memory cimport shared_ptr, make_shared, unique_ptr, make_unique
 from libcpp.string cimport string
@@ -158,6 +158,7 @@ cdef class Struct(thrift.py3.types.Struct):
 
         self._cpp_obj = move(Struct._make_instance(
           NULL,
+          NULL,
           first,
           second,
         ))
@@ -167,27 +168,41 @@ cdef class Struct(thrift.py3.types.Struct):
         first=__NOTSET,
         second=__NOTSET
     ):
-        changes = any((
-            first is not __NOTSET,
+        ___NOTSET = __NOTSET  # Cheaper for larger structs
+        cdef bint[2] __isNOTSET  # so make_instance is typed
 
-            second is not __NOTSET,
-        ))
+        changes = False
+        if first is ___NOTSET:
+            __isNOTSET[0] = True
+            first = None
+        else:
+            __isNOTSET[0] = False
+            changes = True
+
+        if second is ___NOTSET:
+            __isNOTSET[1] = True
+            second = None
+        else:
+            __isNOTSET[1] = False
+            changes = True
+
 
         if not changes:
             return self
 
-        if None is not first is not __NOTSET:
+        if first is not None:
             if not isinstance(first, int):
                 raise TypeError(f'first is not a { int !r}.')
             first = <int32_t> first
 
-        if None is not second is not __NOTSET:
+        if second is not None:
             if not isinstance(second, str):
                 raise TypeError(f'second is not a { str !r}.')
 
         inst = <Struct>Struct.__new__(Struct)
         inst._cpp_obj = move(Struct._make_instance(
           self._cpp_obj.get(),
+          __isNOTSET,
           first,
           second,
         ))
@@ -196,8 +211,9 @@ cdef class Struct(thrift.py3.types.Struct):
     @staticmethod
     cdef unique_ptr[cStruct] _make_instance(
         cStruct* base_instance,
-        object first,
-        object second
+        bint* __isNOTSET,
+        object first ,
+        str second 
     ) except *:
         cdef unique_ptr[cStruct] c_inst
         if base_instance:
@@ -207,25 +223,21 @@ cdef class Struct(thrift.py3.types.Struct):
 
         if base_instance:
             # Convert None's to default value. (or unset)
-            if first is None:
+            if not __isNOTSET[0] and first is None:
                 deref(c_inst).first = _Struct_defaults.first
                 deref(c_inst).__isset.first = False
                 pass
-            elif first is __NOTSET:
-                first = None
 
-            if second is None:
+            if not __isNOTSET[1] and second is None:
                 deref(c_inst).second = _Struct_defaults.second
                 deref(c_inst).__isset.second = False
                 pass
-            elif second is __NOTSET:
-                second = None
 
         if first is not None:
             deref(c_inst).first = first
             deref(c_inst).__isset.first = True
         if second is not None:
-            deref(c_inst).second = second.encode('UTF-8')
+            deref(c_inst).second = thrift.py3.types.move(thrift.py3.types.bytes_to_string(second.encode('utf-8')))
             deref(c_inst).__isset.second = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here

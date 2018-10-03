@@ -4,8 +4,8 @@
 # DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
 #  @generated
 #
-
 cimport cython as __cython
+from cpython.bytes cimport PyBytes_AsStringAndSize
 from cpython.object cimport PyTypeObject, Py_LT, Py_LE, Py_EQ, Py_NE, Py_GT, Py_GE
 from libcpp.memory cimport shared_ptr, make_shared, unique_ptr, make_unique
 from libcpp.string cimport string
@@ -52,6 +52,7 @@ cdef class Foo(thrift.py3.types.Struct):
 
         self._cpp_obj = move(Foo._make_instance(
           NULL,
+          NULL,
           a,
         ))
 
@@ -59,14 +60,22 @@ cdef class Foo(thrift.py3.types.Struct):
         Foo self,
         a=__NOTSET
     ):
-        changes = any((
-            a is not __NOTSET,
-        ))
+        ___NOTSET = __NOTSET  # Cheaper for larger structs
+        cdef bint[1] __isNOTSET  # so make_instance is typed
+
+        changes = False
+        if a is ___NOTSET:
+            __isNOTSET[0] = True
+            a = None
+        else:
+            __isNOTSET[0] = False
+            changes = True
+
 
         if not changes:
             return self
 
-        if None is not a is not __NOTSET:
+        if a is not None:
             if not isinstance(a, int):
                 raise TypeError(f'a is not a { int !r}.')
             a = <int64_t> a
@@ -74,6 +83,7 @@ cdef class Foo(thrift.py3.types.Struct):
         inst = <Foo>Foo.__new__(Foo)
         inst._cpp_obj = move(Foo._make_instance(
           self._cpp_obj.get(),
+          __isNOTSET,
           a,
         ))
         return inst
@@ -81,7 +91,8 @@ cdef class Foo(thrift.py3.types.Struct):
     @staticmethod
     cdef unique_ptr[cFoo] _make_instance(
         cFoo* base_instance,
-        object a
+        bint* __isNOTSET,
+        object a 
     ) except *:
         cdef unique_ptr[cFoo] c_inst
         if base_instance:
@@ -91,12 +102,10 @@ cdef class Foo(thrift.py3.types.Struct):
 
         if base_instance:
             # Convert None's to default value. (or unset)
-            if a is None:
+            if not __isNOTSET[0] and a is None:
                 deref(c_inst).a = _Foo_defaults.a
                 deref(c_inst).__isset.a = False
                 pass
-            elif a is __NOTSET:
-                a = None
 
         if a is not None:
             deref(c_inst).a = a

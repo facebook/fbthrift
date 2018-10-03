@@ -400,7 +400,7 @@ cdef class MyUnion(thrift.py3.types.Union):
     cdef unique_ptr[cMyUnion] _make_instance(
         cMyUnion* base_instance,
         object anInteger,
-        object aString
+        str aString
     ) except *
 
     @staticmethod
@@ -418,6 +418,7 @@ cdef class MyField(thrift.py3.types.Struct):
     @staticmethod
     cdef unique_ptr[cMyField] _make_instance(
         cMyField* base_instance,
+        bint* __isNOTSET,
         object opt_value,
         object value,
         object req_value
@@ -441,9 +442,10 @@ cdef class MyStruct(thrift.py3.types.Struct):
     @staticmethod
     cdef unique_ptr[cMyStruct] _make_instance(
         cMyStruct* base_instance,
-        object opt_ref,
-        object ref,
-        object req_ref
+        bint* __isNOTSET,
+        MyField opt_ref,
+        MyField ref,
+        MyField req_ref
     ) except *
 
     @staticmethod
@@ -463,9 +465,10 @@ cdef class StructWithUnion(thrift.py3.types.Struct):
     @staticmethod
     cdef unique_ptr[cStructWithUnion] _make_instance(
         cStructWithUnion* base_instance,
-        object u,
+        bint* __isNOTSET,
+        MyUnion u,
         object aDouble,
-        object f
+        MyField f
     ) except *
 
     @staticmethod
@@ -484,6 +487,7 @@ cdef class RecursiveStruct(thrift.py3.types.Struct):
     @staticmethod
     cdef unique_ptr[cRecursiveStruct] _make_instance(
         cRecursiveStruct* base_instance,
+        bint* __isNOTSET,
         object mes
     ) except *
 
@@ -508,6 +512,7 @@ cdef class StructWithContainers(thrift.py3.types.Struct):
     @staticmethod
     cdef unique_ptr[cStructWithContainers] _make_instance(
         cStructWithContainers* base_instance,
+        bint* __isNOTSET,
         object list_ref,
         object set_ref,
         object map_ref,
@@ -534,9 +539,10 @@ cdef class StructWithSharedConst(thrift.py3.types.Struct):
     @staticmethod
     cdef unique_ptr[cStructWithSharedConst] _make_instance(
         cStructWithSharedConst* base_instance,
-        object opt_shared_const,
-        object shared_const,
-        object req_shared_const
+        bint* __isNOTSET,
+        MyField opt_shared_const,
+        MyField shared_const,
+        MyField req_shared_const
     ) except *
 
     @staticmethod
@@ -553,7 +559,8 @@ cdef class Empty(thrift.py3.types.Struct):
 
     @staticmethod
     cdef unique_ptr[cEmpty] _make_instance(
-        cEmpty* base_instance
+        cEmpty* base_instance,
+        bint* __isNOTSET
     ) except *
 
     @staticmethod
@@ -574,9 +581,10 @@ cdef class StructWithRef(thrift.py3.types.Struct):
     @staticmethod
     cdef unique_ptr[cStructWithRef] _make_instance(
         cStructWithRef* base_instance,
-        object def_field,
-        object opt_field,
-        object req_field
+        bint* __isNOTSET,
+        Empty def_field,
+        Empty opt_field,
+        Empty req_field
     ) except *
 
     @staticmethod
@@ -597,9 +605,10 @@ cdef class StructWithRefTypeUnique(thrift.py3.types.Struct):
     @staticmethod
     cdef unique_ptr[cStructWithRefTypeUnique] _make_instance(
         cStructWithRefTypeUnique* base_instance,
-        object def_field,
-        object opt_field,
-        object req_field
+        bint* __isNOTSET,
+        Empty def_field,
+        Empty opt_field,
+        Empty req_field
     ) except *
 
     @staticmethod
@@ -620,9 +629,10 @@ cdef class StructWithRefTypeShared(thrift.py3.types.Struct):
     @staticmethod
     cdef unique_ptr[cStructWithRefTypeShared] _make_instance(
         cStructWithRefTypeShared* base_instance,
-        object def_field,
-        object opt_field,
-        object req_field
+        bint* __isNOTSET,
+        Empty def_field,
+        Empty opt_field,
+        Empty req_field
     ) except *
 
     @staticmethod
@@ -643,9 +653,10 @@ cdef class StructWithRefTypeSharedConst(thrift.py3.types.Struct):
     @staticmethod
     cdef unique_ptr[cStructWithRefTypeSharedConst] _make_instance(
         cStructWithRefTypeSharedConst* base_instance,
-        object def_field,
-        object opt_field,
-        object req_field
+        bint* __isNOTSET,
+        Empty def_field,
+        Empty opt_field,
+        Empty req_field
     ) except *
 
     @staticmethod
@@ -664,7 +675,8 @@ cdef class StructWithRefAndAnnotCppNoexceptMoveCtor(thrift.py3.types.Struct):
     @staticmethod
     cdef unique_ptr[cStructWithRefAndAnnotCppNoexceptMoveCtor] _make_instance(
         cStructWithRefAndAnnotCppNoexceptMoveCtor* base_instance,
-        object def_field
+        bint* __isNOTSET,
+        Empty def_field
     ) except *
 
     @staticmethod

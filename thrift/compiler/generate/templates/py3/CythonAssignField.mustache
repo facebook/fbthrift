@@ -47,8 +47,11 @@ on a struct.
 }}{{#type:base?}}{{!
   }}deref(c_inst).{{field:name}} = {{!
   }}{{#program:optionals?}}{{#field:optional?}}cOptional[{{> types/CythonCppType}}]({{/field:optional?}}{{/program:optionals?}}{{!
+  }}{{#type:string?}}thrift.py3.types.move(thrift.py3.types.bytes_to_string({{/type:string?}}{{!
+  }}{{#type:binary?}}thrift.py3.types.move(thrift.py3.types.bytes_to_string({{/type:binary?}}{{!
   }}{{field:name}}{{!
-  }}{{#type:string?}}.encode('UTF-8'){{/type:string?}}{{!
+  }}{{#type:string?}}.encode('utf-8'))){{/type:string?}}{{!
+  }}{{#type:binary?}})){{/type:binary?}}{{!
   }}{{#program:optionals?}}{{#field:optional?}}){{/field:optional?}}{{/program:optionals?}}{{!
 }}{{/type:base?}}{{!
 }}{{#type:enum?}}{{!
