@@ -718,7 +718,10 @@ uint32_t RSocketClientChannel::getTimeout() {
 void RSocketClientChannel::setTimeout(uint32_t timeoutMs) {
   DCHECK(!evb_ || evb_->isInEventBaseThread());
 
-  getTransport()->setSendTimeout(timeoutMs);
+  auto transport = getTransport();
+  if (transport) {
+    transport->setSendTimeout(timeoutMs);
+  }
   timeout_ = std::chrono::milliseconds(timeoutMs);
 }
 
