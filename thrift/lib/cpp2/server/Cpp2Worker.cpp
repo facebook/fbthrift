@@ -237,12 +237,15 @@ void Cpp2Worker::updateSSLStats(
 }
 
 wangle::AcceptorHandshakeHelper::UniquePtr Cpp2Worker::createSSLHelper(
-    const std::vector<uint8_t>& /* bytes */,
+    const std::vector<uint8_t>& bytes,
     const folly::SocketAddress& clientAddr,
     std::chrono::steady_clock::time_point acceptTime,
-    wangle::TransportInfo& tinfo) {
-  return wangle::AcceptorHandshakeHelper::UniquePtr(
-      new wangle::SSLAcceptorHandshakeHelper(clientAddr, acceptTime, tinfo));
+    wangle::TransportInfo& tInfo) {
+  if (accConfig_.fizzConfig.enableFizz) {
+    return getFizzPeeker()->getHelper(bytes, clientAddr, acceptTime, tInfo);
+  }
+  return defaultPeekingCallback_.getHelper(
+      bytes, clientAddr, acceptTime, tInfo);
 }
 
 wangle::AcceptorHandshakeHelper::UniquePtr Cpp2Worker::getHelper(

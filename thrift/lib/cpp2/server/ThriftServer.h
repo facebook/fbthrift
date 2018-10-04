@@ -77,6 +77,7 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
   uint32_t fastOpenQueueSize_{10000};
 
   folly::Optional<wangle::SSLCacheOptions> sslCacheOptions_;
+  wangle::FizzConfig fizzConfig_;
 
   // Security negotiation settings
   bool saslEnabled_ = false;
@@ -358,6 +359,10 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
     updateCertsToWatch();
   }
 
+  void setFizzConfig(wangle::FizzConfig config) {
+    fizzConfig_ = config;
+  }
+
   void setSSLCacheOptions(wangle::SSLCacheOptions options) {
     sslCacheOptions_ = std::move(options);
   }
@@ -454,6 +459,7 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
     // By default, we set strictSSL to false. This means the server will start
     // even if cert/key is missing as it may become available later
     config.strictSSL = getStrictSSL();
+    config.fizzConfig = fizzConfig_;
     return config;
   }
 
