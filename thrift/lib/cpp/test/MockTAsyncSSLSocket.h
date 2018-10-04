@@ -90,18 +90,12 @@ class MockTAsyncSSLSocket : public apache::thrift::async::TAsyncSSLSocket {
   MOCK_CONST_METHOD0(good, bool());
   MOCK_CONST_METHOD0(readable, bool());
   MOCK_CONST_METHOD0(hangup, bool());
-  MOCK_CONST_METHOD3(
+  MOCK_CONST_METHOD2(
       getSelectedNextProtocol,
-      void(
-          const unsigned char**,
-          unsigned*,
-          folly::SSLContext::NextProtocolType*));
-  MOCK_CONST_METHOD3(
+      void(const unsigned char**, unsigned*));
+  MOCK_CONST_METHOD2(
       getSelectedNextProtocolNoThrow,
-      bool(
-          const unsigned char**,
-          unsigned*,
-          folly::SSLContext::NextProtocolType*));
+      bool(const unsigned char**, unsigned*));
 
   void sslConnect(
       TAsyncSSLSocket::HandshakeCallback* cb,
