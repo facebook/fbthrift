@@ -51,6 +51,7 @@ struct ComplexStruct {
   8: map<string, string> amap
   9: set<string> aset
   10: dependent.Item item
+  11: i32 from  // reserved word
 }
 
 union UnionStruct {
