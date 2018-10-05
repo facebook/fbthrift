@@ -26,6 +26,23 @@ namespace {
 
 using namespace std;
 
+// Reserved Python keywords that are not blocked by thrift grammar - note that
+// this is actually a longer list than what t_py_generator checks, but may
+// as well fix up more of them here.
+static const std::unordered_set<string> KEYWORDS = {
+    "async",
+    "await",
+    "from",
+    "nonlocal",
+    "DEF",
+    "ELIF",
+    "ELSE",
+    "False",
+    "IF",
+    "None",
+    "True",
+};
+
 class t_mstch_pyi_generator : public t_mstch_generator {
  public:
   t_mstch_pyi_generator(
@@ -106,7 +123,12 @@ mstch::map t_mstch_pyi_generator::extend_field(const t_field& field) {
   const auto requireValue = required && !hasDefaultValue;
   // For typing, can a property getter return None, if so it needs to Optional[]
   const auto isPEP484Optional = (optional || (!hasDefaultValue && !required));
-  std::string capitalizedName(field.get_name());
+  auto cleanedName = field.get_name();
+  auto it = KEYWORDS.find(cleanedName);
+  if (it != KEYWORDS.end()) {
+    cleanedName += "_PY_RESERVED_KEYWORD";
+  }
+  std::string capitalizedName(cleanedName);
   std::transform(
       capitalizedName.begin(),
       capitalizedName.end(),
@@ -115,6 +137,9 @@ mstch::map t_mstch_pyi_generator::extend_field(const t_field& field) {
   mstch::map result{
       {"requireValue?", requireValue},
       {"PEP484Optional?", isPEP484Optional},
+      // Override the default name attr
+      {"name", cleanedName},
+      {"origName", field.get_name()},
       {"capitalizedName", capitalizedName},
   };
   return result;
