@@ -173,6 +173,7 @@ struct customized {
   5: set_typedef set_type,
   6: map_typedef map_type,
   7: string_typedef string_type,
+  8: i32 foo (cpp.name="bar")
 }
 
 struct Reserved {

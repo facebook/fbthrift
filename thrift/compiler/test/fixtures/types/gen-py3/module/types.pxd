@@ -525,7 +525,7 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "apache::thrift::fixtur
         cMyDataItem__isset __isset
 
     cdef cppclass cRenaming__isset "apache::thrift::fixtures::types::Renaming::__isset":
-        bint foo
+        bint foo "bar"
 
     cdef cppclass cRenaming "apache::thrift::fixtures::types::Renaming":
         cRenaming() except +
@@ -535,7 +535,7 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "apache::thrift::fixtur
         bint operator>(cRenaming&)
         bint operator<=(cRenaming&)
         bint operator>=(cRenaming&)
-        int64_t foo
+        int64_t foo "bar"
         cRenaming__isset __isset
 
     cdef shared_ptr[vector[int32_t]] reference_shared_ptr_fieldA "thrift::py3::reference_shared_ptr<std::vector<int32_t>>"(shared_ptr[cContainerStruct]&, vector[int32_t]&)

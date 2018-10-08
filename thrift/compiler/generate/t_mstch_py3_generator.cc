@@ -218,9 +218,14 @@ mstch::map t_mstch_py3_generator::extend_field(const t_field& field) {
   // For typing, can a property getter return None, if so it needs to Optional[]
   const auto isPEP484Optional =
       ((!hasDefaultValue && !required) || follyOptional);
-  const auto nameToUse = get_rename(field);
+  const auto pyName = get_rename(field);
+  auto cppName = field.get_name();
+  auto nit = field.annotations_.find("cpp.name");
+  if (nit != field.annotations_.end()) {
+    cppName = nit->second;
+  }
   // Compiled thrift-py3 enums won't support entries named name or value
-  const auto enumSafeName = get_enumSafeName(nameToUse);
+  const auto enumSafeName = get_enumSafeName(pyName);
 
   mstch::map result{
       {"reference?", reference},
@@ -233,11 +238,10 @@ mstch::map t_mstch_py3_generator::extend_field(const t_field& field) {
       {"follyOptional?", follyOptional},
       {"PEP484Optional?", isPEP484Optional},
       {"isset?", isset},
-      // We replace the previously-set name on the field with the modified
-      // name, and put the raw value in origName
-      {"name", nameToUse},
-      {"origName", field.get_name()},
-      {"hasModifiedName?", (field.get_name() != nameToUse)},
+      // We replace the previously-set name on the field with the modified name
+      {"name", pyName},
+      {"cppName", cppName},
+      {"hasModifiedName?", (pyName != cppName)},
       {"enumSafeName", enumSafeName},
   };
   return result;
@@ -393,11 +397,12 @@ mstch::map t_mstch_py3_generator::extend_enum_value(const t_enum_value& val) {
   const auto name = get_rename(val);
   // Compiled thrift-py3 enums won't support entries named name or value
   const auto enumSafeName = get_enumSafeName(name);
+  auto cppName = val.get_name();
   mstch::map result{
       // We replace the previously-set name on the enum value with the modified
       // name, and put the raw value in origName
       {"name", name},
-      {"origName", val.get_name()},
+      {"cppName", cppName},
       {"enumSafeName", enumSafeName},
   };
   return result;

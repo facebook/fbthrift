@@ -54,3 +54,7 @@ class CustomTests(unittest.TestCase):
     def test_string_type(self) -> None:
         c = customized(string_type="hello")
         self.assertEquals(c.string_type, "hello")
+
+    def test_cpp_name(self) -> None:
+        c = customized(foo=3)
+        self.assertEqual(c.foo, 3)
