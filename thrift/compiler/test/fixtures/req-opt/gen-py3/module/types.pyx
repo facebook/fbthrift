@@ -400,7 +400,6 @@ cdef class List__bool:
             yield citem
             inc(loc)
 
-
     def __repr__(self):
         if not self:
             return 'i[]'
@@ -457,6 +456,9 @@ cdef class List__bool:
             return 0
         return <int64_t> std_libcpp.count[vector[cbool].iterator, cbool](
             deref(self._cpp_obj).begin(), deref(self._cpp_obj).end(), item)
+
+    def __reduce__(self):
+        return (List__bool, (list(self), ))
 
 
 Sequence.register(List__bool)
@@ -559,7 +561,6 @@ cdef class List__i32:
             yield citem
             inc(loc)
 
-
     def __repr__(self):
         if not self:
             return 'i[]'
@@ -616,6 +617,9 @@ cdef class List__i32:
             return 0
         return <int64_t> std_libcpp.count[vector[int32_t].iterator, int32_t](
             deref(self._cpp_obj).begin(), deref(self._cpp_obj).end(), item)
+
+    def __reduce__(self):
+        return (List__i32, (list(self), ))
 
 
 Sequence.register(List__i32)

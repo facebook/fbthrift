@@ -1077,6 +1077,8 @@ cdef class Map__i16_double:
             yield (ckey, citem)
             inc(loc)
 
+    def __reduce__(self):
+        return (Map__i16_double, (dict(self), ))
 
 
 Mapping.register(Map__i16_double)
@@ -1209,6 +1211,8 @@ cdef class Map__i16_float:
             yield (ckey, citem)
             inc(loc)
 
+    def __reduce__(self):
+        return (Map__i16_float, (dict(self), ))
 
 
 Mapping.register(Map__i16_float)
@@ -1317,7 +1321,6 @@ cdef class List__Map__i16_float:
             yield Map__i16_float.create(citem)
             inc(loc)
 
-
     def __repr__(self):
         if not self:
             return 'i[]'
@@ -1384,6 +1387,9 @@ cdef class List__Map__i16_float:
             return 0
         return <int64_t> std_libcpp.count[vector[cmap[int16_t,float]].iterator, cmap[int16_t,float]](
             deref(self._cpp_obj).begin(), deref(self._cpp_obj).end(), deref((<Map__i16_float>item)._cpp_obj))
+
+    def __reduce__(self):
+        return (List__Map__i16_float, (list(self), ))
 
 
 Sequence.register(List__Map__i16_float)
@@ -1518,6 +1524,8 @@ cdef class Map__i16_Map__i16_float:
             yield (ckey, Map__i16_float.create(citem))
             inc(loc)
 
+    def __reduce__(self):
+        return (Map__i16_Map__i16_float, (dict(self), ))
 
 
 Mapping.register(Map__i16_Map__i16_float)
@@ -1766,6 +1774,9 @@ cdef class Set__Map__i16_float:
     def issuperset(self, other):
         return self >= other
 
+    def __reduce__(self):
+        return (Set__Map__i16_float, (set(self), ))
+
 
 Set.register(Set__Map__i16_float)
 
@@ -1897,6 +1908,8 @@ cdef class Map__i64_double:
             yield (ckey, citem)
             inc(loc)
 
+    def __reduce__(self):
+        return (Map__i64_double, (dict(self), ))
 
 
 Mapping.register(Map__i64_double)
@@ -2031,6 +2044,8 @@ cdef class Map__i16_Map__i64_double:
             yield (ckey, Map__i64_double.create(citem))
             inc(loc)
 
+    def __reduce__(self):
+        return (Map__i16_Map__i64_double, (dict(self), ))
 
 
 Mapping.register(Map__i16_Map__i64_double)
@@ -2165,6 +2180,8 @@ cdef class Map__i32_Map__i64_double:
             yield (ckey, Map__i64_double.create(citem))
             inc(loc)
 
+    def __reduce__(self):
+        return (Map__i32_Map__i64_double, (dict(self), ))
 
 
 Mapping.register(Map__i32_Map__i64_double)
@@ -2266,7 +2283,6 @@ cdef class List__float:
             yield citem
             inc(loc)
 
-
     def __repr__(self):
         if not self:
             return 'i[]'
@@ -2323,6 +2339,9 @@ cdef class List__float:
             return 0
         return <int64_t> std_libcpp.count[vector[float].iterator, float](
             deref(self._cpp_obj).begin(), deref(self._cpp_obj).end(), item)
+
+    def __reduce__(self):
+        return (List__float, (list(self), ))
 
 
 Sequence.register(List__float)
@@ -2457,6 +2476,8 @@ cdef class Map__i16_List__float:
             yield (ckey, List__float.create(citem))
             inc(loc)
 
+    def __reduce__(self):
+        return (Map__i16_List__float, (dict(self), ))
 
 
 Mapping.register(Map__i16_List__float)
@@ -2591,6 +2612,8 @@ cdef class Map__i32_List__float:
             yield (ckey, List__float.create(citem))
             inc(loc)
 
+    def __reduce__(self):
+        return (Map__i32_List__float, (dict(self), ))
 
 
 Mapping.register(Map__i32_List__float)

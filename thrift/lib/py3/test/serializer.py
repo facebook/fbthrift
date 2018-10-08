@@ -3,15 +3,14 @@ import asyncio
 import unittest
 import pickle
 
-from typing import Mapping
+from typing import Mapping, Sequence, AbstractSet, Union, Any
 from thrift.py3 import serialize, deserialize, Protocol, Struct, Error
 from thrift.py3.serializer import serialize_iobuf
 
-from testing.types import easy, hard, Integers
+from testing.types import easy, hard, Integers, I32List, StrStrMap, SetI32, Digits
 
 
 class SerializerTests(unittest.TestCase):
-
     def test_from_thread_pool(self) -> None:
         control = easy(val=5, val_list=[1, 2, 3, 4])
         loop = asyncio.get_event_loop()
@@ -46,7 +45,9 @@ class SerializerTests(unittest.TestCase):
             self.assertEqual(control, decoded)
             self.assertEqual((proto, encoded), (proto, fixtures.get(proto)))
 
-    def pickle_round_robin(self, control: Struct) -> None:
+    def pickle_round_robin(
+        self, control: Union[Struct, Mapping[Any, Any], Sequence[Any], AbstractSet[Any]]
+    ) -> None:
         encoded = pickle.dumps(control, protocol=pickle.HIGHEST_PROTOCOL)
         decoded = pickle.loads(encoded)
         self.assertIsInstance(decoded, type(control))
@@ -107,4 +108,20 @@ class SerializerTests(unittest.TestCase):
 
     def test_pickle_Integers_union(self) -> None:
         control = Integers(large=2 ** 32)
+        self.pickle_round_robin(control)
+
+    def test_pickle_sequence(self) -> None:
+        control = I32List([1, 2, 3, 4])
+        self.pickle_round_robin(control)
+
+        digits = Digits(data=[Integers(tiny=1), Integers(tiny=2), Integers(large=0)])
+        assert digits.data
+        self.pickle_round_robin(digits.data)
+
+    def test_pickle_set(self) -> None:
+        control = SetI32({1, 2, 3, 4})
+        self.pickle_round_robin(control)
+
+    def test_pickle_mapping(self) -> None:
+        control = StrStrMap({"test": "test", "foo": "bar"})
         self.pickle_round_robin(control)

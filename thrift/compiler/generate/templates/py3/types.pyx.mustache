@@ -770,7 +770,6 @@ cdef class {{> types/CythonPythonType}}:
             {{/type:listElemType}}
             inc(loc)
 
-
     def __repr__(self):
         if not self:
             return 'i[]'
@@ -856,6 +855,9 @@ cdef class {{> types/CythonPythonType}}:
         return <int64_t> std_libcpp.count[{{>types/CythonCppType}}.iterator, {{#type:listElemType}}{{>types/CythonCppType}}](
             deref(self._cpp_obj).begin(), deref(self._cpp_obj).end(), {{> CythonPythonToCppItem}})
         {{/type:listElemType}}
+
+    def __reduce__(self):
+        return ({{> types/CythonPythonType}}, (list(self), ))
 
 
 Sequence.register({{> types/CythonPythonType}})
@@ -1111,6 +1113,9 @@ Sequence.register({{> types/CythonPythonType}})
     def issuperset(self, other):
         return self >= other
 
+    def __reduce__(self):
+        return ({{> types/CythonPythonType}}, (set(self), ))
+
 
 Set.register({{> types/CythonPythonType}})
 {{/type:set?}}
@@ -1326,6 +1331,8 @@ Set.register({{> types/CythonPythonType}})
               }}{{/type:valueType}})
             inc(loc)
 
+    def __reduce__(self):
+        return ({{> types/CythonPythonType}}, (dict(self), ))
 
 
 Mapping.register({{> types/CythonPythonType}})

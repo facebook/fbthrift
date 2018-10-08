@@ -165,6 +165,8 @@ cdef class std_unordered_map__Map__i32_string:
             yield (ckey, bytes(citem).decode('UTF-8'))
             inc(loc)
 
+    def __reduce__(self):
+        return (std_unordered_map__Map__i32_string, (dict(self), ))
 
 
 Mapping.register(std_unordered_map__Map__i32_string)
@@ -273,7 +275,6 @@ cdef class List__std_unordered_map__Map__i32_string:
             yield std_unordered_map__Map__i32_string.create(citem)
             inc(loc)
 
-
     def __repr__(self):
         if not self:
             return 'i[]'
@@ -340,6 +341,9 @@ cdef class List__std_unordered_map__Map__i32_string:
             return 0
         return <int64_t> std_libcpp.count[vector[std_unordered_map[int32_t,string]].iterator, std_unordered_map[int32_t,string]](
             deref(self._cpp_obj).begin(), deref(self._cpp_obj).end(), deref((<std_unordered_map__Map__i32_string>item)._cpp_obj))
+
+    def __reduce__(self):
+        return (List__std_unordered_map__Map__i32_string, (list(self), ))
 
 
 Sequence.register(List__std_unordered_map__Map__i32_string)

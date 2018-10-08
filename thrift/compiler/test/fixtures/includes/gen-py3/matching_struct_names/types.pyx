@@ -565,7 +565,6 @@ cdef class List__MyStruct:
             yield MyStruct.create(citem)
             inc(loc)
 
-
     def __repr__(self):
         if not self:
             return 'i[]'
@@ -622,6 +621,9 @@ cdef class List__MyStruct:
             return 0
         return <int64_t> std_libcpp.count[vector[cMyStruct].iterator, cMyStruct](
             deref(self._cpp_obj).begin(), deref(self._cpp_obj).end(), deref((<MyStruct>item)._cpp_obj))
+
+    def __reduce__(self):
+        return (List__MyStruct, (list(self), ))
 
 
 Sequence.register(List__MyStruct)
@@ -730,7 +732,6 @@ cdef class List__List__MyStruct:
             yield List__MyStruct.create(citem)
             inc(loc)
 
-
     def __repr__(self):
         if not self:
             return 'i[]'
@@ -797,6 +798,9 @@ cdef class List__List__MyStruct:
             return 0
         return <int64_t> std_libcpp.count[vector[vector[cMyStruct]].iterator, vector[cMyStruct]](
             deref(self._cpp_obj).begin(), deref(self._cpp_obj).end(), deref((<List__MyStruct>item)._cpp_obj))
+
+    def __reduce__(self):
+        return (List__List__MyStruct, (list(self), ))
 
 
 Sequence.register(List__List__MyStruct)
@@ -898,7 +902,6 @@ cdef class List__module_MyStruct:
             yield _module_types.MyStruct.create(citem)
             inc(loc)
 
-
     def __repr__(self):
         if not self:
             return 'i[]'
@@ -955,6 +958,9 @@ cdef class List__module_MyStruct:
             return 0
         return <int64_t> std_libcpp.count[vector[_module_types.cMyStruct].iterator, _module_types.cMyStruct](
             deref(self._cpp_obj).begin(), deref(self._cpp_obj).end(), deref((<_module_types.MyStruct>item)._cpp_obj))
+
+    def __reduce__(self):
+        return (List__module_MyStruct, (list(self), ))
 
 
 Sequence.register(List__module_MyStruct)
@@ -1063,7 +1069,6 @@ cdef class List__List__module_MyStruct:
             yield List__module_MyStruct.create(citem)
             inc(loc)
 
-
     def __repr__(self):
         if not self:
             return 'i[]'
@@ -1130,6 +1135,9 @@ cdef class List__List__module_MyStruct:
             return 0
         return <int64_t> std_libcpp.count[vector[vector[_module_types.cMyStruct]].iterator, vector[_module_types.cMyStruct]](
             deref(self._cpp_obj).begin(), deref(self._cpp_obj).end(), deref((<List__module_MyStruct>item)._cpp_obj))
+
+    def __reduce__(self):
+        return (List__List__module_MyStruct, (list(self), ))
 
 
 Sequence.register(List__List__module_MyStruct)

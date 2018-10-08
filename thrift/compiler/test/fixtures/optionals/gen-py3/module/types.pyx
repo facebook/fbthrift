@@ -1435,6 +1435,9 @@ cdef class Set__i64:
     def issuperset(self, other):
         return self >= other
 
+    def __reduce__(self):
+        return (Set__i64, (set(self), ))
+
 
 Set.register(Set__i64)
 
@@ -1565,6 +1568,8 @@ cdef class Map__Animal_string:
             yield (translate_cpp_enum_to_python(Animal, <int> ckey), bytes(citem).decode('UTF-8'))
             inc(loc)
 
+    def __reduce__(self):
+        return (Map__Animal_string, (dict(self), ))
 
 
 Mapping.register(Map__Animal_string)
@@ -1666,7 +1671,6 @@ cdef class List__Vehicle:
             yield Vehicle.create(citem)
             inc(loc)
 
-
     def __repr__(self):
         if not self:
             return 'i[]'
@@ -1723,6 +1727,9 @@ cdef class List__Vehicle:
             return 0
         return <int64_t> std_libcpp.count[vector[cVehicle].iterator, cVehicle](
             deref(self._cpp_obj).begin(), deref(self._cpp_obj).end(), deref((<Vehicle>item)._cpp_obj))
+
+    def __reduce__(self):
+        return (List__Vehicle, (list(self), ))
 
 
 Sequence.register(List__Vehicle)

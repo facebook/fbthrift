@@ -3251,7 +3251,6 @@ cdef class List__RecursiveStruct:
             yield RecursiveStruct.create(citem)
             inc(loc)
 
-
     def __repr__(self):
         if not self:
             return 'i[]'
@@ -3308,6 +3307,9 @@ cdef class List__RecursiveStruct:
             return 0
         return <int64_t> std_libcpp.count[vector[cRecursiveStruct].iterator, cRecursiveStruct](
             deref(self._cpp_obj).begin(), deref(self._cpp_obj).end(), deref((<RecursiveStruct>item)._cpp_obj))
+
+    def __reduce__(self):
+        return (List__RecursiveStruct, (list(self), ))
 
 
 Sequence.register(List__RecursiveStruct)
@@ -3410,7 +3412,6 @@ cdef class List__i32:
             yield citem
             inc(loc)
 
-
     def __repr__(self):
         if not self:
             return 'i[]'
@@ -3467,6 +3468,9 @@ cdef class List__i32:
             return 0
         return <int64_t> std_libcpp.count[vector[int32_t].iterator, int32_t](
             deref(self._cpp_obj).begin(), deref(self._cpp_obj).end(), item)
+
+    def __reduce__(self):
+        return (List__i32, (list(self), ))
 
 
 Sequence.register(List__i32)
@@ -3709,6 +3713,9 @@ cdef class Set__i32:
     def issuperset(self, other):
         return self >= other
 
+    def __reduce__(self):
+        return (Set__i32, (set(self), ))
+
 
 Set.register(Set__i32)
 
@@ -3841,6 +3848,8 @@ cdef class Map__i32_i32:
             yield (ckey, citem)
             inc(loc)
 
+    def __reduce__(self):
+        return (Map__i32_i32, (dict(self), ))
 
 
 Mapping.register(Map__i32_i32)

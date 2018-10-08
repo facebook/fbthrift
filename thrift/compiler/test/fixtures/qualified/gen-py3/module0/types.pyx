@@ -448,7 +448,6 @@ cdef class List__Enum:
             yield translate_cpp_enum_to_python(Enum, <int> citem)
             inc(loc)
 
-
     def __repr__(self):
         if not self:
             return 'i[]'
@@ -505,6 +504,9 @@ cdef class List__Enum:
             return 0
         return <int64_t> std_libcpp.count[vector[cEnum].iterator, cEnum](
             deref(self._cpp_obj).begin(), deref(self._cpp_obj).end(), Enum_to_cpp(item))
+
+    def __reduce__(self):
+        return (List__Enum, (list(self), ))
 
 
 Sequence.register(List__Enum)

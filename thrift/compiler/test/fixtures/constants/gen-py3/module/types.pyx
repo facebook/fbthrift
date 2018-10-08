@@ -2432,7 +2432,6 @@ cdef class List__i32:
             yield citem
             inc(loc)
 
-
     def __repr__(self):
         if not self:
             return 'i[]'
@@ -2489,6 +2488,9 @@ cdef class List__i32:
             return 0
         return <int64_t> std_libcpp.count[vector[int32_t].iterator, int32_t](
             deref(self._cpp_obj).begin(), deref(self._cpp_obj).end(), item)
+
+    def __reduce__(self):
+        return (List__i32, (list(self), ))
 
 
 Sequence.register(List__i32)
@@ -2621,6 +2623,8 @@ cdef class Map__string_i32:
             yield (ckey.decode('UTF-8'), citem)
             inc(loc)
 
+    def __reduce__(self):
+        return (Map__string_i32, (dict(self), ))
 
 
 Mapping.register(Map__string_i32)
@@ -2729,7 +2733,6 @@ cdef class List__Map__string_i32:
             yield Map__string_i32.create(citem)
             inc(loc)
 
-
     def __repr__(self):
         if not self:
             return 'i[]'
@@ -2796,6 +2799,9 @@ cdef class List__Map__string_i32:
             return 0
         return <int64_t> std_libcpp.count[vector[cmap[string,int32_t]].iterator, cmap[string,int32_t]](
             deref(self._cpp_obj).begin(), deref(self._cpp_obj).end(), deref((<Map__string_i32>item)._cpp_obj))
+
+    def __reduce__(self):
+        return (List__Map__string_i32, (list(self), ))
 
 
 Sequence.register(List__Map__string_i32)
@@ -2897,7 +2903,6 @@ cdef class List__Range:
             yield Range.create(citem)
             inc(loc)
 
-
     def __repr__(self):
         if not self:
             return 'i[]'
@@ -2954,6 +2959,9 @@ cdef class List__Range:
             return 0
         return <int64_t> std_libcpp.count[vector[cRange].iterator, cRange](
             deref(self._cpp_obj).begin(), deref(self._cpp_obj).end(), deref((<Range>item)._cpp_obj))
+
+    def __reduce__(self):
+        return (List__Range, (list(self), ))
 
 
 Sequence.register(List__Range)
@@ -3055,7 +3063,6 @@ cdef class List__Internship:
             yield Internship.create(citem)
             inc(loc)
 
-
     def __repr__(self):
         if not self:
             return 'i[]'
@@ -3112,6 +3119,9 @@ cdef class List__Internship:
             return 0
         return <int64_t> std_libcpp.count[vector[cInternship].iterator, cInternship](
             deref(self._cpp_obj).begin(), deref(self._cpp_obj).end(), deref((<Internship>item)._cpp_obj))
+
+    def __reduce__(self):
+        return (List__Internship, (list(self), ))
 
 
 Sequence.register(List__Internship)
@@ -3213,7 +3223,6 @@ cdef class List__string:
             yield bytes(citem).decode('UTF-8')
             inc(loc)
 
-
     def __repr__(self):
         if not self:
             return 'i[]'
@@ -3270,6 +3279,9 @@ cdef class List__string:
             return 0
         return <int64_t> std_libcpp.count[vector[string].iterator, string](
             deref(self._cpp_obj).begin(), deref(self._cpp_obj).end(), item.encode('UTF-8'))
+
+    def __reduce__(self):
+        return (List__string, (list(self), ))
 
 
 Sequence.register(List__string)
@@ -3512,6 +3524,9 @@ cdef class Set__i32:
     def issuperset(self, other):
         return self >= other
 
+    def __reduce__(self):
+        return (Set__i32, (set(self), ))
+
 
 Set.register(Set__i32)
 
@@ -3752,6 +3767,9 @@ cdef class Set__string:
     def issuperset(self, other):
         return self >= other
 
+    def __reduce__(self):
+        return (Set__string, (set(self), ))
+
 
 Set.register(Set__string)
 
@@ -3884,6 +3902,8 @@ cdef class Map__i32_i32:
             yield (ckey, citem)
             inc(loc)
 
+    def __reduce__(self):
+        return (Map__i32_i32, (dict(self), ))
 
 
 Mapping.register(Map__i32_i32)
@@ -4016,6 +4036,8 @@ cdef class Map__i32_string:
             yield (ckey, bytes(citem).decode('UTF-8'))
             inc(loc)
 
+    def __reduce__(self):
+        return (Map__i32_string, (dict(self), ))
 
 
 Mapping.register(Map__i32_string)
@@ -4147,6 +4169,8 @@ cdef class Map__string_string:
             yield (ckey.decode('UTF-8'), bytes(citem).decode('UTF-8'))
             inc(loc)
 
+    def __reduce__(self):
+        return (Map__string_string, (dict(self), ))
 
 
 Mapping.register(Map__string_string)

@@ -135,7 +135,6 @@ cdef class List__i32:
             yield citem
             inc(loc)
 
-
     def __repr__(self):
         if not self:
             return 'i[]'
@@ -192,6 +191,9 @@ cdef class List__i32:
             return 0
         return <int64_t> std_libcpp.count[vector[int32_t].iterator, int32_t](
             deref(self._cpp_obj).begin(), deref(self._cpp_obj).end(), item)
+
+    def __reduce__(self):
+        return (List__i32, (list(self), ))
 
 
 Sequence.register(List__i32)
@@ -326,6 +328,8 @@ cdef class Map__i32_List__i32:
             yield (ckey, List__i32.create(citem))
             inc(loc)
 
+    def __reduce__(self):
+        return (Map__i32_List__i32, (dict(self), ))
 
 
 Mapping.register(Map__i32_List__i32)
@@ -568,6 +572,9 @@ cdef class Set__i32:
     def issuperset(self, other):
         return self >= other
 
+    def __reduce__(self):
+        return (Set__i32, (set(self), ))
+
 
 Set.register(Set__i32)
 
@@ -701,6 +708,8 @@ cdef class Map__i32_Set__i32:
             yield (ckey, Set__i32.create(citem))
             inc(loc)
 
+    def __reduce__(self):
+        return (Map__i32_Set__i32, (dict(self), ))
 
 
 Mapping.register(Map__i32_Set__i32)
@@ -834,6 +843,8 @@ cdef class Map__i32_i32:
             yield (ckey, citem)
             inc(loc)
 
+    def __reduce__(self):
+        return (Map__i32_i32, (dict(self), ))
 
 
 Mapping.register(Map__i32_i32)
@@ -942,7 +953,6 @@ cdef class List__Map__i32_i32:
             yield Map__i32_i32.create(citem)
             inc(loc)
 
-
     def __repr__(self):
         if not self:
             return 'i[]'
@@ -1009,6 +1019,9 @@ cdef class List__Map__i32_i32:
             return 0
         return <int64_t> std_libcpp.count[vector[cmap[int32_t,int32_t]].iterator, cmap[int32_t,int32_t]](
             deref(self._cpp_obj).begin(), deref(self._cpp_obj).end(), deref((<Map__i32_i32>item)._cpp_obj))
+
+    def __reduce__(self):
+        return (List__Map__i32_i32, (list(self), ))
 
 
 Sequence.register(List__Map__i32_i32)
@@ -1117,7 +1130,6 @@ cdef class List__Set__i32:
             yield Set__i32.create(citem)
             inc(loc)
 
-
     def __repr__(self):
         if not self:
             return 'i[]'
@@ -1184,6 +1196,9 @@ cdef class List__Set__i32:
             return 0
         return <int64_t> std_libcpp.count[vector[cset[int32_t]].iterator, cset[int32_t]](
             deref(self._cpp_obj).begin(), deref(self._cpp_obj).end(), deref((<Set__i32>item)._cpp_obj))
+
+    def __reduce__(self):
+        return (List__Set__i32, (list(self), ))
 
 
 Sequence.register(List__Set__i32)
@@ -1318,6 +1333,8 @@ cdef class Map__i32_Map__i32_Set__i32:
             yield (ckey, Map__i32_Set__i32.create(citem))
             inc(loc)
 
+    def __reduce__(self):
+        return (Map__i32_Map__i32_Set__i32, (dict(self), ))
 
 
 Mapping.register(Map__i32_Map__i32_Set__i32)
@@ -1426,7 +1443,6 @@ cdef class List__Map__i32_Map__i32_Set__i32:
             yield Map__i32_Map__i32_Set__i32.create(citem)
             inc(loc)
 
-
     def __repr__(self):
         if not self:
             return 'i[]'
@@ -1493,6 +1509,9 @@ cdef class List__Map__i32_Map__i32_Set__i32:
             return 0
         return <int64_t> std_libcpp.count[vector[cmap[int32_t,cmap[int32_t,cset[int32_t]]]].iterator, cmap[int32_t,cmap[int32_t,cset[int32_t]]]](
             deref(self._cpp_obj).begin(), deref(self._cpp_obj).end(), deref((<Map__i32_Map__i32_Set__i32>item)._cpp_obj))
+
+    def __reduce__(self):
+        return (List__Map__i32_Map__i32_Set__i32, (list(self), ))
 
 
 Sequence.register(List__Map__i32_Map__i32_Set__i32)
@@ -1601,7 +1620,6 @@ cdef class List__List__Map__i32_Map__i32_Set__i32:
             yield List__Map__i32_Map__i32_Set__i32.create(citem)
             inc(loc)
 
-
     def __repr__(self):
         if not self:
             return 'i[]'
@@ -1668,6 +1686,9 @@ cdef class List__List__Map__i32_Map__i32_Set__i32:
             return 0
         return <int64_t> std_libcpp.count[vector[vector[cmap[int32_t,cmap[int32_t,cset[int32_t]]]]].iterator, vector[cmap[int32_t,cmap[int32_t,cset[int32_t]]]]](
             deref(self._cpp_obj).begin(), deref(self._cpp_obj).end(), deref((<List__Map__i32_Map__i32_Set__i32>item)._cpp_obj))
+
+    def __reduce__(self):
+        return (List__List__Map__i32_Map__i32_Set__i32, (list(self), ))
 
 
 Sequence.register(List__List__Map__i32_Map__i32_Set__i32)

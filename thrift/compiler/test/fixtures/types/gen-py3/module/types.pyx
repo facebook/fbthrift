@@ -3301,6 +3301,8 @@ cdef class std_unordered_map__Map__i32_string:
             yield (ckey, bytes(citem).decode('UTF-8'))
             inc(loc)
 
+    def __reduce__(self):
+        return (std_unordered_map__Map__i32_string, (dict(self), ))
 
 
 Mapping.register(std_unordered_map__Map__i32_string)
@@ -3403,7 +3405,6 @@ cdef class List__i64:
             yield citem
             inc(loc)
 
-
     def __repr__(self):
         if not self:
             return 'i[]'
@@ -3460,6 +3461,9 @@ cdef class List__i64:
             return 0
         return <int64_t> std_libcpp.count[vector[int64_t].iterator, int64_t](
             deref(self._cpp_obj).begin(), deref(self._cpp_obj).end(), item)
+
+    def __reduce__(self):
+        return (List__i64, (list(self), ))
 
 
 Sequence.register(List__i64)
@@ -3592,6 +3596,8 @@ cdef class Map__binary_i64:
             yield (ckey, citem)
             inc(loc)
 
+    def __reduce__(self):
+        return (Map__binary_i64, (dict(self), ))
 
 
 Mapping.register(Map__binary_i64)
@@ -3694,7 +3700,6 @@ cdef class List__i32:
             yield citem
             inc(loc)
 
-
     def __repr__(self):
         if not self:
             return 'i[]'
@@ -3751,6 +3756,9 @@ cdef class List__i32:
             return 0
         return <int64_t> std_libcpp.count[vector[int32_t].iterator, int32_t](
             deref(self._cpp_obj).begin(), deref(self._cpp_obj).end(), item)
+
+    def __reduce__(self):
+        return (List__i32, (list(self), ))
 
 
 Sequence.register(List__i32)
@@ -3853,7 +3861,6 @@ cdef class std_list__List__i32:
             yield citem
             inc(loc)
 
-
     def __repr__(self):
         if not self:
             return 'i[]'
@@ -3910,6 +3917,9 @@ cdef class std_list__List__i32:
             return 0
         return <int64_t> std_libcpp.count[std_list[int32_t].iterator, int32_t](
             deref(self._cpp_obj).begin(), deref(self._cpp_obj).end(), item)
+
+    def __reduce__(self):
+        return (std_list__List__i32, (list(self), ))
 
 
 Sequence.register(std_list__List__i32)
@@ -4012,7 +4022,6 @@ cdef class std_deque__List__i32:
             yield citem
             inc(loc)
 
-
     def __repr__(self):
         if not self:
             return 'i[]'
@@ -4069,6 +4078,9 @@ cdef class std_deque__List__i32:
             return 0
         return <int64_t> std_libcpp.count[std_deque[int32_t].iterator, int32_t](
             deref(self._cpp_obj).begin(), deref(self._cpp_obj).end(), item)
+
+    def __reduce__(self):
+        return (std_deque__List__i32, (list(self), ))
 
 
 Sequence.register(std_deque__List__i32)
@@ -4171,7 +4183,6 @@ cdef class folly_fbvector__List__i32:
             yield citem
             inc(loc)
 
-
     def __repr__(self):
         if not self:
             return 'i[]'
@@ -4228,6 +4239,9 @@ cdef class folly_fbvector__List__i32:
             return 0
         return <int64_t> std_libcpp.count[folly_fbvector[int32_t].iterator, int32_t](
             deref(self._cpp_obj).begin(), deref(self._cpp_obj).end(), item)
+
+    def __reduce__(self):
+        return (folly_fbvector__List__i32, (list(self), ))
 
 
 Sequence.register(folly_fbvector__List__i32)
@@ -4330,7 +4344,6 @@ cdef class folly_small_vector__List__i32:
             yield citem
             inc(loc)
 
-
     def __repr__(self):
         if not self:
             return 'i[]'
@@ -4387,6 +4400,9 @@ cdef class folly_small_vector__List__i32:
             return 0
         return <int64_t> std_libcpp.count[folly_small_vector[int32_t].iterator, int32_t](
             deref(self._cpp_obj).begin(), deref(self._cpp_obj).end(), item)
+
+    def __reduce__(self):
+        return (folly_small_vector__List__i32, (list(self), ))
 
 
 Sequence.register(folly_small_vector__List__i32)
@@ -4629,6 +4645,9 @@ cdef class folly_sorted_vector_set__Set__i32:
     def issuperset(self, other):
         return self >= other
 
+    def __reduce__(self):
+        return (folly_sorted_vector_set__Set__i32, (set(self), ))
+
 
 Set.register(folly_sorted_vector_set__Set__i32)
 
@@ -4760,6 +4779,8 @@ cdef class folly_sorted_vector_map__Map__i32_string:
             yield (ckey, bytes(citem).decode('UTF-8'))
             inc(loc)
 
+    def __reduce__(self):
+        return (folly_sorted_vector_map__Map__i32_string, (dict(self), ))
 
 
 Mapping.register(folly_sorted_vector_map__Map__i32_string)
@@ -4862,7 +4883,6 @@ cdef class std_list_int32_t__List__i32:
             yield citem
             inc(loc)
 
-
     def __repr__(self):
         if not self:
             return 'i[]'
@@ -4919,6 +4939,9 @@ cdef class std_list_int32_t__List__i32:
             return 0
         return <int64_t> std_libcpp.count[std_list_int32_t.iterator, int32_t](
             deref(self._cpp_obj).begin(), deref(self._cpp_obj).end(), item)
+
+    def __reduce__(self):
+        return (std_list_int32_t__List__i32, (list(self), ))
 
 
 Sequence.register(std_list_int32_t__List__i32)
@@ -5051,6 +5074,8 @@ cdef class Map__string_i32:
             yield (ckey.decode('UTF-8'), citem)
             inc(loc)
 
+    def __reduce__(self):
+        return (Map__string_i32, (dict(self), ))
 
 
 Mapping.register(Map__string_i32)
