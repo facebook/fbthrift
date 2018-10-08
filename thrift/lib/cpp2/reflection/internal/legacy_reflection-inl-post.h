@@ -133,8 +133,11 @@ struct impl<bool, type_class::integral> {
   static void go(schema_t&) {}
 };
 
+template <std::size_t I>
+struct impl_integral;
+
 template <>
-struct impl<int8_t, type_class::integral> {
+struct impl_integral<1> {
   FATAL_S(rname, "byte");
   static id_t rid() {
     return id_t(type_t::TYPE_BYTE);
@@ -143,7 +146,7 @@ struct impl<int8_t, type_class::integral> {
 };
 
 template <>
-struct impl<int16_t, type_class::integral> {
+struct impl_integral<2> {
   FATAL_S(rname, "i16");
   static id_t rid() {
     return id_t(type_t::TYPE_I16);
@@ -152,7 +155,7 @@ struct impl<int16_t, type_class::integral> {
 };
 
 template <>
-struct impl<int32_t, type_class::integral> {
+struct impl_integral<4> {
   FATAL_S(rname, "i32");
   static id_t rid() {
     return id_t(type_t::TYPE_I32);
@@ -161,13 +164,16 @@ struct impl<int32_t, type_class::integral> {
 };
 
 template <>
-struct impl<int64_t, type_class::integral> {
+struct impl_integral<8> {
   FATAL_S(rname, "i64");
   static id_t rid() {
     return id_t(type_t::TYPE_I64);
   }
   static void go(schema_t&) {}
 };
+
+template <typename I>
+struct impl<I, type_class::integral> : impl_integral<sizeof(I)> {};
 
 template <>
 struct impl<double, type_class::floating_point> {

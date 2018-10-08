@@ -16,6 +16,7 @@
 
 #include <thrift/lib/cpp2/reflection/legacy_reflection.h>
 
+#include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
 #include <thrift/lib/cpp2/reflection/debug.h>
@@ -31,4 +32,13 @@ using namespace apache::thrift::test;
 TEST(FatalLegacyReflectionTest, name) {
   constexpr auto actual = legacy_reflection<SampleStruct>::name();
   EXPECT_EQ("struct fatal_legacy_reflection.SampleStruct", actual);
+}
+
+TEST(FatalLegacyReflectionTest, schema) {
+  using type = SampleStruct;
+  ASSERT_FALSE(std::is_unsigned<decltype(type::i16_field)>::value) << "sanity";
+  ASSERT_TRUE(std::is_unsigned<decltype(type::ui16_field)>::value) << "sanity";
+  constexpr auto name = "struct fatal_legacy_reflection.SampleStruct";
+  auto schema = legacy_reflection<type>::schema();
+  EXPECT_THAT(schema.names, testing::Contains(testing::Key(name)));
 }

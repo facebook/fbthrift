@@ -44,4 +44,10 @@ struct SampleStruct {
   24: SampleSubStruct struct_unique_field (cpp.ref_type = 'unique'),
   25: SampleSubStruct struct_shared_field (cpp.ref_type = 'shared'),
   26: SampleSubStruct struct_shared_const_field (cpp.ref_type = 'shared_const'),
+
+  // integer custom types
+  27: byte (cpp.type = "std::uint8_t") ubyte_field,
+  28: i16 (cpp.type = "std::uint16_t") ui16_field,
+  29: i32 (cpp.type = "std::uint32_t") ui32_field,
+  30: i64 (cpp.type = "std::uint64_t") ui64_field,
 }
