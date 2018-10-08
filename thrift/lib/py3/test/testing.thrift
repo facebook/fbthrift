@@ -36,6 +36,10 @@ enum Color {
   green = 2,
 }
 
+exception SimpleError {
+    1: Color color;
+}
+
 enum Shape {
     SQUARE = 0,
     ROUND = 1,

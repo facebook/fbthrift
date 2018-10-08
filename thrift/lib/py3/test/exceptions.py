@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 import unittest
 
-from testing.types import UnusedError, HardError
+from testing.types import UnusedError, HardError, SimpleError, Color
 from .exception_helper import simulate_UnusedError, simulate_HardError
+from thrift.py3 import Error
 
 
 class ExceptionTests(unittest.TestCase):
@@ -53,3 +54,23 @@ class ExceptionTests(unittest.TestCase):
         self.assertEqual(x.errortext, y.errortext)
         self.assertEqual(x.code, y.code)
         self.assertEqual(str(x), str(y))
+
+    def test_raise(self) -> None:
+        with self.assertRaises(SimpleError):
+            raise SimpleError()
+
+        with self.assertRaises(Error):
+            raise SimpleError(Color.red)
+
+        with self.assertRaises(Exception):
+            raise SimpleError()
+
+        with self.assertRaises(BaseException):
+            raise SimpleError()
+
+        x = SimpleError(Color.blue)
+
+        self.assertIsInstance(x, BaseException)
+        self.assertIsInstance(x, Exception)
+        self.assertIsInstance(x, Error)
+        self.assertIsInstance(x, SimpleError)
