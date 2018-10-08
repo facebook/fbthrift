@@ -19,6 +19,7 @@
 #import "TObjective-C.h"
 #import "TBase.h"
 #import "TBaseStruct.h"
+#import "TBaseException.h"
 
 NS_ASSUME_NONNULL_BEGIN
 

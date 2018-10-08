@@ -19,6 +19,7 @@
 #import <thrift/TObjective-C.h>
 #import <thrift/TBase.h>
 #import <thrift/TBaseStruct.h>
+#import <thrift/TBaseException.h>
 
 @interface Foo : TBaseStruct <TBase, NSCoding> {
   int64_t __thrift_a;

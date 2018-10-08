@@ -19,6 +19,7 @@
 #import "TObjective-C.h"
 #import "TBase.h"
 #import "TBaseStruct.h"
+#import "TBaseException.h"
 
 typedef NS_ENUM(int, exampleExample) {
   exampleExample_caseA = 1,

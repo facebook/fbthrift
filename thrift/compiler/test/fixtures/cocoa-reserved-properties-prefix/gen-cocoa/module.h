@@ -19,6 +19,7 @@
 #import "TObjective-C.h"
 #import "TBase.h"
 #import "TBaseStruct.h"
+#import "TBaseException.h"
 
 @interface exampleExample : TBaseStruct <TBase, NSCoding> {
   NSString * __thrift_name;
