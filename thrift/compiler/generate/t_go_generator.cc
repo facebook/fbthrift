@@ -301,7 +301,10 @@ class t_go_generator : public t_concat_generator {
   std::string argument_list(t_struct* tstruct);
   std::string type_to_enum(t_type* ttype);
   std::string type_to_go_type(t_type* ttype);
-  std::string type_to_go_type_with_opt(t_type* ttype, bool optional_field);
+  std::string type_to_go_type_with_opt(
+      t_type* ttype,
+      bool optional_field,
+      bool from_typedef = false);
   std::string type_to_go_key_type(t_type* ttype);
   std::string type_to_spec_args(t_type* ttype);
 
@@ -920,7 +923,7 @@ void t_go_generator::close_generator() {
 void t_go_generator::generate_typedef(t_typedef* ttypedef) {
   generate_go_docstring(f_types_, ttypedef);
   string new_type_name(publicize(ttypedef->get_symbolic()));
-  string base_type(type_to_go_type(ttypedef->get_type()));
+  string base_type(type_to_go_type_with_opt(ttypedef->get_type(), false, true));
 
   if (base_type == new_type_name) {
     return;
@@ -4192,7 +4195,8 @@ string t_go_generator::type_to_go_type(t_type* type) {
  */
 string t_go_generator::type_to_go_type_with_opt(
     t_type* type,
-    bool optional_field) {
+    bool optional_field,
+    bool from_typedef) {
   string maybe_pointer(optional_field ? "*" : "");
 
   if (type->is_typedef() && !((t_typedef*)type)->is_defined()) {
@@ -4237,6 +4241,9 @@ string t_go_generator::type_to_go_type_with_opt(
   } else if (type->is_enum()) {
     return maybe_pointer + publicize(type_name(type));
   } else if (type->is_struct() || type->is_xception()) {
+    if (from_typedef) {
+      return publicize(type_name(type));
+    }
     return "*" + publicize(type_name(type));
   } else if (type->is_map()) {
     t_map* t = (t_map*)type;
@@ -4252,6 +4259,10 @@ string t_go_generator::type_to_go_type_with_opt(
     string elemType = type_to_go_type(t->get_elem_type());
     return maybe_pointer + string("[]") + elemType;
   } else if (type->is_typedef()) {
+    auto true_type = type->get_true_type();
+    if (true_type->is_struct() || true_type->is_xception()) {
+      return "*" + publicize(type_name(type));
+    }
     return maybe_pointer + publicize(type_name(type));
   }
 

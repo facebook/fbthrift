@@ -25,7 +25,7 @@ type Finder interface {
   ByPlate(plate Plate) (r *Automobile, err error)
   // Parameters:
   //  - Plate
-  AliasByPlate(plate Plate) (r Car, err error)
+  AliasByPlate(plate Plate) (r *Car, err error)
   // Parameters:
   //  - Plate
   PreviousPlate(plate Plate) (r Plate, err error)
@@ -139,7 +139,7 @@ func (p *FinderClient) recvByPlate() (value *Automobile, err error) {
 
 // Parameters:
 //  - Plate
-func (p *FinderClient) AliasByPlate(plate Plate) (r Car, err error) {
+func (p *FinderClient) AliasByPlate(plate Plate) (r *Car, err error) {
   if err = p.sendAliasByPlate(plate); err != nil { return }
   return p.recvAliasByPlate()
 }
@@ -167,7 +167,7 @@ func (p *FinderClient) sendAliasByPlate(plate Plate)(err error) {
 }
 
 
-func (p *FinderClient) recvAliasByPlate() (value Car, err error) {
+func (p *FinderClient) recvAliasByPlate() (value *Car, err error) {
   iprot := p.InputProtocol
   if iprot == nil {
     iprot = p.ProtocolFactory.GetProtocol(p.Transport)
@@ -399,7 +399,7 @@ func (p *FinderThreadsafeClient) recvByPlate() (value *Automobile, err error) {
 
 // Parameters:
 //  - Plate
-func (p *FinderThreadsafeClient) AliasByPlate(plate Plate) (r Car, err error) {
+func (p *FinderThreadsafeClient) AliasByPlate(plate Plate) (r *Car, err error) {
   p.Mu.Lock()
   defer p.Mu.Unlock()
   if err = p.sendAliasByPlate(plate); err != nil { return }
@@ -429,7 +429,7 @@ func (p *FinderThreadsafeClient) sendAliasByPlate(plate Plate)(err error) {
 }
 
 
-func (p *FinderThreadsafeClient) recvAliasByPlate() (value Car, err error) {
+func (p *FinderThreadsafeClient) recvAliasByPlate() (value *Car, err error) {
   iprot := p.InputProtocol
   if iprot == nil {
     iprot = p.ProtocolFactory.GetProtocol(p.Transport)
@@ -1005,12 +1005,12 @@ func NewFinderAliasByPlateResult() *FinderAliasByPlateResult {
   return &FinderAliasByPlateResult{}
 }
 
-var FinderAliasByPlateResult_Success_DEFAULT Car
-func (p *FinderAliasByPlateResult) GetSuccess() Car {
+var FinderAliasByPlateResult_Success_DEFAULT *Car
+func (p *FinderAliasByPlateResult) GetSuccess() *Car {
   if !p.IsSetSuccess() {
     return FinderAliasByPlateResult_Success_DEFAULT
   }
-return *p.Success
+return p.Success
 }
 func (p *FinderAliasByPlateResult) IsSetSuccess() bool {
   return p.Success != nil

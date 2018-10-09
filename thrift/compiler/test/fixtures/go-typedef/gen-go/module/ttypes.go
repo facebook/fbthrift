@@ -45,7 +45,7 @@ type PartName = map[int32]string
 
 func PartNamePtr(v PartName) *PartName { return &v }
 
-type Car = *Automobile
+type Car = Automobile
 
 func CarPtr(v Car) *Car { return &v }
 
@@ -316,12 +316,12 @@ func (p *Pair) GetAutomobile() *Automobile {
   }
 return p.Automobile
 }
-var Pair_Car_DEFAULT Car
-func (p *Pair) GetCar() Car {
+var Pair_Car_DEFAULT *Car
+func (p *Pair) GetCar() *Car {
   if !p.IsSetCar() {
     return Pair_Car_DEFAULT
   }
-return *p.Car
+return p.Car
 }
 func (p *Pair) IsSetAutomobile() bool {
   return p.Automobile != nil
@@ -429,7 +429,7 @@ func (p *Pair) String() string {
 //  - Cars
 type Collection struct {
   Automobiles []*Automobile `thrift:"automobiles,1" db:"automobiles" json:"automobiles"`
-  Cars []Car `thrift:"cars,2" db:"cars" json:"cars"`
+  Cars []*Car `thrift:"cars,2" db:"cars" json:"cars"`
 }
 
 func NewCollection() *Collection {
@@ -441,7 +441,7 @@ func (p *Collection) GetAutomobiles() []*Automobile {
   return p.Automobiles
 }
 
-func (p *Collection) GetCars() []Car {
+func (p *Collection) GetCars() []*Car {
   return p.Cars
 }
 func (p *Collection) Read(iprot thrift.Protocol) error {
@@ -505,7 +505,7 @@ func (p *Collection)  ReadField2(iprot thrift.Protocol) error {
   if err != nil {
     return thrift.PrependError("error reading list begin: ", err)
   }
-  tSlice := make([]Car, 0, size)
+  tSlice := make([]*Car, 0, size)
   p.Cars =  tSlice
   for i := 0; i < size; i ++ {
     _elem2 := NewAutomobile()
