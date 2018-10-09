@@ -50,3 +50,35 @@ TEST(ServerAttributeTest, overrideFirst) {
   a.unset(AttributeSource::OVERRIDE);
   EXPECT_EQ(a.get(), 0);
 }
+
+TEST(ServerAttributeTest, stringBaselineFirst) {
+  ServerAttribute<std::string> a{"a"};
+  EXPECT_EQ(a.get(), "a");
+
+  a.set("b", AttributeSource::BASELINE);
+  EXPECT_EQ(a.get(), "b");
+  a.set("c", AttributeSource::OVERRIDE);
+  EXPECT_EQ(a.get(), "c");
+
+  a.unset(AttributeSource::OVERRIDE);
+  EXPECT_EQ(a.get(), "b");
+  a.unset(AttributeSource::BASELINE);
+  EXPECT_EQ(a.get(), "a");
+}
+
+TEST(ServerAttributeTest, stringOverrideFirst) {
+  ServerAttribute<std::string> a{"a"};
+  EXPECT_EQ(a.get(), "a");
+
+  a.set("c", AttributeSource::OVERRIDE);
+  EXPECT_EQ(a.get(), "c");
+  a.set("b", AttributeSource::BASELINE);
+  // still return overrided value
+  EXPECT_EQ(a.get(), "c");
+
+  a.unset(AttributeSource::BASELINE);
+  // still return overrided value
+  EXPECT_EQ(a.get(), "c");
+  a.unset(AttributeSource::OVERRIDE);
+  EXPECT_EQ(a.get(), "a");
+}

@@ -287,7 +287,7 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    *
    * @return current setting.
    */
-  const std::string& getCPUWorkerThreadName() const {
+  std::string getCPUWorkerThreadName() const {
     return poolThreadName_.get();
   }
 
@@ -297,7 +297,7 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    *
    * @return current setting.
    */
-  inline const std::string& getPoolThreadName() const {
+  std::string getPoolThreadName() const {
     return getCPUWorkerThreadName();
   }
 
