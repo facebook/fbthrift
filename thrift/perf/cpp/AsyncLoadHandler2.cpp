@@ -203,12 +203,13 @@ AsyncLoadHandler2::future_echo(
   folly::Promise<std::unique_ptr<std::string>> promise;
   auto future = promise.getFuture();
 
-  folly::via(folly::RequestEventBase::get()).then(
-    [this, promise = std::move(promise), data = std::move(data)]() mutable {
-      std::string output;
-      sync_echo(output, std::move(data));
-      promise.setValue(std::make_unique<std::string>(std::move(output)));
-    });
+  folly::via(folly::RequestEventBase::get())
+      .thenValue([this, promise = std::move(promise), data = std::move(data)](
+                     auto&&) mutable {
+        std::string output;
+        sync_echo(output, std::move(data));
+        promise.setValue(std::make_unique<std::string>(std::move(output)));
+      });
 
   return future;
 }
