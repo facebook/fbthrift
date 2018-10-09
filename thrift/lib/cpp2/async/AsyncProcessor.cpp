@@ -28,5 +28,23 @@ thread_local Cpp2RequestContext* ServerInterface::reqCtx_;
 thread_local concurrency::ThreadManager* ServerInterface::tm_;
 thread_local folly::EventBase* ServerInterface::eb_;
 
+void HandlerCallbackBase::sendReply(
+    folly::IOBufQueue queue,
+    apache::thrift::Stream<folly::IOBufQueue>&& stream) {
+  transform(queue);
+  auto stream_ =
+      std::move(stream).map([](auto&& value) mutable { return value.move(); });
+  if (getEventBase()->isInEventBaseThread()) {
+    req_->sendStreamReply({queue.move(), std::move(stream_)});
+  } else {
+    getEventBase()->runInEventBaseThread(
+        [req = std::move(req_),
+         queue = std::move(queue),
+         stream = std::move(stream_)]() mutable {
+          req->sendStreamReply({queue.move(), std::move(stream)});
+        });
+  }
+}
+
 } // namespace thrift
 } // namespace apache
