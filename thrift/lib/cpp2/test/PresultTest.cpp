@@ -94,8 +94,6 @@ class PresultServiceInterface : public PresultServiceSvIf {
   }
 };
 
-bool Noncopyable::operator<(const Noncopyable&) const { return false; }
-
 std::shared_ptr<PresultServiceAsyncClient> getClient(const ScopedServerThread& sst, folly::EventBase& eb) {
   auto socket = TAsyncSocket::newSocket(&eb, *sst.getAddress());
   auto channel = HeaderClientChannel::newChannel(socket);
