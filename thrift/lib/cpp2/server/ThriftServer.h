@@ -742,6 +742,11 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
   void setup();
 
   /**
+   * Create and start the default thread manager unless it already exists.
+   */
+  void setupThreadManager();
+
+  /**
    * Kill the workers and wait for listeners to quit
    */
   void cleanUp();

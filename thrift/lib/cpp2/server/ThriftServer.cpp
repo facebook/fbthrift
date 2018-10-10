@@ -338,20 +338,7 @@ void ThriftServer::setup() {
       }
     }
 
-    auto nPoolThreads = getNumCPUWorkerThreads();
-    if (!threadManager_) {
-      int numThreads = nPoolThreads > 0 ? nPoolThreads : nWorkers;
-      std::shared_ptr<apache::thrift::concurrency::ThreadManager> threadManager(
-          PriorityThreadManager::newPriorityThreadManager(
-              numThreads, true /*stats*/));
-      threadManager->enableCodel(getEnableCodel());
-      auto poolThreadName = getCPUWorkerThreadName();
-      if (!poolThreadName.empty()) {
-        threadManager->setNamePrefix(poolThreadName);
-      }
-      threadManager->start();
-      setThreadManager(threadManager);
-    }
+    setupThreadManager();
     threadManager_->setExpireCallback([&](std::shared_ptr<Runnable> r) {
       EventTask* task = dynamic_cast<EventTask*>(r.get());
       if (task) {
@@ -445,6 +432,23 @@ void ThriftServer::setup() {
   } catch (...) {
     handleSetupFailure();
     throw;
+  }
+}
+
+void ThriftServer::setupThreadManager() {
+  if (!threadManager_) {
+    auto nPoolThreads = getNumCPUWorkerThreads();
+    int numThreads = nPoolThreads > 0 ? nPoolThreads : getNumIOWorkerThreads();
+    std::shared_ptr<apache::thrift::concurrency::ThreadManager> threadManager(
+        PriorityThreadManager::newPriorityThreadManager(
+            numThreads, true /*stats*/));
+    threadManager->enableCodel(getEnableCodel());
+    auto poolThreadName = getCPUWorkerThreadName();
+    if (!poolThreadName.empty()) {
+      threadManager->setNamePrefix(poolThreadName);
+    }
+    threadManager->start();
+    setThreadManager(threadManager);
   }
 }
 
