@@ -344,9 +344,9 @@ cdef class MyStruct(thrift.py3.types.Struct):
     @property
     def MyDataField(self):
 
-        if self.__MyDataField is None:
-            self.__MyDataField = MyDataItem.create(reference_shared_ptr_MyDataField(self._cpp_obj, deref(self._cpp_obj).MyDataField))
-        return self.__MyDataField
+        if self.__field_MyDataField is None:
+            self.__field_MyDataField = MyDataItem.create(reference_shared_ptr_MyDataField(self._cpp_obj, deref(self._cpp_obj).MyDataField))
+        return self.__field_MyDataField
 
     @property
     def major(self):

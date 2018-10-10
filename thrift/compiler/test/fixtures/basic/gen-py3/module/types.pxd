@@ -102,7 +102,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
     cdef object __hash
     cdef object __weakref__
     cdef shared_ptr[cMyStruct] _cpp_obj
-    cdef MyDataItem __MyDataField
+    cdef MyDataItem __field_MyDataField
 
     @staticmethod
     cdef unique_ptr[cMyStruct] _make_instance(

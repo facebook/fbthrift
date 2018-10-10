@@ -181,16 +181,16 @@ cdef class MyStruct(thrift.py3.types.Struct):
     @property
     def MyIncludedField(self):
 
-        if self.__MyIncludedField is None:
-            self.__MyIncludedField = _includes_types.Included.create(reference_shared_ptr_MyIncludedField(self._cpp_obj, deref(self._cpp_obj).MyIncludedField))
-        return self.__MyIncludedField
+        if self.__field_MyIncludedField is None:
+            self.__field_MyIncludedField = _includes_types.Included.create(reference_shared_ptr_MyIncludedField(self._cpp_obj, deref(self._cpp_obj).MyIncludedField))
+        return self.__field_MyIncludedField
 
     @property
     def MyOtherIncludedField(self):
 
-        if self.__MyOtherIncludedField is None:
-            self.__MyOtherIncludedField = _includes_types.Included.create(reference_shared_ptr_MyOtherIncludedField(self._cpp_obj, deref(self._cpp_obj).MyOtherIncludedField))
-        return self.__MyOtherIncludedField
+        if self.__field_MyOtherIncludedField is None:
+            self.__field_MyOtherIncludedField = _includes_types.Included.create(reference_shared_ptr_MyOtherIncludedField(self._cpp_obj, deref(self._cpp_obj).MyOtherIncludedField))
+        return self.__field_MyOtherIncludedField
 
     @property
     def MyIncludedInt(self):

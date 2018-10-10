@@ -64,7 +64,7 @@ cdef class Included(thrift.py3.types.Struct):
     cdef object __hash
     cdef object __weakref__
     cdef shared_ptr[cIncluded] _cpp_obj
-    cdef _transitive_types.Foo __MyTransitiveField
+    cdef _transitive_types.Foo __field_MyTransitiveField
 
     @staticmethod
     cdef unique_ptr[cIncluded] _make_instance(

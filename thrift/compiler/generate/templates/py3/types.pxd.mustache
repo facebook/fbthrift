@@ -177,13 +177,13 @@ cdef class {{struct:name}}({{> types/PythonStructClass}}):
     {{!Memoized Python wrappers of struct fields, created lazily}}
     {{#struct:fields}}
     {{#field:type}}{{#type:struct}}
-    cdef {{> types/CythonPythonType}} __{{field:name}}
+    cdef {{> types/CythonPythonType}} __field_{{field:name}}
     {{/type:struct}}{{#type:container?}}
-    cdef {{> types/CythonPythonType}} __{{field:name}}
+    cdef {{> types/CythonPythonType}} __field_{{field:name}}
     {{/type:container?}}{{#type:iobuf?}}
-    cdef __iobuf.IOBuf __{{field:name}}
+    cdef __iobuf.IOBuf __field_{{field:name}}
     {{/type:iobuf?}}{{#type:iobufRef?}}
-    cdef __iobuf.IOBuf __{{field:name}}
+    cdef __iobuf.IOBuf __field_{{field:name}}
     {{/type:iobufRef?}}{{/field:type}}
     {{/struct:fields}}{{/struct:union?}}
     {{#struct:union?}}

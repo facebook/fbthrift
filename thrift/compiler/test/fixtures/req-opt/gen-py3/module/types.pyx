@@ -205,16 +205,16 @@ cdef class Foo(thrift.py3.types.Struct):
     @property
     def myBools(self):
 
-        if self.__myBools is None:
-            self.__myBools = List__bool.create(reference_shared_ptr_myBools(self._cpp_obj, deref(self._cpp_obj).myBools))
-        return self.__myBools
+        if self.__field_myBools is None:
+            self.__field_myBools = List__bool.create(reference_shared_ptr_myBools(self._cpp_obj, deref(self._cpp_obj).myBools))
+        return self.__field_myBools
 
     @property
     def myNumbers(self):
 
-        if self.__myNumbers is None:
-            self.__myNumbers = List__i32.create(reference_shared_ptr_myNumbers(self._cpp_obj, deref(self._cpp_obj).myNumbers))
-        return self.__myNumbers
+        if self.__field_myNumbers is None:
+            self.__field_myNumbers = List__i32.create(reference_shared_ptr_myNumbers(self._cpp_obj, deref(self._cpp_obj).myNumbers))
+        return self.__field_myNumbers
 
 
     def __hash__(Foo self):

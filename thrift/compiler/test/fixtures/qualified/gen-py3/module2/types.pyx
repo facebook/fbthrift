@@ -152,16 +152,16 @@ cdef class Struct(thrift.py3.types.Struct):
     @property
     def first(self):
 
-        if self.__first is None:
-            self.__first = _module0_types.Struct.create(reference_shared_ptr_first(self._cpp_obj, deref(self._cpp_obj).first))
-        return self.__first
+        if self.__field_first is None:
+            self.__field_first = _module0_types.Struct.create(reference_shared_ptr_first(self._cpp_obj, deref(self._cpp_obj).first))
+        return self.__field_first
 
     @property
     def second(self):
 
-        if self.__second is None:
-            self.__second = _module1_types.Struct.create(reference_shared_ptr_second(self._cpp_obj, deref(self._cpp_obj).second))
-        return self.__second
+        if self.__field_second is None:
+            self.__field_second = _module1_types.Struct.create(reference_shared_ptr_second(self._cpp_obj, deref(self._cpp_obj).second))
+        return self.__field_second
 
 
     def __hash__(Struct self):
@@ -365,9 +365,9 @@ cdef class BigStruct(thrift.py3.types.Struct):
     @property
     def s(self):
 
-        if self.__s is None:
-            self.__s = Struct.create(reference_shared_ptr_s(self._cpp_obj, deref(self._cpp_obj).s))
-        return self.__s
+        if self.__field_s is None:
+            self.__field_s = Struct.create(reference_shared_ptr_s(self._cpp_obj, deref(self._cpp_obj).s))
+        return self.__field_s
 
     @property
     def id(self):

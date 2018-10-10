@@ -151,7 +151,7 @@ cdef class OldStructure(thrift.py3.types.Struct):
     cdef object __hash
     cdef object __weakref__
     cdef shared_ptr[cOldStructure] _cpp_obj
-    cdef Map__i16_double __features
+    cdef Map__i16_double __field_features
 
     @staticmethod
     cdef unique_ptr[cOldStructure] _make_instance(
@@ -171,7 +171,7 @@ cdef class NewStructure(thrift.py3.types.Struct):
     cdef object __hash
     cdef object __weakref__
     cdef shared_ptr[cNewStructure] _cpp_obj
-    cdef Map__i16_double __features
+    cdef Map__i16_double __field_features
 
     @staticmethod
     cdef unique_ptr[cNewStructure] _make_instance(
@@ -191,7 +191,7 @@ cdef class NewStructure2(thrift.py3.types.Struct):
     cdef object __hash
     cdef object __weakref__
     cdef shared_ptr[cNewStructure2] _cpp_obj
-    cdef Map__i16_float __features
+    cdef Map__i16_float __field_features
 
     @staticmethod
     cdef unique_ptr[cNewStructure2] _make_instance(
@@ -211,9 +211,9 @@ cdef class NewStructureNested(thrift.py3.types.Struct):
     cdef object __hash
     cdef object __weakref__
     cdef shared_ptr[cNewStructureNested] _cpp_obj
-    cdef List__Map__i16_float __lst
-    cdef Map__i16_Map__i16_float __mp
-    cdef Set__Map__i16_float __s
+    cdef List__Map__i16_float __field_lst
+    cdef Map__i16_Map__i16_float __field_mp
+    cdef Set__Map__i16_float __field_s
 
     @staticmethod
     cdef unique_ptr[cNewStructureNested] _make_instance(
@@ -235,7 +235,7 @@ cdef class NewStructureNestedField(thrift.py3.types.Struct):
     cdef object __hash
     cdef object __weakref__
     cdef shared_ptr[cNewStructureNestedField] _cpp_obj
-    cdef NewStructureNested __f
+    cdef NewStructureNested __field_f
 
     @staticmethod
     cdef unique_ptr[cNewStructureNestedField] _make_instance(

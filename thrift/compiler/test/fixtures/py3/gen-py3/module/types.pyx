@@ -1098,16 +1098,16 @@ cdef class ComplexStruct(thrift.py3.types.Struct):
     @property
     def structOne(self):
 
-        if self.__structOne is None:
-            self.__structOne = SimpleStruct.create(reference_shared_ptr_structOne(self._cpp_obj, deref(self._cpp_obj).structOne))
-        return self.__structOne
+        if self.__field_structOne is None:
+            self.__field_structOne = SimpleStruct.create(reference_shared_ptr_structOne(self._cpp_obj, deref(self._cpp_obj).structOne))
+        return self.__field_structOne
 
     @property
     def structTwo(self):
 
-        if self.__structTwo is None:
-            self.__structTwo = SimpleStruct.create(reference_shared_ptr_structTwo(self._cpp_obj, deref(self._cpp_obj).structTwo))
-        return self.__structTwo
+        if self.__field_structTwo is None:
+            self.__field_structTwo = SimpleStruct.create(reference_shared_ptr_structTwo(self._cpp_obj, deref(self._cpp_obj).structTwo))
+        return self.__field_structTwo
 
     @property
     def an_integer(self):

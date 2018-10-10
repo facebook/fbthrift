@@ -208,8 +208,8 @@ cdef class ComplexStruct(thrift.py3.types.Struct):
     cdef object __hash
     cdef object __weakref__
     cdef shared_ptr[cComplexStruct] _cpp_obj
-    cdef SimpleStruct __structOne
-    cdef SimpleStruct __structTwo
+    cdef SimpleStruct __field_structOne
+    cdef SimpleStruct __field_structTwo
 
     @staticmethod
     cdef unique_ptr[cComplexStruct] _make_instance(

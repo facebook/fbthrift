@@ -110,10 +110,10 @@ cdef class Combo(thrift.py3.types.Struct):
     cdef object __hash
     cdef object __weakref__
     cdef shared_ptr[cCombo] _cpp_obj
-    cdef List__List__MyStruct __listOfOurMyStructLists
-    cdef List__module_MyStruct __theirMyStructList
-    cdef List__MyStruct __ourMyStructList
-    cdef List__List__module_MyStruct __listOfTheirMyStructList
+    cdef List__List__MyStruct __field_listOfOurMyStructLists
+    cdef List__module_MyStruct __field_theirMyStructList
+    cdef List__MyStruct __field_ourMyStructList
+    cdef List__List__module_MyStruct __field_listOfTheirMyStructList
 
     @staticmethod
     cdef unique_ptr[cCombo] _make_instance(

@@ -116,7 +116,7 @@ cdef class AStructB(thrift.py3.types.Struct):
     cdef object __hash
     cdef object __weakref__
     cdef shared_ptr[cAStructB] _cpp_obj
-    cdef AStruct __FieldA
+    cdef AStruct __field_FieldA
 
     @staticmethod
     cdef unique_ptr[cAStructB] _make_instance(

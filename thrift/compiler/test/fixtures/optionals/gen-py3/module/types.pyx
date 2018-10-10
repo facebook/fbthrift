@@ -606,9 +606,9 @@ cdef class Vehicle(thrift.py3.types.Struct):
     @property
     def color(self):
 
-        if self.__color is None:
-            self.__color = Color.create(reference_shared_ptr_color(self._cpp_obj, deref(self._cpp_obj).color))
-        return self.__color
+        if self.__field_color is None:
+            self.__field_color = Color.create(reference_shared_ptr_color(self._cpp_obj, deref(self._cpp_obj).color))
+        return self.__field_color
 
     @property
     def licensePlate(self):
@@ -1059,18 +1059,18 @@ cdef class Person(thrift.py3.types.Struct):
         if not deref(self._cpp_obj).__isset.favoriteColor:
             return None
 
-        if self.__favoriteColor is None:
-            self.__favoriteColor = Color.create(reference_shared_ptr_favoriteColor(self._cpp_obj, deref(self._cpp_obj).favoriteColor))
-        return self.__favoriteColor
+        if self.__field_favoriteColor is None:
+            self.__field_favoriteColor = Color.create(reference_shared_ptr_favoriteColor(self._cpp_obj, deref(self._cpp_obj).favoriteColor))
+        return self.__field_favoriteColor
 
     @property
     def friends(self):
         if not deref(self._cpp_obj).__isset.friends:
             return None
 
-        if self.__friends is None:
-            self.__friends = Set__i64.create(reference_shared_ptr_friends(self._cpp_obj, deref(self._cpp_obj).friends))
-        return self.__friends
+        if self.__field_friends is None:
+            self.__field_friends = Set__i64.create(reference_shared_ptr_friends(self._cpp_obj, deref(self._cpp_obj).friends))
+        return self.__field_friends
 
     @property
     def bestFriend(self):
@@ -1084,9 +1084,9 @@ cdef class Person(thrift.py3.types.Struct):
         if not deref(self._cpp_obj).__isset.petNames:
             return None
 
-        if self.__petNames is None:
-            self.__petNames = Map__Animal_string.create(reference_shared_ptr_petNames(self._cpp_obj, deref(self._cpp_obj).petNames))
-        return self.__petNames
+        if self.__field_petNames is None:
+            self.__field_petNames = Map__Animal_string.create(reference_shared_ptr_petNames(self._cpp_obj, deref(self._cpp_obj).petNames))
+        return self.__field_petNames
 
     @property
     def afraidOfAnimal(self):
@@ -1100,9 +1100,9 @@ cdef class Person(thrift.py3.types.Struct):
         if not deref(self._cpp_obj).__isset.vehicles:
             return None
 
-        if self.__vehicles is None:
-            self.__vehicles = List__Vehicle.create(reference_shared_ptr_vehicles(self._cpp_obj, deref(self._cpp_obj).vehicles))
-        return self.__vehicles
+        if self.__field_vehicles is None:
+            self.__field_vehicles = List__Vehicle.create(reference_shared_ptr_vehicles(self._cpp_obj, deref(self._cpp_obj).vehicles))
+        return self.__field_vehicles
 
 
     def __hash__(Person self):

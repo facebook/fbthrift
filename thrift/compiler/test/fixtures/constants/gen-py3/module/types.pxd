@@ -361,8 +361,8 @@ cdef class struct2(thrift.py3.types.Struct):
     cdef object __hash
     cdef object __weakref__
     cdef shared_ptr[cstruct2] _cpp_obj
-    cdef struct1 __c
-    cdef List__i32 __d
+    cdef struct1 __field_c
+    cdef List__i32 __field_d
 
     @staticmethod
     cdef unique_ptr[cstruct2] _make_instance(
@@ -385,7 +385,7 @@ cdef class struct3(thrift.py3.types.Struct):
     cdef object __hash
     cdef object __weakref__
     cdef shared_ptr[cstruct3] _cpp_obj
-    cdef struct2 __c
+    cdef struct2 __field_c
 
     @staticmethod
     cdef unique_ptr[cstruct3] _make_instance(

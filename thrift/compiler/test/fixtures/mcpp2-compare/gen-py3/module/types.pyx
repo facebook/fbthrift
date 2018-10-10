@@ -1752,16 +1752,16 @@ cdef class MyStruct(thrift.py3.types.Struct):
     @property
     def MyBinaryListField4(self):
 
-        if self.__MyBinaryListField4 is None:
-            self.__MyBinaryListField4 = List__binary.create(reference_shared_ptr_MyBinaryListField4(self._cpp_obj, deref(self._cpp_obj).MyBinaryListField4))
-        return self.__MyBinaryListField4
+        if self.__field_MyBinaryListField4 is None:
+            self.__field_MyBinaryListField4 = List__binary.create(reference_shared_ptr_MyBinaryListField4(self._cpp_obj, deref(self._cpp_obj).MyBinaryListField4))
+        return self.__field_MyBinaryListField4
 
     @property
     def MyMapEnumAndInt(self):
 
-        if self.__MyMapEnumAndInt is None:
-            self.__MyMapEnumAndInt = Map__MyEnumA_string.create(reference_shared_ptr_MyMapEnumAndInt(self._cpp_obj, deref(self._cpp_obj).MyMapEnumAndInt))
-        return self.__MyMapEnumAndInt
+        if self.__field_MyMapEnumAndInt is None:
+            self.__field_MyMapEnumAndInt = Map__MyEnumA_string.create(reference_shared_ptr_MyMapEnumAndInt(self._cpp_obj, deref(self._cpp_obj).MyMapEnumAndInt))
+        return self.__field_MyMapEnumAndInt
 
 
     def __hash__(MyStruct self):
@@ -2999,30 +2999,30 @@ cdef class AnException(thrift.py3.exceptions.Error):
     @property
     def exception_list(self):
 
-        if self.__exception_list is None:
-            self.__exception_list = List__i32.create(reference_shared_ptr_exception_list(self._cpp_obj, deref(self._cpp_obj).exception_list))
-        return self.__exception_list
+        if self.__field_exception_list is None:
+            self.__field_exception_list = List__i32.create(reference_shared_ptr_exception_list(self._cpp_obj, deref(self._cpp_obj).exception_list))
+        return self.__field_exception_list
 
     @property
     def exception_set(self):
 
-        if self.__exception_set is None:
-            self.__exception_set = Set__i64.create(reference_shared_ptr_exception_set(self._cpp_obj, deref(self._cpp_obj).exception_set))
-        return self.__exception_set
+        if self.__field_exception_set is None:
+            self.__field_exception_set = Set__i64.create(reference_shared_ptr_exception_set(self._cpp_obj, deref(self._cpp_obj).exception_set))
+        return self.__field_exception_set
 
     @property
     def exception_map(self):
 
-        if self.__exception_map is None:
-            self.__exception_map = Map__string_i32.create(reference_shared_ptr_exception_map(self._cpp_obj, deref(self._cpp_obj).exception_map))
-        return self.__exception_map
+        if self.__field_exception_map is None:
+            self.__field_exception_map = Map__string_i32.create(reference_shared_ptr_exception_map(self._cpp_obj, deref(self._cpp_obj).exception_map))
+        return self.__field_exception_map
 
     @property
     def req_exception_map(self):
 
-        if self.__req_exception_map is None:
-            self.__req_exception_map = Map__string_i32.create(reference_shared_ptr_req_exception_map(self._cpp_obj, deref(self._cpp_obj).req_exception_map))
-        return self.__req_exception_map
+        if self.__field_req_exception_map is None:
+            self.__field_req_exception_map = Map__string_i32.create(reference_shared_ptr_req_exception_map(self._cpp_obj, deref(self._cpp_obj).req_exception_map))
+        return self.__field_req_exception_map
 
     @property
     def enum_field(self):
@@ -3032,44 +3032,44 @@ cdef class AnException(thrift.py3.exceptions.Error):
     @property
     def enum_container(self):
 
-        if self.__enum_container is None:
-            self.__enum_container = List__MyEnumA.create(reference_shared_ptr_enum_container(self._cpp_obj, deref(self._cpp_obj).enum_container))
-        return self.__enum_container
+        if self.__field_enum_container is None:
+            self.__field_enum_container = List__MyEnumA.create(reference_shared_ptr_enum_container(self._cpp_obj, deref(self._cpp_obj).enum_container))
+        return self.__field_enum_container
 
     @property
     def a_struct(self):
 
-        if self.__a_struct is None:
-            self.__a_struct = MyStruct.create(reference_shared_ptr_a_struct(self._cpp_obj, deref(self._cpp_obj).a_struct))
-        return self.__a_struct
+        if self.__field_a_struct is None:
+            self.__field_a_struct = MyStruct.create(reference_shared_ptr_a_struct(self._cpp_obj, deref(self._cpp_obj).a_struct))
+        return self.__field_a_struct
 
     @property
     def a_set_struct(self):
 
-        if self.__a_set_struct is None:
-            self.__a_set_struct = Set__MyStruct.create(reference_shared_ptr_a_set_struct(self._cpp_obj, deref(self._cpp_obj).a_set_struct))
-        return self.__a_set_struct
+        if self.__field_a_set_struct is None:
+            self.__field_a_set_struct = Set__MyStruct.create(reference_shared_ptr_a_set_struct(self._cpp_obj, deref(self._cpp_obj).a_set_struct))
+        return self.__field_a_set_struct
 
     @property
     def a_union_list(self):
 
-        if self.__a_union_list is None:
-            self.__a_union_list = List__SimpleUnion.create(reference_shared_ptr_a_union_list(self._cpp_obj, deref(self._cpp_obj).a_union_list))
-        return self.__a_union_list
+        if self.__field_a_union_list is None:
+            self.__field_a_union_list = List__SimpleUnion.create(reference_shared_ptr_a_union_list(self._cpp_obj, deref(self._cpp_obj).a_union_list))
+        return self.__field_a_union_list
 
     @property
     def union_typedef(self):
 
-        if self.__union_typedef is None:
-            self.__union_typedef = Set__SimpleUnion.create(reference_shared_ptr_union_typedef(self._cpp_obj, deref(self._cpp_obj).union_typedef))
-        return self.__union_typedef
+        if self.__field_union_typedef is None:
+            self.__field_union_typedef = Set__SimpleUnion.create(reference_shared_ptr_union_typedef(self._cpp_obj, deref(self._cpp_obj).union_typedef))
+        return self.__field_union_typedef
 
     @property
     def a_union_typedef_list(self):
 
-        if self.__a_union_typedef_list is None:
-            self.__a_union_typedef_list = List__Set__SimpleUnion.create(reference_shared_ptr_a_union_typedef_list(self._cpp_obj, deref(self._cpp_obj).a_union_typedef_list))
-        return self.__a_union_typedef_list
+        if self.__field_a_union_typedef_list is None:
+            self.__field_a_union_typedef_list = List__Set__SimpleUnion.create(reference_shared_ptr_a_union_typedef_list(self._cpp_obj, deref(self._cpp_obj).a_union_typedef_list))
+        return self.__field_a_union_typedef_list
 
 
     def __hash__(AnException self):
@@ -4371,46 +4371,46 @@ cdef class containerStruct(thrift.py3.types.Struct):
     @property
     def fieldB(self):
 
-        if self.__fieldB is None:
-            self.__fieldB = Map__string_bool.create(reference_shared_ptr_fieldB(self._cpp_obj, deref(self._cpp_obj).fieldB))
-        return self.__fieldB
+        if self.__field_fieldB is None:
+            self.__field_fieldB = Map__string_bool.create(reference_shared_ptr_fieldB(self._cpp_obj, deref(self._cpp_obj).fieldB))
+        return self.__field_fieldB
 
     @property
     def req_fieldB(self):
 
-        if self.__req_fieldB is None:
-            self.__req_fieldB = Map__string_bool.create(reference_shared_ptr_req_fieldB(self._cpp_obj, deref(self._cpp_obj).req_fieldB))
-        return self.__req_fieldB
+        if self.__field_req_fieldB is None:
+            self.__field_req_fieldB = Map__string_bool.create(reference_shared_ptr_req_fieldB(self._cpp_obj, deref(self._cpp_obj).req_fieldB))
+        return self.__field_req_fieldB
 
     @property
     def opt_fieldB(self):
         if not deref(self._cpp_obj).__isset.opt_fieldB:
             return None
 
-        if self.__opt_fieldB is None:
-            self.__opt_fieldB = Map__string_bool.create(reference_shared_ptr_opt_fieldB(self._cpp_obj, deref(self._cpp_obj).opt_fieldB))
-        return self.__opt_fieldB
+        if self.__field_opt_fieldB is None:
+            self.__field_opt_fieldB = Map__string_bool.create(reference_shared_ptr_opt_fieldB(self._cpp_obj, deref(self._cpp_obj).opt_fieldB))
+        return self.__field_opt_fieldB
 
     @property
     def fieldC(self):
 
-        if self.__fieldC is None:
-            self.__fieldC = Set__i32.create(reference_shared_ptr_fieldC(self._cpp_obj, deref(self._cpp_obj).fieldC))
-        return self.__fieldC
+        if self.__field_fieldC is None:
+            self.__field_fieldC = Set__i32.create(reference_shared_ptr_fieldC(self._cpp_obj, deref(self._cpp_obj).fieldC))
+        return self.__field_fieldC
 
     @property
     def req_fieldC(self):
 
-        if self.__req_fieldC is None:
-            self.__req_fieldC = Set__i32.create(reference_shared_ptr_req_fieldC(self._cpp_obj, deref(self._cpp_obj).req_fieldC))
-        return self.__req_fieldC
+        if self.__field_req_fieldC is None:
+            self.__field_req_fieldC = Set__i32.create(reference_shared_ptr_req_fieldC(self._cpp_obj, deref(self._cpp_obj).req_fieldC))
+        return self.__field_req_fieldC
 
     @property
     def opt_fieldC(self):
 
-        if self.__opt_fieldC is None:
-            self.__opt_fieldC = Set__i32.create(reference_shared_ptr_opt_fieldC(self._cpp_obj, deref(self._cpp_obj).opt_fieldC))
-        return self.__opt_fieldC
+        if self.__field_opt_fieldC is None:
+            self.__field_opt_fieldC = Set__i32.create(reference_shared_ptr_opt_fieldC(self._cpp_obj, deref(self._cpp_obj).opt_fieldC))
+        return self.__field_opt_fieldC
 
     @property
     def fieldD(self):
@@ -4435,23 +4435,23 @@ cdef class containerStruct(thrift.py3.types.Struct):
     @property
     def fieldF(self):
 
-        if self.__fieldF is None:
-            self.__fieldF = List__List__i32.create(reference_shared_ptr_fieldF(self._cpp_obj, deref(self._cpp_obj).fieldF))
-        return self.__fieldF
+        if self.__field_fieldF is None:
+            self.__field_fieldF = List__List__i32.create(reference_shared_ptr_fieldF(self._cpp_obj, deref(self._cpp_obj).fieldF))
+        return self.__field_fieldF
 
     @property
     def fieldG(self):
 
-        if self.__fieldG is None:
-            self.__fieldG = Map__string_Map__string_Map__string_i32.create(reference_shared_ptr_fieldG(self._cpp_obj, deref(self._cpp_obj).fieldG))
-        return self.__fieldG
+        if self.__field_fieldG is None:
+            self.__field_fieldG = Map__string_Map__string_Map__string_i32.create(reference_shared_ptr_fieldG(self._cpp_obj, deref(self._cpp_obj).fieldG))
+        return self.__field_fieldG
 
     @property
     def fieldH(self):
 
-        if self.__fieldH is None:
-            self.__fieldH = List__Set__i32.create(reference_shared_ptr_fieldH(self._cpp_obj, deref(self._cpp_obj).fieldH))
-        return self.__fieldH
+        if self.__field_fieldH is None:
+            self.__field_fieldH = List__Set__i32.create(reference_shared_ptr_fieldH(self._cpp_obj, deref(self._cpp_obj).fieldH))
+        return self.__field_fieldH
 
     @property
     def fieldI(self):
@@ -4461,30 +4461,30 @@ cdef class containerStruct(thrift.py3.types.Struct):
     @property
     def fieldJ(self):
 
-        if self.__fieldJ is None:
-            self.__fieldJ = Map__string_List__i32.create(reference_shared_ptr_fieldJ(self._cpp_obj, deref(self._cpp_obj).fieldJ))
-        return self.__fieldJ
+        if self.__field_fieldJ is None:
+            self.__field_fieldJ = Map__string_List__i32.create(reference_shared_ptr_fieldJ(self._cpp_obj, deref(self._cpp_obj).fieldJ))
+        return self.__field_fieldJ
 
     @property
     def fieldK(self):
 
-        if self.__fieldK is None:
-            self.__fieldK = List__List__List__List__i32.create(reference_shared_ptr_fieldK(self._cpp_obj, deref(self._cpp_obj).fieldK))
-        return self.__fieldK
+        if self.__field_fieldK is None:
+            self.__field_fieldK = List__List__List__List__i32.create(reference_shared_ptr_fieldK(self._cpp_obj, deref(self._cpp_obj).fieldK))
+        return self.__field_fieldK
 
     @property
     def fieldL(self):
 
-        if self.__fieldL is None:
-            self.__fieldL = Set__Set__Set__bool.create(reference_shared_ptr_fieldL(self._cpp_obj, deref(self._cpp_obj).fieldL))
-        return self.__fieldL
+        if self.__field_fieldL is None:
+            self.__field_fieldL = Set__Set__Set__bool.create(reference_shared_ptr_fieldL(self._cpp_obj, deref(self._cpp_obj).fieldL))
+        return self.__field_fieldL
 
     @property
     def fieldM(self):
 
-        if self.__fieldM is None:
-            self.__fieldM = Map__Set__List__i32_Map__List__Set__string_string.create(reference_shared_ptr_fieldM(self._cpp_obj, deref(self._cpp_obj).fieldM))
-        return self.__fieldM
+        if self.__field_fieldM is None:
+            self.__field_fieldM = Map__Set__List__i32_Map__List__Set__string_string.create(reference_shared_ptr_fieldM(self._cpp_obj, deref(self._cpp_obj).fieldM))
+        return self.__field_fieldM
 
     @property
     def fieldN(self):
@@ -4494,16 +4494,16 @@ cdef class containerStruct(thrift.py3.types.Struct):
     @property
     def fieldO(self):
 
-        if self.__fieldO is None:
-            self.__fieldO = List__Map__Empty_MyStruct.create(reference_shared_ptr_fieldO(self._cpp_obj, deref(self._cpp_obj).fieldO))
-        return self.__fieldO
+        if self.__field_fieldO is None:
+            self.__field_fieldO = List__Map__Empty_MyStruct.create(reference_shared_ptr_fieldO(self._cpp_obj, deref(self._cpp_obj).fieldO))
+        return self.__field_fieldO
 
     @property
     def fieldP(self):
 
-        if self.__fieldP is None:
-            self.__fieldP = List__List__List__Map__Empty_MyStruct.create(reference_shared_ptr_fieldP(self._cpp_obj, deref(self._cpp_obj).fieldP))
-        return self.__fieldP
+        if self.__field_fieldP is None:
+            self.__field_fieldP = List__List__List__Map__Empty_MyStruct.create(reference_shared_ptr_fieldP(self._cpp_obj, deref(self._cpp_obj).fieldP))
+        return self.__field_fieldP
 
     @property
     def fieldQ(self):
@@ -4533,97 +4533,97 @@ cdef class containerStruct(thrift.py3.types.Struct):
     @property
     def fieldT(self):
 
-        if self.__fieldT is None:
-            self.__fieldT = List__MyEnumA.create(reference_shared_ptr_fieldT(self._cpp_obj, deref(self._cpp_obj).fieldT))
-        return self.__fieldT
+        if self.__field_fieldT is None:
+            self.__field_fieldT = List__MyEnumA.create(reference_shared_ptr_fieldT(self._cpp_obj, deref(self._cpp_obj).fieldT))
+        return self.__field_fieldT
 
     @property
     def fieldU(self):
 
-        if self.__fieldU is None:
-            self.__fieldU = List__MyEnumA.create(reference_shared_ptr_fieldU(self._cpp_obj, deref(self._cpp_obj).fieldU))
-        return self.__fieldU
+        if self.__field_fieldU is None:
+            self.__field_fieldU = List__MyEnumA.create(reference_shared_ptr_fieldU(self._cpp_obj, deref(self._cpp_obj).fieldU))
+        return self.__field_fieldU
 
     @property
     def fieldV(self):
 
-        if self.__fieldV is None:
-            self.__fieldV = MyStruct.create(reference_shared_ptr_fieldV(self._cpp_obj, deref(self._cpp_obj).fieldV))
-        return self.__fieldV
+        if self.__field_fieldV is None:
+            self.__field_fieldV = MyStruct.create(reference_shared_ptr_fieldV(self._cpp_obj, deref(self._cpp_obj).fieldV))
+        return self.__field_fieldV
 
     @property
     def req_fieldV(self):
 
-        if self.__req_fieldV is None:
-            self.__req_fieldV = MyStruct.create(reference_shared_ptr_req_fieldV(self._cpp_obj, deref(self._cpp_obj).req_fieldV))
-        return self.__req_fieldV
+        if self.__field_req_fieldV is None:
+            self.__field_req_fieldV = MyStruct.create(reference_shared_ptr_req_fieldV(self._cpp_obj, deref(self._cpp_obj).req_fieldV))
+        return self.__field_req_fieldV
 
     @property
     def opt_fieldV(self):
         if not deref(self._cpp_obj).__isset.opt_fieldV:
             return None
 
-        if self.__opt_fieldV is None:
-            self.__opt_fieldV = MyStruct.create(reference_shared_ptr_opt_fieldV(self._cpp_obj, deref(self._cpp_obj).opt_fieldV))
-        return self.__opt_fieldV
+        if self.__field_opt_fieldV is None:
+            self.__field_opt_fieldV = MyStruct.create(reference_shared_ptr_opt_fieldV(self._cpp_obj, deref(self._cpp_obj).opt_fieldV))
+        return self.__field_opt_fieldV
 
     @property
     def fieldW(self):
 
-        if self.__fieldW is None:
-            self.__fieldW = Set__MyStruct.create(reference_shared_ptr_fieldW(self._cpp_obj, deref(self._cpp_obj).fieldW))
-        return self.__fieldW
+        if self.__field_fieldW is None:
+            self.__field_fieldW = Set__MyStruct.create(reference_shared_ptr_fieldW(self._cpp_obj, deref(self._cpp_obj).fieldW))
+        return self.__field_fieldW
 
     @property
     def fieldX(self):
 
-        if self.__fieldX is None:
-            self.__fieldX = ComplexUnion.create(reference_shared_ptr_fieldX(self._cpp_obj, deref(self._cpp_obj).fieldX))
-        return self.__fieldX
+        if self.__field_fieldX is None:
+            self.__field_fieldX = ComplexUnion.create(reference_shared_ptr_fieldX(self._cpp_obj, deref(self._cpp_obj).fieldX))
+        return self.__field_fieldX
 
     @property
     def req_fieldX(self):
 
-        if self.__req_fieldX is None:
-            self.__req_fieldX = ComplexUnion.create(reference_shared_ptr_req_fieldX(self._cpp_obj, deref(self._cpp_obj).req_fieldX))
-        return self.__req_fieldX
+        if self.__field_req_fieldX is None:
+            self.__field_req_fieldX = ComplexUnion.create(reference_shared_ptr_req_fieldX(self._cpp_obj, deref(self._cpp_obj).req_fieldX))
+        return self.__field_req_fieldX
 
     @property
     def opt_fieldX(self):
         if not deref(self._cpp_obj).__isset.opt_fieldX:
             return None
 
-        if self.__opt_fieldX is None:
-            self.__opt_fieldX = ComplexUnion.create(reference_shared_ptr_opt_fieldX(self._cpp_obj, deref(self._cpp_obj).opt_fieldX))
-        return self.__opt_fieldX
+        if self.__field_opt_fieldX is None:
+            self.__field_opt_fieldX = ComplexUnion.create(reference_shared_ptr_opt_fieldX(self._cpp_obj, deref(self._cpp_obj).opt_fieldX))
+        return self.__field_opt_fieldX
 
     @property
     def fieldY(self):
 
-        if self.__fieldY is None:
-            self.__fieldY = List__ComplexUnion.create(reference_shared_ptr_fieldY(self._cpp_obj, deref(self._cpp_obj).fieldY))
-        return self.__fieldY
+        if self.__field_fieldY is None:
+            self.__field_fieldY = List__ComplexUnion.create(reference_shared_ptr_fieldY(self._cpp_obj, deref(self._cpp_obj).fieldY))
+        return self.__field_fieldY
 
     @property
     def fieldZ(self):
 
-        if self.__fieldZ is None:
-            self.__fieldZ = Set__SimpleUnion.create(reference_shared_ptr_fieldZ(self._cpp_obj, deref(self._cpp_obj).fieldZ))
-        return self.__fieldZ
+        if self.__field_fieldZ is None:
+            self.__field_fieldZ = Set__SimpleUnion.create(reference_shared_ptr_fieldZ(self._cpp_obj, deref(self._cpp_obj).fieldZ))
+        return self.__field_fieldZ
 
     @property
     def fieldAA(self):
 
-        if self.__fieldAA is None:
-            self.__fieldAA = List__Set__SimpleUnion.create(reference_shared_ptr_fieldAA(self._cpp_obj, deref(self._cpp_obj).fieldAA))
-        return self.__fieldAA
+        if self.__field_fieldAA is None:
+            self.__field_fieldAA = List__Set__SimpleUnion.create(reference_shared_ptr_fieldAA(self._cpp_obj, deref(self._cpp_obj).fieldAA))
+        return self.__field_fieldAA
 
     @property
     def fieldAB(self):
 
-        if self.__fieldAB is None:
-            self.__fieldAB = Map__Bar__double_Baz__i32.create(reference_shared_ptr_fieldAB(self._cpp_obj, deref(self._cpp_obj).fieldAB))
-        return self.__fieldAB
+        if self.__field_fieldAB is None:
+            self.__field_fieldAB = Map__Bar__double_Baz__i32.create(reference_shared_ptr_fieldAB(self._cpp_obj, deref(self._cpp_obj).fieldAB))
+        return self.__field_fieldAB
 
     @property
     def fieldAC(self):
@@ -4638,9 +4638,9 @@ cdef class containerStruct(thrift.py3.types.Struct):
     @property
     def fieldAE(self):
 
-        if self.__fieldAE is None:
-            self.__fieldAE = Map__string_i32.create(reference_shared_ptr_fieldAE(self._cpp_obj, deref(self._cpp_obj).fieldAE))
-        return self.__fieldAE
+        if self.__field_fieldAE is None:
+            self.__field_fieldAE = Map__string_i32.create(reference_shared_ptr_fieldAE(self._cpp_obj, deref(self._cpp_obj).fieldAE))
+        return self.__field_fieldAE
 
     @property
     def fieldSD(self):
@@ -4945,25 +4945,25 @@ cdef class MyIncludedStruct(thrift.py3.types.Struct):
     @property
     def MyIncludedStruct(self):
 
-        if self.__MyIncludedStruct is None:
-            self.__MyIncludedStruct = _includes_types.AStruct.create(reference_shared_ptr_MyIncludedStruct(self._cpp_obj, deref(self._cpp_obj).MyIncludedStruct))
-        return self.__MyIncludedStruct
+        if self.__field_MyIncludedStruct is None:
+            self.__field_MyIncludedStruct = _includes_types.AStruct.create(reference_shared_ptr_MyIncludedStruct(self._cpp_obj, deref(self._cpp_obj).MyIncludedStruct))
+        return self.__field_MyIncludedStruct
 
     @property
     def ARefField(self):
 
-        if self.__ARefField is None:
+        if self.__field_ARefField is None:
             if not deref(self._cpp_obj).ARefField:
                 return None
-            self.__ARefField = _includes_types.AStruct.create(reference_shared_ptr_ARefField(self._cpp_obj, deref(deref(self._cpp_obj).ARefField)))
-        return self.__ARefField
+            self.__field_ARefField = _includes_types.AStruct.create(reference_shared_ptr_ARefField(self._cpp_obj, deref(deref(self._cpp_obj).ARefField)))
+        return self.__field_ARefField
 
     @property
     def ARequiredField(self):
 
-        if self.__ARequiredField is None:
-            self.__ARequiredField = _includes_types.AStruct.create(reference_shared_ptr_ARequiredField(self._cpp_obj, deref(self._cpp_obj).ARequiredField))
-        return self.__ARequiredField
+        if self.__field_ARequiredField is None:
+            self.__field_ARequiredField = _includes_types.AStruct.create(reference_shared_ptr_ARequiredField(self._cpp_obj, deref(self._cpp_obj).ARequiredField))
+        return self.__field_ARequiredField
 
 
     def __hash__(MyIncludedStruct self):
@@ -6017,171 +6017,171 @@ cdef class AnnotatedStruct(thrift.py3.types.Struct):
     @property
     def no_annotation(self):
 
-        if self.__no_annotation is None:
-            self.__no_annotation = containerStruct.create(reference_shared_ptr_no_annotation(self._cpp_obj, deref(self._cpp_obj).no_annotation))
-        return self.__no_annotation
+        if self.__field_no_annotation is None:
+            self.__field_no_annotation = containerStruct.create(reference_shared_ptr_no_annotation(self._cpp_obj, deref(self._cpp_obj).no_annotation))
+        return self.__field_no_annotation
 
     @property
     def cpp_unique_ref(self):
 
-        if self.__cpp_unique_ref is None:
+        if self.__field_cpp_unique_ref is None:
             if not deref(self._cpp_obj).cpp_unique_ref:
                 return None
-            self.__cpp_unique_ref = containerStruct.create(reference_shared_ptr_cpp_unique_ref(self._cpp_obj, deref(deref(self._cpp_obj).cpp_unique_ref)))
-        return self.__cpp_unique_ref
+            self.__field_cpp_unique_ref = containerStruct.create(reference_shared_ptr_cpp_unique_ref(self._cpp_obj, deref(deref(self._cpp_obj).cpp_unique_ref)))
+        return self.__field_cpp_unique_ref
 
     @property
     def cpp2_unique_ref(self):
 
-        if self.__cpp2_unique_ref is None:
+        if self.__field_cpp2_unique_ref is None:
             if not deref(self._cpp_obj).cpp2_unique_ref:
                 return None
-            self.__cpp2_unique_ref = containerStruct.create(reference_shared_ptr_cpp2_unique_ref(self._cpp_obj, deref(deref(self._cpp_obj).cpp2_unique_ref)))
-        return self.__cpp2_unique_ref
+            self.__field_cpp2_unique_ref = containerStruct.create(reference_shared_ptr_cpp2_unique_ref(self._cpp_obj, deref(deref(self._cpp_obj).cpp2_unique_ref)))
+        return self.__field_cpp2_unique_ref
 
     @property
     def container_with_ref(self):
 
-        if self.__container_with_ref is None:
+        if self.__field_container_with_ref is None:
             if not deref(self._cpp_obj).container_with_ref:
                 return None
-            self.__container_with_ref = Map__i32_List__string.create(reference_shared_ptr_container_with_ref(self._cpp_obj, deref(deref(self._cpp_obj).container_with_ref)))
-        return self.__container_with_ref
+            self.__field_container_with_ref = Map__i32_List__string.create(reference_shared_ptr_container_with_ref(self._cpp_obj, deref(deref(self._cpp_obj).container_with_ref)))
+        return self.__field_container_with_ref
 
     @property
     def req_cpp_unique_ref(self):
 
-        if self.__req_cpp_unique_ref is None:
+        if self.__field_req_cpp_unique_ref is None:
             if not deref(self._cpp_obj).req_cpp_unique_ref:
                 return None
-            self.__req_cpp_unique_ref = containerStruct.create(reference_shared_ptr_req_cpp_unique_ref(self._cpp_obj, deref(deref(self._cpp_obj).req_cpp_unique_ref)))
-        return self.__req_cpp_unique_ref
+            self.__field_req_cpp_unique_ref = containerStruct.create(reference_shared_ptr_req_cpp_unique_ref(self._cpp_obj, deref(deref(self._cpp_obj).req_cpp_unique_ref)))
+        return self.__field_req_cpp_unique_ref
 
     @property
     def req_cpp2_unique_ref(self):
 
-        if self.__req_cpp2_unique_ref is None:
+        if self.__field_req_cpp2_unique_ref is None:
             if not deref(self._cpp_obj).req_cpp2_unique_ref:
                 return None
-            self.__req_cpp2_unique_ref = containerStruct.create(reference_shared_ptr_req_cpp2_unique_ref(self._cpp_obj, deref(deref(self._cpp_obj).req_cpp2_unique_ref)))
-        return self.__req_cpp2_unique_ref
+            self.__field_req_cpp2_unique_ref = containerStruct.create(reference_shared_ptr_req_cpp2_unique_ref(self._cpp_obj, deref(deref(self._cpp_obj).req_cpp2_unique_ref)))
+        return self.__field_req_cpp2_unique_ref
 
     @property
     def req_container_with_ref(self):
 
-        if self.__req_container_with_ref is None:
+        if self.__field_req_container_with_ref is None:
             if not deref(self._cpp_obj).req_container_with_ref:
                 return None
-            self.__req_container_with_ref = List__string.create(reference_shared_ptr_req_container_with_ref(self._cpp_obj, deref(deref(self._cpp_obj).req_container_with_ref)))
-        return self.__req_container_with_ref
+            self.__field_req_container_with_ref = List__string.create(reference_shared_ptr_req_container_with_ref(self._cpp_obj, deref(deref(self._cpp_obj).req_container_with_ref)))
+        return self.__field_req_container_with_ref
 
     @property
     def opt_cpp_unique_ref(self):
 
-        if self.__opt_cpp_unique_ref is None:
+        if self.__field_opt_cpp_unique_ref is None:
             if not deref(self._cpp_obj).opt_cpp_unique_ref:
                 return None
-            self.__opt_cpp_unique_ref = containerStruct.create(reference_shared_ptr_opt_cpp_unique_ref(self._cpp_obj, deref(deref(self._cpp_obj).opt_cpp_unique_ref)))
-        return self.__opt_cpp_unique_ref
+            self.__field_opt_cpp_unique_ref = containerStruct.create(reference_shared_ptr_opt_cpp_unique_ref(self._cpp_obj, deref(deref(self._cpp_obj).opt_cpp_unique_ref)))
+        return self.__field_opt_cpp_unique_ref
 
     @property
     def opt_cpp2_unique_ref(self):
 
-        if self.__opt_cpp2_unique_ref is None:
+        if self.__field_opt_cpp2_unique_ref is None:
             if not deref(self._cpp_obj).opt_cpp2_unique_ref:
                 return None
-            self.__opt_cpp2_unique_ref = containerStruct.create(reference_shared_ptr_opt_cpp2_unique_ref(self._cpp_obj, deref(deref(self._cpp_obj).opt_cpp2_unique_ref)))
-        return self.__opt_cpp2_unique_ref
+            self.__field_opt_cpp2_unique_ref = containerStruct.create(reference_shared_ptr_opt_cpp2_unique_ref(self._cpp_obj, deref(deref(self._cpp_obj).opt_cpp2_unique_ref)))
+        return self.__field_opt_cpp2_unique_ref
 
     @property
     def opt_container_with_ref(self):
 
-        if self.__opt_container_with_ref is None:
+        if self.__field_opt_container_with_ref is None:
             if not deref(self._cpp_obj).opt_container_with_ref:
                 return None
-            self.__opt_container_with_ref = Set__i32.create(reference_shared_ptr_opt_container_with_ref(self._cpp_obj, deref(deref(self._cpp_obj).opt_container_with_ref)))
-        return self.__opt_container_with_ref
+            self.__field_opt_container_with_ref = Set__i32.create(reference_shared_ptr_opt_container_with_ref(self._cpp_obj, deref(deref(self._cpp_obj).opt_container_with_ref)))
+        return self.__field_opt_container_with_ref
 
     @property
     def ref_type_unique(self):
 
-        if self.__ref_type_unique is None:
+        if self.__field_ref_type_unique is None:
             if not deref(self._cpp_obj).ref_type_unique:
                 return None
-            self.__ref_type_unique = containerStruct.create(reference_shared_ptr_ref_type_unique(self._cpp_obj, deref(deref(self._cpp_obj).ref_type_unique)))
-        return self.__ref_type_unique
+            self.__field_ref_type_unique = containerStruct.create(reference_shared_ptr_ref_type_unique(self._cpp_obj, deref(deref(self._cpp_obj).ref_type_unique)))
+        return self.__field_ref_type_unique
 
     @property
     def ref_type_shared(self):
 
-        if self.__ref_type_shared is None:
+        if self.__field_ref_type_shared is None:
             if not deref(self._cpp_obj).ref_type_shared:
                 return None
-            self.__ref_type_shared = containerStruct.create(reference_shared_ptr_ref_type_shared(self._cpp_obj, deref(deref(self._cpp_obj).ref_type_shared)))
-        return self.__ref_type_shared
+            self.__field_ref_type_shared = containerStruct.create(reference_shared_ptr_ref_type_shared(self._cpp_obj, deref(deref(self._cpp_obj).ref_type_shared)))
+        return self.__field_ref_type_shared
 
     @property
     def ref_type_const(self):
 
-        if self.__ref_type_const is None:
+        if self.__field_ref_type_const is None:
             if not deref(self._cpp_obj).ref_type_const:
                 return None
-            self.__ref_type_const = Map__i32_List__string.create(reference_shared_ptr_ref_type_const(self._cpp_obj, deref(deref(self._cpp_obj).ref_type_const)))
-        return self.__ref_type_const
+            self.__field_ref_type_const = Map__i32_List__string.create(reference_shared_ptr_ref_type_const(self._cpp_obj, deref(deref(self._cpp_obj).ref_type_const)))
+        return self.__field_ref_type_const
 
     @property
     def req_ref_type_shared(self):
 
-        if self.__req_ref_type_shared is None:
+        if self.__field_req_ref_type_shared is None:
             if not deref(self._cpp_obj).req_ref_type_shared:
                 return None
-            self.__req_ref_type_shared = containerStruct.create(reference_shared_ptr_req_ref_type_shared(self._cpp_obj, deref(deref(self._cpp_obj).req_ref_type_shared)))
-        return self.__req_ref_type_shared
+            self.__field_req_ref_type_shared = containerStruct.create(reference_shared_ptr_req_ref_type_shared(self._cpp_obj, deref(deref(self._cpp_obj).req_ref_type_shared)))
+        return self.__field_req_ref_type_shared
 
     @property
     def req_ref_type_const(self):
 
-        if self.__req_ref_type_const is None:
+        if self.__field_req_ref_type_const is None:
             if not deref(self._cpp_obj).req_ref_type_const:
                 return None
-            self.__req_ref_type_const = containerStruct.create(reference_shared_ptr_req_ref_type_const(self._cpp_obj, deref(deref(self._cpp_obj).req_ref_type_const)))
-        return self.__req_ref_type_const
+            self.__field_req_ref_type_const = containerStruct.create(reference_shared_ptr_req_ref_type_const(self._cpp_obj, deref(deref(self._cpp_obj).req_ref_type_const)))
+        return self.__field_req_ref_type_const
 
     @property
     def req_ref_type_unique(self):
 
-        if self.__req_ref_type_unique is None:
+        if self.__field_req_ref_type_unique is None:
             if not deref(self._cpp_obj).req_ref_type_unique:
                 return None
-            self.__req_ref_type_unique = List__string.create(reference_shared_ptr_req_ref_type_unique(self._cpp_obj, deref(deref(self._cpp_obj).req_ref_type_unique)))
-        return self.__req_ref_type_unique
+            self.__field_req_ref_type_unique = List__string.create(reference_shared_ptr_req_ref_type_unique(self._cpp_obj, deref(deref(self._cpp_obj).req_ref_type_unique)))
+        return self.__field_req_ref_type_unique
 
     @property
     def opt_ref_type_const(self):
 
-        if self.__opt_ref_type_const is None:
+        if self.__field_opt_ref_type_const is None:
             if not deref(self._cpp_obj).opt_ref_type_const:
                 return None
-            self.__opt_ref_type_const = containerStruct.create(reference_shared_ptr_opt_ref_type_const(self._cpp_obj, deref(deref(self._cpp_obj).opt_ref_type_const)))
-        return self.__opt_ref_type_const
+            self.__field_opt_ref_type_const = containerStruct.create(reference_shared_ptr_opt_ref_type_const(self._cpp_obj, deref(deref(self._cpp_obj).opt_ref_type_const)))
+        return self.__field_opt_ref_type_const
 
     @property
     def opt_ref_type_unique(self):
 
-        if self.__opt_ref_type_unique is None:
+        if self.__field_opt_ref_type_unique is None:
             if not deref(self._cpp_obj).opt_ref_type_unique:
                 return None
-            self.__opt_ref_type_unique = containerStruct.create(reference_shared_ptr_opt_ref_type_unique(self._cpp_obj, deref(deref(self._cpp_obj).opt_ref_type_unique)))
-        return self.__opt_ref_type_unique
+            self.__field_opt_ref_type_unique = containerStruct.create(reference_shared_ptr_opt_ref_type_unique(self._cpp_obj, deref(deref(self._cpp_obj).opt_ref_type_unique)))
+        return self.__field_opt_ref_type_unique
 
     @property
     def opt_ref_type_shared(self):
 
-        if self.__opt_ref_type_shared is None:
+        if self.__field_opt_ref_type_shared is None:
             if not deref(self._cpp_obj).opt_ref_type_shared:
                 return None
-            self.__opt_ref_type_shared = Set__i32.create(reference_shared_ptr_opt_ref_type_shared(self._cpp_obj, deref(deref(self._cpp_obj).opt_ref_type_shared)))
-        return self.__opt_ref_type_shared
+            self.__field_opt_ref_type_shared = Set__i32.create(reference_shared_ptr_opt_ref_type_shared(self._cpp_obj, deref(deref(self._cpp_obj).opt_ref_type_shared)))
+        return self.__field_opt_ref_type_shared
 
     @property
     def base_type(self):
@@ -6191,102 +6191,102 @@ cdef class AnnotatedStruct(thrift.py3.types.Struct):
     @property
     def list_type(self):
 
-        if self.__list_type is None:
-            self.__list_type = folly_small_vector_int64_t_8__List__i64.create(reference_shared_ptr_list_type(self._cpp_obj, deref(self._cpp_obj).list_type))
-        return self.__list_type
+        if self.__field_list_type is None:
+            self.__field_list_type = folly_small_vector_int64_t_8__List__i64.create(reference_shared_ptr_list_type(self._cpp_obj, deref(self._cpp_obj).list_type))
+        return self.__field_list_type
 
     @property
     def set_type(self):
 
-        if self.__set_type is None:
-            self.__set_type = folly_sorted_vector_set_std_string__Set__string.create(reference_shared_ptr_set_type(self._cpp_obj, deref(self._cpp_obj).set_type))
-        return self.__set_type
+        if self.__field_set_type is None:
+            self.__field_set_type = folly_sorted_vector_set_std_string__Set__string.create(reference_shared_ptr_set_type(self._cpp_obj, deref(self._cpp_obj).set_type))
+        return self.__field_set_type
 
     @property
     def map_type(self):
 
-        if self.__map_type is None:
-            self.__map_type = FakeMap__Map__i64_double.create(reference_shared_ptr_map_type(self._cpp_obj, deref(self._cpp_obj).map_type))
-        return self.__map_type
+        if self.__field_map_type is None:
+            self.__field_map_type = FakeMap__Map__i64_double.create(reference_shared_ptr_map_type(self._cpp_obj, deref(self._cpp_obj).map_type))
+        return self.__field_map_type
 
     @property
     def map_struct_type(self):
 
-        if self.__map_struct_type is None:
-            self.__map_struct_type = std_unordered_map_std_string_containerStruct__Map__string_containerStruct.create(reference_shared_ptr_map_struct_type(self._cpp_obj, deref(self._cpp_obj).map_struct_type))
-        return self.__map_struct_type
+        if self.__field_map_struct_type is None:
+            self.__field_map_struct_type = std_unordered_map_std_string_containerStruct__Map__string_containerStruct.create(reference_shared_ptr_map_struct_type(self._cpp_obj, deref(self._cpp_obj).map_struct_type))
+        return self.__field_map_struct_type
 
     @property
     def iobuf_type(self):
 
-        if self.__iobuf_type is None:
-            self.__iobuf_type = __iobuf.IOBuf.create(ptr_address(deref(self._cpp_obj).iobuf_type), self)
-        return self.__iobuf_type
+        if self.__field_iobuf_type is None:
+            self.__field_iobuf_type = __iobuf.IOBuf.create(ptr_address(deref(self._cpp_obj).iobuf_type), self)
+        return self.__field_iobuf_type
 
     @property
     def iobuf_ptr(self):
 
-        if self.__iobuf_ptr is None:
+        if self.__field_iobuf_ptr is None:
             if not deref(self._cpp_obj).iobuf_ptr:
                 return None
-            self.__iobuf_ptr = __iobuf.IOBuf.create(deref(self._cpp_obj).iobuf_ptr.get(), self)
-        return self.__iobuf_ptr
+            self.__field_iobuf_ptr = __iobuf.IOBuf.create(deref(self._cpp_obj).iobuf_ptr.get(), self)
+        return self.__field_iobuf_ptr
 
     @property
     def list_i32_template(self):
 
-        if self.__list_i32_template is None:
-            self.__list_i32_template = std_list__List__i32.create(reference_shared_ptr_list_i32_template(self._cpp_obj, deref(self._cpp_obj).list_i32_template))
-        return self.__list_i32_template
+        if self.__field_list_i32_template is None:
+            self.__field_list_i32_template = std_list__List__i32.create(reference_shared_ptr_list_i32_template(self._cpp_obj, deref(self._cpp_obj).list_i32_template))
+        return self.__field_list_i32_template
 
     @property
     def list_string_template(self):
 
-        if self.__list_string_template is None:
-            self.__list_string_template = std_deque__List__string.create(reference_shared_ptr_list_string_template(self._cpp_obj, deref(self._cpp_obj).list_string_template))
-        return self.__list_string_template
+        if self.__field_list_string_template is None:
+            self.__field_list_string_template = std_deque__List__string.create(reference_shared_ptr_list_string_template(self._cpp_obj, deref(self._cpp_obj).list_string_template))
+        return self.__field_list_string_template
 
     @property
     def set_template(self):
 
-        if self.__set_template is None:
-            self.__set_template = folly_sorted_vector_set__Set__string.create(reference_shared_ptr_set_template(self._cpp_obj, deref(self._cpp_obj).set_template))
-        return self.__set_template
+        if self.__field_set_template is None:
+            self.__field_set_template = folly_sorted_vector_set__Set__string.create(reference_shared_ptr_set_template(self._cpp_obj, deref(self._cpp_obj).set_template))
+        return self.__field_set_template
 
     @property
     def map_template(self):
 
-        if self.__map_template is None:
-            self.__map_template = folly_sorted_vector_map__Map__i64_string.create(reference_shared_ptr_map_template(self._cpp_obj, deref(self._cpp_obj).map_template))
-        return self.__map_template
+        if self.__field_map_template is None:
+            self.__field_map_template = folly_sorted_vector_map__Map__i64_string.create(reference_shared_ptr_map_template(self._cpp_obj, deref(self._cpp_obj).map_template))
+        return self.__field_map_template
 
     @property
     def typedef_list_template(self):
 
-        if self.__typedef_list_template is None:
-            self.__typedef_list_template = std_list__List__i32.create(reference_shared_ptr_typedef_list_template(self._cpp_obj, deref(self._cpp_obj).typedef_list_template))
-        return self.__typedef_list_template
+        if self.__field_typedef_list_template is None:
+            self.__field_typedef_list_template = std_list__List__i32.create(reference_shared_ptr_typedef_list_template(self._cpp_obj, deref(self._cpp_obj).typedef_list_template))
+        return self.__field_typedef_list_template
 
     @property
     def typedef_deque_template(self):
 
-        if self.__typedef_deque_template is None:
-            self.__typedef_deque_template = std_deque__List__string.create(reference_shared_ptr_typedef_deque_template(self._cpp_obj, deref(self._cpp_obj).typedef_deque_template))
-        return self.__typedef_deque_template
+        if self.__field_typedef_deque_template is None:
+            self.__field_typedef_deque_template = std_deque__List__string.create(reference_shared_ptr_typedef_deque_template(self._cpp_obj, deref(self._cpp_obj).typedef_deque_template))
+        return self.__field_typedef_deque_template
 
     @property
     def typedef_set_template(self):
 
-        if self.__typedef_set_template is None:
-            self.__typedef_set_template = folly_sorted_vector_set__Set__string.create(reference_shared_ptr_typedef_set_template(self._cpp_obj, deref(self._cpp_obj).typedef_set_template))
-        return self.__typedef_set_template
+        if self.__field_typedef_set_template is None:
+            self.__field_typedef_set_template = folly_sorted_vector_set__Set__string.create(reference_shared_ptr_typedef_set_template(self._cpp_obj, deref(self._cpp_obj).typedef_set_template))
+        return self.__field_typedef_set_template
 
     @property
     def typedef_map_template(self):
 
-        if self.__typedef_map_template is None:
-            self.__typedef_map_template = folly_sorted_vector_map__Map__i64_string.create(reference_shared_ptr_typedef_map_template(self._cpp_obj, deref(self._cpp_obj).typedef_map_template))
-        return self.__typedef_map_template
+        if self.__field_typedef_map_template is None:
+            self.__field_typedef_map_template = folly_sorted_vector_map__Map__i64_string.create(reference_shared_ptr_typedef_map_template(self._cpp_obj, deref(self._cpp_obj).typedef_map_template))
+        return self.__field_typedef_map_template
 
     @property
     def indirection_a(self):
@@ -6296,39 +6296,39 @@ cdef class AnnotatedStruct(thrift.py3.types.Struct):
     @property
     def indirection_b(self):
 
-        if self.__indirection_b is None:
-            self.__indirection_b = List__Bar__double.create(reference_shared_ptr_indirection_b(self._cpp_obj, deref(self._cpp_obj).indirection_b))
-        return self.__indirection_b
+        if self.__field_indirection_b is None:
+            self.__field_indirection_b = List__Bar__double.create(reference_shared_ptr_indirection_b(self._cpp_obj, deref(self._cpp_obj).indirection_b))
+        return self.__field_indirection_b
 
     @property
     def indirection_c(self):
 
-        if self.__indirection_c is None:
-            self.__indirection_c = Set__Baz__i32.create(reference_shared_ptr_indirection_c(self._cpp_obj, deref(self._cpp_obj).indirection_c))
-        return self.__indirection_c
+        if self.__field_indirection_c is None:
+            self.__field_indirection_c = Set__Baz__i32.create(reference_shared_ptr_indirection_c(self._cpp_obj, deref(self._cpp_obj).indirection_c))
+        return self.__field_indirection_c
 
     @property
     def iobuf_type_val(self):
 
-        if self.__iobuf_type_val is None:
-            self.__iobuf_type_val = __iobuf.IOBuf.create(ptr_address(deref(self._cpp_obj).iobuf_type_val), self)
-        return self.__iobuf_type_val
+        if self.__field_iobuf_type_val is None:
+            self.__field_iobuf_type_val = __iobuf.IOBuf.create(ptr_address(deref(self._cpp_obj).iobuf_type_val), self)
+        return self.__field_iobuf_type_val
 
     @property
     def iobuf_ptr_val(self):
 
-        if self.__iobuf_ptr_val is None:
+        if self.__field_iobuf_ptr_val is None:
             if not deref(self._cpp_obj).iobuf_ptr_val:
                 return None
-            self.__iobuf_ptr_val = __iobuf.IOBuf.create(deref(self._cpp_obj).iobuf_ptr_val.get(), self)
-        return self.__iobuf_ptr_val
+            self.__field_iobuf_ptr_val = __iobuf.IOBuf.create(deref(self._cpp_obj).iobuf_ptr_val.get(), self)
+        return self.__field_iobuf_ptr_val
 
     @property
     def struct_struct(self):
 
-        if self.__struct_struct is None:
-            self.__struct_struct = containerStruct.create(reference_shared_ptr_struct_struct(self._cpp_obj, deref(self._cpp_obj).struct_struct))
-        return self.__struct_struct
+        if self.__field_struct_struct is None:
+            self.__field_struct_struct = containerStruct.create(reference_shared_ptr_struct_struct(self._cpp_obj, deref(self._cpp_obj).struct_struct))
+        return self.__field_struct_struct
 
 
     def __hash__(AnnotatedStruct self):

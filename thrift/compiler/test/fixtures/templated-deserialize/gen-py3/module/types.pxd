@@ -182,23 +182,23 @@ cdef class containerStruct(thrift.py3.types.Struct):
     cdef object __hash
     cdef object __weakref__
     cdef shared_ptr[ccontainerStruct] _cpp_obj
-    cdef Map__string_bool __fieldB
-    cdef Set__i32 __fieldC
-    cdef List__List__List__i32 __fieldF
-    cdef Map__string_Map__string_Map__string_i32 __fieldG
-    cdef List__Set__i32 __fieldH
-    cdef Map__string_List__i32 __fieldJ
-    cdef List__List__List__List__i32 __fieldK
-    cdef Set__Set__Set__bool __fieldL
-    cdef Map__Set__List__i32_Map__List__Set__string_string __fieldM
-    cdef List__Foo__i64 __fieldN
-    cdef List__Bar__double __fieldO
-    cdef List__Baz__i32 __fieldP
-    cdef Map__string_bool __fieldR
-    cdef SmallStruct __fieldS
-    cdef SmallStruct __fieldT
-    cdef SmallStruct __fieldU
-    cdef SmallStruct __fieldX
+    cdef Map__string_bool __field_fieldB
+    cdef Set__i32 __field_fieldC
+    cdef List__List__List__i32 __field_fieldF
+    cdef Map__string_Map__string_Map__string_i32 __field_fieldG
+    cdef List__Set__i32 __field_fieldH
+    cdef Map__string_List__i32 __field_fieldJ
+    cdef List__List__List__List__i32 __field_fieldK
+    cdef Set__Set__Set__bool __field_fieldL
+    cdef Map__Set__List__i32_Map__List__Set__string_string __field_fieldM
+    cdef List__Foo__i64 __field_fieldN
+    cdef List__Bar__double __field_fieldO
+    cdef List__Baz__i32 __field_fieldP
+    cdef Map__string_bool __field_fieldR
+    cdef SmallStruct __field_fieldS
+    cdef SmallStruct __field_fieldT
+    cdef SmallStruct __field_fieldU
+    cdef SmallStruct __field_fieldX
 
     @staticmethod
     cdef unique_ptr[ccontainerStruct] _make_instance(

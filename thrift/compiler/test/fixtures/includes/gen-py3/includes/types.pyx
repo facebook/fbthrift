@@ -161,9 +161,9 @@ cdef class Included(thrift.py3.types.Struct):
     @property
     def MyTransitiveField(self):
 
-        if self.__MyTransitiveField is None:
-            self.__MyTransitiveField = _transitive_types.Foo.create(reference_shared_ptr_MyTransitiveField(self._cpp_obj, deref(self._cpp_obj).MyTransitiveField))
-        return self.__MyTransitiveField
+        if self.__field_MyTransitiveField is None:
+            self.__field_MyTransitiveField = _transitive_types.Foo.create(reference_shared_ptr_MyTransitiveField(self._cpp_obj, deref(self._cpp_obj).MyTransitiveField))
+        return self.__field_MyTransitiveField
 
 
     def __hash__(Included self):

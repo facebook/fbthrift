@@ -356,30 +356,30 @@ cdef class Combo(thrift.py3.types.Struct):
     @property
     def listOfOurMyStructLists(self):
 
-        if self.__listOfOurMyStructLists is None:
-            self.__listOfOurMyStructLists = List__List__MyStruct.create(reference_shared_ptr_listOfOurMyStructLists(self._cpp_obj, deref(self._cpp_obj).listOfOurMyStructLists))
-        return self.__listOfOurMyStructLists
+        if self.__field_listOfOurMyStructLists is None:
+            self.__field_listOfOurMyStructLists = List__List__MyStruct.create(reference_shared_ptr_listOfOurMyStructLists(self._cpp_obj, deref(self._cpp_obj).listOfOurMyStructLists))
+        return self.__field_listOfOurMyStructLists
 
     @property
     def theirMyStructList(self):
 
-        if self.__theirMyStructList is None:
-            self.__theirMyStructList = List__module_MyStruct.create(reference_shared_ptr_theirMyStructList(self._cpp_obj, deref(self._cpp_obj).theirMyStructList))
-        return self.__theirMyStructList
+        if self.__field_theirMyStructList is None:
+            self.__field_theirMyStructList = List__module_MyStruct.create(reference_shared_ptr_theirMyStructList(self._cpp_obj, deref(self._cpp_obj).theirMyStructList))
+        return self.__field_theirMyStructList
 
     @property
     def ourMyStructList(self):
 
-        if self.__ourMyStructList is None:
-            self.__ourMyStructList = List__MyStruct.create(reference_shared_ptr_ourMyStructList(self._cpp_obj, deref(self._cpp_obj).ourMyStructList))
-        return self.__ourMyStructList
+        if self.__field_ourMyStructList is None:
+            self.__field_ourMyStructList = List__MyStruct.create(reference_shared_ptr_ourMyStructList(self._cpp_obj, deref(self._cpp_obj).ourMyStructList))
+        return self.__field_ourMyStructList
 
     @property
     def listOfTheirMyStructList(self):
 
-        if self.__listOfTheirMyStructList is None:
-            self.__listOfTheirMyStructList = List__List__module_MyStruct.create(reference_shared_ptr_listOfTheirMyStructList(self._cpp_obj, deref(self._cpp_obj).listOfTheirMyStructList))
-        return self.__listOfTheirMyStructList
+        if self.__field_listOfTheirMyStructList is None:
+            self.__field_listOfTheirMyStructList = List__List__module_MyStruct.create(reference_shared_ptr_listOfTheirMyStructList(self._cpp_obj, deref(self._cpp_obj).listOfTheirMyStructList))
+        return self.__field_listOfTheirMyStructList
 
 
     def __hash__(Combo self):

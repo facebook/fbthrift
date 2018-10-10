@@ -23,16 +23,16 @@ are special because we try to memoize their wrappers on the parent handler
 if they have been previously retrieved.
 
 }}{{#type:iobuf?}}{{!
-}}if self.__{{field:name}} is None:
-    self.__{{field:name}} = __iobuf.IOBuf.create(ptr_address(deref(self._cpp_obj).{{field:name}}), self)
-return self.__{{field:name}}{{!
+}}if self.__field_{{field:name}} is None:
+    self.__field_{{field:name}} = __iobuf.IOBuf.create(ptr_address(deref(self._cpp_obj).{{field:name}}), self)
+return self.__field_{{field:name}}{{!
 }}{{/type:iobuf?}}{{!
 }}{{#type:iobufRef?}}{{!
-}}if self.__{{field:name}} is None:
+}}if self.__field_{{field:name}} is None:
     if not deref(self._cpp_obj).{{field:name}}:
         return None
-    self.__{{field:name}} = __iobuf.IOBuf.create(deref(self._cpp_obj).{{field:name}}.get(), self)
-return self.__{{field:name}}{{!
+    self.__field_{{field:name}} = __iobuf.IOBuf.create(deref(self._cpp_obj).{{field:name}}.get(), self)
+return self.__field_{{field:name}}{{!
 }}{{/type:iobufRef?}}{{!
 }}{{#type:flexibleBinary?}}{{!
   }}return (<const char*>deref(self._cpp_obj).{{field:name}}{{!
@@ -43,14 +43,14 @@ return self.__{{field:name}}{{!
 }}{{/type:flexibleBinary?}}{{!
 }}{{^type:hasCustomTypeBehavior?}}{{!
 }}{{#field:reference?}}{{!
-}}if self.__{{field:name}} is None:
+}}if self.__field_{{field:name}} is None:
     if not deref(self._cpp_obj).{{field:name}}:
         return None
     {{! Use an aliasing constructor since the object we're returning is still
         managed by the top-level object, possible via a unique_ptr }}
-    self.__{{field:name}} = {{> types/CythonPythonType}}.create(reference_shared_ptr_{{field:name}}({{!
+    self.__field_{{field:name}} = {{> types/CythonPythonType}}.create(reference_shared_ptr_{{field:name}}({{!
       }}self._cpp_obj, deref(deref(self._cpp_obj).{{field:name}})))
-return self.__{{field:name}}{{!
+return self.__field_{{field:name}}{{!
 }}{{/field:reference?}}{{!
 }}{{^field:reference?}}{{!
 }}{{#type:base?}}{{!
@@ -71,13 +71,13 @@ return self.__{{field:name}}{{!
     }})){{!
 }}{{/type:enum?}}{{!
 }}{{^type:enum?}}{{!  Structs and Containers
-}}if self.__{{field:name}} is None:
-    self.__{{field:name}} = {{> types/CythonPythonType}}.create(reference_shared_ptr_{{field:name}}({{!
+}}if self.__field_{{field:name}} is None:
+    self.__field_{{field:name}} = {{> types/CythonPythonType}}.create(reference_shared_ptr_{{field:name}}({{!
       }}self._cpp_obj, {{!
       }}deref(self._cpp_obj).{{field:name}}{{!
         }}{{#program:optionals?}}{{#field:optional?}}.value(){{/field:optional?}}{{/program:optionals?}}{{!
       }}))
-return self.__{{field:name}}{{!
+return self.__field_{{field:name}}{{!
 }}{{/type:enum?}}{{!
 }}{{/type:base?}}{{!
 }}{{/field:reference?}}{{!

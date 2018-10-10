@@ -174,7 +174,7 @@ cdef class Vehicle(thrift.py3.types.Struct):
     cdef object __hash
     cdef object __weakref__
     cdef shared_ptr[cVehicle] _cpp_obj
-    cdef Color __color
+    cdef Color __field_color
 
     @staticmethod
     cdef unique_ptr[cVehicle] _make_instance(
@@ -198,10 +198,10 @@ cdef class Person(thrift.py3.types.Struct):
     cdef object __hash
     cdef object __weakref__
     cdef shared_ptr[cPerson] _cpp_obj
-    cdef Color __favoriteColor
-    cdef Set__i64 __friends
-    cdef Map__Animal_string __petNames
-    cdef List__Vehicle __vehicles
+    cdef Color __field_favoriteColor
+    cdef Set__i64 __field_friends
+    cdef Map__Animal_string __field_petNames
+    cdef List__Vehicle __field_vehicles
 
     @staticmethod
     cdef unique_ptr[cPerson] _make_instance(

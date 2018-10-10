@@ -801,29 +801,29 @@ cdef class MyStruct(thrift.py3.types.Struct):
     @property
     def opt_ref(self):
 
-        if self.__opt_ref is None:
+        if self.__field_opt_ref is None:
             if not deref(self._cpp_obj).opt_ref:
                 return None
-            self.__opt_ref = MyField.create(reference_shared_ptr_opt_ref(self._cpp_obj, deref(deref(self._cpp_obj).opt_ref)))
-        return self.__opt_ref
+            self.__field_opt_ref = MyField.create(reference_shared_ptr_opt_ref(self._cpp_obj, deref(deref(self._cpp_obj).opt_ref)))
+        return self.__field_opt_ref
 
     @property
     def ref(self):
 
-        if self.__ref is None:
+        if self.__field_ref is None:
             if not deref(self._cpp_obj).ref:
                 return None
-            self.__ref = MyField.create(reference_shared_ptr_ref(self._cpp_obj, deref(deref(self._cpp_obj).ref)))
-        return self.__ref
+            self.__field_ref = MyField.create(reference_shared_ptr_ref(self._cpp_obj, deref(deref(self._cpp_obj).ref)))
+        return self.__field_ref
 
     @property
     def req_ref(self):
 
-        if self.__req_ref is None:
+        if self.__field_req_ref is None:
             if not deref(self._cpp_obj).req_ref:
                 return None
-            self.__req_ref = MyField.create(reference_shared_ptr_req_ref(self._cpp_obj, deref(deref(self._cpp_obj).req_ref)))
-        return self.__req_ref
+            self.__field_req_ref = MyField.create(reference_shared_ptr_req_ref(self._cpp_obj, deref(deref(self._cpp_obj).req_ref)))
+        return self.__field_req_ref
 
 
     def __hash__(MyStruct self):
@@ -1049,11 +1049,11 @@ cdef class StructWithUnion(thrift.py3.types.Struct):
     @property
     def u(self):
 
-        if self.__u is None:
+        if self.__field_u is None:
             if not deref(self._cpp_obj).u:
                 return None
-            self.__u = MyUnion.create(reference_shared_ptr_u(self._cpp_obj, deref(deref(self._cpp_obj).u)))
-        return self.__u
+            self.__field_u = MyUnion.create(reference_shared_ptr_u(self._cpp_obj, deref(deref(self._cpp_obj).u)))
+        return self.__field_u
 
     @property
     def aDouble(self):
@@ -1063,9 +1063,9 @@ cdef class StructWithUnion(thrift.py3.types.Struct):
     @property
     def f(self):
 
-        if self.__f is None:
-            self.__f = MyField.create(reference_shared_ptr_f(self._cpp_obj, deref(self._cpp_obj).f))
-        return self.__f
+        if self.__field_f is None:
+            self.__field_f = MyField.create(reference_shared_ptr_f(self._cpp_obj, deref(self._cpp_obj).f))
+        return self.__field_f
 
 
     def __hash__(StructWithUnion self):
@@ -1236,9 +1236,9 @@ cdef class RecursiveStruct(thrift.py3.types.Struct):
         if not deref(self._cpp_obj).__isset.mes:
             return None
 
-        if self.__mes is None:
-            self.__mes = List__RecursiveStruct.create(reference_shared_ptr_mes(self._cpp_obj, deref(self._cpp_obj).mes))
-        return self.__mes
+        if self.__field_mes is None:
+            self.__field_mes = List__RecursiveStruct.create(reference_shared_ptr_mes(self._cpp_obj, deref(self._cpp_obj).mes))
+        return self.__field_mes
 
 
     def __hash__(RecursiveStruct self):
@@ -1499,56 +1499,56 @@ cdef class StructWithContainers(thrift.py3.types.Struct):
     @property
     def list_ref(self):
 
-        if self.__list_ref is None:
+        if self.__field_list_ref is None:
             if not deref(self._cpp_obj).list_ref:
                 return None
-            self.__list_ref = List__i32.create(reference_shared_ptr_list_ref(self._cpp_obj, deref(deref(self._cpp_obj).list_ref)))
-        return self.__list_ref
+            self.__field_list_ref = List__i32.create(reference_shared_ptr_list_ref(self._cpp_obj, deref(deref(self._cpp_obj).list_ref)))
+        return self.__field_list_ref
 
     @property
     def set_ref(self):
 
-        if self.__set_ref is None:
+        if self.__field_set_ref is None:
             if not deref(self._cpp_obj).set_ref:
                 return None
-            self.__set_ref = Set__i32.create(reference_shared_ptr_set_ref(self._cpp_obj, deref(deref(self._cpp_obj).set_ref)))
-        return self.__set_ref
+            self.__field_set_ref = Set__i32.create(reference_shared_ptr_set_ref(self._cpp_obj, deref(deref(self._cpp_obj).set_ref)))
+        return self.__field_set_ref
 
     @property
     def map_ref(self):
 
-        if self.__map_ref is None:
+        if self.__field_map_ref is None:
             if not deref(self._cpp_obj).map_ref:
                 return None
-            self.__map_ref = Map__i32_i32.create(reference_shared_ptr_map_ref(self._cpp_obj, deref(deref(self._cpp_obj).map_ref)))
-        return self.__map_ref
+            self.__field_map_ref = Map__i32_i32.create(reference_shared_ptr_map_ref(self._cpp_obj, deref(deref(self._cpp_obj).map_ref)))
+        return self.__field_map_ref
 
     @property
     def list_ref_unique(self):
 
-        if self.__list_ref_unique is None:
+        if self.__field_list_ref_unique is None:
             if not deref(self._cpp_obj).list_ref_unique:
                 return None
-            self.__list_ref_unique = List__i32.create(reference_shared_ptr_list_ref_unique(self._cpp_obj, deref(deref(self._cpp_obj).list_ref_unique)))
-        return self.__list_ref_unique
+            self.__field_list_ref_unique = List__i32.create(reference_shared_ptr_list_ref_unique(self._cpp_obj, deref(deref(self._cpp_obj).list_ref_unique)))
+        return self.__field_list_ref_unique
 
     @property
     def set_ref_shared(self):
 
-        if self.__set_ref_shared is None:
+        if self.__field_set_ref_shared is None:
             if not deref(self._cpp_obj).set_ref_shared:
                 return None
-            self.__set_ref_shared = Set__i32.create(reference_shared_ptr_set_ref_shared(self._cpp_obj, deref(deref(self._cpp_obj).set_ref_shared)))
-        return self.__set_ref_shared
+            self.__field_set_ref_shared = Set__i32.create(reference_shared_ptr_set_ref_shared(self._cpp_obj, deref(deref(self._cpp_obj).set_ref_shared)))
+        return self.__field_set_ref_shared
 
     @property
     def list_ref_shared_const(self):
 
-        if self.__list_ref_shared_const is None:
+        if self.__field_list_ref_shared_const is None:
             if not deref(self._cpp_obj).list_ref_shared_const:
                 return None
-            self.__list_ref_shared_const = List__i32.create(reference_shared_ptr_list_ref_shared_const(self._cpp_obj, deref(deref(self._cpp_obj).list_ref_shared_const)))
-        return self.__list_ref_shared_const
+            self.__field_list_ref_shared_const = List__i32.create(reference_shared_ptr_list_ref_shared_const(self._cpp_obj, deref(deref(self._cpp_obj).list_ref_shared_const)))
+        return self.__field_list_ref_shared_const
 
 
     def __hash__(StructWithContainers self):
@@ -1771,29 +1771,29 @@ cdef class StructWithSharedConst(thrift.py3.types.Struct):
     @property
     def opt_shared_const(self):
 
-        if self.__opt_shared_const is None:
+        if self.__field_opt_shared_const is None:
             if not deref(self._cpp_obj).opt_shared_const:
                 return None
-            self.__opt_shared_const = MyField.create(reference_shared_ptr_opt_shared_const(self._cpp_obj, deref(deref(self._cpp_obj).opt_shared_const)))
-        return self.__opt_shared_const
+            self.__field_opt_shared_const = MyField.create(reference_shared_ptr_opt_shared_const(self._cpp_obj, deref(deref(self._cpp_obj).opt_shared_const)))
+        return self.__field_opt_shared_const
 
     @property
     def shared_const(self):
 
-        if self.__shared_const is None:
+        if self.__field_shared_const is None:
             if not deref(self._cpp_obj).shared_const:
                 return None
-            self.__shared_const = MyField.create(reference_shared_ptr_shared_const(self._cpp_obj, deref(deref(self._cpp_obj).shared_const)))
-        return self.__shared_const
+            self.__field_shared_const = MyField.create(reference_shared_ptr_shared_const(self._cpp_obj, deref(deref(self._cpp_obj).shared_const)))
+        return self.__field_shared_const
 
     @property
     def req_shared_const(self):
 
-        if self.__req_shared_const is None:
+        if self.__field_req_shared_const is None:
             if not deref(self._cpp_obj).req_shared_const:
                 return None
-            self.__req_shared_const = MyField.create(reference_shared_ptr_req_shared_const(self._cpp_obj, deref(deref(self._cpp_obj).req_shared_const)))
-        return self.__req_shared_const
+            self.__field_req_shared_const = MyField.create(reference_shared_ptr_req_shared_const(self._cpp_obj, deref(deref(self._cpp_obj).req_shared_const)))
+        return self.__field_req_shared_const
 
 
     def __hash__(StructWithSharedConst self):
@@ -2144,29 +2144,29 @@ cdef class StructWithRef(thrift.py3.types.Struct):
     @property
     def def_field(self):
 
-        if self.__def_field is None:
+        if self.__field_def_field is None:
             if not deref(self._cpp_obj).def_field:
                 return None
-            self.__def_field = Empty.create(reference_shared_ptr_def_field(self._cpp_obj, deref(deref(self._cpp_obj).def_field)))
-        return self.__def_field
+            self.__field_def_field = Empty.create(reference_shared_ptr_def_field(self._cpp_obj, deref(deref(self._cpp_obj).def_field)))
+        return self.__field_def_field
 
     @property
     def opt_field(self):
 
-        if self.__opt_field is None:
+        if self.__field_opt_field is None:
             if not deref(self._cpp_obj).opt_field:
                 return None
-            self.__opt_field = Empty.create(reference_shared_ptr_opt_field(self._cpp_obj, deref(deref(self._cpp_obj).opt_field)))
-        return self.__opt_field
+            self.__field_opt_field = Empty.create(reference_shared_ptr_opt_field(self._cpp_obj, deref(deref(self._cpp_obj).opt_field)))
+        return self.__field_opt_field
 
     @property
     def req_field(self):
 
-        if self.__req_field is None:
+        if self.__field_req_field is None:
             if not deref(self._cpp_obj).req_field:
                 return None
-            self.__req_field = Empty.create(reference_shared_ptr_req_field(self._cpp_obj, deref(deref(self._cpp_obj).req_field)))
-        return self.__req_field
+            self.__field_req_field = Empty.create(reference_shared_ptr_req_field(self._cpp_obj, deref(deref(self._cpp_obj).req_field)))
+        return self.__field_req_field
 
 
     def __hash__(StructWithRef self):
@@ -2386,29 +2386,29 @@ cdef class StructWithRefTypeUnique(thrift.py3.types.Struct):
     @property
     def def_field(self):
 
-        if self.__def_field is None:
+        if self.__field_def_field is None:
             if not deref(self._cpp_obj).def_field:
                 return None
-            self.__def_field = Empty.create(reference_shared_ptr_def_field(self._cpp_obj, deref(deref(self._cpp_obj).def_field)))
-        return self.__def_field
+            self.__field_def_field = Empty.create(reference_shared_ptr_def_field(self._cpp_obj, deref(deref(self._cpp_obj).def_field)))
+        return self.__field_def_field
 
     @property
     def opt_field(self):
 
-        if self.__opt_field is None:
+        if self.__field_opt_field is None:
             if not deref(self._cpp_obj).opt_field:
                 return None
-            self.__opt_field = Empty.create(reference_shared_ptr_opt_field(self._cpp_obj, deref(deref(self._cpp_obj).opt_field)))
-        return self.__opt_field
+            self.__field_opt_field = Empty.create(reference_shared_ptr_opt_field(self._cpp_obj, deref(deref(self._cpp_obj).opt_field)))
+        return self.__field_opt_field
 
     @property
     def req_field(self):
 
-        if self.__req_field is None:
+        if self.__field_req_field is None:
             if not deref(self._cpp_obj).req_field:
                 return None
-            self.__req_field = Empty.create(reference_shared_ptr_req_field(self._cpp_obj, deref(deref(self._cpp_obj).req_field)))
-        return self.__req_field
+            self.__field_req_field = Empty.create(reference_shared_ptr_req_field(self._cpp_obj, deref(deref(self._cpp_obj).req_field)))
+        return self.__field_req_field
 
 
     def __hash__(StructWithRefTypeUnique self):
@@ -2628,29 +2628,29 @@ cdef class StructWithRefTypeShared(thrift.py3.types.Struct):
     @property
     def def_field(self):
 
-        if self.__def_field is None:
+        if self.__field_def_field is None:
             if not deref(self._cpp_obj).def_field:
                 return None
-            self.__def_field = Empty.create(reference_shared_ptr_def_field(self._cpp_obj, deref(deref(self._cpp_obj).def_field)))
-        return self.__def_field
+            self.__field_def_field = Empty.create(reference_shared_ptr_def_field(self._cpp_obj, deref(deref(self._cpp_obj).def_field)))
+        return self.__field_def_field
 
     @property
     def opt_field(self):
 
-        if self.__opt_field is None:
+        if self.__field_opt_field is None:
             if not deref(self._cpp_obj).opt_field:
                 return None
-            self.__opt_field = Empty.create(reference_shared_ptr_opt_field(self._cpp_obj, deref(deref(self._cpp_obj).opt_field)))
-        return self.__opt_field
+            self.__field_opt_field = Empty.create(reference_shared_ptr_opt_field(self._cpp_obj, deref(deref(self._cpp_obj).opt_field)))
+        return self.__field_opt_field
 
     @property
     def req_field(self):
 
-        if self.__req_field is None:
+        if self.__field_req_field is None:
             if not deref(self._cpp_obj).req_field:
                 return None
-            self.__req_field = Empty.create(reference_shared_ptr_req_field(self._cpp_obj, deref(deref(self._cpp_obj).req_field)))
-        return self.__req_field
+            self.__field_req_field = Empty.create(reference_shared_ptr_req_field(self._cpp_obj, deref(deref(self._cpp_obj).req_field)))
+        return self.__field_req_field
 
 
     def __hash__(StructWithRefTypeShared self):
@@ -2870,29 +2870,29 @@ cdef class StructWithRefTypeSharedConst(thrift.py3.types.Struct):
     @property
     def def_field(self):
 
-        if self.__def_field is None:
+        if self.__field_def_field is None:
             if not deref(self._cpp_obj).def_field:
                 return None
-            self.__def_field = Empty.create(reference_shared_ptr_def_field(self._cpp_obj, deref(deref(self._cpp_obj).def_field)))
-        return self.__def_field
+            self.__field_def_field = Empty.create(reference_shared_ptr_def_field(self._cpp_obj, deref(deref(self._cpp_obj).def_field)))
+        return self.__field_def_field
 
     @property
     def opt_field(self):
 
-        if self.__opt_field is None:
+        if self.__field_opt_field is None:
             if not deref(self._cpp_obj).opt_field:
                 return None
-            self.__opt_field = Empty.create(reference_shared_ptr_opt_field(self._cpp_obj, deref(deref(self._cpp_obj).opt_field)))
-        return self.__opt_field
+            self.__field_opt_field = Empty.create(reference_shared_ptr_opt_field(self._cpp_obj, deref(deref(self._cpp_obj).opt_field)))
+        return self.__field_opt_field
 
     @property
     def req_field(self):
 
-        if self.__req_field is None:
+        if self.__field_req_field is None:
             if not deref(self._cpp_obj).req_field:
                 return None
-            self.__req_field = Empty.create(reference_shared_ptr_req_field(self._cpp_obj, deref(deref(self._cpp_obj).req_field)))
-        return self.__req_field
+            self.__field_req_field = Empty.create(reference_shared_ptr_req_field(self._cpp_obj, deref(deref(self._cpp_obj).req_field)))
+        return self.__field_req_field
 
 
     def __hash__(StructWithRefTypeSharedConst self):
@@ -3064,11 +3064,11 @@ cdef class StructWithRefAndAnnotCppNoexceptMoveCtor(thrift.py3.types.Struct):
     @property
     def def_field(self):
 
-        if self.__def_field is None:
+        if self.__field_def_field is None:
             if not deref(self._cpp_obj).def_field:
                 return None
-            self.__def_field = Empty.create(reference_shared_ptr_def_field(self._cpp_obj, deref(deref(self._cpp_obj).def_field)))
-        return self.__def_field
+            self.__field_def_field = Empty.create(reference_shared_ptr_def_field(self._cpp_obj, deref(deref(self._cpp_obj).def_field)))
+        return self.__field_def_field
 
 
     def __hash__(StructWithRefAndAnnotCppNoexceptMoveCtor self):

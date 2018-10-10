@@ -435,9 +435,9 @@ cdef class MyStruct(thrift.py3.types.Struct):
     cdef object __hash
     cdef object __weakref__
     cdef shared_ptr[cMyStruct] _cpp_obj
-    cdef MyField __opt_ref
-    cdef MyField __ref
-    cdef MyField __req_ref
+    cdef MyField __field_opt_ref
+    cdef MyField __field_ref
+    cdef MyField __field_req_ref
 
     @staticmethod
     cdef unique_ptr[cMyStruct] _make_instance(
@@ -459,8 +459,8 @@ cdef class StructWithUnion(thrift.py3.types.Struct):
     cdef object __hash
     cdef object __weakref__
     cdef shared_ptr[cStructWithUnion] _cpp_obj
-    cdef MyUnion __u
-    cdef MyField __f
+    cdef MyUnion __field_u
+    cdef MyField __field_f
 
     @staticmethod
     cdef unique_ptr[cStructWithUnion] _make_instance(
@@ -482,7 +482,7 @@ cdef class RecursiveStruct(thrift.py3.types.Struct):
     cdef object __hash
     cdef object __weakref__
     cdef shared_ptr[cRecursiveStruct] _cpp_obj
-    cdef List__RecursiveStruct __mes
+    cdef List__RecursiveStruct __field_mes
 
     @staticmethod
     cdef unique_ptr[cRecursiveStruct] _make_instance(
@@ -502,12 +502,12 @@ cdef class StructWithContainers(thrift.py3.types.Struct):
     cdef object __hash
     cdef object __weakref__
     cdef shared_ptr[cStructWithContainers] _cpp_obj
-    cdef List__i32 __list_ref
-    cdef Set__i32 __set_ref
-    cdef Map__i32_i32 __map_ref
-    cdef List__i32 __list_ref_unique
-    cdef Set__i32 __set_ref_shared
-    cdef List__i32 __list_ref_shared_const
+    cdef List__i32 __field_list_ref
+    cdef Set__i32 __field_set_ref
+    cdef Map__i32_i32 __field_map_ref
+    cdef List__i32 __field_list_ref_unique
+    cdef Set__i32 __field_set_ref_shared
+    cdef List__i32 __field_list_ref_shared_const
 
     @staticmethod
     cdef unique_ptr[cStructWithContainers] _make_instance(
@@ -532,9 +532,9 @@ cdef class StructWithSharedConst(thrift.py3.types.Struct):
     cdef object __hash
     cdef object __weakref__
     cdef shared_ptr[cStructWithSharedConst] _cpp_obj
-    cdef MyField __opt_shared_const
-    cdef MyField __shared_const
-    cdef MyField __req_shared_const
+    cdef MyField __field_opt_shared_const
+    cdef MyField __field_shared_const
+    cdef MyField __field_req_shared_const
 
     @staticmethod
     cdef unique_ptr[cStructWithSharedConst] _make_instance(
@@ -574,9 +574,9 @@ cdef class StructWithRef(thrift.py3.types.Struct):
     cdef object __hash
     cdef object __weakref__
     cdef shared_ptr[cStructWithRef] _cpp_obj
-    cdef Empty __def_field
-    cdef Empty __opt_field
-    cdef Empty __req_field
+    cdef Empty __field_def_field
+    cdef Empty __field_opt_field
+    cdef Empty __field_req_field
 
     @staticmethod
     cdef unique_ptr[cStructWithRef] _make_instance(
@@ -598,9 +598,9 @@ cdef class StructWithRefTypeUnique(thrift.py3.types.Struct):
     cdef object __hash
     cdef object __weakref__
     cdef shared_ptr[cStructWithRefTypeUnique] _cpp_obj
-    cdef Empty __def_field
-    cdef Empty __opt_field
-    cdef Empty __req_field
+    cdef Empty __field_def_field
+    cdef Empty __field_opt_field
+    cdef Empty __field_req_field
 
     @staticmethod
     cdef unique_ptr[cStructWithRefTypeUnique] _make_instance(
@@ -622,9 +622,9 @@ cdef class StructWithRefTypeShared(thrift.py3.types.Struct):
     cdef object __hash
     cdef object __weakref__
     cdef shared_ptr[cStructWithRefTypeShared] _cpp_obj
-    cdef Empty __def_field
-    cdef Empty __opt_field
-    cdef Empty __req_field
+    cdef Empty __field_def_field
+    cdef Empty __field_opt_field
+    cdef Empty __field_req_field
 
     @staticmethod
     cdef unique_ptr[cStructWithRefTypeShared] _make_instance(
@@ -646,9 +646,9 @@ cdef class StructWithRefTypeSharedConst(thrift.py3.types.Struct):
     cdef object __hash
     cdef object __weakref__
     cdef shared_ptr[cStructWithRefTypeSharedConst] _cpp_obj
-    cdef Empty __def_field
-    cdef Empty __opt_field
-    cdef Empty __req_field
+    cdef Empty __field_def_field
+    cdef Empty __field_opt_field
+    cdef Empty __field_req_field
 
     @staticmethod
     cdef unique_ptr[cStructWithRefTypeSharedConst] _make_instance(
@@ -670,7 +670,7 @@ cdef class StructWithRefAndAnnotCppNoexceptMoveCtor(thrift.py3.types.Struct):
     cdef object __hash
     cdef object __weakref__
     cdef shared_ptr[cStructWithRefAndAnnotCppNoexceptMoveCtor] _cpp_obj
-    cdef Empty __def_field
+    cdef Empty __field_def_field
 
     @staticmethod
     cdef unique_ptr[cStructWithRefAndAnnotCppNoexceptMoveCtor] _make_instance(

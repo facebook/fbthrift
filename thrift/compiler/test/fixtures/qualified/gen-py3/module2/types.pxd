@@ -89,8 +89,8 @@ cdef class Struct(thrift.py3.types.Struct):
     cdef object __hash
     cdef object __weakref__
     cdef shared_ptr[cStruct] _cpp_obj
-    cdef _module0_types.Struct __first
-    cdef _module1_types.Struct __second
+    cdef _module0_types.Struct __field_first
+    cdef _module1_types.Struct __field_second
 
     @staticmethod
     cdef unique_ptr[cStruct] _make_instance(
@@ -111,7 +111,7 @@ cdef class BigStruct(thrift.py3.types.Struct):
     cdef object __hash
     cdef object __weakref__
     cdef shared_ptr[cBigStruct] _cpp_obj
-    cdef Struct __s
+    cdef Struct __field_s
 
     @staticmethod
     cdef unique_ptr[cBigStruct] _make_instance(

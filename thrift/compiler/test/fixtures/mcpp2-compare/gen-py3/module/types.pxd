@@ -1098,8 +1098,8 @@ cdef class MyStruct(thrift.py3.types.Struct):
     cdef object __hash
     cdef object __weakref__
     cdef shared_ptr[cMyStruct] _cpp_obj
-    cdef List__binary __MyBinaryListField4
-    cdef Map__MyEnumA_string __MyMapEnumAndInt
+    cdef List__binary __field_MyBinaryListField4
+    cdef Map__MyEnumA_string __field_MyMapEnumAndInt
 
     @staticmethod
     cdef unique_ptr[cMyStruct] _make_instance(
@@ -1209,16 +1209,16 @@ cdef class AnException(thrift.py3.exceptions.Error):
     cdef object __hash
     cdef object __weakref__
     cdef shared_ptr[cAnException] _cpp_obj
-    cdef List__i32 __exception_list
-    cdef Set__i64 __exception_set
-    cdef Map__string_i32 __exception_map
-    cdef Map__string_i32 __req_exception_map
-    cdef List__MyEnumA __enum_container
-    cdef MyStruct __a_struct
-    cdef Set__MyStruct __a_set_struct
-    cdef List__SimpleUnion __a_union_list
-    cdef Set__SimpleUnion __union_typedef
-    cdef List__Set__SimpleUnion __a_union_typedef_list
+    cdef List__i32 __field_exception_list
+    cdef Set__i64 __field_exception_set
+    cdef Map__string_i32 __field_exception_map
+    cdef Map__string_i32 __field_req_exception_map
+    cdef List__MyEnumA __field_enum_container
+    cdef MyStruct __field_a_struct
+    cdef Set__MyStruct __field_a_set_struct
+    cdef List__SimpleUnion __field_a_union_list
+    cdef Set__SimpleUnion __field_union_typedef
+    cdef List__Set__SimpleUnion __field_a_union_typedef_list
 
     @staticmethod
     cdef unique_ptr[cAnException] _make_instance(
@@ -1273,35 +1273,35 @@ cdef class containerStruct(thrift.py3.types.Struct):
     cdef object __hash
     cdef object __weakref__
     cdef shared_ptr[ccontainerStruct] _cpp_obj
-    cdef Map__string_bool __fieldB
-    cdef Map__string_bool __req_fieldB
-    cdef Map__string_bool __opt_fieldB
-    cdef Set__i32 __fieldC
-    cdef Set__i32 __req_fieldC
-    cdef Set__i32 __opt_fieldC
-    cdef List__List__i32 __fieldF
-    cdef Map__string_Map__string_Map__string_i32 __fieldG
-    cdef List__Set__i32 __fieldH
-    cdef Map__string_List__i32 __fieldJ
-    cdef List__List__List__List__i32 __fieldK
-    cdef Set__Set__Set__bool __fieldL
-    cdef Map__Set__List__i32_Map__List__Set__string_string __fieldM
-    cdef List__Map__Empty_MyStruct __fieldO
-    cdef List__List__List__Map__Empty_MyStruct __fieldP
-    cdef List__MyEnumA __fieldT
-    cdef List__MyEnumA __fieldU
-    cdef MyStruct __fieldV
-    cdef MyStruct __req_fieldV
-    cdef MyStruct __opt_fieldV
-    cdef Set__MyStruct __fieldW
-    cdef ComplexUnion __fieldX
-    cdef ComplexUnion __req_fieldX
-    cdef ComplexUnion __opt_fieldX
-    cdef List__ComplexUnion __fieldY
-    cdef Set__SimpleUnion __fieldZ
-    cdef List__Set__SimpleUnion __fieldAA
-    cdef Map__Bar__double_Baz__i32 __fieldAB
-    cdef Map__string_i32 __fieldAE
+    cdef Map__string_bool __field_fieldB
+    cdef Map__string_bool __field_req_fieldB
+    cdef Map__string_bool __field_opt_fieldB
+    cdef Set__i32 __field_fieldC
+    cdef Set__i32 __field_req_fieldC
+    cdef Set__i32 __field_opt_fieldC
+    cdef List__List__i32 __field_fieldF
+    cdef Map__string_Map__string_Map__string_i32 __field_fieldG
+    cdef List__Set__i32 __field_fieldH
+    cdef Map__string_List__i32 __field_fieldJ
+    cdef List__List__List__List__i32 __field_fieldK
+    cdef Set__Set__Set__bool __field_fieldL
+    cdef Map__Set__List__i32_Map__List__Set__string_string __field_fieldM
+    cdef List__Map__Empty_MyStruct __field_fieldO
+    cdef List__List__List__Map__Empty_MyStruct __field_fieldP
+    cdef List__MyEnumA __field_fieldT
+    cdef List__MyEnumA __field_fieldU
+    cdef MyStruct __field_fieldV
+    cdef MyStruct __field_req_fieldV
+    cdef MyStruct __field_opt_fieldV
+    cdef Set__MyStruct __field_fieldW
+    cdef ComplexUnion __field_fieldX
+    cdef ComplexUnion __field_req_fieldX
+    cdef ComplexUnion __field_opt_fieldX
+    cdef List__ComplexUnion __field_fieldY
+    cdef Set__SimpleUnion __field_fieldZ
+    cdef List__Set__SimpleUnion __field_fieldAA
+    cdef Map__Bar__double_Baz__i32 __field_fieldAB
+    cdef Map__string_i32 __field_fieldAE
 
     @staticmethod
     cdef unique_ptr[ccontainerStruct] _make_instance(
@@ -1366,9 +1366,9 @@ cdef class MyIncludedStruct(thrift.py3.types.Struct):
     cdef object __hash
     cdef object __weakref__
     cdef shared_ptr[cMyIncludedStruct] _cpp_obj
-    cdef _includes_types.AStruct __MyIncludedStruct
-    cdef _includes_types.AStruct __ARefField
-    cdef _includes_types.AStruct __ARequiredField
+    cdef _includes_types.AStruct __field_MyIncludedStruct
+    cdef _includes_types.AStruct __field_ARefField
+    cdef _includes_types.AStruct __field_ARequiredField
 
     @staticmethod
     cdef unique_ptr[cMyIncludedStruct] _make_instance(
@@ -1391,44 +1391,44 @@ cdef class AnnotatedStruct(thrift.py3.types.Struct):
     cdef object __hash
     cdef object __weakref__
     cdef shared_ptr[cAnnotatedStruct] _cpp_obj
-    cdef containerStruct __no_annotation
-    cdef containerStruct __cpp_unique_ref
-    cdef containerStruct __cpp2_unique_ref
-    cdef Map__i32_List__string __container_with_ref
-    cdef containerStruct __req_cpp_unique_ref
-    cdef containerStruct __req_cpp2_unique_ref
-    cdef List__string __req_container_with_ref
-    cdef containerStruct __opt_cpp_unique_ref
-    cdef containerStruct __opt_cpp2_unique_ref
-    cdef Set__i32 __opt_container_with_ref
-    cdef containerStruct __ref_type_unique
-    cdef containerStruct __ref_type_shared
-    cdef Map__i32_List__string __ref_type_const
-    cdef containerStruct __req_ref_type_shared
-    cdef containerStruct __req_ref_type_const
-    cdef List__string __req_ref_type_unique
-    cdef containerStruct __opt_ref_type_const
-    cdef containerStruct __opt_ref_type_unique
-    cdef Set__i32 __opt_ref_type_shared
-    cdef folly_small_vector_int64_t_8__List__i64 __list_type
-    cdef folly_sorted_vector_set_std_string__Set__string __set_type
-    cdef FakeMap__Map__i64_double __map_type
-    cdef std_unordered_map_std_string_containerStruct__Map__string_containerStruct __map_struct_type
-    cdef __iobuf.IOBuf __iobuf_type
-    cdef __iobuf.IOBuf __iobuf_ptr
-    cdef std_list__List__i32 __list_i32_template
-    cdef std_deque__List__string __list_string_template
-    cdef folly_sorted_vector_set__Set__string __set_template
-    cdef folly_sorted_vector_map__Map__i64_string __map_template
-    cdef std_list__List__i32 __typedef_list_template
-    cdef std_deque__List__string __typedef_deque_template
-    cdef folly_sorted_vector_set__Set__string __typedef_set_template
-    cdef folly_sorted_vector_map__Map__i64_string __typedef_map_template
-    cdef List__Bar__double __indirection_b
-    cdef Set__Baz__i32 __indirection_c
-    cdef __iobuf.IOBuf __iobuf_type_val
-    cdef __iobuf.IOBuf __iobuf_ptr_val
-    cdef containerStruct __struct_struct
+    cdef containerStruct __field_no_annotation
+    cdef containerStruct __field_cpp_unique_ref
+    cdef containerStruct __field_cpp2_unique_ref
+    cdef Map__i32_List__string __field_container_with_ref
+    cdef containerStruct __field_req_cpp_unique_ref
+    cdef containerStruct __field_req_cpp2_unique_ref
+    cdef List__string __field_req_container_with_ref
+    cdef containerStruct __field_opt_cpp_unique_ref
+    cdef containerStruct __field_opt_cpp2_unique_ref
+    cdef Set__i32 __field_opt_container_with_ref
+    cdef containerStruct __field_ref_type_unique
+    cdef containerStruct __field_ref_type_shared
+    cdef Map__i32_List__string __field_ref_type_const
+    cdef containerStruct __field_req_ref_type_shared
+    cdef containerStruct __field_req_ref_type_const
+    cdef List__string __field_req_ref_type_unique
+    cdef containerStruct __field_opt_ref_type_const
+    cdef containerStruct __field_opt_ref_type_unique
+    cdef Set__i32 __field_opt_ref_type_shared
+    cdef folly_small_vector_int64_t_8__List__i64 __field_list_type
+    cdef folly_sorted_vector_set_std_string__Set__string __field_set_type
+    cdef FakeMap__Map__i64_double __field_map_type
+    cdef std_unordered_map_std_string_containerStruct__Map__string_containerStruct __field_map_struct_type
+    cdef __iobuf.IOBuf __field_iobuf_type
+    cdef __iobuf.IOBuf __field_iobuf_ptr
+    cdef std_list__List__i32 __field_list_i32_template
+    cdef std_deque__List__string __field_list_string_template
+    cdef folly_sorted_vector_set__Set__string __field_set_template
+    cdef folly_sorted_vector_map__Map__i64_string __field_map_template
+    cdef std_list__List__i32 __field_typedef_list_template
+    cdef std_deque__List__string __field_typedef_deque_template
+    cdef folly_sorted_vector_set__Set__string __field_typedef_set_template
+    cdef folly_sorted_vector_map__Map__i64_string __field_typedef_map_template
+    cdef List__Bar__double __field_indirection_b
+    cdef Set__Baz__i32 __field_indirection_c
+    cdef __iobuf.IOBuf __field_iobuf_type_val
+    cdef __iobuf.IOBuf __field_iobuf_ptr_val
+    cdef containerStruct __field_struct_struct
 
     @staticmethod
     cdef unique_ptr[cAnnotatedStruct] _make_instance(

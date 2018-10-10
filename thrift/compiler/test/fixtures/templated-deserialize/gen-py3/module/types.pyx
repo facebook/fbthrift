@@ -905,16 +905,16 @@ cdef class containerStruct(thrift.py3.types.Struct):
     @property
     def fieldB(self):
 
-        if self.__fieldB is None:
-            self.__fieldB = Map__string_bool.create(reference_shared_ptr_fieldB(self._cpp_obj, deref(self._cpp_obj).fieldB))
-        return self.__fieldB
+        if self.__field_fieldB is None:
+            self.__field_fieldB = Map__string_bool.create(reference_shared_ptr_fieldB(self._cpp_obj, deref(self._cpp_obj).fieldB))
+        return self.__field_fieldB
 
     @property
     def fieldC(self):
 
-        if self.__fieldC is None:
-            self.__fieldC = Set__i32.create(reference_shared_ptr_fieldC(self._cpp_obj, deref(self._cpp_obj).fieldC))
-        return self.__fieldC
+        if self.__field_fieldC is None:
+            self.__field_fieldC = Set__i32.create(reference_shared_ptr_fieldC(self._cpp_obj, deref(self._cpp_obj).fieldC))
+        return self.__field_fieldC
 
     @property
     def fieldD(self):
@@ -929,23 +929,23 @@ cdef class containerStruct(thrift.py3.types.Struct):
     @property
     def fieldF(self):
 
-        if self.__fieldF is None:
-            self.__fieldF = List__List__List__i32.create(reference_shared_ptr_fieldF(self._cpp_obj, deref(self._cpp_obj).fieldF))
-        return self.__fieldF
+        if self.__field_fieldF is None:
+            self.__field_fieldF = List__List__List__i32.create(reference_shared_ptr_fieldF(self._cpp_obj, deref(self._cpp_obj).fieldF))
+        return self.__field_fieldF
 
     @property
     def fieldG(self):
 
-        if self.__fieldG is None:
-            self.__fieldG = Map__string_Map__string_Map__string_i32.create(reference_shared_ptr_fieldG(self._cpp_obj, deref(self._cpp_obj).fieldG))
-        return self.__fieldG
+        if self.__field_fieldG is None:
+            self.__field_fieldG = Map__string_Map__string_Map__string_i32.create(reference_shared_ptr_fieldG(self._cpp_obj, deref(self._cpp_obj).fieldG))
+        return self.__field_fieldG
 
     @property
     def fieldH(self):
 
-        if self.__fieldH is None:
-            self.__fieldH = List__Set__i32.create(reference_shared_ptr_fieldH(self._cpp_obj, deref(self._cpp_obj).fieldH))
-        return self.__fieldH
+        if self.__field_fieldH is None:
+            self.__field_fieldH = List__Set__i32.create(reference_shared_ptr_fieldH(self._cpp_obj, deref(self._cpp_obj).fieldH))
+        return self.__field_fieldH
 
     @property
     def fieldI(self):
@@ -955,51 +955,51 @@ cdef class containerStruct(thrift.py3.types.Struct):
     @property
     def fieldJ(self):
 
-        if self.__fieldJ is None:
-            self.__fieldJ = Map__string_List__i32.create(reference_shared_ptr_fieldJ(self._cpp_obj, deref(self._cpp_obj).fieldJ))
-        return self.__fieldJ
+        if self.__field_fieldJ is None:
+            self.__field_fieldJ = Map__string_List__i32.create(reference_shared_ptr_fieldJ(self._cpp_obj, deref(self._cpp_obj).fieldJ))
+        return self.__field_fieldJ
 
     @property
     def fieldK(self):
 
-        if self.__fieldK is None:
-            self.__fieldK = List__List__List__List__i32.create(reference_shared_ptr_fieldK(self._cpp_obj, deref(self._cpp_obj).fieldK))
-        return self.__fieldK
+        if self.__field_fieldK is None:
+            self.__field_fieldK = List__List__List__List__i32.create(reference_shared_ptr_fieldK(self._cpp_obj, deref(self._cpp_obj).fieldK))
+        return self.__field_fieldK
 
     @property
     def fieldL(self):
 
-        if self.__fieldL is None:
-            self.__fieldL = Set__Set__Set__bool.create(reference_shared_ptr_fieldL(self._cpp_obj, deref(self._cpp_obj).fieldL))
-        return self.__fieldL
+        if self.__field_fieldL is None:
+            self.__field_fieldL = Set__Set__Set__bool.create(reference_shared_ptr_fieldL(self._cpp_obj, deref(self._cpp_obj).fieldL))
+        return self.__field_fieldL
 
     @property
     def fieldM(self):
 
-        if self.__fieldM is None:
-            self.__fieldM = Map__Set__List__i32_Map__List__Set__string_string.create(reference_shared_ptr_fieldM(self._cpp_obj, deref(self._cpp_obj).fieldM))
-        return self.__fieldM
+        if self.__field_fieldM is None:
+            self.__field_fieldM = Map__Set__List__i32_Map__List__Set__string_string.create(reference_shared_ptr_fieldM(self._cpp_obj, deref(self._cpp_obj).fieldM))
+        return self.__field_fieldM
 
     @property
     def fieldN(self):
 
-        if self.__fieldN is None:
-            self.__fieldN = List__Foo__i64.create(reference_shared_ptr_fieldN(self._cpp_obj, deref(self._cpp_obj).fieldN))
-        return self.__fieldN
+        if self.__field_fieldN is None:
+            self.__field_fieldN = List__Foo__i64.create(reference_shared_ptr_fieldN(self._cpp_obj, deref(self._cpp_obj).fieldN))
+        return self.__field_fieldN
 
     @property
     def fieldO(self):
 
-        if self.__fieldO is None:
-            self.__fieldO = List__Bar__double.create(reference_shared_ptr_fieldO(self._cpp_obj, deref(self._cpp_obj).fieldO))
-        return self.__fieldO
+        if self.__field_fieldO is None:
+            self.__field_fieldO = List__Bar__double.create(reference_shared_ptr_fieldO(self._cpp_obj, deref(self._cpp_obj).fieldO))
+        return self.__field_fieldO
 
     @property
     def fieldP(self):
 
-        if self.__fieldP is None:
-            self.__fieldP = List__Baz__i32.create(reference_shared_ptr_fieldP(self._cpp_obj, deref(self._cpp_obj).fieldP))
-        return self.__fieldP
+        if self.__field_fieldP is None:
+            self.__field_fieldP = List__Baz__i32.create(reference_shared_ptr_fieldP(self._cpp_obj, deref(self._cpp_obj).fieldP))
+        return self.__field_fieldP
 
     @property
     def fieldQ(self):
@@ -1009,47 +1009,47 @@ cdef class containerStruct(thrift.py3.types.Struct):
     @property
     def fieldR(self):
 
-        if self.__fieldR is None:
+        if self.__field_fieldR is None:
             if not deref(self._cpp_obj).fieldR:
                 return None
-            self.__fieldR = Map__string_bool.create(reference_shared_ptr_fieldR(self._cpp_obj, deref(deref(self._cpp_obj).fieldR)))
-        return self.__fieldR
+            self.__field_fieldR = Map__string_bool.create(reference_shared_ptr_fieldR(self._cpp_obj, deref(deref(self._cpp_obj).fieldR)))
+        return self.__field_fieldR
 
     @property
     def fieldS(self):
 
-        if self.__fieldS is None:
+        if self.__field_fieldS is None:
             if not deref(self._cpp_obj).fieldS:
                 return None
-            self.__fieldS = SmallStruct.create(reference_shared_ptr_fieldS(self._cpp_obj, deref(deref(self._cpp_obj).fieldS)))
-        return self.__fieldS
+            self.__field_fieldS = SmallStruct.create(reference_shared_ptr_fieldS(self._cpp_obj, deref(deref(self._cpp_obj).fieldS)))
+        return self.__field_fieldS
 
     @property
     def fieldT(self):
 
-        if self.__fieldT is None:
+        if self.__field_fieldT is None:
             if not deref(self._cpp_obj).fieldT:
                 return None
-            self.__fieldT = SmallStruct.create(reference_shared_ptr_fieldT(self._cpp_obj, deref(deref(self._cpp_obj).fieldT)))
-        return self.__fieldT
+            self.__field_fieldT = SmallStruct.create(reference_shared_ptr_fieldT(self._cpp_obj, deref(deref(self._cpp_obj).fieldT)))
+        return self.__field_fieldT
 
     @property
     def fieldU(self):
 
-        if self.__fieldU is None:
+        if self.__field_fieldU is None:
             if not deref(self._cpp_obj).fieldU:
                 return None
-            self.__fieldU = SmallStruct.create(reference_shared_ptr_fieldU(self._cpp_obj, deref(deref(self._cpp_obj).fieldU)))
-        return self.__fieldU
+            self.__field_fieldU = SmallStruct.create(reference_shared_ptr_fieldU(self._cpp_obj, deref(deref(self._cpp_obj).fieldU)))
+        return self.__field_fieldU
 
     @property
     def fieldX(self):
 
-        if self.__fieldX is None:
+        if self.__field_fieldX is None:
             if not deref(self._cpp_obj).fieldX:
                 return None
-            self.__fieldX = SmallStruct.create(reference_shared_ptr_fieldX(self._cpp_obj, deref(deref(self._cpp_obj).fieldX)))
-        return self.__fieldX
+            self.__field_fieldX = SmallStruct.create(reference_shared_ptr_fieldX(self._cpp_obj, deref(deref(self._cpp_obj).fieldX)))
+        return self.__field_fieldX
 
 
     def __hash__(containerStruct self):

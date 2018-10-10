@@ -635,14 +635,14 @@ cdef class ContainerStruct(thrift.py3.types.Struct):
     cdef object __hash
     cdef object __weakref__
     cdef shared_ptr[cContainerStruct] _cpp_obj
-    cdef List__i32 __fieldA
-    cdef std_list__List__i32 __fieldB
-    cdef std_deque__List__i32 __fieldC
-    cdef folly_fbvector__List__i32 __fieldD
-    cdef folly_small_vector__List__i32 __fieldE
-    cdef folly_sorted_vector_set__Set__i32 __fieldF
-    cdef folly_sorted_vector_map__Map__i32_string __fieldG
-    cdef std_unordered_map__Map__i32_string __fieldH
+    cdef List__i32 __field_fieldA
+    cdef std_list__List__i32 __field_fieldB
+    cdef std_deque__List__i32 __field_fieldC
+    cdef folly_fbvector__List__i32 __field_fieldD
+    cdef folly_small_vector__List__i32 __field_fieldE
+    cdef folly_sorted_vector_set__Set__i32 __field_fieldF
+    cdef folly_sorted_vector_map__Map__i32_string __field_fieldG
+    cdef std_unordered_map__Map__i32_string __field_fieldH
 
     @staticmethod
     cdef unique_ptr[cContainerStruct] _make_instance(
@@ -669,7 +669,7 @@ cdef class CppTypeStruct(thrift.py3.types.Struct):
     cdef object __hash
     cdef object __weakref__
     cdef shared_ptr[cCppTypeStruct] _cpp_obj
-    cdef std_list_int32_t__List__i32 __fieldA
+    cdef std_list_int32_t__List__i32 __field_fieldA
 
     @staticmethod
     cdef unique_ptr[cCppTypeStruct] _make_instance(
@@ -748,7 +748,7 @@ cdef class TrivialNestedWithDefault(thrift.py3.types.Struct):
     cdef object __hash
     cdef object __weakref__
     cdef shared_ptr[cTrivialNestedWithDefault] _cpp_obj
-    cdef TrivialNumeric __n
+    cdef TrivialNumeric __field_n
 
     @staticmethod
     cdef unique_ptr[cTrivialNestedWithDefault] _make_instance(
@@ -769,7 +769,7 @@ cdef class ComplexString(thrift.py3.types.Struct):
     cdef object __hash
     cdef object __weakref__
     cdef shared_ptr[cComplexString] _cpp_obj
-    cdef Map__string_i32 __b
+    cdef Map__string_i32 __field_b
 
     @staticmethod
     cdef unique_ptr[cComplexString] _make_instance(
@@ -790,7 +790,7 @@ cdef class ComplexNestedWithDefault(thrift.py3.types.Struct):
     cdef object __hash
     cdef object __weakref__
     cdef shared_ptr[cComplexNestedWithDefault] _cpp_obj
-    cdef ComplexString __n
+    cdef ComplexString __field_n
 
     @staticmethod
     cdef unique_ptr[cComplexNestedWithDefault] _make_instance(
@@ -834,7 +834,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
     cdef object __hash
     cdef object __weakref__
     cdef shared_ptr[cMyStruct] _cpp_obj
-    cdef MyDataItem __data
+    cdef MyDataItem __field_data
     cdef __MyStruct_eq(MyStruct self, MyStruct other)
 
     @staticmethod

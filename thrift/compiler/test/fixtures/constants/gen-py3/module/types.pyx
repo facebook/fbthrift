@@ -1566,16 +1566,16 @@ cdef class struct2(thrift.py3.types.Struct):
     @property
     def c(self):
 
-        if self.__c is None:
-            self.__c = struct1.create(reference_shared_ptr_c(self._cpp_obj, deref(self._cpp_obj).c))
-        return self.__c
+        if self.__field_c is None:
+            self.__field_c = struct1.create(reference_shared_ptr_c(self._cpp_obj, deref(self._cpp_obj).c))
+        return self.__field_c
 
     @property
     def d(self):
 
-        if self.__d is None:
-            self.__d = List__i32.create(reference_shared_ptr_d(self._cpp_obj, deref(self._cpp_obj).d))
-        return self.__d
+        if self.__field_d is None:
+            self.__field_d = List__i32.create(reference_shared_ptr_d(self._cpp_obj, deref(self._cpp_obj).d))
+        return self.__field_d
 
 
     def __hash__(struct2 self):
@@ -1816,9 +1816,9 @@ cdef class struct3(thrift.py3.types.Struct):
     @property
     def c(self):
 
-        if self.__c is None:
-            self.__c = struct2.create(reference_shared_ptr_c(self._cpp_obj, deref(self._cpp_obj).c))
-        return self.__c
+        if self.__field_c is None:
+            self.__field_c = struct2.create(reference_shared_ptr_c(self._cpp_obj, deref(self._cpp_obj).c))
+        return self.__field_c
 
 
     def __hash__(struct3 self):

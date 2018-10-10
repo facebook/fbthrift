@@ -119,9 +119,9 @@ cdef class OldStructure(thrift.py3.types.Struct):
     @property
     def features(self):
 
-        if self.__features is None:
-            self.__features = Map__i16_double.create(reference_shared_ptr_features(self._cpp_obj, deref(self._cpp_obj).features))
-        return self.__features
+        if self.__field_features is None:
+            self.__field_features = Map__i16_double.create(reference_shared_ptr_features(self._cpp_obj, deref(self._cpp_obj).features))
+        return self.__field_features
 
 
     def __hash__(OldStructure self):
@@ -289,9 +289,9 @@ cdef class NewStructure(thrift.py3.types.Struct):
     @property
     def features(self):
 
-        if self.__features is None:
-            self.__features = Map__i16_double.create(reference_shared_ptr_features(self._cpp_obj, deref(self._cpp_obj).features))
-        return self.__features
+        if self.__field_features is None:
+            self.__field_features = Map__i16_double.create(reference_shared_ptr_features(self._cpp_obj, deref(self._cpp_obj).features))
+        return self.__field_features
 
 
     def __hash__(NewStructure self):
@@ -459,9 +459,9 @@ cdef class NewStructure2(thrift.py3.types.Struct):
     @property
     def features(self):
 
-        if self.__features is None:
-            self.__features = Map__i16_float.create(reference_shared_ptr_features(self._cpp_obj, deref(self._cpp_obj).features))
-        return self.__features
+        if self.__field_features is None:
+            self.__field_features = Map__i16_float.create(reference_shared_ptr_features(self._cpp_obj, deref(self._cpp_obj).features))
+        return self.__field_features
 
 
     def __hash__(NewStructure2 self):
@@ -671,23 +671,23 @@ cdef class NewStructureNested(thrift.py3.types.Struct):
     @property
     def lst(self):
 
-        if self.__lst is None:
-            self.__lst = List__Map__i16_float.create(reference_shared_ptr_lst(self._cpp_obj, deref(self._cpp_obj).lst))
-        return self.__lst
+        if self.__field_lst is None:
+            self.__field_lst = List__Map__i16_float.create(reference_shared_ptr_lst(self._cpp_obj, deref(self._cpp_obj).lst))
+        return self.__field_lst
 
     @property
     def mp(self):
 
-        if self.__mp is None:
-            self.__mp = Map__i16_Map__i16_float.create(reference_shared_ptr_mp(self._cpp_obj, deref(self._cpp_obj).mp))
-        return self.__mp
+        if self.__field_mp is None:
+            self.__field_mp = Map__i16_Map__i16_float.create(reference_shared_ptr_mp(self._cpp_obj, deref(self._cpp_obj).mp))
+        return self.__field_mp
 
     @property
     def s(self):
 
-        if self.__s is None:
-            self.__s = Set__Map__i16_float.create(reference_shared_ptr_s(self._cpp_obj, deref(self._cpp_obj).s))
-        return self.__s
+        if self.__field_s is None:
+            self.__field_s = Set__Map__i16_float.create(reference_shared_ptr_s(self._cpp_obj, deref(self._cpp_obj).s))
+        return self.__field_s
 
 
     def __hash__(NewStructureNested self):
@@ -861,9 +861,9 @@ cdef class NewStructureNestedField(thrift.py3.types.Struct):
     @property
     def f(self):
 
-        if self.__f is None:
-            self.__f = NewStructureNested.create(reference_shared_ptr_f(self._cpp_obj, deref(self._cpp_obj).f))
-        return self.__f
+        if self.__field_f is None:
+            self.__field_f = NewStructureNested.create(reference_shared_ptr_f(self._cpp_obj, deref(self._cpp_obj).f))
+        return self.__field_f
 
 
     def __hash__(NewStructureNestedField self):
