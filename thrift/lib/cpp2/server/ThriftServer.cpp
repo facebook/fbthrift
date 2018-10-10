@@ -547,12 +547,14 @@ void ThriftServer::stopListening() {
   for (auto& socket : sockets) {
     // Stop accepting new connections
     auto eb = socket->getEventBase();
-    eb->runInEventBaseThread([&, g = folly::makeGuard(maybe_post)] {
-      socket->pauseAccepting();
+    eb->runInEventBaseThread(
+        [socket = std::move(socket), g = folly::makeGuard(maybe_post)] {
+          socket->pauseAccepting();
 
-      // Close the listening socket. This will also cause the workers to stop.
-      socket->stopAccepting();
-    });
+          // Close the listening socket
+          // This will also cause the workers to stop
+          socket->stopAccepting();
+        });
   }
 
   if (stopWorkersOnStopListening_) {
