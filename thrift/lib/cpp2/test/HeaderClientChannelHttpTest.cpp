@@ -82,7 +82,7 @@ TEST(HeaderClientChannelHttpTest, SimpleTest) {
   folly::EventBase eb;
   std::shared_ptr<TAsyncSocket> socket = TAsyncSocket::newSocket(&eb, addr);
   auto channel = HeaderClientChannel::newChannel(socket);
-  channel->useAsHttpClient("127.0.0.1", "meh");
+  channel->useAsHttpClient("127.0.0.1", "/meh");
   channel->setProtocolId(T_BINARY_PROTOCOL);
   TestServiceAsyncClient client(std::move(channel));
   client.sendResponse(
@@ -111,7 +111,7 @@ TEST(HeaderClientChannel, LongResponse) {
   folly::EventBase eb;
   std::shared_ptr<TAsyncSocket> socket = TAsyncSocket::newSocket(&eb, addr);
   auto channel = HeaderClientChannel::newChannel(socket);
-  channel->useAsHttpClient("127.0.0.1", "meh");
+  channel->useAsHttpClient("127.0.0.1", "/meh");
   channel->setProtocolId(T_BINARY_PROTOCOL);
   TestServiceAsyncClient client(std::move(channel));
 
