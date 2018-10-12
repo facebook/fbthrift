@@ -211,7 +211,7 @@ TEST(FlowableTest, TakeFirstErrorResponse) {
   folly::Baton<> baton;
   auto takeFirst = std::make_shared<TakeFirst>(
       nullptr,
-      [](auto&&) { ASSERT(false); },
+      [](auto&&) { ASSERT_TRUE(false); },
       [&baton](folly::exception_wrapper ew) {
         ASSERT_STREQ(ew.what().c_str(), "std::runtime_error: error");
         baton.post();
