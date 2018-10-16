@@ -109,7 +109,6 @@ ThriftServer::ThriftServer(
       wShutdownSocketSet_(folly::tryGetShutdownSocketSet()),
       lastRequestTime_(
           std::chrono::steady_clock::now().time_since_epoch().count()) {
-  fizzConfig_.enableFizz = false;
   // SASL setup
   if (saslPolicy_ == "required") {
     setSaslEnabled(true);
