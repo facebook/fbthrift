@@ -52,7 +52,7 @@ void Parser<T>::getReadBuffer(void** bufout, size_t* lenout) {
 
 template <class T>
 void Parser<T>::readDataAvailable(size_t nbytes) noexcept {
-  folly::DelayedDestruction::DestructorGuard(&this->owner_);
+  folly::DelayedDestruction::DestructorGuard dg(&this->owner_);
 
   constexpr size_t kBytesForFrameSize = 3;
 
@@ -93,7 +93,7 @@ void Parser<T>::readDataAvailable(size_t nbytes) noexcept {
 
 template <class T>
 void Parser<T>::readEOF() noexcept {
-  folly::DelayedDestruction::DestructorGuard(&this->owner_);
+  folly::DelayedDestruction::DestructorGuard dg(&this->owner_);
 
   owner_.close(folly::make_exception_wrapper<transport::TTransportException>(
       transport::TTransportException::TTransportExceptionType::NOT_OPEN,
@@ -102,7 +102,7 @@ void Parser<T>::readEOF() noexcept {
 
 template <class T>
 void Parser<T>::readErr(const folly::AsyncSocketException& ex) noexcept {
-  folly::DelayedDestruction::DestructorGuard(&this->owner_);
+  folly::DelayedDestruction::DestructorGuard dg(&this->owner_);
 
   owner_.close(folly::make_exception_wrapper<transport::TTransportException>(
       transport::TTransportException::TTransportExceptionType(ex.getType()),
