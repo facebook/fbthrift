@@ -129,6 +129,18 @@ void Cpp2Worker::handleHeader(
 
 std::shared_ptr<async::TAsyncTransport> Cpp2Worker::createThriftTransport(
     folly::AsyncTransportWrapper::UniquePtr sock) {
+  auto fizzServer = dynamic_cast<async::TAsyncFizzServer*>(sock.get());
+  if (fizzServer) {
+    auto asyncSock = sock->getUnderlyingTransport<async::TAsyncSocket>();
+    if (asyncSock) {
+      markSocketAccepted(asyncSock);
+    }
+    // give up ownership
+    sock.release();
+    return std::shared_ptr<async::TAsyncFizzServer>(
+        fizzServer, async::TAsyncFizzServer::Destructor());
+  }
+
   TAsyncSocket* tsock = dynamic_cast<TAsyncSocket*>(sock.release());
   CHECK(tsock);
   auto asyncSocket =
@@ -218,21 +230,35 @@ void Cpp2Worker::updateSSLStats(
     return;
   }
 
-  auto socket = sock->getUnderlyingTransport<folly::AsyncSSLSocket>();
-  if (!socket) {
-    return;
-  }
-  auto observer = server_->getObserver();
+  auto observer = getServer()->getObserver();
   if (!observer) {
     return;
   }
-  if (socket->good() && error == wangle::SSLErrorEnum::NO_ERROR) {
-    observer->tlsComplete();
-    if (socket->getSSLSessionReused()) {
-      observer->tlsResumption();
+
+  auto fizz = sock->getUnderlyingTransport<fizz::server::AsyncFizzServer>();
+  if (fizz) {
+    if (sock->good() && error == wangle::SSLErrorEnum::NO_ERROR) {
+      observer->tlsComplete();
+      auto pskType = fizz->getState().pskType();
+      if (pskType && *pskType == fizz::PskType::Resumption) {
+        observer->tlsResumption();
+      }
+    } else {
+      observer->tlsError();
     }
   } else {
-    observer->tlsError();
+    auto socket = sock->getUnderlyingTransport<folly::AsyncSSLSocket>();
+    if (!socket) {
+      return;
+    }
+    if (socket->good() && error == wangle::SSLErrorEnum::NO_ERROR) {
+      observer->tlsComplete();
+      if (socket->getSSLSessionReused()) {
+        observer->tlsResumption();
+      }
+    } else {
+      observer->tlsError();
+    }
   }
 }
 
@@ -291,6 +317,5 @@ void Cpp2Worker::waitForStop(std::chrono::system_clock::time_point deadline) {
     LOG(ERROR) << "Failed to join outstanding requests.";
   }
 }
-
 } // namespace thrift
 } // namespace apache

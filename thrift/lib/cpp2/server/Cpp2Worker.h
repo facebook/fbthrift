@@ -23,6 +23,7 @@
 #include <folly/io/async/EventHandler.h>
 #include <folly/io/async/HHWheelTimer.h>
 #include <thrift/lib/cpp/async/TAsyncSSLSocket.h>
+#include <thrift/lib/cpp2/security/FizzPeeker.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
 #include <thrift/lib/cpp2/server/peeking/TLSHelper.h>
 #include <wangle/acceptor/Acceptor.h>
@@ -181,9 +182,15 @@ class Cpp2Worker : public wangle::Acceptor,
       std::chrono::steady_clock::time_point acceptTime,
       wangle::TransportInfo& tinfo);
 
+  wangle::DefaultToFizzPeekingCallback* getFizzPeeker() override {
+    return &fizzPeeker_;
+  }
+
  private:
   /// The mother ship.
   ThriftServer* server_;
+
+  FizzPeeker fizzPeeker_;
 
   // For DuplexChannel case, set only during shutdown so that we can extend the
   // lifetime of the ThriftServer if the Worker is kept alive by some
