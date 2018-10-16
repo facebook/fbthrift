@@ -68,6 +68,8 @@ class t_hack_generator : public t_oop_generator {
         option_is_specified(parsed_options, "nullable_everything");
     const_collections_ =
         option_is_specified(parsed_options, "const_collections");
+    enum_transparenttype_ =
+        option_is_specified(parsed_options, "enum_transparenttype");
 
     // no_use_hack_collections_ is only used to migrate away from php gen
     if (no_use_hack_collections_ && strict_types_) {
@@ -628,6 +630,11 @@ class t_hack_generator : public t_oop_generator {
    */
   bool const_collections_;
 
+  /**
+   * True to use transparent typing for Hack enums: 'enum FooBar: int as int'.
+   */
+  bool enum_transparenttype_;
+
   std::string array_keyword_;
 };
 
@@ -1034,7 +1041,8 @@ void t_hack_generator::generate_enum(t_enum* tenum) {
     if (attributes) {
       f_types_ << "<<" << *attributes << ">>" << endl;
     }
-    f_types_ << "enum " << hack_name(tenum, true) << " : int {" << endl;
+    f_types_ << "enum " << hack_name(tenum, true) << ": int"
+             << (enum_transparenttype_ ? " as int" : "") << " {" << endl;
   }
 
   indent_up();
@@ -5216,4 +5224,5 @@ THRIFT_REGISTER_GENERATOR(
     "    shape_unsafe_json When converting json to Shapes, do not validate.\n"
     "    lazy_constants   Generate lazy initialization code for global constants.\n"
     "    arrays           Use Hack arrays for maps/lists/sets instead of objects.\n"
-    "    const_collections Use ConstCollection objects rather than their mutable counterparts.\n");
+    "    const_collections Use ConstCollection objects rather than their mutable counterparts.\n"
+    "    enum_transparenttype Use transparent typing for Hack enums: 'enum FooBar: int as int'.\n");

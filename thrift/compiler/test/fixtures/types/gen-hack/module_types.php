@@ -10,7 +10,7 @@
  * Original thrift enum:-
  * has_bitwise_ops
  */
-enum has_bitwise_ops : int {
+enum has_bitwise_ops: int {
   none = 0;
   zero = 1;
   one = 2;
@@ -23,7 +23,7 @@ type has_bitwise_opsType = has_bitwise_ops;
  * Original thrift enum:-
  * is_unscoped
  */
-enum is_unscoped : int {
+enum is_unscoped: int {
   hello = 0;
   world = 1;
 }
@@ -33,7 +33,7 @@ type is_unscopedType = is_unscoped;
  * Original thrift enum:-
  * MyForwardRefEnum
  */
-enum MyForwardRefEnum : int {
+enum MyForwardRefEnum: int {
   ZERO = 0;
   NONZERO = 12;
 }

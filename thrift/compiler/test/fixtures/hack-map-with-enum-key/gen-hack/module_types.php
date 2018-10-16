@@ -10,7 +10,7 @@
  * Original thrift enum:-
  * FooEnum
  */
-enum FooEnum : int {
+enum FooEnum: int {
   BAR = 0;
   BAZ = 1;
 }

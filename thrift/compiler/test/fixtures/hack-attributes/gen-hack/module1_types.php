@@ -13,7 +13,7 @@ namespace test\fixtures\jsenum;
  * MyThriftEnum
  */
 <<ApiEnum, JSEnum>>
-enum MyThriftEnum : int {
+enum MyThriftEnum: int {
   foo = 1;
   bar = 2;
   baz = 3;
