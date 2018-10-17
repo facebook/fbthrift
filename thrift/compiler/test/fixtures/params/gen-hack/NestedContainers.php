@@ -1222,6 +1222,7 @@ class NestedContainers_mapList_args implements \IThriftStruct, \IThriftShapishSt
           'format' => 'collection',
         ],
         'format' => 'collection',
+      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     ];
   public static Map<string, int> $_TFIELDMAP = Map {
@@ -1303,6 +1304,7 @@ class NestedContainers_mapSet_args implements \IThriftStruct, \IThriftShapishStr
           'format' => 'collection',
         ],
         'format' => 'collection',
+      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     ];
   public static Map<string, int> $_TFIELDMAP = Map {
@@ -1384,6 +1386,7 @@ class NestedContainers_listMap_args implements \IThriftStruct, \IThriftShapishSt
           'format' => 'collection',
         ],
         'format' => 'collection',
+      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     ];
   public static Map<string, int> $_TFIELDMAP = Map {
@@ -1461,6 +1464,7 @@ class NestedContainers_listSet_args implements \IThriftStruct, \IThriftShapishSt
           'format' => 'collection',
         ],
         'format' => 'collection',
+      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     ];
   public static Map<string, int> $_TFIELDMAP = Map {
@@ -1561,6 +1565,7 @@ class NestedContainers_turtles_args implements \IThriftStruct, \IThriftShapishSt
           'format' => 'collection',
         ],
         'format' => 'collection',
+      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     ];
   public static Map<string, int> $_TFIELDMAP = Map {

@@ -22,6 +22,7 @@ class Foo implements \IThriftStruct {
         'type' => \TType::STRING,
         ],
         'format' => 'collection',
+      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     2 => dict[
       'var' => 'b',
@@ -45,14 +46,17 @@ class Foo implements \IThriftStruct {
           'format' => 'collection',
         ],
         'format' => 'collection',
+      'qualifier' => \TFieldQualifier::T_OPTIONAL,
       ],
     3 => dict[
       'var' => 'c',
       'type' => \TType::I64,
+      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     4 => dict[
       'var' => 'd',
       'type' => \TType::BOOL,
+      'qualifier' => \TFieldQualifier::T_OPTIONAL,
       ],
     ];
   public static ConstMap<string, int> $_TFIELDMAP = Map {
@@ -119,6 +123,7 @@ class Baz extends \TException implements \IThriftStruct {
     1 => dict[
       'var' => 'message',
       'type' => \TType::STRING,
+      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     ];
   public static ConstMap<string, int> $_TFIELDMAP = Map {

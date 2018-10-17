@@ -50,6 +50,7 @@ class decorated_struct implements \IThriftStruct {
     1 => dict[
       'var' => 'field',
       'type' => \TType::STRING,
+      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     ];
   public static Map<string, int> $_TFIELDMAP = Map {
@@ -104,6 +105,7 @@ class ContainerStruct implements \IThriftStruct {
         'type' => \TType::I32,
         ],
         'format' => 'collection',
+      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     2 => dict[
       'var' => 'fieldB',
@@ -113,6 +115,7 @@ class ContainerStruct implements \IThriftStruct {
         'type' => \TType::I32,
         ],
         'format' => 'collection',
+      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     3 => dict[
       'var' => 'fieldC',
@@ -122,6 +125,7 @@ class ContainerStruct implements \IThriftStruct {
         'type' => \TType::I32,
         ],
         'format' => 'collection',
+      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     4 => dict[
       'var' => 'fieldD',
@@ -131,6 +135,7 @@ class ContainerStruct implements \IThriftStruct {
         'type' => \TType::I32,
         ],
         'format' => 'collection',
+      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     5 => dict[
       'var' => 'fieldE',
@@ -140,6 +145,7 @@ class ContainerStruct implements \IThriftStruct {
         'type' => \TType::I32,
         ],
         'format' => 'collection',
+      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     6 => dict[
       'var' => 'fieldF',
@@ -149,6 +155,7 @@ class ContainerStruct implements \IThriftStruct {
         'type' => \TType::I32,
         ],
         'format' => 'collection',
+      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     7 => dict[
       'var' => 'fieldG',
@@ -162,6 +169,7 @@ class ContainerStruct implements \IThriftStruct {
         'type' => \TType::STRING,
         ],
         'format' => 'collection',
+      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     8 => dict[
       'var' => 'fieldH',
@@ -175,6 +183,7 @@ class ContainerStruct implements \IThriftStruct {
         'type' => \TType::STRING,
         ],
         'format' => 'collection',
+      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     ];
   public static Map<string, int> $_TFIELDMAP = Map {
@@ -413,6 +422,7 @@ class CppTypeStruct implements \IThriftStruct {
         'type' => \TType::I32,
         ],
         'format' => 'collection',
+      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     ];
   public static Map<string, int> $_TFIELDMAP = Map {
@@ -474,6 +484,7 @@ class VirtualStruct implements \IThriftStruct {
     1 => dict[
       'var' => 'MyIntField',
       'type' => \TType::I64,
+      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     ];
   public static Map<string, int> $_TFIELDMAP = Map {
@@ -524,11 +535,13 @@ class MyStructWithForwardRefEnum implements \IThriftStruct {
       'var' => 'a',
       'type' => \TType::I32,
       'enum' => 'MyForwardRefEnum',
+      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     2 => dict[
       'var' => 'b',
       'type' => \TType::I32,
       'enum' => 'MyForwardRefEnum',
+      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     ];
   public static Map<string, int> $_TFIELDMAP = Map {
@@ -590,10 +603,12 @@ class TrivialNumeric implements \IThriftStruct {
     1 => dict[
       'var' => 'a',
       'type' => \TType::I32,
+      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     2 => dict[
       'var' => 'b',
       'type' => \TType::BOOL,
+      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     ];
   public static Map<string, int> $_TFIELDMAP = Map {
@@ -662,11 +677,13 @@ class TrivialNestedWithDefault implements \IThriftStruct {
     1 => dict[
       'var' => 'z',
       'type' => \TType::I32,
+      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     2 => dict[
       'var' => 'n',
       'type' => \TType::STRUCT,
       'class' => 'TrivialNumeric',
+      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     ];
   public static Map<string, int> $_TFIELDMAP = Map {
@@ -734,6 +751,7 @@ class ComplexString implements \IThriftStruct {
     1 => dict[
       'var' => 'a',
       'type' => \TType::STRING,
+      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     2 => dict[
       'var' => 'b',
@@ -747,6 +765,7 @@ class ComplexString implements \IThriftStruct {
         'type' => \TType::I32,
         ],
         'format' => 'collection',
+      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     ];
   public static Map<string, int> $_TFIELDMAP = Map {
@@ -822,11 +841,13 @@ class ComplexNestedWithDefault implements \IThriftStruct {
     1 => dict[
       'var' => 'z',
       'type' => \TType::STRING,
+      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     2 => dict[
       'var' => 'n',
       'type' => \TType::STRUCT,
       'class' => 'ComplexString',
+      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     ];
   public static Map<string, int> $_TFIELDMAP = Map {
@@ -889,22 +910,27 @@ class MinPadding implements \IThriftStruct {
     1 => dict[
       'var' => 'small',
       'type' => \TType::BYTE,
+      'qualifier' => \TFieldQualifier::T_REQUIRED,
       ],
     2 => dict[
       'var' => 'big',
       'type' => \TType::I64,
+      'qualifier' => \TFieldQualifier::T_REQUIRED,
       ],
     3 => dict[
       'var' => 'medium',
       'type' => \TType::I16,
+      'qualifier' => \TFieldQualifier::T_REQUIRED,
       ],
     4 => dict[
       'var' => 'biggish',
       'type' => \TType::I32,
+      'qualifier' => \TFieldQualifier::T_REQUIRED,
       ],
     5 => dict[
       'var' => 'tiny',
       'type' => \TType::BYTE,
+      'qualifier' => \TFieldQualifier::T_REQUIRED,
       ],
     ];
   public static Map<string, int> $_TFIELDMAP = Map {
@@ -1040,19 +1066,23 @@ class MyStruct implements \IThriftStruct {
     1 => dict[
       'var' => 'MyIntField',
       'type' => \TType::I64,
+      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     2 => dict[
       'var' => 'MyStringField',
       'type' => \TType::STRING,
+      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     3 => dict[
       'var' => 'major',
       'type' => \TType::I64,
+      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     4 => dict[
       'var' => 'data',
       'type' => \TType::STRUCT,
       'class' => 'MyDataItem',
+      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     ];
   public static Map<string, int> $_TFIELDMAP = Map {
@@ -1174,6 +1204,7 @@ class Renaming implements \IThriftStruct {
     1 => dict[
       'var' => 'foo',
       'type' => \TType::I64,
+      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     ];
   public static Map<string, int> $_TFIELDMAP = Map {

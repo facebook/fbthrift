@@ -32,14 +32,17 @@ class MyThriftStruct implements \IThriftStruct {
     1 => dict[
       'var' => 'foo',
       'type' => \TType::STRING,
+      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     2 => dict[
       'var' => 'bar',
       'type' => \TType::STRING,
+      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     3 => dict[
       'var' => 'baz',
       'type' => \TType::STRING,
+      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     ];
   public static Map<string, int> $_TFIELDMAP = Map {
@@ -109,15 +112,18 @@ class MySecondThriftStruct implements \IThriftStruct {
       'var' => 'foo',
       'type' => \TType::I32,
       'enum' => '\test\fixtures\jsenum\MyThriftEnum',
+      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     2 => dict[
       'var' => 'bar',
       'type' => \TType::STRUCT,
       'class' => '\test\fixtures\jsenum\MyThriftStruct',
+      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     3 => dict[
       'var' => 'baz',
       'type' => \TType::I64,
+      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     ];
   public static Map<string, int> $_TFIELDMAP = Map {

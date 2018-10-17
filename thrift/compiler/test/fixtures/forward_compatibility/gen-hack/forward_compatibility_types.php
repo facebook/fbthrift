@@ -24,6 +24,7 @@ class OldStructure implements \IThriftStruct {
         'type' => \TType::DOUBLE,
         ],
         'format' => 'collection',
+      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     ];
   public static Map<string, int> $_TFIELDMAP = Map {
@@ -150,6 +151,7 @@ class NewStructure implements \IThriftStruct {
         'type' => \TType::DOUBLE,
         ],
         'format' => 'collection',
+      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     ];
   public static Map<string, int> $_TFIELDMAP = Map {
@@ -276,6 +278,7 @@ class NewStructure2 implements \IThriftStruct {
         'type' => \TType::FLOAT,
         ],
         'format' => 'collection',
+      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     ];
   public static Map<string, int> $_TFIELDMAP = Map {
@@ -407,6 +410,7 @@ class NewStructureNested implements \IThriftStruct {
           'format' => 'collection',
         ],
         'format' => 'collection',
+      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     2 => dict[
       'var' => 'mp',
@@ -429,6 +433,7 @@ class NewStructureNested implements \IThriftStruct {
           'format' => 'collection',
         ],
         'format' => 'collection',
+      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     3 => dict[
       'var' => 's',
@@ -447,6 +452,7 @@ class NewStructureNested implements \IThriftStruct {
           'format' => 'collection',
         ],
         'format' => 'collection',
+      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     ];
   public static Map<string, int> $_TFIELDMAP = Map {
@@ -748,6 +754,7 @@ class NewStructureNestedField implements \IThriftStruct {
       'var' => 'f',
       'type' => \TType::STRUCT,
       'class' => 'NewStructureNested',
+      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     ];
   public static Map<string, int> $_TFIELDMAP = Map {

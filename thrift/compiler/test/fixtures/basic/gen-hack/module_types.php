@@ -27,24 +27,29 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
     1 => dict[
       'var' => 'MyIntField',
       'type' => \TType::I64,
+      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     2 => dict[
       'var' => 'MyStringField',
       'type' => \TType::STRING,
+      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     3 => dict[
       'var' => 'MyDataField',
       'type' => \TType::STRUCT,
       'class' => 'MyDataItem',
+      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     4 => dict[
       'var' => 'major',
       'type' => \TType::I64,
+      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     5 => dict[
       'var' => 'myEnum',
       'type' => \TType::I32,
       'enum' => 'MyEnum',
+      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     ];
   public static Map<string, int> $_TFIELDMAP = Map {

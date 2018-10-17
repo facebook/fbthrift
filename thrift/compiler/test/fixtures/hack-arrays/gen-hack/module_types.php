@@ -22,6 +22,7 @@ class Foo implements \IThriftStruct {
         'type' => \TType::STRING,
         ],
         'format' => 'harray',
+      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     2 => dict[
       'var' => 'b',
@@ -45,6 +46,7 @@ class Foo implements \IThriftStruct {
           'format' => 'harray',
         ],
         'format' => 'harray',
+      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     ];
   public static Map<string, int> $_TFIELDMAP = Map {

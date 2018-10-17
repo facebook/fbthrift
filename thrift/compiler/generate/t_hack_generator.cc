@@ -1584,6 +1584,18 @@ void t_hack_generator::generate_php_struct_spec(
       out << indent() << "'union' => true," << endl;
     }
     generate_php_type_spec(out, t);
+    switch ((*m_iter)->get_req()) {
+      case t_field::e_req::T_REQUIRED:
+        out << indent() << "'qualifier' => \\TFieldQualifier::T_REQUIRED,\n";
+        break;
+      case t_field::e_req::T_OPTIONAL:
+        out << indent() << "'qualifier' => \\TFieldQualifier::T_OPTIONAL,\n";
+        break;
+      case t_field::e_req::T_OPT_IN_REQ_OUT:
+        out << indent()
+            << "'qualifier' => \\TFieldQualifier::T_OPT_IN_REQ_OUT,\n";
+        break;
+    }
     indent(out) << "]," << endl;
     indent_down();
   }

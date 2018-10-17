@@ -17,6 +17,7 @@ class A implements \IThriftStruct, \IThriftShapishStruct {
     1 => dict[
       'var' => 'a',
       'type' => \TType::STRING,
+      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     2 => dict[
       'var' => 'map_of_string_to_string',
@@ -30,6 +31,7 @@ class A implements \IThriftStruct, \IThriftShapishStruct {
         'type' => \TType::STRING,
         ],
         'format' => 'harray',
+      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     ];
   public static Map<string, int> $_TFIELDMAP = Map {
@@ -105,6 +107,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
         'type' => \TType::STRING,
         ],
         'format' => 'harray',
+      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     2 => dict[
       'var' => 'map_of_string_to_i32',
@@ -118,6 +121,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
         'type' => \TType::I32,
         ],
         'format' => 'harray',
+      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     3 => dict[
       'var' => 'map_of_string_to_A',
@@ -132,6 +136,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
         'class' => 'A',
         ],
         'format' => 'harray',
+      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     4 => dict[
       'var' => 'map_of_string_to_self',
@@ -146,6 +151,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
         'class' => 'B',
         ],
         'format' => 'harray',
+      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     5 => dict[
       'var' => 'map_of_string_to_list_of_A',
@@ -165,6 +171,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
           'format' => 'harray',
         ],
         'format' => 'harray',
+      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     6 => dict[
       'var' => 'map_of_string_to_map_of_string_to_i32',
@@ -187,6 +194,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
           'format' => 'harray',
         ],
         'format' => 'harray',
+      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     7 => dict[
       'var' => 'map_of_string_to_map_of_string_to_A',
@@ -210,6 +218,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
           'format' => 'harray',
         ],
         'format' => 'harray',
+      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     8 => dict[
       'var' => 'list_of_string',
@@ -219,6 +228,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
         'type' => \TType::STRING,
         ],
         'format' => 'harray',
+      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     9 => dict[
       'var' => 'list_of_map_of_string_to_A',
@@ -238,6 +248,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
           'format' => 'harray',
         ],
         'format' => 'harray',
+      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     10 => dict[
       'var' => 'list_of_self',
@@ -248,6 +259,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
         'class' => 'B',
         ],
         'format' => 'harray',
+      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     11 => dict[
       'var' => 'list_of_list_of_self',
@@ -263,6 +275,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
           'format' => 'harray',
         ],
         'format' => 'harray',
+      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     12 => dict[
       'var' => 'list_of_map_of_string_to_list_of_A',
@@ -287,6 +300,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
           'format' => 'harray',
         ],
         'format' => 'harray',
+      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     ];
   public static Map<string, int> $_TFIELDMAP = Map {
@@ -622,6 +636,7 @@ class C implements \IThriftStruct, \IThriftShapishStruct {
         'type' => \TType::STRING,
         ],
         'format' => 'harray',
+      'qualifier' => \TFieldQualifier::T_OPTIONAL,
       ],
     2 => dict[
       'var' => 'map_of_string_to_i32',
@@ -635,6 +650,7 @@ class C implements \IThriftStruct, \IThriftShapishStruct {
         'type' => \TType::I32,
         ],
         'format' => 'harray',
+      'qualifier' => \TFieldQualifier::T_OPTIONAL,
       ],
     3 => dict[
       'var' => 'map_of_string_to_A',
@@ -649,6 +665,7 @@ class C implements \IThriftStruct, \IThriftShapishStruct {
         'class' => 'A',
         ],
         'format' => 'harray',
+      'qualifier' => \TFieldQualifier::T_OPTIONAL,
       ],
     4 => dict[
       'var' => 'map_of_string_to_self',
@@ -663,6 +680,7 @@ class C implements \IThriftStruct, \IThriftShapishStruct {
         'class' => 'B',
         ],
         'format' => 'harray',
+      'qualifier' => \TFieldQualifier::T_OPTIONAL,
       ],
     5 => dict[
       'var' => 'map_of_string_to_list_of_A',
@@ -682,6 +700,7 @@ class C implements \IThriftStruct, \IThriftShapishStruct {
           'format' => 'harray',
         ],
         'format' => 'harray',
+      'qualifier' => \TFieldQualifier::T_OPTIONAL,
       ],
     6 => dict[
       'var' => 'map_of_string_to_map_of_string_to_i32',
@@ -704,6 +723,7 @@ class C implements \IThriftStruct, \IThriftShapishStruct {
           'format' => 'harray',
         ],
         'format' => 'harray',
+      'qualifier' => \TFieldQualifier::T_OPTIONAL,
       ],
     7 => dict[
       'var' => 'map_of_string_to_map_of_string_to_A',
@@ -727,6 +747,7 @@ class C implements \IThriftStruct, \IThriftShapishStruct {
           'format' => 'harray',
         ],
         'format' => 'harray',
+      'qualifier' => \TFieldQualifier::T_OPTIONAL,
       ],
     8 => dict[
       'var' => 'list_of_string',
@@ -736,6 +757,7 @@ class C implements \IThriftStruct, \IThriftShapishStruct {
         'type' => \TType::STRING,
         ],
         'format' => 'harray',
+      'qualifier' => \TFieldQualifier::T_OPTIONAL,
       ],
     9 => dict[
       'var' => 'list_of_map_of_string_to_A',
@@ -755,6 +777,7 @@ class C implements \IThriftStruct, \IThriftShapishStruct {
           'format' => 'harray',
         ],
         'format' => 'harray',
+      'qualifier' => \TFieldQualifier::T_OPTIONAL,
       ],
     10 => dict[
       'var' => 'list_of_self',
@@ -765,6 +788,7 @@ class C implements \IThriftStruct, \IThriftShapishStruct {
         'class' => 'B',
         ],
         'format' => 'harray',
+      'qualifier' => \TFieldQualifier::T_OPTIONAL,
       ],
     11 => dict[
       'var' => 'list_of_list_of_self',
@@ -780,6 +804,7 @@ class C implements \IThriftStruct, \IThriftShapishStruct {
           'format' => 'harray',
         ],
         'format' => 'harray',
+      'qualifier' => \TFieldQualifier::T_OPTIONAL,
       ],
     12 => dict[
       'var' => 'list_of_map_of_string_to_list_of_A',
@@ -804,6 +829,7 @@ class C implements \IThriftStruct, \IThriftShapishStruct {
           'format' => 'harray',
         ],
         'format' => 'harray',
+      'qualifier' => \TFieldQualifier::T_OPTIONAL,
       ],
     ];
   public static Map<string, int> $_TFIELDMAP = Map {

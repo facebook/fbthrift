@@ -40,6 +40,7 @@ class Fiery extends \TException implements \IThriftStruct {
     1 => dict[
       'var' => 'message',
       'type' => \TType::STRING,
+      'qualifier' => \TFieldQualifier::T_REQUIRED,
       ],
     ];
   public static Map<string, int> $_TFIELDMAP = Map {
@@ -78,6 +79,7 @@ class Serious extends \TException implements \IThriftStruct {
     1 => dict[
       'var' => 'sonnet',
       'type' => \TType::STRING,
+      'qualifier' => \TFieldQualifier::T_OPTIONAL,
       ],
     ];
   public static Map<string, int> $_TFIELDMAP = Map {

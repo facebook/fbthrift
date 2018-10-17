@@ -344,12 +344,18 @@ class ThriftSerializationHelper {
     foreach ($object::$_TSPEC as $field_id => $field) {
       $field_name = $field['var'];
 
-      // Optionals:
-      // When a field is marked as optional and it's not set then
-      // ignore the field. Otherwise, include default value.
-      // Note: If an optional field has a default value,
-      // it will still be added to the buffer.
       if (!isset($object->$field_name)) {
+        if ($field['qualifier'] == TFieldQualifier::T_REQUIRED) {
+          throw new TProtocolException('Missing required field '.$field_name);
+        }
+        // Note: All fields are treated as optional by default
+        // (it stays that way for backward compatibility)
+        //
+        // Optionals:
+        // When a field is marked as optional and it's not set then
+        // ignore the field. Otherwise, include default value.
+        // Note: If an optional field has a default value,
+        // it will still be added to the buffer.
         continue;
       }
 

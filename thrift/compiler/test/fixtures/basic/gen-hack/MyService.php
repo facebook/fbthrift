@@ -1462,6 +1462,7 @@ class MyService_getRandomData_result implements \IThriftStruct {
     0 => dict[
       'var' => 'success',
       'type' => \TType::STRING,
+      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     ];
   public static Map<string, int> $_TFIELDMAP = Map {
@@ -1498,6 +1499,7 @@ class MyService_hasDataById_args implements \IThriftStruct, \IThriftShapishStruc
     1 => dict[
       'var' => 'id',
       'type' => \TType::I64,
+      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     ];
   public static Map<string, int> $_TFIELDMAP = Map {
@@ -1554,6 +1556,7 @@ class MyService_hasDataById_result implements \IThriftStruct {
     0 => dict[
       'var' => 'success',
       'type' => \TType::BOOL,
+      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     ];
   public static Map<string, int> $_TFIELDMAP = Map {
@@ -1590,6 +1593,7 @@ class MyService_getDataById_args implements \IThriftStruct, \IThriftShapishStruc
     1 => dict[
       'var' => 'id',
       'type' => \TType::I64,
+      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     ];
   public static Map<string, int> $_TFIELDMAP = Map {
@@ -1646,6 +1650,7 @@ class MyService_getDataById_result implements \IThriftStruct {
     0 => dict[
       'var' => 'success',
       'type' => \TType::STRING,
+      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     ];
   public static Map<string, int> $_TFIELDMAP = Map {
@@ -1682,10 +1687,12 @@ class MyService_putDataById_args implements \IThriftStruct, \IThriftShapishStruc
     1 => dict[
       'var' => 'id',
       'type' => \TType::I64,
+      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     2 => dict[
       'var' => 'data',
       'type' => \TType::STRING,
+      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     ];
   public static Map<string, int> $_TFIELDMAP = Map {
@@ -1782,10 +1789,12 @@ class MyService_lobDataById_args implements \IThriftStruct, \IThriftShapishStruc
     1 => dict[
       'var' => 'id',
       'type' => \TType::I64,
+      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     2 => dict[
       'var' => 'data',
       'type' => \TType::STRING,
+      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     ];
   public static Map<string, int> $_TFIELDMAP = Map {
