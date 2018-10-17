@@ -193,6 +193,7 @@ class EnumTests(unittest.TestCase):
         self.assertIs(Shape(1), Shape.ROUND)
         self.assertIs(Shape["CIRCLE"], Shape.ROUND)
 
+
 class FlagTests(unittest.TestCase):
 
     def test_flag_enum(self) -> None:
@@ -226,6 +227,10 @@ class FlagTests(unittest.TestCase):
         self.assertNotIn(combo, Perm)
         self.assertIsInstance(combo, Perm)
         self.assertIs(combo, Perm.read | Perm.execute)
+
+    def test_is(self) -> None:
+        allp = Perm(7)
+        self.assertIs(allp, Perm(7))
 
     def test_invert(self) -> None:
         x = Perm(-2)

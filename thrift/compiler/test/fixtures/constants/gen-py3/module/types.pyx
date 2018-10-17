@@ -34,6 +34,7 @@ import sys
 import itertools
 from collections import Sequence, Set, Mapping, Iterable
 import warnings
+import weakref as __weakref
 import builtins as _builtins
 
 cdef object __EmptyEnumEnumInstances = None  # Set[EmptyEnum]
@@ -45,7 +46,7 @@ cdef object __EmptyEnumEnumUniqueValues = dict()    # Dict[int, EmptyEnum]
 cdef class __EmptyEnumMeta(type):
     def __call__(cls, value):
         cdef int cvalue
-        if isinstance(value, cls) and value in __EmptyEnumEnumInstances:
+        if isinstance(value, cls):
             return value
         if isinstance(value, int):
             cvalue = value
@@ -88,7 +89,7 @@ cdef class EmptyEnum(thrift.py3.types.CompiledEnum):
 
     def __cinit__(self, value, name):
         if __EmptyEnumEnumInstances is not None:
-            raise TypeError('For Safty we have disabled __new__')
+            raise TypeError('__new__ is disabled in the interest of type-safety')
         self.value = value
         self.name = name
         self.__hash = hash(name)
@@ -133,7 +134,7 @@ cdef object __CityEnumUniqueValues = dict()    # Dict[int, City]
 cdef class __CityMeta(type):
     def __call__(cls, value):
         cdef int cvalue
-        if isinstance(value, cls) and value in __CityEnumInstances:
+        if isinstance(value, cls):
             return value
         if isinstance(value, int):
             cvalue = value
@@ -192,7 +193,7 @@ cdef class City(thrift.py3.types.CompiledEnum):
 
     def __cinit__(self, value, name):
         if __CityEnumInstances is not None:
-            raise TypeError('For Safty we have disabled __new__')
+            raise TypeError('__new__ is disabled in the interest of type-safety')
         self.value = value
         self.name = name
         self.__hash = hash(name)
@@ -244,7 +245,7 @@ cdef object __CompanyEnumUniqueValues = dict()    # Dict[int, Company]
 cdef class __CompanyMeta(type):
     def __call__(cls, value):
         cdef int cvalue
-        if isinstance(value, cls) and value in __CompanyEnumInstances:
+        if isinstance(value, cls):
             return value
         if isinstance(value, int):
             cvalue = value
@@ -303,7 +304,7 @@ cdef class Company(thrift.py3.types.CompiledEnum):
 
     def __cinit__(self, value, name):
         if __CompanyEnumInstances is not None:
-            raise TypeError('For Safty we have disabled __new__')
+            raise TypeError('__new__ is disabled in the interest of type-safety')
         self.value = value
         self.name = name
         self.__hash = hash(name)

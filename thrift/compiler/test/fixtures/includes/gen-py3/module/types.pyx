@@ -34,6 +34,7 @@ import sys
 import itertools
 from collections import Sequence, Set, Mapping, Iterable
 import warnings
+import weakref as __weakref
 import builtins as _builtins
 cimport includes.types as _includes_types
 import includes.types as _includes_types

@@ -34,6 +34,7 @@ import sys
 import itertools
 from collections import Sequence, Set, Mapping, Iterable
 import warnings
+import weakref as __weakref
 import builtins as _builtins
 
 cdef object __MyEnumAEnumInstances = None  # Set[MyEnumA]
@@ -45,7 +46,7 @@ cdef object __MyEnumAEnumUniqueValues = dict()    # Dict[int, MyEnumA]
 cdef class __MyEnumAMeta(type):
     def __call__(cls, value):
         cdef int cvalue
-        if isinstance(value, cls) and value in __MyEnumAEnumInstances:
+        if isinstance(value, cls):
             return value
         if isinstance(value, int):
             cvalue = value
@@ -100,7 +101,7 @@ cdef class MyEnumA(thrift.py3.types.CompiledEnum):
 
     def __cinit__(self, value, name):
         if __MyEnumAEnumInstances is not None:
-            raise TypeError('For Safty we have disabled __new__')
+            raise TypeError('__new__ is disabled in the interest of type-safety')
         self.value = value
         self.name = name
         self.__hash = hash(name)

@@ -34,6 +34,7 @@ import sys
 import itertools
 from collections import Sequence, Set, Mapping, Iterable
 import warnings
+import weakref as __weakref
 import builtins as _builtins
 
 cdef object __AnEnumEnumInstances = None  # Set[AnEnum]
@@ -45,7 +46,7 @@ cdef object __AnEnumEnumUniqueValues = dict()    # Dict[int, AnEnum]
 cdef class __AnEnumMeta(type):
     def __call__(cls, value):
         cdef int cvalue
-        if isinstance(value, cls) and value in __AnEnumEnumInstances:
+        if isinstance(value, cls):
             return value
         if isinstance(value, int):
             cvalue = value
@@ -108,7 +109,7 @@ cdef class AnEnum(thrift.py3.types.CompiledEnum):
 
     def __cinit__(self, value, name):
         if __AnEnumEnumInstances is not None:
-            raise TypeError('For Safty we have disabled __new__')
+            raise TypeError('__new__ is disabled in the interest of type-safety')
         self.value = value
         self.name = name
         self.__hash = hash(name)
@@ -156,8 +157,7 @@ cdef inline cAnEnum AnEnum_to_cpp(AnEnum value):
 cdef object __FlagsEnumInstances = None  # Set[Flags]
 cdef object __FlagsEnumMembers = {}      # Dict[str, Flags]
 cdef object __FlagsEnumUniqueValues = dict()    # Dict[int, Flags]
-cdef object __FlagsEnumCombinations = None   # Set[Flags]
-cdef object __FlagsEnumValueMapping = None   # Mapping[Int, Flags]
+cdef object __FlagsEnumValueMapping = None  # WeakMapping[Int, Flags]
 
 @__cython.internal
 @__cython.auto_pickle(False)
@@ -165,7 +165,7 @@ cdef class __FlagsMeta(type):
     def __call__(cls, value):
         cdef int cvalue
         cdef bint invert = False
-        if isinstance(value, cls) and value in __FlagsEnumCombinations:
+        if isinstance(value, cls):
             return value
         if isinstance(value, int):
             if value < 0:
@@ -180,11 +180,10 @@ cdef class __FlagsMeta(type):
                 return ~Flags.flag_C if invert else Flags.flag_C
             elif cvalue == 8:
                 return ~Flags.flag_D if invert else Flags.flag_D
-            try:
-                item = __FlagsEnumValueMapping[value]
-                return ~item if invert else item
-            except KeyError:
-                pass  # raise below
+            item = __FlagsEnumValueMapping.get(value, None)
+            if item is None:
+                item = Flags.__new__(Flags, value, None)
+            return ~item if invert else item
 
         raise ValueError(f'{value} is not a valid Flags')
 
@@ -231,8 +230,24 @@ cdef class Flags(thrift.py3.types.Flag):
     __members__ = thrift.py3.types.MappingProxyType(__FlagsEnumMembers)
 
     def __cinit__(self, value, name):
-        if __FlagsEnumCombinations is not None:
-            raise TypeError('For Safty we have disabled __new__')
+        __ExistingValues = __FlagsEnumValueMapping
+        cdef int temp
+        if __ExistingValues is not None:
+            if value < 0 or value in __ExistingValues:
+                raise TypeError('__new__ is disabled in the interest of type-safety')
+            elif value == 0:
+                name = "0"
+            else:
+                combo = []
+                temp = value
+                while temp:
+                    flag = thrift.py3.types.largest_flag(temp)
+                    if flag not in __ExistingValues:
+                        raise ValueError(f'{value} is not a valid Flags')
+                    combo.append(__ExistingValues[flag].name)
+                    temp ^= flag
+                name = '|'.join(combo)
+            __ExistingValues[value] = self
         self.value = value
         self.name = name
         self.__hash = hash(name)
@@ -293,25 +308,9 @@ cdef class Flags(thrift.py3.types.Flag):
 
 __SetMetaClass(<PyTypeObject*> Flags, <PyTypeObject*> __FlagsMeta)
 __FlagsEnumInstances = set(__FlagsEnumUniqueValues.values())
-
-
-cdef object __MakeFlagsCombinations():
-    # Order is important
-    s = tuple(Flags)
-    combos = {p.value: p for p in s}
-    if 0 not in combos:
-        combos[0] = Flags.__new__(Flags, 0, "0")
-    for group in itertools.chain.from_iterable(itertools.combinations(s, r) for r in range(2, len(s)+1)):
-        name = '|'.join(g.name for g in group)
-        value = 0
-        for g in group:
-            value |= g.value
-        combos[value] = Flags.__new__(Flags, value, name)
-    return combos
-
-
-__FlagsEnumValueMapping = __MakeFlagsCombinations()
-__FlagsEnumCombinations = set(__FlagsEnumValueMapping.values())
+__FlagsEnumValueMapping = __weakref.WeakValueDictionary(
+    {f.value: f for f in tuple(Flags)}
+)
 
 
 cdef inline cFlags Flags_to_cpp(Flags value):

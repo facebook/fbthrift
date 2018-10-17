@@ -34,6 +34,7 @@ import sys
 import itertools
 from collections import Sequence, Set, Mapping, Iterable
 import warnings
+import weakref as __weakref
 import builtins as _builtins
 cimport includes.types as _includes_types
 import includes.types as _includes_types
@@ -47,7 +48,7 @@ cdef object __MyEnumAEnumUniqueValues = dict()    # Dict[int, MyEnumA]
 cdef class __MyEnumAMeta(type):
     def __call__(cls, value):
         cdef int cvalue
-        if isinstance(value, cls) and value in __MyEnumAEnumInstances:
+        if isinstance(value, cls):
             return value
         if isinstance(value, int):
             cvalue = value
@@ -102,7 +103,7 @@ cdef class MyEnumA(thrift.py3.types.CompiledEnum):
 
     def __cinit__(self, value, name):
         if __MyEnumAEnumInstances is not None:
-            raise TypeError('For Safty we have disabled __new__')
+            raise TypeError('__new__ is disabled in the interest of type-safety')
         self.value = value
         self.name = name
         self.__hash = hash(name)
@@ -152,7 +153,7 @@ cdef object __AnnotatedEnumEnumUniqueValues = dict()    # Dict[int, AnnotatedEnu
 cdef class __AnnotatedEnumMeta(type):
     def __call__(cls, value):
         cdef int cvalue
-        if isinstance(value, cls) and value in __AnnotatedEnumEnumInstances:
+        if isinstance(value, cls):
             return value
         if isinstance(value, int):
             cvalue = value
@@ -207,7 +208,7 @@ cdef class AnnotatedEnum(thrift.py3.types.CompiledEnum):
 
     def __cinit__(self, value, name):
         if __AnnotatedEnumEnumInstances is not None:
-            raise TypeError('For Safty we have disabled __new__')
+            raise TypeError('__new__ is disabled in the interest of type-safety')
         self.value = value
         self.name = name
         self.__hash = hash(name)
@@ -257,7 +258,7 @@ cdef object __AnnotatedEnum2EnumUniqueValues = dict()    # Dict[int, AnnotatedEn
 cdef class __AnnotatedEnum2Meta(type):
     def __call__(cls, value):
         cdef int cvalue
-        if isinstance(value, cls) and value in __AnnotatedEnum2EnumInstances:
+        if isinstance(value, cls):
             return value
         if isinstance(value, int):
             cvalue = value
@@ -312,7 +313,7 @@ cdef class AnnotatedEnum2(thrift.py3.types.CompiledEnum):
 
     def __cinit__(self, value, name):
         if __AnnotatedEnum2EnumInstances is not None:
-            raise TypeError('For Safty we have disabled __new__')
+            raise TypeError('__new__ is disabled in the interest of type-safety')
         self.value = value
         self.name = name
         self.__hash = hash(name)
@@ -362,7 +363,7 @@ cdef object __MyEnumBEnumUniqueValues = dict()    # Dict[int, MyEnumB]
 cdef class __MyEnumBMeta(type):
     def __call__(cls, value):
         cdef int cvalue
-        if isinstance(value, cls) and value in __MyEnumBEnumInstances:
+        if isinstance(value, cls):
             return value
         if isinstance(value, int):
             cvalue = value
@@ -409,7 +410,7 @@ cdef class MyEnumB(thrift.py3.types.CompiledEnum):
 
     def __cinit__(self, value, name):
         if __MyEnumBEnumInstances is not None:
-            raise TypeError('For Safty we have disabled __new__')
+            raise TypeError('__new__ is disabled in the interest of type-safety')
         self.value = value
         self.name = name
         self.__hash = hash(name)

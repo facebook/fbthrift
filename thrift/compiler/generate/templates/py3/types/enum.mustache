@@ -24,8 +24,7 @@ cdef object __{{enum:name}}EnumInstances = None  # Set[{{enum:name}}]
 cdef object __{{enum:name}}EnumMembers = {}      # Dict[str, {{enum:name}}]
 cdef object __{{enum:name}}EnumUniqueValues = dict()    # Dict[int, {{enum:name}}]
 {{#enum:flags?}}
-cdef object __{{enum:name}}EnumCombinations = None   # Set[{{enum:name}}]
-cdef object __{{enum:name}}EnumValueMapping = None   # Mapping[Int, {{enum:name}}]
+cdef object __{{enum:name}}EnumValueMapping = None  # WeakMapping[Int, {{enum:name}}]
 {{/enum:flags?}}
 
 @__cython.internal
@@ -36,7 +35,7 @@ cdef class __{{enum:name}}Meta(type):
         {{#enum:flags?}}
         cdef bint invert = False
         {{/enum:flags?}}
-        if isinstance(value, cls) and value in __{{enum:name}}Enum{{#enum:flags?}}Combinations{{/enum:flags?}}{{^enum:flags?}}Instances{{/enum:flags?}}:
+        if isinstance(value, cls):
             return value
         if isinstance(value, int):
         {{#enum:flags?}}
@@ -63,11 +62,10 @@ cdef class __{{enum:name}}Meta(type):
             {{/enum:duplicate_values?}}
             {{#last?}}
             {{#enum:flags?}}
-            try:
-                item = __{{enum:name}}EnumValueMapping[value]
-                return ~item if invert else item
-            except KeyError:
-                pass  # raise below
+            item = __{{enum:name}}EnumValueMapping.get(value, None)
+            if item is None:
+                item = {{enum:name}}.__new__({{enum:name}}, value, None)
+            return ~item if invert else item
             {{/enum:flags?}}
             {{/last?}}
             {{/enum:values}}
@@ -116,8 +114,33 @@ cdef class {{enum:name}}(thrift.py3.types.{{^enum:flags?}}CompiledEnum{{/enum:fl
     __members__ = thrift.py3.types.MappingProxyType(__{{enum:name}}EnumMembers)
 
     def __cinit__(self, value, name):
-        if __{{enum:name}}Enum{{#enum:flags?}}Combinations{{/enum:flags?}}{{^enum:flags?}}Instances{{/enum:flags?}} is not None:
-            raise TypeError('For Safty we have disabled __new__')
+        {{^enum:flags?}}
+        if __{{enum:name}}EnumInstances is not None:
+            raise TypeError('__new__ is disabled in the interest of type-safety')
+        {{/enum:flags?}}
+        {{#enum:flags?}}
+        __ExistingValues = __{{enum:name}}EnumValueMapping
+        cdef int temp
+        if __ExistingValues is not None:
+            {{! This is a combination value, not a predefined }}
+            if value < 0 or value in __ExistingValues:
+                raise TypeError('__new__ is disabled in the interest of type-safety')
+            elif value == 0:
+                name = "0"
+            else:
+                {{! Find the decomposed value }}
+                combo = []
+                temp = value
+                while temp:
+                    flag = thrift.py3.types.largest_flag(temp)
+                    if flag not in __ExistingValues:
+                        raise ValueError(f'{value} is not a valid {{enum:name}}')
+                    combo.append(__ExistingValues[flag].name)
+                    temp ^= flag
+                name = '|'.join(combo)
+            {{! Save so combo instances are re-used, this mirrors enum.Flag from python }}
+            __ExistingValues[value] = self
+        {{/enum:flags?}}
         self.value = value
         self.name = name
         self.__hash = hash(name)
@@ -181,25 +204,9 @@ cdef class {{enum:name}}(thrift.py3.types.{{^enum:flags?}}CompiledEnum{{/enum:fl
 __SetMetaClass(<PyTypeObject*> {{enum:name}}, <PyTypeObject*> __{{enum:name}}Meta)
 __{{enum:name}}EnumInstances = set(__{{enum:name}}EnumUniqueValues.values())
 {{#enum:flags?}}
-
-
-cdef object __Make{{enum:name}}Combinations():
-    # Order is important
-    s = tuple({{enum:name}})
-    combos = {p.value: p for p in s}
-    if 0 not in combos:
-        combos[0] = {{enum:name}}.__new__({{enum:name}}, 0, "0")
-    for group in itertools.chain.from_iterable(itertools.combinations(s, r) for r in range(2, len(s)+1)):
-        name = '|'.join(g.name for g in group)
-        value = 0
-        for g in group:
-            value |= g.value
-        combos[value] = {{enum:name}}.__new__({{enum:name}}, value, name)
-    return combos
-
-
-__{{enum:name}}EnumValueMapping = __Make{{enum:name}}Combinations()
-__{{enum:name}}EnumCombinations = set(__{{enum:name}}EnumValueMapping.values())
+__{{enum:name}}EnumValueMapping = __weakref.WeakValueDictionary(
+    {f.value: f for f in tuple({{enum:name}})}
+)
 {{/enum:flags?}}
 
 

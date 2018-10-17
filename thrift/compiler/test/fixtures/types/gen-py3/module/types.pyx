@@ -34,6 +34,7 @@ import sys
 import itertools
 from collections import Sequence, Set, Mapping, Iterable
 import warnings
+import weakref as __weakref
 import builtins as _builtins
 cimport include.types as _include_types
 import include.types as _include_types
@@ -47,7 +48,7 @@ cdef object __has_bitwise_opsEnumUniqueValues = dict()    # Dict[int, has_bitwis
 cdef class __has_bitwise_opsMeta(type):
     def __call__(cls, value):
         cdef int cvalue
-        if isinstance(value, cls) and value in __has_bitwise_opsEnumInstances:
+        if isinstance(value, cls):
             return value
         if isinstance(value, int):
             cvalue = value
@@ -110,7 +111,7 @@ cdef class has_bitwise_ops(thrift.py3.types.CompiledEnum):
 
     def __cinit__(self, value, name):
         if __has_bitwise_opsEnumInstances is not None:
-            raise TypeError('For Safty we have disabled __new__')
+            raise TypeError('__new__ is disabled in the interest of type-safety')
         self.value = value
         self.name = name
         self.__hash = hash(name)
@@ -164,7 +165,7 @@ cdef object __is_unscopedEnumUniqueValues = dict()    # Dict[int, is_unscoped]
 cdef class __is_unscopedMeta(type):
     def __call__(cls, value):
         cdef int cvalue
-        if isinstance(value, cls) and value in __is_unscopedEnumInstances:
+        if isinstance(value, cls):
             return value
         if isinstance(value, int):
             cvalue = value
@@ -215,7 +216,7 @@ cdef class is_unscoped(thrift.py3.types.CompiledEnum):
 
     def __cinit__(self, value, name):
         if __is_unscopedEnumInstances is not None:
-            raise TypeError('For Safty we have disabled __new__')
+            raise TypeError('__new__ is disabled in the interest of type-safety')
         self.value = value
         self.name = name
         self.__hash = hash(name)
@@ -263,7 +264,7 @@ cdef object __MyForwardRefEnumEnumUniqueValues = dict()    # Dict[int, MyForward
 cdef class __MyForwardRefEnumMeta(type):
     def __call__(cls, value):
         cdef int cvalue
-        if isinstance(value, cls) and value in __MyForwardRefEnumEnumInstances:
+        if isinstance(value, cls):
             return value
         if isinstance(value, int):
             cvalue = value
@@ -314,7 +315,7 @@ cdef class MyForwardRefEnum(thrift.py3.types.CompiledEnum):
 
     def __cinit__(self, value, name):
         if __MyForwardRefEnumEnumInstances is not None:
-            raise TypeError('For Safty we have disabled __new__')
+            raise TypeError('__new__ is disabled in the interest of type-safety')
         self.value = value
         self.name = name
         self.__hash = hash(name)

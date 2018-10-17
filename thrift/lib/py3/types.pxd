@@ -29,6 +29,7 @@ cdef class Union(Struct):
 
 
 cdef class CompiledEnum:
+    cdef object __weakref__
     cdef readonly int value
     cdef readonly str name
     cdef object __hash
@@ -38,7 +39,6 @@ cdef class CompiledEnum:
 
 cdef class Flag(CompiledEnum):
     pass
-
 
 cdef class BadEnum:
     cdef object _enum
@@ -92,3 +92,16 @@ cdef inline string bytes_to_string(bytes b) except*:
     cdef char* data
     PyBytes_AsStringAndSize(b, &data, &length)
     return move(string(data, length))  # there is a temp because string can raise
+
+
+cdef inline uint32_t largest_flag(uint32_t v):
+    """
+    Given a 32bit flag field, this identifies the largest bit flag that v is
+    composed of
+    """
+    v |= (v >> 1)
+    v |= (v >> 2)
+    v |= (v >> 4)
+    v |= (v >> 8)
+    v |= (v >> 16)
+    return v ^ (v >> 1)
