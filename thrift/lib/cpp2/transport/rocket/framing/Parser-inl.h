@@ -82,8 +82,8 @@ void Parser<T>::readDataAvailable(size_t nbytes) noexcept {
     // Otherwise, we have a full frame to handle.
     const size_t bytesToClone =
         totalFrameSize - Serializer::kBytesForFrameOrMetadataLength;
-    auto frame = folly::IOBuf::createCombined(bytesToClone);
-    cursor.clone(*frame, bytesToClone);
+    std::unique_ptr<folly::IOBuf> frame;
+    cursor.clone(frame, bytesToClone);
     owner_.handleFrame(std::move(frame));
     readBuffer_.trimStart(totalFrameSize);
   }
