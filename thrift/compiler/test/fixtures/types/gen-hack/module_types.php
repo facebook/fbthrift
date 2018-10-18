@@ -17,7 +17,6 @@ enum has_bitwise_ops: int {
   two = 4;
   three = 8;
 }
-type has_bitwise_opsType = has_bitwise_ops;
 
 /**
  * Original thrift enum:-
@@ -27,7 +26,6 @@ enum is_unscoped: int {
   hello = 0;
   world = 1;
 }
-type is_unscopedType = is_unscoped;
 
 /**
  * Original thrift enum:-
@@ -37,7 +35,6 @@ enum MyForwardRefEnum: int {
   ZERO = 0;
   NONZERO = 12;
 }
-type MyForwardRefEnumType = MyForwardRefEnum;
 
 /**
  * Original thrift struct:-

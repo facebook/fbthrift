@@ -12,7 +12,6 @@
  */
 enum EmptyEnum: int {
 }
-type EmptyEnumType = EmptyEnum;
 
 /**
  * Original thrift enum:-
@@ -24,7 +23,6 @@ enum City: int {
   SEA = 2;
   LON = 3;
 }
-type CityType = City;
 
 /**
  * Original thrift enum:-
@@ -36,7 +34,6 @@ enum Company: int {
   OCULUS = 2;
   INSTAGRAM = 3;
 }
-type CompanyType = Company;
 
 /**
  * Original thrift struct:-

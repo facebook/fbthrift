@@ -13,7 +13,6 @@
 enum Enum: int {
   ENUM = 1;
 }
-type EnumType = Enum;
 
 /**
  * Original thrift struct:-

@@ -18,7 +18,6 @@ enum MyThriftEnum: int {
   bar = 2;
   baz = 3;
 }
-type MyThriftEnumType = MyThriftEnum;
 
 /**
  * Original thrift struct:-

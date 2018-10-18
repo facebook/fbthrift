@@ -68,6 +68,7 @@ class t_hack_generator : public t_oop_generator {
         option_is_specified(parsed_options, "nullable_everything");
     const_collections_ =
         option_is_specified(parsed_options, "const_collections");
+    enum_extratype_ = option_is_specified(parsed_options, "enum_extratype");
     enum_transparenttype_ =
         option_is_specified(parsed_options, "enum_transparenttype");
 
@@ -631,6 +632,11 @@ class t_hack_generator : public t_oop_generator {
   bool const_collections_;
 
   /**
+   * True to generate explicit types for Hack enums: 'type FooType = Foo'
+   */
+  bool enum_extratype_;
+
+  /**
    * True to use transparent typing for Hack enums: 'enum FooBar: int as int'.
    */
   bool enum_transparenttype_;
@@ -1081,7 +1087,7 @@ void t_hack_generator::generate_enum(t_enum* tenum) {
 
   indent_down();
   f_types_ << "}\n";
-  if (hack_enum) {
+  if (hack_enum && enum_extratype_) {
     f_types_ << "type " << typehint << "Type = " << typehint << ";\n";
   }
   f_types_ << "\n";
@@ -5190,4 +5196,5 @@ THRIFT_REGISTER_GENERATOR(
     "    lazy_constants   Generate lazy initialization code for global constants.\n"
     "    arrays           Use Hack arrays for maps/lists/sets instead of objects.\n"
     "    const_collections Use ConstCollection objects rather than their mutable counterparts.\n"
+    "    enum_extratype   Generate explicit types for Hack enums: 'type FooType = Foo'.\n"
     "    enum_transparenttype Use transparent typing for Hack enums: 'enum FooBar: int as int'.\n");

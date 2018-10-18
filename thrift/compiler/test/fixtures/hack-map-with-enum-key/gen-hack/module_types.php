@@ -14,7 +14,6 @@ enum FooEnum: int {
   BAR = 0;
   BAZ = 1;
 }
-type FooEnumType = FooEnum;
 
 /**
  * Original thrift struct:-

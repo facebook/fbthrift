@@ -15,7 +15,6 @@ enum Animal: int {
   CAT = 2;
   TARANTULA = 3;
 }
-type AnimalType = Animal;
 
 /**
  * Original thrift struct:-

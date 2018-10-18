@@ -14,7 +14,6 @@ enum MyEnum: int {
   MyValue1 = 0;
   MyValue2 = 1;
 }
-type MyEnumType = MyEnum;
 
 /**
  * Original thrift exception:-

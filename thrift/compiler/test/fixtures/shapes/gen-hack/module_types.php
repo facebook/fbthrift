@@ -15,7 +15,6 @@ namespace test\fixtures;
 enum Enum: int {
   ENUM = 1;
 }
-type EnumType = Enum;
 
 enum UnionEnum: int {
   _EMPTY_ = 0;
