@@ -220,13 +220,10 @@ class ThreadManager : public virtual folly::Executor {
 
   /**
    * Creates a simple thread manager the uses count number of worker threads
-   * and has a pendingTaskCountMax maximum pending tasks. The default, 0,
-   * specified no limit on pending tasks.
    */
   template <typename SemType = folly::LifoSem>
   static std::shared_ptr<ThreadManager> newSimpleThreadManager(
       size_t count = 4,
-      size_t pendingTaskCountMax = 0,
       bool enableTaskStats = false);
 
   /**

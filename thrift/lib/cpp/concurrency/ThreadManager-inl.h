@@ -640,10 +640,8 @@ class SimpleThreadManager : public ThreadManager::ImplT<SemType> {
  public:
   explicit SimpleThreadManager(
       size_t workerCount = 4,
-      size_t pendingTaskCountMax = 0,
       bool enableTaskStats = false)
-      : ThreadManager::Impl(pendingTaskCountMax, enableTaskStats),
-        workerCount_(workerCount) {}
+      : ThreadManager::Impl(0, enableTaskStats), workerCount_(workerCount) {}
 
   void start() override {
     if (this->state() == this->STARTED) {
@@ -660,10 +658,8 @@ class SimpleThreadManager : public ThreadManager::ImplT<SemType> {
 template <typename SemType>
 shared_ptr<ThreadManager> ThreadManager::newSimpleThreadManager(
     size_t count,
-    size_t pendingTaskCountMax,
     bool enableTaskStats) {
-  return make_shared<SimpleThreadManager<SemType>>(
-      count, pendingTaskCountMax, enableTaskStats);
+  return make_shared<SimpleThreadManager<SemType>>(count, enableTaskStats);
 }
 
 template <typename SemType>
@@ -672,12 +668,8 @@ class PriorityQueueThreadManager : public ThreadManager::ImplT<SemType> {
   typedef apache::thrift::concurrency::PRIORITY PRIORITY;
   explicit PriorityQueueThreadManager(
       size_t numThreads,
-      size_t pendingTaskCountMax = 0,
       bool enableTaskStats = false)
-      : ThreadManager::ImplT<SemType>(
-            pendingTaskCountMax,
-            enableTaskStats,
-            N_PRIORITIES),
+      : ThreadManager::ImplT<SemType>(0, enableTaskStats, N_PRIORITIES),
         numThreads_(numThreads) {}
 
   class PriorityFunctionRunner :
@@ -796,7 +788,7 @@ shared_ptr<ThreadManager> ThreadManager::newPriorityQueueThreadManager(
     size_t numThreads,
     bool enableTaskStats) {
   auto tm = make_shared<PriorityQueueThreadManager<SemType>>(
-      numThreads, /* pendingTaskCountMax = */ 0, enableTaskStats);
+      numThreads, enableTaskStats);
   tm->threadFactory(Factory(PosixThreadFactory::NORMAL));
   return tm;
 }

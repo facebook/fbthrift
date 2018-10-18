@@ -110,8 +110,7 @@ static void loadTest(size_t numTasks, int64_t timeout, size_t numWorkers) {
   Monitor monitor;
   size_t tasksLeft = numTasks;
 
-  auto threadManager =
-    ThreadManager::newSimpleThreadManager(numWorkers, 0, true);
+  auto threadManager = ThreadManager::newSimpleThreadManager(numWorkers, true);
   auto threadFactory = std::make_shared<PosixThreadFactory>();
   threadManager->threadFactory(threadFactory);
   threadManager->start();
@@ -259,121 +258,6 @@ class BlockTask: public Runnable {
   bool started_;
 };
 
-/**
- * Block test.
- * Create pendingTaskCountMax tasks.  Verify that we block adding the
- * pendingTaskCountMax + 1th task.  Verify that we unblock when a task
- * completes
- */
-static void blockTest(int64_t /*timeout*/, size_t numWorkers) {
-  size_t pendingTaskMaxCount = numWorkers;
-
-  auto threadManager =
-    ThreadManager::newSimpleThreadManager(numWorkers, pendingTaskMaxCount);
-  auto threadFactory = std::make_shared<PosixThreadFactory>();
-  threadManager->threadFactory(threadFactory);
-  threadManager->start();
-
-  Monitor monitor;
-  Monitor bmonitor;
-
-  // Add an initial set of tasks, 1 task per worker
-  bool blocked1 = true;
-  size_t tasksCount1 = numWorkers;
-  std::set<std::shared_ptr<BlockTask>> tasks;
-  for (size_t ix = 0; ix < numWorkers; ix++) {
-    auto task = std::make_shared<BlockTask>(
-        &monitor, &bmonitor, &blocked1, &tasksCount1);
-    tasks.insert(task);
-    threadManager->add(task);
-  }
-  REQUIRE_EQUAL_TIMEOUT(threadManager->totalTaskCount(), numWorkers);
-
-  // Add a second set of tasks.
-  // All of these will end up pending since the first set of tasks
-  // are using up all of the worker threads and are still blocked
-  bool blocked2 = true;
-  size_t tasksCount2 = pendingTaskMaxCount;
-  for (size_t ix = 0; ix < pendingTaskMaxCount; ix++) {
-    auto task = std::make_shared<BlockTask>(
-        &monitor, &bmonitor, &blocked2, &tasksCount2);
-    tasks.insert(task);
-    threadManager->add(task);
-  }
-
-  REQUIRE_EQUAL_TIMEOUT(threadManager->totalTaskCount(),
-                      numWorkers + pendingTaskMaxCount);
-  REQUIRE_EQUAL_TIMEOUT(threadManager->pendingTaskCountMax(),
-                      pendingTaskMaxCount);
-
-  // Attempt to add one more task.
-  // Since the pending task count is full, this should fail
-  bool blocked3 = true;
-  size_t tasksCount3 = 1;
-  auto extraTask = std::make_shared<BlockTask>(
-      &monitor, &bmonitor, &blocked3, &tasksCount3);
-  ASSERT_THROW(threadManager->add(extraTask, 1), TimedOutException);
-
-  ASSERT_THROW(threadManager->add(extraTask, -1), TooManyPendingTasksException);
-
-  // Unblock the first set of tasks
-  {
-    Synchronized s(bmonitor);
-    blocked1 = false;
-    bmonitor.notifyAll();
-  }
-  // Wait for the first set of tasks to all finish
-  {
-    Synchronized s(monitor);
-    while (tasksCount1 != 0) {
-      monitor.wait();
-    }
-  }
-
-  // We should be able to add the extra task now
-  try {
-    threadManager->add(extraTask, 1);
-  } catch (const TimedOutException& e) {
-    FAIL() << "Unexpected timeout adding task";
-  } catch (const TooManyPendingTasksException& e) {
-    FAIL() << "Unexpected failure adding task";
-  }
-
-  // Unblock the second set of tasks
-  {
-    Synchronized s(bmonitor);
-    blocked2 = false;
-    bmonitor.notifyAll();
-  }
-  {
-    Synchronized s(monitor);
-    while (tasksCount2 != 0) {
-      monitor.wait();
-    }
-  }
-
-  // Unblock the extra task
-  {
-    Synchronized s(bmonitor);
-    blocked3 = false;
-    bmonitor.notifyAll();
-  }
-  {
-    Synchronized s(monitor);
-    while (tasksCount3 != 0) {
-      monitor.wait();
-    }
-  }
-
-  CHECK_EQUAL_TIMEOUT(threadManager->totalTaskCount(), 0);
-}
-
-TEST_F(ThreadManagerTest, BlockTest) {
-  int64_t timeout = 50;
-  size_t numWorkers = 100;
-  blockTest(timeout, numWorkers);
-}
-
 static void expireTestCallback(std::shared_ptr<Runnable>,
                                Monitor* monitor,
                                size_t* count) {
@@ -389,8 +273,7 @@ static void expireTest(size_t numWorkers, int64_t expirationTimeMs) {
   size_t activeTasks = numWorkers + maxPendingTasks;
   Monitor monitor;
 
-  auto threadManager =
-    ThreadManager::newSimpleThreadManager(numWorkers, maxPendingTasks);
+  auto threadManager = ThreadManager::newSimpleThreadManager(numWorkers);
   auto threadFactory = std::make_shared<PosixThreadFactory>();
   threadManager->threadFactory(threadFactory);
   threadManager->setExpireCallback(

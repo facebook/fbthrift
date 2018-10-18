@@ -303,7 +303,6 @@ void ThriftServer::setup() {
         auto numThreads = getNumSaslThreadsToRun();
         saslThreadManager_ = ThreadManager::newSimpleThreadManager(
             numThreads,
-            0, /* pendingTaskCountMax -- no limit */
             false /* enableTaskStats */);
         saslThreadManager_->setNamePrefix(saslThreadsNamePrefix_);
         saslThreadManager_->threadFactory(threadFactory_);

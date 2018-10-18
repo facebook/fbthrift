@@ -609,12 +609,8 @@ public:
         std::make_shared<CppServerEventHandler>(serverEventHandler));
   }
 
-  void setNewSimpleThreadManager(
-      size_t count,
-      size_t pendingTaskCountMax,
-      bool enableTaskStats) {
-    auto tm = ThreadManager::newSimpleThreadManager(
-        count, pendingTaskCountMax, enableTaskStats);
+  void setNewSimpleThreadManager(size_t count, size_t, bool enableTaskStats) {
+    auto tm = ThreadManager::newSimpleThreadManager(count, enableTaskStats);
     auto poolThreadName = getCPUWorkerThreadName();
     if (!poolThreadName.empty()) {
       tm->setNamePrefix(poolThreadName);
