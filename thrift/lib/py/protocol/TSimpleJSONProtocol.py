@@ -37,7 +37,6 @@ JSON_NEW_LINE = b'\n'
 JSON_PAIR_SEPARATOR = b':'
 JSON_ELEM_SEPARATOR = b','
 JSON_BACKSLASH = b'\\'
-JSON_BACKSLASH_VALUE = ord(JSON_BACKSLASH)
 JSON_STRING_DELIMITER = b'"'
 JSON_ZERO_CHAR = b'0'
 JSON_TAB = b"  "
@@ -363,10 +362,10 @@ class TSimpleJSONProtocolBase(TProtocolBase, object):
         self.trans.write(hexChar(ch))
 
     def writeJSONChar(self, ch):
-        charValue = ord(ch)
+        charValue = ord(ch) if not isinstance(ch, int) else ch
+        ch = chr(ch) if isinstance(ch, int) else ch
         if charValue >= 0x30:
-            # The only special character >= 0x30 is '\'.
-            if charValue == JSON_BACKSLASH_VALUE:
+            if ch == JSON_BACKSLASH:  # Only special character >= 0x30 is '\'.
                 self.trans.write(JSON_BACKSLASH)
                 self.trans.write(JSON_BACKSLASH)
             else:
@@ -384,15 +383,11 @@ class TSimpleJSONProtocolBase(TProtocolBase, object):
     def writeJSONString(self, outStr):
         self.context.write(self.trans)
         self.trans.write(JSON_STRING_DELIMITER)
-        if outStr:
+        is_bytes_type = isinstance(outStr, bytes)
+        for i in range(len(outStr)):
             # Slicing of bytes in Py3 produces bytes!
-            is_int = isinstance(outStr[0], int)
-            if is_int:
-                for i in range(len(outStr)):
-                    self.writeJSONChar(outStr[i:i + 1])
-            else:
-                for ch in outStr:
-                    self.writeJSONChar(ch)
+            ch = outStr[i:(i + 1)] if is_bytes_type else outStr[i]
+            self.writeJSONChar(ch)
         self.trans.write(JSON_STRING_DELIMITER)
 
     def writeJSONBase64(self, outStr):

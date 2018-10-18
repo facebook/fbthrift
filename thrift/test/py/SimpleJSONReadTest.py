@@ -1,10 +1,8 @@
-# -*- coding: utf-8 -*-
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 from __future__ import unicode_literals
 
-import sys
 import unittest
 import math
 
@@ -52,16 +50,6 @@ class TestSimpleJSONRead(unittest.TestCase):
         j = writeToJSON(stuff)
         stuff_read = readStuffFromJSON(j)
         self.assertEqual(stuff_read.aString, '\\hello')
-
-    def test_unicode_string(self):
-        stuff = Stuff(
-            aString='año'.encode('utf-8'))
-        j = writeToJSON(stuff)
-        stuff_read = readStuffFromJSON(j)
-        if sys.version_info[0] == 3:
-            self.assertEqual(stuff_read.aString, 'año')
-        else:
-            self.assertEqual(stuff_read.aString, 'año'.encode('utf-8'))
 
     def test_unusual_numbers(self):
         j = '{ "aListOfDouble": ["inf", "-inf", "nan"]}'
