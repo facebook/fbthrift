@@ -2598,7 +2598,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
         MyStruct self, *,
         MyIntField=None,
         str MyStringField=None,
-        major=None,
+        majorVer=None,
         MyDataItem data=None
     ):
         if MyIntField is not None:
@@ -2606,17 +2606,17 @@ cdef class MyStruct(thrift.py3.types.Struct):
                 raise TypeError(f'MyIntField is not a { int !r}.')
             MyIntField = <int64_t> MyIntField
 
-        if major is not None:
-            if not isinstance(major, int):
-                raise TypeError(f'major is not a { int !r}.')
-            major = <int64_t> major
+        if majorVer is not None:
+            if not isinstance(majorVer, int):
+                raise TypeError(f'majorVer is not a { int !r}.')
+            majorVer = <int64_t> majorVer
 
         self._cpp_obj = move(MyStruct._make_instance(
           NULL,
           NULL,
           MyIntField,
           MyStringField,
-          major,
+          majorVer,
           data,
         ))
 
@@ -2624,7 +2624,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
         MyStruct self,
         MyIntField=__NOTSET,
         MyStringField=__NOTSET,
-        major=__NOTSET,
+        majorVer=__NOTSET,
         data=__NOTSET
     ):
         ___NOTSET = __NOTSET  # Cheaper for larger structs
@@ -2645,9 +2645,9 @@ cdef class MyStruct(thrift.py3.types.Struct):
             __isNOTSET[1] = False
             changes = True
 
-        if major is ___NOTSET:
+        if majorVer is ___NOTSET:
             __isNOTSET[2] = True
-            major = None
+            majorVer = None
         else:
             __isNOTSET[2] = False
             changes = True
@@ -2672,10 +2672,10 @@ cdef class MyStruct(thrift.py3.types.Struct):
             if not isinstance(MyStringField, str):
                 raise TypeError(f'MyStringField is not a { str !r}.')
 
-        if major is not None:
-            if not isinstance(major, int):
-                raise TypeError(f'major is not a { int !r}.')
-            major = <int64_t> major
+        if majorVer is not None:
+            if not isinstance(majorVer, int):
+                raise TypeError(f'majorVer is not a { int !r}.')
+            majorVer = <int64_t> majorVer
 
         if data is not None:
             if not isinstance(data, MyDataItem):
@@ -2687,7 +2687,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
           __isNOTSET,
           MyIntField,
           MyStringField,
-          major,
+          majorVer,
           data,
         ))
         return inst
@@ -2698,7 +2698,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
         bint* __isNOTSET,
         object MyIntField ,
         str MyStringField ,
-        object major ,
+        object majorVer ,
         MyDataItem data 
     ) except *:
         cdef unique_ptr[cMyStruct] c_inst
@@ -2719,9 +2719,9 @@ cdef class MyStruct(thrift.py3.types.Struct):
                 deref(c_inst).__isset.MyStringField = False
                 pass
 
-            if not __isNOTSET[2] and major is None:
-                deref(c_inst).major = _MyStruct_defaults.major
-                deref(c_inst).__isset.major = False
+            if not __isNOTSET[2] and majorVer is None:
+                deref(c_inst).majorVer = _MyStruct_defaults.majorVer
+                deref(c_inst).__isset.majorVer = False
                 pass
 
             if not __isNOTSET[3] and data is None:
@@ -2735,9 +2735,9 @@ cdef class MyStruct(thrift.py3.types.Struct):
         if MyStringField is not None:
             deref(c_inst).MyStringField = thrift.py3.types.move(thrift.py3.types.bytes_to_string(MyStringField.encode('utf-8')))
             deref(c_inst).__isset.MyStringField = True
-        if major is not None:
-            deref(c_inst).major = major
-            deref(c_inst).__isset.major = True
+        if majorVer is not None:
+            deref(c_inst).majorVer = majorVer
+            deref(c_inst).__isset.majorVer = True
         if data is not None:
             deref(c_inst).data = deref((<MyDataItem?> data)._cpp_obj)
             deref(c_inst).__isset.data = True
@@ -2748,7 +2748,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
     def __iter__(self):
         yield 'MyIntField', self.MyIntField
         yield 'MyStringField', self.MyStringField
-        yield 'major', self.major
+        yield 'majorVer', self.majorVer
         yield 'data', self.data
 
     def __bool__(self):
@@ -2771,9 +2771,9 @@ cdef class MyStruct(thrift.py3.types.Struct):
         return (<bytes>deref(self._cpp_obj).MyStringField).decode('UTF-8')
 
     @property
-    def major(self):
+    def majorVer(self):
 
-        return deref(self._cpp_obj).major
+        return deref(self._cpp_obj).majorVer
 
     @property
     def data(self):
@@ -2788,7 +2788,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
             self.__hash = hash((
             self.MyIntField,
             self.MyStringField,
-            self.major,
+            self.majorVer,
             self.data,
             ))
         return self.__hash
@@ -2798,14 +2798,14 @@ cdef class MyStruct(thrift.py3.types.Struct):
             return False
         elif self.MyStringField != other.MyStringField:
             return False
-        elif self.major != other.major:
+        elif self.majorVer != other.majorVer:
             return False
         elif self.data != other.data:
             return False
         return True
 
     def __repr__(MyStruct self):
-        return f'MyStruct(MyIntField={repr(self.MyIntField)}, MyStringField={repr(self.MyStringField)}, major={repr(self.major)}, data={repr(self.data)})'
+        return f'MyStruct(MyIntField={repr(self.MyIntField)}, MyStringField={repr(self.MyStringField)}, majorVer={repr(self.majorVer)}, data={repr(self.data)})'
     def __copy__(MyStruct self):
         cdef shared_ptr[cMyStruct] cpp_obj = make_shared[cMyStruct](
             deref(self._cpp_obj)

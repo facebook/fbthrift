@@ -9,10 +9,6 @@
 
 #include <folly/Indestructible.h>
 
-#pragma push_macro("major")
-#undef major
-
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 }}}} // apache::thrift::fixtures::types
-#pragma pop_macro("major")

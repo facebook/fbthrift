@@ -1752,12 +1752,12 @@ func (p *MinPadding) String() string {
 // Attributes:
 //  - MyIntField
 //  - MyStringField
-//  - Major
+//  - MajorVer
 //  - Data
 type MyStruct struct {
   MyIntField int64 `thrift:"MyIntField,1" db:"MyIntField" json:"MyIntField"`
   MyStringField string `thrift:"MyStringField,2" db:"MyStringField" json:"MyStringField"`
-  Major int64 `thrift:"major,3" db:"major" json:"major"`
+  MajorVer int64 `thrift:"majorVer,3" db:"majorVer" json:"majorVer"`
   Data *MyDataItem `thrift:"data,4" db:"data" json:"data"`
 }
 
@@ -1774,8 +1774,8 @@ func (p *MyStruct) GetMyStringField() string {
   return p.MyStringField
 }
 
-func (p *MyStruct) GetMajor() int64 {
-  return p.Major
+func (p *MyStruct) GetMajorVer() int64 {
+  return p.MajorVer
 }
 var MyStruct_Data_DEFAULT *MyDataItem
 func (p *MyStruct) GetData() *MyDataItem {
@@ -1854,7 +1854,7 @@ func (p *MyStruct)  ReadField3(iprot thrift.Protocol) error {
   if v, err := iprot.ReadI64(); err != nil {
   return thrift.PrependError("error reading field 3: ", err)
 } else {
-  p.Major = v
+  p.MajorVer = v
 }
   return nil
 }
@@ -1902,12 +1902,12 @@ func (p *MyStruct) writeField2(oprot thrift.Protocol) (err error) {
 }
 
 func (p *MyStruct) writeField3(oprot thrift.Protocol) (err error) {
-  if err := oprot.WriteFieldBegin("major", thrift.I64, 3); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T write field begin error 3:major: ", p), err) }
-  if err := oprot.WriteI64(int64(p.Major)); err != nil {
-  return thrift.PrependError(fmt.Sprintf("%T.major (3) field write error: ", p), err) }
+  if err := oprot.WriteFieldBegin("majorVer", thrift.I64, 3); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 3:majorVer: ", p), err) }
+  if err := oprot.WriteI64(int64(p.MajorVer)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.majorVer (3) field write error: ", p), err) }
   if err := oprot.WriteFieldEnd(); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T write field end error 3:major: ", p), err) }
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 3:majorVer: ", p), err) }
   return err
 }
 

@@ -1074,7 +1074,7 @@ class MyStruct implements \IThriftStruct {
       'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     3 => dict[
-      'var' => 'major',
+      'var' => 'majorVer',
       'type' => \TType::I64,
       'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
@@ -1088,10 +1088,10 @@ class MyStruct implements \IThriftStruct {
   public static Map<string, int> $_TFIELDMAP = Map {
     'MyIntField' => 1,
     'MyStringField' => 2,
-    'major' => 3,
+    'majorVer' => 3,
     'data' => 4,
   };
-  const int STRUCTURAL_ID = 5516071879051135479;
+  const int STRUCTURAL_ID = 2472338421128341558;
   /**
    * Original thrift field:-
    * 1: i64 MyIntField
@@ -1104,16 +1104,16 @@ class MyStruct implements \IThriftStruct {
   public string $MyStringField;
   /**
    * Original thrift field:-
-   * 3: i64 major
+   * 3: i64 majorVer
    */
-  public int $major;
+  public int $majorVer;
   /**
    * Original thrift field:-
    * 4: struct module.MyDataItem data
    */
   public ?MyDataItem $data;
 
-  public function __construct(?int $MyIntField = null, ?string $MyStringField = null, ?int $major = null, ?MyDataItem $data = null  ) {
+  public function __construct(?int $MyIntField = null, ?string $MyStringField = null, ?int $majorVer = null, ?MyDataItem $data = null  ) {
     if ($MyIntField === null) {
       $this->MyIntField = 0;
     } else {
@@ -1124,10 +1124,10 @@ class MyStruct implements \IThriftStruct {
     } else {
       $this->MyStringField = $MyStringField;
     }
-    if ($major === null) {
-      $this->major = 0;
+    if ($majorVer === null) {
+      $this->majorVer = 0;
     } else {
-      $this->major = $major;
+      $this->majorVer = $majorVer;
     }
     $this->data = $data;
   }
@@ -1149,8 +1149,8 @@ class MyStruct implements \IThriftStruct {
     if (idx($parsed, 'MyStringField') !== null) {
       $this->MyStringField = $parsed['MyStringField'];
     }    
-    if (idx($parsed, 'major') !== null) {
-      $this->major = $parsed['major'];
+    if (idx($parsed, 'majorVer') !== null) {
+      $this->majorVer = $parsed['majorVer'];
     }    
     if (idx($parsed, 'data') !== null) {
       $_tmp0 = json_encode($parsed['data']);

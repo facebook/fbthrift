@@ -12,9 +12,6 @@
 
 #include "src/gen-cpp2/module_data.h"
 
-#pragma push_macro("major")
-#undef major
-
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 const _has_bitwise_ops_EnumMapFactory::ValuesToNamesMapType _has_bitwise_ops_VALUES_TO_NAMES = _has_bitwise_ops_EnumMapFactory::makeValuesToNamesMap();
@@ -272,7 +269,7 @@ void TccStructTraits< ::apache::thrift::fixtures::types::MyStruct>::translateFie
     fid = 2;
     _ftype = apache::thrift::protocol::T_STRING;
   }
-  else if (_fname == "major") {
+  else if (_fname == "majorVer") {
     fid = 3;
     _ftype = apache::thrift::protocol::T_I64;
   }
@@ -1026,14 +1023,14 @@ template uint32_t MinPadding::serializedSizeZC<>(apache::thrift::CompactProtocol
 }}}} // apache::thrift::fixtures::types
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 
-MyStruct::MyStruct(apache::thrift::FragileConstructor, int64_t MyIntField__arg, std::string MyStringField__arg, int64_t major__arg,  ::apache::thrift::fixtures::types::MyDataItem data__arg) :
+MyStruct::MyStruct(apache::thrift::FragileConstructor, int64_t MyIntField__arg, std::string MyStringField__arg, int64_t majorVer__arg,  ::apache::thrift::fixtures::types::MyDataItem data__arg) :
     MyIntField(std::move(MyIntField__arg)),
     MyStringField(std::move(MyStringField__arg)),
-    major(std::move(major__arg)),
+    majorVer(std::move(majorVer__arg)),
     data(std::move(data__arg)) {
   __isset.MyIntField = true;
   __isset.MyStringField = true;
-  __isset.major = true;
+  __isset.majorVer = true;
   __isset.data = true;
 }
 
@@ -1041,7 +1038,7 @@ void MyStruct::__clear() {
   // clear all fields
   MyIntField = 0;
   MyStringField = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
-  major = 0;
+  majorVer = 0;
   __isset = {};
 }
 
@@ -1060,7 +1057,7 @@ void swap(MyStruct& a, MyStruct& b) {
   using ::std::swap;
   swap(a.MyIntField, b.MyIntField);
   swap(a.MyStringField, b.MyStringField);
-  swap(a.major, b.major);
+  swap(a.majorVer, b.majorVer);
   swap(a.data, b.data);
   swap(a.__isset, b.__isset);
 }
@@ -1152,5 +1149,3 @@ template uint32_t Renaming::serializedSize<>(apache::thrift::CompactProtocolWrit
 template uint32_t Renaming::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 }}}} // apache::thrift::fixtures::types
-
-#pragma pop_macro("major")

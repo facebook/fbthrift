@@ -353,7 +353,7 @@ class MyStruct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typi
         self, *,
         MyIntField: _typing.Optional[int]=None,
         MyStringField: _typing.Optional[str]=None,
-        major: _typing.Optional[int]=None,
+        majorVer: _typing.Optional[int]=None,
         data: _typing.Optional['MyDataItem']=None
     ) -> None: ...
 
@@ -361,7 +361,7 @@ class MyStruct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typi
         self, *,
         MyIntField: _typing.Union[int, NOTSETTYPE, None]=NOTSET,
         MyStringField: _typing.Union[str, NOTSETTYPE, None]=NOTSET,
-        major: _typing.Union[int, NOTSETTYPE, None]=NOTSET,
+        majorVer: _typing.Union[int, NOTSETTYPE, None]=NOTSET,
         data: _typing.Union['MyDataItem', NOTSETTYPE, None]=NOTSET
     ) -> MyStruct: ...
 
@@ -380,7 +380,7 @@ class MyStruct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typi
     @__property__
     def MyStringField(self) -> str: ...
     @__property__
-    def major(self) -> int: ...
+    def majorVer(self) -> int: ...
     @__property__
     def data(self) -> 'MyDataItem': ...
 

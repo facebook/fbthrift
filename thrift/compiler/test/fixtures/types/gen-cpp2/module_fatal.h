@@ -39,7 +39,6 @@ struct apache_thrift_fixtures_types_module__unique_strings_list {
   using Renaming = ::fatal::sequence<char, 'R', 'e', 'n', 'a', 'm', 'i', 'n', 'g'>;
   using bounce_map = ::fatal::sequence<char, 'b', 'o', 'u', 'n', 'c', 'e', '_', 'm', 'a', 'p'>;
   using MyIntField = ::fatal::sequence<char, 'M', 'y', 'I', 'n', 't', 'F', 'i', 'e', 'l', 'd'>;
-  using major = ::fatal::sequence<char, 'm', 'a', 'j', 'o', 'r'>;
   using MinPadding = ::fatal::sequence<char, 'M', 'i', 'n', 'P', 'a', 'd', 'd', 'i', 'n', 'g'>;
   using two = ::fatal::sequence<char, 't', 'w', 'o'>;
   using tiny = ::fatal::sequence<char, 't', 'i', 'n', 'y'>;
@@ -82,6 +81,7 @@ struct apache_thrift_fixtures_types_module__unique_strings_list {
   using TrivialNestedWithDefault = ::fatal::sequence<char, 'T', 'r', 'i', 'v', 'i', 'a', 'l', 'N', 'e', 's', 't', 'e', 'd', 'W', 'i', 't', 'h', 'D', 'e', 'f', 'a', 'u', 'l', 't'>;
   using z = ::fatal::sequence<char, 'z'>;
   using decorated_struct = ::fatal::sequence<char, 'd', 'e', 'c', 'o', 'r', 'a', 't', 'e', 'd', '_', 's', 't', 'r', 'u', 'c', 't'>;
+  using majorVer = ::fatal::sequence<char, 'm', 'a', 'j', 'o', 'r', 'V', 'e', 'r'>;
 };
 
 } // thrift_fatal_impl_detail

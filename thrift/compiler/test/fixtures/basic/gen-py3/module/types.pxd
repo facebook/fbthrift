@@ -49,7 +49,7 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "cpp2":
         bint MyIntField
         bint MyStringField
         bint MyDataField
-        bint major
+        bint major "majorVer"
         bint myEnum
 
     cdef cppclass cMyStruct "cpp2::MyStruct":
@@ -63,7 +63,7 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "cpp2":
         int64_t MyIntField
         string MyStringField
         cMyDataItem MyDataField
-        int64_t major
+        int64_t major "majorVer"
         cMyEnum myEnum
         cMyStruct__isset __isset
 

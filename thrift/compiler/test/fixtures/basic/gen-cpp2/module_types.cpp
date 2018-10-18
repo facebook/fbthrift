@@ -12,9 +12,6 @@
 
 #include "src/gen-cpp2/module_data.h"
 
-#pragma push_macro("major")
-#undef major
-
 namespace cpp2 {
 
 const _MyEnum_EnumMapFactory::ValuesToNamesMapType _MyEnum_VALUES_TO_NAMES = _MyEnum_EnumMapFactory::makeValuesToNamesMap();
@@ -86,22 +83,22 @@ namespace cpp2 {
 
 MyStruct::MyStruct() :
       MyIntField(0),
-      major(0),
+      majorVer(0),
       myEnum( ::cpp2::MyEnum::MyValue1) {}
 
 
 MyStruct::~MyStruct() {}
 
-MyStruct::MyStruct(apache::thrift::FragileConstructor, int64_t MyIntField__arg, std::string MyStringField__arg,  ::cpp2::MyDataItem MyDataField__arg, int64_t major__arg,  ::cpp2::MyEnum myEnum__arg) :
+MyStruct::MyStruct(apache::thrift::FragileConstructor, int64_t MyIntField__arg, std::string MyStringField__arg,  ::cpp2::MyDataItem MyDataField__arg, int64_t majorVer__arg,  ::cpp2::MyEnum myEnum__arg) :
     MyIntField(std::move(MyIntField__arg)),
     MyStringField(std::move(MyStringField__arg)),
     MyDataField(std::move(MyDataField__arg)),
-    major(std::move(major__arg)),
+    majorVer(std::move(majorVer__arg)),
     myEnum(std::move(myEnum__arg)) {
   __isset.MyIntField = true;
   __isset.MyStringField = true;
   __isset.MyDataField = true;
-  __isset.major = true;
+  __isset.majorVer = true;
   __isset.myEnum = true;
 }
 
@@ -109,7 +106,7 @@ void MyStruct::__clear() {
   // clear all fields
   MyIntField = 0;
   MyStringField = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
-  major = 0;
+  majorVer = 0;
   myEnum =  ::cpp2::MyEnum::MyValue1;
   __isset = {};
 }
@@ -127,7 +124,7 @@ bool MyStruct::operator==(const MyStruct& rhs) const {
   if (!(lhs.MyDataField == rhs.MyDataField)) {
     return false;
   }
-  if (!(lhs.major == rhs.major)) {
+  if (!(lhs.majorVer == rhs.majorVer)) {
     return false;
   }
   if (!(lhs.myEnum == rhs.myEnum)) {
@@ -149,8 +146,8 @@ bool MyStruct::operator<(const MyStruct& rhs) const {
   if (!(lhs.MyDataField == rhs.MyDataField)) {
     return lhs.MyDataField < rhs.MyDataField;
   }
-  if (!(lhs.major == rhs.major)) {
-    return lhs.major < rhs.major;
+  if (!(lhs.majorVer == rhs.majorVer)) {
+    return lhs.majorVer < rhs.majorVer;
   }
   if (!(lhs.myEnum == rhs.myEnum)) {
     return lhs.myEnum < rhs.myEnum;
@@ -172,7 +169,7 @@ void swap(MyStruct& a, MyStruct& b) {
   swap(a.MyIntField, b.MyIntField);
   swap(a.MyStringField, b.MyStringField);
   swap(a.MyDataField, b.MyDataField);
-  swap(a.major, b.major);
+  swap(a.majorVer, b.majorVer);
   swap(a.myEnum, b.myEnum);
   swap(a.__isset, b.__isset);
 }
@@ -226,5 +223,3 @@ template uint32_t MyDataItem::serializedSize<>(apache::thrift::CompactProtocolWr
 template uint32_t MyDataItem::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 } // cpp2
-
-#pragma pop_macro("major")

@@ -39,7 +39,7 @@ struct apache_thrift_fixtures_types_module__struct_unique_data_member_getters_li
   FATAL_DATA_MEMBER_GETTER(biggish, biggish);
   FATAL_DATA_MEMBER_GETTER(tiny, tiny);
   FATAL_DATA_MEMBER_GETTER(MyStringField, MyStringField);
-  FATAL_DATA_MEMBER_GETTER(major, major);
+  FATAL_DATA_MEMBER_GETTER(majorVer, majorVer);
   FATAL_DATA_MEMBER_GETTER(data, data);
   FATAL_DATA_MEMBER_GETTER(bar, bar);
 };
@@ -167,8 +167,8 @@ struct apache_thrift_fixtures_types_module__struct_unique_member_pod_list {
 
   template <typename T_apache_thrift_fixtures_types_module_struct_member_pod>
 
-  struct apache_thrift_fixtures_types_module_struct_member_pod_major {
-    T_apache_thrift_fixtures_types_module_struct_member_pod major;
+  struct apache_thrift_fixtures_types_module_struct_member_pod_majorVer {
+    T_apache_thrift_fixtures_types_module_struct_member_pod majorVer;
   };
 
   template <typename T_apache_thrift_fixtures_types_module_struct_member_pod>
@@ -979,7 +979,7 @@ class MyStruct_apache_thrift_fixtures_types_module__struct_unique_annotations {
       >;
     };
 
-    class MyStruct_apache_thrift_fixtures_types_module__struct_unique_annotations_members_major {
+    class MyStruct_apache_thrift_fixtures_types_module__struct_unique_annotations_members_majorVer {
       public:
       using keys = void;
       using values = void;
@@ -997,7 +997,7 @@ class MyStruct_apache_thrift_fixtures_types_module__struct_unique_annotations {
     public:
     using MyIntField = ::apache::thrift::reflected_annotations<MyStruct_apache_thrift_fixtures_types_module__struct_unique_annotations_members_MyIntField>;
     using MyStringField = ::apache::thrift::reflected_annotations<MyStruct_apache_thrift_fixtures_types_module__struct_unique_annotations_members_MyStringField>;
-    using major = ::apache::thrift::reflected_annotations<MyStruct_apache_thrift_fixtures_types_module__struct_unique_annotations_members_major>;
+    using majorVer = ::apache::thrift::reflected_annotations<MyStruct_apache_thrift_fixtures_types_module__struct_unique_annotations_members_majorVer>;
     using data = ::apache::thrift::reflected_annotations<MyStruct_apache_thrift_fixtures_types_module__struct_unique_annotations_members_data>;
   };
 
@@ -1051,15 +1051,15 @@ struct MyStruct_apache_thrift_fixtures_types_module__struct_unique_member_info_l
     ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::MyStruct_apache_thrift_fixtures_types_module__struct_unique_annotations::members::MyStringField>,
     MyStruct
   >;
-  using major = ::apache::thrift::reflected_struct_data_member<
-    thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__unique_strings_list::major,
+  using majorVer = ::apache::thrift::reflected_struct_data_member<
+    thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__unique_strings_list::majorVer,
     int64_t,
     3,
     ::apache::thrift::optionality::required_of_writer,
-    thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__struct_unique_data_member_getters_list::major,
+    thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__struct_unique_data_member_getters_list::majorVer,
     ::apache::thrift::type_class::integral,
-    thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__struct_unique_member_pod_list::apache_thrift_fixtures_types_module_struct_member_pod_major,
-    ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::MyStruct_apache_thrift_fixtures_types_module__struct_unique_annotations::members::major>,
+    thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__struct_unique_member_pod_list::apache_thrift_fixtures_types_module_struct_member_pod_majorVer,
+    ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::MyStruct_apache_thrift_fixtures_types_module__struct_unique_annotations::members::majorVer>,
     MyStruct
   >;
   using data = ::apache::thrift::reflected_struct_data_member<
@@ -1314,7 +1314,7 @@ THRIFT_REGISTER_STRUCT_TRAITS(
   ::fatal::list<
       thrift_fatal_impl_detail::MyStruct_apache_thrift_fixtures_types_module__struct_unique_member_info_list::MyIntField,
       thrift_fatal_impl_detail::MyStruct_apache_thrift_fixtures_types_module__struct_unique_member_info_list::MyStringField,
-      thrift_fatal_impl_detail::MyStruct_apache_thrift_fixtures_types_module__struct_unique_member_info_list::major,
+      thrift_fatal_impl_detail::MyStruct_apache_thrift_fixtures_types_module__struct_unique_member_info_list::majorVer,
       thrift_fatal_impl_detail::MyStruct_apache_thrift_fixtures_types_module__struct_unique_member_info_list::data
   >,
   thrift_fatal_impl_detail::MyStruct_apache_thrift_fixtures_types_module__struct_unique_annotations::members,

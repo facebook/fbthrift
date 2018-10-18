@@ -10,9 +10,6 @@
 
 #include "src/gen-cpp2/module_types.h"
 
-#pragma push_macro("major")
-#undef major
-
 namespace cpp2 {
 
 struct module_constants {
@@ -20,4 +17,3 @@ struct module_constants {
 };
 
 } // cpp2
-#pragma pop_macro("major")

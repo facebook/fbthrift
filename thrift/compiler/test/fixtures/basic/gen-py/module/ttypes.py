@@ -282,6 +282,9 @@ MyStruct.thrift_spec = (
 MyStruct.thrift_struct_annotations = {
 }
 MyStruct.thrift_field_annotations = {
+  4: {
+    "cpp.name": """majorVer""",
+  },
 }
 
 def MyStruct__init__(self, MyIntField=None, MyStringField=None, MyDataField=None, major=None, myEnum=None,):

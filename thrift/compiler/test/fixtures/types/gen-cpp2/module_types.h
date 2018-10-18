@@ -12,9 +12,6 @@
 #include <thrift/lib/cpp2/protocol/Protocol.h>
 
 #include "thrift/compiler/test/fixtures/types/gen-cpp2/include_types.h"
-#pragma push_macro("major")
-#undef major
-
 
 // BEGIN declare_enums
 namespace apache { namespace thrift { namespace fixtures { namespace types {
@@ -1486,9 +1483,9 @@ class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<M
 
   MyStruct() :
       MyIntField(0),
-      major(0) {}
+      majorVer(0) {}
   // FragileConstructor for use in initialization lists only.
-  MyStruct(apache::thrift::FragileConstructor, int64_t MyIntField__arg, std::string MyStringField__arg, int64_t major__arg,  ::apache::thrift::fixtures::types::MyDataItem data__arg);
+  MyStruct(apache::thrift::FragileConstructor, int64_t MyIntField__arg, std::string MyStringField__arg, int64_t majorVer__arg,  ::apache::thrift::fixtures::types::MyDataItem data__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
     MyIntField = arg.extract();
@@ -1501,8 +1498,8 @@ class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<M
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<3, _T> arg) {
-    major = arg.extract();
-    __isset.major = true;
+    majorVer = arg.extract();
+    __isset.majorVer = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<4, _T> arg) {
@@ -1520,13 +1517,13 @@ class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<M
   void __clear();
   int64_t MyIntField;
   std::string MyStringField;
-  int64_t major;
+  int64_t majorVer;
    ::apache::thrift::fixtures::types::MyDataItem data;
 
   struct __isset {
     bool MyIntField;
     bool MyStringField;
-    bool major;
+    bool majorVer;
     bool data;
   } __isset = {};
 
@@ -1555,14 +1552,14 @@ class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<M
     return MyStringField;
   }
 
-  int64_t get_major() const {
-    return major;
+  int64_t get_majorVer() const {
+    return majorVer;
   }
 
-  int64_t& set_major(int64_t major_) {
-    major = major_;
-    __isset.major = true;
-    return major;
+  int64_t& set_majorVer(int64_t majorVer_) {
+    majorVer = majorVer_;
+    __isset.majorVer = true;
+    return majorVer;
   }
   const  ::apache::thrift::fixtures::types::MyDataItem& get_data() const&;
    ::apache::thrift::fixtures::types::MyDataItem get_data() &&;
@@ -1814,5 +1811,3 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::apache::thrift::fixtur
 }
 
 }} // apache::thrift
-
-#pragma pop_macro("major")

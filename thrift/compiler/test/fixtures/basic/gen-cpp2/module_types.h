@@ -11,9 +11,6 @@
 #include <thrift/lib/cpp2/gen/module_types_h.h>
 #include <thrift/lib/cpp2/protocol/Protocol.h>
 
-#pragma push_macro("major")
-#undef major
-
 
 // BEGIN declare_enums
 namespace cpp2 {
@@ -85,7 +82,7 @@ class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<M
   MyStruct();
 
   // FragileConstructor for use in initialization lists only.
-  MyStruct(apache::thrift::FragileConstructor, int64_t MyIntField__arg, std::string MyStringField__arg,  ::cpp2::MyDataItem MyDataField__arg, int64_t major__arg,  ::cpp2::MyEnum myEnum__arg);
+  MyStruct(apache::thrift::FragileConstructor, int64_t MyIntField__arg, std::string MyStringField__arg,  ::cpp2::MyDataItem MyDataField__arg, int64_t majorVer__arg,  ::cpp2::MyEnum myEnum__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
     MyIntField = arg.extract();
@@ -103,8 +100,8 @@ class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<M
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<4, _T> arg) {
-    major = arg.extract();
-    __isset.major = true;
+    majorVer = arg.extract();
+    __isset.majorVer = true;
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<5, _T> arg) {
@@ -126,14 +123,14 @@ class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<M
   int64_t MyIntField;
   std::string MyStringField;
    ::cpp2::MyDataItem MyDataField;
-  int64_t major;
+  int64_t majorVer;
    ::cpp2::MyEnum myEnum;
 
   struct __isset {
     bool MyIntField;
     bool MyStringField;
     bool MyDataField;
-    bool major;
+    bool majorVer;
     bool myEnum;
   } __isset = {};
   bool operator==(const MyStruct& rhs) const;
@@ -173,14 +170,14 @@ class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<M
     return MyDataField;
   }
 
-  int64_t get_major() const {
-    return major;
+  int64_t get_majorVer() const {
+    return majorVer;
   }
 
-  int64_t& set_major(int64_t major_) {
-    major = major_;
-    __isset.major = true;
-    return major;
+  int64_t& set_majorVer(int64_t majorVer_) {
+    majorVer = majorVer_;
+    __isset.majorVer = true;
+    return majorVer;
   }
 
    ::cpp2::MyEnum get_myEnum() const {
@@ -334,5 +331,3 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::MyDataItem>::ser
 }
 
 }} // apache::thrift
-
-#pragma pop_macro("major")

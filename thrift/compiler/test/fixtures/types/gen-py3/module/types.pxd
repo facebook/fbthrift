@@ -504,7 +504,7 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "apache::thrift::fixtur
     cdef cppclass cMyStruct__isset "apache::thrift::fixtures::types::MyStruct::__isset":
         bint MyIntField
         bint MyStringField
-        bint major
+        bint majorVer
         bint data
 
     cdef cppclass cMyStruct "apache::thrift::fixtures::types::MyStruct":
@@ -512,7 +512,7 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "apache::thrift::fixtur
         cMyStruct(const cMyStruct&) except +
         int64_t MyIntField
         string MyStringField
-        int64_t major
+        int64_t majorVer
         cMyDataItem data
         cMyStruct__isset __isset
 
@@ -843,7 +843,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
         bint* __isNOTSET,
         object MyIntField,
         str MyStringField,
-        object major,
+        object majorVer,
         MyDataItem data
     ) except *
 

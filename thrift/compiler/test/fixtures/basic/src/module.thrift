@@ -10,8 +10,8 @@ struct MyStruct {
   2: string MyStringField,
   # use the type before it is defined. Thrift should be able to handle this
   3: MyDataItem MyDataField,
-  # glibc has macros with this name, Thrift should properly push/pop the macro
-  4: i64 major,
+  # glibc has macros with this name, Thrift should be able to prevent collisions
+  4: i64 major (cpp.name = "majorVer"),
   5: MyEnum myEnum,
 }
 

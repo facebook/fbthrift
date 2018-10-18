@@ -87,7 +87,7 @@ struct MinPadding {
 struct MyStruct {
   1: i64 MyIntField,
   2: string MyStringField,
-  3: i64 major,
+  3: i64 majorVer,
   4: MyDataItem data,
 } (cpp2.noncomparable)
 

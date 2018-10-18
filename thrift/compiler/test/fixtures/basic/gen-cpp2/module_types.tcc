@@ -15,9 +15,6 @@
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 #include <thrift/lib/cpp2/protocol/ProtocolReaderStructReadState.h>
 
-#pragma push_macro("major")
-#undef major
-
 namespace cpp2 {
 
 } // cpp2
@@ -108,10 +105,10 @@ _readField_MyDataField:
           apache::thrift::protocol::T_I64))) {
     goto _loop;
   }
-_readField_major:
+_readField_majorVer:
   {
-    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::read(*iprot, this->major);
-    this->__isset.major = true;
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::read(*iprot, this->majorVer);
+    this->__isset.majorVer = true;
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -176,7 +173,7 @@ _loop:
     case 4:
     {
       if (LIKELY(_readState.fieldType == apache::thrift::protocol::T_I64)) {
-        goto _readField_major;
+        goto _readField_majorVer;
       } else {
         goto _skip;
       }
@@ -211,7 +208,7 @@ uint32_t MyStruct::serializedSize(Protocol_ const* prot_) const {
   xfer += prot_->serializedFieldSize("MyDataField", apache::thrift::protocol::T_STRUCT, 3);
   xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::MyDataItem>::serializedSize(prot_, &this->MyDataField);
   xfer += prot_->serializedFieldSize("major", apache::thrift::protocol::T_I64, 4);
-  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::serializedSize<false>(*prot_, this->major);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::serializedSize<false>(*prot_, this->majorVer);
   xfer += prot_->serializedFieldSize("myEnum", apache::thrift::protocol::T_I32, 5);
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::cpp2::MyEnum>::serializedSize<false>(*prot_, this->myEnum);
   xfer += prot_->serializedSizeStop();
@@ -229,7 +226,7 @@ uint32_t MyStruct::serializedSizeZC(Protocol_ const* prot_) const {
   xfer += prot_->serializedFieldSize("MyDataField", apache::thrift::protocol::T_STRUCT, 3);
   xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::MyDataItem>::serializedSizeZC(prot_, &this->MyDataField);
   xfer += prot_->serializedFieldSize("major", apache::thrift::protocol::T_I64, 4);
-  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::serializedSize<false>(*prot_, this->major);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::serializedSize<false>(*prot_, this->majorVer);
   xfer += prot_->serializedFieldSize("myEnum", apache::thrift::protocol::T_I32, 5);
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::cpp2::MyEnum>::serializedSize<false>(*prot_, this->myEnum);
   xfer += prot_->serializedSizeStop();
@@ -250,7 +247,7 @@ uint32_t MyStruct::write(Protocol_* prot_) const {
   xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::MyDataItem>::write(prot_, &this->MyDataField);
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldBegin("major", apache::thrift::protocol::T_I64, 4);
-  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::write(*prot_, this->major);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::write(*prot_, this->majorVer);
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldBegin("myEnum", apache::thrift::protocol::T_I32, 5);
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::cpp2::MyEnum>::write(*prot_, this->myEnum);
@@ -330,5 +327,3 @@ uint32_t MyDataItem::write(Protocol_* prot_) const {
 }
 
 } // cpp2
-
-#pragma pop_macro("major")
