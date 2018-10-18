@@ -17,15 +17,7 @@
 
 #include <glog/logging.h>
 
-#include <boost/python/class.hpp>
-#include <boost/python/def.hpp>
-#include <boost/python/dict.hpp>
-#include <boost/python/enum.hpp>
-#include <boost/python/errors.hpp>
-#include <boost/python/import.hpp>
-#include <boost/python/list.hpp>
-#include <boost/python/module.hpp>
-#include <boost/python/tuple.hpp>
+#include <boost/python.hpp>
 
 #include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
 #include <thrift/lib/cpp/concurrency/ThreadManager.h>

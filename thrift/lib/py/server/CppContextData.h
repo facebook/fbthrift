@@ -16,9 +16,7 @@
 
 #pragma once
 
-#include <boost/python/object.hpp>
-#include <boost/python/str.hpp>
-#include <boost/python/tuple.hpp>
+#include <boost/python.hpp>
 #include <folly/SocketAddress.h>
 #include <thrift/lib/cpp2/server/Cpp2ConnContext.h>
 
