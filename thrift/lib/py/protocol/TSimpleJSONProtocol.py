@@ -37,6 +37,7 @@ JSON_NEW_LINE = b'\n'
 JSON_PAIR_SEPARATOR = b':'
 JSON_ELEM_SEPARATOR = b','
 JSON_BACKSLASH = b'\\'
+JSON_BACKSLASH_VALUE = ord(JSON_BACKSLASH)
 JSON_STRING_DELIMITER = b'"'
 JSON_ZERO_CHAR = b'0'
 JSON_TAB = b"  "
@@ -59,6 +60,20 @@ JSON_CHAR_TABLE = [ \
     0,  0,   0,  0,  0,  0,  0,  0,   0,   0,   0,  0,   0,   0,  0,  0, \
     1,  1,b'"',  1,  1,  1,  1,  1,   1,   1,   1,  1,   1,   1,  1,  1, \
 ]
+
+
+JSON_CHARS_TO_ESCAPE = set()
+for ch_value, mode in enumerate(JSON_CHAR_TABLE):
+    if mode == 1:
+        continue
+    if sys.version_info[0] == 3:
+        JSON_CHARS_TO_ESCAPE.add(chr(ch_value).encode('ascii'))
+        JSON_CHARS_TO_ESCAPE.add(chr(ch_value))
+    else:
+        JSON_CHARS_TO_ESCAPE.add(chr(ch_value))
+        JSON_CHARS_TO_ESCAPE.add(chr(ch_value).encode('utf-8'))
+JSON_CHARS_TO_ESCAPE.add(JSON_BACKSLASH)
+JSON_CHARS_TO_ESCAPE.add(JSON_BACKSLASH.decode('utf-8'))
 
 ESCAPE_CHARS = b"\"\\bfnrt"
 ESCAPE_CHAR_VALS = [b'"', b'\\', b'\b', b'\f', b'\n', b'\r', b'\t']
@@ -98,8 +113,7 @@ class TJSONContext:
         self.indent(trans)
 
     def indent(self, trans):
-        for _i in range(self.indentLevel):
-            trans.write(JSON_TAB)
+        trans.write(JSON_TAB * self.indentLevel)
 
 
 class TJSONPairContext(TJSONContext):
@@ -362,10 +376,10 @@ class TSimpleJSONProtocolBase(TProtocolBase, object):
         self.trans.write(hexChar(ch))
 
     def writeJSONChar(self, ch):
-        charValue = ord(ch) if not isinstance(ch, int) else ch
-        ch = chr(ch) if isinstance(ch, int) else ch
+        charValue = ord(ch)
         if charValue >= 0x30:
-            if ch == JSON_BACKSLASH:  # Only special character >= 0x30 is '\'.
+            # The only special character >= 0x30 is '\'.
+            if charValue == JSON_BACKSLASH_VALUE:
                 self.trans.write(JSON_BACKSLASH)
                 self.trans.write(JSON_BACKSLASH)
             else:
@@ -383,11 +397,24 @@ class TSimpleJSONProtocolBase(TProtocolBase, object):
     def writeJSONString(self, outStr):
         self.context.write(self.trans)
         self.trans.write(JSON_STRING_DELIMITER)
-        is_bytes_type = isinstance(outStr, bytes)
-        for i in range(len(outStr)):
-            # Slicing of bytes in Py3 produces bytes!
-            ch = outStr[i:(i + 1)] if is_bytes_type else outStr[i]
-            self.writeJSONChar(ch)
+        outStrLen = len(outStr)
+        if outStrLen > 0:
+            is_int = isinstance(outStr[0], int)
+            pos = 0
+            for idx, ch in enumerate(outStr):
+                if is_int:
+                    ch = outStr[idx:idx + 1]
+                if ch in JSON_CHARS_TO_ESCAPE:
+                    if pos < idx:
+                        # Write previous chunk not requiring escaping
+                        self.trans.write(outStr[pos:idx])
+                    # Write current char with escaping
+                    self.writeJSONChar(ch)
+                    # Advance pos
+                    pos = idx + 1
+            if pos < outStrLen:
+                # Write last chunk till outStrLen
+                self.trans.write(outStr[pos:outStrLen])
         self.trans.write(JSON_STRING_DELIMITER)
 
     def writeJSONBase64(self, outStr):
