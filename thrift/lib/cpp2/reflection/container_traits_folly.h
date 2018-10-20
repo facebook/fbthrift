@@ -34,13 +34,19 @@ template <class T, std::size_t M, class A, class B, class C>
 struct thrift_list_traits<folly::small_vector<T, M, A, B, C>>
     : thrift_list_traits_std<folly::small_vector<T, M, A, B, C>> {};
 
-template <typename T, typename C, typename A, typename G>
-struct thrift_set_traits<folly::sorted_vector_set<T, C, A, G>>
-    : thrift_set_traits_std<folly::sorted_vector_set<T, C, A, G>> {};
+template <typename T, typename C, typename A, typename G, typename CT>
+struct thrift_set_traits<folly::sorted_vector_set<T, C, A, G, CT>>
+    : thrift_set_traits_std<folly::sorted_vector_set<T, C, A, G, CT>> {};
 
-template <typename K, typename V, typename C, typename A, typename G>
-struct thrift_map_traits<folly::sorted_vector_map<K, V, C, A, G>>
-    : thrift_map_traits_std<folly::sorted_vector_map<K, V, C, A, G>> {};
+template <
+    typename K,
+    typename V,
+    typename C,
+    typename A,
+    typename G,
+    typename CT>
+struct thrift_map_traits<folly::sorted_vector_map<K, V, C, A, G, CT>>
+    : thrift_map_traits_std<folly::sorted_vector_map<K, V, C, A, G, CT>> {};
 
 template <class K, class H, class E, class A>
 struct thrift_set_traits<folly::F14ValueSet<K, H, E, A>>
