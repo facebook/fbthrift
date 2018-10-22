@@ -52,9 +52,7 @@ void readPayloadCommon(
   if (expectingMetadata) {
     metadataSize = readFrameOrMetadataSize(cursor);
     if (metadataSize > 0) {
-      auto& metadata = frame.payload().metadata();
-      metadata = folly::IOBuf::createCombined(metadataSize);
-      cursor.clone(*metadata, metadataSize);
+      cursor.clone(frame.payload().metadata(), metadataSize);
     }
     metadataSize += Serializer::kBytesForFrameOrMetadataLength;
   }
