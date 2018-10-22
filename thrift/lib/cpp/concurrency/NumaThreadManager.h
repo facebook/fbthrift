@@ -167,11 +167,6 @@ class NumaThreadManager : public ThreadManager {
     return sum(&ThreadManager::totalTaskCount);
   }
 
-  size_t pendingTaskCountMax() const override {
-    throw IllegalStateException("Not implemented");
-    return 0;
-  }
-
   size_t expiredTaskCount() override {
     return sum(&ThreadManager::expiredTaskCount);
   }

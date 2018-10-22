@@ -99,30 +99,26 @@ class ThreadManager::ImplT : public ThreadManager,
   class Worker;
 
  public:
-  explicit ImplT(size_t pendingTaskCountMaxArg = 0,
-                 bool enableTaskStats = false,
-                 size_t numPriorities = 1) :
-    workerCount_(0),
-    intendedWorkerCount_(0),
-    idleCount_(0),
-    totalTaskCount_(0),
-    pendingTaskCountMax_(pendingTaskCountMaxArg),
-    expiredCount_(0),
-    workersToStop_(0),
-    enableTaskStats_(enableTaskStats),
-    statsLock_{0},
-    waitingTimeUs_(0),
-    executingTimeUs_(0),
-    numTasks_(0),
-    state_(ThreadManager::UNINITIALIZED),
-    tasks_(numPriorities),
-    monitor_(&mutex_),
-    maxMonitor_(&mutex_),
-    deadWorkerMonitor_(&mutex_),
-    deadWorkers_(),
-    namePrefix_(""),
-    namePrefixCounter_(0),
-    codelEnabled_(false || FLAGS_codel_enabled) {}
+  explicit ImplT(bool enableTaskStats = false, size_t numPriorities = 1)
+      : workerCount_(0),
+        intendedWorkerCount_(0),
+        idleCount_(0),
+        totalTaskCount_(0),
+        expiredCount_(0),
+        workersToStop_(0),
+        enableTaskStats_(enableTaskStats),
+        statsLock_{0},
+        waitingTimeUs_(0),
+        executingTimeUs_(0),
+        numTasks_(0),
+        state_(ThreadManager::UNINITIALIZED),
+        tasks_(numPriorities),
+        monitor_(&mutex_),
+        deadWorkerMonitor_(&mutex_),
+        deadWorkers_(),
+        namePrefix_(""),
+        namePrefixCounter_(0),
+        codelEnabled_(false || FLAGS_codel_enabled) {}
 
   ~ImplT() override { stop(); }
 
@@ -174,10 +170,6 @@ class ThreadManager::ImplT : public ThreadManager,
 
   size_t totalTaskCount() const override {
     return totalTaskCount_;
-  }
-
-  size_t pendingTaskCountMax() const override {
-    return pendingTaskCountMax_;
   }
 
   size_t expiredTaskCount() override {
@@ -253,7 +245,6 @@ class ThreadManager::ImplT : public ThreadManager,
  private:
   void stopImpl(bool joinArg);
   void removeWorkerImpl(size_t value, bool afterTasks = false);
-  void maybeNotifyMaxMonitor(bool shouldLock);
   bool shouldStop();
 
   size_t workerCount_;
@@ -264,7 +255,6 @@ class ThreadManager::ImplT : public ThreadManager,
   size_t intendedWorkerCount_;
   std::atomic<size_t> idleCount_;
   std::atomic<size_t> totalTaskCount_;
-  const size_t pendingTaskCountMax_;
   size_t expiredCount_;
   std::atomic<int> workersToStop_;
 
@@ -289,9 +279,6 @@ class ThreadManager::ImplT : public ThreadManager,
   // - state_ changes
   Monitor monitor_;
   SemType waitSem_;
-  // maxMonitor_ is signalled when the number of pending tasks drops below
-  // pendingTaskCountMax_
-  Monitor maxMonitor_;
   // deadWorkerMonitor_ is signaled whenever a worker thread exits
   Monitor deadWorkerMonitor_;
   std::deque<shared_ptr<Thread> > deadWorkers_;

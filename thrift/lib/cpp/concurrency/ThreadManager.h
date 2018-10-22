@@ -138,22 +138,12 @@ class ThreadManager : public virtual folly::Executor {
   virtual size_t totalTaskCount() const = 0;
 
   /**
-   * Gets the maximum pending task count.  0 indicates no maximum
-   */
-  virtual size_t pendingTaskCountMax() const = 0;
-
-  /**
    * Gets the number of tasks which have been expired without being run.
    */
   virtual size_t expiredTaskCount() = 0;
 
   /**
    * Adds a task to be executed at some time in the future by a worker thread.
-   *
-   * This method will block if pendingTaskCountMax() in not zero and
-   * pendingTaskCount() is greater than or equal to pendingTaskCountMax().  If
-   * this method is called in the context of a ThreadManager worker thread it
-   * will throw a TooManyPendingTasksException
    *
    * @param task  The task to queue for execution
    *
@@ -395,7 +385,6 @@ class ThreadManagerExecutorAdapter : public ThreadManager {
   size_t workerCount() const override { return 0; }
   size_t pendingTaskCount() const override { return 0; }
   size_t totalTaskCount() const override { return 0; }
-  size_t pendingTaskCountMax() const override { return 0; }
   size_t expiredTaskCount() override { return 0; }
 
   void add(std::shared_ptr<Runnable> task,

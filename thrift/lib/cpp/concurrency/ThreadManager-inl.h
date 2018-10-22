@@ -356,13 +356,12 @@ void ThreadManager::ImplT<SemType>::add(
 
 template <typename SemType>
 void ThreadManager::ImplT<SemType>::add(
-  size_t priority,
-  shared_ptr<Runnable> value,
-  int64_t timeout,
-  int64_t expiration,
-  bool /*cancellable*/,
-  bool numa
-) {
+    size_t priority,
+    shared_ptr<Runnable> value,
+    int64_t /*timeout*/,
+    int64_t expiration,
+    bool /*cancellable*/,
+    bool numa) {
   if (numa) {
     VLOG_EVERY_N(1, 100) << "ThreadManager::add called with numa == true, but "
                          << "not a NumaThreadManager";
@@ -371,24 +370,6 @@ void ThreadManager::ImplT<SemType>::add(
   if (state_ != ThreadManager::STARTED) {
     throw IllegalStateException("ThreadManager::Impl::add ThreadManager "
                                 "not started");
-  }
-
-  if (pendingTaskCountMax_ > 0
-      && tasks_.size() >= pendingTaskCountMax_) {
-    Guard g(mutex_, std::chrono::milliseconds(timeout));
-
-    if (!g) {
-      throw TimedOutException();
-    }
-    if (canSleep() && timeout >= 0) {
-      while (pendingTaskCountMax_ > 0
-             && tasks_.size() >= pendingTaskCountMax_) {
-        // This is thread safe because the mutex is shared between monitors.
-        maxMonitor_.wait(timeout);
-      }
-    } else {
-      throw TooManyPendingTasksException();
-    }
   }
 
   auto task = std::make_unique<Task>(
@@ -415,10 +396,6 @@ bool ThreadManager::ImplT<SemType>::tryAdd(
   shared_ptr<Runnable> value
 ) {
   if (state_ != ThreadManager::STARTED) {
-    return false;
-  }
-  if (pendingTaskCountMax_ > 0 &&
-      tasks_.size() >= pendingTaskCountMax_) {
     return false;
   }
 
@@ -461,7 +438,6 @@ std::shared_ptr<Runnable> ThreadManager::ImplT<SemType>::removeNextPending() {
   if (tasks_.read(task)) {
     std::shared_ptr<Runnable> r = task->getRunnable();
     --totalTaskCount_;
-    maybeNotifyMaxMonitor(false);
     return r;
   } else {
     return std::shared_ptr<Runnable>();
@@ -501,7 +477,6 @@ ThreadManager::ImplT<SemType>::waitOnTask() {
   // Fast path - if tasks are ready, get one
   if (tasks_.read(task)) {
     --totalTaskCount_;
-    maybeNotifyMaxMonitor(true);
     return task;
   }
 
@@ -528,22 +503,7 @@ ThreadManager::ImplT<SemType>::waitOnTask() {
   // totalTaskCount_ doesn't change:
   // the decrement of idleCount_ and the dequeueing of a task cancel each other
 
-  maybeNotifyMaxMonitor(true);
   return task;
-}
-
-template <typename SemType>
-void ThreadManager::ImplT<SemType>::maybeNotifyMaxMonitor(bool shouldLock) {
-  if (pendingTaskCountMax_ != 0
-      && tasks_.size() < pendingTaskCountMax_) {
-    if (shouldLock) {
-      Guard g(mutex_);
-      maxMonitor_.notify();
-    } else {
-      assert(mutex_.isLocked());
-      maxMonitor_.notify();
-    }
-  }
 }
 
 template <typename SemType>
@@ -641,7 +601,7 @@ class SimpleThreadManager : public ThreadManager::ImplT<SemType> {
   explicit SimpleThreadManager(
       size_t workerCount = 4,
       bool enableTaskStats = false)
-      : ThreadManager::Impl(0, enableTaskStats), workerCount_(workerCount) {}
+      : ThreadManager::Impl(enableTaskStats), workerCount_(workerCount) {}
 
   void start() override {
     if (this->state() == this->STARTED) {
@@ -669,7 +629,7 @@ class PriorityQueueThreadManager : public ThreadManager::ImplT<SemType> {
   explicit PriorityQueueThreadManager(
       size_t numThreads,
       bool enableTaskStats = false)
-      : ThreadManager::ImplT<SemType>(0, enableTaskStats, N_PRIORITIES),
+      : ThreadManager::ImplT<SemType>(enableTaskStats, N_PRIORITIES),
         numThreads_(numThreads) {}
 
   class PriorityFunctionRunner :
@@ -805,7 +765,7 @@ class PriorityThreadManager::PriorityImplT
       bool enableTaskStats = false) {
     for (int i = 0; i < N_PRIORITIES; i++) {
       unique_ptr<ThreadManager> m(
-          new ThreadManager::ImplT<SemType>(0, enableTaskStats));
+          new ThreadManager::ImplT<SemType>(enableTaskStats));
       m->threadFactory(factories[i].first);
       managers_[i] = std::move(m);
       counts_[i] = factories[i].second;
@@ -989,11 +949,6 @@ class PriorityThreadManager::PriorityImplT
 
   size_t totalTaskCount() const override {
     return sum(&ThreadManager::totalTaskCount);
-  }
-
-  size_t pendingTaskCountMax() const override {
-    throw IllegalStateException("Not implemented");
-    return 0;
   }
 
   size_t expiredTaskCount() override {

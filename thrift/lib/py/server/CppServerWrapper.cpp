@@ -787,7 +787,6 @@ BOOST_PYTHON_MODULE(CppServerWrapper) {
       .def("workerCount", &ThreadManager::workerCount)
       .def("pendingTaskCount", &ThreadManager::pendingTaskCount)
       .def("totalTaskCount", &ThreadManager::totalTaskCount)
-      .def("pendingTaskCountMax", &ThreadManager::pendingTaskCountMax)
       .def("expiredTaskCount", &ThreadManager::expiredTaskCount)
       .def("clearPending", &ThreadManager::clearPending);
 
