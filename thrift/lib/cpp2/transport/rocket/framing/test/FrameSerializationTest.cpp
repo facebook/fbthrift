@@ -24,6 +24,7 @@
 #include <folly/io/Cursor.h>
 #include <folly/io/IOBuf.h>
 
+#include <thrift/lib/cpp2/transport/rocket/RocketException.h>
 #include <thrift/lib/cpp2/transport/rocket/Types.h>
 #include <thrift/lib/cpp2/transport/rocket/framing/ErrorCode.h>
 #include <thrift/lib/cpp2/transport/rocket/framing/Flags.h>
@@ -255,6 +256,24 @@ TEST(FrameSerialization, ErrorSanity) {
 
   ErrorFrame frame(
       kTestStreamId, ErrorCode::CANCELED, Payload::makeFromData(kErrorMessage));
+
+  auto validate = [=](const ErrorFrame& f) {
+    EXPECT_EQ(kTestStreamId, f.streamId());
+    EXPECT_EQ(ErrorCode::CANCELED, f.errorCode());
+    EXPECT_FALSE(f.payload().metadata());
+    EXPECT_EQ(kErrorMessage, getRange(*f.payload().data()));
+  };
+
+  validate(frame);
+  validate(serializeAndDeserialize(std::move(frame)));
+}
+
+TEST(FrameSerialization, ErrorFromException) {
+  constexpr folly::StringPiece kErrorMessage{"error_message"};
+
+  RocketException rex(
+      ErrorCode::CANCELED, folly::IOBuf::copyBuffer(kErrorMessage));
+  ErrorFrame frame(kTestStreamId, std::move(rex));
 
   auto validate = [=](const ErrorFrame& f) {
     EXPECT_EQ(kTestStreamId, f.streamId());

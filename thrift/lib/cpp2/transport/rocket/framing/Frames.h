@@ -25,6 +25,7 @@
 #include <folly/Range.h>
 #include <folly/lang/Exception.h>
 
+#include <thrift/lib/cpp2/transport/rocket/RocketException.h>
 #include <thrift/lib/cpp2/transport/rocket/Types.h>
 #include <thrift/lib/cpp2/transport/rocket/framing/ErrorCode.h>
 #include <thrift/lib/cpp2/transport/rocket/framing/Flags.h>
@@ -344,6 +345,12 @@ class ErrorFrame {
       : streamId_(streamId),
         errorCode_(errorCode),
         payload_(std::move(payload)) {}
+
+  ErrorFrame(StreamId streamId, RocketException&& rocketException)
+      : ErrorFrame(
+            streamId,
+            rocketException.getErrorCode(),
+            Payload::makeFromData(rocketException.moveErrorData())) {}
 
   static constexpr FrameType frameType() {
     return FrameType::ERROR;
