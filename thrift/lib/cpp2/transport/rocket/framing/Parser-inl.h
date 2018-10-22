@@ -36,7 +36,10 @@ namespace rocket {
 template <class T>
 void Parser<T>::getReadBuffer(void** bufout, size_t* lenout) {
   DCHECK(!readBuffer_.isChained());
+
+  resizeBuffer();
   readBuffer_.unshareOne();
+
   if (readBuffer_.length() == 0) {
     DCHECK(readBuffer_.capacity() > 0);
     // If we read everything, reset pointers to 0 and reuse the buffer
@@ -109,6 +112,33 @@ void Parser<T>::readErr(const folly::AsyncSocketException& ex) noexcept {
       ex.what(),
       ex.getErrno()));
 }
+
+template <class T>
+void Parser<T>::resizeBuffer() {
+  if (bufferSize_ <= kMaxBufferSize || readBuffer_.length() > kMaxBufferSize) {
+    return;
+  }
+
+  const auto now = std::chrono::steady_clock::now();
+
+  if (now - resizeBufferTimer_ > resizeBufferTimeout_) {
+    // resize readBuffer_ to kMaxBufferSize
+    readBuffer_ = folly::IOBuf(
+        folly::IOBuf::CopyBufferOp(),
+        readBuffer_.data(),
+        readBuffer_.length(),
+        /* headroom */ 0,
+        /* tailroom */ kMaxBufferSize - readBuffer_.length());
+    resizeBufferTimer_ = now;
+    bufferSize_ = kMaxBufferSize;
+  }
+}
+
+template <class T>
+constexpr size_t Parser<T>::kMinBufferSize;
+
+template <class T>
+constexpr size_t Parser<T>::kMaxBufferSize;
 
 } // namespace rocket
 } // namespace thrift

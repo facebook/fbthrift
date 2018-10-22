@@ -131,7 +131,7 @@ class RocketClient : public folly::DelayedDestruction,
   using StreamMap = std::unordered_map<StreamId, StreamWrapper>;
   StreamMap streams_;
 
-  Parser<RocketClient> parser_{*this};
+  Parser<RocketClient> parser_;
 
   class WriteLoopCallback : public folly::EventBase::LoopCallback {
    public:

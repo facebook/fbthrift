@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include <chrono>
 #include <utility>
 
 #include <folly/ExceptionWrapper.h>
@@ -30,7 +31,8 @@ namespace rocket {
 template <class T>
 class Parser final : public folly::AsyncTransportWrapper::ReadCallback {
  public:
-  explicit Parser(T& owner) : owner_(owner) {}
+  explicit Parser(T& owner, std::chrono::milliseconds resizeBufferTimeout)
+      : owner_(owner), resizeBufferTimeout_(resizeBufferTimeout) {}
 
   // AsyncTransportWrapper::ReadCallback implementation
   FOLLY_NOINLINE void getReadBuffer(void** bufout, size_t* lenout) override;
@@ -39,13 +41,34 @@ class Parser final : public folly::AsyncTransportWrapper::ReadCallback {
   FOLLY_NOINLINE void readErr(
       const folly::AsyncSocketException&) noexcept override;
 
- private:
+  const folly::IOBuf& getReadBuffer() const {
+    return readBuffer_;
+  }
+
+  void setReadBuffer(folly::IOBuf&& buffer) {
+    readBuffer_ = std::move(buffer);
+  }
+
+  size_t getReadBufferSize() const {
+    return bufferSize_;
+  }
+
+  void setReadBufferSize(size_t size) {
+    bufferSize_ = size;
+  }
+
   static constexpr size_t kMinBufferSize = 256;
   static constexpr size_t kMaxBufferSize = 4096;
 
+  void resizeBuffer();
+
+ private:
   T& owner_;
   size_t bufferSize_{kMinBufferSize};
   folly::IOBuf readBuffer_{folly::IOBuf::CreateOp(), bufferSize_};
+  std::chrono::steady_clock::time_point resizeBufferTimer_ =
+      std::chrono::steady_clock::now();
+  std::chrono::milliseconds resizeBufferTimeout_;
 };
 
 } // namespace rocket
