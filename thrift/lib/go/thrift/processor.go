@@ -22,6 +22,7 @@ package thrift
 import (
 	"context"
 	"fmt"
+	"strings"
 )
 
 // Processor exposes access to processor functions which
@@ -171,17 +172,31 @@ func ProcessContext(ctx context.Context, processor ProcessorContext, iprot, opro
 	// for ONEWAY messages, never send a response
 	if messageType == CALL {
 		// protect message writing
-		if err != nil && result == nil {
-			// if the Run function generates an error, synthesize an application
-			// error
-			result = NewApplicationException(INTERNAL_ERROR, "Internal error: "+err.Error())
+		if err != nil {
+			switch oprotHeader := oprot.(type) {
+			case *HeaderProtocol:
+				// get type name without package or pointer information
+				fqet := strings.Replace(fmt.Sprintf("%T", err), "*", "", -1)
+				et := strings.Split(fqet, ".")
+				errorType := et[len(et)-1]
+
+				// set header for ServiceRouter
+				oprotHeader.SetHeader("uex", errorType)
+				oprotHeader.SetHeader("uexw", err.Error())
+			}
+			// it's an application generated error, so serialize it
+			// to the client
+			result = err
 		}
+
 		if e2 := pfunc.Write(seqID, result, oprot); e2 != nil {
 			// close connection on write failure
 			return false, err
 		}
 	}
 
-	// keep the connection open, but let the client know if an error occurred
-	return true, err
+	// keep the connection open and ignore errors
+	// if type was CALL, error has already been serialized to client
+	// if type was ONEWAY, no exception is to be thrown
+	return true, nil
 }

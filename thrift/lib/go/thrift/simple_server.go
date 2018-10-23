@@ -302,6 +302,7 @@ func (p *SimpleServer) processRequests(ctx context.Context, client Transport) er
 	for {
 		keepOpen, exc := ProcessContext(ctx, processor, inputProtocol, outputProtocol)
 		if exc != nil {
+			outputProtocol.Flush()
 			return exc
 		}
 		if !keepOpen {
