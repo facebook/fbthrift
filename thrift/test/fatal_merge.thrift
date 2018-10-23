@@ -28,6 +28,8 @@ const EnumExample kEnumExample = {
 
 struct Basic {
   1: string b,
+  2: optional string b_opt,
+  3: required string b_req,
 }
 
 struct BasicExample {
@@ -40,91 +42,182 @@ struct BasicExample {
 const BasicExample kBasicExample = {
   "src": {
     "b": "hello",
+    "b_opt": "hello_opt",
+    "b_req": "hello_req",
   },
   "dst": {
   },
   "exp": {
     "b": "hello",
+    "b_opt": "hello_opt",
+    "b_req": "hello_req",
+  },
+  "nil": {
+    "b_opt": "",
+  },
+}
+
+const BasicExample kBasicOptionalExample = {
+  "src": {
+    "b": "hello",
+    "b_req": "hello_req",
+  },
+  "dst": {
+    "b_opt": "hello_opt",
+  },
+  "exp": {
+    "b": "hello",
+    "b_opt": "hello_opt",
+    "b_req": "hello_req",
   },
   "nil": {
   },
 }
 
+struct BasicList {
+  1: list<Basic> l,
+}
+
 struct BasicListExample {
-  1: list<Basic> src,
-  2: list<Basic> dst,
-  3: list<Basic> exp,
-  4: list<Basic> nil,
+  1: BasicList src,
+  2: BasicList dst,
+  3: BasicList exp,
+  4: BasicList nil,
 }
 
 const BasicListExample kBasicListExample = {
-  "src": [
-    {
-      "b": "hello",
-    },
-  ],
-  "dst": [
-  ],
-  "exp": [
-    {
-      "b": "hello",
-    },
-  ],
-  "nil": [
-    {
-    },
-  ],
+  "src": {
+    "l": [
+      {
+        "b": "hello",
+      },
+    ],
+  },
+  "dst": {"l": []},
+  "exp": {
+    "l": [
+      {
+        "b": "hello",
+      },
+    ],
+  }
+  "nil": {
+    "l": [
+      {
+      },
+    ],
+  },
+}
+
+struct BasicSet {
+  1: set<Basic> l,
 }
 
 struct BasicSetExample {
-  1: set<Basic> src,
-  2: set<Basic> dst,
-  3: set<Basic> exp,
-  4: set<Basic> nil,
+  1: BasicSet src,
+  2: BasicSet dst,
+  3: BasicSet exp,
+  4: BasicSet nil,
 }
 
 const BasicSetExample kBasicSetExample = {
-  "src": [
-    {
-      "b": "hello",
-    },
-  ],
-  "dst": [
-  ],
-  "exp": [
-    {
-      "b": "hello",
-    },
-  ],
-  "nil": [
-    {
-      "b": "hello", # can't actually move elements
-    },
-  ],
+  "src": {
+    "l": [
+      {
+        "b": "hello",
+      },
+    ],
+  },
+  "dst": {"l": []},
+  "exp": {
+    "l": [
+      {
+        "b": "hello",
+      },
+    ],
+  }
+  "nil": {
+    "l": [
+      {
+        "b": "hello", # cannot actually move elements
+      },
+    ],
+  },
+}
+
+struct BasicMap {
+  1: map<string, Basic> l,
 }
 
 struct BasicMapExample {
-  1: map<string, Basic> src,
-  2: map<string, Basic> dst,
-  3: map<string, Basic> exp,
-  4: map<string, Basic> nil,
+  1: BasicMap src,
+  2: BasicMap dst,
+  3: BasicMap exp,
+  4: BasicMap nil,
 }
 
 const BasicMapExample kBasicMapExample = {
   "src": {
-    "foo": {
-      "b": "hello",
+    "l": {
+      "foo": {
+        "b": "hello",
+      },
+    },
+  },
+  "dst": {"l": {}},
+  "exp": {
+    "l": {
+      "foo": {
+        "b": "hello",
+      },
+    },
+  },
+  "nil": {
+    "l": {
+      "foo": {
+      },
+    },
+  },
+}
+
+struct NestedMap {
+  1: map<string, map<string, Basic>> l,
+}
+
+struct NestedMapExample {
+  1: NestedMap src,
+  2: NestedMap dst,
+  3: NestedMap exp,
+  4: NestedMap nil,
+}
+
+const NestedMapExample kNestedMapExample = {
+  "src": {
+    "l": {
+      "outer_foo": {
+        "inner_foo": {
+          "b": "hello",
+        },
+      },
     },
   },
   "dst": {
   },
   "exp": {
-    "foo": {
-      "b": "hello",
+    "l": {
+      "outer_foo": {
+        "inner_foo": {
+          "b": "hello",
+        },
+      },
     },
   },
   "nil": {
-    "foo": {
+    "l": {
+      "outer_foo": {
+        "inner_foo": {
+        },
+      },
     },
   },
 }
@@ -315,4 +408,102 @@ const IndirectionExample kIndirectionExample = {
     "real": 45,
     "fake": 33,
   }
+}
+
+union BasicUnion {
+  1: i32 a,
+  2: string b,
+}
+
+struct BasicUnionExample {
+  1: BasicUnion src,
+  2: BasicUnion dst,
+  3: BasicUnion exp,
+  4: BasicUnion nil,
+}
+
+const BasicUnionExample kBasicUnionExample1 = {
+  "src": {
+    "a": 1,
+  },
+  "dst": {
+  },
+  "exp": {
+    "a": 1,
+  },
+  "nil": {
+  },
+}
+
+const BasicUnionExample kBasicUnionExample2 = {
+  "src": {
+  },
+  "dst": {
+    "a": 1,
+  },
+  "exp": {
+  },
+  "nil": {
+  },
+}
+
+const BasicUnionExample kBasicUnionExample3 = {
+  "src": {
+    "a": 2,
+  },
+  "dst": {
+    "a": 1,
+  },
+  "exp": {
+    "a": 2,
+  },
+  "nil": {
+  },
+}
+
+const BasicUnionExample kBasicUnionExample4 = {
+  "src": {
+    "a": 1,
+  },
+  "dst": {
+    "b": "wat",
+  },
+  "exp": {
+    "a": 1,
+  },
+  "nil": {
+  },
+}
+
+struct MapUnion {
+  1: map<i64, BasicUnion> l,
+}
+
+struct MapUnionExample {
+  1: MapUnion src,
+  2: MapUnion dst,
+  3: MapUnion exp,
+  4: MapUnion nil,
+}
+
+const MapUnionExample kMapUnionExample = {
+  "src": {
+    "l": {
+      1: {"a": 1,},
+    },
+  },
+  "dst": {
+    "l": {
+    },
+  },
+  "exp": {
+    "l": {
+      1: {"a": 1,},
+    },
+  },
+  "nil": {
+    "l": {
+      1: {},
+    },
+  },
 }
