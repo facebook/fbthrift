@@ -21,7 +21,7 @@
 target: all
 
 # Tools
-THRIFT = ../../../buck-out/dev/gen/thrift/compiler/thrift
+THRIFT = ../../compiler/cpp/thrift
 
 all: normal inline
 

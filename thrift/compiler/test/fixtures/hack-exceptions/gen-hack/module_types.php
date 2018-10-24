@@ -26,13 +26,11 @@ class MyException1 extends \TException implements \IThriftStruct {
     1 => dict[
       'var' => 'message',
       'type' => \TType::STRING,
-      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     2 => dict[
       'var' => 'code',
       'type' => \TType::I32,
       'enum' => 'MyEnum',
-      'qualifier' => \TFieldQualifier::T_OPTIONAL,
       ],
     ];
   public static Map<string, int> $_TFIELDMAP = Map {
@@ -84,13 +82,11 @@ class MyException2 extends \TException implements \IThriftStruct {
     1 => dict[
       'var' => 'message',
       'type' => \TType::STRING,
-      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     2 => dict[
       'var' => 'code',
       'type' => \TType::I32,
       'enum' => 'MyEnum',
-      'qualifier' => \TFieldQualifier::T_REQUIRED,
       ],
     ];
   public static Map<string, int> $_TFIELDMAP = Map {
@@ -142,13 +138,11 @@ class MyException3 extends \TException implements \IThriftStruct {
     1 => dict[
       'var' => 'message',
       'type' => \TType::STRING,
-      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     2 => dict[
       'var' => 'code',
       'type' => \TType::I32,
       'enum' => 'MyEnum',
-      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     ];
   public static Map<string, int> $_TFIELDMAP = Map {
@@ -200,13 +194,11 @@ class MyException4 extends \TException implements \IThriftStruct {
     1 => dict[
       'var' => 'message',
       'type' => \TType::STRING,
-      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     2 => dict[
       'var' => 'code',
       'type' => \TType::I32,
       'enum' => 'MyEnum',
-      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     ];
   public static Map<string, int> $_TFIELDMAP = Map {
@@ -258,12 +250,10 @@ class MyException5 extends \TException implements \IThriftStruct {
     1 => dict[
       'var' => 'message',
       'type' => \TType::STRING,
-      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     2 => dict[
       'var' => 'code',
       'type' => \TType::I64,
-      'qualifier' => \TFieldQualifier::T_OPTIONAL,
       ],
     ];
   public static Map<string, int> $_TFIELDMAP = Map {

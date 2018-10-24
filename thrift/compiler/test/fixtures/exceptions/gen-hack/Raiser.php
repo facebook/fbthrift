@@ -720,19 +720,16 @@ class Raiser_doRaise_result implements \IThriftStruct {
       'var' => 'b',
       'type' => \TType::STRUCT,
       'class' => 'Banal',
-      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     2 => dict[
       'var' => 'f',
       'type' => \TType::STRUCT,
       'class' => 'Fiery',
-      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     3 => dict[
       'var' => 's',
       'type' => \TType::STRUCT,
       'class' => 'Serious',
-      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     ];
   public static Map<string, int> $_TFIELDMAP = Map {
@@ -779,7 +776,6 @@ class Raiser_get200_result implements \IThriftStruct {
     0 => dict[
       'var' => 'success',
       'type' => \TType::STRING,
-      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     ];
   public static Map<string, int> $_TFIELDMAP = Map {
@@ -822,25 +818,21 @@ class Raiser_get500_result implements \IThriftStruct {
     0 => dict[
       'var' => 'success',
       'type' => \TType::STRING,
-      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     1 => dict[
       'var' => 'f',
       'type' => \TType::STRUCT,
       'class' => 'Fiery',
-      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     2 => dict[
       'var' => 'b',
       'type' => \TType::STRUCT,
       'class' => 'Banal',
-      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     3 => dict[
       'var' => 's',
       'type' => \TType::STRUCT,
       'class' => 'Serious',
-      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     ];
   public static Map<string, int> $_TFIELDMAP = Map {

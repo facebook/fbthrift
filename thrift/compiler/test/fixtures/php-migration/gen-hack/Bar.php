@@ -323,7 +323,6 @@ class Bar_baz_args implements \IThriftStruct {
         'type' => \TType::I32,
         ],
         'format' => 'array',
-      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     2 => darray[
       'var' => 'b',
@@ -347,23 +346,19 @@ class Bar_baz_args implements \IThriftStruct {
           'format' => 'array',
         ],
         'format' => 'array',
-      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     3 => darray[
       'var' => 'c',
       'type' => \TType::I64,
-      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     4 => darray[
       'var' => 'd',
       'type' => \TType::STRUCT,
       'class' => 'Foo',
-      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     5 => darray[
       'var' => 'e',
       'type' => \TType::I64,
-      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     ];
   public static Map<string, int> $_TFIELDMAP = Map {
@@ -402,7 +397,6 @@ class Bar_baz_result implements \IThriftStruct {
     0 => darray[
       'var' => 'success',
       'type' => \TType::STRING,
-      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     ];
   public static Map<string, int> $_TFIELDMAP = Map {

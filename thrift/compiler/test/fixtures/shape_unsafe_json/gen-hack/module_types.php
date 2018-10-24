@@ -17,7 +17,6 @@ class A implements \IThriftStruct, \IThriftShapishStruct {
     1 => dict[
       'var' => 'a',
       'type' => \TType::STRING,
-      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     ];
   public static Map<string, int> $_TFIELDMAP = Map {
@@ -71,7 +70,6 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
       'var' => 'just_an_A',
       'type' => \TType::STRUCT,
       'class' => 'A',
-      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     2 => dict[
       'var' => 'set_of_i32',
@@ -81,7 +79,6 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
         'type' => \TType::I32,
         ],
         'format' => 'collection',
-      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     3 => dict[
       'var' => 'list_of_i32',
@@ -91,7 +88,6 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
         'type' => \TType::I32,
         ],
         'format' => 'collection',
-      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     4 => dict[
       'var' => 'list_of_string',
@@ -101,7 +97,6 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
         'type' => \TType::STRING,
         ],
         'format' => 'collection',
-      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     5 => dict[
       'var' => 'map_of_string_to_i32',
@@ -115,7 +110,6 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
         'type' => \TType::I32,
         ],
         'format' => 'collection',
-      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     6 => dict[
       'var' => 'map_of_string_to_A',
@@ -130,7 +124,6 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
         'class' => 'A',
         ],
         'format' => 'collection',
-      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     7 => dict[
       'var' => 'map_of_string_to_list_of_i32',
@@ -149,7 +142,6 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
           'format' => 'collection',
         ],
         'format' => 'collection',
-      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     8 => dict[
       'var' => 'map_of_string_to_list_of_A',
@@ -169,7 +161,6 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
           'format' => 'collection',
         ],
         'format' => 'collection',
-      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     9 => dict[
       'var' => 'map_of_string_to_set_of_i32',
@@ -188,7 +179,6 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
           'format' => 'collection',
         ],
         'format' => 'collection',
-      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     10 => dict[
       'var' => 'map_of_string_to_map_of_string_to_i32',
@@ -211,7 +201,6 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
           'format' => 'collection',
         ],
         'format' => 'collection',
-      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     11 => dict[
       'var' => 'map_of_string_to_map_of_string_to_A',
@@ -235,7 +224,6 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
           'format' => 'collection',
         ],
         'format' => 'collection',
-      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     12 => dict[
       'var' => 'list_of_set_of_i32',
@@ -250,7 +238,6 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
           'format' => 'collection',
         ],
         'format' => 'collection',
-      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     13 => dict[
       'var' => 'list_of_map_of_string_to_list_of_A',
@@ -275,7 +262,6 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
           'format' => 'collection',
         ],
         'format' => 'collection',
-      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     14 => dict[
       'var' => 'list_of_map_of_string_to_A',
@@ -295,7 +281,6 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
           'format' => 'collection',
         ],
         'format' => 'collection',
-      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     15 => dict[
       'var' => 'list_of_self',
@@ -306,7 +291,6 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
         'class' => 'B',
         ],
         'format' => 'collection',
-      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     16 => dict[
       'var' => 'map_of_string_to_self',
@@ -321,13 +305,11 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
         'class' => 'B',
         ],
         'format' => 'collection',
-      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     51 => dict[
       'var' => 'optional_just_an_A',
       'type' => \TType::STRUCT,
       'class' => 'A',
-      'qualifier' => \TFieldQualifier::T_OPTIONAL,
       ],
     52 => dict[
       'var' => 'optional_set_of_i32',
@@ -337,7 +319,6 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
         'type' => \TType::I32,
         ],
         'format' => 'collection',
-      'qualifier' => \TFieldQualifier::T_OPTIONAL,
       ],
     53 => dict[
       'var' => 'optional_list_of_i32',
@@ -347,7 +328,6 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
         'type' => \TType::I32,
         ],
         'format' => 'collection',
-      'qualifier' => \TFieldQualifier::T_OPTIONAL,
       ],
     54 => dict[
       'var' => 'optional_list_of_string',
@@ -357,7 +337,6 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
         'type' => \TType::STRING,
         ],
         'format' => 'collection',
-      'qualifier' => \TFieldQualifier::T_OPTIONAL,
       ],
     55 => dict[
       'var' => 'optional_map_of_string_to_i32',
@@ -371,7 +350,6 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
         'type' => \TType::I32,
         ],
         'format' => 'collection',
-      'qualifier' => \TFieldQualifier::T_OPTIONAL,
       ],
     56 => dict[
       'var' => 'optional_map_of_string_to_A',
@@ -386,7 +364,6 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
         'class' => 'A',
         ],
         'format' => 'collection',
-      'qualifier' => \TFieldQualifier::T_OPTIONAL,
       ],
     57 => dict[
       'var' => 'optional_map_of_string_to_list_of_i32',
@@ -405,7 +382,6 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
           'format' => 'collection',
         ],
         'format' => 'collection',
-      'qualifier' => \TFieldQualifier::T_OPTIONAL,
       ],
     58 => dict[
       'var' => 'optional_map_of_string_to_list_of_A',
@@ -425,7 +401,6 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
           'format' => 'collection',
         ],
         'format' => 'collection',
-      'qualifier' => \TFieldQualifier::T_OPTIONAL,
       ],
     59 => dict[
       'var' => 'optional_map_of_string_to_set_of_i32',
@@ -444,7 +419,6 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
           'format' => 'collection',
         ],
         'format' => 'collection',
-      'qualifier' => \TFieldQualifier::T_OPTIONAL,
       ],
     ];
   public static Map<string, int> $_TFIELDMAP = Map {

@@ -39,18 +39,15 @@ class Internship implements \IThriftStruct {
     1 => dict[
       'var' => 'weeks',
       'type' => \TType::I32,
-      'qualifier' => \TFieldQualifier::T_REQUIRED,
       ],
     2 => dict[
       'var' => 'title',
       'type' => \TType::STRING,
-      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     3 => dict[
       'var' => 'employer',
       'type' => \TType::I32,
       'enum' => 'Company',
-      'qualifier' => \TFieldQualifier::T_OPTIONAL,
       ],
     ];
   public static Map<string, int> $_TFIELDMAP = Map {
@@ -106,12 +103,10 @@ class Range implements \IThriftStruct {
     1 => dict[
       'var' => 'min',
       'type' => \TType::I32,
-      'qualifier' => \TFieldQualifier::T_REQUIRED,
       ],
     2 => dict[
       'var' => 'max',
       'type' => \TType::I32,
-      'qualifier' => \TFieldQualifier::T_REQUIRED,
       ],
     ];
   public static Map<string, int> $_TFIELDMAP = Map {

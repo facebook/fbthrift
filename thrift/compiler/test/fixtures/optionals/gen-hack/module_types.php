@@ -27,22 +27,18 @@ class Color implements \IThriftStruct {
     1 => dict[
       'var' => 'red',
       'type' => \TType::DOUBLE,
-      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     2 => dict[
       'var' => 'green',
       'type' => \TType::DOUBLE,
-      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     3 => dict[
       'var' => 'blue',
       'type' => \TType::DOUBLE,
-      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     4 => dict[
       'var' => 'alpha',
       'type' => \TType::DOUBLE,
-      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     ];
   public static Map<string, int> $_TFIELDMAP = Map {
@@ -114,27 +110,22 @@ class Vehicle implements \IThriftStruct {
       'var' => 'color',
       'type' => \TType::STRUCT,
       'class' => 'Color',
-      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     2 => dict[
       'var' => 'licensePlate',
       'type' => \TType::STRING,
-      'qualifier' => \TFieldQualifier::T_OPTIONAL,
       ],
     3 => dict[
       'var' => 'description',
       'type' => \TType::STRING,
-      'qualifier' => \TFieldQualifier::T_OPTIONAL,
       ],
     4 => dict[
       'var' => 'name',
       'type' => \TType::STRING,
-      'qualifier' => \TFieldQualifier::T_OPTIONAL,
       ],
     5 => dict[
       'var' => 'hasAC',
       'type' => \TType::BOOL,
-      'qualifier' => \TFieldQualifier::T_OPTIONAL,
       ],
     ];
   public static Map<string, int> $_TFIELDMAP = Map {
@@ -200,28 +191,23 @@ class Person implements \IThriftStruct {
     1 => dict[
       'var' => 'id',
       'type' => \TType::I64,
-      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     2 => dict[
       'var' => 'name',
       'type' => \TType::STRING,
-      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     3 => dict[
       'var' => 'age',
       'type' => \TType::I16,
-      'qualifier' => \TFieldQualifier::T_OPTIONAL,
       ],
     4 => dict[
       'var' => 'address',
       'type' => \TType::STRING,
-      'qualifier' => \TFieldQualifier::T_OPTIONAL,
       ],
     5 => dict[
       'var' => 'favoriteColor',
       'type' => \TType::STRUCT,
       'class' => 'Color',
-      'qualifier' => \TFieldQualifier::T_OPTIONAL,
       ],
     6 => dict[
       'var' => 'friends',
@@ -231,12 +217,10 @@ class Person implements \IThriftStruct {
         'type' => \TType::I64,
         ],
         'format' => 'collection',
-      'qualifier' => \TFieldQualifier::T_OPTIONAL,
       ],
     7 => dict[
       'var' => 'bestFriend',
       'type' => \TType::I64,
-      'qualifier' => \TFieldQualifier::T_OPTIONAL,
       ],
     8 => dict[
       'var' => 'petNames',
@@ -251,13 +235,11 @@ class Person implements \IThriftStruct {
         'type' => \TType::STRING,
         ],
         'format' => 'collection',
-      'qualifier' => \TFieldQualifier::T_OPTIONAL,
       ],
     9 => dict[
       'var' => 'afraidOfAnimal',
       'type' => \TType::I32,
       'enum' => 'Animal',
-      'qualifier' => \TFieldQualifier::T_OPTIONAL,
       ],
     10 => dict[
       'var' => 'vehicles',
@@ -268,7 +250,6 @@ class Person implements \IThriftStruct {
         'class' => 'Vehicle',
         ],
         'format' => 'collection',
-      'qualifier' => \TFieldQualifier::T_OPTIONAL,
       ],
     ];
   public static Map<string, int> $_TFIELDMAP = Map {

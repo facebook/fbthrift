@@ -346,7 +346,6 @@ class SomeService_bounce_map_args implements \IThriftStruct {
         'type' => \TType::STRING,
         ],
         'format' => 'collection',
-      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     ];
   public static Map<string, int> $_TFIELDMAP = Map {
@@ -404,7 +403,6 @@ class SomeService_bounce_map_result implements \IThriftStruct {
         'type' => \TType::STRING,
         ],
         'format' => 'collection',
-      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     ];
   public static Map<string, int> $_TFIELDMAP = Map {
@@ -453,7 +451,6 @@ class SomeService_binary_keyed_map_args implements \IThriftStruct {
         'type' => \TType::I64,
         ],
         'format' => 'collection',
-      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     ];
   public static Map<string, int> $_TFIELDMAP = Map {
@@ -511,7 +508,6 @@ class SomeService_binary_keyed_map_result implements \IThriftStruct {
         'type' => \TType::I64,
         ],
         'format' => 'collection',
-      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     ];
   public static Map<string, int> $_TFIELDMAP = Map {

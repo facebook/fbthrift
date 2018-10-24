@@ -37,7 +37,6 @@ class BarStruct implements \IThriftStruct, \IThriftShapishStruct {
         'enum' => 'FooEnum',
         ],
         'format' => 'collection',
-      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     2 => darray[
       'var' => 's',
@@ -48,7 +47,6 @@ class BarStruct implements \IThriftStruct, \IThriftShapishStruct {
         'enum' => 'FooEnum',
         ],
         'format' => 'collection',
-      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     ];
   public static Map<string, int> $_TFIELDMAP = Map {

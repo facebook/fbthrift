@@ -22,7 +22,6 @@ class Foo implements \IThriftStruct {
         'type' => \TType::STRING,
         ],
         'format' => 'array',
-      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     2 => darray[
       'var' => 'b',
@@ -46,17 +45,14 @@ class Foo implements \IThriftStruct {
           'format' => 'array',
         ],
         'format' => 'array',
-      'qualifier' => \TFieldQualifier::T_OPTIONAL,
       ],
     3 => darray[
       'var' => 'c',
       'type' => \TType::I64,
-      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     4 => darray[
       'var' => 'd',
       'type' => \TType::BOOL,
-      'qualifier' => \TFieldQualifier::T_OPTIONAL,
       ],
     ];
   public static Map<string, int> $_TFIELDMAP = Map {
@@ -114,13 +110,11 @@ class Baz extends \TException implements \IThriftStruct {
     1 => darray[
       'var' => 'message',
       'type' => \TType::STRING,
-      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     2 => darray[
       'var' => 'some_field',
       'type' => \TType::STRUCT,
       'class' => 'Foo',
-      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     3 => darray[
       'var' => 'some_container',
@@ -130,12 +124,10 @@ class Baz extends \TException implements \IThriftStruct {
         'type' => \TType::STRING,
         ],
         'format' => 'array',
-      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     4 => darray[
       'var' => 'code',
       'type' => \TType::I32,
-      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     ];
   public static Map<string, int> $_TFIELDMAP = Map {

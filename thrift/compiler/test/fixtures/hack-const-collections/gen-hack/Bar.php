@@ -323,7 +323,6 @@ class Bar_baz_args implements \IThriftStruct {
         'type' => \TType::I32,
         ],
         'format' => 'collection',
-      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     2 => dict[
       'var' => 'b',
@@ -347,23 +346,19 @@ class Bar_baz_args implements \IThriftStruct {
           'format' => 'collection',
         ],
         'format' => 'collection',
-      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     3 => dict[
       'var' => 'c',
       'type' => \TType::I64,
-      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     4 => dict[
       'var' => 'd',
       'type' => \TType::STRUCT,
       'class' => 'Foo',
-      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     5 => dict[
       'var' => 'e',
       'type' => \TType::I64,
-      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     ];
   public static ConstMap<string, int> $_TFIELDMAP = Map {
@@ -417,7 +412,6 @@ class Bar_baz_result implements \IThriftStruct {
     0 => dict[
       'var' => 'success',
       'type' => \TType::STRING,
-      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     ];
   public static ConstMap<string, int> $_TFIELDMAP = Map {

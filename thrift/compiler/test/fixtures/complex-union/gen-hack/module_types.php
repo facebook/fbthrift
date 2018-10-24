@@ -28,13 +28,11 @@ class ComplexUnion implements \IThriftStruct, \IThriftUnion<ComplexUnionEnum> {
       'var' => 'intValue',
       'union' => true,
       'type' => \TType::I64,
-      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     5 => dict[
       'var' => 'stringValue',
       'union' => true,
       'type' => \TType::STRING,
-      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     2 => dict[
       'var' => 'intListValue',
@@ -45,7 +43,6 @@ class ComplexUnion implements \IThriftStruct, \IThriftUnion<ComplexUnionEnum> {
         'type' => \TType::I64,
         ],
         'format' => 'collection',
-      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     3 => dict[
       'var' => 'stringListValue',
@@ -56,7 +53,6 @@ class ComplexUnion implements \IThriftStruct, \IThriftUnion<ComplexUnionEnum> {
         'type' => \TType::STRING,
         ],
         'format' => 'collection',
-      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     9 => dict[
       'var' => 'typedefValue',
@@ -71,13 +67,11 @@ class ComplexUnion implements \IThriftStruct, \IThriftUnion<ComplexUnionEnum> {
         'type' => \TType::STRING,
         ],
         'format' => 'collection',
-      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     14 => dict[
       'var' => 'stringRef',
       'union' => true,
       'type' => \TType::STRING,
-      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     ];
   public static Map<string, int> $_TFIELDMAP = Map {
@@ -322,13 +316,11 @@ class VirtualComplexUnion implements \IThriftStruct, \IThriftUnion<VirtualComple
       'var' => 'thingOne',
       'union' => true,
       'type' => \TType::STRING,
-      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     2 => dict[
       'var' => 'thingTwo',
       'union' => true,
       'type' => \TType::STRING,
-      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     ];
   public static Map<string, int> $_TFIELDMAP = Map {

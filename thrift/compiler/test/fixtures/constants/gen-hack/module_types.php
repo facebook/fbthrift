@@ -46,18 +46,15 @@ class Internship implements \IThriftStruct {
     1 => dict[
       'var' => 'weeks',
       'type' => \TType::I32,
-      'qualifier' => \TFieldQualifier::T_REQUIRED,
       ],
     2 => dict[
       'var' => 'title',
       'type' => \TType::STRING,
-      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     3 => dict[
       'var' => 'employer',
       'type' => \TType::I32,
       'enum' => 'Company',
-      'qualifier' => \TFieldQualifier::T_OPTIONAL,
       ],
     ];
   public static Map<string, int> $_TFIELDMAP = Map {
@@ -114,7 +111,6 @@ class UnEnumStruct implements \IThriftStruct {
       'var' => 'city',
       'type' => \TType::I32,
       'enum' => 'City',
-      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     ];
   public static Map<string, int> $_TFIELDMAP = Map {
@@ -152,12 +148,10 @@ class Range implements \IThriftStruct {
     1 => dict[
       'var' => 'min',
       'type' => \TType::I32,
-      'qualifier' => \TFieldQualifier::T_REQUIRED,
       ],
     2 => dict[
       'var' => 'max',
       'type' => \TType::I32,
-      'qualifier' => \TFieldQualifier::T_REQUIRED,
       ],
     ];
   public static Map<string, int> $_TFIELDMAP = Map {
@@ -206,12 +200,10 @@ class struct1 implements \IThriftStruct {
     1 => dict[
       'var' => 'a',
       'type' => \TType::I32,
-      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     2 => dict[
       'var' => 'b',
       'type' => \TType::STRING,
-      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     ];
   public static Map<string, int> $_TFIELDMAP = Map {
@@ -260,18 +252,15 @@ class struct2 implements \IThriftStruct {
     1 => dict[
       'var' => 'a',
       'type' => \TType::I32,
-      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     2 => dict[
       'var' => 'b',
       'type' => \TType::STRING,
-      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     3 => dict[
       'var' => 'c',
       'type' => \TType::STRUCT,
       'class' => 'struct1',
-      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     4 => dict[
       'var' => 'd',
@@ -281,7 +270,6 @@ class struct2 implements \IThriftStruct {
         'type' => \TType::I32,
         ],
         'format' => 'collection',
-      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     ];
   public static Map<string, int> $_TFIELDMAP = Map {
@@ -348,18 +336,15 @@ class struct3 implements \IThriftStruct {
     1 => dict[
       'var' => 'a',
       'type' => \TType::STRING,
-      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     2 => dict[
       'var' => 'b',
       'type' => \TType::I32,
-      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     3 => dict[
       'var' => 'c',
       'type' => \TType::STRUCT,
       'class' => 'struct2',
-      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     ];
   public static Map<string, int> $_TFIELDMAP = Map {
@@ -422,13 +407,11 @@ class union1 implements \IThriftStruct, \IThriftUnion<union1Enum> {
       'var' => 'i',
       'union' => true,
       'type' => \TType::I32,
-      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     2 => dict[
       'var' => 'd',
       'union' => true,
       'type' => \TType::DOUBLE,
-      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     ];
   public static Map<string, int> $_TFIELDMAP = Map {
@@ -520,27 +503,23 @@ class union2 implements \IThriftStruct, \IThriftUnion<union2Enum> {
       'var' => 'i',
       'union' => true,
       'type' => \TType::I32,
-      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     2 => dict[
       'var' => 'd',
       'union' => true,
       'type' => \TType::DOUBLE,
-      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     3 => dict[
       'var' => 's',
       'union' => true,
       'type' => \TType::STRUCT,
       'class' => 'struct1',
-      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     4 => dict[
       'var' => 'u',
       'union' => true,
       'type' => \TType::STRUCT,
       'class' => 'union1',
-      'qualifier' => \TFieldQualifier::T_OPT_IN_REQ_OUT,
       ],
     ];
   public static Map<string, int> $_TFIELDMAP = Map {
