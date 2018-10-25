@@ -2,7 +2,6 @@ cmake_minimum_required(VERSION 3.1.3 FATAL_ERROR)
 
 # Package information
 project("fbthrift" C CXX)
-set(CMAKE_CXX_STANDARD 14) #Requires CMake 3.1.3
 
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
@@ -46,6 +45,19 @@ find_package(
     thread
 )
 include_directories(${Boost_INCLUDE_DIRS})
+
+# Provide an option to control the -std argument for the C++ compiler.
+# We don't use CMAKE_CXX_STANDARD since it requires at least CMake 3.8
+# to support C++17.
+set(CXX_STD "gnu++1z"
+  CACHE STRING
+  "The C++ standard argument to pass to the compiler. Defaults to gnu++1z."
+)
+mark_as_advanced(CXX_STD)
+if("${CMAKE_CXX_COMPILER_ID}" MATCHES Clang
+    OR "${CMAKE_CXX_COMPILER_ID}" MATCHES GNU)
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=${CXX_STD}")
+endif()
 
 # Enable modular builds
 option(compiler_only "Build the Thrift Compiler only" OFF)
