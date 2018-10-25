@@ -37,13 +37,15 @@ int main(int argc, char* argv[]) {
   FLAGS_logtostderr = true;
   folly::init(&argc, &argv);
 
+  // create eventbase first so no dangling stack refs on 'client' dealloc
+  folly::EventBase evb;
+
   // Create a thrift client
   auto addr = folly::SocketAddress(FLAGS_host, FLAGS_port);
   auto ct = std::make_shared<ConnectionThread<ChatRoomServiceAsyncClient>>();
   auto client = ct->newSyncClient(addr, FLAGS_transport);
 
   // For header transport
-  folly::EventBase evb;
   if (FLAGS_transport == "header") {
     client = newHeaderClient<ChatRoomServiceAsyncClient>(&evb, addr);
   }
