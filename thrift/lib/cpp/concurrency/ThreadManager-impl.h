@@ -181,11 +181,12 @@ class ThreadManager::ImplT : public ThreadManager,
 
   bool canSleep();
 
-  void add(shared_ptr<Runnable> value,
-           int64_t timeout,
-           int64_t expiration,
-           bool cancellable,
-           bool numa) override;
+  void add(
+      shared_ptr<Runnable> value,
+      int64_t timeout,
+      int64_t expiration,
+      bool cancellable,
+      bool numa) noexcept override;
 
   bool tryAdd(std::shared_ptr<Runnable> task) override;
 
@@ -228,13 +229,12 @@ class ThreadManager::ImplT : public ThreadManager,
  protected:
   bool tryAdd(size_t priority, std::shared_ptr<Runnable> task);
   void add(
-    size_t priority,
-    shared_ptr<Runnable> value,
-    int64_t timeout,
-    int64_t expiration,
-    bool cancellable,
-    bool numa
-  );
+      size_t priority,
+      shared_ptr<Runnable> value,
+      int64_t timeout,
+      int64_t expiration,
+      bool cancellable,
+      bool numa) noexcept;
 
   // returns a string to attach to namePrefix when recording
   // stats

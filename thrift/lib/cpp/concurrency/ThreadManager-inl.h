@@ -345,12 +345,11 @@ bool ThreadManager::ImplT<SemType>::canSleep() {
 
 template <typename SemType>
 void ThreadManager::ImplT<SemType>::add(
-  shared_ptr<Runnable> value,
-  int64_t timeout,
-  int64_t expiration,
-  bool cancellable,
-  bool numa
-) {
+    shared_ptr<Runnable> value,
+    int64_t timeout,
+    int64_t expiration,
+    bool cancellable,
+    bool numa) noexcept {
   add(1, value, timeout, expiration, cancellable, numa);
 }
 
@@ -361,15 +360,20 @@ void ThreadManager::ImplT<SemType>::add(
     int64_t /*timeout*/,
     int64_t expiration,
     bool /*cancellable*/,
-    bool numa) {
+    bool numa) noexcept {
   if (numa) {
     VLOG_EVERY_N(1, 100) << "ThreadManager::add called with numa == true, but "
                          << "not a NumaThreadManager";
   }
 
+  CHECK(
+      state_ != ThreadManager::UNINITIALIZED &&
+      state_ != ThreadManager::STARTING)
+      << "ThreadManager::Impl::add ThreadManager not started";
+
   if (state_ != ThreadManager::STARTED) {
-    throw IllegalStateException("ThreadManager::Impl::add ThreadManager "
-                                "not started");
+    LOG(WARNING) << "abort add() that got called after join() or stop()";
+    return;
   }
 
   auto task = std::make_unique<Task>(
@@ -652,12 +656,11 @@ class PriorityQueueThreadManager : public ThreadManager::ImplT<SemType> {
   using ThreadManager::ImplT<SemType>::add;
 
   void add(
-    std::shared_ptr<Runnable> task,
-    int64_t timeout = 0,
-    int64_t expiration = 0,
-    bool cancellable = false,
-    bool numa = false
-  ) override {
+      std::shared_ptr<Runnable> task,
+      int64_t timeout = 0,
+      int64_t expiration = 0,
+      bool cancellable = false,
+      bool numa = false) noexcept override {
     PriorityRunnable* p = dynamic_cast<PriorityRunnable*>(task.get());
     PRIORITY prio = p ? p->getPriority() : NORMAL;
     ThreadManager::ImplT<SemType>::add(prio, std::move(task), timeout,
@@ -871,22 +874,24 @@ class PriorityThreadManager::PriorityImplT
     }
   }
 
-  void add(std::shared_ptr<Runnable> task,
-           int64_t timeout = 0,
-           int64_t expiration = 0,
-           bool cancellable = false,
-           bool numa = false) override {
+  void add(
+      std::shared_ptr<Runnable> task,
+      int64_t timeout = 0,
+      int64_t expiration = 0,
+      bool cancellable = false,
+      bool numa = false) noexcept override {
     PriorityRunnable* p = dynamic_cast<PriorityRunnable*>(task.get());
     PRIORITY prio = p ? p->getPriority() : NORMAL;
     add(prio, std::move(task), timeout, expiration, cancellable, numa);
   }
 
-  void add(PRIORITY priority,
-           std::shared_ptr<Runnable> task,
-           int64_t timeout = 0,
-           int64_t expiration = 0,
-           bool cancellable = false,
-           bool numa = false) override {
+  void add(
+      PRIORITY priority,
+      std::shared_ptr<Runnable> task,
+      int64_t timeout = 0,
+      int64_t expiration = 0,
+      bool cancellable = false,
+      bool numa = false) noexcept override {
     managers_[priority]->add(
         std::move(task), timeout, expiration, cancellable, numa);
   }

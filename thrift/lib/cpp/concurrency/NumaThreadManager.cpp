@@ -191,12 +191,13 @@ NumaThreadManager::NumaThreadManager(size_t normalThreadsCount,
   workerNode_ = managers_.size() - 1;
 }
 
-void NumaThreadManager::add(PRIORITY priority,
-                            std::shared_ptr<Runnable>task,
-                            int64_t timeout,
-                            int64_t expiration,
-                            bool cancellable,
-                            bool numa) {
+void NumaThreadManager::add(
+    PRIORITY priority,
+    std::shared_ptr<Runnable> task,
+    int64_t timeout,
+    int64_t expiration,
+    bool cancellable,
+    bool numa) noexcept {
   if (numa && managers_.size() > 1) {
     auto node = NumaThreadFactory::getNumaNode() % managers_.size();
     managers_[node]->add(
@@ -207,11 +208,12 @@ void NumaThreadManager::add(PRIORITY priority,
   }
 }
 
-void NumaThreadManager::add(std::shared_ptr<Runnable> task,
-                            int64_t timeout,
-                            int64_t expiration,
-                            bool cancellable,
-                            bool numa) {
+void NumaThreadManager::add(
+    std::shared_ptr<Runnable> task,
+    int64_t timeout,
+    int64_t expiration,
+    bool cancellable,
+    bool numa) noexcept {
   PriorityRunnable* p = dynamic_cast<PriorityRunnable*>(task.get());
   PRIORITY prio = p ? p->getPriority() : NORMAL;
   add(prio, std::move(task), timeout, expiration, cancellable, numa);

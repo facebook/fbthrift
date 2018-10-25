@@ -27,10 +27,6 @@ class FakeThreadManager : public apache::thrift::concurrency::ThreadManager {
  public:
   ~FakeThreadManager() override {}
 
-  void setThrowOnAdd(bool val) {
-    throwOnAdd_ = val;
-  }
-
   void start() override {}
 
   void join() override {}
@@ -40,19 +36,14 @@ class FakeThreadManager : public apache::thrift::concurrency::ThreadManager {
       int64_t /*timeout*/,
       int64_t /*expiration*/,
       bool /*cancellable*/,
-      bool /*numa*/) {
-    if (throwOnAdd_) {
-      // Simulates an overloaded server.
-      throw std::exception();
-    } else {
-      auto thread = factory_.newThread(task);
-      thread->start();
-    }
+      bool /*numa*/) noexcept {
+    auto thread = factory_.newThread(task);
+    thread->start();
   }
 
   // Following methods are not required for this fake object.
 
-  void add(folly::Func /*f*/) override {
+  void add(folly::Func /*f*/) noexcept override {
     LOG(FATAL) << "Method not implemented in this fake object";
   }
 

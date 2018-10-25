@@ -147,23 +147,19 @@ class ThreadManager : public virtual folly::Executor {
    *
    * @param task  The task to queue for execution
    *
-   * @param timeout Time to wait in milliseconds to add a task when a
-   * pending-task-count is specified. Specific cases:
-   * timeout = 0  : Wait forever to queue task.
-   * timeout = -1 : Throw immediately if pending task count exceeds specified
-   * max
+   * @param timeout, this argument is deprecated, add() will always be
+   * non-blocking
+   *
    * @param expiration when nonzero, the number of milliseconds the task is
    * valid to be run; if exceeded, the task will be dropped off the queue and
    * not run.
-   *
-   * @throws TooManyPendingTasksException Pending task count exceeds max
-   * pending task count
    */
-  virtual void add(std::shared_ptr<Runnable> task,
-                   int64_t timeout = 0,
-                   int64_t expiration = 0,
-                   bool cancellable = false,
-                   bool numa = false) = 0;
+  virtual void add(
+      std::shared_ptr<Runnable> task,
+      int64_t timeout = 0,
+      int64_t expiration = 0,
+      bool cancellable = false,
+      bool numa = false) noexcept = 0;
 
   /**
    * Similar to add(), but doesn't block or throw.
@@ -301,12 +297,13 @@ class PriorityThreadManager : public ThreadManager {
   virtual size_t pendingTaskCount(PRIORITY priority) const = 0;
 
   using ThreadManager::add;
-  virtual void add(PRIORITY priority,
-                   std::shared_ptr<Runnable> task,
-                   int64_t timeout = 0,
-                   int64_t expiration = 0,
-                   bool cancellable = false,
-                   bool numa = false) = 0;
+  virtual void add(
+      PRIORITY priority,
+      std::shared_ptr<Runnable> task,
+      int64_t timeout = 0,
+      int64_t expiration = 0,
+      bool cancellable = false,
+      bool numa = false) noexcept = 0;
 
   using ThreadManager::tryAdd;
   virtual bool tryAdd(PRIORITY priority, std::shared_ptr<Runnable> task) = 0;
@@ -387,11 +384,12 @@ class ThreadManagerExecutorAdapter : public ThreadManager {
   size_t totalTaskCount() const override { return 0; }
   size_t expiredTaskCount() override { return 0; }
 
-  void add(std::shared_ptr<Runnable> task,
-           int64_t /*timeout*/ = 0,
-           int64_t /*expiration*/ = 0,
-           bool /*cancellable*/ = false,
-           bool /*numa*/ = false) override {
+  void add(
+      std::shared_ptr<Runnable> task,
+      int64_t /*timeout*/ = 0,
+      int64_t /*expiration*/ = 0,
+      bool /*cancellable*/ = false,
+      bool /*numa*/ = false) noexcept override {
     exe_->add([=] { task->run(); });
   }
   bool tryAdd(std::shared_ptr<Runnable> task) override {

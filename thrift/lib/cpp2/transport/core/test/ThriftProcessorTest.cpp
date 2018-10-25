@@ -94,26 +94,5 @@ TEST_F(CoreTestFixture, BadMetadata) {
   EXPECT_EQ(TApplicationException::UNSUPPORTED_CLIENT_TYPE, tae.getType());
 }
 
-// Forces calling sendErrorWrapped()
-TEST_F(CoreTestFixture, SendErrorWrapped) {
-  threadManager_->setThrowOnAdd(true);
-  runInEventBaseThread([&]() mutable {
-    auto metadata = std::make_unique<RequestRpcMetadata>();
-    folly::IOBufQueue request;
-    serializeSumTwoNumbers(5, 10, false, &request, metadata.get());
-    auto channel = std::shared_ptr<ThriftChannelIf>(channel_);
-    processor_.onThriftRequest(std::move(metadata), request.move(), channel);
-  });
-
-  ResponseRpcMetadata* metadata = channel_->getMetadata();
-  auto iter = metadata->otherMetadata.find("ex");
-  EXPECT_NE(metadata->otherMetadata.end(), iter);
-  EXPECT_EQ(kQueueOverloadedErrorCode, iter->second);
-
-  TApplicationException tae;
-  EXPECT_TRUE(deserializeException(channel_->getPayloadBuf(), &tae));
-  EXPECT_EQ(TApplicationException::UNKNOWN, tae.getType());
-}
-
 } // namespace thrift
 } // namespace apache
