@@ -22,9 +22,11 @@
 // to have a bad time.
 
 #ifndef _WIN32
+extern "C" {
 #include <gssapi/gssapi_generic.h>
 #include <gssapi/gssapi_krb5.h>
 #include <krb5/krb5.h>
+}
 #else
 #include <cstdint>
 #include <exception>
