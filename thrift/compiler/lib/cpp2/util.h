@@ -49,6 +49,23 @@ bool is_orderable(
     t_type const& type);
 bool is_orderable(t_type const& type);
 
+/**
+ * If the cpp_type is std::unique_ptr<folly::IOBuf> the C++ compiler implicitly
+ * assumes this is optional.
+ */
+bool is_implicit_ref(const t_type* type);
+
+/**
+ * Return the cpp.type/cpp2.type attribute or empty string if nothing set.
+ */
+std::string const& get_cpp_type(const t_type* type);
+
+/**
+ * Does the field have cpp.ref/cpp2.ref/cpp.ref_type/cpp2.ref_type or is an
+ * implicit ref (see @is_implicit_ref).
+ */
+bool is_cpp_ref(const t_field* f);
+
 } // namespace cpp2
 } // namespace compiler
 } // namespace thrift

@@ -139,6 +139,47 @@ bool is_orderable(t_type const& type) {
   return is_orderable(seen, memo, type);
 }
 
+namespace {
+
+std::string const& map_find_first(
+    std::map<std::string, std::string> const& m,
+    std::initializer_list<char const*> keys) {
+  for (auto const& key : keys) {
+    auto const it = m.find(key);
+    if (it != m.end()) {
+      return it->second;
+    }
+  }
+  static auto const& empty = *new std::string();
+  return empty;
+}
+
+} // namespace
+
+std::string const& get_cpp_type(const t_type* type) {
+  return map_find_first(
+      type->annotations_,
+      {
+          "cpp.type",
+          "cpp2.type",
+      });
+}
+
+bool is_implicit_ref(const t_type* type) {
+  auto const* resolved_typedef = type->get_true_type();
+  return resolved_typedef != nullptr && resolved_typedef->is_binary() &&
+      get_cpp_type(resolved_typedef).find("std::unique_ptr") !=
+      std::string::npos &&
+      get_cpp_type(resolved_typedef).find("folly::IOBuf") != std::string::npos;
+}
+
+bool is_cpp_ref(const t_field* f) {
+  return f->annotations_.count("cpp.ref") ||
+      f->annotations_.count("cpp2.ref") ||
+      f->annotations_.count("cpp.ref_type") ||
+      f->annotations_.count("cpp2.ref_type") || is_implicit_ref(f->get_type());
+}
+
 } // namespace cpp2
 } // namespace compiler
 } // namespace thrift

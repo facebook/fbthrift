@@ -40,15 +40,6 @@ std::string const& map_find_first(
   return empty;
 }
 
-std::string const& get_cpp_type(const t_type* type) {
-  return map_find_first(
-      type->annotations_,
-      {
-          "cpp.type",
-          "cpp2.type",
-      });
-}
-
 std::string const& get_cpp_template(const t_type* type) {
   return map_find_first(
       type->annotations_,
@@ -58,20 +49,6 @@ std::string const& get_cpp_template(const t_type* type) {
       });
 }
 
-bool is_implicit_ref(const t_type* type) {
-  auto const* resolved_typedef = type->get_true_type();
-  return resolved_typedef != nullptr && resolved_typedef->is_binary() &&
-      get_cpp_type(resolved_typedef).find("std::unique_ptr") != string::npos &&
-      get_cpp_type(resolved_typedef).find("folly::IOBuf") != string::npos;
-}
-
-bool is_cpp_ref(const t_field* f) {
-  return f->annotations_.count("cpp.ref") ||
-      f->annotations_.count("cpp2.ref") ||
-      f->annotations_.count("cpp.ref_type") ||
-      f->annotations_.count("cpp2.ref_type") || is_implicit_ref(f->get_type());
-}
-
 bool is_cpp_ref_unique_either(const t_field* f) {
   return f->annotations_.count("cpp.ref") ||
       f->annotations_.count("cpp2.ref") ||
@@ -79,7 +56,7 @@ bool is_cpp_ref_unique_either(const t_field* f) {
        f->annotations_.at("cpp.ref_type") == "unique") ||
       (f->annotations_.count("cpp2.ref_type") &&
        f->annotations_.at("cpp2.ref_type") == "unique") ||
-      is_implicit_ref(f->get_type());
+      cpp2::is_implicit_ref(f->get_type());
 }
 
 bool same_types(const t_type* a, const t_type* b) {
@@ -88,7 +65,7 @@ bool same_types(const t_type* a, const t_type* b) {
   }
 
   if (get_cpp_template(a) != get_cpp_template(b) ||
-      get_cpp_type(a) != get_cpp_type(b)) {
+      cpp2::get_cpp_type(a) != cpp2::get_cpp_type(b)) {
     return false;
   }
 
@@ -371,7 +348,7 @@ class mstch_cpp2_type : public mstch_type {
         resolved_type_->is_struct() || resolved_type_->is_xception();
   }
   mstch::node cpp_type() {
-    return get_cpp_type(type_);
+    return cpp2::get_cpp_type(type_);
   }
   mstch::node cpp_custom_type() {
     if (resolved_type_->annotations_.count("cpp.indirection") ||
@@ -381,7 +358,7 @@ class mstch_cpp2_type : public mstch_type {
       return std::string();
     }
 
-    return get_cpp_type(resolved_type_);
+    return cpp2::get_cpp_type(resolved_type_);
   }
   mstch::node is_string_or_binary() {
     return resolved_type_->is_string() || resolved_type_->is_binary();
@@ -470,7 +447,7 @@ class mstch_cpp2_field : public mstch_field {
   }
   mstch::node cpp_ref_unique_either() {
     return boost::get<bool>(cpp_ref_unique()) ||
-        is_implicit_ref(field_->get_type());
+        cpp2::is_implicit_ref(field_->get_type());
   }
   mstch::node cpp_ref_shared() {
     return get_annotation("cpp.ref_type") == "shared" ||
@@ -632,7 +609,7 @@ class mstch_cpp2_struct : public mstch_struct {
   }
   mstch::node has_cpp_ref() {
     for (auto const* f : strct_->get_members()) {
-      if (is_cpp_ref(f)) {
+      if (cpp2::is_cpp_ref(f)) {
         return true;
       }
     }
@@ -737,7 +714,7 @@ class mstch_cpp2_struct : public mstch_struct {
     }
     for (auto const* field : strct_->get_members()) {
       auto const* resolved_typedef = field->get_type()->get_true_type();
-      if (is_cpp_ref(field) || resolved_typedef->is_string() ||
+      if (cpp2::is_cpp_ref(field) || resolved_typedef->is_string() ||
           resolved_typedef->is_container()) {
         return true;
       }
