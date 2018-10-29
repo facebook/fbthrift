@@ -932,9 +932,21 @@ void t_go_generator::generate_typedef(t_typedef* ttypedef) {
   f_types_ << "type " << new_type_name << " = " << base_type << endl << endl;
   // Generate a convenience function that converts an instance of a type
   // (which may be a constant) into a pointer to an instance of a type.
-  f_types_ << "func " << new_type_name << "Ptr(v " << new_type_name << ") *"
-           << new_type_name << " { return &v }" << endl
-           << endl;
+  // Special case: If a newtype ends in "Ptr" this function might redeclare the
+  // typename as a function. So if that would happen, name it with the suffix
+  // ToPointer instead.
+  int name_len = new_type_name.length();
+  if (name_len >= 3 && new_type_name[name_len - 3] == 'P' &&
+      new_type_name[name_len - 2] == 't' &&
+      new_type_name[name_len - 1] == 'r') {
+    f_types_ << "func " << new_type_name << "ToPointer(v " << new_type_name
+             << ") *" << new_type_name << " { return &v }" << endl
+             << endl;
+  } else {
+    f_types_ << "func " << new_type_name << "Ptr(v " << new_type_name << ") *"
+             << new_type_name << " { return &v }" << endl
+             << endl;
+  }
 }
 
 /**
