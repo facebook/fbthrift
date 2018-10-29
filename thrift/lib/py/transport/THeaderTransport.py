@@ -61,6 +61,23 @@ except ImportError:
                                       'snappy module not available')
     snappy = DummySnappy()  # type: ignore
 
+# Import the zstd module if it is available
+try:
+    import zstd
+except ImportError:
+    # If zstd is not available, don't fail immediately.
+    # Only raise an error if we actually ever need to perform zstd
+    # compression.
+    class DummyZstd(object):
+        def ZstdCompressor(self, write_content_size):
+            raise TTransportException(TTransportException.INVALID_TRANSFORM,
+                                      'zstd module not available')
+
+        def ZstdDecompressor(self):
+            raise TTransportException(TTransportException.INVALID_TRANSFORM,
+                                      'zstd module not available')
+    zstd = DummyZstd()  # type: ignore
+
 
 # Definitions from THeader.h
 
@@ -341,9 +358,7 @@ class THeaderTransport(TTransportBase, CReadableTransport):
         # Read the headers.  Data for each header varies.
         for _ in range(0, num_headers):
             trans_id = readVarint(data)
-            if trans_id == TRANSFORM.ZLIB:
-                self.__read_transforms.insert(0, trans_id)
-            elif trans_id == TRANSFORM.SNAPPY:
+            if trans_id in (TRANSFORM.ZLIB, TRANSFORM.SNAPPY, TRANSFORM.ZSTD):
                 self.__read_transforms.insert(0, trans_id)
             elif trans_id == TRANSFORM.HMAC:
                 raise TApplicationException(
@@ -390,6 +405,8 @@ class THeaderTransport(TTransportBase, CReadableTransport):
                 buf = zlib.compress(buf)
             elif trans_id == TRANSFORM.SNAPPY:
                 buf = snappy.compress(buf)
+            elif trans_id == TRANSFORM.ZSTD:
+                buf = zstd.ZstdCompressor(write_content_size=True).compress(buf)
             else:
                 raise TTransportException(TTransportException.INVALID_TRANSFORM,
                                           "Unknown transform during send")
@@ -401,6 +418,8 @@ class THeaderTransport(TTransportBase, CReadableTransport):
                 buf = zlib.decompress(buf)
             elif trans_id == TRANSFORM.SNAPPY:
                 buf = snappy.decompress(buf)
+            elif trans_id == TRANSFORM.ZSTD:
+                buf = zstd.ZstdDecompressor().decompress(buf)
             if trans_id not in self.__write_transforms:
                 self.__write_transforms.append(trans_id)
         return buf
