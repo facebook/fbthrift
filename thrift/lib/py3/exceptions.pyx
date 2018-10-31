@@ -20,7 +20,6 @@ class TransportErrorType(Enum):
     INVALID_FRAME_SIZE = cTTransportExceptionType__INVALID_FRAME_SIZE
     SSL_ERROR = cTTransportExceptionType__SSL_ERROR
     COULD_NOT_BIND = cTTransportExceptionType__COULD_NOT_BIND
-    SASL_HANDSHAKE_TIMEOUT = cTTransportExceptionType__SASL_HANDSHAKE_TIMEOUT
     NETWORK_ERROR = cTTransportExceptionType__NETWORK_ERROR
 
 

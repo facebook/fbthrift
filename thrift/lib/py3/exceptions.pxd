@@ -71,7 +71,6 @@ cdef extern from "thrift/lib/cpp/transport/TTransportException.h" \
         cTTransportExceptionType__INVALID_FRAME_SIZE "apache::thrift::transport::TTransportException::INVALID_FRAME_SIZE"
         cTTransportExceptionType__SSL_ERROR "apache::thrift::transport::TTransportException::SSL_ERROR"
         cTTransportExceptionType__COULD_NOT_BIND "apache::thrift::transport::TTransportException::COULD_NOT_BIND"
-        cTTransportExceptionType__SASL_HANDSHAKE_TIMEOUT "apache::thrift::transport::TTransportException::SASL_HANDSHAKE_TIMEOUT"
         cTTransportExceptionType__NETWORK_ERROR "apache::thrift::transport::TTransportException::NETWORK_ERROR"
 
     enum cTTransportExceptionOptions "apache::thrift::transport::TTransportException::Options":
