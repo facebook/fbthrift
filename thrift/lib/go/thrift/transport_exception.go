@@ -49,7 +49,6 @@ const (
 	INVALID_FRAME_SIZE          = 11
 	SSL_ERROR                   = 12
 	COULD_NOT_BIND              = 13
-	SASL_HANDSHAKE_TIMEOUT      = 14
 	NETWORK_ERROR               = 15
 )
 

@@ -60,7 +60,6 @@ const (
 	HTTPServerType
 	HTTPClientType
 	FramedCompact
-	HeaderSASLClientType
 	HTTPGetClientType
 	UnknownClientType
 	UnframedCompactDeprecated
@@ -80,8 +79,6 @@ func (c ClientType) String() string {
 		return "HTTPClient"
 	case FramedCompact:
 		return "FramedCompact"
-	case HeaderSASLClientType:
-		return "HeaderSASL"
 	case HTTPGetClientType:
 		return "HTTPGet"
 	case UnframedCompactDeprecated:
@@ -98,7 +95,6 @@ type HeaderFlags uint32
 const (
 	HeaderFlagSupportOutOfOrder HeaderFlags = 0x01
 	HeaderFlagDuplexReverse     HeaderFlags = 0x08
-	HeaderFlagSASL              HeaderFlags = 0x10
 )
 
 type InfoIDType uint32
@@ -411,9 +407,6 @@ func analyzeSecond32Bit(word uint32) ClientType {
 		return FramedCompact
 	}
 	if (word & HeaderMask) == HeaderMagic {
-		if (word & uint32(HeaderFlagSASL)) != 0 {
-			return HeaderSASLClientType
-		}
 		return HeaderClientType
 	}
 	return UnknownClientType
