@@ -19,7 +19,6 @@
 #include <chrono>
 
 #include <thrift/lib/cpp2/server/ThriftServer.h>
-#include <thrift/lib/cpp2/async/StubSaslServer.h>
 #include <thrift/lib/cpp2/test/util/TestServerFactory.h>
 
 namespace apache { namespace thrift {
@@ -28,8 +27,7 @@ template<typename Interface>
 struct TestThriftServerFactory : public TestServerFactory {
   public:
    std::shared_ptr<BaseThriftServer> create() override {
-     auto server =
-         std::make_shared<apache::thrift::ThriftServer>(saslPolicy_, false);
+     auto server = std::make_shared<apache::thrift::ThriftServer>();
      server->setNumIOWorkerThreads(1);
      if (useSimpleThreadManager_) {
        auto threadFactory =
@@ -45,13 +43,6 @@ struct TestThriftServerFactory : public TestServerFactory {
      }
 
      server->setPort(0);
-     server->setSaslEnabled(enableSasl_);
-     if (useStubSaslServer_) {
-       server->setSaslServerFactory([](folly::EventBase* evb) {
-         return std::unique_ptr<apache::thrift::SaslServer>(
-             new apache::thrift::StubSaslServer(evb));
-       });
-     }
 
      if (idleTimeoutMs_ != 0) {
        server->setIdleTimeout(std::chrono::milliseconds(idleTimeoutMs_));
@@ -86,11 +77,6 @@ struct TestThriftServerFactory : public TestServerFactory {
     return *this;
   }
 
-  TestThriftServerFactory& useStubSaslServer(bool use) {
-    useStubSaslServer_ = use;
-    return *this;
-  }
-
   TestThriftServerFactory& idleTimeoutMs (uint32_t idle) {
     idleTimeoutMs_ = idle;
     return *this;
@@ -111,18 +97,9 @@ struct TestThriftServerFactory : public TestServerFactory {
     return *this;
   }
 
-  TestThriftServerFactory& enableSasl(bool enabled) {
-    enableSasl_ = enabled;
-    saslPolicy_ = enabled ? "permitted" : "";
-    return *this;
-  }
-
  private:
   bool useSimpleThreadManager_{true};
   std::shared_ptr<apache::thrift::concurrency::ThreadManager> exe_{nullptr};
-  bool useStubSaslServer_{true};
-  bool enableSasl_{false};
-  std::string saslPolicy_;
   uint32_t idleTimeoutMs_{0};
   bool duplex_{false};
   uint32_t minCompressBytes_{0};

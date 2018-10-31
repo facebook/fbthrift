@@ -27,8 +27,6 @@
 #include <thrift/lib/cpp/transport/THeader.h>
 #include <thrift/lib/cpp2/util/ScopedServerThread.h>
 
-#include <thrift/lib/cpp2/async/StubSaslClient.h>
-#include <thrift/lib/cpp2/async/StubSaslServer.h>
 #include <thrift/lib/cpp2/test/util/TestInterface.h>
 
 #include <thrift/lib/cpp2/test/util/TestThriftServerFactory.h>
@@ -66,29 +64,21 @@ enum ClientChannelTypes {
 };
 
 class SharedServerTests
-    : public testing::TestWithParam<std::tuple<ThriftServerTypes,
-                                               ClientChannelTypes,
-                                               PROTOCOL_TYPES,
-                                               THRIFT_SECURITY_POLICY>> {
+    : public testing::TestWithParam<
+          std::tuple<ThriftServerTypes, ClientChannelTypes, PROTOCOL_TYPES>> {
  protected:
   void SetUp() override {
     base.reset(new folly::EventBase);
 
     auto protocolId = std::get<2>(GetParam());
-    auto securityPolicy = std::get<3>(GetParam());
 
     switch (std::get<0>(GetParam())) {
       case THRIFT_SERVER: {
         auto f = std::make_unique<TestThriftServerFactory<TestInterface>>();
-        if (securityPolicy != THRIFT_SECURITY_DISABLED) {
-          f->useStubSaslServer(true);
-          f->enableSasl(true);
-        }
         serverFactory = std::move(f);
         break;
       }
       case PROXYGEN: {
-        ASSERT_EQ(THRIFT_SECURITY_DISABLED, securityPolicy);
         serverFactory = std::make_unique<
             TestProxygenThriftServerFactory<TestInterface>>();
         break;
@@ -101,12 +91,10 @@ class SharedServerTests
       case HEADER: {
         auto c = std::make_unique<TestHeaderClientChannelFactory>();
         c->setProtocolId(protocolId);
-        c->setSecurityPolicy(securityPolicy);
         channelFactory = std::move(c);
         break;
       }
       case HTTP2: {
-        ASSERT_EQ(THRIFT_SECURITY_DISABLED, securityPolicy);
         auto c = std::make_unique<TestHTTPClientChannelFactory>();
         c->setProtocolId(protocolId);
         channelFactory = std::move(c);
@@ -466,20 +454,18 @@ TEST_P(SharedServerTests, CallbackOrderingTest) {
 using testing::Combine;
 using testing::Values;
 
-INSTANTIATE_TEST_CASE_P(ThriftServerTests,
-                        SharedServerTests,
-                        Combine(Values(ThriftServerTypes::THRIFT_SERVER),
-                                Values(ClientChannelTypes::HEADER),
-                                Values(protocol::T_BINARY_PROTOCOL,
-                                       protocol::T_COMPACT_PROTOCOL),
-                                Values(THRIFT_SECURITY_DISABLED,
-                                       THRIFT_SECURITY_PERMITTED,
-                                       THRIFT_SECURITY_REQUIRED)));
+INSTANTIATE_TEST_CASE_P(
+    ThriftServerTests,
+    SharedServerTests,
+    Combine(
+        Values(ThriftServerTypes::THRIFT_SERVER),
+        Values(ClientChannelTypes::HEADER),
+        Values(protocol::T_BINARY_PROTOCOL, protocol::T_COMPACT_PROTOCOL)));
 
-INSTANTIATE_TEST_CASE_P(ProxygenThriftServerTests,
-                        SharedServerTests,
-                        Combine(Values(ThriftServerTypes::PROXYGEN),
-                                Values(ClientChannelTypes::HTTP2),
-                                Values(protocol::T_BINARY_PROTOCOL,
-                                       protocol::T_COMPACT_PROTOCOL),
-                                Values(THRIFT_SECURITY_DISABLED)));
+INSTANTIATE_TEST_CASE_P(
+    ProxygenThriftServerTests,
+    SharedServerTests,
+    Combine(
+        Values(ThriftServerTypes::PROXYGEN),
+        Values(ClientChannelTypes::HTTP2),
+        Values(protocol::T_BINARY_PROTOCOL, protocol::T_COMPACT_PROTOCOL)));
