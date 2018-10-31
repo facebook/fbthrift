@@ -85,7 +85,6 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
   const std::string saslPolicy_;
   SSLPolicy sslPolicy_ = SSLPolicy::PERMITTED;
   bool strictSSL_ = false;
-  const bool allowInsecureLoopback_;
   std::function<std::unique_ptr<SaslServer>(folly::EventBase*)>
       saslServerFactory_;
   std::shared_ptr<apache::thrift::concurrency::ThreadManager>
@@ -210,9 +209,6 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
 
  public:
   ThriftServer();
-
-  // If sasl_policy is set. FLAGS_sasl_policy will be ignored for this server
-  ThriftServer(const std::string& sasl_policy, bool allow_insecure_loopback);
 
   // NOTE: Don't use this constructor to create a regular Thrift server. This
   // constructor is used by the client to create a duplex server on an existing
@@ -526,9 +522,6 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
   }
   bool getSaslEnabled() {
     return saslEnabled_;
-  }
-  bool getAllowInsecureLoopback() const {
-    return allowInsecureLoopback_;
   }
   std::string getSaslPolicy() const {
     return saslPolicy_;

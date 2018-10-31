@@ -93,26 +93,11 @@ class ThriftAcceptorFactory : public wangle::AcceptorFactory {
   ThriftServer* server_;
 };
 
-ThriftServer::ThriftServer() : ThriftServer("", false) {}
-
-ThriftServer::ThriftServer(
-    const std::string& saslPolicy,
-    bool allowInsecureLoopback)
+ThriftServer::ThriftServer()
     : BaseThriftServer(),
-      saslPolicy_(saslPolicy.empty() ? FLAGS_sasl_policy : saslPolicy),
-      allowInsecureLoopback_(allowInsecureLoopback),
       wShutdownSocketSet_(folly::tryGetShutdownSocketSet()),
       lastRequestTime_(
           std::chrono::steady_clock::now().time_since_epoch().count()) {
-  // SASL setup
-  if (saslPolicy_ == "required") {
-    setSaslEnabled(true);
-    setNonSaslEnabled(false);
-  } else if (saslPolicy_ == "permitted") {
-    setSaslEnabled(true);
-    setNonSaslEnabled(true);
-  }
-
   if (FLAGS_thrift_ssl_policy == "required") {
     sslPolicy_ = SSLPolicy::REQUIRED;
   } else if (FLAGS_thrift_ssl_policy == "permitted") {

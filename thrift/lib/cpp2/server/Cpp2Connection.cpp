@@ -114,7 +114,6 @@ Cpp2Connection::Cpp2Connection(
   }
 
   const bool downgradeSaslPolicy =
-      worker_->getServer()->getAllowInsecureLoopback() &&
       isClientLocal(*address, *context_.getLocalAddress());
 
   if (worker_->getServer()->getSaslEnabled() &&
