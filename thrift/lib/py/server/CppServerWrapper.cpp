@@ -151,9 +151,6 @@ public:
   void connAccepted() override { this->call("connAccepted"); }
   void connDropped() override { this->call("connDropped"); }
   void connRejected() override { this->call("connRejected"); }
-  void saslError() override { this->call("saslError"); }
-  void saslFallBack() override { this->call("saslFallback"); }
-  void saslComplete() override { this->call("saslComplete"); }
   void tlsError() override { this->call("tlsError"); }
   void tlsComplete() override { this->call("tlsComplete"); }
   void tlsFallback() override { this->call("tlsFallback"); }
@@ -238,11 +235,6 @@ public:
             folly::ByteRange input_range = buf->coalesce();
             auto input_data = const_cast<unsigned char*>(input_range.data());
             auto clientType = context->getHeader()->getClientType();
-            if (clientType == THRIFT_HEADER_SASL_CLIENT_TYPE) {
-              // SASL processing is already done, and we're not going to put
-              // it back.  So just use standard header here.
-              clientType = THRIFT_HEADER_CLIENT_TYPE;
-            }
 
             {
               PyGILState_STATE state = PyGILState_Ensure();

@@ -57,12 +57,6 @@ class CppContextData {
     connCtx_ = connCtx;
 
     clientIdentity_ = connCtx->getPeerCommonName();
-    if (clientIdentity_.empty()) {
-      auto ss = connCtx->getSaslServer();
-      if (ss) {
-        clientIdentity_ = ss->getClientIdentity();
-      }
-    }
 
     auto pa = connCtx->getPeerAddress();
     if (pa) {
