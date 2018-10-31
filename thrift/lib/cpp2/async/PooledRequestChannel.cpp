@@ -228,10 +228,7 @@ uint32_t PooledRequestChannel::sendRequestSync(
 PooledRequestChannel::Impl& PooledRequestChannel::impl(folly::EventBase& evb) {
   DCHECK(evb.inRunningEventBaseThread());
 
-  auto creator = [&evb, &implCreator = implCreator_] {
-    return implCreator(evb);
-  };
-  return impl_.getOrCreateFn(evb, creator);
+  return impl_.getOrCreateFn(evb, [this, &evb] { return implCreator_(evb); });
 }
 } // namespace thrift
 } // namespace apache
