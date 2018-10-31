@@ -58,7 +58,6 @@ final class THeaderTransport : TBaseFramedTransport {
     HTTPServer = 3,
     HTTPClient = 4,
     FramedCompact = 5,
-    HeaderSASL = 6,
     HTTPGet = 7,
     Unknown = 8,
   }
