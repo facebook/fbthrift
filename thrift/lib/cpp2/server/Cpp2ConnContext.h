@@ -34,7 +34,6 @@ namespace thrift {
 using ClientIdentityHook = std::function<std::unique_ptr<void, void (*)(void*)>(
     const folly::AsyncTransportWrapper* transport,
     X509* cert,
-    const apache::thrift::SaslServer* sasl,
     const folly::SocketAddress& peerAddress)>;
 
 class RequestChannel;
@@ -67,8 +66,8 @@ class Cpp2ConnContext : public apache::thrift::server::TConnectionContext {
     }
 
     if (clientIdentityHook) {
-      peerIdentities_ = clientIdentityHook(
-          transport_, peerCert_.get(), sasl_server, peerAddress_);
+      peerIdentities_ =
+          clientIdentityHook(transport_, peerCert_.get(), peerAddress_);
     }
   }
 
