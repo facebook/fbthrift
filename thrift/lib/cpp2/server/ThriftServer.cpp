@@ -50,11 +50,6 @@ DEFINE_string(
     service_identity,
     "",
     "The name of the service. Associates the service with ACLs and keys");
-DEFINE_bool(
-    pin_service_identity,
-    false,
-    "Force the service to use keys associated with the service_identity. "
-    "Set this only if you're setting service_identity.");
 
 namespace apache {
 namespace thrift {
@@ -312,21 +307,6 @@ void ThriftServer::setup() {
 
       if (getSaslServerFactory()) {
         // If the factory is already set, don't override it with the default
-      } else if (
-          FLAGS_pin_service_identity && !FLAGS_service_identity.empty()) {
-        // If pin_service_identity flag is set and service_identity is specified
-        // force the server use the corresponding principal from keytab.
-        char hostname[256];
-        if (gethostname(hostname, 255)) {
-          LOG(FATAL) << "Failed getting hostname";
-        }
-        setSaslServerFactory([=](folly::EventBase* evb) {
-          auto saslServer = std::unique_ptr<SaslServer>(
-              new GssSaslServer(evb, saslThreadManager));
-          saslServer->setServiceIdentity(
-              FLAGS_service_identity + "/" + hostname);
-          return saslServer;
-        });
       } else {
         // Allow the server to accept anything in the keytab.
         setSaslServerFactory([=](folly::EventBase* evb) {
