@@ -40,6 +40,8 @@ import module.types as _module_types
 cimport module.types as _module_types
 import includes.types as _includes_types
 cimport includes.types as _includes_types
+import transitive.types as _transitive_types
+cimport transitive.types as _transitive_types
 
 import asyncio
 import functools

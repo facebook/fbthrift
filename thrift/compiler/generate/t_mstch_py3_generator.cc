@@ -665,8 +665,16 @@ void t_mstch_py3_generator::add_per_type_data(
   results.emplace("containerTypes", std::move(containers));
   results.emplace("customTemplates", dump_elems(data.custom_templates));
   results.emplace("customTypes", dump_elems(data.custom_types));
-  // extra_namespaces is already a mstch::array, so we don't need to dump it:
-  results.emplace("extraNamespaces", data.extra_namespaces);
+
+  // extra_namespaces gets appended to the existing includeNamespaces key:
+  auto nit = results.find("includeNamespaces");
+  if (nit == results.end()) {
+    results.emplace("includeNamespaces", data.extra_namespaces);
+  } else {
+    auto& n = boost::get<mstch::array>(nit->second);
+    n.insert(
+        n.end(), data.extra_namespaces.begin(), data.extra_namespaces.end());
+  }
 
   // create second set of container types that treats strings and binaries
   // the same
@@ -753,7 +761,9 @@ void t_mstch_py3_generator::visit_single_type(
         const auto ns = get_py3_namespace(*prog, {prog->get_name()});
         data.extra_namespace_paths.insert(path);
         const mstch::map extra_ns{
-            {"extraNamespace", ns},
+            {"includeNamespace", ns},
+            {"hasServices?", false},
+            {"hasTypes?", true},
         };
         data.extra_namespaces.push_back(extra_ns);
       }

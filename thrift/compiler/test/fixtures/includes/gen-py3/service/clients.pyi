@@ -15,6 +15,7 @@ from types import TracebackType
 import service.types as _service_types
 import module.types as _module_types
 import includes.types as _includes_types
+import transitive.types as _transitive_types
 
 
 _MyServiceT = _typing.TypeVar('_MyServiceT', bound='MyService')
