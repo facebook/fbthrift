@@ -122,6 +122,20 @@ struct LayoutPosition {
 };
 
 /**
+ * folly::none used to be implemented as a pointer-to-member. This meant that
+ * it could be converted to bools and thrift::frozen relied on this behavior
+ * in its serialized binary format. Now that folly::none is its own folly::None
+ * type and no longer implicitly converts to bool, this helper type effects the
+ * old serialization behavior.
+ */
+struct BrokenNone {
+  operator folly::Optional<bool>() const { return false; }
+  template<typename T>
+  operator folly::Optional<T>() const { return folly::none; }
+};
+constexpr BrokenNone brokenNone{};
+
+/**
  * Absolute target position in memory for freezing an object, with bit
  * granularity.
  */
@@ -608,7 +622,7 @@ class LayoutRoot {
     if (present) {
       return layoutField(self, fieldPos, field, value);
     } else {
-      return layoutField(self, fieldPos, field, folly::none);
+      return layoutField(self, fieldPos, field, brokenNone);
     }
   }
 
@@ -702,7 +716,7 @@ class FreezeRoot {
     if (present) {
       freezeField(self, field, value);
     } else {
-      freezeField(self, field, folly::none);
+      freezeField(self, field, brokenNone);
     }
   }
 
