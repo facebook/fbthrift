@@ -57,12 +57,6 @@ class FakeServerObserver : public apache::thrift::server::TServerObserver {
     activeConns_ = numConnections;
   }
 
-  void saslError() override {}
-
-  void saslFallBack() override {}
-
-  void saslComplete() override {}
-
   void tlsError() override {}
 
   void tlsComplete() override {}

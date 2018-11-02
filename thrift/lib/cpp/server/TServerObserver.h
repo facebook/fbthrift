@@ -99,12 +99,6 @@ class TServerObserver {
 
   virtual void activeConnections(int32_t /*numConnections*/) {}
 
-  virtual void saslError() {}
-
-  virtual void saslFallBack() {}
-
-  virtual void saslComplete() {}
-
   virtual void tlsError() {}
 
   virtual void tlsComplete() {}

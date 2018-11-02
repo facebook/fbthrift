@@ -265,11 +265,6 @@ bool HeaderServerChannel::ServerSaslNegotiationHandler::handleSecurityMessage(
       // exists
       channel_.getSaslServer()->detachEventBase();
     }
-    const auto& observer = std::dynamic_pointer_cast<TServerObserver>(
-        channel_.getEventBase()->getObserver());
-    if (observer) {
-      observer->saslFallBack();
-    }
   }
 
   return fallThrough;
@@ -611,17 +606,10 @@ void HeaderServerChannel::SaslServerCallback::saslError(
     // insecure client type is not supported.
     channel_.setClientType(THRIFT_HEADER_CLIENT_TYPE);
   } catch (const std::exception& e) {
-    if (observer) {
-      observer->saslError();
-    }
     channel_.setProtectionState(ProtectionState::INVALID);
     LOG(ERROR) << "SASL required by server but failed: " << ex.what();
     channel_.messageReceiveErrorWrapped(std::move(ex));
     return;
-  }
-
-  if (observer) {
-    observer->saslFallBack();
   }
 
   VLOG(1) << "SASL server falling back to insecure: " << ex.what();
@@ -653,10 +641,6 @@ void HeaderServerChannel::SaslServerCallback::saslComplete() {
 
   const auto& observer = std::dynamic_pointer_cast<TServerObserver>(
       channel_.getEventBase()->getObserver());
-
-  if (observer) {
-    observer->saslComplete();
-  }
 
   folly::HHWheelTimer::Callback::cancelTimeout();
   auto& saslServer = channel_.saslServer_;
