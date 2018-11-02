@@ -11,6 +11,19 @@ from testing.types import easy, hard, Integers, I32List, StrStrMap, SetI32, Digi
 
 
 class SerializerTests(unittest.TestCase):
+    def test_sanity(self) -> None:
+        with self.assertRaises(TypeError):
+            serialize(1, Protocol.COMPACT)  # type: ignore
+
+        with self.assertRaises(TypeError):
+            serialize(easy(), None)  # type: ignore
+
+        with self.assertRaises(TypeError):
+            deserialize(Protocol, b'')  # type: ignore
+
+        with self.assertRaises(TypeError):
+            deserialize(easy, Protocol)  # type: ignore
+
     def test_from_thread_pool(self) -> None:
         control = easy(val=5, val_list=[1, 2, 3, 4])
         loop = asyncio.get_event_loop()

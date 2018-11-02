@@ -18,15 +18,17 @@ class Protocol(Enum):
 def serialize(tstruct, protocol=Protocol.COMPACT):
     return b''.join(serialize_iobuf(tstruct, protocol))
 
-def serialize_iobuf(tstruct, protocol=Protocol.COMPACT):
-    assert isinstance(tstruct, Struct), "Must be a py3 thrift struct instance"
-    assert isinstance(protocol, Protocol), "protocol must of type Protocol"
+def serialize_iobuf(Struct tstruct, protocol=Protocol.COMPACT):
+    if not isinstance(protocol, Protocol):
+        raise TypeError(f"{protocol} must of type Protocol")
     cdef Struct cy_struct = <Struct> tstruct
     return cy_struct._serialize(protocol)
 
 def deserialize(structKlass, buf not None, protocol=Protocol.COMPACT):
-    assert issubclass(structKlass, Struct), "Must be a py3 thrift struct class"
-    assert isinstance(protocol, Protocol), "protocol must of type Protocol"
+    if not issubclass(structKlass, Struct):
+        raise TypeError(f"{structKlass} Must be a py3 thrift struct class")
+    if not isinstance(protocol, Protocol):
+        raise TypeError(f"{protocol} must of type Protocol")
     cdef Struct cy_struct = <Struct> structKlass.__new__(structKlass)
 
     cdef IOBuf iobuf = buf if isinstance(buf, IOBuf) else IOBuf(buf)
