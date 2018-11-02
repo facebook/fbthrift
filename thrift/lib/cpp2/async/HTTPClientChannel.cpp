@@ -213,7 +213,7 @@ uint32_t HTTPClientChannel::sendRequest_(
   // it is a self-destruct-object, it can dangle at some time later,
   // instead, only react to its callback
   auto httpCallback = new HTTPTransactionCallback(
-      oneway, std::move(cb), std::move(ctx), isSecurityActive(), protocolId_);
+      oneway, std::move(cb), std::move(ctx), protocolId_);
 
   if (!httpSession_) {
     TTransportException ex(
@@ -370,12 +370,10 @@ HTTPClientChannel::HTTPTransactionCallback::HTTPTransactionCallback(
     bool oneway,
     std::unique_ptr<RequestCallback> cb,
     std::unique_ptr<apache::thrift::ContextStack> ctx,
-    bool isSecurityActive,
     uint16_t protoId)
     : oneway_(oneway),
       cb_(std::move(cb)),
       ctx_(std::move(ctx)),
-      isSecurityActive_(isSecurityActive),
       protoId_(protoId),
       txn_(nullptr) {}
 

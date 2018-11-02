@@ -78,7 +78,6 @@ class H2ClientConnection : public ClientConnectionIf,
   void attachEventBase(folly::EventBase* evb) override;
   void detachEventBase() override;
   bool isDetachable() override;
-  bool isSecurityActive() override;
   uint32_t getTimeout() override;
   void setTimeout(uint32_t ms) override;
   void closeNow() override;

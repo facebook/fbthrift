@@ -205,11 +205,6 @@ class HeaderClientChannel : public ClientChannel,
     }
   }
 
-  // Returns true if security is negotiated and used
-  bool isSecurityActive() override {
-    return getProtectionState() == ProtectionState::VALID;
-  }
-
   CLIENT_TYPE getClientType() override {
     return HeaderChannelTrait::getClientType();
   }

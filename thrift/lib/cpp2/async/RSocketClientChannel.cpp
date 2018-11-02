@@ -544,7 +544,6 @@ void RSocketClientChannel::sendSingleRequestSingleResponse(
       evb_,
       std::move(cb),
       std::move(ctx),
-      isSecurityActive(),
       protocolId_,
       std::chrono::milliseconds(metadata->clientTimeoutMs));
 
@@ -569,7 +568,6 @@ void RSocketClientChannel::sendSingleRequestStreamResponse(
       evb_,
       std::move(cb),
       std::move(ctx),
-      isSecurityActive(),
       protocolId_,
       std::chrono::milliseconds(metadata->clientTimeoutMs));
 
@@ -702,10 +700,6 @@ bool RSocketClientChannel::isDetachable() {
       (channelCounters_->getPendingRequests() == 0 &&
        transport->isDetachable());
   return result;
-}
-
-bool RSocketClientChannel::isSecurityActive() {
-  return isSecure_;
 }
 
 uint32_t RSocketClientChannel::getTimeout() {

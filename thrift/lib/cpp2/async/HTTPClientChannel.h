@@ -85,10 +85,6 @@ class HTTPClientChannel : public ClientChannel,
   void detachEventBase() override;
   bool isDetachable() override;
 
-  bool isSecurityActive() override {
-    return false;
-  }
-
   // Client timeouts for read, write.
   // Servers should use timeout methods on underlying transport.
   void setTimeout(uint32_t ms) override {
@@ -179,7 +175,6 @@ class HTTPClientChannel : public ClientChannel,
         bool oneway,
         std::unique_ptr<RequestCallback> cb,
         std::unique_ptr<apache::thrift::ContextStack> ctx,
-        bool isSecurityActive,
         uint16_t protoId);
 
     ~HTTPTransactionCallback() override;
@@ -275,7 +270,6 @@ class HTTPClientChannel : public ClientChannel,
 
     std::unique_ptr<RequestCallback> cb_;
     std::unique_ptr<apache::thrift::ContextStack> ctx_;
-    bool isSecurityActive_;
     uint16_t protoId_;
 
     proxygen::HTTPTransaction* txn_;

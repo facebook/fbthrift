@@ -193,10 +193,6 @@ bool H2ClientConnection::isDetachable() {
   return transport_isDetachable && session_isDetachable;
 }
 
-bool H2ClientConnection::isSecurityActive() {
-  return false;
-}
-
 uint32_t H2ClientConnection::getTimeout() {
   return timeout_.count();
 }

@@ -250,7 +250,6 @@ uint32_t ThriftClient::sendRequestHelper(
       callbackEvb,
       std::move(cb),
       std::move(ctx),
-      isSecurityActive(),
       protocolId_,
       std::chrono::milliseconds(metadata->clientTimeoutMs));
   auto conn = connection_;
@@ -321,10 +320,6 @@ void ThriftClient::detachEventBase() {
 
 bool ThriftClient::isDetachable() {
   return connection_->isDetachable();
-}
-
-bool ThriftClient::isSecurityActive() {
-  return connection_->isSecurityActive();
 }
 
 uint32_t ThriftClient::getTimeout() {

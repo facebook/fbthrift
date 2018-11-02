@@ -80,10 +80,6 @@ bool InMemoryConnection::isDetachable() {
   LOG(FATAL) << "Method should not be called";
 }
 
-bool InMemoryConnection::isSecurityActive() {
-  return false;
-}
-
 uint32_t InMemoryConnection::getTimeout() {
   LOG(FATAL) << "Method should not be called";
 }

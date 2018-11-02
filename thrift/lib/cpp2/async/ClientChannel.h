@@ -57,7 +57,6 @@ class ClientChannel : public RequestChannel, public HeaderChannel {
   virtual void detachEventBase() = 0;
   virtual bool isDetachable() = 0;
 
-  virtual bool isSecurityActive() = 0;
   virtual uint32_t getTimeout() = 0;
   virtual void setTimeout(uint32_t ms) = 0;
 

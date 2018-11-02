@@ -95,7 +95,6 @@ class ClientConnectionIf {
   virtual void attachEventBase(folly::EventBase* evb) = 0;
   virtual void detachEventBase() = 0;
   virtual bool isDetachable() = 0;
-  virtual bool isSecurityActive() = 0;
   virtual void closeNow() = 0;
   virtual CLIENT_TYPE getClientType() = 0;
 

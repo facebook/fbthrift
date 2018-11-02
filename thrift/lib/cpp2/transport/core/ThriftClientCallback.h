@@ -37,7 +37,6 @@ class ThriftClientCallback final : public folly::HHWheelTimer::Callback {
       folly::EventBase* evb,
       std::unique_ptr<RequestCallback> cb,
       std::unique_ptr<ContextStack> ctx,
-      bool isSecurityActive,
       uint16_t protoId,
       std::chrono::milliseconds timeout);
 
@@ -94,7 +93,6 @@ class ThriftClientCallback final : public folly::HHWheelTimer::Callback {
   folly::EventBase* evb_;
   std::unique_ptr<RequestCallback> cb_;
   std::unique_ptr<ContextStack> ctx_;
-  bool isSecurityActive_;
   uint16_t protoId_;
 
   bool active_;

@@ -35,13 +35,11 @@ ThriftClientCallback::ThriftClientCallback(
     EventBase* evb,
     std::unique_ptr<RequestCallback> cb,
     std::unique_ptr<ContextStack> ctx,
-    bool isSecurityActive,
     uint16_t protoId,
     std::chrono::milliseconds timeout)
     : evb_(evb),
       cb_(std::move(cb)),
       ctx_(std::move(ctx)),
-      isSecurityActive_(isSecurityActive),
       protoId_(protoId),
       active_(cb_),
       timeout_(timeout) {}

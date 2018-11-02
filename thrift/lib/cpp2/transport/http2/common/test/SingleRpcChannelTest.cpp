@@ -189,7 +189,6 @@ folly::Future<RequestState> sendRequest(
       &evb,
       std::make_unique<TestRequestCallback>(std::move(promise)),
       std::make_unique<ContextStack>("test"),
-      false,
       detail::compact::PROTOCOL_ID,
       std::chrono::milliseconds{10000});
 
