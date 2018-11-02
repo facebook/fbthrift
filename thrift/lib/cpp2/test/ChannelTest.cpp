@@ -45,9 +45,6 @@ using folly::IOBufQueue;
 using std::shared_ptr;
 using std::make_unique;
 
-// +/- for checking timing due to timer granularity, in microseconds
-constexpr size_t kTimingEpsilon = 1000;
-
 unique_ptr<IOBuf> makeTestBuf(size_t len) {
   unique_ptr<IOBuf> buf = IOBuf::create(len);
   buf->IOBuf::append(len);
@@ -262,17 +259,10 @@ class TestRequestCallback : public RequestCallback, public CloseCallback {
   void replyReceived(ClientReceiveState&& state) override {
     reply_++;
     replyBytes_ += state.buf()->computeChainDataLength();
-    if (state.isSecurityActive()) {
-      replySecurityActive_++;
-    }
-    securityStartTime_ = securityStart_;
-    securityEndTime_ = securityEnd_;
   }
   void requestError(ClientReceiveState&& state) override {
     EXPECT_TRUE(state.exception());
     replyError_++;
-    securityStartTime_ = securityStart_;
-    securityEndTime_ = securityEnd_;
   }
   void channelClosed() override { closed_ = true; }
 
@@ -281,27 +271,18 @@ class TestRequestCallback : public RequestCallback, public CloseCallback {
     reply_ = 0;
     replyBytes_ = 0;
     replyError_ = 0;
-    replySecurityActive_ = 0;
-    securityStartTime_ = 0;
-    securityEndTime_ = 0;
   }
 
   static bool closed_;
   static uint32_t reply_;
   static uint32_t replyBytes_;
   static uint32_t replyError_;
-  static uint32_t replySecurityActive_;
-  static int64_t securityStartTime_;
-  static int64_t securityEndTime_;
 };
 
 bool TestRequestCallback::closed_ = false;
 uint32_t TestRequestCallback::reply_ = 0;
 uint32_t TestRequestCallback::replyBytes_ = 0;
 uint32_t TestRequestCallback::replyError_ = 0;
-uint32_t TestRequestCallback::replySecurityActive_ = 0;
-int64_t TestRequestCallback::securityStartTime_ = 0;
-int64_t TestRequestCallback::securityEndTime_ = 0;
 
 class ResponseCallback
     : public ResponseChannel::Callback {
@@ -497,8 +478,6 @@ public:
     EXPECT_EQ(requestBytes_, len_*2);
     EXPECT_EQ(oneway_, 1);
     channel1_->setCallback(nullptr);
-    EXPECT_EQ(securityStartTime_, 0);
-    EXPECT_EQ(securityEndTime_, 0);
   }
 
  private:
@@ -583,315 +562,6 @@ TEST(Channel, HeaderChannelClosedTest) {
   HeaderChannelClosedTest().run();
 }
 
-class SecurityNegotiationTest
-    : public SocketPairTest<HeaderClientChannel, HeaderServerChannel>
-    , public TestRequestCallback
-    , public ResponseCallback {
-public:
-  explicit SecurityNegotiationTest(bool clientSasl, bool clientNonSasl,
-                                   bool serverSasl, bool serverNonSasl,
-                                   bool expectConn, bool expectSecurity,
-                                   bool expectSecurityAttempt,
-                                   int64_t expectedSecurityLatency = 0)
-      : clientSasl_(clientSasl), clientNonSasl_(clientNonSasl)
-      , serverSasl_(serverSasl), serverNonSasl_(serverNonSasl)
-      , expectConn_(expectConn), expectSecurity_(expectSecurity)
-      , expectSecurityAttempt_(expectSecurityAttempt)
-      , expectedSecurityLatency_(expectedSecurityLatency) {
-    // Replace handshake mechanism with a stub.
-    stubSaslClient_ = new StubSaslClient(socket0_->getEventBase());
-    // Force each RTT in stub handshake to take at least 100 ms.
-    stubSaslClient_->setForceMsSpentPerRTT(100);
-    channel0_->setSaslClient(std::unique_ptr<SaslClient>(stubSaslClient_));
-    stubSaslServer_ = new StubSaslServer(socket1_->getEventBase());
-    channel1_->setSaslServer(std::unique_ptr<SaslServer>(stubSaslServer_));
-
-    // Capture the timestamp
-    auto now = std::chrono::high_resolution_clock::now();
-    initTime_ = std::chrono::duration_cast<std::chrono::microseconds>(
-                  now.time_since_epoch()).count();
-
-  }
-
-  ~SecurityNegotiationTest() override {
-    // In case we are still installed as a callback on the channels, clear the
-    // callbacks now.  We are being destroyed now, so it will cause a crash if
-    // we are left installed and the channel then tries to call us.
-    if (channel0_) {
-      channel0_->setCloseCallback(nullptr);
-    }
-    if (channel1_) {
-      channel1_->setCallback(nullptr);
-    }
-  }
-
-  class Callback : public TestRequestCallback {
-   public:
-    explicit Callback(SecurityNegotiationTest* c)
-    : c_(c) {}
-    void replyReceived(ClientReceiveState&& state) override {
-      TestRequestCallback::replyReceived(std::move(state));
-      // If the request works, clear the close callback, so it's not
-      // hanging around.
-      if (!c_->closed_) {
-        c_->channel0_->setCloseCallback(nullptr);
-      }
-      if (!c_->serverClosed_) {
-        c_->channel1_->setCallback(nullptr);
-      }
-    }
-    // Leave requestError() alone.  If the request fails, don't
-    // clear any callbacks.  Failure here (in this test) implies
-    // negotiation failure which means the client will destroy its
-    // own collection which cleans up the callback, which will cause
-    // the server to see a connection close, and we test for both
-    // callbacks being invoked.
-  private:
-    SecurityNegotiationTest* c_;
-  };
-
-  void channelClosed() override {
-    EXPECT_EQ(channel0_->getSaslPeerIdentity(), "");
-    TestRequestCallback::channelClosed();
-  }
-
-  void channelClosed(folly::exception_wrapper&& ew) override {
-    EXPECT_EQ(channel1_->getSaslPeerIdentity(), "");
-    ResponseCallback::channelClosed(std::move(ew));
-    channel1_->setCallback(nullptr);
-  }
-
-  void preLoop() override {
-    TestRequestCallback::reset();
-    if (clientSasl_ && clientNonSasl_) {
-      channel0_->setSecurityPolicy(THRIFT_SECURITY_PERMITTED);
-    } else if (clientSasl_) {
-      channel0_->setSecurityPolicy(THRIFT_SECURITY_REQUIRED);
-    } else {
-      channel0_->setSecurityPolicy(THRIFT_SECURITY_DISABLED);
-    }
-
-    if (serverSasl_ && serverNonSasl_) {
-      channel1_->setSecurityPolicy(THRIFT_SECURITY_PERMITTED);
-    } else if (serverSasl_) {
-      channel1_->setSecurityPolicy(THRIFT_SECURITY_REQUIRED);
-    } else {
-      channel1_->setSecurityPolicy(THRIFT_SECURITY_DISABLED);
-    }
-
-    channel1_->setCallback(this);
-    channel0_->setCloseCallback(this);
-    channel0_->sendRequest(
-      std::unique_ptr<RequestCallback>(new Callback(this)),
-      // Fake method name for creating a ContextStatck
-      std::unique_ptr<ContextStack>(new ContextStack("{ChannelTest}")),
-      makeTestBuf(1),
-      std::unique_ptr<THeader>(new THeader));
-  }
-
-  void postLoop() override {
-    if (expectConn_) {
-      EXPECT_EQ(reply_, 1);
-      EXPECT_EQ(replyError_, 0);
-      EXPECT_EQ(replyBytes_, 1);
-      EXPECT_EQ(closed_, false);
-      EXPECT_EQ(serverClosed_, false);
-      EXPECT_EQ(request_, 1);
-      EXPECT_EQ(requestBytes_, 1);
-      EXPECT_EQ(oneway_, 0);
-    } else {
-      CHECK(!expectSecurity_);
-      EXPECT_EQ(reply_, 0);
-      EXPECT_EQ(replyError_, 1);
-      EXPECT_EQ(replyBytes_, 0);
-      EXPECT_EQ(closed_, true);
-      EXPECT_EQ(serverClosed_, true);
-      EXPECT_EQ(request_, 0);
-      EXPECT_EQ(requestBytes_, 0);
-      EXPECT_EQ(oneway_, 0);
-    }
-    if (expectSecurity_) {
-      EXPECT_NE(channel0_->getSaslPeerIdentity(), "");
-      EXPECT_NE(channel1_->getSaslPeerIdentity(), "");
-      EXPECT_EQ(replySecurityActive_, 1);
-
-      // Check the latency incurred for doing security
-      CHECK(expectSecurityAttempt_);
-      EXPECT_GT(securityStartTime_, initTime_);
-      EXPECT_GT(securityEndTime_, securityStartTime_);
-      /*
-       * Security is expected to succeed. We assert that security latency is
-       * less than expectedSecurityLatency_
-       */
-      EXPECT_LT(securityEndTime_ - securityStartTime_,
-                expectedSecurityLatency_);
-      EXPECT_GT(securityEndTime_ - securityStartTime_, 200*1000);
-    } else {
-      EXPECT_EQ(replySecurityActive_, 0);
-      if (expectSecurityAttempt_) {
-        // Check the latency incurred for doing security
-        EXPECT_GT(securityStartTime_, initTime_);
-        EXPECT_GT(securityEndTime_, securityStartTime_);
-        /*
-         * Security is expected to be attempted but not succeed. We assert on
-         * security latency at least being greater than expectedSecurityLatency_
-         */
-        EXPECT_GT(securityEndTime_ - securityStartTime_,
-                  expectedSecurityLatency_ - kTimingEpsilon);
-        EXPECT_LT(securityEndTime_ - securityStartTime_,
-                  static_cast<int64_t>(expectedSecurityLatency_ * 1.2));
-      }
-    }
-  }
-
-protected:
-  StubSaslClient* stubSaslClient_;
-  StubSaslServer* stubSaslServer_;
-
- private:
-  bool clientSasl_;
-  bool clientNonSasl_;
-  bool serverSasl_;
-  bool serverNonSasl_;
-  bool expectConn_;
-  bool expectSecurity_;
-  bool expectSecurityAttempt_;
-  int64_t expectedSecurityLatency_;
-  int64_t initTime_;
-};
-
-class SecurityNegotiationClientFailTest : public SecurityNegotiationTest {
-public:
-  template <typename... Args>
-  explicit SecurityNegotiationClientFailTest(Args&&... args)
-      : SecurityNegotiationTest(std::forward<Args>(args)...) {
-    stubSaslClient_->setForceFallback();
-  }
-};
-
-class SecurityNegotiationServerFailTest : public SecurityNegotiationTest {
-public:
-  template <typename... Args>
-  explicit SecurityNegotiationServerFailTest(Args&&... args)
-      : SecurityNegotiationTest(std::forward<Args>(args)...) {
-    stubSaslServer_->setForceFallback();
-  }
-};
-
-class SecurityNegotiationClientTimeoutGarbageTest :
-  public SecurityNegotiationTest {
-public:
-  template <typename... Args>
-  explicit SecurityNegotiationClientTimeoutGarbageTest(Args&&... args)
-      : SecurityNegotiationTest(std::forward<Args>(args)...) {
-    stubSaslClient_->setForceTimeout();
-    stubSaslServer_->setForceSendGarbage();
-  }
-};
-
-class SecurityNegotiationLatencyTest : public SecurityNegotiationTest {
-public:
-  template <typename... Args>
-  explicit SecurityNegotiationLatencyTest(Args&&... args)
-      : SecurityNegotiationTest(std::forward<Args>(args)...) {
-    stubSaslClient_->setForceTimeout();
-  }
-};
-
-TEST(Channel, SecurityNegotiationLatencyTest) {
-  // This test forces a timeout on the client side. This means that the client
-  // will attempt to do security but not succeed.
-
-  int64_t defaultSaslTimeout = 500 * 1000; //microseconds
-
-  //clientSasl clientNonSasl serverSasl serverNonSasl expectConn expectSecurity
-  //expectSecurityAttempt expectedSecurityLatency
-
-  /*
-   * For the following three tests connection will not be established because
-   * of security failure. Since the first RTT itself times out, the expected
-   * security latency is > defaultSaslTimeout.
-   */
-
-  // Client = required, Server: required.
-  SecurityNegotiationLatencyTest(true, false, true, false, false, false, true,
-                                 defaultSaslTimeout).run();
-
-  // Client = required, Server: permitted.
-  SecurityNegotiationLatencyTest(true, false, true, true, false, false, true,
-                                 defaultSaslTimeout).run();
-
-  // Client = permitted, Server: required.
-  SecurityNegotiationLatencyTest(true, true, true, false, false, false, true,
-                                 defaultSaslTimeout).run();
-
-  // For the following test connection will be established despite security
-  // failure.
-
-  // Client = permitted, Server: permitted.
-  SecurityNegotiationLatencyTest(true, true, true, true, true, false, true,
-                                 defaultSaslTimeout).run();
-}
-
-TEST(Channel, SecurityNegotiationTest) {
-  //clientSasl clientNonSasl serverSasl serverNonSasl expectConn expectSecurity
-  //expectSecurityAttempt
-
-  /*
-   * When expectSecurity is true, we expect security to succed in those runs.
-   * The expected latency in these cases < 2*defaultSaslTimeout since the
-   * stubSaslClient implementation performs only 2 RTTs.
-   */
-
-  int64_t defaultSaslTimeout = 500 * 1000; //microseconds
-
-  // Client: disabled; Server: disabled, disabled, required, permitted
-  SecurityNegotiationTest(false, false, false, false, true, false, false).run();
-  SecurityNegotiationTest(false, false, false, true, true, false, false).run();
-  SecurityNegotiationTest(false, false, true, false, false, false, false).run();
-  SecurityNegotiationTest(false, false, true, true, true, false, false).run();
-
-  // Client policy: disabled; Server: disabled, disabled, required, permitted
-  SecurityNegotiationTest(false, true, false, false, true, false, false).run();
-  SecurityNegotiationTest(false, true, false, true, true, false, false).run();
-  SecurityNegotiationTest(false, true, true, false, false, false, false).run();
-  SecurityNegotiationTest(false, true, true, true, true, false, false).run();
-
-  // Client policy: required; Server: disabled, disabled, required, permitted
-  SecurityNegotiationTest(true, false, false, false, false, false, false).run();
-  SecurityNegotiationTest(true, false, false, true, false, false, false).run();
-  SecurityNegotiationTest(true, false, true, false, true, true, true,
-                          2*defaultSaslTimeout).run();
-  SecurityNegotiationTest(true, false, true, true, true, true, true,
-                          2*defaultSaslTimeout).run();
-
-  // Client policy: permitted; Server: disabled, disabled, required, permitted
-  SecurityNegotiationTest(true, true, false, false, true, false, false).run();
-  SecurityNegotiationTest(true, true, false, true, true, false, false).run();
-  SecurityNegotiationTest(true, true, true, false, true, true, true,
-                          2*defaultSaslTimeout).run();
-  SecurityNegotiationTest(true, true, true, true, true, true, true,
-                          2*defaultSaslTimeout).run();
-}
-
-TEST(Channel, SecurityNegotiationFailTest) {
-  SecurityNegotiationServerFailTest(
-    true, false, true, true, false,false, false).run();
-
-  SecurityNegotiationClientFailTest(
-    true, true, true, false, false, false, false).run();
-
-  SecurityNegotiationClientFailTest(
-    true, true, true, true, true, false, false).run();
-  SecurityNegotiationServerFailTest(
-    true, true, true, true, true, false, false).run();
-}
-
-TEST(Channel, SecurityNegotiationTimeoutGarbageTest) {
-  SecurityNegotiationClientTimeoutGarbageTest(
-    true, false, true, true, false, false, false).run();
-}
-
 class InOrderTest
     : public SocketPairTest<HeaderClientChannel, HeaderServerChannel>
     , public TestRequestCallback
@@ -955,8 +625,6 @@ class InOrderTest
     EXPECT_EQ(request_, 2);
     EXPECT_EQ(requestBytes_, 2*len_ + 1);
     EXPECT_EQ(oneway_, 0);
-    EXPECT_EQ(securityStartTime_, 0);
-    EXPECT_EQ(securityEndTime_, 0);
   }
 
  private:
@@ -1039,8 +707,6 @@ public:
     EXPECT_EQ(request_, 2);
     EXPECT_EQ(requestBytes_, len_*2);
     EXPECT_EQ(oneway_, 1);
-    EXPECT_EQ(securityStartTime_, 0);
-    EXPECT_EQ(securityEndTime_, 0);
   }
 
  private:
@@ -1095,8 +761,6 @@ public:
     EXPECT_EQ(oneway_, 0);
     channel0_->setCloseCallback(nullptr);
     channel1_->setCallback(nullptr);
-    EXPECT_EQ(securityStartTime_, 0);
-    EXPECT_EQ(securityEndTime_, 0);
   }
 
   void requestReceived(unique_ptr<ResponseChannelRequest>&& req) override {
@@ -1178,8 +842,6 @@ public:
     EXPECT_EQ(request_, 2);
     EXPECT_EQ(requestBytes_, len_ * 2);
     EXPECT_EQ(oneway_, 0);
-    EXPECT_EQ(securityStartTime_, 0);
-    EXPECT_EQ(securityEndTime_, 0);
   }
 
   void requestReceived(unique_ptr<ResponseChannelRequest>&& req) override {
@@ -1239,8 +901,6 @@ public:
     EXPECT_EQ(request_, 0);
     EXPECT_EQ(requestBytes_, 0);
     EXPECT_EQ(oneway_, 0);
-    EXPECT_EQ(securityStartTime_, 0);
-    EXPECT_EQ(securityEndTime_, 0);
   }
 
  private:
@@ -1297,8 +957,6 @@ public:
     EXPECT_EQ(request_, 0);
     EXPECT_EQ(requestBytes_, 0);
     EXPECT_EQ(oneway_, 0);
-    EXPECT_EQ(securityStartTime_, 0);
-    EXPECT_EQ(securityEndTime_, 0);
   }
 
  private:
@@ -1395,8 +1053,6 @@ class ClientCloseOnErrorTest
     EXPECT_EQ(replyBytes_, 0);
     EXPECT_EQ(request_, (forcePendingSend_ ? 1 : 2));
     EXPECT_EQ(requestBytes_, 10 + (forcePendingSend_ ? 0 : reqSize_));
-    EXPECT_EQ(securityStartTime_, 0);
-    EXPECT_EQ(securityEndTime_, 0);
     channel1_->setCallback(nullptr);
   }
 

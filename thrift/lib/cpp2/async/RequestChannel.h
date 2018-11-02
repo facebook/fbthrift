@@ -165,9 +165,6 @@ class RequestCallback {
   virtual void requestError(ClientReceiveState&&) = 0;
 
   std::shared_ptr<folly::RequestContext> context_;
-  // To log latency incurred for doing thrift security
-  int64_t securityStart_ = 0;
-  int64_t securityEnd_ = 0;
 };
 
 /***
