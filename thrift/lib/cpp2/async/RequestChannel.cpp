@@ -101,8 +101,7 @@ uint32_t RequestChannel::sendRequestSync(
   scb->requestError(ClientReceiveState(
       folly::make_exception_wrapper<transport::TTransportException>(
           "Unsupported RpcKind value"),
-      std::move(ctx),
-      false));
+      std::move(ctx)));
   eb->loopForever();
   return 0;
 }
@@ -116,8 +115,7 @@ uint32_t RequestChannel::sendStreamRequest(
   cb->requestError(ClientReceiveState(
       folly::make_exception_wrapper<transport::TTransportException>(
           "Current channel doesn't support stream RPC"),
-      std::move(ctx),
-      false));
+      std::move(ctx)));
   return 0;
 }
 } // namespace thrift

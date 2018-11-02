@@ -461,8 +461,7 @@ void RSocketClientChannel::sendThriftRequest(
         folly::make_exception_wrapper<TTransportException>(
             TTransportException::CORRUPTED_DATA,
             "Unexpected problem stripping envelope"),
-        std::move(ctx),
-        isSecurityActive()));
+        std::move(ctx)));
     return;
   }
   metadata->set_seqId(0);
@@ -473,8 +472,7 @@ void RSocketClientChannel::sendThriftRequest(
     cb->requestError(ClientReceiveState(
         folly::make_exception_wrapper<TTransportException>(
             TTransportException::NOT_OPEN, "Connection is not open"),
-        std::move(ctx),
-        isSecurityActive()));
+        std::move(ctx)));
     return;
   }
 
@@ -489,8 +487,7 @@ void RSocketClientChannel::sendThriftRequest(
     ex.setOptions(TTransportException::CHANNEL_IS_VALID);
 
     folly::RequestContextScopeGuard rctx(cb->context_);
-    cb->requestError(
-        ClientReceiveState(std::move(ex), std::move(ctx), isSecurityActive()));
+    cb->requestError(ClientReceiveState(std::move(ex), std::move(ctx)));
     return;
   }
 
@@ -525,8 +522,8 @@ void RSocketClientChannel::sendSingleRequestNoResponse(
     std::unique_ptr<ContextStack> ctx,
     std::unique_ptr<folly::IOBuf> buf,
     std::unique_ptr<RequestCallback> cb) noexcept {
-  auto callback = new RSocketClientChannel::OnewayCallback(
-      std::move(cb), std::move(ctx), isSecurityActive());
+  auto callback =
+      new RSocketClientChannel::OnewayCallback(std::move(cb), std::move(ctx));
 
   callback->sendQueued();
 

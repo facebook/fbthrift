@@ -47,21 +47,18 @@ namespace thrift {
 
 class ClientReceiveState {
  public:
-  ClientReceiveState()
-      : protocolId_(-1), isSecurityActive_(false), isStreamEnd_(false) {}
+  ClientReceiveState() : protocolId_(-1), isStreamEnd_(false) {}
 
   ClientReceiveState(
       uint16_t _protocolId,
       std::unique_ptr<folly::IOBuf> _buf,
       std::unique_ptr<apache::thrift::transport::THeader> _header,
       std::shared_ptr<apache::thrift::ContextStack> _ctx,
-      bool _isSecurityActive,
       bool _isStreamEnd = false)
       : protocolId_(_protocolId),
         ctx_(std::move(_ctx)),
         buf_(std::move(_buf)),
         header_(std::move(_header)),
-        isSecurityActive_(_isSecurityActive),
         isStreamEnd_(_isStreamEnd) {}
   ClientReceiveState(
       uint16_t _protocolId,
@@ -70,24 +67,20 @@ class ClientReceiveState {
           std::unique_ptr<folly::IOBuf>> bufAndStream,
       std::unique_ptr<apache::thrift::transport::THeader> _header,
       std::shared_ptr<apache::thrift::ContextStack> _ctx,
-      bool _isSecurityActive,
       bool _isStreamEnd = false)
       : protocolId_(_protocolId),
         ctx_(std::move(_ctx)),
         buf_(std::move(bufAndStream.response)),
         header_(std::move(_header)),
-        isSecurityActive_(_isSecurityActive),
         isStreamEnd_(_isStreamEnd),
         stream_(std::move(bufAndStream.stream)) {}
   ClientReceiveState(
       folly::exception_wrapper _excw,
-      std::shared_ptr<apache::thrift::ContextStack> _ctx,
-      bool _isSecurityActive)
+      std::shared_ptr<apache::thrift::ContextStack> _ctx)
       : protocolId_(-1),
         ctx_(std::move(_ctx)),
         header_(std::make_unique<apache::thrift::transport::THeader>()),
         excw_(std::move(_excw)),
-        isSecurityActive_(_isSecurityActive),
         isStreamEnd_(false) {}
 
   bool isException() const {
@@ -134,10 +127,6 @@ class ClientReceiveState {
     return ctx_.get();
   }
 
-  bool isSecurityActive() const {
-    return isSecurityActive_;
-  }
-
   void resetCtx(std::shared_ptr<apache::thrift::ContextStack> _ctx) {
     ctx_ = std::move(_ctx);
   }
@@ -152,7 +141,6 @@ class ClientReceiveState {
   std::unique_ptr<folly::IOBuf> buf_;
   std::unique_ptr<apache::thrift::transport::THeader> header_;
   folly::exception_wrapper excw_;
-  bool isSecurityActive_;
   bool isStreamEnd_;
   SemiStream<std::unique_ptr<folly::IOBuf>> stream_;
 };
@@ -254,7 +242,7 @@ class FunctionSendCallback : public RequestCallback {
       : callback_(std::move(callback)) {}
   void requestSent() override {
     auto cb = std::move(callback_);
-    cb(ClientReceiveState(folly::exception_wrapper(), nullptr, false));
+    cb(ClientReceiveState(folly::exception_wrapper(), nullptr));
   }
   void requestError(ClientReceiveState&& state) override {
     auto cb = std::move(callback_);

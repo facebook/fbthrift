@@ -107,8 +107,7 @@ class ChannelCallbacks {
         CHECK(cb_);
         cbCalled_ = true;
         folly::RequestContextScopeGuard rctx(cb_->context_);
-        cb_->requestError(ClientReceiveState(
-            std::move(ex), std::move(ctx_), channel_->isSecurityActive()));
+        cb_->requestError(ClientReceiveState(std::move(ex), std::move(ctx_)));
         cb_.reset();
       }
       destroy();
@@ -132,7 +131,6 @@ class ChannelCallbacks {
           std::move(buf),
           std::move(header),
           std::move(ctx_),
-          channel_->isSecurityActive(),
           true));
       cb_.reset();
 
@@ -150,11 +148,7 @@ class ChannelCallbacks {
 
       folly::RequestContextScopeGuard rctx(cb_->context_);
       cb_->replyReceived(ClientReceiveState(
-          protoId_,
-          std::move(buf),
-          std::move(header),
-          ctx_,
-          channel_->isSecurityActive()));
+          protoId_, std::move(buf), std::move(header), ctx_));
     }
     void requestError(folly::exception_wrapper ex) {
       DestructorGuard dg(this);
@@ -165,8 +159,7 @@ class ChannelCallbacks {
       if (!cbCalled_) {
         cbCalled_ = true;
         folly::RequestContextScopeGuard rctx(cb_->context_);
-        cb_->requestError(ClientReceiveState(
-            std::move(ex), std::move(ctx_), channel_->isSecurityActive()));
+        cb_->requestError(ClientReceiveState(std::move(ex), std::move(ctx_)));
         cb_.reset();
       }
 
@@ -187,8 +180,7 @@ class ChannelCallbacks {
         folly::RequestContextScopeGuard rctx(cb_->context_);
         cb_->requestError(ClientReceiveState(
             folly::make_exception_wrapper<TTransportException>(std::move(ex)),
-            std::move(ctx_),
-            channel_->isSecurityActive()));
+            std::move(ctx_)));
         cb_.reset();
       }
       maybeDeleteThis();
@@ -257,11 +249,8 @@ class ChannelCallbacks {
    public:
     OnewayCallback(
         std::unique_ptr<RequestCallback> cb,
-        std::unique_ptr<apache::thrift::ContextStack> ctx,
-        bool isSecurityActive)
-        : cb_(std::move(cb)),
-          ctx_(std::move(ctx)),
-          isSecurityActive_(isSecurityActive) {}
+        std::unique_ptr<apache::thrift::ContextStack> ctx)
+        : cb_(std::move(cb)), ctx_(std::move(ctx)) {}
     void sendQueued() override {}
     void messageSent() override {
       DestructorGuard dg(this);
@@ -274,15 +263,13 @@ class ChannelCallbacks {
       DestructorGuard dg(this);
       CHECK(cb_);
       folly::RequestContextScopeGuard rctx(cb_->context_);
-      cb_->requestError(
-          ClientReceiveState(ex, std::move(ctx_), isSecurityActive_));
+      cb_->requestError(ClientReceiveState(ex, std::move(ctx_)));
       destroy();
     }
 
    private:
     std::unique_ptr<RequestCallback> cb_;
     std::unique_ptr<apache::thrift::ContextStack> ctx_;
-    bool isSecurityActive_;
   };
 };
 } // namespace thrift

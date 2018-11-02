@@ -78,11 +78,7 @@ void ThriftClientCallback::onThriftResponse(
     }
     folly::RequestContextScopeGuard rctx(cb_->context_);
     cb_->replyReceived(ClientReceiveState(
-        protoId_,
-        std::move(payload),
-        std::move(tHeader),
-        std::move(ctx_),
-        isSecurityActive_));
+        protoId_, std::move(payload), std::move(tHeader), std::move(ctx_)));
   }
 }
 
@@ -109,8 +105,7 @@ void ThriftClientCallback::onThriftResponse(
             std::unique_ptr<folly::IOBuf>>{std::move(payload),
                                            std::move(stream)},
         std::move(tHeader),
-        std::move(ctx_),
-        isSecurityActive_);
+        std::move(ctx_));
     cb_->replyReceived(std::move(crs));
   }
 }
@@ -121,8 +116,7 @@ void ThriftClientCallback::onError(exception_wrapper ex) noexcept {
   if (active_) {
     active_ = false;
     folly::RequestContextScopeGuard rctx(cb_->context_);
-    cb_->requestError(
-        ClientReceiveState(std::move(ex), std::move(ctx_), isSecurityActive_));
+    cb_->requestError(ClientReceiveState(std::move(ex), std::move(ctx_)));
   }
 }
 
@@ -137,8 +131,7 @@ void ThriftClientCallback::timeoutExpired() noexcept {
     cb_->requestError(ClientReceiveState(
         folly::make_exception_wrapper<TTransportException>(
             apache::thrift::transport::TTransportException::TIMED_OUT),
-        std::move(ctx_),
-        isSecurityActive_));
+        std::move(ctx_)));
     if (auto onTimedout = std::move(onTimedout_)) {
       onTimedout();
     }

@@ -368,7 +368,7 @@ uint32_t HeaderClientChannel::sendOnewayRequest(
 
   if (cb) {
     sendMessage(
-        new OnewayCallback(std::move(cb), std::move(ctx), isSecurityActive()),
+        new OnewayCallback(std::move(cb), std::move(ctx)),
         std::move(buf),
         header.get());
   } else {
@@ -593,8 +593,7 @@ void HeaderClientChannel::messageReceiveErrorWrapped(
     afterSecurity_.pop_front();
     if (cb) {
       folly::RequestContextScopeGuard rctx(cb->context_);
-      cb->requestError(
-          ClientReceiveState(ex, std::move(ctx), isSecurityActive()));
+      cb->requestError(ClientReceiveState(ex, std::move(ctx)));
     }
   }
 
