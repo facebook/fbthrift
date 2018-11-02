@@ -57,6 +57,7 @@ void MyServicePrioParentAsyncProcessor::process_ping(std::unique_ptr<apache::thr
       LOG(ERROR) << ex.what() << " in oneway function ping";
     }
   }
+  req->setStartedProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(ctxStack), return_ping<ProtocolIn_,ProtocolOut_>, throw_wrapped_ping<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
@@ -132,6 +133,7 @@ void MyServicePrioParentAsyncProcessor::process_pong(std::unique_ptr<apache::thr
       LOG(ERROR) << ex.what() << " in oneway function pong";
     }
   }
+  req->setStartedProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(ctxStack), return_pong<ProtocolIn_,ProtocolOut_>, throw_wrapped_pong<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();

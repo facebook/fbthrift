@@ -95,6 +95,7 @@ void PubSubStreamingServiceAsyncProcessor::process_returnstream(std::unique_ptr<
       LOG(ERROR) << ex.what() << " in oneway function returnstream";
     }
   }
+  req->setStartedProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<apache::thrift::Stream<int32_t>>>(std::move(req), std::move(ctxStack), return_returnstream<ProtocolIn_,ProtocolOut_>, throw_wrapped_returnstream<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
@@ -180,6 +181,7 @@ void PubSubStreamingServiceAsyncProcessor::process_takesstream(std::unique_ptr<a
       LOG(ERROR) << ex.what() << " in oneway function takesstream";
     }
   }
+  req->setStartedProcessing();
   auto inputStream = apache::thrift::detail::ap::decode_stream<
       ProtocolIn_, PubSubStreamingService_takesstream_pargs::StreamPResultType,
       int32_t>(req->extractStream());
@@ -260,6 +262,7 @@ void PubSubStreamingServiceAsyncProcessor::process_different(std::unique_ptr<apa
       LOG(ERROR) << ex.what() << " in oneway function different";
     }
   }
+  req->setStartedProcessing();
   auto inputStream = apache::thrift::detail::ap::decode_stream<
       ProtocolIn_, PubSubStreamingService_different_pargs::StreamPResultType,
       int32_t>(req->extractStream());
@@ -346,6 +349,7 @@ void PubSubStreamingServiceAsyncProcessor::process_normalthrows(std::unique_ptr<
       LOG(ERROR) << ex.what() << " in oneway function normalthrows";
     }
   }
+  req->setStartedProcessing();
   auto inputStream = apache::thrift::detail::ap::decode_stream<
       ProtocolIn_, PubSubStreamingService_normalthrows_pargs::StreamPResultType,
       int32_t>(req->extractStream());
@@ -436,6 +440,7 @@ void PubSubStreamingServiceAsyncProcessor::process_streamthrows(std::unique_ptr<
       LOG(ERROR) << ex.what() << " in oneway function streamthrows";
     }
   }
+  req->setStartedProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<apache::thrift::Stream<int32_t>>>(std::move(req), std::move(ctxStack), return_streamthrows<ProtocolIn_,ProtocolOut_>, throw_wrapped_streamthrows<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
@@ -527,6 +532,7 @@ void PubSubStreamingServiceAsyncProcessor::process_boththrows(std::unique_ptr<ap
       LOG(ERROR) << ex.what() << " in oneway function boththrows";
     }
   }
+  req->setStartedProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<apache::thrift::Stream<int32_t>>>(std::move(req), std::move(ctxStack), return_boththrows<ProtocolIn_,ProtocolOut_>, throw_wrapped_boththrows<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
@@ -628,6 +634,7 @@ void PubSubStreamingServiceAsyncProcessor::process_responseandstreamthrows(std::
       LOG(ERROR) << ex.what() << " in oneway function responseandstreamthrows";
     }
   }
+  req->setStartedProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<apache::thrift::ResponseAndStream<int32_t,int32_t>>>(std::move(req), std::move(ctxStack), return_responseandstreamthrows<ProtocolIn_,ProtocolOut_>, throw_wrapped_responseandstreamthrows<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();

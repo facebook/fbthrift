@@ -55,6 +55,7 @@ void MyNodeAsyncProcessor::process_do_mid(std::unique_ptr<apache::thrift::Respon
       LOG(ERROR) << ex.what() << " in oneway function do_mid";
     }
   }
+  req->setStartedProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(ctxStack), return_do_mid<ProtocolIn_,ProtocolOut_>, throw_wrapped_do_mid<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();

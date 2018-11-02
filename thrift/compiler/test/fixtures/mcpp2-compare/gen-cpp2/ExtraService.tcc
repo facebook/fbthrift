@@ -61,6 +61,7 @@ void ExtraServiceAsyncProcessor::process_simple_function(std::unique_ptr<apache:
       LOG(ERROR) << ex.what() << " in oneway function simple_function";
     }
   }
+  req->setStartedProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<bool>>(std::move(req), std::move(ctxStack), return_simple_function<ProtocolIn_,ProtocolOut_>, throw_wrapped_simple_function<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   ctx->setStartedProcessing();
   iface_->async_eb_simple_function(std::move(callback));
@@ -129,6 +130,7 @@ void ExtraServiceAsyncProcessor::process_throws_function(std::unique_ptr<apache:
       LOG(ERROR) << ex.what() << " in oneway function throws_function";
     }
   }
+  req->setStartedProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(ctxStack), return_throws_function<ProtocolIn_,ProtocolOut_>, throw_wrapped_throws_function<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   ctx->setStartedProcessing();
   iface_->async_eb_throws_function(std::move(callback));
@@ -213,6 +215,7 @@ void ExtraServiceAsyncProcessor::process_throws_function2(std::unique_ptr<apache
       LOG(ERROR) << ex.what() << " in oneway function throws_function2";
     }
   }
+  req->setStartedProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<bool>>(std::move(req), std::move(ctxStack), return_throws_function2<ProtocolIn_,ProtocolOut_>, throw_wrapped_throws_function2<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   ctx->setStartedProcessing();
   iface_->async_eb_throws_function2(std::move(callback), args.get<0>().ref());
@@ -301,6 +304,7 @@ void ExtraServiceAsyncProcessor::process_throws_function3(std::unique_ptr<apache
       LOG(ERROR) << ex.what() << " in oneway function throws_function3";
     }
   }
+  req->setStartedProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<std::map<int32_t, std::string>>>(std::move(req), std::move(ctxStack), return_throws_function3<ProtocolIn_,ProtocolOut_>, throw_wrapped_throws_function3<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   ctx->setStartedProcessing();
   iface_->async_eb_throws_function3(std::move(callback), args.get<0>().ref(), args.get<1>().ref());

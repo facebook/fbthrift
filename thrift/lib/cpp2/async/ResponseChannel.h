@@ -107,6 +107,8 @@ class ResponseChannelRequest {
     return timestamps_;
   }
 
+  void setStartedProcessing() {}
+
   apache::thrift::server::TServerObserver::CallTimestamps timestamps_;
 
  protected:

@@ -440,6 +440,7 @@ void ServiceAAsyncProcessor::process_frozen2_moduleAMethod(std::unique_ptr<apach
       LOG(ERROR) << ex.what() << " in oneway function frozen2_moduleAMethod";
     }
   }
+  req->setStartedProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(ctxStack), return_moduleAMethod<apache::thrift::Frozen2ProtocolReader,apache::thrift::Frozen2ProtocolWriter>, throw_wrapped_moduleAMethod<apache::thrift::Frozen2ProtocolReader, apache::thrift::Frozen2ProtocolWriter>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
@@ -484,6 +485,7 @@ void ServiceAAsyncProcessor::process_frozen2_moduleBMethod(std::unique_ptr<apach
       LOG(ERROR) << ex.what() << " in oneway function frozen2_moduleBMethod";
     }
   }
+  req->setStartedProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(ctxStack), return_moduleBMethod<apache::thrift::Frozen2ProtocolReader,apache::thrift::Frozen2ProtocolWriter>, throw_wrapped_moduleBMethod<apache::thrift::Frozen2ProtocolReader, apache::thrift::Frozen2ProtocolWriter>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
@@ -528,6 +530,7 @@ void ServiceAAsyncProcessor::process_frozen2_i32StrDoubleMethod(std::unique_ptr<
       LOG(ERROR) << ex.what() << " in oneway function frozen2_i32StrDoubleMethod";
     }
   }
+  req->setStartedProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(ctxStack), return_i32StrDoubleMethod<apache::thrift::Frozen2ProtocolReader,apache::thrift::Frozen2ProtocolWriter>, throw_wrapped_i32StrDoubleMethod<apache::thrift::Frozen2ProtocolReader, apache::thrift::Frozen2ProtocolWriter>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
@@ -573,6 +576,7 @@ void ServiceAAsyncProcessor::process_frozen2_versioningMethod(std::unique_ptr<ap
       LOG(ERROR) << ex.what() << " in oneway function frozen2_versioningMethod";
     }
   }
+  req->setStartedProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(ctxStack), return_versioningMethod<apache::thrift::Frozen2ProtocolReader,apache::thrift::Frozen2ProtocolWriter>, throw_wrapped_versioningMethod<apache::thrift::Frozen2ProtocolReader, apache::thrift::Frozen2ProtocolWriter>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
@@ -618,6 +622,7 @@ void ServiceAAsyncProcessor::process_frozen2_retI32Method(std::unique_ptr<apache
       LOG(ERROR) << ex.what() << " in oneway function frozen2_retI32Method";
     }
   }
+  req->setStartedProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<int32_t>>(std::move(req), std::move(ctxStack), return_retI32Method<apache::thrift::Frozen2ProtocolReader,apache::thrift::Frozen2ProtocolWriter>, throw_wrapped_retI32Method<apache::thrift::Frozen2ProtocolReader, apache::thrift::Frozen2ProtocolWriter>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
@@ -660,6 +665,7 @@ void ServiceAAsyncProcessor::process_frozen2_retModAMethod(std::unique_ptr<apach
       LOG(ERROR) << ex.what() << " in oneway function frozen2_retModAMethod";
     }
   }
+  req->setStartedProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr< ::some::ns::ModuleA>>>(std::move(req), std::move(ctxStack), return_retModAMethod<apache::thrift::Frozen2ProtocolReader,apache::thrift::Frozen2ProtocolWriter>, throw_wrapped_retModAMethod<apache::thrift::Frozen2ProtocolReader, apache::thrift::Frozen2ProtocolWriter>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
@@ -702,6 +708,7 @@ void ServiceAAsyncProcessor::process_frozen2_throwMethod(std::unique_ptr<apache:
       LOG(ERROR) << ex.what() << " in oneway function frozen2_throwMethod";
     }
   }
+  req->setStartedProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(ctxStack), return_throwMethod<apache::thrift::Frozen2ProtocolReader,apache::thrift::Frozen2ProtocolWriter>, throw_wrapped_throwMethod<apache::thrift::Frozen2ProtocolReader, apache::thrift::Frozen2ProtocolWriter>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
@@ -744,6 +751,7 @@ void ServiceAAsyncProcessor::process_frozen2_multiThrowMethod(std::unique_ptr<ap
       LOG(ERROR) << ex.what() << " in oneway function frozen2_multiThrowMethod";
     }
   }
+  req->setStartedProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(ctxStack), return_multiThrowMethod<apache::thrift::Frozen2ProtocolReader,apache::thrift::Frozen2ProtocolWriter>, throw_wrapped_multiThrowMethod<apache::thrift::Frozen2ProtocolReader, apache::thrift::Frozen2ProtocolWriter>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
@@ -786,6 +794,7 @@ void ServiceAAsyncProcessor::process_frozen2_i32ThrowMethod(std::unique_ptr<apac
       LOG(ERROR) << ex.what() << " in oneway function frozen2_i32ThrowMethod";
     }
   }
+  req->setStartedProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(ctxStack), return_i32ThrowMethod<apache::thrift::Frozen2ProtocolReader,apache::thrift::Frozen2ProtocolWriter>, throw_wrapped_i32ThrowMethod<apache::thrift::Frozen2ProtocolReader, apache::thrift::Frozen2ProtocolWriter>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
@@ -829,6 +838,7 @@ void ServiceAAsyncProcessor::process_frozen2_moduleAThrowMethod(std::unique_ptr<
       LOG(ERROR) << ex.what() << " in oneway function frozen2_moduleAThrowMethod";
     }
   }
+  req->setStartedProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(ctxStack), return_moduleAThrowMethod<apache::thrift::Frozen2ProtocolReader,apache::thrift::Frozen2ProtocolWriter>, throw_wrapped_moduleAThrowMethod<apache::thrift::Frozen2ProtocolReader, apache::thrift::Frozen2ProtocolWriter>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
@@ -873,6 +883,7 @@ void ServiceAAsyncProcessor::process_frozen2_mixedMethod(std::unique_ptr<apache:
       LOG(ERROR) << ex.what() << " in oneway function frozen2_mixedMethod";
     }
   }
+  req->setStartedProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<std::string>>>(std::move(req), std::move(ctxStack), return_mixedMethod<apache::thrift::Frozen2ProtocolReader,apache::thrift::Frozen2ProtocolWriter>, throw_wrapped_mixedMethod<apache::thrift::Frozen2ProtocolReader, apache::thrift::Frozen2ProtocolWriter>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();

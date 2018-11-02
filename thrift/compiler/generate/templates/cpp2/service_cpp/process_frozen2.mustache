@@ -66,6 +66,7 @@ void <%service:name%>AsyncProcessor::process_frozen2_<%function:name%>(std::uniq
       LOG(ERROR) << ex.what() << " in oneway function frozen2_<%function:name%>";
     }
   }
+  req->setStartedProcessing();
 <%^type:resolves_to_complex_return?%>
   auto callback = std::make_unique<apache::thrift::HandlerCallback<<% > types/type%>>>(std::move(req), std::move(ctxStack), return_<%function:name%><apache::thrift::Frozen2ProtocolReader,apache::thrift::Frozen2ProtocolWriter>, throw_wrapped_<%function:name%><apache::thrift::Frozen2ProtocolReader, apache::thrift::Frozen2ProtocolWriter>, ctx->getProtoSeqId(), eb, tm, ctx);
 <%/type:resolves_to_complex_return?%>

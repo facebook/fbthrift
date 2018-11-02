@@ -65,6 +65,7 @@ void service3AsyncProcessor::process_methodA(std::unique_ptr<apache::thrift::Res
       LOG(ERROR) << ex.what() << " in oneway function methodA";
     }
   }
+  req->setStartedProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(ctxStack), return_methodA<ProtocolIn_,ProtocolOut_>, throw_wrapped_methodA<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
@@ -146,6 +147,7 @@ void service3AsyncProcessor::process_methodB(std::unique_ptr<apache::thrift::Res
       LOG(ERROR) << ex.what() << " in oneway function methodB";
     }
   }
+  req->setStartedProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(ctxStack), return_methodB<ProtocolIn_,ProtocolOut_>, throw_wrapped_methodB<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
@@ -221,6 +223,7 @@ void service3AsyncProcessor::process_methodC(std::unique_ptr<apache::thrift::Res
       LOG(ERROR) << ex.what() << " in oneway function methodC";
     }
   }
+  req->setStartedProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<int32_t>>(std::move(req), std::move(ctxStack), return_methodC<ProtocolIn_,ProtocolOut_>, throw_wrapped_methodC<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
@@ -304,6 +307,7 @@ void service3AsyncProcessor::process_methodD(std::unique_ptr<apache::thrift::Res
       LOG(ERROR) << ex.what() << " in oneway function methodD";
     }
   }
+  req->setStartedProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<int32_t>>(std::move(req), std::move(ctxStack), return_methodD<ProtocolIn_,ProtocolOut_>, throw_wrapped_methodD<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
@@ -381,6 +385,7 @@ void service3AsyncProcessor::process_methodE(std::unique_ptr<apache::thrift::Res
       LOG(ERROR) << ex.what() << " in oneway function methodE";
     }
   }
+  req->setStartedProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr< ::test_cpp2::cpp_reflection::struct2>>>(std::move(req), std::move(ctxStack), return_methodE<ProtocolIn_,ProtocolOut_>, throw_wrapped_methodE<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
@@ -464,6 +469,7 @@ void service3AsyncProcessor::process_methodF(std::unique_ptr<apache::thrift::Res
       LOG(ERROR) << ex.what() << " in oneway function methodF";
     }
   }
+  req->setStartedProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr< ::test_cpp2::cpp_reflection::struct3>>>(std::move(req), std::move(ctxStack), return_methodF<ProtocolIn_,ProtocolOut_>, throw_wrapped_methodF<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();

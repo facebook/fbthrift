@@ -55,6 +55,7 @@ void MyLeafAsyncProcessor::process_do_leaf(std::unique_ptr<apache::thrift::Respo
       LOG(ERROR) << ex.what() << " in oneway function do_leaf";
     }
   }
+  req->setStartedProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(ctxStack), return_do_leaf<ProtocolIn_,ProtocolOut_>, throw_wrapped_do_leaf<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();

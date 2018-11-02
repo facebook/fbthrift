@@ -99,6 +99,7 @@ void <%service:name%>AsyncProcessor::process_<%function:name%>(std::unique_ptr<a
       LOG(ERROR) << ex.what() << " in oneway function <%function:name%>";
     }
   }
+  req->setStartedProcessing();
   <%#function:takes_stream?%>
   auto inputStream = apache::thrift::detail::ap::decode_stream<
       ProtocolIn_, <%service:name%>_<%function:name%>_pargs::StreamPResultType,
