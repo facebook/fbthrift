@@ -39,8 +39,6 @@
 #include <thrift/lib/cpp2/async/HTTPClientChannel.h>
 #include <thrift/lib/cpp2/async/HeaderClientChannel.h>
 #include <thrift/lib/cpp2/async/RequestChannel.h>
-#include <thrift/lib/cpp2/async/StubSaslClient.h>
-#include <thrift/lib/cpp2/async/StubSaslServer.h>
 #include <thrift/lib/cpp2/server/Cpp2Connection.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
 #include <thrift/lib/cpp2/test/gen-cpp2/TestService.h>
@@ -1078,18 +1076,6 @@ TEST(ThriftServer, ClientIdentityHook) {
   std::string response;
   client.sync_sendResponse(response, 64);
   EXPECT_TRUE(flag);
-}
-
-TEST(ThriftServer, SaslThreadCount) {
-  auto server = std::make_shared<ThriftServer>();
-  server->setNumIOWorkerThreads(10);
-  EXPECT_EQ(server->getNumSaslThreadsToRun(), 10);
-
-  server->setNumCPUWorkerThreads(20);
-  EXPECT_EQ(server->getNumSaslThreadsToRun(), 20);
-
-  server->setNSaslPoolThreads(30);
-  EXPECT_EQ(server->getNumSaslThreadsToRun(), 30);
 }
 
 namespace {

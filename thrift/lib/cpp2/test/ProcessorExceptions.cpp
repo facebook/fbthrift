@@ -37,8 +37,6 @@
 #include <thrift/lib/cpp/async/TAsyncSocket.h>
 #include <thrift/lib/cpp2/util/ScopedServerThread.h>
 
-#include <thrift/lib/cpp2/async/StubSaslClient.h>
-#include <thrift/lib/cpp2/async/StubSaslServer.h>
 #include <thrift/lib/cpp2/test/util/TestThriftServerFactory.h>
 
 #include <memory>

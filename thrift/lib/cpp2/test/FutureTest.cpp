@@ -24,8 +24,6 @@
 #include <thrift/lib/cpp/async/TAsyncSocket.h>
 #include <thrift/lib/cpp2/util/ScopedServerThread.h>
 
-#include <thrift/lib/cpp2/async/StubSaslClient.h>
-#include <thrift/lib/cpp2/async/StubSaslServer.h>
 #include <thrift/lib/cpp2/test/util/TestThriftServerFactory.h>
 #include <thrift/lib/cpp2/util/ScopedServerInterfaceThread.h>
 
@@ -128,36 +126,6 @@ class TestInterface : public FutureServiceSvIf {
     return f;
   }
 };
-
-void AsyncCpp2Test(bool enable_security) {
-  apache::thrift::TestThriftServerFactory<TestInterface> factory;
-  ScopedServerThread sst(factory.create());
-  EventBase base;
-  std::shared_ptr<TAsyncSocket> socket(
-    TAsyncSocket::newSocket(&base, *sst.getAddress()));
-
-  auto channel = HeaderClientChannel::newChannel(socket);
-  channel->setTimeout(10000);
-  if (enable_security) {
-    channel->setSecurityPolicy(THRIFT_SECURITY_PERMITTED);
-    channel->setSaslClient(std::unique_ptr<SaslClient>(
-      new StubSaslClient(socket->getEventBase())
-    ));
-  }
-  FutureServiceAsyncClient client(std::move(channel));
-
-  client.sendResponse([](ClientReceiveState&& state) {
-                        std::string response;
-                        try {
-                          FutureServiceAsyncClient::recv_sendResponse(
-                              response, state);
-                        } catch(const std::exception& ex) {
-                        }
-                        EXPECT_EQ(response, "test64");
-                      },
-                      64);
-  base.loop();
-}
 
 TEST(ThriftServer, FutureExceptions) {
   apache::thrift::TestThriftServerFactory<TestInterface> factory;

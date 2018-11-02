@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Facebook, Inc.
+ * Copyright 2015-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,6 @@
 #include <thrift/lib/cpp2/test/util/TestClientChannelFactory.h>
 #include <thrift/lib/cpp/async/TAsyncTransport.h>
 #include <thrift/lib/cpp2/async/HeaderClientChannel.h>
-#include <thrift/lib/cpp2/async/StubSaslClient.h>
 
 struct TestHeaderClientChannelFactory : public TestClientChannelFactory {
  public:
@@ -35,21 +34,7 @@ struct TestHeaderClientChannelFactory : public TestClientChannelFactory {
 
     channel->setProtocolId(protocol_);
     channel->setTimeout(timeout_);
-    channel->setSecurityPolicy(securityPolicy_);
-    if (securityPolicy_ != THRIFT_SECURITY_DISABLED) {
-      channel->setSaslClient(std::unique_ptr<apache::thrift::SaslClient>(
-          new apache::thrift::StubSaslClient(eb)));
-    }
 
     return std::move(channel);
   }
-
-  TestClientChannelFactory& setSecurityPolicy(
-      THRIFT_SECURITY_POLICY securityPolicy) {
-    securityPolicy_ = securityPolicy;
-    return *this;
-  }
-
- protected:
-  THRIFT_SECURITY_POLICY securityPolicy_{THRIFT_SECURITY_DISABLED};
 };
