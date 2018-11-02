@@ -19,6 +19,7 @@ struct Nesting {
 struct Pet1 {
   1: string name,
   2: optional i32 age
+  3: optional bool vegan,
 }
 
 struct Person1 {

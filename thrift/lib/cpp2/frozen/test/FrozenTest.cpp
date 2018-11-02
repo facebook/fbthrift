@@ -27,6 +27,19 @@ using namespace apache::thrift::frozen;
 using namespace apache::thrift::test;
 using namespace apache::thrift::util;
 
+template <class T>
+std::string toString(const T& x) {
+  return debugString(x);
+}
+template <class T>
+std::string toString(const Layout<T>& x) {
+  std::ostringstream xStr;
+  xStr << x;
+  return xStr.str();
+}
+
+#define EXPECT_PRINTED_EQ(a, b) EXPECT_EQ(toString(a), toString(b))
+
 EveryLayout stressValue2 = [] {
   EveryLayout x;
   x.aBool = true;
@@ -101,12 +114,9 @@ TEST(Frozen, EndToEnd) {
   }
   Layout<Person1> layout;
   LayoutRoot::layout(tom1, layout);
-  LOG(INFO) << layout;
-  LOG(INFO) << apache::thrift::debugString(tom1);
   auto ttom = view.thaw();
-  LOG(INFO) << apache::thrift::debugString(ttom);
   EXPECT_TRUE(ttom.__isset.name);
-  EXPECT_EQ(tom1, ttom);
+  EXPECT_PRINTED_EQ(tom1, ttom);
 }
 
 TEST(Frozen, Comparison) {
@@ -310,15 +320,6 @@ TEST(Frozen, Tiny) {
   EXPECT_EQ(24, frozenSize(tiny4));
 }
 
-template <class T>
-std::string toString(const T& x) {
-  std::ostringstream xStr;
-  xStr << x;
-  return xStr.str();
-}
-
-#define EXPECT_PRINTED_EQ(a, b) EXPECT_EQ(toString(a), toString(b))
-
 TEST(Frozen, SchemaSaving) {
   // calculate a layout
   Layout<EveryLayout> stressLayoutCalculated;
@@ -347,6 +348,34 @@ TEST(Frozen, Enum) {
   she.gender = Gender::Female;
   EXPECT_EQ(he, freeze(he).thaw());
   EXPECT_EQ(she, freeze(she).thaw());
+}
+
+template <class T>
+size_t frozenBits(const T& value) {
+  Layout<T> layout;
+  LayoutRoot::layout(value, layout);
+  return layout.bits;
+}
+
+TEST(Frozen, Bool) {
+  Pet1 meat, vegan, dunno;
+  meat.vegan_ref() = false;
+  vegan.vegan_ref() = true;
+  // Always-empty optionals take 0 bits.
+  // Sometimes-full optionals take >=1 bits.
+  // Always-false bools take 0 bits.
+  // Sometimes-true bools take 1 bits.
+  // dunno => Nothing => 0 bits.
+  // meat => Just(False) => 1 bit.
+  // vegan => Just(True) => 2 bits.
+  EXPECT_LT(frozenBits(dunno), frozenBits(meat));
+  EXPECT_LT(frozenBits(meat), frozenBits(vegan));
+  EXPECT_EQ(freeze(meat).vegan(), folly::make_optional<bool>(false));
+  EXPECT_EQ(freeze(vegan).vegan(), folly::make_optional<bool>(true));
+  EXPECT_EQ(freeze(dunno).vegan(), folly::Optional<bool>());
+  EXPECT_EQ(meat, freeze(meat).thaw());
+  EXPECT_EQ(vegan, freeze(vegan).thaw());
+  EXPECT_EQ(dunno, freeze(dunno).thaw());
 }
 
 TEST(Frozen, SchemaConversion) {
