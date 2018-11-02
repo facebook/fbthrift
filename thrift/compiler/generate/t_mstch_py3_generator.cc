@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+#include <iterator>
 #include <memory>
 
 #include <boost/algorithm/string/classification.hpp>
@@ -673,7 +674,9 @@ void t_mstch_py3_generator::add_per_type_data(
   } else {
     auto& n = boost::get<mstch::array>(nit->second);
     n.insert(
-        n.end(), data.extra_namespaces.begin(), data.extra_namespaces.end());
+        n.end(),
+        std::make_move_iterator(data.extra_namespaces.begin()),
+        std::make_move_iterator(data.extra_namespaces.end()));
   }
 
   // create second set of container types that treats strings and binaries
