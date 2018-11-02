@@ -19,7 +19,6 @@
 #include <thrift/lib/cpp2/GeneratedCodeHelper.h>
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
-#include <thrift/lib/cpp2/security/SecurityKillSwitch.h>
 #include <thrift/lib/cpp2/server/Cpp2Worker.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
 
@@ -86,21 +85,11 @@ Cpp2Connection::Cpp2Connection(
     channel_->setSampleRate(observer->getSampleRate());
   }
 
-  // Process the security kill switch.
-  if (isSecurityKillSwitchEnabled() &&
-      worker_->getServer()->getSaslPolicy() == "required") {
-    // This means we downgrade only from "required" to "permitted, and don't
-    // end up upgrading from "disabled" to "permitted"
+  if (worker_->getServer()->getSaslPolicy() == "permitted") {
     worker_->getServer()->setNonSaslEnabled(true);
   } else {
-    // This is necessary for the server to revert back to old behavior once
-    // kill switch has been removed after being turned on for some time.
-    if (worker_->getServer()->getSaslPolicy() == "permitted") {
-      worker_->getServer()->setNonSaslEnabled(true);
-    } else {
-      // sasl_policy is either "required" or "disabled"
-      worker_->getServer()->setNonSaslEnabled(false);
-    }
+    // sasl_policy is either "required" or "disabled"
+    worker_->getServer()->setNonSaslEnabled(false);
   }
 
   if (transport) {
