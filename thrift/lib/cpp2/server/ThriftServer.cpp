@@ -372,7 +372,12 @@ void ThriftServer::setup() {
       for (auto& socket : getSockets()) {
         socket->setShutdownSocketSet(wShutdownSocketSet_);
         socket->setAcceptRateAdjustSpeed(acceptRateAdjustSpeed_);
-        socket->setTosReflect(tosReflect_);
+        try {
+          socket->setTosReflect(tosReflect_);
+        } catch (std::exception const& ex) {
+          LOG(ERROR) << "Got exception setting up TOS reflect: "
+                     << folly::exceptionStr(ex);
+        }
       }
 
       // Notify handler of the preServe event
