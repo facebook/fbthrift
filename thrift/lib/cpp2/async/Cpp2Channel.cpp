@@ -233,7 +233,7 @@ void Cpp2Channel::sendMessage(
   DestructorGuard dg(this);
 
   auto future = pipeline_->write(std::make_pair(std::move(buf), header));
-  std::move(future).then([this, dg](folly::Try<folly::Unit>&& t) {
+  std::move(future).thenTry([this, dg](folly::Try<folly::Unit>&& t) {
     if (t.withException<TTransportException>(
             [&](const TTransportException& ex) { writeError(0, ex); }) ||
         t.withException<std::exception>([&](const std::exception& ex) {
