@@ -45,11 +45,11 @@ trait MyServicePrioChildClientBase {
     );
     try {
       $this->eventHandler_->preSend('pang', $args, $currentseqid);
-      if ($this->output_ instanceof \TBinaryProtocolAccelerated)
+      if ($this->output_ is \TBinaryProtocolAccelerated)
       {
         \thrift_protocol_write_binary($this->output_, 'pang', \TMessageType::CALL, $args, $currentseqid, $this->output_->isStrictWrite(), false);
       }
-      else if ($this->output_ instanceof \TCompactProtocolAccelerated)
+      else if ($this->output_ is \TCompactProtocolAccelerated)
       {
         \thrift_protocol_write_compact($this->output_, 'pang', \TMessageType::CALL, $args, $currentseqid, false);
       }
@@ -82,9 +82,9 @@ trait MyServicePrioChildClientBase {
   protected function recvImpl_pang(?int $expectedsequenceid = null): void {
     try {
       $this->eventHandler_->preRecv('pang', $expectedsequenceid);
-      if ($this->input_ instanceof \TBinaryProtocolAccelerated) {
+      if ($this->input_ is \TBinaryProtocolAccelerated) {
         $result = \thrift_protocol_read_binary($this->input_, 'MyServicePrioChild_pang_result', $this->input_->isStrictRead());
-      } else if ($this->input_ instanceof \TCompactProtocolAccelerated)
+      } else if ($this->input_ is \TCompactProtocolAccelerated)
       {
         $result = \thrift_protocol_read_compact($this->input_, 'MyServicePrioChild_pang_result');
       }
@@ -184,9 +184,9 @@ abstract class MyServicePrioChildAsyncProcessorBase extends MyServicePrioParentA
 
     $this->eventHandler_->preRead($handler_ctx, 'pang', dict[]);
 
-    if ($input instanceof \TBinaryProtocolAccelerated) {
+    if ($input is \TBinaryProtocolAccelerated) {
       $args = \thrift_protocol_read_binary_struct($input, 'MyServicePrioChild_pang_args');
-    } else if ($input instanceof \TCompactProtocolAccelerated) {
+    } else if ($input is \TCompactProtocolAccelerated) {
       $args = \thrift_protocol_read_compact_struct($input, 'MyServicePrioChild_pang_args');
     } else {
       $args = new MyServicePrioChild_pang_args();
@@ -205,11 +205,11 @@ abstract class MyServicePrioChildAsyncProcessorBase extends MyServicePrioParentA
       $result = new \TApplicationException($ex->getMessage()."\n".$ex->getTraceAsString());
     }
     $this->eventHandler_->preWrite($handler_ctx, 'pang', $result);
-    if ($output instanceof \TBinaryProtocolAccelerated)
+    if ($output is \TBinaryProtocolAccelerated)
     {
       \thrift_protocol_write_binary($output, 'pang', $reply_type, $result, $seqid, $output->isStrictWrite());
     }
-    else if ($output instanceof \TCompactProtocolAccelerated)
+    else if ($output is \TCompactProtocolAccelerated)
     {
       \thrift_protocol_write_compact($output, 'pang', $reply_type, $result, $seqid);
     }
@@ -235,9 +235,9 @@ abstract class MyServicePrioChildSyncProcessorBase extends MyServicePrioParentSy
 
     $this->eventHandler_->preRead($handler_ctx, 'pang', dict[]);
 
-    if ($input instanceof \TBinaryProtocolAccelerated) {
+    if ($input is \TBinaryProtocolAccelerated) {
       $args = \thrift_protocol_read_binary_struct($input, 'MyServicePrioChild_pang_args');
-    } else if ($input instanceof \TCompactProtocolAccelerated) {
+    } else if ($input is \TCompactProtocolAccelerated) {
       $args = \thrift_protocol_read_compact_struct($input, 'MyServicePrioChild_pang_args');
     } else {
       $args = new MyServicePrioChild_pang_args();
@@ -256,11 +256,11 @@ abstract class MyServicePrioChildSyncProcessorBase extends MyServicePrioParentSy
       $result = new \TApplicationException($ex->getMessage()."\n".$ex->getTraceAsString());
     }
     $this->eventHandler_->preWrite($handler_ctx, 'pang', $result);
-    if ($output instanceof \TBinaryProtocolAccelerated)
+    if ($output is \TBinaryProtocolAccelerated)
     {
       \thrift_protocol_write_binary($output, 'pang', $reply_type, $result, $seqid, $output->isStrictWrite());
     }
-    else if ($output instanceof \TCompactProtocolAccelerated)
+    else if ($output is \TCompactProtocolAccelerated)
     {
       \thrift_protocol_write_compact($output, 'pang', $reply_type, $result, $seqid);
     }

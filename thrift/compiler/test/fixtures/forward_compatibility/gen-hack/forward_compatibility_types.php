@@ -109,7 +109,7 @@ class OldStructure implements \IThriftStruct {
     $xfer += $output->writeStructBegin('OldStructure');
     if ($this->features !== null) {
       $_val0 = $this->features;
-      if (!($_val0 instanceof \Indexish) && !(($_val0 instanceof \Iterator || $_val0 instanceof \IteratorAggregate) && $_val0 instanceof \Countable)) {
+      if (!($_val0 is \Indexish<_, _>) && !(($_val0 is \Iterator<_> || $_val0 is \IteratorAggregate<_>) && $_val0 is \Countable)) {
         throw new \TProtocolException('Bad type in structure.', \TProtocolException::INVALID_DATA);
       }
       $xfer += $output->writeFieldBegin('features', \TType::MAP, 1);
@@ -235,7 +235,7 @@ class NewStructure implements \IThriftStruct {
     $xfer += $output->writeStructBegin('NewStructure');
     if ($this->features !== null) {
       $_val0 = $this->features;
-      if (!($_val0 instanceof \Indexish) && !(($_val0 instanceof \Iterator || $_val0 instanceof \IteratorAggregate) && $_val0 instanceof \Countable)) {
+      if (!($_val0 is \Indexish<_, _>) && !(($_val0 is \Iterator<_> || $_val0 is \IteratorAggregate<_>) && $_val0 is \Countable)) {
         throw new \TProtocolException('Bad type in structure.', \TProtocolException::INVALID_DATA);
       }
       $xfer += $output->writeFieldBegin('features', \TType::MAP, 1);
@@ -361,7 +361,7 @@ class NewStructure2 implements \IThriftStruct {
     $xfer += $output->writeStructBegin('NewStructure2');
     if ($this->features !== null) {
       $_val0 = $this->features;
-      if (!($_val0 instanceof \Indexish) && !(($_val0 instanceof \Iterator || $_val0 instanceof \IteratorAggregate) && $_val0 instanceof \Countable)) {
+      if (!($_val0 is \Indexish<_, _>) && !(($_val0 is \Iterator<_> || $_val0 is \IteratorAggregate<_>) && $_val0 is \Countable)) {
         throw new \TProtocolException('Bad type in structure.', \TProtocolException::INVALID_DATA);
       }
       $xfer += $output->writeFieldBegin('features', \TType::MAP, 1);
@@ -654,7 +654,7 @@ class NewStructureNested implements \IThriftStruct {
     $xfer += $output->writeStructBegin('NewStructureNested');
     if ($this->lst !== null) {
       $_val0 = $this->lst;
-      if (!($_val0 instanceof \Indexish) && !(($_val0 instanceof \Iterator || $_val0 instanceof \IteratorAggregate) && $_val0 instanceof \Countable)) {
+      if (!($_val0 is \Indexish<_, _>) && !(($_val0 is \Iterator<_> || $_val0 is \IteratorAggregate<_>) && $_val0 is \Countable)) {
         throw new \TProtocolException('Bad type in structure.', \TProtocolException::INVALID_DATA);
       }
       $xfer += $output->writeFieldBegin('lst', \TType::LST, 1);
@@ -680,7 +680,7 @@ class NewStructureNested implements \IThriftStruct {
     }
     if ($this->mp !== null) {
       $_val4 = $this->mp;
-      if (!($_val4 instanceof \Indexish) && !(($_val4 instanceof \Iterator || $_val4 instanceof \IteratorAggregate) && $_val4 instanceof \Countable)) {
+      if (!($_val4 is \Indexish<_, _>) && !(($_val4 is \Iterator<_> || $_val4 is \IteratorAggregate<_>) && $_val4 is \Countable)) {
         throw new \TProtocolException('Bad type in structure.', \TProtocolException::INVALID_DATA);
       }
       $xfer += $output->writeFieldBegin('mp', \TType::MAP, 2);
@@ -707,7 +707,7 @@ class NewStructureNested implements \IThriftStruct {
     }
     if ($this->s !== null) {
       $_val9 = $this->s;
-      if (!($_val9 instanceof Set)) {
+      if (!($_val9 is Set<_>)) {
         throw new \TProtocolException('Bad type in structure.', \TProtocolException::INVALID_DATA);
       }
       $xfer += $output->writeFieldBegin('s', \TType::SET, 3);

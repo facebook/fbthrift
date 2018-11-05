@@ -51,11 +51,11 @@ trait BarClientBase {
     );
     try {
       $this->eventHandler_->preSend('baz', $args, $currentseqid);
-      if ($this->output_ instanceof \TBinaryProtocolAccelerated)
+      if ($this->output_ is \TBinaryProtocolAccelerated)
       {
         \thrift_protocol_write_binary($this->output_, 'baz', \TMessageType::CALL, $args, $currentseqid, $this->output_->isStrictWrite(), false);
       }
-      else if ($this->output_ instanceof \TCompactProtocolAccelerated)
+      else if ($this->output_ is \TCompactProtocolAccelerated)
       {
         \thrift_protocol_write_compact($this->output_, 'baz', \TMessageType::CALL, $args, $currentseqid, false);
       }
@@ -88,9 +88,9 @@ trait BarClientBase {
   protected function recvImpl_baz(?int $expectedsequenceid = null): string {
     try {
       $this->eventHandler_->preRecv('baz', $expectedsequenceid);
-      if ($this->input_ instanceof \TBinaryProtocolAccelerated) {
+      if ($this->input_ is \TBinaryProtocolAccelerated) {
         $result = \thrift_protocol_read_binary($this->input_, 'Bar_baz_result', $this->input_->isStrictRead());
-      } else if ($this->input_ instanceof \TCompactProtocolAccelerated)
+      } else if ($this->input_ is \TCompactProtocolAccelerated)
       {
         $result = \thrift_protocol_read_compact($this->input_, 'Bar_baz_result');
       }

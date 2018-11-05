@@ -3000,26 +3000,26 @@ void t_hack_generator::generate_php_struct_writer(
       if (strict_types_) {
         if (type->is_map()) {
           if (arrays_) {
-            out << "!(is_dict($" << val << "))";
+            out << "!($" << val << " is dict<_, _>)";
           } else {
-            out << "!($" << val << " instanceof Map)";
+            out << "!($" << val << " is Map<_, _>)";
           }
         } else if (type->is_list()) {
           if (arrays_) {
-            out << "!(is_vec($" << val << "))";
+            out << "!($" << val << " is vec<_>)";
           } else {
-            out << "!($" << val << " instanceof Vector)";
+            out << "!($" << val << " is Vector<_>)";
           }
         } else if (type->is_set()) {
           if (arrays_) {
-            out << "!(is_keyset($" << val << "))";
+            out << "!($" << val << " is keyset<_>)";
           } else if (arraysets_) {
-            out << "!($" << val << " instanceof \\Indexish) && "
-                << "!(($" << val << " instanceof \\Iterator || "
-                << "$" << val << " instanceof \\IteratorAggregate) "
-                << "&& $" << val << " instanceof \\Countable)";
+            out << "!($" << val << " is \\Indexish<_, _>) && "
+                << "!(($" << val << " is \\Iterator<_> || "
+                << "$" << val << " is \\IteratorAggregate<_>) "
+                << "&& $" << val << " is \\Countable)";
           } else {
-            out << "!($" << val << " instanceof Set)";
+            out << "!($" << val << " is Set<_>)";
           }
         } else {
           out << "!($" << val << " instanceof " << type_to_typehint(type)
@@ -3028,15 +3028,15 @@ void t_hack_generator::generate_php_struct_writer(
       } else {
         if (type->is_set() && !arraysets_) {
           if (arrays_) {
-            out << "!(is_keyset($" << val << "))";
+            out << "!($" << val << " is keyset<_>)";
           } else {
-            out << "!($" << val << " instanceof Set)";
+            out << "!($" << val << " is Set<_>)";
           }
         } else if (type->is_container()) {
-          out << "!($" << val << " instanceof \\Indexish) && "
-              << "!(($" << val << " instanceof \\Iterator || "
-              << "$" << val << " instanceof \\IteratorAggregate) "
-              << "&& $" << val << " instanceof \\Countable)";
+          out << "!($" << val << " is \\Indexish<_, _>) && "
+              << "!(($" << val << " is \\Iterator<_> || "
+              << "$" << val << " is \\IteratorAggregate<_>) "
+              << "&& $" << val << " is \\Countable)";
         } else {
           out << "!($" << val << " instanceof " << type_to_typehint(type)
               << ")";
@@ -3244,11 +3244,11 @@ void t_hack_generator::generate_process_function(
              << fn_name << "', " << array_keyword_ << "[]);\n"
              << "\n"
              << indent()
-             << "if ($input instanceof \\TBinaryProtocolAccelerated) {\n"
+             << "if ($input is \\TBinaryProtocolAccelerated) {\n"
              << indent() << "  $args = \\thrift_protocol_read_binary_struct("
              << "$input, '" << argsname << "');\n"
              << indent()
-             << "} else if ($input instanceof \\TCompactProtocolAccelerated) {"
+             << "} else if ($input is \\TCompactProtocolAccelerated) {"
              << "\n"
              << indent()
              << "  $args = \\thrift_protocol_read_compact_struct($input, '"
@@ -3341,7 +3341,7 @@ void t_hack_generator::generate_process_function(
              << fn_name << "', $result);\n";
 
   f_service_ << indent()
-             << "if ($output instanceof \\TBinaryProtocolAccelerated)\n";
+             << "if ($output is \\TBinaryProtocolAccelerated)\n";
   scope_up(f_service_);
 
   f_service_ << indent() << "\\thrift_protocol_write_binary($output, '"
@@ -3350,7 +3350,7 @@ void t_hack_generator::generate_process_function(
 
   scope_down(f_service_);
   f_service_ << indent()
-             << "else if ($output instanceof \\TCompactProtocolAccelerated)\n";
+             << "else if ($output is \\TCompactProtocolAccelerated)\n";
   scope_up(f_service_);
 
   f_service_ << indent() << "\\thrift_protocol_write_compact($output, '"
@@ -4003,7 +4003,7 @@ void t_hack_generator::_generate_service_client(
     out << indent() << "$this->eventHandler_->preSend('"
         << (*f_iter)->get_name() << "', $args, $currentseqid);\n";
     out << indent()
-        << "if ($this->output_ instanceof \\TBinaryProtocolAccelerated)\n";
+        << "if ($this->output_ is \\TBinaryProtocolAccelerated)\n";
     scope_up(out);
 
     out << indent() << "\\thrift_protocol_write_binary($this->output_, '"
@@ -4014,7 +4014,7 @@ void t_hack_generator::_generate_service_client(
 
     scope_down(out);
     out << indent()
-        << "else if ($this->output_ instanceof \\TCompactProtocolAccelerated)\n";
+        << "else if ($this->output_ is \\TCompactProtocolAccelerated)\n";
     scope_up(out);
 
     out << indent() << "\\thrift_protocol_write_compact($this->output_, '"
@@ -4103,7 +4103,7 @@ void t_hack_generator::_generate_service_client(
           << (*f_iter)->get_name() << "', $expectedsequenceid);\n";
 
       out << indent()
-          << "if ($this->input_ instanceof \\TBinaryProtocolAccelerated) {\n";
+          << "if ($this->input_ is \\TBinaryProtocolAccelerated) {\n";
 
       indent_up();
 
@@ -4114,7 +4114,7 @@ void t_hack_generator::_generate_service_client(
       indent_down();
 
       out << indent()
-          << "} else if ($this->input_ instanceof \\TCompactProtocolAccelerated)\n";
+          << "} else if ($this->input_ is \\TCompactProtocolAccelerated)\n";
       scope_up(out);
       out << indent()
           << "$result = \\thrift_protocol_read_compact($this->input_, '"
