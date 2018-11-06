@@ -100,10 +100,8 @@ typedef list<complexStructTypeDef> mostComplexTypeDef
 
 union ComplexUnion {
   1: i64 intValue;
-  101: required i64 req_intValue;
   201: optional i64 opt_intValue;
   3: string stringValue;
-  103: required string req_stringValue;
   203: optional string opt_stringValue;
   4: i16 intValue2;
   6: i32 intValue3;
@@ -112,21 +110,18 @@ union ComplexUnion {
   9: list<i32> union_list
   10: set<i64> union_set
   11: map<string, i32> union_map
-  111: required map<string, i32> req_union_map
   211: optional map<string, i32> opt_union_map
   12: MyEnumA enum_field
   13: list<MyEnumA> enum_container
   14: MyStruct a_struct
   15: set<MyStruct> a_set_struct
   16: SimpleUnion a_union
-  116: required SimpleUnion req_a_union
   216: optional SimpleUnion opt_a_union
   17: list<SimpleUnion> a_union_list
   18: unionTypeDef a_union_typedef
   19: list<unionTypeDef> a_union_typedef_list
   20: binary MyBinaryField
   21: optional binary MyBinaryField2
-  22: required binary MyBinaryField3
   23: list<binary> MyBinaryListField4
   24: MyStruct ref_field (cpp.ref);
   25: MyStruct ref_field2 (cpp.ref_type="shared_const")

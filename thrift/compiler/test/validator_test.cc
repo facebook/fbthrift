@@ -209,3 +209,25 @@ TEST_F(ValidatorTest, UnsetEnumValues) {
           "[FAILURE:/path/to/file.thrift:3] Unset enum value Baz in enum Foo. "
           "Add an explicit value to suppress this error"));
 }
+
+TEST_F(ValidatorTest, RequiredInUnion) {
+  t_program program("/path/to/file.thrift");
+  t_base_type i64type("i64", t_base_type::TYPE_I64);
+
+  auto field = std::make_unique<t_field>(&i64type, "foo", 1);
+  field->set_lineno(5);
+  field->set_req(t_field::T_REQUIRED);
+
+  auto struct_union = std::make_unique<t_struct>(&program, "Bar");
+  struct_union->set_union(true);
+
+  struct_union->append(std::move(field));
+  program.add_struct(std::move(struct_union));
+
+  auto errors = run_validator<union_no_required_fields_validator>(&program);
+  EXPECT_THAT(
+      errors,
+      testing::ElementsAre(
+          "[FAILURE:/path/to/file.thrift:5] Unions cannot contain fields with "
+          "required qualifier. Remove required qualifier from field 'foo'"));
+}

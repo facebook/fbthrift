@@ -967,11 +967,6 @@ void ComplexUnion::readNoXfer(Protocol_* iprot) {
 
   using apache::thrift::TProtocolException;
 
-  bool isset_req_intValue = false;
-  bool isset_req_stringValue = false;
-  bool isset_req_union_map = false;
-  bool isset_req_a_union = false;
-  bool isset_MyBinaryField3 = false;
 
   _readState.readFieldBegin(iprot);
   if (_readState.fieldType == apache::thrift::protocol::T_STOP) {
@@ -986,17 +981,6 @@ void ComplexUnion::readNoXfer(Protocol_* iprot) {
         if (_readState.fieldType == apache::thrift::protocol::T_I64) {
           this->set_intValue();
           ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::read(*iprot, this->mutable_intValue());
-        } else {
-          iprot->skip(_readState.fieldType);
-        }
-        break;
-      }
-      case 101:
-      {
-        if (_readState.fieldType == apache::thrift::protocol::T_I64) {
-          this->set_req_intValue();
-          ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::read(*iprot, this->mutable_req_intValue());
-          isset_req_intValue = true;
         } else {
           iprot->skip(_readState.fieldType);
         }
@@ -1017,17 +1001,6 @@ void ComplexUnion::readNoXfer(Protocol_* iprot) {
         if (_readState.fieldType == apache::thrift::protocol::T_STRING) {
           this->set_stringValue();
           iprot->readString(this->mutable_stringValue());
-        } else {
-          iprot->skip(_readState.fieldType);
-        }
-        break;
-      }
-      case 103:
-      {
-        if (_readState.fieldType == apache::thrift::protocol::T_STRING) {
-          this->set_req_stringValue();
-          iprot->readString(this->mutable_req_stringValue());
-          isset_req_stringValue = true;
         } else {
           iprot->skip(_readState.fieldType);
         }
@@ -1116,18 +1089,6 @@ void ComplexUnion::readNoXfer(Protocol_* iprot) {
         }
         break;
       }
-      case 111:
-      {
-        if (_readState.fieldType == apache::thrift::protocol::T_MAP) {
-          this->set_req_union_map();
-          this->mutable_req_union_map() = std::map<std::string, int32_t>();
-          ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>, std::map<std::string, int32_t>>::read(*iprot, this->mutable_req_union_map());
-          isset_req_union_map = true;
-        } else {
-          iprot->skip(_readState.fieldType);
-        }
-        break;
-      }
       case 211:
       {
         if (_readState.fieldType == apache::thrift::protocol::T_MAP) {
@@ -1186,17 +1147,6 @@ void ComplexUnion::readNoXfer(Protocol_* iprot) {
         if (_readState.fieldType == apache::thrift::protocol::T_STRUCT) {
           this->set_a_union();
           ::apache::thrift::Cpp2Ops<  ::some::valid::ns::SimpleUnion>::read(iprot, &this->mutable_a_union());
-        } else {
-          iprot->skip(_readState.fieldType);
-        }
-        break;
-      }
-      case 116:
-      {
-        if (_readState.fieldType == apache::thrift::protocol::T_STRUCT) {
-          this->set_req_a_union();
-          ::apache::thrift::Cpp2Ops<  ::some::valid::ns::SimpleUnion>::read(iprot, &this->mutable_req_a_union());
-          isset_req_a_union = true;
         } else {
           iprot->skip(_readState.fieldType);
         }
@@ -1265,17 +1215,6 @@ void ComplexUnion::readNoXfer(Protocol_* iprot) {
         }
         break;
       }
-      case 22:
-      {
-        if (_readState.fieldType == apache::thrift::protocol::T_STRING) {
-          this->set_MyBinaryField3();
-          iprot->readBinary(this->mutable_MyBinaryField3());
-          isset_MyBinaryField3 = true;
-        } else {
-          iprot->skip(_readState.fieldType);
-        }
-        break;
-      }
       case 23:
       {
         if (_readState.fieldType == apache::thrift::protocol::T_LIST) {
@@ -1336,21 +1275,6 @@ void ComplexUnion::readNoXfer(Protocol_* iprot) {
   }
   _readState.readStructEnd(iprot);
 
-  if (!isset_req_intValue) {
-    TProtocolException::throwMissingRequiredField("req_intValue", "ComplexUnion");
-  }
-  if (!isset_req_stringValue) {
-    TProtocolException::throwMissingRequiredField("req_stringValue", "ComplexUnion");
-  }
-  if (!isset_req_union_map) {
-    TProtocolException::throwMissingRequiredField("req_union_map", "ComplexUnion");
-  }
-  if (!isset_req_a_union) {
-    TProtocolException::throwMissingRequiredField("req_a_union", "ComplexUnion");
-  }
-  if (!isset_MyBinaryField3) {
-    TProtocolException::throwMissingRequiredField("MyBinaryField3", "ComplexUnion");
-  }
 }
 template <class Protocol_>
 uint32_t ComplexUnion::serializedSize(Protocol_ const* prot_) const {
@@ -1363,12 +1287,6 @@ uint32_t ComplexUnion::serializedSize(Protocol_ const* prot_) const {
       xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::serializedSize<false>(*prot_, this->get_intValue());
       break;
     }
-    case ComplexUnion::Type::req_intValue:
-    {
-      xfer += prot_->serializedFieldSize("req_intValue", apache::thrift::protocol::T_I64, 101);
-      xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::serializedSize<false>(*prot_, this->get_req_intValue());
-      break;
-    }
     if (this->__isset.opt_intValue) {
       xfer += prot_->serializedFieldSize("opt_intValue", apache::thrift::protocol::T_I64, 201);
       xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::serializedSize<false>(*prot_, this->get_opt_intValue());
@@ -1377,12 +1295,6 @@ uint32_t ComplexUnion::serializedSize(Protocol_ const* prot_) const {
     {
       xfer += prot_->serializedFieldSize("stringValue", apache::thrift::protocol::T_STRING, 3);
       xfer += prot_->serializedSizeString(this->get_stringValue());
-      break;
-    }
-    case ComplexUnion::Type::req_stringValue:
-    {
-      xfer += prot_->serializedFieldSize("req_stringValue", apache::thrift::protocol::T_STRING, 103);
-      xfer += prot_->serializedSizeString(this->get_req_stringValue());
       break;
     }
     if (this->__isset.opt_stringValue) {
@@ -1431,12 +1343,6 @@ uint32_t ComplexUnion::serializedSize(Protocol_ const* prot_) const {
       xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>, std::map<std::string, int32_t>>::serializedSize<false>(*prot_, this->get_union_map());
       break;
     }
-    case ComplexUnion::Type::req_union_map:
-    {
-      xfer += prot_->serializedFieldSize("req_union_map", apache::thrift::protocol::T_MAP, 111);
-      xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>, std::map<std::string, int32_t>>::serializedSize<false>(*prot_, this->get_req_union_map());
-      break;
-    }
     if (this->__isset.opt_union_map) {
       xfer += prot_->serializedFieldSize("opt_union_map", apache::thrift::protocol::T_MAP, 211);
       xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>, std::map<std::string, int32_t>>::serializedSize<false>(*prot_, this->get_opt_union_map());
@@ -1471,12 +1377,6 @@ uint32_t ComplexUnion::serializedSize(Protocol_ const* prot_) const {
       xfer += ::apache::thrift::Cpp2Ops<  ::some::valid::ns::SimpleUnion>::serializedSize(prot_, &this->get_a_union());
       break;
     }
-    case ComplexUnion::Type::req_a_union:
-    {
-      xfer += prot_->serializedFieldSize("req_a_union", apache::thrift::protocol::T_STRUCT, 116);
-      xfer += ::apache::thrift::Cpp2Ops<  ::some::valid::ns::SimpleUnion>::serializedSize(prot_, &this->get_req_a_union());
-      break;
-    }
     if (this->__isset.opt_a_union) {
       xfer += prot_->serializedFieldSize("opt_a_union", apache::thrift::protocol::T_STRUCT, 216);
       xfer += ::apache::thrift::Cpp2Ops<  ::some::valid::ns::SimpleUnion>::serializedSize(prot_, &this->get_opt_a_union());
@@ -1508,12 +1408,6 @@ uint32_t ComplexUnion::serializedSize(Protocol_ const* prot_) const {
     if (this->__isset.MyBinaryField2) {
       xfer += prot_->serializedFieldSize("MyBinaryField2", apache::thrift::protocol::T_STRING, 21);
       xfer += prot_->serializedSizeBinary(this->get_MyBinaryField2());
-    }
-    case ComplexUnion::Type::MyBinaryField3:
-    {
-      xfer += prot_->serializedFieldSize("MyBinaryField3", apache::thrift::protocol::T_STRING, 22);
-      xfer += prot_->serializedSizeBinary(this->get_MyBinaryField3());
-      break;
     }
     case ComplexUnion::Type::MyBinaryListField4:
     {
@@ -1568,12 +1462,6 @@ uint32_t ComplexUnion::serializedSizeZC(Protocol_ const* prot_) const {
       xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::serializedSize<false>(*prot_, this->get_intValue());
       break;
     }
-    case ComplexUnion::Type::req_intValue:
-    {
-      xfer += prot_->serializedFieldSize("req_intValue", apache::thrift::protocol::T_I64, 101);
-      xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::serializedSize<false>(*prot_, this->get_req_intValue());
-      break;
-    }
     if (this->__isset.opt_intValue) {
       xfer += prot_->serializedFieldSize("opt_intValue", apache::thrift::protocol::T_I64, 201);
       xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::serializedSize<false>(*prot_, this->get_opt_intValue());
@@ -1582,12 +1470,6 @@ uint32_t ComplexUnion::serializedSizeZC(Protocol_ const* prot_) const {
     {
       xfer += prot_->serializedFieldSize("stringValue", apache::thrift::protocol::T_STRING, 3);
       xfer += prot_->serializedSizeString(this->get_stringValue());
-      break;
-    }
-    case ComplexUnion::Type::req_stringValue:
-    {
-      xfer += prot_->serializedFieldSize("req_stringValue", apache::thrift::protocol::T_STRING, 103);
-      xfer += prot_->serializedSizeString(this->get_req_stringValue());
       break;
     }
     if (this->__isset.opt_stringValue) {
@@ -1636,12 +1518,6 @@ uint32_t ComplexUnion::serializedSizeZC(Protocol_ const* prot_) const {
       xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>, std::map<std::string, int32_t>>::serializedSize<false>(*prot_, this->get_union_map());
       break;
     }
-    case ComplexUnion::Type::req_union_map:
-    {
-      xfer += prot_->serializedFieldSize("req_union_map", apache::thrift::protocol::T_MAP, 111);
-      xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>, std::map<std::string, int32_t>>::serializedSize<false>(*prot_, this->get_req_union_map());
-      break;
-    }
     if (this->__isset.opt_union_map) {
       xfer += prot_->serializedFieldSize("opt_union_map", apache::thrift::protocol::T_MAP, 211);
       xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>, std::map<std::string, int32_t>>::serializedSize<false>(*prot_, this->get_opt_union_map());
@@ -1676,12 +1552,6 @@ uint32_t ComplexUnion::serializedSizeZC(Protocol_ const* prot_) const {
       xfer += ::apache::thrift::Cpp2Ops<  ::some::valid::ns::SimpleUnion>::serializedSizeZC(prot_, &this->get_a_union());
       break;
     }
-    case ComplexUnion::Type::req_a_union:
-    {
-      xfer += prot_->serializedFieldSize("req_a_union", apache::thrift::protocol::T_STRUCT, 116);
-      xfer += ::apache::thrift::Cpp2Ops<  ::some::valid::ns::SimpleUnion>::serializedSizeZC(prot_, &this->get_req_a_union());
-      break;
-    }
     if (this->__isset.opt_a_union) {
       xfer += prot_->serializedFieldSize("opt_a_union", apache::thrift::protocol::T_STRUCT, 216);
       xfer += ::apache::thrift::Cpp2Ops<  ::some::valid::ns::SimpleUnion>::serializedSizeZC(prot_, &this->get_opt_a_union());
@@ -1713,12 +1583,6 @@ uint32_t ComplexUnion::serializedSizeZC(Protocol_ const* prot_) const {
     if (this->__isset.MyBinaryField2) {
       xfer += prot_->serializedFieldSize("MyBinaryField2", apache::thrift::protocol::T_STRING, 21);
       xfer += prot_->serializedSizeZCBinary(this->get_MyBinaryField2());
-    }
-    case ComplexUnion::Type::MyBinaryField3:
-    {
-      xfer += prot_->serializedFieldSize("MyBinaryField3", apache::thrift::protocol::T_STRING, 22);
-      xfer += prot_->serializedSizeZCBinary(this->get_MyBinaryField3());
-      break;
     }
     case ComplexUnion::Type::MyBinaryListField4:
     {
@@ -1774,13 +1638,6 @@ uint32_t ComplexUnion::write(Protocol_* prot_) const {
       xfer += prot_->writeFieldEnd();
       break;
     }
-    case ComplexUnion::Type::req_intValue:
-    {
-      xfer += prot_->writeFieldBegin("req_intValue", apache::thrift::protocol::T_I64, 101);
-      xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::write(*prot_, this->get_req_intValue());
-      xfer += prot_->writeFieldEnd();
-      break;
-    }
     if (this->__isset.opt_intValue) {
       xfer += prot_->writeFieldBegin("opt_intValue", apache::thrift::protocol::T_I64, 201);
       xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::write(*prot_, this->get_opt_intValue());
@@ -1790,13 +1647,6 @@ uint32_t ComplexUnion::write(Protocol_* prot_) const {
     {
       xfer += prot_->writeFieldBegin("stringValue", apache::thrift::protocol::T_STRING, 3);
       xfer += prot_->writeString(this->get_stringValue());
-      xfer += prot_->writeFieldEnd();
-      break;
-    }
-    case ComplexUnion::Type::req_stringValue:
-    {
-      xfer += prot_->writeFieldBegin("req_stringValue", apache::thrift::protocol::T_STRING, 103);
-      xfer += prot_->writeString(this->get_req_stringValue());
       xfer += prot_->writeFieldEnd();
       break;
     }
@@ -1854,13 +1704,6 @@ uint32_t ComplexUnion::write(Protocol_* prot_) const {
       xfer += prot_->writeFieldEnd();
       break;
     }
-    case ComplexUnion::Type::req_union_map:
-    {
-      xfer += prot_->writeFieldBegin("req_union_map", apache::thrift::protocol::T_MAP, 111);
-      xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>, std::map<std::string, int32_t>>::write(*prot_, this->get_req_union_map());
-      xfer += prot_->writeFieldEnd();
-      break;
-    }
     if (this->__isset.opt_union_map) {
       xfer += prot_->writeFieldBegin("opt_union_map", apache::thrift::protocol::T_MAP, 211);
       xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>, std::map<std::string, int32_t>>::write(*prot_, this->get_opt_union_map());
@@ -1901,13 +1744,6 @@ uint32_t ComplexUnion::write(Protocol_* prot_) const {
       xfer += prot_->writeFieldEnd();
       break;
     }
-    case ComplexUnion::Type::req_a_union:
-    {
-      xfer += prot_->writeFieldBegin("req_a_union", apache::thrift::protocol::T_STRUCT, 116);
-      xfer += ::apache::thrift::Cpp2Ops<  ::some::valid::ns::SimpleUnion>::write(prot_, &this->get_req_a_union());
-      xfer += prot_->writeFieldEnd();
-      break;
-    }
     if (this->__isset.opt_a_union) {
       xfer += prot_->writeFieldBegin("opt_a_union", apache::thrift::protocol::T_STRUCT, 216);
       xfer += ::apache::thrift::Cpp2Ops<  ::some::valid::ns::SimpleUnion>::write(prot_, &this->get_opt_a_union());
@@ -1945,13 +1781,6 @@ uint32_t ComplexUnion::write(Protocol_* prot_) const {
       xfer += prot_->writeFieldBegin("MyBinaryField2", apache::thrift::protocol::T_STRING, 21);
       xfer += prot_->writeBinary(this->get_MyBinaryField2());
       xfer += prot_->writeFieldEnd();
-    }
-    case ComplexUnion::Type::MyBinaryField3:
-    {
-      xfer += prot_->writeFieldBegin("MyBinaryField3", apache::thrift::protocol::T_STRING, 22);
-      xfer += prot_->writeBinary(this->get_MyBinaryField3());
-      xfer += prot_->writeFieldEnd();
-      break;
     }
     case ComplexUnion::Type::MyBinaryListField4:
     {

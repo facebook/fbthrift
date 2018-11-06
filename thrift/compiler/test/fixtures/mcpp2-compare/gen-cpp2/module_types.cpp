@@ -208,20 +208,12 @@ void TccStructTraits< ::some::valid::ns::ComplexUnion>::translateFieldName(
     fid = 1;
     _ftype = apache::thrift::protocol::T_I64;
   }
-  else if (_fname == "req_intValue") {
-    fid = 101;
-    _ftype = apache::thrift::protocol::T_I64;
-  }
   else if (_fname == "opt_intValue") {
     fid = 201;
     _ftype = apache::thrift::protocol::T_I64;
   }
   else if (_fname == "stringValue") {
     fid = 3;
-    _ftype = apache::thrift::protocol::T_STRING;
-  }
-  else if (_fname == "req_stringValue") {
-    fid = 103;
     _ftype = apache::thrift::protocol::T_STRING;
   }
   else if (_fname == "opt_stringValue") {
@@ -256,10 +248,6 @@ void TccStructTraits< ::some::valid::ns::ComplexUnion>::translateFieldName(
     fid = 11;
     _ftype = apache::thrift::protocol::T_MAP;
   }
-  else if (_fname == "req_union_map") {
-    fid = 111;
-    _ftype = apache::thrift::protocol::T_MAP;
-  }
   else if (_fname == "opt_union_map") {
     fid = 211;
     _ftype = apache::thrift::protocol::T_MAP;
@@ -284,10 +272,6 @@ void TccStructTraits< ::some::valid::ns::ComplexUnion>::translateFieldName(
     fid = 16;
     _ftype = apache::thrift::protocol::T_STRUCT;
   }
-  else if (_fname == "req_a_union") {
-    fid = 116;
-    _ftype = apache::thrift::protocol::T_STRUCT;
-  }
   else if (_fname == "opt_a_union") {
     fid = 216;
     _ftype = apache::thrift::protocol::T_STRUCT;
@@ -310,10 +294,6 @@ void TccStructTraits< ::some::valid::ns::ComplexUnion>::translateFieldName(
   }
   else if (_fname == "MyBinaryField2") {
     fid = 21;
-    _ftype = apache::thrift::protocol::T_STRING;
-  }
-  else if (_fname == "MyBinaryField3") {
-    fid = 22;
     _ftype = apache::thrift::protocol::T_STRING;
   }
   else if (_fname == "MyBinaryListField4") {
@@ -1250,11 +1230,6 @@ void ComplexUnion::__clear() {
       destruct(value_.intValue);
       break;
     }
-    case Type::req_intValue:
-    {
-      destruct(value_.req_intValue);
-      break;
-    }
     case Type::opt_intValue:
     {
       destruct(value_.opt_intValue);
@@ -1263,11 +1238,6 @@ void ComplexUnion::__clear() {
     case Type::stringValue:
     {
       destruct(value_.stringValue);
-      break;
-    }
-    case Type::req_stringValue:
-    {
-      destruct(value_.req_stringValue);
       break;
     }
     case Type::opt_stringValue:
@@ -1310,11 +1280,6 @@ void ComplexUnion::__clear() {
       destruct(value_.union_map);
       break;
     }
-    case Type::req_union_map:
-    {
-      destruct(value_.req_union_map);
-      break;
-    }
     case Type::opt_union_map:
     {
       destruct(value_.opt_union_map);
@@ -1345,11 +1310,6 @@ void ComplexUnion::__clear() {
       destruct(value_.a_union);
       break;
     }
-    case Type::req_a_union:
-    {
-      destruct(value_.req_a_union);
-      break;
-    }
     case Type::opt_a_union:
     {
       destruct(value_.opt_a_union);
@@ -1378,11 +1338,6 @@ void ComplexUnion::__clear() {
     case Type::MyBinaryField2:
     {
       destruct(value_.MyBinaryField2);
-      break;
-    }
-    case Type::MyBinaryField3:
-    {
-      destruct(value_.MyBinaryField3);
       break;
     }
     case Type::MyBinaryListField4:
@@ -1421,10 +1376,6 @@ bool ComplexUnion::operator==(const ComplexUnion& rhs) const {
     {
       return value_.intValue == rhs.value_.intValue;
     }
-    case Type::req_intValue:
-    {
-      return value_.req_intValue == rhs.value_.req_intValue;
-    }
     case Type::opt_intValue:
     {
       return value_.opt_intValue == rhs.value_.opt_intValue;
@@ -1432,10 +1383,6 @@ bool ComplexUnion::operator==(const ComplexUnion& rhs) const {
     case Type::stringValue:
     {
       return value_.stringValue == rhs.value_.stringValue;
-    }
-    case Type::req_stringValue:
-    {
-      return value_.req_stringValue == rhs.value_.req_stringValue;
     }
     case Type::opt_stringValue:
     {
@@ -1469,10 +1416,6 @@ bool ComplexUnion::operator==(const ComplexUnion& rhs) const {
     {
       return value_.union_map == rhs.value_.union_map;
     }
-    case Type::req_union_map:
-    {
-      return value_.req_union_map == rhs.value_.req_union_map;
-    }
     case Type::opt_union_map:
     {
       return value_.opt_union_map == rhs.value_.opt_union_map;
@@ -1497,10 +1440,6 @@ bool ComplexUnion::operator==(const ComplexUnion& rhs) const {
     {
       return value_.a_union == rhs.value_.a_union;
     }
-    case Type::req_a_union:
-    {
-      return value_.req_a_union == rhs.value_.req_a_union;
-    }
     case Type::opt_a_union:
     {
       return value_.opt_a_union == rhs.value_.opt_a_union;
@@ -1524,10 +1463,6 @@ bool ComplexUnion::operator==(const ComplexUnion& rhs) const {
     case Type::MyBinaryField2:
     {
       return value_.MyBinaryField2 == rhs.value_.MyBinaryField2;
-    }
-    case Type::MyBinaryField3:
-    {
-      return value_.MyBinaryField3 == rhs.value_.MyBinaryField3;
     }
     case Type::MyBinaryListField4:
     {
@@ -1562,14 +1497,10 @@ bool ComplexUnion::operator<(const ComplexUnion& rhs) const {
   switch (lhs.type_) {
     case Type::intValue:
       return lhs.value_.intValue < rhs.value_.intValue;
-    case Type::req_intValue:
-      return lhs.value_.req_intValue < rhs.value_.req_intValue;
     case Type::opt_intValue:
       return lhs.value_.opt_intValue < rhs.value_.opt_intValue;
     case Type::stringValue:
       return lhs.value_.stringValue < rhs.value_.stringValue;
-    case Type::req_stringValue:
-      return lhs.value_.req_stringValue < rhs.value_.req_stringValue;
     case Type::opt_stringValue:
       return lhs.value_.opt_stringValue < rhs.value_.opt_stringValue;
     case Type::intValue2:
@@ -1586,8 +1517,6 @@ bool ComplexUnion::operator<(const ComplexUnion& rhs) const {
       return lhs.value_.union_set < rhs.value_.union_set;
     case Type::union_map:
       return lhs.value_.union_map < rhs.value_.union_map;
-    case Type::req_union_map:
-      return lhs.value_.req_union_map < rhs.value_.req_union_map;
     case Type::opt_union_map:
       return lhs.value_.opt_union_map < rhs.value_.opt_union_map;
     case Type::enum_field:
@@ -1600,8 +1529,6 @@ bool ComplexUnion::operator<(const ComplexUnion& rhs) const {
       return lhs.value_.a_set_struct < rhs.value_.a_set_struct;
     case Type::a_union:
       return lhs.value_.a_union < rhs.value_.a_union;
-    case Type::req_a_union:
-      return lhs.value_.req_a_union < rhs.value_.req_a_union;
     case Type::opt_a_union:
       return lhs.value_.opt_a_union < rhs.value_.opt_a_union;
     case Type::a_union_list:
@@ -1614,8 +1541,6 @@ bool ComplexUnion::operator<(const ComplexUnion& rhs) const {
       return lhs.value_.MyBinaryField < rhs.value_.MyBinaryField;
     case Type::MyBinaryField2:
       return lhs.value_.MyBinaryField2 < rhs.value_.MyBinaryField2;
-    case Type::MyBinaryField3:
-      return lhs.value_.MyBinaryField3 < rhs.value_.MyBinaryField3;
     case Type::MyBinaryListField4:
       return lhs.value_.MyBinaryListField4 < rhs.value_.MyBinaryListField4;
     case Type::ref_field:

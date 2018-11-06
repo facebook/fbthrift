@@ -450,10 +450,8 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "some::valid::ns":
     cdef enum cComplexUnion__type "some::valid::ns::ComplexUnion::Type":
         cComplexUnion__type___EMPTY__ "some::valid::ns::ComplexUnion::Type::__EMPTY__",
         cComplexUnion__type_intValue "some::valid::ns::ComplexUnion::Type::intValue",
-        cComplexUnion__type_req_intValue "some::valid::ns::ComplexUnion::Type::req_intValue",
         cComplexUnion__type_opt_intValue "some::valid::ns::ComplexUnion::Type::opt_intValue",
         cComplexUnion__type_stringValue "some::valid::ns::ComplexUnion::Type::stringValue",
-        cComplexUnion__type_req_stringValue "some::valid::ns::ComplexUnion::Type::req_stringValue",
         cComplexUnion__type_opt_stringValue "some::valid::ns::ComplexUnion::Type::opt_stringValue",
         cComplexUnion__type_intValue2 "some::valid::ns::ComplexUnion::Type::intValue2",
         cComplexUnion__type_intValue3 "some::valid::ns::ComplexUnion::Type::intValue3",
@@ -462,21 +460,18 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "some::valid::ns":
         cComplexUnion__type_union_list "some::valid::ns::ComplexUnion::Type::union_list",
         cComplexUnion__type_union_set "some::valid::ns::ComplexUnion::Type::union_set",
         cComplexUnion__type_union_map "some::valid::ns::ComplexUnion::Type::union_map",
-        cComplexUnion__type_req_union_map "some::valid::ns::ComplexUnion::Type::req_union_map",
         cComplexUnion__type_opt_union_map "some::valid::ns::ComplexUnion::Type::opt_union_map",
         cComplexUnion__type_enum_field "some::valid::ns::ComplexUnion::Type::enum_field",
         cComplexUnion__type_enum_container "some::valid::ns::ComplexUnion::Type::enum_container",
         cComplexUnion__type_a_struct "some::valid::ns::ComplexUnion::Type::a_struct",
         cComplexUnion__type_a_set_struct "some::valid::ns::ComplexUnion::Type::a_set_struct",
         cComplexUnion__type_a_union "some::valid::ns::ComplexUnion::Type::a_union",
-        cComplexUnion__type_req_a_union "some::valid::ns::ComplexUnion::Type::req_a_union",
         cComplexUnion__type_opt_a_union "some::valid::ns::ComplexUnion::Type::opt_a_union",
         cComplexUnion__type_a_union_list "some::valid::ns::ComplexUnion::Type::a_union_list",
         cComplexUnion__type_a_union_typedef "some::valid::ns::ComplexUnion::Type::a_union_typedef",
         cComplexUnion__type_a_union_typedef_list "some::valid::ns::ComplexUnion::Type::a_union_typedef_list",
         cComplexUnion__type_MyBinaryField "some::valid::ns::ComplexUnion::Type::MyBinaryField",
         cComplexUnion__type_MyBinaryField2 "some::valid::ns::ComplexUnion::Type::MyBinaryField2",
-        cComplexUnion__type_MyBinaryField3 "some::valid::ns::ComplexUnion::Type::MyBinaryField3",
         cComplexUnion__type_MyBinaryListField4 "some::valid::ns::ComplexUnion::Type::MyBinaryListField4",
         cComplexUnion__type_ref_field "some::valid::ns::ComplexUnion::Type::ref_field",
         cComplexUnion__type_ref_field2 "some::valid::ns::ComplexUnion::Type::ref_field2",
@@ -493,14 +488,10 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "some::valid::ns":
         cComplexUnion__type getType() const
         const int64_t& get_intValue() const
         int64_t& set_intValue(const int64_t&)
-        const int64_t& get_req_intValue() const
-        int64_t& set_req_intValue(const int64_t&)
         const int64_t& get_opt_intValue() const
         int64_t& set_opt_intValue(const int64_t&)
         const string& get_stringValue() const
         string& set_stringValue(const string&)
-        const string& get_req_stringValue() const
-        string& set_req_stringValue(const string&)
         const string& get_opt_stringValue() const
         string& set_opt_stringValue(const string&)
         const int16_t& get_intValue2() const
@@ -517,8 +508,6 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "some::valid::ns":
         cset[int64_t]& set_union_set(const cset[int64_t]&)
         const cmap[string,int32_t]& get_union_map() const
         cmap[string,int32_t]& set_union_map(const cmap[string,int32_t]&)
-        const cmap[string,int32_t]& get_req_union_map() const
-        cmap[string,int32_t]& set_req_union_map(const cmap[string,int32_t]&)
         const cmap[string,int32_t]& get_opt_union_map() const
         cmap[string,int32_t]& set_opt_union_map(const cmap[string,int32_t]&)
         const cMyEnumA& get_enum_field() const
@@ -531,8 +520,6 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "some::valid::ns":
         cset[cMyStruct]& set_a_set_struct(const cset[cMyStruct]&)
         const cSimpleUnion& get_a_union() const
         cSimpleUnion& set_a_union(const cSimpleUnion&)
-        const cSimpleUnion& get_req_a_union() const
-        cSimpleUnion& set_req_a_union(const cSimpleUnion&)
         const cSimpleUnion& get_opt_a_union() const
         cSimpleUnion& set_opt_a_union(const cSimpleUnion&)
         const vector[cSimpleUnion]& get_a_union_list() const
@@ -545,8 +532,6 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "some::valid::ns":
         string& set_MyBinaryField(const string&)
         const string& get_MyBinaryField2() const
         string& set_MyBinaryField2(const string&)
-        const string& get_MyBinaryField3() const
-        string& set_MyBinaryField3(const string&)
         const vector[string]& get_MyBinaryListField4() const
         vector[string]& set_MyBinaryListField4(const vector[string]&)
         const unique_ptr[cMyStruct]& get_ref_field() const
@@ -882,13 +867,11 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "some::valid::ns":
     cdef shared_ptr[vector[int32_t]] reference_shared_ptr_union_list "thrift::py3::reference_shared_ptr<std::vector<int32_t>>"(shared_ptr[cComplexUnion]&, vector[int32_t]&)
     cdef shared_ptr[cset[int64_t]] reference_shared_ptr_union_set "thrift::py3::reference_shared_ptr<std::set<int64_t>>"(shared_ptr[cComplexUnion]&, cset[int64_t]&)
     cdef shared_ptr[cmap[string,int32_t]] reference_shared_ptr_union_map "thrift::py3::reference_shared_ptr<std::map<std::string,int32_t>>"(shared_ptr[cComplexUnion]&, cmap[string,int32_t]&)
-    cdef shared_ptr[cmap[string,int32_t]] reference_shared_ptr_req_union_map "thrift::py3::reference_shared_ptr<std::map<std::string,int32_t>>"(shared_ptr[cComplexUnion]&, cmap[string,int32_t]&)
     cdef shared_ptr[cmap[string,int32_t]] reference_shared_ptr_opt_union_map "thrift::py3::reference_shared_ptr<std::map<std::string,int32_t>>"(shared_ptr[cComplexUnion]&, cmap[string,int32_t]&)
     cdef shared_ptr[vector[cMyEnumA]] reference_shared_ptr_enum_container "thrift::py3::reference_shared_ptr<std::vector<some::valid::ns::MyEnumA>>"(shared_ptr[cComplexUnion]&, vector[cMyEnumA]&)
     cdef shared_ptr[cMyStruct] reference_shared_ptr_a_struct "thrift::py3::reference_shared_ptr<some::valid::ns::MyStruct>"(shared_ptr[cComplexUnion]&, cMyStruct&)
     cdef shared_ptr[cset[cMyStruct]] reference_shared_ptr_a_set_struct "thrift::py3::reference_shared_ptr<std::set<some::valid::ns::MyStruct>>"(shared_ptr[cComplexUnion]&, cset[cMyStruct]&)
     cdef shared_ptr[cSimpleUnion] reference_shared_ptr_a_union "thrift::py3::reference_shared_ptr<some::valid::ns::SimpleUnion>"(shared_ptr[cComplexUnion]&, cSimpleUnion&)
-    cdef shared_ptr[cSimpleUnion] reference_shared_ptr_req_a_union "thrift::py3::reference_shared_ptr<some::valid::ns::SimpleUnion>"(shared_ptr[cComplexUnion]&, cSimpleUnion&)
     cdef shared_ptr[cSimpleUnion] reference_shared_ptr_opt_a_union "thrift::py3::reference_shared_ptr<some::valid::ns::SimpleUnion>"(shared_ptr[cComplexUnion]&, cSimpleUnion&)
     cdef shared_ptr[vector[cSimpleUnion]] reference_shared_ptr_a_union_list "thrift::py3::reference_shared_ptr<std::vector<some::valid::ns::SimpleUnion>>"(shared_ptr[cComplexUnion]&, vector[cSimpleUnion]&)
     cdef shared_ptr[cset[cSimpleUnion]] reference_shared_ptr_a_union_typedef "thrift::py3::reference_shared_ptr<std::set<some::valid::ns::SimpleUnion>>"(shared_ptr[cComplexUnion]&, cset[cSimpleUnion]&)
@@ -1165,10 +1148,8 @@ cdef class ComplexUnion(thrift.py3.types.Union):
     cdef unique_ptr[cComplexUnion] _make_instance(
         cComplexUnion* base_instance,
         object intValue,
-        object req_intValue,
         object opt_intValue,
         str stringValue,
-        str req_stringValue,
         str opt_stringValue,
         object intValue2,
         object intValue3,
@@ -1177,21 +1158,18 @@ cdef class ComplexUnion(thrift.py3.types.Union):
         object union_list,
         object union_set,
         object union_map,
-        object req_union_map,
         object opt_union_map,
         MyEnumA enum_field,
         object enum_container,
         MyStruct a_struct,
         object a_set_struct,
         SimpleUnion a_union,
-        SimpleUnion req_a_union,
         SimpleUnion opt_a_union,
         object a_union_list,
         object a_union_typedef,
         object a_union_typedef_list,
         bytes MyBinaryField,
         bytes MyBinaryField2,
-        bytes MyBinaryField3,
         object MyBinaryListField4,
         MyStruct ref_field,
         MyStruct ref_field2,

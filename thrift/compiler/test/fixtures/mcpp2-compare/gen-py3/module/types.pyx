@@ -565,14 +565,10 @@ cdef class __ComplexUnion_Union_TypeMeta(type):
                 return __ComplexUnionType.EMPTY
             elif cvalue == 1:
                 return __ComplexUnionType.intValue
-            elif cvalue == 101:
-                return __ComplexUnionType.req_intValue
             elif cvalue == 201:
                 return __ComplexUnionType.opt_intValue
             elif cvalue == 3:
                 return __ComplexUnionType.stringValue
-            elif cvalue == 103:
-                return __ComplexUnionType.req_stringValue
             elif cvalue == 203:
                 return __ComplexUnionType.opt_stringValue
             elif cvalue == 4:
@@ -589,8 +585,6 @@ cdef class __ComplexUnion_Union_TypeMeta(type):
                 return __ComplexUnionType.union_set
             elif cvalue == 11:
                 return __ComplexUnionType.union_map
-            elif cvalue == 111:
-                return __ComplexUnionType.req_union_map
             elif cvalue == 211:
                 return __ComplexUnionType.opt_union_map
             elif cvalue == 12:
@@ -603,8 +597,6 @@ cdef class __ComplexUnion_Union_TypeMeta(type):
                 return __ComplexUnionType.a_set_struct
             elif cvalue == 16:
                 return __ComplexUnionType.a_union
-            elif cvalue == 116:
-                return __ComplexUnionType.req_a_union
             elif cvalue == 216:
                 return __ComplexUnionType.opt_a_union
             elif cvalue == 17:
@@ -617,8 +609,6 @@ cdef class __ComplexUnion_Union_TypeMeta(type):
                 return __ComplexUnionType.MyBinaryField
             elif cvalue == 21:
                 return __ComplexUnionType.MyBinaryField2
-            elif cvalue == 22:
-                return __ComplexUnionType.MyBinaryField3
             elif cvalue == 23:
                 return __ComplexUnionType.MyBinaryListField4
             elif cvalue == 24:
@@ -635,14 +625,10 @@ cdef class __ComplexUnion_Union_TypeMeta(type):
             return __ComplexUnionType.EMPTY
         elif name == "intValue":
             return __ComplexUnionType.intValue
-        elif name == "req_intValue":
-            return __ComplexUnionType.req_intValue
         elif name == "opt_intValue":
             return __ComplexUnionType.opt_intValue
         elif name == "stringValue":
             return __ComplexUnionType.stringValue
-        elif name == "req_stringValue":
-            return __ComplexUnionType.req_stringValue
         elif name == "opt_stringValue":
             return __ComplexUnionType.opt_stringValue
         elif name == "intValue2":
@@ -659,8 +645,6 @@ cdef class __ComplexUnion_Union_TypeMeta(type):
             return __ComplexUnionType.union_set
         elif name == "union_map":
             return __ComplexUnionType.union_map
-        elif name == "req_union_map":
-            return __ComplexUnionType.req_union_map
         elif name == "opt_union_map":
             return __ComplexUnionType.opt_union_map
         elif name == "enum_field":
@@ -673,8 +657,6 @@ cdef class __ComplexUnion_Union_TypeMeta(type):
             return __ComplexUnionType.a_set_struct
         elif name == "a_union":
             return __ComplexUnionType.a_union
-        elif name == "req_a_union":
-            return __ComplexUnionType.req_a_union
         elif name == "opt_a_union":
             return __ComplexUnionType.opt_a_union
         elif name == "a_union_list":
@@ -687,8 +669,6 @@ cdef class __ComplexUnion_Union_TypeMeta(type):
             return __ComplexUnionType.MyBinaryField
         elif name == "MyBinaryField2":
             return __ComplexUnionType.MyBinaryField2
-        elif name == "MyBinaryField3":
-            return __ComplexUnionType.MyBinaryField3
         elif name == "MyBinaryListField4":
             return __ComplexUnionType.MyBinaryListField4
         elif name == "ref_field":
@@ -702,10 +682,8 @@ cdef class __ComplexUnion_Union_TypeMeta(type):
     def __dir__(cls):
         return ['__class__', '__doc__', '__members__', '__module__', 'EMPTY',
             'intValue',
-            'req_intValue',
             'opt_intValue',
             'stringValue',
-            'req_stringValue',
             'opt_stringValue',
             'intValue2',
             'intValue3',
@@ -714,21 +692,18 @@ cdef class __ComplexUnion_Union_TypeMeta(type):
             'union_list',
             'union_set',
             'union_map',
-            'req_union_map',
             'opt_union_map',
             'enum_field',
             'enum_container',
             'a_struct',
             'a_set_struct',
             'a_union',
-            'req_a_union',
             'opt_a_union',
             'a_union_list',
             'a_union_typedef',
             'a_union_typedef_list',
             'MyBinaryField',
             'MyBinaryField2',
-            'MyBinaryField3',
             'MyBinaryListField4',
             'ref_field',
             'ref_field2',
@@ -742,10 +717,8 @@ cdef class __ComplexUnion_Union_TypeMeta(type):
     def __iter__(cls):
         yield __ComplexUnionType.EMPTY
         yield __ComplexUnionType.intValue
-        yield __ComplexUnionType.req_intValue
         yield __ComplexUnionType.opt_intValue
         yield __ComplexUnionType.stringValue
-        yield __ComplexUnionType.req_stringValue
         yield __ComplexUnionType.opt_stringValue
         yield __ComplexUnionType.intValue2
         yield __ComplexUnionType.intValue3
@@ -754,21 +727,18 @@ cdef class __ComplexUnion_Union_TypeMeta(type):
         yield __ComplexUnionType.union_list
         yield __ComplexUnionType.union_set
         yield __ComplexUnionType.union_map
-        yield __ComplexUnionType.req_union_map
         yield __ComplexUnionType.opt_union_map
         yield __ComplexUnionType.enum_field
         yield __ComplexUnionType.enum_container
         yield __ComplexUnionType.a_struct
         yield __ComplexUnionType.a_set_struct
         yield __ComplexUnionType.a_union
-        yield __ComplexUnionType.req_a_union
         yield __ComplexUnionType.opt_a_union
         yield __ComplexUnionType.a_union_list
         yield __ComplexUnionType.a_union_typedef
         yield __ComplexUnionType.a_union_typedef_list
         yield __ComplexUnionType.MyBinaryField
         yield __ComplexUnionType.MyBinaryField2
-        yield __ComplexUnionType.MyBinaryField3
         yield __ComplexUnionType.MyBinaryListField4
         yield __ComplexUnionType.ref_field
         yield __ComplexUnionType.ref_field2
@@ -783,17 +753,15 @@ cdef class __ComplexUnion_Union_TypeMeta(type):
         return item in __ComplexUnion_Union_TypeEnumMembers
 
     def __len__(cls):
-        return 32+1  # For Empty
+        return 27+1  # For Empty
 
 
 @__cython.final
 cdef class __ComplexUnionType(thrift.py3.types.CompiledEnum):
     EMPTY = __ComplexUnionType.__new__(__ComplexUnionType, 0, "EMPTY")
     intValue = __ComplexUnionType.__new__(__ComplexUnionType, 1, "intValue")
-    req_intValue = __ComplexUnionType.__new__(__ComplexUnionType, 101, "req_intValue")
     opt_intValue = __ComplexUnionType.__new__(__ComplexUnionType, 201, "opt_intValue")
     stringValue = __ComplexUnionType.__new__(__ComplexUnionType, 3, "stringValue")
-    req_stringValue = __ComplexUnionType.__new__(__ComplexUnionType, 103, "req_stringValue")
     opt_stringValue = __ComplexUnionType.__new__(__ComplexUnionType, 203, "opt_stringValue")
     intValue2 = __ComplexUnionType.__new__(__ComplexUnionType, 4, "intValue2")
     intValue3 = __ComplexUnionType.__new__(__ComplexUnionType, 6, "intValue3")
@@ -802,21 +770,18 @@ cdef class __ComplexUnionType(thrift.py3.types.CompiledEnum):
     union_list = __ComplexUnionType.__new__(__ComplexUnionType, 9, "union_list")
     union_set = __ComplexUnionType.__new__(__ComplexUnionType, 10, "union_set")
     union_map = __ComplexUnionType.__new__(__ComplexUnionType, 11, "union_map")
-    req_union_map = __ComplexUnionType.__new__(__ComplexUnionType, 111, "req_union_map")
     opt_union_map = __ComplexUnionType.__new__(__ComplexUnionType, 211, "opt_union_map")
     enum_field = __ComplexUnionType.__new__(__ComplexUnionType, 12, "enum_field")
     enum_container = __ComplexUnionType.__new__(__ComplexUnionType, 13, "enum_container")
     a_struct = __ComplexUnionType.__new__(__ComplexUnionType, 14, "a_struct")
     a_set_struct = __ComplexUnionType.__new__(__ComplexUnionType, 15, "a_set_struct")
     a_union = __ComplexUnionType.__new__(__ComplexUnionType, 16, "a_union")
-    req_a_union = __ComplexUnionType.__new__(__ComplexUnionType, 116, "req_a_union")
     opt_a_union = __ComplexUnionType.__new__(__ComplexUnionType, 216, "opt_a_union")
     a_union_list = __ComplexUnionType.__new__(__ComplexUnionType, 17, "a_union_list")
     a_union_typedef = __ComplexUnionType.__new__(__ComplexUnionType, 18, "a_union_typedef")
     a_union_typedef_list = __ComplexUnionType.__new__(__ComplexUnionType, 19, "a_union_typedef_list")
     MyBinaryField = __ComplexUnionType.__new__(__ComplexUnionType, 20, "MyBinaryField")
     MyBinaryField2 = __ComplexUnionType.__new__(__ComplexUnionType, 21, "MyBinaryField2")
-    MyBinaryField3 = __ComplexUnionType.__new__(__ComplexUnionType, 22, "MyBinaryField3")
     MyBinaryListField4 = __ComplexUnionType.__new__(__ComplexUnionType, 23, "MyBinaryListField4")
     ref_field = __ComplexUnionType.__new__(__ComplexUnionType, 24, "ref_field")
     ref_field2 = __ComplexUnionType.__new__(__ComplexUnionType, 25, "ref_field2")
@@ -2046,10 +2011,8 @@ cdef class ComplexUnion(thrift.py3.types.Union):
     def __init__(
         self, *,
         intValue=None,
-        req_intValue=None,
         opt_intValue=None,
         str stringValue=None,
-        str req_stringValue=None,
         str opt_stringValue=None,
         intValue2=None,
         intValue3=None,
@@ -2058,21 +2021,18 @@ cdef class ComplexUnion(thrift.py3.types.Union):
         union_list=None,
         union_set=None,
         union_map=None,
-        req_union_map=None,
         opt_union_map=None,
         MyEnumA enum_field=None,
         enum_container=None,
         MyStruct a_struct=None,
         a_set_struct=None,
         SimpleUnion a_union=None,
-        SimpleUnion req_a_union=None,
         SimpleUnion opt_a_union=None,
         a_union_list=None,
         a_union_typedef=None,
         a_union_typedef_list=None,
         bytes MyBinaryField=None,
         bytes MyBinaryField2=None,
-        bytes MyBinaryField3=None,
         MyBinaryListField4=None,
         MyStruct ref_field=None,
         MyStruct ref_field2=None,
@@ -2082,11 +2042,6 @@ cdef class ComplexUnion(thrift.py3.types.Union):
             if not isinstance(intValue, int):
                 raise TypeError(f'intValue is not a { int !r}.')
             intValue = <int64_t> intValue
-
-        if req_intValue is not None:
-            if not isinstance(req_intValue, int):
-                raise TypeError(f'req_intValue is not a { int !r}.')
-            req_intValue = <int64_t> req_intValue
 
         if opt_intValue is not None:
             if not isinstance(opt_intValue, int):
@@ -2110,10 +2065,8 @@ cdef class ComplexUnion(thrift.py3.types.Union):
         self._cpp_obj = move(ComplexUnion._make_instance(
           NULL,
           intValue,
-          req_intValue,
           opt_intValue,
           stringValue,
-          req_stringValue,
           opt_stringValue,
           intValue2,
           intValue3,
@@ -2122,21 +2075,18 @@ cdef class ComplexUnion(thrift.py3.types.Union):
           union_list,
           union_set,
           union_map,
-          req_union_map,
           opt_union_map,
           enum_field,
           enum_container,
           a_struct,
           a_set_struct,
           a_union,
-          req_a_union,
           opt_a_union,
           a_union_list,
           a_union_typedef,
           a_union_typedef_list,
           MyBinaryField,
           MyBinaryField2,
-          MyBinaryField3,
           MyBinaryListField4,
           ref_field,
           ref_field2,
@@ -2159,20 +2109,11 @@ cdef class ComplexUnion(thrift.py3.types.Union):
             if not isinstance(value, pbool):
                 try:
                     <int64_t> value
-                    return ComplexUnion(req_intValue=value)
-                except OverflowError:
-                    pass
-        if isinstance(value, int):
-            if not isinstance(value, pbool):
-                try:
-                    <int64_t> value
                     return ComplexUnion(opt_intValue=value)
                 except OverflowError:
                     pass
         if isinstance(value, str):
             return ComplexUnion(stringValue=value)
-        if isinstance(value, str):
-            return ComplexUnion(req_stringValue=value)
         if isinstance(value, str):
             return ComplexUnion(opt_stringValue=value)
         if isinstance(value, int):
@@ -2204,8 +2145,6 @@ cdef class ComplexUnion(thrift.py3.types.Union):
         if isinstance(value, Map__string_i32):
             return ComplexUnion(union_map=value)
         if isinstance(value, Map__string_i32):
-            return ComplexUnion(req_union_map=value)
-        if isinstance(value, Map__string_i32):
             return ComplexUnion(opt_union_map=value)
         if isinstance(value, MyEnumA):
             return ComplexUnion(enum_field=value)
@@ -2218,8 +2157,6 @@ cdef class ComplexUnion(thrift.py3.types.Union):
         if isinstance(value, SimpleUnion):
             return ComplexUnion(a_union=value)
         if isinstance(value, SimpleUnion):
-            return ComplexUnion(req_a_union=value)
-        if isinstance(value, SimpleUnion):
             return ComplexUnion(opt_a_union=value)
         if isinstance(value, List__SimpleUnion):
             return ComplexUnion(a_union_list=value)
@@ -2231,8 +2168,6 @@ cdef class ComplexUnion(thrift.py3.types.Union):
             return ComplexUnion(MyBinaryField=value)
         if isinstance(value, bytes):
             return ComplexUnion(MyBinaryField2=value)
-        if isinstance(value, bytes):
-            return ComplexUnion(MyBinaryField3=value)
         if isinstance(value, List__binary):
             return ComplexUnion(MyBinaryListField4=value)
         if isinstance(value, MyStruct):
@@ -2253,10 +2188,8 @@ cdef class ComplexUnion(thrift.py3.types.Union):
     cdef unique_ptr[cComplexUnion] _make_instance(
         cComplexUnion* base_instance,
         object intValue,
-        object req_intValue,
         object opt_intValue,
         str stringValue,
-        str req_stringValue,
         str opt_stringValue,
         object intValue2,
         object intValue3,
@@ -2265,21 +2198,18 @@ cdef class ComplexUnion(thrift.py3.types.Union):
         object union_list,
         object union_set,
         object union_map,
-        object req_union_map,
         object opt_union_map,
         MyEnumA enum_field,
         object enum_container,
         MyStruct a_struct,
         object a_set_struct,
         SimpleUnion a_union,
-        SimpleUnion req_a_union,
         SimpleUnion opt_a_union,
         object a_union_list,
         object a_union_typedef,
         object a_union_typedef_list,
         bytes MyBinaryField,
         bytes MyBinaryField2,
-        bytes MyBinaryField3,
         object MyBinaryListField4,
         MyStruct ref_field,
         MyStruct ref_field2,
@@ -2292,11 +2222,6 @@ cdef class ComplexUnion(thrift.py3.types.Union):
                 raise TypeError("At most one field may be set when initializing a union")
             deref(c_inst).set_intValue(intValue)
             any_set = True
-        if req_intValue is not None:
-            if any_set:
-                raise TypeError("At most one field may be set when initializing a union")
-            deref(c_inst).set_req_intValue(req_intValue)
-            any_set = True
         if opt_intValue is not None:
             if any_set:
                 raise TypeError("At most one field may be set when initializing a union")
@@ -2306,11 +2231,6 @@ cdef class ComplexUnion(thrift.py3.types.Union):
             if any_set:
                 raise TypeError("At most one field may be set when initializing a union")
             deref(c_inst).set_stringValue(stringValue.encode('UTF-8'))
-            any_set = True
-        if req_stringValue is not None:
-            if any_set:
-                raise TypeError("At most one field may be set when initializing a union")
-            deref(c_inst).set_req_stringValue(req_stringValue.encode('UTF-8'))
             any_set = True
         if opt_stringValue is not None:
             if any_set:
@@ -2352,11 +2272,6 @@ cdef class ComplexUnion(thrift.py3.types.Union):
                 raise TypeError("At most one field may be set when initializing a union")
             deref(c_inst).set_union_map(<cmap[string,int32_t]>deref(Map__string_i32(union_map)._cpp_obj))
             any_set = True
-        if req_union_map is not None:
-            if any_set:
-                raise TypeError("At most one field may be set when initializing a union")
-            deref(c_inst).set_req_union_map(<cmap[string,int32_t]>deref(Map__string_i32(req_union_map)._cpp_obj))
-            any_set = True
         if opt_union_map is not None:
             if any_set:
                 raise TypeError("At most one field may be set when initializing a union")
@@ -2387,11 +2302,6 @@ cdef class ComplexUnion(thrift.py3.types.Union):
                 raise TypeError("At most one field may be set when initializing a union")
             deref(c_inst).set_a_union(deref((<SimpleUnion?> a_union)._cpp_obj))
             any_set = True
-        if req_a_union is not None:
-            if any_set:
-                raise TypeError("At most one field may be set when initializing a union")
-            deref(c_inst).set_req_a_union(deref((<SimpleUnion?> req_a_union)._cpp_obj))
-            any_set = True
         if opt_a_union is not None:
             if any_set:
                 raise TypeError("At most one field may be set when initializing a union")
@@ -2421,11 +2331,6 @@ cdef class ComplexUnion(thrift.py3.types.Union):
             if any_set:
                 raise TypeError("At most one field may be set when initializing a union")
             deref(c_inst).set_MyBinaryField2(MyBinaryField2)
-            any_set = True
-        if MyBinaryField3 is not None:
-            if any_set:
-                raise TypeError("At most one field may be set when initializing a union")
-            deref(c_inst).set_MyBinaryField3(MyBinaryField3)
             any_set = True
         if MyBinaryListField4 is not None:
             if any_set:
@@ -2468,12 +2373,6 @@ cdef class ComplexUnion(thrift.py3.types.Union):
         return self.value
 
     @property
-    def req_intValue(self):
-        if self.type.value != 101:
-            raise TypeError(f'Union contains a value of type {self.type.name}, not req_intValue')
-        return self.value
-
-    @property
     def opt_intValue(self):
         if self.type.value != 201:
             raise TypeError(f'Union contains a value of type {self.type.name}, not opt_intValue')
@@ -2483,12 +2382,6 @@ cdef class ComplexUnion(thrift.py3.types.Union):
     def stringValue(self):
         if self.type.value != 3:
             raise TypeError(f'Union contains a value of type {self.type.name}, not stringValue')
-        return self.value
-
-    @property
-    def req_stringValue(self):
-        if self.type.value != 103:
-            raise TypeError(f'Union contains a value of type {self.type.name}, not req_stringValue')
         return self.value
 
     @property
@@ -2540,12 +2433,6 @@ cdef class ComplexUnion(thrift.py3.types.Union):
         return self.value
 
     @property
-    def req_union_map(self):
-        if self.type.value != 111:
-            raise TypeError(f'Union contains a value of type {self.type.name}, not req_union_map')
-        return self.value
-
-    @property
     def opt_union_map(self):
         if self.type.value != 211:
             raise TypeError(f'Union contains a value of type {self.type.name}, not opt_union_map')
@@ -2582,12 +2469,6 @@ cdef class ComplexUnion(thrift.py3.types.Union):
         return self.value
 
     @property
-    def req_a_union(self):
-        if self.type.value != 116:
-            raise TypeError(f'Union contains a value of type {self.type.name}, not req_a_union')
-        return self.value
-
-    @property
     def opt_a_union(self):
         if self.type.value != 216:
             raise TypeError(f'Union contains a value of type {self.type.name}, not opt_a_union')
@@ -2621,12 +2502,6 @@ cdef class ComplexUnion(thrift.py3.types.Union):
     def MyBinaryField2(self):
         if self.type.value != 21:
             raise TypeError(f'Union contains a value of type {self.type.name}, not MyBinaryField2')
-        return self.value
-
-    @property
-    def MyBinaryField3(self):
-        if self.type.value != 22:
-            raise TypeError(f'Union contains a value of type {self.type.name}, not MyBinaryField3')
         return self.value
 
     @property
@@ -2672,14 +2547,10 @@ cdef class ComplexUnion(thrift.py3.types.Union):
             self.value = None
         elif type == 1:
             self.value = deref(self._cpp_obj).get_intValue()
-        elif type == 101:
-            self.value = deref(self._cpp_obj).get_req_intValue()
         elif type == 201:
             self.value = deref(self._cpp_obj).get_opt_intValue()
         elif type == 3:
             self.value = bytes(deref(self._cpp_obj).get_stringValue()).decode('UTF-8')
-        elif type == 103:
-            self.value = bytes(deref(self._cpp_obj).get_req_stringValue()).decode('UTF-8')
         elif type == 203:
             self.value = bytes(deref(self._cpp_obj).get_opt_stringValue()).decode('UTF-8')
         elif type == 4:
@@ -2696,8 +2567,6 @@ cdef class ComplexUnion(thrift.py3.types.Union):
             self.value = Set__i64.create(make_shared[cset[int64_t]](deref(self._cpp_obj).get_union_set()))
         elif type == 11:
             self.value = Map__string_i32.create(make_shared[cmap[string,int32_t]](deref(self._cpp_obj).get_union_map()))
-        elif type == 111:
-            self.value = Map__string_i32.create(make_shared[cmap[string,int32_t]](deref(self._cpp_obj).get_req_union_map()))
         elif type == 211:
             self.value = Map__string_i32.create(make_shared[cmap[string,int32_t]](deref(self._cpp_obj).get_opt_union_map()))
         elif type == 12:
@@ -2710,8 +2579,6 @@ cdef class ComplexUnion(thrift.py3.types.Union):
             self.value = Set__MyStruct.create(make_shared[cset[cMyStruct]](deref(self._cpp_obj).get_a_set_struct()))
         elif type == 16:
             self.value = SimpleUnion.create(make_shared[cSimpleUnion](deref(self._cpp_obj).get_a_union()))
-        elif type == 116:
-            self.value = SimpleUnion.create(make_shared[cSimpleUnion](deref(self._cpp_obj).get_req_a_union()))
         elif type == 216:
             self.value = SimpleUnion.create(make_shared[cSimpleUnion](deref(self._cpp_obj).get_opt_a_union()))
         elif type == 17:
@@ -2724,8 +2591,6 @@ cdef class ComplexUnion(thrift.py3.types.Union):
             self.value = deref(self._cpp_obj).get_MyBinaryField()
         elif type == 21:
             self.value = deref(self._cpp_obj).get_MyBinaryField2()
-        elif type == 22:
-            self.value = deref(self._cpp_obj).get_MyBinaryField3()
         elif type == 23:
             self.value = List__binary.create(make_shared[vector[string]](deref(self._cpp_obj).get_MyBinaryListField4()))
         elif type == 24:

@@ -1178,10 +1178,8 @@ class ComplexUnion final : private apache::thrift::detail::st::ComparisonOperato
   enum Type {
     __EMPTY__ = 0,
     intValue = 1,
-    req_intValue = 101,
     opt_intValue = 201,
     stringValue = 3,
-    req_stringValue = 103,
     opt_stringValue = 203,
     intValue2 = 4,
     intValue3 = 6,
@@ -1190,21 +1188,18 @@ class ComplexUnion final : private apache::thrift::detail::st::ComparisonOperato
     union_list = 9,
     union_set = 10,
     union_map = 11,
-    req_union_map = 111,
     opt_union_map = 211,
     enum_field = 12,
     enum_container = 13,
     a_struct = 14,
     a_set_struct = 15,
     a_union = 16,
-    req_a_union = 116,
     opt_a_union = 216,
     a_union_list = 17,
     a_union_typedef = 18,
     a_union_typedef_list = 19,
     MyBinaryField = 20,
     MyBinaryField2 = 21,
-    MyBinaryField3 = 22,
     MyBinaryListField4 = 23,
     ref_field = 24,
     ref_field2 = 25,
@@ -1224,11 +1219,6 @@ class ComplexUnion final : private apache::thrift::detail::st::ComparisonOperato
         set_intValue(std::move(rhs.value_.intValue));
         break;
       }
-      case Type::req_intValue:
-      {
-        set_req_intValue(std::move(rhs.value_.req_intValue));
-        break;
-      }
       case Type::opt_intValue:
       {
         set_opt_intValue(std::move(rhs.value_.opt_intValue));
@@ -1237,11 +1227,6 @@ class ComplexUnion final : private apache::thrift::detail::st::ComparisonOperato
       case Type::stringValue:
       {
         set_stringValue(std::move(rhs.value_.stringValue));
-        break;
-      }
-      case Type::req_stringValue:
-      {
-        set_req_stringValue(std::move(rhs.value_.req_stringValue));
         break;
       }
       case Type::opt_stringValue:
@@ -1284,11 +1269,6 @@ class ComplexUnion final : private apache::thrift::detail::st::ComparisonOperato
         set_union_map(std::move(rhs.value_.union_map));
         break;
       }
-      case Type::req_union_map:
-      {
-        set_req_union_map(std::move(rhs.value_.req_union_map));
-        break;
-      }
       case Type::opt_union_map:
       {
         set_opt_union_map(std::move(rhs.value_.opt_union_map));
@@ -1319,11 +1299,6 @@ class ComplexUnion final : private apache::thrift::detail::st::ComparisonOperato
         set_a_union(std::move(rhs.value_.a_union));
         break;
       }
-      case Type::req_a_union:
-      {
-        set_req_a_union(std::move(rhs.value_.req_a_union));
-        break;
-      }
       case Type::opt_a_union:
       {
         set_opt_a_union(std::move(rhs.value_.opt_a_union));
@@ -1352,11 +1327,6 @@ class ComplexUnion final : private apache::thrift::detail::st::ComparisonOperato
       case Type::MyBinaryField2:
       {
         set_MyBinaryField2(std::move(rhs.value_.MyBinaryField2));
-        break;
-      }
-      case Type::MyBinaryField3:
-      {
-        set_MyBinaryField3(std::move(rhs.value_.MyBinaryField3));
         break;
       }
       case Type::MyBinaryListField4:
@@ -1398,11 +1368,6 @@ class ComplexUnion final : private apache::thrift::detail::st::ComparisonOperato
         set_intValue(rhs.value_.intValue);
         break;
       }
-      case Type::req_intValue:
-      {
-        set_req_intValue(rhs.value_.req_intValue);
-        break;
-      }
       case Type::opt_intValue:
       {
         set_opt_intValue(rhs.value_.opt_intValue);
@@ -1411,11 +1376,6 @@ class ComplexUnion final : private apache::thrift::detail::st::ComparisonOperato
       case Type::stringValue:
       {
         set_stringValue(rhs.value_.stringValue);
-        break;
-      }
-      case Type::req_stringValue:
-      {
-        set_req_stringValue(rhs.value_.req_stringValue);
         break;
       }
       case Type::opt_stringValue:
@@ -1458,11 +1418,6 @@ class ComplexUnion final : private apache::thrift::detail::st::ComparisonOperato
         set_union_map(rhs.value_.union_map);
         break;
       }
-      case Type::req_union_map:
-      {
-        set_req_union_map(rhs.value_.req_union_map);
-        break;
-      }
       case Type::opt_union_map:
       {
         set_opt_union_map(rhs.value_.opt_union_map);
@@ -1493,11 +1448,6 @@ class ComplexUnion final : private apache::thrift::detail::st::ComparisonOperato
         set_a_union(rhs.value_.a_union);
         break;
       }
-      case Type::req_a_union:
-      {
-        set_req_a_union(rhs.value_.req_a_union);
-        break;
-      }
       case Type::opt_a_union:
       {
         set_opt_a_union(rhs.value_.opt_a_union);
@@ -1526,11 +1476,6 @@ class ComplexUnion final : private apache::thrift::detail::st::ComparisonOperato
       case Type::MyBinaryField2:
       {
         set_MyBinaryField2(rhs.value_.MyBinaryField2);
-        break;
-      }
-      case Type::MyBinaryField3:
-      {
-        set_MyBinaryField3(rhs.value_.MyBinaryField3);
         break;
       }
       case Type::MyBinaryListField4:
@@ -1571,11 +1516,6 @@ class ComplexUnion final : private apache::thrift::detail::st::ComparisonOperato
         set_intValue(std::move(rhs.value_.intValue));
         break;
       }
-      case Type::req_intValue:
-      {
-        set_req_intValue(std::move(rhs.value_.req_intValue));
-        break;
-      }
       case Type::opt_intValue:
       {
         set_opt_intValue(std::move(rhs.value_.opt_intValue));
@@ -1584,11 +1524,6 @@ class ComplexUnion final : private apache::thrift::detail::st::ComparisonOperato
       case Type::stringValue:
       {
         set_stringValue(std::move(rhs.value_.stringValue));
-        break;
-      }
-      case Type::req_stringValue:
-      {
-        set_req_stringValue(std::move(rhs.value_.req_stringValue));
         break;
       }
       case Type::opt_stringValue:
@@ -1631,11 +1566,6 @@ class ComplexUnion final : private apache::thrift::detail::st::ComparisonOperato
         set_union_map(std::move(rhs.value_.union_map));
         break;
       }
-      case Type::req_union_map:
-      {
-        set_req_union_map(std::move(rhs.value_.req_union_map));
-        break;
-      }
       case Type::opt_union_map:
       {
         set_opt_union_map(std::move(rhs.value_.opt_union_map));
@@ -1666,11 +1596,6 @@ class ComplexUnion final : private apache::thrift::detail::st::ComparisonOperato
         set_a_union(std::move(rhs.value_.a_union));
         break;
       }
-      case Type::req_a_union:
-      {
-        set_req_a_union(std::move(rhs.value_.req_a_union));
-        break;
-      }
       case Type::opt_a_union:
       {
         set_opt_a_union(std::move(rhs.value_.opt_a_union));
@@ -1699,11 +1624,6 @@ class ComplexUnion final : private apache::thrift::detail::st::ComparisonOperato
       case Type::MyBinaryField2:
       {
         set_MyBinaryField2(std::move(rhs.value_.MyBinaryField2));
-        break;
-      }
-      case Type::MyBinaryField3:
-      {
-        set_MyBinaryField3(std::move(rhs.value_.MyBinaryField3));
         break;
       }
       case Type::MyBinaryListField4:
@@ -1746,11 +1666,6 @@ class ComplexUnion final : private apache::thrift::detail::st::ComparisonOperato
         set_intValue(rhs.value_.intValue);
         break;
       }
-      case Type::req_intValue:
-      {
-        set_req_intValue(rhs.value_.req_intValue);
-        break;
-      }
       case Type::opt_intValue:
       {
         set_opt_intValue(rhs.value_.opt_intValue);
@@ -1759,11 +1674,6 @@ class ComplexUnion final : private apache::thrift::detail::st::ComparisonOperato
       case Type::stringValue:
       {
         set_stringValue(rhs.value_.stringValue);
-        break;
-      }
-      case Type::req_stringValue:
-      {
-        set_req_stringValue(rhs.value_.req_stringValue);
         break;
       }
       case Type::opt_stringValue:
@@ -1806,11 +1716,6 @@ class ComplexUnion final : private apache::thrift::detail::st::ComparisonOperato
         set_union_map(rhs.value_.union_map);
         break;
       }
-      case Type::req_union_map:
-      {
-        set_req_union_map(rhs.value_.req_union_map);
-        break;
-      }
       case Type::opt_union_map:
       {
         set_opt_union_map(rhs.value_.opt_union_map);
@@ -1841,11 +1746,6 @@ class ComplexUnion final : private apache::thrift::detail::st::ComparisonOperato
         set_a_union(rhs.value_.a_union);
         break;
       }
-      case Type::req_a_union:
-      {
-        set_req_a_union(rhs.value_.req_a_union);
-        break;
-      }
       case Type::opt_a_union:
       {
         set_opt_a_union(rhs.value_.opt_a_union);
@@ -1874,11 +1774,6 @@ class ComplexUnion final : private apache::thrift::detail::st::ComparisonOperato
       case Type::MyBinaryField2:
       {
         set_MyBinaryField2(rhs.value_.MyBinaryField2);
-        break;
-      }
-      case Type::MyBinaryField3:
-      {
-        set_MyBinaryField3(rhs.value_.MyBinaryField3);
         break;
       }
       case Type::MyBinaryListField4:
@@ -1914,20 +1809,12 @@ class ComplexUnion final : private apache::thrift::detail::st::ComparisonOperato
     set_intValue(arg.extract());
   }
   template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<101, _T> arg) {
-    set_req_intValue(arg.extract());
-  }
-  template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<201, _T> arg) {
     set_opt_intValue(arg.extract());
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<3, _T> arg) {
     set_stringValue(arg.extract());
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<103, _T> arg) {
-    set_req_stringValue(arg.extract());
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<203, _T> arg) {
@@ -1962,10 +1849,6 @@ class ComplexUnion final : private apache::thrift::detail::st::ComparisonOperato
     set_union_map(arg.extract());
   }
   template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<111, _T> arg) {
-    set_req_union_map(arg.extract());
-  }
-  template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<211, _T> arg) {
     set_opt_union_map(arg.extract());
   }
@@ -1988,10 +1871,6 @@ class ComplexUnion final : private apache::thrift::detail::st::ComparisonOperato
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<16, _T> arg) {
     set_a_union(arg.extract());
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<116, _T> arg) {
-    set_req_a_union(arg.extract());
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<216, _T> arg) {
@@ -2018,10 +1897,6 @@ class ComplexUnion final : private apache::thrift::detail::st::ComparisonOperato
     set_MyBinaryField2(arg.extract());
   }
   template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<22, _T> arg) {
-    set_MyBinaryField3(arg.extract());
-  }
-  template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<23, _T> arg) {
     set_MyBinaryListField4(arg.extract());
   }
@@ -2044,10 +1919,8 @@ class ComplexUnion final : private apache::thrift::detail::st::ComparisonOperato
   }
   union storage_type {
     int64_t intValue;
-    int64_t req_intValue;
     int64_t opt_intValue;
     std::string stringValue;
-    std::string req_stringValue;
     std::string opt_stringValue;
     int16_t intValue2;
     int32_t intValue3;
@@ -2056,21 +1929,18 @@ class ComplexUnion final : private apache::thrift::detail::st::ComparisonOperato
     std::vector<int32_t> union_list;
     std::set<int64_t> union_set;
     std::map<std::string, int32_t> union_map;
-    std::map<std::string, int32_t> req_union_map;
     std::map<std::string, int32_t> opt_union_map;
      ::some::valid::ns::MyEnumA enum_field;
     std::vector< ::some::valid::ns::MyEnumA> enum_container;
      ::some::valid::ns::MyStruct a_struct;
     std::set< ::some::valid::ns::MyStruct> a_set_struct;
      ::some::valid::ns::SimpleUnion a_union;
-     ::some::valid::ns::SimpleUnion req_a_union;
      ::some::valid::ns::SimpleUnion opt_a_union;
     std::vector< ::some::valid::ns::SimpleUnion> a_union_list;
      ::some::valid::ns::unionTypeDef a_union_typedef;
     std::vector< ::some::valid::ns::unionTypeDef> a_union_typedef_list;
     std::string MyBinaryField;
     std::string MyBinaryField2;
-    std::string MyBinaryField3;
     std::vector<std::string> MyBinaryListField4;
     std::unique_ptr< ::some::valid::ns::MyStruct> ref_field;
     std::shared_ptr<const  ::some::valid::ns::MyStruct> ref_field2;
@@ -2087,13 +1957,6 @@ class ComplexUnion final : private apache::thrift::detail::st::ComparisonOperato
     type_ = Type::intValue;
     ::new (std::addressof(value_.intValue)) int64_t(t);
     return value_.intValue;
-  }
-
-  int64_t& set_req_intValue(int64_t t = int64_t()) {
-    __clear();
-    type_ = Type::req_intValue;
-    ::new (std::addressof(value_.req_intValue)) int64_t(t);
-    return value_.req_intValue;
   }
 
   int64_t& set_opt_intValue(int64_t t = int64_t()) {
@@ -2122,27 +1985,6 @@ class ComplexUnion final : private apache::thrift::detail::st::ComparisonOperato
     type_ = Type::stringValue;
     ::new (std::addressof(value_.stringValue)) std::string(std::forward<T>(t)...);
     return value_.stringValue;
-  }
-
-  std::string& set_req_stringValue(std::string const &t) {
-    __clear();
-    type_ = Type::req_stringValue;
-    ::new (std::addressof(value_.req_stringValue)) std::string(t);
-    return value_.req_stringValue;
-  }
-
-  std::string& set_req_stringValue(std::string&& t) {
-    __clear();
-    type_ = Type::req_stringValue;
-    ::new (std::addressof(value_.req_stringValue)) std::string(std::move(t));
-    return value_.req_stringValue;
-  }
-
-  template<typename... T, typename = ::apache::thrift::safe_overload_t<std::string, T...>> std::string& set_req_stringValue(T&&... t) {
-    __clear();
-    type_ = Type::req_stringValue;
-    ::new (std::addressof(value_.req_stringValue)) std::string(std::forward<T>(t)...);
-    return value_.req_stringValue;
   }
 
   std::string& set_opt_stringValue(std::string const &t) {
@@ -2257,27 +2099,6 @@ class ComplexUnion final : private apache::thrift::detail::st::ComparisonOperato
     return value_.union_map;
   }
 
-  std::map<std::string, int32_t>& set_req_union_map(std::map<std::string, int32_t> const &t) {
-    __clear();
-    type_ = Type::req_union_map;
-    ::new (std::addressof(value_.req_union_map)) std::map<std::string, int32_t>(t);
-    return value_.req_union_map;
-  }
-
-  std::map<std::string, int32_t>& set_req_union_map(std::map<std::string, int32_t>&& t) {
-    __clear();
-    type_ = Type::req_union_map;
-    ::new (std::addressof(value_.req_union_map)) std::map<std::string, int32_t>(std::move(t));
-    return value_.req_union_map;
-  }
-
-  template<typename... T, typename = ::apache::thrift::safe_overload_t<std::map<std::string, int32_t>, T...>> std::map<std::string, int32_t>& set_req_union_map(T&&... t) {
-    __clear();
-    type_ = Type::req_union_map;
-    ::new (std::addressof(value_.req_union_map)) std::map<std::string, int32_t>(std::forward<T>(t)...);
-    return value_.req_union_map;
-  }
-
   std::map<std::string, int32_t>& set_opt_union_map(std::map<std::string, int32_t> const &t) {
     __clear();
     type_ = Type::opt_union_map;
@@ -2388,27 +2209,6 @@ class ComplexUnion final : private apache::thrift::detail::st::ComparisonOperato
     type_ = Type::a_union;
     ::new (std::addressof(value_.a_union))  ::some::valid::ns::SimpleUnion(std::forward<T>(t)...);
     return value_.a_union;
-  }
-
-   ::some::valid::ns::SimpleUnion& set_req_a_union( ::some::valid::ns::SimpleUnion const &t) {
-    __clear();
-    type_ = Type::req_a_union;
-    ::new (std::addressof(value_.req_a_union))  ::some::valid::ns::SimpleUnion(t);
-    return value_.req_a_union;
-  }
-
-   ::some::valid::ns::SimpleUnion& set_req_a_union( ::some::valid::ns::SimpleUnion&& t) {
-    __clear();
-    type_ = Type::req_a_union;
-    ::new (std::addressof(value_.req_a_union))  ::some::valid::ns::SimpleUnion(std::move(t));
-    return value_.req_a_union;
-  }
-
-  template<typename... T, typename = ::apache::thrift::safe_overload_t< ::some::valid::ns::SimpleUnion, T...>>  ::some::valid::ns::SimpleUnion& set_req_a_union(T&&... t) {
-    __clear();
-    type_ = Type::req_a_union;
-    ::new (std::addressof(value_.req_a_union))  ::some::valid::ns::SimpleUnion(std::forward<T>(t)...);
-    return value_.req_a_union;
   }
 
    ::some::valid::ns::SimpleUnion& set_opt_a_union( ::some::valid::ns::SimpleUnion const &t) {
@@ -2537,27 +2337,6 @@ class ComplexUnion final : private apache::thrift::detail::st::ComparisonOperato
     return value_.MyBinaryField2;
   }
 
-  std::string& set_MyBinaryField3(std::string const &t) {
-    __clear();
-    type_ = Type::MyBinaryField3;
-    ::new (std::addressof(value_.MyBinaryField3)) std::string(t);
-    return value_.MyBinaryField3;
-  }
-
-  std::string& set_MyBinaryField3(std::string&& t) {
-    __clear();
-    type_ = Type::MyBinaryField3;
-    ::new (std::addressof(value_.MyBinaryField3)) std::string(std::move(t));
-    return value_.MyBinaryField3;
-  }
-
-  template<typename... T, typename = ::apache::thrift::safe_overload_t<std::string, T...>> std::string& set_MyBinaryField3(T&&... t) {
-    __clear();
-    type_ = Type::MyBinaryField3;
-    ::new (std::addressof(value_.MyBinaryField3)) std::string(std::forward<T>(t)...);
-    return value_.MyBinaryField3;
-  }
-
   std::vector<std::string>& set_MyBinaryListField4(std::vector<std::string> const &t) {
     __clear();
     type_ = Type::MyBinaryListField4;
@@ -2611,11 +2390,6 @@ class ComplexUnion final : private apache::thrift::detail::st::ComparisonOperato
     return value_.intValue;
   }
 
-  int64_t const & get_req_intValue() const {
-    assert(type_ == Type::req_intValue);
-    return value_.req_intValue;
-  }
-
   int64_t const & get_opt_intValue() const {
     assert(type_ == Type::opt_intValue);
     return value_.opt_intValue;
@@ -2624,11 +2398,6 @@ class ComplexUnion final : private apache::thrift::detail::st::ComparisonOperato
   std::string const & get_stringValue() const {
     assert(type_ == Type::stringValue);
     return value_.stringValue;
-  }
-
-  std::string const & get_req_stringValue() const {
-    assert(type_ == Type::req_stringValue);
-    return value_.req_stringValue;
   }
 
   std::string const & get_opt_stringValue() const {
@@ -2671,11 +2440,6 @@ class ComplexUnion final : private apache::thrift::detail::st::ComparisonOperato
     return value_.union_map;
   }
 
-  std::map<std::string, int32_t> const & get_req_union_map() const {
-    assert(type_ == Type::req_union_map);
-    return value_.req_union_map;
-  }
-
   std::map<std::string, int32_t> const & get_opt_union_map() const {
     assert(type_ == Type::opt_union_map);
     return value_.opt_union_map;
@@ -2704,11 +2468,6 @@ class ComplexUnion final : private apache::thrift::detail::st::ComparisonOperato
    ::some::valid::ns::SimpleUnion const & get_a_union() const {
     assert(type_ == Type::a_union);
     return value_.a_union;
-  }
-
-   ::some::valid::ns::SimpleUnion const & get_req_a_union() const {
-    assert(type_ == Type::req_a_union);
-    return value_.req_a_union;
   }
 
    ::some::valid::ns::SimpleUnion const & get_opt_a_union() const {
@@ -2741,11 +2500,6 @@ class ComplexUnion final : private apache::thrift::detail::st::ComparisonOperato
     return value_.MyBinaryField2;
   }
 
-  std::string const & get_MyBinaryField3() const {
-    assert(type_ == Type::MyBinaryField3);
-    return value_.MyBinaryField3;
-  }
-
   std::vector<std::string> const & get_MyBinaryListField4() const {
     assert(type_ == Type::MyBinaryListField4);
     return value_.MyBinaryListField4;
@@ -2771,11 +2525,6 @@ class ComplexUnion final : private apache::thrift::detail::st::ComparisonOperato
     return value_.intValue;
   }
 
-  int64_t & mutable_req_intValue() {
-    assert(type_ == Type::req_intValue);
-    return value_.req_intValue;
-  }
-
   int64_t & mutable_opt_intValue() {
     assert(type_ == Type::opt_intValue);
     return value_.opt_intValue;
@@ -2784,11 +2533,6 @@ class ComplexUnion final : private apache::thrift::detail::st::ComparisonOperato
   std::string & mutable_stringValue() {
     assert(type_ == Type::stringValue);
     return value_.stringValue;
-  }
-
-  std::string & mutable_req_stringValue() {
-    assert(type_ == Type::req_stringValue);
-    return value_.req_stringValue;
   }
 
   std::string & mutable_opt_stringValue() {
@@ -2831,11 +2575,6 @@ class ComplexUnion final : private apache::thrift::detail::st::ComparisonOperato
     return value_.union_map;
   }
 
-  std::map<std::string, int32_t> & mutable_req_union_map() {
-    assert(type_ == Type::req_union_map);
-    return value_.req_union_map;
-  }
-
   std::map<std::string, int32_t> & mutable_opt_union_map() {
     assert(type_ == Type::opt_union_map);
     return value_.opt_union_map;
@@ -2864,11 +2603,6 @@ class ComplexUnion final : private apache::thrift::detail::st::ComparisonOperato
    ::some::valid::ns::SimpleUnion & mutable_a_union() {
     assert(type_ == Type::a_union);
     return value_.a_union;
-  }
-
-   ::some::valid::ns::SimpleUnion & mutable_req_a_union() {
-    assert(type_ == Type::req_a_union);
-    return value_.req_a_union;
   }
 
    ::some::valid::ns::SimpleUnion & mutable_opt_a_union() {
@@ -2901,11 +2635,6 @@ class ComplexUnion final : private apache::thrift::detail::st::ComparisonOperato
     return value_.MyBinaryField2;
   }
 
-  std::string & mutable_MyBinaryField3() {
-    assert(type_ == Type::MyBinaryField3);
-    return value_.MyBinaryField3;
-  }
-
   std::vector<std::string> & mutable_MyBinaryListField4() {
     assert(type_ == Type::MyBinaryListField4);
     return value_.MyBinaryListField4;
@@ -2931,11 +2660,6 @@ class ComplexUnion final : private apache::thrift::detail::st::ComparisonOperato
     return std::move(value_.intValue);
   }
 
-  int64_t move_req_intValue() {
-    assert(type_ == Type::req_intValue);
-    return std::move(value_.req_intValue);
-  }
-
   int64_t move_opt_intValue() {
     assert(type_ == Type::opt_intValue);
     return std::move(value_.opt_intValue);
@@ -2944,11 +2668,6 @@ class ComplexUnion final : private apache::thrift::detail::st::ComparisonOperato
   std::string move_stringValue() {
     assert(type_ == Type::stringValue);
     return std::move(value_.stringValue);
-  }
-
-  std::string move_req_stringValue() {
-    assert(type_ == Type::req_stringValue);
-    return std::move(value_.req_stringValue);
   }
 
   std::string move_opt_stringValue() {
@@ -2991,11 +2710,6 @@ class ComplexUnion final : private apache::thrift::detail::st::ComparisonOperato
     return std::move(value_.union_map);
   }
 
-  std::map<std::string, int32_t> move_req_union_map() {
-    assert(type_ == Type::req_union_map);
-    return std::move(value_.req_union_map);
-  }
-
   std::map<std::string, int32_t> move_opt_union_map() {
     assert(type_ == Type::opt_union_map);
     return std::move(value_.opt_union_map);
@@ -3026,11 +2740,6 @@ class ComplexUnion final : private apache::thrift::detail::st::ComparisonOperato
     return std::move(value_.a_union);
   }
 
-   ::some::valid::ns::SimpleUnion move_req_a_union() {
-    assert(type_ == Type::req_a_union);
-    return std::move(value_.req_a_union);
-  }
-
    ::some::valid::ns::SimpleUnion move_opt_a_union() {
     assert(type_ == Type::opt_a_union);
     return std::move(value_.opt_a_union);
@@ -3059,11 +2768,6 @@ class ComplexUnion final : private apache::thrift::detail::st::ComparisonOperato
   std::string move_MyBinaryField2() {
     assert(type_ == Type::MyBinaryField2);
     return std::move(value_.MyBinaryField2);
-  }
-
-  std::string move_MyBinaryField3() {
-    assert(type_ == Type::MyBinaryField3);
-    return std::move(value_.MyBinaryField3);
   }
 
   std::vector<std::string> move_MyBinaryListField4() {
