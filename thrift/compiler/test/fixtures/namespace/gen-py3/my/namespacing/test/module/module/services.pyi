@@ -8,7 +8,7 @@
 from folly.iobuf import IOBuf as __IOBuf
 import typing as _typing
 from thrift.py3.server import RequestContext, ServiceInterface
-from abc import abstractmethod
+from abc import abstractmethod, ABCMeta
 
 import my.namespacing.test.module.module.types as _my_namespacing_test_module_module_types
 
@@ -17,17 +17,18 @@ _TestServiceInterfaceT = _typing.TypeVar('_TestServiceInterfaceT', bound='TestSe
 
 class TestServiceInterface(
     ServiceInterface
+    , metaclass=ABCMeta
 ):
 
     @staticmethod
     def pass_context_init(
         fn: _typing.Callable[
                 [_TestServiceInterfaceT, RequestContext, int],
-                _typing.Awaitable[int]
+                _typing.Coroutine[_typing.Any, _typing.Any, int]
         ]
     ) -> _typing.Callable[
         [_TestServiceInterfaceT, int],
-        _typing.Awaitable[int]
+        _typing.Coroutine[_typing.Any, _typing.Any, int]
     ]: ...
 
     @abstractmethod

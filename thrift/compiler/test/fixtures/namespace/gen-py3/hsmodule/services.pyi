@@ -8,7 +8,7 @@
 from folly.iobuf import IOBuf as __IOBuf
 import typing as _typing
 from thrift.py3.server import RequestContext, ServiceInterface
-from abc import abstractmethod
+from abc import abstractmethod, ABCMeta
 
 import hsmodule.types as _hsmodule_types
 
@@ -17,17 +17,18 @@ _HsTestServiceInterfaceT = _typing.TypeVar('_HsTestServiceInterfaceT', bound='Hs
 
 class HsTestServiceInterface(
     ServiceInterface
+    , metaclass=ABCMeta
 ):
 
     @staticmethod
     def pass_context_init(
         fn: _typing.Callable[
                 [_HsTestServiceInterfaceT, RequestContext, int],
-                _typing.Awaitable[int]
+                _typing.Coroutine[_typing.Any, _typing.Any, int]
         ]
     ) -> _typing.Callable[
         [_HsTestServiceInterfaceT, int],
-        _typing.Awaitable[int]
+        _typing.Coroutine[_typing.Any, _typing.Any, int]
     ]: ...
 
     @abstractmethod

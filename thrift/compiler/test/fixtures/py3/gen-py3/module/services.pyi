@@ -8,7 +8,7 @@
 from folly.iobuf import IOBuf as __IOBuf
 import typing as _typing
 from thrift.py3.server import RequestContext, ServiceInterface
-from abc import abstractmethod
+from abc import abstractmethod, ABCMeta
 
 import module.types as _module_types
 
@@ -17,17 +17,18 @@ _SimpleServiceInterfaceT = _typing.TypeVar('_SimpleServiceInterfaceT', bound='Si
 
 class SimpleServiceInterface(
     ServiceInterface
+    , metaclass=ABCMeta
 ):
 
     @staticmethod
     def pass_context_get_five(
         fn: _typing.Callable[
                 [_SimpleServiceInterfaceT, RequestContext],
-                _typing.Awaitable[int]
+                _typing.Coroutine[_typing.Any, _typing.Any, int]
         ]
     ) -> _typing.Callable[
         [_SimpleServiceInterfaceT],
-        _typing.Awaitable[int]
+        _typing.Coroutine[_typing.Any, _typing.Any, int]
     ]: ...
 
     @abstractmethod
@@ -39,11 +40,11 @@ class SimpleServiceInterface(
     def pass_context_add_five(
         fn: _typing.Callable[
                 [_SimpleServiceInterfaceT, RequestContext, int],
-                _typing.Awaitable[int]
+                _typing.Coroutine[_typing.Any, _typing.Any, int]
         ]
     ) -> _typing.Callable[
         [_SimpleServiceInterfaceT, int],
-        _typing.Awaitable[int]
+        _typing.Coroutine[_typing.Any, _typing.Any, int]
     ]: ...
 
     @abstractmethod
@@ -56,11 +57,11 @@ class SimpleServiceInterface(
     def pass_context_do_nothing(
         fn: _typing.Callable[
                 [_SimpleServiceInterfaceT, RequestContext],
-                _typing.Awaitable[None]
+                _typing.Coroutine[_typing.Any, _typing.Any, None]
         ]
     ) -> _typing.Callable[
         [_SimpleServiceInterfaceT],
-        _typing.Awaitable[None]
+        _typing.Coroutine[_typing.Any, _typing.Any, None]
     ]: ...
 
     @abstractmethod
@@ -72,11 +73,11 @@ class SimpleServiceInterface(
     def pass_context_concat(
         fn: _typing.Callable[
                 [_SimpleServiceInterfaceT, RequestContext, str, str],
-                _typing.Awaitable[str]
+                _typing.Coroutine[_typing.Any, _typing.Any, str]
         ]
     ) -> _typing.Callable[
         [_SimpleServiceInterfaceT, str, str],
-        _typing.Awaitable[str]
+        _typing.Coroutine[_typing.Any, _typing.Any, str]
     ]: ...
 
     @abstractmethod
@@ -90,11 +91,11 @@ class SimpleServiceInterface(
     def pass_context_get_value(
         fn: _typing.Callable[
                 [_SimpleServiceInterfaceT, RequestContext, _module_types.SimpleStruct],
-                _typing.Awaitable[int]
+                _typing.Coroutine[_typing.Any, _typing.Any, int]
         ]
     ) -> _typing.Callable[
         [_SimpleServiceInterfaceT, _module_types.SimpleStruct],
-        _typing.Awaitable[int]
+        _typing.Coroutine[_typing.Any, _typing.Any, int]
     ]: ...
 
     @abstractmethod
@@ -107,11 +108,11 @@ class SimpleServiceInterface(
     def pass_context_negate(
         fn: _typing.Callable[
                 [_SimpleServiceInterfaceT, RequestContext, bool],
-                _typing.Awaitable[bool]
+                _typing.Coroutine[_typing.Any, _typing.Any, bool]
         ]
     ) -> _typing.Callable[
         [_SimpleServiceInterfaceT, bool],
-        _typing.Awaitable[bool]
+        _typing.Coroutine[_typing.Any, _typing.Any, bool]
     ]: ...
 
     @abstractmethod
@@ -124,11 +125,11 @@ class SimpleServiceInterface(
     def pass_context_tiny(
         fn: _typing.Callable[
                 [_SimpleServiceInterfaceT, RequestContext, int],
-                _typing.Awaitable[int]
+                _typing.Coroutine[_typing.Any, _typing.Any, int]
         ]
     ) -> _typing.Callable[
         [_SimpleServiceInterfaceT, int],
-        _typing.Awaitable[int]
+        _typing.Coroutine[_typing.Any, _typing.Any, int]
     ]: ...
 
     @abstractmethod
@@ -141,11 +142,11 @@ class SimpleServiceInterface(
     def pass_context_small(
         fn: _typing.Callable[
                 [_SimpleServiceInterfaceT, RequestContext, int],
-                _typing.Awaitable[int]
+                _typing.Coroutine[_typing.Any, _typing.Any, int]
         ]
     ) -> _typing.Callable[
         [_SimpleServiceInterfaceT, int],
-        _typing.Awaitable[int]
+        _typing.Coroutine[_typing.Any, _typing.Any, int]
     ]: ...
 
     @abstractmethod
@@ -158,11 +159,11 @@ class SimpleServiceInterface(
     def pass_context_big(
         fn: _typing.Callable[
                 [_SimpleServiceInterfaceT, RequestContext, int],
-                _typing.Awaitable[int]
+                _typing.Coroutine[_typing.Any, _typing.Any, int]
         ]
     ) -> _typing.Callable[
         [_SimpleServiceInterfaceT, int],
-        _typing.Awaitable[int]
+        _typing.Coroutine[_typing.Any, _typing.Any, int]
     ]: ...
 
     @abstractmethod
@@ -175,11 +176,11 @@ class SimpleServiceInterface(
     def pass_context_two(
         fn: _typing.Callable[
                 [_SimpleServiceInterfaceT, RequestContext, float],
-                _typing.Awaitable[float]
+                _typing.Coroutine[_typing.Any, _typing.Any, float]
         ]
     ) -> _typing.Callable[
         [_SimpleServiceInterfaceT, float],
-        _typing.Awaitable[float]
+        _typing.Coroutine[_typing.Any, _typing.Any, float]
     ]: ...
 
     @abstractmethod
@@ -192,11 +193,11 @@ class SimpleServiceInterface(
     def pass_context_expected_exception(
         fn: _typing.Callable[
                 [_SimpleServiceInterfaceT, RequestContext],
-                _typing.Awaitable[None]
+                _typing.Coroutine[_typing.Any, _typing.Any, None]
         ]
     ) -> _typing.Callable[
         [_SimpleServiceInterfaceT],
-        _typing.Awaitable[None]
+        _typing.Coroutine[_typing.Any, _typing.Any, None]
     ]: ...
 
     @abstractmethod
@@ -208,11 +209,11 @@ class SimpleServiceInterface(
     def pass_context_unexpected_exception(
         fn: _typing.Callable[
                 [_SimpleServiceInterfaceT, RequestContext],
-                _typing.Awaitable[int]
+                _typing.Coroutine[_typing.Any, _typing.Any, int]
         ]
     ) -> _typing.Callable[
         [_SimpleServiceInterfaceT],
-        _typing.Awaitable[int]
+        _typing.Coroutine[_typing.Any, _typing.Any, int]
     ]: ...
 
     @abstractmethod
@@ -224,11 +225,11 @@ class SimpleServiceInterface(
     def pass_context_sum_i16_list(
         fn: _typing.Callable[
                 [_SimpleServiceInterfaceT, RequestContext, _typing.Sequence[int]],
-                _typing.Awaitable[int]
+                _typing.Coroutine[_typing.Any, _typing.Any, int]
         ]
     ) -> _typing.Callable[
         [_SimpleServiceInterfaceT, _typing.Sequence[int]],
-        _typing.Awaitable[int]
+        _typing.Coroutine[_typing.Any, _typing.Any, int]
     ]: ...
 
     @abstractmethod
@@ -241,11 +242,11 @@ class SimpleServiceInterface(
     def pass_context_sum_i32_list(
         fn: _typing.Callable[
                 [_SimpleServiceInterfaceT, RequestContext, _typing.Sequence[int]],
-                _typing.Awaitable[int]
+                _typing.Coroutine[_typing.Any, _typing.Any, int]
         ]
     ) -> _typing.Callable[
         [_SimpleServiceInterfaceT, _typing.Sequence[int]],
-        _typing.Awaitable[int]
+        _typing.Coroutine[_typing.Any, _typing.Any, int]
     ]: ...
 
     @abstractmethod
@@ -258,11 +259,11 @@ class SimpleServiceInterface(
     def pass_context_sum_i64_list(
         fn: _typing.Callable[
                 [_SimpleServiceInterfaceT, RequestContext, _typing.Sequence[int]],
-                _typing.Awaitable[int]
+                _typing.Coroutine[_typing.Any, _typing.Any, int]
         ]
     ) -> _typing.Callable[
         [_SimpleServiceInterfaceT, _typing.Sequence[int]],
-        _typing.Awaitable[int]
+        _typing.Coroutine[_typing.Any, _typing.Any, int]
     ]: ...
 
     @abstractmethod
@@ -275,11 +276,11 @@ class SimpleServiceInterface(
     def pass_context_concat_many(
         fn: _typing.Callable[
                 [_SimpleServiceInterfaceT, RequestContext, _typing.Sequence[str]],
-                _typing.Awaitable[str]
+                _typing.Coroutine[_typing.Any, _typing.Any, str]
         ]
     ) -> _typing.Callable[
         [_SimpleServiceInterfaceT, _typing.Sequence[str]],
-        _typing.Awaitable[str]
+        _typing.Coroutine[_typing.Any, _typing.Any, str]
     ]: ...
 
     @abstractmethod
@@ -292,11 +293,11 @@ class SimpleServiceInterface(
     def pass_context_count_structs(
         fn: _typing.Callable[
                 [_SimpleServiceInterfaceT, RequestContext, _typing.Sequence[_module_types.SimpleStruct]],
-                _typing.Awaitable[int]
+                _typing.Coroutine[_typing.Any, _typing.Any, int]
         ]
     ) -> _typing.Callable[
         [_SimpleServiceInterfaceT, _typing.Sequence[_module_types.SimpleStruct]],
-        _typing.Awaitable[int]
+        _typing.Coroutine[_typing.Any, _typing.Any, int]
     ]: ...
 
     @abstractmethod
@@ -309,11 +310,11 @@ class SimpleServiceInterface(
     def pass_context_sum_set(
         fn: _typing.Callable[
                 [_SimpleServiceInterfaceT, RequestContext, _typing.AbstractSet[int]],
-                _typing.Awaitable[int]
+                _typing.Coroutine[_typing.Any, _typing.Any, int]
         ]
     ) -> _typing.Callable[
         [_SimpleServiceInterfaceT, _typing.AbstractSet[int]],
-        _typing.Awaitable[int]
+        _typing.Coroutine[_typing.Any, _typing.Any, int]
     ]: ...
 
     @abstractmethod
@@ -326,11 +327,11 @@ class SimpleServiceInterface(
     def pass_context_contains_word(
         fn: _typing.Callable[
                 [_SimpleServiceInterfaceT, RequestContext, _typing.AbstractSet[str], str],
-                _typing.Awaitable[bool]
+                _typing.Coroutine[_typing.Any, _typing.Any, bool]
         ]
     ) -> _typing.Callable[
         [_SimpleServiceInterfaceT, _typing.AbstractSet[str], str],
-        _typing.Awaitable[bool]
+        _typing.Coroutine[_typing.Any, _typing.Any, bool]
     ]: ...
 
     @abstractmethod
@@ -344,11 +345,11 @@ class SimpleServiceInterface(
     def pass_context_get_map_value(
         fn: _typing.Callable[
                 [_SimpleServiceInterfaceT, RequestContext, _typing.Mapping[str, str], str],
-                _typing.Awaitable[str]
+                _typing.Coroutine[_typing.Any, _typing.Any, str]
         ]
     ) -> _typing.Callable[
         [_SimpleServiceInterfaceT, _typing.Mapping[str, str], str],
-        _typing.Awaitable[str]
+        _typing.Coroutine[_typing.Any, _typing.Any, str]
     ]: ...
 
     @abstractmethod
@@ -362,11 +363,11 @@ class SimpleServiceInterface(
     def pass_context_map_length(
         fn: _typing.Callable[
                 [_SimpleServiceInterfaceT, RequestContext, _typing.Mapping[str, _module_types.SimpleStruct]],
-                _typing.Awaitable[int]
+                _typing.Coroutine[_typing.Any, _typing.Any, int]
         ]
     ) -> _typing.Callable[
         [_SimpleServiceInterfaceT, _typing.Mapping[str, _module_types.SimpleStruct]],
-        _typing.Awaitable[int]
+        _typing.Coroutine[_typing.Any, _typing.Any, int]
     ]: ...
 
     @abstractmethod
@@ -379,11 +380,11 @@ class SimpleServiceInterface(
     def pass_context_sum_map_values(
         fn: _typing.Callable[
                 [_SimpleServiceInterfaceT, RequestContext, _typing.Mapping[str, int]],
-                _typing.Awaitable[int]
+                _typing.Coroutine[_typing.Any, _typing.Any, int]
         ]
     ) -> _typing.Callable[
         [_SimpleServiceInterfaceT, _typing.Mapping[str, int]],
-        _typing.Awaitable[int]
+        _typing.Coroutine[_typing.Any, _typing.Any, int]
     ]: ...
 
     @abstractmethod
@@ -396,11 +397,11 @@ class SimpleServiceInterface(
     def pass_context_complex_sum_i32(
         fn: _typing.Callable[
                 [_SimpleServiceInterfaceT, RequestContext, _module_types.ComplexStruct],
-                _typing.Awaitable[int]
+                _typing.Coroutine[_typing.Any, _typing.Any, int]
         ]
     ) -> _typing.Callable[
         [_SimpleServiceInterfaceT, _module_types.ComplexStruct],
-        _typing.Awaitable[int]
+        _typing.Coroutine[_typing.Any, _typing.Any, int]
     ]: ...
 
     @abstractmethod
@@ -413,11 +414,11 @@ class SimpleServiceInterface(
     def pass_context_repeat_name(
         fn: _typing.Callable[
                 [_SimpleServiceInterfaceT, RequestContext, _module_types.ComplexStruct],
-                _typing.Awaitable[str]
+                _typing.Coroutine[_typing.Any, _typing.Any, str]
         ]
     ) -> _typing.Callable[
         [_SimpleServiceInterfaceT, _module_types.ComplexStruct],
-        _typing.Awaitable[str]
+        _typing.Coroutine[_typing.Any, _typing.Any, str]
     ]: ...
 
     @abstractmethod
@@ -430,11 +431,11 @@ class SimpleServiceInterface(
     def pass_context_get_struct(
         fn: _typing.Callable[
                 [_SimpleServiceInterfaceT, RequestContext],
-                _typing.Awaitable[_module_types.SimpleStruct]
+                _typing.Coroutine[_typing.Any, _typing.Any, _module_types.SimpleStruct]
         ]
     ) -> _typing.Callable[
         [_SimpleServiceInterfaceT],
-        _typing.Awaitable[_module_types.SimpleStruct]
+        _typing.Coroutine[_typing.Any, _typing.Any, _module_types.SimpleStruct]
     ]: ...
 
     @abstractmethod
@@ -446,11 +447,11 @@ class SimpleServiceInterface(
     def pass_context_fib(
         fn: _typing.Callable[
                 [_SimpleServiceInterfaceT, RequestContext, int],
-                _typing.Awaitable[_typing.Sequence[int]]
+                _typing.Coroutine[_typing.Any, _typing.Any, _typing.Sequence[int]]
         ]
     ) -> _typing.Callable[
         [_SimpleServiceInterfaceT, int],
-        _typing.Awaitable[_typing.Sequence[int]]
+        _typing.Coroutine[_typing.Any, _typing.Any, _typing.Sequence[int]]
     ]: ...
 
     @abstractmethod
@@ -463,11 +464,11 @@ class SimpleServiceInterface(
     def pass_context_unique_words(
         fn: _typing.Callable[
                 [_SimpleServiceInterfaceT, RequestContext, _typing.Sequence[str]],
-                _typing.Awaitable[_typing.AbstractSet[str]]
+                _typing.Coroutine[_typing.Any, _typing.Any, _typing.AbstractSet[str]]
         ]
     ) -> _typing.Callable[
         [_SimpleServiceInterfaceT, _typing.Sequence[str]],
-        _typing.Awaitable[_typing.AbstractSet[str]]
+        _typing.Coroutine[_typing.Any, _typing.Any, _typing.AbstractSet[str]]
     ]: ...
 
     @abstractmethod
@@ -480,11 +481,11 @@ class SimpleServiceInterface(
     def pass_context_words_count(
         fn: _typing.Callable[
                 [_SimpleServiceInterfaceT, RequestContext, _typing.Sequence[str]],
-                _typing.Awaitable[_typing.Mapping[str, int]]
+                _typing.Coroutine[_typing.Any, _typing.Any, _typing.Mapping[str, int]]
         ]
     ) -> _typing.Callable[
         [_SimpleServiceInterfaceT, _typing.Sequence[str]],
-        _typing.Awaitable[_typing.Mapping[str, int]]
+        _typing.Coroutine[_typing.Any, _typing.Any, _typing.Mapping[str, int]]
     ]: ...
 
     @abstractmethod
@@ -497,11 +498,11 @@ class SimpleServiceInterface(
     def pass_context_set_enum(
         fn: _typing.Callable[
                 [_SimpleServiceInterfaceT, RequestContext, _module_types.AnEnum],
-                _typing.Awaitable[_module_types.AnEnum]
+                _typing.Coroutine[_typing.Any, _typing.Any, _module_types.AnEnum]
         ]
     ) -> _typing.Callable[
         [_SimpleServiceInterfaceT, _module_types.AnEnum],
-        _typing.Awaitable[_module_types.AnEnum]
+        _typing.Coroutine[_typing.Any, _typing.Any, _module_types.AnEnum]
     ]: ...
 
     @abstractmethod
@@ -514,11 +515,11 @@ class SimpleServiceInterface(
     def pass_context_list_of_lists(
         fn: _typing.Callable[
                 [_SimpleServiceInterfaceT, RequestContext, int, int],
-                _typing.Awaitable[_typing.Sequence[_typing.Sequence[int]]]
+                _typing.Coroutine[_typing.Any, _typing.Any, _typing.Sequence[_typing.Sequence[int]]]
         ]
     ) -> _typing.Callable[
         [_SimpleServiceInterfaceT, int, int],
-        _typing.Awaitable[_typing.Sequence[_typing.Sequence[int]]]
+        _typing.Coroutine[_typing.Any, _typing.Any, _typing.Sequence[_typing.Sequence[int]]]
     ]: ...
 
     @abstractmethod
@@ -532,11 +533,11 @@ class SimpleServiceInterface(
     def pass_context_word_character_frequency(
         fn: _typing.Callable[
                 [_SimpleServiceInterfaceT, RequestContext, str],
-                _typing.Awaitable[_typing.Mapping[str, _typing.Mapping[str, int]]]
+                _typing.Coroutine[_typing.Any, _typing.Any, _typing.Mapping[str, _typing.Mapping[str, int]]]
         ]
     ) -> _typing.Callable[
         [_SimpleServiceInterfaceT, str],
-        _typing.Awaitable[_typing.Mapping[str, _typing.Mapping[str, int]]]
+        _typing.Coroutine[_typing.Any, _typing.Any, _typing.Mapping[str, _typing.Mapping[str, int]]]
     ]: ...
 
     @abstractmethod
@@ -549,11 +550,11 @@ class SimpleServiceInterface(
     def pass_context_list_of_sets(
         fn: _typing.Callable[
                 [_SimpleServiceInterfaceT, RequestContext, str],
-                _typing.Awaitable[_typing.Sequence[_typing.AbstractSet[str]]]
+                _typing.Coroutine[_typing.Any, _typing.Any, _typing.Sequence[_typing.AbstractSet[str]]]
         ]
     ) -> _typing.Callable[
         [_SimpleServiceInterfaceT, str],
-        _typing.Awaitable[_typing.Sequence[_typing.AbstractSet[str]]]
+        _typing.Coroutine[_typing.Any, _typing.Any, _typing.Sequence[_typing.AbstractSet[str]]]
     ]: ...
 
     @abstractmethod
@@ -566,11 +567,11 @@ class SimpleServiceInterface(
     def pass_context_nested_map_argument(
         fn: _typing.Callable[
                 [_SimpleServiceInterfaceT, RequestContext, _typing.Mapping[str, _typing.Sequence[_module_types.SimpleStruct]]],
-                _typing.Awaitable[int]
+                _typing.Coroutine[_typing.Any, _typing.Any, int]
         ]
     ) -> _typing.Callable[
         [_SimpleServiceInterfaceT, _typing.Mapping[str, _typing.Sequence[_module_types.SimpleStruct]]],
-        _typing.Awaitable[int]
+        _typing.Coroutine[_typing.Any, _typing.Any, int]
     ]: ...
 
     @abstractmethod
@@ -583,11 +584,11 @@ class SimpleServiceInterface(
     def pass_context_make_sentence(
         fn: _typing.Callable[
                 [_SimpleServiceInterfaceT, RequestContext, _typing.Sequence[_typing.Sequence[str]]],
-                _typing.Awaitable[str]
+                _typing.Coroutine[_typing.Any, _typing.Any, str]
         ]
     ) -> _typing.Callable[
         [_SimpleServiceInterfaceT, _typing.Sequence[_typing.Sequence[str]]],
-        _typing.Awaitable[str]
+        _typing.Coroutine[_typing.Any, _typing.Any, str]
     ]: ...
 
     @abstractmethod
@@ -600,11 +601,11 @@ class SimpleServiceInterface(
     def pass_context_get_union(
         fn: _typing.Callable[
                 [_SimpleServiceInterfaceT, RequestContext, _typing.Sequence[_typing.AbstractSet[int]]],
-                _typing.Awaitable[_typing.AbstractSet[int]]
+                _typing.Coroutine[_typing.Any, _typing.Any, _typing.AbstractSet[int]]
         ]
     ) -> _typing.Callable[
         [_SimpleServiceInterfaceT, _typing.Sequence[_typing.AbstractSet[int]]],
-        _typing.Awaitable[_typing.AbstractSet[int]]
+        _typing.Coroutine[_typing.Any, _typing.Any, _typing.AbstractSet[int]]
     ]: ...
 
     @abstractmethod
@@ -617,11 +618,11 @@ class SimpleServiceInterface(
     def pass_context_get_keys(
         fn: _typing.Callable[
                 [_SimpleServiceInterfaceT, RequestContext, _typing.Sequence[_typing.Mapping[str, str]]],
-                _typing.Awaitable[_typing.AbstractSet[str]]
+                _typing.Coroutine[_typing.Any, _typing.Any, _typing.AbstractSet[str]]
         ]
     ) -> _typing.Callable[
         [_SimpleServiceInterfaceT, _typing.Sequence[_typing.Mapping[str, str]]],
-        _typing.Awaitable[_typing.AbstractSet[str]]
+        _typing.Coroutine[_typing.Any, _typing.Any, _typing.AbstractSet[str]]
     ]: ...
 
     @abstractmethod
@@ -634,11 +635,11 @@ class SimpleServiceInterface(
     def pass_context_lookup_double(
         fn: _typing.Callable[
                 [_SimpleServiceInterfaceT, RequestContext, int],
-                _typing.Awaitable[float]
+                _typing.Coroutine[_typing.Any, _typing.Any, float]
         ]
     ) -> _typing.Callable[
         [_SimpleServiceInterfaceT, int],
-        _typing.Awaitable[float]
+        _typing.Coroutine[_typing.Any, _typing.Any, float]
     ]: ...
 
     @abstractmethod
@@ -651,11 +652,11 @@ class SimpleServiceInterface(
     def pass_context_retrieve_binary(
         fn: _typing.Callable[
                 [_SimpleServiceInterfaceT, RequestContext, bytes],
-                _typing.Awaitable[bytes]
+                _typing.Coroutine[_typing.Any, _typing.Any, bytes]
         ]
     ) -> _typing.Callable[
         [_SimpleServiceInterfaceT, bytes],
-        _typing.Awaitable[bytes]
+        _typing.Coroutine[_typing.Any, _typing.Any, bytes]
     ]: ...
 
     @abstractmethod
@@ -668,11 +669,11 @@ class SimpleServiceInterface(
     def pass_context_contain_binary(
         fn: _typing.Callable[
                 [_SimpleServiceInterfaceT, RequestContext, _typing.Sequence[bytes]],
-                _typing.Awaitable[_typing.AbstractSet[bytes]]
+                _typing.Coroutine[_typing.Any, _typing.Any, _typing.AbstractSet[bytes]]
         ]
     ) -> _typing.Callable[
         [_SimpleServiceInterfaceT, _typing.Sequence[bytes]],
-        _typing.Awaitable[_typing.AbstractSet[bytes]]
+        _typing.Coroutine[_typing.Any, _typing.Any, _typing.AbstractSet[bytes]]
     ]: ...
 
     @abstractmethod
@@ -685,11 +686,11 @@ class SimpleServiceInterface(
     def pass_context_contain_enum(
         fn: _typing.Callable[
                 [_SimpleServiceInterfaceT, RequestContext, _typing.Sequence[_module_types.AnEnum]],
-                _typing.Awaitable[_typing.Sequence[_module_types.AnEnum]]
+                _typing.Coroutine[_typing.Any, _typing.Any, _typing.Sequence[_module_types.AnEnum]]
         ]
     ) -> _typing.Callable[
         [_SimpleServiceInterfaceT, _typing.Sequence[_module_types.AnEnum]],
-        _typing.Awaitable[_typing.Sequence[_module_types.AnEnum]]
+        _typing.Coroutine[_typing.Any, _typing.Any, _typing.Sequence[_module_types.AnEnum]]
     ]: ...
 
     @abstractmethod
@@ -705,17 +706,18 @@ _DerivedServiceInterfaceT = _typing.TypeVar('_DerivedServiceInterfaceT', bound='
 
 class DerivedServiceInterface(
 SimpleServiceInterface
+    , metaclass=ABCMeta
 ):
 
     @staticmethod
     def pass_context_get_six(
         fn: _typing.Callable[
                 [_DerivedServiceInterfaceT, RequestContext],
-                _typing.Awaitable[int]
+                _typing.Coroutine[_typing.Any, _typing.Any, int]
         ]
     ) -> _typing.Callable[
         [_DerivedServiceInterfaceT],
-        _typing.Awaitable[int]
+        _typing.Coroutine[_typing.Any, _typing.Any, int]
     ]: ...
 
     @abstractmethod
@@ -730,17 +732,18 @@ _RederivedServiceInterfaceT = _typing.TypeVar('_RederivedServiceInterfaceT', bou
 
 class RederivedServiceInterface(
 DerivedServiceInterface
+    , metaclass=ABCMeta
 ):
 
     @staticmethod
     def pass_context_get_seven(
         fn: _typing.Callable[
                 [_RederivedServiceInterfaceT, RequestContext],
-                _typing.Awaitable[int]
+                _typing.Coroutine[_typing.Any, _typing.Any, int]
         ]
     ) -> _typing.Callable[
         [_RederivedServiceInterfaceT],
-        _typing.Awaitable[int]
+        _typing.Coroutine[_typing.Any, _typing.Any, int]
     ]: ...
 
     @abstractmethod

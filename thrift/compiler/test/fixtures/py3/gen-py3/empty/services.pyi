@@ -8,7 +8,7 @@
 from folly.iobuf import IOBuf as __IOBuf
 import typing as _typing
 from thrift.py3.server import RequestContext, ServiceInterface
-from abc import abstractmethod
+from abc import abstractmethod, ABCMeta
 
 import empty.types as _empty_types
 
@@ -17,6 +17,7 @@ _NullServiceInterfaceT = _typing.TypeVar('_NullServiceInterfaceT', bound='NullSe
 
 class NullServiceInterface(
     ServiceInterface
+    , metaclass=ABCMeta
 ):
     pass
 

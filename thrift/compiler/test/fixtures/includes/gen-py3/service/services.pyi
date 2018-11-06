@@ -8,7 +8,7 @@
 from folly.iobuf import IOBuf as __IOBuf
 import typing as _typing
 from thrift.py3.server import RequestContext, ServiceInterface
-from abc import abstractmethod
+from abc import abstractmethod, ABCMeta
 
 import service.types as _service_types
 import module.types as _module_types
@@ -20,17 +20,18 @@ _MyServiceInterfaceT = _typing.TypeVar('_MyServiceInterfaceT', bound='MyServiceI
 
 class MyServiceInterface(
     ServiceInterface
+    , metaclass=ABCMeta
 ):
 
     @staticmethod
     def pass_context_query(
         fn: _typing.Callable[
                 [_MyServiceInterfaceT, RequestContext, _module_types.MyStruct, _includes_types.Included],
-                _typing.Awaitable[None]
+                _typing.Coroutine[_typing.Any, _typing.Any, None]
         ]
     ) -> _typing.Callable[
         [_MyServiceInterfaceT, _module_types.MyStruct, _includes_types.Included],
-        _typing.Awaitable[None]
+        _typing.Coroutine[_typing.Any, _typing.Any, None]
     ]: ...
 
     @abstractmethod
@@ -44,11 +45,11 @@ class MyServiceInterface(
     def pass_context_has_arg_docs(
         fn: _typing.Callable[
                 [_MyServiceInterfaceT, RequestContext, _module_types.MyStruct, _includes_types.Included],
-                _typing.Awaitable[None]
+                _typing.Coroutine[_typing.Any, _typing.Any, None]
         ]
     ) -> _typing.Callable[
         [_MyServiceInterfaceT, _module_types.MyStruct, _includes_types.Included],
-        _typing.Awaitable[None]
+        _typing.Coroutine[_typing.Any, _typing.Any, None]
     ]: ...
 
     @abstractmethod

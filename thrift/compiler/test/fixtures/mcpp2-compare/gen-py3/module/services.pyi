@@ -8,7 +8,7 @@
 from folly.iobuf import IOBuf as __IOBuf
 import typing as _typing
 from thrift.py3.server import RequestContext, ServiceInterface
-from abc import abstractmethod
+from abc import abstractmethod, ABCMeta
 
 import module.types as _module_types
 import includes.types as _includes_types
@@ -18,6 +18,7 @@ _EmptyServiceInterfaceT = _typing.TypeVar('_EmptyServiceInterfaceT', bound='Empt
 
 class EmptyServiceInterface(
     ServiceInterface
+    , metaclass=ABCMeta
 ):
     pass
 
@@ -27,17 +28,18 @@ _ReturnServiceInterfaceT = _typing.TypeVar('_ReturnServiceInterfaceT', bound='Re
 
 class ReturnServiceInterface(
     ServiceInterface
+    , metaclass=ABCMeta
 ):
 
     @staticmethod
     def pass_context_noReturn(
         fn: _typing.Callable[
                 [_ReturnServiceInterfaceT, RequestContext],
-                _typing.Awaitable[None]
+                _typing.Coroutine[_typing.Any, _typing.Any, None]
         ]
     ) -> _typing.Callable[
         [_ReturnServiceInterfaceT],
-        _typing.Awaitable[None]
+        _typing.Coroutine[_typing.Any, _typing.Any, None]
     ]: ...
 
     @abstractmethod
@@ -49,11 +51,11 @@ class ReturnServiceInterface(
     def pass_context_boolReturn(
         fn: _typing.Callable[
                 [_ReturnServiceInterfaceT, RequestContext],
-                _typing.Awaitable[bool]
+                _typing.Coroutine[_typing.Any, _typing.Any, bool]
         ]
     ) -> _typing.Callable[
         [_ReturnServiceInterfaceT],
-        _typing.Awaitable[bool]
+        _typing.Coroutine[_typing.Any, _typing.Any, bool]
     ]: ...
 
     @abstractmethod
@@ -65,11 +67,11 @@ class ReturnServiceInterface(
     def pass_context_i16Return(
         fn: _typing.Callable[
                 [_ReturnServiceInterfaceT, RequestContext],
-                _typing.Awaitable[int]
+                _typing.Coroutine[_typing.Any, _typing.Any, int]
         ]
     ) -> _typing.Callable[
         [_ReturnServiceInterfaceT],
-        _typing.Awaitable[int]
+        _typing.Coroutine[_typing.Any, _typing.Any, int]
     ]: ...
 
     @abstractmethod
@@ -81,11 +83,11 @@ class ReturnServiceInterface(
     def pass_context_i32Return(
         fn: _typing.Callable[
                 [_ReturnServiceInterfaceT, RequestContext],
-                _typing.Awaitable[int]
+                _typing.Coroutine[_typing.Any, _typing.Any, int]
         ]
     ) -> _typing.Callable[
         [_ReturnServiceInterfaceT],
-        _typing.Awaitable[int]
+        _typing.Coroutine[_typing.Any, _typing.Any, int]
     ]: ...
 
     @abstractmethod
@@ -97,11 +99,11 @@ class ReturnServiceInterface(
     def pass_context_i64Return(
         fn: _typing.Callable[
                 [_ReturnServiceInterfaceT, RequestContext],
-                _typing.Awaitable[int]
+                _typing.Coroutine[_typing.Any, _typing.Any, int]
         ]
     ) -> _typing.Callable[
         [_ReturnServiceInterfaceT],
-        _typing.Awaitable[int]
+        _typing.Coroutine[_typing.Any, _typing.Any, int]
     ]: ...
 
     @abstractmethod
@@ -113,11 +115,11 @@ class ReturnServiceInterface(
     def pass_context_floatReturn(
         fn: _typing.Callable[
                 [_ReturnServiceInterfaceT, RequestContext],
-                _typing.Awaitable[float]
+                _typing.Coroutine[_typing.Any, _typing.Any, float]
         ]
     ) -> _typing.Callable[
         [_ReturnServiceInterfaceT],
-        _typing.Awaitable[float]
+        _typing.Coroutine[_typing.Any, _typing.Any, float]
     ]: ...
 
     @abstractmethod
@@ -129,11 +131,11 @@ class ReturnServiceInterface(
     def pass_context_doubleReturn(
         fn: _typing.Callable[
                 [_ReturnServiceInterfaceT, RequestContext],
-                _typing.Awaitable[float]
+                _typing.Coroutine[_typing.Any, _typing.Any, float]
         ]
     ) -> _typing.Callable[
         [_ReturnServiceInterfaceT],
-        _typing.Awaitable[float]
+        _typing.Coroutine[_typing.Any, _typing.Any, float]
     ]: ...
 
     @abstractmethod
@@ -145,11 +147,11 @@ class ReturnServiceInterface(
     def pass_context_stringReturn(
         fn: _typing.Callable[
                 [_ReturnServiceInterfaceT, RequestContext],
-                _typing.Awaitable[str]
+                _typing.Coroutine[_typing.Any, _typing.Any, str]
         ]
     ) -> _typing.Callable[
         [_ReturnServiceInterfaceT],
-        _typing.Awaitable[str]
+        _typing.Coroutine[_typing.Any, _typing.Any, str]
     ]: ...
 
     @abstractmethod
@@ -161,11 +163,11 @@ class ReturnServiceInterface(
     def pass_context_binaryReturn(
         fn: _typing.Callable[
                 [_ReturnServiceInterfaceT, RequestContext],
-                _typing.Awaitable[bytes]
+                _typing.Coroutine[_typing.Any, _typing.Any, bytes]
         ]
     ) -> _typing.Callable[
         [_ReturnServiceInterfaceT],
-        _typing.Awaitable[bytes]
+        _typing.Coroutine[_typing.Any, _typing.Any, bytes]
     ]: ...
 
     @abstractmethod
@@ -177,11 +179,11 @@ class ReturnServiceInterface(
     def pass_context_mapReturn(
         fn: _typing.Callable[
                 [_ReturnServiceInterfaceT, RequestContext],
-                _typing.Awaitable[_typing.Mapping[str, int]]
+                _typing.Coroutine[_typing.Any, _typing.Any, _typing.Mapping[str, int]]
         ]
     ) -> _typing.Callable[
         [_ReturnServiceInterfaceT],
-        _typing.Awaitable[_typing.Mapping[str, int]]
+        _typing.Coroutine[_typing.Any, _typing.Any, _typing.Mapping[str, int]]
     ]: ...
 
     @abstractmethod
@@ -193,11 +195,11 @@ class ReturnServiceInterface(
     def pass_context_simpleTypedefReturn(
         fn: _typing.Callable[
                 [_ReturnServiceInterfaceT, RequestContext],
-                _typing.Awaitable[int]
+                _typing.Coroutine[_typing.Any, _typing.Any, int]
         ]
     ) -> _typing.Callable[
         [_ReturnServiceInterfaceT],
-        _typing.Awaitable[int]
+        _typing.Coroutine[_typing.Any, _typing.Any, int]
     ]: ...
 
     @abstractmethod
@@ -209,11 +211,11 @@ class ReturnServiceInterface(
     def pass_context_complexTypedefReturn(
         fn: _typing.Callable[
                 [_ReturnServiceInterfaceT, RequestContext],
-                _typing.Awaitable[_typing.Sequence[_typing.Mapping[_module_types.Empty, _module_types.MyStruct]]]
+                _typing.Coroutine[_typing.Any, _typing.Any, _typing.Sequence[_typing.Mapping[_module_types.Empty, _module_types.MyStruct]]]
         ]
     ) -> _typing.Callable[
         [_ReturnServiceInterfaceT],
-        _typing.Awaitable[_typing.Sequence[_typing.Mapping[_module_types.Empty, _module_types.MyStruct]]]
+        _typing.Coroutine[_typing.Any, _typing.Any, _typing.Sequence[_typing.Mapping[_module_types.Empty, _module_types.MyStruct]]]
     ]: ...
 
     @abstractmethod
@@ -225,11 +227,11 @@ class ReturnServiceInterface(
     def pass_context_list_mostComplexTypedefReturn(
         fn: _typing.Callable[
                 [_ReturnServiceInterfaceT, RequestContext],
-                _typing.Awaitable[_typing.Sequence[_typing.Sequence[_typing.Sequence[_typing.Mapping[_module_types.Empty, _module_types.MyStruct]]]]]
+                _typing.Coroutine[_typing.Any, _typing.Any, _typing.Sequence[_typing.Sequence[_typing.Sequence[_typing.Mapping[_module_types.Empty, _module_types.MyStruct]]]]]
         ]
     ) -> _typing.Callable[
         [_ReturnServiceInterfaceT],
-        _typing.Awaitable[_typing.Sequence[_typing.Sequence[_typing.Sequence[_typing.Mapping[_module_types.Empty, _module_types.MyStruct]]]]]
+        _typing.Coroutine[_typing.Any, _typing.Any, _typing.Sequence[_typing.Sequence[_typing.Sequence[_typing.Mapping[_module_types.Empty, _module_types.MyStruct]]]]]
     ]: ...
 
     @abstractmethod
@@ -241,11 +243,11 @@ class ReturnServiceInterface(
     def pass_context_enumReturn(
         fn: _typing.Callable[
                 [_ReturnServiceInterfaceT, RequestContext],
-                _typing.Awaitable[_module_types.MyEnumA]
+                _typing.Coroutine[_typing.Any, _typing.Any, _module_types.MyEnumA]
         ]
     ) -> _typing.Callable[
         [_ReturnServiceInterfaceT],
-        _typing.Awaitable[_module_types.MyEnumA]
+        _typing.Coroutine[_typing.Any, _typing.Any, _module_types.MyEnumA]
     ]: ...
 
     @abstractmethod
@@ -257,11 +259,11 @@ class ReturnServiceInterface(
     def pass_context_list_EnumReturn(
         fn: _typing.Callable[
                 [_ReturnServiceInterfaceT, RequestContext],
-                _typing.Awaitable[_typing.Sequence[_module_types.MyEnumA]]
+                _typing.Coroutine[_typing.Any, _typing.Any, _typing.Sequence[_module_types.MyEnumA]]
         ]
     ) -> _typing.Callable[
         [_ReturnServiceInterfaceT],
-        _typing.Awaitable[_typing.Sequence[_module_types.MyEnumA]]
+        _typing.Coroutine[_typing.Any, _typing.Any, _typing.Sequence[_module_types.MyEnumA]]
     ]: ...
 
     @abstractmethod
@@ -273,11 +275,11 @@ class ReturnServiceInterface(
     def pass_context_structReturn(
         fn: _typing.Callable[
                 [_ReturnServiceInterfaceT, RequestContext],
-                _typing.Awaitable[_module_types.MyStruct]
+                _typing.Coroutine[_typing.Any, _typing.Any, _module_types.MyStruct]
         ]
     ) -> _typing.Callable[
         [_ReturnServiceInterfaceT],
-        _typing.Awaitable[_module_types.MyStruct]
+        _typing.Coroutine[_typing.Any, _typing.Any, _module_types.MyStruct]
     ]: ...
 
     @abstractmethod
@@ -289,11 +291,11 @@ class ReturnServiceInterface(
     def pass_context_set_StructReturn(
         fn: _typing.Callable[
                 [_ReturnServiceInterfaceT, RequestContext],
-                _typing.Awaitable[_typing.AbstractSet[_module_types.MyStruct]]
+                _typing.Coroutine[_typing.Any, _typing.Any, _typing.AbstractSet[_module_types.MyStruct]]
         ]
     ) -> _typing.Callable[
         [_ReturnServiceInterfaceT],
-        _typing.Awaitable[_typing.AbstractSet[_module_types.MyStruct]]
+        _typing.Coroutine[_typing.Any, _typing.Any, _typing.AbstractSet[_module_types.MyStruct]]
     ]: ...
 
     @abstractmethod
@@ -305,11 +307,11 @@ class ReturnServiceInterface(
     def pass_context_unionReturn(
         fn: _typing.Callable[
                 [_ReturnServiceInterfaceT, RequestContext],
-                _typing.Awaitable[_module_types.ComplexUnion]
+                _typing.Coroutine[_typing.Any, _typing.Any, _module_types.ComplexUnion]
         ]
     ) -> _typing.Callable[
         [_ReturnServiceInterfaceT],
-        _typing.Awaitable[_module_types.ComplexUnion]
+        _typing.Coroutine[_typing.Any, _typing.Any, _module_types.ComplexUnion]
     ]: ...
 
     @abstractmethod
@@ -321,11 +323,11 @@ class ReturnServiceInterface(
     def pass_context_list_UnionReturn(
         fn: _typing.Callable[
                 [_ReturnServiceInterfaceT, RequestContext],
-                _typing.Awaitable[_typing.Sequence[_module_types.ComplexUnion]]
+                _typing.Coroutine[_typing.Any, _typing.Any, _typing.Sequence[_module_types.ComplexUnion]]
         ]
     ) -> _typing.Callable[
         [_ReturnServiceInterfaceT],
-        _typing.Awaitable[_typing.Sequence[_module_types.ComplexUnion]]
+        _typing.Coroutine[_typing.Any, _typing.Any, _typing.Sequence[_module_types.ComplexUnion]]
     ]: ...
 
     @abstractmethod
@@ -337,11 +339,11 @@ class ReturnServiceInterface(
     def pass_context_readDataEb(
         fn: _typing.Callable[
                 [_ReturnServiceInterfaceT, RequestContext, int],
-                _typing.Awaitable[__IOBuf]
+                _typing.Coroutine[_typing.Any, _typing.Any, __IOBuf]
         ]
     ) -> _typing.Callable[
         [_ReturnServiceInterfaceT, int],
-        _typing.Awaitable[__IOBuf]
+        _typing.Coroutine[_typing.Any, _typing.Any, __IOBuf]
     ]: ...
 
     @abstractmethod
@@ -354,11 +356,11 @@ class ReturnServiceInterface(
     def pass_context_readData(
         fn: _typing.Callable[
                 [_ReturnServiceInterfaceT, RequestContext, int],
-                _typing.Awaitable[__IOBuf]
+                _typing.Coroutine[_typing.Any, _typing.Any, __IOBuf]
         ]
     ) -> _typing.Callable[
         [_ReturnServiceInterfaceT, int],
-        _typing.Awaitable[__IOBuf]
+        _typing.Coroutine[_typing.Any, _typing.Any, __IOBuf]
     ]: ...
 
     @abstractmethod
@@ -374,17 +376,18 @@ _ParamServiceInterfaceT = _typing.TypeVar('_ParamServiceInterfaceT', bound='Para
 
 class ParamServiceInterface(
     ServiceInterface
+    , metaclass=ABCMeta
 ):
 
     @staticmethod
     def pass_context_void_ret_i16_param(
         fn: _typing.Callable[
                 [_ParamServiceInterfaceT, RequestContext, int],
-                _typing.Awaitable[None]
+                _typing.Coroutine[_typing.Any, _typing.Any, None]
         ]
     ) -> _typing.Callable[
         [_ParamServiceInterfaceT, int],
-        _typing.Awaitable[None]
+        _typing.Coroutine[_typing.Any, _typing.Any, None]
     ]: ...
 
     @abstractmethod
@@ -397,11 +400,11 @@ class ParamServiceInterface(
     def pass_context_void_ret_byte_i16_param(
         fn: _typing.Callable[
                 [_ParamServiceInterfaceT, RequestContext, int, int],
-                _typing.Awaitable[None]
+                _typing.Coroutine[_typing.Any, _typing.Any, None]
         ]
     ) -> _typing.Callable[
         [_ParamServiceInterfaceT, int, int],
-        _typing.Awaitable[None]
+        _typing.Coroutine[_typing.Any, _typing.Any, None]
     ]: ...
 
     @abstractmethod
@@ -415,11 +418,11 @@ class ParamServiceInterface(
     def pass_context_void_ret_map_param(
         fn: _typing.Callable[
                 [_ParamServiceInterfaceT, RequestContext, _typing.Mapping[str, int]],
-                _typing.Awaitable[None]
+                _typing.Coroutine[_typing.Any, _typing.Any, None]
         ]
     ) -> _typing.Callable[
         [_ParamServiceInterfaceT, _typing.Mapping[str, int]],
-        _typing.Awaitable[None]
+        _typing.Coroutine[_typing.Any, _typing.Any, None]
     ]: ...
 
     @abstractmethod
@@ -432,11 +435,11 @@ class ParamServiceInterface(
     def pass_context_void_ret_map_setlist_param(
         fn: _typing.Callable[
                 [_ParamServiceInterfaceT, RequestContext, _typing.Mapping[str, int], _typing.AbstractSet[_typing.Sequence[str]]],
-                _typing.Awaitable[None]
+                _typing.Coroutine[_typing.Any, _typing.Any, None]
         ]
     ) -> _typing.Callable[
         [_ParamServiceInterfaceT, _typing.Mapping[str, int], _typing.AbstractSet[_typing.Sequence[str]]],
-        _typing.Awaitable[None]
+        _typing.Coroutine[_typing.Any, _typing.Any, None]
     ]: ...
 
     @abstractmethod
@@ -450,11 +453,11 @@ class ParamServiceInterface(
     def pass_context_void_ret_map_typedef_param(
         fn: _typing.Callable[
                 [_ParamServiceInterfaceT, RequestContext, int],
-                _typing.Awaitable[None]
+                _typing.Coroutine[_typing.Any, _typing.Any, None]
         ]
     ) -> _typing.Callable[
         [_ParamServiceInterfaceT, int],
-        _typing.Awaitable[None]
+        _typing.Coroutine[_typing.Any, _typing.Any, None]
     ]: ...
 
     @abstractmethod
@@ -467,11 +470,11 @@ class ParamServiceInterface(
     def pass_context_void_ret_enum_param(
         fn: _typing.Callable[
                 [_ParamServiceInterfaceT, RequestContext, _module_types.MyEnumA],
-                _typing.Awaitable[None]
+                _typing.Coroutine[_typing.Any, _typing.Any, None]
         ]
     ) -> _typing.Callable[
         [_ParamServiceInterfaceT, _module_types.MyEnumA],
-        _typing.Awaitable[None]
+        _typing.Coroutine[_typing.Any, _typing.Any, None]
     ]: ...
 
     @abstractmethod
@@ -484,11 +487,11 @@ class ParamServiceInterface(
     def pass_context_void_ret_struct_param(
         fn: _typing.Callable[
                 [_ParamServiceInterfaceT, RequestContext, _module_types.MyStruct],
-                _typing.Awaitable[None]
+                _typing.Coroutine[_typing.Any, _typing.Any, None]
         ]
     ) -> _typing.Callable[
         [_ParamServiceInterfaceT, _module_types.MyStruct],
-        _typing.Awaitable[None]
+        _typing.Coroutine[_typing.Any, _typing.Any, None]
     ]: ...
 
     @abstractmethod
@@ -501,11 +504,11 @@ class ParamServiceInterface(
     def pass_context_void_ret_listunion_param(
         fn: _typing.Callable[
                 [_ParamServiceInterfaceT, RequestContext, _typing.Sequence[_module_types.ComplexUnion]],
-                _typing.Awaitable[None]
+                _typing.Coroutine[_typing.Any, _typing.Any, None]
         ]
     ) -> _typing.Callable[
         [_ParamServiceInterfaceT, _typing.Sequence[_module_types.ComplexUnion]],
-        _typing.Awaitable[None]
+        _typing.Coroutine[_typing.Any, _typing.Any, None]
     ]: ...
 
     @abstractmethod
@@ -518,11 +521,11 @@ class ParamServiceInterface(
     def pass_context_bool_ret_i32_i64_param(
         fn: _typing.Callable[
                 [_ParamServiceInterfaceT, RequestContext, int, int],
-                _typing.Awaitable[bool]
+                _typing.Coroutine[_typing.Any, _typing.Any, bool]
         ]
     ) -> _typing.Callable[
         [_ParamServiceInterfaceT, int, int],
-        _typing.Awaitable[bool]
+        _typing.Coroutine[_typing.Any, _typing.Any, bool]
     ]: ...
 
     @abstractmethod
@@ -536,11 +539,11 @@ class ParamServiceInterface(
     def pass_context_bool_ret_map_param(
         fn: _typing.Callable[
                 [_ParamServiceInterfaceT, RequestContext, _typing.Mapping[str, int]],
-                _typing.Awaitable[bool]
+                _typing.Coroutine[_typing.Any, _typing.Any, bool]
         ]
     ) -> _typing.Callable[
         [_ParamServiceInterfaceT, _typing.Mapping[str, int]],
-        _typing.Awaitable[bool]
+        _typing.Coroutine[_typing.Any, _typing.Any, bool]
     ]: ...
 
     @abstractmethod
@@ -553,11 +556,11 @@ class ParamServiceInterface(
     def pass_context_bool_ret_union_param(
         fn: _typing.Callable[
                 [_ParamServiceInterfaceT, RequestContext, _module_types.ComplexUnion],
-                _typing.Awaitable[bool]
+                _typing.Coroutine[_typing.Any, _typing.Any, bool]
         ]
     ) -> _typing.Callable[
         [_ParamServiceInterfaceT, _module_types.ComplexUnion],
-        _typing.Awaitable[bool]
+        _typing.Coroutine[_typing.Any, _typing.Any, bool]
     ]: ...
 
     @abstractmethod
@@ -570,11 +573,11 @@ class ParamServiceInterface(
     def pass_context_i64_ret_float_double_param(
         fn: _typing.Callable[
                 [_ParamServiceInterfaceT, RequestContext, float, float],
-                _typing.Awaitable[int]
+                _typing.Coroutine[_typing.Any, _typing.Any, int]
         ]
     ) -> _typing.Callable[
         [_ParamServiceInterfaceT, float, float],
-        _typing.Awaitable[int]
+        _typing.Coroutine[_typing.Any, _typing.Any, int]
     ]: ...
 
     @abstractmethod
@@ -588,11 +591,11 @@ class ParamServiceInterface(
     def pass_context_i64_ret_string_typedef_param(
         fn: _typing.Callable[
                 [_ParamServiceInterfaceT, RequestContext, str, _typing.AbstractSet[_typing.Sequence[_typing.Sequence[_typing.Mapping[_module_types.Empty, _module_types.MyStruct]]]]],
-                _typing.Awaitable[int]
+                _typing.Coroutine[_typing.Any, _typing.Any, int]
         ]
     ) -> _typing.Callable[
         [_ParamServiceInterfaceT, str, _typing.AbstractSet[_typing.Sequence[_typing.Sequence[_typing.Mapping[_module_types.Empty, _module_types.MyStruct]]]]],
-        _typing.Awaitable[int]
+        _typing.Coroutine[_typing.Any, _typing.Any, int]
     ]: ...
 
     @abstractmethod
@@ -606,11 +609,11 @@ class ParamServiceInterface(
     def pass_context_i64_ret_i32_i32_i32_i32_i32_param(
         fn: _typing.Callable[
                 [_ParamServiceInterfaceT, RequestContext, int, int, int, int, int],
-                _typing.Awaitable[int]
+                _typing.Coroutine[_typing.Any, _typing.Any, int]
         ]
     ) -> _typing.Callable[
         [_ParamServiceInterfaceT, int, int, int, int, int],
-        _typing.Awaitable[int]
+        _typing.Coroutine[_typing.Any, _typing.Any, int]
     ]: ...
 
     @abstractmethod
@@ -627,11 +630,11 @@ class ParamServiceInterface(
     def pass_context_double_ret_setstruct_param(
         fn: _typing.Callable[
                 [_ParamServiceInterfaceT, RequestContext, _typing.AbstractSet[_module_types.MyStruct]],
-                _typing.Awaitable[float]
+                _typing.Coroutine[_typing.Any, _typing.Any, float]
         ]
     ) -> _typing.Callable[
         [_ParamServiceInterfaceT, _typing.AbstractSet[_module_types.MyStruct]],
-        _typing.Awaitable[float]
+        _typing.Coroutine[_typing.Any, _typing.Any, float]
     ]: ...
 
     @abstractmethod
@@ -644,11 +647,11 @@ class ParamServiceInterface(
     def pass_context_string_ret_string_param(
         fn: _typing.Callable[
                 [_ParamServiceInterfaceT, RequestContext, str],
-                _typing.Awaitable[str]
+                _typing.Coroutine[_typing.Any, _typing.Any, str]
         ]
     ) -> _typing.Callable[
         [_ParamServiceInterfaceT, str],
-        _typing.Awaitable[str]
+        _typing.Coroutine[_typing.Any, _typing.Any, str]
     ]: ...
 
     @abstractmethod
@@ -661,11 +664,11 @@ class ParamServiceInterface(
     def pass_context_binary_ret_binary_param(
         fn: _typing.Callable[
                 [_ParamServiceInterfaceT, RequestContext, bytes],
-                _typing.Awaitable[bytes]
+                _typing.Coroutine[_typing.Any, _typing.Any, bytes]
         ]
     ) -> _typing.Callable[
         [_ParamServiceInterfaceT, bytes],
-        _typing.Awaitable[bytes]
+        _typing.Coroutine[_typing.Any, _typing.Any, bytes]
     ]: ...
 
     @abstractmethod
@@ -678,11 +681,11 @@ class ParamServiceInterface(
     def pass_context_map_ret_bool_param(
         fn: _typing.Callable[
                 [_ParamServiceInterfaceT, RequestContext, bool],
-                _typing.Awaitable[_typing.Mapping[str, int]]
+                _typing.Coroutine[_typing.Any, _typing.Any, _typing.Mapping[str, int]]
         ]
     ) -> _typing.Callable[
         [_ParamServiceInterfaceT, bool],
-        _typing.Awaitable[_typing.Mapping[str, int]]
+        _typing.Coroutine[_typing.Any, _typing.Any, _typing.Mapping[str, int]]
     ]: ...
 
     @abstractmethod
@@ -695,11 +698,11 @@ class ParamServiceInterface(
     def pass_context_list_ret_map_setlist_param(
         fn: _typing.Callable[
                 [_ParamServiceInterfaceT, RequestContext, _typing.Mapping[int, _typing.Sequence[str]], _typing.Sequence[str]],
-                _typing.Awaitable[_typing.Sequence[bool]]
+                _typing.Coroutine[_typing.Any, _typing.Any, _typing.Sequence[bool]]
         ]
     ) -> _typing.Callable[
         [_ParamServiceInterfaceT, _typing.Mapping[int, _typing.Sequence[str]], _typing.Sequence[str]],
-        _typing.Awaitable[_typing.Sequence[bool]]
+        _typing.Coroutine[_typing.Any, _typing.Any, _typing.Sequence[bool]]
     ]: ...
 
     @abstractmethod
@@ -713,11 +716,11 @@ class ParamServiceInterface(
     def pass_context_mapsetlistmapliststring_ret_listlistlist_param(
         fn: _typing.Callable[
                 [_ParamServiceInterfaceT, RequestContext, _typing.Sequence[_typing.Sequence[_typing.Sequence[_typing.Sequence[int]]]]],
-                _typing.Awaitable[_typing.Mapping[_typing.AbstractSet[_typing.Sequence[int]], _typing.Mapping[_typing.Sequence[_typing.AbstractSet[str]], str]]]
+                _typing.Coroutine[_typing.Any, _typing.Any, _typing.Mapping[_typing.AbstractSet[_typing.Sequence[int]], _typing.Mapping[_typing.Sequence[_typing.AbstractSet[str]], str]]]
         ]
     ) -> _typing.Callable[
         [_ParamServiceInterfaceT, _typing.Sequence[_typing.Sequence[_typing.Sequence[_typing.Sequence[int]]]]],
-        _typing.Awaitable[_typing.Mapping[_typing.AbstractSet[_typing.Sequence[int]], _typing.Mapping[_typing.Sequence[_typing.AbstractSet[str]], str]]]
+        _typing.Coroutine[_typing.Any, _typing.Any, _typing.Mapping[_typing.AbstractSet[_typing.Sequence[int]], _typing.Mapping[_typing.Sequence[_typing.AbstractSet[str]], str]]]
     ]: ...
 
     @abstractmethod
@@ -730,11 +733,11 @@ class ParamServiceInterface(
     def pass_context_typedef_ret_i32_param(
         fn: _typing.Callable[
                 [_ParamServiceInterfaceT, RequestContext, int],
-                _typing.Awaitable[int]
+                _typing.Coroutine[_typing.Any, _typing.Any, int]
         ]
     ) -> _typing.Callable[
         [_ParamServiceInterfaceT, int],
-        _typing.Awaitable[int]
+        _typing.Coroutine[_typing.Any, _typing.Any, int]
     ]: ...
 
     @abstractmethod
@@ -747,11 +750,11 @@ class ParamServiceInterface(
     def pass_context_listtypedef_ret_typedef_param(
         fn: _typing.Callable[
                 [_ParamServiceInterfaceT, RequestContext, _typing.Sequence[_typing.Mapping[_module_types.Empty, _module_types.MyStruct]]],
-                _typing.Awaitable[_typing.Sequence[int]]
+                _typing.Coroutine[_typing.Any, _typing.Any, _typing.Sequence[int]]
         ]
     ) -> _typing.Callable[
         [_ParamServiceInterfaceT, _typing.Sequence[_typing.Mapping[_module_types.Empty, _module_types.MyStruct]]],
-        _typing.Awaitable[_typing.Sequence[int]]
+        _typing.Coroutine[_typing.Any, _typing.Any, _typing.Sequence[int]]
     ]: ...
 
     @abstractmethod
@@ -764,11 +767,11 @@ class ParamServiceInterface(
     def pass_context_enum_ret_double_param(
         fn: _typing.Callable[
                 [_ParamServiceInterfaceT, RequestContext, float],
-                _typing.Awaitable[_module_types.MyEnumA]
+                _typing.Coroutine[_typing.Any, _typing.Any, _module_types.MyEnumA]
         ]
     ) -> _typing.Callable[
         [_ParamServiceInterfaceT, float],
-        _typing.Awaitable[_module_types.MyEnumA]
+        _typing.Coroutine[_typing.Any, _typing.Any, _module_types.MyEnumA]
     ]: ...
 
     @abstractmethod
@@ -781,11 +784,11 @@ class ParamServiceInterface(
     def pass_context_enum_ret_double_enum_param(
         fn: _typing.Callable[
                 [_ParamServiceInterfaceT, RequestContext, float, _module_types.MyEnumA],
-                _typing.Awaitable[_module_types.MyEnumA]
+                _typing.Coroutine[_typing.Any, _typing.Any, _module_types.MyEnumA]
         ]
     ) -> _typing.Callable[
         [_ParamServiceInterfaceT, float, _module_types.MyEnumA],
-        _typing.Awaitable[_module_types.MyEnumA]
+        _typing.Coroutine[_typing.Any, _typing.Any, _module_types.MyEnumA]
     ]: ...
 
     @abstractmethod
@@ -799,11 +802,11 @@ class ParamServiceInterface(
     def pass_context_listenum_ret_map_param(
         fn: _typing.Callable[
                 [_ParamServiceInterfaceT, RequestContext, _typing.Mapping[str, int]],
-                _typing.Awaitable[_typing.Sequence[_module_types.MyEnumA]]
+                _typing.Coroutine[_typing.Any, _typing.Any, _typing.Sequence[_module_types.MyEnumA]]
         ]
     ) -> _typing.Callable[
         [_ParamServiceInterfaceT, _typing.Mapping[str, int]],
-        _typing.Awaitable[_typing.Sequence[_module_types.MyEnumA]]
+        _typing.Coroutine[_typing.Any, _typing.Any, _typing.Sequence[_module_types.MyEnumA]]
     ]: ...
 
     @abstractmethod
@@ -816,11 +819,11 @@ class ParamServiceInterface(
     def pass_context_struct_ret_i16_param(
         fn: _typing.Callable[
                 [_ParamServiceInterfaceT, RequestContext, int],
-                _typing.Awaitable[_module_types.MyStruct]
+                _typing.Coroutine[_typing.Any, _typing.Any, _module_types.MyStruct]
         ]
     ) -> _typing.Callable[
         [_ParamServiceInterfaceT, int],
-        _typing.Awaitable[_module_types.MyStruct]
+        _typing.Coroutine[_typing.Any, _typing.Any, _module_types.MyStruct]
     ]: ...
 
     @abstractmethod
@@ -833,11 +836,11 @@ class ParamServiceInterface(
     def pass_context_setstruct_ret_set_param(
         fn: _typing.Callable[
                 [_ParamServiceInterfaceT, RequestContext, _typing.AbstractSet[str]],
-                _typing.Awaitable[_typing.AbstractSet[_module_types.MyStruct]]
+                _typing.Coroutine[_typing.Any, _typing.Any, _typing.AbstractSet[_module_types.MyStruct]]
         ]
     ) -> _typing.Callable[
         [_ParamServiceInterfaceT, _typing.AbstractSet[str]],
-        _typing.Awaitable[_typing.AbstractSet[_module_types.MyStruct]]
+        _typing.Coroutine[_typing.Any, _typing.Any, _typing.AbstractSet[_module_types.MyStruct]]
     ]: ...
 
     @abstractmethod
@@ -850,11 +853,11 @@ class ParamServiceInterface(
     def pass_context_union_ret_i32_i32_param(
         fn: _typing.Callable[
                 [_ParamServiceInterfaceT, RequestContext, int, int],
-                _typing.Awaitable[_module_types.ComplexUnion]
+                _typing.Coroutine[_typing.Any, _typing.Any, _module_types.ComplexUnion]
         ]
     ) -> _typing.Callable[
         [_ParamServiceInterfaceT, int, int],
-        _typing.Awaitable[_module_types.ComplexUnion]
+        _typing.Coroutine[_typing.Any, _typing.Any, _module_types.ComplexUnion]
     ]: ...
 
     @abstractmethod
@@ -868,11 +871,11 @@ class ParamServiceInterface(
     def pass_context_listunion_string_param(
         fn: _typing.Callable[
                 [_ParamServiceInterfaceT, RequestContext, str],
-                _typing.Awaitable[_typing.Sequence[_module_types.ComplexUnion]]
+                _typing.Coroutine[_typing.Any, _typing.Any, _typing.Sequence[_module_types.ComplexUnion]]
         ]
     ) -> _typing.Callable[
         [_ParamServiceInterfaceT, str],
-        _typing.Awaitable[_typing.Sequence[_module_types.ComplexUnion]]
+        _typing.Coroutine[_typing.Any, _typing.Any, _typing.Sequence[_module_types.ComplexUnion]]
     ]: ...
 
     @abstractmethod

@@ -8,7 +8,7 @@
 from folly.iobuf import IOBuf as __IOBuf
 import typing as _typing
 from thrift.py3.server import RequestContext, ServiceInterface
-from abc import abstractmethod
+from abc import abstractmethod, ABCMeta
 
 import module.types as _module_types
 
@@ -17,17 +17,18 @@ _MyServiceInterfaceT = _typing.TypeVar('_MyServiceInterfaceT', bound='MyServiceI
 
 class MyServiceInterface(
     ServiceInterface
+    , metaclass=ABCMeta
 ):
 
     @staticmethod
     def pass_context_hasDataById(
         fn: _typing.Callable[
                 [_MyServiceInterfaceT, RequestContext, int],
-                _typing.Awaitable[bool]
+                _typing.Coroutine[_typing.Any, _typing.Any, bool]
         ]
     ) -> _typing.Callable[
         [_MyServiceInterfaceT, int],
-        _typing.Awaitable[bool]
+        _typing.Coroutine[_typing.Any, _typing.Any, bool]
     ]: ...
 
     @abstractmethod
@@ -40,11 +41,11 @@ class MyServiceInterface(
     def pass_context_getDataById(
         fn: _typing.Callable[
                 [_MyServiceInterfaceT, RequestContext, int],
-                _typing.Awaitable[str]
+                _typing.Coroutine[_typing.Any, _typing.Any, str]
         ]
     ) -> _typing.Callable[
         [_MyServiceInterfaceT, int],
-        _typing.Awaitable[str]
+        _typing.Coroutine[_typing.Any, _typing.Any, str]
     ]: ...
 
     @abstractmethod
@@ -57,11 +58,11 @@ class MyServiceInterface(
     def pass_context_putDataById(
         fn: _typing.Callable[
                 [_MyServiceInterfaceT, RequestContext, int, str],
-                _typing.Awaitable[None]
+                _typing.Coroutine[_typing.Any, _typing.Any, None]
         ]
     ) -> _typing.Callable[
         [_MyServiceInterfaceT, int, str],
-        _typing.Awaitable[None]
+        _typing.Coroutine[_typing.Any, _typing.Any, None]
     ]: ...
 
     @abstractmethod
@@ -75,11 +76,11 @@ class MyServiceInterface(
     def pass_context_lobDataById(
         fn: _typing.Callable[
                 [_MyServiceInterfaceT, RequestContext, int, str],
-                _typing.Awaitable[None]
+                _typing.Coroutine[_typing.Any, _typing.Any, None]
         ]
     ) -> _typing.Callable[
         [_MyServiceInterfaceT, int, str],
-        _typing.Awaitable[None]
+        _typing.Coroutine[_typing.Any, _typing.Any, None]
     ]: ...
 
     @abstractmethod
@@ -96,17 +97,18 @@ _MyServiceFastInterfaceT = _typing.TypeVar('_MyServiceFastInterfaceT', bound='My
 
 class MyServiceFastInterface(
     ServiceInterface
+    , metaclass=ABCMeta
 ):
 
     @staticmethod
     def pass_context_hasDataById(
         fn: _typing.Callable[
                 [_MyServiceFastInterfaceT, RequestContext, int],
-                _typing.Awaitable[bool]
+                _typing.Coroutine[_typing.Any, _typing.Any, bool]
         ]
     ) -> _typing.Callable[
         [_MyServiceFastInterfaceT, int],
-        _typing.Awaitable[bool]
+        _typing.Coroutine[_typing.Any, _typing.Any, bool]
     ]: ...
 
     @abstractmethod
@@ -119,11 +121,11 @@ class MyServiceFastInterface(
     def pass_context_getDataById(
         fn: _typing.Callable[
                 [_MyServiceFastInterfaceT, RequestContext, int],
-                _typing.Awaitable[str]
+                _typing.Coroutine[_typing.Any, _typing.Any, str]
         ]
     ) -> _typing.Callable[
         [_MyServiceFastInterfaceT, int],
-        _typing.Awaitable[str]
+        _typing.Coroutine[_typing.Any, _typing.Any, str]
     ]: ...
 
     @abstractmethod
@@ -136,11 +138,11 @@ class MyServiceFastInterface(
     def pass_context_putDataById(
         fn: _typing.Callable[
                 [_MyServiceFastInterfaceT, RequestContext, int, str],
-                _typing.Awaitable[None]
+                _typing.Coroutine[_typing.Any, _typing.Any, None]
         ]
     ) -> _typing.Callable[
         [_MyServiceFastInterfaceT, int, str],
-        _typing.Awaitable[None]
+        _typing.Coroutine[_typing.Any, _typing.Any, None]
     ]: ...
 
     @abstractmethod
@@ -154,11 +156,11 @@ class MyServiceFastInterface(
     def pass_context_lobDataById(
         fn: _typing.Callable[
                 [_MyServiceFastInterfaceT, RequestContext, int, str],
-                _typing.Awaitable[None]
+                _typing.Coroutine[_typing.Any, _typing.Any, None]
         ]
     ) -> _typing.Callable[
         [_MyServiceFastInterfaceT, int, str],
-        _typing.Awaitable[None]
+        _typing.Coroutine[_typing.Any, _typing.Any, None]
     ]: ...
 
     @abstractmethod
