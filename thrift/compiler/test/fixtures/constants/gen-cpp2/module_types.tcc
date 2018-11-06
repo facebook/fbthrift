@@ -976,9 +976,6 @@ void union1::readNoXfer(Protocol_* iprot) {
 
   _readState.readStructBegin(iprot);
 
-  using apache::thrift::TProtocolException;
-
-
   _readState.readFieldBegin(iprot);
   if (_readState.fieldType == apache::thrift::protocol::T_STOP) {
     this->__clear();
@@ -1021,7 +1018,6 @@ void union1::readNoXfer(Protocol_* iprot) {
     }
   }
   _readState.readStructEnd(iprot);
-
 }
 template <class Protocol_>
 uint32_t union1::serializedSize(Protocol_ const* prot_) const {
@@ -1105,9 +1101,6 @@ void union2::readNoXfer(Protocol_* iprot) {
 
   _readState.readStructBegin(iprot);
 
-  using apache::thrift::TProtocolException;
-
-
   _readState.readFieldBegin(iprot);
   if (_readState.fieldType == apache::thrift::protocol::T_STOP) {
     this->__clear();
@@ -1170,7 +1163,6 @@ void union2::readNoXfer(Protocol_* iprot) {
     }
   }
   _readState.readStructEnd(iprot);
-
 }
 template <class Protocol_>
 uint32_t union2::serializedSize(Protocol_ const* prot_) const {

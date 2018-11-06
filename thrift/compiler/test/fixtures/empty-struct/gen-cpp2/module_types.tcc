@@ -117,9 +117,6 @@ void Nada::readNoXfer(Protocol_* iprot) {
 
   _readState.readStructBegin(iprot);
 
-  using apache::thrift::TProtocolException;
-
-
   _readState.readFieldBegin(iprot);
   if (_readState.fieldType == apache::thrift::protocol::T_STOP) {
     this->__clear();
@@ -142,7 +139,6 @@ void Nada::readNoXfer(Protocol_* iprot) {
     }
   }
   _readState.readStructEnd(iprot);
-
 }
 template <class Protocol_>
 uint32_t Nada::serializedSize(Protocol_ const* prot_) const {

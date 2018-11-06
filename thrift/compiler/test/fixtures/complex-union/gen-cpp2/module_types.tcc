@@ -48,9 +48,6 @@ void ComplexUnion::readNoXfer(Protocol_* iprot) {
 
   _readState.readStructBegin(iprot);
 
-  using apache::thrift::TProtocolException;
-
-
   _readState.readFieldBegin(iprot);
   if (_readState.fieldType == apache::thrift::protocol::T_STOP) {
     this->__clear();
@@ -136,7 +133,6 @@ void ComplexUnion::readNoXfer(Protocol_* iprot) {
     }
   }
   _readState.readStructEnd(iprot);
-
 }
 template <class Protocol_>
 uint32_t ComplexUnion::serializedSize(Protocol_ const* prot_) const {
@@ -296,9 +292,6 @@ void VirtualComplexUnion::readNoXfer(Protocol_* iprot) {
 
   _readState.readStructBegin(iprot);
 
-  using apache::thrift::TProtocolException;
-
-
   _readState.readFieldBegin(iprot);
   if (_readState.fieldType == apache::thrift::protocol::T_STOP) {
     this->__clear();
@@ -341,7 +334,6 @@ void VirtualComplexUnion::readNoXfer(Protocol_* iprot) {
     }
   }
   _readState.readStructEnd(iprot);
-
 }
 template <class Protocol_>
 uint32_t VirtualComplexUnion::serializedSize(Protocol_ const* prot_) const {
