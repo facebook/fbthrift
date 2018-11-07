@@ -5,7 +5,7 @@
 #  @generated
 #
 
-from folly.iobuf import IOBuf as __IOBuf
+import folly.iobuf as __iobuf
 import thrift.py3.types
 import thrift.py3.client
 import thrift.py3.common
@@ -147,13 +147,13 @@ class ReturnService(thrift.py3.client.Client):
         self,
         size: int,
         rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
-    ) -> __IOBuf: ...
+    ) -> __iobuf.IOBuf: ...
 
     async def readData(
         self,
         size: int,
         rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
-    ) -> __IOBuf: ...
+    ) -> __iobuf.IOBuf: ...
 
 
 

@@ -5,7 +5,7 @@
 #  @generated
 #
 
-from folly.iobuf import IOBuf as __IOBuf
+import folly.iobuf as __iobuf
 import thrift.py3.types
 import thrift.py3.exceptions
 from thrift.py3.types import NOTSET, NOTSETTYPE
@@ -687,8 +687,8 @@ class AnnotatedStruct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterabl
         set_type: _typing.Optional[_typing.AbstractSet[str]]=None,
         map_type: _typing.Optional[_typing.Mapping[int, float]]=None,
         map_struct_type: _typing.Optional[_typing.Mapping[str, 'containerStruct']]=None,
-        iobuf_type: _typing.Optional[__IOBuf]=None,
-        iobuf_ptr: _typing.Optional[__IOBuf]=None,
+        iobuf_type: _typing.Optional[__iobuf.IOBuf]=None,
+        iobuf_ptr: _typing.Optional[__iobuf.IOBuf]=None,
         list_i32_template: _typing.Optional[_typing.Sequence[int]]=None,
         list_string_template: _typing.Optional[_typing.Sequence[str]]=None,
         set_template: _typing.Optional[_typing.AbstractSet[str]]=None,
@@ -700,8 +700,8 @@ class AnnotatedStruct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterabl
         indirection_a: _typing.Optional[int]=None,
         indirection_b: _typing.Optional[_typing.Sequence[float]]=None,
         indirection_c: _typing.Optional[_typing.AbstractSet[int]]=None,
-        iobuf_type_val: _typing.Optional[__IOBuf]=None,
-        iobuf_ptr_val: _typing.Optional[__IOBuf]=None,
+        iobuf_type_val: _typing.Optional[__iobuf.IOBuf]=None,
+        iobuf_ptr_val: _typing.Optional[__iobuf.IOBuf]=None,
         struct_struct: _typing.Optional['containerStruct']=None
     ) -> None: ...
 
@@ -731,8 +731,8 @@ class AnnotatedStruct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterabl
         set_type: _typing.Union[_typing.AbstractSet[str], NOTSETTYPE, None]=NOTSET,
         map_type: _typing.Union[_typing.Mapping[int, float], NOTSETTYPE, None]=NOTSET,
         map_struct_type: _typing.Union[_typing.Mapping[str, 'containerStruct'], NOTSETTYPE, None]=NOTSET,
-        iobuf_type: _typing.Union[__IOBuf, NOTSETTYPE, None]=NOTSET,
-        iobuf_ptr: _typing.Union[__IOBuf, NOTSETTYPE, None]=NOTSET,
+        iobuf_type: _typing.Union[__iobuf.IOBuf, NOTSETTYPE, None]=NOTSET,
+        iobuf_ptr: _typing.Union[__iobuf.IOBuf, NOTSETTYPE, None]=NOTSET,
         list_i32_template: _typing.Union[_typing.Sequence[int], NOTSETTYPE, None]=NOTSET,
         list_string_template: _typing.Union[_typing.Sequence[str], NOTSETTYPE, None]=NOTSET,
         set_template: _typing.Union[_typing.AbstractSet[str], NOTSETTYPE, None]=NOTSET,
@@ -744,8 +744,8 @@ class AnnotatedStruct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterabl
         indirection_a: _typing.Union[int, NOTSETTYPE, None]=NOTSET,
         indirection_b: _typing.Union[_typing.Sequence[float], NOTSETTYPE, None]=NOTSET,
         indirection_c: _typing.Union[_typing.AbstractSet[int], NOTSETTYPE, None]=NOTSET,
-        iobuf_type_val: _typing.Union[__IOBuf, NOTSETTYPE, None]=NOTSET,
-        iobuf_ptr_val: _typing.Union[__IOBuf, NOTSETTYPE, None]=NOTSET,
+        iobuf_type_val: _typing.Union[__iobuf.IOBuf, NOTSETTYPE, None]=NOTSET,
+        iobuf_ptr_val: _typing.Union[__iobuf.IOBuf, NOTSETTYPE, None]=NOTSET,
         struct_struct: _typing.Union['containerStruct', NOTSETTYPE, None]=NOTSET
     ) -> AnnotatedStruct: ...
 
@@ -804,9 +804,9 @@ class AnnotatedStruct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterabl
     @__property__
     def map_struct_type(self) -> _typing.Mapping[str, 'containerStruct']: ...
     @__property__
-    def iobuf_type(self) -> __IOBuf: ...
+    def iobuf_type(self) -> __iobuf.IOBuf: ...
     @__property__
-    def iobuf_ptr(self) -> _typing.Optional[__IOBuf]: ...
+    def iobuf_ptr(self) -> _typing.Optional[__iobuf.IOBuf]: ...
     @__property__
     def list_i32_template(self) -> _typing.Sequence[int]: ...
     @__property__
@@ -830,9 +830,9 @@ class AnnotatedStruct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterabl
     @__property__
     def indirection_c(self) -> _typing.AbstractSet[int]: ...
     @__property__
-    def iobuf_type_val(self) -> __IOBuf: ...
+    def iobuf_type_val(self) -> __iobuf.IOBuf: ...
     @__property__
-    def iobuf_ptr_val(self) -> _typing.Optional[__IOBuf]: ...
+    def iobuf_ptr_val(self) -> _typing.Optional[__iobuf.IOBuf]: ...
     @__property__
     def struct_struct(self) -> 'containerStruct': ...
 
