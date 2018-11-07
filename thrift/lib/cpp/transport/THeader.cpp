@@ -258,7 +258,12 @@ unique_ptr<IOBuf> THeader::removeHeader(
     return nullptr;
   }
   Cursor c(queue->front());
-  size_t remaining = queue->front()->computeChainDataLength();
+  size_t remaining;
+  if (queue->options().cacheChainLength) {
+    remaining = queue->chainLength();
+  } else {
+    remaining = queue->front()->computeChainDataLength();
+  }
   size_t frameSizeBytes = 4;
   needed = 0;
 
