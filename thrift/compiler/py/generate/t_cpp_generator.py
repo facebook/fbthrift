@@ -1177,12 +1177,14 @@ class CppGenerator(t_generator.Generator):
     def _include_prefix(self, program, dir_base):
         #assert isinstance(program, frontend.t_program)
         ip = program.include_prefix
-        if not self.flag_include_prefix or ip.startswith('/'):
-            return ""
-        if '/' in ip:
-            ip = os.path.dirname(ip)
-            return os.path.join(ip, dir_base)
-        return ""
+        if not ip:
+            if not self.flag_include_prefix:
+                return ip
+            else:
+                return self.flag_include_prefix + "/gen-cpp2/"
+        if ip.startswith("/"):
+            return self.flag_include_prefix + "/gen-cpp2/"
+        return ip + "gen-cpp2/"
 
     def _out_include_prefix(self, program):
         return self._include_prefix(program, self._out_dir_base)
