@@ -921,7 +921,7 @@ const folly::SocketAddress* TSocket::getPeerAddress() {
   }
 
   if (!cachedPeerAddr_.isInitialized()) {
-    cachedPeerAddr_.setFromPeerAddress(socket_);
+    cachedPeerAddr_.setFromPeerAddress(folly::NetworkSocket::fromFd(socket_));
   }
 
   return &cachedPeerAddr_;

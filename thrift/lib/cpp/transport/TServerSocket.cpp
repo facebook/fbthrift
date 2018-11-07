@@ -472,7 +472,7 @@ void TServerSocket::getAddress(folly::SocketAddress* address) {
   // called often enough to make it worthwhile.  (Note that we can't cache the
   // value that we use to bind(), in case the port was 0 and the kernel picked
   // an ephemeral port for us to use.)
-  address->setFromLocalAddress(serverSocket_);
+  address->setFromLocalAddress(folly::NetworkSocket::fromFd(serverSocket_));
 }
 
 }}} // apache::thrift::transport
