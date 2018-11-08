@@ -255,7 +255,7 @@ class CppGenerator(t_generator.Generator):
         # Combo include: types
         context_cmb_types = self._make_context(name + '_fatal_types')
         with get_global_scope(CppPrimitiveFactory, context_cmb_types) as sg:
-            for dep in self._get_fatal_type_dependencies():
+            for dep in self._program.includes:
                 sg('#include  "{0}_fatal_types.h"'
                    .format(self._with_include_prefix(dep, dep.name)))
             sg()
@@ -266,7 +266,7 @@ class CppGenerator(t_generator.Generator):
         # Combo include: all
         context_cmb_all = self._make_context(name + '_fatal_all')
         with get_global_scope(CppPrimitiveFactory, context_cmb_all) as sg:
-            for dep in self._get_fatal_type_dependencies():
+            for dep in self._program.includes:
                 sg('#include  "{0}_fatal_all.h"'
                    .format(self._with_include_prefix(dep, dep.name)))
             sg()
@@ -382,39 +382,6 @@ class CppGenerator(t_generator.Generator):
             result += ", '{0}'".format(substitutions.get(i, i))
         result += ">"
         return result
-
-    # this is an attempt to be more conservative on what dependencies require
-    # to enable compile-time reflection than `program.includes`
-    def _get_fatal_type_dependencies(self):
-        if self._fatal_type_dependencies is None:
-            dependencies = set()
-            for struct in self._program.structs:
-                for member in struct.members:
-                    def traverse(type):
-                        type = type.get_true_type
-                        if type.is_struct:
-                            yield type
-                        if type.is_enum:
-                            yield type
-                        if type.is_list:
-                            for t in traverse(type.elem_type):
-                                yield t
-                        if type.is_set:
-                            for t in traverse(type.elem_type):
-                                yield t
-                        if type.is_map:
-                            for t in traverse(type.key_type):
-                                yield t
-                            for t in traverse(type.value_type):
-                                yield t
-                    dependencies.update(
-                        t.program
-                        for t in traverse(member.type)
-                        if t.program is not None and t.program != self._program
-                    )
-            self._fatal_type_dependencies = (
-                list(sorted(dependencies, key=lambda d: d.path)))
-        return self._fatal_type_dependencies
 
     def _render_fatal_type_class(self, ttype):
         while ttype.is_typedef:
@@ -684,7 +651,7 @@ class CppGenerator(t_generator.Generator):
 
         context = self._make_context(name + '_fatal_union')
         with get_global_scope(CppPrimitiveFactory, context) as sg:
-            for dep in self._get_fatal_type_dependencies():
+            for dep in self._program.includes:
                 sg('#include  "{0}_fatal_types.h"'
                    .format(self._with_include_prefix(dep, dep.name)))
             sg()
@@ -824,7 +791,7 @@ class CppGenerator(t_generator.Generator):
         ns = self._get_original_namespace()
         context = self._make_context(name + '_fatal_struct')
         with get_global_scope(CppPrimitiveFactory, context) as sg:
-            for dep in self._get_fatal_type_dependencies():
+            for dep in self._program.includes:
                 sg('#include  "{0}_fatal_types.h"'
                    .format(self._with_include_prefix(dep, dep.name)))
             sg()

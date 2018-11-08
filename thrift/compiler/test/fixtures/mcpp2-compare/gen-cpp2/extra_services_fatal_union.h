@@ -6,6 +6,7 @@
  */
 #pragma once
 
+#include  "thrift/compiler/test/fixtures/mcpp2-compare/gen-cpp2/module_fatal_types.h"
 
 #include "thrift/compiler/test/fixtures/mcpp2-compare/gen-cpp2/extra_services_types.h"
 #include "thrift/compiler/test/fixtures/mcpp2-compare/gen-cpp2/extra_services_fatal.h"
