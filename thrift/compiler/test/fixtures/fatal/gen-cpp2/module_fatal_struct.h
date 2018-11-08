@@ -7,6 +7,8 @@
 #pragma once
 
 #include  "thrift/compiler/test/fixtures/fatal/gen-cpp2/reflection_dep_B_fatal_types.h"
+#include  "thrift/compiler/test/fixtures/fatal/gen-cpp2/reflection_dep_B_fatal_types.h"
+#include  "thrift/compiler/test/fixtures/fatal/gen-cpp2/reflection_dep_C_fatal_types.h"
 #include  "thrift/compiler/test/fixtures/fatal/gen-cpp2/reflection_dep_C_fatal_types.h"
 
 #include "thrift/compiler/test/fixtures/fatal/gen-cpp2/module_types.h"
@@ -2508,6 +2510,87 @@ struct dep_A_struct_test_cpp2_cpp_reflection_module__struct_unique_member_info_l
   >;
 };
 
+class dep_B_struct_test_cpp2_cpp_reflection_module__struct_unique_annotations {
+  class dep_B_struct_test_cpp2_cpp_reflection_module__struct_unique_annotations_members {
+    class dep_B_struct_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_b {
+      public:
+      using keys = void;
+      using values = void;
+      using map = ::fatal::list<
+      >;
+    };
+
+    class dep_B_struct_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_c {
+      public:
+      using keys = void;
+      using values = void;
+      using map = ::fatal::list<
+      >;
+    };
+
+    class dep_B_struct_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_i_a {
+      public:
+      using keys = void;
+      using values = void;
+      using map = ::fatal::list<
+      >;
+    };
+    public:
+    using b = ::apache::thrift::reflected_annotations<dep_B_struct_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_b>;
+    using c = ::apache::thrift::reflected_annotations<dep_B_struct_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_c>;
+    using i_a = ::apache::thrift::reflected_annotations<dep_B_struct_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_i_a>;
+  };
+
+  class annotations {
+    public:
+    using keys = void;
+    using values = void;
+    using map = ::fatal::list<
+    >;
+  };
+  public:
+  using keys = annotations::keys;
+  using values = annotations::values;
+  using map = annotations::map;
+  using members = dep_B_struct_test_cpp2_cpp_reflection_module__struct_unique_annotations_members;
+};
+
+struct dep_B_struct_test_cpp2_cpp_reflection_module__struct_unique_member_info_list {
+  using b = ::apache::thrift::reflected_struct_data_member<
+    thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::b,
+     ::test_cpp2::cpp_reflection::dep_B_struct,
+    1,
+    ::apache::thrift::optionality::required_of_writer,
+    thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_data_member_getters_list::b,
+    ::apache::thrift::type_class::structure,
+    thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_b,
+    ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::dep_B_struct_test_cpp2_cpp_reflection_module__struct_unique_annotations::members::b>,
+    dep_B_struct
+  >;
+  using c = ::apache::thrift::reflected_struct_data_member<
+    thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::c,
+     ::test_cpp2::cpp_reflection::dep_C_struct,
+    2,
+    ::apache::thrift::optionality::required_of_writer,
+    thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_data_member_getters_list::c,
+    ::apache::thrift::type_class::structure,
+    thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_c,
+    ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::dep_B_struct_test_cpp2_cpp_reflection_module__struct_unique_annotations::members::c>,
+    dep_B_struct
+  >;
+  using i_a = ::apache::thrift::reflected_struct_data_member<
+    thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::i_a,
+    int32_t,
+    3,
+    ::apache::thrift::optionality::required_of_writer,
+    thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_data_member_getters_list::i_a,
+    ::apache::thrift::type_class::integral,
+    thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_i_a,
+    ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::dep_B_struct_test_cpp2_cpp_reflection_module__struct_unique_annotations::members::i_a>,
+    dep_B_struct
+  >;
+};
+
 class annotated_test_cpp2_cpp_reflection_module__struct_unique_annotations {
   class annotated_test_cpp2_cpp_reflection_module__struct_unique_annotations_members {
     class annotated_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_a {
@@ -3754,6 +3837,22 @@ THRIFT_REGISTER_STRUCT_TRAITS(
     module_tags::module,
     ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::dep_A_struct_test_cpp2_cpp_reflection_module__struct_unique_annotations>,
     static_cast<::apache::thrift::legacy_type_id_t>(11652604999991056108ull)
+  >
+);
+THRIFT_REGISTER_STRUCT_TRAITS(
+  dep_B_struct,
+  thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::dep_B_struct,
+  thrift_fatal_impl_detail::dep_B_struct_test_cpp2_cpp_reflection_module__struct_unique_member_info_list,
+  ::fatal::list<
+      thrift_fatal_impl_detail::dep_B_struct_test_cpp2_cpp_reflection_module__struct_unique_member_info_list::b,
+      thrift_fatal_impl_detail::dep_B_struct_test_cpp2_cpp_reflection_module__struct_unique_member_info_list::c,
+      thrift_fatal_impl_detail::dep_B_struct_test_cpp2_cpp_reflection_module__struct_unique_member_info_list::i_a
+  >,
+  thrift_fatal_impl_detail::dep_B_struct_test_cpp2_cpp_reflection_module__struct_unique_annotations::members,
+  ::apache::thrift::detail::type_common_metadata_impl<
+    module_tags::module,
+    ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::dep_B_struct_test_cpp2_cpp_reflection_module__struct_unique_annotations>,
+    static_cast<::apache::thrift::legacy_type_id_t>(9714134117356966700ull)
   >
 );
 THRIFT_REGISTER_STRUCT_TRAITS(

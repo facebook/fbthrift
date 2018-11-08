@@ -184,12 +184,13 @@ struct test_cpp2_cpp_reflection_module__unique_strings_list {
   using service3 = ::fatal::sequence<char, 's', 'e', 'r', 'v', 'i', 'c', 'e', '3'>;
   using phrase = ::fatal::sequence<char, 'p', 'h', 'r', 'a', 's', 'e'>;
   using service1 = ::fatal::sequence<char, 's', 'e', 'r', 'v', 'i', 'c', 'e', '1'>;
-  using constant1 = ::fatal::sequence<char, 'c', 'o', 'n', 's', 't', 'a', 'n', 't', '1'>;
+  using dep_B_struct = ::fatal::sequence<char, 'd', 'e', 'p', '_', 'B', '_', 's', 't', 'r', 'u', 'c', 't'>;
   using duplicate_id_annotation_2 = ::fatal::sequence<char, 'd', 'u', 'p', 'l', 'i', 'c', 'a', 't', 'e', '_', 'i', 'd', '_', 'a', 'n', 'n', 'o', 't', 'a', 't', 'i', 'o', 'n', '_', '2'>;
   using duplicate_id_annotation_1 = ::fatal::sequence<char, 'd', 'u', 'p', 'l', 'i', 'c', 'a', 't', 'e', '_', 'i', 'd', '_', 'a', 'n', 'n', 'o', 't', 'a', 't', 'i', 'o', 'n', '_', '1'>;
   using constant2 = ::fatal::sequence<char, 'c', 'o', 'n', 's', 't', 'a', 'n', 't', '2'>;
   using some_other_annotation = ::fatal::sequence<char, 's', 'o', 'm', 'e', '.', 'o', 't', 'h', 'e', 'r', '.', 'a', 'n', 'n', 'o', 't', 'a', 't', 'i', 'o', 'n'>;
   using s_b_true = ::fatal::sequence<char, 's', '_', 'b', '_', 't', 'r', 'u', 'e'>;
+  using constant1 = ::fatal::sequence<char, 'c', 'o', 'n', 's', 't', 'a', 'n', 't', '1'>;
   using field1_2 = ::fatal::sequence<char, 'f', 'i', 'e', 'l', 'd', '1', '_', '2'>;
   using id = ::fatal::sequence<char, 'i', 'd'>;
   using member = ::fatal::sequence<char, 'm', 'e', 'm', 'b', 'e', 'r'>;
@@ -263,6 +264,7 @@ class module_tags {
     using struct5 = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::struct5;
     using struct_binary = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::struct_binary;
     using dep_A_struct = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::dep_A_struct;
+    using dep_B_struct = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::dep_B_struct;
     using annotated = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::annotated;
     using struct_with_special_names = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::struct_with_special_names;
     using struct_with_indirections = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::struct_with_indirections;
@@ -336,6 +338,7 @@ THRIFT_REGISTER_REFLECTION_METADATA(
     ::fatal::pair<struct5, thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::struct5>,
     ::fatal::pair<struct_binary, thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::struct_binary>,
     ::fatal::pair<dep_A_struct, thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::dep_A_struct>,
+    ::fatal::pair<dep_B_struct, thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::dep_B_struct>,
     ::fatal::pair<annotated, thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::annotated>,
     ::fatal::pair<struct_with_special_names, thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::struct_with_special_names>,
     ::fatal::pair<struct_with_indirections, thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::struct_with_indirections>,

@@ -193,6 +193,12 @@ struct dep_A_struct {
   3: i32 i_a
 }
 
+struct dep_B_struct {
+  1: reflection_dep_B.dep_B_struct b
+  2: reflection_dep_C.dep_C_struct c
+  3: i32 i_a
+}
+
 struct annotated {
   1: i32 a (
     m_b_false = 'false',

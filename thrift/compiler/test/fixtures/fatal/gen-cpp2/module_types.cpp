@@ -581,6 +581,24 @@ void TccStructTraits< ::test_cpp2::cpp_reflection::dep_A_struct>::translateField
     _ftype = apache::thrift::protocol::T_I32;
   }
 }
+void TccStructTraits< ::test_cpp2::cpp_reflection::dep_B_struct>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "b") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_STRUCT;
+  }
+  else if (_fname == "c") {
+    fid = 2;
+    _ftype = apache::thrift::protocol::T_STRUCT;
+  }
+  else if (_fname == "i_a") {
+    fid = 3;
+    _ftype = apache::thrift::protocol::T_I32;
+  }
+}
 void TccStructTraits< ::test_cpp2::cpp_reflection::annotated>::translateFieldName(
     FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
     FOLLY_MAYBE_UNUSED int16_t& fid,
@@ -2916,6 +2934,92 @@ template void dep_A_struct::readNoXfer<>(apache::thrift::CompactProtocolReader*)
 template uint32_t dep_A_struct::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t dep_A_struct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t dep_A_struct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+}} // test_cpp2::cpp_reflection
+namespace test_cpp2 { namespace cpp_reflection {
+
+dep_B_struct::dep_B_struct(apache::thrift::FragileConstructor,  ::test_cpp2::cpp_reflection::dep_B_struct b__arg,  ::test_cpp2::cpp_reflection::dep_C_struct c__arg, int32_t i_a__arg) :
+    b(std::move(b__arg)),
+    c(std::move(c__arg)),
+    i_a(std::move(i_a__arg)) {
+  __isset.b = true;
+  __isset.c = true;
+  __isset.i_a = true;
+}
+
+void dep_B_struct::__clear() {
+  // clear all fields
+  ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::dep_B_struct>::clear(&b);
+  ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::dep_C_struct>::clear(&c);
+  i_a = 0;
+  __isset = {};
+}
+
+bool dep_B_struct::operator==(const dep_B_struct& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  if (!(lhs.b == rhs.b)) {
+    return false;
+  }
+  if (!(lhs.c == rhs.c)) {
+    return false;
+  }
+  if (!(lhs.i_a == rhs.i_a)) {
+    return false;
+  }
+  return true;
+}
+
+bool dep_B_struct::operator<(const dep_B_struct& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  if (!(lhs.b == rhs.b)) {
+    return lhs.b < rhs.b;
+  }
+  if (!(lhs.c == rhs.c)) {
+    return lhs.c < rhs.c;
+  }
+  if (!(lhs.i_a == rhs.i_a)) {
+    return lhs.i_a < rhs.i_a;
+  }
+  return false;
+}
+
+const  ::test_cpp2::cpp_reflection::dep_B_struct& dep_B_struct::get_b() const& {
+  return b;
+}
+
+ ::test_cpp2::cpp_reflection::dep_B_struct dep_B_struct::get_b() && {
+  return std::move(b);
+}
+
+const  ::test_cpp2::cpp_reflection::dep_C_struct& dep_B_struct::get_c() const& {
+  return c;
+}
+
+ ::test_cpp2::cpp_reflection::dep_C_struct dep_B_struct::get_c() && {
+  return std::move(c);
+}
+
+
+void swap(dep_B_struct& a, dep_B_struct& b) {
+  using ::std::swap;
+  swap(a.b, b.b);
+  swap(a.c, b.c);
+  swap(a.i_a, b.i_a);
+  swap(a.__isset, b.__isset);
+}
+
+template void dep_B_struct::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+template uint32_t dep_B_struct::write<>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t dep_B_struct::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t dep_B_struct::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+template void dep_B_struct::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+template uint32_t dep_B_struct::write<>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t dep_B_struct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t dep_B_struct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 }} // test_cpp2::cpp_reflection
 namespace test_cpp2 { namespace cpp_reflection {

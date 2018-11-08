@@ -243,6 +243,7 @@ class struct4;
 class struct5;
 class struct_binary;
 class dep_A_struct;
+class dep_B_struct;
 class annotated;
 class union_with_special_names;
 class struct_with_special_names;
@@ -3925,6 +3926,139 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp2::cpp_reflect
 }
 
 template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp2::cpp_reflection::dep_A_struct>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::dep_A_struct const* obj) {
+  return obj->serializedSizeZC(proto);
+}
+
+}} // apache::thrift
+namespace test_cpp2 { namespace cpp_reflection {
+class dep_B_struct final : private apache::thrift::detail::st::ComparisonOperators<dep_B_struct> {
+ public:
+
+  dep_B_struct() :
+      i_a(0) {}
+  // FragileConstructor for use in initialization lists only.
+  dep_B_struct(apache::thrift::FragileConstructor,  ::test_cpp2::cpp_reflection::dep_B_struct b__arg,  ::test_cpp2::cpp_reflection::dep_C_struct c__arg, int32_t i_a__arg);
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
+    b = arg.extract();
+    __isset.b = true;
+  }
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
+    c = arg.extract();
+    __isset.c = true;
+  }
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<3, _T> arg) {
+    i_a = arg.extract();
+    __isset.i_a = true;
+  }
+
+  dep_B_struct(dep_B_struct&&) = default;
+
+  dep_B_struct(const dep_B_struct&) = default;
+
+  dep_B_struct& operator=(dep_B_struct&&) = default;
+
+  dep_B_struct& operator=(const dep_B_struct&) = default;
+  void __clear();
+   ::test_cpp2::cpp_reflection::dep_B_struct b;
+   ::test_cpp2::cpp_reflection::dep_C_struct c;
+  int32_t i_a;
+
+  struct __isset {
+    bool b;
+    bool c;
+    bool i_a;
+  } __isset = {};
+  bool operator==(const dep_B_struct& rhs) const;
+  bool operator<(const dep_B_struct& rhs) const;
+  const  ::test_cpp2::cpp_reflection::dep_B_struct& get_b() const&;
+   ::test_cpp2::cpp_reflection::dep_B_struct get_b() &&;
+
+  template <typename T_dep_B_struct_b_struct_setter =  ::test_cpp2::cpp_reflection::dep_B_struct>
+   ::test_cpp2::cpp_reflection::dep_B_struct& set_b(T_dep_B_struct_b_struct_setter&& b_) {
+    b = std::forward<T_dep_B_struct_b_struct_setter>(b_);
+    __isset.b = true;
+    return b;
+  }
+  const  ::test_cpp2::cpp_reflection::dep_C_struct& get_c() const&;
+   ::test_cpp2::cpp_reflection::dep_C_struct get_c() &&;
+
+  template <typename T_dep_B_struct_c_struct_setter =  ::test_cpp2::cpp_reflection::dep_C_struct>
+   ::test_cpp2::cpp_reflection::dep_C_struct& set_c(T_dep_B_struct_c_struct_setter&& c_) {
+    c = std::forward<T_dep_B_struct_c_struct_setter>(c_);
+    __isset.c = true;
+    return c;
+  }
+
+  int32_t get_i_a() const {
+    return i_a;
+  }
+
+  int32_t& set_i_a(int32_t i_a_) {
+    i_a = i_a_;
+    __isset.i_a = true;
+    return i_a;
+  }
+
+  template <class Protocol_>
+  uint32_t read(Protocol_* iprot);
+  template <class Protocol_>
+  uint32_t serializedSize(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t serializedSizeZC(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t write(Protocol_* prot_) const;
+
+ private:
+  template <class Protocol_>
+  void readNoXfer(Protocol_* iprot);
+
+  friend class ::apache::thrift::Cpp2Ops< dep_B_struct >;
+};
+
+void swap(dep_B_struct& a, dep_B_struct& b);
+extern template void dep_B_struct::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+extern template uint32_t dep_B_struct::write<>(apache::thrift::BinaryProtocolWriter*) const;
+extern template uint32_t dep_B_struct::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t dep_B_struct::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template void dep_B_struct::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+extern template uint32_t dep_B_struct::write<>(apache::thrift::CompactProtocolWriter*) const;
+extern template uint32_t dep_B_struct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template uint32_t dep_B_struct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+template <class Protocol_>
+uint32_t dep_B_struct::read(Protocol_* iprot) {
+  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
+  readNoXfer(iprot);
+  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
+}
+
+}} // test_cpp2::cpp_reflection
+namespace apache { namespace thrift {
+
+template <> inline void Cpp2Ops< ::test_cpp2::cpp_reflection::dep_B_struct>::clear( ::test_cpp2::cpp_reflection::dep_B_struct* obj) {
+  return obj->__clear();
+}
+
+template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::test_cpp2::cpp_reflection::dep_B_struct>::thriftType() {
+  return apache::thrift::protocol::T_STRUCT;
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp2::cpp_reflection::dep_B_struct>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::dep_B_struct const* obj) {
+  return obj->write(proto);
+}
+
+template <> template <class Protocol> void Cpp2Ops< ::test_cpp2::cpp_reflection::dep_B_struct>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::dep_B_struct* obj) {
+  return obj->readNoXfer(proto);
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp2::cpp_reflection::dep_B_struct>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::dep_B_struct const* obj) {
+  return obj->serializedSize(proto);
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp2::cpp_reflection::dep_B_struct>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::dep_B_struct const* obj) {
   return obj->serializedSizeZC(proto);
 }
 
