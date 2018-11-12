@@ -87,6 +87,13 @@ def get_client(
     cdef int _timeout = int(timeout * 1000)
     cdef PROTOCOL_TYPES proto = Protocol2PROTOCOL_TYPES(protocol)
 
+    endpoint = b''
+    if client_type is ClientType.THRIFT_HTTP_CLIENT_TYPE:
+        if path is None:
+            raise TypeError("use path='/endpoint' when using ClientType.THRIFT_HTTP_CLIENT_TYPE")
+        endpoint = os.fsencode(path)  # means we can accept bytes/str/Path objects
+        path = None
+
     if port == -1 and path is None:
         raise ValueError('path or port must be set')
 
@@ -96,7 +103,7 @@ def get_client(
         fspath = os.fsencode(path)
         bridgeFutureWith[cRequestChannel_ptr](
             (<Client>client)._executor,
-            createThriftChannelUnix(fspath, _timeout, client_type, proto),
+            createThriftChannelUnix(move_string(fspath), _timeout, client_type, proto),
             requestchannel_callback,
             <PyObject *> client
         )
@@ -104,7 +111,7 @@ def get_client(
         p = _ResolvePromise(host, port)
         bridgeFutureWith[cRequestChannel_ptr](
             (<Client>client)._executor,
-            createThriftChannelTCP(p.cPromise.getFuture(), port, _timeout, client_type, proto),
+            createThriftChannelTCP(p.cPromise.getFuture(), port, _timeout, client_type, proto, move_string(endpoint)),
             requestchannel_callback,
             <PyObject *> client
         )

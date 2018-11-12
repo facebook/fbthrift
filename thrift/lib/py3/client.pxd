@@ -53,15 +53,16 @@ cdef extern from "thrift/lib/py3/client.h" namespace "thrift::py3":
         pass
 
     cdef cFollyFuture[cRequestChannel_ptr] createThriftChannelTCP(
-        cFollyFuture[string] fut,
+        cFollyFuture[string]&& fut,
         const uint16_t port,
         const uint32_t connect_timeout,
         ClientType,
         PROTOCOL_TYPES,
+        string&& endpoint,
     )
 
     cdef cFollyFuture[cRequestChannel_ptr] createThriftChannelUnix(
-        string path,
+        string&& path,
         const uint32_t connect_timeout,
         ClientType,
         PROTOCOL_TYPES,
@@ -71,6 +72,7 @@ cdef extern from "thrift/lib/py3/client.h" namespace "thrift::py3":
 
 cdef extern from "<utility>" namespace "std" nogil:
     cdef cRequestChannel_ptr move(cRequestChannel_ptr)
+    cdef string move_string "std::move"(string)
 
 cdef class Client:
     cdef object __weakref__
