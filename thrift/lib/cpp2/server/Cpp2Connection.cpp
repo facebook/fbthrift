@@ -68,7 +68,6 @@ Cpp2Connection::Cpp2Connection(
       context_(
           address,
           transport.get(),
-          channel_->getSaslServer(),
           worker_->getServer()->getEventBaseManager(),
           duplexChannel_ ? duplexChannel_->getClientChannel() : nullptr,
           nullptr,
@@ -83,16 +82,6 @@ Cpp2Connection::Cpp2Connection(
   auto observer = worker_->getServer()->getObserver();
   if (observer) {
     channel_->setSampleRate(observer->getSampleRate());
-  }
-
-  if (transport) {
-    auto factory = worker_->getServer()->getSaslServerFactory();
-    if (factory) {
-      channel_->setSaslServer(
-          unique_ptr<SaslServer>(factory(transport->getEventBase())));
-      // Refresh the saslServer_ pointer in context_
-      context_.setSaslServer(channel_->getSaslServer());
-    }
   }
 
   channel_->setSupportedClientsAll();

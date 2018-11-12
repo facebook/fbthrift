@@ -48,7 +48,6 @@ std::shared_ptr<Cpp2ConnContext> RSResponder::createConnContext() {
         nullptr,
         nullptr,
         nullptr,
-        nullptr,
         worker_->getServer()->getClientIdentityHook());
   }
   return connContext_;

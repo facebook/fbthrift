@@ -289,16 +289,6 @@ void ThriftServer::setup() {
         saslThreadManager_->start();
       }
       auto saslThreadManager = saslThreadManager_;
-
-      if (getSaslServerFactory()) {
-        // If the factory is already set, don't override it with the default
-      } else {
-        // Allow the server to accept anything in the keytab.
-        setSaslServerFactory([=](folly::EventBase* evb) {
-          return std::unique_ptr<SaslServer>(
-              new GssSaslServer(evb, saslThreadManager));
-        });
-      }
     }
 
     setupThreadManager();

@@ -23,7 +23,6 @@
 #include <thrift/lib/cpp/concurrency/ThreadManager.h>
 #include <thrift/lib/cpp/server/TConnectionContext.h>
 #include <thrift/lib/cpp/transport/THeader.h>
-#include <thrift/lib/cpp2/async/SaslServer.h>
 #include <wangle/ssl/SSLUtil.h>
 
 using apache::thrift::concurrency::PriorityThreadManager;
@@ -44,13 +43,11 @@ class Cpp2ConnContext : public apache::thrift::server::TConnectionContext {
   explicit Cpp2ConnContext(
       const folly::SocketAddress* address = nullptr,
       const folly::AsyncTransportWrapper* transport = nullptr,
-      const apache::thrift::SaslServer* sasl_server = nullptr,
       folly::EventBaseManager* manager = nullptr,
       const std::shared_ptr<RequestChannel>& duplexChannel = nullptr,
       const std::shared_ptr<X509> peerCert = nullptr /*overridden from socket*/,
       apache::thrift::ClientIdentityHook clientIdentityHook = nullptr)
-      : saslServer_(sasl_server),
-        manager_(manager),
+      : manager_(manager),
         requestHeader_(nullptr),
         duplexChannel_(duplexChannel),
         peerCert_(peerCert),
@@ -81,14 +78,6 @@ class Cpp2ConnContext : public apache::thrift::server::TConnectionContext {
 
   void setRequestHeader(apache::thrift::transport::THeader* header) {
     requestHeader_ = header;
-  }
-
-  virtual void setSaslServer(const apache::thrift::SaslServer* sasl_server) {
-    saslServer_ = sasl_server;
-  }
-
-  virtual const apache::thrift::SaslServer* getSaslServer() const {
-    return saslServer_;
   }
 
   folly::EventBaseManager* getEventBaseManager() override {
@@ -132,7 +121,6 @@ class Cpp2ConnContext : public apache::thrift::server::TConnectionContext {
   }
 
  private:
-  const apache::thrift::SaslServer* saslServer_;
   folly::EventBaseManager* manager_;
   transport::THeader* requestHeader_;
   std::shared_ptr<RequestChannel> duplexChannel_;
@@ -177,10 +165,6 @@ class Cpp2RequestContext : public apache::thrift::server::TConnectionContext {
 
   apache::thrift::transport::THeader* getHeader() const override {
     return header_;
-  }
-
-  virtual const apache::thrift::SaslServer* getSaslServer() const {
-    return ctx_->getSaslServer();
   }
 
   virtual std::vector<uint16_t>& getTransforms() {

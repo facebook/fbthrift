@@ -84,8 +84,6 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
   const std::string saslPolicy_;
   SSLPolicy sslPolicy_ = SSLPolicy::PERMITTED;
   bool strictSSL_ = false;
-  std::function<std::unique_ptr<SaslServer>(folly::EventBase*)>
-      saslServerFactory_;
   std::shared_ptr<apache::thrift::concurrency::ThreadManager>
       saslThreadManager_;
   size_t nSaslPoolThreads_ = 0;
@@ -510,18 +508,6 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
   }
   bool getStrictSSL() {
     return strictSSL_;
-  }
-
-  // The default SASL implementation can be overridden for testing or
-  // other purposes.  Most users will never need to call this.
-  void setSaslServerFactory(
-      std::function<std::unique_ptr<SaslServer>(folly::EventBase*)> func) {
-    saslServerFactory_ = func;
-  }
-
-  std::function<std::unique_ptr<SaslServer>(folly::EventBase*)>
-  getSaslServerFactory() {
-    return saslServerFactory_;
   }
 
   void setAcceptorFactory(
