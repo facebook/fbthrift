@@ -7,19 +7,16 @@ import os
 from typing import Callable, NamedTuple, Union, Optional, TypeVar, Mapping, ClassVar
 from thrift.py3.common import Priority, Headers
 
-mT = TypeVar('mT', bound=Callable)
+mT = TypeVar("mT", bound=Callable)
 IPAddress = Union[ipaddress.IPv4Address, ipaddress.IPv6Address]
 Path = Union[str, bytes, os.PathLike]
-
 
 class SocketAddress(NamedTuple):
     ip: Optional[IPAddress]
     port: Optional[int]
     path: Optional[pathlib.Path]
 
-
 def pass_context(func: mT) -> mT: ...
-
 
 class SSLPolicy(Enum):
     DISABLED: SSLPolicy = ...
@@ -27,27 +24,23 @@ class SSLPolicy(Enum):
     REQUIRED: SSLPolicy = ...
     value: int
 
-
 class AsyncProcessorFactory:
     pass
-
 
 class ServiceInterface(AsyncProcessorFactory):
     annotations: ClassVar[Mapping[str, str]] = ...
 
-
-hT = TypeVar('hT', bound=AsyncProcessorFactory)
+hT = TypeVar("hT", bound=AsyncProcessorFactory)
 
 def getServiceName(svc: hT) -> str: ...
-
 
 class ThriftServer:
     def __init__(
         self,
         handler: hT,
-        port: int=0,
-        ip: Optional[Union[IPAddress, str]]=None,
-        path: Optional[Path]=None,
+        port: int = 0,
+        ip: Optional[Union[IPAddress, str]] = None,
+        path: Optional[Path] = None,
     ) -> None: ...
     async def serve(self) -> None: ...
     def set_ssl_policy(self, policy: SSLPolicy) -> None: ...
@@ -67,17 +60,14 @@ class ThriftServer:
     def set_ssl_handshake_worker_threads(self, num: int) -> None: ...
     def get_ssl_handshake_worker_threads(self) -> int: ...
 
-
 class ReadHeaders(Headers): ...
 class WriteHeaders(Headers): ...
-
 
 class ConnectionContext:
     peer_address: SocketAddress
     is_tls: bool
     peer_common_name: str
     peer_certificate: bytes
-
 
 class RequestContext:
     connection_context: ConnectionContext

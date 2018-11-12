@@ -1,10 +1,6 @@
-from thrift.py3.client cimport (
-    Client,
-    cRequestChannel_ptr,
-    createThriftChannelTCP,
-    createThriftChannelUnix,
-)
+cimport cython
 from thrift.py3.exceptions cimport create_py_exception
+from thrift.py3.common import Protocol
 from libcpp.string cimport string
 from cython.operator cimport dereference as deref
 from folly.futures cimport bridgeFutureWith
@@ -28,6 +24,7 @@ def install_proxy_factory(factory):
     proxy_factory = factory
 
 
+@cython.auto_pickle(False)
 cdef class Client:
     """
     Base class for all thrift clients
@@ -47,6 +44,7 @@ cdef extern from "<stdexcept>" namespace "std" nogil:
         cruntime_error(string& what)
 
 
+@cython.auto_pickle(False)
 cdef class _ResolvePromise:
     cdef cFollyPromise[string] cPromise
 
@@ -67,13 +65,27 @@ cdef class _ResolvePromise:
             self.cPromise.setValue(ip)
 
 
-def get_client(clientKlass, *, host='::1', int port=-1, path=None, float timeout=1, headers=None):
+def get_client(
+    clientKlass,
+    *,
+    host='::1',
+    int port=-1,
+    path=None,
+    float timeout=1,
+    headers=None,
+    ClientType client_type = ClientType.THRIFT_HEADER_CLIENT_TYPE,
+    protocol = Protocol.COMPACT,
+):
+    if not isinstance(protocol, Protocol):
+        raise TypeError(f'protocol={protocol} is not a valid {Protocol}')
+
     loop = asyncio.get_event_loop()
     # This is to prevent calling get_client at import time at module scope
     assert loop.is_running(), "Eventloop is not running"
     assert issubclass(clientKlass, Client), "Must be a py3 thrift client"
     host = str(host)  # Accept ipaddress objects
     cdef int _timeout = int(timeout * 1000)
+    cdef PROTOCOL_TYPES proto = Protocol2PROTOCOL_TYPES(protocol)
 
     if port == -1 and path is None:
         raise ValueError('path or port must be set')
@@ -84,7 +96,7 @@ def get_client(clientKlass, *, host='::1', int port=-1, path=None, float timeout
         fspath = os.fsencode(path)
         bridgeFutureWith[cRequestChannel_ptr](
             (<Client>client)._executor,
-            createThriftChannelUnix(fspath, _timeout),
+            createThriftChannelUnix(fspath, _timeout, client_type, proto),
             requestchannel_callback,
             <PyObject *> client
         )
@@ -92,7 +104,7 @@ def get_client(clientKlass, *, host='::1', int port=-1, path=None, float timeout
         p = _ResolvePromise(host, port)
         bridgeFutureWith[cRequestChannel_ptr](
             (<Client>client)._executor,
-            createThriftChannelTCP(p.cPromise.getFuture(), port, _timeout),
+            createThriftChannelTCP(p.cPromise.getFuture(), port, _timeout, client_type, proto),
             requestchannel_callback,
             <PyObject *> client
         )

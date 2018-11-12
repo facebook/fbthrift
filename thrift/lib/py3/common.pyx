@@ -4,6 +4,13 @@ from collections import Mapping
 from functools import total_ordering
 
 
+class Protocol(Enum):
+    COMPACT = 0
+    BINARY = 1
+    JSON = 3
+    COMPACT_JSON = 4
+
+
 class Priority(Enum):
     HIGH_IMPORTANCE = cHIGH_IMPORTANT
     HIGH = cHIGH

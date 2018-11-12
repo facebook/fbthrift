@@ -34,6 +34,11 @@ typedef std::unique_ptr<
     folly::DelayedDestruction::Destructor>
     RequestChannel_ptr;
 
+typedef std::unique_ptr<
+    apache::thrift::HeaderClientChannel,
+    folly::DelayedDestruction::Destructor>
+    HeaderChannel_ptr;
+
 /*
  * T is the cpp2 async client class
  * U is the py3 clientwraper class
@@ -50,19 +55,44 @@ void destroyInEventBaseThread(RequestChannel_ptr&& ptr) {
   eb->runInEventBaseThread([ptr = std::move(ptr)] {});
 }
 
+HeaderChannel_ptr configureClientChannel(
+    HeaderChannel_ptr&& chan,
+    CLIENT_TYPE client,
+    apache::thrift::protocol::PROTOCOL_TYPES proto) {
+  chan->setProtocolId(proto);
+  if (client != THRIFT_HEADER_CLIENT_TYPE) {
+    chan->setClientType(client);
+    chan->forceClientType(true);
+  }
+
+  if (client == THRIFT_FRAMED_DEPRECATED) {
+    chan->setProtocolId(
+        apache::thrift::protocol::PROTOCOL_TYPES::T_BINARY_PROTOCOL);
+  } else if (client == THRIFT_FRAMED_COMPACT) {
+    chan->setProtocolId(
+        apache::thrift::protocol::PROTOCOL_TYPES::T_COMPACT_PROTOCOL);
+  }
+  return std::move(chan);
+}
+
 /**
  * Create a thrift channel by connecting to a host:port over TCP.
  */
 folly::Future<RequestChannel_ptr> createThriftChannelTCP(
     folly::Future<std::string>&& host_fut,
     const uint16_t port,
-    const uint32_t connect_timeout) {
+    const uint32_t connect_timeout,
+    CLIENT_TYPE client_t,
+    apache::thrift::protocol::PROTOCOL_TYPES proto) {
   return std::move(host_fut).then([=](std::string host) {
     auto eb = folly::getEventBase();
     return folly::via(eb, [=] {
-      return apache::thrift::HeaderClientChannel::newChannel(
-          apache::thrift::async::TAsyncSocket::newSocket(
-              eb, host, port, connect_timeout));
+      return configureClientChannel(
+          apache::thrift::HeaderClientChannel::newChannel(
+              apache::thrift::async::TAsyncSocket::newSocket(
+                  eb, host, port, connect_timeout)),
+          client_t,
+          proto);
     });
   });
 }
@@ -72,15 +102,20 @@ folly::Future<RequestChannel_ptr> createThriftChannelTCP(
  */
 folly::Future<RequestChannel_ptr> createThriftChannelUnix(
     const std::string path,
-    const uint32_t connect_timeout) {
+    const uint32_t connect_timeout,
+    CLIENT_TYPE client_t,
+    apache::thrift::protocol::PROTOCOL_TYPES proto) {
   auto eb = folly::getEventBase();
   return folly::via(eb, [=] {
-    return apache::thrift::HeaderClientChannel::newChannel(
-        apache::thrift::async::TAsyncSocket::newSocket(
-            eb,
-            folly::SocketAddress::makeFromPath(
-                folly::StringPiece(path.data(), path.size())),
-            connect_timeout));
+    return configureClientChannel(
+        apache::thrift::HeaderClientChannel::newChannel(
+            apache::thrift::async::TAsyncSocket::newSocket(
+                eb,
+                folly::SocketAddress::makeFromPath(
+                    folly::StringPiece(path.data(), path.size())),
+                connect_timeout)),
+        client_t,
+        proto);
   });
 }
 

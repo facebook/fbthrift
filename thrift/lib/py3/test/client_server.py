@@ -17,9 +17,11 @@ from thrift.py3 import (
     TransportError,
     RequestContext,
     RpcOptions,
+    Protocol,
 )
 from typing import Sequence, Optional
 import thrift.py3.server
+from thrift.py3.client import ClientType
 
 
 class Handler(TestingServiceInterface):
@@ -61,7 +63,7 @@ class TestServer:
         self,
         ip: Optional[str] = None,
         path: Optional["thrift.py3.server.Path"] = None,
-        handler: thrift.py3.server.ServiceInterface = Handler(),
+        handler: thrift.py3.server.ServiceInterface = Handler(),  # noqa: B008
     ) -> None:
         self.server = ThriftServer(handler, ip=ip, path=path)
 
@@ -104,6 +106,58 @@ class ClientServerTests(unittest.TestCase):
                 assert sa.port
                 async with get_client(
                     TestingService, host=hostname, port=sa.port
+                ) as client:
+                    self.assertTrue(await client.invert(False))
+                    self.assertFalse(await client.invert(True))
+
+        loop.run_until_complete(inner_test())
+
+    def test_unframed_binary(self) -> None:
+        loop = asyncio.get_event_loop()
+
+        async def inner_test() -> None:
+            async with TestServer(ip="::1") as sa:
+                assert sa.ip and sa.port
+                async with get_client(
+                    TestingService,
+                    host=sa.ip,
+                    port=sa.port,
+                    client_type=ClientType.THRIFT_UNFRAMED_DEPRECATED,
+                    protocol=Protocol.BINARY,
+                ) as client:
+                    self.assertTrue(await client.invert(False))
+                    self.assertFalse(await client.invert(True))
+
+        loop.run_until_complete(inner_test())
+
+    def test_framed_deprecated(self) -> None:
+        loop = asyncio.get_event_loop()
+
+        async def inner_test() -> None:
+            async with TestServer(ip="::1") as sa:
+                assert sa.ip and sa.port
+                async with get_client(
+                    TestingService,
+                    host=sa.ip,
+                    port=sa.port,
+                    client_type=ClientType.THRIFT_FRAMED_DEPRECATED,
+                ) as client:
+                    self.assertTrue(await client.invert(False))
+                    self.assertFalse(await client.invert(True))
+
+        loop.run_until_complete(inner_test())
+
+    def test_framed_compact(self) -> None:
+        loop = asyncio.get_event_loop()
+
+        async def inner_test() -> None:
+            async with TestServer(ip="::1") as sa:
+                assert sa.ip and sa.port
+                async with get_client(
+                    TestingService,
+                    host=sa.ip,
+                    port=sa.port,
+                    client_type=ClientType.THRIFT_FRAMED_COMPACT,
                 ) as client:
                     self.assertTrue(await client.invert(False))
                     self.assertFalse(await client.invert(True))

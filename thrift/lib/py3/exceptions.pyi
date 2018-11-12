@@ -48,23 +48,18 @@ class ProtocolErrorType(Enum):
     MISSING_REQUIRED_FIELD: ProtocolErrorType = ...
     value: int
 
-
 class Error(Exception): ...
-
 
 class ApplicationError(Error):
     def __int__(self, type: ApplicationErrorType, message: str) -> None: ...
     type: ApplicationErrorType
     message: str
 
-
 class LibraryError(Error): ...
-
 
 class ProtocolError(LibraryError):
     type: ProtocolErrorType
     message: str
-
 
 class TransportError(LibraryError):
     type: TransportErrorType
