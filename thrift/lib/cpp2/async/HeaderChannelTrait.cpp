@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Facebook, Inc.
+ * Copyright 2015-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -56,7 +56,7 @@ void HeaderChannelTrait::setSupportedClients(
       setClientType(THRIFT_HEADER_CLIENT_TYPE);
     }
   } else {
-    setSecurityPolicy(THRIFT_SECURITY_DISABLED);
+    setSupportedClientsAll();
   }
 }
 
@@ -72,39 +72,18 @@ void HeaderChannelTrait::checkSupportedClient(CLIENT_TYPE ct) {
   }
 }
 
-void HeaderChannelTrait::setSecurityPolicy(THRIFT_SECURITY_POLICY policy) {
+void HeaderChannelTrait::setSupportedClientsAll() {
   std::bitset<CLIENT_TYPES_LEN> clients;
 
-  switch (policy) {
-    case THRIFT_SECURITY_DISABLED: {
-      clients[THRIFT_UNFRAMED_DEPRECATED] = true;
-      clients[THRIFT_UNFRAMED_COMPACT_DEPRECATED] = true;
-      clients[THRIFT_FRAMED_DEPRECATED] = true;
-      clients[THRIFT_HTTP_SERVER_TYPE] = true;
-      clients[THRIFT_HTTP_CLIENT_TYPE] = true;
-      clients[THRIFT_HEADER_CLIENT_TYPE] = true;
-      clients[THRIFT_FRAMED_COMPACT] = true;
-      break;
-    }
-    case THRIFT_SECURITY_PERMITTED: {
-      clients[THRIFT_UNFRAMED_DEPRECATED] = true;
-      clients[THRIFT_UNFRAMED_COMPACT_DEPRECATED] = true;
-      clients[THRIFT_FRAMED_DEPRECATED] = true;
-      clients[THRIFT_HTTP_SERVER_TYPE] = true;
-      clients[THRIFT_HTTP_CLIENT_TYPE] = true;
-      clients[THRIFT_HEADER_CLIENT_TYPE] = true;
-      clients[THRIFT_HEADER_SASL_CLIENT_TYPE] = true;
-      clients[THRIFT_FRAMED_COMPACT] = true;
-      break;
-    }
-    case THRIFT_SECURITY_REQUIRED: {
-      clients[THRIFT_HEADER_SASL_CLIENT_TYPE] = true;
-      break;
-    }
-  }
+  clients[THRIFT_UNFRAMED_DEPRECATED] = true;
+  clients[THRIFT_UNFRAMED_COMPACT_DEPRECATED] = true;
+  clients[THRIFT_FRAMED_DEPRECATED] = true;
+  clients[THRIFT_HTTP_SERVER_TYPE] = true;
+  clients[THRIFT_HTTP_CLIENT_TYPE] = true;
+  clients[THRIFT_HEADER_CLIENT_TYPE] = true;
+  clients[THRIFT_FRAMED_COMPACT] = true;
 
   setSupportedClients(&clients);
-  securityPolicy_ = policy;
 }
 } // namespace thrift
 } // namespace apache

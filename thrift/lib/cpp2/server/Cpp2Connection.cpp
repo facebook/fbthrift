@@ -95,17 +95,7 @@ Cpp2Connection::Cpp2Connection(
     }
   }
 
-  const bool downgradeSaslPolicy =
-      isClientLocal(*address, *context_.getLocalAddress());
-
-  if (worker_->getServer()->getSaslEnabled() && downgradeSaslPolicy) {
-    channel_->setSecurityPolicy(THRIFT_SECURITY_PERMITTED);
-  } else if (worker_->getServer()->getSaslEnabled()) {
-    channel_->setSecurityPolicy(THRIFT_SECURITY_REQUIRED);
-  } else {
-    // If neither is set, act as if non-sasl was specified.
-    channel_->setSecurityPolicy(THRIFT_SECURITY_DISABLED);
-  }
+  channel_->setSupportedClientsAll();
 
   auto handler = worker_->getServer()->getEventHandler();
   if (handler) {

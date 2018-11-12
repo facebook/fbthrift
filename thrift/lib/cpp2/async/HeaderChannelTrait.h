@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Facebook, Inc.
+ * Copyright 2015-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,12 +16,6 @@
 #pragma once
 
 #include <thrift/lib/cpp/transport/THeader.h>
-
-enum THRIFT_SECURITY_POLICY {
-  THRIFT_SECURITY_DISABLED = 1,
-  THRIFT_SECURITY_PERMITTED = 2,
-  THRIFT_SECURITY_REQUIRED = 3,
-};
 
 namespace apache {
 namespace thrift {
@@ -58,10 +52,7 @@ class HeaderChannelTrait {
   }
   void updateClientType(CLIENT_TYPE ct);
 
-  void setSecurityPolicy(THRIFT_SECURITY_POLICY policy);
-  THRIFT_SECURITY_POLICY getSecurityPolicy() {
-    return securityPolicy_;
-  }
+  void setSupportedClientsAll();
 
   void setMinCompressBytes(uint32_t bytes) {
     minCompressBytes_ = bytes;
@@ -106,7 +97,6 @@ class HeaderChannelTrait {
   CLIENT_TYPE prevClientType_{THRIFT_HEADER_CLIENT_TYPE};
   bool forceClientType_{false};
   std::bitset<CLIENT_TYPES_LEN> supported_clients;
-  THRIFT_SECURITY_POLICY securityPolicy_;
 
   std::vector<uint16_t> writeTrans_;
 };

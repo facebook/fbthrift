@@ -512,20 +512,6 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
     return strictSSL_;
   }
 
-  /**
-   * Enable negotiation of SASL on received connections.  This
-   * defaults to false.
-   */
-  void setSaslEnabled(bool enabled) {
-    saslEnabled_ = enabled;
-  }
-  bool getSaslEnabled() {
-    return saslEnabled_;
-  }
-  std::string getSaslPolicy() const {
-    return saslPolicy_;
-  }
-
   // The default SASL implementation can be overridden for testing or
   // other purposes.  Most users will never need to call this.
   void setSaslServerFactory(
