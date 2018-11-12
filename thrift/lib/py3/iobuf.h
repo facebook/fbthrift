@@ -22,7 +22,7 @@
 #include <folly/ScopeGuard.h>
 #include <folly/io/IOBuf.h>
 
-#ifdef PY_VERSION_HEX < 0x03040000
+#if PY_VERSION_HEX < 0x03040000
 #define PyGILState_Check() (true)
 #endif
 
