@@ -81,7 +81,6 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
 
   // Security negotiation settings
   bool saslEnabled_ = false;
-  bool nonSaslEnabled_ = true;
   const std::string saslPolicy_;
   SSLPolicy sslPolicy_ = SSLPolicy::PERMITTED;
   bool strictSSL_ = false;
@@ -542,17 +541,6 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
   void setAcceptorFactory(
       const std::shared_ptr<wangle::AcceptorFactory>& acceptorFactory) {
     acceptorFactory_ = acceptorFactory;
-  }
-
-  /**
-   * Enable negotiation of insecure (non-SASL) on received
-   * connections.  This defaults to true.
-   */
-  void setNonSaslEnabled(bool enabled) {
-    nonSaslEnabled_ = enabled;
-  }
-  bool getNonSaslEnabled() {
-    return nonSaslEnabled_;
   }
 
   /**

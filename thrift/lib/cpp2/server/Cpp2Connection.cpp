@@ -85,13 +85,6 @@ Cpp2Connection::Cpp2Connection(
     channel_->setSampleRate(observer->getSampleRate());
   }
 
-  if (worker_->getServer()->getSaslPolicy() == "permitted") {
-    worker_->getServer()->setNonSaslEnabled(true);
-  } else {
-    // sasl_policy is either "required" or "disabled"
-    worker_->getServer()->setNonSaslEnabled(false);
-  }
-
   if (transport) {
     auto factory = worker_->getServer()->getSaslServerFactory();
     if (factory) {
@@ -105,8 +98,7 @@ Cpp2Connection::Cpp2Connection(
   const bool downgradeSaslPolicy =
       isClientLocal(*address, *context_.getLocalAddress());
 
-  if (worker_->getServer()->getSaslEnabled() &&
-      (worker_->getServer()->getNonSaslEnabled() || downgradeSaslPolicy)) {
+  if (worker_->getServer()->getSaslEnabled() && downgradeSaslPolicy) {
     channel_->setSecurityPolicy(THRIFT_SECURITY_PERMITTED);
   } else if (worker_->getServer()->getSaslEnabled()) {
     channel_->setSecurityPolicy(THRIFT_SECURITY_REQUIRED);
