@@ -19,6 +19,7 @@
  * under the License.
  */
 
+#include <memory>
 #include <string>
 #include <type_traits>
 
@@ -89,15 +90,21 @@ class TestStruct {
     return {scons_, __isset.scons};
   }
 
+  optional_field_ref<std::shared_ptr<int>> ptr_ref() {
+    return {ptr_, __isset.ptr};
+  }
+
  private:
   std::string name_ = "default";
   IntAssignable int_assign_;
   StringConstructible scons_;
+  std::shared_ptr<int> ptr_;
 
   struct __isset {
     bool name;
     bool int_assign;
     bool scons;
+    bool ptr;
   } __isset = {};
 };
 
@@ -202,6 +209,20 @@ TEST(optional_field_ref_test, assign_forwards) {
   s.opt_int_assign() = 42;
   EXPECT_TRUE(s.opt_int_assign().has_value());
   EXPECT_EQ(s.opt_int_assign()->value, 42);
+}
+
+TEST(optional_field_ref_test, reset) {
+  auto s = TestStruct();
+  EXPECT_FALSE(s.ptr_ref().has_value());
+  s.ptr_ref().reset();
+  EXPECT_FALSE(s.ptr_ref().has_value());
+  auto ptr = std::make_shared<int>(42);
+  s.ptr_ref() = ptr;
+  EXPECT_TRUE(s.ptr_ref().has_value());
+  EXPECT_EQ(ptr.use_count(), 2);
+  s.ptr_ref().reset();
+  EXPECT_FALSE(s.ptr_ref().has_value());
+  EXPECT_EQ(ptr.use_count(), 1);
 }
 
 TEST(optional_field_ref_test, construct_const_from_mutable) {

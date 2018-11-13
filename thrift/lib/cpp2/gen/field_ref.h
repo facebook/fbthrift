@@ -113,6 +113,11 @@ class optional_field_ref {
     return is_set_;
   }
 
+  THRIFT_NOLINK void reset() noexcept {
+    value_ = T();
+    is_set_ = false;
+  }
+
   // Returns a reference to the value if this optional_field_ref has one; throws
   // bad_field_access otherwise.
   THRIFT_NOLINK T& value() const {
