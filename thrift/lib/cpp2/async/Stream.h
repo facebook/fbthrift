@@ -128,6 +128,12 @@ class Stream {
 
   Stream() {}
 
+  Stream(Stream&&) = default;
+
+  Stream& operator=(Stream&&) = default;
+
+  ~Stream();
+
   static Stream create(
       std::unique_ptr<detail::StreamImplIf> impl,
       folly::Executor::KeepAlive<folly::SequencedExecutor> executor) {

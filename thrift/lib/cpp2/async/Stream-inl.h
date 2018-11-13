@@ -70,6 +70,13 @@ struct EncodedError : std::exception {
 } // namespace detail
 
 template <typename T>
+Stream<T>::~Stream() {
+  if (impl_) {
+    impl_ = std::move(*impl_).subscribeVia(executor_);
+  }
+}
+
+template <typename T>
 template <typename F, typename EF>
 Stream<folly::invoke_result_t<F, T&&>> Stream<T>::map(F&& f, EF&& ef) && {
   if (!impl_) {

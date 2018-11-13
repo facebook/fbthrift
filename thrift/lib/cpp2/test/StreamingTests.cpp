@@ -111,3 +111,25 @@ TEST(StreamingTest, StreamPublisherCancellation) {
 
   publisherThread.join();
 }
+
+TEST(StreamingTest, StreamPublisherNoSubscription) {
+  class SlowExecutor : public folly::SequencedExecutor {
+   public:
+    void add(folly::Func func) override {
+      impl_.add([f = std::move(func)]() mutable {
+        /* sleep override */ std::this_thread::sleep_for(
+            std::chrono::milliseconds{5});
+        f();
+      });
+    }
+
+   private:
+    folly::ScopedEventBaseThread impl_;
+  };
+  SlowExecutor executor;
+
+  auto streamAndPublisher = apache::thrift::StreamPublisher<int>::create(
+      folly::getKeepAliveToken(executor), [] {});
+  std::exchange(streamAndPublisher.first, apache::thrift::Stream<int>());
+  std::move(streamAndPublisher.second).complete();
+}
