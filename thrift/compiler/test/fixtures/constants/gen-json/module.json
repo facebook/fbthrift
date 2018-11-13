@@ -177,7 +177,7 @@
     },
     "char2ascii" : {
       "lineno" : 178,
-      "value" : { "'" : 39, """ : 34, "\\" : 92, "\x61" : 97 },
+      "value" : { "'" : 39, "\"" : 34, "\\\\" : 92, "\\x61" : 97 },
       "type_enum" : "MAP",
       "spec_args" : { "key_type" : { "type_enum" : "STRING", "spec_args" : null }, "val_type" : { "type_enum" : "I32", "spec_args" : null} } 
     },
