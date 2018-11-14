@@ -1,5 +1,6 @@
 from __future__ import print_function
 
+import difflib
 import os
 import re
 import shlex
@@ -62,12 +63,21 @@ class CompilerTest(unittest.TestCase):
             # Compare that the generated files are the same
             self.assertEqual(sorted(gens), sorted(fixt))
             for gen in gens:
-                geng = read_file(os.path.join(path1, gen))
-                genf = read_file(os.path.join(path2, gen))
-                if geng != genf:
-                    print(os.path.join(path1, gen), file=sys.stderr)
-                # Compare that the file contents are equal
-                self.assertMultiLineEqual(geng, genf)
+                geng_path = os.path.join(path1, gen)
+                genf_path = os.path.join(path2, gen)
+                geng = read_file(geng_path)
+                genf = read_file(genf_path)
+                if geng == genf:
+                    continue
+
+                msg = ["Difference found in " + gen + ":"]
+                for line in difflib.unified_diff(
+                        geng.splitlines(), genf.splitlines(),
+                        geng_path, genf_path,
+                        lineterm="",
+                ):
+                    msg.append(line)
+                self.fail("\n".join(msg))
         except Exception:
             print(self.MSG, file=sys.stderr)
             traceback.print_exc(file=sys.stderr)
