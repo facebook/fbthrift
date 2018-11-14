@@ -23,7 +23,8 @@ module ClientServerTest where
 
 import Control.Concurrent
 import Control.Exception
-import Network
+import Network as N
+import Network.Socket as NS
 import System.IO
 import Test.HUnit
 import qualified Data.HashMap.Strict as Map
@@ -144,10 +145,20 @@ main = do
                }
   where
     runTest :: Protocol p => (Handle -> p Handle) -> IO Counts
-    runTest prot =
-      bracket (listenOn $ PortNumber 9090) sClose $ \socket ->
-      bracket (forkIO $ runServer prot socket) killThread $ const $
-      bracket (hOpen conn) tClose (runTestTT . runClient . prot)
-    conn :: (String, PortID)
-    conn = ("localhost", PortNumber 9090)
+    runTest prot = do
+      port <- getFreePort
+      let conn :: (String, PortID) = ("localhost", port) in
+        bracket (listenOn port) N.sClose $ \socket ->
+        bracket (forkIO $ runServer prot socket) killThread $ const $
+        bracket (hOpen conn) tClose (runTestTT . runClient . prot)
     total a = sum . map a
+
+    getFreePort :: IO PortID
+    getFreePort =
+      -- Attach to any socket then free it. The port should hopefully be open
+      -- afterward, but it's possible that it's (1) not cleaned up fast enough
+      -- or (2) another process grabs it immediately after it's released but
+      -- before we grab it again.
+      bracket (socket AF_INET Stream defaultProtocol) NS.close $ \s -> do
+        bind s (SockAddrInet aNY_PORT iNADDR_ANY)
+        N.socketPort s
