@@ -60,7 +60,13 @@ class Iface{{!
     }}: ...
     {{/service:functions}}
 
-class Client(Iface, t.ContextManager[Client]):{{^service:functions}} ...{{/service:functions}}  # {{service:name}}
+class Client(Iface, t.ContextManager[Client]):  # {{service:name}}
+    {{#program:asyncio?}}{{!
+    }}def __init__(self, oprot: TProtocolBase, loop: t.Optional[asyncio.AbstractEventLoop] = None) -> None: ...{{!
+    }}{{/program:asyncio?}}{{!
+    }}{{^program:asyncio?}}{{!
+    }}def __init__(self, iprot: TProtocolBase, oprot: t.Optional[TProtocolBase] = None) -> None: ...{{!
+    }}{{/program:asyncio?}}
     {{#service:functions}}
     def send_{{function:name}}(self{{#function:args}}, {{!
     }}{{field:name}}: {{#field:type}}{{> common/OptionalFieldType}}{{/field:type}} = ...{{!

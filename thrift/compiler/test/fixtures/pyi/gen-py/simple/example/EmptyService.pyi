@@ -15,7 +15,8 @@ from simple.example.ttypes import *
 
 class Iface: ...  # EmptyService
 
-class Client(Iface, t.ContextManager[Client]): ...  # EmptyService
+class Client(Iface, t.ContextManager[Client]):  # EmptyService
+    def __init__(self, iprot: TProtocolBase, oprot: t.Optional[TProtocolBase] = None) -> None: ...
 
 class Processor(Iface, Thrift.TProcessor):  # EmptyService
     def __init__(self, handler: Iface) -> None:
