@@ -189,7 +189,7 @@ TEST(ThriftServer, ResponseTooBigTest) {
   }
 }
 
-class ConnCallback : public TAsyncSocket::ConnectCallback {
+class TestConnCallback : public TAsyncSocket::ConnectCallback {
  public:
   void connectSuccess() noexcept override {}
 
@@ -208,7 +208,7 @@ TEST(ThriftServer, SSLClientOnPlaintextServerTest) {
   auto sslCtx = std::make_shared<SSLContext>();
   std::shared_ptr<TAsyncSocket> socket(
       TAsyncSSLSocket::newSocket(sslCtx, &base));
-  ConnCallback cb;
+  TestConnCallback cb;
   socket->connect(&cb, *sst.getAddress());
   base.loop();
   ASSERT_TRUE(cb.exception);
