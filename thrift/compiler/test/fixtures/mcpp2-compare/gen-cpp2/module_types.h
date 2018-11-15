@@ -284,6 +284,7 @@ class AnotherException;
 class containerStruct;
 class MyIncludedStruct;
 class AnnotatedStruct;
+class ComplexContainerStruct;
 class FloatStruct;
 class FloatUnion;
 class AllRequiredNoExceptMoveCtrStruct;
@@ -4970,6 +4971,125 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::Annot
 }
 
 template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::AnnotatedStruct>::serializedSizeZC(Protocol const* proto,  ::some::valid::ns::AnnotatedStruct const* obj) {
+  return obj->serializedSizeZC(proto);
+}
+
+}} // apache::thrift
+namespace some { namespace valid { namespace ns {
+class ComplexContainerStruct final : private apache::thrift::detail::st::ComparisonOperators<ComplexContainerStruct> {
+ public:
+
+  ComplexContainerStruct() {}
+  // FragileConstructor for use in initialization lists only.
+  ComplexContainerStruct(apache::thrift::FragileConstructor, std::map<std::string,  ::some::valid::ns::IOBuf> map_of_iobufs__arg, std::map<std::string,  ::some::valid::ns::IOBufPtr> map_of_iobuf_ptrs__arg);
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
+    map_of_iobufs = arg.extract();
+    __isset.map_of_iobufs = true;
+  }
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
+    map_of_iobuf_ptrs = arg.extract();
+    __isset.map_of_iobuf_ptrs = true;
+  }
+
+  ComplexContainerStruct(ComplexContainerStruct&&) = default;
+
+  ComplexContainerStruct(const ComplexContainerStruct&) = default;
+
+  ComplexContainerStruct& operator=(ComplexContainerStruct&&) = default;
+
+  ComplexContainerStruct& operator=(const ComplexContainerStruct&) = default;
+  void __clear();
+  std::map<std::string,  ::some::valid::ns::IOBuf> map_of_iobufs;
+  std::map<std::string,  ::some::valid::ns::IOBufPtr> map_of_iobuf_ptrs;
+
+  struct __isset {
+    bool map_of_iobufs;
+    bool map_of_iobuf_ptrs;
+  } __isset = {};
+  bool operator==(const ComplexContainerStruct& rhs) const;
+  bool operator<(const ComplexContainerStruct& rhs) const;
+  const std::map<std::string,  ::some::valid::ns::IOBuf>& get_map_of_iobufs() const&;
+  std::map<std::string,  ::some::valid::ns::IOBuf> get_map_of_iobufs() &&;
+
+  template <typename T_ComplexContainerStruct_map_of_iobufs_struct_setter = std::map<std::string,  ::some::valid::ns::IOBuf>>
+  std::map<std::string,  ::some::valid::ns::IOBuf>& set_map_of_iobufs(T_ComplexContainerStruct_map_of_iobufs_struct_setter&& map_of_iobufs_) {
+    map_of_iobufs = std::forward<T_ComplexContainerStruct_map_of_iobufs_struct_setter>(map_of_iobufs_);
+    __isset.map_of_iobufs = true;
+    return map_of_iobufs;
+  }
+  const std::map<std::string,  ::some::valid::ns::IOBufPtr>& get_map_of_iobuf_ptrs() const&;
+  std::map<std::string,  ::some::valid::ns::IOBufPtr> get_map_of_iobuf_ptrs() &&;
+
+  template <typename T_ComplexContainerStruct_map_of_iobuf_ptrs_struct_setter = std::map<std::string,  ::some::valid::ns::IOBufPtr>>
+  std::map<std::string,  ::some::valid::ns::IOBufPtr>& set_map_of_iobuf_ptrs(T_ComplexContainerStruct_map_of_iobuf_ptrs_struct_setter&& map_of_iobuf_ptrs_) {
+    map_of_iobuf_ptrs = std::forward<T_ComplexContainerStruct_map_of_iobuf_ptrs_struct_setter>(map_of_iobuf_ptrs_);
+    __isset.map_of_iobuf_ptrs = true;
+    return map_of_iobuf_ptrs;
+  }
+
+  template <class Protocol_>
+  uint32_t read(Protocol_* iprot);
+  template <class Protocol_>
+  uint32_t serializedSize(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t serializedSizeZC(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t write(Protocol_* prot_) const;
+
+ private:
+  template <class Protocol_>
+  void readNoXfer(Protocol_* iprot);
+
+  friend class ::apache::thrift::Cpp2Ops< ComplexContainerStruct >;
+};
+
+void swap(ComplexContainerStruct& a, ComplexContainerStruct& b);
+extern template void ComplexContainerStruct::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+extern template uint32_t ComplexContainerStruct::write<>(apache::thrift::BinaryProtocolWriter*) const;
+extern template uint32_t ComplexContainerStruct::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t ComplexContainerStruct::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template void ComplexContainerStruct::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+extern template uint32_t ComplexContainerStruct::write<>(apache::thrift::CompactProtocolWriter*) const;
+extern template uint32_t ComplexContainerStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template uint32_t ComplexContainerStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template void ComplexContainerStruct::readNoXfer<>(apache::thrift::SimpleJSONProtocolReader*);
+extern template uint32_t ComplexContainerStruct::write<>(apache::thrift::SimpleJSONProtocolWriter*) const;
+extern template uint32_t ComplexContainerStruct::serializedSize<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
+extern template uint32_t ComplexContainerStruct::serializedSizeZC<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
+
+template <class Protocol_>
+uint32_t ComplexContainerStruct::read(Protocol_* iprot) {
+  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
+  readNoXfer(iprot);
+  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
+}
+
+}}} // some::valid::ns
+namespace apache { namespace thrift {
+
+template <> inline void Cpp2Ops< ::some::valid::ns::ComplexContainerStruct>::clear( ::some::valid::ns::ComplexContainerStruct* obj) {
+  return obj->__clear();
+}
+
+template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::some::valid::ns::ComplexContainerStruct>::thriftType() {
+  return apache::thrift::protocol::T_STRUCT;
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::ComplexContainerStruct>::write(Protocol* proto,  ::some::valid::ns::ComplexContainerStruct const* obj) {
+  return obj->write(proto);
+}
+
+template <> template <class Protocol> void Cpp2Ops< ::some::valid::ns::ComplexContainerStruct>::read(Protocol* proto,  ::some::valid::ns::ComplexContainerStruct* obj) {
+  return obj->readNoXfer(proto);
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::ComplexContainerStruct>::serializedSize(Protocol const* proto,  ::some::valid::ns::ComplexContainerStruct const* obj) {
+  return obj->serializedSize(proto);
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::ComplexContainerStruct>::serializedSizeZC(Protocol const* proto,  ::some::valid::ns::ComplexContainerStruct const* obj) {
   return obj->serializedSizeZC(proto);
 }
 

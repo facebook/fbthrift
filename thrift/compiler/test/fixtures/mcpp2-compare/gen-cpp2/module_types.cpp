@@ -775,6 +775,20 @@ void TccStructTraits< ::some::valid::ns::AnnotatedStruct>::translateFieldName(
     _ftype = apache::thrift::protocol::T_STRUCT;
   }
 }
+void TccStructTraits< ::some::valid::ns::ComplexContainerStruct>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "map_of_iobufs") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_MAP;
+  }
+  else if (_fname == "map_of_iobuf_ptrs") {
+    fid = 2;
+    _ftype = apache::thrift::protocol::T_MAP;
+  }
+}
 void TccStructTraits< ::some::valid::ns::FloatStruct>::translateFieldName(
     FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
     FOLLY_MAYBE_UNUSED int16_t& fid,
@@ -3510,6 +3524,86 @@ template void AnnotatedStruct::readNoXfer<>(apache::thrift::SimpleJSONProtocolRe
 template uint32_t AnnotatedStruct::write<>(apache::thrift::SimpleJSONProtocolWriter*) const;
 template uint32_t AnnotatedStruct::serializedSize<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 template uint32_t AnnotatedStruct::serializedSizeZC<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
+
+}}} // some::valid::ns
+namespace some { namespace valid { namespace ns {
+
+ComplexContainerStruct::ComplexContainerStruct(apache::thrift::FragileConstructor, std::map<std::string,  ::some::valid::ns::IOBuf> map_of_iobufs__arg, std::map<std::string,  ::some::valid::ns::IOBufPtr> map_of_iobuf_ptrs__arg) :
+    map_of_iobufs(std::move(map_of_iobufs__arg)),
+    map_of_iobuf_ptrs(std::move(map_of_iobuf_ptrs__arg)) {
+  __isset.map_of_iobufs = true;
+  __isset.map_of_iobuf_ptrs = true;
+}
+
+void ComplexContainerStruct::__clear() {
+  // clear all fields
+  map_of_iobufs.clear();
+  map_of_iobuf_ptrs.clear();
+  __isset = {};
+}
+
+bool ComplexContainerStruct::operator==(const ComplexContainerStruct& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  if (!(lhs.map_of_iobufs == rhs.map_of_iobufs)) {
+    return false;
+  }
+  if (!(lhs.map_of_iobuf_ptrs == rhs.map_of_iobuf_ptrs)) {
+    return false;
+  }
+  return true;
+}
+
+bool ComplexContainerStruct::operator<(const ComplexContainerStruct& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  if (!(lhs.map_of_iobufs == rhs.map_of_iobufs)) {
+    return lhs.map_of_iobufs < rhs.map_of_iobufs;
+  }
+  if (!(lhs.map_of_iobuf_ptrs == rhs.map_of_iobuf_ptrs)) {
+    return lhs.map_of_iobuf_ptrs < rhs.map_of_iobuf_ptrs;
+  }
+  return false;
+}
+
+const std::map<std::string,  ::some::valid::ns::IOBuf>& ComplexContainerStruct::get_map_of_iobufs() const& {
+  return map_of_iobufs;
+}
+
+std::map<std::string,  ::some::valid::ns::IOBuf> ComplexContainerStruct::get_map_of_iobufs() && {
+  return std::move(map_of_iobufs);
+}
+
+const std::map<std::string,  ::some::valid::ns::IOBufPtr>& ComplexContainerStruct::get_map_of_iobuf_ptrs() const& {
+  return map_of_iobuf_ptrs;
+}
+
+std::map<std::string,  ::some::valid::ns::IOBufPtr> ComplexContainerStruct::get_map_of_iobuf_ptrs() && {
+  return std::move(map_of_iobuf_ptrs);
+}
+
+
+void swap(ComplexContainerStruct& a, ComplexContainerStruct& b) {
+  using ::std::swap;
+  swap(a.map_of_iobufs, b.map_of_iobufs);
+  swap(a.map_of_iobuf_ptrs, b.map_of_iobuf_ptrs);
+  swap(a.__isset, b.__isset);
+}
+
+template void ComplexContainerStruct::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+template uint32_t ComplexContainerStruct::write<>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t ComplexContainerStruct::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t ComplexContainerStruct::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+template void ComplexContainerStruct::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+template uint32_t ComplexContainerStruct::write<>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t ComplexContainerStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t ComplexContainerStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+template void ComplexContainerStruct::readNoXfer<>(apache::thrift::SimpleJSONProtocolReader*);
+template uint32_t ComplexContainerStruct::write<>(apache::thrift::SimpleJSONProtocolWriter*) const;
+template uint32_t ComplexContainerStruct::serializedSize<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
+template uint32_t ComplexContainerStruct::serializedSizeZC<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 
 }}} // some::valid::ns
 namespace some { namespace valid { namespace ns {

@@ -288,6 +288,11 @@ struct AnnotatedStruct {
     cpp2.methods = "void foo(const std::string& bar) {}"
 )
 
+struct ComplexContainerStruct {
+    1: map<string, IOBuf> map_of_iobufs
+    2: map<string, IOBufPtr> map_of_iobuf_ptrs
+}
+
 service EmptyService {
 }
 

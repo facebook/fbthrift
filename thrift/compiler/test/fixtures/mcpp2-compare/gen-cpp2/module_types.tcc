@@ -135,6 +135,13 @@ struct TccStructTraits< ::some::valid::ns::AnnotatedStruct> {
       apache::thrift::protocol::TType& _ftype);
 };
 template <>
+struct TccStructTraits< ::some::valid::ns::ComplexContainerStruct> {
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
+};
+template <>
 struct TccStructTraits< ::some::valid::ns::FloatStruct> {
   static void translateFieldName(
       folly::StringPiece _fname,
@@ -6194,6 +6201,146 @@ uint32_t AnnotatedStruct::write(Protocol_* prot_) const {
   xfer += prot_->writeFieldBegin("struct_struct", apache::thrift::protocol::T_STRUCT, 40);
   xfer += ::apache::thrift::Cpp2Ops<  ::some::valid::ns::containerStruct>::write(prot_, &this->struct_struct);
   xfer += prot_->writeFieldEnd();
+  xfer += prot_->writeFieldStop();
+  xfer += prot_->writeStructEnd();
+  return xfer;
+}
+
+}}} // some::valid::ns
+namespace some { namespace valid { namespace ns {
+
+template <class Protocol_>
+void ComplexContainerStruct::readNoXfer(Protocol_* iprot) {
+  apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
+
+  _readState.readStructBegin(iprot);
+
+  using apache::thrift::TProtocolException;
+
+
+  if (UNLIKELY(!_readState.advanceToNextField(
+          iprot,
+          0,
+          1,
+          apache::thrift::protocol::T_MAP))) {
+    goto _loop;
+  }
+_readField_map_of_iobufs:
+  {
+    this->map_of_iobufs = std::map<std::string,  ::some::valid::ns::IOBuf>();
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::binary>, std::map<std::string,  ::some::valid::ns::IOBuf>>::read(*iprot, this->map_of_iobufs);
+    this->__isset.map_of_iobufs = true;
+  }
+
+  if (UNLIKELY(!_readState.advanceToNextField(
+          iprot,
+          1,
+          2,
+          apache::thrift::protocol::T_MAP))) {
+    goto _loop;
+  }
+_readField_map_of_iobuf_ptrs:
+  {
+    this->map_of_iobuf_ptrs = std::map<std::string,  ::some::valid::ns::IOBufPtr>();
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::binary>, std::map<std::string,  ::some::valid::ns::IOBufPtr>>::read(*iprot, this->map_of_iobuf_ptrs);
+    this->__isset.map_of_iobuf_ptrs = true;
+  }
+
+  if (UNLIKELY(!_readState.advanceToNextField(
+          iprot,
+          2,
+          0,
+          apache::thrift::protocol::T_STOP))) {
+    goto _loop;
+  }
+
+_end:
+  _readState.readStructEnd(iprot);
+
+  return;
+
+_loop:
+  if (_readState.fieldType == apache::thrift::protocol::T_STOP) {
+    goto _end;
+  }
+  if (iprot->kUsesFieldNames()) {
+    apache::thrift::detail::TccStructTraits<ComplexContainerStruct>::translateFieldName(_readState.fieldName(), _readState.fieldId, _readState.fieldType);
+  }
+
+  switch (_readState.fieldId) {
+    case 1:
+    {
+      if (LIKELY(_readState.fieldType == apache::thrift::protocol::T_MAP)) {
+        goto _readField_map_of_iobufs;
+      } else {
+        goto _skip;
+      }
+    }
+    case 2:
+    {
+      if (LIKELY(_readState.fieldType == apache::thrift::protocol::T_MAP)) {
+        goto _readField_map_of_iobuf_ptrs;
+      } else {
+        goto _skip;
+      }
+    }
+    default:
+    {
+_skip:
+      iprot->skip(_readState.fieldType);
+      _readState.readFieldEnd(iprot);
+      _readState.readFieldBeginNoInline(iprot);
+      goto _loop;
+    }
+  }
+}
+
+template <class Protocol_>
+uint32_t ComplexContainerStruct::serializedSize(Protocol_ const* prot_) const {
+  uint32_t xfer = 0;
+  xfer += prot_->serializedStructSize("ComplexContainerStruct");
+  if (!this->map_of_iobufs.empty()) {
+    xfer += prot_->serializedFieldSize("map_of_iobufs", apache::thrift::protocol::T_MAP, 1);
+    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::binary>, std::map<std::string,  ::some::valid::ns::IOBuf>>::serializedSize<false>(*prot_, this->map_of_iobufs);
+  }
+  if (!this->map_of_iobuf_ptrs.empty()) {
+    xfer += prot_->serializedFieldSize("map_of_iobuf_ptrs", apache::thrift::protocol::T_MAP, 2);
+    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::binary>, std::map<std::string,  ::some::valid::ns::IOBufPtr>>::serializedSize<false>(*prot_, this->map_of_iobuf_ptrs);
+  }
+  xfer += prot_->serializedSizeStop();
+  return xfer;
+}
+
+template <class Protocol_>
+uint32_t ComplexContainerStruct::serializedSizeZC(Protocol_ const* prot_) const {
+  uint32_t xfer = 0;
+  xfer += prot_->serializedStructSize("ComplexContainerStruct");
+  if (!this->map_of_iobufs.empty()) {
+    xfer += prot_->serializedFieldSize("map_of_iobufs", apache::thrift::protocol::T_MAP, 1);
+    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::binary>, std::map<std::string,  ::some::valid::ns::IOBuf>>::serializedSize<false>(*prot_, this->map_of_iobufs);
+  }
+  if (!this->map_of_iobuf_ptrs.empty()) {
+    xfer += prot_->serializedFieldSize("map_of_iobuf_ptrs", apache::thrift::protocol::T_MAP, 2);
+    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::binary>, std::map<std::string,  ::some::valid::ns::IOBufPtr>>::serializedSize<false>(*prot_, this->map_of_iobuf_ptrs);
+  }
+  xfer += prot_->serializedSizeStop();
+  return xfer;
+}
+
+template <class Protocol_>
+uint32_t ComplexContainerStruct::write(Protocol_* prot_) const {
+  uint32_t xfer = 0;
+  xfer += prot_->writeStructBegin("ComplexContainerStruct");
+  if (!this->map_of_iobufs.empty()) {
+    xfer += prot_->writeFieldBegin("map_of_iobufs", apache::thrift::protocol::T_MAP, 1);
+    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::binary>, std::map<std::string,  ::some::valid::ns::IOBuf>>::write(*prot_, this->map_of_iobufs);
+    xfer += prot_->writeFieldEnd();
+  }
+  if (!this->map_of_iobuf_ptrs.empty()) {
+    xfer += prot_->writeFieldBegin("map_of_iobuf_ptrs", apache::thrift::protocol::T_MAP, 2);
+    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::binary>, std::map<std::string,  ::some::valid::ns::IOBufPtr>>::write(*prot_, this->map_of_iobuf_ptrs);
+    xfer += prot_->writeFieldEnd();
+  }
   xfer += prot_->writeFieldStop();
   xfer += prot_->writeStructEnd();
   return xfer;

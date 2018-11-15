@@ -6311,6 +6311,205 @@ cdef class AnnotatedStruct(thrift.py3.types.Struct):
         return (deserialize, (AnnotatedStruct, serialize(self)))
 
 
+cdef cComplexContainerStruct _ComplexContainerStruct_defaults = cComplexContainerStruct()
+
+cdef class ComplexContainerStruct(thrift.py3.types.Struct):
+
+    def __init__(
+        ComplexContainerStruct self, *,
+        map_of_iobufs=None,
+        map_of_iobuf_ptrs=None
+    ):
+        self._cpp_obj = move(ComplexContainerStruct._make_instance(
+          NULL,
+          NULL,
+          map_of_iobufs,
+          map_of_iobuf_ptrs,
+        ))
+
+    def __call__(
+        ComplexContainerStruct self,
+        map_of_iobufs=__NOTSET,
+        map_of_iobuf_ptrs=__NOTSET
+    ):
+        ___NOTSET = __NOTSET  # Cheaper for larger structs
+        cdef bint[2] __isNOTSET  # so make_instance is typed
+
+        changes = False
+        if map_of_iobufs is ___NOTSET:
+            __isNOTSET[0] = True
+            map_of_iobufs = None
+        else:
+            __isNOTSET[0] = False
+            changes = True
+
+        if map_of_iobuf_ptrs is ___NOTSET:
+            __isNOTSET[1] = True
+            map_of_iobuf_ptrs = None
+        else:
+            __isNOTSET[1] = False
+            changes = True
+
+
+        if not changes:
+            return self
+
+        inst = <ComplexContainerStruct>ComplexContainerStruct.__new__(ComplexContainerStruct)
+        inst._cpp_obj = move(ComplexContainerStruct._make_instance(
+          self._cpp_obj.get(),
+          __isNOTSET,
+          map_of_iobufs,
+          map_of_iobuf_ptrs,
+        ))
+        return inst
+
+    @staticmethod
+    cdef unique_ptr[cComplexContainerStruct] _make_instance(
+        cComplexContainerStruct* base_instance,
+        bint* __isNOTSET,
+        object map_of_iobufs ,
+        object map_of_iobuf_ptrs 
+    ) except *:
+        cdef unique_ptr[cComplexContainerStruct] c_inst
+        if base_instance:
+            c_inst = make_unique[cComplexContainerStruct](deref(base_instance))
+        else:
+            c_inst = make_unique[cComplexContainerStruct]()
+
+        if base_instance:
+            # Convert None's to default value. (or unset)
+            if not __isNOTSET[0] and map_of_iobufs is None:
+                deref(c_inst).map_of_iobufs = _ComplexContainerStruct_defaults.map_of_iobufs
+                deref(c_inst).__isset.map_of_iobufs = False
+                pass
+
+            if not __isNOTSET[1] and map_of_iobuf_ptrs is None:
+                deref(c_inst).map_of_iobuf_ptrs = _ComplexContainerStruct_defaults.map_of_iobuf_ptrs
+                deref(c_inst).__isset.map_of_iobuf_ptrs = False
+                pass
+
+        if map_of_iobufs is not None:
+            deref(c_inst).map_of_iobufs = deref(Map__string_folly_IOBuf__binary(map_of_iobufs)._cpp_obj)
+            deref(c_inst).__isset.map_of_iobufs = True
+        if map_of_iobuf_ptrs is not None:
+            deref(c_inst).map_of_iobuf_ptrs = deref(Map__string_std_unique_ptr_folly_IOBuf__binary(map_of_iobuf_ptrs)._cpp_obj)
+            deref(c_inst).__isset.map_of_iobuf_ptrs = True
+        # in C++ you don't have to call move(), but this doesn't translate
+        # into a C++ return statement, so you do here
+        return move_unique(c_inst)
+
+    def __iter__(self):
+        yield 'map_of_iobufs', self.map_of_iobufs
+        yield 'map_of_iobuf_ptrs', self.map_of_iobuf_ptrs
+
+    def __bool__(self):
+        return True
+
+    @staticmethod
+    cdef create(shared_ptr[cComplexContainerStruct] cpp_obj):
+        inst = <ComplexContainerStruct>ComplexContainerStruct.__new__(ComplexContainerStruct)
+        inst._cpp_obj = move_shared(cpp_obj)
+        return inst
+
+    @property
+    def map_of_iobufs(self):
+
+        if self.__field_map_of_iobufs is None:
+            self.__field_map_of_iobufs = Map__string_folly_IOBuf__binary.create(reference_shared_ptr_map_of_iobufs(self._cpp_obj, deref(self._cpp_obj).map_of_iobufs))
+        return self.__field_map_of_iobufs
+
+    @property
+    def map_of_iobuf_ptrs(self):
+
+        if self.__field_map_of_iobuf_ptrs is None:
+            self.__field_map_of_iobuf_ptrs = Map__string_std_unique_ptr_folly_IOBuf__binary.create(reference_shared_ptr_map_of_iobuf_ptrs(self._cpp_obj, deref(self._cpp_obj).map_of_iobuf_ptrs))
+        return self.__field_map_of_iobuf_ptrs
+
+
+    def __hash__(ComplexContainerStruct self):
+        if not self.__hash:
+            self.__hash = hash((
+            self.map_of_iobufs,
+            self.map_of_iobuf_ptrs,
+            ))
+        return self.__hash
+
+    def __repr__(ComplexContainerStruct self):
+        return f'ComplexContainerStruct(map_of_iobufs={repr(self.map_of_iobufs)}, map_of_iobuf_ptrs={repr(self.map_of_iobuf_ptrs)})'
+    def __copy__(ComplexContainerStruct self):
+        cdef shared_ptr[cComplexContainerStruct] cpp_obj = make_shared[cComplexContainerStruct](
+            deref(self._cpp_obj)
+        )
+        return ComplexContainerStruct.create(move_shared(cpp_obj))
+
+    def __richcmp__(self, other, op):
+        cdef int cop = op
+        if not (
+                isinstance(self, ComplexContainerStruct) and
+                isinstance(other, ComplexContainerStruct)):
+            if cop == Py_EQ:  # different types are never equal
+                return False
+            elif cop == Py_NE:  # different types are always notequal
+                return True
+            else:
+                return NotImplemented
+
+        cdef cComplexContainerStruct cself = deref((<ComplexContainerStruct>self)._cpp_obj)
+        cdef cComplexContainerStruct cother = deref((<ComplexContainerStruct>other)._cpp_obj)
+        if cop == Py_EQ:
+            return cself == cother
+        elif cop == Py_NE:
+            return not (cself == cother)
+        elif cop == Py_LT:
+            return cself < cother
+        elif cop == Py_LE:
+            return cself <= cother
+        elif cop == Py_GT:
+            return cself > cother
+        elif cop == Py_GE:
+            return cself >= cother
+        else:
+            return NotImplemented
+
+    cdef __iobuf.IOBuf _serialize(ComplexContainerStruct self, proto):
+        cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
+        cdef cComplexContainerStruct* cpp_obj = self._cpp_obj.get()
+        if proto is __Protocol.COMPACT:
+            with nogil:
+                serializer.CompactSerialize[cComplexContainerStruct](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.BINARY:
+            with nogil:
+                serializer.BinarySerialize[cComplexContainerStruct](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.JSON:
+            with nogil:
+                serializer.JSONSerialize[cComplexContainerStruct](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.COMPACT_JSON:
+            with nogil:
+                serializer.CompactJSONSerialize[cComplexContainerStruct](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
+        return __iobuf.from_unique_ptr(queue.move())
+
+    cdef uint32_t _deserialize(ComplexContainerStruct self, const __iobuf.cIOBuf* buf, proto) except? 0:
+        cdef uint32_t needed
+        self._cpp_obj = make_shared[cComplexContainerStruct]()
+        cdef cComplexContainerStruct* cpp_obj = self._cpp_obj.get()
+        if proto is __Protocol.COMPACT:
+            with nogil:
+                needed = serializer.CompactDeserialize[cComplexContainerStruct](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.BINARY:
+            with nogil:
+                needed = serializer.BinaryDeserialize[cComplexContainerStruct](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.JSON:
+            with nogil:
+                needed = serializer.JSONDeserialize[cComplexContainerStruct](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.COMPACT_JSON:
+            with nogil:
+                needed = serializer.CompactJSONDeserialize[cComplexContainerStruct](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
+        return needed
+
+    def __reduce__(self):
+        return (deserialize, (ComplexContainerStruct, serialize(self)))
+
+
 cdef cFloatStruct _FloatStruct_defaults = cFloatStruct()
 
 cdef class FloatStruct(thrift.py3.types.Struct):
@@ -15741,6 +15940,272 @@ cdef class Set__Baz__i32:
 
 
 Set.register(Set__Baz__i32)
+
+cdef class Map__string_folly_IOBuf__binary:
+    def __init__(self, items=None):
+        if isinstance(items, Map__string_folly_IOBuf__binary):
+            self._cpp_obj = (<Map__string_folly_IOBuf__binary> items)._cpp_obj
+        else:
+            self._cpp_obj = Map__string_folly_IOBuf__binary._make_instance(items)
+
+    @staticmethod
+    cdef create(shared_ptr[cmap[string,__iobuf.cIOBuf]] c_items):
+        inst = <Map__string_folly_IOBuf__binary>Map__string_folly_IOBuf__binary.__new__(Map__string_folly_IOBuf__binary)
+        inst._cpp_obj = move_shared(c_items)
+        return inst
+
+    def __copy__(Map__string_folly_IOBuf__binary self):
+        cdef shared_ptr[cmap[string,__iobuf.cIOBuf]] cpp_obj = make_shared[cmap[string,__iobuf.cIOBuf]](
+            deref(self._cpp_obj)
+        )
+        return Map__string_folly_IOBuf__binary.create(move_shared(cpp_obj))
+
+    @staticmethod
+    cdef shared_ptr[cmap[string,__iobuf.cIOBuf]] _make_instance(object items) except *:
+        cdef shared_ptr[cmap[string,__iobuf.cIOBuf]] c_inst = make_shared[cmap[string,__iobuf.cIOBuf]]()
+        if items is not None:
+            for key, item in items.items():
+                if not isinstance(key, str):
+                    raise TypeError(f"{key!r} is not of type str")
+                if not isinstance(item, bytes):
+                    raise TypeError(f"{item!r} is not of type __iobuf.IOBuf")
+
+                deref(c_inst)[key.encode('UTF-8')] = item
+        return c_inst
+
+    def __getitem__(self, key):
+        err = KeyError(f'{key}')
+        if not self or key is None:
+            raise err
+        if not isinstance(key, str):
+            raise err from None
+        cdef cmap[string,__iobuf.cIOBuf].iterator iter = deref(
+            self._cpp_obj).find(key.encode('UTF-8'))
+        if iter == deref(self._cpp_obj).end():
+            raise err
+        cdef __iobuf.cIOBuf citem = deref(iter).second
+        return bytes(citem)
+
+    def __len__(self):
+        return deref(self._cpp_obj).size()
+
+    def __iter__(self):
+        if not self:
+            raise StopIteration
+        cdef string citem
+        cdef cmap[string,__iobuf.cIOBuf].iterator loc = deref(self._cpp_obj).begin()
+        while loc != deref(self._cpp_obj).end():
+            citem = deref(loc).first
+            yield bytes(citem).decode('UTF-8')
+            inc(loc)
+
+    def __eq__(self, other):
+        if not (isinstance(self, Mapping) and isinstance(other, Mapping)):
+            return False
+        if len(self) != len(other):
+            return False
+
+        for key in self:
+            if key not in other:
+                return False
+            if other[key] != self[key]:
+                return False
+
+        return True
+
+    def __ne__(self, other):
+        return not self.__eq__(other)
+
+    def __hash__(self):
+        if not self.__hash:
+            self.__hash = hash(tuple(self.items()))
+        return self.__hash
+
+    def __repr__(self):
+        if not self:
+            return 'i{}'
+        return f'i{{{", ".join(map(lambda i: f"{repr(i[0])}: {repr(i[1])}", self.items()))}}}'
+
+    def __contains__(self, key):
+        if not self or key is None:
+            return False
+        if not isinstance(key, str):
+            return False
+        cdef string ckey = key.encode('UTF-8')
+        return deref(self._cpp_obj).count(ckey) > 0
+
+    def get(self, key, default=None):
+        if not self or key is None:
+            return default
+        if not isinstance(key, str):
+            return default
+        if key not in self:
+            return default
+        return self[key]
+
+    def keys(self):
+        return self.__iter__()
+
+    def values(self):
+        if not self:
+            raise StopIteration
+        cdef __iobuf.cIOBuf citem
+        cdef cmap[string,__iobuf.cIOBuf].iterator loc = deref(self._cpp_obj).begin()
+        while loc != deref(self._cpp_obj).end():
+            citem = deref(loc).second
+            yield bytes(citem)
+            inc(loc)
+
+    def items(self):
+        if not self:
+            raise StopIteration
+        cdef string ckey
+        cdef __iobuf.cIOBuf citem
+        cdef cmap[string,__iobuf.cIOBuf].iterator loc = deref(self._cpp_obj).begin()
+        while loc != deref(self._cpp_obj).end():
+            ckey = deref(loc).first
+            citem = deref(loc).second
+            yield (ckey.decode('UTF-8'), bytes(citem))
+            inc(loc)
+
+    def __reduce__(self):
+        return (Map__string_folly_IOBuf__binary, (dict(self), ))
+
+
+Mapping.register(Map__string_folly_IOBuf__binary)
+
+cdef class Map__string_std_unique_ptr_folly_IOBuf__binary:
+    def __init__(self, items=None):
+        if isinstance(items, Map__string_std_unique_ptr_folly_IOBuf__binary):
+            self._cpp_obj = (<Map__string_std_unique_ptr_folly_IOBuf__binary> items)._cpp_obj
+        else:
+            self._cpp_obj = Map__string_std_unique_ptr_folly_IOBuf__binary._make_instance(items)
+
+    @staticmethod
+    cdef create(shared_ptr[cmap[string,unique_ptr[__iobuf.cIOBuf]]] c_items):
+        inst = <Map__string_std_unique_ptr_folly_IOBuf__binary>Map__string_std_unique_ptr_folly_IOBuf__binary.__new__(Map__string_std_unique_ptr_folly_IOBuf__binary)
+        inst._cpp_obj = move_shared(c_items)
+        return inst
+
+    def __copy__(Map__string_std_unique_ptr_folly_IOBuf__binary self):
+        cdef shared_ptr[cmap[string,unique_ptr[__iobuf.cIOBuf]]] cpp_obj = make_shared[cmap[string,unique_ptr[__iobuf.cIOBuf]]](
+            deref(self._cpp_obj)
+        )
+        return Map__string_std_unique_ptr_folly_IOBuf__binary.create(move_shared(cpp_obj))
+
+    @staticmethod
+    cdef shared_ptr[cmap[string,unique_ptr[__iobuf.cIOBuf]]] _make_instance(object items) except *:
+        cdef shared_ptr[cmap[string,unique_ptr[__iobuf.cIOBuf]]] c_inst = make_shared[cmap[string,unique_ptr[__iobuf.cIOBuf]]]()
+        if items is not None:
+            for key, item in items.items():
+                if not isinstance(key, str):
+                    raise TypeError(f"{key!r} is not of type str")
+                if not isinstance(item, bytes):
+                    raise TypeError(f"{item!r} is not of type __iobuf.IOBuf")
+
+                deref(c_inst)[key.encode('UTF-8')] = item
+        return c_inst
+
+    def __getitem__(self, key):
+        err = KeyError(f'{key}')
+        if not self or key is None:
+            raise err
+        if not isinstance(key, str):
+            raise err from None
+        cdef cmap[string,unique_ptr[__iobuf.cIOBuf]].iterator iter = deref(
+            self._cpp_obj).find(key.encode('UTF-8'))
+        if iter == deref(self._cpp_obj).end():
+            raise err
+        cdef unique_ptr[__iobuf.cIOBuf] citem = deref(iter).second
+        return bytes(citem)
+
+    def __len__(self):
+        return deref(self._cpp_obj).size()
+
+    def __iter__(self):
+        if not self:
+            raise StopIteration
+        cdef string citem
+        cdef cmap[string,unique_ptr[__iobuf.cIOBuf]].iterator loc = deref(self._cpp_obj).begin()
+        while loc != deref(self._cpp_obj).end():
+            citem = deref(loc).first
+            yield bytes(citem).decode('UTF-8')
+            inc(loc)
+
+    def __eq__(self, other):
+        if not (isinstance(self, Mapping) and isinstance(other, Mapping)):
+            return False
+        if len(self) != len(other):
+            return False
+
+        for key in self:
+            if key not in other:
+                return False
+            if other[key] != self[key]:
+                return False
+
+        return True
+
+    def __ne__(self, other):
+        return not self.__eq__(other)
+
+    def __hash__(self):
+        if not self.__hash:
+            self.__hash = hash(tuple(self.items()))
+        return self.__hash
+
+    def __repr__(self):
+        if not self:
+            return 'i{}'
+        return f'i{{{", ".join(map(lambda i: f"{repr(i[0])}: {repr(i[1])}", self.items()))}}}'
+
+    def __contains__(self, key):
+        if not self or key is None:
+            return False
+        if not isinstance(key, str):
+            return False
+        cdef string ckey = key.encode('UTF-8')
+        return deref(self._cpp_obj).count(ckey) > 0
+
+    def get(self, key, default=None):
+        if not self or key is None:
+            return default
+        if not isinstance(key, str):
+            return default
+        if key not in self:
+            return default
+        return self[key]
+
+    def keys(self):
+        return self.__iter__()
+
+    def values(self):
+        if not self:
+            raise StopIteration
+        cdef unique_ptr[__iobuf.cIOBuf] citem
+        cdef cmap[string,unique_ptr[__iobuf.cIOBuf]].iterator loc = deref(self._cpp_obj).begin()
+        while loc != deref(self._cpp_obj).end():
+            citem = deref(loc).second
+            yield bytes(citem)
+            inc(loc)
+
+    def items(self):
+        if not self:
+            raise StopIteration
+        cdef string ckey
+        cdef unique_ptr[__iobuf.cIOBuf] citem
+        cdef cmap[string,unique_ptr[__iobuf.cIOBuf]].iterator loc = deref(self._cpp_obj).begin()
+        while loc != deref(self._cpp_obj).end():
+            ckey = deref(loc).first
+            citem = deref(loc).second
+            yield (ckey.decode('UTF-8'), bytes(citem))
+            inc(loc)
+
+    def __reduce__(self):
+        return (Map__string_std_unique_ptr_folly_IOBuf__binary, (dict(self), ))
+
+
+Mapping.register(Map__string_std_unique_ptr_folly_IOBuf__binary)
 
 cdef class Map__i32_string:
     def __init__(self, items=None):

@@ -354,6 +354,8 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "some::
     # Forward Declaration
     cdef cppclass cAnnotatedStruct "some::valid::ns::AnnotatedStruct"
     # Forward Declaration
+    cdef cppclass cComplexContainerStruct "some::valid::ns::ComplexContainerStruct"
+    # Forward Declaration
     cdef cppclass cFloatStruct "some::valid::ns::FloatStruct"
     # Forward Declaration
     cdef cppclass cFloatUnion "some::valid::ns::FloatUnion"
@@ -813,6 +815,22 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "some::valid::ns":
         ccontainerStruct struct_struct
         cAnnotatedStruct__isset __isset
 
+    cdef cppclass cComplexContainerStruct__isset "some::valid::ns::ComplexContainerStruct::__isset":
+        bint map_of_iobufs
+        bint map_of_iobuf_ptrs
+
+    cdef cppclass cComplexContainerStruct "some::valid::ns::ComplexContainerStruct":
+        cComplexContainerStruct() except +
+        cComplexContainerStruct(const cComplexContainerStruct&) except +
+        bint operator==(cComplexContainerStruct&)
+        bint operator<(cComplexContainerStruct&)
+        bint operator>(cComplexContainerStruct&)
+        bint operator<=(cComplexContainerStruct&)
+        bint operator>=(cComplexContainerStruct&)
+        cmap[string,__iobuf.cIOBuf] map_of_iobufs
+        cmap[string,unique_ptr[__iobuf.cIOBuf]] map_of_iobuf_ptrs
+        cComplexContainerStruct__isset __isset
+
     cdef cppclass cFloatStruct__isset "some::valid::ns::FloatStruct::__isset":
         bint floatField
         bint doubleField
@@ -956,6 +974,8 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "some::valid::ns":
     cdef shared_ptr[vector[Bar]] reference_shared_ptr_indirection_b "thrift::py3::reference_shared_ptr<std::vector<Bar>>"(shared_ptr[cAnnotatedStruct]&, vector[Bar]&)
     cdef shared_ptr[cset[Baz]] reference_shared_ptr_indirection_c "thrift::py3::reference_shared_ptr<std::set<Baz>>"(shared_ptr[cAnnotatedStruct]&, cset[Baz]&)
     cdef shared_ptr[ccontainerStruct] reference_shared_ptr_struct_struct "thrift::py3::reference_shared_ptr<some::valid::ns::containerStruct>"(shared_ptr[cAnnotatedStruct]&, ccontainerStruct&)
+    cdef shared_ptr[cmap[string,__iobuf.cIOBuf]] reference_shared_ptr_map_of_iobufs "thrift::py3::reference_shared_ptr<std::map<std::string,folly::IOBuf>>"(shared_ptr[cComplexContainerStruct]&, cmap[string,__iobuf.cIOBuf]&)
+    cdef shared_ptr[cmap[string,unique_ptr[__iobuf.cIOBuf]]] reference_shared_ptr_map_of_iobuf_ptrs "thrift::py3::reference_shared_ptr<std::map<std::string,std::unique_ptr<folly::IOBuf>>>"(shared_ptr[cComplexContainerStruct]&, cmap[string,unique_ptr[__iobuf.cIOBuf]]&)
 
 cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[cEmpty] move(unique_ptr[cEmpty])
@@ -991,6 +1011,9 @@ cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[cAnnotatedStruct] move(unique_ptr[cAnnotatedStruct])
     cdef shared_ptr[cAnnotatedStruct] move_shared "std::move"(shared_ptr[cAnnotatedStruct])
     cdef unique_ptr[cAnnotatedStruct] move_unique "std::move"(unique_ptr[cAnnotatedStruct])
+    cdef shared_ptr[cComplexContainerStruct] move(unique_ptr[cComplexContainerStruct])
+    cdef shared_ptr[cComplexContainerStruct] move_shared "std::move"(shared_ptr[cComplexContainerStruct])
+    cdef unique_ptr[cComplexContainerStruct] move_unique "std::move"(unique_ptr[cComplexContainerStruct])
     cdef shared_ptr[cFloatStruct] move(unique_ptr[cFloatStruct])
     cdef shared_ptr[cFloatStruct] move_shared "std::move"(shared_ptr[cFloatStruct])
     cdef unique_ptr[cFloatStruct] move_unique "std::move"(unique_ptr[cFloatStruct])
@@ -1013,6 +1036,7 @@ cdef extern from "<memory>" namespace "std" nogil:
     cdef shared_ptr[const ccontainerStruct] const_pointer_cast "std::const_pointer_cast<const some::valid::ns::containerStruct>"(shared_ptr[ccontainerStruct])
     cdef shared_ptr[const cMyIncludedStruct] const_pointer_cast "std::const_pointer_cast<const some::valid::ns::MyIncludedStruct>"(shared_ptr[cMyIncludedStruct])
     cdef shared_ptr[const cAnnotatedStruct] const_pointer_cast "std::const_pointer_cast<const some::valid::ns::AnnotatedStruct>"(shared_ptr[cAnnotatedStruct])
+    cdef shared_ptr[const cComplexContainerStruct] const_pointer_cast "std::const_pointer_cast<const some::valid::ns::ComplexContainerStruct>"(shared_ptr[cComplexContainerStruct])
     cdef shared_ptr[const cFloatStruct] const_pointer_cast "std::const_pointer_cast<const some::valid::ns::FloatStruct>"(shared_ptr[cFloatStruct])
     cdef shared_ptr[const cFloatUnion] const_pointer_cast "std::const_pointer_cast<const some::valid::ns::FloatUnion>"(shared_ptr[cFloatUnion])
     cdef shared_ptr[const cAllRequiredNoExceptMoveCtrStruct] const_pointer_cast "std::const_pointer_cast<const some::valid::ns::AllRequiredNoExceptMoveCtrStruct>"(shared_ptr[cAllRequiredNoExceptMoveCtrStruct])
@@ -1456,6 +1480,28 @@ cdef class AnnotatedStruct(thrift.py3.types.Struct):
 
     @staticmethod
     cdef create(shared_ptr[cAnnotatedStruct])
+
+# Forward Definition of the cython struct
+cdef class ComplexContainerStruct(thrift.py3.types.Struct)
+
+
+cdef class ComplexContainerStruct(thrift.py3.types.Struct):
+    cdef object __hash
+    cdef object __weakref__
+    cdef shared_ptr[cComplexContainerStruct] _cpp_obj
+    cdef Map__string_folly_IOBuf__binary __field_map_of_iobufs
+    cdef Map__string_std_unique_ptr_folly_IOBuf__binary __field_map_of_iobuf_ptrs
+
+    @staticmethod
+    cdef unique_ptr[cComplexContainerStruct] _make_instance(
+        cComplexContainerStruct* base_instance,
+        bint* __isNOTSET,
+        object map_of_iobufs,
+        object map_of_iobuf_ptrs
+    ) except *
+
+    @staticmethod
+    cdef create(shared_ptr[cComplexContainerStruct])
 
 # Forward Definition of the cython struct
 cdef class FloatStruct(thrift.py3.types.Struct)
@@ -1964,6 +2010,24 @@ cdef class Set__Baz__i32:
     @staticmethod
     cdef shared_ptr[cset[Baz]] _make_instance(object items) except *
 
+cdef class Map__string_folly_IOBuf__binary:
+    cdef object __hash
+    cdef object __weakref__
+    cdef shared_ptr[cmap[string,__iobuf.cIOBuf]] _cpp_obj
+    @staticmethod
+    cdef create(shared_ptr[cmap[string,__iobuf.cIOBuf]])
+    @staticmethod
+    cdef shared_ptr[cmap[string,__iobuf.cIOBuf]] _make_instance(object items) except *
+
+cdef class Map__string_std_unique_ptr_folly_IOBuf__binary:
+    cdef object __hash
+    cdef object __weakref__
+    cdef shared_ptr[cmap[string,unique_ptr[__iobuf.cIOBuf]]] _cpp_obj
+    @staticmethod
+    cdef create(shared_ptr[cmap[string,unique_ptr[__iobuf.cIOBuf]]])
+    @staticmethod
+    cdef shared_ptr[cmap[string,unique_ptr[__iobuf.cIOBuf]]] _make_instance(object items) except *
+
 cdef class Map__i32_string:
     cdef object __hash
     cdef object __weakref__
@@ -2106,6 +2170,10 @@ cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[vector[Bar]] move_shared "std::move"(shared_ptr[vector[Bar]])
     cdef shared_ptr[cset[Baz]] move "std::move"(unique_ptr[cset[Baz]])
     cdef shared_ptr[cset[Baz]] move_shared "std::move"(shared_ptr[cset[Baz]])
+    cdef shared_ptr[cmap[string,__iobuf.cIOBuf]] move "std::move"(unique_ptr[cmap[string,__iobuf.cIOBuf]])
+    cdef shared_ptr[cmap[string,__iobuf.cIOBuf]] move_shared "std::move"(shared_ptr[cmap[string,__iobuf.cIOBuf]])
+    cdef shared_ptr[cmap[string,unique_ptr[__iobuf.cIOBuf]]] move "std::move"(unique_ptr[cmap[string,unique_ptr[__iobuf.cIOBuf]]])
+    cdef shared_ptr[cmap[string,unique_ptr[__iobuf.cIOBuf]]] move_shared "std::move"(shared_ptr[cmap[string,unique_ptr[__iobuf.cIOBuf]]])
     cdef shared_ptr[cmap[int32_t,string]] move "std::move"(unique_ptr[cmap[int32_t,string]])
     cdef shared_ptr[cmap[int32_t,string]] move_shared "std::move"(shared_ptr[cmap[int32_t,string]])
     cdef shared_ptr[vector[cmap[string,int32_t]]] move "std::move"(unique_ptr[vector[cmap[string,int32_t]]])
@@ -2198,6 +2266,8 @@ cdef extern from "<memory>" namespace "std" nogil:
     cdef shared_ptr[const folly_sorted_vector_map[int64_t,string]] const_pointer_cast "std::const_pointer_cast<const folly::sorted_vector_map<int64_t,std::string>>"(shared_ptr[folly_sorted_vector_map[int64_t,string]])
     cdef shared_ptr[const vector[Bar]] const_pointer_cast "std::const_pointer_cast<const std::vector<Bar>>"(shared_ptr[vector[Bar]])
     cdef shared_ptr[const cset[Baz]] const_pointer_cast "std::const_pointer_cast<const std::set<Baz>>"(shared_ptr[cset[Baz]])
+    cdef shared_ptr[const cmap[string,__iobuf.cIOBuf]] const_pointer_cast "std::const_pointer_cast<const std::map<std::string,folly::IOBuf>>"(shared_ptr[cmap[string,__iobuf.cIOBuf]])
+    cdef shared_ptr[const cmap[string,unique_ptr[__iobuf.cIOBuf]]] const_pointer_cast "std::const_pointer_cast<const std::map<std::string,std::unique_ptr<folly::IOBuf>>>"(shared_ptr[cmap[string,unique_ptr[__iobuf.cIOBuf]]])
     cdef shared_ptr[const cmap[int32_t,string]] const_pointer_cast "std::const_pointer_cast<const std::map<int32_t,std::string>>"(shared_ptr[cmap[int32_t,string]])
     cdef shared_ptr[const vector[cmap[string,int32_t]]] const_pointer_cast "std::const_pointer_cast<const std::vector<std::map<std::string,int32_t>>>"(shared_ptr[vector[cmap[string,int32_t]]])
     cdef shared_ptr[const cmap[int16_t,string]] const_pointer_cast "std::const_pointer_cast<const std::map<int16_t,std::string>>"(shared_ptr[cmap[int16_t,string]])
