@@ -1,6 +1,8 @@
 from folly.executor cimport get_executor
 from cpython cimport Py_buffer
 from weakref import WeakValueDictionary
+from cpython.object cimport Py_LT, Py_LE, Py_EQ, Py_NE, Py_GT, Py_GE
+from cython.operator cimport dereference as deref
 from cython.view cimport memoryview
 
 __cache = WeakValueDictionary()
@@ -121,3 +123,29 @@ cdef class IOBuf:
         if not self._hash:
             self._hash = hash(b''.join(self))
         return self._hash
+
+    def __richcmp__(self, other, op):
+        cdef int cop = op
+        if not (isinstance(self, IOBuf) and isinstance(other, IOBuf)):
+            if cop == Py_EQ:  # different types are never equal
+                return False
+            elif cop == Py_NE:  # different types are always notequal
+                return True
+            else:
+                return NotImplemented
+
+        cdef cIOBuf* othis = (<IOBuf>other)._this
+        if cop == Py_EQ:
+            return check_iobuf_equal(self._this, othis)
+        elif cop == Py_NE:
+            return not(check_iobuf_equal(self._this, othis))
+        elif cop == Py_LT:
+            return check_iobuf_less(self._this, othis)
+        elif cop == Py_LE:
+            return not(check_iobuf_less(othis, self._this))
+        elif cop == Py_GT:
+            return check_iobuf_less(othis, self._this)
+        elif cop == Py_GE:
+            return not(check_iobuf_less(self._this, othis))
+        else:
+            return NotImplemented

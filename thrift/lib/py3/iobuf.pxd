@@ -44,7 +44,8 @@ cdef extern from '<utility>' namespace 'std':
 
 cdef extern from "thrift/lib/py3/iobuf.h" namespace "thrift::py3":
     unique_ptr[cIOBuf] iobuf_from_python(cFollyExecutor*, PyObject*, void*, uint64_t)
-
+    bint check_iobuf_equal(cIOBuf*, cIOBuf*)
+    bint check_iobuf_less(cIOBuf*, cIOBuf*)
 
 cdef extern from "Python.h":
     cdef int PyBUF_C_CONTIGUOUS
@@ -61,7 +62,6 @@ cdef class IOBuf:
     @staticmethod
     cdef IOBuf create(cIOBuf* this, object parent)
     cdef unique_ptr[cIOBuf] c_clone(self)
-
 
 cdef unique_ptr[cIOBuf] from_python_buffer(memoryview view)
 cdef IOBuf from_unique_ptr(unique_ptr[cIOBuf] iobuf)

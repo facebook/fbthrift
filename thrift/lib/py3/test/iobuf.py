@@ -56,6 +56,18 @@ class IOBufTests(unittest.TestCase):
         xb = IOBuf(x)
         self.assertEqual(bytes(xb), x)
 
+    def test_cmp(self) -> None:
+        x = IOBuf(b"abc")
+        y = IOBuf(b"def")
+        z = IOBuf(b"abc")
+        self.assertEqual(x, z)
+        self.assertNotEqual(x, y)
+        self.assertLess(x, y)
+        self.assertLessEqual(x, y)
+        self.assertLessEqual(x, z)
+        self.assertGreater(y, x)
+        self.assertGreaterEqual(y, x)
+
     def test_get_set_struct_field(self) -> None:
         m = Moo(val=3, ptr=IOBuf(b'abcdef'), buf=IOBuf(b'xyzzy'))
         m2 = Moo(val=3, ptr=IOBuf(b'abcdef'), buf=IOBuf(b'xyzzy'))

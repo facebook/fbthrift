@@ -83,5 +83,14 @@ std::unique_ptr<folly::IOBuf> iobuf_from_python(
       },
       userData);
 }
+
+bool check_iobuf_equal(const folly::IOBuf* a, const folly::IOBuf* b) {
+  return folly::IOBufEqualTo{}(a, b);
+}
+
+bool check_iobuf_less(const folly::IOBuf* a, const folly::IOBuf* b) {
+  return folly::IOBufLess{}(a, b);
+}
+
 } // namespace py3
 } // namespace thrift
