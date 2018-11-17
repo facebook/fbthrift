@@ -70,7 +70,9 @@ Useful (but not complete set of) options that can be set on the ThriftServer:
 
 * setNumCPUWorkerThreads(int) - Number of synchronous pool threads.  Defaults
   to number of IO threads.  If you do a lot of blocking synchronous
-  work, you may want to increase this.
+  work, you may want to increase this.  This controls the number of normal
+  priority threads; the Thrift thread manager can create additional threads for
+  other priorities.
 
 * setInterface(std::shared_ptr<ServerInterface>) - Your thrift handler
   interface that subclasses the generated code.

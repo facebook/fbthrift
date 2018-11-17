@@ -589,7 +589,9 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
 
   /**
    * Set the number of CPU (pool) threads.
-   * Only valid if you do not also set a threadmanager.
+   * Only valid if you do not also set a threadmanager. This controls the number
+   * of normal priority threads; the Thrift thread manager can create additional
+   * threads for other priorities.
    *
    * @param number of CPU (pool) threads
    */
