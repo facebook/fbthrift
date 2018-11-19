@@ -232,7 +232,7 @@ class t_struct : public t_type {
   bool is_paramlist_{false};
 
   const t_struct* view_parent_ = nullptr;
-}; // namespace compiler
+};
 
 } // namespace compiler
 } // namespace thrift

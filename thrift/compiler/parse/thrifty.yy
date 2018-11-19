@@ -112,6 +112,7 @@ namespace apache {
 namespace thrift {
 
 class parsing_driver;
+using t_structpair = std::pair<t_struct*, t_struct*>;
 
 } // apache
 } // thrift
@@ -285,7 +286,7 @@ class parsing_driver;
 
 %type<t_struct*>        Throws
 %type<t_struct*>        StreamThrows
-%type<std::pair<t_struct*, t_struct*>>    ThrowsThrows
+%type<t_structpair>     ThrowsThrows
 %type<t_service*>       Extends
 %type<bool>             Oneway
 
