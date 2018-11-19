@@ -16,7 +16,6 @@
 #include <thrift/lib/cpp2/GeneratedCodeHelper.h>
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
-#include <thrift/lib/cpp2/protocol/Frozen2Protocol.h>
 #include <thrift/lib/cpp2/protocol/Protocol.h>
 
 using namespace std;
@@ -93,7 +92,6 @@ void helper<ProtocolReader, ProtocolWriter>::process_exn(
 
 template struct helper<BinaryProtocolReader, BinaryProtocolWriter>;
 template struct helper<CompactProtocolReader, CompactProtocolWriter>;
-template struct helper<Frozen2ProtocolReader, Frozen2ProtocolWriter>;
 
 template <class ProtocolReader>
 static
@@ -147,8 +145,6 @@ bool deserializeMessageBegin(
     case protocol::T_COMPACT_PROTOCOL:
       return deserializeMessageBegin<CompactProtocolReader>(
           req, buf, ctx, eb);
-    case protocol::T_FROZEN2_PROTOCOL:
-      return deserializeMessageBegin<Frozen2ProtocolReader>(req, buf, ctx, eb);
     default:
       LOG(ERROR) << "invalid protType: " << protType;
       return false;
@@ -269,8 +265,6 @@ bool is_oneway_method(
       return is_oneway_method<BinaryProtocolReader>(buf, oneways);
     case T_COMPACT_PROTOCOL:
       return is_oneway_method<CompactProtocolReader>(buf, oneways);
-    case T_FROZEN2_PROTOCOL:
-      return is_oneway_method<Frozen2ProtocolReader>(buf, oneways);
     default:
       LOG(ERROR) << "invalid protType: " << protType;
       return false;

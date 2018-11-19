@@ -22,9 +22,6 @@
 #include <thrift/lib/cpp2/async/AsyncClient.h>
 #include <thrift/lib/cpp2/async/FutureRequest.h>
 #include "<%service:include_prefix%><%service:program_name%>_types.h"
-<%#service:frozen2?%>
-#include "<%service:include_prefix%><%service:program_name%>_layouts.h"
-<%/service:frozen2?%>
 <%#service:extends%>
 #include "<%service:include_prefix%><%service:name%>AsyncClient.h"
 <%/service:extends%>
@@ -46,9 +43,6 @@ namespace apache { namespace thrift {
   class Cpp2RequestContext;
   class BinaryProtocolReader;
   class CompactProtocolReader;
-<%#service:frozen2?%>
-  class Frozen2ProtocolReader;
-<%/service:frozen2?%>
   namespace transport { class THeader; }
 }}
 

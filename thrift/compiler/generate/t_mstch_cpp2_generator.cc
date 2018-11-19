@@ -913,7 +913,6 @@ class mstch_cpp2_service : public mstch_service {
             {"service:oneways?", &mstch_cpp2_service::has_oneway},
             {"service:cache_keys?", &mstch_cpp2_service::has_cache_keys},
             {"service:cpp_includes", &mstch_cpp2_service::cpp_includes},
-            {"service:frozen2?", &mstch_cpp2_service::frozen2},
         });
   }
   virtual std::string get_service_namespace(t_program const* program) override {
@@ -976,9 +975,6 @@ class mstch_cpp2_service : public mstch_service {
       }
     }
     return false;
-  }
-  mstch::node frozen2() {
-    return cache_->parsed_options_.count("frozen2") != 0;
   }
 };
 
@@ -1395,9 +1391,6 @@ void t_mstch_cpp2_generator::generate_service(t_service const* service) {
       {{"binary", "BinaryProtocol", "T_BINARY_PROTOCOL"}},
       {{"compact", "CompactProtocol", "T_COMPACT_PROTOCOL"}},
   };
-  if (cache_->parsed_options_.count("frozen2")) {
-    protocols.push_back({{"frozen", "Frozen2Protocol", "T_FROZEN2_PROTOCOL"}});
-  }
   for (const auto& protocol : protocols) {
     render_to_file(
         cache_->services_[service_id],

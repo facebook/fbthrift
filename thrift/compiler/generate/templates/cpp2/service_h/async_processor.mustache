@@ -23,12 +23,6 @@
 <%^service:extends%>
   using BaseAsyncProcessor = void;
 <%/service:extends%>
-<%#service:frozen2?%>
-  using HasFrozen2 = std::true_type;
-<%/service:frozen2?%>
-<%^service:frozen2?%>
-  using HasFrozen2 = std::false_type;
-<%/service:frozen2?%>
  protected:
   <%service:name%>SvIf* iface_;
   folly::Optional<std::string> getCacheKey(folly::IOBuf* buf, apache::thrift::protocol::PROTOCOL_TYPES protType) override;
@@ -51,14 +45,6 @@
   static const <%service:name%>AsyncProcessor::CompactProtocolProcessMap& getCompactProtocolProcessMap();
  private:
   static const <%service:name%>AsyncProcessor::CompactProtocolProcessMap compactProcessMap_;
-<%#service:frozen2?%>
- public:
-  using Frozen2ProtocolProcessFunc = ProcessFunc<<%service:name%>AsyncProcessor, apache::thrift::Frozen2ProtocolReader>;
-  using Frozen2ProtocolProcessMap = ProcessMap<Frozen2ProtocolProcessFunc>;
-  static const <%service:name%>AsyncProcessor::Frozen2ProtocolProcessMap& getFrozen2ProtocolProcessMap();
- private:
-  static const <%service:name%>AsyncProcessor::Frozen2ProtocolProcessMap frozen2ProcessMap_;
-<%/service:frozen2?%>
  private:
 <%#service:functions%><%#function:returnType%>
 <%^function:eb%>
@@ -67,12 +53,6 @@
 <%/function:eb%>
   template <typename ProtocolIn_, typename ProtocolOut_>
   void process_<%function:name%>(std::unique_ptr<apache::thrift::ResponseChannelRequest> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot,apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
-<%#service:frozen2?%>
-<%^function:eb%>
-  void _processInThread_frozen2_<%function:name%>(std::unique_ptr<apache::thrift::ResponseChannelRequest> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<apache::thrift::Frozen2ProtocolReader> iprot, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
-<%/function:eb%>
-  void process_frozen2_<%function:name%>(std::unique_ptr<apache::thrift::ResponseChannelRequest> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<apache::thrift::Frozen2ProtocolReader> iprot,apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
-<%/service:frozen2?%>
 <%^function:oneway?%>
   template <class ProtocolIn_, class ProtocolOut_>
 <%#type:void?%>

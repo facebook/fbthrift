@@ -21,7 +21,6 @@ add_library(
   frozen/Frozen.cpp
   frozen/FrozenUtil.cpp
   frozen/schema/MemorySchema.cpp
-  protocol/Frozen2Protocol.cpp
   ${frozen-cpp2-SOURCES}
 )
 add_dependencies(thriftfrozen2 frozen-cpp2-target)

@@ -21,9 +21,6 @@
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 #include <thrift/lib/cpp2/protocol/Protocol.h>
-<%#service:frozen2?%>
-#include <thrift/lib/cpp2/protocol/Frozen2Protocol.h>
-<%/service:frozen2?%>
 <%#service:any_streams?%>
 #include <thrift/lib/cpp2/protocol/Serializer.h>
 #include <thrift/lib/cpp2/transport/core/ThriftRequest.h>
@@ -38,9 +35,6 @@ std::unique_ptr<apache::thrift::AsyncProcessor> <%service:name%>SvIf::getProcess
 <% > service_cpp/service_interface_impl%>
 
 <% > service_cpp/service_null_impl%>
-<%#service:frozen2?%>
-<% > service_cpp/process_frozen2%>
-<%/service:frozen2?%>
 const char* <%service:name%>AsyncProcessor::getServiceName() {
   return "<%service:name%>";
 }
@@ -63,10 +57,6 @@ bool <%service:name%>AsyncProcessor::isOnewayMethod(const folly::IOBuf* buf, con
 
 <% > service_cpp/compact_processmap%>
 
-<%#service:frozen2?%>
-<% > service_cpp/frozen2_processmap%>
-
-<%/service:frozen2?%>
 <% > common/namespace_cpp2_end%>
 
 namespace apache { namespace thrift {

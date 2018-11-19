@@ -22,6 +22,7 @@
 #include <proxygen/httpserver/ScopedHTTPServer.h>
 
 #include <thrift/lib/cpp/async/TAsyncSocket.h>
+#include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 #include <thrift/lib/cpp2/transport/core/ThriftClientCallback.h>
 #include <thrift/lib/cpp2/transport/core/testutil/CoreTestFixture.h>
 #include <thrift/lib/cpp2/transport/core/testutil/ServerConfigsMock.h>

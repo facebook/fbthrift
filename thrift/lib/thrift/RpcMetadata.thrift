@@ -21,7 +21,8 @@ enum ProtocolId {
   // The values must match those in thrift/lib/cpp/protocol/TProtocolTypes.h
   BINARY = 0,
   COMPACT = 2,
-  FROZEN2 = 6,
+  // Deprecated.
+  // FROZEN2 = 6,
 }
 
 enum RpcKind {

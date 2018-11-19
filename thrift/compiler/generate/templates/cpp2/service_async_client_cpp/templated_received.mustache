@@ -50,14 +50,9 @@ void <%service:name%>AsyncClient::<%function:name%>T(Protocol_* prot, bool useSy
 <%/type:resolves_to_stream?%>
 <%/first?%><%/field:type%><%/function:args%><%!
 
-%><%^service:frozen2?%>
+%>
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
-<%/service:frozen2?%>
-<%#service:frozen2?%>
-  auto sizer = [&](Protocol_* p) { return ::apache::thrift::detail::serializedResponseBodySizeZC(p, &args); };
-  auto writer = [&](Protocol_* p) { ::apache::thrift::detail::serializeResponseBody(p, &args); };
-<%/service:frozen2?%>
 <%#function:oneway?%>
   apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), "<%function:name%>", writer, sizer, apache::thrift::RpcKind::SINGLE_REQUEST_NO_RESPONSE, useSync);
 <%/function:oneway?%><%!

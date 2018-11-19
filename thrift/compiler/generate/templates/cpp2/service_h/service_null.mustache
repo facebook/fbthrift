@@ -23,13 +23,5 @@
 <%#type:resolves_to_complex_return?%>
   void <%function:name%>(<% > types/type%>& /*_return*/<%function:comma%><% > service_common/function_param_list_commented_out%>) override;
 <%/type:resolves_to_complex_return?%>
-<%#service:frozen2?%>
-<%^type:resolves_to_complex_return?%>
-  <% > types/type%> frozen2_<%function:name%>(<% > service_common/frozen2_function_param_list%>) override;
-<%/type:resolves_to_complex_return?%>
-<%#type:resolves_to_complex_return?%>
-  void frozen2_<%function:name%>(<% > types/type%>& /*_return*/<%function:comma%><% > service_common/frozen2_function_param_list%>) override;
-<%/type:resolves_to_complex_return?%>
-<%/service:frozen2?%>
 <%/type:deprecated_stream?%><%/function:eb%><%/function:returnType%><%/service:functions%>
 };

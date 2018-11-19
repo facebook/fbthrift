@@ -16,6 +16,7 @@
 #include <thrift/lib/cpp2/test/util/TestInterface.h>
 
 #include <folly/Format.h>
+#include <folly/io/Cursor.h>
 
 const std::string kEchoSuffix(45, 'c');
 

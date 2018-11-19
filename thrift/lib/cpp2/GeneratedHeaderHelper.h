@@ -30,8 +30,6 @@ class BinaryProtocolReader;
 class BinaryProtocolWriter;
 class CompactProtocolReader;
 class CompactProtocolWriter;
-class Frozen2ProtocolReader;
-class Frozen2ProtocolWriter;
 
 } // thrift
 } // apache

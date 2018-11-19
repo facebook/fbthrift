@@ -26,7 +26,8 @@ enum PROTOCOL_TYPES {
   T_DEBUG_PROTOCOL = 3,
   T_VIRTUAL_PROTOCOL = 4,
   T_SIMPLE_JSON_PROTOCOL = 5,
-  T_FROZEN2_PROTOCOL = 6,
+  // The frozen2 protocol is deprecated, but we don't want reuse its ID.
+  // T_FROZEN2_PROTOCOL = 6,
 };
 }}} // apache::thrift::protocol
 
