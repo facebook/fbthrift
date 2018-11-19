@@ -22,7 +22,7 @@
 #include <thrift/test/gen-cpp2/OptionalRequiredTest_types.h>
 #include <thrift/test/gen-cpp2/ThriftTest_types.h>
 
-#include <gtest/gtest.h>
+#include <folly/portability/GTest.h>
 
 using namespace std;
 

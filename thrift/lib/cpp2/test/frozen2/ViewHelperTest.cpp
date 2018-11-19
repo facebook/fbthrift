@@ -20,7 +20,7 @@
 #include <thrift/lib/cpp2/frozen/FrozenUtil.h>
 #include <thrift/lib/cpp2/util/Frozen2ViewHelpers.h>
 
-#include <gtest/gtest.h>
+#include <folly/portability/GTest.h>
 
 using namespace ::apache::thrift::frozen;
 using namespace ::test::frozen2;

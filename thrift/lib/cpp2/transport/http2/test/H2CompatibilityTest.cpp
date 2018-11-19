@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include <gflags/gflags.h>
+#include <folly/portability/GFlags.h>
 
 #include <proxygen/httpserver/HTTPServerOptions.h>
 #include <thrift/lib/cpp2/transport/core/testutil/TransportCompatibilityTest.h>

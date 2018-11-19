@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 #include <folly/ExceptionWrapper.h>
-#include <gtest/gtest.h>
+#include <folly/portability/GTest.h>
 #include <thrift/lib/cpp/protocol/THeaderProtocol.h>
 #include <thrift/lib/cpp2/async/HeaderClientChannel.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>

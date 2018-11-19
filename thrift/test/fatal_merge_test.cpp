@@ -22,7 +22,7 @@
 #include <thrift/test/gen-cpp2/fatal_merge_types.h>
 #include <thrift/test/gen-cpp2/fatal_merge_fatal_types.h>
 
-#include <gtest/gtest.h>
+#include <folly/portability/GTest.h>
 
 using namespace apache::thrift::test;
 using apache::thrift::debug_equals;

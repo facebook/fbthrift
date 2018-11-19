@@ -17,7 +17,7 @@
 #include <signal.h>
 
 #include <boost/random.hpp>
-#include <gtest/gtest.h>
+#include <folly/portability/GTest.h>
 
 #include <thrift/lib/cpp/async/TAsyncSocket.h>
 #include <thrift/lib/cpp/async/TAsyncTransport.h>

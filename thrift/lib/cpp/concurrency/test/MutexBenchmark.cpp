@@ -19,7 +19,7 @@
 #include <chrono>
 #include <mutex>
 #include <thread>
-#include <gflags/gflags.h>
+#include <folly/portability/GFlags.h>
 
 #include <folly/Benchmark.h>
 

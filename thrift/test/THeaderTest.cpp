@@ -19,7 +19,7 @@
 #include <thrift/lib/cpp/protocol/THeaderProtocol.h>
 #include <thrift/lib/cpp/transport/TBufferTransports.h>
 
-#include <gtest/gtest.h>
+#include <folly/portability/GTest.h>
 
 using namespace std;
 using namespace apache::thrift;

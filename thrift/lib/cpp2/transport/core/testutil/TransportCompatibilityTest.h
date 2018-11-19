@@ -16,7 +16,7 @@
 
 #pragma once
 
-#include <gmock/gmock.h>
+#include <folly/portability/GMock.h>
 
 #include <folly/io/async/ScopedEventBaseThread.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>

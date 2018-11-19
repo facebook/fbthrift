@@ -17,7 +17,7 @@
 #include <thrift/test/gen-cpp2/fatal_optionals_types.h>
 #include <thrift/test/gen-cpp2/fatal_optionals_fatal.h>
 
-#include <gtest/gtest.h>
+#include <folly/portability/GTest.h>
 
 class FatalOptionalsTest : public testing::Test {};
 

@@ -22,7 +22,7 @@
 #include <vector>
 
 #include <glog/logging.h>
-#include <gtest/gtest.h>
+#include <folly/portability/GTest.h>
 
 #include <folly/Benchmark.h>
 

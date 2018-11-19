@@ -16,7 +16,7 @@
 
 #include <thrift/test/gen-cpp2/fatal_reflection_indirection_fatal.h>
 
-#include <gtest/gtest.h>
+#include <folly/portability/GTest.h>
 
 #include <folly/Utility.h>
 #include <folly/Traits.h>

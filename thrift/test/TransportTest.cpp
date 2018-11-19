@@ -35,7 +35,7 @@
 #include <thrift/lib/cpp/transport/TSocket.h>
 #include <thrift/lib/cpp/transport/TZlibTransport.h>
 
-#include <gtest/gtest.h>
+#include <folly/portability/GTest.h>
 
 using namespace std;
 using namespace folly;

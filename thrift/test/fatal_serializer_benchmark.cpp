@@ -22,7 +22,7 @@
 #include <thrift/lib/cpp2/reflection/populator.h>
 #include <thrift/test/fatal_serialization_common.h>
 
-#include <gflags/gflags.h>
+#include <folly/portability/GFlags.h>
 
 #include <random>
 

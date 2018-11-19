@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include <gtest/gtest.h>
+#include <folly/portability/GTest.h>
 #include <glog/logging.h>
 
 #include <folly/portability/Sockets.h>

@@ -16,7 +16,7 @@
 
 #include <thrift/lib/cpp2/util/EwmaRate.h>
 
-#include <gtest/gtest.h>
+#include <folly/portability/GTest.h>
 
 #include <folly/Random.h>
 

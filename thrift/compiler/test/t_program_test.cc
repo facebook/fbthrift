@@ -17,7 +17,7 @@
 #include <string>
 #include <vector>
 
-#include <gtest/gtest.h>
+#include <folly/portability/GTest.h>
 
 #include <thrift/compiler/ast/t_program.h>
 

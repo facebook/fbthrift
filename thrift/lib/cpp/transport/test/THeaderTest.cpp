@@ -27,7 +27,7 @@
 #include <folly/io/IOBufQueue.h>
 #include <folly/Random.h>
 
-#include <gtest/gtest.h>
+#include <folly/portability/GTest.h>
 
 using namespace apache::thrift;
 using namespace folly;

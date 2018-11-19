@@ -23,7 +23,7 @@
 #include <folly/io/async/EventBase.h>
 #include <folly/io/async/AsyncTimeout.h>
 
-#include <gtest/gtest.h>
+#include <folly/portability/GTest.h>
 
 using namespace std;
 using namespace apache::thrift::async;

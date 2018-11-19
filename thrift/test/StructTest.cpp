@@ -17,7 +17,7 @@
 #include <thrift/test/gen-cpp2/structs_terse_types.h>
 #include <thrift/test/gen-cpp2/structs_types.h>
 
-#include <gtest/gtest.h>
+#include <folly/portability/GTest.h>
 
 using namespace apache::thrift::test;
 using namespace folly;

@@ -17,7 +17,7 @@
 #include <thrift/lib/cpp2/test/gen-cpp2/Raiser.h>
 #include <thrift/lib/cpp2/util/ScopedServerInterfaceThread.h>
 
-#include <gtest/gtest.h>
+#include <folly/portability/GTest.h>
 
 using namespace std;
 using namespace folly;

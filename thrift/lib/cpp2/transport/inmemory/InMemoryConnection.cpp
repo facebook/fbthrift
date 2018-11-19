@@ -16,7 +16,7 @@
 
 #include <thrift/lib/cpp2/transport/inmemory/InMemoryConnection.h>
 
-#include <gflags/gflags.h>
+#include <folly/portability/GFlags.h>
 #include <glog/logging.h>
 
 #include <thrift/lib/cpp2/transport/inmemory/InMemoryChannel.h>

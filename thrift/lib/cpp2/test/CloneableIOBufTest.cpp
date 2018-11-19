@@ -19,7 +19,7 @@
 
 
 
-#include <gtest/gtest.h>
+#include <folly/portability/GTest.h>
 #include <thrift/lib/cpp2/CloneableIOBuf.h>
 
 using namespace folly;

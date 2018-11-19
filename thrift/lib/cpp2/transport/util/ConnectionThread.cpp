@@ -16,7 +16,7 @@
 
 #include <thrift/lib/cpp2/transport/util/ConnectionThread.h>
 
-#include <gflags/gflags.h>
+#include <folly/portability/GFlags.h>
 #include <glog/logging.h>
 
 #include <folly/Conv.h>

@@ -15,7 +15,7 @@
  */
 
 #include <folly/init/Init.h>
-#include <gflags/gflags.h>
+#include <folly/portability/GFlags.h>
 #include <glog/logging.h>
 #include <proxygen/httpserver/HTTPServerOptions.h>
 #include <thrift/example/cpp2/server/ChatRoomService.h>

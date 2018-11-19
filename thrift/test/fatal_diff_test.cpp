@@ -19,7 +19,7 @@
 #include <thrift/test/gen-cpp2/reflection_fatal_types.h>
 
 #include <folly/String.h>
-#include <gtest/gtest.h>
+#include <folly/portability/GTest.h>
 
 #include <sstream>
 #include <string>

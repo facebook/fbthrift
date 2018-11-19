@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include <gtest/gtest.h>
+#include <folly/portability/GTest.h>
 
 #include <folly/futures/Future.h>
 #include <folly/synchronization/Baton.h>

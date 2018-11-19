@@ -15,7 +15,7 @@
  */
 
 #include <fstream>
-#include <gtest/gtest.h>
+#include <folly/portability/GTest.h>
 
 #include <folly/experimental/TestUtil.h>
 #include <thrift/lib/cpp2/util/kerberos/Krb5CredentialsCacheManager.h>

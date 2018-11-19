@@ -26,7 +26,7 @@
 #include <string>
 
 #include <boost/regex.hpp>
-#include <gtest/gtest.h>
+#include <folly/portability/GTest.h>
 
 using namespace apache::thrift::compiler;
 

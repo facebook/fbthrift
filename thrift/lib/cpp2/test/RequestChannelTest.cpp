@@ -26,8 +26,8 @@
 #include <thrift/lib/cpp2/util/ScopedServerInterfaceThread.h>
 #include <thrift/lib/cpp2/test/gen-cpp2/TestService.h>
 
-#include <gtest/gtest.h>
-#include <gmock/gmock.h>
+#include <folly/portability/GTest.h>
+#include <folly/portability/GMock.h>
 
 using namespace std;
 using namespace std::chrono;

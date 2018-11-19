@@ -18,7 +18,7 @@
 
 #include <type_traits>
 
-#include <gtest/gtest.h>
+#include <folly/portability/GTest.h>
 
 using namespace apache::thrift::test;
 

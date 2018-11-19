@@ -18,7 +18,7 @@
 
 #include <unistd.h>
 
-#include <gflags/gflags.h>
+#include <folly/portability/GFlags.h>
 
 #include <folly/Singleton.h>
 

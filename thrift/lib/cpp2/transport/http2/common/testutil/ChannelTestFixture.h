@@ -20,7 +20,7 @@
 #include <string>
 #include <unordered_map>
 
-#include <gtest/gtest.h>
+#include <folly/portability/GTest.h>
 
 #include <folly/io/IOBuf.h>
 #include <folly/io/async/EventBase.h>

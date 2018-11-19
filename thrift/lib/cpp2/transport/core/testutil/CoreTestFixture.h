@@ -16,7 +16,7 @@
 
 #pragma once
 
-#include <gtest/gtest.h>
+#include <folly/portability/GTest.h>
 
 #include <folly/Function.h>
 #include <folly/io/IOBufQueue.h>

@@ -19,7 +19,7 @@
 #include <stdlib.h>
 #include <time.h>
 
-#include <gflags/gflags.h>
+#include <folly/portability/GFlags.h>
 
 #include <folly/FBVector.h>
 #include <folly/FileUtil.h>

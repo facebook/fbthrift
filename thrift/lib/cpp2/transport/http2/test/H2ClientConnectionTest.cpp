@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include <gtest/gtest.h>
+#include <folly/portability/GTest.h>
 
 #include <proxygen/httpserver/HTTPServer.h>
 #include <proxygen/httpserver/HTTPServerOptions.h>

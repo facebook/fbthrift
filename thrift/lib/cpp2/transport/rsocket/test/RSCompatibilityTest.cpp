@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#include <gflags/gflags.h>
-#include <gtest/gtest.h>
+#include <folly/portability/GFlags.h>
+#include <folly/portability/GTest.h>
 
 #include <thrift/lib/cpp2/async/RSocketClientChannel.h>
 #include <thrift/lib/cpp2/transport/core/testutil/MockCallback.h>

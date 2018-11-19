@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <gtest/gtest.h>
+#include <folly/portability/GTest.h>
 
 #include <folly/SocketAddress.h>
 #include <folly/io/Cursor.h>

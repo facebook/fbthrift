@@ -17,8 +17,8 @@
 #include <thrift/lib/cpp/util/THttpParser.h>
 #include <folly/Format.h>
 
-#include <gmock/gmock.h>
-#include <gtest/gtest.h>
+#include <folly/portability/GMock.h>
+#include <folly/portability/GTest.h>
 
 namespace {
 

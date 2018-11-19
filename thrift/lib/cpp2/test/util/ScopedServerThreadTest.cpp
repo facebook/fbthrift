@@ -22,7 +22,7 @@
 #include <thrift/lib/cpp2/server/ThriftServer.h>
 
 #include <iostream>
-#include <gtest/gtest.h>
+#include <folly/portability/GTest.h>
 #include <stdexcept>
 
 using namespace apache::thrift;

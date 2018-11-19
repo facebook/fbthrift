@@ -16,7 +16,7 @@
 #ifndef THRIFT_TEST_MOCKTASYNCSSLSOCKET_H_
 #define THRIFT_TEST_MOCKTASYNCSSLSOCKET_H_ 1
 
-#include <gmock/gmock.h>
+#include <folly/portability/GMock.h>
 
 #include <thrift/lib/cpp/async/TAsyncSSLSocket.h>
 

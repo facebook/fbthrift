@@ -16,8 +16,8 @@
 
 #include <thrift/lib/cpp2/reflection/legacy_reflection.h>
 
-#include <gmock/gmock.h>
-#include <gtest/gtest.h>
+#include <folly/portability/GMock.h>
+#include <folly/portability/GTest.h>
 
 #include <thrift/lib/cpp2/reflection/debug.h>
 #include <thrift/lib/cpp2/reflection/pretty_print.h>

@@ -17,7 +17,7 @@
 #ifndef THRIFT_TEST_MOCKTASYNCSERVERSOCKET_H_
 #define THRIFT_TEST_MOCKTASYNCSERVERSOCKET_H_ 1
 
-#include <gmock/gmock.h>
+#include <folly/portability/GMock.h>
 
 #include <folly/io/async/AsyncServerSocket.h>
 #include <folly/io/async/EventBase.h>

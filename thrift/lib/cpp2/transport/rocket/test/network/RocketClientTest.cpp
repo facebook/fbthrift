@@ -19,7 +19,7 @@
 #include <string>
 #include <utility>
 
-#include <gtest/gtest.h>
+#include <folly/portability/GTest.h>
 
 #include <folly/ExceptionWrapper.h>
 #include <folly/Format.h>

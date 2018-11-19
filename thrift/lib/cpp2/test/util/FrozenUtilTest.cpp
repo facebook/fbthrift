@@ -20,7 +20,7 @@
 #include <thrift/lib/cpp/util/FrozenUtil.h>
 #include <thrift/lib/cpp2/test/gen-cpp2/FrozenTypes_types.h>
 
-#include <gtest/gtest.h>
+#include <folly/portability/GTest.h>
 
 using namespace apache::thrift;
 using namespace apache::thrift::test;

@@ -16,7 +16,7 @@
 
 #include <thrift/lib/cpp2/async/HTTPClientChannel.h>
 
-#include <gtest/gtest.h>
+#include <folly/portability/GTest.h>
 
 #include <proxygen/httpserver/HTTPServer.h>
 #include <proxygen/httpserver/ResponseBuilder.h>

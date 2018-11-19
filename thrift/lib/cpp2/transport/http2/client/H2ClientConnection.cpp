@@ -16,7 +16,7 @@
 
 #include <thrift/lib/cpp2/transport/http2/client/H2ClientConnection.h>
 
-#include <gflags/gflags.h>
+#include <folly/portability/GFlags.h>
 #include <glog/logging.h>
 
 #include <folly/Likely.h>

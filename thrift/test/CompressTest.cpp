@@ -19,8 +19,8 @@
  * under the License.
  */
 #include <folly/Benchmark.h>
-#include <gflags/gflags.h>
-#include <gtest/gtest.h>
+#include <folly/portability/GFlags.h>
+#include <folly/portability/GTest.h>
 #include <thrift/lib/cpp/transport/THeader.h>
 #include <thrift/lib/cpp2/protocol/Serializer.h>
 #include <cstdlib>

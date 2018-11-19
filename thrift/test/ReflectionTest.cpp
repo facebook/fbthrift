@@ -23,7 +23,7 @@
 #include <thrift/lib/cpp2/reflection/legacy_reflection.h>
 #include <thrift/test/gen-cpp2/ReflectionTest_fatal_types.h>
 
-#include <gtest/gtest.h>
+#include <folly/portability/GTest.h>
 
 using namespace apache::thrift;
 using namespace apache::thrift::reflection;

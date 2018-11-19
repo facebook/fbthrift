@@ -16,7 +16,7 @@
 #include <thrift/lib/cpp2/test/optionals/without_folly_optional/gen-cpp2/FollyOptionals_types.h>
 #include <thrift/lib/cpp2/test/optionals/without_folly_optional/gen-cpp2/FollyOptionals_types_custom_protocol.h>
 #include <thrift/lib/cpp2/protocol/SimpleJSONProtocol.h>
-#include <gtest/gtest.h>
+#include <folly/portability/GTest.h>
 
 using namespace apache::thrift;
 

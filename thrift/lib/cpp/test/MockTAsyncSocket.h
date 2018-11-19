@@ -17,7 +17,7 @@
 #define THRIFT_TEST_MOCKTASYNCSOCKET_H_ 1
 
 
-#include <gmock/gmock.h>
+#include <folly/portability/GMock.h>
 
 #include <thrift/lib/cpp/async/TAsyncSocket.h>
 #include <folly/io/async/EventBase.h>

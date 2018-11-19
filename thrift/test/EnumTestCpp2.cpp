@@ -18,7 +18,7 @@
 #include <thrift/test/gen-cpp2/EnumTest_types.h>
 #include <thrift/lib/cpp/util/EnumUtils.h>
 
-#include <gtest/gtest.h>
+#include <folly/portability/GTest.h>
 
 using apache::thrift::TEnumTraits;
 using namespace apache::thrift::util;

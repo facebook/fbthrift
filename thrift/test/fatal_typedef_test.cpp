@@ -18,7 +18,7 @@
 
 #include <thrift/lib/cpp2/reflection/internal/test_helpers.h>
 
-#include <gtest/gtest.h>
+#include <folly/portability/GTest.h>
 
 FATAL_S(my_structAs, "my_structA");
 FATAL_S(field_as, "a");

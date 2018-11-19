@@ -16,7 +16,7 @@
 
 #include <vector>
 
-#include <gtest/gtest.h>
+#include <folly/portability/GTest.h>
 #include <pcap.h>
 
 #include <folly/io/IOBuf.h>

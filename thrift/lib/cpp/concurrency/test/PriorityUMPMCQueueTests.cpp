@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include <gtest/gtest.h>
+#include <folly/portability/GTest.h>
 #include <thrift/lib/cpp/concurrency/PriorityUMPMCQueue.h>
 
 using namespace apache::thrift::concurrency;

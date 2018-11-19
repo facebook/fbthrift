@@ -18,7 +18,7 @@
 
 #include <limits>
 
-#include <gflags/gflags.h>
+#include <folly/portability/GFlags.h>
 
 #include <proxygen/httpserver/HTTPServerAcceptor.h>
 #include <proxygen/httpserver/HTTPServerOptions.h>

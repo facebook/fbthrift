@@ -16,7 +16,7 @@
 
 #include <thrift/lib/cpp2/test/ProtoBufBenchData.pb.h>
 
-#include <gflags/gflags.h>
+#include <folly/portability/GFlags.h>
 #include <glog/logging.h>
 #include <folly/Benchmark.h>
 #include <folly/Format.h>

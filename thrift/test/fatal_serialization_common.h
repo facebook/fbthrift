@@ -21,7 +21,7 @@
 #include <thrift/lib/cpp2/protocol/JSONProtocol.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 
-#include <gtest/gtest.h>
+#include <folly/portability/GTest.h>
 
 namespace apache {
 namespace thrift {

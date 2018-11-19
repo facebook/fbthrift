@@ -29,7 +29,7 @@
 #include <thrift/test/gen-cpp2/cpp_name_fatal_struct.h>
 #include <thrift/test/gen-cpp2/cpp_name_types.h>
 
-#include <gtest/gtest.h>
+#include <folly/portability/GTest.h>
 
 using apache::thrift::SimpleJSONSerializer;
 using namespace apache::thrift::test;

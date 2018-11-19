@@ -17,7 +17,7 @@
 #include <thrift/lib/cpp2/protocol/Serializer.h>
 #include <thrift/lib/cpp2/test/gen-cpp2/ProtocolBenchData_types.h>
 
-#include <gflags/gflags.h>
+#include <folly/portability/GFlags.h>
 #include <glog/logging.h>
 #include <folly/Benchmark.h>
 #include <folly/Format.h>

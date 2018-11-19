@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <gflags/gflags.h>
+#include <folly/portability/GFlags.h>
 #include <glog/logging.h>
-#include <gtest/gtest.h>
+#include <folly/portability/GTest.h>
 
 #include <folly/ScopeGuard.h>
 #include <folly/io/async/EventBase.h>

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 #include <glog/logging.h>
-#include <gtest/gtest.h>
+#include <folly/portability/GTest.h>
 
 #include <thrift/lib/cpp2/frozen/FrozenUtil.h>
 #include <thrift/lib/cpp2/frozen/test/gen-cpp2/Compatibility_constants.h>

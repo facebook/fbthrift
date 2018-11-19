@@ -22,7 +22,7 @@
 #include <algorithm>
 #include <random>
 
-#include <gtest/gtest.h>
+#include <folly/portability/GTest.h>
 
 #include <folly/lang/Bits.h>
 #include <thrift/lib/cpp/transport/TBufferTransports.h>

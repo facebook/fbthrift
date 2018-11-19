@@ -21,7 +21,7 @@
 
 #include <thrift/lib/cpp/concurrency/Mutex.h>
 
-#include <gtest/gtest.h>
+#include <folly/portability/GTest.h>
 #include <thread>
 #include <condition_variable>
 #include <vector>

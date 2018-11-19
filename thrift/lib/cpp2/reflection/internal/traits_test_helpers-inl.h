@@ -23,7 +23,7 @@
 #include <unordered_set>
 #include <utility>
 
-#include <gtest/gtest.h>
+#include <folly/portability/GTest.h>
 
 #include <folly/Range.h>
 #include <folly/Traits.h>

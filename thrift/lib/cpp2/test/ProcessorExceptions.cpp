@@ -24,7 +24,7 @@
 // definition define an optional field and send it to a server (SampleService)
 // that expects a required argument
 
-#include <gtest/gtest.h>
+#include <folly/portability/GTest.h>
 #include <thrift/lib/cpp/TApplicationException.h>
 #include <thrift/lib/cpp2/test/gen-cpp2/SampleService.h>
 #include <thrift/lib/cpp2/test/gen-cpp2/SampleService2.h>

@@ -20,7 +20,7 @@
 
 #include <iostream>
 #include <vector>
-#include <gflags/gflags.h>
+#include <folly/portability/GFlags.h>
 #include <glog/logging.h>
 #include <folly/Benchmark.h>
 #include <folly/Format.h>

@@ -23,8 +23,8 @@
 
 #include <memory>
 
-#include <gmock/gmock.h>
-#include <gtest/gtest.h>
+#include <folly/portability/GMock.h>
+#include <folly/portability/GTest.h>
 
 #include <thrift/compiler/ast/t_base_type.h>
 #include <thrift/compiler/ast/t_field.h>

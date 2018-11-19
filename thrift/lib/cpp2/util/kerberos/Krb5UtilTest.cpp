@@ -15,8 +15,8 @@
  */
 
 #include <fstream>
-#include <gtest/gtest.h>
-#include <gmock/gmock.h>
+#include <folly/portability/GTest.h>
+#include <folly/portability/GMock.h>
 #include <sstream>
 
 #include <thrift/lib/cpp2/util/kerberos/Krb5Util.h>

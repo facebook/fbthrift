@@ -26,7 +26,7 @@
 #include <thrift/lib/cpp2/gen/bad_field_access.h>
 #include <thrift/lib/cpp2/gen/field_ref.h>
 
-#include <gtest/gtest.h>
+#include <folly/portability/GTest.h>
 
 using apache::thrift::bad_field_access;
 using apache::thrift::field_ref;

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include <gmock/gmock.h>
+#include <folly/portability/GMock.h>
 
 #include <folly/io/async/ScopedEventBaseThread.h>
 #include <thrift/lib/cpp2/GeneratedCodeHelper.h>

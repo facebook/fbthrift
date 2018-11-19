@@ -24,7 +24,7 @@
 #include <limits>
 #include <memory>
 
-#include <gtest/gtest.h>
+#include <folly/portability/GTest.h>
 
 #include <folly/FileUtil.h>
 #include <thrift/lib/cpp2/protocol/Serializer.h>

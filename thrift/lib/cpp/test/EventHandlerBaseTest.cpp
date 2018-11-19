@@ -15,7 +15,7 @@
  */
 #include <thrift/lib/cpp/EventHandlerBase.h>
 
-#include <gtest/gtest.h>
+#include <folly/portability/GTest.h>
 
 using namespace std;
 using namespace folly;

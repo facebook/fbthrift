@@ -15,7 +15,7 @@
  */
 
 #include <thrift/lib/cpp2/test/gen-cpp2/StreamingService.h>
-#include <gtest/gtest.h>
+#include <folly/portability/GTest.h>
 #include <thrift/lib/cpp2/util/ScopedServerInterfaceThread.h>
 
 using namespace apache::thrift;

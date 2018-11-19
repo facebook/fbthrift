@@ -21,7 +21,7 @@
 
 #include <thrift/lib/cpp/util/VarintUtils.h>
 
-#include <gtest/gtest.h>
+#include <folly/portability/GTest.h>
 
 using namespace apache::thrift::util;
 using namespace std;

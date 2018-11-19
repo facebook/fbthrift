@@ -23,7 +23,7 @@
 
 #include <thrift/test/gen-cpp2/minimize_padding_types.h>
 
-#include <gtest/gtest.h>
+#include <folly/portability/GTest.h>
 
 using namespace apache::thrift::test;
 

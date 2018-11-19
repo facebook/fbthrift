@@ -20,7 +20,7 @@
 #include <thrift/lib/cpp/async/TAsyncSocketFactory.h>
 #include <folly/io/async/EventBase.h>
 
-#include <gmock/gmock.h>
+#include <folly/portability/GMock.h>
 
 namespace apache { namespace thrift {
 

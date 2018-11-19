@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 #include <iostream>
-#include <gtest/gtest.h>
+#include <folly/portability/GTest.h>
 
 #include <fatal/test/random_data.h>
 #include <folly/container/Foreach.h>

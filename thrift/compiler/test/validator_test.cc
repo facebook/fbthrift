@@ -18,8 +18,8 @@
 #include <string>
 #include <vector>
 
-#include <gmock/gmock.h>
-#include <gtest/gtest.h>
+#include <folly/portability/GMock.h>
+#include <folly/portability/GTest.h>
 
 #include <thrift/compiler/ast/t_function.h>
 #include <thrift/compiler/ast/t_service.h>
