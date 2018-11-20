@@ -105,11 +105,9 @@ add_library(
   async/HeaderClientChannel.cpp
   async/HeaderServerChannel.cpp
   async/PcapLoggingHandler.cpp
-  async/ProtectionHandler.cpp
   async/RequestChannel.cpp
   async/ResponseChannel.cpp
   async/SaslEndpoint.cpp
-  async/SaslNegotiationHandler.cpp
   async/GssSaslClient.cpp
   async/GssSaslServer.cpp
   security/KerberosSASLHandshakeClient.cpp

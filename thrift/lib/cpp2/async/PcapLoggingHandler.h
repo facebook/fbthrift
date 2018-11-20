@@ -26,9 +26,9 @@ namespace thrift {
 class PcapLoggingHandler : public wangle::BytesToBytesHandler {
  public:
   enum Peer { CLIENT, SERVER };
-  enum class EncryptionType : uint8_t { NONE = 0, KRB = 1, SSL = 2 };
+  enum class EncryptionType : uint8_t { NONE = 0, SSL = 2 };
 
-  explicit PcapLoggingHandler(std::function<bool()> isKrbEncrypted);
+  explicit PcapLoggingHandler() = default;
 
   void transportActive(Context* ctx) override;
   void readEOF(Context* ctx) override;
@@ -51,7 +51,6 @@ class PcapLoggingHandler : public wangle::BytesToBytesHandler {
   bool enabled_ = false;
   Peer peer_;
   folly::Optional<bool> ssl_;
-  std::function<bool()> isKrbEncrypted_;
   int snaplen_;
   folly::SocketAddress local_;
   folly::SocketAddress remote_;

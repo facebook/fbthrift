@@ -28,9 +28,7 @@ namespace thrift {
  */
 class HeaderChannelTrait {
  public:
-  HeaderChannelTrait() {
-    setSupportedClients(nullptr);
-  }
+  HeaderChannelTrait();
   virtual ~HeaderChannelTrait() {}
 
   // If clients is nullptr, a security policy of THRIFT_SECURITY_DISABLED
@@ -51,8 +49,6 @@ class HeaderChannelTrait {
     return clientType_;
   }
   void updateClientType(CLIENT_TYPE ct);
-
-  void setSupportedClientsAll();
 
   void setMinCompressBytes(uint32_t bytes) {
     minCompressBytes_ = bytes;
@@ -85,9 +81,6 @@ class HeaderChannelTrait {
   const std::vector<uint16_t>& getWriteTransforms() const {
     return writeTrans_;
   }
-
- protected:
-  virtual void setPersistentAuthHeader(bool auth) = 0;
 
  private:
   uint32_t minCompressBytes_{0};

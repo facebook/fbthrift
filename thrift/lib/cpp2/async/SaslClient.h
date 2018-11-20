@@ -54,8 +54,7 @@ class SaslClient : public SaslEndpoint {
     void timeoutExpired() noexcept override {
       using apache::thrift::transport::TTransportException;
       saslError(folly::make_exception_wrapper<TTransportException>(
-          TTransportException::SASL_HANDSHAKE_TIMEOUT,
-          "SASL handshake timed out"));
+          TTransportException::UNKNOWN, "SASL handshake timed out"));
     }
   };
 

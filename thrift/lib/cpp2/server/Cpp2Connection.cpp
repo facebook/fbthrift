@@ -84,8 +84,6 @@ Cpp2Connection::Cpp2Connection(
     channel_->setSampleRate(observer->getSampleRate());
   }
 
-  channel_->setSupportedClientsAll();
-
   auto handler = worker_->getServer()->getEventHandler();
   if (handler) {
     handler->newConnection(&context_);

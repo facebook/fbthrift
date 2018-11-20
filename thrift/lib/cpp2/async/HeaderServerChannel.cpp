@@ -48,8 +48,7 @@ HeaderServerChannel::HeaderServerChannel(
     const std::shared_ptr<TAsyncTransport>& transport)
     : HeaderServerChannel(std::shared_ptr<Cpp2Channel>(Cpp2Channel::newChannel(
           transport,
-          make_unique<ServerFramingHandler>(*this),
-          make_unique<ServerSaslNegotiationHandler>(*this)))) {}
+          make_unique<ServerFramingHandler>(*this)))) {}
 
 HeaderServerChannel::HeaderServerChannel(
     const std::shared_ptr<Cpp2Channel>& cpp2Channel)
@@ -57,17 +56,10 @@ HeaderServerChannel::HeaderServerChannel(
       arrivalSeqId_(1),
       lastWrittenSeqId_(0),
       sampleRate_(0),
-      timeoutSASL_(5000),
-      saslServerCallback_(*this),
       cpp2Channel_(cpp2Channel) {}
 
 void HeaderServerChannel::destroy() {
   DestructorGuard dg(this);
-
-  saslServerCallback_.cancelTimeout();
-  if (saslServer_) {
-    saslServer_->detachEventBase();
-  }
 
   if (callback_) {
     auto error =
@@ -121,7 +113,7 @@ HeaderServerChannel::ServerFramingHandler::removeFrame(IOBufQueue* q) {
   }
 
   CLIENT_TYPE ct = header->getClientType();
-  if (!channel_.isSupportedClient(ct) && ct != THRIFT_HEADER_SASL_CLIENT_TYPE) {
+  if (!channel_.isSupportedClient(ct)) {
     LOG(ERROR) << "Server rejecting unsupported client type " << ct;
     channel_.checkSupportedClient(ct);
   }
@@ -137,8 +129,7 @@ HeaderServerChannel::ServerFramingHandler::removeFrame(IOBufQueue* q) {
     protInBuf = PROTOCOL_TYPES::T_COMPACT_PROTOCOL;
   } else if (byte == 0x80) {
     protInBuf = PROTOCOL_TYPES::T_BINARY_PROTOCOL;
-  } else if (
-      ct != THRIFT_HTTP_SERVER_TYPE && ct != THRIFT_HEADER_SASL_CLIENT_TYPE) {
+  } else if (ct != THRIFT_HTTP_SERVER_TYPE) {
     LOG(ERROR) << "Received corrupted request from client: "
                << getTransportDebugString(channel_.getTransport()) << ". "
                << "Corrupted payload in header message. In message header, "
@@ -164,108 +155,12 @@ HeaderServerChannel::ServerFramingHandler::removeFrame(IOBufQueue* q) {
                << getTHeaderPayloadString(buf.get());
   }
 
-  // In order to allow negotiation to happen when the client requests
-  // sasl but it's not supported, we don't throw an exception in the
-  // sasl case.  Instead, we let the message bubble up, and check if
-  // the client is supported in handleSecurityMessage called from the
-  // ServerSaslNegotiationHandler.
-
   header->setMinCompressBytes(channel_.getMinCompressBytes());
   // Only set default transforms if client has not set any
   if (header->getWriteTransforms().empty()) {
     header->setTransforms(channel_.getDefaultWriteTransforms());
   }
   return make_tuple(std::move(buf), 0, std::move(header));
-}
-
-bool HeaderServerChannel::ServerSaslNegotiationHandler::handleSecurityMessage(
-    std::unique_ptr<folly::IOBuf>&& buf,
-    std::unique_ptr<apache::thrift::transport::THeader>&& header) {
-  auto ct = header->getClientType();
-  auto protectionState = channel_.getProtectionState();
-  bool fallThrough = false;
-  if (ct == THRIFT_HEADER_SASL_CLIENT_TYPE) {
-    if (!channel_.isSupportedClient(ct) ||
-        (!channel_.getSaslServer() && !protectionHandler_->getSaslEndpoint())) {
-      if (protectionState == ProtectionState::UNKNOWN) {
-        // The client tried to use SASL, but it's not supported by
-        // policy.  Tell the client to fall back.
-        try {
-          auto trans = header->getWriteTransforms();
-          channel_.sendMessage(
-              nullptr,
-              THeader::transform(
-                  IOBuf::create(0), trans, channel_.getMinCompressBytes()),
-              header.get());
-        } catch (const std::exception& e) {
-          LOG(ERROR) << "Failed to send message: " << e.what();
-        }
-      } else {
-        // The supported client set changed halfway through or
-        // something.  Bail out.
-        channel_.setProtectionState(ProtectionState::INVALID);
-        LOG(WARNING) << "Inconsistent SASL support";
-        auto ex = folly::make_exception_wrapper<TTransportException>(
-            "Inconsistent SASL support");
-        channel_.messageReceiveErrorWrapped(std::move(ex));
-      }
-    } else if (
-        protectionState == ProtectionState::UNKNOWN ||
-        protectionState == ProtectionState::INPROGRESS ||
-        protectionState == ProtectionState::WAITING) {
-      // Technically we shouldn't get any new messages while in the INPROGRESS
-      // state, but we'll allow it to fall through here and let the saslServer_
-      // state machine throw an error.
-      channel_.setProtectionState(ProtectionState::INPROGRESS);
-      channel_.getSaslServer()->setProtocolId(header->getProtocolId());
-      channel_.getSaslServerCallback()->setHeader(std::move(header));
-      channel_.getSaslServer()->consumeFromClient(
-          channel_.getSaslServerCallback(), std::move(buf));
-    } else {
-      // else, fall through to application message processing
-      fallThrough = true;
-    }
-  } else if (
-      (protectionState == ProtectionState::VALID ||
-       protectionState == ProtectionState::INPROGRESS ||
-       protectionState == ProtectionState::WAITING) &&
-      !channel_.isSupportedClient(ct)) {
-    // Either negotiation has completed or negotiation is incomplete,
-    // non-sasl was received, but is not permitted.
-    // We should fail hard in this case.
-    channel_.setProtectionState(ProtectionState::INVALID);
-    LOG(WARNING) << "non-SASL message received on SASL channel";
-    auto ex = folly::make_exception_wrapper<TTransportException>(
-        "non-SASL message received on SASL channel");
-    channel_.messageReceiveErrorWrapped(std::move(ex));
-  } else if (protectionState == ProtectionState::UNKNOWN) {
-    // This is the path non-SASL-aware (or SASL-disabled) clients will
-    // take.
-    VLOG(5) << "non-SASL client connection received";
-    channel_.setProtectionState(ProtectionState::NONE);
-    fallThrough = true;
-  } else if (
-      (protectionState == ProtectionState::VALID ||
-       protectionState == ProtectionState::INPROGRESS ||
-       protectionState == ProtectionState::WAITING) &&
-      channel_.isSupportedClient(ct)) {
-    // If a client  permits a non-secure connection, we allow falling back to
-    // one even if a SASL handshake is in progress, or SASL handshake has been
-    // completed. The reason for latter is that we should allow a fallback if
-    // client timed out in the last leg of the handshake.
-    VLOG(5) << "Client initiated a fallback during a SASL handshake";
-    // Cancel any SASL-related state, and log
-    channel_.setProtectionState(ProtectionState::NONE);
-    fallThrough = true;
-    channel_.getSaslServerCallback()->cancelTimeout();
-    if (channel_.getSaslServer()) {
-      // Should be set here, but just in case check that saslServer_
-      // exists
-      channel_.getSaslServer()->detachEventBase();
-    }
-  }
-
-  return fallThrough;
 }
 
 std::string HeaderServerChannel::getTHeaderPayloadString(IOBuf* buf) {
@@ -572,81 +467,6 @@ void HeaderServerChannel::messageReceiveErrorWrapped(
   if (callback_) {
     callback_->channelClosed(std::move(ex));
   }
-}
-
-void HeaderServerChannel::SaslServerCallback::saslSendClient(
-    std::unique_ptr<folly::IOBuf>&& response) {
-  if (channel_.timeoutSASL_ > 0) {
-    channel_.getEventBase()->timer().scheduleTimeout(
-        this, std::chrono::milliseconds(channel_.timeoutSASL_));
-  }
-  try {
-    auto trans = header_->getWriteTransforms();
-    channel_.setProtectionState(ProtectionState::WAITING);
-    channel_.sendMessage(
-        nullptr,
-        THeader::transform(
-            std::move(response), trans, channel_.getMinCompressBytes()),
-        header_.get());
-  } catch (const std::exception& e) {
-    LOG(ERROR) << "Failed to send message: " << e.what();
-  }
-}
-
-void HeaderServerChannel::SaslServerCallback::saslError(
-    folly::exception_wrapper&& ex) {
-  folly::HHWheelTimer::Callback::cancelTimeout();
-  const auto& observer = std::dynamic_pointer_cast<TServerObserver>(
-      channel_.getEventBase()->getObserver());
-
-  try {
-    // Fall back to insecure.  This will throw an exception if the
-    // insecure client type is not supported.
-    channel_.setClientType(THRIFT_HEADER_CLIENT_TYPE);
-  } catch (const std::exception& e) {
-    channel_.setProtectionState(ProtectionState::INVALID);
-    LOG(ERROR) << "SASL required by server but failed: " << ex.what();
-    channel_.messageReceiveErrorWrapped(std::move(ex));
-    return;
-  }
-
-  VLOG(1) << "SASL server falling back to insecure: " << ex.what();
-
-  // Send the client a null message so the client will try again.
-  // TODO mhorowitz: generate a real message here.
-  header_->setClientType(THRIFT_HEADER_SASL_CLIENT_TYPE);
-  try {
-    auto trans = header_->getWriteTransforms();
-    channel_.sendMessage(
-        nullptr,
-        THeader::transform(
-            IOBuf::create(0), trans, channel_.getMinCompressBytes()),
-        header_.get());
-  } catch (const std::exception& e) {
-    LOG(ERROR) << "Failed to send message: " << e.what();
-  }
-  channel_.setProtectionState(ProtectionState::NONE);
-  // We need to tell saslServer that the security channel is no longer
-  // available, so that it does not attempt to send messages to the server.
-  // Since the server-side SASL code is virtually non-blocking, it should be
-  // rare that this is actually necessary.
-  channel_.saslServer_->detachEventBase();
-}
-
-void HeaderServerChannel::SaslServerCallback::saslComplete() {
-  // setProtectionState could eventually destroy the channel
-  DestructorGuard dg(&channel_);
-
-  const auto& observer = std::dynamic_pointer_cast<TServerObserver>(
-      channel_.getEventBase()->getObserver());
-
-  folly::HHWheelTimer::Callback::cancelTimeout();
-  auto& saslServer = channel_.saslServer_;
-  VLOG(5) << "SASL server negotiation complete: "
-          << saslServer->getServerIdentity()
-          << " <= " << saslServer->getClientIdentity();
-  channel_.setProtectionState(ProtectionState::VALID);
-  channel_.setClientType(THRIFT_HEADER_SASL_CLIENT_TYPE);
 }
 
 } // namespace thrift

@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Facebook, Inc.
+ * Copyright 2014-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -69,10 +69,6 @@ void THeaderTransport::setSupportedClients(
     clients[THRIFT_FRAMED_COMPACT] = true;
 
     supported_clients = clients;
-  } else if (ct->test(THRIFT_HEADER_SASL_CLIENT_TYPE)) {
-    throw TApplicationException(
-        TApplicationException::UNSUPPORTED_CLIENT_TYPE,
-        "Thrift 1 does not support SASL client type");
   } else {
     supported_clients = *ct;
   }

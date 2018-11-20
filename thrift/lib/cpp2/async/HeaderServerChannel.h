@@ -32,7 +32,6 @@
 #include <thrift/lib/cpp2/async/Cpp2Channel.h>
 #include <thrift/lib/cpp2/async/HeaderChannelTrait.h>
 #include <thrift/lib/cpp2/async/MessageChannel.h>
-#include <thrift/lib/cpp2/async/SaslServer.h>
 #include <thrift/lib/cpp2/async/ServerChannel.h>
 
 namespace apache {
@@ -50,8 +49,6 @@ class HeaderServerChannel : public ServerChannel,
                             public HeaderChannelTrait,
                             public MessageChannel::RecvCallback,
                             virtual public folly::DelayedDestruction {
-  typedef ProtectionHandler::ProtectionState ProtectionState;
-
  protected:
   ~HeaderServerChannel() override {}
 
@@ -192,27 +189,6 @@ class HeaderServerChannel : public ServerChannel,
     std::atomic<bool> active_;
   };
 
-  // The default SASL implementation can be overridden for testing or
-  // other purposes.  Most users will never need to call this.
-  void setSaslServer(std::unique_ptr<SaslServer> server) {
-    saslServer_ = std::move(server);
-  }
-
-  // Return pointer to sasl server for mutation.
-  SaslServer* getSaslServer() {
-    return saslServer_.get();
-  }
-
-  // Returns the identity of the remote peer.  Value will be empty if
-  // security was not negotiated.
-  std::string getSaslPeerIdentity() {
-    if (getProtectionState() == ProtectionState::VALID) {
-      return saslServer_->getClientIdentity();
-    } else {
-      return "";
-    }
-  }
-
   void setSampleRate(uint32_t sampleRate) {
     sampleRate_ = sampleRate;
   }
@@ -252,62 +228,12 @@ class HeaderServerChannel : public ServerChannel,
     HeaderServerChannel& channel_;
   };
 
-  class ServerSaslNegotiationHandler : public SaslNegotiationHandler {
-   public:
-    explicit ServerSaslNegotiationHandler(HeaderServerChannel& channel)
-        : channel_(channel) {}
-
-    bool handleSecurityMessage(
-        std::unique_ptr<folly::IOBuf>&& buf,
-        std::unique_ptr<apache::thrift::transport::THeader>&& header) override;
-
-   private:
-    HeaderServerChannel& channel_;
-  };
-
-  class SaslServerCallback : public SaslServer::Callback {
-   public:
-    explicit SaslServerCallback(HeaderServerChannel& channel)
-        : channel_(channel), header_(nullptr) {}
-    void saslSendClient(std::unique_ptr<folly::IOBuf>&&) override;
-    void saslError(folly::exception_wrapper&&) override;
-    void saslComplete() override;
-
-    void setHeader(
-        std::unique_ptr<apache::thrift::transport::THeader>&& header) {
-      header_ = std::move(header);
-    }
-
-   private:
-    HeaderServerChannel& channel_;
-    std::unique_ptr<apache::thrift::transport::THeader> header_;
-  };
-
-  SaslServerCallback* getSaslServerCallback() {
-    return &saslServerCallback_;
-  }
-
- protected:
-  void setPersistentAuthHeader(bool auth) override {
-    setPersistentHeader("thrift_auth", auth ? "1" : "0");
-  }
-
  private:
-  ProtectionState getProtectionState() {
-    return cpp2Channel_->getProtectionHandler()->getProtectionState();
-  }
-
-  void setProtectionState(ProtectionState newState) {
-    cpp2Channel_->getProtectionHandler()->setProtectionState(
-        newState, saslServer_.get());
-  }
-
   static std::string getTHeaderPayloadString(folly::IOBuf* buf);
   static std::string getTransportDebugString(
       apache::thrift::async::TAsyncTransport* transport);
 
   ResponseChannel::Callback* callback_;
-  std::unique_ptr<SaslServer> saslServer_;
 
   // For backwards-compatible in-order responses support
   std::unordered_map<
@@ -328,10 +254,6 @@ class HeaderServerChannel : public ServerChannel,
   static const int MAX_REQUEST_SIZE = 2000;
   static std::atomic<uint32_t> sample_;
   uint32_t sampleRate_;
-
-  uint32_t timeoutSASL_;
-
-  SaslServerCallback saslServerCallback_;
 
   std::shared_ptr<Cpp2Channel> cpp2Channel_;
 };

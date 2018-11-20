@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Facebook, Inc.
+ * Copyright 2014-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -136,11 +136,6 @@
 /* Define to 1 if you have the `rt' library (-lrt). */
 #ifndef THRIFT_HAVE_LIBRT
 #define THRIFT_HAVE_LIBRT 1
-#endif
-
-/* Define to 1 if you have the `sasl2' library (-lsasl2). */
-#ifndef THRIFT_HAVE_LIBSASL2
-#define THRIFT_HAVE_LIBSASL2 1
 #endif
 
 /* Define to 1 if you have the `snappy' library (-lsnappy). */

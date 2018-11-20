@@ -60,8 +60,6 @@ const string THeader::PRIORITY_HEADER = "thrift_priority";
 const string& THeader::CLIENT_TIMEOUT_HEADER = *(new string("client_timeout"));
 const string THeader::QUEUE_TIMEOUT_HEADER = "queue_timeout";
 
-static constexpr StringPiece THRIFT_AUTH_HEADER = "thrift_auth";
-
 THeader::THeader(int options)
     : queue_(new folly::IOBufQueue),
       protoId_(T_COMPACT_PROTOCOL),
@@ -196,9 +194,6 @@ CLIENT_TYPE THeader::analyzeSecond32bit(uint32_t w) {
     return THRIFT_FRAMED_COMPACT;
   }
   if ((w & HEADER_MASK) == HEADER_MAGIC) {
-    if ((w & HEADER_FLAG_SASL) != 0) {
-      return THRIFT_HEADER_SASL_CLIENT_TYPE;
-    }
     return THRIFT_HEADER_CLIENT_TYPE;
   }
   return THRIFT_UNKNOWN_CLIENT_TYPE;
@@ -365,18 +360,6 @@ unique_ptr<IOBuf> THeader::removeHeader(
   queue->trimStart(frameSizeBytes);
   buf = readHeaderFormat(queue->split(sz), persistentReadHeaders);
 
-  // auth client?
-  auto auth_header = getHeaders().find(THRIFT_AUTH_HEADER.str());
-
-  // Correct client type if needed
-  if (auth_header != getHeaders().end()) {
-    if (auth_header->second == "1") {
-      clientType_ = THRIFT_HEADER_SASL_CLIENT_TYPE;
-    } else {
-      clientType_ = THRIFT_HEADER_CLIENT_TYPE;
-    }
-    readHeaders_.erase(auth_header);
-  }
   return buf;
 }
 
@@ -753,8 +736,7 @@ unique_ptr<IOBuf> THeader::addHeader(
   // a copy here
   std::vector<uint16_t> writeTrans = writeTrans_;
 
-  if (clientType_ == THRIFT_HEADER_CLIENT_TYPE ||
-      clientType_ == THRIFT_HEADER_SASL_CLIENT_TYPE) {
+  if (clientType_ == THRIFT_HEADER_CLIENT_TYPE) {
     if (transform) {
       buf = THeader::transform(std::move(buf), writeTrans, minCompressBytes_);
     }
@@ -766,8 +748,7 @@ unique_ptr<IOBuf> THeader::addHeader(
         TTransportException::BAD_ARGS, "Trying to send JSON without HTTP");
   }
 
-  if (chainSize > MAX_FRAME_SIZE && clientType_ != THRIFT_HEADER_CLIENT_TYPE &&
-      clientType_ != THRIFT_HEADER_SASL_CLIENT_TYPE) {
+  if (chainSize > MAX_FRAME_SIZE && clientType_ != THRIFT_HEADER_CLIENT_TYPE) {
     throw TTransportException(
         TTransportException::INVALID_FRAME_SIZE,
         "Attempting to send non-header frame that is too large");
@@ -780,8 +761,7 @@ unique_ptr<IOBuf> THeader::addHeader(
     writeHeaders_[ID_VERSION_HEADER] = ID_VERSION;
   }
 
-  if (clientType_ == THRIFT_HEADER_CLIENT_TYPE ||
-      clientType_ == THRIFT_HEADER_SASL_CLIENT_TYPE) {
+  if (clientType_ == THRIFT_HEADER_CLIENT_TYPE) {
     // header size will need to be updated at the end because of varints.
     // Make it big enough here for max varint size, plus 4 for padding.
     int headerSize =
@@ -808,9 +788,7 @@ unique_ptr<IOBuf> THeader::addHeader(
     uint16_t magicN = htons(HEADER_MAGIC >> 16);
     memcpy(pkt, &magicN, sizeof(magicN));
     pkt += sizeof(magicN);
-    uint16_t flagsN = (clientType_ == THRIFT_HEADER_SASL_CLIENT_TYPE)
-        ? htons(flags_ | HEADER_FLAG_SASL)
-        : htons(flags_);
+    uint16_t flagsN = htons(flags_);
     memcpy(pkt, &flagsN, sizeof(flagsN));
     pkt += sizeof(flagsN);
     uint32_t seqIdN = htonl(seqId_);

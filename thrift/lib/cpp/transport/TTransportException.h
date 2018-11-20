@@ -51,7 +51,6 @@ class TTransportException : public apache::thrift::TLibraryException {
     INVALID_FRAME_SIZE = 11,
     SSL_ERROR = 12,
     COULD_NOT_BIND = 13,
-    SASL_HANDSHAKE_TIMEOUT = 14,
     NETWORK_ERROR = 15,
     EARLY_DATA_REJECTED = 16
     // Remember to update TTransportExceptionTypeSize if you add an entry here
@@ -151,8 +150,6 @@ class TTransportException : public apache::thrift::TLibraryException {
           return "TTransportException: Invalid frame size";
         case SSL_ERROR:
           return "TTransportException: SSL error";
-        case SASL_HANDSHAKE_TIMEOUT:
-          return "TTransportException: SASL Handshake timeout";
         case NETWORK_ERROR:
           return "TTransportException: Network Error";
         case EARLY_DATA_REJECTED:

@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Facebook, Inc.
+ * Copyright 2015-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,6 @@
 #pragma once
 
 #include <thrift/lib/cpp/transport/THeader.h>
-#include <thrift/lib/cpp2/async/ProtectionHandler.h>
 #include <wangle/channel/Handler.h>
 #include <wangle/channel/StaticPipeline.h>
 
@@ -65,10 +64,6 @@ class FramingHandler
       std::unique_ptr<folly::IOBuf> buf,
       apache::thrift::transport::THeader* header) = 0;
 
-  void setProtectionHandler(ProtectionHandler* h) {
-    protectionHandler_ = h;
-  }
-
   /**
    * Set read buffer size.
    *
@@ -88,8 +83,6 @@ class FramingHandler
   enum BUFFER_SIZE {
     DEFAULT_BUFFER_SIZE = 2048,
   };
-
-  ProtectionHandler* protectionHandler_{nullptr};
 
   size_t readBufferSize_{DEFAULT_BUFFER_SIZE};
 

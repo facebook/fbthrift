@@ -683,14 +683,11 @@ class LoggingThread {
 
 } // namespace
 
-PcapLoggingHandler::PcapLoggingHandler(std::function<bool()> isKrbEncrypted)
-    : isKrbEncrypted_(std::move(isKrbEncrypted)) {}
-
 PcapLoggingHandler::EncryptionType PcapLoggingHandler::getEncryptionType() {
   if (ssl_.hasValue() && ssl_.value()) {
     return EncryptionType::SSL;
   }
-  return isKrbEncrypted_() ? EncryptionType::KRB : EncryptionType::NONE;
+  return EncryptionType::NONE;
 }
 
 void PcapLoggingHandler::transportActive(Context* ctx) {

@@ -20,17 +20,8 @@
 namespace apache {
 namespace thrift {
 
-// We set a persistent header so we don't have to include a header in every
-// message on the wire. If clientType changes from last used (e.g. SASL
-// client connects to SASL-disabled server and falls back to non-SASL),
-// replace the header.
 void HeaderChannelTrait::updateClientType(CLIENT_TYPE ct) {
   if (prevClientType_ != ct) {
-    if (ct == THRIFT_HEADER_SASL_CLIENT_TYPE) {
-      setPersistentAuthHeader(true);
-    } else if (ct == THRIFT_HEADER_CLIENT_TYPE) {
-      setPersistentAuthHeader(false);
-    }
     prevClientType_ = ct;
   }
 }
@@ -44,19 +35,9 @@ void HeaderChannelTrait::setSupportedClients(
     std::bitset<CLIENT_TYPES_LEN> const* clients) {
   if (clients) {
     supported_clients = *clients;
-    // Let's support insecure Header if SASL isn't explicitly supported.
-    // It's ok for both to be supported by the caller, too.
-    if (!supported_clients[THRIFT_HEADER_SASL_CLIENT_TYPE]) {
-      supported_clients[THRIFT_HEADER_CLIENT_TYPE] = true;
-    }
+    supported_clients[THRIFT_HEADER_CLIENT_TYPE] = true;
 
-    if (supported_clients[THRIFT_HEADER_SASL_CLIENT_TYPE]) {
-      setClientType(THRIFT_HEADER_SASL_CLIENT_TYPE);
-    } else {
-      setClientType(THRIFT_HEADER_CLIENT_TYPE);
-    }
-  } else {
-    setSupportedClientsAll();
+    setClientType(THRIFT_HEADER_CLIENT_TYPE);
   }
 }
 
@@ -72,7 +53,7 @@ void HeaderChannelTrait::checkSupportedClient(CLIENT_TYPE ct) {
   }
 }
 
-void HeaderChannelTrait::setSupportedClientsAll() {
+HeaderChannelTrait::HeaderChannelTrait() {
   std::bitset<CLIENT_TYPES_LEN> clients;
 
   clients[THRIFT_UNFRAMED_DEPRECATED] = true;

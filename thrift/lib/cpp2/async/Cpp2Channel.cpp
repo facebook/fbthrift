@@ -40,37 +40,19 @@ namespace thrift {
 
 Cpp2Channel::Cpp2Channel(
     const std::shared_ptr<TAsyncTransport>& transport,
-    std::unique_ptr<FramingHandler> framingHandler,
-    std::unique_ptr<ProtectionHandler> protectionHandler,
-    std::unique_ptr<SaslNegotiationHandler> saslNegotiationHandler)
+    std::unique_ptr<FramingHandler> framingHandler)
     : transport_(transport),
       recvCallback_(nullptr),
       eofInvoked_(false),
       outputBufferingHandler_(
           std::make_shared<wangle::OutputBufferingHandler>()),
-      protectionHandler_(std::move(protectionHandler)),
-      framingHandler_(std::move(framingHandler)),
-      saslNegotiationHandler_(std::move(saslNegotiationHandler)) {
-  if (!protectionHandler_) {
-    protectionHandler_.reset(new ProtectionHandler);
-  }
-  framingHandler_->setProtectionHandler(protectionHandler_.get());
-
-  if (!saslNegotiationHandler_) {
-    saslNegotiationHandler_ = std::make_unique<DummySaslNegotiationHandler>();
-  }
-  saslNegotiationHandler_->setProtectionHandler(protectionHandler_.get());
-  auto pcapLoggingHandler = std::make_shared<PcapLoggingHandler>([this] {
-    return protectionHandler_->getProtectionState() ==
-        ProtectionHandler::ProtectionState::VALID;
-  });
+      framingHandler_(std::move(framingHandler)) {
+  auto pcapLoggingHandler = std::make_shared<PcapLoggingHandler>();
   pipeline_ = Pipeline::create(
       TAsyncTransportHandler(transport),
       outputBufferingHandler_,
-      protectionHandler_,
       pcapLoggingHandler,
       framingHandler_,
-      saslNegotiationHandler_,
       this);
   // Let the pipeline know that this handler owns the pipeline itself.
   // The pipeline will then avoid destruction order issues.

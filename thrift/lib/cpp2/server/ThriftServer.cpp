@@ -31,15 +31,9 @@
 #include <thrift/lib/cpp/concurrency/Thread.h>
 #include <thrift/lib/cpp/concurrency/ThreadManager.h>
 #include <thrift/lib/cpp/server/TServerObserver.h>
-#include <thrift/lib/cpp2/async/GssSaslServer.h>
 #include <thrift/lib/cpp2/server/Cpp2Connection.h>
 #include <thrift/lib/cpp2/server/Cpp2Worker.h>
 #include <wangle/ssl/SSLContextManager.h>
-
-DEFINE_string(
-    sasl_policy,
-    "disabled",
-    "SASL handshake required / permitted / disabled");
 
 DEFINE_string(
     thrift_ssl_policy,
@@ -68,17 +62,6 @@ using folly::IOThreadPoolExecutor;
 using folly::NamedThreadFactory;
 using std::shared_ptr;
 using wangle::TLSCredProcessor;
-
-namespace {
-struct DisableKerberosReplayCacheSingleton {
-  DisableKerberosReplayCacheSingleton() {
-    // Disable replay caching since we're doing mutual auth. Enabling
-    // this will significantly degrade perf. Force this to overwrite
-    // existing env variables to avoid performance regressions.
-    setenv("KRB5RCACHETYPE", "none", 1);
-  }
-} kDisableKerberosReplayCacheSingleton;
-} // namespace
 
 class ThriftAcceptorFactory : public wangle::AcceptorFactory {
  public:
@@ -114,10 +97,6 @@ ThriftServer::ThriftServer(
 }
 
 ThriftServer::~ThriftServer() {
-  if (saslThreadManager_) {
-    saslThreadManager_->stop();
-  }
-
   if (duplexWorker_) {
     // usually ServerBootstrap::stop drains the workers, but ServerBootstrap
     // doesn't know about duplexWorker_
@@ -222,13 +201,6 @@ void ThriftServer::touchRequestTimestamp() noexcept {
   }
 }
 
-size_t ThriftServer::getNumSaslThreadsToRun() const {
-  size_t nPoolThreads = getNumCPUWorkerThreads();
-  return nSaslPoolThreads_ > 0
-      ? nSaslPoolThreads_
-      : (nPoolThreads > 0 ? nPoolThreads : getNumIOWorkerThreads());
-}
-
 void ThriftServer::setup() {
   DCHECK_NOTNULL(getProcessorFactory().get());
   auto nWorkers = getNumIOWorkerThreads();
@@ -276,19 +248,6 @@ void ThriftServer::setup() {
               apache::thrift::concurrency::PosixThreadFactory::kDefaultPolicy,
               apache::thrift::concurrency::PosixThreadFactory::kDefaultPriority,
               threadStackSizeMB_));
-    }
-
-    if (saslEnabled_) {
-      if (!saslThreadManager_) {
-        auto numThreads = getNumSaslThreadsToRun();
-        saslThreadManager_ = ThreadManager::newSimpleThreadManager(
-            numThreads,
-            false /* enableTaskStats */);
-        saslThreadManager_->setNamePrefix(saslThreadsNamePrefix_);
-        saslThreadManager_->threadFactory(threadFactory_);
-        saslThreadManager_->start();
-      }
-      auto saslThreadManager = saslThreadManager_;
     }
 
     setupThreadManager();

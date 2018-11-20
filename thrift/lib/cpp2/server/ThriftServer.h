@@ -39,7 +39,6 @@
 #include <thrift/lib/cpp2/Thrift.h>
 #include <thrift/lib/cpp2/async/AsyncProcessor.h>
 #include <thrift/lib/cpp2/async/HeaderServerChannel.h>
-#include <thrift/lib/cpp2/async/SaslServer.h>
 #include <thrift/lib/cpp2/server/BaseThriftServer.h>
 #include <thrift/lib/cpp2/server/TransportRoutingHandler.h>
 #include <thrift/lib/cpp2/transport/core/ThriftProcessor.h>
@@ -80,14 +79,8 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
   wangle::FizzConfig fizzConfig_;
 
   // Security negotiation settings
-  bool saslEnabled_ = false;
-  const std::string saslPolicy_;
   SSLPolicy sslPolicy_ = SSLPolicy::PERMITTED;
   bool strictSSL_ = false;
-  std::shared_ptr<apache::thrift::concurrency::ThreadManager>
-      saslThreadManager_;
-  size_t nSaslPoolThreads_ = 0;
-  std::string saslThreadsNamePrefix_ = "thrift-sasl";
 
   std::weak_ptr<folly::ShutdownSocketSet> wShutdownSocketSet_;
 
@@ -257,8 +250,6 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
     CHECK(configMutable());
     ioThreadPool_->setThreadFactory(threadFactory);
   }
-
-  size_t getNumSaslThreadsToRun() const;
 
   /**
    * Set the thread pool used to handle TLS handshakes. Note that the pool's
@@ -513,38 +504,6 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
   void setAcceptorFactory(
       const std::shared_ptr<wangle::AcceptorFactory>& acceptorFactory) {
     acceptorFactory_ = acceptorFactory;
-  }
-
-  /**
-   * Sets the number of threads to use for SASL negotiation if it has been
-   * enabled.
-   */
-  void setNSaslPoolThreads(size_t nSaslPoolThreads) {
-    CHECK(configMutable());
-    nSaslPoolThreads_ = nSaslPoolThreads;
-  }
-
-  /**
-   * Sets the number of threads to use for SASL negotiation if it has been
-   * enabled.
-   */
-  size_t getNSaslPoolThreads() {
-    return nSaslPoolThreads_;
-  }
-
-  /**
-   * Sets the prefix used for SASL threads.
-   */
-  void setSaslThreadsNamePrefix(std::string saslThreadsNamePrefix) {
-    CHECK(configMutable());
-    saslThreadsNamePrefix_ = std::move(saslThreadsNamePrefix);
-  }
-
-  /**
-   * Get the prefix used for SASL threads.
-   */
-  const std::string& getSaslThreadsNamePrefix() {
-    return saslThreadsNamePrefix_;
   }
 
   /**

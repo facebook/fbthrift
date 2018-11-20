@@ -33,9 +33,6 @@
 #include <thrift/lib/cpp2/async/FramingHandler.h>
 #include <thrift/lib/cpp2/async/MessageChannel.h>
 #include <thrift/lib/cpp2/async/PcapLoggingHandler.h>
-#include <thrift/lib/cpp2/async/ProtectionHandler.h>
-#include <thrift/lib/cpp2/async/SaslEndpoint.h>
-#include <thrift/lib/cpp2/async/SaslNegotiationHandler.h>
 #include <thrift/lib/cpp2/async/TAsyncTransportHandler.h>
 #include <wangle/channel/Handler.h>
 #include <wangle/channel/OutputBufferingHandler.h>
@@ -57,9 +54,7 @@ class Cpp2Channel
  public:
   explicit Cpp2Channel(
       const std::shared_ptr<apache::thrift::async::TAsyncTransport>& transport,
-      std::unique_ptr<FramingHandler> framingHandler,
-      std::unique_ptr<ProtectionHandler> protectionHandler = nullptr,
-      std::unique_ptr<SaslNegotiationHandler> saslNegotiationHandler = nullptr);
+      std::unique_ptr<FramingHandler> framingHandler);
 
   // TODO(jsedgwick) This should be protected, but wangle::StaticPipeline
   // will encase this in a folly::Optional, which requires a public destructor.
@@ -69,14 +64,9 @@ class Cpp2Channel
   static std::unique_ptr<Cpp2Channel, folly::DelayedDestruction::Destructor>
   newChannel(
       const std::shared_ptr<apache::thrift::async::TAsyncTransport>& transport,
-      std::unique_ptr<FramingHandler> framingHandler,
-      std::unique_ptr<SaslNegotiationHandler> saslHandler = nullptr) {
+      std::unique_ptr<FramingHandler> framingHandler) {
     return std::unique_ptr<Cpp2Channel, folly::DelayedDestruction::Destructor>(
-        new Cpp2Channel(
-            transport,
-            std::move(framingHandler),
-            nullptr,
-            std::move(saslHandler)));
+        new Cpp2Channel(transport, std::move(framingHandler)));
   }
   void closeNow();
 
@@ -136,10 +126,6 @@ class Cpp2Channel
     }
   }
 
-  ProtectionHandler* getProtectionHandler() const {
-    return protectionHandler_.get();
-  }
-
   /**
    * Set read buffer size.
    *
@@ -161,9 +147,7 @@ class Cpp2Channel
   std::unique_ptr<RecvCallback::sample> sample_;
 
   std::shared_ptr<wangle::OutputBufferingHandler> outputBufferingHandler_;
-  std::shared_ptr<ProtectionHandler> protectionHandler_;
   std::shared_ptr<FramingHandler> framingHandler_;
-  std::shared_ptr<SaslNegotiationHandler> saslNegotiationHandler_;
 
   typedef wangle::StaticPipeline<
       folly::IOBufQueue&,
@@ -172,10 +156,8 @@ class Cpp2Channel
           apache::thrift::transport::THeader*>,
       TAsyncTransportHandler,
       wangle::OutputBufferingHandler,
-      ProtectionHandler,
       PcapLoggingHandler,
       FramingHandler,
-      SaslNegotiationHandler,
       Cpp2Channel>
       Pipeline;
   std::shared_ptr<Pipeline> pipeline_;
