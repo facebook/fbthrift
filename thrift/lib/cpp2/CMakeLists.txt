@@ -53,16 +53,6 @@ target_link_libraries(
     wangle::wangle
 )
 
-thrift_generate(
-  "Sasl" #file_name
-  "SaslAuthService" #services
-  "cpp2" #language
-  "" #options
-  "${LIB_CPP2_HOME}" #file_path
-  "${LIB_CPP2_HOME}" #output_path
-  "thrift/lib/cpp2" #include_prefix
-)
-
 add_library(
   security
 
@@ -89,7 +79,6 @@ target_link_libraries(
 )
 
 bypass_source_check("${RpcMetadata-cpp2-SOURCES}")
-bypass_source_check("${Sasl-cpp2-SOURCES}")
 add_library(
   thriftcpp2
 
@@ -107,9 +96,6 @@ add_library(
   async/PcapLoggingHandler.cpp
   async/RequestChannel.cpp
   async/ResponseChannel.cpp
-  async/SaslEndpoint.cpp
-  async/GssSaslClient.cpp
-  async/GssSaslServer.cpp
   security/KerberosSASLHandshakeClient.cpp
   security/KerberosSASLHandshakeServer.cpp
   security/KerberosSASLHandshakeUtils.cpp
@@ -123,9 +109,7 @@ add_library(
   util/ScopedServerInterfaceThread.cpp
   util/ScopedServerThread.cpp
   ${RpcMetadata-cpp2-SOURCES}
-  ${Sasl-cpp2-SOURCES}
 )
-add_dependencies(thriftcpp2 Sasl-cpp2-target)
 target_link_libraries(
   thriftcpp2
   PUBLIC
