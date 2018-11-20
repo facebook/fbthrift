@@ -85,7 +85,7 @@ folly::Future<RequestChannel_ptr> createThriftChannelTCP(
     CLIENT_TYPE client_t,
     apache::thrift::protocol::PROTOCOL_TYPES proto,
     std::string&& endpoint) {
-  return std::move(host_fut).then(
+  return std::move(host_fut).thenValue(
       [=, endpoint{std::move(endpoint)}](std::string host) {
         auto eb = folly::getEventBase();
         return folly::via(eb, [=, endpoint{std::move(endpoint)}] {
