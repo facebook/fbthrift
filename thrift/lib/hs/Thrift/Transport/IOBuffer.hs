@@ -35,7 +35,9 @@ import Data.ByteString.Builder
 import Data.Functor
 #endif
 import Data.IORef
+#if __GLASGOW_HASKELL__ < 804
 import Data.Monoid
+#endif
 import Data.Word
 
 import qualified Data.ByteString.Lazy as LBS

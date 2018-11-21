@@ -38,7 +38,9 @@ import Data.Attoparsec.ByteString.Lazy as LP
 import Data.ByteString.Builder as B
 import Data.Int
 import Data.List
+#if __GLASGOW_HASKELL__ < 804
 import Data.Monoid
+#endif
 import Data.Text.Lazy.Encoding
 import qualified Data.HashMap.Strict as Map
 

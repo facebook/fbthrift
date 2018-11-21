@@ -38,7 +38,9 @@ import Data.Bits
 import Data.ByteString.Builder as B
 import Data.Int
 import Data.List as List
+#if __GLASGOW_HASKELL__ < 804
 import Data.Monoid
+#endif
 import Data.Word
 import Data.Text.Lazy.Encoding ( decodeUtf8, encodeUtf8 )
 

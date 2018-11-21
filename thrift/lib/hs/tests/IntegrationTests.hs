@@ -56,4 +56,4 @@ main = aggregateResults
   , quickCheckWithResult args (propCToHs CompactProtocol c_serializeCompact)
   , quickCheckWithResult args (propHsToC CompactProtocol c_deserializeCompact)
   ]
-  where args = Args Nothing 100 10 100 True
+  where args = stdArgs

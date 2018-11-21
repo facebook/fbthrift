@@ -38,7 +38,9 @@ import Data.Functor
 import Data.Int
 import Data.List
 import Data.Maybe (catMaybes)
+#if __GLASGOW_HASKELL__ < 804
 import Data.Monoid
+#endif
 import Data.Text.Lazy.Encoding
 import qualified Data.HashMap.Strict as Map
 import qualified Data.Text.Lazy as LT

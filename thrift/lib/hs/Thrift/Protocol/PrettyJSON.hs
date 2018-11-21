@@ -17,6 +17,7 @@
 -- under the License.
 --
 
+{-# LANGUAGE CPP #-}
 {-# LANGUAGE OverloadedStrings #-}
 
 module Thrift.Protocol.PrettyJSON
@@ -27,7 +28,9 @@ module Thrift.Protocol.PrettyJSON
 import Data.ByteString.Builder as B
 import Data.Int
 import Data.List
+#if __GLASGOW_HASKELL__ < 804
 import Data.Monoid
+#endif
 import Data.Text.Lazy.Encoding
 import qualified Data.HashMap.Strict as Map
 import qualified Data.Text.Lazy as LT

@@ -17,6 +17,7 @@
 -- under the License.
 --
 
+{-# LANGUAGE CPP #-}
 {-# LANGUAGE OverloadedStrings #-}
 
 module Thrift.Protocol.JSONUtils
@@ -35,7 +36,9 @@ import Data.Bits
 import Data.ByteString.Builder as B
 import Data.ByteString.Internal (c2w, w2c)
 import Data.Char as C
+#if __GLASGOW_HASKELL__ < 804
 import Data.Monoid
+#endif
 import Data.Word
 import qualified Data.ByteString.Lazy as LBS
 

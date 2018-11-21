@@ -1,4 +1,5 @@
 {-# OPTIONS_GHC -fno-warn-orphans #-}
+{-# LANGUAGE CPP #-}
 {-# LANGUAGE OverloadedStrings #-}
 module Util
        ( TestTransport(..)
@@ -11,7 +12,9 @@ import Control.Monad
 import Data.Functor
 import Data.Int
 import Data.IORef
+#if __GLASGOW_HASKELL__ < 804
 import Data.Monoid
+#endif
 import Prelude
 import System.Exit
 import Test.QuickCheck as QC
