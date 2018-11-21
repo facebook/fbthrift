@@ -37,21 +37,29 @@ using namespace apache::thrift::test;
 TEST(cpp_name_test, rename) {
   auto s = MyStruct();
   s.set_unique_name(42);
+  s.set_opt_unique_name(4);  // chosen by fair dice roll
   EXPECT_EQ(42, s.unique_name);
+  EXPECT_EQ(4, s.opt_unique_name);
   EXPECT_EQ(42, s.get_unique_name());
+  EXPECT_EQ(4, *(s.get_opt_unique_name()));
+  EXPECT_EQ(4, *(s.opt_unique_name_ref()));
 }
 
 TEST(cpp_name_test, json_serialization) {
   auto in = MyStruct();
   in.set_unique_name(42);
+  in.set_opt_unique_name(4);  // chosen by fair dice roll
   auto json = SimpleJSONSerializer::serialize<std::string>(in);
-  FOLLY_EXPECT_JSON_EQ(json, R"({"conflicting_name": 42})");
+  FOLLY_EXPECT_JSON_EQ(json, R"({"conflicting_name": 42, "opt_conflicting_name": 4})");
   auto out = MyStruct();
   SimpleJSONSerializer::deserialize(json, out);
   EXPECT_EQ(out.unique_name, 42);
+  EXPECT_EQ(out.opt_unique_name, 4);
+  EXPECT_EQ(*(out.opt_unique_name_ref()), 4);
 }
 
 FATAL_S(unique_name, "unique_name");
+FATAL_S(opt_unique_name, "opt_unique_name");
 
 TEST(cpp_name_test, reflection) {
   using info = apache::thrift::reflect_struct<MyStruct>;
