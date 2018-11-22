@@ -212,7 +212,7 @@ struct protocol_methods<type_class::list<ElemClass>, Type> {
   template <typename Protocol>
   static void read(Protocol& protocol, Type& out) {
     std::uint32_t list_size = -1;
-    TType reported_type = protocol::T_STOP;
+    protocol::TType reported_type = protocol::T_STOP;
 
     out = Type();
 
@@ -301,7 +301,7 @@ struct protocol_methods<type_class::set<ElemClass>, Type> {
     // TODO: readSetBegin takes (TType, std::uint32_t)
     // instead of a (TType, std::size_t)
     std::uint32_t set_size = -1;
-    TType reported_type = protocol::T_STOP;
+    protocol::TType reported_type = protocol::T_STOP;
 
     out = Type();
     protocol.readSetBegin(reported_type, set_size);
@@ -378,7 +378,8 @@ struct protocol_methods<type_class::map<KeyClass, MappedClass>, Type> {
   static void read(Protocol& protocol, Type& out) {
     // TODO: see above re: readMapBegin taking a uint32_t size param
     std::uint32_t map_size = -1;
-    TType rpt_key_type = protocol::T_STOP, rpt_mapped_type = protocol::T_STOP;
+    protocol::TType rpt_key_type = protocol::T_STOP,
+                    rpt_mapped_type = protocol::T_STOP;
     out = Type();
 
     protocol.readMapBegin(rpt_key_type, rpt_mapped_type, map_size);
@@ -593,7 +594,7 @@ struct protocol_methods<type_class::variant, Union> {
     template <typename Fid, std::size_t Index>
     void operator()(
         fatal::indexed<Fid, Index>,
-        const TType ftype,
+        const protocol::TType ftype,
         Protocol& protocol,
         Union& obj) const {
       using descriptor = fatal::get<
@@ -795,7 +796,7 @@ struct protocol_methods<type_class::structure, Struct> {
         typename isset_array>
     void operator()(
         fatal::indexed<Fid, Index>,
-        const TType ftype,
+        const protocol::TType ftype,
         Protocol& protocol,
         Struct& obj,
         isset_array& required_isset) {
@@ -871,8 +872,8 @@ struct protocol_methods<type_class::structure, Struct> {
 
     for (std::size_t idx = 0; idx < required_isset.size(); idx++) {
       if (!required_isset[idx]) {
-        throw apache::thrift::TProtocolException(
-            TProtocolException::MISSING_REQUIRED_FIELD,
+        throw protocol::TProtocolException(
+            protocol::TProtocolException::MISSING_REQUIRED_FIELD,
             "Required field was not found in serialized data!");
       }
     }
