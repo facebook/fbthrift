@@ -89,7 +89,7 @@ class TConnectionContext {
     }
   }
 
-  virtual const std::map<std::string, std::string>* getHeadersPtr() {
+  virtual const std::map<std::string, std::string>* getHeadersPtr() const {
     auto header = getHeader();
     if (header) {
       return &header->getHeaders();
