@@ -351,6 +351,6 @@ struct ProtocolReaderStructReadState<BinaryProtocolReader>
 } // namespace thrift
 } // namespace apache
 
-#include <thrift/lib/cpp2/protocol/BinaryProtocol.tcc>
+#include <thrift/lib/cpp2/protocol/BinaryProtocol-inl.h>
 
 #endif // #ifndef CPP2_PROTOCOL_TBINARYPROTOCOL_H_

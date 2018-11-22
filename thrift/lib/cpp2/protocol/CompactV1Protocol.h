@@ -137,4 +137,4 @@ class CompactV1ProtocolReader : protected CompactProtocolReader {
 } // namespace thrift
 } // namespace apache
 
-#include <thrift/lib/cpp2/protocol/CompactV1Protocol.tcc>
+#include <thrift/lib/cpp2/protocol/CompactV1Protocol-inl.h>

@@ -330,4 +330,4 @@ class JSONProtocolReaderCommon {
 } // namespace thrift
 } // namespace apache
 
-#include <thrift/lib/cpp2/protocol/JSONProtocolCommon.tcc>
+#include <thrift/lib/cpp2/protocol/JSONProtocolCommon-inl.h>

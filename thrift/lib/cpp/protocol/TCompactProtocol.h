@@ -332,6 +332,6 @@ typedef TCompactProtocolFactoryT<TTransport> TCompactProtocolFactory;
 
 }}} // apache::thrift::protocol
 
-#include <thrift/lib/cpp/protocol/TCompactProtocol.tcc>
+#include <thrift/lib/cpp/protocol/TCompactProtocol-inl.h>
 
 #endif
