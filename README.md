@@ -59,7 +59,6 @@ Please install the following dependencies before building Facebook Thrift:
 [Flex](https://www.gnu.org/software/flex),
 [Bison](https://www.gnu.org/software/bison),
 [Boost](https://www.boost.org),
-[Krb5](https://web.mit.edu/kerberos),
 [OpenSSLv1.0.2g](https://www.openssl.org),
 [PThreads](https://computing.llnl.gov/tutorials/pthreads),
 [Zlib](https://zlib.net).

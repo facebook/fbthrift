@@ -89,7 +89,6 @@ if(lib_only OR build_all)
   find_package(folly CONFIG REQUIRED)
   find_package(GFlags REQUIRED)
   find_package(Glog REQUIRED)
-  find_package(Krb5 REQUIRED gssapi)
   find_package(Yarpl)
   find_package(fizz CONFIG REQUIRED)
   find_package(wangle CONFIG REQUIRED)
@@ -101,7 +100,6 @@ if(lib_only OR build_all)
   include_directories(
     ${LIBGFLAGS_INCLUDE_DIR}
     ${GLOG_INCLUDE_DIRS}
-    ${KRB5_INCLUDE_DIRS}
     ${OPENSSL_INCLUDE_DIR}
     ${ZLIB_INCLUDE_DIRS}
     ${ZSTD_INCLUDE_DIRS}

@@ -53,31 +53,6 @@ target_link_libraries(
     wangle::wangle
 )
 
-add_library(
-  security
-
-  util/kerberos/Krb5Util.cpp
-  util/kerberos/Krb5OlderVersionStubs.cpp
-  util/kerberos/Krb5CredentialsCacheManager.cpp
-  util/kerberos/Krb5CCacheStore.cpp
-  util/kerberos/Krb5Tgts.cpp
-  util/kerberos/FBKrb5GetCreds.cpp
-)
-target_include_directories(
-  security
-  PUBLIC
-    ${KRB5_INCLUDE_DIRS}
-)
-target_link_libraries(
-  security
-  PUBLIC
-    ${KRB5_LIBRARIES}
-    ${Boost_LIBRARIES}
-    Folly::folly
-    ${LIBGFLAGS_LIBRARY}
-    ${GLOG_LIBRARIES}
-)
-
 bypass_source_check("${RpcMetadata-cpp2-SOURCES}")
 add_library(
   thriftcpp2
@@ -96,10 +71,6 @@ add_library(
   async/PcapLoggingHandler.cpp
   async/RequestChannel.cpp
   async/ResponseChannel.cpp
-  security/KerberosSASLHandshakeClient.cpp
-  security/KerberosSASLHandshakeServer.cpp
-  security/KerberosSASLHandshakeUtils.cpp
-  security/KerberosSASLThreadManager.cpp
   server/BaseThriftServer.cpp
   server/Cpp2Connection.cpp
   server/Cpp2Worker.cpp
@@ -113,7 +84,6 @@ add_library(
 target_link_libraries(
   thriftcpp2
   PUBLIC
-    security
     thrift
     thriftfrozen2
     thriftprotocol
@@ -125,7 +95,6 @@ set(THRIFT2_HEADER_DIRS
   frozen
   gen-cpp2
   protocol
-  security
   server
   transport
   util
@@ -139,7 +108,6 @@ endforeach()
 
 install(
   TARGETS
-    security
     thriftfrozen2
     thriftprotocol
     thriftcpp2
