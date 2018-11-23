@@ -18,6 +18,9 @@
 
 #include <folly/dynamic.h>
 
+#include <thrift/lib/cpp/protocol/TType.h>
+#include <thrift/lib/cpp2/protocol/Cpp2Ops.h>
+
 namespace apache { namespace thrift {
 
 /**
@@ -231,12 +234,8 @@ class SerializableDynamic {
 
  private:
   folly::dynamic value_;
-#ifdef THRIFT_CPP2_H_
   friend class ::apache::thrift::Cpp2Ops<SerializableDynamic>;
-#endif
 };
-
-#ifdef THRIFT_CPP2_H_
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -438,8 +437,6 @@ inline void Cpp2Ops<SerializableDynamic>::read(
   }
   iprot->readStructEnd();
 }
-
-#endif // THRIFT_CPP2_H_
 
 }}
 
