@@ -61,9 +61,6 @@ class OnEventBaseDestructionCallback : public folly::EventBase::LoopCallback {
  private:
   RocketClient& client_;
 };
-
-const std::chrono::milliseconds kResizeBufferTimeout =
-    std::chrono::milliseconds(3000);
 } // namespace
 
 RocketClient::RocketClient(
@@ -72,7 +69,7 @@ RocketClient::RocketClient(
     : evb_(&evb),
       fm_(&folly::fibers::getFiberManager(*evb_)),
       socket_(std::move(socket)),
-      parser_(*this, kResizeBufferTimeout),
+      parser_(*this),
       writeLoopCallback_(*this),
       eventBaseDestructionCallback_(
           std::make_unique<OnEventBaseDestructionCallback>(*this)) {

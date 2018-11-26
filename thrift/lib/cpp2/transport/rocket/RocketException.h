@@ -19,6 +19,7 @@
 #include <memory>
 #include <utility>
 
+#include <folly/Range.h>
 #include <folly/io/IOBuf.h>
 
 #include <thrift/lib/cpp2/transport/rocket/framing/ErrorCode.h>
@@ -34,6 +35,9 @@ class RocketException : public std::exception {
 
   RocketException(ErrorCode errorCode, std::unique_ptr<folly::IOBuf> errorData)
       : rsocketErrorCode_(errorCode), errorData_(std::move(errorData)) {}
+
+  RocketException(ErrorCode errorCode, folly::StringPiece errorData)
+      : RocketException(errorCode, folly::IOBuf::copyBuffer(errorData)) {}
 
   RocketException(RocketException&&) = default;
   RocketException(const RocketException& other)

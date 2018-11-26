@@ -17,6 +17,7 @@
 #include <thrift/lib/cpp2/transport/rocket/framing/Parser.h>
 
 #include <algorithm>
+#include <chrono>
 #include <stdexcept>
 
 #include <folly/io/Cursor.h>
@@ -136,9 +137,10 @@ void Parser<T>::resizeBuffer() {
 
 template <class T>
 constexpr size_t Parser<T>::kMinBufferSize;
-
 template <class T>
 constexpr size_t Parser<T>::kMaxBufferSize;
+template <class T>
+constexpr std::chrono::milliseconds Parser<T>::kDefaultBufferResizeInterval;
 
 } // namespace rocket
 } // namespace thrift

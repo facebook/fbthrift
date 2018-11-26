@@ -31,7 +31,10 @@ namespace rocket {
 template <class T>
 class Parser final : public folly::AsyncTransportWrapper::ReadCallback {
  public:
-  explicit Parser(T& owner, std::chrono::milliseconds resizeBufferTimeout)
+  explicit Parser(
+      T& owner,
+      std::chrono::milliseconds resizeBufferTimeout =
+          kDefaultBufferResizeInterval)
       : owner_(owner), resizeBufferTimeout_(resizeBufferTimeout) {}
 
   // AsyncTransportWrapper::ReadCallback implementation
@@ -57,18 +60,21 @@ class Parser final : public folly::AsyncTransportWrapper::ReadCallback {
     bufferSize_ = size;
   }
 
-  static constexpr size_t kMinBufferSize = 256;
-  static constexpr size_t kMaxBufferSize = 4096;
-
   void resizeBuffer();
 
+  static constexpr size_t kMinBufferSize{256};
+  static constexpr size_t kMaxBufferSize{4096};
+
  private:
+  static constexpr std::chrono::milliseconds kDefaultBufferResizeInterval{
+      std::chrono::seconds(3)};
+
   T& owner_;
   size_t bufferSize_{kMinBufferSize};
   folly::IOBuf readBuffer_{folly::IOBuf::CreateOp(), bufferSize_};
-  std::chrono::steady_clock::time_point resizeBufferTimer_ =
-      std::chrono::steady_clock::now();
-  std::chrono::milliseconds resizeBufferTimeout_;
+  std::chrono::steady_clock::time_point resizeBufferTimer_{
+      std::chrono::steady_clock::now()};
+  const std::chrono::milliseconds resizeBufferTimeout_;
 };
 
 } // namespace rocket
