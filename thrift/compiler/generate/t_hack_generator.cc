@@ -1724,7 +1724,7 @@ void t_hack_generator::generate_hack_array_from_shape_lambda(
     out << "Vec\\map(\n";
   }
   indent_up();
-  indent(out) << "$$ ?? " << (t->is_map() ? "dict[]" : "vec[]") << ",\n";
+  indent(out) << "$$,\n";
   string tmp = namer("_val");
   indent(out) << "$" << tmp << " ==> $" << tmp;
 
@@ -1768,7 +1768,7 @@ void t_hack_generator::generate_shape_from_hack_array_lambda(
     out << "Vec\\map(\n";
   }
   indent_up();
-  indent(out) << "$$ ?? " << (t->is_map() ? "dict[]" : "vec[]") << ",\n";
+  indent(out) << "$$,\n";
   string tmp = namer("_val");
   indent(out) << "$" << tmp << " ==> $" << tmp;
 
@@ -2099,37 +2099,24 @@ void t_hack_generator::generate_php_struct_shape_methods(
     bool nullable = field_is_nullable(tstruct, *m_iter, dval);
 
     stringstream source;
-    if (nullable) {
-      source << "Shapes::idx($shape, '" << (*m_iter)->get_name() << "')";
-    } else {
-      source << "$shape['" << (*m_iter)->get_name() << "']";
-    }
+    source << "$shape['" << (*m_iter)->get_name() << "']";
 
     stringstream val;
 
-    if (tstruct->is_union()) {
-      indent(val) << "if (" << source.str() << " !== null) {\n";
+    if (tstruct->is_union() || nullable) {
+      indent(val) << "if (Shapes::idx($shape, '" << (*m_iter)->get_name()
+                  << "') !== null) {\n";
       indent_up();
     }
 
     indent(val) << "$me->" << (*m_iter)->get_name() << " = ";
     if (t->is_set()) {
-      if (nullable) {
-        val << source.str() << " === null ? null : ";
-      }
       if (arraysets_ || arrays_) {
         val << source.str() << ";\n";
       } else {
-        val << "new Set(Keyset\\keys(" << (nullable ? "\\nullthrows(" : "")
-            << source.str() << (nullable ? ")" : "") << "));\n";
+        val << "new Set(Keyset\\keys(" << source.str() << "));\n";
       }
     } else if (t->is_map() || t->is_list()) {
-      if (nullable) {
-        val << source.str() << " === null ? null : \n";
-        indent_up();
-        indent(val);
-      }
-
       bool stringify_map_keys = false;
       if (t->is_map() && shape_arraykeys_) {
         t_type* key_type = ((t_map*)t)->get_key_type();
@@ -2231,16 +2218,9 @@ void t_hack_generator::generate_php_struct_shape_methods(
         }
         val << ";\n";
       }
-      if (nullable) {
-        indent_down();
-      }
     } else if (t->is_struct()) {
       string type = hack_name(t);
-      if (nullable) {
-        val << source.str() << " === null ? null : ";
-      }
-      val << type << "::__fromShape(" << (nullable ? "\\nullthrows(" : "")
-          << source.str() << (nullable ? ")" : "") << ");\n";
+      val << type << "::__fromShape(" << source.str() << ");\n";
     } else {
       val << source.str() << ";\n";
     }
@@ -2248,6 +2228,9 @@ void t_hack_generator::generate_php_struct_shape_methods(
     if (tstruct->is_union()) {
       indent(val) << "$me->_type = " << union_field_to_enum(tstruct, *m_iter)
                   << ";\n";
+    }
+
+    if (tstruct->is_union() || nullable) {
       indent_down();
       indent(val) << "}\n";
     }
@@ -2279,15 +2262,19 @@ void t_hack_generator::generate_php_struct_shape_methods(
         if (arrays_) {
           val << "$this->" << (*m_iter)->get_name();
           if (type_has_nested_struct(t)) {
-            if (nullable) {
-              val << " === null ? null : $this->" << (*m_iter)->get_name()
-                  << endl;
-            } else {
-              val << endl;
-            }
+            val << "\n";
             indent_up();
             indent(val) << "|> ";
+            if (nullable) {
+              val << "$$ === null \n";
+              indent_up();
+              indent(val) << "? null \n";
+              indent(val) << ": ";
+            }
             generate_shape_from_hack_array_lambda(val, ngen, t);
+            if (nullable) {
+              indent_down();
+            }
             indent_down();
           } else {
             val << ",\n";

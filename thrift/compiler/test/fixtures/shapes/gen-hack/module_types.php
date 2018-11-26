@@ -115,11 +115,11 @@ class Union implements \IThriftStruct, \IThriftUnion<\test\fixtures\UnionEnum>, 
     $me = /* HH_IGNORE_ERROR[4060] */ new static();
     $me->_type = \test\fixtures\UnionEnum::_EMPTY_;
     if (Shapes::idx($shape, 'intValue') !== null) {
-      $me->intValue = Shapes::idx($shape, 'intValue');
+      $me->intValue = $shape['intValue'];
       $me->_type = \test\fixtures\UnionEnum::intValue;
     }
     if (Shapes::idx($shape, 'stringValue') !== null) {
-      $me->stringValue = Shapes::idx($shape, 'stringValue');
+      $me->stringValue = $shape['stringValue'];
       $me->_type = \test\fixtures\UnionEnum::stringValue;
     }
     return $me;
@@ -1190,7 +1190,9 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
 
   public static function __fromShape(self::TShape $shape): this {
     $me = /* HH_IGNORE_ERROR[4060] */ new static();
-    $me->just_an_A = Shapes::idx($shape, 'just_an_A') === null ? null : \test\fixtures\A::__fromShape(\nullthrows(Shapes::idx($shape, 'just_an_A')));
+    if (Shapes::idx($shape, 'just_an_A') !== null) {
+      $me->just_an_A = \test\fixtures\A::__fromShape($shape['just_an_A']);
+    }
     $me->set_of_i32 = new Set(Keyset\keys($shape['set_of_i32']));
     $me->list_of_i32 = (new Vector($shape['list_of_i32']));
     $me->list_of_string = (new Vector($shape['list_of_string']));
@@ -1238,41 +1240,62 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     $me->map_of_string_to_self = (new Map($shape['map_of_string_to_self']))->map(
       $val15 ==> \test\fixtures\B::__fromShape($val15),
     );
-    $me->just_an_enum = Shapes::idx($shape, 'just_an_enum');
-    $me->just_a_union = Shapes::idx($shape, 'just_a_union') === null ? null : \test\fixtures\Union::__fromShape(\nullthrows(Shapes::idx($shape, 'just_a_union')));
-    $me->optional_just_an_A = Shapes::idx($shape, 'optional_just_an_A') === null ? null : \test\fixtures\A::__fromShape(\nullthrows(Shapes::idx($shape, 'optional_just_an_A')));
-    $me->optional_set_of_i32 = Shapes::idx($shape, 'optional_set_of_i32') === null ? null : new Set(Keyset\keys(\nullthrows(Shapes::idx($shape, 'optional_set_of_i32'))));
-    $me->optional_list_of_i32 = Shapes::idx($shape, 'optional_list_of_i32') === null ? null : 
-      (new Vector(Shapes::idx($shape, 'optional_list_of_i32')));
-    $me->optional_list_of_string = Shapes::idx($shape, 'optional_list_of_string') === null ? null : 
-      (new Vector(Shapes::idx($shape, 'optional_list_of_string')));
-    $me->optional_map_of_string_to_i32 = Shapes::idx($shape, 'optional_map_of_string_to_i32') === null ? null : 
-      (new Map(Shapes::idx($shape, 'optional_map_of_string_to_i32')));
-    $me->optional_map_of_string_to_A = Shapes::idx($shape, 'optional_map_of_string_to_A') === null ? null : 
-      (new Map(Shapes::idx($shape, 'optional_map_of_string_to_A')))->map(
+    if (Shapes::idx($shape, 'just_an_enum') !== null) {
+      $me->just_an_enum = $shape['just_an_enum'];
+    }
+    if (Shapes::idx($shape, 'just_a_union') !== null) {
+      $me->just_a_union = \test\fixtures\Union::__fromShape($shape['just_a_union']);
+    }
+    if (Shapes::idx($shape, 'optional_just_an_A') !== null) {
+      $me->optional_just_an_A = \test\fixtures\A::__fromShape($shape['optional_just_an_A']);
+    }
+    if (Shapes::idx($shape, 'optional_set_of_i32') !== null) {
+      $me->optional_set_of_i32 = new Set(Keyset\keys($shape['optional_set_of_i32']));
+    }
+    if (Shapes::idx($shape, 'optional_list_of_i32') !== null) {
+      $me->optional_list_of_i32 = (new Vector($shape['optional_list_of_i32']));
+    }
+    if (Shapes::idx($shape, 'optional_list_of_string') !== null) {
+      $me->optional_list_of_string = (new Vector($shape['optional_list_of_string']));
+    }
+    if (Shapes::idx($shape, 'optional_map_of_string_to_i32') !== null) {
+      $me->optional_map_of_string_to_i32 = (new Map($shape['optional_map_of_string_to_i32']));
+    }
+    if (Shapes::idx($shape, 'optional_map_of_string_to_A') !== null) {
+      $me->optional_map_of_string_to_A = (new Map($shape['optional_map_of_string_to_A']))->map(
         $val16 ==> \test\fixtures\A::__fromShape($val16),
       );
-    $me->optional_map_of_string_to_list_of_i32 = Shapes::idx($shape, 'optional_map_of_string_to_list_of_i32') === null ? null : 
-      (new Map(Shapes::idx($shape, 'optional_map_of_string_to_list_of_i32')))->map(
+    }
+    if (Shapes::idx($shape, 'optional_map_of_string_to_list_of_i32') !== null) {
+      $me->optional_map_of_string_to_list_of_i32 = (new Map($shape['optional_map_of_string_to_list_of_i32']))->map(
         $val17 ==> (new Vector($val17)),
       );
-    $me->optional_map_of_string_to_list_of_A = Shapes::idx($shape, 'optional_map_of_string_to_list_of_A') === null ? null : 
-      (new Map(Shapes::idx($shape, 'optional_map_of_string_to_list_of_A')))->map(
+    }
+    if (Shapes::idx($shape, 'optional_map_of_string_to_list_of_A') !== null) {
+      $me->optional_map_of_string_to_list_of_A = (new Map($shape['optional_map_of_string_to_list_of_A']))->map(
         $val18 ==> (new Vector($val18))->map(
           $val19 ==> \test\fixtures\A::__fromShape($val19),
         ),
       );
-    $me->optional_map_of_string_to_set_of_i32 = Shapes::idx($shape, 'optional_map_of_string_to_set_of_i32') === null ? null : 
-      (new Map(Shapes::idx($shape, 'optional_map_of_string_to_set_of_i32')))->map(
+    }
+    if (Shapes::idx($shape, 'optional_map_of_string_to_set_of_i32') !== null) {
+      $me->optional_map_of_string_to_set_of_i32 = (new Map($shape['optional_map_of_string_to_set_of_i32']))->map(
         $val20 ==> new Set(Keyset\keys($val20)),
       );
-    $me->optional_enum = Shapes::idx($shape, 'optional_enum');
+    }
+    if (Shapes::idx($shape, 'optional_enum') !== null) {
+      $me->optional_enum = $shape['optional_enum'];
+    }
     $me->required_enum_with_default = $shape['required_enum_with_default'];
     $me->string_with_default_value = $shape['string_with_default_value'];
     $me->i32_with_default_value = $shape['i32_with_default_value'];
     $me->double_with_default_value = $shape['double_with_default_value'];
-    $me->enum_with_default_value = Shapes::idx($shape, 'enum_with_default_value');
-    $me->A_with_default_value = Shapes::idx($shape, 'A_with_default_value') === null ? null : \test\fixtures\A::__fromShape(\nullthrows(Shapes::idx($shape, 'A_with_default_value')));
+    if (Shapes::idx($shape, 'enum_with_default_value') !== null) {
+      $me->enum_with_default_value = $shape['enum_with_default_value'];
+    }
+    if (Shapes::idx($shape, 'A_with_default_value') !== null) {
+      $me->A_with_default_value = \test\fixtures\A::__fromShape($shape['A_with_default_value']);
+    }
     $me->set_of_i32_with_default_value = new Set(Keyset\keys($shape['set_of_i32_with_default_value']));
     $me->map_of_i32_to_string_with_default_value = (new Map($shape['map_of_i32_to_string_with_default_value']));
     $me->list_of_string_with_default_value = (new Vector($shape['list_of_string_with_default_value']));
