@@ -18,6 +18,7 @@
  */
 
 namespace cpp2 apache.thrift.test
+namespace json thrift.test.optional
 
 struct OldSchool {
   1: i16    im_int;
