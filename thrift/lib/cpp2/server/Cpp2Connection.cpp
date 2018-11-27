@@ -51,7 +51,8 @@ Cpp2Connection::Cpp2Connection(
     const std::shared_ptr<TAsyncTransport>& transport,
     const folly::SocketAddress* address,
     std::shared_ptr<Cpp2Worker> worker,
-    const std::shared_ptr<HeaderServerChannel>& serverChannel)
+    const std::shared_ptr<HeaderServerChannel>& serverChannel,
+    std::shared_ptr<AdmissionStrategy> admissionStrategy)
     : processor_(worker->getServer()->getCpp2Processor()),
       duplexChannel_(
           worker->getServer()->isDuplex() ? std::make_unique<DuplexChannel>(
@@ -73,7 +74,8 @@ Cpp2Connection::Cpp2Connection(
           nullptr,
           worker_->getServer()->getClientIdentityHook()),
       transport_(transport),
-      threadManager_(worker_->getServer()->getThreadManager()) {
+      threadManager_(worker_->getServer()->getThreadManager()),
+      admissionStrategy_(std::move(admissionStrategy)) {
   channel_->setQueueSends(worker_->getServer()->getQueueSends());
   channel_->setMinCompressBytes(worker_->getServer()->getMinCompressBytes());
   channel_->setDefaultWriteTransforms(
@@ -231,8 +233,7 @@ void Cpp2Connection::killRequest(
 }
 
 // Response Channel callbacks
-void Cpp2Connection::requestReceived(
-    unique_ptr<ResponseChannelRequest>&& req) {
+void Cpp2Connection::requestReceived(unique_ptr<ResponseChannelRequest>&& req) {
   auto reqCtx = std::make_shared<folly::RequestContext>();
   auto handler = worker_->getServer()->getEventHandler();
   if (handler) {
@@ -322,6 +323,16 @@ void Cpp2Connection::requestReceived(
         "loadshedding request");
     return;
   }
+  std::shared_ptr<AdmissionController> admissionController =
+      admissionStrategy_->select(*req, context_);
+  if (!admissionController->admit()) {
+    killRequest(
+        *req,
+        TApplicationException::TApplicationExceptionType::LOADSHEDDING,
+        server->getOverloadedErrorCode(),
+        "adaptive loadshedding rejection");
+    return;
+  }
 
   if (worker_->stopping_) {
     killRequest(
@@ -350,6 +361,9 @@ void Cpp2Connection::requestReceived(
   unique_ptr<folly::IOBuf> buf = hreq->extractBuf();
 
   Cpp2Request* t2r = new Cpp2Request(std::move(req), this_);
+  if (admissionController) {
+    t2r->setAdmissionController(admissionController);
+  }
   auto up2r = std::unique_ptr<ResponseChannelRequest>(t2r);
   activeRequests_.insert(t2r);
   ++worker_->activeRequests_;

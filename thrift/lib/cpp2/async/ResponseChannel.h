@@ -30,6 +30,7 @@
 #include <thrift/lib/cpp/server/TServerObserver.h>
 #include <thrift/lib/cpp2/async/MessageChannel.h>
 #include <thrift/lib/cpp2/async/SemiStream.h>
+#include <thrift/lib/cpp2/server/AdmissionController.h>
 
 namespace folly {
 class IOBuf;
@@ -100,20 +101,44 @@ class ResponseChannelRequest {
       std::string exCode,
       MessageChannel::SendCallback* cb = nullptr) = 0;
 
-  virtual ~ResponseChannelRequest() {}
+  virtual ~ResponseChannelRequest() {
+    if (admissionController_ != nullptr) {
+      if (!startedProcessing_) {
+        admissionController_->dequeue();
+      } else {
+        admissionController_->returnedResponse();
+      }
+    }
+  }
+
+  void setStartedProcessing() {
+    startedProcessing_ = true;
+    if (admissionController_ != nullptr) {
+      admissionController_->dequeue();
+    }
+  }
+
+  void setAdmissionController(
+      std::shared_ptr<AdmissionController> admissionController) {
+    admissionController_ = std::move(admissionController);
+  }
+
+  std::shared_ptr<AdmissionController> getAdmissionController() const {
+    return admissionController_;
+  }
 
   virtual apache::thrift::server::TServerObserver::CallTimestamps&
   getTimestamps() {
     return timestamps_;
   }
 
-  void setStartedProcessing() {}
-
   apache::thrift::server::TServerObserver::CallTimestamps timestamps_;
 
  protected:
   std::unique_ptr<folly::IOBuf> buf_;
   SemiStream<std::unique_ptr<folly::IOBuf>> stream_;
+  std::shared_ptr<apache::thrift::AdmissionController> admissionController_;
+  bool startedProcessing_{false};
 };
 
 /**

@@ -33,6 +33,7 @@
 #include <thrift/lib/cpp/server/TServerObserver.h>
 #include <thrift/lib/cpp2/server/Cpp2Connection.h>
 #include <thrift/lib/cpp2/server/Cpp2Worker.h>
+#include <thrift/lib/cpp2/server/admission_strategy/AcceptAllAdmissionStrategy.h>
 #include <wangle/ssl/SSLContextManager.h>
 
 DEFINE_string(
@@ -80,7 +81,8 @@ ThriftServer::ThriftServer()
     : BaseThriftServer(),
       wShutdownSocketSet_(folly::tryGetShutdownSocketSet()),
       lastRequestTime_(
-          std::chrono::steady_clock::now().time_since_epoch().count()) {
+          std::chrono::steady_clock::now().time_since_epoch().count()),
+      admissionStrategy_(std::make_shared<AcceptAllAdmissionStrategy>()) {
   if (FLAGS_thrift_ssl_policy == "required") {
     sslPolicy_ = SSLPolicy::REQUIRED;
   } else if (FLAGS_thrift_ssl_policy == "permitted") {
