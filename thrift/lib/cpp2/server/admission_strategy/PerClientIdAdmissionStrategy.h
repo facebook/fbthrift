@@ -27,8 +27,6 @@
 namespace apache {
 namespace thrift {
 
-constexpr const char* AdmissionStrategy::kWildcard;
-
 /**
  * PerClientIdAdmissionStrategy asigns equal priority for each clientId it sees.
  */
