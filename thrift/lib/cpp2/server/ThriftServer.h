@@ -41,7 +41,6 @@
 #include <thrift/lib/cpp2/async/HeaderServerChannel.h>
 #include <thrift/lib/cpp2/server/BaseThriftServer.h>
 #include <thrift/lib/cpp2/server/TransportRoutingHandler.h>
-#include <thrift/lib/cpp2/server/admission_strategy/AdmissionStrategy.h>
 #include <thrift/lib/cpp2/transport/core/ThriftProcessor.h>
 #include <wangle/acceptor/ServerSocketConfig.h>
 #include <wangle/bootstrap/ServerBootstrap.h>
@@ -192,8 +191,6 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
 
   std::unique_ptr<ThriftProcessor> thriftProcessor_;
   std::vector<std::unique_ptr<TransportRoutingHandler>> routingHandlers_;
-
-  std::shared_ptr<AdmissionStrategy> admissionStrategy_;
 
   friend class Cpp2Connection;
   friend class Cpp2Worker;
@@ -800,21 +797,6 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
   // other.
   void replaceShutdownSocketSet(
       const std::shared_ptr<folly::ShutdownSocketSet>& newSSS);
-
-  /**
-   * Set the admission strategy used by the Thrift Server
-   */
-  void setAdmissionStrategy(
-      std::shared_ptr<AdmissionStrategy> admissionStrategy) {
-    admissionStrategy_ = std::move(admissionStrategy);
-  }
-
-  /**
-   * Return the admission strategy associated with the Thrift Server
-   */
-  const std::shared_ptr<AdmissionStrategy> getAdmissionStrategy() const {
-    return admissionStrategy_;
-  }
 };
 
 } // namespace thrift

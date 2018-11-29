@@ -28,6 +28,7 @@
 #include <folly/Random.h>
 #include <folly/ScopeGuard.h>
 #include <folly/portability/Sockets.h>
+#include <thrift/lib/cpp2/server/admission_strategy/AcceptAllAdmissionStrategy.h>
 
 namespace apache {
 namespace thrift {
@@ -53,6 +54,9 @@ const std::chrono::milliseconds BaseThriftServer::DEFAULT_QUEUE_TIMEOUT =
 
 const std::chrono::milliseconds BaseThriftServer::DEFAULT_TIMEOUT =
     std::chrono::milliseconds(60000);
+
+BaseThriftServer::BaseThriftServer()
+    : admissionStrategy_(std::make_shared<AcceptAllAdmissionStrategy>()) {}
 
 void BaseThriftServer::CumulativeFailureInjection::set(
     const FailureInjection& fi) {

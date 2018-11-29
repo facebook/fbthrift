@@ -39,6 +39,8 @@
 namespace apache {
 namespace thrift {
 
+class AdmissionStrategy;
+
 typedef std::function<void(
     folly::EventBase*,
     std::shared_ptr<apache::thrift::async::TAsyncTransport>,
@@ -257,8 +259,9 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
   // setters.
   std::atomic<bool> configMutable_{true};
 
-  BaseThriftServer() {}
+  std::shared_ptr<AdmissionStrategy> admissionStrategy_;
 
+  BaseThriftServer();
   ~BaseThriftServer() override {}
 
  public:
@@ -875,6 +878,21 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
   // Allows running the server as a Runnable thread
   void run() override {
     serve();
+  }
+
+  /**
+   * Set the admission strategy used by the Thrift Server
+   */
+  void setAdmissionStrategy(
+      std::shared_ptr<AdmissionStrategy> admissionStrategy) {
+    admissionStrategy_ = std::move(admissionStrategy);
+  }
+
+  /**
+   * Return the admission strategy associated with the Thrift Server
+   */
+  const std::shared_ptr<AdmissionStrategy> getAdmissionStrategy() const {
+    return admissionStrategy_;
   }
 };
 } // namespace thrift
