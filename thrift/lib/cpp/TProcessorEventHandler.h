@@ -16,6 +16,9 @@
 
 #pragma once
 
+#include <folly/ExceptionWrapper.h>
+
+#include <thrift/lib/cpp/SerializedMessage.h>
 #include <thrift/lib/cpp/server/TConnectionContext.h>
 #include <thrift/lib/cpp/transport/THeader.h>
 

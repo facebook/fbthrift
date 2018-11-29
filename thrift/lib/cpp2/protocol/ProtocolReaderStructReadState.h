@@ -15,6 +15,9 @@
  */
 #pragma once
 
+#include <folly/CPortability.h>
+#include "thrift/lib/cpp2/protocol/Protocol.h"
+
 namespace apache {
 namespace thrift {
 namespace detail {

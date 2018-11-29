@@ -16,6 +16,8 @@
 #pragma once
 
 #include <thrift/lib/cpp/async/TAsyncFizzServer.h>
+#include <thrift/lib/cpp/async/TAsyncSSLSocket.h>
+#include <thrift/lib/cpp/async/TAsyncSocket.h>
 #include <wangle/acceptor/FizzAcceptorHandshakeHelper.h>
 
 namespace apache {

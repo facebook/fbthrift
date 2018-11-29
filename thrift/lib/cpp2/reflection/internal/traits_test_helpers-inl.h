@@ -28,6 +28,7 @@
 #include <folly/Range.h>
 #include <folly/Traits.h>
 #include <thrift/lib/cpp2/reflection/internal/test_helpers.h>
+#include <thrift/lib/cpp2/reflection/reflection.h>
 
 namespace apache {
 namespace thrift {

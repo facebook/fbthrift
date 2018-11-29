@@ -1,4 +1,6 @@
 /*
+ * Copyright 2018-present Facebook, Inc.
+ *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -19,8 +21,9 @@
 #ifndef THRIFT_TEST_LOADGEN_OPENABLEDSTATE_H_
 #define THRIFT_TEST_LOADGEN_OPENABLEDSTATE_H_ 1
 
-#include <vector>
+#include <stdint.h>
 #include <cassert>
+#include <vector>
 
 namespace apache { namespace thrift { namespace loadgen {
 

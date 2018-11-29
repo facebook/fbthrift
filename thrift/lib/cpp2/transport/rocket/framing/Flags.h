@@ -16,6 +16,10 @@
 
 #pragma once
 
+#include <stdint.h>
+
+#include <glog/logging.h>
+
 namespace apache {
 namespace thrift {
 namespace rocket {

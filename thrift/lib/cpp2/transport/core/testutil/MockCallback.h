@@ -16,6 +16,8 @@
 
 #pragma once
 
+#include <gtest/gtest.h>
+
 #include <thrift/lib/cpp2/async/RequestChannel.h>
 
 namespace apache {

@@ -19,6 +19,7 @@
 #include <folly/ExceptionString.h>
 #include <folly/io/Cursor.h>
 #include <thrift/lib/cpp/server/TServerObserver.h>
+#include <thrift/lib/cpp2/server/Cpp2Worker.h>
 #include <thrift/lib/cpp2/server/peeking/TLSHelper.h>
 #include <wangle/acceptor/Acceptor.h>
 #include <wangle/acceptor/ManagedConnection.h>
