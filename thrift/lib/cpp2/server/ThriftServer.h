@@ -110,9 +110,6 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
   std::chrono::steady_clock::time_point lastRequestTime() const noexcept;
   void touchRequestTimestamp() noexcept;
 
-  //! Thread stack size in MB
-  int threadStackSizeMB_ = 1;
-
   //! Manager of per-thread EventBase objects.
   folly::EventBaseManager* eventBaseManager_ = folly::EventBaseManager::get();
 
@@ -139,13 +136,6 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
    * helps create acceptors.
    */
   std::shared_ptr<wangle::AcceptorFactory> acceptorFactory_;
-
-  /**
-   * ThreadFactory used to create worker threads
-   */
-  std::shared_ptr<apache::thrift::concurrency::ThreadFactory> threadFactory_;
-
-  void addWorker();
 
   void handleSetupFailure(void);
 
@@ -556,27 +546,6 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
   void stopWorkers();
 
   /**
-   * Set the thread stack size in MB
-   * Only valid if you do not also set a threadmanager.
-   *
-   * @param stack size in MB
-   */
-  void setThreadStackSizeMB(int stackSize) {
-    assert(!threadFactory_);
-
-    threadStackSizeMB_ = stackSize;
-  }
-
-  /**
-   * Get the thread stack size
-   *
-   * @return thread stack size
-   */
-  int getThreadStackSizeMB() {
-    return threadStackSizeMB_;
-  }
-
-  /**
    * Set whether to stop io workers when stopListening() is called (we do stop
    * them by default).
    */
@@ -597,15 +566,6 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
    */
   void setWorkersJoinTimeout(std::chrono::seconds timeout) {
     workersJoinTimeout_ = timeout;
-  }
-
-  /**
-   * Set the thread factory used to create new worker threads
-   */
-  void setThreadFactory(
-      std::shared_ptr<apache::thrift::concurrency::ThreadFactory> tf) {
-    CHECK(configMutable());
-    threadFactory_ = tf;
   }
 
   /**

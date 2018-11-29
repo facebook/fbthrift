@@ -242,14 +242,6 @@ void ThriftServer::setup() {
     }
 
     // We always need a threadmanager for cpp2.
-    if (!threadFactory_) {
-      setThreadFactory(
-          std::make_shared<apache::thrift::concurrency::PosixThreadFactory>(
-              apache::thrift::concurrency::PosixThreadFactory::kDefaultPolicy,
-              apache::thrift::concurrency::PosixThreadFactory::kDefaultPriority,
-              threadStackSizeMB_));
-    }
-
     setupThreadManager();
     threadManager_->setExpireCallback([&](std::shared_ptr<Runnable> r) {
       EventTask* task = dynamic_cast<EventTask*>(r.get());
