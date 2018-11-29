@@ -24,6 +24,16 @@ type:keyType, or type:valueType.
 By convention, it assumes the c++ structure that is being manipulated is named
 citem.
 
+}}{{#type:iobuf?}}{{!
+  }}__iobuf.IOBuf.create(citem.get(), self){{!
+}}{{/type:iobuf?}}{{!
+}}{{#type:iobufRef?}}{{!
+  }}__iobuf.IOBuf.create(citem.get().get(), self){{!
+}}{{/type:iobufRef?}}{{!
+}}{{#type:flexibleBinary?}}{{!
+  }}(<const char*>citem.data())[:citem.size()]{{!
+}}{{/type:flexibleBinary?}}{{!
+}}{{^type:hasCustomTypeBehavior?}}{{!
 }}{{#type:bool?}}citem{{/type:bool?}}{{!
 }}{{#type:byte?}}citem{{/type:byte?}}{{!
 }}{{#type:i16?}}citem{{/type:i16?}}{{!
@@ -37,4 +47,5 @@ citem.
     }}{{> types/CythonPythonType}}.create(citem){{!
 }}{{/type:enum?}}{{/type:base?}}{{!
 }}{{#type:enum}}translate_cpp_enum_to_python({{!
-    }}{{> types/CythonPythonType}}, <int> citem){{/type:enum}}
+    }}{{> types/CythonPythonType}}, <int> citem){{/type:enum}}{{!
+}}{{/type:hasCustomTypeBehavior?}}

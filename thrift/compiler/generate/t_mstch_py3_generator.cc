@@ -335,6 +335,12 @@ mstch::map t_mstch_py3_generator::extend_type(const t_type& type) {
   }
   bool hasCustomTypeBehavior = isIOBuf || isIOBufRef || isFlexibleBinary;
 
+  // "Simple" type is a bit of a vague term, but it basically means "not a
+  // struct or a container, and no custom cpp type behavior, so it can be relied
+  // on to be straightforwardly copyable, etc"
+  bool isSimple =
+      (type.is_base_type() || type.is_enum()) && !hasCustomTypeBehavior;
+
   mstch::map result{
       {"modulePath", modulePath},
       {"externalProgram?", externalProgram},
@@ -355,6 +361,7 @@ mstch::map t_mstch_py3_generator::extend_type(const t_type& type) {
       {"iobufWrapper?", (isIOBuf || isIOBufRef)},
       {"flexibleBinary?", isFlexibleBinary},
       {"hasCustomTypeBehavior?", hasCustomTypeBehavior},
+      {"simple?", isSimple},
   };
   return result;
 }

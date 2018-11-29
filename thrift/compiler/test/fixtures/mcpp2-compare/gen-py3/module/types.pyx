@@ -5421,12 +5421,12 @@ cdef class AnnotatedStruct(thrift.py3.types.Struct):
             base_type = <int32_t> base_type
 
         if iobuf_type is not None:
-            if not isinstance(iobuf_type, bytes):
-                raise TypeError(f'iobuf_type is not a { bytes !r}.')
+            if not isinstance(iobuf_type, __iobuf.IOBuf):
+                raise TypeError(f'iobuf_type is not a { __iobuf.IOBuf !r}.')
 
         if iobuf_ptr is not None:
-            if not isinstance(iobuf_ptr, bytes):
-                raise TypeError(f'iobuf_ptr is not a { bytes !r}.')
+            if not isinstance(iobuf_ptr, __iobuf.IOBuf):
+                raise TypeError(f'iobuf_ptr is not a { __iobuf.IOBuf !r}.')
 
         if indirection_a is not None:
             if not isinstance(indirection_a, int):
@@ -5434,12 +5434,12 @@ cdef class AnnotatedStruct(thrift.py3.types.Struct):
             indirection_a = <int64_t> indirection_a
 
         if iobuf_type_val is not None:
-            if not isinstance(iobuf_type_val, bytes):
-                raise TypeError(f'iobuf_type_val is not a { bytes !r}.')
+            if not isinstance(iobuf_type_val, __iobuf.IOBuf):
+                raise TypeError(f'iobuf_type_val is not a { __iobuf.IOBuf !r}.')
 
         if iobuf_ptr_val is not None:
-            if not isinstance(iobuf_ptr_val, bytes):
-                raise TypeError(f'iobuf_ptr_val is not a { bytes !r}.')
+            if not isinstance(iobuf_ptr_val, __iobuf.IOBuf):
+                raise TypeError(f'iobuf_ptr_val is not a { __iobuf.IOBuf !r}.')
 
         if struct_struct is not None:
             if not isinstance(struct_struct, containerStruct):
@@ -15967,10 +15967,10 @@ cdef class Map__string_folly_IOBuf__binary:
             for key, item in items.items():
                 if not isinstance(key, str):
                     raise TypeError(f"{key!r} is not of type str")
-                if not isinstance(item, bytes):
+                if not isinstance(item, __iobuf.IOBuf):
                     raise TypeError(f"{item!r} is not of type __iobuf.IOBuf")
 
-                deref(c_inst)[key.encode('UTF-8')] = item
+                deref(c_inst)[key.encode('UTF-8')] = deref((<__iobuf.IOBuf?>item).c_clone())
         return c_inst
 
     def __getitem__(self, key):
@@ -15983,8 +15983,8 @@ cdef class Map__string_folly_IOBuf__binary:
             self._cpp_obj).find(key.encode('UTF-8'))
         if iter == deref(self._cpp_obj).end():
             raise err
-        cdef __iobuf.cIOBuf citem = deref(iter).second
-        return bytes(citem)
+        cdef shared_ptr[__iobuf.cIOBuf] citem = reference_shared_ptr_Map__string_folly_IOBuf__binary(self._cpp_obj, deref(iter).second)
+        return __iobuf.IOBuf.create(citem.get(), self)
 
     def __len__(self):
         return deref(self._cpp_obj).size()
@@ -16049,23 +16049,23 @@ cdef class Map__string_folly_IOBuf__binary:
     def values(self):
         if not self:
             raise StopIteration
-        cdef __iobuf.cIOBuf citem
+        cdef shared_ptr[__iobuf.cIOBuf] citem
         cdef cmap[string,__iobuf.cIOBuf].iterator loc = deref(self._cpp_obj).begin()
         while loc != deref(self._cpp_obj).end():
-            citem = deref(loc).second
-            yield bytes(citem)
+            citem = reference_shared_ptr_Map__string_folly_IOBuf__binary(self._cpp_obj, deref(loc).second)
+            yield __iobuf.IOBuf.create(citem.get(), self)
             inc(loc)
 
     def items(self):
         if not self:
             raise StopIteration
         cdef string ckey
-        cdef __iobuf.cIOBuf citem
+        cdef shared_ptr[__iobuf.cIOBuf] citem
         cdef cmap[string,__iobuf.cIOBuf].iterator loc = deref(self._cpp_obj).begin()
         while loc != deref(self._cpp_obj).end():
             ckey = deref(loc).first
-            citem = deref(loc).second
-            yield (ckey.decode('UTF-8'), bytes(citem))
+            citem = reference_shared_ptr_Map__string_folly_IOBuf__binary(self._cpp_obj, deref(loc).second)
+            yield (ckey.decode('UTF-8'), __iobuf.IOBuf.create(citem.get(), self))
             inc(loc)
 
     def __reduce__(self):
@@ -16100,10 +16100,10 @@ cdef class Map__string_std_unique_ptr_folly_IOBuf__binary:
             for key, item in items.items():
                 if not isinstance(key, str):
                     raise TypeError(f"{key!r} is not of type str")
-                if not isinstance(item, bytes):
+                if not isinstance(item, __iobuf.IOBuf):
                     raise TypeError(f"{item!r} is not of type __iobuf.IOBuf")
 
-                deref(c_inst)[key.encode('UTF-8')] = item
+                deref(c_inst)[key.encode('UTF-8')] = (<__iobuf.IOBuf?>item).c_clone()
         return c_inst
 
     def __getitem__(self, key):
@@ -16116,8 +16116,8 @@ cdef class Map__string_std_unique_ptr_folly_IOBuf__binary:
             self._cpp_obj).find(key.encode('UTF-8'))
         if iter == deref(self._cpp_obj).end():
             raise err
-        cdef unique_ptr[__iobuf.cIOBuf] citem = deref(iter).second
-        return bytes(citem)
+        cdef shared_ptr[unique_ptr[__iobuf.cIOBuf]] citem = reference_shared_ptr_Map__string_std_unique_ptr_folly_IOBuf__binary(self._cpp_obj, deref(iter).second)
+        return __iobuf.IOBuf.create(citem.get().get(), self)
 
     def __len__(self):
         return deref(self._cpp_obj).size()
@@ -16182,23 +16182,23 @@ cdef class Map__string_std_unique_ptr_folly_IOBuf__binary:
     def values(self):
         if not self:
             raise StopIteration
-        cdef unique_ptr[__iobuf.cIOBuf] citem
+        cdef shared_ptr[unique_ptr[__iobuf.cIOBuf]] citem
         cdef cmap[string,unique_ptr[__iobuf.cIOBuf]].iterator loc = deref(self._cpp_obj).begin()
         while loc != deref(self._cpp_obj).end():
-            citem = deref(loc).second
-            yield bytes(citem)
+            citem = reference_shared_ptr_Map__string_std_unique_ptr_folly_IOBuf__binary(self._cpp_obj, deref(loc).second)
+            yield __iobuf.IOBuf.create(citem.get().get(), self)
             inc(loc)
 
     def items(self):
         if not self:
             raise StopIteration
         cdef string ckey
-        cdef unique_ptr[__iobuf.cIOBuf] citem
+        cdef shared_ptr[unique_ptr[__iobuf.cIOBuf]] citem
         cdef cmap[string,unique_ptr[__iobuf.cIOBuf]].iterator loc = deref(self._cpp_obj).begin()
         while loc != deref(self._cpp_obj).end():
             ckey = deref(loc).first
-            citem = deref(loc).second
-            yield (ckey.decode('UTF-8'), bytes(citem))
+            citem = reference_shared_ptr_Map__string_std_unique_ptr_folly_IOBuf__binary(self._cpp_obj, deref(loc).second)
+            yield (ckey.decode('UTF-8'), __iobuf.IOBuf.create(citem.get().get(), self))
             inc(loc)
 
     def __reduce__(self):
@@ -17030,5 +17030,5 @@ std_list = std_list__List__i32
 std_deque = std_deque__List__string
 folly_set = folly_sorted_vector_set__Set__string
 folly_map = folly_sorted_vector_map__Map__i64_string
-IOBuf = bytes
-IOBufPtr = bytes
+IOBuf = __iobuf.IOBuf
+IOBufPtr = __iobuf.IOBuf

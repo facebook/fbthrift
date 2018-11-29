@@ -139,6 +139,7 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "py3::simple":
 
     cdef shared_ptr[cSimpleStruct] reference_shared_ptr_structOne "thrift::py3::reference_shared_ptr<py3::simple::SimpleStruct>"(shared_ptr[cComplexStruct]&, cSimpleStruct&)
     cdef shared_ptr[cSimpleStruct] reference_shared_ptr_structTwo "thrift::py3::reference_shared_ptr<py3::simple::SimpleStruct>"(shared_ptr[cComplexStruct]&, cSimpleStruct&)
+    cdef shared_ptr[foo_Bar] reference_shared_ptr_bytes_with_cpp_type "thrift::py3::reference_shared_ptr<foo::Bar>"(shared_ptr[cComplexStruct]&, foo_Bar&)
 
 cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[cSimpleException] move(unique_ptr[cSimpleException])

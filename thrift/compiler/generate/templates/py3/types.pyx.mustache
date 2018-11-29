@@ -681,8 +681,8 @@ cdef class {{> types/CythonPythonType}}:
     def __getitem__(self, object index_obj):
         cdef shared_ptr[{{> types/CythonCppType}}] c_inst
         cdef {{#type:listElemType}}{{!
-            }}{{^type:base?}}{{^type:enum?}}shared_ptr[{{/type:enum?}}{{/type:base?}}{{> types/CythonCppType}}{{!
-            }}{{^type:base?}}{{^type:enum?}}]{{/type:enum?}}{{/type:base?}}{{!
+            }}{{^type:simple?}}shared_ptr[{{/type:simple?}}{{> types/CythonCppType}}{{!
+            }}{{^type:simple?}}]{{/type:simple?}}{{!
             }}{{/type:listElemType}} citem
         if isinstance(index_obj, slice):
             c_inst = make_shared[{{> types/CythonCppType}}]()
@@ -699,9 +699,9 @@ cdef class {{> types/CythonPythonType}}:
             if index >= size or index < 0:
                 raise IndexError('list index out of range')
             {{#type:listElemType}}
-            citem = {{^type:base?}}{{^type:enum?}}reference_shared_ptr_{{containerType:flat_name}}(self._cpp_obj, {{/type:enum?}}{{/type:base?}}{{!
+            citem = {{^type:simple?}}reference_shared_ptr_{{containerType:flat_name}}(self._cpp_obj, {{/type:simple?}}{{!
                     }}deref(self._cpp_obj)[index]{{!
-                    }}{{^type:base?}}{{^type:enum?}}){{/type:enum?}}{{/type:base?}}
+                    }}{{^type:simple?}}){{/type:simple?}}
             return {{> ContainerCythonCppToPythonItem}}
             {{/type:listElemType}}
 
@@ -754,15 +754,15 @@ cdef class {{> types/CythonPythonType}}:
         if not self:
             raise StopIteration
         cdef {{#type:listElemType}}{{!
-            }}{{^type:base?}}{{^type:enum?}}shared_ptr[{{/type:enum?}}{{/type:base?}}{{> types/CythonCppType}}{{!
-            }}{{^type:base?}}{{^type:enum?}}]{{/type:enum?}}{{/type:base?}}{{!
+            }}{{^type:simple?}}shared_ptr[{{/type:simple?}}{{> types/CythonCppType}}{{!
+            }}{{^type:simple?}}]{{/type:simple?}}{{!
             }}{{/type:listElemType}} citem
         cdef {{>types/CythonCppType}}.iterator loc = deref(self._cpp_obj).begin()
         while loc != deref(self._cpp_obj).end():
             {{#type:listElemType}}
-            citem = {{^type:base?}}{{^type:enum?}}reference_shared_ptr_{{containerType:flat_name}}(self._cpp_obj, {{/type:enum?}}{{/type:base?}}{{!
+            citem = {{^type:simple?}}reference_shared_ptr_{{containerType:flat_name}}(self._cpp_obj, {{/type:simple?}}{{!
                     }}deref(loc){{!
-                    }}{{^type:base?}}{{^type:enum?}}){{/type:enum?}}{{/type:base?}}
+                    }}{{^type:simple?}}){{/type:simple?}}
             yield {{> ContainerCythonCppToPythonItem}}
             {{/type:listElemType}}
             inc(loc)
@@ -776,15 +776,15 @@ cdef class {{> types/CythonPythonType}}:
         if not self:
             raise StopIteration
         cdef {{#type:listElemType}}{{!
-            }}{{^type:base?}}{{^type:enum?}}shared_ptr[{{/type:enum?}}{{/type:base?}}{{> types/CythonCppType}}{{!
-            }}{{^type:base?}}{{^type:enum?}}]{{/type:enum?}}{{/type:base?}}{{!
+            }}{{^type:simple?}}shared_ptr[{{/type:simple?}}{{> types/CythonCppType}}{{!
+            }}{{^type:simple?}}]{{/type:simple?}}{{!
             }}{{/type:listElemType}} citem
         cdef {{>types/CythonCppType}}.reverse_iterator loc = deref(self._cpp_obj).rbegin()
         while loc != deref(self._cpp_obj).rend():
             {{#type:listElemType}}
-            citem = {{^type:base?}}{{^type:enum?}}reference_shared_ptr_{{containerType:flat_name}}(self._cpp_obj, {{/type:enum?}}{{/type:base?}}{{!
+            citem = {{^type:simple?}}reference_shared_ptr_{{containerType:flat_name}}(self._cpp_obj, {{/type:simple?}}{{!
                     }}deref(loc){{!
-                    }}{{^type:base?}}{{^type:enum?}}){{/type:enum?}}{{/type:base?}}
+                    }}{{^type:simple?}}){{/type:simple?}}
             yield {{> ContainerCythonCppToPythonItem}}
             {{/type:listElemType}}
             inc(loc)
@@ -908,15 +908,15 @@ Sequence.register({{> types/CythonPythonType}})
         if not self:
             raise StopIteration
         cdef {{#type:setElemType}}{{!
-            }}{{^type:base?}}{{^type:enum?}}shared_ptr[{{/type:enum?}}{{/type:base?}}{{> types/CythonCppType}}{{!
-            }}{{^type:base?}}{{^type:enum?}}]{{/type:enum?}}{{/type:base?}}{{!
+            }}{{^type:simple?}}shared_ptr[{{/type:simple?}}{{> types/CythonCppType}}{{!
+            }}{{^type:simple?}}]{{/type:simple?}}{{!
             }}{{/type:setElemType}} citem
         cdef {{>types/CythonCppType}}.iterator loc = deref(self._cpp_obj).begin()
         while loc != deref(self._cpp_obj).end():
             {{#type:setElemType}}
-            citem = {{^type:base?}}{{^type:enum?}}reference_shared_ptr_{{containerType:flat_name}}(self._cpp_obj, {{/type:enum?}}{{/type:base?}}{{!
+            citem = {{^type:simple?}}reference_shared_ptr_{{containerType:flat_name}}(self._cpp_obj, {{/type:simple?}}{{!
                     }}deref(loc){{!
-                    }}{{^type:base?}}{{^type:enum?}}){{/type:enum?}}{{/type:base?}}
+                    }}{{^type:simple?}}){{/type:simple?}}
             yield {{> ContainerCythonCppToPythonItem}}
             {{/type:setElemType}}
             inc(loc)
@@ -1181,11 +1181,11 @@ Set.register({{> types/CythonPythonType}})
         if iter == deref(self._cpp_obj).end():
             raise err
         cdef {{#type:valueType}}{{!
-            }}{{^type:base?}}{{^type:enum?}}shared_ptr[{{/type:enum?}}{{/type:base?}}{{> types/CythonCppType}}{{!
-            }}{{^type:base?}}{{^type:enum?}}]{{/type:enum?}}{{/type:base?}}{{!
-            }} citem = {{^type:base?}}{{^type:enum?}}reference_shared_ptr_{{containerType:flat_name}}(self._cpp_obj, {{/type:enum?}}{{/type:base?}}{{!
+        }}{{^type:simple?}}shared_ptr[{{/type:simple?}}{{> types/CythonCppType}}{{!
+            }}{{^type:simple?}}]{{/type:simple?}}{{!
+            }} citem = {{^type:simple?}}reference_shared_ptr_{{containerType:flat_name}}(self._cpp_obj, {{/type:simple?}}{{!
                 }}deref(iter).second{{!
-            }}{{^type:base?}}{{^type:enum?}}){{/type:enum?}}{{/type:base?}}{{/type:valueType}}
+            }}{{^type:simple?}}){{/type:simple?}}{{/type:valueType}}
         return {{#type:valueType}}{{!
             }}{{> ContainerCythonCppToPythonItem}}{{/type:valueType}}
 
@@ -1196,15 +1196,15 @@ Set.register({{> types/CythonPythonType}})
         if not self:
             raise StopIteration
         cdef {{#type:keyType}}{{!
-            }}{{^type:base?}}{{^type:enum?}}shared_ptr[{{/type:enum?}}{{/type:base?}}{{> types/CythonCppType}}{{!
-            }}{{^type:base?}}{{^type:enum?}}]{{/type:enum?}}{{/type:base?}}{{!
+            }}{{^type:simple?}}shared_ptr[{{/type:simple?}}{{> types/CythonCppType}}{{!
+            }}{{^type:simple?}}]{{/type:simple?}}{{!
             }}{{/type:keyType}} citem
         cdef {{>types/CythonCppType}}.iterator loc = deref(self._cpp_obj).begin()
         while loc != deref(self._cpp_obj).end():
             {{#type:keyType}}
-            citem = {{^type:base?}}{{^type:enum?}}reference_shared_ptr_{{containerType:flat_name}}_key(self._cpp_obj, {{/type:enum?}}{{/type:base?}}{{!
+            citem = {{^type:simple?}}reference_shared_ptr_{{containerType:flat_name}}_key(self._cpp_obj, {{/type:simple?}}{{!
                     }}deref(loc).first{{!
-                    }}{{^type:base?}}{{^type:enum?}}){{/type:enum?}}{{/type:base?}}
+                    }}{{^type:simple?}}){{/type:simple?}}
             yield {{> ContainerCythonCppToPythonItem}}
             {{/type:keyType}}
             inc(loc)
@@ -1281,16 +1281,16 @@ Set.register({{> types/CythonPythonType}})
         if not self:
             raise StopIteration
         cdef {{#type:valueType}}{{!
-          }}{{^type:base?}}{{^type:enum?}}shared_ptr[{{/type:enum?}}{{/type:base?}}{{> types/CythonCppType}}{{!
-          }}{{^type:base?}}{{^type:enum?}}]{{/type:enum?}}{{/type:base?}}{{!
+          }}{{^type:simple?}}shared_ptr[{{/type:simple?}}{{> types/CythonCppType}}{{!
+          }}{{^type:simple?}}]{{/type:simple?}}{{!
           }}{{/type:valueType}}{{!!
           }} citem
         cdef {{>types/CythonCppType}}.iterator loc = deref(self._cpp_obj).begin()
         while loc != deref(self._cpp_obj).end():
             {{#type:valueType}}
-            citem = {{^type:base?}}{{^type:enum?}}reference_shared_ptr_{{containerType:flat_name}}(self._cpp_obj, {{/type:enum?}}{{/type:base?}}{{!
+            citem = {{^type:simple?}}reference_shared_ptr_{{containerType:flat_name}}(self._cpp_obj, {{/type:simple?}}{{!
                     }}deref(loc).second{{!
-                    }}{{^type:base?}}{{^type:enum?}}){{/type:enum?}}{{/type:base?}}
+                    }}{{^type:simple?}}){{/type:simple?}}
             yield {{> ContainerCythonCppToPythonItem}}
             {{/type:valueType}}
             inc(loc)
@@ -1299,25 +1299,25 @@ Set.register({{> types/CythonPythonType}})
         if not self:
             raise StopIteration
         cdef {{#type:keyType}}{{!
-          }}{{^type:base?}}{{^type:enum?}}shared_ptr[{{/type:enum?}}{{/type:base?}}{{> types/CythonCppType}}{{!
-            }}{{^type:base?}}{{^type:enum?}}]{{/type:enum?}}{{/type:base?}}{{!
+          }}{{^type:simple?}}shared_ptr[{{/type:simple?}}{{> types/CythonCppType}}{{!
+            }}{{^type:simple?}}]{{/type:simple?}}{{!
             }}{{/type:keyType}}{{!
           }} ckey
         cdef {{#type:valueType}}{{!
-          }}{{^type:base?}}{{^type:enum?}}shared_ptr[{{/type:enum?}}{{/type:base?}}{{> types/CythonCppType}}{{!
-            }}{{^type:base?}}{{^type:enum?}}]{{/type:enum?}}{{/type:base?}}{{!
+          }}{{^type:simple?}}shared_ptr[{{/type:simple?}}{{> types/CythonCppType}}{{!
+            }}{{^type:simple?}}]{{/type:simple?}}{{!
             }}{{/type:valueType}} citem
         cdef {{>types/CythonCppType}}.iterator loc = deref(self._cpp_obj).begin()
         while loc != deref(self._cpp_obj).end():
             {{#type:keyType}}
-            ckey = {{^type:base?}}{{^type:enum?}}reference_shared_ptr_{{containerType:flat_name}}_key(self._cpp_obj, {{/type:enum?}}{{/type:base?}}{{!
+            ckey = {{^type:simple?}}reference_shared_ptr_{{containerType:flat_name}}_key(self._cpp_obj, {{/type:simple?}}{{!
                     }}deref(loc).first{{!
-                    }}{{^type:base?}}{{^type:enum?}}){{/type:enum?}}{{/type:base?}}
+                    }}{{^type:simple?}}){{/type:simple?}}
             {{/type:keyType}}
             {{#type:valueType}}
-            citem = {{^type:base?}}{{^type:enum?}}reference_shared_ptr_{{containerType:flat_name}}(self._cpp_obj, {{/type:enum?}}{{/type:base?}}{{!
+            citem = {{^type:simple?}}reference_shared_ptr_{{containerType:flat_name}}(self._cpp_obj, {{/type:simple?}}{{!
                     }}deref(loc).second{{!
-                    }}{{^type:base?}}{{^type:enum?}}){{/type:enum?}}{{/type:base?}}
+                    }}{{^type:simple?}}){{/type:simple?}}
             {{/type:valueType}}
             yield ({{!
               }}{{#type:keyType}}{{!

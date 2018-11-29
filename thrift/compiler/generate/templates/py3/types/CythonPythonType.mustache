@@ -33,10 +33,7 @@ in the client or server source rather than the type definition source.
 }}{{#type:double?}}double{{/type:double?}}{{!
 }}{{#type:float?}}float{{/type:float?}}{{!
 }}{{#type:string?}}str{{/type:string?}}{{!
-}}{{#type:binary?}}{{!
-  }}{{#type:iobuf_wrapper?}}__iobuf.IOBuf{{/type:iobuf_wrapper?}}{{!
-  }}{{^type:iobuf_wrapper?}}bytes{{/type:iobuf_wrapper?}}{{!
-}}{{/type:binary?}}{{!
+}}{{#type:binary?}}bytes{{/type:binary?}}{{!
 }}{{#type:struct}}{{!
   }}{{#type:externalProgram?}}{{> common/ModulePath}}.{{/type:externalProgram?}}{{!
   }}{{^type:externalProgram?}}{{^program:typeContext?}}{{!

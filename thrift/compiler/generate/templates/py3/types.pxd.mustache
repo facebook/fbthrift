@@ -134,12 +134,12 @@ cdef extern from "{{program:includePrefix}}gen-cpp2/{{program:name}}_types.h"{{!
     }}"thrift::py3::reference_shared_ptr<{{> types/CppValueType}}>"({{!
     }}shared_ptr[c{{struct:name}}]&, {{> types/CythonCppType}}&)
 {{/field:type}}{{/field:iobuf_ref?}}{{/field:reference?}}
-{{^field:reference?}}{{#field:type}}{{^type:base?}}{{^type:enum?}}
+{{^field:reference?}}{{#field:type}}{{^type:simple?}}
     cdef shared_ptr[{{> types/CythonCppType}}] {{!
     }}reference_shared_ptr_{{field:name}} {{!
     }}"thrift::py3::reference_shared_ptr<{{> types/CppValueType}}>"({{!
     }}shared_ptr[c{{struct:name}}]&, {{> types/CythonCppType}}&)
-{{/type:enum?}}{{/type:base?}}{{/field:type}}{{/field:reference?}}
+{{/type:simple?}}{{/field:type}}{{/field:reference?}}
 {{/struct:fields}}{{/program:structs}}
 
 {{#program:structs}}
@@ -234,32 +234,32 @@ cdef extern from "<utility>" nogil:
 {{/first?}}
 {{#type:list?}}
 {{#type:listElemType}}
-{{^type:base?}}{{^type:enum?}}
+{{^type:simple?}}
     shared_ptr[{{> types/CythonCppType}}] reference_shared_ptr_{{containerType:flat_name}} {{!
     }}"thrift::py3::reference_shared_ptr<{{> types/CppValueType}}>"(...)
-{{/type:enum?}}{{/type:base?}}
+{{/type:simple?}}
 {{/type:listElemType}}
 {{/type:list?}}
 {{#type:set?}}
 {{#type:setElemType}}
-{{^type:base?}}{{^type:enum?}}
+{{^type:simple?}}
     shared_ptr[{{> types/CythonCppType}}] reference_shared_ptr_{{containerType:flat_name}} {{!
     }}"thrift::py3::reference_shared_ptr<{{> types/CppValueType}}>"(...)
-{{/type:enum?}}{{/type:base?}}
+{{/type:simple?}}
 {{/type:setElemType}}
 {{/type:set?}}
 {{#type:map?}}
 {{#type:keyType}}
-{{^type:base?}}{{^type:enum?}}
+{{^type:simple?}}
     shared_ptr[{{> types/CythonCppType}}] reference_shared_ptr_{{containerType:flat_name}}_key {{!
     }}"thrift::py3::reference_shared_ptr<{{> types/CppValueType}}>"(...)
-{{/type:enum?}}{{/type:base?}}
+{{/type:simple?}}
 {{/type:keyType}}
 {{#type:valueType}}
-{{^type:base?}}{{^type:enum?}}
+{{^type:simple?}}
     shared_ptr[{{> types/CythonCppType}}] reference_shared_ptr_{{containerType:flat_name}} {{!
     }}"thrift::py3::reference_shared_ptr<{{> types/CppValueType}}>"(...)
-{{/type:enum?}}{{/type:base?}}
+{{/type:simple?}}
 {{/type:valueType}}
 {{/type:map?}}{{!
 }}{{/program:containerTypes}}{{!

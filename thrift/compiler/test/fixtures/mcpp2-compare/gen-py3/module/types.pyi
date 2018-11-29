@@ -1947,5 +1947,5 @@ std_list = std_list__List__i32
 std_deque = std_deque__List__string
 folly_set = folly_sorted_vector_set__Set__string
 folly_map = folly_sorted_vector_map__Map__i64_string
-IOBuf = bytes
-IOBufPtr = bytes
+IOBuf = __iobuf.IOBuf
+IOBufPtr = __iobuf.IOBuf

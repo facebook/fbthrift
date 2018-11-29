@@ -25,6 +25,16 @@ By convention, the template assumes that the Python object is in a variable
 named item, for use in sets, lists, and map values. If you need to use a map
 key, include the parallel CythonPythonToCppKey file instead.
 
+}}{{#type:iobuf?}}{{!
+  }}deref((<__iobuf.IOBuf?>item).c_clone()){{!
+}}{{/type:iobuf?}}{{!
+}}{{#type:iobufRef?}}{{!
+  }}(<__iobuf.IOBuf?>item).c_clone(){{!
+}}{{/type:iobufRef?}}{{!
+}}{{#type:flexibleBinary?}}{{!
+  }}{{> types/CythonCppType}}(move(<string>item)){{!
+}}{{/type:flexibleBinary?}}{{!
+}}{{^type:hasCustomTypeBehavior?}}{{!
 }}{{#type:bool?}}item{{/type:bool?}}{{!
 }}{{#type:byte?}}item{{/type:byte?}}{{!
 }}{{#type:i16?}}item{{/type:i16?}}{{!
@@ -40,4 +50,5 @@ key, include the parallel CythonPythonToCppKey file instead.
 }}{{#type:container?}}{{!
   }}deref((<{{> types/CythonPythonType}}>item)._cpp_obj){{!
 }}{{/type:container?}}{{!
-}}{{#type:enum}}{{> types/CythonPythonType}}_to_cpp(item){{/type:enum}}
+}}{{#type:enum}}{{> types/CythonPythonType}}_to_cpp(item){{/type:enum}}{{!
+}}{{/type:hasCustomTypeBehavior?}}
