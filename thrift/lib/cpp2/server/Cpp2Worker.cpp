@@ -111,11 +111,7 @@ void Cpp2Worker::handleHeader(
 
   auto thriftTransport = createThriftTransport(std::move(sock));
   auto connection = std::make_shared<Cpp2Connection>(
-      std::move(thriftTransport),
-      addr,
-      shared_from_this(),
-      nullptr,
-      server_->getAdmissionStrategy());
+      std::move(thriftTransport), addr, shared_from_this(), nullptr);
   Acceptor::addConnection(connection.get());
   connection->addConnection(connection);
   connection->start();

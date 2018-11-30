@@ -21,6 +21,7 @@
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 #include <thrift/lib/cpp2/server/Cpp2Worker.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
+#include <thrift/lib/cpp2/server/admission_strategy/AdmissionStrategy.h>
 
 namespace apache {
 namespace thrift {
@@ -51,8 +52,7 @@ Cpp2Connection::Cpp2Connection(
     const std::shared_ptr<TAsyncTransport>& transport,
     const folly::SocketAddress* address,
     std::shared_ptr<Cpp2Worker> worker,
-    const std::shared_ptr<HeaderServerChannel>& serverChannel,
-    std::shared_ptr<AdmissionStrategy> admissionStrategy)
+    const std::shared_ptr<HeaderServerChannel>& serverChannel)
     : processor_(worker->getServer()->getCpp2Processor()),
       duplexChannel_(
           worker->getServer()->isDuplex() ? std::make_unique<DuplexChannel>(
@@ -74,8 +74,7 @@ Cpp2Connection::Cpp2Connection(
           nullptr,
           worker_->getServer()->getClientIdentityHook()),
       transport_(transport),
-      threadManager_(worker_->getServer()->getThreadManager()),
-      admissionStrategy_(std::move(admissionStrategy)) {
+      threadManager_(worker_->getServer()->getThreadManager()) {
   channel_->setQueueSends(worker_->getServer()->getQueueSends());
   channel_->setMinCompressBytes(worker_->getServer()->getMinCompressBytes());
   channel_->setDefaultWriteTransforms(
@@ -323,8 +322,9 @@ void Cpp2Connection::requestReceived(unique_ptr<ResponseChannelRequest>&& req) {
         "loadshedding request");
     return;
   }
-  std::shared_ptr<AdmissionController> admissionController =
-      admissionStrategy_->select(*req, context_);
+
+  auto admissionStrategy = worker_->getServer()->getAdmissionStrategy();
+  auto admissionController = admissionStrategy->select(*req, context_);
   if (!admissionController->admit()) {
     killRequest(
         *req,

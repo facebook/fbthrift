@@ -30,8 +30,6 @@
 #include <thrift/lib/cpp2/server/Cpp2ConnContext.h>
 #include <thrift/lib/cpp2/server/Cpp2Worker.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
-#include <thrift/lib/cpp2/server/admission_strategy/AcceptAllAdmissionStrategy.h>
-#include <thrift/lib/cpp2/server/admission_strategy/AdmissionStrategy.h>
 #include <wangle/acceptor/ManagedConnection.h>
 
 namespace apache {
@@ -66,9 +64,7 @@ class Cpp2Connection : public ResponseChannel::Callback,
       const std::shared_ptr<apache::thrift::async::TAsyncTransport>& transport,
       const folly::SocketAddress* address,
       std::shared_ptr<Cpp2Worker> worker,
-      const std::shared_ptr<HeaderServerChannel>& serverChannel = nullptr,
-      std::shared_ptr<AdmissionStrategy> admissionStrategy =
-          std::make_shared<AcceptAllAdmissionStrategy>());
+      const std::shared_ptr<HeaderServerChannel>& serverChannel = nullptr);
 
   /// Destructor -- close down the connection.
   ~Cpp2Connection() override;
@@ -121,8 +117,6 @@ class Cpp2Connection : public ResponseChannel::Callback,
 
   std::shared_ptr<apache::thrift::async::TAsyncTransport> transport_;
   std::shared_ptr<apache::thrift::concurrency::ThreadManager> threadManager_;
-
-  std::shared_ptr<AdmissionStrategy> admissionStrategy_;
 
   /**
    * Wrap the request in our own request.  This is done for 2 reasons:
