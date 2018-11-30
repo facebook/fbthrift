@@ -21,6 +21,7 @@
 
 #pragma once
 
+#include <cstdint>
 #include <type_traits>
 
 // Implement basic opaque typedef suitable for testing

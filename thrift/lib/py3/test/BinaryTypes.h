@@ -22,6 +22,8 @@
 #include <folly/Range.h>
 #include <folly/io/IOBuf.h>
 
+#include <thrift/lib/cpp2/protocol/Cpp2Ops.h>
+
 namespace test {
 
 class Buffer : boost::totally_ordered<Buffer> {
