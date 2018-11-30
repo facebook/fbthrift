@@ -2403,7 +2403,12 @@ void t_hack_generator::generate_php_union_methods(
     indent_down();
     indent(out) << "}\n\n";
 
-    // set_<fieldName>()
+    // get_<fieldName>()
+    string const* getter_attributes =
+        get_hack_annotation(*m_iter, "getter_attributes");
+    if (getter_attributes) {
+      indent(out) << "<<" << *getter_attributes << ">>\n";
+    }
     indent(out) << "public function get_" << fieldName << "(): " << typehint
                 << " {\n";
     indent_up();
@@ -2590,22 +2595,24 @@ void t_hack_generator::_generate_php_struct_definition(
     indent(out) << visibility << " " << typehint << " $"
                 << (*m_iter)->get_name() << ";\n";
 
-    bool hack_getter = (*m_iter)->annotations_.find("hack.getter") !=
-        (*m_iter)->annotations_.end();
-    string const* getter_attributes =
-        get_hack_annotation(*m_iter, "getter_attributes");
-    if (hack_getter) {
-      if (getter_attributes) {
-        indent(out) << "<<" << *getter_attributes << ">>\n";
+    if (!tstruct->is_union()) {
+      bool hack_getter = (*m_iter)->annotations_.find("hack.getter") !=
+          (*m_iter)->annotations_.end();
+      string const* getter_attributes =
+          get_hack_annotation(*m_iter, "getter_attributes");
+      if (hack_getter) {
+        if (getter_attributes) {
+          indent(out) << "<<" << *getter_attributes << ">>\n";
+        }
+        indent(out) << "public function get_" << (*m_iter)->get_name()
+                    << "(): " << typehint << " {\n";
+        indent(indent(out)) << "return $this->" << (*m_iter)->get_name() << ";"
+                            << endl;
+        indent(out) << "}\n";
+      } else if (getter_attributes) {
+        throw tstruct->get_name() + "::" + (*m_iter)->get_name() +
+            " declares hack.getter_attributes without enabling hack.getter";
       }
-      indent(out) << "public function get_" << (*m_iter)->get_name()
-                  << "(): " << typehint << " {\n";
-      indent(indent(out)) << "return $this->" << (*m_iter)->get_name() << ";"
-                          << endl;
-      indent(out) << "}\n";
-    } else if (getter_attributes) {
-      throw tstruct->get_name() + "::" + (*m_iter)->get_name() +
-          " declares hack.getter_attributes without enabling hack.getter";
     }
   }
 

@@ -200,19 +200,11 @@ class UnionTesting implements \IThriftStruct, \IThriftUnion<\test\fixtures\jsenu
    * 1: string foo
    */
   protected ?string $foo;
-  <<FieldUnionGetterAttribute>>
-  public function get_foo(): ?string {
-    return $this->foo;
-  }
   /**
    * Original thrift field:-
    * 3: i64 bar
    */
   public ?int $bar;
-  <<FieldGetterAttribute>>
-  public function get_bar(): ?int {
-    return $this->bar;
-  }
   protected \test\fixtures\jsenum\UnionTestingEnum $_type = \test\fixtures\jsenum\UnionTestingEnum::_EMPTY_;
 
   public function __construct(?string $foo = null, ?int $bar = null  ) {
@@ -241,6 +233,7 @@ class UnionTesting implements \IThriftStruct, \IThriftUnion<\test\fixtures\jsenu
     return $this;
   }
 
+  <<FieldUnionGetterAttribute>>
   public function get_foo(): string {
     invariant(
       $this->_type === \test\fixtures\jsenum\UnionTestingEnum::foo,
@@ -256,6 +249,7 @@ class UnionTesting implements \IThriftStruct, \IThriftUnion<\test\fixtures\jsenu
     return $this;
   }
 
+  <<FieldGetterAttribute>>
   public function get_bar(): int {
     invariant(
       $this->_type === \test\fixtures\jsenum\UnionTestingEnum::bar,
