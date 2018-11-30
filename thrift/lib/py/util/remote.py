@@ -525,7 +525,7 @@ class RemoteTransportClient(RemoteClient):
 
         return client
 
-    def close_client(self):
+    def _close_client(self):
         self._transport.close()
 
     def _validate_options(self, options):
