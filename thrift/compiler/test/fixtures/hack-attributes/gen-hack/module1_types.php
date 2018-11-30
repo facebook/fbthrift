@@ -165,6 +165,7 @@ class MySecondThriftStruct implements \IThriftStruct {
 
 }
 
+<<EnumAttributes>>
 enum UnionTestingEnum: int {
   _EMPTY_ = 0;
   foo = 1;

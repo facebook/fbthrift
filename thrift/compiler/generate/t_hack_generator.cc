@@ -2438,6 +2438,11 @@ void t_hack_generator::generate_php_union_enum(
   const vector<t_field*>& members = tstruct->get_members();
   vector<t_field*>::const_iterator m_iter;
 
+  string const* union_enum_attributes =
+      get_hack_annotation(tstruct, "union_enum_attributes");
+  if (union_enum_attributes) {
+    indent(out) << "<<" << *union_enum_attributes << ">>\n";
+  }
   out << "enum " << union_enum_name(tstruct, true) << ": int {\n";
 
   indent_up();
