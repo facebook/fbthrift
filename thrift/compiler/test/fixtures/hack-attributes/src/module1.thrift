@@ -19,3 +19,9 @@ struct MySecondThriftStruct {
     hack.getter_attributes="FieldStructGetterAttribute"),
   3: i64 baz (hack.getter hack.getter_attributes="FieldGetterAttribute"),
 }
+
+union UnionTesting {
+  1: string foo (hack.visibility="protected" hack.getter
+    hack.getter_attributes="FieldUnionGetterAttribute"),
+  3: i64 bar (hack.getter hack.getter_attributes="FieldGetterAttribute"),
+}

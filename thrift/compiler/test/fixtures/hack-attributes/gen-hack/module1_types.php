@@ -165,3 +165,105 @@ class MySecondThriftStruct implements \IThriftStruct {
 
 }
 
+enum UnionTestingEnum: int {
+  _EMPTY_ = 0;
+  foo = 1;
+  bar = 3;
+}
+
+/**
+ * Original thrift struct:-
+ * UnionTesting
+ */
+class UnionTesting implements \IThriftStruct, \IThriftUnion<\test\fixtures\jsenum\UnionTestingEnum> {
+  use \ThriftUnionSerializationTrait;
+
+  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
+    1 => dict[
+      'var' => 'foo',
+      'union' => true,
+      'type' => \TType::STRING,
+      ],
+    3 => dict[
+      'var' => 'bar',
+      'union' => true,
+      'type' => \TType::I64,
+      ],
+    ];
+  public static Map<string, int> $_TFIELDMAP = Map {
+    'foo' => 1,
+    'bar' => 3,
+  };
+  const int STRUCTURAL_ID = 4708174399727259919;
+  /**
+   * Original thrift field:-
+   * 1: string foo
+   */
+  protected ?string $foo;
+  <<FieldUnionGetterAttribute>>
+  public function get_foo(): ?string {
+    return $this->foo;
+  }
+  /**
+   * Original thrift field:-
+   * 3: i64 bar
+   */
+  public ?int $bar;
+  <<FieldGetterAttribute>>
+  public function get_bar(): ?int {
+    return $this->bar;
+  }
+  protected \test\fixtures\jsenum\UnionTestingEnum $_type = \test\fixtures\jsenum\UnionTestingEnum::_EMPTY_;
+
+  public function __construct(?string $foo = null, ?int $bar = null  ) {
+    $this->_type = \test\fixtures\jsenum\UnionTestingEnum::_EMPTY_;
+    if ($foo !== null) {
+      $this->foo = $foo;
+      $this->_type = \test\fixtures\jsenum\UnionTestingEnum::foo;
+    }
+    if ($bar !== null) {
+      $this->bar = $bar;
+      $this->_type = \test\fixtures\jsenum\UnionTestingEnum::bar;
+    }
+  }
+
+  public function getName(): string {
+    return 'UnionTesting';
+  }
+
+  public function getType(): \test\fixtures\jsenum\UnionTestingEnum {
+    return $this->_type;
+  }
+
+  public function set_foo(string $foo): this {
+    $this->_type = \test\fixtures\jsenum\UnionTestingEnum::foo;
+    $this->foo = $foo;
+    return $this;
+  }
+
+  public function get_foo(): string {
+    invariant(
+      $this->_type === \test\fixtures\jsenum\UnionTestingEnum::foo,
+      'get_foo called on an instance of UnionTesting whose current type is %s',
+      $this->_type,
+    );
+    return \nullthrows($this->foo);
+  }
+
+  public function set_bar(int $bar): this {
+    $this->_type = \test\fixtures\jsenum\UnionTestingEnum::bar;
+    $this->bar = $bar;
+    return $this;
+  }
+
+  public function get_bar(): int {
+    invariant(
+      $this->_type === \test\fixtures\jsenum\UnionTestingEnum::bar,
+      'get_bar called on an instance of UnionTesting whose current type is %s',
+      $this->_type,
+    );
+    return \nullthrows($this->bar);
+  }
+
+}
+
