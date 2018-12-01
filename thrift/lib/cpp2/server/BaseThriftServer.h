@@ -198,6 +198,9 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
   // Track # of active requests for this server
   std::atomic<int32_t> activeRequests_{0};
 
+  // Admission strategy use for accepting new requests
+  folly::Synchronized<std::shared_ptr<AdmissionStrategy>> admissionStrategy_;
+
  protected:
   //! The server's listening address
   folly::SocketAddress address_;
@@ -258,8 +261,6 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
   // Flag indicating whether it is safe to mutate the server config through its
   // setters.
   std::atomic<bool> configMutable_{true};
-
-  std::shared_ptr<AdmissionStrategy> admissionStrategy_;
 
   BaseThriftServer();
   ~BaseThriftServer() override {}
@@ -891,8 +892,8 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
   /**
    * Return the admission strategy associated with the Thrift Server
    */
-  const std::shared_ptr<AdmissionStrategy> getAdmissionStrategy() const {
-    return admissionStrategy_;
+  std::shared_ptr<AdmissionStrategy> getAdmissionStrategy() const {
+    return admissionStrategy_.copy();
   }
 };
 } // namespace thrift
