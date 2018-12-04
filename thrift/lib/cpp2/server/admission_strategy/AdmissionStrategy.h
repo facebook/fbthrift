@@ -24,8 +24,15 @@
 namespace apache {
 namespace thrift {
 
+class BaseThriftServer;
+
 class AdmissionStrategy {
  public:
+  enum Type { ACCEPT_ALL = 0, GLOBAL = 1, PER_CLIENT_ID = 2, PRIORITY = 3 };
+
+  using MetricReportFn =
+      folly::Function<void(const std::string&, double) const>;
+
   virtual ~AdmissionStrategy() {}
 
   /**
@@ -34,6 +41,12 @@ class AdmissionStrategy {
   virtual std::shared_ptr<AdmissionController> select(
       const ResponseChannelRequest& request,
       const Cpp2ConnContext& connContext) = 0;
+
+  virtual void reportMetrics(
+      const MetricReportFn&,
+      const std::string& prefix) = 0;
+
+  virtual Type getType() = 0;
 
  protected:
   static constexpr const char* kWildcard = "*";

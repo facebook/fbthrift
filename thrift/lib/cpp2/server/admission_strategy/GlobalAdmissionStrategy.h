@@ -51,6 +51,16 @@ class GlobalAdmissionStrategy : public AdmissionStrategy {
     return admissionController_;
   }
 
+  void reportMetrics(
+      const AdmissionStrategy::MetricReportFn& report,
+      const std::string& prefix) override {
+    admissionController_->reportMetrics(report, prefix + "global.");
+  }
+
+  Type getType() override {
+    return AdmissionStrategy::GLOBAL;
+  }
+
  private:
   std::shared_ptr<AdmissionController> admissionController_;
 };

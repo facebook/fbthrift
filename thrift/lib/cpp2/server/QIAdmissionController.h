@@ -157,6 +157,18 @@ class QIAdmissionController : public AdmissionController {
     return getIntegral() / getMaxIntegral();
   }
 
+  virtual void reportMetrics(
+      const AdmissionController::MetricReportFn& report,
+      const std::string& prefix) override {
+    report(prefix + "queue_size", getQueueSize());
+    report(prefix + "queue_max", getMaxQueue());
+    report(prefix + "queue_limit", getQueueLimit());
+    report(prefix + "response_rate", getResponseRate());
+    report(prefix + "integral", getIntegral());
+    report(prefix + "integral_ratio", getIntegralRatio());
+  }
+
+ private:
   bool reject() {
     return false;
   }

@@ -91,6 +91,23 @@ class PerClientIdAdmissionStrategy : public AdmissionStrategy {
     return admController;
   }
 
+  void reportMetrics(
+      const AdmissionStrategy::MetricReportFn& report,
+      const std::string& prefix) override {
+    auto controllers = admissionControllers_.rlock();
+
+    for (auto it = controllers->begin(); it != controllers->end(); it++) {
+      const auto& clientId = it->first;
+      const auto& controller = it->second;
+
+      controller->reportMetrics(report, prefix + clientId + ".");
+    }
+  }
+
+  Type getType() override {
+    return AdmissionStrategy::PER_CLIENT_ID;
+  }
+
  private:
   using ControllerMap =
       std::unordered_map<std::string, std::shared_ptr<AdmissionController>>;

@@ -16,15 +16,22 @@
 
 #pragma once
 
+#include <string>
+
+#include <folly/Function.h>
+
 namespace apache {
 namespace thrift {
 
+class BaseThriftServer;
 class ResponseChannelRequest;
-
 class Cpp2ConnContext;
 
 class AdmissionController {
  public:
+  using MetricReportFn =
+      folly::Function<void(const std::string&, double) const>;
+
   virtual ~AdmissionController() {}
 
   /**
@@ -43,6 +50,8 @@ class AdmissionController {
    * request, and it returned a response to the client.
    */
   virtual void returnedResponse() = 0;
+
+  virtual void reportMetrics(const MetricReportFn&, const std::string&) {}
 };
 
 class DenyAllAdmissionController : public AdmissionController {

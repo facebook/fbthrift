@@ -42,6 +42,14 @@ class AcceptAllAdmissionStrategy : public AdmissionStrategy {
     return admissionController_;
   }
 
+  void reportMetrics(
+      const AdmissionStrategy::MetricReportFn&,
+      const std::string&) override {}
+
+  Type getType() override {
+    return AdmissionStrategy::ACCEPT_ALL;
+  }
+
  private:
   std::shared_ptr<AdmissionController> admissionController_;
 };

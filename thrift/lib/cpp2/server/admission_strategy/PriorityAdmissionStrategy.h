@@ -120,6 +120,27 @@ class PriorityAdmissionStrategy : public AdmissionStrategy {
     return admissionControllers_[bucketIndex];
   }
 
+  void reportMetrics(
+      const AdmissionStrategy::MetricReportFn& report,
+      const std::string& prefix) override {
+    for (const auto& entry : priorities_) {
+      auto clientId = entry.first;
+      auto priority = entry.second;
+
+      const auto offset = priority.offset;
+      for (auto i = 0; i < priority.priority; i++) {
+        const auto& controller = admissionControllers_[offset + i];
+
+        controller->reportMetrics(
+            report, prefix + clientId + "." + std::to_string(i) + ".");
+      }
+    }
+  }
+
+  Type getType() override {
+    return AdmissionStrategy::PRIORITY;
+  }
+
  private:
   /**
    * Compute a bucket index based on the connection context.
