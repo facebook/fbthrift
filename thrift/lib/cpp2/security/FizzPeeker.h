@@ -31,7 +31,7 @@ class ThriftFizzAcceptorHandshakeHelper
  protected:
   fizz::server::AsyncFizzServer::UniquePtr createFizzServer(
       folly::AsyncSSLSocket::UniquePtr sslSock,
-      const std::shared_ptr<fizz::server::FizzServerContext>& fizzContext,
+      const std::shared_ptr<const fizz::server::FizzServerContext>& fizzContext,
       const std::shared_ptr<fizz::ServerExtensions>& /*extensions*/) override {
     folly::AsyncSocket::UniquePtr asyncSock(
       new apache::thrift::async::TAsyncSocket(std::move(sslSock)));

@@ -28,9 +28,9 @@ class TAsyncFizzServer : public virtual fizz::server::AsyncFizzServer,
  public:
   TAsyncFizzServer(
       folly::AsyncTransportWrapper::UniquePtr sock,
-      const std::shared_ptr<fizz::server::FizzServerContext>& ctx,
+      const std::shared_ptr<const fizz::server::FizzServerContext>& ctx,
       const std::shared_ptr<fizz::ServerExtensions>& ext = nullptr)
-    : fizz::server::AsyncFizzServer(std::move(sock), ctx, ext) {}
+      : fizz::server::AsyncFizzServer(std::move(sock), ctx, ext) {}
 
   void setReadCB(AsyncTransportWrapper::ReadCallback* callback) override {
     fizz::server::AsyncFizzServer::setReadCB(callback);
