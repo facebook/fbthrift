@@ -43,7 +43,7 @@ class ContextStack {
         serviceName_(serviceName),
         method_(method) {
     ctxs_.reserve(handlers->size());
-    for (auto handler : *handlers) {
+    for (const auto& handler : *handlers) {
       ctxs_.push_back(
           handler->getServiceContext(serviceName, method, connectionContext));
     }
@@ -55,7 +55,8 @@ class ContextStack {
       const char* method,
       TConnectionContext* connectionContext)
       : ctxs_(), handlers_(handlers), method_(method) {
-    for (auto handler : *handlers) {
+    ctxs_.reserve(handlers->size());
+    for (const auto& handler : *handlers) {
       ctxs_.push_back(handler->getContext(method, connectionContext));
     }
   }
