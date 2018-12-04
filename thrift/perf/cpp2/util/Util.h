@@ -83,8 +83,7 @@ static std::unique_ptr<AsyncClient> newRSocketClient(
     folly::SocketAddress const& addr,
     bool encrypted) {
   auto sock = apache::thrift::perf::getSocket(evb, addr, encrypted, {"rs"});
-  RSocketClientChannel::Ptr channel =
-      RSocketClientChannel::newChannel(std::move(sock), encrypted);
+  auto channel = RSocketClientChannel::newChannel(std::move(sock));
   channel->setProtocolId(apache::thrift::protocol::T_COMPACT_PROTOCOL);
   return std::make_unique<AsyncClient>(std::move(channel));
 }

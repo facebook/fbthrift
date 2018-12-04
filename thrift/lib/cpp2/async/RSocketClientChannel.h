@@ -115,9 +115,7 @@ class RSocketClientChannel final : public ClientChannel,
 
   using ChannelCallbacks::OnewayCallback;
 
-  static Ptr newChannel(
-      apache::thrift::async::TAsyncTransport::UniquePtr socket,
-      bool isSecure = false);
+  static Ptr newChannel(async::TAsyncTransport::UniquePtr socket);
 
   void setProtocolId(uint16_t protocolId);
   void setHTTPHost(const std::string& host);
@@ -170,9 +168,7 @@ class RSocketClientChannel final : public ClientChannel,
       const folly::IOBuf& buffer);
 
  private:
-  RSocketClientChannel(
-      apache::thrift::async::TAsyncTransport::UniquePtr socket,
-      bool isSecure = false);
+  explicit RSocketClientChannel(async::TAsyncTransport::UniquePtr socket);
 
   RSocketClientChannel(const RSocketClientChannel&) = delete;
   RSocketClientChannel& operator=(const RSocketClientChannel&) = delete;
@@ -222,7 +218,6 @@ class RSocketClientChannel final : public ClientChannel,
       std::chrono::milliseconds(500)};
 
   folly::EventBase* evb_;
-  bool isSecure_;
 
   std::string httpHost_;
   std::string httpUrl_;

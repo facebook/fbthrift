@@ -266,10 +266,9 @@ const uint16_t RSocketClientChannel::kMajorVersion = 0;
 const uint16_t RSocketClientChannel::kMinorVersion = 1;
 
 RSocketClientChannel::Ptr RSocketClientChannel::newChannel(
-    async::TAsyncTransport::UniquePtr transport,
-    bool isSecure) {
+    async::TAsyncTransport::UniquePtr transport) {
   return RSocketClientChannel::Ptr(
-      new RSocketClientChannel(std::move(transport), isSecure));
+      new RSocketClientChannel(std::move(transport)));
 }
 
 std::unique_ptr<folly::IOBuf> RSocketClientChannel::serializeMetadata(
@@ -291,10 +290,8 @@ std::unique_ptr<ResponseRpcMetadata> RSocketClientChannel::deserializeMetadata(
 }
 
 RSocketClientChannel::RSocketClientChannel(
-    apache::thrift::async::TAsyncTransport::UniquePtr socket,
-    bool isSecure)
+    async::TAsyncTransport::UniquePtr socket)
     : evb_(socket->getEventBase()),
-      isSecure_(isSecure),
       connectionStatus_(std::make_shared<detail::RSConnectionStatus>()),
       channelCounters_(std::make_shared<detail::ChannelCounters>([&]() {
         DCHECK(!evb_ || evb_->isInEventBaseThread());
