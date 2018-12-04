@@ -23,10 +23,10 @@ from __future__ import print_function
 from __future__ import unicode_literals
 import json
 import os
-import re
 import shutil
 import unittest
 import subprocess
+import tempfile
 
 
 class TestJSONGenerate(unittest.TestCase):
@@ -47,18 +47,16 @@ class TestJSONGenerate(unittest.TestCase):
         'DocTest': 'thrift.test.doc',
         }
 
-    @classmethod
-    def tearDownClass(cls):
-        if os.path.exists('gen-json'):
-            shutil.rmtree('gen-json')
+    def setUp(self):
+        self.addCleanup(self.cleanup)
+        self.temp_dir = tempfile.mkdtemp()
 
-    @classmethod
-    def setUpClass(cls):
-        if os.path.exists('gen-json'):
-            shutil.rmtree('gen-json')
+    def cleanup(self):
+        if os.path.exists(self.temp_dir):
+            shutil.rmtree(self.temp_dir)
 
     def getGenPath(self, thriftFile):
-        output_path = 'gen-json/'
+        output_path = os.path.join(self.temp_dir, 'gen-json/')
         output_path += self.namespaces.get(thriftFile,
                                            thriftFile).replace('.', '/')
         output_path += '.json'
@@ -70,7 +68,7 @@ class TestJSONGenerate(unittest.TestCase):
             path = 'thrift/test/' + thriftFile + '.thrift'
             self.assertTrue(os.path.exists(path))
             proc = subprocess.Popen(
-                [thrift_compiler, '-gen', 'json', path],
+                [thrift_compiler, '-gen', 'json', '-o', self.temp_dir, path],
                 stdout=subprocess.PIPE,
                 stderr=subprocess.STDOUT)
             output = proc.communicate()[0]
@@ -83,7 +81,7 @@ class TestJSONGenerate(unittest.TestCase):
                 json.load(jsonData)
 
         for JSONFile in self.unsupportedThriftFiles:
-            path = 'gen-json/' + JSONFile + '.json'
+            path = os.path.join(self.temp_dir, 'gen-json', JSONFile + '.json')
             jsonData = open(path)
             self.assertRaises(TypeError, json.loads, jsonData)
 
