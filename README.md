@@ -5,11 +5,11 @@ Thrift is a serialization and RPC framework for service communication. Thrift en
 
 Facebook Thrift is not a distribution of [Apache Thrift](https://thrift.apache.org/). This is an evolved internal branch of Thrift that Facebook re-released to open source community in February 2014. Facebook Thrift was originally released closely tracking Apache Thrift but is now evolving in new directions. In particular, the compiler was rewritten from scratch and the new implementation features a fully asynchronous Thrift server. Read more about these improvements in the [ThriftServer documentation](https://github.com/facebook/fbthrift/blob/master/thrift/doc/Cpp2.md). 
 
-You can also learn more about this project in the original Facebook Code [blog post](https://code.facebook.com/posts/1468950976659943/under-the-hood-building-and-open-sourcing-fbthrift/)
+You can also learn more about this project in the original Facebook Code [blog post](https://code.facebook.com/posts/1468950976659943/under-the-hood-building-and-open-sourcing-fbthrift/).
 
 Table of Contents (ToC):
 =========================
-* The Three Things About Thrift
+* [The Three Things About Thrift](#about-thrift)
   * [A Code Generator](#a-code-generator)
   * [A Serialization Framework](#a-serialization-framework)
   * [An RPC Framework](#an-rpc-framework)
@@ -36,16 +36,16 @@ Thrift has a set of protocols for serialization that may be used in different la
 Thrift has a framework to frame messages to send between clients and servers, and to call application-defined functions when receiving messages in different languages.
 
 There are several key goals for these components:
-* Ease of use
+* Ease of use:
   Thrift takes care of the boilerplate of serialization and RPC, and enables the developer to focus on the schema of the system's serializable types and on the interfaces of system's RPC services.
 
-* Cross language support
+* Cross language support:
   Thrift enables intercommunication between different languages. For example, a Python client communicating with a C++ server.
 
-* Performance
+* Performance:
   Thrift structures and services enable fast serialization and deserialization, and its RPC protocol and frameworks are designed with performance as a feature.
 
-* Backwards compatibility
+* Backwards compatibility:
   Thrift allows fields to be added to and removed from serializable types in a manner that preserves backward and forward compatibility.
 
 ---
