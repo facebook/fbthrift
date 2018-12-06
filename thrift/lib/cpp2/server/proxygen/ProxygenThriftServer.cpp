@@ -110,7 +110,7 @@ void ProxygenThriftServer::ThriftRequestHandler::onBody(
 }
 
 void ProxygenThriftServer::ThriftRequestHandler::onEOM() noexcept {
-  folly::RequestContext::create();
+  folly::RequestContextScopeGuard rctxScopeGuard;
   connCtx_ = std::make_shared<apache::thrift::Cpp2ConnContext>(
       &msg_->getClientAddress(), nullptr, nullptr, nullptr, nullptr);
 
