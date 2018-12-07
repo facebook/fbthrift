@@ -15,6 +15,9 @@
  */
 #include <thrift/lib/cpp2/transport/rsocket/test/util/TestUtil.h>
 
+#include <thrift/lib/cpp2/async/RSocketClientChannel.h>
+#include <thrift/lib/cpp2/async/RocketClientChannel.h>
+
 DECLARE_int32(num_client_connections);
 DECLARE_string(transport); // ConnectionManager depends on this flag.
 
@@ -54,19 +57,31 @@ std::unique_ptr<ThriftServer> TestSetup::createServer(
 std::unique_ptr<PooledRequestChannel, folly::DelayedDestruction::Destructor>
 TestSetup::connectToServer(
     uint16_t port,
-    folly::Function<void()> onDetachable) {
+    folly::Function<void()> onDetachable,
+    bool useRocketClient) {
   CHECK_GT(port, 0) << "Check if the server has started already";
   return PooledRequestChannel::newChannel(
       evbThread_.getEventBase(),
       std::make_shared<folly::ScopedEventBaseThread>(),
-      [port,
-       onDetachable = std::move(onDetachable)](folly::EventBase& evb) mutable {
-        auto rsocketChannel = RSocketClientChannel::newChannel(
-            TAsyncSocket::UniquePtr(new TAsyncSocket(&evb, "::1", port)));
+      [port, useRocketClient, onDetachable = std::move(onDetachable)](
+          folly::EventBase& evb) mutable
+      -> std::unique_ptr<ClientChannel, folly::DelayedDestruction::Destructor> {
+        auto socket =
+            TAsyncSocket::UniquePtr(new TAsyncSocket(&evb, "::1", port));
+
+        auto channel = [&]() -> std::unique_ptr<
+                                 ClientChannel,
+                                 folly::DelayedDestruction::Destructor> {
+          if (useRocketClient) {
+            return RocketClientChannel::newChannel(std::move(socket));
+          }
+          return RSocketClientChannel::newChannel(std::move(socket));
+        }();
+
         if (onDetachable) {
-          rsocketChannel->setOnDetachable(std::move(onDetachable));
+          channel->setOnDetachable(std::move(onDetachable));
         }
-        return rsocketChannel;
+        return channel;
       });
 }
 

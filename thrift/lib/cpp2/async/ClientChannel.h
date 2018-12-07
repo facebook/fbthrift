@@ -63,11 +63,11 @@ class ClientChannel : public RequestChannel, public HeaderChannel {
   virtual void closeNow() = 0;
   virtual CLIENT_TYPE getClientType() = 0;
 
-  void setOnDetachable(folly::Function<void()> onDetachable) {
+  virtual void setOnDetachable(folly::Function<void()> onDetachable) {
     onDetachable_ = std::move(onDetachable);
   }
 
-  void unsetOnDetachable() {
+  virtual void unsetOnDetachable() {
     onDetachable_ = nullptr;
   }
 

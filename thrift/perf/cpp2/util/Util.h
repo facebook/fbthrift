@@ -23,6 +23,7 @@
 #include <thrift/lib/cpp/async/TAsyncSocket.h>
 #include <thrift/lib/cpp2/async/HeaderClientChannel.h>
 #include <thrift/lib/cpp2/async/RSocketClientChannel.h>
+#include <thrift/lib/cpp2/async/RocketClientChannel.h>
 #include <thrift/lib/cpp2/server/BaseThriftServer.h>
 #include <thrift/lib/cpp2/transport/core/ThriftClient.h>
 #include <thrift/lib/cpp2/transport/core/testutil/ServerConfigsMock.h>
@@ -33,6 +34,7 @@ using apache::thrift::ClientConnectionIf;
 using apache::thrift::H2ClientConnection;
 using apache::thrift::HeaderClientChannel;
 using apache::thrift::InMemoryConnection;
+using apache::thrift::RocketClientChannel;
 using apache::thrift::RSocketClientChannel;
 using apache::thrift::ThriftClient;
 using apache::thrift::ThriftServerAsyncProcessorFactory;
@@ -88,6 +90,18 @@ static std::unique_ptr<AsyncClient> newRSocketClient(
   return std::make_unique<AsyncClient>(std::move(channel));
 }
 
+template <typename AsyncClient>
+static std::unique_ptr<AsyncClient> newRocketClient(
+    folly::EventBase* evb,
+    folly::SocketAddress const& addr,
+    bool encrypted) {
+  auto sock = apache::thrift::perf::getSocket(evb, addr, encrypted, {"rs2"});
+  RocketClientChannel::Ptr channel =
+      RocketClientChannel::newChannel(std::move(sock));
+  channel->setProtocolId(apache::thrift::protocol::T_COMPACT_PROTOCOL);
+  return std::make_unique<AsyncClient>(std::move(channel));
+}
+
 template <typename AsyncClient, typename ServiceHandler>
 static std::unique_ptr<AsyncClient> newInMemoryClient(
     std::shared_ptr<ServiceHandler> handler,
@@ -109,6 +123,9 @@ static std::unique_ptr<AsyncClient> newClient(
     bool encrypted = false) {
   if (transport == "header") {
     return newHeaderClient<AsyncClient>(evb, addr);
+  }
+  if (transport == "rocket") {
+    return newRocketClient<AsyncClient>(evb, addr, encrypted);
   }
   if (transport == "rsocket") {
     return newRSocketClient<AsyncClient>(evb, addr, encrypted);

@@ -54,6 +54,11 @@ void RocketClientFlowable::RocketClientSubscription::cancel() {
 }
 
 void RocketClientFlowable::onPayloadFrame(PayloadFrame&& frame) {
+  // Lifetime management here is tricky. If this payload is marked as complete,
+  // freeStream() may return the only shared_ptr to this flowable, which can
+  // only safely be destroyed at the end of onPayloadFrame().
+  std::shared_ptr<RocketClientFlowable> self;
+
   if (frame.hasFollows()) {
     if (!bufferedFragments_) {
       bufferedFragments_ =
@@ -77,13 +82,16 @@ void RocketClientFlowable::onPayloadFrame(PayloadFrame&& frame) {
   }
 
   if (frame.hasComplete()) {
+    self = this->ref_from_this(this);
+    client_.freeStream(streamId_);
     onComplete();
   }
 }
 
 void RocketClientFlowable::onErrorFrame(ErrorFrame&& frame) {
+  auto self = this->ref_from_this(this);
+  client_.freeStream(streamId_);
   bufferedFragments_.reset();
-
   onError(folly::make_exception_wrapper<RocketException>(
       frame.errorCode(), std::move(frame.payload()).data()));
 }

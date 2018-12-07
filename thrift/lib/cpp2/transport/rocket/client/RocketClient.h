@@ -20,6 +20,7 @@
 #include <memory>
 #include <string>
 #include <unordered_map>
+#include <utility>
 
 #include <glog/logging.h>
 
@@ -76,6 +77,7 @@ class RocketClient : public folly::DelayedDestruction,
   std::shared_ptr<RocketClientFlowable> createStream(Payload&& request);
   void sendRequestN(StreamId streamId, int32_t n);
   void cancelStream(StreamId streamId);
+  void freeStream(StreamId streamId);
 
   void scheduleWrite(RequestContext& ctx);
 
@@ -95,6 +97,14 @@ class RocketClient : public folly::DelayedDestruction,
   // with the exception specified by ew.
   void close(folly::exception_wrapper ew) noexcept;
 
+  void setCloseCallback(folly::Function<void()> closeCallback) {
+    closeCallback_ = std::move(closeCallback);
+  }
+
+  bool isAlive() const {
+    return state_ == ConnectionState::CONNECTED;
+  }
+
   const folly::AsyncTransportWrapper* getTransportWrapper() const {
     return socket_.get();
   }
@@ -103,10 +113,53 @@ class RocketClient : public folly::DelayedDestruction,
     return socket_.get();
   }
 
+  bool isDetachable() const {
+    DCHECK(evb_);
+    evb_->dcheckIsInEventBaseThread();
+
+    // Client is only detachable if there are no inflight requests, no active
+    // streams, and if the underlying transport is detachable, i.e., has no
+    // inflight writes of its own.
+    return !writeLoopCallback_.isLoopCallbackScheduled() && streams_.empty() &&
+        (!socket_ || socket_->isDetachable());
+  }
+
+  void attachEventBase(folly::EventBase& evb) {
+    DCHECK(!evb_);
+    evb.dcheckIsInEventBaseThread();
+
+    evb_ = &evb;
+    socket_->attachEventBase(evb_);
+    evb_->runOnDestruction(eventBaseDestructionCallback_.get());
+  }
+
+  void detachEventBase() {
+    DCHECK(evb_);
+    evb_->dcheckIsInEventBaseThread();
+
+    DCHECK(eventBaseDestructionCallback_->isLoopCallbackScheduled());
+    DCHECK(!writeLoopCallback_.isLoopCallbackScheduled());
+
+    eventBaseDestructionCallback_->cancelLoopCallback();
+    socket_->detachEventBase();
+    evb_ = nullptr;
+  }
+
+  void setOnDetachable(folly::Function<void()> onDetachable) {
+    onDetachable_ = std::move(onDetachable);
+  }
+
+  void notifyIfDetachable() {
+    if (onDetachable_ && isDetachable()) {
+      onDetachable_();
+    }
+  }
+
  private:
   folly::EventBase* evb_;
   folly::fibers::FiberManager* fm_;
   folly::AsyncTransportWrapper::UniquePtr socket_;
+  folly::Function<void()> onDetachable_;
   StreamId nextStreamId_{1};
   bool setupFrameSent_{false};
   enum class ConnectionState : uint8_t {
@@ -126,7 +179,7 @@ class RocketClient : public folly::DelayedDestruction,
         : requestStreamPayload(std::move(payload)), flowable(std::move(f)) {}
 
     std::unique_ptr<Payload> requestStreamPayload;
-    const std::shared_ptr<RocketClientFlowable> flowable;
+    std::shared_ptr<RocketClientFlowable> flowable;
   };
   using StreamMap = std::unordered_map<StreamId, StreamWrapper>;
   StreamMap streams_;
@@ -146,6 +199,7 @@ class RocketClient : public folly::DelayedDestruction,
   WriteLoopCallback writeLoopCallback_;
 
   std::unique_ptr<folly::EventBase::LoopCallback> eventBaseDestructionCallback_;
+  folly::Function<void()> closeCallback_;
 
   RocketClient(
       folly::EventBase& evb,

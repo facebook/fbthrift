@@ -25,6 +25,7 @@
 #include <folly/CppAttributes.h>
 #include <folly/ExceptionWrapper.h>
 #include <folly/Format.h>
+#include <folly/GLog.h>
 #include <folly/Likely.h>
 #include <folly/Try.h>
 #include <folly/fibers/FiberManager.h>
@@ -229,24 +230,44 @@ void RocketClient::sendRequestNSync(StreamId streamId, int32_t n) {
 void RocketClient::sendCancelSync(StreamId streamId) {
   RequestContext ctx(
       CancelFrame(streamId), queue_, false /* setupFrameNeeded */);
+  SCOPE_EXIT {
+    freeStream(streamId);
+  };
   scheduleWrite(ctx);
-  streams_.erase(streamId);
-  return ctx.waitForWriteToComplete();
+  ctx.waitForWriteToComplete();
 }
 
 void RocketClient::sendRequestN(StreamId streamId, int32_t n) {
-  fm_->addTask([this, streamId, n, keepAlive = shared_from_this()] {
-    sendRequestNSync(streamId, n);
-  });
+  fm_->addTaskFinally(
+      [this, streamId, n] { sendRequestNSync(streamId, n); },
+      [this, keepAlive = shared_from_this()](folly::Try<void>&& result) {
+        if (result.hasException()) {
+          FB_LOG_EVERY_MS(ERROR, 1000) << "sendRequestN failed, closing now: "
+                                       << result.exception().what();
+          closeNow(std::move(result.exception()));
+        }
+      });
 }
 
 void RocketClient::cancelStream(StreamId streamId) {
-  fm_->addTask([this, streamId, keepAlive = shared_from_this()] {
-    sendCancelSync(streamId);
-  });
+  fm_->addTaskFinally(
+      [this, streamId] { sendCancelSync(streamId); },
+      [this, keepAlive = shared_from_this()](folly::Try<void>&& result) {
+        if (result.hasException()) {
+          FB_LOG_EVERY_MS(ERROR, 1000) << "cancelStream failed, closing now: "
+                                       << result.exception().what();
+          closeNow(std::move(result.exception()));
+        }
+      });
 }
 
 void RocketClient::scheduleWrite(RequestContext& ctx) {
+  if (!evb_) {
+    folly::throw_exception(transport::TTransportException(
+        transport::TTransportException::TTransportExceptionType::INVALID_STATE,
+        "Cannot send requests on a detached client"));
+  }
+
   if (state_ != ConnectionState::CONNECTED) {
     folly::throw_exception(transport::TTransportException(
         transport::TTransportException::TTransportExceptionType::NOT_OPEN,
@@ -280,6 +301,8 @@ void RocketClient::writeScheduledRequestsToSocket() noexcept {
         std::move(iobufChain),
         --reqsToWrite ? folly::WriteFlags::CORK : folly::WriteFlags::NONE);
   }
+
+  notifyIfDetachable();
 }
 
 void RocketClient::writeSuccess() noexcept {
@@ -320,6 +343,10 @@ void RocketClient::writeErr(
 void RocketClient::closeNow(folly::exception_wrapper ew) noexcept {
   DestructorGuard dg(this);
 
+  if (auto closeCallback = std::move(closeCallback_)) {
+    closeCallback();
+  }
+
   if (socket_) {
     socket_->closeNow();
     socket_.reset();
@@ -328,6 +355,8 @@ void RocketClient::closeNow(folly::exception_wrapper ew) noexcept {
   for (auto it = streams_.begin(); it != streams_.end();) {
     auto& streamWrapper = it->second;
     streamWrapper.flowable->onError(ew);
+    // Since the client is shutting down now, we don't bother with
+    // notifyIfDetachable().
     it = streams_.erase(it);
   }
 }
@@ -367,6 +396,11 @@ void RocketClient::close(folly::exception_wrapper ew) noexcept {
 RocketClient::StreamWrapper* RocketClient::getStreamById(StreamId streamId) {
   auto it = streams_.find(streamId);
   return it != streams_.end() ? &it->second : nullptr;
+}
+
+void RocketClient::freeStream(StreamId streamId) {
+  streams_.erase(streamId);
+  notifyIfDetachable();
 }
 
 } // namespace rocket

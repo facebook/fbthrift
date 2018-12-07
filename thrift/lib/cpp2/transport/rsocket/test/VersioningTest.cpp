@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+#include <gtest/gtest.h>
+
 #include <thrift/lib/cpp2/transport/rsocket/test/util/TestUtil.h>
 #include <thrift/lib/cpp2/transport/rsocket/test/util/VersionServicesMock.h>
 
@@ -21,7 +23,9 @@ namespace apache {
 namespace thrift {
 
 // Testing transport layers for resilience to changes in the service interface
-class VersioningTest : public TestSetup {
+class VersioningTest
+    : public TestSetup,
+      public testing::WithParamInterface<bool /* useRocketClient */> {
  private:
  public:
   void SetUp() override {
@@ -55,28 +59,32 @@ class VersioningTest : public TestSetup {
   void connectToOldServer(
       folly::Function<void(std::unique_ptr<OldVersionAsyncClient>)> callMe,
       folly::Function<void()> onDetachable = nullptr) {
-    auto channel = connectToServer(portOld_, std::move(onDetachable));
+    auto channel = connectToServer(
+        portOld_, std::move(onDetachable), GetParam() /* useRocketClient */);
     callMe(std::make_unique<OldVersionAsyncClient>(std::move(channel)));
   }
 
   void connectToOldServer(
       folly::Function<void(std::unique_ptr<NewVersionAsyncClient>)> callMe,
       folly::Function<void()> onDetachable = nullptr) {
-    auto channel = connectToServer(portOld_, std::move(onDetachable));
+    auto channel = connectToServer(
+        portOld_, std::move(onDetachable), GetParam() /* useRocketClient */);
     callMe(std::make_unique<NewVersionAsyncClient>(std::move(channel)));
   }
 
   void connectToNewServer(
       folly::Function<void(std::unique_ptr<OldVersionAsyncClient>)> callMe,
       folly::Function<void()> onDetachable = nullptr) {
-    auto channel = connectToServer(portNew_, std::move(onDetachable));
+    auto channel = connectToServer(
+        portNew_, std::move(onDetachable), GetParam() /* useRocketClient */);
     callMe(std::make_unique<OldVersionAsyncClient>(std::move(channel)));
   }
 
   void connectToNewServer(
       folly::Function<void(std::unique_ptr<NewVersionAsyncClient>)> callMe,
       folly::Function<void()> onDetachable = nullptr) {
-    auto channel = connectToServer(portNew_, std::move(onDetachable));
+    auto channel = connectToServer(
+        portNew_, std::move(onDetachable), GetParam() /* useRocketClient */);
     callMe(std::make_unique<NewVersionAsyncClient>(std::move(channel)));
   }
 
@@ -91,7 +99,7 @@ class VersioningTest : public TestSetup {
   folly::ScopedEventBaseThread executor_;
 };
 
-TEST_F(VersioningTest, SameRequestResponse) {
+TEST_P(VersioningTest, SameRequestResponse) {
   connectToOldServer([](std::unique_ptr<OldVersionAsyncClient> client) {
     EXPECT_EQ(6, client->sync_AddOne(5));
   });
@@ -106,7 +114,7 @@ TEST_F(VersioningTest, SameRequestResponse) {
   });
 }
 
-TEST_F(VersioningTest, SameStream) {
+TEST_P(VersioningTest, SameStream) {
   auto oldLambda = [this](std::unique_ptr<OldVersionAsyncClient> client) {
     auto stream = client->sync_Range(5, 5);
     auto subscription =
@@ -135,7 +143,7 @@ TEST_F(VersioningTest, SameStream) {
   connectToNewServer(newLambda);
 }
 
-TEST_F(VersioningTest, SameResponseAndStream) {
+TEST_P(VersioningTest, SameResponseAndStream) {
   auto oldLambda = [this](std::unique_ptr<OldVersionAsyncClient> client) {
     auto streamAndResponse = client->sync_RangeAndAddOne(5, 5, -2);
     EXPECT_EQ(-1, streamAndResponse.response);
@@ -166,7 +174,7 @@ TEST_F(VersioningTest, SameResponseAndStream) {
   connectToNewServer(newLambda);
 }
 
-TEST_F(VersioningTest, DeletedMethod) {
+TEST_P(VersioningTest, DeletedMethod) {
   connectToOldServer([](std::unique_ptr<OldVersionAsyncClient> client) {
     client->sync_DeletedMethod();
   });
@@ -182,7 +190,7 @@ TEST_F(VersioningTest, DeletedMethod) {
   });
 }
 
-TEST_F(VersioningTest, DeletedStreamMethod) {
+TEST_P(VersioningTest, DeletedStreamMethod) {
   connectToOldServer([](std::unique_ptr<OldVersionAsyncClient> client) {
     client->sync_DeletedStreamMethod();
   });
@@ -198,7 +206,7 @@ TEST_F(VersioningTest, DeletedStreamMethod) {
   });
 }
 
-TEST_F(VersioningTest, StreamToRequestResponse) {
+TEST_P(VersioningTest, StreamToRequestResponse) {
   // Old client connects to the old server, everything is fine
   connectToOldServer([](std::unique_ptr<OldVersionAsyncClient> client) {
     folly::ScopedEventBaseThread clientThread;
@@ -234,7 +242,7 @@ TEST_F(VersioningTest, StreamToRequestResponse) {
   });
 }
 
-TEST_F(VersioningTest, ResponseandStreamToRequestResponse) {
+TEST_P(VersioningTest, ResponseandStreamToRequestResponse) {
   // Old client connects to the old server, everything is fine
   connectToOldServer([](std::unique_ptr<OldVersionAsyncClient> client) {
     folly::ScopedEventBaseThread clientThread;
@@ -271,7 +279,7 @@ TEST_F(VersioningTest, ResponseandStreamToRequestResponse) {
   });
 }
 
-TEST_F(VersioningTest, RequestResponseToStream) {
+TEST_P(VersioningTest, RequestResponseToStream) {
   // Old client connects to the old server, everything is fine
   connectToOldServer([](std::unique_ptr<OldVersionAsyncClient> client) {
     Message result;
@@ -304,7 +312,7 @@ TEST_F(VersioningTest, RequestResponseToStream) {
   });
 }
 
-TEST_F(VersioningTest, RequestResponseToResponseandStream) {
+TEST_P(VersioningTest, RequestResponseToResponseandStream) {
   // Old client connects to the old server, everything is fine
   connectToOldServer([](std::unique_ptr<OldVersionAsyncClient> client) {
     Message result;
@@ -337,7 +345,7 @@ TEST_F(VersioningTest, RequestResponseToResponseandStream) {
   });
 }
 
-TEST_F(VersioningTest, DeletedResponseAndStreamMethod) {
+TEST_P(VersioningTest, DeletedResponseAndStreamMethod) {
   connectToOldServer([](std::unique_ptr<OldVersionAsyncClient> client) {
     client->sync_DeletedResponseAndStreamMethod();
   });
@@ -352,6 +360,11 @@ TEST_F(VersioningTest, DeletedResponseAndStreamMethod) {
     }
   });
 }
+
+INSTANTIATE_TEST_CASE_P(
+    VersioningTests,
+    VersioningTest,
+    testing::Values(false, true));
 
 } // namespace thrift
 } // namespace apache

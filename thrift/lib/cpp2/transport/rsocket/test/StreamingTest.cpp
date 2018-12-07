@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+#include <gtest/gtest.h>
+
 #include <thrift/lib/cpp2/transport/rsocket/test/util/TestServiceMock.h>
 #include <thrift/lib/cpp2/transport/rsocket/test/util/TestUtil.h>
 
@@ -39,7 +41,9 @@ void waitNoLeak(StreamServiceAsyncClient* client) {
 } // namespace
 
 // Testing transport layers for their support to Streaming
-class StreamingTest : public TestSetup {
+class StreamingTest
+    : public TestSetup,
+      public testing::WithParamInterface<bool /* useRocketClient */> {
  protected:
   void SetUp() override {
     handler_ = std::make_shared<StrictMock<TestServiceMock>>();
@@ -60,7 +64,8 @@ class StreamingTest : public TestSetup {
   void connectToServer(
       folly::Function<void(std::unique_ptr<StreamServiceAsyncClient>)> callMe,
       folly::Function<void()> onDetachable = nullptr) {
-    auto channel = connectToServer(port_, std::move(onDetachable));
+    auto channel = connectToServer(
+        port_, std::move(onDetachable), GetParam() /* useRocketClient */);
     callMe(std::make_unique<StreamServiceAsyncClient>(std::move(channel)));
   }
 
@@ -102,7 +107,7 @@ class BlockStreamingTest : public StreamingTest {
   }
 };
 
-TEST_F(StreamingTest, SimpleStream) {
+TEST_P(StreamingTest, SimpleStream) {
   connectToServer([this](std::unique_ptr<StreamServiceAsyncClient> client) {
     auto result = client->sync_range(0, 10).via(&executor_);
     int j = 0;
@@ -114,7 +119,7 @@ TEST_F(StreamingTest, SimpleStream) {
   });
 }
 
-TEST_F(StreamingTest, FutureSimpleStream) {
+TEST_P(StreamingTest, FutureSimpleStream) {
   connectToServer([this](std::unique_ptr<StreamServiceAsyncClient> client) {
     auto futureRange = client->future_range(0, 10);
     auto stream = std::move(futureRange).get();
@@ -128,7 +133,7 @@ TEST_F(StreamingTest, FutureSimpleStream) {
   });
 }
 
-TEST_F(StreamingTest, CallbackSimpleStream) {
+TEST_P(StreamingTest, CallbackSimpleStream) {
   connectToServer([this](std::unique_ptr<StreamServiceAsyncClient> client) {
     folly::Baton<> done;
     int j = 0;
@@ -154,7 +159,7 @@ TEST_F(StreamingTest, CallbackSimpleStream) {
   });
 }
 
-TEST_F(StreamingTest, DefaultStreamImplementation) {
+TEST_P(StreamingTest, DefaultStreamImplementation) {
   connectToServer([&](std::unique_ptr<StreamServiceAsyncClient> client) {
     EXPECT_THROW(
         toFlowable(client->sync_nonImplementedStream("test").via(&executor_)),
@@ -162,7 +167,7 @@ TEST_F(StreamingTest, DefaultStreamImplementation) {
   });
 }
 
-TEST_F(StreamingTest, ReturnsNullptr) {
+TEST_P(StreamingTest, ReturnsNullptr) {
   // User function should return a Stream, but it returns a nullptr.
   connectToServer([&](std::unique_ptr<StreamServiceAsyncClient> client) {
     bool success = false;
@@ -177,13 +182,13 @@ TEST_F(StreamingTest, ReturnsNullptr) {
   });
 }
 
-TEST_F(StreamingTest, ThrowsWithResponse) {
+TEST_P(StreamingTest, ThrowsWithResponse) {
   connectToServer([&](std::unique_ptr<StreamServiceAsyncClient> client) {
     EXPECT_THROW(client->sync_throwError(), Error);
   });
 }
 
-TEST_F(StreamingTest, LifeTimeTesting) {
+TEST_P(StreamingTest, LifeTimeTesting) {
   connectToServer([this](std::unique_ptr<StreamServiceAsyncClient> client) {
     CHECK_EQ(0, client->sync_instanceCount());
 
@@ -261,7 +266,7 @@ TEST_F(StreamingTest, LifeTimeTesting) {
   });
 }
 
-TEST_F(StreamingTest, RequestTimeout) {
+TEST_P(StreamingTest, RequestTimeout) {
   bool withResponse = false;
   auto test =
       [this, &withResponse](std::unique_ptr<StreamServiceAsyncClient> client) {
@@ -291,7 +296,7 @@ TEST_F(StreamingTest, RequestTimeout) {
   EXPECT_EQ(0, observer_->queueTimeout_);
 }
 
-TEST_F(StreamingTest, OnDetachable) {
+TEST_P(StreamingTest, OnDetachable) {
   folly::Promise<folly::Unit> detachablePromise;
   auto detachableFuture = detachablePromise.getSemiFuture();
   connectToServer(
@@ -317,7 +322,7 @@ TEST_F(StreamingTest, OnDetachable) {
       });
 }
 
-TEST_F(StreamingTest, ChunkTimeout) {
+TEST_P(StreamingTest, ChunkTimeout) {
   connectToServer([this](std::unique_ptr<StreamServiceAsyncClient> client) {
     RpcOptions options;
     options.setChunkTimeout(std::chrono::milliseconds{10});
@@ -342,7 +347,7 @@ TEST_F(StreamingTest, ChunkTimeout) {
   });
 }
 
-TEST_F(StreamingTest, UserCantBlockIOThread) {
+TEST_P(StreamingTest, UserCantBlockIOThread) {
   connectToServer([this](std::unique_ptr<StreamServiceAsyncClient> client) {
     RpcOptions options;
     options.setChunkTimeout(std::chrono::milliseconds{10});
@@ -370,7 +375,7 @@ TEST_F(StreamingTest, UserCantBlockIOThread) {
   });
 }
 
-TEST_F(StreamingTest, TwoRequestsOneTimesOut) {
+TEST_P(StreamingTest, TwoRequestsOneTimesOut) {
   folly::Promise<folly::Unit> detachablePromise;
   auto detachableFuture = detachablePromise.getSemiFuture();
 
@@ -415,7 +420,7 @@ TEST_F(StreamingTest, TwoRequestsOneTimesOut) {
       });
 }
 
-TEST_F(StreamingTest, StreamStarvationNoRequest) {
+TEST_P(StreamingTest, StreamStarvationNoRequest) {
   connectToServer([this](std::unique_ptr<StreamServiceAsyncClient> client) {
     server_->setStreamExpireTime(std::chrono::milliseconds(10));
 
@@ -439,7 +444,7 @@ TEST_F(StreamingTest, StreamStarvationNoRequest) {
   });
 }
 
-TEST_F(StreamingTest, StreamStarvationNoSubscribe) {
+TEST_P(StreamingTest, StreamStarvationNoSubscribe) {
   connectToServer([this](std::unique_ptr<StreamServiceAsyncClient> client) {
     server_->setStreamExpireTime(std::chrono::milliseconds(10));
 
@@ -451,7 +456,7 @@ TEST_F(StreamingTest, StreamStarvationNoSubscribe) {
   });
 }
 
-TEST_F(StreamingTest, StreamThrowsKnownException) {
+TEST_P(StreamingTest, StreamThrowsKnownException) {
   connectToServer([this](std::unique_ptr<StreamServiceAsyncClient> client) {
     bool thrown = false;
     auto stream = client->sync_streamThrows(1);
@@ -473,7 +478,7 @@ TEST_F(StreamingTest, StreamThrowsKnownException) {
   });
 }
 
-TEST_F(StreamingTest, StreamThrowsNonspecifiedException) {
+TEST_P(StreamingTest, StreamThrowsNonspecifiedException) {
   connectToServer([this](std::unique_ptr<StreamServiceAsyncClient> client) {
     bool thrown = false;
     auto stream = client->sync_streamThrows(2);
@@ -496,7 +501,7 @@ TEST_F(StreamingTest, StreamThrowsNonspecifiedException) {
   });
 }
 
-TEST_F(StreamingTest, StreamThrowsRuntimeError) {
+TEST_P(StreamingTest, StreamThrowsRuntimeError) {
   connectToServer([this](std::unique_ptr<StreamServiceAsyncClient> client) {
     bool thrown = false;
     auto stream = client->sync_streamThrows(3);
@@ -517,7 +522,7 @@ TEST_F(StreamingTest, StreamThrowsRuntimeError) {
   });
 }
 
-TEST_F(StreamingTest, StreamFunctionThrowsImmediately) {
+TEST_P(StreamingTest, StreamFunctionThrowsImmediately) {
   connectToServer([](std::unique_ptr<StreamServiceAsyncClient> client) {
     bool thrown = false;
     try {
@@ -529,7 +534,7 @@ TEST_F(StreamingTest, StreamFunctionThrowsImmediately) {
   });
 }
 
-TEST_F(StreamingTest, ResponseAndStreamThrowsKnownException) {
+TEST_P(StreamingTest, ResponseAndStreamThrowsKnownException) {
   connectToServer([this](std::unique_ptr<StreamServiceAsyncClient> client) {
     bool thrown = false;
     auto responseAndStream = client->sync_responseAndStreamThrows(1);
@@ -552,7 +557,7 @@ TEST_F(StreamingTest, ResponseAndStreamThrowsKnownException) {
   });
 }
 
-TEST_F(StreamingTest, ResponseAndStreamFunctionThrowsImmediately) {
+TEST_P(StreamingTest, ResponseAndStreamFunctionThrowsImmediately) {
   connectToServer([](std::unique_ptr<StreamServiceAsyncClient> client) {
     bool thrown = false;
     try {
@@ -564,7 +569,7 @@ TEST_F(StreamingTest, ResponseAndStreamFunctionThrowsImmediately) {
   });
 }
 
-TEST_F(BlockStreamingTest, StreamBlockTaskQueue) {
+TEST_P(BlockStreamingTest, StreamBlockTaskQueue) {
   connectToServer([](std::unique_ptr<StreamServiceAsyncClient> client) {
     std::vector<apache::thrift::SemiStream<int32_t>> streams;
     for (int ind = 0; ind < 1000; ind++) {
@@ -572,6 +577,16 @@ TEST_F(BlockStreamingTest, StreamBlockTaskQueue) {
     }
   });
 }
+
+INSTANTIATE_TEST_CASE_P(
+    StreamingTests,
+    StreamingTest,
+    testing::Values(false, true));
+
+INSTANTIATE_TEST_CASE_P(
+    BlockingStreamingTests,
+    BlockStreamingTest,
+    testing::Values(false, true));
 
 } // namespace thrift
 } // namespace apache

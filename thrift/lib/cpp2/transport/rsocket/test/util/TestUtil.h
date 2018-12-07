@@ -20,7 +20,6 @@
 #include <folly/io/async/ScopedEventBaseThread.h>
 #include <thrift/lib/cpp/async/TAsyncSocket.h>
 #include <thrift/lib/cpp2/async/PooledRequestChannel.h>
-#include <thrift/lib/cpp2/async/RSocketClientChannel.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
 #include <thrift/lib/cpp2/server/TransportRoutingHandler.h>
 #include <thrift/lib/cpp2/transport/core/ThriftClient.h>
@@ -75,7 +74,8 @@ class TestSetup : public testing::Test {
   std::unique_ptr<PooledRequestChannel, folly::DelayedDestruction::Destructor>
   connectToServer(
       uint16_t port,
-      folly::Function<void()> onDetachable = nullptr);
+      folly::Function<void()> onDetachable = nullptr,
+      bool useRocketClient = false);
 
  protected:
   std::shared_ptr<FakeServerObserver> observer_;
