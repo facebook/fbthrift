@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-#include <algorithm>
 #include <chrono>
 #include <string>
 #include <utility>
@@ -36,6 +35,7 @@
 #include <thrift/lib/cpp2/transport/rocket/client/RocketClient.h>
 #include <thrift/lib/cpp2/transport/rocket/framing/ErrorCode.h>
 #include <thrift/lib/cpp2/transport/rocket/test/network/ClientServerTestUtil.h>
+#include <thrift/lib/cpp2/transport/rocket/test/network/Util.h>
 
 using namespace apache::thrift;
 using namespace apache::thrift::rocket;
@@ -43,42 +43,13 @@ using namespace apache::thrift::rocket::test;
 using namespace apache::thrift::transport;
 
 namespace {
-std::string repeatPattern(folly::StringPiece pattern, size_t nbytes) {
-  std::string rv;
-  rv.reserve(nbytes);
-  for (size_t remaining = nbytes; remaining != 0;) {
-    const size_t toCopy = std::min<size_t>(pattern.size(), remaining);
-    std::copy_n(pattern.begin(), toCopy, std::back_inserter(rv));
-    remaining -= toCopy;
-  }
-  return rv;
-}
-
-folly::StringPiece getRange(folly::IOBuf& iobuf) {
-  return folly::StringPiece(iobuf.coalesce());
-}
-
-void expectTransportExceptionType(
-    TTransportException::TTransportExceptionType expectedType,
-    folly::exception_wrapper ew) {
-  const auto* const tex =
-      dynamic_cast<transport::TTransportException*>(ew.get_exception());
-  EXPECT_NE(nullptr, tex);
-  EXPECT_EQ(expectedType, tex->getType());
-}
-
-void expectRocketExceptionType(
-    ErrorCode expectedCode,
-    folly::exception_wrapper ew) {
-  const auto* const rex = dynamic_cast<RocketException*>(ew.get_exception());
-  EXPECT_NE(nullptr, rex);
-  EXPECT_EQ(expectedCode, rex->getErrorCode());
-}
-
-class RocketClientTest : public testing::Test {
+// Used for testing RocketClient against rsocket-cpp server and for testing
+// RocketClient against RocketTestServer
+template <class Server>
+class RocketNetworkTest : public testing::Test {
  protected:
   void SetUp() override {
-    server_ = std::make_unique<RsocketTestServer>();
+    server_ = std::make_unique<Server>();
     client_ = std::make_unique<RocketTestClient>(
         folly::SocketAddress("::1", server_->getListeningPort()));
   }
@@ -98,17 +69,20 @@ class RocketClientTest : public testing::Test {
   }
 
  protected:
-  std::unique_ptr<RsocketTestServer> server_;
+  std::unique_ptr<Server> server_;
   std::unique_ptr<RocketTestClient> client_;
   folly::ScopedEventBaseThread userExecutor_;
 };
 } // namespace
 
+using ServerTypes = ::testing::Types<RsocketTestServer, RocketTestServer>;
+TYPED_TEST_CASE(RocketNetworkTest, ServerTypes);
+
 /**
  * REQUEST_RESPONSE tests
  */
-TEST_F(RocketClientTest, RequestResponseBasic) {
-  withClient([](RocketTestClient& client) {
+TYPED_TEST(RocketNetworkTest, RequestResponseBasic) {
+  this->withClient([](RocketTestClient& client) {
     constexpr folly::StringPiece kMetadata("metadata");
     constexpr folly::StringPiece kData("test_request");
 
@@ -122,8 +96,8 @@ TEST_F(RocketClientTest, RequestResponseBasic) {
   });
 }
 
-TEST_F(RocketClientTest, RequestResponseTimeout) {
-  withClient([](RocketTestClient& client) {
+TYPED_TEST(RocketNetworkTest, RequestResponseTimeout) {
+  this->withClient([](RocketTestClient& client) {
     constexpr folly::StringPiece kMetadata("metadata");
     constexpr folly::StringPiece kData("sleep_ms:200");
 
@@ -138,8 +112,8 @@ TEST_F(RocketClientTest, RequestResponseTimeout) {
   });
 }
 
-TEST_F(RocketClientTest, RequestResponseLargeMetadata) {
-  withClient([](RocketTestClient& client) {
+TYPED_TEST(RocketNetworkTest, RequestResponseLargeMetadata) {
+  this->withClient([](RocketTestClient& client) {
     // Ensure metadata will be split across multiple frames
     constexpr size_t kReplyMetadataSize = 0x2ffffff;
     constexpr folly::StringPiece kPattern =
@@ -161,8 +135,8 @@ TEST_F(RocketClientTest, RequestResponseLargeMetadata) {
   });
 }
 
-TEST_F(RocketClientTest, RequestResponseLargeData) {
-  withClient([](RocketTestClient& client) {
+TYPED_TEST(RocketNetworkTest, RequestResponseLargeData) {
+  this->withClient([](RocketTestClient& client) {
     // Ensure metadata will be split across multiple frames
     constexpr size_t kReplyDataSize = 0x2ffffff;
     constexpr folly::StringPiece kPattern =
@@ -183,8 +157,8 @@ TEST_F(RocketClientTest, RequestResponseLargeData) {
   });
 }
 
-TEST_F(RocketClientTest, RequestResponseEmptyMetadata) {
-  withClient([](RocketTestClient& client) {
+TYPED_TEST(RocketNetworkTest, RequestResponseEmptyMetadata) {
+  this->withClient([](RocketTestClient& client) {
     constexpr folly::StringPiece kMetadata{"metadata"};
     constexpr folly::StringPiece kData{"metadata_echo:"};
 
@@ -198,8 +172,8 @@ TEST_F(RocketClientTest, RequestResponseEmptyMetadata) {
   });
 }
 
-TEST_F(RocketClientTest, RequestResponseEmptyData) {
-  withClient([](RocketTestClient& client) {
+TYPED_TEST(RocketNetworkTest, RequestResponseEmptyData) {
+  this->withClient([](RocketTestClient& client) {
     constexpr folly::StringPiece kMetadata{"metadata"};
     constexpr folly::StringPiece kData{"data_echo:"};
 
@@ -213,8 +187,8 @@ TEST_F(RocketClientTest, RequestResponseEmptyData) {
   });
 }
 
-TEST_F(RocketClientTest, RequestResponseError) {
-  withClient([](RocketTestClient& client) {
+TYPED_TEST(RocketNetworkTest, RequestResponseError) {
+  this->withClient([](RocketTestClient& client) {
     constexpr folly::StringPiece kMetadata{"metadata"};
     constexpr folly::StringPiece kData{"error:application"};
 
@@ -227,13 +201,13 @@ TEST_F(RocketClientTest, RequestResponseError) {
   });
 }
 
-TEST_F(RocketClientTest, RequestResponseDeadServer) {
+TYPED_TEST(RocketNetworkTest, RequestResponseDeadServer) {
   constexpr folly::StringPiece kMetadata{"metadata"};
   constexpr folly::StringPiece kData{"data"};
 
-  server_.reset();
+  this->server_.reset();
 
-  auto reply = client_->sendRequestResponseSync(
+  auto reply = this->client_->sendRequestResponseSync(
       Payload::makeFromMetadataAndData(kMetadata, kData),
       std::chrono::milliseconds(250));
 
@@ -243,10 +217,11 @@ TEST_F(RocketClientTest, RequestResponseDeadServer) {
       std::move(reply.exception()));
 }
 
-TEST_F(RocketClientTest, RocketClientEventBaseDestruction) {
+TYPED_TEST(RocketNetworkTest, RocketClientEventBaseDestruction) {
   auto evb = std::make_unique<folly::EventBase>();
   folly::AsyncSocket::UniquePtr socket(new folly::AsyncSocket(
-      evb.get(), folly::SocketAddress("::1", server_->getListeningPort())));
+      evb.get(),
+      folly::SocketAddress("::1", this->server_->getListeningPort())));
   auto client = RocketClient::create(*evb, std::move(socket));
   EXPECT_NE(nullptr, client->getTransportWrapper());
 
@@ -257,8 +232,8 @@ TEST_F(RocketClientTest, RocketClientEventBaseDestruction) {
 /**
  * REQUEST_FNF tests
  */
-TEST_F(RocketClientTest, RequestFnfBasic) {
-  withClient([](RocketTestClient& client) {
+TYPED_TEST(RocketNetworkTest, RequestFnfBasic) {
+  this->withClient([](RocketTestClient& client) {
     constexpr folly::StringPiece kMetadata("metadata");
     constexpr folly::StringPiece kData("test_request");
 
@@ -272,6 +247,8 @@ TEST_F(RocketClientTest, RequestFnfBasic) {
 /**
  * REQUEST_STREAM tests
  */
+using RocketClientTest = RocketNetworkTest<RsocketTestServer>;
+
 TEST_F(RocketClientTest, RequestStreamBasic) {
   withClient([this](RocketTestClient& client) {
     constexpr size_t kNumRequestedPayloads = 200;

@@ -20,6 +20,9 @@
 #include <chrono>
 #include <memory>
 #include <stdexcept>
+#include <utility>
+
+#include <gtest/gtest.h>
 
 #include <folly/Conv.h>
 #include <folly/Optional.h>
@@ -27,18 +30,24 @@
 #include <folly/fibers/Baton.h>
 #include <folly/fibers/FiberManager.h>
 #include <folly/fibers/FiberManagerMap.h>
+#include <folly/futures/helpers.h>
 #include <folly/io/IOBuf.h>
 #include <folly/io/async/AsyncSocket.h>
 #include <folly/io/async/EventBase.h>
 
 #include <rsocket/RSocket.h>
 #include <rsocket/transports/tcp/TcpConnectionAcceptor.h>
+#include <wangle/acceptor/Acceptor.h>
+#include <wangle/acceptor/ServerSocketConfig.h>
 #include <yarpl/Flowable.h>
 #include <yarpl/Single.h>
 
 #include <thrift/lib/cpp2/async/Stream.h>
 #include <thrift/lib/cpp2/transport/rocket/Types.h>
 #include <thrift/lib/cpp2/transport/rocket/client/RocketClient.h>
+#include <thrift/lib/cpp2/transport/rocket/server/RocketServerConnection.h>
+#include <thrift/lib/cpp2/transport/rocket/server/RocketServerFrameContext.h>
+#include <thrift/lib/cpp2/transport/rocket/server/RocketServerHandler.h>
 
 using namespace rsocket;
 using namespace yarpl::flowable;
@@ -61,6 +70,48 @@ class RsocketTestServerResponder : public rsocket::RSocketResponder {
       uint32_t) final;
 };
 
+std::pair<std::unique_ptr<folly::IOBuf>, std::unique_ptr<folly::IOBuf>>
+makeTestResponse(
+    std::unique_ptr<folly::IOBuf> requestMetadata,
+    std::unique_ptr<folly::IOBuf> requestData) {
+  std::pair<std::unique_ptr<folly::IOBuf>, std::unique_ptr<folly::IOBuf>>
+      response;
+
+  folly::StringPiece data(requestData->coalesce());
+  constexpr folly::StringPiece kMetadataEchoPrefix{"metadata_echo:"};
+  constexpr folly::StringPiece kDataEchoPrefix{"data_echo:"};
+
+  folly::Optional<rsocket::Payload> responsePayload;
+  if (data.removePrefix("sleep_ms:")) {
+    // Sleep, then echo back request.
+    std::chrono::milliseconds sleepFor(folly::to<uint32_t>(data));
+    std::this_thread::sleep_for(sleepFor); // sleep override
+  } else if (data.removePrefix("error:")) {
+    // Reply with a specific kind of error.
+  } else if (data.startsWith(kMetadataEchoPrefix)) {
+    // Reply with echoed metadata in the response payload.
+    auto responseMetadata = requestData->clone();
+    responseMetadata->trimStart(kMetadataEchoPrefix.size());
+    response =
+        std::make_pair(std::move(responseMetadata), std::move(requestData));
+  } else if (data.startsWith(kDataEchoPrefix)) {
+    // Reply with echoed data in the response payload.
+    auto responseData = requestData->clone();
+    responseData->trimStart(kDataEchoPrefix.size());
+    response =
+        std::make_pair(std::move(requestMetadata), std::move(responseData));
+  }
+
+  // If response payload is not set at this point, simply echo back what client
+  // sent.
+  if (!response.first && !response.second) {
+    response =
+        std::make_pair(std::move(requestMetadata), std::move(requestData));
+  }
+
+  return response;
+}
+
 std::shared_ptr<Single<rsocket::Payload>>
 RsocketTestServerResponder::handleRequestResponse(
     rsocket::Payload request,
@@ -76,39 +127,14 @@ RsocketTestServerResponder::handleRequestResponse(
     });
   }
 
-  constexpr folly::StringPiece kMetadataEchoPrefix{"metadata_echo:"};
-  constexpr folly::StringPiece kDataEchoPrefix{"data_echo:"};
-
-  folly::Optional<rsocket::Payload> responsePayload;
-  if (data.removePrefix("sleep_ms:")) {
-    // Sleep, then echo back request.
-    std::chrono::milliseconds sleepFor(folly::to<uint32_t>(data));
-    std::this_thread::sleep_for(sleepFor); // sleep override
-  } else if (data.removePrefix("error:")) {
-    // Reply with a specific kind of error.
-  } else if (data.startsWith(kMetadataEchoPrefix)) {
-    // Reply with echoed metadata in the response payload.
-    auto responseMetadata = request.data->clone();
-    responseMetadata->trimStart(kMetadataEchoPrefix.size());
-    responsePayload.emplace(
-        rsocket::Payload(std::move(request.data), std::move(responseMetadata)));
-  } else if (data.startsWith(kDataEchoPrefix)) {
-    // Reply with echoed data in the response payload.
-    auto responseData = request.data->clone();
-    responseData->trimStart(kDataEchoPrefix.size());
-    responsePayload.emplace(
-        rsocket::Payload(std::move(responseData), std::move(request.metadata)));
-  }
-
-  // If response payload is not set at this point, simply echo back what client
-  // sent.
-  if (!responsePayload) {
-    responsePayload.emplace(std::move(request));
-  }
+  auto response =
+      makeTestResponse(std::move(request.metadata), std::move(request.data));
+  rsocket::Payload responsePayload(
+      std::move(response.second), std::move(response.first));
 
   return Single<rsocket::Payload>::create(
       [responsePayload =
-           std::move(*responsePayload)](auto&& subscriber) mutable {
+           std::move(responsePayload)](auto&& subscriber) mutable {
         subscriber->onSubscribe(SingleSubscriptions::empty());
         subscriber->onSuccess(std::move(responsePayload));
       });
@@ -242,6 +268,94 @@ folly::Try<SemiStream<Payload>> RocketTestClient::sendRequestStreamSync(
   });
 
   return stream;
+}
+
+namespace {
+class RocketTestServerAcceptor final : public wangle::Acceptor {
+ public:
+  explicit RocketTestServerAcceptor(
+      std::shared_ptr<RocketServerHandler> frameHandler)
+      : Acceptor(wangle::ServerSocketConfig{}),
+        frameHandler_(std::move(frameHandler)) {}
+
+  void onNewConnection(
+      folly::AsyncTransportWrapper::UniquePtr socket,
+      const folly::SocketAddress*,
+      const std::string&,
+      wangle::SecureTransportType,
+      const wangle::TransportInfo&) override {
+    auto* connection =
+        new RocketServerConnection(std::move(socket), frameHandler_);
+    getConnectionManager()->addConnection(connection);
+  }
+
+ private:
+  const std::shared_ptr<RocketServerHandler> frameHandler_;
+};
+
+class RocketTestServerHandler : public RocketServerHandler {
+ public:
+  void handleSetupFrame(SetupFrame&&, RocketServerFrameContext&&) final {}
+
+  void handleRequestResponseFrame(
+      RequestResponseFrame&& frame,
+      RocketServerFrameContext&& context) final {
+    auto payload = std::move(frame.payload());
+    folly::StringPiece dataPiece(payload.data()->coalesce());
+
+    if (dataPiece.removePrefix("error:application")) {
+      return context.sendError(RocketException(
+          ErrorCode::APPLICATION_ERROR, "Application error occurred"));
+    }
+
+    auto md = std::move(payload).metadata();
+    auto data = std::move(payload).data();
+    auto response = makeTestResponse(std::move(md), std::move(data));
+    auto responsePayload = Payload::makeFromMetadataAndData(
+        std::move(response.first), std::move(response.second));
+    return context.sendPayload(
+        std::move(responsePayload), Flags::none().next(true).complete(true));
+  }
+
+  void handleRequestFnfFrame(RequestFnfFrame&&, RocketServerFrameContext&&)
+      final {}
+};
+} // namespace
+
+RocketTestServer::RocketTestServer()
+    : evb_(*ioThread_.getEventBase()),
+      listeningSocket_(new folly::AsyncServerSocket(&evb_)),
+      acceptor_(std::make_unique<RocketTestServerAcceptor>(
+          std::make_shared<RocketTestServerHandler>())) {
+  start();
+}
+
+RocketTestServer::~RocketTestServer() {
+  stop();
+}
+
+void RocketTestServer::start() {
+  folly::via(
+      &evb_,
+      [this] {
+        acceptor_->init(listeningSocket_.get(), &evb_);
+        listeningSocket_->bind(0 /* bind to any port */);
+        listeningSocket_->listen(128 /* tcpBacklog */);
+        listeningSocket_->startAccepting();
+      })
+      .wait();
+}
+
+void RocketTestServer::stop() {
+  folly::via(&evb_, [this] { listeningSocket_.reset(); }).wait();
+  // Ensure that asynchronous shutdown work enqueued by ~AsyncServerSocket()
+  // has a chance to run before acceptor_ is reset.
+  folly::via(&evb_, [] {}).wait();
+  folly::via(&evb_, [this] { acceptor_.reset(); }).wait();
+}
+
+uint16_t RocketTestServer::getListeningPort() const {
+  return listeningSocket_->getAddress().getPort();
 }
 
 } // namespace test

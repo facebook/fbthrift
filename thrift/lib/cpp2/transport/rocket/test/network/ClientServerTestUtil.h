@@ -20,6 +20,7 @@
 #include <memory>
 
 #include <folly/Try.h>
+#include <folly/io/async/AsyncServerSocket.h>
 #include <folly/io/async/ScopedEventBaseThread.h>
 
 #include <thrift/lib/cpp2/async/SemiStream.h>
@@ -39,6 +40,10 @@ class FiberManager;
 namespace rsocket {
 class RSocketServer;
 } // namespace rsocket
+
+namespace wangle {
+class Acceptor;
+} // namespace wangle
 
 namespace apache {
 namespace thrift {
@@ -78,6 +83,23 @@ class RocketTestClient {
   folly::EventBase& evb_;
   folly::fibers::FiberManager& fm_;
   std::shared_ptr<RocketClient> client_;
+};
+
+class RocketTestServer {
+ public:
+  RocketTestServer();
+  ~RocketTestServer();
+
+  uint16_t getListeningPort() const;
+
+ private:
+  folly::ScopedEventBaseThread ioThread_;
+  folly::EventBase& evb_;
+  folly::AsyncServerSocket::UniquePtr listeningSocket_;
+  std::unique_ptr<wangle::Acceptor> acceptor_;
+
+  void start();
+  void stop();
 };
 
 } // namespace test
