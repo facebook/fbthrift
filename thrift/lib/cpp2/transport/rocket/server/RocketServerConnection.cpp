@@ -36,6 +36,7 @@
 #include <thrift/lib/cpp2/transport/rocket/framing/Util.h>
 #include <thrift/lib/cpp2/transport/rocket/server/RocketServerFrameContext.h>
 #include <thrift/lib/cpp2/transport/rocket/server/RocketServerHandler.h>
+#include <thrift/lib/cpp2/transport/rocket/server/RocketServerStreamSubscriber.h>
 
 namespace apache {
 namespace thrift {
@@ -50,6 +51,18 @@ RocketServerConnection::RocketServerConnection(
   CHECK(socket_);
   CHECK(frameHandler_);
   socket_->setReadCB(&parser_);
+}
+
+std::shared_ptr<RocketServerStreamSubscriber>
+RocketServerConnection::createStreamSubscriber(
+    RocketServerFrameContext&& context,
+    uint32_t initialRequestN) {
+  const auto streamId = context.streamId();
+  auto& connection = context.connection();
+  auto subscriber = std::make_shared<RocketServerStreamSubscriber>(
+      std::move(context), initialRequestN);
+  connection.streams_.emplace(streamId, subscriber);
+  return subscriber;
 }
 
 void RocketServerConnection::send(std::unique_ptr<folly::IOBuf> data) {
@@ -71,8 +84,14 @@ RocketServerConnection::~RocketServerConnection() {
 }
 
 void RocketServerConnection::closeIfNeeded() {
-  if (state_ != ConnectionState::CLOSING || inflight_ != 0) {
+  if (state_ != ConnectionState::CLOSING || inflight_ != streams_.size()) {
     return;
+  }
+
+  for (auto it = streams_.begin(); it != streams_.end();) {
+    auto& subscriber = *it->second;
+    subscriber.cancel();
+    it = streams_.erase(it);
   }
 
   if (batchWriteLoopCallback_.isLoopCallbackScheduled()) {
@@ -129,6 +148,29 @@ void RocketServerConnection::handleFrame(std::unique_ptr<folly::IOBuf> frame) {
       RocketServerFrameContext frameContext(*this, streamId);
       return std::move(frameContext)
           .onRequestFrame(RequestFnfFrame(std::move(frame)));
+    }
+
+    case FrameType::REQUEST_STREAM: {
+      RocketServerFrameContext frameContext(*this, streamId);
+      return std::move(frameContext)
+          .onRequestFrame(RequestStreamFrame(std::move(frame)));
+    }
+
+    case FrameType::REQUEST_N: {
+      RequestNFrame requestNFrame(std::move(frame));
+      if (auto* stream = folly::get_ptr(streams_, requestNFrame.streamId())) {
+        (*stream)->request(requestNFrame.requestN());
+      }
+      return;
+    }
+
+    case FrameType::CANCEL: {
+      auto streamIt = streams_.find(streamId);
+      if (streamIt != streams_.end()) {
+        streamIt->second->cancel();
+        streams_.erase(streamIt);
+      }
+      return;
     }
 
     case FrameType::PAYLOAD: {

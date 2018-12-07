@@ -48,6 +48,7 @@
 #include <thrift/lib/cpp2/transport/rocket/server/RocketServerConnection.h>
 #include <thrift/lib/cpp2/transport/rocket/server/RocketServerFrameContext.h>
 #include <thrift/lib/cpp2/transport/rocket/server/RocketServerHandler.h>
+#include <thrift/lib/cpp2/transport/rocket/server/RocketServerStreamSubscriber.h>
 
 using namespace rsocket;
 using namespace yarpl::flowable;
@@ -112,6 +113,46 @@ makeTestResponse(
   return response;
 }
 
+template <class P>
+P makePayload(folly::StringPiece metadata, folly::StringPiece data);
+
+template <>
+rsocket::Payload makePayload<rsocket::Payload>(
+    folly::StringPiece metadata,
+    folly::StringPiece data) {
+  return rsocket::Payload(data, metadata);
+}
+
+template <>
+apache::thrift::rocket::Payload makePayload<apache::thrift::rocket::Payload>(
+    folly::StringPiece metadata,
+    folly::StringPiece data) {
+  return apache::thrift::rocket::Payload::makeFromMetadataAndData(
+      metadata, data);
+}
+
+template <class P>
+std::shared_ptr<yarpl::flowable::Flowable<P>> makeTestFlowable(
+    folly::StringPiece data) {
+  size_t n = 500;
+  if (data.removePrefix("generate:")) {
+    n = folly::to<size_t>(data);
+  }
+
+  auto gen = [n, i = static_cast<size_t>(0)](
+                 auto& subscriber, int64_t requested) mutable {
+    while (requested-- > 0 && i < n) {
+      subscriber.onNext(makePayload<P>(
+          folly::to<std::string>("metadata:", i), folly::to<std::string>(i)));
+      ++i;
+    }
+    if (i == n) {
+      subscriber.onComplete();
+    }
+  };
+  return yarpl::flowable::Flowable<P>::create(std::move(gen));
+}
+
 std::shared_ptr<Single<rsocket::Payload>>
 RsocketTestServerResponder::handleRequestResponse(
     rsocket::Payload request,
@@ -155,25 +196,7 @@ RsocketTestServerResponder::handleRequestStream(
               "Application error occurred"));
         });
   }
-
-  size_t n = 500;
-  if (data.removePrefix("generate:")) {
-    n = folly::to<size_t>(data);
-  }
-
-  auto gen = [request = std::move(request), n, i = static_cast<size_t>(0)](
-                 Subscriber<rsocket::Payload>& subscriber,
-                 int64_t requested) mutable {
-    while (requested-- > 0 && i < n) {
-      subscriber.onNext(rsocket::Payload(
-          folly::to<std::string>(i), folly::to<std::string>("metadata:", i)));
-      ++i;
-    }
-    if (i == n) {
-      subscriber.onComplete();
-    }
-  };
-  return Flowable<rsocket::Payload>::create(std::move(gen));
+  return makeTestFlowable<rsocket::Payload>(data);
 }
 } // namespace
 
@@ -319,6 +342,23 @@ class RocketTestServerHandler : public RocketServerHandler {
 
   void handleRequestFnfFrame(RequestFnfFrame&&, RocketServerFrameContext&&)
       final {}
+
+  void handleRequestStreamFrame(
+      RequestStreamFrame&& frame,
+      std::shared_ptr<RocketServerStreamSubscriber> subscriber) final {
+    auto payload = std::move(frame.payload());
+    folly::StringPiece dataPiece(payload.data()->coalesce());
+
+    if (dataPiece.removePrefix("error:application")) {
+      return Flowable<Payload>::error(
+                 folly::make_exception_wrapper<RocketException>(
+                     ErrorCode::APPLICATION_ERROR,
+                     "Application error occurred"))
+          ->subscribe(std::move(subscriber));
+    }
+    makeTestFlowable<rocket::Payload>(dataPiece)->subscribe(
+        std::move(subscriber));
+  }
 };
 } // namespace
 

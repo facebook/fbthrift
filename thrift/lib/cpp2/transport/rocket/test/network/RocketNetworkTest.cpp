@@ -247,10 +247,8 @@ TYPED_TEST(RocketNetworkTest, RequestFnfBasic) {
 /**
  * REQUEST_STREAM tests
  */
-using RocketClientTest = RocketNetworkTest<RsocketTestServer>;
-
-TEST_F(RocketClientTest, RequestStreamBasic) {
-  withClient([this](RocketTestClient& client) {
+TYPED_TEST(RocketNetworkTest, RequestStreamBasic) {
+  this->withClient([this](RocketTestClient& client) {
     constexpr size_t kNumRequestedPayloads = 200;
     constexpr folly::StringPiece kMetadata("metadata");
     const auto data =
@@ -263,7 +261,7 @@ TEST_F(RocketClientTest, RequestStreamBasic) {
     size_t received = 0;
     auto subscription =
         std::move(*stream)
-            .via(getUserExecutor())
+            .via(this->getUserExecutor())
             .subscribe(
                 [&received](Payload&& payload) {
                   const auto x = folly::to<size_t>(getRange(*payload.data()));
@@ -276,8 +274,8 @@ TEST_F(RocketClientTest, RequestStreamBasic) {
   });
 }
 
-TEST_F(RocketClientTest, RequestStreamError) {
-  withClient([this](RocketTestClient& client) {
+TYPED_TEST(RocketNetworkTest, RequestStreamError) {
+  this->withClient([this](RocketTestClient& client) {
     constexpr folly::StringPiece kMetadata("metadata");
     constexpr folly::StringPiece kData("error:application");
 
@@ -289,7 +287,7 @@ TEST_F(RocketClientTest, RequestStreamError) {
     bool error = false;
     auto subscription =
         std::move(*stream)
-            .via(getUserExecutor())
+            .via(this->getUserExecutor())
             .subscribe(
                 [&received](Payload&& payload) {
                   const auto x = folly::to<size_t>(getRange(*payload.data()));
@@ -308,8 +306,8 @@ TEST_F(RocketClientTest, RequestStreamError) {
   });
 }
 
-TEST_F(RocketClientTest, RequestStreamSmallInitialRequestN) {
-  withClient([this](RocketTestClient& client) {
+TYPED_TEST(RocketNetworkTest, RequestStreamSmallInitialRequestN) {
+  this->withClient([this](RocketTestClient& client) {
     constexpr size_t kNumRequestedPayloads = 200;
     constexpr folly::StringPiece kMetadata("metadata");
     const auto data =
@@ -322,7 +320,7 @@ TEST_F(RocketClientTest, RequestStreamSmallInitialRequestN) {
     size_t received = 0;
     auto subscription =
         std::move(*stream)
-            .via(getUserExecutor())
+            .via(this->getUserExecutor())
             .subscribe(
                 [&received](Payload&& payload) {
                   const auto x = folly::to<size_t>(getRange(*payload.data()));
@@ -336,8 +334,8 @@ TEST_F(RocketClientTest, RequestStreamSmallInitialRequestN) {
   });
 }
 
-TEST_F(RocketClientTest, RequestStreamCancelSubscription) {
-  withClient([this](RocketTestClient& client) {
+TYPED_TEST(RocketNetworkTest, RequestStreamCancelSubscription) {
+  this->withClient([this](RocketTestClient& client) {
     // Open an essentially infinite stream and ensure stream is able to be
     // canceled within a reasonable amount of time.
     constexpr size_t kNumRequestedPayloads =
@@ -353,7 +351,7 @@ TEST_F(RocketClientTest, RequestStreamCancelSubscription) {
     size_t received = 0;
     auto subscription =
         std::move(*stream)
-            .via(getUserExecutor())
+            .via(this->getUserExecutor())
             .subscribe(
                 [&received](Payload&& payload) {
                   const auto x = folly::to<size_t>(getRange(*payload.data()));
@@ -367,8 +365,8 @@ TEST_F(RocketClientTest, RequestStreamCancelSubscription) {
   });
 }
 
-TEST_F(RocketClientTest, RequestStreamNeverSubscribe) {
-  withClient([](RocketTestClient& client) {
+TYPED_TEST(RocketNetworkTest, RequestStreamNeverSubscribe) {
+  this->withClient([](RocketTestClient& client) {
     constexpr size_t kNumRequestedPayloads = 200;
     constexpr folly::StringPiece kMetadata("metadata");
     const auto data =
@@ -383,19 +381,19 @@ TEST_F(RocketClientTest, RequestStreamNeverSubscribe) {
   });
 }
 
-TEST_F(RocketClientTest, RequestStreamCloseClient) {
+TYPED_TEST(RocketNetworkTest, RequestStreamCloseClient) {
   constexpr size_t kNumRequestedPayloads = 200;
   constexpr folly::StringPiece kMetadata("metadata");
   const auto data = folly::to<std::string>("generate:", kNumRequestedPayloads);
 
-  auto stream = client_->sendRequestStreamSync(
+  auto stream = this->client_->sendRequestStreamSync(
       Payload::makeFromMetadataAndData(kMetadata, folly::StringPiece{data}));
   EXPECT_TRUE(stream.hasValue());
 
   bool onErrorCalled = false;
   auto subscription =
       std::move(*stream)
-          .via(getUserExecutor())
+          .via(this->getUserExecutor())
           .subscribe(
               [](Payload&&) {},
               [&](auto ew) {
@@ -405,7 +403,7 @@ TEST_F(RocketClientTest, RequestStreamCloseClient) {
                     std::move(ew));
               });
 
-  client_.reset();
+  this->client_.reset();
 
   std::move(subscription).join();
   EXPECT_TRUE(onErrorCalled);

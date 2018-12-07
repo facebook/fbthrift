@@ -16,15 +16,19 @@
 
 #pragma once
 
+#include <memory>
+
 namespace apache {
 namespace thrift {
 namespace rocket {
 
 class RequestFnfFrame;
 class RequestResponseFrame;
+class RequestStreamFrame;
 class SetupFrame;
 
 class RocketServerFrameContext;
+class RocketServerStreamSubscriber;
 
 class RocketServerHandler {
  public:
@@ -39,6 +43,10 @@ class RocketServerHandler {
   virtual void handleRequestFnfFrame(
       RequestFnfFrame&& frame,
       RocketServerFrameContext&& context) = 0;
+
+  virtual void handleRequestStreamFrame(
+      RequestStreamFrame&& frame,
+      std::shared_ptr<RocketServerStreamSubscriber> subscriber) = 0;
 };
 
 } // namespace rocket

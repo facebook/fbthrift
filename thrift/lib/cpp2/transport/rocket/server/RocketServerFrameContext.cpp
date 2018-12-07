@@ -43,6 +43,9 @@ class FragmentAppender : public boost::static_visitor<void> {
   void operator()(RequestFnfFrame& requestFrame) {
     appendPayload(requestFrame);
   }
+  void operator()(RequestStreamFrame& requestFrame) {
+    appendPayload(requestFrame);
+  }
 
  private:
   PayloadFrame payloadFrame_;
@@ -77,7 +80,6 @@ RocketServerFrameContext::~RocketServerFrameContext() {
 
 folly::EventBase& RocketServerFrameContext::getEventBase() const {
   DCHECK(connection_);
-
   return connection_->getEventBase();
 }
 
@@ -152,11 +154,24 @@ void RocketServerFrameContext::OnFullFrame::operator()(
   frameHandler.handleRequestFnfFrame(std::move(fullFrame), std::move(parent_));
 }
 
+void RocketServerFrameContext::OnFullFrame::operator()(
+    RequestStreamFrame&& fullFrame) {
+  fullFrame.setHasFollows(false);
+  auto& connection = *parent_.connection_;
+  auto& frameHandler = *connection.frameHandler_;
+  auto subscriber = connection.createStreamSubscriber(
+      std::move(parent_), fullFrame.initialRequestN());
+  frameHandler.handleRequestStreamFrame(
+      std::move(fullFrame), std::move(subscriber));
+}
+
 // Explicit function template instantiations
 template void RocketServerFrameContext::onRequestFrame<RequestResponseFrame>(
     RequestResponseFrame&&) &&;
 template void RocketServerFrameContext::onRequestFrame<RequestFnfFrame>(
     RequestFnfFrame&&) &&;
+template void RocketServerFrameContext::onRequestFrame<RequestStreamFrame>(
+    RequestStreamFrame&&) &&;
 
 } // namespace rocket
 } // namespace thrift

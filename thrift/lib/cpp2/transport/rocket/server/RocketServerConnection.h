@@ -52,6 +52,11 @@ class RocketServerConnection
 
   void send(std::unique_ptr<folly::IOBuf> data);
 
+  // Create a stream subscriber with initialRequestN credits
+  static std::shared_ptr<RocketServerStreamSubscriber> createStreamSubscriber(
+      RocketServerFrameContext&& context,
+      uint32_t initialRequestN);
+
   // Parser callbacks
   void handleFrame(std::unique_ptr<folly::IOBuf> frame);
   void close(folly::exception_wrapper ew);
@@ -59,6 +64,7 @@ class RocketServerConnection
   void onContextConstructed() {
     ++inflight_;
   }
+
   void onContextDestroyed() {
     DCHECK(inflight_ != 0);
     --inflight_;
@@ -94,6 +100,10 @@ class RocketServerConnection
     CLOSED,
   };
   ConnectionState state_{ConnectionState::ALIVE};
+
+  // streams_ map only maintains entries for REQUEST_STREAM streams
+  std::unordered_map<StreamId, std::shared_ptr<RocketServerStreamSubscriber>>
+      streams_;
 
   class BatchWriteLoopCallback : public folly::EventBase::LoopCallback {
    public:

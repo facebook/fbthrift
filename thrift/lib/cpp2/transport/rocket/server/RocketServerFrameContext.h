@@ -68,7 +68,8 @@ class RocketServerFrameContext {
  private:
   RocketServerConnection* connection_{nullptr};
   const StreamId streamId_;
-  folly::Optional<boost::variant<RequestResponseFrame, RequestFnfFrame>>
+  folly::Optional<
+      boost::variant<RequestResponseFrame, RequestFnfFrame, RequestStreamFrame>>
       bufferedFragments_;
 
   void onFullFrame() &&;
@@ -82,6 +83,7 @@ class RocketServerFrameContext::OnFullFrame
 
   void operator()(RequestResponseFrame&& fullFrame);
   void operator()(RequestFnfFrame&& fullFrame);
+  void operator()(RequestStreamFrame&& fullFrame);
 
  private:
   RocketServerFrameContext parent_;
@@ -91,6 +93,8 @@ extern template void RocketServerFrameContext::onRequestFrame<
     RequestResponseFrame>(RequestResponseFrame&&) &&;
 extern template void RocketServerFrameContext::onRequestFrame<RequestFnfFrame>(
     RequestFnfFrame&&) &&;
+extern template void RocketServerFrameContext::onRequestFrame<
+    RequestStreamFrame>(RequestStreamFrame&&) &&;
 
 } // namespace rocket
 } // namespace thrift
