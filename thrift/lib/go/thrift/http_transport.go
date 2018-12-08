@@ -19,7 +19,11 @@
 
 package thrift
 
-import "net/http"
+import (
+	"context"
+	"net"
+	"net/http"
+)
 
 // NewThriftHandlerFunc is a function that create a ready to use Apache Thrift Handler function
 func NewThriftHandlerFunc(processor Processor,
@@ -39,6 +43,18 @@ func NewThriftHandlerContextFunc(processor ProcessorContext,
 	return func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Add("Content-Type", "application/x-thrift")
 		transport := NewStreamTransport(r.Body, w)
-		ProcessContext(r.Context(), processor, inPfactory.GetProtocol(transport), outPfactory.GetProtocol(transport))
+		ctx := newConnInfoFromHTTP(r)
+		ProcessContext(ctx, processor, inPfactory.GetProtocol(transport), outPfactory.GetProtocol(transport))
 	}
+}
+
+func newConnInfoFromHTTP(r *http.Request) context.Context {
+	ctx := r.Context()
+	laddr, _ := ctx.Value(http.LocalAddrContextKey).(net.Addr)
+	raddr, _ := net.ResolveTCPAddr("tcp", r.RemoteAddr)
+	return context.WithValue(context.Background(), connInfoKey, ConnInfo{
+		LocalAddr:  laddr,
+		RemoteAddr: raddr,
+		tlsState:   r.TLS,
+	})
 }

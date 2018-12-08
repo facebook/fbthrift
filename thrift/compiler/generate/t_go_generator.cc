@@ -3095,9 +3095,13 @@ void t_go_generator::generate_service_server(t_service* tservice) {
                << gen_processor_func_ << ") {" << endl;
     f_service_ << indent() << "  p.processorMap[key] = processor" << endl;
     f_service_ << indent() << "}" << endl << endl;
-    f_service_ << indent() << "func (p *" << serviceName
-               << "Processor) GetProcessorFunction(key string) "
-               << "(processor " << gen_processor_func_ << ", err error) {"
+    f_service_ << indent() << "func (p *" << serviceName << "Processor) ";
+    if (gen_use_context_) {
+      f_service_ << "GetProcessorFunctionContext(key string) ";
+    } else {
+      f_service_ << "GetProcessorFunction(key string) ";
+    }
+    f_service_ << "(processor " << gen_processor_func_ << ", err error) {"
                << endl;
     indent_up();
     f_service_ << indent() << "if processor, ok := p.processorMap[key]; ok {"
@@ -4314,4 +4318,5 @@ THRIFT_REGISTER_GENERATOR(
     "    thrift_import=   Override thrift package import path (default:" +
         default_thrift_import +
         ")\n"
-        "    package=         Package name (default: inferred from thrift file name)\n");
+        "    package=         Package name (default: inferred from thrift file name)\n"
+        "    use_context      Generate code with context on all thrift server handlers\n");

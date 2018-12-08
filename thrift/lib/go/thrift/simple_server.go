@@ -22,7 +22,6 @@ package thrift
 import (
 	"context"
 	"errors"
-	"net"
 	"runtime/debug"
 )
 
@@ -205,30 +204,9 @@ func (p *SimpleServer) addConnInfo(ctx context.Context, client Transport) contex
 	ctx = context.WithValue(ctx, connInfoKey, ConnInfo{
 		LocalAddr:  s.Conn().LocalAddr(),
 		RemoteAddr: s.Conn().RemoteAddr(),
+		netConn:    s.Conn(),
 	})
 	return ctx
-}
-
-type contextKey int
-
-const (
-	connInfoKey contextKey = iota
-)
-
-// ConnInfo contains connection information from clients of the SimpleServer.
-type ConnInfo struct {
-	LocalAddr  net.Addr
-	RemoteAddr net.Addr
-}
-
-func (c ConnInfo) String() string {
-	return c.RemoteAddr.String() + " -> " + c.LocalAddr.String()
-}
-
-// ConnInfoFromContext extracts and returns ConnInfo from context.
-func ConnInfoFromContext(ctx context.Context) (ConnInfo, bool) {
-	v, ok := ctx.Value(connInfoKey).(ConnInfo)
-	return v, ok
 }
 
 // Serve starts listening on the transport and accepting new connections
