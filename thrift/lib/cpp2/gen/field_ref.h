@@ -50,7 +50,7 @@ class field_ref {
     return {value_, is_set_};
   }
 
-  template <typename U>
+  template <typename U = T>
   THRIFT_NOLINK std::enable_if_t<std::is_assignable<T&, U>::value, field_ref&>
   operator=(U&& value) noexcept(std::is_nothrow_assignable<T&, U>::value) {
     value_ = std::forward<U>(value);
@@ -96,7 +96,7 @@ class optional_field_ref {
     return {value_, is_set_};
   }
 
-  template <typename U>
+  template <typename U = T>
   THRIFT_NOLINK
       std::enable_if_t<std::is_assignable<T&, U>::value, optional_field_ref&>
       operator=(U&& value) noexcept(std::is_nothrow_assignable<T&, U>::value) {

@@ -186,6 +186,11 @@ TEST(field_ref_test, mutable_accessors) {
   EXPECT_FALSE(name.is_set());
 }
 
+TEST(field_ref_test, copy_list_initialization) {
+  TestStruct s;
+  s.name() = {};
+}
+
 TEST(optional_field_ref_test, access_default_value) {
   auto s = TestStruct();
   EXPECT_THROW(*s.opt_name(), bad_field_access);
@@ -279,4 +284,9 @@ TEST(optional_field_ref_test, convert_to_bool) {
     EXPECT_TRUE(false);
   }
   EXPECT_FALSE((std::is_convertible<decltype(s.opt_name()), bool>::value));
+}
+
+TEST(optional_field_ref_test, copy_list_initialization) {
+  TestStruct s;
+  s.opt_name() = {};
 }
