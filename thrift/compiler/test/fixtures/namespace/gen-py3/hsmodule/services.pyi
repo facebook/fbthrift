@@ -16,8 +16,8 @@ _HsTestServiceInterfaceT = _typing.TypeVar('_HsTestServiceInterfaceT', bound='Hs
 
 
 class HsTestServiceInterface(
-    ServiceInterface
-    , metaclass=ABCMeta
+    ServiceInterface,
+    metaclass=ABCMeta,
 ):
 
     @staticmethod

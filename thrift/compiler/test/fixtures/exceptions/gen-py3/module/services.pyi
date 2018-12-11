@@ -16,8 +16,8 @@ _RaiserInterfaceT = _typing.TypeVar('_RaiserInterfaceT', bound='RaiserInterface'
 
 
 class RaiserInterface(
-    ServiceInterface
-    , metaclass=ABCMeta
+    ServiceInterface,
+    metaclass=ABCMeta,
 ):
 
     @staticmethod

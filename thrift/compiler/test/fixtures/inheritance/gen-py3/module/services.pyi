@@ -16,8 +16,8 @@ _MyRootInterfaceT = _typing.TypeVar('_MyRootInterfaceT', bound='MyRootInterface'
 
 
 class MyRootInterface(
-    ServiceInterface
-    , metaclass=ABCMeta
+    ServiceInterface,
+    metaclass=ABCMeta,
 ):
 
     @staticmethod
@@ -42,8 +42,8 @@ _MyNodeInterfaceT = _typing.TypeVar('_MyNodeInterfaceT', bound='MyNodeInterface'
 
 
 class MyNodeInterface(
-MyRootInterface
-    , metaclass=ABCMeta
+MyRootInterface,
+    metaclass=ABCMeta,
 ):
 
     @staticmethod
@@ -68,8 +68,8 @@ _MyLeafInterfaceT = _typing.TypeVar('_MyLeafInterfaceT', bound='MyLeafInterface'
 
 
 class MyLeafInterface(
-MyNodeInterface
-    , metaclass=ABCMeta
+MyNodeInterface,
+    metaclass=ABCMeta,
 ):
 
     @staticmethod

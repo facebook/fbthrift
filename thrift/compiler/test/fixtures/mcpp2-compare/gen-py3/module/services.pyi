@@ -17,8 +17,8 @@ _EmptyServiceInterfaceT = _typing.TypeVar('_EmptyServiceInterfaceT', bound='Empt
 
 
 class EmptyServiceInterface(
-    ServiceInterface
-    , metaclass=ABCMeta
+    ServiceInterface,
+    metaclass=ABCMeta,
 ):
     pass
 
@@ -27,8 +27,8 @@ _ReturnServiceInterfaceT = _typing.TypeVar('_ReturnServiceInterfaceT', bound='Re
 
 
 class ReturnServiceInterface(
-    ServiceInterface
-    , metaclass=ABCMeta
+    ServiceInterface,
+    metaclass=ABCMeta,
 ):
 
     @staticmethod
@@ -375,8 +375,8 @@ _ParamServiceInterfaceT = _typing.TypeVar('_ParamServiceInterfaceT', bound='Para
 
 
 class ParamServiceInterface(
-    ServiceInterface
-    , metaclass=ABCMeta
+    ServiceInterface,
+    metaclass=ABCMeta,
 ):
 
     @staticmethod

@@ -18,8 +18,8 @@ _ExtendTestServiceInterfaceT = _typing.TypeVar('_ExtendTestServiceInterfaceT', b
 
 
 class ExtendTestServiceInterface(
-    _hsmodule_services.HsTestServiceInterface
-    , metaclass=ABCMeta
+    _hsmodule_services.HsTestServiceInterface,
+    metaclass=ABCMeta,
 ):
 
     @staticmethod

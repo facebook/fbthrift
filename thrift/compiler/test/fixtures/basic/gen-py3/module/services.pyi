@@ -16,8 +16,8 @@ _MyServiceInterfaceT = _typing.TypeVar('_MyServiceInterfaceT', bound='MyServiceI
 
 
 class MyServiceInterface(
-    ServiceInterface
-    , metaclass=ABCMeta
+    ServiceInterface,
+    metaclass=ABCMeta,
 ):
 
     @staticmethod
@@ -128,8 +128,8 @@ _MyServiceFastInterfaceT = _typing.TypeVar('_MyServiceFastInterfaceT', bound='My
 
 
 class MyServiceFastInterface(
-    ServiceInterface
-    , metaclass=ABCMeta
+    ServiceInterface,
+    metaclass=ABCMeta,
 ):
 
     @staticmethod
@@ -240,8 +240,8 @@ _MyServiceEmptyInterfaceT = _typing.TypeVar('_MyServiceEmptyInterfaceT', bound='
 
 
 class MyServiceEmptyInterface(
-    ServiceInterface
-    , metaclass=ABCMeta
+    ServiceInterface,
+    metaclass=ABCMeta,
 ):
     pass
 
@@ -250,8 +250,8 @@ _MyServicePrioParentInterfaceT = _typing.TypeVar('_MyServicePrioParentInterfaceT
 
 
 class MyServicePrioParentInterface(
-    ServiceInterface
-    , metaclass=ABCMeta
+    ServiceInterface,
+    metaclass=ABCMeta,
 ):
 
     @staticmethod
@@ -292,8 +292,8 @@ _MyServicePrioChildInterfaceT = _typing.TypeVar('_MyServicePrioChildInterfaceT',
 
 
 class MyServicePrioChildInterface(
-MyServicePrioParentInterface
-    , metaclass=ABCMeta
+MyServicePrioParentInterface,
+    metaclass=ABCMeta,
 ):
 
     @staticmethod

@@ -16,8 +16,8 @@ _NestedContainersInterfaceT = _typing.TypeVar('_NestedContainersInterfaceT', bou
 
 
 class NestedContainersInterface(
-    ServiceInterface
-    , metaclass=ABCMeta
+    ServiceInterface,
+    metaclass=ABCMeta,
 ):
 
     @staticmethod

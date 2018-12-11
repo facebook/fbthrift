@@ -16,8 +16,8 @@ _SimpleServiceInterfaceT = _typing.TypeVar('_SimpleServiceInterfaceT', bound='Si
 
 
 class SimpleServiceInterface(
-    ServiceInterface
-    , metaclass=ABCMeta
+    ServiceInterface,
+    metaclass=ABCMeta,
 ):
 
     @staticmethod
@@ -705,8 +705,8 @@ _DerivedServiceInterfaceT = _typing.TypeVar('_DerivedServiceInterfaceT', bound='
 
 
 class DerivedServiceInterface(
-SimpleServiceInterface
-    , metaclass=ABCMeta
+SimpleServiceInterface,
+    metaclass=ABCMeta,
 ):
 
     @staticmethod
@@ -731,8 +731,8 @@ _RederivedServiceInterfaceT = _typing.TypeVar('_RederivedServiceInterfaceT', bou
 
 
 class RederivedServiceInterface(
-DerivedServiceInterface
-    , metaclass=ABCMeta
+DerivedServiceInterface,
+    metaclass=ABCMeta,
 ):
 
     @staticmethod

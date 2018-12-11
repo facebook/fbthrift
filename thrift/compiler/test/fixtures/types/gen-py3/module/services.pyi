@@ -17,8 +17,8 @@ _SomeServiceInterfaceT = _typing.TypeVar('_SomeServiceInterfaceT', bound='SomeSe
 
 
 class SomeServiceInterface(
-    ServiceInterface
-    , metaclass=ABCMeta
+    ServiceInterface,
+    metaclass=ABCMeta,
 ):
 
     @staticmethod
