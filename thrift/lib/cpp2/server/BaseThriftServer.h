@@ -270,6 +270,18 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
     return eventHandler_;
   }
 
+  /**
+   * If a view of the event handler is needed that does not need to extend its
+   * lifetime beyond that of the BaseThriftServer, this method allows obtaining
+   * the raw pointer rather than the more expensive shared_ptr.
+   * Since unsynchronized setServerEventHandler / getEventHandler calls are not
+   * permitted, use cases that get the handler, inform it of some action, and
+   * then discard the handle immediately can use getEventHandlerUnsafe.
+   */
+  server::TServerEventHandler* getEventHandlerUnsafe() {
+    return eventHandler_.get();
+  }
+
   void setServerEventHandler(
       std::shared_ptr<server::TServerEventHandler> eventHandler) {
     eventHandler_ = std::move(eventHandler);

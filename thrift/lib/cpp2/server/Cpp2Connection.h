@@ -191,8 +191,14 @@ class Cpp2Connection : public ResponseChannel::Callback,
         apache::thrift::server::TServerObserver* observer);
 
     std::unique_ptr<HeaderServerChannel::HeaderRequest> req_;
+
+    // The order of these two fields matters; to save a shared_ptr operation, we
+    // move into connection_ first and then use the pointer in connection_ to
+    // initialize reqContext_; since field initialization happens in order of
+    // definition, connection_ needs to appear before reqContext_.
     std::shared_ptr<Cpp2Connection> connection_;
     Cpp2RequestContext reqContext_;
+
     QueueTimeout queueTimeout_;
     TaskTimeout taskTimeout_;
 

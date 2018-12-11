@@ -85,14 +85,14 @@ Cpp2Connection::Cpp2Connection(
     channel_->setSampleRate(observer->getSampleRate());
   }
 
-  auto handler = worker_->getServer()->getEventHandler();
+  auto handler = worker_->getServer()->getEventHandlerUnsafe();
   if (handler) {
     handler->newConnection(&context_);
   }
 }
 
 Cpp2Connection::~Cpp2Connection() {
-  auto handler = worker_->getServer()->getEventHandler();
+  auto handler = worker_->getServer()->getEventHandlerUnsafe();
   if (handler) {
     handler->connectionDestroyed(&context_);
   }
@@ -234,14 +234,14 @@ void Cpp2Connection::killRequest(
 // Response Channel callbacks
 void Cpp2Connection::requestReceived(unique_ptr<ResponseChannelRequest>&& req) {
   auto reqCtx = std::make_shared<folly::RequestContext>();
-  auto handler = worker_->getServer()->getEventHandler();
+  auto handler = worker_->getServer()->getEventHandlerUnsafe();
   if (handler) {
     handler->connectionNewRequest(&context_, reqCtx.get());
   }
   folly::RequestContextScopeGuard rctx(reqCtx);
 
   auto server = worker_->getServer();
-  auto observer = server->getObserver();
+  auto& observer = server->getObserver();
 
   server->touchRequestTimestamp();
 
@@ -362,7 +362,7 @@ void Cpp2Connection::requestReceived(unique_ptr<ResponseChannelRequest>&& req) {
 
   Cpp2Request* t2r = new Cpp2Request(std::move(req), this_);
   if (admissionController) {
-    t2r->setAdmissionController(admissionController);
+    t2r->setAdmissionController(std::move(admissionController));
   }
   auto up2r = std::unique_ptr<ResponseChannelRequest>(t2r);
   activeRequests_.insert(t2r);
@@ -427,8 +427,10 @@ Cpp2Connection::Cpp2Request::Cpp2Request(
     std::unique_ptr<ResponseChannelRequest> req,
     std::shared_ptr<Cpp2Connection> con)
     : req_(static_cast<HeaderServerChannel::HeaderRequest*>(req.release())),
-      connection_(con),
-      reqContext_(&con->context_, req_->getHeader()) {
+      connection_(std::move(con)),
+      // Note: tricky ordering here; see the note on connection_ in the class
+      // definition.
+      reqContext_(&connection_->context_, req_->getHeader()) {
   queueTimeout_.request_ = this;
   taskTimeout_.request_ = this;
 }
