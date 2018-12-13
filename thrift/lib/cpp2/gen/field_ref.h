@@ -58,6 +58,13 @@ class field_ref {
     return *this;
   }
 
+  THRIFT_NOLINK field_ref& operator=(const field_ref& other) noexcept(
+      std::is_nothrow_assignable<T&, T>::value) {
+    value_ = other.is_set_ ? other.value_ : T();
+    is_set_ = other.is_set_;
+    return *this;
+  }
+
   THRIFT_NOLINK bool is_set() const noexcept {
     return is_set_;
   }
@@ -102,6 +109,14 @@ class optional_field_ref {
       operator=(U&& value) noexcept(std::is_nothrow_assignable<T&, U>::value) {
     value_ = std::forward<U>(value);
     is_set_ = true;
+    return *this;
+  }
+
+  THRIFT_NOLINK optional_field_ref&
+  operator=(const optional_field_ref& other) noexcept(
+      std::is_nothrow_assignable<T&, T>::value) {
+    value_ = other.is_set_ ? other.value_ : T();
+    is_set_ = other.is_set_;
     return *this;
   }
 

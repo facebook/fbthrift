@@ -120,6 +120,13 @@ TEST(field_ref_test, assign) {
   s.name() = "foo";
   EXPECT_TRUE(s.name().is_set());
   EXPECT_EQ(*s.name(), "foo");
+  auto s2 = TestStruct();
+  s.name() = s2.name();
+  EXPECT_FALSE(s.name().is_set());
+  s2.name() = "foo";
+  s.name() = s2.name();
+  EXPECT_TRUE(s.name().is_set());
+  EXPECT_EQ(*s.name(), "foo");
 }
 
 template <template <typename> class FieldRef>
@@ -201,6 +208,13 @@ TEST(optional_field_ref_test, assign) {
   auto s = TestStruct();
   EXPECT_FALSE(s.opt_name().has_value());
   s.opt_name() = "foo";
+  EXPECT_TRUE(s.opt_name().has_value());
+  EXPECT_EQ(*s.opt_name(), "foo");
+  auto s2 = TestStruct();
+  s.opt_name() = s2.opt_name();
+  EXPECT_FALSE(s.opt_name().has_value());
+  s2.opt_name() = "foo";
+  s.opt_name() = s2.opt_name();
   EXPECT_TRUE(s.opt_name().has_value());
   EXPECT_EQ(*s.opt_name(), "foo");
 }
