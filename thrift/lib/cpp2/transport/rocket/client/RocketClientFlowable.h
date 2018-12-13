@@ -56,14 +56,6 @@ class RocketClientFlowable final : public yarpl::flowable::Flowable<Payload> {
   RocketClientFlowable(StreamId streamId, RocketClient& client)
       : client_(client), streamId_(streamId) {}
 
-  ~RocketClientFlowable() override {
-    if (!subscribed_) {
-      auto subscription =
-          std::make_shared<RocketClientSubscription>(streamId_, client_);
-      subscription->cancel();
-    }
-  }
-
   // Flowable implementation
   void subscribe(std::shared_ptr<yarpl::flowable::Subscriber<Payload>>
                      subscriber) override {

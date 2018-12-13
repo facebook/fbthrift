@@ -45,6 +45,7 @@
 #include <thrift/lib/cpp2/async/Stream.h>
 #include <thrift/lib/cpp2/transport/rocket/Types.h>
 #include <thrift/lib/cpp2/transport/rocket/client/RocketClient.h>
+#include <thrift/lib/cpp2/transport/rocket/client/RocketStreamImpl.h>
 #include <thrift/lib/cpp2/transport/rocket/server/RocketServerConnection.h>
 #include <thrift/lib/cpp2/transport/rocket/server/RocketServerFrameContext.h>
 #include <thrift/lib/cpp2/transport/rocket/server/RocketServerHandler.h>
@@ -285,8 +286,10 @@ folly::Try<SemiStream<Payload>> RocketTestClient::sendRequestStreamSync(
 
   evb_.runInEventBaseThreadAndWait([&] {
     stream = folly::makeTryWith([&] {
-      return SemiStream<Payload>(
-          toStream<Payload>(client_->createStream(std::move(request)), &evb_));
+      return SemiStream<Payload>(Stream<Payload>::create(
+          std::make_unique<apache::thrift::detail::RocketStreamImpl>(
+              client_->createStream(std::move(request))),
+          &evb_));
     });
   });
 
