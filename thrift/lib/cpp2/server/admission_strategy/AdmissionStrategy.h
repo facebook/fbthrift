@@ -36,9 +36,14 @@ class AdmissionStrategy {
   virtual ~AdmissionStrategy() {}
 
   /**
-   * Select an AdmissionController to be used for this specific request
+   * Select an AdmissionController to be used for this specific request.
+   * This selection can be made based on the arguments which are:
+   * - methodName: the name of the Thrift method called
+   * - request: An object representing the serialized request
+   * - connContext: The connection context allowing you to access metadata
    */
   virtual std::shared_ptr<AdmissionController> select(
+      const std::string& methodName,
       const ResponseChannelRequest& request,
       const Cpp2ConnContext& connContext) = 0;
 

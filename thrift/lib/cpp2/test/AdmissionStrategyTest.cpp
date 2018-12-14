@@ -119,23 +119,26 @@ TEST_F(AdmissionControllerSelectorTest, globalAdmission) {
   DummyRequest request;
   DummyConnContext connContextA1;
   connContextA1.setHeader(kClientId, "A");
-  auto admissionControllerA1 = selector.select(request, connContextA1);
+  auto admissionControllerA1 =
+      selector.select("myThriftMethod", request, connContextA1);
 
   DummyConnContext connContextA2;
   connContextA2.setHeader(kClientId, "A");
-  auto admissionControllerA2 = selector.select(request, connContextA2);
+  auto admissionControllerA2 =
+      selector.select("myThriftMethod", request, connContextA2);
 
   ASSERT_EQ(admissionControllerA1, admissionControllerA2);
 
   DummyConnContext connContextB1;
   connContextB1.setHeader(kClientId, "B");
-  auto admissionControllerB1 = selector.select(request, connContextB1);
+  auto admissionControllerB1 =
+      selector.select("myThriftMethod", request, connContextB1);
 
   ASSERT_EQ(admissionControllerA1, admissionControllerB1);
 
   DummyConnContext connContextNoClientId;
   auto admissionControllerNoClientId =
-      selector.select(request, connContextNoClientId);
+      selector.select("myThriftMethod", request, connContextNoClientId);
 
   ASSERT_EQ(admissionControllerB1, admissionControllerNoClientId);
 }
@@ -147,23 +150,27 @@ TEST_F(AdmissionControllerSelectorTest, perClientIdAdmission) {
   DummyRequest request;
   DummyConnContext connContextA1;
   connContextA1.setHeader(kClientId, "A");
-  auto admissionControllerA1 = selector.select(request, connContextA1);
+  auto admissionControllerA1 =
+      selector.select("myThriftMethod", request, connContextA1);
 
   DummyConnContext connContextA2;
   connContextA2.setHeader(kClientId, "A");
-  auto admissionControllerA2 = selector.select(request, connContextA2);
+  auto admissionControllerA2 =
+      selector.select("myThriftMethod", request, connContextA2);
 
   ASSERT_EQ(admissionControllerA1, admissionControllerA2);
 
   DummyConnContext connContextB1;
   connContextB1.setHeader(kClientId, "B");
-  auto admissionControllerB1 = selector.select(request, connContextB1);
+  auto admissionControllerB1 =
+      selector.select("myThriftMethod", request, connContextB1);
 
   ASSERT_NE(admissionControllerA1, admissionControllerB1);
 
   DummyConnContext connContextB2;
   connContextB2.setHeader(kClientId, "B");
-  auto admissionControllerB2 = selector.select(request, connContextB2);
+  auto admissionControllerB2 =
+      selector.select("myThriftMethod", request, connContextB2);
 
   ASSERT_EQ(admissionControllerB1, admissionControllerB2);
 }
@@ -188,7 +195,7 @@ TEST_F(AdmissionControllerSelectorTest, priorityBasedAdmission) {
       DummyRequest request;
       DummyConnContext connContext;
       connContext.setHeader(kClientId, clientId);
-      auto controller = selector.select(request, connContext);
+      auto controller = selector.select("myThriftMethod", request, connContext);
       admControllerSet.insert(controller);
     }
   }
@@ -218,15 +225,17 @@ TEST_F(AdmissionControllerSelectorTest, deniesZeroPriority) {
       DummyRequest request;
       DummyConnContext connContext;
       connContext.setHeader(kClientId, clientId);
-      auto controller = selector.select(request, connContext);
+      auto controller = selector.select("myThriftMethod", request, connContext);
       admControllerSet.insert(controller);
     }
   }
   DummyRequest requestC;
   DummyConnContext connContextC;
-  auto controllerForEmpty = selector.select(requestC, connContextC);
+  auto controllerForEmpty =
+      selector.select("myThriftMethod", requestC, connContextC);
   connContextC.setHeader("client_id", "C");
-  auto controllerForC = selector.select(requestC, connContextC);
+  auto controllerForC =
+      selector.select("myThriftMethod", requestC, connContextC);
   ASSERT_FALSE(controllerForC->admit());
   ASSERT_EQ(controllerForEmpty, controllerForC);
 

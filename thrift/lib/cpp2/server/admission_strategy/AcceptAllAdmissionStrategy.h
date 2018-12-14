@@ -37,6 +37,7 @@ class AcceptAllAdmissionStrategy : public AdmissionStrategy {
   }
 
   std::shared_ptr<AdmissionController> select(
+      const std::string&,
       const ResponseChannelRequest&,
       const Cpp2ConnContext&) override {
     return admissionController_;

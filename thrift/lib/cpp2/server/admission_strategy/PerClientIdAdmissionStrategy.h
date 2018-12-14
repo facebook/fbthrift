@@ -57,6 +57,7 @@ class PerClientIdAdmissionStrategy : public AdmissionStrategy {
    * It returns one shared AdmissionController per clientId.
    */
   std::shared_ptr<AdmissionController> select(
+      const std::string&,
       const ResponseChannelRequest&,
       const Cpp2ConnContext& connContext) override {
     const auto* headers = connContext.getHeadersPtr();

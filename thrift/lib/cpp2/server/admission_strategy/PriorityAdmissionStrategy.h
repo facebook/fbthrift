@@ -111,6 +111,7 @@ class PriorityAdmissionStrategy : public AdmissionStrategy {
    * the priority of the clientId.
    */
   std::shared_ptr<AdmissionController> select(
+      const std::string&,
       const ResponseChannelRequest&,
       const Cpp2ConnContext& connContext) override {
     auto bucketIndex = computeBucketIndex(connContext);

@@ -46,6 +46,7 @@ class GlobalAdmissionStrategy : public AdmissionStrategy {
    * Always return the same shared AdmissionController.
    */
   std::shared_ptr<AdmissionController> select(
+      const std::string&,
       const ResponseChannelRequest&,
       const Cpp2ConnContext&) override {
     return admissionController_;
