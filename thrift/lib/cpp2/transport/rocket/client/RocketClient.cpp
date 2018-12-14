@@ -352,12 +352,16 @@ void RocketClient::closeNow(folly::exception_wrapper ew) noexcept {
     socket_.reset();
   }
 
-  for (auto it = streams_.begin(); it != streams_.end();) {
-    auto& streamWrapper = it->second;
-    streamWrapper.flowable->onError(ew);
+  // Move streams_ into a local copy before iterating and erasing. Note that
+  // flowable->onError() may itself attempt to erase an element of streams_,
+  // invalidating any outstanding iterators.
+  auto streams = std::move(streams_);
+  for (auto it = streams.begin(); it != streams.end();) {
+    auto& flowable = it->second.flowable;
+    flowable->onError(ew);
     // Since the client is shutting down now, we don't bother with
     // notifyIfDetachable().
-    it = streams_.erase(it);
+    it = streams.erase(it);
   }
 }
 
