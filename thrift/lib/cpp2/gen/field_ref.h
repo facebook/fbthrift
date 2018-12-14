@@ -58,11 +58,13 @@ class field_ref {
     return *this;
   }
 
-  THRIFT_NOLINK field_ref& operator=(const field_ref& other) noexcept(
+  // Assignment from field_ref is intentionally not provided to prevent
+  // potential confusion between two possible behaviors, copying and reference
+  // rebinding. The copy_from method is provided instead.
+  THRIFT_NOLINK void copy_from(const field_ref& other) noexcept(
       std::is_nothrow_assignable<T&, T>::value) {
-    value_ = other.is_set_ ? other.value_ : T();
+    value_ = other.value_;
     is_set_ = other.is_set_;
-    return *this;
   }
 
   THRIFT_NOLINK bool is_set() const noexcept {
@@ -112,12 +114,13 @@ class optional_field_ref {
     return *this;
   }
 
-  THRIFT_NOLINK optional_field_ref&
-  operator=(const optional_field_ref& other) noexcept(
+  // Assignment from optional_field_ref is intentionally not provided to prevent
+  // potential confusion between two possible behaviors, copying and reference
+  // rebinding. The copy_from method is provided instead.
+  THRIFT_NOLINK void copy_from(const optional_field_ref& other) noexcept(
       std::is_nothrow_assignable<T&, T>::value) {
-    value_ = other.is_set_ ? other.value_ : T();
+    value_ = other.value_;
     is_set_ = other.is_set_;
-    return *this;
   }
 
   THRIFT_NOLINK bool has_value() const noexcept {
