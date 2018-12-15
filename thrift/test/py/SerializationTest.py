@@ -64,7 +64,7 @@ class AbstractTest():
             newbyte=2,
             newshort=3,
             newlong=4,
-            newdouble=5.0,
+            newdouble=5.5,
             newstruct=Bonk(message="Hello!", type=123),
             newlist=[7, 8, 9],
             newset=[42, 1, 8],
@@ -117,6 +117,11 @@ class AbstractTest():
         self.assertEquals(obj.begin_in_both, self.v2obj.begin_in_both)
         self.assertEquals(obj.end_in_both, self.v2obj.end_in_both)
 
+    def testDouble(self):
+        if isinstance(self, SimpleJSONTest):
+            return
+        obj = self._deserialize(VersioningTestV2, self._serialize(self.v2obj))
+        self.assertEquals(obj.newdouble, self.v2obj.newdouble)
 
 class NormalBinaryTest(AbstractTest, unittest.TestCase):
     protocol_factory = TBinaryProtocol.TBinaryProtocolFactory()
