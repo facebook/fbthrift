@@ -103,7 +103,7 @@ second = std::move(second)    ]() mutable {
 }
 
 folly::Future<int32_t> SimpleServiceWrapper::future_get_value(
-  std::unique_ptr<py3::simple::SimpleStruct> simple_struct
+  std::unique_ptr<::py3::simple::SimpleStruct> simple_struct
 ) {
   folly::Promise<int32_t> promise;
   auto future = promise.getFuture();
@@ -347,7 +347,7 @@ words = std::move(words)    ]() mutable {
 }
 
 folly::Future<int32_t> SimpleServiceWrapper::future_count_structs(
-  std::unique_ptr<std::vector<py3::simple::SimpleStruct>> items
+  std::unique_ptr<std::vector<::py3::simple::SimpleStruct>> items
 ) {
   folly::Promise<int32_t> promise;
   auto future = promise.getFuture();
@@ -437,7 +437,7 @@ key = std::move(key)    ]() mutable {
 }
 
 folly::Future<int16_t> SimpleServiceWrapper::future_map_length(
-  std::unique_ptr<std::map<std::string,py3::simple::SimpleStruct>> items
+  std::unique_ptr<std::map<std::string,::py3::simple::SimpleStruct>> items
 ) {
   folly::Promise<int16_t> promise;
   auto future = promise.getFuture();
@@ -479,7 +479,7 @@ items = std::move(items)    ]() mutable {
 }
 
 folly::Future<int32_t> SimpleServiceWrapper::future_complex_sum_i32(
-  std::unique_ptr<py3::simple::ComplexStruct> counter
+  std::unique_ptr<::py3::simple::ComplexStruct> counter
 ) {
   folly::Promise<int32_t> promise;
   auto future = promise.getFuture();
@@ -500,7 +500,7 @@ counter = std::move(counter)    ]() mutable {
 }
 
 folly::Future<std::unique_ptr<std::string>> SimpleServiceWrapper::future_repeat_name(
-  std::unique_ptr<py3::simple::ComplexStruct> counter
+  std::unique_ptr<::py3::simple::ComplexStruct> counter
 ) {
   folly::Promise<std::unique_ptr<std::string>> promise;
   auto future = promise.getFuture();
@@ -520,8 +520,8 @@ counter = std::move(counter)    ]() mutable {
   return future;
 }
 
-folly::Future<std::unique_ptr<py3::simple::SimpleStruct>> SimpleServiceWrapper::future_get_struct() {
-  folly::Promise<std::unique_ptr<py3::simple::SimpleStruct>> promise;
+folly::Future<std::unique_ptr<::py3::simple::SimpleStruct>> SimpleServiceWrapper::future_get_struct() {
+  folly::Promise<std::unique_ptr<::py3::simple::SimpleStruct>> promise;
   auto future = promise.getFuture();
   auto ctx = getConnectionContext();
   folly::via(
@@ -600,10 +600,10 @@ words = std::move(words)    ]() mutable {
   return future;
 }
 
-folly::Future<py3::simple::AnEnum> SimpleServiceWrapper::future_set_enum(
-  py3::simple::AnEnum in_enum
+folly::Future<::py3::simple::AnEnum> SimpleServiceWrapper::future_set_enum(
+  ::py3::simple::AnEnum in_enum
 ) {
-  folly::Promise<py3::simple::AnEnum> promise;
+  folly::Promise<::py3::simple::AnEnum> promise;
   auto future = promise.getFuture();
   auto ctx = getConnectionContext();
   folly::via(
@@ -688,7 +688,7 @@ some_words = std::move(some_words)    ]() mutable {
 }
 
 folly::Future<int32_t> SimpleServiceWrapper::future_nested_map_argument(
-  std::unique_ptr<std::map<std::string,std::vector<py3::simple::SimpleStruct>>> struct_map
+  std::unique_ptr<std::map<std::string,std::vector<::py3::simple::SimpleStruct>>> struct_map
 ) {
   folly::Promise<int32_t> promise;
   auto future = promise.getFuture();
@@ -834,10 +834,10 @@ binaries = std::move(binaries)    ]() mutable {
   return future;
 }
 
-folly::Future<std::unique_ptr<std::vector<py3::simple::AnEnum>>> SimpleServiceWrapper::future_contain_enum(
-  std::unique_ptr<std::vector<py3::simple::AnEnum>> the_enum
+folly::Future<std::unique_ptr<std::vector<::py3::simple::AnEnum>>> SimpleServiceWrapper::future_contain_enum(
+  std::unique_ptr<std::vector<::py3::simple::AnEnum>> the_enum
 ) {
-  folly::Promise<std::unique_ptr<std::vector<py3::simple::AnEnum>>> promise;
+  folly::Promise<std::unique_ptr<std::vector<::py3::simple::AnEnum>>> promise;
   auto future = promise.getFuture();
   auto ctx = getConnectionContext();
   folly::via(
@@ -861,7 +861,7 @@ std::shared_ptr<apache::thrift::ServerInterface> SimpleServiceInterface(PyObject
 
 
 DerivedServiceWrapper::DerivedServiceWrapper(PyObject *obj, folly::Executor* exc)
-  : py3::simple::SimpleServiceWrapper(obj, exc)
+  : ::py3::simple::SimpleServiceWrapper(obj, exc)
   {
     import_module__services();
   }
@@ -889,7 +889,7 @@ std::shared_ptr<apache::thrift::ServerInterface> DerivedServiceInterface(PyObjec
 
 
 RederivedServiceWrapper::RederivedServiceWrapper(PyObject *obj, folly::Executor* exc)
-  : py3::simple::DerivedServiceWrapper(obj, exc)
+  : ::py3::simple::DerivedServiceWrapper(obj, exc)
   {
     import_module__services();
   }

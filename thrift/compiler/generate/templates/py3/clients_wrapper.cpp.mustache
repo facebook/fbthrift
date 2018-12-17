@@ -31,7 +31,7 @@ thread that will pass data to the cython callback.
 
 {{#program:services}}
 {{service:name}}ClientWrapper::{{service:name}}ClientWrapper(
-    std::shared_ptr<{{#service:cppNamespaces}}{{value}}::{{/service:cppNamespaces}}{{service:name}}AsyncClient> async_client,
+    std::shared_ptr<::{{#service:cppNamespaces}}{{value}}::{{/service:cppNamespaces}}{{service:name}}AsyncClient> async_client,
     std::shared_ptr<apache::thrift::RequestChannel> channel) : {{!
     }}
     {{#service:extends?}}{{#service:extends}}{{service:name}}ClientWrapper(async_client, channel),
@@ -54,7 +54,7 @@ void {{service:name}}ClientWrapper::disconnectInLoop() {
     channel_.reset();
     async_client.reset();
     {{#service:extends}}
-    {{#service:cppNamespaces}}{{value}}::{{/service:cppNamespaces}}{{service:name}}ClientWrapper::disconnectInLoop();
+    ::{{#service:cppNamespaces}}{{value}}::{{/service:cppNamespaces}}{{service:name}}ClientWrapper::disconnectInLoop();
     {{/service:extends}}
 }
 

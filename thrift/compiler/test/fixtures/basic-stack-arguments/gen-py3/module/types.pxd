@@ -21,11 +21,11 @@ from thrift.py3.types cimport bstring, move
 from folly.optional cimport cOptional
 
 
-cdef extern from "src/gen-cpp2/module_types.h" namespace "cpp2":
-    cdef cppclass cMyEnum "cpp2::MyEnum":
+cdef extern from "src/gen-cpp2/module_types.h" namespace "::cpp2":
+    cdef cppclass cMyEnum "::cpp2::MyEnum":
         bint operator==(cMyEnum&)
-    cMyEnum MyEnum__MyValue1 "cpp2::MyEnum::MyValue1"
-    cMyEnum MyEnum__MyValue2 "cpp2::MyEnum::MyValue2"
+    cMyEnum MyEnum__MyValue1 "::cpp2::MyEnum::MyValue1"
+    cMyEnum MyEnum__MyValue2 "::cpp2::MyEnum::MyValue2"
 
 
 
@@ -38,16 +38,16 @@ cdef cMyEnum MyEnum_to_cpp(MyEnum value)
 
 
 
-cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "cpp2":
+cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2":
     # Forward Declaration
-    cdef cppclass cMyStruct "cpp2::MyStruct"
+    cdef cppclass cMyStruct "::cpp2::MyStruct"
 
-cdef extern from "src/gen-cpp2/module_types.h" namespace "cpp2":
-    cdef cppclass cMyStruct__isset "cpp2::MyStruct::__isset":
+cdef extern from "src/gen-cpp2/module_types.h" namespace "::cpp2":
+    cdef cppclass cMyStruct__isset "::cpp2::MyStruct::__isset":
         bint MyIntField
         bint MyStringField
 
-    cdef cppclass cMyStruct "cpp2::MyStruct":
+    cdef cppclass cMyStruct "::cpp2::MyStruct":
         cMyStruct() except +
         cMyStruct(const cMyStruct&) except +
         bint operator==(cMyStruct&)
@@ -66,7 +66,7 @@ cdef extern from "<utility>" namespace "std" nogil:
     cdef unique_ptr[cMyStruct] move_unique "std::move"(unique_ptr[cMyStruct])
 
 cdef extern from "<memory>" namespace "std" nogil:
-    cdef shared_ptr[const cMyStruct] const_pointer_cast "std::const_pointer_cast<const cpp2::MyStruct>"(shared_ptr[cMyStruct])
+    cdef shared_ptr[const cMyStruct] const_pointer_cast "std::const_pointer_cast<const ::cpp2::MyStruct>"(shared_ptr[cMyStruct])
 
 # Forward Definition of the cython struct
 cdef class MyStruct(thrift.py3.types.Struct)

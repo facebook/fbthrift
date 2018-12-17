@@ -23,20 +23,20 @@ from folly.optional cimport cOptional
 cdef extern from *:
     ctypedef bstring foo_Bar "foo::Bar"
 
-cdef extern from "src/gen-cpp2/module_types.h" namespace "py3::simple":
-    cdef cppclass cAnEnum "py3::simple::AnEnum":
+cdef extern from "src/gen-cpp2/module_types.h" namespace "::py3::simple":
+    cdef cppclass cAnEnum "::py3::simple::AnEnum":
         bint operator==(cAnEnum&)
-    cAnEnum AnEnum__NOTSET "py3::simple::AnEnum::None"
-    cAnEnum AnEnum__ONE "py3::simple::AnEnum::ONE"
-    cAnEnum AnEnum__TWO "py3::simple::AnEnum::TWO"
-    cAnEnum AnEnum__THREE "py3::simple::AnEnum::THREE"
-    cAnEnum AnEnum__FOUR "py3::simple::AnEnum::FOUR"
-    cdef cppclass cFlags "py3::simple::Flags":
+    cAnEnum AnEnum__NOTSET "::py3::simple::AnEnum::None"
+    cAnEnum AnEnum__ONE "::py3::simple::AnEnum::ONE"
+    cAnEnum AnEnum__TWO "::py3::simple::AnEnum::TWO"
+    cAnEnum AnEnum__THREE "::py3::simple::AnEnum::THREE"
+    cAnEnum AnEnum__FOUR "::py3::simple::AnEnum::FOUR"
+    cdef cppclass cFlags "::py3::simple::Flags":
         bint operator==(cFlags&)
-    cFlags Flags__flag_A "py3::simple::Flags::flag_A"
-    cFlags Flags__flag_B "py3::simple::Flags::flag_B"
-    cFlags Flags__flag_C "py3::simple::Flags::flag_C"
-    cFlags Flags__flag_D "py3::simple::Flags::flag_D"
+    cFlags Flags__flag_A "::py3::simple::Flags::flag_A"
+    cFlags Flags__flag_B "::py3::simple::Flags::flag_B"
+    cFlags Flags__flag_C "::py3::simple::Flags::flag_C"
+    cFlags Flags__flag_D "::py3::simple::Flags::flag_D"
 
 
 
@@ -58,19 +58,19 @@ cdef cFlags Flags_to_cpp(Flags value)
 
 
 
-cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "py3::simple":
+cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::py3::simple":
     # Forward Declaration
-    cdef cppclass cSimpleException "py3::simple::SimpleException"(cTException)
+    cdef cppclass cSimpleException "::py3::simple::SimpleException"(cTException)
     # Forward Declaration
-    cdef cppclass cSimpleStruct "py3::simple::SimpleStruct"
+    cdef cppclass cSimpleStruct "::py3::simple::SimpleStruct"
     # Forward Declaration
-    cdef cppclass cComplexStruct "py3::simple::ComplexStruct"
+    cdef cppclass cComplexStruct "::py3::simple::ComplexStruct"
 
-cdef extern from "src/gen-cpp2/module_types.h" namespace "py3::simple":
-    cdef cppclass cSimpleException__isset "py3::simple::SimpleException::__isset":
+cdef extern from "src/gen-cpp2/module_types.h" namespace "::py3::simple":
+    cdef cppclass cSimpleException__isset "::py3::simple::SimpleException::__isset":
         bint err_code
 
-    cdef cppclass cSimpleException "py3::simple::SimpleException"(cTException):
+    cdef cppclass cSimpleException "::py3::simple::SimpleException"(cTException):
         cSimpleException() except +
         cSimpleException(const cSimpleException&) except +
         bint operator==(cSimpleException&)
@@ -81,7 +81,7 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "py3::simple":
         int16_t err_code
         cSimpleException__isset __isset
 
-    cdef cppclass cSimpleStruct__isset "py3::simple::SimpleStruct::__isset":
+    cdef cppclass cSimpleStruct__isset "::py3::simple::SimpleStruct::__isset":
         bint is_on
         bint tiny_int
         bint small_int
@@ -90,7 +90,7 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "py3::simple":
         bint real
         bint smaller_real
 
-    cdef cppclass cSimpleStruct "py3::simple::SimpleStruct":
+    cdef cppclass cSimpleStruct "::py3::simple::SimpleStruct":
         cSimpleStruct() except +
         cSimpleStruct(const cSimpleStruct&) except +
         bint operator==(cSimpleStruct&)
@@ -107,7 +107,7 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "py3::simple":
         float smaller_real
         cSimpleStruct__isset __isset
 
-    cdef cppclass cComplexStruct__isset "py3::simple::ComplexStruct::__isset":
+    cdef cppclass cComplexStruct__isset "::py3::simple::ComplexStruct::__isset":
         bint structOne
         bint structTwo
         bint an_integer
@@ -118,7 +118,7 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "py3::simple":
         bint cdef_ "cdef"
         bint bytes_with_cpp_type
 
-    cdef cppclass cComplexStruct "py3::simple::ComplexStruct":
+    cdef cppclass cComplexStruct "::py3::simple::ComplexStruct":
         cComplexStruct() except +
         cComplexStruct(const cComplexStruct&) except +
         bint operator==(cComplexStruct&)
@@ -137,8 +137,8 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "py3::simple":
         foo_Bar bytes_with_cpp_type
         cComplexStruct__isset __isset
 
-    cdef shared_ptr[cSimpleStruct] reference_shared_ptr_structOne "thrift::py3::reference_shared_ptr<py3::simple::SimpleStruct>"(shared_ptr[cComplexStruct]&, cSimpleStruct&)
-    cdef shared_ptr[cSimpleStruct] reference_shared_ptr_structTwo "thrift::py3::reference_shared_ptr<py3::simple::SimpleStruct>"(shared_ptr[cComplexStruct]&, cSimpleStruct&)
+    cdef shared_ptr[cSimpleStruct] reference_shared_ptr_structOne "thrift::py3::reference_shared_ptr<::py3::simple::SimpleStruct>"(shared_ptr[cComplexStruct]&, cSimpleStruct&)
+    cdef shared_ptr[cSimpleStruct] reference_shared_ptr_structTwo "thrift::py3::reference_shared_ptr<::py3::simple::SimpleStruct>"(shared_ptr[cComplexStruct]&, cSimpleStruct&)
     cdef shared_ptr[foo_Bar] reference_shared_ptr_bytes_with_cpp_type "thrift::py3::reference_shared_ptr<foo::Bar>"(shared_ptr[cComplexStruct]&, foo_Bar&)
 
 cdef extern from "<utility>" namespace "std" nogil:
@@ -153,9 +153,9 @@ cdef extern from "<utility>" namespace "std" nogil:
     cdef unique_ptr[cComplexStruct] move_unique "std::move"(unique_ptr[cComplexStruct])
 
 cdef extern from "<memory>" namespace "std" nogil:
-    cdef shared_ptr[const cSimpleException] const_pointer_cast "std::const_pointer_cast<const py3::simple::SimpleException>"(shared_ptr[cSimpleException])
-    cdef shared_ptr[const cSimpleStruct] const_pointer_cast "std::const_pointer_cast<const py3::simple::SimpleStruct>"(shared_ptr[cSimpleStruct])
-    cdef shared_ptr[const cComplexStruct] const_pointer_cast "std::const_pointer_cast<const py3::simple::ComplexStruct>"(shared_ptr[cComplexStruct])
+    cdef shared_ptr[const cSimpleException] const_pointer_cast "std::const_pointer_cast<const ::py3::simple::SimpleException>"(shared_ptr[cSimpleException])
+    cdef shared_ptr[const cSimpleStruct] const_pointer_cast "std::const_pointer_cast<const ::py3::simple::SimpleStruct>"(shared_ptr[cSimpleStruct])
+    cdef shared_ptr[const cComplexStruct] const_pointer_cast "std::const_pointer_cast<const ::py3::simple::ComplexStruct>"(shared_ptr[cComplexStruct])
 
 # Forward Definition of the cython struct
 cdef class SimpleException(thrift.py3.exceptions.Error)
@@ -483,12 +483,12 @@ cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[vector[cmap[int32_t,double]]] move_shared "std::move"(shared_ptr[vector[cmap[int32_t,double]]])
 cdef extern from "<utility>" nogil:
     pass  
-    shared_ptr[cSimpleStruct] reference_shared_ptr_List__SimpleStruct "thrift::py3::reference_shared_ptr<py3::simple::SimpleStruct>"(...)
-    shared_ptr[cSimpleStruct] reference_shared_ptr_Map__string_SimpleStruct "thrift::py3::reference_shared_ptr<py3::simple::SimpleStruct>"(...)
+    shared_ptr[cSimpleStruct] reference_shared_ptr_List__SimpleStruct "thrift::py3::reference_shared_ptr<::py3::simple::SimpleStruct>"(...)
+    shared_ptr[cSimpleStruct] reference_shared_ptr_Map__string_SimpleStruct "thrift::py3::reference_shared_ptr<::py3::simple::SimpleStruct>"(...)
     shared_ptr[vector[int32_t]] reference_shared_ptr_List__List__i32 "thrift::py3::reference_shared_ptr<std::vector<int32_t>>"(...)
     shared_ptr[cmap[string,int32_t]] reference_shared_ptr_Map__string_Map__string_i32 "thrift::py3::reference_shared_ptr<std::map<std::string,int32_t>>"(...)
     shared_ptr[cset[string]] reference_shared_ptr_List__Set__string "thrift::py3::reference_shared_ptr<std::set<std::string>>"(...)
-    shared_ptr[vector[cSimpleStruct]] reference_shared_ptr_Map__string_List__SimpleStruct "thrift::py3::reference_shared_ptr<std::vector<py3::simple::SimpleStruct>>"(...)
+    shared_ptr[vector[cSimpleStruct]] reference_shared_ptr_Map__string_List__SimpleStruct "thrift::py3::reference_shared_ptr<std::vector<::py3::simple::SimpleStruct>>"(...)
     shared_ptr[vector[string]] reference_shared_ptr_List__List__string "thrift::py3::reference_shared_ptr<std::vector<std::string>>"(...)
     shared_ptr[cset[int32_t]] reference_shared_ptr_List__Set__i32 "thrift::py3::reference_shared_ptr<std::set<int32_t>>"(...)
     shared_ptr[cmap[string,string]] reference_shared_ptr_List__Map__string_string "thrift::py3::reference_shared_ptr<std::map<std::string,std::string>>"(...)
@@ -498,36 +498,36 @@ cdef extern from "<memory>" namespace "std" nogil:
     cdef shared_ptr[const vector[int32_t]] const_pointer_cast "std::const_pointer_cast<const std::vector<int32_t>>"(shared_ptr[vector[int32_t]])
     cdef shared_ptr[const vector[int64_t]] const_pointer_cast "std::const_pointer_cast<const std::vector<int64_t>>"(shared_ptr[vector[int64_t]])
     cdef shared_ptr[const vector[string]] const_pointer_cast "std::const_pointer_cast<const std::vector<std::string>>"(shared_ptr[vector[string]])
-    cdef shared_ptr[const vector[cSimpleStruct]] const_pointer_cast "std::const_pointer_cast<const std::vector<py3::simple::SimpleStruct>>"(shared_ptr[vector[cSimpleStruct]])
+    cdef shared_ptr[const vector[cSimpleStruct]] const_pointer_cast "std::const_pointer_cast<const std::vector<::py3::simple::SimpleStruct>>"(shared_ptr[vector[cSimpleStruct]])
     cdef shared_ptr[const cset[int32_t]] const_pointer_cast "std::const_pointer_cast<const std::set<int32_t>>"(shared_ptr[cset[int32_t]])
     cdef shared_ptr[const cset[string]] const_pointer_cast "std::const_pointer_cast<const std::set<std::string>>"(shared_ptr[cset[string]])
     cdef shared_ptr[const cmap[string,string]] const_pointer_cast "std::const_pointer_cast<const std::map<std::string,std::string>>"(shared_ptr[cmap[string,string]])
-    cdef shared_ptr[const cmap[string,cSimpleStruct]] const_pointer_cast "std::const_pointer_cast<const std::map<std::string,py3::simple::SimpleStruct>>"(shared_ptr[cmap[string,cSimpleStruct]])
+    cdef shared_ptr[const cmap[string,cSimpleStruct]] const_pointer_cast "std::const_pointer_cast<const std::map<std::string,::py3::simple::SimpleStruct>>"(shared_ptr[cmap[string,cSimpleStruct]])
     cdef shared_ptr[const cmap[string,int16_t]] const_pointer_cast "std::const_pointer_cast<const std::map<std::string,int16_t>>"(shared_ptr[cmap[string,int16_t]])
     cdef shared_ptr[const vector[vector[int32_t]]] const_pointer_cast "std::const_pointer_cast<const std::vector<std::vector<int32_t>>>"(shared_ptr[vector[vector[int32_t]]])
     cdef shared_ptr[const cmap[string,int32_t]] const_pointer_cast "std::const_pointer_cast<const std::map<std::string,int32_t>>"(shared_ptr[cmap[string,int32_t]])
     cdef shared_ptr[const cmap[string,cmap[string,int32_t]]] const_pointer_cast "std::const_pointer_cast<const std::map<std::string,std::map<std::string,int32_t>>>"(shared_ptr[cmap[string,cmap[string,int32_t]]])
     cdef shared_ptr[const vector[cset[string]]] const_pointer_cast "std::const_pointer_cast<const std::vector<std::set<std::string>>>"(shared_ptr[vector[cset[string]]])
-    cdef shared_ptr[const cmap[string,vector[cSimpleStruct]]] const_pointer_cast "std::const_pointer_cast<const std::map<std::string,std::vector<py3::simple::SimpleStruct>>>"(shared_ptr[cmap[string,vector[cSimpleStruct]]])
+    cdef shared_ptr[const cmap[string,vector[cSimpleStruct]]] const_pointer_cast "std::const_pointer_cast<const std::map<std::string,std::vector<::py3::simple::SimpleStruct>>>"(shared_ptr[cmap[string,vector[cSimpleStruct]]])
     cdef shared_ptr[const vector[vector[string]]] const_pointer_cast "std::const_pointer_cast<const std::vector<std::vector<std::string>>>"(shared_ptr[vector[vector[string]]])
     cdef shared_ptr[const vector[cset[int32_t]]] const_pointer_cast "std::const_pointer_cast<const std::vector<std::set<int32_t>>>"(shared_ptr[vector[cset[int32_t]]])
     cdef shared_ptr[const vector[cmap[string,string]]] const_pointer_cast "std::const_pointer_cast<const std::vector<std::map<std::string,std::string>>>"(shared_ptr[vector[cmap[string,string]]])
-    cdef shared_ptr[const vector[cAnEnum]] const_pointer_cast "std::const_pointer_cast<const std::vector<py3::simple::AnEnum>>"(shared_ptr[vector[cAnEnum]])
+    cdef shared_ptr[const vector[cAnEnum]] const_pointer_cast "std::const_pointer_cast<const std::vector<::py3::simple::AnEnum>>"(shared_ptr[vector[cAnEnum]])
     cdef shared_ptr[const cmap[int32_t,double]] const_pointer_cast "std::const_pointer_cast<const std::map<int32_t,double>>"(shared_ptr[cmap[int32_t,double]])
     cdef shared_ptr[const vector[cmap[int32_t,double]]] const_pointer_cast "std::const_pointer_cast<const std::vector<std::map<int32_t,double>>>"(shared_ptr[vector[cmap[int32_t,double]]])
 
-cdef extern from "src/gen-cpp2/module_constants.h" namespace "py3::simple":
-    cdef cbool cA_BOOL "py3::simple::module_constants::A_BOOL"
-    cdef int8_t cA_BYTE "py3::simple::module_constants::A_BYTE"
-    cdef int16_t cTHE_ANSWER "py3::simple::module_constants::THE_ANSWER"
-    cdef int32_t cA_NUMBER "py3::simple::module_constants::A_NUMBER"
-    cdef int64_t cA_BIG_NUMBER "py3::simple::module_constants::A_BIG_NUMBER"
-    cdef double cA_REAL_NUMBER "py3::simple::module_constants::A_REAL_NUMBER"
-    cdef double cA_FAKE_NUMBER "py3::simple::module_constants::A_FAKE_NUMBER"
-    cdef const char* cA_WORD "py3::simple::module_constants::A_WORD"()
-    cdef string cSOME_BYTES "py3::simple::module_constants::SOME_BYTES"()
-    cdef cSimpleStruct cA_STRUCT "py3::simple::module_constants::A_STRUCT"()
-    cdef vector[string] cWORD_LIST "py3::simple::module_constants::WORD_LIST"()
-    cdef vector[cmap[int32_t,double]] cSOME_MAP "py3::simple::module_constants::SOME_MAP"()
-    cdef cset[int32_t] cDIGITS "py3::simple::module_constants::DIGITS"()
-    cdef cmap[string,cSimpleStruct] cA_CONST_MAP "py3::simple::module_constants::A_CONST_MAP"()
+cdef extern from "src/gen-cpp2/module_constants.h" namespace "::py3::simple":
+    cdef cbool cA_BOOL "::py3::simple::module_constants::A_BOOL"
+    cdef int8_t cA_BYTE "::py3::simple::module_constants::A_BYTE"
+    cdef int16_t cTHE_ANSWER "::py3::simple::module_constants::THE_ANSWER"
+    cdef int32_t cA_NUMBER "::py3::simple::module_constants::A_NUMBER"
+    cdef int64_t cA_BIG_NUMBER "::py3::simple::module_constants::A_BIG_NUMBER"
+    cdef double cA_REAL_NUMBER "::py3::simple::module_constants::A_REAL_NUMBER"
+    cdef double cA_FAKE_NUMBER "::py3::simple::module_constants::A_FAKE_NUMBER"
+    cdef const char* cA_WORD "::py3::simple::module_constants::A_WORD"()
+    cdef string cSOME_BYTES "::py3::simple::module_constants::SOME_BYTES"()
+    cdef cSimpleStruct cA_STRUCT "::py3::simple::module_constants::A_STRUCT"()
+    cdef vector[string] cWORD_LIST "::py3::simple::module_constants::WORD_LIST"()
+    cdef vector[cmap[int32_t,double]] cSOME_MAP "::py3::simple::module_constants::SOME_MAP"()
+    cdef cset[int32_t] cDIGITS "::py3::simple::module_constants::DIGITS"()
+    cdef cmap[string,cSimpleStruct] cA_CONST_MAP "::py3::simple::module_constants::A_CONST_MAP"()

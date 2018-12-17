@@ -11,7 +11,7 @@ namespace cpp2 {
 
 
 NestedContainersClientWrapper::NestedContainersClientWrapper(
-    std::shared_ptr<cpp2::NestedContainersAsyncClient> async_client,
+    std::shared_ptr<::cpp2::NestedContainersAsyncClient> async_client,
     std::shared_ptr<apache::thrift::RequestChannel> channel) : 
     async_client(async_client),
       channel_(channel) {}

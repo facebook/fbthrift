@@ -24,11 +24,11 @@ namespace cpp2 {
 
 class TestServiceClientWrapper {
   protected:
-    std::shared_ptr<cpp2::TestServiceAsyncClient> async_client;
+    std::shared_ptr<::cpp2::TestServiceAsyncClient> async_client;
     std::shared_ptr<apache::thrift::RequestChannel> channel_;
   public:
     explicit TestServiceClientWrapper(
-      std::shared_ptr<cpp2::TestServiceAsyncClient> async_client,
+      std::shared_ptr<::cpp2::TestServiceAsyncClient> async_client,
       std::shared_ptr<apache::thrift::RequestChannel> channel);
     virtual ~TestServiceClientWrapper();
 

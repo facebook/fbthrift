@@ -24,23 +24,23 @@ from folly.optional cimport cOptional
 
 
 
-cdef extern from "src/gen-cpp2/forward_compatibility_types_custom_protocol.h" namespace "cpp2":
+cdef extern from "src/gen-cpp2/forward_compatibility_types_custom_protocol.h" namespace "::cpp2":
     # Forward Declaration
-    cdef cppclass cOldStructure "cpp2::OldStructure"
+    cdef cppclass cOldStructure "::cpp2::OldStructure"
     # Forward Declaration
-    cdef cppclass cNewStructure "cpp2::NewStructure"
+    cdef cppclass cNewStructure "::cpp2::NewStructure"
     # Forward Declaration
-    cdef cppclass cNewStructure2 "cpp2::NewStructure2"
+    cdef cppclass cNewStructure2 "::cpp2::NewStructure2"
     # Forward Declaration
-    cdef cppclass cNewStructureNested "cpp2::NewStructureNested"
+    cdef cppclass cNewStructureNested "::cpp2::NewStructureNested"
     # Forward Declaration
-    cdef cppclass cNewStructureNestedField "cpp2::NewStructureNestedField"
+    cdef cppclass cNewStructureNestedField "::cpp2::NewStructureNestedField"
 
-cdef extern from "src/gen-cpp2/forward_compatibility_types.h" namespace "cpp2":
-    cdef cppclass cOldStructure__isset "cpp2::OldStructure::__isset":
+cdef extern from "src/gen-cpp2/forward_compatibility_types.h" namespace "::cpp2":
+    cdef cppclass cOldStructure__isset "::cpp2::OldStructure::__isset":
         bint features
 
-    cdef cppclass cOldStructure "cpp2::OldStructure":
+    cdef cppclass cOldStructure "::cpp2::OldStructure":
         cOldStructure() except +
         cOldStructure(const cOldStructure&) except +
         bint operator==(cOldStructure&)
@@ -51,10 +51,10 @@ cdef extern from "src/gen-cpp2/forward_compatibility_types.h" namespace "cpp2":
         cmap[int16_t,double] features
         cOldStructure__isset __isset
 
-    cdef cppclass cNewStructure__isset "cpp2::NewStructure::__isset":
+    cdef cppclass cNewStructure__isset "::cpp2::NewStructure::__isset":
         bint features
 
-    cdef cppclass cNewStructure "cpp2::NewStructure":
+    cdef cppclass cNewStructure "::cpp2::NewStructure":
         cNewStructure() except +
         cNewStructure(const cNewStructure&) except +
         bint operator==(cNewStructure&)
@@ -65,10 +65,10 @@ cdef extern from "src/gen-cpp2/forward_compatibility_types.h" namespace "cpp2":
         cmap[int16_t,double] features
         cNewStructure__isset __isset
 
-    cdef cppclass cNewStructure2__isset "cpp2::NewStructure2::__isset":
+    cdef cppclass cNewStructure2__isset "::cpp2::NewStructure2::__isset":
         bint features
 
-    cdef cppclass cNewStructure2 "cpp2::NewStructure2":
+    cdef cppclass cNewStructure2 "::cpp2::NewStructure2":
         cNewStructure2() except +
         cNewStructure2(const cNewStructure2&) except +
         bint operator==(cNewStructure2&)
@@ -79,12 +79,12 @@ cdef extern from "src/gen-cpp2/forward_compatibility_types.h" namespace "cpp2":
         cmap[int16_t,float] features
         cNewStructure2__isset __isset
 
-    cdef cppclass cNewStructureNested__isset "cpp2::NewStructureNested::__isset":
+    cdef cppclass cNewStructureNested__isset "::cpp2::NewStructureNested::__isset":
         bint lst
         bint mp
         bint s
 
-    cdef cppclass cNewStructureNested "cpp2::NewStructureNested":
+    cdef cppclass cNewStructureNested "::cpp2::NewStructureNested":
         cNewStructureNested() except +
         cNewStructureNested(const cNewStructureNested&) except +
         bint operator==(cNewStructureNested&)
@@ -97,10 +97,10 @@ cdef extern from "src/gen-cpp2/forward_compatibility_types.h" namespace "cpp2":
         cset[cmap[int16_t,float]] s
         cNewStructureNested__isset __isset
 
-    cdef cppclass cNewStructureNestedField__isset "cpp2::NewStructureNestedField::__isset":
+    cdef cppclass cNewStructureNestedField__isset "::cpp2::NewStructureNestedField::__isset":
         bint f
 
-    cdef cppclass cNewStructureNestedField "cpp2::NewStructureNestedField":
+    cdef cppclass cNewStructureNestedField "::cpp2::NewStructureNestedField":
         cNewStructureNestedField() except +
         cNewStructureNestedField(const cNewStructureNestedField&) except +
         bint operator==(cNewStructureNestedField&)
@@ -117,7 +117,7 @@ cdef extern from "src/gen-cpp2/forward_compatibility_types.h" namespace "cpp2":
     cdef shared_ptr[vector[cmap[int16_t,float]]] reference_shared_ptr_lst "thrift::py3::reference_shared_ptr<std::vector<std::map<int16_t,float>>>"(shared_ptr[cNewStructureNested]&, vector[cmap[int16_t,float]]&)
     cdef shared_ptr[cmap[int16_t,cmap[int16_t,float]]] reference_shared_ptr_mp "thrift::py3::reference_shared_ptr<std::map<int16_t,std::map<int16_t,float>>>"(shared_ptr[cNewStructureNested]&, cmap[int16_t,cmap[int16_t,float]]&)
     cdef shared_ptr[cset[cmap[int16_t,float]]] reference_shared_ptr_s "thrift::py3::reference_shared_ptr<std::set<std::map<int16_t,float>>>"(shared_ptr[cNewStructureNested]&, cset[cmap[int16_t,float]]&)
-    cdef shared_ptr[cNewStructureNested] reference_shared_ptr_f "thrift::py3::reference_shared_ptr<cpp2::NewStructureNested>"(shared_ptr[cNewStructureNestedField]&, cNewStructureNested&)
+    cdef shared_ptr[cNewStructureNested] reference_shared_ptr_f "thrift::py3::reference_shared_ptr<::cpp2::NewStructureNested>"(shared_ptr[cNewStructureNestedField]&, cNewStructureNested&)
 
 cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[cOldStructure] move(unique_ptr[cOldStructure])
@@ -137,11 +137,11 @@ cdef extern from "<utility>" namespace "std" nogil:
     cdef unique_ptr[cNewStructureNestedField] move_unique "std::move"(unique_ptr[cNewStructureNestedField])
 
 cdef extern from "<memory>" namespace "std" nogil:
-    cdef shared_ptr[const cOldStructure] const_pointer_cast "std::const_pointer_cast<const cpp2::OldStructure>"(shared_ptr[cOldStructure])
-    cdef shared_ptr[const cNewStructure] const_pointer_cast "std::const_pointer_cast<const cpp2::NewStructure>"(shared_ptr[cNewStructure])
-    cdef shared_ptr[const cNewStructure2] const_pointer_cast "std::const_pointer_cast<const cpp2::NewStructure2>"(shared_ptr[cNewStructure2])
-    cdef shared_ptr[const cNewStructureNested] const_pointer_cast "std::const_pointer_cast<const cpp2::NewStructureNested>"(shared_ptr[cNewStructureNested])
-    cdef shared_ptr[const cNewStructureNestedField] const_pointer_cast "std::const_pointer_cast<const cpp2::NewStructureNestedField>"(shared_ptr[cNewStructureNestedField])
+    cdef shared_ptr[const cOldStructure] const_pointer_cast "std::const_pointer_cast<const ::cpp2::OldStructure>"(shared_ptr[cOldStructure])
+    cdef shared_ptr[const cNewStructure] const_pointer_cast "std::const_pointer_cast<const ::cpp2::NewStructure>"(shared_ptr[cNewStructure])
+    cdef shared_ptr[const cNewStructure2] const_pointer_cast "std::const_pointer_cast<const ::cpp2::NewStructure2>"(shared_ptr[cNewStructure2])
+    cdef shared_ptr[const cNewStructureNested] const_pointer_cast "std::const_pointer_cast<const ::cpp2::NewStructureNested>"(shared_ptr[cNewStructureNested])
+    cdef shared_ptr[const cNewStructureNestedField] const_pointer_cast "std::const_pointer_cast<const ::cpp2::NewStructureNestedField>"(shared_ptr[cNewStructureNestedField])
 
 # Forward Definition of the cython struct
 cdef class OldStructure(thrift.py3.types.Struct)

@@ -11,7 +11,7 @@ namespace cpp2 {
 
 
 MyServiceClientWrapper::MyServiceClientWrapper(
-    std::shared_ptr<cpp2::MyServiceAsyncClient> async_client,
+    std::shared_ptr<::cpp2::MyServiceAsyncClient> async_client,
     std::shared_ptr<apache::thrift::RequestChannel> channel) : 
     async_client(async_client),
       channel_(channel) {}
@@ -40,8 +40,8 @@ void MyServiceClientWrapper::setPersistentHeader(const std::string& key, const s
 folly::Future<folly::Unit>
 MyServiceClientWrapper::query(
     apache::thrift::RpcOptions& rpcOptions,
-    cpp2::MyStruct arg_s,
-    cpp2::Included arg_i) {
+    ::cpp2::MyStruct arg_s,
+    ::cpp2::Included arg_i) {
   folly::Promise<folly::Unit> _promise;
   auto _future = _promise.getFuture();
   auto callback = std::make_unique<::thrift::py3::FutureCallback<folly::Unit>>(
@@ -58,8 +58,8 @@ MyServiceClientWrapper::query(
 folly::Future<folly::Unit>
 MyServiceClientWrapper::has_arg_docs(
     apache::thrift::RpcOptions& rpcOptions,
-    cpp2::MyStruct arg_s,
-    cpp2::Included arg_i) {
+    ::cpp2::MyStruct arg_s,
+    ::cpp2::Included arg_i) {
   folly::Promise<folly::Unit> _promise;
   auto _future = _promise.getFuture();
   auto callback = std::make_unique<::thrift::py3::FutureCallback<folly::Unit>>(

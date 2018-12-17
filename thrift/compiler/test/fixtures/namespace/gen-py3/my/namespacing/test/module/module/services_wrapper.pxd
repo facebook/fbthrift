@@ -12,21 +12,21 @@ from folly cimport cFollyExecutor
 
 
 
-cdef extern from "src/gen-cpp2/TestService.h" namespace "cpp2":
-    cdef cppclass cTestServiceSvAsyncIf "cpp2::TestServiceSvAsyncIf":
+cdef extern from "src/gen-cpp2/TestService.h" namespace "::cpp2":
+    cdef cppclass cTestServiceSvAsyncIf "::cpp2::TestServiceSvAsyncIf":
       pass
 
-    cdef cppclass cTestServiceSvIf "cpp2::TestServiceSvIf"(
+    cdef cppclass cTestServiceSvIf "::cpp2::TestServiceSvIf"(
             cTestServiceSvAsyncIf,
             cServerInterface):
         pass
 
 
 
-cdef extern from "src/gen-py3/module/services_wrapper.h" namespace "cpp2":
-    cdef cppclass cTestServiceWrapper "cpp2::TestServiceWrapper"(
+cdef extern from "src/gen-py3/module/services_wrapper.h" namespace "::cpp2":
+    cdef cppclass cTestServiceWrapper "::cpp2::TestServiceWrapper"(
         cTestServiceSvIf
     ):
         pass
 
-    shared_ptr[cAsyncProcessorFactory] cTestServiceInterface "cpp2::TestServiceInterface"(PyObject *if_object, cFollyExecutor* Q)
+    shared_ptr[cAsyncProcessorFactory] cTestServiceInterface "::cpp2::TestServiceInterface"(PyObject *if_object, cFollyExecutor* Q)

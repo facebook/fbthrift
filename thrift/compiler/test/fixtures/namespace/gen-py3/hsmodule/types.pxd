@@ -24,15 +24,15 @@ from folly.optional cimport cOptional
 
 
 
-cdef extern from "gen-cpp2/hsmodule_types_custom_protocol.h" namespace "cpp2":
+cdef extern from "gen-cpp2/hsmodule_types_custom_protocol.h" namespace "::cpp2":
     # Forward Declaration
-    cdef cppclass cHsFoo "cpp2::HsFoo"
+    cdef cppclass cHsFoo "::cpp2::HsFoo"
 
-cdef extern from "gen-cpp2/hsmodule_types.h" namespace "cpp2":
-    cdef cppclass cHsFoo__isset "cpp2::HsFoo::__isset":
+cdef extern from "gen-cpp2/hsmodule_types.h" namespace "::cpp2":
+    cdef cppclass cHsFoo__isset "::cpp2::HsFoo::__isset":
         bint MyInt
 
-    cdef cppclass cHsFoo "cpp2::HsFoo":
+    cdef cppclass cHsFoo "::cpp2::HsFoo":
         cHsFoo() except +
         cHsFoo(const cHsFoo&) except +
         bint operator==(cHsFoo&)
@@ -50,7 +50,7 @@ cdef extern from "<utility>" namespace "std" nogil:
     cdef unique_ptr[cHsFoo] move_unique "std::move"(unique_ptr[cHsFoo])
 
 cdef extern from "<memory>" namespace "std" nogil:
-    cdef shared_ptr[const cHsFoo] const_pointer_cast "std::const_pointer_cast<const cpp2::HsFoo>"(shared_ptr[cHsFoo])
+    cdef shared_ptr[const cHsFoo] const_pointer_cast "std::const_pointer_cast<const ::cpp2::HsFoo>"(shared_ptr[cHsFoo])
 
 # Forward Definition of the cython struct
 cdef class HsFoo(thrift.py3.types.Struct)

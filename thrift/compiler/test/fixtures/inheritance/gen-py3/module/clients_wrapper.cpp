@@ -11,7 +11,7 @@ namespace cpp2 {
 
 
 MyRootClientWrapper::MyRootClientWrapper(
-    std::shared_ptr<cpp2::MyRootAsyncClient> async_client,
+    std::shared_ptr<::cpp2::MyRootAsyncClient> async_client,
     std::shared_ptr<apache::thrift::RequestChannel> channel) : 
     async_client(async_client),
       channel_(channel) {}
@@ -53,7 +53,7 @@ MyRootClientWrapper::do_root(
 
 
 MyNodeClientWrapper::MyNodeClientWrapper(
-    std::shared_ptr<cpp2::MyNodeAsyncClient> async_client,
+    std::shared_ptr<::cpp2::MyNodeAsyncClient> async_client,
     std::shared_ptr<apache::thrift::RequestChannel> channel) : 
     MyRootClientWrapper(async_client, channel),
     async_client(async_client),
@@ -69,7 +69,7 @@ folly::Future<folly::Unit> MyNodeClientWrapper::disconnect() {
 void MyNodeClientWrapper::disconnectInLoop() {
     channel_.reset();
     async_client.reset();
-    cpp2::MyRootClientWrapper::disconnectInLoop();
+    ::cpp2::MyRootClientWrapper::disconnectInLoop();
 }
 
 
@@ -90,7 +90,7 @@ MyNodeClientWrapper::do_mid(
 
 
 MyLeafClientWrapper::MyLeafClientWrapper(
-    std::shared_ptr<cpp2::MyLeafAsyncClient> async_client,
+    std::shared_ptr<::cpp2::MyLeafAsyncClient> async_client,
     std::shared_ptr<apache::thrift::RequestChannel> channel) : 
     MyNodeClientWrapper(async_client, channel),
     async_client(async_client),
@@ -106,7 +106,7 @@ folly::Future<folly::Unit> MyLeafClientWrapper::disconnect() {
 void MyLeafClientWrapper::disconnectInLoop() {
     channel_.reset();
     async_client.reset();
-    cpp2::MyNodeClientWrapper::disconnectInLoop();
+    ::cpp2::MyNodeClientWrapper::disconnectInLoop();
 }
 
 

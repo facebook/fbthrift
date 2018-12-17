@@ -21,15 +21,15 @@ from thrift.py3.common cimport cRpcOptions
 cimport module.types as _module_types
 
 
-cdef extern from "src/gen-cpp2/Raiser.h" namespace "cpp2":
-  cdef cppclass cRaiserAsyncClient "cpp2::RaiserAsyncClient":
+cdef extern from "src/gen-cpp2/Raiser.h" namespace "::cpp2":
+  cdef cppclass cRaiserAsyncClient "::cpp2::RaiserAsyncClient":
       pass
 
 cdef extern from "<utility>" namespace "std":
   cdef unique_ptr[cRaiserClientWrapper] move(unique_ptr[cRaiserClientWrapper])
 
-cdef extern from "src/gen-py3/module/clients_wrapper.h" namespace "cpp2":
-  cdef cppclass cRaiserClientWrapper "cpp2::RaiserClientWrapper":
+cdef extern from "src/gen-py3/module/clients_wrapper.h" namespace "::cpp2":
+  cdef cppclass cRaiserClientWrapper "::cpp2::RaiserClientWrapper":
     cFollyFuture[cFollyUnit] disconnect()
     void setPersistentHeader(const string& key, const string& value)
 

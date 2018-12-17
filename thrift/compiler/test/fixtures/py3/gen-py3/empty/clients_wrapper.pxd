@@ -21,15 +21,15 @@ from thrift.py3.common cimport cRpcOptions
 cimport empty.types as _empty_types
 
 
-cdef extern from "src/gen-cpp2/NullService.h" namespace "cpp2":
-  cdef cppclass cNullServiceAsyncClient "cpp2::NullServiceAsyncClient":
+cdef extern from "src/gen-cpp2/NullService.h" namespace "::cpp2":
+  cdef cppclass cNullServiceAsyncClient "::cpp2::NullServiceAsyncClient":
       pass
 
 cdef extern from "<utility>" namespace "std":
   cdef unique_ptr[cNullServiceClientWrapper] move(unique_ptr[cNullServiceClientWrapper])
 
-cdef extern from "src/gen-py3/empty/clients_wrapper.h" namespace "cpp2":
-  cdef cppclass cNullServiceClientWrapper "cpp2::NullServiceClientWrapper":
+cdef extern from "src/gen-py3/empty/clients_wrapper.h" namespace "::cpp2":
+  cdef cppclass cNullServiceClientWrapper "::cpp2::NullServiceClientWrapper":
     cFollyFuture[cFollyUnit] disconnect()
     void setPersistentHeader(const string& key, const string& value)
 

@@ -12,51 +12,51 @@ from folly cimport cFollyExecutor
 
 
 
-cdef extern from "src/gen-cpp2/EmptyService.h" namespace "some::valid::ns":
-    cdef cppclass cEmptyServiceSvAsyncIf "some::valid::ns::EmptyServiceSvAsyncIf":
+cdef extern from "src/gen-cpp2/EmptyService.h" namespace "::some::valid::ns":
+    cdef cppclass cEmptyServiceSvAsyncIf "::some::valid::ns::EmptyServiceSvAsyncIf":
       pass
 
-    cdef cppclass cEmptyServiceSvIf "some::valid::ns::EmptyServiceSvIf"(
+    cdef cppclass cEmptyServiceSvIf "::some::valid::ns::EmptyServiceSvIf"(
             cEmptyServiceSvAsyncIf,
             cServerInterface):
         pass
 
-cdef extern from "src/gen-cpp2/ReturnService.h" namespace "some::valid::ns":
-    cdef cppclass cReturnServiceSvAsyncIf "some::valid::ns::ReturnServiceSvAsyncIf":
+cdef extern from "src/gen-cpp2/ReturnService.h" namespace "::some::valid::ns":
+    cdef cppclass cReturnServiceSvAsyncIf "::some::valid::ns::ReturnServiceSvAsyncIf":
       pass
 
-    cdef cppclass cReturnServiceSvIf "some::valid::ns::ReturnServiceSvIf"(
+    cdef cppclass cReturnServiceSvIf "::some::valid::ns::ReturnServiceSvIf"(
             cReturnServiceSvAsyncIf,
             cServerInterface):
         pass
 
-cdef extern from "src/gen-cpp2/ParamService.h" namespace "some::valid::ns":
-    cdef cppclass cParamServiceSvAsyncIf "some::valid::ns::ParamServiceSvAsyncIf":
+cdef extern from "src/gen-cpp2/ParamService.h" namespace "::some::valid::ns":
+    cdef cppclass cParamServiceSvAsyncIf "::some::valid::ns::ParamServiceSvAsyncIf":
       pass
 
-    cdef cppclass cParamServiceSvIf "some::valid::ns::ParamServiceSvIf"(
+    cdef cppclass cParamServiceSvIf "::some::valid::ns::ParamServiceSvIf"(
             cParamServiceSvAsyncIf,
             cServerInterface):
         pass
 
 
 
-cdef extern from "src/gen-py3/module/services_wrapper.h" namespace "some::valid::ns":
-    cdef cppclass cEmptyServiceWrapper "some::valid::ns::EmptyServiceWrapper"(
+cdef extern from "src/gen-py3/module/services_wrapper.h" namespace "::some::valid::ns":
+    cdef cppclass cEmptyServiceWrapper "::some::valid::ns::EmptyServiceWrapper"(
         cEmptyServiceSvIf
     ):
         pass
 
-    shared_ptr[cAsyncProcessorFactory] cEmptyServiceInterface "some::valid::ns::EmptyServiceInterface"(PyObject *if_object, cFollyExecutor* Q)
-    cdef cppclass cReturnServiceWrapper "some::valid::ns::ReturnServiceWrapper"(
+    shared_ptr[cAsyncProcessorFactory] cEmptyServiceInterface "::some::valid::ns::EmptyServiceInterface"(PyObject *if_object, cFollyExecutor* Q)
+    cdef cppclass cReturnServiceWrapper "::some::valid::ns::ReturnServiceWrapper"(
         cReturnServiceSvIf
     ):
         pass
 
-    shared_ptr[cAsyncProcessorFactory] cReturnServiceInterface "some::valid::ns::ReturnServiceInterface"(PyObject *if_object, cFollyExecutor* Q)
-    cdef cppclass cParamServiceWrapper "some::valid::ns::ParamServiceWrapper"(
+    shared_ptr[cAsyncProcessorFactory] cReturnServiceInterface "::some::valid::ns::ReturnServiceInterface"(PyObject *if_object, cFollyExecutor* Q)
+    cdef cppclass cParamServiceWrapper "::some::valid::ns::ParamServiceWrapper"(
         cParamServiceSvIf
     ):
         pass
 
-    shared_ptr[cAsyncProcessorFactory] cParamServiceInterface "some::valid::ns::ParamServiceInterface"(PyObject *if_object, cFollyExecutor* Q)
+    shared_ptr[cAsyncProcessorFactory] cParamServiceInterface "::some::valid::ns::ParamServiceInterface"(PyObject *if_object, cFollyExecutor* Q)

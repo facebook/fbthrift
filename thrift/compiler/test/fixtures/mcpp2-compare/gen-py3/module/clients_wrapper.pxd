@@ -22,35 +22,35 @@ cimport module.types as _module_types
 
 cimport includes.types as _includes_types
 
-cdef extern from "src/gen-cpp2/EmptyService.h" namespace "some::valid::ns":
-  cdef cppclass cEmptyServiceAsyncClient "some::valid::ns::EmptyServiceAsyncClient":
+cdef extern from "src/gen-cpp2/EmptyService.h" namespace "::some::valid::ns":
+  cdef cppclass cEmptyServiceAsyncClient "::some::valid::ns::EmptyServiceAsyncClient":
       pass
 
 cdef extern from "<utility>" namespace "std":
   cdef unique_ptr[cEmptyServiceClientWrapper] move(unique_ptr[cEmptyServiceClientWrapper])
 
-cdef extern from "src/gen-cpp2/ReturnService.h" namespace "some::valid::ns":
-  cdef cppclass cReturnServiceAsyncClient "some::valid::ns::ReturnServiceAsyncClient":
+cdef extern from "src/gen-cpp2/ReturnService.h" namespace "::some::valid::ns":
+  cdef cppclass cReturnServiceAsyncClient "::some::valid::ns::ReturnServiceAsyncClient":
       pass
 
 cdef extern from "<utility>" namespace "std":
   cdef unique_ptr[cReturnServiceClientWrapper] move(unique_ptr[cReturnServiceClientWrapper])
 
-cdef extern from "src/gen-cpp2/ParamService.h" namespace "some::valid::ns":
-  cdef cppclass cParamServiceAsyncClient "some::valid::ns::ParamServiceAsyncClient":
+cdef extern from "src/gen-cpp2/ParamService.h" namespace "::some::valid::ns":
+  cdef cppclass cParamServiceAsyncClient "::some::valid::ns::ParamServiceAsyncClient":
       pass
 
 cdef extern from "<utility>" namespace "std":
   cdef unique_ptr[cParamServiceClientWrapper] move(unique_ptr[cParamServiceClientWrapper])
 
-cdef extern from "src/gen-py3/module/clients_wrapper.h" namespace "some::valid::ns":
-  cdef cppclass cEmptyServiceClientWrapper "some::valid::ns::EmptyServiceClientWrapper":
+cdef extern from "src/gen-py3/module/clients_wrapper.h" namespace "::some::valid::ns":
+  cdef cppclass cEmptyServiceClientWrapper "::some::valid::ns::EmptyServiceClientWrapper":
     cFollyFuture[cFollyUnit] disconnect()
     void setPersistentHeader(const string& key, const string& value)
 
 
 
-  cdef cppclass cReturnServiceClientWrapper "some::valid::ns::ReturnServiceClientWrapper":
+  cdef cppclass cReturnServiceClientWrapper "::some::valid::ns::ReturnServiceClientWrapper":
     cFollyFuture[cFollyUnit] disconnect()
     void setPersistentHeader(const string& key, const string& value)
 
@@ -79,7 +79,7 @@ cdef extern from "src/gen-py3/module/clients_wrapper.h" namespace "some::valid::
       int64_t arg_size,)
 
 
-  cdef cppclass cParamServiceClientWrapper "some::valid::ns::ParamServiceClientWrapper":
+  cdef cppclass cParamServiceClientWrapper "::some::valid::ns::ParamServiceClientWrapper":
     cFollyFuture[cFollyUnit] disconnect()
     void setPersistentHeader(const string& key, const string& value)
 

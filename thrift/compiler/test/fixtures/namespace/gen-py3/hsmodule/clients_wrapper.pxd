@@ -21,15 +21,15 @@ from thrift.py3.common cimport cRpcOptions
 cimport hsmodule.types as _hsmodule_types
 
 
-cdef extern from "gen-cpp2/HsTestService.h" namespace "cpp2":
-  cdef cppclass cHsTestServiceAsyncClient "cpp2::HsTestServiceAsyncClient":
+cdef extern from "gen-cpp2/HsTestService.h" namespace "::cpp2":
+  cdef cppclass cHsTestServiceAsyncClient "::cpp2::HsTestServiceAsyncClient":
       pass
 
 cdef extern from "<utility>" namespace "std":
   cdef unique_ptr[cHsTestServiceClientWrapper] move(unique_ptr[cHsTestServiceClientWrapper])
 
-cdef extern from "gen-py3/hsmodule/clients_wrapper.h" namespace "cpp2":
-  cdef cppclass cHsTestServiceClientWrapper "cpp2::HsTestServiceClientWrapper":
+cdef extern from "gen-py3/hsmodule/clients_wrapper.h" namespace "::cpp2":
+  cdef cppclass cHsTestServiceClientWrapper "::cpp2::HsTestServiceClientWrapper":
     cFollyFuture[cFollyUnit] disconnect()
     void setPersistentHeader(const string& key, const string& value)
 

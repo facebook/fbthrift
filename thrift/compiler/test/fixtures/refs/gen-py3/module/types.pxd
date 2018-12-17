@@ -21,11 +21,11 @@ from thrift.py3.types cimport bstring, move
 from folly.optional cimport cOptional
 
 
-cdef extern from "src/gen-cpp2/module_types.h" namespace "cpp2":
-    cdef cppclass cTypedEnum "cpp2::TypedEnum":
+cdef extern from "src/gen-cpp2/module_types.h" namespace "::cpp2":
+    cdef cppclass cTypedEnum "::cpp2::TypedEnum":
         bint operator==(cTypedEnum&)
-    cTypedEnum TypedEnum__VAL1 "cpp2::TypedEnum::VAL1"
-    cTypedEnum TypedEnum__VAL2 "cpp2::TypedEnum::VAL2"
+    cTypedEnum TypedEnum__VAL1 "::cpp2::TypedEnum::VAL1"
+    cTypedEnum TypedEnum__VAL2 "::cpp2::TypedEnum::VAL2"
 
 
 
@@ -38,41 +38,41 @@ cdef cTypedEnum TypedEnum_to_cpp(TypedEnum value)
 
 
 
-cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "cpp2":
+cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2":
     # Forward Declaration
-    cdef cppclass cMyUnion "cpp2::MyUnion"
+    cdef cppclass cMyUnion "::cpp2::MyUnion"
     # Forward Declaration
-    cdef cppclass cMyField "cpp2::MyField"
+    cdef cppclass cMyField "::cpp2::MyField"
     # Forward Declaration
-    cdef cppclass cMyStruct "cpp2::MyStruct"
+    cdef cppclass cMyStruct "::cpp2::MyStruct"
     # Forward Declaration
-    cdef cppclass cStructWithUnion "cpp2::StructWithUnion"
+    cdef cppclass cStructWithUnion "::cpp2::StructWithUnion"
     # Forward Declaration
-    cdef cppclass cRecursiveStruct "cpp2::RecursiveStruct"
+    cdef cppclass cRecursiveStruct "::cpp2::RecursiveStruct"
     # Forward Declaration
-    cdef cppclass cStructWithContainers "cpp2::StructWithContainers"
+    cdef cppclass cStructWithContainers "::cpp2::StructWithContainers"
     # Forward Declaration
-    cdef cppclass cStructWithSharedConst "cpp2::StructWithSharedConst"
+    cdef cppclass cStructWithSharedConst "::cpp2::StructWithSharedConst"
     # Forward Declaration
-    cdef cppclass cEmpty "cpp2::Empty"
+    cdef cppclass cEmpty "::cpp2::Empty"
     # Forward Declaration
-    cdef cppclass cStructWithRef "cpp2::StructWithRef"
+    cdef cppclass cStructWithRef "::cpp2::StructWithRef"
     # Forward Declaration
-    cdef cppclass cStructWithRefTypeUnique "cpp2::StructWithRefTypeUnique"
+    cdef cppclass cStructWithRefTypeUnique "::cpp2::StructWithRefTypeUnique"
     # Forward Declaration
-    cdef cppclass cStructWithRefTypeShared "cpp2::StructWithRefTypeShared"
+    cdef cppclass cStructWithRefTypeShared "::cpp2::StructWithRefTypeShared"
     # Forward Declaration
-    cdef cppclass cStructWithRefTypeSharedConst "cpp2::StructWithRefTypeSharedConst"
+    cdef cppclass cStructWithRefTypeSharedConst "::cpp2::StructWithRefTypeSharedConst"
     # Forward Declaration
-    cdef cppclass cStructWithRefAndAnnotCppNoexceptMoveCtor "cpp2::StructWithRefAndAnnotCppNoexceptMoveCtor"
+    cdef cppclass cStructWithRefAndAnnotCppNoexceptMoveCtor "::cpp2::StructWithRefAndAnnotCppNoexceptMoveCtor"
 
-cdef extern from "src/gen-cpp2/module_types.h" namespace "cpp2":
-    cdef enum cMyUnion__type "cpp2::MyUnion::Type":
-        cMyUnion__type___EMPTY__ "cpp2::MyUnion::Type::__EMPTY__",
-        cMyUnion__type_anInteger "cpp2::MyUnion::Type::anInteger",
-        cMyUnion__type_aString "cpp2::MyUnion::Type::aString",
+cdef extern from "src/gen-cpp2/module_types.h" namespace "::cpp2":
+    cdef enum cMyUnion__type "::cpp2::MyUnion::Type":
+        cMyUnion__type___EMPTY__ "::cpp2::MyUnion::Type::__EMPTY__",
+        cMyUnion__type_anInteger "::cpp2::MyUnion::Type::anInteger",
+        cMyUnion__type_aString "::cpp2::MyUnion::Type::aString",
 
-    cdef cppclass cMyUnion "cpp2::MyUnion":
+    cdef cppclass cMyUnion "::cpp2::MyUnion":
         cMyUnion() except +
         cMyUnion(const cMyUnion&) except +
         bint operator==(cMyUnion&)
@@ -86,12 +86,12 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "cpp2":
         const string& get_aString() const
         string& set_aString(const string&)
 
-    cdef cppclass cMyField__isset "cpp2::MyField::__isset":
+    cdef cppclass cMyField__isset "::cpp2::MyField::__isset":
         bint opt_value
         bint value
         bint req_value
 
-    cdef cppclass cMyField "cpp2::MyField":
+    cdef cppclass cMyField "::cpp2::MyField":
         cMyField() except +
         cMyField(const cMyField&) except +
         bint operator==(cMyField&)
@@ -104,12 +104,12 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "cpp2":
         int64_t req_value
         cMyField__isset __isset
 
-    cdef cppclass cMyStruct__isset "cpp2::MyStruct::__isset":
+    cdef cppclass cMyStruct__isset "::cpp2::MyStruct::__isset":
         bint opt_ref
         bint ref
         bint req_ref
 
-    cdef cppclass cMyStruct "cpp2::MyStruct":
+    cdef cppclass cMyStruct "::cpp2::MyStruct":
         cMyStruct() except +
         cMyStruct(const cMyStruct&) except +
         bint operator==(cMyStruct&)
@@ -122,12 +122,12 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "cpp2":
         unique_ptr[cMyField] req_ref
         cMyStruct__isset __isset
 
-    cdef cppclass cStructWithUnion__isset "cpp2::StructWithUnion::__isset":
+    cdef cppclass cStructWithUnion__isset "::cpp2::StructWithUnion::__isset":
         bint u
         bint aDouble
         bint f
 
-    cdef cppclass cStructWithUnion "cpp2::StructWithUnion":
+    cdef cppclass cStructWithUnion "::cpp2::StructWithUnion":
         cStructWithUnion() except +
         cStructWithUnion(const cStructWithUnion&) except +
         bint operator==(cStructWithUnion&)
@@ -140,10 +140,10 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "cpp2":
         cMyField f
         cStructWithUnion__isset __isset
 
-    cdef cppclass cRecursiveStruct__isset "cpp2::RecursiveStruct::__isset":
+    cdef cppclass cRecursiveStruct__isset "::cpp2::RecursiveStruct::__isset":
         bint mes
 
-    cdef cppclass cRecursiveStruct "cpp2::RecursiveStruct":
+    cdef cppclass cRecursiveStruct "::cpp2::RecursiveStruct":
         cRecursiveStruct() except +
         cRecursiveStruct(const cRecursiveStruct&) except +
         bint operator==(cRecursiveStruct&)
@@ -154,7 +154,7 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "cpp2":
         vector[cRecursiveStruct] mes
         cRecursiveStruct__isset __isset
 
-    cdef cppclass cStructWithContainers__isset "cpp2::StructWithContainers::__isset":
+    cdef cppclass cStructWithContainers__isset "::cpp2::StructWithContainers::__isset":
         bint list_ref
         bint set_ref
         bint map_ref
@@ -162,7 +162,7 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "cpp2":
         bint set_ref_shared
         bint list_ref_shared_const
 
-    cdef cppclass cStructWithContainers "cpp2::StructWithContainers":
+    cdef cppclass cStructWithContainers "::cpp2::StructWithContainers":
         cStructWithContainers() except +
         cStructWithContainers(const cStructWithContainers&) except +
         bint operator==(cStructWithContainers&)
@@ -178,12 +178,12 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "cpp2":
         shared_ptr[const vector[int32_t]] list_ref_shared_const
         cStructWithContainers__isset __isset
 
-    cdef cppclass cStructWithSharedConst__isset "cpp2::StructWithSharedConst::__isset":
+    cdef cppclass cStructWithSharedConst__isset "::cpp2::StructWithSharedConst::__isset":
         bint opt_shared_const
         bint shared_const
         bint req_shared_const
 
-    cdef cppclass cStructWithSharedConst "cpp2::StructWithSharedConst":
+    cdef cppclass cStructWithSharedConst "::cpp2::StructWithSharedConst":
         cStructWithSharedConst() except +
         cStructWithSharedConst(const cStructWithSharedConst&) except +
         bint operator==(cStructWithSharedConst&)
@@ -196,10 +196,10 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "cpp2":
         shared_ptr[const cMyField] req_shared_const
         cStructWithSharedConst__isset __isset
 
-    cdef cppclass cEmpty__isset "cpp2::Empty::__isset":
+    cdef cppclass cEmpty__isset "::cpp2::Empty::__isset":
         pass
 
-    cdef cppclass cEmpty "cpp2::Empty":
+    cdef cppclass cEmpty "::cpp2::Empty":
         cEmpty() except +
         cEmpty(const cEmpty&) except +
         bint operator==(cEmpty&)
@@ -209,12 +209,12 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "cpp2":
         bint operator>=(cEmpty&)
         cEmpty__isset __isset
 
-    cdef cppclass cStructWithRef__isset "cpp2::StructWithRef::__isset":
+    cdef cppclass cStructWithRef__isset "::cpp2::StructWithRef::__isset":
         bint def_field
         bint opt_field
         bint req_field
 
-    cdef cppclass cStructWithRef "cpp2::StructWithRef":
+    cdef cppclass cStructWithRef "::cpp2::StructWithRef":
         cStructWithRef() except +
         cStructWithRef(const cStructWithRef&) except +
         bint operator==(cStructWithRef&)
@@ -227,12 +227,12 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "cpp2":
         unique_ptr[cEmpty] req_field
         cStructWithRef__isset __isset
 
-    cdef cppclass cStructWithRefTypeUnique__isset "cpp2::StructWithRefTypeUnique::__isset":
+    cdef cppclass cStructWithRefTypeUnique__isset "::cpp2::StructWithRefTypeUnique::__isset":
         bint def_field
         bint opt_field
         bint req_field
 
-    cdef cppclass cStructWithRefTypeUnique "cpp2::StructWithRefTypeUnique":
+    cdef cppclass cStructWithRefTypeUnique "::cpp2::StructWithRefTypeUnique":
         cStructWithRefTypeUnique() except +
         cStructWithRefTypeUnique(const cStructWithRefTypeUnique&) except +
         bint operator==(cStructWithRefTypeUnique&)
@@ -245,12 +245,12 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "cpp2":
         unique_ptr[cEmpty] req_field
         cStructWithRefTypeUnique__isset __isset
 
-    cdef cppclass cStructWithRefTypeShared__isset "cpp2::StructWithRefTypeShared::__isset":
+    cdef cppclass cStructWithRefTypeShared__isset "::cpp2::StructWithRefTypeShared::__isset":
         bint def_field
         bint opt_field
         bint req_field
 
-    cdef cppclass cStructWithRefTypeShared "cpp2::StructWithRefTypeShared":
+    cdef cppclass cStructWithRefTypeShared "::cpp2::StructWithRefTypeShared":
         cStructWithRefTypeShared() except +
         cStructWithRefTypeShared(const cStructWithRefTypeShared&) except +
         bint operator==(cStructWithRefTypeShared&)
@@ -263,12 +263,12 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "cpp2":
         shared_ptr[cEmpty] req_field
         cStructWithRefTypeShared__isset __isset
 
-    cdef cppclass cStructWithRefTypeSharedConst__isset "cpp2::StructWithRefTypeSharedConst::__isset":
+    cdef cppclass cStructWithRefTypeSharedConst__isset "::cpp2::StructWithRefTypeSharedConst::__isset":
         bint def_field
         bint opt_field
         bint req_field
 
-    cdef cppclass cStructWithRefTypeSharedConst "cpp2::StructWithRefTypeSharedConst":
+    cdef cppclass cStructWithRefTypeSharedConst "::cpp2::StructWithRefTypeSharedConst":
         cStructWithRefTypeSharedConst() except +
         cStructWithRefTypeSharedConst(const cStructWithRefTypeSharedConst&) except +
         bint operator==(cStructWithRefTypeSharedConst&)
@@ -281,10 +281,10 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "cpp2":
         shared_ptr[const cEmpty] req_field
         cStructWithRefTypeSharedConst__isset __isset
 
-    cdef cppclass cStructWithRefAndAnnotCppNoexceptMoveCtor__isset "cpp2::StructWithRefAndAnnotCppNoexceptMoveCtor::__isset":
+    cdef cppclass cStructWithRefAndAnnotCppNoexceptMoveCtor__isset "::cpp2::StructWithRefAndAnnotCppNoexceptMoveCtor::__isset":
         bint def_field
 
-    cdef cppclass cStructWithRefAndAnnotCppNoexceptMoveCtor "cpp2::StructWithRefAndAnnotCppNoexceptMoveCtor":
+    cdef cppclass cStructWithRefAndAnnotCppNoexceptMoveCtor "::cpp2::StructWithRefAndAnnotCppNoexceptMoveCtor":
         cStructWithRefAndAnnotCppNoexceptMoveCtor() except +
         cStructWithRefAndAnnotCppNoexceptMoveCtor(const cStructWithRefAndAnnotCppNoexceptMoveCtor&) except +
         bint operator==(cStructWithRefAndAnnotCppNoexceptMoveCtor&)
@@ -295,34 +295,34 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "cpp2":
         unique_ptr[cEmpty] def_field
         cStructWithRefAndAnnotCppNoexceptMoveCtor__isset __isset
 
-    cdef shared_ptr[cMyField] reference_shared_ptr_opt_ref "thrift::py3::reference_shared_ptr<cpp2::MyField>"(shared_ptr[cMyStruct]&, cMyField&)
-    cdef shared_ptr[cMyField] reference_shared_ptr_ref "thrift::py3::reference_shared_ptr<cpp2::MyField>"(shared_ptr[cMyStruct]&, cMyField&)
-    cdef shared_ptr[cMyField] reference_shared_ptr_req_ref "thrift::py3::reference_shared_ptr<cpp2::MyField>"(shared_ptr[cMyStruct]&, cMyField&)
-    cdef shared_ptr[cMyUnion] reference_shared_ptr_u "thrift::py3::reference_shared_ptr<cpp2::MyUnion>"(shared_ptr[cStructWithUnion]&, cMyUnion&)
-    cdef shared_ptr[cMyField] reference_shared_ptr_f "thrift::py3::reference_shared_ptr<cpp2::MyField>"(shared_ptr[cStructWithUnion]&, cMyField&)
-    cdef shared_ptr[vector[cRecursiveStruct]] reference_shared_ptr_mes "thrift::py3::reference_shared_ptr<std::vector<cpp2::RecursiveStruct>>"(shared_ptr[cRecursiveStruct]&, vector[cRecursiveStruct]&)
+    cdef shared_ptr[cMyField] reference_shared_ptr_opt_ref "thrift::py3::reference_shared_ptr<::cpp2::MyField>"(shared_ptr[cMyStruct]&, cMyField&)
+    cdef shared_ptr[cMyField] reference_shared_ptr_ref "thrift::py3::reference_shared_ptr<::cpp2::MyField>"(shared_ptr[cMyStruct]&, cMyField&)
+    cdef shared_ptr[cMyField] reference_shared_ptr_req_ref "thrift::py3::reference_shared_ptr<::cpp2::MyField>"(shared_ptr[cMyStruct]&, cMyField&)
+    cdef shared_ptr[cMyUnion] reference_shared_ptr_u "thrift::py3::reference_shared_ptr<::cpp2::MyUnion>"(shared_ptr[cStructWithUnion]&, cMyUnion&)
+    cdef shared_ptr[cMyField] reference_shared_ptr_f "thrift::py3::reference_shared_ptr<::cpp2::MyField>"(shared_ptr[cStructWithUnion]&, cMyField&)
+    cdef shared_ptr[vector[cRecursiveStruct]] reference_shared_ptr_mes "thrift::py3::reference_shared_ptr<std::vector<::cpp2::RecursiveStruct>>"(shared_ptr[cRecursiveStruct]&, vector[cRecursiveStruct]&)
     cdef shared_ptr[vector[int32_t]] reference_shared_ptr_list_ref "thrift::py3::reference_shared_ptr<std::vector<int32_t>>"(shared_ptr[cStructWithContainers]&, vector[int32_t]&)
     cdef shared_ptr[cset[int32_t]] reference_shared_ptr_set_ref "thrift::py3::reference_shared_ptr<std::set<int32_t>>"(shared_ptr[cStructWithContainers]&, cset[int32_t]&)
     cdef shared_ptr[cmap[int32_t,int32_t]] reference_shared_ptr_map_ref "thrift::py3::reference_shared_ptr<std::map<int32_t,int32_t>>"(shared_ptr[cStructWithContainers]&, cmap[int32_t,int32_t]&)
     cdef shared_ptr[vector[int32_t]] reference_shared_ptr_list_ref_unique "thrift::py3::reference_shared_ptr<std::vector<int32_t>>"(shared_ptr[cStructWithContainers]&, vector[int32_t]&)
     cdef shared_ptr[cset[int32_t]] reference_shared_ptr_set_ref_shared "thrift::py3::reference_shared_ptr<std::set<int32_t>>"(shared_ptr[cStructWithContainers]&, cset[int32_t]&)
     cdef shared_ptr[vector[int32_t]] reference_shared_ptr_list_ref_shared_const "thrift::py3::reference_shared_ptr<std::vector<int32_t>>"(shared_ptr[cStructWithContainers]&, vector[int32_t]&)
-    cdef shared_ptr[cMyField] reference_shared_ptr_opt_shared_const "thrift::py3::reference_shared_ptr<cpp2::MyField>"(shared_ptr[cStructWithSharedConst]&, cMyField&)
-    cdef shared_ptr[cMyField] reference_shared_ptr_shared_const "thrift::py3::reference_shared_ptr<cpp2::MyField>"(shared_ptr[cStructWithSharedConst]&, cMyField&)
-    cdef shared_ptr[cMyField] reference_shared_ptr_req_shared_const "thrift::py3::reference_shared_ptr<cpp2::MyField>"(shared_ptr[cStructWithSharedConst]&, cMyField&)
-    cdef shared_ptr[cEmpty] reference_shared_ptr_def_field "thrift::py3::reference_shared_ptr<cpp2::Empty>"(shared_ptr[cStructWithRef]&, cEmpty&)
-    cdef shared_ptr[cEmpty] reference_shared_ptr_opt_field "thrift::py3::reference_shared_ptr<cpp2::Empty>"(shared_ptr[cStructWithRef]&, cEmpty&)
-    cdef shared_ptr[cEmpty] reference_shared_ptr_req_field "thrift::py3::reference_shared_ptr<cpp2::Empty>"(shared_ptr[cStructWithRef]&, cEmpty&)
-    cdef shared_ptr[cEmpty] reference_shared_ptr_def_field "thrift::py3::reference_shared_ptr<cpp2::Empty>"(shared_ptr[cStructWithRefTypeUnique]&, cEmpty&)
-    cdef shared_ptr[cEmpty] reference_shared_ptr_opt_field "thrift::py3::reference_shared_ptr<cpp2::Empty>"(shared_ptr[cStructWithRefTypeUnique]&, cEmpty&)
-    cdef shared_ptr[cEmpty] reference_shared_ptr_req_field "thrift::py3::reference_shared_ptr<cpp2::Empty>"(shared_ptr[cStructWithRefTypeUnique]&, cEmpty&)
-    cdef shared_ptr[cEmpty] reference_shared_ptr_def_field "thrift::py3::reference_shared_ptr<cpp2::Empty>"(shared_ptr[cStructWithRefTypeShared]&, cEmpty&)
-    cdef shared_ptr[cEmpty] reference_shared_ptr_opt_field "thrift::py3::reference_shared_ptr<cpp2::Empty>"(shared_ptr[cStructWithRefTypeShared]&, cEmpty&)
-    cdef shared_ptr[cEmpty] reference_shared_ptr_req_field "thrift::py3::reference_shared_ptr<cpp2::Empty>"(shared_ptr[cStructWithRefTypeShared]&, cEmpty&)
-    cdef shared_ptr[cEmpty] reference_shared_ptr_def_field "thrift::py3::reference_shared_ptr<cpp2::Empty>"(shared_ptr[cStructWithRefTypeSharedConst]&, cEmpty&)
-    cdef shared_ptr[cEmpty] reference_shared_ptr_opt_field "thrift::py3::reference_shared_ptr<cpp2::Empty>"(shared_ptr[cStructWithRefTypeSharedConst]&, cEmpty&)
-    cdef shared_ptr[cEmpty] reference_shared_ptr_req_field "thrift::py3::reference_shared_ptr<cpp2::Empty>"(shared_ptr[cStructWithRefTypeSharedConst]&, cEmpty&)
-    cdef shared_ptr[cEmpty] reference_shared_ptr_def_field "thrift::py3::reference_shared_ptr<cpp2::Empty>"(shared_ptr[cStructWithRefAndAnnotCppNoexceptMoveCtor]&, cEmpty&)
+    cdef shared_ptr[cMyField] reference_shared_ptr_opt_shared_const "thrift::py3::reference_shared_ptr<::cpp2::MyField>"(shared_ptr[cStructWithSharedConst]&, cMyField&)
+    cdef shared_ptr[cMyField] reference_shared_ptr_shared_const "thrift::py3::reference_shared_ptr<::cpp2::MyField>"(shared_ptr[cStructWithSharedConst]&, cMyField&)
+    cdef shared_ptr[cMyField] reference_shared_ptr_req_shared_const "thrift::py3::reference_shared_ptr<::cpp2::MyField>"(shared_ptr[cStructWithSharedConst]&, cMyField&)
+    cdef shared_ptr[cEmpty] reference_shared_ptr_def_field "thrift::py3::reference_shared_ptr<::cpp2::Empty>"(shared_ptr[cStructWithRef]&, cEmpty&)
+    cdef shared_ptr[cEmpty] reference_shared_ptr_opt_field "thrift::py3::reference_shared_ptr<::cpp2::Empty>"(shared_ptr[cStructWithRef]&, cEmpty&)
+    cdef shared_ptr[cEmpty] reference_shared_ptr_req_field "thrift::py3::reference_shared_ptr<::cpp2::Empty>"(shared_ptr[cStructWithRef]&, cEmpty&)
+    cdef shared_ptr[cEmpty] reference_shared_ptr_def_field "thrift::py3::reference_shared_ptr<::cpp2::Empty>"(shared_ptr[cStructWithRefTypeUnique]&, cEmpty&)
+    cdef shared_ptr[cEmpty] reference_shared_ptr_opt_field "thrift::py3::reference_shared_ptr<::cpp2::Empty>"(shared_ptr[cStructWithRefTypeUnique]&, cEmpty&)
+    cdef shared_ptr[cEmpty] reference_shared_ptr_req_field "thrift::py3::reference_shared_ptr<::cpp2::Empty>"(shared_ptr[cStructWithRefTypeUnique]&, cEmpty&)
+    cdef shared_ptr[cEmpty] reference_shared_ptr_def_field "thrift::py3::reference_shared_ptr<::cpp2::Empty>"(shared_ptr[cStructWithRefTypeShared]&, cEmpty&)
+    cdef shared_ptr[cEmpty] reference_shared_ptr_opt_field "thrift::py3::reference_shared_ptr<::cpp2::Empty>"(shared_ptr[cStructWithRefTypeShared]&, cEmpty&)
+    cdef shared_ptr[cEmpty] reference_shared_ptr_req_field "thrift::py3::reference_shared_ptr<::cpp2::Empty>"(shared_ptr[cStructWithRefTypeShared]&, cEmpty&)
+    cdef shared_ptr[cEmpty] reference_shared_ptr_def_field "thrift::py3::reference_shared_ptr<::cpp2::Empty>"(shared_ptr[cStructWithRefTypeSharedConst]&, cEmpty&)
+    cdef shared_ptr[cEmpty] reference_shared_ptr_opt_field "thrift::py3::reference_shared_ptr<::cpp2::Empty>"(shared_ptr[cStructWithRefTypeSharedConst]&, cEmpty&)
+    cdef shared_ptr[cEmpty] reference_shared_ptr_req_field "thrift::py3::reference_shared_ptr<::cpp2::Empty>"(shared_ptr[cStructWithRefTypeSharedConst]&, cEmpty&)
+    cdef shared_ptr[cEmpty] reference_shared_ptr_def_field "thrift::py3::reference_shared_ptr<::cpp2::Empty>"(shared_ptr[cStructWithRefAndAnnotCppNoexceptMoveCtor]&, cEmpty&)
 
 cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[cMyUnion] move(unique_ptr[cMyUnion])
@@ -366,19 +366,19 @@ cdef extern from "<utility>" namespace "std" nogil:
     cdef unique_ptr[cStructWithRefAndAnnotCppNoexceptMoveCtor] move_unique "std::move"(unique_ptr[cStructWithRefAndAnnotCppNoexceptMoveCtor])
 
 cdef extern from "<memory>" namespace "std" nogil:
-    cdef shared_ptr[const cMyUnion] const_pointer_cast "std::const_pointer_cast<const cpp2::MyUnion>"(shared_ptr[cMyUnion])
-    cdef shared_ptr[const cMyField] const_pointer_cast "std::const_pointer_cast<const cpp2::MyField>"(shared_ptr[cMyField])
-    cdef shared_ptr[const cMyStruct] const_pointer_cast "std::const_pointer_cast<const cpp2::MyStruct>"(shared_ptr[cMyStruct])
-    cdef shared_ptr[const cStructWithUnion] const_pointer_cast "std::const_pointer_cast<const cpp2::StructWithUnion>"(shared_ptr[cStructWithUnion])
-    cdef shared_ptr[const cRecursiveStruct] const_pointer_cast "std::const_pointer_cast<const cpp2::RecursiveStruct>"(shared_ptr[cRecursiveStruct])
-    cdef shared_ptr[const cStructWithContainers] const_pointer_cast "std::const_pointer_cast<const cpp2::StructWithContainers>"(shared_ptr[cStructWithContainers])
-    cdef shared_ptr[const cStructWithSharedConst] const_pointer_cast "std::const_pointer_cast<const cpp2::StructWithSharedConst>"(shared_ptr[cStructWithSharedConst])
-    cdef shared_ptr[const cEmpty] const_pointer_cast "std::const_pointer_cast<const cpp2::Empty>"(shared_ptr[cEmpty])
-    cdef shared_ptr[const cStructWithRef] const_pointer_cast "std::const_pointer_cast<const cpp2::StructWithRef>"(shared_ptr[cStructWithRef])
-    cdef shared_ptr[const cStructWithRefTypeUnique] const_pointer_cast "std::const_pointer_cast<const cpp2::StructWithRefTypeUnique>"(shared_ptr[cStructWithRefTypeUnique])
-    cdef shared_ptr[const cStructWithRefTypeShared] const_pointer_cast "std::const_pointer_cast<const cpp2::StructWithRefTypeShared>"(shared_ptr[cStructWithRefTypeShared])
-    cdef shared_ptr[const cStructWithRefTypeSharedConst] const_pointer_cast "std::const_pointer_cast<const cpp2::StructWithRefTypeSharedConst>"(shared_ptr[cStructWithRefTypeSharedConst])
-    cdef shared_ptr[const cStructWithRefAndAnnotCppNoexceptMoveCtor] const_pointer_cast "std::const_pointer_cast<const cpp2::StructWithRefAndAnnotCppNoexceptMoveCtor>"(shared_ptr[cStructWithRefAndAnnotCppNoexceptMoveCtor])
+    cdef shared_ptr[const cMyUnion] const_pointer_cast "std::const_pointer_cast<const ::cpp2::MyUnion>"(shared_ptr[cMyUnion])
+    cdef shared_ptr[const cMyField] const_pointer_cast "std::const_pointer_cast<const ::cpp2::MyField>"(shared_ptr[cMyField])
+    cdef shared_ptr[const cMyStruct] const_pointer_cast "std::const_pointer_cast<const ::cpp2::MyStruct>"(shared_ptr[cMyStruct])
+    cdef shared_ptr[const cStructWithUnion] const_pointer_cast "std::const_pointer_cast<const ::cpp2::StructWithUnion>"(shared_ptr[cStructWithUnion])
+    cdef shared_ptr[const cRecursiveStruct] const_pointer_cast "std::const_pointer_cast<const ::cpp2::RecursiveStruct>"(shared_ptr[cRecursiveStruct])
+    cdef shared_ptr[const cStructWithContainers] const_pointer_cast "std::const_pointer_cast<const ::cpp2::StructWithContainers>"(shared_ptr[cStructWithContainers])
+    cdef shared_ptr[const cStructWithSharedConst] const_pointer_cast "std::const_pointer_cast<const ::cpp2::StructWithSharedConst>"(shared_ptr[cStructWithSharedConst])
+    cdef shared_ptr[const cEmpty] const_pointer_cast "std::const_pointer_cast<const ::cpp2::Empty>"(shared_ptr[cEmpty])
+    cdef shared_ptr[const cStructWithRef] const_pointer_cast "std::const_pointer_cast<const ::cpp2::StructWithRef>"(shared_ptr[cStructWithRef])
+    cdef shared_ptr[const cStructWithRefTypeUnique] const_pointer_cast "std::const_pointer_cast<const ::cpp2::StructWithRefTypeUnique>"(shared_ptr[cStructWithRefTypeUnique])
+    cdef shared_ptr[const cStructWithRefTypeShared] const_pointer_cast "std::const_pointer_cast<const ::cpp2::StructWithRefTypeShared>"(shared_ptr[cStructWithRefTypeShared])
+    cdef shared_ptr[const cStructWithRefTypeSharedConst] const_pointer_cast "std::const_pointer_cast<const ::cpp2::StructWithRefTypeSharedConst>"(shared_ptr[cStructWithRefTypeSharedConst])
+    cdef shared_ptr[const cStructWithRefAndAnnotCppNoexceptMoveCtor] const_pointer_cast "std::const_pointer_cast<const ::cpp2::StructWithRefAndAnnotCppNoexceptMoveCtor>"(shared_ptr[cStructWithRefAndAnnotCppNoexceptMoveCtor])
 
 cdef class __MyUnionType(thrift.py3.types.CompiledEnum):
     pass
@@ -730,15 +730,15 @@ cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[cmap[int32_t,int32_t]] move_shared "std::move"(shared_ptr[cmap[int32_t,int32_t]])
 cdef extern from "<utility>" nogil:
     pass  
-    shared_ptr[cRecursiveStruct] reference_shared_ptr_List__RecursiveStruct "thrift::py3::reference_shared_ptr<cpp2::RecursiveStruct>"(...)
+    shared_ptr[cRecursiveStruct] reference_shared_ptr_List__RecursiveStruct "thrift::py3::reference_shared_ptr<::cpp2::RecursiveStruct>"(...)
 cdef extern from "<memory>" namespace "std" nogil:
-    cdef shared_ptr[const vector[cRecursiveStruct]] const_pointer_cast "std::const_pointer_cast<const std::vector<cpp2::RecursiveStruct>>"(shared_ptr[vector[cRecursiveStruct]])
+    cdef shared_ptr[const vector[cRecursiveStruct]] const_pointer_cast "std::const_pointer_cast<const std::vector<::cpp2::RecursiveStruct>>"(shared_ptr[vector[cRecursiveStruct]])
     cdef shared_ptr[const vector[int32_t]] const_pointer_cast "std::const_pointer_cast<const std::vector<int32_t>>"(shared_ptr[vector[int32_t]])
     cdef shared_ptr[const cset[int32_t]] const_pointer_cast "std::const_pointer_cast<const std::set<int32_t>>"(shared_ptr[cset[int32_t]])
     cdef shared_ptr[const cmap[int32_t,int32_t]] const_pointer_cast "std::const_pointer_cast<const std::map<int32_t,int32_t>>"(shared_ptr[cmap[int32_t,int32_t]])
 
-cdef extern from "src/gen-cpp2/module_constants.h" namespace "cpp2":
-    cdef cStructWithRef ckStructWithRef "cpp2::module_constants::kStructWithRef"()
-    cdef cStructWithRefTypeUnique ckStructWithRefTypeUnique "cpp2::module_constants::kStructWithRefTypeUnique"()
-    cdef cStructWithRefTypeShared ckStructWithRefTypeShared "cpp2::module_constants::kStructWithRefTypeShared"()
-    cdef cStructWithRefTypeSharedConst ckStructWithRefTypeSharedConst "cpp2::module_constants::kStructWithRefTypeSharedConst"()
+cdef extern from "src/gen-cpp2/module_constants.h" namespace "::cpp2":
+    cdef cStructWithRef ckStructWithRef "::cpp2::module_constants::kStructWithRef"()
+    cdef cStructWithRefTypeUnique ckStructWithRefTypeUnique "::cpp2::module_constants::kStructWithRefTypeUnique"()
+    cdef cStructWithRefTypeShared ckStructWithRefTypeShared "::cpp2::module_constants::kStructWithRefTypeShared"()
+    cdef cStructWithRefTypeSharedConst ckStructWithRefTypeSharedConst "::cpp2::module_constants::kStructWithRefTypeSharedConst"()

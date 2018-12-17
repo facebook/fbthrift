@@ -227,8 +227,8 @@ folly::Future<int32_t> ReturnServiceWrapper::future_simpleTypedefReturn() {
   return future;
 }
 
-folly::Future<std::unique_ptr<std::vector<std::map<some::valid::ns::Empty,some::valid::ns::MyStruct>>>> ReturnServiceWrapper::future_complexTypedefReturn() {
-  folly::Promise<std::unique_ptr<std::vector<std::map<some::valid::ns::Empty,some::valid::ns::MyStruct>>>> promise;
+folly::Future<std::unique_ptr<std::vector<std::map<::some::valid::ns::Empty,::some::valid::ns::MyStruct>>>> ReturnServiceWrapper::future_complexTypedefReturn() {
+  folly::Promise<std::unique_ptr<std::vector<std::map<::some::valid::ns::Empty,::some::valid::ns::MyStruct>>>> promise;
   auto future = promise.getFuture();
   auto ctx = getConnectionContext();
   folly::via(
@@ -244,8 +244,8 @@ folly::Future<std::unique_ptr<std::vector<std::map<some::valid::ns::Empty,some::
   return future;
 }
 
-folly::Future<std::unique_ptr<std::vector<std::vector<std::vector<std::map<some::valid::ns::Empty,some::valid::ns::MyStruct>>>>>> ReturnServiceWrapper::future_list_mostComplexTypedefReturn() {
-  folly::Promise<std::unique_ptr<std::vector<std::vector<std::vector<std::map<some::valid::ns::Empty,some::valid::ns::MyStruct>>>>>> promise;
+folly::Future<std::unique_ptr<std::vector<std::vector<std::vector<std::map<::some::valid::ns::Empty,::some::valid::ns::MyStruct>>>>>> ReturnServiceWrapper::future_list_mostComplexTypedefReturn() {
+  folly::Promise<std::unique_ptr<std::vector<std::vector<std::vector<std::map<::some::valid::ns::Empty,::some::valid::ns::MyStruct>>>>>> promise;
   auto future = promise.getFuture();
   auto ctx = getConnectionContext();
   folly::via(
@@ -261,8 +261,8 @@ folly::Future<std::unique_ptr<std::vector<std::vector<std::vector<std::map<some:
   return future;
 }
 
-folly::Future<some::valid::ns::MyEnumA> ReturnServiceWrapper::future_enumReturn() {
-  folly::Promise<some::valid::ns::MyEnumA> promise;
+folly::Future<::some::valid::ns::MyEnumA> ReturnServiceWrapper::future_enumReturn() {
+  folly::Promise<::some::valid::ns::MyEnumA> promise;
   auto future = promise.getFuture();
   auto ctx = getConnectionContext();
   folly::via(
@@ -278,8 +278,8 @@ folly::Future<some::valid::ns::MyEnumA> ReturnServiceWrapper::future_enumReturn(
   return future;
 }
 
-folly::Future<std::unique_ptr<std::vector<some::valid::ns::MyEnumA>>> ReturnServiceWrapper::future_list_EnumReturn() {
-  folly::Promise<std::unique_ptr<std::vector<some::valid::ns::MyEnumA>>> promise;
+folly::Future<std::unique_ptr<std::vector<::some::valid::ns::MyEnumA>>> ReturnServiceWrapper::future_list_EnumReturn() {
+  folly::Promise<std::unique_ptr<std::vector<::some::valid::ns::MyEnumA>>> promise;
   auto future = promise.getFuture();
   auto ctx = getConnectionContext();
   folly::via(
@@ -295,8 +295,8 @@ folly::Future<std::unique_ptr<std::vector<some::valid::ns::MyEnumA>>> ReturnServ
   return future;
 }
 
-folly::Future<std::unique_ptr<some::valid::ns::MyStruct>> ReturnServiceWrapper::future_structReturn() {
-  folly::Promise<std::unique_ptr<some::valid::ns::MyStruct>> promise;
+folly::Future<std::unique_ptr<::some::valid::ns::MyStruct>> ReturnServiceWrapper::future_structReturn() {
+  folly::Promise<std::unique_ptr<::some::valid::ns::MyStruct>> promise;
   auto future = promise.getFuture();
   auto ctx = getConnectionContext();
   folly::via(
@@ -312,8 +312,8 @@ folly::Future<std::unique_ptr<some::valid::ns::MyStruct>> ReturnServiceWrapper::
   return future;
 }
 
-folly::Future<std::unique_ptr<std::set<some::valid::ns::MyStruct>>> ReturnServiceWrapper::future_set_StructReturn() {
-  folly::Promise<std::unique_ptr<std::set<some::valid::ns::MyStruct>>> promise;
+folly::Future<std::unique_ptr<std::set<::some::valid::ns::MyStruct>>> ReturnServiceWrapper::future_set_StructReturn() {
+  folly::Promise<std::unique_ptr<std::set<::some::valid::ns::MyStruct>>> promise;
   auto future = promise.getFuture();
   auto ctx = getConnectionContext();
   folly::via(
@@ -329,8 +329,8 @@ folly::Future<std::unique_ptr<std::set<some::valid::ns::MyStruct>>> ReturnServic
   return future;
 }
 
-folly::Future<std::unique_ptr<some::valid::ns::ComplexUnion>> ReturnServiceWrapper::future_unionReturn() {
-  folly::Promise<std::unique_ptr<some::valid::ns::ComplexUnion>> promise;
+folly::Future<std::unique_ptr<::some::valid::ns::ComplexUnion>> ReturnServiceWrapper::future_unionReturn() {
+  folly::Promise<std::unique_ptr<::some::valid::ns::ComplexUnion>> promise;
   auto future = promise.getFuture();
   auto ctx = getConnectionContext();
   folly::via(
@@ -346,8 +346,8 @@ folly::Future<std::unique_ptr<some::valid::ns::ComplexUnion>> ReturnServiceWrapp
   return future;
 }
 
-folly::Future<std::unique_ptr<std::vector<some::valid::ns::ComplexUnion>>> ReturnServiceWrapper::future_list_UnionReturn() {
-  folly::Promise<std::unique_ptr<std::vector<some::valid::ns::ComplexUnion>>> promise;
+folly::Future<std::unique_ptr<std::vector<::some::valid::ns::ComplexUnion>>> ReturnServiceWrapper::future_list_UnionReturn() {
+  folly::Promise<std::unique_ptr<std::vector<::some::valid::ns::ComplexUnion>>> promise;
   auto future = promise.getFuture();
   auto ctx = getConnectionContext();
   folly::via(
@@ -533,7 +533,7 @@ param1    ]() mutable {
 }
 
 folly::Future<folly::Unit> ParamServiceWrapper::future_void_ret_enum_param(
-  some::valid::ns::MyEnumA param1
+  ::some::valid::ns::MyEnumA param1
 ) {
   folly::Promise<folly::Unit> promise;
   auto future = promise.getFuture();
@@ -554,7 +554,7 @@ param1    ]() mutable {
 }
 
 folly::Future<folly::Unit> ParamServiceWrapper::future_void_ret_struct_param(
-  std::unique_ptr<some::valid::ns::MyStruct> param1
+  std::unique_ptr<::some::valid::ns::MyStruct> param1
 ) {
   folly::Promise<folly::Unit> promise;
   auto future = promise.getFuture();
@@ -575,7 +575,7 @@ param1 = std::move(param1)    ]() mutable {
 }
 
 folly::Future<folly::Unit> ParamServiceWrapper::future_void_ret_listunion_param(
-  std::unique_ptr<std::vector<some::valid::ns::ComplexUnion>> param1
+  std::unique_ptr<std::vector<::some::valid::ns::ComplexUnion>> param1
 ) {
   folly::Promise<folly::Unit> promise;
   auto future = promise.getFuture();
@@ -641,7 +641,7 @@ param1 = std::move(param1)    ]() mutable {
 }
 
 folly::Future<bool> ParamServiceWrapper::future_bool_ret_union_param(
-  std::unique_ptr<some::valid::ns::ComplexUnion> param1
+  std::unique_ptr<::some::valid::ns::ComplexUnion> param1
 ) {
   folly::Promise<bool> promise;
   auto future = promise.getFuture();
@@ -687,7 +687,7 @@ param2    ]() mutable {
 
 folly::Future<int64_t> ParamServiceWrapper::future_i64_ret_string_typedef_param(
   std::unique_ptr<std::string> param1,
-  std::unique_ptr<std::set<std::vector<std::vector<std::map<some::valid::ns::Empty,some::valid::ns::MyStruct>>>>> param2
+  std::unique_ptr<std::set<std::vector<std::vector<std::map<::some::valid::ns::Empty,::some::valid::ns::MyStruct>>>>> param2
 ) {
   folly::Promise<int64_t> promise;
   auto future = promise.getFuture();
@@ -743,7 +743,7 @@ param5    ]() mutable {
 }
 
 folly::Future<double> ParamServiceWrapper::future_double_ret_setstruct_param(
-  std::unique_ptr<std::set<some::valid::ns::MyStruct>> param1
+  std::unique_ptr<std::set<::some::valid::ns::MyStruct>> param1
 ) {
   folly::Promise<double> promise;
   auto future = promise.getFuture();
@@ -893,7 +893,7 @@ param1    ]() mutable {
 }
 
 folly::Future<std::unique_ptr<std::vector<int32_t>>> ParamServiceWrapper::future_listtypedef_ret_typedef_param(
-  std::unique_ptr<std::vector<std::map<some::valid::ns::Empty,some::valid::ns::MyStruct>>> param1
+  std::unique_ptr<std::vector<std::map<::some::valid::ns::Empty,::some::valid::ns::MyStruct>>> param1
 ) {
   folly::Promise<std::unique_ptr<std::vector<int32_t>>> promise;
   auto future = promise.getFuture();
@@ -913,10 +913,10 @@ param1 = std::move(param1)    ]() mutable {
   return future;
 }
 
-folly::Future<some::valid::ns::MyEnumA> ParamServiceWrapper::future_enum_ret_double_param(
+folly::Future<::some::valid::ns::MyEnumA> ParamServiceWrapper::future_enum_ret_double_param(
   double param1
 ) {
-  folly::Promise<some::valid::ns::MyEnumA> promise;
+  folly::Promise<::some::valid::ns::MyEnumA> promise;
   auto future = promise.getFuture();
   auto ctx = getConnectionContext();
   folly::via(
@@ -934,11 +934,11 @@ param1    ]() mutable {
   return future;
 }
 
-folly::Future<some::valid::ns::MyEnumA> ParamServiceWrapper::future_enum_ret_double_enum_param(
+folly::Future<::some::valid::ns::MyEnumA> ParamServiceWrapper::future_enum_ret_double_enum_param(
   double param1,
-  some::valid::ns::MyEnumA param2
+  ::some::valid::ns::MyEnumA param2
 ) {
-  folly::Promise<some::valid::ns::MyEnumA> promise;
+  folly::Promise<::some::valid::ns::MyEnumA> promise;
   auto future = promise.getFuture();
   auto ctx = getConnectionContext();
   folly::via(
@@ -958,10 +958,10 @@ param2    ]() mutable {
   return future;
 }
 
-folly::Future<std::unique_ptr<std::vector<some::valid::ns::MyEnumA>>> ParamServiceWrapper::future_listenum_ret_map_param(
+folly::Future<std::unique_ptr<std::vector<::some::valid::ns::MyEnumA>>> ParamServiceWrapper::future_listenum_ret_map_param(
   std::unique_ptr<std::map<std::string,int64_t>> param1
 ) {
-  folly::Promise<std::unique_ptr<std::vector<some::valid::ns::MyEnumA>>> promise;
+  folly::Promise<std::unique_ptr<std::vector<::some::valid::ns::MyEnumA>>> promise;
   auto future = promise.getFuture();
   auto ctx = getConnectionContext();
   folly::via(
@@ -979,10 +979,10 @@ param1 = std::move(param1)    ]() mutable {
   return future;
 }
 
-folly::Future<std::unique_ptr<some::valid::ns::MyStruct>> ParamServiceWrapper::future_struct_ret_i16_param(
+folly::Future<std::unique_ptr<::some::valid::ns::MyStruct>> ParamServiceWrapper::future_struct_ret_i16_param(
   int16_t param1
 ) {
-  folly::Promise<std::unique_ptr<some::valid::ns::MyStruct>> promise;
+  folly::Promise<std::unique_ptr<::some::valid::ns::MyStruct>> promise;
   auto future = promise.getFuture();
   auto ctx = getConnectionContext();
   folly::via(
@@ -1000,10 +1000,10 @@ param1    ]() mutable {
   return future;
 }
 
-folly::Future<std::unique_ptr<std::set<some::valid::ns::MyStruct>>> ParamServiceWrapper::future_setstruct_ret_set_param(
+folly::Future<std::unique_ptr<std::set<::some::valid::ns::MyStruct>>> ParamServiceWrapper::future_setstruct_ret_set_param(
   std::unique_ptr<std::set<std::string>> param1
 ) {
-  folly::Promise<std::unique_ptr<std::set<some::valid::ns::MyStruct>>> promise;
+  folly::Promise<std::unique_ptr<std::set<::some::valid::ns::MyStruct>>> promise;
   auto future = promise.getFuture();
   auto ctx = getConnectionContext();
   folly::via(
@@ -1021,11 +1021,11 @@ param1 = std::move(param1)    ]() mutable {
   return future;
 }
 
-folly::Future<std::unique_ptr<some::valid::ns::ComplexUnion>> ParamServiceWrapper::future_union_ret_i32_i32_param(
+folly::Future<std::unique_ptr<::some::valid::ns::ComplexUnion>> ParamServiceWrapper::future_union_ret_i32_i32_param(
   int32_t param1,
   int32_t param2
 ) {
-  folly::Promise<std::unique_ptr<some::valid::ns::ComplexUnion>> promise;
+  folly::Promise<std::unique_ptr<::some::valid::ns::ComplexUnion>> promise;
   auto future = promise.getFuture();
   auto ctx = getConnectionContext();
   folly::via(
@@ -1045,10 +1045,10 @@ param2    ]() mutable {
   return future;
 }
 
-folly::Future<std::unique_ptr<std::vector<some::valid::ns::ComplexUnion>>> ParamServiceWrapper::future_listunion_string_param(
+folly::Future<std::unique_ptr<std::vector<::some::valid::ns::ComplexUnion>>> ParamServiceWrapper::future_listunion_string_param(
   std::unique_ptr<std::string> param1
 ) {
-  folly::Promise<std::unique_ptr<std::vector<some::valid::ns::ComplexUnion>>> promise;
+  folly::Promise<std::unique_ptr<std::vector<::some::valid::ns::ComplexUnion>>> promise;
   auto future = promise.getFuture();
   auto ctx = getConnectionContext();
   folly::via(

@@ -15,11 +15,11 @@
 
 namespace cpp2 {
 
-class ExtendTestServiceWrapper : public cpp2::HsTestServiceWrapper, virtual public ExtendTestServiceSvIf {
+class ExtendTestServiceWrapper : public ::cpp2::HsTestServiceWrapper, virtual public ExtendTestServiceSvIf {
   public:
     explicit ExtendTestServiceWrapper(PyObject *if_object, folly::Executor *exc);
     folly::Future<bool> future_check(
-        std::unique_ptr<cpp2::HsFoo> struct1
+        std::unique_ptr<::cpp2::HsFoo> struct1
     ) override;
 };
 

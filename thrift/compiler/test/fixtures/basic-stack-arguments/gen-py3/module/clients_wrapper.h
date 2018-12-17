@@ -25,11 +25,11 @@ namespace cpp2 {
 
 class MyServiceClientWrapper {
   protected:
-    std::shared_ptr<cpp2::MyServiceAsyncClient> async_client;
+    std::shared_ptr<::cpp2::MyServiceAsyncClient> async_client;
     std::shared_ptr<apache::thrift::RequestChannel> channel_;
   public:
     explicit MyServiceClientWrapper(
-      std::shared_ptr<cpp2::MyServiceAsyncClient> async_client,
+      std::shared_ptr<::cpp2::MyServiceAsyncClient> async_client,
       std::shared_ptr<apache::thrift::RequestChannel> channel);
     virtual ~MyServiceClientWrapper();
 
@@ -56,11 +56,11 @@ class MyServiceClientWrapper {
 
 class MyServiceFastClientWrapper {
   protected:
-    std::shared_ptr<cpp2::MyServiceFastAsyncClient> async_client;
+    std::shared_ptr<::cpp2::MyServiceFastAsyncClient> async_client;
     std::shared_ptr<apache::thrift::RequestChannel> channel_;
   public:
     explicit MyServiceFastClientWrapper(
-      std::shared_ptr<cpp2::MyServiceFastAsyncClient> async_client,
+      std::shared_ptr<::cpp2::MyServiceFastAsyncClient> async_client,
       std::shared_ptr<apache::thrift::RequestChannel> channel);
     virtual ~MyServiceFastClientWrapper();
 

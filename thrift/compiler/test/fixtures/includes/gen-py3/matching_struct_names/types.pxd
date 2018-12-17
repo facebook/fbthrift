@@ -25,17 +25,17 @@ cimport module.types as _module_types
 
 
 
-cdef extern from "src/gen-cpp2/matching_struct_names_types_custom_protocol.h" namespace "cpp2":
+cdef extern from "src/gen-cpp2/matching_struct_names_types_custom_protocol.h" namespace "::cpp2":
     # Forward Declaration
-    cdef cppclass cMyStruct "cpp2::MyStruct"
+    cdef cppclass cMyStruct "::cpp2::MyStruct"
     # Forward Declaration
-    cdef cppclass cCombo "cpp2::Combo"
+    cdef cppclass cCombo "::cpp2::Combo"
 
-cdef extern from "src/gen-cpp2/matching_struct_names_types.h" namespace "cpp2":
-    cdef cppclass cMyStruct__isset "cpp2::MyStruct::__isset":
+cdef extern from "src/gen-cpp2/matching_struct_names_types.h" namespace "::cpp2":
+    cdef cppclass cMyStruct__isset "::cpp2::MyStruct::__isset":
         bint field
 
-    cdef cppclass cMyStruct "cpp2::MyStruct":
+    cdef cppclass cMyStruct "::cpp2::MyStruct":
         cMyStruct() except +
         cMyStruct(const cMyStruct&) except +
         bint operator==(cMyStruct&)
@@ -46,13 +46,13 @@ cdef extern from "src/gen-cpp2/matching_struct_names_types.h" namespace "cpp2":
         string field
         cMyStruct__isset __isset
 
-    cdef cppclass cCombo__isset "cpp2::Combo::__isset":
+    cdef cppclass cCombo__isset "::cpp2::Combo::__isset":
         bint listOfOurMyStructLists
         bint theirMyStructList
         bint ourMyStructList
         bint listOfTheirMyStructList
 
-    cdef cppclass cCombo "cpp2::Combo":
+    cdef cppclass cCombo "::cpp2::Combo":
         cCombo() except +
         cCombo(const cCombo&) except +
         bint operator==(cCombo&)
@@ -66,10 +66,10 @@ cdef extern from "src/gen-cpp2/matching_struct_names_types.h" namespace "cpp2":
         vector[vector[_module_types.cMyStruct]] listOfTheirMyStructList
         cCombo__isset __isset
 
-    cdef shared_ptr[vector[vector[cMyStruct]]] reference_shared_ptr_listOfOurMyStructLists "thrift::py3::reference_shared_ptr<std::vector<std::vector<cpp2::MyStruct>>>"(shared_ptr[cCombo]&, vector[vector[cMyStruct]]&)
-    cdef shared_ptr[vector[_module_types.cMyStruct]] reference_shared_ptr_theirMyStructList "thrift::py3::reference_shared_ptr<std::vector<cpp2::MyStruct>>"(shared_ptr[cCombo]&, vector[_module_types.cMyStruct]&)
-    cdef shared_ptr[vector[cMyStruct]] reference_shared_ptr_ourMyStructList "thrift::py3::reference_shared_ptr<std::vector<cpp2::MyStruct>>"(shared_ptr[cCombo]&, vector[cMyStruct]&)
-    cdef shared_ptr[vector[vector[_module_types.cMyStruct]]] reference_shared_ptr_listOfTheirMyStructList "thrift::py3::reference_shared_ptr<std::vector<std::vector<cpp2::MyStruct>>>"(shared_ptr[cCombo]&, vector[vector[_module_types.cMyStruct]]&)
+    cdef shared_ptr[vector[vector[cMyStruct]]] reference_shared_ptr_listOfOurMyStructLists "thrift::py3::reference_shared_ptr<std::vector<std::vector<::cpp2::MyStruct>>>"(shared_ptr[cCombo]&, vector[vector[cMyStruct]]&)
+    cdef shared_ptr[vector[_module_types.cMyStruct]] reference_shared_ptr_theirMyStructList "thrift::py3::reference_shared_ptr<std::vector<::cpp2::MyStruct>>"(shared_ptr[cCombo]&, vector[_module_types.cMyStruct]&)
+    cdef shared_ptr[vector[cMyStruct]] reference_shared_ptr_ourMyStructList "thrift::py3::reference_shared_ptr<std::vector<::cpp2::MyStruct>>"(shared_ptr[cCombo]&, vector[cMyStruct]&)
+    cdef shared_ptr[vector[vector[_module_types.cMyStruct]]] reference_shared_ptr_listOfTheirMyStructList "thrift::py3::reference_shared_ptr<std::vector<std::vector<::cpp2::MyStruct>>>"(shared_ptr[cCombo]&, vector[vector[_module_types.cMyStruct]]&)
 
 cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[cMyStruct] move(unique_ptr[cMyStruct])
@@ -80,8 +80,8 @@ cdef extern from "<utility>" namespace "std" nogil:
     cdef unique_ptr[cCombo] move_unique "std::move"(unique_ptr[cCombo])
 
 cdef extern from "<memory>" namespace "std" nogil:
-    cdef shared_ptr[const cMyStruct] const_pointer_cast "std::const_pointer_cast<const cpp2::MyStruct>"(shared_ptr[cMyStruct])
-    cdef shared_ptr[const cCombo] const_pointer_cast "std::const_pointer_cast<const cpp2::Combo>"(shared_ptr[cCombo])
+    cdef shared_ptr[const cMyStruct] const_pointer_cast "std::const_pointer_cast<const ::cpp2::MyStruct>"(shared_ptr[cMyStruct])
+    cdef shared_ptr[const cCombo] const_pointer_cast "std::const_pointer_cast<const ::cpp2::Combo>"(shared_ptr[cCombo])
 
 # Forward Definition of the cython struct
 cdef class MyStruct(thrift.py3.types.Struct)
@@ -176,13 +176,13 @@ cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[vector[vector[_module_types.cMyStruct]]] move_shared "std::move"(shared_ptr[vector[vector[_module_types.cMyStruct]]])
 cdef extern from "<utility>" nogil:
     pass  
-    shared_ptr[cMyStruct] reference_shared_ptr_List__MyStruct "thrift::py3::reference_shared_ptr<cpp2::MyStruct>"(...)
-    shared_ptr[vector[cMyStruct]] reference_shared_ptr_List__List__MyStruct "thrift::py3::reference_shared_ptr<std::vector<cpp2::MyStruct>>"(...)
-    shared_ptr[_module_types.cMyStruct] reference_shared_ptr_List__module_MyStruct "thrift::py3::reference_shared_ptr<cpp2::MyStruct>"(...)
-    shared_ptr[vector[_module_types.cMyStruct]] reference_shared_ptr_List__List__module_MyStruct "thrift::py3::reference_shared_ptr<std::vector<cpp2::MyStruct>>"(...)
+    shared_ptr[cMyStruct] reference_shared_ptr_List__MyStruct "thrift::py3::reference_shared_ptr<::cpp2::MyStruct>"(...)
+    shared_ptr[vector[cMyStruct]] reference_shared_ptr_List__List__MyStruct "thrift::py3::reference_shared_ptr<std::vector<::cpp2::MyStruct>>"(...)
+    shared_ptr[_module_types.cMyStruct] reference_shared_ptr_List__module_MyStruct "thrift::py3::reference_shared_ptr<::cpp2::MyStruct>"(...)
+    shared_ptr[vector[_module_types.cMyStruct]] reference_shared_ptr_List__List__module_MyStruct "thrift::py3::reference_shared_ptr<std::vector<::cpp2::MyStruct>>"(...)
 cdef extern from "<memory>" namespace "std" nogil:
-    cdef shared_ptr[const vector[cMyStruct]] const_pointer_cast "std::const_pointer_cast<const std::vector<cpp2::MyStruct>>"(shared_ptr[vector[cMyStruct]])
-    cdef shared_ptr[const vector[vector[cMyStruct]]] const_pointer_cast "std::const_pointer_cast<const std::vector<std::vector<cpp2::MyStruct>>>"(shared_ptr[vector[vector[cMyStruct]]])
-    cdef shared_ptr[const vector[_module_types.cMyStruct]] const_pointer_cast "std::const_pointer_cast<const std::vector<cpp2::MyStruct>>"(shared_ptr[vector[_module_types.cMyStruct]])
-    cdef shared_ptr[const vector[vector[_module_types.cMyStruct]]] const_pointer_cast "std::const_pointer_cast<const std::vector<std::vector<cpp2::MyStruct>>>"(shared_ptr[vector[vector[_module_types.cMyStruct]]])
+    cdef shared_ptr[const vector[cMyStruct]] const_pointer_cast "std::const_pointer_cast<const std::vector<::cpp2::MyStruct>>"(shared_ptr[vector[cMyStruct]])
+    cdef shared_ptr[const vector[vector[cMyStruct]]] const_pointer_cast "std::const_pointer_cast<const std::vector<std::vector<::cpp2::MyStruct>>>"(shared_ptr[vector[vector[cMyStruct]]])
+    cdef shared_ptr[const vector[_module_types.cMyStruct]] const_pointer_cast "std::const_pointer_cast<const std::vector<::cpp2::MyStruct>>"(shared_ptr[vector[_module_types.cMyStruct]])
+    cdef shared_ptr[const vector[vector[_module_types.cMyStruct]]] const_pointer_cast "std::const_pointer_cast<const std::vector<std::vector<::cpp2::MyStruct>>>"(shared_ptr[vector[vector[_module_types.cMyStruct]]])
 

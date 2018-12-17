@@ -12,13 +12,13 @@
 namespace cpp2 {
 
 ExtendTestServiceWrapper::ExtendTestServiceWrapper(PyObject *obj, folly::Executor* exc)
-  : cpp2::HsTestServiceWrapper(obj, exc)
+  : ::cpp2::HsTestServiceWrapper(obj, exc)
   {
     import_my__namespacing__extend__test__extend__services();
   }
 
 folly::Future<bool> ExtendTestServiceWrapper::future_check(
-  std::unique_ptr<cpp2::HsFoo> struct1
+  std::unique_ptr<::cpp2::HsFoo> struct1
 ) {
   folly::Promise<bool> promise;
   auto future = promise.getFuture();

@@ -24,17 +24,17 @@ from folly.optional cimport cOptional
 
 
 
-cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "cpp2":
+cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2":
     # Forward Declaration
-    cdef cppclass cEmpty "cpp2::Empty"
+    cdef cppclass cEmpty "::cpp2::Empty"
     # Forward Declaration
-    cdef cppclass cNada "cpp2::Nada"
+    cdef cppclass cNada "::cpp2::Nada"
 
-cdef extern from "src/gen-cpp2/module_types.h" namespace "cpp2":
-    cdef cppclass cEmpty__isset "cpp2::Empty::__isset":
+cdef extern from "src/gen-cpp2/module_types.h" namespace "::cpp2":
+    cdef cppclass cEmpty__isset "::cpp2::Empty::__isset":
         pass
 
-    cdef cppclass cEmpty "cpp2::Empty":
+    cdef cppclass cEmpty "::cpp2::Empty":
         cEmpty() except +
         cEmpty(const cEmpty&) except +
         bint operator==(cEmpty&)
@@ -44,10 +44,10 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "cpp2":
         bint operator>=(cEmpty&)
         cEmpty__isset __isset
 
-    cdef enum cNada__type "cpp2::Nada::Type":
-        cNada__type___EMPTY__ "cpp2::Nada::Type::__EMPTY__",
+    cdef enum cNada__type "::cpp2::Nada::Type":
+        cNada__type___EMPTY__ "::cpp2::Nada::Type::__EMPTY__",
 
-    cdef cppclass cNada "cpp2::Nada":
+    cdef cppclass cNada "::cpp2::Nada":
         cNada() except +
         cNada(const cNada&) except +
         bint operator==(cNada&)
@@ -67,8 +67,8 @@ cdef extern from "<utility>" namespace "std" nogil:
     cdef unique_ptr[cNada] move_unique "std::move"(unique_ptr[cNada])
 
 cdef extern from "<memory>" namespace "std" nogil:
-    cdef shared_ptr[const cEmpty] const_pointer_cast "std::const_pointer_cast<const cpp2::Empty>"(shared_ptr[cEmpty])
-    cdef shared_ptr[const cNada] const_pointer_cast "std::const_pointer_cast<const cpp2::Nada>"(shared_ptr[cNada])
+    cdef shared_ptr[const cEmpty] const_pointer_cast "std::const_pointer_cast<const ::cpp2::Empty>"(shared_ptr[cEmpty])
+    cdef shared_ptr[const cNada] const_pointer_cast "std::const_pointer_cast<const ::cpp2::Nada>"(shared_ptr[cNada])
 
 # Forward Definition of the cython struct
 cdef class Empty(thrift.py3.types.Struct)

@@ -27,12 +27,12 @@ cdef extern from *:
 cdef extern from *:
     ctypedef int32_t Baz "Baz"
 
-cdef extern from "src/gen-cpp2/module_types.h" namespace "cpp2":
-    cdef cppclass cMyEnumA "cpp2::MyEnumA":
+cdef extern from "src/gen-cpp2/module_types.h" namespace "::cpp2":
+    cdef cppclass cMyEnumA "::cpp2::MyEnumA":
         bint operator==(cMyEnumA&)
-    cMyEnumA MyEnumA__fieldA "cpp2::MyEnumA::fieldA"
-    cMyEnumA MyEnumA__fieldB "cpp2::MyEnumA::fieldB"
-    cMyEnumA MyEnumA__fieldC "cpp2::MyEnumA::fieldC"
+    cMyEnumA MyEnumA__fieldA "::cpp2::MyEnumA::fieldA"
+    cMyEnumA MyEnumA__fieldB "::cpp2::MyEnumA::fieldB"
+    cMyEnumA MyEnumA__fieldC "::cpp2::MyEnumA::fieldC"
 
 
 
@@ -45,18 +45,18 @@ cdef cMyEnumA MyEnumA_to_cpp(MyEnumA value)
 
 
 
-cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "cpp2":
+cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2":
     # Forward Declaration
-    cdef cppclass cSmallStruct "cpp2::SmallStruct"
+    cdef cppclass cSmallStruct "::cpp2::SmallStruct"
     # Forward Declaration
-    cdef cppclass ccontainerStruct "cpp2::containerStruct"
+    cdef cppclass ccontainerStruct "::cpp2::containerStruct"
 
-cdef extern from "src/gen-cpp2/module_types.h" namespace "cpp2":
-    cdef cppclass cSmallStruct__isset "cpp2::SmallStruct::__isset":
+cdef extern from "src/gen-cpp2/module_types.h" namespace "::cpp2":
+    cdef cppclass cSmallStruct__isset "::cpp2::SmallStruct::__isset":
         bint small_A
         bint small_B
 
-    cdef cppclass cSmallStruct "cpp2::SmallStruct":
+    cdef cppclass cSmallStruct "::cpp2::SmallStruct":
         cSmallStruct() except +
         cSmallStruct(const cSmallStruct&) except +
         bint operator==(cSmallStruct&)
@@ -68,7 +68,7 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "cpp2":
         int32_t small_B
         cSmallStruct__isset __isset
 
-    cdef cppclass ccontainerStruct__isset "cpp2::containerStruct::__isset":
+    cdef cppclass ccontainerStruct__isset "::cpp2::containerStruct::__isset":
         bint fieldA
         bint fieldB
         bint fieldC
@@ -92,7 +92,7 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "cpp2":
         bint fieldU
         bint fieldX
 
-    cdef cppclass ccontainerStruct "cpp2::containerStruct":
+    cdef cppclass ccontainerStruct "::cpp2::containerStruct":
         ccontainerStruct() except +
         ccontainerStruct(const ccontainerStruct&) except +
         bint operator==(ccontainerStruct&)
@@ -137,10 +137,10 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "cpp2":
     cdef shared_ptr[vector[Bar]] reference_shared_ptr_fieldO "thrift::py3::reference_shared_ptr<std::vector<Bar>>"(shared_ptr[ccontainerStruct]&, vector[Bar]&)
     cdef shared_ptr[vector[Baz]] reference_shared_ptr_fieldP "thrift::py3::reference_shared_ptr<std::vector<Baz>>"(shared_ptr[ccontainerStruct]&, vector[Baz]&)
     cdef shared_ptr[cmap[string,cbool]] reference_shared_ptr_fieldR "thrift::py3::reference_shared_ptr<std::map<std::string,bool>>"(shared_ptr[ccontainerStruct]&, cmap[string,cbool]&)
-    cdef shared_ptr[cSmallStruct] reference_shared_ptr_fieldS "thrift::py3::reference_shared_ptr<cpp2::SmallStruct>"(shared_ptr[ccontainerStruct]&, cSmallStruct&)
-    cdef shared_ptr[cSmallStruct] reference_shared_ptr_fieldT "thrift::py3::reference_shared_ptr<cpp2::SmallStruct>"(shared_ptr[ccontainerStruct]&, cSmallStruct&)
-    cdef shared_ptr[cSmallStruct] reference_shared_ptr_fieldU "thrift::py3::reference_shared_ptr<cpp2::SmallStruct>"(shared_ptr[ccontainerStruct]&, cSmallStruct&)
-    cdef shared_ptr[cSmallStruct] reference_shared_ptr_fieldX "thrift::py3::reference_shared_ptr<cpp2::SmallStruct>"(shared_ptr[ccontainerStruct]&, cSmallStruct&)
+    cdef shared_ptr[cSmallStruct] reference_shared_ptr_fieldS "thrift::py3::reference_shared_ptr<::cpp2::SmallStruct>"(shared_ptr[ccontainerStruct]&, cSmallStruct&)
+    cdef shared_ptr[cSmallStruct] reference_shared_ptr_fieldT "thrift::py3::reference_shared_ptr<::cpp2::SmallStruct>"(shared_ptr[ccontainerStruct]&, cSmallStruct&)
+    cdef shared_ptr[cSmallStruct] reference_shared_ptr_fieldU "thrift::py3::reference_shared_ptr<::cpp2::SmallStruct>"(shared_ptr[ccontainerStruct]&, cSmallStruct&)
+    cdef shared_ptr[cSmallStruct] reference_shared_ptr_fieldX "thrift::py3::reference_shared_ptr<::cpp2::SmallStruct>"(shared_ptr[ccontainerStruct]&, cSmallStruct&)
 
 cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[cSmallStruct] move(unique_ptr[cSmallStruct])
@@ -151,8 +151,8 @@ cdef extern from "<utility>" namespace "std" nogil:
     cdef unique_ptr[ccontainerStruct] move_unique "std::move"(unique_ptr[ccontainerStruct])
 
 cdef extern from "<memory>" namespace "std" nogil:
-    cdef shared_ptr[const cSmallStruct] const_pointer_cast "std::const_pointer_cast<const cpp2::SmallStruct>"(shared_ptr[cSmallStruct])
-    cdef shared_ptr[const ccontainerStruct] const_pointer_cast "std::const_pointer_cast<const cpp2::containerStruct>"(shared_ptr[ccontainerStruct])
+    cdef shared_ptr[const cSmallStruct] const_pointer_cast "std::const_pointer_cast<const ::cpp2::SmallStruct>"(shared_ptr[cSmallStruct])
+    cdef shared_ptr[const ccontainerStruct] const_pointer_cast "std::const_pointer_cast<const ::cpp2::containerStruct>"(shared_ptr[ccontainerStruct])
 
 # Forward Definition of the cython struct
 cdef class SmallStruct(thrift.py3.types.Struct)

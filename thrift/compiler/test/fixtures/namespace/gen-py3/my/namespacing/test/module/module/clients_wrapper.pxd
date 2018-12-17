@@ -21,15 +21,15 @@ from thrift.py3.common cimport cRpcOptions
 cimport my.namespacing.test.module.module.types as _my_namespacing_test_module_module_types
 
 
-cdef extern from "src/gen-cpp2/TestService.h" namespace "cpp2":
-  cdef cppclass cTestServiceAsyncClient "cpp2::TestServiceAsyncClient":
+cdef extern from "src/gen-cpp2/TestService.h" namespace "::cpp2":
+  cdef cppclass cTestServiceAsyncClient "::cpp2::TestServiceAsyncClient":
       pass
 
 cdef extern from "<utility>" namespace "std":
   cdef unique_ptr[cTestServiceClientWrapper] move(unique_ptr[cTestServiceClientWrapper])
 
-cdef extern from "src/gen-py3/module/clients_wrapper.h" namespace "cpp2":
-  cdef cppclass cTestServiceClientWrapper "cpp2::TestServiceClientWrapper":
+cdef extern from "src/gen-py3/module/clients_wrapper.h" namespace "::cpp2":
+  cdef cppclass cTestServiceClientWrapper "::cpp2::TestServiceClientWrapper":
     cFollyFuture[cFollyUnit] disconnect()
     void setPersistentHeader(const string& key, const string& value)
 

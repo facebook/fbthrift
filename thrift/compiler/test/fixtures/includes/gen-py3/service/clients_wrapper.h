@@ -24,11 +24,11 @@ namespace cpp2 {
 
 class MyServiceClientWrapper {
   protected:
-    std::shared_ptr<cpp2::MyServiceAsyncClient> async_client;
+    std::shared_ptr<::cpp2::MyServiceAsyncClient> async_client;
     std::shared_ptr<apache::thrift::RequestChannel> channel_;
   public:
     explicit MyServiceClientWrapper(
-      std::shared_ptr<cpp2::MyServiceAsyncClient> async_client,
+      std::shared_ptr<::cpp2::MyServiceAsyncClient> async_client,
       std::shared_ptr<apache::thrift::RequestChannel> channel);
     virtual ~MyServiceClientWrapper();
 
@@ -38,12 +38,12 @@ class MyServiceClientWrapper {
 
     folly::Future<folly::Unit> query(
       apache::thrift::RpcOptions& rpcOptions,
-      cpp2::MyStruct arg_s,
-      cpp2::Included arg_i);
+      ::cpp2::MyStruct arg_s,
+      ::cpp2::Included arg_i);
     folly::Future<folly::Unit> has_arg_docs(
       apache::thrift::RpcOptions& rpcOptions,
-      cpp2::MyStruct arg_s,
-      cpp2::Included arg_i);
+      ::cpp2::MyStruct arg_s,
+      ::cpp2::Included arg_i);
 };
 
 

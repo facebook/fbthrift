@@ -24,11 +24,11 @@ namespace cpp2 {
 
 class RaiserClientWrapper {
   protected:
-    std::shared_ptr<cpp2::RaiserAsyncClient> async_client;
+    std::shared_ptr<::cpp2::RaiserAsyncClient> async_client;
     std::shared_ptr<apache::thrift::RequestChannel> channel_;
   public:
     explicit RaiserClientWrapper(
-      std::shared_ptr<cpp2::RaiserAsyncClient> async_client,
+      std::shared_ptr<::cpp2::RaiserAsyncClient> async_client,
       std::shared_ptr<apache::thrift::RequestChannel> channel);
     virtual ~RaiserClientWrapper();
 

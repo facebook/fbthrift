@@ -26,18 +26,18 @@ cimport module1.types as _module1_types
 
 
 
-cdef extern from "src/gen-cpp2/module2_types_custom_protocol.h" namespace "module2":
+cdef extern from "src/gen-cpp2/module2_types_custom_protocol.h" namespace "::module2":
     # Forward Declaration
-    cdef cppclass cStruct "module2::Struct"
+    cdef cppclass cStruct "::module2::Struct"
     # Forward Declaration
-    cdef cppclass cBigStruct "module2::BigStruct"
+    cdef cppclass cBigStruct "::module2::BigStruct"
 
-cdef extern from "src/gen-cpp2/module2_types.h" namespace "module2":
-    cdef cppclass cStruct__isset "module2::Struct::__isset":
+cdef extern from "src/gen-cpp2/module2_types.h" namespace "::module2":
+    cdef cppclass cStruct__isset "::module2::Struct::__isset":
         bint first
         bint second
 
-    cdef cppclass cStruct "module2::Struct":
+    cdef cppclass cStruct "::module2::Struct":
         cStruct() except +
         cStruct(const cStruct&) except +
         bint operator==(cStruct&)
@@ -49,11 +49,11 @@ cdef extern from "src/gen-cpp2/module2_types.h" namespace "module2":
         _module1_types.cStruct second
         cStruct__isset __isset
 
-    cdef cppclass cBigStruct__isset "module2::BigStruct::__isset":
+    cdef cppclass cBigStruct__isset "::module2::BigStruct::__isset":
         bint s
         bint id
 
-    cdef cppclass cBigStruct "module2::BigStruct":
+    cdef cppclass cBigStruct "::module2::BigStruct":
         cBigStruct() except +
         cBigStruct(const cBigStruct&) except +
         bint operator==(cBigStruct&)
@@ -65,9 +65,9 @@ cdef extern from "src/gen-cpp2/module2_types.h" namespace "module2":
         int32_t id
         cBigStruct__isset __isset
 
-    cdef shared_ptr[_module0_types.cStruct] reference_shared_ptr_first "thrift::py3::reference_shared_ptr<module0::Struct>"(shared_ptr[cStruct]&, _module0_types.cStruct&)
-    cdef shared_ptr[_module1_types.cStruct] reference_shared_ptr_second "thrift::py3::reference_shared_ptr<module1::Struct>"(shared_ptr[cStruct]&, _module1_types.cStruct&)
-    cdef shared_ptr[cStruct] reference_shared_ptr_s "thrift::py3::reference_shared_ptr<module2::Struct>"(shared_ptr[cBigStruct]&, cStruct&)
+    cdef shared_ptr[_module0_types.cStruct] reference_shared_ptr_first "thrift::py3::reference_shared_ptr<::module0::Struct>"(shared_ptr[cStruct]&, _module0_types.cStruct&)
+    cdef shared_ptr[_module1_types.cStruct] reference_shared_ptr_second "thrift::py3::reference_shared_ptr<::module1::Struct>"(shared_ptr[cStruct]&, _module1_types.cStruct&)
+    cdef shared_ptr[cStruct] reference_shared_ptr_s "thrift::py3::reference_shared_ptr<::module2::Struct>"(shared_ptr[cBigStruct]&, cStruct&)
 
 cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[cStruct] move(unique_ptr[cStruct])
@@ -78,8 +78,8 @@ cdef extern from "<utility>" namespace "std" nogil:
     cdef unique_ptr[cBigStruct] move_unique "std::move"(unique_ptr[cBigStruct])
 
 cdef extern from "<memory>" namespace "std" nogil:
-    cdef shared_ptr[const cStruct] const_pointer_cast "std::const_pointer_cast<const module2::Struct>"(shared_ptr[cStruct])
-    cdef shared_ptr[const cBigStruct] const_pointer_cast "std::const_pointer_cast<const module2::BigStruct>"(shared_ptr[cBigStruct])
+    cdef shared_ptr[const cStruct] const_pointer_cast "std::const_pointer_cast<const ::module2::Struct>"(shared_ptr[cStruct])
+    cdef shared_ptr[const cBigStruct] const_pointer_cast "std::const_pointer_cast<const ::module2::BigStruct>"(shared_ptr[cBigStruct])
 
 # Forward Definition of the cython struct
 cdef class Struct(thrift.py3.types.Struct)
@@ -128,7 +128,7 @@ cdef class BigStruct(thrift.py3.types.Struct):
 
 
 
-cdef extern from "src/gen-cpp2/module2_constants.h" namespace "module2":
-    cdef cStruct cc2 "module2::module2_constants::c2"()
-    cdef cStruct cc3 "module2::module2_constants::c3"()
-    cdef cStruct cc4 "module2::module2_constants::c4"()
+cdef extern from "src/gen-cpp2/module2_constants.h" namespace "::module2":
+    cdef cStruct cc2 "::module2::module2_constants::c2"()
+    cdef cStruct cc3 "::module2::module2_constants::c3"()
+    cdef cStruct cc4 "::module2::module2_constants::c4"()

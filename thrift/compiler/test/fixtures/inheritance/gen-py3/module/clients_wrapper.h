@@ -26,11 +26,11 @@ namespace cpp2 {
 
 class MyRootClientWrapper {
   protected:
-    std::shared_ptr<cpp2::MyRootAsyncClient> async_client;
+    std::shared_ptr<::cpp2::MyRootAsyncClient> async_client;
     std::shared_ptr<apache::thrift::RequestChannel> channel_;
   public:
     explicit MyRootClientWrapper(
-      std::shared_ptr<cpp2::MyRootAsyncClient> async_client,
+      std::shared_ptr<::cpp2::MyRootAsyncClient> async_client,
       std::shared_ptr<apache::thrift::RequestChannel> channel);
     virtual ~MyRootClientWrapper();
 
@@ -43,13 +43,13 @@ class MyRootClientWrapper {
 };
 
 
-class MyNodeClientWrapper : public cpp2::MyRootClientWrapper {
+class MyNodeClientWrapper : public ::cpp2::MyRootClientWrapper {
   protected:
-    std::shared_ptr<cpp2::MyNodeAsyncClient> async_client;
+    std::shared_ptr<::cpp2::MyNodeAsyncClient> async_client;
     std::shared_ptr<apache::thrift::RequestChannel> channel_;
   public:
     explicit MyNodeClientWrapper(
-      std::shared_ptr<cpp2::MyNodeAsyncClient> async_client,
+      std::shared_ptr<::cpp2::MyNodeAsyncClient> async_client,
       std::shared_ptr<apache::thrift::RequestChannel> channel);
 
     folly::Future<folly::Unit> disconnect();
@@ -60,13 +60,13 @@ class MyNodeClientWrapper : public cpp2::MyRootClientWrapper {
 };
 
 
-class MyLeafClientWrapper : public cpp2::MyNodeClientWrapper {
+class MyLeafClientWrapper : public ::cpp2::MyNodeClientWrapper {
   protected:
-    std::shared_ptr<cpp2::MyLeafAsyncClient> async_client;
+    std::shared_ptr<::cpp2::MyLeafAsyncClient> async_client;
     std::shared_ptr<apache::thrift::RequestChannel> channel_;
   public:
     explicit MyLeafClientWrapper(
-      std::shared_ptr<cpp2::MyLeafAsyncClient> async_client,
+      std::shared_ptr<::cpp2::MyLeafAsyncClient> async_client,
       std::shared_ptr<apache::thrift::RequestChannel> channel);
 
     folly::Future<folly::Unit> disconnect();

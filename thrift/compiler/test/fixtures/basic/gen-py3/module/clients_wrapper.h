@@ -28,11 +28,11 @@ namespace cpp2 {
 
 class MyServiceClientWrapper {
   protected:
-    std::shared_ptr<cpp2::MyServiceAsyncClient> async_client;
+    std::shared_ptr<::cpp2::MyServiceAsyncClient> async_client;
     std::shared_ptr<apache::thrift::RequestChannel> channel_;
   public:
     explicit MyServiceClientWrapper(
-      std::shared_ptr<cpp2::MyServiceAsyncClient> async_client,
+      std::shared_ptr<::cpp2::MyServiceAsyncClient> async_client,
       std::shared_ptr<apache::thrift::RequestChannel> channel);
     virtual ~MyServiceClientWrapper();
 
@@ -63,11 +63,11 @@ class MyServiceClientWrapper {
 
 class MyServiceFastClientWrapper {
   protected:
-    std::shared_ptr<cpp2::MyServiceFastAsyncClient> async_client;
+    std::shared_ptr<::cpp2::MyServiceFastAsyncClient> async_client;
     std::shared_ptr<apache::thrift::RequestChannel> channel_;
   public:
     explicit MyServiceFastClientWrapper(
-      std::shared_ptr<cpp2::MyServiceFastAsyncClient> async_client,
+      std::shared_ptr<::cpp2::MyServiceFastAsyncClient> async_client,
       std::shared_ptr<apache::thrift::RequestChannel> channel);
     virtual ~MyServiceFastClientWrapper();
 
@@ -98,11 +98,11 @@ class MyServiceFastClientWrapper {
 
 class MyServiceEmptyClientWrapper {
   protected:
-    std::shared_ptr<cpp2::MyServiceEmptyAsyncClient> async_client;
+    std::shared_ptr<::cpp2::MyServiceEmptyAsyncClient> async_client;
     std::shared_ptr<apache::thrift::RequestChannel> channel_;
   public:
     explicit MyServiceEmptyClientWrapper(
-      std::shared_ptr<cpp2::MyServiceEmptyAsyncClient> async_client,
+      std::shared_ptr<::cpp2::MyServiceEmptyAsyncClient> async_client,
       std::shared_ptr<apache::thrift::RequestChannel> channel);
     virtual ~MyServiceEmptyClientWrapper();
 
@@ -115,11 +115,11 @@ class MyServiceEmptyClientWrapper {
 
 class MyServicePrioParentClientWrapper {
   protected:
-    std::shared_ptr<cpp2::MyServicePrioParentAsyncClient> async_client;
+    std::shared_ptr<::cpp2::MyServicePrioParentAsyncClient> async_client;
     std::shared_ptr<apache::thrift::RequestChannel> channel_;
   public:
     explicit MyServicePrioParentClientWrapper(
-      std::shared_ptr<cpp2::MyServicePrioParentAsyncClient> async_client,
+      std::shared_ptr<::cpp2::MyServicePrioParentAsyncClient> async_client,
       std::shared_ptr<apache::thrift::RequestChannel> channel);
     virtual ~MyServicePrioParentClientWrapper();
 
@@ -134,13 +134,13 @@ class MyServicePrioParentClientWrapper {
 };
 
 
-class MyServicePrioChildClientWrapper : public cpp2::MyServicePrioParentClientWrapper {
+class MyServicePrioChildClientWrapper : public ::cpp2::MyServicePrioParentClientWrapper {
   protected:
-    std::shared_ptr<cpp2::MyServicePrioChildAsyncClient> async_client;
+    std::shared_ptr<::cpp2::MyServicePrioChildAsyncClient> async_client;
     std::shared_ptr<apache::thrift::RequestChannel> channel_;
   public:
     explicit MyServicePrioChildClientWrapper(
-      std::shared_ptr<cpp2::MyServicePrioChildAsyncClient> async_client,
+      std::shared_ptr<::cpp2::MyServicePrioChildAsyncClient> async_client,
       std::shared_ptr<apache::thrift::RequestChannel> channel);
 
     folly::Future<folly::Unit> disconnect();

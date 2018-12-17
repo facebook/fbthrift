@@ -21,11 +21,11 @@ from thrift.py3.types cimport bstring, move
 from folly.optional cimport cOptional
 
 
-cdef extern from "src/gen-cpp2/module_types.h" namespace "cpp2":
-    cdef cppclass cMyEnum "cpp2::MyEnum":
+cdef extern from "src/gen-cpp2/module_types.h" namespace "::cpp2":
+    cdef cppclass cMyEnum "::cpp2::MyEnum":
         bint operator==(cMyEnum&)
-    cMyEnum MyEnum__MyValue1 "cpp2::MyEnum::MyValue1"
-    cMyEnum MyEnum__MyValue2 "cpp2::MyEnum::MyValue2"
+    cMyEnum MyEnum__MyValue1 "::cpp2::MyEnum::MyValue1"
+    cMyEnum MyEnum__MyValue2 "::cpp2::MyEnum::MyValue2"
 
 
 
@@ -38,21 +38,21 @@ cdef cMyEnum MyEnum_to_cpp(MyEnum value)
 
 
 
-cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "cpp2":
+cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2":
     # Forward Declaration
-    cdef cppclass cMyStruct "cpp2::MyStruct"
+    cdef cppclass cMyStruct "::cpp2::MyStruct"
     # Forward Declaration
-    cdef cppclass cMyDataItem "cpp2::MyDataItem"
+    cdef cppclass cMyDataItem "::cpp2::MyDataItem"
 
-cdef extern from "src/gen-cpp2/module_types.h" namespace "cpp2":
-    cdef cppclass cMyStruct__isset "cpp2::MyStruct::__isset":
+cdef extern from "src/gen-cpp2/module_types.h" namespace "::cpp2":
+    cdef cppclass cMyStruct__isset "::cpp2::MyStruct::__isset":
         bint MyIntField
         bint MyStringField
         bint MyDataField
         bint major "majorVer"
         bint myEnum
 
-    cdef cppclass cMyStruct "cpp2::MyStruct":
+    cdef cppclass cMyStruct "::cpp2::MyStruct":
         cMyStruct() except +
         cMyStruct(const cMyStruct&) except +
         bint operator==(cMyStruct&)
@@ -67,10 +67,10 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "cpp2":
         cMyEnum myEnum
         cMyStruct__isset __isset
 
-    cdef cppclass cMyDataItem__isset "cpp2::MyDataItem::__isset":
+    cdef cppclass cMyDataItem__isset "::cpp2::MyDataItem::__isset":
         pass
 
-    cdef cppclass cMyDataItem "cpp2::MyDataItem":
+    cdef cppclass cMyDataItem "::cpp2::MyDataItem":
         cMyDataItem() except +
         cMyDataItem(const cMyDataItem&) except +
         bint operator==(cMyDataItem&)
@@ -80,7 +80,7 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "cpp2":
         bint operator>=(cMyDataItem&)
         cMyDataItem__isset __isset
 
-    cdef shared_ptr[cMyDataItem] reference_shared_ptr_MyDataField "thrift::py3::reference_shared_ptr<cpp2::MyDataItem>"(shared_ptr[cMyStruct]&, cMyDataItem&)
+    cdef shared_ptr[cMyDataItem] reference_shared_ptr_MyDataField "thrift::py3::reference_shared_ptr<::cpp2::MyDataItem>"(shared_ptr[cMyStruct]&, cMyDataItem&)
 
 cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[cMyStruct] move(unique_ptr[cMyStruct])
@@ -91,8 +91,8 @@ cdef extern from "<utility>" namespace "std" nogil:
     cdef unique_ptr[cMyDataItem] move_unique "std::move"(unique_ptr[cMyDataItem])
 
 cdef extern from "<memory>" namespace "std" nogil:
-    cdef shared_ptr[const cMyStruct] const_pointer_cast "std::const_pointer_cast<const cpp2::MyStruct>"(shared_ptr[cMyStruct])
-    cdef shared_ptr[const cMyDataItem] const_pointer_cast "std::const_pointer_cast<const cpp2::MyDataItem>"(shared_ptr[cMyDataItem])
+    cdef shared_ptr[const cMyStruct] const_pointer_cast "std::const_pointer_cast<const ::cpp2::MyStruct>"(shared_ptr[cMyStruct])
+    cdef shared_ptr[const cMyDataItem] const_pointer_cast "std::const_pointer_cast<const ::cpp2::MyDataItem>"(shared_ptr[cMyDataItem])
 
 # Forward Definition of the cython struct
 cdef class MyStruct(thrift.py3.types.Struct)

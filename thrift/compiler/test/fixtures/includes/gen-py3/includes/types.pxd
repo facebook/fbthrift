@@ -25,16 +25,16 @@ cimport transitive.types as _transitive_types
 
 
 
-cdef extern from "gen-cpp2/includes_types_custom_protocol.h" namespace "cpp2":
+cdef extern from "gen-cpp2/includes_types_custom_protocol.h" namespace "::cpp2":
     # Forward Declaration
-    cdef cppclass cIncluded "cpp2::Included"
+    cdef cppclass cIncluded "::cpp2::Included"
 
-cdef extern from "gen-cpp2/includes_types.h" namespace "cpp2":
-    cdef cppclass cIncluded__isset "cpp2::Included::__isset":
+cdef extern from "gen-cpp2/includes_types.h" namespace "::cpp2":
+    cdef cppclass cIncluded__isset "::cpp2::Included::__isset":
         bint MyIntField
         bint MyTransitiveField
 
-    cdef cppclass cIncluded "cpp2::Included":
+    cdef cppclass cIncluded "::cpp2::Included":
         cIncluded() except +
         cIncluded(const cIncluded&) except +
         bint operator==(cIncluded&)
@@ -46,7 +46,7 @@ cdef extern from "gen-cpp2/includes_types.h" namespace "cpp2":
         _transitive_types.cFoo MyTransitiveField
         cIncluded__isset __isset
 
-    cdef shared_ptr[_transitive_types.cFoo] reference_shared_ptr_MyTransitiveField "thrift::py3::reference_shared_ptr<cpp2::Foo>"(shared_ptr[cIncluded]&, _transitive_types.cFoo&)
+    cdef shared_ptr[_transitive_types.cFoo] reference_shared_ptr_MyTransitiveField "thrift::py3::reference_shared_ptr<::cpp2::Foo>"(shared_ptr[cIncluded]&, _transitive_types.cFoo&)
 
 cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[cIncluded] move(unique_ptr[cIncluded])
@@ -54,7 +54,7 @@ cdef extern from "<utility>" namespace "std" nogil:
     cdef unique_ptr[cIncluded] move_unique "std::move"(unique_ptr[cIncluded])
 
 cdef extern from "<memory>" namespace "std" nogil:
-    cdef shared_ptr[const cIncluded] const_pointer_cast "std::const_pointer_cast<const cpp2::Included>"(shared_ptr[cIncluded])
+    cdef shared_ptr[const cIncluded] const_pointer_cast "std::const_pointer_cast<const ::cpp2::Included>"(shared_ptr[cIncluded])
 
 # Forward Definition of the cython struct
 cdef class Included(thrift.py3.types.Struct)
@@ -81,6 +81,6 @@ cdef class Included(thrift.py3.types.Struct):
 
 
 
-cdef extern from "gen-cpp2/includes_constants.h" namespace "cpp2":
-    cdef cIncluded cExampleIncluded "cpp2::includes_constants::ExampleIncluded"()
-    cdef int64_t cIncludedConstant "cpp2::includes_constants::IncludedConstant"
+cdef extern from "gen-cpp2/includes_constants.h" namespace "::cpp2":
+    cdef cIncluded cExampleIncluded "::cpp2::includes_constants::ExampleIncluded"()
+    cdef int64_t cIncludedConstant "::cpp2::includes_constants::IncludedConstant"

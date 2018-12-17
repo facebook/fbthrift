@@ -358,7 +358,7 @@ std::shared_ptr<apache::thrift::ServerInterface> MyServicePrioParentInterface(Py
 
 
 MyServicePrioChildWrapper::MyServicePrioChildWrapper(PyObject *obj, folly::Executor* exc)
-  : cpp2::MyServicePrioParentWrapper(obj, exc)
+  : ::cpp2::MyServicePrioParentWrapper(obj, exc)
   {
     import_module__services();
   }

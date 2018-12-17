@@ -21,22 +21,22 @@ from thrift.py3.common cimport cRpcOptions
 cimport module.types as _module_types
 
 
-cdef extern from "src/gen-cpp2/MyService.h" namespace "cpp2":
-  cdef cppclass cMyServiceAsyncClient "cpp2::MyServiceAsyncClient":
+cdef extern from "src/gen-cpp2/MyService.h" namespace "::cpp2":
+  cdef cppclass cMyServiceAsyncClient "::cpp2::MyServiceAsyncClient":
       pass
 
 cdef extern from "<utility>" namespace "std":
   cdef unique_ptr[cMyServiceClientWrapper] move(unique_ptr[cMyServiceClientWrapper])
 
-cdef extern from "src/gen-cpp2/MyServiceFast.h" namespace "cpp2":
-  cdef cppclass cMyServiceFastAsyncClient "cpp2::MyServiceFastAsyncClient":
+cdef extern from "src/gen-cpp2/MyServiceFast.h" namespace "::cpp2":
+  cdef cppclass cMyServiceFastAsyncClient "::cpp2::MyServiceFastAsyncClient":
       pass
 
 cdef extern from "<utility>" namespace "std":
   cdef unique_ptr[cMyServiceFastClientWrapper] move(unique_ptr[cMyServiceFastClientWrapper])
 
-cdef extern from "src/gen-py3/module/clients_wrapper.h" namespace "cpp2":
-  cdef cppclass cMyServiceClientWrapper "cpp2::MyServiceClientWrapper":
+cdef extern from "src/gen-py3/module/clients_wrapper.h" namespace "::cpp2":
+  cdef cppclass cMyServiceClientWrapper "::cpp2::MyServiceClientWrapper":
     cFollyFuture[cFollyUnit] disconnect()
     void setPersistentHeader(const string& key, const string& value)
 
@@ -52,7 +52,7 @@ cdef extern from "src/gen-py3/module/clients_wrapper.h" namespace "cpp2":
       string arg_data,)
 
 
-  cdef cppclass cMyServiceFastClientWrapper "cpp2::MyServiceFastClientWrapper":
+  cdef cppclass cMyServiceFastClientWrapper "::cpp2::MyServiceFastClientWrapper":
     cFollyFuture[cFollyUnit] disconnect()
     void setPersistentHeader(const string& key, const string& value)
 

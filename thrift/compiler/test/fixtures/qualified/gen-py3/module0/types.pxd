@@ -21,12 +21,12 @@ from thrift.py3.types cimport bstring, move
 from folly.optional cimport cOptional
 
 
-cdef extern from "gen-cpp2/module0_types.h" namespace "module0":
-    cdef cppclass cEnum "module0::Enum":
+cdef extern from "gen-cpp2/module0_types.h" namespace "::module0":
+    cdef cppclass cEnum "::module0::Enum":
         bint operator==(cEnum&)
-    cEnum Enum__ONE "module0::Enum::ONE"
-    cEnum Enum__TWO "module0::Enum::TWO"
-    cEnum Enum__THREE "module0::Enum::THREE"
+    cEnum Enum__ONE "::module0::Enum::ONE"
+    cEnum Enum__TWO "::module0::Enum::TWO"
+    cEnum Enum__THREE "::module0::Enum::THREE"
 
 
 
@@ -39,16 +39,16 @@ cdef cEnum Enum_to_cpp(Enum value)
 
 
 
-cdef extern from "gen-cpp2/module0_types_custom_protocol.h" namespace "module0":
+cdef extern from "gen-cpp2/module0_types_custom_protocol.h" namespace "::module0":
     # Forward Declaration
-    cdef cppclass cStruct "module0::Struct"
+    cdef cppclass cStruct "::module0::Struct"
 
-cdef extern from "gen-cpp2/module0_types.h" namespace "module0":
-    cdef cppclass cStruct__isset "module0::Struct::__isset":
+cdef extern from "gen-cpp2/module0_types.h" namespace "::module0":
+    cdef cppclass cStruct__isset "::module0::Struct::__isset":
         bint first
         bint second
 
-    cdef cppclass cStruct "module0::Struct":
+    cdef cppclass cStruct "::module0::Struct":
         cStruct() except +
         cStruct(const cStruct&) except +
         bint operator==(cStruct&)
@@ -67,7 +67,7 @@ cdef extern from "<utility>" namespace "std" nogil:
     cdef unique_ptr[cStruct] move_unique "std::move"(unique_ptr[cStruct])
 
 cdef extern from "<memory>" namespace "std" nogil:
-    cdef shared_ptr[const cStruct] const_pointer_cast "std::const_pointer_cast<const module0::Struct>"(shared_ptr[cStruct])
+    cdef shared_ptr[const cStruct] const_pointer_cast "std::const_pointer_cast<const ::module0::Struct>"(shared_ptr[cStruct])
 
 # Forward Definition of the cython struct
 cdef class Struct(thrift.py3.types.Struct)
@@ -105,8 +105,8 @@ cdef extern from "<utility>" namespace "std" nogil:
 cdef extern from "<utility>" nogil:
     pass  
 cdef extern from "<memory>" namespace "std" nogil:
-    cdef shared_ptr[const vector[cEnum]] const_pointer_cast "std::const_pointer_cast<const std::vector<module0::Enum>>"(shared_ptr[vector[cEnum]])
+    cdef shared_ptr[const vector[cEnum]] const_pointer_cast "std::const_pointer_cast<const std::vector<::module0::Enum>>"(shared_ptr[vector[cEnum]])
 
-cdef extern from "gen-cpp2/module0_constants.h" namespace "module0":
-    cdef cStruct cc0 "module0::module0_constants::c0"()
-    cdef vector[cEnum] ce0s "module0::module0_constants::e0s"()
+cdef extern from "gen-cpp2/module0_constants.h" namespace "::module0":
+    cdef cStruct cc0 "::module0::module0_constants::c0"()
+    cdef vector[cEnum] ce0s "::module0::module0_constants::e0s"()

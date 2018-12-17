@@ -21,41 +21,41 @@ from thrift.py3.common cimport cRpcOptions
 cimport module.types as _module_types
 
 
-cdef extern from "src/gen-cpp2/MyRoot.h" namespace "cpp2":
-  cdef cppclass cMyRootAsyncClient "cpp2::MyRootAsyncClient":
+cdef extern from "src/gen-cpp2/MyRoot.h" namespace "::cpp2":
+  cdef cppclass cMyRootAsyncClient "::cpp2::MyRootAsyncClient":
       pass
 
 cdef extern from "<utility>" namespace "std":
   cdef unique_ptr[cMyRootClientWrapper] move(unique_ptr[cMyRootClientWrapper])
 
-cdef extern from "src/gen-cpp2/MyNode.h" namespace "cpp2":
-  cdef cppclass cMyNodeAsyncClient "cpp2::MyNodeAsyncClient":
+cdef extern from "src/gen-cpp2/MyNode.h" namespace "::cpp2":
+  cdef cppclass cMyNodeAsyncClient "::cpp2::MyNodeAsyncClient":
       pass
 
 cdef extern from "<utility>" namespace "std":
   cdef unique_ptr[cMyNodeClientWrapper] move(unique_ptr[cMyNodeClientWrapper])
 
-cdef extern from "src/gen-cpp2/MyLeaf.h" namespace "cpp2":
-  cdef cppclass cMyLeafAsyncClient "cpp2::MyLeafAsyncClient":
+cdef extern from "src/gen-cpp2/MyLeaf.h" namespace "::cpp2":
+  cdef cppclass cMyLeafAsyncClient "::cpp2::MyLeafAsyncClient":
       pass
 
 cdef extern from "<utility>" namespace "std":
   cdef unique_ptr[cMyLeafClientWrapper] move(unique_ptr[cMyLeafClientWrapper])
 
-cdef extern from "src/gen-py3/module/clients_wrapper.h" namespace "cpp2":
-  cdef cppclass cMyRootClientWrapper "cpp2::MyRootClientWrapper":
+cdef extern from "src/gen-py3/module/clients_wrapper.h" namespace "::cpp2":
+  cdef cppclass cMyRootClientWrapper "::cpp2::MyRootClientWrapper":
     cFollyFuture[cFollyUnit] disconnect()
     void setPersistentHeader(const string& key, const string& value)
 
     cFollyFuture[cFollyUnit] do_root(cRpcOptions, )
 
 
-  cdef cppclass cMyNodeClientWrapper "cpp2::MyNodeClientWrapper"(cMyRootClientWrapper):
+  cdef cppclass cMyNodeClientWrapper "::cpp2::MyNodeClientWrapper"(cMyRootClientWrapper):
 
     cFollyFuture[cFollyUnit] do_mid(cRpcOptions, )
 
 
-  cdef cppclass cMyLeafClientWrapper "cpp2::MyLeafClientWrapper"(cMyNodeClientWrapper):
+  cdef cppclass cMyLeafClientWrapper "::cpp2::MyLeafClientWrapper"(cMyNodeClientWrapper):
 
     cFollyFuture[cFollyUnit] do_leaf(cRpcOptions, )
 

@@ -56,12 +56,12 @@ cdef extern from "{{path}}":
 {{#program:enums}}
 {{#first?}}
 cdef extern from "{{program:includePrefix}}gen-cpp2/{{program:name}}_types.h"{{!
-}} namespace "{{#program:cppNamespaces}}{{value}}{{^last?}}::{{/last?}}{{/program:cppNamespaces}}":
+}} namespace "{{#program:cppNamespaces}}::{{value}}{{/program:cppNamespaces}}":
 {{/first?}}
-    cdef cppclass c{{enum:name}} "{{#program:cppNamespaces}}{{value}}::{{/program:cppNamespaces}}{{enum:name}}":
+    cdef cppclass c{{enum:name}} "::{{#program:cppNamespaces}}{{value}}::{{/program:cppNamespaces}}{{enum:name}}":
         bint operator==(c{{enum:name}}&)
     {{#enum:values}}
-    c{{enum:name}} {{enum:name}}__{{enumValue:name}} "{{#program:cppNamespaces}}{{value}}::{{/program:cppNamespaces}}{{enum:name}}::{{enumValue:cppName}}"
+    c{{enum:name}} {{enum:name}}__{{enumValue:name}} "::{{#program:cppNamespaces}}{{value}}::{{/program:cppNamespaces}}{{enum:name}}::{{enumValue:cppName}}"
     {{/enum:values}}
 {{/program:enums}}
 
@@ -71,19 +71,19 @@ cdef extern from "{{program:includePrefix}}gen-cpp2/{{program:name}}_types.h"{{!
 {{#program:structs}}
 {{#first?}}
 cdef extern from "{{program:includePrefix}}gen-cpp2/{{program:name}}_types_custom_protocol.h"{{!
-}} namespace "{{#program:cppNamespaces}}{{value}}{{^last?}}::{{/last?}}{{/program:cppNamespaces}}":
+}} namespace "{{#program:cppNamespaces}}::{{value}}{{/program:cppNamespaces}}":
 {{/first?}}
     # Forward Declaration
-    cdef cppclass c{{struct:name}} "{{#program:cppNamespaces}}{{value}}::{{/program:cppNamespaces}}{{struct:name}}"{{#struct:exception?}}(cTException){{/struct:exception?}}
+    cdef cppclass c{{struct:name}} "::{{#program:cppNamespaces}}{{value}}::{{/program:cppNamespaces}}{{struct:name}}"{{#struct:exception?}}(cTException){{/struct:exception?}}
 {{/program:structs}}
 
 {{#program:structs}}
 {{#first?}}
 cdef extern from "{{program:includePrefix}}gen-cpp2/{{program:name}}_types.h"{{!
-}} namespace "{{#program:cppNamespaces}}{{value}}{{^last?}}::{{/last?}}{{/program:cppNamespaces}}":
+}} namespace "{{#program:cppNamespaces}}::{{value}}{{/program:cppNamespaces}}":
 {{/first?}}
     {{^struct:union?}}
-    cdef cppclass c{{struct:name}}__isset "{{#program:cppNamespaces}}{{value}}::{{/program:cppNamespaces}}{{struct:name}}::__isset":
+    cdef cppclass c{{struct:name}}__isset "::{{#program:cppNamespaces}}{{value}}::{{/program:cppNamespaces}}{{struct:name}}::__isset":
     {{#struct:fields}}
         bint {{field:name}}{{#field:hasModifiedName?}} "{{field:cppName}}"{{/field:hasModifiedName?}}
     {{/struct:fields}}
@@ -92,14 +92,14 @@ cdef extern from "{{program:includePrefix}}gen-cpp2/{{program:name}}_types.h"{{!
     {{/struct:fields}}
     {{/struct:union?}}
     {{#struct:union?}}
-    cdef enum c{{struct:name}}__type "{{#program:cppNamespaces}}{{value}}::{{/program:cppNamespaces}}{{struct:name}}::Type":
-        c{{struct:name}}__type___EMPTY__ "{{#program:cppNamespaces}}{{value}}::{{/program:cppNamespaces}}{{struct:name}}::Type::__EMPTY__",
+    cdef enum c{{struct:name}}__type "::{{#program:cppNamespaces}}{{value}}::{{/program:cppNamespaces}}{{struct:name}}::Type":
+        c{{struct:name}}__type___EMPTY__ "::{{#program:cppNamespaces}}{{value}}::{{/program:cppNamespaces}}{{struct:name}}::Type::__EMPTY__",
     {{#struct:fields}}
-        c{{struct:name}}__type_{{field:name}} "{{#program:cppNamespaces}}{{value}}::{{/program:cppNamespaces}}{{struct:name}}::Type::{{field:cppName}}",
+        c{{struct:name}}__type_{{field:name}} "::{{#program:cppNamespaces}}{{value}}::{{/program:cppNamespaces}}{{struct:name}}::Type::{{field:cppName}}",
     {{/struct:fields}}
     {{/struct:union?}}
 
-    cdef cppclass c{{struct:name}} "{{#program:cppNamespaces}}{{value}}::{{/program:cppNamespaces}}{{struct:name}}"{{#struct:exception?}}(cTException){{/struct:exception?}}:
+    cdef cppclass c{{struct:name}} "::{{#program:cppNamespaces}}{{value}}::{{/program:cppNamespaces}}{{struct:name}}"{{#struct:exception?}}(cTException){{/struct:exception?}}:
         c{{struct:name}}() except +
         c{{struct:name}}(const c{{struct:name}}&) except +
         {{^struct:cpp_noncomparable}}
@@ -152,7 +152,7 @@ cdef extern from "{{program:includePrefix}}gen-cpp2/{{program:name}}_types.h"{{!
 {{#first?}}cdef extern from "<memory>" namespace "std" nogil:{{/first?}}
     cdef shared_ptr[const c{{struct:name}}] const_pointer_cast {{!
     }}"std::const_pointer_cast<const {{!
-    }}{{#program:cppNamespaces}}{{value}}::{{/program:cppNamespaces}}{{struct:name}}{{!
+    }}::{{#program:cppNamespaces}}{{value}}::{{/program:cppNamespaces}}{{struct:name}}{{!
     }}>"(shared_ptr[c{{struct:name}}]){{/program:structs}}
 
 {{#program:structs}}
@@ -274,10 +274,10 @@ cdef extern from "<memory>" namespace "std" nogil:{{/first?}}
 {{#program:constants}}
 {{#first?}}
 cdef extern from "{{program:includePrefix}}gen-cpp2/{{program:name}}_constants.h"{{!
-}} namespace "{{#program:cppNamespaces}}{{value}}{{^last?}}::{{/last?}}{{/program:cppNamespaces}}":
+}} namespace "{{#program:cppNamespaces}}::{{value}}{{/program:cppNamespaces}}":
 {{/first?}}
     {{#constant:type}}
     cdef {{^type:string?}}{{> types/CythonCppType}}{{/type:string?}}{{#type:string?}}const char*{{/type:string?}} {{!
-    }}c{{constant:name}} "{{#program:cppNamespaces}}{{value}}::{{/program:cppNamespaces}}{{program:name}}_constants::{{constant:name}}"{{!
+    }}c{{constant:name}} "::{{#program:cppNamespaces}}{{value}}::{{/program:cppNamespaces}}{{program:name}}_constants::{{constant:name}}"{{!
     }}{{#type:struct?}}(){{/type:struct?}}{{#type:string?}}(){{/type:string?}}{{#type:binary?}}(){{/type:binary?}}{{#type:container?}}(){{/type:container?}}{{#type:enum?}}(){{/type:enum?}}
 {{/constant:type}}{{/program:constants}}

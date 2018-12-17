@@ -27,11 +27,11 @@ namespace types {
 
 class SomeServiceClientWrapper {
   protected:
-    std::shared_ptr<apache::thrift::fixtures::types::SomeServiceAsyncClient> async_client;
+    std::shared_ptr<::apache::thrift::fixtures::types::SomeServiceAsyncClient> async_client;
     std::shared_ptr<apache::thrift::RequestChannel> channel_;
   public:
     explicit SomeServiceClientWrapper(
-      std::shared_ptr<apache::thrift::fixtures::types::SomeServiceAsyncClient> async_client,
+      std::shared_ptr<::apache::thrift::fixtures::types::SomeServiceAsyncClient> async_client,
       std::shared_ptr<apache::thrift::RequestChannel> channel);
     virtual ~SomeServiceClientWrapper();
 

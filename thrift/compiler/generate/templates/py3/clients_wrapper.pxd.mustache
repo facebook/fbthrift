@@ -47,9 +47,9 @@ cimport {{#includeNamespace}}{{value}}.{{/includeNamespace}}clients_wrapper as _
 
 {{#program:services}}
 cdef extern from "{{program:includePrefix}}gen-cpp2/{{service:name}}.h"{{!
-    }} namespace "{{#program:cppNamespaces}}{{value}}{{^last?}}::{{/last?}}{{/program:cppNamespaces}}":
+    }} namespace "{{#program:cppNamespaces}}::{{value}}{{/program:cppNamespaces}}":
   cdef cppclass c{{service:name}}AsyncClient {{!
-    }}"{{#program:cppNamespaces}}{{value}}::{{/program:cppNamespaces}}{{!
+    }}"::{{#program:cppNamespaces}}{{value}}::{{/program:cppNamespaces}}{{!
     }}{{service:name}}AsyncClient":
       pass
 
@@ -58,11 +58,11 @@ cdef extern from "<utility>" namespace "std":
 
 {{/program:services}}
 cdef extern from "{{program:includePrefix}}gen-py3/{{program:name}}/clients_wrapper.h"{{!
-    }} namespace "{{#program:cppNamespaces}}{{value}}{{^last?}}::{{/last?}}{{/program:cppNamespaces}}":{{!
+    }} namespace "{{#program:cppNamespaces}}::{{value}}{{/program:cppNamespaces}}":{{!
     }}{{^program:services}}
   pass{{/program:services}}{{#program:services}}
   cdef cppclass c{{service:name}}ClientWrapper "{{!
-  }}{{#program:cppNamespaces}}{{value}}::{{/program:cppNamespaces}}{{service:name}}ClientWrapper"{{!
+  }}::{{#program:cppNamespaces}}{{value}}::{{/program:cppNamespaces}}{{service:name}}ClientWrapper"{{!
   }}{{#service:extends}}({{!
     }}{{#service:externalProgram?}}{{!
     }}_{{#service:py3Namespaces}}{{value}}_{{/service:py3Namespaces}}{{!

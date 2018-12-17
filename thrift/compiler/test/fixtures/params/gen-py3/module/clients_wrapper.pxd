@@ -21,15 +21,15 @@ from thrift.py3.common cimport cRpcOptions
 cimport module.types as _module_types
 
 
-cdef extern from "src/gen-cpp2/NestedContainers.h" namespace "cpp2":
-  cdef cppclass cNestedContainersAsyncClient "cpp2::NestedContainersAsyncClient":
+cdef extern from "src/gen-cpp2/NestedContainers.h" namespace "::cpp2":
+  cdef cppclass cNestedContainersAsyncClient "::cpp2::NestedContainersAsyncClient":
       pass
 
 cdef extern from "<utility>" namespace "std":
   cdef unique_ptr[cNestedContainersClientWrapper] move(unique_ptr[cNestedContainersClientWrapper])
 
-cdef extern from "src/gen-py3/module/clients_wrapper.h" namespace "cpp2":
-  cdef cppclass cNestedContainersClientWrapper "cpp2::NestedContainersClientWrapper":
+cdef extern from "src/gen-py3/module/clients_wrapper.h" namespace "::cpp2":
+  cdef cppclass cNestedContainersClientWrapper "::cpp2::NestedContainersClientWrapper":
     cFollyFuture[cFollyUnit] disconnect()
     void setPersistentHeader(const string& key, const string& value)
 

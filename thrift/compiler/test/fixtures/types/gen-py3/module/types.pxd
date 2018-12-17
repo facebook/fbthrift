@@ -258,22 +258,22 @@ cdef extern from * nogil:
         bint empty()
 
 
-cdef extern from "src/gen-cpp2/module_types.h" namespace "apache::thrift::fixtures::types":
-    cdef cppclass chas_bitwise_ops "apache::thrift::fixtures::types::has_bitwise_ops":
+cdef extern from "src/gen-cpp2/module_types.h" namespace "::apache::thrift::fixtures::types":
+    cdef cppclass chas_bitwise_ops "::apache::thrift::fixtures::types::has_bitwise_ops":
         bint operator==(chas_bitwise_ops&)
-    chas_bitwise_ops has_bitwise_ops__none "apache::thrift::fixtures::types::has_bitwise_ops::none"
-    chas_bitwise_ops has_bitwise_ops__zero "apache::thrift::fixtures::types::has_bitwise_ops::zero"
-    chas_bitwise_ops has_bitwise_ops__one "apache::thrift::fixtures::types::has_bitwise_ops::one"
-    chas_bitwise_ops has_bitwise_ops__two "apache::thrift::fixtures::types::has_bitwise_ops::two"
-    chas_bitwise_ops has_bitwise_ops__three "apache::thrift::fixtures::types::has_bitwise_ops::three"
-    cdef cppclass cis_unscoped "apache::thrift::fixtures::types::is_unscoped":
+    chas_bitwise_ops has_bitwise_ops__none "::apache::thrift::fixtures::types::has_bitwise_ops::none"
+    chas_bitwise_ops has_bitwise_ops__zero "::apache::thrift::fixtures::types::has_bitwise_ops::zero"
+    chas_bitwise_ops has_bitwise_ops__one "::apache::thrift::fixtures::types::has_bitwise_ops::one"
+    chas_bitwise_ops has_bitwise_ops__two "::apache::thrift::fixtures::types::has_bitwise_ops::two"
+    chas_bitwise_ops has_bitwise_ops__three "::apache::thrift::fixtures::types::has_bitwise_ops::three"
+    cdef cppclass cis_unscoped "::apache::thrift::fixtures::types::is_unscoped":
         bint operator==(cis_unscoped&)
-    cis_unscoped is_unscoped__hello "apache::thrift::fixtures::types::is_unscoped::hello"
-    cis_unscoped is_unscoped__world "apache::thrift::fixtures::types::is_unscoped::world"
-    cdef cppclass cMyForwardRefEnum "apache::thrift::fixtures::types::MyForwardRefEnum":
+    cis_unscoped is_unscoped__hello "::apache::thrift::fixtures::types::is_unscoped::hello"
+    cis_unscoped is_unscoped__world "::apache::thrift::fixtures::types::is_unscoped::world"
+    cdef cppclass cMyForwardRefEnum "::apache::thrift::fixtures::types::MyForwardRefEnum":
         bint operator==(cMyForwardRefEnum&)
-    cMyForwardRefEnum MyForwardRefEnum__ZERO "apache::thrift::fixtures::types::MyForwardRefEnum::ZERO"
-    cMyForwardRefEnum MyForwardRefEnum__NONZERO "apache::thrift::fixtures::types::MyForwardRefEnum::NONZERO"
+    cMyForwardRefEnum MyForwardRefEnum__ZERO "::apache::thrift::fixtures::types::MyForwardRefEnum::ZERO"
+    cMyForwardRefEnum MyForwardRefEnum__NONZERO "::apache::thrift::fixtures::types::MyForwardRefEnum::NONZERO"
 
 
 
@@ -304,39 +304,39 @@ cdef cMyForwardRefEnum MyForwardRefEnum_to_cpp(MyForwardRefEnum value)
 
 
 
-cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "apache::thrift::fixtures::types":
+cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::apache::thrift::fixtures::types":
     # Forward Declaration
-    cdef cppclass cdecorated_struct "apache::thrift::fixtures::types::decorated_struct"
+    cdef cppclass cdecorated_struct "::apache::thrift::fixtures::types::decorated_struct"
     # Forward Declaration
-    cdef cppclass cContainerStruct "apache::thrift::fixtures::types::ContainerStruct"
+    cdef cppclass cContainerStruct "::apache::thrift::fixtures::types::ContainerStruct"
     # Forward Declaration
-    cdef cppclass cCppTypeStruct "apache::thrift::fixtures::types::CppTypeStruct"
+    cdef cppclass cCppTypeStruct "::apache::thrift::fixtures::types::CppTypeStruct"
     # Forward Declaration
-    cdef cppclass cVirtualStruct "apache::thrift::fixtures::types::VirtualStruct"
+    cdef cppclass cVirtualStruct "::apache::thrift::fixtures::types::VirtualStruct"
     # Forward Declaration
-    cdef cppclass cMyStructWithForwardRefEnum "apache::thrift::fixtures::types::MyStructWithForwardRefEnum"
+    cdef cppclass cMyStructWithForwardRefEnum "::apache::thrift::fixtures::types::MyStructWithForwardRefEnum"
     # Forward Declaration
-    cdef cppclass cTrivialNumeric "apache::thrift::fixtures::types::TrivialNumeric"
+    cdef cppclass cTrivialNumeric "::apache::thrift::fixtures::types::TrivialNumeric"
     # Forward Declaration
-    cdef cppclass cTrivialNestedWithDefault "apache::thrift::fixtures::types::TrivialNestedWithDefault"
+    cdef cppclass cTrivialNestedWithDefault "::apache::thrift::fixtures::types::TrivialNestedWithDefault"
     # Forward Declaration
-    cdef cppclass cComplexString "apache::thrift::fixtures::types::ComplexString"
+    cdef cppclass cComplexString "::apache::thrift::fixtures::types::ComplexString"
     # Forward Declaration
-    cdef cppclass cComplexNestedWithDefault "apache::thrift::fixtures::types::ComplexNestedWithDefault"
+    cdef cppclass cComplexNestedWithDefault "::apache::thrift::fixtures::types::ComplexNestedWithDefault"
     # Forward Declaration
-    cdef cppclass cMinPadding "apache::thrift::fixtures::types::MinPadding"
+    cdef cppclass cMinPadding "::apache::thrift::fixtures::types::MinPadding"
     # Forward Declaration
-    cdef cppclass cMyStruct "apache::thrift::fixtures::types::MyStruct"
+    cdef cppclass cMyStruct "::apache::thrift::fixtures::types::MyStruct"
     # Forward Declaration
-    cdef cppclass cMyDataItem "apache::thrift::fixtures::types::MyDataItem"
+    cdef cppclass cMyDataItem "::apache::thrift::fixtures::types::MyDataItem"
     # Forward Declaration
-    cdef cppclass cRenaming "apache::thrift::fixtures::types::Renaming"
+    cdef cppclass cRenaming "::apache::thrift::fixtures::types::Renaming"
 
-cdef extern from "src/gen-cpp2/module_types.h" namespace "apache::thrift::fixtures::types":
-    cdef cppclass cdecorated_struct__isset "apache::thrift::fixtures::types::decorated_struct::__isset":
+cdef extern from "src/gen-cpp2/module_types.h" namespace "::apache::thrift::fixtures::types":
+    cdef cppclass cdecorated_struct__isset "::apache::thrift::fixtures::types::decorated_struct::__isset":
         bint field
 
-    cdef cppclass cdecorated_struct "apache::thrift::fixtures::types::decorated_struct":
+    cdef cppclass cdecorated_struct "::apache::thrift::fixtures::types::decorated_struct":
         cdecorated_struct() except +
         cdecorated_struct(const cdecorated_struct&) except +
         bint operator==(cdecorated_struct&)
@@ -347,7 +347,7 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "apache::thrift::fixtur
         string field
         cdecorated_struct__isset __isset
 
-    cdef cppclass cContainerStruct__isset "apache::thrift::fixtures::types::ContainerStruct::__isset":
+    cdef cppclass cContainerStruct__isset "::apache::thrift::fixtures::types::ContainerStruct::__isset":
         bint fieldA
         bint fieldB
         bint fieldC
@@ -357,7 +357,7 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "apache::thrift::fixtur
         bint fieldG
         bint fieldH
 
-    cdef cppclass cContainerStruct "apache::thrift::fixtures::types::ContainerStruct":
+    cdef cppclass cContainerStruct "::apache::thrift::fixtures::types::ContainerStruct":
         cContainerStruct() except +
         cContainerStruct(const cContainerStruct&) except +
         bint operator==(cContainerStruct&)
@@ -371,10 +371,10 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "apache::thrift::fixtur
         std_unordered_map[int32_t,string] fieldH
         cContainerStruct__isset __isset
 
-    cdef cppclass cCppTypeStruct__isset "apache::thrift::fixtures::types::CppTypeStruct::__isset":
+    cdef cppclass cCppTypeStruct__isset "::apache::thrift::fixtures::types::CppTypeStruct::__isset":
         bint fieldA
 
-    cdef cppclass cCppTypeStruct "apache::thrift::fixtures::types::CppTypeStruct":
+    cdef cppclass cCppTypeStruct "::apache::thrift::fixtures::types::CppTypeStruct":
         cCppTypeStruct() except +
         cCppTypeStruct(const cCppTypeStruct&) except +
         bint operator==(cCppTypeStruct&)
@@ -385,10 +385,10 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "apache::thrift::fixtur
         std_list_int32_t fieldA
         cCppTypeStruct__isset __isset
 
-    cdef cppclass cVirtualStruct__isset "apache::thrift::fixtures::types::VirtualStruct::__isset":
+    cdef cppclass cVirtualStruct__isset "::apache::thrift::fixtures::types::VirtualStruct::__isset":
         bint MyIntField
 
-    cdef cppclass cVirtualStruct "apache::thrift::fixtures::types::VirtualStruct":
+    cdef cppclass cVirtualStruct "::apache::thrift::fixtures::types::VirtualStruct":
         cVirtualStruct() except +
         cVirtualStruct(const cVirtualStruct&) except +
         bint operator==(cVirtualStruct&)
@@ -399,11 +399,11 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "apache::thrift::fixtur
         int64_t MyIntField
         cVirtualStruct__isset __isset
 
-    cdef cppclass cMyStructWithForwardRefEnum__isset "apache::thrift::fixtures::types::MyStructWithForwardRefEnum::__isset":
+    cdef cppclass cMyStructWithForwardRefEnum__isset "::apache::thrift::fixtures::types::MyStructWithForwardRefEnum::__isset":
         bint a
         bint b
 
-    cdef cppclass cMyStructWithForwardRefEnum "apache::thrift::fixtures::types::MyStructWithForwardRefEnum":
+    cdef cppclass cMyStructWithForwardRefEnum "::apache::thrift::fixtures::types::MyStructWithForwardRefEnum":
         cMyStructWithForwardRefEnum() except +
         cMyStructWithForwardRefEnum(const cMyStructWithForwardRefEnum&) except +
         bint operator==(cMyStructWithForwardRefEnum&)
@@ -415,11 +415,11 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "apache::thrift::fixtur
         cMyForwardRefEnum b
         cMyStructWithForwardRefEnum__isset __isset
 
-    cdef cppclass cTrivialNumeric__isset "apache::thrift::fixtures::types::TrivialNumeric::__isset":
+    cdef cppclass cTrivialNumeric__isset "::apache::thrift::fixtures::types::TrivialNumeric::__isset":
         bint a
         bint b
 
-    cdef cppclass cTrivialNumeric "apache::thrift::fixtures::types::TrivialNumeric":
+    cdef cppclass cTrivialNumeric "::apache::thrift::fixtures::types::TrivialNumeric":
         cTrivialNumeric() except +
         cTrivialNumeric(const cTrivialNumeric&) except +
         bint operator==(cTrivialNumeric&)
@@ -431,11 +431,11 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "apache::thrift::fixtur
         cbool b
         cTrivialNumeric__isset __isset
 
-    cdef cppclass cTrivialNestedWithDefault__isset "apache::thrift::fixtures::types::TrivialNestedWithDefault::__isset":
+    cdef cppclass cTrivialNestedWithDefault__isset "::apache::thrift::fixtures::types::TrivialNestedWithDefault::__isset":
         bint z
         bint n
 
-    cdef cppclass cTrivialNestedWithDefault "apache::thrift::fixtures::types::TrivialNestedWithDefault":
+    cdef cppclass cTrivialNestedWithDefault "::apache::thrift::fixtures::types::TrivialNestedWithDefault":
         cTrivialNestedWithDefault() except +
         cTrivialNestedWithDefault(const cTrivialNestedWithDefault&) except +
         bint operator==(cTrivialNestedWithDefault&)
@@ -447,11 +447,11 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "apache::thrift::fixtur
         cTrivialNumeric n
         cTrivialNestedWithDefault__isset __isset
 
-    cdef cppclass cComplexString__isset "apache::thrift::fixtures::types::ComplexString::__isset":
+    cdef cppclass cComplexString__isset "::apache::thrift::fixtures::types::ComplexString::__isset":
         bint a
         bint b
 
-    cdef cppclass cComplexString "apache::thrift::fixtures::types::ComplexString":
+    cdef cppclass cComplexString "::apache::thrift::fixtures::types::ComplexString":
         cComplexString() except +
         cComplexString(const cComplexString&) except +
         bint operator==(cComplexString&)
@@ -463,11 +463,11 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "apache::thrift::fixtur
         cmap[string,int32_t] b
         cComplexString__isset __isset
 
-    cdef cppclass cComplexNestedWithDefault__isset "apache::thrift::fixtures::types::ComplexNestedWithDefault::__isset":
+    cdef cppclass cComplexNestedWithDefault__isset "::apache::thrift::fixtures::types::ComplexNestedWithDefault::__isset":
         bint z
         bint n
 
-    cdef cppclass cComplexNestedWithDefault "apache::thrift::fixtures::types::ComplexNestedWithDefault":
+    cdef cppclass cComplexNestedWithDefault "::apache::thrift::fixtures::types::ComplexNestedWithDefault":
         cComplexNestedWithDefault() except +
         cComplexNestedWithDefault(const cComplexNestedWithDefault&) except +
         bint operator==(cComplexNestedWithDefault&)
@@ -479,14 +479,14 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "apache::thrift::fixtur
         cComplexString n
         cComplexNestedWithDefault__isset __isset
 
-    cdef cppclass cMinPadding__isset "apache::thrift::fixtures::types::MinPadding::__isset":
+    cdef cppclass cMinPadding__isset "::apache::thrift::fixtures::types::MinPadding::__isset":
         bint small
         bint big
         bint medium
         bint biggish
         bint tiny
 
-    cdef cppclass cMinPadding "apache::thrift::fixtures::types::MinPadding":
+    cdef cppclass cMinPadding "::apache::thrift::fixtures::types::MinPadding":
         cMinPadding() except +
         cMinPadding(const cMinPadding&) except +
         bint operator==(cMinPadding&)
@@ -501,13 +501,13 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "apache::thrift::fixtur
         int8_t tiny
         cMinPadding__isset __isset
 
-    cdef cppclass cMyStruct__isset "apache::thrift::fixtures::types::MyStruct::__isset":
+    cdef cppclass cMyStruct__isset "::apache::thrift::fixtures::types::MyStruct::__isset":
         bint MyIntField
         bint MyStringField
         bint majorVer
         bint data
 
-    cdef cppclass cMyStruct "apache::thrift::fixtures::types::MyStruct":
+    cdef cppclass cMyStruct "::apache::thrift::fixtures::types::MyStruct":
         cMyStruct() except +
         cMyStruct(const cMyStruct&) except +
         int64_t MyIntField
@@ -516,18 +516,18 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "apache::thrift::fixtur
         cMyDataItem data
         cMyStruct__isset __isset
 
-    cdef cppclass cMyDataItem__isset "apache::thrift::fixtures::types::MyDataItem::__isset":
+    cdef cppclass cMyDataItem__isset "::apache::thrift::fixtures::types::MyDataItem::__isset":
         pass
 
-    cdef cppclass cMyDataItem "apache::thrift::fixtures::types::MyDataItem":
+    cdef cppclass cMyDataItem "::apache::thrift::fixtures::types::MyDataItem":
         cMyDataItem() except +
         cMyDataItem(const cMyDataItem&) except +
         cMyDataItem__isset __isset
 
-    cdef cppclass cRenaming__isset "apache::thrift::fixtures::types::Renaming::__isset":
+    cdef cppclass cRenaming__isset "::apache::thrift::fixtures::types::Renaming::__isset":
         bint foo "bar"
 
-    cdef cppclass cRenaming "apache::thrift::fixtures::types::Renaming":
+    cdef cppclass cRenaming "::apache::thrift::fixtures::types::Renaming":
         cRenaming() except +
         cRenaming(const cRenaming&) except +
         bint operator==(cRenaming&)
@@ -547,10 +547,10 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "apache::thrift::fixtur
     cdef shared_ptr[folly_sorted_vector_map[int32_t,string]] reference_shared_ptr_fieldG "thrift::py3::reference_shared_ptr<folly::sorted_vector_map<int32_t,std::string>>"(shared_ptr[cContainerStruct]&, folly_sorted_vector_map[int32_t,string]&)
     cdef shared_ptr[std_unordered_map[int32_t,string]] reference_shared_ptr_fieldH "thrift::py3::reference_shared_ptr<std::unordered_map<int32_t,std::string>>"(shared_ptr[cContainerStruct]&, std_unordered_map[int32_t,string]&)
     cdef shared_ptr[std_list_int32_t] reference_shared_ptr_fieldA "thrift::py3::reference_shared_ptr<std::list<int32_t>>"(shared_ptr[cCppTypeStruct]&, std_list_int32_t&)
-    cdef shared_ptr[cTrivialNumeric] reference_shared_ptr_n "thrift::py3::reference_shared_ptr<apache::thrift::fixtures::types::TrivialNumeric>"(shared_ptr[cTrivialNestedWithDefault]&, cTrivialNumeric&)
+    cdef shared_ptr[cTrivialNumeric] reference_shared_ptr_n "thrift::py3::reference_shared_ptr<::apache::thrift::fixtures::types::TrivialNumeric>"(shared_ptr[cTrivialNestedWithDefault]&, cTrivialNumeric&)
     cdef shared_ptr[cmap[string,int32_t]] reference_shared_ptr_b "thrift::py3::reference_shared_ptr<std::map<std::string,int32_t>>"(shared_ptr[cComplexString]&, cmap[string,int32_t]&)
-    cdef shared_ptr[cComplexString] reference_shared_ptr_n "thrift::py3::reference_shared_ptr<apache::thrift::fixtures::types::ComplexString>"(shared_ptr[cComplexNestedWithDefault]&, cComplexString&)
-    cdef shared_ptr[cMyDataItem] reference_shared_ptr_data "thrift::py3::reference_shared_ptr<apache::thrift::fixtures::types::MyDataItem>"(shared_ptr[cMyStruct]&, cMyDataItem&)
+    cdef shared_ptr[cComplexString] reference_shared_ptr_n "thrift::py3::reference_shared_ptr<::apache::thrift::fixtures::types::ComplexString>"(shared_ptr[cComplexNestedWithDefault]&, cComplexString&)
+    cdef shared_ptr[cMyDataItem] reference_shared_ptr_data "thrift::py3::reference_shared_ptr<::apache::thrift::fixtures::types::MyDataItem>"(shared_ptr[cMyStruct]&, cMyDataItem&)
 
 cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[cdecorated_struct] move(unique_ptr[cdecorated_struct])
@@ -594,19 +594,19 @@ cdef extern from "<utility>" namespace "std" nogil:
     cdef unique_ptr[cRenaming] move_unique "std::move"(unique_ptr[cRenaming])
 
 cdef extern from "<memory>" namespace "std" nogil:
-    cdef shared_ptr[const cdecorated_struct] const_pointer_cast "std::const_pointer_cast<const apache::thrift::fixtures::types::decorated_struct>"(shared_ptr[cdecorated_struct])
-    cdef shared_ptr[const cContainerStruct] const_pointer_cast "std::const_pointer_cast<const apache::thrift::fixtures::types::ContainerStruct>"(shared_ptr[cContainerStruct])
-    cdef shared_ptr[const cCppTypeStruct] const_pointer_cast "std::const_pointer_cast<const apache::thrift::fixtures::types::CppTypeStruct>"(shared_ptr[cCppTypeStruct])
-    cdef shared_ptr[const cVirtualStruct] const_pointer_cast "std::const_pointer_cast<const apache::thrift::fixtures::types::VirtualStruct>"(shared_ptr[cVirtualStruct])
-    cdef shared_ptr[const cMyStructWithForwardRefEnum] const_pointer_cast "std::const_pointer_cast<const apache::thrift::fixtures::types::MyStructWithForwardRefEnum>"(shared_ptr[cMyStructWithForwardRefEnum])
-    cdef shared_ptr[const cTrivialNumeric] const_pointer_cast "std::const_pointer_cast<const apache::thrift::fixtures::types::TrivialNumeric>"(shared_ptr[cTrivialNumeric])
-    cdef shared_ptr[const cTrivialNestedWithDefault] const_pointer_cast "std::const_pointer_cast<const apache::thrift::fixtures::types::TrivialNestedWithDefault>"(shared_ptr[cTrivialNestedWithDefault])
-    cdef shared_ptr[const cComplexString] const_pointer_cast "std::const_pointer_cast<const apache::thrift::fixtures::types::ComplexString>"(shared_ptr[cComplexString])
-    cdef shared_ptr[const cComplexNestedWithDefault] const_pointer_cast "std::const_pointer_cast<const apache::thrift::fixtures::types::ComplexNestedWithDefault>"(shared_ptr[cComplexNestedWithDefault])
-    cdef shared_ptr[const cMinPadding] const_pointer_cast "std::const_pointer_cast<const apache::thrift::fixtures::types::MinPadding>"(shared_ptr[cMinPadding])
-    cdef shared_ptr[const cMyStruct] const_pointer_cast "std::const_pointer_cast<const apache::thrift::fixtures::types::MyStruct>"(shared_ptr[cMyStruct])
-    cdef shared_ptr[const cMyDataItem] const_pointer_cast "std::const_pointer_cast<const apache::thrift::fixtures::types::MyDataItem>"(shared_ptr[cMyDataItem])
-    cdef shared_ptr[const cRenaming] const_pointer_cast "std::const_pointer_cast<const apache::thrift::fixtures::types::Renaming>"(shared_ptr[cRenaming])
+    cdef shared_ptr[const cdecorated_struct] const_pointer_cast "std::const_pointer_cast<const ::apache::thrift::fixtures::types::decorated_struct>"(shared_ptr[cdecorated_struct])
+    cdef shared_ptr[const cContainerStruct] const_pointer_cast "std::const_pointer_cast<const ::apache::thrift::fixtures::types::ContainerStruct>"(shared_ptr[cContainerStruct])
+    cdef shared_ptr[const cCppTypeStruct] const_pointer_cast "std::const_pointer_cast<const ::apache::thrift::fixtures::types::CppTypeStruct>"(shared_ptr[cCppTypeStruct])
+    cdef shared_ptr[const cVirtualStruct] const_pointer_cast "std::const_pointer_cast<const ::apache::thrift::fixtures::types::VirtualStruct>"(shared_ptr[cVirtualStruct])
+    cdef shared_ptr[const cMyStructWithForwardRefEnum] const_pointer_cast "std::const_pointer_cast<const ::apache::thrift::fixtures::types::MyStructWithForwardRefEnum>"(shared_ptr[cMyStructWithForwardRefEnum])
+    cdef shared_ptr[const cTrivialNumeric] const_pointer_cast "std::const_pointer_cast<const ::apache::thrift::fixtures::types::TrivialNumeric>"(shared_ptr[cTrivialNumeric])
+    cdef shared_ptr[const cTrivialNestedWithDefault] const_pointer_cast "std::const_pointer_cast<const ::apache::thrift::fixtures::types::TrivialNestedWithDefault>"(shared_ptr[cTrivialNestedWithDefault])
+    cdef shared_ptr[const cComplexString] const_pointer_cast "std::const_pointer_cast<const ::apache::thrift::fixtures::types::ComplexString>"(shared_ptr[cComplexString])
+    cdef shared_ptr[const cComplexNestedWithDefault] const_pointer_cast "std::const_pointer_cast<const ::apache::thrift::fixtures::types::ComplexNestedWithDefault>"(shared_ptr[cComplexNestedWithDefault])
+    cdef shared_ptr[const cMinPadding] const_pointer_cast "std::const_pointer_cast<const ::apache::thrift::fixtures::types::MinPadding>"(shared_ptr[cMinPadding])
+    cdef shared_ptr[const cMyStruct] const_pointer_cast "std::const_pointer_cast<const ::apache::thrift::fixtures::types::MyStruct>"(shared_ptr[cMyStruct])
+    cdef shared_ptr[const cMyDataItem] const_pointer_cast "std::const_pointer_cast<const ::apache::thrift::fixtures::types::MyDataItem>"(shared_ptr[cMyDataItem])
+    cdef shared_ptr[const cRenaming] const_pointer_cast "std::const_pointer_cast<const ::apache::thrift::fixtures::types::Renaming>"(shared_ptr[cRenaming])
 
 # Forward Definition of the cython struct
 cdef class decorated_struct(thrift.py3.types.Struct)

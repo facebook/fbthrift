@@ -12,21 +12,21 @@ from folly cimport cFollyExecutor
 
 
 
-cdef extern from "gen-cpp2/HsTestService.h" namespace "cpp2":
-    cdef cppclass cHsTestServiceSvAsyncIf "cpp2::HsTestServiceSvAsyncIf":
+cdef extern from "gen-cpp2/HsTestService.h" namespace "::cpp2":
+    cdef cppclass cHsTestServiceSvAsyncIf "::cpp2::HsTestServiceSvAsyncIf":
       pass
 
-    cdef cppclass cHsTestServiceSvIf "cpp2::HsTestServiceSvIf"(
+    cdef cppclass cHsTestServiceSvIf "::cpp2::HsTestServiceSvIf"(
             cHsTestServiceSvAsyncIf,
             cServerInterface):
         pass
 
 
 
-cdef extern from "gen-py3/hsmodule/services_wrapper.h" namespace "cpp2":
-    cdef cppclass cHsTestServiceWrapper "cpp2::HsTestServiceWrapper"(
+cdef extern from "gen-py3/hsmodule/services_wrapper.h" namespace "::cpp2":
+    cdef cppclass cHsTestServiceWrapper "::cpp2::HsTestServiceWrapper"(
         cHsTestServiceSvIf
     ):
         pass
 
-    shared_ptr[cAsyncProcessorFactory] cHsTestServiceInterface "cpp2::HsTestServiceInterface"(PyObject *if_object, cFollyExecutor* Q)
+    shared_ptr[cAsyncProcessorFactory] cHsTestServiceInterface "::cpp2::HsTestServiceInterface"(PyObject *if_object, cFollyExecutor* Q)

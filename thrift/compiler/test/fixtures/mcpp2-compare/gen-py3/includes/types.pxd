@@ -23,11 +23,11 @@ from folly.optional cimport cOptional
 cdef extern from "folly/sorted_vector_types.h":
   pass
 
-cdef extern from "gen-cpp2/includes_types.h" namespace "a::different::ns":
-    cdef cppclass cAnEnum "a::different::ns::AnEnum":
+cdef extern from "gen-cpp2/includes_types.h" namespace "::a::different::ns":
+    cdef cppclass cAnEnum "::a::different::ns::AnEnum":
         bint operator==(cAnEnum&)
-    cAnEnum AnEnum__FIELDA "a::different::ns::AnEnum::FIELDA"
-    cAnEnum AnEnum__FIELDB "a::different::ns::AnEnum::FIELDB"
+    cAnEnum AnEnum__FIELDA "::a::different::ns::AnEnum::FIELDA"
+    cAnEnum AnEnum__FIELDB "::a::different::ns::AnEnum::FIELDB"
 
 
 
@@ -40,17 +40,17 @@ cdef cAnEnum AnEnum_to_cpp(AnEnum value)
 
 
 
-cdef extern from "gen-cpp2/includes_types_custom_protocol.h" namespace "a::different::ns":
+cdef extern from "gen-cpp2/includes_types_custom_protocol.h" namespace "::a::different::ns":
     # Forward Declaration
-    cdef cppclass cAStruct "a::different::ns::AStruct"
+    cdef cppclass cAStruct "::a::different::ns::AStruct"
     # Forward Declaration
-    cdef cppclass cAStructB "a::different::ns::AStructB"
+    cdef cppclass cAStructB "::a::different::ns::AStructB"
 
-cdef extern from "gen-cpp2/includes_types.h" namespace "a::different::ns":
-    cdef cppclass cAStruct__isset "a::different::ns::AStruct::__isset":
+cdef extern from "gen-cpp2/includes_types.h" namespace "::a::different::ns":
+    cdef cppclass cAStruct__isset "::a::different::ns::AStruct::__isset":
         bint FieldA
 
-    cdef cppclass cAStruct "a::different::ns::AStruct":
+    cdef cppclass cAStruct "::a::different::ns::AStruct":
         cAStruct() except +
         cAStruct(const cAStruct&) except +
         bint operator==(cAStruct&)
@@ -61,10 +61,10 @@ cdef extern from "gen-cpp2/includes_types.h" namespace "a::different::ns":
         int32_t FieldA
         cAStruct__isset __isset
 
-    cdef cppclass cAStructB__isset "a::different::ns::AStructB::__isset":
+    cdef cppclass cAStructB__isset "::a::different::ns::AStructB::__isset":
         bint FieldA
 
-    cdef cppclass cAStructB "a::different::ns::AStructB":
+    cdef cppclass cAStructB "::a::different::ns::AStructB":
         cAStructB() except +
         cAStructB(const cAStructB&) except +
         bint operator==(cAStructB&)
@@ -75,7 +75,7 @@ cdef extern from "gen-cpp2/includes_types.h" namespace "a::different::ns":
         shared_ptr[const cAStruct] FieldA
         cAStructB__isset __isset
 
-    cdef shared_ptr[cAStruct] reference_shared_ptr_FieldA "thrift::py3::reference_shared_ptr<a::different::ns::AStruct>"(shared_ptr[cAStructB]&, cAStruct&)
+    cdef shared_ptr[cAStruct] reference_shared_ptr_FieldA "thrift::py3::reference_shared_ptr<::a::different::ns::AStruct>"(shared_ptr[cAStructB]&, cAStruct&)
 
 cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[cAStruct] move(unique_ptr[cAStruct])
@@ -86,8 +86,8 @@ cdef extern from "<utility>" namespace "std" nogil:
     cdef unique_ptr[cAStructB] move_unique "std::move"(unique_ptr[cAStructB])
 
 cdef extern from "<memory>" namespace "std" nogil:
-    cdef shared_ptr[const cAStruct] const_pointer_cast "std::const_pointer_cast<const a::different::ns::AStruct>"(shared_ptr[cAStruct])
-    cdef shared_ptr[const cAStructB] const_pointer_cast "std::const_pointer_cast<const a::different::ns::AStructB>"(shared_ptr[cAStructB])
+    cdef shared_ptr[const cAStruct] const_pointer_cast "std::const_pointer_cast<const ::a::different::ns::AStruct>"(shared_ptr[cAStruct])
+    cdef shared_ptr[const cAStructB] const_pointer_cast "std::const_pointer_cast<const ::a::different::ns::AStructB>"(shared_ptr[cAStructB])
 
 # Forward Definition of the cython struct
 cdef class AStruct(thrift.py3.types.Struct)
@@ -132,5 +132,5 @@ cdef class AStructB(thrift.py3.types.Struct):
 
 
 
-cdef extern from "gen-cpp2/includes_constants.h" namespace "a::different::ns":
-    cdef int64_t cIncludedConstant "a::different::ns::includes_constants::IncludedConstant"
+cdef extern from "gen-cpp2/includes_constants.h" namespace "::a::different::ns":
+    cdef int64_t cIncludedConstant "::a::different::ns::includes_constants::IncludedConstant"

@@ -34,7 +34,7 @@ class SimpleServiceWrapper : virtual public SimpleServiceSvIf {
         std::unique_ptr<std::string> second
     ) override;
     folly::Future<int32_t> future_get_value(
-        std::unique_ptr<py3::simple::SimpleStruct> simple_struct
+        std::unique_ptr<::py3::simple::SimpleStruct> simple_struct
     ) override;
     folly::Future<bool> future_negate(
         bool input
@@ -66,7 +66,7 @@ class SimpleServiceWrapper : virtual public SimpleServiceSvIf {
         std::unique_ptr<std::vector<std::string>> words
     ) override;
     folly::Future<int32_t> future_count_structs(
-        std::unique_ptr<std::vector<py3::simple::SimpleStruct>> items
+        std::unique_ptr<std::vector<::py3::simple::SimpleStruct>> items
     ) override;
     folly::Future<int32_t> future_sum_set(
         std::unique_ptr<std::set<int32_t>> numbers
@@ -80,18 +80,18 @@ class SimpleServiceWrapper : virtual public SimpleServiceSvIf {
         std::unique_ptr<std::string> key
     ) override;
     folly::Future<int16_t> future_map_length(
-        std::unique_ptr<std::map<std::string,py3::simple::SimpleStruct>> items
+        std::unique_ptr<std::map<std::string,::py3::simple::SimpleStruct>> items
     ) override;
     folly::Future<int16_t> future_sum_map_values(
         std::unique_ptr<std::map<std::string,int16_t>> items
     ) override;
     folly::Future<int32_t> future_complex_sum_i32(
-        std::unique_ptr<py3::simple::ComplexStruct> counter
+        std::unique_ptr<::py3::simple::ComplexStruct> counter
     ) override;
     folly::Future<std::unique_ptr<std::string>> future_repeat_name(
-        std::unique_ptr<py3::simple::ComplexStruct> counter
+        std::unique_ptr<::py3::simple::ComplexStruct> counter
     ) override;
-    folly::Future<std::unique_ptr<py3::simple::SimpleStruct>> future_get_struct() override;
+    folly::Future<std::unique_ptr<::py3::simple::SimpleStruct>> future_get_struct() override;
     folly::Future<std::unique_ptr<std::vector<int32_t>>> future_fib(
         int16_t n
     ) override;
@@ -101,8 +101,8 @@ class SimpleServiceWrapper : virtual public SimpleServiceSvIf {
     folly::Future<std::unique_ptr<std::map<std::string,int16_t>>> future_words_count(
         std::unique_ptr<std::vector<std::string>> words
     ) override;
-    folly::Future<py3::simple::AnEnum> future_set_enum(
-        py3::simple::AnEnum in_enum
+    folly::Future<::py3::simple::AnEnum> future_set_enum(
+        ::py3::simple::AnEnum in_enum
     ) override;
     folly::Future<std::unique_ptr<std::vector<std::vector<int32_t>>>> future_list_of_lists(
         int16_t num_lists,
@@ -115,7 +115,7 @@ class SimpleServiceWrapper : virtual public SimpleServiceSvIf {
         std::unique_ptr<std::string> some_words
     ) override;
     folly::Future<int32_t> future_nested_map_argument(
-        std::unique_ptr<std::map<std::string,std::vector<py3::simple::SimpleStruct>>> struct_map
+        std::unique_ptr<std::map<std::string,std::vector<::py3::simple::SimpleStruct>>> struct_map
     ) override;
     folly::Future<std::unique_ptr<std::string>> future_make_sentence(
         std::unique_ptr<std::vector<std::vector<std::string>>> word_chars
@@ -135,15 +135,15 @@ class SimpleServiceWrapper : virtual public SimpleServiceSvIf {
     folly::Future<std::unique_ptr<std::set<std::string>>> future_contain_binary(
         std::unique_ptr<std::vector<std::string>> binaries
     ) override;
-    folly::Future<std::unique_ptr<std::vector<py3::simple::AnEnum>>> future_contain_enum(
-        std::unique_ptr<std::vector<py3::simple::AnEnum>> the_enum
+    folly::Future<std::unique_ptr<std::vector<::py3::simple::AnEnum>>> future_contain_enum(
+        std::unique_ptr<std::vector<::py3::simple::AnEnum>> the_enum
     ) override;
 };
 
 std::shared_ptr<apache::thrift::ServerInterface> SimpleServiceInterface(PyObject *if_object, folly::Executor *exc);
 
 
-class DerivedServiceWrapper : public py3::simple::SimpleServiceWrapper, virtual public DerivedServiceSvIf {
+class DerivedServiceWrapper : public ::py3::simple::SimpleServiceWrapper, virtual public DerivedServiceSvIf {
   public:
     explicit DerivedServiceWrapper(PyObject *if_object, folly::Executor *exc);
     folly::Future<int32_t> future_get_six() override;
@@ -152,7 +152,7 @@ class DerivedServiceWrapper : public py3::simple::SimpleServiceWrapper, virtual 
 std::shared_ptr<apache::thrift::ServerInterface> DerivedServiceInterface(PyObject *if_object, folly::Executor *exc);
 
 
-class RederivedServiceWrapper : public py3::simple::DerivedServiceWrapper, virtual public RederivedServiceSvIf {
+class RederivedServiceWrapper : public ::py3::simple::DerivedServiceWrapper, virtual public RederivedServiceSvIf {
   public:
     explicit RederivedServiceWrapper(PyObject *if_object, folly::Executor *exc);
     folly::Future<int32_t> future_get_seven() override;

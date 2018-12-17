@@ -12,7 +12,7 @@ namespace simple {
 
 
 SimpleServiceClientWrapper::SimpleServiceClientWrapper(
-    std::shared_ptr<py3::simple::SimpleServiceAsyncClient> async_client,
+    std::shared_ptr<::py3::simple::SimpleServiceAsyncClient> async_client,
     std::shared_ptr<apache::thrift::RequestChannel> channel) : 
     async_client(async_client),
       channel_(channel) {}
@@ -103,7 +103,7 @@ SimpleServiceClientWrapper::concat(
 folly::Future<int32_t>
 SimpleServiceClientWrapper::get_value(
     apache::thrift::RpcOptions& rpcOptions,
-    py3::simple::SimpleStruct arg_simple_struct) {
+    ::py3::simple::SimpleStruct arg_simple_struct) {
   folly::Promise<int32_t> _promise;
   auto _future = _promise.getFuture();
   auto callback = std::make_unique<::thrift::py3::FutureCallback<int32_t>>(
@@ -291,7 +291,7 @@ SimpleServiceClientWrapper::concat_many(
 folly::Future<int32_t>
 SimpleServiceClientWrapper::count_structs(
     apache::thrift::RpcOptions& rpcOptions,
-    std::vector<py3::simple::SimpleStruct> arg_items) {
+    std::vector<::py3::simple::SimpleStruct> arg_items) {
   folly::Promise<int32_t> _promise;
   auto _future = _promise.getFuture();
   auto callback = std::make_unique<::thrift::py3::FutureCallback<int32_t>>(
@@ -359,7 +359,7 @@ SimpleServiceClientWrapper::get_map_value(
 folly::Future<int16_t>
 SimpleServiceClientWrapper::map_length(
     apache::thrift::RpcOptions& rpcOptions,
-    std::map<std::string,py3::simple::SimpleStruct> arg_items) {
+    std::map<std::string,::py3::simple::SimpleStruct> arg_items) {
   folly::Promise<int16_t> _promise;
   auto _future = _promise.getFuture();
   auto callback = std::make_unique<::thrift::py3::FutureCallback<int16_t>>(
@@ -391,7 +391,7 @@ SimpleServiceClientWrapper::sum_map_values(
 folly::Future<int32_t>
 SimpleServiceClientWrapper::complex_sum_i32(
     apache::thrift::RpcOptions& rpcOptions,
-    py3::simple::ComplexStruct arg_counter) {
+    ::py3::simple::ComplexStruct arg_counter) {
   folly::Promise<int32_t> _promise;
   auto _future = _promise.getFuture();
   auto callback = std::make_unique<::thrift::py3::FutureCallback<int32_t>>(
@@ -407,7 +407,7 @@ SimpleServiceClientWrapper::complex_sum_i32(
 folly::Future<std::string>
 SimpleServiceClientWrapper::repeat_name(
     apache::thrift::RpcOptions& rpcOptions,
-    py3::simple::ComplexStruct arg_counter) {
+    ::py3::simple::ComplexStruct arg_counter) {
   folly::Promise<std::string> _promise;
   auto _future = _promise.getFuture();
   auto callback = std::make_unique<::thrift::py3::FutureCallback<std::string>>(
@@ -420,12 +420,12 @@ SimpleServiceClientWrapper::repeat_name(
   return _future;
 }
 
-folly::Future<py3::simple::SimpleStruct>
+folly::Future<::py3::simple::SimpleStruct>
 SimpleServiceClientWrapper::get_struct(
     apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<py3::simple::SimpleStruct> _promise;
+  folly::Promise<::py3::simple::SimpleStruct> _promise;
   auto _future = _promise.getFuture();
-  auto callback = std::make_unique<::thrift::py3::FutureCallback<py3::simple::SimpleStruct>>(
+  auto callback = std::make_unique<::thrift::py3::FutureCallback<::py3::simple::SimpleStruct>>(
     std::move(_promise), rpcOptions, async_client->recv_wrapped_get_struct, channel_);
   async_client->get_struct(
     rpcOptions,
@@ -482,13 +482,13 @@ SimpleServiceClientWrapper::words_count(
   return _future;
 }
 
-folly::Future<py3::simple::AnEnum>
+folly::Future<::py3::simple::AnEnum>
 SimpleServiceClientWrapper::set_enum(
     apache::thrift::RpcOptions& rpcOptions,
-    py3::simple::AnEnum arg_in_enum) {
-  folly::Promise<py3::simple::AnEnum> _promise;
+    ::py3::simple::AnEnum arg_in_enum) {
+  folly::Promise<::py3::simple::AnEnum> _promise;
   auto _future = _promise.getFuture();
-  auto callback = std::make_unique<::thrift::py3::FutureCallback<py3::simple::AnEnum>>(
+  auto callback = std::make_unique<::thrift::py3::FutureCallback<::py3::simple::AnEnum>>(
     std::move(_promise), rpcOptions, async_client->recv_wrapped_set_enum, channel_);
   async_client->set_enum(
     rpcOptions,
@@ -551,7 +551,7 @@ SimpleServiceClientWrapper::list_of_sets(
 folly::Future<int32_t>
 SimpleServiceClientWrapper::nested_map_argument(
     apache::thrift::RpcOptions& rpcOptions,
-    std::map<std::string,std::vector<py3::simple::SimpleStruct>> arg_struct_map) {
+    std::map<std::string,std::vector<::py3::simple::SimpleStruct>> arg_struct_map) {
   folly::Promise<int32_t> _promise;
   auto _future = _promise.getFuture();
   auto callback = std::make_unique<::thrift::py3::FutureCallback<int32_t>>(
@@ -660,13 +660,13 @@ SimpleServiceClientWrapper::contain_binary(
   return _future;
 }
 
-folly::Future<std::vector<py3::simple::AnEnum>>
+folly::Future<std::vector<::py3::simple::AnEnum>>
 SimpleServiceClientWrapper::contain_enum(
     apache::thrift::RpcOptions& rpcOptions,
-    std::vector<py3::simple::AnEnum> arg_the_enum) {
-  folly::Promise<std::vector<py3::simple::AnEnum>> _promise;
+    std::vector<::py3::simple::AnEnum> arg_the_enum) {
+  folly::Promise<std::vector<::py3::simple::AnEnum>> _promise;
   auto _future = _promise.getFuture();
-  auto callback = std::make_unique<::thrift::py3::FutureCallback<std::vector<py3::simple::AnEnum>>>(
+  auto callback = std::make_unique<::thrift::py3::FutureCallback<std::vector<::py3::simple::AnEnum>>>(
     std::move(_promise), rpcOptions, async_client->recv_wrapped_contain_enum, channel_);
   async_client->contain_enum(
     rpcOptions,
@@ -678,7 +678,7 @@ SimpleServiceClientWrapper::contain_enum(
 
 
 DerivedServiceClientWrapper::DerivedServiceClientWrapper(
-    std::shared_ptr<py3::simple::DerivedServiceAsyncClient> async_client,
+    std::shared_ptr<::py3::simple::DerivedServiceAsyncClient> async_client,
     std::shared_ptr<apache::thrift::RequestChannel> channel) : 
     SimpleServiceClientWrapper(async_client, channel),
     async_client(async_client),
@@ -694,7 +694,7 @@ folly::Future<folly::Unit> DerivedServiceClientWrapper::disconnect() {
 void DerivedServiceClientWrapper::disconnectInLoop() {
     channel_.reset();
     async_client.reset();
-    py3::simple::SimpleServiceClientWrapper::disconnectInLoop();
+    ::py3::simple::SimpleServiceClientWrapper::disconnectInLoop();
 }
 
 
@@ -715,7 +715,7 @@ DerivedServiceClientWrapper::get_six(
 
 
 RederivedServiceClientWrapper::RederivedServiceClientWrapper(
-    std::shared_ptr<py3::simple::RederivedServiceAsyncClient> async_client,
+    std::shared_ptr<::py3::simple::RederivedServiceAsyncClient> async_client,
     std::shared_ptr<apache::thrift::RequestChannel> channel) : 
     DerivedServiceClientWrapper(async_client, channel),
     async_client(async_client),
@@ -731,7 +731,7 @@ folly::Future<folly::Unit> RederivedServiceClientWrapper::disconnect() {
 void RederivedServiceClientWrapper::disconnectInLoop() {
     channel_.reset();
     async_client.reset();
-    py3::simple::DerivedServiceClientWrapper::disconnectInLoop();
+    ::py3::simple::DerivedServiceClientWrapper::disconnectInLoop();
 }
 
 

@@ -24,19 +24,19 @@ from folly.optional cimport cOptional
 
 
 
-cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "cpp2":
+cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2":
     # Forward Declaration
-    cdef cppclass cBanal "cpp2::Banal"(cTException)
+    cdef cppclass cBanal "::cpp2::Banal"(cTException)
     # Forward Declaration
-    cdef cppclass cFiery "cpp2::Fiery"(cTException)
+    cdef cppclass cFiery "::cpp2::Fiery"(cTException)
     # Forward Declaration
-    cdef cppclass cSerious "cpp2::Serious"(cTException)
+    cdef cppclass cSerious "::cpp2::Serious"(cTException)
 
-cdef extern from "src/gen-cpp2/module_types.h" namespace "cpp2":
-    cdef cppclass cBanal__isset "cpp2::Banal::__isset":
+cdef extern from "src/gen-cpp2/module_types.h" namespace "::cpp2":
+    cdef cppclass cBanal__isset "::cpp2::Banal::__isset":
         pass
 
-    cdef cppclass cBanal "cpp2::Banal"(cTException):
+    cdef cppclass cBanal "::cpp2::Banal"(cTException):
         cBanal() except +
         cBanal(const cBanal&) except +
         bint operator==(cBanal&)
@@ -46,10 +46,10 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "cpp2":
         bint operator>=(cBanal&)
         cBanal__isset __isset
 
-    cdef cppclass cFiery__isset "cpp2::Fiery::__isset":
+    cdef cppclass cFiery__isset "::cpp2::Fiery::__isset":
         bint message
 
-    cdef cppclass cFiery "cpp2::Fiery"(cTException):
+    cdef cppclass cFiery "::cpp2::Fiery"(cTException):
         cFiery() except +
         cFiery(const cFiery&) except +
         bint operator==(cFiery&)
@@ -60,10 +60,10 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "cpp2":
         string message
         cFiery__isset __isset
 
-    cdef cppclass cSerious__isset "cpp2::Serious::__isset":
+    cdef cppclass cSerious__isset "::cpp2::Serious::__isset":
         bint sonnet
 
-    cdef cppclass cSerious "cpp2::Serious"(cTException):
+    cdef cppclass cSerious "::cpp2::Serious"(cTException):
         cSerious() except +
         cSerious(const cSerious&) except +
         bint operator==(cSerious&)
@@ -87,9 +87,9 @@ cdef extern from "<utility>" namespace "std" nogil:
     cdef unique_ptr[cSerious] move_unique "std::move"(unique_ptr[cSerious])
 
 cdef extern from "<memory>" namespace "std" nogil:
-    cdef shared_ptr[const cBanal] const_pointer_cast "std::const_pointer_cast<const cpp2::Banal>"(shared_ptr[cBanal])
-    cdef shared_ptr[const cFiery] const_pointer_cast "std::const_pointer_cast<const cpp2::Fiery>"(shared_ptr[cFiery])
-    cdef shared_ptr[const cSerious] const_pointer_cast "std::const_pointer_cast<const cpp2::Serious>"(shared_ptr[cSerious])
+    cdef shared_ptr[const cBanal] const_pointer_cast "std::const_pointer_cast<const ::cpp2::Banal>"(shared_ptr[cBanal])
+    cdef shared_ptr[const cFiery] const_pointer_cast "std::const_pointer_cast<const ::cpp2::Fiery>"(shared_ptr[cFiery])
+    cdef shared_ptr[const cSerious] const_pointer_cast "std::const_pointer_cast<const ::cpp2::Serious>"(shared_ptr[cSerious])
 
 # Forward Definition of the cython struct
 cdef class Banal(thrift.py3.exceptions.Error)

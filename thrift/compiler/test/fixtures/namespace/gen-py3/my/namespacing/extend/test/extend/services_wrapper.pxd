@@ -13,11 +13,11 @@ from folly cimport cFollyExecutor
 cimport hsmodule.services_wrapper as _hsmodule_services_wrapper
 
 
-cdef extern from "src/gen-cpp2/ExtendTestService.h" namespace "cpp2":
-    cdef cppclass cExtendTestServiceSvAsyncIf "cpp2::ExtendTestServiceSvAsyncIf":
+cdef extern from "src/gen-cpp2/ExtendTestService.h" namespace "::cpp2":
+    cdef cppclass cExtendTestServiceSvAsyncIf "::cpp2::ExtendTestServiceSvAsyncIf":
       pass
 
-    cdef cppclass cExtendTestServiceSvIf "cpp2::ExtendTestServiceSvIf"(
+    cdef cppclass cExtendTestServiceSvIf "::cpp2::ExtendTestServiceSvIf"(
             cExtendTestServiceSvAsyncIf,
             _hsmodule_services_wrapper.cHsTestServiceSvIf,
             cServerInterface):
@@ -25,11 +25,11 @@ cdef extern from "src/gen-cpp2/ExtendTestService.h" namespace "cpp2":
 
 
 
-cdef extern from "src/gen-py3/extend/services_wrapper.h" namespace "cpp2":
-    cdef cppclass cExtendTestServiceWrapper "cpp2::ExtendTestServiceWrapper"(
+cdef extern from "src/gen-py3/extend/services_wrapper.h" namespace "::cpp2":
+    cdef cppclass cExtendTestServiceWrapper "::cpp2::ExtendTestServiceWrapper"(
         cExtendTestServiceSvIf,
         _hsmodule_services_wrapper.cHsTestServiceWrapper
     ):
         pass
 
-    shared_ptr[cAsyncProcessorFactory] cExtendTestServiceInterface "cpp2::ExtendTestServiceInterface"(PyObject *if_object, cFollyExecutor* Q)
+    shared_ptr[cAsyncProcessorFactory] cExtendTestServiceInterface "::cpp2::ExtendTestServiceInterface"(PyObject *if_object, cFollyExecutor* Q)

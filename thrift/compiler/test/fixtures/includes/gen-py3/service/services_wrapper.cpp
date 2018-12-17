@@ -23,8 +23,8 @@ MyServiceWrapper::~MyServiceWrapper() {
 }
 
 folly::Future<folly::Unit> MyServiceWrapper::future_query(
-  std::unique_ptr<cpp2::MyStruct> s,
-  std::unique_ptr<cpp2::Included> i
+  std::unique_ptr<::cpp2::MyStruct> s,
+  std::unique_ptr<::cpp2::Included> i
 ) {
   folly::Promise<folly::Unit> promise;
   auto future = promise.getFuture();
@@ -47,8 +47,8 @@ i = std::move(i)    ]() mutable {
 }
 
 folly::Future<folly::Unit> MyServiceWrapper::future_has_arg_docs(
-  std::unique_ptr<cpp2::MyStruct> s,
-  std::unique_ptr<cpp2::Included> i
+  std::unique_ptr<::cpp2::MyStruct> s,
+  std::unique_ptr<::cpp2::Included> i
 ) {
   folly::Promise<folly::Unit> promise;
   auto future = promise.getFuture();

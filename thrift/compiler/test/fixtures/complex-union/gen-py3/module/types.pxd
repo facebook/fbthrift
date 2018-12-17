@@ -24,23 +24,23 @@ from folly.optional cimport cOptional
 
 
 
-cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "cpp2":
+cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2":
     # Forward Declaration
-    cdef cppclass cComplexUnion "cpp2::ComplexUnion"
+    cdef cppclass cComplexUnion "::cpp2::ComplexUnion"
     # Forward Declaration
-    cdef cppclass cVirtualComplexUnion "cpp2::VirtualComplexUnion"
+    cdef cppclass cVirtualComplexUnion "::cpp2::VirtualComplexUnion"
 
-cdef extern from "src/gen-cpp2/module_types.h" namespace "cpp2":
-    cdef enum cComplexUnion__type "cpp2::ComplexUnion::Type":
-        cComplexUnion__type___EMPTY__ "cpp2::ComplexUnion::Type::__EMPTY__",
-        cComplexUnion__type_intValue "cpp2::ComplexUnion::Type::intValue",
-        cComplexUnion__type_stringValue "cpp2::ComplexUnion::Type::stringValue",
-        cComplexUnion__type_intListValue "cpp2::ComplexUnion::Type::intListValue",
-        cComplexUnion__type_stringListValue "cpp2::ComplexUnion::Type::stringListValue",
-        cComplexUnion__type_typedefValue "cpp2::ComplexUnion::Type::typedefValue",
-        cComplexUnion__type_stringRef "cpp2::ComplexUnion::Type::stringRef",
+cdef extern from "src/gen-cpp2/module_types.h" namespace "::cpp2":
+    cdef enum cComplexUnion__type "::cpp2::ComplexUnion::Type":
+        cComplexUnion__type___EMPTY__ "::cpp2::ComplexUnion::Type::__EMPTY__",
+        cComplexUnion__type_intValue "::cpp2::ComplexUnion::Type::intValue",
+        cComplexUnion__type_stringValue "::cpp2::ComplexUnion::Type::stringValue",
+        cComplexUnion__type_intListValue "::cpp2::ComplexUnion::Type::intListValue",
+        cComplexUnion__type_stringListValue "::cpp2::ComplexUnion::Type::stringListValue",
+        cComplexUnion__type_typedefValue "::cpp2::ComplexUnion::Type::typedefValue",
+        cComplexUnion__type_stringRef "::cpp2::ComplexUnion::Type::stringRef",
 
-    cdef cppclass cComplexUnion "cpp2::ComplexUnion":
+    cdef cppclass cComplexUnion "::cpp2::ComplexUnion":
         cComplexUnion() except +
         cComplexUnion(const cComplexUnion&) except +
         bint operator==(cComplexUnion&)
@@ -62,12 +62,12 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "cpp2":
         const unique_ptr[string]& get_stringRef() const
         unique_ptr[string]& set_stringRef(const string&)
 
-    cdef enum cVirtualComplexUnion__type "cpp2::VirtualComplexUnion::Type":
-        cVirtualComplexUnion__type___EMPTY__ "cpp2::VirtualComplexUnion::Type::__EMPTY__",
-        cVirtualComplexUnion__type_thingOne "cpp2::VirtualComplexUnion::Type::thingOne",
-        cVirtualComplexUnion__type_thingTwo "cpp2::VirtualComplexUnion::Type::thingTwo",
+    cdef enum cVirtualComplexUnion__type "::cpp2::VirtualComplexUnion::Type":
+        cVirtualComplexUnion__type___EMPTY__ "::cpp2::VirtualComplexUnion::Type::__EMPTY__",
+        cVirtualComplexUnion__type_thingOne "::cpp2::VirtualComplexUnion::Type::thingOne",
+        cVirtualComplexUnion__type_thingTwo "::cpp2::VirtualComplexUnion::Type::thingTwo",
 
-    cdef cppclass cVirtualComplexUnion "cpp2::VirtualComplexUnion":
+    cdef cppclass cVirtualComplexUnion "::cpp2::VirtualComplexUnion":
         cVirtualComplexUnion() except +
         cVirtualComplexUnion(const cVirtualComplexUnion&) except +
         bint operator==(cVirtualComplexUnion&)
@@ -95,8 +95,8 @@ cdef extern from "<utility>" namespace "std" nogil:
     cdef unique_ptr[cVirtualComplexUnion] move_unique "std::move"(unique_ptr[cVirtualComplexUnion])
 
 cdef extern from "<memory>" namespace "std" nogil:
-    cdef shared_ptr[const cComplexUnion] const_pointer_cast "std::const_pointer_cast<const cpp2::ComplexUnion>"(shared_ptr[cComplexUnion])
-    cdef shared_ptr[const cVirtualComplexUnion] const_pointer_cast "std::const_pointer_cast<const cpp2::VirtualComplexUnion>"(shared_ptr[cVirtualComplexUnion])
+    cdef shared_ptr[const cComplexUnion] const_pointer_cast "std::const_pointer_cast<const ::cpp2::ComplexUnion>"(shared_ptr[cComplexUnion])
+    cdef shared_ptr[const cVirtualComplexUnion] const_pointer_cast "std::const_pointer_cast<const ::cpp2::VirtualComplexUnion>"(shared_ptr[cVirtualComplexUnion])
 
 cdef class __ComplexUnionType(thrift.py3.types.CompiledEnum):
     pass

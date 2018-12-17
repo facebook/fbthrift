@@ -11,7 +11,7 @@ namespace cpp2 {
 
 
 MyServiceClientWrapper::MyServiceClientWrapper(
-    std::shared_ptr<cpp2::MyServiceAsyncClient> async_client,
+    std::shared_ptr<::cpp2::MyServiceAsyncClient> async_client,
     std::shared_ptr<apache::thrift::RequestChannel> channel) : 
     async_client(async_client),
       channel_(channel) {}
@@ -135,7 +135,7 @@ MyServiceClientWrapper::lobDataById(
 
 
 MyServiceFastClientWrapper::MyServiceFastClientWrapper(
-    std::shared_ptr<cpp2::MyServiceFastAsyncClient> async_client,
+    std::shared_ptr<::cpp2::MyServiceFastAsyncClient> async_client,
     std::shared_ptr<apache::thrift::RequestChannel> channel) : 
     async_client(async_client),
       channel_(channel) {}
@@ -259,7 +259,7 @@ MyServiceFastClientWrapper::lobDataById(
 
 
 MyServiceEmptyClientWrapper::MyServiceEmptyClientWrapper(
-    std::shared_ptr<cpp2::MyServiceEmptyAsyncClient> async_client,
+    std::shared_ptr<::cpp2::MyServiceEmptyAsyncClient> async_client,
     std::shared_ptr<apache::thrift::RequestChannel> channel) : 
     async_client(async_client),
       channel_(channel) {}
@@ -287,7 +287,7 @@ void MyServiceEmptyClientWrapper::setPersistentHeader(const std::string& key, co
 
 
 MyServicePrioParentClientWrapper::MyServicePrioParentClientWrapper(
-    std::shared_ptr<cpp2::MyServicePrioParentAsyncClient> async_client,
+    std::shared_ptr<::cpp2::MyServicePrioParentAsyncClient> async_client,
     std::shared_ptr<apache::thrift::RequestChannel> channel) : 
     async_client(async_client),
       channel_(channel) {}
@@ -343,7 +343,7 @@ MyServicePrioParentClientWrapper::pong(
 
 
 MyServicePrioChildClientWrapper::MyServicePrioChildClientWrapper(
-    std::shared_ptr<cpp2::MyServicePrioChildAsyncClient> async_client,
+    std::shared_ptr<::cpp2::MyServicePrioChildAsyncClient> async_client,
     std::shared_ptr<apache::thrift::RequestChannel> channel) : 
     MyServicePrioParentClientWrapper(async_client, channel),
     async_client(async_client),
@@ -359,7 +359,7 @@ folly::Future<folly::Unit> MyServicePrioChildClientWrapper::disconnect() {
 void MyServicePrioChildClientWrapper::disconnectInLoop() {
     channel_.reset();
     async_client.reset();
-    cpp2::MyServicePrioParentClientWrapper::disconnectInLoop();
+    ::cpp2::MyServicePrioParentClientWrapper::disconnectInLoop();
 }
 
 

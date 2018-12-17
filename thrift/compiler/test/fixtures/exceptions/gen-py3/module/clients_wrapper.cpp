@@ -11,7 +11,7 @@ namespace cpp2 {
 
 
 RaiserClientWrapper::RaiserClientWrapper(
-    std::shared_ptr<cpp2::RaiserAsyncClient> async_client,
+    std::shared_ptr<::cpp2::RaiserAsyncClient> async_client,
     std::shared_ptr<apache::thrift::RequestChannel> channel) : 
     async_client(async_client),
       channel_(channel) {}

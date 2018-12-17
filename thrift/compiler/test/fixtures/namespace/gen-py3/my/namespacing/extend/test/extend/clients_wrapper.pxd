@@ -23,15 +23,15 @@ cimport my.namespacing.extend.test.extend.types as _my_namespacing_extend_test_e
 cimport hsmodule.types as _hsmodule_types
 cimport hsmodule.clients_wrapper as _hsmodule_clients_wrapper
 
-cdef extern from "src/gen-cpp2/ExtendTestService.h" namespace "cpp2":
-  cdef cppclass cExtendTestServiceAsyncClient "cpp2::ExtendTestServiceAsyncClient":
+cdef extern from "src/gen-cpp2/ExtendTestService.h" namespace "::cpp2":
+  cdef cppclass cExtendTestServiceAsyncClient "::cpp2::ExtendTestServiceAsyncClient":
       pass
 
 cdef extern from "<utility>" namespace "std":
   cdef unique_ptr[cExtendTestServiceClientWrapper] move(unique_ptr[cExtendTestServiceClientWrapper])
 
-cdef extern from "src/gen-py3/extend/clients_wrapper.h" namespace "cpp2":
-  cdef cppclass cExtendTestServiceClientWrapper "cpp2::ExtendTestServiceClientWrapper"(_hsmodule_clients_wrapper.cHsTestServiceClientWrapper):
+cdef extern from "src/gen-py3/extend/clients_wrapper.h" namespace "::cpp2":
+  cdef cppclass cExtendTestServiceClientWrapper "::cpp2::ExtendTestServiceClientWrapper"(_hsmodule_clients_wrapper.cHsTestServiceClientWrapper):
 
     cFollyFuture[cbool] check(cRpcOptions, 
       _hsmodule_types.cHsFoo arg_struct1,)

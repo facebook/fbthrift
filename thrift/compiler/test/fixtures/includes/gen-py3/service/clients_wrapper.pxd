@@ -24,15 +24,15 @@ cimport module.types as _module_types
 cimport includes.types as _includes_types
 cimport transitive.types as _transitive_types
 
-cdef extern from "src/gen-cpp2/MyService.h" namespace "cpp2":
-  cdef cppclass cMyServiceAsyncClient "cpp2::MyServiceAsyncClient":
+cdef extern from "src/gen-cpp2/MyService.h" namespace "::cpp2":
+  cdef cppclass cMyServiceAsyncClient "::cpp2::MyServiceAsyncClient":
       pass
 
 cdef extern from "<utility>" namespace "std":
   cdef unique_ptr[cMyServiceClientWrapper] move(unique_ptr[cMyServiceClientWrapper])
 
-cdef extern from "src/gen-py3/service/clients_wrapper.h" namespace "cpp2":
-  cdef cppclass cMyServiceClientWrapper "cpp2::MyServiceClientWrapper":
+cdef extern from "src/gen-py3/service/clients_wrapper.h" namespace "::cpp2":
+  cdef cppclass cMyServiceClientWrapper "::cpp2::MyServiceClientWrapper":
     cFollyFuture[cFollyUnit] disconnect()
     void setPersistentHeader(const string& key, const string& value)
 

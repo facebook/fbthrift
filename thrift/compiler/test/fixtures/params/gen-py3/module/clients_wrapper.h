@@ -24,11 +24,11 @@ namespace cpp2 {
 
 class NestedContainersClientWrapper {
   protected:
-    std::shared_ptr<cpp2::NestedContainersAsyncClient> async_client;
+    std::shared_ptr<::cpp2::NestedContainersAsyncClient> async_client;
     std::shared_ptr<apache::thrift::RequestChannel> channel_;
   public:
     explicit NestedContainersClientWrapper(
-      std::shared_ptr<cpp2::NestedContainersAsyncClient> async_client,
+      std::shared_ptr<::cpp2::NestedContainersAsyncClient> async_client,
       std::shared_ptr<apache::thrift::RequestChannel> channel);
     virtual ~NestedContainersClientWrapper();
 

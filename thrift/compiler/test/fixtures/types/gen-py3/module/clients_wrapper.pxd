@@ -22,15 +22,15 @@ cimport module.types as _module_types
 
 cimport include.types as _include_types
 
-cdef extern from "src/gen-cpp2/SomeService.h" namespace "apache::thrift::fixtures::types":
-  cdef cppclass cSomeServiceAsyncClient "apache::thrift::fixtures::types::SomeServiceAsyncClient":
+cdef extern from "src/gen-cpp2/SomeService.h" namespace "::apache::thrift::fixtures::types":
+  cdef cppclass cSomeServiceAsyncClient "::apache::thrift::fixtures::types::SomeServiceAsyncClient":
       pass
 
 cdef extern from "<utility>" namespace "std":
   cdef unique_ptr[cSomeServiceClientWrapper] move(unique_ptr[cSomeServiceClientWrapper])
 
-cdef extern from "src/gen-py3/module/clients_wrapper.h" namespace "apache::thrift::fixtures::types":
-  cdef cppclass cSomeServiceClientWrapper "apache::thrift::fixtures::types::SomeServiceClientWrapper":
+cdef extern from "src/gen-py3/module/clients_wrapper.h" namespace "::apache::thrift::fixtures::types":
+  cdef cppclass cSomeServiceClientWrapper "::apache::thrift::fixtures::types::SomeServiceClientWrapper":
     cFollyFuture[cFollyUnit] disconnect()
     void setPersistentHeader(const string& key, const string& value)
 

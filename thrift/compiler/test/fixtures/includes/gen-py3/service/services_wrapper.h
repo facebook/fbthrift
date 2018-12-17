@@ -22,12 +22,12 @@ class MyServiceWrapper : virtual public MyServiceSvIf {
     explicit MyServiceWrapper(PyObject *if_object, folly::Executor *exc);
     virtual ~MyServiceWrapper();
     folly::Future<folly::Unit> future_query(
-        std::unique_ptr<cpp2::MyStruct> s,
-        std::unique_ptr<cpp2::Included> i
+        std::unique_ptr<::cpp2::MyStruct> s,
+        std::unique_ptr<::cpp2::Included> i
     ) override;
     folly::Future<folly::Unit> future_has_arg_docs(
-        std::unique_ptr<cpp2::MyStruct> s,
-        std::unique_ptr<cpp2::Included> i
+        std::unique_ptr<::cpp2::MyStruct> s,
+        std::unique_ptr<::cpp2::Included> i
     ) override;
 };
 

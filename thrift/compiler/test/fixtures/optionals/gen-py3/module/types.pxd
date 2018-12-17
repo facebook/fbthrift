@@ -21,12 +21,12 @@ from thrift.py3.types cimport bstring, move
 from folly.optional cimport cOptional
 
 
-cdef extern from "src/gen-cpp2/module_types.h" namespace "cpp2":
-    cdef cppclass cAnimal "cpp2::Animal":
+cdef extern from "src/gen-cpp2/module_types.h" namespace "::cpp2":
+    cdef cppclass cAnimal "::cpp2::Animal":
         bint operator==(cAnimal&)
-    cAnimal Animal__DOG "cpp2::Animal::DOG"
-    cAnimal Animal__CAT "cpp2::Animal::CAT"
-    cAnimal Animal__TARANTULA "cpp2::Animal::TARANTULA"
+    cAnimal Animal__DOG "::cpp2::Animal::DOG"
+    cAnimal Animal__CAT "::cpp2::Animal::CAT"
+    cAnimal Animal__TARANTULA "::cpp2::Animal::TARANTULA"
 
 
 
@@ -39,22 +39,22 @@ cdef cAnimal Animal_to_cpp(Animal value)
 
 
 
-cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "cpp2":
+cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2":
     # Forward Declaration
-    cdef cppclass cColor "cpp2::Color"
+    cdef cppclass cColor "::cpp2::Color"
     # Forward Declaration
-    cdef cppclass cVehicle "cpp2::Vehicle"
+    cdef cppclass cVehicle "::cpp2::Vehicle"
     # Forward Declaration
-    cdef cppclass cPerson "cpp2::Person"
+    cdef cppclass cPerson "::cpp2::Person"
 
-cdef extern from "src/gen-cpp2/module_types.h" namespace "cpp2":
-    cdef cppclass cColor__isset "cpp2::Color::__isset":
+cdef extern from "src/gen-cpp2/module_types.h" namespace "::cpp2":
+    cdef cppclass cColor__isset "::cpp2::Color::__isset":
         bint red
         bint green
         bint blue
         bint alpha
 
-    cdef cppclass cColor "cpp2::Color":
+    cdef cppclass cColor "::cpp2::Color":
         cColor() except +
         cColor(const cColor&) except +
         bint operator==(cColor&)
@@ -68,14 +68,14 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "cpp2":
         double alpha
         cColor__isset __isset
 
-    cdef cppclass cVehicle__isset "cpp2::Vehicle::__isset":
+    cdef cppclass cVehicle__isset "::cpp2::Vehicle::__isset":
         bint color
         bint licensePlate
         bint description
         bint name
         bint hasAC
 
-    cdef cppclass cVehicle "cpp2::Vehicle":
+    cdef cppclass cVehicle "::cpp2::Vehicle":
         cVehicle() except +
         cVehicle(const cVehicle&) except +
         bint operator==(cVehicle&)
@@ -90,7 +90,7 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "cpp2":
         cbool hasAC
         cVehicle__isset __isset
 
-    cdef cppclass cPerson__isset "cpp2::Person::__isset":
+    cdef cppclass cPerson__isset "::cpp2::Person::__isset":
         bint id
         bint name
         bint age
@@ -102,7 +102,7 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "cpp2":
         bint afraidOfAnimal
         bint vehicles
 
-    cdef cppclass cPerson "cpp2::Person":
+    cdef cppclass cPerson "::cpp2::Person":
         cPerson() except +
         cPerson(const cPerson&) except +
         bint operator==(cPerson&)
@@ -122,11 +122,11 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "cpp2":
         vector[cVehicle] vehicles
         cPerson__isset __isset
 
-    cdef shared_ptr[cColor] reference_shared_ptr_color "thrift::py3::reference_shared_ptr<cpp2::Color>"(shared_ptr[cVehicle]&, cColor&)
-    cdef shared_ptr[cColor] reference_shared_ptr_favoriteColor "thrift::py3::reference_shared_ptr<cpp2::Color>"(shared_ptr[cPerson]&, cColor&)
+    cdef shared_ptr[cColor] reference_shared_ptr_color "thrift::py3::reference_shared_ptr<::cpp2::Color>"(shared_ptr[cVehicle]&, cColor&)
+    cdef shared_ptr[cColor] reference_shared_ptr_favoriteColor "thrift::py3::reference_shared_ptr<::cpp2::Color>"(shared_ptr[cPerson]&, cColor&)
     cdef shared_ptr[cset[int64_t]] reference_shared_ptr_friends "thrift::py3::reference_shared_ptr<std::set<int64_t>>"(shared_ptr[cPerson]&, cset[int64_t]&)
-    cdef shared_ptr[cmap[cAnimal,string]] reference_shared_ptr_petNames "thrift::py3::reference_shared_ptr<std::map<cpp2::Animal,std::string>>"(shared_ptr[cPerson]&, cmap[cAnimal,string]&)
-    cdef shared_ptr[vector[cVehicle]] reference_shared_ptr_vehicles "thrift::py3::reference_shared_ptr<std::vector<cpp2::Vehicle>>"(shared_ptr[cPerson]&, vector[cVehicle]&)
+    cdef shared_ptr[cmap[cAnimal,string]] reference_shared_ptr_petNames "thrift::py3::reference_shared_ptr<std::map<::cpp2::Animal,std::string>>"(shared_ptr[cPerson]&, cmap[cAnimal,string]&)
+    cdef shared_ptr[vector[cVehicle]] reference_shared_ptr_vehicles "thrift::py3::reference_shared_ptr<std::vector<::cpp2::Vehicle>>"(shared_ptr[cPerson]&, vector[cVehicle]&)
 
 cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[cColor] move(unique_ptr[cColor])
@@ -140,9 +140,9 @@ cdef extern from "<utility>" namespace "std" nogil:
     cdef unique_ptr[cPerson] move_unique "std::move"(unique_ptr[cPerson])
 
 cdef extern from "<memory>" namespace "std" nogil:
-    cdef shared_ptr[const cColor] const_pointer_cast "std::const_pointer_cast<const cpp2::Color>"(shared_ptr[cColor])
-    cdef shared_ptr[const cVehicle] const_pointer_cast "std::const_pointer_cast<const cpp2::Vehicle>"(shared_ptr[cVehicle])
-    cdef shared_ptr[const cPerson] const_pointer_cast "std::const_pointer_cast<const cpp2::Person>"(shared_ptr[cPerson])
+    cdef shared_ptr[const cColor] const_pointer_cast "std::const_pointer_cast<const ::cpp2::Color>"(shared_ptr[cColor])
+    cdef shared_ptr[const cVehicle] const_pointer_cast "std::const_pointer_cast<const ::cpp2::Vehicle>"(shared_ptr[cVehicle])
+    cdef shared_ptr[const cPerson] const_pointer_cast "std::const_pointer_cast<const ::cpp2::Person>"(shared_ptr[cPerson])
 
 # Forward Definition of the cython struct
 cdef class Color(thrift.py3.types.Struct)
@@ -259,9 +259,9 @@ cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[vector[cVehicle]] move_shared "std::move"(shared_ptr[vector[cVehicle]])
 cdef extern from "<utility>" nogil:
     pass  
-    shared_ptr[cVehicle] reference_shared_ptr_List__Vehicle "thrift::py3::reference_shared_ptr<cpp2::Vehicle>"(...)
+    shared_ptr[cVehicle] reference_shared_ptr_List__Vehicle "thrift::py3::reference_shared_ptr<::cpp2::Vehicle>"(...)
 cdef extern from "<memory>" namespace "std" nogil:
     cdef shared_ptr[const cset[int64_t]] const_pointer_cast "std::const_pointer_cast<const std::set<int64_t>>"(shared_ptr[cset[int64_t]])
-    cdef shared_ptr[const cmap[cAnimal,string]] const_pointer_cast "std::const_pointer_cast<const std::map<cpp2::Animal,std::string>>"(shared_ptr[cmap[cAnimal,string]])
-    cdef shared_ptr[const vector[cVehicle]] const_pointer_cast "std::const_pointer_cast<const std::vector<cpp2::Vehicle>>"(shared_ptr[vector[cVehicle]])
+    cdef shared_ptr[const cmap[cAnimal,string]] const_pointer_cast "std::const_pointer_cast<const std::map<::cpp2::Animal,std::string>>"(shared_ptr[cmap[cAnimal,string]])
+    cdef shared_ptr[const vector[cVehicle]] const_pointer_cast "std::const_pointer_cast<const std::vector<::cpp2::Vehicle>>"(shared_ptr[vector[cVehicle]])
 
