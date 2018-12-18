@@ -35,9 +35,6 @@
 #include <thrift/lib/cpp2/server/Cpp2Worker.h>
 #include <wangle/ssl/SSLContextManager.h>
 
-// This flag is still being used by some binaries.
-DEFINE_string(sasl_policy, "", "DO NOT USE");
-
 DEFINE_string(
     thrift_ssl_policy,
     "disabled",
