@@ -52,6 +52,9 @@ class EventTask : public virtual apache::thrift::concurrency::Runnable {
   void run() override {
     if (!oneway_) {
       if (req_ && !req_->isActive()) {
+        auto req = req_;
+        base_->runInEventBaseThread([req]() { delete req; });
+
         return;
       }
     }
@@ -233,38 +236,54 @@ class GeneratedAsyncProcessor : public AsyncProcessor {
       return;
     }
     auto preq = req.get();
-    tm->add(
-        std::make_shared<apache::thrift::PriorityEventTask>(
-            pri,
-            [=,
-             iprot = std::move(iprot),
-             buf = std::move(buf),
-             rq = std::move(req)]() mutable {
-              if (rq->getTimestamps().getSamplingStatus().isEnabled()) {
-                // Since this request was queued, reset the processBegin
-                // time to the actual start time, and not the queue time.
-                rq->getTimestamps().processBegin =
-                    apache::thrift::concurrency::Util::currentTimeUsec();
-              }
-              // Oneway request won't be canceled if expired. see
-              // D1006482 for furhter details.  TODO: fix this
-              if (kind != apache::thrift::RpcKind::SINGLE_REQUEST_NO_RESPONSE) {
-                if (!rq->isActive()) {
-                  eb->runInEventBaseThread(
-                      [rq = std::move(rq)]() mutable { rq.reset(); });
-                  return;
+    try {
+      tm->add(
+          std::make_shared<apache::thrift::PriorityEventTask>(
+              pri,
+              [=, iprot = std::move(iprot), buf = std::move(buf)]() mutable {
+                auto rq =
+                    std::unique_ptr<apache::thrift::ResponseChannelRequest>(
+                        preq);
+                if (rq->getTimestamps().getSamplingStatus().isEnabled()) {
+                  // Since this request was queued, reset the processBegin
+                  // time to the actual start time, and not the queue time.
+                  rq->getTimestamps().processBegin =
+                      apache::thrift::concurrency::Util::currentTimeUsec();
                 }
-              }
-              (childClass->*processFunc)(
-                  std::move(rq), std::move(buf), std::move(iprot), ctx, eb, tm);
-            },
-            preq,
-            eb,
-            kind == apache::thrift::RpcKind::SINGLE_REQUEST_NO_RESPONSE),
-        0, // timeout
-        0, // expiration
-        true, // cancellable
-        true); // numa
+                // Oneway request won't be canceled if expired. see
+                // D1006482 for furhter details.  TODO: fix this
+                if (kind !=
+                    apache::thrift::RpcKind::SINGLE_REQUEST_NO_RESPONSE) {
+                  if (!rq->isActive()) {
+                    eb->runInEventBaseThread(
+                        [rq = std::move(rq)]() mutable { rq.reset(); });
+                    return;
+                  }
+                }
+                (childClass->*processFunc)(
+                    std::move(rq),
+                    std::move(buf),
+                    std::move(iprot),
+                    ctx,
+                    eb,
+                    tm);
+              },
+              preq,
+              eb,
+              kind == apache::thrift::RpcKind::SINGLE_REQUEST_NO_RESPONSE),
+          0, // timeout
+          0, // expiration
+          true, // cancellable
+          true); // numa
+      req.release();
+    } catch (const std::exception&) {
+      if (kind != apache::thrift::RpcKind::SINGLE_REQUEST_NO_RESPONSE) {
+        req->sendErrorWrapped(
+            folly::make_exception_wrapper<TApplicationException>(
+                "Failed to add task to queue, too full"),
+            kQueueOverloadedErrorCode);
+      }
+    }
   }
 };
 
