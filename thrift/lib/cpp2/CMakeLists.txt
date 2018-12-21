@@ -71,6 +71,7 @@ add_library(
   async/PcapLoggingHandler.cpp
   async/RequestChannel.cpp
   async/ResponseChannel.cpp
+  gen/field_ref.cpp
   server/BaseThriftServer.cpp
   server/Cpp2Connection.cpp
   server/Cpp2Worker.cpp
