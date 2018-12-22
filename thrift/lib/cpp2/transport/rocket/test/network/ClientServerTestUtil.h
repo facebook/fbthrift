@@ -17,6 +17,7 @@
 #pragma once
 
 #include <chrono>
+#include <future>
 #include <memory>
 
 #include <folly/Try.h>
@@ -97,6 +98,7 @@ class RocketTestServer {
   folly::EventBase& evb_;
   folly::AsyncServerSocket::UniquePtr listeningSocket_;
   std::unique_ptr<wangle::Acceptor> acceptor_;
+  std::future<void> shutdownFuture_;
 
   void start();
   void stop();

@@ -18,6 +18,7 @@
 
 #include <algorithm>
 #include <chrono>
+#include <future>
 #include <memory>
 #include <stdexcept>
 #include <utility>
@@ -300,9 +301,15 @@ namespace {
 class RocketTestServerAcceptor final : public wangle::Acceptor {
  public:
   explicit RocketTestServerAcceptor(
-      std::shared_ptr<RocketServerHandler> frameHandler)
+      std::shared_ptr<RocketServerHandler> frameHandler,
+      std::promise<void> shutdownPromise)
       : Acceptor(wangle::ServerSocketConfig{}),
-        frameHandler_(std::move(frameHandler)) {}
+        frameHandler_(std::move(frameHandler)),
+        shutdownPromise_(std::move(shutdownPromise)) {}
+
+  ~RocketTestServerAcceptor() {
+    EXPECT_EQ(0, connections_);
+  }
 
   void onNewConnection(
       folly::AsyncTransportWrapper::UniquePtr socket,
@@ -315,8 +322,22 @@ class RocketTestServerAcceptor final : public wangle::Acceptor {
     getConnectionManager()->addConnection(connection);
   }
 
+  void onConnectionsDrained() override {
+    shutdownPromise_.set_value();
+  }
+
+  void onConnectionAdded(const wangle::ManagedConnection*) override {
+    ++connections_;
+  }
+
+  void onConnectionRemoved(const wangle::ManagedConnection*) override {
+    --connections_;
+  }
+
  private:
   const std::shared_ptr<RocketServerHandler> frameHandler_;
+  std::promise<void> shutdownPromise_;
+  size_t connections_{0};
 };
 
 class RocketTestServerHandler : public RocketServerHandler {
@@ -367,9 +388,11 @@ class RocketTestServerHandler : public RocketServerHandler {
 
 RocketTestServer::RocketTestServer()
     : evb_(*ioThread_.getEventBase()),
-      listeningSocket_(new folly::AsyncServerSocket(&evb_)),
-      acceptor_(std::make_unique<RocketTestServerAcceptor>(
-          std::make_shared<RocketTestServerHandler>())) {
+      listeningSocket_(new folly::AsyncServerSocket(&evb_)) {
+  std::promise<void> shutdownPromise;
+  shutdownFuture_ = shutdownPromise.get_future();
+  acceptor_ = std::make_unique<RocketTestServerAcceptor>(
+      std::make_shared<RocketTestServerHandler>(), std::move(shutdownPromise));
   start();
 }
 
@@ -390,11 +413,11 @@ void RocketTestServer::start() {
 }
 
 void RocketTestServer::stop() {
-  folly::via(&evb_, [this] { listeningSocket_.reset(); }).wait();
-  // Ensure that asynchronous shutdown work enqueued by ~AsyncServerSocket()
-  // has a chance to run before acceptor_ is reset.
-  folly::via(&evb_, [] {}).wait();
-  folly::via(&evb_, [this] { acceptor_.reset(); }).wait();
+  // Ensure socket and acceptor are destroyed in EventBase thread
+  folly::via(&evb_, [listeningSocket = std::move(listeningSocket_)] {});
+  // Wait for server to drain connections as gracefully as possible.
+  shutdownFuture_.wait();
+  folly::via(&evb_, [acceptor = std::move(acceptor_)] {});
 }
 
 uint16_t RocketTestServer::getListeningPort() const {
