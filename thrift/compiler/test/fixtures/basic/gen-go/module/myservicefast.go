@@ -21,13 +21,13 @@ var _ = context.Background
 
 type MyServiceFast interface {
   Ping() (err error)
-  GetRandomData() (r string, err error)
+  GetRandomData() (_r string, err error)
   // Parameters:
   //  - Id
-  HasDataById(id int64) (r bool, err error)
+  HasDataById(id int64) (_r bool, err error)
   // Parameters:
   //  - Id
-  GetDataById(id int64) (r string, err error)
+  GetDataById(id int64) (_r string, err error)
   // Parameters:
   //  - Id
   //  - Data
@@ -140,7 +140,7 @@ func (p *MyServiceFastClient) recvPing() (err error) {
   return
 }
 
-func (p *MyServiceFastClient) GetRandomData() (r string, err error) {
+func (p *MyServiceFastClient) GetRandomData() (_r string, err error) {
   if err = p.sendGetRandomData(); err != nil { return }
   return p.recvGetRandomData()
 }
@@ -215,7 +215,7 @@ func (p *MyServiceFastClient) recvGetRandomData() (value string, err error) {
 
 // Parameters:
 //  - Id
-func (p *MyServiceFastClient) HasDataById(id int64) (r bool, err error) {
+func (p *MyServiceFastClient) HasDataById(id int64) (_r bool, err error) {
   if err = p.sendHasDataById(id); err != nil { return }
   return p.recvHasDataById()
 }
@@ -291,7 +291,7 @@ func (p *MyServiceFastClient) recvHasDataById() (value bool, err error) {
 
 // Parameters:
 //  - Id
-func (p *MyServiceFastClient) GetDataById(id int64) (r string, err error) {
+func (p *MyServiceFastClient) GetDataById(id int64) (_r string, err error) {
   if err = p.sendGetDataById(id); err != nil { return }
   return p.recvGetDataById()
 }
@@ -577,7 +577,7 @@ func (p *MyServiceFastThreadsafeClient) recvPing() (err error) {
   return
 }
 
-func (p *MyServiceFastThreadsafeClient) GetRandomData() (r string, err error) {
+func (p *MyServiceFastThreadsafeClient) GetRandomData() (_r string, err error) {
   p.Mu.Lock()
   defer p.Mu.Unlock()
   if err = p.sendGetRandomData(); err != nil { return }
@@ -654,7 +654,7 @@ func (p *MyServiceFastThreadsafeClient) recvGetRandomData() (value string, err e
 
 // Parameters:
 //  - Id
-func (p *MyServiceFastThreadsafeClient) HasDataById(id int64) (r bool, err error) {
+func (p *MyServiceFastThreadsafeClient) HasDataById(id int64) (_r bool, err error) {
   p.Mu.Lock()
   defer p.Mu.Unlock()
   if err = p.sendHasDataById(id); err != nil { return }
@@ -732,7 +732,7 @@ func (p *MyServiceFastThreadsafeClient) recvHasDataById() (value bool, err error
 
 // Parameters:
 //  - Id
-func (p *MyServiceFastThreadsafeClient) GetDataById(id int64) (r string, err error) {
+func (p *MyServiceFastThreadsafeClient) GetDataById(id int64) (_r string, err error) {
   p.Mu.Lock()
   defer p.Mu.Unlock()
   if err = p.sendGetDataById(id); err != nil { return }

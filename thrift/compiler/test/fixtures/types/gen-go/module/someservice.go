@@ -25,10 +25,10 @@ var _ = include0.GoUnusedProtection__
 type SomeService interface {
   // Parameters:
   //  - M
-  BounceMap(m include0.SomeMap) (r include0.SomeMap, err error)
+  BounceMap(m include0.SomeMap) (_r include0.SomeMap, err error)
   // Parameters:
   //  - R
-  BinaryKeyedMap(r []int64) (r map[string]int64, err error)
+  BinaryKeyedMap(r []int64) (_r map[string]int64, err error)
 }
 
 type SomeServiceClient struct {
@@ -63,7 +63,7 @@ func NewSomeServiceClient(t thrift.Transport, iprot thrift.Protocol, oprot thrif
 
 // Parameters:
 //  - M
-func (p *SomeServiceClient) BounceMap(m include0.SomeMap) (r include0.SomeMap, err error) {
+func (p *SomeServiceClient) BounceMap(m include0.SomeMap) (_r include0.SomeMap, err error) {
   if err = p.sendBounceMap(m); err != nil { return }
   return p.recvBounceMap()
 }
@@ -139,7 +139,7 @@ func (p *SomeServiceClient) recvBounceMap() (value include0.SomeMap, err error) 
 
 // Parameters:
 //  - R
-func (p *SomeServiceClient) BinaryKeyedMap(r []int64) (r map[string]int64, err error) {
+func (p *SomeServiceClient) BinaryKeyedMap(r []int64) (_r map[string]int64, err error) {
   if err = p.sendBinaryKeyedMap(r); err != nil { return }
   return p.recvBinaryKeyedMap()
 }
@@ -245,7 +245,7 @@ func (p *SomeServiceThreadsafeClient) Threadsafe() {}
 
 // Parameters:
 //  - M
-func (p *SomeServiceThreadsafeClient) BounceMap(m include0.SomeMap) (r include0.SomeMap, err error) {
+func (p *SomeServiceThreadsafeClient) BounceMap(m include0.SomeMap) (_r include0.SomeMap, err error) {
   p.Mu.Lock()
   defer p.Mu.Unlock()
   if err = p.sendBounceMap(m); err != nil { return }
@@ -323,7 +323,7 @@ func (p *SomeServiceThreadsafeClient) recvBounceMap() (value include0.SomeMap, e
 
 // Parameters:
 //  - R
-func (p *SomeServiceThreadsafeClient) BinaryKeyedMap(r []int64) (r map[string]int64, err error) {
+func (p *SomeServiceThreadsafeClient) BinaryKeyedMap(r []int64) (_r map[string]int64, err error) {
   p.Mu.Lock()
   defer p.Mu.Unlock()
   if err = p.sendBinaryKeyedMap(r); err != nil { return }

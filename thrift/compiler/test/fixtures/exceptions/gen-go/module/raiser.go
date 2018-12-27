@@ -22,8 +22,8 @@ var _ = context.Background
 type Raiser interface {
   DoBland() (err error)
   DoRaise() (err error)
-  Get200() (r string, err error)
-  Get500() (r string, err error)
+  Get200() (_r string, err error)
+  Get500() (_r string, err error)
 }
 
 type RaiserClient struct {
@@ -210,7 +210,7 @@ func (p *RaiserClient) recvDoRaise() (err error) {
   return
 }
 
-func (p *RaiserClient) Get200() (r string, err error) {
+func (p *RaiserClient) Get200() (_r string, err error) {
   if err = p.sendGet200(); err != nil { return }
   return p.recvGet200()
 }
@@ -283,7 +283,7 @@ func (p *RaiserClient) recvGet200() (value string, err error) {
   return
 }
 
-func (p *RaiserClient) Get500() (r string, err error) {
+func (p *RaiserClient) Get500() (_r string, err error) {
   if err = p.sendGet500(); err != nil { return }
   return p.recvGet500()
 }
@@ -554,7 +554,7 @@ func (p *RaiserThreadsafeClient) recvDoRaise() (err error) {
   return
 }
 
-func (p *RaiserThreadsafeClient) Get200() (r string, err error) {
+func (p *RaiserThreadsafeClient) Get200() (_r string, err error) {
   p.Mu.Lock()
   defer p.Mu.Unlock()
   if err = p.sendGet200(); err != nil { return }
@@ -629,7 +629,7 @@ func (p *RaiserThreadsafeClient) recvGet200() (value string, err error) {
   return
 }
 
-func (p *RaiserThreadsafeClient) Get500() (r string, err error) {
+func (p *RaiserThreadsafeClient) Get500() (_r string, err error) {
   p.Mu.Lock()
   defer p.Mu.Unlock()
   if err = p.sendGet500(); err != nil { return }

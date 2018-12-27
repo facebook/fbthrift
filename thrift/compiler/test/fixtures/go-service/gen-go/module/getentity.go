@@ -22,18 +22,18 @@ var _ = context.Background
 type GetEntity interface {
   // Parameters:
   //  - R
-  GetEntity(r *GetEntityRequest) (r *GetEntityResponse, err error)
-  GetBool() (r bool, err error)
-  GetByte() (r int8, err error)
-  GetI16() (r int16, err error)
-  GetI32() (r int32, err error)
-  GetI64() (r int64, err error)
-  GetDouble() (r float64, err error)
-  GetString() (r string, err error)
-  GetBinary() (r []byte, err error)
-  GetMap() (r map[string]string, err error)
-  GetSet() (r []string, err error)
-  GetList() (r []string, err error)
+  GetEntity(r *GetEntityRequest) (_r *GetEntityResponse, err error)
+  GetBool() (_r bool, err error)
+  GetByte() (_r int8, err error)
+  GetI16() (_r int16, err error)
+  GetI32() (_r int32, err error)
+  GetI64() (_r int64, err error)
+  GetDouble() (_r float64, err error)
+  GetString() (_r string, err error)
+  GetBinary() (_r []byte, err error)
+  GetMap() (_r map[string]string, err error)
+  GetSet() (_r []string, err error)
+  GetList() (_r []string, err error)
 }
 
 type GetEntityClient struct {
@@ -68,7 +68,7 @@ func NewGetEntityClient(t thrift.Transport, iprot thrift.Protocol, oprot thrift.
 
 // Parameters:
 //  - R
-func (p *GetEntityClient) GetEntity(r *GetEntityRequest) (r *GetEntityResponse, err error) {
+func (p *GetEntityClient) GetEntity(r *GetEntityRequest) (_r *GetEntityResponse, err error) {
   if err = p.sendGetEntity(r); err != nil { return }
   return p.recvGetEntity()
 }
@@ -142,7 +142,7 @@ func (p *GetEntityClient) recvGetEntity() (value *GetEntityResponse, err error) 
   return
 }
 
-func (p *GetEntityClient) GetBool() (r bool, err error) {
+func (p *GetEntityClient) GetBool() (_r bool, err error) {
   if err = p.sendGetBool(); err != nil { return }
   return p.recvGetBool()
 }
@@ -215,7 +215,7 @@ func (p *GetEntityClient) recvGetBool() (value bool, err error) {
   return
 }
 
-func (p *GetEntityClient) GetByte() (r int8, err error) {
+func (p *GetEntityClient) GetByte() (_r int8, err error) {
   if err = p.sendGetByte(); err != nil { return }
   return p.recvGetByte()
 }
@@ -288,7 +288,7 @@ func (p *GetEntityClient) recvGetByte() (value int8, err error) {
   return
 }
 
-func (p *GetEntityClient) GetI16() (r int16, err error) {
+func (p *GetEntityClient) GetI16() (_r int16, err error) {
   if err = p.sendGetI16(); err != nil { return }
   return p.recvGetI16()
 }
@@ -361,7 +361,7 @@ func (p *GetEntityClient) recvGetI16() (value int16, err error) {
   return
 }
 
-func (p *GetEntityClient) GetI32() (r int32, err error) {
+func (p *GetEntityClient) GetI32() (_r int32, err error) {
   if err = p.sendGetI32(); err != nil { return }
   return p.recvGetI32()
 }
@@ -434,7 +434,7 @@ func (p *GetEntityClient) recvGetI32() (value int32, err error) {
   return
 }
 
-func (p *GetEntityClient) GetI64() (r int64, err error) {
+func (p *GetEntityClient) GetI64() (_r int64, err error) {
   if err = p.sendGetI64(); err != nil { return }
   return p.recvGetI64()
 }
@@ -507,7 +507,7 @@ func (p *GetEntityClient) recvGetI64() (value int64, err error) {
   return
 }
 
-func (p *GetEntityClient) GetDouble() (r float64, err error) {
+func (p *GetEntityClient) GetDouble() (_r float64, err error) {
   if err = p.sendGetDouble(); err != nil { return }
   return p.recvGetDouble()
 }
@@ -580,7 +580,7 @@ func (p *GetEntityClient) recvGetDouble() (value float64, err error) {
   return
 }
 
-func (p *GetEntityClient) GetString() (r string, err error) {
+func (p *GetEntityClient) GetString() (_r string, err error) {
   if err = p.sendGetString(); err != nil { return }
   return p.recvGetString()
 }
@@ -653,7 +653,7 @@ func (p *GetEntityClient) recvGetString() (value string, err error) {
   return
 }
 
-func (p *GetEntityClient) GetBinary() (r []byte, err error) {
+func (p *GetEntityClient) GetBinary() (_r []byte, err error) {
   if err = p.sendGetBinary(); err != nil { return }
   return p.recvGetBinary()
 }
@@ -726,7 +726,7 @@ func (p *GetEntityClient) recvGetBinary() (value []byte, err error) {
   return
 }
 
-func (p *GetEntityClient) GetMap() (r map[string]string, err error) {
+func (p *GetEntityClient) GetMap() (_r map[string]string, err error) {
   if err = p.sendGetMap(); err != nil { return }
   return p.recvGetMap()
 }
@@ -799,7 +799,7 @@ func (p *GetEntityClient) recvGetMap() (value map[string]string, err error) {
   return
 }
 
-func (p *GetEntityClient) GetSet() (r []string, err error) {
+func (p *GetEntityClient) GetSet() (_r []string, err error) {
   if err = p.sendGetSet(); err != nil { return }
   return p.recvGetSet()
 }
@@ -872,7 +872,7 @@ func (p *GetEntityClient) recvGetSet() (value []string, err error) {
   return
 }
 
-func (p *GetEntityClient) GetList() (r []string, err error) {
+func (p *GetEntityClient) GetList() (_r []string, err error) {
   if err = p.sendGetList(); err != nil { return }
   return p.recvGetList()
 }
@@ -977,7 +977,7 @@ func (p *GetEntityThreadsafeClient) Threadsafe() {}
 
 // Parameters:
 //  - R
-func (p *GetEntityThreadsafeClient) GetEntity(r *GetEntityRequest) (r *GetEntityResponse, err error) {
+func (p *GetEntityThreadsafeClient) GetEntity(r *GetEntityRequest) (_r *GetEntityResponse, err error) {
   p.Mu.Lock()
   defer p.Mu.Unlock()
   if err = p.sendGetEntity(r); err != nil { return }
@@ -1053,7 +1053,7 @@ func (p *GetEntityThreadsafeClient) recvGetEntity() (value *GetEntityResponse, e
   return
 }
 
-func (p *GetEntityThreadsafeClient) GetBool() (r bool, err error) {
+func (p *GetEntityThreadsafeClient) GetBool() (_r bool, err error) {
   p.Mu.Lock()
   defer p.Mu.Unlock()
   if err = p.sendGetBool(); err != nil { return }
@@ -1128,7 +1128,7 @@ func (p *GetEntityThreadsafeClient) recvGetBool() (value bool, err error) {
   return
 }
 
-func (p *GetEntityThreadsafeClient) GetByte() (r int8, err error) {
+func (p *GetEntityThreadsafeClient) GetByte() (_r int8, err error) {
   p.Mu.Lock()
   defer p.Mu.Unlock()
   if err = p.sendGetByte(); err != nil { return }
@@ -1203,7 +1203,7 @@ func (p *GetEntityThreadsafeClient) recvGetByte() (value int8, err error) {
   return
 }
 
-func (p *GetEntityThreadsafeClient) GetI16() (r int16, err error) {
+func (p *GetEntityThreadsafeClient) GetI16() (_r int16, err error) {
   p.Mu.Lock()
   defer p.Mu.Unlock()
   if err = p.sendGetI16(); err != nil { return }
@@ -1278,7 +1278,7 @@ func (p *GetEntityThreadsafeClient) recvGetI16() (value int16, err error) {
   return
 }
 
-func (p *GetEntityThreadsafeClient) GetI32() (r int32, err error) {
+func (p *GetEntityThreadsafeClient) GetI32() (_r int32, err error) {
   p.Mu.Lock()
   defer p.Mu.Unlock()
   if err = p.sendGetI32(); err != nil { return }
@@ -1353,7 +1353,7 @@ func (p *GetEntityThreadsafeClient) recvGetI32() (value int32, err error) {
   return
 }
 
-func (p *GetEntityThreadsafeClient) GetI64() (r int64, err error) {
+func (p *GetEntityThreadsafeClient) GetI64() (_r int64, err error) {
   p.Mu.Lock()
   defer p.Mu.Unlock()
   if err = p.sendGetI64(); err != nil { return }
@@ -1428,7 +1428,7 @@ func (p *GetEntityThreadsafeClient) recvGetI64() (value int64, err error) {
   return
 }
 
-func (p *GetEntityThreadsafeClient) GetDouble() (r float64, err error) {
+func (p *GetEntityThreadsafeClient) GetDouble() (_r float64, err error) {
   p.Mu.Lock()
   defer p.Mu.Unlock()
   if err = p.sendGetDouble(); err != nil { return }
@@ -1503,7 +1503,7 @@ func (p *GetEntityThreadsafeClient) recvGetDouble() (value float64, err error) {
   return
 }
 
-func (p *GetEntityThreadsafeClient) GetString() (r string, err error) {
+func (p *GetEntityThreadsafeClient) GetString() (_r string, err error) {
   p.Mu.Lock()
   defer p.Mu.Unlock()
   if err = p.sendGetString(); err != nil { return }
@@ -1578,7 +1578,7 @@ func (p *GetEntityThreadsafeClient) recvGetString() (value string, err error) {
   return
 }
 
-func (p *GetEntityThreadsafeClient) GetBinary() (r []byte, err error) {
+func (p *GetEntityThreadsafeClient) GetBinary() (_r []byte, err error) {
   p.Mu.Lock()
   defer p.Mu.Unlock()
   if err = p.sendGetBinary(); err != nil { return }
@@ -1653,7 +1653,7 @@ func (p *GetEntityThreadsafeClient) recvGetBinary() (value []byte, err error) {
   return
 }
 
-func (p *GetEntityThreadsafeClient) GetMap() (r map[string]string, err error) {
+func (p *GetEntityThreadsafeClient) GetMap() (_r map[string]string, err error) {
   p.Mu.Lock()
   defer p.Mu.Unlock()
   if err = p.sendGetMap(); err != nil { return }
@@ -1728,7 +1728,7 @@ func (p *GetEntityThreadsafeClient) recvGetMap() (value map[string]string, err e
   return
 }
 
-func (p *GetEntityThreadsafeClient) GetSet() (r []string, err error) {
+func (p *GetEntityThreadsafeClient) GetSet() (_r []string, err error) {
   p.Mu.Lock()
   defer p.Mu.Unlock()
   if err = p.sendGetSet(); err != nil { return }
@@ -1803,7 +1803,7 @@ func (p *GetEntityThreadsafeClient) recvGetSet() (value []string, err error) {
   return
 }
 
-func (p *GetEntityThreadsafeClient) GetList() (r []string, err error) {
+func (p *GetEntityThreadsafeClient) GetList() (_r []string, err error) {
   p.Mu.Lock()
   defer p.Mu.Unlock()
   if err = p.sendGetList(); err != nil { return }

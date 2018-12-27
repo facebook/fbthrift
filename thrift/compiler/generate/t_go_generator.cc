@@ -4076,7 +4076,7 @@ string t_go_generator::function_signature_if(
   t_type* ret = tfunction->get_returntype();
 
   if (!ret->is_void()) {
-    signature += "r " + type_to_go_type(ret) + ", ";
+    signature += "_r " + type_to_go_type(ret) + ", ";
   }
 
   signature += "err error)";

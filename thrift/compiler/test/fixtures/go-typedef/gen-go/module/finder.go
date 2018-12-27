@@ -22,13 +22,13 @@ var _ = context.Background
 type Finder interface {
   // Parameters:
   //  - Plate
-  ByPlate(plate Plate) (r *Automobile, err error)
+  ByPlate(plate Plate) (_r *Automobile, err error)
   // Parameters:
   //  - Plate
-  AliasByPlate(plate Plate) (r *Car, err error)
+  AliasByPlate(plate Plate) (_r *Car, err error)
   // Parameters:
   //  - Plate
-  PreviousPlate(plate Plate) (r Plate, err error)
+  PreviousPlate(plate Plate) (_r Plate, err error)
 }
 
 type FinderClient struct {
@@ -63,7 +63,7 @@ func NewFinderClient(t thrift.Transport, iprot thrift.Protocol, oprot thrift.Pro
 
 // Parameters:
 //  - Plate
-func (p *FinderClient) ByPlate(plate Plate) (r *Automobile, err error) {
+func (p *FinderClient) ByPlate(plate Plate) (_r *Automobile, err error) {
   if err = p.sendByPlate(plate); err != nil { return }
   return p.recvByPlate()
 }
@@ -139,7 +139,7 @@ func (p *FinderClient) recvByPlate() (value *Automobile, err error) {
 
 // Parameters:
 //  - Plate
-func (p *FinderClient) AliasByPlate(plate Plate) (r *Car, err error) {
+func (p *FinderClient) AliasByPlate(plate Plate) (_r *Car, err error) {
   if err = p.sendAliasByPlate(plate); err != nil { return }
   return p.recvAliasByPlate()
 }
@@ -215,7 +215,7 @@ func (p *FinderClient) recvAliasByPlate() (value *Car, err error) {
 
 // Parameters:
 //  - Plate
-func (p *FinderClient) PreviousPlate(plate Plate) (r Plate, err error) {
+func (p *FinderClient) PreviousPlate(plate Plate) (_r Plate, err error) {
   if err = p.sendPreviousPlate(plate); err != nil { return }
   return p.recvPreviousPlate()
 }
@@ -321,7 +321,7 @@ func (p *FinderThreadsafeClient) Threadsafe() {}
 
 // Parameters:
 //  - Plate
-func (p *FinderThreadsafeClient) ByPlate(plate Plate) (r *Automobile, err error) {
+func (p *FinderThreadsafeClient) ByPlate(plate Plate) (_r *Automobile, err error) {
   p.Mu.Lock()
   defer p.Mu.Unlock()
   if err = p.sendByPlate(plate); err != nil { return }
@@ -399,7 +399,7 @@ func (p *FinderThreadsafeClient) recvByPlate() (value *Automobile, err error) {
 
 // Parameters:
 //  - Plate
-func (p *FinderThreadsafeClient) AliasByPlate(plate Plate) (r *Car, err error) {
+func (p *FinderThreadsafeClient) AliasByPlate(plate Plate) (_r *Car, err error) {
   p.Mu.Lock()
   defer p.Mu.Unlock()
   if err = p.sendAliasByPlate(plate); err != nil { return }
@@ -477,7 +477,7 @@ func (p *FinderThreadsafeClient) recvAliasByPlate() (value *Car, err error) {
 
 // Parameters:
 //  - Plate
-func (p *FinderThreadsafeClient) PreviousPlate(plate Plate) (r Plate, err error) {
+func (p *FinderThreadsafeClient) PreviousPlate(plate Plate) (_r Plate, err error) {
   p.Mu.Lock()
   defer p.Mu.Unlock()
   if err = p.sendPreviousPlate(plate); err != nil { return }
