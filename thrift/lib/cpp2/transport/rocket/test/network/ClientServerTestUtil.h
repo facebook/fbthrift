@@ -79,11 +79,17 @@ class RocketTestClient {
 
   folly::Try<SemiStream<Payload>> sendRequestStreamSync(Payload request);
 
+  void reconnect();
+
  private:
   folly::ScopedEventBaseThread evbThread_;
   folly::EventBase& evb_;
   folly::fibers::FiberManager& fm_;
   std::shared_ptr<RocketClient> client_;
+  const folly::SocketAddress serverAddr_;
+
+  void connect();
+  void disconnect();
 };
 
 class RocketTestServer {

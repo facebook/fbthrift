@@ -25,6 +25,7 @@
 #include <folly/Range.h>
 #include <folly/SocketAddress.h>
 #include <folly/Try.h>
+#include <folly/executors/ManualExecutor.h>
 #include <folly/io/async/AsyncSocket.h>
 #include <folly/io/async/EventBase.h>
 #include <folly/io/async/ScopedEventBaseThread.h>
@@ -64,14 +65,14 @@ class RocketNetworkTest : public testing::Test {
     f(*client_);
   }
 
-  folly::EventBase* getUserExecutor() const {
-    return userExecutor_.getEventBase();
+  folly::ManualExecutor* getUserExecutor() {
+    return &userExecutor_;
   }
 
  protected:
   std::unique_ptr<Server> server_;
   std::unique_ptr<RocketTestClient> client_;
-  folly::ScopedEventBaseThread userExecutor_;
+  folly::ManualExecutor userExecutor_;
 };
 } // namespace
 
@@ -269,7 +270,7 @@ TYPED_TEST(RocketNetworkTest, RequestStreamBasic) {
                 },
                 [](auto ew) { FAIL() << ew.what(); });
 
-    std::move(subscription).join();
+    std::move(subscription).futureJoin().waitVia(this->getUserExecutor());
     EXPECT_EQ(kNumRequestedPayloads, received);
   });
 }
@@ -291,7 +292,6 @@ TYPED_TEST(RocketNetworkTest, RequestStreamError) {
             .subscribe(
                 [&received](Payload&& payload) {
                   const auto x = folly::to<size_t>(getRange(*payload.data()));
-                  LOG(INFO) << "Here: " << x;
                   EXPECT_EQ(received++, x);
                 },
                 [&error](auto ew) {
@@ -300,7 +300,7 @@ TYPED_TEST(RocketNetworkTest, RequestStreamError) {
                       ErrorCode::APPLICATION_ERROR, std::move(ew));
                 });
 
-    std::move(subscription).join();
+    std::move(subscription).futureJoin().waitVia(this->getUserExecutor());
     EXPECT_TRUE(error);
     EXPECT_EQ(0, received);
   });
@@ -329,7 +329,7 @@ TYPED_TEST(RocketNetworkTest, RequestStreamSmallInitialRequestN) {
                 [](auto ew) { FAIL() << ew.what(); },
                 5 /* batch size */);
 
-    std::move(subscription).join();
+    std::move(subscription).futureJoin().waitVia(this->getUserExecutor());
     EXPECT_EQ(kNumRequestedPayloads, received);
   });
 }
@@ -360,7 +360,7 @@ TYPED_TEST(RocketNetworkTest, RequestStreamCancelSubscription) {
                 [](auto ew) { FAIL() << ew.what(); });
 
     subscription.cancel();
-    std::move(subscription).join();
+    std::move(subscription).futureJoin().waitVia(this->getUserExecutor());
     EXPECT_LT(received, kNumRequestedPayloads);
   });
 }
@@ -405,6 +405,79 @@ TYPED_TEST(RocketNetworkTest, RequestStreamCloseClient) {
 
   this->client_.reset();
 
-  std::move(subscription).join();
+  std::move(subscription).futureJoin().waitVia(this->getUserExecutor());
   EXPECT_TRUE(onErrorCalled);
+}
+
+TYPED_TEST(RocketNetworkTest, ClientCreationAndReconnectStreamOutlivesClient) {
+  this->withClient([](RocketTestClient& client) {
+    constexpr size_t kNumRequestedPayloads = 1000000;
+    constexpr folly::StringPiece kMetadata("metadata");
+    const auto data =
+        folly::to<std::string>("generate:", kNumRequestedPayloads);
+
+    // Open a stream and reconnect many times, having each stream slightly
+    // outlive its associated RocketClient.
+    for (size_t i = 0; i < 1000; ++i) {
+      auto stream =
+          client.sendRequestStreamSync(Payload::makeFromMetadataAndData(
+              kMetadata, folly::StringPiece{data}));
+      EXPECT_TRUE(stream.hasValue());
+      client.reconnect();
+    }
+  });
+}
+
+TYPED_TEST(
+    RocketNetworkTest,
+    ClientCreationAndReconnectSubscriptionOutlivesClient) {
+  this->withClient([this](RocketTestClient& client) {
+    constexpr size_t kNumRequestedPayloads = 1000000;
+    constexpr folly::StringPiece kMetadata("metadata");
+    const auto data =
+        folly::to<std::string>("generate:", kNumRequestedPayloads);
+
+    // Open a stream and reconnect many times, subscribing to the stream before
+    // and having the subscription outlive the client.
+    for (size_t i = 0; i < 1000; ++i) {
+      auto stream =
+          client.sendRequestStreamSync(Payload::makeFromMetadataAndData(
+              kMetadata, folly::StringPiece{data}));
+      EXPECT_TRUE(stream.hasValue());
+      size_t received = 0;
+      auto subscription =
+          std::move(*stream)
+              .via(this->getUserExecutor())
+              .subscribe(
+                  [&received](Payload&& payload) {
+                    const auto x = folly::to<size_t>(getRange(*payload.data()));
+                    EXPECT_EQ(received++, x);
+                  },
+                  [](auto /* ew */) {});
+      client.reconnect();
+      subscription.cancel();
+      std::move(subscription).futureJoin().waitVia(this->getUserExecutor());
+    }
+  });
+}
+
+TYPED_TEST(RocketNetworkTest, ClientCreationAndReconnectClientOutlivesStream) {
+  this->withClient([](RocketTestClient& client) {
+    constexpr size_t kNumRequestedPayloads = 1000000;
+    constexpr folly::StringPiece kMetadata("metadata");
+    const auto data =
+        folly::to<std::string>("generate:", kNumRequestedPayloads);
+
+    // Open a stream and reconnect many times, having each RocketClient slightly
+    // outlive the associated stream.
+    for (size_t i = 0; i < 1000; ++i) {
+      {
+        auto stream =
+            client.sendRequestStreamSync(Payload::makeFromMetadataAndData(
+                kMetadata, folly::StringPiece{data}));
+        EXPECT_TRUE(stream.hasValue());
+      }
+      client.reconnect();
+    }
+  });
 }

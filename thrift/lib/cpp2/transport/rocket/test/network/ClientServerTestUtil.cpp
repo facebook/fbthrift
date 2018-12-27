@@ -46,11 +46,11 @@
 #include <thrift/lib/cpp2/async/Stream.h>
 #include <thrift/lib/cpp2/transport/rocket/Types.h>
 #include <thrift/lib/cpp2/transport/rocket/client/RocketClient.h>
-#include <thrift/lib/cpp2/transport/rocket/client/RocketStreamImpl.h>
 #include <thrift/lib/cpp2/transport/rocket/server/RocketServerConnection.h>
 #include <thrift/lib/cpp2/transport/rocket/server/RocketServerFrameContext.h>
 #include <thrift/lib/cpp2/transport/rocket/server/RocketServerHandler.h>
 #include <thrift/lib/cpp2/transport/rocket/server/RocketServerStreamSubscriber.h>
+#include <thrift/lib/cpp2/transport/rsocket/YarplStreamImpl.h>
 
 using namespace rsocket;
 using namespace yarpl::flowable;
@@ -231,16 +231,13 @@ void RsocketTestServer::shutdown() {
 
 RocketTestClient::RocketTestClient(const folly::SocketAddress& serverAddr)
     : evb_(*evbThread_.getEventBase()),
-      fm_(folly::fibers::getFiberManager(evb_)) {
-  evb_.runInEventBaseThread([this, serverAddr] {
-    folly::AsyncSocket::UniquePtr socket(
-        new folly::AsyncSocket(&evb_, serverAddr));
-    client_ = RocketClient::create(evb_, std::move(socket));
-  });
+      fm_(folly::fibers::getFiberManager(evb_)),
+      serverAddr_(serverAddr) {
+  connect();
 }
 
 RocketTestClient::~RocketTestClient() {
-  evb_.runInEventBaseThreadAndWait([this] { client_.reset(); });
+  disconnect();
 }
 
 folly::Try<Payload> RocketTestClient::sendRequestResponseSync(
@@ -287,14 +284,34 @@ folly::Try<SemiStream<Payload>> RocketTestClient::sendRequestStreamSync(
 
   evb_.runInEventBaseThreadAndWait([&] {
     stream = folly::makeTryWith([&] {
-      return SemiStream<Payload>(Stream<Payload>::create(
-          std::make_unique<apache::thrift::detail::RocketStreamImpl>(
-              client_->createStream(std::move(request))),
-          &evb_));
+      return SemiStream<Payload>(
+          toStream<Payload>(client_->createStream(std::move(request)), &evb_));
     });
   });
 
   return stream;
+}
+
+void RocketTestClient::reconnect() {
+  disconnect();
+  connect();
+}
+
+void RocketTestClient::connect() {
+  evb_.runInEventBaseThreadAndWait([this] {
+    folly::AsyncSocket::UniquePtr socket(
+        new folly::AsyncSocket(&evb_, serverAddr_));
+    client_ = RocketClient::create(evb_, std::move(socket));
+  });
+}
+
+void RocketTestClient::disconnect() {
+  evb_.runInEventBaseThread([client = std::move(client_)] {
+    if (client) {
+      client->closeNow(folly::make_exception_wrapper<std::runtime_error>(
+          "RocketTestClient disconnecting"));
+    }
+  });
 }
 
 namespace {
