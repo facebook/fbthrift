@@ -40,45 +40,63 @@ namespace thrift {
 class EventTask : public virtual apache::thrift::concurrency::Runnable {
  public:
   EventTask(
-      folly::Function<void()>&& taskFunc,
-      apache::thrift::ResponseChannelRequest* req,
+      folly::Function<void(
+          std::unique_ptr<apache::thrift::ResponseChannelRequest>)>&& taskFunc,
+      std::unique_ptr<apache::thrift::ResponseChannelRequest> req,
       folly::EventBase* base,
       bool oneway)
       : taskFunc_(std::move(taskFunc)),
-        req_(req),
+        req_(std::move(req)),
         base_(base),
         oneway_(oneway) {}
+
+  virtual ~EventTask() {
+    // req_ needs to be destructed on base_ eventBase thread
+    if (!base_->isInEventBaseThread()) {
+      expired();
+      return;
+    }
+    if (!oneway_ && req_) {
+      req_->sendErrorWrapped(
+          folly::make_exception_wrapper<TApplicationException>(
+              "Failed to add task to queue, too full"),
+          kQueueOverloadedErrorCode);
+    }
+  }
 
   void run() override {
     if (!oneway_) {
       if (req_ && !req_->isActive()) {
-        auto req = req_;
-        base_->runInEventBaseThread([req]() { delete req; });
-
+        // del on eventbase thread
+        base_->runInEventBaseThread([req = std::move(req_)]() mutable {});
         return;
       }
     }
-    taskFunc_();
+    taskFunc_(std::move(req_));
   }
 
   void expired() {
     if (!oneway_) {
-      auto req = req_;
-      if (req) {
-        base_->runInEventBaseThread([req]() {
+      if (req_) {
+        base_->runInEventBaseThread([req = std::move(req_)]() {
           req->sendErrorWrapped(
               folly::make_exception_wrapper<TApplicationException>(
                   "Failed to add task to queue, too full"),
               kQueueOverloadedErrorCode);
-          delete req;
         });
+      }
+    } else {
+      if (req_) {
+        // del on eventbase thread
+        base_->runInEventBaseThread([req = std::move(req_)]() mutable {});
       }
     }
   }
 
  private:
-  folly::Function<void()> taskFunc_;
-  apache::thrift::ResponseChannelRequest* req_;
+  folly::Function<void(std::unique_ptr<apache::thrift::ResponseChannelRequest>)>
+      taskFunc_;
+  std::unique_ptr<apache::thrift::ResponseChannelRequest> req_;
   folly::EventBase* base_;
   bool oneway_;
 };
@@ -88,11 +106,12 @@ class PriorityEventTask : public apache::thrift::concurrency::PriorityRunnable,
  public:
   PriorityEventTask(
       apache::thrift::concurrency::PriorityThreadManager::PRIORITY priority,
-      folly::Function<void()>&& taskFunc,
-      apache::thrift::ResponseChannelRequest* req,
+      folly::Function<void(
+          std::unique_ptr<apache::thrift::ResponseChannelRequest>)>&& taskFunc,
+      std::unique_ptr<apache::thrift::ResponseChannelRequest> req,
       folly::EventBase* base,
       bool oneway)
-      : EventTask(std::move(taskFunc), req, base, oneway),
+      : EventTask(std::move(taskFunc), std::move(req), base, oneway),
         priority_(priority) {}
 
   apache::thrift::concurrency::PriorityThreadManager::PRIORITY getPriority()
@@ -235,55 +254,37 @@ class GeneratedAsyncProcessor : public AsyncProcessor {
       }
       return;
     }
-    auto preq = req.get();
-    try {
-      tm->add(
-          std::make_shared<apache::thrift::PriorityEventTask>(
-              pri,
-              [=, iprot = std::move(iprot), buf = std::move(buf)]() mutable {
-                auto rq =
-                    std::unique_ptr<apache::thrift::ResponseChannelRequest>(
-                        preq);
-                if (rq->getTimestamps().getSamplingStatus().isEnabled()) {
-                  // Since this request was queued, reset the processBegin
-                  // time to the actual start time, and not the queue time.
-                  rq->getTimestamps().processBegin =
-                      apache::thrift::concurrency::Util::currentTimeUsec();
+    tm->add(
+        std::make_shared<apache::thrift::PriorityEventTask>(
+            pri,
+            [=, iprot = std::move(iprot), buf = std::move(buf)](
+                std::unique_ptr<apache::thrift::ResponseChannelRequest>
+                    rq) mutable {
+              if (rq->getTimestamps().getSamplingStatus().isEnabled()) {
+                // Since this request was queued, reset the processBegin
+                // time to the actual start time, and not the queue time.
+                rq->getTimestamps().processBegin =
+                    apache::thrift::concurrency::Util::currentTimeUsec();
+              }
+              // Oneway request won't be canceled if expired. see
+              // D1006482 for furhter details.  TODO: fix this
+              if (kind != apache::thrift::RpcKind::SINGLE_REQUEST_NO_RESPONSE) {
+                if (!rq->isActive()) {
+                  eb->runInEventBaseThread(
+                      [rq = std::move(rq)]() mutable { rq.reset(); });
+                  return;
                 }
-                // Oneway request won't be canceled if expired. see
-                // D1006482 for furhter details.  TODO: fix this
-                if (kind !=
-                    apache::thrift::RpcKind::SINGLE_REQUEST_NO_RESPONSE) {
-                  if (!rq->isActive()) {
-                    eb->runInEventBaseThread(
-                        [rq = std::move(rq)]() mutable { rq.reset(); });
-                    return;
-                  }
-                }
-                (childClass->*processFunc)(
-                    std::move(rq),
-                    std::move(buf),
-                    std::move(iprot),
-                    ctx,
-                    eb,
-                    tm);
-              },
-              preq,
-              eb,
-              kind == apache::thrift::RpcKind::SINGLE_REQUEST_NO_RESPONSE),
-          0, // timeout
-          0, // expiration
-          true, // cancellable
-          true); // numa
-      req.release();
-    } catch (const std::exception&) {
-      if (kind != apache::thrift::RpcKind::SINGLE_REQUEST_NO_RESPONSE) {
-        req->sendErrorWrapped(
-            folly::make_exception_wrapper<TApplicationException>(
-                "Failed to add task to queue, too full"),
-            kQueueOverloadedErrorCode);
-      }
-    }
+              }
+              (childClass->*processFunc)(
+                  std::move(rq), std::move(buf), std::move(iprot), ctx, eb, tm);
+            },
+            std::move(req),
+            eb,
+            kind == apache::thrift::RpcKind::SINGLE_REQUEST_NO_RESPONSE),
+        0, // timeout
+        0, // expiration
+        true, // cancellable
+        true); // numa
   }
 };
 

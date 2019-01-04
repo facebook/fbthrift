@@ -216,148 +216,135 @@ public:
     if (oneway && !req->isOneway()) {
       req->sendReply(std::unique_ptr<folly::IOBuf>());
     }
-    auto preq = req.get();
-    try {
-      tm->add(std::make_shared<apache::thrift::PriorityEventTask>(
-          priority,
-          [=, buf = std::move(buf)]() mutable {
-            auto req_up = std::unique_ptr<ResponseChannelRequest>(preq);
 
+    tm->add(std::make_shared<apache::thrift::PriorityEventTask>(
+        priority,
+        [=, buf = std::move(buf)](
+            std::unique_ptr<apache::thrift::ResponseChannelRequest>
+                req_up) mutable {
+          SCOPE_EXIT {
+            eb->runInEventBaseThread(
+                [req_up = std::move(req_up)]() mutable { req_up = {}; });
+          };
+
+          if (!oneway && !req_up->isActive()) {
+            return;
+          }
+
+          folly::ByteRange input_range = buf->coalesce();
+          auto input_data = const_cast<unsigned char*>(input_range.data());
+          auto clientType = context->getHeader()->getClientType();
+
+          {
+            PyGILState_STATE state = PyGILState_Ensure();
             SCOPE_EXIT {
-              eb->runInEventBaseThread(
-                  [req_up = std::move(req_up)]() mutable { req_up = {}; });
+              PyGILState_Release(state);
             };
 
-            if (!oneway && !req_up->isActive()) {
-              return;
-            }
-
-            folly::ByteRange input_range = buf->coalesce();
-            auto input_data = const_cast<unsigned char*>(input_range.data());
-            auto clientType = context->getHeader()->getClientType();
-
-            {
-              PyGILState_STATE state = PyGILState_Ensure();
-              SCOPE_EXIT {
-                PyGILState_Release(state);
-              };
-
 #if PY_MAJOR_VERSION == 2
-              auto input =
-                  handle<>(PyBuffer_FromMemory(input_data, input_range.size()));
+            auto input =
+                handle<>(PyBuffer_FromMemory(input_data, input_range.size()));
 #else
-              auto input = handle<>(PyMemoryView_FromMemory(
-                  reinterpret_cast<char*>(input_data),
-                  input_range.size(),
-                  PyBUF_READ));
+            auto input = handle<>(PyMemoryView_FromMemory(
+                reinterpret_cast<char*>(input_data),
+                input_range.size(),
+                PyBUF_READ));
 #endif
 
-              auto cd_ctor = adapter_->attr("CONTEXT_DATA");
-              object contextData = cd_ctor();
-              extract<CppContextData&>(contextData)().copyContextContents(
-                  context);
+            auto cd_ctor = adapter_->attr("CONTEXT_DATA");
+            object contextData = cd_ctor();
+            extract<CppContextData&>(contextData)().copyContextContents(
+                context);
 
-              auto cb_ctor = adapter_->attr("CALLBACK_WRAPPER");
-              object callbackWrapper = cb_ctor();
-              extract<CallbackWrapper&>(callbackWrapper)().setCallback(
-                  [oneway,
-                   req_up = std::move(req_up),
-                   context,
-                   eb,
-                   contextData](object output) mutable {
-                    // Make sure the request is deleted in evb.
-                    SCOPE_EXIT {
-                      eb->runInEventBaseThread(
-                          [req_up = std::move(req_up)]() mutable {
-                            req_up = {};
-                          });
-                    };
+            auto cb_ctor = adapter_->attr("CALLBACK_WRAPPER");
+            object callbackWrapper = cb_ctor();
+            extract<CallbackWrapper&>(callbackWrapper)().setCallback(
+                [oneway, req_up = std::move(req_up), context, eb, contextData](
+                    object output) mutable {
+                  // Make sure the request is deleted in evb.
+                  SCOPE_EXIT {
+                    eb->runInEventBaseThread(
+                        [req_up = std::move(req_up)]() mutable {
+                          req_up = {};
+                        });
+                  };
 
-                    // Always called from python so no need to grab GIL.
-                    try {
-                      std::unique_ptr<folly::IOBuf> outbuf;
-                      if (output.is_none()) {
-                        throw std::runtime_error(
-                            "Unexpected error in processor method");
-                      }
-                      PyObject* output_ptr = output.ptr();
+                  // Always called from python so no need to grab GIL.
+                  try {
+                    std::unique_ptr<folly::IOBuf> outbuf;
+                    if (output.is_none()) {
+                      throw std::runtime_error(
+                          "Unexpected error in processor method");
+                    }
+                    PyObject* output_ptr = output.ptr();
 #if PY_MAJOR_VERSION == 2
-                      if (PyString_Check(output_ptr)) {
-                        int len = extract<int>(output.attr("__len__")());
-                        if (len == 0) {
-                          return;
-                        }
-                        outbuf = folly::IOBuf::copyBuffer(
-                            extract<const char*>(output), len);
-                      } else
-#endif
-                          if (PyBytes_Check(output_ptr)) {
-                        int len = PyBytes_Size(output_ptr);
-                        if (len == 0) {
-                          return;
-                        }
-                        outbuf = folly::IOBuf::copyBuffer(
-                            PyBytes_AsString(output_ptr), len);
-                      } else {
-                        throw std::runtime_error(
-                            "Return from processor "
-                            "method is not string or bytes");
-                      }
-
-                      if (!req_up->isActive()) {
+                    if (PyString_Check(output_ptr)) {
+                      int len = extract<int>(output.attr("__len__")());
+                      if (len == 0) {
                         return;
                       }
-                      CppContextData& cppContextData =
-                          extract<CppContextData&>(contextData);
-                      if (!cppContextData.getHeaderEx().empty()) {
-                        context->getHeader()->setHeader(
-                            kHeaderEx, cppContextData.getHeaderEx());
+                      outbuf = folly::IOBuf::copyBuffer(
+                          extract<const char*>(output), len);
+                    } else
+#endif
+                        if (PyBytes_Check(output_ptr)) {
+                      int len = PyBytes_Size(output_ptr);
+                      if (len == 0) {
+                        return;
                       }
-                      if (!cppContextData.getHeaderExWhat().empty()) {
-                        context->getHeader()->setHeader(
-                            kHeaderExWhat, cppContextData.getHeaderExWhat());
-                      }
-                      auto q = THeader::transform(
-                          std::move(outbuf),
-                          context->getHeader()->getWriteTransforms(),
-                          context->getHeader()->getMinCompressBytes());
-                      eb->runInEventBaseThread([req_up = std::move(req_up),
-                                                q = std::move(q)]() mutable {
-                        req_up->sendReply(std::move(q));
-                      });
-                    } catch (const std::exception& e) {
-                      if (!oneway) {
-                        req_up->sendErrorWrapped(
-                            folly::make_exception_wrapper<
-                                TApplicationException>(folly::to<std::string>(
-                                "Failed to read response from Python:",
-                                e.what())),
-                            "python");
-                      }
+                      outbuf = folly::IOBuf::copyBuffer(
+                          PyBytes_AsString(output_ptr), len);
+                    } else {
+                      throw std::runtime_error(
+                          "Return from processor "
+                          "method is not string or bytes");
                     }
-                  });
 
-              adapter_->attr("call_processor")(
-                  input,
-                  makePythonHeaders(context->getHeader()->getHeaders()),
-                  int(clientType),
-                  int(protType),
-                  contextData,
-                  callbackWrapper);
-            }
-          },
-          preq,
-          eb,
-          oneway));
-      req.release();
-    } catch (const std::exception& e) {
-      if (!oneway) {
-        req->sendErrorWrapped(
-            folly::make_exception_wrapper<TApplicationException>(
-              "Failed to add task to queue, too full"),
-            kQueueOverloadedErrorCode);
-      }
-    }
+                    if (!req_up->isActive()) {
+                      return;
+                    }
+                    CppContextData& cppContextData =
+                        extract<CppContextData&>(contextData);
+                    if (!cppContextData.getHeaderEx().empty()) {
+                      context->getHeader()->setHeader(
+                          kHeaderEx, cppContextData.getHeaderEx());
+                    }
+                    if (!cppContextData.getHeaderExWhat().empty()) {
+                      context->getHeader()->setHeader(
+                          kHeaderExWhat, cppContextData.getHeaderExWhat());
+                    }
+                    auto q = THeader::transform(
+                        std::move(outbuf),
+                        context->getHeader()->getWriteTransforms(),
+                        context->getHeader()->getMinCompressBytes());
+                    eb->runInEventBaseThread([req_up = std::move(req_up),
+                                              q = std::move(q)]() mutable {
+                      req_up->sendReply(std::move(q));
+                    });
+                  } catch (const std::exception& e) {
+                    if (!oneway) {
+                      req_up->sendErrorWrapped(
+                          folly::make_exception_wrapper<TApplicationException>(
+                              folly::to<std::string>(
+                                  "Failed to read response from Python:",
+                                  e.what())),
+                          "python");
+                    }
+                  }
+                });
+
+            adapter_->attr("call_processor")(
+                input,
+                makePythonHeaders(context->getHeader()->getHeaders()),
+                int(clientType),
+                int(protType),
+                contextData,
+                callbackWrapper);
+          }
+        },
+        std::move(req),
+        eb,
+        oneway));
   }
 
   bool isOnewayMethod(const folly::IOBuf* buf, const THeader* header) override {
