@@ -123,6 +123,8 @@ using t_structpair = std::pair<t_struct*, t_struct*>;
 %define api.value.type variant
 %define api.namespace {apache::thrift::yy}
 
+%expect 1
+
 %param {apache::thrift::parsing_driver& driver} {yyscan_t raw_scanner}
 
 /**
