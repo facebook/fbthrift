@@ -54,16 +54,6 @@ struct StringAssignable {
   std::string value;
 };
 
-// A struct constructible from std::string with a non-noexcept ctor
-// to test conditional noexcept in field_ref::emplace.
-struct StringConstructible {
-  explicit StringConstructible(const std::string& v = {}) {
-    value = v;
-  }
-
-  std::string value;
-};
-
 class TestStruct {
  public:
   field_ref<std::string> name() {
@@ -78,6 +68,10 @@ class TestStruct {
     return {name_, __isset.name};
   }
 
+  optional_field_ref<const std::string> opt_name() const {
+    return {name_, __isset.name};
+  }
+
   field_ref<IntAssignable> int_assign() {
     return {int_assign_, __isset.int_assign};
   }
@@ -86,25 +80,29 @@ class TestStruct {
     return {int_assign_, __isset.int_assign};
   }
 
-  optional_field_ref<StringConstructible> scons() {
-    return {scons_, __isset.scons};
-  }
-
   optional_field_ref<std::shared_ptr<int>> ptr_ref() {
     return {ptr_, __isset.ptr};
+  }
+
+  field_ref<int> int_val() {
+    return {int_val_, __isset.int_val};
+  }
+
+  optional_field_ref<int> opt_int_val() {
+    return {int_val_, __isset.int_val};
   }
 
  private:
   std::string name_ = "default";
   IntAssignable int_assign_;
-  StringConstructible scons_;
   std::shared_ptr<int> ptr_;
+  int int_val_;
 
   struct __isset {
     bool name;
     bool int_assign;
-    bool scons;
     bool ptr;
+    bool int_val;
   } __isset = {};
 };
 
@@ -132,6 +130,25 @@ TEST(field_ref_test, copy_from) {
   s.name().copy_from(s2.name());
   EXPECT_TRUE(s.name().is_set());
   EXPECT_EQ(*s.name(), "foo");
+}
+
+TEST(field_ref_test, copy_from_const) {
+  auto s = TestStruct();
+  auto s2 = TestStruct();
+  const auto& s_const = s2;
+  s2.name() = "foo";
+  s.name().copy_from(s_const.name());
+  EXPECT_TRUE(s.name().is_set());
+  EXPECT_EQ(*s.name(), "foo");
+}
+
+TEST(field_ref_test, copy_from_other_type) {
+  auto s = TestStruct();
+  auto s2 = TestStruct();
+  s2.int_val() = 42;
+  s.int_assign().copy_from(s2.int_val());
+  EXPECT_TRUE(s.int_assign().is_set());
+  EXPECT_EQ(s.int_assign()->value, 42);
 }
 
 template <template <typename> class FieldRef>
@@ -227,6 +244,25 @@ TEST(optional_field_ref_test, copy_from) {
   s.opt_name().copy_from(s2.opt_name());
   EXPECT_TRUE(s.opt_name().has_value());
   EXPECT_EQ(*s.opt_name(), "foo");
+}
+
+TEST(optional_field_ref_test, copy_from_const) {
+  auto s = TestStruct();
+  auto s2 = TestStruct();
+  const auto& s_const = s2;
+  s2.opt_name() = "foo";
+  s.opt_name().copy_from(s_const.opt_name());
+  EXPECT_TRUE(s.opt_name().has_value());
+  EXPECT_EQ(*s.opt_name(), "foo");
+}
+
+TEST(optional_field_ref_test, copy_from_other_type) {
+  auto s = TestStruct();
+  auto s2 = TestStruct();
+  s2.opt_int_val() = 42;
+  s.opt_int_assign().copy_from(s2.opt_int_val());
+  EXPECT_TRUE(s.opt_int_assign().has_value());
+  EXPECT_EQ(s.opt_int_assign()->value, 42);
 }
 
 TEST(optional_field_ref_test, is_assignable) {
