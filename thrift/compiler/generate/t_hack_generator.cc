@@ -2385,6 +2385,11 @@ void t_hack_generator::generate_php_union_methods(
   auto enumName = union_enum_name(tstruct);
 
   // getType() : <UnionName>Enum {}
+  string const* union_type_getter_attributes =
+      get_hack_annotation(tstruct, "union_type_getter_attributes");
+  if (union_type_getter_attributes) {
+    indent(out) << "<<" << *union_type_getter_attributes << ">>\n";
+  }
   indent(out) << "public function getType(): " << enumName << " {\n";
   indent(out) << indent() << "return $this->_type;\n";
   indent(out) << "}\n\n";

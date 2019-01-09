@@ -224,6 +224,7 @@ class UnionTesting implements \IThriftStruct, \IThriftUnion<\test\fixtures\jsenu
     return 'UnionTesting';
   }
 
+  <<GetTypeAttribute>>
   public function getType(): \test\fixtures\jsenum\UnionTestingEnum {
     return $this->_type;
   }
