@@ -22,10 +22,10 @@
 #include <thrift/lib/cpp/transport/THeader.h>
 #include <thrift/lib/cpp/util/THttpParser.h>
 
-#include <memory>
+#include <folly/Random.h>
 #include <folly/io/IOBuf.h>
 #include <folly/io/IOBufQueue.h>
-#include <folly/Random.h>
+#include <memory>
 
 #include <folly/portability/GTest.h>
 
@@ -33,7 +33,9 @@ using namespace apache::thrift;
 using namespace folly;
 using namespace apache::thrift::transport;
 
-namespace apache { namespace thrift { namespace transport {
+namespace apache {
+namespace thrift {
+namespace transport {
 
 TEST(THeaderTest, largetransform) {
   THeader header;
@@ -44,9 +46,9 @@ TEST(THeaderTest, largetransform) {
   // Make the data compressible, but not totally random
   for (size_t i = 0; i < buf_size / 4; i++) {
     buf->writableData()[i] = (int8_t)folly::Random::rand32(256);
-    buf->writableData()[i+1] = buf->writableData()[i];
-    buf->writableData()[i+2] = buf->writableData()[i];
-    buf->writableData()[i+3] = (int8_t)folly::Random::rand32(256);
+    buf->writableData()[i + 1] = buf->writableData()[i];
+    buf->writableData()[i + 2] = buf->writableData()[i];
+    buf->writableData()[i + 3] = (int8_t)folly::Random::rand32(256);
   }
   buf->append(buf_size);
 
@@ -57,10 +59,10 @@ TEST(THeaderTest, largetransform) {
   std::unique_ptr<IOBufQueue> queue(new IOBufQueue);
   std::unique_ptr<IOBufQueue> queue2(new IOBufQueue);
   queue->append(std::move(buf));
-  queue2->append(queue->split(buf_size/4));
-  queue2->append(queue->split(buf_size/4));
+  queue2->append(queue->split(buf_size / 4));
+  queue2->append(queue->split(buf_size / 4));
   queue2->append(IOBuf::create(0)); // Empty buffer should work
-  queue2->append(queue->split(buf_size/4));
+  queue2->append(queue->split(buf_size / 4));
   queue2->append(queue->move());
 
   size_t needed;
@@ -88,7 +90,7 @@ TEST(THeaderTest, http_clear_header) {
 TEST(THeaderTest, transform) {
   // Simple test for TRANSFORMS enum to string conversion
   EXPECT_EQ(
-    THeader::getStringTransform(THeader::TRANSFORMS::ZLIB_TRANSFORM), "zlib");
+      THeader::getStringTransform(THeader::TRANSFORMS::ZLIB_TRANSFORM), "zlib");
 }
 
 TEST(THeaderTest, eraseReadHeader) {
@@ -149,4 +151,6 @@ TEST(THeaderTest, defaultTimeoutAndPriority) {
   EXPECT_EQ(std::chrono::milliseconds(0), header.getClientQueueTimeout());
   EXPECT_EQ(concurrency::PRIORITY::N_PRIORITIES, header.getCallPriority());
 }
-}}}
+} // namespace transport
+} // namespace thrift
+} // namespace apache
