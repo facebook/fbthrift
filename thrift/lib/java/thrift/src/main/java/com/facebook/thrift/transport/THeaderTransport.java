@@ -306,6 +306,16 @@ public class THeaderTransport extends TFramedTransport {
       throw new THeaderException("This transport does not support HTTP");
     } else {
       if (word1 - 4 > MAX_FRAME_SIZE) {
+        // special case for the most common question in user-group
+        // this will probably saves hours of engineering effort.
+        int magic1 = 0x61702048; // ASCII "ap H" in little endian
+        int magic2 = 0x6C6C6F63; // ASCII "lloc" in little endian
+        if (word1 == magic1 || word1 == magic2) {
+          throw new TTransportException(
+              "The Thrift server received an ASCII request and safely ignored it. "
+                  + "In all likelihood, this isn't the reason of your problem "
+                  + "(probably a local daemon sending HTTP content to all listening ports).");
+        }
         throw new TTransportException("Framed transport frame " +
                                       "is too large");
       }

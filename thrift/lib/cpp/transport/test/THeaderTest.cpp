@@ -151,6 +151,49 @@ TEST(THeaderTest, defaultTimeoutAndPriority) {
   EXPECT_EQ(std::chrono::milliseconds(0), header.getClientQueueTimeout());
   EXPECT_EQ(concurrency::PRIORITY::N_PRIORITIES, header.getCallPriority());
 }
+
+void testAsciiHeaderData(const std::string& data, const std::string& expected) {
+  auto buf = folly::IOBuf::copyBuffer(data);
+  std::map<std::string, std::string> persistentHeaders;
+  THeader header;
+  std::unique_ptr<IOBufQueue> queue(new IOBufQueue);
+  queue->append(std::move(buf));
+
+  size_t needed;
+  try {
+    buf = header.removeHeader(queue.get(), needed, persistentHeaders);
+    ASSERT_TRUE(false);
+  } catch (TTransportException& e) {
+    ASSERT_EQ(e.what(), expected);
+  }
+}
+
+TEST(THeaderTest, asciiData1) {
+  std::string data = "llocations statistics!";
+  auto expected = "The Thrift server received an ASCII request '" + data +
+      "' and safely ignored it. In all likelihood, "
+      "this isn't the reason of your problem (probably a local daemon "
+      "sending HTTP content to all listening ports).";
+
+  testAsciiHeaderData(data, expected);
+}
+
+TEST(THeaderTest, asciiData2) {
+  std::string data = "ap Here for more details";
+  auto expected = "The Thrift server received an ASCII request '" + data +
+      "' and safely ignored it. In all likelihood, "
+      "this isn't the reason of your problem (probably a local daemon "
+      "sending HTTP content to all listening ports).";
+  testAsciiHeaderData(data, expected);
+}
+
+TEST(THeaderTest, asciiData3) {
+  auto expected =
+      "Header transport frame is too large: 1918987876 "
+      "(hex 0x72616e64, ascii 'rand')";
+  testAsciiHeaderData("random data", expected);
+}
+
 } // namespace transport
 } // namespace thrift
 } // namespace apache

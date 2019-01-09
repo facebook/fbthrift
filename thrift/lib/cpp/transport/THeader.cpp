@@ -60,6 +60,15 @@ const string THeader::PRIORITY_HEADER = "thrift_priority";
 const string& THeader::CLIENT_TIMEOUT_HEADER = *(new string("client_timeout"));
 const string THeader::QUEUE_TIMEOUT_HEADER = "queue_timeout";
 
+std::string getReadableChars(Cursor c, size_t limit) {
+  size_t size = 0;
+  return c.readWhile([&size, limit](char b) {
+    const auto isPrintable = 0x20 <= b && b < 0x7F;
+    size++;
+    return size <= limit && isPrintable;
+  });
+}
+
 THeader::THeader(int options)
     : queue_(new folly::IOBufQueue),
       protoId_(T_COMPACT_PROTOCOL),
@@ -304,6 +313,18 @@ unique_ptr<IOBuf> THeader::removeHeader(
       sz = c.readBE<uint64_t>();
       remaining -= 8;
       frameSizeBytes += 8;
+    } else if (
+        sz32 == *reinterpret_cast<const uint32_t*>("coll") ||
+        sz32 == *reinterpret_cast<const uint32_t*>("H pa")) {
+      // special case for the most common question in user-group
+      // this will probably saves hours of engineering effort.
+      c.retreat(4);
+      std::string err = "The Thrift server received an ASCII request '" +
+          getReadableChars(c, 32) +
+          "' and safely ignored it. "
+          "In all likelihood, this isn't the reason of your problem "
+          "(probably a local daemon sending HTTP content to all listening ports).";
+      throw TTransportException(TTransportException::INVALID_FRAME_SIZE, err);
     } else {
       std::string err = folly::stringPrintf(
           "Header transport frame is too large: %u (hex 0x%08x", sz32, sz32);
