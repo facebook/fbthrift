@@ -106,7 +106,9 @@ void Cpp2Worker::onNewConnection(
 void Cpp2Worker::handleHeader(
     folly::AsyncTransportWrapper::UniquePtr sock,
     const folly::SocketAddress* addr) {
-  auto fd = sock->getUnderlyingTransport<folly::AsyncSocket>()->getFd();
+  auto fd = sock->getUnderlyingTransport<folly::AsyncSocket>()
+                ->getNetworkSocket()
+                .toFd();
   VLOG(4) << "Cpp2Worker: Creating connection for socket " << fd;
 
   auto thriftTransport = createThriftTransport(std::move(sock));

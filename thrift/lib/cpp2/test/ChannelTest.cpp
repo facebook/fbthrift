@@ -179,11 +179,11 @@ class SocketPairTest {
   }
 
   int getFd0() {
-    return socket0_->getFd();
+    return socket0_->getNetworkSocket().toFd();
   }
 
   int getFd1() {
-    return socket1_->getFd();
+    return socket1_->getNetworkSocket().toFd();
   }
 
   shared_ptr<TAsyncSocket> getSocket0() {
