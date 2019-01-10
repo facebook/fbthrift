@@ -324,6 +324,13 @@ TEST(optional_field_ref_test, mutable_accessors) {
   EXPECT_TRUE(name.has_value());
 }
 
+TEST(optional_field_ref_test, value_or) {
+  TestStruct s;
+  EXPECT_EQ("foo", s.opt_name().value_or("foo"));
+  s.opt_name() = "bar";
+  EXPECT_EQ("bar", s.opt_name().value_or("foo"));
+}
+
 TEST(optional_field_ref_test, bad_field_access) {
   TestStruct s;
   optional_field_ref<std::string> name = s.opt_name();
