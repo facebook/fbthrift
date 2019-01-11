@@ -25,6 +25,7 @@
 #include <thrift/lib/cpp2/server/admission_strategy/GlobalAdmissionStrategy.h>
 #include <thrift/lib/cpp2/server/admission_strategy/PerClientIdAdmissionStrategy.h>
 #include <thrift/lib/cpp2/server/admission_strategy/PriorityAdmissionStrategy.h>
+#include <thrift/lib/cpp2/server/admission_strategy/WhitelistAdmissionStrategy.h>
 
 #include <chrono>
 
@@ -247,6 +248,25 @@ TEST_F(AdmissionControllerSelectorTest, deniesZeroPriority) {
   DummyRequest requestB;
   DummyConnContext connContextB;
   ASSERT_FALSE(admControllerForB->admit());
+}
+
+TEST_F(AdmissionControllerSelectorTest, whiteListAdmission) {
+  std::unordered_set<std::string> whitelist{"getStatus"};
+  WhitelistAdmissionStrategy<GlobalAdmissionStrategy> selector(
+      whitelist, std::make_shared<DummyController>());
+
+  DummyRequest request;
+  DummyConnContext connContext;
+  auto admissionController =
+      selector.select("myThriftMethod", request, connContext);
+  ASSERT_NE(dynamic_cast<DummyController*>(admissionController.get()), nullptr);
+
+  DummyConnContext connContext2;
+  auto admissionController2 =
+      selector.select("getStatus", request, connContext2);
+  ASSERT_NE(
+      dynamic_cast<AcceptAllAdmissionController*>(admissionController2.get()),
+      nullptr);
 }
 
 } // namespace thrift
