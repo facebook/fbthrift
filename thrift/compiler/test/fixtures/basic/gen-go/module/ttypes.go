@@ -25,16 +25,19 @@ type MyEnum int64
 const (
   MyEnum_MyValue1 MyEnum = 0
   MyEnum_MyValue2 MyEnum = 1
+  MyEnum_DOMAIN MyEnum = 2
 )
 
 var MyEnumToName = map[MyEnum]string {
   MyEnum_MyValue1: "MyValue1",
   MyEnum_MyValue2: "MyValue2",
+  MyEnum_DOMAIN: "DOMAIN",
 }
 
 var MyEnumToValue = map[string]MyEnum {
   "MyValue1": MyEnum_MyValue1,
   "MyValue2": MyEnum_MyValue2,
+  "DOMAIN": MyEnum_DOMAIN,
 }
 
 func (p MyEnum) String() string {

@@ -5,13 +5,14 @@
       "lineno" : 3,
       "constants" : {
         "MyValue1" : 0,
-        "MyValue2" : 1
+        "MyValue2" : 1,
+        "DOMAIN" : 2
       }
     }
   },
   "structs" : {
     "MyStruct" : {
-      "lineno" : 8,
+      "lineno" : 9,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -43,7 +44,7 @@
       }
     },
     "MyDataItem" : {
-      "lineno" : 18,
+      "lineno" : 19,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -53,7 +54,7 @@
   },
   "services" : {
     "MyService" : {
-      "lineno" : 20,
+      "lineno" : 21,
       "functions" : {
         "MyService.ping" : {
           "return_type" : {
@@ -134,7 +135,7 @@
       }
     },
     "MyServiceFast" : {
-      "lineno" : 29,
+      "lineno" : 30,
       "functions" : {
         "MyServiceFast.ping" : {
           "return_type" : {
@@ -215,13 +216,13 @@
       }
     },
     "MyServiceEmpty" : {
-      "lineno" : 38,
+      "lineno" : 39,
       "functions" : {
 
       }
     },
     "MyServicePrioParent" : {
-      "lineno" : 41,
+      "lineno" : 42,
       "functions" : {
         "MyServicePrioParent.ping" : {
           "return_type" : {
@@ -246,7 +247,7 @@
         "type_enum" : "SERVICE",
         "spec_args" : "MyServicePrioParent"
       },
-      "lineno" : 46,
+      "lineno" : 47,
       "functions" : {
         "MyServicePrioChild.pang" : {
           "return_type" : {

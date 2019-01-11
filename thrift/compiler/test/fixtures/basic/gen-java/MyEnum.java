@@ -17,6 +17,7 @@ import java.util.HashMap;
 public class MyEnum {
   public static final int MyValue1 = 0;
   public static final int MyValue2 = 1;
+  public static final int DOMAIN = 2;
 
   public static final IntRangeSet VALID_VALUES;
   public static final Map<Integer, String> VALUES_TO_NAMES = new HashMap<Integer, String>();

@@ -26,6 +26,7 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "::cpp2":
         bint operator==(cMyEnum&)
     cMyEnum MyEnum__MyValue1 "::cpp2::MyEnum::MyValue1"
     cMyEnum MyEnum__MyValue2 "::cpp2::MyEnum::MyValue2"
+    cMyEnum MyEnum__DOMAIN "::cpp2::MyEnum::DOMAIN"
 
 
 

@@ -17,7 +17,8 @@ namespace cpp2 {
 
 enum class MyEnum {
   MyValue1 = 0,
-  MyValue2 = 1
+  MyValue2 = 1,
+  DOMAIN = 2
 };
 
 using _MyEnum_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<MyEnum, MyEnum>;
@@ -53,7 +54,7 @@ template <> inline constexpr  ::cpp2::MyEnum TEnumTraits< ::cpp2::MyEnum>::min()
 }
 
 template <> inline constexpr  ::cpp2::MyEnum TEnumTraits< ::cpp2::MyEnum>::max() {
-  return  ::cpp2::MyEnum::MyValue2;
+  return  ::cpp2::MyEnum::DOMAIN;
 }
 
 

@@ -16,14 +16,16 @@ namespace cpp2 {
 
 struct _MyEnumEnumDataStorage {
   using type = MyEnum;
-  static constexpr const std::size_t size = 2;
-  static constexpr const std::array<MyEnum, 2> values = {{
+  static constexpr const std::size_t size = 3;
+  static constexpr const std::array<MyEnum, 3> values = {{
     MyEnum::MyValue1,
     MyEnum::MyValue2,
+    MyEnum::DOMAIN,
   }};
-  static constexpr const std::array<folly::StringPiece, 2> names = {{
+  static constexpr const std::array<folly::StringPiece, 3> names = {{
     "MyValue1",
     "MyValue2",
+    "DOMAIN",
   }};
 };
 

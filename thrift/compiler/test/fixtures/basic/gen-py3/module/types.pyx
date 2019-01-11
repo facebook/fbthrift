@@ -54,6 +54,8 @@ cdef class __MyEnumMeta(type):
                 return MyEnum.MyValue1
             elif cvalue == 1:
                 return MyEnum.MyValue2
+            elif cvalue == 2:
+                return MyEnum.DOMAIN
 
         raise ValueError(f'{value} is not a valid MyEnum')
 
@@ -64,6 +66,7 @@ cdef class __MyEnumMeta(type):
         return ['__class__', '__doc__', '__members__', '__module__',
         'MyValue1',
         'MyValue2',
+        'DOMAIN',
         ]
 
     def __iter__(cls):
@@ -93,6 +96,7 @@ cdef __MyEnum_unique_instance(int value, str name):
 cdef class MyEnum(thrift.py3.types.CompiledEnum):
     MyValue1 = __MyEnum_unique_instance(0, "MyValue1")
     MyValue2 = __MyEnum_unique_instance(1, "MyValue2")
+    DOMAIN = __MyEnum_unique_instance(2, "DOMAIN")
     __members__ = thrift.py3.types.MappingProxyType(__MyEnumEnumMembers)
 
     def __cinit__(self, value, name):
@@ -136,6 +140,8 @@ cdef inline cMyEnum MyEnum_to_cpp(MyEnum value):
         return MyEnum__MyValue1
     elif cvalue == 1:
         return MyEnum__MyValue2
+    elif cvalue == 2:
+        return MyEnum__DOMAIN
 
 cdef cMyStruct _MyStruct_defaults = cMyStruct()
 

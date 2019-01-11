@@ -23,7 +23,7 @@ namespace std {
 } // std
 namespace apache { namespace thrift {
 
-template <> const std::size_t TEnumTraits< ::cpp2::MyEnum>::size = 2;
+template <> const std::size_t TEnumTraits< ::cpp2::MyEnum>::size = 3;
 template <> const folly::Range<const  ::cpp2::MyEnum*> TEnumTraits< ::cpp2::MyEnum>::values = folly::range( ::cpp2::_MyEnumEnumDataStorage::values);
 template <> const folly::Range<const folly::StringPiece*> TEnumTraits< ::cpp2::MyEnum>::names = folly::range( ::cpp2::_MyEnumEnumDataStorage::names);
 template <> const char* TEnumTraits< ::cpp2::MyEnum>::findName( ::cpp2::MyEnum value) {

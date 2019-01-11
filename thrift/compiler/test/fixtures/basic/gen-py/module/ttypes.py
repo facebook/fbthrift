@@ -38,15 +38,18 @@ __all__ = ['UTF8STRINGS', 'MyEnum', 'MyStruct', 'MyDataItem']
 class MyEnum:
   MyValue1 = 0
   MyValue2 = 1
+  DOMAIN = 2
 
   _VALUES_TO_NAMES = {
     0: "MyValue1",
     1: "MyValue2",
+    2: "DOMAIN",
   }
 
   _NAMES_TO_VALUES = {
     "MyValue1": 0,
     "MyValue2": 1,
+    "DOMAIN": 2,
   }
 
 class MyStruct:

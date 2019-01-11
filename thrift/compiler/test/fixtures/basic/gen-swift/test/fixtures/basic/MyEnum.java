@@ -11,7 +11,7 @@ import com.facebook.swift.codec.*;
 
 public enum MyEnum
 {
-    MY_VALUE1(0), MY_VALUE2(1);
+    MY_VALUE1(0), MY_VALUE2(1), DOMAIN(2);
 
     private final int value;
 
@@ -32,6 +32,8 @@ public enum MyEnum
             return MY_VALUE1;
         case 1:
             return MY_VALUE2;
+        case 2:
+            return DOMAIN;
         default:
             return null;
         }
