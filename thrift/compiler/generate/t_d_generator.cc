@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Facebook, Inc.
+ * Copyright 2014-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 #include <fstream>
 #include <iostream>
 #include <set>
@@ -739,10 +738,24 @@ class t_d_generator : public t_oop_generator {
       }
     }
 
-    if (ttype->is_struct() && isArg) {
-      return "ref const(" + ttype->get_name() + ")";
+    string type_name;
+    const t_program* type_program = ttype->get_program();
+    if (type_program != get_program()) {
+      if (ttype->is_service()) {
+        type_name = render_package(*type_program) + ttype->get_name() + "." +
+            ttype->get_name();
+      } else {
+        type_name = render_package(*type_program) + type_program->get_name() +
+            "_types." + ttype->get_name();
+      }
     } else {
-      return ttype->get_name();
+      type_name = ttype->get_name();
+    }
+
+    if (ttype->is_struct() && isArg) {
+      return "ref const(" + type_name + ")";
+    } else {
+      return type_name;
     }
   }
 
