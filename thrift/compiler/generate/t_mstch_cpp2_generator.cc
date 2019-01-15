@@ -98,6 +98,12 @@ bool same_types(const t_type* a, const t_type* b) {
   return true;
 }
 
+template <typename Node>
+const std::string& get_cpp_name(const Node* node) {
+  auto name = node->annotations_.find("cpp.name");
+  return name != node->annotations_.end() ? name->second : node->get_name();
+}
+
 class cpp2_generator_context {
  public:
   static cpp2_generator_context create(t_program const* const program) {
@@ -182,7 +188,7 @@ class mstch_cpp2_enum : public mstch_enum {
           [](t_enum_value* a, t_enum_value* b) {
             return a->get_value() < b->get_value();
           });
-      return (*e_min)->get_name();
+      return get_cpp_name(*e_min);
     }
     return mstch::node();
   }
@@ -194,7 +200,7 @@ class mstch_cpp2_enum : public mstch_enum {
           [](t_enum_value* a, t_enum_value* b) {
             return a->get_value() < b->get_value();
           });
-      return (*e_max)->get_name();
+      return get_cpp_name(*e_max);
     }
     return mstch::node();
   }
@@ -244,6 +250,25 @@ class mstch_cpp2_enum : public mstch_enum {
           enm_value, generators_, cache_, pos_);
     }
     return mstch::node();
+  }
+};
+
+class mstch_cpp2_enum_value : public mstch_enum_value {
+ public:
+  mstch_cpp2_enum_value(
+      t_enum_value const* enm_value,
+      std::shared_ptr<mstch_generators const> generators,
+      std::shared_ptr<mstch_cache> cache,
+      ELEMENT_POSITION const pos)
+      : mstch_enum_value(enm_value, generators, cache, pos) {
+    register_methods(
+        this,
+        {
+            {"enumValue:cpp_name", &mstch_cpp2_enum_value::cpp_name},
+        });
+  }
+  mstch::node cpp_name() {
+    return get_cpp_name(enm_value_);
   }
 };
 
@@ -432,9 +457,7 @@ class mstch_cpp2_field : public mstch_field {
         });
   }
   mstch::node cpp_name() {
-    auto name = field_->annotations_.find("cpp.name");
-    return name != field_->annotations_.end() ? name->second
-                                              : field_->get_name();
+    return get_cpp_name(field_);
   }
   mstch::node cpp_ref() {
     return has_annotation("cpp.ref") || has_annotation("cpp2.ref") ||
@@ -1143,6 +1166,19 @@ class enum_cpp2_generator : public enum_generator {
   }
 };
 
+class enum_value_cpp2_generator : public enum_value_generator {
+ public:
+  std::shared_ptr<mstch_base> generate(
+      t_enum_value const* enm_value,
+      std::shared_ptr<mstch_generators const> generators,
+      std::shared_ptr<mstch_cache> cache,
+      ELEMENT_POSITION pos = ELEMENT_POSITION::NONE,
+      int32_t /*index*/ = 0) const override {
+    return std::make_shared<mstch_cpp2_enum_value>(
+        enm_value, generators, cache, pos);
+  }
+};
+
 class type_cpp2_generator : public type_generator {
  public:
   type_cpp2_generator() = default;
@@ -1309,6 +1345,8 @@ void t_mstch_cpp2_generator::generate_program() {
 
 void t_mstch_cpp2_generator::set_mstch_generators() {
   generators_->set_enum_generator(std::make_unique<enum_cpp2_generator>());
+  generators_->set_enum_value_generator(
+      std::make_unique<enum_value_cpp2_generator>());
   generators_->set_type_generator(std::make_unique<type_cpp2_generator>());
   generators_->set_field_generator(std::make_unique<field_cpp2_generator>());
   generators_->set_function_generator(

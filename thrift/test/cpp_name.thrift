@@ -19,6 +19,10 @@
 
 namespace cpp2 apache.thrift.test
 
+enum MyEnum {
+  DOMAIN = 1 (cpp.name = "REALM"),
+}
+
 struct MyStruct {
   1: i64 conflicting_name (cpp.name = 'unique_name'),
   2: optional i64 opt_conflicting_name (cpp.name = 'opt_unique_name'),

@@ -23,7 +23,7 @@
 enum <%^enum:cpp_is_unscoped%>class <%/enum:cpp_is_unscoped%><%enum:name%><%#enum:cpp_enum_type%> : <%enum:cpp_enum_type%><%/enum:cpp_enum_type%> {<%!
   %><%#enum:values%><%#first?%>
 <%/first?%><%!
-    %>  <%enumValue:name%> = <%enumValue:value%><% > common/comma_newline%><%#last?%>
+    %>  <%enumValue:cpp_name%> = <%enumValue:value%><% > common/comma_newline%><%#last?%>
 <%/last?%><%!
   %><%/enum:values%><%!
 %>}<% > common/semicolon_newline%>

@@ -24,6 +24,7 @@
 #define conflicting_name 0
 
 #include <folly/test/JsonTestUtil.h>
+#include <thrift/lib/cpp/util/EnumUtils.h>
 #include <thrift/lib/cpp2/protocol/Serializer.h>
 #include <thrift/lib/cpp2/reflection/internal/test_helpers.h>
 #include <thrift/test/gen-cpp2/cpp_name_fatal_struct.h>
@@ -64,4 +65,9 @@ FATAL_S(opt_unique_name, "opt_unique_name");
 TEST(cpp_name_test, reflection) {
   using info = apache::thrift::reflect_struct<MyStruct>;
   EXPECT_SAME<unique_name, info::member::unique_name::name>();
+}
+
+TEST(cpp_name_test, enum_value) {
+  EXPECT_EQ(static_cast<int>(MyEnum::REALM), 1);
+  EXPECT_STREQ(apache::thrift::util::enumName(MyEnum::REALM), "DOMAIN");
 }

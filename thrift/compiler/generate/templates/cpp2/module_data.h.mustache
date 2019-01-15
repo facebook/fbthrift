@@ -32,7 +32,7 @@ struct _<%enum:name%>EnumDataStorage {
   static constexpr const std::size_t size = <%enum:size%>;
   static constexpr const std::array<<%enum:name%>, <%enum:size%>> values = {{
 <%#enum:values%><%!
-%>    <%enum:name%>::<%enumValue:name%>,
+%>    <%enum:name%>::<%enumValue:cpp_name%>,
 <%/enum:values%>
   }};
   static constexpr const std::array<folly::StringPiece, <%enum:size%>> names = {{

@@ -20,7 +20,7 @@ struct _MyEnumEnumDataStorage {
   static constexpr const std::array<MyEnum, 3> values = {{
     MyEnum::MyValue1,
     MyEnum::MyValue2,
-    MyEnum::DOMAIN,
+    MyEnum::REALM,
   }};
   static constexpr const std::array<folly::StringPiece, 3> names = {{
     "MyValue1",
