@@ -75,8 +75,9 @@ class QIAdmissionController : public AdmissionController {
    * queueSize is unchanged.
    */
   bool admit() override {
+    auto now = Clock::now();
     std::lock_guard<std::mutex> guard(mutex_);
-    updateIntegral(queueSize_);
+    updateIntegral(queueSize_, now);
     const auto qLimit = getQueueLimit();
     if (queueSize_ >= qLimit) {
       FB_LOG_EVERY_MS(INFO, 1000) << "LoadShedding: q(" << queueSize_
@@ -91,9 +92,10 @@ class QIAdmissionController : public AdmissionController {
    * currently processing it.
    */
   void dequeue() override {
+    auto now = Clock::now();
     std::lock_guard<std::mutex> guard(mutex_);
     CHECK(queueSize_ >= 1);
-    updateIntegral(queueSize_);
+    updateIntegral(queueSize_, now);
     queueSize_ -= 1;
   }
 
@@ -102,8 +104,9 @@ class QIAdmissionController : public AdmissionController {
    * request, and it returned a response to the client.
    */
   void returnedResponse() override {
+    auto now = Clock::now();
     std::lock_guard<std::mutex> guard(mutex_);
-    outgoingRate_.addValue(Clock::now(), 1.0);
+    outgoingRate_.addValue(now, 1.0);
   }
 
  private:
@@ -181,8 +184,9 @@ class QIAdmissionController : public AdmissionController {
   /**
    * Update the integral value with the queue value for the last interval
    */
-  void updateIntegral(size_t valueForLastInterval) {
-    const auto now = Clock::now();
+  void updateIntegral(
+      size_t valueForLastInterval,
+      typename Clock::time_point now) {
     double dt =
         std::chrono::duration<double>(now - integral_.getLatestTime()).count();
     integral_.addValue(now, valueForLastInterval * dt);
