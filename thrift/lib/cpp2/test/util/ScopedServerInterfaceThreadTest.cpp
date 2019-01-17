@@ -79,6 +79,14 @@ TEST(ScopedServerInterfaceThread, newClient_ref) {
   EXPECT_EQ(6, cli->sync_add(-3, 9));
 }
 
+TEST(ScopedServerInterfaceThread, newClient_SemiFuture) {
+  ScopedServerInterfaceThread ssit(make_shared<SimpleServiceImpl>());
+
+  auto cli = ssit.newClient<SimpleServiceAsyncClient>();
+
+  EXPECT_EQ(6, cli->semifuture_add(-3, 9).get());
+}
+
 TEST(ScopedServerInterfaceThread, getThriftServer) {
   ScopedServerInterfaceThread ssit(
     make_shared<SimpleServiceImpl>());

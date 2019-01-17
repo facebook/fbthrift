@@ -55,7 +55,19 @@ class ScopedServerInterfaceThread {
   uint16_t getPort() const;
 
   template <class AsyncClientT>
+  std::unique_ptr<AsyncClientT> newClient() const;
+  /**
+   * DEPRECATED
+   *
+   * Client returned by this method doesn't support semifuture_ APIs.
+   */
+  template <class AsyncClientT>
   std::unique_ptr<AsyncClientT> newClient(folly::EventBase* eb) const;
+  /**
+   * DEPRECATED
+   *
+   * Client returned by this method doesn't support semifuture_ APIs.
+   */
   template <class AsyncClientT>
   std::unique_ptr<AsyncClientT> newClient(folly::EventBase& eb) const;
 

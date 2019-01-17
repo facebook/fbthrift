@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Facebook, Inc.
+ * Copyright 2015-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,25 +13,37 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 #include <folly/Memory.h>
+#include <folly/io/async/ScopedEventBaseThread.h>
 #include <thrift/lib/cpp/async/TAsyncSocket.h>
 #include <thrift/lib/cpp2/async/HeaderClientChannel.h>
+#include <thrift/lib/cpp2/async/PooledRequestChannel.h>
 
-namespace apache { namespace thrift {
+namespace apache {
+namespace thrift {
+
+template <class AsyncClientT>
+std::unique_ptr<AsyncClientT> ScopedServerInterfaceThread::newClient() const {
+  return std::make_unique<AsyncClientT>(PooledRequestChannel::newSyncChannel(
+      std::make_shared<folly::ScopedEventBaseThread>(),
+      [address = getAddress()](folly::EventBase& eb) {
+        return HeaderClientChannel::newChannel(
+            async::TAsyncSocket::newSocket(&eb, address));
+      }));
+}
 
 template <class AsyncClientT>
 std::unique_ptr<AsyncClientT> ScopedServerInterfaceThread::newClient(
     folly::EventBase* eb) const {
-  return std::make_unique<AsyncClientT>(
-      HeaderClientChannel::newChannel(
-        async::TAsyncSocket::newSocket(
-          eb, getAddress())));
+  return std::make_unique<AsyncClientT>(HeaderClientChannel::newChannel(
+      async::TAsyncSocket::newSocket(eb, getAddress())));
 }
+
 template <class AsyncClientT>
 std::unique_ptr<AsyncClientT> ScopedServerInterfaceThread::newClient(
     folly::EventBase& eb) const {
   return newClient<AsyncClientT>(&eb);
 }
 
-}}
+} // namespace thrift
+} // namespace apache
