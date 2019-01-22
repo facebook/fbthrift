@@ -139,7 +139,7 @@ endmacro()
 # Params:
 #   @file_name - The name of tge thrift file
 #   @services  - A list of services that are declared in the thrift file
-#   @language  - The generator to use (cpp or cpp2)
+#   @language  - The generator to use (cpp, cpp2 or py3)
 #   @options   - Extra options to pass to the generator
 #   @output_path - The directory where the thrift file lives
 #
@@ -182,13 +182,19 @@ foreach(service ${services})
     ${output_path}/gen-${language}/${service}AsyncClient.cpp
   )
 endforeach()
-set(include_prefix_text "include_prefix=${include_prefix}")
-if(NOT "${options}" STREQUAL "")
-  set(include_prefix_text ",${include_prefix_text}")
+if("${include_prefix}" STREQUAL "")
+  set(include_prefix_text "")
+else()
+  set(include_prefix_text "include_prefix=${include_prefix}")
+  if(NOT "${options}" STREQUAL "")
+    set(include_prefix_text ",${include_prefix_text}")
+  endif()
 endif()
 set(gen_language ${language})
 if("${language}" STREQUAL "cpp2")
   set(gen_language "mstch_cpp2")
+elseif("${language}" STREQUAL "py3")
+  set(gen_language "mstch_py3")
 endif()
 add_custom_command(
   OUTPUT ${${file_name}-${language}-HEADERS} ${${file_name}-${language}-SOURCES}

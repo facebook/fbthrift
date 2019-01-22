@@ -1,3 +1,5 @@
+# distutils: language = c++
+
 from libcpp.string cimport string
 from libc.stdint cimport uint64_t
 from libcpp.memory cimport unique_ptr
