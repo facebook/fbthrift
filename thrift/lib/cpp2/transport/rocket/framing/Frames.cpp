@@ -99,7 +99,7 @@ void serializeInFragmentsSlowCommon(
 }
 } // namespace
 
-void SetupFrame::serialize(Serializer& writer) const {
+void SetupFrame::serialize(Serializer& writer) && {
   /**
    *  0                   1                   2                   3
    *  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
@@ -283,7 +283,7 @@ void RequestStreamFrame::serializeIntoSingleFrame(Serializer& writer) const {
   DCHECK_EQ(Serializer::kBytesForFrameOrMetadataLength + frameSize, nwritten);
 }
 
-void RequestNFrame::serialize(Serializer& writer) const {
+void RequestNFrame::serialize(Serializer& writer) && {
   /**
    *  0                   1                   2                   3
    *  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
@@ -307,7 +307,7 @@ void RequestNFrame::serialize(Serializer& writer) const {
   DCHECK_EQ(Serializer::kBytesForFrameOrMetadataLength + frameSize, nwritten);
 }
 
-void CancelFrame::serialize(Serializer& writer) const {
+void CancelFrame::serialize(Serializer& writer) && {
   /**
    *  0                   1                   2                   3
    *  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
@@ -369,7 +369,7 @@ void PayloadFrame::serializeIntoSingleFrame(Serializer& writer) const {
   DCHECK_EQ(Serializer::kBytesForFrameOrMetadataLength + frameSize, nwritten);
 }
 
-void ErrorFrame::serialize(Serializer& writer) const {
+void ErrorFrame::serialize(Serializer& writer) && {
   /**
    *  0                   1                   2                   3
    *  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1

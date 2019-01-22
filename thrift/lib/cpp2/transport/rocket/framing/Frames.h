@@ -72,7 +72,7 @@ class SetupFrame {
     return payload_;
   }
 
-  void serialize(Serializer& writer) const;
+  void serialize(Serializer& writer) &&;
 
  private:
   static constexpr folly::StringPiece kMimeType{"text/plain"};
@@ -256,7 +256,7 @@ class RequestNFrame {
     return requestN_;
   }
 
-  void serialize(Serializer& writer) const;
+  void serialize(Serializer& writer) &&;
 
  private:
   StreamId streamId_;
@@ -281,7 +281,7 @@ class CancelFrame {
     return streamId_;
   }
 
-  void serialize(Serializer& writer) const;
+  void serialize(Serializer& writer) &&;
 
  private:
   StreamId streamId_;
@@ -375,7 +375,7 @@ class ErrorFrame {
     return payload_;
   }
 
-  void serialize(Serializer& writer) const;
+  void serialize(Serializer& writer) &&;
 
  private:
   StreamId streamId_;

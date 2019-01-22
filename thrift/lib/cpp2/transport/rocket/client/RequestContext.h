@@ -130,8 +130,7 @@ class RequestContext {
   void serialize(Frame&& frame, bool setupFrameNeeded) {
     Serializer writer;
     if (setupFrameNeeded) {
-      auto setupFrame = detail::makeSetupFrame();
-      setupFrame.serialize(writer);
+      detail::makeSetupFrame().serialize(writer);
     }
     std::forward<Frame>(frame).serialize(writer);
 
