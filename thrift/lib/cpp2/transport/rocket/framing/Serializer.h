@@ -65,6 +65,12 @@ class Serializer {
     return buf.computeChainDataLength();
   }
 
+  size_t write(std::unique_ptr<folly::IOBuf> buf) {
+    auto r = buf->computeChainDataLength();
+    appender_.insert(std::move(buf));
+    return r;
+  }
+
   size_t write(folly::StringPiece sp) {
     appender_.push(reinterpret_cast<const uint8_t*>(sp.data()), sp.size());
     return sp.size();
@@ -80,7 +86,7 @@ class Serializer {
     return push(start, kBytesForFrameOrMetadataLength);
   }
 
-  size_t writePayload(const Payload& p);
+  size_t writePayload(Payload&& p);
 
   std::unique_ptr<folly::IOBuf> move() && {
     return queue_.move();

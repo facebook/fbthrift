@@ -173,7 +173,7 @@ void SetupFrame::serialize(Serializer& writer) && {
   nwritten += writer.write(kMimeType);
 
   // Setup metadata and data
-  nwritten += writer.writePayload(payload());
+  nwritten += writer.writePayload(std::move(payload()));
 
   DCHECK_EQ(Serializer::kBytesForFrameOrMetadataLength + frameSize, nwritten);
 }
@@ -182,10 +182,10 @@ void RequestResponseFrame::serialize(Serializer& writer) && {
   if (UNLIKELY(payload().metadataAndDataSize() > kMaxFragmentedPayloadSize)) {
     return std::move(*this).serializeInFragmentsSlow(writer);
   }
-  serializeIntoSingleFrame(writer);
+  std::move(*this).serializeIntoSingleFrame(writer);
 }
 
-void RequestResponseFrame::serializeIntoSingleFrame(Serializer& writer) const {
+void RequestResponseFrame::serializeIntoSingleFrame(Serializer& writer) && {
   /**
    *  0                   1                   2                   3
    *  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
@@ -207,7 +207,7 @@ void RequestResponseFrame::serializeIntoSingleFrame(Serializer& writer) const {
       Flags::none()
           .metadata(payload_.hasNonemptyMetadata())
           .follows(hasFollows()));
-  nwritten += writer.writePayload(payload());
+  nwritten += writer.writePayload(std::move(payload()));
 
   DCHECK_EQ(Serializer::kBytesForFrameOrMetadataLength + frameSize, nwritten);
 }
@@ -216,10 +216,10 @@ void RequestFnfFrame::serialize(Serializer& writer) && {
   if (UNLIKELY(payload().metadataAndDataSize() > kMaxFragmentedPayloadSize)) {
     return std::move(*this).serializeInFragmentsSlow(writer);
   }
-  serializeIntoSingleFrame(writer);
+  std::move(*this).serializeIntoSingleFrame(writer);
 }
 
-void RequestFnfFrame::serializeIntoSingleFrame(Serializer& writer) const {
+void RequestFnfFrame::serializeIntoSingleFrame(Serializer& writer) && {
   /**
    *  0                   1                   2                   3
    *  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
@@ -241,7 +241,7 @@ void RequestFnfFrame::serializeIntoSingleFrame(Serializer& writer) const {
       Flags::none()
           .metadata(payload_.hasNonemptyMetadata())
           .follows(hasFollows()));
-  nwritten += writer.writePayload(payload());
+  nwritten += writer.writePayload(std::move(payload()));
 
   DCHECK_EQ(Serializer::kBytesForFrameOrMetadataLength + frameSize, nwritten);
 }
@@ -250,10 +250,10 @@ void RequestStreamFrame::serialize(Serializer& writer) && {
   if (UNLIKELY(payload().metadataAndDataSize() > kMaxFragmentedPayloadSize)) {
     return std::move(*this).serializeInFragmentsSlow(writer);
   }
-  serializeIntoSingleFrame(writer);
+  std::move(*this).serializeIntoSingleFrame(writer);
 }
 
-void RequestStreamFrame::serializeIntoSingleFrame(Serializer& writer) const {
+void RequestStreamFrame::serializeIntoSingleFrame(Serializer& writer) && {
   /**
    *  0                   1                   2                   3
    *  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
@@ -278,7 +278,7 @@ void RequestStreamFrame::serializeIntoSingleFrame(Serializer& writer) const {
           .metadata(payload_.hasNonemptyMetadata())
           .follows(hasFollows()));
   nwritten += writer.writeBE<uint32_t>(initialRequestN());
-  nwritten += writer.writePayload(payload());
+  nwritten += writer.writePayload(std::move(payload()));
 
   DCHECK_EQ(Serializer::kBytesForFrameOrMetadataLength + frameSize, nwritten);
 }
@@ -332,10 +332,10 @@ void PayloadFrame::serialize(Serializer& writer) && {
   if (UNLIKELY(payload().metadataAndDataSize() > kMaxFragmentedPayloadSize)) {
     return std::move(*this).serializeInFragmentsSlow(writer);
   }
-  serializeIntoSingleFrame(writer);
+  std::move(*this).serializeIntoSingleFrame(writer);
 }
 
-void PayloadFrame::serializeIntoSingleFrame(Serializer& writer) const {
+void PayloadFrame::serializeIntoSingleFrame(Serializer& writer) && {
   /**
    *  0                   1                   2                   3
    *  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
@@ -364,7 +364,7 @@ void PayloadFrame::serializeIntoSingleFrame(Serializer& writer) const {
           .complete(hasComplete())
           .next(hasNext()));
 
-  nwritten += writer.writePayload(payload());
+  nwritten += writer.writePayload(std::move(payload()));
 
   DCHECK_EQ(Serializer::kBytesForFrameOrMetadataLength + frameSize, nwritten);
 }
@@ -394,7 +394,7 @@ void ErrorFrame::serialize(Serializer& writer) && {
   nwritten +=
       writer.writeBE<ErrorCodeInt>(static_cast<ErrorCodeInt>(errorCode()));
 
-  nwritten += writer.writePayload(payload());
+  nwritten += writer.writePayload(std::move(payload()));
 
   DCHECK_EQ(Serializer::kBytesForFrameOrMetadataLength + frameSize, nwritten);
 }

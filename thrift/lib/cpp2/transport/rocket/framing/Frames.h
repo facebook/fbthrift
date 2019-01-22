@@ -123,7 +123,7 @@ class RequestResponseFrame {
   Flags flags_{Flags::none()};
   Payload payload_;
 
-  void serializeIntoSingleFrame(Serializer& writer) const;
+  void serializeIntoSingleFrame(Serializer& writer) &&;
   FOLLY_NOINLINE void serializeInFragmentsSlow(Serializer& writer) &&;
 };
 
@@ -167,7 +167,7 @@ class RequestFnfFrame {
   Flags flags_{Flags::none()};
   Payload payload_;
 
-  void serializeIntoSingleFrame(Serializer& writer) const;
+  void serializeIntoSingleFrame(Serializer& writer) &&;
   FOLLY_NOINLINE void serializeInFragmentsSlow(Serializer& writer) &&;
 };
 
@@ -225,7 +225,7 @@ class RequestStreamFrame {
   Flags flags_{Flags::none()};
   Payload payload_;
 
-  void serializeIntoSingleFrame(Serializer& writer) const;
+  void serializeIntoSingleFrame(Serializer& writer) &&;
   FOLLY_NOINLINE void serializeInFragmentsSlow(Serializer& writer) &&;
 };
 
@@ -333,7 +333,7 @@ class PayloadFrame {
   Flags flags_{Flags::none()};
   Payload payload_;
 
-  void serializeIntoSingleFrame(Serializer& writer) const;
+  void serializeIntoSingleFrame(Serializer& writer) &&;
   FOLLY_NOINLINE void serializeInFragmentsSlow(Serializer& writer) &&;
 };
 

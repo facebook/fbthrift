@@ -22,15 +22,15 @@ namespace apache {
 namespace thrift {
 namespace rocket {
 
-size_t Serializer::writePayload(const Payload& p) {
+size_t Serializer::writePayload(Payload&& p) {
   size_t nwritten = 0;
   if (p.hasNonemptyMetadata()) {
     const size_t metadataSize = p.metadata()->computeChainDataLength();
     nwritten += writeFrameOrMetadataSize(metadataSize);
-    nwritten += write(*p.metadata());
+    nwritten += write(std::move(p.metadata()));
   }
   if (!p.data()->empty()) {
-    nwritten += write(*p.data());
+    nwritten += write(std::move(p).data());
   }
   return nwritten;
 }
