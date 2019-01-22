@@ -49,7 +49,7 @@ file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/cybld/folly/__init__.py)
 
 add_custom_target(thrift_python_bindings ALL
   COMMAND
-   python3 ${CMAKE_CURRENT_SOURCE_DIR}/setup.py
+    python3 ${CMAKE_CURRENT_SOURCE_DIR}/setup.py
     build_ext -f -L${CMAKE_LIBRARY_OUTPUT_DIRECTORY}
     -I${THRIFT_HOME}:${THRIFT_BUILD}
   DEPENDS thriftcpp2
@@ -61,4 +61,3 @@ install(CODE "
   execute_process(COMMAND
   python3 ${CMAKE_CURRENT_SOURCE_DIR}/setup.py install \${PYROOT}
   WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/cybld)")
-

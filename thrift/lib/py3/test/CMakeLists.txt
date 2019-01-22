@@ -45,8 +45,8 @@ file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/gen-py3/test/__init__.py)
 
 add_custom_target(iobuf_python_unittest ALL
   COMMAND
-   python3 ${CMAKE_CURRENT_SOURCE_DIR}/setup.py
-    build_ext -i -f -L${CMAKE_LIBRARY_OUTPUT_DIRECTORY} -I${CMAKE_SOURCE_DIR}:${CMAKE_CURRENT_BINARY_DIR}/..
+    python3 ${CMAKE_CURRENT_SOURCE_DIR}/setup.py
+    build_ext -i -f -L${CMAKE_LIBRARY_OUTPUT_DIRECTORY}
+    -I${CMAKE_SOURCE_DIR}:${CMAKE_CURRENT_BINARY_DIR}/..
   DEPENDS thriftcpp2
   WORKING_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/gen-py3")
-

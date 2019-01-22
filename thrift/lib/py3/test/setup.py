@@ -3,7 +3,6 @@
 from setuptools import setup, Extension
 from Cython.Build import cythonize
 from Cython.Compiler import Options
-import os
 
 Options.fast_fail = True
 
@@ -33,20 +32,17 @@ common_libs = ['glog',
 extensions = [
     Extension("iobuf.types",
               sources=['iobuf/types.pyx'],
-              libraries=common_libs
-             ),
+              libraries=common_libs),
     Extension("test.iobuf_helper",
               sources=['test/iobuf_helper.pyx'],
-              libraries=common_libs
-             ),
+              libraries=common_libs),
 ]
 
 setup(name="test",
       version='0.0.1',
       zip_safe=False,
-      ext_modules = cythonize(extensions,
-                              # FIXME: I cannot seem to get lib thift-py3 build
-                              # path passed from CMake as a parameter
-                              include_path=["../../cybld/"],
-                              compiler_directives={'language_level': 3,}),
-)
+      ext_modules=cythonize(extensions,
+                            # FIXME: I cannot seem to get lib thift-py3 build
+                            # path passed from CMake as a parameter
+                            include_path=["../../cybld/"],
+                            compiler_directives={'language_level': 3}))
