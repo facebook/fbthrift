@@ -86,9 +86,9 @@ endif(compiler_only OR build_all)
 
 # Find required dependencies for thrift/lib
 if(lib_only OR build_all)
-  find_package(folly CONFIG REQUIRED)
   find_package(GFlags REQUIRED)
   find_package(Glog REQUIRED)
+  find_package(folly CONFIG REQUIRED)
   find_package(Yarpl)
   find_package(fizz CONFIG REQUIRED)
   find_package(wangle CONFIG REQUIRED)
