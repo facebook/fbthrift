@@ -151,10 +151,6 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
 
   bool queueSends_ = true;
 
-  // Whether or not we should try to approximate pending IO events for
-  // load balancing and load shedding
-  bool trackPendingIO_ = false;
-
   bool stopWorkersOnStopListening_ = true;
   std::chrono::seconds workersJoinTimeout_{30};
 
@@ -288,14 +284,6 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
     CHECK(namedFactory);
     namedFactory->setNamePrefix(cpp2WorkerThreadName);
   }
-
-  /**
-   * Number of connections that epoll says need attention but ThriftServer
-   * didn't have a chance to "ack" yet. A rough proxy for a number of pending
-   * requests that are waiting to be processed (though it's an imperfect proxy
-   * as there may be more than one request sent through a single connection).
-   */
-  int32_t getPendingCount() const;
 
   bool isOverloaded(
       const apache::thrift::transport::THeader* header = nullptr,
@@ -674,22 +662,6 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
 
   bool getQueueSends() {
     return queueSends_;
-  }
-
-  /**
-   * Set whether or not we should try to approximate pending IO events for
-   * load balancing and load shedding.
-   */
-  void setTrackPendingIO(bool trackPendingIO) {
-    trackPendingIO_ = trackPendingIO;
-  }
-
-  /**
-   * Get whether or not we should try to approximate pending IO events for
-   * load balancing and load shedding.
-   */
-  bool getTrackPendingIO() const {
-    return trackPendingIO_;
   }
 
   // client side duplex

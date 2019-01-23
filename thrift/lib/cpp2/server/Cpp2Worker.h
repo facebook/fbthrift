@@ -93,17 +93,6 @@ class Cpp2Worker : public wangle::Acceptor,
   }
 
   /**
-   * Count the number of pending fds. Used for overload detection.
-   * Not thread-safe.
-   */
-  int computePendingCount();
-
-  /**
-   * Cached pending count. Thread-safe.
-   */
-  int getPendingCount() const;
-
-  /**
    * SSL stats hook
    */
   void updateSSLStats(
@@ -122,9 +111,7 @@ class Cpp2Worker : public wangle::Acceptor,
       : Acceptor(server->getServerSocketConfig()),
         wangle::PeekingAcceptorHandshakeHelper::PeekCallback(kPeekCount),
         server_(server),
-        activeRequests_(0),
-        pendingCount_(0),
-        pendingTime_(std::chrono::steady_clock::now()) {}
+        activeRequests_(0) {}
 
   void construct(
       ThriftServer*,
@@ -226,9 +213,6 @@ class Cpp2Worker : public wangle::Acceptor,
   uint32_t activeRequests_;
   bool stopping_{false};
   folly::Baton<> stopBaton_;
-
-  int pendingCount_;
-  std::chrono::steady_clock::time_point pendingTime_;
 
   wangle::AcceptorHandshakeHelper::UniquePtr getHelper(
       const std::vector<uint8_t>& bytes,

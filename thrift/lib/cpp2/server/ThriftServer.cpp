@@ -510,22 +510,6 @@ void ThriftServer::handleSetupFailure(void) {
   serveEventBase_ = nullptr;
 }
 
-int32_t ThriftServer::getPendingCount() const {
-  int32_t count = 0;
-  if (!trackPendingIO_) { // Ignore pending
-    return 0;
-  }
-  if (!getIOGroupSafe()) { // Not enabled in duplex mode
-    return 0;
-  }
-  forEachWorker([&](wangle::Acceptor* acceptor) {
-    auto worker = dynamic_cast<Cpp2Worker*>(acceptor);
-    count += worker->getPendingCount();
-  });
-
-  return count;
-}
-
 void ThriftServer::updateTicketSeeds(wangle::TLSTicketKeySeeds seeds) {
   forEachWorker([&](wangle::Acceptor* acceptor) {
     if (!acceptor) {
@@ -607,15 +591,14 @@ bool ThriftServer::isOverloaded(
 
   uint32_t maxRequests = getMaxRequests();
   if (maxRequests > 0) {
-    return static_cast<uint32_t>(getActiveRequests() + getPendingCount()) >=
-        maxRequests;
+    return static_cast<uint32_t>(getActiveRequests()) >= maxRequests;
   }
 
   return false;
 }
 
 int64_t ThriftServer::getRequestLoad() {
-  return getActiveRequests() + getPendingCount();
+  return getActiveRequests();
 }
 
 std::string ThriftServer::getLoadInfo(int64_t load) {
@@ -632,8 +615,7 @@ std::string ThriftServer::getLoadInfo(int64_t load) {
   std::stringstream stream;
 
   stream << workerFactory->getNamePrefix() << " load is: " << load
-         << "% requests, " << getActiveRequests() << " active reqs, "
-         << getPendingCount() << " pending reqs";
+         << "% requests, " << getActiveRequests() << " active reqs";
 
   return stream.str();
 }

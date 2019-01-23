@@ -756,7 +756,6 @@ BOOST_PYTHON_MODULE(CppServerWrapper) {
 
       .def("getLoad", &CppServerWrapper::getLoad)
       .def("getRequestLoad", &CppServerWrapper::getRequestLoad)
-      .def("getPendingCount", &CppServerWrapper::getPendingCount)
       .def("getActiveRequests", &CppServerWrapper::getActiveRequests)
       .def("getThreadManager", &CppServerWrapper::getThreadManagerHelper);
 

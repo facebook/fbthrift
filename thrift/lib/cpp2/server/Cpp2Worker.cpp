@@ -31,8 +31,6 @@
 #include <wangle/acceptor/SSLAcceptorHandshakeHelper.h>
 #include <wangle/acceptor/UnencryptedAcceptorHandshakeHelper.h>
 
-DEFINE_int32(pending_interval, 0, "Pending count interval in ms");
-
 namespace apache {
 namespace thrift {
 
@@ -199,29 +197,6 @@ void Cpp2Worker::stopDuplex(std::shared_ptr<ThriftServer> myServer) {
   // Capture a shared_ptr to our ThriftServer making sure it will outlive us
   // Otherwise our raw pointer to it (server_) will be jeopardized.
   duplexServer_ = myServer;
-}
-
-int Cpp2Worker::computePendingCount() {
-  // Only recalculate once every pending_interval
-  if (FLAGS_pending_interval > 0) {
-    auto now = std::chrono::steady_clock::now();
-    if (pendingTime_ < now) {
-      pendingTime_ = now + std::chrono::milliseconds(FLAGS_pending_interval);
-      pendingCount_ = 0;
-      Acceptor::getConnectionManager()->iterateConns(
-          [&](wangle::ManagedConnection* connection) {
-            if ((static_cast<Cpp2Connection*>(connection))->pending()) {
-              pendingCount_++;
-            }
-          });
-    }
-  }
-
-  return pendingCount_;
-}
-
-int Cpp2Worker::getPendingCount() const {
-  return pendingCount_;
 }
 
 void Cpp2Worker::updateSSLStats(

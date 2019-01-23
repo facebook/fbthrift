@@ -306,10 +306,6 @@ void Cpp2Connection::requestReceived(unique_ptr<ResponseChannelRequest>&& req) {
         hreq->getHeader(), context_.getPeerAddress());
   }
 
-  if (server->getTrackPendingIO()) {
-    worker_->computePendingCount();
-  }
-
   auto protoId = static_cast<apache::thrift::protocol::PROTOCOL_TYPES>(
       hreq->getHeader()->getProtocolId());
   auto methodName =
@@ -352,8 +348,7 @@ void Cpp2Connection::requestReceived(unique_ptr<ResponseChannelRequest>&& req) {
         apache::thrift::concurrency::Util::currentTimeUsec();
     if (samplingStatus.isEnabledByServer() && observer) {
       observer->queuedRequests(threadManager_->pendingTaskCount());
-      observer->activeRequests(
-          server->getActiveRequests() + server->getPendingCount());
+      observer->activeRequests(server->getActiveRequests());
     }
   }
 
