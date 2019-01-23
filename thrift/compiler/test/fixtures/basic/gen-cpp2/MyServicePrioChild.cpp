@@ -32,7 +32,9 @@ void MyServicePrioChildSvIf::async_tm_pang(std::unique_ptr<apache::thrift::Handl
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_pang(); });
 }
 
-void MyServicePrioChildSvNull::pang() {}
+void MyServicePrioChildSvNull::pang() {
+  return;
+}
 
 const char* MyServicePrioChildAsyncProcessor::getServiceName() {
   return "MyServicePrioChild";

@@ -96,15 +96,25 @@ void NestedContainersSvIf::async_tm_turtles(std::unique_ptr<apache::thrift::Hand
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_turtles(std::move(foo)); });
 }
 
-void NestedContainersSvNull::mapList(std::unique_ptr<std::map<int32_t, std::vector<int32_t>>> /*foo*/) {}
+void NestedContainersSvNull::mapList(std::unique_ptr<std::map<int32_t, std::vector<int32_t>>> /*foo*/) {
+  return;
+}
 
-void NestedContainersSvNull::mapSet(std::unique_ptr<std::map<int32_t, std::set<int32_t>>> /*foo*/) {}
+void NestedContainersSvNull::mapSet(std::unique_ptr<std::map<int32_t, std::set<int32_t>>> /*foo*/) {
+  return;
+}
 
-void NestedContainersSvNull::listMap(std::unique_ptr<std::vector<std::map<int32_t, int32_t>>> /*foo*/) {}
+void NestedContainersSvNull::listMap(std::unique_ptr<std::vector<std::map<int32_t, int32_t>>> /*foo*/) {
+  return;
+}
 
-void NestedContainersSvNull::listSet(std::unique_ptr<std::vector<std::set<int32_t>>> /*foo*/) {}
+void NestedContainersSvNull::listSet(std::unique_ptr<std::vector<std::set<int32_t>>> /*foo*/) {
+  return;
+}
 
-void NestedContainersSvNull::turtles(std::unique_ptr<std::vector<std::vector<std::map<int32_t, std::map<int32_t, std::set<int32_t>>>>>> /*foo*/) {}
+void NestedContainersSvNull::turtles(std::unique_ptr<std::vector<std::vector<std::map<int32_t, std::map<int32_t, std::set<int32_t>>>>>> /*foo*/) {
+  return;
+}
 
 const char* NestedContainersAsyncProcessor::getServiceName() {
   return "NestedContainers";

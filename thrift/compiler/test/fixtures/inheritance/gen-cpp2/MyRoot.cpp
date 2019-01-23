@@ -32,7 +32,9 @@ void MyRootSvIf::async_tm_do_root(std::unique_ptr<apache::thrift::HandlerCallbac
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_do_root(); });
 }
 
-void MyRootSvNull::do_root() {}
+void MyRootSvNull::do_root() {
+  return;
+}
 
 const char* MyRootAsyncProcessor::getServiceName() {
   return "MyRoot";

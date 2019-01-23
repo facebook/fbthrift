@@ -824,6 +824,7 @@ class mstch_function : public mstch_base {
             {"function:any_streams?", &mstch_function::any_streams},
             {"function:returns_stream?", &mstch_function::returns_stream},
             {"function:takes_stream?", &mstch_function::takes_stream},
+            {"function:coroutine?", &mstch_function::coroutine},
         });
   }
   mstch::node taken_stream_type();
@@ -863,6 +864,9 @@ class mstch_function : public mstch_base {
       return strct->annotations_.at("priority");
     }
     return std::string("NORMAL");
+  }
+  mstch::node coroutine() {
+    return function_->coroutine();
   }
 
   mstch::node return_type();

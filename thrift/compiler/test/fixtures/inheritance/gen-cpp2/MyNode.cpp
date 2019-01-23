@@ -32,7 +32,9 @@ void MyNodeSvIf::async_tm_do_mid(std::unique_ptr<apache::thrift::HandlerCallback
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_do_mid(); });
 }
 
-void MyNodeSvNull::do_mid() {}
+void MyNodeSvNull::do_mid() {
+  return;
+}
 
 const char* MyNodeAsyncProcessor::getServiceName() {
   return "MyNode";

@@ -135,13 +135,17 @@ apache::thrift::Stream<int32_t> PubSubStreamingServiceSvNull::returnstream(int32
   return {};
 }
 
-void PubSubStreamingServiceSvNull::takesstream(apache::thrift::SemiStream<int32_t> /*instream*/, int32_t /*other_param*/) {}
+void PubSubStreamingServiceSvNull::takesstream(apache::thrift::SemiStream<int32_t> /*instream*/, int32_t /*other_param*/) {
+  return;
+}
 
 apache::thrift::Stream<std::string> PubSubStreamingServiceSvNull::different(apache::thrift::SemiStream<int32_t> /*foo*/, int64_t /*firstparam*/) {
   return {};
 }
 
-void PubSubStreamingServiceSvNull::normalthrows(apache::thrift::SemiStream<int32_t> /*foo*/) {}
+void PubSubStreamingServiceSvNull::normalthrows(apache::thrift::SemiStream<int32_t> /*foo*/) {
+  return;
+}
 
 apache::thrift::Stream<int32_t> PubSubStreamingServiceSvNull::streamthrows(int32_t /*foo*/) {
   return {};

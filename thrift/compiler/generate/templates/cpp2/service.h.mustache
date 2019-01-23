@@ -17,6 +17,9 @@
 %><% > Autogen%>
 #pragma once
 
+<%#service:coroutines?%>
+#include <folly/experimental/coro/Task.h>
+<%/service:coroutines?%>
 #include <folly/futures/Future.h>
 #include <thrift/lib/cpp/TApplicationException.h>
 #include <thrift/lib/cpp2/ServiceIncludes.h>

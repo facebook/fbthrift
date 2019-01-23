@@ -16,27 +16,53 @@
 
 %><%#service:functions%><%#function:returnType%><%^function:eb%><%^type:deprecated_stream?%>
 <%^type:resolves_to_complex_return?%>
-<%#type:void?%>
-void <%service:name%>SvNull::<%function:name%>(<% > service_common/function_param_list_commented_out%>) {}
-<%/type:void?%>
-<%^type:void?%>
+<%^function:coroutine?%>
 <% > types/type%> <%service:name%>SvNull::<%function:name%>(<% > service_common/function_param_list_commented_out%>) {
+<%#type:void?%>
+  return;
+<%/type:void?%>
 <%#type:enum?%>
   return (<% > types/type%>)0;
 <%/type:enum?%>
-<%^type:enum?%>
 <%#type:stream?%>
   return {};
 <%/type:stream?%>
-<%^type:stream?%>
+<%^type:void?%><%^type:enum?%><%^type:stream?%>
   return 0;
-<%/type:stream?%>
-<%/type:enum?%>
+<%/type:stream?%><%/type:enum?%><%/type:void?%>
 }
+<%/function:coroutine?%>
+<%#function:coroutine?%>
+folly::coro::Task<<% > types/type%>> <%service:name%>SvNull::co_<%function:name%>(<% > service_common/function_param_list_commented_out%>) {
+<%#type:void?%>
+  co_return;
 <%/type:void?%>
+<%#type:enum?%>
+  co_return (<% > types/type%>)0;
+<%/type:enum?%>
+<%#type:stream?%>
+  co_return {};
+<%/type:stream?%>
+<%^type:void?%><%^type:enum?%><%^type:stream?%>
+  co_return 0;
+<%/type:stream?%><%/type:enum?%><%/type:void?%>
+}
+<%/function:coroutine?%>
 <%/type:resolves_to_complex_return?%>
 <%#type:resolves_to_complex_return?%>
+<%^function:coroutine?%>
 void <%service:name%>SvNull::<%function:name%>(<% > types/type%>& /*_return*/<%function:comma%><% > service_common/function_param_list_commented_out%>) {}
+<%/function:coroutine?%>
+<%#function:coroutine?%>
+folly::coro::Task<<% > types/unique_ptr_type%>> <%service:name%>SvNull::co_<%function:name%>(<% > service_common/function_param_list%>) {
+<%#type:stack_arguments?%>
+  co_return <% > types/type%>{};
+<%/type:stack_arguments?%>
+<%^type:stack_arguments?%>
+  co_return std::make_unique<<% > types/type%>>();
+<%/type:stack_arguments?%>
+}
+<%/function:coroutine?%>
 <%/type:resolves_to_complex_return?%>
 
 <%/type:deprecated_stream?%><%/function:eb%><%/function:returnType%><%/service:functions%>

@@ -480,19 +480,33 @@ void ParamServiceSvIf::async_tm_listunion_string_param(std::unique_ptr<apache::t
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_listunion_string_param(std::move(param1)); });
 }
 
-void ParamServiceSvNull::void_ret_byte_i16_param(int8_t /*param1*/, int16_t /*param2*/) {}
+void ParamServiceSvNull::void_ret_byte_i16_param(int8_t /*param1*/, int16_t /*param2*/) {
+  return;
+}
 
-void ParamServiceSvNull::void_ret_map_param(std::unique_ptr<std::map<std::string, int64_t>> /*param1*/) {}
+void ParamServiceSvNull::void_ret_map_param(std::unique_ptr<std::map<std::string, int64_t>> /*param1*/) {
+  return;
+}
 
-void ParamServiceSvNull::void_ret_map_setlist_param(std::unique_ptr<std::map<std::string, int64_t>> /*param1*/, std::unique_ptr<std::set<std::vector<std::string>>> /*param2*/) {}
+void ParamServiceSvNull::void_ret_map_setlist_param(std::unique_ptr<std::map<std::string, int64_t>> /*param1*/, std::unique_ptr<std::set<std::vector<std::string>>> /*param2*/) {
+  return;
+}
 
-void ParamServiceSvNull::void_ret_map_typedef_param( ::some::valid::ns::simpleTypeDef /*param1*/) {}
+void ParamServiceSvNull::void_ret_map_typedef_param( ::some::valid::ns::simpleTypeDef /*param1*/) {
+  return;
+}
 
-void ParamServiceSvNull::void_ret_enum_param( ::some::valid::ns::MyEnumA /*param1*/) {}
+void ParamServiceSvNull::void_ret_enum_param( ::some::valid::ns::MyEnumA /*param1*/) {
+  return;
+}
 
-void ParamServiceSvNull::void_ret_struct_param(std::unique_ptr< ::some::valid::ns::MyStruct> /*param1*/) {}
+void ParamServiceSvNull::void_ret_struct_param(std::unique_ptr< ::some::valid::ns::MyStruct> /*param1*/) {
+  return;
+}
 
-void ParamServiceSvNull::void_ret_listunion_param(std::unique_ptr<std::vector< ::some::valid::ns::ComplexUnion>> /*param1*/) {}
+void ParamServiceSvNull::void_ret_listunion_param(std::unique_ptr<std::vector< ::some::valid::ns::ComplexUnion>> /*param1*/) {
+  return;
+}
 
 bool ParamServiceSvNull::bool_ret_i32_i64_param(int32_t /*param1*/, int64_t /*param2*/) {
   return 0;

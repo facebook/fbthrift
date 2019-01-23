@@ -112,9 +112,13 @@ void service2SvIf::async_tm_methodF(std::unique_ptr<apache::thrift::HandlerCallb
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_methodF(l, std::move(m), n); });
 }
 
-void service2SvNull::methodA() {}
+void service2SvNull::methodA() {
+  return;
+}
 
-void service2SvNull::methodB(int32_t /*x*/, std::unique_ptr< ::test_cpp2::cpp_reflection::struct1> /*y*/, double /*z*/) {}
+void service2SvNull::methodB(int32_t /*x*/, std::unique_ptr< ::test_cpp2::cpp_reflection::struct1> /*y*/, double /*z*/) {
+  return;
+}
 
 int32_t service2SvNull::methodC() {
   return 0;

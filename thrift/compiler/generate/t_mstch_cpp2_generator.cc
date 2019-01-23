@@ -936,6 +936,7 @@ class mstch_cpp2_service : public mstch_service {
             {"service:oneways?", &mstch_cpp2_service::has_oneway},
             {"service:cache_keys?", &mstch_cpp2_service::has_cache_keys},
             {"service:cpp_includes", &mstch_cpp2_service::cpp_includes},
+            {"service:coroutines?", &mstch_cpp2_service::coroutines},
         });
   }
   virtual std::string get_service_namespace(t_program const* program) override {
@@ -995,6 +996,14 @@ class mstch_cpp2_service : public mstch_service {
         if (arg->annotations_.find("cpp.cache") != arg->annotations_.end()) {
           return true;
         }
+      }
+    }
+    return false;
+  }
+  mstch::node coroutines() {
+    for (auto const* function : service_->get_functions()) {
+      if (function->coroutine()) {
+        return true;
       }
     }
     return false;
@@ -1074,6 +1083,7 @@ class mstch_cpp2_program : public mstch_program {
             {"program:indirection?", &mstch_cpp2_program::has_indirection},
             {"program:json?", &mstch_cpp2_program::json},
             {"program:optionals?", &mstch_cpp2_program::optionals},
+            {"program:coroutines?", &mstch_cpp2_program::coroutines},
         });
   }
   virtual std::string get_program_namespace(t_program const* program) override {
@@ -1149,6 +1159,9 @@ class mstch_cpp2_program : public mstch_program {
   }
   mstch::node optionals() {
     return cache_->parsed_options_.count("optionals") != 0;
+  }
+  mstch::node coroutines() {
+    return cache_->parsed_options_.count("coroutines") != 0;
   }
 };
 

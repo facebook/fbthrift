@@ -86,9 +86,13 @@ bool MyServiceSvNull::hasDataById(int64_t /*id*/) {
 
 void MyServiceSvNull::getDataById(std::string& /*_return*/, int64_t /*id*/) {}
 
-void MyServiceSvNull::putDataById(int64_t /*id*/, const std::string& /*data*/) {}
+void MyServiceSvNull::putDataById(int64_t /*id*/, const std::string& /*data*/) {
+  return;
+}
 
-void MyServiceSvNull::lobDataById(int64_t /*id*/, const std::string& /*data*/) {}
+void MyServiceSvNull::lobDataById(int64_t /*id*/, const std::string& /*data*/) {
+  return;
+}
 
 const char* MyServiceAsyncProcessor::getServiceName() {
   return "MyService";

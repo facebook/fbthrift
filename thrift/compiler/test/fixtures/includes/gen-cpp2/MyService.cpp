@@ -48,9 +48,13 @@ void MyServiceSvIf::async_tm_has_arg_docs(std::unique_ptr<apache::thrift::Handle
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_has_arg_docs(std::move(s), std::move(i)); });
 }
 
-void MyServiceSvNull::query(std::unique_ptr< ::cpp2::MyStruct> /*s*/, std::unique_ptr< ::cpp2::Included> /*i*/) {}
+void MyServiceSvNull::query(std::unique_ptr< ::cpp2::MyStruct> /*s*/, std::unique_ptr< ::cpp2::Included> /*i*/) {
+  return;
+}
 
-void MyServiceSvNull::has_arg_docs(std::unique_ptr< ::cpp2::MyStruct> /*s*/, std::unique_ptr< ::cpp2::Included> /*i*/) {}
+void MyServiceSvNull::has_arg_docs(std::unique_ptr< ::cpp2::MyStruct> /*s*/, std::unique_ptr< ::cpp2::Included> /*i*/) {
+  return;
+}
 
 const char* MyServiceAsyncProcessor::getServiceName() {
   return "MyService";

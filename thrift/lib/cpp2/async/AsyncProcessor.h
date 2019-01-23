@@ -986,37 +986,48 @@ class AsyncProcessorFactory {
   virtual ~AsyncProcessorFactory() {}
 };
 
+/**
+ * This struct encapsulates the various thrift control information of interest
+ * to request handlers; the executor on which we expect them to execute, the
+ * Cpp2RequestContext of the incoming request struct, etc.
+ */
+struct RequestParams {
+  Cpp2RequestContext* requestContext;
+  apache::thrift::concurrency::ThreadManager* threadManager;
+  folly::EventBase* eventBase;
+};
+
 class ServerInterface : public AsyncProcessorFactory {
  public:
   ~ServerInterface() override {}
 
   Cpp2RequestContext* getConnectionContext() {
-    return reqCtx_;
+    return requestParams_.requestContext;
   }
 
   void setConnectionContext(Cpp2RequestContext* c) {
-    reqCtx_ = c;
+    requestParams_.requestContext = c;
   }
 
   void setThreadManager(apache::thrift::concurrency::ThreadManager* tm) {
-    tm_ = tm;
+    requestParams_.threadManager = tm;
   }
 
   apache::thrift::concurrency::ThreadManager* getThreadManager() {
-    return tm_;
+    return requestParams_.threadManager;
   }
 
   folly::Executor::KeepAlive<> getBlockingThreadManager() {
-    return BlockingThreadManager::create(tm_);
+    return BlockingThreadManager::create(requestParams_.threadManager);
   }
 
   void setEventBase(folly::EventBase* eb) {
     folly::RequestEventBase::set(eb);
-    eb_ = eb;
+    requestParams_.eventBase = eb;
   }
 
   folly::EventBase* getEventBase() {
-    return eb_;
+    return requestParams_.eventBase;
   }
 
   virtual apache::thrift::concurrency::PRIORITY getRequestPriority(
@@ -1091,9 +1102,7 @@ class ServerInterface : public AsyncProcessorFactory {
    * use the callback->getConnectionContext() method.  This reqCtx_
    * will be NULL for async calls.
    */
-  static thread_local Cpp2RequestContext* reqCtx_;
-  static thread_local apache::thrift::concurrency::ThreadManager* tm_;
-  static thread_local folly::EventBase* eb_;
+  static thread_local RequestParams requestParams_;
 };
 
 } // namespace thrift

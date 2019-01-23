@@ -80,9 +80,13 @@ void RaiserSvIf::async_tm_get500(std::unique_ptr<apache::thrift::HandlerCallback
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_get500(); });
 }
 
-void RaiserSvNull::doBland() {}
+void RaiserSvNull::doBland() {
+  return;
+}
 
-void RaiserSvNull::doRaise() {}
+void RaiserSvNull::doRaise() {
+  return;
+}
 
 void RaiserSvNull::get200(std::string& /*_return*/) {}
 

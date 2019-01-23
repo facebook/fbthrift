@@ -32,7 +32,9 @@ void CSvIf::async_tm_f(std::unique_ptr<apache::thrift::HandlerCallback<void>> ca
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_f(); });
 }
 
-void CSvNull::f() {}
+void CSvNull::f() {
+  return;
+}
 
 const char* CAsyncProcessor::getServiceName() {
   return "C";
