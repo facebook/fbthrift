@@ -49,12 +49,13 @@ namespace thrift {
 namespace rocket {
 
 namespace {
-class OnEventBaseDestructionCallback : public folly::EventBase::LoopCallback {
+class OnEventBaseDestructionCallback
+    : public folly::EventBase::OnDestructionCallback {
  public:
   explicit OnEventBaseDestructionCallback(RocketClient& client)
       : client_(client) {}
-  ~OnEventBaseDestructionCallback() final = default;
-  void runLoopCallback() noexcept final {
+
+  void onEventBaseDestruction() noexcept final {
     client_.closeNow(folly::make_exception_wrapper<std::runtime_error>(
         "Destroying EventBase"));
   }
@@ -76,14 +77,15 @@ RocketClient::RocketClient(
           std::make_unique<OnEventBaseDestructionCallback>(*this)) {
   DCHECK(socket_ != nullptr);
   socket_->setReadCB(&parser_);
-  evb_->runOnDestruction(eventBaseDestructionCallback_.get());
+  evb_->runOnDestruction(*eventBaseDestructionCallback_);
 }
 
 RocketClient::~RocketClient() {
   closeNow(folly::make_exception_wrapper<std::runtime_error>(
       "Destroying RocketClient"));
-  eventBaseDestructionCallback_.reset();
-  // All outstanding request contexts should have be cleaned up after closeNow()
+  eventBaseDestructionCallback_->cancel();
+
+  // All outstanding request contexts should have been cleaned up in closeNow()
   DCHECK(!queue_.hasInflightRequests());
   DCHECK(streams_.empty());
 }

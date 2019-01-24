@@ -130,17 +130,14 @@ class RocketClient : public folly::DelayedDestruction,
 
     evb_ = &evb;
     socket_->attachEventBase(evb_);
-    evb_->runOnDestruction(eventBaseDestructionCallback_.get());
+    evb_->runOnDestruction(*eventBaseDestructionCallback_);
   }
 
   void detachEventBase() {
     DCHECK(evb_);
     evb_->dcheckIsInEventBaseThread();
-
-    DCHECK(eventBaseDestructionCallback_->isLoopCallbackScheduled());
     DCHECK(!writeLoopCallback_.isLoopCallbackScheduled());
-
-    eventBaseDestructionCallback_->cancelLoopCallback();
+    eventBaseDestructionCallback_->cancel();
     socket_->detachEventBase();
     evb_ = nullptr;
   }
@@ -198,7 +195,8 @@ class RocketClient : public folly::DelayedDestruction,
   };
   WriteLoopCallback writeLoopCallback_;
 
-  std::unique_ptr<folly::EventBase::LoopCallback> eventBaseDestructionCallback_;
+  std::unique_ptr<folly::EventBase::OnDestructionCallback>
+      eventBaseDestructionCallback_;
   folly::Function<void()> closeCallback_;
 
   RocketClient(
