@@ -1,3 +1,5 @@
+add_subdirectory(transport/rsocket)
+
 # Set the cpp2 directory
 set(LIB_CPP2_HOME ${CMAKE_CURRENT_SOURCE_DIR})
 set(THRIFT_TEMPLATES_DIR ${THRIFT_HOME}/thrift/compiler/generate/templates)
@@ -13,6 +15,7 @@ set(THRIFT_TEMPLATES_DIR ${THRIFT_HOME}/thrift/compiler/generate/templates)
 #
 get_property(RpcMetadata-cpp2-SOURCES GLOBAL PROPERTY RpcMetadata-cpp2-SOURCES)
 get_property(frozen-cpp2-SOURCES GLOBAL PROPERTY frozen-cpp2-SOURCES)
+get_property(rsocket-cpp2-SOURCES GLOBAL PROPERTY rsocket-cpp2-SOURCES)
 
 bypass_source_check("${frozen-cpp2-SOURCES}")
 add_library(
@@ -54,6 +57,7 @@ target_link_libraries(
 )
 
 bypass_source_check("${RpcMetadata-cpp2-SOURCES}")
+bypass_source_check("${rsocket-cpp2-SOURCES}")
 add_library(
   thriftcpp2
 
@@ -71,6 +75,7 @@ add_library(
   async/PcapLoggingHandler.cpp
   async/RequestChannel.cpp
   async/ResponseChannel.cpp
+  async/RSocketClientChannel.cpp
   gen/field_ref.cpp
   server/BaseThriftServer.cpp
   server/Cpp2Connection.cpp
@@ -78,9 +83,12 @@ add_library(
   server/ThriftServer.cpp
   server/peeking/TLSHelper.cpp
   transport/core/ThriftProcessor.cpp
+  transport/core/ThriftClient.cpp
+  transport/core/ThriftClientCallback.cpp
   util/ScopedServerInterfaceThread.cpp
   util/ScopedServerThread.cpp
   ${RpcMetadata-cpp2-SOURCES}
+  ${rsocket-cpp2-SOURCES}
 )
 target_link_libraries(
   thriftcpp2
@@ -88,6 +96,8 @@ target_link_libraries(
     thrift
     thriftfrozen2
     thriftprotocol
+    yarpl::yarpl
+    rsocket::ReactiveSocket
 )
 
 # Install includes
