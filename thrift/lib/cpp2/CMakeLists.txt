@@ -58,6 +58,13 @@ target_link_libraries(
 
 bypass_source_check("${RpcMetadata-cpp2-SOURCES}")
 bypass_source_check("${rsocket-cpp2-SOURCES}")
+
+if(TARGET rsocket::ReactiveSocket)
+  list(APPEND rsocket-cpp2-SOURCES
+    async/RSocketClientChannel.cpp
+  )
+endif()
+
 add_library(
   thriftcpp2
 
@@ -75,7 +82,6 @@ add_library(
   async/PcapLoggingHandler.cpp
   async/RequestChannel.cpp
   async/ResponseChannel.cpp
-  async/RSocketClientChannel.cpp
   gen/field_ref.cpp
   server/BaseThriftServer.cpp
   server/Cpp2Connection.cpp
