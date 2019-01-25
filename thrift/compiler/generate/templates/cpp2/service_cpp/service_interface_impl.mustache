@@ -69,11 +69,10 @@ void <%service:name%>SvIf::async_<%#function:eb%>eb<%/function:eb%><%^function:e
     callback->getThreadManager(), callback->getEventBase()};
 
   auto task = co_<%function:name%>(params<%function:comma%><% > service_common/param_list_move%>);
-  auto semiFuture = std::move(task).semi().defer([callback = std::move(callback)](
-      folly::Try<<% > types/service_type%>> tryResult) mutable {
+  std::move(task).scheduleOn(params.threadManager).start([callback = std::move(callback)](
+      folly::Try<<% > types/service_type%>>&& tryResult) mutable {
         apache::thrift::HandlerCallback<<% > types/type%>>::completeInThread(std::move(callback), std::move(tryResult));
       });
-  std::move(semiFuture).via(params.threadManager);
 }
 <%/function:coroutine?%>
 <%/type:resolves_to_complex_return?%>
@@ -110,11 +109,10 @@ void <%service:name%>SvIf::async_<%#function:eb%>eb<%/function:eb%><%^function:e
     callback->getThreadManager(), callback->getEventBase()};
 
   auto task = co_<%function:name%>(params<%function:comma%><% > service_common/param_list_move%>);
-  auto semiFuture = std::move(task).semi().defer([callback = std::move(callback)](
-      folly::Try<<% > types/unique_ptr_type%>> tryResult) mutable {
+  std::move(task).scheduleOn(params.threadManager).start([callback = std::move(callback)](
+      folly::Try<<% > types/unique_ptr_type%>>&& tryResult) mutable {
         apache::thrift::HandlerCallback<<% > types/unique_ptr_type%>>::completeInThread(std::move(callback), std::move(tryResult));
       });
-  std::move(semiFuture).via(params.threadManager);
 }
 <%/function:coroutine?%>
 <%/type:resolves_to_complex_return?%>

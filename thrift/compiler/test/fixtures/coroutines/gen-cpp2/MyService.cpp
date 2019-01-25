@@ -30,11 +30,10 @@ void MyServiceSvIf::async_tm_ping(std::unique_ptr<apache::thrift::HandlerCallbac
     callback->getThreadManager(), callback->getEventBase()};
 
   auto task = co_ping(params);
-  auto semiFuture = std::move(task).semi().defer([callback = std::move(callback)](
-      folly::Try<folly::Unit> tryResult) mutable {
+  std::move(task).scheduleOn(params.threadManager).start([callback = std::move(callback)](
+      folly::Try<folly::Unit>&& tryResult) mutable {
         apache::thrift::HandlerCallback<void>::completeInThread(std::move(callback), std::move(tryResult));
       });
-  std::move(semiFuture).via(params.threadManager);
 }
 
 void MyServiceSvIf::getRandomData(std::string& /*_return*/) {
@@ -67,11 +66,10 @@ void MyServiceSvIf::async_tm_hasDataById(std::unique_ptr<apache::thrift::Handler
     callback->getThreadManager(), callback->getEventBase()};
 
   auto task = co_hasDataById(params, id);
-  auto semiFuture = std::move(task).semi().defer([callback = std::move(callback)](
-      folly::Try<bool> tryResult) mutable {
+  std::move(task).scheduleOn(params.threadManager).start([callback = std::move(callback)](
+      folly::Try<bool>&& tryResult) mutable {
         apache::thrift::HandlerCallback<bool>::completeInThread(std::move(callback), std::move(tryResult));
       });
-  std::move(semiFuture).via(params.threadManager);
 }
 
 folly::coro::Task<std::unique_ptr<std::string>> MyServiceSvIf::co_getDataById(int64_t id) {
@@ -88,11 +86,10 @@ void MyServiceSvIf::async_eb_getDataById(std::unique_ptr<apache::thrift::Handler
     callback->getThreadManager(), callback->getEventBase()};
 
   auto task = co_getDataById(params, id);
-  auto semiFuture = std::move(task).semi().defer([callback = std::move(callback)](
-      folly::Try<std::unique_ptr<std::string>> tryResult) mutable {
+  std::move(task).scheduleOn(params.threadManager).start([callback = std::move(callback)](
+      folly::Try<std::unique_ptr<std::string>>&& tryResult) mutable {
         apache::thrift::HandlerCallback<std::unique_ptr<std::string>>::completeInThread(std::move(callback), std::move(tryResult));
       });
-  std::move(semiFuture).via(params.threadManager);
 }
 
 void MyServiceSvIf::putDataById(int64_t /*id*/, std::unique_ptr<std::string> /*data*/) {
