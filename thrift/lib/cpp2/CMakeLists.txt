@@ -102,9 +102,16 @@ target_link_libraries(
     thrift
     thriftfrozen2
     thriftprotocol
-    yarpl::yarpl
-    rsocket::ReactiveSocket
 )
+if(TARGET rsocket::ReactiveSocket)
+  target_link_libraries(
+    thriftcpp2
+    PUBLIC
+      yarpl::yarpl
+      rsocket::ReactiveSocket
+  )
+endif()
+
 
 # Install includes
 set(THRIFT2_HEADER_DIRS
