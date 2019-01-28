@@ -88,6 +88,7 @@ void RocketServerConnection::closeIfNeeded() {
     return;
   }
 
+  DestructorGuard dg(this);
   for (auto it = streams_.begin(); it != streams_.end();) {
     auto& subscriber = *it->second;
     subscriber.cancel();
