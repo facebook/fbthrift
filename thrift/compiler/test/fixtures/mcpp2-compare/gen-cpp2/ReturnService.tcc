@@ -82,11 +82,9 @@ void ReturnServiceAsyncProcessor::process_noReturn(std::unique_ptr<apache::thrif
         } else {
           req->sendReply(queue.move());
         }
-      }
-      );
+      });
       return;
-    }
-    else {
+    } else {
       LOG(ERROR) << ex.what() << " in oneway function noReturn";
     }
   }
@@ -109,7 +107,7 @@ void ReturnServiceAsyncProcessor::throw_wrapped_noReturn(std::unique_ptr<apache:
     return;
   }
   ProtocolOut_ prot;
-   {
+  {
     if (req) {
       LOG(ERROR) << ew << " in function noReturn";
       apache::thrift::TApplicationException x(ew.what().toStdString());
@@ -119,8 +117,7 @@ void ReturnServiceAsyncProcessor::throw_wrapped_noReturn(std::unique_ptr<apache:
       queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
       req->sendReply(queue.move());
       return;
-    }
-    else {
+    } else {
       LOG(ERROR) << ew << " in oneway function noReturn";
     }
   }
@@ -154,11 +151,9 @@ void ReturnServiceAsyncProcessor::process_boolReturn(std::unique_ptr<apache::thr
         } else {
           req->sendReply(queue.move());
         }
-      }
-      );
+      });
       return;
-    }
-    else {
+    } else {
       LOG(ERROR) << ex.what() << " in oneway function boolReturn";
     }
   }
@@ -187,7 +182,7 @@ void ReturnServiceAsyncProcessor::throw_wrapped_boolReturn(std::unique_ptr<apach
     return;
   }
   ProtocolOut_ prot;
-   {
+  {
     if (req) {
       LOG(ERROR) << ew << " in function boolReturn";
       apache::thrift::TApplicationException x(ew.what().toStdString());
@@ -197,8 +192,7 @@ void ReturnServiceAsyncProcessor::throw_wrapped_boolReturn(std::unique_ptr<apach
       queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
       req->sendReply(queue.move());
       return;
-    }
-    else {
+    } else {
       LOG(ERROR) << ew << " in oneway function boolReturn";
     }
   }
@@ -232,11 +226,9 @@ void ReturnServiceAsyncProcessor::process_i16Return(std::unique_ptr<apache::thri
         } else {
           req->sendReply(queue.move());
         }
-      }
-      );
+      });
       return;
-    }
-    else {
+    } else {
       LOG(ERROR) << ex.what() << " in oneway function i16Return";
     }
   }
@@ -265,7 +257,7 @@ void ReturnServiceAsyncProcessor::throw_wrapped_i16Return(std::unique_ptr<apache
     return;
   }
   ProtocolOut_ prot;
-   {
+  {
     if (req) {
       LOG(ERROR) << ew << " in function i16Return";
       apache::thrift::TApplicationException x(ew.what().toStdString());
@@ -275,8 +267,7 @@ void ReturnServiceAsyncProcessor::throw_wrapped_i16Return(std::unique_ptr<apache
       queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
       req->sendReply(queue.move());
       return;
-    }
-    else {
+    } else {
       LOG(ERROR) << ew << " in oneway function i16Return";
     }
   }
@@ -310,11 +301,9 @@ void ReturnServiceAsyncProcessor::process_i32Return(std::unique_ptr<apache::thri
         } else {
           req->sendReply(queue.move());
         }
-      }
-      );
+      });
       return;
-    }
-    else {
+    } else {
       LOG(ERROR) << ex.what() << " in oneway function i32Return";
     }
   }
@@ -343,7 +332,7 @@ void ReturnServiceAsyncProcessor::throw_wrapped_i32Return(std::unique_ptr<apache
     return;
   }
   ProtocolOut_ prot;
-   {
+  {
     if (req) {
       LOG(ERROR) << ew << " in function i32Return";
       apache::thrift::TApplicationException x(ew.what().toStdString());
@@ -353,8 +342,7 @@ void ReturnServiceAsyncProcessor::throw_wrapped_i32Return(std::unique_ptr<apache
       queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
       req->sendReply(queue.move());
       return;
-    }
-    else {
+    } else {
       LOG(ERROR) << ew << " in oneway function i32Return";
     }
   }
@@ -388,11 +376,9 @@ void ReturnServiceAsyncProcessor::process_i64Return(std::unique_ptr<apache::thri
         } else {
           req->sendReply(queue.move());
         }
-      }
-      );
+      });
       return;
-    }
-    else {
+    } else {
       LOG(ERROR) << ex.what() << " in oneway function i64Return";
     }
   }
@@ -421,7 +407,7 @@ void ReturnServiceAsyncProcessor::throw_wrapped_i64Return(std::unique_ptr<apache
     return;
   }
   ProtocolOut_ prot;
-   {
+  {
     if (req) {
       LOG(ERROR) << ew << " in function i64Return";
       apache::thrift::TApplicationException x(ew.what().toStdString());
@@ -431,8 +417,7 @@ void ReturnServiceAsyncProcessor::throw_wrapped_i64Return(std::unique_ptr<apache
       queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
       req->sendReply(queue.move());
       return;
-    }
-    else {
+    } else {
       LOG(ERROR) << ew << " in oneway function i64Return";
     }
   }
@@ -466,11 +451,9 @@ void ReturnServiceAsyncProcessor::process_floatReturn(std::unique_ptr<apache::th
         } else {
           req->sendReply(queue.move());
         }
-      }
-      );
+      });
       return;
-    }
-    else {
+    } else {
       LOG(ERROR) << ex.what() << " in oneway function floatReturn";
     }
   }
@@ -499,7 +482,7 @@ void ReturnServiceAsyncProcessor::throw_wrapped_floatReturn(std::unique_ptr<apac
     return;
   }
   ProtocolOut_ prot;
-   {
+  {
     if (req) {
       LOG(ERROR) << ew << " in function floatReturn";
       apache::thrift::TApplicationException x(ew.what().toStdString());
@@ -509,8 +492,7 @@ void ReturnServiceAsyncProcessor::throw_wrapped_floatReturn(std::unique_ptr<apac
       queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
       req->sendReply(queue.move());
       return;
-    }
-    else {
+    } else {
       LOG(ERROR) << ew << " in oneway function floatReturn";
     }
   }
@@ -544,11 +526,9 @@ void ReturnServiceAsyncProcessor::process_doubleReturn(std::unique_ptr<apache::t
         } else {
           req->sendReply(queue.move());
         }
-      }
-      );
+      });
       return;
-    }
-    else {
+    } else {
       LOG(ERROR) << ex.what() << " in oneway function doubleReturn";
     }
   }
@@ -577,7 +557,7 @@ void ReturnServiceAsyncProcessor::throw_wrapped_doubleReturn(std::unique_ptr<apa
     return;
   }
   ProtocolOut_ prot;
-   {
+  {
     if (req) {
       LOG(ERROR) << ew << " in function doubleReturn";
       apache::thrift::TApplicationException x(ew.what().toStdString());
@@ -587,8 +567,7 @@ void ReturnServiceAsyncProcessor::throw_wrapped_doubleReturn(std::unique_ptr<apa
       queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
       req->sendReply(queue.move());
       return;
-    }
-    else {
+    } else {
       LOG(ERROR) << ew << " in oneway function doubleReturn";
     }
   }
@@ -617,11 +596,9 @@ void ReturnServiceAsyncProcessor::process_stringReturn(std::unique_ptr<apache::t
         } else {
           req->sendReply(queue.move());
         }
-      }
-      );
+      });
       return;
-    }
-    else {
+    } else {
       LOG(ERROR) << ex.what() << " in oneway function stringReturn";
     }
   }
@@ -646,7 +623,7 @@ void ReturnServiceAsyncProcessor::throw_wrapped_stringReturn(std::unique_ptr<apa
     return;
   }
   ProtocolOut_ prot;
-   {
+  {
     if (req) {
       LOG(ERROR) << ew << " in function stringReturn";
       apache::thrift::TApplicationException x(ew.what().toStdString());
@@ -656,8 +633,7 @@ void ReturnServiceAsyncProcessor::throw_wrapped_stringReturn(std::unique_ptr<apa
       queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
       req->sendReply(queue.move());
       return;
-    }
-    else {
+    } else {
       LOG(ERROR) << ew << " in oneway function stringReturn";
     }
   }
@@ -691,11 +667,9 @@ void ReturnServiceAsyncProcessor::process_binaryReturn(std::unique_ptr<apache::t
         } else {
           req->sendReply(queue.move());
         }
-      }
-      );
+      });
       return;
-    }
-    else {
+    } else {
       LOG(ERROR) << ex.what() << " in oneway function binaryReturn";
     }
   }
@@ -724,7 +698,7 @@ void ReturnServiceAsyncProcessor::throw_wrapped_binaryReturn(std::unique_ptr<apa
     return;
   }
   ProtocolOut_ prot;
-   {
+  {
     if (req) {
       LOG(ERROR) << ew << " in function binaryReturn";
       apache::thrift::TApplicationException x(ew.what().toStdString());
@@ -734,8 +708,7 @@ void ReturnServiceAsyncProcessor::throw_wrapped_binaryReturn(std::unique_ptr<apa
       queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
       req->sendReply(queue.move());
       return;
-    }
-    else {
+    } else {
       LOG(ERROR) << ew << " in oneway function binaryReturn";
     }
   }
@@ -769,11 +742,9 @@ void ReturnServiceAsyncProcessor::process_mapReturn(std::unique_ptr<apache::thri
         } else {
           req->sendReply(queue.move());
         }
-      }
-      );
+      });
       return;
-    }
-    else {
+    } else {
       LOG(ERROR) << ex.what() << " in oneway function mapReturn";
     }
   }
@@ -802,7 +773,7 @@ void ReturnServiceAsyncProcessor::throw_wrapped_mapReturn(std::unique_ptr<apache
     return;
   }
   ProtocolOut_ prot;
-   {
+  {
     if (req) {
       LOG(ERROR) << ew << " in function mapReturn";
       apache::thrift::TApplicationException x(ew.what().toStdString());
@@ -812,8 +783,7 @@ void ReturnServiceAsyncProcessor::throw_wrapped_mapReturn(std::unique_ptr<apache
       queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
       req->sendReply(queue.move());
       return;
-    }
-    else {
+    } else {
       LOG(ERROR) << ew << " in oneway function mapReturn";
     }
   }
@@ -847,11 +817,9 @@ void ReturnServiceAsyncProcessor::process_simpleTypedefReturn(std::unique_ptr<ap
         } else {
           req->sendReply(queue.move());
         }
-      }
-      );
+      });
       return;
-    }
-    else {
+    } else {
       LOG(ERROR) << ex.what() << " in oneway function simpleTypedefReturn";
     }
   }
@@ -880,7 +848,7 @@ void ReturnServiceAsyncProcessor::throw_wrapped_simpleTypedefReturn(std::unique_
     return;
   }
   ProtocolOut_ prot;
-   {
+  {
     if (req) {
       LOG(ERROR) << ew << " in function simpleTypedefReturn";
       apache::thrift::TApplicationException x(ew.what().toStdString());
@@ -890,8 +858,7 @@ void ReturnServiceAsyncProcessor::throw_wrapped_simpleTypedefReturn(std::unique_
       queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
       req->sendReply(queue.move());
       return;
-    }
-    else {
+    } else {
       LOG(ERROR) << ew << " in oneway function simpleTypedefReturn";
     }
   }
@@ -925,11 +892,9 @@ void ReturnServiceAsyncProcessor::process_complexTypedefReturn(std::unique_ptr<a
         } else {
           req->sendReply(queue.move());
         }
-      }
-      );
+      });
       return;
-    }
-    else {
+    } else {
       LOG(ERROR) << ex.what() << " in oneway function complexTypedefReturn";
     }
   }
@@ -958,7 +923,7 @@ void ReturnServiceAsyncProcessor::throw_wrapped_complexTypedefReturn(std::unique
     return;
   }
   ProtocolOut_ prot;
-   {
+  {
     if (req) {
       LOG(ERROR) << ew << " in function complexTypedefReturn";
       apache::thrift::TApplicationException x(ew.what().toStdString());
@@ -968,8 +933,7 @@ void ReturnServiceAsyncProcessor::throw_wrapped_complexTypedefReturn(std::unique
       queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
       req->sendReply(queue.move());
       return;
-    }
-    else {
+    } else {
       LOG(ERROR) << ew << " in oneway function complexTypedefReturn";
     }
   }
@@ -1003,11 +967,9 @@ void ReturnServiceAsyncProcessor::process_list_mostComplexTypedefReturn(std::uni
         } else {
           req->sendReply(queue.move());
         }
-      }
-      );
+      });
       return;
-    }
-    else {
+    } else {
       LOG(ERROR) << ex.what() << " in oneway function list_mostComplexTypedefReturn";
     }
   }
@@ -1036,7 +998,7 @@ void ReturnServiceAsyncProcessor::throw_wrapped_list_mostComplexTypedefReturn(st
     return;
   }
   ProtocolOut_ prot;
-   {
+  {
     if (req) {
       LOG(ERROR) << ew << " in function list_mostComplexTypedefReturn";
       apache::thrift::TApplicationException x(ew.what().toStdString());
@@ -1046,8 +1008,7 @@ void ReturnServiceAsyncProcessor::throw_wrapped_list_mostComplexTypedefReturn(st
       queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
       req->sendReply(queue.move());
       return;
-    }
-    else {
+    } else {
       LOG(ERROR) << ew << " in oneway function list_mostComplexTypedefReturn";
     }
   }
@@ -1076,11 +1037,9 @@ void ReturnServiceAsyncProcessor::process_enumReturn(std::unique_ptr<apache::thr
         } else {
           req->sendReply(queue.move());
         }
-      }
-      );
+      });
       return;
-    }
-    else {
+    } else {
       LOG(ERROR) << ex.what() << " in oneway function enumReturn";
     }
   }
@@ -1105,7 +1064,7 @@ void ReturnServiceAsyncProcessor::throw_wrapped_enumReturn(std::unique_ptr<apach
     return;
   }
   ProtocolOut_ prot;
-   {
+  {
     if (req) {
       LOG(ERROR) << ew << " in function enumReturn";
       apache::thrift::TApplicationException x(ew.what().toStdString());
@@ -1115,8 +1074,7 @@ void ReturnServiceAsyncProcessor::throw_wrapped_enumReturn(std::unique_ptr<apach
       queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
       req->sendReply(queue.move());
       return;
-    }
-    else {
+    } else {
       LOG(ERROR) << ew << " in oneway function enumReturn";
     }
   }
@@ -1145,11 +1103,9 @@ void ReturnServiceAsyncProcessor::process_list_EnumReturn(std::unique_ptr<apache
         } else {
           req->sendReply(queue.move());
         }
-      }
-      );
+      });
       return;
-    }
-    else {
+    } else {
       LOG(ERROR) << ex.what() << " in oneway function list_EnumReturn";
     }
   }
@@ -1174,7 +1130,7 @@ void ReturnServiceAsyncProcessor::throw_wrapped_list_EnumReturn(std::unique_ptr<
     return;
   }
   ProtocolOut_ prot;
-   {
+  {
     if (req) {
       LOG(ERROR) << ew << " in function list_EnumReturn";
       apache::thrift::TApplicationException x(ew.what().toStdString());
@@ -1184,8 +1140,7 @@ void ReturnServiceAsyncProcessor::throw_wrapped_list_EnumReturn(std::unique_ptr<
       queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
       req->sendReply(queue.move());
       return;
-    }
-    else {
+    } else {
       LOG(ERROR) << ew << " in oneway function list_EnumReturn";
     }
   }
@@ -1219,11 +1174,9 @@ void ReturnServiceAsyncProcessor::process_structReturn(std::unique_ptr<apache::t
         } else {
           req->sendReply(queue.move());
         }
-      }
-      );
+      });
       return;
-    }
-    else {
+    } else {
       LOG(ERROR) << ex.what() << " in oneway function structReturn";
     }
   }
@@ -1252,7 +1205,7 @@ void ReturnServiceAsyncProcessor::throw_wrapped_structReturn(std::unique_ptr<apa
     return;
   }
   ProtocolOut_ prot;
-   {
+  {
     if (req) {
       LOG(ERROR) << ew << " in function structReturn";
       apache::thrift::TApplicationException x(ew.what().toStdString());
@@ -1262,8 +1215,7 @@ void ReturnServiceAsyncProcessor::throw_wrapped_structReturn(std::unique_ptr<apa
       queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
       req->sendReply(queue.move());
       return;
-    }
-    else {
+    } else {
       LOG(ERROR) << ew << " in oneway function structReturn";
     }
   }
@@ -1297,11 +1249,9 @@ void ReturnServiceAsyncProcessor::process_set_StructReturn(std::unique_ptr<apach
         } else {
           req->sendReply(queue.move());
         }
-      }
-      );
+      });
       return;
-    }
-    else {
+    } else {
       LOG(ERROR) << ex.what() << " in oneway function set_StructReturn";
     }
   }
@@ -1330,7 +1280,7 @@ void ReturnServiceAsyncProcessor::throw_wrapped_set_StructReturn(std::unique_ptr
     return;
   }
   ProtocolOut_ prot;
-   {
+  {
     if (req) {
       LOG(ERROR) << ew << " in function set_StructReturn";
       apache::thrift::TApplicationException x(ew.what().toStdString());
@@ -1340,8 +1290,7 @@ void ReturnServiceAsyncProcessor::throw_wrapped_set_StructReturn(std::unique_ptr
       queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
       req->sendReply(queue.move());
       return;
-    }
-    else {
+    } else {
       LOG(ERROR) << ew << " in oneway function set_StructReturn";
     }
   }
@@ -1370,11 +1319,9 @@ void ReturnServiceAsyncProcessor::process_unionReturn(std::unique_ptr<apache::th
         } else {
           req->sendReply(queue.move());
         }
-      }
-      );
+      });
       return;
-    }
-    else {
+    } else {
       LOG(ERROR) << ex.what() << " in oneway function unionReturn";
     }
   }
@@ -1399,7 +1346,7 @@ void ReturnServiceAsyncProcessor::throw_wrapped_unionReturn(std::unique_ptr<apac
     return;
   }
   ProtocolOut_ prot;
-   {
+  {
     if (req) {
       LOG(ERROR) << ew << " in function unionReturn";
       apache::thrift::TApplicationException x(ew.what().toStdString());
@@ -1409,8 +1356,7 @@ void ReturnServiceAsyncProcessor::throw_wrapped_unionReturn(std::unique_ptr<apac
       queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
       req->sendReply(queue.move());
       return;
-    }
-    else {
+    } else {
       LOG(ERROR) << ew << " in oneway function unionReturn";
     }
   }
@@ -1444,11 +1390,9 @@ void ReturnServiceAsyncProcessor::process_list_UnionReturn(std::unique_ptr<apach
         } else {
           req->sendReply(queue.move());
         }
-      }
-      );
+      });
       return;
-    }
-    else {
+    } else {
       LOG(ERROR) << ex.what() << " in oneway function list_UnionReturn";
     }
   }
@@ -1477,7 +1421,7 @@ void ReturnServiceAsyncProcessor::throw_wrapped_list_UnionReturn(std::unique_ptr
     return;
   }
   ProtocolOut_ prot;
-   {
+  {
     if (req) {
       LOG(ERROR) << ew << " in function list_UnionReturn";
       apache::thrift::TApplicationException x(ew.what().toStdString());
@@ -1487,8 +1431,7 @@ void ReturnServiceAsyncProcessor::throw_wrapped_list_UnionReturn(std::unique_ptr
       queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
       req->sendReply(queue.move());
       return;
-    }
-    else {
+    } else {
       LOG(ERROR) << ew << " in oneway function list_UnionReturn";
     }
   }
@@ -1519,11 +1462,9 @@ void ReturnServiceAsyncProcessor::process_readDataEb(std::unique_ptr<apache::thr
         } else {
           req->sendReply(queue.move());
         }
-      }
-      );
+      });
       return;
-    }
-    else {
+    } else {
       LOG(ERROR) << ex.what() << " in oneway function readDataEb";
     }
   }
@@ -1548,7 +1489,7 @@ void ReturnServiceAsyncProcessor::throw_wrapped_readDataEb(std::unique_ptr<apach
     return;
   }
   ProtocolOut_ prot;
-   {
+  {
     if (req) {
       LOG(ERROR) << ew << " in function readDataEb";
       apache::thrift::TApplicationException x(ew.what().toStdString());
@@ -1558,8 +1499,7 @@ void ReturnServiceAsyncProcessor::throw_wrapped_readDataEb(std::unique_ptr<apach
       queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
       req->sendReply(queue.move());
       return;
-    }
-    else {
+    } else {
       LOG(ERROR) << ew << " in oneway function readDataEb";
     }
   }
@@ -1595,11 +1535,9 @@ void ReturnServiceAsyncProcessor::process_readData(std::unique_ptr<apache::thrif
         } else {
           req->sendReply(queue.move());
         }
-      }
-      );
+      });
       return;
-    }
-    else {
+    } else {
       LOG(ERROR) << ex.what() << " in oneway function readData";
     }
   }
@@ -1628,7 +1566,7 @@ void ReturnServiceAsyncProcessor::throw_wrapped_readData(std::unique_ptr<apache:
     return;
   }
   ProtocolOut_ prot;
-   {
+  {
     if (req) {
       LOG(ERROR) << ew << " in function readData";
       apache::thrift::TApplicationException x(ew.what().toStdString());
@@ -1638,8 +1576,7 @@ void ReturnServiceAsyncProcessor::throw_wrapped_readData(std::unique_ptr<apache:
       queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
       req->sendReply(queue.move());
       return;
-    }
-    else {
+    } else {
       LOG(ERROR) << ew << " in oneway function readData";
     }
   }

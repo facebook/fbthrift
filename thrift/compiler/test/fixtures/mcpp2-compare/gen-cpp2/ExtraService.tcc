@@ -53,11 +53,9 @@ void ExtraServiceAsyncProcessor::process_simple_function(std::unique_ptr<apache:
         } else {
           req->sendReply(queue.move());
         }
-      }
-      );
+      });
       return;
-    }
-    else {
+    } else {
       LOG(ERROR) << ex.what() << " in oneway function simple_function";
     }
   }
@@ -82,7 +80,7 @@ void ExtraServiceAsyncProcessor::throw_wrapped_simple_function(std::unique_ptr<a
     return;
   }
   ProtocolOut_ prot;
-   {
+  {
     if (req) {
       LOG(ERROR) << ew << " in function simple_function";
       apache::thrift::TApplicationException x(ew.what().toStdString());
@@ -92,8 +90,7 @@ void ExtraServiceAsyncProcessor::throw_wrapped_simple_function(std::unique_ptr<a
       queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
       req->sendReply(queue.move());
       return;
-    }
-    else {
+    } else {
       LOG(ERROR) << ew << " in oneway function simple_function";
     }
   }
@@ -122,11 +119,9 @@ void ExtraServiceAsyncProcessor::process_throws_function(std::unique_ptr<apache:
         } else {
           req->sendReply(queue.move());
         }
-      }
-      );
+      });
       return;
-    }
-    else {
+    } else {
       LOG(ERROR) << ex.what() << " in oneway function throws_function";
     }
   }
@@ -162,7 +157,7 @@ void ExtraServiceAsyncProcessor::throw_wrapped_throws_function(std::unique_ptr<a
     result.setIsSet(1, true);
   }
   )) {} else
-   {
+  {
     if (req) {
       LOG(ERROR) << ew << " in function throws_function";
       apache::thrift::TApplicationException x(ew.what().toStdString());
@@ -172,8 +167,7 @@ void ExtraServiceAsyncProcessor::throw_wrapped_throws_function(std::unique_ptr<a
       queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
       req->sendReply(queue.move());
       return;
-    }
-    else {
+    } else {
       LOG(ERROR) << ew << " in oneway function throws_function";
     }
   }
@@ -207,11 +201,9 @@ void ExtraServiceAsyncProcessor::process_throws_function2(std::unique_ptr<apache
         } else {
           req->sendReply(queue.move());
         }
-      }
-      );
+      });
       return;
-    }
-    else {
+    } else {
       LOG(ERROR) << ex.what() << " in oneway function throws_function2";
     }
   }
@@ -249,7 +241,7 @@ void ExtraServiceAsyncProcessor::throw_wrapped_throws_function2(std::unique_ptr<
     result.setIsSet(2, true);
   }
   )) {} else
-   {
+  {
     if (req) {
       LOG(ERROR) << ew << " in function throws_function2";
       apache::thrift::TApplicationException x(ew.what().toStdString());
@@ -259,8 +251,7 @@ void ExtraServiceAsyncProcessor::throw_wrapped_throws_function2(std::unique_ptr<
       queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
       req->sendReply(queue.move());
       return;
-    }
-    else {
+    } else {
       LOG(ERROR) << ew << " in oneway function throws_function2";
     }
   }
@@ -296,11 +287,9 @@ void ExtraServiceAsyncProcessor::process_throws_function3(std::unique_ptr<apache
         } else {
           req->sendReply(queue.move());
         }
-      }
-      );
+      });
       return;
-    }
-    else {
+    } else {
       LOG(ERROR) << ex.what() << " in oneway function throws_function3";
     }
   }
@@ -338,7 +327,7 @@ void ExtraServiceAsyncProcessor::throw_wrapped_throws_function3(std::unique_ptr<
     result.setIsSet(2, true);
   }
   )) {} else
-   {
+  {
     if (req) {
       LOG(ERROR) << ew << " in function throws_function3";
       apache::thrift::TApplicationException x(ew.what().toStdString());
@@ -348,8 +337,7 @@ void ExtraServiceAsyncProcessor::throw_wrapped_throws_function3(std::unique_ptr<
       queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
       req->sendReply(queue.move());
       return;
-    }
-    else {
+    } else {
       LOG(ERROR) << ew << " in oneway function throws_function3";
     }
   }

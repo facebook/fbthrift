@@ -54,11 +54,9 @@ void MyServiceAsyncProcessor::process_hasDataById(std::unique_ptr<apache::thrift
         } else {
           req->sendReply(queue.move());
         }
-      }
-      );
+      });
       return;
-    }
-    else {
+    } else {
       LOG(ERROR) << ex.what() << " in oneway function hasDataById";
     }
   }
@@ -87,7 +85,7 @@ void MyServiceAsyncProcessor::throw_wrapped_hasDataById(std::unique_ptr<apache::
     return;
   }
   ProtocolOut_ prot;
-   {
+  {
     if (req) {
       LOG(ERROR) << ew << " in function hasDataById";
       apache::thrift::TApplicationException x(ew.what().toStdString());
@@ -97,8 +95,7 @@ void MyServiceAsyncProcessor::throw_wrapped_hasDataById(std::unique_ptr<apache::
       queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
       req->sendReply(queue.move());
       return;
-    }
-    else {
+    } else {
       LOG(ERROR) << ew << " in oneway function hasDataById";
     }
   }
@@ -134,11 +131,9 @@ void MyServiceAsyncProcessor::process_getDataById(std::unique_ptr<apache::thrift
         } else {
           req->sendReply(queue.move());
         }
-      }
-      );
+      });
       return;
-    }
-    else {
+    } else {
       LOG(ERROR) << ex.what() << " in oneway function getDataById";
     }
   }
@@ -167,7 +162,7 @@ void MyServiceAsyncProcessor::throw_wrapped_getDataById(std::unique_ptr<apache::
     return;
   }
   ProtocolOut_ prot;
-   {
+  {
     if (req) {
       LOG(ERROR) << ew << " in function getDataById";
       apache::thrift::TApplicationException x(ew.what().toStdString());
@@ -177,8 +172,7 @@ void MyServiceAsyncProcessor::throw_wrapped_getDataById(std::unique_ptr<apache::
       queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
       req->sendReply(queue.move());
       return;
-    }
-    else {
+    } else {
       LOG(ERROR) << ew << " in oneway function getDataById";
     }
   }
@@ -216,11 +210,9 @@ void MyServiceAsyncProcessor::process_putDataById(std::unique_ptr<apache::thrift
         } else {
           req->sendReply(queue.move());
         }
-      }
-      );
+      });
       return;
-    }
-    else {
+    } else {
       LOG(ERROR) << ex.what() << " in oneway function putDataById";
     }
   }
@@ -247,7 +239,7 @@ void MyServiceAsyncProcessor::throw_wrapped_putDataById(std::unique_ptr<apache::
     return;
   }
   ProtocolOut_ prot;
-   {
+  {
     if (req) {
       LOG(ERROR) << ew << " in function putDataById";
       apache::thrift::TApplicationException x(ew.what().toStdString());
@@ -257,8 +249,7 @@ void MyServiceAsyncProcessor::throw_wrapped_putDataById(std::unique_ptr<apache::
       queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
       req->sendReply(queue.move());
       return;
-    }
-    else {
+    } else {
       LOG(ERROR) << ew << " in oneway function putDataById";
     }
   }

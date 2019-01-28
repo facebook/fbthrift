@@ -47,11 +47,9 @@ void MyRootAsyncProcessor::process_do_root(std::unique_ptr<apache::thrift::Respo
         } else {
           req->sendReply(queue.move());
         }
-      }
-      );
+      });
       return;
-    }
-    else {
+    } else {
       LOG(ERROR) << ex.what() << " in oneway function do_root";
     }
   }
@@ -78,7 +76,7 @@ void MyRootAsyncProcessor::throw_wrapped_do_root(std::unique_ptr<apache::thrift:
     return;
   }
   ProtocolOut_ prot;
-   {
+  {
     if (req) {
       LOG(ERROR) << ew << " in function do_root";
       apache::thrift::TApplicationException x(ew.what().toStdString());
@@ -88,8 +86,7 @@ void MyRootAsyncProcessor::throw_wrapped_do_root(std::unique_ptr<apache::thrift:
       queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
       req->sendReply(queue.move());
       return;
-    }
-    else {
+    } else {
       LOG(ERROR) << ew << " in oneway function do_root";
     }
   }

@@ -87,11 +87,9 @@ void PubSubStreamingServiceAsyncProcessor::process_returnstream(std::unique_ptr<
         } else {
           req->sendReply(queue.move());
         }
-      }
-      );
+      });
       return;
-    }
-    else {
+    } else {
       LOG(ERROR) << ex.what() << " in oneway function returnstream";
     }
   }
@@ -126,7 +124,7 @@ void PubSubStreamingServiceAsyncProcessor::throw_wrapped_returnstream(std::uniqu
     return;
   }
   ProtocolOut_ prot;
-   {
+  {
     if (req) {
       LOG(ERROR) << ew << " in function returnstream";
       apache::thrift::TApplicationException x(ew.what().toStdString());
@@ -136,8 +134,7 @@ void PubSubStreamingServiceAsyncProcessor::throw_wrapped_returnstream(std::uniqu
       queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
       req->sendStreamReply({queue.move(), {}});
       return;
-    }
-    else {
+    } else {
       LOG(ERROR) << ew << " in oneway function returnstream";
     }
   }
@@ -173,11 +170,9 @@ void PubSubStreamingServiceAsyncProcessor::process_takesstream(std::unique_ptr<a
         } else {
           req->sendReply(queue.move());
         }
-      }
-      );
+      });
       return;
-    }
-    else {
+    } else {
       LOG(ERROR) << ex.what() << " in oneway function takesstream";
     }
   }
@@ -207,7 +202,7 @@ void PubSubStreamingServiceAsyncProcessor::throw_wrapped_takesstream(std::unique
     return;
   }
   ProtocolOut_ prot;
-   {
+  {
     if (req) {
       LOG(ERROR) << ew << " in function takesstream";
       apache::thrift::TApplicationException x(ew.what().toStdString());
@@ -217,8 +212,7 @@ void PubSubStreamingServiceAsyncProcessor::throw_wrapped_takesstream(std::unique
       queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
       req->sendReply(queue.move());
       return;
-    }
-    else {
+    } else {
       LOG(ERROR) << ew << " in oneway function takesstream";
     }
   }
@@ -254,11 +248,9 @@ void PubSubStreamingServiceAsyncProcessor::process_different(std::unique_ptr<apa
         } else {
           req->sendReply(queue.move());
         }
-      }
-      );
+      });
       return;
-    }
-    else {
+    } else {
       LOG(ERROR) << ex.what() << " in oneway function different";
     }
   }
@@ -296,7 +288,7 @@ void PubSubStreamingServiceAsyncProcessor::throw_wrapped_different(std::unique_p
     return;
   }
   ProtocolOut_ prot;
-   {
+  {
     if (req) {
       LOG(ERROR) << ew << " in function different";
       apache::thrift::TApplicationException x(ew.what().toStdString());
@@ -306,8 +298,7 @@ void PubSubStreamingServiceAsyncProcessor::throw_wrapped_different(std::unique_p
       queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
       req->sendStreamReply({queue.move(), {}});
       return;
-    }
-    else {
+    } else {
       LOG(ERROR) << ew << " in oneway function different";
     }
   }
@@ -341,11 +332,9 @@ void PubSubStreamingServiceAsyncProcessor::process_normalthrows(std::unique_ptr<
         } else {
           req->sendReply(queue.move());
         }
-      }
-      );
+      });
       return;
-    }
-    else {
+    } else {
       LOG(ERROR) << ex.what() << " in oneway function normalthrows";
     }
   }
@@ -382,7 +371,7 @@ void PubSubStreamingServiceAsyncProcessor::throw_wrapped_normalthrows(std::uniqu
     result.setIsSet(0, true);
   }
   )) {} else
-   {
+  {
     if (req) {
       LOG(ERROR) << ew << " in function normalthrows";
       apache::thrift::TApplicationException x(ew.what().toStdString());
@@ -392,8 +381,7 @@ void PubSubStreamingServiceAsyncProcessor::throw_wrapped_normalthrows(std::uniqu
       queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
       req->sendReply(queue.move());
       return;
-    }
-    else {
+    } else {
       LOG(ERROR) << ew << " in oneway function normalthrows";
     }
   }
@@ -432,11 +420,9 @@ void PubSubStreamingServiceAsyncProcessor::process_streamthrows(std::unique_ptr<
         } else {
           req->sendReply(queue.move());
         }
-      }
-      );
+      });
       return;
-    }
-    else {
+    } else {
       LOG(ERROR) << ex.what() << " in oneway function streamthrows";
     }
   }
@@ -477,7 +463,7 @@ void PubSubStreamingServiceAsyncProcessor::throw_wrapped_streamthrows(std::uniqu
     return;
   }
   ProtocolOut_ prot;
-   {
+  {
     if (req) {
       LOG(ERROR) << ew << " in function streamthrows";
       apache::thrift::TApplicationException x(ew.what().toStdString());
@@ -487,8 +473,7 @@ void PubSubStreamingServiceAsyncProcessor::throw_wrapped_streamthrows(std::uniqu
       queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
       req->sendStreamReply({queue.move(), {}});
       return;
-    }
-    else {
+    } else {
       LOG(ERROR) << ew << " in oneway function streamthrows";
     }
   }
@@ -524,11 +509,9 @@ void PubSubStreamingServiceAsyncProcessor::process_boththrows(std::unique_ptr<ap
         } else {
           req->sendReply(queue.move());
         }
-      }
-      );
+      });
       return;
-    }
-    else {
+    } else {
       LOG(ERROR) << ex.what() << " in oneway function boththrows";
     }
   }
@@ -576,7 +559,7 @@ void PubSubStreamingServiceAsyncProcessor::throw_wrapped_boththrows(std::unique_
     result.fields.setIsSet(0, true);
   }
   )) {} else
-   {
+  {
     if (req) {
       LOG(ERROR) << ew << " in function boththrows";
       apache::thrift::TApplicationException x(ew.what().toStdString());
@@ -586,8 +569,7 @@ void PubSubStreamingServiceAsyncProcessor::throw_wrapped_boththrows(std::unique_
       queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
       req->sendStreamReply({queue.move(), {}});
       return;
-    }
-    else {
+    } else {
       LOG(ERROR) << ew << " in oneway function boththrows";
     }
   }
@@ -626,11 +608,9 @@ void PubSubStreamingServiceAsyncProcessor::process_responseandstreamthrows(std::
         } else {
           req->sendReply(queue.move());
         }
-      }
-      );
+      });
       return;
-    }
-    else {
+    } else {
       LOG(ERROR) << ex.what() << " in oneway function responseandstreamthrows";
     }
   }
@@ -680,7 +660,7 @@ void PubSubStreamingServiceAsyncProcessor::throw_wrapped_responseandstreamthrows
     result.fields.setIsSet(1, true);
   }
   )) {} else
-   {
+  {
     if (req) {
       LOG(ERROR) << ew << " in function responseandstreamthrows";
       apache::thrift::TApplicationException x(ew.what().toStdString());
@@ -690,8 +670,7 @@ void PubSubStreamingServiceAsyncProcessor::throw_wrapped_responseandstreamthrows
       queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
       req->sendStreamReply({queue.move(), {}});
       return;
-    }
-    else {
+    } else {
       LOG(ERROR) << ew << " in oneway function responseandstreamthrows";
     }
   }

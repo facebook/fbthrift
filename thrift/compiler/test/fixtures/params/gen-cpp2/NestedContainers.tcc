@@ -57,11 +57,9 @@ void NestedContainersAsyncProcessor::process_mapList(std::unique_ptr<apache::thr
         } else {
           req->sendReply(queue.move());
         }
-      }
-      );
+      });
       return;
-    }
-    else {
+    } else {
       LOG(ERROR) << ex.what() << " in oneway function mapList";
     }
   }
@@ -88,7 +86,7 @@ void NestedContainersAsyncProcessor::throw_wrapped_mapList(std::unique_ptr<apach
     return;
   }
   ProtocolOut_ prot;
-   {
+  {
     if (req) {
       LOG(ERROR) << ew << " in function mapList";
       apache::thrift::TApplicationException x(ew.what().toStdString());
@@ -98,8 +96,7 @@ void NestedContainersAsyncProcessor::throw_wrapped_mapList(std::unique_ptr<apach
       queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
       req->sendReply(queue.move());
       return;
-    }
-    else {
+    } else {
       LOG(ERROR) << ew << " in oneway function mapList";
     }
   }
@@ -135,11 +132,9 @@ void NestedContainersAsyncProcessor::process_mapSet(std::unique_ptr<apache::thri
         } else {
           req->sendReply(queue.move());
         }
-      }
-      );
+      });
       return;
-    }
-    else {
+    } else {
       LOG(ERROR) << ex.what() << " in oneway function mapSet";
     }
   }
@@ -166,7 +161,7 @@ void NestedContainersAsyncProcessor::throw_wrapped_mapSet(std::unique_ptr<apache
     return;
   }
   ProtocolOut_ prot;
-   {
+  {
     if (req) {
       LOG(ERROR) << ew << " in function mapSet";
       apache::thrift::TApplicationException x(ew.what().toStdString());
@@ -176,8 +171,7 @@ void NestedContainersAsyncProcessor::throw_wrapped_mapSet(std::unique_ptr<apache
       queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
       req->sendReply(queue.move());
       return;
-    }
-    else {
+    } else {
       LOG(ERROR) << ew << " in oneway function mapSet";
     }
   }
@@ -213,11 +207,9 @@ void NestedContainersAsyncProcessor::process_listMap(std::unique_ptr<apache::thr
         } else {
           req->sendReply(queue.move());
         }
-      }
-      );
+      });
       return;
-    }
-    else {
+    } else {
       LOG(ERROR) << ex.what() << " in oneway function listMap";
     }
   }
@@ -244,7 +236,7 @@ void NestedContainersAsyncProcessor::throw_wrapped_listMap(std::unique_ptr<apach
     return;
   }
   ProtocolOut_ prot;
-   {
+  {
     if (req) {
       LOG(ERROR) << ew << " in function listMap";
       apache::thrift::TApplicationException x(ew.what().toStdString());
@@ -254,8 +246,7 @@ void NestedContainersAsyncProcessor::throw_wrapped_listMap(std::unique_ptr<apach
       queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
       req->sendReply(queue.move());
       return;
-    }
-    else {
+    } else {
       LOG(ERROR) << ew << " in oneway function listMap";
     }
   }
@@ -291,11 +282,9 @@ void NestedContainersAsyncProcessor::process_listSet(std::unique_ptr<apache::thr
         } else {
           req->sendReply(queue.move());
         }
-      }
-      );
+      });
       return;
-    }
-    else {
+    } else {
       LOG(ERROR) << ex.what() << " in oneway function listSet";
     }
   }
@@ -322,7 +311,7 @@ void NestedContainersAsyncProcessor::throw_wrapped_listSet(std::unique_ptr<apach
     return;
   }
   ProtocolOut_ prot;
-   {
+  {
     if (req) {
       LOG(ERROR) << ew << " in function listSet";
       apache::thrift::TApplicationException x(ew.what().toStdString());
@@ -332,8 +321,7 @@ void NestedContainersAsyncProcessor::throw_wrapped_listSet(std::unique_ptr<apach
       queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
       req->sendReply(queue.move());
       return;
-    }
-    else {
+    } else {
       LOG(ERROR) << ew << " in oneway function listSet";
     }
   }
@@ -369,11 +357,9 @@ void NestedContainersAsyncProcessor::process_turtles(std::unique_ptr<apache::thr
         } else {
           req->sendReply(queue.move());
         }
-      }
-      );
+      });
       return;
-    }
-    else {
+    } else {
       LOG(ERROR) << ex.what() << " in oneway function turtles";
     }
   }
@@ -400,7 +386,7 @@ void NestedContainersAsyncProcessor::throw_wrapped_turtles(std::unique_ptr<apach
     return;
   }
   ProtocolOut_ prot;
-   {
+  {
     if (req) {
       LOG(ERROR) << ew << " in function turtles";
       apache::thrift::TApplicationException x(ew.what().toStdString());
@@ -410,8 +396,7 @@ void NestedContainersAsyncProcessor::throw_wrapped_turtles(std::unique_ptr<apach
       queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
       req->sendReply(queue.move());
       return;
-    }
-    else {
+    } else {
       LOG(ERROR) << ew << " in oneway function turtles";
     }
   }

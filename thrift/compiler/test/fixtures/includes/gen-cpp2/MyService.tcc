@@ -53,11 +53,9 @@ void MyServiceAsyncProcessor::process_query(std::unique_ptr<apache::thrift::Resp
         } else {
           req->sendReply(queue.move());
         }
-      }
-      );
+      });
       return;
-    }
-    else {
+    } else {
       LOG(ERROR) << ex.what() << " in oneway function query";
     }
   }
@@ -84,7 +82,7 @@ void MyServiceAsyncProcessor::throw_wrapped_query(std::unique_ptr<apache::thrift
     return;
   }
   ProtocolOut_ prot;
-   {
+  {
     if (req) {
       LOG(ERROR) << ew << " in function query";
       apache::thrift::TApplicationException x(ew.what().toStdString());
@@ -94,8 +92,7 @@ void MyServiceAsyncProcessor::throw_wrapped_query(std::unique_ptr<apache::thrift
       queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
       req->sendReply(queue.move());
       return;
-    }
-    else {
+    } else {
       LOG(ERROR) << ew << " in oneway function query";
     }
   }
@@ -133,11 +130,9 @@ void MyServiceAsyncProcessor::process_has_arg_docs(std::unique_ptr<apache::thrif
         } else {
           req->sendReply(queue.move());
         }
-      }
-      );
+      });
       return;
-    }
-    else {
+    } else {
       LOG(ERROR) << ex.what() << " in oneway function has_arg_docs";
     }
   }
@@ -164,7 +159,7 @@ void MyServiceAsyncProcessor::throw_wrapped_has_arg_docs(std::unique_ptr<apache:
     return;
   }
   ProtocolOut_ prot;
-   {
+  {
     if (req) {
       LOG(ERROR) << ew << " in function has_arg_docs";
       apache::thrift::TApplicationException x(ew.what().toStdString());
@@ -174,8 +169,7 @@ void MyServiceAsyncProcessor::throw_wrapped_has_arg_docs(std::unique_ptr<apache:
       queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
       req->sendReply(queue.move());
       return;
-    }
-    else {
+    } else {
       LOG(ERROR) << ew << " in oneway function has_arg_docs";
     }
   }

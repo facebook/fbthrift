@@ -47,11 +47,9 @@ void CAsyncProcessor::process_f(std::unique_ptr<apache::thrift::ResponseChannelR
         } else {
           req->sendReply(queue.move());
         }
-      }
-      );
+      });
       return;
-    }
-    else {
+    } else {
       LOG(ERROR) << ex.what() << " in oneway function f";
     }
   }
@@ -78,7 +76,7 @@ void CAsyncProcessor::throw_wrapped_f(std::unique_ptr<apache::thrift::ResponseCh
     return;
   }
   ProtocolOut_ prot;
-   {
+  {
     if (req) {
       LOG(ERROR) << ew << " in function f";
       apache::thrift::TApplicationException x(ew.what().toStdString());
@@ -88,8 +86,7 @@ void CAsyncProcessor::throw_wrapped_f(std::unique_ptr<apache::thrift::ResponseCh
       queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
       req->sendReply(queue.move());
       return;
-    }
-    else {
+    } else {
       LOG(ERROR) << ew << " in oneway function f";
     }
   }

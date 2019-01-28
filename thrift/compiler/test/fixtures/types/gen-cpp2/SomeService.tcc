@@ -51,11 +51,9 @@ void SomeServiceAsyncProcessor::process_bounce_map(std::unique_ptr<apache::thrif
         } else {
           req->sendReply(queue.move());
         }
-      }
-      );
+      });
       return;
-    }
-    else {
+    } else {
       LOG(ERROR) << ex.what() << " in oneway function bounce_map";
     }
   }
@@ -84,7 +82,7 @@ void SomeServiceAsyncProcessor::throw_wrapped_bounce_map(std::unique_ptr<apache:
     return;
   }
   ProtocolOut_ prot;
-   {
+  {
     if (req) {
       LOG(ERROR) << ew << " in function bounce_map";
       apache::thrift::TApplicationException x(ew.what().toStdString());
@@ -94,8 +92,7 @@ void SomeServiceAsyncProcessor::throw_wrapped_bounce_map(std::unique_ptr<apache:
       queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
       req->sendReply(queue.move());
       return;
-    }
-    else {
+    } else {
       LOG(ERROR) << ew << " in oneway function bounce_map";
     }
   }
@@ -131,11 +128,9 @@ void SomeServiceAsyncProcessor::process_binary_keyed_map(std::unique_ptr<apache:
         } else {
           req->sendReply(queue.move());
         }
-      }
-      );
+      });
       return;
-    }
-    else {
+    } else {
       LOG(ERROR) << ex.what() << " in oneway function binary_keyed_map";
     }
   }
@@ -164,7 +159,7 @@ void SomeServiceAsyncProcessor::throw_wrapped_binary_keyed_map(std::unique_ptr<a
     return;
   }
   ProtocolOut_ prot;
-   {
+  {
     if (req) {
       LOG(ERROR) << ew << " in function binary_keyed_map";
       apache::thrift::TApplicationException x(ew.what().toStdString());
@@ -174,8 +169,7 @@ void SomeServiceAsyncProcessor::throw_wrapped_binary_keyed_map(std::unique_ptr<a
       queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
       req->sendReply(queue.move());
       return;
-    }
-    else {
+    } else {
       LOG(ERROR) << ew << " in oneway function binary_keyed_map";
     }
   }

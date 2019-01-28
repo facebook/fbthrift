@@ -57,11 +57,9 @@ void service2AsyncProcessor::process_methodA(std::unique_ptr<apache::thrift::Res
         } else {
           req->sendReply(queue.move());
         }
-      }
-      );
+      });
       return;
-    }
-    else {
+    } else {
       LOG(ERROR) << ex.what() << " in oneway function methodA";
     }
   }
@@ -88,7 +86,7 @@ void service2AsyncProcessor::throw_wrapped_methodA(std::unique_ptr<apache::thrif
     return;
   }
   ProtocolOut_ prot;
-   {
+  {
     if (req) {
       LOG(ERROR) << ew << " in function methodA";
       apache::thrift::TApplicationException x(ew.what().toStdString());
@@ -98,8 +96,7 @@ void service2AsyncProcessor::throw_wrapped_methodA(std::unique_ptr<apache::thrif
       queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
       req->sendReply(queue.move());
       return;
-    }
-    else {
+    } else {
       LOG(ERROR) << ew << " in oneway function methodA";
     }
   }
@@ -139,11 +136,9 @@ void service2AsyncProcessor::process_methodB(std::unique_ptr<apache::thrift::Res
         } else {
           req->sendReply(queue.move());
         }
-      }
-      );
+      });
       return;
-    }
-    else {
+    } else {
       LOG(ERROR) << ex.what() << " in oneway function methodB";
     }
   }
@@ -170,7 +165,7 @@ void service2AsyncProcessor::throw_wrapped_methodB(std::unique_ptr<apache::thrif
     return;
   }
   ProtocolOut_ prot;
-   {
+  {
     if (req) {
       LOG(ERROR) << ew << " in function methodB";
       apache::thrift::TApplicationException x(ew.what().toStdString());
@@ -180,8 +175,7 @@ void service2AsyncProcessor::throw_wrapped_methodB(std::unique_ptr<apache::thrif
       queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
       req->sendReply(queue.move());
       return;
-    }
-    else {
+    } else {
       LOG(ERROR) << ew << " in oneway function methodB";
     }
   }
@@ -215,11 +209,9 @@ void service2AsyncProcessor::process_methodC(std::unique_ptr<apache::thrift::Res
         } else {
           req->sendReply(queue.move());
         }
-      }
-      );
+      });
       return;
-    }
-    else {
+    } else {
       LOG(ERROR) << ex.what() << " in oneway function methodC";
     }
   }
@@ -248,7 +240,7 @@ void service2AsyncProcessor::throw_wrapped_methodC(std::unique_ptr<apache::thrif
     return;
   }
   ProtocolOut_ prot;
-   {
+  {
     if (req) {
       LOG(ERROR) << ew << " in function methodC";
       apache::thrift::TApplicationException x(ew.what().toStdString());
@@ -258,8 +250,7 @@ void service2AsyncProcessor::throw_wrapped_methodC(std::unique_ptr<apache::thrif
       queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
       req->sendReply(queue.move());
       return;
-    }
-    else {
+    } else {
       LOG(ERROR) << ew << " in oneway function methodC";
     }
   }
@@ -299,11 +290,9 @@ void service2AsyncProcessor::process_methodD(std::unique_ptr<apache::thrift::Res
         } else {
           req->sendReply(queue.move());
         }
-      }
-      );
+      });
       return;
-    }
-    else {
+    } else {
       LOG(ERROR) << ex.what() << " in oneway function methodD";
     }
   }
@@ -332,7 +321,7 @@ void service2AsyncProcessor::throw_wrapped_methodD(std::unique_ptr<apache::thrif
     return;
   }
   ProtocolOut_ prot;
-   {
+  {
     if (req) {
       LOG(ERROR) << ew << " in function methodD";
       apache::thrift::TApplicationException x(ew.what().toStdString());
@@ -342,8 +331,7 @@ void service2AsyncProcessor::throw_wrapped_methodD(std::unique_ptr<apache::thrif
       queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
       req->sendReply(queue.move());
       return;
-    }
-    else {
+    } else {
       LOG(ERROR) << ew << " in oneway function methodD";
     }
   }
@@ -377,11 +365,9 @@ void service2AsyncProcessor::process_methodE(std::unique_ptr<apache::thrift::Res
         } else {
           req->sendReply(queue.move());
         }
-      }
-      );
+      });
       return;
-    }
-    else {
+    } else {
       LOG(ERROR) << ex.what() << " in oneway function methodE";
     }
   }
@@ -410,7 +396,7 @@ void service2AsyncProcessor::throw_wrapped_methodE(std::unique_ptr<apache::thrif
     return;
   }
   ProtocolOut_ prot;
-   {
+  {
     if (req) {
       LOG(ERROR) << ew << " in function methodE";
       apache::thrift::TApplicationException x(ew.what().toStdString());
@@ -420,8 +406,7 @@ void service2AsyncProcessor::throw_wrapped_methodE(std::unique_ptr<apache::thrif
       queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
       req->sendReply(queue.move());
       return;
-    }
-    else {
+    } else {
       LOG(ERROR) << ew << " in oneway function methodE";
     }
   }
@@ -461,11 +446,9 @@ void service2AsyncProcessor::process_methodF(std::unique_ptr<apache::thrift::Res
         } else {
           req->sendReply(queue.move());
         }
-      }
-      );
+      });
       return;
-    }
-    else {
+    } else {
       LOG(ERROR) << ex.what() << " in oneway function methodF";
     }
   }
@@ -494,7 +477,7 @@ void service2AsyncProcessor::throw_wrapped_methodF(std::unique_ptr<apache::thrif
     return;
   }
   ProtocolOut_ prot;
-   {
+  {
     if (req) {
       LOG(ERROR) << ew << " in function methodF";
       apache::thrift::TApplicationException x(ew.what().toStdString());
@@ -504,8 +487,7 @@ void service2AsyncProcessor::throw_wrapped_methodF(std::unique_ptr<apache::thrif
       queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
       req->sendReply(queue.move());
       return;
-    }
-    else {
+    } else {
       LOG(ERROR) << ew << " in oneway function methodF";
     }
   }

@@ -47,11 +47,9 @@ void MyServicePrioChildAsyncProcessor::process_pang(std::unique_ptr<apache::thri
         } else {
           req->sendReply(queue.move());
         }
-      }
-      );
+      });
       return;
-    }
-    else {
+    } else {
       LOG(ERROR) << ex.what() << " in oneway function pang";
     }
   }
@@ -78,7 +76,7 @@ void MyServicePrioChildAsyncProcessor::throw_wrapped_pang(std::unique_ptr<apache
     return;
   }
   ProtocolOut_ prot;
-   {
+  {
     if (req) {
       LOG(ERROR) << ew << " in function pang";
       apache::thrift::TApplicationException x(ew.what().toStdString());
@@ -88,8 +86,7 @@ void MyServicePrioChildAsyncProcessor::throw_wrapped_pang(std::unique_ptr<apache
       queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
       req->sendReply(queue.move());
       return;
-    }
-    else {
+    } else {
       LOG(ERROR) << ew << " in oneway function pang";
     }
   }

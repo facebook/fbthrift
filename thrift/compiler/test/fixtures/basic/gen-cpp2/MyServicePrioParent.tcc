@@ -49,11 +49,9 @@ void MyServicePrioParentAsyncProcessor::process_ping(std::unique_ptr<apache::thr
         } else {
           req->sendReply(queue.move());
         }
-      }
-      );
+      });
       return;
-    }
-    else {
+    } else {
       LOG(ERROR) << ex.what() << " in oneway function ping";
     }
   }
@@ -80,7 +78,7 @@ void MyServicePrioParentAsyncProcessor::throw_wrapped_ping(std::unique_ptr<apach
     return;
   }
   ProtocolOut_ prot;
-   {
+  {
     if (req) {
       LOG(ERROR) << ew << " in function ping";
       apache::thrift::TApplicationException x(ew.what().toStdString());
@@ -90,8 +88,7 @@ void MyServicePrioParentAsyncProcessor::throw_wrapped_ping(std::unique_ptr<apach
       queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
       req->sendReply(queue.move());
       return;
-    }
-    else {
+    } else {
       LOG(ERROR) << ew << " in oneway function ping";
     }
   }
@@ -125,11 +122,9 @@ void MyServicePrioParentAsyncProcessor::process_pong(std::unique_ptr<apache::thr
         } else {
           req->sendReply(queue.move());
         }
-      }
-      );
+      });
       return;
-    }
-    else {
+    } else {
       LOG(ERROR) << ex.what() << " in oneway function pong";
     }
   }
@@ -156,7 +151,7 @@ void MyServicePrioParentAsyncProcessor::throw_wrapped_pong(std::unique_ptr<apach
     return;
   }
   ProtocolOut_ prot;
-   {
+  {
     if (req) {
       LOG(ERROR) << ew << " in function pong";
       apache::thrift::TApplicationException x(ew.what().toStdString());
@@ -166,8 +161,7 @@ void MyServicePrioParentAsyncProcessor::throw_wrapped_pong(std::unique_ptr<apach
       queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
       req->sendReply(queue.move());
       return;
-    }
-    else {
+    } else {
       LOG(ERROR) << ew << " in oneway function pong";
     }
   }

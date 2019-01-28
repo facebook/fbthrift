@@ -91,11 +91,9 @@ void <%service:name%>AsyncProcessor::process_<%function:name%>(std::unique_ptr<a
         } else {
           req->sendReply(queue.move());
         }
-      }
-      );
+      });
       return;
-    }
-    else {
+    } else {
       LOG(ERROR) << ex.what() << " in oneway function <%function:name%>";
     }
   }
@@ -253,7 +251,7 @@ void <%service:name%>AsyncProcessor::throw_wrapped_<%function:name%>(std::unique
   }
   )) {} else
 <%/function:exceptions%>
-   {
+  {
     if (req) {
       LOG(ERROR) << ew << " in function <%function:name%>";
       apache::thrift::TApplicationException x(ew.what().toStdString());
@@ -268,8 +266,7 @@ void <%service:name%>AsyncProcessor::throw_wrapped_<%function:name%>(std::unique
       req->sendStreamReply({queue.move(), {}});
       <%/function:returns_stream?%>
       return;
-    }
-    else {
+    } else {
       LOG(ERROR) << ew << " in oneway function <%function:name%>";
     }
   }

@@ -53,11 +53,9 @@ void RaiserAsyncProcessor::process_doBland(std::unique_ptr<apache::thrift::Respo
         } else {
           req->sendReply(queue.move());
         }
-      }
-      );
+      });
       return;
-    }
-    else {
+    } else {
       LOG(ERROR) << ex.what() << " in oneway function doBland";
     }
   }
@@ -84,7 +82,7 @@ void RaiserAsyncProcessor::throw_wrapped_doBland(std::unique_ptr<apache::thrift:
     return;
   }
   ProtocolOut_ prot;
-   {
+  {
     if (req) {
       LOG(ERROR) << ew << " in function doBland";
       apache::thrift::TApplicationException x(ew.what().toStdString());
@@ -94,8 +92,7 @@ void RaiserAsyncProcessor::throw_wrapped_doBland(std::unique_ptr<apache::thrift:
       queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
       req->sendReply(queue.move());
       return;
-    }
-    else {
+    } else {
       LOG(ERROR) << ew << " in oneway function doBland";
     }
   }
@@ -129,11 +126,9 @@ void RaiserAsyncProcessor::process_doRaise(std::unique_ptr<apache::thrift::Respo
         } else {
           req->sendReply(queue.move());
         }
-      }
-      );
+      });
       return;
-    }
-    else {
+    } else {
       LOG(ERROR) << ex.what() << " in oneway function doRaise";
     }
   }
@@ -179,7 +174,7 @@ void RaiserAsyncProcessor::throw_wrapped_doRaise(std::unique_ptr<apache::thrift:
     result.setIsSet(2, true);
   }
   )) {} else
-   {
+  {
     if (req) {
       LOG(ERROR) << ew << " in function doRaise";
       apache::thrift::TApplicationException x(ew.what().toStdString());
@@ -189,8 +184,7 @@ void RaiserAsyncProcessor::throw_wrapped_doRaise(std::unique_ptr<apache::thrift:
       queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
       req->sendReply(queue.move());
       return;
-    }
-    else {
+    } else {
       LOG(ERROR) << ew << " in oneway function doRaise";
     }
   }
@@ -227,11 +221,9 @@ void RaiserAsyncProcessor::process_get200(std::unique_ptr<apache::thrift::Respon
         } else {
           req->sendReply(queue.move());
         }
-      }
-      );
+      });
       return;
-    }
-    else {
+    } else {
       LOG(ERROR) << ex.what() << " in oneway function get200";
     }
   }
@@ -260,7 +252,7 @@ void RaiserAsyncProcessor::throw_wrapped_get200(std::unique_ptr<apache::thrift::
     return;
   }
   ProtocolOut_ prot;
-   {
+  {
     if (req) {
       LOG(ERROR) << ew << " in function get200";
       apache::thrift::TApplicationException x(ew.what().toStdString());
@@ -270,8 +262,7 @@ void RaiserAsyncProcessor::throw_wrapped_get200(std::unique_ptr<apache::thrift::
       queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
       req->sendReply(queue.move());
       return;
-    }
-    else {
+    } else {
       LOG(ERROR) << ew << " in oneway function get200";
     }
   }
@@ -305,11 +296,9 @@ void RaiserAsyncProcessor::process_get500(std::unique_ptr<apache::thrift::Respon
         } else {
           req->sendReply(queue.move());
         }
-      }
-      );
+      });
       return;
-    }
-    else {
+    } else {
       LOG(ERROR) << ex.what() << " in oneway function get500";
     }
   }
@@ -357,7 +346,7 @@ void RaiserAsyncProcessor::throw_wrapped_get500(std::unique_ptr<apache::thrift::
     result.setIsSet(3, true);
   }
   )) {} else
-   {
+  {
     if (req) {
       LOG(ERROR) << ew << " in function get500";
       apache::thrift::TApplicationException x(ew.what().toStdString());
@@ -367,8 +356,7 @@ void RaiserAsyncProcessor::throw_wrapped_get500(std::unique_ptr<apache::thrift::
       queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
       req->sendReply(queue.move());
       return;
-    }
-    else {
+    } else {
       LOG(ERROR) << ew << " in oneway function get500";
     }
   }

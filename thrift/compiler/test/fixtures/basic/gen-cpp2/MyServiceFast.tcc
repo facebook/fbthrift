@@ -51,11 +51,9 @@ void MyServiceFastAsyncProcessor::process_ping(std::unique_ptr<apache::thrift::R
         } else {
           req->sendReply(queue.move());
         }
-      }
-      );
+      });
       return;
-    }
-    else {
+    } else {
       LOG(ERROR) << ex.what() << " in oneway function ping";
     }
   }
@@ -78,7 +76,7 @@ void MyServiceFastAsyncProcessor::throw_wrapped_ping(std::unique_ptr<apache::thr
     return;
   }
   ProtocolOut_ prot;
-   {
+  {
     if (req) {
       LOG(ERROR) << ew << " in function ping";
       apache::thrift::TApplicationException x(ew.what().toStdString());
@@ -88,8 +86,7 @@ void MyServiceFastAsyncProcessor::throw_wrapped_ping(std::unique_ptr<apache::thr
       queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
       req->sendReply(queue.move());
       return;
-    }
-    else {
+    } else {
       LOG(ERROR) << ew << " in oneway function ping";
     }
   }
@@ -118,11 +115,9 @@ void MyServiceFastAsyncProcessor::process_getRandomData(std::unique_ptr<apache::
         } else {
           req->sendReply(queue.move());
         }
-      }
-      );
+      });
       return;
-    }
-    else {
+    } else {
       LOG(ERROR) << ex.what() << " in oneway function getRandomData";
     }
   }
@@ -147,7 +142,7 @@ void MyServiceFastAsyncProcessor::throw_wrapped_getRandomData(std::unique_ptr<ap
     return;
   }
   ProtocolOut_ prot;
-   {
+  {
     if (req) {
       LOG(ERROR) << ew << " in function getRandomData";
       apache::thrift::TApplicationException x(ew.what().toStdString());
@@ -157,8 +152,7 @@ void MyServiceFastAsyncProcessor::throw_wrapped_getRandomData(std::unique_ptr<ap
       queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
       req->sendReply(queue.move());
       return;
-    }
-    else {
+    } else {
       LOG(ERROR) << ew << " in oneway function getRandomData";
     }
   }
@@ -189,11 +183,9 @@ void MyServiceFastAsyncProcessor::process_hasDataById(std::unique_ptr<apache::th
         } else {
           req->sendReply(queue.move());
         }
-      }
-      );
+      });
       return;
-    }
-    else {
+    } else {
       LOG(ERROR) << ex.what() << " in oneway function hasDataById";
     }
   }
@@ -218,7 +210,7 @@ void MyServiceFastAsyncProcessor::throw_wrapped_hasDataById(std::unique_ptr<apac
     return;
   }
   ProtocolOut_ prot;
-   {
+  {
     if (req) {
       LOG(ERROR) << ew << " in function hasDataById";
       apache::thrift::TApplicationException x(ew.what().toStdString());
@@ -228,8 +220,7 @@ void MyServiceFastAsyncProcessor::throw_wrapped_hasDataById(std::unique_ptr<apac
       queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
       req->sendReply(queue.move());
       return;
-    }
-    else {
+    } else {
       LOG(ERROR) << ew << " in oneway function hasDataById";
     }
   }
@@ -260,11 +251,9 @@ void MyServiceFastAsyncProcessor::process_getDataById(std::unique_ptr<apache::th
         } else {
           req->sendReply(queue.move());
         }
-      }
-      );
+      });
       return;
-    }
-    else {
+    } else {
       LOG(ERROR) << ex.what() << " in oneway function getDataById";
     }
   }
@@ -289,7 +278,7 @@ void MyServiceFastAsyncProcessor::throw_wrapped_getDataById(std::unique_ptr<apac
     return;
   }
   ProtocolOut_ prot;
-   {
+  {
     if (req) {
       LOG(ERROR) << ew << " in function getDataById";
       apache::thrift::TApplicationException x(ew.what().toStdString());
@@ -299,8 +288,7 @@ void MyServiceFastAsyncProcessor::throw_wrapped_getDataById(std::unique_ptr<apac
       queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
       req->sendReply(queue.move());
       return;
-    }
-    else {
+    } else {
       LOG(ERROR) << ew << " in oneway function getDataById";
     }
   }
@@ -333,11 +321,9 @@ void MyServiceFastAsyncProcessor::process_putDataById(std::unique_ptr<apache::th
         } else {
           req->sendReply(queue.move());
         }
-      }
-      );
+      });
       return;
-    }
-    else {
+    } else {
       LOG(ERROR) << ex.what() << " in oneway function putDataById";
     }
   }
@@ -360,7 +346,7 @@ void MyServiceFastAsyncProcessor::throw_wrapped_putDataById(std::unique_ptr<apac
     return;
   }
   ProtocolOut_ prot;
-   {
+  {
     if (req) {
       LOG(ERROR) << ew << " in function putDataById";
       apache::thrift::TApplicationException x(ew.what().toStdString());
@@ -370,8 +356,7 @@ void MyServiceFastAsyncProcessor::throw_wrapped_putDataById(std::unique_ptr<apac
       queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
       req->sendReply(queue.move());
       return;
-    }
-    else {
+    } else {
       LOG(ERROR) << ew << " in oneway function putDataById";
     }
   }
