@@ -14,6 +14,7 @@
 #include <thrift/lib/cpp/transport/THeader.h>
 #include <thrift/lib/cpp2/GeneratedCodeHelper.h>
 #include <thrift/lib/cpp2/GeneratedSerializationCodeHelper.h>
+#include <thrift/lib/cpp2/gen/service_tcc.h>
 #include <thrift/lib/cpp2/server/Cpp2ConnContext.h>
 
 namespace cpp2 {
@@ -43,18 +44,8 @@ void MyServiceAsyncProcessor::process_ping(std::unique_ptr<apache::thrift::Respo
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
   catch (const std::exception& ex) {
-    ProtocolOut_ prot;
-    LOG(ERROR) << ex.what() << " in function ping";
-    apache::thrift::TApplicationException x(apache::thrift::TApplicationException::TApplicationExceptionType::PROTOCOL_ERROR, ex.what());
-    folly::IOBufQueue queue = serializeException("ping", &prot, ctx->getProtoSeqId(), nullptr, x);
-    queue.append(apache::thrift::transport::THeader::transform(queue.move(), ctx->getHeader()->getWriteTransforms(), ctx->getHeader()->getMinCompressBytes()));
-    eb->runInEventBaseThread([queue = std::move(queue), req = std::move(req)]() mutable {
-      if (req->isStream()) {
-        req->sendStreamReply({queue.move(), {}});
-      } else {
-        req->sendReply(queue.move());
-      }
-    });
+    apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
+        ex, std::move(req), ctx, eb, "ping");
     return;
   }
   req->setStartedProcessing();
@@ -79,15 +70,10 @@ void MyServiceAsyncProcessor::throw_wrapped_ping(std::unique_ptr<apache::thrift:
   if (!ew) {
     return;
   }
-  ProtocolOut_ prot;
   {
-    LOG(ERROR) << ew << " in function ping";
-    apache::thrift::TApplicationException x(ew.what().toStdString());
-    ctx->userExceptionWrapped(false, ew);
-    ctx->handlerErrorWrapped(ew);
-    folly::IOBufQueue queue = serializeException("ping", &prot, protoSeqId, ctx, x);
-    queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
-    req->sendReply(queue.move());
+    (void)protoSeqId;
+    apache::thrift::detail::ap::process_throw_wrapped_handler_error<ProtocolOut_>(
+        ew, std::move(req), reqCtx, ctx, "ping");
     return;
   }
 }
@@ -108,18 +94,8 @@ void MyServiceAsyncProcessor::process_getRandomData(std::unique_ptr<apache::thri
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
   catch (const std::exception& ex) {
-    ProtocolOut_ prot;
-    LOG(ERROR) << ex.what() << " in function getRandomData";
-    apache::thrift::TApplicationException x(apache::thrift::TApplicationException::TApplicationExceptionType::PROTOCOL_ERROR, ex.what());
-    folly::IOBufQueue queue = serializeException("getRandomData", &prot, ctx->getProtoSeqId(), nullptr, x);
-    queue.append(apache::thrift::transport::THeader::transform(queue.move(), ctx->getHeader()->getWriteTransforms(), ctx->getHeader()->getMinCompressBytes()));
-    eb->runInEventBaseThread([queue = std::move(queue), req = std::move(req)]() mutable {
-      if (req->isStream()) {
-        req->sendStreamReply({queue.move(), {}});
-      } else {
-        req->sendReply(queue.move());
-      }
-    });
+    apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
+        ex, std::move(req), ctx, eb, "getRandomData");
     return;
   }
   req->setStartedProcessing();
@@ -146,15 +122,10 @@ void MyServiceAsyncProcessor::throw_wrapped_getRandomData(std::unique_ptr<apache
   if (!ew) {
     return;
   }
-  ProtocolOut_ prot;
   {
-    LOG(ERROR) << ew << " in function getRandomData";
-    apache::thrift::TApplicationException x(ew.what().toStdString());
-    ctx->userExceptionWrapped(false, ew);
-    ctx->handlerErrorWrapped(ew);
-    folly::IOBufQueue queue = serializeException("getRandomData", &prot, protoSeqId, ctx, x);
-    queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
-    req->sendReply(queue.move());
+    (void)protoSeqId;
+    apache::thrift::detail::ap::process_throw_wrapped_handler_error<ProtocolOut_>(
+        ew, std::move(req), reqCtx, ctx, "getRandomData");
     return;
   }
 }
@@ -177,18 +148,8 @@ void MyServiceAsyncProcessor::process_hasDataById(std::unique_ptr<apache::thrift
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
   catch (const std::exception& ex) {
-    ProtocolOut_ prot;
-    LOG(ERROR) << ex.what() << " in function hasDataById";
-    apache::thrift::TApplicationException x(apache::thrift::TApplicationException::TApplicationExceptionType::PROTOCOL_ERROR, ex.what());
-    folly::IOBufQueue queue = serializeException("hasDataById", &prot, ctx->getProtoSeqId(), nullptr, x);
-    queue.append(apache::thrift::transport::THeader::transform(queue.move(), ctx->getHeader()->getWriteTransforms(), ctx->getHeader()->getMinCompressBytes()));
-    eb->runInEventBaseThread([queue = std::move(queue), req = std::move(req)]() mutable {
-      if (req->isStream()) {
-        req->sendStreamReply({queue.move(), {}});
-      } else {
-        req->sendReply(queue.move());
-      }
-    });
+    apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
+        ex, std::move(req), ctx, eb, "hasDataById");
     return;
   }
   req->setStartedProcessing();
@@ -215,15 +176,10 @@ void MyServiceAsyncProcessor::throw_wrapped_hasDataById(std::unique_ptr<apache::
   if (!ew) {
     return;
   }
-  ProtocolOut_ prot;
   {
-    LOG(ERROR) << ew << " in function hasDataById";
-    apache::thrift::TApplicationException x(ew.what().toStdString());
-    ctx->userExceptionWrapped(false, ew);
-    ctx->handlerErrorWrapped(ew);
-    folly::IOBufQueue queue = serializeException("hasDataById", &prot, protoSeqId, ctx, x);
-    queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
-    req->sendReply(queue.move());
+    (void)protoSeqId;
+    apache::thrift::detail::ap::process_throw_wrapped_handler_error<ProtocolOut_>(
+        ew, std::move(req), reqCtx, ctx, "hasDataById");
     return;
   }
 }
@@ -241,18 +197,8 @@ void MyServiceAsyncProcessor::process_getDataById(std::unique_ptr<apache::thrift
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
   catch (const std::exception& ex) {
-    ProtocolOut_ prot;
-    LOG(ERROR) << ex.what() << " in function getDataById";
-    apache::thrift::TApplicationException x(apache::thrift::TApplicationException::TApplicationExceptionType::PROTOCOL_ERROR, ex.what());
-    folly::IOBufQueue queue = serializeException("getDataById", &prot, ctx->getProtoSeqId(), nullptr, x);
-    queue.append(apache::thrift::transport::THeader::transform(queue.move(), ctx->getHeader()->getWriteTransforms(), ctx->getHeader()->getMinCompressBytes()));
-    eb->runInEventBaseThread([queue = std::move(queue), req = std::move(req)]() mutable {
-      if (req->isStream()) {
-        req->sendStreamReply({queue.move(), {}});
-      } else {
-        req->sendReply(queue.move());
-      }
-    });
+    apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
+        ex, std::move(req), ctx, eb, "getDataById");
     return;
   }
   req->setStartedProcessing();
@@ -275,15 +221,10 @@ void MyServiceAsyncProcessor::throw_wrapped_getDataById(std::unique_ptr<apache::
   if (!ew) {
     return;
   }
-  ProtocolOut_ prot;
   {
-    LOG(ERROR) << ew << " in function getDataById";
-    apache::thrift::TApplicationException x(ew.what().toStdString());
-    ctx->userExceptionWrapped(false, ew);
-    ctx->handlerErrorWrapped(ew);
-    folly::IOBufQueue queue = serializeException("getDataById", &prot, protoSeqId, ctx, x);
-    queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
-    req->sendReply(queue.move());
+    (void)protoSeqId;
+    apache::thrift::detail::ap::process_throw_wrapped_handler_error<ProtocolOut_>(
+        ew, std::move(req), reqCtx, ctx, "getDataById");
     return;
   }
 }
@@ -308,18 +249,8 @@ void MyServiceAsyncProcessor::process_putDataById(std::unique_ptr<apache::thrift
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
   catch (const std::exception& ex) {
-    ProtocolOut_ prot;
-    LOG(ERROR) << ex.what() << " in function putDataById";
-    apache::thrift::TApplicationException x(apache::thrift::TApplicationException::TApplicationExceptionType::PROTOCOL_ERROR, ex.what());
-    folly::IOBufQueue queue = serializeException("putDataById", &prot, ctx->getProtoSeqId(), nullptr, x);
-    queue.append(apache::thrift::transport::THeader::transform(queue.move(), ctx->getHeader()->getWriteTransforms(), ctx->getHeader()->getMinCompressBytes()));
-    eb->runInEventBaseThread([queue = std::move(queue), req = std::move(req)]() mutable {
-      if (req->isStream()) {
-        req->sendStreamReply({queue.move(), {}});
-      } else {
-        req->sendReply(queue.move());
-      }
-    });
+    apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
+        ex, std::move(req), ctx, eb, "putDataById");
     return;
   }
   req->setStartedProcessing();
@@ -344,15 +275,10 @@ void MyServiceAsyncProcessor::throw_wrapped_putDataById(std::unique_ptr<apache::
   if (!ew) {
     return;
   }
-  ProtocolOut_ prot;
   {
-    LOG(ERROR) << ew << " in function putDataById";
-    apache::thrift::TApplicationException x(ew.what().toStdString());
-    ctx->userExceptionWrapped(false, ew);
-    ctx->handlerErrorWrapped(ew);
-    folly::IOBufQueue queue = serializeException("putDataById", &prot, protoSeqId, ctx, x);
-    queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
-    req->sendReply(queue.move());
+    (void)protoSeqId;
+    apache::thrift::detail::ap::process_throw_wrapped_handler_error<ProtocolOut_>(
+        ew, std::move(req), reqCtx, ctx, "putDataById");
     return;
   }
 }

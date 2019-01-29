@@ -14,6 +14,7 @@
 #include <thrift/lib/cpp/transport/THeader.h>
 #include <thrift/lib/cpp2/GeneratedCodeHelper.h>
 #include <thrift/lib/cpp2/GeneratedSerializationCodeHelper.h>
+#include <thrift/lib/cpp2/gen/service_tcc.h>
 #include <thrift/lib/cpp2/server/Cpp2ConnContext.h>
 
 namespace cpp2 {
@@ -35,18 +36,8 @@ void MyRootAsyncProcessor::process_do_root(std::unique_ptr<apache::thrift::Respo
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
   catch (const std::exception& ex) {
-    ProtocolOut_ prot;
-    LOG(ERROR) << ex.what() << " in function do_root";
-    apache::thrift::TApplicationException x(apache::thrift::TApplicationException::TApplicationExceptionType::PROTOCOL_ERROR, ex.what());
-    folly::IOBufQueue queue = serializeException("do_root", &prot, ctx->getProtoSeqId(), nullptr, x);
-    queue.append(apache::thrift::transport::THeader::transform(queue.move(), ctx->getHeader()->getWriteTransforms(), ctx->getHeader()->getMinCompressBytes()));
-    eb->runInEventBaseThread([queue = std::move(queue), req = std::move(req)]() mutable {
-      if (req->isStream()) {
-        req->sendStreamReply({queue.move(), {}});
-      } else {
-        req->sendReply(queue.move());
-      }
-    });
+    apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
+        ex, std::move(req), ctx, eb, "do_root");
     return;
   }
   req->setStartedProcessing();
@@ -71,15 +62,10 @@ void MyRootAsyncProcessor::throw_wrapped_do_root(std::unique_ptr<apache::thrift:
   if (!ew) {
     return;
   }
-  ProtocolOut_ prot;
   {
-    LOG(ERROR) << ew << " in function do_root";
-    apache::thrift::TApplicationException x(ew.what().toStdString());
-    ctx->userExceptionWrapped(false, ew);
-    ctx->handlerErrorWrapped(ew);
-    folly::IOBufQueue queue = serializeException("do_root", &prot, protoSeqId, ctx, x);
-    queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
-    req->sendReply(queue.move());
+    (void)protoSeqId;
+    apache::thrift::detail::ap::process_throw_wrapped_handler_error<ProtocolOut_>(
+        ew, std::move(req), reqCtx, ctx, "do_root");
     return;
   }
 }

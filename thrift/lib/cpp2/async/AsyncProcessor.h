@@ -202,23 +202,6 @@ class GeneratedAsyncProcessor : public AsyncProcessor {
     return queue;
   }
 
-  template <typename ProtocolOut>
-  static folly::IOBufQueue serializeException(
-      const char* method,
-      ProtocolOut* prot,
-      int32_t protoSeqId,
-      apache::thrift::ContextStack*,
-      const apache::thrift::TApplicationException& x) {
-    folly::IOBufQueue queue(folly::IOBufQueue::cacheChainLength());
-    size_t bufSize = detail::serializedExceptionBodySizeZC(prot, &x);
-    bufSize += prot->serializedMessageSize(method);
-    prot->setOutput(&queue, bufSize);
-    prot->writeMessageBegin(method, apache::thrift::T_EXCEPTION, protoSeqId);
-    detail::serializeExceptionBody(prot, &x);
-    prot->writeMessageEnd();
-    return queue;
-  }
-
   template <
       typename ProtocolIn_,
       typename ProtocolOut_,

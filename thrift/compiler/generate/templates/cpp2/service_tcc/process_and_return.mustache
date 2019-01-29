@@ -79,18 +79,8 @@ void <%service:name%>AsyncProcessor::process_<%function:name%>(std::unique_ptr<a
   auto callback = std::make_unique<apache::thrift::HandlerCallbackBase>(std::move(req), std::move(ctxStack), nullptr, eb, tm, ctx);
 <%/function:oneway?%>
 <%^function:oneway?%>
-    ProtocolOut_ prot;
-    LOG(ERROR) << ex.what() << " in function <%function:name%>";
-    apache::thrift::TApplicationException x(apache::thrift::TApplicationException::TApplicationExceptionType::PROTOCOL_ERROR, ex.what());
-    folly::IOBufQueue queue = serializeException("<%function:name%>", &prot, ctx->getProtoSeqId(), nullptr, x);
-    queue.append(apache::thrift::transport::THeader::transform(queue.move(), ctx->getHeader()->getWriteTransforms(), ctx->getHeader()->getMinCompressBytes()));
-    eb->runInEventBaseThread([queue = std::move(queue), req = std::move(req)]() mutable {
-      if (req->isStream()) {
-        req->sendStreamReply({queue.move(), {}});
-      } else {
-        req->sendReply(queue.move());
-      }
-    });
+    apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
+        ex, std::move(req), ctx, eb, "<%function:name%>");
     return;
   }
   req->setStartedProcessing();
@@ -217,7 +207,6 @@ void <%service:name%>AsyncProcessor::throw_wrapped_<%function:name%>(std::unique
   if (!ew) {
     return;
   }
-  ProtocolOut_ prot;
 <%#function:exceptions?%>
   <%service:name%>_<%function:name%>_presult result;
 <%/function:exceptions?%>
@@ -248,21 +237,13 @@ void <%service:name%>AsyncProcessor::throw_wrapped_<%function:name%>(std::unique
   )) {} else
 <%/function:exceptions%>
   {
-    LOG(ERROR) << ew << " in function <%function:name%>";
-    apache::thrift::TApplicationException x(ew.what().toStdString());
-    ctx->userExceptionWrapped(false, ew);
-    ctx->handlerErrorWrapped(ew);
-    folly::IOBufQueue queue = serializeException("<%function:name%>", &prot, protoSeqId, ctx, x);
-    queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
-    <%^function:returns_stream?%>
-    req->sendReply(queue.move());
-    <%/function:returns_stream?%>
-    <%#function:returns_stream?%>
-    req->sendStreamReply({queue.move(), {}});
-    <%/function:returns_stream?%>
+    (void)protoSeqId;
+    apache::thrift::detail::ap::process_throw_wrapped_handler_error<ProtocolOut_>(
+        ew, std::move(req), reqCtx, ctx, "<%function:name%>");
     return;
   }
 <%#function:exceptions?%>
+  ProtocolOut_ prot;
   <%^function:returns_stream?%>
   auto queue = serializeResponse("<%function:name%>", &prot, protoSeqId, ctx, result);
   queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
