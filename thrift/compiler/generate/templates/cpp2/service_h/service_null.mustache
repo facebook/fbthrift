@@ -18,20 +18,10 @@
  public:
 <%#service:functions%><%#function:returnType%><%^function:eb%><%^type:deprecated_stream?%>
 <%^type:resolves_to_complex_return?%>
-<%^function:coroutine?%>
   <% > types/type%> <%function:name%>(<% > service_common/function_param_list_commented_out%>) override;
-<%/function:coroutine?%>
-<%#function:coroutine?%>
-  folly::coro::Task<<% > types/type%>> co_<%function:name%>(<% > service_common/function_param_list%>) override;
-<%/function:coroutine?%>
 <%/type:resolves_to_complex_return?%>
 <%#type:resolves_to_complex_return?%>
-<%^function:coroutine?%>
   void <%function:name%>(<% > types/type%>& /*_return*/<%function:comma%><% > service_common/function_param_list_commented_out%>) override;
-<%/function:coroutine?%>
-<%#function:coroutine?%>
-  folly::coro::Task<<% > types/unique_ptr_type%>> co_<%function:name%>(<% > service_common/function_param_list%>) override;
-<%/function:coroutine?%>
 <%/type:resolves_to_complex_return?%>
 <%/type:deprecated_stream?%><%/function:eb%><%/function:returnType%><%/service:functions%>
 };

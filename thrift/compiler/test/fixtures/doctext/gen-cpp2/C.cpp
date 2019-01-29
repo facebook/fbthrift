@@ -20,13 +20,14 @@ void CSvIf::f() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("f");
 }
 
+folly::SemiFuture<folly::Unit> CSvIf::semifuture_f() {
+  return apache::thrift::detail::si::semifuture([&] { return f(); });
+}
+
 folly::Future<folly::Unit> CSvIf::future_f() {
   return apache::thrift::detail::si::future(semifuture_f(), getThreadManager());
 }
 
-folly::SemiFuture<folly::Unit> CSvIf::semifuture_f() {
-  return apache::thrift::detail::si::semifuture([&] { return f(); });
-}
 
 void CSvIf::async_tm_f(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_f(); });

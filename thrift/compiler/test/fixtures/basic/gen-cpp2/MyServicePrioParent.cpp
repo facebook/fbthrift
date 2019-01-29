@@ -20,13 +20,14 @@ void MyServicePrioParentSvIf::ping() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("ping");
 }
 
+folly::SemiFuture<folly::Unit> MyServicePrioParentSvIf::semifuture_ping() {
+  return apache::thrift::detail::si::semifuture([&] { return ping(); });
+}
+
 folly::Future<folly::Unit> MyServicePrioParentSvIf::future_ping() {
   return apache::thrift::detail::si::future(semifuture_ping(), getThreadManager());
 }
 
-folly::SemiFuture<folly::Unit> MyServicePrioParentSvIf::semifuture_ping() {
-  return apache::thrift::detail::si::semifuture([&] { return ping(); });
-}
 
 void MyServicePrioParentSvIf::async_tm_ping(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_ping(); });
@@ -36,13 +37,14 @@ void MyServicePrioParentSvIf::pong() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("pong");
 }
 
+folly::SemiFuture<folly::Unit> MyServicePrioParentSvIf::semifuture_pong() {
+  return apache::thrift::detail::si::semifuture([&] { return pong(); });
+}
+
 folly::Future<folly::Unit> MyServicePrioParentSvIf::future_pong() {
   return apache::thrift::detail::si::future(semifuture_pong(), getThreadManager());
 }
 
-folly::SemiFuture<folly::Unit> MyServicePrioParentSvIf::semifuture_pong() {
-  return apache::thrift::detail::si::semifuture([&] { return pong(); });
-}
 
 void MyServicePrioParentSvIf::async_tm_pong(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_pong(); });

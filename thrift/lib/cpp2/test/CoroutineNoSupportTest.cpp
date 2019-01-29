@@ -21,6 +21,7 @@
 #include <thrift/lib/cpp2/test/gen-cpp2/Coroutine.h>
 #include <thrift/lib/cpp2/util/ScopedServerInterfaceThread.h>
 
+using apache::thrift::HandlerCallback;
 using apache::thrift::ScopedServerInterfaceThread;
 using folly::EventBaseManager;
 
@@ -41,44 +42,46 @@ class CoroutineServiceHandler : virtual public CoroutineSvIf {
     response.sum = request->x + request->y;
   }
 
-  folly::coro::Task<std::unique_ptr<SumResponse>> co_computeSum(
+  folly::Future<std::unique_ptr<SumResponse>> future_computeSum(
       std::unique_ptr<SumRequest> request) override {
     auto response = std::make_unique<SumResponse>();
     response->sum = request->x + request->y;
-    co_return response;
+    return folly::makeFuture(std::move(response));
   }
 
-  folly::coro::Task<std::unique_ptr<SumResponse>> co_computeSumEb(
+  folly::Future<std::unique_ptr<SumResponse>> future_computeSumEb(
       std::unique_ptr<SumRequest> request) override {
     auto response = std::make_unique<SumResponse>();
     response->sum = request->x + request->y;
-    co_return response;
+    return folly::makeFuture(std::move(response));
   }
 
-  folly::coro::Task<int32_t> co_computeSumPrimitive(int32_t x, int32_t y)
+  folly::Future<int32_t> future_computeSumPrimitive(int32_t x, int32_t y)
       override {
-    co_return x + y;
+    return folly::makeFuture(x + y);
   }
 
-  folly::coro::Task<void> co_computeSumVoid(int32_t x, int32_t y) override {
+  folly::Future<folly::Unit> future_computeSumVoid(int32_t x, int32_t y)
+      override {
     voidReturnValue = x + y;
-    co_return;
+    return folly::makeFuture(folly::Unit{});
   }
 
-  folly::coro::Task<std::unique_ptr<SumResponse>> co_computeSumThrows(
+  folly::Future<std::unique_ptr<SumResponse>> future_computeSumThrows(
       std::unique_ptr<SumRequest> /* request */) override {
-    co_await std::experimental::suspend_never{};
-    throw std::runtime_error("Not implemented");
+    return folly::makeFuture<std::unique_ptr<SumResponse>>(
+        folly::exception_wrapper(
+            folly::in_place, std::runtime_error("Not implemented")));
   }
 
-  folly::coro::Task<int32_t> co_computeSumThrowsPrimitive(int32_t, int32_t)
+  folly::Future<int32_t> future_computeSumThrowsPrimitive(int32_t, int32_t)
       override {
-    co_await std::experimental::suspend_never{};
-    throw std::runtime_error("Not implemented");
+    return folly::makeFuture<int32_t>(folly::exception_wrapper(
+        folly::in_place, std::runtime_error("Not implemented")));
   }
 
-  folly::coro::Task<int32_t> co_noParameters() override {
-    co_return kNoParameterReturnValue;
+  folly::Future<int32_t> future_noParameters() override {
+    return folly::makeFuture(kNoParameterReturnValue);
   }
 
   folly::Future<std::unique_ptr<SumResponse>> future_implementedWithFutures()

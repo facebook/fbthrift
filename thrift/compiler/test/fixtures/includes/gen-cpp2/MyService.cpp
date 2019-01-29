@@ -20,13 +20,14 @@ void MyServiceSvIf::query(std::unique_ptr< ::cpp2::MyStruct> /*s*/, std::unique_
   apache::thrift::detail::si::throw_app_exn_unimplemented("query");
 }
 
+folly::SemiFuture<folly::Unit> MyServiceSvIf::semifuture_query(std::unique_ptr< ::cpp2::MyStruct> s, std::unique_ptr< ::cpp2::Included> i) {
+  return apache::thrift::detail::si::semifuture([&] { return query(std::move(s), std::move(i)); });
+}
+
 folly::Future<folly::Unit> MyServiceSvIf::future_query(std::unique_ptr< ::cpp2::MyStruct> s, std::unique_ptr< ::cpp2::Included> i) {
   return apache::thrift::detail::si::future(semifuture_query(std::move(s), std::move(i)), getThreadManager());
 }
 
-folly::SemiFuture<folly::Unit> MyServiceSvIf::semifuture_query(std::unique_ptr< ::cpp2::MyStruct> s, std::unique_ptr< ::cpp2::Included> i) {
-  return apache::thrift::detail::si::semifuture([&] { return query(std::move(s), std::move(i)); });
-}
 
 void MyServiceSvIf::async_tm_query(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr< ::cpp2::MyStruct> s, std::unique_ptr< ::cpp2::Included> i) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_query(std::move(s), std::move(i)); });
@@ -36,13 +37,14 @@ void MyServiceSvIf::has_arg_docs(std::unique_ptr< ::cpp2::MyStruct> /*s*/, std::
   apache::thrift::detail::si::throw_app_exn_unimplemented("has_arg_docs");
 }
 
+folly::SemiFuture<folly::Unit> MyServiceSvIf::semifuture_has_arg_docs(std::unique_ptr< ::cpp2::MyStruct> s, std::unique_ptr< ::cpp2::Included> i) {
+  return apache::thrift::detail::si::semifuture([&] { return has_arg_docs(std::move(s), std::move(i)); });
+}
+
 folly::Future<folly::Unit> MyServiceSvIf::future_has_arg_docs(std::unique_ptr< ::cpp2::MyStruct> s, std::unique_ptr< ::cpp2::Included> i) {
   return apache::thrift::detail::si::future(semifuture_has_arg_docs(std::move(s), std::move(i)), getThreadManager());
 }
 
-folly::SemiFuture<folly::Unit> MyServiceSvIf::semifuture_has_arg_docs(std::unique_ptr< ::cpp2::MyStruct> s, std::unique_ptr< ::cpp2::Included> i) {
-  return apache::thrift::detail::si::semifuture([&] { return has_arg_docs(std::move(s), std::move(i)); });
-}
 
 void MyServiceSvIf::async_tm_has_arg_docs(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr< ::cpp2::MyStruct> s, std::unique_ptr< ::cpp2::Included> i) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_has_arg_docs(std::move(s), std::move(i)); });

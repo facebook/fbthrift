@@ -20,13 +20,14 @@ void MyNodeSvIf::do_mid() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("do_mid");
 }
 
+folly::SemiFuture<folly::Unit> MyNodeSvIf::semifuture_do_mid() {
+  return apache::thrift::detail::si::semifuture([&] { return do_mid(); });
+}
+
 folly::Future<folly::Unit> MyNodeSvIf::future_do_mid() {
   return apache::thrift::detail::si::future(semifuture_do_mid(), getThreadManager());
 }
 
-folly::SemiFuture<folly::Unit> MyNodeSvIf::semifuture_do_mid() {
-  return apache::thrift::detail::si::semifuture([&] { return do_mid(); });
-}
 
 void MyNodeSvIf::async_tm_do_mid(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_do_mid(); });

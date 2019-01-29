@@ -20,13 +20,14 @@ void RaiserSvIf::doBland() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("doBland");
 }
 
+folly::SemiFuture<folly::Unit> RaiserSvIf::semifuture_doBland() {
+  return apache::thrift::detail::si::semifuture([&] { return doBland(); });
+}
+
 folly::Future<folly::Unit> RaiserSvIf::future_doBland() {
   return apache::thrift::detail::si::future(semifuture_doBland(), getThreadManager());
 }
 
-folly::SemiFuture<folly::Unit> RaiserSvIf::semifuture_doBland() {
-  return apache::thrift::detail::si::semifuture([&] { return doBland(); });
-}
 
 void RaiserSvIf::async_tm_doBland(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_doBland(); });
@@ -36,13 +37,14 @@ void RaiserSvIf::doRaise() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("doRaise");
 }
 
+folly::SemiFuture<folly::Unit> RaiserSvIf::semifuture_doRaise() {
+  return apache::thrift::detail::si::semifuture([&] { return doRaise(); });
+}
+
 folly::Future<folly::Unit> RaiserSvIf::future_doRaise() {
   return apache::thrift::detail::si::future(semifuture_doRaise(), getThreadManager());
 }
 
-folly::SemiFuture<folly::Unit> RaiserSvIf::semifuture_doRaise() {
-  return apache::thrift::detail::si::semifuture([&] { return doRaise(); });
-}
 
 void RaiserSvIf::async_tm_doRaise(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_doRaise(); });
@@ -52,33 +54,37 @@ void RaiserSvIf::get200(std::string& /*_return*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("get200");
 }
 
+folly::SemiFuture<std::unique_ptr<std::string>> RaiserSvIf::semifuture_get200() {
+  return apache::thrift::detail::si::semifuture_returning_uptr([&](std::string& _return) { get200(_return); });
+}
+
 folly::Future<std::unique_ptr<std::string>> RaiserSvIf::future_get200() {
   return apache::thrift::detail::si::future(semifuture_get200(), getThreadManager());
 }
 
-folly::SemiFuture<std::unique_ptr<std::string>> RaiserSvIf::semifuture_get200() {
-  return apache::thrift::detail::si::semifuture_returning_uptr([&](std::string& _return) { get200(_return); });
-}
 
 void RaiserSvIf::async_tm_get200(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::string>>> callback) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_get200(); });
 }
 
+
 void RaiserSvIf::get500(std::string& /*_return*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("get500");
-}
-
-folly::Future<std::unique_ptr<std::string>> RaiserSvIf::future_get500() {
-  return apache::thrift::detail::si::future(semifuture_get500(), getThreadManager());
 }
 
 folly::SemiFuture<std::unique_ptr<std::string>> RaiserSvIf::semifuture_get500() {
   return apache::thrift::detail::si::semifuture_returning_uptr([&](std::string& _return) { get500(_return); });
 }
 
+folly::Future<std::unique_ptr<std::string>> RaiserSvIf::future_get500() {
+  return apache::thrift::detail::si::future(semifuture_get500(), getThreadManager());
+}
+
+
 void RaiserSvIf::async_tm_get500(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::string>>> callback) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_get500(); });
 }
+
 
 void RaiserSvNull::doBland() {
   return;

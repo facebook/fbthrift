@@ -25,4 +25,7 @@ service Coroutine {
   i32 computeSumThrowsPrimitive(1: i32 x, 2: i32 y) (coroutine);
 
   i32 noParameters() (coroutine);
+
+  SumResponse implementedWithFutures() (coroutine);
+  i32 implementedWithFuturesPrimitive() (coroutine);
 }
