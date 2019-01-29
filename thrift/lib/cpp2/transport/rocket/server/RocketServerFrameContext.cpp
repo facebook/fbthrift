@@ -31,32 +31,6 @@ namespace apache {
 namespace thrift {
 namespace rocket {
 
-namespace {
-class FragmentAppender : public boost::static_visitor<void> {
- public:
-  explicit FragmentAppender(PayloadFrame&& payloadFrame)
-      : payloadFrame_(std::move(payloadFrame)) {}
-
-  void operator()(RequestResponseFrame& requestFrame) {
-    appendPayload(requestFrame);
-  }
-  void operator()(RequestFnfFrame& requestFrame) {
-    appendPayload(requestFrame);
-  }
-  void operator()(RequestStreamFrame& requestFrame) {
-    appendPayload(requestFrame);
-  }
-
- private:
-  PayloadFrame payloadFrame_;
-
-  template <class Frame>
-  void appendPayload(Frame& requestFrame) {
-    requestFrame.payload().append(std::move(payloadFrame_.payload()));
-  }
-};
-} // namespace
-
 RocketServerFrameContext::RocketServerFrameContext(
     RocketServerConnection& connection,
     StreamId streamId)
@@ -66,9 +40,7 @@ RocketServerFrameContext::RocketServerFrameContext(
 
 RocketServerFrameContext::RocketServerFrameContext(
     RocketServerFrameContext&& other) noexcept
-    : connection_(other.connection_),
-      streamId_(other.streamId_),
-      bufferedFragments_(std::move(other.bufferedFragments_)) {
+    : connection_(other.connection_), streamId_(other.streamId_) {
   other.connection_ = nullptr;
 }
 
@@ -100,69 +72,81 @@ void RocketServerFrameContext::sendError(RocketException&& rex) {
   connection_->send(std::move(writer).move());
 }
 
-void RocketServerFrameContext::onPayloadFrame(PayloadFrame&& payloadFrame) && {
-  // Until RequestChannel is supported, client may not send non-fragment payload
-  // frames to server
-  DCHECK(bufferedFragments_);
-  const bool hasFollows = payloadFrame.hasFollows();
+void RocketServerFrameContext::onFullFrame(
+    RequestResponseFrame&& fullFrame) && {
+  auto& frameHandler = *connection_->frameHandler_;
+  frameHandler.handleRequestResponseFrame(
+      std::move(fullFrame), std::move(*this));
+}
 
-  FragmentAppender fragmentAppender{std::move(payloadFrame)};
-  bufferedFragments_->apply_visitor(fragmentAppender);
+void RocketServerFrameContext::onFullFrame(RequestFnfFrame&& fullFrame) && {
+  auto& frameHandler = *connection_->frameHandler_;
+  frameHandler.handleRequestFnfFrame(std::move(fullFrame), std::move(*this));
+}
 
-  if (!hasFollows) {
-    std::move(*this).onFullFrame();
-  }
+void RocketServerFrameContext::onFullFrame(RequestStreamFrame&& fullFrame) && {
+  auto& connection = *connection_;
+  auto& frameHandler = *connection.frameHandler_;
+  auto subscriber = connection.createStreamSubscriber(
+      std::move(*this), fullFrame.initialRequestN());
+  frameHandler.handleRequestStreamFrame(
+      std::move(fullFrame), std::move(subscriber));
 }
 
 template <class RequestFrame>
 void RocketServerFrameContext::onRequestFrame(RequestFrame&& frame) && {
-  // Request* frames may only be the first in a sequence of fragments.
-  DCHECK(!bufferedFragments_);
-  const bool hasFollows = frame.hasFollows();
-  bufferedFragments_.emplace(std::forward<RequestFrame>(frame));
-
-  if (UNLIKELY(hasFollows)) {
-    connection_->partialFrames_.emplace(streamId_, std::move(*this));
+  if (UNLIKELY(frame.hasFollows())) {
+    auto streamId = streamId_;
+    auto& connection = *connection_;
+    connection.partialFrames_.emplace(
+        streamId,
+        RocketServerPartialFrameContext(
+            std::move(*this), std::forward<RequestFrame>(frame)));
     return;
   }
-  std::move(*this).onFullFrame();
+
+  std::move(*this).onFullFrame(std::forward<RequestFrame>(frame));
 }
 
-void RocketServerFrameContext::onFullFrame() && {
-  auto fullFrame = std::move(bufferedFragments_);
-  OnFullFrame onFullFrame{std::move(*this)};
-  std::move(*fullFrame).apply_visitor(onFullFrame);
-}
+namespace detail {
 
-// Implementation of nested OnFullFrame visitor
-RocketServerFrameContext::OnFullFrame::OnFullFrame(
-    RocketServerFrameContext&& context)
-    : parent_(std::move(context)) {}
+class OnPayloadVisitor : public boost::static_visitor<void> {
+ public:
+  OnPayloadVisitor(PayloadFrame&& payloadFrame, RocketServerFrameContext& ctx)
+      : payloadFrame_(std::move(payloadFrame)), ctx_(ctx) {}
 
-void RocketServerFrameContext::OnFullFrame::operator()(
-    RequestResponseFrame&& fullFrame) {
-  fullFrame.setHasFollows(false);
-  auto& frameHandler = *parent_.connection_->frameHandler_;
-  frameHandler.handleRequestResponseFrame(
-      std::move(fullFrame), std::move(parent_));
-}
+  void operator()(RequestResponseFrame& requestFrame) {
+    handleNext(requestFrame);
+  }
+  void operator()(RequestFnfFrame& requestFrame) {
+    handleNext(requestFrame);
+  }
+  void operator()(RequestStreamFrame& requestFrame) {
+    handleNext(requestFrame);
+  }
 
-void RocketServerFrameContext::OnFullFrame::operator()(
-    RequestFnfFrame&& fullFrame) {
-  fullFrame.setHasFollows(false);
-  auto& frameHandler = *parent_.connection_->frameHandler_;
-  frameHandler.handleRequestFnfFrame(std::move(fullFrame), std::move(parent_));
-}
+ private:
+  PayloadFrame payloadFrame_;
+  RocketServerFrameContext& ctx_;
 
-void RocketServerFrameContext::OnFullFrame::operator()(
-    RequestStreamFrame&& fullFrame) {
-  fullFrame.setHasFollows(false);
-  auto& connection = *parent_.connection_;
-  auto& frameHandler = *connection.frameHandler_;
-  auto subscriber = connection.createStreamSubscriber(
-      std::move(parent_), fullFrame.initialRequestN());
-  frameHandler.handleRequestStreamFrame(
-      std::move(fullFrame), std::move(subscriber));
+  template <class Frame>
+  void handleNext(Frame& requestFrame) {
+    const bool hasFollows = payloadFrame_.hasFollows();
+    requestFrame.payload().append(std::move(payloadFrame_.payload()));
+
+    if (!hasFollows) {
+      requestFrame.setHasFollows(false);
+      std::move(ctx_).onFullFrame(std::move(requestFrame));
+    }
+  }
+};
+
+} // namespace detail
+
+void RocketServerPartialFrameContext::onPayloadFrame(
+    PayloadFrame&& payloadFrame) && {
+  detail::OnPayloadVisitor visitor(std::move(payloadFrame), mainCtx);
+  bufferedFragments_.apply_visitor(visitor);
 }
 
 // Explicit function template instantiations

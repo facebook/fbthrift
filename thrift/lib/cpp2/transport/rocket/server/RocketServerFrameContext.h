@@ -18,8 +18,6 @@
 
 #include <boost/variant.hpp>
 
-#include <folly/Optional.h>
-
 #include <thrift/lib/cpp2/transport/rocket/Types.h>
 #include <thrift/lib/cpp2/transport/rocket/framing/Flags.h>
 #include <thrift/lib/cpp2/transport/rocket/framing/Frames.h>
@@ -34,9 +32,11 @@ namespace thrift {
 namespace rocket {
 
 class RocketException;
-
-class RequestResponseFrame;
 class RocketServerConnection;
+
+namespace detail {
+class OnPayloadVisitor;
+} // namespace detail
 
 class RocketServerFrameContext {
  public:
@@ -52,7 +52,6 @@ class RocketServerFrameContext {
 
   template <class RequestFrame>
   void onRequestFrame(RequestFrame&& frame) &&;
-  void onPayloadFrame(PayloadFrame&& frame) &&;
 
   folly::EventBase& getEventBase() const;
 
@@ -66,27 +65,30 @@ class RocketServerFrameContext {
   }
 
  private:
+  friend class detail::OnPayloadVisitor;
+
   RocketServerConnection* connection_{nullptr};
   const StreamId streamId_;
-  folly::Optional<
-      boost::variant<RequestResponseFrame, RequestFnfFrame, RequestStreamFrame>>
-      bufferedFragments_;
 
-  void onFullFrame() &&;
-  class OnFullFrame;
+  void onFullFrame(RequestResponseFrame&& fullFrame) &&;
+  void onFullFrame(RequestFnfFrame&& fullFrame) &&;
+  void onFullFrame(RequestStreamFrame&& fullFrame) &&;
 };
 
-class RocketServerFrameContext::OnFullFrame
-    : public boost::static_visitor<void> {
+class RocketServerPartialFrameContext {
  public:
-  explicit OnFullFrame(RocketServerFrameContext&& context);
-
-  void operator()(RequestResponseFrame&& fullFrame);
-  void operator()(RequestFnfFrame&& fullFrame);
-  void operator()(RequestStreamFrame&& fullFrame);
+  template <class RequestFrame>
+  RocketServerPartialFrameContext(
+      RocketServerFrameContext&& baseCtx,
+      RequestFrame&& frame)
+      : mainCtx(std::move(baseCtx)),
+        bufferedFragments_(std::forward<RequestFrame>(frame)) {}
+  void onPayloadFrame(PayloadFrame&& payloadFrame) &&;
 
  private:
-  RocketServerFrameContext parent_;
+  RocketServerFrameContext mainCtx;
+  boost::variant<RequestResponseFrame, RequestFnfFrame, RequestStreamFrame>
+      bufferedFragments_;
 };
 
 extern template void RocketServerFrameContext::onRequestFrame<

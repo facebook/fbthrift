@@ -90,7 +90,7 @@ class RocketServerConnection
   Parser<RocketServerConnection> parser_{*this};
   const std::shared_ptr<RocketServerHandler> frameHandler_;
   bool setupFrameReceived_{false};
-  folly::F14NodeMap<StreamId, RocketServerFrameContext> partialFrames_;
+  folly::F14NodeMap<StreamId, RocketServerPartialFrameContext> partialFrames_;
 
   // Total number of active Request* frames ("streams" in protocol parlance)
   size_t inflight_{0};
