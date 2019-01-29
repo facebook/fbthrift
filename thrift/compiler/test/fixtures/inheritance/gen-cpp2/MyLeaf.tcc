@@ -36,22 +36,18 @@ void MyLeafAsyncProcessor::process_do_leaf(std::unique_ptr<apache::thrift::Respo
   }
   catch (const std::exception& ex) {
     ProtocolOut_ prot;
-    if (req) {
-      LOG(ERROR) << ex.what() << " in function do_leaf";
-      apache::thrift::TApplicationException x(apache::thrift::TApplicationException::TApplicationExceptionType::PROTOCOL_ERROR, ex.what());
-      folly::IOBufQueue queue = serializeException("do_leaf", &prot, ctx->getProtoSeqId(), nullptr, x);
-      queue.append(apache::thrift::transport::THeader::transform(queue.move(), ctx->getHeader()->getWriteTransforms(), ctx->getHeader()->getMinCompressBytes()));
-      eb->runInEventBaseThread([queue = std::move(queue), req = std::move(req)]() mutable {
-        if (req->isStream()) {
-          req->sendStreamReply({queue.move(), {}});
-        } else {
-          req->sendReply(queue.move());
-        }
-      });
-      return;
-    } else {
-      LOG(ERROR) << ex.what() << " in oneway function do_leaf";
-    }
+    LOG(ERROR) << ex.what() << " in function do_leaf";
+    apache::thrift::TApplicationException x(apache::thrift::TApplicationException::TApplicationExceptionType::PROTOCOL_ERROR, ex.what());
+    folly::IOBufQueue queue = serializeException("do_leaf", &prot, ctx->getProtoSeqId(), nullptr, x);
+    queue.append(apache::thrift::transport::THeader::transform(queue.move(), ctx->getHeader()->getWriteTransforms(), ctx->getHeader()->getMinCompressBytes()));
+    eb->runInEventBaseThread([queue = std::move(queue), req = std::move(req)]() mutable {
+      if (req->isStream()) {
+        req->sendStreamReply({queue.move(), {}});
+      } else {
+        req->sendReply(queue.move());
+      }
+    });
+    return;
   }
   req->setStartedProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(ctxStack), return_do_leaf<ProtocolIn_,ProtocolOut_>, throw_wrapped_do_leaf<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
@@ -77,18 +73,14 @@ void MyLeafAsyncProcessor::throw_wrapped_do_leaf(std::unique_ptr<apache::thrift:
   }
   ProtocolOut_ prot;
   {
-    if (req) {
-      LOG(ERROR) << ew << " in function do_leaf";
-      apache::thrift::TApplicationException x(ew.what().toStdString());
-      ctx->userExceptionWrapped(false, ew);
-      ctx->handlerErrorWrapped(ew);
-      folly::IOBufQueue queue = serializeException("do_leaf", &prot, protoSeqId, ctx, x);
-      queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
-      req->sendReply(queue.move());
-      return;
-    } else {
-      LOG(ERROR) << ew << " in oneway function do_leaf";
-    }
+    LOG(ERROR) << ew << " in function do_leaf";
+    apache::thrift::TApplicationException x(ew.what().toStdString());
+    ctx->userExceptionWrapped(false, ew);
+    ctx->handlerErrorWrapped(ew);
+    folly::IOBufQueue queue = serializeException("do_leaf", &prot, protoSeqId, ctx, x);
+    queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
+    req->sendReply(queue.move());
+    return;
   }
 }
 

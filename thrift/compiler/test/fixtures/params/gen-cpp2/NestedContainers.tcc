@@ -46,22 +46,18 @@ void NestedContainersAsyncProcessor::process_mapList(std::unique_ptr<apache::thr
   }
   catch (const std::exception& ex) {
     ProtocolOut_ prot;
-    if (req) {
-      LOG(ERROR) << ex.what() << " in function mapList";
-      apache::thrift::TApplicationException x(apache::thrift::TApplicationException::TApplicationExceptionType::PROTOCOL_ERROR, ex.what());
-      folly::IOBufQueue queue = serializeException("mapList", &prot, ctx->getProtoSeqId(), nullptr, x);
-      queue.append(apache::thrift::transport::THeader::transform(queue.move(), ctx->getHeader()->getWriteTransforms(), ctx->getHeader()->getMinCompressBytes()));
-      eb->runInEventBaseThread([queue = std::move(queue), req = std::move(req)]() mutable {
-        if (req->isStream()) {
-          req->sendStreamReply({queue.move(), {}});
-        } else {
-          req->sendReply(queue.move());
-        }
-      });
-      return;
-    } else {
-      LOG(ERROR) << ex.what() << " in oneway function mapList";
-    }
+    LOG(ERROR) << ex.what() << " in function mapList";
+    apache::thrift::TApplicationException x(apache::thrift::TApplicationException::TApplicationExceptionType::PROTOCOL_ERROR, ex.what());
+    folly::IOBufQueue queue = serializeException("mapList", &prot, ctx->getProtoSeqId(), nullptr, x);
+    queue.append(apache::thrift::transport::THeader::transform(queue.move(), ctx->getHeader()->getWriteTransforms(), ctx->getHeader()->getMinCompressBytes()));
+    eb->runInEventBaseThread([queue = std::move(queue), req = std::move(req)]() mutable {
+      if (req->isStream()) {
+        req->sendStreamReply({queue.move(), {}});
+      } else {
+        req->sendReply(queue.move());
+      }
+    });
+    return;
   }
   req->setStartedProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(ctxStack), return_mapList<ProtocolIn_,ProtocolOut_>, throw_wrapped_mapList<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
@@ -87,18 +83,14 @@ void NestedContainersAsyncProcessor::throw_wrapped_mapList(std::unique_ptr<apach
   }
   ProtocolOut_ prot;
   {
-    if (req) {
-      LOG(ERROR) << ew << " in function mapList";
-      apache::thrift::TApplicationException x(ew.what().toStdString());
-      ctx->userExceptionWrapped(false, ew);
-      ctx->handlerErrorWrapped(ew);
-      folly::IOBufQueue queue = serializeException("mapList", &prot, protoSeqId, ctx, x);
-      queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
-      req->sendReply(queue.move());
-      return;
-    } else {
-      LOG(ERROR) << ew << " in oneway function mapList";
-    }
+    LOG(ERROR) << ew << " in function mapList";
+    apache::thrift::TApplicationException x(ew.what().toStdString());
+    ctx->userExceptionWrapped(false, ew);
+    ctx->handlerErrorWrapped(ew);
+    folly::IOBufQueue queue = serializeException("mapList", &prot, protoSeqId, ctx, x);
+    queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
+    req->sendReply(queue.move());
+    return;
   }
 }
 
@@ -121,22 +113,18 @@ void NestedContainersAsyncProcessor::process_mapSet(std::unique_ptr<apache::thri
   }
   catch (const std::exception& ex) {
     ProtocolOut_ prot;
-    if (req) {
-      LOG(ERROR) << ex.what() << " in function mapSet";
-      apache::thrift::TApplicationException x(apache::thrift::TApplicationException::TApplicationExceptionType::PROTOCOL_ERROR, ex.what());
-      folly::IOBufQueue queue = serializeException("mapSet", &prot, ctx->getProtoSeqId(), nullptr, x);
-      queue.append(apache::thrift::transport::THeader::transform(queue.move(), ctx->getHeader()->getWriteTransforms(), ctx->getHeader()->getMinCompressBytes()));
-      eb->runInEventBaseThread([queue = std::move(queue), req = std::move(req)]() mutable {
-        if (req->isStream()) {
-          req->sendStreamReply({queue.move(), {}});
-        } else {
-          req->sendReply(queue.move());
-        }
-      });
-      return;
-    } else {
-      LOG(ERROR) << ex.what() << " in oneway function mapSet";
-    }
+    LOG(ERROR) << ex.what() << " in function mapSet";
+    apache::thrift::TApplicationException x(apache::thrift::TApplicationException::TApplicationExceptionType::PROTOCOL_ERROR, ex.what());
+    folly::IOBufQueue queue = serializeException("mapSet", &prot, ctx->getProtoSeqId(), nullptr, x);
+    queue.append(apache::thrift::transport::THeader::transform(queue.move(), ctx->getHeader()->getWriteTransforms(), ctx->getHeader()->getMinCompressBytes()));
+    eb->runInEventBaseThread([queue = std::move(queue), req = std::move(req)]() mutable {
+      if (req->isStream()) {
+        req->sendStreamReply({queue.move(), {}});
+      } else {
+        req->sendReply(queue.move());
+      }
+    });
+    return;
   }
   req->setStartedProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(ctxStack), return_mapSet<ProtocolIn_,ProtocolOut_>, throw_wrapped_mapSet<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
@@ -162,18 +150,14 @@ void NestedContainersAsyncProcessor::throw_wrapped_mapSet(std::unique_ptr<apache
   }
   ProtocolOut_ prot;
   {
-    if (req) {
-      LOG(ERROR) << ew << " in function mapSet";
-      apache::thrift::TApplicationException x(ew.what().toStdString());
-      ctx->userExceptionWrapped(false, ew);
-      ctx->handlerErrorWrapped(ew);
-      folly::IOBufQueue queue = serializeException("mapSet", &prot, protoSeqId, ctx, x);
-      queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
-      req->sendReply(queue.move());
-      return;
-    } else {
-      LOG(ERROR) << ew << " in oneway function mapSet";
-    }
+    LOG(ERROR) << ew << " in function mapSet";
+    apache::thrift::TApplicationException x(ew.what().toStdString());
+    ctx->userExceptionWrapped(false, ew);
+    ctx->handlerErrorWrapped(ew);
+    folly::IOBufQueue queue = serializeException("mapSet", &prot, protoSeqId, ctx, x);
+    queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
+    req->sendReply(queue.move());
+    return;
   }
 }
 
@@ -196,22 +180,18 @@ void NestedContainersAsyncProcessor::process_listMap(std::unique_ptr<apache::thr
   }
   catch (const std::exception& ex) {
     ProtocolOut_ prot;
-    if (req) {
-      LOG(ERROR) << ex.what() << " in function listMap";
-      apache::thrift::TApplicationException x(apache::thrift::TApplicationException::TApplicationExceptionType::PROTOCOL_ERROR, ex.what());
-      folly::IOBufQueue queue = serializeException("listMap", &prot, ctx->getProtoSeqId(), nullptr, x);
-      queue.append(apache::thrift::transport::THeader::transform(queue.move(), ctx->getHeader()->getWriteTransforms(), ctx->getHeader()->getMinCompressBytes()));
-      eb->runInEventBaseThread([queue = std::move(queue), req = std::move(req)]() mutable {
-        if (req->isStream()) {
-          req->sendStreamReply({queue.move(), {}});
-        } else {
-          req->sendReply(queue.move());
-        }
-      });
-      return;
-    } else {
-      LOG(ERROR) << ex.what() << " in oneway function listMap";
-    }
+    LOG(ERROR) << ex.what() << " in function listMap";
+    apache::thrift::TApplicationException x(apache::thrift::TApplicationException::TApplicationExceptionType::PROTOCOL_ERROR, ex.what());
+    folly::IOBufQueue queue = serializeException("listMap", &prot, ctx->getProtoSeqId(), nullptr, x);
+    queue.append(apache::thrift::transport::THeader::transform(queue.move(), ctx->getHeader()->getWriteTransforms(), ctx->getHeader()->getMinCompressBytes()));
+    eb->runInEventBaseThread([queue = std::move(queue), req = std::move(req)]() mutable {
+      if (req->isStream()) {
+        req->sendStreamReply({queue.move(), {}});
+      } else {
+        req->sendReply(queue.move());
+      }
+    });
+    return;
   }
   req->setStartedProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(ctxStack), return_listMap<ProtocolIn_,ProtocolOut_>, throw_wrapped_listMap<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
@@ -237,18 +217,14 @@ void NestedContainersAsyncProcessor::throw_wrapped_listMap(std::unique_ptr<apach
   }
   ProtocolOut_ prot;
   {
-    if (req) {
-      LOG(ERROR) << ew << " in function listMap";
-      apache::thrift::TApplicationException x(ew.what().toStdString());
-      ctx->userExceptionWrapped(false, ew);
-      ctx->handlerErrorWrapped(ew);
-      folly::IOBufQueue queue = serializeException("listMap", &prot, protoSeqId, ctx, x);
-      queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
-      req->sendReply(queue.move());
-      return;
-    } else {
-      LOG(ERROR) << ew << " in oneway function listMap";
-    }
+    LOG(ERROR) << ew << " in function listMap";
+    apache::thrift::TApplicationException x(ew.what().toStdString());
+    ctx->userExceptionWrapped(false, ew);
+    ctx->handlerErrorWrapped(ew);
+    folly::IOBufQueue queue = serializeException("listMap", &prot, protoSeqId, ctx, x);
+    queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
+    req->sendReply(queue.move());
+    return;
   }
 }
 
@@ -271,22 +247,18 @@ void NestedContainersAsyncProcessor::process_listSet(std::unique_ptr<apache::thr
   }
   catch (const std::exception& ex) {
     ProtocolOut_ prot;
-    if (req) {
-      LOG(ERROR) << ex.what() << " in function listSet";
-      apache::thrift::TApplicationException x(apache::thrift::TApplicationException::TApplicationExceptionType::PROTOCOL_ERROR, ex.what());
-      folly::IOBufQueue queue = serializeException("listSet", &prot, ctx->getProtoSeqId(), nullptr, x);
-      queue.append(apache::thrift::transport::THeader::transform(queue.move(), ctx->getHeader()->getWriteTransforms(), ctx->getHeader()->getMinCompressBytes()));
-      eb->runInEventBaseThread([queue = std::move(queue), req = std::move(req)]() mutable {
-        if (req->isStream()) {
-          req->sendStreamReply({queue.move(), {}});
-        } else {
-          req->sendReply(queue.move());
-        }
-      });
-      return;
-    } else {
-      LOG(ERROR) << ex.what() << " in oneway function listSet";
-    }
+    LOG(ERROR) << ex.what() << " in function listSet";
+    apache::thrift::TApplicationException x(apache::thrift::TApplicationException::TApplicationExceptionType::PROTOCOL_ERROR, ex.what());
+    folly::IOBufQueue queue = serializeException("listSet", &prot, ctx->getProtoSeqId(), nullptr, x);
+    queue.append(apache::thrift::transport::THeader::transform(queue.move(), ctx->getHeader()->getWriteTransforms(), ctx->getHeader()->getMinCompressBytes()));
+    eb->runInEventBaseThread([queue = std::move(queue), req = std::move(req)]() mutable {
+      if (req->isStream()) {
+        req->sendStreamReply({queue.move(), {}});
+      } else {
+        req->sendReply(queue.move());
+      }
+    });
+    return;
   }
   req->setStartedProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(ctxStack), return_listSet<ProtocolIn_,ProtocolOut_>, throw_wrapped_listSet<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
@@ -312,18 +284,14 @@ void NestedContainersAsyncProcessor::throw_wrapped_listSet(std::unique_ptr<apach
   }
   ProtocolOut_ prot;
   {
-    if (req) {
-      LOG(ERROR) << ew << " in function listSet";
-      apache::thrift::TApplicationException x(ew.what().toStdString());
-      ctx->userExceptionWrapped(false, ew);
-      ctx->handlerErrorWrapped(ew);
-      folly::IOBufQueue queue = serializeException("listSet", &prot, protoSeqId, ctx, x);
-      queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
-      req->sendReply(queue.move());
-      return;
-    } else {
-      LOG(ERROR) << ew << " in oneway function listSet";
-    }
+    LOG(ERROR) << ew << " in function listSet";
+    apache::thrift::TApplicationException x(ew.what().toStdString());
+    ctx->userExceptionWrapped(false, ew);
+    ctx->handlerErrorWrapped(ew);
+    folly::IOBufQueue queue = serializeException("listSet", &prot, protoSeqId, ctx, x);
+    queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
+    req->sendReply(queue.move());
+    return;
   }
 }
 
@@ -346,22 +314,18 @@ void NestedContainersAsyncProcessor::process_turtles(std::unique_ptr<apache::thr
   }
   catch (const std::exception& ex) {
     ProtocolOut_ prot;
-    if (req) {
-      LOG(ERROR) << ex.what() << " in function turtles";
-      apache::thrift::TApplicationException x(apache::thrift::TApplicationException::TApplicationExceptionType::PROTOCOL_ERROR, ex.what());
-      folly::IOBufQueue queue = serializeException("turtles", &prot, ctx->getProtoSeqId(), nullptr, x);
-      queue.append(apache::thrift::transport::THeader::transform(queue.move(), ctx->getHeader()->getWriteTransforms(), ctx->getHeader()->getMinCompressBytes()));
-      eb->runInEventBaseThread([queue = std::move(queue), req = std::move(req)]() mutable {
-        if (req->isStream()) {
-          req->sendStreamReply({queue.move(), {}});
-        } else {
-          req->sendReply(queue.move());
-        }
-      });
-      return;
-    } else {
-      LOG(ERROR) << ex.what() << " in oneway function turtles";
-    }
+    LOG(ERROR) << ex.what() << " in function turtles";
+    apache::thrift::TApplicationException x(apache::thrift::TApplicationException::TApplicationExceptionType::PROTOCOL_ERROR, ex.what());
+    folly::IOBufQueue queue = serializeException("turtles", &prot, ctx->getProtoSeqId(), nullptr, x);
+    queue.append(apache::thrift::transport::THeader::transform(queue.move(), ctx->getHeader()->getWriteTransforms(), ctx->getHeader()->getMinCompressBytes()));
+    eb->runInEventBaseThread([queue = std::move(queue), req = std::move(req)]() mutable {
+      if (req->isStream()) {
+        req->sendStreamReply({queue.move(), {}});
+      } else {
+        req->sendReply(queue.move());
+      }
+    });
+    return;
   }
   req->setStartedProcessing();
   auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(ctxStack), return_turtles<ProtocolIn_,ProtocolOut_>, throw_wrapped_turtles<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
@@ -387,18 +351,14 @@ void NestedContainersAsyncProcessor::throw_wrapped_turtles(std::unique_ptr<apach
   }
   ProtocolOut_ prot;
   {
-    if (req) {
-      LOG(ERROR) << ew << " in function turtles";
-      apache::thrift::TApplicationException x(ew.what().toStdString());
-      ctx->userExceptionWrapped(false, ew);
-      ctx->handlerErrorWrapped(ew);
-      folly::IOBufQueue queue = serializeException("turtles", &prot, protoSeqId, ctx, x);
-      queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
-      req->sendReply(queue.move());
-      return;
-    } else {
-      LOG(ERROR) << ew << " in oneway function turtles";
-    }
+    LOG(ERROR) << ew << " in function turtles";
+    apache::thrift::TApplicationException x(ew.what().toStdString());
+    ctx->userExceptionWrapped(false, ew);
+    ctx->handlerErrorWrapped(ew);
+    folly::IOBufQueue queue = serializeException("turtles", &prot, protoSeqId, ctx, x);
+    queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
+    req->sendReply(queue.move());
+    return;
   }
 }
 
