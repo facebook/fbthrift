@@ -22,6 +22,7 @@
 
 #include <glog/logging.h>
 
+#include <folly/ExceptionString.h>
 #include <folly/ExceptionWrapper.h>
 #include <folly/io/IOBufQueue.h>
 #include <folly/io/async/EventBase.h>
@@ -66,7 +67,7 @@ void process_handle_exn_deserialization(
     Cpp2RequestContext* const ctx,
     folly::EventBase* const eb,
     char const* const method) {
-  LOG(ERROR) << ex.what() << " in function " << method;
+  LOG(ERROR) << folly::exceptionStr(ex) << " in function " << method;
   TApplicationException x(
       TApplicationException::TApplicationExceptionType::PROTOCOL_ERROR,
       ex.what());
