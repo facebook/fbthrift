@@ -86,9 +86,6 @@ void RSResponder::handleRequestResponse(
     std::shared_ptr<yarpl::single::SingleObserver<Payload>> response) noexcept {
   DCHECK(request.metadata);
   auto metadata = detail::deserializeMetadata(*request.metadata);
-  DCHECK(metadata->__isset.kind);
-  DCHECK(metadata->__isset.seqId);
-
   bool invalidMetadata =
       !(metadata->__isset.protocol && metadata->__isset.name &&
         metadata->__isset.kind && metadata->__isset.seqId);
@@ -107,9 +104,6 @@ void RSResponder::handleRequestResponse(
 void RSResponder::handleFireAndForget(Payload request, StreamId) {
   DCHECK(request.metadata);
   auto metadata = detail::deserializeMetadata(*request.metadata);
-  DCHECK(metadata->__isset.kind);
-  DCHECK(metadata->__isset.seqId);
-
   bool invalidMetadata =
       !(metadata->__isset.protocol && metadata->__isset.name &&
         metadata->__isset.kind && metadata->__isset.seqId);
@@ -137,8 +131,6 @@ void RSResponder::handleRequestStream(
     std::shared_ptr<yarpl::flowable::Subscriber<Payload>> response) noexcept {
   DCHECK(request.metadata);
   auto metadata = detail::deserializeMetadata(*request.metadata);
-  DCHECK(metadata->__isset.kind);
-  DCHECK(metadata->__isset.seqId);
   request.metadata.reset();
 
   bool invalidMetadata =

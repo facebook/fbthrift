@@ -28,6 +28,8 @@ namespace detail {
 std::unique_ptr<folly::IOBuf> serializeMetadata(
     const ResponseRpcMetadata& responseMetadata);
 
+// Deserializes metadata returning an invalid object with the kind field unset
+// on error.
 std::unique_ptr<RequestRpcMetadata> deserializeMetadata(
     const folly::IOBuf& buffer);
 } // namespace detail

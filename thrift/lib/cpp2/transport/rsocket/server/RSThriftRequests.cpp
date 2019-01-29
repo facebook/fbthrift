@@ -16,6 +16,7 @@
 
 #include <thrift/lib/cpp2/transport/rsocket/server/RSThriftRequests.h>
 
+#include <folly/ExceptionString.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 #include <thrift/lib/cpp2/transport/rsocket/YarplStreamImpl.h>
 #include <yarpl/flowable/Flowable.h>
@@ -38,8 +39,18 @@ std::unique_ptr<RequestRpcMetadata> deserializeMetadata(
     const folly::IOBuf& buffer) {
   CompactProtocolReader reader;
   auto metadata = std::make_unique<RequestRpcMetadata>();
-  reader.setInput(&buffer);
-  metadata->read(&reader);
+  try {
+    reader.setInput(&buffer);
+    metadata->read(&reader);
+    DCHECK(metadata->__isset.kind);
+    DCHECK(metadata->__isset.seqId);
+  } catch (const std::exception& e) {
+    LOG(ERROR) << "Exception on deserializing metadata: "
+               << folly::exceptionStr(e);
+    // Return an invalid metadata object instead of potentially valid partially
+    // deserialized one.
+    metadata->__isset.kind = false;
+  }
   return metadata;
 }
 } // namespace detail
