@@ -19,8 +19,8 @@
 #include <memory>
 #include <utility>
 
-#include <glog/logging.h>
-
+#include <folly/ExceptionString.h>
+#include <folly/GLog.h>
 #include <folly/Likely.h>
 #include <folly/Memory.h>
 #include <folly/io/IOBuf.h>
@@ -263,11 +263,12 @@ void RocketClientChannel::sendSingleRequestSingleResponse(
        protocolId = protocolId_,
        inflightWeak = folly::to_weak_ptr(inflightState_)](
           folly::Try<rocket::Payload>&& response) mutable {
+        folly::RequestContextScopeGuard rctx(cb->context_);
+
         if (auto inflightState = inflightWeak.lock()) {
           inflightState->decPendingRequests();
         }
         if (UNLIKELY(response.hasException())) {
-          folly::RequestContextScopeGuard rctx(cb->context_);
           cb->requestError(ClientReceiveState(
               std::move(response.exception()), std::move(ctx)));
           return;
@@ -278,14 +279,23 @@ void RocketClientChannel::sendSingleRequestSingleResponse(
 
         if (response.value().hasNonemptyMetadata()) {
           ResponseRpcMetadata responseMetadata;
-          deserializeMetadata(responseMetadata, *response.value().metadata());
-          if (responseMetadata.otherMetadata_ref().has_value()) {
-            tHeader->setReadHeaders(
-                std::move(responseMetadata.otherMetadata_ref().value()));
+          try {
+            deserializeMetadata(responseMetadata, *response.value().metadata());
+            if (responseMetadata.otherMetadata_ref().has_value()) {
+              tHeader->setReadHeaders(
+                  std::move(responseMetadata.otherMetadata_ref().value()));
+            }
+          } catch (const std::exception& e) {
+            FB_LOG_EVERY_MS(ERROR, 10000)
+                << "Exception on deserializing metadata: "
+                << folly::exceptionStr(e);
+            cb->requestError(ClientReceiveState(
+                folly::exception_wrapper(std::current_exception(), e),
+                std::move(ctx)));
+            return;
           }
         }
 
-        folly::RequestContextScopeGuard rctx(cb->context_);
         cb->replyReceived(ClientReceiveState(
             protocolId,
             std::move(response.value()).data(),
@@ -307,8 +317,7 @@ void RocketClientChannel::sendSingleRequestStreamResponse(
   } catch (const std::exception& e) {
     folly::RequestContextScopeGuard rctx(cb->context_);
     cb->requestError(ClientReceiveState(
-        folly::exception_wrapper::from_exception_ptr(std::current_exception()),
-        std::move(ctx)));
+        folly::exception_wrapper(std::current_exception(), e), std::move(ctx)));
     return;
   }
 
