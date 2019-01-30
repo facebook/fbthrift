@@ -529,8 +529,6 @@ void RocketClientChannel::TakeFirst::onNormalFirstResponse(
     rocket::Payload&& firstPayload,
     std::shared_ptr<yarpl::flowable::Flowable<std::unique_ptr<folly::IOBuf>>>
         tail) {
-  auto cb = std::move(clientCallback_);
-
   if (chunkTimeout_ != std::chrono::milliseconds::zero()) {
     tail = tail->timeout(evb_, chunkTimeout_, chunkTimeout_, [] {
       return transport::TTransportException(
@@ -538,9 +536,20 @@ void RocketClientChannel::TakeFirst::onNormalFirstResponse(
     });
   }
 
-  auto metadata = firstPayload.hasNonemptyMetadata()
-      ? deserializeMetadata(*firstPayload.metadata())
-      : std::make_unique<ResponseRpcMetadata>();
+  std::unique_ptr<ResponseRpcMetadata> metadata;
+  try {
+    metadata = firstPayload.hasNonemptyMetadata()
+        ? deserializeMetadata(*firstPayload.metadata())
+        : std::make_unique<ResponseRpcMetadata>();
+  } catch (const std::exception& ex) {
+    FB_LOG_EVERY_MS(ERROR, 10000)
+        << "Exception on deserializing metadata: " << folly::exceptionStr(ex);
+    onErrorFirstResponse(
+        folly::exception_wrapper(std::current_exception(), ex));
+    return;
+  }
+
+  auto cb = std::move(clientCallback_);
   cb->onThriftResponse(
       std::move(metadata),
       std::move(firstPayload).data(),
