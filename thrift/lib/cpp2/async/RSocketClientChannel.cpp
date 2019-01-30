@@ -16,6 +16,7 @@
 
 #include <thrift/lib/cpp2/async/RSocketClientChannel.h>
 
+#include <folly/ExceptionString.h>
 #include <rsocket/RSocketResponder.h>
 #include <rsocket/framing/FramedDuplexConnection.h>
 #include <rsocket/transports/tcp/TcpConnectionFactory.h>
@@ -25,10 +26,32 @@
 #include <thrift/lib/cpp2/transport/rsocket/YarplStreamImpl.h>
 #include <thrift/lib/cpp2/transport/rsocket/gen-cpp2/Config_types.h>
 
+using namespace apache::thrift;
 using namespace apache::thrift::transport;
 using namespace rsocket;
 using namespace yarpl::single;
 using namespace yarpl::flowable;
+
+namespace {
+// Deserializes metadata returning an invalid object with the protocol field
+// unset on error.
+std::unique_ptr<ResponseRpcMetadata> deserializeMetadata(
+    const folly::IOBuf& buffer) {
+  CompactProtocolReader reader;
+  auto responseMetadata = std::make_unique<ResponseRpcMetadata>();
+  try {
+    reader.setInput(&buffer);
+    responseMetadata->read(&reader);
+  } catch (const std::exception& e) {
+    LOG(ERROR) << "Exception on deserializing metadata: "
+               << folly::exceptionStr(e);
+    // Return an invalid metadata object instead of potentially valid partially
+    // deserialized one.
+    responseMetadata->__isset.protocol = false;
+  }
+  return responseMetadata;
+}
+} // namespace
 
 namespace apache {
 namespace thrift {
@@ -237,9 +260,8 @@ class CountedSingleObserver : public SingleObserver<Payload> {
   void onSuccess(Payload payload) override {
     if (auto callback = std::move(callback_)) {
       callback->onThriftResponse(
-          payload.metadata
-              ? RSocketClientChannel::deserializeMetadata(*payload.metadata)
-              : std::make_unique<ResponseRpcMetadata>(),
+          payload.metadata ? deserializeMetadata(*payload.metadata)
+                           : std::make_unique<ResponseRpcMetadata>(),
           std::move(payload.data));
     }
   }
@@ -278,15 +300,6 @@ std::unique_ptr<folly::IOBuf> RSocketClientChannel::serializeMetadata(
   writer.setOutput(&queue);
   requestMetadata.write(&writer);
   return queue.move();
-}
-
-std::unique_ptr<ResponseRpcMetadata> RSocketClientChannel::deserializeMetadata(
-    const folly::IOBuf& buffer) {
-  CompactProtocolReader reader;
-  auto responseMetadata = std::make_unique<ResponseRpcMetadata>();
-  reader.setInput(&buffer);
-  responseMetadata->read(&reader);
-  return responseMetadata;
 }
 
 RSocketClientChannel::RSocketClientChannel(

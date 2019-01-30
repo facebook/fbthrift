@@ -164,9 +164,6 @@ class RSocketClientChannel final : public ClientChannel,
   static std::unique_ptr<folly::IOBuf> serializeMetadata(
       const RequestRpcMetadata& requestMetadata);
 
-  static std::unique_ptr<ResponseRpcMetadata> deserializeMetadata(
-      const folly::IOBuf& buffer);
-
  private:
   explicit RSocketClientChannel(async::TAsyncTransport::UniquePtr socket);
 
