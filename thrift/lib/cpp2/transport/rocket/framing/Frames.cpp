@@ -47,18 +47,15 @@ void readPayloadCommon(
     Frame& frame,
     bool expectingMetadata,
     folly::io::Cursor& cursor) {
-  size_t metadataSize = 0;
-
   if (expectingMetadata) {
-    metadataSize = readFrameOrMetadataSize(cursor);
+    auto metadataSize = readFrameOrMetadataSize(cursor);
     if (metadataSize > 0) {
       cursor.clone(frame.payload().metadata(), metadataSize);
     }
-    metadataSize += Serializer::kBytesForFrameOrMetadataLength;
   }
 
   // Finally, fix up payload data.
-  frame.payload().data()->trimStart(frame.frameHeaderSize() + metadataSize);
+  frame.payload().data()->trimStart(cursor.getCurrentPosition());
 }
 
 template <class Frame>
@@ -484,6 +481,17 @@ RequestResponseFrame::RequestResponseFrame(std::unique_ptr<folly::IOBuf> _frame)
   readPayloadCommon(*this, flags_.metadata(), cursor);
 }
 
+RequestResponseFrame::RequestResponseFrame(
+    StreamId streamId,
+    Flags flags,
+    folly::io::Cursor& cursor,
+    std::unique_ptr<folly::IOBuf> underlyingBuffer)
+    : streamId_(streamId),
+      flags_(flags),
+      payload_(Payload::makeFromData(std::move(underlyingBuffer))) {
+  readPayloadCommon(*this, flags_.metadata(), cursor);
+}
+
 RequestFnfFrame::RequestFnfFrame(std::unique_ptr<folly::IOBuf> _frame)
     : payload_(Payload::makeFromData(std::move(_frame))) {
   // Trick to avoid the default-constructed IOBuf. See expanded comment in
@@ -498,6 +506,17 @@ RequestFnfFrame::RequestFnfFrame(std::unique_ptr<folly::IOBuf> _frame)
   std::tie(type, flags_) = readFrameTypeAndFlags(cursor);
   DCHECK(frameType() == type);
 
+  readPayloadCommon(*this, flags_.metadata(), cursor);
+}
+
+RequestFnfFrame::RequestFnfFrame(
+    StreamId streamId,
+    Flags flags,
+    folly::io::Cursor& cursor,
+    std::unique_ptr<folly::IOBuf> underlyingBuffer)
+    : streamId_(streamId),
+      flags_(flags),
+      payload_(Payload::makeFromData(std::move(underlyingBuffer))) {
   readPayloadCommon(*this, flags_.metadata(), cursor);
 }
 
@@ -520,6 +539,18 @@ RequestStreamFrame::RequestStreamFrame(std::unique_ptr<folly::IOBuf> _frame)
   readPayloadCommon(*this, flags_.metadata(), cursor);
 }
 
+RequestStreamFrame::RequestStreamFrame(
+    StreamId streamId,
+    Flags flags,
+    folly::io::Cursor& cursor,
+    std::unique_ptr<folly::IOBuf> underlyingBuffer)
+    : streamId_(streamId),
+      flags_(flags),
+      payload_(Payload::makeFromData(std::move(underlyingBuffer))) {
+  initialRequestN_ = cursor.readBE<int32_t>();
+  readPayloadCommon(*this, flags_.metadata(), cursor);
+}
+
 RequestNFrame::RequestNFrame(std::unique_ptr<folly::IOBuf> frame) {
   folly::io::Cursor cursor(frame.get());
   DCHECK(!frame->isChained());
@@ -533,6 +564,15 @@ RequestNFrame::RequestNFrame(std::unique_ptr<folly::IOBuf> frame) {
   DCHECK(frameType() == type);
   DCHECK(Flags::none() == flags);
 
+  requestN_ = cursor.readBE<int32_t>();
+}
+
+RequestNFrame::RequestNFrame(
+    StreamId streamId,
+    Flags flags,
+    folly::io::Cursor& cursor)
+    : streamId_(streamId) {
+  DCHECK(Flags::none() == flags);
   requestN_ = cursor.readBE<int32_t>();
 }
 
@@ -565,6 +605,17 @@ PayloadFrame::PayloadFrame(std::unique_ptr<folly::IOBuf> _frame)
   std::tie(type, flags_) = readFrameTypeAndFlags(cursor);
   DCHECK(frameType() == type);
 
+  readPayloadCommon(*this, flags_.metadata(), cursor);
+}
+
+PayloadFrame::PayloadFrame(
+    StreamId streamId,
+    Flags flags,
+    folly::io::Cursor& cursor,
+    std::unique_ptr<folly::IOBuf> underlyingBuffer)
+    : streamId_(streamId),
+      flags_(flags),
+      payload_(Payload::makeFromData(std::move(underlyingBuffer))) {
   readPayloadCommon(*this, flags_.metadata(), cursor);
 }
 

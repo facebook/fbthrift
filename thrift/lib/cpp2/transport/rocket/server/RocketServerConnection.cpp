@@ -117,7 +117,8 @@ void RocketServerConnection::handleFrame(std::unique_ptr<folly::IOBuf> frame) {
 
   const auto streamId = readStreamId(cursor);
   FrameType frameType;
-  std::tie(frameType, std::ignore) = readFrameTypeAndFlags(cursor);
+  Flags flags;
+  std::tie(frameType, flags) = readFrameTypeAndFlags(cursor);
 
   if (UNLIKELY(!setupFrameReceived_)) {
     if (frameType != FrameType::SETUP) {
@@ -142,23 +143,26 @@ void RocketServerConnection::handleFrame(std::unique_ptr<folly::IOBuf> frame) {
     case FrameType::REQUEST_RESPONSE: {
       RocketServerFrameContext frameContext(*this, streamId);
       return std::move(frameContext)
-          .onRequestFrame(RequestResponseFrame(std::move(frame)));
+          .onRequestFrame(
+              RequestResponseFrame(streamId, flags, cursor, std::move(frame)));
     }
 
     case FrameType::REQUEST_FNF: {
       RocketServerFrameContext frameContext(*this, streamId);
       return std::move(frameContext)
-          .onRequestFrame(RequestFnfFrame(std::move(frame)));
+          .onRequestFrame(
+              RequestFnfFrame(streamId, flags, cursor, std::move(frame)));
     }
 
     case FrameType::REQUEST_STREAM: {
       RocketServerFrameContext frameContext(*this, streamId);
       return std::move(frameContext)
-          .onRequestFrame(RequestStreamFrame(std::move(frame)));
+          .onRequestFrame(
+              RequestStreamFrame(streamId, flags, cursor, std::move(frame)));
     }
 
     case FrameType::REQUEST_N: {
-      RequestNFrame requestNFrame(std::move(frame));
+      RequestNFrame requestNFrame(streamId, flags, cursor);
       if (auto* stream = folly::get_ptr(streams_, requestNFrame.streamId())) {
         (*stream)->request(requestNFrame.requestN());
       }
@@ -185,7 +189,7 @@ void RocketServerConnection::handleFrame(std::unique_ptr<folly::IOBuf> frame) {
       }
 
       auto& frameContext = it->second;
-      PayloadFrame payloadFrame(std::move(frame));
+      PayloadFrame payloadFrame(streamId, flags, cursor, std::move(frame));
 
       const bool hasFollows = payloadFrame.hasFollows();
       SCOPE_EXIT {

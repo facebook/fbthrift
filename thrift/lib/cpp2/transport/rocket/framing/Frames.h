@@ -87,6 +87,12 @@ class RequestResponseFrame {
  public:
   explicit RequestResponseFrame(std::unique_ptr<folly::IOBuf> frame);
 
+  RequestResponseFrame(
+      StreamId streamId,
+      Flags flags,
+      folly::io::Cursor& cursor,
+      std::unique_ptr<folly::IOBuf> underlyingBuffer);
+
   RequestResponseFrame(StreamId streamId, Payload&& payload)
       : streamId_(streamId), payload_(std::move(payload)) {}
 
@@ -131,6 +137,12 @@ class RequestFnfFrame {
  public:
   explicit RequestFnfFrame(std::unique_ptr<folly::IOBuf> frame);
 
+  RequestFnfFrame(
+      StreamId streamId,
+      Flags flags,
+      folly::io::Cursor& cursor,
+      std::unique_ptr<folly::IOBuf> underlyingBuffer);
+
   RequestFnfFrame(StreamId streamId, Payload&& payload)
       : streamId_(streamId), payload_(std::move(payload)) {}
 
@@ -174,6 +186,12 @@ class RequestFnfFrame {
 class RequestStreamFrame {
  public:
   explicit RequestStreamFrame(std::unique_ptr<folly::IOBuf> frame);
+
+  RequestStreamFrame(
+      StreamId streamId,
+      Flags flags,
+      folly::io::Cursor& cursor,
+      std::unique_ptr<folly::IOBuf> underlyingBuffer);
 
   RequestStreamFrame(
       StreamId streamId,
@@ -233,6 +251,8 @@ class RequestNFrame {
  public:
   explicit RequestNFrame(std::unique_ptr<folly::IOBuf> frame);
 
+  RequestNFrame(StreamId streamId, Flags flags, folly::io::Cursor& cursor);
+
   RequestNFrame(StreamId streamId, int32_t n)
       : streamId_(streamId), requestN_(n) {
     if (requestN_ <= 0) {
@@ -290,6 +310,12 @@ class CancelFrame {
 class PayloadFrame {
  public:
   explicit PayloadFrame(std::unique_ptr<folly::IOBuf> frame);
+
+  PayloadFrame(
+      StreamId streamId,
+      Flags flags,
+      folly::io::Cursor& cursor,
+      std::unique_ptr<folly::IOBuf> underlyingBuffer);
 
   PayloadFrame(StreamId streamId, Payload&& payload, Flags flags)
       : streamId_(streamId), flags_(flags), payload_(std::move(payload)) {}
