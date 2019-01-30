@@ -75,8 +75,8 @@ class QIAdmissionController : public AdmissionController {
    * queueSize is unchanged.
    */
   bool admit() override {
-    auto now = Clock::now();
     std::lock_guard<std::mutex> guard(mutex_);
+    auto now = Clock::now();
     updateIntegral(queueSize_, now);
     const auto qLimit = getQueueLimit();
     if (queueSize_ >= qLimit) {
@@ -92,8 +92,8 @@ class QIAdmissionController : public AdmissionController {
    * currently processing it.
    */
   void dequeue() override {
-    auto now = Clock::now();
     std::lock_guard<std::mutex> guard(mutex_);
+    auto now = Clock::now();
     CHECK(queueSize_ >= 1);
     updateIntegral(queueSize_, now);
     queueSize_ -= 1;
