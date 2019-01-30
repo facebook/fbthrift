@@ -1,3 +1,5 @@
+# distutils: language = c++
+
 from folly cimport (
     cFollyExceptionWrapper,
     cFollyFuture,

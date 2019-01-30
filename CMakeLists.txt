@@ -68,6 +68,11 @@ else()
   set(build_all ON)
 endif(compiler_only OR lib_only)
 
+option(thriftpy3
+  "Include thrift-py3 library and extensions in the build, requires Cython"
+  OFF
+)
+
 # Find required dependencies for thrift/compiler
 if(compiler_only OR build_all)
   find_package(BISON REQUIRED)
@@ -113,6 +118,11 @@ if(lib_only OR build_all)
     include(${THRIFT_COMPILER_INCLUDE}/thrift/ThriftLibrary.cmake)
   endif(lib_only)
 endif(lib_only OR build_all)
+
+if(thriftpy3)
+  find_package(PythonInterp 3.6 REQUIRED)
+  find_package(Cython 0.29 REQUIRED)
+endif()
 
 # Add the test dependencies
 # To run tests: `make test`

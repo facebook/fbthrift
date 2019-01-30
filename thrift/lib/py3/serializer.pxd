@@ -1,3 +1,5 @@
+# distutils: language = c++
+
 from libcpp.string cimport string
 from libc.stdint cimport uint32_t
 from folly.iobuf cimport cIOBuf, cIOBufQueue

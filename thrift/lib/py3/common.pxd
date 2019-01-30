@@ -1,3 +1,5 @@
+# distutils: language=c++
+
 from libcpp.map cimport map as cmap
 from libc.stdint cimport int64_t
 from libcpp.string cimport string

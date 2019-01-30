@@ -1,3 +1,5 @@
+# distutils: language = c++
+
 # stdlib functions that have not been wrapped in the cython distribution
 from libc.stdint cimport int64_t
 from libcpp cimport bool as cbool

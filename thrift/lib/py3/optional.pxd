@@ -1,3 +1,5 @@
+# distutils: language = c++
+
 cdef extern from "folly/Optional.h" namespace "folly" nogil:
     cdef cppclass cOptional "folly::Optional"[T]:
         cOptional()

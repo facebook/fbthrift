@@ -1,3 +1,5 @@
+# distutils: language=c++
+
 from folly.iobuf cimport from_unique_ptr, createChain, IOBuf
 
 def get_empty_chain():

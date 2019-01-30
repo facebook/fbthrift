@@ -1,3 +1,5 @@
+# distutils: language = c++
+
 from libcpp.string cimport string
 from cpython.ref cimport PyObject
 from folly cimport cFollyExceptionWrapper

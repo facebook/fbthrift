@@ -1,3 +1,4 @@
+# distutils: language=c++
 from cpython.bytes cimport PyBytes_AsStringAndSize
 from cpython.object cimport PyTypeObject, Py_LT, Py_EQ
 from folly.iobuf cimport cIOBuf, IOBuf
