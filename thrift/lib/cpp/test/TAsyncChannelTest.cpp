@@ -684,21 +684,21 @@ class MultiSendRecvTest : public SocketPairTest<ChannelT> {
 };
 
 TEST(TAsyncChannelTest, TestMultiSendRecvBinary) {
-  typedef MultiSendRecvTest<TBinaryAsyncChannel> MultiSendRecvBinaryTest;
+  typedef MultiSendRecvTest<TBinaryAsyncChannel> MultiSendRECV_BINARY_TEST;
 
   //size below 1024 for each message
   MultiMessageSize sizes(911, 911, 911, -1);
 
   // each time send one whole message below 1024
-  MultiSendRecvBinaryTest(sizes, 3, 0).run();
-  MultiSendRecvBinaryTest(sizes, 3, 2).run();
+  MultiSendRECV_BINARY_TEST(sizes, 3, 0).run();
+  MultiSendRECV_BINARY_TEST(sizes, 3, 2).run();
 
   // send all messages for one time
-  MultiSendRecvBinaryTest(sizes, 1, 0).run();
+  MultiSendRECV_BINARY_TEST(sizes, 1, 0).run();
 
   // each time send one and half message.
-  MultiSendRecvBinaryTest(sizes, 2).run();
-  MultiSendRecvBinaryTest(sizes, 2, 2).run();
+  MultiSendRECV_BINARY_TEST(sizes, 2).run();
+  MultiSendRECV_BINARY_TEST(sizes, 2, 2).run();
 
   //size above 1024 for each message
   MultiMessageSize bigSizes(1911 * 1911,
@@ -707,33 +707,33 @@ TEST(TAsyncChannelTest, TestMultiSendRecvBinary) {
                             -1);
 
   // each time send one whole message above 1024
-  MultiSendRecvBinaryTest(bigSizes, 3, 0).run();
-  MultiSendRecvBinaryTest(bigSizes, 3, 2).run();
+  MultiSendRECV_BINARY_TEST(bigSizes, 3, 0).run();
+  MultiSendRECV_BINARY_TEST(bigSizes, 3, 2).run();
 
   // send all messages for one time
-  MultiSendRecvBinaryTest(bigSizes, 1, 0).run();
+  MultiSendRECV_BINARY_TEST(bigSizes, 1, 0).run();
 
   // each time send one and half message
-  MultiSendRecvBinaryTest(bigSizes, 2).run();
-  MultiSendRecvBinaryTest(bigSizes, 2, 2).run();
+  MultiSendRECV_BINARY_TEST(bigSizes, 2).run();
+  MultiSendRECV_BINARY_TEST(bigSizes, 2, 2).run();
 }
 
 TEST(TAsyncChannelTest, TestMultiSendRecvBinaryQueued) {
-  typedef MultiSendRecvTest<TBinaryAsyncChannel> MultiSendRecvBinaryTest;
+  typedef MultiSendRecvTest<TBinaryAsyncChannel> MultiSendRECV_BINARY_TEST;
 
   //size below 1024 for each message
   MultiMessageSize sizes(911, 911, 911, -1);
 
   // each time send one whole message below 1024
-  MultiSendRecvBinaryTest(sizes, 3, true, milliseconds(0)).run();
-  MultiSendRecvBinaryTest(sizes, 3, true, milliseconds(2)).run();
+  MultiSendRECV_BINARY_TEST(sizes, 3, true, milliseconds(0)).run();
+  MultiSendRECV_BINARY_TEST(sizes, 3, true, milliseconds(2)).run();
 
   // send all messages for one time
-  MultiSendRecvBinaryTest(sizes, 1, true, milliseconds(0)).run();
+  MultiSendRECV_BINARY_TEST(sizes, 1, true, milliseconds(0)).run();
 
   // each time send one and half message.
-  MultiSendRecvBinaryTest(sizes, 2, true).run();
-  MultiSendRecvBinaryTest(sizes, 2, true, milliseconds(2)).run();
+  MultiSendRECV_BINARY_TEST(sizes, 2, true).run();
+  MultiSendRECV_BINARY_TEST(sizes, 2, true, milliseconds(2)).run();
 
   //size above 1024 for each message
   MultiMessageSize bigSizes(1911 * 1911,
@@ -742,15 +742,15 @@ TEST(TAsyncChannelTest, TestMultiSendRecvBinaryQueued) {
                             -1);
 
   // each time send one whole message above 1024
-  MultiSendRecvBinaryTest(bigSizes, 3, true, milliseconds(0)).run();
-  MultiSendRecvBinaryTest(bigSizes, 3, true, milliseconds(2)).run();
+  MultiSendRECV_BINARY_TEST(bigSizes, 3, true, milliseconds(0)).run();
+  MultiSendRECV_BINARY_TEST(bigSizes, 3, true, milliseconds(2)).run();
 
   // send all messages for one time
-  MultiSendRecvBinaryTest(bigSizes, 1, true, milliseconds(0)).run();
+  MultiSendRECV_BINARY_TEST(bigSizes, 1, true, milliseconds(0)).run();
 
   // each time send one and half message
-  MultiSendRecvBinaryTest(bigSizes, 2, true).run();
-  MultiSendRecvBinaryTest(bigSizes, 2, true, milliseconds(2)).run();
+  MultiSendRECV_BINARY_TEST(bigSizes, 2, true).run();
+  MultiSendRECV_BINARY_TEST(bigSizes, 2, true, milliseconds(2)).run();
 }
 
 TEST(TAsyncChannelTest, TestMultiSendRecvFramed) {
@@ -790,21 +790,21 @@ TEST(TAsyncChannelTest, TestMultiSendRecvFramed) {
 
 
 TEST(TAsyncChannelTest, TestMultiSendRecvFramedQueued) {
-  typedef MultiSendRecvTest<TFramedAsyncChannel> MultiSendRecvBinaryTest;
+  typedef MultiSendRecvTest<TFramedAsyncChannel> MultiSendRECV_BINARY_TEST;
 
   //size below 1024 for each message
   MultiMessageSize sizes(911, 911, 911, -1);
 
   // each time send one whole message below 1024
-  MultiSendRecvBinaryTest(sizes, 3, true, milliseconds(0)).run();
-  MultiSendRecvBinaryTest(sizes, 3, true, milliseconds(2)).run();
+  MultiSendRECV_BINARY_TEST(sizes, 3, true, milliseconds(0)).run();
+  MultiSendRECV_BINARY_TEST(sizes, 3, true, milliseconds(2)).run();
 
   // send all messages for one time
-  MultiSendRecvBinaryTest(sizes, 1, true, milliseconds(0)).run();
+  MultiSendRECV_BINARY_TEST(sizes, 1, true, milliseconds(0)).run();
 
   // each time send one and half message.
-  MultiSendRecvBinaryTest(sizes, 2, true).run();
-  MultiSendRecvBinaryTest(sizes, 2, true, milliseconds(2)).run();
+  MultiSendRECV_BINARY_TEST(sizes, 2, true).run();
+  MultiSendRECV_BINARY_TEST(sizes, 2, true, milliseconds(2)).run();
 
   //size above 1024 for each message
   MultiMessageSize bigSizes(1911 * 1911,
@@ -813,15 +813,15 @@ TEST(TAsyncChannelTest, TestMultiSendRecvFramedQueued) {
                             -1);
 
   // each time send one whole message above 1024
-  MultiSendRecvBinaryTest(bigSizes, 3, true, milliseconds(0)).run();
-  MultiSendRecvBinaryTest(bigSizes, 3, true, milliseconds(2)).run();
+  MultiSendRECV_BINARY_TEST(bigSizes, 3, true, milliseconds(0)).run();
+  MultiSendRECV_BINARY_TEST(bigSizes, 3, true, milliseconds(2)).run();
 
   // send all messages for one time
-  MultiSendRecvBinaryTest(bigSizes, 1, true, milliseconds(0)).run();
+  MultiSendRECV_BINARY_TEST(bigSizes, 1, true, milliseconds(0)).run();
 
   // each time send one and half message
-  MultiSendRecvBinaryTest(bigSizes, 2, true).run();
-  MultiSendRecvBinaryTest(bigSizes, 2, true, milliseconds(2)).run();
+  MultiSendRECV_BINARY_TEST(bigSizes, 2, true).run();
+  MultiSendRECV_BINARY_TEST(bigSizes, 2, true, milliseconds(2)).run();
 }
 
 const int kRecvDelay = 200;
@@ -895,14 +895,18 @@ TEST(TAsyncChannelTest, TestTimeoutQueued) {
 template<typename ChannelT>
 class RecvChunksTest : public SocketPairTest<ChannelT> {
  public:
-  explicit RecvChunksTest(const ChunkSchedule& schedule,
-                          milliseconds timeout = milliseconds(0),
-                          uint32_t msgLen = 1024*1024)
-    : start_(false)
-    , timeout_(timeout)
-    , msg_(msgLen, NeedsFrame<ChannelT>::value())
-    , sender_(&this->eventBase_, this->socket0_.get(), &msg_, schedule) {
-  }
+  explicit RecvChunksTest(
+      const char* file,
+      int line,
+      const ChunkSchedule& schedule,
+      milliseconds timeout = milliseconds(0),
+      uint32_t msgLen = 1024 * 1024)
+      : file_(file),
+        line_(line),
+        start_(false),
+        timeout_(timeout),
+        msg_(msgLen, NeedsFrame<ChannelT>::value()),
+        sender_(&this->eventBase_, this->socket0_.get(), &msg_, schedule) {}
 
   void preLoop() override {
     if (timeout_ > milliseconds(0)) {
@@ -955,7 +959,8 @@ class RecvChunksTest : public SocketPairTest<ChannelT> {
 
     if (expectTimeout) {
       // We should time out after expectedMS
-      LOG(INFO) << "RecvChunksTest: testing for timeout";
+      LOG(INFO) << "RecvChunksTest: testing for timeout in " << file_ << ":"
+                << line_;
       CHECK_EQ(sender_.error(), true);
       CHECK_EQ(recvCallback_.getRecvError(), 1);
       CHECK_EQ(recvCallback_.getRecvDone(), 0);
@@ -971,7 +976,8 @@ class RecvChunksTest : public SocketPairTest<ChannelT> {
       // This seems like a weird special case.  TAsyncChannel calls the normal
       // callback in this case, even though no message was received.  Maybe we
       // should consider changing this TAsyncChannel behavior?
-      LOG(INFO) << "RecvChunksTest: testing for EOF with no data";
+      LOG(INFO) << "RecvChunksTest: testing for EOF with no data in " << file_
+                << ":" << line_;
       CHECK_EQ(sender_.error(), false);
       CHECK_EQ(recvCallback_.getRecvError(), 0);
       CHECK_EQ(recvCallback_.getRecvDone(), 1);
@@ -984,7 +990,8 @@ class RecvChunksTest : public SocketPairTest<ChannelT> {
                       tolerance);
     } else if (expectedBytes < msg_.getLength()) {
       // We should get EOF after expectedMS
-      LOG(INFO) << "RecvChunksTest: testing for EOF";
+      LOG(INFO) << "RecvChunksTest: testing for EOF in " << file_ << ":"
+                << line_;
       CHECK_EQ(sender_.error(), false);
       CHECK_EQ(recvCallback_.getRecvError(), 1);
       CHECK_EQ(recvCallback_.getRecvDone(), 0);
@@ -996,7 +1003,8 @@ class RecvChunksTest : public SocketPairTest<ChannelT> {
                       tolerance);
     } else {
       // We expect success after expectedMS
-      LOG(INFO) << "RecvChunksTest: testing for success";
+      LOG(INFO) << "RecvChunksTest: testing for success in " << file_ << ":"
+                << line_;
       CHECK_EQ(sender_.error(), false);
       CHECK_EQ(recvCallback_.getRecvError(), 0);
       CHECK_EQ(recvCallback_.getRecvDone(), 1);
@@ -1011,6 +1019,8 @@ class RecvChunksTest : public SocketPairTest<ChannelT> {
   }
 
  private:
+  std::string file_;
+  int line_;
   TimePoint start_;
   milliseconds timeout_;
   Message msg_;
@@ -1019,10 +1029,10 @@ class RecvChunksTest : public SocketPairTest<ChannelT> {
   ChannelCallback recvCallback_;
 };
 
+#define RECV_FRAME_TEST(...) \
+  RecvChunksTest<TFramedAsyncChannel>(__FILE__, __LINE__, __VA_ARGS__)
 
 TEST(TAsyncChannelTest, TestRecvFrameChunks) {
-  typedef RecvChunksTest<TFramedAsyncChannel> RecvFrameTest;
-
   // The frame header is 4 bytes.  Test sending each byte separately,
   // 5ms apart, followed by the body.
   ChunkSchedule s1(1, milliseconds(5),
@@ -1032,50 +1042,56 @@ TEST(TAsyncChannelTest, TestRecvFrameChunks) {
                    100, milliseconds(10),
                    -1, milliseconds(10));
   // Test reading the whole message
-  RecvFrameTest(s1).run();
+  RECV_FRAME_TEST(s1).run();
   // Setting the timeout to 15ms should still succeed--the code only times out
   // if no data is received for the specified period
-  RecvFrameTest(s1, milliseconds(15)).run();
+  RECV_FRAME_TEST(s1, milliseconds(15)).run();
 
   // Test timing out before any data is sent
-  RecvFrameTest(ChunkSchedule(-1, milliseconds(50)),
-                milliseconds(20)).run();
+  RECV_FRAME_TEST(ChunkSchedule(-1, milliseconds(50)), milliseconds(20)).run();
   // Test timing out after part of the frame header is sent
-  RecvFrameTest(ChunkSchedule(2, milliseconds(10),
-                              -1, milliseconds(50)),
-                milliseconds(20)).run();
+  RECV_FRAME_TEST(
+      ChunkSchedule(2, milliseconds(10), -1, milliseconds(50)),
+      milliseconds(20))
+      .run();
   // Test timing out after the frame header is sent
-  RecvFrameTest(ChunkSchedule(4, milliseconds(10),
-                              -1, milliseconds(50)),
-                milliseconds(20)).run();
+  RECV_FRAME_TEST(
+      ChunkSchedule(4, milliseconds(10), -1, milliseconds(50)),
+      milliseconds(20))
+      .run();
   // Test timing out after part of the body is snet
-  RecvFrameTest(ChunkSchedule(100, milliseconds(10),
-                              -1, milliseconds(50)),
-                milliseconds(20)).run();
+  RECV_FRAME_TEST(
+      ChunkSchedule(100, milliseconds(10), -1, milliseconds(50)),
+      milliseconds(20))
+      .run();
 
   // Test closing the connection before any data is sent
-  RecvFrameTest(ChunkSchedule(0, milliseconds(5))).run();
+  RECV_FRAME_TEST(ChunkSchedule(0, milliseconds(5))).run();
   // Test closing the connection after part of the frame header is sent
-  RecvFrameTest(ChunkSchedule(2, milliseconds(10),
-                              0, milliseconds(5))).run();
+  RECV_FRAME_TEST(ChunkSchedule(2, milliseconds(10), 0, milliseconds(5))).run();
   // Test closing the connection after the frame header is sent
-  RecvFrameTest(ChunkSchedule(4, milliseconds(10),
-                              0, milliseconds(5))).run();
+  RECV_FRAME_TEST(ChunkSchedule(4, milliseconds(10), 0, milliseconds(5))).run();
   // Test closing the connection after part of the body is snet
-  RecvFrameTest(ChunkSchedule(100, milliseconds(10),
-                              0, milliseconds(5))).run();
-
+  RECV_FRAME_TEST(ChunkSchedule(100, milliseconds(10), 0, milliseconds(5)))
+      .run();
 
   // Some various other schedules
-  RecvFrameTest(ChunkSchedule(1, milliseconds(10),
-                              1, milliseconds(10),
-                              100, milliseconds(10),
-                              -1, milliseconds(5))).run();
+  RECV_FRAME_TEST(ChunkSchedule(
+                      1,
+                      milliseconds(10),
+                      1,
+                      milliseconds(10),
+                      100,
+                      milliseconds(10),
+                      -1,
+                      milliseconds(5)))
+      .run();
 }
 
-TEST(TAsyncChannelTest, TestRecvBinaryChunks) {
-  typedef RecvChunksTest<TBinaryAsyncChannel> RecvBinaryTest;
+#define RECV_BINARY_TEST(...) \
+  RecvChunksTest<TBinaryAsyncChannel>(__FILE__, __LINE__, __VA_ARGS__)
 
+TEST(TAsyncChannelTest, TestRecvBinaryChunks) {
   // Test sending the first four bytes byte separately,
   // 5ms apart, followed by the rest of the message.
   ChunkSchedule s1(1, milliseconds(5),
@@ -1085,42 +1101,49 @@ TEST(TAsyncChannelTest, TestRecvBinaryChunks) {
                    100, milliseconds(10),
                    -1, milliseconds(10));
   // Test reading the whole message
-  RecvBinaryTest(s1).run();
+  RECV_BINARY_TEST(s1).run();
   // Setting the timeout to 15ms should still succeed--the code only times out
   // if no data is received for the specified period
-  RecvBinaryTest(s1, milliseconds(15)).run();
+  RECV_BINARY_TEST(s1, milliseconds(15)).run();
 
   // Test timing out before any data is sent
-  RecvBinaryTest(ChunkSchedule(-1, milliseconds(50)),
-                 milliseconds(20)).run();
+  RECV_BINARY_TEST(ChunkSchedule(-1, milliseconds(50)), milliseconds(20)).run();
   // Test timing out after part of the frame header is sent
-  RecvBinaryTest(ChunkSchedule(2, milliseconds(10),
-                               -1, milliseconds(50)),
-                 milliseconds(20)).run();
+  RECV_BINARY_TEST(
+      ChunkSchedule(2, milliseconds(10), -1, milliseconds(50)),
+      milliseconds(20))
+      .run();
   // Test timing out after the frame header is sent
-  RecvBinaryTest(ChunkSchedule(4, milliseconds(10),
-                               -1, milliseconds(50)),
-                 milliseconds(20)).run();
+  RECV_BINARY_TEST(
+      ChunkSchedule(4, milliseconds(10), -1, milliseconds(50)),
+      milliseconds(20))
+      .run();
   // Test timing out after part of the body is snet
-  RecvBinaryTest(ChunkSchedule(100, milliseconds(10),
-                               -1, milliseconds(50)),
-                 milliseconds(20)).run();
+  RECV_BINARY_TEST(
+      ChunkSchedule(100, milliseconds(10), -1, milliseconds(50)),
+      milliseconds(20))
+      .run();
 
   // Test closing the connection before any data is sent
-  RecvBinaryTest(ChunkSchedule(0, milliseconds(5))).run();
+  RECV_BINARY_TEST(ChunkSchedule(0, milliseconds(5))).run();
   // Test closing the connection after sending 4 bytes
-  RecvBinaryTest(ChunkSchedule(2, milliseconds(10),
-                               0, milliseconds(5))).run();
+  RECV_BINARY_TEST(ChunkSchedule(2, milliseconds(10), 0, milliseconds(5)))
+      .run();
   // Test closing the connection after sending 100 bytes
-  RecvBinaryTest(ChunkSchedule(100, milliseconds(10),
-                               0, milliseconds(5))).run();
-
+  RECV_BINARY_TEST(ChunkSchedule(100, milliseconds(10), 0, milliseconds(5)))
+      .run();
 
   // Some various other schedules
-  RecvBinaryTest(ChunkSchedule(1, milliseconds(10),
-                               1, milliseconds(10),
-                               100, milliseconds(10),
-                               -1, milliseconds(5))).run();
+  RECV_BINARY_TEST(ChunkSchedule(
+                       1,
+                       milliseconds(10),
+                       1,
+                       milliseconds(10),
+                       100,
+                       milliseconds(10),
+                       -1,
+                       milliseconds(5)))
+      .run();
 }
 
 template<typename ChannelT>
