@@ -20,7 +20,7 @@ interface BarAsyncIf extends \IThriftAsyncIf {
    *       4: Foo d,
    *       5: i64 e);
    */
-  public function baz(?darray<int, bool> $a, ?\Indexish<int, \Indexish<int, darray<string, bool>>> $b, ?int $c, ?Foo $d, ?int $e): Awaitable<string>;
+  public function baz(?darray<int, bool> $a, ?\KeyedContainer<int, \KeyedContainer<int, darray<string, bool>>> $b, ?int $c, ?Foo $d, ?int $e): Awaitable<string>;
 }
 
 /**
@@ -37,7 +37,7 @@ interface BarIf extends \IThriftSyncIf {
    *       4: Foo d,
    *       5: i64 e);
    */
-  public function baz(?darray<int, bool> $a, ?\Indexish<int, \Indexish<int, darray<string, bool>>> $b, ?int $c, ?Foo $d, ?int $e): string;
+  public function baz(?darray<int, bool> $a, ?\KeyedContainer<int, \KeyedContainer<int, darray<string, bool>>> $b, ?int $c, ?Foo $d, ?int $e): string;
 }
 
 /**
@@ -47,7 +47,7 @@ interface BarIf extends \IThriftSyncIf {
 trait BarClientBase {
   require extends \ThriftClientBase;
 
-  protected function sendImpl_baz(?darray<int, bool> $a, ?\Indexish<int, \Indexish<int, darray<string, bool>>> $b, ?int $c, ?Foo $d, ?int $e): int {
+  protected function sendImpl_baz(?darray<int, bool> $a, ?\KeyedContainer<int, \KeyedContainer<int, darray<string, bool>>> $b, ?int $c, ?Foo $d, ?int $e): int {
     $currentseqid = $this->getNextSequenceID();
     $args = new Bar_baz_args(Map {
       'a' => $a === null ? null : $a,
@@ -164,7 +164,7 @@ class BarAsyncClient extends \ThriftClientBase implements BarAsyncIf {
    *       4: Foo d,
    *       5: i64 e);
    */
-  public async function baz(?darray<int, bool> $a, ?\Indexish<int, \Indexish<int, darray<string, bool>>> $b, ?int $c, ?Foo $d, ?int $e): Awaitable<string> {
+  public async function baz(?darray<int, bool> $a, ?\KeyedContainer<int, \KeyedContainer<int, darray<string, bool>>> $b, ?int $c, ?Foo $d, ?int $e): Awaitable<string> {
     $currentseqid = $this->sendImpl_baz($a, $b, $c, $d, $e);
     await $this->asyncHandler_->genWait($currentseqid);
     return $this->recvImpl_baz($currentseqid);
@@ -176,7 +176,7 @@ class BarClient extends \ThriftClientBase implements BarIf {
   use BarClientBase;
 
   <<__Deprecated('use gen_baz()')>>
-  public function baz(?darray<int, bool> $a, ?\Indexish<int, \Indexish<int, darray<string, bool>>> $b, ?int $c, ?Foo $d, ?int $e): string {
+  public function baz(?darray<int, bool> $a, ?\KeyedContainer<int, \KeyedContainer<int, darray<string, bool>>> $b, ?int $c, ?Foo $d, ?int $e): string {
     $currentseqid = $this->sendImpl_baz($a, $b, $c, $d, $e);
     return $this->recvImpl_baz($currentseqid);
   }
@@ -190,14 +190,14 @@ class BarClient extends \ThriftClientBase implements BarIf {
    *       4: Foo d,
    *       5: i64 e);
    */
-  public async function gen_baz(?darray<int, bool> $a, ?\Indexish<int, \Indexish<int, darray<string, bool>>> $b, ?int $c, ?Foo $d, ?int $e): Awaitable<string> {
+  public async function gen_baz(?darray<int, bool> $a, ?\KeyedContainer<int, \KeyedContainer<int, darray<string, bool>>> $b, ?int $c, ?Foo $d, ?int $e): Awaitable<string> {
     $currentseqid = $this->sendImpl_baz($a, $b, $c, $d, $e);
     await $this->asyncHandler_->genWait($currentseqid);
     return $this->recvImpl_baz($currentseqid);
   }
 
   /* send and recv functions */
-  public function send_baz(darray<int, bool> $a, \Indexish<int, \Indexish<int, darray<string, bool>>> $b, int $c, ?Foo $d, int $e): int {
+  public function send_baz(darray<int, bool> $a, \KeyedContainer<int, \KeyedContainer<int, darray<string, bool>>> $b, int $c, ?Foo $d, int $e): int {
     return $this->sendImpl_baz($a, $b, $c, $d, $e);
   }
   public function recv_baz(?int $expectedsequenceid = null): string {
@@ -375,7 +375,7 @@ class Bar_baz_args implements \IThriftStruct {
   public ?Foo $d;
   public ?int $e;
 
-  public function __construct(@\Indexish<string, mixed> $vals = darray[]) {
+  public function __construct(@\KeyedContainer<string, mixed> $vals = darray[]) {
     // UNSAFE_BLOCK $vals is not type safe :(, and we don't cast structs (yet)
     $this->a = idx($vals, 'a', null);
     $this->b = idx($vals, 'b', null);
@@ -405,7 +405,7 @@ class Bar_baz_result implements \IThriftStruct {
   const int STRUCTURAL_ID = 1365128170602685579;
   public ?string $success;
 
-  public function __construct(@\Indexish<string, mixed> $vals = darray[]) {
+  public function __construct(@\KeyedContainer<string, mixed> $vals = darray[]) {
     // UNSAFE_BLOCK $vals is not type safe :(, and we don't cast structs (yet)
   }
 

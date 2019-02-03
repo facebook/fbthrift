@@ -23,7 +23,7 @@ interface SomeServiceAsyncIf extends \IThriftAsyncIf {
    * map<TBinary, i64>
    *   binary_keyed_map(1: list<i64> r);
    */
-  public function binary_keyed_map(\Indexish<int, int> $r): Awaitable<Map<string, int>>;
+  public function binary_keyed_map(\KeyedContainer<int, int> $r): Awaitable<Map<string, int>>;
 }
 
 /**
@@ -43,7 +43,7 @@ interface SomeServiceIf extends \IThriftSyncIf {
    * map<TBinary, i64>
    *   binary_keyed_map(1: list<i64> r);
    */
-  public function binary_keyed_map(\Indexish<int, int> $r): Map<string, int>;
+  public function binary_keyed_map(\KeyedContainer<int, int> $r): Map<string, int>;
 }
 
 /**
@@ -150,7 +150,7 @@ trait SomeServiceClientBase {
     throw $x;
   }
 
-  protected function sendImpl_binary_keyed_map(\Indexish<int, int> $r): int {
+  protected function sendImpl_binary_keyed_map(\KeyedContainer<int, int> $r): int {
     $currentseqid = $this->getNextSequenceID();
     $args = new SomeService_binary_keyed_map_args(
       new Vector($r),
@@ -268,7 +268,7 @@ class SomeServiceAsyncClient extends \ThriftClientBase implements SomeServiceAsy
    * map<TBinary, i64>
    *   binary_keyed_map(1: list<i64> r);
    */
-  public async function binary_keyed_map(\Indexish<int, int> $r): Awaitable<Map<string, int>> {
+  public async function binary_keyed_map(\KeyedContainer<int, int> $r): Awaitable<Map<string, int>> {
     $currentseqid = $this->sendImpl_binary_keyed_map($r);
     await $this->asyncHandler_->genWait($currentseqid);
     return $this->recvImpl_binary_keyed_map($currentseqid);
@@ -297,7 +297,7 @@ class SomeServiceClient extends \ThriftClientBase implements SomeServiceIf {
   }
 
   <<__Deprecated('use gen_binary_keyed_map()')>>
-  public function binary_keyed_map(\Indexish<int, int> $r): Map<string, int> {
+  public function binary_keyed_map(\KeyedContainer<int, int> $r): Map<string, int> {
     $currentseqid = $this->sendImpl_binary_keyed_map($r);
     return $this->recvImpl_binary_keyed_map($currentseqid);
   }
@@ -307,7 +307,7 @@ class SomeServiceClient extends \ThriftClientBase implements SomeServiceIf {
    * map<TBinary, i64>
    *   binary_keyed_map(1: list<i64> r);
    */
-  public async function gen_binary_keyed_map(\Indexish<int, int> $r): Awaitable<Map<string, int>> {
+  public async function gen_binary_keyed_map(\KeyedContainer<int, int> $r): Awaitable<Map<string, int>> {
     $currentseqid = $this->sendImpl_binary_keyed_map($r);
     await $this->asyncHandler_->genWait($currentseqid);
     return $this->recvImpl_binary_keyed_map($currentseqid);
@@ -320,7 +320,7 @@ class SomeServiceClient extends \ThriftClientBase implements SomeServiceIf {
   public function recv_bounce_map(?int $expectedsequenceid = null): Map<int, string> {
     return $this->recvImpl_bounce_map($expectedsequenceid);
   }
-  public function send_binary_keyed_map(\Indexish<int, int> $r): int {
+  public function send_binary_keyed_map(\KeyedContainer<int, int> $r): int {
     return $this->sendImpl_binary_keyed_map($r);
   }
   public function recv_binary_keyed_map(?int $expectedsequenceid = null): Map<string, int> {

@@ -83,7 +83,7 @@ class Foo implements \IThriftStruct {
    */
   public ?bool $d;
 
-  public function __construct(@\Indexish<string, mixed> $vals = darray[]) {
+  public function __construct(@\KeyedContainer<string, mixed> $vals = darray[]) {
     // UNSAFE_BLOCK $vals is not type safe :(, and we don't cast structs (yet)
     $this->a = idx($vals, 'a', null);
     if (C\contains_key($vals, 'b')) {
@@ -158,7 +158,7 @@ class Baz extends \TException implements \IThriftStruct {
    */
   public int $code;
 
-  public function __construct(@\Indexish<string, mixed> $vals = darray[]) {
+  public function __construct(@\KeyedContainer<string, mixed> $vals = darray[]) {
     // UNSAFE_BLOCK $vals is not type safe :(, and we don't cast structs (yet)
     parent::__construct();
     $this->message = (string)idx($vals, 'message', '');

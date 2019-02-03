@@ -542,7 +542,7 @@ class t_hack_generator : public t_oop_generator {
   bool oldenum_;
 
   /**
-   * * Whether to use collection classes everywhere vs Indexish
+   * * Whether to use collection classes everywhere vs KeyedContainer
    */
   bool strict_types_;
 
@@ -2642,9 +2642,9 @@ void t_hack_generator::_generate_php_struct_definition(
           << (const_collections_ ? "Const" : "")
           << "Map<string, mixed> $vals = Map {}) {\n";
     } else {
-      // Generate constructor from Indexish
+      // Generate constructor from KeyedContainer
       out << indent()
-          << "public function __construct(@\\Indexish<string, mixed> $vals = "
+          << "public function __construct(@\\KeyedContainer<string, mixed> $vals = "
           << array_keyword_ << "[]) {\n";
     }
     out << indent()
@@ -3018,7 +3018,7 @@ void t_hack_generator::generate_php_struct_writer(
           if (arrays_) {
             out << "!($" << val << " is keyset<_>)";
           } else if (arraysets_) {
-            out << "!($" << val << " is \\Indexish<_, _>) && "
+            out << "!($" << val << " is \\KeyedContainer<_, _>) && "
                 << "!(($" << val << " is \\Iterator<_> || "
                 << "$" << val << " is \\IteratorAggregate<_>) "
                 << "&& $" << val << " is \\Countable)";
@@ -3037,7 +3037,7 @@ void t_hack_generator::generate_php_struct_writer(
             out << "!($" << val << " is Set<_>)";
           }
         } else if (type->is_container()) {
-          out << "!($" << val << " is \\Indexish<_, _>) && "
+          out << "!($" << val << " is \\KeyedContainer<_, _>) && "
               << "!(($" << val << " is \\Iterator<_> || "
               << "$" << val << " is \\IteratorAggregate<_>) "
               << "&& $" << val << " is \\Countable)";
@@ -3773,21 +3773,21 @@ t_hack_generator::type_to_typehint(t_type* ttype, bool nullable, bool shape) {
 /**
  * Generate an appropriate string for a parameter typehint.
  * The difference from type_to_typehint() is for parameters we should accept an
- * array or a collection type, so we return Indexish
+ * array or a collection type, so we return KeyedContainer
  */
 string t_hack_generator::type_to_param_typehint(t_type* ttype, bool nullable) {
   if (ttype->is_list()) {
     if (strict_types_) {
       return type_to_typehint(ttype, nullable);
     } else {
-      return "\\Indexish<int, " +
+      return "\\KeyedContainer<int, " +
           type_to_param_typehint(((t_list*)ttype)->get_elem_type()) + ">";
     }
   } else if (ttype->is_map()) {
     if (strict_types_) {
       return type_to_typehint(ttype, nullable);
     } else {
-      return "\\Indexish<" +
+      return "\\KeyedContainer<" +
           type_to_param_typehint(((t_map*)ttype)->get_key_type()) + ", " +
           type_to_param_typehint(((t_map*)ttype)->get_val_type()) + ">";
     }
@@ -3879,7 +3879,7 @@ void t_hack_generator::generate_service_rest(t_service* tservice, bool mangle) {
   vector<t_function*>::iterator f_iter;
   for (f_iter = functions.begin(); f_iter != functions.end(); ++f_iter) {
     indent(f_service_) << "public function " << (*f_iter)->get_name()
-                       << "(\\Indexish<string, mixed> $request): "
+                       << "(\\KeyedContainer<string, mixed> $request): "
                        << type_to_typehint((*f_iter)->get_returntype())
                        << " {\n";
     indent_up();
@@ -4242,7 +4242,7 @@ void t_hack_generator::_generate_service_client(
   _generate_service_client_children(out, tservice, mangle, /*async*/ false);
 }
 
-// If !strict_types, containers are typehinted as Indexish<Key, Value>
+// If !strict_types, containers are typehinted as KeyedContainer<Key, Value>
 // to better support passing in arrays/dicts/maps/vecs/vectors and
 // handle backwards compatibility. However, structs are typehinted as
 // the actual container (ex: Map<Key, Val>), and we need to safely
@@ -5175,7 +5175,7 @@ THRIFT_REGISTER_GENERATOR(
     "    oldenum:         Generate enums with $__names and $__values fields.\n"
     "    json:            Generate functions to parse JSON into thrift struct.\n"
     "    mangledsvcs      Generate services with namespace mangling.\n"
-    "    stricttypes      Use Collection classes everywhere rather than Indexish.\n"
+    "    stricttypes      Use Collection classes everywhere rather than KeyedContainer.\n"
     "    strict           Generate strict hack header.\n"
     "    arraysets        Use legacy arrays for sets rather than objects.\n"
     "    nonullables      Instantiate struct fields within structs, rather than nullable\n"

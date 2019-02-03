@@ -20,7 +20,7 @@ interface BarAsyncIf extends \IThriftAsyncIf {
    *       4: Foo d,
    *       5: i64 e);
    */
-  public function baz(ConstSet<int> $a, \Indexish<int, \Indexish<int, ConstSet<string>>> $b, int $c, ?Foo $d, int $e): Awaitable<string>;
+  public function baz(ConstSet<int> $a, \KeyedContainer<int, \KeyedContainer<int, ConstSet<string>>> $b, int $c, ?Foo $d, int $e): Awaitable<string>;
 }
 
 /**
@@ -37,7 +37,7 @@ interface BarIf extends \IThriftSyncIf {
    *       4: Foo d,
    *       5: i64 e);
    */
-  public function baz(ConstSet<int> $a, \Indexish<int, \Indexish<int, ConstSet<string>>> $b, int $c, ?Foo $d, int $e): string;
+  public function baz(ConstSet<int> $a, \KeyedContainer<int, \KeyedContainer<int, ConstSet<string>>> $b, int $c, ?Foo $d, int $e): string;
 }
 
 /**
@@ -47,7 +47,7 @@ interface BarIf extends \IThriftSyncIf {
 trait BarClientBase {
   require extends \ThriftClientBase;
 
-  protected function sendImpl_baz(ConstSet<int> $a, \Indexish<int, \Indexish<int, ConstSet<string>>> $b, int $c, ?Foo $d, int $e): int {
+  protected function sendImpl_baz(ConstSet<int> $a, \KeyedContainer<int, \KeyedContainer<int, ConstSet<string>>> $b, int $c, ?Foo $d, int $e): int {
     $currentseqid = $this->getNextSequenceID();
     $args = new Bar_baz_args(
       $a,
@@ -164,7 +164,7 @@ class BarAsyncClient extends \ThriftClientBase implements BarAsyncIf {
    *       4: Foo d,
    *       5: i64 e);
    */
-  public async function baz(ConstSet<int> $a, \Indexish<int, \Indexish<int, ConstSet<string>>> $b, int $c, ?Foo $d, int $e): Awaitable<string> {
+  public async function baz(ConstSet<int> $a, \KeyedContainer<int, \KeyedContainer<int, ConstSet<string>>> $b, int $c, ?Foo $d, int $e): Awaitable<string> {
     $currentseqid = $this->sendImpl_baz($a, $b, $c, $d, $e);
     await $this->asyncHandler_->genWait($currentseqid);
     return $this->recvImpl_baz($currentseqid);
@@ -176,7 +176,7 @@ class BarClient extends \ThriftClientBase implements BarIf {
   use BarClientBase;
 
   <<__Deprecated('use gen_baz()')>>
-  public function baz(ConstSet<int> $a, \Indexish<int, \Indexish<int, ConstSet<string>>> $b, int $c, ?Foo $d, int $e): string {
+  public function baz(ConstSet<int> $a, \KeyedContainer<int, \KeyedContainer<int, ConstSet<string>>> $b, int $c, ?Foo $d, int $e): string {
     $currentseqid = $this->sendImpl_baz($a, $b, $c, $d, $e);
     return $this->recvImpl_baz($currentseqid);
   }
@@ -190,14 +190,14 @@ class BarClient extends \ThriftClientBase implements BarIf {
    *       4: Foo d,
    *       5: i64 e);
    */
-  public async function gen_baz(ConstSet<int> $a, \Indexish<int, \Indexish<int, ConstSet<string>>> $b, int $c, ?Foo $d, int $e): Awaitable<string> {
+  public async function gen_baz(ConstSet<int> $a, \KeyedContainer<int, \KeyedContainer<int, ConstSet<string>>> $b, int $c, ?Foo $d, int $e): Awaitable<string> {
     $currentseqid = $this->sendImpl_baz($a, $b, $c, $d, $e);
     await $this->asyncHandler_->genWait($currentseqid);
     return $this->recvImpl_baz($currentseqid);
   }
 
   /* send and recv functions */
-  public function send_baz(ConstSet<int> $a, \Indexish<int, \Indexish<int, ConstSet<string>>> $b, int $c, ?Foo $d, int $e): int {
+  public function send_baz(ConstSet<int> $a, \KeyedContainer<int, \KeyedContainer<int, ConstSet<string>>> $b, int $c, ?Foo $d, int $e): int {
     return $this->sendImpl_baz($a, $b, $c, $d, $e);
   }
   public function recv_baz(?int $expectedsequenceid = null): string {
