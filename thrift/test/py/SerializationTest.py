@@ -176,6 +176,13 @@ class SimpleJSONTest(AbstractTest):
 class JSONProtocolTest(AbstractTest, unittest.TestCase):
     protocol_factory = TJSONProtocol.TJSONProtocolFactory()
 
+    def testNestedStructs(self):
+        self._deserialize(NestedStructs, '{"1":{"rec":{}}"2":{"rec":{}}}')
+        self._deserialize(NestedStructs, '{"1":{"rec":{}},"2":{"rec":{}}}')
+        nested = NestedStructs(bonk=Bonk(), bools=Bools())
+        protocol_factory = TJSONProtocol.TJSONProtocolFactory(validJSON=True)
+        json.loads(Serializer.serialize(protocol_factory, nested))
+
 class HeaderDefaultFactory(THeaderProtocol.THeaderProtocolFactory):
 
     def __init__(self, default_protocol):

@@ -84,6 +84,11 @@ struct CrazyNesting {
   3: required list< map<set<i32>,map<i32,set<list<map<Insanity,string>>>>>> list_field
 }
 
+struct NestedStructs {
+  1: Bonk bonk,
+  2: Bools bools,
+}
+
 exception Xception {
   1: i32 errorCode,
   2: string message

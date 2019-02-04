@@ -100,6 +100,10 @@ class JSONPairContext(JSONBaseContext):
 
     def doIO(self, function):
         if self.first is True:
+            # Ignore extra commas at field start. Once context stack handling
+            # fix is fully rolled out this can be removed.
+            if self.protocol.reader.peek() == COMMA:
+                self.protocol.readJSONSyntaxChar(COMMA)
             self.first = False
             self.colon = True
         else:
@@ -142,14 +146,15 @@ class LookaheadReader():
 
 class TJSONProtocolBase(TProtocolBase):
 
-    def __init__(self, trans):
+    def __init__(self, trans, validJSON=False):
         TProtocolBase.__init__(self, trans)
+        self.validJSON = validJSON
         self.resetWriteContext()
         self.resetReadContext()
 
     def resetWriteContext(self):
-        self.contextStack = []
         self.context = JSONBaseContext(self)
+        self.contextStack = [self.context]
 
     def resetReadContext(self):
         self.resetWriteContext()
@@ -161,6 +166,8 @@ class TJSONProtocolBase(TProtocolBase):
 
     def popContext(self):
         self.contextStack.pop()
+        if self.validJSON:
+            self.context = self.contextStack[-1]
 
     def writeJSONString(self, string):
         # Python 3 JSON will not serialize bytes
@@ -479,9 +486,11 @@ class TJSONProtocol(TJSONProtocolBase):
         self.writeJSONBase64(binary)
 
 class TJSONProtocolFactory:
-    def __init__(self):
-        # type: () -> None
-        pass
+    # validJSON specifies whether to emit valid JSON or possibly invalid but
+    # backward-compatible one.
+    def __init__(self, validJSON=False):
+        # type: (bool) -> None
+        self.validJSON = validJSON
 
     def getProtocol(self, trans):
-        return TJSONProtocol(trans)
+        return TJSONProtocol(trans, self.validJSON)
