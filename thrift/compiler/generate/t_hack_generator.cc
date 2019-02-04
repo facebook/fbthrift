@@ -2644,7 +2644,7 @@ void t_hack_generator::_generate_php_struct_definition(
     } else {
       // Generate constructor from KeyedContainer
       out << indent()
-          << "public function __construct(@\\KeyedContainer<string, mixed> $vals = "
+          << "public function __construct(@\\HH\\KeyedContainer<string, mixed> $vals = "
           << array_keyword_ << "[]) {\n";
     }
     out << indent()
@@ -3018,7 +3018,7 @@ void t_hack_generator::generate_php_struct_writer(
           if (arrays_) {
             out << "!($" << val << " is keyset<_>)";
           } else if (arraysets_) {
-            out << "!($" << val << " is \\KeyedContainer<_, _>) && "
+            out << "!($" << val << " is \\HH\\KeyedContainer<_, _>) && "
                 << "!(($" << val << " is \\Iterator<_> || "
                 << "$" << val << " is \\IteratorAggregate<_>) "
                 << "&& $" << val << " is \\Countable)";
@@ -3037,7 +3037,7 @@ void t_hack_generator::generate_php_struct_writer(
             out << "!($" << val << " is Set<_>)";
           }
         } else if (type->is_container()) {
-          out << "!($" << val << " is \\KeyedContainer<_, _>) && "
+          out << "!($" << val << " is \\HH\\KeyedContainer<_, _>) && "
               << "!(($" << val << " is \\Iterator<_> || "
               << "$" << val << " is \\IteratorAggregate<_>) "
               << "&& $" << val << " is \\Countable)";
@@ -3780,14 +3780,14 @@ string t_hack_generator::type_to_param_typehint(t_type* ttype, bool nullable) {
     if (strict_types_) {
       return type_to_typehint(ttype, nullable);
     } else {
-      return "\\KeyedContainer<int, " +
+      return "\\HH\\KeyedContainer<int, " +
           type_to_param_typehint(((t_list*)ttype)->get_elem_type()) + ">";
     }
   } else if (ttype->is_map()) {
     if (strict_types_) {
       return type_to_typehint(ttype, nullable);
     } else {
-      return "\\KeyedContainer<" +
+      return "\\HH\\KeyedContainer<" +
           type_to_param_typehint(((t_map*)ttype)->get_key_type()) + ", " +
           type_to_param_typehint(((t_map*)ttype)->get_val_type()) + ">";
     }
@@ -3879,7 +3879,7 @@ void t_hack_generator::generate_service_rest(t_service* tservice, bool mangle) {
   vector<t_function*>::iterator f_iter;
   for (f_iter = functions.begin(); f_iter != functions.end(); ++f_iter) {
     indent(f_service_) << "public function " << (*f_iter)->get_name()
-                       << "(\\KeyedContainer<string, mixed> $request): "
+                       << "(\\HH\\KeyedContainer<string, mixed> $request): "
                        << type_to_typehint((*f_iter)->get_returntype())
                        << " {\n";
     indent_up();

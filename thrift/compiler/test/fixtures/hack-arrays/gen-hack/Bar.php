@@ -17,7 +17,7 @@ interface BarAsyncIf extends \IThriftAsyncIf {
    *   baz(1: set<i32> a,
    *       2: list<map<i32, set<string>>> b);
    */
-  public function baz(keyset<int> $a, \KeyedContainer<int, \KeyedContainer<int, keyset<string>>> $b): Awaitable<string>;
+  public function baz(keyset<int> $a, \HH\KeyedContainer<int, \HH\KeyedContainer<int, keyset<string>>> $b): Awaitable<string>;
 }
 
 /**
@@ -31,7 +31,7 @@ interface BarIf extends \IThriftSyncIf {
    *   baz(1: set<i32> a,
    *       2: list<map<i32, set<string>>> b);
    */
-  public function baz(keyset<int> $a, \KeyedContainer<int, \KeyedContainer<int, keyset<string>>> $b): string;
+  public function baz(keyset<int> $a, \HH\KeyedContainer<int, \HH\KeyedContainer<int, keyset<string>>> $b): string;
 }
 
 /**
@@ -41,7 +41,7 @@ interface BarIf extends \IThriftSyncIf {
 trait BarClientBase {
   require extends \ThriftClientBase;
 
-  protected function sendImpl_baz(keyset<int> $a, \KeyedContainer<int, \KeyedContainer<int, keyset<string>>> $b): int {
+  protected function sendImpl_baz(keyset<int> $a, \HH\KeyedContainer<int, \HH\KeyedContainer<int, keyset<string>>> $b): int {
     $currentseqid = $this->getNextSequenceID();
     $args = new Bar_baz_args(
       $a,
@@ -152,7 +152,7 @@ class BarAsyncClient extends \ThriftClientBase implements BarAsyncIf {
    *   baz(1: set<i32> a,
    *       2: list<map<i32, set<string>>> b);
    */
-  public async function baz(keyset<int> $a, \KeyedContainer<int, \KeyedContainer<int, keyset<string>>> $b): Awaitable<string> {
+  public async function baz(keyset<int> $a, \HH\KeyedContainer<int, \HH\KeyedContainer<int, keyset<string>>> $b): Awaitable<string> {
     $currentseqid = $this->sendImpl_baz($a, $b);
     await $this->asyncHandler_->genWait($currentseqid);
     return $this->recvImpl_baz($currentseqid);
@@ -164,7 +164,7 @@ class BarClient extends \ThriftClientBase implements BarIf {
   use BarClientBase;
 
   <<__Deprecated('use gen_baz()')>>
-  public function baz(keyset<int> $a, \KeyedContainer<int, \KeyedContainer<int, keyset<string>>> $b): string {
+  public function baz(keyset<int> $a, \HH\KeyedContainer<int, \HH\KeyedContainer<int, keyset<string>>> $b): string {
     $currentseqid = $this->sendImpl_baz($a, $b);
     return $this->recvImpl_baz($currentseqid);
   }
@@ -175,14 +175,14 @@ class BarClient extends \ThriftClientBase implements BarIf {
    *   baz(1: set<i32> a,
    *       2: list<map<i32, set<string>>> b);
    */
-  public async function gen_baz(keyset<int> $a, \KeyedContainer<int, \KeyedContainer<int, keyset<string>>> $b): Awaitable<string> {
+  public async function gen_baz(keyset<int> $a, \HH\KeyedContainer<int, \HH\KeyedContainer<int, keyset<string>>> $b): Awaitable<string> {
     $currentseqid = $this->sendImpl_baz($a, $b);
     await $this->asyncHandler_->genWait($currentseqid);
     return $this->recvImpl_baz($currentseqid);
   }
 
   /* send and recv functions */
-  public function send_baz(keyset<int> $a, \KeyedContainer<int, \KeyedContainer<int, keyset<string>>> $b): int {
+  public function send_baz(keyset<int> $a, \HH\KeyedContainer<int, \HH\KeyedContainer<int, keyset<string>>> $b): int {
     return $this->sendImpl_baz($a, $b);
   }
   public function recv_baz(?int $expectedsequenceid = null): string {
