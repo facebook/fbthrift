@@ -111,7 +111,9 @@ class Cpp2Worker : public wangle::Acceptor,
       : Acceptor(server->getServerSocketConfig()),
         wangle::PeekingAcceptorHandshakeHelper::PeekCallback(kPeekCount),
         server_(server),
-        activeRequests_(0) {}
+        activeRequests_(0) {
+    setGracefulShutdownTimeout(server->workersJoinTimeout_);
+  }
 
   void construct(
       ThriftServer*,

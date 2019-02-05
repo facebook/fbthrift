@@ -158,7 +158,7 @@ TEST(ScopedServerInterfaceThread, joinRequests) {
   folly::stop_watch<std::chrono::milliseconds> timer;
 
   auto future = via(eb.getEventBase()).thenValue([&](auto&&) {
-    return cli->future_add(2000, 0);
+    return cli->future_add(6000, 0);
   });
 
   serviceImpl->waitForRequest();
@@ -166,8 +166,8 @@ TEST(ScopedServerInterfaceThread, joinRequests) {
 
   ssit.reset();
 
-  EXPECT_GE(timer.elapsed().count(), 2000);
-  EXPECT_EQ(2000, std::move(future).get());
+  EXPECT_GE(timer.elapsed().count(), 6000);
+  EXPECT_EQ(6000, std::move(future).get());
 
   via(eb.getEventBase()).thenValue([cli = std::move(cli)](auto&&) {});
 }
