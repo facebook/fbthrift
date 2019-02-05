@@ -215,12 +215,7 @@ class ThriftRequestCore : public ResponseChannelRequest {
     if (checkResponseSize(*buf)) {
       sendThriftResponse(createMetadata(), std::move(buf));
     } else {
-      sendErrorWrappedInternal(
-          folly::make_exception_wrapper<TApplicationException>(
-              TApplicationException::TApplicationExceptionType::INTERNAL_ERROR,
-              "Response size too big"),
-          kResponseTooBigErrorCode,
-          cb);
+      sendResponseTooBigEx(cb);
     }
   }
 
@@ -232,13 +227,17 @@ class ThriftRequestCore : public ResponseChannelRequest {
       sendStreamThriftResponse(
           createMetadata(), std::move(buf), std::move(stream));
     } else {
-      sendErrorWrappedInternal(
-          folly::make_exception_wrapper<TApplicationException>(
-              TApplicationException::TApplicationExceptionType::INTERNAL_ERROR,
-              "Response size too big"),
-          kResponseTooBigErrorCode,
-          cb);
+      sendResponseTooBigEx(cb);
     }
+  }
+
+  void sendResponseTooBigEx(apache::thrift::MessageChannel::SendCallback* cb) {
+    sendErrorWrappedInternal(
+        folly::make_exception_wrapper<TApplicationException>(
+            TApplicationException::TApplicationExceptionType::INTERNAL_ERROR,
+            "Response size too big"),
+        kResponseTooBigErrorCode,
+        cb);
   }
 
   std::unique_ptr<ResponseRpcMetadata> createMetadata() {
@@ -273,10 +272,18 @@ class ThriftRequestCore : public ResponseChannelRequest {
         LOG(ERROR) << "serializeError failed. type=" << pe.getType()
                    << " what()=" << pe.what();
       }
+
+      if (tae.getType() ==
+              TApplicationException::TApplicationExceptionType::UNKNOWN &&
+          !checkResponseSize(*exbuf)) {
+        sendResponseTooBigEx(nullptr);
+        return;
+      }
+
       if (kind_ != RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE) {
-        sendReplyInternal(std::move(exbuf));
+        sendThriftResponse(createMetadata(), std::move(exbuf));
       } else {
-        sendReplyInternal(std::move(exbuf), {}, nullptr);
+        sendStreamThriftResponse(createMetadata(), std::move(exbuf), {});
       }
     });
   }
@@ -293,11 +300,6 @@ class ThriftRequestCore : public ResponseChannelRequest {
   }
 
   bool checkResponseSize(const folly::IOBuf& buf) {
-    if (responseSizeChecked_) {
-      return true;
-    }
-    responseSizeChecked_ = true;
-
     auto maxResponseSize = serverConfigs_.getMaxResponseSize();
     return maxResponseSize == 0 ||
         buf.computeChainDataLength() <= maxResponseSize;
@@ -369,7 +371,6 @@ class ThriftRequestCore : public ResponseChannelRequest {
   TaskTimeout taskTimeout_;
   std::chrono::milliseconds clientQueueTimeout_{0};
   std::chrono::milliseconds clientTimeout_{0};
-  bool responseSizeChecked_{false};
 };
 
 class ThriftRequest final : public ThriftRequestCore {
