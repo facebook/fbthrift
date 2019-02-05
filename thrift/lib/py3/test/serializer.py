@@ -11,6 +11,10 @@ from testing.types import easy, hard, Integers, I32List, StrStrMap, SetI32, Digi
 
 
 class SerializerTests(unittest.TestCase):
+    def test_None(self) -> None:
+        with self.assertRaises(TypeError):
+            serialize(None, Protocol.JSON)  # type: ignore
+
     def test_sanity(self) -> None:
         with self.assertRaises(TypeError):
             serialize(1, Protocol.COMPACT)  # type: ignore

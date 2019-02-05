@@ -10,7 +10,7 @@ from thrift.py3.common import Protocol
 def serialize(tstruct, protocol=Protocol.COMPACT):
     return b''.join(serialize_iobuf(tstruct, protocol))
 
-def serialize_iobuf(Struct tstruct, protocol=Protocol.COMPACT):
+def serialize_iobuf(Struct tstruct not None, protocol=Protocol.COMPACT):
     if not isinstance(protocol, Protocol):
         raise TypeError(f"{protocol} must of type Protocol")
     cdef Struct cy_struct = <Struct> tstruct
