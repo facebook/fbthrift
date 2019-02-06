@@ -72,28 +72,26 @@ class DummyController : public AdmissionController {
 
 class DummyConnContext : public Cpp2ConnContext {
  public:
-  bool setHeader(const std::string& key, const std::string& value) override {
-    auto headers = header_.getHeaders();
-    headers.insert({key, value});
-    header_.setReadHeaders(std::move(headers));
-    return true;
+  DummyConnContext() {
+    setRequestHeader(&reqHeader_);
   }
 
-  virtual THeader* getHeader() const override {
-    // const_cast for testing purposes only
-    return const_cast<THeader*>(&header_);
+  void setReadHeader(const std::string& key, const std::string& value) {
+    auto headers = reqHeader_.releaseHeaders();
+    headers.insert({key, value});
+    reqHeader_.setReadHeaders(std::move(headers));
   }
 
  private:
-  THeader header_;
+  THeader reqHeader_;
 };
 
 class DummyContextTest : public testing::Test {};
 
 TEST_F(DummyContextTest, globalAdmission) {
   DummyConnContext ctx;
-  ctx.setHeader("toto", "titi");
-  ctx.setHeader("tutu", "tata");
+  ctx.setReadHeader("toto", "titi");
+  ctx.setReadHeader("tutu", "tata");
 
   // Simulate below the way we extract the clientId from ConnContext
   std::string clientId = "NONE";
@@ -119,19 +117,19 @@ TEST_F(AdmissionControllerSelectorTest, globalAdmission) {
 
   DummyRequest request;
   DummyConnContext connContextA1;
-  connContextA1.setHeader(kClientId, "A");
+  connContextA1.setReadHeader(kClientId, "A");
   auto admissionControllerA1 =
       selector.select("myThriftMethod", request, connContextA1);
 
   DummyConnContext connContextA2;
-  connContextA2.setHeader(kClientId, "A");
+  connContextA2.setReadHeader(kClientId, "A");
   auto admissionControllerA2 =
       selector.select("myThriftMethod", request, connContextA2);
 
   ASSERT_EQ(admissionControllerA1, admissionControllerA2);
 
   DummyConnContext connContextB1;
-  connContextB1.setHeader(kClientId, "B");
+  connContextB1.setReadHeader(kClientId, "B");
   auto admissionControllerB1 =
       selector.select("myThriftMethod", request, connContextB1);
 
@@ -150,26 +148,26 @@ TEST_F(AdmissionControllerSelectorTest, perClientIdAdmission) {
 
   DummyRequest request;
   DummyConnContext connContextA1;
-  connContextA1.setHeader(kClientId, "A");
+  connContextA1.setReadHeader(kClientId, "A");
   auto admissionControllerA1 =
       selector.select("myThriftMethod", request, connContextA1);
 
   DummyConnContext connContextA2;
-  connContextA2.setHeader(kClientId, "A");
+  connContextA2.setReadHeader(kClientId, "A");
   auto admissionControllerA2 =
       selector.select("myThriftMethod", request, connContextA2);
 
   ASSERT_EQ(admissionControllerA1, admissionControllerA2);
 
   DummyConnContext connContextB1;
-  connContextB1.setHeader(kClientId, "B");
+  connContextB1.setReadHeader(kClientId, "B");
   auto admissionControllerB1 =
       selector.select("myThriftMethod", request, connContextB1);
 
   ASSERT_NE(admissionControllerA1, admissionControllerB1);
 
   DummyConnContext connContextB2;
-  connContextB2.setHeader(kClientId, "B");
+  connContextB2.setReadHeader(kClientId, "B");
   auto admissionControllerB2 =
       selector.select("myThriftMethod", request, connContextB2);
 
@@ -195,7 +193,7 @@ TEST_F(AdmissionControllerSelectorTest, priorityBasedAdmission) {
     for (int i = 0; i < 5; i++) {
       DummyRequest request;
       DummyConnContext connContext;
-      connContext.setHeader(kClientId, clientId);
+      connContext.setReadHeader(kClientId, clientId);
       auto controller = selector.select("myThriftMethod", request, connContext);
       admControllerSet.insert(controller);
     }
@@ -225,7 +223,7 @@ TEST_F(AdmissionControllerSelectorTest, deniesZeroPriority) {
     for (int i = 0; i < 5; i++) {
       DummyRequest request;
       DummyConnContext connContext;
-      connContext.setHeader(kClientId, clientId);
+      connContext.setReadHeader(kClientId, clientId);
       auto controller = selector.select("myThriftMethod", request, connContext);
       admControllerSet.insert(controller);
     }
@@ -234,7 +232,7 @@ TEST_F(AdmissionControllerSelectorTest, deniesZeroPriority) {
   DummyConnContext connContextC;
   auto controllerForEmpty =
       selector.select("myThriftMethod", requestC, connContextC);
-  connContextC.setHeader("client_id", "C");
+  connContextC.setReadHeader("client_id", "C");
   auto controllerForC =
       selector.select("myThriftMethod", requestC, connContextC);
   ASSERT_FALSE(controllerForC->admit());
