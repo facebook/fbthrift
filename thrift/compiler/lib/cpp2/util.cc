@@ -60,7 +60,8 @@ std::vector<std::string> get_gen_namespace_components(
 }
 
 std::string get_gen_namespace(t_program const& program) {
-  return boost::algorithm::join(get_gen_namespace_components(program), "::");
+  auto const components = get_gen_namespace_components(program);
+  return "::" + boost::algorithm::join(components, "::");
 }
 
 bool is_orderable(
