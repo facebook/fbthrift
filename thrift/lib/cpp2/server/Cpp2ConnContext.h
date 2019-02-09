@@ -169,6 +169,15 @@ class Cpp2ConnContext : public apache::thrift::server::TConnectionContext {
   static void no_op_destructor(void* /*ptr*/) {}
 };
 
+class Cpp2ClientRequestContext
+    : public apache::thrift::server::TConnectionContext {
+ public:
+  Cpp2ClientRequestContext() = default;
+  void setRequestHeader(transport::THeader* header) {
+    header_ = header;
+  }
+};
+
 // Request-specific context
 class Cpp2RequestContext : public apache::thrift::server::TConnectionContext {
  public:

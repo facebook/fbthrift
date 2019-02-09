@@ -34,126 +34,126 @@ typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, apache
 
 template <typename Protocol_>
 void ExtraServiceAsyncClient::simple_functionT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
-  struct HeaderAndConnContext {
-    HeaderAndConnContext() : header(apache::thrift::transport::THeader::ALLOW_BIG_FRAMES) {}
+  struct HeaderAndReqContext {
+    HeaderAndReqContext() : header(apache::thrift::transport::THeader::ALLOW_BIG_FRAMES) {}
 
     apache::thrift::transport::THeader header;
-    apache::thrift::Cpp2ConnContext connContext;
+    apache::thrift::Cpp2ClientRequestContext reqContext;
   };
-  auto headerAndConnContext = std::make_shared<HeaderAndConnContext>();
-  std::shared_ptr<apache::thrift::transport::THeader> header(headerAndConnContext, &headerAndConnContext->header);
+  auto headerAndReqContext = std::make_shared<HeaderAndReqContext>();
+  std::shared_ptr<apache::thrift::transport::THeader> header(headerAndReqContext, &headerAndReqContext->header);
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
-  headerAndConnContext->connContext.setRequestHeader(header.get());
-  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "ExtraService.simple_function", &headerAndConnContext->connContext);
+  headerAndReqContext->reqContext.setRequestHeader(header.get());
+  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "ExtraService.simple_function", &headerAndReqContext->reqContext);
   ExtraService_simple_function_pargs args;
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
   apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), "simple_function", writer, sizer, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, useSync);
-  headerAndConnContext->connContext.setRequestHeader(nullptr);
+  headerAndReqContext->reqContext.setRequestHeader(nullptr);
 }
 
 template <typename Protocol_>
 void ExtraServiceAsyncClient::throws_functionT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
-  struct HeaderAndConnContext {
-    HeaderAndConnContext() : header(apache::thrift::transport::THeader::ALLOW_BIG_FRAMES) {}
+  struct HeaderAndReqContext {
+    HeaderAndReqContext() : header(apache::thrift::transport::THeader::ALLOW_BIG_FRAMES) {}
 
     apache::thrift::transport::THeader header;
-    apache::thrift::Cpp2ConnContext connContext;
+    apache::thrift::Cpp2ClientRequestContext reqContext;
   };
-  auto headerAndConnContext = std::make_shared<HeaderAndConnContext>();
-  std::shared_ptr<apache::thrift::transport::THeader> header(headerAndConnContext, &headerAndConnContext->header);
+  auto headerAndReqContext = std::make_shared<HeaderAndReqContext>();
+  std::shared_ptr<apache::thrift::transport::THeader> header(headerAndReqContext, &headerAndReqContext->header);
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
-  headerAndConnContext->connContext.setRequestHeader(header.get());
-  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "ExtraService.throws_function", &headerAndConnContext->connContext);
+  headerAndReqContext->reqContext.setRequestHeader(header.get());
+  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "ExtraService.throws_function", &headerAndReqContext->reqContext);
   ExtraService_throws_function_pargs args;
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
   apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), "throws_function", writer, sizer, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, useSync);
-  headerAndConnContext->connContext.setRequestHeader(nullptr);
+  headerAndReqContext->reqContext.setRequestHeader(nullptr);
 }
 
 template <typename Protocol_>
 void ExtraServiceAsyncClient::throws_function2T(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, bool param1) {
-  struct HeaderAndConnContext {
-    HeaderAndConnContext() : header(apache::thrift::transport::THeader::ALLOW_BIG_FRAMES) {}
+  struct HeaderAndReqContext {
+    HeaderAndReqContext() : header(apache::thrift::transport::THeader::ALLOW_BIG_FRAMES) {}
 
     apache::thrift::transport::THeader header;
-    apache::thrift::Cpp2ConnContext connContext;
+    apache::thrift::Cpp2ClientRequestContext reqContext;
   };
-  auto headerAndConnContext = std::make_shared<HeaderAndConnContext>();
-  std::shared_ptr<apache::thrift::transport::THeader> header(headerAndConnContext, &headerAndConnContext->header);
+  auto headerAndReqContext = std::make_shared<HeaderAndReqContext>();
+  std::shared_ptr<apache::thrift::transport::THeader> header(headerAndReqContext, &headerAndReqContext->header);
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
-  headerAndConnContext->connContext.setRequestHeader(header.get());
-  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "ExtraService.throws_function2", &headerAndConnContext->connContext);
+  headerAndReqContext->reqContext.setRequestHeader(header.get());
+  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "ExtraService.throws_function2", &headerAndReqContext->reqContext);
   ExtraService_throws_function2_pargs args;
   args.get<0>().value = &param1;
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
   apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), "throws_function2", writer, sizer, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, useSync);
-  headerAndConnContext->connContext.setRequestHeader(nullptr);
+  headerAndReqContext->reqContext.setRequestHeader(nullptr);
 }
 
 template <typename Protocol_>
 void ExtraServiceAsyncClient::throws_function3T(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, bool param1, const std::string& param2) {
-  struct HeaderAndConnContext {
-    HeaderAndConnContext() : header(apache::thrift::transport::THeader::ALLOW_BIG_FRAMES) {}
+  struct HeaderAndReqContext {
+    HeaderAndReqContext() : header(apache::thrift::transport::THeader::ALLOW_BIG_FRAMES) {}
 
     apache::thrift::transport::THeader header;
-    apache::thrift::Cpp2ConnContext connContext;
+    apache::thrift::Cpp2ClientRequestContext reqContext;
   };
-  auto headerAndConnContext = std::make_shared<HeaderAndConnContext>();
-  std::shared_ptr<apache::thrift::transport::THeader> header(headerAndConnContext, &headerAndConnContext->header);
+  auto headerAndReqContext = std::make_shared<HeaderAndReqContext>();
+  std::shared_ptr<apache::thrift::transport::THeader> header(headerAndReqContext, &headerAndReqContext->header);
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
-  headerAndConnContext->connContext.setRequestHeader(header.get());
-  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "ExtraService.throws_function3", &headerAndConnContext->connContext);
+  headerAndReqContext->reqContext.setRequestHeader(header.get());
+  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "ExtraService.throws_function3", &headerAndReqContext->reqContext);
   ExtraService_throws_function3_pargs args;
   args.get<0>().value = &param1;
   args.get<1>().value = const_cast<std::string*>(&param2);
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
   apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), "throws_function3", writer, sizer, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, useSync);
-  headerAndConnContext->connContext.setRequestHeader(nullptr);
+  headerAndReqContext->reqContext.setRequestHeader(nullptr);
 }
 
 template <typename Protocol_>
 void ExtraServiceAsyncClient::oneway_void_retT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
-  struct HeaderAndConnContext {
-    HeaderAndConnContext() : header(apache::thrift::transport::THeader::ALLOW_BIG_FRAMES) {}
+  struct HeaderAndReqContext {
+    HeaderAndReqContext() : header(apache::thrift::transport::THeader::ALLOW_BIG_FRAMES) {}
 
     apache::thrift::transport::THeader header;
-    apache::thrift::Cpp2ConnContext connContext;
+    apache::thrift::Cpp2ClientRequestContext reqContext;
   };
-  auto headerAndConnContext = std::make_shared<HeaderAndConnContext>();
-  std::shared_ptr<apache::thrift::transport::THeader> header(headerAndConnContext, &headerAndConnContext->header);
+  auto headerAndReqContext = std::make_shared<HeaderAndReqContext>();
+  std::shared_ptr<apache::thrift::transport::THeader> header(headerAndReqContext, &headerAndReqContext->header);
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
-  headerAndConnContext->connContext.setRequestHeader(header.get());
-  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "ExtraService.oneway_void_ret", &headerAndConnContext->connContext);
+  headerAndReqContext->reqContext.setRequestHeader(header.get());
+  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "ExtraService.oneway_void_ret", &headerAndReqContext->reqContext);
   ExtraService_oneway_void_ret_pargs args;
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
   apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), "oneway_void_ret", writer, sizer, apache::thrift::RpcKind::SINGLE_REQUEST_NO_RESPONSE, useSync);
-  headerAndConnContext->connContext.setRequestHeader(nullptr);
+  headerAndReqContext->reqContext.setRequestHeader(nullptr);
 }
 
 template <typename Protocol_>
 void ExtraServiceAsyncClient::oneway_void_ret_i32_i32_i32_i32_i32_paramT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t param1, int32_t param2, int32_t param3, int32_t param4, int32_t param5) {
-  struct HeaderAndConnContext {
-    HeaderAndConnContext() : header(apache::thrift::transport::THeader::ALLOW_BIG_FRAMES) {}
+  struct HeaderAndReqContext {
+    HeaderAndReqContext() : header(apache::thrift::transport::THeader::ALLOW_BIG_FRAMES) {}
 
     apache::thrift::transport::THeader header;
-    apache::thrift::Cpp2ConnContext connContext;
+    apache::thrift::Cpp2ClientRequestContext reqContext;
   };
-  auto headerAndConnContext = std::make_shared<HeaderAndConnContext>();
-  std::shared_ptr<apache::thrift::transport::THeader> header(headerAndConnContext, &headerAndConnContext->header);
+  auto headerAndReqContext = std::make_shared<HeaderAndReqContext>();
+  std::shared_ptr<apache::thrift::transport::THeader> header(headerAndReqContext, &headerAndReqContext->header);
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
-  headerAndConnContext->connContext.setRequestHeader(header.get());
-  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "ExtraService.oneway_void_ret_i32_i32_i32_i32_i32_param", &headerAndConnContext->connContext);
+  headerAndReqContext->reqContext.setRequestHeader(header.get());
+  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "ExtraService.oneway_void_ret_i32_i32_i32_i32_i32_param", &headerAndReqContext->reqContext);
   ExtraService_oneway_void_ret_i32_i32_i32_i32_i32_param_pargs args;
   args.get<0>().value = &param1;
   args.get<1>().value = &param2;
@@ -163,74 +163,74 @@ void ExtraServiceAsyncClient::oneway_void_ret_i32_i32_i32_i32_i32_paramT(Protoco
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
   apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), "oneway_void_ret_i32_i32_i32_i32_i32_param", writer, sizer, apache::thrift::RpcKind::SINGLE_REQUEST_NO_RESPONSE, useSync);
-  headerAndConnContext->connContext.setRequestHeader(nullptr);
+  headerAndReqContext->reqContext.setRequestHeader(nullptr);
 }
 
 template <typename Protocol_>
 void ExtraServiceAsyncClient::oneway_void_ret_map_setlist_paramT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const std::map<std::string, int64_t>& param1, const std::set<std::vector<std::string>>& param2) {
-  struct HeaderAndConnContext {
-    HeaderAndConnContext() : header(apache::thrift::transport::THeader::ALLOW_BIG_FRAMES) {}
+  struct HeaderAndReqContext {
+    HeaderAndReqContext() : header(apache::thrift::transport::THeader::ALLOW_BIG_FRAMES) {}
 
     apache::thrift::transport::THeader header;
-    apache::thrift::Cpp2ConnContext connContext;
+    apache::thrift::Cpp2ClientRequestContext reqContext;
   };
-  auto headerAndConnContext = std::make_shared<HeaderAndConnContext>();
-  std::shared_ptr<apache::thrift::transport::THeader> header(headerAndConnContext, &headerAndConnContext->header);
+  auto headerAndReqContext = std::make_shared<HeaderAndReqContext>();
+  std::shared_ptr<apache::thrift::transport::THeader> header(headerAndReqContext, &headerAndReqContext->header);
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
-  headerAndConnContext->connContext.setRequestHeader(header.get());
-  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "ExtraService.oneway_void_ret_map_setlist_param", &headerAndConnContext->connContext);
+  headerAndReqContext->reqContext.setRequestHeader(header.get());
+  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "ExtraService.oneway_void_ret_map_setlist_param", &headerAndReqContext->reqContext);
   ExtraService_oneway_void_ret_map_setlist_param_pargs args;
   args.get<0>().value = const_cast<std::map<std::string, int64_t>*>(&param1);
   args.get<1>().value = const_cast<std::set<std::vector<std::string>>*>(&param2);
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
   apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), "oneway_void_ret_map_setlist_param", writer, sizer, apache::thrift::RpcKind::SINGLE_REQUEST_NO_RESPONSE, useSync);
-  headerAndConnContext->connContext.setRequestHeader(nullptr);
+  headerAndReqContext->reqContext.setRequestHeader(nullptr);
 }
 
 template <typename Protocol_>
 void ExtraServiceAsyncClient::oneway_void_ret_struct_paramT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const  ::some::valid::ns::MyStruct& param1) {
-  struct HeaderAndConnContext {
-    HeaderAndConnContext() : header(apache::thrift::transport::THeader::ALLOW_BIG_FRAMES) {}
+  struct HeaderAndReqContext {
+    HeaderAndReqContext() : header(apache::thrift::transport::THeader::ALLOW_BIG_FRAMES) {}
 
     apache::thrift::transport::THeader header;
-    apache::thrift::Cpp2ConnContext connContext;
+    apache::thrift::Cpp2ClientRequestContext reqContext;
   };
-  auto headerAndConnContext = std::make_shared<HeaderAndConnContext>();
-  std::shared_ptr<apache::thrift::transport::THeader> header(headerAndConnContext, &headerAndConnContext->header);
+  auto headerAndReqContext = std::make_shared<HeaderAndReqContext>();
+  std::shared_ptr<apache::thrift::transport::THeader> header(headerAndReqContext, &headerAndReqContext->header);
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
-  headerAndConnContext->connContext.setRequestHeader(header.get());
-  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "ExtraService.oneway_void_ret_struct_param", &headerAndConnContext->connContext);
+  headerAndReqContext->reqContext.setRequestHeader(header.get());
+  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "ExtraService.oneway_void_ret_struct_param", &headerAndReqContext->reqContext);
   ExtraService_oneway_void_ret_struct_param_pargs args;
   args.get<0>().value = const_cast< ::some::valid::ns::MyStruct*>(&param1);
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
   apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), "oneway_void_ret_struct_param", writer, sizer, apache::thrift::RpcKind::SINGLE_REQUEST_NO_RESPONSE, useSync);
-  headerAndConnContext->connContext.setRequestHeader(nullptr);
+  headerAndReqContext->reqContext.setRequestHeader(nullptr);
 }
 
 template <typename Protocol_>
 void ExtraServiceAsyncClient::oneway_void_ret_listunion_paramT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const std::vector< ::some::valid::ns::ComplexUnion>& param1) {
-  struct HeaderAndConnContext {
-    HeaderAndConnContext() : header(apache::thrift::transport::THeader::ALLOW_BIG_FRAMES) {}
+  struct HeaderAndReqContext {
+    HeaderAndReqContext() : header(apache::thrift::transport::THeader::ALLOW_BIG_FRAMES) {}
 
     apache::thrift::transport::THeader header;
-    apache::thrift::Cpp2ConnContext connContext;
+    apache::thrift::Cpp2ClientRequestContext reqContext;
   };
-  auto headerAndConnContext = std::make_shared<HeaderAndConnContext>();
-  std::shared_ptr<apache::thrift::transport::THeader> header(headerAndConnContext, &headerAndConnContext->header);
+  auto headerAndReqContext = std::make_shared<HeaderAndReqContext>();
+  std::shared_ptr<apache::thrift::transport::THeader> header(headerAndReqContext, &headerAndReqContext->header);
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
-  headerAndConnContext->connContext.setRequestHeader(header.get());
-  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "ExtraService.oneway_void_ret_listunion_param", &headerAndConnContext->connContext);
+  headerAndReqContext->reqContext.setRequestHeader(header.get());
+  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "ExtraService.oneway_void_ret_listunion_param", &headerAndReqContext->reqContext);
   ExtraService_oneway_void_ret_listunion_param_pargs args;
   args.get<0>().value = const_cast<std::vector< ::some::valid::ns::ComplexUnion>*>(&param1);
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
   apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), "oneway_void_ret_listunion_param", writer, sizer, apache::thrift::RpcKind::SINGLE_REQUEST_NO_RESPONSE, useSync);
-  headerAndConnContext->connContext.setRequestHeader(nullptr);
+  headerAndReqContext->reqContext.setRequestHeader(nullptr);
 }
 
 
