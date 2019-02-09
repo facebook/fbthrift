@@ -258,12 +258,16 @@ class Serious final : private apache::thrift::detail::st::ComparisonOperators<Se
   bool operator==(const Serious& rhs) const;
   bool operator<(const Serious& rhs) const;
 
-  THRIFT_NOLINK ::apache::thrift::optional_field_ref<const std::string> sonnet_ref() const& {
+  THRIFT_NOLINK ::apache::thrift::optional_field_ref<const std::string&> sonnet_ref() const& {
     return {sonnet, __isset.sonnet};
   }
 
-  THRIFT_NOLINK ::apache::thrift::optional_field_ref<std::string> sonnet_ref() & {
+  THRIFT_NOLINK ::apache::thrift::optional_field_ref<std::string&> sonnet_ref() & {
     return {sonnet, __isset.sonnet};
+  }
+
+  THRIFT_NOLINK ::apache::thrift::optional_field_ref<std::string&&> sonnet_ref() && {
+    return {std::move(sonnet), __isset.sonnet};
   }
 
   const std::string* get_sonnet() const& {

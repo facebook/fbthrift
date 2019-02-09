@@ -56,40 +56,56 @@ struct StringAssignable {
 
 class TestStruct {
  public:
-  field_ref<std::string> name() {
+  field_ref<std::string&> name() {
     return {name_, __isset.name};
   }
 
-  field_ref<const std::string> name() const {
+  field_ref<const std::string&> name() const {
     return {name_, __isset.name};
   }
 
-  optional_field_ref<std::string> opt_name() {
+  optional_field_ref<std::string&> opt_name() {
     return {name_, __isset.name};
   }
 
-  optional_field_ref<const std::string> opt_name() const {
+  optional_field_ref<const std::string&> opt_name() const {
     return {name_, __isset.name};
   }
 
-  field_ref<IntAssignable> int_assign() {
+  field_ref<IntAssignable&> int_assign() {
     return {int_assign_, __isset.int_assign};
   }
 
-  optional_field_ref<IntAssignable> opt_int_assign() {
+  optional_field_ref<IntAssignable&> opt_int_assign() {
     return {int_assign_, __isset.int_assign};
   }
 
-  optional_field_ref<std::shared_ptr<int>> ptr_ref() {
+  optional_field_ref<std::shared_ptr<int>&> ptr_ref() {
     return {ptr_, __isset.ptr};
   }
 
-  field_ref<int> int_val() {
+  field_ref<int&> int_val() {
     return {int_val_, __isset.int_val};
   }
 
-  optional_field_ref<int> opt_int_val() {
+  optional_field_ref<int&> opt_int_val() {
     return {int_val_, __isset.int_val};
+  }
+
+  field_ref<std::unique_ptr<int>&> uptr() & {
+    return {uptr_, __isset.uptr};
+  }
+
+  field_ref<std::unique_ptr<int>&&> uptr() && {
+    return {std::move(uptr_), __isset.uptr};
+  }
+
+  optional_field_ref<std::unique_ptr<int>&> opt_uptr() & {
+    return {uptr_, __isset.uptr};
+  }
+
+  optional_field_ref<std::unique_ptr<int>&&> opt_uptr() && {
+    return {std::move(uptr_), __isset.uptr};
   }
 
  private:
@@ -97,12 +113,14 @@ class TestStruct {
   IntAssignable int_assign_;
   std::shared_ptr<int> ptr_;
   int int_val_;
+  std::unique_ptr<int> uptr_;
 
   struct __isset {
     bool name;
     bool int_assign;
     bool ptr;
     bool int_val;
+    bool uptr;
   } __isset = {};
 };
 
@@ -153,14 +171,14 @@ TEST(field_ref_test, copy_from_other_type) {
 
 template <template <typename> class FieldRef>
 void check_is_assignable() {
-  using IntAssignableRef = FieldRef<IntAssignable>;
+  using IntAssignableRef = FieldRef<IntAssignable&>;
   static_assert(std::is_assignable<IntAssignableRef, int>::value, "");
   static_assert(!std::is_assignable<IntAssignableRef, std::string>::value, "");
   static_assert(std::is_nothrow_assignable<IntAssignableRef, int>::value, "");
 
-  using StringAssignableRef = FieldRef<StringAssignable>;
+  using StringAssignableRef = FieldRef<StringAssignable&>;
   static_assert(
-      !std::is_nothrow_assignable<StringAssignableRef, int>::value, "");
+      !std::is_nothrow_assignable<StringAssignableRef&, int>::value, "");
 }
 
 TEST(field_ref_test, is_assignable) {
@@ -177,8 +195,8 @@ TEST(field_ref_test, assign_forwards) {
 TEST(field_ref_test, construct_const_from_mutable) {
   auto s = TestStruct();
   s.name() = "foo";
-  field_ref<std::string> name = s.name();
-  field_ref<const std::string> const_name = name;
+  field_ref<std::string&> name = s.name();
+  field_ref<const std::string&> const_name = name;
   EXPECT_TRUE(const_name.is_set());
   EXPECT_EQ(*const_name, "foo");
 }
@@ -192,7 +210,7 @@ constexpr bool is_const_ref() {
 TEST(field_ref_test, const_accessors) {
   TestStruct s;
   s.name() = "bar";
-  field_ref<const std::string> name = s.name();
+  field_ref<const std::string&> name = s.name();
   EXPECT_EQ(*name, "bar");
   EXPECT_EQ(name.value(), "bar");
   EXPECT_EQ(name->size(), 3);
@@ -203,7 +221,7 @@ TEST(field_ref_test, const_accessors) {
 
 TEST(field_ref_test, mutable_accessors) {
   TestStruct s;
-  field_ref<std::string> name = s.name();
+  field_ref<std::string&> name = s.name();
   *name = "foo";
   EXPECT_EQ(*name, "foo");
   name.value() = "bar";
@@ -215,9 +233,49 @@ TEST(field_ref_test, mutable_accessors) {
   EXPECT_FALSE(name.is_set());
 }
 
+using expander = int[];
+
+template <template <typename, typename> class F, typename T, typename... Args>
+void do_gen_pairs() {
+  (void)expander{(F<T, Args>(), 0)...};
+}
+
+// Generates all possible pairs of types (T1, T2) from T (cross product) and
+// invokes F<T1, T2>().
+template <template <typename, typename> class F, typename... T>
+void gen_pairs() {
+  (void)expander{(do_gen_pairs<F, T, T...>(), 0)...};
+}
+
+template <template <typename, typename> class F>
+void test_conversions() {
+  gen_pairs<F, int&, const int&, int&&, const int&&>();
+}
+
+template <typename From, typename To>
+struct FieldRefConversionChecker {
+  static_assert(
+      std::is_convertible<From, To>() ==
+          std::is_convertible<field_ref<From>, field_ref<To>>(),
+      "inconsistent implicit conversion");
+};
+
+TEST(field_ref_test, conversions) {
+  test_conversions<FieldRefConversionChecker>();
+}
+
 TEST(field_ref_test, copy_list_initialization) {
   TestStruct s;
   s.name() = {};
+}
+
+TEST(field_ref_test, move) {
+  TestStruct s;
+  s.uptr() = std::make_unique<int>(42);
+  auto rawp = s.uptr()->get();
+  std::unique_ptr<int> p = *std::move(s).uptr();
+  EXPECT_TRUE(!*s.uptr());
+  EXPECT_EQ(p.get(), rawp);
 }
 
 TEST(optional_field_ref_test, access_default_value) {
@@ -293,8 +351,8 @@ TEST(optional_field_ref_test, reset) {
 TEST(optional_field_ref_test, construct_const_from_mutable) {
   auto s = TestStruct();
   s.opt_name() = "foo";
-  optional_field_ref<std::string> name = s.opt_name();
-  optional_field_ref<const std::string> const_name = name;
+  optional_field_ref<std::string&> name = s.opt_name();
+  optional_field_ref<const std::string&> const_name = name;
   EXPECT_TRUE(const_name.has_value());
   EXPECT_EQ(*const_name, "foo");
 }
@@ -302,19 +360,21 @@ TEST(optional_field_ref_test, construct_const_from_mutable) {
 TEST(optional_field_ref_test, const_accessors) {
   TestStruct s;
   s.opt_name() = "bar";
-  optional_field_ref<const std::string> name = s.opt_name();
+  optional_field_ref<const std::string&> name = s.opt_name();
   EXPECT_EQ(*name, "bar");
   EXPECT_EQ(name.value(), "bar");
   EXPECT_EQ(name->size(), 3);
   static_assert(is_const_ref<decltype(*name)>(), "");
   static_assert(is_const_ref<decltype(name.value())>(), "");
   static_assert(is_const_ref<decltype(*name.operator->())>(), "");
+  s.opt_uptr() = std::make_unique<int>(42);
+  std::move(s).opt_uptr()->get();
 }
 
 TEST(optional_field_ref_test, mutable_accessors) {
   TestStruct s;
   s.opt_name() = "initial";
-  optional_field_ref<std::string> name = s.opt_name();
+  optional_field_ref<std::string&> name = s.opt_name();
   *name = "foo";
   EXPECT_EQ(*name, "foo");
   name.value() = "bar";
@@ -333,7 +393,7 @@ TEST(optional_field_ref_test, value_or) {
 
 TEST(optional_field_ref_test, bad_field_access) {
   TestStruct s;
-  optional_field_ref<std::string> name = s.opt_name();
+  optional_field_ref<std::string&> name = s.opt_name();
   EXPECT_THROW(*name = "foo", bad_field_access);
   EXPECT_THROW(name.value() = "bar", bad_field_access);
   EXPECT_THROW(name->assign("baz"), bad_field_access);
@@ -353,7 +413,30 @@ TEST(optional_field_ref_test, convert_to_bool) {
   EXPECT_FALSE((std::is_convertible<decltype(s.opt_name()), bool>::value));
 }
 
+template <typename From, typename To>
+struct OptionalFieldRefConversionChecker {
+  static_assert(
+      std::is_convertible<From, To>() ==
+          std::is_convertible<
+              optional_field_ref<From>,
+              optional_field_ref<To>>(),
+      "inconsistent implicit conversion");
+};
+
+TEST(optional_field_ref_test, conversions) {
+  test_conversions<OptionalFieldRefConversionChecker>();
+}
+
 TEST(optional_field_ref_test, copy_list_initialization) {
   TestStruct s;
   s.opt_name() = {};
+}
+
+TEST(optional_field_ref_test, move) {
+  TestStruct s;
+  s.opt_uptr() = std::make_unique<int>(42);
+  auto rawp = s.opt_uptr()->get();
+  std::unique_ptr<int> p = *std::move(s).opt_uptr();
+  EXPECT_TRUE(!*s.opt_uptr());
+  EXPECT_EQ(p.get(), rawp);
 }
