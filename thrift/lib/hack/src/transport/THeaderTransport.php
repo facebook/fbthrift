@@ -124,15 +124,15 @@ class THeaderTransport extends TFramedTransport
     return $this;
   }
 
-  public function getWriteHeaders(): Indexish<string, string> {
+  public function getWriteHeaders(): KeyedContainer<string, string> {
     return $this->writeHeaders;
   }
 
-  public function getPersistentWriteHeaders(): Indexish<string, string> {
+  public function getPersistentWriteHeaders(): KeyedContainer<string, string> {
     return $this->persistentWriteHeaders;
   }
 
-  public function getHeaders(): Indexish<string, string> {
+  public function getHeaders(): KeyedContainer<string, string> {
     return $this->readHeaders;
   }
 

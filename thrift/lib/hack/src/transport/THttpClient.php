@@ -78,7 +78,7 @@ class THttpClient extends TTransport implements IThriftRemoteConn {
    *
    * @var array
    */
-  protected ?Indexish<string, string> $custom_headers_;
+  protected ?KeyedContainer<string, string> $custom_headers_;
 
   /**
    * Debugging on?
@@ -162,7 +162,7 @@ class THttpClient extends TTransport implements IThriftRemoteConn {
    * @param array of key value pairs of custom headers
    */
   public function setCustomHeaders(
-    Indexish<string, string> $custom_headers,
+    KeyedContainer<string, string> $custom_headers,
   ): void {
     $this->custom_headers_ = $custom_headers;
   }
@@ -172,7 +172,7 @@ class THttpClient extends TTransport implements IThriftRemoteConn {
    *
    * @return array key value pairs of custom headers
    */
-  public function getCustomHeaders(): ?Indexish<string, string> {
+  public function getCustomHeaders(): ?KeyedContainer<string, string> {
     return $this->custom_headers_;
   }
 

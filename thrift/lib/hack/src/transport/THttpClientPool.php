@@ -50,8 +50,8 @@ class THttpClientPool extends THttpClient {
    * @param string $scheme  http or https
    */
   public function __construct(
-    Indexish<mixed, string> $hosts,
-    Indexish<mixed, int> $ports,
+    KeyedContainer<mixed, string> $hosts,
+    KeyedContainer<mixed, int> $ports,
     string $uri = '',
     string $scheme = 'http',
     ?(function(string): bool) $debugHandler = null,

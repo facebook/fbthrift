@@ -16,9 +16,9 @@ interface TTransportSupportsHeaders {
     string $str_key,
     @string $str_value,
   ): this;
-  public function getWriteHeaders(): Indexish<string, string>;
-  public function getPersistentWriteHeaders(): Indexish<string, string>;
-  public function getHeaders(): Indexish<string, string>;
+  public function getWriteHeaders(): KeyedContainer<string, string>;
+  public function getPersistentWriteHeaders(): KeyedContainer<string, string>;
+  public function getHeaders(): KeyedContainer<string, string>;
   public function clearHeaders(): void;
   public function clearPersistentHeaders(): void;
 }

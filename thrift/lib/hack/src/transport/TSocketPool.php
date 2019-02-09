@@ -89,8 +89,8 @@ class TSocketPool extends TSocket {
    * @param mixed  $debugHandler Function for error logging
    */
   public function __construct(
-    Indexish<int, string> $hosts = array('localhost'),
-    Indexish<int, int> $ports = array(9090),
+    KeyedContainer<int, string> $hosts = array('localhost'),
+    KeyedContainer<int, int> $ports = array(9090),
     bool $persist = false,
     ?(function(string): bool) $debugHandler = null,
   ) {
@@ -472,4 +472,3 @@ class TSocketPool extends TSocket {
     }
   }
 }
-
