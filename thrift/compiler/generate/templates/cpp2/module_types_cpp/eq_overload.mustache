@@ -37,7 +37,7 @@ bool <%struct:name%>::operator==(const <%struct:name%>& rhs) const {
   }
   if (lhs.__isset.<%field:cpp_name%>) {
 <%#type:binary?%>
-    if (!apache::thrift::StringTraits<<%#type:cpp_custom_type%><%type:cpp_custom_type%><%/type:cpp_custom_type%><%^type:cpp_custom_type%>std::string<%/type:cpp_custom_type%>>::isEqual(lhs.<%field:cpp_name%><%type:cpp_indirection%>, rhs.<%field:cpp_name%><%type:cpp_indirection%>)) {
+    if (!apache::thrift::StringTraits<<% > types/indirected_string_type%>>::isEqual(lhs.<%field:cpp_name%><%type:cpp_indirection%>, rhs.<%field:cpp_name%><%type:cpp_indirection%>)) {
       return false;
     }
 <%/type:binary?%>
@@ -55,7 +55,7 @@ bool <%struct:name%>::operator==(const <%struct:name%>& rhs) const {
 <%/field:optionals?%>
 <%^field:optional?%>
 <%#type:binary?%>
-  if (!apache::thrift::StringTraits<<%#type:cpp_custom_type%><%type:cpp_custom_type%><%/type:cpp_custom_type%><%^type:cpp_custom_type%>std::string<%/type:cpp_custom_type%>>::isEqual(lhs.<%field:cpp_name%>, rhs.<%field:cpp_name%>)) {
+  if (!apache::thrift::StringTraits<<% > types/indirected_string_type%>>::isEqual(lhs.<%field:cpp_name%><%type:cpp_indirection%>, rhs.<%field:cpp_name%><%type:cpp_indirection%>)) {
     return false;
   }
 <%/type:binary?%>

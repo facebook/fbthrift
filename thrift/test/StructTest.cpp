@@ -465,3 +465,11 @@ TEST_F(StructTest, less_refs_shared) {
     EXPECT_FALSE(op(b, a));
   }
 }
+
+TEST_F(StructTest, custom_indirection) {
+  IOBufIndirection a;
+  a.foo.raw = folly::IOBuf(folly::IOBuf::COPY_BUFFER, "test");
+  a.bar.raw = "test2";
+  IOBufIndirection b = a;
+  EXPECT_EQ(a, b);
+}

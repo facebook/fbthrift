@@ -14,10 +14,18 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-%><%#type:string_or_binary?%><%!
-  %>apache::thrift::StringTraits< <% > types/indirected_string_type%>>::fromStringLiteral("")<%!
-%><%/type:string_or_binary?%><%!
+%><%!
 
-%><%#type:enum?%><%#type:enum%><%#enum:has_zero%><% > common/type_namespace_cpp2%><%type:name%>::<%enumValue:cpp_name%><%/enum:has_zero%><%^enum:has_zero%>static_cast<<% > common/type_namespace_cpp2%><%type:name%>>(0)<%/enum:has_zero%><%/type:enum%><%/type:enum?%><%!
+Deduces the underlying string type after indirection
 
-%><%^type:string_or_binary?%><%^type:enum?%>0<%/type:enum?%><%/type:string_or_binary?%>
+%><%#type:resolved_cpp_type%><%!
+  %><%#type:cpp_indirection%><%!
+    %>decltype(std::declval<<%type:resolved_cpp_type%>>()<%type:cpp_indirection%>)<%!
+  %><%/type:cpp_indirection%><%!
+  %><%^type:cpp_indirection%><%!
+    %><%type:resolved_cpp_type%><%!
+  %><%/type:cpp_indirection%><%!
+%><%/type:resolved_cpp_type%><%!
+%><%^type:resolved_cpp_type%><%!
+  %>std::string<%!
+%><%/type:resolved_cpp_type%>

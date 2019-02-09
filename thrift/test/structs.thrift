@@ -21,6 +21,8 @@
 
 namespace cpp2 apache.thrift.test
 
+cpp_include "thrift/test/WrappedType.h"
+
 struct Basic {
   1: i32 def_field,
   2: required i32 req_field,
@@ -48,3 +50,10 @@ struct BasicRefsShared {
 struct BasicRefsAnnotCppNoexceptMoveCtor {
   1: HasInt def_field (cpp.ref),
 } (cpp.noexcept_move_ctor)
+
+struct IOBufIndirection {
+  1: binary (cpp.type = "WrappedType<folly::IOBuf>",
+             cpp.indirection = ".raw") foo
+  2: binary (cpp.type = "WrappedType<std::string>",
+             cpp.indirection = ".raw") bar
+}

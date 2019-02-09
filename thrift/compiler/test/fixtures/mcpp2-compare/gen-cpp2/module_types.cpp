@@ -2161,7 +2161,7 @@ void containerStruct::__clear() {
   fieldAC =  ::some::valid::ns::MyEnumB::AField;
   fieldAD = static_cast< ::a::different::ns::AnEnum>(0);
   fieldAE.clear();
-  fieldSD.value = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
+  fieldSD.value = apache::thrift::StringTraits< decltype(std::declval<FooBar>().value)>::fromStringLiteral("");
   __isset = {};
 }
 
