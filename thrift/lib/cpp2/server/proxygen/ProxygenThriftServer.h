@@ -248,10 +248,17 @@ class ProxygenThriftServer : public BaseThriftServer,
   class ConnectionContext : public apache::thrift::server::TConnectionContext {
    public:
     explicit ConnectionContext(const proxygen::HTTPSessionBase& session)
-        : apache::thrift::server::TConnectionContext() {
-      peerAddress_ = session.getPeerAddress();
-    }
+        : apache::thrift::server::TConnectionContext(),
+          peerAddress_(session.getPeerAddress()) {}
+
     ~ConnectionContext() override {}
+
+    const folly::SocketAddress* getPeerAddress() const final {
+      return &peerAddress_;
+    }
+
+   private:
+    folly::SocketAddress peerAddress_;
   };
 
   bool isOverloaded(

@@ -47,8 +47,8 @@ class Cpp2ConnContext : public apache::thrift::server::TConnectionContext {
       const std::shared_ptr<RequestChannel>& duplexChannel = nullptr,
       const std::shared_ptr<X509> peerCert = nullptr /*overridden from socket*/,
       apache::thrift::ClientIdentityHook clientIdentityHook = nullptr)
-      : manager_(manager),
-        requestHeader_(nullptr),
+      : userData_(nullptr, no_op_destructor),
+        manager_(manager),
         duplexChannel_(duplexChannel),
         peerCert_(peerCert),
         peerIdentities_(nullptr, [](void*) {}),
@@ -68,16 +68,26 @@ class Cpp2ConnContext : public apache::thrift::server::TConnectionContext {
     }
   }
 
+  void reset() {
+    peerAddress_.reset();
+    localAddress_.reset();
+    userData_.reset();
+  }
+
+  const folly::SocketAddress* getPeerAddress() const final {
+    return &peerAddress_;
+  }
+
   const folly::SocketAddress* getLocalAddress() const {
     return &localAddress_;
   }
 
-  apache::thrift::transport::THeader* getHeader() const override {
-    return requestHeader_;
+  void setLocalAddress(const folly::SocketAddress& localAddress) {
+    localAddress_ = localAddress;
   }
 
   void setRequestHeader(apache::thrift::transport::THeader* header) {
-    requestHeader_ = header;
+    header_ = header;
   }
 
   folly::EventBaseManager* getEventBaseManager() override {
@@ -120,15 +130,43 @@ class Cpp2ConnContext : public apache::thrift::server::TConnectionContext {
     return transport_;
   }
 
+  /**
+   * Get the user data field.
+   */
+  virtual void* getUserData() const override {
+    return userData_.get();
+  }
+
+  /**
+   * Set the user data field.
+   *
+   * @param data         The new value for the user data field.
+   * @param destructor   A function pointer to invoke when the connection
+   *                     context is destroyed.  It will be invoked with the
+   *                     contents of the user data field.
+   *
+   * @return Returns the old user data value.
+   */
+  virtual void* setUserData(void* data, void (*destructor)(void*) = nullptr)
+      override {
+    auto oldData = userData_.release();
+    userData_ = {data, destructor ? destructor : no_op_destructor};
+    return oldData;
+  }
+
  private:
+  std::unique_ptr<void, void (*)(void*)> userData_;
+  folly::SocketAddress peerAddress_;
+  folly::SocketAddress localAddress_;
   folly::EventBaseManager* manager_;
-  transport::THeader* requestHeader_;
   std::shared_ptr<RequestChannel> duplexChannel_;
   std::shared_ptr<TClientBase> duplexClient_;
   std::shared_ptr<X509> peerCert_;
   std::unique_ptr<void, void (*)(void*)> peerIdentities_;
   std::string securityProtocol_;
   const folly::AsyncTransportWrapper* transport_;
+
+  static void no_op_destructor(void* /*ptr*/) {}
 };
 
 // Request-specific context
@@ -137,9 +175,9 @@ class Cpp2RequestContext : public apache::thrift::server::TConnectionContext {
   explicit Cpp2RequestContext(
       Cpp2ConnContext* ctx,
       apache::thrift::transport::THeader* header = nullptr)
-      : ctx_(ctx),
+      : TConnectionContext(header),
+        ctx_(ctx),
         requestData_(nullptr, no_op_destructor),
-        header_(header),
         startedProcessing_(false) {}
 
   void setConnectionContext(Cpp2ConnContext* ctx) {
@@ -161,10 +199,6 @@ class Cpp2RequestContext : public apache::thrift::server::TConnectionContext {
 
   PriorityThreadManager::PRIORITY getCallPriority() {
     return header_->getCallPriority();
-  }
-
-  apache::thrift::transport::THeader* getHeader() const override {
-    return header_;
   }
 
   virtual std::vector<uint16_t>& getTransforms() {
@@ -250,7 +284,6 @@ class Cpp2RequestContext : public apache::thrift::server::TConnectionContext {
  private:
   Cpp2ConnContext* ctx_;
   RequestDataPtr requestData_;
-  apache::thrift::transport::THeader* header_;
   bool startedProcessing_ = false;
   std::chrono::milliseconds requestTimeout_{0};
   folly::Optional<std::chrono::steady_clock::time_point> processingStartTime_;
