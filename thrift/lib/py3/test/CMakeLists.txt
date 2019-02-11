@@ -2,7 +2,7 @@ include_directories("${CMAKE_CURRENT_BINARY_DIR}/..")
 
 thrift_library(
     "iobuf"
-    "TestingService"
+    "IobufTestService"
     "cpp2"
     ""
     "${CMAKE_CURRENT_SOURCE_DIR}"
@@ -12,7 +12,7 @@ thrift_library(
 
 thrift_generate(
     "iobuf"
-    "TestingService"
+    "IobufTestService"
     "py3"
     ""
     "${CMAKE_CURRENT_SOURCE_DIR}"

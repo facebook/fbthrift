@@ -9,7 +9,7 @@ struct Moo {
   3: IOBuf buf
 }
 
-service TestingService {
+service IobufTestService {
     Moo getMoo()
     void sendMoo(1: Moo m)
 }
