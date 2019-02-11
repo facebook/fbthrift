@@ -42,6 +42,8 @@ namespace apache {
 namespace thrift {
 namespace rocket {
 
+class RocketClientWriteCallback;
+
 namespace detail {
 SetupFrame makeSetupFrame();
 } // namespace detail
@@ -64,10 +66,12 @@ class RequestContext {
   RequestContext(
       Frame&& frame,
       RequestContextQueue& queue,
-      bool setupFrameNeeded)
+      bool setupFrameNeeded,
+      RocketClientWriteCallback* writeCallback = nullptr)
       : queue_(queue),
         streamId_(frame.streamId()),
-        frameType_(Frame::frameType()) {
+        frameType_(Frame::frameType()),
+        writeCallback_(writeCallback) {
     serialize(std::forward<Frame>(frame), setupFrameNeeded);
   }
 
@@ -112,6 +116,8 @@ class RequestContext {
   void onPayloadFrame(PayloadFrame&& payloadFrame);
   void onErrorFrame(ErrorFrame&& errorFrame);
 
+  void onWriteSuccess() noexcept;
+
  private:
   RequestContextQueue& queue_;
   folly::SafeIntrusiveListHook queueHook_;
@@ -125,6 +131,7 @@ class RequestContext {
   std::chrono::milliseconds awaitResponseTimeout_{1000};
   folly::fibers::Baton::TimeoutHandler awaitResponseTimeoutHandler_;
   folly::Try<Payload> responsePayload_;
+  RocketClientWriteCallback* const writeCallback_;
 
   template <class Frame>
   void serialize(Frame&& frame, bool setupFrameNeeded) {

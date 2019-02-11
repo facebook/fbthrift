@@ -48,6 +48,8 @@ namespace apache {
 namespace thrift {
 namespace rocket {
 
+class RocketClientWriteCallback;
+
 namespace {
 class OnEventBaseDestructionCallback
     : public folly::EventBase::OnDestructionCallback {
@@ -173,21 +175,25 @@ void RocketClient::handleStreamFrame(
 
 Payload RocketClient::sendRequestResponseSync(
     Payload&& request,
-    std::chrono::milliseconds timeout) {
+    std::chrono::milliseconds timeout,
+    RocketClientWriteCallback* writeCallback) {
   RequestContext ctx(
       RequestResponseFrame(makeStreamId(), std::move(request)),
       queue_,
-      !std::exchange(setupFrameSent_, true) /* setupFrameNeeded */);
+      !std::exchange(setupFrameSent_, true) /* setupFrameNeeded */,
+      writeCallback);
   scheduleWrite(ctx);
   return ctx.waitForResponse(timeout);
 }
 
-void RocketClient::sendRequestFnfSync(Payload&& request) {
+void RocketClient::sendRequestFnfSync(
+    Payload&& request,
+    RocketClientWriteCallback* writeCallback) {
   RequestContext ctx(
       RequestFnfFrame(makeStreamId(), std::move(request)),
       queue_,
-      !std::exchange(setupFrameSent_, true) /* setupFrameNeeded */
-  );
+      !std::exchange(setupFrameSent_, true) /* setupFrameNeeded */,
+      writeCallback);
   scheduleWrite(ctx);
   return ctx.waitForWriteToComplete();
 }
@@ -312,6 +318,7 @@ void RocketClient::writeSuccess() noexcept {
   DCHECK(state_ != ConnectionState::CLOSED);
 
   auto& req = queue_.markNextSendingAsSent();
+  req.onWriteSuccess();
   if (req.isRequestResponse()) {
     req.scheduleTimeoutForResponse();
   } else {

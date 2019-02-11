@@ -38,14 +38,32 @@
 #include <thrift/lib/cpp2/transport/core/ThriftClientCallback.h>
 #include <thrift/lib/cpp2/transport/rocket/RocketException.h>
 #include <thrift/lib/cpp2/transport/rocket/client/RocketClient.h>
+#include <thrift/lib/cpp2/transport/rocket/client/RocketClientWriteCallback.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
 
 using namespace apache::thrift::transport;
 
+namespace apache {
+namespace thrift {
+
 namespace {
+class OnWriteSuccess final : public rocket::RocketClientWriteCallback {
+ public:
+  explicit OnWriteSuccess(RequestCallback& requestCallback)
+      : requestCallback_(requestCallback) {}
+
+  void onWriteSuccess() noexcept override {
+    folly::RequestContextScopeGuard rctx(requestCallback_.context_);
+    requestCallback_.requestSent();
+  }
+
+ private:
+  RequestCallback& requestCallback_;
+};
+
 std::unique_ptr<folly::IOBuf> serializeMetadata(
-    const apache::thrift::RequestRpcMetadata& requestMetadata) {
-  apache::thrift::CompactProtocolWriter writer;
+    const RequestRpcMetadata& requestMetadata) {
+  CompactProtocolWriter writer;
   folly::IOBufQueue queue;
   writer.setOutput(&queue);
   requestMetadata.write(&writer);
@@ -53,24 +71,20 @@ std::unique_ptr<folly::IOBuf> serializeMetadata(
 }
 
 void deserializeMetadata(
-    apache::thrift::ResponseRpcMetadata& dest,
+    ResponseRpcMetadata& dest,
     const folly::IOBuf& buffer) {
-  apache::thrift::CompactProtocolReader reader;
+  CompactProtocolReader reader;
   reader.setInput(&buffer);
   dest.read(&reader);
 }
 
-std::unique_ptr<apache::thrift::ResponseRpcMetadata> deserializeMetadata(
+std::unique_ptr<ResponseRpcMetadata> deserializeMetadata(
     const folly::IOBuf& buffer) {
-  auto responseMetadata =
-      std::make_unique<apache::thrift::ResponseRpcMetadata>();
+  auto responseMetadata = std::make_unique<ResponseRpcMetadata>();
   deserializeMetadata(*responseMetadata, buffer);
   return responseMetadata;
 }
 } // namespace
-
-namespace apache {
-namespace thrift {
 
 RocketClientChannel::RocketClientChannel(
     async::TAsyncTransport::UniquePtr socket)
@@ -213,12 +227,17 @@ void RocketClientChannel::sendSingleRequestNoResponse(
     std::unique_ptr<ContextStack> ctx,
     std::unique_ptr<folly::IOBuf> buf,
     std::unique_ptr<RequestCallback> cb) {
+  auto& cbRef = *cb;
   auto& fm = getFiberManager();
+
   fm.addTaskFinally(
-      [rclient = rclient_,
+      [&cbRef,
+       rclient = rclient_,
        requestPayload = rocket::Payload::makeFromMetadataAndData(
            serializeMetadata(metadata), std::move(buf))]() mutable {
-        return rclient->sendRequestFnfSync(std::move(requestPayload));
+        OnWriteSuccess writeCallback(cbRef);
+        return rclient->sendRequestFnfSync(
+            std::move(requestPayload), &writeCallback);
       },
       [cb = std::move(cb),
        ctx = std::move(ctx),
@@ -227,11 +246,12 @@ void RocketClientChannel::sendSingleRequestNoResponse(
         if (auto inflightState = inflightWeak.lock()) {
           inflightState->decPendingRequests();
         }
-        folly::RequestContextScopeGuard rctx(cb->context_);
-        return result.hasValue() ? cb->requestSent()
-                                 : cb->requestError(ClientReceiveState(
-                                       std::move(result.exception()),
-                                       folly::to_shared_ptr(std::move(ctx))));
+        if (result.hasException()) {
+          folly::RequestContextScopeGuard rctx(cb->context_);
+          cb->requestError(ClientReceiveState(
+              std::move(result.exception()),
+              folly::to_shared_ptr(std::move(ctx))));
+        }
       });
 }
 
@@ -250,13 +270,9 @@ void RocketClientChannel::sendSingleRequestSingleResponse(
        rclient = rclient_,
        requestPayload = rocket::Payload::makeFromMetadataAndData(
            serializeMetadata(metadata), std::move(buf))]() mutable {
-        // Note that at this point, we are only about to schedule the request
-        // for sending. This is similar to how requestSent() behaves in
-        // RSocketClientChannel.
-        folly::RequestContextScopeGuard rctx(cbRef.context_);
-        cbRef.requestSent();
+        OnWriteSuccess writeCallback(cbRef);
         return rclient->sendRequestResponseSync(
-            std::move(requestPayload), timeout);
+            std::move(requestPayload), timeout, &writeCallback);
       },
       [ctx = std::move(ctx),
        cb = std::move(cb),

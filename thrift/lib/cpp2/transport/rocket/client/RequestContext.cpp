@@ -29,6 +29,7 @@
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 #include <thrift/lib/cpp2/transport/rocket/RocketException.h>
 #include <thrift/lib/cpp2/transport/rocket/client/RequestContextQueue.h>
+#include <thrift/lib/cpp2/transport/rocket/client/RocketClientWriteCallback.h>
 #include <thrift/lib/cpp2/transport/rocket/framing/Frames.h>
 #include <thrift/lib/cpp2/transport/rsocket/gen-cpp2/Config_types.h>
 
@@ -138,6 +139,12 @@ void RequestContext::onErrorFrame(ErrorFrame&& errorFrame) {
           errorFrame.errorCode(), std::move(errorFrame.payload()).data()));
 
   queue_.markAsResponded(*this);
+}
+
+void RequestContext::onWriteSuccess() noexcept {
+  if (writeCallback_) {
+    writeCallback_->onWriteSuccess();
+  }
 }
 
 namespace detail {

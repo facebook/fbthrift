@@ -34,6 +34,7 @@
 #include <thrift/lib/cpp2/transport/rocket/RocketException.h>
 #include <thrift/lib/cpp2/transport/rocket/Types.h>
 #include <thrift/lib/cpp2/transport/rocket/client/RocketClient.h>
+#include <thrift/lib/cpp2/transport/rocket/client/RocketClientWriteCallback.h>
 #include <thrift/lib/cpp2/transport/rocket/framing/ErrorCode.h>
 #include <thrift/lib/cpp2/transport/rocket/test/network/ClientServerTestUtil.h>
 #include <thrift/lib/cpp2/transport/rocket/test/network/Util.h>
@@ -74,6 +75,14 @@ class RocketNetworkTest : public testing::Test {
   std::unique_ptr<RocketTestClient> client_;
   folly::ManualExecutor userExecutor_;
 };
+
+struct OnWriteSuccess : RocketClientWriteCallback {
+  bool writeSuccess{false};
+
+  void onWriteSuccess() noexcept final {
+    writeSuccess = true;
+  }
+};
 } // namespace
 
 using ServerTypes = ::testing::Types<RsocketTestServer, RocketTestServer>;
@@ -87,9 +96,13 @@ TYPED_TEST(RocketNetworkTest, RequestResponseBasic) {
     constexpr folly::StringPiece kMetadata("metadata");
     constexpr folly::StringPiece kData("test_request");
 
+    OnWriteSuccess writeCallback;
     auto reply = client.sendRequestResponseSync(
-        Payload::makeFromMetadataAndData(kMetadata, kData));
+        Payload::makeFromMetadataAndData(kMetadata, kData),
+        std::chrono::milliseconds(250) /* timeout */,
+        &writeCallback);
 
+    EXPECT_TRUE(writeCallback.writeSuccess);
     EXPECT_TRUE(reply.hasValue());
     EXPECT_EQ(kData, getRange(*reply->data()));
     EXPECT_TRUE(reply->metadata());
@@ -208,10 +221,13 @@ TYPED_TEST(RocketNetworkTest, RequestResponseDeadServer) {
 
   this->server_.reset();
 
+  OnWriteSuccess writeCallback;
   auto reply = this->client_->sendRequestResponseSync(
       Payload::makeFromMetadataAndData(kMetadata, kData),
-      std::chrono::milliseconds(250));
+      std::chrono::milliseconds(250),
+      &writeCallback);
 
+  EXPECT_FALSE(writeCallback.writeSuccess);
   EXPECT_TRUE(reply.hasException());
   expectTransportExceptionType(
       TTransportException::TTransportExceptionType::NOT_OPEN,

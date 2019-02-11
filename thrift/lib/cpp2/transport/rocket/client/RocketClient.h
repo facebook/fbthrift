@@ -51,6 +51,8 @@ namespace apache {
 namespace thrift {
 namespace rocket {
 
+class RocketClientWriteCallback;
+
 class RocketClient : public folly::DelayedDestruction,
                      private folly::AsyncTransportWrapper::WriteCallback,
                      public std::enable_shared_from_this<RocketClient> {
@@ -69,9 +71,12 @@ class RocketClient : public folly::DelayedDestruction,
   // Main send*Sync() API. Must be called on the EventBase's FiberManager.
   Payload sendRequestResponseSync(
       Payload&& request,
-      std::chrono::milliseconds timeout);
+      std::chrono::milliseconds timeout,
+      RocketClientWriteCallback* writeCallback);
 
-  void sendRequestFnfSync(Payload&& request);
+  void sendRequestFnfSync(
+      Payload&& request,
+      RocketClientWriteCallback* writeCallback);
 
   // Note that createStream is non-blocking.
   std::shared_ptr<RocketClientFlowable> createStream(Payload&& request);
@@ -81,7 +86,7 @@ class RocketClient : public folly::DelayedDestruction,
 
   void scheduleWrite(RequestContext& ctx);
 
-  // WriteCallback implementation
+  // AsyncTransportWrapper::WriteCallback implementation
   void writeSuccess() noexcept final;
   void writeErr(
       size_t bytesWritten,
