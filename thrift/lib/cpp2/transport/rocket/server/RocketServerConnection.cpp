@@ -89,6 +89,10 @@ void RocketServerConnection::closeIfNeeded() {
   }
 
   DestructorGuard dg(this);
+  // Update state_ early, as subsequent lines may call recursively into
+  // closeIfNeeded(). Such recursive calls should be no-ops.
+  state_ = ConnectionState::CLOSED;
+
   for (auto it = streams_.begin(); it != streams_.end();) {
     auto& subscriber = *it->second;
     subscriber.cancel();
@@ -99,7 +103,6 @@ void RocketServerConnection::closeIfNeeded() {
     batchWriteLoopCallback_.cancelLoopCallback();
     flushPendingWrites();
   }
-  state_ = ConnectionState::CLOSED;
   if (auto* manager = getConnectionManager()) {
     manager->removeConnection(this);
   }
@@ -213,8 +216,11 @@ void RocketServerConnection::handleFrame(std::unique_ptr<folly::IOBuf> frame) {
 }
 
 void RocketServerConnection::close(folly::exception_wrapper ew) {
-  DestructorGuard dg(this);
+  if (state_ == ConnectionState::CLOSING || state_ == ConnectionState::CLOSED) {
+    return;
+  }
 
+  DestructorGuard dg(this);
   // Immediately stop processing new requests
   socket_->setReadCB(nullptr);
 
