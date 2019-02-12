@@ -1,7 +1,7 @@
 namespace cpp2 py3.simple
 
 enum AnEnum {
-  None = 0 (py3.rename = "NOTSET"),
+  None = 0 (py3.name = "NOTSET"),
   ONE = 1,
   TWO = 2,
   THREE = 3,
@@ -38,7 +38,7 @@ struct ComplexStruct {
   4: string name
   5: AnEnum an_enum
   6: binary some_bytes
-  7: string from (py3.rename = "sender")
+  7: string from (py3.name = "sender")
   8: string cdef
   9: foo_bar bytes_with_cpp_type
 }

@@ -102,6 +102,15 @@ union Integers {
     7: Digits digits (cpp.ref="True"),
 }
 
+struct Error {
+    1: string message,
+}
+
+union ValueOrError {
+    1: File value (py3.name = "value_"),
+    2: Error error,
+}
+
 struct easy {
     1: i32 val,
     2: I32List val_list,
@@ -184,7 +193,7 @@ struct Reserved {
   1: string from,  // named with a python keyword (which is not a C++ keyword)
   2: i32 nonlocal, // ditto
   3: string ok,    // not a keyword
-  4: bool cpdef (py3.rename = 'is_cpdef'),
+  4: bool cpdef (py3.name = 'is_cpdef'),
 }
 
 union ReservedUnion {

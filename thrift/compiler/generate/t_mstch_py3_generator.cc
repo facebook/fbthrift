@@ -195,11 +195,11 @@ std::string t_mstch_py3_generator::get_enumSafeName(const std::string& name) {
 template <class T>
 std::string t_mstch_py3_generator::get_rename(const T& elem) {
   auto& annotation = elem.annotations_;
-  auto it = annotation.find("py3.rename");
+  auto it = annotation.find("py3.name");
+  if (it != annotation.end()) {
+    return it->second;
+  }
   if (KEYWORDS.find(elem.get_name()) != KEYWORDS.end()) {
-    if (it != annotation.end()) {
-      return it->second;
-    }
     return elem.get_name() + "_";
   }
   return elem.get_name();
