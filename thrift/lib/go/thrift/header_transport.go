@@ -403,14 +403,7 @@ func (t *HeaderTransport) flushHeader() error {
 		return NewTransportExceptionFromError(err)
 	}
 
-	hdrbuf := bytes.NewBuffer(make([]byte, 64))
-	hdrbuf.Reset()
-	err = hdr.Write(hdrbuf)
-	if err != nil {
-		return NewTransportExceptionFromError(err)
-	}
-
-	_, err = hdrbuf.WriteTo(t.transport)
+	err = hdr.Write(t.transport)
 	return NewTransportExceptionFromError(err)
 }
 
