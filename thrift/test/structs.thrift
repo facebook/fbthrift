@@ -56,4 +56,6 @@ struct IOBufIndirection {
              cpp.indirection = ".raw") foo
   2: binary (cpp.type = "WrappedType<std::string>",
              cpp.indirection = ".raw") bar
+  3: binary (cpp.type = "WrappedType<folly::IOBuf>",
+             cpp.indirection = ".rawAccessor()") baz
 }

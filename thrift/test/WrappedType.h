@@ -20,6 +20,14 @@ namespace test {
 template <class T>
 struct WrappedType {
   T raw;
+
+  T& rawAccessor() {
+    return raw;
+  }
+
+  const T& rawAccessor() const {
+    return raw;
+  }
 };
 
 } // namespace test

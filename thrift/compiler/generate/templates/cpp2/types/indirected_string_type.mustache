@@ -20,7 +20,7 @@ Deduces the underlying string type after indirection
 
 %><%#type:resolved_cpp_type%><%!
   %><%#type:cpp_indirection%><%!
-    %>decltype(std::declval<<%type:resolved_cpp_type%>>()<%type:cpp_indirection%>)<%!
+    %>folly::remove_cvref_t<decltype(std::declval<<%type:resolved_cpp_type%>>()<%type:cpp_indirection%>)><%!
   %><%/type:cpp_indirection%><%!
   %><%^type:cpp_indirection%><%!
     %><%type:resolved_cpp_type%><%!

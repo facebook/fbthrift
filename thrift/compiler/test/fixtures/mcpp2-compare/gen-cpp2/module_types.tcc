@@ -3805,7 +3805,7 @@ uint32_t containerStruct::serializedSize(Protocol_ const* prot_) const {
     xfer += prot_->serializedFieldSize("fieldAE", apache::thrift::protocol::T_MAP, 32);
     xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>, std::map<std::string, int32_t>>::serializedSize<false>(*prot_, this->fieldAE);
   }
-  if (!apache::thrift::StringTraits< decltype(std::declval<FooBar>().value)>::isEmpty(this->fieldSD.value)) {
+  if (!apache::thrift::StringTraits< folly::remove_cvref_t<decltype(std::declval<FooBar>().value)>>::isEmpty(this->fieldSD.value)) {
     xfer += prot_->serializedFieldSize("fieldSD", apache::thrift::protocol::T_STRING, 33);
     xfer += prot_->serializedSizeString(this->fieldSD.value);
   }
@@ -3979,7 +3979,7 @@ uint32_t containerStruct::serializedSizeZC(Protocol_ const* prot_) const {
     xfer += prot_->serializedFieldSize("fieldAE", apache::thrift::protocol::T_MAP, 32);
     xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>, std::map<std::string, int32_t>>::serializedSize<false>(*prot_, this->fieldAE);
   }
-  if (!apache::thrift::StringTraits< decltype(std::declval<FooBar>().value)>::isEmpty(this->fieldSD.value)) {
+  if (!apache::thrift::StringTraits< folly::remove_cvref_t<decltype(std::declval<FooBar>().value)>>::isEmpty(this->fieldSD.value)) {
     xfer += prot_->serializedFieldSize("fieldSD", apache::thrift::protocol::T_STRING, 33);
     xfer += prot_->serializedSizeString(this->fieldSD.value);
   }
@@ -4198,7 +4198,7 @@ uint32_t containerStruct::write(Protocol_* prot_) const {
     xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>, std::map<std::string, int32_t>>::write(*prot_, this->fieldAE);
     xfer += prot_->writeFieldEnd();
   }
-  if (!apache::thrift::StringTraits< decltype(std::declval<FooBar>().value)>::isEmpty(this->fieldSD.value)) {
+  if (!apache::thrift::StringTraits< folly::remove_cvref_t<decltype(std::declval<FooBar>().value)>>::isEmpty(this->fieldSD.value)) {
     xfer += prot_->writeFieldBegin("fieldSD", apache::thrift::protocol::T_STRING, 33);
     xfer += prot_->writeString(this->fieldSD.value);
     xfer += prot_->writeFieldEnd();

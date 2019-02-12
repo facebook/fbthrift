@@ -3784,7 +3784,7 @@ void struct_with_indirections::__clear() {
   fake = 0;
   number.number = 0;
   result.foo().result() = 0;
-  phrase.phrase = apache::thrift::StringTraits< decltype(std::declval<CppHasAPhrase>().phrase)>::fromStringLiteral("");
+  phrase.phrase = apache::thrift::StringTraits< folly::remove_cvref_t<decltype(std::declval<CppHasAPhrase>().phrase)>>::fromStringLiteral("");
   __isset = {};
 }
 
