@@ -1,4 +1,4 @@
-#!/usr/bin/env python -tt
+#!/usr/bin/env python3
 #
 # Licensed to the Apache Software Foundation (ASF) under one
 # or more contributor license agreements. See the NOTICE file
@@ -45,7 +45,7 @@ def init_parser():
 
     # construct the epilogue
     tmp = []
-    for lang, opts in generator_registry.reference.iteritems():
+    for lang, opts in generator_registry.reference.items():
         tmp.append('  {0} ({1[long]}):'.format(lang, opts))
         for key, help in opts.get('options', {}).items():
             tmp.append(''.join(('    ', '{0}:'.format(key).ljust(20), help)))
@@ -121,7 +121,7 @@ def toDict(string):
     'Turns a string of the form a[,c[=d]]... to a dict'
     d = {}
     items = string.split(',')
-    for item in itertools.ifilter(None, items):
+    for item in filter(None, items):
         item = item.split('=', 1)
         if len(item) == 1:
             key = item[0]
@@ -223,7 +223,7 @@ class Configuration(object):
         if self.dump_docs:
             frontend.dump_docstrings(program)
 
-        for language, flags in languages.iteritems():
+        for language, flags in languages.items():
             for flag in flags:
                 if flag not in generator_registry.generator_factory_map[ \
                         language].supported_flags:

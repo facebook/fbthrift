@@ -1,4 +1,4 @@
-#! /usr/bin/env python2 -tt
+#! /usr/bin/env python3
 #
 # Licensed to the Apache Software Foundation (ASF) under one
 # or more contributor license agreements. See the NOTICE file
@@ -18,14 +18,16 @@
 # under the License.
 #
 
+from __future__ import print_function
+
 import re
 
-from t_output import CompositeOutput
-from t_output_aggregator import create_scope_factory
-from t_output_aggregator import OutputContext
-from t_output_aggregator import Primitive
-from t_output_aggregator import PrimitiveFactory
-from t_output_aggregator import Scope
+from .t_output import CompositeOutput
+from .t_output_aggregator import create_scope_factory
+from .t_output_aggregator import OutputContext
+from .t_output_aggregator import Primitive
+from .t_output_aggregator import PrimitiveFactory
+from .t_output_aggregator import Scope
 
 # ---------------------------------------------------------------
 # Scope
@@ -37,7 +39,7 @@ class CppScope (Scope):
     # while it wasn't closed
 
     def acquire(self):
-        print >>self._out, ' {',
+        print(' {', end=' ', file=self._out)
         self._out.flag_this_line()
         self._out.indent(2)
 
@@ -57,10 +59,10 @@ class Class(Primitive):
     # String Format: type folly abspath::name
     # Example: class FOLLY_DEPRECATE("msg") classname::function : extrastuff
     _pattern_type = "(?P<type>class |struct )"
-    _pattern_folly = "(?P<folly>\w+\(.*?\) )*"
-    _pattern_name = "(?:\s*(?P<name>\w+))"
-    _pattern_scope = "(?:\s*::{pname})*".format(pname=_pattern_name)
-    _pattern_abspath = "(?P<abspath>\w+{pscope})".format(pscope=_pattern_scope)
+    _pattern_folly = r"(?P<folly>\w+\(.*?\) )*"
+    _pattern_name = r"(?:\s*(?P<name>\w+))"
+    _pattern_scope = r"(?:\s*::{pname})*".format(pname=_pattern_name)
+    _pattern_abspath = r"(?P<abspath>\w+{pscope})".format(pscope=_pattern_scope)
     _pattern = "{ptype}{pfolly}{pabspath}".format(
         ptype=_pattern_type,
         pfolly=_pattern_folly,
@@ -79,7 +81,7 @@ class Class(Primitive):
         # already on an empty line. If we are not then we introduce a
         # newline before the class defn
         context.h.double_space()
-        print >>context.h, self,
+        print(self, end=' ', file=context.h)
         # the scope of this will be written to output_h
         self.output = context.h
         # no custom epilogue? we'll just set our own haha
@@ -105,13 +107,13 @@ class Namespace(Primitive):
         self.epilogue = None
 
     def _write(self, context):
-        path = filter(None, self.path)
+        path = [_f for _f in self.path if _f]
         if path:
             parts = [r'namespace {0} {{'.format(i) for i in path]
             text = ' '.join(parts) + '\n'
             self.epilogue = '}' * len(path) + ' // ' + '::'.join(path)
             context.outputs.line_feed()
-            print >>context.outputs, text
+            print(text, file=context.outputs)
 
     def enter_scope_callback(self, context, scope):
         return dict(physical_scope=False)
@@ -122,7 +124,7 @@ class Namespace(Primitive):
             # text hardcoded into .epilogue by the write_primitive method
             context.outputs.double_space()
             # => write the epilogue statement for all outputs
-            print >>context.outputs, scope.opts.epilogue,
+            print(scope.opts.epilogue, end=' ', file=context.outputs)
         return dict(physical_scope=False)
 
 
@@ -160,6 +162,13 @@ class CppOutputContext(OutputContext):
         # start writing in the header
         self.output = output_h
 
+    def __enter__(self):
+        self.output.__enter__()
+        return self
+
+    def __exit__(self, *args):
+        self.output.__exit__(*args)
+
     @property
     def h(self):
         return self._output_h
@@ -181,7 +190,7 @@ class CppOutputContext(OutputContext):
             # save the default "current output" in the parent scope
             scope.opts.output = self.output
             # start guard in h
-            print >>self._output_h, '#pragma once\n'
+            print('#pragma once\n', file=self._output_h)
             return
 
         # set the output of the real scope's content according to the

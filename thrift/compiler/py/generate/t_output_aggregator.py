@@ -1,4 +1,4 @@
-#! /usr/bin/env python2 -tt
+#! /usr/bin/env python3
 #
 # Licensed to the Apache Software Foundation (ASF) under one
 # or more contributor license agreements. See the NOTICE file
@@ -20,9 +20,10 @@
 
 import functools
 import re
+import warnings
 import weakref
 
-from t_output import Output
+from .t_output import Output
 
 global_out = None
 
@@ -147,11 +148,10 @@ class PrimitiveFactory:
             return type_(self._scope(), text, **kwargs)
 
         # generate all the type factories
-        import new
-        for fname, type_ in self.types.iteritems():
+        import types
+        for fname, type_ in self.types.items():
             func = functools.partial(generatePrimitive, type_)
-            setattr(self, fname, new.instancemethod(func, self,
-                PrimitiveFactory))
+            setattr(self, fname, types.MethodType(func, self))
 
 
 class Values(dict):
@@ -287,10 +287,15 @@ class LogicalScope:
         released'''
         if not self.is_live:
             return
-        assert self._acquired == 2, ("LogicalScope: {0} with parent {1} "
-        "went out of scope before being released. Did you forget to call"
-        " .release() on it?".format(str(self.opts.__dict__),
-                                    str(self.parent.opts.__dict__)))
+        if self._acquired == 0:
+            # deallocated and never acquired
+            return
+        if self._acquired == 1:
+            warnings.warn(
+                "LogicalScope: {0} with parent {1} went out of scope before "
+                "being released. Did you forget to call .release() on it? "
+                "_acquired = {2}".format(str(self.opts.__dict__),
+                    str(self.parent.opts.__dict__), self._acquired))
 
     def release(self):
         """Call the exit_scope callback set by the owner Primitive, or

@@ -1,4 +1,4 @@
-#! /usr/bin/env python2 -tt
+#! /usr/bin/env python3
 #
 # Licensed to the Apache Software Foundation (ASF) under one
 # or more contributor license agreements. See the NOTICE file
@@ -18,7 +18,7 @@
 # under the License.
 #
 
-import t_generator
-import t_cpp_generator
+from . import t_generator
+from . import t_cpp_generator
 
 __all__ = [t_cpp_generator, t_generator]

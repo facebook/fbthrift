@@ -1,4 +1,4 @@
-#! /usr/bin/env python2 -tt
+#! /usr/bin/env python3
 #
 # Licensed to the Apache Software Foundation (ASF) under one
 # or more contributor license agreements. See the NOTICE file
@@ -18,6 +18,8 @@
 # under the License.
 #
 
+from __future__ import print_function
+
 class Output:
     'Output interface'
 
@@ -25,6 +27,12 @@ class Output:
         self._on_blank_line = True
         self._output = output
         self._flag = False
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, type, value, traceback):
+        self._output.close()
 
     def write(self, lines):
         'Writes lines (a string) '
@@ -52,7 +60,7 @@ class Output:
 
     def force_newline(self):
         'Force a newline'
-        print >>self._output
+        print(file=self._output)
         self._on_blank_line = True
         self._flag = False
 

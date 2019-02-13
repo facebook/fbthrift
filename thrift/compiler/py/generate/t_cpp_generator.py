@@ -1,4 +1,4 @@
-#! /usr/bin/env python2 -tt
+#! /usr/bin/env python3
 #
 # Licensed to the Apache Software Foundation (ASF) under one
 # or more contributor license agreements. See the NOTICE file
@@ -18,7 +18,8 @@
 # under the License.
 #
 
-from itertools import chain, ifilter
+from __future__ import print_function
+from itertools import chain
 from collections import namedtuple
 import copy
 import errno
@@ -91,7 +92,7 @@ class CppGenerator(t_generator.Generator):
         t_generator.Generator.__init__(self, *args, **kwargs)
 
         prefix = self._flags.get('include_prefix')
-        if isinstance(prefix, basestring):
+        if isinstance(prefix, (str, bytes)):
             self.program.include_prefix = prefix
 
     def _base_type_name(self, tbase):
@@ -184,7 +185,7 @@ class CppGenerator(t_generator.Generator):
         if ns:
             return ns
         ns = program.get_namespace('cpp')
-        parts = filter(None, ns.split('.'))
+        parts = [_f for _f in ns.split('.') if _f]
         parts.append('cpp2')
         return '.'.join(parts)
 
@@ -209,8 +210,8 @@ class CppGenerator(t_generator.Generator):
         name = self._program.name
         ns = self._get_original_namespace()
         self.fatal_detail_ns = 'thrift_fatal_impl_detail'
-        context = self._make_context(name + '_fatal')
-        with get_global_scope(CppPrimitiveFactory, context) as sg:
+        with self._make_context(name + '_fatal') as context, \
+                get_global_scope(CppPrimitiveFactory, context) as sg:
             sg('#include <thrift/lib/cpp2/reflection/reflection.h>')
             sg()
             sg('#include <fatal/type/list.h>')
@@ -253,8 +254,8 @@ class CppGenerator(t_generator.Generator):
         items['service'] = self._generate_fatal_service(program)
 
         # Combo include: types
-        context_cmb_types = self._make_context(name + '_fatal_types')
-        with get_global_scope(CppPrimitiveFactory, context_cmb_types) as sg:
+        with self._make_context(name + '_fatal_types') as context_cmb_types, \
+                get_global_scope(CppPrimitiveFactory, context_cmb_types) as sg:
             for dep in self._program.includes:
                 sg('#include  "{0}_fatal_types.h"'
                    .format(self._with_include_prefix(dep, dep.name)))
@@ -264,8 +265,8 @@ class CppGenerator(t_generator.Generator):
                     self._program, name + '_fatal_' + what + '.h')))
 
         # Combo include: all
-        context_cmb_all = self._make_context(name + '_fatal_all')
-        with get_global_scope(CppPrimitiveFactory, context_cmb_all) as sg:
+        with self._make_context(name + '_fatal_all') as context_cmb_all, \
+                get_global_scope(CppPrimitiveFactory, context_cmb_all) as sg:
             for dep in self._program.includes:
                 sg('#include  "{0}_fatal_all.h"'
                    .format(self._with_include_prefix(dep, dep.name)))
@@ -445,7 +446,7 @@ class CppGenerator(t_generator.Generator):
             out('{0}>{1}'.format(indent, comma))
         elif t == dict:
             out('{0}::fatal::list<'.format(indent))
-            for i, (k, v) in enumerate(sorted(what.iteritems())):
+            for i, (k, v) in enumerate(sorted(what.items())):
                 out('{0}  ::fatal::pair<'.format(indent))
                 self._render_fatal_structured_annotation(k, out,
                                                          indent + '    ', True)
@@ -482,12 +483,12 @@ class CppGenerator(t_generator.Generator):
         with scope.cls('class {0}'.format(class_name)).scope as aclass:
             if len(annotation_keys) > 0:
                 with scope.cls('struct {0}'.format(clsnmkeys)).scope as akeys:
-                    for idx, i in enumerate(annotation_keys):
+                    for i in annotation_keys:
                         full_id = self._set_fatal_string(i)
                         short_id = self._get_fatal_string_short_id(i)
                         akeys('using {0} = {1};'.format(short_id, full_id))
                 with scope.cls('struct {0}'.format(clsnmvalues)).scope as aval:
-                    for idx, i in enumerate(annotation_keys):
+                    for i in annotation_keys:
                         aval('using {0} = {1};'.format(
                             self._get_fatal_string_short_id(i),
                             self._render_fatal_string(annotations[i])))
@@ -550,8 +551,8 @@ class CppGenerator(t_generator.Generator):
         name = self._program.name
         ns = self._get_original_namespace()
 
-        context = self._make_context(name + '_fatal_enum')
-        with get_global_scope(CppPrimitiveFactory, context) as sg:
+        with self._make_context(name + '_fatal_enum') as context, \
+                get_global_scope(CppPrimitiveFactory, context) as sg:
             sg('#include "{0}"'.format(self._with_include_prefix(
                 self._program, name + '_types.h')))
 
@@ -649,8 +650,8 @@ class CppGenerator(t_generator.Generator):
         name = self._program.name
         ns = self._get_original_namespace()
 
-        context = self._make_context(name + '_fatal_union')
-        with get_global_scope(CppPrimitiveFactory, context) as sg:
+        with self._make_context(name + '_fatal_union') as context, \
+                get_global_scope(CppPrimitiveFactory, context) as sg:
             for dep in self._program.includes:
                 sg('#include  "{0}_fatal_types.h"'
                    .format(self._with_include_prefix(dep, dep.name)))
@@ -789,8 +790,8 @@ class CppGenerator(t_generator.Generator):
     def _generate_fatal_struct(self, program):
         name = self._program.name
         ns = self._get_original_namespace()
-        context = self._make_context(name + '_fatal_struct')
-        with get_global_scope(CppPrimitiveFactory, context) as sg:
+        with self._make_context(name + '_fatal_struct') as context, \
+                get_global_scope(CppPrimitiveFactory, context) as sg:
             for dep in self._program.includes:
                 sg('#include  "{0}_fatal_types.h"'
                    .format(self._with_include_prefix(dep, dep.name)))
@@ -953,7 +954,7 @@ class CppGenerator(t_generator.Generator):
                         # Owner
                         cmnf('  {0}'.format(i.name))
                         cmnf('>;')
-            for i, alias, ttype, ns_prefix in aliases:
+            for i, _alias, ttype, _ns_prefix in aliases:
                 self._set_fatal_string(i.symbolic)
                 with detail.cls(('struct {0}_{1}').format(
                         i.symbolic, mnfclsprefix)).scope as cmnf:
@@ -1034,7 +1035,7 @@ class CppGenerator(t_generator.Generator):
         mnfclsprefix = '{0}_{1}__struct_unique_member_info_list'.format(
             safe_ns, name)
         with sg.namespace('apache.thrift.detail').scope as detail:
-            for i, alias, ttype, ns_prefix in aliases:
+            for i, _alias, ttype, ns_prefix in aliases:
                 string_ref = self._set_fatal_string(i.symbolic)
                 result[i.symbolic] = (i.symbolic, string_ref, string_ref)
                 order.append(i.symbolic)
@@ -1070,8 +1071,8 @@ class CppGenerator(t_generator.Generator):
         name = self._program.name
         ns = self._get_original_namespace()
 
-        context = self._make_context(name + '_fatal_constant')
-        with get_global_scope(CppPrimitiveFactory, context) as sg:
+        with self._make_context(name + '_fatal_constant') as context, \
+                get_global_scope(CppPrimitiveFactory, context) as sg:
             sg('#include "{0}"'.format(self._with_include_prefix(
                 self._program, name + '_fatal_types.h')))
             sg()
@@ -1091,8 +1092,8 @@ class CppGenerator(t_generator.Generator):
     def _generate_fatal_service(self, program):
         name = self._program.name
         ns = self._get_original_namespace()
-        context = self._make_context(name + '_fatal_service')
-        with get_global_scope(CppPrimitiveFactory, context) as sg:
+        with self._make_context(name + '_fatal_service') as context, \
+                get_global_scope(CppPrimitiveFactory, context) as sg:
             sg('#include "{0}"'.format(self._with_include_prefix(
                 self._program, name + '_types.h')))
 
@@ -1129,7 +1130,7 @@ class CppGenerator(t_generator.Generator):
 
         context = CppOutputContext(output_h, header_path)
 
-        print >>context.outputs, self._autogen_comment
+        print(self._autogen_comment, file=context.outputs)
         return context
 
     @property

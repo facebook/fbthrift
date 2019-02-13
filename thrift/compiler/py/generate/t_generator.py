@@ -1,4 +1,4 @@
-#! /usr/bin/env python2 -tt
+#! /usr/bin/env python3
 #
 # Licensed to the Apache Software Foundation (ASF) under one
 # or more contributor license agreements. See the NOTICE file
@@ -18,7 +18,7 @@
 # under the License.
 #
 
-from itertools import chain, imap
+from itertools import chain
 
 from thrift_compiler import frontend
 
@@ -181,7 +181,7 @@ class GeneratorRegistry:
         generator_factory = None
         try:
             generator_factory = gfmap[language]
-        except KeyError as e:
+        except KeyError:
             raise Exception('t_generator_registry: could not get_generator '
                             'for language {0}'.format(language))
         return generator_factory.get_generator(program, out_path, flags)
