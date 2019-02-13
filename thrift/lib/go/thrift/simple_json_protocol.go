@@ -16,7 +16,6 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 package thrift
 
 import (
@@ -1371,7 +1370,7 @@ func (p *SimpleJSONProtocol) readNumeric() (Numeric, error) {
 func (p *SimpleJSONProtocol) safePeekContains(b []byte) bool {
 	for i := 0; i < len(b); i++ {
 		a, _ := p.reader.Peek(i + 1)
-		if len(a) == 0 || a[i] != b[i] {
+		if len(a) < (i+1) || a[i] != b[i] {
 			return false
 		}
 	}

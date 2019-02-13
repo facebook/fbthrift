@@ -16,7 +16,6 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 package thrift
 
 import (
@@ -788,4 +787,15 @@ func TestWriteSimpleJSONProtocolMap(t *testing.T) {
 		trans.Reset()
 	}
 	trans.Close()
+}
+
+func TestWriteSimpleJSONProtocolSafePeekOOBRead(t *testing.T) {
+	trans := NewMemoryBuffer()
+	p := NewSimpleJSONProtocol(trans)
+	trans.Write([]byte{'f', 'a'})
+	trans.Flush()
+	match := p.safePeekContains([]byte{'f', 'a', 'c', 'e'})
+	if match {
+		t.Fatalf("Matched on too short of a string")
+	}
 }
