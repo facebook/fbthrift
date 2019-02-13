@@ -18,24 +18,24 @@ namespace facebook { namespace ns { namespace qwerty {
 namespace thrift_fatal_impl_detail {
 
 struct facebook_ns_qwerty_enums__unique_strings_list {
-  using SomeStruct = ::fatal::sequence<char, 'S', 'o', 'm', 'e', 'S', 't', 'r', 'u', 'c', 't'>;
-  using FIELDA = ::fatal::sequence<char, 'F', 'I', 'E', 'L', 'D', 'A'>;
+  using AnEnumA = ::fatal::sequence<char, 'A', 'n', 'E', 'n', 'u', 'm', 'A'>;
+  using AnEnumB = ::fatal::sequence<char, 'A', 'n', 'E', 'n', 'u', 'm', 'B'>;
+  using AnEnumC = ::fatal::sequence<char, 'A', 'n', 'E', 'n', 'u', 'm', 'C'>;
+  using AnEnumD = ::fatal::sequence<char, 'A', 'n', 'E', 'n', 'u', 'm', 'D'>;
+  using AnEnumE = ::fatal::sequence<char, 'A', 'n', 'E', 'n', 'u', 'm', 'E'>;
+  using ConstantMap1 = ::fatal::sequence<char, 'C', 'o', 'n', 's', 't', 'a', 'n', 't', 'M', 'a', 'p', '1'>;
   using ConstantMap2 = ::fatal::sequence<char, 'C', 'o', 'n', 's', 't', 'a', 'n', 't', 'M', 'a', 'p', '2'>;
-  using cpp2 = ::fatal::sequence<char, 'c', 'p', 'p', '2'>;
+  using FIELDA = ::fatal::sequence<char, 'F', 'I', 'E', 'L', 'D', 'A'>;
+  using FIELDB = ::fatal::sequence<char, 'F', 'I', 'E', 'L', 'D', 'B'>;
+  using FIELDC = ::fatal::sequence<char, 'F', 'I', 'E', 'L', 'D', 'C'>;
+  using FIELDD = ::fatal::sequence<char, 'F', 'I', 'E', 'L', 'D', 'D'>;
   using MapEnumString = ::fatal::sequence<char, 'M', 'a', 'p', 'E', 'n', 'u', 'm', 'S', 't', 'r', 'i', 'n', 'g'>;
   using MapStringEnum = ::fatal::sequence<char, 'M', 'a', 'p', 'S', 't', 'r', 'i', 'n', 'g', 'E', 'n', 'u', 'm'>;
-  using AnEnumB = ::fatal::sequence<char, 'A', 'n', 'E', 'n', 'u', 'm', 'B'>;
-  using ConstantMap1 = ::fatal::sequence<char, 'C', 'o', 'n', 's', 't', 'a', 'n', 't', 'M', 'a', 'p', '1'>;
-  using FIELDB = ::fatal::sequence<char, 'F', 'I', 'E', 'L', 'D', 'B'>;
-  using fieldA = ::fatal::sequence<char, 'f', 'i', 'e', 'l', 'd', 'A'>;
-  using FIELDC = ::fatal::sequence<char, 'F', 'I', 'E', 'L', 'D', 'C'>;
-  using AnEnumA = ::fatal::sequence<char, 'A', 'n', 'E', 'n', 'u', 'm', 'A'>;
-  using facebook__ns__qwerty = ::fatal::sequence<char, 'f', 'a', 'c', 'e', 'b', 'o', 'o', 'k', ':', ':', 'n', 's', ':', ':', 'q', 'w', 'e', 'r', 't', 'y'>;
-  using AnEnumC = ::fatal::sequence<char, 'A', 'n', 'E', 'n', 'u', 'm', 'C'>;
+  using SomeStruct = ::fatal::sequence<char, 'S', 'o', 'm', 'e', 'S', 't', 'r', 'u', 'c', 't'>;
+  using cpp2 = ::fatal::sequence<char, 'c', 'p', 'p', '2'>;
   using enums = ::fatal::sequence<char, 'e', 'n', 'u', 'm', 's'>;
-  using AnEnumE = ::fatal::sequence<char, 'A', 'n', 'E', 'n', 'u', 'm', 'E'>;
-  using AnEnumD = ::fatal::sequence<char, 'A', 'n', 'E', 'n', 'u', 'm', 'D'>;
-  using FIELDD = ::fatal::sequence<char, 'F', 'I', 'E', 'L', 'D', 'D'>;
+  using facebook__ns__qwerty = ::fatal::sequence<char, 'f', 'a', 'c', 'e', 'b', 'o', 'o', 'k', ':', ':', 'n', 's', ':', ':', 'q', 'w', 'e', 'r', 't', 'y'>;
+  using fieldA = ::fatal::sequence<char, 'f', 'i', 'e', 'l', 'd', 'A'>;
 };
 
 } // thrift_fatal_impl_detail

@@ -280,7 +280,7 @@ class CppGenerator(t_generator.Generator):
         # Unique Compile-time Strings
         with sns.namespace(self.fatal_detail_ns).scope as detail:
             with detail.cls('struct {0}'.format(str_class)).scope as cstr:
-                for i in self.fatal_str_map:
+                for i in sorted(self.fatal_str_map):
                     cstr('using {0} = {1};'.format(
                         self.fatal_str_map[i],
                         self._render_fatal_string(i)))
