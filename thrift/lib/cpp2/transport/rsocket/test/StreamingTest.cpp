@@ -40,10 +40,18 @@ void waitNoLeak(StreamServiceAsyncClient* client) {
 }
 } // namespace
 
+struct StreamingTestParameters {
+  StreamingTestParameters(bool rocketClient, bool rocketServer)
+      : useRocketClient(rocketClient), useRocketServer(rocketServer) {}
+
+  bool useRocketClient;
+  bool useRocketServer;
+};
+
 // Testing transport layers for their support to Streaming
 class StreamingTest
     : public TestSetup,
-      public testing::WithParamInterface<bool /* useRocketClient */> {
+      public testing::WithParamInterface<StreamingTestParameters> {
  protected:
   void SetUp() override {
     handler_ = std::make_shared<StrictMock<TestServiceMock>>();
@@ -51,6 +59,7 @@ class StreamingTest
         std::make_shared<ThriftServerAsyncProcessorFactory<TestServiceMock>>(
             handler_),
         port_);
+    server_->enableRocketServer(GetParam().useRocketServer);
   }
 
   void TearDown() override {
@@ -65,7 +74,7 @@ class StreamingTest
       folly::Function<void(std::unique_ptr<StreamServiceAsyncClient>)> callMe,
       folly::Function<void()> onDetachable = nullptr) {
     auto channel = connectToServer(
-        port_, std::move(onDetachable), GetParam() /* useRocketClient */);
+        port_, std::move(onDetachable), GetParam().useRocketClient);
     callMe(std::make_unique<StreamServiceAsyncClient>(std::move(channel)));
   }
 
@@ -581,12 +590,18 @@ TEST_P(BlockStreamingTest, StreamBlockTaskQueue) {
 INSTANTIATE_TEST_CASE_P(
     StreamingTests,
     StreamingTest,
-    testing::Values(false, true));
+    testing::Values(
+        StreamingTestParameters{false, false},
+        StreamingTestParameters{false, true},
+        StreamingTestParameters{true, true}));
 
 INSTANTIATE_TEST_CASE_P(
     BlockingStreamingTests,
     BlockStreamingTest,
-    testing::Values(false, true));
+    testing::Values(
+        StreamingTestParameters{false, false},
+        StreamingTestParameters{false, true},
+        StreamingTestParameters{true, true}));
 
 } // namespace thrift
 } // namespace apache
