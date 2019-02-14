@@ -144,7 +144,7 @@ TEST_F(AdmissionControllerSelectorTest, globalAdmission) {
 
 TEST_F(AdmissionControllerSelectorTest, perClientIdAdmission) {
   PerClientIdAdmissionStrategy selector(
-      []() { return std::make_shared<DummyController>(); }, kClientId);
+      [](auto&) { return std::make_shared<DummyController>(); }, kClientId);
 
   DummyRequest request;
   DummyConnContext connContextA1;

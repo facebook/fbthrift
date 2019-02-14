@@ -32,22 +32,26 @@ namespace thrift {
  */
 class PerClientIdAdmissionStrategy : public AdmissionStrategy {
  public:
+  using AdmissionControllerFactoryFn =
+      folly::Function<std::shared_ptr<AdmissionController>(
+          const std::string& clientId)>;
+
   template <class Clock = std::chrono::steady_clock>
   explicit PerClientIdAdmissionStrategy(
       typename Clock::duration processTimeout,
       const std::string& clientIdHeaderName)
       : PerClientIdAdmissionStrategy(
-            [processTimeout]() {
+            [processTimeout](auto&) {
               return std::make_shared<QIAdmissionController<Clock>>(
                   processTimeout);
             },
             clientIdHeaderName) {}
 
   explicit PerClientIdAdmissionStrategy(
-      folly::Function<std::shared_ptr<AdmissionController>()> factory,
+      AdmissionControllerFactoryFn factory,
       const std::string& clientIdHeaderName)
       : factory_(std::move(factory)),
-        wildcardController_(factory_()),
+        wildcardController_(factory_(kWildcard)),
         clientIdHeaderName_(clientIdHeaderName) {}
 
   ~PerClientIdAdmissionStrategy() {}
@@ -86,7 +90,7 @@ class PerClientIdAdmissionStrategy : public AdmissionStrategy {
     if (it != readWriteAdmController->end()) {
       return it->second;
     }
-    auto admController = factory_();
+    auto admController = factory_(clientId);
     // TODO: garbage collect when admissionControllers_ is too big
     readWriteAdmController->insert({clientId, admController});
     return admController;
@@ -112,7 +116,7 @@ class PerClientIdAdmissionStrategy : public AdmissionStrategy {
  private:
   using ControllerMap =
       std::unordered_map<std::string, std::shared_ptr<AdmissionController>>;
-  folly::Function<std::shared_ptr<AdmissionController>()> factory_;
+  AdmissionControllerFactoryFn factory_;
   folly::Synchronized<ControllerMap> admissionControllers_;
   std::shared_ptr<AdmissionController> wildcardController_;
   const std::string clientIdHeaderName_;
