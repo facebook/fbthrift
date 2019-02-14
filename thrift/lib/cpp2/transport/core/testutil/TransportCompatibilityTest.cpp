@@ -238,7 +238,7 @@ void SampleServer<Service>::connectToServer(
             auto sslContext = std::make_shared<folly::SSLContext>();
             sslContext->setAdvertisedNextProtocols({"h2", "http"});
             auto sslSocket = new TAsyncSSLSocket(
-                sslContext, &evb, socket->detachFd(), false);
+                sslContext, &evb, socket->detachNetworkSocket().toFd(), false);
             sslSocket->sslConn(nullptr);
             socket.reset(sslSocket);
           }
