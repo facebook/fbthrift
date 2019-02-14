@@ -23,6 +23,7 @@
 #include <folly/compression/Compression.h>
 #include <folly/io/Cursor.h>
 #include <folly/io/IOBuf.h>
+#include <folly/lang/Bits.h>
 #include <thrift/lib/cpp/TApplicationException.h>
 #include <thrift/lib/cpp/concurrency/Thread.h>
 #include <thrift/lib/cpp/protocol/TBinaryProtocol.h>
@@ -335,7 +336,7 @@ unique_ptr<IOBuf> THeader::removeHeader(
           ((sz32 >> 0) & 0xff) >= 0x20) {
         char buffer[5];
         uint32_t* asUint32 = reinterpret_cast<uint32_t*>(buffer);
-        *asUint32 = htonl(sz32);
+        *asUint32 = folly::Endian::big(sz32);
         buffer[4] = 0;
         folly::stringAppendf(&err, ", ascii '%s'", buffer);
       }
@@ -806,13 +807,13 @@ unique_ptr<IOBuf> THeader::addHeader(
 
     // Fixup szNbo later
     pkt += sizeof(szNbo);
-    uint16_t magicN = htons(HEADER_MAGIC >> 16);
+    uint16_t magicN = folly::Endian::big<uint16_t>(HEADER_MAGIC >> 16);
     memcpy(pkt, &magicN, sizeof(magicN));
     pkt += sizeof(magicN);
-    uint16_t flagsN = htons(flags_);
+    uint16_t flagsN = folly::Endian::big(flags_);
     memcpy(pkt, &flagsN, sizeof(flagsN));
     pkt += sizeof(flagsN);
-    uint32_t seqIdN = htonl(seqId_);
+    uint32_t seqIdN = folly::Endian::big(seqId_);
     memcpy(pkt, &seqIdN, sizeof(seqIdN));
     pkt += sizeof(seqIdN);
     headerSizePtr = pkt;
@@ -855,7 +856,7 @@ unique_ptr<IOBuf> THeader::addHeader(
     // Pkt size
     szHbo = headerSize + chainSize // thrift header + payload
         + (headerStart - pktStart - 4); // common header section
-    headerSizeN = htons(headerSize / 4);
+    headerSizeN = folly::Endian::big<uint16_t>(headerSize / 4);
     memcpy(headerSizePtr, &headerSizeN, sizeof(headerSizeN));
 
     // Set framing size.
@@ -866,12 +867,12 @@ unique_ptr<IOBuf> THeader::addHeader(
       }
       header->prepend(8);
       pktStart -= 8;
-      szNbo = htonl(BIG_FRAME_MAGIC);
+      szNbo = folly::Endian::big(BIG_FRAME_MAGIC);
       memcpy(pktStart, &szNbo, sizeof(szNbo));
       uint64_t s = folly::Endian::big<uint64_t>(szHbo);
       memcpy(pktStart + 4, &s, sizeof(s));
     } else {
-      szNbo = htonl(szHbo);
+      szNbo = folly::Endian::big<uint32_t>(szHbo);
       memcpy(pktStart, &szNbo, sizeof(szNbo));
     }
 
@@ -882,7 +883,7 @@ unique_ptr<IOBuf> THeader::addHeader(
       (clientType_ == THRIFT_FRAMED_DEPRECATED) ||
       (clientType_ == THRIFT_FRAMED_COMPACT)) {
     uint32_t szHbo = (uint32_t)chainSize;
-    uint32_t szNbo = htonl(szHbo);
+    uint32_t szNbo = folly::Endian::big<uint32_t>(szHbo);
 
     unique_ptr<IOBuf> header = IOBuf::create(4);
     header->append(4);

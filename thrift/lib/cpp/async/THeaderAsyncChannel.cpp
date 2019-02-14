@@ -18,6 +18,8 @@
  */
 #include <thrift/lib/cpp/async/THeaderAsyncChannel.h>
 
+#include <folly/lang/Bits.h>
+
 #include <thrift/lib/cpp/protocol/THeaderProtocol.h>
 #include <thrift/lib/cpp/transport/TBufferTransports.h>
 
@@ -51,7 +53,7 @@ bool THeaderACProtocolTraits::getMessageLength(uint8_t* buffer,
     // We've finished reading the frame size
     // Convert the frame size to host byte order
     memcpy(&frameSize, buffer, sizeof(frameSize));
-    frameSize = ntohl(frameSize);
+    frameSize = folly::Endian::big(frameSize);
     if ((frameSize & TBinaryProtocol::VERSION_MASK) == TBinaryProtocol::VERSION_1) {
       bool foundCompleteMessage = tryReadUnframed(buffer, bufferLength, messageLength, strictRead_);
       if (foundCompleteMessage && (*messageLength > maxMessageSize_)) {

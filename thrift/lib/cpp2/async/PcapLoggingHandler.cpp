@@ -25,6 +25,7 @@
 #include <folly/FileUtil.h>
 #include <folly/MPMCQueue.h>
 #include <folly/Random.h>
+#include <folly/lang/Bits.h>
 #include <folly/portability/Sockets.h>
 #include <folly/portability/Stdlib.h>
 #include <thrift/lib/cpp/async/TAsyncSSLSocket.h>
@@ -154,15 +155,15 @@ Headers::Headers(
   memset(&write_.ether.ether_dhost[1], client ? 0x22 : 0x11, 4);
 
   memset(&write_.tcp, 0, sizeof(tcphdr));
-  write_.tcp.source = htons(local.getPort());
-  write_.tcp.dest = htons(remote.getPort());
+  write_.tcp.source = folly::Endian::big(local.getPort());
+  write_.tcp.dest = folly::Endian::big(remote.getPort());
   write_.tcp.doff = 5;
   write_.tcp.ack = 1;
-  write_.tcp.window = htons(100);
+  write_.tcp.window = folly::Endian::big<uint16_t>(100);
 
   if (local.getFamily() == AF_INET) {
     is6_ = false;
-    write_.ether.ether_type = htons(ETHERTYPE_IP);
+    write_.ether.ether_type = folly::Endian::big<uint16_t>(ETHERTYPE_IP);
     write_.ip4.version = 4;
     write_.ip4.ihl = 5;
     write_.ip4.tos = 0;
@@ -174,15 +175,15 @@ Headers::Headers(
     write_.ip4.saddr = local.getIPAddress().asV4().toLong();
     write_.ip4.daddr = remote.getIPAddress().asV4().toLong();
     // HBO = host byte order
-    uint32_t srcHBO = htonl(write_.ip4.saddr);
-    uint32_t destHBO = htonl(write_.ip4.daddr);
+    uint32_t srcHBO = folly::Endian::big(write_.ip4.saddr);
+    uint32_t destHBO = folly::Endian::big(write_.ip4.daddr);
     uint32_t checksum = 0x5506 + (srcHBO >> 16) + (srcHBO & 0xffff) +
         (destHBO >> 16) + (destHBO & 0xffff);
     while ((checksum >> 16) != 0) {
       checksum = (checksum >> 16) + (checksum & 0xffff);
     }
     // checksum for a 0 length packet
-    write_.ip4.check = ~htons(checksum);
+    write_.ip4.check = ~folly::Endian::big<uint16_t>(checksum);
 
     // The read_ header is identical to the write_ one, except the
     // src and dest addresses and ports. The IP checksum is the same too.
@@ -190,8 +191,8 @@ Headers::Headers(
     swap(read_.ip4.saddr, read_.ip4.daddr);
   } else {
     is6_ = true;
-    write_.ether.ether_type = htons(ETHERTYPE_IPV6);
-    write_.ip6.ip6_flow = htonl(0x60000000);
+    write_.ether.ether_type = folly::Endian::big<uint16_t>(ETHERTYPE_IPV6);
+    write_.ip6.ip6_flow = folly::Endian::big(0x60000000);
     write_.ip6.ip6_plen = 0;
     write_.ip6.ip6_nxt = IPPROTO_TCP;
     write_.ip6.ip6_hlim = 16;
@@ -263,15 +264,15 @@ void Headers::appendToIov(
   iov->push_back({&h->ether, sizeof(ether_header)});
 
   if (is6_) {
-    h->ip6.ip6_plen = htons(len);
+    h->ip6.ip6_plen = folly::Endian::big<uint16_t>(len);
   } else {
-    uint32_t lendiff = len - htons(h->ip4.tot_len);
-    h->ip4.tot_len = htons(len);
-    uint32_t checksum = htons(~h->ip4.check) + lendiff;
+    uint32_t lendiff = len - folly::Endian::big<uint16_t>(h->ip4.tot_len);
+    h->ip4.tot_len = folly::Endian::big<uint16_t>(len);
+    uint32_t checksum = folly::Endian::big<uint16_t>(~h->ip4.check) + lendiff;
     while ((checksum >> 16) != 0) {
       checksum = (checksum >> 16) + (checksum & 0xffff);
     }
-    h->ip4.check = ~htons(checksum);
+    h->ip4.check = ~folly::Endian::big<uint16_t>(checksum);
   }
   void* ip = is6_ ? static_cast<void*>(&h->ip6) : static_cast<void*>(&h->ip4);
   iov->push_back({ip, ipsize});
@@ -279,12 +280,14 @@ void Headers::appendToIov(
   // syn, fin take 1 byte in the seqid space
   uint32_t seqNumInc = dataLen == 0 && (h->tcp.syn || h->tcp.fin) ? 1 : dataLen;
   if (dir == Direction::WRITE) {
-    h->tcp.seq = htonl(tcpSeq_);
-    h->tcp.ack_seq = (h->tcp.syn && !h->tcp.ack) ? 0 : htonl(tcpAck_);
+    h->tcp.seq = folly::Endian::big(tcpSeq_);
+    h->tcp.ack_seq =
+        (h->tcp.syn && !h->tcp.ack) ? 0 : folly::Endian::big(tcpAck_);
     tcpSeq_ += seqNumInc;
   } else {
-    h->tcp.seq = htonl(tcpAck_);
-    h->tcp.ack_seq = (h->tcp.syn && !h->tcp.ack) ? 0 : htonl(tcpSeq_);
+    h->tcp.seq = folly::Endian::big(tcpAck_);
+    h->tcp.ack_seq =
+        (h->tcp.syn && !h->tcp.ack) ? 0 : folly::Endian::big(tcpSeq_);
     tcpAck_ += seqNumInc;
   }
   iov->push_back({&h->tcp, sizeof(tcphdr)});

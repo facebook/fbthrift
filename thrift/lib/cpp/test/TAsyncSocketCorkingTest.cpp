@@ -19,12 +19,13 @@
 #include <folly/portability/GTest.h>
 #include <pcap.h>
 
-#include <folly/io/IOBuf.h>
 #include <folly/Conv.h>
+#include <folly/io/IOBuf.h>
 #include <folly/io/async/AsyncServerSocket.h>
+#include <folly/io/async/EventBase.h>
+#include <folly/lang/Bits.h>
 #include <thrift/lib/cpp/async/TAsyncSSLSocket.h>
 #include <thrift/lib/cpp/async/TAsyncSocket.h>
-#include <folly/io/async/EventBase.h>
 
 using folly::AsyncServerSocket;
 using apache::thrift::async::TAsyncSocket;
@@ -228,7 +229,7 @@ class Packet {
  private:
   void parse() {
     ether_ = reinterpret_cast<EthernetHeader*>(data_.get());
-    uint16_t ethertype = ntohs(ether_->type);
+    uint16_t ethertype = folly::Endian::big(ether_->type);
     VLOG(4) << "  ethertype: " << ethertype;
     static const uint16_t kTypeIP = 2048;
     if (ethertype != kTypeIP) {

@@ -253,9 +253,9 @@ uint32_t TCompactProtocolT<Transport_>::writeDouble(const double dub) {
 
   uint64_t bits = bitwise_cast<uint64_t>(dub);
   if (version_ >= VERSION_DOUBLE_BE) {
-    bits = htonll(bits);
+    bits = folly::Endian::big(bits);
   } else {
-    auto x = htolell(bits);  // skip clang self-assign warning
+    auto x = folly::Endian::little(bits); // skip clang self-assign warning
     bits = x;
   }
 
@@ -272,7 +272,7 @@ uint32_t TCompactProtocolT<Transport_>::writeFloat(const float flt) {
   static_assert(std::numeric_limits<float>::is_iec559, "");
 
   uint32_t bits = bitwise_cast<uint32_t>(flt);
-  bits = htonl(bits);
+  bits = folly::Endian::big(bits);
   trans_->write((uint8_t*)&bits, 4);
   return 4;
 }
@@ -661,9 +661,9 @@ uint32_t TCompactProtocolT<Transport_>::readDouble(double& dub) {
   } u;
   trans_->readAll(u.b, 8);
   if (version_ >= VERSION_DOUBLE_BE) {
-    u.bits = ntohll(u.bits);
+    u.bits = folly::Endian::big(u.bits);
   } else {
-    u.bits = letohll(u.bits);
+    u.bits = folly::Endian::little(u.bits);
   }
   dub = bitwise_cast<double>(u.bits);
   return 8;
@@ -682,7 +682,7 @@ uint32_t TCompactProtocolT<Transport_>::readFloat(float& flt) {
     uint8_t b[4];
   } u;
   trans_->readAll(u.b, 4);
-  u.bits = ntohl(u.bits);
+  u.bits = folly::Endian::big(u.bits);
   flt = bitwise_cast<float>(u.bits);
   return 4;
 }

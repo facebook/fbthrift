@@ -23,6 +23,7 @@
 #include <folly/io/async/EventBase.h>
 #include <folly/io/async/test/SocketPair.h>
 #include <folly/io/async/test/TestSSLServer.h>
+#include <folly/lang/Bits.h>
 #include <thrift/lib/cpp/EventHandlerBase.h>
 #include <thrift/lib/cpp/async/TAsyncSSLSocket.h>
 #include <thrift/lib/cpp/async/TAsyncSocket.h>
@@ -1188,8 +1189,8 @@ TEST(Channel, SetKeepRegisteredForClose) {
   rc = getsockname(lfd, (struct sockaddr*)&addr, &addrlen);
 
   folly::EventBase base;
-  auto transport =
-    TAsyncSocket::newSocket(&base, "127.0.0.1", ntohs(addr.sin_port));
+  auto transport = TAsyncSocket::newSocket(
+      &base, "127.0.0.1", folly::Endian::big(addr.sin_port));
   auto channel = createChannel<HeaderClientChannel>(transport);
   NullCloseCallback ncc;
   channel->setCloseCallback(&ncc);

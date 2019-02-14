@@ -20,6 +20,7 @@
 #ifndef THRIFT_PROTOCOL_TBINARYPROTOCOL_H_
 #define THRIFT_PROTOCOL_TBINARYPROTOCOL_H_ 1
 
+#include <folly/lang/Bits.h>
 #include <thrift/lib/cpp/protocol/TProtocol.h>
 #include <thrift/lib/cpp/protocol/TVirtualProtocol.h>
 

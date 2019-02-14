@@ -32,63 +32,6 @@
 
 #include <folly/FBString.h>
 
-#if __has_include(<endian.h>)
-#include <endian.h>
-#endif
-
-#ifndef __BYTE_ORDER
-# if defined(BYTE_ORDER) && defined(LITTLE_ENDIAN) && defined(BIG_ENDIAN)
-#  define __BYTE_ORDER BYTE_ORDER
-#  define __LITTLE_ENDIAN LITTLE_ENDIAN
-#  define __BIG_ENDIAN BIG_ENDIAN
-# elif defined(_WIN32)
-#  define __BYTE_ORDER 1
-#  define __LITTLE_ENDIAN 1
-#  define __BIG_ENDIAN 2
-# else
-#  error "Cannot determine endianness"
-# endif
-#endif
-
-#if __BYTE_ORDER == __BIG_ENDIAN
-# if !defined(htonll) && !defined(ntohll)
-#  define ntohll(n) (n)
-#  define htonll(n) (n)
-# endif /* !defined(htonll) && !defined(ntohll) */
-# if defined(__GNUC__) && defined(__GLIBC__)
-#  include <byteswap.h>
-#  define htolell(n) bswap_64(n)
-#  define letohll(n) bswap_64(n)
-# else /* GNUC & GLIBC */
-#  define bswap_64(n) \
-      ( (((n) & 0xff00000000000000ull) >> 56) \
-      | (((n) & 0x00ff000000000000ull) >> 40) \
-      | (((n) & 0x0000ff0000000000ull) >> 24) \
-      | (((n) & 0x000000ff00000000ull) >> 8)  \
-      | (((n) & 0x00000000ff000000ull) << 8)  \
-      | (((n) & 0x0000000000ff0000ull) << 24) \
-      | (((n) & 0x000000000000ff00ull) << 40) \
-      | (((n) & 0x00000000000000ffull) << 56) )
-#  define htolell(n) bswap_64(n)
-#  define letohll(n) bswap_64(n)
-# endif /* GNUC & GLIBC */
-#elif __BYTE_ORDER == __LITTLE_ENDIAN
-#  define htolell(n) (n)
-#  define letohll(n) (n)
-# if !defined(htonll) && !defined(ntohll)
-#  if defined(__GNUC__) && defined(__GLIBC__)
-#   include <byteswap.h> // nolint
-#   define ntohll(n) bswap_64(n)
-#   define htonll(n) bswap_64(n)
-#  else /* GNUC & GLIBC */
-#   define ntohll(n) ( (((unsigned long long)ntohl(n)) << 32) + ntohl(n >> 32) )
-#   define htonll(n) ( (((unsigned long long)htonl(n)) << 32) + htonl(n >> 32) )
-#  endif /* GNUC & GLIBC */
-# endif /* !defined(htonll) && !defined(ntohll) */
-#else /* __BYTE_ORDER */
-# error "Can't define htonll or ntohll!"
-#endif
-
 namespace apache { namespace thrift { namespace reflection {
   class Schema;
 }}} // apache::thrift::protocol

@@ -21,6 +21,7 @@
 
 #include <thrift/lib/cpp/async/TFramedAsyncChannel.h>
 
+#include <folly/lang/Bits.h>
 #include <thrift/lib/cpp/async/TStreamAsyncChannel.tcc>
 
 using apache::thrift::transport::TMemoryBuffer;
@@ -50,7 +51,7 @@ void TFramedACWriteRequest::write(
   const int kNOps = 2;
   iovec ops[kNOps];
 
-  frameSize_ = htonl(len);
+  frameSize_ = folly::Endian::big(len);
   ops[0].iov_base = frameSizeBuf_;
   ops[0].iov_len = sizeof(frameSizeBuf_);
 
@@ -61,7 +62,7 @@ void TFramedACWriteRequest::write(
 }
 
 void TFramedACWriteRequest::writeSuccess() noexcept {
-  buffer_.consume(ntohl(frameSize_));
+  buffer_.consume(folly::Endian::big(frameSize_));
   invokeCallback();
 }
 
@@ -104,7 +105,7 @@ bool TFramedACReadState::readDataAvailable(size_t len) {
     if (bytesRead_ >= sizeof(frameSize_)) {
       // We've finished reading the frame size
       // Convert the frame size to host byte order
-      frameSize_ = ntohl(frameSize_);
+      frameSize_ = folly::Endian::big(frameSize_);
 
       // Check for overly large frame sizes, so that we reject garbage data
       // instead of allocating a huge buffer.
