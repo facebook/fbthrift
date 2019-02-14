@@ -23,6 +23,7 @@
 #define _THRIFT_PROTOCOL_TPROTOCOLEXCEPTION_H_ 1
 
 #include <thrift/lib/cpp/Thrift.h>
+#include <thrift/lib/cpp/protocol/TType.h>
 
 #include <string>
 
@@ -106,6 +107,7 @@ class TProtocolException : public apache::thrift::TLibraryException {
       folly::StringPiece field,
       folly::StringPiece type);
   [[noreturn]] static void throwBoolValueOutOfRange(uint8_t value);
+  [[noreturn]] static void throwInvalidSkipType(TType type);
 
  protected:
   /**

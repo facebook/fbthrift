@@ -177,9 +177,7 @@ class TProtocolBase:
         pass
 
     def skip(self, type):
-        if type == TType.STOP:
-            return
-        elif type == TType.BOOL:
+        if type == TType.BOOL:
             self.readBool()
         elif type == TType.BYTE:
             self.readByte()
@@ -220,6 +218,11 @@ class TProtocolBase:
             for _ in range(size):
                 self.skip(etype)
             self.readListEnd()
+        else:
+            raise TProtocolException(
+                TProtocolException.INVALID_DATA,
+                "Unexpected type for skipping {}".format(type)
+            )
 
     def readIntegral(self, type):
         if type == TType.BOOL:

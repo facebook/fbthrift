@@ -176,8 +176,9 @@ void skip(Protocol_& prot, TType arg_type) {
       prot.readListEnd();
       return;
     }
-    default:
-      return;
+    default: {
+      TProtocolException::throwInvalidSkipType(arg_type);
+    }
   }
 }
 
