@@ -186,7 +186,8 @@ struct customized {
   5: set_typedef set_type,
   6: map_typedef map_type,
   7: string_typedef string_type,
-  8: i32 foo (cpp.name="bar")
+  8: i32 foo (cpp.name="bar"),
+  9: hash_set<string> other_set,  // hash_set is now treated the same as set
 }
 
 struct Reserved {

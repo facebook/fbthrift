@@ -430,11 +430,9 @@ string t_mstch_py3_generator::get_cpp_template(const t_type& type) const {
   } else if (type.is_list()) {
     return "std::vector";
   } else if (type.is_set()) {
-    bool unordered = dynamic_cast<const t_set&>(type).is_unordered();
-    return unordered ? "std::unordered_set" : "std::set";
+    return "std::set";
   } else if (type.is_map()) {
-    bool unordered = dynamic_cast<const t_map&>(type).is_unordered();
-    return unordered ? "std::unordered_map" : "std::map";
+    return "std::map";
   } else {
     return "";
   }
