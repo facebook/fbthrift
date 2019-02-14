@@ -182,6 +182,10 @@ TEST_F(CoroutineTest, ImplemetedWithFuturesPrimitive) {
       kNoParameterReturnValue, client_->sync_implementedWithFuturesPrimitive());
 }
 
+TEST_F(CoroutineTest, TakesRequestParams) {
+  client_->sync_takesRequestParams();
+}
+
 class CoroutineNullTest : public testing::Test {
  public:
   CoroutineNullTest()

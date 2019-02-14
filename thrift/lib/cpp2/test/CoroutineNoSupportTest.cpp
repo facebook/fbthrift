@@ -21,8 +21,10 @@
 #include <thrift/lib/cpp2/test/gen-cpp2/Coroutine.h>
 #include <thrift/lib/cpp2/util/ScopedServerInterfaceThread.h>
 
-using apache::thrift::HandlerCallback;
+using apache::thrift::Cpp2RequestContext;
 using apache::thrift::ScopedServerInterfaceThread;
+using apache::thrift::concurrency::ThreadManager;
+using folly::EventBase;
 using folly::EventBaseManager;
 
 using apache::thrift::test::CoroutineAsyncClient;
@@ -93,6 +95,12 @@ class CoroutineServiceHandler : virtual public CoroutineSvIf {
 
   folly::Future<int32_t> future_implementedWithFuturesPrimitive() override {
     return folly::makeFuture(kNoParameterReturnValue);
+  }
+
+  folly::Future<int32_t> future_takesRequestParams() override {
+    // Future functionality is tested elsewhere; we only need this method to
+    // make the code compile.
+    return folly::makeFuture(0);
   }
 };
 

@@ -28,4 +28,6 @@ service Coroutine {
 
   SumResponse implementedWithFutures() (coroutine);
   i32 implementedWithFuturesPrimitive() (coroutine);
+
+  i32 takesRequestParams() (coroutine);
 }

@@ -21,7 +21,11 @@
 #include <thrift/lib/cpp2/test/gen-cpp2/Coroutine.h>
 #include <thrift/lib/cpp2/util/ScopedServerInterfaceThread.h>
 
+using apache::thrift::Cpp2RequestContext;
+using apache::thrift::RequestParams;
 using apache::thrift::ScopedServerInterfaceThread;
+using apache::thrift::concurrency::ThreadManager;
+using folly::EventBase;
 using folly::EventBaseManager;
 
 using apache::thrift::test::CoroutineAsyncClient;
@@ -90,6 +94,19 @@ class CoroutineServiceHandler : virtual public CoroutineSvIf {
 
   folly::Future<int32_t> future_implementedWithFuturesPrimitive() override {
     return folly::makeFuture(kNoParameterReturnValue);
+  }
+
+  folly::coro::Task<int32_t> co_takesRequestParams(
+      RequestParams params) override {
+    Cpp2RequestContext* requestContext = params.getRequestContext();
+    ThreadManager* threadManager = params.getThreadManager();
+    EventBase* eventBase = params.getEventBase();
+    // It's hard to check that these pointers are what we expect them to be; we
+    // can at least make sure that they point to valid memory, though.
+    *(volatile char*)requestContext;
+    *(volatile char*)threadManager;
+    *(volatile char*)eventBase;
+    co_return 0;
   }
 };
 

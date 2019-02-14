@@ -53,7 +53,7 @@ void MyServiceSvIf::async_tm_ping(std::unique_ptr<apache::thrift::HandlerCallbac
   apache::thrift::RequestParams params{callback->getConnectionContext(),
     callback->getThreadManager(), callback->getEventBase()};
   auto task = co_ping(params);
-  std::move(task).scheduleOn(params.threadManager).start([callback = std::move(callback)](
+  std::move(task).scheduleOn(params.getThreadManager()).start([callback = std::move(callback)](
       folly::Try<folly::Unit>&& tryResult) mutable {
         apache::thrift::HandlerCallback<void>::completeInThread(std::move(callback), std::move(tryResult));
       });
@@ -117,7 +117,7 @@ void MyServiceSvIf::async_tm_hasDataById(std::unique_ptr<apache::thrift::Handler
   apache::thrift::RequestParams params{callback->getConnectionContext(),
     callback->getThreadManager(), callback->getEventBase()};
   auto task = co_hasDataById(params, id);
-  std::move(task).scheduleOn(params.threadManager).start([callback = std::move(callback)](
+  std::move(task).scheduleOn(params.getThreadManager()).start([callback = std::move(callback)](
       folly::Try<bool>&& tryResult) mutable {
         apache::thrift::HandlerCallback<bool>::completeInThread(std::move(callback), std::move(tryResult));
       });
@@ -156,7 +156,7 @@ void MyServiceSvIf::async_eb_getDataById(std::unique_ptr<apache::thrift::Handler
   apache::thrift::RequestParams params{callback->getConnectionContext(),
     callback->getThreadManager(), callback->getEventBase()};
   auto task = co_getDataById(params, id);
-  std::move(task).scheduleOn(params.threadManager).start([callback = std::move(callback)](
+  std::move(task).scheduleOn(params.getThreadManager()).start([callback = std::move(callback)](
       folly::Try<std::unique_ptr<std::string>>&& tryResult) mutable {
         apache::thrift::HandlerCallback<std::unique_ptr<std::string>>::completeInThread(std::move(callback), std::move(tryResult));
       });

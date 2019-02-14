@@ -974,10 +974,35 @@ class AsyncProcessorFactory {
  * to request handlers; the executor on which we expect them to execute, the
  * Cpp2RequestContext of the incoming request struct, etc.
  */
-struct RequestParams {
-  Cpp2RequestContext* requestContext;
-  apache::thrift::concurrency::ThreadManager* threadManager;
-  folly::EventBase* eventBase;
+class RequestParams {
+ public:
+  RequestParams(
+      Cpp2RequestContext* requestContext,
+      apache::thrift::concurrency::ThreadManager* threadManager,
+      folly::EventBase* eventBase)
+      : requestContext_(requestContext),
+        threadManager_(threadManager),
+        eventBase_(eventBase) {}
+  RequestParams() : RequestParams(nullptr, nullptr, nullptr) {}
+  RequestParams(const RequestParams&) = default;
+  RequestParams& operator=(const RequestParams&) = default;
+
+  Cpp2RequestContext* getRequestContext() {
+    return requestContext_;
+  }
+  apache::thrift::concurrency::ThreadManager* getThreadManager() {
+    return threadManager_;
+  }
+  folly::EventBase* getEventBase() {
+    return eventBase_;
+  }
+
+ private:
+  friend class ServerInterface;
+
+  Cpp2RequestContext* requestContext_;
+  apache::thrift::concurrency::ThreadManager* threadManager_;
+  folly::EventBase* eventBase_;
 };
 
 class ServerInterface : public AsyncProcessorFactory {
@@ -985,32 +1010,32 @@ class ServerInterface : public AsyncProcessorFactory {
   ~ServerInterface() override {}
 
   Cpp2RequestContext* getConnectionContext() {
-    return requestParams_.requestContext;
+    return requestParams_.requestContext_;
   }
 
   void setConnectionContext(Cpp2RequestContext* c) {
-    requestParams_.requestContext = c;
+    requestParams_.requestContext_ = c;
   }
 
   void setThreadManager(apache::thrift::concurrency::ThreadManager* tm) {
-    requestParams_.threadManager = tm;
+    requestParams_.threadManager_ = tm;
   }
 
   apache::thrift::concurrency::ThreadManager* getThreadManager() {
-    return requestParams_.threadManager;
+    return requestParams_.threadManager_;
   }
 
   folly::Executor::KeepAlive<> getBlockingThreadManager() {
-    return BlockingThreadManager::create(requestParams_.threadManager);
+    return BlockingThreadManager::create(requestParams_.threadManager_);
   }
 
   void setEventBase(folly::EventBase* eb) {
     folly::RequestEventBase::set(eb);
-    requestParams_.eventBase = eb;
+    requestParams_.eventBase_ = eb;
   }
 
   folly::EventBase* getEventBase() {
-    return requestParams_.eventBase;
+    return requestParams_.eventBase_;
   }
 
   virtual apache::thrift::concurrency::PRIORITY getRequestPriority(

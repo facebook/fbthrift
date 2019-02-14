@@ -83,7 +83,7 @@ void <%service:name%>SvIf::async_<%#function:eb%>eb<%/function:eb%><%^function:e
   apache::thrift::RequestParams params{callback->getConnectionContext(),
     callback->getThreadManager(), callback->getEventBase()};
   auto task = co_<%function:name%>(params<%function:comma%><% > service_common/param_list_move%>);
-  std::move(task).scheduleOn(params.threadManager).start([callback = std::move(callback)](
+  std::move(task).scheduleOn(params.getThreadManager()).start([callback = std::move(callback)](
       folly::Try<<% > types/service_type%>>&& tryResult) mutable {
         apache::thrift::HandlerCallback<<% > types/type%>>::completeInThread(std::move(callback), std::move(tryResult));
       });
@@ -142,7 +142,7 @@ void <%service:name%>SvIf::async_<%#function:eb%>eb<%/function:eb%><%^function:e
   apache::thrift::RequestParams params{callback->getConnectionContext(),
     callback->getThreadManager(), callback->getEventBase()};
   auto task = co_<%function:name%>(params<%function:comma%><% > service_common/param_list_move%>);
-  std::move(task).scheduleOn(params.threadManager).start([callback = std::move(callback)](
+  std::move(task).scheduleOn(params.getThreadManager()).start([callback = std::move(callback)](
       folly::Try<<% > types/unique_ptr_type%>>&& tryResult) mutable {
         apache::thrift::HandlerCallback<<% > types/unique_ptr_type%>>::completeInThread(std::move(callback), std::move(tryResult));
       });
