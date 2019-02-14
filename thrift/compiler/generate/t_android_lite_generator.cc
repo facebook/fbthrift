@@ -72,13 +72,13 @@ class t_android_lite_generator : public t_java_generator {
                      bool in_init=false,
                      bool skip_generic=false) override;
 
-    virtual void print_const_value(
+    void print_const_value(
         std::ostream& out,
         std::string name,
         t_type* type,
         const t_const_value* value,
         bool in_static,
-        bool defval=false) override;
+        bool defval = false) override;
     string render_const_value(
         ostream& out,
         string name,

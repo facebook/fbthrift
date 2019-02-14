@@ -54,7 +54,7 @@ class HTTP2RoutingSessionManager : public proxygen::HTTPSession::InfoCallback,
     acceptor_ = std::move(acceptor);
   }
 
-  ~HTTP2RoutingSessionManager() = default;
+  ~HTTP2RoutingSessionManager() override = default;
 
   proxygen::HTTPDownstreamSession* createSession(
       folly::AsyncTransportWrapper::UniquePtr sock,

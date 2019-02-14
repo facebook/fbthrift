@@ -37,18 +37,17 @@ namespace thrift {
 FakeClock::time_point FakeClock::now_us_;
 
 class DummyRequest : public ResponseChannelRequest {
-  virtual bool isActive() override {
+  bool isActive() override {
     return true;
   }
-  virtual void cancel() override {}
-  virtual bool isOneway() override {
+  void cancel() override {}
+  bool isOneway() override {
     return false;
   }
-  virtual void sendReply(
-      std::unique_ptr<folly::IOBuf>&&,
-      MessageChannel::SendCallback*) override {}
+  void sendReply(std::unique_ptr<folly::IOBuf>&&, MessageChannel::SendCallback*)
+      override {}
 
-  virtual void sendErrorWrapped(
+  void sendErrorWrapped(
       folly::exception_wrapper,
       std::string,
       MessageChannel::SendCallback*) override {}

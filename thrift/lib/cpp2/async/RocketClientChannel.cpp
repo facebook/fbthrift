@@ -621,7 +621,7 @@ void RocketClientChannel::TakeFirst::onNext(TakeFirst::T payload) {
     explicit SafeFlowable(std::shared_ptr<TakeFirst> inner)
         : inner_(std::move(inner)) {}
 
-    ~SafeFlowable() {
+    ~SafeFlowable() override {
       if (auto inner = std::move(inner_)) {
         inner->cancel();
       }

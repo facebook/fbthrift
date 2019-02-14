@@ -131,15 +131,15 @@ class TestRequestCallback : public apache::thrift::RequestCallback {
   explicit TestRequestCallback(folly::Promise<RequestState> promise)
       : promise_(std::move(promise)) {}
 
-  virtual void requestSent() override final {
+  void requestSent() final {
     rstate_.sent = true;
   }
-  virtual void replyReceived(ClientReceiveState&& state) override final {
+  void replyReceived(ClientReceiveState&& state) final {
     rstate_.reply = true;
     rstate_.receiveState = std::move(state);
     promise_.setValue(std::move(rstate_));
   }
-  virtual void requestError(ClientReceiveState&& state) override final {
+  void requestError(ClientReceiveState&& state) final {
     rstate_.error = true;
     rstate_.receiveState = std::move(state);
     promise_.setValue(std::move(rstate_));

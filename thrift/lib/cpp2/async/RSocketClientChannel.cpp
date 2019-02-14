@@ -198,7 +198,7 @@ void TakeFirst::onNext(TakeFirst::T value) {
     explicit SafeFlowable(std::shared_ptr<TakeFirst> inner)
         : inner_(std::move(inner)) {}
 
-    ~SafeFlowable() {
+    ~SafeFlowable() override {
       if (auto inner = std::exchange(inner_, nullptr)) {
         inner->cancel();
       }
@@ -245,7 +245,7 @@ class CountedSingleObserver : public SingleObserver<Payload> {
       std::weak_ptr<detail::ChannelCounters> counters)
       : callback_(std::move(callback)), counters_(counters) {}
 
-  virtual ~CountedSingleObserver() {
+  ~CountedSingleObserver() override {
     if (auto counters = counters_.lock()) {
       counters->decPendingRequests();
     }

@@ -92,8 +92,8 @@ class json_experimental_program : public mstch_program {
 class program_json_experimental_generator : public program_generator {
  public:
   program_json_experimental_generator() = default;
-  virtual ~program_json_experimental_generator() = default;
-  virtual std::shared_ptr<mstch_base> generate(
+  ~program_json_experimental_generator() override = default;
+  std::shared_ptr<mstch_base> generate(
       t_program const* program,
       std::shared_ptr<mstch_generators const> generators,
       std::shared_ptr<mstch_cache> cache,
@@ -138,8 +138,8 @@ class json_experimental_enum : public mstch_enum {
 class enum_json_experimental_generator : public enum_generator {
  public:
   enum_json_experimental_generator() = default;
-  virtual ~enum_json_experimental_generator() = default;
-  virtual std::shared_ptr<mstch_base> generate(
+  ~enum_json_experimental_generator() override = default;
+  std::shared_ptr<mstch_base> generate(
       t_enum const* enm,
       std::shared_ptr<mstch_generators const> generators,
       std::shared_ptr<mstch_cache> cache,
@@ -182,8 +182,8 @@ class json_experimental_enum_value : public mstch_enum_value {
 class enum_value_json_experimental_generator : public enum_value_generator {
  public:
   enum_value_json_experimental_generator() = default;
-  virtual ~enum_value_json_experimental_generator() = default;
-  virtual std::shared_ptr<mstch_base> generate(
+  ~enum_value_json_experimental_generator() override = default;
+  std::shared_ptr<mstch_base> generate(
       t_enum_value const* enm_value,
       std::shared_ptr<mstch_generators const> generators,
       std::shared_ptr<mstch_cache> cache,
@@ -224,8 +224,8 @@ class json_experimental_struct : public mstch_struct {
 class struct_json_experimental_generator : public struct_generator {
  public:
   struct_json_experimental_generator() = default;
-  virtual ~struct_json_experimental_generator() = default;
-  virtual std::shared_ptr<mstch_base> generate(
+  ~struct_json_experimental_generator() override = default;
+  std::shared_ptr<mstch_base> generate(
       t_struct const* strct,
       std::shared_ptr<mstch_generators const> generators,
       std::shared_ptr<mstch_cache> cache,
@@ -266,8 +266,8 @@ class json_experimental_service : public mstch_service {
 class service_json_experimental_generator : public service_generator {
  public:
   service_json_experimental_generator() = default;
-  virtual ~service_json_experimental_generator() = default;
-  virtual std::shared_ptr<mstch_base> generate(
+  ~service_json_experimental_generator() override = default;
+  std::shared_ptr<mstch_base> generate(
       t_service const* srvc,
       std::shared_ptr<mstch_generators const> generators,
       std::shared_ptr<mstch_cache> cache,
@@ -312,8 +312,8 @@ class json_experimental_function : public mstch_function {
 class function_json_experimental_generator : public function_generator {
  public:
   function_json_experimental_generator() = default;
-  virtual ~function_json_experimental_generator() = default;
-  virtual std::shared_ptr<mstch_base> generate(
+  ~function_json_experimental_generator() override = default;
+  std::shared_ptr<mstch_base> generate(
       t_function const* func,
       std::shared_ptr<mstch_generators const> generators,
       std::shared_ptr<mstch_cache> cache,
@@ -355,8 +355,8 @@ class json_experimental_field : public mstch_field {
 class field_json_experimental_generator : public field_generator {
  public:
   field_json_experimental_generator() = default;
-  virtual ~field_json_experimental_generator() = default;
-  virtual std::shared_ptr<mstch_base> generate(
+  ~field_json_experimental_generator() override = default;
+  std::shared_ptr<mstch_base> generate(
       t_field const* field,
       std::shared_ptr<mstch_generators const> generators,
       std::shared_ptr<mstch_cache> cache,

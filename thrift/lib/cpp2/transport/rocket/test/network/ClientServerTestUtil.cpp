@@ -330,7 +330,7 @@ class RocketTestServerAcceptor final : public wangle::Acceptor {
         frameHandler_(std::move(frameHandler)),
         shutdownPromise_(std::move(shutdownPromise)) {}
 
-  ~RocketTestServerAcceptor() {
+  ~RocketTestServerAcceptor() override {
     EXPECT_EQ(0, connections_);
   }
 

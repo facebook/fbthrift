@@ -208,7 +208,7 @@ class TakeFirstTest<rocket::Payload> : public testing::Test {
           onErrorFirstResponse_(std::move(onErrorFirstResponse)),
           onStreamTerminated_(std::move(onStreamTerminated)) {}
 
-    ~RocketTestTakeFirst() = default;
+    ~RocketTestTakeFirst() override = default;
 
    private:
     folly::Function<void(

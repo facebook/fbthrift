@@ -1143,7 +1143,7 @@ void doBadRequestHeaderTest(bool duplex, bool secure) {
       socket_.setReadCB(this);
     }
 
-    ~CheckClosedReadCallback() {
+    ~CheckClosedReadCallback() override {
       // We expect that the server closed the connection
       EXPECT_TRUE(remoteClosed_);
       socket_.close();
