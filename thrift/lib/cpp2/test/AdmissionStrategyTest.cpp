@@ -44,23 +44,6 @@ namespace thrift {
 
 FakeClock::time_point FakeClock::now_us_;
 
-class DummyRequest : public ResponseChannelRequest {
-  bool isActive() override {
-    return true;
-  }
-  void cancel() override {}
-  bool isOneway() override {
-    return false;
-  }
-  void sendReply(std::unique_ptr<folly::IOBuf>&&, MessageChannel::SendCallback*)
-      override {}
-
-  void sendErrorWrapped(
-      folly::exception_wrapper,
-      std::string,
-      MessageChannel::SendCallback*) override {}
-};
-
 class DummyController : public AdmissionController {
  public:
   bool admit() override {
@@ -70,43 +53,6 @@ class DummyController : public AdmissionController {
   void returnedResponse() override {}
 };
 
-class DummyConnContext : public Cpp2ConnContext {
- public:
-  DummyConnContext() {
-    setRequestHeader(&reqHeader_);
-  }
-
-  void setReadHeader(const std::string& key, const std::string& value) {
-    auto headers = reqHeader_.releaseHeaders();
-    headers.insert({key, value});
-    reqHeader_.setReadHeaders(std::move(headers));
-  }
-
- private:
-  THeader reqHeader_;
-};
-
-class DummyContextTest : public testing::Test {};
-
-TEST_F(DummyContextTest, globalAdmission) {
-  DummyConnContext ctx;
-  ctx.setReadHeader("toto", "titi");
-  ctx.setReadHeader("tutu", "tata");
-
-  // Simulate below the way we extract the clientId from ConnContext
-  std::string clientId = "NONE";
-  auto header = ctx.getHeader();
-  if (header != nullptr) {
-    auto headers = header->getHeaders();
-    auto it = headers.find("toto");
-    if (it != headers.end()) {
-      clientId = it->second;
-    }
-  }
-
-  ASSERT_EQ(clientId, "titi");
-}
-
 class AdmissionControllerSelectorTest : public testing::Test {
  public:
   const std::string kClientId{"client_id"};
@@ -115,29 +61,25 @@ class AdmissionControllerSelectorTest : public testing::Test {
 TEST_F(AdmissionControllerSelectorTest, globalAdmission) {
   GlobalAdmissionStrategy selector(std::make_shared<DummyController>());
 
-  DummyRequest request;
-  DummyConnContext connContextA1;
-  connContextA1.setReadHeader(kClientId, "A");
-  auto admissionControllerA1 =
-      selector.select("myThriftMethod", request, connContextA1);
+  THeader headerA1;
+  headerA1.setReadHeaders({{kClientId, "A"}});
+  auto admissionControllerA1 = selector.select("myThriftMethod", &headerA1);
 
-  DummyConnContext connContextA2;
-  connContextA2.setReadHeader(kClientId, "A");
-  auto admissionControllerA2 =
-      selector.select("myThriftMethod", request, connContextA2);
+  THeader headerA2;
+  headerA2.setReadHeaders({{kClientId, "A"}});
+  auto admissionControllerA2 = selector.select("myThriftMethod", &headerA2);
 
   ASSERT_EQ(admissionControllerA1, admissionControllerA2);
 
-  DummyConnContext connContextB1;
-  connContextB1.setReadHeader(kClientId, "B");
-  auto admissionControllerB1 =
-      selector.select("myThriftMethod", request, connContextB1);
+  THeader headerB1;
+  headerB1.setReadHeaders({{kClientId, "B"}});
+  auto admissionControllerB1 = selector.select("myThriftMethod", &headerB1);
 
   ASSERT_EQ(admissionControllerA1, admissionControllerB1);
 
-  DummyConnContext connContextNoClientId;
+  THeader headerNoClientId;
   auto admissionControllerNoClientId =
-      selector.select("myThriftMethod", request, connContextNoClientId);
+      selector.select("myThriftMethod", &headerNoClientId);
 
   ASSERT_EQ(admissionControllerB1, admissionControllerNoClientId);
 }
@@ -146,30 +88,25 @@ TEST_F(AdmissionControllerSelectorTest, perClientIdAdmission) {
   PerClientIdAdmissionStrategy selector(
       [](auto&) { return std::make_shared<DummyController>(); }, kClientId);
 
-  DummyRequest request;
-  DummyConnContext connContextA1;
-  connContextA1.setReadHeader(kClientId, "A");
-  auto admissionControllerA1 =
-      selector.select("myThriftMethod", request, connContextA1);
+  THeader headerA1;
+  headerA1.setReadHeaders({{kClientId, "A"}});
+  auto admissionControllerA1 = selector.select("myThriftMethod", &headerA1);
 
-  DummyConnContext connContextA2;
-  connContextA2.setReadHeader(kClientId, "A");
-  auto admissionControllerA2 =
-      selector.select("myThriftMethod", request, connContextA2);
+  THeader headerA2;
+  headerA2.setReadHeaders({{kClientId, "A"}});
+  auto admissionControllerA2 = selector.select("myThriftMethod", &headerA2);
 
   ASSERT_EQ(admissionControllerA1, admissionControllerA2);
 
-  DummyConnContext connContextB1;
-  connContextB1.setReadHeader(kClientId, "B");
-  auto admissionControllerB1 =
-      selector.select("myThriftMethod", request, connContextB1);
+  THeader headerB1;
+  headerB1.setReadHeaders({{kClientId, "B"}});
+  auto admissionControllerB1 = selector.select("myThriftMethod", &headerB1);
 
   ASSERT_NE(admissionControllerA1, admissionControllerB1);
 
-  DummyConnContext connContextB2;
-  connContextB2.setReadHeader(kClientId, "B");
-  auto admissionControllerB2 =
-      selector.select("myThriftMethod", request, connContextB2);
+  THeader headerB2;
+  headerB2.setReadHeaders({{kClientId, "B"}});
+  auto admissionControllerB2 = selector.select("myThriftMethod", &headerB2);
 
   ASSERT_EQ(admissionControllerB1, admissionControllerB2);
 }
@@ -191,10 +128,9 @@ TEST_F(AdmissionControllerSelectorTest, priorityBasedAdmission) {
     auto& clientId = it.first;
     auto& admControllerSet = it.second;
     for (int i = 0; i < 5; i++) {
-      DummyRequest request;
-      DummyConnContext connContext;
-      connContext.setReadHeader(kClientId, clientId);
-      auto controller = selector.select("myThriftMethod", request, connContext);
+      THeader header;
+      header.setReadHeaders({{kClientId, clientId}});
+      auto controller = selector.select("myThriftMethod", &header);
       admControllerSet.insert(controller);
     }
   }
@@ -221,20 +157,20 @@ TEST_F(AdmissionControllerSelectorTest, deniesZeroPriority) {
     auto& clientId = it.first;
     auto& admControllerSet = it.second;
     for (int i = 0; i < 5; i++) {
-      DummyRequest request;
-      DummyConnContext connContext;
-      connContext.setReadHeader(kClientId, clientId);
-      auto controller = selector.select("myThriftMethod", request, connContext);
+      THeader header;
+      header.setReadHeaders({{kClientId, clientId}});
+      auto controller = selector.select("myThriftMethod", &header);
       admControllerSet.insert(controller);
     }
   }
-  DummyRequest requestC;
-  DummyConnContext connContextC;
-  auto controllerForEmpty =
-      selector.select("myThriftMethod", requestC, connContextC);
-  connContextC.setReadHeader("client_id", "C");
-  auto controllerForC =
-      selector.select("myThriftMethod", requestC, connContextC);
+
+  THeader header;
+  auto controllerForEmpty = selector.select("myThriftMethod", &header);
+
+  THeader headerC;
+  headerC.setReadHeaders({{kClientId, "C"}});
+  auto controllerForC = selector.select("myThriftMethod", &headerC);
+
   ASSERT_FALSE(controllerForC->admit());
   ASSERT_EQ(controllerForEmpty, controllerForC);
 
@@ -243,8 +179,6 @@ TEST_F(AdmissionControllerSelectorTest, deniesZeroPriority) {
   ASSERT_EQ(mapping["A"].size(), 2);
   ASSERT_EQ(mapping["B"].size(), 1);
   auto admControllerForB = *mapping["B"].begin();
-  DummyRequest requestB;
-  DummyConnContext connContextB;
   ASSERT_FALSE(admControllerForB->admit());
 }
 
@@ -253,15 +187,11 @@ TEST_F(AdmissionControllerSelectorTest, whiteListAdmission) {
   WhitelistAdmissionStrategy<GlobalAdmissionStrategy> selector(
       whitelist, std::make_shared<DummyController>());
 
-  DummyRequest request;
-  DummyConnContext connContext;
-  auto admissionController =
-      selector.select("myThriftMethod", request, connContext);
+  THeader header;
+  auto admissionController = selector.select("myThriftMethod", &header);
   ASSERT_NE(dynamic_cast<DummyController*>(admissionController.get()), nullptr);
 
-  DummyConnContext connContext2;
-  auto admissionController2 =
-      selector.select("getStatus", request, connContext2);
+  auto admissionController2 = selector.select("getStatus", &header);
   ASSERT_NE(
       dynamic_cast<AcceptAllAdmissionController*>(admissionController2.get()),
       nullptr);

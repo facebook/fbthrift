@@ -18,13 +18,11 @@
 
 #include <memory>
 
-#include <thrift/lib/cpp2/async/ResponseChannel.h>
+#include <thrift/lib/cpp/transport/THeader.h>
 #include <thrift/lib/cpp2/server/AdmissionController.h>
 
 namespace apache {
 namespace thrift {
-
-class BaseThriftServer;
 
 class AdmissionStrategy {
  public:
@@ -39,13 +37,11 @@ class AdmissionStrategy {
    * Select an AdmissionController to be used for this specific request.
    * This selection can be made based on the arguments which are:
    * - methodName: the name of the Thrift method called
-   * - request: An object representing the serialized request
-   * - connContext: The connection context allowing you to access metadata
+   * - tHeader: transport header allowing access to request headers
    */
   virtual std::shared_ptr<AdmissionController> select(
       const std::string& methodName,
-      const ResponseChannelRequest& request,
-      const Cpp2ConnContext& connContext) = 0;
+      const transport::THeader* tHeader) = 0;
 
   virtual void reportMetrics(
       const MetricReportFn&,

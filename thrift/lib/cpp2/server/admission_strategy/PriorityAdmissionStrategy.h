@@ -78,7 +78,7 @@ class PriorityAdmissionStrategy : public AdmissionStrategy {
    *
    * `priorities` is a map of clientId to absolute priority.
    * `factory` is the function used to create a new admission controller
-   * `clientIdHeaderName` is the header read from the connexion context to
+   * `clientIdHeaderName` is the header read from request headers to
    * identify a client
    */
   PriorityAdmissionStrategy(
@@ -112,9 +112,8 @@ class PriorityAdmissionStrategy : public AdmissionStrategy {
    */
   std::shared_ptr<AdmissionController> select(
       const std::string&,
-      const ResponseChannelRequest&,
-      const Cpp2ConnContext& connContext) override {
-    auto bucketIndex = computeBucketIndex(connContext);
+      const transport::THeader* tHeader) override {
+    auto bucketIndex = computeBucketIndex(tHeader);
     if (bucketIndex < 0) {
       return denyAdmissionController_;
     }
@@ -144,7 +143,7 @@ class PriorityAdmissionStrategy : public AdmissionStrategy {
 
  private:
   /**
-   * Compute a bucket index based on the connection context.
+   * Compute a bucket index based on the client-id
    *
    * This method compute a bucket index based on the priorities.
    * E.g. for priorities like this: {"A": 1, "B": 3, WILDCARD: 1}
@@ -153,8 +152,8 @@ class PriorityAdmissionStrategy : public AdmissionStrategy {
    * "B" -> 1, 2, 3 (returned in a round-robin way)
    * WILDCARD -> 4
    */
-  int computeBucketIndex(const Cpp2ConnContext& connContext) {
-    auto& priority = getPriority(connContext);
+  int computeBucketIndex(const transport::THeader* theader) {
+    auto& priority = getPriority(theader);
     if (priority.priority == 0) {
       return -1; // deny all requests if priority == 0
     }
@@ -163,11 +162,11 @@ class PriorityAdmissionStrategy : public AdmissionStrategy {
     return index;
   }
 
-  Priority& getPriority(const Cpp2ConnContext& connContext) {
-    const auto* headers = connContext.getHeadersPtr();
-    if (headers != nullptr) {
-      auto clientIdIt = headers->find(clientIdHeaderName_);
-      if (clientIdIt != headers->end()) {
+  Priority& getPriority(const transport::THeader* theader) {
+    if (theader != nullptr) {
+      const auto& headers = theader->getHeaders();
+      auto clientIdIt = headers.find(clientIdHeaderName_);
+      if (clientIdIt != headers.end()) {
         auto priorityIt = priorities_.find(clientIdIt->second);
         if (priorityIt != priorities_.end()) {
           return priorityIt->second;

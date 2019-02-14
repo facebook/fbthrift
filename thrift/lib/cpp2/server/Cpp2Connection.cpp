@@ -321,7 +321,7 @@ void Cpp2Connection::requestReceived(unique_ptr<ResponseChannelRequest>&& req) {
 
   auto admissionStrategy = worker_->getServer()->getAdmissionStrategy();
   auto admissionController =
-      admissionStrategy->select(methodName, *req, context_);
+      admissionStrategy->select(methodName, hreq->getHeader());
   if (!admissionController->admit()) {
     killRequest(
         *req,

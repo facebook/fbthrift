@@ -47,8 +47,7 @@ class GlobalAdmissionStrategy : public AdmissionStrategy {
    */
   std::shared_ptr<AdmissionController> select(
       const std::string&,
-      const ResponseChannelRequest&,
-      const Cpp2ConnContext&) override {
+      const transport::THeader*) override {
     return admissionController_;
   }
 

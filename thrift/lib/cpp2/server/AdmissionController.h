@@ -23,10 +23,6 @@
 namespace apache {
 namespace thrift {
 
-class BaseThriftServer;
-class ResponseChannelRequest;
-class Cpp2ConnContext;
-
 class AdmissionController {
  public:
   using MetricReportFn =

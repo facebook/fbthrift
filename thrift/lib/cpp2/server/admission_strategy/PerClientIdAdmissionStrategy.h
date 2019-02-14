@@ -62,15 +62,14 @@ class PerClientIdAdmissionStrategy : public AdmissionStrategy {
    */
   std::shared_ptr<AdmissionController> select(
       const std::string&,
-      const ResponseChannelRequest&,
-      const Cpp2ConnContext& connContext) override {
-    const auto* headers = connContext.getHeadersPtr();
-    if (headers == nullptr) {
+      const transport::THeader* theader) override {
+    if (theader == nullptr) {
       return wildcardController_;
     }
 
-    auto headersIt = headers->find(clientIdHeaderName_);
-    if (headersIt == headers->end() || headersIt->second == kWildcard) {
+    const auto& headers = theader->getHeaders();
+    auto headersIt = headers.find(clientIdHeaderName_);
+    if (headersIt == headers.end() || headersIt->second == kWildcard) {
       return wildcardController_;
     }
 

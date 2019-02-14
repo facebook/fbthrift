@@ -61,12 +61,11 @@ class WhitelistAdmissionStrategy : public AdmissionStrategy {
 
   std::shared_ptr<AdmissionController> select(
       const std::string& methodName,
-      const ResponseChannelRequest& request,
-      const Cpp2ConnContext& connContext) override {
+      const transport::THeader* tHeader) override {
     if (whitelist_.find(methodName) != whitelist_.end()) {
       return acceptAllAdmissionController_;
     }
-    return innerStrategy_.select(methodName, request, connContext);
+    return innerStrategy_.select(methodName, tHeader);
   }
 
   void reportMetrics(
