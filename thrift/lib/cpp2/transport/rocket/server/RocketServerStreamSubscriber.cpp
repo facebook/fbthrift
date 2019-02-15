@@ -60,16 +60,24 @@ void RocketServerStreamSubscriber::onSubscribe(
 }
 
 void RocketServerStreamSubscriber::onNext(Payload payload) {
-  context_->sendPayload(std::move(payload), Flags::none().next(true));
+  if (context_) {
+    context_->sendPayload(std::move(payload), Flags::none().next(true));
+  }
 }
 
 void RocketServerStreamSubscriber::onComplete() {
-  context_->sendPayload(
-      Payload::makeFromData(std::unique_ptr<folly::IOBuf>{}),
-      Flags::none().complete(true));
+  if (context_) {
+    context_->sendPayload(
+        Payload::makeFromData(std::unique_ptr<folly::IOBuf>{}),
+        Flags::none().complete(true));
+  }
 }
 
 void RocketServerStreamSubscriber::onError(folly::exception_wrapper ew) {
+  if (!context_) {
+    return;
+  }
+
   if (!ew.with_exception<RocketException>([this](auto&& rex) {
         context_->sendError(
             RocketException(ErrorCode::APPLICATION_ERROR, rex.moveErrorData()));
@@ -88,9 +96,10 @@ void RocketServerStreamSubscriber::request(uint32_t n) {
 }
 
 void RocketServerStreamSubscriber::cancel() {
+  context_.reset();
+
   if (auto subscription = std::move(subscription_)) {
     subscription->cancel();
-    context_.reset();
   } else {
     canceledBeforeSubscribed_ = true;
   }
