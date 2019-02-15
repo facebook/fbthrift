@@ -42,6 +42,9 @@ template <typename T>
 class field_ref {
   static_assert(std::is_reference<T>::value, "not a reference");
 
+  template <typename U>
+  friend class field_ref;
+
  public:
   using value_type = std::remove_reference_t<T>;
   using reference_type = T;
@@ -51,19 +54,16 @@ class field_ref {
       detail::is_set_t<value_type>& is_set) noexcept
       : value_(value), is_set_(is_set) {}
 
-  THRIFT_NOLINK operator field_ref<const value_type&>() noexcept {
-    return {value_, is_set_};
-  }
-
-  // Conversion from value_type&& to const value_type&&.
   template <
       typename U,
       std::enable_if_t<
-          std::is_same<T, value_type&&>() && std::is_same<U, value_type>(),
+          std::is_same<
+              std::add_const_t<std::remove_reference_t<U>>,
+              value_type>{} &&
+              !(std::is_rvalue_reference<T>{} && std::is_lvalue_reference<U>{}),
           int> = 0>
-  THRIFT_NOLINK operator field_ref<const U&&>() noexcept {
-    return {value_, is_set_};
-  }
+  THRIFT_NOLINK /* implicit */ field_ref(const field_ref<U>& other) noexcept
+      : value_(other.value_), is_set_(other.is_set_) {}
 
   template <typename U = value_type>
   THRIFT_NOLINK
@@ -113,13 +113,16 @@ template <typename T>
 class optional_field_ref {
   static_assert(std::is_reference<T>::value, "not a reference");
 
+  template <typename U>
+  friend class optional_field_ref;
+
  public:
   using value_type = std::remove_reference_t<T>;
   using reference_type = T;
 
  private:
   using pointee_type = std::conditional_t<
-      std::is_same<T, value_type&&>{},
+      std::is_rvalue_reference<T>{},
       const value_type,
       value_type>;
 
@@ -129,19 +132,26 @@ class optional_field_ref {
       detail::is_set_t<value_type>& is_set) noexcept
       : value_(value), is_set_(is_set) {}
 
-  THRIFT_NOLINK operator optional_field_ref<const value_type&>() noexcept {
-    return {value_, is_set_};
-  }
-
-  // Conversion from value_type&& to const value_type&&.
   template <
       typename U,
       std::enable_if_t<
-          std::is_same<T, value_type&&>() && std::is_same<U, value_type>(),
+          std::is_same<
+              std::add_const_t<std::remove_reference_t<U>>,
+              value_type>{} &&
+              !(std::is_rvalue_reference<T>{} && std::is_lvalue_reference<U>{}),
           int> = 0>
-  THRIFT_NOLINK operator optional_field_ref<const U&&>() noexcept {
-    return {value_, is_set_};
-  }
+  THRIFT_NOLINK /* implicit */ optional_field_ref(
+      const optional_field_ref<U>& other) noexcept
+      : value_(other.value_), is_set_(other.is_set_) {}
+
+  template <
+      typename U,
+      std::enable_if_t<
+          std::is_same<T, U&&>{} || std::is_same<T, const U&&>{},
+          int> = 0>
+  THRIFT_NOLINK explicit optional_field_ref(
+      const optional_field_ref<U&>& other) noexcept
+      : value_(other.value_), is_set_(other.is_set_) {}
 
   template <typename U = value_type>
   THRIFT_NOLINK std::enable_if_t<

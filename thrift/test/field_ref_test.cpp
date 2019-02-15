@@ -425,6 +425,12 @@ struct OptionalFieldRefConversionChecker {
 
 TEST(optional_field_ref_test, conversions) {
   test_conversions<OptionalFieldRefConversionChecker>();
+  TestStruct s;
+  optional_field_ref<std::string&> lvalue_ref = s.opt_name();
+  optional_field_ref<std::string&&> rvalue_ref =
+      static_cast<optional_field_ref<std::string&&>>(lvalue_ref);
+  optional_field_ref<const std::string&&> crvalue_ref =
+      static_cast<optional_field_ref<const std::string&&>>(lvalue_ref);
 }
 
 TEST(optional_field_ref_test, copy_list_initialization) {
