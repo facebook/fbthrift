@@ -177,11 +177,15 @@ class JSONProtocolTest(AbstractTest, unittest.TestCase):
     protocol_factory = TJSONProtocol.TJSONProtocolFactory()
 
     def testNestedStructs(self):
-        self._deserialize(NestedStructs, '{"1":{"rec":{}}"2":{"rec":{}}}')
-        self._deserialize(NestedStructs, '{"1":{"rec":{}},"2":{"rec":{}}}')
         nested = NestedStructs(bonk=Bonk(), bools=Bools())
-        protocol_factory = TJSONProtocol.TJSONProtocolFactory(validJSON=True)
-        json.loads(Serializer.serialize(protocol_factory, nested))
+        json.loads(self._serialize(nested))
+        # Old protocol should be able to deserialize both valid and invalid
+        # JSON.
+        protocol_factory = TJSONProtocol.TJSONProtocolFactory(validJSON=False)
+        Serializer.deserialize(protocol_factory,
+            '{"1":{"rec":{}}"2":{"rec":{}}}', NestedStructs())
+        Serializer.deserialize(protocol_factory,
+            '{"1":{"rec":{}},"2":{"rec":{}}}', NestedStructs())
 
 class HeaderDefaultFactory(THeaderProtocol.THeaderProtocolFactory):
 

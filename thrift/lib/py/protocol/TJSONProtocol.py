@@ -146,7 +146,7 @@ class LookaheadReader():
 
 class TJSONProtocolBase(TProtocolBase):
 
-    def __init__(self, trans, validJSON=False):
+    def __init__(self, trans, validJSON=True):
         TProtocolBase.__init__(self, trans)
         self.validJSON = validJSON
         self.resetWriteContext()
@@ -488,7 +488,7 @@ class TJSONProtocol(TJSONProtocolBase):
 class TJSONProtocolFactory:
     # validJSON specifies whether to emit valid JSON or possibly invalid but
     # backward-compatible one.
-    def __init__(self, validJSON=False):
+    def __init__(self, validJSON=True):
         # type: (bool) -> None
         self.validJSON = validJSON
 
