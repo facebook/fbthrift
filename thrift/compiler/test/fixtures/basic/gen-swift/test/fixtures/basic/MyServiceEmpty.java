@@ -16,10 +16,8 @@ import java.util.*;
 
 @SwiftGenerated
 @ThriftService("MyServiceEmpty")
-public interface MyServiceEmpty
-{
+public interface MyServiceEmpty {
     @ThriftService("MyServiceEmpty")
-    public interface Async
-    {
+    public interface Async {
     }
 }

@@ -16,8 +16,7 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 
 @SwiftGenerated
 @ThriftStruct("UnEnumStruct")
-public final class UnEnumStruct
-{
+public final class UnEnumStruct {
     @ThriftConstructor
     public UnEnumStruct(
         @ThriftField(value=1, name="city", requiredness=Requiredness.NONE) final test.fixtures.constants.City city
@@ -51,8 +50,7 @@ public final class UnEnumStruct
     public test.fixtures.constants.City getCity() { return city; }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return toStringHelper(this)
             .add("city", city)
             .toString();

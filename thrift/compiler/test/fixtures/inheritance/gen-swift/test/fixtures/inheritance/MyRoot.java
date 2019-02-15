@@ -16,17 +16,13 @@ import java.util.*;
 
 @SwiftGenerated
 @ThriftService("MyRoot")
-public interface MyRoot
-{
+public interface MyRoot {
     @ThriftService("MyRoot")
-    public interface Async
-    {
+    public interface Async {
         @ThriftMethod(value = "do_root")
-        ListenableFuture<Void> doRoot(
-        );
+        ListenableFuture<Void> doRoot();
     }
-    @ThriftMethod(value = "do_root")
-    void doRoot(
-    );
 
+    @ThriftMethod(value = "do_root")
+    void doRoot();
 }

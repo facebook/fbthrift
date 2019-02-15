@@ -16,8 +16,7 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 
 @SwiftGenerated
 @ThriftStruct("Included")
-public final class Included
-{
+public final class Included {
     @ThriftConstructor
     public Included(
         @ThriftField(value=1, name="MyIntField", requiredness=Requiredness.NONE) final long myIntField,
@@ -66,8 +65,7 @@ public final class Included
     public test.fixtures.includes.transitive.Foo getMyTransitiveField() { return myTransitiveField; }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return toStringHelper(this)
             .add("myIntField", myIntField)
             .add("myTransitiveField", myTransitiveField)

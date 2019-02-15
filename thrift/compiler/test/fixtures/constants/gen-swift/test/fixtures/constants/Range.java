@@ -16,8 +16,7 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 
 @SwiftGenerated
 @ThriftStruct("Range")
-public final class Range
-{
+public final class Range {
     @ThriftConstructor
     public Range(
         @ThriftField(value=1, name="min", requiredness=Requiredness.REQUIRED) final int min,
@@ -66,8 +65,7 @@ public final class Range
     public int getMax() { return max; }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return toStringHelper(this)
             .add("min", min)
             .add("max", max)

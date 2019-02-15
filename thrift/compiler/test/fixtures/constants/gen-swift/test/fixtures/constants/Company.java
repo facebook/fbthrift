@@ -10,20 +10,20 @@ package test.fixtures.constants;
 import com.facebook.swift.codec.*;
 
 @SwiftGenerated
-public enum Company
-{
-    FACEBOOK(0), WHATSAPP(1), OCULUS(2), INSTAGRAM(3);
+public enum Company {
+    FACEBOOK(0),
+    WHATSAPP(1),
+    OCULUS(2),
+    INSTAGRAM(3);
 
     private final int value;
 
-    Company(int value)
-    {
+    Company(int value) {
         this.value = value;
     }
 
     @ThriftEnumValue
-    public int getValue()
-    {
+    public int getValue() {
         return value;
     }
 

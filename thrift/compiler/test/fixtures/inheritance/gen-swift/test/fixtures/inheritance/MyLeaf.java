@@ -16,17 +16,13 @@ import java.util.*;
 
 @SwiftGenerated
 @ThriftService("MyLeaf")
-public interface MyLeaf extends test.fixtures.inheritance.MyNode
-{
+public interface MyLeaf extends test.fixtures.inheritance.MyNode {
     @ThriftService("MyLeaf")
-    public interface Async extends test.fixtures.inheritance.MyNode.Async
-    {
+    public interface Async extends test.fixtures.inheritance.MyNode.Async {
         @ThriftMethod(value = "do_leaf")
-        ListenableFuture<Void> doLeaf(
-        );
+        ListenableFuture<Void> doLeaf();
     }
-    @ThriftMethod(value = "do_leaf")
-    void doLeaf(
-    );
 
+    @ThriftMethod(value = "do_leaf")
+    void doLeaf();
 }

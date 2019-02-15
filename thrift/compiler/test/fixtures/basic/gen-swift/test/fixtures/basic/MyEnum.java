@@ -10,20 +10,19 @@ package test.fixtures.basic;
 import com.facebook.swift.codec.*;
 
 @SwiftGenerated
-public enum MyEnum
-{
-    MY_VALUE1(0), MY_VALUE2(1), DOMAIN(2);
+public enum MyEnum {
+    MY_VALUE1(0),
+    MY_VALUE2(1),
+    DOMAIN(2);
 
     private final int value;
 
-    MyEnum(int value)
-    {
+    MyEnum(int value) {
         this.value = value;
     }
 
     @ThriftEnumValue
-    public int getValue()
-    {
+    public int getValue() {
         return value;
     }
 

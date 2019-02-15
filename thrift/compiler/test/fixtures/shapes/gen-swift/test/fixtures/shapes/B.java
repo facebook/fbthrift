@@ -16,8 +16,7 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 
 @SwiftGenerated
 @ThriftStruct("B")
-public final class B
-{
+public final class B {
     @ThriftConstructor
     public B(
         @ThriftField(value=1, name="just_an_A", requiredness=Requiredness.NONE) final test.fixtures.shapes.A justAnA,
@@ -606,8 +605,7 @@ public final class B
     public Map<String, List<Integer>> getMapOfStringToListOfI32WithDefaultValue() { return mapOfStringToListOfI32WithDefaultValue; }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return toStringHelper(this)
             .add("justAnA", justAnA)
             .add("setOfI32", setOfI32)

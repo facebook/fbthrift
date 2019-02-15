@@ -16,8 +16,7 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 
 @SwiftGenerated
 @ThriftStruct("MyStruct")
-public final class MyStruct
-{
+public final class MyStruct {
     @ThriftConstructor
     public MyStruct(
         @ThriftField(value=1, name="MyIncludedField", requiredness=Requiredness.NONE) final test.fixtures.includes.includes.Included myIncludedField,
@@ -81,8 +80,7 @@ public final class MyStruct
     public long getMyIncludedInt() { return myIncludedInt; }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return toStringHelper(this)
             .add("myIncludedField", myIncludedField)
             .add("myOtherIncludedField", myOtherIncludedField)

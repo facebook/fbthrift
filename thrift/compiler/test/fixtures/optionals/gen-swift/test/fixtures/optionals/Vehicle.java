@@ -16,8 +16,7 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 
 @SwiftGenerated
 @ThriftStruct("Vehicle")
-public final class Vehicle
-{
+public final class Vehicle {
     @ThriftConstructor
     public Vehicle(
         @ThriftField(value=1, name="color", requiredness=Requiredness.NONE) final test.fixtures.optionals.Color color,
@@ -111,8 +110,7 @@ public final class Vehicle
     public Boolean isHasAC() { return hasAC; }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return toStringHelper(this)
             .add("color", color)
             .add("licensePlate", licensePlate)

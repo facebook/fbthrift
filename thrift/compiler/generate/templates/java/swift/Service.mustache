@@ -28,41 +28,34 @@ import java.util.*;
 
 @SwiftGenerated
 @ThriftService("{{service:javaCapitalName}}"){{! TODO t12384098: Java Swift services use wrong name in annotation }}
-public interface {{service:javaCapitalName}}{{#service:extends}} extends {{service:javaPackage}}.{{service:javaCapitalName}}{{/service:extends}}
-{
+public interface {{service:javaCapitalName}}{{#service:extends}} extends {{service:javaPackage}}.{{service:javaCapitalName}}{{/service:extends}} {
     @ThriftService("{{service:javaCapitalName}}"){{! TODO t12384098: Java Swift services use wrong name in annotation }}
-    public interface Async{{#service:extends}} extends {{service:javaPackage}}.{{service:javaCapitalName}}.Async{{/service:extends}}
-    {
+    public interface Async{{#service:extends}} extends {{service:javaPackage}}.{{service:javaCapitalName}}.Async{{/service:extends}} {
         {{#service:functions}}
         @ThriftMethod(value = "{{function:name}}"{{#function:oneway?}},
                       oneway = true{{/function:oneway?}}{{#function:exceptions}}{{#first?}},
                       exception = { {{/first?}}
                           @ThriftException(type={{#field:type}}{{> Type}}{{/field:type}}.class, id={{field:key}}){{^last?}},{{/last?}}{{#last?}}
                       }{{/last?}}{{/function:exceptions}})
-        ListenableFuture<{{#function:returnType}}{{> BoxedType}}{{/function:returnType}}> {{function:javaName}}(
-            {{#function:args}}
-            @ThriftField(value={{field:key}}, name="{{field:name}}", requiredness={{> Requiredness}}) final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}{{^last?}},{{/last?}}
-            {{/function:args}}
-        ){{#function:exceptions}}{{#first?}} throws {{/first?}}{{#field:type}}{{> BoxedType}}{{/field:type}}{{^last?}}, {{/last?}}{{/function:exceptions}};
-        {{^last?}}{{! TODO t12383908: Fix spacing in mstch Swift generators }}
+        ListenableFuture<{{#function:returnType}}{{> BoxedType}}{{/function:returnType}}> {{function:javaName}}({{#function:args}}
+            @ThriftField(value={{field:key}}, name="{{field:name}}", requiredness={{> Requiredness}}) final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}{{^last?}},{{/last?}}{{/function:args}}){{!
+              Exceptions
+            }}{{#function:exceptions}}{{#first?}} throws {{/first?}}{{#field:type}}{{> BoxedType}}{{/field:type}}{{^last?}}, {{/last?}}{{/function:exceptions}};
+        {{^last?}}
 
         {{/last?}}
         {{/service:functions}}
     }
     {{#service:functions}}
-    {{^first?}}{{! TODO t12383908: Fix spacing in mstch Swift generators }}
 
-    {{/first?}}
     @ThriftMethod(value = "{{function:name}}"{{#function:oneway?}},
                   oneway = true{{/function:oneway?}}{{#function:exceptions}}{{#first?}},
                   exception = { {{/first?}}
                       @ThriftException(type={{#field:type}}{{> Type}}{{/field:type}}.class, id={{field:key}}){{^last?}},{{/last?}}{{#last?}}
                   }{{/last?}}{{/function:exceptions}})
-    {{#function:returnType}}{{> Type}}{{/function:returnType}} {{function:javaName}}(
-        {{#function:args}}
-        @ThriftField(value={{field:key}}, name="{{field:name}}", requiredness={{> Requiredness}}) final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}{{^last?}},{{/last?}}
-        {{/function:args}}
-    ){{#function:exceptions}}{{#first?}} throws {{/first?}}{{#field:type}}{{> BoxedType}}{{/field:type}}{{^last?}}, {{/last?}}{{/function:exceptions}};
-
+    {{#function:returnType}}{{> Type}}{{/function:returnType}} {{function:javaName}}({{#function:args}}
+        @ThriftField(value={{field:key}}, name="{{field:name}}", requiredness={{> Requiredness}}) final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}{{^last?}},{{/last?}}{{/function:args}}){{!
+          Exceptions
+        }}{{#function:exceptions}}{{#first?}} throws {{/first?}}{{#field:type}}{{> BoxedType}}{{/field:type}}{{^last?}}, {{/last?}}{{/function:exceptions}};
     {{/service:functions}}
 }

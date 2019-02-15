@@ -16,8 +16,7 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 
 @SwiftGenerated
 @ThriftStruct("Color")
-public final class Color
-{
+public final class Color {
     @ThriftConstructor
     public Color(
         @ThriftField(value=1, name="red", requiredness=Requiredness.NONE) final double red,
@@ -96,8 +95,7 @@ public final class Color
     public double getAlpha() { return alpha; }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return toStringHelper(this)
             .add("red", red)
             .add("green", green)

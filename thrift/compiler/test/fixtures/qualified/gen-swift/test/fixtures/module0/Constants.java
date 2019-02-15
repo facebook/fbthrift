@@ -12,10 +12,8 @@ import com.google.common.collect.*;
 import java.util.*;
 
 @SwiftGenerated
-public final class Constants
-{
-    private Constants() {
-    }
+public final class Constants {
+    private Constants() {}
 
     public static final test.fixtures.module0.Struct c0 = ;
 

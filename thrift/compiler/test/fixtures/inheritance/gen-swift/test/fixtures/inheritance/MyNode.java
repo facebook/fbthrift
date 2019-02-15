@@ -16,17 +16,13 @@ import java.util.*;
 
 @SwiftGenerated
 @ThriftService("MyNode")
-public interface MyNode extends test.fixtures.inheritance.MyRoot
-{
+public interface MyNode extends test.fixtures.inheritance.MyRoot {
     @ThriftService("MyNode")
-    public interface Async extends test.fixtures.inheritance.MyRoot.Async
-    {
+    public interface Async extends test.fixtures.inheritance.MyRoot.Async {
         @ThriftMethod(value = "do_mid")
-        ListenableFuture<Void> doMid(
-        );
+        ListenableFuture<Void> doMid();
     }
-    @ThriftMethod(value = "do_mid")
-    void doMid(
-    );
 
+    @ThriftMethod(value = "do_mid")
+    void doMid();
 }

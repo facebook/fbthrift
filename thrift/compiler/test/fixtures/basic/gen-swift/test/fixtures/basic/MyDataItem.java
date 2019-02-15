@@ -16,8 +16,7 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 
 @SwiftGenerated
 @ThriftStruct("MyDataItem")
-public final class MyDataItem
-{
+public final class MyDataItem {
     @ThriftConstructor
     public MyDataItem(
     ) {
@@ -36,8 +35,7 @@ public final class MyDataItem
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return toStringHelper(this)
             .toString();
     }

@@ -16,26 +16,19 @@ import java.util.*;
 
 @SwiftGenerated
 @ThriftService("MyServicePrioParent")
-public interface MyServicePrioParent
-{
+public interface MyServicePrioParent {
     @ThriftService("MyServicePrioParent")
-    public interface Async
-    {
+    public interface Async {
         @ThriftMethod(value = "ping")
-        ListenableFuture<Void> ping(
-        );
+        ListenableFuture<Void> ping();
 
         @ThriftMethod(value = "pong")
-        ListenableFuture<Void> pong(
-        );
+        ListenableFuture<Void> pong();
     }
-    @ThriftMethod(value = "ping")
-    void ping(
-    );
 
+    @ThriftMethod(value = "ping")
+    void ping();
 
     @ThriftMethod(value = "pong")
-    void pong(
-    );
-
+    void pong();
 }

@@ -16,17 +16,13 @@ import java.util.*;
 
 @SwiftGenerated
 @ThriftService("MyServicePrioChild")
-public interface MyServicePrioChild extends test.fixtures.basic.MyServicePrioParent
-{
+public interface MyServicePrioChild extends test.fixtures.basic.MyServicePrioParent {
     @ThriftService("MyServicePrioChild")
-    public interface Async extends test.fixtures.basic.MyServicePrioParent.Async
-    {
+    public interface Async extends test.fixtures.basic.MyServicePrioParent.Async {
         @ThriftMethod(value = "pang")
-        ListenableFuture<Void> pang(
-        );
+        ListenableFuture<Void> pang();
     }
-    @ThriftMethod(value = "pang")
-    void pang(
-    );
 
+    @ThriftMethod(value = "pang")
+    void pang();
 }

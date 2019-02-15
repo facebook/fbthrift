@@ -16,8 +16,7 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 
 @SwiftGenerated
 @ThriftStruct("MyStruct")
-public final class MyStruct
-{
+public final class MyStruct {
     @ThriftConstructor
     public MyStruct(
         @ThriftField(value=1, name="MyIntField", requiredness=Requiredness.NONE) final long myIntField,
@@ -111,8 +110,7 @@ public final class MyStruct
     public test.fixtures.basic.MyEnum getMyEnum() { return myEnum; }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return toStringHelper(this)
             .add("myIntField", myIntField)
             .add("myStringField", myStringField)

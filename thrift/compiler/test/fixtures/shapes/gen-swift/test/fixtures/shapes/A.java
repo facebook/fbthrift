@@ -16,8 +16,7 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 
 @SwiftGenerated
 @ThriftStruct("A")
-public final class A
-{
+public final class A {
     @ThriftConstructor
     public A(
         @ThriftField(value=1, name="a", requiredness=Requiredness.NONE) final String a
@@ -51,8 +50,7 @@ public final class A
     public String getA() { return a; }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return toStringHelper(this)
             .add("a", a)
             .toString();

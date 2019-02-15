@@ -16,8 +16,7 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 
 @SwiftGenerated
 @ThriftUnion("union1")
-public final class Union1
-{
+public final class Union1 {
     private final Object value;
     private final int id;
     private final String name;
@@ -62,19 +61,16 @@ public final class Union1
     }
 
     @ThriftUnionId
-    public int getThriftId()
-    {
+    public int getThriftId() {
         return this.id;
     }
 
-    public String getThriftName()
-    {
+    public String getThriftName() {
         return this.name;
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return toStringHelper(this)
             .add("value", value)
             .add("id", id)

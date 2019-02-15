@@ -16,8 +16,7 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 
 @SwiftGenerated
 @ThriftStruct("BigStruct")
-public final class BigStruct
-{
+public final class BigStruct {
     @ThriftConstructor
     public BigStruct(
         @ThriftField(value=1, name="s", requiredness=Requiredness.NONE) final test.fixtures.module2.Struct s,
@@ -66,8 +65,7 @@ public final class BigStruct
     public int getId() { return id; }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return toStringHelper(this)
             .add("s", s)
             .add("id", id)

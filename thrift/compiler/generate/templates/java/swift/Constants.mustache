@@ -24,10 +24,8 @@ import com.google.common.collect.*;
 import java.util.*;
 
 @SwiftGenerated
-public final class Constants
-{
-    private Constants() {
-    }
+public final class Constants {
+    private Constants() {}
     {{#program:sortedConstants}}
 
     public static final {{#constant:type}}{{> Type}}{{/constant:type}} {{constant:name}} = {{#constant:type}}{{#constant:value}}{{> ConstantValue}}{{/constant:value}}{{/constant:type}};

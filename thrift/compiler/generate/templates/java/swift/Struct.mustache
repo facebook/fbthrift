@@ -30,8 +30,7 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 
 @SwiftGenerated
 @ThriftStruct("{{struct:name}}")
-public final class {{struct:javaCapitalName}}{{#struct:exception?}} extends Exception{{/struct:exception?}}
-{
+public final class {{struct:javaCapitalName}}{{#struct:exception?}} extends Exception{{/struct:exception?}} {
 {{#struct:exception?}}
     private static final long serialVersionUID = 1L;
 
@@ -83,8 +82,7 @@ public final class {{struct:javaCapitalName}}{{#struct:exception?}} extends Exce
     {{^struct:exception?}}
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return toStringHelper(this)
             {{#struct:fields}}
             .add("{{field:javaName}}", {{field:javaName}})
