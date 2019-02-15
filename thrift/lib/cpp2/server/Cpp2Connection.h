@@ -46,10 +46,6 @@ constexpr folly::StringPiece kProcessLatencyHeader("process_latency_us");
 class Cpp2Connection : public ResponseChannel::Callback,
                        public wangle::ManagedConnection {
  public:
-  static bool isClientLocal(
-      const folly::SocketAddress& clientAddr,
-      const folly::SocketAddress& serverAddr);
-
   static const std::string loadHeader;
   /**
    * Constructor for Cpp2Connection.

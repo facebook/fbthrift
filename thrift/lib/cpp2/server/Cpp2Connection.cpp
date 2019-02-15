@@ -36,18 +36,6 @@ using apache::thrift::TApplicationException;
 
 const std::string Cpp2Connection::loadHeader{"load"};
 
-bool Cpp2Connection::isClientLocal(
-    const folly::SocketAddress& clientAddr,
-    const folly::SocketAddress& serverAddr) {
-  if (clientAddr.isLoopbackAddress()) {
-    return true;
-  }
-  if (clientAddr.empty() || serverAddr.empty()) {
-    return false;
-  }
-  return clientAddr.getIPAddress() == serverAddr.getIPAddress();
-}
-
 Cpp2Connection::Cpp2Connection(
     const std::shared_ptr<TAsyncTransport>& transport,
     const folly::SocketAddress* address,
