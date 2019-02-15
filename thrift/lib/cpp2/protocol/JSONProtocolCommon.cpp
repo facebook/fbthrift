@@ -75,8 +75,6 @@ const uint8_t JSONProtocolWriterCommon::kJSONCharTable[0x30] = {
     1, 1, '"', 1, 1, 1, 1, 1, 1,   1,   1,   1, 1,   1,   1, 1, // 2
 };
 
-constexpr folly::StringPiece JSONProtocolReaderCommon::kEscapeChars;
-
 // The elements of this array must match up with the sequence of characters in
 // kEscapeChars
 const uint8_t JSONProtocolReaderCommon::kEscapeCharVals[8] = {

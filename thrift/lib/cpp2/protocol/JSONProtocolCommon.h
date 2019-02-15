@@ -272,7 +272,10 @@ class JSONProtocolReaderCommon {
   // This string's characters must match up with the elements in kEscapeCharVals
   // I don't have '/' on this list even though it appears on www.json.org --
   // it is not in the RFC
-  static constexpr folly::StringPiece kEscapeChars{"\"\\/bfnrt"};
+  static constexpr folly::StringPiece kEscapeChars() {
+    return "\"\\/bfnrt";
+  }
+
   static const uint8_t kEscapeCharVals[8];
   static inline uint8_t hexVal(uint8_t ch);
 

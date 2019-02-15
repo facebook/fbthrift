@@ -795,13 +795,13 @@ uint32_t JSONProtocolReaderCommon::readJSONString(StrType& val) {
           ret += readJSONEscapeChar(ch);
         }
       } else {
-        size_t pos = kEscapeChars.find_first_of(ch);
+        size_t pos = kEscapeChars().find_first_of(ch);
         if (pos == std::string::npos) {
           throwInvalidEscapeChar(ch);
         }
         if (allowDecodeUTF8_) {
           json += "\\";
-          json += kEscapeChars[pos];
+          json += kEscapeChars()[pos];
           continue;
         } else {
           ch = kEscapeCharVals[pos];
