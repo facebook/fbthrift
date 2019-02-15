@@ -14,6 +14,7 @@ import java.util.*;
 
 import static com.google.common.base.MoreObjects.toStringHelper;
 
+@SwiftGenerated
 @ThriftUnion("union2")
 public final class Union2
 {

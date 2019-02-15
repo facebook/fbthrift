@@ -9,6 +9,7 @@ package test.fixtures.optionals;
 
 import com.facebook.swift.codec.*;
 
+@SwiftGenerated
 public enum Animal
 {
     DOG(1), CAT(2), TARANTULA(3);

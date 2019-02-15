@@ -9,6 +9,7 @@ package test.fixtures.lazy_constants;
 
 import com.facebook.swift.codec.*;
 
+@SwiftGenerated
 public enum Company
 {
     FACEBOOK(0), WHATSAPP(1), OCULUS(2), INSTAGRAM(3);

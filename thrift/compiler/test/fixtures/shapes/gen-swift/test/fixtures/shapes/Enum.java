@@ -9,6 +9,7 @@ package test.fixtures.shapes;
 
 import com.facebook.swift.codec.*;
 
+@SwiftGenerated
 public enum Enum
 {
     ENUM(1);

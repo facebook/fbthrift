@@ -26,6 +26,7 @@ import com.google.common.util.concurrent.ListenableFuture;
 import java.io.*;
 import java.util.*;
 
+@SwiftGenerated
 @ThriftService("{{service:javaCapitalName}}"){{! TODO t12384098: Java Swift services use wrong name in annotation }}
 public interface {{service:javaCapitalName}}{{#service:extends}} extends {{service:javaPackage}}.{{service:javaCapitalName}}{{/service:extends}}
 {

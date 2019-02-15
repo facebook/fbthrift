@@ -12,6 +12,7 @@ import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.codec.ThriftField.Recursiveness;
 import java.util.*;
 
+@SwiftGenerated
 @ThriftStruct("Serious")
 public final class Serious extends Exception
 {

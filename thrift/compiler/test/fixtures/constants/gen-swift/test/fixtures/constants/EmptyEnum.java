@@ -9,6 +9,7 @@ package test.fixtures.constants;
 
 import com.facebook.swift.codec.*;
 
+@SwiftGenerated
 public enum EmptyEnum
 {
 ;

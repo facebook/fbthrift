@@ -21,6 +21,7 @@ package {{enum:javaPackage}};
 
 import com.facebook.swift.codec.*;
 
+@SwiftGenerated
 public enum {{enum:javaCapitalName}}
 {
 {{#enum:values}}{{#first?}}    {{/first?}}{{! TODO t12383908: Fix spacing in mstch Swift generators

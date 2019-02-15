@@ -14,6 +14,7 @@ import java.util.*;
 
 import static com.google.common.base.MoreObjects.toStringHelper;
 
+@SwiftGenerated
 @ThriftUnion("ComplexUnion")
 public final class ComplexUnion
 {

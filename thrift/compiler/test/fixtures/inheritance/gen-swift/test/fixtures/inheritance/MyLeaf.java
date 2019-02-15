@@ -14,6 +14,7 @@ import com.google.common.util.concurrent.ListenableFuture;
 import java.io.*;
 import java.util.*;
 
+@SwiftGenerated
 @ThriftService("MyLeaf")
 public interface MyLeaf extends test.fixtures.inheritance.MyNode
 {

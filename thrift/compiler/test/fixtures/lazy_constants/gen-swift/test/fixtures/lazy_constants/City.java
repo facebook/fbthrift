@@ -9,6 +9,7 @@ package test.fixtures.lazy_constants;
 
 import com.facebook.swift.codec.*;
 
+@SwiftGenerated
 public enum City
 {
     NYC(0), MPK(1), SEA(2), LON(3);
