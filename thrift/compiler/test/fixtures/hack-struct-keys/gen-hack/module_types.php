@@ -85,14 +85,14 @@ class Bar implements \IThriftStruct {
    * Original thrift field:-
    * 1: set<struct module.Foo> a
    */
-  public Set<Foo> $a;
+  public Set<arraykey> $a;
   /**
    * Original thrift field:-
    * 2: map<struct module.Foo, i32> b
    */
-  public Map<Foo, int> $b;
+  public Map<arraykey, int> $b;
 
-  public function __construct(?Set<Foo> $a = null, ?Map<Foo, int> $b = null  ) {
+  public function __construct(?Set<arraykey> $a = null, ?Map<arraykey, int> $b = null  ) {
     if ($a === null) {
       $this->a = Set {};
     } else {

@@ -3747,6 +3747,8 @@ t_hack_generator::type_to_typehint(t_type* ttype, bool nullable, bool shape) {
         type_to_typehint(((t_map*)ttype)->get_key_type(), false, shape);
     if (shape && shape_arraykeys_ && key_type == "string") {
       key_type = "arraykey";
+    } else if (((t_map*)ttype)->get_key_type()->is_struct()) {
+      key_type = "arraykey";
     }
     return prefix + "<" + key_type + ", " +
         type_to_typehint(((t_map*)ttype)->get_val_type(), false, shape) + ">";
@@ -3762,9 +3764,10 @@ t_hack_generator::type_to_typehint(t_type* ttype, bool nullable, bool shape) {
       prefix = const_collections_ ? "ConstSet" : "Set";
     }
     string suffix = (arraysets_ || (shape && !arrays_)) ? ", bool>" : ">";
-    return prefix + "<" +
-        type_to_typehint(((t_set*)ttype)->get_elem_type(), false, shape) +
-        suffix;
+    string key_type = ((t_map*)ttype)->get_key_type()->is_struct()
+        ? "arraykey"
+        : type_to_typehint(((t_set*)ttype)->get_elem_type(), false, shape);
+    return prefix + "<" + key_type + suffix;
   } else {
     return "mixed";
   }
@@ -3787,9 +3790,11 @@ string t_hack_generator::type_to_param_typehint(t_type* ttype, bool nullable) {
     if (strict_types_) {
       return type_to_typehint(ttype, nullable);
     } else {
+      auto key_type = ((t_map*)ttype)->get_key_type();
       return "\\HH\\KeyedContainer<" +
-          type_to_param_typehint(((t_map*)ttype)->get_key_type()) + ", " +
-          type_to_param_typehint(((t_map*)ttype)->get_val_type()) + ">";
+          (key_type->is_struct() ? "arraykey"
+                                 : type_to_param_typehint(key_type)) +
+          ", " + type_to_param_typehint(((t_map*)ttype)->get_val_type()) + ">";
     }
   } else {
     return type_to_typehint(ttype, nullable);
