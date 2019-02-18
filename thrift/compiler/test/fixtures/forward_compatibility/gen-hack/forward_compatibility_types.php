@@ -469,9 +469,9 @@ class NewStructureNested implements \IThriftStruct {
    * Original thrift field:-
    * 3: set<map<i16, float>> s
    */
-  public Set<Map<int, float>> $s;
+  public Set<arraykey> $s;
 
-  public function __construct(?Vector<Map<int, float>> $lst = null, ?Map<int, Map<int, float>> $mp = null, ?Set<Map<int, float>> $s = null  ) {
+  public function __construct(?Vector<Map<int, float>> $lst = null, ?Map<int, Map<int, float>> $mp = null, ?Set<arraykey> $s = null  ) {
     if ($lst === null) {
       $this->lst = Vector {};
     } else {

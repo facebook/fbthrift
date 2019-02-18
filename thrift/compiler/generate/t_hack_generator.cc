@@ -377,6 +377,8 @@ class t_hack_generator : public t_oop_generator {
   type_to_typehint(t_type* ttype, bool nullable = false, bool shape = false);
   std::string type_to_param_typehint(t_type* ttype, bool nullable = false);
 
+  bool is_type_arraykey(t_type* type);
+
   std::string union_enum_name(t_struct* tstruct, bool decl = false) {
     // <StructName>Type
     return hack_name(tstruct, decl) + "Enum";
@@ -3747,7 +3749,7 @@ t_hack_generator::type_to_typehint(t_type* ttype, bool nullable, bool shape) {
         type_to_typehint(((t_map*)ttype)->get_key_type(), false, shape);
     if (shape && shape_arraykeys_ && key_type == "string") {
       key_type = "arraykey";
-    } else if (((t_map*)ttype)->get_key_type()->is_struct()) {
+    } else if (!is_type_arraykey(((t_map*)ttype)->get_key_type())) {
       key_type = "arraykey";
     }
     return prefix + "<" + key_type + ", " +
@@ -3764,7 +3766,7 @@ t_hack_generator::type_to_typehint(t_type* ttype, bool nullable, bool shape) {
       prefix = const_collections_ ? "ConstSet" : "Set";
     }
     string suffix = (arraysets_ || (shape && !arrays_)) ? ", bool>" : ">";
-    string key_type = ((t_map*)ttype)->get_key_type()->is_struct()
+    string key_type = !is_type_arraykey(((t_set*)ttype)->get_elem_type())
         ? "arraykey"
         : type_to_typehint(((t_set*)ttype)->get_elem_type(), false, shape);
     return prefix + "<" + key_type + suffix;
@@ -3792,13 +3794,19 @@ string t_hack_generator::type_to_param_typehint(t_type* ttype, bool nullable) {
     } else {
       auto key_type = ((t_map*)ttype)->get_key_type();
       return "\\HH\\KeyedContainer<" +
-          (key_type->is_struct() ? "arraykey"
-                                 : type_to_param_typehint(key_type)) +
+          (!is_type_arraykey(key_type) ? "arraykey"
+                                       : type_to_param_typehint(key_type)) +
           ", " + type_to_param_typehint(((t_map*)ttype)->get_val_type()) + ">";
     }
   } else {
     return type_to_typehint(ttype, nullable);
   }
+}
+
+bool t_hack_generator::is_type_arraykey(t_type* type) {
+  type = type->get_true_type();
+  return type->is_string() || type->is_any_int() || type->is_binary() ||
+      type->is_byte() || type->is_enum();
 }
 
 /**
