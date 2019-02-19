@@ -52,7 +52,6 @@ DEFINE_bool(
 #include <net/ethernet.h>
 #include <netinet/ip.h>
 #include <netinet/ip6.h>
-#include <netinet/tcp.h>
 #endif
 
 namespace apache {
