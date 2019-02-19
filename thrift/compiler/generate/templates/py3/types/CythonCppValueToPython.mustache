@@ -34,7 +34,7 @@ to be converted from unicode to binary representation.
 }}{{#type:i64?}}{{field:name}}{{/type:i64?}}{{!
 }}{{#type:double?}}{{field:name}}{{/type:double?}}{{!
 }}{{#type:float?}}{{field:name}}{{/type:float?}}{{!
-}}{{#type:string?}}{{field:name}}.decode('UTF-8'){{/type:string?}}{{!
+}}{{#type:string?}}{{field:name}}.data().decode('UTF-8'){{/type:string?}}{{!
 }}{{#type:binary?}}{{field:name}}{{/type:binary?}}{{!
 }}{{#type:struct?}}{{> types/CythonPythonType}}.create({{!
   }}make_shared[{{> types/CythonCppType}}]({{field:name}})){{/type:struct?}}{{!

@@ -2649,7 +2649,7 @@ cdef class Map__string_string:
         while loc != deref(self._cpp_obj).end():
             ckey = deref(loc).first
             citem = deref(loc).second
-            yield (ckey.decode('UTF-8'), bytes(citem).decode('UTF-8'))
+            yield (ckey.data().decode('UTF-8'), bytes(citem).decode('UTF-8'))
             inc(loc)
 
     def __reduce__(self):
@@ -2782,7 +2782,7 @@ cdef class Map__string_SimpleStruct:
         while loc != deref(self._cpp_obj).end():
             ckey = deref(loc).first
             citem = reference_shared_ptr_Map__string_SimpleStruct(self._cpp_obj, deref(loc).second)
-            yield (ckey.decode('UTF-8'), SimpleStruct.create(citem))
+            yield (ckey.data().decode('UTF-8'), SimpleStruct.create(citem))
             inc(loc)
 
     def __reduce__(self):
@@ -2916,7 +2916,7 @@ cdef class Map__string_i16:
         while loc != deref(self._cpp_obj).end():
             ckey = deref(loc).first
             citem = deref(loc).second
-            yield (ckey.decode('UTF-8'), citem)
+            yield (ckey.data().decode('UTF-8'), citem)
             inc(loc)
 
     def __reduce__(self):
@@ -3227,7 +3227,7 @@ cdef class Map__string_i32:
         while loc != deref(self._cpp_obj).end():
             ckey = deref(loc).first
             citem = deref(loc).second
-            yield (ckey.decode('UTF-8'), citem)
+            yield (ckey.data().decode('UTF-8'), citem)
             inc(loc)
 
     def __reduce__(self):
@@ -3362,7 +3362,7 @@ cdef class Map__string_Map__string_i32:
         while loc != deref(self._cpp_obj).end():
             ckey = deref(loc).first
             citem = reference_shared_ptr_Map__string_Map__string_i32(self._cpp_obj, deref(loc).second)
-            yield (ckey.decode('UTF-8'), Map__string_i32.create(citem))
+            yield (ckey.data().decode('UTF-8'), Map__string_i32.create(citem))
             inc(loc)
 
     def __reduce__(self):
@@ -3674,7 +3674,7 @@ cdef class Map__string_List__SimpleStruct:
         while loc != deref(self._cpp_obj).end():
             ckey = deref(loc).first
             citem = reference_shared_ptr_Map__string_List__SimpleStruct(self._cpp_obj, deref(loc).second)
-            yield (ckey.decode('UTF-8'), List__SimpleStruct.create(citem))
+            yield (ckey.data().decode('UTF-8'), List__SimpleStruct.create(citem))
             inc(loc)
 
     def __reduce__(self):

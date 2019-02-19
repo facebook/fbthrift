@@ -31,7 +31,7 @@ ckey.
 }}{{#type:i64?}}ckey{{/type:i64?}}{{!
 }}{{#type:double?}}ckey{{/type:double?}}{{!
 }}{{#type:float?}}ckey{{/type:float?}}{{!
-}}{{#type:string?}}ckey.decode('UTF-8'){{/type:string?}}{{!
+}}{{#type:string?}}ckey.data().decode('UTF-8'){{/type:string?}}{{!
 }}{{#type:binary?}}ckey{{/type:binary?}}{{!
 }}{{^type:base?}}{{^type:enum?}}{{!
     }}{{> types/CythonPythonType}}.create(ckey){{!

@@ -36,7 +36,7 @@ to a python type.
 }}{{#type:i64?}}result.value(){{/type:i64?}}{{!
 }}{{#type:double?}}result.value(){{/type:double?}}{{!
 }}{{#type:float?}}result.value(){{/type:float?}}{{!
-}}{{#type:string?}}result.value().decode('UTF-8'){{/type:string?}}{{!
+}}{{#type:string?}}result.value().data().decode('UTF-8'){{/type:string?}}{{!
 }}{{#type:binary?}}result.value(){{/type:binary?}}{{!
 }}{{#type:struct}}{{> types/CythonPythonType}}.create({{!
   }}make_shared[{{> types/CythonCppType}}]({{!

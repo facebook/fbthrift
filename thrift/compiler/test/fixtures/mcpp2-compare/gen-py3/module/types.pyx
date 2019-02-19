@@ -7225,7 +7225,7 @@ cdef class Map__string_i64:
         while loc != deref(self._cpp_obj).end():
             ckey = deref(loc).first
             citem = deref(loc).second
-            yield (ckey.decode('UTF-8'), citem)
+            yield (ckey.data().decode('UTF-8'), citem)
             inc(loc)
 
     def __reduce__(self):
@@ -11743,7 +11743,7 @@ cdef class Map__string_i32:
         while loc != deref(self._cpp_obj).end():
             ckey = deref(loc).first
             citem = deref(loc).second
-            yield (ckey.decode('UTF-8'), citem)
+            yield (ckey.data().decode('UTF-8'), citem)
             inc(loc)
 
     def __reduce__(self):
@@ -12456,7 +12456,7 @@ cdef class Map__string_bool:
         while loc != deref(self._cpp_obj).end():
             ckey = deref(loc).first
             citem = deref(loc).second
-            yield (ckey.decode('UTF-8'), citem)
+            yield (ckey.data().decode('UTF-8'), citem)
             inc(loc)
 
     def __reduce__(self):
@@ -12835,7 +12835,7 @@ cdef class Map__string_Map__string_i32:
         while loc != deref(self._cpp_obj).end():
             ckey = deref(loc).first
             citem = reference_shared_ptr_Map__string_Map__string_i32(self._cpp_obj, deref(loc).second)
-            yield (ckey.decode('UTF-8'), Map__string_i32.create(citem))
+            yield (ckey.data().decode('UTF-8'), Map__string_i32.create(citem))
             inc(loc)
 
     def __reduce__(self):
@@ -12970,7 +12970,7 @@ cdef class Map__string_Map__string_Map__string_i32:
         while loc != deref(self._cpp_obj).end():
             ckey = deref(loc).first
             citem = reference_shared_ptr_Map__string_Map__string_Map__string_i32(self._cpp_obj, deref(loc).second)
-            yield (ckey.decode('UTF-8'), Map__string_Map__string_i32.create(citem))
+            yield (ckey.data().decode('UTF-8'), Map__string_Map__string_i32.create(citem))
             inc(loc)
 
     def __reduce__(self):
@@ -13282,7 +13282,7 @@ cdef class Map__string_List__i32:
         while loc != deref(self._cpp_obj).end():
             ckey = deref(loc).first
             citem = reference_shared_ptr_Map__string_List__i32(self._cpp_obj, deref(loc).second)
-            yield (ckey.decode('UTF-8'), List__i32.create(citem))
+            yield (ckey.data().decode('UTF-8'), List__i32.create(citem))
             inc(loc)
 
     def __reduce__(self):
@@ -14830,7 +14830,7 @@ cdef class std_unordered_map_std_string_containerStruct__Map__string_containerSt
         while loc != deref(self._cpp_obj).end():
             ckey = deref(loc).first
             citem = reference_shared_ptr_std_unordered_map_std_string_containerStruct__Map__string_containerStruct(self._cpp_obj, deref(loc).second)
-            yield (ckey.decode('UTF-8'), containerStruct.create(citem))
+            yield (ckey.data().decode('UTF-8'), containerStruct.create(citem))
             inc(loc)
 
     def __reduce__(self):
@@ -16065,7 +16065,7 @@ cdef class Map__string_folly_IOBuf__binary:
         while loc != deref(self._cpp_obj).end():
             ckey = deref(loc).first
             citem = reference_shared_ptr_Map__string_folly_IOBuf__binary(self._cpp_obj, deref(loc).second)
-            yield (ckey.decode('UTF-8'), __iobuf.IOBuf.create(citem.get(), self))
+            yield (ckey.data().decode('UTF-8'), __iobuf.IOBuf.create(citem.get(), self))
             inc(loc)
 
     def __reduce__(self):
@@ -16198,7 +16198,7 @@ cdef class Map__string_std_unique_ptr_folly_IOBuf__binary:
         while loc != deref(self._cpp_obj).end():
             ckey = deref(loc).first
             citem = reference_shared_ptr_Map__string_std_unique_ptr_folly_IOBuf__binary(self._cpp_obj, deref(loc).second)
-            yield (ckey.decode('UTF-8'), __iobuf.IOBuf.create(citem.get().get(), self))
+            yield (ckey.data().decode('UTF-8'), __iobuf.IOBuf.create(citem.get().get(), self))
             inc(loc)
 
     def __reduce__(self):

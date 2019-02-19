@@ -147,7 +147,7 @@ cdef void ReturnService_stringReturn_callback(
         pyfuture.set_exception(create_py_exception(result.exception(), <__RpcOptions>options))
     else:
         try:
-            pyfuture.set_result(result.value().decode('UTF-8'))
+            pyfuture.set_result(result.value().data().decode('UTF-8'))
         except Exception as ex:
             pyfuture.set_exception(ex.with_traceback(None))
 
@@ -524,7 +524,7 @@ cdef void ParamService_string_ret_string_param_callback(
         pyfuture.set_exception(create_py_exception(result.exception(), <__RpcOptions>options))
     else:
         try:
-            pyfuture.set_result(result.value().decode('UTF-8'))
+            pyfuture.set_result(result.value().data().decode('UTF-8'))
         except Exception as ex:
             pyfuture.set_exception(ex.with_traceback(None))
 

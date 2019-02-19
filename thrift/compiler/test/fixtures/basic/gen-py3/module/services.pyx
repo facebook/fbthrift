@@ -493,7 +493,7 @@ cdef api void call_cy_MyService_putDataById(
     __iface = self
     __promise = Promise_cFollyUnit.create(move_promise_cFollyUnit(cPromise))
     arg_id = id
-    arg_data = (deref(data)).decode('UTF-8')
+    arg_data = (deref(data)).data().decode('UTF-8')
     __context = None
     if __iface._pass_context_putDataById:
         __context = RequestContext.create(ctx)
@@ -550,7 +550,7 @@ cdef api void call_cy_MyService_lobDataById(
     __iface = self
     __promise = Promise_cFollyUnit.create(move_promise_cFollyUnit(cPromise))
     arg_id = id
-    arg_data = (deref(data)).decode('UTF-8')
+    arg_data = (deref(data)).data().decode('UTF-8')
     __context = None
     if __iface._pass_context_lobDataById:
         __context = RequestContext.create(ctx)
@@ -799,7 +799,7 @@ cdef api void call_cy_MyServiceFast_putDataById(
     __iface = self
     __promise = Promise_cFollyUnit.create(move_promise_cFollyUnit(cPromise))
     arg_id = id
-    arg_data = (deref(data)).decode('UTF-8')
+    arg_data = (deref(data)).data().decode('UTF-8')
     __context = None
     if __iface._pass_context_putDataById:
         __context = RequestContext.create(ctx)
@@ -856,7 +856,7 @@ cdef api void call_cy_MyServiceFast_lobDataById(
     __iface = self
     __promise = Promise_cFollyUnit.create(move_promise_cFollyUnit(cPromise))
     arg_id = id
-    arg_data = (deref(data)).decode('UTF-8')
+    arg_data = (deref(data)).data().decode('UTF-8')
     __context = None
     if __iface._pass_context_lobDataById:
         __context = RequestContext.create(ctx)
