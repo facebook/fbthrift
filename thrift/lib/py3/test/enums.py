@@ -35,6 +35,15 @@ class EnumTests(unittest.TestCase):
         x = deserialize(File, b'{"name":"blah", "type":0}', Protocol.JSON)
         self.assertEqual(x.type, Kind.None_)
 
+    def test_bad_enum_hash_same(self) -> None:
+        x = deserialize(File, b'{"name": "something", "type": 64}', Protocol.JSON)
+        y = deserialize(File, b'{"name": "something", "type": 64}', Protocol.JSON)
+        self.assertEqual(hash(x), hash(y))
+        self.assertEqual(hash(x.type), hash(y.type))
+        self.assertFalse(x.type is y.type)
+        self.assertEqual(x.type, y.type)
+        self.assertFalse(x.type != y.type)
+
     def test_bad_enum_in_struct(self) -> None:
         x = deserialize(File, b'{"name": "something", "type": 64}', Protocol.JSON)
         self.assertBadEnum(cast(BadEnum, x.type), Kind, 64)

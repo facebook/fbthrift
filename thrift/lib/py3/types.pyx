@@ -75,6 +75,18 @@ cdef class BadEnum:
     def __reduce__(self):
         return BadEnum, (self._enum, self.value)
 
+    def __hash__(self):
+        return hash((self._enum, self.value))
+
+    def __eq__(self, other):
+        if not isinstance(other, BadEnum):
+            return False
+        cdef BadEnum cother = <BadEnum>other
+        return (self._enum, self.value) == (cother._enum, cother.value)
+
+    def __ne__(self, other):
+        return not(self == other)
+
 
 cdef translate_cpp_enum_to_python(object EnumClass, int value):
     try:
