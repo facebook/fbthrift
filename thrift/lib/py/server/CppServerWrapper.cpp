@@ -62,7 +62,7 @@ object makePythonList(const std::vector<std::string>& vec) {
   for (auto it = vec.begin(); it != vec.end(); ++it) {
     result.append(*it);
   }
-  return result;
+  return std::move(result);
 }
 
 std::string getStringAttrSafe(object& pyObject, const char* attrName) {
@@ -555,7 +555,7 @@ public:
     result["old"] = makePythonList(seeds->oldSeeds);
     result["current"] = makePythonList(seeds->currentSeeds);
     result["new"] = makePythonList(seeds->newSeeds);
-    return result;
+    return std::move(result);
   }
 
   void cleanUp() {
