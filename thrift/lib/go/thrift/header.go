@@ -149,7 +149,7 @@ var supportedTransforms = map[TransformID]bool{
 	TransformHMAC:   false,
 	TransformSnappy: false,
 	TransformQLZ:    false,
-	TransformZstd:   false,
+	TransformZstd:   zstdTransformSupport,
 }
 
 // Untransformer will find a transform function to wrap a reader with to transformed the data.
@@ -167,6 +167,8 @@ func (c TransformID) Untransformer() (func(byteReader) (byteReader, error), erro
 			}
 			return ensureByteReader(zlrd), nil
 		}, nil
+	case TransformZstd:
+		return zstdRead, nil
 	default:
 		return nil, NewProtocolExceptionWithType(
 			NOT_IMPLEMENTED, fmt.Errorf("Header transform %s not supported", c.String()),

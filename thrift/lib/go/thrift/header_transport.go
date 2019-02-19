@@ -368,6 +368,13 @@ func applyTransforms(buf *bytes.Buffer, transforms []TransformID) (*bytes.Buffer
 			}
 			buf, tmpbuf = tmpbuf, buf
 			tmpbuf.Reset()
+		case TransformZstd:
+			err := zstdWriter(tmpbuf, buf)
+			if err != nil {
+				return nil, err
+			}
+			buf, tmpbuf = tmpbuf, buf
+			tmpbuf.Reset()
 		default:
 			return nil, NewTransportException(
 				NOT_IMPLEMENTED, fmt.Sprintf("unimplemented transform ID: %s (%#x)", trans.String(), int64(trans)),
