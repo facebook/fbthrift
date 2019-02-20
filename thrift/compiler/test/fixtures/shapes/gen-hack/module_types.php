@@ -112,7 +112,7 @@ class Union implements \IThriftStruct, \IThriftUnion<\test\fixtures\UnionEnum>, 
   }
 
   public static function __fromShape(self::TShape $shape): this {
-    $me = /* HH_IGNORE_ERROR[4060] */ new static();
+    $me = new static();
     $me->_type = \test\fixtures\UnionEnum::_EMPTY_;
     if (Shapes::idx($shape, 'intValue') !== null) {
       $me->intValue = $shape['intValue'];
@@ -238,7 +238,7 @@ class A implements \IThriftStruct, \IThriftShapishStruct {
   }
 
   public static function __fromShape(self::TShape $shape): this {
-    $me = /* HH_IGNORE_ERROR[4060] */ new static();
+    $me = new static();
     $me->a = $shape['a'];
     return $me;
   }
@@ -1189,7 +1189,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
   }
 
   public static function __fromShape(self::TShape $shape): this {
-    $me = /* HH_IGNORE_ERROR[4060] */ new static();
+    $me = new static();
     if (Shapes::idx($shape, 'just_an_A') !== null) {
       $me->just_an_A = \test\fixtures\A::__fromShape($shape['just_an_A']);
     }

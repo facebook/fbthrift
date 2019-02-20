@@ -13,7 +13,11 @@
 /**
  * Base interface for Thrift structs
  */
+<<__ConsistentConstruct>>
 interface IThriftStruct {
+  abstract const int STRUCTURAL_ID;
+
+  public function __construct();
   public function getName(): string;
   public function read(TProtocol $input): int;
   public function write(TProtocol $input): int;

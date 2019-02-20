@@ -1370,7 +1370,7 @@ class MyService_ping_args implements \IThriftStruct, \IThriftShapishStruct {
   }
 
   public static function __fromShape(self::TShape $shape): this {
-    $me = /* HH_IGNORE_ERROR[4060] */ new static();
+    $me = new static();
     return $me;
   }
 
@@ -1436,7 +1436,7 @@ class MyService_getRandomData_args implements \IThriftStruct, \IThriftShapishStr
   }
 
   public static function __fromShape(self::TShape $shape): this {
-    $me = /* HH_IGNORE_ERROR[4060] */ new static();
+    $me = new static();
     return $me;
   }
 
@@ -1523,7 +1523,7 @@ class MyService_hasDataById_args implements \IThriftStruct, \IThriftShapishStruc
   }
 
   public static function __fromShape(self::TShape $shape): this {
-    $me = /* HH_IGNORE_ERROR[4060] */ new static();
+    $me = new static();
     $me->id = $shape['id'];
     return $me;
   }
@@ -1615,7 +1615,7 @@ class MyService_getDataById_args implements \IThriftStruct, \IThriftShapishStruc
   }
 
   public static function __fromShape(self::TShape $shape): this {
-    $me = /* HH_IGNORE_ERROR[4060] */ new static();
+    $me = new static();
     $me->id = $shape['id'];
     return $me;
   }
@@ -1719,7 +1719,7 @@ class MyService_putDataById_args implements \IThriftStruct, \IThriftShapishStruc
   }
 
   public static function __fromShape(self::TShape $shape): this {
-    $me = /* HH_IGNORE_ERROR[4060] */ new static();
+    $me = new static();
     $me->id = $shape['id'];
     $me->data = $shape['data'];
     return $me;
@@ -1819,7 +1819,7 @@ class MyService_lobDataById_args implements \IThriftStruct, \IThriftShapishStruc
   }
 
   public static function __fromShape(self::TShape $shape): this {
-    $me = /* HH_IGNORE_ERROR[4060] */ new static();
+    $me = new static();
     $me->id = $shape['id'];
     $me->data = $shape['data'];
     return $me;

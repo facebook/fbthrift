@@ -2078,7 +2078,7 @@ void t_hack_generator::generate_php_struct_shape_methods(
   indent(out)
       << "public static function __fromShape(self::TShape $shape): this {\n";
   indent_up();
-  indent(out) << "$me = /* HH_IGNORE_ERROR[4060] */ new static();\n";
+  indent(out) << "$me = new static();\n";
   if (tstruct->is_union()) {
     indent(out) << "$me->_type = " << union_field_to_enum(tstruct, nullptr)
                 << ";\n";

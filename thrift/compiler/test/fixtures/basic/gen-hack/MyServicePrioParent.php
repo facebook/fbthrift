@@ -528,7 +528,7 @@ class MyServicePrioParent_ping_args implements \IThriftStruct, \IThriftShapishSt
   }
 
   public static function __fromShape(self::TShape $shape): this {
-    $me = /* HH_IGNORE_ERROR[4060] */ new static();
+    $me = new static();
     return $me;
   }
 
@@ -594,7 +594,7 @@ class MyServicePrioParent_pong_args implements \IThriftStruct, \IThriftShapishSt
   }
 
   public static function __fromShape(self::TShape $shape): this {
-    $me = /* HH_IGNORE_ERROR[4060] */ new static();
+    $me = new static();
     return $me;
   }
 

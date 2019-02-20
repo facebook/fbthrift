@@ -1247,7 +1247,7 @@ class NestedContainers_mapList_args implements \IThriftStruct, \IThriftShapishSt
   }
 
   public static function __fromShape(self::TShape $shape): this {
-    $me = /* HH_IGNORE_ERROR[4060] */ new static();
+    $me = new static();
     $me->foo = (new Map($shape['foo']))->map(
       $val0 ==> (new Vector($val0)),
     );
@@ -1328,7 +1328,7 @@ class NestedContainers_mapSet_args implements \IThriftStruct, \IThriftShapishStr
   }
 
   public static function __fromShape(self::TShape $shape): this {
-    $me = /* HH_IGNORE_ERROR[4060] */ new static();
+    $me = new static();
     $me->foo = (new Map($shape['foo']))->map(
       $val0 ==> new Set(Keyset\keys($val0)),
     );
@@ -1409,7 +1409,7 @@ class NestedContainers_listMap_args implements \IThriftStruct, \IThriftShapishSt
   }
 
   public static function __fromShape(self::TShape $shape): this {
-    $me = /* HH_IGNORE_ERROR[4060] */ new static();
+    $me = new static();
     $me->foo = (new Vector($shape['foo']))->map(
       $val0 ==> (new Map($val0)),
     );
@@ -1486,7 +1486,7 @@ class NestedContainers_listSet_args implements \IThriftStruct, \IThriftShapishSt
   }
 
   public static function __fromShape(self::TShape $shape): this {
-    $me = /* HH_IGNORE_ERROR[4060] */ new static();
+    $me = new static();
     $me->foo = (new Vector($shape['foo']))->map(
       $val0 ==> new Set(Keyset\keys($val0)),
     );
@@ -1586,7 +1586,7 @@ class NestedContainers_turtles_args implements \IThriftStruct, \IThriftShapishSt
   }
 
   public static function __fromShape(self::TShape $shape): this {
-    $me = /* HH_IGNORE_ERROR[4060] */ new static();
+    $me = new static();
     $me->foo = (new Vector($shape['foo']))->map(
       $val0 ==> (new Vector($val0))->map(
         $val1 ==> (new Map($val1))->map(

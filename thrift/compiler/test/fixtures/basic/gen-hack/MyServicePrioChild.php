@@ -302,7 +302,7 @@ class MyServicePrioChild_pang_args implements \IThriftStruct, \IThriftShapishStr
   }
 
   public static function __fromShape(self::TShape $shape): this {
-    $me = /* HH_IGNORE_ERROR[4060] */ new static();
+    $me = new static();
     return $me;
   }
 
