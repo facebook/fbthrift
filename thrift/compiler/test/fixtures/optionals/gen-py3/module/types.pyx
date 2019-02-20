@@ -368,20 +368,20 @@ cdef class Color(thrift.py3.types.Struct):
             else:
                 return NotImplemented
 
-        cdef cColor cself = deref((<Color>self)._cpp_obj)
-        cdef cColor cother = deref((<Color>other)._cpp_obj)
+        cdef cColor* cself = (<Color>self)._cpp_obj.get()
+        cdef cColor* cother = (<Color>other)._cpp_obj.get()
         if cop == Py_EQ:
-            return cself == cother
+            return deref(cself) == deref(cother)
         elif cop == Py_NE:
-            return not (cself == cother)
+            return not (deref(cself) == deref(cother))
         elif cop == Py_LT:
-            return cself < cother
+            return deref(cself) < deref(cother)
         elif cop == Py_LE:
-            return cself <= cother
+            return deref(cself) <= deref(cother)
         elif cop == Py_GT:
-            return cself > cother
+            return deref(cself) > deref(cother)
         elif cop == Py_GE:
-            return cself >= cother
+            return deref(cself) >= deref(cother)
         else:
             return NotImplemented
 
@@ -669,20 +669,20 @@ cdef class Vehicle(thrift.py3.types.Struct):
             else:
                 return NotImplemented
 
-        cdef cVehicle cself = deref((<Vehicle>self)._cpp_obj)
-        cdef cVehicle cother = deref((<Vehicle>other)._cpp_obj)
+        cdef cVehicle* cself = (<Vehicle>self)._cpp_obj.get()
+        cdef cVehicle* cother = (<Vehicle>other)._cpp_obj.get()
         if cop == Py_EQ:
-            return cself == cother
+            return deref(cself) == deref(cother)
         elif cop == Py_NE:
-            return not (cself == cother)
+            return not (deref(cself) == deref(cother))
         elif cop == Py_LT:
-            return cself < cother
+            return deref(cself) < deref(cother)
         elif cop == Py_LE:
-            return cself <= cother
+            return deref(cself) <= deref(cother)
         elif cop == Py_GT:
-            return cself > cother
+            return deref(cself) > deref(cother)
         elif cop == Py_GE:
-            return cself >= cother
+            return deref(cself) >= deref(cother)
         else:
             return NotImplemented
 
@@ -1142,20 +1142,20 @@ cdef class Person(thrift.py3.types.Struct):
             else:
                 return NotImplemented
 
-        cdef cPerson cself = deref((<Person>self)._cpp_obj)
-        cdef cPerson cother = deref((<Person>other)._cpp_obj)
+        cdef cPerson* cself = (<Person>self)._cpp_obj.get()
+        cdef cPerson* cother = (<Person>other)._cpp_obj.get()
         if cop == Py_EQ:
-            return cself == cother
+            return deref(cself) == deref(cother)
         elif cop == Py_NE:
-            return not (cself == cother)
+            return not (deref(cself) == deref(cother))
         elif cop == Py_LT:
-            return cself < cother
+            return deref(cself) < deref(cother)
         elif cop == Py_LE:
-            return cself <= cother
+            return deref(cself) <= deref(cother)
         elif cop == Py_GT:
-            return cself > cother
+            return deref(cself) > deref(cother)
         elif cop == Py_GE:
-            return cself >= cother
+            return deref(cself) >= deref(cother)
         else:
             return NotImplemented
 

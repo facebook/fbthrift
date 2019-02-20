@@ -199,20 +199,20 @@ cdef class Empty(thrift.py3.types.Struct):
             else:
                 return NotImplemented
 
-        cdef cEmpty cself = deref((<Empty>self)._cpp_obj)
-        cdef cEmpty cother = deref((<Empty>other)._cpp_obj)
+        cdef cEmpty* cself = (<Empty>self)._cpp_obj.get()
+        cdef cEmpty* cother = (<Empty>other)._cpp_obj.get()
         if cop == Py_EQ:
-            return cself == cother
+            return deref(cself) == deref(cother)
         elif cop == Py_NE:
-            return not (cself == cother)
+            return not (deref(cself) == deref(cother))
         elif cop == Py_LT:
-            return cself < cother
+            return deref(cself) < deref(cother)
         elif cop == Py_LE:
-            return cself <= cother
+            return deref(cself) <= deref(cother)
         elif cop == Py_GT:
-            return cself > cother
+            return deref(cself) > deref(cother)
         elif cop == Py_GE:
-            return cself >= cother
+            return deref(cself) >= deref(cother)
         else:
             return NotImplemented
 
@@ -333,20 +333,20 @@ cdef class Nada(thrift.py3.types.Union):
             else:
                 return NotImplemented
 
-        cdef cNada cself = deref((<Nada>self)._cpp_obj)
-        cdef cNada cother = deref((<Nada>other)._cpp_obj)
+        cdef cNada* cself = (<Nada>self)._cpp_obj.get()
+        cdef cNada* cother = (<Nada>other)._cpp_obj.get()
         if cop == Py_EQ:
-            return cself == cother
+            return deref(cself) == deref(cother)
         elif cop == Py_NE:
-            return not (cself == cother)
+            return not (deref(cself) == deref(cother))
         elif cop == Py_LT:
-            return cself < cother
+            return deref(cself) < deref(cother)
         elif cop == Py_LE:
-            return cself <= cother
+            return deref(cself) <= deref(cother)
         elif cop == Py_GT:
-            return cself > cother
+            return deref(cself) > deref(cother)
         elif cop == Py_GE:
-            return cself >= cother
+            return deref(cself) >= deref(cother)
         else:
             return NotImplemented
 

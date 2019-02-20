@@ -471,20 +471,20 @@ cdef class decorated_struct(thrift.py3.types.Struct):
             else:
                 return NotImplemented
 
-        cdef cdecorated_struct cself = deref((<decorated_struct>self)._cpp_obj)
-        cdef cdecorated_struct cother = deref((<decorated_struct>other)._cpp_obj)
+        cdef cdecorated_struct* cself = (<decorated_struct>self)._cpp_obj.get()
+        cdef cdecorated_struct* cother = (<decorated_struct>other)._cpp_obj.get()
         if cop == Py_EQ:
-            return cself == cother
+            return deref(cself) == deref(cother)
         elif cop == Py_NE:
-            return not (cself == cother)
+            return not (deref(cself) == deref(cother))
         elif cop == Py_LT:
-            return cself < cother
+            return deref(cself) < deref(cother)
         elif cop == Py_LE:
-            return cself <= cother
+            return deref(cself) <= deref(cother)
         elif cop == Py_GT:
-            return cself > cother
+            return deref(cself) > deref(cother)
         elif cop == Py_GE:
-            return cself >= cother
+            return deref(cself) >= deref(cother)
         else:
             return NotImplemented
 
@@ -844,12 +844,12 @@ cdef class ContainerStruct(thrift.py3.types.Struct):
             else:
                 return NotImplemented
 
-        cdef cContainerStruct cself = deref((<ContainerStruct>self)._cpp_obj)
-        cdef cContainerStruct cother = deref((<ContainerStruct>other)._cpp_obj)
+        cdef cContainerStruct* cself = (<ContainerStruct>self)._cpp_obj.get()
+        cdef cContainerStruct* cother = (<ContainerStruct>other)._cpp_obj.get()
         if cop == Py_EQ:
-            return cself == cother
+            return deref(cself) == deref(cother)
         elif cop == Py_NE:
-            return not (cself == cother)
+            return not (deref(cself) == deref(cother))
         else:
             return NotImplemented
 
@@ -1006,20 +1006,20 @@ cdef class CppTypeStruct(thrift.py3.types.Struct):
             else:
                 return NotImplemented
 
-        cdef cCppTypeStruct cself = deref((<CppTypeStruct>self)._cpp_obj)
-        cdef cCppTypeStruct cother = deref((<CppTypeStruct>other)._cpp_obj)
+        cdef cCppTypeStruct* cself = (<CppTypeStruct>self)._cpp_obj.get()
+        cdef cCppTypeStruct* cother = (<CppTypeStruct>other)._cpp_obj.get()
         if cop == Py_EQ:
-            return cself == cother
+            return deref(cself) == deref(cother)
         elif cop == Py_NE:
-            return not (cself == cother)
+            return not (deref(cself) == deref(cother))
         elif cop == Py_LT:
-            return cself < cother
+            return deref(cself) < deref(cother)
         elif cop == Py_LE:
-            return cself <= cother
+            return deref(cself) <= deref(cother)
         elif cop == Py_GT:
-            return cself > cother
+            return deref(cself) > deref(cother)
         elif cop == Py_GE:
-            return cself >= cother
+            return deref(cself) >= deref(cother)
         else:
             return NotImplemented
 
@@ -1184,20 +1184,20 @@ cdef class VirtualStruct(thrift.py3.types.Struct):
             else:
                 return NotImplemented
 
-        cdef cVirtualStruct cself = deref((<VirtualStruct>self)._cpp_obj)
-        cdef cVirtualStruct cother = deref((<VirtualStruct>other)._cpp_obj)
+        cdef cVirtualStruct* cself = (<VirtualStruct>self)._cpp_obj.get()
+        cdef cVirtualStruct* cother = (<VirtualStruct>other)._cpp_obj.get()
         if cop == Py_EQ:
-            return cself == cother
+            return deref(cself) == deref(cother)
         elif cop == Py_NE:
-            return not (cself == cother)
+            return not (deref(cself) == deref(cother))
         elif cop == Py_LT:
-            return cself < cother
+            return deref(cself) < deref(cother)
         elif cop == Py_LE:
-            return cself <= cother
+            return deref(cself) <= deref(cother)
         elif cop == Py_GT:
-            return cself > cother
+            return deref(cself) > deref(cother)
         elif cop == Py_GE:
-            return cself >= cother
+            return deref(cself) >= deref(cother)
         else:
             return NotImplemented
 
@@ -1387,20 +1387,20 @@ cdef class MyStructWithForwardRefEnum(thrift.py3.types.Struct):
             else:
                 return NotImplemented
 
-        cdef cMyStructWithForwardRefEnum cself = deref((<MyStructWithForwardRefEnum>self)._cpp_obj)
-        cdef cMyStructWithForwardRefEnum cother = deref((<MyStructWithForwardRefEnum>other)._cpp_obj)
+        cdef cMyStructWithForwardRefEnum* cself = (<MyStructWithForwardRefEnum>self)._cpp_obj.get()
+        cdef cMyStructWithForwardRefEnum* cother = (<MyStructWithForwardRefEnum>other)._cpp_obj.get()
         if cop == Py_EQ:
-            return cself == cother
+            return deref(cself) == deref(cother)
         elif cop == Py_NE:
-            return not (cself == cother)
+            return not (deref(cself) == deref(cother))
         elif cop == Py_LT:
-            return cself < cother
+            return deref(cself) < deref(cother)
         elif cop == Py_LE:
-            return cself <= cother
+            return deref(cself) <= deref(cother)
         elif cop == Py_GT:
-            return cself > cother
+            return deref(cself) > deref(cother)
         elif cop == Py_GE:
-            return cself >= cother
+            return deref(cself) >= deref(cother)
         else:
             return NotImplemented
 
@@ -1596,20 +1596,20 @@ cdef class TrivialNumeric(thrift.py3.types.Struct):
             else:
                 return NotImplemented
 
-        cdef cTrivialNumeric cself = deref((<TrivialNumeric>self)._cpp_obj)
-        cdef cTrivialNumeric cother = deref((<TrivialNumeric>other)._cpp_obj)
+        cdef cTrivialNumeric* cself = (<TrivialNumeric>self)._cpp_obj.get()
+        cdef cTrivialNumeric* cother = (<TrivialNumeric>other)._cpp_obj.get()
         if cop == Py_EQ:
-            return cself == cother
+            return deref(cself) == deref(cother)
         elif cop == Py_NE:
-            return not (cself == cother)
+            return not (deref(cself) == deref(cother))
         elif cop == Py_LT:
-            return cself < cother
+            return deref(cself) < deref(cother)
         elif cop == Py_LE:
-            return cself <= cother
+            return deref(cself) <= deref(cother)
         elif cop == Py_GT:
-            return cself > cother
+            return deref(cself) > deref(cother)
         elif cop == Py_GE:
-            return cself >= cother
+            return deref(cself) >= deref(cother)
         else:
             return NotImplemented
 
@@ -1807,20 +1807,20 @@ cdef class TrivialNestedWithDefault(thrift.py3.types.Struct):
             else:
                 return NotImplemented
 
-        cdef cTrivialNestedWithDefault cself = deref((<TrivialNestedWithDefault>self)._cpp_obj)
-        cdef cTrivialNestedWithDefault cother = deref((<TrivialNestedWithDefault>other)._cpp_obj)
+        cdef cTrivialNestedWithDefault* cself = (<TrivialNestedWithDefault>self)._cpp_obj.get()
+        cdef cTrivialNestedWithDefault* cother = (<TrivialNestedWithDefault>other)._cpp_obj.get()
         if cop == Py_EQ:
-            return cself == cother
+            return deref(cself) == deref(cother)
         elif cop == Py_NE:
-            return not (cself == cother)
+            return not (deref(cself) == deref(cother))
         elif cop == Py_LT:
-            return cself < cother
+            return deref(cself) < deref(cother)
         elif cop == Py_LE:
-            return cself <= cother
+            return deref(cself) <= deref(cother)
         elif cop == Py_GT:
-            return cself > cother
+            return deref(cself) > deref(cother)
         elif cop == Py_GE:
-            return cself >= cother
+            return deref(cself) >= deref(cother)
         else:
             return NotImplemented
 
@@ -2008,20 +2008,20 @@ cdef class ComplexString(thrift.py3.types.Struct):
             else:
                 return NotImplemented
 
-        cdef cComplexString cself = deref((<ComplexString>self)._cpp_obj)
-        cdef cComplexString cother = deref((<ComplexString>other)._cpp_obj)
+        cdef cComplexString* cself = (<ComplexString>self)._cpp_obj.get()
+        cdef cComplexString* cother = (<ComplexString>other)._cpp_obj.get()
         if cop == Py_EQ:
-            return cself == cother
+            return deref(cself) == deref(cother)
         elif cop == Py_NE:
-            return not (cself == cother)
+            return not (deref(cself) == deref(cother))
         elif cop == Py_LT:
-            return cself < cother
+            return deref(cself) < deref(cother)
         elif cop == Py_LE:
-            return cself <= cother
+            return deref(cself) <= deref(cother)
         elif cop == Py_GT:
-            return cself > cother
+            return deref(cself) > deref(cother)
         elif cop == Py_GE:
-            return cself >= cother
+            return deref(cself) >= deref(cother)
         else:
             return NotImplemented
 
@@ -2213,20 +2213,20 @@ cdef class ComplexNestedWithDefault(thrift.py3.types.Struct):
             else:
                 return NotImplemented
 
-        cdef cComplexNestedWithDefault cself = deref((<ComplexNestedWithDefault>self)._cpp_obj)
-        cdef cComplexNestedWithDefault cother = deref((<ComplexNestedWithDefault>other)._cpp_obj)
+        cdef cComplexNestedWithDefault* cself = (<ComplexNestedWithDefault>self)._cpp_obj.get()
+        cdef cComplexNestedWithDefault* cother = (<ComplexNestedWithDefault>other)._cpp_obj.get()
         if cop == Py_EQ:
-            return cself == cother
+            return deref(cself) == deref(cother)
         elif cop == Py_NE:
-            return not (cself == cother)
+            return not (deref(cself) == deref(cother))
         elif cop == Py_LT:
-            return cself < cother
+            return deref(cself) < deref(cother)
         elif cop == Py_LE:
-            return cself <= cother
+            return deref(cself) <= deref(cother)
         elif cop == Py_GT:
-            return cself > cother
+            return deref(cself) > deref(cother)
         elif cop == Py_GE:
-            return cself >= cother
+            return deref(cself) >= deref(cother)
         else:
             return NotImplemented
 
@@ -2534,20 +2534,20 @@ cdef class MinPadding(thrift.py3.types.Struct):
             else:
                 return NotImplemented
 
-        cdef cMinPadding cself = deref((<MinPadding>self)._cpp_obj)
-        cdef cMinPadding cother = deref((<MinPadding>other)._cpp_obj)
+        cdef cMinPadding* cself = (<MinPadding>self)._cpp_obj.get()
+        cdef cMinPadding* cother = (<MinPadding>other)._cpp_obj.get()
         if cop == Py_EQ:
-            return cself == cother
+            return deref(cself) == deref(cother)
         elif cop == Py_NE:
-            return not (cself == cother)
+            return not (deref(cself) == deref(cother))
         elif cop == Py_LT:
-            return cself < cother
+            return deref(cself) < deref(cother)
         elif cop == Py_LE:
-            return cself <= cother
+            return deref(cself) <= deref(cother)
         elif cop == Py_GT:
-            return cself > cother
+            return deref(cself) > deref(cother)
         elif cop == Py_GE:
-            return cself >= cother
+            return deref(cself) >= deref(cother)
         else:
             return NotImplemented
 
@@ -3118,20 +3118,20 @@ cdef class Renaming(thrift.py3.types.Struct):
             else:
                 return NotImplemented
 
-        cdef cRenaming cself = deref((<Renaming>self)._cpp_obj)
-        cdef cRenaming cother = deref((<Renaming>other)._cpp_obj)
+        cdef cRenaming* cself = (<Renaming>self)._cpp_obj.get()
+        cdef cRenaming* cother = (<Renaming>other)._cpp_obj.get()
         if cop == Py_EQ:
-            return cself == cother
+            return deref(cself) == deref(cother)
         elif cop == Py_NE:
-            return not (cself == cother)
+            return not (deref(cself) == deref(cother))
         elif cop == Py_LT:
-            return cself < cother
+            return deref(cself) < deref(cother)
         elif cop == Py_LE:
-            return cself <= cother
+            return deref(cself) <= deref(cother)
         elif cop == Py_GT:
-            return cself > cother
+            return deref(cself) > deref(cother)
         elif cop == Py_GE:
-            return cself >= cother
+            return deref(cself) >= deref(cother)
         else:
             return NotImplemented
 

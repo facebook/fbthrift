@@ -102,20 +102,20 @@ cdef class Banal(thrift.py3.exceptions.Error):
             else:
                 return NotImplemented
 
-        cdef cBanal cself = deref((<Banal>self)._cpp_obj)
-        cdef cBanal cother = deref((<Banal>other)._cpp_obj)
+        cdef cBanal* cself = (<Banal>self)._cpp_obj.get()
+        cdef cBanal* cother = (<Banal>other)._cpp_obj.get()
         if cop == Py_EQ:
-            return cself == cother
+            return deref(cself) == deref(cother)
         elif cop == Py_NE:
-            return not (cself == cother)
+            return not (deref(cself) == deref(cother))
         elif cop == Py_LT:
-            return cself < cother
+            return deref(cself) < deref(cother)
         elif cop == Py_LE:
-            return cself <= cother
+            return deref(cself) <= deref(cother)
         elif cop == Py_GT:
-            return cself > cother
+            return deref(cself) > deref(cother)
         elif cop == Py_GE:
-            return cself >= cother
+            return deref(cself) >= deref(cother)
         else:
             return NotImplemented
 
@@ -197,20 +197,20 @@ cdef class Fiery(thrift.py3.exceptions.Error):
             else:
                 return NotImplemented
 
-        cdef cFiery cself = deref((<Fiery>self)._cpp_obj)
-        cdef cFiery cother = deref((<Fiery>other)._cpp_obj)
+        cdef cFiery* cself = (<Fiery>self)._cpp_obj.get()
+        cdef cFiery* cother = (<Fiery>other)._cpp_obj.get()
         if cop == Py_EQ:
-            return cself == cother
+            return deref(cself) == deref(cother)
         elif cop == Py_NE:
-            return not (cself == cother)
+            return not (deref(cself) == deref(cother))
         elif cop == Py_LT:
-            return cself < cother
+            return deref(cself) < deref(cother)
         elif cop == Py_LE:
-            return cself <= cother
+            return deref(cself) <= deref(cother)
         elif cop == Py_GT:
-            return cself > cother
+            return deref(cself) > deref(cother)
         elif cop == Py_GE:
-            return cself >= cother
+            return deref(cself) >= deref(cother)
         else:
             return NotImplemented
 
@@ -293,20 +293,20 @@ cdef class Serious(thrift.py3.exceptions.Error):
             else:
                 return NotImplemented
 
-        cdef cSerious cself = deref((<Serious>self)._cpp_obj)
-        cdef cSerious cother = deref((<Serious>other)._cpp_obj)
+        cdef cSerious* cself = (<Serious>self)._cpp_obj.get()
+        cdef cSerious* cother = (<Serious>other)._cpp_obj.get()
         if cop == Py_EQ:
-            return cself == cother
+            return deref(cself) == deref(cother)
         elif cop == Py_NE:
-            return not (cself == cother)
+            return not (deref(cself) == deref(cother))
         elif cop == Py_LT:
-            return cself < cother
+            return deref(cself) < deref(cother)
         elif cop == Py_LE:
-            return cself <= cother
+            return deref(cself) <= deref(cother)
         elif cop == Py_GT:
-            return cself > cother
+            return deref(cself) > deref(cother)
         elif cop == Py_GE:
-            return cself >= cother
+            return deref(cself) >= deref(cother)
         else:
             return NotImplemented
 

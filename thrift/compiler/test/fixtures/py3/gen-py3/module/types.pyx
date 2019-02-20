@@ -396,20 +396,20 @@ cdef class SimpleException(thrift.py3.exceptions.Error):
             else:
                 return NotImplemented
 
-        cdef cSimpleException cself = deref((<SimpleException>self)._cpp_obj)
-        cdef cSimpleException cother = deref((<SimpleException>other)._cpp_obj)
+        cdef cSimpleException* cself = (<SimpleException>self)._cpp_obj.get()
+        cdef cSimpleException* cother = (<SimpleException>other)._cpp_obj.get()
         if cop == Py_EQ:
-            return cself == cother
+            return deref(cself) == deref(cother)
         elif cop == Py_NE:
-            return not (cself == cother)
+            return not (deref(cself) == deref(cother))
         elif cop == Py_LT:
-            return cself < cother
+            return deref(cself) < deref(cother)
         elif cop == Py_LE:
-            return cself <= cother
+            return deref(cself) <= deref(cother)
         elif cop == Py_GT:
-            return cself > cother
+            return deref(cself) > deref(cother)
         elif cop == Py_GE:
-            return cself >= cother
+            return deref(cself) >= deref(cother)
         else:
             return NotImplemented
 
@@ -749,20 +749,20 @@ cdef class SimpleStruct(thrift.py3.types.Struct):
             else:
                 return NotImplemented
 
-        cdef cSimpleStruct cself = deref((<SimpleStruct>self)._cpp_obj)
-        cdef cSimpleStruct cother = deref((<SimpleStruct>other)._cpp_obj)
+        cdef cSimpleStruct* cself = (<SimpleStruct>self)._cpp_obj.get()
+        cdef cSimpleStruct* cother = (<SimpleStruct>other)._cpp_obj.get()
         if cop == Py_EQ:
-            return cself == cother
+            return deref(cself) == deref(cother)
         elif cop == Py_NE:
-            return not (cself == cother)
+            return not (deref(cself) == deref(cother))
         elif cop == Py_LT:
-            return cself < cother
+            return deref(cself) < deref(cother)
         elif cop == Py_LE:
-            return cself <= cother
+            return deref(cself) <= deref(cother)
         elif cop == Py_GT:
-            return cself > cother
+            return deref(cself) > deref(cother)
         elif cop == Py_GE:
-            return cself >= cother
+            return deref(cself) >= deref(cother)
         else:
             return NotImplemented
 
@@ -1179,20 +1179,20 @@ cdef class ComplexStruct(thrift.py3.types.Struct):
             else:
                 return NotImplemented
 
-        cdef cComplexStruct cself = deref((<ComplexStruct>self)._cpp_obj)
-        cdef cComplexStruct cother = deref((<ComplexStruct>other)._cpp_obj)
+        cdef cComplexStruct* cself = (<ComplexStruct>self)._cpp_obj.get()
+        cdef cComplexStruct* cother = (<ComplexStruct>other)._cpp_obj.get()
         if cop == Py_EQ:
-            return cself == cother
+            return deref(cself) == deref(cother)
         elif cop == Py_NE:
-            return not (cself == cother)
+            return not (deref(cself) == deref(cother))
         elif cop == Py_LT:
-            return cself < cother
+            return deref(cself) < deref(cother)
         elif cop == Py_LE:
-            return cself <= cother
+            return deref(cself) <= deref(cother)
         elif cop == Py_GT:
-            return cself > cother
+            return deref(cself) > deref(cother)
         elif cop == Py_GE:
-            return cself >= cother
+            return deref(cself) >= deref(cother)
         else:
             return NotImplemented
 

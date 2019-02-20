@@ -557,21 +557,21 @@ cdef class {{struct:name}}(thrift.py3.types.Union):
             return not self.__{{struct:name}}_eq(other)
         {{/struct:cpp_noncomparable}}
         {{^struct:cpp_noncomparable}}
-        cdef c{{struct:name}} cself = deref((<{{struct:name}}>self)._cpp_obj)
-        cdef c{{struct:name}} cother = deref((<{{struct:name}}>other)._cpp_obj)
+        cdef c{{struct:name}}* cself = (<{{struct:name}}>self)._cpp_obj.get()
+        cdef c{{struct:name}}* cother = (<{{struct:name}}>other)._cpp_obj.get()
         if cop == Py_EQ:
-            return cself == cother
+            return deref(cself) == deref(cother)
         elif cop == Py_NE:
-            return not (cself == cother)
+            return not (deref(cself) == deref(cother))
         {{#struct:is_struct_orderable?}}
         elif cop == Py_LT:
-            return cself < cother
+            return deref(cself) < deref(cother)
         elif cop == Py_LE:
-            return cself <= cother
+            return deref(cself) <= deref(cother)
         elif cop == Py_GT:
-            return cself > cother
+            return deref(cself) > deref(cother)
         elif cop == Py_GE:
-            return cself >= cother
+            return deref(cself) >= deref(cother)
         {{/struct:is_struct_orderable?}}
         {{/struct:cpp_noncomparable}}
         else:

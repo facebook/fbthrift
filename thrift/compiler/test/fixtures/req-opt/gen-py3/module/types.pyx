@@ -248,20 +248,20 @@ cdef class Foo(thrift.py3.types.Struct):
             else:
                 return NotImplemented
 
-        cdef cFoo cself = deref((<Foo>self)._cpp_obj)
-        cdef cFoo cother = deref((<Foo>other)._cpp_obj)
+        cdef cFoo* cself = (<Foo>self)._cpp_obj.get()
+        cdef cFoo* cother = (<Foo>other)._cpp_obj.get()
         if cop == Py_EQ:
-            return cself == cother
+            return deref(cself) == deref(cother)
         elif cop == Py_NE:
-            return not (cself == cother)
+            return not (deref(cself) == deref(cother))
         elif cop == Py_LT:
-            return cself < cother
+            return deref(cself) < deref(cother)
         elif cop == Py_LE:
-            return cself <= cother
+            return deref(cself) <= deref(cother)
         elif cop == Py_GT:
-            return cself > cother
+            return deref(cself) > deref(cother)
         elif cop == Py_GE:
-            return cself >= cother
+            return deref(cself) >= deref(cother)
         else:
             return NotImplemented
 

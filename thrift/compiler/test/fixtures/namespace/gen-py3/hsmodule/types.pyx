@@ -160,20 +160,20 @@ cdef class HsFoo(thrift.py3.types.Struct):
             else:
                 return NotImplemented
 
-        cdef cHsFoo cself = deref((<HsFoo>self)._cpp_obj)
-        cdef cHsFoo cother = deref((<HsFoo>other)._cpp_obj)
+        cdef cHsFoo* cself = (<HsFoo>self)._cpp_obj.get()
+        cdef cHsFoo* cother = (<HsFoo>other)._cpp_obj.get()
         if cop == Py_EQ:
-            return cself == cother
+            return deref(cself) == deref(cother)
         elif cop == Py_NE:
-            return not (cself == cother)
+            return not (deref(cself) == deref(cother))
         elif cop == Py_LT:
-            return cself < cother
+            return deref(cself) < deref(cother)
         elif cop == Py_LE:
-            return cself <= cother
+            return deref(cself) <= deref(cother)
         elif cop == Py_GT:
-            return cself > cother
+            return deref(cself) > deref(cother)
         elif cop == Py_GE:
-            return cself >= cother
+            return deref(cself) >= deref(cother)
         else:
             return NotImplemented
 

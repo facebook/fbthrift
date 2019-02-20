@@ -463,20 +463,20 @@ cdef class ComplexUnion(thrift.py3.types.Union):
             else:
                 return NotImplemented
 
-        cdef cComplexUnion cself = deref((<ComplexUnion>self)._cpp_obj)
-        cdef cComplexUnion cother = deref((<ComplexUnion>other)._cpp_obj)
+        cdef cComplexUnion* cself = (<ComplexUnion>self)._cpp_obj.get()
+        cdef cComplexUnion* cother = (<ComplexUnion>other)._cpp_obj.get()
         if cop == Py_EQ:
-            return cself == cother
+            return deref(cself) == deref(cother)
         elif cop == Py_NE:
-            return not (cself == cother)
+            return not (deref(cself) == deref(cother))
         elif cop == Py_LT:
-            return cself < cother
+            return deref(cself) < deref(cother)
         elif cop == Py_LE:
-            return cself <= cother
+            return deref(cself) <= deref(cother)
         elif cop == Py_GT:
-            return cself > cother
+            return deref(cself) > deref(cother)
         elif cop == Py_GE:
-            return cself >= cother
+            return deref(cself) >= deref(cother)
         else:
             return NotImplemented
 
@@ -635,20 +635,20 @@ cdef class VirtualComplexUnion(thrift.py3.types.Union):
             else:
                 return NotImplemented
 
-        cdef cVirtualComplexUnion cself = deref((<VirtualComplexUnion>self)._cpp_obj)
-        cdef cVirtualComplexUnion cother = deref((<VirtualComplexUnion>other)._cpp_obj)
+        cdef cVirtualComplexUnion* cself = (<VirtualComplexUnion>self)._cpp_obj.get()
+        cdef cVirtualComplexUnion* cother = (<VirtualComplexUnion>other)._cpp_obj.get()
         if cop == Py_EQ:
-            return cself == cother
+            return deref(cself) == deref(cother)
         elif cop == Py_NE:
-            return not (cself == cother)
+            return not (deref(cself) == deref(cother))
         elif cop == Py_LT:
-            return cself < cother
+            return deref(cself) < deref(cother)
         elif cop == Py_LE:
-            return cself <= cother
+            return deref(cself) <= deref(cother)
         elif cop == Py_GT:
-            return cself > cother
+            return deref(cself) > deref(cother)
         elif cop == Py_GE:
-            return cself >= cother
+            return deref(cself) >= deref(cother)
         else:
             return NotImplemented
 

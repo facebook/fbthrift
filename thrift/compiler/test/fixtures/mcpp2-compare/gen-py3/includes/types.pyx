@@ -259,20 +259,20 @@ cdef class AStruct(thrift.py3.types.Struct):
             else:
                 return NotImplemented
 
-        cdef cAStruct cself = deref((<AStruct>self)._cpp_obj)
-        cdef cAStruct cother = deref((<AStruct>other)._cpp_obj)
+        cdef cAStruct* cself = (<AStruct>self)._cpp_obj.get()
+        cdef cAStruct* cother = (<AStruct>other)._cpp_obj.get()
         if cop == Py_EQ:
-            return cself == cother
+            return deref(cself) == deref(cother)
         elif cop == Py_NE:
-            return not (cself == cother)
+            return not (deref(cself) == deref(cother))
         elif cop == Py_LT:
-            return cself < cother
+            return deref(cself) < deref(cother)
         elif cop == Py_LE:
-            return cself <= cother
+            return deref(cself) <= deref(cother)
         elif cop == Py_GT:
-            return cself > cother
+            return deref(cself) > deref(cother)
         elif cop == Py_GE:
-            return cself >= cother
+            return deref(cself) >= deref(cother)
         else:
             return NotImplemented
 
@@ -433,20 +433,20 @@ cdef class AStructB(thrift.py3.types.Struct):
             else:
                 return NotImplemented
 
-        cdef cAStructB cself = deref((<AStructB>self)._cpp_obj)
-        cdef cAStructB cother = deref((<AStructB>other)._cpp_obj)
+        cdef cAStructB* cself = (<AStructB>self)._cpp_obj.get()
+        cdef cAStructB* cother = (<AStructB>other)._cpp_obj.get()
         if cop == Py_EQ:
-            return cself == cother
+            return deref(cself) == deref(cother)
         elif cop == Py_NE:
-            return not (cself == cother)
+            return not (deref(cself) == deref(cother))
         elif cop == Py_LT:
-            return cself < cother
+            return deref(cself) < deref(cother)
         elif cop == Py_LE:
-            return cself <= cother
+            return deref(cself) <= deref(cother)
         elif cop == Py_GT:
-            return cself > cother
+            return deref(cself) > deref(cother)
         elif cop == Py_GE:
-            return cself >= cother
+            return deref(cself) >= deref(cother)
         else:
             return NotImplemented
 
