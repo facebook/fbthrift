@@ -75,12 +75,6 @@ cdef class __EmptyEnumMeta(type):
         return len(__EmptyEnumEnumInstances)
 
 
-cdef __EmptyEnum_unique_instance(int value, str name):
-    inst = __EmptyEnumEnumUniqueValues.get(value)
-    if inst is None:
-        inst = __EmptyEnumEnumUniqueValues[value] = EmptyEnum.__new__(EmptyEnum, value, name)
-    __EmptyEnumEnumMembers[name] = inst
-    return inst
 
 
 @__cython.final

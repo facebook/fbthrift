@@ -45,6 +45,9 @@ class {{enum:name}}(thrift.py3.types.{{^enum:flags?}}Enum{{/enum:flags?}}{{#enum
     {{#enum:values}}
     {{enumValue:enumSafeName}}: {{enum:name}} = ...
     {{/enum:values}}
+    {{^enum:values}}
+    pass
+    {{/enum:values}}
 
 
 {{/program:enums}}

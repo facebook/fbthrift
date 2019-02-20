@@ -69,6 +69,12 @@ enum BadMembers {
     value = 2,
 }
 
+enum EmptyEnum {
+}
+
+union EmptyUnion {
+}
+
 struct StringBucket {
     1: string one,
     2: optional string two,

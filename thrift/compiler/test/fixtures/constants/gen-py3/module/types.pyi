@@ -20,6 +20,7 @@ __property__ = property
 
 
 class EmptyEnum(thrift.py3.types.Enum):
+    pass
 
 
 class City(thrift.py3.types.Enum):

@@ -97,6 +97,7 @@ cdef class __{{enum:name}}Meta(type):
         return len(__{{enum:name}}EnumInstances)
 
 
+{{#enum:values}}{{#first?}}
 cdef __{{enum:name}}_unique_instance(int value, str name):
     {{! Build up __memebers__ and maintain unique value }}
     inst = __{{enum:name}}EnumUniqueValues.get(value)
@@ -104,6 +105,7 @@ cdef __{{enum:name}}_unique_instance(int value, str name):
         inst = __{{enum:name}}EnumUniqueValues[value] = {{enum:name}}.__new__({{enum:name}}, value, name)
     __{{enum:name}}EnumMembers[name] = inst
     return inst
+{{/first?}}{{/enum:values}}
 
 
 @__cython.final
