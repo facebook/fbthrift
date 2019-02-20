@@ -1,5 +1,5 @@
 # Set the compiler directory
-set(COMPILER_DIR ${CMAKE_CURRENT_SOURCE_DIR})
+set(COMPILER_DIR ${CMAKE_CURRENT_BINARY_DIR})
 
 # Override default install path for `make install` step
 set(CMAKE_INSTALL_PREFIX ${THRIFT_HOME})

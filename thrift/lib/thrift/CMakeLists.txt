@@ -1,13 +1,10 @@
-# Set the lib directory
-set(LIB_THRIFT_HOME ${CMAKE_CURRENT_SOURCE_DIR})
-
 thrift_generate(
   "reflection" #file_name
   "" #services
   "cpp2" #language
   "templates" #options
-  "${LIB_THRIFT_HOME}" #file_path
-  "${LIB_THRIFT_HOME}" #output_path
+  "${CMAKE_CURRENT_SOURCE_DIR}" #file_path
+  "${CMAKE_CURRENT_BINARY_DIR}" #output_path
   "thrift/lib/thrift" #include_prefix
 )
 
@@ -16,8 +13,8 @@ thrift_generate(
   "" #services
   "cpp2" #language
   "" #options
-  "${LIB_THRIFT_HOME}" #file_path
-  "${LIB_THRIFT_HOME}" #output_path
+  "${CMAKE_CURRENT_SOURCE_DIR}" #file_path
+  "${CMAKE_CURRENT_BINARY_DIR}" #output_path
   "thrift/lib/thrift" #include_prefix
 )
 
@@ -26,8 +23,8 @@ thrift_generate(
   "" #services
   "cpp2" #language
   "" #options
-  "${LIB_THRIFT_HOME}" #file_path
-  "${LIB_THRIFT_HOME}" #output_path
+  "${CMAKE_CURRENT_SOURCE_DIR}" #file_path
+  "${CMAKE_CURRENT_BINARY_DIR}" #output_path
   "thrift/lib/thrift" #include_prefix
 )
 
