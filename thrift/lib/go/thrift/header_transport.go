@@ -430,10 +430,6 @@ func (t *HeaderTransport) flushFramed() error {
 }
 
 func (t *HeaderTransport) Flush() error {
-	// Closure incase wbuf pointer changes in xform
-	defer func(tp *HeaderTransport) {
-		tp.wbuf.Reset()
-	}(t)
 	var err error
 
 	switch t.clientType {
@@ -448,6 +444,7 @@ func (t *HeaderTransport) Flush() error {
 	case UnframedDeprecated:
 		err = nil
 	default:
+		t.wbuf.Reset() // reset incase wbuf pointer changes in xform
 		return NewTransportException(
 			UNKNOWN_TRANSPORT_EXCEPTION,
 			fmt.Sprintf("tHeader cannot flush for clientType %s", t.clientType.String()),
@@ -455,6 +452,7 @@ func (t *HeaderTransport) Flush() error {
 	}
 
 	if err != nil {
+		t.wbuf.Reset() // reset incase wbuf pointer changes in xform
 		return err
 	}
 
@@ -462,6 +460,7 @@ func (t *HeaderTransport) Flush() error {
 	if t.wbuf.Len() > 0 {
 		_, err = t.wbuf.WriteTo(t.transport)
 		if err != nil {
+			t.wbuf.Reset() // reset on return
 			return NewTransportExceptionFromError(err)
 		}
 	}
@@ -470,5 +469,7 @@ func (t *HeaderTransport) Flush() error {
 	t.ClearHeaders()
 
 	err = t.transport.Flush()
+
+	t.wbuf.Reset() // reset incase wbuf pointer changes in xform
 	return NewTransportExceptionFromError(err)
 }
