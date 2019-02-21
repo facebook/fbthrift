@@ -96,93 +96,88 @@ namespace apache { namespace thrift {
 
 
 template <> struct TEnumDataStorage< ::facebook::ns::qwerty::AnEnumA>;
-#ifndef _MSC_VER
-template <> const std::size_t TEnumTraits< ::facebook::ns::qwerty::AnEnumA>::size;
-template <> const folly::Range<const  ::facebook::ns::qwerty::AnEnumA*> TEnumTraits< ::facebook::ns::qwerty::AnEnumA>::values;
-template <> const folly::Range<const folly::StringPiece*> TEnumTraits< ::facebook::ns::qwerty::AnEnumA>::names;
-#endif
-template <> const char* TEnumTraits< ::facebook::ns::qwerty::AnEnumA>::findName( ::facebook::ns::qwerty::AnEnumA value);
-template <> bool TEnumTraits< ::facebook::ns::qwerty::AnEnumA>::findValue(const char* name,  ::facebook::ns::qwerty::AnEnumA* outValue);
 
-template <> inline constexpr  ::facebook::ns::qwerty::AnEnumA TEnumTraits< ::facebook::ns::qwerty::AnEnumA>::min() {
-  return  ::facebook::ns::qwerty::AnEnumA::FIELDA;
-}
+template <> struct TEnumTraits< ::facebook::ns::qwerty::AnEnumA> {
+  using type =  ::facebook::ns::qwerty::AnEnumA;
 
-template <> inline constexpr  ::facebook::ns::qwerty::AnEnumA TEnumTraits< ::facebook::ns::qwerty::AnEnumA>::max() {
-  return  ::facebook::ns::qwerty::AnEnumA::FIELDA;
-}
+  static constexpr std::size_t const size = 1;
+  static folly::Range<type const*> const values;
+  static folly::Range<folly::StringPiece const*> const names;
+
+  static char const* findName(type value);
+  static bool findValue(char const* name, type* out);
+
+  static constexpr type min() { return type::FIELDA; }
+  static constexpr type max() { return type::FIELDA; }
+};
 
 
 template <> struct TEnumDataStorage< ::facebook::ns::qwerty::AnEnumB>;
-#ifndef _MSC_VER
-template <> const std::size_t TEnumTraits< ::facebook::ns::qwerty::AnEnumB>::size;
-template <> const folly::Range<const  ::facebook::ns::qwerty::AnEnumB*> TEnumTraits< ::facebook::ns::qwerty::AnEnumB>::values;
-template <> const folly::Range<const folly::StringPiece*> TEnumTraits< ::facebook::ns::qwerty::AnEnumB>::names;
-#endif
-template <> const char* TEnumTraits< ::facebook::ns::qwerty::AnEnumB>::findName( ::facebook::ns::qwerty::AnEnumB value);
-template <> bool TEnumTraits< ::facebook::ns::qwerty::AnEnumB>::findValue(const char* name,  ::facebook::ns::qwerty::AnEnumB* outValue);
 
-template <> inline constexpr  ::facebook::ns::qwerty::AnEnumB TEnumTraits< ::facebook::ns::qwerty::AnEnumB>::min() {
-  return  ::facebook::ns::qwerty::AnEnumB::FIELDA;
-}
+template <> struct TEnumTraits< ::facebook::ns::qwerty::AnEnumB> {
+  using type =  ::facebook::ns::qwerty::AnEnumB;
 
-template <> inline constexpr  ::facebook::ns::qwerty::AnEnumB TEnumTraits< ::facebook::ns::qwerty::AnEnumB>::max() {
-  return  ::facebook::ns::qwerty::AnEnumB::FIELDB;
-}
+  static constexpr std::size_t const size = 2;
+  static folly::Range<type const*> const values;
+  static folly::Range<folly::StringPiece const*> const names;
+
+  static char const* findName(type value);
+  static bool findValue(char const* name, type* out);
+
+  static constexpr type min() { return type::FIELDA; }
+  static constexpr type max() { return type::FIELDB; }
+};
 
 
 template <> struct TEnumDataStorage< ::facebook::ns::qwerty::AnEnumC>;
-#ifndef _MSC_VER
-template <> const std::size_t TEnumTraits< ::facebook::ns::qwerty::AnEnumC>::size;
-template <> const folly::Range<const  ::facebook::ns::qwerty::AnEnumC*> TEnumTraits< ::facebook::ns::qwerty::AnEnumC>::values;
-template <> const folly::Range<const folly::StringPiece*> TEnumTraits< ::facebook::ns::qwerty::AnEnumC>::names;
-#endif
-template <> const char* TEnumTraits< ::facebook::ns::qwerty::AnEnumC>::findName( ::facebook::ns::qwerty::AnEnumC value);
-template <> bool TEnumTraits< ::facebook::ns::qwerty::AnEnumC>::findValue(const char* name,  ::facebook::ns::qwerty::AnEnumC* outValue);
 
-template <> inline constexpr  ::facebook::ns::qwerty::AnEnumC TEnumTraits< ::facebook::ns::qwerty::AnEnumC>::min() {
-  return  ::facebook::ns::qwerty::AnEnumC::FIELDC;
-}
+template <> struct TEnumTraits< ::facebook::ns::qwerty::AnEnumC> {
+  using type =  ::facebook::ns::qwerty::AnEnumC;
 
-template <> inline constexpr  ::facebook::ns::qwerty::AnEnumC TEnumTraits< ::facebook::ns::qwerty::AnEnumC>::max() {
-  return  ::facebook::ns::qwerty::AnEnumC::FIELDC;
-}
+  static constexpr std::size_t const size = 1;
+  static folly::Range<type const*> const values;
+  static folly::Range<folly::StringPiece const*> const names;
+
+  static char const* findName(type value);
+  static bool findValue(char const* name, type* out);
+
+  static constexpr type min() { return type::FIELDC; }
+  static constexpr type max() { return type::FIELDC; }
+};
 
 
 template <> struct TEnumDataStorage< ::facebook::ns::qwerty::AnEnumD>;
-#ifndef _MSC_VER
-template <> const std::size_t TEnumTraits< ::facebook::ns::qwerty::AnEnumD>::size;
-template <> const folly::Range<const  ::facebook::ns::qwerty::AnEnumD*> TEnumTraits< ::facebook::ns::qwerty::AnEnumD>::values;
-template <> const folly::Range<const folly::StringPiece*> TEnumTraits< ::facebook::ns::qwerty::AnEnumD>::names;
-#endif
-template <> const char* TEnumTraits< ::facebook::ns::qwerty::AnEnumD>::findName( ::facebook::ns::qwerty::AnEnumD value);
-template <> bool TEnumTraits< ::facebook::ns::qwerty::AnEnumD>::findValue(const char* name,  ::facebook::ns::qwerty::AnEnumD* outValue);
 
-template <> inline constexpr  ::facebook::ns::qwerty::AnEnumD TEnumTraits< ::facebook::ns::qwerty::AnEnumD>::min() {
-  return  ::facebook::ns::qwerty::AnEnumD::FIELDD;
-}
+template <> struct TEnumTraits< ::facebook::ns::qwerty::AnEnumD> {
+  using type =  ::facebook::ns::qwerty::AnEnumD;
 
-template <> inline constexpr  ::facebook::ns::qwerty::AnEnumD TEnumTraits< ::facebook::ns::qwerty::AnEnumD>::max() {
-  return  ::facebook::ns::qwerty::AnEnumD::FIELDD;
-}
+  static constexpr std::size_t const size = 1;
+  static folly::Range<type const*> const values;
+  static folly::Range<folly::StringPiece const*> const names;
+
+  static char const* findName(type value);
+  static bool findValue(char const* name, type* out);
+
+  static constexpr type min() { return type::FIELDD; }
+  static constexpr type max() { return type::FIELDD; }
+};
 
 
 template <> struct TEnumDataStorage< ::facebook::ns::qwerty::AnEnumE>;
-#ifndef _MSC_VER
-template <> const std::size_t TEnumTraits< ::facebook::ns::qwerty::AnEnumE>::size;
-template <> const folly::Range<const  ::facebook::ns::qwerty::AnEnumE*> TEnumTraits< ::facebook::ns::qwerty::AnEnumE>::values;
-template <> const folly::Range<const folly::StringPiece*> TEnumTraits< ::facebook::ns::qwerty::AnEnumE>::names;
-#endif
-template <> const char* TEnumTraits< ::facebook::ns::qwerty::AnEnumE>::findName( ::facebook::ns::qwerty::AnEnumE value);
-template <> bool TEnumTraits< ::facebook::ns::qwerty::AnEnumE>::findValue(const char* name,  ::facebook::ns::qwerty::AnEnumE* outValue);
 
-template <> inline constexpr  ::facebook::ns::qwerty::AnEnumE TEnumTraits< ::facebook::ns::qwerty::AnEnumE>::min() {
-  return  ::facebook::ns::qwerty::AnEnumE::FIELDA;
-}
+template <> struct TEnumTraits< ::facebook::ns::qwerty::AnEnumE> {
+  using type =  ::facebook::ns::qwerty::AnEnumE;
 
-template <> inline constexpr  ::facebook::ns::qwerty::AnEnumE TEnumTraits< ::facebook::ns::qwerty::AnEnumE>::max() {
-  return  ::facebook::ns::qwerty::AnEnumE::FIELDA;
-}
+  static constexpr std::size_t const size = 1;
+  static folly::Range<type const*> const values;
+  static folly::Range<folly::StringPiece const*> const names;
+
+  static char const* findName(type value);
+  static bool findValue(char const* name, type* out);
+
+  static constexpr type min() { return type::FIELDA; }
+  static constexpr type max() { return type::FIELDA; }
+};
 
 
 }} // apache::thrift

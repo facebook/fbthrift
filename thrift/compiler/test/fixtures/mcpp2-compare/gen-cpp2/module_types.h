@@ -151,75 +151,71 @@ namespace apache { namespace thrift {
 
 
 template <> struct TEnumDataStorage< ::some::valid::ns::MyEnumA>;
-#ifndef _MSC_VER
-template <> const std::size_t TEnumTraits< ::some::valid::ns::MyEnumA>::size;
-template <> const folly::Range<const  ::some::valid::ns::MyEnumA*> TEnumTraits< ::some::valid::ns::MyEnumA>::values;
-template <> const folly::Range<const folly::StringPiece*> TEnumTraits< ::some::valid::ns::MyEnumA>::names;
-#endif
-template <> const char* TEnumTraits< ::some::valid::ns::MyEnumA>::findName( ::some::valid::ns::MyEnumA value);
-template <> bool TEnumTraits< ::some::valid::ns::MyEnumA>::findValue(const char* name,  ::some::valid::ns::MyEnumA* outValue);
 
-template <> inline constexpr  ::some::valid::ns::MyEnumA TEnumTraits< ::some::valid::ns::MyEnumA>::min() {
-  return  ::some::valid::ns::MyEnumA::fieldA;
-}
+template <> struct TEnumTraits< ::some::valid::ns::MyEnumA> {
+  using type =  ::some::valid::ns::MyEnumA;
 
-template <> inline constexpr  ::some::valid::ns::MyEnumA TEnumTraits< ::some::valid::ns::MyEnumA>::max() {
-  return  ::some::valid::ns::MyEnumA::fieldC;
-}
+  static constexpr std::size_t const size = 3;
+  static folly::Range<type const*> const values;
+  static folly::Range<folly::StringPiece const*> const names;
+
+  static char const* findName(type value);
+  static bool findValue(char const* name, type* out);
+
+  static constexpr type min() { return type::fieldA; }
+  static constexpr type max() { return type::fieldC; }
+};
 
 
 template <> struct TEnumDataStorage< ::some::valid::ns::AnnotatedEnum>;
-#ifndef _MSC_VER
-template <> const std::size_t TEnumTraits< ::some::valid::ns::AnnotatedEnum>::size;
-template <> const folly::Range<const  ::some::valid::ns::AnnotatedEnum*> TEnumTraits< ::some::valid::ns::AnnotatedEnum>::values;
-template <> const folly::Range<const folly::StringPiece*> TEnumTraits< ::some::valid::ns::AnnotatedEnum>::names;
-#endif
-template <> const char* TEnumTraits< ::some::valid::ns::AnnotatedEnum>::findName( ::some::valid::ns::AnnotatedEnum value);
-template <> bool TEnumTraits< ::some::valid::ns::AnnotatedEnum>::findValue(const char* name,  ::some::valid::ns::AnnotatedEnum* outValue);
 
-template <> inline constexpr  ::some::valid::ns::AnnotatedEnum TEnumTraits< ::some::valid::ns::AnnotatedEnum>::min() {
-  return  ::some::valid::ns::AnnotatedEnum::FIELDA;
-}
+template <> struct TEnumTraits< ::some::valid::ns::AnnotatedEnum> {
+  using type =  ::some::valid::ns::AnnotatedEnum;
 
-template <> inline constexpr  ::some::valid::ns::AnnotatedEnum TEnumTraits< ::some::valid::ns::AnnotatedEnum>::max() {
-  return  ::some::valid::ns::AnnotatedEnum::FIELDC;
-}
+  static constexpr std::size_t const size = 3;
+  static folly::Range<type const*> const values;
+  static folly::Range<folly::StringPiece const*> const names;
+
+  static char const* findName(type value);
+  static bool findValue(char const* name, type* out);
+
+  static constexpr type min() { return type::FIELDA; }
+  static constexpr type max() { return type::FIELDC; }
+};
 
 
 template <> struct TEnumDataStorage< ::some::valid::ns::AnnotatedEnum2>;
-#ifndef _MSC_VER
-template <> const std::size_t TEnumTraits< ::some::valid::ns::AnnotatedEnum2>::size;
-template <> const folly::Range<const  ::some::valid::ns::AnnotatedEnum2*> TEnumTraits< ::some::valid::ns::AnnotatedEnum2>::values;
-template <> const folly::Range<const folly::StringPiece*> TEnumTraits< ::some::valid::ns::AnnotatedEnum2>::names;
-#endif
-template <> const char* TEnumTraits< ::some::valid::ns::AnnotatedEnum2>::findName( ::some::valid::ns::AnnotatedEnum2 value);
-template <> bool TEnumTraits< ::some::valid::ns::AnnotatedEnum2>::findValue(const char* name,  ::some::valid::ns::AnnotatedEnum2* outValue);
 
-template <> inline constexpr  ::some::valid::ns::AnnotatedEnum2 TEnumTraits< ::some::valid::ns::AnnotatedEnum2>::min() {
-  return  ::some::valid::ns::AnnotatedEnum2::FIELDA;
-}
+template <> struct TEnumTraits< ::some::valid::ns::AnnotatedEnum2> {
+  using type =  ::some::valid::ns::AnnotatedEnum2;
 
-template <> inline constexpr  ::some::valid::ns::AnnotatedEnum2 TEnumTraits< ::some::valid::ns::AnnotatedEnum2>::max() {
-  return  ::some::valid::ns::AnnotatedEnum2::FIELDC;
-}
+  static constexpr std::size_t const size = 3;
+  static folly::Range<type const*> const values;
+  static folly::Range<folly::StringPiece const*> const names;
+
+  static char const* findName(type value);
+  static bool findValue(char const* name, type* out);
+
+  static constexpr type min() { return type::FIELDA; }
+  static constexpr type max() { return type::FIELDC; }
+};
 
 
 template <> struct TEnumDataStorage< ::some::valid::ns::MyEnumB>;
-#ifndef _MSC_VER
-template <> const std::size_t TEnumTraits< ::some::valid::ns::MyEnumB>::size;
-template <> const folly::Range<const  ::some::valid::ns::MyEnumB*> TEnumTraits< ::some::valid::ns::MyEnumB>::values;
-template <> const folly::Range<const folly::StringPiece*> TEnumTraits< ::some::valid::ns::MyEnumB>::names;
-#endif
-template <> const char* TEnumTraits< ::some::valid::ns::MyEnumB>::findName( ::some::valid::ns::MyEnumB value);
-template <> bool TEnumTraits< ::some::valid::ns::MyEnumB>::findValue(const char* name,  ::some::valid::ns::MyEnumB* outValue);
 
-template <> inline constexpr  ::some::valid::ns::MyEnumB TEnumTraits< ::some::valid::ns::MyEnumB>::min() {
-  return  ::some::valid::ns::MyEnumB::AField;
-}
+template <> struct TEnumTraits< ::some::valid::ns::MyEnumB> {
+  using type =  ::some::valid::ns::MyEnumB;
 
-template <> inline constexpr  ::some::valid::ns::MyEnumB TEnumTraits< ::some::valid::ns::MyEnumB>::max() {
-  return  ::some::valid::ns::MyEnumB::AField;
-}
+  static constexpr std::size_t const size = 1;
+  static folly::Range<type const*> const values;
+  static folly::Range<folly::StringPiece const*> const names;
+
+  static char const* findName(type value);
+  static bool findValue(char const* name, type* out);
+
+  static constexpr type min() { return type::AField; }
+  static constexpr type max() { return type::AField; }
+};
 
 
 }} // apache::thrift

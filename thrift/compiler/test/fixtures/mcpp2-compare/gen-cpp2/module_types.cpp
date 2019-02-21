@@ -23,17 +23,24 @@ namespace std {
 } // std
 namespace apache { namespace thrift {
 
-template <> const std::size_t TEnumTraits< ::some::valid::ns::MyEnumA>::size = 3;
-template <> const folly::Range<const  ::some::valid::ns::MyEnumA*> TEnumTraits< ::some::valid::ns::MyEnumA>::values = folly::range( ::some::valid::ns::_MyEnumAEnumDataStorage::values);
-template <> const folly::Range<const folly::StringPiece*> TEnumTraits< ::some::valid::ns::MyEnumA>::names = folly::range( ::some::valid::ns::_MyEnumAEnumDataStorage::names);
-template <> const char* TEnumTraits< ::some::valid::ns::MyEnumA>::findName( ::some::valid::ns::MyEnumA value) {
-  static auto const map = folly::Indestructible< ::some::valid::ns::_MyEnumA_EnumMapFactory::ValuesToNamesMapType>{ ::some::valid::ns::_MyEnumA_EnumMapFactory::makeValuesToNamesMap()};
-  return findName(*map, value);
+constexpr std::size_t const TEnumTraits< ::some::valid::ns::MyEnumA>::size;
+folly::Range< ::some::valid::ns::MyEnumA const*> const TEnumTraits< ::some::valid::ns::MyEnumA>::values = folly::range( ::some::valid::ns::_MyEnumAEnumDataStorage::values);
+folly::Range<folly::StringPiece const*> const TEnumTraits< ::some::valid::ns::MyEnumA>::names = folly::range( ::some::valid::ns::_MyEnumAEnumDataStorage::names);
+
+char const* TEnumTraits< ::some::valid::ns::MyEnumA>::findName(type value) {
+  using factory =  ::some::valid::ns::_MyEnumA_EnumMapFactory;
+  static folly::Indestructible<factory::ValuesToNamesMapType> const map{
+      factory::makeValuesToNamesMap()};
+  auto found = map->find(value);
+  return found == map->end() ? nullptr : found->second;
 }
 
-template <> bool TEnumTraits< ::some::valid::ns::MyEnumA>::findValue(const char* name,  ::some::valid::ns::MyEnumA* outValue) {
-  static auto const map = folly::Indestructible< ::some::valid::ns::_MyEnumA_EnumMapFactory::NamesToValuesMapType>{ ::some::valid::ns::_MyEnumA_EnumMapFactory::makeNamesToValuesMap()};
-  return findValue(*map, name, outValue);
+bool TEnumTraits< ::some::valid::ns::MyEnumA>::findValue(char const* name, type* out) {
+  using factory =  ::some::valid::ns::_MyEnumA_EnumMapFactory;
+  static folly::Indestructible<factory::NamesToValuesMapType> const map{
+      factory::makeNamesToValuesMap()};
+  auto found = map->find(name);
+  return found == map->end() ? false : (*out = found->second, true);
 }
 
 }} // apache::thrift
@@ -48,17 +55,24 @@ namespace std {
 } // std
 namespace apache { namespace thrift {
 
-template <> const std::size_t TEnumTraits< ::some::valid::ns::AnnotatedEnum>::size = 3;
-template <> const folly::Range<const  ::some::valid::ns::AnnotatedEnum*> TEnumTraits< ::some::valid::ns::AnnotatedEnum>::values = folly::range( ::some::valid::ns::_AnnotatedEnumEnumDataStorage::values);
-template <> const folly::Range<const folly::StringPiece*> TEnumTraits< ::some::valid::ns::AnnotatedEnum>::names = folly::range( ::some::valid::ns::_AnnotatedEnumEnumDataStorage::names);
-template <> const char* TEnumTraits< ::some::valid::ns::AnnotatedEnum>::findName( ::some::valid::ns::AnnotatedEnum value) {
-  static auto const map = folly::Indestructible< ::some::valid::ns::_AnnotatedEnum_EnumMapFactory::ValuesToNamesMapType>{ ::some::valid::ns::_AnnotatedEnum_EnumMapFactory::makeValuesToNamesMap()};
-  return findName(*map, value);
+constexpr std::size_t const TEnumTraits< ::some::valid::ns::AnnotatedEnum>::size;
+folly::Range< ::some::valid::ns::AnnotatedEnum const*> const TEnumTraits< ::some::valid::ns::AnnotatedEnum>::values = folly::range( ::some::valid::ns::_AnnotatedEnumEnumDataStorage::values);
+folly::Range<folly::StringPiece const*> const TEnumTraits< ::some::valid::ns::AnnotatedEnum>::names = folly::range( ::some::valid::ns::_AnnotatedEnumEnumDataStorage::names);
+
+char const* TEnumTraits< ::some::valid::ns::AnnotatedEnum>::findName(type value) {
+  using factory =  ::some::valid::ns::_AnnotatedEnum_EnumMapFactory;
+  static folly::Indestructible<factory::ValuesToNamesMapType> const map{
+      factory::makeValuesToNamesMap()};
+  auto found = map->find(value);
+  return found == map->end() ? nullptr : found->second;
 }
 
-template <> bool TEnumTraits< ::some::valid::ns::AnnotatedEnum>::findValue(const char* name,  ::some::valid::ns::AnnotatedEnum* outValue) {
-  static auto const map = folly::Indestructible< ::some::valid::ns::_AnnotatedEnum_EnumMapFactory::NamesToValuesMapType>{ ::some::valid::ns::_AnnotatedEnum_EnumMapFactory::makeNamesToValuesMap()};
-  return findValue(*map, name, outValue);
+bool TEnumTraits< ::some::valid::ns::AnnotatedEnum>::findValue(char const* name, type* out) {
+  using factory =  ::some::valid::ns::_AnnotatedEnum_EnumMapFactory;
+  static folly::Indestructible<factory::NamesToValuesMapType> const map{
+      factory::makeNamesToValuesMap()};
+  auto found = map->find(name);
+  return found == map->end() ? false : (*out = found->second, true);
 }
 
 }} // apache::thrift
@@ -73,17 +87,24 @@ namespace std {
 } // std
 namespace apache { namespace thrift {
 
-template <> const std::size_t TEnumTraits< ::some::valid::ns::AnnotatedEnum2>::size = 3;
-template <> const folly::Range<const  ::some::valid::ns::AnnotatedEnum2*> TEnumTraits< ::some::valid::ns::AnnotatedEnum2>::values = folly::range( ::some::valid::ns::_AnnotatedEnum2EnumDataStorage::values);
-template <> const folly::Range<const folly::StringPiece*> TEnumTraits< ::some::valid::ns::AnnotatedEnum2>::names = folly::range( ::some::valid::ns::_AnnotatedEnum2EnumDataStorage::names);
-template <> const char* TEnumTraits< ::some::valid::ns::AnnotatedEnum2>::findName( ::some::valid::ns::AnnotatedEnum2 value) {
-  static auto const map = folly::Indestructible< ::some::valid::ns::_AnnotatedEnum2_EnumMapFactory::ValuesToNamesMapType>{ ::some::valid::ns::_AnnotatedEnum2_EnumMapFactory::makeValuesToNamesMap()};
-  return findName(*map, value);
+constexpr std::size_t const TEnumTraits< ::some::valid::ns::AnnotatedEnum2>::size;
+folly::Range< ::some::valid::ns::AnnotatedEnum2 const*> const TEnumTraits< ::some::valid::ns::AnnotatedEnum2>::values = folly::range( ::some::valid::ns::_AnnotatedEnum2EnumDataStorage::values);
+folly::Range<folly::StringPiece const*> const TEnumTraits< ::some::valid::ns::AnnotatedEnum2>::names = folly::range( ::some::valid::ns::_AnnotatedEnum2EnumDataStorage::names);
+
+char const* TEnumTraits< ::some::valid::ns::AnnotatedEnum2>::findName(type value) {
+  using factory =  ::some::valid::ns::_AnnotatedEnum2_EnumMapFactory;
+  static folly::Indestructible<factory::ValuesToNamesMapType> const map{
+      factory::makeValuesToNamesMap()};
+  auto found = map->find(value);
+  return found == map->end() ? nullptr : found->second;
 }
 
-template <> bool TEnumTraits< ::some::valid::ns::AnnotatedEnum2>::findValue(const char* name,  ::some::valid::ns::AnnotatedEnum2* outValue) {
-  static auto const map = folly::Indestructible< ::some::valid::ns::_AnnotatedEnum2_EnumMapFactory::NamesToValuesMapType>{ ::some::valid::ns::_AnnotatedEnum2_EnumMapFactory::makeNamesToValuesMap()};
-  return findValue(*map, name, outValue);
+bool TEnumTraits< ::some::valid::ns::AnnotatedEnum2>::findValue(char const* name, type* out) {
+  using factory =  ::some::valid::ns::_AnnotatedEnum2_EnumMapFactory;
+  static folly::Indestructible<factory::NamesToValuesMapType> const map{
+      factory::makeNamesToValuesMap()};
+  auto found = map->find(name);
+  return found == map->end() ? false : (*out = found->second, true);
 }
 
 }} // apache::thrift
@@ -98,17 +119,24 @@ namespace std {
 } // std
 namespace apache { namespace thrift {
 
-template <> const std::size_t TEnumTraits< ::some::valid::ns::MyEnumB>::size = 1;
-template <> const folly::Range<const  ::some::valid::ns::MyEnumB*> TEnumTraits< ::some::valid::ns::MyEnumB>::values = folly::range( ::some::valid::ns::_MyEnumBEnumDataStorage::values);
-template <> const folly::Range<const folly::StringPiece*> TEnumTraits< ::some::valid::ns::MyEnumB>::names = folly::range( ::some::valid::ns::_MyEnumBEnumDataStorage::names);
-template <> const char* TEnumTraits< ::some::valid::ns::MyEnumB>::findName( ::some::valid::ns::MyEnumB value) {
-  static auto const map = folly::Indestructible< ::some::valid::ns::_MyEnumB_EnumMapFactory::ValuesToNamesMapType>{ ::some::valid::ns::_MyEnumB_EnumMapFactory::makeValuesToNamesMap()};
-  return findName(*map, value);
+constexpr std::size_t const TEnumTraits< ::some::valid::ns::MyEnumB>::size;
+folly::Range< ::some::valid::ns::MyEnumB const*> const TEnumTraits< ::some::valid::ns::MyEnumB>::values = folly::range( ::some::valid::ns::_MyEnumBEnumDataStorage::values);
+folly::Range<folly::StringPiece const*> const TEnumTraits< ::some::valid::ns::MyEnumB>::names = folly::range( ::some::valid::ns::_MyEnumBEnumDataStorage::names);
+
+char const* TEnumTraits< ::some::valid::ns::MyEnumB>::findName(type value) {
+  using factory =  ::some::valid::ns::_MyEnumB_EnumMapFactory;
+  static folly::Indestructible<factory::ValuesToNamesMapType> const map{
+      factory::makeValuesToNamesMap()};
+  auto found = map->find(value);
+  return found == map->end() ? nullptr : found->second;
 }
 
-template <> bool TEnumTraits< ::some::valid::ns::MyEnumB>::findValue(const char* name,  ::some::valid::ns::MyEnumB* outValue) {
-  static auto const map = folly::Indestructible< ::some::valid::ns::_MyEnumB_EnumMapFactory::NamesToValuesMapType>{ ::some::valid::ns::_MyEnumB_EnumMapFactory::makeNamesToValuesMap()};
-  return findValue(*map, name, outValue);
+bool TEnumTraits< ::some::valid::ns::MyEnumB>::findValue(char const* name, type* out) {
+  using factory =  ::some::valid::ns::_MyEnumB_EnumMapFactory;
+  static folly::Indestructible<factory::NamesToValuesMapType> const map{
+      factory::makeNamesToValuesMap()};
+  auto found = map->find(name);
+  return found == map->end() ? false : (*out = found->second, true);
 }
 
 }} // apache::thrift

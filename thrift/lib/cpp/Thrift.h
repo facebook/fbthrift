@@ -62,87 +62,33 @@ struct ltstr {
  * Specialization defn in _data.h.
  */
 template <typename T>
-struct TEnumDataStorage;
+struct TEnumDataStorage {
+  static_assert(sizeof(T) == ~0ull, "invalid use of base template");
+};
 
 /**
- * Helper template class for enum<->string conversion.
+ * Specialization defn in _types.h.
+ * Specialization member defns in _types.cpp.
  */
 template <typename T>
 struct TEnumTraits {
-  static_assert(std::is_enum<T>::value, "only works with enum types");
+  static_assert(sizeof(T) == ~0ull, "invalid use of base template");
 
-  static const std::size_t size;
-  static const folly::Range<const T*> values;
-  static const folly::Range<const folly::StringPiece*> names;
-
-  /**
-   * Return the minimum value.
-   */
-  static constexpr T min();
-
-  /**
-   * Return the maximum value.
-   */
-  static constexpr T max();
-
-  /**
-   * Finds the name of a given enum value, returning it or nullptr on failure.
-   * Specialized implementations will be emitted as part of enum codegen.
-   *
-   * Example specialization:
-   *   template<>
-   *   const char* TEnumTraits<MyEnum>::findName(MyEnum value) {
-   *     return findName(_MyEnum_VALUES_TO_NAMES, value);
-   *   }
-   * Note the use of helper function 'findName(...)', below.
-   */
-  static const char* findName(T value);
-  /**
-   * Attempts to find a value for a given name.
-   * Specialized implementations will be emitted as part of enum codegen.
-   *
-   * Example implementation:
-   *   template<>
-   *   bool TEnumTraits<MyEnum>::findValue(const char* name,
-   *                                        MyEnum* outValue) {
-   *     return findValue(_MyEnum_NAMES_TO_VALUES, name, outValue);
-   *   }
-   * Note the use of helper function 'findValue(...)', below.
-   */
-  static bool findValue(const char* name, T* outValue);
- private:
-  /**
-   * Helper method used by codegen implementation of findName, Supports
-   * use with strict and non-strict enums by way of template parameter
-   * 'ValueType'.
-   */
-  template<typename ValueType>
-  static const char* findName(const std::map<ValueType, const char*>& map,
-                              T value) {
-    auto found = map.find(value);
-    if (found == map.end()) {
-      return nullptr;
-    } else {
-      return found->second;
-    }
-  }
-
-  /**
-   * Helper method used by codegen implementation of findValue, Supports
-   * use with strict and non-strict enums by way of template parameter
-   * 'ValueType'.
-   */
-  template<typename ValueType>
-  static bool findValue(const std::map<const char*, ValueType, ltstr>& map,
-                        const char* name, T* out) {
-    auto found = map.find(name);
-    if (found == map.end()) {
-      return false;
-    } else {
-      *out = static_cast<T>(found->second);
-      return true;
-    }
-  }
+  //  When instantiated with an enum type T, includes:
+  //
+  //      using type = T;
+  //
+  //      static constexpr std::size_t const size = /*...*/;
+  //      static folly::Range<type const*> const values;
+  //      static folly::Range<folly::StringPiece const*> const names;
+  //
+  //      static char const* findName(type value);
+  //      static bool findValue(char const* name, type* out);
+  //
+  //  When instantiated with an enum type T which is not empty, includes:
+  //
+  //      static constexpr type min() { /*...*/ }
+  //      static constexpr type min() { /*...*/ }
 };
 
 namespace detail {

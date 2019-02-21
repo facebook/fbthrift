@@ -23,17 +23,24 @@ namespace std {
 } // std
 namespace apache { namespace thrift {
 
-template <> const std::size_t TEnumTraits< ::some::ns::EnumB>::size = 1;
-template <> const folly::Range<const  ::some::ns::EnumB*> TEnumTraits< ::some::ns::EnumB>::values = folly::range( ::some::ns::_EnumBEnumDataStorage::values);
-template <> const folly::Range<const folly::StringPiece*> TEnumTraits< ::some::ns::EnumB>::names = folly::range( ::some::ns::_EnumBEnumDataStorage::names);
-template <> const char* TEnumTraits< ::some::ns::EnumB>::findName( ::some::ns::EnumB value) {
-  static auto const map = folly::Indestructible< ::some::ns::_EnumB_EnumMapFactory::ValuesToNamesMapType>{ ::some::ns::_EnumB_EnumMapFactory::makeValuesToNamesMap()};
-  return findName(*map, value);
+constexpr std::size_t const TEnumTraits< ::some::ns::EnumB>::size;
+folly::Range< ::some::ns::EnumB const*> const TEnumTraits< ::some::ns::EnumB>::values = folly::range( ::some::ns::_EnumBEnumDataStorage::values);
+folly::Range<folly::StringPiece const*> const TEnumTraits< ::some::ns::EnumB>::names = folly::range( ::some::ns::_EnumBEnumDataStorage::names);
+
+char const* TEnumTraits< ::some::ns::EnumB>::findName(type value) {
+  using factory =  ::some::ns::_EnumB_EnumMapFactory;
+  static folly::Indestructible<factory::ValuesToNamesMapType> const map{
+      factory::makeValuesToNamesMap()};
+  auto found = map->find(value);
+  return found == map->end() ? nullptr : found->second;
 }
 
-template <> bool TEnumTraits< ::some::ns::EnumB>::findValue(const char* name,  ::some::ns::EnumB* outValue) {
-  static auto const map = folly::Indestructible< ::some::ns::_EnumB_EnumMapFactory::NamesToValuesMapType>{ ::some::ns::_EnumB_EnumMapFactory::makeNamesToValuesMap()};
-  return findValue(*map, name, outValue);
+bool TEnumTraits< ::some::ns::EnumB>::findValue(char const* name, type* out) {
+  using factory =  ::some::ns::_EnumB_EnumMapFactory;
+  static folly::Indestructible<factory::NamesToValuesMapType> const map{
+      factory::makeNamesToValuesMap()};
+  auto found = map->find(name);
+  return found == map->end() ? false : (*out = found->second, true);
 }
 
 }} // apache::thrift

@@ -23,17 +23,24 @@ namespace std {
 } // std
 namespace apache { namespace thrift {
 
-template <> const std::size_t TEnumTraits< ::a::different::ns::AnEnum>::size = 2;
-template <> const folly::Range<const  ::a::different::ns::AnEnum*> TEnumTraits< ::a::different::ns::AnEnum>::values = folly::range( ::a::different::ns::_AnEnumEnumDataStorage::values);
-template <> const folly::Range<const folly::StringPiece*> TEnumTraits< ::a::different::ns::AnEnum>::names = folly::range( ::a::different::ns::_AnEnumEnumDataStorage::names);
-template <> const char* TEnumTraits< ::a::different::ns::AnEnum>::findName( ::a::different::ns::AnEnum value) {
-  static auto const map = folly::Indestructible< ::a::different::ns::_AnEnum_EnumMapFactory::ValuesToNamesMapType>{ ::a::different::ns::_AnEnum_EnumMapFactory::makeValuesToNamesMap()};
-  return findName(*map, value);
+constexpr std::size_t const TEnumTraits< ::a::different::ns::AnEnum>::size;
+folly::Range< ::a::different::ns::AnEnum const*> const TEnumTraits< ::a::different::ns::AnEnum>::values = folly::range( ::a::different::ns::_AnEnumEnumDataStorage::values);
+folly::Range<folly::StringPiece const*> const TEnumTraits< ::a::different::ns::AnEnum>::names = folly::range( ::a::different::ns::_AnEnumEnumDataStorage::names);
+
+char const* TEnumTraits< ::a::different::ns::AnEnum>::findName(type value) {
+  using factory =  ::a::different::ns::_AnEnum_EnumMapFactory;
+  static folly::Indestructible<factory::ValuesToNamesMapType> const map{
+      factory::makeValuesToNamesMap()};
+  auto found = map->find(value);
+  return found == map->end() ? nullptr : found->second;
 }
 
-template <> bool TEnumTraits< ::a::different::ns::AnEnum>::findValue(const char* name,  ::a::different::ns::AnEnum* outValue) {
-  static auto const map = folly::Indestructible< ::a::different::ns::_AnEnum_EnumMapFactory::NamesToValuesMapType>{ ::a::different::ns::_AnEnum_EnumMapFactory::makeNamesToValuesMap()};
-  return findValue(*map, name, outValue);
+bool TEnumTraits< ::a::different::ns::AnEnum>::findValue(char const* name, type* out) {
+  using factory =  ::a::different::ns::_AnEnum_EnumMapFactory;
+  static folly::Indestructible<factory::NamesToValuesMapType> const map{
+      factory::makeNamesToValuesMap()};
+  auto found = map->find(name);
+  return found == map->end() ? false : (*out = found->second, true);
 }
 
 }} // apache::thrift

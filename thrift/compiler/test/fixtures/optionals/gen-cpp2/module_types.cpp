@@ -23,17 +23,24 @@ namespace std {
 } // std
 namespace apache { namespace thrift {
 
-template <> const std::size_t TEnumTraits< ::cpp2::Animal>::size = 3;
-template <> const folly::Range<const  ::cpp2::Animal*> TEnumTraits< ::cpp2::Animal>::values = folly::range( ::cpp2::_AnimalEnumDataStorage::values);
-template <> const folly::Range<const folly::StringPiece*> TEnumTraits< ::cpp2::Animal>::names = folly::range( ::cpp2::_AnimalEnumDataStorage::names);
-template <> const char* TEnumTraits< ::cpp2::Animal>::findName( ::cpp2::Animal value) {
-  static auto const map = folly::Indestructible< ::cpp2::_Animal_EnumMapFactory::ValuesToNamesMapType>{ ::cpp2::_Animal_EnumMapFactory::makeValuesToNamesMap()};
-  return findName(*map, value);
+constexpr std::size_t const TEnumTraits< ::cpp2::Animal>::size;
+folly::Range< ::cpp2::Animal const*> const TEnumTraits< ::cpp2::Animal>::values = folly::range( ::cpp2::_AnimalEnumDataStorage::values);
+folly::Range<folly::StringPiece const*> const TEnumTraits< ::cpp2::Animal>::names = folly::range( ::cpp2::_AnimalEnumDataStorage::names);
+
+char const* TEnumTraits< ::cpp2::Animal>::findName(type value) {
+  using factory =  ::cpp2::_Animal_EnumMapFactory;
+  static folly::Indestructible<factory::ValuesToNamesMapType> const map{
+      factory::makeValuesToNamesMap()};
+  auto found = map->find(value);
+  return found == map->end() ? nullptr : found->second;
 }
 
-template <> bool TEnumTraits< ::cpp2::Animal>::findValue(const char* name,  ::cpp2::Animal* outValue) {
-  static auto const map = folly::Indestructible< ::cpp2::_Animal_EnumMapFactory::NamesToValuesMapType>{ ::cpp2::_Animal_EnumMapFactory::makeNamesToValuesMap()};
-  return findValue(*map, name, outValue);
+bool TEnumTraits< ::cpp2::Animal>::findValue(char const* name, type* out) {
+  using factory =  ::cpp2::_Animal_EnumMapFactory;
+  static folly::Indestructible<factory::NamesToValuesMapType> const map{
+      factory::makeNamesToValuesMap()};
+  auto found = map->find(name);
+  return found == map->end() ? false : (*out = found->second, true);
 }
 
 }} // apache::thrift

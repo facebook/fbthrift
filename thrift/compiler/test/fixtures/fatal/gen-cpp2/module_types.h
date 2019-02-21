@@ -117,75 +117,71 @@ namespace apache { namespace thrift {
 
 
 template <> struct TEnumDataStorage< ::test_cpp2::cpp_reflection::enum1>;
-#ifndef _MSC_VER
-template <> const std::size_t TEnumTraits< ::test_cpp2::cpp_reflection::enum1>::size;
-template <> const folly::Range<const  ::test_cpp2::cpp_reflection::enum1*> TEnumTraits< ::test_cpp2::cpp_reflection::enum1>::values;
-template <> const folly::Range<const folly::StringPiece*> TEnumTraits< ::test_cpp2::cpp_reflection::enum1>::names;
-#endif
-template <> const char* TEnumTraits< ::test_cpp2::cpp_reflection::enum1>::findName( ::test_cpp2::cpp_reflection::enum1 value);
-template <> bool TEnumTraits< ::test_cpp2::cpp_reflection::enum1>::findValue(const char* name,  ::test_cpp2::cpp_reflection::enum1* outValue);
 
-template <> inline constexpr  ::test_cpp2::cpp_reflection::enum1 TEnumTraits< ::test_cpp2::cpp_reflection::enum1>::min() {
-  return  ::test_cpp2::cpp_reflection::enum1::field0;
-}
+template <> struct TEnumTraits< ::test_cpp2::cpp_reflection::enum1> {
+  using type =  ::test_cpp2::cpp_reflection::enum1;
 
-template <> inline constexpr  ::test_cpp2::cpp_reflection::enum1 TEnumTraits< ::test_cpp2::cpp_reflection::enum1>::max() {
-  return  ::test_cpp2::cpp_reflection::enum1::field2;
-}
+  static constexpr std::size_t const size = 3;
+  static folly::Range<type const*> const values;
+  static folly::Range<folly::StringPiece const*> const names;
+
+  static char const* findName(type value);
+  static bool findValue(char const* name, type* out);
+
+  static constexpr type min() { return type::field0; }
+  static constexpr type max() { return type::field2; }
+};
 
 
 template <> struct TEnumDataStorage< ::test_cpp2::cpp_reflection::enum2>;
-#ifndef _MSC_VER
-template <> const std::size_t TEnumTraits< ::test_cpp2::cpp_reflection::enum2>::size;
-template <> const folly::Range<const  ::test_cpp2::cpp_reflection::enum2*> TEnumTraits< ::test_cpp2::cpp_reflection::enum2>::values;
-template <> const folly::Range<const folly::StringPiece*> TEnumTraits< ::test_cpp2::cpp_reflection::enum2>::names;
-#endif
-template <> const char* TEnumTraits< ::test_cpp2::cpp_reflection::enum2>::findName( ::test_cpp2::cpp_reflection::enum2 value);
-template <> bool TEnumTraits< ::test_cpp2::cpp_reflection::enum2>::findValue(const char* name,  ::test_cpp2::cpp_reflection::enum2* outValue);
 
-template <> inline constexpr  ::test_cpp2::cpp_reflection::enum2 TEnumTraits< ::test_cpp2::cpp_reflection::enum2>::min() {
-  return  ::test_cpp2::cpp_reflection::enum2::field0_2;
-}
+template <> struct TEnumTraits< ::test_cpp2::cpp_reflection::enum2> {
+  using type =  ::test_cpp2::cpp_reflection::enum2;
 
-template <> inline constexpr  ::test_cpp2::cpp_reflection::enum2 TEnumTraits< ::test_cpp2::cpp_reflection::enum2>::max() {
-  return  ::test_cpp2::cpp_reflection::enum2::field2_2;
-}
+  static constexpr std::size_t const size = 3;
+  static folly::Range<type const*> const values;
+  static folly::Range<folly::StringPiece const*> const names;
+
+  static char const* findName(type value);
+  static bool findValue(char const* name, type* out);
+
+  static constexpr type min() { return type::field0_2; }
+  static constexpr type max() { return type::field2_2; }
+};
 
 
 template <> struct TEnumDataStorage< ::test_cpp2::cpp_reflection::enum3>;
-#ifndef _MSC_VER
-template <> const std::size_t TEnumTraits< ::test_cpp2::cpp_reflection::enum3>::size;
-template <> const folly::Range<const  ::test_cpp2::cpp_reflection::enum3*> TEnumTraits< ::test_cpp2::cpp_reflection::enum3>::values;
-template <> const folly::Range<const folly::StringPiece*> TEnumTraits< ::test_cpp2::cpp_reflection::enum3>::names;
-#endif
-template <> const char* TEnumTraits< ::test_cpp2::cpp_reflection::enum3>::findName( ::test_cpp2::cpp_reflection::enum3 value);
-template <> bool TEnumTraits< ::test_cpp2::cpp_reflection::enum3>::findValue(const char* name,  ::test_cpp2::cpp_reflection::enum3* outValue);
 
-template <> inline constexpr  ::test_cpp2::cpp_reflection::enum3 TEnumTraits< ::test_cpp2::cpp_reflection::enum3>::min() {
-  return  ::test_cpp2::cpp_reflection::enum3::field0_3;
-}
+template <> struct TEnumTraits< ::test_cpp2::cpp_reflection::enum3> {
+  using type =  ::test_cpp2::cpp_reflection::enum3;
 
-template <> inline constexpr  ::test_cpp2::cpp_reflection::enum3 TEnumTraits< ::test_cpp2::cpp_reflection::enum3>::max() {
-  return  ::test_cpp2::cpp_reflection::enum3::field2_3;
-}
+  static constexpr std::size_t const size = 3;
+  static folly::Range<type const*> const values;
+  static folly::Range<folly::StringPiece const*> const names;
+
+  static char const* findName(type value);
+  static bool findValue(char const* name, type* out);
+
+  static constexpr type min() { return type::field0_3; }
+  static constexpr type max() { return type::field2_3; }
+};
 
 
 template <> struct TEnumDataStorage< ::test_cpp2::cpp_reflection::enum_with_special_names>;
-#ifndef _MSC_VER
-template <> const std::size_t TEnumTraits< ::test_cpp2::cpp_reflection::enum_with_special_names>::size;
-template <> const folly::Range<const  ::test_cpp2::cpp_reflection::enum_with_special_names*> TEnumTraits< ::test_cpp2::cpp_reflection::enum_with_special_names>::values;
-template <> const folly::Range<const folly::StringPiece*> TEnumTraits< ::test_cpp2::cpp_reflection::enum_with_special_names>::names;
-#endif
-template <> const char* TEnumTraits< ::test_cpp2::cpp_reflection::enum_with_special_names>::findName( ::test_cpp2::cpp_reflection::enum_with_special_names value);
-template <> bool TEnumTraits< ::test_cpp2::cpp_reflection::enum_with_special_names>::findValue(const char* name,  ::test_cpp2::cpp_reflection::enum_with_special_names* outValue);
 
-template <> inline constexpr  ::test_cpp2::cpp_reflection::enum_with_special_names TEnumTraits< ::test_cpp2::cpp_reflection::enum_with_special_names>::min() {
-  return  ::test_cpp2::cpp_reflection::enum_with_special_names::get;
-}
+template <> struct TEnumTraits< ::test_cpp2::cpp_reflection::enum_with_special_names> {
+  using type =  ::test_cpp2::cpp_reflection::enum_with_special_names;
 
-template <> inline constexpr  ::test_cpp2::cpp_reflection::enum_with_special_names TEnumTraits< ::test_cpp2::cpp_reflection::enum_with_special_names>::max() {
-  return  ::test_cpp2::cpp_reflection::enum_with_special_names::fields;
-}
+  static constexpr std::size_t const size = 28;
+  static folly::Range<type const*> const values;
+  static folly::Range<folly::StringPiece const*> const names;
+
+  static char const* findName(type value);
+  static bool findValue(char const* name, type* out);
+
+  static constexpr type min() { return type::get; }
+  static constexpr type max() { return type::fields; }
+};
 
 
 }} // apache::thrift

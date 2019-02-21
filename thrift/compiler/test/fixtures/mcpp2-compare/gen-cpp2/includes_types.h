@@ -41,21 +41,20 @@ namespace apache { namespace thrift {
 
 
 template <> struct TEnumDataStorage< ::a::different::ns::AnEnum>;
-#ifndef _MSC_VER
-template <> const std::size_t TEnumTraits< ::a::different::ns::AnEnum>::size;
-template <> const folly::Range<const  ::a::different::ns::AnEnum*> TEnumTraits< ::a::different::ns::AnEnum>::values;
-template <> const folly::Range<const folly::StringPiece*> TEnumTraits< ::a::different::ns::AnEnum>::names;
-#endif
-template <> const char* TEnumTraits< ::a::different::ns::AnEnum>::findName( ::a::different::ns::AnEnum value);
-template <> bool TEnumTraits< ::a::different::ns::AnEnum>::findValue(const char* name,  ::a::different::ns::AnEnum* outValue);
 
-template <> inline constexpr  ::a::different::ns::AnEnum TEnumTraits< ::a::different::ns::AnEnum>::min() {
-  return  ::a::different::ns::AnEnum::FIELDA;
-}
+template <> struct TEnumTraits< ::a::different::ns::AnEnum> {
+  using type =  ::a::different::ns::AnEnum;
 
-template <> inline constexpr  ::a::different::ns::AnEnum TEnumTraits< ::a::different::ns::AnEnum>::max() {
-  return  ::a::different::ns::AnEnum::FIELDB;
-}
+  static constexpr std::size_t const size = 2;
+  static folly::Range<type const*> const values;
+  static folly::Range<folly::StringPiece const*> const names;
+
+  static char const* findName(type value);
+  static bool findValue(char const* name, type* out);
+
+  static constexpr type min() { return type::FIELDA; }
+  static constexpr type max() { return type::FIELDB; }
+};
 
 
 }} // apache::thrift

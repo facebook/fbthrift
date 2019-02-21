@@ -23,17 +23,24 @@ namespace std {
 } // std
 namespace apache { namespace thrift {
 
-template <> const std::size_t TEnumTraits< ::facebook::ns::qwerty::AnEnumA>::size = 1;
-template <> const folly::Range<const  ::facebook::ns::qwerty::AnEnumA*> TEnumTraits< ::facebook::ns::qwerty::AnEnumA>::values = folly::range( ::facebook::ns::qwerty::_AnEnumAEnumDataStorage::values);
-template <> const folly::Range<const folly::StringPiece*> TEnumTraits< ::facebook::ns::qwerty::AnEnumA>::names = folly::range( ::facebook::ns::qwerty::_AnEnumAEnumDataStorage::names);
-template <> const char* TEnumTraits< ::facebook::ns::qwerty::AnEnumA>::findName( ::facebook::ns::qwerty::AnEnumA value) {
-  static auto const map = folly::Indestructible< ::facebook::ns::qwerty::_AnEnumA_EnumMapFactory::ValuesToNamesMapType>{ ::facebook::ns::qwerty::_AnEnumA_EnumMapFactory::makeValuesToNamesMap()};
-  return findName(*map, value);
+constexpr std::size_t const TEnumTraits< ::facebook::ns::qwerty::AnEnumA>::size;
+folly::Range< ::facebook::ns::qwerty::AnEnumA const*> const TEnumTraits< ::facebook::ns::qwerty::AnEnumA>::values = folly::range( ::facebook::ns::qwerty::_AnEnumAEnumDataStorage::values);
+folly::Range<folly::StringPiece const*> const TEnumTraits< ::facebook::ns::qwerty::AnEnumA>::names = folly::range( ::facebook::ns::qwerty::_AnEnumAEnumDataStorage::names);
+
+char const* TEnumTraits< ::facebook::ns::qwerty::AnEnumA>::findName(type value) {
+  using factory =  ::facebook::ns::qwerty::_AnEnumA_EnumMapFactory;
+  static folly::Indestructible<factory::ValuesToNamesMapType> const map{
+      factory::makeValuesToNamesMap()};
+  auto found = map->find(value);
+  return found == map->end() ? nullptr : found->second;
 }
 
-template <> bool TEnumTraits< ::facebook::ns::qwerty::AnEnumA>::findValue(const char* name,  ::facebook::ns::qwerty::AnEnumA* outValue) {
-  static auto const map = folly::Indestructible< ::facebook::ns::qwerty::_AnEnumA_EnumMapFactory::NamesToValuesMapType>{ ::facebook::ns::qwerty::_AnEnumA_EnumMapFactory::makeNamesToValuesMap()};
-  return findValue(*map, name, outValue);
+bool TEnumTraits< ::facebook::ns::qwerty::AnEnumA>::findValue(char const* name, type* out) {
+  using factory =  ::facebook::ns::qwerty::_AnEnumA_EnumMapFactory;
+  static folly::Indestructible<factory::NamesToValuesMapType> const map{
+      factory::makeNamesToValuesMap()};
+  auto found = map->find(name);
+  return found == map->end() ? false : (*out = found->second, true);
 }
 
 }} // apache::thrift
@@ -48,17 +55,24 @@ namespace std {
 } // std
 namespace apache { namespace thrift {
 
-template <> const std::size_t TEnumTraits< ::facebook::ns::qwerty::AnEnumB>::size = 2;
-template <> const folly::Range<const  ::facebook::ns::qwerty::AnEnumB*> TEnumTraits< ::facebook::ns::qwerty::AnEnumB>::values = folly::range( ::facebook::ns::qwerty::_AnEnumBEnumDataStorage::values);
-template <> const folly::Range<const folly::StringPiece*> TEnumTraits< ::facebook::ns::qwerty::AnEnumB>::names = folly::range( ::facebook::ns::qwerty::_AnEnumBEnumDataStorage::names);
-template <> const char* TEnumTraits< ::facebook::ns::qwerty::AnEnumB>::findName( ::facebook::ns::qwerty::AnEnumB value) {
-  static auto const map = folly::Indestructible< ::facebook::ns::qwerty::_AnEnumB_EnumMapFactory::ValuesToNamesMapType>{ ::facebook::ns::qwerty::_AnEnumB_EnumMapFactory::makeValuesToNamesMap()};
-  return findName(*map, value);
+constexpr std::size_t const TEnumTraits< ::facebook::ns::qwerty::AnEnumB>::size;
+folly::Range< ::facebook::ns::qwerty::AnEnumB const*> const TEnumTraits< ::facebook::ns::qwerty::AnEnumB>::values = folly::range( ::facebook::ns::qwerty::_AnEnumBEnumDataStorage::values);
+folly::Range<folly::StringPiece const*> const TEnumTraits< ::facebook::ns::qwerty::AnEnumB>::names = folly::range( ::facebook::ns::qwerty::_AnEnumBEnumDataStorage::names);
+
+char const* TEnumTraits< ::facebook::ns::qwerty::AnEnumB>::findName(type value) {
+  using factory =  ::facebook::ns::qwerty::_AnEnumB_EnumMapFactory;
+  static folly::Indestructible<factory::ValuesToNamesMapType> const map{
+      factory::makeValuesToNamesMap()};
+  auto found = map->find(value);
+  return found == map->end() ? nullptr : found->second;
 }
 
-template <> bool TEnumTraits< ::facebook::ns::qwerty::AnEnumB>::findValue(const char* name,  ::facebook::ns::qwerty::AnEnumB* outValue) {
-  static auto const map = folly::Indestructible< ::facebook::ns::qwerty::_AnEnumB_EnumMapFactory::NamesToValuesMapType>{ ::facebook::ns::qwerty::_AnEnumB_EnumMapFactory::makeNamesToValuesMap()};
-  return findValue(*map, name, outValue);
+bool TEnumTraits< ::facebook::ns::qwerty::AnEnumB>::findValue(char const* name, type* out) {
+  using factory =  ::facebook::ns::qwerty::_AnEnumB_EnumMapFactory;
+  static folly::Indestructible<factory::NamesToValuesMapType> const map{
+      factory::makeNamesToValuesMap()};
+  auto found = map->find(name);
+  return found == map->end() ? false : (*out = found->second, true);
 }
 
 }} // apache::thrift
@@ -73,17 +87,24 @@ namespace std {
 } // std
 namespace apache { namespace thrift {
 
-template <> const std::size_t TEnumTraits< ::facebook::ns::qwerty::AnEnumC>::size = 1;
-template <> const folly::Range<const  ::facebook::ns::qwerty::AnEnumC*> TEnumTraits< ::facebook::ns::qwerty::AnEnumC>::values = folly::range( ::facebook::ns::qwerty::_AnEnumCEnumDataStorage::values);
-template <> const folly::Range<const folly::StringPiece*> TEnumTraits< ::facebook::ns::qwerty::AnEnumC>::names = folly::range( ::facebook::ns::qwerty::_AnEnumCEnumDataStorage::names);
-template <> const char* TEnumTraits< ::facebook::ns::qwerty::AnEnumC>::findName( ::facebook::ns::qwerty::AnEnumC value) {
-  static auto const map = folly::Indestructible< ::facebook::ns::qwerty::_AnEnumC_EnumMapFactory::ValuesToNamesMapType>{ ::facebook::ns::qwerty::_AnEnumC_EnumMapFactory::makeValuesToNamesMap()};
-  return findName(*map, value);
+constexpr std::size_t const TEnumTraits< ::facebook::ns::qwerty::AnEnumC>::size;
+folly::Range< ::facebook::ns::qwerty::AnEnumC const*> const TEnumTraits< ::facebook::ns::qwerty::AnEnumC>::values = folly::range( ::facebook::ns::qwerty::_AnEnumCEnumDataStorage::values);
+folly::Range<folly::StringPiece const*> const TEnumTraits< ::facebook::ns::qwerty::AnEnumC>::names = folly::range( ::facebook::ns::qwerty::_AnEnumCEnumDataStorage::names);
+
+char const* TEnumTraits< ::facebook::ns::qwerty::AnEnumC>::findName(type value) {
+  using factory =  ::facebook::ns::qwerty::_AnEnumC_EnumMapFactory;
+  static folly::Indestructible<factory::ValuesToNamesMapType> const map{
+      factory::makeValuesToNamesMap()};
+  auto found = map->find(value);
+  return found == map->end() ? nullptr : found->second;
 }
 
-template <> bool TEnumTraits< ::facebook::ns::qwerty::AnEnumC>::findValue(const char* name,  ::facebook::ns::qwerty::AnEnumC* outValue) {
-  static auto const map = folly::Indestructible< ::facebook::ns::qwerty::_AnEnumC_EnumMapFactory::NamesToValuesMapType>{ ::facebook::ns::qwerty::_AnEnumC_EnumMapFactory::makeNamesToValuesMap()};
-  return findValue(*map, name, outValue);
+bool TEnumTraits< ::facebook::ns::qwerty::AnEnumC>::findValue(char const* name, type* out) {
+  using factory =  ::facebook::ns::qwerty::_AnEnumC_EnumMapFactory;
+  static folly::Indestructible<factory::NamesToValuesMapType> const map{
+      factory::makeNamesToValuesMap()};
+  auto found = map->find(name);
+  return found == map->end() ? false : (*out = found->second, true);
 }
 
 }} // apache::thrift
@@ -98,17 +119,24 @@ namespace std {
 } // std
 namespace apache { namespace thrift {
 
-template <> const std::size_t TEnumTraits< ::facebook::ns::qwerty::AnEnumD>::size = 1;
-template <> const folly::Range<const  ::facebook::ns::qwerty::AnEnumD*> TEnumTraits< ::facebook::ns::qwerty::AnEnumD>::values = folly::range( ::facebook::ns::qwerty::_AnEnumDEnumDataStorage::values);
-template <> const folly::Range<const folly::StringPiece*> TEnumTraits< ::facebook::ns::qwerty::AnEnumD>::names = folly::range( ::facebook::ns::qwerty::_AnEnumDEnumDataStorage::names);
-template <> const char* TEnumTraits< ::facebook::ns::qwerty::AnEnumD>::findName( ::facebook::ns::qwerty::AnEnumD value) {
-  static auto const map = folly::Indestructible< ::facebook::ns::qwerty::_AnEnumD_EnumMapFactory::ValuesToNamesMapType>{ ::facebook::ns::qwerty::_AnEnumD_EnumMapFactory::makeValuesToNamesMap()};
-  return findName(*map, value);
+constexpr std::size_t const TEnumTraits< ::facebook::ns::qwerty::AnEnumD>::size;
+folly::Range< ::facebook::ns::qwerty::AnEnumD const*> const TEnumTraits< ::facebook::ns::qwerty::AnEnumD>::values = folly::range( ::facebook::ns::qwerty::_AnEnumDEnumDataStorage::values);
+folly::Range<folly::StringPiece const*> const TEnumTraits< ::facebook::ns::qwerty::AnEnumD>::names = folly::range( ::facebook::ns::qwerty::_AnEnumDEnumDataStorage::names);
+
+char const* TEnumTraits< ::facebook::ns::qwerty::AnEnumD>::findName(type value) {
+  using factory =  ::facebook::ns::qwerty::_AnEnumD_EnumMapFactory;
+  static folly::Indestructible<factory::ValuesToNamesMapType> const map{
+      factory::makeValuesToNamesMap()};
+  auto found = map->find(value);
+  return found == map->end() ? nullptr : found->second;
 }
 
-template <> bool TEnumTraits< ::facebook::ns::qwerty::AnEnumD>::findValue(const char* name,  ::facebook::ns::qwerty::AnEnumD* outValue) {
-  static auto const map = folly::Indestructible< ::facebook::ns::qwerty::_AnEnumD_EnumMapFactory::NamesToValuesMapType>{ ::facebook::ns::qwerty::_AnEnumD_EnumMapFactory::makeNamesToValuesMap()};
-  return findValue(*map, name, outValue);
+bool TEnumTraits< ::facebook::ns::qwerty::AnEnumD>::findValue(char const* name, type* out) {
+  using factory =  ::facebook::ns::qwerty::_AnEnumD_EnumMapFactory;
+  static folly::Indestructible<factory::NamesToValuesMapType> const map{
+      factory::makeNamesToValuesMap()};
+  auto found = map->find(name);
+  return found == map->end() ? false : (*out = found->second, true);
 }
 
 }} // apache::thrift
@@ -123,17 +151,24 @@ namespace std {
 } // std
 namespace apache { namespace thrift {
 
-template <> const std::size_t TEnumTraits< ::facebook::ns::qwerty::AnEnumE>::size = 1;
-template <> const folly::Range<const  ::facebook::ns::qwerty::AnEnumE*> TEnumTraits< ::facebook::ns::qwerty::AnEnumE>::values = folly::range( ::facebook::ns::qwerty::_AnEnumEEnumDataStorage::values);
-template <> const folly::Range<const folly::StringPiece*> TEnumTraits< ::facebook::ns::qwerty::AnEnumE>::names = folly::range( ::facebook::ns::qwerty::_AnEnumEEnumDataStorage::names);
-template <> const char* TEnumTraits< ::facebook::ns::qwerty::AnEnumE>::findName( ::facebook::ns::qwerty::AnEnumE value) {
-  static auto const map = folly::Indestructible< ::facebook::ns::qwerty::_AnEnumE_EnumMapFactory::ValuesToNamesMapType>{ ::facebook::ns::qwerty::_AnEnumE_EnumMapFactory::makeValuesToNamesMap()};
-  return findName(*map, value);
+constexpr std::size_t const TEnumTraits< ::facebook::ns::qwerty::AnEnumE>::size;
+folly::Range< ::facebook::ns::qwerty::AnEnumE const*> const TEnumTraits< ::facebook::ns::qwerty::AnEnumE>::values = folly::range( ::facebook::ns::qwerty::_AnEnumEEnumDataStorage::values);
+folly::Range<folly::StringPiece const*> const TEnumTraits< ::facebook::ns::qwerty::AnEnumE>::names = folly::range( ::facebook::ns::qwerty::_AnEnumEEnumDataStorage::names);
+
+char const* TEnumTraits< ::facebook::ns::qwerty::AnEnumE>::findName(type value) {
+  using factory =  ::facebook::ns::qwerty::_AnEnumE_EnumMapFactory;
+  static folly::Indestructible<factory::ValuesToNamesMapType> const map{
+      factory::makeValuesToNamesMap()};
+  auto found = map->find(value);
+  return found == map->end() ? nullptr : found->second;
 }
 
-template <> bool TEnumTraits< ::facebook::ns::qwerty::AnEnumE>::findValue(const char* name,  ::facebook::ns::qwerty::AnEnumE* outValue) {
-  static auto const map = folly::Indestructible< ::facebook::ns::qwerty::_AnEnumE_EnumMapFactory::NamesToValuesMapType>{ ::facebook::ns::qwerty::_AnEnumE_EnumMapFactory::makeNamesToValuesMap()};
-  return findValue(*map, name, outValue);
+bool TEnumTraits< ::facebook::ns::qwerty::AnEnumE>::findValue(char const* name, type* out) {
+  using factory =  ::facebook::ns::qwerty::_AnEnumE_EnumMapFactory;
+  static folly::Indestructible<factory::NamesToValuesMapType> const map{
+      factory::makeNamesToValuesMap()};
+  auto found = map->find(name);
+  return found == map->end() ? false : (*out = found->second, true);
 }
 
 }} // apache::thrift

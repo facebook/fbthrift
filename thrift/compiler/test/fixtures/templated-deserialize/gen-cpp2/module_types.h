@@ -41,21 +41,20 @@ namespace apache { namespace thrift {
 
 
 template <> struct TEnumDataStorage< ::cpp2::MyEnumA>;
-#ifndef _MSC_VER
-template <> const std::size_t TEnumTraits< ::cpp2::MyEnumA>::size;
-template <> const folly::Range<const  ::cpp2::MyEnumA*> TEnumTraits< ::cpp2::MyEnumA>::values;
-template <> const folly::Range<const folly::StringPiece*> TEnumTraits< ::cpp2::MyEnumA>::names;
-#endif
-template <> const char* TEnumTraits< ::cpp2::MyEnumA>::findName( ::cpp2::MyEnumA value);
-template <> bool TEnumTraits< ::cpp2::MyEnumA>::findValue(const char* name,  ::cpp2::MyEnumA* outValue);
 
-template <> inline constexpr  ::cpp2::MyEnumA TEnumTraits< ::cpp2::MyEnumA>::min() {
-  return  ::cpp2::MyEnumA::fieldA;
-}
+template <> struct TEnumTraits< ::cpp2::MyEnumA> {
+  using type =  ::cpp2::MyEnumA;
 
-template <> inline constexpr  ::cpp2::MyEnumA TEnumTraits< ::cpp2::MyEnumA>::max() {
-  return  ::cpp2::MyEnumA::fieldC;
-}
+  static constexpr std::size_t const size = 3;
+  static folly::Range<type const*> const values;
+  static folly::Range<folly::StringPiece const*> const names;
+
+  static char const* findName(type value);
+  static bool findValue(char const* name, type* out);
+
+  static constexpr type min() { return type::fieldA; }
+  static constexpr type max() { return type::fieldC; }
+};
 
 
 }} // apache::thrift

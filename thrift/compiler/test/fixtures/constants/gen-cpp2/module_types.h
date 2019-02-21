@@ -71,50 +71,52 @@ namespace apache { namespace thrift {
 
 
 template <> struct TEnumDataStorage< ::cpp2::EmptyEnum>;
-#ifndef _MSC_VER
-template <> const std::size_t TEnumTraits< ::cpp2::EmptyEnum>::size;
-template <> const folly::Range<const  ::cpp2::EmptyEnum*> TEnumTraits< ::cpp2::EmptyEnum>::values;
-template <> const folly::Range<const folly::StringPiece*> TEnumTraits< ::cpp2::EmptyEnum>::names;
-#endif
-template <> const char* TEnumTraits< ::cpp2::EmptyEnum>::findName( ::cpp2::EmptyEnum value);
-template <> bool TEnumTraits< ::cpp2::EmptyEnum>::findValue(const char* name,  ::cpp2::EmptyEnum* outValue);
 
+template <> struct TEnumTraits< ::cpp2::EmptyEnum> {
+  using type =  ::cpp2::EmptyEnum;
+
+  static constexpr std::size_t const size = 0;
+  static folly::Range<type const*> const values;
+  static folly::Range<folly::StringPiece const*> const names;
+
+  static char const* findName(type value);
+  static bool findValue(char const* name, type* out);
+
+};
 
 
 template <> struct TEnumDataStorage< ::cpp2::City>;
-#ifndef _MSC_VER
-template <> const std::size_t TEnumTraits< ::cpp2::City>::size;
-template <> const folly::Range<const  ::cpp2::City*> TEnumTraits< ::cpp2::City>::values;
-template <> const folly::Range<const folly::StringPiece*> TEnumTraits< ::cpp2::City>::names;
-#endif
-template <> const char* TEnumTraits< ::cpp2::City>::findName( ::cpp2::City value);
-template <> bool TEnumTraits< ::cpp2::City>::findValue(const char* name,  ::cpp2::City* outValue);
 
-template <> inline constexpr  ::cpp2::City TEnumTraits< ::cpp2::City>::min() {
-  return  ::cpp2::City::NYC;
-}
+template <> struct TEnumTraits< ::cpp2::City> {
+  using type =  ::cpp2::City;
 
-template <> inline constexpr  ::cpp2::City TEnumTraits< ::cpp2::City>::max() {
-  return  ::cpp2::City::LON;
-}
+  static constexpr std::size_t const size = 4;
+  static folly::Range<type const*> const values;
+  static folly::Range<folly::StringPiece const*> const names;
+
+  static char const* findName(type value);
+  static bool findValue(char const* name, type* out);
+
+  static constexpr type min() { return type::NYC; }
+  static constexpr type max() { return type::LON; }
+};
 
 
 template <> struct TEnumDataStorage< ::cpp2::Company>;
-#ifndef _MSC_VER
-template <> const std::size_t TEnumTraits< ::cpp2::Company>::size;
-template <> const folly::Range<const  ::cpp2::Company*> TEnumTraits< ::cpp2::Company>::values;
-template <> const folly::Range<const folly::StringPiece*> TEnumTraits< ::cpp2::Company>::names;
-#endif
-template <> const char* TEnumTraits< ::cpp2::Company>::findName( ::cpp2::Company value);
-template <> bool TEnumTraits< ::cpp2::Company>::findValue(const char* name,  ::cpp2::Company* outValue);
 
-template <> inline constexpr  ::cpp2::Company TEnumTraits< ::cpp2::Company>::min() {
-  return  ::cpp2::Company::FACEBOOK;
-}
+template <> struct TEnumTraits< ::cpp2::Company> {
+  using type =  ::cpp2::Company;
 
-template <> inline constexpr  ::cpp2::Company TEnumTraits< ::cpp2::Company>::max() {
-  return  ::cpp2::Company::INSTAGRAM;
-}
+  static constexpr std::size_t const size = 4;
+  static folly::Range<type const*> const values;
+  static folly::Range<folly::StringPiece const*> const names;
+
+  static char const* findName(type value);
+  static bool findValue(char const* name, type* out);
+
+  static constexpr type min() { return type::FACEBOOK; }
+  static constexpr type max() { return type::INSTAGRAM; }
+};
 
 
 }} // apache::thrift
