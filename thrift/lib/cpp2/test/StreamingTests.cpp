@@ -61,8 +61,13 @@ TEST(StreamingTest, DifferentStreamClientCompiles) {
 }
 
 TEST(StreamingTest, StreamPublisherCancellation) {
-  class SlowExecutor : public folly::SequencedExecutor {
+  class SlowExecutor : public folly::SequencedExecutor,
+                       public folly::DefaultKeepAliveExecutor {
    public:
+    ~SlowExecutor() override {
+      joinKeepAlive();
+    }
+
     void add(folly::Func func) override {
       impl_.add([f = std::move(func)]() mutable {
         /* sleep override */ std::this_thread::sleep_for(
@@ -113,8 +118,13 @@ TEST(StreamingTest, StreamPublisherCancellation) {
 }
 
 TEST(StreamingTest, StreamPublisherNoSubscription) {
-  class SlowExecutor : public folly::SequencedExecutor {
+  class SlowExecutor : public folly::SequencedExecutor,
+                       public folly::DefaultKeepAliveExecutor {
    public:
+    ~SlowExecutor() override {
+      joinKeepAlive();
+    }
+
     void add(folly::Func func) override {
       impl_.add([f = std::move(func)]() mutable {
         /* sleep override */ std::this_thread::sleep_for(
