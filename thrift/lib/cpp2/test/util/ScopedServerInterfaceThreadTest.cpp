@@ -127,7 +127,7 @@ class SlowSimpleServiceImpl : public virtual SimpleServiceSvIf {
   ~SlowSimpleServiceImpl() override {}
   folly::Future<int64_t> future_add(int64_t a, int64_t b) override {
     requestSem_.post();
-    return folly::futures::sleep(std::chrono::milliseconds(a + b))
+    return folly::futures::sleepUnsafe(std::chrono::milliseconds(a + b))
         .via(getEventBase())
         .thenValue([=](auto&&) { return a + b; });
   }

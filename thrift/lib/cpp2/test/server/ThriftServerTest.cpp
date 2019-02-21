@@ -126,7 +126,7 @@ TEST(ThriftServer, OnewayDeferredHandlerTest) {
     folly::Future<folly::Unit> future_noResponse(int64_t size) override {
       auto tm = getThreadManager();
       auto ctx = getConnectionContext();
-      return folly::futures::sleep(std::chrono::milliseconds(size))
+      return folly::futures::sleepUnsafe(std::chrono::milliseconds(size))
           .via(tm)
           .thenValue(
               [ctx](auto&&) { EXPECT_EQ("noResponse", ctx->getMethodName()); })
