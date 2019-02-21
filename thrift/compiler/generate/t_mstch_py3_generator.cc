@@ -215,7 +215,8 @@ mstch::map t_mstch_py3_generator::extend_field(const t_field& field) {
   const auto follyOptional = is_folly_optional(field);
   const auto hasDefaultValue = has_default_value(field);
   const auto requireValue = required && !hasDefaultValue;
-  const auto isset = !flag_optionals && !reference && !required;
+  const auto isset =
+      !flag_optionals && (!reference || ref_type == "iobuf") && !required;
   // For typing, can a property getter return None, if so it needs to Optional[]
   const auto isPEP484Optional =
       ((!hasDefaultValue && !required) || follyOptional);

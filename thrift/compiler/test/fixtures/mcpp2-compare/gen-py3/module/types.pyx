@@ -5653,6 +5653,7 @@ cdef class AnnotatedStruct(thrift.py3.types.Struct):
                 pass
 
             if not __isNOTSET[25] and iobuf_ptr is None:
+                deref(c_inst).__isset.iobuf_ptr = False
                 deref(c_inst).iobuf_ptr.reset()
                 pass
 
@@ -5717,6 +5718,7 @@ cdef class AnnotatedStruct(thrift.py3.types.Struct):
                 pass
 
             if not __isNOTSET[38] and iobuf_ptr_val is None:
+                deref(c_inst).__isset.iobuf_ptr_val = False
                 deref(c_inst).iobuf_ptr_val.reset()
                 pass
 
@@ -5784,6 +5786,7 @@ cdef class AnnotatedStruct(thrift.py3.types.Struct):
             deref(c_inst).__isset.iobuf_type = True
         if iobuf_ptr is not None:
             deref(c_inst).iobuf_ptr = (<__iobuf.IOBuf?>iobuf_ptr).c_clone()
+            deref(c_inst).__isset.iobuf_ptr = True
         if list_i32_template is not None:
             deref(c_inst).list_i32_template = deref(std_list__List__i32(list_i32_template)._cpp_obj)
             deref(c_inst).__isset.list_i32_template = True
@@ -5822,6 +5825,7 @@ cdef class AnnotatedStruct(thrift.py3.types.Struct):
             deref(c_inst).__isset.iobuf_type_val = True
         if iobuf_ptr_val is not None:
             deref(c_inst).iobuf_ptr_val = (<__iobuf.IOBuf?>iobuf_ptr_val).c_clone()
+            deref(c_inst).__isset.iobuf_ptr_val = True
         if struct_struct is not None:
             deref(c_inst).struct_struct = deref((<containerStruct?> struct_struct)._cpp_obj)
             deref(c_inst).__isset.struct_struct = True
