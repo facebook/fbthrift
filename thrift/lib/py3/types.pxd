@@ -5,7 +5,7 @@ from folly.iobuf cimport cIOBuf, IOBuf
 from libc.stdint cimport uint32_t
 from libcpp.string cimport string
 from libcpp.memory cimport shared_ptr
-from collections import Iterable
+from collections.abc import Iterable
 
 cdef extern from "":
     """

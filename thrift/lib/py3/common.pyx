@@ -1,6 +1,6 @@
 from cython.operator cimport dereference as deref, preincrement as inc
 from enum import Enum
-from collections import Mapping
+from collections.abc import Mapping
 from functools import total_ordering
 
 
