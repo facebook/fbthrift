@@ -117,18 +117,16 @@ endif()
 set(THRIFT2_HEADER_DIRS
   async
   frozen
-  gen-cpp2
   protocol
   server
   transport
   util
 )
-foreach(dir ${THRIFT2_HEADER_DIRS})
-  install(DIRECTORY ${dir} DESTINATION ${INCLUDE_INSTALL_DIR}/thrift/lib/cpp2
-          FILES_MATCHING PATTERN "*.h")
-  install(DIRECTORY ${dir} DESTINATION ${INCLUDE_INSTALL_DIR}/thrift/lib/cpp2
-          FILES_MATCHING PATTERN "*.tcc")
-endforeach()
+install(
+  DIRECTORY ${THRIFT2_HEADER_DIRS}
+  DESTINATION ${INCLUDE_INSTALL_DIR}/thrift/lib/cpp2
+  FILES_MATCHING PATTERN "*.h" PATTERN "*.tcc"
+)
 
 install(
   TARGETS

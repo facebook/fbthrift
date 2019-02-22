@@ -13,8 +13,10 @@ set(LIB_DIRS
   cpp2
 )
 foreach(dir ${LIB_DIRS})
-  install(DIRECTORY ${dir} DESTINATION include/thrift/lib
-          FILES_MATCHING PATTERN "*.h")
-  install(DIRECTORY ${dir} DESTINATION include/thrift/lib
-          FILES_MATCHING PATTERN "*.tcc")
+  install(DIRECTORY ${dir} "${CMAKE_CURRENT_BINARY_DIR}/${dir}"
+        DESTINATION include/thrift/lib
+        FILES_MATCHING
+          PATTERN "*.h"
+          PATTERN "*.tcc"
+          PATTERN CMakeFiles EXCLUDE)
 endforeach()
