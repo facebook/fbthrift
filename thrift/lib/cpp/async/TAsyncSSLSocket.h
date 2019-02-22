@@ -38,14 +38,20 @@ class TAsyncSSLSocket : public folly::AsyncSSLSocket, public TAsyncSocket {
       , folly::AsyncSSLSocket(ctx, evb)
       , TAsyncSocket(evb) {}
 
-  TAsyncSSLSocket(const std::shared_ptr<folly::SSLContext>& ctx,
-                  folly::EventBase* evb,
-                  int fd,
-                  bool server = true,
-                  bool deferSecurityNegotiation = false)
-      : AsyncSocket(evb, fd)
-      , folly::AsyncSSLSocket(ctx, evb, fd, server, deferSecurityNegotiation)
-      , TAsyncSocket(evb, fd) {}
+  TAsyncSSLSocket(
+      const std::shared_ptr<folly::SSLContext>& ctx,
+      folly::EventBase* evb,
+      int fd,
+      bool server = true,
+      bool deferSecurityNegotiation = false)
+      : AsyncSocket(evb, fd),
+        folly::AsyncSSLSocket(
+            ctx,
+            evb,
+            folly::NetworkSocket::fromFd(fd),
+            server,
+            deferSecurityNegotiation),
+        TAsyncSocket(evb, fd) {}
 
   static std::shared_ptr<TAsyncSSLSocket> newSocket(
     const std::shared_ptr<folly::SSLContext> &ctx, folly::EventBase* evb) {
@@ -71,13 +77,18 @@ class TAsyncSSLSocket : public folly::AsyncSSLSocket, public TAsyncSocket {
       , folly::AsyncSSLSocket(ctx, evb, serverName)
       , TAsyncSocket(evb) {}
 
-  TAsyncSSLSocket(const std::shared_ptr<folly::SSLContext>& ctx,
-                 folly::EventBase* evb,
-                  int fd,
-                 const std::string& serverName)
-      : AsyncSocket(evb, fd)
-      , folly::AsyncSSLSocket(ctx, evb, fd, serverName)
-      , TAsyncSocket(evb, fd) {}
+  TAsyncSSLSocket(
+      const std::shared_ptr<folly::SSLContext>& ctx,
+      folly::EventBase* evb,
+      int fd,
+      const std::string& serverName)
+      : AsyncSocket(evb, fd),
+        folly::AsyncSSLSocket(
+            ctx,
+            evb,
+            folly::NetworkSocket::fromFd(fd),
+            serverName),
+        TAsyncSocket(evb, fd) {}
 
   static std::shared_ptr<TAsyncSSLSocket> newSocket(
     const std::shared_ptr<folly::SSLContext>& ctx,
