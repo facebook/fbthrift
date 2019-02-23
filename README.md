@@ -65,7 +65,7 @@ Please install the following dependencies before building Facebook Thrift:
 
 **External**: [Double Conversion](https://github.com/google/double-conversion), [GFlags](https://github.com/gflags/gflags), [GLog](https://github.com/google/glog), [Mstch](https://github.com/no1msd/mstch)
 
-**Facebook**: [Folly](https://github.com/facebook/folly), [Wangle](https://github.com/facebook/wangle), [Zstd](https://github.com/facebook/zstd)
+**Facebook**: [Fizz](https://github.com/facebookincubator/fizz), [Folly](https://github.com/facebook/folly), [Wangle](https://github.com/facebook/wangle), [Zstd](https://github.com/facebook/zstd)
 
 ### Build
     git clone https://github.com/facebook/fbthrift
