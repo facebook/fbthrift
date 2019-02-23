@@ -75,7 +75,7 @@ option(thriftpy3
 
 # Find required dependencies for thrift/compiler
 if(compiler_only OR build_all)
-  find_package(BISON REQUIRED)
+  find_package(BISON 3.0.4 REQUIRED)
   find_package(FLEX REQUIRED)
   find_package(Mstch REQUIRED)
   include_directories(
