@@ -57,6 +57,8 @@ class t_hack_generator : public t_oop_generator {
     shape_arraykeys_ = option_is_specified(parsed_options, "shape_arraykeys");
     shape_unsafe_json_ =
         option_is_specified(parsed_options, "shape_unsafe_json");
+    shapes_allow_unknown_fields_ =
+        option_is_specified(parsed_options, "shapes_allow_unknown_fields");
     lazy_constants_ = option_is_specified(parsed_options, "lazy_constants");
     array_migration_ = option_is_specified(parsed_options, "array_migration");
     arrays_ = option_is_specified(parsed_options, "arrays");
@@ -595,6 +597,11 @@ class t_hack_generator : public t_oop_generator {
    * TValue>
    */
   bool shape_arraykeys_;
+
+  /**
+   * True if we should allow implicit subtyping for shapes (i.e. '...')
+   */
+  bool shapes_allow_unknown_fields_;
 
   /**
    * True if we should not validate json when converting to Shapes
@@ -1657,7 +1664,9 @@ void t_hack_generator::generate_php_struct_shape_spec(
     indent(out) << "  " << namePrefix << "'" << (*m_iter)->get_name() << "' => "
                 << typehint << ",\n";
   }
-  indent(out) << "  ...\n";
+  if (shapes_allow_unknown_fields_) {
+    indent(out) << "  ...\n";
+  }
   indent(out) << ");\n";
 }
 
@@ -5168,6 +5177,7 @@ THRIFT_REGISTER_GENERATOR(
     "    shapes           Generate Shape definitions for structs\n"
     "    shape_arraykeys  When generating Shape definition for structs:\n"
     "                        replace array<string, TValue> with array<arraykey, TValue>\n"
+    "    shapes_allow_unknown_fields Allow unknown fields and implicit subtyping for shapes \n"
     "    shape_unsafe_json When converting json to Shapes, do not validate.\n"
     "    lazy_constants   Generate lazy initialization code for global constants.\n"
     "    arrays           Use Hack arrays for maps/lists/sets instead of objects.\n"

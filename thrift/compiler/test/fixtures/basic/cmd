@@ -1,7 +1,7 @@
 #cpp2:frozen2 src/module.thrift
 go src/module.thrift
 java src/module.thrift
-hack:json,server=1,shapes=1 src/module.thrift
+hack:json,server=1,shapes=1,shapes_allow_unknown_fields=1 src/module.thrift
 mstch_cpp2 src/module.thrift
 mstch_swift src/module.thrift
 mstch_py3 src/module.thrift
