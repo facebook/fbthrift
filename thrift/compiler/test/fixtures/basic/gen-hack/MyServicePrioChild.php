@@ -36,6 +36,19 @@ interface MyServicePrioChildIf extends MyServicePrioParentIf {
  * Original thrift service:-
  * MyServicePrioChild
  */
+interface MyServicePrioChildClientIf extends MyServicePrioParentClientIf {
+  /**
+   * Original thrift definition:-
+   * void
+   *   pang();
+   */
+  public function gen_pang(): Awaitable<void>;
+}
+
+/**
+ * Original thrift service:-
+ * MyServicePrioChild
+ */
 trait MyServicePrioChildClientBase {
   require extends \ThriftClientBase;
 
@@ -147,14 +160,8 @@ class MyServicePrioChildAsyncClient extends MyServicePrioParentAsyncClient imple
 
 }
 
-class MyServicePrioChildClient extends MyServicePrioParentClient implements MyServicePrioChildIf {
+class MyServicePrioChildClient extends MyServicePrioParentClient implements MyServicePrioChildClientIf {
   use MyServicePrioChildClientBase;
-
-  <<__Deprecated('use gen_pang()')>>
-  public function pang(): void {
-    $currentseqid = $this->sendImpl_pang();
-    $this->recvImpl_pang($currentseqid);
-  }
 
   /**
    * Original thrift definition:-

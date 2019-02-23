@@ -50,6 +50,26 @@ interface MyServicePrioParentIf extends \IThriftSyncIf {
  * Original thrift service:-
  * MyServicePrioParent
  */
+interface MyServicePrioParentClientIf extends \IThriftSyncIf {
+  /**
+   * Original thrift definition:-
+   * void
+   *   ping();
+   */
+  public function gen_ping(): Awaitable<void>;
+
+  /**
+   * Original thrift definition:-
+   * void
+   *   pong();
+   */
+  public function gen_pong(): Awaitable<void>;
+}
+
+/**
+ * Original thrift service:-
+ * MyServicePrioParent
+ */
 trait MyServicePrioParentClientBase {
   require extends \ThriftClientBase;
 
@@ -262,14 +282,8 @@ class MyServicePrioParentAsyncClient extends \ThriftClientBase implements MyServ
 
 }
 
-class MyServicePrioParentClient extends \ThriftClientBase implements MyServicePrioParentIf {
+class MyServicePrioParentClient extends \ThriftClientBase implements MyServicePrioParentClientIf {
   use MyServicePrioParentClientBase;
-
-  <<__Deprecated('use gen_ping()')>>
-  public function ping(): void {
-    $currentseqid = $this->sendImpl_ping();
-    $this->recvImpl_ping($currentseqid);
-  }
 
   /**
    * Original thrift definition:-
@@ -280,12 +294,6 @@ class MyServicePrioParentClient extends \ThriftClientBase implements MyServicePr
     $currentseqid = $this->sendImpl_ping();
     await $this->asyncHandler_->genWait($currentseqid);
     $this->recvImpl_ping($currentseqid);
-  }
-
-  <<__Deprecated('use gen_pong()')>>
-  public function pong(): void {
-    $currentseqid = $this->sendImpl_pong();
-    $this->recvImpl_pong($currentseqid);
   }
 
   /**

@@ -175,7 +175,11 @@ class t_hack_generator : public t_oop_generator {
 
   void generate_service(t_service* tservice, bool mangle);
   void generate_service_helpers(t_service* tservice);
-  void generate_service_interface(t_service* tservice, bool mangle, bool async);
+  void generate_service_interface(
+      t_service* tservice,
+      bool mangle,
+      bool async,
+      bool client);
   void generate_service_rest(t_service* tservice, bool mangle);
   void generate_service_client(t_service* tservice, bool mangle);
   void _generate_service_client(
@@ -2618,8 +2622,8 @@ void t_hack_generator::_generate_php_struct_definition(
         }
         indent(out) << "public function get_" << (*m_iter)->get_name()
                     << "(): " << typehint << " {\n";
-        indent(indent(out)) << "return $this->" << (*m_iter)->get_name() << ";"
-                            << endl;
+        indent(indent(out))
+            << "return $this->" << (*m_iter)->get_name() << ";" << endl;
         indent(out) << "}\n";
       } else if (getter_attributes) {
         throw tstruct->get_name() + "::" + (*m_iter)->get_name() +
@@ -3119,8 +3123,9 @@ void t_hack_generator::generate_service(t_service* tservice, bool mangle) {
   }
 
   // Generate the main parts of the service
-  generate_service_interface(tservice, mangle, true);
-  generate_service_interface(tservice, mangle, false);
+  generate_service_interface(tservice, mangle, true, false);
+  generate_service_interface(tservice, mangle, false, false);
+  generate_service_interface(tservice, mangle, false, true);
   if (rest_) {
     generate_service_rest(tservice, mangle);
   }
@@ -3249,8 +3254,7 @@ void t_hack_generator::generate_process_function(
              << indent() << "$this->eventHandler_->preRead($handler_ctx, '"
              << fn_name << "', " << array_keyword_ << "[]);\n"
              << "\n"
-             << indent()
-             << "if ($input is \\TBinaryProtocolAccelerated) {\n"
+             << indent() << "if ($input is \\TBinaryProtocolAccelerated) {\n"
              << indent() << "  $args = \\thrift_protocol_read_binary_struct("
              << "$input, '" << argsname << "');\n"
              << indent()
@@ -3346,8 +3350,7 @@ void t_hack_generator::generate_process_function(
   f_service_ << indent() << "$this->eventHandler_->preWrite($handler_ctx, '"
              << fn_name << "', $result);\n";
 
-  f_service_ << indent()
-             << "if ($output is \\TBinaryProtocolAccelerated)\n";
+  f_service_ << indent() << "if ($output is \\TBinaryProtocolAccelerated)\n";
   scope_up(f_service_);
 
   f_service_ << indent() << "\\thrift_protocol_write_binary($output, '"
@@ -3818,9 +3821,13 @@ bool t_hack_generator::is_type_arraykey(t_type* type) {
 void t_hack_generator::generate_service_interface(
     t_service* tservice,
     bool mangle,
-    bool async) {
+    bool async,
+    bool client) {
   generate_php_docstring(f_service_, tservice);
   string suffix = async ? "Async" : "";
+  if (client) {
+    suffix += "Client";
+  }
   string extends_if = string("\\IThrift") + (async ? "Async" : "Sync") + "If";
   if (tservice->get_extends() != nullptr) {
     string ext_prefix = php_servicename_mangle(mangle, tservice->get_extends());
@@ -3843,17 +3850,18 @@ void t_hack_generator::generate_service_interface(
 
     // Finally, the function declaration.
     string return_typehint = type_to_typehint((*f_iter)->get_returntype());
-    if (async) {
+    if (async || client) {
       return_typehint = "Awaitable<" + return_typehint + ">";
     }
+    string prefix = async || !client ? "" : "gen_";
     if (nullable_everything_) {
       string funname = (*f_iter)->get_name();
-      indent(f_service_) << "public function " << funname << "("
+      indent(f_service_) << "public function " << prefix << funname << "("
                          << argument_list(
                                 (*f_iter)->get_arglist(), "", true, true)
                          << "): " << return_typehint << ";\n";
     } else {
-      indent(f_service_) << "public function "
+      indent(f_service_) << "public function " << prefix
                          << function_signature(*f_iter, "", "", return_typehint)
                          << ";\n";
     }
@@ -4019,8 +4027,7 @@ void t_hack_generator::_generate_service_client(
     indent_up();
     out << indent() << "$this->eventHandler_->preSend('"
         << (*f_iter)->get_name() << "', $args, $currentseqid);\n";
-    out << indent()
-        << "if ($this->output_ is \\TBinaryProtocolAccelerated)\n";
+    out << indent() << "if ($this->output_ is \\TBinaryProtocolAccelerated)\n";
     scope_up(out);
 
     out << indent() << "\\thrift_protocol_write_binary($this->output_, '"
@@ -4364,7 +4371,7 @@ void t_hack_generator::_generate_service_client_children(
   }
 
   out << "class " << long_name << suffix << "Client extends " << extends
-      << " implements " << long_name << suffix << "If {\n"
+      << " implements " << long_name << (async ? "Async" : "Client") << "If {\n"
       << "  use " << long_name << "ClientBase;\n\n";
   indent_up();
 
@@ -4377,42 +4384,6 @@ void t_hack_generator::_generate_service_client_children(
     vector<t_field*>::const_iterator fld_iter;
     string funname = (*f_iter)->get_name();
     string return_typehint = type_to_typehint((*f_iter)->get_returntype());
-
-    if (!async) {
-      // Non-Async function
-      indent(out) << "<<__Deprecated('use gen_" << funname << "()')>>\n";
-      if (nullable_everything_) {
-        indent(out) << "public function " << funname << "("
-                    << argument_list((*f_iter)->get_arglist(), "", true, true)
-                    << "): " << return_typehint << " {\n";
-      } else {
-        indent(out) << "public function " << function_signature(*f_iter)
-                    << " {\n";
-      }
-      indent_up();
-      indent(out) << "$currentseqid = $this->sendImpl_" << funname << "(";
-
-      first = true;
-      for (fld_iter = fields.begin(); fld_iter != fields.end(); ++fld_iter) {
-        if (first) {
-          first = false;
-        } else {
-          out << ", ";
-        }
-        out << "$" << (*fld_iter)->get_name();
-      }
-      out << ");\n";
-
-      if (!(*f_iter)->is_oneway()) {
-        out << indent();
-        if (!(*f_iter)->get_returntype()->is_void()) {
-          out << "return ";
-        }
-        out << "$this->recvImpl_" << funname << "($currentseqid);\n";
-      }
-      scope_down(out);
-      out << "\n";
-    }
 
     // Async function
     generate_php_docstring(out, *f_iter);

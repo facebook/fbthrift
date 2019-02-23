@@ -90,6 +90,46 @@ interface RaiserIf extends \IThriftSyncIf {
  * Original thrift service:-
  * Raiser
  */
+interface RaiserClientIf extends \IThriftSyncIf {
+  /**
+   * Original thrift definition:-
+   * void
+   *   doBland();
+   */
+  public function gen_doBland(): Awaitable<void>;
+
+  /**
+   * Original thrift definition:-
+   * void
+   *   doRaise()
+   *   throws (1: Banal b,
+   *           2: Fiery f,
+   *           3: Serious s);
+   */
+  public function gen_doRaise(): Awaitable<void>;
+
+  /**
+   * Original thrift definition:-
+   * string
+   *   get200();
+   */
+  public function gen_get200(): Awaitable<string>;
+
+  /**
+   * Original thrift definition:-
+   * string
+   *   get500()
+   *   throws (1: Fiery f,
+   *           2: Banal b,
+   *           3: Serious s);
+   */
+  public function gen_get500(): Awaitable<string>;
+}
+
+/**
+ * Original thrift service:-
+ * Raiser
+ */
 trait RaiserClientBase {
   require extends \ThriftClientBase;
 
@@ -552,14 +592,8 @@ class RaiserAsyncClient extends \ThriftClientBase implements RaiserAsyncIf {
 
 }
 
-class RaiserClient extends \ThriftClientBase implements RaiserIf {
+class RaiserClient extends \ThriftClientBase implements RaiserClientIf {
   use RaiserClientBase;
-
-  <<__Deprecated('use gen_doBland()')>>
-  public function doBland(): void {
-    $currentseqid = $this->sendImpl_doBland();
-    $this->recvImpl_doBland($currentseqid);
-  }
 
   /**
    * Original thrift definition:-
@@ -570,12 +604,6 @@ class RaiserClient extends \ThriftClientBase implements RaiserIf {
     $currentseqid = $this->sendImpl_doBland();
     await $this->asyncHandler_->genWait($currentseqid);
     $this->recvImpl_doBland($currentseqid);
-  }
-
-  <<__Deprecated('use gen_doRaise()')>>
-  public function doRaise(): void {
-    $currentseqid = $this->sendImpl_doRaise();
-    $this->recvImpl_doRaise($currentseqid);
   }
 
   /**
@@ -592,12 +620,6 @@ class RaiserClient extends \ThriftClientBase implements RaiserIf {
     $this->recvImpl_doRaise($currentseqid);
   }
 
-  <<__Deprecated('use gen_get200()')>>
-  public function get200(): string {
-    $currentseqid = $this->sendImpl_get200();
-    return $this->recvImpl_get200($currentseqid);
-  }
-
   /**
    * Original thrift definition:-
    * string
@@ -607,12 +629,6 @@ class RaiserClient extends \ThriftClientBase implements RaiserIf {
     $currentseqid = $this->sendImpl_get200();
     await $this->asyncHandler_->genWait($currentseqid);
     return $this->recvImpl_get200($currentseqid);
-  }
-
-  <<__Deprecated('use gen_get500()')>>
-  public function get500(): string {
-    $currentseqid = $this->sendImpl_get500();
-    return $this->recvImpl_get500($currentseqid);
   }
 
   /**

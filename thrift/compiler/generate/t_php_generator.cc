@@ -2419,17 +2419,16 @@ void t_php_generator::_generate_service_client(
     vector<t_field*>::const_iterator fld_iter;
     string funname = (*f_iter)->get_name();
 
-    // Open function
-    if (async_) {
-      indent(out) << "<<__Deprecated('use gen_" << funname << "()')>>" << endl;
-    } else {
-      generate_php_docstring(out, *f_iter);
-    }
-    indent(out) <<
-      "public function " << function_signature(*f_iter) << endl;
+    generate_php_docstring(out, *f_iter);
+    indent(out)
+      << "public "
+      << (async_ ? "async " : "")
+      << "function "
+      << function_signature(*f_iter, async_ ? "gen_" : "")
+      << endl;
+
     scope_up(out);
-      indent(out) <<
-        "$currentseqid = $this->send_" << funname << "(";
+      indent(out) << "$currentseqid = $this->send_" << funname << "(";
 
       bool first = true;
       for (fld_iter = fields.begin(); fld_iter != fields.end(); ++fld_iter) {
@@ -2443,6 +2442,10 @@ void t_php_generator::_generate_service_client(
       out << ");" << endl;
 
       if (!(*f_iter)->is_oneway()) {
+        if (async_) {
+          indent(out)
+            << "await $this->asyncHandler_->genWait($currentseqid);" << endl;
+        }
         out << indent();
         if (!(*f_iter)->get_returntype()->is_void()) {
           out << "return ";
@@ -2452,39 +2455,6 @@ void t_php_generator::_generate_service_client(
       }
     scope_down(out);
     out << endl;
-
-    if (async_) {
-      // Async function
-      generate_php_docstring(out, *f_iter);
-      indent(out) <<
-        "public async function " << function_signature(*f_iter, "gen_") << endl;
-      scope_up(out);
-        indent(out) <<
-          "$currentseqid = $this->send_" << funname << "(";
-
-        first = true;
-        for (fld_iter = fields.begin(); fld_iter != fields.end(); ++fld_iter) {
-          if (first) {
-            first = false;
-          } else {
-            out << ", ";
-          }
-          out << "$" << (*fld_iter)->get_name();
-        }
-        out << ");" << endl;
-
-        if (!(*f_iter)->is_oneway()) {
-          indent(out) << "await $this->asyncHandler_->genWait($currentseqid);" << endl;
-          out << indent();
-          if (!(*f_iter)->get_returntype()->is_void()) {
-            out << "return ";
-          }
-          out <<
-            "$this->recv_" << funname << "($currentseqid);" << endl;
-        }
-      scope_down(out);
-      out << endl;
-    }
 
     indent(out) <<
       "public function send_" << function_signature(*f_iter) << endl;

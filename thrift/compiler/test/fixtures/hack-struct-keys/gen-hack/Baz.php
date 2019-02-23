@@ -40,6 +40,21 @@ interface BazIf extends \IThriftSyncIf {
  * Original thrift service:-
  * Baz
  */
+interface BazClientIf extends \IThriftSyncIf {
+  /**
+   * Original thrift definition:-
+   * string
+   *   qux(1: set<Foo> a,
+   *       2: list<Bar> b,
+   *       3: map<Foo, string> c);
+   */
+  public function gen_qux(Set<arraykey> $a, \HH\KeyedContainer<int, Bar> $b, \HH\KeyedContainer<arraykey, string> $c): Awaitable<string>;
+}
+
+/**
+ * Original thrift service:-
+ * Baz
+ */
 trait BazClientBase {
   require extends \ThriftClientBase;
 
@@ -162,14 +177,8 @@ class BazAsyncClient extends \ThriftClientBase implements BazAsyncIf {
 
 }
 
-class BazClient extends \ThriftClientBase implements BazIf {
+class BazClient extends \ThriftClientBase implements BazClientIf {
   use BazClientBase;
-
-  <<__Deprecated('use gen_qux()')>>
-  public function qux(Set<arraykey> $a, \HH\KeyedContainer<int, Bar> $b, \HH\KeyedContainer<arraykey, string> $c): string {
-    $currentseqid = $this->sendImpl_qux($a, $b, $c);
-    return $this->recvImpl_qux($currentseqid);
-  }
 
   /**
    * Original thrift definition:-

@@ -44,6 +44,23 @@ interface BarIf extends \IThriftSyncIf {
  * Original thrift service:-
  * Bar
  */
+interface BarClientIf extends \IThriftSyncIf {
+  /**
+   * Original thrift definition:-
+   * string
+   *   baz(1: set<i32> a,
+   *       2: list<map<i32, set<string>>> b,
+   *       3: i64 c,
+   *       4: Foo d,
+   *       5: i64 e);
+   */
+  public function gen_baz(?darray<int, bool> $a, ?\HH\KeyedContainer<int, \HH\KeyedContainer<int, darray<string, bool>>> $b, ?int $c, ?Foo $d, ?int $e): Awaitable<string>;
+}
+
+/**
+ * Original thrift service:-
+ * Bar
+ */
 trait BarClientBase {
   require extends \ThriftClientBase;
 
@@ -172,14 +189,8 @@ class BarAsyncClient extends \ThriftClientBase implements BarAsyncIf {
 
 }
 
-class BarClient extends \ThriftClientBase implements BarIf {
+class BarClient extends \ThriftClientBase implements BarClientIf {
   use BarClientBase;
-
-  <<__Deprecated('use gen_baz()')>>
-  public function baz(?darray<int, bool> $a, ?\HH\KeyedContainer<int, \HH\KeyedContainer<int, darray<string, bool>>> $b, ?int $c, ?Foo $d, ?int $e): string {
-    $currentseqid = $this->sendImpl_baz($a, $b, $c, $d, $e);
-    return $this->recvImpl_baz($currentseqid);
-  }
 
   /**
    * Original thrift definition:-

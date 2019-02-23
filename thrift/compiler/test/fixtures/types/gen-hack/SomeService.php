@@ -50,6 +50,26 @@ interface SomeServiceIf extends \IThriftSyncIf {
  * Original thrift service:-
  * SomeService
  */
+interface SomeServiceClientIf extends \IThriftSyncIf {
+  /**
+   * Original thrift definition:-
+   * include.SomeMap
+   *   bounce_map(1: include.SomeMap m);
+   */
+  public function gen_bounce_map(Map<int, string> $m): Awaitable<Map<int, string>>;
+
+  /**
+   * Original thrift definition:-
+   * map<TBinary, i64>
+   *   binary_keyed_map(1: list<i64> r);
+   */
+  public function gen_binary_keyed_map(\HH\KeyedContainer<int, int> $r): Awaitable<Map<string, int>>;
+}
+
+/**
+ * Original thrift service:-
+ * SomeService
+ */
 trait SomeServiceClientBase {
   require extends \ThriftClientBase;
 
@@ -276,14 +296,8 @@ class SomeServiceAsyncClient extends \ThriftClientBase implements SomeServiceAsy
 
 }
 
-class SomeServiceClient extends \ThriftClientBase implements SomeServiceIf {
+class SomeServiceClient extends \ThriftClientBase implements SomeServiceClientIf {
   use SomeServiceClientBase;
-
-  <<__Deprecated('use gen_bounce_map()')>>
-  public function bounce_map(Map<int, string> $m): Map<int, string> {
-    $currentseqid = $this->sendImpl_bounce_map($m);
-    return $this->recvImpl_bounce_map($currentseqid);
-  }
 
   /**
    * Original thrift definition:-
@@ -294,12 +308,6 @@ class SomeServiceClient extends \ThriftClientBase implements SomeServiceIf {
     $currentseqid = $this->sendImpl_bounce_map($m);
     await $this->asyncHandler_->genWait($currentseqid);
     return $this->recvImpl_bounce_map($currentseqid);
-  }
-
-  <<__Deprecated('use gen_binary_keyed_map()')>>
-  public function binary_keyed_map(\HH\KeyedContainer<int, int> $r): Map<string, int> {
-    $currentseqid = $this->sendImpl_binary_keyed_map($r);
-    return $this->recvImpl_binary_keyed_map($currentseqid);
   }
 
   /**

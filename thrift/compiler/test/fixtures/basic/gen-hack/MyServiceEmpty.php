@@ -24,6 +24,13 @@ interface MyServiceEmptyIf extends \IThriftSyncIf {
  * Original thrift service:-
  * MyServiceEmpty
  */
+interface MyServiceEmptyClientIf extends \IThriftSyncIf {
+}
+
+/**
+ * Original thrift service:-
+ * MyServiceEmpty
+ */
 trait MyServiceEmptyClientBase {
   require extends \ThriftClientBase;
 
@@ -34,7 +41,7 @@ class MyServiceEmptyAsyncClient extends \ThriftClientBase implements MyServiceEm
 
 }
 
-class MyServiceEmptyClient extends \ThriftClientBase implements MyServiceEmptyIf {
+class MyServiceEmptyClient extends \ThriftClientBase implements MyServiceEmptyClientIf {
   use MyServiceEmptyClientBase;
 
   /* send and recv functions */

@@ -110,6 +110,56 @@ interface MyServiceIf extends \IThriftSyncIf {
  * Original thrift service:-
  * MyService
  */
+interface MyServiceClientIf extends \IThriftSyncIf {
+  /**
+   * Original thrift definition:-
+   * void
+   *   ping();
+   */
+  public function gen_ping(): Awaitable<void>;
+
+  /**
+   * Original thrift definition:-
+   * string
+   *   getRandomData();
+   */
+  public function gen_getRandomData(): Awaitable<string>;
+
+  /**
+   * Original thrift definition:-
+   * bool
+   *   hasDataById(1: i64 id);
+   */
+  public function gen_hasDataById(int $id): Awaitable<bool>;
+
+  /**
+   * Original thrift definition:-
+   * string
+   *   getDataById(1: i64 id);
+   */
+  public function gen_getDataById(int $id): Awaitable<string>;
+
+  /**
+   * Original thrift definition:-
+   * void
+   *   putDataById(1: i64 id,
+   *               2: string data);
+   */
+  public function gen_putDataById(int $id, string $data): Awaitable<void>;
+
+  /**
+   * Original thrift definition:-
+   * oneway void
+   *   lobDataById(1: i64 id,
+   *               2: string data);
+   */
+  public function gen_lobDataById(int $id, string $data): Awaitable<void>;
+}
+
+/**
+ * Original thrift service:-
+ * MyService
+ */
 trait MyServiceClientBase {
   require extends \ThriftClientBase;
 
@@ -700,14 +750,8 @@ class MyServiceAsyncClient extends \ThriftClientBase implements MyServiceAsyncIf
 
 }
 
-class MyServiceClient extends \ThriftClientBase implements MyServiceIf {
+class MyServiceClient extends \ThriftClientBase implements MyServiceClientIf {
   use MyServiceClientBase;
-
-  <<__Deprecated('use gen_ping()')>>
-  public function ping(): void {
-    $currentseqid = $this->sendImpl_ping();
-    $this->recvImpl_ping($currentseqid);
-  }
 
   /**
    * Original thrift definition:-
@@ -718,12 +762,6 @@ class MyServiceClient extends \ThriftClientBase implements MyServiceIf {
     $currentseqid = $this->sendImpl_ping();
     await $this->asyncHandler_->genWait($currentseqid);
     $this->recvImpl_ping($currentseqid);
-  }
-
-  <<__Deprecated('use gen_getRandomData()')>>
-  public function getRandomData(): string {
-    $currentseqid = $this->sendImpl_getRandomData();
-    return $this->recvImpl_getRandomData($currentseqid);
   }
 
   /**
@@ -737,12 +775,6 @@ class MyServiceClient extends \ThriftClientBase implements MyServiceIf {
     return $this->recvImpl_getRandomData($currentseqid);
   }
 
-  <<__Deprecated('use gen_hasDataById()')>>
-  public function hasDataById(int $id): bool {
-    $currentseqid = $this->sendImpl_hasDataById($id);
-    return $this->recvImpl_hasDataById($currentseqid);
-  }
-
   /**
    * Original thrift definition:-
    * bool
@@ -752,12 +784,6 @@ class MyServiceClient extends \ThriftClientBase implements MyServiceIf {
     $currentseqid = $this->sendImpl_hasDataById($id);
     await $this->asyncHandler_->genWait($currentseqid);
     return $this->recvImpl_hasDataById($currentseqid);
-  }
-
-  <<__Deprecated('use gen_getDataById()')>>
-  public function getDataById(int $id): string {
-    $currentseqid = $this->sendImpl_getDataById($id);
-    return $this->recvImpl_getDataById($currentseqid);
   }
 
   /**
@@ -771,12 +797,6 @@ class MyServiceClient extends \ThriftClientBase implements MyServiceIf {
     return $this->recvImpl_getDataById($currentseqid);
   }
 
-  <<__Deprecated('use gen_putDataById()')>>
-  public function putDataById(int $id, string $data): void {
-    $currentseqid = $this->sendImpl_putDataById($id, $data);
-    $this->recvImpl_putDataById($currentseqid);
-  }
-
   /**
    * Original thrift definition:-
    * void
@@ -787,11 +807,6 @@ class MyServiceClient extends \ThriftClientBase implements MyServiceIf {
     $currentseqid = $this->sendImpl_putDataById($id, $data);
     await $this->asyncHandler_->genWait($currentseqid);
     $this->recvImpl_putDataById($currentseqid);
-  }
-
-  <<__Deprecated('use gen_lobDataById()')>>
-  public function lobDataById(int $id, string $data): void {
-    $currentseqid = $this->sendImpl_lobDataById($id, $data);
   }
 
   /**
