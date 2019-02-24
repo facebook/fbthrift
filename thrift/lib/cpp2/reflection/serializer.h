@@ -25,6 +25,7 @@
 #include <fatal/type/call_traits.h>
 #include <fatal/type/trie.h>
 #include <folly/Traits.h>
+#include <folly/Utility.h>
 #include <thrift/lib/cpp2/GeneratedSerializationCodeHelper.h>
 #include <thrift/lib/cpp2/reflection/container_traits.h>
 #include <thrift/lib/cpp2/reflection/reflection.h>
@@ -811,8 +812,7 @@ struct protocol_methods<type_class::structure, Struct> {
 
       if (ftype == protocol_method::ttype_value) {
         detail::mark_isset<
-            static_cast<std::underlying_type<optionality>::type>(
-                member::optional::value),
+            folly::to_underlying_type(member::optional::value),
             required_fields,
             member>(required_isset, obj);
         protocol_method::read(
