@@ -21,7 +21,6 @@
 #ifndef THRIFT_UTIL_SCOPEDSERVERTHREAD_H_
 #define THRIFT_UTIL_SCOPEDSERVERTHREAD_H_ 1
 
-#include <boost/noncopyable.hpp>
 #include <memory>
 #include <string>
 
@@ -44,7 +43,7 @@ namespace util {
  * The server is stopped automatically when the ScopedServerThread is
  * destroyed.
  */
-class ScopedServerThread : public boost::noncopyable {
+class ScopedServerThread {
  public:
   /**
    * Create a new, unstarted ScopedServerThread object.
@@ -55,6 +54,8 @@ class ScopedServerThread : public boost::noncopyable {
    * Create a ScopedServerThread object and automatically start it.
    */
   explicit ScopedServerThread(std::shared_ptr<BaseThriftServer> server);
+
+  ScopedServerThread(const ScopedServerThread&) = delete;
 
   virtual ~ScopedServerThread();
 

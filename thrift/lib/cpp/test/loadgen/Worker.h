@@ -27,7 +27,6 @@
 #include <thrift/lib/cpp/concurrency/Util.h>
 #include <thrift/lib/cpp/TLogging.h>
 
-#include <boost/noncopyable.hpp>
 #include <memory>
 
 namespace apache { namespace thrift { namespace loadgen {
@@ -46,7 +45,7 @@ namespace apache { namespace thrift { namespace loadgen {
  * from LoadConfig.
  */
 template <typename ClientT, typename ConfigT = LoadConfig>
-class Worker : public WorkerIf, public boost::noncopyable {
+class Worker : public WorkerIf {
  public:
   typedef ClientT ClientType;
   typedef ConfigT ConfigType;
@@ -64,6 +63,8 @@ class Worker : public WorkerIf, public boost::noncopyable {
     , intervalTimer_(nullptr)
     , config_()
     , scoreboard_() {}
+
+  Worker(const Worker&) = delete;
 
   /**
    * Initialize the Worker.

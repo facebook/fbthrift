@@ -19,8 +19,6 @@
 #ifndef THRIFT_TEST_LOADGEN_CONTROLLER_H_
 #define THRIFT_TEST_LOADGEN_CONTROLLER_H_ 1
 
-#include <boost/noncopyable.hpp>
-
 #include <thrift/lib/cpp/concurrency/Monitor.h>
 #include <thrift/lib/cpp/test/loadgen/LoadConfig.h>
 #include <thrift/lib/cpp/test/loadgen/IntervalTimer.h>
@@ -39,11 +37,13 @@ class WorkerFactory;
 class WorkerIf;
 class Monitor;
 
-class Controller : private boost::noncopyable {
+class Controller {
  public:
   Controller(WorkerFactory* factory, Monitor* monitor,
       std::shared_ptr<LoadConfig> config,
       apache::thrift::concurrency::PosixThreadFactory* threadFactory = nullptr);
+
+  Controller(const Controller&) = delete;
 
   void run(uint32_t numThreads, uint32_t maxThreads,
       double monitorInterval = 1.0);
