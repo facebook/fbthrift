@@ -23,8 +23,6 @@
 #include <thrift/lib/cpp/concurrency/Exception.h>
 #include <thrift/lib/cpp/concurrency/Mutex.h>
 
-#include <boost/noncopyable.hpp>
-
 namespace apache { namespace thrift { namespace concurrency {
 
 /**
@@ -45,7 +43,7 @@ namespace apache { namespace thrift { namespace concurrency {
  *
  * @version $Id:$
  */
-class Monitor : boost::noncopyable {
+class Monitor {
  public:
   /** Creates a new mutex, and takes ownership of it. */
   Monitor();
@@ -55,6 +53,9 @@ class Monitor : boost::noncopyable {
 
   /** Uses the mutex inside the provided Monitor without taking ownership. */
   explicit Monitor(Monitor* monitor);
+
+  Monitor(const Monitor&) = delete;
+  Monitor& operator=(const Monitor&) = delete;
 
   /** Deallocates the mutex only if we own it. */
   virtual ~Monitor();
