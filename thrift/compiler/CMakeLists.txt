@@ -42,6 +42,10 @@ target_compile_definitions(
  compiler_base
  PRIVATE -DTHRIFTY_HH="${COMPILER_DIR}/thrifty.hh"
 )
+target_compile_options(
+ compiler_base
+ PUBLIC "-Wno-deprecated-register"
+)
 target_link_libraries(
   compiler_base
 
