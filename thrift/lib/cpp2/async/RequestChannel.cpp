@@ -58,7 +58,7 @@ uint32_t RequestChannel::sendRequestSync(
     std::unique_ptr<apache::thrift::ContextStack> ctx,
     std::unique_ptr<folly::IOBuf> buf,
     std::shared_ptr<apache::thrift::transport::THeader> header) {
-  DCHECK(typeid(ClientSyncCallback) == typeid(*cb));
+  DCHECK(dynamic_cast<ClientSyncCallback*>(cb.get()));
   apache::thrift::RpcKind kind =
       static_cast<ClientSyncCallback&>(*cb).rpcKind();
   auto eb = getEventBase();
