@@ -104,7 +104,7 @@ class PerClientIdAdmissionStrategy : public AdmissionStrategy {
       const auto& clientId = it->first;
       const auto& controller = it->second;
 
-      controller->reportMetrics(report, prefix + clientId + ".");
+      controller->reportMetrics(report, prefix + "." + clientId + ".");
     }
   }
 

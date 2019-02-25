@@ -18,6 +18,7 @@
 
 #include <stdint.h>
 #include <chrono>
+#include <unordered_map>
 
 #include <thrift/lib/cpp2/server/AdmissionController.h>
 #include <thrift/lib/cpp2/server/QIAdmissionController.h>
@@ -127,13 +128,24 @@ class PriorityAdmissionStrategy : public AdmissionStrategy {
       auto clientId = entry.first;
       auto priority = entry.second;
 
+      std::unordered_map<std::string, double> metrics;
+
       const auto offset = priority.offset;
+      const auto newPrefix = prefix + "priority." + clientId + ".";
       for (auto i = 0; i < priority.priority; i++) {
         const auto& controller = admissionControllers_[offset + i];
 
         controller->reportMetrics(
-            report, prefix + clientId + "." + std::to_string(i) + ".");
+            [&metrics](const auto& key, auto value) { metrics[key] = value; },
+            newPrefix,
+            metrics,
+            i + 1);
       }
+
+      for (const auto& entry : metrics) {
+        report(entry.first, entry.second);
+      }
+      report(newPrefix + "priority", priority.priority);
     }
   }
 

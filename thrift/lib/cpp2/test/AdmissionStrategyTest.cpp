@@ -22,6 +22,7 @@
 #include <thrift/lib/cpp2/server/admission_strategy/AdmissionStrategy.h>
 
 #include <thrift/lib/cpp2/server/Cpp2ConnContext.h>
+#include <thrift/lib/cpp2/server/QIAdmissionController.h>
 #include <thrift/lib/cpp2/server/admission_strategy/GlobalAdmissionStrategy.h>
 #include <thrift/lib/cpp2/server/admission_strategy/PerClientIdAdmissionStrategy.h>
 #include <thrift/lib/cpp2/server/admission_strategy/PriorityAdmissionStrategy.h>
@@ -195,6 +196,92 @@ TEST_F(AdmissionControllerSelectorTest, whiteListAdmission) {
   ASSERT_NE(
       dynamic_cast<AcceptAllAdmissionController*>(admissionController2.get()),
       nullptr);
+}
+
+TEST_F(AdmissionControllerSelectorTest, metricsCreated) {
+  GlobalAdmissionStrategy selector(
+      std::make_shared<QIAdmissionController<FakeClock>>(
+          std::chrono::seconds(1)));
+
+  THeader header;
+  header.setReadHeaders({{kClientId, "A"}});
+  auto admissionControllerA1 = selector.select("myThriftmethod", &header);
+
+  std::unordered_map<std::string, double> metrics;
+  selector.reportMetrics(
+      [&metrics](auto key, auto value) { metrics.emplace(key, value); },
+      "my_prefix.");
+
+  ASSERT_FALSE(metrics.empty());
+  ASSERT_NE(metrics.find("my_prefix.global.queue_size"), metrics.end());
+  ASSERT_NE(metrics.find("my_prefix.global.queue_max"), metrics.end());
+  ASSERT_NE(metrics.find("my_prefix.global.queue_limit"), metrics.end());
+  ASSERT_NE(metrics.find("my_prefix.global.response_rate"), metrics.end());
+  ASSERT_NE(metrics.find("my_prefix.global.integral"), metrics.end());
+  ASSERT_NE(metrics.find("my_prefix.global.integral_ratio"), metrics.end());
+}
+
+TEST_F(AdmissionControllerSelectorTest, priorityMetricsAggregated) {
+  std::unordered_map<std::string, uint8_t> priorities = {
+      {"A", 1}, {"B", 5}, {"*", 1}};
+  const auto qMin = 10;
+  PriorityAdmissionStrategy selector(
+      priorities,
+      [qMin]() {
+        return std::make_shared<QIAdmissionController<FakeClock>>(
+            std::chrono::seconds(1), std::chrono::seconds(10), qMin);
+      },
+      kClientId);
+
+  std::map<std::string, std::set<std::shared_ptr<AdmissionController>>>
+      mapping = {{"A", std::set<std::shared_ptr<AdmissionController>>()},
+                 {"B", std::set<std::shared_ptr<AdmissionController>>()},
+                 {"*", std::set<std::shared_ptr<AdmissionController>>()}};
+
+  for (auto& it : priorities) {
+    auto& clientId = it.first;
+    for (int i = 0; i < 5; i++) {
+      THeader header;
+      header.setReadHeaders({{kClientId, clientId}});
+      auto controller = selector.select("myThriftMethod", &header);
+      controller->admit();
+      FakeClock::advance(std::chrono::milliseconds(10));
+      controller->dequeue();
+      FakeClock::advance(std::chrono::milliseconds(1));
+      controller->returnedResponse();
+    }
+  }
+
+  std::unordered_map<std::string, double> metrics;
+  selector.reportMetrics(
+      [&metrics](auto key, auto value) { metrics.emplace(key, value); },
+      "my_prefix.");
+
+  ASSERT_FALSE(metrics.empty());
+  ASSERT_EQ(metrics.at("my_prefix.priority.A.queue_size"), 0);
+  ASSERT_EQ(metrics.at("my_prefix.priority.A.queue_max"), 10);
+  ASSERT_EQ(metrics.at("my_prefix.priority.A.queue_limit"), 10);
+  ASSERT_EQ(metrics.at("my_prefix.priority.A.response_rate"), 0.5);
+  ASSERT_EQ(metrics.at("my_prefix.priority.A.integral"), 0.05);
+  ASSERT_EQ(metrics.at("my_prefix.priority.A.integral_ratio"), 0.0005);
+  ASSERT_EQ(metrics.at("my_prefix.priority.A.priority"), priorities["A"]);
+
+  ASSERT_EQ(metrics.at("my_prefix.priority.B.queue_size"), 0);
+  ASSERT_EQ(metrics.at("my_prefix.priority.B.queue_max"), 50);
+  ASSERT_EQ(metrics["my_prefix.priority.B.queue_max"], priorities["B"] * qMin);
+  ASSERT_EQ(metrics.at("my_prefix.priority.B.queue_limit"), 50);
+  ASSERT_EQ(metrics.at("my_prefix.priority.B.response_rate"), 0.5);
+  ASSERT_EQ(metrics.at("my_prefix.priority.B.integral"), 0.05);
+  ASSERT_EQ(metrics.at("my_prefix.priority.B.integral_ratio"), 0.0001);
+  ASSERT_EQ(metrics.at("my_prefix.priority.B.priority"), priorities["B"]);
+
+  ASSERT_EQ(metrics.at("my_prefix.priority.*.queue_size"), 0);
+  ASSERT_EQ(metrics.at("my_prefix.priority.*.queue_max"), 10);
+  ASSERT_EQ(metrics.at("my_prefix.priority.*.queue_limit"), 10);
+  ASSERT_EQ(metrics.at("my_prefix.priority.*.response_rate"), 0.5);
+  ASSERT_EQ(metrics.at("my_prefix.priority.*.integral"), 0.05);
+  ASSERT_EQ(metrics.at("my_prefix.priority.*.integral_ratio"), 0.0005);
+  ASSERT_EQ(metrics.at("my_prefix.priority.*.priority"), priorities["*"]);
 }
 
 } // namespace thrift

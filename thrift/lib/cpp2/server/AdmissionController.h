@@ -17,6 +17,7 @@
 #pragma once
 
 #include <string>
+#include <unordered_map>
 
 #include <folly/Function.h>
 
@@ -27,6 +28,8 @@ class AdmissionController {
  public:
   using MetricReportFn =
       folly::Function<void(const std::string&, double) const>;
+
+  enum AggregationType { SUM, AVG };
 
   virtual ~AdmissionController() {}
 
@@ -47,7 +50,16 @@ class AdmissionController {
    */
   virtual void returnedResponse() = 0;
 
-  virtual void reportMetrics(const MetricReportFn&, const std::string&) {}
+  /**
+   * Delegate reporting the metrics to the underlying implementation
+   * The last argument must contain the current metric values in case the
+   * implementation needs to do aggregation.
+   */
+  virtual void reportMetrics(
+      const MetricReportFn& /*reportFunction*/,
+      const std::string& /*prefix*/,
+      const std::unordered_map<std::string, double>& /*previousValues*/ = {},
+      uint32_t /*previousValueCount*/ = 0) {}
 };
 
 class DenyAllAdmissionController : public AdmissionController {

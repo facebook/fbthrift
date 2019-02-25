@@ -162,13 +162,55 @@ class QIAdmissionController : public AdmissionController {
 
   virtual void reportMetrics(
       const AdmissionController::MetricReportFn& report,
-      const std::string& prefix) override {
-    report(prefix + "queue_size", getQueueSize());
-    report(prefix + "queue_max", getMaxQueue());
-    report(prefix + "queue_limit", getQueueLimit());
-    report(prefix + "response_rate", getResponseRate());
-    report(prefix + "integral", getIntegral());
-    report(prefix + "integral_ratio", getIntegralRatio());
+      const std::string& prefix,
+      const std::unordered_map<std::string, double>& metrics,
+      uint32_t count) override {
+    // Except `integral_ratio`, all of the aggregations below use sum,
+    // because the requests are dispatched to each admission controller, thus
+    // things like max are actually computed on a per controller basis.
+    // The actual max is the sum of all the max.
+    reportAggregate(
+        prefix + "queue_size",
+        metrics,
+        report,
+        AdmissionController::AggregationType::SUM,
+        getQueueSize(),
+        count);
+    reportAggregate(
+        prefix + "queue_max",
+        metrics,
+        report,
+        AdmissionController::AggregationType::SUM,
+        getMaxQueue(),
+        count);
+    reportAggregate(
+        prefix + "queue_limit",
+        metrics,
+        report,
+        AdmissionController::AggregationType::SUM,
+        getQueueLimit(),
+        count);
+    reportAggregate(
+        prefix + "response_rate",
+        metrics,
+        report,
+        AdmissionController::AggregationType::SUM,
+        getResponseRate(),
+        count);
+    reportAggregate(
+        prefix + "integral",
+        metrics,
+        report,
+        AdmissionController::AggregationType::SUM,
+        getIntegral(),
+        count);
+    reportAggregate(
+        prefix + "integral_ratio",
+        metrics,
+        report,
+        AdmissionController::AggregationType::AVG,
+        getIntegralRatio(),
+        count);
   }
 
  private:
@@ -179,6 +221,38 @@ class QIAdmissionController : public AdmissionController {
   bool accept() {
     queueSize_ += 1;
     return true;
+  }
+
+  /**
+   * Report the metrics and aggregate it with the previous value if metrics is
+   * non-empty.
+   * This can be useful for aggregating metrics accros similar admission
+   * controllers, e.g. the priority admission controller creates *many*
+   * sub-controllers (controller.A.1.xyz, controller.A.2.xyz, ...,
+   * controller.A.128.xyz)
+   * Those metrics are aggregated under controller.A.xyz
+   */
+  void reportAggregate(
+      const std::string& metricName,
+      const std::unordered_map<std::string, double>& metrics,
+      const AdmissionController::MetricReportFn& report,
+      AdmissionController::AggregationType aggType,
+      double newValue,
+      uint32_t count) {
+    auto value = 0.0;
+    auto it = metrics.find(metricName);
+    if (it != metrics.end()) {
+      value = it->second;
+    }
+    switch (aggType) {
+      case AdmissionController::AggregationType::SUM:
+        value = value + newValue;
+        break;
+      case AdmissionController::AggregationType::AVG:
+        value = (value * (count - 1) + newValue) / std::max(1U, count);
+        break;
+    }
+    report(metricName, value);
   }
 
   /**
