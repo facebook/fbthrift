@@ -702,8 +702,7 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
   const std::vector<std::shared_ptr<folly::AsyncServerSocket>> getSockets()
       const {
     std::vector<std::shared_ptr<folly::AsyncServerSocket>> serverSockets;
-    auto sockets = ServerBootstrap::getSockets();
-    for (auto& socket : sockets) {
+    for (auto& socket : ServerBootstrap::getSockets()) {
       serverSockets.push_back(
           std::dynamic_pointer_cast<folly::AsyncServerSocket>(socket));
     }

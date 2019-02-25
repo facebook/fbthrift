@@ -145,9 +145,8 @@ class TProcessorEventHandler {
       const char* fn_name,
       bool declared,
       const folly::exception_wrapper& ew_) {
-    auto ew = ew_; // make a local, mutable copy
-    const auto type = ew.class_name();
-    const auto what = ew.what();
+    const auto type = ew_.class_name();
+    const auto what = ew_.what();
     folly::StringPiece whatsp(what);
     if (declared) {
       CHECK(whatsp.removePrefix(type)) << "weird format: '" << what << "'";
