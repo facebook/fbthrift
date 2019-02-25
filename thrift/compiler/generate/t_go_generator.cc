@@ -176,6 +176,9 @@ class t_go_generator : public t_concat_generator {
   void generate_service_client_send_method(
       string& serviceName,
       const vector<t_function*>::const_iterator& f_iter);
+  void generate_service_client_recv_method(
+      string& serviceName,
+      const vector<t_function*>::const_iterator& f_iter);
   void generate_service_client_threadsafe(t_service* tservice);
   void generate_service_remote(t_service* tservice);
   void generate_service_server(t_service* tservice);
@@ -1974,6 +1977,115 @@ void t_go_generator::generate_service_client_send_method(
   f_service_ << indent() << "}" << endl << endl;
 }
 
+void t_go_generator::generate_service_client_recv_method(
+    string& serviceName,
+    const vector<t_function*>::const_iterator& f_iter) {
+  std::string resultname = publicize((*f_iter)->get_name() + "_result", true);
+  // Open function
+  f_service_ << endl
+             << indent() << "func (p *" << serviceName << "Client) recv"
+             << publicize((*f_iter)->get_name()) << "() (";
+
+  if (!(*f_iter)->get_returntype()->is_void()) {
+    f_service_ << "value " << type_to_go_type((*f_iter)->get_returntype())
+               << ", ";
+  }
+
+  f_service_ << "err error) {" << endl;
+  indent_up();
+  // TODO(mcslee): Validate message reply here, seq ids etc.
+  string error(tmp("error"));
+  string error2(tmp("error"));
+  f_service_ << indent() << "iprot := p.InputProtocol" << endl;
+  f_service_ << indent() << "if iprot == nil {" << endl;
+  f_service_ << indent()
+             << "  iprot = p.ProtocolFactory.GetProtocol(p.Transport)" << endl;
+  f_service_ << indent() << "  p.InputProtocol = iprot" << endl;
+  f_service_ << indent() << "}" << endl;
+  f_service_ << indent()
+             << "method, mTypeId, seqId, err := iprot.ReadMessageBegin()"
+             << endl;
+  f_service_ << indent() << "if err != nil {" << endl;
+  f_service_ << indent() << "  return" << endl;
+  f_service_ << indent() << "}" << endl;
+  f_service_ << indent() << "if method != \"" << (*f_iter)->get_name() << "\" {"
+             << endl;
+  f_service_ << indent() << "  err = thrift.NewApplicationException("
+             << "thrift.WRONG_METHOD_NAME, \"" << (*f_iter)->get_name()
+             << " failed: wrong method name\")" << endl;
+  f_service_ << indent() << "  return" << endl;
+  f_service_ << indent() << "}" << endl;
+  f_service_ << indent() << "if p.SeqId != seqId {" << endl;
+  f_service_ << indent() << "  err = thrift.NewApplicationException("
+             << "thrift.BAD_SEQUENCE_ID, \"" << (*f_iter)->get_name()
+             << " failed: out of sequence response\")" << endl;
+  f_service_ << indent() << "  return" << endl;
+  f_service_ << indent() << "}" << endl;
+  f_service_ << indent() << "if mTypeId == thrift.EXCEPTION {" << endl;
+  f_service_
+      << indent() << "  " << error
+      << " := thrift.NewApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "
+         "\"Unknown Exception\")"
+      << endl;
+  f_service_ << indent() << "  var " << error2 << " error" << endl;
+  f_service_ << indent() << "  " << error2 << ", err = " << error
+             << ".Read(iprot)" << endl;
+  f_service_ << indent() << "  if err != nil {" << endl;
+  f_service_ << indent() << "    return" << endl;
+  f_service_ << indent() << "  }" << endl;
+  f_service_ << indent() << "  if err = iprot.ReadMessageEnd(); err != nil {"
+             << endl;
+  f_service_ << indent() << "    return" << endl;
+  f_service_ << indent() << "  }" << endl;
+  f_service_ << indent() << "  err = " << error2 << endl;
+  f_service_ << indent() << "  return" << endl;
+  f_service_ << indent() << "}" << endl;
+  f_service_ << indent() << "if mTypeId != thrift.REPLY {" << endl;
+  f_service_ << indent() << "  err = thrift.NewApplicationException("
+             << "thrift.INVALID_MESSAGE_TYPE_EXCEPTION, \""
+             << (*f_iter)->get_name() << " failed: invalid message type\")"
+             << endl;
+  f_service_ << indent() << "  return" << endl;
+  f_service_ << indent() << "}" << endl;
+  f_service_ << indent() << "result := " << resultname << "{}" << endl;
+  f_service_ << indent() << "if err = result.Read(iprot); err != nil {" << endl;
+  f_service_ << indent() << "  return" << endl;
+  f_service_ << indent() << "}" << endl;
+  f_service_ << indent() << "if err = iprot.ReadMessageEnd(); err != nil {"
+             << endl;
+  f_service_ << indent() << "  return" << endl;
+  f_service_ << indent() << "}" << endl;
+
+  t_struct* xs = (*f_iter)->get_xceptions();
+  const std::vector<t_field*>& xceptions = xs->get_members();
+  vector<t_field*>::const_iterator x_iter;
+
+  for (x_iter = xceptions.begin(); x_iter != xceptions.end(); ++x_iter) {
+    const std::string pubname = publicize((*x_iter)->get_name());
+
+    f_service_ << indent() << "if result." << pubname << " != nil {" << endl;
+    f_service_ << indent() << "  err = result." << pubname << endl;
+    f_service_ << indent() << "  return " << endl;
+    f_service_ << indent() << "}";
+
+    if ((x_iter + 1) != xceptions.end()) {
+      f_service_ << " else ";
+    } else {
+      f_service_ << endl;
+    }
+  }
+
+  // Careful, only return _result if not a void function
+  if (!(*f_iter)->get_returntype()->is_void()) {
+    f_service_ << indent() << "value = result.GetSuccess()" << endl;
+  }
+
+  f_service_ << indent() << "return" << endl;
+  // Close function
+  indent_down();
+  f_service_ << indent() << "}" << endl << endl;
+}
+
 /**
  * Generates a service client definition.
  *
@@ -2129,114 +2241,7 @@ void t_go_generator::generate_service_client(t_service* tservice) {
     generate_service_client_send_method(serviceName, f_iter);
 
     if (!(*f_iter)->is_oneway()) {
-      std::string resultname =
-          publicize((*f_iter)->get_name() + "_result", true);
-      // Open function
-      f_service_ << endl
-                 << indent() << "func (p *" << serviceName << "Client) recv"
-                 << publicize((*f_iter)->get_name()) << "() (";
-
-      if (!(*f_iter)->get_returntype()->is_void()) {
-        f_service_ << "value " << type_to_go_type((*f_iter)->get_returntype())
-                   << ", ";
-      }
-
-      f_service_ << "err error) {" << endl;
-      indent_up();
-      // TODO(mcslee): Validate message reply here, seq ids etc.
-      string error(tmp("error"));
-      string error2(tmp("error"));
-      f_service_ << indent() << "iprot := p.InputProtocol" << endl;
-      f_service_ << indent() << "if iprot == nil {" << endl;
-      f_service_ << indent()
-                 << "  iprot = p.ProtocolFactory.GetProtocol(p.Transport)"
-                 << endl;
-      f_service_ << indent() << "  p.InputProtocol = iprot" << endl;
-      f_service_ << indent() << "}" << endl;
-      f_service_ << indent()
-                 << "method, mTypeId, seqId, err := iprot.ReadMessageBegin()"
-                 << endl;
-      f_service_ << indent() << "if err != nil {" << endl;
-      f_service_ << indent() << "  return" << endl;
-      f_service_ << indent() << "}" << endl;
-      f_service_ << indent() << "if method != \"" << (*f_iter)->get_name()
-                 << "\" {" << endl;
-      f_service_ << indent() << "  err = thrift.NewApplicationException("
-                 << "thrift.WRONG_METHOD_NAME, \"" << (*f_iter)->get_name()
-                 << " failed: wrong method name\")" << endl;
-      f_service_ << indent() << "  return" << endl;
-      f_service_ << indent() << "}" << endl;
-      f_service_ << indent() << "if p.SeqId != seqId {" << endl;
-      f_service_ << indent() << "  err = thrift.NewApplicationException("
-                 << "thrift.BAD_SEQUENCE_ID, \"" << (*f_iter)->get_name()
-                 << " failed: out of sequence response\")" << endl;
-      f_service_ << indent() << "  return" << endl;
-      f_service_ << indent() << "}" << endl;
-      f_service_ << indent() << "if mTypeId == thrift.EXCEPTION {" << endl;
-      f_service_
-          << indent() << "  " << error
-          << " := thrift.NewApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "
-             "\"Unknown Exception\")"
-          << endl;
-      f_service_ << indent() << "  var " << error2 << " error" << endl;
-      f_service_ << indent() << "  " << error2 << ", err = " << error
-                 << ".Read(iprot)" << endl;
-      f_service_ << indent() << "  if err != nil {" << endl;
-      f_service_ << indent() << "    return" << endl;
-      f_service_ << indent() << "  }" << endl;
-      f_service_ << indent()
-                 << "  if err = iprot.ReadMessageEnd(); err != nil {" << endl;
-      f_service_ << indent() << "    return" << endl;
-      f_service_ << indent() << "  }" << endl;
-      f_service_ << indent() << "  err = " << error2 << endl;
-      f_service_ << indent() << "  return" << endl;
-      f_service_ << indent() << "}" << endl;
-      f_service_ << indent() << "if mTypeId != thrift.REPLY {" << endl;
-      f_service_ << indent() << "  err = thrift.NewApplicationException("
-                 << "thrift.INVALID_MESSAGE_TYPE_EXCEPTION, \""
-                 << (*f_iter)->get_name() << " failed: invalid message type\")"
-                 << endl;
-      f_service_ << indent() << "  return" << endl;
-      f_service_ << indent() << "}" << endl;
-      f_service_ << indent() << "result := " << resultname << "{}" << endl;
-      f_service_ << indent() << "if err = result.Read(iprot); err != nil {"
-                 << endl;
-      f_service_ << indent() << "  return" << endl;
-      f_service_ << indent() << "}" << endl;
-      f_service_ << indent() << "if err = iprot.ReadMessageEnd(); err != nil {"
-                 << endl;
-      f_service_ << indent() << "  return" << endl;
-      f_service_ << indent() << "}" << endl;
-
-      t_struct* xs = (*f_iter)->get_xceptions();
-      const std::vector<t_field*>& xceptions = xs->get_members();
-      vector<t_field*>::const_iterator x_iter;
-
-      for (x_iter = xceptions.begin(); x_iter != xceptions.end(); ++x_iter) {
-        const std::string pubname = publicize((*x_iter)->get_name());
-
-        f_service_ << indent() << "if result." << pubname << " != nil {"
-                   << endl;
-        f_service_ << indent() << "  err = result." << pubname << endl;
-        f_service_ << indent() << "  return " << endl;
-        f_service_ << indent() << "}";
-
-        if ((x_iter + 1) != xceptions.end()) {
-          f_service_ << " else ";
-        } else {
-          f_service_ << endl;
-        }
-      }
-
-      // Careful, only return _result if not a void function
-      if (!(*f_iter)->get_returntype()->is_void()) {
-        f_service_ << indent() << "value = result.GetSuccess()" << endl;
-      }
-
-      f_service_ << indent() << "return" << endl;
-      // Close function
-      indent_down();
-      f_service_ << indent() << "}" << endl << endl;
+      generate_service_client_recv_method(serviceName, f_iter);
     }
   }
 
