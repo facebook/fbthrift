@@ -122,8 +122,13 @@ void ThriftServer::useExistingSocket(
   socket_ = std::move(socket);
 }
 
-void ThriftServer::useExistingSockets(const std::vector<int>& sockets) {
+void ThriftServer::useExistingSockets(const std::vector<int>& socketFds) {
   folly::AsyncServerSocket::UniquePtr socket(new folly::AsyncServerSocket);
+  std::vector<folly::NetworkSocket> sockets;
+  sockets.reserve(socketFds.size());
+  for (auto s : socketFds) {
+    sockets.push_back(folly::NetworkSocket::fromFd(s));
+  }
   socket->useExistingSockets(sockets);
   useExistingSocket(std::move(socket));
 }
