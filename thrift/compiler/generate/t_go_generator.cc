@@ -173,6 +173,9 @@ class t_go_generator : public t_concat_generator {
   void generate_service_helpers(t_service* tservice);
   void generate_service_interface(t_service* tservice);
   void generate_service_client(t_service* tservice);
+  void generate_service_client_send_method(
+      string& serviceName,
+      const vector<t_function*>::const_iterator& f_iter);
   void generate_service_client_threadsafe(t_service* tservice);
   void generate_service_remote(t_service* tservice);
   void generate_service_server(t_service* tservice);
@@ -1919,6 +1922,58 @@ void t_go_generator::generate_service_interface(t_service* tservice) {
   f_service_ << indent() << "}" << endl << endl;
 }
 
+void t_go_generator::generate_service_client_send_method(
+    std::string& serviceName,
+    const vector<t_function*>::const_iterator& f_iter) {
+  f_service_ << indent() << "func (p *" << serviceName << "Client) send"
+             << function_signature(*f_iter) << "(err error) {" << endl;
+  indent_up();
+  std::string argsname = publicize((*f_iter)->get_name() + "_args", true);
+  // Serialize the request header
+  f_service_ << indent() << "oprot := p.OutputProtocol" << endl;
+  f_service_ << indent() << "if oprot == nil {" << endl;
+  f_service_ << indent()
+             << "  oprot = p.ProtocolFactory.GetProtocol(p.Transport)" << endl;
+  f_service_ << indent() << "  p.OutputProtocol = oprot" << endl;
+  f_service_ << indent() << "}" << endl;
+  f_service_ << indent() << "p.SeqId++" << endl;
+  f_service_ << indent() << "if err = oprot.WriteMessageBegin(\""
+             << (*f_iter)->get_name() << "\", "
+             << ((*f_iter)->is_oneway() ? "thrift.ONEWAY" : "thrift.CALL")
+             << ", p.SeqId); err != nil {" << endl;
+  indent_up();
+  f_service_ << indent() << "  return" << endl;
+  indent_down();
+  f_service_ << indent() << "}" << endl;
+  f_service_ << indent() << "args := " << argsname << "{" << endl;
+
+  auto arg_struct = (*f_iter)->get_arglist();
+  const auto& fields = arg_struct->get_members();
+
+  for (auto fld_iter = fields.begin(); fld_iter != fields.end(); ++fld_iter) {
+    f_service_ << indent() << publicize((*fld_iter)->get_name()) << " : "
+               << variable_name_to_go_name((*fld_iter)->get_name()) << ","
+               << endl;
+  }
+  f_service_ << indent() << "}" << endl;
+
+  // Write to the stream
+  f_service_ << indent() << "if err = args.Write(oprot); err != nil {" << endl;
+  indent_up();
+  f_service_ << indent() << "  return" << endl;
+  indent_down();
+  f_service_ << indent() << "}" << endl;
+  f_service_ << indent() << "if err = oprot.WriteMessageEnd(); err != nil {"
+             << endl;
+  indent_up();
+  f_service_ << indent() << "  return" << endl;
+  indent_down();
+  f_service_ << indent() << "}" << endl;
+  f_service_ << indent() << "return oprot.Flush()" << endl;
+  indent_down();
+  f_service_ << indent() << "}" << endl << endl;
+}
+
 /**
  * Generates a service client definition.
  *
@@ -2070,52 +2125,8 @@ void t_go_generator::generate_service_client(t_service* tservice) {
 
     indent_down();
     f_service_ << indent() << "}" << endl << endl;
-    f_service_ << indent() << "func (p *" << serviceName << "Client) send"
-               << function_signature(*f_iter) << "(err error) {" << endl;
-    indent_up();
-    std::string argsname = publicize((*f_iter)->get_name() + "_args", true);
-    // Serialize the request header
-    f_service_ << indent() << "oprot := p.OutputProtocol" << endl;
-    f_service_ << indent() << "if oprot == nil {" << endl;
-    f_service_ << indent()
-               << "  oprot = p.ProtocolFactory.GetProtocol(p.Transport)"
-               << endl;
-    f_service_ << indent() << "  p.OutputProtocol = oprot" << endl;
-    f_service_ << indent() << "}" << endl;
-    f_service_ << indent() << "p.SeqId++" << endl;
-    f_service_ << indent() << "if err = oprot.WriteMessageBegin(\""
-               << (*f_iter)->get_name() << "\", "
-               << ((*f_iter)->is_oneway() ? "thrift.ONEWAY" : "thrift.CALL")
-               << ", p.SeqId); err != nil {" << endl;
-    indent_up();
-    f_service_ << indent() << "  return" << endl;
-    indent_down();
-    f_service_ << indent() << "}" << endl;
-    f_service_ << indent() << "args := " << argsname << "{" << endl;
 
-    for (fld_iter = fields.begin(); fld_iter != fields.end(); ++fld_iter) {
-      f_service_ << indent() << publicize((*fld_iter)->get_name()) << " : "
-                 << variable_name_to_go_name((*fld_iter)->get_name()) << ","
-                 << endl;
-    }
-    f_service_ << indent() << "}" << endl;
-
-    // Write to the stream
-    f_service_ << indent() << "if err = args.Write(oprot); err != nil {"
-               << endl;
-    indent_up();
-    f_service_ << indent() << "  return" << endl;
-    indent_down();
-    f_service_ << indent() << "}" << endl;
-    f_service_ << indent() << "if err = oprot.WriteMessageEnd(); err != nil {"
-               << endl;
-    indent_up();
-    f_service_ << indent() << "  return" << endl;
-    indent_down();
-    f_service_ << indent() << "}" << endl;
-    f_service_ << indent() << "return oprot.Flush()" << endl;
-    indent_down();
-    f_service_ << indent() << "}" << endl << endl;
+    generate_service_client_send_method(serviceName, f_iter);
 
     if (!(*f_iter)->is_oneway()) {
       std::string resultname =
