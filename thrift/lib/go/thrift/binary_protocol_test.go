@@ -21,9 +21,31 @@
 package thrift
 
 import (
+	"strings"
 	"testing"
+	"time"
 )
 
 func TestReadWriteBinaryProtocol(t *testing.T) {
 	ReadWriteProtocolTest(t, NewBinaryProtocolFactoryDefault())
+}
+
+func TestSkipUnknownTypeBinaryProtocol(t *testing.T) {
+	var m MyTestStruct
+	d := NewDeserializer()
+	f := NewBinaryProtocolFactoryDefault()
+	d.Protocol = f.GetProtocol(d.Transport)
+	// skip over a map with invalid key/value type and 1.7B entries
+	data := []byte("\n\x10\rO\t6\x03\n\n\n\x10\r\n\tslice\x00")
+	start := time.Now()
+	err := d.Read(&m, data)
+	if err == nil {
+		t.Fatalf("Parsed invalid message correctly")
+	} else if !strings.Contains(err.Error(), "unknown type") {
+		t.Fatalf("Failed for reason besides unknown type")
+	}
+
+	if time.Now().Sub(start).Seconds() > 5 {
+		t.Fatalf("It should not take seconds to parse a small message")
+	}
 }

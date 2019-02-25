@@ -22,6 +22,7 @@ package thrift
 
 import (
 	"errors"
+	"fmt"
 )
 
 type ProtocolID int16
@@ -127,8 +128,6 @@ func Skip(self Protocol, fieldType Type, maxDepth int) (err error) {
 	}
 
 	switch fieldType {
-	case STOP:
-		return
 	case BOOL:
 		_, err = self.ReadBool()
 		return
@@ -206,6 +205,7 @@ func Skip(self Protocol, fieldType Type, maxDepth int) (err error) {
 			}
 		}
 		return self.ReadListEnd()
+	default:
+		return fmt.Errorf("unable to skip over unknown type id %d", fieldType)
 	}
-	return nil
 }
