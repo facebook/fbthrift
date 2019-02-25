@@ -173,6 +173,9 @@ class t_go_generator : public t_concat_generator {
   void generate_service_helpers(t_service* tservice);
   void generate_service_interface(t_service* tservice);
   void generate_service_client(t_service* tservice);
+  void generate_service_client_method(
+      string& serviceName,
+      const vector<t_function*>::const_iterator& f_iter);
   void generate_service_client_send_method(
       string& serviceName,
       const vector<t_function*>::const_iterator& f_iter);
@@ -1925,6 +1928,58 @@ void t_go_generator::generate_service_interface(t_service* tservice) {
   f_service_ << indent() << "}" << endl << endl;
 }
 
+void t_go_generator::generate_service_client_method(
+    string& serviceName,
+    const vector<t_function*>::const_iterator& f_iter) {
+  t_struct* arg_struct = (*f_iter)->get_arglist();
+  const vector<t_field*>& fields = arg_struct->get_members();
+  vector<t_field*>::const_iterator fld_iter;
+  string funname = publicize((*f_iter)->get_name());
+  // Open function
+  generate_go_docstring(f_service_, (*f_iter));
+  f_service_ << indent() << "func (p *" << serviceName << "Client) "
+             << function_signature_if(*f_iter, "", false) << " {" << endl;
+  indent_up();
+  /*
+  f_service_ <<
+    indent() << "p.SeqId += 1" << endl;
+  if (!(*f_iter)->is_oneway()) {
+    f_service_ <<
+      indent() << "d := defer.Deferred()" << endl <<
+      indent() << "p.Reqs[p.SeqId] = d" << endl;
+  }
+  */
+  f_service_ << indent() << "if err = p.send" << funname << "(";
+  bool first = true;
+
+  for (fld_iter = fields.begin(); fld_iter != fields.end(); ++fld_iter) {
+    if (first) {
+      first = false;
+    } else {
+      f_service_ << ", ";
+    }
+
+    f_service_ << variable_name_to_go_name((*fld_iter)->get_name());
+  }
+
+  f_service_ << "); err != nil { return }" << endl;
+
+  if (!(*f_iter)->is_oneway()) {
+    f_service_ << indent() << "return p.recv" << funname << "()" << endl;
+  } else {
+    f_service_ << indent() << "return" << endl;
+  }
+
+  indent_down();
+  f_service_ << indent() << "}" << endl << endl;
+
+  generate_service_client_send_method(serviceName, f_iter);
+
+  if (!(*f_iter)->is_oneway()) {
+    generate_service_client_recv_method(serviceName, f_iter);
+  }
+}
+
 void t_go_generator::generate_service_client_send_method(
     std::string& serviceName,
     const vector<t_function*>::const_iterator& f_iter) {
@@ -2196,53 +2251,7 @@ void t_go_generator::generate_service_client(t_service* tservice) {
   vector<t_function*>::const_iterator f_iter;
 
   for (f_iter = functions.begin(); f_iter != functions.end(); ++f_iter) {
-    t_struct* arg_struct = (*f_iter)->get_arglist();
-    const vector<t_field*>& fields = arg_struct->get_members();
-    vector<t_field*>::const_iterator fld_iter;
-    string funname = publicize((*f_iter)->get_name());
-    // Open function
-    generate_go_docstring(f_service_, (*f_iter));
-    f_service_ << indent() << "func (p *" << serviceName << "Client) "
-               << function_signature_if(*f_iter, "", false) << " {" << endl;
-    indent_up();
-    /*
-    f_service_ <<
-      indent() << "p.SeqId += 1" << endl;
-    if (!(*f_iter)->is_oneway()) {
-      f_service_ <<
-        indent() << "d := defer.Deferred()" << endl <<
-        indent() << "p.Reqs[p.SeqId] = d" << endl;
-    }
-    */
-    f_service_ << indent() << "if err = p.send" << funname << "(";
-    bool first = true;
-
-    for (fld_iter = fields.begin(); fld_iter != fields.end(); ++fld_iter) {
-      if (first) {
-        first = false;
-      } else {
-        f_service_ << ", ";
-      }
-
-      f_service_ << variable_name_to_go_name((*fld_iter)->get_name());
-    }
-
-    f_service_ << "); err != nil { return }" << endl;
-
-    if (!(*f_iter)->is_oneway()) {
-      f_service_ << indent() << "return p.recv" << funname << "()" << endl;
-    } else {
-      f_service_ << indent() << "return" << endl;
-    }
-
-    indent_down();
-    f_service_ << indent() << "}" << endl << endl;
-
-    generate_service_client_send_method(serviceName, f_iter);
-
-    if (!(*f_iter)->is_oneway()) {
-      generate_service_client_recv_method(serviceName, f_iter);
-    }
+    generate_service_client_method(serviceName, f_iter);
   }
 
   // indent_down();
