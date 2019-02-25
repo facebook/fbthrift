@@ -120,7 +120,7 @@ uint32_t ThriftClient::sendRequestSync(
   EventBase* connectionEvb = connection_->getEventBase();
   DCHECK(!connectionEvb->inRunningEventBaseThread());
   folly::Baton<> baton;
-  DCHECK(typeid(ClientSyncCallback) == typeid(*cb));
+  DCHECK(dynamic_cast<ClientSyncCallback*>(cb.get()));
   auto kind = static_cast<ClientSyncCallback&>(*cb).rpcKind();
   bool oneway = kind == RpcKind::SINGLE_REQUEST_NO_RESPONSE;
   auto scb =
