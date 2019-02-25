@@ -96,6 +96,7 @@ add_library(
   ${RpcMetadata-cpp2-SOURCES}
   ${rsocket-cpp2-SOURCES}
 )
+add_dependencies(thriftcpp2 Config-cpp2-target RpcMetadata-cpp2-target)
 target_link_libraries(
   thriftcpp2
   PUBLIC
