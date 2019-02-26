@@ -28,7 +28,7 @@ public interface Raiser {
                           @ThriftException(type=test.fixtures.exceptions.Fiery.class, id=2),
                           @ThriftException(type=test.fixtures.exceptions.Serious.class, id=3)
                       })
-        ListenableFuture<Void> doRaise() throws test.fixtures.exceptions.Banal, test.fixtures.exceptions.Fiery, test.fixtures.exceptions.Serious;
+        ListenableFuture<Void> doRaise();
 
         @ThriftMethod(value = "get200")
         ListenableFuture<String> get200();
@@ -39,7 +39,7 @@ public interface Raiser {
                           @ThriftException(type=test.fixtures.exceptions.Banal.class, id=2),
                           @ThriftException(type=test.fixtures.exceptions.Serious.class, id=3)
                       })
-        ListenableFuture<String> get500() throws test.fixtures.exceptions.Fiery, test.fixtures.exceptions.Banal, test.fixtures.exceptions.Serious;
+        ListenableFuture<String> get500();
     }
 
     @ThriftMethod(value = "doBland")

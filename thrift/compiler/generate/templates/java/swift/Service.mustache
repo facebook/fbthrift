@@ -38,9 +38,7 @@ public interface {{service:javaCapitalName}}{{#service:extends}} extends {{servi
                           @ThriftException(type={{#field:type}}{{> Type}}{{/field:type}}.class, id={{field:key}}){{^last?}},{{/last?}}{{#last?}}
                       }{{/last?}}{{/function:exceptions}})
         ListenableFuture<{{#function:returnType}}{{> BoxedType}}{{/function:returnType}}> {{function:javaName}}({{#function:args}}
-            @ThriftField(value={{field:key}}, name="{{field:name}}", requiredness={{> Requiredness}}) final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}{{^last?}},{{/last?}}{{/function:args}}){{!
-              Exceptions
-            }}{{#function:exceptions}}{{#first?}} throws {{/first?}}{{#field:type}}{{> BoxedType}}{{/field:type}}{{^last?}}, {{/last?}}{{/function:exceptions}};
+            @ThriftField(value={{field:key}}, name="{{field:name}}", requiredness={{> Requiredness}}) final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}{{^last?}},{{/last?}}{{/function:args}});
         {{^last?}}
 
         {{/last?}}
