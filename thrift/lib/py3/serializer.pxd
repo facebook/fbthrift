@@ -1,8 +1,11 @@
 # distutils: language = c++
 
+from libcpp.memory cimport unique_ptr
 from libcpp.string cimport string
-from libc.stdint cimport uint32_t
+from libcpp.map cimport map
+from libc.stdint cimport uint32_t, uint16_t
 from folly.iobuf cimport cIOBuf, cIOBufQueue
+from thrift.py3.common cimport PROTOCOL_TYPES
 
 
 cdef extern from "thrift/lib/cpp2/protocol/Protocol.h":
@@ -20,3 +23,19 @@ cdef extern from "<thrift/lib/cpp2/protocol/Serializer.h>" nogil:
     uint32_t JSONDeserialize "apache::thrift::SimpleJSONSerializer::deserialize"[T](const cIOBuf* buf, T& obj, cExternalBufferSharing) except+
     void CompactJSONSerialize "apache::thrift::JSONSerializer::serialize"[T](const T& obj, cIOBufQueue* out, cExternalBufferSharing) except+
     uint32_t CompactJSONDeserialize "apache::thrift::JSONSerializer::deserialize"[T](const cIOBuf* buf, T& obj, cExternalBufferSharing) except+
+
+
+cdef extern from "thrift/lib/cpp/transport/THeader.h" namespace "apache::thrift::transport::THeader":
+    cpdef enum Transform "apache::thrift::transport::THeader::TRANSFORMS":
+        NONE,
+        ZLIB_TRANSFORM,
+        SNAPPY_TRANSFORM,
+        ZSTD_TRANSFORM,
+
+    cdef cppclass cTHeader "apache::thrift::transport::THeader":
+        cTHeader() nogil except +
+        void setProtocolId(PROTOCOL_TYPES)
+        uint16_t getProtocolId()
+        void setTransform(Transform)
+        unique_ptr[cIOBuf] addHeader(unique_ptr[cIOBuf], map[string, string])
+        unique_ptr[cIOBuf] removeHeader(cIOBufQueue*, size_t&, map[string, string])

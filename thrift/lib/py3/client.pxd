@@ -16,6 +16,7 @@ from libcpp cimport bool
 
 # This is just here to make the cython compile happy.
 from asyncio import InvalidStateError as asyncio_InvalidStateError
+from thrift.py3.common cimport PROTOCOL_TYPES
 
 cdef extern from "thrift/lib/cpp/transport/THeader.h":
     cpdef enum ClientType "CLIENT_TYPE":
@@ -28,26 +29,6 @@ cdef extern from "thrift/lib/cpp/transport/THeader.h":
         THRIFT_HTTP_GET_CLIENT_TYPE,
         THRIFT_UNKNOWN_CLIENT_TYPE,
         THRIFT_UNFRAMED_COMPACT_DEPRECATED
-
-cdef extern from "thrift/lib/cpp/protocol/TProtocolTypes.h" namespace "apache::thrift::protocol":
-    cdef enum PROTOCOL_TYPES:
-        T_BINARY_PROTOCOL,
-        T_JSON_PROTOCOL,
-        T_COMPACT_PROTOCOL,
-        T_DEBUG_PROTOCOL,
-        T_VIRTUAL_PROTOCOL,
-        T_SIMPLE_JSON_PROTOCOL,
-
-cdef inline PROTOCOL_TYPES Protocol2PROTOCOL_TYPES(object proto):
-    cdef int value = proto.value
-    if value == 0:
-        return PROTOCOL_TYPES.T_COMPACT_PROTOCOL
-    elif value == 1:
-        return PROTOCOL_TYPES.T_BINARY_PROTOCOL
-    elif value == 3:
-        return PROTOCOL_TYPES.T_SIMPLE_JSON_PROTOCOL
-    elif value == 4:
-        return PROTOCOL_TYPES.T_JSON_PROTOCOL
 
 cdef extern from "thrift/lib/py3/client.h" namespace "thrift::py3":
     # The custome deleter is hard, so instead make cython treat it as class

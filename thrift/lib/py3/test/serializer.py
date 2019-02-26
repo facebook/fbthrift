@@ -5,12 +5,36 @@ import pickle
 
 from typing import Mapping, Sequence, AbstractSet, Union, Any
 from thrift.py3 import serialize, deserialize, Protocol, Struct, Error
-from thrift.py3.serializer import serialize_iobuf
-
+from thrift.py3.serializer import (
+    serialize_iobuf,
+    serialize_with_header,
+    deserialize_from_header,
+    Transform,
+)
 from testing.types import easy, hard, Integers, I32List, StrStrMap, SetI32, Digits
 
 
 class SerializerTests(unittest.TestCase):
+    def test_with_header(self) -> None:
+        control = easy(val=5, val_list=[4, 3, 2, 1])
+        iobuf = serialize_with_header(control, transform=Transform.ZSTD_TRANSFORM)
+        decoded = deserialize_from_header(easy, iobuf)
+        self.assertEqual(control, decoded)
+
+    def test_with_header_binary(self) -> None:
+        control = easy(val=6, val_list=[5, 4, 3, 2, 1])
+        iobuf = serialize_with_header(
+            control, protocol=Protocol.BINARY, transform=Transform.ZLIB_TRANSFORM
+        )
+        decoded = deserialize_from_header(easy, iobuf)
+        self.assertEqual(control, decoded)
+
+    def test_with_header_json(self) -> None:
+        control = easy(val=4, val_list=[3, 2, 1])
+        iobuf = serialize_with_header(control, protocol=Protocol.JSON)
+        decoded = deserialize_from_header(easy, iobuf)
+        self.assertEqual(control, decoded)
+
     def test_None(self) -> None:
         with self.assertRaises(TypeError):
             serialize(None, Protocol.JSON)  # type: ignore
@@ -23,7 +47,7 @@ class SerializerTests(unittest.TestCase):
             serialize(easy(), None)  # type: ignore
 
         with self.assertRaises(TypeError):
-            deserialize(Protocol, b'')  # type: ignore
+            deserialize(Protocol, b"")  # type: ignore
 
         with self.assertRaises(TypeError):
             deserialize(easy, Protocol)  # type: ignore

@@ -38,6 +38,7 @@ cdef extern from "folly/io/IOBufQueue.h" namespace "folly":
         cIOBufQueue(cIOBufQueueOptions)
         cIOBufQueue()
         unique_ptr[cIOBuf] move()
+        void append(unique_ptr[cIOBuf]&& buf)
 
 
 cdef extern from '<utility>' namespace 'std':

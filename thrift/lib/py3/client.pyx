@@ -1,6 +1,7 @@
 cimport cython
 from thrift.py3.exceptions cimport create_py_exception
 from thrift.py3.common import Protocol
+from thrift.py3.common cimport Protocol2PROTOCOL_TYPES
 from libcpp.string cimport string
 from cython.operator cimport dereference as deref
 from folly.futures cimport bridgeFutureWith
