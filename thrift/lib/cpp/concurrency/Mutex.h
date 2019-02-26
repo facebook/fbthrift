@@ -19,7 +19,6 @@
 #include <cstdint>
 #include <chrono>
 #include <memory>
-#include <boost/noncopyable.hpp>
 
 namespace apache { namespace thrift { namespace concurrency {
 class PthreadMutex;
@@ -119,7 +118,7 @@ private:
   mutable volatile bool writerWaiting_;
 };
 
-class Guard : boost::noncopyable {
+class Guard {
  public:
   explicit Guard(const Mutex& value,
     std::chrono::milliseconds timeout = std::chrono::milliseconds::zero())
@@ -139,6 +138,9 @@ class Guard : boost::noncopyable {
   ~Guard() {
     release();
   }
+
+  Guard(const Guard&) = delete;
+  Guard& operator=(const Guard&) = delete;
 
   // Move constructor/assignment.
   Guard(Guard&& other) noexcept {
@@ -178,7 +180,7 @@ enum RWGuardType {
 };
 
 
-class RWGuard : boost::noncopyable {
+class RWGuard {
  public:
   explicit RWGuard(const ReadWriteMutex& value, bool write = false,
                    std::chrono::milliseconds timeout =
@@ -206,6 +208,9 @@ class RWGuard : boost::noncopyable {
           std::chrono::milliseconds timeout = std::chrono::milliseconds::zero())
       : RWGuard(value, type == RW_WRITE, timeout) {
   }
+
+  RWGuard(const RWGuard&) = delete;
+  RWGuard& operator=(const RWGuard&) = delete;
 
   ~RWGuard() {
     release();

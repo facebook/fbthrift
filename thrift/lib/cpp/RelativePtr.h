@@ -16,7 +16,6 @@
 #ifndef THRIFT_RELATIVEPTR_H_
 #define THRIFT_RELATIVEPTR_H_
 
-#include <boost/noncopyable.hpp>
 #include <glog/logging.h>
 
 namespace apache { namespace thrift {
@@ -27,12 +26,15 @@ typedef uint8_t byte;
 // TODO: expose 'OffsetType' as a type parameter in freeze()
 template<class T,
          class OffsetType = uint32_t>
-class RelativePtr : private boost::noncopyable {
+class RelativePtr {
   OffsetType offset_;
  public:
   RelativePtr() {
     reset(nullptr);
   }
+
+  RelativePtr(const RelativePtr&) = delete;
+  RelativePtr& operator=(const RelativePtr&) = delete;
 
   explicit RelativePtr(T* ptr) {
     reset(ptr);
