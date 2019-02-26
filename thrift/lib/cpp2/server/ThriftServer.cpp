@@ -140,8 +140,11 @@ void ThriftServer::useExistingSocket(int socket) {
 std::vector<int> ThriftServer::getListenSockets() const {
   std::vector<int> sockets;
   for (const auto& socket : getSockets()) {
-    auto newsockets = socket->getSockets();
-    sockets.insert(sockets.end(), newsockets.begin(), newsockets.end());
+    auto newsockets = socket->getNetworkSockets();
+    sockets.reserve(sockets.size() + newsockets.size());
+    for (auto s : newsockets) {
+      sockets.push_back(s.toFd());
+    }
   }
   return sockets;
 }
