@@ -96,20 +96,20 @@ class PosixThreadFactory : public ThreadFactory {
    * value of the priority.
    */
   enum PRIORITY {
-    LOWEST = 0,
-    LOWER = 1,
-    LOW = 2,
-    NORMAL = 3,
-    HIGH = 4,
-    HIGHER = 5,
-    HIGHEST = 6,
+    LOWEST_PRI = 0,
+    LOWER_PRI = 1,
+    LOW_PRI = 2,
+    NORMAL_PRI = 3,
+    HIGH_PRI = 4,
+    HIGHER_PRI = 5,
+    HIGHEST_PRI = 6,
 
     // Inherit priority of caller thread (supported only for POLICY::OTHER).
-    INHERITED = 9,
+    INHERITED_PRI = 9,
   };
 
   static const POLICY kDefaultPolicy = OTHER;
-  static const PRIORITY kDefaultPriority = NORMAL;
+  static const PRIORITY kDefaultPriority = NORMAL_PRI;
   static const int kDefaultStackSizeMB = 1;
 
   /**

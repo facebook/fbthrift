@@ -755,15 +755,15 @@ TEST_F(ThreadManagerTest, PosixThreadFactoryPriority) {
 
   // NOTE: Test may not have permission to raise priority,
   // so use prio <= NORMAL.
-  EXPECT_EQ(0, getNiceValue(PosixThreadFactory::NORMAL));
-  EXPECT_LT(0, getNiceValue(PosixThreadFactory::LOW));
+  EXPECT_EQ(0, getNiceValue(PosixThreadFactory::NORMAL_PRI));
+  EXPECT_LT(0, getNiceValue(PosixThreadFactory::LOW_PRI));
   std::thread([&] {
     for (int i = 0; i < 20; ++i) {
       if (setpriority(PRIO_PROCESS, 0, i) != 0) {
         PLOG(WARNING) << "failed setpriority(" << i << ")";
         continue;
       }
-      EXPECT_EQ(i, getNiceValue(PosixThreadFactory::INHERITED));
+      EXPECT_EQ(i, getNiceValue(PosixThreadFactory::INHERITED_PRI));
     }
   }).join();
 }

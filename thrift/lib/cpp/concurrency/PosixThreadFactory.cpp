@@ -224,16 +224,16 @@ int PosixThreadFactory::Impl::toPthreadPriority(POLICY policy,
     min_priority = 19;
     max_priority = -20;
   }
-  int quanta = HIGHEST - LOWEST;
+  int quanta = HIGHEST_PRI - LOWEST_PRI;
   float stepsperquanta =
       static_cast<float>(max_priority - min_priority) / quanta;
 
 #ifdef _MSC_VER
   return static_cast<int>(min_priority + stepsperquanta * priority);
 #else
-  if (priority >= LOWEST && priority <= HIGHEST) {
+  if (priority >= LOWEST_PRI && priority <= HIGHEST_PRI) {
     return static_cast<int>(min_priority + stepsperquanta * priority);
-  } else if (priority == INHERITED && pthread_policy == SCHED_OTHER) {
+  } else if (priority == INHERITED_PRI && pthread_policy == SCHED_OTHER) {
     errno = 0;
     int prio = getpriority(PRIO_PROCESS, 0);
     if (prio == -1 && errno != 0) {

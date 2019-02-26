@@ -752,7 +752,7 @@ shared_ptr<ThreadManager> ThreadManager::newPriorityQueueThreadManager(
     bool enableTaskStats) {
   auto tm = make_shared<PriorityQueueThreadManager<SemType>>(
       numThreads, enableTaskStats);
-  tm->threadFactory(Factory(PosixThreadFactory::NORMAL));
+  tm->threadFactory(Factory(PosixThreadFactory::NORMAL_PRI));
   return tm;
 }
 
@@ -1047,11 +1047,11 @@ PriorityThreadManager::newPriorityThreadManager(
   // is in the number of threads.
   const std::array<std::pair<shared_ptr<ThreadFactory>, size_t>, N_PRIORITIES>
     factories{{
-      {Factory(PosixThreadFactory::HIGHER), counts[PRIORITY::HIGH_IMPORTANT]},
-      {Factory(PosixThreadFactory::HIGH),   counts[PRIORITY::HIGH]},
-      {Factory(PosixThreadFactory::HIGH),   counts[PRIORITY::IMPORTANT]},
-      {Factory(PosixThreadFactory::NORMAL), counts[PRIORITY::NORMAL]},
-      {Factory(PosixThreadFactory::LOW),    counts[PRIORITY::BEST_EFFORT]},
+      {Factory(PosixThreadFactory::HIGHER_PRI), counts[PRIORITY::HIGH_IMPORTANT]},
+      {Factory(PosixThreadFactory::HIGH_PRI),   counts[PRIORITY::HIGH]},
+      {Factory(PosixThreadFactory::HIGH_PRI),   counts[PRIORITY::IMPORTANT]},
+      {Factory(PosixThreadFactory::NORMAL_PRI), counts[PRIORITY::NORMAL]},
+      {Factory(PosixThreadFactory::LOW_PRI),    counts[PRIORITY::BEST_EFFORT]},
   }};
   return newPriorityThreadManager<SemType>(factories, enableTaskStats);
 }
