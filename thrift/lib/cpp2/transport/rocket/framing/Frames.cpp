@@ -26,6 +26,7 @@
 #include <folly/Format.h>
 #include <folly/Likely.h>
 #include <folly/Range.h>
+#include <folly/Utility.h>
 #include <folly/io/Cursor.h>
 #include <folly/io/IOBuf.h>
 
@@ -387,9 +388,7 @@ void ErrorFrame::serialize(Serializer& writer) && {
   nwritten += writer.write(streamId());
   nwritten += writer.writeFrameTypeAndFlags(frameType(), Flags::none());
 
-  using ErrorCodeInt = std::underlying_type_t<ErrorCode>;
-  nwritten +=
-      writer.writeBE<ErrorCodeInt>(static_cast<ErrorCodeInt>(errorCode()));
+  nwritten += writer.writeBE(folly::to_underlying_type(errorCode()));
 
   nwritten += writer.writePayload(std::move(payload()));
 

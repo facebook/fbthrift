@@ -25,6 +25,8 @@
 #include <memory>
 #include <type_traits>
 
+#include <folly/Utility.h>
+
 namespace apache { namespace thrift { namespace protocol {
 
 /*
@@ -255,10 +257,7 @@ public:
   template<typename T>
   typename std::enable_if<std::is_enum<T>::value, void>::type
   write(const T value) {
-    // TODO: change the following to underlying_type when everyone
-    // upgraded to gcc-4.7
-    // write(static_cast<typename std::underlying_type<T>::type>(value));
-    write(static_cast<int64_t>(value));
+    write(folly::to_underlying_type(value));
   }
 
 
