@@ -228,7 +228,7 @@ class TSSLSocket(TSocket):
                     sslh.close()
                     raise TTransportException(TTransportException.NOT_OPEN,
                             "failed to verify certificate name")
-            self.handle = sslh
+            self.setHandle(sslh)
         except ssl.SSLError as e:
             raise TTransportException(TTransportException.NOT_OPEN,
                             "SSL error during handshake: " + str(e))
