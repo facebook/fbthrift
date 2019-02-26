@@ -56,6 +56,7 @@ interface MyServicePrioParentClientIf extends \IThriftSyncIf {
    * void
    *   ping();
    */
+  public function ping(): Awaitable<void>;
   public function gen_ping(): Awaitable<void>;
 
   /**
@@ -63,6 +64,7 @@ interface MyServicePrioParentClientIf extends \IThriftSyncIf {
    * void
    *   pong();
    */
+  public function pong(): Awaitable<void>;
   public function gen_pong(): Awaitable<void>;
 }
 
@@ -290,6 +292,12 @@ class MyServicePrioParentClient extends \ThriftClientBase implements MyServicePr
    * void
    *   ping();
    */
+  public async function ping(): Awaitable<void> {
+    $currentseqid = $this->sendImpl_ping();
+    await $this->asyncHandler_->genWait($currentseqid);
+    $this->recvImpl_ping($currentseqid);
+  }
+
   public async function gen_ping(): Awaitable<void> {
     $currentseqid = $this->sendImpl_ping();
     await $this->asyncHandler_->genWait($currentseqid);
@@ -301,6 +309,12 @@ class MyServicePrioParentClient extends \ThriftClientBase implements MyServicePr
    * void
    *   pong();
    */
+  public async function pong(): Awaitable<void> {
+    $currentseqid = $this->sendImpl_pong();
+    await $this->asyncHandler_->genWait($currentseqid);
+    $this->recvImpl_pong($currentseqid);
+  }
+
   public async function gen_pong(): Awaitable<void> {
     $currentseqid = $this->sendImpl_pong();
     await $this->asyncHandler_->genWait($currentseqid);

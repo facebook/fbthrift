@@ -45,6 +45,7 @@ interface BarClientIf extends \IThriftSyncIf {
    *   baz(1: set<i32> a,
    *       2: list<map<i32, set<string>>> b);
    */
+  public function baz(keyset<int> $a, \HH\KeyedContainer<int, \HH\KeyedContainer<int, keyset<string>>> $b): Awaitable<string>;
   public function gen_baz(keyset<int> $a, \HH\KeyedContainer<int, \HH\KeyedContainer<int, keyset<string>>> $b): Awaitable<string>;
 }
 
@@ -183,6 +184,12 @@ class BarClient extends \ThriftClientBase implements BarClientIf {
    *   baz(1: set<i32> a,
    *       2: list<map<i32, set<string>>> b);
    */
+  public async function baz(keyset<int> $a, \HH\KeyedContainer<int, \HH\KeyedContainer<int, keyset<string>>> $b): Awaitable<string> {
+    $currentseqid = $this->sendImpl_baz($a, $b);
+    await $this->asyncHandler_->genWait($currentseqid);
+    return $this->recvImpl_baz($currentseqid);
+  }
+
   public async function gen_baz(keyset<int> $a, \HH\KeyedContainer<int, \HH\KeyedContainer<int, keyset<string>>> $b): Awaitable<string> {
     $currentseqid = $this->sendImpl_baz($a, $b);
     await $this->asyncHandler_->genWait($currentseqid);

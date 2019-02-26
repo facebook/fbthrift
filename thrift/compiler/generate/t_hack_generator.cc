@@ -3848,6 +3848,10 @@ void t_hack_generator::generate_service_interface(
   indent_up();
   vector<t_function*> functions = tservice->get_functions();
   vector<t_function*>::iterator f_iter;
+  vector<string> prefixes{""};
+  if (!async && client) {
+    prefixes.push_back("gen_");
+  }
   for (f_iter = functions.begin(); f_iter != functions.end(); ++f_iter) {
     // Add a blank line before the start of a new function definition
     if (f_iter != functions.begin()) {
@@ -3862,17 +3866,19 @@ void t_hack_generator::generate_service_interface(
     if (async || client) {
       return_typehint = "Awaitable<" + return_typehint + ">";
     }
-    string prefix = async || !client ? "" : "gen_";
-    if (nullable_everything_) {
-      string funname = (*f_iter)->get_name();
-      indent(f_service_) << "public function " << prefix << funname << "("
-                         << argument_list(
-                                (*f_iter)->get_arglist(), "", true, true)
-                         << "): " << return_typehint << ";\n";
-    } else {
-      indent(f_service_) << "public function " << prefix
-                         << function_signature(*f_iter, "", "", return_typehint)
-                         << ";\n";
+    for (string prefix : prefixes) {
+      if (nullable_everything_) {
+        string funname = (*f_iter)->get_name();
+        indent(f_service_) << "public function " << prefix << funname << "("
+                           << argument_list(
+                                  (*f_iter)->get_arglist(), "", true, true)
+                           << "): " << return_typehint << ";\n";
+      } else {
+        indent(f_service_) << "public function " << prefix
+                           << function_signature(
+                                  *f_iter, "", "", return_typehint)
+                           << ";\n";
+      }
     }
   }
   indent_down();
@@ -4387,54 +4393,59 @@ void t_hack_generator::_generate_service_client_children(
   // Generate client method implementations
   vector<t_function*> functions = tservice->get_functions();
   vector<t_function*>::const_iterator f_iter;
+
+  // generate functions as necessary
+  vector<string> prefixes{""};
+  if (!async) {
+    prefixes.push_back("gen_");
+  }
   for (f_iter = functions.begin(); f_iter != functions.end(); ++f_iter) {
     t_struct* arg_struct = (*f_iter)->get_arglist();
     const vector<t_field*>& fields = arg_struct->get_members();
     vector<t_field*>::const_iterator fld_iter;
     string funname = (*f_iter)->get_name();
     string return_typehint = type_to_typehint((*f_iter)->get_returntype());
-
-    // Async function
     generate_php_docstring(out, *f_iter);
-    string prefix = async ? "" : "gen_";
-    if (nullable_everything_) {
-      indent(out) << "public async function " << prefix << funname << "("
-                  << argument_list((*f_iter)->get_arglist(), "", true, true)
-                  << "): Awaitable<" + return_typehint + "> {\n";
-    } else {
-      indent(out) << "public async function "
-                  << function_signature(
-                         *f_iter,
-                         prefix,
-                         "",
-                         "Awaitable<" + return_typehint + ">")
-                  << " {\n";
-    }
-
-    indent_up();
-    indent(out) << "$currentseqid = $this->sendImpl_" << funname << "(";
-
-    first = true;
-    for (fld_iter = fields.begin(); fld_iter != fields.end(); ++fld_iter) {
-      if (first) {
-        first = false;
+    for (string prefix : prefixes) {
+      if (nullable_everything_) {
+        indent(out) << "public async function " << prefix << funname << "("
+                    << argument_list((*f_iter)->get_arglist(), "", true, true)
+                    << "): Awaitable<" + return_typehint + "> {\n";
       } else {
-        out << ", ";
+        indent(out) << "public async function "
+                    << function_signature(
+                           *f_iter,
+                           prefix,
+                           "",
+                           "Awaitable<" + return_typehint + ">")
+                    << " {\n";
       }
-      out << "$" << (*fld_iter)->get_name();
-    }
-    out << ");\n";
 
-    if (!(*f_iter)->is_oneway()) {
-      indent(out) << "await $this->asyncHandler_->genWait($currentseqid);\n";
-      out << indent();
-      if (!(*f_iter)->get_returntype()->is_void()) {
-        out << "return ";
+      indent_up();
+      indent(out) << "$currentseqid = $this->sendImpl_" << funname << "(";
+
+      first = true;
+      for (fld_iter = fields.begin(); fld_iter != fields.end(); ++fld_iter) {
+        if (first) {
+          first = false;
+        } else {
+          out << ", ";
+        }
+        out << "$" << (*fld_iter)->get_name();
       }
-      out << "$this->recvImpl_" << funname << "($currentseqid);\n";
+      out << ");\n";
+
+      if (!(*f_iter)->is_oneway()) {
+        indent(out) << "await $this->asyncHandler_->genWait($currentseqid);\n";
+        out << indent();
+        if (!(*f_iter)->get_returntype()->is_void()) {
+          out << "return ";
+        }
+        out << "$this->recvImpl_" << funname << "($currentseqid);\n";
+      }
+      scope_down(out);
+      out << "\n";
     }
-    scope_down(out);
-    out << "\n";
   }
 
   if (!async) {

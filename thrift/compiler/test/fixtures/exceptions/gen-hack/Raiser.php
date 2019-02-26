@@ -96,6 +96,7 @@ interface RaiserClientIf extends \IThriftSyncIf {
    * void
    *   doBland();
    */
+  public function doBland(): Awaitable<void>;
   public function gen_doBland(): Awaitable<void>;
 
   /**
@@ -106,6 +107,7 @@ interface RaiserClientIf extends \IThriftSyncIf {
    *           2: Fiery f,
    *           3: Serious s);
    */
+  public function doRaise(): Awaitable<void>;
   public function gen_doRaise(): Awaitable<void>;
 
   /**
@@ -113,6 +115,7 @@ interface RaiserClientIf extends \IThriftSyncIf {
    * string
    *   get200();
    */
+  public function get200(): Awaitable<string>;
   public function gen_get200(): Awaitable<string>;
 
   /**
@@ -123,6 +126,7 @@ interface RaiserClientIf extends \IThriftSyncIf {
    *           2: Banal b,
    *           3: Serious s);
    */
+  public function get500(): Awaitable<string>;
   public function gen_get500(): Awaitable<string>;
 }
 
@@ -600,6 +604,12 @@ class RaiserClient extends \ThriftClientBase implements RaiserClientIf {
    * void
    *   doBland();
    */
+  public async function doBland(): Awaitable<void> {
+    $currentseqid = $this->sendImpl_doBland();
+    await $this->asyncHandler_->genWait($currentseqid);
+    $this->recvImpl_doBland($currentseqid);
+  }
+
   public async function gen_doBland(): Awaitable<void> {
     $currentseqid = $this->sendImpl_doBland();
     await $this->asyncHandler_->genWait($currentseqid);
@@ -614,6 +624,12 @@ class RaiserClient extends \ThriftClientBase implements RaiserClientIf {
    *           2: Fiery f,
    *           3: Serious s);
    */
+  public async function doRaise(): Awaitable<void> {
+    $currentseqid = $this->sendImpl_doRaise();
+    await $this->asyncHandler_->genWait($currentseqid);
+    $this->recvImpl_doRaise($currentseqid);
+  }
+
   public async function gen_doRaise(): Awaitable<void> {
     $currentseqid = $this->sendImpl_doRaise();
     await $this->asyncHandler_->genWait($currentseqid);
@@ -625,6 +641,12 @@ class RaiserClient extends \ThriftClientBase implements RaiserClientIf {
    * string
    *   get200();
    */
+  public async function get200(): Awaitable<string> {
+    $currentseqid = $this->sendImpl_get200();
+    await $this->asyncHandler_->genWait($currentseqid);
+    return $this->recvImpl_get200($currentseqid);
+  }
+
   public async function gen_get200(): Awaitable<string> {
     $currentseqid = $this->sendImpl_get200();
     await $this->asyncHandler_->genWait($currentseqid);
@@ -639,6 +661,12 @@ class RaiserClient extends \ThriftClientBase implements RaiserClientIf {
    *           2: Banal b,
    *           3: Serious s);
    */
+  public async function get500(): Awaitable<string> {
+    $currentseqid = $this->sendImpl_get500();
+    await $this->asyncHandler_->genWait($currentseqid);
+    return $this->recvImpl_get500($currentseqid);
+  }
+
   public async function gen_get500(): Awaitable<string> {
     $currentseqid = $this->sendImpl_get500();
     await $this->asyncHandler_->genWait($currentseqid);
