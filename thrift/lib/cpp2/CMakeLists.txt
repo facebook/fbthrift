@@ -113,6 +113,61 @@ if(TARGET rsocket::ReactiveSocket)
   )
 endif()
 
+if(thriftpy3)
+  # Replicate all the cpp target sources, so they are ensured to be position
+  # independent code as required to create a shared library
+  get_property(reflection-cpp2-SOURCES GLOBAL PROPERTY reflection-cpp2-SOURCES)
+  bypass_source_check("${reflection-cpp2-SOURCES}")
+
+  foreach(_lib
+    transport
+    thrift-core
+    concurrency
+    protocol
+    async
+  )
+    get_target_property(_lib_srcs ${_lib} SOURCES)
+    foreach(_s ${_lib_srcs})
+      if(NOT IS_ABSOLUTE ${_s})
+        get_filename_component(_a "../cpp/${_s}" ABSOLUTE)
+      else()
+        set(_a ${_s})
+      endif()
+      list(APPEND _cpp2_sources "${_a}")
+    endforeach()
+  endforeach()
+
+  add_library(
+    thriftcpp2_shared
+    SHARED
+    $<TARGET_PROPERTY:thriftcpp2,SOURCES>
+    $<TARGET_PROPERTY:thriftprotocol,SOURCES>
+    $<TARGET_PROPERTY:thriftfrozen2,SOURCES>
+    ${_cpp2_sources}
+  )
+
+  add_dependencies(thriftcpp2_shared thriftfrozen2)
+  add_dependencies(thriftcpp2_shared reflection-cpp2-target)
+
+  target_link_libraries(
+    thriftcpp2_shared
+    PUBLIC
+      fizz::fizz
+      wangle::wangle
+      Folly::folly_pic
+      sodium
+      ${LIBGFLAGS_LIBRARY}
+      yarpl::yarpl
+      rsocket::ReactiveSocket
+  )
+
+  install(
+    TARGETS
+      thriftcpp2_shared
+    EXPORT fbthrift-exports
+    DESTINATION ${LIB_INSTALL_DIR}
+  )
+endif()
 
 # Install includes
 set(THRIFT2_HEADER_DIRS
