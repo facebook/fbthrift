@@ -157,9 +157,16 @@ if(thriftpy3)
       Folly::folly_pic
       sodium
       ${LIBGFLAGS_LIBRARY}
-      yarpl::yarpl
-      rsocket::ReactiveSocket
   )
+
+  if(TARGET rsocket::ReactiveSocket)
+    target_link_libraries(
+      thriftcpp2_shared
+      PUBLIC
+        yarpl::yarpl
+        rsocket::ReactiveSocket
+    )
+  endif()
 
   install(
     TARGETS
