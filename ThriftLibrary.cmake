@@ -195,6 +195,7 @@ if("${language}" STREQUAL "cpp2")
   set(gen_language "mstch_cpp2")
 elseif("${language}" STREQUAL "py3")
   set(gen_language "mstch_py3")
+  file(WRITE "${output_path}/gen-${language}/${file_name}/__init__.py")
 endif()
 add_custom_command(
   OUTPUT ${${file_name}-${language}-HEADERS} ${${file_name}-${language}-SOURCES}

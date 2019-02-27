@@ -1,52 +1,123 @@
 include_directories("${CMAKE_CURRENT_BINARY_DIR}/..")
 
-thrift_library(
-    "iobuf"
-    "IobufTestService"
+macro(thrift_py3_test filename services)
+  thrift_library(
+    ${filename}
+    ${services}
     "cpp2"
     ""
     "${CMAKE_CURRENT_SOURCE_DIR}"
     "${CMAKE_CURRENT_BINARY_DIR}"
     "test"
-)
+  )
 
-thrift_generate(
-    "iobuf"
-    "IobufTestService"
+  set_target_properties(${filename}-cpp2-obj
+     PROPERTIES POSITION_INDEPENDENT_CODE True)
+
+  thrift_generate(
+    ${filename}
+    ${services}
     "py3"
     ""
     "${CMAKE_CURRENT_SOURCE_DIR}"
     "${CMAKE_CURRENT_BINARY_DIR}"
     "test"
-)
+  )
 
+  foreach(_src
+    "types"
+    "clients"
+    "services"
+  )
+    set(_pyx "gen-py3/${filename}/${_src}.pyx")
+    set(_cxx "gen-py3/${filename}/${_src}.cpp")
+    string(REPLACE "/" "-" _module_name "${filename}/${_src}-py3")
+    message(STATUS "Create Cython module ${_module_name} from ${_pyx}")
+
+    add_custom_command(OUTPUT ${_cxx}
+      COMMAND ${CYTHON_EXE} --fast-fail -3 --cplus ${_pyx} -o ${_cxx}
+        -I${THRIFT_BUILD}/thrift/lib/py3/cybld/
+      COMMENT "Generating ${_cxx} using Cython"
+      DEPENDS thriftcpp2_shared folly-symlinks thrift-symlinks
+    )
+
+    if(${_src} STREQUAL "types")
+      python_add_module(${_module_name} "${_cxx}")
+    else()
+      python_add_module(${_module_name} "${_cxx}" "gen-py3/${filename}/${_src}_wrapper.cpp")
+      set_source_files_properties(
+        "gen-py3/${filename}/${_src}_wrapper.cpp"
+        PROPERTIES GENERATED TRUE
+      )
+    endif()
+    target_link_libraries(${_module_name} thriftcpp2_shared "${filename}-cpp2")
+    set_target_properties(${_module_name}
+      PROPERTIES
+      LIBRARY_OUTPUT_DIRECTORY "gen-py3/${filename}"
+      LIBRARY_OUTPUT_NAME ${_src})
+  endforeach()
+endmacro()
+
+include_directories(${PYTHON_INCLUDE_DIRS})
+thrift_py3_test("testing" "TestingService")
+thrift_py3_test("optional" "NullService")
+thrift_py3_test("iobuf" "IobufTestService")
+thrift_py3_test("stack_args" "StackService")
+thrift_py3_test("binary" "BinaryService")
 
 file(MAKE_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/gen-py3/test")
 
-add_custom_target("create_iobuf_testlink" ALL
-  COMMAND
-    ${CMAKE_COMMAND} -E create_symlink
-    ${CMAKE_CURRENT_SOURCE_DIR}/iobuf_helper.pyx
-    "${CMAKE_CURRENT_BINARY_DIR}/gen-py3/test/iobuf_helper.pyx"
+foreach(_src
+  binary.py
+  client_server.py
+  clients.py
+  custom.py
+  enums.py
+  exceptions.py
+  exception_helper.pyx
+  iobuf.py
+  iobuf_helper.pyx
+  lists.py
+  maps.py
+  optional_mode.py
+  serializer.py
+  server.py
+  sets.py
+  structs.py
+  unions.py
 )
-
-add_custom_target("create_iobuf_testlink2" ALL
-  COMMAND
-    ${CMAKE_COMMAND} -E create_symlink
-    ${CMAKE_CURRENT_SOURCE_DIR}/iobuf.py
-    "${CMAKE_CURRENT_BINARY_DIR}/gen-py3/test/iobuf.py"
-)
-
-
-
-#Next need to do the following inside gen-py3/ ...
-file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/gen-py3/iobuf/__init__.py)
+  add_custom_target("create_test_${_src}" ALL
+    COMMAND
+      ${CMAKE_COMMAND} -E create_symlink
+      ${CMAKE_CURRENT_SOURCE_DIR}/${_src}
+      "${CMAKE_CURRENT_BINARY_DIR}/gen-py3/test/${_src}"
+  )
+endforeach()
 file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/gen-py3/test/__init__.py)
 
-add_custom_target(iobuf_python_unittest ALL
-  COMMAND
-    python3 ${CMAKE_CURRENT_SOURCE_DIR}/setup.py
-    build_ext -i -f -L${CMAKE_LIBRARY_OUTPUT_DIRECTORY}
-    -I${CMAKE_SOURCE_DIR}:${CMAKE_CURRENT_BINARY_DIR}/..
-  DEPENDS thriftcpp2
-  WORKING_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/gen-py3")
+foreach(_src
+    "iobuf_helper"
+    "exception_helper"
+)
+  set(_pyx "gen-py3/test/${_src}.pyx")
+  set(_cxx "gen-py3/test/${_src}.cpp")
+  string(REPLACE "/" "-" _module_name "test/${_src}-py3")
+  message(STATUS "Create Cython module ${_module_name} from ${_pyx}")
+
+  add_custom_command(OUTPUT ${_cxx}
+    COMMAND ${CYTHON_EXE} --fast-fail -3 --cplus ${_pyx} -o ${_cxx}
+      -I${THRIFT_BUILD}/thrift/lib/py3/cybld/
+    COMMENT "Generating ${_cxx} using Cython"
+    DEPENDS folly-symlinks thrift-symlinks
+  )
+
+  python_add_module(${_module_name} "${_cxx}")
+
+  set_target_properties(${_module_name}
+    PROPERTIES
+    LIBRARY_OUTPUT_DIRECTORY gen-py3/test
+    LIBRARY_OUTPUT_NAME "${_src}")
+
+  target_link_libraries(${_module_name} iobuf-cpp2 thriftcpp2_shared)
+endforeach()
+
