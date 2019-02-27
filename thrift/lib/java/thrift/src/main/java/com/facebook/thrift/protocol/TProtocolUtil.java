@@ -19,14 +19,12 @@
 
 package com.facebook.thrift.protocol;
 
-import java.util.Collections;
-
 import com.facebook.thrift.TException;
+import java.util.Collections;
 
 /**
  * Utility class with static methods for interacting with protocol data
  * streams.
- *
  */
 public class TProtocolUtil {
 
@@ -41,11 +39,10 @@ public class TProtocolUtil {
    * traverse before throwing a TException.  This is a global setting, so
    * any call to skip in this JVM will enforce this value.
    *
-   * @param depth  the maximum recursive depth.  A value of 2 would allow
-   *    the skip function to skip a structure or collection with basic children,
-   *    but it would not permit skipping a struct that had a field containing
-   *    a child struct.  A value of 1 would only allow skipping of simple
-   *    types and empty structs/collections.
+   * @param depth the maximum recursive depth.  A value of 2 would allow the skip function to skip a
+   * structure or collection with basic children, but it would not permit skipping a struct that had
+   * a field containing a child struct.  A value of 1 would only allow skipping of simple types and
+   * empty structs/collections.
    */
   public static void setMaxSkipDepth(int depth) {
     maxSkipDepth = depth;
@@ -54,70 +51,61 @@ public class TProtocolUtil {
   /**
    * Skips over the next data element from the provided input TProtocol object.
    *
-   * @param prot  the protocol object to read from
-   * @param type  the next value will be intepreted as this TType value.
+   * @param prot the protocol object to read from
+   * @param type the next value will be intepreted as this TType value.
    */
   public static void skip(TProtocol prot, byte type)
-    throws TException {
+      throws TException {
     skip(prot, type, maxSkipDepth);
   }
 
   /**
    * Skips over the next data element from the provided input TProtocol object.
    *
-   * @param prot  the protocol object to read from
-   * @param type  the next value will be intepreted as this TType value.
-   * @param maxDepth  this function will only skip complex objects to this
-   *   recursive depth, to prevent Java stack overflow.
+   * @param prot the protocol object to read from
+   * @param type the next value will be intepreted as this TType value.
+   * @param maxDepth this function will only skip complex objects to this recursive depth, to
+   * prevent Java stack overflow.
    */
   public static void skip(TProtocol prot, byte type, int maxDepth)
-  throws TException {
+      throws TException {
     if (maxDepth <= 0) {
       throw new TException("Maximum skip depth exceeded");
     }
     switch (type) {
-    case TType.BOOL:
-      {
+      case TType.BOOL: {
         prot.readBool();
         break;
       }
-    case TType.BYTE:
-      {
+      case TType.BYTE: {
         prot.readByte();
         break;
       }
-    case TType.I16:
-      {
+      case TType.I16: {
         prot.readI16();
         break;
       }
-    case TType.I32:
-      {
+      case TType.I32: {
         prot.readI32();
         break;
       }
-    case TType.I64:
-      {
+      case TType.I64: {
         prot.readI64();
         break;
       }
-    case TType.DOUBLE:
-      {
+      case TType.DOUBLE: {
         prot.readDouble();
         break;
       }
-    case TType.FLOAT:
-      {
+      case TType.FLOAT: {
         prot.readFloat();
         break;
       }
-    case TType.STRING:
-      {
+      case TType.STRING: {
         prot.readBinary();
         break;
       }
-    case TType.STRUCT:
-      {
+      case TType.STRUCT: {
         prot.readStructBegin(
             Collections.<Integer, com.facebook.thrift.meta_data.FieldMetaData>emptyMap());
         while (true) {
@@ -131,8 +119,7 @@ public class TProtocolUtil {
         prot.readStructEnd();
         break;
       }
-    case TType.MAP:
-      {
+      case TType.MAP: {
         TMap map = prot.readMapBegin();
         for (int i = 0;
              (map.size < 0) ? prot.peekMap() : (i < map.size);
@@ -143,8 +130,7 @@ public class TProtocolUtil {
         prot.readMapEnd();
         break;
       }
-    case TType.SET:
-      {
+      case TType.SET: {
         TSet set = prot.readSetBegin();
         for (int i = 0;
              (set.size < 0) ? prot.peekSet() : (i < set.size);
@@ -154,8 +140,7 @@ public class TProtocolUtil {
         prot.readSetEnd();
         break;
       }
-    case TType.LIST:
-      {
+      case TType.LIST: {
         TList list = prot.readListBegin();
         for (int i = 0;
              (list.size < 0) ? prot.peekList() : (i < list.size);
@@ -165,17 +150,17 @@ public class TProtocolUtil {
         prot.readListEnd();
         break;
       }
-    default:
-      {
-        throw new TProtocolException(
+      default:
+        {
+          throw new TProtocolException(
               TProtocolException.INVALID_DATA, "Invalid type encountered during skipping: " + type);
-      }
+        }
     }
   }
 
   /**
    * Attempt to determine the protocol used to serialize some data.
-   *
+   * <p>
    * The guess is based on known specificities of supported protocols.
    * In some cases, no guess can be done, in that case we return the
    * fallback TProtocolFactory.

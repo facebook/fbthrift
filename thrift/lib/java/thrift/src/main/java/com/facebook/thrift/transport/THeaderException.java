@@ -21,7 +21,6 @@ package com.facebook.thrift.transport;
 
 /**
  * Application level exception
- *
  */
 public class THeaderException extends TTransportException {
   private static final long serialVersionUID = 1L;

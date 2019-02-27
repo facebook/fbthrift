@@ -21,7 +21,6 @@ package com.facebook.thrift.protocol;
 
 /**
  * Helper class that encapsulates list metadata.
- *
  */
 public final class TList {
   public TList() {
@@ -34,5 +33,5 @@ public final class TList {
   }
 
   public final byte elemType;
-  public final int  size;
+  public final int size;
 }

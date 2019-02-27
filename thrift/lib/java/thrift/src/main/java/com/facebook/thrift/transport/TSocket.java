@@ -19,6 +19,9 @@
 
 package com.facebook.thrift.transport;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.IOException;
@@ -26,12 +29,8 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketException;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 /**
  * Socket implementation of the TTransport interface. To be commented soon!
- *
  */
 public class TSocket extends TIOStreamTransport implements TSocketIf {
 
@@ -45,7 +44,7 @@ public class TSocket extends TIOStreamTransport implements TSocketIf {
   /**
    * Remote host
    */
-  private String host_  = null;
+  private String host_ = null;
 
   /**
    * Remote port
@@ -103,8 +102,8 @@ public class TSocket extends TIOStreamTransport implements TSocketIf {
    * Creates a new unconnected socket that will connect to the given host
    * on the given port.
    *
-   * @param host    Remote host
-   * @param port    Remote port
+   * @param host Remote host
+   * @param port Remote port
    * @param timeout Socket timeout
    */
   public TSocket(String host, int port, int timeout) {
@@ -115,9 +114,9 @@ public class TSocket extends TIOStreamTransport implements TSocketIf {
    * Creates a new unconnected socket that will connect to the given host
    * on the given port.
    *
-   * @param host              Remote host
-   * @param port              Remote port
-   * @param timeout           Socket timeout
+   * @param host Remote host
+   * @param port Remote port
+   * @param timeout Socket timeout
    * @param connectionTimeout Socket connection timeout
    */
   public TSocket(String host, int port, int timeout, int connectionTimeout) {

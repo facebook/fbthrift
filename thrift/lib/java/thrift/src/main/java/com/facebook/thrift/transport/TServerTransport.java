@@ -21,7 +21,6 @@ package com.facebook.thrift.transport;
 
 /**
  * Server transport. Object which provides client transports.
- *
  */
 public abstract class TServerTransport {
 
@@ -46,6 +45,7 @@ public abstract class TServerTransport {
    * be called from a different thread context than the other TServerTransport
    * methods.
    */
-  public void interrupt() {}
+  public void interrupt() {
+  }
 
 }

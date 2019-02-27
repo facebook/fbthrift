@@ -31,7 +31,6 @@ import java.io.OutputStream;
  * and an OutputStream and uses those to perform all transport operations.
  * This allows for compatibility with all the nice constructs Java already
  * has to provide a variety of types of streams.
- *
  */
 public class TIOStreamTransport extends TTransport {
 
@@ -47,7 +46,8 @@ public class TIOStreamTransport extends TTransport {
    * Subclasses can invoke the default constructor and then assign the input
    * streams in the open method.
    */
-  protected TIOStreamTransport() {}
+  protected TIOStreamTransport() {
+  }
 
   /**
    * Input stream constructor.
@@ -91,7 +91,8 @@ public class TIOStreamTransport extends TTransport {
   /**
    * The streams must already be open. This method does nothing.
    */
-  public void open() throws TTransportException {}
+  public void open() throws TTransportException {
+  }
 
   /**
    * Closes both the input and output streams.
@@ -120,7 +121,8 @@ public class TIOStreamTransport extends TTransport {
    */
   public int read(byte[] buf, int off, int len) throws TTransportException {
     if (inputStream_ == null) {
-      throw new TTransportException(TTransportException.NOT_OPEN, "Cannot read from null inputStream");
+      throw new TTransportException(TTransportException.NOT_OPEN,
+          "Cannot read from null inputStream");
     }
     int bytesRead;
     try {
@@ -139,7 +141,8 @@ public class TIOStreamTransport extends TTransport {
    */
   public void write(byte[] buf, int off, int len) throws TTransportException {
     if (outputStream_ == null) {
-      throw new TTransportException(TTransportException.NOT_OPEN, "Cannot write to null outputStream");
+      throw new TTransportException(TTransportException.NOT_OPEN,
+          "Cannot write to null outputStream");
     }
     try {
       outputStream_.write(buf, off, len);

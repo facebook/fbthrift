@@ -34,7 +34,7 @@ import java.nio.channels.SocketChannel;
  * Socket implementation of the TTransport interface. To be commented soon!
  */
 public class TNonblockingSocket extends TNonblockingTransport
-  implements TSocketIf {
+    implements TSocketIf {
 
   /**
    * Host and port if passed in, used for lazy non-blocking connect.
@@ -59,12 +59,9 @@ public class TNonblockingSocket extends TNonblockingTransport
 
   /**
    * Create a new nonblocking socket transport that will be connected to host:port.
-   * @param host
-   * @param port
-   * @throws TTransportException
-   * @throws IOException
    */
-  public TNonblockingSocket(String host, int port, int timeout) throws TTransportException, IOException {
+  public TNonblockingSocket(String host, int port, int timeout)
+      throws TTransportException, IOException {
     this(SocketChannel.open(), timeout, new InetSocketAddress(host, port));
   }
 
@@ -76,11 +73,13 @@ public class TNonblockingSocket extends TNonblockingTransport
    */
   public TNonblockingSocket(SocketChannel socketChannel) throws TTransportException, IOException {
     this(socketChannel, 0, null);
-    if (!socketChannel.isConnected()) throw new IOException("Socket must already be connected");
+    if (!socketChannel.isConnected()) {
+      throw new IOException("Socket must already be connected");
+    }
   }
 
   private TNonblockingSocket(SocketChannel socketChannel, int timeout, SocketAddress socketAddress)
-    throws TTransportException, IOException {
+      throws TTransportException, IOException {
 
     try {
       // make it a nonblocking channel
@@ -104,7 +103,6 @@ public class TNonblockingSocket extends TNonblockingTransport
    * Register this socket with the specified selector for both read and write
    * operations.
    *
-   * @param selector
    * @return the selection key for this socket.
    */
   public SelectionKey registerSelector(Selector selector, int interests) throws IOException {
@@ -182,7 +180,7 @@ public class TNonblockingSocket extends TNonblockingTransport
   public int read(byte[] buf, int off, int len) throws TTransportException {
     if ((socketChannel.validOps() & SelectionKey.OP_READ) != SelectionKey.OP_READ) {
       throw new TTransportException(TTransportException.NOT_OPEN,
-        "Cannot read from write-only socket channel");
+          "Cannot read from write-only socket channel");
     }
     try {
       return socketChannel.read(ByteBuffer.wrap(buf, off, len));
@@ -204,7 +202,7 @@ public class TNonblockingSocket extends TNonblockingTransport
   public void write(byte[] buf, int off, int len) throws TTransportException {
     if ((socketChannel.validOps() & SelectionKey.OP_WRITE) != SelectionKey.OP_WRITE) {
       throw new TTransportException(TTransportException.NOT_OPEN,
-        "Cannot write to write-only socket channel");
+          "Cannot write to write-only socket channel");
     }
     try {
       socketChannel.write(ByteBuffer.wrap(buf, off, len));

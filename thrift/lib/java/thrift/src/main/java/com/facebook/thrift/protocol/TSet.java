@@ -21,7 +21,6 @@ package com.facebook.thrift.protocol;
 
 /**
  * Helper class that encapsulates set metadata.
- *
  */
 public final class TSet {
   public TSet() {
@@ -38,5 +37,5 @@ public final class TSet {
   }
 
   public final byte elemType;
-  public final int  size;
+  public final int size;
 }

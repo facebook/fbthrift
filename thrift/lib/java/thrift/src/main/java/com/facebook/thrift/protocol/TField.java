@@ -21,11 +21,10 @@ package com.facebook.thrift.protocol;
 
 /**
  * Helper class that encapsulates field metadata.
- *
  */
 public class TField {
   public TField() {
-    this("", TType.STOP, (short)0);
+    this("", TType.STOP, (short) 0);
   }
 
   public TField(String n, byte t, short i) {
@@ -35,8 +34,8 @@ public class TField {
   }
 
   public final String name;
-  public final byte   type;
-  public final short  id;
+  public final byte type;
+  public final short id;
 
   public String toString() {
     return "<TField name:'" + name + "' type:" + type + " field-id:" + id + ">";

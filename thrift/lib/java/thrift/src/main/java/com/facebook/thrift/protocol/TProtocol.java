@@ -19,16 +19,15 @@
 
 package com.facebook.thrift.protocol;
 
-import java.util.Map;
-import java.util.Collections;
-
 import com.facebook.thrift.TException;
-import com.facebook.thrift.transport.TTransport;
 import com.facebook.thrift.meta_data.FieldMetaData;
+import com.facebook.thrift.transport.TTransport;
+
+import java.util.Collections;
+import java.util.Map;
 
 /**
  * Protocol interface definition.
- *
  */
 public abstract class TProtocol {
 
@@ -128,7 +127,7 @@ public abstract class TProtocol {
    */
   public TStruct readStructBegin() throws TException {
     return readStructBegin(
-      Collections.<Integer, FieldMetaData>emptyMap());
+        Collections.<Integer, FieldMetaData>emptyMap());
   }
 
   public abstract void readStructEnd() throws TException;
@@ -195,5 +194,6 @@ public abstract class TProtocol {
    * Reset any internal state back to a blank slate. This method only needs to
    * be implemented for stateful protocols.
    */
-  public void reset() {}
+  public void reset() {
+  }
 }

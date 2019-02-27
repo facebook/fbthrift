@@ -30,7 +30,6 @@ import java.net.SocketException;
 
 /**
  * Wrapper around ServerSocket for Thrift.
- *
  */
 public class TServerSocket extends TServerTransport {
 
@@ -91,7 +90,8 @@ public class TServerSocket extends TServerTransport {
     this(bindAddr, clientTimeout, 0);
   }
 
-  public TServerSocket(InetSocketAddress bindAddr, int clientTimeout, int backlog) throws TTransportException {
+  public TServerSocket(InetSocketAddress bindAddr, int clientTimeout, int backlog)
+      throws TTransportException {
     clientTimeout_ = clientTimeout;
     try {
       // Make server socket
@@ -102,7 +102,8 @@ public class TServerSocket extends TServerTransport {
       serverSocket_.bind(bindAddr, backlog);
     } catch (IOException ioe) {
       serverSocket_ = null;
-      throw new TTransportException("Could not create ServerSocket on address " + bindAddr.toString() + ".");
+      throw new TTransportException(
+          "Could not create ServerSocket on address " + bindAddr.toString() + ".");
     }
   }
 
@@ -148,4 +149,7 @@ public class TServerSocket extends TServerTransport {
     close();
   }
 
+  public ServerSocket getServerSocket() {
+    return serverSocket_;
+  }
 }

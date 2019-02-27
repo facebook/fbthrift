@@ -22,12 +22,12 @@ package com.facebook.thrift.server.example;
 import com.facebook.thrift.TException;
 import com.facebook.thrift.TProcessor;
 import com.facebook.thrift.TProcessorFactory;
-import com.facebook.thrift.protocol.TProtocol;
-import com.facebook.thrift.protocol.TProtocolFactory;
 import com.facebook.thrift.protocol.TBinaryProtocol;
 import com.facebook.thrift.protocol.THeaderProtocol;
-import com.facebook.thrift.server.TServer;
+import com.facebook.thrift.protocol.TProtocol;
+import com.facebook.thrift.protocol.TProtocolFactory;
 import com.facebook.thrift.server.TRpcConnectionContext;
+import com.facebook.thrift.server.TServer;
 import com.facebook.thrift.server.TThreadFactoryImpl;
 import com.facebook.thrift.transport.TServerTransport;
 import com.facebook.thrift.transport.TTransport;
@@ -37,9 +37,9 @@ import com.facebook.thrift.transport.TTransportFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.RejectedExecutionHandler;
 import java.util.concurrent.SynchronousQueue;
@@ -48,12 +48,9 @@ import java.util.concurrent.TimeUnit;
 
 
 /**
- * @deprecated "Please use Netty server instead.
- * See https://github.com/facebook/nifty for details."
- *
- * Server which uses Java's built in ThreadPool management to spawn off
- * a worker pool that
- *
+ * @deprecated "Please use Netty server instead. See https://github.com/facebook/nifty for details."
+ * <p>
+ * Server which uses Java's built in ThreadPool management to spawn off a worker pool that
  */
 @Deprecated
 public class TThreadPoolServer extends TServer {
@@ -81,65 +78,65 @@ public class TThreadPoolServer extends TServer {
   }
 
   public TThreadPoolServer(TProcessor processor,
-                           TServerTransport serverTransport) {
+      TServerTransport serverTransport) {
     this(processor, serverTransport,
-         new TTransportFactory(), new TTransportFactory(),
-         new TBinaryProtocol.Factory(), new TBinaryProtocol.Factory());
+        new TTransportFactory(), new TTransportFactory(),
+        new TBinaryProtocol.Factory(), new TBinaryProtocol.Factory());
   }
 
   public TThreadPoolServer(TProcessorFactory processorFactory,
-                           TServerTransport serverTransport) {
+      TServerTransport serverTransport) {
     this(processorFactory, serverTransport,
-         new TTransportFactory(), new TTransportFactory(),
-         new TBinaryProtocol.Factory(), new TBinaryProtocol.Factory());
+        new TTransportFactory(), new TTransportFactory(),
+        new TBinaryProtocol.Factory(), new TBinaryProtocol.Factory());
   }
 
   public TThreadPoolServer(TProcessor processor,
-                           TServerTransport serverTransport,
-                           TProtocolFactory protocolFactory) {
+      TServerTransport serverTransport,
+      TProtocolFactory protocolFactory) {
     this(processor, serverTransport,
-         new TTransportFactory(), new TTransportFactory(),
-         protocolFactory, protocolFactory);
+        new TTransportFactory(), new TTransportFactory(),
+        protocolFactory, protocolFactory);
   }
 
   public TThreadPoolServer(TProcessor processor,
-                           TServerTransport serverTransport,
-                           TTransportFactory transportFactory,
-                           TProtocolFactory protocolFactory) {
+      TServerTransport serverTransport,
+      TTransportFactory transportFactory,
+      TProtocolFactory protocolFactory) {
     this(processor, serverTransport,
-         transportFactory, transportFactory,
-         protocolFactory, protocolFactory);
+        transportFactory, transportFactory,
+        protocolFactory, protocolFactory);
   }
 
   public TThreadPoolServer(TProcessorFactory processorFactory,
-                           TServerTransport serverTransport,
-                           TTransportFactory transportFactory,
-                           TProtocolFactory protocolFactory) {
+      TServerTransport serverTransport,
+      TTransportFactory transportFactory,
+      TProtocolFactory protocolFactory) {
     this(processorFactory, serverTransport,
-         transportFactory, transportFactory,
-         protocolFactory, protocolFactory);
+        transportFactory, transportFactory,
+        protocolFactory, protocolFactory);
   }
 
   public TThreadPoolServer(TProcessor processor,
-                           TServerTransport serverTransport,
-                           TTransportFactory inputTransportFactory,
-                           TTransportFactory outputTransportFactory,
-                           TProtocolFactory inputProtocolFactory,
-                           TProtocolFactory outputProtocolFactory) {
+      TServerTransport serverTransport,
+      TTransportFactory inputTransportFactory,
+      TTransportFactory outputTransportFactory,
+      TProtocolFactory inputProtocolFactory,
+      TProtocolFactory outputProtocolFactory) {
     this(new TProcessorFactory(processor), serverTransport,
-         inputTransportFactory, outputTransportFactory,
-         inputProtocolFactory, outputProtocolFactory);
+        inputTransportFactory, outputTransportFactory,
+        inputProtocolFactory, outputProtocolFactory);
   }
 
   public TThreadPoolServer(TProcessorFactory processorFactory,
-                           TServerTransport serverTransport,
-                           TTransportFactory inputTransportFactory,
-                           TTransportFactory outputTransportFactory,
-                           TProtocolFactory inputProtocolFactory,
-                           TProtocolFactory outputProtocolFactory) {
+      TServerTransport serverTransport,
+      TTransportFactory inputTransportFactory,
+      TTransportFactory outputTransportFactory,
+      TProtocolFactory inputProtocolFactory,
+      TProtocolFactory outputProtocolFactory) {
     super(processorFactory, serverTransport,
-          inputTransportFactory, outputTransportFactory,
-          inputProtocolFactory, outputProtocolFactory);
+        inputTransportFactory, outputTransportFactory,
+        inputProtocolFactory, outputProtocolFactory);
     options_ = new Options();
     executorService_ = Executors.newCachedThreadPool(
         new TThreadFactoryImpl("thrift")
@@ -147,28 +144,28 @@ public class TThreadPoolServer extends TServer {
   }
 
   public TThreadPoolServer(TProcessor processor,
-          TServerTransport serverTransport,
-          TTransportFactory inputTransportFactory,
-          TTransportFactory outputTransportFactory,
-          TProtocolFactory inputProtocolFactory,
-          TProtocolFactory outputProtocolFactory,
-          Options options) {
+      TServerTransport serverTransport,
+      TTransportFactory inputTransportFactory,
+      TTransportFactory outputTransportFactory,
+      TProtocolFactory inputProtocolFactory,
+      TProtocolFactory outputProtocolFactory,
+      Options options) {
     this(new TProcessorFactory(processor), serverTransport,
-         inputTransportFactory, outputTransportFactory,
-         inputProtocolFactory, outputProtocolFactory,
-         options);
+        inputTransportFactory, outputTransportFactory,
+        inputProtocolFactory, outputProtocolFactory,
+        options);
   }
 
   public TThreadPoolServer(TProcessorFactory processorFactory,
-                           TServerTransport serverTransport,
-                           TTransportFactory inputTransportFactory,
-                           TTransportFactory outputTransportFactory,
-                           TProtocolFactory inputProtocolFactory,
-                           TProtocolFactory outputProtocolFactory,
-                           Options options) {
+      TServerTransport serverTransport,
+      TTransportFactory inputTransportFactory,
+      TTransportFactory outputTransportFactory,
+      TProtocolFactory inputProtocolFactory,
+      TProtocolFactory outputProtocolFactory,
+      Options options) {
     super(processorFactory, serverTransport,
-          inputTransportFactory, outputTransportFactory,
-          inputProtocolFactory, outputProtocolFactory);
+        inputTransportFactory, outputTransportFactory,
+        inputProtocolFactory, outputProtocolFactory);
 
     if (options.executorService != null) {
       executorService_ = options.executorService;
@@ -187,12 +184,12 @@ public class TThreadPoolServer extends TServer {
         executorQueue = new SynchronousQueue<Runnable>();
       }
       executorService_ = new ThreadPoolExecutor(options.minWorkerThreads,
-                                                options.maxWorkerThreads,
-                                                60,
-                                                TimeUnit.SECONDS,
-                                                executorQueue,
-                                                new TThreadFactoryImpl("thrift"),
-                                                rejectedExecutionHandler);
+          options.maxWorkerThreads,
+          60,
+          TimeUnit.SECONDS,
+          executorQueue,
+          new TThreadFactoryImpl("thrift"),
+          rejectedExecutionHandler);
     }
 
     options_ = options;
@@ -293,9 +290,10 @@ public class TThreadPoolServer extends TServer {
         // we check stopped_ first to make sure we're not supposed to be shutting
         // down. this is necessary for graceful shutdown.
         TRpcConnectionContext server_ctx = new TRpcConnectionContext(client_,
-                                                                     inputProtocol,
-                                                                     outputProtocol);
-        while (!stopped_ && processor.process(inputProtocol, outputProtocol, server_ctx)) {}
+            inputProtocol,
+            outputProtocol);
+        while (!stopped_ && processor.process(inputProtocol, outputProtocol, server_ctx)) {
+        }
       } catch (TTransportException ttx) {
         // Assume the client died and continue silently
       } catch (TException tx) {

@@ -87,7 +87,8 @@ public class TNonblockingServerSocket extends TNonblockingServerTransport {
   /**
    * Creates just a port listening server socket
    */
-  public TNonblockingServerSocket(int port, int clientTimeout, int backlog) throws TTransportException {
+  public TNonblockingServerSocket(int port, int clientTimeout, int backlog)
+      throws TTransportException {
     port_ = port;
     clientTimeout_ = clientTimeout;
     try {
@@ -153,7 +154,7 @@ public class TNonblockingServerSocket extends TNonblockingServerTransport {
         serverSocket_.close();
       } catch (IOException iox) {
         System.err.println("WARNING: Could not close server socket: " +
-                           iox.getMessage());
+            iox.getMessage());
       }
       serverSocket_ = null;
     }

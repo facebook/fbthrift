@@ -19,13 +19,12 @@
 
 package com.facebook.thrift.protocol;
 
-import java.io.Serializable;
-
 import com.facebook.thrift.transport.TTransport;
+
+import java.io.Serializable;
 
 /**
  * Factory interface for constructing protocol instances.
- *
  */
 public interface TProtocolFactory extends Serializable {
   public TProtocol getProtocol(TTransport trans);

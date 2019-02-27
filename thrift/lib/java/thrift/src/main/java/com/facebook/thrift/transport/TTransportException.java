@@ -23,7 +23,6 @@ import com.facebook.thrift.TException;
 
 /**
  * Transport exceptions.
- *
  */
 public class TTransportException extends TException {
 

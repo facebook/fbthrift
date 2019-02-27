@@ -18,24 +18,25 @@
  */
 package com.facebook.thrift.transport;
 
-import java.io.UnsupportedEncodingException;
-import java.nio.ByteBuffer;
-import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.zip.*;
-
 import com.facebook.thrift.TApplicationException;
 import com.facebook.thrift.TException;
 import com.facebook.thrift.protocol.TBinaryProtocol;
 import com.facebook.thrift.protocol.TCompactProtocol;
 import com.facebook.thrift.protocol.TMessage;
 import com.facebook.thrift.protocol.TMessageType;
-
-import org.iq80.snappy.Snappy;
+import java.io.UnsupportedEncodingException;
+import java.nio.ByteBuffer;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.zip.DataFormatException;
+import java.util.zip.Deflater;
+import java.util.zip.Inflater;
 import org.iq80.snappy.CorruptionException;
+import org.iq80.snappy.Snappy;
 
 public class THeaderTransport extends TFramedTransport {
   public static final int HEADER_MAGIC_MASK = 0xFFFF0000;
@@ -175,8 +176,6 @@ public class THeaderTransport extends TFramedTransport {
   /**
    * Sets protocol Id we are writing
    * May be updated on read.
-   *
-   * @param protoId
    */
   public void setProtocolId(int protoId) {
     this.protoId = protoId;
@@ -196,8 +195,6 @@ public class THeaderTransport extends TFramedTransport {
 
   /**
    * Add a transform to the write transforms list
-   *
-   * @param transform
    */
   public void addTransform(Transforms transform) {
     writeTransforms.add(transform);
@@ -367,7 +364,7 @@ public class THeaderTransport extends TFramedTransport {
 
     while (true) {
       byte b = frame.get();
-      result |= (int)(b & 0x7f) << shift;
+      result |= (int) (b & 0x7f) << shift;
       if ((b & 0x80) != 0x80) {
         break;
       }
@@ -380,10 +377,10 @@ public class THeaderTransport extends TFramedTransport {
   private void writeVarint(ByteBuffer out, int n) {
     while (true) {
       if ((n & ~0x7F) == 0) {
-        out.put((byte)n);
+        out.put((byte) n);
         break;
       } else {
-        out.put((byte)(n | 0x80));
+        out.put((byte) (n | 0x80));
         n >>>= 7;
       }
     }
@@ -532,8 +529,7 @@ public class THeaderTransport extends TFramedTransport {
     return data;
   }
 
-  private ByteBuffer transform(ByteBuffer data)
-    throws TTransportException {
+  private ByteBuffer transform(ByteBuffer data) throws TTransportException {
 
     if (writeTransforms.contains(Transforms.ZLIB_TRANSFORM)) {
       byte[] output = new byte[data.limit() + 512]; // output might be larger
@@ -551,12 +547,8 @@ public class THeaderTransport extends TFramedTransport {
       data.limit(length);
     } else if (writeTransforms.contains(Transforms.SNAPPY_TRANSFORM)) {
       byte[] outputBuffer = new byte[Snappy.maxCompressedLength(data.limit())];
-      int length = Snappy.compress(
-          data.array(),
-          data.position(),
-          data.remaining(),
-          outputBuffer,
-          0);
+      int length =
+          Snappy.compress(data.array(), data.position(), data.remaining(), outputBuffer, 0);
       data = ByteBuffer.wrap(outputBuffer, 0, length);
     }
 
@@ -716,7 +708,7 @@ public class THeaderTransport extends TFramedTransport {
       // There are no info headers for this version
       // Pad out the header with 0x00
       for (int i = 0; i < paddingSize; i++) {
-        out.put((byte)0x00);
+        out.put((byte) 0x00);
       }
       out.position(0);
 

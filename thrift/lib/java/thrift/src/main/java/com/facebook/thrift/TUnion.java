@@ -38,7 +38,9 @@ public abstract class TUnion<Me extends TUnion<Me>> implements TBase {
 
   public Object getFieldValue(int fieldId) {
     if (fieldId != setField_) {
-      throw new IllegalArgumentException("Cannot get the value of field " + fieldId + " because union's set field is " + setField_);
+      throw new IllegalArgumentException(
+          "Cannot get the value of field " + fieldId + " because union's set field is " +
+              setField_);
     }
 
     return getFieldValue();
@@ -75,8 +77,8 @@ public abstract class TUnion<Me extends TUnion<Me>> implements TBase {
   }
 
   public void setFieldValue(int fieldId, Object value) {
-    checkType((short)fieldId, value);
-    setField_ = (short)fieldId;
+    checkType((short) fieldId, value);
+    setField_ = (short) fieldId;
     value_ = value;
   }
 
@@ -86,7 +88,7 @@ public abstract class TUnion<Me extends TUnion<Me>> implements TBase {
     }
     oprot.writeStructBegin(getStructDesc());
     oprot.writeFieldBegin(getFieldDesc(setField_));
-    writeValue(oprot, (short)setField_, value_);
+    writeValue(oprot, (short) setField_, value_);
     oprot.writeFieldEnd();
     oprot.writeFieldStop();
     oprot.writeStructEnd();
@@ -95,20 +97,17 @@ public abstract class TUnion<Me extends TUnion<Me>> implements TBase {
   /**
    * Implementation should be generated so that we can efficiently type check
    * various values.
-   * @param setField
-   * @param value
    */
   protected abstract void checkType(short setField, Object value) throws ClassCastException;
 
   /**
    * Implementation should be generated to read the right stuff from the wire
    * based on the field header.
-   * @param field
-   * @return
    */
   protected abstract Object readValue(TProtocol iprot, TField field) throws TException;
 
-  protected abstract void writeValue(TProtocol oprot, short setField, Object value) throws TException;
+  protected abstract void writeValue(TProtocol oprot, short setField, Object value)
+      throws TException;
 
   protected abstract TStruct getStructDesc();
 
@@ -171,11 +170,12 @@ public abstract class TUnion<Me extends TUnion<Me>> implements TBase {
     Object v = getFieldValue();
     String vStr = null;
     if (v instanceof byte[]) {
-      vStr = bytesToStr((byte[])v);
+      vStr = bytesToStr((byte[]) v);
     } else {
       vStr = v.toString();
     }
-    return "<" + this.getClass().getSimpleName() + " " + getFieldDesc(getSetField()).name + ":" + vStr + ">";
+    return "<" + this.getClass().getSimpleName() + " " + getFieldDesc(getSetField()).name + ":" +
+        vStr + ">";
   }
 
   private static String bytesToStr(byte[] bytes) {

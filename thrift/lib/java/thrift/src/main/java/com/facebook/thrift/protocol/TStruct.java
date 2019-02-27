@@ -21,7 +21,6 @@ package com.facebook.thrift.protocol;
 
 /**
  * Helper class that encapsulates struct metadata.
- *
  */
 public final class TStruct {
   public TStruct() {

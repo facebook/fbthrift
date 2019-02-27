@@ -20,20 +20,20 @@
 
 package com.facebook.thrift.server;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.SynchronousQueue;
-import java.util.concurrent.RejectedExecutionException;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
-
 import com.facebook.thrift.TProcessor;
 import com.facebook.thrift.TProcessorFactory;
 import com.facebook.thrift.protocol.TBinaryProtocol;
 import com.facebook.thrift.protocol.TProtocolFactory;
 import com.facebook.thrift.transport.TFramedTransport;
 import com.facebook.thrift.transport.TNonblockingServerTransport;
+
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.RejectedExecutionException;
+import java.util.concurrent.SynchronousQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 /**
  * An extension of the TNonblockingServer to a Half-Sync/Half-Async server.
@@ -224,7 +224,8 @@ public class THsHaServer extends TNonblockingServer {
   protected boolean startInvokerPool() {
     // start the invoker pool
     BlockingQueue<Runnable> queue = (options_.hsHaQueueSize == 0) ? new SynchronousQueue<Runnable>()
-        : new LinkedBlockingQueue<Runnable>(options_.hsHaQueueSize);
+                                                                  : new LinkedBlockingQueue<Runnable>(
+                                                                      options_.hsHaQueueSize);
     invoker = new ThreadPoolExecutor(options_.minHsHaWorkerThreads,
         options_.maxHsHaWorkerThreads,
         options_.stopTimeoutVal, options_.stopTimeoutUnit, queue,
@@ -262,7 +263,7 @@ public class THsHaServer extends TNonblockingServer {
    */
   @Override
   protected void requestInvoke(FrameBuffer frameBuffer)
-  throws ServerOverloadedException {
+      throws ServerOverloadedException {
     try {
       invoker.execute(new Invocation(frameBuffer));
     } catch (RejectedExecutionException e) {

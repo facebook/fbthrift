@@ -19,13 +19,12 @@
 
 package com.facebook.thrift;
 
-import java.io.Serializable;
-
 import com.facebook.thrift.protocol.TProtocol;
+
+import java.io.Serializable;
 
 /**
  * Generic base interface for generated Thrift objects.
- *
  */
 public interface TBase extends Serializable {
 
@@ -75,11 +74,11 @@ public interface TBase extends Serializable {
   public TBase deepCopy();
 
   /**
-   *  Creates an indented String representation for
-   *  pretty printing
+   * Creates an indented String representation for
+   * pretty printing
    *
-   *  @param indent The level of indentation desired
-   *  @param prettyPrint Set pretty printing on/off
+   * @param indent The level of indentation desired
+   * @param prettyPrint Set pretty printing on/off
    */
 
   public String toString(int indent, boolean prettyPrint);

@@ -20,6 +20,7 @@
 package com.facebook.thrift;
 
 import com.facebook.thrift.server.TConnectionContext;
+
 import java.util.ArrayList;
 
 public class EventHandlerBase {
@@ -32,9 +33,9 @@ public class EventHandlerBase {
     private ArrayList<Object> ctxs;
 
     public ContextStack(
-      ArrayList<TProcessorEventHandler> handlers,
-      String method,
-      TConnectionContext connectionContext
+        ArrayList<TProcessorEventHandler> handlers,
+        String method,
+        TConnectionContext connectionContext
     ) {
       ctxs = new ArrayList<Object>();
       for (TProcessorEventHandler handler : handlers) {
@@ -74,19 +75,19 @@ public class EventHandlerBase {
     handlers.add(eventHandler);
   }
 
- /**
-  * These functions are only used in the client handler
-  * implementation. The server process functions maintain
-  * ContextStack on the stack and binds ctx in to the async calls.
-  *
-  * Clients are not thread safe, so using a member variable is okay.
-  * Client send_ and recv_ functions contain parameters based off of
-  * the function call, and adding a parameter there would change the
-  * function signature enough that other thrift users might break.
-  *
-  * The generated code should be the ONLY user of s_. All other functions
-  * should just use the ContextStack parameter.
-  */
+  /**
+   * These functions are only used in the client handler
+   * implementation. The server process functions maintain
+   * ContextStack on the stack and binds ctx in to the async calls.
+   * <p>
+   * Clients are not thread safe, so using a member variable is okay.
+   * Client send_ and recv_ functions contain parameters based off of
+   * the function call, and adding a parameter there would change the
+   * function signature enough that other thrift users might break.
+   * <p>
+   * The generated code should be the ONLY user of s_. All other functions
+   * should just use the ContextStack parameter.
+   */
   public ContextStack getContextStack() {
     return s_;
   }
@@ -97,15 +98,15 @@ public class EventHandlerBase {
   }
 
   protected ContextStack getContextStack(
-    String fn_name,
-    TConnectionContext connectionContext
+      String fn_name,
+      TConnectionContext connectionContext
   ) {
     return new ContextStack(handlers, fn_name, connectionContext);
   }
 
   protected void preWrite(ContextStack s, String fn_name, TBase result) {
     if (s != null) {
-      for (int i=0; i < handlers.size(); i++) {
+      for (int i = 0; i < handlers.size(); i++) {
         try {
           handlers.get(i).preWrite(s.ctxs.get(i), fn_name, result);
         } catch (TException e) {
@@ -116,7 +117,7 @@ public class EventHandlerBase {
 
   protected void postWrite(ContextStack s, String fn_name, TBase result) {
     if (s != null) {
-      for (int i=0; i < handlers.size(); i++) {
+      for (int i = 0; i < handlers.size(); i++) {
         try {
           handlers.get(i).postWrite(s.ctxs.get(i), fn_name, result);
         } catch (TException e) {
@@ -127,18 +128,18 @@ public class EventHandlerBase {
 
   protected void preRead(ContextStack s, String fn_name) {
     if (s != null) {
-        for (int i=0; i < handlers.size(); i++) {
-          try {
-            handlers.get(i).preRead(s.ctxs.get(i), fn_name);
-          } catch (TException e) {
-          }
+      for (int i = 0; i < handlers.size(); i++) {
+        try {
+          handlers.get(i).preRead(s.ctxs.get(i), fn_name);
+        } catch (TException e) {
         }
       }
     }
+  }
 
   protected void postRead(ContextStack s, String fn_name, TBase args) {
     if (s != null) {
-      for (int i=0; i < handlers.size(); i++) {
+      for (int i = 0; i < handlers.size(); i++) {
         try {
           handlers.get(i).postRead(s.ctxs.get(i), fn_name, args);
         } catch (TException e) {
@@ -149,13 +150,12 @@ public class EventHandlerBase {
 
   protected void handlerError(ContextStack s, String fn_name, Throwable th) {
     if (s != null) {
-      for (int i=0; i < handlers.size(); i++) {
+      for (int i = 0; i < handlers.size(); i++) {
         try {
           handlers.get(i).handlerError(s.ctxs.get(i), fn_name, th);
-        } catch (TException e){
+        } catch (TException e) {
         }
       }
     }
   }
 }
-

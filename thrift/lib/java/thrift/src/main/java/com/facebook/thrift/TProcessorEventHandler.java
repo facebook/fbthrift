@@ -23,7 +23,6 @@ import com.facebook.thrift.server.TConnectionContext;
 
 /**
  * An event handler for a TProcessor.
- *
  */
 public class TProcessorEventHandler {
   public Object getContext(String fn_name, TConnectionContext context) {
@@ -37,7 +36,8 @@ public class TProcessorEventHandler {
    * @param fn_name name of the thrift method being invoked
    */
   public void preRead(Object handler_context, String fn_name)
-    throws TException {}
+      throws TException {
+  }
 
   /**
    * Called after the thrift handler method's arguments are read.
@@ -47,29 +47,32 @@ public class TProcessorEventHandler {
    * @param args the thrift structure holding the method's arguments
    */
   public void postRead(Object handler_context, String fn_name, TBase args)
-    throws TException {}
+      throws TException {
+  }
 
   /**
    * Called before the thrift handler method's results are written.
    *
    * @param handler_context object returned by {@link getContext} call
    * @param fn_name name of the thrift method being invoked
-   * @param result instance of TBase holding the result of the call,
-   *    or null if the handler threw an unexpected exception
+   * @param result instance of TBase holding the result of the call, or null if the handler threw an
+   * unexpected exception
    */
   public void preWrite(Object handler_context, String fn_name, TBase result)
-    throws TException {}
+      throws TException {
+  }
 
   /**
    * Called after the thrift handler method's results are written.
    *
    * @param handler_context object returned by {@link getContext} call
    * @param fn_name name of the thrift method being invoked
-   * @param result instance of TBase holding the result of the call,
-   *    or null if the handler threw an unexpected exception
+   * @param result instance of TBase holding the result of the call, or null if the handler threw an
+   * unexpected exception
    */
   public void postWrite(Object handler_context, String fn_name, TBase result)
-    throws TException {}
+      throws TException {
+  }
 
   /**
    * Called before the thrift handler method's results are written iff
@@ -80,7 +83,8 @@ public class TProcessorEventHandler {
    * @param th the unexpected exception thrown by the thrift handler
    */
   public void handlerError(Object handler_context, String fn_name, Throwable th)
-    throws TException {}
+      throws TException {
+  }
 
   /**
    * Called before the thrift handler method's results are written iff
@@ -94,8 +98,9 @@ public class TProcessorEventHandler {
   // NB: for compatibility with Processor code generated in Dec 2015/Jan 2016,
   // this method should have type erasure `(LObject;LString;LThrowable;)V`
   public <T extends Throwable & TBase>
-    void declaredUserException(Object handler_context,
-                               String fn_name,
-                               T th)
-    throws TException {}
+  void declaredUserException(Object handler_context,
+      String fn_name,
+      T th)
+      throws TException {
+  }
 }

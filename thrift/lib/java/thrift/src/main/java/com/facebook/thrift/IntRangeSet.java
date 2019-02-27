@@ -97,19 +97,20 @@ public class IntRangeSet implements Set<Integer> {
    * using it. It incurs boxing overhead! Use the int method directly, instead.
    */
   public boolean contains(Object arg0) {
-    return contains(((Integer)arg0).intValue());
+    return contains(((Integer) arg0).intValue());
   }
 
   /**
    * This is much faster, since it doesn't stop at Integer on the way through.
+   *
    * @param val the value you want to check set membership for
    * @return true if val was found, false otherwise
    */
   public boolean contains(int val) {
     for (int i = 0; i < extents.length / 2; i++) {
-      if (val < extents[i*2]) {
+      if (val < extents[i * 2]) {
         return false;
-      } else if (val <= extents[i*2+1]) {
+      } else if (val <= extents[i * 2 + 1]) {
         return true;
       }
     }
@@ -165,7 +166,7 @@ public class IntRangeSet implements Set<Integer> {
       if (i != 0) {
         buf += ", ";
       }
-      buf += "[" + extents[i*2] + "," + extents[i*2+1] + "]";
+      buf += "[" + extents[i * 2] + "," + extents[i * 2 + 1] + "]";
     }
     return buf;
   }

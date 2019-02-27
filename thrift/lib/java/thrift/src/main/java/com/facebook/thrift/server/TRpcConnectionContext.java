@@ -27,20 +27,19 @@ import java.net.InetAddress;
 
 /**
  * Generic interface for a Thrift server.
- *
  */
 public class TRpcConnectionContext extends TConnectionContext {
   protected TTransport client_socket;
 
   public TRpcConnectionContext(TTransport client_socket, TProtocol input_protocol,
-                               TProtocol output_protocol) {
+      TProtocol output_protocol) {
     super(input_protocol, output_protocol);
     this.client_socket = client_socket;
   }
 
   @Override
   public InetAddress getPeerAddress() {
-    TSocketIf socket = (TSocketIf)client_socket;
+    TSocketIf socket = (TSocketIf) client_socket;
     return socket.getSocket().getInetAddress();
   }
 

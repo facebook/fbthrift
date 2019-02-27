@@ -31,15 +31,17 @@ import com.facebook.thrift.protocol.TStruct;
 import com.facebook.thrift.protocol.TType;
 import com.facebook.thrift.server.TRpcConnectionContext;
 import com.facebook.thrift.transport.TMemoryBuffer;
-import org.junit.*;
+
+import org.junit.Test;
+
+import java.util.Arrays;
+import java.util.List;
+
 import thrift.test.CompactProtoTestStruct;
 import thrift.test.HolyMoley;
 import thrift.test.Nesting;
 import thrift.test.OneOfEach;
 import thrift.test.Srv;
-
-import java.util.Arrays;
-import java.util.List;
 
 public class TCompactProtocolTest extends junit.framework.TestCase {
 
@@ -53,29 +55,29 @@ public class TCompactProtocolTest extends junit.framework.TestCase {
   public static void testCompactProtocol() throws Exception {
     testNakedByte();
     for (int i = 0; i < 128; i++) {
-      testByteField((byte)i);
-      testByteField((byte)-i);
+      testByteField((byte) i);
+      testByteField((byte) -i);
     }
 
-    testNakedI16((short)0);
-    testNakedI16((short)1);
-    testNakedI16((short)15000);
-    testNakedI16((short)0x7fff);
-    testNakedI16((short)-1);
-    testNakedI16((short)-15000);
-    testNakedI16((short)-0x7fff);
+    testNakedI16((short) 0);
+    testNakedI16((short) 1);
+    testNakedI16((short) 15000);
+    testNakedI16((short) 0x7fff);
+    testNakedI16((short) -1);
+    testNakedI16((short) -15000);
+    testNakedI16((short) -0x7fff);
 
-    testI16Field((short)0);
-    testI16Field((short)1);
-    testI16Field((short)7);
-    testI16Field((short)150);
-    testI16Field((short)15000);
-    testI16Field((short)0x7fff);
-    testI16Field((short)-1);
-    testI16Field((short)-7);
-    testI16Field((short)-150);
-    testI16Field((short)-15000);
-    testI16Field((short)-0x7fff);
+    testI16Field((short) 0);
+    testI16Field((short) 1);
+    testI16Field((short) 7);
+    testI16Field((short) 150);
+    testI16Field((short) 15000);
+    testI16Field((short) 0x7fff);
+    testI16Field((short) -1);
+    testI16Field((short) -7);
+    testI16Field((short) -150);
+    testI16Field((short) -15000);
+    testI16Field((short) -0x7fff);
 
     testNakedI32(0);
     testNakedI32(1);
@@ -134,13 +136,13 @@ public class TCompactProtocolTest extends junit.framework.TestCase {
     testFloatField(Float.NEGATIVE_INFINITY);
 
     testNakedBinary(new byte[]{});
-    testNakedBinary(new byte[]{0,1,2,3,4,5,6,7,8,9,10});
-    testNakedBinary(new byte[]{0,1,2,3,4,5,6,7,8,9,10,11,12,13,14});
+    testNakedBinary(new byte[]{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10});
+    testNakedBinary(new byte[]{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14});
     testNakedBinary(new byte[128]);
 
     testBinaryField(new byte[]{});
-    testBinaryField(new byte[]{0,1,2,3,4,5,6,7,8,9,10});
-    testBinaryField(new byte[]{0,1,2,3,4,5,6,7,8,9,10,11,12,13,14});
+    testBinaryField(new byte[]{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10});
+    testBinaryField(new byte[]{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14});
     testBinaryField(new byte[128]);
 
     testSerialization(OneOfEach.class, Fixtures.oneOfEach);
@@ -156,15 +158,15 @@ public class TCompactProtocolTest extends junit.framework.TestCase {
   public static void testNakedByte() throws Exception {
     TMemoryBuffer buf = new TMemoryBuffer(0);
     TProtocol proto = factory.getProtocol(buf);
-    proto.writeByte((byte)123);
+    proto.writeByte((byte) 123);
     byte out = proto.readByte();
     if (out != 123) {
-      throw new RuntimeException("Byte was supposed to be " + (byte)123 + " but was " + out);
+      throw new RuntimeException("Byte was supposed to be " + (byte) 123 + " but was " + out);
     }
   }
 
   public static void testByteField(final byte b) throws Exception {
-    testStructField(new StructFieldTestCase(TType.BYTE, (short)15) {
+    testStructField(new StructFieldTestCase(TType.BYTE, (short) 15) {
       public void writeMethod(TProtocol proto) throws TException {
         proto.writeByte(b);
       }
@@ -172,7 +174,7 @@ public class TCompactProtocolTest extends junit.framework.TestCase {
       public void readMethod(TProtocol proto) throws TException {
         byte result = proto.readByte();
         if (result != b) {
-          throw new RuntimeException("Byte was supposed to be " + (byte)b + " but was " + result);
+          throw new RuntimeException("Byte was supposed to be " + (byte) b + " but was " + result);
         }
       }
     });
@@ -190,7 +192,7 @@ public class TCompactProtocolTest extends junit.framework.TestCase {
   }
 
   public static void testI16Field(final short n) throws Exception {
-    testStructField(new StructFieldTestCase(TType.I16, (short)15) {
+    testStructField(new StructFieldTestCase(TType.I16, (short) 15) {
       public void writeMethod(TProtocol proto) throws TException {
         proto.writeI16(n);
       }
@@ -216,7 +218,7 @@ public class TCompactProtocolTest extends junit.framework.TestCase {
   }
 
   public static void testI32Field(final int n) throws Exception {
-    testStructField(new StructFieldTestCase(TType.I32, (short)15) {
+    testStructField(new StructFieldTestCase(TType.I32, (short) 15) {
       public void writeMethod(TProtocol proto) throws TException {
         proto.writeI32(n);
       }
@@ -243,7 +245,7 @@ public class TCompactProtocolTest extends junit.framework.TestCase {
   }
 
   public static void testI64Field(final long n) throws Exception {
-    testStructField(new StructFieldTestCase(TType.I64, (short)15) {
+    testStructField(new StructFieldTestCase(TType.I64, (short) 15) {
       public void writeMethod(TProtocol proto) throws TException {
         proto.writeI64(n);
       }
@@ -278,7 +280,7 @@ public class TCompactProtocolTest extends junit.framework.TestCase {
   }
 
   public static void testFloatField(final float value) throws Exception {
-    testStructField(new StructFieldTestCase(TType.FLOAT, (short)15) {
+    testStructField(new StructFieldTestCase(TType.FLOAT, (short) 15) {
       public void writeMethod(TProtocol proto) throws TException {
         proto.writeFloat(value);
       }
@@ -304,7 +306,7 @@ public class TCompactProtocolTest extends junit.framework.TestCase {
   }
 
   public static void testStringField(final String str) throws Exception {
-    testStructField(new StructFieldTestCase(TType.STRING, (short)15) {
+    testStructField(new StructFieldTestCase(TType.STRING, (short) 15) {
       public void writeMethod(TProtocol proto) throws TException {
         proto.writeString(str);
       }
@@ -330,7 +332,7 @@ public class TCompactProtocolTest extends junit.framework.TestCase {
   }
 
   public static void testBinaryField(final byte[] data) throws Exception {
-    testStructField(new StructFieldTestCase(TType.STRING, (short)15) {
+    testStructField(new StructFieldTestCase(TType.STRING, (short) 15) {
       public void writeMethod(TProtocol proto) throws TException {
         proto.writeBinary(data);
       }
@@ -338,7 +340,9 @@ public class TCompactProtocolTest extends junit.framework.TestCase {
       public void readMethod(TProtocol proto) throws TException {
         byte[] result = proto.readBinary();
         if (!Arrays.equals(data, result)) {
-          throw new RuntimeException("Binary was supposed to be '" + bytesToString(data) + "' but was '" + bytesToString(result) + "'");
+          throw new RuntimeException(
+              "Binary was supposed to be '" + bytesToString(data) + "' but was '" +
+                  bytesToString(result) + "'");
         }
       }
     });
@@ -376,10 +380,10 @@ public class TCompactProtocolTest extends junit.framework.TestCase {
 
   public static void testMessage() throws Exception {
     List<TMessage> msgs = Arrays.asList(new TMessage[]{
-      new TMessage("short message name", TMessageType.CALL, 0),
-      new TMessage("1", TMessageType.REPLY, 12345),
-      new TMessage("loooooooooooooooooooooooooooooooooong", TMessageType.EXCEPTION, 1 << 16),
-      new TMessage("Janky", TMessageType.CALL, 0),
+        new TMessage("short message name", TMessageType.CALL, 0),
+        new TMessage("1", TMessageType.REPLY, 12345),
+        new TMessage("loooooooooooooooooooooooooooooooooong", TMessageType.EXCEPTION, 1 << 16),
+        new TMessage("Janky", TMessageType.CALL, 0),
     });
 
     for (TMessage msg : msgs) {
@@ -447,7 +451,7 @@ public class TCompactProtocolTest extends junit.framework.TestCase {
   private static String bytesToString(byte[] bytes) {
     String s = "";
     for (int i = 0; i < bytes.length; i++) {
-      s += Integer.toHexString((int)bytes[i]) + " ";
+      s += Integer.toHexString((int) bytes[i]) + " ";
     }
     return s;
   }
@@ -478,12 +482,14 @@ public class TCompactProtocolTest extends junit.framework.TestCase {
   public static abstract class StructFieldTestCase {
     byte type_;
     short id_;
+
     public StructFieldTestCase(byte type, short id) {
       type_ = type;
       id_ = id;
     }
 
     public abstract void writeMethod(TProtocol proto) throws TException;
+
     public abstract void readMethod(TProtocol proto) throws TException;
   }
 }

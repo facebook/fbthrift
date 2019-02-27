@@ -18,12 +18,6 @@
  */
 package com.facebook.thrift.async;
 
-import java.io.IOException;
-import java.nio.ByteBuffer;
-import java.nio.channels.SelectionKey;
-import java.nio.channels.Selector;
-import java.util.concurrent.atomic.AtomicLong;
-
 import com.facebook.thrift.TException;
 import com.facebook.thrift.protocol.TProtocol;
 import com.facebook.thrift.protocol.TProtocolFactory;
@@ -32,11 +26,17 @@ import com.facebook.thrift.transport.TMemoryBuffer;
 import com.facebook.thrift.transport.TNonblockingTransport;
 import com.facebook.thrift.transport.TTransportException;
 
+import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.channels.SelectionKey;
+import java.nio.channels.Selector;
+import java.util.concurrent.atomic.AtomicLong;
+
 /**
  * Encapsulates an async method call
  * Need to generate:
- *   - private void write_args(TProtocol protocol)
- *   - public TAsyncMethodCall getResult() throws <Exception_1>, <Exception_2>, ...
+ * - private void write_args(TProtocol protocol)
+ * - public TAsyncMethodCall getResult() throws <Exception_1>, <Exception_2>, ...
  */
 public abstract class TAsyncMethodCall {
 
@@ -71,7 +71,11 @@ public abstract class TAsyncMethodCall {
 
   private long startTime = System.currentTimeMillis();
 
-  protected TAsyncMethodCall(TAsyncClient client, TProtocolFactory protocolFactory, TNonblockingTransport transport, AsyncMethodCallback callback, boolean isOneway) {
+  protected TAsyncMethodCall(TAsyncClient client,
+      TProtocolFactory protocolFactory,
+      TNonblockingTransport transport,
+      AsyncMethodCallback callback,
+      boolean isOneway) {
     this.transport = transport;
     this.callback = callback;
     this.protocolFactory = protocolFactory;
@@ -112,6 +116,7 @@ public abstract class TAsyncMethodCall {
 
   /**
    * Initialize buffers.
+   *
    * @throws TException if buffer initialization fails
    */
   protected void prepareMethodCall() throws TException {
@@ -128,6 +133,7 @@ public abstract class TAsyncMethodCall {
 
   /**
    * Register with selector and start first state, which could be either connecting or writing.
+   *
    * @throws IOException if register or starting fails
    */
   void start(Selector sel) throws IOException {
@@ -162,7 +168,6 @@ public abstract class TAsyncMethodCall {
    * Transition to next state, doing whatever work is required. Since this
    * method is only called by the selector thread, we can make changes to our
    * select interests without worrying about concurrency.
-   * @param key
    */
   protected void transition(SelectionKey key) {
     // Ensure key is valid
@@ -223,7 +228,7 @@ public abstract class TAsyncMethodCall {
     // this ensures that the TAsyncMethod instance doesn't hang around
     key.attach(null);
     client.onComplete();
-    callback.onComplete((TAsyncMethodCall)this);
+    callback.onComplete((TAsyncMethodCall) this);
   }
 
   private void doReadingResponseSize() throws IOException {
@@ -262,7 +267,8 @@ public abstract class TAsyncMethodCall {
 
   private void doConnecting(SelectionKey key) throws IOException {
     if (!key.isConnectable() || !transport.finishConnect()) {
-      throw new IOException("not connectable or finishConnect returned false after we got an OP_CONNECT");
+      throw new IOException(
+          "not connectable or finishConnect returned false after we got an OP_CONNECT");
     }
     registerForFirstWrite(key);
   }

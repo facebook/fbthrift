@@ -23,7 +23,6 @@ import com.facebook.thrift.TException;
 
 /**
  * Protocol exceptions.
- *
  */
 public class TProtocolException extends TException {
 

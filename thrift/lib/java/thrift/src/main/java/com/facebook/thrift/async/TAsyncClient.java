@@ -29,11 +29,16 @@ public abstract class TAsyncClient {
   private Exception ___error;
   private long ___timeout;
 
-  public TAsyncClient(TProtocolFactory protocolFactory, TAsyncClientManager manager, TNonblockingTransport transport) {
+  public TAsyncClient(TProtocolFactory protocolFactory,
+      TAsyncClientManager manager,
+      TNonblockingTransport transport) {
     this(protocolFactory, manager, transport, 0);
   }
 
-  public TAsyncClient(TProtocolFactory protocolFactory, TAsyncClientManager manager, TNonblockingTransport transport, long timeout) {
+  public TAsyncClient(TProtocolFactory protocolFactory,
+      TAsyncClientManager manager,
+      TNonblockingTransport transport,
+      long timeout) {
     this.___protocolFactory = protocolFactory;
     this.___manager = manager;
     this.___transport = transport;
@@ -58,7 +63,6 @@ public abstract class TAsyncClient {
 
   /**
    * Is the client in an error state?
-   * @return
    */
   public boolean hasError() {
     return ___error != null;
@@ -66,7 +70,6 @@ public abstract class TAsyncClient {
 
   /**
    * Get the client's error - returns null if no error
-   * @return
    */
   public Exception getError() {
     return ___error;
@@ -75,7 +78,8 @@ public abstract class TAsyncClient {
   protected void checkReady() {
     // Ensure we are not currently executing a method
     if (___currentMethod != null) {
-      throw new IllegalStateException("Client is currently executing another method: " + ___currentMethod.getClass().getName());
+      throw new IllegalStateException(
+          "Client is currently executing another method: " + ___currentMethod.getClass().getName());
     }
 
     // Ensure we're not in an error state

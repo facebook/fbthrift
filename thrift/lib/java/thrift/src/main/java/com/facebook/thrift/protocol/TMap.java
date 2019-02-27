@@ -21,7 +21,6 @@ package com.facebook.thrift.protocol;
 
 /**
  * Helper class that encapsulates map metadata.
- *
  */
 public final class TMap {
   public TMap() {
@@ -34,7 +33,7 @@ public final class TMap {
     size = s;
   }
 
-  public final byte  keyType;
-  public final byte  valueType;
-  public final int   size;
+  public final byte keyType;
+  public final byte valueType;
+  public final int size;
 }

@@ -20,25 +20,23 @@
 package com.facebook.thrift.transport;
 
 import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
 import java.io.IOException;
-
-import java.net.URL;
+import java.io.InputStream;
 import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
  * HTTP implementation of the TTransport interface. Used for working with a
  * Thrift web services implementation.
- *
  */
 public class THttpClient extends TTransport {
 
   private URL url_ = null;
 
   private final ByteArrayOutputStream requestBuffer_ =
-    new ByteArrayOutputStream();
+      new ByteArrayOutputStream();
 
   private InputStream inputStream_ = null;
 
@@ -46,7 +44,7 @@ public class THttpClient extends TTransport {
 
   private int readTimeout_ = 0;
 
-  private Map<String,String> customHeaders_ = null;
+  private Map<String, String> customHeaders_ = null;
 
   public THttpClient(String url) throws TTransportException {
     try {
@@ -64,7 +62,7 @@ public class THttpClient extends TTransport {
     readTimeout_ = timeout;
   }
 
-  public void setCustomHeaders(Map<String,String> headers) {
+  public void setCustomHeaders(Map<String, String> headers) {
     customHeaders_ = headers;
   }
 
@@ -75,7 +73,8 @@ public class THttpClient extends TTransport {
     customHeaders_.put(key, value);
   }
 
-  public void open() {}
+  public void open() {
+  }
 
   public void close() {
     if (null != inputStream_) {
@@ -118,7 +117,7 @@ public class THttpClient extends TTransport {
 
     try {
       // Create connection object
-      HttpURLConnection connection = (HttpURLConnection)url_.openConnection();
+      HttpURLConnection connection = (HttpURLConnection) url_.openConnection();
 
       // Timeouts, only if explicitly set
       if (connectTimeout_ > 0) {

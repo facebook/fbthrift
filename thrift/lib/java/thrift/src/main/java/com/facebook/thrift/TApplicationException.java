@@ -19,27 +19,26 @@
 
 package com.facebook.thrift;
 
-import java.util.Map;
-import java.util.HashMap;
-import java.util.Collections;
-
+import com.facebook.thrift.meta_data.FieldMetaData;
+import com.facebook.thrift.meta_data.FieldValueMetaData;
 import com.facebook.thrift.protocol.TField;
 import com.facebook.thrift.protocol.TProtocol;
 import com.facebook.thrift.protocol.TProtocolUtil;
 import com.facebook.thrift.protocol.TStruct;
 import com.facebook.thrift.protocol.TType;
-import com.facebook.thrift.meta_data.FieldMetaData;
-import com.facebook.thrift.meta_data.FieldValueMetaData;
+
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Application level exception
- *
  */
 public class TApplicationException extends TException {
 
   private static final TStruct TAPPLICATION_EXCEPTION_STRUCT = new TStruct("TApplicationException");
-  private static final TField MESSAGE_FIELD = new TField("message", TType.STRING, (short)1);
-  private static final TField TYPE_FIELD = new TField("type", TType.I32, (short)2);
+  private static final TField MESSAGE_FIELD = new TField("message", TType.STRING, (short) 1);
+  private static final TField TYPE_FIELD = new TField("type", TType.I32, (short) 2);
 
   private static final long serialVersionUID = 1L;
 
@@ -61,6 +60,7 @@ public class TApplicationException extends TException {
   public static final int TYPE = 2;
 
   public static final Map<Integer, FieldMetaData> metaDataMap;
+
   static {
     Map<Integer, FieldMetaData> tmpMetaDataMap = new HashMap<Integer, FieldMetaData>();
     tmpMetaDataMap.put(MESSAGE, new FieldMetaData("message", TFieldRequirementType.DEFAULT,
@@ -105,23 +105,23 @@ public class TApplicationException extends TException {
         break;
       }
       switch (field.id) {
-      case 1:
-        if (field.type == TType.STRING) {
-          message = iprot.readString();
-        } else {
+        case 1:
+          if (field.type == TType.STRING) {
+            message = iprot.readString();
+          } else {
+            TProtocolUtil.skip(iprot, field.type);
+          }
+          break;
+        case 2:
+          if (field.type == TType.I32) {
+            type = iprot.readI32();
+          } else {
+            TProtocolUtil.skip(iprot, field.type);
+          }
+          break;
+        default:
           TProtocolUtil.skip(iprot, field.type);
-        }
-        break;
-      case 2:
-        if (field.type == TType.I32) {
-          type = iprot.readI32();
-        } else {
-          TProtocolUtil.skip(iprot, field.type);
-        }
-        break;
-      default:
-        TProtocolUtil.skip(iprot, field.type);
-        break;
+          break;
       }
       iprot.readFieldEnd();
     }

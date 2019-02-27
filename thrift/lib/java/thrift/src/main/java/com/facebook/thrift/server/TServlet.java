@@ -1,5 +1,12 @@
 package com.facebook.thrift.server;
 
+import com.facebook.thrift.TException;
+import com.facebook.thrift.TProcessor;
+import com.facebook.thrift.protocol.TProtocol;
+import com.facebook.thrift.protocol.TProtocolFactory;
+import com.facebook.thrift.transport.TIOStreamTransport;
+import com.facebook.thrift.transport.TTransport;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -11,13 +18,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import com.facebook.thrift.TException;
-import com.facebook.thrift.TProcessor;
-import com.facebook.thrift.protocol.TProtocol;
-import com.facebook.thrift.protocol.TProtocolFactory;
-import com.facebook.thrift.transport.TIOStreamTransport;
-import com.facebook.thrift.transport.TTransport;
 
 /**
  * Servlet implementation class ThriftServer
@@ -53,8 +53,7 @@ public class TServlet extends HttpServlet {
   }
 
   /**
-   * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
-   *      response)
+   * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
    */
   @Override
   protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -82,7 +81,7 @@ public class TServlet extends HttpServlet {
       TProtocol outProtocol = outProtocolFactory.getProtocol(outTransport);
 
       TConnectionContext server_ctx = new TConnectionContext(inProtocol,
-                                                             outProtocol);
+          outProtocol);
       processor.process(inProtocol, outProtocol, server_ctx);
       out.flush();
     } catch (TException te) {
@@ -91,8 +90,7 @@ public class TServlet extends HttpServlet {
   }
 
   /**
-   * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
-   *      response)
+   * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
    */
   protected void doGet(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {

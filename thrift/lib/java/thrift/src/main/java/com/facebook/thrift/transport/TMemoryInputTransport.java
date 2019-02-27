@@ -46,7 +46,8 @@ public final class TMemoryInputTransport extends TTransport {
   }
 
   @Override
-  public void close() {}
+  public void close() {
+  }
 
   @Override
   public boolean isOpen() {
@@ -54,7 +55,8 @@ public final class TMemoryInputTransport extends TTransport {
   }
 
   @Override
-  public void open() throws TTransportException {}
+  public void open() throws TTransportException {
+  }
 
   @Override
   public int read(byte[] buf, int off, int len) throws TTransportException {

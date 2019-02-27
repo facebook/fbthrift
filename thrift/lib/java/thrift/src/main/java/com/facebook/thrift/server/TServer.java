@@ -27,7 +27,6 @@ import com.facebook.thrift.transport.TTransportFactory;
 
 /**
  * Generic interface for a Thrift server.
- *
  */
 public abstract class TServer {
 
@@ -66,44 +65,44 @@ public abstract class TServer {
    */
 
   protected TServer(TProcessorFactory processorFactory,
-                    TServerTransport serverTransport) {
+      TServerTransport serverTransport) {
     this(processorFactory,
-         serverTransport,
-         new TTransportFactory(),
-         new TTransportFactory(),
-         new TBinaryProtocol.Factory(),
-         new TBinaryProtocol.Factory());
+        serverTransport,
+        new TTransportFactory(),
+        new TTransportFactory(),
+        new TBinaryProtocol.Factory(),
+        new TBinaryProtocol.Factory());
   }
 
   protected TServer(TProcessorFactory processorFactory,
-                    TServerTransport serverTransport,
-                    TTransportFactory transportFactory) {
+      TServerTransport serverTransport,
+      TTransportFactory transportFactory) {
     this(processorFactory,
-         serverTransport,
-         transportFactory,
-         transportFactory,
-         new TBinaryProtocol.Factory(),
-         new TBinaryProtocol.Factory());
+        serverTransport,
+        transportFactory,
+        transportFactory,
+        new TBinaryProtocol.Factory(),
+        new TBinaryProtocol.Factory());
   }
 
   protected TServer(TProcessorFactory processorFactory,
-                    TServerTransport serverTransport,
-                    TTransportFactory transportFactory,
-                    TProtocolFactory protocolFactory) {
+      TServerTransport serverTransport,
+      TTransportFactory transportFactory,
+      TProtocolFactory protocolFactory) {
     this(processorFactory,
-         serverTransport,
-         transportFactory,
-         transportFactory,
-         protocolFactory,
-         protocolFactory);
+        serverTransport,
+        transportFactory,
+        transportFactory,
+        protocolFactory,
+        protocolFactory);
   }
 
   protected TServer(TProcessorFactory processorFactory,
-                    TServerTransport serverTransport,
-                    TTransportFactory inputTransportFactory,
-                    TTransportFactory outputTransportFactory,
-                    TProtocolFactory inputProtocolFactory,
-                    TProtocolFactory outputProtocolFactory) {
+      TServerTransport serverTransport,
+      TTransportFactory inputTransportFactory,
+      TTransportFactory outputTransportFactory,
+      TProtocolFactory inputProtocolFactory,
+      TProtocolFactory outputProtocolFactory) {
     processorFactory_ = processorFactory;
     serverTransport_ = serverTransport;
     inputTransportFactory_ = inputTransportFactory;
@@ -121,6 +120,7 @@ public abstract class TServer {
    * Stop the server. This is optional on a per-implementation basis. Not
    * all servers are required to be cleanly stoppable.
    */
-  public void stop() {}
+  public void stop() {
+  }
 
 }

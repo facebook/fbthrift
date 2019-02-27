@@ -18,14 +18,14 @@
  */
 package com.facebook.thrift.protocol;
 
-import java.util.List;
-import java.util.Map;
-
 import com.facebook.thrift.TApplicationException;
 import com.facebook.thrift.TException;
 import com.facebook.thrift.transport.THeaderException;
 import com.facebook.thrift.transport.THeaderTransport;
 import com.facebook.thrift.transport.TTransport;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * Pass through protocol for use with THeaderTransport servers
@@ -38,11 +38,11 @@ public class THeaderProtocol extends TProtocol {
   private void resetProtocol() throws TProtocolException {
     // We guarantee trans_ to be of type THeaderTransport, parent class does not
     if (proto != null &&
-        protoId == ((THeaderTransport)trans_).getProtocolId()) {
+        protoId == ((THeaderTransport) trans_).getProtocolId()) {
       return;
     }
 
-    protoId = ((THeaderTransport)trans_).getProtocolId();
+    protoId = ((THeaderTransport) trans_).getProtocolId();
     switch (protoId) {
       case THeaderTransport.T_BINARY_PROTOCOL:
         proto = new TBinaryProtocol(trans_, true, true);
@@ -73,7 +73,7 @@ public class THeaderProtocol extends TProtocol {
       if (trans instanceof THeaderTransport) {
         // Make sure we call the THeaderTransport specific constructor if
         // we can.
-        return new THeaderProtocol((THeaderTransport)trans);
+        return new THeaderProtocol((THeaderTransport) trans);
       } else {
         return new THeaderProtocol(trans, clientTypes);
       }
@@ -84,7 +84,7 @@ public class THeaderProtocol extends TProtocol {
    * Constructor
    */
   public THeaderProtocol(TTransport trans,
-                         List<THeaderTransport.ClientTypes> clientTypes) {
+      List<THeaderTransport.ClientTypes> clientTypes) {
     this(new THeaderTransport(trans, clientTypes));
   }
 
@@ -220,7 +220,7 @@ public class THeaderProtocol extends TProtocol {
     if (proto != null) {
       writeMessageBegin(new TMessage("", TMessageType.EXCEPTION, 0));
       TApplicationException ex =
-        new TApplicationException(msg);
+          new TApplicationException(msg);
       ex.write(this);
       writeMessageEnd();
       trans_.flush();
@@ -231,7 +231,7 @@ public class THeaderProtocol extends TProtocol {
   public TMessage readMessageBegin() throws TException {
     // Read the next frame, and change protocols if needed
     try {
-      ((THeaderTransport)trans_)._resetProtocol();
+      ((THeaderTransport) trans_)._resetProtocol();
       resetProtocol();
     } catch (THeaderException e) {
       // THeaderExceptions are exceptions we want thrown back to the endpoint

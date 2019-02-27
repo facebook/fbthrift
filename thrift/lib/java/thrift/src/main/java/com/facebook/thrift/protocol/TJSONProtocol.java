@@ -19,19 +19,18 @@
 
 package com.facebook.thrift.protocol;
 
-import java.util.Map;
-
 import com.facebook.thrift.TException;
 import com.facebook.thrift.transport.TTransport;
 
+import java.util.Map;
+
 /**
  * JSON protocol implementation for thrift.
- *
+ * <p>
  * This is a full-featured protocol supporting write and read.
- *
+ * <p>
  * Please see the C++ class header for a detailed description of the
  * protocol's wire format.
- *
  */
 public class TJSONProtocol extends TJSONProtocolBase {
 
@@ -82,7 +81,8 @@ public class TJSONProtocol extends TJSONProtocolBase {
   }
 
   @Override
-  public void writeFieldStop() {}
+  public void writeFieldStop() {
+  }
 
   @Override
   public void writeMapBegin(TMap map) throws TException {
@@ -146,8 +146,7 @@ public class TJSONProtocol extends TJSONProtocolBase {
     short id = 0;
     if (ch == RBRACE[0]) {
       type = TType.STOP;
-    }
-    else {
+    } else {
       id = (short) readJSONInteger();
       readJSONObjectStart();
       type = getTypeIDForTypeName(readJSONString(false).get());
@@ -165,7 +164,7 @@ public class TJSONProtocol extends TJSONProtocolBase {
     readJSONArrayStart();
     byte keyType = getTypeIDForTypeName(readJSONString(false).get());
     byte valueType = getTypeIDForTypeName(readJSONString(false).get());
-    int size = (int)readJSONInteger();
+    int size = (int) readJSONInteger();
     readJSONObjectStart();
     return new TMap(keyType, valueType, size);
   }
@@ -180,7 +179,7 @@ public class TJSONProtocol extends TJSONProtocolBase {
   public TList readListBegin() throws TException {
     readJSONArrayStart();
     byte elemType = getTypeIDForTypeName(readJSONString(false).get());
-    int size = (int)readJSONInteger();
+    int size = (int) readJSONInteger();
     return new TList(elemType, size);
   }
 
@@ -193,7 +192,7 @@ public class TJSONProtocol extends TJSONProtocolBase {
   public TSet readSetBegin() throws TException {
     readJSONArrayStart();
     byte elemType = getTypeIDForTypeName(readJSONString(false).get());
-    int size = (int)readJSONInteger();
+    int size = (int) readJSONInteger();
     return new TSet(elemType, size);
   }
 

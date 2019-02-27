@@ -25,22 +25,20 @@ import com.facebook.thrift.TProcessorFactory;
 import com.facebook.thrift.protocol.THeaderProtocol;
 import com.facebook.thrift.protocol.TProtocol;
 import com.facebook.thrift.protocol.TProtocolFactory;
-import com.facebook.thrift.server.TServer;
 import com.facebook.thrift.server.TRpcConnectionContext;
+import com.facebook.thrift.server.TServer;
 import com.facebook.thrift.transport.TServerTransport;
 import com.facebook.thrift.transport.TTransport;
-import com.facebook.thrift.transport.TTransportFactory;
 import com.facebook.thrift.transport.TTransportException;
+import com.facebook.thrift.transport.TTransportFactory;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * @deprecated "Please use Netty server instead.
- * See https://github.com/facebook/nifty for details."
- *
+ * @deprecated "Please use Netty server instead. See https://github.com/facebook/nifty for details."
+ * <p>
  * Simple singlethreaded server for testing.
- *
  */
 @Deprecated
 public class TSimpleServer extends TServer {
@@ -50,49 +48,49 @@ public class TSimpleServer extends TServer {
   private boolean stopped_ = false;
 
   public TSimpleServer(TProcessor processor,
-                       TServerTransport serverTransport) {
+      TServerTransport serverTransport) {
     super(new TProcessorFactory(processor), serverTransport);
   }
 
   public TSimpleServer(TProcessor processor,
-                       TServerTransport serverTransport,
-                       TTransportFactory transportFactory,
-                       TProtocolFactory protocolFactory) {
+      TServerTransport serverTransport,
+      TTransportFactory transportFactory,
+      TProtocolFactory protocolFactory) {
     super(new TProcessorFactory(processor), serverTransport, transportFactory, protocolFactory);
   }
 
   public TSimpleServer(TProcessor processor,
-                       TServerTransport serverTransport,
-                       TTransportFactory inputTransportFactory,
-                       TTransportFactory outputTransportFactory,
-                       TProtocolFactory inputProtocolFactory,
-                       TProtocolFactory outputProtocolFactory) {
+      TServerTransport serverTransport,
+      TTransportFactory inputTransportFactory,
+      TTransportFactory outputTransportFactory,
+      TProtocolFactory inputProtocolFactory,
+      TProtocolFactory outputProtocolFactory) {
     super(new TProcessorFactory(processor), serverTransport,
-          inputTransportFactory, outputTransportFactory,
-          inputProtocolFactory, outputProtocolFactory);
+        inputTransportFactory, outputTransportFactory,
+        inputProtocolFactory, outputProtocolFactory);
   }
 
   public TSimpleServer(TProcessorFactory processorFactory,
-          TServerTransport serverTransport) {
+      TServerTransport serverTransport) {
     super(processorFactory, serverTransport);
   }
 
   public TSimpleServer(TProcessorFactory processorFactory,
-          TServerTransport serverTransport,
-          TTransportFactory transportFactory,
-          TProtocolFactory protocolFactory) {
+      TServerTransport serverTransport,
+      TTransportFactory transportFactory,
+      TProtocolFactory protocolFactory) {
     super(processorFactory, serverTransport, transportFactory, protocolFactory);
   }
 
   public TSimpleServer(TProcessorFactory processorFactory,
-          TServerTransport serverTransport,
-          TTransportFactory inputTransportFactory,
-          TTransportFactory outputTransportFactory,
-          TProtocolFactory inputProtocolFactory,
-          TProtocolFactory outputProtocolFactory) {
+      TServerTransport serverTransport,
+      TTransportFactory inputTransportFactory,
+      TTransportFactory outputTransportFactory,
+      TProtocolFactory inputProtocolFactory,
+      TProtocolFactory outputProtocolFactory) {
     super(processorFactory, serverTransport,
-          inputTransportFactory, outputTransportFactory,
-          inputProtocolFactory, outputProtocolFactory);
+        inputTransportFactory, outputTransportFactory,
+        inputProtocolFactory, outputProtocolFactory);
   }
 
 
@@ -126,9 +124,10 @@ public class TSimpleServer extends TServer {
             outputProtocol = outputProtocolFactory_.getProtocol(outputTransport);
           }
           TRpcConnectionContext server_ctx = new TRpcConnectionContext(client,
-                                                                       inputProtocol,
-                                                                       outputProtocol);
-          while (processor.process(inputProtocol, outputProtocol, server_ctx)) {}
+              inputProtocol,
+              outputProtocol);
+          while (processor.process(inputProtocol, outputProtocol, server_ctx)) {
+          }
         }
       } catch (TTransportException ttx) {
         // Client died, just move on

@@ -19,17 +19,16 @@
 
 package com.facebook.thrift;
 
-import java.io.ByteArrayInputStream;
-import java.io.UnsupportedEncodingException;
-
 import com.facebook.thrift.protocol.TBinaryProtocol;
 import com.facebook.thrift.protocol.TProtocolFactory;
 import com.facebook.thrift.transport.TIOStreamTransport;
 
+import java.io.ByteArrayInputStream;
+import java.io.UnsupportedEncodingException;
+
 /**
  * Generic utility for easily deserializing objects from a byte array or Java
  * String.
- *
  */
 public class TDeserializer {
   private final TProtocolFactory protocolFactory_;
@@ -60,8 +59,8 @@ public class TDeserializer {
   public void deserialize(TBase base, byte[] bytes) throws TException {
     base.read(
         protocolFactory_.getProtocol(
-          new TIOStreamTransport(
-            new ByteArrayInputStream(bytes))));
+            new TIOStreamTransport(
+                new ByteArrayInputStream(bytes))));
   }
 
   /**
@@ -91,4 +90,3 @@ public class TDeserializer {
     deserialize(base, data.getBytes());
   }
 }
-

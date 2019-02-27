@@ -6,9 +6,9 @@
  * to you under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in compliance
  * with the License.  You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -34,7 +34,8 @@ import java.util.TreeSet;
 
 public final class TBaseHelper {
 
-  private TBaseHelper(){}
+  private TBaseHelper() {
+  }
 
 
   public static <T extends TBase & Comparable<T>> int compareTo(T a, T b) {
@@ -235,7 +236,7 @@ public final class TBaseHelper {
     return 0;
   }
 
-  public static <K,V> int compareTo(Map<K, V> a, Map<K, V> b) {
+  public static <K, V> int compareTo(Map<K, V> a, Map<K, V> b) {
     int lastComparison = compareTo(a.size(), b.size());
     if (lastComparison != 0) {
       return lastComparison;
@@ -275,7 +276,8 @@ public final class TBaseHelper {
     return 0;
   }
 
-  /*package*/ static int compareToUnchecked(Object a, Object b) {
+  /*package*/
+  static int compareToUnchecked(Object a, Object b) {
     return NestedStructureComparator.get().compare(a, b);
   }
 
@@ -287,9 +289,9 @@ public final class TBaseHelper {
    * of Thrift-supported types, and structs and unions.
    */
   private static class NestedStructureComparator<T>
-        implements Comparator<T> {
+      implements Comparator<T> {
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @SuppressWarnings({"unchecked", "rawtypes"})
     @Override
     public int compare(T oA, T oB) {
       if (oA == oB) {  // performance, not correctness
@@ -302,23 +304,23 @@ public final class TBaseHelper {
       } else if (oB == null) {
         return 1;
       } else if (oA instanceof List<?> && oB instanceof List<?>) {
-        return compareTo((List)oA, (List)oB);
+        return compareTo((List) oA, (List) oB);
       } else if (oA instanceof Set<?> && oB instanceof Set<?>) {
-        return compareTo((Set)oA, (Set)oB);
-      } else if (oA instanceof Map<?,?> && oB instanceof Map<?,?>) {
-        return compareTo((Map)oA, (Map)oB);
+        return compareTo((Set) oA, (Set) oB);
+      } else if (oA instanceof Map<?, ?> && oB instanceof Map<?, ?>) {
+        return compareTo((Map) oA, (Map) oB);
       } else if (oA instanceof byte[]) {
-        return compareTo((byte[])oA, (byte[])oB);
+        return compareTo((byte[]) oA, (byte[]) oB);
       } else if (oA.getClass() == oB.getClass()
-              && ( oA instanceof String
-                || oA instanceof Boolean
-                || oA instanceof Byte
-                || oA instanceof Short
-                || oA instanceof Integer
-                || oA instanceof Long
-                || oA instanceof Float
-                || oA instanceof Double
-                || oA instanceof TBase)) {
+          && (oA instanceof String
+          || oA instanceof Boolean
+          || oA instanceof Byte
+          || oA instanceof Short
+          || oA instanceof Integer
+          || oA instanceof Long
+          || oA instanceof Float
+          || oA instanceof Double
+          || oA instanceof TBase)) {
         // All the primitives are Comparable. Assume that any TBase
         // we're called on is Comparable, because otherwise the codegen
         // wouldn't have made code that calls us on it. At this point,
@@ -326,7 +328,7 @@ public final class TBaseHelper {
         // which is to say its `compareTo` accepts any subtype of some
         // unspecified supertype of oA.getClass(), so it certainly accepts
         // things of oA.getClass() and so it accepts oB.
-        return ((Comparable)oA).compareTo(oB);
+        return ((Comparable) oA).compareTo(oB);
       }
       throw new IllegalArgumentException(
           "cannot compare " + oA + " and " + oB);
@@ -378,9 +380,9 @@ public final class TBaseHelper {
 
   public static boolean wrapsFullArray(ByteBuffer byteBuffer) {
     return byteBuffer.hasArray()
-      && byteBuffer.position() == 0
-      && byteBuffer.arrayOffset() == 0
-      && byteBuffer.remaining() == byteBuffer.capacity();
+        && byteBuffer.position() == 0
+        && byteBuffer.arrayOffset() == 0
+        && byteBuffer.remaining() == byteBuffer.capacity();
   }
 
   public static int byteBufferToByteArray(ByteBuffer byteBuffer, byte[] target, int offset) {
@@ -503,13 +505,13 @@ public final class TBaseHelper {
     return copy;
   }
 
-  @SuppressWarnings({ "unchecked", "rawtypes" })
+  @SuppressWarnings({"unchecked", "rawtypes"})
   public static <T extends TBase> T deepCopy(T orig) {
     return (T) orig.deepCopy();
   }
 
   // Called above and from TUnion
-  @SuppressWarnings({ "unchecked", "rawtypes" })
+  @SuppressWarnings({"unchecked", "rawtypes"})
   /*package*/ static <T> T deepCopyUnchecked(T orig) {
     if (orig == null) {
       return null;
@@ -541,8 +543,8 @@ public final class TBaseHelper {
     }
     throw new UnsupportedOperationException(
         "Don't know how to deepCopy something of type " + orig.getClass()
-        + " which is weird because nothing should be calling me on something"
-        + " I don't understand");
+            + " which is weird because nothing should be calling me on something"
+            + " I don't understand");
   }
 
   /* ********************************************************
@@ -567,6 +569,7 @@ public final class TBaseHelper {
 
   /**
    * Checks two items for logical equality.
+   *
    * @param a non-null item
    * @param b non-null item
    */
@@ -576,6 +579,7 @@ public final class TBaseHelper {
 
   /**
    * Checks two items for logical equality.
+   *
    * @param a non-null item
    * @param b non-null item
    */
@@ -592,6 +596,7 @@ public final class TBaseHelper {
 
   /**
    * Checks two items for logical equality.
+   *
    * @param a non-null item
    * @param b non-null item
    */
@@ -608,6 +613,7 @@ public final class TBaseHelper {
 
   /**
    * Checks two items for logical equality.
+   *
    * @param a non-null item
    * @param b non-null item
    */
@@ -624,6 +630,7 @@ public final class TBaseHelper {
 
   /**
    * Checks two items for logical equality.
+   *
    * @param a non-null item
    * @param b non-null item
    */
@@ -640,6 +647,7 @@ public final class TBaseHelper {
 
   /**
    * Checks two items for logical equality.
+   *
    * @param a non-null item
    * @param b non-null item
    */
@@ -656,6 +664,7 @@ public final class TBaseHelper {
 
   /**
    * Checks two items for logical equality.
+   *
    * @param a non-null item
    * @param b non-null item
    */
@@ -672,6 +681,7 @@ public final class TBaseHelper {
 
   /**
    * Checks two items for logical equality.
+   *
    * @param a non-null item
    * @param b non-null item
    */
@@ -688,6 +698,7 @@ public final class TBaseHelper {
 
   /**
    * Checks two items for logical equality.
+   *
    * @param a non-null item
    * @param b non-null item
    */
@@ -742,6 +753,7 @@ public final class TBaseHelper {
 
   /**
    * Checks two items for logical equality.
+   *
    * @param a non-null item
    * @param b non-null item
    */
@@ -754,6 +766,7 @@ public final class TBaseHelper {
 
   /**
    * Checks two items for logical equality.
+   *
    * @param a non-null item
    * @param b non-null item
    */
@@ -763,6 +776,7 @@ public final class TBaseHelper {
 
   /**
    * Checks two items for logical equality.
+   *
    * @param a non-null item
    * @param b non-null item
    */
@@ -780,7 +794,7 @@ public final class TBaseHelper {
 
     for (Map.Entry<K, V> elemB : b.entrySet()) {
       boolean found = false;
-      for (int i=firstValidA; i<as.length; i++) {
+      for (int i = firstValidA; i < as.length; i++) {
         if (equalsSlowUnchecked(as[i].getKey(), elemB.getKey())
             && equalsSlowUnchecked(as[i].getValue(), elemB.getValue())) {
           found = true;
@@ -801,6 +815,7 @@ public final class TBaseHelper {
 
   /**
    * Checks two items for logical equality.
+   *
    * @param a non-null item
    * @param b non-null item
    */
@@ -827,6 +842,7 @@ public final class TBaseHelper {
 
   /**
    * Checks two items for logical equality.
+   *
    * @param a non-null item
    * @param b non-null item
    */
@@ -844,7 +860,7 @@ public final class TBaseHelper {
 
     for (T elemB : b) {
       boolean found = false;
-      for (int i=firstValidA; i<as.length; i++) {
+      for (int i = firstValidA; i < as.length; i++) {
         if (equalsSlowUnchecked(as[i], elemB)) {
           found = true;
           as[i] = as[firstValidA];
@@ -870,22 +886,22 @@ public final class TBaseHelper {
    * @param a non-null item
    * @param b non-null item
    */
-  @SuppressWarnings({ "unchecked", "rawtypes" })
+  @SuppressWarnings({"unchecked", "rawtypes"})
   /*package*/ static <T> boolean equalsNobinaryUnchecked(T a, T b) {
     if (a == b) {  // performance, not correctness
       return true;
     }
     if (a instanceof byte[] && b instanceof byte[]) {
-      return equalsSlow((byte[])a, (byte[])b);
+      return equalsSlow((byte[]) a, (byte[]) b);
     } else if (a.getClass() == b.getClass()
         && (a instanceof String
-            || a instanceof Boolean
-            || a instanceof Byte
-            || a instanceof Short
-            || a instanceof Integer
-            || a instanceof Long
-            || a instanceof Double
-            || a instanceof Float)) {
+        || a instanceof Boolean
+        || a instanceof Byte
+        || a instanceof Short
+        || a instanceof Integer
+        || a instanceof Long
+        || a instanceof Double
+        || a instanceof Float)) {
       return a.equals(b);
     } else if (a instanceof TBase) {
       return a.equals(b);
@@ -898,33 +914,34 @@ public final class TBaseHelper {
     } else {
       throw new IllegalAccessError(
           "Don't know how to compare " + a + " and " + b
-          + " which is odd, because nothing should be calling me on types"
-          + " I don't understand");
+              + " which is odd, because nothing should be calling me on types"
+              + " I don't understand");
     }
   }
 
   /**
    * Checks two items for logical equality. Both items should be
    * of the same Thrift-expressible type.
+   *
    * @param a non-null item
    * @param b non-null item
    */
-  @SuppressWarnings({ "rawtypes", "unchecked" })
+  @SuppressWarnings({"rawtypes", "unchecked"})
   /*package*/ static <T> boolean equalsSlowUnchecked(T a, T b) {
     if (a == b) {  // performance, not correctness
       return true;
     }
     if (a instanceof byte[] && b instanceof byte[]) {
-      return equalsSlow((byte[])a, (byte[])b);
+      return equalsSlow((byte[]) a, (byte[]) b);
     } else if (a.getClass() == b.getClass()
         && (a instanceof String
-            || a instanceof Boolean
-            || a instanceof Byte
-            || a instanceof Short
-            || a instanceof Integer
-            || a instanceof Long
-            || a instanceof Double
-            || a instanceof Float)) {
+        || a instanceof Boolean
+        || a instanceof Byte
+        || a instanceof Short
+        || a instanceof Integer
+        || a instanceof Long
+        || a instanceof Double
+        || a instanceof Float)) {
       return a.equals(b);
     } else if (a instanceof TBase) {
       return a.equals(b);
@@ -937,34 +954,36 @@ public final class TBaseHelper {
     } else {
       throw new IllegalAccessError(
           "Don't know how to compare " + a + " and " + b
-          + " which is odd, because nothing should be calling me on types"
-          + " I don't understand");
+              + " which is odd, because nothing should be calling me on types"
+              + " I don't understand");
     }
   }
 
 
-
   public static String getIndentedString(int indent) {
-    StringBuilder sb  = new StringBuilder();
-    for (int i = 0; i < indent; i++)
+    StringBuilder sb = new StringBuilder();
+    for (int i = 0; i < indent; i++) {
       sb.append("  ");
+    }
     return sb.toString();
   }
 
   public static String reduceIndent(String indentStr) {
-    return  (indentStr.length() > 1) ?
-      indentStr.substring(0, indentStr.length() - 2) : "";
+    return (indentStr.length() > 1) ?
+           indentStr.substring(0, indentStr.length() - 2) : "";
   }
 
   /**
-   *  Creates String representation of object with
-   *  desired indentation
+   * Creates String representation of object with
+   * desired indentation
    *
-   *  @param obj    The object to be printed
-   *  @param indent The level of indentation
+   * @param obj The object to be printed
+   * @param indent The level of indentation
    */
   public static String toString(Object obj, int indent, boolean prettyPrint) {
-    if (obj == null) return "";
+    if (obj == null) {
+      return "";
+    }
     String indentStr = prettyPrint ? getIndentedString(indent) : "";
     String newLine = prettyPrint ? "\n" : "";
     String space = prettyPrint ? " " : "";
@@ -972,21 +991,21 @@ public final class TBaseHelper {
     try {
       if (obj instanceof Map) {
         sb.append("{");
-        for (Map.Entry<?,?> entry : (((Map<?,?>)obj).entrySet())) {
-          Object key = (Object)entry.getKey();
-          Object val = (Object)entry.getValue();
+        for (Map.Entry<?, ?> entry : (((Map<?, ?>) obj).entrySet())) {
+          Object key = (Object) entry.getKey();
+          Object val = (Object) entry.getValue();
           sb.append(newLine + indentStr + toString(key, indent + 2, prettyPrint)
               + space + ":" + space + toString(val, indent + 2, prettyPrint));
         }
         sb.append(newLine + reduceIndent(indentStr) + "}");
       } else if (obj instanceof java.util.Collection) {
         sb.append("[");
-        for (Object o : (java.util.Collection<?>)obj) {
+        for (Object o : (java.util.Collection<?>) obj) {
           sb.append(newLine + indentStr + toString(o, indent + 2, prettyPrint));
         }
         sb.append(newLine + reduceIndent(indentStr) + "]");
       } else if (obj instanceof TBase) {
-        sb.append(((TBase)obj).toString(indent, prettyPrint));
+        sb.append(((TBase) obj).toString(indent, prettyPrint));
       } else if (obj instanceof String) {
         if (prettyPrint) {
           sb.append("\"" + obj + "\"");

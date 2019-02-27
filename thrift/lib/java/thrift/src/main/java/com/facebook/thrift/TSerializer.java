@@ -19,18 +19,17 @@
 
 package com.facebook.thrift;
 
-import java.io.ByteArrayOutputStream;
-import java.io.UnsupportedEncodingException;
-
 import com.facebook.thrift.protocol.TBinaryProtocol;
 import com.facebook.thrift.protocol.TProtocol;
 import com.facebook.thrift.protocol.TProtocolFactory;
 import com.facebook.thrift.transport.TIOStreamTransport;
 
+import java.io.ByteArrayOutputStream;
+import java.io.UnsupportedEncodingException;
+
 /**
  * Generic utility for easily serializing objects into a byte array or Java
  * String.
- *
  */
 public class TSerializer {
 
@@ -101,4 +100,3 @@ public class TSerializer {
     return new String(serialize(base));
   }
 }
-

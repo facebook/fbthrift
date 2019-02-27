@@ -25,14 +25,13 @@ import java.net.InetAddress;
 
 /**
  * Generic Thrift server connection context
- *
  */
 public class TConnectionContext {
   protected TProtocol input_protocol;
   protected TProtocol output_protocol;
 
   public TConnectionContext(TProtocol input_protocol,
-                            TProtocol output_protocol) {
+      TProtocol output_protocol) {
     this.input_protocol = input_protocol;
     this.output_protocol = output_protocol;
   }

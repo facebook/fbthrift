@@ -19,20 +19,20 @@
 
 package com.facebook.thrift.protocol;
 
-import java.util.Stack;
-import java.util.Map;
-
 import com.facebook.thrift.TException;
-import com.facebook.thrift.transport.TTransport;
 import com.facebook.thrift.meta_data.FieldMetaData;
+import com.facebook.thrift.transport.TTransport;
+
+import java.util.Map;
+import java.util.Stack;
 
 /**
  * Compact JSON protocol.
  * It is similar to simple JSON protocol, only it is JSON-compliant, and supports reading back.
  * Unlike simple JSON protocol, compact JSON protocol
- *   encodes binary fields with Base64
- *   encloses Infinity and -Infinity values in quotes
- *   encloses non-string map keys in quotes
+ * encodes binary fields with Base64
+ * encloses Infinity and -Infinity values in quotes
+ * encloses non-string map keys in quotes
  */
 public class TCompactJSONProtocol extends TJSONProtocolBase {
 
@@ -74,7 +74,8 @@ public class TCompactJSONProtocol extends TJSONProtocolBase {
   }
 
   @Override
-  public void writeFieldStop() {}
+  public void writeFieldStop() {
+  }
 
   @Override
   public void writeMapBegin(TMap map) throws TException {
@@ -112,7 +113,7 @@ public class TCompactJSONProtocol extends TJSONProtocolBase {
 
   // Stack of nested structs that we may be in
   private Stack<Map<Integer, FieldMetaData>> structStack_ =
-    new Stack<Map<Integer, FieldMetaData>>();
+      new Stack<Map<Integer, FieldMetaData>>();
 
   @Override
   public TStruct readStructBegin(
@@ -132,12 +133,12 @@ public class TCompactJSONProtocol extends TJSONProtocolBase {
   public TField readFieldBegin() throws TException {
     if (reader_.peek() == RBRACE[0]) {
       // No more fields at current level
-      return new TField("", TType.STOP, (short)0);
+      return new TField("", TType.STOP, (short) 0);
     }
 
     String name = readString();
 
-    for (Map.Entry<Integer, FieldMetaData> entry: structStack_.peek().entrySet()) {
+    for (Map.Entry<Integer, FieldMetaData> entry : structStack_.peek().entrySet()) {
       if (entry.getValue().fieldName.equals(name)) {
         // Field name match
         return new TField(name, entry.getValue().valueMetaData.type, entry.getKey().shortValue());
@@ -145,7 +146,7 @@ public class TCompactJSONProtocol extends TJSONProtocolBase {
     }
 
     // Unknown field name, return id 0 and a compatible type, to let user skip it
-    return new TField(name, getTypeIDForPeekedByte(context_.peekNextValue()), (short)0);
+    return new TField(name, getTypeIDForPeekedByte(context_.peekNextValue()), (short) 0);
   }
 
   @Override
