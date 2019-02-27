@@ -1051,33 +1051,35 @@ TEST(ThriftServer, ClientIdentityHook) {
 }
 
 namespace {
+void setupServerSSL(ThriftServer& server) {
+  auto sslConfig = std::make_shared<wangle::SSLContextConfig>();
+  sslConfig->setCertificate(folly::kTestCert, folly::kTestKey, "");
+  sslConfig->clientCAFile = folly::kTestCA;
+  sslConfig->sessionContext = "ThriftServerTest";
+  server.setSSLConfig(std::move(sslConfig));
+}
+
+std::shared_ptr<folly::SSLContext> makeClientSslContext() {
+  auto ctx = std::make_shared<folly::SSLContext>();
+  ctx->loadCertificate(folly::kTestCert);
+  ctx->loadPrivateKey(folly::kTestKey);
+  ctx->loadTrustedCertificates(folly::kTestCA);
+  ctx->authenticate(
+      true /* verify server cert */, false /* don't verify server name */);
+  ctx->setVerificationOption(folly::SSLContext::SSLVerifyPeerEnum::VERIFY);
+  return ctx;
+}
+
 void doBadRequestHeaderTest(bool duplex, bool secure) {
   auto server = std::static_pointer_cast<ThriftServer>(
       TestThriftServerFactory<TestInterface>().create());
   server->setDuplex(duplex);
   if (secure) {
-    auto makeSslConfig = []() {
-      auto sslConfig = std::make_shared<wangle::SSLContextConfig>();
-      sslConfig->setCertificate(folly::kTestCert, folly::kTestKey, "");
-      sslConfig->clientCAFile = folly::kTestCA;
-      sslConfig->sessionContext = "ThriftServerTest";
-      return sslConfig;
-    };
-    server->setSSLConfig(makeSslConfig());
+    setupServerSSL(*server);
   }
   ScopedServerThread sst(std::move(server));
 
   folly::EventBase evb;
-  auto makeClientSslContext = []() {
-    auto ctx = std::make_shared<folly::SSLContext>();
-    ctx->loadCertificate(folly::kTestCert);
-    ctx->loadPrivateKey(folly::kTestKey);
-    ctx->loadTrustedCertificates(folly::kTestCA);
-    ctx->authenticate(
-        true /* verify server cert */, false /* don't verify server name */);
-    ctx->setVerificationOption(folly::SSLContext::SSLVerifyPeerEnum::VERIFY);
-    return ctx;
-  };
   folly::AsyncSocket::UniquePtr socket(
       secure ? new folly::AsyncSSLSocket(makeClientSslContext(), &evb)
              : new folly::AsyncSocket(&evb));
@@ -1173,4 +1175,102 @@ TEST(ThriftServer, BadRequestHeaderNoDuplexSsl) {
 
 TEST(ThriftServer, BadRequestHeaderDuplexSsl) {
   doBadRequestHeaderTest(true /* duplex */, true /* secure */);
+}
+
+TEST(ThriftServer, SSLRequiredRejectsPlaintext) {
+  auto server = std::static_pointer_cast<ThriftServer>(
+      TestThriftServerFactory<TestInterface>().create());
+  server->setSSLPolicy(SSLPolicy::REQUIRED);
+  setupServerSSL(*server);
+  ScopedServerThread sst(std::move(server));
+
+  folly::EventBase base;
+  std::shared_ptr<TAsyncSocket> socket(
+      TAsyncSocket::newSocket(&base, *sst.getAddress()));
+  TestServiceAsyncClient client(HeaderClientChannel::newChannel(socket));
+
+  std::string response;
+  EXPECT_THROW(client.sync_sendResponse(response, 64);, TTransportException);
+}
+
+TEST(ThriftServer, SSLRequiredAllowsLocalPlaintext) {
+  auto server = std::static_pointer_cast<ThriftServer>(
+      TestThriftServerFactory<TestInterface>().create());
+  server->setAllowPlaintextOnLoopback(true);
+  server->setSSLPolicy(SSLPolicy::REQUIRED);
+  setupServerSSL(*server);
+  ScopedServerThread sst(std::move(server));
+
+  folly::EventBase base;
+  // ensure that the address is loopback
+  auto port = sst.getAddress()->getPort();
+  folly::SocketAddress loopback("::1", port);
+  std::shared_ptr<TAsyncSocket> socket(
+      TAsyncSocket::newSocket(&base, loopback));
+  TestServiceAsyncClient client(HeaderClientChannel::newChannel(socket));
+
+  std::string response;
+  client.sync_sendResponse(response, 64);
+  EXPECT_EQ(response, "test64");
+  base.loop();
+}
+
+TEST(ThriftServer, SSLRequiredLoopbackUsesSSL) {
+  auto server = std::static_pointer_cast<ThriftServer>(
+      TestThriftServerFactory<TestInterface>().create());
+  server->setAllowPlaintextOnLoopback(true);
+  server->setSSLPolicy(SSLPolicy::REQUIRED);
+  setupServerSSL(*server);
+  ScopedServerThread sst(std::move(server));
+
+  folly::EventBase base;
+  // ensure that the address is loopback
+  auto port = sst.getAddress()->getPort();
+  folly::SocketAddress loopback("::1", port);
+
+  auto ctx = makeClientSslContext();
+  auto sslSock = TAsyncSSLSocket::newSocket(ctx, &base);
+  sslSock->connect(nullptr /* connect callback */, loopback);
+
+  TestServiceAsyncClient client(HeaderClientChannel::newChannel(sslSock));
+
+  std::string response;
+  client.sync_sendResponse(response, 64);
+  EXPECT_EQ(response, "test64");
+  base.loop();
+}
+
+TEST(ThriftServer, SSLPermittedAcceptsPlaintextAndSSL) {
+  auto server = std::static_pointer_cast<ThriftServer>(
+      TestThriftServerFactory<TestInterface>().create());
+  server->setSSLPolicy(SSLPolicy::PERMITTED);
+  setupServerSSL(*server);
+  ScopedServerThread sst(std::move(server));
+
+  folly::EventBase base;
+  {
+    SCOPED_TRACE("Plaintext");
+    std::shared_ptr<TAsyncSocket> socket(
+        TAsyncSocket::newSocket(&base, *sst.getAddress()));
+    TestServiceAsyncClient client(HeaderClientChannel::newChannel(socket));
+
+    std::string response;
+    client.sync_sendResponse(response, 64);
+    EXPECT_EQ(response, "test64");
+    base.loop();
+  }
+
+  {
+    SCOPED_TRACE("SSL");
+    auto ctx = makeClientSslContext();
+    auto sslSock = TAsyncSSLSocket::newSocket(ctx, &base);
+    sslSock->connect(nullptr /* connect callback */, *sst.getAddress());
+
+    TestServiceAsyncClient client(HeaderClientChannel::newChannel(sslSock));
+
+    std::string response;
+    client.sync_sendResponse(response, 64);
+    EXPECT_EQ(response, "test64");
+    base.loop();
+  }
 }

@@ -81,6 +81,8 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
   // Security negotiation settings
   SSLPolicy sslPolicy_ = SSLPolicy::PERMITTED;
   bool strictSSL_ = false;
+  // whether we allow plaintext connections from loopback in REQUIRED mode
+  bool allowPlaintextOnLoopback_ = false;
 
   std::weak_ptr<folly::ShutdownSocketSet> wShutdownSocketSet_;
 
@@ -475,8 +477,17 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
   void setStrictSSL(bool strictSSL) {
     strictSSL_ = strictSSL;
   }
+
   bool getStrictSSL() {
     return strictSSL_;
+  }
+
+  void setAllowPlaintextOnLoopback(bool allow) {
+    allowPlaintextOnLoopback_ = allow;
+  }
+
+  bool isPlaintextAllowedOnLoopback() const {
+    return allowPlaintextOnLoopback_;
   }
 
   void setAcceptorFactory(

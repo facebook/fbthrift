@@ -150,10 +150,6 @@ class Cpp2Worker : public wangle::Acceptor,
 
   void markSocketAccepted(async::TAsyncSocket* sock);
 
-  SSLPolicy getSSLPolicy() {
-    return server_->getSSLPolicy();
-  }
-
   void plaintextConnectionReady(
       folly::AsyncTransportWrapper::UniquePtr sock,
       const folly::SocketAddress& clientAddr,
@@ -221,6 +217,18 @@ class Cpp2Worker : public wangle::Acceptor,
       const folly::SocketAddress& clientAddr,
       std::chrono::steady_clock::time_point acceptTime,
       wangle::TransportInfo& tinfo) override;
+
+  bool isPlaintextAllowedOnLoopback() {
+    return server_->isPlaintextAllowedOnLoopback();
+  }
+
+  SSLPolicy getSSLPolicy() {
+    return server_->getSSLPolicy();
+  }
+
+  bool shouldPerformSSL(
+      const std::vector<uint8_t>& bytes,
+      const folly::SocketAddress& clientAddr);
 
   friend class Cpp2Connection;
   friend class ThriftServer;

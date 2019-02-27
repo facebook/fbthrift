@@ -251,16 +251,29 @@ wangle::AcceptorHandshakeHelper::UniquePtr Cpp2Worker::createSSLHelper(
       bytes, clientAddr, acceptTime, tInfo);
 }
 
+bool Cpp2Worker::shouldPerformSSL(
+    const std::vector<uint8_t>& bytes,
+    const folly::SocketAddress& clientAddr) {
+  auto sslPolicy = getSSLPolicy();
+  if (sslPolicy == SSLPolicy::REQUIRED) {
+    if (isPlaintextAllowedOnLoopback()) {
+      // loopback clients may still be sending TLS so we need to ensure that
+      // it doesn't appear that way in addition to verifying it's loopback.
+      return !(
+          clientAddr.isLoopbackAddress() && !TLSHelper::looksLikeTLS(bytes));
+    }
+    return true;
+  } else {
+    return sslPolicy != SSLPolicy::DISABLED && TLSHelper::looksLikeTLS(bytes);
+  }
+}
+
 wangle::AcceptorHandshakeHelper::UniquePtr Cpp2Worker::getHelper(
     const std::vector<uint8_t>& bytes,
     const folly::SocketAddress& clientAddr,
     std::chrono::steady_clock::time_point acceptTime,
     wangle::TransportInfo& ti) {
-  auto sslPolicy = getSSLPolicy();
-  auto performSSL = (sslPolicy == SSLPolicy::REQUIRED) ||
-      (sslPolicy != SSLPolicy::DISABLED && TLSHelper::looksLikeTLS(bytes));
-
-  if (!performSSL) {
+  if (!shouldPerformSSL(bytes, clientAddr)) {
     return wangle::AcceptorHandshakeHelper::UniquePtr(
         new wangle::UnencryptedAcceptorHandshakeHelper());
   }
