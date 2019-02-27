@@ -85,23 +85,9 @@ public class TBinaryProtocol extends TProtocol {
     strictWrite_ = strictWrite;
   }
 
-  public void writeMessageBegin() throws TException {
-    if (strictWrite_) {
-      int version = VERSION_1;
-      writeI32(version);
-    }
-  }
-
   public void writeMessageBegin(TMessage message) throws TException {
     if (message == null) {
-      // Writing data.
-      if (strictWrite_) {
-        int version = VERSION_1 | TMessageType.DATA;
-        writeI32(version);
-      } else {
-        throw new TException("Can write data only in strict mode");
-      }
-      return;
+      throw new TException("Can't write 'null' message");
     }
 
     if (strictWrite_) {
@@ -239,11 +225,6 @@ public class TBinaryProtocol extends TProtocol {
       if (version != VERSION_1) {
         throw new TProtocolException(TProtocolException.BAD_VERSION,
             "Bad version in readMessageBegin");
-      }
-      byte type = (byte)(size & 0x000000ff);
-      if (type == TMessageType.DATA) {
-        // Data payload.
-        return null;
       }
       return new TMessage(readString(), (byte) (size & 0x000000ff), readI32());
     } else {

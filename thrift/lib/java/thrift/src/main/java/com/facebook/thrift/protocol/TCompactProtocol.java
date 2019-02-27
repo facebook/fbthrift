@@ -144,11 +144,6 @@ public final class TCompactProtocol extends TProtocol {
    * protocol version so we can migrate forwards in the future if need be.
    */
   public void writeMessageBegin(TMessage message) throws TException {
-    if (message == null) {
-      writeByteDirect(PROTOCOL_ID);
-      writeByteDirect((VERSION & VERSION_MASK) | ((TMessageType.DATA << TYPE_SHIFT_AMOUNT) & TYPE_MASK));
-      return;
-    }
     writeByteDirect(PROTOCOL_ID);
     writeByteDirect((VERSION & VERSION_MASK) | ((message.type << TYPE_SHIFT_AMOUNT) & TYPE_MASK));
     writeVarint32(message.seqid);
@@ -495,10 +490,6 @@ public final class TCompactProtocol extends TProtocol {
       throw new TProtocolException("Expected version " + VERSION + " but got " + version_);
     }
     byte type = (byte) ((versionAndType >> TYPE_SHIFT_AMOUNT) & 0x03);
-    if (type == TMessageType.DATA) {
-      // Data payload.
-      return null;
-    }
     int seqid = readVarint32();
     String messageName = readString();
     return new TMessage(messageName, type, seqid);
@@ -683,7 +674,7 @@ public final class TCompactProtocol extends TProtocol {
     int length = readVarint32();
 
     if (length == 0) {
-     return "";
+      return "";
     }
 
     try {
@@ -786,7 +777,7 @@ public final class TCompactProtocol extends TProtocol {
       int pos = trans_.getBufferPosition();
       int off = 0;
       while (true) {
-       byte b = buf[pos + off];
+        byte b = buf[pos + off];
         result |= (long) (b & 0x7f) << shift;
         if ((b & 0x80) != 0x80) {
           break;
