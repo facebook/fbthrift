@@ -26,7 +26,6 @@ import com.facebook.thrift.protocol.TMessage;
 import com.facebook.thrift.protocol.TMessageType;
 import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -233,8 +232,8 @@ public class THeaderTransport extends TFramedTransport {
   }
 
   public String getPeerIdentity() {
-    if (readHeaders.containsKey(IDENTITY_HEADER) &&
-        readHeaders.get(ID_VERSION_HEADER).equals(ID_VERSION)) {
+    if (readHeaders.containsKey(IDENTITY_HEADER)
+        && ID_VERSION.equals(readHeaders.get(ID_VERSION_HEADER))) {
       return readHeaders.get(IDENTITY_HEADER);
     }
 
@@ -314,7 +313,7 @@ public class THeaderTransport extends TFramedTransport {
                   + "(probably a local daemon sending HTTP content to all listening ports).");
         }
         throw new TTransportException("Framed transport frame " +
-                                      "is too large");
+            "is too large");
       }
 
       // Could be framed or header format.  Check next word.
@@ -331,7 +330,7 @@ public class THeaderTransport extends TFramedTransport {
         clientType = ClientTypes.HEADERS;
         if (word1 - 4 < 10) {
           throw new TTransportException("Header transport frame " +
-                                        "is too small");
+              "is too small");
         }
         byte[] buff = new byte[word1];
         System.arraycopy(i32buf, 0, buff, 0, 4);
@@ -387,8 +386,9 @@ public class THeaderTransport extends TFramedTransport {
   }
 
   private void writeString(ByteBuffer out, String str) {
-    writeVarint(out, str.length());
-    out.put(ByteBuffer.wrap(str.getBytes(Charset.forName("UTF-8"))));
+    byte[] bytes = str.getBytes(StandardCharsets.UTF_8);
+    writeVarint(out, bytes.length);
+    out.put(ByteBuffer.wrap(bytes));
   }
 
   private String readString(ByteBuffer in) throws TTransportException {
@@ -403,7 +403,7 @@ public class THeaderTransport extends TFramedTransport {
   }
 
   private void readHeaderFormat(int headerSize, byte[] buff)
-    throws TTransportException {
+      throws TTransportException {
     ByteBuffer frame = ByteBuffer.wrap(buff);
     frame.position(10); // Advance past version, flags, seqid
 
@@ -420,7 +420,7 @@ public class THeaderTransport extends TFramedTransport {
 
     if (protoId == T_JSON_PROTOCOL && clientType != ClientTypes.HTTP) {
       throw new TTransportException("Trying to recv JSON encoding " +
-                                    "over binary");
+          "over binary");
     }
 
     // Read in the headers.  Data for each varies. See
@@ -473,7 +473,7 @@ public class THeaderTransport extends TFramedTransport {
   }
 
   private ByteBuffer untransform(ByteBuffer data)
-    throws TTransportException {
+      throws TTransportException {
 
     if (readTransforms.contains(Transforms.ZLIB_TRANSFORM.getValue())) {
       try {
@@ -509,15 +509,15 @@ public class THeaderTransport extends TFramedTransport {
     } else if (readTransforms.contains(Transforms.SNAPPY_TRANSFORM.getValue())) {
       try {
         byte[] output = new byte[
-          Snappy.getUncompressedLength(
-            data.array(),
-            data.position())];
+            Snappy.getUncompressedLength(
+                data.array(),
+                data.position())];
         int length = Snappy.uncompress(
-          data.array(),
-          data.position(),
-          data.remaining(),
-          output,
-          0);
+            data.array(),
+            data.position(),
+            data.remaining(),
+            output,
+            0);
         data = ByteBuffer.wrap(output, 0, length);
       } catch (CorruptionException e) {
         throw new THeaderException(e);
@@ -534,17 +534,20 @@ public class THeaderTransport extends TFramedTransport {
     if (writeTransforms.contains(Transforms.ZLIB_TRANSFORM)) {
       byte[] output = new byte[data.limit() + 512]; // output might be larger
       Deflater compressor = new Deflater();
-      compressor.setInput(data.array(), data.position(), data.remaining());
-      compressor.finish();
-      int length = compressor.deflate(output);
-      if (!compressor.finished()) {
-        // Output buffer was not big enough.  Unlikely.
-        // If you hit this, you probably shouldn't be using ZLIB_TRANSFORM :)
-        throw new TTransportException("Output compress buffer not big enough");
+      try {
+        compressor.setInput(data.array(), data.position(), data.remaining());
+        compressor.finish();
+        int length = compressor.deflate(output);
+        if (!compressor.finished()) {
+          // Output buffer was not big enough.  Unlikely.
+          // If you hit this, you probably shouldn't be using ZLIB_TRANSFORM :)
+          throw new TTransportException("Output compress buffer not big enough");
+        }
+        data = ByteBuffer.wrap(output);
+        data.limit(length);
+      } finally {
+        compressor.end();
       }
-      compressor.end();
-      data = ByteBuffer.wrap(output);
-      data.limit(length);
     } else if (writeTransforms.contains(Transforms.SNAPPY_TRANSFORM)) {
       byte[] outputBuffer = new byte[Snappy.maxCompressedLength(data.limit())];
       int length =
@@ -561,10 +564,10 @@ public class THeaderTransport extends TFramedTransport {
     }
 
     int len = 10; // 5 bytes varint for info header type
-                  // 5 bytes varint for info headers count
+    // 5 bytes varint for info headers count
     for (Map.Entry<String, String> header : headers.entrySet()) {
       len += 10; // 5 bytes varint for key size and
-                 // 5 bytes varint for value size
+      // 5 bytes varint for value size
       len += header.getKey().length();
       len += header.getValue().length();
     }
@@ -644,20 +647,20 @@ public class THeaderTransport extends TFramedTransport {
 
     if (frame.remaining() > MAX_FRAME_SIZE) {
       throw new TTransportException("Attempting to send frame that is " +
-                                    "too large: " +
-                                    Integer.toString(frame.remaining()));
+          "too large: " +
+          Integer.toString(frame.remaining()));
     }
 
     if (protoId == T_JSON_PROTOCOL && clientType != ClientTypes.HTTP) {
       throw new TTransportException("Trying to send JSON encoding" +
-                                    " over binary");
+          " over binary");
     }
 
     if (clientType == ClientTypes.HEADERS) {
 
       // Each varint could be up to 5 in size.
       ByteBuffer transformData =
-        ByteBuffer.allocate(writeTransforms.size() * 5);
+          ByteBuffer.allocate(writeTransforms.size() * 5);
 
       // For now, no transforms require data.
       int numTransforms = writeTransforms.size();
@@ -673,9 +676,9 @@ public class THeaderTransport extends TFramedTransport {
       }
 
       ByteBuffer infoData1 = flushInfoHeaders(
-              Infos.INFO_PKEYVALUE, writePersistentHeaders);
+          Infos.INFO_PKEYVALUE, writePersistentHeaders);
       ByteBuffer infoData2 = flushInfoHeaders(
-              Infos.INFO_KEYVALUE, writeHeaders);
+          Infos.INFO_KEYVALUE, writeHeaders);
 
 
       ByteBuffer headerData = ByteBuffer.allocate(10);
