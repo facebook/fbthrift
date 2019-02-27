@@ -66,6 +66,7 @@ public abstract class TJSONProtocolBase extends TProtocol {
   protected static final byte[] NAME_I32 = new byte[]{'i', '3', '2'};
   protected static final byte[] NAME_I64 = new byte[]{'i', '6', '4'};
   protected static final byte[] NAME_DOUBLE = new byte[]{'d', 'b', 'l'};
+  protected static final byte[] NAME_FLOAT = new byte[]{'f', 'l', 't'};
   protected static final byte[] NAME_STRUCT = new byte[]{'r', 'e', 'c'};
   protected static final byte[] NAME_STRING = new byte[]{'s', 't', 'r'};
   protected static final byte[] NAME_MAP = new byte[]{'m', 'a', 'p'};
@@ -78,79 +79,84 @@ public abstract class TJSONProtocolBase extends TProtocol {
   protected static final TStruct ANONYMOUS_STRUCT = new TStruct();
 
   protected static final byte[] getTypeNameForTypeID(byte typeID)
-    throws TException {
+      throws TException {
     switch (typeID) {
-    case TType.BOOL:
-      return NAME_BOOL;
-    case TType.BYTE:
-      return NAME_BYTE;
-    case TType.I16:
-      return NAME_I16;
-    case TType.I32:
-      return NAME_I32;
-    case TType.I64:
-      return NAME_I64;
-    case TType.DOUBLE:
-      return NAME_DOUBLE;
-    case TType.STRING:
-      return NAME_STRING;
-    case TType.STRUCT:
-      return NAME_STRUCT;
-    case TType.MAP:
-      return NAME_MAP;
-    case TType.SET:
-      return NAME_SET;
-    case TType.LIST:
-      return NAME_LIST;
-    default:
-      throw new TProtocolException(TProtocolException.NOT_IMPLEMENTED,
-          "Unrecognized type");
+      case TType.BOOL:
+        return NAME_BOOL;
+      case TType.BYTE:
+        return NAME_BYTE;
+      case TType.I16:
+        return NAME_I16;
+      case TType.I32:
+        return NAME_I32;
+      case TType.I64:
+        return NAME_I64;
+      case TType.DOUBLE:
+        return NAME_DOUBLE;
+      case TType.FLOAT:
+        return NAME_FLOAT;
+      case TType.STRING:
+        return NAME_STRING;
+      case TType.STRUCT:
+        return NAME_STRUCT;
+      case TType.MAP:
+        return NAME_MAP;
+      case TType.SET:
+        return NAME_SET;
+      case TType.LIST:
+        return NAME_LIST;
+      default:
+        throw new TProtocolException(TProtocolException.NOT_IMPLEMENTED,
+            "Unrecognized type");
     }
   }
 
   protected static final byte getTypeIDForTypeName(byte[] name)
-    throws TException {
+      throws TException {
     byte result = TType.STOP;
     if (name.length > 1) {
       switch (name[0]) {
-      case 'd':
-        result = TType.DOUBLE;
-        break;
-      case 'i':
-        switch (name[1]) {
-        case '8':
-          result = TType.BYTE;
+        case 'd':
+          result = TType.DOUBLE;
           break;
-        case '1':
-          result = TType.I16;
+        case 'f':
+          result = TType.FLOAT;
           break;
-        case '3':
-          result = TType.I32;
+        case 'i':
+          switch (name[1]) {
+            case '8':
+              result = TType.BYTE;
+              break;
+            case '1':
+              result = TType.I16;
+              break;
+            case '3':
+              result = TType.I32;
+              break;
+            case '6':
+              result = TType.I64;
+              break;
+          }
           break;
-        case '6':
-          result = TType.I64;
+        case 'l':
+          result = TType.LIST;
           break;
-        }
-        break;
-      case 'l':
-        result = TType.LIST;
-        break;
-      case 'm':
-        result = TType.MAP;
-        break;
-      case 'r':
-        result = TType.STRUCT;
-        break;
-      case 's':
-        if (name[1] == 't') {
-          result = TType.STRING;
-        } else if (name[1] == 'e') {
-          result = TType.SET;
-        }
-        break;
-      case 't':
-        result = TType.BOOL;
-        break;
+        case 'm':
+          result = TType.MAP;
+          break;
+        case 'r':
+          result = TType.STRUCT;
+          break;
+        case 's':
+          if (name[1] == 't') {
+            result = TType.STRING;
+          } else if (name[1] == 'e') {
+            result = TType.SET;
+          }
+          break;
+        case 't':
+          result = TType.BOOL;
+          break;
       }
     }
     if (result == TType.STOP) {
@@ -477,15 +483,15 @@ public abstract class TJSONProtocolBase extends TProtocol {
     context_.write();
     boolean special = false;
     switch (str.charAt(0)) {
-    case 'N': // NaN
-    case 'I': // Infinity
-      special = true;
-      break;
-    case '-':
-      if (str.charAt(1) == 'I') { // -Infinity
+      case 'N': // NaN
+      case 'I': // Infinity
         special = true;
-      }
-      break;
+        break;
+      case '-':
+        if (str.charAt(1) == 'I') { // -Infinity
+          special = true;
+        }
+        break;
     }
 
     boolean escapeNum = special || context_.escapeNum();
@@ -624,7 +630,7 @@ public abstract class TJSONProtocolBase extends TProtocol {
   // context if skipContext is true.
   @SuppressWarnings("resource")
   protected TByteArrayOutputStream readJSONString(boolean skipContext)
-    throws TException {
+      throws TException {
     TByteArrayOutputStream arr = new TByteArrayOutputStream(DEF_STRING_SIZE);
     if (!skipContext) {
       context_.read();
@@ -659,22 +665,22 @@ public abstract class TJSONProtocolBase extends TProtocol {
   // Return true if the given byte could be a valid part of a JSON number.
   protected boolean isJSONNumeric(byte b) {
     switch (b) {
-    case '+':
-    case '-':
-    case '.':
-    case '0':
-    case '1':
-    case '2':
-    case '3':
-    case '4':
-    case '5':
-    case '6':
-    case '7':
-    case '8':
-    case '9':
-    case 'E':
-    case 'e':
-      return true;
+      case '+':
+      case '-':
+      case '.':
+      case '0':
+      case '1':
+      case '2':
+      case '3':
+      case '4':
+      case '5':
+      case '6':
+      case '7':
+      case '8':
+      case '9':
+      case 'E':
+      case 'e':
+        return true;
     }
     return false;
   }
@@ -883,7 +889,7 @@ public abstract class TJSONProtocolBase extends TProtocol {
       for (byte expected : literalValue) {
         if (reader_.read() != expected) {
           throw new TProtocolException(TProtocolException.INVALID_DATA,
-                                       "Invalid boolean literal");
+              "Invalid boolean literal");
         }
       }
 
