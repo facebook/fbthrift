@@ -36,7 +36,8 @@ class TAsyncSocket : public virtual folly::AsyncSocket, public TAsyncTransport {
                uint32_t connectTimeout = 0)
     : folly::AsyncSocket(evb, address, connectTimeout) {}
 
-  TAsyncSocket(folly::EventBase* evb, int fd) : folly::AsyncSocket(evb, fd) {}
+  TAsyncSocket(folly::EventBase* evb, int fd)
+      : folly::AsyncSocket(evb, folly::NetworkSocket::fromFd(fd)) {}
 
   TAsyncSocket(folly::EventBase* evb,
                const std::string& ip,

@@ -44,7 +44,7 @@ class TAsyncSSLSocket : public folly::AsyncSSLSocket, public TAsyncSocket {
       int fd,
       bool server = true,
       bool deferSecurityNegotiation = false)
-      : AsyncSocket(evb, fd),
+      : AsyncSocket(evb, folly::NetworkSocket::fromFd(fd)),
         folly::AsyncSSLSocket(
             ctx,
             evb,
@@ -82,7 +82,7 @@ class TAsyncSSLSocket : public folly::AsyncSSLSocket, public TAsyncSocket {
       folly::EventBase* evb,
       int fd,
       const std::string& serverName)
-      : AsyncSocket(evb, fd),
+      : AsyncSocket(evb, folly::NetworkSocket::fromFd(fd)),
         folly::AsyncSSLSocket(
             ctx,
             evb,
