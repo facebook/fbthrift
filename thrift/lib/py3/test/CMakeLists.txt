@@ -13,6 +13,7 @@ macro(thrift_py3_test filename services)
 
   set_target_properties(${filename}-cpp2-obj
      PROPERTIES POSITION_INDEPENDENT_CODE True)
+  target_include_directories(${filename}-cpp2-obj PUBLIC ${FOLLY_INCLUDE_DIR})
 
   thrift_generate(
     ${filename}
