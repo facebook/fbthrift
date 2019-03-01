@@ -55,7 +55,6 @@ interface BarClientIf extends \IThriftSyncIf {
    *       5: i64 e);
    */
   public function baz(?darray<int, bool> $a, ?\HH\KeyedContainer<int, \HH\KeyedContainer<int, darray<string, bool>>> $b, ?int $c, ?Foo $d, ?int $e): Awaitable<string>;
-  public function gen_baz(?darray<int, bool> $a, ?\HH\KeyedContainer<int, \HH\KeyedContainer<int, darray<string, bool>>> $b, ?int $c, ?Foo $d, ?int $e): Awaitable<string>;
 }
 
 /**
@@ -208,6 +207,7 @@ class BarClient extends \ThriftClientBase implements BarClientIf {
     return $this->recvImpl_baz($currentseqid);
   }
 
+  <<__Deprecated('use baz')>>
   public async function gen_baz(?darray<int, bool> $a, ?\HH\KeyedContainer<int, \HH\KeyedContainer<int, darray<string, bool>>> $b, ?int $c, ?Foo $d, ?int $e): Awaitable<string> {
     $currentseqid = $this->sendImpl_baz($a, $b, $c, $d, $e);
     await $this->asyncHandler_->genWait($currentseqid);

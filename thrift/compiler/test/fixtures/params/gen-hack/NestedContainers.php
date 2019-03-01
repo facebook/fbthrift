@@ -99,7 +99,6 @@ interface NestedContainersClientIf extends \IThriftSyncIf {
    *   mapList(1: map<i32, list<i32>> foo);
    */
   public function mapList(\HH\KeyedContainer<int, \HH\KeyedContainer<int, int>> $foo): Awaitable<void>;
-  public function gen_mapList(\HH\KeyedContainer<int, \HH\KeyedContainer<int, int>> $foo): Awaitable<void>;
 
   /**
    * Original thrift definition:-
@@ -107,7 +106,6 @@ interface NestedContainersClientIf extends \IThriftSyncIf {
    *   mapSet(1: map<i32, set<i32>> foo);
    */
   public function mapSet(\HH\KeyedContainer<int, Set<int>> $foo): Awaitable<void>;
-  public function gen_mapSet(\HH\KeyedContainer<int, Set<int>> $foo): Awaitable<void>;
 
   /**
    * Original thrift definition:-
@@ -115,7 +113,6 @@ interface NestedContainersClientIf extends \IThriftSyncIf {
    *   listMap(1: list<map<i32, i32>> foo);
    */
   public function listMap(\HH\KeyedContainer<int, \HH\KeyedContainer<int, int>> $foo): Awaitable<void>;
-  public function gen_listMap(\HH\KeyedContainer<int, \HH\KeyedContainer<int, int>> $foo): Awaitable<void>;
 
   /**
    * Original thrift definition:-
@@ -123,7 +120,6 @@ interface NestedContainersClientIf extends \IThriftSyncIf {
    *   listSet(1: list<set<i32>> foo);
    */
   public function listSet(\HH\KeyedContainer<int, Set<int>> $foo): Awaitable<void>;
-  public function gen_listSet(\HH\KeyedContainer<int, Set<int>> $foo): Awaitable<void>;
 
   /**
    * Original thrift definition:-
@@ -131,7 +127,6 @@ interface NestedContainersClientIf extends \IThriftSyncIf {
    *   turtles(1: list<list<map<i32, map<i32, set<i32>>>>> foo);
    */
   public function turtles(\HH\KeyedContainer<int, \HH\KeyedContainer<int, \HH\KeyedContainer<int, \HH\KeyedContainer<int, Set<int>>>>> $foo): Awaitable<void>;
-  public function gen_turtles(\HH\KeyedContainer<int, \HH\KeyedContainer<int, \HH\KeyedContainer<int, \HH\KeyedContainer<int, Set<int>>>>> $foo): Awaitable<void>;
 }
 
 /**
@@ -682,6 +677,7 @@ class NestedContainersClient extends \ThriftClientBase implements NestedContaine
     $this->recvImpl_mapList($currentseqid);
   }
 
+  <<__Deprecated('use mapList')>>
   public async function gen_mapList(\HH\KeyedContainer<int, \HH\KeyedContainer<int, int>> $foo): Awaitable<void> {
     $currentseqid = $this->sendImpl_mapList($foo);
     await $this->asyncHandler_->genWait($currentseqid);
@@ -699,6 +695,7 @@ class NestedContainersClient extends \ThriftClientBase implements NestedContaine
     $this->recvImpl_mapSet($currentseqid);
   }
 
+  <<__Deprecated('use mapSet')>>
   public async function gen_mapSet(\HH\KeyedContainer<int, Set<int>> $foo): Awaitable<void> {
     $currentseqid = $this->sendImpl_mapSet($foo);
     await $this->asyncHandler_->genWait($currentseqid);
@@ -716,6 +713,7 @@ class NestedContainersClient extends \ThriftClientBase implements NestedContaine
     $this->recvImpl_listMap($currentseqid);
   }
 
+  <<__Deprecated('use listMap')>>
   public async function gen_listMap(\HH\KeyedContainer<int, \HH\KeyedContainer<int, int>> $foo): Awaitable<void> {
     $currentseqid = $this->sendImpl_listMap($foo);
     await $this->asyncHandler_->genWait($currentseqid);
@@ -733,6 +731,7 @@ class NestedContainersClient extends \ThriftClientBase implements NestedContaine
     $this->recvImpl_listSet($currentseqid);
   }
 
+  <<__Deprecated('use listSet')>>
   public async function gen_listSet(\HH\KeyedContainer<int, Set<int>> $foo): Awaitable<void> {
     $currentseqid = $this->sendImpl_listSet($foo);
     await $this->asyncHandler_->genWait($currentseqid);
@@ -750,6 +749,7 @@ class NestedContainersClient extends \ThriftClientBase implements NestedContaine
     $this->recvImpl_turtles($currentseqid);
   }
 
+  <<__Deprecated('use turtles')>>
   public async function gen_turtles(\HH\KeyedContainer<int, \HH\KeyedContainer<int, \HH\KeyedContainer<int, \HH\KeyedContainer<int, Set<int>>>>> $foo): Awaitable<void> {
     $currentseqid = $this->sendImpl_turtles($foo);
     await $this->asyncHandler_->genWait($currentseqid);

@@ -49,7 +49,6 @@ interface BazClientIf extends \IThriftSyncIf {
    *       3: map<Foo, string> c);
    */
   public function qux(Set<arraykey> $a, \HH\KeyedContainer<int, Bar> $b, \HH\KeyedContainer<arraykey, string> $c): Awaitable<string>;
-  public function gen_qux(Set<arraykey> $a, \HH\KeyedContainer<int, Bar> $b, \HH\KeyedContainer<arraykey, string> $c): Awaitable<string>;
 }
 
 /**
@@ -194,6 +193,7 @@ class BazClient extends \ThriftClientBase implements BazClientIf {
     return $this->recvImpl_qux($currentseqid);
   }
 
+  <<__Deprecated('use qux')>>
   public async function gen_qux(Set<arraykey> $a, \HH\KeyedContainer<int, Bar> $b, \HH\KeyedContainer<arraykey, string> $c): Awaitable<string> {
     $currentseqid = $this->sendImpl_qux($a, $b, $c);
     await $this->asyncHandler_->genWait($currentseqid);

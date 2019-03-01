@@ -117,7 +117,6 @@ interface MyServiceFastClientIf extends \IThriftSyncIf {
    *   ping();
    */
   public function ping(): Awaitable<void>;
-  public function gen_ping(): Awaitable<void>;
 
   /**
    * Original thrift definition:-
@@ -125,7 +124,6 @@ interface MyServiceFastClientIf extends \IThriftSyncIf {
    *   getRandomData();
    */
   public function getRandomData(): Awaitable<string>;
-  public function gen_getRandomData(): Awaitable<string>;
 
   /**
    * Original thrift definition:-
@@ -133,7 +131,6 @@ interface MyServiceFastClientIf extends \IThriftSyncIf {
    *   hasDataById(1: i64 id);
    */
   public function hasDataById(int $id): Awaitable<bool>;
-  public function gen_hasDataById(int $id): Awaitable<bool>;
 
   /**
    * Original thrift definition:-
@@ -141,7 +138,6 @@ interface MyServiceFastClientIf extends \IThriftSyncIf {
    *   getDataById(1: i64 id);
    */
   public function getDataById(int $id): Awaitable<string>;
-  public function gen_getDataById(int $id): Awaitable<string>;
 
   /**
    * Original thrift definition:-
@@ -150,7 +146,6 @@ interface MyServiceFastClientIf extends \IThriftSyncIf {
    *               2: string data);
    */
   public function putDataById(int $id, string $data): Awaitable<void>;
-  public function gen_putDataById(int $id, string $data): Awaitable<void>;
 
   /**
    * Original thrift definition:-
@@ -159,7 +154,6 @@ interface MyServiceFastClientIf extends \IThriftSyncIf {
    *               2: string data);
    */
   public function lobDataById(int $id, string $data): Awaitable<void>;
-  public function gen_lobDataById(int $id, string $data): Awaitable<void>;
 }
 
 /**
@@ -770,6 +764,7 @@ class MyServiceFastClient extends \ThriftClientBase implements MyServiceFastClie
     $this->recvImpl_ping($currentseqid);
   }
 
+  <<__Deprecated('use ping')>>
   public async function gen_ping(): Awaitable<void> {
     $currentseqid = $this->sendImpl_ping();
     await $this->asyncHandler_->genWait($currentseqid);
@@ -787,6 +782,7 @@ class MyServiceFastClient extends \ThriftClientBase implements MyServiceFastClie
     return $this->recvImpl_getRandomData($currentseqid);
   }
 
+  <<__Deprecated('use getRandomData')>>
   public async function gen_getRandomData(): Awaitable<string> {
     $currentseqid = $this->sendImpl_getRandomData();
     await $this->asyncHandler_->genWait($currentseqid);
@@ -804,6 +800,7 @@ class MyServiceFastClient extends \ThriftClientBase implements MyServiceFastClie
     return $this->recvImpl_hasDataById($currentseqid);
   }
 
+  <<__Deprecated('use hasDataById')>>
   public async function gen_hasDataById(int $id): Awaitable<bool> {
     $currentseqid = $this->sendImpl_hasDataById($id);
     await $this->asyncHandler_->genWait($currentseqid);
@@ -821,6 +818,7 @@ class MyServiceFastClient extends \ThriftClientBase implements MyServiceFastClie
     return $this->recvImpl_getDataById($currentseqid);
   }
 
+  <<__Deprecated('use getDataById')>>
   public async function gen_getDataById(int $id): Awaitable<string> {
     $currentseqid = $this->sendImpl_getDataById($id);
     await $this->asyncHandler_->genWait($currentseqid);
@@ -839,6 +837,7 @@ class MyServiceFastClient extends \ThriftClientBase implements MyServiceFastClie
     $this->recvImpl_putDataById($currentseqid);
   }
 
+  <<__Deprecated('use putDataById')>>
   public async function gen_putDataById(int $id, string $data): Awaitable<void> {
     $currentseqid = $this->sendImpl_putDataById($id, $data);
     await $this->asyncHandler_->genWait($currentseqid);
@@ -855,6 +854,7 @@ class MyServiceFastClient extends \ThriftClientBase implements MyServiceFastClie
     $currentseqid = $this->sendImpl_lobDataById($id, $data);
   }
 
+  <<__Deprecated('use lobDataById')>>
   public async function gen_lobDataById(int $id, string $data): Awaitable<void> {
     $currentseqid = $this->sendImpl_lobDataById($id, $data);
   }

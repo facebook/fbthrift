@@ -43,7 +43,6 @@ interface MyServicePrioChildClientIf extends MyServicePrioParentClientIf {
    *   pang();
    */
   public function pang(): Awaitable<void>;
-  public function gen_pang(): Awaitable<void>;
 }
 
 /**
@@ -175,6 +174,7 @@ class MyServicePrioChildClient extends MyServicePrioParentClient implements MySe
     $this->recvImpl_pang($currentseqid);
   }
 
+  <<__Deprecated('use pang')>>
   public async function gen_pang(): Awaitable<void> {
     $currentseqid = $this->sendImpl_pang();
     await $this->asyncHandler_->genWait($currentseqid);

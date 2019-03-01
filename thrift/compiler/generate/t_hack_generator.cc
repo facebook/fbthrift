@@ -3848,10 +3848,6 @@ void t_hack_generator::generate_service_interface(
   indent_up();
   vector<t_function*> functions = tservice->get_functions();
   vector<t_function*>::iterator f_iter;
-  vector<string> prefixes{""};
-  if (!async && client) {
-    prefixes.push_back("gen_");
-  }
   for (f_iter = functions.begin(); f_iter != functions.end(); ++f_iter) {
     // Add a blank line before the start of a new function definition
     if (f_iter != functions.begin()) {
@@ -3866,19 +3862,16 @@ void t_hack_generator::generate_service_interface(
     if (async || client) {
       return_typehint = "Awaitable<" + return_typehint + ">";
     }
-    for (string prefix : prefixes) {
-      if (nullable_everything_) {
-        string funname = (*f_iter)->get_name();
-        indent(f_service_) << "public function " << prefix << funname << "("
-                           << argument_list(
-                                  (*f_iter)->get_arglist(), "", true, true)
-                           << "): " << return_typehint << ";\n";
-      } else {
-        indent(f_service_) << "public function " << prefix
-                           << function_signature(
-                                  *f_iter, "", "", return_typehint)
-                           << ";\n";
-      }
+    if (nullable_everything_) {
+      string funname = (*f_iter)->get_name();
+      indent(f_service_) << "public function " << funname << "("
+                         << argument_list(
+                                (*f_iter)->get_arglist(), "", true, true)
+                         << "): " << return_typehint << ";\n";
+    } else {
+      indent(f_service_) << "public function "
+                         << function_signature(*f_iter, "", "", return_typehint)
+                         << ";\n";
     }
   }
   indent_down();
@@ -4407,6 +4400,9 @@ void t_hack_generator::_generate_service_client_children(
     string return_typehint = type_to_typehint((*f_iter)->get_returntype());
     generate_php_docstring(out, *f_iter);
     for (string prefix : prefixes) {
+      if (prefix == "gen_") {
+        indent(out) << "<<__Deprecated('use " << funname << "')>>\n";
+      }
       if (nullable_everything_) {
         indent(out) << "public async function " << prefix << funname << "("
                     << argument_list((*f_iter)->get_arglist(), "", true, true)

@@ -97,7 +97,6 @@ interface RaiserClientIf extends \IThriftSyncIf {
    *   doBland();
    */
   public function doBland(): Awaitable<void>;
-  public function gen_doBland(): Awaitable<void>;
 
   /**
    * Original thrift definition:-
@@ -108,7 +107,6 @@ interface RaiserClientIf extends \IThriftSyncIf {
    *           3: Serious s);
    */
   public function doRaise(): Awaitable<void>;
-  public function gen_doRaise(): Awaitable<void>;
 
   /**
    * Original thrift definition:-
@@ -116,7 +114,6 @@ interface RaiserClientIf extends \IThriftSyncIf {
    *   get200();
    */
   public function get200(): Awaitable<string>;
-  public function gen_get200(): Awaitable<string>;
 
   /**
    * Original thrift definition:-
@@ -127,7 +124,6 @@ interface RaiserClientIf extends \IThriftSyncIf {
    *           3: Serious s);
    */
   public function get500(): Awaitable<string>;
-  public function gen_get500(): Awaitable<string>;
 }
 
 /**
@@ -610,6 +606,7 @@ class RaiserClient extends \ThriftClientBase implements RaiserClientIf {
     $this->recvImpl_doBland($currentseqid);
   }
 
+  <<__Deprecated('use doBland')>>
   public async function gen_doBland(): Awaitable<void> {
     $currentseqid = $this->sendImpl_doBland();
     await $this->asyncHandler_->genWait($currentseqid);
@@ -630,6 +627,7 @@ class RaiserClient extends \ThriftClientBase implements RaiserClientIf {
     $this->recvImpl_doRaise($currentseqid);
   }
 
+  <<__Deprecated('use doRaise')>>
   public async function gen_doRaise(): Awaitable<void> {
     $currentseqid = $this->sendImpl_doRaise();
     await $this->asyncHandler_->genWait($currentseqid);
@@ -647,6 +645,7 @@ class RaiserClient extends \ThriftClientBase implements RaiserClientIf {
     return $this->recvImpl_get200($currentseqid);
   }
 
+  <<__Deprecated('use get200')>>
   public async function gen_get200(): Awaitable<string> {
     $currentseqid = $this->sendImpl_get200();
     await $this->asyncHandler_->genWait($currentseqid);
@@ -667,6 +666,7 @@ class RaiserClient extends \ThriftClientBase implements RaiserClientIf {
     return $this->recvImpl_get500($currentseqid);
   }
 
+  <<__Deprecated('use get500')>>
   public async function gen_get500(): Awaitable<string> {
     $currentseqid = $this->sendImpl_get500();
     await $this->asyncHandler_->genWait($currentseqid);
