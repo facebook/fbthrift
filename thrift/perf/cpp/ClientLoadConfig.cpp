@@ -17,9 +17,6 @@
 
 #include <thrift/perf/cpp/ClientLoadConfig.h>
 
-#include <gflags/gflags.h>
-#include <glog/logging.h>
-
 #include <thrift/lib/cpp/test/loadgen/RNG.h>
 
 using namespace boost;
