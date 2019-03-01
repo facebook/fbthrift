@@ -68,6 +68,7 @@ thrift_py3_test("binary" "BinaryService")
 
 file(MAKE_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/gen-py3/test")
 
+set(_linked_files)
 foreach(_src
   binary.py
   client_server.py
@@ -87,13 +88,16 @@ foreach(_src
   structs.py
   unions.py
 )
-  add_custom_target("create_test_${_src}" ALL
-    COMMAND
-      ${CMAKE_COMMAND} -E create_symlink
+  set(_link_dest "gen-py3/test/${_src}")
+  add_custom_command(OUTPUT ${_link_dest}
+    COMMAND ${CMAKE_COMMAND} -E create_symlink
       ${CMAKE_CURRENT_SOURCE_DIR}/${_src}
-      "${CMAKE_CURRENT_BINARY_DIR}/gen-py3/test/${_src}"
+      "${_link_dest}"
+    COMMENT "Generating symlink to ${_link_dest}"
   )
+  list(APPEND _linked_files "${_link_dest}")
 endforeach()
+add_custom_target(py3-test-symlinks DEPENDS ${_linked_files})
 file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/gen-py3/test/__init__.py)
 
 foreach(_src
@@ -109,7 +113,7 @@ foreach(_src
     COMMAND ${CYTHON_EXE} --fast-fail -3 --cplus ${_pyx} -o ${_cxx}
       -I${THRIFT_BUILD}/thrift/lib/py3/cybld/
     COMMENT "Generating ${_cxx} using Cython"
-    DEPENDS folly-symlinks thrift-symlinks
+    DEPENDS folly-symlinks thrift-symlinks py3-test-symlinks
   )
 
   python_add_module(${_module_name} "${_cxx}")
