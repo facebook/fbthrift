@@ -824,7 +824,7 @@ enum class Frozen2 { Marker };
 template <
     class T,
     class =
-        typename std::enable_if<!folly::is_trivially_copyable<T>::value>::type,
+        typename std::enable_if<!std::is_trivially_copyable<T>::value>::type,
     class Return = Bundled<typename Layout<T>::View>>
 Return freeze(const T& x, Frozen2 = Frozen2::Marker) {
   std::unique_ptr<Layout<T>> layout(new Layout<T>);
