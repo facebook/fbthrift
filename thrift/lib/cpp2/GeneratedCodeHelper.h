@@ -74,15 +74,14 @@ class container_traits {
   static std::true_type has_push_back(T*);
 
   template <typename T>
-  using is_map = std::integral_constant<bool, is_map_not_set<T>::value>;
+  using is_map = folly::bool_constant<is_map_not_set<T>::value>;
 
   template <typename T>
-  using is_set = std::integral_constant<bool,
-        is_map_or_set<T>::value && !is_map_not_set<T>::value>;
+  using is_set = folly::bool_constant<is_map_or_set<T>::value &&
+                                      !is_map_not_set<T>::value>;
 
   template <typename T>
-  using is_vector = std::integral_constant<bool,
-        !is_map_or_set<T>::value &&
+  using is_vector = folly::bool_constant<!is_map_or_set<T>::value &&
         decltype(has_push_back(static_cast<T*>(nullptr)))::value>;
 };
 
