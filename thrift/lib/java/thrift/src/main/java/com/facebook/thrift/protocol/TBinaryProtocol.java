@@ -37,6 +37,8 @@ public class TBinaryProtocol extends TProtocol {
   protected int readLength_;
   protected boolean checkReadLength_;
 
+  private final byte[] buffer = new byte[8];
+
   /** Factory */
   @SuppressWarnings("serial")
   public static class Factory implements TProtocolFactory {
@@ -139,43 +141,35 @@ public class TBinaryProtocol extends TProtocol {
     writeByte(b ? (byte) 1 : (byte) 0);
   }
 
-  private byte[] bout = new byte[1];
-
   public void writeByte(byte b) throws TException {
-    bout[0] = b;
-    trans_.write(bout, 0, 1);
+    buffer[0] = b;
+    trans_.write(buffer, 0, 1);
   }
-
-  private byte[] i16out = new byte[2];
 
   public void writeI16(short i16) throws TException {
-    i16out[0] = (byte) (0xff & (i16 >> 8));
-    i16out[1] = (byte) (0xff & (i16));
-    trans_.write(i16out, 0, 2);
+    buffer[0] = (byte) (0xff & (i16 >> 8));
+    buffer[1] = (byte) (0xff & (i16));
+    trans_.write(buffer, 0, 2);
   }
-
-  private byte[] i32out = new byte[4];
 
   public void writeI32(int i32) throws TException {
-    i32out[0] = (byte) (0xff & (i32 >> 24));
-    i32out[1] = (byte) (0xff & (i32 >> 16));
-    i32out[2] = (byte) (0xff & (i32 >> 8));
-    i32out[3] = (byte) (0xff & (i32));
-    trans_.write(i32out, 0, 4);
+    buffer[0] = (byte) (0xff & (i32 >> 24));
+    buffer[1] = (byte) (0xff & (i32 >> 16));
+    buffer[2] = (byte) (0xff & (i32 >> 8));
+    buffer[3] = (byte) (0xff & (i32));
+    trans_.write(buffer, 0, 4);
   }
 
-  private byte[] i64out = new byte[8];
-
   public void writeI64(long i64) throws TException {
-    i64out[0] = (byte) (0xff & (i64 >> 56));
-    i64out[1] = (byte) (0xff & (i64 >> 48));
-    i64out[2] = (byte) (0xff & (i64 >> 40));
-    i64out[3] = (byte) (0xff & (i64 >> 32));
-    i64out[4] = (byte) (0xff & (i64 >> 24));
-    i64out[5] = (byte) (0xff & (i64 >> 16));
-    i64out[6] = (byte) (0xff & (i64 >> 8));
-    i64out[7] = (byte) (0xff & (i64));
-    trans_.write(i64out, 0, 8);
+    buffer[0] = (byte) (0xff & (i64 >> 56));
+    buffer[1] = (byte) (0xff & (i64 >> 48));
+    buffer[2] = (byte) (0xff & (i64 >> 40));
+    buffer[3] = (byte) (0xff & (i64 >> 32));
+    buffer[4] = (byte) (0xff & (i64 >> 24));
+    buffer[5] = (byte) (0xff & (i64 >> 16));
+    buffer[6] = (byte) (0xff & (i64 >> 8));
+    buffer[7] = (byte) (0xff & (i64));
+    trans_.write(buffer, 0, 8);
   }
 
   public void writeDouble(double dub) throws TException {
@@ -255,22 +249,18 @@ public class TBinaryProtocol extends TProtocol {
     return (readByte() == 1);
   }
 
-  private byte[] bin = new byte[1];
-
   public byte readByte() throws TException {
     if (trans_.getBytesRemainingInBuffer() >= 1) {
       byte b = trans_.getBuffer()[trans_.getBufferPosition()];
       trans_.consumeBuffer(1);
       return b;
     }
-    readAll(bin, 0, 1);
-    return bin[0];
+    readAll(buffer, 0, 1);
+    return buffer[0];
   }
 
-  private byte[] i16rd = new byte[2];
-
   public short readI16() throws TException {
-    byte[] buf = i16rd;
+    byte[] buf = buffer;
     int off = 0;
 
     if (trans_.getBytesRemainingInBuffer() >= 2) {
@@ -278,16 +268,14 @@ public class TBinaryProtocol extends TProtocol {
       off = trans_.getBufferPosition();
       trans_.consumeBuffer(2);
     } else {
-      readAll(i16rd, 0, 2);
+      readAll(buffer, 0, 2);
     }
 
     return (short) (((buf[off] & 0xff) << 8) | ((buf[off + 1] & 0xff)));
   }
 
-  private byte[] i32rd = new byte[4];
-
   public int readI32() throws TException {
-    byte[] buf = i32rd;
+    byte[] buf = buffer;
     int off = 0;
 
     if (trans_.getBytesRemainingInBuffer() >= 4) {
@@ -295,7 +283,7 @@ public class TBinaryProtocol extends TProtocol {
       off = trans_.getBufferPosition();
       trans_.consumeBuffer(4);
     } else {
-      readAll(i32rd, 0, 4);
+      readAll(buffer, 0, 4);
     }
     return ((buf[off] & 0xff) << 24)
         | ((buf[off + 1] & 0xff) << 16)
@@ -303,10 +291,8 @@ public class TBinaryProtocol extends TProtocol {
         | ((buf[off + 3] & 0xff));
   }
 
-  private byte[] i64rd = new byte[8];
-
   public long readI64() throws TException {
-    byte[] buf = i64rd;
+    byte[] buf = buffer;
     int off = 0;
 
     if (trans_.getBytesRemainingInBuffer() >= 8) {
@@ -314,7 +300,7 @@ public class TBinaryProtocol extends TProtocol {
       off = trans_.getBufferPosition();
       trans_.consumeBuffer(8);
     } else {
-      readAll(i64rd, 0, 8);
+      readAll(buffer, 0, 8);
     }
 
     return ((long) (buf[off] & 0xff) << 56)
