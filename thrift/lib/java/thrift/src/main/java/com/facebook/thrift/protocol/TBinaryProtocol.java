@@ -31,17 +31,17 @@ public class TBinaryProtocol extends TProtocol {
   public static final int VERSION_MASK = 0xffff0000;
   public static final int VERSION_1 = 0x80010000;
 
-  protected boolean strictRead_ = false;
-  protected boolean strictWrite_ = true;
+  protected final boolean strictRead_;
+  protected final boolean strictWrite_;
 
   protected int readLength_;
-  protected boolean checkReadLength_ = false;
+  protected boolean checkReadLength_;
 
   /** Factory */
   @SuppressWarnings("serial")
   public static class Factory implements TProtocolFactory {
-    protected boolean strictRead_ = false;
-    protected boolean strictWrite_ = true;
+    protected final boolean strictRead_;
+    protected final boolean strictWrite_;
     protected int readLength_;
 
     public Factory() {
@@ -76,6 +76,7 @@ public class TBinaryProtocol extends TProtocol {
     super(trans);
     strictRead_ = strictRead;
     strictWrite_ = strictWrite;
+    checkReadLength_ = false;
   }
 
   public void writeMessageBegin(TMessage message) throws TException {
@@ -336,6 +337,7 @@ public class TBinaryProtocol extends TProtocol {
 
   public String readString() throws TException {
     int size = readI32();
+    checkReadLength(size);
 
     if (trans_.getBytesRemainingInBuffer() >= size) {
       String s =
