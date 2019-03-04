@@ -94,8 +94,8 @@ class TestInterface : public FutureServiceSvIf {
   SemiFuture<std::unique_ptr<std::string>> semifuture_echoRequestSlow(
       std::unique_ptr<std::string> req,
       int64_t sleepMs) override {
-    return folly::futures::sleepUnsafe(std::chrono::milliseconds{sleepMs})
-        .semi()
+    return folly::futures::sleep(std::chrono::milliseconds{sleepMs})
+
         .deferValue(
             [req = std::move(req)](auto&&) mutable { return std::move(req); });
   }
