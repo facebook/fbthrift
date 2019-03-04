@@ -4,7 +4,7 @@
 # DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
 #  @generated
 #
-import typing as t
+import typing as __T
 
 from simple.dependent.ttypes import *
 

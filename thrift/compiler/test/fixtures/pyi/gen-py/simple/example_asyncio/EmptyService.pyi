@@ -4,7 +4,7 @@
 # DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
 #  @generated
 #
-import typing as t
+import typing as __T
 import asyncio
 
 from thrift import Thrift
@@ -19,14 +19,14 @@ class Iface: ...  # EmptyService
     # Clients do return Futures but lsp requires us to say they are both Awaitable
     # You can cast the result of a Client if you need Future
 
-class Client(Iface, t.ContextManager[Client]):  # EmptyService
-    def __init__(self, oprot: TProtocolBase, loop: t.Optional[asyncio.AbstractEventLoop] = None) -> None: ...
+class Client(Iface, __T.ContextManager[Client]):  # EmptyService
+    def __init__(self, oprot: TProtocolBase, loop: __T.Optional[asyncio.AbstractEventLoop] = None) -> None: ...
 
 class Processor(Iface, Thrift.TProcessor):  # EmptyService
     def __init__(self, handler: Iface) -> None:
         self._handler: Iface
-        self._onewayMethods: t.Sequence[t.Callable]
-        self._processMap: t.Dict[str, t.Callable]
+        self._onewayMethods: __T.Sequence[__T.Callable]
+        self._processMap: __T.Dict[str, __T.Callable]
 
-    def process_main(self, iprot: TProtocolBase, oprot: TProtocolBase, server_ctx: t.Any = ...) -> asyncio.Future: ...
-    def onewayMethods(self) -> t.Tuple[t.Callable]: ...
+    def process_main(self, iprot: TProtocolBase, oprot: TProtocolBase, server_ctx: __T.Any = ...) -> asyncio.Future: ...
+    def onewayMethods(self) -> __T.Tuple[__T.Callable]: ...

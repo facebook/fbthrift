@@ -4,7 +4,7 @@
 # DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
 #  @generated
 #
-import typing as t
+import typing as __T
 
 from thrift import Thrift
 from thrift.protocol.TProtocol import TProtocolBase
@@ -15,14 +15,14 @@ from simple.example.ttypes import *
 
 class Iface: ...  # EmptyService
 
-class Client(Iface, t.ContextManager[Client]):  # EmptyService
-    def __init__(self, iprot: TProtocolBase, oprot: t.Optional[TProtocolBase] = None) -> None: ...
+class Client(Iface, __T.ContextManager[Client]):  # EmptyService
+    def __init__(self, iprot: TProtocolBase, oprot: __T.Optional[TProtocolBase] = None) -> None: ...
 
 class Processor(Iface, Thrift.TProcessor):  # EmptyService
     def __init__(self, handler: Iface) -> None:
         self._handler: Iface
-        self._onewayMethods: t.Sequence[t.Callable]
-        self._processMap: t.Dict[str, t.Callable]
+        self._onewayMethods: __T.Sequence[__T.Callable]
+        self._processMap: __T.Dict[str, __T.Callable]
 
-    def process_main(self, iprot: TProtocolBase, oprot: TProtocolBase, server_ctx: t.Any = ...) -> t.Optional[bool]: ...
-    def onewayMethods(self) -> t.Tuple[t.Callable]: ...
+    def process_main(self, iprot: TProtocolBase, oprot: TProtocolBase, server_ctx: __T.Any = ...) -> __T.Optional[bool]: ...
+    def onewayMethods(self) -> __T.Tuple[__T.Callable]: ...
