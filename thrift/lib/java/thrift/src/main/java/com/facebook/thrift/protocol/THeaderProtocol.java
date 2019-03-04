@@ -23,13 +23,10 @@ import com.facebook.thrift.TException;
 import com.facebook.thrift.transport.THeaderException;
 import com.facebook.thrift.transport.THeaderTransport;
 import com.facebook.thrift.transport.TTransport;
-
 import java.util.List;
 import java.util.Map;
 
-/**
- * Pass through protocol for use with THeaderTransport servers
- */
+/** Pass through protocol for use with THeaderTransport servers */
 public class THeaderProtocol extends TProtocol {
 
   private TProtocol proto;
@@ -37,8 +34,7 @@ public class THeaderProtocol extends TProtocol {
 
   private void resetProtocol() throws TProtocolException {
     // We guarantee trans_ to be of type THeaderTransport, parent class does not
-    if (proto != null &&
-        protoId == ((THeaderTransport) trans_).getProtocolId()) {
+    if (proto != null && protoId == ((THeaderTransport) trans_).getProtocolId()) {
       return;
     }
 
@@ -55,9 +51,7 @@ public class THeaderProtocol extends TProtocol {
     }
   }
 
-  /**
-   * Factory
-   */
+  /** Factory */
   @SuppressWarnings("serial")
   public static class Factory implements TProtocolFactory {
     List<THeaderTransport.ClientTypes> clientTypes;
@@ -66,8 +60,7 @@ public class THeaderProtocol extends TProtocol {
       this.clientTypes = clientTypes;
     }
 
-    public Factory() {
-    }
+    public Factory() {}
 
     public TProtocol getProtocol(TTransport trans) {
       if (trans instanceof THeaderTransport) {
@@ -80,11 +73,8 @@ public class THeaderProtocol extends TProtocol {
     }
   }
 
-  /**
-   * Constructor
-   */
-  public THeaderProtocol(TTransport trans,
-      List<THeaderTransport.ClientTypes> clientTypes) {
+  /** Constructor */
+  public THeaderProtocol(TTransport trans, List<THeaderTransport.ClientTypes> clientTypes) {
     this(new THeaderTransport(trans, clientTypes));
   }
 
@@ -209,18 +199,13 @@ public class THeaderProtocol extends TProtocol {
     proto.writeBinary(bin);
   }
 
-  /**
-   * Reading methods.
-   */
+  /** Reading methods. */
 
-  /**
-   * Helper method to throw an error back to the endpoint
-   */
+  /** Helper method to throw an error back to the endpoint */
   public void notifyEndpoint(String msg) throws TException {
     if (proto != null) {
       writeMessageBegin(new TMessage("", TMessageType.EXCEPTION, 0));
-      TApplicationException ex =
-          new TApplicationException(msg);
+      TApplicationException ex = new TApplicationException(msg);
       ex.write(this);
       writeMessageEnd();
       trans_.flush();

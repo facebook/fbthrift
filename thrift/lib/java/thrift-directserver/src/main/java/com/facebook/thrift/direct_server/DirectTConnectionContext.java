@@ -1,12 +1,9 @@
-
 package com.facebook.thrift.direct_server;
 
+import com.facebook.thrift.protocol.TProtocol;
+import com.facebook.thrift.server.TConnectionContext;
 import java.net.InetAddress;
 import java.nio.channels.SocketChannel;
-
-import com.facebook.thrift.server.TConnectionContext;
-import com.facebook.thrift.protocol.TProtocol;
-
 
 public class DirectTConnectionContext extends TConnectionContext {
   private InetAddress peerAddress_;
@@ -16,7 +13,8 @@ public class DirectTConnectionContext extends TConnectionContext {
     peerAddress_ = chan.socket() != null ? chan.socket().getInetAddress() : null;
   }
 
-  @Override public InetAddress getPeerAddress() {
+  @Override
+  public InetAddress getPeerAddress() {
     return peerAddress_;
   }
 }

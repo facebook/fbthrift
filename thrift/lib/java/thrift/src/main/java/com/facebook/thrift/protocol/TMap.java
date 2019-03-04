@@ -19,9 +19,7 @@
 
 package com.facebook.thrift.protocol;
 
-/**
- * Helper class that encapsulates map metadata.
- */
+/** Helper class that encapsulates map metadata. */
 public final class TMap {
   public TMap() {
     this(TType.STOP, TType.STOP, 0);

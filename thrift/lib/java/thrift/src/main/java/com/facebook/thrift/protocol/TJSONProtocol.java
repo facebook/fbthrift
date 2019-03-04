@@ -21,34 +21,27 @@ package com.facebook.thrift.protocol;
 
 import com.facebook.thrift.TException;
 import com.facebook.thrift.transport.TTransport;
-
 import java.util.Map;
 
 /**
  * JSON protocol implementation for thrift.
- * <p>
- * This is a full-featured protocol supporting write and read.
- * <p>
- * Please see the C++ class header for a detailed description of the
- * protocol's wire format.
+ *
+ * <p>This is a full-featured protocol supporting write and read.
+ *
+ * <p>Please see the C++ class header for a detailed description of the protocol's wire format.
  */
 public class TJSONProtocol extends TJSONProtocolBase {
 
-  /**
-   * Factory for JSON protocol objects
-   */
+  /** Factory for JSON protocol objects */
   @SuppressWarnings("serial")
   public static class Factory implements TProtocolFactory {
 
     public TProtocol getProtocol(TTransport trans) {
       return new TJSONProtocol(trans);
     }
-
   }
 
-  /**
-   * Constructor
-   */
+  /** Constructor */
   public TJSONProtocol(TTransport trans) {
     super(trans);
   }
@@ -81,8 +74,7 @@ public class TJSONProtocol extends TJSONProtocolBase {
   }
 
   @Override
-  public void writeFieldStop() {
-  }
+  public void writeFieldStop() {}
 
   @Override
   public void writeMapBegin(TMap map) throws TException {
@@ -123,10 +115,7 @@ public class TJSONProtocol extends TJSONProtocolBase {
     writeJSONArrayEnd();
   }
 
-  /**
-   * Reading methods.
-   */
-
+  /** Reading methods. */
   @Override
   public TStruct readStructBegin(
       Map<Integer, com.facebook.thrift.meta_data.FieldMetaData> metaDataMap) throws TException {

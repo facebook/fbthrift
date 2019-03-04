@@ -31,14 +31,12 @@ import com.facebook.thrift.transport.TServerTransport;
 import com.facebook.thrift.transport.TTransport;
 import com.facebook.thrift.transport.TTransportException;
 import com.facebook.thrift.transport.TTransportFactory;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
  * @deprecated "Please use Netty server instead. See https://github.com/facebook/nifty for details."
- * <p>
- * Simple singlethreaded server for testing.
+ *     <p>Simple singlethreaded server for testing.
  */
 @Deprecated
 public class TSimpleServer extends TServer {
@@ -47,52 +45,61 @@ public class TSimpleServer extends TServer {
 
   private boolean stopped_ = false;
 
-  public TSimpleServer(TProcessor processor,
-      TServerTransport serverTransport) {
+  public TSimpleServer(TProcessor processor, TServerTransport serverTransport) {
     super(new TProcessorFactory(processor), serverTransport);
   }
 
-  public TSimpleServer(TProcessor processor,
+  public TSimpleServer(
+      TProcessor processor,
       TServerTransport serverTransport,
       TTransportFactory transportFactory,
       TProtocolFactory protocolFactory) {
     super(new TProcessorFactory(processor), serverTransport, transportFactory, protocolFactory);
   }
 
-  public TSimpleServer(TProcessor processor,
+  public TSimpleServer(
+      TProcessor processor,
       TServerTransport serverTransport,
       TTransportFactory inputTransportFactory,
       TTransportFactory outputTransportFactory,
       TProtocolFactory inputProtocolFactory,
       TProtocolFactory outputProtocolFactory) {
-    super(new TProcessorFactory(processor), serverTransport,
-        inputTransportFactory, outputTransportFactory,
-        inputProtocolFactory, outputProtocolFactory);
+    super(
+        new TProcessorFactory(processor),
+        serverTransport,
+        inputTransportFactory,
+        outputTransportFactory,
+        inputProtocolFactory,
+        outputProtocolFactory);
   }
 
-  public TSimpleServer(TProcessorFactory processorFactory,
-      TServerTransport serverTransport) {
+  public TSimpleServer(TProcessorFactory processorFactory, TServerTransport serverTransport) {
     super(processorFactory, serverTransport);
   }
 
-  public TSimpleServer(TProcessorFactory processorFactory,
+  public TSimpleServer(
+      TProcessorFactory processorFactory,
       TServerTransport serverTransport,
       TTransportFactory transportFactory,
       TProtocolFactory protocolFactory) {
     super(processorFactory, serverTransport, transportFactory, protocolFactory);
   }
 
-  public TSimpleServer(TProcessorFactory processorFactory,
+  public TSimpleServer(
+      TProcessorFactory processorFactory,
       TServerTransport serverTransport,
       TTransportFactory inputTransportFactory,
       TTransportFactory outputTransportFactory,
       TProtocolFactory inputProtocolFactory,
       TProtocolFactory outputProtocolFactory) {
-    super(processorFactory, serverTransport,
-        inputTransportFactory, outputTransportFactory,
-        inputProtocolFactory, outputProtocolFactory);
+    super(
+        processorFactory,
+        serverTransport,
+        inputTransportFactory,
+        outputTransportFactory,
+        inputProtocolFactory,
+        outputProtocolFactory);
   }
-
 
   public void serve() {
     stopped_ = false;
@@ -123,11 +130,9 @@ public class TSimpleServer extends TServer {
             outputTransport = outputTransportFactory_.getTransport(client);
             outputProtocol = outputProtocolFactory_.getProtocol(outputTransport);
           }
-          TRpcConnectionContext server_ctx = new TRpcConnectionContext(client,
-              inputProtocol,
-              outputProtocol);
-          while (processor.process(inputProtocol, outputProtocol, server_ctx)) {
-          }
+          TRpcConnectionContext server_ctx =
+              new TRpcConnectionContext(client, inputProtocol, outputProtocol);
+          while (processor.process(inputProtocol, outputProtocol, server_ctx)) {}
         }
       } catch (TTransportException ttx) {
         // Client died, just move on
@@ -148,7 +153,6 @@ public class TSimpleServer extends TServer {
       if (outputTransport != null) {
         outputTransport.close();
       }
-
     }
   }
 

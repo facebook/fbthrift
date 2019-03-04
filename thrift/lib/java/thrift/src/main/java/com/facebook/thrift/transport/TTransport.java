@@ -20,8 +20,8 @@
 package com.facebook.thrift.transport;
 
 /**
- * Generic class that encapsulates the I/O layer. This is basically a thin
- * wrapper around the combined functionality of Java input/output streams.
+ * Generic class that encapsulates the I/O layer. This is basically a thin wrapper around the
+ * combined functionality of Java input/output streams.
  */
 public abstract class TTransport {
 
@@ -46,12 +46,9 @@ public abstract class TTransport {
    *
    * @throws TTransportException if the transport could not be opened
    */
-  public abstract void open()
-      throws TTransportException;
+  public abstract void open() throws TTransportException;
 
-  /**
-   * Closes the transport.
-   */
+  /** Closes the transport. */
   public abstract void close();
 
   /**
@@ -63,8 +60,7 @@ public abstract class TTransport {
    * @return The number of bytes actually read
    * @throws TTransportException if there was an error reading data
    */
-  public abstract int read(byte[] buf, int off, int len)
-      throws TTransportException;
+  public abstract int read(byte[] buf, int off, int len) throws TTransportException;
 
   /**
    * Guarantees that all of len bytes are actually read off the transport.
@@ -75,16 +71,18 @@ public abstract class TTransport {
    * @return The number of bytes actually read, which must be equal to len
    * @throws TTransportException if there was an error reading data
    */
-  public int readAll(byte[] buf, int off, int len)
-      throws TTransportException {
+  public int readAll(byte[] buf, int off, int len) throws TTransportException {
     int got = 0;
     int ret = 0;
     while (got < len) {
       ret = read(buf, off + got, len - got);
       if (ret <= 0) {
         throw new TTransportException(
-            "Cannot read. Remote side has closed. Tried to read " + len + " bytes, but only got " +
-                got + " bytes.");
+            "Cannot read. Remote side has closed. Tried to read "
+                + len
+                + " bytes, but only got "
+                + got
+                + " bytes.");
       }
       got += ret;
     }
@@ -109,17 +107,14 @@ public abstract class TTransport {
    * @param len The number of bytes to write
    * @throws TTransportException if there was an error writing data
    */
-  public abstract void write(byte[] buf, int off, int len)
-      throws TTransportException;
+  public abstract void write(byte[] buf, int off, int len) throws TTransportException;
 
   /**
    * Flush any pending data out of a transport buffer.
    *
    * @throws TTransportException if there was an error writing out data.
    */
-  public void flush()
-      throws TTransportException {
-  }
+  public void flush() throws TTransportException {}
 
   /**
    * Flush any pending data out of a transport buffer for a oneway call.
@@ -131,32 +126,29 @@ public abstract class TTransport {
   }
 
   /**
-   * Access the protocol's underlying buffer directly. If this is not a
-   * buffered transport, return null.
+   * Access the protocol's underlying buffer directly. If this is not a buffered transport, return
+   * null.
    */
   public byte[] getBuffer() {
     return null;
   }
 
   /**
-   * Return the index within the underlying buffer that specifies the next spot
-   * that should be read from.
+   * Return the index within the underlying buffer that specifies the next spot that should be read
+   * from.
    */
   public int getBufferPosition() {
     return 0;
   }
 
   /**
-   * Get the number of bytes remaining in the underlying buffer. Returns -1 if
-   * this is a non-buffered transport.
+   * Get the number of bytes remaining in the underlying buffer. Returns -1 if this is a
+   * non-buffered transport.
    */
   public int getBytesRemainingInBuffer() {
     return -1;
   }
 
-  /**
-   * Consume len bytes from the underlying buffer.
-   */
-  public void consumeBuffer(int len) {
-  }
+  /** Consume len bytes from the underlying buffer. */
+  public void consumeBuffer(int len) {}
 }

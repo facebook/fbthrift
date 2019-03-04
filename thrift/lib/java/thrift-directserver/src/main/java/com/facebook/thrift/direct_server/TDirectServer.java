@@ -1,15 +1,11 @@
 /**
  * Copyright 2011 Facebook
- * @author Wei Chen (weichen@fb.com)
  *
- * A thrift server class that is built on top of DirectServer.
+ * <p>A thrift server class that is built on top of DirectServer.
+ *
+ * @author Wei Chen (weichen@fb.com)
  */
-
 package com.facebook.thrift.direct_server;
-
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
 
 import com.facebook.thrift.TProcessor;
 import com.facebook.thrift.TProcessorFactory;
@@ -17,18 +13,19 @@ import com.facebook.thrift.protocol.TProtocolFactory;
 import com.facebook.thrift.server.TServer;
 import com.facebook.thrift.transport.TServerTransport;
 import com.facebook.thrift.transport.TTransportFactory;
-
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 public class TDirectServer extends TServer {
 
   private final DirectServer directServer_;
 
-
   /**
    * Create a TDirectServer instance.
    *
-   * Only call this directly if you know what you're doing, otherwise, call
-   * either asFiberServer() or asHsHaServer() to get hold of an instance.
+   * <p>Only call this directly if you know what you're doing, otherwise, call either
+   * asFiberServer() or asHsHaServer() to get hold of an instance.
    *
    * @param port The server port number
    * @param numSelectors How many selector threads the server needs
@@ -38,67 +35,84 @@ public class TDirectServer extends TServer {
    * @param onServerListens Runnable to be run when server is listening on port
    */
   public TDirectServer(
-    int port,
-    int numSelectors,
-    int numThreads,
-    int maxPending,
-    int numSyncHandlers,
-    TProcessor p,
-    Runnable onServerListens) {
+      int port,
+      int numSelectors,
+      int numThreads,
+      int maxPending,
+      int numSyncHandlers,
+      TProcessor p,
+      Runnable onServerListens) {
 
-    super(new TProcessorFactory(p), (TServerTransport)null,
-          (TTransportFactory)null, (TProtocolFactory)null);
+    super(
+        new TProcessorFactory(p),
+        (TServerTransport) null,
+        (TTransportFactory) null,
+        (TProtocolFactory) null);
 
     ThreadPoolExecutor executorService = null;
     if (numThreads > 0) {
-        executorService = new ThreadPoolExecutor(
-            numThreads, numThreads, 0, TimeUnit.SECONDS,
-            new ArrayBlockingQueue<Runnable>(maxPending),
-            new ThreadPoolExecutor.AbortPolicy());
+      executorService =
+          new ThreadPoolExecutor(
+              numThreads,
+              numThreads,
+              0,
+              TimeUnit.SECONDS,
+              new ArrayBlockingQueue<Runnable>(maxPending),
+              new ThreadPoolExecutor.AbortPolicy());
     }
 
-    directServer_ = new DirectServer(
-        port, new FramedTransportChannelHandlerFactory(this),
-        numSelectors, numSyncHandlers, executorService, onServerListens);
+    directServer_ =
+        new DirectServer(
+            port,
+            new FramedTransportChannelHandlerFactory(this),
+            numSelectors,
+            numSyncHandlers,
+            executorService,
+            onServerListens);
   }
 
   /**
-   * Helper constructor to create a TDirectServer that do not need an extra
-   * hook to know when the TDirectServer is ready to serve traffic
+   * Helper constructor to create a TDirectServer that do not need an extra hook to know when the
+   * TDirectServer is ready to serve traffic
    */
   public TDirectServer(
-    int port,
-    int numSelectors,
-    int numThreads,
-    int maxPending,
-    int numSyncHandlers,
-    TProcessor p) {
+      int port,
+      int numSelectors,
+      int numThreads,
+      int maxPending,
+      int numSyncHandlers,
+      TProcessor p) {
 
-    this(port, numSelectors, numThreads, maxPending, numSyncHandlers,
-      p, new DirectServer.DoNothing());
+    this(
+        port,
+        numSelectors,
+        numThreads,
+        maxPending,
+        numSyncHandlers,
+        p,
+        new DirectServer.DoNothing());
   }
 
   /**
    * Create a TDirectServer in fiber server mode.
    *
-   * Fiber server mode is for services that requires high throughput
-   * and that each request has very short latency.
+   * <p>Fiber server mode is for services that requires high throughput and that each request has
+   * very short latency.
    *
    * @param port the port the server is listening on
    * @param numSelectors the number of selector threads
    * @param p the processor instance
    * @return a TDirectServer instance in fiber server mode
    */
-  static public final TDirectServer asFiberServer(
-      int port, int numSelectors, TProcessor p) {
+  public static final TDirectServer asFiberServer(int port, int numSelectors, TProcessor p) {
     return new TDirectServer(port, numSelectors, 0, 0, 64, p);
   }
 
   /**
    * Create a TDirectServer in fiber server mode.
    *
-   * Fiber server mode is for services that requires high throughput
-   * and that each request has very short latency.
+   * <p>Fiber server mode is for services that requires high throughput and that each request has
+   * very short latency.
    *
    * @param port the port the server is listening on
    * @param numSelectors the number of selector threads
@@ -106,7 +120,7 @@ public class TDirectServer extends TServer {
    * @param onServerListens runnable to be run when server is listening
    * @return a TDirectServer instance in fiber server mode
    */
-  static public final TDirectServer asFiberServer(
+  public static final TDirectServer asFiberServer(
       int port, int numSelectors, TProcessor p, Runnable onServerListens) {
     return new TDirectServer(port, numSelectors, 0, 0, 64, p, onServerListens);
   }
@@ -114,9 +128,8 @@ public class TDirectServer extends TServer {
   /**
    * Create a TDirectServer in HsHaServer mode
    *
-   * HsHaServer mode is for services that individual requests can take
-   * long time to be served, so that we should not handle requests
-   * in selector thread.
+   * <p>HsHaServer mode is for services that individual requests can take long time to be served, so
+   * that we should not handle requests in selector thread.
    *
    * @param port the port the server is listening on
    * @param numThreads the number of threads in the thread pool
@@ -124,7 +137,7 @@ public class TDirectServer extends TServer {
    * @param p the processor instance
    * @return a TDirectServer instance in HsHaServer mode
    */
-  static public final TDirectServer asHsHaServer(
+  public static final TDirectServer asHsHaServer(
       int port, int numThreads, int maxPending, TProcessor p) {
     // We have a listener thread, plus 3 selector threads.
     return new TDirectServer(port, 3, numThreads, maxPending, 0, p);
@@ -133,9 +146,8 @@ public class TDirectServer extends TServer {
   /**
    * Create a TDirectServer in HsHaServer mode
    *
-   * HsHaServer mode is for services that individual requests can take
-   * long time to be served, so that we should not handle requests
-   * in selector thread.
+   * <p>HsHaServer mode is for services that individual requests can take long time to be served, so
+   * that we should not handle requests in selector thread.
    *
    * @param port the port the server is listening on
    * @param numThreads the number of threads in the thread pool
@@ -144,12 +156,10 @@ public class TDirectServer extends TServer {
    * @param onServerListens runnable to be run when server is listening
    * @return a TDirectServer instance in HsHaServer mode
    */
-  static public final TDirectServer asHsHaServer(
-      int port, int numThreads, int maxPending, TProcessor p,
-      Runnable onServerListens) {
+  public static final TDirectServer asHsHaServer(
+      int port, int numThreads, int maxPending, TProcessor p, Runnable onServerListens) {
     // We have a listener thread, plus 3 selector threads.
-    return new TDirectServer(
-        port, 3, numThreads, maxPending, 0, p, onServerListens);
+    return new TDirectServer(port, 3, numThreads, maxPending, 0, p, onServerListens);
   }
 
   // Expose DirectServer so that callers can tune parameters
@@ -162,7 +172,8 @@ public class TDirectServer extends TServer {
   }
 
   // Main serving loop, will block until the server quit.
-  @Override public void serve() {
+  @Override
+  public void serve() {
     directServer_.serve();
   }
 

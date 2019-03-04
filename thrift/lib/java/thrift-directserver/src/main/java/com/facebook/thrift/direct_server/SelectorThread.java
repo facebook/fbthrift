@@ -1,5 +1,3 @@
-
-
 package com.facebook.thrift.direct_server;
 
 import java.io.IOException;
@@ -10,14 +8,12 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.ThreadPoolExecutor;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class SelectorThread extends Thread {
 
-  private static Logger LOG =
-      LoggerFactory.getLogger(SelectorThread.class);
+  private static Logger LOG = LoggerFactory.getLogger(SelectorThread.class);
 
   // Max number of handlers that can be handled in the selector thread
   // on a single select() invocation
@@ -31,7 +27,7 @@ public class SelectorThread extends Thread {
   private List<DirectServerTask> pendingTasks_;
 
   // The max number of connections that a single select can handle
-  private final static int NUM_HANDLERS = 512;
+  private static final int NUM_HANDLERS = 512;
 
   private final ThreadPoolExecutor executorService_;
 
@@ -40,10 +36,7 @@ public class SelectorThread extends Thread {
 
   private volatile boolean stopping_ = false;
 
-  SelectorThread(
-      DirectServer s,
-      ThreadPoolExecutor es,
-      int numPendingChannelHandlers) {
+  SelectorThread(DirectServer s, ThreadPoolExecutor es, int numPendingChannelHandlers) {
 
     try {
       // TODO remove IO operation out of Ctor
@@ -69,7 +62,7 @@ public class SelectorThread extends Thread {
 
   // The thread pool worker calls this after the async task is done.
   void notifyExecutorServiceTaskComplete(DirectServerTask t) {
-    synchronized(this) {
+    synchronized (this) {
       if (pendingTasks_ == null) {
         pendingTasks_ = new ArrayList<DirectServerTask>();
       }
@@ -83,7 +76,7 @@ public class SelectorThread extends Thread {
     ChannelHandler discarding = null;
     boolean needNotify = false;
 
-    synchronized(newHandlers_) {
+    synchronized (newHandlers_) {
       for (int i = 0; i < newHandlers_.length; ++i) {
         if (newHandlers_[i] != null) {
           continue;
@@ -121,7 +114,8 @@ public class SelectorThread extends Thread {
     }
   }
 
-  @Override public void run() {
+  @Override
+  public void run() {
     ChannelHandler[] handlers = new ChannelHandler[NUM_HANDLERS];
 
     while (true) {
@@ -139,7 +133,7 @@ public class SelectorThread extends Thread {
       boolean stopping = stopping_;
 
       // Check if we have any new connections
-      synchronized(newHandlers_) {
+      synchronized (newHandlers_) {
         for (int i = 0; i < newHandlers_.length; ++i) {
           if (newHandlers_[i] == null) {
             break;
@@ -174,19 +168,18 @@ public class SelectorThread extends Thread {
       }
 
       // Examin new active connections
-      for (Iterator<SelectionKey> it = selector_.selectedKeys().iterator(); it
-          .hasNext();) {
+      for (Iterator<SelectionKey> it = selector_.selectedKeys().iterator(); it.hasNext(); ) {
         SelectionKey key = it.next();
 
         // Remove from selected keys set to indicate that it is processed.
         it.remove();
 
         if (numReqs < NUM_HANDLERS && !stopping) {
-          handlers[numReqs] = (ChannelHandler)key.attachment();
+          handlers[numReqs] = (ChannelHandler) key.attachment();
           ++numReqs;
         } else {
           // Too many active connections, close some of them.
-          ChannelHandler handler = (ChannelHandler)key.attachment();
+          ChannelHandler handler = (ChannelHandler) key.attachment();
           key.cancel();
           try {
             handler.close();
@@ -196,7 +189,6 @@ public class SelectorThread extends Thread {
           LOG.info("Closed a connection to reduce load");
         }
       }
-
 
       // If we have too many connections, move some of them to thread pool.
       for (int i = numSyncHandlers_; i < numReqs; ++i) {
@@ -210,8 +202,7 @@ public class SelectorThread extends Thread {
             handler.transition(this);
           }
           if (handler.canUseThreadPool()) {
-            new DirectServerTask(this, handler).executingBy(
-                executorService_);
+            new DirectServerTask(this, handler).executingBy(executorService_);
           }
         }
       }
@@ -226,7 +217,7 @@ public class SelectorThread extends Thread {
       // Processing finished asynchronous tasks.
       if (executorService_ != null) {
         List<DirectServerTask> tasks = null;
-        synchronized(this) {
+        synchronized (this) {
           if (pendingTasks_ != null && pendingTasks_.size() > 0) {
             tasks = pendingTasks_;
             pendingTasks_ = null;

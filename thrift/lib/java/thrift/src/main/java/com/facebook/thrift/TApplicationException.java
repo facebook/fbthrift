@@ -26,14 +26,11 @@ import com.facebook.thrift.protocol.TProtocol;
 import com.facebook.thrift.protocol.TProtocolUtil;
 import com.facebook.thrift.protocol.TStruct;
 import com.facebook.thrift.protocol.TType;
-
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Application level exception
- */
+/** Application level exception */
 public class TApplicationException extends TException {
 
   private static final TStruct TAPPLICATION_EXCEPTION_STRUCT = new TStruct("TApplicationException");
@@ -63,10 +60,14 @@ public class TApplicationException extends TException {
 
   static {
     Map<Integer, FieldMetaData> tmpMetaDataMap = new HashMap<Integer, FieldMetaData>();
-    tmpMetaDataMap.put(MESSAGE, new FieldMetaData("message", TFieldRequirementType.DEFAULT,
-        new FieldValueMetaData(TType.STRING)));
-    tmpMetaDataMap.put(TYPE, new FieldMetaData("type", TFieldRequirementType.DEFAULT,
-        new FieldValueMetaData(TType.I32)));
+    tmpMetaDataMap.put(
+        MESSAGE,
+        new FieldMetaData(
+            "message", TFieldRequirementType.DEFAULT, new FieldValueMetaData(TType.STRING)));
+    tmpMetaDataMap.put(
+        TYPE,
+        new FieldMetaData(
+            "type", TFieldRequirementType.DEFAULT, new FieldValueMetaData(TType.I32)));
     metaDataMap = Collections.unmodifiableMap(tmpMetaDataMap);
   }
 

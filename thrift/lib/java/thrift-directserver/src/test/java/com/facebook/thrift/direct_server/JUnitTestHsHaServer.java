@@ -2,7 +2,7 @@ package com.facebook.thrift.direct_server;
 
 import static org.junit.Assert.*;
 
-import com.facebook.thrift.direct_server.TDirectServer;
+import com.facebook.fbcode.fb303.fb_status;
 import com.facebook.thrift.protocol.TBinaryProtocol;
 import com.facebook.thrift.transport.TFramedTransport;
 import com.facebook.thrift.transport.TSocket;
@@ -10,8 +10,6 @@ import com.facebook.thrift.transport.TTransportException;
 import java.util.concurrent.CountDownLatch;
 import org.junit.BeforeClass;
 import org.junit.Test;
-
-import com.facebook.fbcode.fb303.fb_status;
 
 public class JUnitTestHsHaServer {
 
@@ -52,8 +50,7 @@ public class JUnitTestHsHaServer {
 
   @BeforeClass
   public static void setUpBeforeClass() throws Exception {
-    JavaSimpleService.Processor proc =
-        new JavaSimpleService.Processor(new SimpleServiceHandler());
+    JavaSimpleService.Processor proc = new JavaSimpleService.Processor(new SimpleServiceHandler());
     CountDownLatch latch = new CountDownLatch(1);
     PortGetter portGetter = new PortGetter(latch);
     final TDirectServer server =

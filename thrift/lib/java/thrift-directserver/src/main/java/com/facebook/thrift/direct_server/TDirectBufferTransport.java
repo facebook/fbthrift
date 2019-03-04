@@ -1,40 +1,35 @@
 /**
  * Copyright 2011 Facebook
+ *
+ * <p>To achieve the full performance of java direct buffer, we need some tweaks to thrift
+ * TTransport and TProtocol classes.
+ *
+ * <p>Class DirectBufferTransport extends TTransport so that we can take the full benefits of direct
+ * buffer.
+ *
  * @author Wei Chen (weichen@fb.com)
- *
- * To achieve the full performance of java direct buffer, we need
- * some tweaks to thrift TTransport and TProtocol classes.
- *
- * Class DirectBufferTransport extends TTransport so that we can
- * take the full benefits of direct buffer.
  */
-
 package com.facebook.thrift.direct_server;
-
-import java.nio.BufferOverflowException;
-import java.nio.BufferUnderflowException;
-import java.nio.ByteBuffer;
 
 import com.facebook.thrift.transport.TTransport;
 import com.facebook.thrift.transport.TTransportException;
+import java.nio.BufferOverflowException;
+import java.nio.BufferUnderflowException;
+import java.nio.ByteBuffer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 
 /**
  * A TTransport class that support java.nio's direct buffer.
  *
- * We are going to use a single TTransport object for a ChannelHandler.
- * The TTransport object is first used for reading from a socket,
- * and then switch the role to be an output transport object.
+ * <p>We are going to use a single TTransport object for a ChannelHandler. The TTransport object is
+ * first used for reading from a socket, and then switch the role to be an output transport object.
  *
- * We need a special TProtocol class which overrides readMessageEnd() to
- * flip the buffer for us.
+ * <p>We need a special TProtocol class which overrides readMessageEnd() to flip the buffer for us.
  */
 public class TDirectBufferTransport extends TTransport {
 
-  private static Logger LOG =
-      LoggerFactory.getLogger(TDirectBufferTransport.class);
+  private static Logger LOG = LoggerFactory.getLogger(TDirectBufferTransport.class);
 
   private static int defaultBytes_ = 1024 * 64;
 
@@ -46,10 +41,7 @@ public class TDirectBufferTransport extends TTransport {
 
   private boolean isDirect_;
 
-
-  /**
-   * A class that manages a pool of DirectBufferTransport instances.
-   */
+  /** A class that manages a pool of DirectBufferTransport instances. */
   public static class Pool {
     private int idx_;
     private TDirectBufferTransport[] pool_;
@@ -66,7 +58,7 @@ public class TDirectBufferTransport extends TTransport {
     }
 
     public TDirectBufferTransport getTransport() {
-      synchronized(this) {
+      synchronized (this) {
         if (idx_ >= 0) {
           TDirectBufferTransport r = pool_[idx_];
           pool_[idx_] = null;
@@ -81,7 +73,7 @@ public class TDirectBufferTransport extends TTransport {
     public void returnTransport(TDirectBufferTransport dbt) {
       dbt.cleanup();
       if (dbt.isDirect()) {
-        synchronized(this) {
+        synchronized (this) {
           ++idx_;
           pool_[idx_] = dbt;
         }
@@ -94,7 +86,6 @@ public class TDirectBufferTransport extends TTransport {
       return pool_.length - idx_ - 1;
     }
   };
-
 
   // Callers do not need to access constructor, use Pool to get an object.
   private TDirectBufferTransport(boolean useDirect) {
@@ -156,14 +147,10 @@ public class TDirectBufferTransport extends TTransport {
    *
    * @throws TTransportException if the transport could not be opened
    */
-  public void open() throws TTransportException {
-  }
+  public void open() throws TTransportException {}
 
-  /**
-   * Closes the transport.
-   */
-  public void close() {
-  }
+  /** Closes the transport. */
+  public void close() {}
 
   /**
    * Reads up to len bytes into buffer buf, starting att offset off.
@@ -206,8 +193,7 @@ public class TDirectBufferTransport extends TTransport {
    * @param len The number of bytes to write
    * @throws TTransportException if there was an error writing data
    */
-  public void write(byte[] buf, int off, int len)
-    throws TTransportException {
+  public void write(byte[] buf, int off, int len) throws TTransportException {
 
     while (true) {
       try {
@@ -227,8 +213,9 @@ public class TDirectBufferTransport extends TTransport {
   }
 
   /**
-   * Access the protocol's underlying buffer directly. If this is not a
-   * buffered transport, return null.
+   * Access the protocol's underlying buffer directly. If this is not a buffered transport, return
+   * null.
+   *
    * @return
    */
   public byte[] getBuffer() {
@@ -236,8 +223,9 @@ public class TDirectBufferTransport extends TTransport {
   }
 
   /**
-   * Return the index within the underlying buffer that specifies the next spot
-   * that should be read from.
+   * Return the index within the underlying buffer that specifies the next spot that should be read
+   * from.
+   *
    * @return
    */
   public int getBufferPosition() {
@@ -246,8 +234,9 @@ public class TDirectBufferTransport extends TTransport {
   }
 
   /**
-   * Get the number of bytes remaining in the underlying buffer. Returns -1 if
-   * this is a non-buffered transport.
+   * Get the number of bytes remaining in the underlying buffer. Returns -1 if this is a
+   * non-buffered transport.
+   *
    * @return
    */
   public int getBytesRemainingInBuffer() {
@@ -256,6 +245,7 @@ public class TDirectBufferTransport extends TTransport {
 
   /**
    * Consume len bytes from the underlying buffer.
+   *
    * @param len
    */
   public void consumeBuffer(int len) {

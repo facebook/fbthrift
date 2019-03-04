@@ -1,18 +1,15 @@
 /**
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements.  See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership.  The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License.  You may obtain a copy of the License at
- * <p>
- * http://www.apache.org/licenses/LICENSE-2.0
- * <p>
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
+ * Licensed to the Apache Software Foundation (ASF) under one or more contributor license
+ * agreements. See the NOTICE file distributed with this work for additional information regarding
+ * copyright ownership. The ASF licenses this file to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance with the License. You may obtain a
+ * copy of the License at
+ *
+ * <p>http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * <p>Unless required by applicable law or agreed to in writing, software distributed under the
+ * License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ * express or implied. See the License for the specific language governing permissions and
  * limitations under the License.
  */
 package com.facebook.thrift;
@@ -34,9 +31,7 @@ import java.util.TreeSet;
 
 public final class TBaseHelper {
 
-  private TBaseHelper() {
-  }
-
+  private TBaseHelper() {}
 
   public static <T extends TBase & Comparable<T>> int compareTo(T a, T b) {
     if (a == null && b == null) {
@@ -47,7 +42,7 @@ public final class TBaseHelper {
       return +1;
     }
 
-    if (a == b) {  // performance, not correctness
+    if (a == b) { // performance, not correctness
       return 0;
     }
 
@@ -127,7 +122,7 @@ public final class TBaseHelper {
       return +1;
     }
 
-    if (a == b) {  // performance, not correctness
+    if (a == b) { // performance, not correctness
       return 0;
     }
 
@@ -143,7 +138,7 @@ public final class TBaseHelper {
       return +1;
     }
 
-    if (a == b) {  // performance, not correctness
+    if (a == b) { // performance, not correctness
       return 0;
     }
 
@@ -171,7 +166,7 @@ public final class TBaseHelper {
       return +1;
     }
 
-    if (a == b) {  // performance, not correctness
+    if (a == b) { // performance, not correctness
       return 0;
     }
 
@@ -205,7 +200,7 @@ public final class TBaseHelper {
       return +1;
     }
 
-    if (a == b) {  // performance, not correctness
+    if (a == b) { // performance, not correctness
       return 0;
     }
 
@@ -242,7 +237,7 @@ public final class TBaseHelper {
       return lastComparison;
     }
 
-    if (a == b) {  // performance, not correctness
+    if (a == b) { // performance, not correctness
       return 0;
     }
 
@@ -282,19 +277,17 @@ public final class TBaseHelper {
   }
 
   /**
-   * Comparator to compare items inside containers (lists, sets, maps), while
-   * respecting Thrift's equality semantics. The type of this comparator is
-   * <code>Comparator&lt;T&gt;</code>, but it can only be used with types
-   * <code>T</code> supported by Thrift: the base types, Lists, Sets, and Maps
-   * of Thrift-supported types, and structs and unions.
+   * Comparator to compare items inside containers (lists, sets, maps), while respecting Thrift's
+   * equality semantics. The type of this comparator is <code>Comparator&lt;T&gt;</code>, but it can
+   * only be used with types <code>T</code> supported by Thrift: the base types, Lists, Sets, and
+   * Maps of Thrift-supported types, and structs and unions.
    */
-  private static class NestedStructureComparator<T>
-      implements Comparator<T> {
+  private static class NestedStructureComparator<T> implements Comparator<T> {
 
     @SuppressWarnings({"unchecked", "rawtypes"})
     @Override
     public int compare(T oA, T oB) {
-      if (oA == oB) {  // performance, not correctness
+      if (oA == oB) { // performance, not correctness
         return 0;
       }
       if (oA == null && oB == null) {
@@ -313,14 +306,14 @@ public final class TBaseHelper {
         return compareTo((byte[]) oA, (byte[]) oB);
       } else if (oA.getClass() == oB.getClass()
           && (oA instanceof String
-          || oA instanceof Boolean
-          || oA instanceof Byte
-          || oA instanceof Short
-          || oA instanceof Integer
-          || oA instanceof Long
-          || oA instanceof Float
-          || oA instanceof Double
-          || oA instanceof TBase)) {
+              || oA instanceof Boolean
+              || oA instanceof Byte
+              || oA instanceof Short
+              || oA instanceof Integer
+              || oA instanceof Long
+              || oA instanceof Float
+              || oA instanceof Double
+              || oA instanceof TBase)) {
         // All the primitives are Comparable. Assume that any TBase
         // we're called on is Comparable, because otherwise the codegen
         // wouldn't have made code that calls us on it. At this point,
@@ -330,21 +323,19 @@ public final class TBaseHelper {
         // things of oA.getClass() and so it accepts oB.
         return ((Comparable) oA).compareTo(oB);
       }
-      throw new IllegalArgumentException(
-          "cannot compare " + oA + " and " + oB);
+      throw new IllegalArgumentException("cannot compare " + oA + " and " + oB);
     }
 
     // All instances of NestedStructureComparator are operationally equivalent,
     // so we only need to make one.
-    private static final NestedStructureComparator<?> INSTANCE
-        = new NestedStructureComparator<Void>();
+    private static final NestedStructureComparator<?> INSTANCE =
+        new NestedStructureComparator<Void>();
 
     @SuppressWarnings("unchecked")
     public static <T> NestedStructureComparator<T> get() {
       return (NestedStructureComparator<T>) INSTANCE;
     }
   }
-
 
   public static void toString(ByteBuffer bb, StringBuilder sb) {
     byte[] buf = bb.array();
@@ -387,7 +378,8 @@ public final class TBaseHelper {
 
   public static int byteBufferToByteArray(ByteBuffer byteBuffer, byte[] target, int offset) {
     int remaining = byteBuffer.remaining();
-    System.arraycopy(byteBuffer.array(),
+    System.arraycopy(
+        byteBuffer.array(),
         byteBuffer.arrayOffset() + byteBuffer.position(),
         target,
         offset,
@@ -413,63 +405,63 @@ public final class TBaseHelper {
   }
 
   public static String deepCopy(String orig) {
-    return orig;  // immutable
+    return orig; // immutable
   }
 
   public static boolean deepCopy(boolean orig) {
-    return orig;  // primitive
+    return orig; // primitive
   }
 
   public static Boolean deepCopy(Boolean orig) {
-    return orig;  // immutable
+    return orig; // immutable
   }
 
   public static byte deepCopy(byte orig) {
-    return orig;  // primitive
+    return orig; // primitive
   }
 
   public static Byte deepCopy(Byte orig) {
-    return orig;  // immutable
+    return orig; // immutable
   }
 
   public static short deepCopy(short orig) {
-    return orig;  // primitive
+    return orig; // primitive
   }
 
   public static Short deepCopy(Short orig) {
-    return orig;  // immutable
+    return orig; // immutable
   }
 
   public static int deepCopy(int orig) {
-    return orig;  // primitive
+    return orig; // primitive
   }
 
   public static Integer deepCopy(Integer orig) {
-    return orig;  // immutable
+    return orig; // immutable
   }
 
   public static long deepCopy(long orig) {
-    return orig;  // primitive
+    return orig; // primitive
   }
 
   public static Long deepCopy(Long orig) {
-    return orig;  // immutable
+    return orig; // immutable
   }
 
   public static double deepCopy(double orig) {
-    return orig;  // primitive
+    return orig; // primitive
   }
 
   public static Double deepCopy(Double orig) {
-    return orig;  // primitive
+    return orig; // primitive
   }
 
   public static float deepCopy(float orig) {
-    return orig;  // primitive
+    return orig; // primitive
   }
 
   public static Float deepCopy(Float orig) {
-    return orig;  // immutable
+    return orig; // immutable
   }
 
   public static <K, V> Map<K, V> deepCopy(Map<K, V> orig) {
@@ -527,7 +519,7 @@ public final class TBaseHelper {
         || orig instanceof Long
         || orig instanceof Double
         || orig instanceof Float) {
-      return orig;  // immutable
+      return orig; // immutable
     }
     if (orig instanceof Map<?, ?>) {
       return (T) deepCopy((Map<?, ?>) orig);
@@ -542,7 +534,8 @@ public final class TBaseHelper {
       return (T) deepCopy((TBase) orig);
     }
     throw new UnsupportedOperationException(
-        "Don't know how to deepCopy something of type " + orig.getClass()
+        "Don't know how to deepCopy something of type "
+            + orig.getClass()
             + " which is weird because nothing should be calling me on something"
             + " I don't understand");
   }
@@ -587,9 +580,7 @@ public final class TBaseHelper {
     return a.equals(b);
   }
 
-  /**
-   * Checks two items for logical equality.
-   */
+  /** Checks two items for logical equality. */
   public static boolean equalsNobinary(boolean a, boolean b) {
     return a == b;
   }
@@ -604,9 +595,7 @@ public final class TBaseHelper {
     return a.equals(b);
   }
 
-  /**
-   * Checks two items for logical equality.
-   */
+  /** Checks two items for logical equality. */
   public static boolean equalsNobinary(byte a, byte b) {
     return a == b;
   }
@@ -621,9 +610,7 @@ public final class TBaseHelper {
     return a.equals(b);
   }
 
-  /**
-   * Checks two items for logical equality.
-   */
+  /** Checks two items for logical equality. */
   public static boolean equalsNobinary(short a, short b) {
     return a == b;
   }
@@ -638,9 +625,7 @@ public final class TBaseHelper {
     return a.equals(b);
   }
 
-  /**
-   * Checks two items for logical equality.
-   */
+  /** Checks two items for logical equality. */
   public static boolean equalsNobinary(int a, int b) {
     return a == b;
   }
@@ -655,9 +640,7 @@ public final class TBaseHelper {
     return a.equals(b);
   }
 
-  /**
-   * Checks two items for logical equality.
-   */
+  /** Checks two items for logical equality. */
   public static boolean equalsNobinary(long a, long b) {
     return a == b;
   }
@@ -672,9 +655,7 @@ public final class TBaseHelper {
     return a.equals(b);
   }
 
-  /**
-   * Checks two items for logical equality.
-   */
+  /** Checks two items for logical equality. */
   public static boolean equalsNobinary(double a, double b) {
     return a == b;
   }
@@ -689,9 +670,7 @@ public final class TBaseHelper {
     return a.equals(b);
   }
 
-  /**
-   * Checks two items for logical equality.
-   */
+  /** Checks two items for logical equality. */
   public static boolean equalsNobinary(float a, float b) {
     return a == b;
   }
@@ -707,10 +686,9 @@ public final class TBaseHelper {
   }
 
   /**
-   * Checks two items for logical equality. The items should not contain
-   * "naked binaries"; that is, neither keys nor values can be <code>byte[]</code>
-   * or containers which themselves contain naked binaries. The key type and
-   * value type should both be expressible in thrift.
+   * Checks two items for logical equality. The items should not contain "naked binaries"; that is,
+   * neither keys nor values can be <code>byte[]</code> or containers which themselves contain naked
+   * binaries. The key type and value type should both be expressible in thrift.
    *
    * @param a non-null item
    * @param b non-null item
@@ -720,32 +698,30 @@ public final class TBaseHelper {
   }
 
   /**
-   * Checks two items for logical equality. The items should not contain
-   * "naked binaries"; that is, elements can not be <code>byte[]</code>
-   * or containers which themselves contain naked binaries. The element
-   * type should be expressible in thrift.
+   * Checks two items for logical equality. The items should not contain "naked binaries"; that is,
+   * elements can not be <code>byte[]</code> or containers which themselves contain naked binaries.
+   * The element type should be expressible in thrift.
    *
    * @param a non-null item
    * @param b non-null item
    */
   public static <T> boolean equalsNobinary(List<T> as, List<T> bs) {
-    if (as == bs) {  // performance, not correctness
+    if (as == bs) { // performance, not correctness
       return true;
     }
     return as.equals(bs);
   }
 
   /**
-   * Checks two items for logical equality. The items should not contain
-   * "naked binaries"; that is, elements can not be <code>byte[]</code>
-   * or containers which themselves contain naked binaries. The element
-   * type should be expressible in thrift.
+   * Checks two items for logical equality. The items should not contain "naked binaries"; that is,
+   * elements can not be <code>byte[]</code> or containers which themselves contain naked binaries.
+   * The element type should be expressible in thrift.
    *
    * @param a non-null item
    * @param b non-null item
    */
   public static <T> boolean equalsNobinary(Set<T> as, Set<T> bs) {
-    if (as == bs) {  // performance, not correctness
+    if (as == bs) { // performance, not correctness
       return true;
     }
     return as.equals(bs);
@@ -758,7 +734,7 @@ public final class TBaseHelper {
    * @param b non-null item
    */
   public static <T extends TBase> boolean equalsNobinary(T a, T b) {
-    if (a == b) {  // performance, not correctness
+    if (a == b) { // performance, not correctness
       return true;
     }
     return a.equals(b);
@@ -781,7 +757,7 @@ public final class TBaseHelper {
    * @param b non-null item
    */
   public static <K, V> boolean equalsSlow(Map<K, V> a, Map<K, V> b) {
-    if (a == b) {  // performance, not correctness
+    if (a == b) { // performance, not correctness
       return true;
     }
     if (a.size() != b.size()) {
@@ -820,7 +796,7 @@ public final class TBaseHelper {
    * @param b non-null item
    */
   public static <T> boolean equalsSlow(List<T> a, List<T> b) {
-    if (a == b) {  // performance, not correctness
+    if (a == b) { // performance, not correctness
       return true;
     }
     if (a.size() != b.size()) {
@@ -847,7 +823,7 @@ public final class TBaseHelper {
    * @param b non-null item
    */
   public static <T> boolean equalsSlow(Set<T> a, Set<T> b) {
-    if (a == b) {  // performance, not correctness
+    if (a == b) { // performance, not correctness
       return true;
     }
     if (a.size() != b.size()) {
@@ -879,29 +855,28 @@ public final class TBaseHelper {
   }
 
   /**
-   * Checks two items for logical equality. Neither item should contain
-   * naked binaries. Both items should be of the same Thrift-expressible
-   * type.
+   * Checks two items for logical equality. Neither item should contain naked binaries. Both items
+   * should be of the same Thrift-expressible type.
    *
    * @param a non-null item
    * @param b non-null item
    */
   @SuppressWarnings({"unchecked", "rawtypes"})
   /*package*/ static <T> boolean equalsNobinaryUnchecked(T a, T b) {
-    if (a == b) {  // performance, not correctness
+    if (a == b) { // performance, not correctness
       return true;
     }
     if (a instanceof byte[] && b instanceof byte[]) {
       return equalsSlow((byte[]) a, (byte[]) b);
     } else if (a.getClass() == b.getClass()
         && (a instanceof String
-        || a instanceof Boolean
-        || a instanceof Byte
-        || a instanceof Short
-        || a instanceof Integer
-        || a instanceof Long
-        || a instanceof Double
-        || a instanceof Float)) {
+            || a instanceof Boolean
+            || a instanceof Byte
+            || a instanceof Short
+            || a instanceof Integer
+            || a instanceof Long
+            || a instanceof Double
+            || a instanceof Float)) {
       return a.equals(b);
     } else if (a instanceof TBase) {
       return a.equals(b);
@@ -913,35 +888,38 @@ public final class TBaseHelper {
       return equalsNobinary((Set) a, (Set) b);
     } else {
       throw new IllegalAccessError(
-          "Don't know how to compare " + a + " and " + b
+          "Don't know how to compare "
+              + a
+              + " and "
+              + b
               + " which is odd, because nothing should be calling me on types"
               + " I don't understand");
     }
   }
 
   /**
-   * Checks two items for logical equality. Both items should be
-   * of the same Thrift-expressible type.
+   * Checks two items for logical equality. Both items should be of the same Thrift-expressible
+   * type.
    *
    * @param a non-null item
    * @param b non-null item
    */
   @SuppressWarnings({"rawtypes", "unchecked"})
   /*package*/ static <T> boolean equalsSlowUnchecked(T a, T b) {
-    if (a == b) {  // performance, not correctness
+    if (a == b) { // performance, not correctness
       return true;
     }
     if (a instanceof byte[] && b instanceof byte[]) {
       return equalsSlow((byte[]) a, (byte[]) b);
     } else if (a.getClass() == b.getClass()
         && (a instanceof String
-        || a instanceof Boolean
-        || a instanceof Byte
-        || a instanceof Short
-        || a instanceof Integer
-        || a instanceof Long
-        || a instanceof Double
-        || a instanceof Float)) {
+            || a instanceof Boolean
+            || a instanceof Byte
+            || a instanceof Short
+            || a instanceof Integer
+            || a instanceof Long
+            || a instanceof Double
+            || a instanceof Float)) {
       return a.equals(b);
     } else if (a instanceof TBase) {
       return a.equals(b);
@@ -953,12 +931,14 @@ public final class TBaseHelper {
       return equalsSlow((Set) a, (Set) b);
     } else {
       throw new IllegalAccessError(
-          "Don't know how to compare " + a + " and " + b
+          "Don't know how to compare "
+              + a
+              + " and "
+              + b
               + " which is odd, because nothing should be calling me on types"
               + " I don't understand");
     }
   }
-
 
   public static String getIndentedString(int indent) {
     StringBuilder sb = new StringBuilder();
@@ -969,13 +949,11 @@ public final class TBaseHelper {
   }
 
   public static String reduceIndent(String indentStr) {
-    return (indentStr.length() > 1) ?
-           indentStr.substring(0, indentStr.length() - 2) : "";
+    return (indentStr.length() > 1) ? indentStr.substring(0, indentStr.length() - 2) : "";
   }
 
   /**
-   * Creates String representation of object with
-   * desired indentation
+   * Creates String representation of object with desired indentation
    *
    * @param obj The object to be printed
    * @param indent The level of indentation
@@ -994,8 +972,14 @@ public final class TBaseHelper {
         for (Map.Entry<?, ?> entry : (((Map<?, ?>) obj).entrySet())) {
           Object key = (Object) entry.getKey();
           Object val = (Object) entry.getValue();
-          sb.append(newLine + indentStr + toString(key, indent + 2, prettyPrint)
-              + space + ":" + space + toString(val, indent + 2, prettyPrint));
+          sb.append(
+              newLine
+                  + indentStr
+                  + toString(key, indent + 2, prettyPrint)
+                  + space
+                  + ":"
+                  + space
+                  + toString(val, indent + 2, prettyPrint));
         }
         sb.append(newLine + reduceIndent(indentStr) + "}");
       } else if (obj instanceof java.util.Collection) {

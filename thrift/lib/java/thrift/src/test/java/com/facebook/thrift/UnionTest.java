@@ -8,12 +8,9 @@ import com.facebook.thrift.protocol.TProtocolException;
 import com.facebook.thrift.protocol.TProtocolFactory;
 import com.facebook.thrift.transport.TMemoryBuffer;
 import com.facebook.thrift.transport.TTransportException;
-
-import org.junit.Test;
-
 import java.util.ArrayList;
 import java.util.List;
-
+import org.junit.Test;
 import thrift.test.Empty;
 import thrift.test.RandomStuff;
 import thrift.test.StructWithAUnion;
@@ -64,7 +61,6 @@ public class UnionTest extends junit.framework.TestCase {
     } catch (Exception e) {
       // sweet
     }
-
   }
 
   @Test
@@ -133,13 +129,9 @@ public class UnionTest extends junit.framework.TestCase {
 
   @Test
   public static void testJSONSerialization() throws Exception {
-    TDeserializer deserializer = new TDeserializer(
-        new TCompactJSONProtocol.Factory()
-    );
+    TDeserializer deserializer = new TDeserializer(new TCompactJSONProtocol.Factory());
 
-    TSerializer serializer = new TSerializer(
-        new TCompactJSONProtocol.Factory()
-    );
+    TSerializer serializer = new TSerializer(new TCompactJSONProtocol.Factory());
 
     // Deserialize empty union
     TestUnion emptyUnion = new TestUnion();
@@ -164,9 +156,7 @@ public class UnionTest extends junit.framework.TestCase {
 
     // Serialize union with inner list then deserialize it. Should be the same.
     List<RandomStuff> randomList = new ArrayList<RandomStuff>();
-    randomList.add(
-        new RandomStuff(1, 2, 3, 4, new ArrayList<Integer>(), null, 10l, 10.5)
-    );
+    randomList.add(new RandomStuff(1, 2, 3, 4, new ArrayList<Integer>(), null, 10l, 10.5));
     TestUnion unionWithList = new TestUnion(TestUnion.STRUCT_LIST, randomList);
 
     String unionWithListJSON = serializer.toString(unionWithList, "UTF-8");

@@ -19,9 +19,7 @@
 
 package com.facebook.thrift.protocol;
 
-/**
- * Type constants in the Thrift protocol.
- */
+/** Type constants in the Thrift protocol. */
 public final class TType {
   public static final byte STOP = 0;
   public static final byte VOID = 1;

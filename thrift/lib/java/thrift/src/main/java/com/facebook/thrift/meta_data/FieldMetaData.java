@@ -20,13 +20,12 @@
 package com.facebook.thrift.meta_data;
 
 import com.facebook.thrift.TBase;
-
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * This class is used to store meta data about thrift fields. Every field in a
- * a struct should have a corresponding instance of this class describing it.
+ * This class is used to store meta data about thrift fields. Every field in a a struct should have
+ * a corresponding instance of this class describing it.
  */
 @SuppressWarnings("serial")
 public class FieldMetaData implements java.io.Serializable {
@@ -45,14 +44,14 @@ public class FieldMetaData implements java.io.Serializable {
     this.valueMetaData = vMetaData;
   }
 
-  public static void addStructMetaDataMap(Class<? extends TBase> sClass,
-      Map<Integer, FieldMetaData> map) {
+  public static void addStructMetaDataMap(
+      Class<? extends TBase> sClass, Map<Integer, FieldMetaData> map) {
     structMap.put(sClass, map);
   }
 
   /**
-   * Returns a map with metadata (i.e. instances of FieldMetaData) that
-   * describe the fields of the given class.
+   * Returns a map with metadata (i.e. instances of FieldMetaData) that describe the fields of the
+   * given class.
    *
    * @param sClass The TBase class for which the metadata map is requested
    */
@@ -62,12 +61,16 @@ public class FieldMetaData implements java.io.Serializable {
         sClass.newInstance();
       } catch (InstantiationException e) {
         throw new RuntimeException(
-            "InstantiationException for TBase class: " + sClass.getName() + ", message: " +
-                e.getMessage());
+            "InstantiationException for TBase class: "
+                + sClass.getName()
+                + ", message: "
+                + e.getMessage());
       } catch (IllegalAccessException e) {
         throw new RuntimeException(
-            "IllegalAccessException for TBase class: " + sClass.getName() + ", message: " +
-                e.getMessage());
+            "IllegalAccessException for TBase class: "
+                + sClass.getName()
+                + ", message: "
+                + e.getMessage());
       }
     }
     return structMap.get(sClass);

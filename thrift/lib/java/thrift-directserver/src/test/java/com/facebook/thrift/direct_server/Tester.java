@@ -1,6 +1,5 @@
 package com.facebook.thrift.direct_server;
 
-
 /*
  * A testing tool for TDirectServer
  *
@@ -8,26 +7,22 @@ package com.facebook.thrift.direct_server;
  */
 
 import com.facebook.thrift.protocol.TBinaryProtocol;
-import com.facebook.thrift.transport.TSocket;
 import com.facebook.thrift.transport.TFramedTransport;
+import com.facebook.thrift.transport.TSocket;
+import java.util.ArrayList;
+import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.List;
-import java.util.ArrayList;
-
-
 public class Tester {
 
-  static private Logger LOG =
-      LoggerFactory.getLogger(Tester.class);
+  private static Logger LOG = LoggerFactory.getLogger(Tester.class);
 
-  static private String host_ = "localhost";
+  private static String host_ = "localhost";
 
-  static private int port_ = 3010;
+  private static int port_ = 3010;
 
   static boolean bigPayloadTest_ = true;
-
 
   static JavaSimpleService.Client getClient(String host, int port) {
     String msg = null;
@@ -70,9 +65,8 @@ public class Tester {
     }
   }
 
-
   static class MultiTestThread extends Thread {
-    static public int numTests_ = 500000;
+    public static int numTests_ = 500000;
 
     public long beg_ = 0;
     public long end_ = 0;
@@ -83,14 +77,13 @@ public class Tester {
         return "";
       }
 
-      char[] arr = new char[15*1024];
+      char[] arr = new char[15 * 1024];
       for (int i = 0; i < arr.length; ++i) {
         arr[i] = 'A';
       }
 
       return new String(arr);
     }
-
 
     public void run() {
       SimpleRequest r = new SimpleRequest();
@@ -102,7 +95,7 @@ public class Tester {
         try {
           String s = cli.simple(r);
           if (Tester.bigPayloadTest_) {
-            if (s.length() > 15*1024 && s.charAt(15*1024) == 'A') {
+            if (s.length() > 15 * 1024 && s.charAt(15 * 1024) == 'A') {
               ++success_;
             }
           } else {
@@ -156,7 +149,7 @@ public class Tester {
     LOG.info("Total success is " + Integer.toString(success));
 
     if (success > 0) {
-      LOG.info("QPS is " + Long.toString(success * multiple/ duration));
+      LOG.info("QPS is " + Long.toString(success * multiple / duration));
       LOG.info("Latency is " + Long.toString(duration * 1000 / success));
     }
   }

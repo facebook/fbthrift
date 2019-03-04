@@ -20,12 +20,9 @@
 package com.facebook.thrift;
 
 import com.facebook.thrift.protocol.TProtocol;
-
 import java.io.Serializable;
 
-/**
- * Generic base interface for generated Thrift objects.
- */
+/** Generic base interface for generated Thrift objects. */
 public interface TBase extends Serializable {
 
   /**
@@ -50,37 +47,33 @@ public interface TBase extends Serializable {
   public boolean isSet(int fieldId);
 
   /**
-   * Get a field's value by id. Primitive types will be wrapped in the
-   * appropriate "boxed" types.
+   * Get a field's value by id. Primitive types will be wrapped in the appropriate "boxed" types.
    *
    * @param fieldId The field's id tag as found in the IDL.
    */
   public Object getFieldValue(int fieldId);
 
   /**
-   * Set a field's value by id. Primitive types must be "boxed" in the
-   * appropriate object wrapper type.
+   * Set a field's value by id. Primitive types must be "boxed" in the appropriate object wrapper
+   * type.
    *
    * @param fieldId The field's id tag as found in the IDL.
    */
   public void setFieldValue(int fieldId, Object value);
 
   /**
-   * Returns a copy of `this`. The type of the returned object should
-   * be the same as the type of this; that is,
-   * <code>x.getClass() == x.deepCopy().getClass()</code> should be true
-   * for any TBase.
+   * Returns a copy of `this`. The type of the returned object should be the same as the type of
+   * this; that is, <code>x.getClass() == x.deepCopy().getClass()</code> should be true for any
+   * TBase.
    */
   public TBase deepCopy();
 
   /**
-   * Creates an indented String representation for
-   * pretty printing
+   * Creates an indented String representation for pretty printing
    *
    * @param indent The level of indentation desired
    * @param prettyPrint Set pretty printing on/off
    */
-
   public String toString(int indent, boolean prettyPrint);
 
   /**
@@ -89,5 +82,4 @@ public interface TBase extends Serializable {
    * @param prettyPrint Set pretty printing on/off
    */
   public String toString(boolean prettyPrint);
-
 }

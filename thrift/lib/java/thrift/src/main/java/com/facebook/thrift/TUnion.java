@@ -39,8 +39,10 @@ public abstract class TUnion<Me extends TUnion<Me>> implements TBase {
   public Object getFieldValue(int fieldId) {
     if (fieldId != setField_) {
       throw new IllegalArgumentException(
-          "Cannot get the value of field " + fieldId + " because union's set field is " +
-              setField_);
+          "Cannot get the value of field "
+              + fieldId
+              + " because union's set field is "
+              + setField_);
     }
 
     return getFieldValue();
@@ -94,15 +96,12 @@ public abstract class TUnion<Me extends TUnion<Me>> implements TBase {
     oprot.writeStructEnd();
   }
 
-  /**
-   * Implementation should be generated so that we can efficiently type check
-   * various values.
-   */
+  /** Implementation should be generated so that we can efficiently type check various values. */
   protected abstract void checkType(short setField, Object value) throws ClassCastException;
 
   /**
-   * Implementation should be generated to read the right stuff from the wire
-   * based on the field header.
+   * Implementation should be generated to read the right stuff from the wire based on the field
+   * header.
    */
   protected abstract Object readValue(TProtocol iprot, TField field) throws TException;
 
@@ -174,8 +173,13 @@ public abstract class TUnion<Me extends TUnion<Me>> implements TBase {
     } else {
       vStr = v.toString();
     }
-    return "<" + this.getClass().getSimpleName() + " " + getFieldDesc(getSetField()).name + ":" +
-        vStr + ">";
+    return "<"
+        + this.getClass().getSimpleName()
+        + " "
+        + getFieldDesc(getSetField()).name
+        + ":"
+        + vStr
+        + ">";
   }
 
   private static String bytesToStr(byte[] bytes) {

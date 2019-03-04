@@ -23,9 +23,7 @@ import com.facebook.thrift.server.TConnectionContext;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * A class which wraps multiple TProcessorEventHandler objects.
- */
+/** A class which wraps multiple TProcessorEventHandler objects. */
 public class MultipleTProcessorEventHandlers extends TProcessorEventHandler {
   private final List<TProcessorEventHandler> handlers;
 
@@ -41,12 +39,9 @@ public class MultipleTProcessorEventHandlers extends TProcessorEventHandler {
     return new EventHandlerContexts(handlers, fn_name, context);
   }
 
-  /**
-    * Invokes each handler's preRead method with its own context.
-    */
+  /** Invokes each handler's preRead method with its own context. */
   @Override
-  public void preRead(Object handler_context, String fn_name)
-      throws TException {
+  public void preRead(Object handler_context, String fn_name) throws TException {
     if (handler_context != null) {
       EventHandlerContexts contexts = (EventHandlerContexts) handler_context;
       for (int i = 0; i < handlers.size(); i++) {
@@ -55,12 +50,9 @@ public class MultipleTProcessorEventHandlers extends TProcessorEventHandler {
     }
   }
 
-  /**
-    * Invokes each handler's postRead method with its own context.
-    */
+  /** Invokes each handler's postRead method with its own context. */
   @Override
-  public void postRead(Object handler_context, String fn_name, TBase args)
-      throws TException {
+  public void postRead(Object handler_context, String fn_name, TBase args) throws TException {
     if (handler_context != null) {
       EventHandlerContexts contexts = (EventHandlerContexts) handler_context;
       for (int i = 0; i < handlers.size(); i++) {
@@ -69,12 +61,9 @@ public class MultipleTProcessorEventHandlers extends TProcessorEventHandler {
     }
   }
 
-  /**
-    * Invokes each handler's preWrite method with its own context.
-    */
+  /** Invokes each handler's preWrite method with its own context. */
   @Override
-  public void preWrite(Object handler_context, String fn_name, TBase result)
-      throws TException {
+  public void preWrite(Object handler_context, String fn_name, TBase result) throws TException {
     if (handler_context != null) {
       EventHandlerContexts contexts = (EventHandlerContexts) handler_context;
       for (int i = 0; i < handlers.size(); i++) {
@@ -83,12 +72,9 @@ public class MultipleTProcessorEventHandlers extends TProcessorEventHandler {
     }
   }
 
-  /**
-    * Invokes each handler's preWrite method with its own context.
-    */
+  /** Invokes each handler's preWrite method with its own context. */
   @Override
-  public void postWrite(Object handler_context, String fn_name, TBase result)
-      throws TException {
+  public void postWrite(Object handler_context, String fn_name, TBase result) throws TException {
     if (handler_context != null) {
       EventHandlerContexts contexts = (EventHandlerContexts) handler_context;
       for (int i = 0; i < handlers.size(); i++) {
@@ -97,12 +83,9 @@ public class MultipleTProcessorEventHandlers extends TProcessorEventHandler {
     }
   }
 
-  /**
-    * Invokes each handler's handlerError method with its own context.
-    */
+  /** Invokes each handler's handlerError method with its own context. */
   @Override
-  public void handlerError(Object handler_context, String fn_name, Throwable th)
-      throws TException {
+  public void handlerError(Object handler_context, String fn_name, Throwable th) throws TException {
     if (handler_context != null) {
       EventHandlerContexts contexts = (EventHandlerContexts) handler_context;
       for (int i = 0; i < handlers.size(); i++) {
@@ -111,17 +94,12 @@ public class MultipleTProcessorEventHandlers extends TProcessorEventHandler {
     }
   }
 
-  /**
-    * Invokes each handler's declaredUserException method with its own context.
-    */
+  /** Invokes each handler's declaredUserException method with its own context. */
   // NB: for compatibility with Processor code generated in Dec 2015/Jan 2016,
   // this method should have type erasure `(LObject;LString;LThrowable;)V`
   @Override
-  public <T extends Throwable & TBase>
-    void declaredUserException(Object handler_context,
-                               String fn_name,
-                               T th)
-      throws TException {
+  public <T extends Throwable & TBase> void declaredUserException(
+      Object handler_context, String fn_name, T th) throws TException {
     if (handler_context != null) {
       EventHandlerContexts contexts = (EventHandlerContexts) handler_context;
       for (int i = 0; i < handlers.size(); i++) {
@@ -130,22 +108,18 @@ public class MultipleTProcessorEventHandlers extends TProcessorEventHandler {
     }
   }
 
-  /**
-    * This class encapsulates the context of each event handler.
-    */
+  /** This class encapsulates the context of each event handler. */
   private static class EventHandlerContexts {
     private final List<Object> ctxs;
 
     public EventHandlerContexts(
-      List<TProcessorEventHandler> handlers,
-      String method,
-      TConnectionContext connectionContext
-    ) {
+        List<TProcessorEventHandler> handlers,
+        String method,
+        TConnectionContext connectionContext) {
       ctxs = new ArrayList<Object>();
       for (TProcessorEventHandler handler : handlers) {
         ctxs.add(handler.getContext(method, connectionContext));
       }
     }
   }
-
 }

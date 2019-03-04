@@ -22,64 +22,62 @@ package com.facebook.thrift.protocol;
 import com.facebook.thrift.TByteArrayOutputStream;
 import com.facebook.thrift.TException;
 import com.facebook.thrift.transport.TTransport;
-
 import java.io.UnsupportedEncodingException;
 import java.util.Stack;
 
 /**
- * Base class for full and brief JSON protocols.
- * Simple JSON protocol has subtle differences and doesn't use it.
+ * Base class for full and brief JSON protocols. Simple JSON protocol has subtle differences and
+ * doesn't use it.
  */
 public abstract class TJSONProtocolBase extends TProtocol {
-  protected static final byte[] COMMA = new byte[]{','};
-  protected static final byte[] COLON = new byte[]{':'};
-  protected static final byte[] LBRACE = new byte[]{'{'};
-  protected static final byte[] RBRACE = new byte[]{'}'};
-  protected static final byte[] LBRACKET = new byte[]{'['};
-  protected static final byte[] RBRACKET = new byte[]{']'};
-  protected static final byte[] QUOTE = new byte[]{'"'};
-  protected static final byte[] BACKSLASH = new byte[]{'\\'};
-  protected static final byte[] ZERO = new byte[]{'0'};
+  protected static final byte[] COMMA = new byte[] {','};
+  protected static final byte[] COLON = new byte[] {':'};
+  protected static final byte[] LBRACE = new byte[] {'{'};
+  protected static final byte[] RBRACE = new byte[] {'}'};
+  protected static final byte[] LBRACKET = new byte[] {'['};
+  protected static final byte[] RBRACKET = new byte[] {']'};
+  protected static final byte[] QUOTE = new byte[] {'"'};
+  protected static final byte[] BACKSLASH = new byte[] {'\\'};
+  protected static final byte[] ZERO = new byte[] {'0'};
 
-  protected static final byte[] ESCSEQ = new byte[]{'\\', 'u', '0', '0'};
+  protected static final byte[] ESCSEQ = new byte[] {'\\', 'u', '0', '0'};
 
   protected static final long VERSION = 1;
 
   protected static final byte[] JSON_CHAR_TABLE = {
     /*  0   1   2   3   4   5   6   7   8   9   A   B   C   D   E   F */
-      0, 0, 0, 0, 0, 0, 0, 0, 'b', 't', 'n', 0, 'f', 'r', 0, 0, // 0
-      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, // 1
-      1, 1, '"', 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, // 2
+    0, 0, 0, 0, 0, 0, 0, 0, 'b', 't', 'n', 0, 'f', 'r', 0, 0, // 0
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, // 1
+    1, 1, '"', 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, // 2
   };
 
   protected static final String ESCAPE_CHARS = "\"\\bfnrt";
 
   protected static final byte[] ESCAPE_CHAR_VALS = {
-      '"', '\\', '\b', '\f', '\n', '\r', '\t',
+    '"', '\\', '\b', '\f', '\n', '\r', '\t',
   };
 
   protected static final int DEF_STRING_SIZE = 16;
 
-  protected static final byte[] NAME_BOOL = new byte[]{'t', 'f'};
-  protected static final byte[] NAME_BYTE = new byte[]{'i', '8'};
-  protected static final byte[] NAME_I16 = new byte[]{'i', '1', '6'};
-  protected static final byte[] NAME_I32 = new byte[]{'i', '3', '2'};
-  protected static final byte[] NAME_I64 = new byte[]{'i', '6', '4'};
-  protected static final byte[] NAME_DOUBLE = new byte[]{'d', 'b', 'l'};
-  protected static final byte[] NAME_FLOAT = new byte[]{'f', 'l', 't'};
-  protected static final byte[] NAME_STRUCT = new byte[]{'r', 'e', 'c'};
-  protected static final byte[] NAME_STRING = new byte[]{'s', 't', 'r'};
-  protected static final byte[] NAME_MAP = new byte[]{'m', 'a', 'p'};
-  protected static final byte[] NAME_LIST = new byte[]{'l', 's', 't'};
-  protected static final byte[] NAME_SET = new byte[]{'s', 'e', 't'};
+  protected static final byte[] NAME_BOOL = new byte[] {'t', 'f'};
+  protected static final byte[] NAME_BYTE = new byte[] {'i', '8'};
+  protected static final byte[] NAME_I16 = new byte[] {'i', '1', '6'};
+  protected static final byte[] NAME_I32 = new byte[] {'i', '3', '2'};
+  protected static final byte[] NAME_I64 = new byte[] {'i', '6', '4'};
+  protected static final byte[] NAME_DOUBLE = new byte[] {'d', 'b', 'l'};
+  protected static final byte[] NAME_FLOAT = new byte[] {'f', 'l', 't'};
+  protected static final byte[] NAME_STRUCT = new byte[] {'r', 'e', 'c'};
+  protected static final byte[] NAME_STRING = new byte[] {'s', 't', 'r'};
+  protected static final byte[] NAME_MAP = new byte[] {'m', 'a', 'p'};
+  protected static final byte[] NAME_LIST = new byte[] {'l', 's', 't'};
+  protected static final byte[] NAME_SET = new byte[] {'s', 'e', 't'};
 
-  protected static final byte[] VALUE_TRUE = new byte[]{'t', 'r', 'u', 'e'};
-  protected static final byte[] VALUE_FALSE = new byte[]{'f', 'a', 'l', 's', 'e'};
+  protected static final byte[] VALUE_TRUE = new byte[] {'t', 'r', 'u', 'e'};
+  protected static final byte[] VALUE_FALSE = new byte[] {'f', 'a', 'l', 's', 'e'};
 
   protected static final TStruct ANONYMOUS_STRUCT = new TStruct();
 
-  protected static final byte[] getTypeNameForTypeID(byte typeID)
-      throws TException {
+  protected static final byte[] getTypeNameForTypeID(byte typeID) throws TException {
     switch (typeID) {
       case TType.BOOL:
         return NAME_BOOL;
@@ -106,13 +104,11 @@ public abstract class TJSONProtocolBase extends TProtocol {
       case TType.LIST:
         return NAME_LIST;
       default:
-        throw new TProtocolException(TProtocolException.NOT_IMPLEMENTED,
-            "Unrecognized type");
+        throw new TProtocolException(TProtocolException.NOT_IMPLEMENTED, "Unrecognized type");
     }
   }
 
-  protected static final byte getTypeIDForTypeName(byte[] name)
-      throws TException {
+  protected static final byte getTypeIDForTypeName(byte[] name) throws TException {
     byte result = TType.STOP;
     if (name.length > 1) {
       switch (name[0]) {
@@ -160,8 +156,7 @@ public abstract class TJSONProtocolBase extends TProtocol {
       }
     }
     if (result == TType.STOP) {
-      throw new TProtocolException(TProtocolException.NOT_IMPLEMENTED,
-          "Unrecognized type");
+      throw new TProtocolException(TProtocolException.NOT_IMPLEMENTED, "Unrecognized type");
     }
     return result;
   }
@@ -169,8 +164,8 @@ public abstract class TJSONProtocolBase extends TProtocol {
   /**
    * Given a byte, peeked from the beginning of some JSON value, determine a type of that value.
    * Result type is used to decide how to skip that value, so differences between compatible types
-   * don't matter and the more general type is assumed.
-   * STOP is returned for } and ] to indicate end of collection.
+   * don't matter and the more general type is assumed. STOP is returned for } and ] to indicate end
+   * of collection.
    */
   protected static final byte getTypeIDForPeekedByte(byte peekedByte) throws TException {
     switch (peekedByte) {
@@ -207,8 +202,8 @@ public abstract class TJSONProtocolBase extends TProtocol {
         return TType.STRING;
 
       default:
-        throw new TProtocolException(TProtocolException.NOT_IMPLEMENTED,
-            "Unrecognized peeked byte: " + (char) peekedByte);
+        throw new TProtocolException(
+            TProtocolException.NOT_IMPLEMENTED, "Unrecognized peeked byte: " + (char) peekedByte);
     }
   }
 
@@ -216,15 +211,11 @@ public abstract class TJSONProtocolBase extends TProtocol {
   // additional JSON syntax characters
   // This base context does nothing.
   protected class JSONBaseContext {
-    protected void write() throws TException {
-    }
+    protected void write() throws TException {}
 
-    protected void read() throws TException {
-    }
+    protected void read() throws TException {}
 
-    /**
-     * Peek the first byte of the following value in the stream.
-     */
+    /** Peek the first byte of the following value in the stream. */
     protected byte peekNextValue() throws TException {
       return reader_.peek();
     }
@@ -398,8 +389,8 @@ public abstract class TJSONProtocolBase extends TProtocol {
   protected void readJSONSyntaxChar(byte[] b) throws TException {
     byte ch = reader_.read();
     if (ch != b[0]) {
-      throw new TProtocolException(TProtocolException.INVALID_DATA,
-          "Unexpected character:" + (char) ch);
+      throw new TProtocolException(
+          TProtocolException.INVALID_DATA, "Unexpected character:" + (char) ch);
     }
   }
 
@@ -411,8 +402,7 @@ public abstract class TJSONProtocolBase extends TProtocol {
     } else if ((ch >= 'a') && (ch <= 'f')) {
       return (byte) ((char) ch - 'a' + 10);
     } else {
-      throw new TProtocolException(TProtocolException.INVALID_DATA,
-          "Expected hex character");
+      throw new TProtocolException(TProtocolException.INVALID_DATA, "Expected hex character");
     }
   }
 
@@ -622,15 +612,12 @@ public abstract class TJSONProtocolBase extends TProtocol {
     writeJSONBase64(bin);
   }
 
-  /**
-   * Reading methods.
-   */
+  /** Reading methods. */
 
   // Read in a JSON string, unescaping as appropriate.. Skip reading from the
   // context if skipContext is true.
   @SuppressWarnings("resource")
-  protected TByteArrayOutputStream readJSONString(boolean skipContext)
-      throws TException {
+  protected TByteArrayOutputStream readJSONString(boolean skipContext) throws TException {
     TByteArrayOutputStream arr = new TByteArrayOutputStream(DEF_STRING_SIZE);
     if (!skipContext) {
       context_.read();
@@ -651,8 +638,7 @@ public abstract class TJSONProtocolBase extends TProtocol {
         } else {
           int off = ESCAPE_CHARS.indexOf(ch);
           if (off == -1) {
-            throw new TProtocolException(TProtocolException.INVALID_DATA,
-                "Expected control char");
+            throw new TProtocolException(TProtocolException.INVALID_DATA, "Expected control char");
           }
           ch = ESCAPE_CHAR_VALS[off];
         }
@@ -712,8 +698,8 @@ public abstract class TJSONProtocolBase extends TProtocol {
     try {
       return Long.valueOf(str);
     } catch (NumberFormatException ex) {
-      throw new TProtocolException(TProtocolException.INVALID_DATA,
-          "Bad data encounted in numeric data");
+      throw new TProtocolException(
+          TProtocolException.INVALID_DATA, "Bad data encounted in numeric data");
     }
   }
 
@@ -725,11 +711,10 @@ public abstract class TJSONProtocolBase extends TProtocol {
       TByteArrayOutputStream arr = readJSONString(true);
       try {
         double dub = Double.valueOf(arr.toString("UTF-8"));
-        if (!context_.escapeNum() && !Double.isNaN(dub) &&
-            !Double.isInfinite(dub)) {
+        if (!context_.escapeNum() && !Double.isNaN(dub) && !Double.isInfinite(dub)) {
           // Throw exception -- we should not be in a string in this case
-          throw new TProtocolException(TProtocolException.INVALID_DATA,
-              "Numeric data unexpectedly quoted");
+          throw new TProtocolException(
+              TProtocolException.INVALID_DATA, "Numeric data unexpectedly quoted");
         }
         return dub;
       } catch (UnsupportedEncodingException ex) {
@@ -743,8 +728,8 @@ public abstract class TJSONProtocolBase extends TProtocol {
       try {
         return Double.valueOf(readJSONNumericChars());
       } catch (NumberFormatException ex) {
-        throw new TProtocolException(TProtocolException.INVALID_DATA,
-            "Bad data encounted in numeric data");
+        throw new TProtocolException(
+            TProtocolException.INVALID_DATA, "Bad data encounted in numeric data");
       }
     }
   }
@@ -757,11 +742,10 @@ public abstract class TJSONProtocolBase extends TProtocol {
       TByteArrayOutputStream arr = readJSONString(true);
       try {
         float flt = Float.valueOf(arr.toString("UTF-8"));
-        if (!context_.escapeNum() && !Float.isNaN(flt) &&
-            !Float.isInfinite(flt)) {
+        if (!context_.escapeNum() && !Float.isNaN(flt) && !Float.isInfinite(flt)) {
           // Throw exception -- we should not be in a string in this case
-          throw new TProtocolException(TProtocolException.INVALID_DATA,
-              "Numeric data unexpectedly quoted");
+          throw new TProtocolException(
+              TProtocolException.INVALID_DATA, "Numeric data unexpectedly quoted");
         }
         return flt;
       } catch (UnsupportedEncodingException ex) {
@@ -775,8 +759,8 @@ public abstract class TJSONProtocolBase extends TProtocol {
       try {
         return Float.valueOf(readJSONNumericChars());
       } catch (NumberFormatException ex) {
-        throw new TProtocolException(TProtocolException.INVALID_DATA,
-            "Bad data encounted in numeric data");
+        throw new TProtocolException(
+            TProtocolException.INVALID_DATA, "Bad data encounted in numeric data");
       }
     }
   }
@@ -834,8 +818,8 @@ public abstract class TJSONProtocolBase extends TProtocol {
   public TMessage readMessageBegin() throws TException {
     readJSONArrayStart();
     if (readJSONInteger() != VERSION) {
-      throw new TProtocolException(TProtocolException.BAD_VERSION,
-          "Message contained bad version.");
+      throw new TProtocolException(
+          TProtocolException.BAD_VERSION, "Message contained bad version.");
     }
     String name;
     try {
@@ -854,10 +838,9 @@ public abstract class TJSONProtocolBase extends TProtocol {
   }
 
   /**
-   * JSON and CompactJSON protocol serialize bool type as int with values 0 and 1,
-   * but for deserialization it's worth supporting false and true JSON literals
-   * as well for cases when CompactJSON is used to deserialize messages not
-   * authored by Thrift.
+   * JSON and CompactJSON protocol serialize bool type as int with values 0 and 1, but for
+   * deserialization it's worth supporting false and true JSON literals as well for cases when
+   * CompactJSON is used to deserialize messages not authored by Thrift.
    */
   @Override
   public boolean readBool() throws TException {
@@ -888,8 +871,7 @@ public abstract class TJSONProtocolBase extends TProtocol {
       // "false" or "true" detected, read character by character
       for (byte expected : literalValue) {
         if (reader_.read() != expected) {
-          throw new TProtocolException(TProtocolException.INVALID_DATA,
-              "Invalid boolean literal");
+          throw new TProtocolException(TProtocolException.INVALID_DATA, "Invalid boolean literal");
         }
       }
 
@@ -913,8 +895,8 @@ public abstract class TJSONProtocolBase extends TProtocol {
     try {
       numericResult = Long.valueOf(str);
     } catch (NumberFormatException ex) {
-      throw new TProtocolException(TProtocolException.INVALID_DATA,
-          "Bad data encounted in numeric data");
+      throw new TProtocolException(
+          TProtocolException.INVALID_DATA, "Bad data encounted in numeric data");
     }
 
     return numericResult != 0;
@@ -963,5 +945,4 @@ public abstract class TJSONProtocolBase extends TProtocol {
   public byte[] readBinary() throws TException {
     return readJSONBase64();
   }
-
 }

@@ -19,9 +19,7 @@
 
 package com.facebook.thrift.protocol;
 
-/**
- * Helper class that encapsulates field metadata.
- */
+/** Helper class that encapsulates field metadata. */
 public class TField {
   public TField() {
     this("", TType.STOP, (short) 0);

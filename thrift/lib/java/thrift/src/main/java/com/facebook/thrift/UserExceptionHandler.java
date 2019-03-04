@@ -30,18 +30,14 @@ public class UserExceptionHandler extends TProcessorEventHandler {
     TProtocol protocol = connectionContext.getOutputProtocol();
     TTransport transport = protocol.getTransport();
     return (transport instanceof THeaderTransport) ? transport : null;
-
   }
 
   @Override
-  public <T extends Throwable & TBase>
-    void declaredUserException(Object handler_context,
-                               String fn_name,
-                               T th)
-    throws TException {
+  public <T extends Throwable & TBase> void declaredUserException(
+      Object handler_context, String fn_name, T th) throws TException {
 
     if (handler_context != null) {
-      THeaderTransport headerTransport = (THeaderTransport)handler_context;
+      THeaderTransport headerTransport = (THeaderTransport) handler_context;
       headerTransport.setHeader("uex", th.getClass().getSimpleName());
       // On thrift-generated exceptions, getMessage doesn't include any
       // declared fields (and will be unset unless somebody explicitly called
@@ -50,26 +46,23 @@ public class UserExceptionHandler extends TProcessorEventHandler {
       // Otherwise, fall back to toString. It would be nice to skip toString if
       // there are no fields, but that would be much harder.
       String message = th.getMessage();
-      if (message != null && ! message.isEmpty()) {
+      if (message != null && !message.isEmpty()) {
         headerTransport.setHeader("uexw", message);
       } else {
         String str = // don't inline; see JDK-8056984
-              th.toString(/* prettyPrint */ false);
+            th.toString(/* prettyPrint */ false);
         headerTransport.setHeader("uexw", str);
       }
     }
-
   }
 
   @Override
-  public void handlerError(Object handler_context, String fn_name, Throwable th)
-    throws TException {
+  public void handlerError(Object handler_context, String fn_name, Throwable th) throws TException {
 
     if (handler_context != null) {
-      THeaderTransport headerTransport = (THeaderTransport)handler_context;
+      THeaderTransport headerTransport = (THeaderTransport) handler_context;
       headerTransport.setHeader("uex", th.getClass().getSimpleName());
       headerTransport.setHeader("uexw", th.toString());
     }
-
   }
 }

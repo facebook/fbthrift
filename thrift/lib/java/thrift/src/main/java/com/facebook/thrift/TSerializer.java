@@ -23,31 +23,22 @@ import com.facebook.thrift.protocol.TBinaryProtocol;
 import com.facebook.thrift.protocol.TProtocol;
 import com.facebook.thrift.protocol.TProtocolFactory;
 import com.facebook.thrift.transport.TIOStreamTransport;
-
 import java.io.ByteArrayOutputStream;
 import java.io.UnsupportedEncodingException;
 
-/**
- * Generic utility for easily serializing objects into a byte array or Java
- * String.
- */
+/** Generic utility for easily serializing objects into a byte array or Java String. */
 public class TSerializer {
 
-  /**
-   * Internal protocol used for serializing objects.
-   */
+  /** Internal protocol used for serializing objects. */
   private final TProtocolFactory protocolFactory;
 
-  /**
-   * Create a new TSerializer that uses the TBinaryProtocol by default.
-   */
+  /** Create a new TSerializer that uses the TBinaryProtocol by default. */
   public TSerializer() {
     this(new TBinaryProtocol.Factory());
   }
 
   /**
-   * Create a new TSerializer. It will use the TProtocol specified by the
-   * factory that is passed in.
+   * Create a new TSerializer. It will use the TProtocol specified by the factory that is passed in.
    *
    * @param protocolFactory Factory to create a protocol
    */
@@ -56,9 +47,8 @@ public class TSerializer {
   }
 
   /**
-   * Serialize the Thrift object into a byte array. The process is simple,
-   * just clear the byte array output, write the object into it, and grab the
-   * raw bytes.
+   * Serialize the Thrift object into a byte array. The process is simple, just clear the byte array
+   * output, write the object into it, and grab the raw bytes.
    *
    * @param base The object to serialize
    * @return Serialized object in byte[] format
@@ -74,8 +64,7 @@ public class TSerializer {
   }
 
   /**
-   * Serialize the Thrift object into a Java string, using a specified
-   * character set for encoding.
+   * Serialize the Thrift object into a Java string, using a specified character set for encoding.
    *
    * @param base The object to serialize
    * @param charset Valid JVM charset
@@ -90,8 +79,7 @@ public class TSerializer {
   }
 
   /**
-   * Serialize the Thrift object into a Java string, using the default JVM
-   * charset encoding.
+   * Serialize the Thrift object into a Java string, using the default JVM charset encoding.
    *
    * @param base The object to serialize
    * @return Serialized object as a String

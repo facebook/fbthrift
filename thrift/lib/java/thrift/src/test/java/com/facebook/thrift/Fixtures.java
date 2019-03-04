@@ -17,14 +17,12 @@
  * under the License.
  */
 
-
 package com.facebook.thrift;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-
 import thrift.test.Bonk;
 import thrift.test.CompactProtoTestStruct;
 import thrift.test.HolyMoley;
@@ -34,16 +32,15 @@ import thrift.test.OneOfEach;
 public class Fixtures {
 
   private static final byte[] kUnicodeBytes = {
-      (byte) 0xd3, (byte) 0x80, (byte) 0xe2, (byte) 0x85, (byte) 0xae, (byte) 0xce,
-      (byte) 0x9d, (byte) 0x20, (byte) 0xd0, (byte) 0x9d, (byte) 0xce, (byte) 0xbf,
-      (byte) 0xe2, (byte) 0x85, (byte) 0xbf, (byte) 0xd0, (byte) 0xbe, (byte) 0xc9,
-      (byte) 0xa1, (byte) 0xd0, (byte) 0xb3, (byte) 0xd0, (byte) 0xb0, (byte) 0xcf,
-      (byte) 0x81, (byte) 0xe2, (byte) 0x84, (byte) 0x8e, (byte) 0x20, (byte) 0xce,
-      (byte) 0x91, (byte) 0x74, (byte) 0x74, (byte) 0xce, (byte) 0xb1, (byte) 0xe2,
-      (byte) 0x85, (byte) 0xbd, (byte) 0xce, (byte) 0xba, (byte) 0x83, (byte) 0xe2,
-      (byte) 0x80, (byte) 0xbc
+    (byte) 0xd3, (byte) 0x80, (byte) 0xe2, (byte) 0x85, (byte) 0xae, (byte) 0xce,
+    (byte) 0x9d, (byte) 0x20, (byte) 0xd0, (byte) 0x9d, (byte) 0xce, (byte) 0xbf,
+    (byte) 0xe2, (byte) 0x85, (byte) 0xbf, (byte) 0xd0, (byte) 0xbe, (byte) 0xc9,
+    (byte) 0xa1, (byte) 0xd0, (byte) 0xb3, (byte) 0xd0, (byte) 0xb0, (byte) 0xcf,
+    (byte) 0x81, (byte) 0xe2, (byte) 0x84, (byte) 0x8e, (byte) 0x20, (byte) 0xce,
+    (byte) 0x91, (byte) 0x74, (byte) 0x74, (byte) 0xce, (byte) 0xb1, (byte) 0xe2,
+    (byte) 0x85, (byte) 0xbd, (byte) 0xce, (byte) 0xba, (byte) 0x83, (byte) 0xe2,
+    (byte) 0x80, (byte) 0xbc
   };
-
 
   public static final OneOfEach oneOfEach;
   public static final Nesting nesting;
@@ -126,10 +123,9 @@ public class Fixtures {
 
       // superhuge compact proto test struct
       compactProtoTestStruct = new CompactProtoTestStruct(thrift.test.Constants.COMPACT_TEST);
-      compactProtoTestStruct.a_binary = new byte[]{0, 1, 2, 3, 4, 5, 6, 7, 8};
+      compactProtoTestStruct.a_binary = new byte[] {0, 1, 2, 3, 4, 5, 6, 7, 8};
     } catch (Exception e) {
       throw new RuntimeException(e);
     }
   }
-
 }

@@ -1,17 +1,15 @@
 /**
  * Copyright 2011 Facebook
- * @author Wei Chen (weichen@fb.com)
  *
- * A class to manage moving average stats. The class can be used to
- * calculate 1-minute, 10-minute, 60-minute simple moving averages.
+ * <p>A class to manage moving average stats. The class can be used to calculate 1-minute,
+ * 10-minute, 60-minute simple moving averages.
+ *
+ * @author Wei Chen (weichen@fb.com)
  */
-
 package com.facebook.thrift.direct_server;
 
-import java.util.concurrent.ConcurrentLinkedQueue;
-
 import com.facebook.fbcode.fb303.FacebookBase;
-
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class MovingAvgStat {
 
@@ -37,7 +35,6 @@ public class MovingAvgStat {
   // The object that display stats values
   protected FacebookBase handler_;
 
-
   protected final String nameOf1Min_;
 
   protected final String nameOf10Min_;
@@ -54,7 +51,6 @@ public class MovingAvgStat {
 
   protected final String nameOfAllAvg_;
 
-
   // A singleton that updates fb303 counters periodically.
   static class StatsManager extends Thread {
 
@@ -62,7 +58,7 @@ public class MovingAvgStat {
     private ConcurrentLinkedQueue<MovingAvgStat> stats_;
 
     // Update fb303 counters every 20 seconds.
-    static private int kUpdateInterval = 20000;
+    private static int kUpdateInterval = 20000;
 
     StatsManager() {
       stats_ = new ConcurrentLinkedQueue<MovingAvgStat>();
@@ -75,7 +71,8 @@ public class MovingAvgStat {
     }
 
     // Refresh fb303 counters periodically.
-    @Override public void run() {
+    @Override
+    public void run() {
       long dur = 60000;
       long ms = System.currentTimeMillis();
       long nextUpdate = (ms / dur + 1) * dur;
@@ -84,7 +81,7 @@ public class MovingAvgStat {
         if (ms < nextUpdate) {
           // Do not rotate history
           for (MovingAvgStat s : stats_) {
-            synchronized(s) {
+            synchronized (s) {
               s.updateFb303(false);
             }
           }
@@ -93,7 +90,7 @@ public class MovingAvgStat {
           nextUpdate = (ms / dur + 1) * dur;
           for (MovingAvgStat s : stats_) {
             // Rotate history
-            synchronized(s) {
+            synchronized (s) {
               s.updateFb303(true);
 
               int nidx = (s.idx_ + 1) % MovingAvgStat.valueTotalSize();
@@ -111,8 +108,7 @@ public class MovingAvgStat {
 
         // Only sleep if we haven't already passed nextUpdate
         if (ms <= nextUpdate) {
-          long exp = (ms + kUpdateInterval > nextUpdate) ?
-            nextUpdate - ms : kUpdateInterval;
+          long exp = (ms + kUpdateInterval > nextUpdate) ? nextUpdate - ms : kUpdateInterval;
 
           try {
             Thread.sleep(exp);
@@ -126,16 +122,13 @@ public class MovingAvgStat {
     }
   };
 
-
   // A singleton StatsManager that update fb303 counters periodically
   static StatsManager manager_ = new StatsManager();
 
-
   // Return array length of @vals_.
-  final public static int valueTotalSize() {
+  public static final int valueTotalSize() {
     return 60;
   }
-
 
   public MovingAvgStat(FacebookBase h, String fName, MovingAvgStat b) {
     handler_ = h;
@@ -161,7 +154,7 @@ public class MovingAvgStat {
   }
 
   public void addValue(long v) {
-    synchronized(this) {
+    synchronized (this) {
       int i = idx_ % valueTotalSize();
       vals_[i] += v;
       sumOf10Min_ += v;

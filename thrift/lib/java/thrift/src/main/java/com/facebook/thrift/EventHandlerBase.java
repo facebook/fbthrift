@@ -20,7 +20,6 @@
 package com.facebook.thrift;
 
 import com.facebook.thrift.server.TConnectionContext;
-
 import java.util.ArrayList;
 
 public class EventHandlerBase {
@@ -35,8 +34,7 @@ public class EventHandlerBase {
     public ContextStack(
         ArrayList<TProcessorEventHandler> handlers,
         String method,
-        TConnectionContext connectionContext
-    ) {
+        TConnectionContext connectionContext) {
       ctxs = new ArrayList<Object>();
       for (TProcessorEventHandler handler : handlers) {
         ctxs.add(handler.getContext(method, connectionContext));
@@ -76,17 +74,15 @@ public class EventHandlerBase {
   }
 
   /**
-   * These functions are only used in the client handler
-   * implementation. The server process functions maintain
-   * ContextStack on the stack and binds ctx in to the async calls.
-   * <p>
-   * Clients are not thread safe, so using a member variable is okay.
-   * Client send_ and recv_ functions contain parameters based off of
-   * the function call, and adding a parameter there would change the
-   * function signature enough that other thrift users might break.
-   * <p>
-   * The generated code should be the ONLY user of s_. All other functions
-   * should just use the ContextStack parameter.
+   * These functions are only used in the client handler implementation. The server process
+   * functions maintain ContextStack on the stack and binds ctx in to the async calls.
+   *
+   * <p>Clients are not thread safe, so using a member variable is okay. Client send_ and recv_
+   * functions contain parameters based off of the function call, and adding a parameter there would
+   * change the function signature enough that other thrift users might break.
+   *
+   * <p>The generated code should be the ONLY user of s_. All other functions should just use the
+   * ContextStack parameter.
    */
   public ContextStack getContextStack() {
     return s_;
@@ -97,10 +93,7 @@ public class EventHandlerBase {
     s_ = s;
   }
 
-  protected ContextStack getContextStack(
-      String fn_name,
-      TConnectionContext connectionContext
-  ) {
+  protected ContextStack getContextStack(String fn_name, TConnectionContext connectionContext) {
     return new ContextStack(handlers, fn_name, connectionContext);
   }
 

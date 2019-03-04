@@ -129,25 +129,22 @@ public class EqualityTest {
 package com.facebook.thrift;
 
 // Generated code
+
 import thrift.test.*;
 
-/**
- */
+/** */
 public class EqualityTest {
   public static void main(String[] args) throws Exception {
     JavaTestHelper lhs, rhs;
 
-
     lhs = new JavaTestHelper();
     rhs = new JavaTestHelper();
     lhs.req_int = 1;
     rhs.req_int = 1;
     // this_present = True
     // that_present = True
-    if (lhs.equals(rhs) != true)
-      throw new RuntimeException("Failure");
-    if (lhs.hashCode() != rhs.hashCode())
-      throw new RuntimeException("Failure");
+    if (lhs.equals(rhs) != true) throw new RuntimeException("Failure");
+    if (lhs.hashCode() != rhs.hashCode()) throw new RuntimeException("Failure");
 
     lhs = new JavaTestHelper();
     rhs = new JavaTestHelper();
@@ -155,8 +152,7 @@ public class EqualityTest {
     rhs.req_int = 2;
     // this_present = True
     // that_present = True
-    if (lhs.equals(rhs) != false)
-      throw new RuntimeException("Failure");
+    if (lhs.equals(rhs) != false) throw new RuntimeException("Failure");
 
     lhs = new JavaTestHelper();
     rhs = new JavaTestHelper();
@@ -165,10 +161,8 @@ public class EqualityTest {
     rhs.setReq_intIsSet(true);
     // this_present = True
     // that_present = True
-    if (lhs.equals(rhs) != true)
-      throw new RuntimeException("Failure");
-    if (lhs.hashCode() != rhs.hashCode())
-      throw new RuntimeException("Failure");
+    if (lhs.equals(rhs) != true) throw new RuntimeException("Failure");
+    if (lhs.hashCode() != rhs.hashCode()) throw new RuntimeException("Failure");
 
     lhs = new JavaTestHelper();
     rhs = new JavaTestHelper();
@@ -177,8 +171,7 @@ public class EqualityTest {
     rhs.setReq_intIsSet(true);
     // this_present = True
     // that_present = True
-    if (lhs.equals(rhs) != false)
-      throw new RuntimeException("Failure");
+    if (lhs.equals(rhs) != false) throw new RuntimeException("Failure");
 
     lhs = new JavaTestHelper();
     rhs = new JavaTestHelper();
@@ -187,10 +180,8 @@ public class EqualityTest {
     lhs.setReq_intIsSet(true);
     // this_present = True
     // that_present = True
-    if (lhs.equals(rhs) != true)
-      throw new RuntimeException("Failure");
-    if (lhs.hashCode() != rhs.hashCode())
-      throw new RuntimeException("Failure");
+    if (lhs.equals(rhs) != true) throw new RuntimeException("Failure");
+    if (lhs.hashCode() != rhs.hashCode()) throw new RuntimeException("Failure");
 
     lhs = new JavaTestHelper();
     rhs = new JavaTestHelper();
@@ -199,8 +190,7 @@ public class EqualityTest {
     lhs.setReq_intIsSet(true);
     // this_present = True
     // that_present = True
-    if (lhs.equals(rhs) != false)
-      throw new RuntimeException("Failure");
+    if (lhs.equals(rhs) != false) throw new RuntimeException("Failure");
 
     lhs = new JavaTestHelper();
     rhs = new JavaTestHelper();
@@ -210,10 +200,8 @@ public class EqualityTest {
     rhs.setReq_intIsSet(true);
     // this_present = True
     // that_present = True
-    if (lhs.equals(rhs) != true)
-      throw new RuntimeException("Failure");
-    if (lhs.hashCode() != rhs.hashCode())
-      throw new RuntimeException("Failure");
+    if (lhs.equals(rhs) != true) throw new RuntimeException("Failure");
+    if (lhs.hashCode() != rhs.hashCode()) throw new RuntimeException("Failure");
 
     lhs = new JavaTestHelper();
     rhs = new JavaTestHelper();
@@ -223,8 +211,7 @@ public class EqualityTest {
     rhs.setReq_intIsSet(true);
     // this_present = True
     // that_present = True
-    if (lhs.equals(rhs) != false)
-      throw new RuntimeException("Failure");
+    if (lhs.equals(rhs) != false) throw new RuntimeException("Failure");
 
     lhs = new JavaTestHelper();
     rhs = new JavaTestHelper();
@@ -232,10 +219,8 @@ public class EqualityTest {
     rhs.opt_int = 1;
     // this_present = False
     // that_present = False
-    if (lhs.equals(rhs) != true)
-      throw new RuntimeException("Failure");
-    if (lhs.hashCode() != rhs.hashCode())
-      throw new RuntimeException("Failure");
+    if (lhs.equals(rhs) != true) throw new RuntimeException("Failure");
+    if (lhs.hashCode() != rhs.hashCode()) throw new RuntimeException("Failure");
 
     lhs = new JavaTestHelper();
     rhs = new JavaTestHelper();
@@ -243,10 +228,8 @@ public class EqualityTest {
     rhs.opt_int = 2;
     // this_present = False
     // that_present = False
-    if (lhs.equals(rhs) != true)
-      throw new RuntimeException("Failure");
-    if (lhs.hashCode() != rhs.hashCode())
-      throw new RuntimeException("Failure");
+    if (lhs.equals(rhs) != true) throw new RuntimeException("Failure");
+    if (lhs.hashCode() != rhs.hashCode()) throw new RuntimeException("Failure");
 
     lhs = new JavaTestHelper();
     rhs = new JavaTestHelper();
@@ -255,8 +238,7 @@ public class EqualityTest {
     rhs.setOpt_intIsSet(true);
     // this_present = False
     // that_present = True
-    if (lhs.equals(rhs) != false)
-      throw new RuntimeException("Failure");
+    if (lhs.equals(rhs) != false) throw new RuntimeException("Failure");
 
     lhs = new JavaTestHelper();
     rhs = new JavaTestHelper();
@@ -265,8 +247,7 @@ public class EqualityTest {
     rhs.setOpt_intIsSet(true);
     // this_present = False
     // that_present = True
-    if (lhs.equals(rhs) != false)
-      throw new RuntimeException("Failure");
+    if (lhs.equals(rhs) != false) throw new RuntimeException("Failure");
 
     lhs = new JavaTestHelper();
     rhs = new JavaTestHelper();
@@ -275,8 +256,7 @@ public class EqualityTest {
     lhs.setOpt_intIsSet(true);
     // this_present = True
     // that_present = False
-    if (lhs.equals(rhs) != false)
-      throw new RuntimeException("Failure");
+    if (lhs.equals(rhs) != false) throw new RuntimeException("Failure");
 
     lhs = new JavaTestHelper();
     rhs = new JavaTestHelper();
@@ -285,8 +265,7 @@ public class EqualityTest {
     lhs.setOpt_intIsSet(true);
     // this_present = True
     // that_present = False
-    if (lhs.equals(rhs) != false)
-      throw new RuntimeException("Failure");
+    if (lhs.equals(rhs) != false) throw new RuntimeException("Failure");
 
     lhs = new JavaTestHelper();
     rhs = new JavaTestHelper();
@@ -296,10 +275,8 @@ public class EqualityTest {
     rhs.setOpt_intIsSet(true);
     // this_present = True
     // that_present = True
-    if (lhs.equals(rhs) != true)
-      throw new RuntimeException("Failure");
-    if (lhs.hashCode() != rhs.hashCode())
-      throw new RuntimeException("Failure");
+    if (lhs.equals(rhs) != true) throw new RuntimeException("Failure");
+    if (lhs.hashCode() != rhs.hashCode()) throw new RuntimeException("Failure");
 
     lhs = new JavaTestHelper();
     rhs = new JavaTestHelper();
@@ -309,8 +286,7 @@ public class EqualityTest {
     rhs.setOpt_intIsSet(true);
     // this_present = True
     // that_present = True
-    if (lhs.equals(rhs) != false)
-      throw new RuntimeException("Failure");
+    if (lhs.equals(rhs) != false) throw new RuntimeException("Failure");
 
     lhs = new JavaTestHelper();
     rhs = new JavaTestHelper();
@@ -320,10 +296,8 @@ public class EqualityTest {
     rhs.req_obj = null;
     // this_present = False
     // that_present = False
-    if (lhs.equals(rhs) != true)
-      throw new RuntimeException("Failure");
-    if (lhs.hashCode() != rhs.hashCode())
-      throw new RuntimeException("Failure");
+    if (lhs.equals(rhs) != true) throw new RuntimeException("Failure");
+    if (lhs.hashCode() != rhs.hashCode()) throw new RuntimeException("Failure");
 
     lhs = new JavaTestHelper();
     rhs = new JavaTestHelper();
@@ -333,10 +307,8 @@ public class EqualityTest {
     rhs.req_obj = null;
     // this_present = False
     // that_present = False
-    if (lhs.equals(rhs) != true)
-      throw new RuntimeException("Failure");
-    if (lhs.hashCode() != rhs.hashCode())
-      throw new RuntimeException("Failure");
+    if (lhs.equals(rhs) != true) throw new RuntimeException("Failure");
+    if (lhs.hashCode() != rhs.hashCode()) throw new RuntimeException("Failure");
 
     lhs = new JavaTestHelper();
     rhs = new JavaTestHelper();
@@ -345,8 +317,7 @@ public class EqualityTest {
     lhs.req_obj = null;
     // this_present = False
     // that_present = True
-    if (lhs.equals(rhs) != false)
-      throw new RuntimeException("Failure");
+    if (lhs.equals(rhs) != false) throw new RuntimeException("Failure");
 
     lhs = new JavaTestHelper();
     rhs = new JavaTestHelper();
@@ -355,8 +326,7 @@ public class EqualityTest {
     lhs.req_obj = null;
     // this_present = False
     // that_present = True
-    if (lhs.equals(rhs) != false)
-      throw new RuntimeException("Failure");
+    if (lhs.equals(rhs) != false) throw new RuntimeException("Failure");
 
     lhs = new JavaTestHelper();
     rhs = new JavaTestHelper();
@@ -365,8 +335,7 @@ public class EqualityTest {
     rhs.req_obj = null;
     // this_present = True
     // that_present = False
-    if (lhs.equals(rhs) != false)
-      throw new RuntimeException("Failure");
+    if (lhs.equals(rhs) != false) throw new RuntimeException("Failure");
 
     lhs = new JavaTestHelper();
     rhs = new JavaTestHelper();
@@ -375,8 +344,7 @@ public class EqualityTest {
     rhs.req_obj = null;
     // this_present = True
     // that_present = False
-    if (lhs.equals(rhs) != false)
-      throw new RuntimeException("Failure");
+    if (lhs.equals(rhs) != false) throw new RuntimeException("Failure");
 
     lhs = new JavaTestHelper();
     rhs = new JavaTestHelper();
@@ -384,10 +352,8 @@ public class EqualityTest {
     rhs.req_obj = "foo";
     // this_present = True
     // that_present = True
-    if (lhs.equals(rhs) != true)
-      throw new RuntimeException("Failure");
-    if (lhs.hashCode() != rhs.hashCode())
-      throw new RuntimeException("Failure");
+    if (lhs.equals(rhs) != true) throw new RuntimeException("Failure");
+    if (lhs.hashCode() != rhs.hashCode()) throw new RuntimeException("Failure");
 
     lhs = new JavaTestHelper();
     rhs = new JavaTestHelper();
@@ -395,8 +361,7 @@ public class EqualityTest {
     rhs.req_obj = "bar";
     // this_present = True
     // that_present = True
-    if (lhs.equals(rhs) != false)
-      throw new RuntimeException("Failure");
+    if (lhs.equals(rhs) != false) throw new RuntimeException("Failure");
 
     lhs = new JavaTestHelper();
     rhs = new JavaTestHelper();
@@ -406,10 +371,8 @@ public class EqualityTest {
     rhs.opt_obj = null;
     // this_present = False
     // that_present = False
-    if (lhs.equals(rhs) != true)
-      throw new RuntimeException("Failure");
-    if (lhs.hashCode() != rhs.hashCode())
-      throw new RuntimeException("Failure");
+    if (lhs.equals(rhs) != true) throw new RuntimeException("Failure");
+    if (lhs.hashCode() != rhs.hashCode()) throw new RuntimeException("Failure");
 
     lhs = new JavaTestHelper();
     rhs = new JavaTestHelper();
@@ -419,10 +382,8 @@ public class EqualityTest {
     rhs.opt_obj = null;
     // this_present = False
     // that_present = False
-    if (lhs.equals(rhs) != true)
-      throw new RuntimeException("Failure");
-    if (lhs.hashCode() != rhs.hashCode())
-      throw new RuntimeException("Failure");
+    if (lhs.equals(rhs) != true) throw new RuntimeException("Failure");
+    if (lhs.hashCode() != rhs.hashCode()) throw new RuntimeException("Failure");
 
     lhs = new JavaTestHelper();
     rhs = new JavaTestHelper();
@@ -431,8 +392,7 @@ public class EqualityTest {
     lhs.opt_obj = null;
     // this_present = False
     // that_present = True
-    if (lhs.equals(rhs) != false)
-      throw new RuntimeException("Failure");
+    if (lhs.equals(rhs) != false) throw new RuntimeException("Failure");
 
     lhs = new JavaTestHelper();
     rhs = new JavaTestHelper();
@@ -441,8 +401,7 @@ public class EqualityTest {
     lhs.opt_obj = null;
     // this_present = False
     // that_present = True
-    if (lhs.equals(rhs) != false)
-      throw new RuntimeException("Failure");
+    if (lhs.equals(rhs) != false) throw new RuntimeException("Failure");
 
     lhs = new JavaTestHelper();
     rhs = new JavaTestHelper();
@@ -451,8 +410,7 @@ public class EqualityTest {
     rhs.opt_obj = null;
     // this_present = True
     // that_present = False
-    if (lhs.equals(rhs) != false)
-      throw new RuntimeException("Failure");
+    if (lhs.equals(rhs) != false) throw new RuntimeException("Failure");
 
     lhs = new JavaTestHelper();
     rhs = new JavaTestHelper();
@@ -461,8 +419,7 @@ public class EqualityTest {
     rhs.opt_obj = null;
     // this_present = True
     // that_present = False
-    if (lhs.equals(rhs) != false)
-      throw new RuntimeException("Failure");
+    if (lhs.equals(rhs) != false) throw new RuntimeException("Failure");
 
     lhs = new JavaTestHelper();
     rhs = new JavaTestHelper();
@@ -470,10 +427,8 @@ public class EqualityTest {
     rhs.opt_obj = "foo";
     // this_present = True
     // that_present = True
-    if (lhs.equals(rhs) != true)
-      throw new RuntimeException("Failure");
-    if (lhs.hashCode() != rhs.hashCode())
-      throw new RuntimeException("Failure");
+    if (lhs.equals(rhs) != true) throw new RuntimeException("Failure");
+    if (lhs.hashCode() != rhs.hashCode()) throw new RuntimeException("Failure");
 
     lhs = new JavaTestHelper();
     rhs = new JavaTestHelper();
@@ -481,181 +436,156 @@ public class EqualityTest {
     rhs.opt_obj = "bar";
     // this_present = True
     // that_present = True
-    if (lhs.equals(rhs) != false)
-      throw new RuntimeException("Failure");
+    if (lhs.equals(rhs) != false) throw new RuntimeException("Failure");
 
     lhs = new JavaTestHelper();
     rhs = new JavaTestHelper();
-    lhs.req_bin = new byte[]{1,2};
-    rhs.req_bin = new byte[]{1,2};
+    lhs.req_bin = new byte[] {1, 2};
+    rhs.req_bin = new byte[] {1, 2};
     lhs.req_bin = null;
     rhs.req_bin = null;
     // this_present = False
     // that_present = False
-    if (lhs.equals(rhs) != true)
-      throw new RuntimeException("Failure");
-    if (lhs.hashCode() != rhs.hashCode())
-      throw new RuntimeException("Failure");
+    if (lhs.equals(rhs) != true) throw new RuntimeException("Failure");
+    if (lhs.hashCode() != rhs.hashCode()) throw new RuntimeException("Failure");
 
     lhs = new JavaTestHelper();
     rhs = new JavaTestHelper();
-    lhs.req_bin = new byte[]{1,2};
-    rhs.req_bin = new byte[]{3,4};
+    lhs.req_bin = new byte[] {1, 2};
+    rhs.req_bin = new byte[] {3, 4};
     lhs.req_bin = null;
     rhs.req_bin = null;
     // this_present = False
     // that_present = False
-    if (lhs.equals(rhs) != true)
-      throw new RuntimeException("Failure");
-    if (lhs.hashCode() != rhs.hashCode())
-      throw new RuntimeException("Failure");
+    if (lhs.equals(rhs) != true) throw new RuntimeException("Failure");
+    if (lhs.hashCode() != rhs.hashCode()) throw new RuntimeException("Failure");
 
     lhs = new JavaTestHelper();
     rhs = new JavaTestHelper();
-    lhs.req_bin = new byte[]{1,2};
-    rhs.req_bin = new byte[]{1,2};
+    lhs.req_bin = new byte[] {1, 2};
+    rhs.req_bin = new byte[] {1, 2};
     lhs.req_bin = null;
     // this_present = False
     // that_present = True
-    if (lhs.equals(rhs) != false)
-      throw new RuntimeException("Failure");
+    if (lhs.equals(rhs) != false) throw new RuntimeException("Failure");
 
     lhs = new JavaTestHelper();
     rhs = new JavaTestHelper();
-    lhs.req_bin = new byte[]{1,2};
-    rhs.req_bin = new byte[]{3,4};
+    lhs.req_bin = new byte[] {1, 2};
+    rhs.req_bin = new byte[] {3, 4};
     lhs.req_bin = null;
     // this_present = False
     // that_present = True
-    if (lhs.equals(rhs) != false)
-      throw new RuntimeException("Failure");
+    if (lhs.equals(rhs) != false) throw new RuntimeException("Failure");
 
     lhs = new JavaTestHelper();
     rhs = new JavaTestHelper();
-    lhs.req_bin = new byte[]{1,2};
-    rhs.req_bin = new byte[]{1,2};
+    lhs.req_bin = new byte[] {1, 2};
+    rhs.req_bin = new byte[] {1, 2};
     rhs.req_bin = null;
     // this_present = True
     // that_present = False
-    if (lhs.equals(rhs) != false)
-      throw new RuntimeException("Failure");
+    if (lhs.equals(rhs) != false) throw new RuntimeException("Failure");
 
     lhs = new JavaTestHelper();
     rhs = new JavaTestHelper();
-    lhs.req_bin = new byte[]{1,2};
-    rhs.req_bin = new byte[]{3,4};
+    lhs.req_bin = new byte[] {1, 2};
+    rhs.req_bin = new byte[] {3, 4};
     rhs.req_bin = null;
     // this_present = True
     // that_present = False
-    if (lhs.equals(rhs) != false)
-      throw new RuntimeException("Failure");
+    if (lhs.equals(rhs) != false) throw new RuntimeException("Failure");
 
     lhs = new JavaTestHelper();
     rhs = new JavaTestHelper();
-    lhs.req_bin = new byte[]{1,2};
-    rhs.req_bin = new byte[]{1,2};
+    lhs.req_bin = new byte[] {1, 2};
+    rhs.req_bin = new byte[] {1, 2};
     // this_present = True
     // that_present = True
-    if (lhs.equals(rhs) != true)
-      throw new RuntimeException("Failure");
-    if (lhs.hashCode() != rhs.hashCode())
-      throw new RuntimeException("Failure");
+    if (lhs.equals(rhs) != true) throw new RuntimeException("Failure");
+    if (lhs.hashCode() != rhs.hashCode()) throw new RuntimeException("Failure");
 
     lhs = new JavaTestHelper();
     rhs = new JavaTestHelper();
-    lhs.req_bin = new byte[]{1,2};
-    rhs.req_bin = new byte[]{3,4};
+    lhs.req_bin = new byte[] {1, 2};
+    rhs.req_bin = new byte[] {3, 4};
     // this_present = True
     // that_present = True
-    if (lhs.equals(rhs) != false)
-      throw new RuntimeException("Failure");
+    if (lhs.equals(rhs) != false) throw new RuntimeException("Failure");
 
     lhs = new JavaTestHelper();
     rhs = new JavaTestHelper();
-    lhs.opt_bin = new byte[]{1,2};
-    rhs.opt_bin = new byte[]{1,2};
+    lhs.opt_bin = new byte[] {1, 2};
+    rhs.opt_bin = new byte[] {1, 2};
     lhs.opt_bin = null;
     rhs.opt_bin = null;
     // this_present = False
     // that_present = False
-    if (lhs.equals(rhs) != true)
-      throw new RuntimeException("Failure");
-    if (lhs.hashCode() != rhs.hashCode())
-      throw new RuntimeException("Failure");
+    if (lhs.equals(rhs) != true) throw new RuntimeException("Failure");
+    if (lhs.hashCode() != rhs.hashCode()) throw new RuntimeException("Failure");
 
     lhs = new JavaTestHelper();
     rhs = new JavaTestHelper();
-    lhs.opt_bin = new byte[]{1,2};
-    rhs.opt_bin = new byte[]{3,4};
+    lhs.opt_bin = new byte[] {1, 2};
+    rhs.opt_bin = new byte[] {3, 4};
     lhs.opt_bin = null;
     rhs.opt_bin = null;
     // this_present = False
     // that_present = False
-    if (lhs.equals(rhs) != true)
-      throw new RuntimeException("Failure");
-    if (lhs.hashCode() != rhs.hashCode())
-      throw new RuntimeException("Failure");
+    if (lhs.equals(rhs) != true) throw new RuntimeException("Failure");
+    if (lhs.hashCode() != rhs.hashCode()) throw new RuntimeException("Failure");
 
     lhs = new JavaTestHelper();
     rhs = new JavaTestHelper();
-    lhs.opt_bin = new byte[]{1,2};
-    rhs.opt_bin = new byte[]{1,2};
+    lhs.opt_bin = new byte[] {1, 2};
+    rhs.opt_bin = new byte[] {1, 2};
     lhs.opt_bin = null;
     // this_present = False
     // that_present = True
-    if (lhs.equals(rhs) != false)
-      throw new RuntimeException("Failure");
+    if (lhs.equals(rhs) != false) throw new RuntimeException("Failure");
 
     lhs = new JavaTestHelper();
     rhs = new JavaTestHelper();
-    lhs.opt_bin = new byte[]{1,2};
-    rhs.opt_bin = new byte[]{3,4};
+    lhs.opt_bin = new byte[] {1, 2};
+    rhs.opt_bin = new byte[] {3, 4};
     lhs.opt_bin = null;
     // this_present = False
     // that_present = True
-    if (lhs.equals(rhs) != false)
-      throw new RuntimeException("Failure");
+    if (lhs.equals(rhs) != false) throw new RuntimeException("Failure");
 
     lhs = new JavaTestHelper();
     rhs = new JavaTestHelper();
-    lhs.opt_bin = new byte[]{1,2};
-    rhs.opt_bin = new byte[]{1,2};
+    lhs.opt_bin = new byte[] {1, 2};
+    rhs.opt_bin = new byte[] {1, 2};
     rhs.opt_bin = null;
     // this_present = True
     // that_present = False
-    if (lhs.equals(rhs) != false)
-      throw new RuntimeException("Failure");
+    if (lhs.equals(rhs) != false) throw new RuntimeException("Failure");
 
     lhs = new JavaTestHelper();
     rhs = new JavaTestHelper();
-    lhs.opt_bin = new byte[]{1,2};
-    rhs.opt_bin = new byte[]{3,4};
+    lhs.opt_bin = new byte[] {1, 2};
+    rhs.opt_bin = new byte[] {3, 4};
     rhs.opt_bin = null;
     // this_present = True
     // that_present = False
-    if (lhs.equals(rhs) != false)
-      throw new RuntimeException("Failure");
+    if (lhs.equals(rhs) != false) throw new RuntimeException("Failure");
 
     lhs = new JavaTestHelper();
     rhs = new JavaTestHelper();
-    lhs.opt_bin = new byte[]{1,2};
-    rhs.opt_bin = new byte[]{1,2};
+    lhs.opt_bin = new byte[] {1, 2};
+    rhs.opt_bin = new byte[] {1, 2};
     // this_present = True
     // that_present = True
-    if (lhs.equals(rhs) != true)
-      throw new RuntimeException("Failure");
-    if (lhs.hashCode() != rhs.hashCode())
-      throw new RuntimeException("Failure");
+    if (lhs.equals(rhs) != true) throw new RuntimeException("Failure");
+    if (lhs.hashCode() != rhs.hashCode()) throw new RuntimeException("Failure");
 
     lhs = new JavaTestHelper();
     rhs = new JavaTestHelper();
-    lhs.opt_bin = new byte[]{1,2};
-    rhs.opt_bin = new byte[]{3,4};
+    lhs.opt_bin = new byte[] {1, 2};
+    rhs.opt_bin = new byte[] {3, 4};
     // this_present = True
     // that_present = True
-    if (lhs.equals(rhs) != false)
-      throw new RuntimeException("Failure");
-
+    if (lhs.equals(rhs) != false) throw new RuntimeException("Failure");
   }
 }
-

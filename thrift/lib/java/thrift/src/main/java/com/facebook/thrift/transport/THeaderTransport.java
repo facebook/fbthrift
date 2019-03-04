@@ -125,7 +125,6 @@ public class THeaderTransport extends TFramedTransport {
   private final HashMap<String, String> writeHeaders;
   private final HashMap<String, String> writePersistentHeaders;
 
-
   private static final String IDENTITY_HEADER = "identity";
   private static final String ID_VERSION_HEADER = "id_version";
   private static final String ID_VERSION = "1";
@@ -172,19 +171,14 @@ public class THeaderTransport extends TFramedTransport {
     }
   }
 
-  /**
-   * Sets protocol Id we are writing
-   * May be updated on read.
-   */
+  /** Sets protocol Id we are writing May be updated on read. */
   public void setProtocolId(int protoId) {
     this.protoId = protoId;
   }
 
-
   /**
-   * Sets the internal buffer size for zlib transform
-   * This will work with any value (except 0), but this is provided
-   * as an optimization knob.
+   * Sets the internal buffer size for zlib transform This will work with any value (except 0), but
+   * this is provided as an optimization knob.
    *
    * @param sz Block size for decompress
    */
@@ -192,9 +186,7 @@ public class THeaderTransport extends TFramedTransport {
     zlibBufferSize = sz;
   }
 
-  /**
-   * Add a transform to the write transforms list
-   */
+  /** Add a transform to the write transforms list */
   public void addTransform(Transforms transform) {
     writeTransforms.add(transform);
   }
@@ -263,9 +255,7 @@ public class THeaderTransport extends TFramedTransport {
     return readBuffer_.read(buf, off, len);
   }
 
-  /**
-   * Should be called from THeaderProtocol at the start of every message
-   */
+  /** Should be called from THeaderProtocol at the start of every message */
   public void _resetProtocol() throws TTransportException {
     // Set to anything except unframed
     clientType = ClientTypes.HEADERS;
@@ -287,8 +277,7 @@ public class THeaderTransport extends TFramedTransport {
     transport_.readAll(i32buf, 0, 4);
     int word1 = decodeWord(i32buf);
 
-    if ((word1 & TBinaryProtocol.VERSION_MASK) ==
-        TBinaryProtocol.VERSION_1) {
+    if ((word1 & TBinaryProtocol.VERSION_MASK) == TBinaryProtocol.VERSION_1) {
       clientType = ClientTypes.UNFRAMED_DEPRECATED;
       if (reqLen <= 4) {
         readBuffer_.reset(i32buf);
@@ -312,15 +301,13 @@ public class THeaderTransport extends TFramedTransport {
                   + "In all likelihood, this isn't the reason of your problem "
                   + "(probably a local daemon sending HTTP content to all listening ports).");
         }
-        throw new TTransportException("Framed transport frame " +
-            "is too large");
+        throw new TTransportException("Framed transport frame " + "is too large");
       }
 
       // Could be framed or header format.  Check next word.
       transport_.readAll(i32buf, 0, 4);
       int version = decodeWord(i32buf);
-      if ((version & TBinaryProtocol.VERSION_MASK) ==
-          TBinaryProtocol.VERSION_1) {
+      if ((version & TBinaryProtocol.VERSION_MASK) == TBinaryProtocol.VERSION_1) {
         clientType = ClientTypes.FRAMED_DEPRECATED;
         byte[] buff = new byte[word1];
         System.arraycopy(i32buf, 0, buff, 0, 4);
@@ -329,8 +316,7 @@ public class THeaderTransport extends TFramedTransport {
       } else if ((version & HEADER_MAGIC_MASK) == HEADER_MAGIC) {
         clientType = ClientTypes.HEADERS;
         if (word1 - 4 < 10) {
-          throw new TTransportException("Header transport frame " +
-              "is too small");
+          throw new TTransportException("Header transport frame " + "is too small");
         }
         byte[] buff = new byte[word1];
         System.arraycopy(i32buf, 0, buff, 0, 4);
@@ -353,9 +339,8 @@ public class THeaderTransport extends TFramedTransport {
   // TODO(davejwatson) potential inclusion in a java util class
 
   /**
-   * Reads a varint from the buffer.
-   * frame.data = buffer to use
-   * frame.idx = Offset to data in this case, incremented by size of varint
+   * Reads a varint from the buffer. frame.data = buffer to use frame.idx = Offset to data in this
+   * case, incremented by size of varint
    */
   private int readVarint32Buf(ByteBuffer frame) {
     int result = 0;
@@ -402,8 +387,7 @@ public class THeaderTransport extends TFramedTransport {
     }
   }
 
-  private void readHeaderFormat(int headerSize, byte[] buff)
-      throws TTransportException {
+  private void readHeaderFormat(int headerSize, byte[] buff) throws TTransportException {
     ByteBuffer frame = ByteBuffer.wrap(buff);
     frame.position(10); // Advance past version, flags, seqid
 
@@ -419,8 +403,7 @@ public class THeaderTransport extends TFramedTransport {
     readTransforms = new ArrayList<Integer>(numHeaders);
 
     if (protoId == T_JSON_PROTOCOL && clientType != ClientTypes.HTTP) {
-      throw new TTransportException("Trying to recv JSON encoding " +
-          "over binary");
+      throw new TTransportException("Trying to recv JSON encoding " + "over binary");
     }
 
     // Read in the headers.  Data for each varies. See
@@ -472,8 +455,7 @@ public class THeaderTransport extends TFramedTransport {
     readBuffer_.reset(frame.array(), frame.position(), frame.remaining());
   }
 
-  private ByteBuffer untransform(ByteBuffer data)
-      throws TTransportException {
+  private ByteBuffer untransform(ByteBuffer data) throws TTransportException {
 
     if (readTransforms.contains(Transforms.ZLIB_TRANSFORM.getValue())) {
       try {
@@ -508,16 +490,8 @@ public class THeaderTransport extends TFramedTransport {
       }
     } else if (readTransforms.contains(Transforms.SNAPPY_TRANSFORM.getValue())) {
       try {
-        byte[] output = new byte[
-            Snappy.getUncompressedLength(
-                data.array(),
-                data.position())];
-        int length = Snappy.uncompress(
-            data.array(),
-            data.position(),
-            data.remaining(),
-            output,
-            0);
+        byte[] output = new byte[Snappy.getUncompressedLength(data.array(), data.position())];
+        int length = Snappy.uncompress(data.array(), data.position(), data.remaining(), output, 0);
         data = ByteBuffer.wrap(output, 0, length);
       } catch (CorruptionException e) {
         throw new THeaderException(e);
@@ -575,8 +549,7 @@ public class THeaderTransport extends TFramedTransport {
   }
 
   private ByteBuffer flushInfoHeaders(Infos info, Map<String, String> headers) {
-    ByteBuffer infoData =
-        ByteBuffer.allocate(getWriteHeadersSize(headers));
+    ByteBuffer infoData = ByteBuffer.allocate(getWriteHeadersSize(headers));
     if (!headers.isEmpty()) {
       writeVarint(infoData, info.getValue());
       writeVarint(infoData, headers.size());
@@ -610,15 +583,17 @@ public class THeaderTransport extends TFramedTransport {
       TApplicationException tae = null;
       byte[] buf = writeBuffer_.get();
       int len = writeBuffer_.len();
-      if (len >= 2 && buf[0] == TCompactProtocol.PROTOCOL_ID &&
-          ((buf[1] >> TCompactProtocol.TYPE_SHIFT_AMOUNT) & 0x03) == TMessageType.EXCEPTION) {
+      if (len >= 2
+          && buf[0] == TCompactProtocol.PROTOCOL_ID
+          && ((buf[1] >> TCompactProtocol.TYPE_SHIFT_AMOUNT) & 0x03) == TMessageType.EXCEPTION) {
         // Compact
         TCompactProtocol proto = new TCompactProtocol(new TMemoryInputTransport(buf));
         @SuppressWarnings("unused")
         TMessage msg = proto.readMessageBegin();
         tae = TApplicationException.read(proto);
-      } else if (len >= 4 && ((buf[0] << 24) | (buf[1] << 16)) == TBinaryProtocol.VERSION_1 &&
-          buf[3] == TMessageType.EXCEPTION) {
+      } else if (len >= 4
+          && ((buf[0] << 24) | (buf[1] << 16)) == TBinaryProtocol.VERSION_1
+          && buf[3] == TMessageType.EXCEPTION) {
         // Binary
         TBinaryProtocol proto = new TBinaryProtocol(new TMemoryInputTransport(buf));
         @SuppressWarnings("unused")
@@ -646,21 +621,20 @@ public class THeaderTransport extends TFramedTransport {
     }
 
     if (frame.remaining() > MAX_FRAME_SIZE) {
-      throw new TTransportException("Attempting to send frame that is " +
-          "too large: " +
-          Integer.toString(frame.remaining()));
+      throw new TTransportException(
+          "Attempting to send frame that is "
+              + "too large: "
+              + Integer.toString(frame.remaining()));
     }
 
     if (protoId == T_JSON_PROTOCOL && clientType != ClientTypes.HTTP) {
-      throw new TTransportException("Trying to send JSON encoding" +
-          " over binary");
+      throw new TTransportException("Trying to send JSON encoding" + " over binary");
     }
 
     if (clientType == ClientTypes.HEADERS) {
 
       // Each varint could be up to 5 in size.
-      ByteBuffer transformData =
-          ByteBuffer.allocate(writeTransforms.size() * 5);
+      ByteBuffer transformData = ByteBuffer.allocate(writeTransforms.size() * 5);
 
       // For now, no transforms require data.
       int numTransforms = writeTransforms.size();
@@ -675,11 +649,8 @@ public class THeaderTransport extends TFramedTransport {
         writeHeaders.put(IDENTITY_HEADER, identity);
       }
 
-      ByteBuffer infoData1 = flushInfoHeaders(
-          Infos.INFO_PKEYVALUE, writePersistentHeaders);
-      ByteBuffer infoData2 = flushInfoHeaders(
-          Infos.INFO_KEYVALUE, writeHeaders);
-
+      ByteBuffer infoData1 = flushInfoHeaders(Infos.INFO_PKEYVALUE, writePersistentHeaders);
+      ByteBuffer infoData2 = flushInfoHeaders(Infos.INFO_KEYVALUE, writeHeaders);
 
       ByteBuffer headerData = ByteBuffer.allocate(10);
       writeVarint(headerData, protoId);
@@ -687,8 +658,11 @@ public class THeaderTransport extends TFramedTransport {
       headerData.limit(headerData.position());
       headerData.position(0);
 
-      int headerSize = transformData.remaining() + infoData1.remaining() +
-          infoData2.remaining() + headerData.remaining();
+      int headerSize =
+          transformData.remaining()
+              + infoData1.remaining()
+              + infoData2.remaining()
+              + headerData.remaining();
       int paddingSize = 4 - headerSize % 4;
       headerSize += paddingSize;
 

@@ -18,20 +18,18 @@
  */
 package com.facebook.thrift.async;
 
-
 public interface AsyncMethodCallback {
   /**
-   * This method will be called when the remote side has completed invoking
-   * your method call and the result is fully read. For oneway method calls,
-   * this method will be called as soon as we have completed writing out the
-   * request.
+   * This method will be called when the remote side has completed invoking your method call and the
+   * result is fully read. For oneway method calls, this method will be called as soon as we have
+   * completed writing out the request.
    */
   public void onComplete(TAsyncMethodCall response);
 
   /**
-   * This method will be called when there is an unexpected clientside
-   * exception. This does not include application-defined exceptions that
-   * appear in the IDL, but rather things like IOExceptions.
+   * This method will be called when there is an unexpected clientside exception. This does not
+   * include application-defined exceptions that appear in the IDL, but rather things like
+   * IOExceptions.
    */
   public void onError(Exception exception);
 }

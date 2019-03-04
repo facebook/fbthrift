@@ -25,19 +25,30 @@ import com.facebook.thrift.TException;
  * <code>TMultiplexedProtocol</code> is a protocol-independent concrete decorator that allows a
  * Thrift client to communicate with a multiplexing Thrift server, by prepending the service name to
  * the function name during function calls.
+ *
  * <p>
- * <p>NOTE: THIS IS NOT USED BY SERVERS.  On the server, use {@link org.apache.thrift.TMultiplexedProcessor
- * TMultiplexedProcessor} to handle requests from a multiplexing client.
+ *
+ * <p>NOTE: THIS IS NOT USED BY SERVERS. On the server, use {@link
+ * org.apache.thrift.TMultiplexedProcessor TMultiplexedProcessor} to handle requests from a
+ * multiplexing client.
+ *
  * <p>
+ *
  * <p>This example uses a single socket transport to invoke two services:
+ *
  * <p>
- * <blockquote><code> TSocket transport = new TSocket("localhost", 9090);<br/>
+ *
+ * <blockquote>
+ *
+ * <code> TSocket transport = new TSocket("localhost", 9090);<br/>
  * transport.open();<br/> <br/> TBinaryProtocol protocol = new TBinaryProtocol(transport);<br/>
  * <br/> TMultiplexedProtocol mp = new TMultiplexedProtocol(protocol, "Calculator");<br/>
  * Calculator.Client service = new Calculator.Client(mp);<br/> <br/> TMultiplexedProtocol mp2 = new
  * TMultiplexedProtocol(protocol, "WeatherReport");<br/> WeatherReport.Client service2 = new
  * WeatherReport.Client(mp2);<br/> <br/> System.out.println(service.add(2,2));<br/>
- * System.out.println(service2.getTemperature());<br/> </code></blockquote>
+ * System.out.println(service2.getTemperature());<br/> </code>
+ *
+ * </blockquote>
  *
  * @see org.apache.thrift.protocol.TProtocolDecorator
  */
@@ -49,10 +60,9 @@ public class TMultiplexedProtocol extends TProtocolDecorator {
   private final String SERVICE_NAME;
 
   /**
-   * Wrap the specified protocol, allowing it to be used to communicate with a
-   * multiplexing server.  The <code>serviceName</code> is required as it is
-   * prepended to the message header so that the multiplexing server can broker
-   * the function call to the proper service.
+   * Wrap the specified protocol, allowing it to be used to communicate with a multiplexing server.
+   * The <code>serviceName</code> is required as it is prepended to the message header so that the
+   * multiplexing server can broker the function call to the proper service.
    *
    * @param protocol Your communication protocol of choice, e.g. <code>TBinaryProtocol</code>.
    * @param serviceName The service name of the service communicating via this protocol.
@@ -71,11 +81,8 @@ public class TMultiplexedProtocol extends TProtocolDecorator {
   @Override
   public void writeMessageBegin(TMessage tMessage) throws TException {
     if (tMessage.type == TMessageType.CALL || tMessage.type == TMessageType.ONEWAY) {
-      super.writeMessageBegin(new TMessage(
-          SERVICE_NAME + SEPARATOR + tMessage.name,
-          tMessage.type,
-          tMessage.seqid
-      ));
+      super.writeMessageBegin(
+          new TMessage(SERVICE_NAME + SEPARATOR + tMessage.name, tMessage.type, tMessage.seqid));
     } else {
       super.writeMessageBegin(tMessage);
     }

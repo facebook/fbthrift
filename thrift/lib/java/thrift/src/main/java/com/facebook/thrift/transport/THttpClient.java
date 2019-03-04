@@ -28,15 +28,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * HTTP implementation of the TTransport interface. Used for working with a
- * Thrift web services implementation.
+ * HTTP implementation of the TTransport interface. Used for working with a Thrift web services
+ * implementation.
  */
 public class THttpClient extends TTransport {
 
   private URL url_ = null;
 
-  private final ByteArrayOutputStream requestBuffer_ =
-      new ByteArrayOutputStream();
+  private final ByteArrayOutputStream requestBuffer_ = new ByteArrayOutputStream();
 
   private InputStream inputStream_ = null;
 
@@ -73,15 +72,13 @@ public class THttpClient extends TTransport {
     customHeaders_.put(key, value);
   }
 
-  public void open() {
-  }
+  public void open() {}
 
   public void close() {
     if (null != inputStream_) {
       try {
         inputStream_.close();
-      } catch (IOException ioe) {
-        ;
+      } catch (IOException ioe) {;
       }
       inputStream_ = null;
     }

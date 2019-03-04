@@ -28,24 +28,23 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * IntRangeSet is a specialized Set<Integer> implementation designed
- * specifically to make the generated validate() method calls faster. It groups
- * the set values into ranges, and in the contains() call, it does
- * num ranges * 2 comparisons max. For the common case, which is a single,
- * contiguous range, this approach is about 60% faster than using a HashSet. If
- * you had a very ragged value set, like all the odd numbers, for instance,
- * then you would end up with pretty poor running time.
+ * IntRangeSet is a specialized Set<Integer> implementation designed specifically to make the
+ * generated validate() method calls faster. It groups the set values into ranges, and in the
+ * contains() call, it does num ranges * 2 comparisons max. For the common case, which is a single,
+ * contiguous range, this approach is about 60% faster than using a HashSet. If you had a very
+ * ragged value set, like all the odd numbers, for instance, then you would end up with pretty poor
+ * running time.
  */
 public class IntRangeSet implements Set<Integer> {
   /**
-   * This array keeps the bounds of each extent in alternating cells, always
-   * increasing. Example: [0,5,10,15], which corresponds to 0-5, 10-15.
+   * This array keeps the bounds of each extent in alternating cells, always increasing. Example:
+   * [0,5,10,15], which corresponds to 0-5, 10-15.
    */
   private int[] extents;
 
   /**
-   * We'll keep a duplicate, real HashSet around internally to satisfy some of
-   * the other set operations.
+   * We'll keep a duplicate, real HashSet around internally to satisfy some of the other set
+   * operations.
    */
   private Set<Integer> realSet = new HashSet<Integer>();
 
@@ -93,8 +92,8 @@ public class IntRangeSet implements Set<Integer> {
   }
 
   /**
-   * While this method is here for Set interface compatibility, you should avoid
-   * using it. It incurs boxing overhead! Use the int method directly, instead.
+   * While this method is here for Set interface compatibility, you should avoid using it. It incurs
+   * boxing overhead! Use the int method directly, instead.
    */
   public boolean contains(Object arg0) {
     return contains(((Integer) arg0).intValue());

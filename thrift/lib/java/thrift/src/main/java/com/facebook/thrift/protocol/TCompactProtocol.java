@@ -17,31 +17,28 @@
  * under the License.
  */
 
-
 package com.facebook.thrift.protocol;
 
 import com.facebook.thrift.ShortStack;
 import com.facebook.thrift.TException;
 import com.facebook.thrift.transport.TTransport;
-
 import java.io.UnsupportedEncodingException;
 import java.util.Map;
 
 /**
- * TCompactProtocol2 is the Java implementation of the compact protocol specified
- * in THRIFT-110. The fundamental approach to reducing the overhead of
- * structures is a) use variable-length integers all over the place and b) make
- * use of unused bits wherever possible. Your savings will obviously vary
- * based on the specific makeup of your structs, but in general, the more
- * fields, nested structures, short strings and collections, and low-value i32
- * and i64 fields you have, the more benefit you'll see.
+ * TCompactProtocol2 is the Java implementation of the compact protocol specified in THRIFT-110. The
+ * fundamental approach to reducing the overhead of structures is a) use variable-length integers
+ * all over the place and b) make use of unused bits wherever possible. Your savings will obviously
+ * vary based on the specific makeup of your structs, but in general, the more fields, nested
+ * structures, short strings and collections, and low-value i32 and i64 fields you have, the more
+ * benefit you'll see.
  */
 public final class TCompactProtocol extends TProtocol {
 
-  private final static TStruct ANONYMOUS_STRUCT = new TStruct("");
-  private final static TField TSTOP = new TField("", TType.STOP, (short) 0);
+  private static final TStruct ANONYMOUS_STRUCT = new TStruct("");
+  private static final TField TSTOP = new TField("", TType.STOP, (short) 0);
 
-  private final static byte[] ttypeToCompactType = new byte[20];
+  private static final byte[] ttypeToCompactType = new byte[20];
 
   static {
     ttypeToCompactType[TType.STOP] = TType.STOP;
@@ -59,13 +56,10 @@ public final class TCompactProtocol extends TProtocol {
     ttypeToCompactType[TType.FLOAT] = Types.FLOAT;
   }
 
-  /**
-   * TProtocolFactory that produces TCompactProtocols.
-   */
+  /** TProtocolFactory that produces TCompactProtocols. */
   @SuppressWarnings("serial")
   public static class Factory implements TProtocolFactory {
-    public Factory() {
-    }
+    public Factory() {}
 
     public TProtocol getProtocol(TTransport trans) {
       return new TCompactProtocol(trans);
@@ -80,9 +74,7 @@ public final class TCompactProtocol extends TProtocol {
   public static final byte TYPE_MASK = (byte) 0xE0; // 1110 0000
   public static final int TYPE_SHIFT_AMOUNT = 5;
 
-  /**
-   * All of the on-wire type codes.
-   */
+  /** All of the on-wire type codes. */
   private static class Types {
     public static final byte BOOLEAN_TRUE = 0x01;
     public static final byte BOOLEAN_FALSE = 0x02;
@@ -100,8 +92,8 @@ public final class TCompactProtocol extends TProtocol {
   }
 
   /**
-   * Used to keep track of the last field for the current and previous structs,
-   * so we can do the delta stuff.
+   * Used to keep track of the last field for the current and previous structs, so we can do the
+   * delta stuff.
    */
   private ShortStack lastField_ = new ShortStack(15);
 
@@ -110,14 +102,14 @@ public final class TCompactProtocol extends TProtocol {
   private byte version_ = VERSION;
 
   /**
-   * If we encounter a boolean field begin, save the TField here so it can
-   * have the value incorporated.
+   * If we encounter a boolean field begin, save the TField here so it can have the value
+   * incorporated.
    */
   private TField booleanField_ = null;
 
   /**
-   * If we read a field header, and it's a boolean field, save the boolean
-   * value here so that readBool can use it.
+   * If we read a field header, and it's a boolean field, save the boolean value here so that
+   * readBool can use it.
    */
   private Boolean boolValue_ = null;
 
@@ -140,8 +132,8 @@ public final class TCompactProtocol extends TProtocol {
   //
 
   /**
-   * Write a message header to the wire. Compact Protocol messages contain the
-   * protocol version so we can migrate forwards in the future if need be.
+   * Write a message header to the wire. Compact Protocol messages contain the protocol version so
+   * we can migrate forwards in the future if need be.
    */
   public void writeMessageBegin(TMessage message) throws TException {
     writeByteDirect(PROTOCOL_ID);
@@ -151,9 +143,9 @@ public final class TCompactProtocol extends TProtocol {
   }
 
   /**
-   * Write a struct begin. This doesn't actually put anything on the wire. We
-   * use it as an opportunity to put special placeholder markers on the field
-   * stack so we can get the field id deltas correct.
+   * Write a struct begin. This doesn't actually put anything on the wire. We use it as an
+   * opportunity to put special placeholder markers on the field stack so we can get the field id
+   * deltas correct.
    */
   public void writeStructBegin(TStruct struct) throws TException {
     lastField_.push(lastFieldId_);
@@ -161,19 +153,17 @@ public final class TCompactProtocol extends TProtocol {
   }
 
   /**
-   * Write a struct end. This doesn't actually put anything on the wire. We use
-   * this as an opportunity to pop the last field from the current struct off
-   * of the field stack.
+   * Write a struct end. This doesn't actually put anything on the wire. We use this as an
+   * opportunity to pop the last field from the current struct off of the field stack.
    */
   public void writeStructEnd() throws TException {
     lastFieldId_ = lastField_.pop();
   }
 
   /**
-   * Write a field header containing the field id and field type. If the
-   * difference between the current field id and the last one is small (< 15),
-   * then the field id will be encoded in the 4 MSB as a delta. Otherwise, the
-   * field id will follow the type header as a zigzag varint.
+   * Write a field header containing the field id and field type. If the difference between the
+   * current field id and the last one is small (< 15), then the field id will be encoded in the 4
+   * MSB as a delta. Otherwise, the field id will follow the type header as a zigzag varint.
    */
   public void writeFieldBegin(TField field) throws TException {
     if (field.type == TType.BOOL) {
@@ -185,9 +175,8 @@ public final class TCompactProtocol extends TProtocol {
   }
 
   /**
-   * The workhorse of writeFieldBegin. It has the option of doing a
-   * 'type override' of the type header. This is used specifically in the
-   * boolean field case.
+   * The workhorse of writeFieldBegin. It has the option of doing a 'type override' of the type
+   * header. This is used specifically in the boolean field case.
    */
   private void writeFieldBeginInternal(TField field, byte typeOverride) throws TException {
     // short lastField = lastField_.pop();
@@ -209,16 +198,14 @@ public final class TCompactProtocol extends TProtocol {
     // lastField_.push(field.id);
   }
 
-  /**
-   * Write the STOP symbol so we know there are no more fields in this struct.
-   */
+  /** Write the STOP symbol so we know there are no more fields in this struct. */
   public void writeFieldStop() throws TException {
     writeByteDirect(TType.STOP);
   }
 
   /**
-   * Write a map header. If the map is empty, omit the key and value type
-   * headers, as we don't need any additional information to skip it.
+   * Write a map header. If the map is empty, omit the key and value type headers, as we don't need
+   * any additional information to skip it.
    */
   public void writeMapBegin(TMap map) throws TException {
     if (map.size == 0) {
@@ -229,25 +216,20 @@ public final class TCompactProtocol extends TProtocol {
     }
   }
 
-  /**
-   * Write a list header.
-   */
+  /** Write a list header. */
   public void writeListBegin(TList list) throws TException {
     writeCollectionBegin(list.elemType, list.size);
   }
 
-  /**
-   * Write a set header.
-   */
+  /** Write a set header. */
   public void writeSetBegin(TSet set) throws TException {
     writeCollectionBegin(set.elemType, set.size);
   }
 
   /**
-   * Write a boolean value. Potentially, this could be a boolean field, in
-   * which case the field header info isn't written yet. If so, decide what the
-   * right type header is for the value and then write the field header.
-   * Otherwise, write a single byte.
+   * Write a boolean value. Potentially, this could be a boolean field, in which case the field
+   * header info isn't written yet. If so, decide what the right type header is for the value and
+   * then write the field header. Otherwise, write a single byte.
    */
   public void writeBool(boolean b) throws TException {
     if (booleanField_ != null) {
@@ -260,55 +242,41 @@ public final class TCompactProtocol extends TProtocol {
     }
   }
 
-  /**
-   * Write a byte. Nothing to see here!
-   */
+  /** Write a byte. Nothing to see here! */
   public void writeByte(byte b) throws TException {
     writeByteDirect(b);
   }
 
-  /**
-   * Write an I16 as a zigzag varint.
-   */
+  /** Write an I16 as a zigzag varint. */
   public void writeI16(short i16) throws TException {
     writeVarint32(intToZigZag(i16));
   }
 
-  /**
-   * Write an i32 as a zigzag varint.
-   */
+  /** Write an i32 as a zigzag varint. */
   public void writeI32(int i32) throws TException {
     writeVarint32(intToZigZag(i32));
   }
 
-  /**
-   * Write an i64 as a zigzag varint.
-   */
+  /** Write an i64 as a zigzag varint. */
   public void writeI64(long i64) throws TException {
     writeVarint64(longToZigzag(i64));
   }
 
-  /**
-   * Write a double to the wire as 8 bytes.
-   */
+  /** Write a double to the wire as 8 bytes. */
   public void writeDouble(double dub) throws TException {
-    byte[] data = new byte[]{0, 0, 0, 0, 0, 0, 0, 0};
+    byte[] data = new byte[] {0, 0, 0, 0, 0, 0, 0, 0};
     fixedLongToBytes(Double.doubleToLongBits(dub), data, 0);
     trans_.write(data);
   }
 
-  /**
-   * Write a float to the wire as 4 bytes.
-   */
+  /** Write a float to the wire as 4 bytes. */
   public void writeFloat(float flt) throws TException {
-    byte[] data = new byte[]{0, 0, 0, 0};
+    byte[] data = new byte[] {0, 0, 0, 0};
     fixedIntToBytes(Float.floatToIntBits(flt), data, 0);
     trans_.write(data);
   }
 
-  /**
-   * Write a string to the wire with a varint size preceeding.
-   */
+  /** Write a string to the wire with a varint size preceding. */
   public void writeString(String str) throws TException {
     try {
       byte[] bytes = str.getBytes("UTF-8");
@@ -318,9 +286,7 @@ public final class TCompactProtocol extends TProtocol {
     }
   }
 
-  /**
-   * Write a byte array, using a varint for the size.
-   */
+  /** Write a byte array, using a varint for the size. */
   public void writeBinary(byte[] buf) throws TException {
     writeBinary(buf, 0, buf.length);
   }
@@ -335,28 +301,23 @@ public final class TCompactProtocol extends TProtocol {
   // output or purpose.
   //
 
-  public void writeMessageEnd() throws TException {
-  }
+  public void writeMessageEnd() throws TException {}
 
-  public void writeMapEnd() throws TException {
-  }
+  public void writeMapEnd() throws TException {}
 
-  public void writeListEnd() throws TException {
-  }
+  public void writeListEnd() throws TException {}
 
-  public void writeSetEnd() throws TException {
-  }
+  public void writeSetEnd() throws TException {}
 
-  public void writeFieldEnd() throws TException {
-  }
+  public void writeFieldEnd() throws TException {}
 
   //
   // Internal writing methods
   //
 
   /**
-   * Abstract method for writing the start of lists and sets. List and sets on
-   * the wire differ only by the type indicator.
+   * Abstract method for writing the start of lists and sets. List and sets on the wire differ only
+   * by the type indicator.
    */
   protected void writeCollectionBegin(byte elemType, int size) throws TException {
     if (size <= 14) {
@@ -368,8 +329,8 @@ public final class TCompactProtocol extends TProtocol {
   }
 
   /**
-   * Write an i32 as a varint. Results in 1-5 bytes on the wire.
-   * TODO: make a permanent buffer like writeVarint64?
+   * Write an i32 as a varint. Results in 1-5 bytes on the wire. TODO: make a permanent buffer like
+   * writeVarint64?
    */
   byte[] i32buf = new byte[5];
 
@@ -390,9 +351,7 @@ public final class TCompactProtocol extends TProtocol {
     trans_.write(i32buf, 0, idx);
   }
 
-  /**
-   * Write an i64 as a varint. Results in 1-10 bytes on the wire.
-   */
+  /** Write an i64 as a varint. Results in 1-10 bytes on the wire. */
   byte[] varint64out = new byte[10];
 
   private void writeVarint64(long n) throws TException {
@@ -410,25 +369,22 @@ public final class TCompactProtocol extends TProtocol {
   }
 
   /**
-   * Convert l into a zigzag long. This allows negative numbers to be
-   * represented compactly as a varint.
+   * Convert l into a zigzag long. This allows negative numbers to be represented compactly as a
+   * varint.
    */
   private long longToZigzag(long l) {
     return (l << 1) ^ (l >> 63);
   }
 
   /**
-   * Convert n into a zigzag int. This allows negative numbers to be
-   * represented compactly as a varint.
+   * Convert n into a zigzag int. This allows negative numbers to be represented compactly as a
+   * varint.
    */
   private int intToZigZag(int n) {
     return (n << 1) ^ (n >> 31);
   }
 
-  /**
-   * Convert a long into little-endian bytes in buf starting at off and going
-   * until off+7.
-   */
+  /** Convert a long into little-endian bytes in buf starting at off and going until off+7. */
   private void fixedLongToBytes(long n, byte[] buf, int off) {
     buf[off + 0] = (byte) ((n >> 56) & 0xff);
     buf[off + 1] = (byte) ((n >> 48) & 0xff);
@@ -440,10 +396,7 @@ public final class TCompactProtocol extends TProtocol {
     buf[off + 7] = (byte) (n & 0xff);
   }
 
-  /**
-   * Convert a long into little-endian bytes in buf starting at off and going
-   * until off+7.
-   */
+  /** Convert a long into little-endian bytes in buf starting at off and going until off+7. */
   private void fixedIntToBytes(int n, byte[] buf, int off) {
     buf[off + 0] = (byte) ((n >> 24) & 0xff);
     buf[off + 1] = (byte) ((n >> 16) & 0xff);
@@ -452,8 +405,8 @@ public final class TCompactProtocol extends TProtocol {
   }
 
   /**
-   * Writes a byte without any possiblity of all that field header nonsense.
-   * Used internally by other writing methods that know they need to write a byte.
+   * Writes a byte without any possiblity of all that field header nonsense. Used internally by
+   * other writing methods that know they need to write a byte.
    */
   private byte[] byteDirectBuffer = new byte[1];
 
@@ -462,27 +415,24 @@ public final class TCompactProtocol extends TProtocol {
     trans_.write(byteDirectBuffer);
   }
 
-  /**
-   * Writes a byte without any possiblity of all that field header nonsense.
-   */
+  /** Writes a byte without any possiblity of all that field header nonsense. */
   private void writeByteDirect(int n) throws TException {
     writeByteDirect((byte) n);
   }
-
 
   //
   // Reading methods.
   //
 
-  /**
-   * Read a message header.
-   */
+  /** Read a message header. */
   public TMessage readMessageBegin() throws TException {
     byte protocolId = readByte();
     if (protocolId != PROTOCOL_ID) {
       throw new TProtocolException(
-          "Expected protocol id " + Integer.toHexString(PROTOCOL_ID) + " but got " +
-              Integer.toHexString(protocolId));
+          "Expected protocol id "
+              + Integer.toHexString(PROTOCOL_ID)
+              + " but got "
+              + Integer.toHexString(protocolId));
     }
     byte versionAndType = readByte();
     version_ = (byte) (versionAndType & VERSION_MASK);
@@ -496,8 +446,8 @@ public final class TCompactProtocol extends TProtocol {
   }
 
   /**
-   * Read a struct begin. There's nothing on the wire for this, but it is our
-   * opportunity to push a new struct begin marker onto the field stack.
+   * Read a struct begin. There's nothing on the wire for this, but it is our opportunity to push a
+   * new struct begin marker onto the field stack.
    */
   public TStruct readStructBegin(
       Map<Integer, com.facebook.thrift.meta_data.FieldMetaData> metaDataMap) throws TException {
@@ -507,17 +457,15 @@ public final class TCompactProtocol extends TProtocol {
   }
 
   /**
-   * Doesn't actually consume any wire data, just removes the last field for
-   * this struct from the field stack.
+   * Doesn't actually consume any wire data, just removes the last field for this struct from the
+   * field stack.
    */
   public void readStructEnd() throws TException {
     // consume the last field we read off the wire.
     lastFieldId_ = lastField_.pop();
   }
 
-  /**
-   * Read a field header off the wire.
-   */
+  /** Read a field header off the wire. */
   public TField readFieldBegin() throws TException {
     byte type = readByte();
 
@@ -552,22 +500,20 @@ public final class TCompactProtocol extends TProtocol {
   }
 
   /**
-   * Read a map header off the wire. If the size is zero, skip reading the key
-   * and value type. This means that 0-length maps will yield TMaps without the
-   * "correct" types.
+   * Read a map header off the wire. If the size is zero, skip reading the key and value type. This
+   * means that 0-length maps will yield TMaps without the "correct" types.
    */
   public TMap readMapBegin() throws TException {
     int size = readVarint32();
     byte keyAndValueType = size == 0 ? 0 : readByte();
-    return new TMap(getTType((byte) (keyAndValueType >> 4)),
-        getTType((byte) (keyAndValueType & 0xf)), size);
+    return new TMap(
+        getTType((byte) (keyAndValueType >> 4)), getTType((byte) (keyAndValueType & 0xf)), size);
   }
 
   /**
-   * Read a list header off the wire. If the list size is 0-14, the size will
-   * be packed into the element type header. If it's a longer list, the 4 MSB
-   * of the element type header will be 0xF, and a varint will follow with the
-   * true size.
+   * Read a list header off the wire. If the list size is 0-14, the size will be packed into the
+   * element type header. If it's a longer list, the 4 MSB of the element type header will be 0xF,
+   * and a varint will follow with the true size.
    */
   public TList readListBegin() throws TException {
     byte size_and_type = readByte();
@@ -580,19 +526,17 @@ public final class TCompactProtocol extends TProtocol {
   }
 
   /**
-   * Read a set header off the wire. If the set size is 0-14, the size will
-   * be packed into the element type header. If it's a longer set, the 4 MSB
-   * of the element type header will be 0xF, and a varint will follow with the
-   * true size.
+   * Read a set header off the wire. If the set size is 0-14, the size will be packed into the
+   * element type header. If it's a longer set, the 4 MSB of the element type header will be 0xF,
+   * and a varint will follow with the true size.
    */
   public TSet readSetBegin() throws TException {
     return new TSet(readListBegin());
   }
 
   /**
-   * Read a boolean off the wire. If this is a boolean field, the value should
-   * already have been read during readFieldBegin, so we'll just consume the
-   * pre-stored value. Otherwise, read a byte.
+   * Read a boolean off the wire. If this is a boolean field, the value should already have been
+   * read during readFieldBegin, so we'll just consume the pre-stored value. Otherwise, read a byte.
    */
   public boolean readBool() throws TException {
     if (boolValue_ != null) {
@@ -605,9 +549,7 @@ public final class TCompactProtocol extends TProtocol {
 
   byte[] byteRawBuf = new byte[1];
 
-  /**
-   * Read a single byte off the wire. Nothing interesting here.
-   */
+  /** Read a single byte off the wire. Nothing interesting here. */
   public byte readByte() throws TException {
     byte b;
     if (trans_.getBytesRemainingInBuffer() > 0) {
@@ -620,30 +562,22 @@ public final class TCompactProtocol extends TProtocol {
     return b;
   }
 
-  /**
-   * Read an i16 from the wire as a zigzag varint.
-   */
+  /** Read an i16 from the wire as a zigzag varint. */
   public short readI16() throws TException {
     return (short) zigzagToInt(readVarint32());
   }
 
-  /**
-   * Read an i32 from the wire as a zigzag varint.
-   */
+  /** Read an i32 from the wire as a zigzag varint. */
   public int readI32() throws TException {
     return zigzagToInt(readVarint32());
   }
 
-  /**
-   * Read an i64 from the wire as a zigzag varint.
-   */
+  /** Read an i64 from the wire as a zigzag varint. */
   public long readI64() throws TException {
     return zigzagToLong(readVarint64());
   }
 
-  /**
-   * No magic here - just read a double off the wire.
-   */
+  /** No magic here - just read a double off the wire. */
   public double readDouble() throws TException {
     byte[] longBits = new byte[8];
     trans_.readAll(longBits, 0, 8);
@@ -656,9 +590,7 @@ public final class TCompactProtocol extends TProtocol {
     return Double.longBitsToDouble(value);
   }
 
-  /**
-   * No magic here - just read a float off the wire.
-   */
+  /** No magic here - just read a float off the wire. */
   public float readFloat() throws TException {
     byte[] intBits = new byte[4];
     trans_.readAll(intBits, 0, 4);
@@ -667,9 +599,7 @@ public final class TCompactProtocol extends TProtocol {
     return Float.intBitsToFloat(value);
   }
 
-  /**
-   * Reads a byte[] (via readBinary), and then UTF-8 decodes it.
-   */
+  /** Reads a byte[] (via readBinary), and then UTF-8 decodes it. */
   public String readString() throws TException {
     int length = readVarint32();
 
@@ -690,9 +620,7 @@ public final class TCompactProtocol extends TProtocol {
     }
   }
 
-  /**
-   * Read a byte[] from the wire.
-   */
+  /** Read a byte[] from the wire. */
   public byte[] readBinary() throws TException {
     int length = readVarint32();
     return readBinary(length);
@@ -712,28 +640,23 @@ public final class TCompactProtocol extends TProtocol {
   // These methods are here for the struct to call, but don't have any wire
   // encoding.
   //
-  public void readMessageEnd() throws TException {
-  }
+  public void readMessageEnd() throws TException {}
 
-  public void readFieldEnd() throws TException {
-  }
+  public void readFieldEnd() throws TException {}
 
-  public void readMapEnd() throws TException {
-  }
+  public void readMapEnd() throws TException {}
 
-  public void readListEnd() throws TException {
-  }
+  public void readListEnd() throws TException {}
 
-  public void readSetEnd() throws TException {
-  }
+  public void readSetEnd() throws TException {}
 
   //
   // Internal reading methods
   //
 
   /**
-   * Read an i32 from the wire as a varint. The MSB of each byte is set
-   * if there is another byte to follow. This can read up to 5 bytes.
+   * Read an i32 from the wire as a varint. The MSB of each byte is set if there is another byte to
+   * follow. This can read up to 5 bytes.
    */
   private int readVarint32() throws TException {
     int result = 0;
@@ -766,8 +689,8 @@ public final class TCompactProtocol extends TProtocol {
   }
 
   /**
-   * Read an i64 from the wire as a proper varint. The MSB of each byte is set
-   * if there is another byte to follow. This can read up to 10 bytes.
+   * Read an i64 from the wire as a proper varint. The MSB of each byte is set if there is another
+   * byte to follow. This can read up to 10 bytes.
    */
   private long readVarint64() throws TException {
     int shift = 0;
@@ -803,56 +726,48 @@ public final class TCompactProtocol extends TProtocol {
   // encoding helpers
   //
 
-  /**
-   * Convert from zigzag int to int.
-   */
+  /** Convert from zigzag int to int. */
   private int zigzagToInt(int n) {
     return (n >>> 1) ^ -(n & 1);
   }
 
-  /**
-   * Convert from zigzag long to long.
-   */
+  /** Convert from zigzag long to long. */
   private long zigzagToLong(long n) {
     return (n >>> 1) ^ -(n & 1);
   }
 
   /**
-   * Note that it's important that the mask bytes are long literals,
-   * otherwise they'll default to ints, and when you shift an int left 56 bits,
-   * you just get a messed up int.
+   * Note that it's important that the mask bytes are long literals, otherwise they'll default to
+   * ints, and when you shift an int left 56 bits, you just get a messed up int.
    */
   private long bytesToLong(byte[] bytes) {
-    return
-      ((bytes[0] & 0xffL) << 56) |
-      ((bytes[1] & 0xffL) << 48) |
-      ((bytes[2] & 0xffL) << 40) |
-      ((bytes[3] & 0xffL) << 32) |
-      ((bytes[4] & 0xffL) << 24) |
-      ((bytes[5] & 0xffL) << 16) |
-      ((bytes[6] & 0xffL) << 8) |
-      ((bytes[7] & 0xffL));
+    return ((bytes[0] & 0xffL) << 56)
+        | ((bytes[1] & 0xffL) << 48)
+        | ((bytes[2] & 0xffL) << 40)
+        | ((bytes[3] & 0xffL) << 32)
+        | ((bytes[4] & 0xffL) << 24)
+        | ((bytes[5] & 0xffL) << 16)
+        | ((bytes[6] & 0xffL) << 8)
+        | ((bytes[7] & 0xffL));
   }
 
   /* Little endian version of the above */
   private long bytesToLongLE(byte[] bytes) {
-    return
-      ((bytes[7] & 0xffL) << 56) |
-      ((bytes[6] & 0xffL) << 48) |
-      ((bytes[5] & 0xffL) << 40) |
-      ((bytes[4] & 0xffL) << 32) |
-      ((bytes[3] & 0xffL) << 24) |
-      ((bytes[2] & 0xffL) << 16) |
-      ((bytes[1] & 0xffL) << 8) |
-      ((bytes[0] & 0xffL));
+    return ((bytes[7] & 0xffL) << 56)
+        | ((bytes[6] & 0xffL) << 48)
+        | ((bytes[5] & 0xffL) << 40)
+        | ((bytes[4] & 0xffL) << 32)
+        | ((bytes[3] & 0xffL) << 24)
+        | ((bytes[2] & 0xffL) << 16)
+        | ((bytes[1] & 0xffL) << 8)
+        | ((bytes[0] & 0xffL));
   }
 
   private int bytesToInt(byte[] bytes) {
-    return
-      ((bytes[0] & 0xff) << 24) |
-      ((bytes[1] & 0xff) << 16) |
-      ((bytes[2] & 0xff) << 8) |
-      ((bytes[3] & 0xff));
+    return ((bytes[0] & 0xff) << 24)
+        | ((bytes[1] & 0xff) << 16)
+        | ((bytes[2] & 0xff) << 8)
+        | ((bytes[3] & 0xff));
   }
 
   //
@@ -864,10 +779,7 @@ public final class TCompactProtocol extends TProtocol {
     return lowerNibble == Types.BOOLEAN_TRUE || lowerNibble == Types.BOOLEAN_FALSE;
   }
 
-  /**
-   * Given a TCompactProtocol.Types constant, convert it to its corresponding
-   * TType value.
-   */
+  /** Given a TCompactProtocol.Types constant, convert it to its corresponding TType value. */
   private byte getTType(byte type) throws TProtocolException {
     switch ((byte) (type & 0x0f)) {
       case TType.STOP:
@@ -902,11 +814,8 @@ public final class TCompactProtocol extends TProtocol {
     }
   }
 
-  /**
-   * Given a TType value, find the appropriate TCompactProtocol.Types constant.
-   */
+  /** Given a TType value, find the appropriate TCompactProtocol.Types constant. */
   private byte getCompactType(byte ttype) {
     return ttypeToCompactType[ttype];
   }
-
 }

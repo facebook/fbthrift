@@ -17,7 +17,6 @@
  * under the License.
  */
 
-
 package com.facebook.thrift.server;
 
 import com.facebook.thrift.TByteArrayOutputStream;
@@ -34,10 +33,6 @@ import com.facebook.thrift.transport.TNonblockingServerTransport;
 import com.facebook.thrift.transport.TNonblockingTransport;
 import com.facebook.thrift.transport.TTransport;
 import com.facebook.thrift.transport.TTransportException;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -55,22 +50,22 @@ import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
- * A nonblocking TServer implementation. This allows for fairness amongst all
- * connected clients in terms of invocations.
- * <p>
- * This server is inherently single-threaded. If you want a limited thread pool
- * coupled with invocation-fairness, see THsHaServer.
- * <p>
- * To use this server, you MUST use a TFramedTransport at the outermost
- * transport, otherwise this server will be unable to determine when a whole
- * method call has been read off the wire. Clients must also use
- * TFramedTransport.
+ * A nonblocking TServer implementation. This allows for fairness amongst all connected clients in
+ * terms of invocations.
+ *
+ * <p>This server is inherently single-threaded. If you want a limited thread pool coupled with
+ * invocation-fairness, see THsHaServer.
+ *
+ * <p>To use this server, you MUST use a TFramedTransport at the outermost transport, otherwise this
+ * server will be unable to determine when a whole method call has been read off the wire. Clients
+ * must also use TFramedTransport.
  */
 public class TNonblockingServer extends TServer {
-  private static final Logger LOGGER =
-      LoggerFactory.getLogger(TNonblockingServer.class.getName());
+  private static final Logger LOGGER = LoggerFactory.getLogger(TNonblockingServer.class.getName());
   private static final int selectWaitTime_ = 500;
 
   private final ExecutorService tcpWorkerPool_;
@@ -80,104 +75,145 @@ public class TNonblockingServer extends TServer {
   private SelectThread selectThread_;
 
   /**
-   * The maximum amount of memory we will allocate to client IO buffers at a
-   * time. Without this limit, the server will gladly allocate client buffers
-   * right into an out of memory exception, rather than waiting.
+   * The maximum amount of memory we will allocate to client IO buffers at a time. Without this
+   * limit, the server will gladly allocate client buffers right into an out of memory exception,
+   * rather than waiting.
    */
   private final long MAX_READ_BUFFER_BYTES;
 
   protected final Options options_;
 
-  /**
-   * How many bytes are currently allocated to read buffers.
-   */
+  /** How many bytes are currently allocated to read buffers. */
   private final AtomicLong readBufferBytesAllocated = new AtomicLong(0);
 
   /**
-   * Create server with given processor and server transport, using
-   * TBinaryProtocol for the protocol, TFramedTransport.Factory on both input
-   * and output transports. A TProcessorFactory will be created that always
-   * returns the specified processor.
+   * Create server with given processor and server transport, using TBinaryProtocol for the
+   * protocol, TFramedTransport.Factory on both input and output transports. A TProcessorFactory
+   * will be created that always returns the specified processor.
    */
-  public TNonblockingServer(TProcessor processor,
-      TNonblockingServerTransport serverTransport) {
+  public TNonblockingServer(TProcessor processor, TNonblockingServerTransport serverTransport) {
     this(new TProcessorFactory(processor), serverTransport);
   }
 
   /**
-   * Create server with specified processor factory and server transport.
-   * TBinaryProtocol is assumed. TFramedTransport.Factory is used on both input
-   * and output transports.
+   * Create server with specified processor factory and server transport. TBinaryProtocol is
+   * assumed. TFramedTransport.Factory is used on both input and output transports.
    */
-  public TNonblockingServer(TProcessorFactory processorFactory,
-      TNonblockingServerTransport serverTransport) {
-    this(processorFactory, serverTransport, new TFramedTransport.Factory(),
-        new TFramedTransport.Factory(), new TBinaryProtocol.Factory(),
+  public TNonblockingServer(
+      TProcessorFactory processorFactory, TNonblockingServerTransport serverTransport) {
+    this(
+        processorFactory,
+        serverTransport,
+        new TFramedTransport.Factory(),
+        new TFramedTransport.Factory(),
+        new TBinaryProtocol.Factory(),
         new TBinaryProtocol.Factory());
   }
 
-  public TNonblockingServer(TProcessor processor,
+  public TNonblockingServer(
+      TProcessor processor,
       TNonblockingServerTransport serverTransport,
       TProtocolFactory protocolFactory) {
-    this(processor, serverTransport, new TFramedTransport.Factory(),
-        new TFramedTransport.Factory(), protocolFactory, protocolFactory);
+    this(
+        processor,
+        serverTransport,
+        new TFramedTransport.Factory(),
+        new TFramedTransport.Factory(),
+        protocolFactory,
+        protocolFactory);
   }
 
-  public TNonblockingServer(TProcessor processor,
+  public TNonblockingServer(
+      TProcessor processor,
       TNonblockingServerTransport serverTransport,
       TFramedTransport.Factory transportFactory,
       TProtocolFactory protocolFactory) {
-    this(processor, serverTransport, transportFactory, transportFactory,
-        protocolFactory, protocolFactory);
+    this(
+        processor,
+        serverTransport,
+        transportFactory,
+        transportFactory,
+        protocolFactory,
+        protocolFactory);
   }
 
-  public TNonblockingServer(TProcessorFactory processorFactory,
+  public TNonblockingServer(
+      TProcessorFactory processorFactory,
       TNonblockingServerTransport serverTransport,
       TFramedTransport.Factory transportFactory,
       TProtocolFactory protocolFactory) {
-    this(processorFactory, serverTransport, transportFactory, transportFactory,
-        protocolFactory, protocolFactory);
+    this(
+        processorFactory,
+        serverTransport,
+        transportFactory,
+        transportFactory,
+        protocolFactory,
+        protocolFactory);
   }
 
-  public TNonblockingServer(TProcessor processor,
+  public TNonblockingServer(
+      TProcessor processor,
       TNonblockingServerTransport serverTransport,
       TFramedTransport.Factory inputTransportFactory,
       TFramedTransport.Factory outputTransportFactory,
       TProtocolFactory inputProtocolFactory,
       TProtocolFactory outputProtocolFactory) {
-    this(new TProcessorFactory(processor), serverTransport,
-        inputTransportFactory, outputTransportFactory, inputProtocolFactory,
+    this(
+        new TProcessorFactory(processor),
+        serverTransport,
+        inputTransportFactory,
+        outputTransportFactory,
+        inputProtocolFactory,
         outputProtocolFactory);
   }
 
-  public TNonblockingServer(TProcessorFactory processorFactory,
+  public TNonblockingServer(
+      TProcessorFactory processorFactory,
       TNonblockingServerTransport serverTransport,
       TFramedTransport.Factory inputTransportFactory,
       TFramedTransport.Factory outputTransportFactory,
       TProtocolFactory inputProtocolFactory,
       TProtocolFactory outputProtocolFactory) {
-    this(processorFactory, serverTransport, inputTransportFactory,
-        outputTransportFactory, inputProtocolFactory, outputProtocolFactory,
+    this(
+        processorFactory,
+        serverTransport,
+        inputTransportFactory,
+        outputTransportFactory,
+        inputProtocolFactory,
+        outputProtocolFactory,
         new Options());
   }
 
-  public TNonblockingServer(TProcessorFactory processorFactory,
+  public TNonblockingServer(
+      TProcessorFactory processorFactory,
       TNonblockingServerTransport serverTransport,
       TFramedTransport.Factory inputTransportFactory,
       TFramedTransport.Factory outputTransportFactory,
       TProtocolFactory inputProtocolFactory,
-      TProtocolFactory outputProtocolFactory, Options options) {
-    super(processorFactory, serverTransport, inputTransportFactory,
-        outputTransportFactory, inputProtocolFactory, outputProtocolFactory);
+      TProtocolFactory outputProtocolFactory,
+      Options options) {
+    super(
+        processorFactory,
+        serverTransport,
+        inputTransportFactory,
+        outputTransportFactory,
+        inputProtocolFactory,
+        outputProtocolFactory);
     options_ = options;
     options_.validate();
     MAX_READ_BUFFER_BYTES = options.maxReadBufferBytes;
-    BlockingQueue<Runnable> queue = (options_.queueSize == 0) ? new SynchronousQueue<Runnable>()
-                                                              : new LinkedBlockingQueue<Runnable>(
-                                                                  options_.queueSize);
-    tcpWorkerPool_ = new ThreadPoolExecutor(options_.minWorkerThreads,
-        options_.maxWorkerThreads, Integer.MAX_VALUE, TimeUnit.MILLISECONDS,
-        queue, new TThreadFactoryImpl("thrift-tcpworker"));
+    BlockingQueue<Runnable> queue =
+        (options_.queueSize == 0)
+            ? new SynchronousQueue<Runnable>()
+            : new LinkedBlockingQueue<Runnable>(options_.queueSize);
+    tcpWorkerPool_ =
+        new ThreadPoolExecutor(
+            options_.minWorkerThreads,
+            options_.maxWorkerThreads,
+            Integer.MAX_VALUE,
+            TimeUnit.MILLISECONDS,
+            queue,
+            new TThreadFactoryImpl("thrift-tcpworker"));
   }
 
   protected void submitTask(Runnable r) throws ServerOverloadedException {
@@ -192,9 +228,7 @@ public class TNonblockingServer extends TServer {
     }
   }
 
-  /**
-   * Begin accepting connections and processing invocations.
-   */
+  /** Begin accepting connections and processing invocations. */
   public void serve() {
     // start listening, or exit
     if (!startListening()) {
@@ -228,9 +262,7 @@ public class TNonblockingServer extends TServer {
     }
   }
 
-  /**
-   * Stop listening for connections.
-   */
+  /** Stop listening for connections. */
   protected void stopListening() {
     serverTransport_.close();
   }
@@ -243,8 +275,7 @@ public class TNonblockingServer extends TServer {
   protected boolean startSelectorThread() {
     // start the selector
     try {
-      selectThread_ = new SelectThread(
-          (TNonblockingServerTransport) serverTransport_);
+      selectThread_ = new SelectThread((TNonblockingServerTransport) serverTransport_);
       stopped_ = false;
       selectThread_.start();
       return true;
@@ -254,9 +285,7 @@ public class TNonblockingServer extends TServer {
     }
   }
 
-  /**
-   * Block until the selector exits.
-   */
+  /** Block until the selector exits. */
   protected void joinSelector() {
     // wait until the selector thread exits
     try {
@@ -268,9 +297,7 @@ public class TNonblockingServer extends TServer {
     }
   }
 
-  /**
-   * Stop serving and shut everything down.
-   */
+  /** Stop serving and shut everything down. */
   public void stop() {
     stopped_ = true;
     if (selectThread_ != null) {
@@ -283,11 +310,10 @@ public class TNonblockingServer extends TServer {
   }
 
   /**
-   * Perform an invocation. This method could behave several different ways
-   * - invoke immediately inline, queue for separate execution, etc.
+   * Perform an invocation. This method could behave several different ways - invoke immediately
+   * inline, queue for separate execution, etc.
    */
-  protected void requestInvoke(FrameBuffer frameBuffer)
-      throws ServerOverloadedException {
+  protected void requestInvoke(FrameBuffer frameBuffer) throws ServerOverloadedException {
     frameBuffer.invoke();
   }
 
@@ -305,8 +331,8 @@ public class TNonblockingServer extends TServer {
   }
 
   /**
-   * The thread that will be doing all the selecting, managing new connections
-   * and those that still need to be read.
+   * The thread that will be doing all the selecting, managing new connections and those that still
+   * need to be read.
    */
   protected class SelectThread extends Thread {
 
@@ -346,11 +372,8 @@ public class TNonblockingServer extends TServer {
     // List of FrameBuffers that want to cancel their keys.
     private final Set<FrameBuffer> cancellations = new HashSet<FrameBuffer>();
 
-    /**
-     * Set up the SelectorThread.
-     */
-    public SelectThread(final TNonblockingServerTransport serverTransport)
-        throws IOException {
+    /** Set up the SelectorThread. */
+    public SelectThread(final TNonblockingServerTransport serverTransport) throws IOException {
       super(SelectThread.name_);
       this.serverTransport = serverTransport;
       this.selector = SelectorProvider.provider().openSelector();
@@ -362,8 +385,8 @@ public class TNonblockingServer extends TServer {
     }
 
     /**
-     * The work loop. Handles both selecting (all IO operations) and managing
-     * the selection preferences of all existing connections.
+     * The work loop. Handles both selecting (all IO operations) and managing the selection
+     * preferences of all existing connections.
      */
     public void run() {
       while (!stopped_) {
@@ -373,9 +396,7 @@ public class TNonblockingServer extends TServer {
       }
     }
 
-    /**
-     * If the selector is blocked, wake it up.
-     */
+    /** If the selector is blocked, wake it up. */
     public void wakeupSelector() {
       selector.wakeup();
     }
@@ -389,12 +410,10 @@ public class TNonblockingServer extends TServer {
     }
 
     /**
-     * Select and process IO events appropriately:
-     * If there are connections to be accepted, accept them.
-     * If there are existing connections with data waiting to be read, read it,
-     * buffering until a whole frame has been read.
-     * If there are any pending responses, buffer them until their target client
-     * is available, and then send the data.
+     * Select and process IO events appropriately: If there are connections to be accepted, accept
+     * them. If there are existing connections with data waiting to be read, read it, buffering
+     * until a whole frame has been read. If there are any pending responses, buffer them until
+     * their target client is available, and then send the data.
      */
     private void select() {
       try {
@@ -402,8 +421,7 @@ public class TNonblockingServer extends TServer {
         selector.select(TNonblockingServer.selectWaitTime_);
 
         // process the io events we received
-        Iterator<SelectionKey> selectedKeys = selector.selectedKeys()
-            .iterator();
+        Iterator<SelectionKey> selectedKeys = selector.selectedKeys().iterator();
         while (!stopped_ && selectedKeys.hasNext()) {
           SelectionKey key = selectedKeys.next();
           selectedKeys.remove();
@@ -454,9 +472,7 @@ public class TNonblockingServer extends TServer {
       }
     }
 
-    /**
-     * Accept a new connection.
-     */
+    /** Accept a new connection. */
     private void handleAccept() throws IOException {
       TNonblockingTransport client = null;
       try {
@@ -474,8 +490,8 @@ public class TNonblockingServer extends TServer {
     }
 
     /**
-     * Do the work required to read from a readable client. If the frame is
-     * fully read, then invoke the method call.
+     * Do the work required to read from a readable client. If the frame is fully read, then invoke
+     * the method call.
      */
     private void handleRead(SelectionKey key) {
       FrameBuffer buffer = (FrameBuffer) key.attachment();
@@ -495,9 +511,7 @@ public class TNonblockingServer extends TServer {
       }
     }
 
-    /**
-     * Let a writable client get written, if there's data to be written.
-     */
+    /** Let a writable client get written, if there's data to be written. */
     private void handleWrite(SelectionKey key) {
       FrameBuffer buffer = (FrameBuffer) key.attachment();
       if (buffer.write()) {
@@ -507,9 +521,7 @@ public class TNonblockingServer extends TServer {
       }
     }
 
-    /**
-     * Do connection-close cleanup on a given SelectionKey.
-     */
+    /** Do connection-close cleanup on a given SelectionKey. */
     private void cleanupSelectionkey(SelectionKey key) {
       // remove the records from the two maps
       FrameBuffer buffer = (FrameBuffer) key.attachment();
@@ -523,11 +535,10 @@ public class TNonblockingServer extends TServer {
   } // SelectorThread
 
   /**
-   * Class that implements a sort of state machine around the interaction with
-   * a client and an invoker. It manages reading the frame size and frame data,
-   * getting it handed off as wrapped transports, and then the writing of
-   * response data back to the client. In the process it manages flipping the
-   * read and write bits on the selection key for its client.
+   * Class that implements a sort of state machine around the interaction with a client and an
+   * invoker. It manages reading the frame size and frame data, getting it handed off as wrapped
+   * transports, and then the writing of response data back to the client. In the process it manages
+   * flipping the read and write bits on the selection key for its client.
    */
   protected class FrameBuffer {
     //
@@ -568,8 +579,7 @@ public class TNonblockingServer extends TServer {
 
     private TByteArrayOutputStream response_;
 
-    public FrameBuffer(final TNonblockingTransport trans,
-        final SelectionKey selectionKey) {
+    public FrameBuffer(final TNonblockingTransport trans, final SelectionKey selectionKey) {
       creationTime_ = System.currentTimeMillis();
       trans_ = trans;
       selectionKey_ = selectionKey;
@@ -582,8 +592,8 @@ public class TNonblockingServer extends TServer {
     }
 
     /**
-     * Give this FrameBuffer a chance to read. The selector loop should have
-     * received a read event for this FrameBuffer.
+     * Give this FrameBuffer a chance to read. The selector loop should have received a read event
+     * for this FrameBuffer.
      *
      * @return true if the connection should live on, false if it should be closed
      */
@@ -600,8 +610,10 @@ public class TNonblockingServer extends TServer {
           // pull out the frame size as an integer.
           int frameSize = buffer_.getInt(0);
           if (frameSize <= 0) {
-            LOGGER.error("Read an invalid frame size of " + frameSize
-                + ". Are you using TFramedTransport on the client side?");
+            LOGGER.error(
+                "Read an invalid frame size of "
+                    + frameSize
+                    + ". Are you using TFramedTransport on the client side?");
             return false;
           }
 
@@ -609,9 +621,11 @@ public class TNonblockingServer extends TServer {
           // error and close the connection.
           int newBufferSize = frameSize + 4;
           if (newBufferSize > MAX_READ_BUFFER_BYTES) {
-            LOGGER.error("Read a frame size of " + frameSize
-                + ", which is bigger than the maximum allowable buffer size "
-                + "for ALL connections.");
+            LOGGER.error(
+                "Read a frame size of "
+                    + frameSize
+                    + ", which is bigger than the maximum allowable buffer size "
+                    + "for ALL connections.");
             return false;
           }
 
@@ -660,9 +674,7 @@ public class TNonblockingServer extends TServer {
       return false;
     }
 
-    /**
-     * Give this FrameBuffer a chance to write its output to the final client.
-     */
+    /** Give this FrameBuffer a chance to write its output to the final client. */
     public synchronized boolean write() {
       if (state_ == WRITING) {
         try {
@@ -686,9 +698,7 @@ public class TNonblockingServer extends TServer {
       return false;
     }
 
-    /**
-     * Give this FrameBuffer a chance to set its interest depending on state
-     */
+    /** Give this FrameBuffer a chance to set its interest depending on state */
     public synchronized void changeSelectInterests() {
       if ((state_ == AWAITING_REGISTER_WRITE) || (state_ == WRITING)) {
         state_ = WRITING;
@@ -711,8 +721,7 @@ public class TNonblockingServer extends TServer {
         // Register interest to continue reading.
         selectionKey_.interestOps(SelectionKey.OP_READ);
       } else {
-        LOGGER.error("changeSelectInterest was called, but state is invalid ("
-            + state_ + ")");
+        LOGGER.error("changeSelectInterest was called, but state is invalid (" + state_ + ")");
       }
 
       // All selector interest ops updates MUST be followed with a call to wake
@@ -727,9 +736,7 @@ public class TNonblockingServer extends TServer {
       selectionKey_.cancel();
     }
 
-    /**
-     * Shut the connection down.
-     */
+    /** Shut the connection down. */
     public synchronized void close() {
       // if we're being closed due to an error, we might have allocated a
       // buffer that we need to subtract for our memory accounting.
@@ -739,19 +746,16 @@ public class TNonblockingServer extends TServer {
       trans_.close();
     }
 
-    /**
-     * Check if this FrameBuffer has a full frame read.
-     */
+    /** Check if this FrameBuffer has a full frame read. */
     public synchronized boolean isFrameFullyRead() {
       return state_ == READ_FRAME_COMPLETE;
     }
 
     /**
-     * After the processor has processed the invocation, whatever thread is
-     * managing invocations should call this method on this FrameBuffer so we
-     * know it's time to start trying to write again. Also, if it turns out that
-     * there actually isn't any data in the response buffer, we'll skip trying
-     * to write and instead go back to reading.
+     * After the processor has processed the invocation, whatever thread is managing invocations
+     * should call this method on this FrameBuffer so we know it's time to start trying to write
+     * again. Also, if it turns out that there actually isn't any data in the response buffer, we'll
+     * skip trying to write and instead go back to reading.
      */
     private void responseReady() {
       // the read buffer is definitely no longer in use, so we will decrement
@@ -778,9 +782,7 @@ public class TNonblockingServer extends TServer {
       changeSelectInterests();
     }
 
-    /**
-     * Actually invoke the method signified by this FrameBuffer.
-     */
+    /** Actually invoke the method signified by this FrameBuffer. */
     public synchronized void invoke() {
       TTransport inTrans;
       TProtocol inProt;
@@ -793,14 +795,11 @@ public class TNonblockingServer extends TServer {
       } else {
         inTrans = getInputTransport();
         inProt = inputProtocolFactory_.getProtocol(inTrans);
-        outProt = outputProtocolFactory_
-            .getProtocol(getOutputTransport());
+        outProt = outputProtocolFactory_.getProtocol(getOutputTransport());
       }
 
       try {
-        TRpcConnectionContext server_ctx = new TRpcConnectionContext(trans_,
-            inProt,
-            outProt);
+        TRpcConnectionContext server_ctx = new TRpcConnectionContext(trans_, inProt, outProt);
         processorFactory_.getProcessor(inTrans).process(inProt, outProt, server_ctx);
         responseReady();
         return;
@@ -819,32 +818,25 @@ public class TNonblockingServer extends TServer {
     }
 
     /**
-     * Wrap the read buffer in a memory-based transport so a processor can read
-     * the data it needs to handle an invocation.
+     * Wrap the read buffer in a memory-based transport so a processor can read the data it needs to
+     * handle an invocation.
      */
     public synchronized TTransport getInputTransport() {
-      return inputTransportFactory_.getTransport(new TIOStreamTransport(
-          new ByteArrayInputStream(buffer_.array())));
+      return inputTransportFactory_.getTransport(
+          new TIOStreamTransport(new ByteArrayInputStream(buffer_.array())));
     }
 
-    /**
-     * Get the transport that should be used by the invoker for responding.
-     */
+    /** Get the transport that should be used by the invoker for responding. */
     private TTransport getOutputTransport() {
       response_ = new TByteArrayOutputStream();
-      return outputTransportFactory_.getTransport(new TIOStreamTransport(
-          response_));
+      return outputTransportFactory_.getTransport(new TIOStreamTransport(response_));
     }
 
-    /**
-     * Get a transport that works for reading and responding
-     */
+    /** Get a transport that works for reading and responding */
     private TTransport getInputOutputTransport() {
       response_ = new TByteArrayOutputStream();
       return inputTransportFactory_.getTransport(
-          new TIOStreamTransport(
-              new ByteArrayInputStream(buffer_.array()),
-              response_));
+          new TIOStreamTransport(new ByteArrayInputStream(buffer_.array()), response_));
     }
 
     /**
@@ -868,9 +860,7 @@ public class TNonblockingServer extends TServer {
   public static class ServerOverloadedException extends Exception {
     private static final long serialVersionUID = 1L;
 
-    public ServerOverloadedException() {
-
-    }
+    public ServerOverloadedException() {}
 
     public ServerOverloadedException(Throwable th) {
       super(th);
@@ -885,13 +875,11 @@ public class TNonblockingServer extends TServer {
     public long timeout = 2000;
     public long maxReadBufferBytes = Long.MAX_VALUE;
 
-    public Options() {
-    }
+    public Options() {}
 
     public void validate() {
       if (maxReadBufferBytes <= 1024) {
-        throw new IllegalArgumentException(
-            "You must allocate at least 1KB to the read buffer.");
+        throw new IllegalArgumentException("You must allocate at least 1KB to the read buffer.");
       }
     }
   }

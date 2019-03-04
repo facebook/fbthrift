@@ -19,18 +19,16 @@
 
 package com.facebook.thrift.transport;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
- * This is the most commonly used base transport. It takes an InputStream
- * and an OutputStream and uses those to perform all transport operations.
- * This allows for compatibility with all the nice constructs Java already
- * has to provide a variety of types of streams.
+ * This is the most commonly used base transport. It takes an InputStream and an OutputStream and
+ * uses those to perform all transport operations. This allows for compatibility with all the nice
+ * constructs Java already has to provide a variety of types of streams.
  */
 public class TIOStreamTransport extends TTransport {
 
@@ -43,11 +41,10 @@ public class TIOStreamTransport extends TTransport {
   protected OutputStream outputStream_ = null;
 
   /**
-   * Subclasses can invoke the default constructor and then assign the input
-   * streams in the open method.
+   * Subclasses can invoke the default constructor and then assign the input streams in the open
+   * method.
    */
-  protected TIOStreamTransport() {
-  }
+  protected TIOStreamTransport() {}
 
   /**
    * Input stream constructor.
@@ -79,8 +76,7 @@ public class TIOStreamTransport extends TTransport {
   }
 
   /**
-   * The streams must already be open at construction time, so this should
-   * always return true.
+   * The streams must already be open at construction time, so this should always return true.
    *
    * @return true
    */
@@ -88,15 +84,10 @@ public class TIOStreamTransport extends TTransport {
     return true;
   }
 
-  /**
-   * The streams must already be open. This method does nothing.
-   */
-  public void open() throws TTransportException {
-  }
+  /** The streams must already be open. This method does nothing. */
+  public void open() throws TTransportException {}
 
-  /**
-   * Closes both the input and output streams.
-   */
+  /** Closes both the input and output streams. */
   public void close() {
     if (inputStream_ != null) {
       try {
@@ -116,13 +107,11 @@ public class TIOStreamTransport extends TTransport {
     }
   }
 
-  /**
-   * Reads from the underlying input stream if not null.
-   */
+  /** Reads from the underlying input stream if not null. */
   public int read(byte[] buf, int off, int len) throws TTransportException {
     if (inputStream_ == null) {
-      throw new TTransportException(TTransportException.NOT_OPEN,
-          "Cannot read from null inputStream");
+      throw new TTransportException(
+          TTransportException.NOT_OPEN, "Cannot read from null inputStream");
     }
     int bytesRead;
     try {
@@ -136,13 +125,11 @@ public class TIOStreamTransport extends TTransport {
     return bytesRead;
   }
 
-  /**
-   * Writes to the underlying output stream if not null.
-   */
+  /** Writes to the underlying output stream if not null. */
   public void write(byte[] buf, int off, int len) throws TTransportException {
     if (outputStream_ == null) {
-      throw new TTransportException(TTransportException.NOT_OPEN,
-          "Cannot write to null outputStream");
+      throw new TTransportException(
+          TTransportException.NOT_OPEN, "Cannot write to null outputStream");
     }
     try {
       outputStream_.write(buf, off, len);
@@ -151,9 +138,7 @@ public class TIOStreamTransport extends TTransport {
     }
   }
 
-  /**
-   * Flushes the underlying output stream if not null.
-   */
+  /** Flushes the underlying output stream if not null. */
   public void flush() throws TTransportException {
     if (outputStream_ == null) {
       throw new TTransportException(TTransportException.NOT_OPEN, "Cannot flush null outputStream");

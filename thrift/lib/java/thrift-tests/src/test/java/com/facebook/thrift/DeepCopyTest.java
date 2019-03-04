@@ -17,33 +17,30 @@
  * under the License.
  */
 
-
 package com.facebook.thrift;
 
-import com.facebook.thrift.TDeserializer;
-import com.facebook.thrift.TSerializer;
 import com.facebook.thrift.protocol.TBinaryProtocol;
-import thrift.test.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import thrift.test.*;
 
 public class DeepCopyTest {
 
   private static final byte[] kUnicodeBytes = {
-    (byte)0xd3, (byte)0x80, (byte)0xe2, (byte)0x85, (byte)0xae, (byte)0xce,
-    (byte)0x9d, (byte)0x20, (byte)0xd0, (byte)0x9d, (byte)0xce, (byte)0xbf,
-    (byte)0xe2, (byte)0x85, (byte)0xbf, (byte)0xd0, (byte)0xbe, (byte)0xc9,
-    (byte)0xa1, (byte)0xd0, (byte)0xb3, (byte)0xd0, (byte)0xb0, (byte)0xcf,
-    (byte)0x81, (byte)0xe2, (byte)0x84, (byte)0x8e, (byte)0x20, (byte)0xce,
-    (byte)0x91, (byte)0x74, (byte)0x74, (byte)0xce, (byte)0xb1, (byte)0xe2,
-    (byte)0x85, (byte)0xbd, (byte)0xce, (byte)0xba, (byte)0x83, (byte)0xe2,
-    (byte)0x80, (byte)0xbc
+    (byte) 0xd3, (byte) 0x80, (byte) 0xe2, (byte) 0x85, (byte) 0xae, (byte) 0xce,
+    (byte) 0x9d, (byte) 0x20, (byte) 0xd0, (byte) 0x9d, (byte) 0xce, (byte) 0xbf,
+    (byte) 0xe2, (byte) 0x85, (byte) 0xbf, (byte) 0xd0, (byte) 0xbe, (byte) 0xc9,
+    (byte) 0xa1, (byte) 0xd0, (byte) 0xb3, (byte) 0xd0, (byte) 0xb0, (byte) 0xcf,
+    (byte) 0x81, (byte) 0xe2, (byte) 0x84, (byte) 0x8e, (byte) 0x20, (byte) 0xce,
+    (byte) 0x91, (byte) 0x74, (byte) 0x74, (byte) 0xce, (byte) 0xb1, (byte) 0xe2,
+    (byte) 0x85, (byte) 0xbd, (byte) 0xce, (byte) 0xba, (byte) 0x83, (byte) 0xe2,
+    (byte) 0x80, (byte) 0xbc
   };
 
   public static void main(String[] args) throws Exception {
-    TSerializer   binarySerializer   = new   TSerializer(new TBinaryProtocol.Factory());
+    TSerializer binarySerializer = new TSerializer(new TBinaryProtocol.Factory());
     TDeserializer binaryDeserializer = new TDeserializer(new TBinaryProtocol.Factory());
 
     OneOfEach ooe = new OneOfEach();
@@ -113,7 +110,6 @@ public class DeepCopyTest {
     b.message = "nevermore";
     hm.bonks.put("poe", stage2);
 
-
     byte[] binaryCopy = binarySerializer.serialize(hm);
     HolyMoley hmCopy = new HolyMoley();
     binaryDeserializer.deserialize(hmCopy, binaryCopy);
@@ -126,13 +122,11 @@ public class DeepCopyTest {
 
     hm.big.get(0).base64[0]++; // change binary value in original object
     if (hm.equals(hmCopy2)) // make sure the change didn't propagate to the copied object
-      throw new RuntimeException("Binary field not copied correctly!");
+    throw new RuntimeException("Binary field not copied correctly!");
     hm.big.get(0).base64[0]--; // undo change
 
     hmCopy2.bonks.get("nothing").get(1).message = "What else?";
 
-    if (hm.equals(hmCopy2))
-      throw new RuntimeException("A deep copy was not done!");
-
+    if (hm.equals(hmCopy2)) throw new RuntimeException("A deep copy was not done!");
   }
 }

@@ -19,9 +19,7 @@
 
 package com.facebook.thrift;
 
-/**
- * Generic exception class for Thrift.
- */
+/** Generic exception class for Thrift. */
 public class TException extends RuntimeException {
 
   private static final long serialVersionUID = 1L;

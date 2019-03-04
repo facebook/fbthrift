@@ -19,9 +19,7 @@
 
 package com.facebook.thrift.protocol;
 
-/**
- * Helper class that encapsulates set metadata.
- */
+/** Helper class that encapsulates set metadata. */
 public final class TSet {
   public TSet() {
     this(TType.STOP, 0);

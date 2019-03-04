@@ -17,12 +17,10 @@
  * under the License.
  */
 
-
 package com.facebook.thrift;
 
 import com.facebook.thrift.protocol.TBinaryProtocol;
 import com.facebook.thrift.transport.TSocket;
-
 
 public class OverloadNonblockingServer {
 

@@ -24,8 +24,7 @@ public final class TMemoryInputTransport extends TTransport {
   private int pos_;
   private int endPos_;
 
-  public TMemoryInputTransport() {
-  }
+  public TMemoryInputTransport() {}
 
   public TMemoryInputTransport(byte[] buf) {
     reset(buf);
@@ -46,8 +45,7 @@ public final class TMemoryInputTransport extends TTransport {
   }
 
   @Override
-  public void close() {
-  }
+  public void close() {}
 
   @Override
   public boolean isOpen() {
@@ -55,8 +53,7 @@ public final class TMemoryInputTransport extends TTransport {
   }
 
   @Override
-  public void open() throws TTransportException {
-  }
+  public void open() throws TTransportException {}
 
   @Override
   public int read(byte[] buf, int off, int len) throws TTransportException {
@@ -90,5 +87,4 @@ public final class TMemoryInputTransport extends TTransport {
   public void consumeBuffer(int len) {
     pos_ += len;
   }
-
 }

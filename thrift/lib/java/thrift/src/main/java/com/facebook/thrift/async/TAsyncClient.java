@@ -29,13 +29,15 @@ public abstract class TAsyncClient {
   private Exception ___error;
   private long ___timeout;
 
-  public TAsyncClient(TProtocolFactory protocolFactory,
+  public TAsyncClient(
+      TProtocolFactory protocolFactory,
       TAsyncClientManager manager,
       TNonblockingTransport transport) {
     this(protocolFactory, manager, transport, 0);
   }
 
-  public TAsyncClient(TProtocolFactory protocolFactory,
+  public TAsyncClient(
+      TProtocolFactory protocolFactory,
       TAsyncClientManager manager,
       TNonblockingTransport transport,
       long timeout) {
@@ -61,16 +63,12 @@ public abstract class TAsyncClient {
     this.___timeout = timeout;
   }
 
-  /**
-   * Is the client in an error state?
-   */
+  /** Is the client in an error state? */
   public boolean hasError() {
     return ___error != null;
   }
 
-  /**
-   * Get the client's error - returns null if no error
-   */
+  /** Get the client's error - returns null if no error */
   public Exception getError() {
     return ___error;
   }
@@ -88,16 +86,12 @@ public abstract class TAsyncClient {
     }
   }
 
-  /**
-   * Called by delegate method when finished
-   */
+  /** Called by delegate method when finished */
   protected void onComplete() {
     ___currentMethod = null;
   }
 
-  /**
-   * Called by delegate method on error
-   */
+  /** Called by delegate method on error */
   protected void onError(Exception exception) {
     ___transport.close();
     ___currentMethod = null;

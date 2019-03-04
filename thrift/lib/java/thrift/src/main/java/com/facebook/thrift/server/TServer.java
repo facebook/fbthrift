@@ -25,48 +25,31 @@ import com.facebook.thrift.protocol.TProtocolFactory;
 import com.facebook.thrift.transport.TServerTransport;
 import com.facebook.thrift.transport.TTransportFactory;
 
-/**
- * Generic interface for a Thrift server.
- */
+/** Generic interface for a Thrift server. */
 public abstract class TServer {
 
-  /**
-   * Core processor
-   */
+  /** Core processor */
   protected final TProcessorFactory processorFactory_;
 
-  /**
-   * Server transport
-   */
+  /** Server transport */
   protected final TServerTransport serverTransport_;
 
-  /**
-   * Input Transport Factory
-   */
+  /** Input Transport Factory */
   protected final TTransportFactory inputTransportFactory_;
 
-  /**
-   * Output Transport Factory
-   */
+  /** Output Transport Factory */
   protected final TTransportFactory outputTransportFactory_;
 
-  /**
-   * Input Protocol Factory
-   */
+  /** Input Protocol Factory */
   protected final TProtocolFactory inputProtocolFactory_;
 
-  /**
-   * Output Protocol Factory
-   */
+  /** Output Protocol Factory */
   protected final TProtocolFactory outputProtocolFactory_;
 
-  /**
-   * Default constructors.
-   */
-
-  protected TServer(TProcessorFactory processorFactory,
-      TServerTransport serverTransport) {
-    this(processorFactory,
+  /** Default constructors. */
+  protected TServer(TProcessorFactory processorFactory, TServerTransport serverTransport) {
+    this(
+        processorFactory,
         serverTransport,
         new TTransportFactory(),
         new TTransportFactory(),
@@ -74,10 +57,12 @@ public abstract class TServer {
         new TBinaryProtocol.Factory());
   }
 
-  protected TServer(TProcessorFactory processorFactory,
+  protected TServer(
+      TProcessorFactory processorFactory,
       TServerTransport serverTransport,
       TTransportFactory transportFactory) {
-    this(processorFactory,
+    this(
+        processorFactory,
         serverTransport,
         transportFactory,
         transportFactory,
@@ -85,11 +70,13 @@ public abstract class TServer {
         new TBinaryProtocol.Factory());
   }
 
-  protected TServer(TProcessorFactory processorFactory,
+  protected TServer(
+      TProcessorFactory processorFactory,
       TServerTransport serverTransport,
       TTransportFactory transportFactory,
       TProtocolFactory protocolFactory) {
-    this(processorFactory,
+    this(
+        processorFactory,
         serverTransport,
         transportFactory,
         transportFactory,
@@ -97,7 +84,8 @@ public abstract class TServer {
         protocolFactory);
   }
 
-  protected TServer(TProcessorFactory processorFactory,
+  protected TServer(
+      TProcessorFactory processorFactory,
       TServerTransport serverTransport,
       TTransportFactory inputTransportFactory,
       TTransportFactory outputTransportFactory,
@@ -111,16 +99,12 @@ public abstract class TServer {
     outputProtocolFactory_ = outputProtocolFactory;
   }
 
-  /**
-   * The run method fires up the server and gets things going.
-   */
+  /** The run method fires up the server and gets things going. */
   public abstract void serve();
 
   /**
-   * Stop the server. This is optional on a per-implementation basis. Not
-   * all servers are required to be cleanly stoppable.
+   * Stop the server. This is optional on a per-implementation basis. Not all servers are required
+   * to be cleanly stoppable.
    */
-  public void stop() {
-  }
-
+  public void stop() {}
 }

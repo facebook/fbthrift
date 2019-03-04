@@ -17,7 +17,6 @@
  * under the License.
  */
 
-
 package com.facebook.thrift.transport;
 
 import java.io.IOException;
@@ -30,63 +29,43 @@ import java.nio.channels.Selector;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
 
-/**
- * Wrapper around ServerSocketChannel
- */
+/** Wrapper around ServerSocketChannel */
 public class TNonblockingServerSocket extends TNonblockingServerTransport {
 
-  /**
-   * This channel is where all the nonblocking magic happens.
-   */
+  /** This channel is where all the nonblocking magic happens. */
   private ServerSocketChannel serverSocketChannel = null;
 
-  /**
-   * Underlying serversocket object
-   */
+  /** Underlying serversocket object */
   private ServerSocket serverSocket_ = null;
 
-  /**
-   * Port to listen on
-   */
+  /** Port to listen on */
   private int port_ = 0;
 
-  /**
-   * Timeout for client sockets from accept
-   */
+  /** Timeout for client sockets from accept */
   private int clientTimeout_ = 0;
 
-  /**
-   * Creates a server socket from underlying socket object
-   */
+  /** Creates a server socket from underlying socket object */
   // public TNonblockingServerSocket(ServerSocket serverSocket) {
   //   this(serverSocket, 0);
   // }
 
-  /**
-   * Creates a server socket from underlying socket object
-   */
+  /** Creates a server socket from underlying socket object */
   // public TNonblockingServerSocket(ServerSocket serverSocket, int clientTimeout) {
   //   serverSocket_ = serverSocket;
   //   clientTimeout_ = clientTimeout;
   // }
 
-  /**
-   * Creates just a port listening server socket
-   */
+  /** Creates just a port listening server socket */
   public TNonblockingServerSocket(int port) throws TTransportException {
     this(port, 0);
   }
 
-  /**
-   * Creates just a port listening server socket
-   */
+  /** Creates just a port listening server socket */
   public TNonblockingServerSocket(int port, int clientTimeout) throws TTransportException {
     this(port, clientTimeout, 0);
   }
 
-  /**
-   * Creates just a port listening server socket
-   */
+  /** Creates just a port listening server socket */
   public TNonblockingServerSocket(int port, int clientTimeout, int backlog)
       throws TTransportException {
     port_ = port;
@@ -153,8 +132,7 @@ public class TNonblockingServerSocket extends TNonblockingServerTransport {
       try {
         serverSocket_.close();
       } catch (IOException iox) {
-        System.err.println("WARNING: Could not close server socket: " +
-            iox.getMessage());
+        System.err.println("WARNING: Could not close server socket: " + iox.getMessage());
       }
       serverSocket_ = null;
     }

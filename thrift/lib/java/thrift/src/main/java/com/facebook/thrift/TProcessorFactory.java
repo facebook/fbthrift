@@ -21,10 +21,7 @@ package com.facebook.thrift;
 
 import com.facebook.thrift.transport.TTransport;
 
-/**
- * The default processor factory just returns a singleton
- * instance.
- */
+/** The default processor factory just returns a singleton instance. */
 public class TProcessorFactory {
 
   private final TProcessor processor_;

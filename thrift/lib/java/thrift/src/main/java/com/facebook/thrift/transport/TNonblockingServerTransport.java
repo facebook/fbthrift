@@ -17,14 +17,11 @@
  * under the License.
  */
 
-
 package com.facebook.thrift.transport;
 
 import java.nio.channels.Selector;
 
-/**
- * Server transport that can be operated in a nonblocking fashion.
- */
+/** Server transport that can be operated in a nonblocking fashion. */
 public abstract class TNonblockingServerTransport extends TServerTransport {
 
   public abstract void registerSelector(Selector selector);

@@ -21,17 +21,17 @@ package com.facebook.thrift.protocol;
 
 import com.facebook.thrift.TException;
 import com.facebook.thrift.meta_data.FieldMetaData;
-
 import java.util.Map;
 
 /**
- * <code>TProtocolDecorator</code> forwards all requests to an enclosed
- * <code>TProtocol</code> instance, providing a way to author concise
- * concrete decorator subclasses.  While it has no abstract methods, it
- * is marked abstract as a reminder that by itself, it does not modify
- * the behaviour of the enclosed <code>TProtocol</code>.
+ * <code>TProtocolDecorator</code> forwards all requests to an enclosed <code>TProtocol</code>
+ * instance, providing a way to author concise concrete decorator subclasses. While it has no
+ * abstract methods, it is marked abstract as a reminder that by itself, it does not modify the
+ * behaviour of the enclosed <code>TProtocol</code>.
+ *
  * <p>
- * <p>See p.175 of Design Patterns (by Gamma et al.)</p>
+ *
+ * <p>See p.175 of Design Patterns (by Gamma et al.)
  *
  * @see org.apache.thrift.protocol.TMultiplexedProtocol
  */
@@ -42,7 +42,7 @@ public abstract class TProtocolDecorator extends TProtocol {
   /**
    * Encloses the specified protocol.
    *
-   * @param protocol All operations will be forward to this protocol.  Must be non-null.
+   * @param protocol All operations will be forward to this protocol. Must be non-null.
    */
   public TProtocolDecorator(TProtocol protocol) {
     super(protocol.getTransport());

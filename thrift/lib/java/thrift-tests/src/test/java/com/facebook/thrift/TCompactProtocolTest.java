@@ -17,14 +17,8 @@
  * under the License.
  */
 
-
 package com.facebook.thrift;
 
-import java.util.Arrays;
-import java.util.List;
-
-import com.facebook.thrift.TBase;
-import com.facebook.thrift.TException;
 import com.facebook.thrift.protocol.TBinaryProtocol;
 import com.facebook.thrift.protocol.TCompactProtocol;
 import com.facebook.thrift.protocol.TField;
@@ -36,14 +30,14 @@ import com.facebook.thrift.protocol.TStruct;
 import com.facebook.thrift.protocol.TType;
 import com.facebook.thrift.server.TRpcConnectionContext;
 import com.facebook.thrift.transport.TMemoryBuffer;
-
+import java.util.Arrays;
+import java.util.List;
+import org.junit.*;
 import thrift.test.CompactProtoTestStruct;
 import thrift.test.HolyMoley;
 import thrift.test.Nesting;
 import thrift.test.OneOfEach;
 import thrift.test.Srv;
-
-import org.junit.*;
 
 public class TCompactProtocolTest extends junit.framework.TestCase {
 
@@ -57,29 +51,29 @@ public class TCompactProtocolTest extends junit.framework.TestCase {
   public static void testCompactProtocol() throws Exception {
     testNakedByte();
     for (int i = 0; i < 128; i++) {
-      testByteField((byte)i);
-      testByteField((byte)-i);
+      testByteField((byte) i);
+      testByteField((byte) -i);
     }
 
-    testNakedI16((short)0);
-    testNakedI16((short)1);
-    testNakedI16((short)15000);
-    testNakedI16((short)0x7fff);
-    testNakedI16((short)-1);
-    testNakedI16((short)-15000);
-    testNakedI16((short)-0x7fff);
+    testNakedI16((short) 0);
+    testNakedI16((short) 1);
+    testNakedI16((short) 15000);
+    testNakedI16((short) 0x7fff);
+    testNakedI16((short) -1);
+    testNakedI16((short) -15000);
+    testNakedI16((short) -0x7fff);
 
-    testI16Field((short)0);
-    testI16Field((short)1);
-    testI16Field((short)7);
-    testI16Field((short)150);
-    testI16Field((short)15000);
-    testI16Field((short)0x7fff);
-    testI16Field((short)-1);
-    testI16Field((short)-7);
-    testI16Field((short)-150);
-    testI16Field((short)-15000);
-    testI16Field((short)-0x7fff);
+    testI16Field((short) 0);
+    testI16Field((short) 1);
+    testI16Field((short) 7);
+    testI16Field((short) 150);
+    testI16Field((short) 15000);
+    testI16Field((short) 0x7fff);
+    testI16Field((short) -1);
+    testI16Field((short) -7);
+    testI16Field((short) -150);
+    testI16Field((short) -15000);
+    testI16Field((short) -0x7fff);
 
     testNakedI32(0);
     testNakedI32(1);
@@ -137,14 +131,14 @@ public class TCompactProtocolTest extends junit.framework.TestCase {
     testFloatField(Float.POSITIVE_INFINITY);
     testFloatField(Float.NEGATIVE_INFINITY);
 
-    testNakedBinary(new byte[]{});
-    testNakedBinary(new byte[]{0,1,2,3,4,5,6,7,8,9,10});
-    testNakedBinary(new byte[]{0,1,2,3,4,5,6,7,8,9,10,11,12,13,14});
+    testNakedBinary(new byte[] {});
+    testNakedBinary(new byte[] {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10});
+    testNakedBinary(new byte[] {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14});
     testNakedBinary(new byte[128]);
 
-    testBinaryField(new byte[]{});
-    testBinaryField(new byte[]{0,1,2,3,4,5,6,7,8,9,10});
-    testBinaryField(new byte[]{0,1,2,3,4,5,6,7,8,9,10,11,12,13,14});
+    testBinaryField(new byte[] {});
+    testBinaryField(new byte[] {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10});
+    testBinaryField(new byte[] {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14});
     testBinaryField(new byte[128]);
 
     testSerialization(OneOfEach.class, Fixtures.oneOfEach);
@@ -160,26 +154,28 @@ public class TCompactProtocolTest extends junit.framework.TestCase {
   public static void testNakedByte() throws Exception {
     TMemoryBuffer buf = new TMemoryBuffer(0);
     TProtocol proto = factory.getProtocol(buf);
-    proto.writeByte((byte)123);
+    proto.writeByte((byte) 123);
     byte out = proto.readByte();
     if (out != 123) {
-      throw new RuntimeException("Byte was supposed to be " + (byte)123 + " but was " + out);
+      throw new RuntimeException("Byte was supposed to be " + (byte) 123 + " but was " + out);
     }
   }
 
   public static void testByteField(final byte b) throws Exception {
-    testStructField(new StructFieldTestCase(TType.BYTE, (short)15) {
-      public void writeMethod(TProtocol proto) throws TException {
-        proto.writeByte(b);
-      }
+    testStructField(
+        new StructFieldTestCase(TType.BYTE, (short) 15) {
+          public void writeMethod(TProtocol proto) throws TException {
+            proto.writeByte(b);
+          }
 
-      public void readMethod(TProtocol proto) throws TException {
-        byte result = proto.readByte();
-        if (result != b) {
-          throw new RuntimeException("Byte was supposed to be " + (byte)b + " but was " + result);
-        }
-      }
-    });
+          public void readMethod(TProtocol proto) throws TException {
+            byte result = proto.readByte();
+            if (result != b) {
+              throw new RuntimeException(
+                  "Byte was supposed to be " + (byte) b + " but was " + result);
+            }
+          }
+        });
   }
 
   public static void testNakedI16(short n) throws Exception {
@@ -194,18 +190,19 @@ public class TCompactProtocolTest extends junit.framework.TestCase {
   }
 
   public static void testI16Field(final short n) throws Exception {
-    testStructField(new StructFieldTestCase(TType.I16, (short)15) {
-      public void writeMethod(TProtocol proto) throws TException {
-        proto.writeI16(n);
-      }
+    testStructField(
+        new StructFieldTestCase(TType.I16, (short) 15) {
+          public void writeMethod(TProtocol proto) throws TException {
+            proto.writeI16(n);
+          }
 
-      public void readMethod(TProtocol proto) throws TException {
-        short result = proto.readI16();
-        if (result != n) {
-          throw new RuntimeException("I16 was supposed to be " + n + " but was " + result);
-        }
-      }
-    });
+          public void readMethod(TProtocol proto) throws TException {
+            short result = proto.readI16();
+            if (result != n) {
+              throw new RuntimeException("I16 was supposed to be " + n + " but was " + result);
+            }
+          }
+        });
   }
 
   public static void testNakedI32(int n) throws Exception {
@@ -220,19 +217,19 @@ public class TCompactProtocolTest extends junit.framework.TestCase {
   }
 
   public static void testI32Field(final int n) throws Exception {
-    testStructField(new StructFieldTestCase(TType.I32, (short)15) {
-      public void writeMethod(TProtocol proto) throws TException {
-        proto.writeI32(n);
-      }
+    testStructField(
+        new StructFieldTestCase(TType.I32, (short) 15) {
+          public void writeMethod(TProtocol proto) throws TException {
+            proto.writeI32(n);
+          }
 
-      public void readMethod(TProtocol proto) throws TException {
-        int result = proto.readI32();
-        if (result != n) {
-          throw new RuntimeException("I32 was supposed to be " + n + " but was " + result);
-        }
-      }
-    });
-
+          public void readMethod(TProtocol proto) throws TException {
+            int result = proto.readI32();
+            if (result != n) {
+              throw new RuntimeException("I32 was supposed to be " + n + " but was " + result);
+            }
+          }
+        });
   }
 
   public static void testNakedI64(long n) throws Exception {
@@ -247,18 +244,19 @@ public class TCompactProtocolTest extends junit.framework.TestCase {
   }
 
   public static void testI64Field(final long n) throws Exception {
-    testStructField(new StructFieldTestCase(TType.I64, (short)15) {
-      public void writeMethod(TProtocol proto) throws TException {
-        proto.writeI64(n);
-      }
+    testStructField(
+        new StructFieldTestCase(TType.I64, (short) 15) {
+          public void writeMethod(TProtocol proto) throws TException {
+            proto.writeI64(n);
+          }
 
-      public void readMethod(TProtocol proto) throws TException {
-        long result = proto.readI64();
-        if (result != n) {
-          throw new RuntimeException("I64 was supposed to be " + n + " but was " + result);
-        }
-      }
-    });
+          public void readMethod(TProtocol proto) throws TException {
+            long result = proto.readI64();
+            if (result != n) {
+              throw new RuntimeException("I64 was supposed to be " + n + " but was " + result);
+            }
+          }
+        });
   }
 
   public static void testDouble() throws Exception {
@@ -282,18 +280,20 @@ public class TCompactProtocolTest extends junit.framework.TestCase {
   }
 
   public static void testFloatField(final float value) throws Exception {
-    testStructField(new StructFieldTestCase(TType.FLOAT, (short)15) {
-      public void writeMethod(TProtocol proto) throws TException {
-        proto.writeFloat(value);
-      }
+    testStructField(
+        new StructFieldTestCase(TType.FLOAT, (short) 15) {
+          public void writeMethod(TProtocol proto) throws TException {
+            proto.writeFloat(value);
+          }
 
-      public void readMethod(TProtocol proto) throws TException {
-        float result = proto.readFloat();
-        if (0 != Float.compare(result, value)) {
-          throw new RuntimeException("Float was supposed to  be " + value + " but was " + result);
-        }
-      }
-    });
+          public void readMethod(TProtocol proto) throws TException {
+            float result = proto.readFloat();
+            if (0 != Float.compare(result, value)) {
+              throw new RuntimeException(
+                  "Float was supposed to  be " + value + " but was " + result);
+            }
+          }
+        });
   }
 
   public static void testNakedString(String str) throws Exception {
@@ -308,18 +308,19 @@ public class TCompactProtocolTest extends junit.framework.TestCase {
   }
 
   public static void testStringField(final String str) throws Exception {
-    testStructField(new StructFieldTestCase(TType.STRING, (short)15) {
-      public void writeMethod(TProtocol proto) throws TException {
-        proto.writeString(str);
-      }
+    testStructField(
+        new StructFieldTestCase(TType.STRING, (short) 15) {
+          public void writeMethod(TProtocol proto) throws TException {
+            proto.writeString(str);
+          }
 
-      public void readMethod(TProtocol proto) throws TException {
-        String result = proto.readString();
-        if (!result.equals(str)) {
-          throw new RuntimeException("String was supposed to be " + str + " but was " + result);
-        }
-      }
-    });
+          public void readMethod(TProtocol proto) throws TException {
+            String result = proto.readString();
+            if (!result.equals(str)) {
+              throw new RuntimeException("String was supposed to be " + str + " but was " + result);
+            }
+          }
+        });
   }
 
   public static void testNakedBinary(byte[] data) throws Exception {
@@ -334,19 +335,24 @@ public class TCompactProtocolTest extends junit.framework.TestCase {
   }
 
   public static void testBinaryField(final byte[] data) throws Exception {
-    testStructField(new StructFieldTestCase(TType.STRING, (short)15) {
-      public void writeMethod(TProtocol proto) throws TException {
-        proto.writeBinary(data);
-      }
+    testStructField(
+        new StructFieldTestCase(TType.STRING, (short) 15) {
+          public void writeMethod(TProtocol proto) throws TException {
+            proto.writeBinary(data);
+          }
 
-      public void readMethod(TProtocol proto) throws TException {
-        byte[] result = proto.readBinary();
-        if (!Arrays.equals(data, result)) {
-          throw new RuntimeException("Binary was supposed to be '" + bytesToString(data) + "' but was '" + bytesToString(result) + "'");
-        }
-      }
-    });
-
+          public void readMethod(TProtocol proto) throws TException {
+            byte[] result = proto.readBinary();
+            if (!Arrays.equals(data, result)) {
+              throw new RuntimeException(
+                  "Binary was supposed to be '"
+                      + bytesToString(data)
+                      + "' but was '"
+                      + bytesToString(result)
+                      + "'");
+            }
+          }
+        });
   }
 
   public static <T extends TBase> void testSerialization(Class<T> klass, T obj) throws Exception {
@@ -379,12 +385,15 @@ public class TCompactProtocolTest extends junit.framework.TestCase {
   }
 
   public static void testMessage() throws Exception {
-    List<TMessage> msgs = Arrays.asList(new TMessage[]{
-      new TMessage("short message name", TMessageType.CALL, 0),
-      new TMessage("1", TMessageType.REPLY, 12345),
-      new TMessage("loooooooooooooooooooooooooooooooooong", TMessageType.EXCEPTION, 1 << 16),
-      new TMessage("Janky", TMessageType.CALL, 0),
-    });
+    List<TMessage> msgs =
+        Arrays.asList(
+            new TMessage[] {
+              new TMessage("short message name", TMessageType.CALL, 0),
+              new TMessage("1", TMessageType.REPLY, 12345),
+              new TMessage(
+                  "loooooooooooooooooooooooooooooooooong", TMessageType.EXCEPTION, 1 << 16),
+              new TMessage("Janky", TMessageType.CALL, 0),
+            });
 
     for (TMessage msg : msgs) {
       TMemoryBuffer buf = new TMemoryBuffer(0);
@@ -403,26 +412,27 @@ public class TCompactProtocolTest extends junit.framework.TestCase {
   }
 
   public static void testServerRequest() throws Exception {
-    Srv.Iface handler = new Srv.Iface() {
-      public int Janky(int i32arg) throws TException {
-        return i32arg * 2;
-      }
+    Srv.Iface handler =
+        new Srv.Iface() {
+          public int Janky(int i32arg) throws TException {
+            return i32arg * 2;
+          }
 
-      public int primitiveMethod() throws TException {
-        // TODO Auto-generated method stub
-        return 0;
-      }
+          public int primitiveMethod() throws TException {
+            // TODO Auto-generated method stub
+            return 0;
+          }
 
-      public CompactProtoTestStruct structMethod() throws TException {
-        // TODO Auto-generated method stub
-        return null;
-      }
+          public CompactProtoTestStruct structMethod() throws TException {
+            // TODO Auto-generated method stub
+            return null;
+          }
 
-      public void voidMethod() throws TException {
-        // TODO Auto-generated method stub
+          public void voidMethod() throws TException {
+            // TODO Auto-generated method stub
 
-      }
-    };
+          }
+        };
 
     Srv.Processor testProcessor = new Srv.Processor(handler);
 
@@ -451,7 +461,7 @@ public class TCompactProtocolTest extends junit.framework.TestCase {
   private static String bytesToString(byte[] bytes) {
     String s = "";
     for (int i = 0; i < bytes.length; i++) {
-      s += Integer.toHexString((int)bytes[i]) + " ";
+      s += Integer.toHexString((int) bytes[i]) + " ";
     }
     return s;
   }
@@ -479,15 +489,17 @@ public class TCompactProtocolTest extends junit.framework.TestCase {
     proto.readStructEnd();
   }
 
-  public static abstract class StructFieldTestCase {
+  public abstract static class StructFieldTestCase {
     byte type_;
     short id_;
+
     public StructFieldTestCase(byte type, short id) {
       type_ = type;
       id_ = id;
     }
 
     public abstract void writeMethod(TProtocol proto) throws TException;
+
     public abstract void readMethod(TProtocol proto) throws TException;
   }
 }

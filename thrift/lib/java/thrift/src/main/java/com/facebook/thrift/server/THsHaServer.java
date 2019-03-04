@@ -17,7 +17,6 @@
  * under the License.
  */
 
-
 package com.facebook.thrift.server;
 
 import com.facebook.thrift.TProcessor;
@@ -26,7 +25,6 @@ import com.facebook.thrift.protocol.TBinaryProtocol;
 import com.facebook.thrift.protocol.TProtocolFactory;
 import com.facebook.thrift.transport.TFramedTransport;
 import com.facebook.thrift.transport.TNonblockingServerTransport;
-
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -36,8 +34,8 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 /**
- * An extension of the TNonblockingServer to a Half-Sync/Half-Async server.
- * Like TNonblockingServer, it relies on the use of TFramedTransport.
+ * An extension of the TNonblockingServer to a Half-Sync/Half-Async server. Like TNonblockingServer,
+ * it relies on the use of TFramedTransport.
  */
 public class THsHaServer extends TNonblockingServer {
 
@@ -48,147 +46,182 @@ public class THsHaServer extends TNonblockingServer {
   protected final Options options_;
 
   /**
-   * Create server with given processor, and server transport. Default server
-   * options, TBinaryProtocol for the protocol, and TFramedTransport.Factory on
-   * both input and output transports. A TProcessorFactory will be created that
-   * always returns the specified processor.
+   * Create server with given processor, and server transport. Default server options,
+   * TBinaryProtocol for the protocol, and TFramedTransport.Factory on both input and output
+   * transports. A TProcessorFactory will be created that always returns the specified processor.
    */
-  public THsHaServer(TProcessor processor,
-      TNonblockingServerTransport serverTransport) {
+  public THsHaServer(TProcessor processor, TNonblockingServerTransport serverTransport) {
     this(processor, serverTransport, new Options());
   }
 
   /**
-   * Create server with given processor, server transport, and server options
-   * using TBinaryProtocol for the protocol, and TFramedTransport.Factory on
-   * both input and output transports. A TProcessorFactory will be created that
-   * always returns the specified processor.
+   * Create server with given processor, server transport, and server options using TBinaryProtocol
+   * for the protocol, and TFramedTransport.Factory on both input and output transports. A
+   * TProcessorFactory will be created that always returns the specified processor.
    */
-  public THsHaServer(TProcessor processor,
-      TNonblockingServerTransport serverTransport, Options options) {
+  public THsHaServer(
+      TProcessor processor, TNonblockingServerTransport serverTransport, Options options) {
     this(new TProcessorFactory(processor), serverTransport, options);
   }
 
   /**
-   * Create server with specified processor factory and server transport. Uses
-   * default options. TBinaryProtocol is assumed. TFramedTransport.Factory is
-   * used on both input and output transports.
+   * Create server with specified processor factory and server transport. Uses default options.
+   * TBinaryProtocol is assumed. TFramedTransport.Factory is used on both input and output
+   * transports.
    */
-  public THsHaServer(TProcessorFactory processorFactory,
-      TNonblockingServerTransport serverTransport) {
+  public THsHaServer(
+      TProcessorFactory processorFactory, TNonblockingServerTransport serverTransport) {
     this(processorFactory, serverTransport, new Options());
   }
 
   /**
-   * Create server with specified processor factory, server transport, and
-   * server options. TBinaryProtocol is assumed. TFramedTransport.Factory is
-   * used on both input and output transports.
+   * Create server with specified processor factory, server transport, and server options.
+   * TBinaryProtocol is assumed. TFramedTransport.Factory is used on both input and output
+   * transports.
    */
-  public THsHaServer(TProcessorFactory processorFactory,
-      TNonblockingServerTransport serverTransport, Options options) {
-    this(processorFactory, serverTransport, new TFramedTransport.Factory(),
-        new TBinaryProtocol.Factory(), options);
+  public THsHaServer(
+      TProcessorFactory processorFactory,
+      TNonblockingServerTransport serverTransport,
+      Options options) {
+    this(
+        processorFactory,
+        serverTransport,
+        new TFramedTransport.Factory(),
+        new TBinaryProtocol.Factory(),
+        options);
   }
 
   /**
-   * Server with specified processor, server transport, and in/out protocol
-   * factory. Defaults will be used for in/out transport factory and server
-   * options.
+   * Server with specified processor, server transport, and in/out protocol factory. Defaults will
+   * be used for in/out transport factory and server options.
    */
-  public THsHaServer(TProcessor processor,
+  public THsHaServer(
+      TProcessor processor,
       TNonblockingServerTransport serverTransport,
       TProtocolFactory protocolFactory) {
     this(processor, serverTransport, protocolFactory, new Options());
   }
 
   /**
-   * Server with specified processor, server transport, and in/out protocol
-   * factory. Defaults will be used for in/out transport factory and server
-   * options.
+   * Server with specified processor, server transport, and in/out protocol factory. Defaults will
+   * be used for in/out transport factory and server options.
    */
-  public THsHaServer(TProcessor processor,
+  public THsHaServer(
+      TProcessor processor,
       TNonblockingServerTransport serverTransport,
-      TProtocolFactory protocolFactory, Options options) {
-    this(new TProcessorFactory(processor), serverTransport,
-        new TFramedTransport.Factory(), protocolFactory, options);
+      TProtocolFactory protocolFactory,
+      Options options) {
+    this(
+        new TProcessorFactory(processor),
+        serverTransport,
+        new TFramedTransport.Factory(),
+        protocolFactory,
+        options);
   }
 
   /**
-   * Create server with specified processor, server transport, in/out transport
-   * factory, in/out protocol factory, and default server options. A processor
-   * factory will be created that always returns the specified processor.
+   * Create server with specified processor, server transport, in/out transport factory, in/out
+   * protocol factory, and default server options. A processor factory will be created that always
+   * returns the specified processor.
    */
-  public THsHaServer(TProcessor processor,
+  public THsHaServer(
+      TProcessor processor,
       TNonblockingServerTransport serverTransport,
       TFramedTransport.Factory transportFactory,
       TProtocolFactory protocolFactory) {
-    this(new TProcessorFactory(processor), serverTransport, transportFactory,
-        protocolFactory);
+    this(new TProcessorFactory(processor), serverTransport, transportFactory, protocolFactory);
   }
 
   /**
-   * Create server with specified processor factory, server transport, in/out
-   * transport factory, in/out protocol factory, and default server options.
+   * Create server with specified processor factory, server transport, in/out transport factory,
+   * in/out protocol factory, and default server options.
    */
-  public THsHaServer(TProcessorFactory processorFactory,
+  public THsHaServer(
+      TProcessorFactory processorFactory,
       TNonblockingServerTransport serverTransport,
       TFramedTransport.Factory transportFactory,
       TProtocolFactory protocolFactory) {
-    this(processorFactory, serverTransport, transportFactory, transportFactory,
-        protocolFactory, protocolFactory, new Options());
-  }
-
-  /**
-   * Create server with specified processor factory, server transport, in/out
-   * transport factory, in/out protocol factory, and server options.
-   */
-  public THsHaServer(TProcessorFactory processorFactory,
-      TNonblockingServerTransport serverTransport,
-      TFramedTransport.Factory transportFactory,
-      TProtocolFactory protocolFactory, Options options) {
-    this(processorFactory, serverTransport, transportFactory, transportFactory,
-        protocolFactory, protocolFactory, options);
-  }
-
-  /**
-   * Create server with everything specified, except use default server options.
-   */
-  public THsHaServer(TProcessor processor,
-      TNonblockingServerTransport serverTransport,
-      TFramedTransport.Factory inputTransportFactory,
-      TFramedTransport.Factory outputTransportFactory,
-      TProtocolFactory inputProtocolFactory,
-      TProtocolFactory outputProtocolFactory) {
-    this(new TProcessorFactory(processor), serverTransport,
-        inputTransportFactory, outputTransportFactory, inputProtocolFactory,
-        outputProtocolFactory);
-  }
-
-  /**
-   * Create server with everything specified, except use default server options.
-   */
-  public THsHaServer(TProcessorFactory processorFactory,
-      TNonblockingServerTransport serverTransport,
-      TFramedTransport.Factory inputTransportFactory,
-      TFramedTransport.Factory outputTransportFactory,
-      TProtocolFactory inputProtocolFactory,
-      TProtocolFactory outputProtocolFactory) {
-    this(processorFactory, serverTransport, inputTransportFactory,
-        outputTransportFactory, inputProtocolFactory, outputProtocolFactory,
+    this(
+        processorFactory,
+        serverTransport,
+        transportFactory,
+        transportFactory,
+        protocolFactory,
+        protocolFactory,
         new Options());
   }
 
   /**
-   * Create server with every option fully specified.
+   * Create server with specified processor factory, server transport, in/out transport factory,
+   * in/out protocol factory, and server options.
    */
-  public THsHaServer(TProcessorFactory processorFactory,
+  public THsHaServer(
+      TProcessorFactory processorFactory,
+      TNonblockingServerTransport serverTransport,
+      TFramedTransport.Factory transportFactory,
+      TProtocolFactory protocolFactory,
+      Options options) {
+    this(
+        processorFactory,
+        serverTransport,
+        transportFactory,
+        transportFactory,
+        protocolFactory,
+        protocolFactory,
+        options);
+  }
+
+  /** Create server with everything specified, except use default server options. */
+  public THsHaServer(
+      TProcessor processor,
       TNonblockingServerTransport serverTransport,
       TFramedTransport.Factory inputTransportFactory,
       TFramedTransport.Factory outputTransportFactory,
       TProtocolFactory inputProtocolFactory,
-      TProtocolFactory outputProtocolFactory, Options options) {
-    super(processorFactory, serverTransport, inputTransportFactory,
-        outputTransportFactory, inputProtocolFactory, outputProtocolFactory,
+      TProtocolFactory outputProtocolFactory) {
+    this(
+        new TProcessorFactory(processor),
+        serverTransport,
+        inputTransportFactory,
+        outputTransportFactory,
+        inputProtocolFactory,
+        outputProtocolFactory);
+  }
+
+  /** Create server with everything specified, except use default server options. */
+  public THsHaServer(
+      TProcessorFactory processorFactory,
+      TNonblockingServerTransport serverTransport,
+      TFramedTransport.Factory inputTransportFactory,
+      TFramedTransport.Factory outputTransportFactory,
+      TProtocolFactory inputProtocolFactory,
+      TProtocolFactory outputProtocolFactory) {
+    this(
+        processorFactory,
+        serverTransport,
+        inputTransportFactory,
+        outputTransportFactory,
+        inputProtocolFactory,
+        outputProtocolFactory,
+        new Options());
+  }
+
+  /** Create server with every option fully specified. */
+  public THsHaServer(
+      TProcessorFactory processorFactory,
+      TNonblockingServerTransport serverTransport,
+      TFramedTransport.Factory inputTransportFactory,
+      TFramedTransport.Factory outputTransportFactory,
+      TProtocolFactory inputProtocolFactory,
+      TProtocolFactory outputProtocolFactory,
+      Options options) {
+    super(
+        processorFactory,
+        serverTransport,
+        inputTransportFactory,
+        outputTransportFactory,
+        inputProtocolFactory,
+        outputProtocolFactory,
         options);
     options_ = options;
   }
@@ -223,13 +256,18 @@ public class THsHaServer extends TNonblockingServer {
 
   protected boolean startInvokerPool() {
     // start the invoker pool
-    BlockingQueue<Runnable> queue = (options_.hsHaQueueSize == 0) ? new SynchronousQueue<Runnable>()
-                                                                  : new LinkedBlockingQueue<Runnable>(
-                                                                      options_.hsHaQueueSize);
-    invoker = new ThreadPoolExecutor(options_.minHsHaWorkerThreads,
-        options_.maxHsHaWorkerThreads,
-        options_.stopTimeoutVal, options_.stopTimeoutUnit, queue,
-        new TThreadFactoryImpl("THsHaServer-Invoker"));
+    BlockingQueue<Runnable> queue =
+        (options_.hsHaQueueSize == 0)
+            ? new SynchronousQueue<Runnable>()
+            : new LinkedBlockingQueue<Runnable>(options_.hsHaQueueSize);
+    invoker =
+        new ThreadPoolExecutor(
+            options_.minHsHaWorkerThreads,
+            options_.maxHsHaWorkerThreads,
+            options_.stopTimeoutVal,
+            options_.stopTimeoutUnit,
+            queue,
+            new TThreadFactoryImpl("THsHaServer-Invoker"));
 
     return true;
   }
@@ -257,13 +295,11 @@ public class THsHaServer extends TNonblockingServer {
   }
 
   /**
-   * We override the standard invoke method here to queue the invocation for
-   * invoker service instead of immediately invoking. The thread pool takes care
-   * of the rest.
+   * We override the standard invoke method here to queue the invocation for invoker service instead
+   * of immediately invoking. The thread pool takes care of the rest.
    */
   @Override
-  protected void requestInvoke(FrameBuffer frameBuffer)
-      throws ServerOverloadedException {
+  protected void requestInvoke(FrameBuffer frameBuffer) throws ServerOverloadedException {
     try {
       invoker.execute(new Invocation(frameBuffer));
     } catch (RejectedExecutionException e) {
@@ -272,9 +308,9 @@ public class THsHaServer extends TNonblockingServer {
   }
 
   /**
-   * An Invocation represents a method call that is prepared to execute, given
-   * an idle worker thread. It contains the input and output protocols the
-   * thread's processor should use to perform the usual Thrift invocation.
+   * An Invocation represents a method call that is prepared to execute, given an idle worker
+   * thread. It contains the input and output protocols the thread's processor should use to perform
+   * the usual Thrift invocation.
    */
   private static class Invocation implements Runnable {
 

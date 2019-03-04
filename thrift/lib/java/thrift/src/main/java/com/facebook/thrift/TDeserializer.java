@@ -22,27 +22,21 @@ package com.facebook.thrift;
 import com.facebook.thrift.protocol.TBinaryProtocol;
 import com.facebook.thrift.protocol.TProtocolFactory;
 import com.facebook.thrift.transport.TIOStreamTransport;
-
 import java.io.ByteArrayInputStream;
 import java.io.UnsupportedEncodingException;
 
-/**
- * Generic utility for easily deserializing objects from a byte array or Java
- * String.
- */
+/** Generic utility for easily deserializing objects from a byte array or Java String. */
 public class TDeserializer {
   private final TProtocolFactory protocolFactory_;
 
-  /**
-   * Create a new TDeserializer that uses the TBinaryProtocol by default.
-   */
+  /** Create a new TDeserializer that uses the TBinaryProtocol by default. */
   public TDeserializer() {
     this(new TBinaryProtocol.Factory());
   }
 
   /**
-   * Create a new TDeserializer. It will use the TProtocol specified by the
-   * factory that is passed in.
+   * Create a new TDeserializer. It will use the TProtocol specified by the factory that is passed
+   * in.
    *
    * @param protocolFactory Factory to create a protocol
    */
@@ -58,14 +52,11 @@ public class TDeserializer {
    */
   public void deserialize(TBase base, byte[] bytes) throws TException {
     base.read(
-        protocolFactory_.getProtocol(
-            new TIOStreamTransport(
-                new ByteArrayInputStream(bytes))));
+        protocolFactory_.getProtocol(new TIOStreamTransport(new ByteArrayInputStream(bytes))));
   }
 
   /**
-   * Deserialize the Thrift object from a Java string, using a specified
-   * character set for decoding.
+   * Deserialize the Thrift object from a Java string, using a specified character set for decoding.
    *
    * @param base The object to read into
    * @param data The string to read from
@@ -80,8 +71,7 @@ public class TDeserializer {
   }
 
   /**
-   * Deserialize the Thrift object from a Java string, using the default JVM
-   * charset encoding.
+   * Deserialize the Thrift object from a Java string, using the default JVM charset encoding.
    *
    * @param base The object to read into
    * @param data The string to read from

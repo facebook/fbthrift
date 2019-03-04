@@ -22,17 +22,14 @@ package com.facebook.thrift.server;
 import com.facebook.thrift.protocol.TProtocol;
 import com.facebook.thrift.transport.TSocketIf;
 import com.facebook.thrift.transport.TTransport;
-
 import java.net.InetAddress;
 
-/**
- * Generic interface for a Thrift server.
- */
+/** Generic interface for a Thrift server. */
 public class TRpcConnectionContext extends TConnectionContext {
   protected TTransport client_socket;
 
-  public TRpcConnectionContext(TTransport client_socket, TProtocol input_protocol,
-      TProtocol output_protocol) {
+  public TRpcConnectionContext(
+      TTransport client_socket, TProtocol input_protocol, TProtocol output_protocol) {
     super(input_protocol, output_protocol);
     this.client_socket = client_socket;
   }
@@ -42,5 +39,4 @@ public class TRpcConnectionContext extends TConnectionContext {
     TSocketIf socket = (TSocketIf) client_socket;
     return socket.getSocket().getInetAddress();
   }
-
 }

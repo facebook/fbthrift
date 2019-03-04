@@ -23,12 +23,10 @@ import com.facebook.thrift.server.THsHaServer;
 import com.facebook.thrift.server.TNonblockingServer;
 import com.facebook.thrift.server.TServer;
 import com.facebook.thrift.transport.TNonblockingServerSocket;
-
 import thrift.test.ThriftTest;
 
-
 public class TestNonblockingServer extends TestServer {
-  public static void main(String [] args) {
+  public static void main(String[] args) {
     try {
       int port = 9090;
       boolean hsha = false;
@@ -42,14 +40,11 @@ public class TestNonblockingServer extends TestServer {
       }
 
       // Processor
-      TestHandler testHandler =
-        new TestHandler();
-      ThriftTest.Processor testProcessor =
-        new ThriftTest.Processor(testHandler);
+      TestHandler testHandler = new TestHandler();
+      ThriftTest.Processor testProcessor = new ThriftTest.Processor(testHandler);
 
       // Transport
-      TNonblockingServerSocket tServerSocket =
-        new TNonblockingServerSocket(port);
+      TNonblockingServerSocket tServerSocket = new TNonblockingServerSocket(port);
 
       TServer serverEngine;
 

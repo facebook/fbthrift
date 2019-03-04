@@ -19,68 +19,50 @@
 
 package com.facebook.thrift.transport;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-/**
- * Wrapper around ServerSocket for Thrift.
- */
+/** Wrapper around ServerSocket for Thrift. */
 public class TServerSocket extends TServerTransport {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(TServerSocket.class.getName());
 
-  /**
-   * Underlying serversocket object
-   */
+  /** Underlying serversocket object */
   private ServerSocket serverSocket_ = null;
 
-  /**
-   * Timeout for client sockets from accept
-   */
+  /** Timeout for client sockets from accept */
   private int clientTimeout_ = 0;
 
-  /**
-   * Creates a server socket from underlying socket object
-   */
+  /** Creates a server socket from underlying socket object */
   public TServerSocket(ServerSocket serverSocket) {
     this(serverSocket, 0);
   }
 
-  /**
-   * Creates a server socket from underlying socket object
-   */
+  /** Creates a server socket from underlying socket object */
   public TServerSocket(ServerSocket serverSocket, int clientTimeout) {
     serverSocket_ = serverSocket;
     clientTimeout_ = clientTimeout;
   }
 
-  /**
-   * Creates just a port listening server socket
-   */
+  /** Creates just a port listening server socket */
   public TServerSocket(int port) throws TTransportException {
     this(port, 0);
   }
 
-  /**
-   * Creates just a port listening server socket
-   */
+  /** Creates just a port listening server socket */
   public TServerSocket(int port, int clientTimeout) throws TTransportException {
     this(new InetSocketAddress(port), clientTimeout);
   }
 
-  /**
-   * Creates just a port listening server socket
-   */
+  /** Creates just a port listening server socket */
   public TServerSocket(int port, int clientTimeout, int backlog) throws TTransportException {
     this(new InetSocketAddress(port), clientTimeout, backlog);
   }
-
 
   public TServerSocket(InetSocketAddress bindAddr) throws TTransportException {
     this(bindAddr, 0, 0);

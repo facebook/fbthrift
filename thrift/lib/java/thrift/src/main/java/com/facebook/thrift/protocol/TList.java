@@ -19,9 +19,7 @@
 
 package com.facebook.thrift.protocol;
 
-/**
- * Helper class that encapsulates list metadata.
- */
+/** Helper class that encapsulates list metadata. */
 public final class TList {
   public TList() {
     this(TType.STOP, 0);

@@ -20,17 +20,12 @@
 package com.facebook.thrift.transport;
 
 import com.facebook.thrift.TByteArrayOutputStream;
-
 import java.io.UnsupportedEncodingException;
 
-/**
- * Memory buffer-based implementation of the TTransport interface.
- */
+/** Memory buffer-based implementation of the TTransport interface. */
 public class TMemoryBuffer extends TTransport {
 
-  /**
-   *
-   */
+  /** */
   public TMemoryBuffer(int size) {
     reset(size);
   }
@@ -67,8 +62,7 @@ public class TMemoryBuffer extends TTransport {
   }
 
   /**
-   * Output the contents of the memory buffer as a String, using the supplied
-   * encoding
+   * Output the contents of the memory buffer as a String, using the supplied encoding
    *
    * @param enc the encoding to use
    * @return the contents of the memory buffer as a String

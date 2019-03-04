@@ -1,27 +1,20 @@
 package com.facebook.thrift;
 
 import com.facebook.thrift.protocol.TBinaryProtocol;
+import com.facebook.thrift.protocol.TCompactJSONProtocol;
+import com.facebook.thrift.protocol.TCompactProtocol;
 import com.facebook.thrift.protocol.TProtocol;
+import com.facebook.thrift.protocol.TProtocolException;
 import com.facebook.thrift.protocol.TProtocolFactory;
 import com.facebook.thrift.transport.TMemoryBuffer;
-import com.facebook.thrift.protocol.TCompactProtocol;
-import com.facebook.thrift.protocol.TCompactJSONProtocol;
-import com.facebook.thrift.protocol.TJSONProtocol;
-import com.facebook.thrift.protocol.TProtocolException;
-import com.facebook.thrift.TDeserializer;
-import com.facebook.thrift.TSerializer;
 import com.facebook.thrift.transport.TTransportException;
-
-import thrift.test.Empty;
-import thrift.test.StructWithAUnion;
-import thrift.test.RandomStuff;
-import thrift.test.TestUnion;
-
-import java.util.List;
 import java.util.ArrayList;
-import java.util.HashMap;
-
+import java.util.List;
 import org.junit.*;
+import thrift.test.Empty;
+import thrift.test.RandomStuff;
+import thrift.test.StructWithAUnion;
+import thrift.test.TestUnion;
 
 public class UnionTest extends junit.framework.TestCase {
 
@@ -39,11 +32,11 @@ public class UnionTest extends junit.framework.TestCase {
 
     union = new TestUnion(TestUnion.I32_FIELD, 25);
 
-    if ((Integer)union.getFieldValue() != 25) {
+    if ((Integer) union.getFieldValue() != 25) {
       throw new RuntimeException("set i32 field didn't come out as planned");
     }
 
-    if ((Integer)union.getFieldValue(TestUnion.I32_FIELD) != 25) {
+    if ((Integer) union.getFieldValue(TestUnion.I32_FIELD) != 25) {
       throw new RuntimeException("set i32 field didn't come out of TBase getFieldValue");
     }
 
@@ -68,7 +61,6 @@ public class UnionTest extends junit.framework.TestCase {
     } catch (Exception e) {
       // sweet
     }
-
   }
 
   @Test
@@ -137,13 +129,9 @@ public class UnionTest extends junit.framework.TestCase {
 
   @Test
   public static void testJSONSerialization() throws Exception {
-    TDeserializer deserializer = new TDeserializer(
-      new TCompactJSONProtocol.Factory()
-    );
+    TDeserializer deserializer = new TDeserializer(new TCompactJSONProtocol.Factory());
 
-    TSerializer serializer = new TSerializer(
-      new TCompactJSONProtocol.Factory()
-    );
+    TSerializer serializer = new TSerializer(new TCompactJSONProtocol.Factory());
 
     // Deserialize empty union
     TestUnion emptyUnion = new TestUnion();
@@ -168,9 +156,7 @@ public class UnionTest extends junit.framework.TestCase {
 
     // Serialize union with inner list then deserialize it. Should be the same.
     List<RandomStuff> randomList = new ArrayList<RandomStuff>();
-    randomList.add(
-      new RandomStuff(1, 2, 3, 4, new ArrayList<Integer>(), null, 10l, 10.5)
-    );
+    randomList.add(new RandomStuff(1, 2, 3, 4, new ArrayList<Integer>(), null, 10l, 10.5));
     TestUnion unionWithList = new TestUnion(TestUnion.STRUCT_LIST, randomList);
 
     String unionWithListJSON = serializer.toString(unionWithList, "UTF-8");

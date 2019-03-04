@@ -25,7 +25,7 @@ import com.facebook.thrift.TBase;
 public class StructMetaData extends FieldValueMetaData {
   public final Class<? extends TBase> structClass;
 
-  public StructMetaData(byte type, Class<? extends TBase> sClass){
+  public StructMetaData(byte type, Class<? extends TBase> sClass) {
     super(type);
     this.structClass = sClass;
   }

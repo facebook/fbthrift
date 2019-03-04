@@ -21,13 +21,10 @@ package com.facebook.thrift.protocol;
 
 import com.facebook.thrift.TException;
 import com.facebook.thrift.transport.TTransport;
-
 import java.io.UnsupportedEncodingException;
 import java.util.Map;
 
-/**
- * Binary protocol implementation for thrift.
- */
+/** Binary protocol implementation for thrift. */
 public class TBinaryProtocol extends TProtocol {
   private static final TStruct ANONYMOUS_STRUCT = new TStruct();
 
@@ -40,9 +37,7 @@ public class TBinaryProtocol extends TProtocol {
   protected int readLength_;
   protected boolean checkReadLength_ = false;
 
-  /**
-   * Factory
-   */
+  /** Factory */
   @SuppressWarnings("serial")
   public static class Factory implements TProtocolFactory {
     protected boolean strictRead_ = false;
@@ -72,9 +67,7 @@ public class TBinaryProtocol extends TProtocol {
     }
   }
 
-  /**
-   * Constructor
-   */
+  /** Constructor */
   public TBinaryProtocol(TTransport trans) {
     this(trans, false, true);
   }
@@ -102,22 +95,18 @@ public class TBinaryProtocol extends TProtocol {
     }
   }
 
-  public void writeMessageEnd() {
-  }
+  public void writeMessageEnd() {}
 
-  public void writeStructBegin(TStruct struct) {
-  }
+  public void writeStructBegin(TStruct struct) {}
 
-  public void writeStructEnd() {
-  }
+  public void writeStructEnd() {}
 
   public void writeFieldBegin(TField field) throws TException {
     writeByte(field.type);
     writeI16(field.id);
   }
 
-  public void writeFieldEnd() {
-  }
+  public void writeFieldEnd() {}
 
   public void writeFieldStop() throws TException {
     writeByte(TType.STOP);
@@ -129,24 +118,21 @@ public class TBinaryProtocol extends TProtocol {
     writeI32(map.size);
   }
 
-  public void writeMapEnd() {
-  }
+  public void writeMapEnd() {}
 
   public void writeListBegin(TList list) throws TException {
     writeByte(list.elemType);
     writeI32(list.size);
   }
 
-  public void writeListEnd() {
-  }
+  public void writeListEnd() {}
 
   public void writeSetBegin(TSet set) throws TException {
     writeByte(set.elemType);
     writeI32(set.size);
   }
 
-  public void writeSetEnd() {
-  }
+  public void writeSetEnd() {}
 
   public void writeBool(boolean b) throws TException {
     writeByte(b ? (byte) 1 : (byte) 0);
@@ -214,38 +200,33 @@ public class TBinaryProtocol extends TProtocol {
     trans_.write(bin, 0, bin.length);
   }
 
-  /**
-   * Reading methods.
-   */
-
+  /** Reading methods. */
   public TMessage readMessageBegin() throws TException {
     int size = readI32();
     if (size < 0) {
       int version = size & VERSION_MASK;
       if (version != VERSION_1) {
-        throw new TProtocolException(TProtocolException.BAD_VERSION,
-            "Bad version in readMessageBegin");
+        throw new TProtocolException(
+            TProtocolException.BAD_VERSION, "Bad version in readMessageBegin");
       }
       return new TMessage(readString(), (byte) (size & 0x000000ff), readI32());
     } else {
       if (strictRead_) {
-        throw new TProtocolException(TProtocolException.BAD_VERSION,
-            "Missing version in readMessageBegin, old client?");
+        throw new TProtocolException(
+            TProtocolException.BAD_VERSION, "Missing version in readMessageBegin, old client?");
       }
       return new TMessage(readStringBody(size), readByte(), readI32());
     }
   }
 
-  public void readMessageEnd() {
-  }
+  public void readMessageEnd() {}
 
   public TStruct readStructBegin(
       Map<Integer, com.facebook.thrift.meta_data.FieldMetaData> metaDataMap) {
     return ANONYMOUS_STRUCT;
   }
 
-  public void readStructEnd() {
-  }
+  public void readStructEnd() {}
 
   public TField readFieldBegin() throws TException {
     byte type = readByte();
@@ -253,29 +234,25 @@ public class TBinaryProtocol extends TProtocol {
     return new TField("", type, id);
   }
 
-  public void readFieldEnd() {
-  }
+  public void readFieldEnd() {}
 
   public TMap readMapBegin() throws TException {
     return new TMap(readByte(), readByte(), readI32());
   }
 
-  public void readMapEnd() {
-  }
+  public void readMapEnd() {}
 
   public TList readListBegin() throws TException {
     return new TList(readByte(), readI32());
   }
 
-  public void readListEnd() {
-  }
+  public void readListEnd() {}
 
   public TSet readSetBegin() throws TException {
     return new TSet(readByte(), readI32());
   }
 
-  public void readSetEnd() {
-  }
+  public void readSetEnd() {}
 
   public boolean readBool() throws TException {
     return (readByte() == 1);
@@ -307,10 +284,7 @@ public class TBinaryProtocol extends TProtocol {
       readAll(i16rd, 0, 2);
     }
 
-    return
-      (short)
-      (((buf[off] & 0xff) << 8) |
-       ((buf[off + 1] & 0xff)));
+    return (short) (((buf[off] & 0xff) << 8) | ((buf[off + 1] & 0xff)));
   }
 
   private byte[] i32rd = new byte[4];
@@ -326,11 +300,10 @@ public class TBinaryProtocol extends TProtocol {
     } else {
       readAll(i32rd, 0, 4);
     }
-    return
-      ((buf[off] & 0xff) << 24) |
-      ((buf[off + 1] & 0xff) << 16) |
-      ((buf[off + 2] & 0xff) <<  8) |
-      ((buf[off + 3] & 0xff));
+    return ((buf[off] & 0xff) << 24)
+        | ((buf[off + 1] & 0xff) << 16)
+        | ((buf[off + 2] & 0xff) << 8)
+        | ((buf[off + 3] & 0xff));
   }
 
   private byte[] i64rd = new byte[8];
@@ -347,15 +320,14 @@ public class TBinaryProtocol extends TProtocol {
       readAll(i64rd, 0, 8);
     }
 
-    return
-      ((long)(buf[off]   & 0xff) << 56) |
-      ((long)(buf[off + 1] & 0xff) << 48) |
-      ((long)(buf[off + 2] & 0xff) << 40) |
-      ((long)(buf[off + 3] & 0xff) << 32) |
-      ((long)(buf[off + 4] & 0xff) << 24) |
-      ((long)(buf[off + 5] & 0xff) << 16) |
-      ((long)(buf[off + 6] & 0xff) <<  8) |
-      ((long)(buf[off + 7] & 0xff));
+    return ((long) (buf[off] & 0xff) << 56)
+        | ((long) (buf[off + 1] & 0xff) << 48)
+        | ((long) (buf[off + 2] & 0xff) << 40)
+        | ((long) (buf[off + 3] & 0xff) << 32)
+        | ((long) (buf[off + 4] & 0xff) << 24)
+        | ((long) (buf[off + 5] & 0xff) << 16)
+        | ((long) (buf[off + 6] & 0xff) << 8)
+        | ((long) (buf[off + 7] & 0xff));
   }
 
   public double readDouble() throws TException {
@@ -401,7 +373,6 @@ public class TBinaryProtocol extends TProtocol {
     return buf;
   }
 
-
   private int readAll(byte[] buf, int off, int len) throws TException {
     checkReadLength(len);
     return trans_.readAll(buf, off, len);
@@ -423,5 +394,4 @@ public class TBinaryProtocol extends TProtocol {
       }
     }
   }
-
 }

@@ -19,46 +19,33 @@
 
 package com.facebook.thrift.transport;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-/**
- * Socket implementation of the TTransport interface. To be commented soon!
- */
+/** Socket implementation of the TTransport interface. To be commented soon! */
 public class TSocket extends TIOStreamTransport implements TSocketIf {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(TSocket.class.getName());
 
-  /**
-   * Wrapped Socket object
-   */
+  /** Wrapped Socket object */
   private Socket socket_ = null;
 
-  /**
-   * Remote host
-   */
+  /** Remote host */
   private String host_ = null;
 
-  /**
-   * Remote port
-   */
+  /** Remote port */
   private int port_ = 0;
 
-  /**
-   * Socket timeout
-   */
+  /** Socket timeout */
   private int timeout_ = 0;
 
-  /**
-   * Socket connection timeout
-   */
+  /** Socket connection timeout */
   private int connectionTimeout_ = 0;
 
   /**
@@ -88,8 +75,7 @@ public class TSocket extends TIOStreamTransport implements TSocketIf {
   }
 
   /**
-   * Creates a new unconnected socket that will connect to the given host
-   * on the given port.
+   * Creates a new unconnected socket that will connect to the given host on the given port.
    *
    * @param host Remote host
    * @param port Remote port
@@ -99,8 +85,7 @@ public class TSocket extends TIOStreamTransport implements TSocketIf {
   }
 
   /**
-   * Creates a new unconnected socket that will connect to the given host
-   * on the given port.
+   * Creates a new unconnected socket that will connect to the given host on the given port.
    *
    * @param host Remote host
    * @param port Remote port
@@ -111,8 +96,7 @@ public class TSocket extends TIOStreamTransport implements TSocketIf {
   }
 
   /**
-   * Creates a new unconnected socket that will connect to the given host
-   * on the given port.
+   * Creates a new unconnected socket that will connect to the given host on the given port.
    *
    * @param host Remote host
    * @param port Remote port
@@ -127,9 +111,7 @@ public class TSocket extends TIOStreamTransport implements TSocketIf {
     initSocket();
   }
 
-  /**
-   * Initializes the socket object
-   */
+  /** Initializes the socket object */
   private void initSocket() {
     socket_ = new Socket();
     try {
@@ -155,9 +137,7 @@ public class TSocket extends TIOStreamTransport implements TSocketIf {
     }
   }
 
-  /**
-   * Returns a reference to the underlying socket.
-   */
+  /** Returns a reference to the underlying socket. */
   public Socket getSocket() {
     if (socket_ == null) {
       initSocket();
@@ -165,9 +145,7 @@ public class TSocket extends TIOStreamTransport implements TSocketIf {
     return socket_;
   }
 
-  /**
-   * Checks whether the socket is connected.
-   */
+  /** Checks whether the socket is connected. */
   public boolean isOpen() {
     if (socket_ == null) {
       return false;
@@ -175,9 +153,7 @@ public class TSocket extends TIOStreamTransport implements TSocketIf {
     return socket_.isConnected();
   }
 
-  /**
-   * Connects the socket, creating a new socket object if necessary.
-   */
+  /** Connects the socket, creating a new socket object if necessary. */
   public void open() throws TTransportException {
     if (isOpen()) {
       throw new TTransportException(TTransportException.ALREADY_OPEN, "Socket already connected.");
@@ -204,9 +180,7 @@ public class TSocket extends TIOStreamTransport implements TSocketIf {
     }
   }
 
-  /**
-   * Closes the socket.
-   */
+  /** Closes the socket. */
   public void close() {
     // Close the underlying streams
     super.close();
@@ -221,5 +195,4 @@ public class TSocket extends TIOStreamTransport implements TSocketIf {
       socket_ = null;
     }
   }
-
 }

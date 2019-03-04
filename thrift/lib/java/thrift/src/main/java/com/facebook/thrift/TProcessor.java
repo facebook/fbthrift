@@ -23,8 +23,8 @@ import com.facebook.thrift.protocol.TProtocol;
 import com.facebook.thrift.server.TConnectionContext;
 
 /**
- * A processor is a generic object which operates upon an input stream and
- * writes to some output stream.
+ * A processor is a generic object which operates upon an input stream and writes to some output
+ * stream.
  */
 public interface TProcessor {
   public boolean process(TProtocol in, TProtocol out, TConnectionContext server_ctx)

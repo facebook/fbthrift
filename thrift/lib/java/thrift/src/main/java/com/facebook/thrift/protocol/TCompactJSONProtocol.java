@@ -22,23 +22,18 @@ package com.facebook.thrift.protocol;
 import com.facebook.thrift.TException;
 import com.facebook.thrift.meta_data.FieldMetaData;
 import com.facebook.thrift.transport.TTransport;
-
 import java.util.Map;
 import java.util.Stack;
 
 /**
- * Compact JSON protocol.
- * It is similar to simple JSON protocol, only it is JSON-compliant, and supports reading back.
- * Unlike simple JSON protocol, compact JSON protocol
- * encodes binary fields with Base64
- * encloses Infinity and -Infinity values in quotes
- * encloses non-string map keys in quotes
+ * Compact JSON protocol. It is similar to simple JSON protocol, only it is JSON-compliant, and
+ * supports reading back. Unlike simple JSON protocol, compact JSON protocol encodes binary fields
+ * with Base64 encloses Infinity and -Infinity values in quotes encloses non-string map keys in
+ * quotes
  */
 public class TCompactJSONProtocol extends TJSONProtocolBase {
 
-  /**
-   * Factory
-   */
+  /** Factory */
   @SuppressWarnings("serial")
   public static class Factory implements TProtocolFactory {
     public TProtocol getProtocol(TTransport trans) {
@@ -46,10 +41,7 @@ public class TCompactJSONProtocol extends TJSONProtocolBase {
     }
   }
 
-
-  /**
-   * Constructor
-   */
+  /** Constructor */
   public TCompactJSONProtocol(TTransport trans) {
     super(trans);
   }
@@ -70,12 +62,10 @@ public class TCompactJSONProtocol extends TJSONProtocolBase {
   }
 
   @Override
-  public void writeFieldEnd() throws TException {
-  }
+  public void writeFieldEnd() throws TException {}
 
   @Override
-  public void writeFieldStop() {
-  }
+  public void writeFieldStop() {}
 
   @Override
   public void writeMapBegin(TMap map) throws TException {
@@ -107,17 +97,14 @@ public class TCompactJSONProtocol extends TJSONProtocolBase {
     writeJSONArrayEnd();
   }
 
-  /**
-   * Reading methods.
-   */
+  /** Reading methods. */
 
   // Stack of nested structs that we may be in
   private Stack<Map<Integer, FieldMetaData>> structStack_ =
       new Stack<Map<Integer, FieldMetaData>>();
 
   @Override
-  public TStruct readStructBegin(
-      Map<Integer, FieldMetaData> metaDataMap) throws TException {
+  public TStruct readStructBegin(Map<Integer, FieldMetaData> metaDataMap) throws TException {
     readJSONObjectStart();
     structStack_.push(metaDataMap);
     return ANONYMOUS_STRUCT;
@@ -150,8 +137,7 @@ public class TCompactJSONProtocol extends TJSONProtocolBase {
   }
 
   @Override
-  public void readFieldEnd() throws TException {
-  }
+  public void readFieldEnd() throws TException {}
 
   @Override
   public TMap readMapBegin() throws TException {

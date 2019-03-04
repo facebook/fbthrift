@@ -1,12 +1,11 @@
 /**
  * Copyright 2011 Facebook
- * @author Wei Chen (weichen@fb.com)
  *
- * A interface to provide ChannelHandlers to DirectServer.
- * Extentions of DirectServer uses this class to create ChannelHandler
- * instances of their choice.
+ * <p>A interface to provide ChannelHandlers to DirectServer. Extentions of DirectServer uses this
+ * class to create ChannelHandler instances of their choice.
+ *
+ * @author Wei Chen (weichen@fb.com)
  */
-
 package com.facebook.thrift.direct_server;
 
 import java.nio.channels.SocketChannel;

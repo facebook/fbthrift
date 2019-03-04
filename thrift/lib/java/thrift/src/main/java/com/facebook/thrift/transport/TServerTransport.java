@@ -19,9 +19,7 @@
 
 package com.facebook.thrift.transport;
 
-/**
- * Server transport. Object which provides client transports.
- */
+/** Server transport. Object which provides client transports. */
 public abstract class TServerTransport {
 
   public abstract void listen() throws TTransportException;
@@ -39,13 +37,10 @@ public abstract class TServerTransport {
   protected abstract TTransport acceptImpl() throws TTransportException;
 
   /**
-   * Optional method implementation. This signals to the server transport
-   * that it should break out of any accept() or listen() that it is currently
-   * blocked on. This method, if implemented, MUST be thread safe, as it may
-   * be called from a different thread context than the other TServerTransport
-   * methods.
+   * Optional method implementation. This signals to the server transport that it should break out
+   * of any accept() or listen() that it is currently blocked on. This method, if implemented, MUST
+   * be thread safe, as it may be called from a different thread context than the other
+   * TServerTransport methods.
    */
-  public void interrupt() {
-  }
-
+  public void interrupt() {}
 }

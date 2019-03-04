@@ -17,7 +17,6 @@
  * under the License.
  */
 
-
 package com.facebook.thrift.transport;
 
 import java.net.Socket;

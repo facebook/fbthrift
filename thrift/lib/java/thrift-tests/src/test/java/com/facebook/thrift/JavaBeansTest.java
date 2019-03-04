@@ -51,7 +51,7 @@ public class JavaBeansTest {
     if (ooe.is_set_some_characters())
       throw new RuntimeException("isSet method error: unset field returned as set!");
 
-    for (int i = 1; i < 12; i++){
+    for (int i = 1; i < 12; i++) {
       if (ooe.isSet(i))
         throw new RuntimeException("isSet method error: unset field " + i + " returned as set!");
     }
@@ -92,19 +92,20 @@ public class JavaBeansTest {
     if (!ooe.is_set_some_characters())
       throw new RuntimeException("isSet method error: set field returned as unset!");
 
-    for (int i = 1; i < 12; i++){
+    for (int i = 1; i < 12; i++) {
       if (!ooe.isSet(i))
         throw new RuntimeException("isSet method error: set field " + i + " returned as unset!");
     }
 
     // Should throw exception when field doesn't exist
     boolean exceptionThrown = false;
-    try{
-      if (ooe.isSet(100));
-    } catch (IllegalArgumentException e){
+    try {
+      if (ooe.isSet(100)) ;
+    } catch (IllegalArgumentException e) {
       exceptionThrown = true;
     }
     if (!exceptionThrown)
-      throw new RuntimeException("isSet method error: non-existent field provided as agument but no exception thrown!");
+      throw new RuntimeException(
+          "isSet method error: non-existent field provided as agument but no exception thrown!");
   }
 }

@@ -37,7 +37,6 @@ public abstract class TNonblockingTransport extends TTransport {
    *
    * @see java.nio.channels.SocketChannel#finishConnect()
    */
-
   public abstract boolean finishConnect() throws IOException;
 
   public abstract SelectionKey registerSelector(Selector selector, int interests)

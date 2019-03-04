@@ -19,23 +19,19 @@
 
 package com.facebook.thrift;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import com.facebook.thrift.TProcessorFactory;
 import com.facebook.thrift.protocol.TBinaryProtocol;
 import com.facebook.thrift.protocol.THeaderProtocol;
 import com.facebook.thrift.protocol.TProtocolFactory;
 import com.facebook.thrift.server.TServer;
 import com.facebook.thrift.server.example.TSimpleServer;
-import com.facebook.thrift.server.example.TThreadPoolServer;
 import com.facebook.thrift.transport.THeaderTransport;
 import com.facebook.thrift.transport.TServerSocket;
 import com.facebook.thrift.transport.TTransportFactory;
-
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import thrift.test.Insanity;
 import thrift.test.Numberz;
 import thrift.test.ThriftTest;
@@ -80,27 +76,41 @@ public class TestServer {
     }
 
     public Xtruct testStruct(Xtruct thing) {
-      System.out.print("testStruct({" +
-                       "\"" + thing.string_thing + "\", " +
-                       thing.byte_thing + ", " +
-                       thing.i32_thing + ", " +
-                       thing.i64_thing + "})\n");
+      System.out.print(
+          "testStruct({"
+              + "\""
+              + thing.string_thing
+              + "\", "
+              + thing.byte_thing
+              + ", "
+              + thing.i32_thing
+              + ", "
+              + thing.i64_thing
+              + "})\n");
       return thing;
     }
 
     public Xtruct2 testNest(Xtruct2 nest) {
       Xtruct thing = nest.struct_thing;
-      System.out.print("testNest({" +
-                       nest.byte_thing + ", {" +
-                       "\"" + thing.string_thing + "\", " +
-                       thing.byte_thing + ", " +
-                       thing.i32_thing + ", " +
-                       thing.i64_thing + "}, " +
-                       nest.i32_thing + "})\n");
+      System.out.print(
+          "testNest({"
+              + nest.byte_thing
+              + ", {"
+              + "\""
+              + thing.string_thing
+              + "\", "
+              + thing.byte_thing
+              + ", "
+              + thing.i32_thing
+              + ", "
+              + thing.i64_thing
+              + "}, "
+              + nest.i32_thing
+              + "})\n");
       return nest;
     }
 
-    public Map<Integer,Integer> testMap(Map<Integer,Integer> thing) {
+    public Map<Integer, Integer> testMap(Map<Integer, Integer> thing) {
       System.out.print("testMap({");
       boolean first = true;
       for (int key : thing.keySet()) {
@@ -155,13 +165,12 @@ public class TestServer {
       return thing;
     }
 
-    public Map<Integer,Map<Integer,Integer>> testMapMap(int hello) {
+    public Map<Integer, Map<Integer, Integer>> testMapMap(int hello) {
       System.out.print("testMapMap(" + hello + ")\n");
-      Map<Integer,Map<Integer,Integer>> mapmap =
-        new HashMap<Integer,Map<Integer,Integer>>();
+      Map<Integer, Map<Integer, Integer>> mapmap = new HashMap<Integer, Map<Integer, Integer>>();
 
-      HashMap<Integer,Integer> pos = new HashMap<Integer,Integer>();
-      HashMap<Integer,Integer> neg = new HashMap<Integer,Integer>();
+      HashMap<Integer, Integer> pos = new HashMap<Integer, Integer>();
+      HashMap<Integer, Integer> neg = new HashMap<Integer, Integer>();
       for (int i = 1; i < 5; i++) {
         pos.put(i, i);
         neg.put(-i, -i);
@@ -173,7 +182,7 @@ public class TestServer {
       return mapmap;
     }
 
-    public Map<Long, Map<Integer,Insanity>> testInsanity(Insanity argument) {
+    public Map<Long, Map<Integer, Insanity>> testInsanity(Insanity argument) {
       System.out.print("testInsanity()\n");
 
       Xtruct hello = new Xtruct();
@@ -184,41 +193,43 @@ public class TestServer {
 
       Xtruct goodbye = new Xtruct();
       goodbye.string_thing = "Goodbye4";
-      goodbye.byte_thing = (byte)4;
+      goodbye.byte_thing = (byte) 4;
       goodbye.i32_thing = 4;
-      goodbye.i64_thing = (long)4;
+      goodbye.i64_thing = (long) 4;
 
       Insanity crazy = new Insanity();
       crazy.userMap = new HashMap<Integer, Long>();
       crazy.xtructs = new ArrayList<Xtruct>();
 
-      crazy.userMap.put(Numberz.EIGHT, (long)8);
+      crazy.userMap.put(Numberz.EIGHT, (long) 8);
       crazy.xtructs.add(goodbye);
 
       Insanity looney = new Insanity();
-      crazy.userMap.put(Numberz.FIVE, (long)5);
+      crazy.userMap.put(Numberz.FIVE, (long) 5);
       crazy.xtructs.add(hello);
 
-      HashMap<Integer,Insanity> first_map = new HashMap<Integer, Insanity>();
-      HashMap<Integer,Insanity> second_map = new HashMap<Integer, Insanity>();;
+      HashMap<Integer, Insanity> first_map = new HashMap<Integer, Insanity>();
+      HashMap<Integer, Insanity> second_map = new HashMap<Integer, Insanity>();
+      ;
 
       first_map.put(Numberz.TWO, crazy);
       first_map.put(Numberz.THREE, crazy);
 
       second_map.put(Numberz.SIX, looney);
 
-      Map<Long,Map<Integer,Insanity>> insane =
-        new HashMap<Long, Map<Integer,Insanity>>();
-      insane.put((long)1, first_map);
-      insane.put((long)2, second_map);
+      Map<Long, Map<Integer, Insanity>> insane = new HashMap<Long, Map<Integer, Insanity>>();
+      insane.put((long) 1, first_map);
+      insane.put((long) 2, second_map);
 
       return insane;
     }
 
-    public Xtruct testMulti(byte arg0, int arg1, long arg2, Map<Short,String> arg3, int arg4, long arg5) {
+    public Xtruct testMulti(
+        byte arg0, int arg1, long arg2, Map<Short, String> arg3, int arg4, long arg5) {
       System.out.print("testMulti()\n");
 
-      Xtruct hello = new Xtruct();;
+      Xtruct hello = new Xtruct();
+      ;
       hello.string_thing = "Hello2";
       hello.byte_thing = arg0;
       hello.i32_thing = arg1;
@@ -227,7 +238,7 @@ public class TestServer {
     }
 
     public void testException(String arg) throws Xception {
-      System.out.print("testException("+arg+")\n");
+      System.out.print("testException(" + arg + ")\n");
       if (arg.equals("Xception")) {
         Xception x = new Xception();
         x.errorCode = 1001;
@@ -258,8 +269,7 @@ public class TestServer {
     }
 
     public void testOneway(int sleepFor) {
-      System.out.println("testOneway(" + Integer.toString(sleepFor) +
-                         ") => sleeping...");
+      System.out.println("testOneway(" + Integer.toString(sleepFor) + ") => sleeping...");
       try {
         Thread.sleep(sleepFor * 1000);
         System.out.println("Done sleeping!");
@@ -267,10 +277,9 @@ public class TestServer {
         throw new RuntimeException(ie);
       }
     }
-
   } // class TestHandler
 
-  public static void main(String [] args) {
+  public static void main(String[] args) {
     boolean header = false;
 
     try {
@@ -282,21 +291,18 @@ public class TestServer {
       }
 
       // Processor
-      TestHandler testHandler =
-        new TestHandler();
-      ThriftTest.Processor testProcessor =
-        new ThriftTest.Processor(testHandler);
+      TestHandler testHandler = new TestHandler();
+      ThriftTest.Processor testProcessor = new ThriftTest.Processor(testHandler);
 
       // Transport
-      TServerSocket tServerSocket =
-        new TServerSocket(port);
+      TServerSocket tServerSocket = new TServerSocket(port);
 
       // Protocol factory
       TProtocolFactory tProtocolFactory;
       if (header) {
         System.out.println("Header server accepting all");
         List<THeaderTransport.ClientTypes> clientTypes =
-          new ArrayList<THeaderTransport.ClientTypes>();
+            new ArrayList<THeaderTransport.ClientTypes>();
         tProtocolFactory = new THeaderProtocol.Factory(clientTypes);
       } else {
         tProtocolFactory = new TBinaryProtocol.Factory();
@@ -305,14 +311,16 @@ public class TestServer {
       TServer serverEngine;
 
       // Simple Server
-      serverEngine = new TSimpleServer(new TProcessorFactory(testProcessor),
-                                       tServerSocket,
-                                       new TTransportFactory(),
-                                       tProtocolFactory);
+      serverEngine =
+          new TSimpleServer(
+              new TProcessorFactory(testProcessor),
+              tServerSocket,
+              new TTransportFactory(),
+              tProtocolFactory);
 
       // ThreadPool Server
-      //serverEngine = new TThreadPoolServer(testProcessor, tServerSocket,
-      //tProtocolFactory);
+      // serverEngine = new TThreadPoolServer(testProcessor, tServerSocket,
+      // tProtocolFactory);
 
       // Run it
       System.out.println("Starting the server on port " + port + "...");

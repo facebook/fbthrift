@@ -20,36 +20,31 @@
 package com.facebook.thrift;
 
 // Generated code
-import thrift.test.*;
 
-import com.facebook.thrift.TApplicationException;
-import com.facebook.thrift.TSerializer;
-import com.facebook.thrift.transport.TTransport;
-import com.facebook.thrift.transport.TSocket;
-import com.facebook.thrift.transport.THttpClient;
+import com.facebook.thrift.protocol.TBinaryProtocol;
+import com.facebook.thrift.protocol.TCompactJSONProtocol;
+import com.facebook.thrift.protocol.TCompactProtocol;
+import com.facebook.thrift.protocol.TProtocol;
 import com.facebook.thrift.transport.TFramedTransport;
 import com.facebook.thrift.transport.THeaderTransport;
+import com.facebook.thrift.transport.THttpClient;
+import com.facebook.thrift.transport.TSocket;
+import com.facebook.thrift.transport.TTransport;
 import com.facebook.thrift.transport.TTransportException;
-import com.facebook.thrift.protocol.TProtocol;
-import com.facebook.thrift.protocol.TBinaryProtocol;
-import com.facebook.thrift.protocol.TCompactProtocol;
-import com.facebook.thrift.protocol.TCompactJSONProtocol;
-
-import java.util.Map;
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Set;
 import java.util.HashSet;
 import java.util.List;
-import java.util.ArrayList;
+import java.util.Map;
+import java.util.Set;
+import thrift.test.*;
 
 /**
- * Test Java client for thrift. Essentially just a copy of the C++ version,
- * this makes a variety of requests to enable testing for both performance and
- * correctness of the output.
- *
+ * Test Java client for thrift. Essentially just a copy of the C++ version, this makes a variety of
+ * requests to enable testing for both performance and correctness of the output.
  */
 public class TestClient {
-  public static void main(String [] args) {
+  public static void main(String[] args) {
     try {
       String host = "localhost";
       int port = 9090;
@@ -107,8 +102,7 @@ public class TestClient {
       } else {
         prot = new TBinaryProtocol(transport);
       }
-      ThriftTest.Client testClient =
-        new ThriftTest.Client(prot);
+      ThriftTest.Client testClient = new ThriftTest.Client(prot);
       Insanity insane = new Insanity();
 
       long timeMin = 0;
@@ -117,10 +111,8 @@ public class TestClient {
 
       for (int test = 0; test < numTests; ++test) {
 
-        /**
-         * CONNECT TEST
-         */
-        System.out.println("Test #" + (test+1) + ", " + "connect " + host + ":" + port);
+        /** CONNECT TEST */
+        System.out.println("Test #" + (test + 1) + ", " + "connect " + host + ":" + port);
         try {
           transport.open();
         } catch (TTransportException ttx) {
@@ -130,9 +122,7 @@ public class TestClient {
 
         long start = System.nanoTime();
 
-        /**
-         * VOID TEST
-         */
+        /** VOID TEST */
         try {
           System.out.print("testVoid()");
           testClient.testVoid();
@@ -141,44 +131,32 @@ public class TestClient {
           tax.printStackTrace();
         }
 
-        /**
-         * STRING TEST
-         */
+        /** STRING TEST */
         System.out.print("testString(\"Test\")");
         String s = testClient.testString("Test");
         System.out.print(" = \"" + s + "\"\n");
 
-        /**
-         * BYTE TEST
-         */
+        /** BYTE TEST */
         System.out.print("testByte(1)");
-        byte i8 = testClient.testByte((byte)1);
+        byte i8 = testClient.testByte((byte) 1);
         System.out.print(" = " + i8 + "\n");
 
-        /**
-         * I32 TEST
-         */
+        /** I32 TEST */
         System.out.print("testI32(-1)");
         int i32 = testClient.testI32(-1);
         System.out.print(" = " + i32 + "\n");
 
-        /**
-         * I64 TEST
-         */
+        /** I64 TEST */
         System.out.print("testI64(-34359738368)");
         long i64 = testClient.testI64(-34359738368L);
         System.out.print(" = " + i64 + "\n");
 
-        /**
-         * DOUBLE TEST
-         */
+        /** DOUBLE TEST */
         System.out.print("testDouble(5.325098235)");
         double dub = testClient.testDouble(5.325098235);
         System.out.print(" = " + dub + "\n");
 
-        /**
-         * STRUCT TEST
-         */
+        /** STRUCT TEST */
         System.out.print("testStruct({\"Zero\", 1, -3, -5})");
         Xtruct out = new Xtruct();
         out.string_thing = "Zero";
@@ -186,26 +164,46 @@ public class TestClient {
         out.i32_thing = -3;
         out.i64_thing = -5;
         Xtruct in = testClient.testStruct(out);
-        System.out.print(" = {" + "\"" + in.string_thing + "\", " + in.byte_thing + ", " + in.i32_thing + ", " + in.i64_thing + "}\n");
+        System.out.print(
+            " = {"
+                + "\""
+                + in.string_thing
+                + "\", "
+                + in.byte_thing
+                + ", "
+                + in.i32_thing
+                + ", "
+                + in.i64_thing
+                + "}\n");
 
-        /**
-         * NESTED STRUCT TEST
-         */
+        /** NESTED STRUCT TEST */
         System.out.print("testNest({1, {\"Zero\", 1, -3, -5}), 5}");
         Xtruct2 out2 = new Xtruct2();
-        out2.byte_thing = (short)1;
+        out2.byte_thing = (short) 1;
         out2.struct_thing = out;
         out2.i32_thing = 5;
         Xtruct2 in2 = testClient.testNest(out2);
         in = in2.struct_thing;
-        System.out.print(" = {" + in2.byte_thing + ", {" + "\"" + in.string_thing + "\", " + in.byte_thing + ", " + in.i32_thing + ", " + in.i64_thing + "}, " + in2.i32_thing + "}\n");
+        System.out.print(
+            " = {"
+                + in2.byte_thing
+                + ", {"
+                + "\""
+                + in.string_thing
+                + "\", "
+                + in.byte_thing
+                + ", "
+                + in.i32_thing
+                + ", "
+                + in.i64_thing
+                + "}, "
+                + in2.i32_thing
+                + "}\n");
 
-        /**
-         * MAP TEST
-         */
-        Map<Integer,Integer> mapout = new HashMap<Integer,Integer>();
+        /** MAP TEST */
+        Map<Integer, Integer> mapout = new HashMap<Integer, Integer>();
         for (int i = 0; i < 5; ++i) {
-          mapout.put(i, i-10);
+          mapout.put(i, i - 10);
         }
         System.out.print("testMap({");
         boolean first = true;
@@ -218,7 +216,7 @@ public class TestClient {
           System.out.print(key + " => " + mapout.get(key));
         }
         System.out.print("})");
-        Map<Integer,Integer> mapin = testClient.testMap(mapout);
+        Map<Integer, Integer> mapin = testClient.testMap(mapout);
         System.out.print(" = {");
         first = true;
         for (int key : mapin.keySet()) {
@@ -231,9 +229,7 @@ public class TestClient {
         }
         System.out.print("}\n");
 
-        /**
-         * SET TEST
-         */
+        /** SET TEST */
         Set<Integer> setout = new HashSet<Integer>();
         for (int i = -2; i < 3; ++i) {
           setout.add(i);
@@ -262,9 +258,7 @@ public class TestClient {
         }
         System.out.print("}\n");
 
-        /**
-         * LIST TEST
-         */
+        /** LIST TEST */
         List<Integer> listout = new ArrayList<Integer>();
         for (int i = -2; i < 3; ++i) {
           listout.add(i);
@@ -293,9 +287,7 @@ public class TestClient {
         }
         System.out.print("}\n");
 
-        /**
-         * ENUM TEST
-         */
+        /** ENUM TEST */
         System.out.print("testEnum(ONE)");
         int ret = testClient.testEnum(Numberz.ONE);
         System.out.print(" = " + ret + "\n");
@@ -316,23 +308,18 @@ public class TestClient {
         ret = testClient.testEnum(Numberz.EIGHT);
         System.out.print(" = " + ret + "\n");
 
-        /**
-         * TYPEDEF TEST
-         */
+        /** TYPEDEF TEST */
         System.out.print("testTypedef(309858235082523)");
         long uid = testClient.testTypedef(309858235082523L);
         System.out.print(" = " + uid + "\n");
 
-        /**
-         * NESTED MAP TEST
-         */
+        /** NESTED MAP TEST */
         System.out.print("testMapMap(1)");
-        Map<Integer,Map<Integer,Integer>> mm =
-          testClient.testMapMap(1);
+        Map<Integer, Map<Integer, Integer>> mm = testClient.testMapMap(1);
         System.out.print(" = {");
         for (int key : mm.keySet()) {
           System.out.print(key + " => {");
-          Map<Integer,Integer> m2 = mm.get(key);
+          Map<Integer, Integer> m2 = mm.get(key);
           for (int k2 : m2.keySet()) {
             System.out.print(k2 + " => " + m2.get(k2) + ", ");
           }
@@ -340,25 +327,22 @@ public class TestClient {
         }
         System.out.print("}\n");
 
-        /**
-         * INSANITY TEST
-         */
+        /** INSANITY TEST */
         insane = new Insanity();
         insane.userMap = new HashMap<Integer, Long>();
-        insane.userMap.put(Numberz.FIVE, (long)5000);
+        insane.userMap.put(Numberz.FIVE, (long) 5000);
         Xtruct truck = new Xtruct();
         truck.string_thing = "Truck";
-        truck.byte_thing = (byte)8;
+        truck.byte_thing = (byte) 8;
         truck.i32_thing = 8;
         truck.i64_thing = 8;
         insane.xtructs = new ArrayList<Xtruct>();
         insane.xtructs.add(truck);
         System.out.print("testInsanity()");
-        Map<Long,Map<Integer,Insanity>> whoa =
-          testClient.testInsanity(insane);
+        Map<Long, Map<Integer, Insanity>> whoa = testClient.testInsanity(insane);
         System.out.print(" = {");
         for (long key : whoa.keySet()) {
-          Map<Integer,Insanity> val = whoa.get(key);
+          Map<Integer, Insanity> val = whoa.get(key);
           System.out.print(key + " => {");
 
           for (int k2 : val.keySet()) {
@@ -377,7 +361,17 @@ public class TestClient {
             System.out.print("{");
             if (xtructs != null) {
               for (Xtruct x : xtructs) {
-                System.out.print("{" + "\"" + x.string_thing + "\", " + x.byte_thing + ", " + x.i32_thing + ", "+ x.i64_thing + "}, ");
+                System.out.print(
+                    "{"
+                        + "\""
+                        + x.string_thing
+                        + "\", "
+                        + x.byte_thing
+                        + ", "
+                        + x.i32_thing
+                        + ", "
+                        + x.i64_thing
+                        + "}, ");
               }
             }
             System.out.print("}");
@@ -394,20 +388,16 @@ public class TestClient {
         testClient.testOneway(3);
         long onewayElapsedMillis = (System.nanoTime() - startOneway) / 1000000;
         if (onewayElapsedMillis > 200) {
-          throw new Exception("Oneway test failed: took " +
-                              Long.toString(onewayElapsedMillis) +
-                              "ms");
+          throw new Exception(
+              "Oneway test failed: took " + Long.toString(onewayElapsedMillis) + "ms");
         } else {
-          System.out.println("Success - took " +
-                             Long.toString(onewayElapsedMillis) +
-                             "ms");
+          System.out.println("Success - took " + Long.toString(onewayElapsedMillis) + "ms");
         }
 
-
         long stop = System.nanoTime();
-        long tot = stop-start;
+        long tot = stop - start;
 
-        System.out.println("Total time: " + tot/1000 + "us");
+        System.out.println("Total time: " + tot / 1000 + "us");
 
         if (timeMin == 0 || tot < timeMin) {
           timeMin = tot;
@@ -422,9 +412,9 @@ public class TestClient {
 
       long timeAvg = timeTot / numTests;
 
-      System.out.println("Min time: " + timeMin/1000 + "us");
-      System.out.println("Max time: " + timeMax/1000 + "us");
-      System.out.println("Avg time: " + timeAvg/1000 + "us");
+      System.out.println("Min time: " + timeMin / 1000 + "us");
+      System.out.println("Max time: " + timeMax / 1000 + "us");
+      System.out.println("Avg time: " + timeAvg / 1000 + "us");
 
       String json = (new TSerializer(new TCompactJSONProtocol.Factory())).toString(insane);
 
@@ -433,7 +423,5 @@ public class TestClient {
     } catch (Exception x) {
       x.printStackTrace();
     }
-
   }
-
 }

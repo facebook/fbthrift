@@ -1,40 +1,34 @@
 /**
  * Copyright 2011 Facebook
+ *
+ * <p>A generic java TCP socket server that mirrors C++ FiberServer.
+ *
+ * <p>Fiber server is a C++ thrift server that is implemented directly on top of epoll API. Since
+ * epoll APIs are thread safe, Fiber server does not need additional lockings to ensure
+ * synchronization and achieves very high throughput under load.
+ *
+ * <p>The direct socket server consists of one single blocking server socket thread, a number of
+ * selector threads, and a thread pool for dispatching tasks.
+ *
+ * <p>The server socket thread listens on incoming connections, and dispatches the accepted
+ * connection to one of selector threads.
+ *
+ * <p>Each of selector threads runs a selector loop. When a channel becomes active, it can be
+ * handled either in the loop or by one of worker threads in the thread pool.
+ *
+ * <p>If all the channels' activities are handled by selector thread, it likes a FiberServer; if
+ * most of them are handled by worker threads, it likes a Java HsHaServer.
+ *
+ * <p>Different servers can be created by instantiating different ChannelHandler classes. For
+ * example, the class FramedTransportChannelHandler makes a DirectServer a thrift server (i.e.
+ * TDirectServer), while a class of HttpChannelHandler can make it a http server.
+ *
+ * <p>Different ChannelHandlers can stack togather to form a mixed server. For example, we can use
+ * FramedTransportChannelHandler alone with a HttpChannelHandler to make a thrift server that also
+ * serves http requests.
+ *
  * @author Wei Chen (weichen@fb.com)
- *
- * A generic java TCP socket server that mirrors C++ FiberServer.
- *
- * Fiber server is a C++ thrift server that is implemented directly
- * on top of epoll API. Since epoll APIs are thread safe, Fiber server
- * does not need additional lockings to ensure synchronization and
- * achieves very high throughput under load.
- *
- * The direct socket server consists of one single blocking server socket
- * thread, a number of selector threads, and a thread pool for dispatching
- * tasks.
- *
- * The server socket thread listens on incoming connections,
- * and dispatches the accepted connection to one of selector threads.
- *
- * Each of selector threads runs a selector loop. When a channel becomes
- * active, it can be handled either in the loop or by one of worker
- * threads in the thread pool.
- *
- * If all the channels' activities are handled by selector thread, it likes
- * a FiberServer; if most of them are handled by worker threads, it likes
- * a Java HsHaServer.
- *
- * Different servers can be created by instantiating different ChannelHandler
- * classes. For example, the class FramedTransportChannelHandler makes
- * a DirectServer a thrift server (i.e. TDirectServer), while a class
- * of HttpChannelHandler can make it a http server.
- *
- * Different ChannelHandlers can stack togather to form a mixed server.
- * For example, we can use FramedTransportChannelHandler alone with
- * a HttpChannelHandler to make a thrift server that also serves http
- * requests.
-*/
-
+ */
 package com.facebook.thrift.direct_server;
 
 import java.io.IOException;
@@ -45,16 +39,14 @@ import java.nio.channels.spi.SelectorProvider;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
  * The base class of TDirectServer
  *
- * DirectServer is a TCP socket server. By implementing different ChannelHandler
- * classes, a DirectServer can be made into a thrift server, a web server,
- * or something else.
+ * <p>DirectServer is a TCP socket server. By implementing different ChannelHandler classes, a
+ * DirectServer can be made into a thrift server, a web server, or something else.
  */
 public class DirectServer {
 
@@ -64,14 +56,12 @@ public class DirectServer {
 
   public static class DoNothing implements Runnable {
     @Override
-    public void run() {
-    }
+    public void run() {}
   };
 
   private static final Logger LOG = LoggerFactory.getLogger(DirectServer.class);
 
-  private volatile LoggingCallback loggingCallback =
-      new DefaultLoggingCallback();
+  private volatile LoggingCallback loggingCallback = new DefaultLoggingCallback();
 
   // server's listening port
   private final int port_;
@@ -107,22 +97,26 @@ public class DirectServer {
     handlerCreator_ = creator;
     numSyncHandlers_ = 1;
 
-    executorService_ = new ThreadPoolExecutor(
-        8, 8, 0, TimeUnit.SECONDS,
-        new ArrayBlockingQueue<Runnable>(4),
-        new ThreadPoolExecutor.AbortPolicy());
+    executorService_ =
+        new ThreadPoolExecutor(
+            8,
+            8,
+            0,
+            TimeUnit.SECONDS,
+            new ArrayBlockingQueue<Runnable>(4),
+            new ThreadPoolExecutor.AbortPolicy());
 
     maxPendingPerSelector_ = 64;
     onServerListens_ = new DoNothing();
   }
 
   public DirectServer(
-    int port,
-    ChannelHandlerFactory creator,
-    int numSelectors,
-    int numSyncHandlers,
-    ThreadPoolExecutor service,
-    Runnable onServerListens) {
+      int port,
+      ChannelHandlerFactory creator,
+      int numSelectors,
+      int numSyncHandlers,
+      ThreadPoolExecutor service,
+      Runnable onServerListens) {
 
     port_ = port;
     totalSelectorThreads_ = numSelectors;
@@ -136,8 +130,7 @@ public class DirectServer {
   }
 
   /**
-   * Set listening socket's backlog number.
-   * Must be called before serve() is called.
+   * Set listening socket's backlog number. Must be called before serve() is called.
    *
    * @param b backlog size of listening queue.
    */
@@ -146,12 +139,11 @@ public class DirectServer {
   }
 
   /**
-   * Set max number of pending incoming connections for a selector.
-   * If the pending incoming connections are more than this number,
-   * the selector thread will close the oldest pending one.
+   * Set max number of pending incoming connections for a selector. If the pending incoming
+   * connections are more than this number, the selector thread will close the oldest pending one.
    *
-   * Note that this is different from the max number of connections
-   * that a selector thread can handle.
+   * <p>Note that this is different from the max number of connections that a selector thread can
+   * handle.
    *
    * @param num max number of incoming connections.
    */
@@ -160,15 +152,14 @@ public class DirectServer {
   }
 
   /**
-   * Allow users to use their own favorite service executor.
-   * Must be called before serve() to take effect.
+   * Allow users to use their own favorite service executor. Must be called before serve() to take
+   * effect.
    *
    * @param service the service executor that caller wants to install.
    */
   public void setExecutor(ThreadPoolExecutor service) {
     executorService_ = service;
   }
-
 
   // Selector thread will calls this.
   int maxSyncHandlers() {
@@ -204,8 +195,7 @@ public class DirectServer {
     // Start selector threads
     SelectorThread[] threads = new SelectorThread[totalSelectorThreads_];
     for (int i = 0; i < totalSelectorThreads_; ++i) {
-      threads[i] = new SelectorThread(
-          this, executorService_, maxPendingPerSelector_);
+      threads[i] = new SelectorThread(this, executorService_, maxPendingPerSelector_);
       threads[i].start();
     }
 
