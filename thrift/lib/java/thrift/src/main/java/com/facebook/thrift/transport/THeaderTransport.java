@@ -24,7 +24,6 @@ import com.facebook.thrift.protocol.TBinaryProtocol;
 import com.facebook.thrift.protocol.TCompactProtocol;
 import com.facebook.thrift.protocol.TMessage;
 import com.facebook.thrift.protocol.TMessageType;
-import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -377,14 +376,10 @@ public class THeaderTransport extends TFramedTransport {
   }
 
   private String readString(ByteBuffer in) throws TTransportException {
-    try {
       int sz = readVarint32Buf(in);
       byte[] bytearr = new byte[sz];
       in.get(bytearr, 0, sz);
-      return new String(bytearr, 0, sz, "UTF-8");
-    } catch (UnsupportedEncodingException ex) {
-      throw new TTransportException("Could not decode string");
-    }
+    return new String(bytearr, 0, sz, StandardCharsets.UTF_8);
   }
 
   private void readHeaderFormat(int headerSize, byte[] buff) throws TTransportException {
