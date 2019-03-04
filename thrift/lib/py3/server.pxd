@@ -43,6 +43,11 @@ cdef extern from "thrift/lib/cpp2/async/AsyncProcessor.h" \
 
     cdef cGeneratedAsyncProcessor* dynamic_cast_gen "dynamic_cast<apache::thrift::GeneratedAsyncProcessor*>"(...)
 
+cdef extern from "thrift/lib/cpp2/server/TransportRoutingHandler.h" \
+        namespace "apache::thrift":
+    cdef cppclass cTransportRoutingHandler "apache::thrift::TransportRoutingHandler":
+        pass
+
 cdef extern from "thrift/lib/cpp2/server/ThriftServer.h" \
         namespace "apache::thrift":
 
@@ -60,6 +65,7 @@ cdef extern from "thrift/lib/cpp2/server/ThriftServer.h" \
         void setAddress(string ip, uint16_t port) nogil
         void setInterface(shared_ptr[cServerInterface]) nogil
         void setProcessorFactory(shared_ptr[cAsyncProcessorFactory]) nogil
+        void addRoutingHandler(unique_ptr[cTransportRoutingHandler]) nogil
         void serve() nogil except +
         void stop() nogil except +
         void setSSLPolicy(cSSLPolicy policy) nogil
@@ -107,7 +113,6 @@ cdef extern from "thrift/lib/cpp2/server/Cpp2ConnContext.h" \
         cPriority getCallPriority()
         THeader* getHeader()
 
-
 cdef class AsyncProcessorFactory:
     cdef shared_ptr[cAsyncProcessorFactory] _cpp_obj
 
@@ -121,6 +126,8 @@ cdef class ThriftServer:
     cdef AsyncProcessorFactory factory
     cdef object loop
     cdef object address_future
+
+    cdef add_routing_handler(ThriftServer self, unique_ptr[cTransportRoutingHandler] transport_routing_handler)
 
 
 cdef class ConnectionContext:
@@ -151,3 +158,6 @@ cdef class WriteHeaders(Headers):
     cdef RequestContext _parent
     @staticmethod
     cdef create(RequestContext ctx)
+
+cdef extern from "<utility>" namespace "std" nogil:
+    cdef unique_ptr[cTransportRoutingHandler] move(unique_ptr[cTransportRoutingHandler])

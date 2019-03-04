@@ -102,6 +102,12 @@ cdef class ThriftServer:
             )
         )
 
+    cdef add_routing_handler(
+        ThriftServer self,
+        unique_ptr[cTransportRoutingHandler] transport_routing_handler
+    ):
+        self.server.get().addRoutingHandler(move(transport_routing_handler))
+
     async def serve(self):
         def _serve():
             with nogil:
