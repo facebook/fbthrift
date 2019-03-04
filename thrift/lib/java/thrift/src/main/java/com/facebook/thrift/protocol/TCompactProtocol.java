@@ -113,6 +113,9 @@ public final class TCompactProtocol extends TProtocol {
    */
   private Boolean boolValue_ = null;
 
+  /** Temporary buffer to avoid allocations */
+  private final byte[] buffer = new byte[10];
+
   /**
    * Create a TCompactProtocol.
    *
@@ -264,16 +267,14 @@ public final class TCompactProtocol extends TProtocol {
 
   /** Write a double to the wire as 8 bytes. */
   public void writeDouble(double dub) throws TException {
-    byte[] data = new byte[] {0, 0, 0, 0, 0, 0, 0, 0};
-    fixedLongToBytes(Double.doubleToLongBits(dub), data, 0);
-    trans_.write(data);
+    fixedLongToBytes(Double.doubleToLongBits(dub), buffer, 0);
+    trans_.write(buffer, 0, 8);
   }
 
   /** Write a float to the wire as 4 bytes. */
   public void writeFloat(float flt) throws TException {
-    byte[] data = new byte[] {0, 0, 0, 0};
-    fixedIntToBytes(Float.floatToIntBits(flt), data, 0);
-    trans_.write(data);
+    fixedIntToBytes(Float.floatToIntBits(flt), buffer, 0);
+    trans_.write(buffer, 0, 4);
   }
 
   /** Write a string to the wire with a varint size preceding. */
@@ -324,44 +325,34 @@ public final class TCompactProtocol extends TProtocol {
     }
   }
 
-  /**
-   * Write an i32 as a varint. Results in 1-5 bytes on the wire. TODO: make a permanent buffer like
-   * writeVarint64?
-   */
-  byte[] i32buf = new byte[5];
-
+  /** Write an i32 as a varint. Results in 1-5 bytes on the wire. */
   private void writeVarint32(int n) throws TException {
     int idx = 0;
     while (true) {
       if ((n & ~0x7F) == 0) {
-        i32buf[idx++] = (byte) n;
-        // writeByteDirect((byte)n);
+        buffer[idx++] = (byte) n;
         break;
-        // return;
       } else {
-        i32buf[idx++] = (byte) ((n & 0x7F) | 0x80);
-        // writeByteDirect((byte)((n & 0x7F) | 0x80));
+        buffer[idx++] = (byte) ((n & 0x7F) | 0x80);
         n >>>= 7;
       }
     }
-    trans_.write(i32buf, 0, idx);
+    trans_.write(buffer, 0, idx);
   }
 
   /** Write an i64 as a varint. Results in 1-10 bytes on the wire. */
-  byte[] varint64out = new byte[10];
-
   private void writeVarint64(long n) throws TException {
     int idx = 0;
     while (true) {
       if ((n & ~0x7FL) == 0) {
-        varint64out[idx++] = (byte) n;
+        buffer[idx++] = (byte) n;
         break;
       } else {
-        varint64out[idx++] = ((byte) ((n & 0x7F) | 0x80));
+        buffer[idx++] = ((byte) ((n & 0x7F) | 0x80));
         n >>>= 7;
       }
     }
-    trans_.write(varint64out, 0, idx);
+    trans_.write(buffer, 0, idx);
   }
 
   /**
@@ -404,11 +395,9 @@ public final class TCompactProtocol extends TProtocol {
    * Writes a byte without any possiblity of all that field header nonsense. Used internally by
    * other writing methods that know they need to write a byte.
    */
-  private byte[] byteDirectBuffer = new byte[1];
-
   private void writeByteDirect(byte b) throws TException {
-    byteDirectBuffer[0] = b;
-    trans_.write(byteDirectBuffer);
+    buffer[0] = b;
+    trans_.write(buffer, 0, 1);
   }
 
   /** Writes a byte without any possiblity of all that field header nonsense. */
@@ -543,8 +532,6 @@ public final class TCompactProtocol extends TProtocol {
     return readByte() == Types.BOOLEAN_TRUE;
   }
 
-  byte[] byteRawBuf = new byte[1];
-
   /** Read a single byte off the wire. Nothing interesting here. */
   public byte readByte() throws TException {
     byte b;
@@ -552,8 +539,8 @@ public final class TCompactProtocol extends TProtocol {
       b = trans_.getBuffer()[trans_.getBufferPosition()];
       trans_.consumeBuffer(1);
     } else {
-      trans_.readAll(byteRawBuf, 0, 1);
-      b = byteRawBuf[0];
+      trans_.readAll(buffer, 0, 1);
+      b = buffer[0];
     }
     return b;
   }
@@ -575,23 +562,20 @@ public final class TCompactProtocol extends TProtocol {
 
   /** No magic here - just read a double off the wire. */
   public double readDouble() throws TException {
-    byte[] longBits = new byte[8];
-    trans_.readAll(longBits, 0, 8);
+    trans_.readAll(buffer, 0, 8);
     long value;
     if (version_ >= VERSION_DOUBLE_BE) {
-      value = bytesToLong(longBits);
+      value = bytesToLong(buffer);
     } else {
-      value = bytesToLongLE(longBits);
+      value = bytesToLongLE(buffer);
     }
     return Double.longBitsToDouble(value);
   }
 
   /** No magic here - just read a float off the wire. */
   public float readFloat() throws TException {
-    byte[] intBits = new byte[4];
-    trans_.readAll(intBits, 0, 4);
-    int value;
-    value = bytesToInt(intBits);
+    trans_.readAll(buffer, 0, 4);
+    int value = bytesToInt(buffer);
     return Float.intBitsToFloat(value);
   }
 
