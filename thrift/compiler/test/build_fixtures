@@ -65,6 +65,8 @@ thrift = ascend_find_exe(exe, thrift_rel)
 if thrift is None:
     sys.stderr.write(
         "error: cannot find the Thrift compiler ({})\n".format(thrift_rel))
+    sys.stderr.write(
+        "(run `buck build thrift/compiler:thrift` to build it yourself)\n")
     sys.exit(1)
 fixture_dir = ascend_find_dir(exe, 'thrift/compiler/test/fixtures')
 fixture_names = [sys.argv[2]] if len(sys.argv) > 2 else sorted([
