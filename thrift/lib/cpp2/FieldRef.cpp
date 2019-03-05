@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#include <thrift/lib/cpp2/gen/field_ref.h>
-#include <thrift/lib/cpp2/gen/bad_field_access.h>
+#include <thrift/lib/cpp2/FieldRef.h>
+#include <thrift/lib/cpp2/BadFieldAccess.h>
 
 [[noreturn]] void apache::thrift::detail::throw_on_bad_field_access() {
   throw bad_field_access();

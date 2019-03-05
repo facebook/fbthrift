@@ -23,8 +23,8 @@
 #include <string>
 #include <type_traits>
 
-#include <thrift/lib/cpp2/gen/bad_field_access.h>
-#include <thrift/lib/cpp2/gen/field_ref.h>
+#include <thrift/lib/cpp2/BadFieldAccess.h>
+#include <thrift/lib/cpp2/FieldRef.h>
 
 #include <folly/portability/GTest.h>
 
