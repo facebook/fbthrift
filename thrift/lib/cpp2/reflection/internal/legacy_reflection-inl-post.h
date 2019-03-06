@@ -395,16 +395,15 @@ struct impl<T, type_class::map<KeyTypeClass, MappedTypeClass>> {
 };
 
 template <typename T, typename TC>
-using is_unknown = std::integral_constant<
-    bool,
+using is_unknown = folly::bool_constant<
     std::is_same<TC, type_class::unknown>::value ||
-        (std::is_same<reflect_type_class<T>, type_class::unknown>::value &&
-         (std::is_same<TC, type_class::enumeration>::value ||
-          std::is_same<TC, type_class::structure>::value ||
-          std::is_same<TC, type_class::variant>::value))>;
+    (std::is_same<reflect_type_class<T>, type_class::unknown>::value &&
+     (std::is_same<TC, type_class::enumeration>::value ||
+      std::is_same<TC, type_class::structure>::value ||
+      std::is_same<TC, type_class::variant>::value))>;
 
 template <typename T, typename TC>
-using is_known = std::integral_constant<bool, !is_unknown<T, TC>::value>;
+using is_known = folly::bool_constant<!is_unknown<T, TC>::value>;
 
 template <typename T, typename TC>
 using is_complete = fatal::is_complete<impl<T, TC>>;

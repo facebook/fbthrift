@@ -21,6 +21,7 @@
 #include <thrift/lib/cpp2/protocol/JSONProtocol.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 
+#include <folly/Traits.h>
 #include <folly/portability/GTest.h>
 
 namespace apache {
@@ -31,7 +32,7 @@ template <typename Reader, typename Writer, bool Printable>
 struct RWPair {
   using reader = Reader;
   using writer = Writer;
-  using printable = std::integral_constant<bool, Printable>;
+  using printable = folly::bool_constant<Printable>;
 };
 
 using protocol_type_pairs = ::testing::Types<
