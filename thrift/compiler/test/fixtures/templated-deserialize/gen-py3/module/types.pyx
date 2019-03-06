@@ -1207,7 +1207,7 @@ cdef class Map__string_bool:
 
     def __iter__(self):
         if not self:
-            raise StopIteration
+            return
         cdef string citem
         cdef cmap[string,cbool].iterator loc = deref(self._cpp_obj).begin()
         while loc != deref(self._cpp_obj).end():
@@ -1264,7 +1264,7 @@ cdef class Map__string_bool:
 
     def values(self):
         if not self:
-            raise StopIteration
+            return
         cdef cbool citem
         cdef cmap[string,cbool].iterator loc = deref(self._cpp_obj).begin()
         while loc != deref(self._cpp_obj).end():
@@ -1274,7 +1274,7 @@ cdef class Map__string_bool:
 
     def items(self):
         if not self:
-            raise StopIteration
+            return
         cdef string ckey
         cdef cbool citem
         cdef cmap[string,cbool].iterator loc = deref(self._cpp_obj).begin()
@@ -1333,7 +1333,7 @@ cdef class Set__i32:
 
     def __iter__(self):
         if not self:
-            raise StopIteration
+            return
         cdef int32_t citem
         cdef cset[int32_t].iterator loc = deref(self._cpp_obj).begin()
         while loc != deref(self._cpp_obj).end():
@@ -1624,7 +1624,7 @@ cdef class List__i32:
 
     def __iter__(self):
         if not self:
-            raise StopIteration
+            return
         cdef int32_t citem
         cdef vector[int32_t].iterator loc = deref(self._cpp_obj).begin()
         while loc != deref(self._cpp_obj).end():
@@ -1639,7 +1639,7 @@ cdef class List__i32:
 
     def __reversed__(self):
         if not self:
-            raise StopIteration
+            return
         cdef int32_t citem
         cdef vector[int32_t].reverse_iterator loc = deref(self._cpp_obj).rbegin()
         while loc != deref(self._cpp_obj).rend():
@@ -1791,7 +1791,7 @@ cdef class List__List__i32:
 
     def __iter__(self):
         if not self:
-            raise StopIteration
+            return
         cdef shared_ptr[vector[int32_t]] citem
         cdef vector[vector[int32_t]].iterator loc = deref(self._cpp_obj).begin()
         while loc != deref(self._cpp_obj).end():
@@ -1806,7 +1806,7 @@ cdef class List__List__i32:
 
     def __reversed__(self):
         if not self:
-            raise StopIteration
+            return
         cdef shared_ptr[vector[int32_t]] citem
         cdef vector[vector[int32_t]].reverse_iterator loc = deref(self._cpp_obj).rbegin()
         while loc != deref(self._cpp_obj).rend():
@@ -1968,7 +1968,7 @@ cdef class List__List__List__i32:
 
     def __iter__(self):
         if not self:
-            raise StopIteration
+            return
         cdef shared_ptr[vector[vector[int32_t]]] citem
         cdef vector[vector[vector[int32_t]]].iterator loc = deref(self._cpp_obj).begin()
         while loc != deref(self._cpp_obj).end():
@@ -1983,7 +1983,7 @@ cdef class List__List__List__i32:
 
     def __reversed__(self):
         if not self:
-            raise StopIteration
+            return
         cdef shared_ptr[vector[vector[int32_t]]] citem
         cdef vector[vector[vector[int32_t]]].reverse_iterator loc = deref(self._cpp_obj).rbegin()
         while loc != deref(self._cpp_obj).rend():
@@ -2100,7 +2100,7 @@ cdef class Map__string_i32:
 
     def __iter__(self):
         if not self:
-            raise StopIteration
+            return
         cdef string citem
         cdef cmap[string,int32_t].iterator loc = deref(self._cpp_obj).begin()
         while loc != deref(self._cpp_obj).end():
@@ -2157,7 +2157,7 @@ cdef class Map__string_i32:
 
     def values(self):
         if not self:
-            raise StopIteration
+            return
         cdef int32_t citem
         cdef cmap[string,int32_t].iterator loc = deref(self._cpp_obj).begin()
         while loc != deref(self._cpp_obj).end():
@@ -2167,7 +2167,7 @@ cdef class Map__string_i32:
 
     def items(self):
         if not self:
-            raise StopIteration
+            return
         cdef string ckey
         cdef int32_t citem
         cdef cmap[string,int32_t].iterator loc = deref(self._cpp_obj).begin()
@@ -2235,7 +2235,7 @@ cdef class Map__string_Map__string_i32:
 
     def __iter__(self):
         if not self:
-            raise StopIteration
+            return
         cdef string citem
         cdef cmap[string,cmap[string,int32_t]].iterator loc = deref(self._cpp_obj).begin()
         while loc != deref(self._cpp_obj).end():
@@ -2292,7 +2292,7 @@ cdef class Map__string_Map__string_i32:
 
     def values(self):
         if not self:
-            raise StopIteration
+            return
         cdef shared_ptr[cmap[string,int32_t]] citem
         cdef cmap[string,cmap[string,int32_t]].iterator loc = deref(self._cpp_obj).begin()
         while loc != deref(self._cpp_obj).end():
@@ -2302,7 +2302,7 @@ cdef class Map__string_Map__string_i32:
 
     def items(self):
         if not self:
-            raise StopIteration
+            return
         cdef string ckey
         cdef shared_ptr[cmap[string,int32_t]] citem
         cdef cmap[string,cmap[string,int32_t]].iterator loc = deref(self._cpp_obj).begin()
@@ -2370,7 +2370,7 @@ cdef class Map__string_Map__string_Map__string_i32:
 
     def __iter__(self):
         if not self:
-            raise StopIteration
+            return
         cdef string citem
         cdef cmap[string,cmap[string,cmap[string,int32_t]]].iterator loc = deref(self._cpp_obj).begin()
         while loc != deref(self._cpp_obj).end():
@@ -2427,7 +2427,7 @@ cdef class Map__string_Map__string_Map__string_i32:
 
     def values(self):
         if not self:
-            raise StopIteration
+            return
         cdef shared_ptr[cmap[string,cmap[string,int32_t]]] citem
         cdef cmap[string,cmap[string,cmap[string,int32_t]]].iterator loc = deref(self._cpp_obj).begin()
         while loc != deref(self._cpp_obj).end():
@@ -2437,7 +2437,7 @@ cdef class Map__string_Map__string_Map__string_i32:
 
     def items(self):
         if not self:
-            raise StopIteration
+            return
         cdef string ckey
         cdef shared_ptr[cmap[string,cmap[string,int32_t]]] citem
         cdef cmap[string,cmap[string,cmap[string,int32_t]]].iterator loc = deref(self._cpp_obj).begin()
@@ -2549,7 +2549,7 @@ cdef class List__Set__i32:
 
     def __iter__(self):
         if not self:
-            raise StopIteration
+            return
         cdef shared_ptr[cset[int32_t]] citem
         cdef vector[cset[int32_t]].iterator loc = deref(self._cpp_obj).begin()
         while loc != deref(self._cpp_obj).end():
@@ -2564,7 +2564,7 @@ cdef class List__Set__i32:
 
     def __reversed__(self):
         if not self:
-            raise StopIteration
+            return
         cdef shared_ptr[cset[int32_t]] citem
         cdef vector[cset[int32_t]].reverse_iterator loc = deref(self._cpp_obj).rbegin()
         while loc != deref(self._cpp_obj).rend():
@@ -2682,7 +2682,7 @@ cdef class Map__string_List__i32:
 
     def __iter__(self):
         if not self:
-            raise StopIteration
+            return
         cdef string citem
         cdef cmap[string,vector[int32_t]].iterator loc = deref(self._cpp_obj).begin()
         while loc != deref(self._cpp_obj).end():
@@ -2739,7 +2739,7 @@ cdef class Map__string_List__i32:
 
     def values(self):
         if not self:
-            raise StopIteration
+            return
         cdef shared_ptr[vector[int32_t]] citem
         cdef cmap[string,vector[int32_t]].iterator loc = deref(self._cpp_obj).begin()
         while loc != deref(self._cpp_obj).end():
@@ -2749,7 +2749,7 @@ cdef class Map__string_List__i32:
 
     def items(self):
         if not self:
-            raise StopIteration
+            return
         cdef string ckey
         cdef shared_ptr[vector[int32_t]] citem
         cdef cmap[string,vector[int32_t]].iterator loc = deref(self._cpp_obj).begin()
@@ -2861,7 +2861,7 @@ cdef class List__List__List__List__i32:
 
     def __iter__(self):
         if not self:
-            raise StopIteration
+            return
         cdef shared_ptr[vector[vector[vector[int32_t]]]] citem
         cdef vector[vector[vector[vector[int32_t]]]].iterator loc = deref(self._cpp_obj).begin()
         while loc != deref(self._cpp_obj).end():
@@ -2876,7 +2876,7 @@ cdef class List__List__List__List__i32:
 
     def __reversed__(self):
         if not self:
-            raise StopIteration
+            return
         cdef shared_ptr[vector[vector[vector[int32_t]]]] citem
         cdef vector[vector[vector[vector[int32_t]]]].reverse_iterator loc = deref(self._cpp_obj).rbegin()
         while loc != deref(self._cpp_obj).rend():
@@ -2984,7 +2984,7 @@ cdef class Set__bool:
 
     def __iter__(self):
         if not self:
-            raise StopIteration
+            return
         cdef cbool citem
         cdef cset[cbool].iterator loc = deref(self._cpp_obj).begin()
         while loc != deref(self._cpp_obj).end():
@@ -3234,7 +3234,7 @@ cdef class Set__Set__bool:
 
     def __iter__(self):
         if not self:
-            raise StopIteration
+            return
         cdef shared_ptr[cset[cbool]] citem
         cdef cset[cset[cbool]].iterator loc = deref(self._cpp_obj).begin()
         while loc != deref(self._cpp_obj).end():
@@ -3484,7 +3484,7 @@ cdef class Set__Set__Set__bool:
 
     def __iter__(self):
         if not self:
-            raise StopIteration
+            return
         cdef shared_ptr[cset[cset[cbool]]] citem
         cdef cset[cset[cset[cbool]]].iterator loc = deref(self._cpp_obj).begin()
         while loc != deref(self._cpp_obj).end():
@@ -3734,7 +3734,7 @@ cdef class Set__List__i32:
 
     def __iter__(self):
         if not self:
-            raise StopIteration
+            return
         cdef shared_ptr[vector[int32_t]] citem
         cdef cset[vector[int32_t]].iterator loc = deref(self._cpp_obj).begin()
         while loc != deref(self._cpp_obj).end():
@@ -3977,7 +3977,7 @@ cdef class Set__string:
 
     def __iter__(self):
         if not self:
-            raise StopIteration
+            return
         cdef string citem
         cdef cset[string].iterator loc = deref(self._cpp_obj).begin()
         while loc != deref(self._cpp_obj).end():
@@ -4274,7 +4274,7 @@ cdef class List__Set__string:
 
     def __iter__(self):
         if not self:
-            raise StopIteration
+            return
         cdef shared_ptr[cset[string]] citem
         cdef vector[cset[string]].iterator loc = deref(self._cpp_obj).begin()
         while loc != deref(self._cpp_obj).end():
@@ -4289,7 +4289,7 @@ cdef class List__Set__string:
 
     def __reversed__(self):
         if not self:
-            raise StopIteration
+            return
         cdef shared_ptr[cset[string]] citem
         cdef vector[cset[string]].reverse_iterator loc = deref(self._cpp_obj).rbegin()
         while loc != deref(self._cpp_obj).rend():
@@ -4412,7 +4412,7 @@ cdef class Map__List__Set__string_string:
 
     def __iter__(self):
         if not self:
-            raise StopIteration
+            return
         cdef shared_ptr[vector[cset[string]]] citem
         cdef cmap[vector[cset[string]],string].iterator loc = deref(self._cpp_obj).begin()
         while loc != deref(self._cpp_obj).end():
@@ -4479,7 +4479,7 @@ cdef class Map__List__Set__string_string:
 
     def values(self):
         if not self:
-            raise StopIteration
+            return
         cdef string citem
         cdef cmap[vector[cset[string]],string].iterator loc = deref(self._cpp_obj).begin()
         while loc != deref(self._cpp_obj).end():
@@ -4489,7 +4489,7 @@ cdef class Map__List__Set__string_string:
 
     def items(self):
         if not self:
-            raise StopIteration
+            return
         cdef shared_ptr[vector[cset[string]]] ckey
         cdef string citem
         cdef cmap[vector[cset[string]],string].iterator loc = deref(self._cpp_obj).begin()
@@ -4564,7 +4564,7 @@ cdef class Map__Set__List__i32_Map__List__Set__string_string:
 
     def __iter__(self):
         if not self:
-            raise StopIteration
+            return
         cdef shared_ptr[cset[vector[int32_t]]] citem
         cdef cmap[cset[vector[int32_t]],cmap[vector[cset[string]],string]].iterator loc = deref(self._cpp_obj).begin()
         while loc != deref(self._cpp_obj).end():
@@ -4631,7 +4631,7 @@ cdef class Map__Set__List__i32_Map__List__Set__string_string:
 
     def values(self):
         if not self:
-            raise StopIteration
+            return
         cdef shared_ptr[cmap[vector[cset[string]],string]] citem
         cdef cmap[cset[vector[int32_t]],cmap[vector[cset[string]],string]].iterator loc = deref(self._cpp_obj).begin()
         while loc != deref(self._cpp_obj).end():
@@ -4641,7 +4641,7 @@ cdef class Map__Set__List__i32_Map__List__Set__string_string:
 
     def items(self):
         if not self:
-            raise StopIteration
+            return
         cdef shared_ptr[cset[vector[int32_t]]] ckey
         cdef shared_ptr[cmap[vector[cset[string]],string]] citem
         cdef cmap[cset[vector[int32_t]],cmap[vector[cset[string]],string]].iterator loc = deref(self._cpp_obj).begin()
@@ -4747,7 +4747,7 @@ cdef class List__Foo__i64:
 
     def __iter__(self):
         if not self:
-            raise StopIteration
+            return
         cdef Foo citem
         cdef vector[Foo].iterator loc = deref(self._cpp_obj).begin()
         while loc != deref(self._cpp_obj).end():
@@ -4762,7 +4762,7 @@ cdef class List__Foo__i64:
 
     def __reversed__(self):
         if not self:
-            raise StopIteration
+            return
         cdef Foo citem
         cdef vector[Foo].reverse_iterator loc = deref(self._cpp_obj).rbegin()
         while loc != deref(self._cpp_obj).rend():
@@ -4907,7 +4907,7 @@ cdef class List__Bar__double:
 
     def __iter__(self):
         if not self:
-            raise StopIteration
+            return
         cdef Bar citem
         cdef vector[Bar].iterator loc = deref(self._cpp_obj).begin()
         while loc != deref(self._cpp_obj).end():
@@ -4922,7 +4922,7 @@ cdef class List__Bar__double:
 
     def __reversed__(self):
         if not self:
-            raise StopIteration
+            return
         cdef Bar citem
         cdef vector[Bar].reverse_iterator loc = deref(self._cpp_obj).rbegin()
         while loc != deref(self._cpp_obj).rend():
@@ -5068,7 +5068,7 @@ cdef class List__Baz__i32:
 
     def __iter__(self):
         if not self:
-            raise StopIteration
+            return
         cdef Baz citem
         cdef vector[Baz].iterator loc = deref(self._cpp_obj).begin()
         while loc != deref(self._cpp_obj).end():
@@ -5083,7 +5083,7 @@ cdef class List__Baz__i32:
 
     def __reversed__(self):
         if not self:
-            raise StopIteration
+            return
         cdef Baz citem
         cdef vector[Baz].reverse_iterator loc = deref(self._cpp_obj).rbegin()
         while loc != deref(self._cpp_obj).rend():

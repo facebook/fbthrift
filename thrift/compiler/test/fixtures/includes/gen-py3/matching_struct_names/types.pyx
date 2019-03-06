@@ -558,7 +558,7 @@ cdef class List__MyStruct:
 
     def __iter__(self):
         if not self:
-            raise StopIteration
+            return
         cdef shared_ptr[cMyStruct] citem
         cdef vector[cMyStruct].iterator loc = deref(self._cpp_obj).begin()
         while loc != deref(self._cpp_obj).end():
@@ -573,7 +573,7 @@ cdef class List__MyStruct:
 
     def __reversed__(self):
         if not self:
-            raise StopIteration
+            return
         cdef shared_ptr[cMyStruct] citem
         cdef vector[cMyStruct].reverse_iterator loc = deref(self._cpp_obj).rbegin()
         while loc != deref(self._cpp_obj).rend():
@@ -725,7 +725,7 @@ cdef class List__List__MyStruct:
 
     def __iter__(self):
         if not self:
-            raise StopIteration
+            return
         cdef shared_ptr[vector[cMyStruct]] citem
         cdef vector[vector[cMyStruct]].iterator loc = deref(self._cpp_obj).begin()
         while loc != deref(self._cpp_obj).end():
@@ -740,7 +740,7 @@ cdef class List__List__MyStruct:
 
     def __reversed__(self):
         if not self:
-            raise StopIteration
+            return
         cdef shared_ptr[vector[cMyStruct]] citem
         cdef vector[vector[cMyStruct]].reverse_iterator loc = deref(self._cpp_obj).rbegin()
         while loc != deref(self._cpp_obj).rend():
@@ -895,7 +895,7 @@ cdef class List__module_MyStruct:
 
     def __iter__(self):
         if not self:
-            raise StopIteration
+            return
         cdef shared_ptr[_module_types.cMyStruct] citem
         cdef vector[_module_types.cMyStruct].iterator loc = deref(self._cpp_obj).begin()
         while loc != deref(self._cpp_obj).end():
@@ -910,7 +910,7 @@ cdef class List__module_MyStruct:
 
     def __reversed__(self):
         if not self:
-            raise StopIteration
+            return
         cdef shared_ptr[_module_types.cMyStruct] citem
         cdef vector[_module_types.cMyStruct].reverse_iterator loc = deref(self._cpp_obj).rbegin()
         while loc != deref(self._cpp_obj).rend():
@@ -1062,7 +1062,7 @@ cdef class List__List__module_MyStruct:
 
     def __iter__(self):
         if not self:
-            raise StopIteration
+            return
         cdef shared_ptr[vector[_module_types.cMyStruct]] citem
         cdef vector[vector[_module_types.cMyStruct]].iterator loc = deref(self._cpp_obj).begin()
         while loc != deref(self._cpp_obj).end():
@@ -1077,7 +1077,7 @@ cdef class List__List__module_MyStruct:
 
     def __reversed__(self):
         if not self:
-            raise StopIteration
+            return
         cdef shared_ptr[vector[_module_types.cMyStruct]] citem
         cdef vector[vector[_module_types.cMyStruct]].reverse_iterator loc = deref(self._cpp_obj).rbegin()
         while loc != deref(self._cpp_obj).rend():

@@ -393,7 +393,7 @@ cdef class List__bool:
 
     def __iter__(self):
         if not self:
-            raise StopIteration
+            return
         cdef cbool citem
         cdef vector[cbool].iterator loc = deref(self._cpp_obj).begin()
         while loc != deref(self._cpp_obj).end():
@@ -408,7 +408,7 @@ cdef class List__bool:
 
     def __reversed__(self):
         if not self:
-            raise StopIteration
+            return
         cdef cbool citem
         cdef vector[cbool].reverse_iterator loc = deref(self._cpp_obj).rbegin()
         while loc != deref(self._cpp_obj).rend():
@@ -554,7 +554,7 @@ cdef class List__i32:
 
     def __iter__(self):
         if not self:
-            raise StopIteration
+            return
         cdef int32_t citem
         cdef vector[int32_t].iterator loc = deref(self._cpp_obj).begin()
         while loc != deref(self._cpp_obj).end():
@@ -569,7 +569,7 @@ cdef class List__i32:
 
     def __reversed__(self):
         if not self:
-            raise StopIteration
+            return
         cdef int32_t citem
         cdef vector[int32_t].reverse_iterator loc = deref(self._cpp_obj).rbegin()
         while loc != deref(self._cpp_obj).rend():

@@ -441,7 +441,7 @@ cdef class List__Enum:
 
     def __iter__(self):
         if not self:
-            raise StopIteration
+            return
         cdef cEnum citem
         cdef vector[cEnum].iterator loc = deref(self._cpp_obj).begin()
         while loc != deref(self._cpp_obj).end():
@@ -456,7 +456,7 @@ cdef class List__Enum:
 
     def __reversed__(self):
         if not self:
-            raise StopIteration
+            return
         cdef cEnum citem
         cdef vector[cEnum].reverse_iterator loc = deref(self._cpp_obj).rbegin()
         while loc != deref(self._cpp_obj).rend():

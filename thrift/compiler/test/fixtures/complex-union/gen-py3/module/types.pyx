@@ -783,7 +783,7 @@ cdef class List__i64:
 
     def __iter__(self):
         if not self:
-            raise StopIteration
+            return
         cdef int64_t citem
         cdef vector[int64_t].iterator loc = deref(self._cpp_obj).begin()
         while loc != deref(self._cpp_obj).end():
@@ -798,7 +798,7 @@ cdef class List__i64:
 
     def __reversed__(self):
         if not self:
-            raise StopIteration
+            return
         cdef int64_t citem
         cdef vector[int64_t].reverse_iterator loc = deref(self._cpp_obj).rbegin()
         while loc != deref(self._cpp_obj).rend():
@@ -943,7 +943,7 @@ cdef class List__string:
 
     def __iter__(self):
         if not self:
-            raise StopIteration
+            return
         cdef string citem
         cdef vector[string].iterator loc = deref(self._cpp_obj).begin()
         while loc != deref(self._cpp_obj).end():
@@ -958,7 +958,7 @@ cdef class List__string:
 
     def __reversed__(self):
         if not self:
-            raise StopIteration
+            return
         cdef string citem
         cdef vector[string].reverse_iterator loc = deref(self._cpp_obj).rbegin()
         while loc != deref(self._cpp_obj).rend():
@@ -1065,7 +1065,7 @@ cdef class Map__i16_string:
 
     def __iter__(self):
         if not self:
-            raise StopIteration
+            return
         cdef int16_t citem
         cdef cmap[int16_t,string].iterator loc = deref(self._cpp_obj).begin()
         while loc != deref(self._cpp_obj).end():
@@ -1122,7 +1122,7 @@ cdef class Map__i16_string:
 
     def values(self):
         if not self:
-            raise StopIteration
+            return
         cdef string citem
         cdef cmap[int16_t,string].iterator loc = deref(self._cpp_obj).begin()
         while loc != deref(self._cpp_obj).end():
@@ -1132,7 +1132,7 @@ cdef class Map__i16_string:
 
     def items(self):
         if not self:
-            raise StopIteration
+            return
         cdef int16_t ckey
         cdef string citem
         cdef cmap[int16_t,string].iterator loc = deref(self._cpp_obj).begin()

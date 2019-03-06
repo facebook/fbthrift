@@ -89,7 +89,7 @@ cdef class std_unordered_map__Map__i32_string:
 
     def __iter__(self):
         if not self:
-            raise StopIteration
+            return
         cdef int32_t citem
         cdef std_unordered_map[int32_t,string].iterator loc = deref(self._cpp_obj).begin()
         while loc != deref(self._cpp_obj).end():
@@ -146,7 +146,7 @@ cdef class std_unordered_map__Map__i32_string:
 
     def values(self):
         if not self:
-            raise StopIteration
+            return
         cdef string citem
         cdef std_unordered_map[int32_t,string].iterator loc = deref(self._cpp_obj).begin()
         while loc != deref(self._cpp_obj).end():
@@ -156,7 +156,7 @@ cdef class std_unordered_map__Map__i32_string:
 
     def items(self):
         if not self:
-            raise StopIteration
+            return
         cdef int32_t ckey
         cdef string citem
         cdef std_unordered_map[int32_t,string].iterator loc = deref(self._cpp_obj).begin()
@@ -268,7 +268,7 @@ cdef class List__std_unordered_map__Map__i32_string:
 
     def __iter__(self):
         if not self:
-            raise StopIteration
+            return
         cdef shared_ptr[std_unordered_map[int32_t,string]] citem
         cdef vector[std_unordered_map[int32_t,string]].iterator loc = deref(self._cpp_obj).begin()
         while loc != deref(self._cpp_obj).end():
@@ -283,7 +283,7 @@ cdef class List__std_unordered_map__Map__i32_string:
 
     def __reversed__(self):
         if not self:
-            raise StopIteration
+            return
         cdef shared_ptr[std_unordered_map[int32_t,string]] citem
         cdef vector[std_unordered_map[int32_t,string]].reverse_iterator loc = deref(self._cpp_obj).rbegin()
         while loc != deref(self._cpp_obj).rend():

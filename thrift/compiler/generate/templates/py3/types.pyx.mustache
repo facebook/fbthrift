@@ -752,7 +752,7 @@ cdef class {{> types/CythonPythonType}}:
 
     def __iter__(self):
         if not self:
-            raise StopIteration
+            return
         cdef {{#type:listElemType}}{{!
             }}{{^type:simple?}}shared_ptr[{{/type:simple?}}{{> types/CythonCppType}}{{!
             }}{{^type:simple?}}]{{/type:simple?}}{{!
@@ -774,7 +774,7 @@ cdef class {{> types/CythonPythonType}}:
 
     def __reversed__(self):
         if not self:
-            raise StopIteration
+            return
         cdef {{#type:listElemType}}{{!
             }}{{^type:simple?}}shared_ptr[{{/type:simple?}}{{> types/CythonCppType}}{{!
             }}{{^type:simple?}}]{{/type:simple?}}{{!
@@ -906,7 +906,7 @@ Sequence.register({{> types/CythonPythonType}})
 
     def __iter__(self):
         if not self:
-            raise StopIteration
+            return
         cdef {{#type:setElemType}}{{!
             }}{{^type:simple?}}shared_ptr[{{/type:simple?}}{{> types/CythonCppType}}{{!
             }}{{^type:simple?}}]{{/type:simple?}}{{!
@@ -1194,7 +1194,7 @@ Set.register({{> types/CythonPythonType}})
 
     def __iter__(self):
         if not self:
-            raise StopIteration
+            return
         cdef {{#type:keyType}}{{!
             }}{{^type:simple?}}shared_ptr[{{/type:simple?}}{{> types/CythonCppType}}{{!
             }}{{^type:simple?}}]{{/type:simple?}}{{!
@@ -1279,7 +1279,7 @@ Set.register({{> types/CythonPythonType}})
 
     def values(self):
         if not self:
-            raise StopIteration
+            return
         cdef {{#type:valueType}}{{!
           }}{{^type:simple?}}shared_ptr[{{/type:simple?}}{{> types/CythonCppType}}{{!
           }}{{^type:simple?}}]{{/type:simple?}}{{!
@@ -1297,7 +1297,7 @@ Set.register({{> types/CythonPythonType}})
 
     def items(self):
         if not self:
-            raise StopIteration
+            return
         cdef {{#type:keyType}}{{!
           }}{{^type:simple?}}shared_ptr[{{/type:simple?}}{{> types/CythonCppType}}{{!
             }}{{^type:simple?}}]{{/type:simple?}}{{!

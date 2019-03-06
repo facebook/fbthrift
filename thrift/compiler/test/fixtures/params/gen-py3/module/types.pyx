@@ -128,7 +128,7 @@ cdef class List__i32:
 
     def __iter__(self):
         if not self:
-            raise StopIteration
+            return
         cdef int32_t citem
         cdef vector[int32_t].iterator loc = deref(self._cpp_obj).begin()
         while loc != deref(self._cpp_obj).end():
@@ -143,7 +143,7 @@ cdef class List__i32:
 
     def __reversed__(self):
         if not self:
-            raise StopIteration
+            return
         cdef int32_t citem
         cdef vector[int32_t].reverse_iterator loc = deref(self._cpp_obj).rbegin()
         while loc != deref(self._cpp_obj).rend():
@@ -252,7 +252,7 @@ cdef class Map__i32_List__i32:
 
     def __iter__(self):
         if not self:
-            raise StopIteration
+            return
         cdef int32_t citem
         cdef cmap[int32_t,vector[int32_t]].iterator loc = deref(self._cpp_obj).begin()
         while loc != deref(self._cpp_obj).end():
@@ -309,7 +309,7 @@ cdef class Map__i32_List__i32:
 
     def values(self):
         if not self:
-            raise StopIteration
+            return
         cdef shared_ptr[vector[int32_t]] citem
         cdef cmap[int32_t,vector[int32_t]].iterator loc = deref(self._cpp_obj).begin()
         while loc != deref(self._cpp_obj).end():
@@ -319,7 +319,7 @@ cdef class Map__i32_List__i32:
 
     def items(self):
         if not self:
-            raise StopIteration
+            return
         cdef int32_t ckey
         cdef shared_ptr[vector[int32_t]] citem
         cdef cmap[int32_t,vector[int32_t]].iterator loc = deref(self._cpp_obj).begin()
@@ -378,7 +378,7 @@ cdef class Set__i32:
 
     def __iter__(self):
         if not self:
-            raise StopIteration
+            return
         cdef int32_t citem
         cdef cset[int32_t].iterator loc = deref(self._cpp_obj).begin()
         while loc != deref(self._cpp_obj).end():
@@ -632,7 +632,7 @@ cdef class Map__i32_Set__i32:
 
     def __iter__(self):
         if not self:
-            raise StopIteration
+            return
         cdef int32_t citem
         cdef cmap[int32_t,cset[int32_t]].iterator loc = deref(self._cpp_obj).begin()
         while loc != deref(self._cpp_obj).end():
@@ -689,7 +689,7 @@ cdef class Map__i32_Set__i32:
 
     def values(self):
         if not self:
-            raise StopIteration
+            return
         cdef shared_ptr[cset[int32_t]] citem
         cdef cmap[int32_t,cset[int32_t]].iterator loc = deref(self._cpp_obj).begin()
         while loc != deref(self._cpp_obj).end():
@@ -699,7 +699,7 @@ cdef class Map__i32_Set__i32:
 
     def items(self):
         if not self:
-            raise StopIteration
+            return
         cdef int32_t ckey
         cdef shared_ptr[cset[int32_t]] citem
         cdef cmap[int32_t,cset[int32_t]].iterator loc = deref(self._cpp_obj).begin()
@@ -767,7 +767,7 @@ cdef class Map__i32_i32:
 
     def __iter__(self):
         if not self:
-            raise StopIteration
+            return
         cdef int32_t citem
         cdef cmap[int32_t,int32_t].iterator loc = deref(self._cpp_obj).begin()
         while loc != deref(self._cpp_obj).end():
@@ -824,7 +824,7 @@ cdef class Map__i32_i32:
 
     def values(self):
         if not self:
-            raise StopIteration
+            return
         cdef int32_t citem
         cdef cmap[int32_t,int32_t].iterator loc = deref(self._cpp_obj).begin()
         while loc != deref(self._cpp_obj).end():
@@ -834,7 +834,7 @@ cdef class Map__i32_i32:
 
     def items(self):
         if not self:
-            raise StopIteration
+            return
         cdef int32_t ckey
         cdef int32_t citem
         cdef cmap[int32_t,int32_t].iterator loc = deref(self._cpp_obj).begin()
@@ -946,7 +946,7 @@ cdef class List__Map__i32_i32:
 
     def __iter__(self):
         if not self:
-            raise StopIteration
+            return
         cdef shared_ptr[cmap[int32_t,int32_t]] citem
         cdef vector[cmap[int32_t,int32_t]].iterator loc = deref(self._cpp_obj).begin()
         while loc != deref(self._cpp_obj).end():
@@ -961,7 +961,7 @@ cdef class List__Map__i32_i32:
 
     def __reversed__(self):
         if not self:
-            raise StopIteration
+            return
         cdef shared_ptr[cmap[int32_t,int32_t]] citem
         cdef vector[cmap[int32_t,int32_t]].reverse_iterator loc = deref(self._cpp_obj).rbegin()
         while loc != deref(self._cpp_obj).rend():
@@ -1123,7 +1123,7 @@ cdef class List__Set__i32:
 
     def __iter__(self):
         if not self:
-            raise StopIteration
+            return
         cdef shared_ptr[cset[int32_t]] citem
         cdef vector[cset[int32_t]].iterator loc = deref(self._cpp_obj).begin()
         while loc != deref(self._cpp_obj).end():
@@ -1138,7 +1138,7 @@ cdef class List__Set__i32:
 
     def __reversed__(self):
         if not self:
-            raise StopIteration
+            return
         cdef shared_ptr[cset[int32_t]] citem
         cdef vector[cset[int32_t]].reverse_iterator loc = deref(self._cpp_obj).rbegin()
         while loc != deref(self._cpp_obj).rend():
@@ -1257,7 +1257,7 @@ cdef class Map__i32_Map__i32_Set__i32:
 
     def __iter__(self):
         if not self:
-            raise StopIteration
+            return
         cdef int32_t citem
         cdef cmap[int32_t,cmap[int32_t,cset[int32_t]]].iterator loc = deref(self._cpp_obj).begin()
         while loc != deref(self._cpp_obj).end():
@@ -1314,7 +1314,7 @@ cdef class Map__i32_Map__i32_Set__i32:
 
     def values(self):
         if not self:
-            raise StopIteration
+            return
         cdef shared_ptr[cmap[int32_t,cset[int32_t]]] citem
         cdef cmap[int32_t,cmap[int32_t,cset[int32_t]]].iterator loc = deref(self._cpp_obj).begin()
         while loc != deref(self._cpp_obj).end():
@@ -1324,7 +1324,7 @@ cdef class Map__i32_Map__i32_Set__i32:
 
     def items(self):
         if not self:
-            raise StopIteration
+            return
         cdef int32_t ckey
         cdef shared_ptr[cmap[int32_t,cset[int32_t]]] citem
         cdef cmap[int32_t,cmap[int32_t,cset[int32_t]]].iterator loc = deref(self._cpp_obj).begin()
@@ -1436,7 +1436,7 @@ cdef class List__Map__i32_Map__i32_Set__i32:
 
     def __iter__(self):
         if not self:
-            raise StopIteration
+            return
         cdef shared_ptr[cmap[int32_t,cmap[int32_t,cset[int32_t]]]] citem
         cdef vector[cmap[int32_t,cmap[int32_t,cset[int32_t]]]].iterator loc = deref(self._cpp_obj).begin()
         while loc != deref(self._cpp_obj).end():
@@ -1451,7 +1451,7 @@ cdef class List__Map__i32_Map__i32_Set__i32:
 
     def __reversed__(self):
         if not self:
-            raise StopIteration
+            return
         cdef shared_ptr[cmap[int32_t,cmap[int32_t,cset[int32_t]]]] citem
         cdef vector[cmap[int32_t,cmap[int32_t,cset[int32_t]]]].reverse_iterator loc = deref(self._cpp_obj).rbegin()
         while loc != deref(self._cpp_obj).rend():
@@ -1613,7 +1613,7 @@ cdef class List__List__Map__i32_Map__i32_Set__i32:
 
     def __iter__(self):
         if not self:
-            raise StopIteration
+            return
         cdef shared_ptr[vector[cmap[int32_t,cmap[int32_t,cset[int32_t]]]]] citem
         cdef vector[vector[cmap[int32_t,cmap[int32_t,cset[int32_t]]]]].iterator loc = deref(self._cpp_obj).begin()
         while loc != deref(self._cpp_obj).end():
@@ -1628,7 +1628,7 @@ cdef class List__List__Map__i32_Map__i32_Set__i32:
 
     def __reversed__(self):
         if not self:
-            raise StopIteration
+            return
         cdef shared_ptr[vector[cmap[int32_t,cmap[int32_t,cset[int32_t]]]]] citem
         cdef vector[vector[cmap[int32_t,cmap[int32_t,cset[int32_t]]]]].reverse_iterator loc = deref(self._cpp_obj).rbegin()
         while loc != deref(self._cpp_obj).rend():

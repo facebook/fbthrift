@@ -1241,7 +1241,7 @@ cdef class Set__i64:
 
     def __iter__(self):
         if not self:
-            raise StopIteration
+            return
         cdef int64_t citem
         cdef cset[int64_t].iterator loc = deref(self._cpp_obj).begin()
         while loc != deref(self._cpp_obj).end():
@@ -1492,7 +1492,7 @@ cdef class Map__Animal_string:
 
     def __iter__(self):
         if not self:
-            raise StopIteration
+            return
         cdef cAnimal citem
         cdef cmap[cAnimal,string].iterator loc = deref(self._cpp_obj).begin()
         while loc != deref(self._cpp_obj).end():
@@ -1549,7 +1549,7 @@ cdef class Map__Animal_string:
 
     def values(self):
         if not self:
-            raise StopIteration
+            return
         cdef string citem
         cdef cmap[cAnimal,string].iterator loc = deref(self._cpp_obj).begin()
         while loc != deref(self._cpp_obj).end():
@@ -1559,7 +1559,7 @@ cdef class Map__Animal_string:
 
     def items(self):
         if not self:
-            raise StopIteration
+            return
         cdef cAnimal ckey
         cdef string citem
         cdef cmap[cAnimal,string].iterator loc = deref(self._cpp_obj).begin()
@@ -1664,7 +1664,7 @@ cdef class List__Vehicle:
 
     def __iter__(self):
         if not self:
-            raise StopIteration
+            return
         cdef shared_ptr[cVehicle] citem
         cdef vector[cVehicle].iterator loc = deref(self._cpp_obj).begin()
         while loc != deref(self._cpp_obj).end():
@@ -1679,7 +1679,7 @@ cdef class List__Vehicle:
 
     def __reversed__(self):
         if not self:
-            raise StopIteration
+            return
         cdef shared_ptr[cVehicle] citem
         cdef vector[cVehicle].reverse_iterator loc = deref(self._cpp_obj).rbegin()
         while loc != deref(self._cpp_obj).rend():
