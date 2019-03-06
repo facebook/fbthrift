@@ -85,6 +85,14 @@ class field_ref {
     is_set_ = other.is_set();
   }
 
+  template <typename U>
+  THRIFT_NOLINK void move_from(field_ref<U> other) noexcept(
+      std::is_nothrow_assignable<value_type&, U&&>::value) {
+    value_ = std::move(other.value_);
+    is_set_ = other.is_set_;
+    other.is_set_ = false;
+  }
+
   THRIFT_NOLINK bool is_set() const noexcept {
     return is_set_;
   }
@@ -172,6 +180,14 @@ class optional_field_ref {
       std::is_nothrow_assignable<value_type&, U>::value) {
     value_ = other.value_unchecked();
     is_set_ = other.has_value();
+  }
+
+  template <typename U>
+  THRIFT_NOLINK void move_from(optional_field_ref<U> other) noexcept(
+      std::is_nothrow_assignable<value_type&, U&&>::value) {
+    value_ = std::move(other.value_);
+    is_set_ = other.is_set_;
+    other.is_set_ = false;
   }
 
   THRIFT_NOLINK bool has_value() const noexcept {
