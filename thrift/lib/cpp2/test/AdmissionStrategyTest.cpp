@@ -37,6 +37,7 @@
 #include <thrift/lib/cpp2/test/util/FakeClock.h>
 
 using namespace apache::thrift;
+using namespace std::chrono;
 
 using apache::thrift::transport::THeader;
 
@@ -248,7 +249,7 @@ TEST_F(AdmissionControllerSelectorTest, priorityMetricsAggregated) {
       FakeClock::advance(std::chrono::milliseconds(10));
       controller->dequeue();
       FakeClock::advance(std::chrono::milliseconds(1));
-      controller->returnedResponse();
+      controller->returnedResponse(std::chrono::milliseconds(11));
     }
   }
 

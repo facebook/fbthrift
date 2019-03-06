@@ -20,6 +20,7 @@
  */
 
 #include <thrift/lib/cpp2/server/QIAdmissionController.h>
+#include <thrift/lib/cpp2/server/SLAViolationController.h>
 
 #include <chrono>
 
@@ -31,6 +32,7 @@
 
 using namespace apache::thrift;
 using namespace std::chrono;
+
 namespace apache {
 namespace thrift {
 
@@ -172,6 +174,114 @@ TEST_F(AdmissionControllerTest, steadyMaxRPS) {
   }
 
   ASSERT_NEAR(rejected, 10, 4);
+}
+
+TEST_F(AdmissionControllerTest, SLAViolationControllerTest) {
+  auto n = 1000;
+  auto tolerance = 0.2;
+  SLAViolationController<AcceptAllAdmissionController, FakeClock> controller(
+      0.5, seconds(1), minutes(2), AcceptAllAdmissionController());
+
+  EXPECT_TRUE(controller.admit());
+
+  for (auto i = 0; i < n; i++) {
+    controller.returnedResponse(seconds(2)); // latency is bigger than SLA
+    FakeClock::advance(seconds(1));
+  }
+
+  // probability of rejection should be very high,
+  auto rejections = 0;
+  for (auto i = 0; i < n; i++) {
+    auto admitted = controller.admit();
+    if (!admitted) {
+      rejections++;
+    }
+  }
+  EXPECT_NEAR(rejections, n, tolerance * n);
+
+  for (auto i = 0; i < n; i++) {
+    // i.e. ~25% of timeouts (<50% threshold)
+    auto latency =
+        folly::Random::randDouble01() < 0.25 ? seconds(2) : milliseconds(100);
+    controller.returnedResponse(latency);
+    FakeClock::advance(milliseconds(500));
+  }
+
+  EXPECT_TRUE(controller.admit());
+
+  for (auto i = 0; i < n; i++) {
+    // i.e. ~50% of timeouts (~=50% threshold)
+    auto latency =
+        folly::Random::randDouble01() < 0.5 ? seconds(2) : milliseconds(100);
+    controller.returnedResponse(latency);
+    FakeClock::advance(milliseconds(500));
+  }
+
+  rejections = 0;
+  auto accepted = 0;
+  for (auto i = 0; i < n; i++) {
+    auto admitted = controller.admit();
+    if (admitted) {
+      accepted++;
+    } else {
+      rejections++;
+    }
+  }
+  EXPECT_NEAR(rejections, 0, tolerance * n);
+  EXPECT_NEAR(accepted, n, tolerance * n);
+
+  for (auto i = 0; i < n; i++) {
+    // i.e. ~75% of timeouts (>50% threshold)
+    auto latency =
+        folly::Random::randDouble01() < 0.75 ? seconds(2) : milliseconds(100);
+    controller.returnedResponse(latency);
+    FakeClock::advance(milliseconds(500));
+  }
+
+  rejections = 0;
+  accepted = 0;
+  for (auto i = 0; i < n; i++) {
+    auto admitted = controller.admit();
+    if (admitted) {
+      accepted++;
+    } else {
+      rejections++;
+    }
+  }
+  // 75% is halfway between 50% (threshold) and 100%, so 50% should be accepted
+  EXPECT_NEAR(rejections, 0.5 * n, tolerance * n);
+  EXPECT_NEAR(accepted, 0.5 * n, tolerance * n);
+  LOG(INFO) << "###2 (ewma=" << controller.ewma() << ") accepted: " << accepted
+            << ", rejections: " << rejections;
+}
+
+TEST_F(AdmissionControllerTest, SLAViolationControllerDecayTest) {
+  auto n = 1000;
+  auto tolerance = 0.2;
+  auto window = minutes(2);
+  SLAViolationController<AcceptAllAdmissionController, FakeClock> controller(
+      0.5, seconds(1), minutes(2), AcceptAllAdmissionController());
+
+  EXPECT_TRUE(controller.admit());
+
+  for (auto i = 0; i < n; i++) {
+    controller.returnedResponse(seconds(2)); // latency is bigger than SLA
+    FakeClock::advance(seconds(1));
+  }
+
+  // probability of rejection should be very high,
+  auto rejections = 0;
+  for (auto i = 0; i < n; i++) {
+    auto admitted = controller.admit();
+    if (!admitted) {
+      rejections++;
+    }
+  }
+  EXPECT_NEAR(rejections, n, tolerance * n);
+
+  // wait a more than window, we should admit a new request at that point
+  FakeClock::advance(2 * window);
+  EXPECT_TRUE(controller.admit());
 }
 
 } // namespace thrift
