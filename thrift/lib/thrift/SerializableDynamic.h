@@ -21,7 +21,8 @@
 #include <thrift/lib/cpp/protocol/TType.h>
 #include <thrift/lib/cpp2/protocol/Cpp2Ops.h>
 
-namespace apache { namespace thrift {
+namespace apache {
+namespace thrift {
 
 /**
  *
@@ -38,11 +39,19 @@ class SerializableDynamic {
     return *this;
   }
 
-  const folly::dynamic& operator*() const { return value_; }
-        folly::dynamic& operator*()       { return value_; }
+  const folly::dynamic& operator*() const {
+    return value_;
+  }
+  folly::dynamic& operator*() {
+    return value_;
+  }
 
-  const folly::dynamic* operator->() const { return &value_; }
-        folly::dynamic* operator->()       { return &value_; }
+  const folly::dynamic* operator->() const {
+    return &value_;
+  }
+  folly::dynamic* operator->() {
+    return &value_;
+  }
 
   bool operator==(const SerializableDynamic& other) const {
     return value_ == other.value_;
@@ -65,8 +74,7 @@ class SerializableDynamic {
       __clear();
     } else {
       switch (fid) {
-        case 1:
-        {
+        case 1: {
           if (ftype == protocol::T_BOOL) {
             bool value;
             xfer += iprot->readBool(value);
@@ -76,8 +84,7 @@ class SerializableDynamic {
           }
           break;
         }
-        case 2:
-        {
+        case 2: {
           if (ftype == protocol::T_I64) {
             int64_t value;
             xfer += iprot->readI64(value);
@@ -87,8 +94,7 @@ class SerializableDynamic {
           }
           break;
         }
-        case 3:
-        {
+        case 3: {
           if (ftype == protocol::T_DOUBLE) {
             double value;
             xfer += iprot->readDouble(value);
@@ -98,8 +104,7 @@ class SerializableDynamic {
           }
           break;
         }
-        case 4:
-        {
+        case 4: {
           if (ftype == protocol::T_STRING) {
             std::string value;
             xfer += iprot->readString(value);
@@ -109,8 +114,7 @@ class SerializableDynamic {
           }
           break;
         }
-        case 5:
-        {
+        case 5: {
           if (ftype == protocol::T_LIST) {
             value_ = folly::dynamic::array;
             uint32_t size;
@@ -128,8 +132,7 @@ class SerializableDynamic {
           }
           break;
         }
-        case 6:
-        {
+        case 6: {
           if (ftype == protocol::T_MAP) {
             value_ = folly::dynamic::object;
             uint32_t size;
@@ -150,8 +153,7 @@ class SerializableDynamic {
           }
           break;
         }
-        default:
-        {
+        default: {
           xfer += iprot->skip(ftype);
           break;
         }
@@ -210,9 +212,8 @@ class SerializableDynamic {
 
       case folly::dynamic::Type::OBJECT:
         xfer += p->writeFieldBegin("object", protocol::T_MAP, 6);
-        xfer += p->writeMapBegin(protocol::T_STRING,
-                                 protocol::T_STRUCT,
-                                 value_.size());
+        xfer += p->writeMapBegin(
+            protocol::T_STRING, protocol::T_STRUCT, value_.size());
         for (const auto& item : value_.items()) {
           SerializableDynamic wrappedItem(item.second);
           xfer += p->writeString(item.first.asString());
@@ -240,19 +241,18 @@ class SerializableDynamic {
 ////////////////////////////////////////////////////////////////////////////////
 
 template <>
-inline void Cpp2Ops< SerializableDynamic>::clear(
-    SerializableDynamic* obj) {
+inline void Cpp2Ops<SerializableDynamic>::clear(SerializableDynamic* obj) {
   obj->__clear();
 }
 
 template <>
-inline constexpr protocol::TType Cpp2Ops< SerializableDynamic>::thriftType() {
+inline constexpr protocol::TType Cpp2Ops<SerializableDynamic>::thriftType() {
   return protocol::T_STRUCT;
 }
 
 template <>
 template <class Protocol_>
-inline uint32_t Cpp2Ops< SerializableDynamic>::write(
+inline uint32_t Cpp2Ops<SerializableDynamic>::write(
     Protocol_* p,
     const SerializableDynamic* obj) {
   return obj->write(p);
@@ -260,7 +260,7 @@ inline uint32_t Cpp2Ops< SerializableDynamic>::write(
 
 template <>
 template <class Protocol_>
-inline uint32_t Cpp2Ops< SerializableDynamic>::serializedSize(
+inline uint32_t Cpp2Ops<SerializableDynamic>::serializedSize(
     Protocol_ const* p,
     const SerializableDynamic* obj) {
   uint32_t xfer = 0;
@@ -291,26 +291,23 @@ inline uint32_t Cpp2Ops< SerializableDynamic>::serializedSize(
 
     case folly::dynamic::Type::ARRAY:
       xfer += p->serializedFieldSize("arr", protocol::T_LIST, 5);
-      xfer += p->serializedSizeListBegin(protocol::T_STRUCT,
-                                         obj->value_.size());
+      xfer +=
+          p->serializedSizeListBegin(protocol::T_STRUCT, obj->value_.size());
       for (const auto& item : obj->value_) {
         SerializableDynamic wrappedItem(item);
-        xfer += Cpp2Ops<SerializableDynamic>::serializedSize(
-            p, &wrappedItem);
+        xfer += Cpp2Ops<SerializableDynamic>::serializedSize(p, &wrappedItem);
       }
       xfer += p->serializedSizeListEnd();
       break;
 
     case folly::dynamic::Type::OBJECT:
       xfer += p->serializedFieldSize("object", protocol::T_MAP, 6);
-      xfer += p->serializedSizeMapBegin(protocol::T_STRING,
-                               protocol::T_STRUCT,
-                               obj->value_.size());
+      xfer += p->serializedSizeMapBegin(
+          protocol::T_STRING, protocol::T_STRUCT, obj->value_.size());
       for (const auto& item : obj->value_.items()) {
         SerializableDynamic wrappedItem(item.second);
         xfer += p->serializedSizeString(item.first.asString());
-        xfer += Cpp2Ops<SerializableDynamic>::serializedSize(
-            p, &wrappedItem);
+        xfer += Cpp2Ops<SerializableDynamic>::serializedSize(p, &wrappedItem);
       }
       xfer += p->serializedSizeMapEnd();
       break;
@@ -321,10 +318,10 @@ inline uint32_t Cpp2Ops< SerializableDynamic>::serializedSize(
 
 template <>
 template <class Protocol_>
-inline uint32_t Cpp2Ops< SerializableDynamic>::serializedSizeZC(
+inline uint32_t Cpp2Ops<SerializableDynamic>::serializedSizeZC(
     Protocol_ const* p,
     const SerializableDynamic* obj) {
-  return Cpp2Ops< SerializableDynamic>::serializedSize(p, obj);
+  return Cpp2Ops<SerializableDynamic>::serializedSize(p, obj);
 }
 
 template <>
@@ -342,8 +339,7 @@ inline void Cpp2Ops<SerializableDynamic>::read(
     obj->__clear();
   } else {
     switch (fid) {
-      case 1:
-      {
+      case 1: {
         if (ftype == protocol::T_BOOL) {
           bool value;
           iprot->readBool(value);
@@ -353,8 +349,7 @@ inline void Cpp2Ops<SerializableDynamic>::read(
         }
         break;
       }
-      case 2:
-      {
+      case 2: {
         if (ftype == protocol::T_I64) {
           int64_t value;
           iprot->readI64(value);
@@ -364,8 +359,7 @@ inline void Cpp2Ops<SerializableDynamic>::read(
         }
         break;
       }
-      case 3:
-     {
+      case 3: {
         if (ftype == protocol::T_DOUBLE) {
           double value;
           iprot->readDouble(value);
@@ -375,8 +369,7 @@ inline void Cpp2Ops<SerializableDynamic>::read(
         }
         break;
       }
-      case 4:
-      {
+      case 4: {
         if (ftype == protocol::T_STRING) {
           std::string value;
           iprot->readString(value);
@@ -386,8 +379,7 @@ inline void Cpp2Ops<SerializableDynamic>::read(
         }
         break;
       }
-      case 5:
-      {
+      case 5: {
         if (ftype == protocol::T_LIST) {
           obj->value_ = folly::dynamic::array;
           uint32_t size;
@@ -404,8 +396,7 @@ inline void Cpp2Ops<SerializableDynamic>::read(
         }
         break;
       }
-      case 6:
-      {
+      case 6: {
         if (ftype == protocol::T_MAP) {
           obj->value_ = folly::dynamic::object;
           uint32_t size;
@@ -425,8 +416,7 @@ inline void Cpp2Ops<SerializableDynamic>::read(
         }
         break;
       }
-      default:
-      {
+      default: {
         iprot->skip(ftype);
         break;
       }
@@ -438,6 +428,7 @@ inline void Cpp2Ops<SerializableDynamic>::read(
   iprot->readStructEnd();
 }
 
-}}
+} // namespace thrift
+} // namespace apache
 
-#endif //THRIFT_UTIL_SERIALIZABLEDYNAMIC_H
+#endif // THRIFT_UTIL_SERIALIZABLEDYNAMIC_H
