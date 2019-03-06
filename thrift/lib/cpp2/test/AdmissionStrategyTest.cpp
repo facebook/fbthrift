@@ -51,7 +51,7 @@ class DummyController : public AdmissionController {
     return true;
   }
   void dequeue() override {}
-  void returnedResponse() override {}
+  void returnedResponse(std::chrono::nanoseconds) override {}
 };
 
 class AdmissionControllerSelectorTest : public testing::Test {

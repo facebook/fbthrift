@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include <chrono>
 #include <string>
 #include <unordered_map>
 
@@ -48,7 +49,7 @@ class AdmissionController {
    * Indicate to the controller that the server has finished processing the
    * request, and it returned a response to the client.
    */
-  virtual void returnedResponse() = 0;
+  virtual void returnedResponse(std::chrono::nanoseconds) = 0;
 
   /**
    * Delegate reporting the metrics to the underlying implementation
@@ -72,7 +73,7 @@ class DenyAllAdmissionController : public AdmissionController {
 
   void dequeue() override {}
 
-  void returnedResponse() override {}
+  void returnedResponse(std::chrono::nanoseconds) override {}
 };
 
 class AcceptAllAdmissionController : public AdmissionController {
@@ -85,7 +86,7 @@ class AcceptAllAdmissionController : public AdmissionController {
 
   void dequeue() override {}
 
-  void returnedResponse() override {}
+  void returnedResponse(std::chrono::nanoseconds) override {}
 };
 
 } // namespace thrift

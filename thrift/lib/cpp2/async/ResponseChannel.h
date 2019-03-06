@@ -106,7 +106,8 @@ class ResponseChannelRequest {
       if (!startedProcessing_) {
         admissionController_->dequeue();
       } else {
-        admissionController_->returnedResponse();
+        auto latency = std::chrono::steady_clock::now() - creationTimestamps_;
+        admissionController_->returnedResponse(latency);
       }
     }
   }
@@ -115,6 +116,7 @@ class ResponseChannelRequest {
     startedProcessing_ = true;
     if (admissionController_ != nullptr) {
       admissionController_->dequeue();
+      creationTimestamps_ = std::chrono::steady_clock::now();
     }
   }
 
@@ -139,6 +141,7 @@ class ResponseChannelRequest {
   SemiStream<std::unique_ptr<folly::IOBuf>> stream_;
   std::shared_ptr<apache::thrift::AdmissionController> admissionController_;
   bool startedProcessing_{false};
+  std::chrono::steady_clock::time_point creationTimestamps_;
 };
 
 /**

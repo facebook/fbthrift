@@ -91,7 +91,7 @@ TEST_F(AdmissionControllerTest, steadyLowRPSTraffic) {
   ASSERT_TRUE(controller.admit());
   FakeClock::advance(seconds(1));
   controller.dequeue();
-  controller.returnedResponse();
+  controller.returnedResponse(std::chrono::nanoseconds(1));
 
   // 2 concurrent requests, under the rate of responses/sec
   ASSERT_TRUE(controller.admit());
@@ -99,10 +99,12 @@ TEST_F(AdmissionControllerTest, steadyLowRPSTraffic) {
   ASSERT_TRUE(controller.admit());
   FakeClock::advance(milliseconds(500));
   controller.dequeue();
-  controller.returnedResponse(); // response for the first req
+  controller.returnedResponse(
+      std::chrono::nanoseconds(1)); // response for the first req
   FakeClock::advance(milliseconds(500));
   controller.dequeue();
-  controller.returnedResponse(); // response for the second req
+  controller.returnedResponse(
+      std::chrono::nanoseconds(1)); // response for the second req
 
   // 5 concurrent requests, under the rate of responses/sec
   for (int i = 0; i < 5; i++) {
@@ -123,7 +125,7 @@ TEST_F(AdmissionControllerTest, spikeAfterSteady) {
     ASSERT_TRUE(controller.admit());
     FakeClock::advance(milliseconds(100));
     controller.dequeue();
-    controller.returnedResponse();
+    controller.returnedResponse(std::chrono::nanoseconds(1));
   }
 
   // the previous steady state leave the queue empty
@@ -148,7 +150,7 @@ TEST_F(AdmissionControllerTest, steadyMaxRPS) {
     ASSERT_TRUE(controller.admit());
     FakeClock::advance(milliseconds(100));
     controller.dequeue();
-    controller.returnedResponse();
+    controller.returnedResponse(std::chrono::nanoseconds(1));
   }
 
   // queue limit should be equal to ~10 here
@@ -166,7 +168,7 @@ TEST_F(AdmissionControllerTest, steadyMaxRPS) {
     }
     FakeClock::advance(milliseconds(100));
     controller.dequeue();
-    controller.returnedResponse();
+    controller.returnedResponse(std::chrono::nanoseconds(1));
   }
 
   ASSERT_NEAR(rejected, 10, 4);

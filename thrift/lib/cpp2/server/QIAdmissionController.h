@@ -103,7 +103,7 @@ class QIAdmissionController : public AdmissionController {
    * Indicate to the controller that the server has finished processing the
    * request, and it returned a response to the client.
    */
-  void returnedResponse() override {
+  void returnedResponse(std::chrono::nanoseconds) override {
     auto now = Clock::now();
     std::lock_guard<std::mutex> guard(mutex_);
     outgoingRate_.addValue(now, 1.0);
