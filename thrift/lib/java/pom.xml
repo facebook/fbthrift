@@ -22,6 +22,5 @@
 
   <modules>
     <module>thrift</module>
-    <module>thrift-directserver</module>
   </modules>
 </project>
