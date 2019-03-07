@@ -122,24 +122,6 @@ func TestHeaderFramedCompact(t *testing.T) {
 	)
 }
 
-func TestHeaderUnframedBinary(t *testing.T) {
-	tmb := NewMemoryBuffer()
-	testHeaderToProto(
-		t, UnframedDeprecated, tmb,
-		NewBinaryProtocol(tmb, true, true),
-		NewHeaderTransport(tmb),
-	)
-}
-
-func TestHeaderUnframedCompact(t *testing.T) {
-	tmb := NewMemoryBuffer()
-	testHeaderToProto(
-		t, UnframedCompactDeprecated, tmb,
-		NewCompactProtocol(tmb),
-		NewHeaderTransport(tmb),
-	)
-}
-
 func TestHeaderProtoID(t *testing.T) {
 	n := 1
 	tmb := NewMemoryBuffer()

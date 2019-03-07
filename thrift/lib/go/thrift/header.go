@@ -453,14 +453,6 @@ func (hdr *tHeader) Read(buf *bufio.Reader) error {
 	// Check the first word if it matches http/unframed signatures
 	// We don't support non-framed protocols, so bail out
 	switch clientType := analyzeFirst32Bit(firstword); clientType {
-	case UnframedDeprecated:
-		hdr.clientType = clientType
-		hdr.protoID = ProtocolIDBinary
-		return nil
-	case UnframedCompactDeprecated:
-		hdr.clientType = clientType
-		hdr.protoID = ProtocolIDCompact
-		return nil
 	case UnknownClientType:
 		break
 	default:

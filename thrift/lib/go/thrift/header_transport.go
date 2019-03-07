@@ -27,7 +27,6 @@ import (
 	"encoding/binary"
 	"fmt"
 	"io/ioutil"
-	"math"
 )
 
 const (
@@ -248,12 +247,6 @@ func (t *HeaderTransport) ResetProtocol() error {
 	t.seqID = hdr.seq
 	t.flags = hdr.flags
 
-	// If the client is using unframed, just pass up the data to the protocol
-	if t.clientType == UnframedDeprecated || t.clientType == UnframedCompactDeprecated {
-		t.framebuf = t.rbuf
-		return nil
-	}
-
 	// Make sure we can't read past the current frame length
 	t.frameSize = hdr.payloadLen
 	t.framebuf = newLimitedByteReader(t.rbuf, int64(hdr.payloadLen))
@@ -301,10 +294,6 @@ func (t *HeaderTransport) Close() error {
 
 // Read Read from the current framebuffer. EOF if the frame is done.
 func (t *HeaderTransport) Read(buf []byte) (int, error) {
-	// If we detected unframed, just pass the transport up
-	if t.clientType == UnframedDeprecated || t.clientType == UnframedCompactDeprecated {
-		return t.framebuf.Read(buf)
-	}
 	n, err := t.framebuf.Read(buf)
 	// Shouldn't be possibe, but just in case the frame size was flubbed
 	if uint64(n) > t.frameSize {
@@ -316,10 +305,6 @@ func (t *HeaderTransport) Read(buf []byte) (int, error) {
 
 // ReadByte Read a single byte from the current framebuffer. EOF if the frame is done.
 func (t *HeaderTransport) ReadByte() (byte, error) {
-	// If we detected unframed, just pass the transport up
-	if t.clientType == UnframedDeprecated || t.clientType == UnframedCompactDeprecated {
-		return t.framebuf.ReadByte()
-	}
 	b, err := t.framebuf.ReadByte()
 	t.frameSize--
 	return b, err
@@ -345,10 +330,6 @@ func (t *HeaderTransport) WriteString(s string) (int, error) {
 
 // RemainingBytes Return how many bytes remain in the current recv framebuffer.
 func (t *HeaderTransport) RemainingBytes() uint64 {
-	if t.clientType == UnframedDeprecated || t.clientType == UnframedCompactDeprecated {
-		// We cannot really tell the size without reading the whole struct in here
-		return math.MaxUint64
-	}
 	return t.frameSize
 }
 
@@ -439,10 +420,6 @@ func (t *HeaderTransport) Flush() error {
 		err = t.flushFramed()
 	case FramedCompact:
 		err = t.flushFramed()
-	case UnframedCompactDeprecated:
-		err = nil
-	case UnframedDeprecated:
-		err = nil
 	default:
 		t.wbuf.Reset() // reset incase wbuf pointer changes in xform
 		return NewTransportException(
