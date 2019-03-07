@@ -107,10 +107,8 @@ func (z *ZlibTransport) Read(p []byte) (int, error) {
 	return z.reader.Read(p)
 }
 
-// RemainingBytes returns the size in bytes of the data that is still to be
-// read.
 func (z *ZlibTransport) RemainingBytes() uint64 {
-	return z.transport.RemainingBytes()
+	return UnknownRemaining // the truth is, we just don't know unless framed is used
 }
 
 func (z *ZlibTransport) Write(p []byte) (int, error) {

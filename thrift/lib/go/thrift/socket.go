@@ -188,6 +188,5 @@ func (p *Socket) Interrupt() error {
 }
 
 func (p *Socket) RemainingBytes() (num_bytes uint64) {
-	const maxSize = ^uint64(0)
-	return maxSize // the thruth is, we just don't know unless framed is used
+	return UnknownRemaining // the truth is, we just don't know unless framed is used
 }

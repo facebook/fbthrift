@@ -66,3 +66,7 @@ type RichTransport interface {
 	Flusher
 	ReadSizeProvider
 }
+
+// UnknownRemaining is used by transports that can not return a real answer
+// for RemainingBytes()
+const UnknownRemaining = ^uint64(0)
