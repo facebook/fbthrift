@@ -158,30 +158,6 @@ uint32_t AStruct::read(Protocol_* iprot) {
 }}} // a::different::ns
 namespace apache { namespace thrift {
 
-template <> inline void Cpp2Ops< ::a::different::ns::AStruct>::clear( ::a::different::ns::AStruct* obj) {
-  return obj->__clear();
-}
-
-template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::a::different::ns::AStruct>::thriftType() {
-  return apache::thrift::protocol::T_STRUCT;
-}
-
-template <> template <class Protocol> uint32_t Cpp2Ops< ::a::different::ns::AStruct>::write(Protocol* proto,  ::a::different::ns::AStruct const* obj) {
-  return obj->write(proto);
-}
-
-template <> template <class Protocol> void Cpp2Ops< ::a::different::ns::AStruct>::read(Protocol* proto,  ::a::different::ns::AStruct* obj) {
-  return obj->readNoXfer(proto);
-}
-
-template <> template <class Protocol> uint32_t Cpp2Ops< ::a::different::ns::AStruct>::serializedSize(Protocol const* proto,  ::a::different::ns::AStruct const* obj) {
-  return obj->serializedSize(proto);
-}
-
-template <> template <class Protocol> uint32_t Cpp2Ops< ::a::different::ns::AStruct>::serializedSizeZC(Protocol const* proto,  ::a::different::ns::AStruct const* obj) {
-  return obj->serializedSizeZC(proto);
-}
-
 }} // apache::thrift
 namespace a { namespace different { namespace ns {
 class AStructB final : private apache::thrift::detail::st::ComparisonOperators<AStructB> {
@@ -247,29 +223,5 @@ uint32_t AStructB::read(Protocol_* iprot) {
 
 }}} // a::different::ns
 namespace apache { namespace thrift {
-
-template <> inline void Cpp2Ops< ::a::different::ns::AStructB>::clear( ::a::different::ns::AStructB* obj) {
-  return obj->__clear();
-}
-
-template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::a::different::ns::AStructB>::thriftType() {
-  return apache::thrift::protocol::T_STRUCT;
-}
-
-template <> template <class Protocol> uint32_t Cpp2Ops< ::a::different::ns::AStructB>::write(Protocol* proto,  ::a::different::ns::AStructB const* obj) {
-  return obj->write(proto);
-}
-
-template <> template <class Protocol> void Cpp2Ops< ::a::different::ns::AStructB>::read(Protocol* proto,  ::a::different::ns::AStructB* obj) {
-  return obj->readNoXfer(proto);
-}
-
-template <> template <class Protocol> uint32_t Cpp2Ops< ::a::different::ns::AStructB>::serializedSize(Protocol const* proto,  ::a::different::ns::AStructB const* obj) {
-  return obj->serializedSize(proto);
-}
-
-template <> template <class Protocol> uint32_t Cpp2Ops< ::a::different::ns::AStructB>::serializedSizeZC(Protocol const* proto,  ::a::different::ns::AStructB const* obj) {
-  return obj->serializedSizeZC(proto);
-}
 
 }} // apache::thrift

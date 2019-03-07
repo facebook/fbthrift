@@ -66,214 +66,200 @@ class MyCustomUnion {
 namespace apache { namespace thrift {
 
 template <>
-inline void Cpp2Ops< ::thrift::test::MyCustomStruct>::clear(
-    ::thrift::test::MyCustomStruct* obj) {
-  obj->data_.clear();
-}
-
-template <>
-template <class Protocol>
-inline uint32_t Cpp2Ops< ::thrift::test::MyCustomStruct>::write(
-    Protocol* p,
-    const ::thrift::test::MyCustomStruct* obj) {
-  uint32_t xfer = 0;
-  assert(obj->data_.size() >= sizeof(int));
-  const int prefix = *reinterpret_cast<const int*>(&obj->data_[0]);
-  std::string suffix = obj->data_.substr(sizeof(int));
-  xfer += p->writeStructBegin("MyStruct");
-  xfer += p->writeFieldBegin("stringData", protocol::T_STRING, 1);
-  xfer += p->writeString(suffix);
-  xfer += p->writeFieldEnd();
-  xfer += p->writeFieldBegin("intData", protocol::T_I32, 2);
-  xfer += p->writeI32(prefix);
-  xfer += p->writeFieldEnd();
-  xfer += p->writeFieldStop();
-  xfer += p->writeStructEnd();
-  return xfer;
-}
-
-template <>
-template <class Protocol>
-inline uint32_t Cpp2Ops< ::thrift::test::MyCustomStruct>::serializedSize(
-    Protocol const* p,
-    const ::thrift::test::MyCustomStruct* obj) {
-  uint32_t xfer = 0;
-  assert(obj->data_.size() >= sizeof(int));
-  const int prefix = *reinterpret_cast<const int*>(&obj->data_[0]);
-  std::string suffix = obj->data_.substr(sizeof(int));
-  xfer += p->serializedStructSize("MyStruct");
-  xfer += p->serializedFieldSize("stringData", protocol::T_STRING, 1);
-  xfer += p->serializedSizeString(suffix);
-  xfer += p->serializedFieldSize("intData", apache::thrift::protocol::T_I32, 2);
-  xfer += p->serializedSizeI32(prefix);
-  xfer += p->serializedSizeStop();
-  return xfer;
-}
-
-template <>
-template <class Protocol>
-inline uint32_t Cpp2Ops< ::thrift::test::MyCustomStruct>::serializedSizeZC(
-    Protocol const* p,
-    const ::thrift::test::MyCustomStruct* obj) {
-  return Cpp2Ops< ::thrift::test::MyCustomStruct>::serializedSize(p, obj);
-}
-
-template <>
-template <class Protocol>
-inline void Cpp2Ops<::thrift::test::MyCustomStruct>::read(
-    Protocol* iprot,
-    ::thrift::test::MyCustomStruct* obj) {
-  std::string fname;
-  protocol::TType ftype;
-  int16_t fid;
-  std::string suffix;
-  int prefix;
-
-  iprot->readStructBegin(fname);
-
-  while (true) {
-    iprot->readFieldBegin(fname, ftype, fid);
-    if (ftype == apache::thrift::protocol::T_STOP) {
-      break;
-    }
-    switch (fid) {
-      case 1:
-        if (ftype == apache::thrift::protocol::T_STRING) {
-          iprot->readString(suffix);
-        } else {
-          iprot->skip(ftype);
-        }
-        break;
-      case 2:
-        if (ftype == apache::thrift::protocol::T_I32) {
-          iprot->readI32(prefix);
-        } else {
-          iprot->skip(ftype);
-        }
-        break;
-      default:
-        iprot->skip(ftype);
-        break;
-    }
-    iprot->readFieldEnd();
+class Cpp2Ops<::thrift::test::MyCustomStruct> {
+ public:
+  static void clear(::thrift::test::MyCustomStruct* obj) {
+    obj->data_.clear();
   }
-  iprot->readStructEnd();
 
-  obj->data_ = std::string(reinterpret_cast<const char*>(&prefix),
-                           sizeof(int)) +
-               suffix;
-}
+  template <class Protocol>
+  static uint32_t write(
+      Protocol* p,
+      const ::thrift::test::MyCustomStruct* obj) {
+    uint32_t xfer = 0;
+    assert(obj->data_.size() >= sizeof(int));
+    const int prefix = *reinterpret_cast<const int*>(&obj->data_[0]);
+    std::string suffix = obj->data_.substr(sizeof(int));
+    xfer += p->writeStructBegin("MyStruct");
+    xfer += p->writeFieldBegin("stringData", protocol::T_STRING, 1);
+    xfer += p->writeString(suffix);
+    xfer += p->writeFieldEnd();
+    xfer += p->writeFieldBegin("intData", protocol::T_I32, 2);
+    xfer += p->writeI32(prefix);
+    xfer += p->writeFieldEnd();
+    xfer += p->writeFieldStop();
+    xfer += p->writeStructEnd();
+    return xfer;
+  }
 
-template <>
-inline constexpr apache::thrift::protocol::TType
-Cpp2Ops< ::thrift::test::MyCustomStruct>::thriftType() {
-  return apache::thrift::protocol::T_STRUCT;
-}
+  template <class Protocol>
+  static uint32_t serializedSize(
+      Protocol const* p,
+      const ::thrift::test::MyCustomStruct* obj) {
+    uint32_t xfer = 0;
+    assert(obj->data_.size() >= sizeof(int));
+    const int prefix = *reinterpret_cast<const int*>(&obj->data_[0]);
+    std::string suffix = obj->data_.substr(sizeof(int));
+    xfer += p->serializedStructSize("MyStruct");
+    xfer += p->serializedFieldSize("stringData", protocol::T_STRING, 1);
+    xfer += p->serializedSizeString(suffix);
+    xfer +=
+        p->serializedFieldSize("intData", apache::thrift::protocol::T_I32, 2);
+    xfer += p->serializedSizeI32(prefix);
+    xfer += p->serializedSizeStop();
+    return xfer;
+  }
+
+  template <class Protocol>
+  static uint32_t serializedSizeZC(
+      Protocol const* p,
+      const ::thrift::test::MyCustomStruct* obj) {
+    return serializedSize(p, obj);
+  }
+
+  template <class Protocol>
+  static void read(Protocol* iprot, ::thrift::test::MyCustomStruct* obj) {
+    std::string fname;
+    protocol::TType ftype;
+    int16_t fid;
+    std::string suffix;
+    int prefix;
+
+    iprot->readStructBegin(fname);
+
+    while (true) {
+      iprot->readFieldBegin(fname, ftype, fid);
+      if (ftype == apache::thrift::protocol::T_STOP) {
+        break;
+      }
+      switch (fid) {
+        case 1:
+          if (ftype == apache::thrift::protocol::T_STRING) {
+            iprot->readString(suffix);
+          } else {
+            iprot->skip(ftype);
+          }
+          break;
+        case 2:
+          if (ftype == apache::thrift::protocol::T_I32) {
+            iprot->readI32(prefix);
+          } else {
+            iprot->skip(ftype);
+          }
+          break;
+        default:
+          iprot->skip(ftype);
+          break;
+      }
+      iprot->readFieldEnd();
+    }
+    iprot->readStructEnd();
+
+    obj->data_ =
+        std::string(reinterpret_cast<const char*>(&prefix), sizeof(int)) +
+        suffix;
+  }
+
+  static constexpr apache::thrift::protocol::TType thriftType() {
+    return apache::thrift::protocol::T_STRUCT;
+  }
+};
 
 ////////////////////////////////////////////////////////////////////////////////
 
 template <>
-inline void Cpp2Ops< ::thrift::test::MyCustomUnion>::clear(
-    ::thrift::test::MyCustomUnion* obj) {
-  obj->data_.clear();
-}
-
-template <>
-template <class Protocol>
-inline uint32_t Cpp2Ops< ::thrift::test::MyCustomUnion>::write(
-    Protocol* p,
-    const ::thrift::test::MyCustomUnion* obj) {
-  uint32_t xfer = 0;
-  xfer += p->writeStructBegin("MyStruct");
-  try {
-    int i = folly::to<int>(obj->data_);
-    xfer += p->writeFieldBegin("intData", protocol::T_I32, 2);
-    xfer += p->writeI32(i);
-    xfer += p->writeFieldEnd();
-  } catch (const std::range_error&) {
-    xfer += p->writeFieldBegin("stringData", protocol::T_STRING, 1);
-    xfer += p->writeString(obj->data_);
-    xfer += p->writeFieldEnd();
+class Cpp2Ops<::thrift::test::MyCustomUnion> {
+ public:
+  static void clear(::thrift::test::MyCustomUnion* obj) {
+    obj->data_.clear();
   }
-  xfer += p->writeFieldStop();
-  xfer += p->writeStructEnd();
-  return xfer;
-}
 
-template <>
-template <class Protocol>
-inline uint32_t Cpp2Ops< ::thrift::test::MyCustomUnion>::serializedSize(
-    Protocol const* p,
-    const ::thrift::test::MyCustomUnion* obj) {
-  uint32_t xfer = 0;
-  xfer += p->serializedStructSize("MyStruct");
-  try {
-    int i = folly::to<int>(obj->data_);
-    xfer += p->serializedFieldSize("intData", protocol::T_I32, 2);
-    xfer += p->serializedSizeI32(i);
-  } catch (const std::range_error&) {
-    xfer += p->serializedFieldSize("stringData", protocol::T_STRING, 1);
-    xfer += p->serializedSizeString(obj->data_);
-  }
-  xfer += p->serializedSizeStop();
-  return xfer;
-}
-
-template <>
-template <class Protocol>
-inline uint32_t Cpp2Ops< ::thrift::test::MyCustomUnion>::serializedSizeZC(
-    Protocol const* p,
-    const ::thrift::test::MyCustomUnion* obj) {
-  return Cpp2Ops< ::thrift::test::MyCustomUnion>::serializedSize(p, obj);
-}
-
-template <>
-template <class Protocol>
-inline void Cpp2Ops<::thrift::test::MyCustomUnion>::read(
-    Protocol* iprot,
-    ::thrift::test::MyCustomUnion* obj) {
-  std::string fname;
-  protocol::TType ftype;
-  int16_t fid;
-
-  iprot->readStructBegin(fname);
-
-  iprot->readFieldBegin(fname, ftype, fid);
-  if (ftype != apache::thrift::protocol::T_STOP) {
-    switch (fid) {
-      case 1:
-        if (ftype == apache::thrift::protocol::T_STRING) {
-          iprot->readString(obj->data_);
-
-        } else {
-          iprot->skip(ftype);
-        }
-        break;
-      case 2:
-        if (ftype == apache::thrift::protocol::T_I32) {
-          int i;
-          iprot->readI32(i);
-          obj->data_ = folly::to<std::string>(i);
-        } else {
-          iprot->skip(ftype);
-        }
-        break;
-      default:
-        iprot->skip(ftype);
-        break;
+  template <class Protocol>
+  static uint32_t write(Protocol* p, const ::thrift::test::MyCustomUnion* obj) {
+    uint32_t xfer = 0;
+    xfer += p->writeStructBegin("MyStruct");
+    try {
+      int i = folly::to<int>(obj->data_);
+      xfer += p->writeFieldBegin("intData", protocol::T_I32, 2);
+      xfer += p->writeI32(i);
+      xfer += p->writeFieldEnd();
+    } catch (const std::range_error&) {
+      xfer += p->writeFieldBegin("stringData", protocol::T_STRING, 1);
+      xfer += p->writeString(obj->data_);
+      xfer += p->writeFieldEnd();
     }
-    iprot->readFieldEnd();
-    iprot->readFieldBegin(fname, ftype, fid);
-    iprot->readFieldEnd();
+    xfer += p->writeFieldStop();
+    xfer += p->writeStructEnd();
+    return xfer;
   }
 
-  iprot->readStructEnd();
-}
+  template <class Protocol>
+  static uint32_t serializedSize(
+      Protocol const* p,
+      const ::thrift::test::MyCustomUnion* obj) {
+    uint32_t xfer = 0;
+    xfer += p->serializedStructSize("MyStruct");
+    try {
+      int i = folly::to<int>(obj->data_);
+      xfer += p->serializedFieldSize("intData", protocol::T_I32, 2);
+      xfer += p->serializedSizeI32(i);
+    } catch (const std::range_error&) {
+      xfer += p->serializedFieldSize("stringData", protocol::T_STRING, 1);
+      xfer += p->serializedSizeString(obj->data_);
+    }
+    xfer += p->serializedSizeStop();
+    return xfer;
+  }
 
-template <>
-inline constexpr apache::thrift::protocol::TType
-Cpp2Ops< ::thrift::test::MyCustomUnion>::thriftType() {
-  return apache::thrift::protocol::T_STRUCT;
-}
+  template <class Protocol>
+  static uint32_t serializedSizeZC(
+      Protocol const* p,
+      const ::thrift::test::MyCustomUnion* obj) {
+    return serializedSize(p, obj);
+  }
 
+  template <class Protocol>
+  static void read(Protocol* iprot, ::thrift::test::MyCustomUnion* obj) {
+    std::string fname;
+    protocol::TType ftype;
+    int16_t fid;
+
+    iprot->readStructBegin(fname);
+
+    iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype != apache::thrift::protocol::T_STOP) {
+      switch (fid) {
+        case 1:
+          if (ftype == apache::thrift::protocol::T_STRING) {
+            iprot->readString(obj->data_);
+
+          } else {
+            iprot->skip(ftype);
+          }
+          break;
+        case 2:
+          if (ftype == apache::thrift::protocol::T_I32) {
+            int i;
+            iprot->readI32(i);
+            obj->data_ = folly::to<std::string>(i);
+          } else {
+            iprot->skip(ftype);
+          }
+          break;
+        default:
+          iprot->skip(ftype);
+          break;
+      }
+      iprot->readFieldEnd();
+      iprot->readFieldBegin(fname, ftype, fid);
+      iprot->readFieldEnd();
+    }
+
+    iprot->readStructEnd();
+  }
+
+  static constexpr apache::thrift::protocol::TType thriftType() {
+    return apache::thrift::protocol::T_STRUCT;
+  }
+};
 }}

@@ -398,30 +398,6 @@ uint32_t Empty::read(Protocol_* iprot) {
 }}} // some::valid::ns
 namespace apache { namespace thrift {
 
-template <> inline void Cpp2Ops< ::some::valid::ns::Empty>::clear( ::some::valid::ns::Empty* obj) {
-  return obj->__clear();
-}
-
-template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::some::valid::ns::Empty>::thriftType() {
-  return apache::thrift::protocol::T_STRUCT;
-}
-
-template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::Empty>::write(Protocol* proto,  ::some::valid::ns::Empty const* obj) {
-  return obj->write(proto);
-}
-
-template <> template <class Protocol> void Cpp2Ops< ::some::valid::ns::Empty>::read(Protocol* proto,  ::some::valid::ns::Empty* obj) {
-  return obj->readNoXfer(proto);
-}
-
-template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::Empty>::serializedSize(Protocol const* proto,  ::some::valid::ns::Empty const* obj) {
-  return obj->serializedSize(proto);
-}
-
-template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::Empty>::serializedSizeZC(Protocol const* proto,  ::some::valid::ns::Empty const* obj) {
-  return obj->serializedSizeZC(proto);
-}
-
 }} // apache::thrift
 namespace some { namespace valid { namespace ns {
 class ASimpleStruct final : private apache::thrift::detail::st::ComparisonOperators<ASimpleStruct> {
@@ -503,30 +479,6 @@ uint32_t ASimpleStruct::read(Protocol_* iprot) {
 }}} // some::valid::ns
 namespace apache { namespace thrift {
 
-template <> inline void Cpp2Ops< ::some::valid::ns::ASimpleStruct>::clear( ::some::valid::ns::ASimpleStruct* obj) {
-  return obj->__clear();
-}
-
-template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::some::valid::ns::ASimpleStruct>::thriftType() {
-  return apache::thrift::protocol::T_STRUCT;
-}
-
-template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::ASimpleStruct>::write(Protocol* proto,  ::some::valid::ns::ASimpleStruct const* obj) {
-  return obj->write(proto);
-}
-
-template <> template <class Protocol> void Cpp2Ops< ::some::valid::ns::ASimpleStruct>::read(Protocol* proto,  ::some::valid::ns::ASimpleStruct* obj) {
-  return obj->readNoXfer(proto);
-}
-
-template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::ASimpleStruct>::serializedSize(Protocol const* proto,  ::some::valid::ns::ASimpleStruct const* obj) {
-  return obj->serializedSize(proto);
-}
-
-template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::ASimpleStruct>::serializedSizeZC(Protocol const* proto,  ::some::valid::ns::ASimpleStruct const* obj) {
-  return obj->serializedSizeZC(proto);
-}
-
 }} // apache::thrift
 namespace some { namespace valid { namespace ns {
 class ASimpleStructNoexcept final : private apache::thrift::detail::st::ComparisonOperators<ASimpleStructNoexcept> {
@@ -607,30 +559,6 @@ uint32_t ASimpleStructNoexcept::read(Protocol_* iprot) {
 
 }}} // some::valid::ns
 namespace apache { namespace thrift {
-
-template <> inline void Cpp2Ops< ::some::valid::ns::ASimpleStructNoexcept>::clear( ::some::valid::ns::ASimpleStructNoexcept* obj) {
-  return obj->__clear();
-}
-
-template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::some::valid::ns::ASimpleStructNoexcept>::thriftType() {
-  return apache::thrift::protocol::T_STRUCT;
-}
-
-template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::ASimpleStructNoexcept>::write(Protocol* proto,  ::some::valid::ns::ASimpleStructNoexcept const* obj) {
-  return obj->write(proto);
-}
-
-template <> template <class Protocol> void Cpp2Ops< ::some::valid::ns::ASimpleStructNoexcept>::read(Protocol* proto,  ::some::valid::ns::ASimpleStructNoexcept* obj) {
-  return obj->readNoXfer(proto);
-}
-
-template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::ASimpleStructNoexcept>::serializedSize(Protocol const* proto,  ::some::valid::ns::ASimpleStructNoexcept const* obj) {
-  return obj->serializedSize(proto);
-}
-
-template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::ASimpleStructNoexcept>::serializedSizeZC(Protocol const* proto,  ::some::valid::ns::ASimpleStructNoexcept const* obj) {
-  return obj->serializedSizeZC(proto);
-}
 
 }} // apache::thrift
 namespace some { namespace valid { namespace ns {
@@ -884,30 +812,6 @@ uint32_t MyStruct::read(Protocol_* iprot) {
 }}} // some::valid::ns
 namespace apache { namespace thrift {
 
-template <> inline void Cpp2Ops< ::some::valid::ns::MyStruct>::clear( ::some::valid::ns::MyStruct* obj) {
-  return obj->__clear();
-}
-
-template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::some::valid::ns::MyStruct>::thriftType() {
-  return apache::thrift::protocol::T_STRUCT;
-}
-
-template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::MyStruct>::write(Protocol* proto,  ::some::valid::ns::MyStruct const* obj) {
-  return obj->write(proto);
-}
-
-template <> template <class Protocol> void Cpp2Ops< ::some::valid::ns::MyStruct>::read(Protocol* proto,  ::some::valid::ns::MyStruct* obj) {
-  return obj->readNoXfer(proto);
-}
-
-template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::MyStruct>::serializedSize(Protocol const* proto,  ::some::valid::ns::MyStruct const* obj) {
-  return obj->serializedSize(proto);
-}
-
-template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::MyStruct>::serializedSizeZC(Protocol const* proto,  ::some::valid::ns::MyStruct const* obj) {
-  return obj->serializedSizeZC(proto);
-}
-
 }} // apache::thrift
 namespace some { namespace valid { namespace ns {
 class SimpleUnion : private apache::thrift::detail::st::ComparisonOperators<SimpleUnion> {
@@ -1147,30 +1051,6 @@ uint32_t SimpleUnion::read(Protocol_* iprot) {
 
 }}} // some::valid::ns
 namespace apache { namespace thrift {
-
-template <> inline void Cpp2Ops< ::some::valid::ns::SimpleUnion>::clear( ::some::valid::ns::SimpleUnion* obj) {
-  return obj->__clear();
-}
-
-template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::some::valid::ns::SimpleUnion>::thriftType() {
-  return apache::thrift::protocol::T_STRUCT;
-}
-
-template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::SimpleUnion>::write(Protocol* proto,  ::some::valid::ns::SimpleUnion const* obj) {
-  return obj->write(proto);
-}
-
-template <> template <class Protocol> void Cpp2Ops< ::some::valid::ns::SimpleUnion>::read(Protocol* proto,  ::some::valid::ns::SimpleUnion* obj) {
-  return obj->readNoXfer(proto);
-}
-
-template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::SimpleUnion>::serializedSize(Protocol const* proto,  ::some::valid::ns::SimpleUnion const* obj) {
-  return obj->serializedSize(proto);
-}
-
-template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::SimpleUnion>::serializedSizeZC(Protocol const* proto,  ::some::valid::ns::SimpleUnion const* obj) {
-  return obj->serializedSizeZC(proto);
-}
 
 }} // apache::thrift
 namespace some { namespace valid { namespace ns {
@@ -2843,30 +2723,6 @@ uint32_t ComplexUnion::read(Protocol_* iprot) {
 }}} // some::valid::ns
 namespace apache { namespace thrift {
 
-template <> inline void Cpp2Ops< ::some::valid::ns::ComplexUnion>::clear( ::some::valid::ns::ComplexUnion* obj) {
-  return obj->__clear();
-}
-
-template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::some::valid::ns::ComplexUnion>::thriftType() {
-  return apache::thrift::protocol::T_STRUCT;
-}
-
-template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::ComplexUnion>::write(Protocol* proto,  ::some::valid::ns::ComplexUnion const* obj) {
-  return obj->write(proto);
-}
-
-template <> template <class Protocol> void Cpp2Ops< ::some::valid::ns::ComplexUnion>::read(Protocol* proto,  ::some::valid::ns::ComplexUnion* obj) {
-  return obj->readNoXfer(proto);
-}
-
-template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::ComplexUnion>::serializedSize(Protocol const* proto,  ::some::valid::ns::ComplexUnion const* obj) {
-  return obj->serializedSize(proto);
-}
-
-template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::ComplexUnion>::serializedSizeZC(Protocol const* proto,  ::some::valid::ns::ComplexUnion const* obj) {
-  return obj->serializedSizeZC(proto);
-}
-
 }} // apache::thrift
 namespace some { namespace valid { namespace ns {
 class AnException final : private apache::thrift::detail::st::ComparisonOperators<AnException>, public apache::thrift::TException {
@@ -3190,30 +3046,6 @@ uint32_t AnException::read(Protocol_* iprot) {
 }}} // some::valid::ns
 namespace apache { namespace thrift {
 
-template <> inline void Cpp2Ops< ::some::valid::ns::AnException>::clear( ::some::valid::ns::AnException* obj) {
-  return obj->__clear();
-}
-
-template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::some::valid::ns::AnException>::thriftType() {
-  return apache::thrift::protocol::T_STRUCT;
-}
-
-template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::AnException>::write(Protocol* proto,  ::some::valid::ns::AnException const* obj) {
-  return obj->write(proto);
-}
-
-template <> template <class Protocol> void Cpp2Ops< ::some::valid::ns::AnException>::read(Protocol* proto,  ::some::valid::ns::AnException* obj) {
-  return obj->readNoXfer(proto);
-}
-
-template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::AnException>::serializedSize(Protocol const* proto,  ::some::valid::ns::AnException const* obj) {
-  return obj->serializedSize(proto);
-}
-
-template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::AnException>::serializedSizeZC(Protocol const* proto,  ::some::valid::ns::AnException const* obj) {
-  return obj->serializedSizeZC(proto);
-}
-
 }} // apache::thrift
 namespace some { namespace valid { namespace ns {
 class AnotherException : private apache::thrift::detail::st::ComparisonOperators<AnotherException>, public apache::thrift::TException {
@@ -3338,30 +3170,6 @@ uint32_t AnotherException::read(Protocol_* iprot) {
 
 }}} // some::valid::ns
 namespace apache { namespace thrift {
-
-template <> inline void Cpp2Ops< ::some::valid::ns::AnotherException>::clear( ::some::valid::ns::AnotherException* obj) {
-  return obj->__clear();
-}
-
-template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::some::valid::ns::AnotherException>::thriftType() {
-  return apache::thrift::protocol::T_STRUCT;
-}
-
-template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::AnotherException>::write(Protocol* proto,  ::some::valid::ns::AnotherException const* obj) {
-  return obj->write(proto);
-}
-
-template <> template <class Protocol> void Cpp2Ops< ::some::valid::ns::AnotherException>::read(Protocol* proto,  ::some::valid::ns::AnotherException* obj) {
-  return obj->readNoXfer(proto);
-}
-
-template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::AnotherException>::serializedSize(Protocol const* proto,  ::some::valid::ns::AnotherException const* obj) {
-  return obj->serializedSize(proto);
-}
-
-template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::AnotherException>::serializedSizeZC(Protocol const* proto,  ::some::valid::ns::AnotherException const* obj) {
-  return obj->serializedSizeZC(proto);
-}
 
 }} // apache::thrift
 namespace some { namespace valid { namespace ns {
@@ -4284,30 +4092,6 @@ uint32_t containerStruct::read(Protocol_* iprot) {
 }}} // some::valid::ns
 namespace apache { namespace thrift {
 
-template <> inline void Cpp2Ops< ::some::valid::ns::containerStruct>::clear( ::some::valid::ns::containerStruct* obj) {
-  return obj->__clear();
-}
-
-template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::some::valid::ns::containerStruct>::thriftType() {
-  return apache::thrift::protocol::T_STRUCT;
-}
-
-template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::containerStruct>::write(Protocol* proto,  ::some::valid::ns::containerStruct const* obj) {
-  return obj->write(proto);
-}
-
-template <> template <class Protocol> void Cpp2Ops< ::some::valid::ns::containerStruct>::read(Protocol* proto,  ::some::valid::ns::containerStruct* obj) {
-  return obj->readNoXfer(proto);
-}
-
-template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::containerStruct>::serializedSize(Protocol const* proto,  ::some::valid::ns::containerStruct const* obj) {
-  return obj->serializedSize(proto);
-}
-
-template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::containerStruct>::serializedSizeZC(Protocol const* proto,  ::some::valid::ns::containerStruct const* obj) {
-  return obj->serializedSizeZC(proto);
-}
-
 }} // apache::thrift
 namespace some { namespace valid { namespace ns {
 class MyIncludedStruct final : private apache::thrift::detail::st::ComparisonOperators<MyIncludedStruct> {
@@ -4421,30 +4205,6 @@ uint32_t MyIncludedStruct::read(Protocol_* iprot) {
 
 }}} // some::valid::ns
 namespace apache { namespace thrift {
-
-template <> inline void Cpp2Ops< ::some::valid::ns::MyIncludedStruct>::clear( ::some::valid::ns::MyIncludedStruct* obj) {
-  return obj->__clear();
-}
-
-template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::some::valid::ns::MyIncludedStruct>::thriftType() {
-  return apache::thrift::protocol::T_STRUCT;
-}
-
-template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::MyIncludedStruct>::write(Protocol* proto,  ::some::valid::ns::MyIncludedStruct const* obj) {
-  return obj->write(proto);
-}
-
-template <> template <class Protocol> void Cpp2Ops< ::some::valid::ns::MyIncludedStruct>::read(Protocol* proto,  ::some::valid::ns::MyIncludedStruct* obj) {
-  return obj->readNoXfer(proto);
-}
-
-template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::MyIncludedStruct>::serializedSize(Protocol const* proto,  ::some::valid::ns::MyIncludedStruct const* obj) {
-  return obj->serializedSize(proto);
-}
-
-template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::MyIncludedStruct>::serializedSizeZC(Protocol const* proto,  ::some::valid::ns::MyIncludedStruct const* obj) {
-  return obj->serializedSizeZC(proto);
-}
 
 }} // apache::thrift
 namespace some { namespace valid { namespace ns {
@@ -4978,30 +4738,6 @@ uint32_t AnnotatedStruct::read(Protocol_* iprot) {
 }}} // some::valid::ns
 namespace apache { namespace thrift {
 
-template <> inline void Cpp2Ops< ::some::valid::ns::AnnotatedStruct>::clear( ::some::valid::ns::AnnotatedStruct* obj) {
-  return obj->__clear();
-}
-
-template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::some::valid::ns::AnnotatedStruct>::thriftType() {
-  return apache::thrift::protocol::T_STRUCT;
-}
-
-template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::AnnotatedStruct>::write(Protocol* proto,  ::some::valid::ns::AnnotatedStruct const* obj) {
-  return obj->write(proto);
-}
-
-template <> template <class Protocol> void Cpp2Ops< ::some::valid::ns::AnnotatedStruct>::read(Protocol* proto,  ::some::valid::ns::AnnotatedStruct* obj) {
-  return obj->readNoXfer(proto);
-}
-
-template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::AnnotatedStruct>::serializedSize(Protocol const* proto,  ::some::valid::ns::AnnotatedStruct const* obj) {
-  return obj->serializedSize(proto);
-}
-
-template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::AnnotatedStruct>::serializedSizeZC(Protocol const* proto,  ::some::valid::ns::AnnotatedStruct const* obj) {
-  return obj->serializedSizeZC(proto);
-}
-
 }} // apache::thrift
 namespace some { namespace valid { namespace ns {
 class ComplexContainerStruct final : private apache::thrift::detail::st::ComparisonOperators<ComplexContainerStruct> {
@@ -5096,30 +4832,6 @@ uint32_t ComplexContainerStruct::read(Protocol_* iprot) {
 
 }}} // some::valid::ns
 namespace apache { namespace thrift {
-
-template <> inline void Cpp2Ops< ::some::valid::ns::ComplexContainerStruct>::clear( ::some::valid::ns::ComplexContainerStruct* obj) {
-  return obj->__clear();
-}
-
-template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::some::valid::ns::ComplexContainerStruct>::thriftType() {
-  return apache::thrift::protocol::T_STRUCT;
-}
-
-template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::ComplexContainerStruct>::write(Protocol* proto,  ::some::valid::ns::ComplexContainerStruct const* obj) {
-  return obj->write(proto);
-}
-
-template <> template <class Protocol> void Cpp2Ops< ::some::valid::ns::ComplexContainerStruct>::read(Protocol* proto,  ::some::valid::ns::ComplexContainerStruct* obj) {
-  return obj->readNoXfer(proto);
-}
-
-template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::ComplexContainerStruct>::serializedSize(Protocol const* proto,  ::some::valid::ns::ComplexContainerStruct const* obj) {
-  return obj->serializedSize(proto);
-}
-
-template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::ComplexContainerStruct>::serializedSizeZC(Protocol const* proto,  ::some::valid::ns::ComplexContainerStruct const* obj) {
-  return obj->serializedSizeZC(proto);
-}
 
 }} // apache::thrift
 namespace some { namespace valid { namespace ns {
@@ -5219,30 +4931,6 @@ uint32_t FloatStruct::read(Protocol_* iprot) {
 
 }}} // some::valid::ns
 namespace apache { namespace thrift {
-
-template <> inline void Cpp2Ops< ::some::valid::ns::FloatStruct>::clear( ::some::valid::ns::FloatStruct* obj) {
-  return obj->__clear();
-}
-
-template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::some::valid::ns::FloatStruct>::thriftType() {
-  return apache::thrift::protocol::T_STRUCT;
-}
-
-template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::FloatStruct>::write(Protocol* proto,  ::some::valid::ns::FloatStruct const* obj) {
-  return obj->write(proto);
-}
-
-template <> template <class Protocol> void Cpp2Ops< ::some::valid::ns::FloatStruct>::read(Protocol* proto,  ::some::valid::ns::FloatStruct* obj) {
-  return obj->readNoXfer(proto);
-}
-
-template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::FloatStruct>::serializedSize(Protocol const* proto,  ::some::valid::ns::FloatStruct const* obj) {
-  return obj->serializedSize(proto);
-}
-
-template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::FloatStruct>::serializedSizeZC(Protocol const* proto,  ::some::valid::ns::FloatStruct const* obj) {
-  return obj->serializedSizeZC(proto);
-}
 
 }} // apache::thrift
 namespace some { namespace valid { namespace ns {
@@ -5469,30 +5157,6 @@ uint32_t FloatUnion::read(Protocol_* iprot) {
 }}} // some::valid::ns
 namespace apache { namespace thrift {
 
-template <> inline void Cpp2Ops< ::some::valid::ns::FloatUnion>::clear( ::some::valid::ns::FloatUnion* obj) {
-  return obj->__clear();
-}
-
-template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::some::valid::ns::FloatUnion>::thriftType() {
-  return apache::thrift::protocol::T_STRUCT;
-}
-
-template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::FloatUnion>::write(Protocol* proto,  ::some::valid::ns::FloatUnion const* obj) {
-  return obj->write(proto);
-}
-
-template <> template <class Protocol> void Cpp2Ops< ::some::valid::ns::FloatUnion>::read(Protocol* proto,  ::some::valid::ns::FloatUnion* obj) {
-  return obj->readNoXfer(proto);
-}
-
-template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::FloatUnion>::serializedSize(Protocol const* proto,  ::some::valid::ns::FloatUnion const* obj) {
-  return obj->serializedSize(proto);
-}
-
-template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::FloatUnion>::serializedSizeZC(Protocol const* proto,  ::some::valid::ns::FloatUnion const* obj) {
-  return obj->serializedSizeZC(proto);
-}
-
 }} // apache::thrift
 namespace some { namespace valid { namespace ns {
 class AllRequiredNoExceptMoveCtrStruct final : private apache::thrift::detail::st::ComparisonOperators<AllRequiredNoExceptMoveCtrStruct> {
@@ -5567,29 +5231,5 @@ uint32_t AllRequiredNoExceptMoveCtrStruct::read(Protocol_* iprot) {
 
 }}} // some::valid::ns
 namespace apache { namespace thrift {
-
-template <> inline void Cpp2Ops< ::some::valid::ns::AllRequiredNoExceptMoveCtrStruct>::clear( ::some::valid::ns::AllRequiredNoExceptMoveCtrStruct* obj) {
-  return obj->__clear();
-}
-
-template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::some::valid::ns::AllRequiredNoExceptMoveCtrStruct>::thriftType() {
-  return apache::thrift::protocol::T_STRUCT;
-}
-
-template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::AllRequiredNoExceptMoveCtrStruct>::write(Protocol* proto,  ::some::valid::ns::AllRequiredNoExceptMoveCtrStruct const* obj) {
-  return obj->write(proto);
-}
-
-template <> template <class Protocol> void Cpp2Ops< ::some::valid::ns::AllRequiredNoExceptMoveCtrStruct>::read(Protocol* proto,  ::some::valid::ns::AllRequiredNoExceptMoveCtrStruct* obj) {
-  return obj->readNoXfer(proto);
-}
-
-template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::AllRequiredNoExceptMoveCtrStruct>::serializedSize(Protocol const* proto,  ::some::valid::ns::AllRequiredNoExceptMoveCtrStruct const* obj) {
-  return obj->serializedSize(proto);
-}
-
-template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::AllRequiredNoExceptMoveCtrStruct>::serializedSizeZC(Protocol const* proto,  ::some::valid::ns::AllRequiredNoExceptMoveCtrStruct const* obj) {
-  return obj->serializedSizeZC(proto);
-}
 
 }} // apache::thrift

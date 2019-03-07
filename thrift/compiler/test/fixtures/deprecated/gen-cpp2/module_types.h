@@ -104,30 +104,6 @@ uint32_t House::read(Protocol_* iprot) {
 } // cpp2
 namespace apache { namespace thrift {
 
-template <> inline void Cpp2Ops< ::cpp2::House>::clear( ::cpp2::House* obj) {
-  return obj->__clear();
-}
-
-template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::cpp2::House>::thriftType() {
-  return apache::thrift::protocol::T_STRUCT;
-}
-
-template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::House>::write(Protocol* proto,  ::cpp2::House const* obj) {
-  return obj->write(proto);
-}
-
-template <> template <class Protocol> void Cpp2Ops< ::cpp2::House>::read(Protocol* proto,  ::cpp2::House* obj) {
-  return obj->readNoXfer(proto);
-}
-
-template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::House>::serializedSize(Protocol const* proto,  ::cpp2::House const* obj) {
-  return obj->serializedSize(proto);
-}
-
-template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::House>::serializedSizeZC(Protocol const* proto,  ::cpp2::House const* obj) {
-  return obj->serializedSizeZC(proto);
-}
-
 }} // apache::thrift
 namespace cpp2 {
 class Field final : private apache::thrift::detail::st::ComparisonOperators<Field> {
@@ -195,29 +171,5 @@ uint32_t Field::read(Protocol_* iprot) {
 
 } // cpp2
 namespace apache { namespace thrift {
-
-template <> inline void Cpp2Ops< ::cpp2::Field>::clear( ::cpp2::Field* obj) {
-  return obj->__clear();
-}
-
-template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::cpp2::Field>::thriftType() {
-  return apache::thrift::protocol::T_STRUCT;
-}
-
-template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::Field>::write(Protocol* proto,  ::cpp2::Field const* obj) {
-  return obj->write(proto);
-}
-
-template <> template <class Protocol> void Cpp2Ops< ::cpp2::Field>::read(Protocol* proto,  ::cpp2::Field* obj) {
-  return obj->readNoXfer(proto);
-}
-
-template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::Field>::serializedSize(Protocol const* proto,  ::cpp2::Field const* obj) {
-  return obj->serializedSize(proto);
-}
-
-template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::Field>::serializedSizeZC(Protocol const* proto,  ::cpp2::Field const* obj) {
-  return obj->serializedSizeZC(proto);
-}
 
 }} // apache::thrift

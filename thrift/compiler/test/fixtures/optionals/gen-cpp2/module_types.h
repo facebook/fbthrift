@@ -159,30 +159,6 @@ uint32_t Color::read(Protocol_* iprot) {
 } // cpp2
 namespace apache { namespace thrift {
 
-template <> inline void Cpp2Ops< ::cpp2::Color>::clear( ::cpp2::Color* obj) {
-  return obj->__clear();
-}
-
-template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::cpp2::Color>::thriftType() {
-  return apache::thrift::protocol::T_STRUCT;
-}
-
-template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::Color>::write(Protocol* proto,  ::cpp2::Color const* obj) {
-  return obj->write(proto);
-}
-
-template <> template <class Protocol> void Cpp2Ops< ::cpp2::Color>::read(Protocol* proto,  ::cpp2::Color* obj) {
-  return obj->readNoXfer(proto);
-}
-
-template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::Color>::serializedSize(Protocol const* proto,  ::cpp2::Color const* obj) {
-  return obj->serializedSize(proto);
-}
-
-template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::Color>::serializedSizeZC(Protocol const* proto,  ::cpp2::Color const* obj) {
-  return obj->serializedSizeZC(proto);
-}
-
 }} // apache::thrift
 namespace cpp2 {
 class Vehicle final : private apache::thrift::detail::st::ComparisonOperators<Vehicle> {
@@ -267,30 +243,6 @@ uint32_t Vehicle::read(Protocol_* iprot) {
 
 } // cpp2
 namespace apache { namespace thrift {
-
-template <> inline void Cpp2Ops< ::cpp2::Vehicle>::clear( ::cpp2::Vehicle* obj) {
-  return obj->__clear();
-}
-
-template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::cpp2::Vehicle>::thriftType() {
-  return apache::thrift::protocol::T_STRUCT;
-}
-
-template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::Vehicle>::write(Protocol* proto,  ::cpp2::Vehicle const* obj) {
-  return obj->write(proto);
-}
-
-template <> template <class Protocol> void Cpp2Ops< ::cpp2::Vehicle>::read(Protocol* proto,  ::cpp2::Vehicle* obj) {
-  return obj->readNoXfer(proto);
-}
-
-template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::Vehicle>::serializedSize(Protocol const* proto,  ::cpp2::Vehicle const* obj) {
-  return obj->serializedSize(proto);
-}
-
-template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::Vehicle>::serializedSizeZC(Protocol const* proto,  ::cpp2::Vehicle const* obj) {
-  return obj->serializedSizeZC(proto);
-}
 
 }} // apache::thrift
 namespace cpp2 {
@@ -401,29 +353,5 @@ uint32_t Person::read(Protocol_* iprot) {
 
 } // cpp2
 namespace apache { namespace thrift {
-
-template <> inline void Cpp2Ops< ::cpp2::Person>::clear( ::cpp2::Person* obj) {
-  return obj->__clear();
-}
-
-template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::cpp2::Person>::thriftType() {
-  return apache::thrift::protocol::T_STRUCT;
-}
-
-template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::Person>::write(Protocol* proto,  ::cpp2::Person const* obj) {
-  return obj->write(proto);
-}
-
-template <> template <class Protocol> void Cpp2Ops< ::cpp2::Person>::read(Protocol* proto,  ::cpp2::Person* obj) {
-  return obj->readNoXfer(proto);
-}
-
-template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::Person>::serializedSize(Protocol const* proto,  ::cpp2::Person const* obj) {
-  return obj->serializedSize(proto);
-}
-
-template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::Person>::serializedSizeZC(Protocol const* proto,  ::cpp2::Person const* obj) {
-  return obj->serializedSizeZC(proto);
-}
 
 }} // apache::thrift

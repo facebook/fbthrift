@@ -89,30 +89,6 @@ uint32_t Banal::read(Protocol_* iprot) {
 } // cpp2
 namespace apache { namespace thrift {
 
-template <> inline void Cpp2Ops< ::cpp2::Banal>::clear( ::cpp2::Banal* obj) {
-  return obj->__clear();
-}
-
-template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::cpp2::Banal>::thriftType() {
-  return apache::thrift::protocol::T_STRUCT;
-}
-
-template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::Banal>::write(Protocol* proto,  ::cpp2::Banal const* obj) {
-  return obj->write(proto);
-}
-
-template <> template <class Protocol> void Cpp2Ops< ::cpp2::Banal>::read(Protocol* proto,  ::cpp2::Banal* obj) {
-  return obj->readNoXfer(proto);
-}
-
-template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::Banal>::serializedSize(Protocol const* proto,  ::cpp2::Banal const* obj) {
-  return obj->serializedSize(proto);
-}
-
-template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::Banal>::serializedSizeZC(Protocol const* proto,  ::cpp2::Banal const* obj) {
-  return obj->serializedSizeZC(proto);
-}
-
 }} // apache::thrift
 namespace cpp2 {
 class Fiery final : private apache::thrift::detail::st::ComparisonOperators<Fiery>, public apache::thrift::TException {
@@ -197,30 +173,6 @@ uint32_t Fiery::read(Protocol_* iprot) {
 
 } // cpp2
 namespace apache { namespace thrift {
-
-template <> inline void Cpp2Ops< ::cpp2::Fiery>::clear( ::cpp2::Fiery* obj) {
-  return obj->__clear();
-}
-
-template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::cpp2::Fiery>::thriftType() {
-  return apache::thrift::protocol::T_STRUCT;
-}
-
-template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::Fiery>::write(Protocol* proto,  ::cpp2::Fiery const* obj) {
-  return obj->write(proto);
-}
-
-template <> template <class Protocol> void Cpp2Ops< ::cpp2::Fiery>::read(Protocol* proto,  ::cpp2::Fiery* obj) {
-  return obj->readNoXfer(proto);
-}
-
-template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::Fiery>::serializedSize(Protocol const* proto,  ::cpp2::Fiery const* obj) {
-  return obj->serializedSize(proto);
-}
-
-template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::Fiery>::serializedSizeZC(Protocol const* proto,  ::cpp2::Fiery const* obj) {
-  return obj->serializedSizeZC(proto);
-}
 
 }} // apache::thrift
 namespace cpp2 {
@@ -325,29 +277,5 @@ uint32_t Serious::read(Protocol_* iprot) {
 
 } // cpp2
 namespace apache { namespace thrift {
-
-template <> inline void Cpp2Ops< ::cpp2::Serious>::clear( ::cpp2::Serious* obj) {
-  return obj->__clear();
-}
-
-template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::cpp2::Serious>::thriftType() {
-  return apache::thrift::protocol::T_STRUCT;
-}
-
-template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::Serious>::write(Protocol* proto,  ::cpp2::Serious const* obj) {
-  return obj->write(proto);
-}
-
-template <> template <class Protocol> void Cpp2Ops< ::cpp2::Serious>::read(Protocol* proto,  ::cpp2::Serious* obj) {
-  return obj->readNoXfer(proto);
-}
-
-template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::Serious>::serializedSize(Protocol const* proto,  ::cpp2::Serious const* obj) {
-  return obj->serializedSize(proto);
-}
-
-template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::Serious>::serializedSizeZC(Protocol const* proto,  ::cpp2::Serious const* obj) {
-  return obj->serializedSizeZC(proto);
-}
 
 }} // apache::thrift

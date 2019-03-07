@@ -126,28 +126,4 @@ uint32_t Included::read(Protocol_* iprot) {
 } // cpp2
 namespace apache { namespace thrift {
 
-template <> inline void Cpp2Ops< ::cpp2::Included>::clear( ::cpp2::Included* obj) {
-  return obj->__clear();
-}
-
-template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::cpp2::Included>::thriftType() {
-  return apache::thrift::protocol::T_STRUCT;
-}
-
-template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::Included>::write(Protocol* proto,  ::cpp2::Included const* obj) {
-  return obj->write(proto);
-}
-
-template <> template <class Protocol> void Cpp2Ops< ::cpp2::Included>::read(Protocol* proto,  ::cpp2::Included* obj) {
-  return obj->readNoXfer(proto);
-}
-
-template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::Included>::serializedSize(Protocol const* proto,  ::cpp2::Included const* obj) {
-  return obj->serializedSize(proto);
-}
-
-template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::Included>::serializedSizeZC(Protocol const* proto,  ::cpp2::Included const* obj) {
-  return obj->serializedSizeZC(proto);
-}
-
 }} // apache::thrift

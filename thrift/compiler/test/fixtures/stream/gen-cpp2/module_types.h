@@ -87,28 +87,4 @@ uint32_t FooEx::read(Protocol_* iprot) {
 } // cpp2
 namespace apache { namespace thrift {
 
-template <> inline void Cpp2Ops< ::cpp2::FooEx>::clear( ::cpp2::FooEx* obj) {
-  return obj->__clear();
-}
-
-template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::cpp2::FooEx>::thriftType() {
-  return apache::thrift::protocol::T_STRUCT;
-}
-
-template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::FooEx>::write(Protocol* proto,  ::cpp2::FooEx const* obj) {
-  return obj->write(proto);
-}
-
-template <> template <class Protocol> void Cpp2Ops< ::cpp2::FooEx>::read(Protocol* proto,  ::cpp2::FooEx* obj) {
-  return obj->readNoXfer(proto);
-}
-
-template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::FooEx>::serializedSize(Protocol const* proto,  ::cpp2::FooEx const* obj) {
-  return obj->serializedSize(proto);
-}
-
-template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::FooEx>::serializedSizeZC(Protocol const* proto,  ::cpp2::FooEx const* obj) {
-  return obj->serializedSizeZC(proto);
-}
-
 }} // apache::thrift

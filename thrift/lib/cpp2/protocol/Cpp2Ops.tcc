@@ -714,5 +714,36 @@ class Cpp2Ops<std::unique_ptr<folly::IOBuf>> {
   }
 };
 
+template <class T>
+class Cpp2Ops<
+    T,
+    std::enable_if_t<
+        std::is_base_of<detail::st::ComparisonOperators<T>, T>::value>> {
+ public:
+  typedef T Type;
+  static constexpr protocol::TType thriftType() {
+    return protocol::T_STRUCT;
+  }
+  static void clear(Type* value) {
+    value->__clear();
+  }
+  template <class Protocol>
+  static uint32_t write(Protocol* prot, const Type* value) {
+    return value->write(prot);
+  }
+  template <class Protocol>
+  static void read(Protocol* prot, Type* value) {
+    value->readNoXfer(prot);
+  }
+  template <class Protocol>
+  static uint32_t serializedSize(Protocol* prot, const Type* value) {
+    return value->serializedSize(prot);
+  }
+  template <class Protocol>
+  static uint32_t serializedSizeZC(Protocol* prot, const Type* value) {
+    return value->serializedSizeZC(prot);
+  }
+};
+
 } // namespace thrift
 } // namespace apache

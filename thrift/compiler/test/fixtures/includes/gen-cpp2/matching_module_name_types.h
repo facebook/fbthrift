@@ -103,28 +103,4 @@ uint32_t MyStruct::read(Protocol_* iprot) {
 } // matching_module_name
 namespace apache { namespace thrift {
 
-template <> inline void Cpp2Ops< ::matching_module_name::MyStruct>::clear( ::matching_module_name::MyStruct* obj) {
-  return obj->__clear();
-}
-
-template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::matching_module_name::MyStruct>::thriftType() {
-  return apache::thrift::protocol::T_STRUCT;
-}
-
-template <> template <class Protocol> uint32_t Cpp2Ops< ::matching_module_name::MyStruct>::write(Protocol* proto,  ::matching_module_name::MyStruct const* obj) {
-  return obj->write(proto);
-}
-
-template <> template <class Protocol> void Cpp2Ops< ::matching_module_name::MyStruct>::read(Protocol* proto,  ::matching_module_name::MyStruct* obj) {
-  return obj->readNoXfer(proto);
-}
-
-template <> template <class Protocol> uint32_t Cpp2Ops< ::matching_module_name::MyStruct>::serializedSize(Protocol const* proto,  ::matching_module_name::MyStruct const* obj) {
-  return obj->serializedSize(proto);
-}
-
-template <> template <class Protocol> uint32_t Cpp2Ops< ::matching_module_name::MyStruct>::serializedSizeZC(Protocol const* proto,  ::matching_module_name::MyStruct const* obj) {
-  return obj->serializedSizeZC(proto);
-}
-
 }} // apache::thrift

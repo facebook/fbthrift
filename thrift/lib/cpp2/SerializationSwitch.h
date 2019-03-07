@@ -17,6 +17,7 @@
 #pragma once
 
 #include <thrift/lib/cpp2/Thrift.h>
+#include <thrift/lib/cpp2/protocol/Cpp2Ops.h>
 
 namespace apache {
 namespace thrift {

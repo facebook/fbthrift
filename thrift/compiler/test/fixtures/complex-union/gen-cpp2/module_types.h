@@ -514,30 +514,6 @@ uint32_t ComplexUnion::read(Protocol_* iprot) {
 } // cpp2
 namespace apache { namespace thrift {
 
-template <> inline void Cpp2Ops< ::cpp2::ComplexUnion>::clear( ::cpp2::ComplexUnion* obj) {
-  return obj->__clear();
-}
-
-template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::cpp2::ComplexUnion>::thriftType() {
-  return apache::thrift::protocol::T_STRUCT;
-}
-
-template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::ComplexUnion>::write(Protocol* proto,  ::cpp2::ComplexUnion const* obj) {
-  return obj->write(proto);
-}
-
-template <> template <class Protocol> void Cpp2Ops< ::cpp2::ComplexUnion>::read(Protocol* proto,  ::cpp2::ComplexUnion* obj) {
-  return obj->readNoXfer(proto);
-}
-
-template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::ComplexUnion>::serializedSize(Protocol const* proto,  ::cpp2::ComplexUnion const* obj) {
-  return obj->serializedSize(proto);
-}
-
-template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::ComplexUnion>::serializedSizeZC(Protocol const* proto,  ::cpp2::ComplexUnion const* obj) {
-  return obj->serializedSizeZC(proto);
-}
-
 }} // apache::thrift
 namespace cpp2 {
 class VirtualComplexUnion : private apache::thrift::detail::st::ComparisonOperators<VirtualComplexUnion> {
@@ -787,29 +763,5 @@ uint32_t VirtualComplexUnion::read(Protocol_* iprot) {
 
 } // cpp2
 namespace apache { namespace thrift {
-
-template <> inline void Cpp2Ops< ::cpp2::VirtualComplexUnion>::clear( ::cpp2::VirtualComplexUnion* obj) {
-  return obj->__clear();
-}
-
-template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::cpp2::VirtualComplexUnion>::thriftType() {
-  return apache::thrift::protocol::T_STRUCT;
-}
-
-template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::VirtualComplexUnion>::write(Protocol* proto,  ::cpp2::VirtualComplexUnion const* obj) {
-  return obj->write(proto);
-}
-
-template <> template <class Protocol> void Cpp2Ops< ::cpp2::VirtualComplexUnion>::read(Protocol* proto,  ::cpp2::VirtualComplexUnion* obj) {
-  return obj->readNoXfer(proto);
-}
-
-template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::VirtualComplexUnion>::serializedSize(Protocol const* proto,  ::cpp2::VirtualComplexUnion const* obj) {
-  return obj->serializedSize(proto);
-}
-
-template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::VirtualComplexUnion>::serializedSizeZC(Protocol const* proto,  ::cpp2::VirtualComplexUnion const* obj) {
-  return obj->serializedSizeZC(proto);
-}
 
 }} // apache::thrift

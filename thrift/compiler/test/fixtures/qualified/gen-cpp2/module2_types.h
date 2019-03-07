@@ -121,30 +121,6 @@ uint32_t Struct::read(Protocol_* iprot) {
 } // module2
 namespace apache { namespace thrift {
 
-template <> inline void Cpp2Ops< ::module2::Struct>::clear( ::module2::Struct* obj) {
-  return obj->__clear();
-}
-
-template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::module2::Struct>::thriftType() {
-  return apache::thrift::protocol::T_STRUCT;
-}
-
-template <> template <class Protocol> uint32_t Cpp2Ops< ::module2::Struct>::write(Protocol* proto,  ::module2::Struct const* obj) {
-  return obj->write(proto);
-}
-
-template <> template <class Protocol> void Cpp2Ops< ::module2::Struct>::read(Protocol* proto,  ::module2::Struct* obj) {
-  return obj->readNoXfer(proto);
-}
-
-template <> template <class Protocol> uint32_t Cpp2Ops< ::module2::Struct>::serializedSize(Protocol const* proto,  ::module2::Struct const* obj) {
-  return obj->serializedSize(proto);
-}
-
-template <> template <class Protocol> uint32_t Cpp2Ops< ::module2::Struct>::serializedSizeZC(Protocol const* proto,  ::module2::Struct const* obj) {
-  return obj->serializedSizeZC(proto);
-}
-
 }} // apache::thrift
 namespace module2 {
 class BigStruct final : private apache::thrift::detail::st::ComparisonOperators<BigStruct> {
@@ -237,29 +213,5 @@ uint32_t BigStruct::read(Protocol_* iprot) {
 
 } // module2
 namespace apache { namespace thrift {
-
-template <> inline void Cpp2Ops< ::module2::BigStruct>::clear( ::module2::BigStruct* obj) {
-  return obj->__clear();
-}
-
-template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::module2::BigStruct>::thriftType() {
-  return apache::thrift::protocol::T_STRUCT;
-}
-
-template <> template <class Protocol> uint32_t Cpp2Ops< ::module2::BigStruct>::write(Protocol* proto,  ::module2::BigStruct const* obj) {
-  return obj->write(proto);
-}
-
-template <> template <class Protocol> void Cpp2Ops< ::module2::BigStruct>::read(Protocol* proto,  ::module2::BigStruct* obj) {
-  return obj->readNoXfer(proto);
-}
-
-template <> template <class Protocol> uint32_t Cpp2Ops< ::module2::BigStruct>::serializedSize(Protocol const* proto,  ::module2::BigStruct const* obj) {
-  return obj->serializedSize(proto);
-}
-
-template <> template <class Protocol> uint32_t Cpp2Ops< ::module2::BigStruct>::serializedSizeZC(Protocol const* proto,  ::module2::BigStruct const* obj) {
-  return obj->serializedSizeZC(proto);
-}
 
 }} // apache::thrift

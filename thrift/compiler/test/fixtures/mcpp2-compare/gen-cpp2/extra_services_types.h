@@ -158,28 +158,4 @@ uint32_t containerStruct2::read(Protocol_* iprot) {
 }} // extra::svc
 namespace apache { namespace thrift {
 
-template <> inline void Cpp2Ops< ::extra::svc::containerStruct2>::clear( ::extra::svc::containerStruct2* obj) {
-  return obj->__clear();
-}
-
-template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::extra::svc::containerStruct2>::thriftType() {
-  return apache::thrift::protocol::T_STRUCT;
-}
-
-template <> template <class Protocol> uint32_t Cpp2Ops< ::extra::svc::containerStruct2>::write(Protocol* proto,  ::extra::svc::containerStruct2 const* obj) {
-  return obj->write(proto);
-}
-
-template <> template <class Protocol> void Cpp2Ops< ::extra::svc::containerStruct2>::read(Protocol* proto,  ::extra::svc::containerStruct2* obj) {
-  return obj->readNoXfer(proto);
-}
-
-template <> template <class Protocol> uint32_t Cpp2Ops< ::extra::svc::containerStruct2>::serializedSize(Protocol const* proto,  ::extra::svc::containerStruct2 const* obj) {
-  return obj->serializedSize(proto);
-}
-
-template <> template <class Protocol> uint32_t Cpp2Ops< ::extra::svc::containerStruct2>::serializedSizeZC(Protocol const* proto,  ::extra::svc::containerStruct2 const* obj) {
-  return obj->serializedSizeZC(proto);
-}
-
 }} // apache::thrift

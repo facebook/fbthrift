@@ -19,6 +19,7 @@
 #include <stdint.h>
 
 #include <thrift/lib/cpp/protocol/TType.h>
+#include <thrift/lib/cpp2/Thrift.h>
 
 namespace apache {
 namespace thrift {
@@ -39,23 +40,27 @@ namespace thrift {
  */
 template <class T, class = void>
 class Cpp2Ops {
- public:
-  static void clear(T*);
-
-  template <class P>
-  static uint32_t write(P*, const T*);
-
-  template <class P>
-  static void read(P*, T*);
-
-  template <class P>
-  static uint32_t serializedSize(P const*, T const*);
-
-  template <class P>
-  static uint32_t serializedSizeZC(P const*, T const*);
-
-  static constexpr apache::thrift::protocol::TType thriftType();
+  static_assert(sizeof(T) == ~0ull, "");
+  //  When instantiated with a type T, includes:
+  //
+  //      static void clear(T*);
+  //
+  //      template <class P>
+  //      static uint32_t write(P*, const T*);
+  //
+  //      template <class P>
+  //      static void read(P*, T*);
+  //
+  //      template <class P>
+  //      static uint32_t serializedSize(P const*, T const*);
+  //
+  //      template <class P>
+  //      static uint32_t serializedSizeZC(P const*, T const*);
+  //
+  //      static constexpr apache::thrift::protocol::TType thriftType();
 };
 
 } // namespace thrift
 } // namespace apache
+
+#include <thrift/lib/cpp2/protocol/Cpp2Ops.tcc>

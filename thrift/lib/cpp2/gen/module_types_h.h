@@ -20,8 +20,18 @@
 #include <initializer_list>
 #include <type_traits>
 
+#include <thrift/lib/cpp2/protocol/Cpp2Ops.h>
+
 namespace apache {
 namespace thrift {
+
+class BinaryProtocolReader;
+class BinaryProtocolWriter;
+class ComapctProtocolReader;
+class CompactProtocolWriter;
+class SimpleJSONProtocolReader;
+class SimpleJSONProtocolWriter;
+
 namespace detail {
 
 template <std::intmax_t Id, typename Ref>

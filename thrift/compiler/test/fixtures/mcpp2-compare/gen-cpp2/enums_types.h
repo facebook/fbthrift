@@ -277,28 +277,4 @@ uint32_t SomeStruct::read(Protocol_* iprot) {
 }}} // facebook::ns::qwerty
 namespace apache { namespace thrift {
 
-template <> inline void Cpp2Ops< ::facebook::ns::qwerty::SomeStruct>::clear( ::facebook::ns::qwerty::SomeStruct* obj) {
-  return obj->__clear();
-}
-
-template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::facebook::ns::qwerty::SomeStruct>::thriftType() {
-  return apache::thrift::protocol::T_STRUCT;
-}
-
-template <> template <class Protocol> uint32_t Cpp2Ops< ::facebook::ns::qwerty::SomeStruct>::write(Protocol* proto,  ::facebook::ns::qwerty::SomeStruct const* obj) {
-  return obj->write(proto);
-}
-
-template <> template <class Protocol> void Cpp2Ops< ::facebook::ns::qwerty::SomeStruct>::read(Protocol* proto,  ::facebook::ns::qwerty::SomeStruct* obj) {
-  return obj->readNoXfer(proto);
-}
-
-template <> template <class Protocol> uint32_t Cpp2Ops< ::facebook::ns::qwerty::SomeStruct>::serializedSize(Protocol const* proto,  ::facebook::ns::qwerty::SomeStruct const* obj) {
-  return obj->serializedSize(proto);
-}
-
-template <> template <class Protocol> uint32_t Cpp2Ops< ::facebook::ns::qwerty::SomeStruct>::serializedSizeZC(Protocol const* proto,  ::facebook::ns::qwerty::SomeStruct const* obj) {
-  return obj->serializedSizeZC(proto);
-}
-
 }} // apache::thrift

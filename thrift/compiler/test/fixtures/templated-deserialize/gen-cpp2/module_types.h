@@ -206,30 +206,6 @@ uint32_t SmallStruct::read(Protocol_* iprot) {
 } // cpp2
 namespace apache { namespace thrift {
 
-template <> inline void Cpp2Ops< ::cpp2::SmallStruct>::clear( ::cpp2::SmallStruct* obj) {
-  return obj->__clear();
-}
-
-template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::cpp2::SmallStruct>::thriftType() {
-  return apache::thrift::protocol::T_STRUCT;
-}
-
-template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::SmallStruct>::write(Protocol* proto,  ::cpp2::SmallStruct const* obj) {
-  return obj->write(proto);
-}
-
-template <> template <class Protocol> void Cpp2Ops< ::cpp2::SmallStruct>::read(Protocol* proto,  ::cpp2::SmallStruct* obj) {
-  return obj->readNoXfer(proto);
-}
-
-template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::SmallStruct>::serializedSize(Protocol const* proto,  ::cpp2::SmallStruct const* obj) {
-  return obj->serializedSize(proto);
-}
-
-template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::SmallStruct>::serializedSizeZC(Protocol const* proto,  ::cpp2::SmallStruct const* obj) {
-  return obj->serializedSizeZC(proto);
-}
-
 }} // apache::thrift
 namespace cpp2 {
 class containerStruct final : private apache::thrift::detail::st::ComparisonOperators<containerStruct> {
@@ -602,29 +578,5 @@ uint32_t containerStruct::read(Protocol_* iprot) {
 
 } // cpp2
 namespace apache { namespace thrift {
-
-template <> inline void Cpp2Ops< ::cpp2::containerStruct>::clear( ::cpp2::containerStruct* obj) {
-  return obj->__clear();
-}
-
-template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::cpp2::containerStruct>::thriftType() {
-  return apache::thrift::protocol::T_STRUCT;
-}
-
-template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::containerStruct>::write(Protocol* proto,  ::cpp2::containerStruct const* obj) {
-  return obj->write(proto);
-}
-
-template <> template <class Protocol> void Cpp2Ops< ::cpp2::containerStruct>::read(Protocol* proto,  ::cpp2::containerStruct* obj) {
-  return obj->readNoXfer(proto);
-}
-
-template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::containerStruct>::serializedSize(Protocol const* proto,  ::cpp2::containerStruct const* obj) {
-  return obj->serializedSize(proto);
-}
-
-template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::containerStruct>::serializedSizeZC(Protocol const* proto,  ::cpp2::containerStruct const* obj) {
-  return obj->serializedSizeZC(proto);
-}
 
 }} // apache::thrift
