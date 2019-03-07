@@ -271,9 +271,6 @@ uint32_t Internship::read(Protocol_* iprot) {
 }
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace cpp2 {
 class UnEnumStruct final : private apache::thrift::detail::st::ComparisonOperators<UnEnumStruct> {
  public:
@@ -348,9 +345,6 @@ uint32_t UnEnumStruct::read(Protocol_* iprot) {
 }
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace cpp2 {
 class Range final : private apache::thrift::detail::st::ComparisonOperators<Range> {
  public:
@@ -434,9 +428,6 @@ uint32_t Range::read(Protocol_* iprot) {
 }
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace cpp2 {
 class struct1 final : private apache::thrift::detail::st::ComparisonOperators<struct1> {
  public:
@@ -534,9 +525,6 @@ uint32_t struct1::read(Protocol_* iprot) {
 }
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace cpp2 {
 class struct2 final : private apache::thrift::detail::st::ComparisonOperators<struct2> {
  public:
@@ -665,9 +653,6 @@ uint32_t struct2::read(Protocol_* iprot) {
 }
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace cpp2 {
 class struct3 final : private apache::thrift::detail::st::ComparisonOperators<struct3> {
  public:
@@ -780,9 +765,6 @@ uint32_t struct3::read(Protocol_* iprot) {
 }
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace cpp2 {
 class union1 final : private apache::thrift::detail::st::ComparisonOperators<union1> {
  public:
@@ -1001,9 +983,6 @@ uint32_t union1::read(Protocol_* iprot) {
 }
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace cpp2 {
 class union2 final : private apache::thrift::detail::st::ComparisonOperators<union2> {
  public:
@@ -1346,6 +1325,3 @@ uint32_t union2::read(Protocol_* iprot) {
 }
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift

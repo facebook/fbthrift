@@ -317,9 +317,6 @@ uint32_t MyUnion::read(Protocol_* iprot) {
 }
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace cpp2 {
 class MyField final : private apache::thrift::detail::st::ComparisonOperators<MyField> {
  public:
@@ -444,9 +441,6 @@ uint32_t MyField::read(Protocol_* iprot) {
 }
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace cpp2 {
 class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<MyStruct> {
  public:
@@ -515,9 +509,6 @@ uint32_t MyStruct::read(Protocol_* iprot) {
 }
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace cpp2 {
 class StructWithUnion final : private apache::thrift::detail::st::ComparisonOperators<StructWithUnion> {
  public:
@@ -612,9 +603,6 @@ uint32_t StructWithUnion::read(Protocol_* iprot) {
 }
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace cpp2 {
 class RecursiveStruct final : private apache::thrift::detail::st::ComparisonOperators<RecursiveStruct> {
  public:
@@ -700,9 +688,6 @@ uint32_t RecursiveStruct::read(Protocol_* iprot) {
 }
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace cpp2 {
 class StructWithContainers final : private apache::thrift::detail::st::ComparisonOperators<StructWithContainers> {
  public:
@@ -788,9 +773,6 @@ uint32_t StructWithContainers::read(Protocol_* iprot) {
 }
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace cpp2 {
 class StructWithSharedConst final : private apache::thrift::detail::st::ComparisonOperators<StructWithSharedConst> {
  public:
@@ -861,9 +843,6 @@ uint32_t StructWithSharedConst::read(Protocol_* iprot) {
 }
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace cpp2 {
 class Empty final : private apache::thrift::detail::st::ComparisonOperators<Empty> {
  public:
@@ -917,9 +896,6 @@ uint32_t Empty::read(Protocol_* iprot) {
 }
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace cpp2 {
 class StructWithRef final : private apache::thrift::detail::st::ComparisonOperators<StructWithRef> {
  public:
@@ -988,9 +964,6 @@ uint32_t StructWithRef::read(Protocol_* iprot) {
 }
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace cpp2 {
 class StructWithRefTypeUnique final : private apache::thrift::detail::st::ComparisonOperators<StructWithRefTypeUnique> {
  public:
@@ -1059,9 +1032,6 @@ uint32_t StructWithRefTypeUnique::read(Protocol_* iprot) {
 }
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace cpp2 {
 class StructWithRefTypeShared final : private apache::thrift::detail::st::ComparisonOperators<StructWithRefTypeShared> {
  public:
@@ -1132,9 +1102,6 @@ uint32_t StructWithRefTypeShared::read(Protocol_* iprot) {
 }
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace cpp2 {
 class StructWithRefTypeSharedConst final : private apache::thrift::detail::st::ComparisonOperators<StructWithRefTypeSharedConst> {
  public:
@@ -1205,9 +1172,6 @@ uint32_t StructWithRefTypeSharedConst::read(Protocol_* iprot) {
 }
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace cpp2 {
 class StructWithRefAndAnnotCppNoexceptMoveCtor final : private apache::thrift::detail::st::ComparisonOperators<StructWithRefAndAnnotCppNoexceptMoveCtor> {
  public:
@@ -1265,6 +1229,3 @@ uint32_t StructWithRefAndAnnotCppNoexceptMoveCtor::read(Protocol_* iprot) {
 }
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift

@@ -156,6 +156,3 @@ uint32_t containerStruct2::read(Protocol_* iprot) {
 }
 
 }} // extra::svc
-namespace apache { namespace thrift {
-
-}} // apache::thrift

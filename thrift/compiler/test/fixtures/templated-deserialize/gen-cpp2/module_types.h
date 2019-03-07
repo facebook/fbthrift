@@ -204,9 +204,6 @@ uint32_t SmallStruct::read(Protocol_* iprot) {
 }
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace cpp2 {
 class containerStruct final : private apache::thrift::detail::st::ComparisonOperators<containerStruct> {
  public:
@@ -577,6 +574,3 @@ uint32_t containerStruct::read(Protocol_* iprot) {
 }
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift

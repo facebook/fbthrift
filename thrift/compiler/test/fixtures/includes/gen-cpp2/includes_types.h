@@ -124,6 +124,3 @@ uint32_t Included::read(Protocol_* iprot) {
 }
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift

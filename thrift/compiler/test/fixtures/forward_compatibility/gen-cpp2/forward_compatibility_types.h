@@ -116,9 +116,6 @@ uint32_t OldStructure::read(Protocol_* iprot) {
 }
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace cpp2 {
 class NewStructure final : private apache::thrift::detail::st::ComparisonOperators<NewStructure> {
  public:
@@ -195,9 +192,6 @@ uint32_t NewStructure::read(Protocol_* iprot) {
 }
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace cpp2 {
 class NewStructure2 final : private apache::thrift::detail::st::ComparisonOperators<NewStructure2> {
  public:
@@ -274,9 +268,6 @@ uint32_t NewStructure2::read(Protocol_* iprot) {
 }
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace cpp2 {
 class NewStructureNested final : private apache::thrift::detail::st::ComparisonOperators<NewStructureNested> {
  public:
@@ -385,9 +376,6 @@ uint32_t NewStructureNested::read(Protocol_* iprot) {
 }
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace cpp2 {
 class NewStructureNestedField final : private apache::thrift::detail::st::ComparisonOperators<NewStructureNestedField> {
  public:
@@ -464,6 +452,3 @@ uint32_t NewStructureNestedField::read(Protocol_* iprot) {
 }
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift

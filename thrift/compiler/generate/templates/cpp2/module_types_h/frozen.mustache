@@ -14,8 +14,11 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-%><%#program:frozen?%><%!
-%><%#program:frozen_packed?%>#pragma pack(push, 1)<%/program:frozen_packed?%>
+%><%#program:frozen?%>
+
+namespace apache { namespace thrift {
+
+<%#program:frozen_packed?%>#pragma pack(push, 1)<%/program:frozen_packed?%>
 template<>
 struct Frozen<<% > common/namespace_cpp2%><%struct:name%>, void> {
 <%#struct:fields%>
@@ -37,5 +40,8 @@ struct Frozen<<% > common/namespace_cpp2%><%struct:name%>, void> {
   } __isset = {};
 <%/struct:isset_fields?%>
 };
+
 <%#program:frozen_packed?%>#pragma pack(pop)<%/program:frozen_packed?%>
+
+}} // apache::thrift
 <%/program:frozen?%>

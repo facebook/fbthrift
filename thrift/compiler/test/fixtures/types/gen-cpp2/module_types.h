@@ -274,9 +274,6 @@ uint32_t decorated_struct::read(Protocol_* iprot) {
 }
 
 }}}} // apache::thrift::fixtures::types
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 class ContainerStruct final : private apache::thrift::detail::st::ComparisonOperators<ContainerStruct> {
  public:
@@ -465,9 +462,6 @@ uint32_t ContainerStruct::read(Protocol_* iprot) {
 }
 
 }}}} // apache::thrift::fixtures::types
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 class CppTypeStruct final : private apache::thrift::detail::st::ComparisonOperators<CppTypeStruct> {
  public:
@@ -540,9 +534,6 @@ uint32_t CppTypeStruct::read(Protocol_* iprot) {
 }
 
 }}}} // apache::thrift::fixtures::types
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 class VirtualStruct : private apache::thrift::detail::st::ComparisonOperators<VirtualStruct> {
  public:
@@ -620,9 +611,6 @@ uint32_t VirtualStruct::read(Protocol_* iprot) {
 }
 
 }}}} // apache::thrift::fixtures::types
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 class MyStructWithForwardRefEnum final : private apache::thrift::detail::st::ComparisonOperators<MyStructWithForwardRefEnum> {
  public:
@@ -715,9 +703,6 @@ uint32_t MyStructWithForwardRefEnum::read(Protocol_* iprot) {
 }
 
 }}}} // apache::thrift::fixtures::types
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 class TrivialNumeric final : private apache::thrift::detail::st::ComparisonOperators<TrivialNumeric> {
  public:
@@ -810,9 +795,6 @@ uint32_t TrivialNumeric::read(Protocol_* iprot) {
 }
 
 }}}} // apache::thrift::fixtures::types
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 class TrivialNestedWithDefault final : private apache::thrift::detail::st::ComparisonOperators<TrivialNestedWithDefault> {
  public:
@@ -904,9 +886,6 @@ uint32_t TrivialNestedWithDefault::read(Protocol_* iprot) {
 }
 
 }}}} // apache::thrift::fixtures::types
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 class ComplexString final : private apache::thrift::detail::st::ComparisonOperators<ComplexString> {
  public:
@@ -1001,9 +980,6 @@ uint32_t ComplexString::read(Protocol_* iprot) {
 }
 
 }}}} // apache::thrift::fixtures::types
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 class ComplexNestedWithDefault final : private apache::thrift::detail::st::ComparisonOperators<ComplexNestedWithDefault> {
  public:
@@ -1100,9 +1076,6 @@ uint32_t ComplexNestedWithDefault::read(Protocol_* iprot) {
 }
 
 }}}} // apache::thrift::fixtures::types
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 class MinPadding final : private apache::thrift::detail::st::ComparisonOperators<MinPadding> {
  public:
@@ -1231,9 +1204,6 @@ uint32_t MinPadding::read(Protocol_* iprot) {
 }
 
 }}}} // apache::thrift::fixtures::types
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<MyStruct> {
  public:
@@ -1362,9 +1332,6 @@ uint32_t MyStruct::read(Protocol_* iprot) {
 }
 
 }}}} // apache::thrift::fixtures::types
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 class MyDataItem final : private apache::thrift::detail::st::ComparisonOperators<MyDataItem> {
  public:
@@ -1416,9 +1383,6 @@ uint32_t MyDataItem::read(Protocol_* iprot) {
 }
 
 }}}} // apache::thrift::fixtures::types
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 class Renaming final : private apache::thrift::detail::st::ComparisonOperators<Renaming> {
  public:
@@ -1493,6 +1457,3 @@ uint32_t Renaming::read(Protocol_* iprot) {
 }
 
 }}}} // apache::thrift::fixtures::types
-namespace apache { namespace thrift {
-
-}} // apache::thrift

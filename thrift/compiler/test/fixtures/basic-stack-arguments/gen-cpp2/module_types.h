@@ -169,6 +169,3 @@ uint32_t MyStruct::read(Protocol_* iprot) {
 }
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift

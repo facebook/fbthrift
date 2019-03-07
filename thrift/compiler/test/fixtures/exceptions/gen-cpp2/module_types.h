@@ -87,9 +87,6 @@ uint32_t Banal::read(Protocol_* iprot) {
 }
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace cpp2 {
 class Fiery final : private apache::thrift::detail::st::ComparisonOperators<Fiery>, public apache::thrift::TException {
  public:
@@ -172,9 +169,6 @@ uint32_t Fiery::read(Protocol_* iprot) {
 }
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace cpp2 {
 class Serious final : private apache::thrift::detail::st::ComparisonOperators<Serious>, public apache::thrift::TException {
  public:
@@ -276,6 +270,3 @@ uint32_t Serious::read(Protocol_* iprot) {
 }
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift

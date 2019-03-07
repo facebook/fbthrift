@@ -157,9 +157,6 @@ uint32_t Color::read(Protocol_* iprot) {
 }
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace cpp2 {
 class Vehicle final : private apache::thrift::detail::st::ComparisonOperators<Vehicle> {
  public:
@@ -242,9 +239,6 @@ uint32_t Vehicle::read(Protocol_* iprot) {
 }
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace cpp2 {
 class Person final : private apache::thrift::detail::st::ComparisonOperators<Person> {
  public:
@@ -352,6 +346,3 @@ uint32_t Person::read(Protocol_* iprot) {
 }
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift

@@ -156,9 +156,6 @@ uint32_t AStruct::read(Protocol_* iprot) {
 }
 
 }}} // a::different::ns
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace a { namespace different { namespace ns {
 class AStructB final : private apache::thrift::detail::st::ComparisonOperators<AStructB> {
  public:
@@ -222,6 +219,3 @@ uint32_t AStructB::read(Protocol_* iprot) {
 }
 
 }}} // a::different::ns
-namespace apache { namespace thrift {
-
-}} // apache::thrift

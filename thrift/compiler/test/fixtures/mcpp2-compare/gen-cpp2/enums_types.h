@@ -275,6 +275,3 @@ uint32_t SomeStruct::read(Protocol_* iprot) {
 }
 
 }}} // facebook::ns::qwerty
-namespace apache { namespace thrift {
-
-}} // apache::thrift

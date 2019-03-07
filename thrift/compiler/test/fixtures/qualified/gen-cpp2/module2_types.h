@@ -119,9 +119,6 @@ uint32_t Struct::read(Protocol_* iprot) {
 }
 
 } // module2
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace module2 {
 class BigStruct final : private apache::thrift::detail::st::ComparisonOperators<BigStruct> {
  public:
@@ -212,6 +209,3 @@ uint32_t BigStruct::read(Protocol_* iprot) {
 }
 
 } // module2
-namespace apache { namespace thrift {
-
-}} // apache::thrift

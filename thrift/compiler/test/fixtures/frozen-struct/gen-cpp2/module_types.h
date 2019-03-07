@@ -238,9 +238,6 @@ uint32_t ModuleA::read(Protocol_* iprot) {
 }
 
 }} // some::ns
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace some { namespace ns {
 class ModuleB final : private apache::thrift::detail::st::ComparisonOperators<ModuleB> {
  public:
@@ -333,6 +330,3 @@ uint32_t ModuleB::read(Protocol_* iprot) {
 }
 
 }} // some::ns
-namespace apache { namespace thrift {
-
-}} // apache::thrift

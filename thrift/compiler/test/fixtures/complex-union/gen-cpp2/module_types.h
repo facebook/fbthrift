@@ -512,9 +512,6 @@ uint32_t ComplexUnion::read(Protocol_* iprot) {
 }
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace cpp2 {
 class VirtualComplexUnion : private apache::thrift::detail::st::ComparisonOperators<VirtualComplexUnion> {
  public:
@@ -762,6 +759,3 @@ uint32_t VirtualComplexUnion::read(Protocol_* iprot) {
 }
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift

@@ -102,9 +102,6 @@ uint32_t House::read(Protocol_* iprot) {
 }
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace cpp2 {
 class Field final : private apache::thrift::detail::st::ComparisonOperators<Field> {
  public:
@@ -170,6 +167,3 @@ uint32_t Field::read(Protocol_* iprot) {
 }
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift

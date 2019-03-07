@@ -224,9 +224,6 @@ uint32_t MyStruct::read(Protocol_* iprot) {
 }
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace cpp2 {
 class MyDataItem final : private apache::thrift::detail::st::ComparisonOperators<MyDataItem> {
  public:
@@ -280,6 +277,3 @@ uint32_t MyDataItem::read(Protocol_* iprot) {
 }
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift

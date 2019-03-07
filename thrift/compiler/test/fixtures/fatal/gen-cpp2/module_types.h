@@ -586,9 +586,6 @@ uint32_t union1::read(Protocol_* iprot) {
 }
 
 }} // test_cpp2::cpp_reflection
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace test_cpp2 { namespace cpp_reflection {
 class union2 final : private apache::thrift::detail::st::ComparisonOperators<union2> {
  public:
@@ -917,9 +914,6 @@ uint32_t union2::read(Protocol_* iprot) {
 }
 
 }} // test_cpp2::cpp_reflection
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace test_cpp2 { namespace cpp_reflection {
 class union3 final : private apache::thrift::detail::st::ComparisonOperators<union3> {
  public:
@@ -1248,9 +1242,6 @@ uint32_t union3::read(Protocol_* iprot) {
 }
 
 }} // test_cpp2::cpp_reflection
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace test_cpp2 { namespace cpp_reflection {
 class structA final : private apache::thrift::detail::st::ComparisonOperators<structA> {
  public:
@@ -1347,9 +1338,6 @@ uint32_t structA::read(Protocol_* iprot) {
 }
 
 }} // test_cpp2::cpp_reflection
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace test_cpp2 { namespace cpp_reflection {
 class unionA final : private apache::thrift::detail::st::ComparisonOperators<unionA> {
  public:
@@ -1740,9 +1728,6 @@ uint32_t unionA::read(Protocol_* iprot) {
 }
 
 }} // test_cpp2::cpp_reflection
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace test_cpp2 { namespace cpp_reflection {
 class structB final : private apache::thrift::detail::st::ComparisonOperators<structB> {
  public:
@@ -1835,9 +1820,6 @@ uint32_t structB::read(Protocol_* iprot) {
 }
 
 }} // test_cpp2::cpp_reflection
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace test_cpp2 { namespace cpp_reflection {
 class structC final : private apache::thrift::detail::st::ComparisonOperators<structC> {
  public:
@@ -2389,9 +2371,6 @@ uint32_t structC::read(Protocol_* iprot) {
 }
 
 }} // test_cpp2::cpp_reflection
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace test_cpp2 { namespace cpp_reflection {
 class struct1 final : private apache::thrift::detail::st::ComparisonOperators<struct1> {
  public:
@@ -2577,9 +2556,6 @@ uint32_t struct1::read(Protocol_* iprot) {
 }
 
 }} // test_cpp2::cpp_reflection
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace test_cpp2 { namespace cpp_reflection {
 class struct2 final : private apache::thrift::detail::st::ComparisonOperators<struct2> {
  public:
@@ -2761,9 +2737,6 @@ uint32_t struct2::read(Protocol_* iprot) {
 }
 
 }} // test_cpp2::cpp_reflection
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace test_cpp2 { namespace cpp_reflection {
 class struct3 final : private apache::thrift::detail::st::ComparisonOperators<struct3> {
  public:
@@ -3121,9 +3094,6 @@ uint32_t struct3::read(Protocol_* iprot) {
 }
 
 }} // test_cpp2::cpp_reflection
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace test_cpp2 { namespace cpp_reflection {
 class struct4 final : private apache::thrift::detail::st::ComparisonOperators<struct4> {
  public:
@@ -3252,9 +3222,6 @@ uint32_t struct4::read(Protocol_* iprot) {
 }
 
 }} // test_cpp2::cpp_reflection
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace test_cpp2 { namespace cpp_reflection {
 class struct5 final : private apache::thrift::detail::st::ComparisonOperators<struct5> {
  public:
@@ -3413,9 +3380,6 @@ uint32_t struct5::read(Protocol_* iprot) {
 }
 
 }} // test_cpp2::cpp_reflection
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace test_cpp2 { namespace cpp_reflection {
 class struct_binary final : private apache::thrift::detail::st::ComparisonOperators<struct_binary> {
  public:
@@ -3494,9 +3458,6 @@ uint32_t struct_binary::read(Protocol_* iprot) {
 }
 
 }} // test_cpp2::cpp_reflection
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace test_cpp2 { namespace cpp_reflection {
 class dep_A_struct final : private apache::thrift::detail::st::ComparisonOperators<dep_A_struct> {
  public:
@@ -3603,9 +3564,6 @@ uint32_t dep_A_struct::read(Protocol_* iprot) {
 }
 
 }} // test_cpp2::cpp_reflection
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace test_cpp2 { namespace cpp_reflection {
 class dep_B_struct final : private apache::thrift::detail::st::ComparisonOperators<dep_B_struct> {
  public:
@@ -3712,9 +3670,6 @@ uint32_t dep_B_struct::read(Protocol_* iprot) {
 }
 
 }} // test_cpp2::cpp_reflection
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace test_cpp2 { namespace cpp_reflection {
 class annotated final : private apache::thrift::detail::st::ComparisonOperators<annotated> {
  public:
@@ -3789,9 +3744,6 @@ uint32_t annotated::read(Protocol_* iprot) {
 }
 
 }} // test_cpp2::cpp_reflection
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace test_cpp2 { namespace cpp_reflection {
 class union_with_special_names final : private apache::thrift::detail::st::ComparisonOperators<union_with_special_names> {
  public:
@@ -5258,9 +5210,6 @@ uint32_t union_with_special_names::read(Protocol_* iprot) {
 }
 
 }} // test_cpp2::cpp_reflection
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace test_cpp2 { namespace cpp_reflection {
 class struct_with_special_names final : private apache::thrift::detail::st::ComparisonOperators<struct_with_special_names> {
  public:
@@ -5821,9 +5770,6 @@ uint32_t struct_with_special_names::read(Protocol_* iprot) {
 }
 
 }} // test_cpp2::cpp_reflection
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace test_cpp2 { namespace cpp_reflection {
 class struct_with_indirections final : private apache::thrift::detail::st::ComparisonOperators<struct_with_indirections> {
  public:
@@ -5974,6 +5920,3 @@ uint32_t struct_with_indirections::read(Protocol_* iprot) {
 }
 
 }} // test_cpp2::cpp_reflection
-namespace apache { namespace thrift {
-
-}} // apache::thrift

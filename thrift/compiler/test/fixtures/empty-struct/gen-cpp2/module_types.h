@@ -82,9 +82,6 @@ uint32_t Empty::read(Protocol_* iprot) {
 }
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace cpp2 {
 class Nada final : private apache::thrift::detail::st::ComparisonOperators<Nada> {
  public:
@@ -207,6 +204,3 @@ uint32_t Nada::read(Protocol_* iprot) {
 }
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift

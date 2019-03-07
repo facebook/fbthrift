@@ -396,9 +396,6 @@ uint32_t Empty::read(Protocol_* iprot) {
 }
 
 }}} // some::valid::ns
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace some { namespace valid { namespace ns {
 class ASimpleStruct final : private apache::thrift::detail::st::ComparisonOperators<ASimpleStruct> {
  public:
@@ -477,9 +474,6 @@ uint32_t ASimpleStruct::read(Protocol_* iprot) {
 }
 
 }}} // some::valid::ns
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace some { namespace valid { namespace ns {
 class ASimpleStructNoexcept final : private apache::thrift::detail::st::ComparisonOperators<ASimpleStructNoexcept> {
  public:
@@ -558,9 +552,6 @@ uint32_t ASimpleStructNoexcept::read(Protocol_* iprot) {
 }
 
 }}} // some::valid::ns
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace some { namespace valid { namespace ns {
 class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<MyStruct> {
  public:
@@ -810,9 +801,6 @@ uint32_t MyStruct::read(Protocol_* iprot) {
 }
 
 }}} // some::valid::ns
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace some { namespace valid { namespace ns {
 class SimpleUnion : private apache::thrift::detail::st::ComparisonOperators<SimpleUnion> {
  public:
@@ -1050,9 +1038,6 @@ uint32_t SimpleUnion::read(Protocol_* iprot) {
 }
 
 }}} // some::valid::ns
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace some { namespace valid { namespace ns {
 class ComplexUnion final : private apache::thrift::detail::st::ComparisonOperators<ComplexUnion> {
  public:
@@ -2721,9 +2706,6 @@ uint32_t ComplexUnion::read(Protocol_* iprot) {
 }
 
 }}} // some::valid::ns
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace some { namespace valid { namespace ns {
 class AnException final : private apache::thrift::detail::st::ComparisonOperators<AnException>, public apache::thrift::TException {
  public:
@@ -3044,9 +3026,6 @@ uint32_t AnException::read(Protocol_* iprot) {
 }
 
 }}} // some::valid::ns
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace some { namespace valid { namespace ns {
 class AnotherException : private apache::thrift::detail::st::ComparisonOperators<AnotherException>, public apache::thrift::TException {
  public:
@@ -3169,9 +3148,6 @@ uint32_t AnotherException::read(Protocol_* iprot) {
 }
 
 }}} // some::valid::ns
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace some { namespace valid { namespace ns {
 class containerStruct final : private apache::thrift::detail::st::ComparisonOperators<containerStruct> {
  public:
@@ -4090,9 +4066,6 @@ uint32_t containerStruct::read(Protocol_* iprot) {
 }
 
 }}} // some::valid::ns
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace some { namespace valid { namespace ns {
 class MyIncludedStruct final : private apache::thrift::detail::st::ComparisonOperators<MyIncludedStruct> {
  public:
@@ -4204,9 +4177,6 @@ uint32_t MyIncludedStruct::read(Protocol_* iprot) {
 }
 
 }}} // some::valid::ns
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace some { namespace valid { namespace ns {
 class AnnotatedStruct : private apache::thrift::detail::st::ComparisonOperators<AnnotatedStruct> {
  public:
@@ -4736,9 +4706,6 @@ uint32_t AnnotatedStruct::read(Protocol_* iprot) {
 }
 
 }}} // some::valid::ns
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace some { namespace valid { namespace ns {
 class ComplexContainerStruct final : private apache::thrift::detail::st::ComparisonOperators<ComplexContainerStruct> {
  public:
@@ -4831,9 +4798,6 @@ uint32_t ComplexContainerStruct::read(Protocol_* iprot) {
 }
 
 }}} // some::valid::ns
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace some { namespace valid { namespace ns {
 class FloatStruct final : private apache::thrift::detail::st::ComparisonOperators<FloatStruct> {
  public:
@@ -4930,9 +4894,6 @@ uint32_t FloatStruct::read(Protocol_* iprot) {
 }
 
 }}} // some::valid::ns
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace some { namespace valid { namespace ns {
 class FloatUnion final : private apache::thrift::detail::st::ComparisonOperators<FloatUnion> {
  public:
@@ -5155,9 +5116,6 @@ uint32_t FloatUnion::read(Protocol_* iprot) {
 }
 
 }}} // some::valid::ns
-namespace apache { namespace thrift {
-
-}} // apache::thrift
 namespace some { namespace valid { namespace ns {
 class AllRequiredNoExceptMoveCtrStruct final : private apache::thrift::detail::st::ComparisonOperators<AllRequiredNoExceptMoveCtrStruct> {
  public:
@@ -5230,6 +5188,3 @@ uint32_t AllRequiredNoExceptMoveCtrStruct::read(Protocol_* iprot) {
 }
 
 }}} // some::valid::ns
-namespace apache { namespace thrift {
-
-}} // apache::thrift

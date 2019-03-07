@@ -124,6 +124,3 @@ uint32_t IncludedA::read(Protocol_* iprot) {
 }
 
 }} // some::ns
-namespace apache { namespace thrift {
-
-}} // apache::thrift
