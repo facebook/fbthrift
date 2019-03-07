@@ -27,8 +27,8 @@ public interface MyServicePrioParent {
     }
 
     @ThriftMethod(value = "ping")
-    void ping();
+    void ping() throws org.apache.thrift.TException;
 
     @ThriftMethod(value = "pong")
-    void pong();
+    void pong() throws org.apache.thrift.TException;
 }

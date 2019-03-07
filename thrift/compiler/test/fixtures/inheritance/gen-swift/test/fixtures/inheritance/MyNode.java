@@ -24,5 +24,5 @@ public interface MyNode extends test.fixtures.inheritance.MyRoot {
     }
 
     @ThriftMethod(value = "do_mid")
-    void doMid();
+    void doMid() throws org.apache.thrift.TException;
 }

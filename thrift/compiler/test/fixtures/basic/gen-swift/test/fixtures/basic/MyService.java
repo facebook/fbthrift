@@ -46,27 +46,27 @@ public interface MyService {
     }
 
     @ThriftMethod(value = "ping")
-    void ping();
+    void ping() throws org.apache.thrift.TException;
 
     @ThriftMethod(value = "getRandomData")
-    String getRandomData();
+    String getRandomData() throws org.apache.thrift.TException;
 
     @ThriftMethod(value = "hasDataById")
     boolean hasDataById(
-        @ThriftField(value=1, name="id", requiredness=Requiredness.NONE) final long id);
+        @ThriftField(value=1, name="id", requiredness=Requiredness.NONE) final long id) throws org.apache.thrift.TException;
 
     @ThriftMethod(value = "getDataById")
     String getDataById(
-        @ThriftField(value=1, name="id", requiredness=Requiredness.NONE) final long id);
+        @ThriftField(value=1, name="id", requiredness=Requiredness.NONE) final long id) throws org.apache.thrift.TException;
 
     @ThriftMethod(value = "putDataById")
     void putDataById(
         @ThriftField(value=1, name="id", requiredness=Requiredness.NONE) final long id,
-        @ThriftField(value=2, name="data", requiredness=Requiredness.NONE) final String data);
+        @ThriftField(value=2, name="data", requiredness=Requiredness.NONE) final String data) throws org.apache.thrift.TException;
 
     @ThriftMethod(value = "lobDataById",
                   oneway = true)
     void lobDataById(
         @ThriftField(value=1, name="id", requiredness=Requiredness.NONE) final long id,
-        @ThriftField(value=2, name="data", requiredness=Requiredness.NONE) final String data);
+        @ThriftField(value=2, name="data", requiredness=Requiredness.NONE) final String data) throws org.apache.thrift.TException;
 }

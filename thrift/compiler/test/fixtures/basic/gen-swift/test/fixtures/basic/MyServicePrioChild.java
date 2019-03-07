@@ -24,5 +24,5 @@ public interface MyServicePrioChild extends test.fixtures.basic.MyServicePrioPar
     }
 
     @ThriftMethod(value = "pang")
-    void pang();
+    void pang() throws org.apache.thrift.TException;
 }

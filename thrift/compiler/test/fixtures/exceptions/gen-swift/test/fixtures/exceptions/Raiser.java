@@ -43,7 +43,7 @@ public interface Raiser {
     }
 
     @ThriftMethod(value = "doBland")
-    void doBland();
+    void doBland() throws org.apache.thrift.TException;
 
     @ThriftMethod(value = "doRaise",
                   exception = { 
@@ -51,10 +51,10 @@ public interface Raiser {
                       @ThriftException(type=test.fixtures.exceptions.Fiery.class, id=2),
                       @ThriftException(type=test.fixtures.exceptions.Serious.class, id=3)
                   })
-    void doRaise() throws test.fixtures.exceptions.Banal, test.fixtures.exceptions.Fiery, test.fixtures.exceptions.Serious;
+    void doRaise() throws test.fixtures.exceptions.Banal, test.fixtures.exceptions.Fiery, test.fixtures.exceptions.Serious, org.apache.thrift.TException;
 
     @ThriftMethod(value = "get200")
-    String get200();
+    String get200() throws org.apache.thrift.TException;
 
     @ThriftMethod(value = "get500",
                   exception = { 
@@ -62,5 +62,5 @@ public interface Raiser {
                       @ThriftException(type=test.fixtures.exceptions.Banal.class, id=2),
                       @ThriftException(type=test.fixtures.exceptions.Serious.class, id=3)
                   })
-    String get500() throws test.fixtures.exceptions.Fiery, test.fixtures.exceptions.Banal, test.fixtures.exceptions.Serious;
+    String get500() throws test.fixtures.exceptions.Fiery, test.fixtures.exceptions.Banal, test.fixtures.exceptions.Serious, org.apache.thrift.TException;
 }

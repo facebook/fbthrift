@@ -42,21 +42,21 @@ public interface NestedContainers {
 
     @ThriftMethod(value = "mapList")
     void mapList(
-        @ThriftField(value=1, name="foo", requiredness=Requiredness.NONE) final Map<Integer, List<Integer>> foo);
+        @ThriftField(value=1, name="foo", requiredness=Requiredness.NONE) final Map<Integer, List<Integer>> foo) throws org.apache.thrift.TException;
 
     @ThriftMethod(value = "mapSet")
     void mapSet(
-        @ThriftField(value=1, name="foo", requiredness=Requiredness.NONE) final Map<Integer, Set<Integer>> foo);
+        @ThriftField(value=1, name="foo", requiredness=Requiredness.NONE) final Map<Integer, Set<Integer>> foo) throws org.apache.thrift.TException;
 
     @ThriftMethod(value = "listMap")
     void listMap(
-        @ThriftField(value=1, name="foo", requiredness=Requiredness.NONE) final List<Map<Integer, Integer>> foo);
+        @ThriftField(value=1, name="foo", requiredness=Requiredness.NONE) final List<Map<Integer, Integer>> foo) throws org.apache.thrift.TException;
 
     @ThriftMethod(value = "listSet")
     void listSet(
-        @ThriftField(value=1, name="foo", requiredness=Requiredness.NONE) final List<Set<Integer>> foo);
+        @ThriftField(value=1, name="foo", requiredness=Requiredness.NONE) final List<Set<Integer>> foo) throws org.apache.thrift.TException;
 
     @ThriftMethod(value = "turtles")
     void turtles(
-        @ThriftField(value=1, name="foo", requiredness=Requiredness.NONE) final List<List<Map<Integer, Map<Integer, Set<Integer>>>>> foo);
+        @ThriftField(value=1, name="foo", requiredness=Requiredness.NONE) final List<List<Map<Integer, Map<Integer, Set<Integer>>>>> foo) throws org.apache.thrift.TException;
 }

@@ -24,5 +24,5 @@ public interface MyLeaf extends test.fixtures.inheritance.MyNode {
     }
 
     @ThriftMethod(value = "do_leaf")
-    void doLeaf();
+    void doLeaf() throws org.apache.thrift.TException;
 }

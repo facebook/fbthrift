@@ -24,5 +24,5 @@ public interface MyRoot {
     }
 
     @ThriftMethod(value = "do_root")
-    void doRoot();
+    void doRoot() throws org.apache.thrift.TException;
 }
