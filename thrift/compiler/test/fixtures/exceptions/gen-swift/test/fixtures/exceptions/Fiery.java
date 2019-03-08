@@ -14,7 +14,7 @@ import java.util.*;
 
 @SwiftGenerated
 @ThriftStruct("Fiery")
-public final class Fiery extends Exception {
+public final class Fiery extends RuntimeException {
     private static final long serialVersionUID = 1L;
 
     @ThriftConstructor

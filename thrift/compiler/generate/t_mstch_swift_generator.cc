@@ -35,6 +35,8 @@ class t_mstch_swift_generator : public t_mstch_generator {
             "java/swift",
             parsed_options),
         default_package_(get_option("default_package")),
+        legacy_extend_runtime_exception_(
+            get_option("legacy_extend_runtime_exception") ? true : false),
         namespace_identifier_(
             get_option("use_java_namespace") ? "java" : "java.swift") {
     out_dir_base_ = "gen-swift";
@@ -44,7 +46,7 @@ class t_mstch_swift_generator : public t_mstch_generator {
 
  protected:
   std::unique_ptr<std::string> default_package_;
-
+  const bool legacy_extend_runtime_exception_;
   const std::string namespace_identifier_;
 
   /**
@@ -107,7 +109,7 @@ class t_mstch_swift_generator : public t_mstch_generator {
   mstch::map extend_struct(const t_struct& strct) override {
     mstch::map result{
         {"javaPackage", get_namespace_or_default(*strct.get_program())},
-    };
+        {"extendRuntimeException?", legacy_extend_runtime_exception_}};
     add_java_names(result, strct.get_name());
     return result;
   }

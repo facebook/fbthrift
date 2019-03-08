@@ -30,7 +30,7 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 
 @SwiftGenerated
 @ThriftStruct("{{struct:name}}")
-public final class {{struct:javaCapitalName}}{{#struct:exception?}} extends Exception{{/struct:exception?}} {
+public final class {{struct:javaCapitalName}}{{#struct:exception?}} extends {{#struct:extendRuntimeException?}}RuntimeException{{/struct:extendRuntimeException?}}{{^struct:extendRuntimeException?}}Exception{{/struct:extendRuntimeException?}}{{/struct:exception?}} {
 {{#struct:exception?}}
     private static final long serialVersionUID = 1L;
 
