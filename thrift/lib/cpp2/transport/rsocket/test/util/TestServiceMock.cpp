@@ -179,5 +179,11 @@ TestServiceMock::responseAndStreamThrows(int32_t whichEx) {
   return {1, streamThrows(whichEx)};
 }
 
+apache::thrift::Stream<int32_t> TestServiceMock::requestWithBlob(
+    std::unique_ptr<folly::IOBuf>) {
+  return createStreamGenerator(
+      []() mutable -> folly::Optional<int> { return folly::none; });
+}
+
 } // namespace testservice
 } // namespace testutil

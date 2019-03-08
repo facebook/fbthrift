@@ -433,6 +433,9 @@ RSocketClientChannel::createRequestRpcMetadata(
   if (rpcOptions.getPriority() < concurrency::N_PRIORITIES) {
     metadata->set_priority(static_cast<RpcPriority>(rpcOptions.getPriority()));
   }
+  if (header->getCrc32c().hasValue()) {
+    metadata->set_crc32c(header->getCrc32c().value());
+  }
   metadata->otherMetadata = header->releaseWriteHeaders();
   auto* eh = header->getExtraWriteHeaders();
   if (eh) {

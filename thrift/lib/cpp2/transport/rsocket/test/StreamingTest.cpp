@@ -168,6 +168,52 @@ TEST_P(StreamingTest, CallbackSimpleStream) {
   });
 }
 
+TEST_P(StreamingTest, ChecksummingRequest) {
+  connectToServer([this](std::unique_ptr<StreamServiceAsyncClient> client) {
+    static const int kSize = 32 << 10;
+    std::string asString(kSize, 'a');
+    std::unique_ptr<folly::IOBuf> payload = folly::IOBuf::copyBuffer(asString);
+
+    // First, once "normally"
+    auto futureRet1 = client->future_requestWithBlob(*payload);
+    auto stream1 = std::move(futureRet1).get();
+    auto result1 = std::move(stream1).via(&executor_);
+    auto subscription1 = std::move(result1).subscribe(
+        [](auto) { FAIL() << "Should be empty "; },
+        [](auto ex) { FAIL() << "Should not call onError: " << ex.what(); });
+    std::move(subscription1).join();
+
+    // Corrupt an "inflight" request.
+    // We rely on IOBuf sharing and crc/serialization being on this
+    // thread, before net thread can send, and then corrupt the buffer.
+    folly::Baton<> evbPaused, evbMayResume;
+    executor_.add([&]() {
+      evbPaused.post();
+      evbMayResume.wait();
+    });
+    evbPaused.wait(); // Pause evbase/sending.
+    payload = folly::IOBuf::copyBuffer(asString);
+    folly::IOBuf* rawPtr = payload.get();
+    auto futureRet2 = client->future_requestWithBlob(*payload);
+    rawPtr->writableData()[0] = 'b';
+    evbMayResume.post(); // Unpause
+
+    bool didThrow = false;
+    try {
+      auto stream2 = std::move(futureRet2).get();
+      auto result2 = std::move(stream2).via(&executor_);
+      auto subscription2 = std::move(result2).subscribe(
+          [](auto) { FAIL() << "Should be empty "; },
+          [](auto ex) { FAIL() << "Should not call onError: " << ex.what(); });
+      std::move(subscription2).join();
+    } catch (TApplicationException& ex) {
+      EXPECT_EQ(TApplicationException::CHECKSUM_MISMATCH, ex.getType());
+      didThrow = true;
+    }
+    EXPECT_TRUE(didThrow);
+  });
+}
+
 TEST_P(StreamingTest, DefaultStreamImplementation) {
   connectToServer([&](std::unique_ptr<StreamServiceAsyncClient> client) {
     EXPECT_THROW(

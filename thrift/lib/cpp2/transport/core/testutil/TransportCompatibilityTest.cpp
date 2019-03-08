@@ -689,6 +689,46 @@ void TransportCompatibilityTest::TestRequestResponse_ResponseSizeTooBig() {
   });
 }
 
+void TransportCompatibilityTest::TestRequestResponse_RequestChecksumming() {
+  connectToServer([this](std::unique_ptr<TestServiceAsyncClient> client) {
+    EXPECT_CALL(*handler_.get(), echo_(_));
+
+    // Large enough for IOBuf buffer sharing path.
+    static const int kSize = 32 << 10;
+    std::string asString(kSize, 'a');
+
+    // First make sure it works without corruption.
+    std::unique_ptr<folly::IOBuf> payload = folly::IOBuf::copyBuffer(asString);
+    std::string ret = client->future_echo(*payload).get();
+    EXPECT_EQ(asString, ret);
+
+    // Corrupt an "inflight" request.
+    // We rely on IOBuf sharing and crc/serialization being on this
+    // thread, before evbase can send, and then corrupt the buffer.
+    folly::Baton<> evbPaused, evbMayResume;
+    auto channel = static_cast<ClientChannel*>(client->getChannel());
+    channel->getEventBase()->add([&]() {
+      evbPaused.post();
+      evbMayResume.wait();
+    });
+    evbPaused.wait(); // Pause evbase/sending.
+    payload = folly::IOBuf::copyBuffer(asString);
+    folly::IOBuf* rawPtr = payload.get();
+    auto echoFuture = client->future_echo(*payload);
+    rawPtr->writableData()[0] = 'b';
+    evbMayResume.post(); // Unpause
+
+    bool didThrow = false;
+    try {
+      auto res = std::move(echoFuture).get();
+    } catch (TApplicationException& ex) {
+      EXPECT_EQ(TApplicationException::CHECKSUM_MISMATCH, ex.getType());
+      didThrow = true;
+    }
+    EXPECT_TRUE(didThrow);
+  });
+}
+
 void TransportCompatibilityTest::TestOneway_Simple() {
   connectToServer([this](std::unique_ptr<TestServiceAsyncClient> client) {
     EXPECT_CALL(*handler_.get(), add_(0));
@@ -785,6 +825,38 @@ void TransportCompatibilityTest::TestOneway_ServerQueueTimeout() {
           EXPECT_NO_THROW(client->future_addAfterDelay(100, 5).get());
         }
       });
+}
+
+void TransportCompatibilityTest::TestOneway_Checksumming() {
+  connectToServer([this](std::unique_ptr<TestServiceAsyncClient> client) {
+    EXPECT_CALL(*handler_.get(), onewayLogBlob_(_));
+
+    static const int kSize = 32 << 10; // > IOBuf buf sharing thresh
+    std::string asString(kSize, 'a');
+
+    // Without corruption
+    auto payload = folly::IOBuf::copyBuffer(asString);
+    client->future_onewayLogBlob(*payload).get();
+
+    // With corruption
+    folly::Baton<> evbPaused, evbMayResume;
+    auto channel = static_cast<ClientChannel*>(client->getChannel());
+    channel->getEventBase()->add([&]() {
+      evbPaused.post();
+      evbMayResume.wait();
+    });
+    evbPaused.wait(); // Pause evbase/sending.
+    payload = folly::IOBuf::copyBuffer(asString);
+    folly::IOBuf* rawPtr = payload.get();
+    auto logFuture = client->future_onewayLogBlob(*payload);
+    rawPtr->writableData()[0] = 'b';
+    evbMayResume.post(); // Unpause
+    std::move(logFuture).get();
+    // Unlike request/response case, no exception is thrown here for
+    // a one-way RPC.
+    /* sleep override */
+    std::this_thread::sleep_for(std::chrono::milliseconds(200));
+  });
 }
 
 void TransportCompatibilityTest::TestRequestContextIsPreserved() {

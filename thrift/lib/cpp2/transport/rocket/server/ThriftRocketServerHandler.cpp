@@ -40,6 +40,7 @@
 #include <thrift/lib/cpp2/transport/rocket/server/RocketThriftRequests.h>
 
 #include <thrift/lib/cpp2/transport/rsocket/gen-cpp2/Config_types.h>
+#include <thrift/lib/cpp2/util/Checksum.h>
 
 namespace apache {
 namespace thrift {
@@ -178,9 +179,11 @@ void ThriftRocketServerHandler::handleRequestCommon(
 
   auto data = std::move(payload).data();
   const bool validMetadata = isMetadataValid(*metadata);
+  const bool validChecksum = validMetadata && metadata->crc32c_ref() &&
+      *metadata->crc32c_ref() == checksum::crc32c(*data);
   auto request = makeRequest(std::move(metadata));
 
-  if (validMetadata) {
+  if (validMetadata && validChecksum) {
     const auto protocolId = request->getProtoId();
     auto* const cpp2ReqCtx = request->getRequestContext();
     cpp2Processor_->process(
@@ -190,8 +193,10 @@ void ThriftRocketServerHandler::handleRequestCommon(
         cpp2ReqCtx,
         worker_->getEventBase(),
         threadManager_.get());
-  } else {
+  } else if (!validMetadata) {
     handleRequestWithBadMetadata(std::move(request));
+  } else {
+    handleRequestWithBadChecksum(std::move(request));
   }
 }
 
@@ -202,6 +207,14 @@ void ThriftRocketServerHandler::handleRequestWithBadMetadata(
           TApplicationException::UNSUPPORTED_CLIENT_TYPE,
           "Invalid metadata object"),
       "Corrupted metadata in rsocket request");
+}
+
+void ThriftRocketServerHandler::handleRequestWithBadChecksum(
+    std::unique_ptr<ThriftRequestCore> request) {
+  request->sendErrorWrapped(
+      folly::make_exception_wrapper<TApplicationException>(
+          TApplicationException::CHECKSUM_MISMATCH, "Checksum mismatch"),
+      "Corrupted request");
 }
 
 } // namespace rocket

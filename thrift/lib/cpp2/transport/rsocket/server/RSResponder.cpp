@@ -19,6 +19,7 @@
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 #include <thrift/lib/cpp2/transport/core/ThriftRequest.h>
 #include <thrift/lib/cpp2/transport/rsocket/server/RSThriftRequests.h>
+#include <thrift/lib/cpp2/util/Checksum.h>
 
 namespace apache {
 namespace thrift {
@@ -56,17 +57,32 @@ std::shared_ptr<Cpp2ConnContext> RSResponder::createConnContext() {
 void RSResponder::onThriftRequest(
     std::unique_ptr<ThriftRequestCore> request,
     std::unique_ptr<folly::IOBuf> buf,
-    bool invalidMetadata) {
-  if (UNLIKELY(invalidMetadata)) {
-    LOG(ERROR) << "Invalid metadata object";
-    worker_->getEventBase()->runInEventBaseThread([req = std::move(request)]() {
-      req->sendErrorWrapped(
-          folly::make_exception_wrapper<TApplicationException>(
-              TApplicationException::UNSUPPORTED_CLIENT_TYPE,
-              "invalid metadata object"),
-          "corrupted metadata");
-    });
-    return;
+    ParseStatus parseStatus) {
+  if (UNLIKELY(parseStatus != PARSED_OK)) {
+    if (parseStatus == PARSED_METADATA_ERROR) {
+      LOG(ERROR) << "Invalid metadata object";
+      worker_->getEventBase()->runInEventBaseThread(
+          [req = std::move(request)]() {
+            req->sendErrorWrapped(
+                folly::make_exception_wrapper<TApplicationException>(
+                    TApplicationException::UNSUPPORTED_CLIENT_TYPE,
+                    "invalid metadata object"),
+                "corrupted metadata");
+          });
+      return;
+    }
+
+    if (parseStatus == PARSED_CHECKSUM_MISMATCH) {
+      worker_->getEventBase()->runInEventBaseThread([req =
+                                                         std::move(request)]() {
+        req->sendErrorWrapped(
+            folly::make_exception_wrapper<TApplicationException>(
+                TApplicationException::CHECKSUM_MISMATCH, "checksum mismatch"),
+            "corrupted data");
+      });
+      return;
+    }
+    DCHECK(false);
   }
 
   auto protoId = request->getProtoId();
@@ -86,9 +102,16 @@ void RSResponder::handleRequestResponse(
     std::shared_ptr<yarpl::single::SingleObserver<Payload>> response) noexcept {
   DCHECK(request.metadata);
   auto metadata = detail::deserializeMetadata(*request.metadata);
-  bool invalidMetadata =
-      !(metadata->__isset.protocol && metadata->__isset.name &&
-        metadata->__isset.kind && metadata->__isset.seqId);
+
+  ParseStatus parseStatus = PARSED_OK;
+  if (!(metadata->__isset.protocol && metadata->__isset.name &&
+        metadata->__isset.kind && metadata->__isset.seqId)) {
+    parseStatus = PARSED_METADATA_ERROR;
+  } else if (auto crc32c = metadata->crc32c_ref()) {
+    if (*crc32c != checksum::crc32c(*request.data)) {
+      parseStatus = PARSED_CHECKSUM_MISMATCH;
+    }
+  }
 
   auto singleRequest = std::make_unique<RSSingleRequest>(
       *serverConfigs_,
@@ -98,15 +121,22 @@ void RSResponder::handleRequestResponse(
       std::move(response));
 
   onThriftRequest(
-      std::move(singleRequest), std::move(request.data), invalidMetadata);
+      std::move(singleRequest), std::move(request.data), parseStatus);
 }
 
 void RSResponder::handleFireAndForget(Payload request, StreamId) {
   DCHECK(request.metadata);
   auto metadata = detail::deserializeMetadata(*request.metadata);
-  bool invalidMetadata =
-      !(metadata->__isset.protocol && metadata->__isset.name &&
-        metadata->__isset.kind && metadata->__isset.seqId);
+
+  ParseStatus parseStatus = PARSED_OK;
+  if (!(metadata->__isset.protocol && metadata->__isset.name &&
+        metadata->__isset.kind && metadata->__isset.seqId)) {
+    parseStatus = PARSED_METADATA_ERROR;
+  } else if (auto crc32c = metadata->crc32c_ref()) {
+    if (*crc32c != checksum::crc32c(*request.data)) {
+      parseStatus = PARSED_CHECKSUM_MISMATCH;
+    }
+  }
 
   auto onewayRequest = std::make_unique<RSOneWayRequest>(
       *serverConfigs_,
@@ -122,7 +152,7 @@ void RSResponder::handleFireAndForget(Payload request, StreamId) {
       });
 
   onThriftRequest(
-      std::move(onewayRequest), std::move(request.data), invalidMetadata);
+      std::move(onewayRequest), std::move(request.data), parseStatus);
 }
 
 void RSResponder::handleRequestStream(
@@ -133,9 +163,15 @@ void RSResponder::handleRequestStream(
   auto metadata = detail::deserializeMetadata(*request.metadata);
   request.metadata.reset();
 
-  bool invalidMetadata =
-      !(metadata->__isset.protocol && metadata->__isset.name &&
-        metadata->__isset.kind && metadata->__isset.seqId);
+  ParseStatus parseStatus = PARSED_OK;
+  if (!(metadata->__isset.protocol && metadata->__isset.name &&
+        metadata->__isset.kind && metadata->__isset.seqId)) {
+    parseStatus = PARSED_METADATA_ERROR;
+  } else if (auto crc32c = metadata->crc32c_ref()) {
+    if (*crc32c != checksum::crc32c(*request.data)) {
+      parseStatus = PARSED_CHECKSUM_MISMATCH;
+    }
+  }
 
   auto streamRequest = std::make_unique<RSStreamRequest>(
       *serverConfigs_,
@@ -145,7 +181,7 @@ void RSResponder::handleRequestStream(
       std::move(response));
 
   onThriftRequest(
-      std::move(streamRequest), std::move(request.data), invalidMetadata);
+      std::move(streamRequest), std::move(request.data), parseStatus);
 }
 
 } // namespace thrift

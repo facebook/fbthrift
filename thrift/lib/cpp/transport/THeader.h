@@ -303,6 +303,14 @@ class THeader {
     return minCompressBytes_;
   }
 
+  void setCrc32c(folly::Optional<uint32_t> crc32c) {
+    crc32c_ = crc32c;
+  }
+
+  folly::Optional<uint32_t> getCrc32c() {
+    return crc32c_;
+  }
+
   apache::thrift::concurrency::PRIORITY getCallPriority();
 
   std::chrono::milliseconds getTimeoutFromHeader(
@@ -426,6 +434,9 @@ class THeader {
       END // signal the end of infoIds we can handle
     };
   };
+
+  // CRC32C of message payload for checksum.
+  folly::Optional<uint32_t> crc32c_;
 };
 
 } // namespace transport

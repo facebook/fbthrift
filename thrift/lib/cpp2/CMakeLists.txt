@@ -91,6 +91,7 @@ add_library(
   transport/core/ThriftProcessor.cpp
   transport/core/ThriftClient.cpp
   transport/core/ThriftClientCallback.cpp
+  util/Checksum.cpp
   util/ScopedServerInterfaceThread.cpp
   util/ScopedServerThread.cpp
   ${RpcMetadata-cpp2-SOURCES}

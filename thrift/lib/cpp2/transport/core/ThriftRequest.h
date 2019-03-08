@@ -280,11 +280,18 @@ class ThriftRequestCore : public ResponseChannelRequest {
         return;
       }
 
-      if (kind_ != RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE) {
-        sendThriftResponse(createMetadata(), std::move(exbuf));
-      } else {
-        sendStreamThriftResponse(createMetadata(), std::move(exbuf), {});
-      }
+      switch (kind_) {
+        case RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE:
+        case RpcKind::STREAMING_REQUEST_SINGLE_RESPONSE:
+          sendThriftResponse(createMetadata(), std::move(exbuf));
+          break;
+        case RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE:
+        case RpcKind::STREAMING_REQUEST_STREAMING_RESPONSE:
+          sendStreamThriftResponse(createMetadata(), std::move(exbuf), {});
+          break;
+        default: // Don't send error back for one-way.
+          break;
+      } // 
     });
   }
 

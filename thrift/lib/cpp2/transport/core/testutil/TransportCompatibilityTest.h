@@ -98,6 +98,7 @@ class TransportCompatibilityTest {
   void TestRequestResponse_Connection_CloseNow();
   void TestRequestResponse_ServerQueueTimeout();
   void TestRequestResponse_ResponseSizeTooBig();
+  void TestRequestResponse_RequestChecksumming();
 
   void TestOneway_Simple();
   void TestOneway_WithDelay();
@@ -105,6 +106,7 @@ class TransportCompatibilityTest {
   void TestOneway_UnexpectedException();
   void TestOneway_Connection_CloseNow();
   void TestOneway_ServerQueueTimeout();
+  void TestOneway_Checksumming();
 
   void TestRequestContextIsPreserved();
   void TestBadPayload();

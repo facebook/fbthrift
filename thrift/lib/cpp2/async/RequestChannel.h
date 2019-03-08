@@ -35,6 +35,7 @@
 #include <thrift/lib/cpp2/async/SemiStream.h>
 #include <thrift/lib/cpp2/async/Stream.h>
 #include <thrift/lib/cpp2/protocol/Protocol.h>
+#include <thrift/lib/cpp2/util/Checksum.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
 #include <wangle/deprecated/rx/Subject.h>
 
@@ -517,9 +518,11 @@ void clientSendT(
   folly::IOBufQueue queue(folly::IOBufQueue::cacheChainLength());
   prot->setOutput(&queue, bufSize);
   auto guard = folly::makeGuard([&] { prot->setOutput(nullptr); });
+  size_t crcSkip = 0;
   try {
     ctx->preWrite();
     prot->writeMessageBegin(methodName, apache::thrift::T_CALL, 0);
+    crcSkip = queue.chainLength();
     writefunc(prot);
     prot->writeMessageEnd();
     ::apache::thrift::SerializedMessage smsg;
@@ -532,6 +535,7 @@ void clientSendT(
         folly::exception_wrapper(std::current_exception(), ex));
     throw;
   }
+  header->setCrc32c(apache::thrift::checksum::crc32c(*queue.front(), crcSkip));
 
   if (sync) {
     channel->sendRequestSync(

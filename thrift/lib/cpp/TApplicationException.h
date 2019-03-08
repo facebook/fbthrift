@@ -42,23 +42,23 @@ class TApplicationException : public TException {
   /**
    * Error codes for the various types of exceptions.
    */
-  enum TApplicationExceptionType
-  { UNKNOWN = 0
-  , UNKNOWN_METHOD = 1
-  , INVALID_MESSAGE_TYPE = 2
-  , WRONG_METHOD_NAME = 3
-  , BAD_SEQUENCE_ID = 4
-  , MISSING_RESULT = 5
-  , INTERNAL_ERROR = 6
-  , PROTOCOL_ERROR = 7
-  , INVALID_TRANSFORM = 8
-  , INVALID_PROTOCOL = 9
-  , UNSUPPORTED_CLIENT_TYPE = 10
-  , LOADSHEDDING = 11
-  , TIMEOUT = 12
-  , INJECTED_FAILURE = 13
+  enum TApplicationExceptionType {
+    UNKNOWN = 0,
+    UNKNOWN_METHOD = 1,
+    INVALID_MESSAGE_TYPE = 2,
+    WRONG_METHOD_NAME = 3,
+    BAD_SEQUENCE_ID = 4,
+    MISSING_RESULT = 5,
+    INTERNAL_ERROR = 6,
+    PROTOCOL_ERROR = 7,
+    INVALID_TRANSFORM = 8,
+    INVALID_PROTOCOL = 9,
+    UNSUPPORTED_CLIENT_TYPE = 10,
+    LOADSHEDDING = 11,
+    TIMEOUT = 12,
+    INJECTED_FAILURE = 13,
+    CHECKSUM_MISMATCH = 14,
   };
-
 
   TApplicationException() :
     type_(UNKNOWN) {}
@@ -130,6 +130,8 @@ class TApplicationException : public TException {
           return "TApplicationException: Timeout";
         case INJECTED_FAILURE:
           return "TApplicationException: Injected failure";
+        case CHECKSUM_MISMATCH:
+          return "TApplicationException: Checksum mismatch";
         default:
           return "TApplicationException: (Invalid exception type)";
       };

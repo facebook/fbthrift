@@ -163,6 +163,10 @@ TEST_P(RSCompatibilityTest, RequestResponse_ResponseSizeTooBig) {
   compatibilityTest_->TestRequestResponse_ResponseSizeTooBig();
 }
 
+TEST_P(RSCompatibilityTest, RequestResponse_RequestChecksumming) {
+  compatibilityTest_->TestRequestResponse_RequestChecksumming();
+}
+
 TEST_P(RSCompatibilityTest, Oneway_Simple) {
   compatibilityTest_->TestOneway_Simple();
 }
@@ -218,6 +222,10 @@ TEST_P(RSCompatibilityTest, Oneway_Connection_CloseNow) {
 
 TEST_P(RSCompatibilityTest, Oneway_ServerQueueTimeout) {
   compatibilityTest_->TestOneway_ServerQueueTimeout();
+}
+
+TEST_P(RSCompatibilityTest, Oneway_Checksumming) {
+  compatibilityTest_->TestOneway_Checksumming();
 }
 
 TEST_P(RSCompatibilityTest, RequestContextIsPreserved) {

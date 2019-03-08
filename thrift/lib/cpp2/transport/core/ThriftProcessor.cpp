@@ -24,6 +24,7 @@
 #include <thrift/lib/cpp2/async/ResponseChannel.h>
 #include <thrift/lib/cpp2/server/Cpp2ConnContext.h>
 #include <thrift/lib/cpp2/transport/core/ThriftRequest.h>
+#include <thrift/lib/cpp2/util/Checksum.h>
 
 namespace apache {
 namespace thrift {
@@ -50,6 +51,9 @@ void ThriftProcessor::onThriftRequest(
       !(metadata->__isset.protocol && metadata->__isset.name &&
         metadata->__isset.kind && metadata->__isset.seqId);
 
+  bool invalidChecksum = metadata->crc32c_ref() &&
+      *metadata->crc32c_ref() != apache::thrift::checksum::crc32c(*payload);
+
   auto request = std::make_unique<ThriftRequest>(
       serverConfigs_, channel, std::move(metadata), std::move(connContext));
 
@@ -62,6 +66,16 @@ void ThriftProcessor::onThriftRequest(
               TApplicationException::UNSUPPORTED_CLIENT_TYPE,
               "invalid metadata object"),
           "corrupted metadata");
+    });
+    return;
+  }
+  if (UNLIKELY(invalidChecksum)) {
+    LOG(ERROR) << "Invalid checksum";
+    evb->runInEventBaseThread([request = std::move(request)]() {
+      request->sendErrorWrapped(
+          folly::make_exception_wrapper<TApplicationException>(
+              TApplicationException::CHECKSUM_MISMATCH, "checksum mismatch"),
+          "corrupted request");
     });
     return;
   }

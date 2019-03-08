@@ -469,6 +469,9 @@ RequestRpcMetadata RocketClientChannel::makeRequestRpcMetadata(
     metadata.priority_ref() =
         static_cast<RpcPriority>(rpcOptions.getPriority());
   }
+  if (header->getCrc32c().hasValue()) {
+    metadata.crc32c_ref() = header->getCrc32c().value();
+  }
   metadata.otherMetadata_ref() = header->releaseWriteHeaders();
   auto* eh = header->getExtraWriteHeaders();
   if (eh) {

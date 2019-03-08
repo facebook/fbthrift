@@ -88,7 +88,10 @@ class ThriftRocketServerHandler : public RocketServerHandler {
 
   void handleRequestCommon(Payload&& payload, MakeRequestFunc makeRequest);
 
-  void handleRequestWithBadMetadata(std::unique_ptr<ThriftRequestCore> request);
+  FOLLY_NOINLINE void handleRequestWithBadMetadata(
+      std::unique_ptr<ThriftRequestCore> request);
+  FOLLY_NOINLINE void handleRequestWithBadChecksum(
+      std::unique_ptr<ThriftRequestCore> request);
 };
 
 } // namespace rocket

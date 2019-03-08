@@ -110,6 +110,18 @@ void TestServiceMock::checkPort(int32_t port) {
   CHECK_EQ(port, getConnectionContext()->getPeerAddress()->getPort());
 }
 
+void TestServiceMock::echo(
+    std::string& result,
+    std::unique_ptr<folly::IOBuf> val) {
+  echo_(*val);
+  folly::io::Cursor c(val.get());
+  result = c.readFixedString(val->computeChainDataLength());
+}
+
+void TestServiceMock::onewayLogBlob(std::unique_ptr<folly::IOBuf> val) {
+  onewayLogBlob_(*val);
+}
+
 IntermHeaderService::IntermHeaderService(
     std::string const& host,
     int16_t port) {

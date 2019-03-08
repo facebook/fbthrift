@@ -28,4 +28,8 @@ service TestService {
   string hello(1: string name);
 
   void checkPort(1: i32 port);
+
+  string echo(1: binary (cpp2.type = "folly::IOBuf") val);
+
+  oneway void onewayLogBlob(1: binary (cpp2.type = "folly::IOBuf") val);
 }

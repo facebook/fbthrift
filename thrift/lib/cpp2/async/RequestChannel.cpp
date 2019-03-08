@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 #include <thrift/lib/cpp2/async/RequestChannel.h>
 
 namespace apache {
@@ -118,5 +117,6 @@ uint32_t RequestChannel::sendStreamRequest(
       std::move(ctx)));
   return 0;
 }
+
 } // namespace thrift
 } // namespace apache

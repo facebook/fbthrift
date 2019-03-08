@@ -54,10 +54,16 @@ class RSResponder : public rsocket::RSocketResponderCore {
           response) noexcept override;
 
  private:
+  enum ParseStatus {
+    PARSED_OK = 0,
+    PARSED_METADATA_ERROR = 1,
+    PARSED_CHECKSUM_MISMATCH = 2,
+  };
+
   void onThriftRequest(
       std::unique_ptr<ThriftRequestCore> request,
       std::unique_ptr<folly::IOBuf> buf,
-      bool invalidMetadata);
+      ParseStatus parseStatus);
 
  private:
   std::shared_ptr<Cpp2ConnContext> createConnContext();

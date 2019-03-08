@@ -87,6 +87,8 @@ struct RequestRpcMetadata {
   9: optional string host;
   // The URL supporting the RPC.  Needed for some HTTP2 transports.
   10: optional string url;
+  // The CRC32C of the RPC message.
+  11: optional i32 (cpp.type = "std::uint32_t") crc32c;
 }
 
 // RPC metadata sent from the server to the client.  The lifetime of

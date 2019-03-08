@@ -51,6 +51,9 @@ class TestServiceMock : public StreamServiceSvIf {
   apache::thrift::ResponseAndStream<int32_t, Message> responseAndStreamThrows(
       int32_t whichEx) override;
 
+  apache::thrift::Stream<int32_t> requestWithBlob(
+      std::unique_ptr<folly::IOBuf> val) override;
+
  protected:
   folly::ScopedEventBaseThread executor_;
 
