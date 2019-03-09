@@ -1,6 +1,6 @@
 {{!
 
-  Copyright 2016 Facebook, Inc.
+  Copyright 2019 Facebook, Inc.
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -14,6 +14,15 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-}}{{#struct:union?}}{{> Union}}{{/struct:union?}}{{!
-}}{{#struct:exception?}}{{> Exception}}{{/struct:exception?}}{{!
-}}{{#struct:plain?}}{{> Struct}}{{/struct:plain?}}
+}}
+    @ThriftConstructor
+    public {{struct:javaCapitalName}}(
+        {{#struct:fields}}
+        {{> ThriftFieldAnnotation}} final {{> FieldType}} {{field:javaName}}{{^last?}},{{/last?}}
+        {{/struct:fields}}
+    ) {
+        {{#struct:fields}}
+        this.{{field:javaName}} = {{field:javaName}};
+        {{/struct:fields}}
+    }
+{{! terminate with newline }}

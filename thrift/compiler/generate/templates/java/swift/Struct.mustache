@@ -23,54 +23,15 @@ import com.facebook.swift.codec.*;
 import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.codec.ThriftField.Recursiveness;
 import java.util.*;
-{{^struct:exception?}}
 
 import static com.google.common.base.MoreObjects.toStringHelper;
-{{/struct:exception?}}
 
 @SwiftGenerated
 @ThriftStruct("{{struct:name}}")
-public final class {{struct:javaCapitalName}}{{#struct:exception?}} extends {{#struct:extendRuntimeException?}}RuntimeException{{/struct:extendRuntimeException?}}{{^struct:extendRuntimeException?}}Exception{{/struct:extendRuntimeException?}}{{/struct:exception?}} {
-{{#struct:exception?}}
-    private static final long serialVersionUID = 1L;
+public final class {{struct:javaCapitalName}} {
+{{> ThriftConstructor}}
 
-{{/struct:exception?}}
-    @ThriftConstructor
-    public {{struct:javaCapitalName}}(
-        {{#struct:fields}}
-        {{> ThriftFieldAnnotation}} final {{> FieldType}} {{field:javaName}}{{^last?}},{{/last?}}
-        {{/struct:fields}}
-    ) {
-        {{#struct:fields}}
-        this.{{field:javaName}} = {{field:javaName}};
-        {{/struct:fields}}
-    }
-
-    public static class Builder {
-        {{#struct:fields}}
-        private {{> FieldType}} {{field:javaName}};
-
-        public Builder set{{field:javaCapitalName}}({{> FieldType}} {{field:javaName}}) {
-            this.{{field:javaName}} = {{field:javaName}};
-            return this;
-        }
-        {{/struct:fields}}
-
-        public Builder() { }
-        public Builder({{struct:javaCapitalName}} other) {
-            {{#struct:fields}}
-            this.{{field:javaName}} = other.{{field:javaName}};
-            {{/struct:fields}}
-        }
-
-        public {{struct:javaCapitalName}} build() {
-            return new {{struct:javaCapitalName}} (
-                {{#struct:fields}}
-                this.{{field:javaName}}{{^last?}},{{/last?}}
-                {{/struct:fields}}
-            );
-        }
-    }
+{{> StructBuilder}}
     {{#struct:fields}}
 
     private final {{> FieldType}} {{field:javaName}};
@@ -79,7 +40,6 @@ public final class {{struct:javaCapitalName}}{{#struct:exception?}} extends {{#s
 
     public {{> FieldType}} {{#field:type}}{{#type:bool?}}is{{/type:bool?}}{{^type:bool?}}get{{/type:bool?}}{{/field:type}}{{field:javaCapitalName}}() { return {{field:javaName}}; }
     {{/struct:fields}}
-    {{^struct:exception?}}
 
     @Override
     public String toString() {
@@ -119,5 +79,4 @@ public final class {{struct:javaCapitalName}}{{#struct:exception?}} extends {{#s
             {{/struct:fields}}
         });
     }
-    {{/struct:exception?}}
 }
