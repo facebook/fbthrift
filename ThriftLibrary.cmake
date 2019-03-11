@@ -49,6 +49,7 @@ thrift_generate(
   "${file_path}"
   "${output_path}"
   "${include_prefix}"
+  "${ARGN}"
 )
 bypass_source_check(${${file_name}-${language}-SOURCES})
 add_library(
@@ -107,6 +108,7 @@ thrift_object(
   "${file_path}"
   "${output_path}"
   "${include_prefix}"
+  "${ARGN}"
 )
 add_library(
   "${file_name}-${language}"
@@ -157,6 +159,24 @@ endmacro()
 #
 
 macro(thrift_generate file_name services language options file_path output_path include_prefix)
+
+# Parse optional arguments
+set(thrift_include_directories)
+
+set(nextarg)
+foreach(arg ${ARGN})
+  if ("${arg}" STREQUAL "THRIFT_INCLUDE_DIRECTORIES")
+    set(nextarg "THRIFT_INCLUDE_DIRECTORIES")
+  else()
+    if("${nextarg}" STREQUAL "THRIFT_INCLUDE_DIRECTORIES")
+      list(APPEND thrift_include_directories "-I" "${arg}")
+    else()
+      message(FATAL_ERROR "Unexpected parameter '${arg}' call to"
+        "thrift_generate")
+    endif()
+  endif()
+endforeach()
+
 set("${file_name}-${language}-HEADERS"
   ${output_path}/gen-${language}/${file_name}_constants.h
   ${output_path}/gen-${language}/${file_name}_data.h
@@ -202,6 +222,7 @@ add_custom_command(
   COMMAND ${THRIFT1}
     --gen "${gen_language}:${options}${include_prefix_text}"
     -o ${output_path}
+    ${thrift_include_directories}
     --templates ${THRIFT_TEMPLATES}
     "${file_path}/${file_name}.thrift"
   DEPENDS ${THRIFT1}
