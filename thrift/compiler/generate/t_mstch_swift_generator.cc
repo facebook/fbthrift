@@ -17,9 +17,11 @@
 
 #include <boost/algorithm/string/predicate.hpp>
 #include <boost/algorithm/string/replace.hpp>
+#include <thrift/compiler/lib/java/util.h>
 
 #include <thrift/compiler/generate/t_mstch_generator.h>
 
+namespace {
 using namespace std;
 
 class t_mstch_swift_generator : public t_mstch_generator {
@@ -74,10 +76,9 @@ class t_mstch_swift_generator : public t_mstch_generator {
       const std::string& tpl_path,
       const std::vector<T*>& items) {
     for (const T* item : items) {
-      auto package_dir =
-          package_to_path(get_namespace_or_default(*item->get_program()));
-      auto filename = mangle_java_name(item->get_name(), true) + ".java";
-
+      auto package_dir = boost::filesystem::path{java::package_to_path(
+          get_namespace_or_default(*item->get_program()))};
+      auto filename = java::mangle_java_name(item->get_name(), true) + ".java";
       render_to_file(*item, tpl_path, package_dir / filename);
     }
   }
@@ -87,7 +88,8 @@ class t_mstch_swift_generator : public t_mstch_generator {
       // Only generate Constants.java if we actually have constants
       return;
     }
-    auto package_dir = package_to_path(get_namespace_or_default(prog));
+    auto package_dir = boost::filesystem::path{
+        java::package_to_path(get_namespace_or_default(prog))};
     render_to_file(prog, "Constants", package_dir / "Constants.java");
   }
 
@@ -123,13 +125,13 @@ class t_mstch_swift_generator : public t_mstch_generator {
   }
 
   mstch::map extend_function(const t_function& func) override {
-    mstch::map result{};
+    mstch::map result;
     add_java_names(result, func.get_name());
     return result;
   }
 
   mstch::map extend_field(const t_field& field) override {
-    mstch::map result{};
+    mstch::map result;
     add_java_names(result, field.get_name());
     return result;
   }
@@ -143,7 +145,7 @@ class t_mstch_swift_generator : public t_mstch_generator {
   }
 
   mstch::map extend_enum_value(const t_enum_value& value) override {
-    mstch::map result{};
+    mstch::map result;
     add_java_names(result, value.get_name());
     return result;
   }
@@ -162,100 +164,21 @@ class t_mstch_swift_generator : public t_mstch_generator {
     };
   }
 
-  /** Static Helpers **/
-
   /**
    * Extends the map to contain elements for the java-mangled versions
    * of a Thrift identifier.
    * @modifies - map
    */
   static void add_java_names(mstch::map& map, const std::string& rawName) {
-    map.emplace("javaName", mangle_java_name(rawName, false));
-    map.emplace("javaCapitalName", mangle_java_name(rawName, true));
-    map.emplace("javaConstantName", mangle_java_constant_name(rawName));
-  }
-
-  /**
-   * Mangles an identifier for use in generated Java. Ported from
-   * TemplateContextGenerator.java::mangleJavaName
-   * from the java implementation of the swift generator.
-   * http://tinyurl.com/z7vocup
-   */
-  static std::string mangle_java_name(const std::string& ref, bool capitalize) {
-    std::ostringstream res;
-    bool upcase = capitalize;
-    bool acronym =
-        ref.size() > 1 && std::isupper(ref[0]) && std::isupper(ref[1]);
-    bool downcase = !capitalize && !acronym;
-    for (typename std::string::size_type i = 0; i < ref.size(); ++i) {
-      if (ref[i] == '_') {
-        upcase = true;
-        continue;
-      } else {
-        char ch = ref[i];
-        ch = downcase ? std::tolower(ch) : ch;
-        ch = upcase ? std::toupper(ch) : ch;
-        res << ch;
-        upcase = false;
-        downcase = false;
-      }
-    }
-    return res.str();
-  }
-
-  /**
-   * Mangles an identifier for use in generated Java as a constant.
-   * Ported from TemplateContextGenerator.java::mangleJavaConstantName
-   * from the java implementation of the swift generator.
-   * http://tinyurl.com/z7vocup
-   */
-  static std::string mangle_java_constant_name(const std::string& ref) {
-    std::ostringstream res;
-    bool lowercase = false;
-    for (typename std::string::size_type i = 0; i < ref.size(); ++i) {
-      char ch = ref[i];
-      if (std::isupper(ch)) {
-        if (lowercase) {
-          res << '_';
-        }
-        res << static_cast<char>(std::toupper(ch));
-        lowercase = false;
-      } else if (std::islower(ch)) {
-        res << static_cast<char>(std::toupper(ch));
-        lowercase = true;
-      } else {
-        // Not a letter, just emit it
-        res << ch;
-      }
-    }
-    return res.str();
-  }
-
-  /**
-   * Converts a java package string to the path containing the source for
-   * that package. Example: "foo.bar.baz" -> "foo/bar/baz"
-   */
-  boost::filesystem::path package_to_path(std::string package) {
-    if (package.empty()) {
-      throw std::runtime_error{
-          "No Java package specified and no default given"};
-    }
-    if (boost::algorithm::contains(package, "/")) {
-      std::ostringstream err;
-      err << "\"" << package << "\" is not a valid Java package name";
-      throw std::runtime_error{err.str()};
-    }
-    boost::algorithm::replace_all(package, ".", "/");
-    return boost::filesystem::path{package};
+    map.emplace("javaName", java::mangle_java_name(rawName, false));
+    map.emplace("javaCapitalName", java::mangle_java_name(rawName, true));
+    map.emplace("javaConstantName", java::mangle_java_constant_name(rawName));
   }
 };
 
 void t_mstch_swift_generator::generate_program() {
   // disable mstch escaping
   mstch::config::escape = [](const std::string s) { return s; };
-
-  // Load templates
-  auto& templates = get_template_map();
 
   generate_items("Object", get_program()->get_objects());
 
@@ -265,5 +188,5 @@ void t_mstch_swift_generator::generate_program() {
 
   generate_constants(*get_program());
 }
-
+} // namespace
 THRIFT_REGISTER_GENERATOR(mstch_swift, "Java Swift", "");

@@ -58,6 +58,7 @@ add_library(
   compiler_lib
 
   lib/cpp2/util.cc
+  lib/java/util.cc
 )
 target_link_libraries(
   compiler_lib
