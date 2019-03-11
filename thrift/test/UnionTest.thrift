@@ -19,6 +19,7 @@
 
 namespace cpp thrift.test.debug
 namespace py thrift.test.UnionTest
+namespace java thrift.test
 
 struct OneOfEach {
   // make at least one field of a struct contained in a union required
