@@ -34,6 +34,8 @@ using apache::thrift::test::CoroutineSvNull;
 using apache::thrift::test::SumRequest;
 using apache::thrift::test::SumResponse;
 
+#if FOLLY_HAS_COROUTINES
+
 const static int kNoParameterReturnValue = 123;
 static int voidReturnValue;
 
@@ -111,3 +113,5 @@ class CoroutineServiceHandler : virtual public CoroutineSvIf {
 };
 
 #include "thrift/lib/cpp2/test/CoroutineCommonTests.h"
+
+#endif
