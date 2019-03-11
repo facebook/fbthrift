@@ -21,12 +21,12 @@ public final class Constants {
 
     public static final Map<String, Integer> char2ascii = ImmutableMap.<String, Integer>builder()
         .put("'", 39)
-        .put(""", 34)
+        .put("\"", 34)
         .put("\\", 92)
-        .put("\x61", 97)
+        .put("\u0061", 97)
         .build();
 
-    public static final String escaped_a = "\x61";
+    public static final String escaped_a = "\u0061";
 
     public static final test.fixtures.lazy_constants.Internship instagram = ;
 
@@ -44,7 +44,7 @@ public final class Constants {
 
     public static final String name = "Mark Zuckerberg";
 
-    public static final String quotationMark = """;
+    public static final String quotationMark = "\"";
 
     public static final List<Map<String, Integer>> states = ImmutableList.<Map<String, Integer>>builder()
         .add(ImmutableMap.<String, Integer>builder()

@@ -164,6 +164,15 @@ class t_mstch_swift_generator : public t_mstch_generator {
     };
   }
 
+  mstch::map extend_const_value(const t_const_value& const_value) override {
+    mstch::map result;
+    if (const_value.get_type() == t_const_value::CV_STRING) {
+      result.emplace(
+          "quotedString", java::quote_java_string(const_value.get_string()));
+    }
+    return result;
+  }
+
   /**
    * Extends the map to contain elements for the java-mangled versions
    * of a Thrift identifier.

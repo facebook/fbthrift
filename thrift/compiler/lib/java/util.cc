@@ -20,6 +20,7 @@
  */
 
 #include <thrift/compiler/lib/java/util.h>
+#include <folly/CppAttributes.h>
 
 namespace apache {
 namespace thrift {
@@ -76,6 +77,58 @@ std::string mangle_java_constant_name(const std::string& ref) {
     }
   }
   return res.str();
+}
+
+std::string quote_java_string(const std::string& unescaped) {
+  std::ostringstream quoted;
+  quoted << '\"';
+  for (std::string::size_type i = 0; i < unescaped.size();) {
+    switch (unescaped[i]) {
+      case '\\': {
+        quoted << unescaped[i];
+        ++i;
+        assert(i <= unescaped.size());
+        if (i == unescaped.size()) {
+          throw std::runtime_error(
+              "compiler error: leading backslash missing escape sequence: " +
+              unescaped);
+        }
+        if (unescaped[i] == 'x') {
+          auto end = unescaped.find_first_not_of("0123456789abcdefABCDEF", ++i);
+          if (end == std::string::npos) {
+            end = unescaped.size();
+          }
+          if (end == i) {
+            throw std::runtime_error(
+                "compiler error: missing hexadecimal character code in escape sequence: " +
+                unescaped);
+          }
+          assert(i < end);
+          if (end > i + 2) {
+            end = i + 2;
+          }
+          quoted << 'u';
+          for (auto n = 4 - (end - i); n--;) {
+            quoted << '0';
+          }
+          quoted.write(std::next(unescaped.data(), i), end - i);
+          i = end;
+        } else {
+          quoted << unescaped[i++];
+        }
+        break;
+      }
+      case '"':
+        quoted << '\\';
+        FOLLY_FALLTHROUGH;
+      default:
+        quoted << unescaped[i];
+        ++i;
+    }
+  }
+  quoted << '\"';
+
+  return quoted.str();
 }
 
 std::string package_to_path(std::string package) {

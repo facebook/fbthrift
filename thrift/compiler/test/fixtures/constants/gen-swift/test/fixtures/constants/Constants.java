@@ -21,9 +21,9 @@ public final class Constants {
 
     public static final Map<String, Integer> char2ascii = ImmutableMap.<String, Integer>builder()
         .put("'", 39)
-        .put(""", 34)
+        .put("\"", 34)
         .put("\\", 92)
-        .put("\x61", 97)
+        .put("\u0061", 97)
         .build();
 
     public static final Map<Integer, Integer> empty_int_int_map = ImmutableMap.<Integer, Integer>builder()
@@ -52,25 +52,25 @@ public final class Constants {
     public static final Map<String, String> empty_string_string_map = ImmutableMap.<String, String>builder()
         .build();
 
-    public static final String escaped_a = "\x61";
+    public static final String escaped_a = "\u0061";
 
     public static final List<String> escaped_strings = ImmutableList.<String>builder()
-        .add("\x61")
-        .add("\xab")
-        .add("\x6a")
-        .add("\xa6")
-        .add("\x61yyy")
-        .add("\xabyyy")
-        .add("\x6ayyy")
-        .add("\xa6yyy")
-        .add("zzz\x61")
-        .add("zzz\xab")
-        .add("zzz\x6a")
-        .add("zzz\xa6")
-        .add("zzz\x61yyy")
-        .add("zzz\xabyyy")
-        .add("zzz\x6ayyy")
-        .add("zzz\xa6yyy")
+        .add("\u0061")
+        .add("\u00ab")
+        .add("\u006a")
+        .add("\u00a6")
+        .add("\u0061yyy")
+        .add("\u00abyyy")
+        .add("\u006ayyy")
+        .add("\u00a6yyy")
+        .add("zzz\u0061")
+        .add("zzz\u00ab")
+        .add("zzz\u006a")
+        .add("zzz\u00a6")
+        .add("zzz\u0061yyy")
+        .add("zzz\u00abyyy")
+        .add("zzz\u006ayyy")
+        .add("zzz\u00a6yyy")
         .build();
 
     public static final boolean false_c = false;
@@ -101,7 +101,7 @@ public final class Constants {
 
     public static final test.fixtures.constants.Struct3 pod_3 = ;
 
-    public static final String quotationMark = """;
+    public static final String quotationMark = "\"";
 
     public static final List<Map<String, Integer>> states = ImmutableList.<Map<String, Integer>>builder()
         .add(ImmutableMap.<String, Integer>builder()
