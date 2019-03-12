@@ -160,21 +160,15 @@ endmacro()
 
 macro(thrift_generate file_name services language options file_path output_path include_prefix)
 
-# Parse optional arguments
-set(thrift_include_directories)
+cmake_parse_arguments(THRIFT_GENERATE   # Prefix
+  "" # Options
+  "" # One Value args
+  "THRIFT_INCLUDE_DIRECTORIES" # Multi-value args
+  "${ARGN}")
 
-set(nextarg)
-foreach(arg ${ARGN})
-  if ("${arg}" STREQUAL "THRIFT_INCLUDE_DIRECTORIES")
-    set(nextarg "THRIFT_INCLUDE_DIRECTORIES")
-  else()
-    if("${nextarg}" STREQUAL "THRIFT_INCLUDE_DIRECTORIES")
-      list(APPEND thrift_include_directories "-I" "${arg}")
-    else()
-      message(FATAL_ERROR "Unexpected parameter '${arg}' call to"
-        "thrift_generate")
-    endif()
-  endif()
+set(thrift_include_directories)
+foreach(dir ${THRIFT_GENERATE_THRIFT_INCLUDE_DIRECTORIES})
+  list(APPEND thrift_include_directories "-I" "${dir}")
 endforeach()
 
 set("${file_name}-${language}-HEADERS"
