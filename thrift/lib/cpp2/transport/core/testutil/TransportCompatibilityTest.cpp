@@ -705,18 +705,19 @@ void TransportCompatibilityTest::TestRequestResponse_RequestChecksumming() {
     // Corrupt an "inflight" request.
     // We rely on IOBuf sharing and crc/serialization being on this
     // thread, before evbase can send, and then corrupt the buffer.
-    folly::Baton<> evbPaused, evbMayResume;
+    auto evbPaused = std::make_shared<folly::Baton<>>();
+    auto evbMayResume = std::make_shared<folly::Baton<>>();
     auto channel = static_cast<ClientChannel*>(client->getChannel());
-    channel->getEventBase()->add([&]() {
-      evbPaused.post();
-      evbMayResume.wait();
+    channel->getEventBase()->add([=]() {
+      evbPaused->post();
+      evbMayResume->wait();
     });
-    evbPaused.wait(); // Pause evbase/sending.
+    evbPaused->wait(); // Pause evbase/sending.
     payload = folly::IOBuf::copyBuffer(asString);
     folly::IOBuf* rawPtr = payload.get();
     auto echoFuture = client->future_echo(*payload);
     rawPtr->writableData()[0] = 'b';
-    evbMayResume.post(); // Unpause
+    evbMayResume->post(); // Unpause
 
     bool didThrow = false;
     try {
@@ -839,18 +840,19 @@ void TransportCompatibilityTest::TestOneway_Checksumming() {
     client->future_onewayLogBlob(*payload).get();
 
     // With corruption
-    folly::Baton<> evbPaused, evbMayResume;
+    auto evbPaused = std::make_shared<folly::Baton<>>();
+    auto evbMayResume = std::make_shared<folly::Baton<>>();
     auto channel = static_cast<ClientChannel*>(client->getChannel());
     channel->getEventBase()->add([&]() {
-      evbPaused.post();
-      evbMayResume.wait();
+      evbPaused->post();
+      evbMayResume->wait();
     });
-    evbPaused.wait(); // Pause evbase/sending.
+    evbPaused->wait(); // Pause evbase/sending.
     payload = folly::IOBuf::copyBuffer(asString);
     folly::IOBuf* rawPtr = payload.get();
     auto logFuture = client->future_onewayLogBlob(*payload);
     rawPtr->writableData()[0] = 'b';
-    evbMayResume.post(); // Unpause
+    evbMayResume->post(); // Unpause
     std::move(logFuture).get();
     // Unlike request/response case, no exception is thrown here for
     // a one-way RPC.
