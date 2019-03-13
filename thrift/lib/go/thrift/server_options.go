@@ -27,8 +27,9 @@ import (
 
 // ServerOptions is options needed to run a thrift server
 type ServerOptions struct {
-	quit chan struct{}
-	log  *log.Logger
+	quit        chan struct{}
+	log         *log.Logger
+	interceptor Interceptor
 
 	serverTransport        ServerTransport
 	inputTransportFactory  TransportFactory
@@ -88,6 +89,13 @@ func Logger(log *log.Logger) func(*ServerOptions) {
 	}
 }
 
+// WithInterceptor sets the interceptor for the server
+func WithInterceptor(interceptor Interceptor) func(*ServerOptions) {
+	return func(server *ServerOptions) {
+		server.interceptor = interceptor
+	}
+}
+
 func defaultServerOptions(serverTransport ServerTransport) *ServerOptions {
 	return &ServerOptions{
 		serverTransport:        serverTransport,
@@ -95,7 +103,7 @@ func defaultServerOptions(serverTransport ServerTransport) *ServerOptions {
 		outputTransportFactory: NewTransportFactory(),
 		inputProtocolFactory:   NewBinaryProtocolFactoryDefault(),
 		outputProtocolFactory:  NewBinaryProtocolFactoryDefault(),
-		quit: make(chan struct{}, 1),
-		log:  log.New(os.Stderr, "", log.LstdFlags),
+		quit:                   make(chan struct{}, 1),
+		log:                    log.New(os.Stderr, "", log.LstdFlags),
 	}
 }

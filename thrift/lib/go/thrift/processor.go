@@ -145,13 +145,7 @@ func ProcessContext(ctx context.Context, processor ProcessorContext, iprot, opro
 		}
 		// for ONEWAY, we have no way to report that the processing failed.
 		if messageType != ONEWAY {
-			if e2 := oprot.WriteMessageBegin(name, EXCEPTION, seqID); e2 != nil {
-				return false, e2
-			} else if e2 := err.Write(oprot); e2 != nil {
-				return false, e2
-			} else if e2 := oprot.WriteMessageEnd(); e2 != nil {
-				return false, e2
-			} else if e2 := oprot.Flush(); e2 != nil {
+			if e2 := sendException(oprot, name, seqID, err); e2 != nil {
 				return false, e2
 			}
 		}

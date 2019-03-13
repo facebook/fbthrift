@@ -145,3 +145,18 @@ func (e *applicationException) Write(oprot Protocol) (err error) {
 	err = oprot.WriteStructEnd()
 	return
 }
+
+// sendException is a utility function to send the exception for the specified
+// method.
+func sendException(oprot Protocol, name string, seqID int32, err ApplicationException) error {
+	if e2 := oprot.WriteMessageBegin(name, EXCEPTION, seqID); e2 != nil {
+		return e2
+	} else if e2 := err.Write(oprot); e2 != nil {
+		return e2
+	} else if e2 := oprot.WriteMessageEnd(); e2 != nil {
+		return e2
+	} else if e2 := oprot.Flush(); e2 != nil {
+		return e2
+	}
+	return nil
+}

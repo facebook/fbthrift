@@ -278,8 +278,9 @@ func (p *SimpleServer) processRequests(ctx context.Context, client Transport) er
 	if outputTransport != nil {
 		defer outputTransport.Close()
 	}
+	intProcessor := WrapInterceptorContext(p.interceptor, processor)
 	for {
-		keepOpen, exc := ProcessContext(ctx, processor, inputProtocol, outputProtocol)
+		keepOpen, exc := ProcessContext(ctx, intProcessor, inputProtocol, outputProtocol)
 		if exc != nil {
 			outputProtocol.Flush()
 			return exc

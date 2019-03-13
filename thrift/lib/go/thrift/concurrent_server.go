@@ -92,6 +92,7 @@ func (p *ConcurrentServer) processRequests(ctx context.Context, client Transport
 	if outputTransport != nil {
 		defer outputTransport.Close()
 	}
+	intProcessor := WrapInterceptorContext(p.interceptor, processor)
 
 	// WARNING: This server implementation has a host of problems, and is included
 	// to preserve previous behavior.  If you really want a production quality thrift
@@ -115,7 +116,7 @@ func (p *ConcurrentServer) processRequests(ctx context.Context, client Transport
 			}
 			return err
 		}
-		pfunc, err := processor.GetProcessorFunctionContext(name)
+		pfunc, err := intProcessor.GetProcessorFunctionContext(name)
 		if pfunc == nil || err != nil {
 			if err == nil {
 				err = fmt.Errorf("no such function: %q", name)
