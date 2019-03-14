@@ -13,6 +13,16 @@ struct Automobile {
   5: Drivers drivers;
 }
 
+// Test structs as map keys
+struct MapKey {
+  1: i64 num;
+  2: string strval;
+}
+
+struct MapContainer {
+  1: map<MapKey, string> mapval;
+}
+
 typedef Automobile Car
 
 service Finder {

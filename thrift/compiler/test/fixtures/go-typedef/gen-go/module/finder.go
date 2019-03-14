@@ -110,16 +110,16 @@ func (p *FinderClient) recvByPlate() (value *Automobile, err error) {
     return
   }
   if mTypeId == thrift.EXCEPTION {
-    error3 := thrift.NewApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
-    var error4 error
-    error4, err = error3.Read(iprot)
+    error5 := thrift.NewApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
+    var error6 error
+    error6, err = error5.Read(iprot)
     if err != nil {
       return
     }
     if err = iprot.ReadMessageEnd(); err != nil {
       return
     }
-    err = error4
+    err = error6
     return
   }
   if mTypeId != thrift.REPLY {
@@ -186,16 +186,16 @@ func (p *FinderClient) recvAliasByPlate() (value *Car, err error) {
     return
   }
   if mTypeId == thrift.EXCEPTION {
-    error5 := thrift.NewApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
-    var error6 error
-    error6, err = error5.Read(iprot)
+    error7 := thrift.NewApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
+    var error8 error
+    error8, err = error7.Read(iprot)
     if err != nil {
       return
     }
     if err = iprot.ReadMessageEnd(); err != nil {
       return
     }
-    err = error6
+    err = error8
     return
   }
   if mTypeId != thrift.REPLY {
@@ -262,16 +262,16 @@ func (p *FinderClient) recvPreviousPlate() (value Plate, err error) {
     return
   }
   if mTypeId == thrift.EXCEPTION {
-    error7 := thrift.NewApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
-    var error8 error
-    error8, err = error7.Read(iprot)
+    error9 := thrift.NewApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
+    var error10 error
+    error10, err = error9.Read(iprot)
     if err != nil {
       return
     }
     if err = iprot.ReadMessageEnd(); err != nil {
       return
     }
-    err = error8
+    err = error10
     return
   }
   if mTypeId != thrift.REPLY {
@@ -370,16 +370,16 @@ func (p *FinderThreadsafeClient) recvByPlate() (value *Automobile, err error) {
     return
   }
   if mTypeId == thrift.EXCEPTION {
-    error9 := thrift.NewApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
-    var error10 error
-    error10, err = error9.Read(iprot)
+    error11 := thrift.NewApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
+    var error12 error
+    error12, err = error11.Read(iprot)
     if err != nil {
       return
     }
     if err = iprot.ReadMessageEnd(); err != nil {
       return
     }
-    err = error10
+    err = error12
     return
   }
   if mTypeId != thrift.REPLY {
@@ -448,16 +448,16 @@ func (p *FinderThreadsafeClient) recvAliasByPlate() (value *Car, err error) {
     return
   }
   if mTypeId == thrift.EXCEPTION {
-    error11 := thrift.NewApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
-    var error12 error
-    error12, err = error11.Read(iprot)
+    error13 := thrift.NewApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
+    var error14 error
+    error14, err = error13.Read(iprot)
     if err != nil {
       return
     }
     if err = iprot.ReadMessageEnd(); err != nil {
       return
     }
-    err = error12
+    err = error14
     return
   }
   if mTypeId != thrift.REPLY {
@@ -526,16 +526,16 @@ func (p *FinderThreadsafeClient) recvPreviousPlate() (value Plate, err error) {
     return
   }
   if mTypeId == thrift.EXCEPTION {
-    error13 := thrift.NewApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
-    var error14 error
-    error14, err = error13.Read(iprot)
+    error15 := thrift.NewApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
+    var error16 error
+    error16, err = error15.Read(iprot)
     if err != nil {
       return
     }
     if err = iprot.ReadMessageEnd(); err != nil {
       return
     }
-    err = error14
+    err = error16
     return
   }
   if mTypeId != thrift.REPLY {
@@ -575,11 +575,11 @@ func (p *FinderProcessor) ProcessorMap() map[string]thrift.ProcessorFunction {
 }
 
 func NewFinderProcessor(handler Finder) *FinderProcessor {
-  self15 := &FinderProcessor{handler:handler, processorMap:make(map[string]thrift.ProcessorFunction)}
-  self15.processorMap["byPlate"] = &finderProcessorByPlate{handler:handler}
-  self15.processorMap["aliasByPlate"] = &finderProcessorAliasByPlate{handler:handler}
-  self15.processorMap["previousPlate"] = &finderProcessorPreviousPlate{handler:handler}
-  return self15
+  self17 := &FinderProcessor{handler:handler, processorMap:make(map[string]thrift.ProcessorFunction)}
+  self17.processorMap["byPlate"] = &finderProcessorByPlate{handler:handler}
+  self17.processorMap["aliasByPlate"] = &finderProcessorAliasByPlate{handler:handler}
+  self17.processorMap["previousPlate"] = &finderProcessorPreviousPlate{handler:handler}
+  return self17
 }
 
 type finderProcessorByPlate struct {

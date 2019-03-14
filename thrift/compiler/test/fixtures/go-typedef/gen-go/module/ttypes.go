@@ -296,6 +296,230 @@ func (p *Automobile) String() string {
 }
 
 // Attributes:
+//  - Num
+//  - Strval
+type MapKey struct {
+  Num int64 `thrift:"num,1" db:"num" json:"num"`
+  Strval string `thrift:"strval,2" db:"strval" json:"strval"`
+}
+
+func NewMapKey() *MapKey {
+  return &MapKey{}
+}
+
+
+func (p *MapKey) GetNum() int64 {
+  return p.Num
+}
+
+func (p *MapKey) GetStrval() string {
+  return p.Strval
+}
+func (p *MapKey) Read(iprot thrift.Protocol) error {
+  if _, err := iprot.ReadStructBegin(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
+  }
+
+
+  for {
+    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
+    if err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
+    }
+    if fieldTypeId == thrift.STOP { break; }
+    switch fieldId {
+    case 1:
+      if err := p.ReadField1(iprot); err != nil {
+        return err
+      }
+    case 2:
+      if err := p.ReadField2(iprot); err != nil {
+        return err
+      }
+    default:
+      if err := iprot.Skip(fieldTypeId); err != nil {
+        return err
+      }
+    }
+    if err := iprot.ReadFieldEnd(); err != nil {
+      return err
+    }
+  }
+  if err := iprot.ReadStructEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+  }
+  return nil
+}
+
+func (p *MapKey)  ReadField1(iprot thrift.Protocol) error {
+  if v, err := iprot.ReadI64(); err != nil {
+  return thrift.PrependError("error reading field 1: ", err)
+} else {
+  p.Num = v
+}
+  return nil
+}
+
+func (p *MapKey)  ReadField2(iprot thrift.Protocol) error {
+  if v, err := iprot.ReadString(); err != nil {
+  return thrift.PrependError("error reading field 2: ", err)
+} else {
+  p.Strval = v
+}
+  return nil
+}
+
+func (p *MapKey) Write(oprot thrift.Protocol) error {
+  if err := oprot.WriteStructBegin("MapKey"); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
+  if err := p.writeField1(oprot); err != nil { return err }
+  if err := p.writeField2(oprot); err != nil { return err }
+  if err := oprot.WriteFieldStop(); err != nil {
+    return thrift.PrependError("write field stop error: ", err) }
+  if err := oprot.WriteStructEnd(); err != nil {
+    return thrift.PrependError("write struct stop error: ", err) }
+  return nil
+}
+
+func (p *MapKey) writeField1(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("num", thrift.I64, 1); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 1:num: ", p), err) }
+  if err := oprot.WriteI64(int64(p.Num)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.num (1) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 1:num: ", p), err) }
+  return err
+}
+
+func (p *MapKey) writeField2(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("strval", thrift.STRING, 2); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 2:strval: ", p), err) }
+  if err := oprot.WriteString(string(p.Strval)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.strval (2) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 2:strval: ", p), err) }
+  return err
+}
+
+func (p *MapKey) String() string {
+  if p == nil {
+    return "<nil>"
+  }
+  return fmt.Sprintf("MapKey(%+v)", *p)
+}
+
+// Attributes:
+//  - Mapval
+type MapContainer struct {
+  Mapval map[MapKey]string `thrift:"mapval,1" db:"mapval" json:"mapval"`
+}
+
+func NewMapContainer() *MapContainer {
+  return &MapContainer{}
+}
+
+
+func (p *MapContainer) GetMapval() map[MapKey]string {
+  return p.Mapval
+}
+func (p *MapContainer) Read(iprot thrift.Protocol) error {
+  if _, err := iprot.ReadStructBegin(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
+  }
+
+
+  for {
+    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
+    if err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
+    }
+    if fieldTypeId == thrift.STOP { break; }
+    switch fieldId {
+    case 1:
+      if err := p.ReadField1(iprot); err != nil {
+        return err
+      }
+    default:
+      if err := iprot.Skip(fieldTypeId); err != nil {
+        return err
+      }
+    }
+    if err := iprot.ReadFieldEnd(); err != nil {
+      return err
+    }
+  }
+  if err := iprot.ReadStructEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+  }
+  return nil
+}
+
+func (p *MapContainer)  ReadField1(iprot thrift.Protocol) error {
+  _, _, size, err := iprot.ReadMapBegin()
+  if err != nil {
+    return thrift.PrependError("error reading map begin: ", err)
+  }
+  tMap := make(map[MapKey]string, size)
+  p.Mapval =  tMap
+  for i := 0; i < size; i ++ {
+    _key1 := NewMapKey()
+    if err := _key1.Read(iprot); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", _key1), err)
+    }
+var _val2 string
+    if v, err := iprot.ReadString(); err != nil {
+    return thrift.PrependError("error reading field 0: ", err)
+} else {
+    _val2 = v
+}
+    p.Mapval[*_key1] = _val2
+  }
+  if err := iprot.ReadMapEnd(); err != nil {
+    return thrift.PrependError("error reading map end: ", err)
+  }
+  return nil
+}
+
+func (p *MapContainer) Write(oprot thrift.Protocol) error {
+  if err := oprot.WriteStructBegin("MapContainer"); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
+  if err := p.writeField1(oprot); err != nil { return err }
+  if err := oprot.WriteFieldStop(); err != nil {
+    return thrift.PrependError("write field stop error: ", err) }
+  if err := oprot.WriteStructEnd(); err != nil {
+    return thrift.PrependError("write struct stop error: ", err) }
+  return nil
+}
+
+func (p *MapContainer) writeField1(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("mapval", thrift.MAP, 1); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 1:mapval: ", p), err) }
+  if err := oprot.WriteMapBegin(thrift.STRUCT, thrift.STRING, len(p.Mapval)); err != nil {
+    return thrift.PrependError("error writing map begin: ", err)
+  }
+  for k, v := range p.Mapval {
+    if err := k.Write(oprot); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T error writing struct: ", k), err)
+    }
+    if err := oprot.WriteString(string(v)); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T. (0) field write error: ", p), err) }
+  }
+  if err := oprot.WriteMapEnd(); err != nil {
+    return thrift.PrependError("error writing map end: ", err)
+  }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 1:mapval: ", p), err) }
+  return err
+}
+
+func (p *MapContainer) String() string {
+  if p == nil {
+    return "<nil>"
+  }
+  return fmt.Sprintf("MapContainer(%+v)", *p)
+}
+
+// Attributes:
 //  - Automobile
 //  - Car
 type Pair struct {
@@ -488,11 +712,11 @@ func (p *Collection)  ReadField1(iprot thrift.Protocol) error {
   tSlice := make([]*Automobile, 0, size)
   p.Automobiles =  tSlice
   for i := 0; i < size; i ++ {
-    _elem1 := NewAutomobile()
-    if err := _elem1.Read(iprot); err != nil {
-      return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", _elem1), err)
+    _elem3 := NewAutomobile()
+    if err := _elem3.Read(iprot); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", _elem3), err)
     }
-    p.Automobiles = append(p.Automobiles, _elem1)
+    p.Automobiles = append(p.Automobiles, _elem3)
   }
   if err := iprot.ReadListEnd(); err != nil {
     return thrift.PrependError("error reading list end: ", err)
@@ -508,11 +732,11 @@ func (p *Collection)  ReadField2(iprot thrift.Protocol) error {
   tSlice := make([]*Car, 0, size)
   p.Cars =  tSlice
   for i := 0; i < size; i ++ {
-    _elem2 := NewAutomobile()
-    if err := _elem2.Read(iprot); err != nil {
-      return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", _elem2), err)
+    _elem4 := NewAutomobile()
+    if err := _elem4.Read(iprot); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", _elem4), err)
     }
-    p.Cars = append(p.Cars, _elem2)
+    p.Cars = append(p.Cars, _elem4)
   }
   if err := iprot.ReadListEnd(); err != nil {
     return thrift.PrependError("error reading list end: ", err)

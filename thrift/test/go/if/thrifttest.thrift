@@ -176,11 +176,17 @@ struct SimpleJSONTestStruct {
   1: map <i32, VersioningTestV1> m;
 }
 
+struct MapKey {
+  1: i64 num;
+  2: string strval;
+}
+
 struct Maps {
   1: map<string, string> str2str;
   2: map<string, list<string>> str2list;
   3: map<string, map<string, string>> str2map;
   4: map<string, Insanity> str2struct;
+  5: map<MapKey, string> struct2str;
 }
 
 struct WithAnnotations {

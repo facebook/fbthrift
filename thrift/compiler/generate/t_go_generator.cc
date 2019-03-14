@@ -3665,13 +3665,15 @@ void t_go_generator::generate_deserialize_map_element(
   (void)declare;
   string key = tmp("_key");
   string val = tmp("_val");
+
   t_field fkey(tmap->get_key_type(), key);
   t_field fval(tmap->get_val_type(), val);
+  string derefs = is_pointer_field(&fkey) ? "*" : "";
   fkey.set_req(t_field::T_OPT_IN_REQ_OUT);
   fval.set_req(t_field::T_OPT_IN_REQ_OUT);
   generate_deserialize_field(out, &fkey, true, "", false, false, true);
   generate_deserialize_field(out, &fval, true, "", false, false, false, true);
-  indent(out) << prefix << "[" << key << "] = " << val << endl;
+  indent(out) << prefix << "[" << derefs << key << "] = " << val << endl;
 }
 
 /**
@@ -4200,6 +4202,12 @@ string t_go_generator::type_to_enum(t_type* type) {
   throw "INVALID TYPE IN type_to_enum: " + type->get_name();
 }
 
+string strip_type_pointer(string tname) {
+  if (!tname.empty() && tname.front() == '*') {
+    return tname.substr(1, tname.size() - 1);
+  }
+  return tname;
+}
 /**
  * Converts the parse type to a go map type, will throw an exception if it will
  * not produce a valid go map type.
@@ -4220,7 +4228,7 @@ string t_go_generator::type_to_go_key_type(t_type* type) {
   if (resolved_type->is_string() && ((t_base_type*)resolved_type)->is_binary())
     return "string";
 
-  return type_to_go_type(type);
+  return strip_type_pointer(type_to_go_type(type));
 }
 
 /**
