@@ -212,7 +212,7 @@ class optional_field_ref {
     return std::forward<reference_type>(value_);
   }
 
-  template <typename U>
+  template <typename U = value_type>
   THRIFT_NOLINK value_type value_or(U&& default_value) const {
     return is_set_ ? value_
                    : static_cast<value_type>(std::forward<U>(default_value));

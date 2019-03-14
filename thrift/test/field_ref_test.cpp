@@ -417,6 +417,8 @@ TEST(optional_field_ref_test, value_or) {
   EXPECT_EQ("foo", s.opt_name().value_or("foo"));
   s.opt_name() = "bar";
   EXPECT_EQ("bar", s.opt_name().value_or("foo"));
+  s.opt_name().reset();
+  EXPECT_EQ("", s.opt_name().value_or({}));
 }
 
 TEST(optional_field_ref_test, bad_field_access) {
