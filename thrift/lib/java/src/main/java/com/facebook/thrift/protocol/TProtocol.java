@@ -21,6 +21,8 @@ package com.facebook.thrift.protocol;
 
 import com.facebook.thrift.TException;
 import com.facebook.thrift.meta_data.FieldMetaData;
+import com.facebook.thrift.scheme.IScheme;
+import com.facebook.thrift.scheme.StandardScheme;
 import com.facebook.thrift.transport.TTransport;
 import java.util.Collections;
 import java.util.Map;
@@ -175,4 +177,9 @@ public abstract class TProtocol {
    * stateful protocols.
    */
   public void reset() {}
+
+  /** Scheme accessor */
+  public Class<? extends IScheme> getScheme() {
+    return StandardScheme.class;
+  }
 }
