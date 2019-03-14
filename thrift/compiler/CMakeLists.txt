@@ -65,7 +65,6 @@ target_link_libraries(
 
   compiler_ast
   ${Boost_LIBRARIES}
-  Folly::folly
 )
 
 # build compiler/generate

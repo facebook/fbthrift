@@ -20,7 +20,6 @@
  */
 
 #include <thrift/compiler/lib/java/util.h>
-#include <folly/CppAttributes.h>
 
 namespace apache {
 namespace thrift {
@@ -119,11 +118,13 @@ std::string quote_java_string(const std::string& unescaped) {
         break;
       }
       case '"':
-        quoted << '\\';
-        FOLLY_FALLTHROUGH;
+        quoted << '\\' << unescaped[i];
+        ++i;
+        break;
       default:
         quoted << unescaped[i];
         ++i;
+        break;
     }
   }
   quoted << '\"';
