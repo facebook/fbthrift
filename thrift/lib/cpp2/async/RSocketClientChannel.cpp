@@ -351,14 +351,6 @@ void RSocketClientChannel::setProtocolId(uint16_t protocolId) {
   protocolId_ = protocolId;
 }
 
-void RSocketClientChannel::setHTTPHost(const std::string& host) {
-  httpHost_ = host;
-}
-
-void RSocketClientChannel::setHTTPUrl(const std::string& url) {
-  httpUrl_ = url;
-}
-
 uint32_t RSocketClientChannel::sendRequest(
     RpcOptions& rpcOptions,
     std::unique_ptr<RequestCallback> cb,
@@ -416,12 +408,6 @@ RSocketClientChannel::createRequestRpcMetadata(
   auto metadata = std::make_unique<RequestRpcMetadata>();
   metadata->set_protocol(protocolId);
   metadata->set_kind(kind);
-  if (!httpHost_.empty()) {
-    metadata->set_host(httpHost_);
-  }
-  if (!httpUrl_.empty()) {
-    metadata->set_url(httpUrl_);
-  }
   if (rpcOptions.getTimeout() > std::chrono::milliseconds(0)) {
     metadata->set_clientTimeoutMs(rpcOptions.getTimeout().count());
   } else if (timeout_.count() > 0) {

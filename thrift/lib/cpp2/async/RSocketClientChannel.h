@@ -118,8 +118,6 @@ class RSocketClientChannel final : public ClientChannel,
   static Ptr newChannel(async::TAsyncTransport::UniquePtr socket);
 
   void setProtocolId(uint16_t protocolId);
-  void setHTTPHost(const std::string& host);
-  void setHTTPUrl(const std::string& url);
 
   uint32_t sendRequest(
       RpcOptions& rpcOptions,
@@ -216,8 +214,6 @@ class RSocketClientChannel final : public ClientChannel,
 
   folly::EventBase* evb_;
 
-  std::string httpHost_;
-  std::string httpUrl_;
   uint16_t protocolId_{apache::thrift::protocol::T_BINARY_PROTOCOL};
 
   std::shared_ptr<detail::RSConnectionStatus> connectionStatus_;
