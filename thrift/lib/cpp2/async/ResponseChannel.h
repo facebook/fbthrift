@@ -74,13 +74,13 @@ class ResponseChannelRequest {
     return std::move(stream_);
   }
 
-  virtual bool isActive() = 0;
+  virtual bool isActive() const = 0;
 
   virtual void cancel() = 0;
 
-  virtual bool isOneway() = 0;
+  virtual bool isOneway() const = 0;
 
-  virtual bool isStream() {
+  virtual bool isStream() const {
     return false;
   }
 

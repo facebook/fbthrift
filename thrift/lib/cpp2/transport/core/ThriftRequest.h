@@ -110,7 +110,7 @@ class ThriftRequestCore : public ResponseChannelRequest {
     cancelTimeout();
   }
 
-  bool isActive() final {
+  bool isActive() const final {
     return active_.load();
   }
 
@@ -120,7 +120,7 @@ class ThriftRequestCore : public ResponseChannelRequest {
     }
   }
 
-  bool isOneway() final {
+  bool isOneway() const final {
     return kind_ == RpcKind::SINGLE_REQUEST_NO_RESPONSE ||
         kind_ == RpcKind::STREAMING_REQUEST_NO_RESPONSE;
   }
@@ -291,7 +291,7 @@ class ThriftRequestCore : public ResponseChannelRequest {
           break;
         default: // Don't send error back for one-way.
           break;
-      } // 
+      }
     });
   }
 

@@ -39,11 +39,11 @@ namespace thrift {
 FakeClock::time_point FakeClock::now_us_;
 
 class DummyRequest : public ResponseChannelRequest {
-  bool isActive() override {
+  bool isActive() const override {
     return true;
   }
   void cancel() override {}
-  bool isOneway() override {
+  bool isOneway() const override {
     return false;
   }
   void sendReply(std::unique_ptr<folly::IOBuf>&&, MessageChannel::SendCallback*)

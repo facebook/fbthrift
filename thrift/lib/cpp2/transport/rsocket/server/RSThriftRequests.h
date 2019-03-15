@@ -102,7 +102,7 @@ class RSStreamRequest final : public ThriftRequestCore {
       std::shared_ptr<yarpl::flowable::Subscriber<rsocket::Payload>>
           subscriber);
 
-  bool isStream() override {
+  bool isStream() const override {
     return true;
   }
 

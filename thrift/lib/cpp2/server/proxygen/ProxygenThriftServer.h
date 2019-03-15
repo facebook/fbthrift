@@ -116,13 +116,13 @@ class ProxygenThriftServer : public BaseThriftServer,
     void onError(proxygen::ProxygenError err) noexcept override;
 
     // apache::thrift::ResponseChannelRequest
-    bool isActive() override {
+    bool isActive() const override {
       return active_;
     }
     void cancel() override {
       active_ = false;
     }
-    bool isOneway() override {
+    bool isOneway() const override {
       return false;
     }
 
@@ -153,7 +153,7 @@ class ProxygenThriftServer : public BaseThriftServer,
         }
       }
 
-      bool isActive() override {
+      bool isActive() const override {
         if (handler_) {
           return handler_->isActive();
         }
@@ -167,7 +167,7 @@ class ProxygenThriftServer : public BaseThriftServer,
         }
       }
 
-      bool isOneway() override {
+      bool isOneway() const override {
         if (handler_) {
           return handler_->isOneway();
         }
@@ -175,7 +175,7 @@ class ProxygenThriftServer : public BaseThriftServer,
         return false;
       }
 
-      bool isStream() override {
+      bool isStream() const override {
         if (handler_) {
           return handler_->isStream();
         }

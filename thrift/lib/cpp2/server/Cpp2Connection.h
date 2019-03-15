@@ -119,7 +119,7 @@ class Cpp2Connection : public ResponseChannel::Callback,
    * a) To have task timeouts for all requests,
    * b) To ensure the channel is not destroyed before callback is called
    */
-  class Cpp2Request : public ResponseChannelRequest {
+  class Cpp2Request final : public ResponseChannelRequest {
    public:
     friend class Cpp2Connection;
 
@@ -141,18 +141,18 @@ class Cpp2Connection : public ResponseChannel::Callback,
         std::shared_ptr<Cpp2Connection> con);
 
     // Delegates to wrapped request.
-    bool isActive() override {
+    bool isActive() const override {
       return req_->isActive();
     }
     void cancel() override {
       req_->cancel();
     }
 
-    bool isOneway() override {
+    bool isOneway() const override {
       return req_->isOneway();
     }
 
-    bool isStream() override {
+    bool isStream() const override {
       return req_->isStream();
     }
 

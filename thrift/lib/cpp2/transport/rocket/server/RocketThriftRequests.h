@@ -64,7 +64,7 @@ class ThriftServerRequestResponse final : public ThriftRequestCore {
     return &evb_;
   }
 
-  bool isStream() override {
+  bool isStream() const override {
     return false;
   }
 
@@ -131,7 +131,7 @@ class ThriftServerRequestStream final : public ThriftRequestCore {
     return &evb_;
   }
 
-  bool isStream() override {
+  bool isStream() const override {
     return true;
   }
 

@@ -116,7 +116,7 @@ class HeaderServerChannel : public ServerChannel,
       MessageChannel::SendCallback* cb,
       apache::thrift::transport::THeader* header);
 
-  class HeaderRequest : public ResponseChannelRequest {
+  class HeaderRequest final : public ResponseChannelRequest {
    public:
     HeaderRequest(
         HeaderServerChannel* channel,
@@ -124,14 +124,14 @@ class HeaderServerChannel : public ServerChannel,
         std::unique_ptr<apache::thrift::transport::THeader>&& header,
         std::unique_ptr<sample> sample);
 
-    bool isActive() override {
+    bool isActive() const override {
       return active_;
     }
     void cancel() override {
       active_ = false;
     }
 
-    bool isOneway() override {
+    bool isOneway() const override {
       return header_->getSequenceNumber() == ONEWAY_REQUEST_ID;
     }
 
