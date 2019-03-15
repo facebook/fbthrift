@@ -53,7 +53,7 @@ class OldStructure implements \IThriftStruct {
     $fname = '';
     $ftype = 0;
     $fid = 0;
-    $xfer += $input->readStructBegin(&$fname);
+    $xfer += $input->readStructBegin(inout $fname);
     while (true)
     {
       $xfer += $input->readFieldBegin(&$fname, &$ftype, &$fid);
@@ -179,7 +179,7 @@ class NewStructure implements \IThriftStruct {
     $fname = '';
     $ftype = 0;
     $fid = 0;
-    $xfer += $input->readStructBegin(&$fname);
+    $xfer += $input->readStructBegin(inout $fname);
     while (true)
     {
       $xfer += $input->readFieldBegin(&$fname, &$ftype, &$fid);
@@ -305,7 +305,7 @@ class NewStructure2 implements \IThriftStruct {
     $fname = '';
     $ftype = 0;
     $fid = 0;
-    $xfer += $input->readStructBegin(&$fname);
+    $xfer += $input->readStructBegin(inout $fname);
     while (true)
     {
       $xfer += $input->readFieldBegin(&$fname, &$ftype, &$fid);
@@ -498,7 +498,7 @@ class NewStructureNested implements \IThriftStruct {
     $fname = '';
     $ftype = 0;
     $fid = 0;
-    $xfer += $input->readStructBegin(&$fname);
+    $xfer += $input->readStructBegin(inout $fname);
     while (true)
     {
       $xfer += $input->readFieldBegin(&$fname, &$ftype, &$fid);
@@ -773,7 +773,7 @@ class NewStructureNestedField implements \IThriftStruct {
     $fname = '';
     $ftype = 0;
     $fid = 0;
-    $xfer += $input->readStructBegin(&$fname);
+    $xfer += $input->readStructBegin(inout $fname);
     while (true)
     {
       $xfer += $input->readFieldBegin(&$fname, &$ftype, &$fid);

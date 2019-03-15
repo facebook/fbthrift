@@ -179,7 +179,7 @@ class TException extends Exception {
     $fname = null;
     $ftype = 0;
     $fid = 0;
-    $xfer += $input->readStructBegin($fname);
+    $xfer += $input->readStructBegin(inout $fname);
     while (true) {
       $xfer += $input->readFieldBegin($fname, $ftype, $fid);
       if ($ftype == TType::STOP) {

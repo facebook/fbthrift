@@ -137,7 +137,7 @@ class Union implements \IThriftStruct, \IThriftUnion<\test\fixtures\UnionEnum>, 
     $ftype = 0;
     $fid = 0;
     $this->_type = \test\fixtures\UnionEnum::_EMPTY_;
-    $xfer += $input->readStructBegin(&$fname);
+    $xfer += $input->readStructBegin(inout $fname);
     while (true)
     {
       $xfer += $input->readFieldBegin(&$fname, &$ftype, &$fid);
@@ -253,7 +253,7 @@ class A implements \IThriftStruct, \IThriftShapishStruct {
     $fname = '';
     $ftype = 0;
     $fid = 0;
-    $xfer += $input->readStructBegin(&$fname);
+    $xfer += $input->readStructBegin(inout $fname);
     while (true)
     {
       $xfer += $input->readFieldBegin(&$fname, &$ftype, &$fid);
@@ -1423,7 +1423,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     $ftype = 0;
     $fid = 0;
     $required_enum_with_default__isset = false;
-    $xfer += $input->readStructBegin(&$fname);
+    $xfer += $input->readStructBegin(inout $fname);
     while (true)
     {
       $xfer += $input->readFieldBegin(&$fname, &$ftype, &$fid);

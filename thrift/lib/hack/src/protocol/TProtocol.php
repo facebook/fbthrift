@@ -145,7 +145,7 @@ abstract class TProtocol {
    */
   public abstract function readMessageEnd();
 
-  public abstract function readStructBegin(&$name);
+  public abstract function readStructBegin(inout $name);
 
   public abstract function readStructEnd();
 
@@ -225,7 +225,7 @@ abstract class TProtocol {
       case TType::STRING:
         return $this->readString($_ref);
       case TType::STRUCT: {
-          $result = $this->readStructBegin($_ref);
+          $result = $this->readStructBegin(inout $_ref);
           while (true) {
             $ftype = null;
             $result += $this->readFieldBegin($_ref, $ftype, $_ref);

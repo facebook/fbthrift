@@ -444,7 +444,7 @@ abstract class TCompactProtocolBase extends TProtocol {
   }
 
   <<__Override>>
-  public function readStructBegin(&$name) {
+  public function readStructBegin(inout $name) {
     $name = ''; // unused
     $this->structs[] = varray[$this->state, $this->lastFid];
     $this->state = self::STATE_FIELD_READ;

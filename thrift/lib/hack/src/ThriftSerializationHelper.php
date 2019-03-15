@@ -14,7 +14,7 @@ class ThriftSerializationHelper {
     $field_id = 0;
 
     $tspec = $object::$_TSPEC;
-    $xfer = $protocol->readStructBegin(&$field_name);
+    $xfer = $protocol->readStructBegin(inout $field_name);
     while (true) {
       $xfer += $protocol->readFieldBegin(
         &$field_name,
@@ -85,7 +85,7 @@ class ThriftSerializationHelper {
     $tspec = $object::$_TSPEC;
     $union_enum_name = get_class($object) . "Enum";
     $union_enum = $union_enum_name::_EMPTY_;
-    $xfer = $protocol->readStructBegin(&$field_name);
+    $xfer = $protocol->readStructBegin(inout $field_name);
     while (true) {
       $xfer += $protocol->readFieldBegin(
         &$field_name,

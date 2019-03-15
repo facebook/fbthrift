@@ -2851,7 +2851,7 @@ void t_hack_generator::generate_php_struct_reader(
     }
   }
   // Declare stack tmp variables
-  indent(out) << "$xfer += $input->readStructBegin(&$fname);\n";
+  indent(out) << "$xfer += $input->readStructBegin(inout $fname);\n";
 
   // Loop over reading in fields
   indent(out) << "while (true)\n";

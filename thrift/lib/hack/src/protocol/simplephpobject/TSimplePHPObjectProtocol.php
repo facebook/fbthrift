@@ -29,7 +29,7 @@ class TSimplePHPObjectProtocol extends TProtocol {
     throw new TProtocolException('Not Supported');
   }
 
-  public function readStructBegin(&$name) {
+  public function readStructBegin(inout $name) {
     $name = null;
     $val = $this->top->current();
     $this->top->next();

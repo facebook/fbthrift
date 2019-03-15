@@ -346,7 +346,7 @@ abstract class TBinaryProtocolBase extends TProtocol {
     return 0;
   }
 
-  public function readStructBegin(&$name) {
+  public function readStructBegin(inout $name) {
     $name = '';
     return 0;
   }

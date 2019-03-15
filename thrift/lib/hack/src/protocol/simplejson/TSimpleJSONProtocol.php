@@ -253,7 +253,7 @@ class TSimpleJSONProtocol extends TProtocol {
     );
   }
 
-  public function readStructBegin(&$name) {
+  public function readStructBegin(inout $_name) {
     $this->getContext()->readSeparator();
     $this->skipWhitespace();
     $this->pushMapReadContext();
