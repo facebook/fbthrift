@@ -12,22 +12,22 @@ struct SumResponse {
 service Coroutine {
   SumResponse computeSumNoCoro(1: SumRequest request);
 
-  SumResponse computeSum(1: SumRequest request) (coroutine);
-  i32 computeSumPrimitive(1: i32 x, 2: i32 y) (coroutine);
-  SumResponse computeSumEb(1: SumRequest request) (coroutine, thread='eb');
+  SumResponse computeSum(1: SumRequest request) (cpp.coroutine);
+  i32 computeSumPrimitive(1: i32 x, 2: i32 y) (cpp.coroutine);
+  SumResponse computeSumEb(1: SumRequest request) (cpp.coroutine, thread='eb');
 
-  void computeSumVoid(1: i32 x, 2: i32 y) (coroutine);
+  void computeSumVoid(1: i32 x, 2: i32 y) (cpp.coroutine);
 
-  SumResponse computeSumUnimplemented(1: SumRequest request) (coroutine);
-  i32 computeSumUnimplementedPrimitive(1: i32 x, 2: i32 y) (coroutine);
+  SumResponse computeSumUnimplemented(1: SumRequest request) (cpp.coroutine);
+  i32 computeSumUnimplementedPrimitive(1: i32 x, 2: i32 y) (cpp.coroutine);
 
-  SumResponse computeSumThrows(1: SumRequest request) (coroutine);
-  i32 computeSumThrowsPrimitive(1: i32 x, 2: i32 y) (coroutine);
+  SumResponse computeSumThrows(1: SumRequest request) (cpp.coroutine);
+  i32 computeSumThrowsPrimitive(1: i32 x, 2: i32 y) (cpp.coroutine);
 
-  i32 noParameters() (coroutine);
+  i32 noParameters() (cpp.coroutine);
 
-  SumResponse implementedWithFutures() (coroutine);
-  i32 implementedWithFuturesPrimitive() (coroutine);
+  SumResponse implementedWithFutures() (cpp.coroutine);
+  i32 implementedWithFuturesPrimitive() (cpp.coroutine);
 
-  i32 takesRequestParams() (coroutine);
+  i32 takesRequestParams() (cpp.coroutine);
 }

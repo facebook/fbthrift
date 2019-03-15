@@ -129,7 +129,7 @@ class t_function : public t_doc {
 
   bool coroutine() const {
     return annotations_ != nullptr &&
-        annotations_->annotations_.count("coroutine") > 0;
+        annotations_->annotations_.count("cpp.coroutine") > 0;
   }
 
   bool any_stream_params() const {
