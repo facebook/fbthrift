@@ -303,7 +303,7 @@ abstract class TBinaryProtocolBase extends TProtocol {
     return $seqid;
   }
 
-  public function readMessageBegin(&$name, &$type, &$seqid) {
+  public function readMessageBegin(inout $name, inout $type, inout $seqid) {
     $sz = 0;
     $result = $this->readI32($sz);
     if ($sz < 0) {

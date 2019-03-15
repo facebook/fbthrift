@@ -420,7 +420,7 @@ abstract class TCompactProtocolBase extends TProtocol {
   }
 
   <<__Override>>
-  public function readMessageBegin(&$name, &$type, &$seqid) {
+  public function readMessageBegin(inout $name, inout $type, inout $seqid) {
     $protoId = 0;
     $result = $this->readUByte(&$protoId);
     if ($protoId != self::PROTOCOL_ID) {

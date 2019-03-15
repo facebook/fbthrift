@@ -21,7 +21,7 @@ class TSimplePHPObjectProtocol extends TProtocol {
     parent::__construct(new TNullTransport());
   }
 
-  public function readMessageBegin(&$name, &$type, &$seqid) {
+  public function readMessageBegin(inout $name, inout $type, inout $seqid) {
     throw new TProtocolException('Not Supported');
   }
 

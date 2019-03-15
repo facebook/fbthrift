@@ -4160,8 +4160,11 @@ void t_hack_generator::_generate_service_client(
           << indent() << "$fname = '';\n"
           << indent() << "$mtype = 0;\n\n";
 
-      out << indent() << "$this->input_->readMessageBegin(&$fname, &$mtype, "
-          << "&$rseqid);\n"
+      out << indent() << "$this->input_->readMessageBegin(\n"
+          << indent() << "  inout $fname,\n"
+          << indent() << "  inout $mtype,\n"
+          << indent() << "  inout $rseqid,\n"
+          << indent() << ");\n"
           << indent() << "if ($mtype == \\TMessageType::EXCEPTION) {\n"
           << indent() << "  $x = new \\TApplicationException();\n"
           << indent() << "  $x->read($this->input_);\n"

@@ -50,11 +50,13 @@ class TCompactSerializer extends TProtocolSerializer {
       if ($last_version !== null) {
         thrift_protocol_set_compact_version($last_version);
       }
-      $unused_name = $unused_type = $unused_seqid = null;
+      $unused_name = null;
+      $unused_type = null;
+      $unused_seqid = null;
       $protocol->readMessageBegin(
-        $unused_name,
-        $unused_type,
-        $unused_seqid,
+        inout $unused_name,
+        inout $unused_type,
+        inout $unused_seqid,
       );
     } else {
       $object->write($protocol);

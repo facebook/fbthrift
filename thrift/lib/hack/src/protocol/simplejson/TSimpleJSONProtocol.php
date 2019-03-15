@@ -239,7 +239,7 @@ class TSimpleJSONProtocol extends TProtocol {
     return $ret + strlen($enc);
   }
 
-  public function readMessageBegin(&$name, &$type, &$seqid) {
+  public function readMessageBegin(inout $name, inout $type, inout $seqid) {
     throw new TProtocolException(
       'Reading with TSimpleJSONProtocol is not supported. '.
       'Use readFromJSON() on your struct',

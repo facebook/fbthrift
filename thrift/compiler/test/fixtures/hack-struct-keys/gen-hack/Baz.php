@@ -116,7 +116,11 @@ trait BazClientBase {
         $fname = '';
         $mtype = 0;
 
-        $this->input_->readMessageBegin(&$fname, &$mtype, &$rseqid);
+        $this->input_->readMessageBegin(
+          inout $fname,
+          inout $mtype,
+          inout $rseqid,
+        );
         if ($mtype == \TMessageType::EXCEPTION) {
           $x = new \TApplicationException();
           $x->read($this->input_);

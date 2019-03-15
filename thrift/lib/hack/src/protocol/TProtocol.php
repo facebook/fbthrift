@@ -138,7 +138,11 @@ abstract class TProtocol {
    * @param int $type message type TMessageType::CALL or TMessageType::REPLY
    * @param int $seqid The sequence id of this message
    */
-  public abstract function readMessageBegin(&$name, &$type, &$seqid);
+  public abstract function readMessageBegin(
+    inout $name,
+    inout $type,
+    inout $seqid,
+  );
 
   /**
    * Read the close of message
