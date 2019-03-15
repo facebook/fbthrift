@@ -74,7 +74,11 @@ class OldStructure implements \IThriftStruct {
             $_val0 = Map {};
             $_ktype2 = 0;
             $_vtype3 = 0;
-            $xfer += $input->readMapBegin(&$_ktype2, &$_vtype3, &$_size1);
+            $xfer += $input->readMapBegin(
+              inout $_ktype2,
+              inout $_vtype3,
+              inout $_size1,
+            );
             for ($_i5 = 0; $_size1 === null || $_i5 < $_size1; ++$_i5)
             {
               if ($_size1 === null && !$input->readMapHasNext()) {
@@ -200,7 +204,11 @@ class NewStructure implements \IThriftStruct {
             $_val0 = Map {};
             $_ktype2 = 0;
             $_vtype3 = 0;
-            $xfer += $input->readMapBegin(&$_ktype2, &$_vtype3, &$_size1);
+            $xfer += $input->readMapBegin(
+              inout $_ktype2,
+              inout $_vtype3,
+              inout $_size1,
+            );
             for ($_i5 = 0; $_size1 === null || $_i5 < $_size1; ++$_i5)
             {
               if ($_size1 === null && !$input->readMapHasNext()) {
@@ -326,7 +334,11 @@ class NewStructure2 implements \IThriftStruct {
             $_val0 = Map {};
             $_ktype2 = 0;
             $_vtype3 = 0;
-            $xfer += $input->readMapBegin(&$_ktype2, &$_vtype3, &$_size1);
+            $xfer += $input->readMapBegin(
+              inout $_ktype2,
+              inout $_vtype3,
+              inout $_size1,
+            );
             for ($_i5 = 0; $_size1 === null || $_i5 < $_size1; ++$_i5)
             {
               if ($_size1 === null && !$input->readMapHasNext()) {
@@ -528,7 +540,11 @@ class NewStructureNested implements \IThriftStruct {
               $_val7 = Map {};
               $_ktype9 = 0;
               $_vtype10 = 0;
-              $xfer += $input->readMapBegin(&$_ktype9, &$_vtype10, &$_size8);
+              $xfer += $input->readMapBegin(
+                inout $_ktype9,
+                inout $_vtype10,
+                inout $_size8,
+              );
               for ($_i12 = 0; $_size8 === null || $_i12 < $_size8; ++$_i12)
               {
                 if ($_size8 === null && !$input->readMapHasNext()) {
@@ -560,7 +576,11 @@ class NewStructureNested implements \IThriftStruct {
             $_val15 = Map {};
             $_ktype17 = 0;
             $_vtype18 = 0;
-            $xfer += $input->readMapBegin(&$_ktype17, &$_vtype18, &$_size16);
+            $xfer += $input->readMapBegin(
+              inout $_ktype17,
+              inout $_vtype18,
+              inout $_size16,
+            );
             for ($_i20 = 0; $_size16 === null || $_i20 < $_size16; ++$_i20)
             {
               if ($_size16 === null && !$input->readMapHasNext()) {
@@ -572,7 +592,11 @@ class NewStructureNested implements \IThriftStruct {
               $_val23 = Map {};
               $_ktype25 = 0;
               $_vtype26 = 0;
-              $xfer += $input->readMapBegin(&$_ktype25, &$_vtype26, &$_size24);
+              $xfer += $input->readMapBegin(
+                inout $_ktype25,
+                inout $_vtype26,
+                inout $_size24,
+              );
               for ($_i28 = 0; $_size24 === null || $_i28 < $_size24; ++$_i28)
               {
                 if ($_size24 === null && !$input->readMapHasNext()) {
@@ -613,7 +637,11 @@ class NewStructureNested implements \IThriftStruct {
               $_val38 = Map {};
               $_ktype40 = 0;
               $_vtype41 = 0;
-              $xfer += $input->readMapBegin(&$_ktype40, &$_vtype41, &$_size39);
+              $xfer += $input->readMapBegin(
+                inout $_ktype40,
+                inout $_vtype41,
+                inout $_size39,
+              );
               for ($_i43 = 0; $_size39 === null || $_i43 < $_size39; ++$_i43)
               {
                 if ($_size39 === null && !$input->readMapHasNext()) {

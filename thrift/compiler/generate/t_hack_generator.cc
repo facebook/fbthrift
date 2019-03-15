@@ -4626,8 +4626,11 @@ void t_hack_generator::generate_deserialize_container(
     }
     out << indent() << "$" << ktype << " = 0;\n"
         << indent() << "$" << vtype << " = 0;\n";
-    out << indent() << "$xfer += $input->readMapBegin("
-        << "&$" << ktype << ", &$" << vtype << ", &$" << size << ");\n";
+    out << indent() << "$xfer += $input->readMapBegin(\n"
+        << indent() << "  inout $" << ktype << ",\n"
+        << indent() << "  inout $" << vtype << ",\n"
+        << indent() << "  inout $" << size << ",\n"
+        << indent() << ");\n";
   } else if (ttype->is_set()) {
     out << indent() << "$" << etype << " = 0;\n";
     if (arrays_) {

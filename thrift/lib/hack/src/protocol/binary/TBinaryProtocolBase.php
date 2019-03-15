@@ -373,7 +373,7 @@ abstract class TBinaryProtocolBase extends TProtocol {
     return 0;
   }
 
-  public function readMapBegin(&$keyType, &$valType, &$size) {
+  public function readMapBegin(inout $keyType, inout $valType, inout $size) {
     return
       $this->readByte($keyType) +
       $this->readByte($valType) +

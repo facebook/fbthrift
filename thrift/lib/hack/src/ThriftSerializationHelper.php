@@ -283,7 +283,11 @@ class ThriftSerializationHelper {
         $size = 0;
         $key_type = 0;
         $value_type = 0;
-        $xfer += $protocol->readMapBegin(&$key_type, &$value_type, &$size);
+        $xfer += $protocol->readMapBegin(
+          inout $key_type,
+          inout $value_type,
+          inout $size,
+        );
 
         // Use the correct collection.
         $map = null;

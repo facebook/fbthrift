@@ -303,7 +303,7 @@ class TSimpleJSONProtocol extends TProtocol {
     // Do nothing
   }
 
-  public function readMapBegin(&$keyType, &$valType, &$size) {
+  public function readMapBegin(inout $keyType, inout $valType, inout $size) {
     $size = null;
     $this->getContext()->readSeparator();
     $this->skipWhitespace();

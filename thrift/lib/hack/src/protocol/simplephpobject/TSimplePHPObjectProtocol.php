@@ -107,7 +107,7 @@ class TSimplePHPObjectProtocol extends TProtocol {
 
   public function readFieldEnd() {}
 
-  public function readMapBegin(&$keyType, &$valType, &$size) {
+  public function readMapBegin(inout $keyType, inout $valType, inout $size) {
     $val = $this->top->current();
     $this->top->next();
     $itr = null;

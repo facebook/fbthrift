@@ -64,8 +64,10 @@ abstract class TBase {
       $vspec = $spec['val'];
     }
     $var = array();
-    $_ktype = $_vtype = $size = 0;
-    $xfer += $input->readMapBegin($_ktype, $_vtype, $size);
+    $_ktype = 0;
+    $_vtype = 0;
+    $size = 0;
+    $xfer += $input->readMapBegin(inout $_ktype, inout $_vtype, inout $size);
     for ($i = 0; $i < $size; ++$i) {
       $key = $val = null;
       if ($kread !== null) {

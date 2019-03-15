@@ -161,7 +161,11 @@ abstract class TProtocol {
 
   public abstract function readFieldEnd();
 
-  public abstract function readMapBegin(&$keyType, &$valType, &$size);
+  public abstract function readMapBegin(
+    inout $keyType,
+    inout $valType,
+    inout $size,
+  );
 
   public function readMapHasNext(): bool {
     throw new TProtocolException(
@@ -254,7 +258,11 @@ abstract class TProtocol {
           $keyType = null;
           $valType = null;
           $size = 0;
-          $result = $this->readMapBegin($keyType, $valType, $size);
+          $result = $this->readMapBegin(
+            inout $keyType,
+            inout $valType,
+            inout $size,
+          );
           for ($i = 0; $size === null || $i < $size; $i++) {
             if ($size === null && !$this->readMapHasNext()) {
               break;

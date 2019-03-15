@@ -479,7 +479,7 @@ abstract class TCompactProtocolBase extends TProtocol {
   }
 
   <<__Override>>
-  public function readMapBegin(&$key_type, &$val_type, &$size) {
+  public function readMapBegin(inout $key_type, inout $val_type, inout $size) {
     $result = $this->readVarint(&$size);
     $types = 0;
     if ($size > 0) {
