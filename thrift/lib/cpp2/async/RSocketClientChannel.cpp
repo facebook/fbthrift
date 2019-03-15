@@ -23,6 +23,7 @@
 #include <rsocket/transports/tcp/TcpDuplexConnection.h>
 #include <thrift/lib/cpp2/async/ResponseChannel.h>
 #include <thrift/lib/cpp2/transport/core/EnvelopeUtil.h>
+#include <thrift/lib/cpp2/transport/rocket/util/RpcMetadataUtil.h>
 #include <thrift/lib/cpp2/transport/rsocket/YarplStreamImpl.h>
 #include <thrift/lib/cpp2/transport/rsocket/gen-cpp2/Config_types.h>
 
@@ -399,42 +400,6 @@ uint32_t RSocketClientChannel::sendStreamRequest(
   return 0;
 }
 
-std::unique_ptr<RequestRpcMetadata>
-RSocketClientChannel::createRequestRpcMetadata(
-    RpcOptions& rpcOptions,
-    RpcKind kind,
-    apache::thrift::ProtocolId protocolId,
-    THeader* header) {
-  auto metadata = std::make_unique<RequestRpcMetadata>();
-  metadata->set_protocol(protocolId);
-  metadata->set_kind(kind);
-  if (rpcOptions.getTimeout() > std::chrono::milliseconds(0)) {
-    metadata->set_clientTimeoutMs(rpcOptions.getTimeout().count());
-  } else if (timeout_.count() > 0) {
-    metadata->set_clientTimeoutMs(timeout_.count());
-  }
-  if (rpcOptions.getQueueTimeout() > std::chrono::milliseconds(0)) {
-    metadata->set_queueTimeoutMs(rpcOptions.getQueueTimeout().count());
-  }
-  if (rpcOptions.getPriority() < concurrency::N_PRIORITIES) {
-    metadata->set_priority(static_cast<RpcPriority>(rpcOptions.getPriority()));
-  }
-  if (header->getCrc32c().hasValue()) {
-    metadata->set_crc32c(header->getCrc32c().value());
-  }
-  metadata->otherMetadata = header->releaseWriteHeaders();
-  auto* eh = header->getExtraWriteHeaders();
-  if (eh) {
-    metadata->otherMetadata.insert(eh->begin(), eh->end());
-  }
-  auto& pwh = getPersistentWriteHeaders();
-  metadata->otherMetadata.insert(pwh.begin(), pwh.end());
-  if (!metadata->otherMetadata.empty()) {
-    metadata->__isset.otherMetadata = true;
-  }
-  return metadata;
-}
-
 void RSocketClientChannel::sendThriftRequest(
     RpcOptions& rpcOptions,
     RpcKind kind,
@@ -445,11 +410,14 @@ void RSocketClientChannel::sendThriftRequest(
   DestructorGuard dg(this);
 
   cb->context_ = folly::RequestContext::saveContext();
-  auto metadata = createRequestRpcMetadata(
-      rpcOptions,
-      kind,
-      static_cast<apache::thrift::ProtocolId>(protocolId_),
-      header.get());
+  auto metadata =
+      std::make_unique<RequestRpcMetadata>(util::makeRequestRpcMetadata(
+          rpcOptions,
+          kind,
+          static_cast<ProtocolId>(protocolId_),
+          timeout_,
+          *header,
+          getPersistentWriteHeaders()));
 
   if (!EnvelopeUtil::stripEnvelope(metadata.get(), buf) ||
       !(metadata->kind == RpcKind::SINGLE_REQUEST_NO_RESPONSE ||

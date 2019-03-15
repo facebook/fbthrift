@@ -207,12 +207,6 @@ class RocketClientChannel final : public ClientChannel {
       std::unique_ptr<RequestCallback> cb,
       std::chrono::milliseconds chunkTimeout);
 
-  RequestRpcMetadata makeRequestRpcMetadata(
-      RpcOptions& rpcOptions,
-      RpcKind kind,
-      ProtocolId protocolId,
-      transport::THeader* header);
-
   folly::fibers::FiberManager& getFiberManager() const {
     DCHECK(evb_);
     return folly::fibers::getFiberManager(*evb_);

@@ -170,12 +170,6 @@ class RSocketClientChannel final : public ClientChannel,
 
   virtual ~RSocketClientChannel();
 
-  std::unique_ptr<RequestRpcMetadata> createRequestRpcMetadata(
-      RpcOptions& rpcOptions,
-      RpcKind kind,
-      apache::thrift::ProtocolId protocolId,
-      transport::THeader* header);
-
   void sendThriftRequest(
       RpcOptions& rpcOptions,
       RpcKind kind,

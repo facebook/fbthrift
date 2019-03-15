@@ -39,6 +39,7 @@
 #include <thrift/lib/cpp2/transport/rocket/RocketException.h>
 #include <thrift/lib/cpp2/transport/rocket/client/RocketClient.h>
 #include <thrift/lib/cpp2/transport/rocket/client/RocketClientWriteCallback.h>
+#include <thrift/lib/cpp2/transport/rocket/util/RpcMetadataUtil.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
 
 using namespace apache::thrift::transport;
@@ -160,8 +161,13 @@ void RocketClientChannel::sendThriftRequest(
   DestructorGuard dg(this);
 
   cb->context_ = folly::RequestContext::saveContext();
-  auto metadata = makeRequestRpcMetadata(
-      rpcOptions, kind, static_cast<ProtocolId>(protocolId_), header.get());
+  auto metadata = util::makeRequestRpcMetadata(
+      rpcOptions,
+      kind,
+      static_cast<ProtocolId>(protocolId_),
+      timeout_,
+      *header,
+      getPersistentWriteHeaders());
 
   if (!EnvelopeUtil::stripEnvelope(&metadata, buf)) {
     folly::RequestContextScopeGuard rctx(cb->context_);
@@ -447,39 +453,6 @@ void RocketClientChannel::unsetOnDetachable() {
   if (rclient_) {
     rclient_->setOnDetachable(nullptr);
   }
-}
-
-RequestRpcMetadata RocketClientChannel::makeRequestRpcMetadata(
-    RpcOptions& rpcOptions,
-    RpcKind kind,
-    ProtocolId protocolId,
-    THeader* header) {
-  RequestRpcMetadata metadata;
-  metadata.protocol_ref() = protocolId;
-  metadata.kind_ref() = kind;
-  if (rpcOptions.getTimeout() > std::chrono::milliseconds::zero()) {
-    metadata.clientTimeoutMs_ref() = rpcOptions.getTimeout().count();
-  } else if (timeout_ > std::chrono::milliseconds::zero()) {
-    metadata.clientTimeoutMs_ref() = timeout_.count();
-  }
-  if (rpcOptions.getQueueTimeout() > std::chrono::milliseconds::zero()) {
-    metadata.queueTimeoutMs_ref() = rpcOptions.getQueueTimeout().count();
-  }
-  if (rpcOptions.getPriority() < concurrency::N_PRIORITIES) {
-    metadata.priority_ref() =
-        static_cast<RpcPriority>(rpcOptions.getPriority());
-  }
-  if (header->getCrc32c().hasValue()) {
-    metadata.crc32c_ref() = header->getCrc32c().value();
-  }
-  metadata.otherMetadata_ref() = header->releaseWriteHeaders();
-  auto* eh = header->getExtraWriteHeaders();
-  if (eh) {
-    metadata.otherMetadata_ref()->insert(eh->begin(), eh->end());
-  }
-  auto& pwh = getPersistentWriteHeaders();
-  metadata.otherMetadata_ref()->insert(pwh.begin(), pwh.end());
-  return metadata;
 }
 
 RocketClientChannel::TakeFirst::TakeFirst(
