@@ -37,912 +37,223 @@ type GetEntity interface {
 }
 
 type GetEntityClient struct {
-  Transport thrift.Transport
-  ProtocolFactory thrift.ProtocolFactory
-  InputProtocol thrift.Protocol
-  OutputProtocol thrift.Protocol
-  SeqId int32
+  CC thrift.ClientConn
 }
 
 func (client *GetEntityClient) Close() error {
-  return client.Transport.Close()
+  return client.CC.Close()
+}
+
+func (client *GetEntityClient) Open() error {
+  return client.CC.Open()
+}
+
+func (client *GetEntityClient) IsOpen() bool {
+  return client.CC.IsOpen()
 }
 
 func NewGetEntityClientFactory(t thrift.Transport, f thrift.ProtocolFactory) *GetEntityClient {
-  return &GetEntityClient{Transport: t,
-    ProtocolFactory: f,
-    InputProtocol: f.GetProtocol(t),
-    OutputProtocol: f.GetProtocol(t),
-    SeqId: 0,
-  }
+  return &GetEntityClient{ CC: thrift.NewClientConn(t, f) }
 }
 
 func NewGetEntityClient(t thrift.Transport, iprot thrift.Protocol, oprot thrift.Protocol) *GetEntityClient {
-  return &GetEntityClient{Transport: t,
-    ProtocolFactory: nil,
-    InputProtocol: iprot,
-    OutputProtocol: oprot,
-    SeqId: 0,
-  }
+  return &GetEntityClient{ CC: thrift.NewClientConnWithProtocols(t, iprot, oprot) }
 }
 
 // Parameters:
 //  - R
 func (p *GetEntityClient) GetEntity(r *GetEntityRequest) (_r *GetEntityResponse, err error) {
-  if err = p.sendGetEntity(r); err != nil { return }
-  return p.recvGetEntity()
-}
-
-func (p *GetEntityClient) sendGetEntity(r *GetEntityRequest)(err error) {
-  oprot := p.OutputProtocol
-  if oprot == nil {
-    oprot = p.ProtocolFactory.GetProtocol(p.Transport)
-    p.OutputProtocol = oprot
-  }
-  p.SeqId++
-  if err = oprot.WriteMessageBegin("getEntity", thrift.CALL, p.SeqId); err != nil {
-      return
-  }
   args := GetEntityGetEntityArgs{
-  R : r,
+    R : r,
   }
-  if err = args.Write(oprot); err != nil {
-      return
-  }
-  if err = oprot.WriteMessageEnd(); err != nil {
-      return
-  }
-  return oprot.Flush()
+  err = p.CC.SendMsg("getEntity", &args, thrift.CALL)
+  if err != nil { return }
+  return p.recvGetEntity()
 }
 
 
 func (p *GetEntityClient) recvGetEntity() (value *GetEntityResponse, err error) {
-  iprot := p.InputProtocol
-  if iprot == nil {
-    iprot = p.ProtocolFactory.GetProtocol(p.Transport)
-    p.InputProtocol = iprot
-  }
-  method, mTypeId, seqId, err := iprot.ReadMessageBegin()
-  if err != nil {
-    return
-  }
-  if method != "getEntity" {
-    err = thrift.NewApplicationException(thrift.WRONG_METHOD_NAME, "getEntity failed: wrong method name")
-    return
-  }
-  if p.SeqId != seqId {
-    err = thrift.NewApplicationException(thrift.BAD_SEQUENCE_ID, "getEntity failed: out of sequence response")
-    return
-  }
-  if mTypeId == thrift.EXCEPTION {
-    error0 := thrift.NewApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
-    var error1 error
-    error1, err = error0.Read(iprot)
-    if err != nil {
-      return
-    }
-    if err = iprot.ReadMessageEnd(); err != nil {
-      return
-    }
-    err = error1
-    return
-  }
-  if mTypeId != thrift.REPLY {
-    err = thrift.NewApplicationException(thrift.INVALID_MESSAGE_TYPE_EXCEPTION, "getEntity failed: invalid message type")
-    return
-  }
-  result := GetEntityGetEntityResult{}
-  if err = result.Read(iprot); err != nil {
-    return
-  }
-  if err = iprot.ReadMessageEnd(); err != nil {
-    return
-  }
-  value = result.GetSuccess()
-  return
+  var result GetEntityGetEntityResult
+  err = p.CC.RecvMsg("getEntity", &result)
+  if err != nil { return }
+
+  return result.GetSuccess(), nil
 }
 
 func (p *GetEntityClient) GetBool() (_r bool, err error) {
-  if err = p.sendGetBool(); err != nil { return }
+  var args GetEntityGetBoolArgs
+  err = p.CC.SendMsg("getBool", &args, thrift.CALL)
+  if err != nil { return }
   return p.recvGetBool()
-}
-
-func (p *GetEntityClient) sendGetBool()(err error) {
-  oprot := p.OutputProtocol
-  if oprot == nil {
-    oprot = p.ProtocolFactory.GetProtocol(p.Transport)
-    p.OutputProtocol = oprot
-  }
-  p.SeqId++
-  if err = oprot.WriteMessageBegin("getBool", thrift.CALL, p.SeqId); err != nil {
-      return
-  }
-  args := GetEntityGetBoolArgs{
-  }
-  if err = args.Write(oprot); err != nil {
-      return
-  }
-  if err = oprot.WriteMessageEnd(); err != nil {
-      return
-  }
-  return oprot.Flush()
 }
 
 
 func (p *GetEntityClient) recvGetBool() (value bool, err error) {
-  iprot := p.InputProtocol
-  if iprot == nil {
-    iprot = p.ProtocolFactory.GetProtocol(p.Transport)
-    p.InputProtocol = iprot
-  }
-  method, mTypeId, seqId, err := iprot.ReadMessageBegin()
-  if err != nil {
-    return
-  }
-  if method != "getBool" {
-    err = thrift.NewApplicationException(thrift.WRONG_METHOD_NAME, "getBool failed: wrong method name")
-    return
-  }
-  if p.SeqId != seqId {
-    err = thrift.NewApplicationException(thrift.BAD_SEQUENCE_ID, "getBool failed: out of sequence response")
-    return
-  }
-  if mTypeId == thrift.EXCEPTION {
-    error2 := thrift.NewApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
-    var error3 error
-    error3, err = error2.Read(iprot)
-    if err != nil {
-      return
-    }
-    if err = iprot.ReadMessageEnd(); err != nil {
-      return
-    }
-    err = error3
-    return
-  }
-  if mTypeId != thrift.REPLY {
-    err = thrift.NewApplicationException(thrift.INVALID_MESSAGE_TYPE_EXCEPTION, "getBool failed: invalid message type")
-    return
-  }
-  result := GetEntityGetBoolResult{}
-  if err = result.Read(iprot); err != nil {
-    return
-  }
-  if err = iprot.ReadMessageEnd(); err != nil {
-    return
-  }
-  value = result.GetSuccess()
-  return
+  var result GetEntityGetBoolResult
+  err = p.CC.RecvMsg("getBool", &result)
+  if err != nil { return }
+
+  return result.GetSuccess(), nil
 }
 
 func (p *GetEntityClient) GetByte() (_r int8, err error) {
-  if err = p.sendGetByte(); err != nil { return }
+  var args GetEntityGetByteArgs
+  err = p.CC.SendMsg("getByte", &args, thrift.CALL)
+  if err != nil { return }
   return p.recvGetByte()
-}
-
-func (p *GetEntityClient) sendGetByte()(err error) {
-  oprot := p.OutputProtocol
-  if oprot == nil {
-    oprot = p.ProtocolFactory.GetProtocol(p.Transport)
-    p.OutputProtocol = oprot
-  }
-  p.SeqId++
-  if err = oprot.WriteMessageBegin("getByte", thrift.CALL, p.SeqId); err != nil {
-      return
-  }
-  args := GetEntityGetByteArgs{
-  }
-  if err = args.Write(oprot); err != nil {
-      return
-  }
-  if err = oprot.WriteMessageEnd(); err != nil {
-      return
-  }
-  return oprot.Flush()
 }
 
 
 func (p *GetEntityClient) recvGetByte() (value int8, err error) {
-  iprot := p.InputProtocol
-  if iprot == nil {
-    iprot = p.ProtocolFactory.GetProtocol(p.Transport)
-    p.InputProtocol = iprot
-  }
-  method, mTypeId, seqId, err := iprot.ReadMessageBegin()
-  if err != nil {
-    return
-  }
-  if method != "getByte" {
-    err = thrift.NewApplicationException(thrift.WRONG_METHOD_NAME, "getByte failed: wrong method name")
-    return
-  }
-  if p.SeqId != seqId {
-    err = thrift.NewApplicationException(thrift.BAD_SEQUENCE_ID, "getByte failed: out of sequence response")
-    return
-  }
-  if mTypeId == thrift.EXCEPTION {
-    error4 := thrift.NewApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
-    var error5 error
-    error5, err = error4.Read(iprot)
-    if err != nil {
-      return
-    }
-    if err = iprot.ReadMessageEnd(); err != nil {
-      return
-    }
-    err = error5
-    return
-  }
-  if mTypeId != thrift.REPLY {
-    err = thrift.NewApplicationException(thrift.INVALID_MESSAGE_TYPE_EXCEPTION, "getByte failed: invalid message type")
-    return
-  }
-  result := GetEntityGetByteResult{}
-  if err = result.Read(iprot); err != nil {
-    return
-  }
-  if err = iprot.ReadMessageEnd(); err != nil {
-    return
-  }
-  value = result.GetSuccess()
-  return
+  var result GetEntityGetByteResult
+  err = p.CC.RecvMsg("getByte", &result)
+  if err != nil { return }
+
+  return result.GetSuccess(), nil
 }
 
 func (p *GetEntityClient) GetI16() (_r int16, err error) {
-  if err = p.sendGetI16(); err != nil { return }
+  var args GetEntityGetI16Args
+  err = p.CC.SendMsg("getI16", &args, thrift.CALL)
+  if err != nil { return }
   return p.recvGetI16()
-}
-
-func (p *GetEntityClient) sendGetI16()(err error) {
-  oprot := p.OutputProtocol
-  if oprot == nil {
-    oprot = p.ProtocolFactory.GetProtocol(p.Transport)
-    p.OutputProtocol = oprot
-  }
-  p.SeqId++
-  if err = oprot.WriteMessageBegin("getI16", thrift.CALL, p.SeqId); err != nil {
-      return
-  }
-  args := GetEntityGetI16Args{
-  }
-  if err = args.Write(oprot); err != nil {
-      return
-  }
-  if err = oprot.WriteMessageEnd(); err != nil {
-      return
-  }
-  return oprot.Flush()
 }
 
 
 func (p *GetEntityClient) recvGetI16() (value int16, err error) {
-  iprot := p.InputProtocol
-  if iprot == nil {
-    iprot = p.ProtocolFactory.GetProtocol(p.Transport)
-    p.InputProtocol = iprot
-  }
-  method, mTypeId, seqId, err := iprot.ReadMessageBegin()
-  if err != nil {
-    return
-  }
-  if method != "getI16" {
-    err = thrift.NewApplicationException(thrift.WRONG_METHOD_NAME, "getI16 failed: wrong method name")
-    return
-  }
-  if p.SeqId != seqId {
-    err = thrift.NewApplicationException(thrift.BAD_SEQUENCE_ID, "getI16 failed: out of sequence response")
-    return
-  }
-  if mTypeId == thrift.EXCEPTION {
-    error6 := thrift.NewApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
-    var error7 error
-    error7, err = error6.Read(iprot)
-    if err != nil {
-      return
-    }
-    if err = iprot.ReadMessageEnd(); err != nil {
-      return
-    }
-    err = error7
-    return
-  }
-  if mTypeId != thrift.REPLY {
-    err = thrift.NewApplicationException(thrift.INVALID_MESSAGE_TYPE_EXCEPTION, "getI16 failed: invalid message type")
-    return
-  }
-  result := GetEntityGetI16Result{}
-  if err = result.Read(iprot); err != nil {
-    return
-  }
-  if err = iprot.ReadMessageEnd(); err != nil {
-    return
-  }
-  value = result.GetSuccess()
-  return
+  var result GetEntityGetI16Result
+  err = p.CC.RecvMsg("getI16", &result)
+  if err != nil { return }
+
+  return result.GetSuccess(), nil
 }
 
 func (p *GetEntityClient) GetI32() (_r int32, err error) {
-  if err = p.sendGetI32(); err != nil { return }
+  var args GetEntityGetI32Args
+  err = p.CC.SendMsg("getI32", &args, thrift.CALL)
+  if err != nil { return }
   return p.recvGetI32()
-}
-
-func (p *GetEntityClient) sendGetI32()(err error) {
-  oprot := p.OutputProtocol
-  if oprot == nil {
-    oprot = p.ProtocolFactory.GetProtocol(p.Transport)
-    p.OutputProtocol = oprot
-  }
-  p.SeqId++
-  if err = oprot.WriteMessageBegin("getI32", thrift.CALL, p.SeqId); err != nil {
-      return
-  }
-  args := GetEntityGetI32Args{
-  }
-  if err = args.Write(oprot); err != nil {
-      return
-  }
-  if err = oprot.WriteMessageEnd(); err != nil {
-      return
-  }
-  return oprot.Flush()
 }
 
 
 func (p *GetEntityClient) recvGetI32() (value int32, err error) {
-  iprot := p.InputProtocol
-  if iprot == nil {
-    iprot = p.ProtocolFactory.GetProtocol(p.Transport)
-    p.InputProtocol = iprot
-  }
-  method, mTypeId, seqId, err := iprot.ReadMessageBegin()
-  if err != nil {
-    return
-  }
-  if method != "getI32" {
-    err = thrift.NewApplicationException(thrift.WRONG_METHOD_NAME, "getI32 failed: wrong method name")
-    return
-  }
-  if p.SeqId != seqId {
-    err = thrift.NewApplicationException(thrift.BAD_SEQUENCE_ID, "getI32 failed: out of sequence response")
-    return
-  }
-  if mTypeId == thrift.EXCEPTION {
-    error8 := thrift.NewApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
-    var error9 error
-    error9, err = error8.Read(iprot)
-    if err != nil {
-      return
-    }
-    if err = iprot.ReadMessageEnd(); err != nil {
-      return
-    }
-    err = error9
-    return
-  }
-  if mTypeId != thrift.REPLY {
-    err = thrift.NewApplicationException(thrift.INVALID_MESSAGE_TYPE_EXCEPTION, "getI32 failed: invalid message type")
-    return
-  }
-  result := GetEntityGetI32Result{}
-  if err = result.Read(iprot); err != nil {
-    return
-  }
-  if err = iprot.ReadMessageEnd(); err != nil {
-    return
-  }
-  value = result.GetSuccess()
-  return
+  var result GetEntityGetI32Result
+  err = p.CC.RecvMsg("getI32", &result)
+  if err != nil { return }
+
+  return result.GetSuccess(), nil
 }
 
 func (p *GetEntityClient) GetI64() (_r int64, err error) {
-  if err = p.sendGetI64(); err != nil { return }
+  var args GetEntityGetI64Args
+  err = p.CC.SendMsg("getI64", &args, thrift.CALL)
+  if err != nil { return }
   return p.recvGetI64()
-}
-
-func (p *GetEntityClient) sendGetI64()(err error) {
-  oprot := p.OutputProtocol
-  if oprot == nil {
-    oprot = p.ProtocolFactory.GetProtocol(p.Transport)
-    p.OutputProtocol = oprot
-  }
-  p.SeqId++
-  if err = oprot.WriteMessageBegin("getI64", thrift.CALL, p.SeqId); err != nil {
-      return
-  }
-  args := GetEntityGetI64Args{
-  }
-  if err = args.Write(oprot); err != nil {
-      return
-  }
-  if err = oprot.WriteMessageEnd(); err != nil {
-      return
-  }
-  return oprot.Flush()
 }
 
 
 func (p *GetEntityClient) recvGetI64() (value int64, err error) {
-  iprot := p.InputProtocol
-  if iprot == nil {
-    iprot = p.ProtocolFactory.GetProtocol(p.Transport)
-    p.InputProtocol = iprot
-  }
-  method, mTypeId, seqId, err := iprot.ReadMessageBegin()
-  if err != nil {
-    return
-  }
-  if method != "getI64" {
-    err = thrift.NewApplicationException(thrift.WRONG_METHOD_NAME, "getI64 failed: wrong method name")
-    return
-  }
-  if p.SeqId != seqId {
-    err = thrift.NewApplicationException(thrift.BAD_SEQUENCE_ID, "getI64 failed: out of sequence response")
-    return
-  }
-  if mTypeId == thrift.EXCEPTION {
-    error10 := thrift.NewApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
-    var error11 error
-    error11, err = error10.Read(iprot)
-    if err != nil {
-      return
-    }
-    if err = iprot.ReadMessageEnd(); err != nil {
-      return
-    }
-    err = error11
-    return
-  }
-  if mTypeId != thrift.REPLY {
-    err = thrift.NewApplicationException(thrift.INVALID_MESSAGE_TYPE_EXCEPTION, "getI64 failed: invalid message type")
-    return
-  }
-  result := GetEntityGetI64Result{}
-  if err = result.Read(iprot); err != nil {
-    return
-  }
-  if err = iprot.ReadMessageEnd(); err != nil {
-    return
-  }
-  value = result.GetSuccess()
-  return
+  var result GetEntityGetI64Result
+  err = p.CC.RecvMsg("getI64", &result)
+  if err != nil { return }
+
+  return result.GetSuccess(), nil
 }
 
 func (p *GetEntityClient) GetDouble() (_r float64, err error) {
-  if err = p.sendGetDouble(); err != nil { return }
+  var args GetEntityGetDoubleArgs
+  err = p.CC.SendMsg("getDouble", &args, thrift.CALL)
+  if err != nil { return }
   return p.recvGetDouble()
-}
-
-func (p *GetEntityClient) sendGetDouble()(err error) {
-  oprot := p.OutputProtocol
-  if oprot == nil {
-    oprot = p.ProtocolFactory.GetProtocol(p.Transport)
-    p.OutputProtocol = oprot
-  }
-  p.SeqId++
-  if err = oprot.WriteMessageBegin("getDouble", thrift.CALL, p.SeqId); err != nil {
-      return
-  }
-  args := GetEntityGetDoubleArgs{
-  }
-  if err = args.Write(oprot); err != nil {
-      return
-  }
-  if err = oprot.WriteMessageEnd(); err != nil {
-      return
-  }
-  return oprot.Flush()
 }
 
 
 func (p *GetEntityClient) recvGetDouble() (value float64, err error) {
-  iprot := p.InputProtocol
-  if iprot == nil {
-    iprot = p.ProtocolFactory.GetProtocol(p.Transport)
-    p.InputProtocol = iprot
-  }
-  method, mTypeId, seqId, err := iprot.ReadMessageBegin()
-  if err != nil {
-    return
-  }
-  if method != "getDouble" {
-    err = thrift.NewApplicationException(thrift.WRONG_METHOD_NAME, "getDouble failed: wrong method name")
-    return
-  }
-  if p.SeqId != seqId {
-    err = thrift.NewApplicationException(thrift.BAD_SEQUENCE_ID, "getDouble failed: out of sequence response")
-    return
-  }
-  if mTypeId == thrift.EXCEPTION {
-    error12 := thrift.NewApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
-    var error13 error
-    error13, err = error12.Read(iprot)
-    if err != nil {
-      return
-    }
-    if err = iprot.ReadMessageEnd(); err != nil {
-      return
-    }
-    err = error13
-    return
-  }
-  if mTypeId != thrift.REPLY {
-    err = thrift.NewApplicationException(thrift.INVALID_MESSAGE_TYPE_EXCEPTION, "getDouble failed: invalid message type")
-    return
-  }
-  result := GetEntityGetDoubleResult{}
-  if err = result.Read(iprot); err != nil {
-    return
-  }
-  if err = iprot.ReadMessageEnd(); err != nil {
-    return
-  }
-  value = result.GetSuccess()
-  return
+  var result GetEntityGetDoubleResult
+  err = p.CC.RecvMsg("getDouble", &result)
+  if err != nil { return }
+
+  return result.GetSuccess(), nil
 }
 
 func (p *GetEntityClient) GetString() (_r string, err error) {
-  if err = p.sendGetString(); err != nil { return }
+  var args GetEntityGetStringArgs
+  err = p.CC.SendMsg("getString", &args, thrift.CALL)
+  if err != nil { return }
   return p.recvGetString()
-}
-
-func (p *GetEntityClient) sendGetString()(err error) {
-  oprot := p.OutputProtocol
-  if oprot == nil {
-    oprot = p.ProtocolFactory.GetProtocol(p.Transport)
-    p.OutputProtocol = oprot
-  }
-  p.SeqId++
-  if err = oprot.WriteMessageBegin("getString", thrift.CALL, p.SeqId); err != nil {
-      return
-  }
-  args := GetEntityGetStringArgs{
-  }
-  if err = args.Write(oprot); err != nil {
-      return
-  }
-  if err = oprot.WriteMessageEnd(); err != nil {
-      return
-  }
-  return oprot.Flush()
 }
 
 
 func (p *GetEntityClient) recvGetString() (value string, err error) {
-  iprot := p.InputProtocol
-  if iprot == nil {
-    iprot = p.ProtocolFactory.GetProtocol(p.Transport)
-    p.InputProtocol = iprot
-  }
-  method, mTypeId, seqId, err := iprot.ReadMessageBegin()
-  if err != nil {
-    return
-  }
-  if method != "getString" {
-    err = thrift.NewApplicationException(thrift.WRONG_METHOD_NAME, "getString failed: wrong method name")
-    return
-  }
-  if p.SeqId != seqId {
-    err = thrift.NewApplicationException(thrift.BAD_SEQUENCE_ID, "getString failed: out of sequence response")
-    return
-  }
-  if mTypeId == thrift.EXCEPTION {
-    error14 := thrift.NewApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
-    var error15 error
-    error15, err = error14.Read(iprot)
-    if err != nil {
-      return
-    }
-    if err = iprot.ReadMessageEnd(); err != nil {
-      return
-    }
-    err = error15
-    return
-  }
-  if mTypeId != thrift.REPLY {
-    err = thrift.NewApplicationException(thrift.INVALID_MESSAGE_TYPE_EXCEPTION, "getString failed: invalid message type")
-    return
-  }
-  result := GetEntityGetStringResult{}
-  if err = result.Read(iprot); err != nil {
-    return
-  }
-  if err = iprot.ReadMessageEnd(); err != nil {
-    return
-  }
-  value = result.GetSuccess()
-  return
+  var result GetEntityGetStringResult
+  err = p.CC.RecvMsg("getString", &result)
+  if err != nil { return }
+
+  return result.GetSuccess(), nil
 }
 
 func (p *GetEntityClient) GetBinary() (_r []byte, err error) {
-  if err = p.sendGetBinary(); err != nil { return }
+  var args GetEntityGetBinaryArgs
+  err = p.CC.SendMsg("getBinary", &args, thrift.CALL)
+  if err != nil { return }
   return p.recvGetBinary()
-}
-
-func (p *GetEntityClient) sendGetBinary()(err error) {
-  oprot := p.OutputProtocol
-  if oprot == nil {
-    oprot = p.ProtocolFactory.GetProtocol(p.Transport)
-    p.OutputProtocol = oprot
-  }
-  p.SeqId++
-  if err = oprot.WriteMessageBegin("getBinary", thrift.CALL, p.SeqId); err != nil {
-      return
-  }
-  args := GetEntityGetBinaryArgs{
-  }
-  if err = args.Write(oprot); err != nil {
-      return
-  }
-  if err = oprot.WriteMessageEnd(); err != nil {
-      return
-  }
-  return oprot.Flush()
 }
 
 
 func (p *GetEntityClient) recvGetBinary() (value []byte, err error) {
-  iprot := p.InputProtocol
-  if iprot == nil {
-    iprot = p.ProtocolFactory.GetProtocol(p.Transport)
-    p.InputProtocol = iprot
-  }
-  method, mTypeId, seqId, err := iprot.ReadMessageBegin()
-  if err != nil {
-    return
-  }
-  if method != "getBinary" {
-    err = thrift.NewApplicationException(thrift.WRONG_METHOD_NAME, "getBinary failed: wrong method name")
-    return
-  }
-  if p.SeqId != seqId {
-    err = thrift.NewApplicationException(thrift.BAD_SEQUENCE_ID, "getBinary failed: out of sequence response")
-    return
-  }
-  if mTypeId == thrift.EXCEPTION {
-    error16 := thrift.NewApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
-    var error17 error
-    error17, err = error16.Read(iprot)
-    if err != nil {
-      return
-    }
-    if err = iprot.ReadMessageEnd(); err != nil {
-      return
-    }
-    err = error17
-    return
-  }
-  if mTypeId != thrift.REPLY {
-    err = thrift.NewApplicationException(thrift.INVALID_MESSAGE_TYPE_EXCEPTION, "getBinary failed: invalid message type")
-    return
-  }
-  result := GetEntityGetBinaryResult{}
-  if err = result.Read(iprot); err != nil {
-    return
-  }
-  if err = iprot.ReadMessageEnd(); err != nil {
-    return
-  }
-  value = result.GetSuccess()
-  return
+  var result GetEntityGetBinaryResult
+  err = p.CC.RecvMsg("getBinary", &result)
+  if err != nil { return }
+
+  return result.GetSuccess(), nil
 }
 
 func (p *GetEntityClient) GetMap() (_r map[string]string, err error) {
-  if err = p.sendGetMap(); err != nil { return }
+  var args GetEntityGetMapArgs
+  err = p.CC.SendMsg("getMap", &args, thrift.CALL)
+  if err != nil { return }
   return p.recvGetMap()
-}
-
-func (p *GetEntityClient) sendGetMap()(err error) {
-  oprot := p.OutputProtocol
-  if oprot == nil {
-    oprot = p.ProtocolFactory.GetProtocol(p.Transport)
-    p.OutputProtocol = oprot
-  }
-  p.SeqId++
-  if err = oprot.WriteMessageBegin("getMap", thrift.CALL, p.SeqId); err != nil {
-      return
-  }
-  args := GetEntityGetMapArgs{
-  }
-  if err = args.Write(oprot); err != nil {
-      return
-  }
-  if err = oprot.WriteMessageEnd(); err != nil {
-      return
-  }
-  return oprot.Flush()
 }
 
 
 func (p *GetEntityClient) recvGetMap() (value map[string]string, err error) {
-  iprot := p.InputProtocol
-  if iprot == nil {
-    iprot = p.ProtocolFactory.GetProtocol(p.Transport)
-    p.InputProtocol = iprot
-  }
-  method, mTypeId, seqId, err := iprot.ReadMessageBegin()
-  if err != nil {
-    return
-  }
-  if method != "getMap" {
-    err = thrift.NewApplicationException(thrift.WRONG_METHOD_NAME, "getMap failed: wrong method name")
-    return
-  }
-  if p.SeqId != seqId {
-    err = thrift.NewApplicationException(thrift.BAD_SEQUENCE_ID, "getMap failed: out of sequence response")
-    return
-  }
-  if mTypeId == thrift.EXCEPTION {
-    error18 := thrift.NewApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
-    var error19 error
-    error19, err = error18.Read(iprot)
-    if err != nil {
-      return
-    }
-    if err = iprot.ReadMessageEnd(); err != nil {
-      return
-    }
-    err = error19
-    return
-  }
-  if mTypeId != thrift.REPLY {
-    err = thrift.NewApplicationException(thrift.INVALID_MESSAGE_TYPE_EXCEPTION, "getMap failed: invalid message type")
-    return
-  }
-  result := GetEntityGetMapResult{}
-  if err = result.Read(iprot); err != nil {
-    return
-  }
-  if err = iprot.ReadMessageEnd(); err != nil {
-    return
-  }
-  value = result.GetSuccess()
-  return
+  var result GetEntityGetMapResult
+  err = p.CC.RecvMsg("getMap", &result)
+  if err != nil { return }
+
+  return result.GetSuccess(), nil
 }
 
 func (p *GetEntityClient) GetSet() (_r []string, err error) {
-  if err = p.sendGetSet(); err != nil { return }
+  var args GetEntityGetSetArgs
+  err = p.CC.SendMsg("getSet", &args, thrift.CALL)
+  if err != nil { return }
   return p.recvGetSet()
-}
-
-func (p *GetEntityClient) sendGetSet()(err error) {
-  oprot := p.OutputProtocol
-  if oprot == nil {
-    oprot = p.ProtocolFactory.GetProtocol(p.Transport)
-    p.OutputProtocol = oprot
-  }
-  p.SeqId++
-  if err = oprot.WriteMessageBegin("getSet", thrift.CALL, p.SeqId); err != nil {
-      return
-  }
-  args := GetEntityGetSetArgs{
-  }
-  if err = args.Write(oprot); err != nil {
-      return
-  }
-  if err = oprot.WriteMessageEnd(); err != nil {
-      return
-  }
-  return oprot.Flush()
 }
 
 
 func (p *GetEntityClient) recvGetSet() (value []string, err error) {
-  iprot := p.InputProtocol
-  if iprot == nil {
-    iprot = p.ProtocolFactory.GetProtocol(p.Transport)
-    p.InputProtocol = iprot
-  }
-  method, mTypeId, seqId, err := iprot.ReadMessageBegin()
-  if err != nil {
-    return
-  }
-  if method != "getSet" {
-    err = thrift.NewApplicationException(thrift.WRONG_METHOD_NAME, "getSet failed: wrong method name")
-    return
-  }
-  if p.SeqId != seqId {
-    err = thrift.NewApplicationException(thrift.BAD_SEQUENCE_ID, "getSet failed: out of sequence response")
-    return
-  }
-  if mTypeId == thrift.EXCEPTION {
-    error20 := thrift.NewApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
-    var error21 error
-    error21, err = error20.Read(iprot)
-    if err != nil {
-      return
-    }
-    if err = iprot.ReadMessageEnd(); err != nil {
-      return
-    }
-    err = error21
-    return
-  }
-  if mTypeId != thrift.REPLY {
-    err = thrift.NewApplicationException(thrift.INVALID_MESSAGE_TYPE_EXCEPTION, "getSet failed: invalid message type")
-    return
-  }
-  result := GetEntityGetSetResult{}
-  if err = result.Read(iprot); err != nil {
-    return
-  }
-  if err = iprot.ReadMessageEnd(); err != nil {
-    return
-  }
-  value = result.GetSuccess()
-  return
+  var result GetEntityGetSetResult
+  err = p.CC.RecvMsg("getSet", &result)
+  if err != nil { return }
+
+  return result.GetSuccess(), nil
 }
 
 func (p *GetEntityClient) GetList() (_r []string, err error) {
-  if err = p.sendGetList(); err != nil { return }
+  var args GetEntityGetListArgs
+  err = p.CC.SendMsg("getList", &args, thrift.CALL)
+  if err != nil { return }
   return p.recvGetList()
-}
-
-func (p *GetEntityClient) sendGetList()(err error) {
-  oprot := p.OutputProtocol
-  if oprot == nil {
-    oprot = p.ProtocolFactory.GetProtocol(p.Transport)
-    p.OutputProtocol = oprot
-  }
-  p.SeqId++
-  if err = oprot.WriteMessageBegin("getList", thrift.CALL, p.SeqId); err != nil {
-      return
-  }
-  args := GetEntityGetListArgs{
-  }
-  if err = args.Write(oprot); err != nil {
-      return
-  }
-  if err = oprot.WriteMessageEnd(); err != nil {
-      return
-  }
-  return oprot.Flush()
 }
 
 
 func (p *GetEntityClient) recvGetList() (value []string, err error) {
-  iprot := p.InputProtocol
-  if iprot == nil {
-    iprot = p.ProtocolFactory.GetProtocol(p.Transport)
-    p.InputProtocol = iprot
-  }
-  method, mTypeId, seqId, err := iprot.ReadMessageBegin()
-  if err != nil {
-    return
-  }
-  if method != "getList" {
-    err = thrift.NewApplicationException(thrift.WRONG_METHOD_NAME, "getList failed: wrong method name")
-    return
-  }
-  if p.SeqId != seqId {
-    err = thrift.NewApplicationException(thrift.BAD_SEQUENCE_ID, "getList failed: out of sequence response")
-    return
-  }
-  if mTypeId == thrift.EXCEPTION {
-    error22 := thrift.NewApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
-    var error23 error
-    error23, err = error22.Read(iprot)
-    if err != nil {
-      return
-    }
-    if err = iprot.ReadMessageEnd(); err != nil {
-      return
-    }
-    err = error23
-    return
-  }
-  if mTypeId != thrift.REPLY {
-    err = thrift.NewApplicationException(thrift.INVALID_MESSAGE_TYPE_EXCEPTION, "getList failed: invalid message type")
-    return
-  }
-  result := GetEntityGetListResult{}
-  if err = result.Read(iprot); err != nil {
-    return
-  }
-  if err = iprot.ReadMessageEnd(); err != nil {
-    return
-  }
-  value = result.GetSuccess()
-  return
+  var result GetEntityGetListResult
+  err = p.CC.RecvMsg("getList", &result)
+  if err != nil { return }
+
+  return result.GetSuccess(), nil
 }
 
 
@@ -1026,16 +337,16 @@ func (p *GetEntityThreadsafeClient) recvGetEntity() (value *GetEntityResponse, e
     return
   }
   if mTypeId == thrift.EXCEPTION {
-    error24 := thrift.NewApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
-    var error25 error
-    error25, err = error24.Read(iprot)
+    error0 := thrift.NewApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
+    var error1 error
+    error1, err = error0.Read(iprot)
     if err != nil {
       return
     }
     if err = iprot.ReadMessageEnd(); err != nil {
       return
     }
-    err = error25
+    err = error1
     return
   }
   if mTypeId != thrift.REPLY {
@@ -1101,16 +412,16 @@ func (p *GetEntityThreadsafeClient) recvGetBool() (value bool, err error) {
     return
   }
   if mTypeId == thrift.EXCEPTION {
-    error26 := thrift.NewApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
-    var error27 error
-    error27, err = error26.Read(iprot)
+    error2 := thrift.NewApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
+    var error3 error
+    error3, err = error2.Read(iprot)
     if err != nil {
       return
     }
     if err = iprot.ReadMessageEnd(); err != nil {
       return
     }
-    err = error27
+    err = error3
     return
   }
   if mTypeId != thrift.REPLY {
@@ -1176,16 +487,16 @@ func (p *GetEntityThreadsafeClient) recvGetByte() (value int8, err error) {
     return
   }
   if mTypeId == thrift.EXCEPTION {
-    error28 := thrift.NewApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
-    var error29 error
-    error29, err = error28.Read(iprot)
+    error4 := thrift.NewApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
+    var error5 error
+    error5, err = error4.Read(iprot)
     if err != nil {
       return
     }
     if err = iprot.ReadMessageEnd(); err != nil {
       return
     }
-    err = error29
+    err = error5
     return
   }
   if mTypeId != thrift.REPLY {
@@ -1251,16 +562,16 @@ func (p *GetEntityThreadsafeClient) recvGetI16() (value int16, err error) {
     return
   }
   if mTypeId == thrift.EXCEPTION {
-    error30 := thrift.NewApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
-    var error31 error
-    error31, err = error30.Read(iprot)
+    error6 := thrift.NewApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
+    var error7 error
+    error7, err = error6.Read(iprot)
     if err != nil {
       return
     }
     if err = iprot.ReadMessageEnd(); err != nil {
       return
     }
-    err = error31
+    err = error7
     return
   }
   if mTypeId != thrift.REPLY {
@@ -1326,16 +637,16 @@ func (p *GetEntityThreadsafeClient) recvGetI32() (value int32, err error) {
     return
   }
   if mTypeId == thrift.EXCEPTION {
-    error32 := thrift.NewApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
-    var error33 error
-    error33, err = error32.Read(iprot)
+    error8 := thrift.NewApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
+    var error9 error
+    error9, err = error8.Read(iprot)
     if err != nil {
       return
     }
     if err = iprot.ReadMessageEnd(); err != nil {
       return
     }
-    err = error33
+    err = error9
     return
   }
   if mTypeId != thrift.REPLY {
@@ -1401,16 +712,16 @@ func (p *GetEntityThreadsafeClient) recvGetI64() (value int64, err error) {
     return
   }
   if mTypeId == thrift.EXCEPTION {
-    error34 := thrift.NewApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
-    var error35 error
-    error35, err = error34.Read(iprot)
+    error10 := thrift.NewApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
+    var error11 error
+    error11, err = error10.Read(iprot)
     if err != nil {
       return
     }
     if err = iprot.ReadMessageEnd(); err != nil {
       return
     }
-    err = error35
+    err = error11
     return
   }
   if mTypeId != thrift.REPLY {
@@ -1476,16 +787,16 @@ func (p *GetEntityThreadsafeClient) recvGetDouble() (value float64, err error) {
     return
   }
   if mTypeId == thrift.EXCEPTION {
-    error36 := thrift.NewApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
-    var error37 error
-    error37, err = error36.Read(iprot)
+    error12 := thrift.NewApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
+    var error13 error
+    error13, err = error12.Read(iprot)
     if err != nil {
       return
     }
     if err = iprot.ReadMessageEnd(); err != nil {
       return
     }
-    err = error37
+    err = error13
     return
   }
   if mTypeId != thrift.REPLY {
@@ -1551,16 +862,16 @@ func (p *GetEntityThreadsafeClient) recvGetString() (value string, err error) {
     return
   }
   if mTypeId == thrift.EXCEPTION {
-    error38 := thrift.NewApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
-    var error39 error
-    error39, err = error38.Read(iprot)
+    error14 := thrift.NewApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
+    var error15 error
+    error15, err = error14.Read(iprot)
     if err != nil {
       return
     }
     if err = iprot.ReadMessageEnd(); err != nil {
       return
     }
-    err = error39
+    err = error15
     return
   }
   if mTypeId != thrift.REPLY {
@@ -1626,16 +937,16 @@ func (p *GetEntityThreadsafeClient) recvGetBinary() (value []byte, err error) {
     return
   }
   if mTypeId == thrift.EXCEPTION {
-    error40 := thrift.NewApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
-    var error41 error
-    error41, err = error40.Read(iprot)
+    error16 := thrift.NewApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
+    var error17 error
+    error17, err = error16.Read(iprot)
     if err != nil {
       return
     }
     if err = iprot.ReadMessageEnd(); err != nil {
       return
     }
-    err = error41
+    err = error17
     return
   }
   if mTypeId != thrift.REPLY {
@@ -1701,16 +1012,16 @@ func (p *GetEntityThreadsafeClient) recvGetMap() (value map[string]string, err e
     return
   }
   if mTypeId == thrift.EXCEPTION {
-    error42 := thrift.NewApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
-    var error43 error
-    error43, err = error42.Read(iprot)
+    error18 := thrift.NewApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
+    var error19 error
+    error19, err = error18.Read(iprot)
     if err != nil {
       return
     }
     if err = iprot.ReadMessageEnd(); err != nil {
       return
     }
-    err = error43
+    err = error19
     return
   }
   if mTypeId != thrift.REPLY {
@@ -1776,16 +1087,16 @@ func (p *GetEntityThreadsafeClient) recvGetSet() (value []string, err error) {
     return
   }
   if mTypeId == thrift.EXCEPTION {
-    error44 := thrift.NewApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
-    var error45 error
-    error45, err = error44.Read(iprot)
+    error20 := thrift.NewApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
+    var error21 error
+    error21, err = error20.Read(iprot)
     if err != nil {
       return
     }
     if err = iprot.ReadMessageEnd(); err != nil {
       return
     }
-    err = error45
+    err = error21
     return
   }
   if mTypeId != thrift.REPLY {
@@ -1851,16 +1162,16 @@ func (p *GetEntityThreadsafeClient) recvGetList() (value []string, err error) {
     return
   }
   if mTypeId == thrift.EXCEPTION {
-    error46 := thrift.NewApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
-    var error47 error
-    error47, err = error46.Read(iprot)
+    error22 := thrift.NewApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
+    var error23 error
+    error23, err = error22.Read(iprot)
     if err != nil {
       return
     }
     if err = iprot.ReadMessageEnd(); err != nil {
       return
     }
-    err = error47
+    err = error23
     return
   }
   if mTypeId != thrift.REPLY {
@@ -1900,20 +1211,20 @@ func (p *GetEntityProcessor) ProcessorMap() map[string]thrift.ProcessorFunction 
 }
 
 func NewGetEntityProcessor(handler GetEntity) *GetEntityProcessor {
-  self48 := &GetEntityProcessor{handler:handler, processorMap:make(map[string]thrift.ProcessorFunction)}
-  self48.processorMap["getEntity"] = &getEntityProcessorGetEntity{handler:handler}
-  self48.processorMap["getBool"] = &getEntityProcessorGetBool{handler:handler}
-  self48.processorMap["getByte"] = &getEntityProcessorGetByte{handler:handler}
-  self48.processorMap["getI16"] = &getEntityProcessorGetI16{handler:handler}
-  self48.processorMap["getI32"] = &getEntityProcessorGetI32{handler:handler}
-  self48.processorMap["getI64"] = &getEntityProcessorGetI64{handler:handler}
-  self48.processorMap["getDouble"] = &getEntityProcessorGetDouble{handler:handler}
-  self48.processorMap["getString"] = &getEntityProcessorGetString{handler:handler}
-  self48.processorMap["getBinary"] = &getEntityProcessorGetBinary{handler:handler}
-  self48.processorMap["getMap"] = &getEntityProcessorGetMap{handler:handler}
-  self48.processorMap["getSet"] = &getEntityProcessorGetSet{handler:handler}
-  self48.processorMap["getList"] = &getEntityProcessorGetList{handler:handler}
-  return self48
+  self24 := &GetEntityProcessor{handler:handler, processorMap:make(map[string]thrift.ProcessorFunction)}
+  self24.processorMap["getEntity"] = &getEntityProcessorGetEntity{handler:handler}
+  self24.processorMap["getBool"] = &getEntityProcessorGetBool{handler:handler}
+  self24.processorMap["getByte"] = &getEntityProcessorGetByte{handler:handler}
+  self24.processorMap["getI16"] = &getEntityProcessorGetI16{handler:handler}
+  self24.processorMap["getI32"] = &getEntityProcessorGetI32{handler:handler}
+  self24.processorMap["getI64"] = &getEntityProcessorGetI64{handler:handler}
+  self24.processorMap["getDouble"] = &getEntityProcessorGetDouble{handler:handler}
+  self24.processorMap["getString"] = &getEntityProcessorGetString{handler:handler}
+  self24.processorMap["getBinary"] = &getEntityProcessorGetBinary{handler:handler}
+  self24.processorMap["getMap"] = &getEntityProcessorGetMap{handler:handler}
+  self24.processorMap["getSet"] = &getEntityProcessorGetSet{handler:handler}
+  self24.processorMap["getList"] = &getEntityProcessorGetList{handler:handler}
+  return self24
 }
 
 type getEntityProcessorGetEntity struct {
@@ -2511,6 +1822,7 @@ func (p *getEntityProcessorGetList) Run(argStruct thrift.Struct) (thrift.Writabl
 // Attributes:
 //  - R
 type GetEntityGetEntityArgs struct {
+  thrift.IRequest
   R *GetEntityRequest `thrift:"r,1" db:"r" json:"r"`
 }
 
@@ -2603,6 +1915,7 @@ func (p *GetEntityGetEntityArgs) String() string {
 // Attributes:
 //  - Success
 type GetEntityGetEntityResult struct {
+  thrift.IResponse
   Success *GetEntityResponse `thrift:"success,0" db:"success" json:"success,omitempty"`
 }
 
@@ -2693,6 +2006,7 @@ func (p *GetEntityGetEntityResult) String() string {
 }
 
 type GetEntityGetBoolArgs struct {
+  thrift.IRequest
 }
 
 func NewGetEntityGetBoolArgs() *GetEntityGetBoolArgs {
@@ -2744,6 +2058,7 @@ func (p *GetEntityGetBoolArgs) String() string {
 // Attributes:
 //  - Success
 type GetEntityGetBoolResult struct {
+  thrift.IResponse
   Success *bool `thrift:"success,0" db:"success" json:"success,omitempty"`
 }
 
@@ -2834,6 +2149,7 @@ func (p *GetEntityGetBoolResult) String() string {
 }
 
 type GetEntityGetByteArgs struct {
+  thrift.IRequest
 }
 
 func NewGetEntityGetByteArgs() *GetEntityGetByteArgs {
@@ -2885,6 +2201,7 @@ func (p *GetEntityGetByteArgs) String() string {
 // Attributes:
 //  - Success
 type GetEntityGetByteResult struct {
+  thrift.IResponse
   Success *int8 `thrift:"success,0" db:"success" json:"success,omitempty"`
 }
 
@@ -2976,6 +2293,7 @@ func (p *GetEntityGetByteResult) String() string {
 }
 
 type GetEntityGetI16Args struct {
+  thrift.IRequest
 }
 
 func NewGetEntityGetI16Args() *GetEntityGetI16Args {
@@ -3027,6 +2345,7 @@ func (p *GetEntityGetI16Args) String() string {
 // Attributes:
 //  - Success
 type GetEntityGetI16Result struct {
+  thrift.IResponse
   Success *int16 `thrift:"success,0" db:"success" json:"success,omitempty"`
 }
 
@@ -3117,6 +2436,7 @@ func (p *GetEntityGetI16Result) String() string {
 }
 
 type GetEntityGetI32Args struct {
+  thrift.IRequest
 }
 
 func NewGetEntityGetI32Args() *GetEntityGetI32Args {
@@ -3168,6 +2488,7 @@ func (p *GetEntityGetI32Args) String() string {
 // Attributes:
 //  - Success
 type GetEntityGetI32Result struct {
+  thrift.IResponse
   Success *int32 `thrift:"success,0" db:"success" json:"success,omitempty"`
 }
 
@@ -3258,6 +2579,7 @@ func (p *GetEntityGetI32Result) String() string {
 }
 
 type GetEntityGetI64Args struct {
+  thrift.IRequest
 }
 
 func NewGetEntityGetI64Args() *GetEntityGetI64Args {
@@ -3309,6 +2631,7 @@ func (p *GetEntityGetI64Args) String() string {
 // Attributes:
 //  - Success
 type GetEntityGetI64Result struct {
+  thrift.IResponse
   Success *int64 `thrift:"success,0" db:"success" json:"success,omitempty"`
 }
 
@@ -3399,6 +2722,7 @@ func (p *GetEntityGetI64Result) String() string {
 }
 
 type GetEntityGetDoubleArgs struct {
+  thrift.IRequest
 }
 
 func NewGetEntityGetDoubleArgs() *GetEntityGetDoubleArgs {
@@ -3450,6 +2774,7 @@ func (p *GetEntityGetDoubleArgs) String() string {
 // Attributes:
 //  - Success
 type GetEntityGetDoubleResult struct {
+  thrift.IResponse
   Success *float64 `thrift:"success,0" db:"success" json:"success,omitempty"`
 }
 
@@ -3540,6 +2865,7 @@ func (p *GetEntityGetDoubleResult) String() string {
 }
 
 type GetEntityGetStringArgs struct {
+  thrift.IRequest
 }
 
 func NewGetEntityGetStringArgs() *GetEntityGetStringArgs {
@@ -3591,6 +2917,7 @@ func (p *GetEntityGetStringArgs) String() string {
 // Attributes:
 //  - Success
 type GetEntityGetStringResult struct {
+  thrift.IResponse
   Success *string `thrift:"success,0" db:"success" json:"success,omitempty"`
 }
 
@@ -3681,6 +3008,7 @@ func (p *GetEntityGetStringResult) String() string {
 }
 
 type GetEntityGetBinaryArgs struct {
+  thrift.IRequest
 }
 
 func NewGetEntityGetBinaryArgs() *GetEntityGetBinaryArgs {
@@ -3732,6 +3060,7 @@ func (p *GetEntityGetBinaryArgs) String() string {
 // Attributes:
 //  - Success
 type GetEntityGetBinaryResult struct {
+  thrift.IResponse
   Success []byte `thrift:"success,0" db:"success" json:"success,omitempty"`
 }
 
@@ -3820,6 +3149,7 @@ func (p *GetEntityGetBinaryResult) String() string {
 }
 
 type GetEntityGetMapArgs struct {
+  thrift.IRequest
 }
 
 func NewGetEntityGetMapArgs() *GetEntityGetMapArgs {
@@ -3871,6 +3201,7 @@ func (p *GetEntityGetMapArgs) String() string {
 // Attributes:
 //  - Success
 type GetEntityGetMapResult struct {
+  thrift.IResponse
   Success map[string]string `thrift:"success,0" db:"success" json:"success,omitempty"`
 }
 
@@ -3927,19 +3258,19 @@ func (p *GetEntityGetMapResult)  ReadField0(iprot thrift.Protocol) error {
   tMap := make(map[string]string, size)
   p.Success =  tMap
   for i := 0; i < size; i ++ {
-var _key50 string
+var _key26 string
     if v, err := iprot.ReadString(); err != nil {
     return thrift.PrependError("error reading field 0: ", err)
 } else {
-    _key50 = v
+    _key26 = v
 }
-var _val51 string
+var _val27 string
     if v, err := iprot.ReadString(); err != nil {
     return thrift.PrependError("error reading field 0: ", err)
 } else {
-    _val51 = v
+    _val27 = v
 }
-    p.Success[_key50] = _val51
+    p.Success[_key26] = _val27
   }
   if err := iprot.ReadMapEnd(); err != nil {
     return thrift.PrependError("error reading map end: ", err)
@@ -3988,6 +3319,7 @@ func (p *GetEntityGetMapResult) String() string {
 }
 
 type GetEntityGetSetArgs struct {
+  thrift.IRequest
 }
 
 func NewGetEntityGetSetArgs() *GetEntityGetSetArgs {
@@ -4039,6 +3371,7 @@ func (p *GetEntityGetSetArgs) String() string {
 // Attributes:
 //  - Success
 type GetEntityGetSetResult struct {
+  thrift.IResponse
   Success []string `thrift:"success,0" db:"success" json:"success,omitempty"`
 }
 
@@ -4095,13 +3428,13 @@ func (p *GetEntityGetSetResult)  ReadField0(iprot thrift.Protocol) error {
   tSet := make([]string, 0, size)
   p.Success =  tSet
   for i := 0; i < size; i ++ {
-var _elem52 string
+var _elem28 string
     if v, err := iprot.ReadString(); err != nil {
     return thrift.PrependError("error reading field 0: ", err)
 } else {
-    _elem52 = v
+    _elem28 = v
 }
-    p.Success = append(p.Success, _elem52)
+    p.Success = append(p.Success, _elem28)
   }
   if err := iprot.ReadSetEnd(); err != nil {
     return thrift.PrependError("error reading set end: ", err)
@@ -4155,6 +3488,7 @@ func (p *GetEntityGetSetResult) String() string {
 }
 
 type GetEntityGetListArgs struct {
+  thrift.IRequest
 }
 
 func NewGetEntityGetListArgs() *GetEntityGetListArgs {
@@ -4206,6 +3540,7 @@ func (p *GetEntityGetListArgs) String() string {
 // Attributes:
 //  - Success
 type GetEntityGetListResult struct {
+  thrift.IResponse
   Success []string `thrift:"success,0" db:"success" json:"success,omitempty"`
 }
 
@@ -4262,13 +3597,13 @@ func (p *GetEntityGetListResult)  ReadField0(iprot thrift.Protocol) error {
   tSlice := make([]string, 0, size)
   p.Success =  tSlice
   for i := 0; i < size; i ++ {
-var _elem53 string
+var _elem29 string
     if v, err := iprot.ReadString(); err != nil {
     return thrift.PrependError("error reading field 0: ", err)
 } else {
-    _elem53 = v
+    _elem29 = v
 }
-    p.Success = append(p.Success, _elem53)
+    p.Success = append(p.Success, _elem29)
   }
   if err := iprot.ReadListEnd(); err != nil {
     return thrift.PrependError("error reading list end: ", err)

@@ -1,4 +1,6 @@
 /*
+ * Copyright 2019-present Facebook, Inc.
+ *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -16,7 +18,6 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 package gotest
 
 import (
@@ -108,7 +109,7 @@ func doClientTest(t *testing.T, transportFactory thrift.TransportFactory, protoc
 	if err != nil {
 		t.Fatalf("failed to connect to test server: %s", err.Error())
 	}
-	defer client.Transport.Close()
+	defer client.Close()
 
 	res, err := client.DoTestString(testCallString)
 	if err != nil {

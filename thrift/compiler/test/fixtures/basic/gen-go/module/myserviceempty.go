@@ -22,33 +22,27 @@ var _ = context.Background
 type MyServiceEmpty interface {}
 
 type MyServiceEmptyClient struct {
-  Transport thrift.Transport
-  ProtocolFactory thrift.ProtocolFactory
-  InputProtocol thrift.Protocol
-  OutputProtocol thrift.Protocol
-  SeqId int32
+  CC thrift.ClientConn
 }
 
 func (client *MyServiceEmptyClient) Close() error {
-  return client.Transport.Close()
+  return client.CC.Close()
+}
+
+func (client *MyServiceEmptyClient) Open() error {
+  return client.CC.Open()
+}
+
+func (client *MyServiceEmptyClient) IsOpen() bool {
+  return client.CC.IsOpen()
 }
 
 func NewMyServiceEmptyClientFactory(t thrift.Transport, f thrift.ProtocolFactory) *MyServiceEmptyClient {
-  return &MyServiceEmptyClient{Transport: t,
-    ProtocolFactory: f,
-    InputProtocol: f.GetProtocol(t),
-    OutputProtocol: f.GetProtocol(t),
-    SeqId: 0,
-  }
+  return &MyServiceEmptyClient{ CC: thrift.NewClientConn(t, f) }
 }
 
 func NewMyServiceEmptyClient(t thrift.Transport, iprot thrift.Protocol, oprot thrift.Protocol) *MyServiceEmptyClient {
-  return &MyServiceEmptyClient{Transport: t,
-    ProtocolFactory: nil,
-    InputProtocol: iprot,
-    OutputProtocol: oprot,
-    SeqId: 0,
-  }
+  return &MyServiceEmptyClient{ CC: thrift.NewClientConnWithProtocols(t, iprot, oprot) }
 }
 
 
@@ -103,8 +97,8 @@ func (p *MyServiceEmptyProcessor) ProcessorMap() map[string]thrift.ProcessorFunc
 }
 
 func NewMyServiceEmptyProcessor(handler MyServiceEmpty) *MyServiceEmptyProcessor {
-  self56 := &MyServiceEmptyProcessor{handler:handler, processorMap:make(map[string]thrift.ProcessorFunction)}
-  return self56
+  self36 := &MyServiceEmptyProcessor{handler:handler, processorMap:make(map[string]thrift.ProcessorFunction)}
+  return self36
 }
 
 

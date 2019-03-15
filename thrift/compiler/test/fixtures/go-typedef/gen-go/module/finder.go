@@ -32,261 +32,87 @@ type Finder interface {
 }
 
 type FinderClient struct {
-  Transport thrift.Transport
-  ProtocolFactory thrift.ProtocolFactory
-  InputProtocol thrift.Protocol
-  OutputProtocol thrift.Protocol
-  SeqId int32
+  CC thrift.ClientConn
 }
 
 func (client *FinderClient) Close() error {
-  return client.Transport.Close()
+  return client.CC.Close()
+}
+
+func (client *FinderClient) Open() error {
+  return client.CC.Open()
+}
+
+func (client *FinderClient) IsOpen() bool {
+  return client.CC.IsOpen()
 }
 
 func NewFinderClientFactory(t thrift.Transport, f thrift.ProtocolFactory) *FinderClient {
-  return &FinderClient{Transport: t,
-    ProtocolFactory: f,
-    InputProtocol: f.GetProtocol(t),
-    OutputProtocol: f.GetProtocol(t),
-    SeqId: 0,
-  }
+  return &FinderClient{ CC: thrift.NewClientConn(t, f) }
 }
 
 func NewFinderClient(t thrift.Transport, iprot thrift.Protocol, oprot thrift.Protocol) *FinderClient {
-  return &FinderClient{Transport: t,
-    ProtocolFactory: nil,
-    InputProtocol: iprot,
-    OutputProtocol: oprot,
-    SeqId: 0,
-  }
+  return &FinderClient{ CC: thrift.NewClientConnWithProtocols(t, iprot, oprot) }
 }
 
 // Parameters:
 //  - Plate
 func (p *FinderClient) ByPlate(plate Plate) (_r *Automobile, err error) {
-  if err = p.sendByPlate(plate); err != nil { return }
-  return p.recvByPlate()
-}
-
-func (p *FinderClient) sendByPlate(plate Plate)(err error) {
-  oprot := p.OutputProtocol
-  if oprot == nil {
-    oprot = p.ProtocolFactory.GetProtocol(p.Transport)
-    p.OutputProtocol = oprot
-  }
-  p.SeqId++
-  if err = oprot.WriteMessageBegin("byPlate", thrift.CALL, p.SeqId); err != nil {
-      return
-  }
   args := FinderByPlateArgs{
-  Plate : plate,
+    Plate : plate,
   }
-  if err = args.Write(oprot); err != nil {
-      return
-  }
-  if err = oprot.WriteMessageEnd(); err != nil {
-      return
-  }
-  return oprot.Flush()
+  err = p.CC.SendMsg("byPlate", &args, thrift.CALL)
+  if err != nil { return }
+  return p.recvByPlate()
 }
 
 
 func (p *FinderClient) recvByPlate() (value *Automobile, err error) {
-  iprot := p.InputProtocol
-  if iprot == nil {
-    iprot = p.ProtocolFactory.GetProtocol(p.Transport)
-    p.InputProtocol = iprot
-  }
-  method, mTypeId, seqId, err := iprot.ReadMessageBegin()
-  if err != nil {
-    return
-  }
-  if method != "byPlate" {
-    err = thrift.NewApplicationException(thrift.WRONG_METHOD_NAME, "byPlate failed: wrong method name")
-    return
-  }
-  if p.SeqId != seqId {
-    err = thrift.NewApplicationException(thrift.BAD_SEQUENCE_ID, "byPlate failed: out of sequence response")
-    return
-  }
-  if mTypeId == thrift.EXCEPTION {
-    error5 := thrift.NewApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
-    var error6 error
-    error6, err = error5.Read(iprot)
-    if err != nil {
-      return
-    }
-    if err = iprot.ReadMessageEnd(); err != nil {
-      return
-    }
-    err = error6
-    return
-  }
-  if mTypeId != thrift.REPLY {
-    err = thrift.NewApplicationException(thrift.INVALID_MESSAGE_TYPE_EXCEPTION, "byPlate failed: invalid message type")
-    return
-  }
-  result := FinderByPlateResult{}
-  if err = result.Read(iprot); err != nil {
-    return
-  }
-  if err = iprot.ReadMessageEnd(); err != nil {
-    return
-  }
-  value = result.GetSuccess()
-  return
+  var result FinderByPlateResult
+  err = p.CC.RecvMsg("byPlate", &result)
+  if err != nil { return }
+
+  return result.GetSuccess(), nil
 }
 
 // Parameters:
 //  - Plate
 func (p *FinderClient) AliasByPlate(plate Plate) (_r *Car, err error) {
-  if err = p.sendAliasByPlate(plate); err != nil { return }
-  return p.recvAliasByPlate()
-}
-
-func (p *FinderClient) sendAliasByPlate(plate Plate)(err error) {
-  oprot := p.OutputProtocol
-  if oprot == nil {
-    oprot = p.ProtocolFactory.GetProtocol(p.Transport)
-    p.OutputProtocol = oprot
-  }
-  p.SeqId++
-  if err = oprot.WriteMessageBegin("aliasByPlate", thrift.CALL, p.SeqId); err != nil {
-      return
-  }
   args := FinderAliasByPlateArgs{
-  Plate : plate,
+    Plate : plate,
   }
-  if err = args.Write(oprot); err != nil {
-      return
-  }
-  if err = oprot.WriteMessageEnd(); err != nil {
-      return
-  }
-  return oprot.Flush()
+  err = p.CC.SendMsg("aliasByPlate", &args, thrift.CALL)
+  if err != nil { return }
+  return p.recvAliasByPlate()
 }
 
 
 func (p *FinderClient) recvAliasByPlate() (value *Car, err error) {
-  iprot := p.InputProtocol
-  if iprot == nil {
-    iprot = p.ProtocolFactory.GetProtocol(p.Transport)
-    p.InputProtocol = iprot
-  }
-  method, mTypeId, seqId, err := iprot.ReadMessageBegin()
-  if err != nil {
-    return
-  }
-  if method != "aliasByPlate" {
-    err = thrift.NewApplicationException(thrift.WRONG_METHOD_NAME, "aliasByPlate failed: wrong method name")
-    return
-  }
-  if p.SeqId != seqId {
-    err = thrift.NewApplicationException(thrift.BAD_SEQUENCE_ID, "aliasByPlate failed: out of sequence response")
-    return
-  }
-  if mTypeId == thrift.EXCEPTION {
-    error7 := thrift.NewApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
-    var error8 error
-    error8, err = error7.Read(iprot)
-    if err != nil {
-      return
-    }
-    if err = iprot.ReadMessageEnd(); err != nil {
-      return
-    }
-    err = error8
-    return
-  }
-  if mTypeId != thrift.REPLY {
-    err = thrift.NewApplicationException(thrift.INVALID_MESSAGE_TYPE_EXCEPTION, "aliasByPlate failed: invalid message type")
-    return
-  }
-  result := FinderAliasByPlateResult{}
-  if err = result.Read(iprot); err != nil {
-    return
-  }
-  if err = iprot.ReadMessageEnd(); err != nil {
-    return
-  }
-  value = result.GetSuccess()
-  return
+  var result FinderAliasByPlateResult
+  err = p.CC.RecvMsg("aliasByPlate", &result)
+  if err != nil { return }
+
+  return result.GetSuccess(), nil
 }
 
 // Parameters:
 //  - Plate
 func (p *FinderClient) PreviousPlate(plate Plate) (_r Plate, err error) {
-  if err = p.sendPreviousPlate(plate); err != nil { return }
-  return p.recvPreviousPlate()
-}
-
-func (p *FinderClient) sendPreviousPlate(plate Plate)(err error) {
-  oprot := p.OutputProtocol
-  if oprot == nil {
-    oprot = p.ProtocolFactory.GetProtocol(p.Transport)
-    p.OutputProtocol = oprot
-  }
-  p.SeqId++
-  if err = oprot.WriteMessageBegin("previousPlate", thrift.CALL, p.SeqId); err != nil {
-      return
-  }
   args := FinderPreviousPlateArgs{
-  Plate : plate,
+    Plate : plate,
   }
-  if err = args.Write(oprot); err != nil {
-      return
-  }
-  if err = oprot.WriteMessageEnd(); err != nil {
-      return
-  }
-  return oprot.Flush()
+  err = p.CC.SendMsg("previousPlate", &args, thrift.CALL)
+  if err != nil { return }
+  return p.recvPreviousPlate()
 }
 
 
 func (p *FinderClient) recvPreviousPlate() (value Plate, err error) {
-  iprot := p.InputProtocol
-  if iprot == nil {
-    iprot = p.ProtocolFactory.GetProtocol(p.Transport)
-    p.InputProtocol = iprot
-  }
-  method, mTypeId, seqId, err := iprot.ReadMessageBegin()
-  if err != nil {
-    return
-  }
-  if method != "previousPlate" {
-    err = thrift.NewApplicationException(thrift.WRONG_METHOD_NAME, "previousPlate failed: wrong method name")
-    return
-  }
-  if p.SeqId != seqId {
-    err = thrift.NewApplicationException(thrift.BAD_SEQUENCE_ID, "previousPlate failed: out of sequence response")
-    return
-  }
-  if mTypeId == thrift.EXCEPTION {
-    error9 := thrift.NewApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
-    var error10 error
-    error10, err = error9.Read(iprot)
-    if err != nil {
-      return
-    }
-    if err = iprot.ReadMessageEnd(); err != nil {
-      return
-    }
-    err = error10
-    return
-  }
-  if mTypeId != thrift.REPLY {
-    err = thrift.NewApplicationException(thrift.INVALID_MESSAGE_TYPE_EXCEPTION, "previousPlate failed: invalid message type")
-    return
-  }
-  result := FinderPreviousPlateResult{}
-  if err = result.Read(iprot); err != nil {
-    return
-  }
-  if err = iprot.ReadMessageEnd(); err != nil {
-    return
-  }
-  value = result.GetSuccess()
-  return
+  var result FinderPreviousPlateResult
+  err = p.CC.RecvMsg("previousPlate", &result)
+  if err != nil { return }
+
+  return result.GetSuccess(), nil
 }
 
 
@@ -370,16 +196,16 @@ func (p *FinderThreadsafeClient) recvByPlate() (value *Automobile, err error) {
     return
   }
   if mTypeId == thrift.EXCEPTION {
-    error11 := thrift.NewApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
-    var error12 error
-    error12, err = error11.Read(iprot)
+    error5 := thrift.NewApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
+    var error6 error
+    error6, err = error5.Read(iprot)
     if err != nil {
       return
     }
     if err = iprot.ReadMessageEnd(); err != nil {
       return
     }
-    err = error12
+    err = error6
     return
   }
   if mTypeId != thrift.REPLY {
@@ -448,16 +274,16 @@ func (p *FinderThreadsafeClient) recvAliasByPlate() (value *Car, err error) {
     return
   }
   if mTypeId == thrift.EXCEPTION {
-    error13 := thrift.NewApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
-    var error14 error
-    error14, err = error13.Read(iprot)
+    error7 := thrift.NewApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
+    var error8 error
+    error8, err = error7.Read(iprot)
     if err != nil {
       return
     }
     if err = iprot.ReadMessageEnd(); err != nil {
       return
     }
-    err = error14
+    err = error8
     return
   }
   if mTypeId != thrift.REPLY {
@@ -526,16 +352,16 @@ func (p *FinderThreadsafeClient) recvPreviousPlate() (value Plate, err error) {
     return
   }
   if mTypeId == thrift.EXCEPTION {
-    error15 := thrift.NewApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
-    var error16 error
-    error16, err = error15.Read(iprot)
+    error9 := thrift.NewApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
+    var error10 error
+    error10, err = error9.Read(iprot)
     if err != nil {
       return
     }
     if err = iprot.ReadMessageEnd(); err != nil {
       return
     }
-    err = error16
+    err = error10
     return
   }
   if mTypeId != thrift.REPLY {
@@ -575,11 +401,11 @@ func (p *FinderProcessor) ProcessorMap() map[string]thrift.ProcessorFunction {
 }
 
 func NewFinderProcessor(handler Finder) *FinderProcessor {
-  self17 := &FinderProcessor{handler:handler, processorMap:make(map[string]thrift.ProcessorFunction)}
-  self17.processorMap["byPlate"] = &finderProcessorByPlate{handler:handler}
-  self17.processorMap["aliasByPlate"] = &finderProcessorAliasByPlate{handler:handler}
-  self17.processorMap["previousPlate"] = &finderProcessorPreviousPlate{handler:handler}
-  return self17
+  self11 := &FinderProcessor{handler:handler, processorMap:make(map[string]thrift.ProcessorFunction)}
+  self11.processorMap["byPlate"] = &finderProcessorByPlate{handler:handler}
+  self11.processorMap["aliasByPlate"] = &finderProcessorAliasByPlate{handler:handler}
+  self11.processorMap["previousPlate"] = &finderProcessorPreviousPlate{handler:handler}
+  return self11
 }
 
 type finderProcessorByPlate struct {
@@ -738,6 +564,7 @@ func (p *finderProcessorPreviousPlate) Run(argStruct thrift.Struct) (thrift.Writ
 // Attributes:
 //  - Plate
 type FinderByPlateArgs struct {
+  thrift.IRequest
   Plate Plate `thrift:"plate,1" db:"plate" json:"plate"`
 }
 
@@ -822,6 +649,7 @@ func (p *FinderByPlateArgs) String() string {
 // Attributes:
 //  - Success
 type FinderByPlateResult struct {
+  thrift.IResponse
   Success *Automobile `thrift:"success,0" db:"success" json:"success,omitempty"`
 }
 
@@ -914,6 +742,7 @@ func (p *FinderByPlateResult) String() string {
 // Attributes:
 //  - Plate
 type FinderAliasByPlateArgs struct {
+  thrift.IRequest
   Plate Plate `thrift:"plate,1" db:"plate" json:"plate"`
 }
 
@@ -998,6 +827,7 @@ func (p *FinderAliasByPlateArgs) String() string {
 // Attributes:
 //  - Success
 type FinderAliasByPlateResult struct {
+  thrift.IResponse
   Success *Car `thrift:"success,0" db:"success" json:"success,omitempty"`
 }
 
@@ -1090,6 +920,7 @@ func (p *FinderAliasByPlateResult) String() string {
 // Attributes:
 //  - Plate
 type FinderPreviousPlateArgs struct {
+  thrift.IRequest
   Plate Plate `thrift:"plate,1" db:"plate" json:"plate"`
 }
 
@@ -1174,6 +1005,7 @@ func (p *FinderPreviousPlateArgs) String() string {
 // Attributes:
 //  - Success
 type FinderPreviousPlateResult struct {
+  thrift.IResponse
   Success *Plate `thrift:"success,0" db:"success" json:"success,omitempty"`
 }
 
