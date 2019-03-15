@@ -149,7 +149,11 @@ abstract class TProtocol {
 
   public abstract function readStructEnd();
 
-  public abstract function readFieldBegin(&$name, &$fieldType, &$fieldId);
+  public abstract function readFieldBegin(
+    inout $name,
+    inout $fieldType,
+    inout $fieldId,
+  );
 
   public abstract function readFieldEnd();
 
@@ -228,7 +232,11 @@ abstract class TProtocol {
           $result = $this->readStructBegin(inout $_ref);
           while (true) {
             $ftype = null;
-            $result += $this->readFieldBegin($_ref, $ftype, $_ref);
+            $result += $this->readFieldBegin(
+              inout $_ref,
+              inout $ftype,
+              inout $_ref,
+            );
             if ($ftype == TType::STOP) {
               break;
             }

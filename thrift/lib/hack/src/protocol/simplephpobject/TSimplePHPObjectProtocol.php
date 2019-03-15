@@ -80,7 +80,11 @@ class TSimplePHPObjectProtocol extends TProtocol {
     $this->top = $val;
   }
 
-  public function readFieldBegin(&$name, &$fieldType, &$fieldId) {
+  public function readFieldBegin(
+    inout $name,
+    inout $fieldType,
+    inout $fieldId,
+  ) {
     $val = null;
     while ($val === null) {
       if (!$this->top->valid()) {

@@ -175,7 +175,7 @@ abstract class TBase {
     $fid = 0;
     $xfer += $input->readStructBegin(inout $fname);
     while (true) {
-      $xfer += $input->readFieldBegin($fname, $ftype, $fid);
+      $xfer += $input->readFieldBegin(inout $fname, inout $ftype, inout $fid);
       if ($ftype == TType::STOP) {
         break;
       }

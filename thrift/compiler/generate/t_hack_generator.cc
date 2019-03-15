@@ -2860,7 +2860,7 @@ void t_hack_generator::generate_php_struct_reader(
 
   // Read beginning field marker
   out << indent()
-      << "$xfer += $input->readFieldBegin(&$fname, &$ftype, &$fid);\n";
+      << "$xfer += $input->readFieldBegin(inout $fname, inout $ftype, inout $fid);\n";
   // Check for field STOP marker and break
   indent(out) << "if ($ftype == \\TType::STOP) {\n";
   indent_up();

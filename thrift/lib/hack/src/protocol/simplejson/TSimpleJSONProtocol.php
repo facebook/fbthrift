@@ -263,7 +263,11 @@ class TSimpleJSONProtocol extends TProtocol {
     $this->popReadContext();
   }
 
-  public function readFieldBegin(&$name, &$fieldType, &$fieldId) {
+  public function readFieldBegin(
+    inout $name,
+    inout $fieldType,
+    inout $fieldId,
+  ) {
     $fieldId = null;
     $ctx = $this->getContext();
     $name = null;

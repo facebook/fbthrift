@@ -355,7 +355,11 @@ abstract class TCompactProtocolBase extends TProtocol {
   }
 
   <<__Override>>
-  public function readFieldBegin(&$name, &$field_type, &$field_id) {
+  public function readFieldBegin(
+    inout $name,
+    inout $field_type,
+    inout $field_id,
+  ) {
     $result = $this->readUByte(&$field_type);
     $delta = $field_type >> 4;
     $field_type = $field_type & 0x0f;

@@ -355,7 +355,11 @@ abstract class TBinaryProtocolBase extends TProtocol {
     return 0;
   }
 
-  public function readFieldBegin(&$name, &$fieldType, &$fieldId) {
+  public function readFieldBegin(
+    inout $name,
+    inout $fieldType,
+    inout $fieldId,
+  ) {
     $result = $this->readByte($fieldType);
     if ($fieldType == TType::STOP) {
       $fieldId = 0;

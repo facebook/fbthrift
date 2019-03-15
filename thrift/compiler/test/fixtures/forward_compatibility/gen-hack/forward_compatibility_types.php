@@ -56,7 +56,7 @@ class OldStructure implements \IThriftStruct {
     $xfer += $input->readStructBegin(inout $fname);
     while (true)
     {
-      $xfer += $input->readFieldBegin(&$fname, &$ftype, &$fid);
+      $xfer += $input->readFieldBegin(inout $fname, inout $ftype, inout $fid);
       if ($ftype == \TType::STOP) {
         break;
       }
@@ -182,7 +182,7 @@ class NewStructure implements \IThriftStruct {
     $xfer += $input->readStructBegin(inout $fname);
     while (true)
     {
-      $xfer += $input->readFieldBegin(&$fname, &$ftype, &$fid);
+      $xfer += $input->readFieldBegin(inout $fname, inout $ftype, inout $fid);
       if ($ftype == \TType::STOP) {
         break;
       }
@@ -308,7 +308,7 @@ class NewStructure2 implements \IThriftStruct {
     $xfer += $input->readStructBegin(inout $fname);
     while (true)
     {
-      $xfer += $input->readFieldBegin(&$fname, &$ftype, &$fid);
+      $xfer += $input->readFieldBegin(inout $fname, inout $ftype, inout $fid);
       if ($ftype == \TType::STOP) {
         break;
       }
@@ -501,7 +501,7 @@ class NewStructureNested implements \IThriftStruct {
     $xfer += $input->readStructBegin(inout $fname);
     while (true)
     {
-      $xfer += $input->readFieldBegin(&$fname, &$ftype, &$fid);
+      $xfer += $input->readFieldBegin(inout $fname, inout $ftype, inout $fid);
       if ($ftype == \TType::STOP) {
         break;
       }
@@ -776,7 +776,7 @@ class NewStructureNestedField implements \IThriftStruct {
     $xfer += $input->readStructBegin(inout $fname);
     while (true)
     {
-      $xfer += $input->readFieldBegin(&$fname, &$ftype, &$fid);
+      $xfer += $input->readFieldBegin(inout $fname, inout $ftype, inout $fid);
       if ($ftype == \TType::STOP) {
         break;
       }

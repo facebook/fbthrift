@@ -17,9 +17,9 @@ class ThriftSerializationHelper {
     $xfer = $protocol->readStructBegin(inout $field_name);
     while (true) {
       $xfer += $protocol->readFieldBegin(
-        &$field_name,
-        &$field_type,
-        &$field_id,
+        inout $field_name,
+        inout $field_type,
+        inout $field_id,
       );
 
       // Break once we reach the end of the struct.
@@ -88,9 +88,9 @@ class ThriftSerializationHelper {
     $xfer = $protocol->readStructBegin(inout $field_name);
     while (true) {
       $xfer += $protocol->readFieldBegin(
-        &$field_name,
-        &$field_type,
-        &$field_id,
+        inout $field_name,
+        inout $field_type,
+        inout $field_id,
       );
 
       // Break once we reach the end of the struct.
