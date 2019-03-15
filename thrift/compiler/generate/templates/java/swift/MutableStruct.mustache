@@ -29,16 +29,23 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 @SwiftGenerated
 @ThriftStruct("{{struct:name}}")
 public final class {{struct:javaCapitalName}} {
-{{> ThriftConstructor}}
+    @ThriftConstructor
+    public {{struct:javaCapitalName}}() {}
 
-{{> StructBuilder}}
     {{#struct:fields}}
+    private {{> FieldType}} {{field:javaName}};
+    {{/struct:fields}}
 
-    private final {{> FieldType}} {{field:javaName}};
-
+    {{#struct:fields}}
     {{> ThriftFieldAnnotation}}
 
     public {{> FieldType}} {{> GetterName}}() { return {{field:javaName}}; }
+
+    @ThriftField
+    public {{struct:javaCapitalName}} {{> SetterName}}({{> FieldType}} {{field:javaName}}) {
+        this.{{field:javaName}} = {{field:javaName}};
+        return this;
+    }
     {{/struct:fields}}
 
     @Override
@@ -64,11 +71,9 @@ public final class {{struct:javaCapitalName}} {
         return
             {{#struct:fields}}
             {{#field:type}}{{#type:binary?}}Arrays{{/type:binary?}}{{^type:binary?}}Objects{{/type:binary?}}{{/field:type}}{{!
-            }}.equals({{field:javaName}}, other.{{field:javaName}}){{^last?}} &&{{/last?}}{{#last?}};{{/last?}}
+            }}.equals({{field:javaName}}, other.{{field:javaName}}) &&
             {{/struct:fields}}
-            {{^struct:fields}}
             true;
-            {{/struct:fields}}
     }
 
     @Override

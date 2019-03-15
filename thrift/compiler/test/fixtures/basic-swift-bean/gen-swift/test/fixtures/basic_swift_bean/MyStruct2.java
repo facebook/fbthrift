@@ -18,51 +18,27 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 @ThriftStruct("MyStruct2")
 public final class MyStruct2 {
     @ThriftConstructor
-    public MyStruct2(
-        @ThriftField(value=1, name="myStruct1", requiredness=Requiredness.NONE) final test.fixtures.basic_swift_bean.MyStruct1 myStruct1,
-        @ThriftField(value=2, name="myString", requiredness=Requiredness.NONE) final String myString
-    ) {
-        this.myStruct1 = myStruct1;
-        this.myString = myString;
-    }
+    public MyStruct2() {}
 
-    public static class Builder {
-        private test.fixtures.basic_swift_bean.MyStruct1 myStruct1;
-
-        public Builder setMyStruct1(test.fixtures.basic_swift_bean.MyStruct1 myStruct1) {
-            this.myStruct1 = myStruct1;
-            return this;
-        }
-        private String myString;
-
-        public Builder setMyString(String myString) {
-            this.myString = myString;
-            return this;
-        }
-
-        public Builder() { }
-        public Builder(MyStruct2 other) {
-            this.myStruct1 = other.myStruct1;
-            this.myString = other.myString;
-        }
-
-        public MyStruct2 build() {
-            return new MyStruct2 (
-                this.myStruct1,
-                this.myString
-            );
-        }
-    }
-
-    private final test.fixtures.basic_swift_bean.MyStruct1 myStruct1;
+    private test.fixtures.basic_swift_bean.MyStruct1 myStruct1;
+    private String myString;
 
     @ThriftField(value=1, name="myStruct1", requiredness=Requiredness.NONE)
     public test.fixtures.basic_swift_bean.MyStruct1 getMyStruct1() { return myStruct1; }
 
-    private final String myString;
-
+    @ThriftField
+    public MyStruct2 setMyStruct1(test.fixtures.basic_swift_bean.MyStruct1 myStruct1) {
+        this.myStruct1 = myStruct1;
+        return this;
+    }
     @ThriftField(value=2, name="myString", requiredness=Requiredness.NONE)
     public String getMyString() { return myString; }
+
+    @ThriftField
+    public MyStruct2 setMyString(String myString) {
+        this.myString = myString;
+        return this;
+    }
 
     @Override
     public String toString() {
@@ -85,7 +61,8 @@ public final class MyStruct2 {
 
         return
             Objects.equals(myStruct1, other.myStruct1) &&
-            Objects.equals(myString, other.myString);
+            Objects.equals(myString, other.myString) &&
+            true;
     }
 
     @Override

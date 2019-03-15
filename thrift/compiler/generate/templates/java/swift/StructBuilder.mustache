@@ -19,7 +19,7 @@
         {{#struct:fields}}
         private {{> FieldType}} {{field:javaName}};
 
-        public Builder set{{field:javaCapitalName}}({{> FieldType}} {{field:javaName}}) {
+        public Builder {{> SetterName}}({{> FieldType}} {{field:javaName}}) {
             this.{{field:javaName}} = {{field:javaName}};
             return this;
         }

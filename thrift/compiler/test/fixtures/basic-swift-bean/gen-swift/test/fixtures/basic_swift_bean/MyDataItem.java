@@ -18,51 +18,27 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 @ThriftStruct("MyDataItem")
 public final class MyDataItem {
     @ThriftConstructor
-    public MyDataItem(
-        @ThriftField(value=1, name="field1", requiredness=Requiredness.NONE) final int field1,
-        @ThriftField(value=2, name="field2", requiredness=Requiredness.NONE) final int field2
-    ) {
-        this.field1 = field1;
-        this.field2 = field2;
-    }
+    public MyDataItem() {}
 
-    public static class Builder {
-        private int field1;
-
-        public Builder setField1(int field1) {
-            this.field1 = field1;
-            return this;
-        }
-        private int field2;
-
-        public Builder setField2(int field2) {
-            this.field2 = field2;
-            return this;
-        }
-
-        public Builder() { }
-        public Builder(MyDataItem other) {
-            this.field1 = other.field1;
-            this.field2 = other.field2;
-        }
-
-        public MyDataItem build() {
-            return new MyDataItem (
-                this.field1,
-                this.field2
-            );
-        }
-    }
-
-    private final int field1;
+    private int field1;
+    private int field2;
 
     @ThriftField(value=1, name="field1", requiredness=Requiredness.NONE)
     public int getField1() { return field1; }
 
-    private final int field2;
-
+    @ThriftField
+    public MyDataItem setField1(int field1) {
+        this.field1 = field1;
+        return this;
+    }
     @ThriftField(value=2, name="field2", requiredness=Requiredness.NONE)
     public int getField2() { return field2; }
+
+    @ThriftField
+    public MyDataItem setField2(int field2) {
+        this.field2 = field2;
+        return this;
+    }
 
     @Override
     public String toString() {
@@ -85,7 +61,8 @@ public final class MyDataItem {
 
         return
             Objects.equals(field1, other.field1) &&
-            Objects.equals(field2, other.field2);
+            Objects.equals(field2, other.field2) &&
+            true;
     }
 
     @Override

@@ -18,81 +18,45 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 @ThriftStruct("MyStruct1")
 public final class MyStruct1 {
     @ThriftConstructor
-    public MyStruct1(
-        @ThriftField(value=1, name="MyIntField", requiredness=Requiredness.NONE) final long myIntField,
-        @ThriftField(value=2, name="MyStringField", requiredness=Requiredness.NONE) final String myStringField,
-        @ThriftField(value=3, name="MyDataField", requiredness=Requiredness.NONE) final test.fixtures.basic_swift_bean.MyDataItem myDataField,
-        @ThriftField(value=4, name="major", requiredness=Requiredness.NONE, idlAnnotations = { @ThriftIdlAnnotation(key = "cpp.name", value = "majorVer") }) final long major
-    ) {
-        this.myIntField = myIntField;
-        this.myStringField = myStringField;
-        this.myDataField = myDataField;
-        this.major = major;
-    }
+    public MyStruct1() {}
 
-    public static class Builder {
-        private long myIntField;
-
-        public Builder setMyIntField(long myIntField) {
-            this.myIntField = myIntField;
-            return this;
-        }
-        private String myStringField;
-
-        public Builder setMyStringField(String myStringField) {
-            this.myStringField = myStringField;
-            return this;
-        }
-        private test.fixtures.basic_swift_bean.MyDataItem myDataField;
-
-        public Builder setMyDataField(test.fixtures.basic_swift_bean.MyDataItem myDataField) {
-            this.myDataField = myDataField;
-            return this;
-        }
-        private long major;
-
-        public Builder setMajor(long major) {
-            this.major = major;
-            return this;
-        }
-
-        public Builder() { }
-        public Builder(MyStruct1 other) {
-            this.myIntField = other.myIntField;
-            this.myStringField = other.myStringField;
-            this.myDataField = other.myDataField;
-            this.major = other.major;
-        }
-
-        public MyStruct1 build() {
-            return new MyStruct1 (
-                this.myIntField,
-                this.myStringField,
-                this.myDataField,
-                this.major
-            );
-        }
-    }
-
-    private final long myIntField;
+    private long myIntField;
+    private String myStringField;
+    private test.fixtures.basic_swift_bean.MyDataItem myDataField;
+    private long major;
 
     @ThriftField(value=1, name="MyIntField", requiredness=Requiredness.NONE)
     public long getMyIntField() { return myIntField; }
 
-    private final String myStringField;
-
+    @ThriftField
+    public MyStruct1 setMyIntField(long myIntField) {
+        this.myIntField = myIntField;
+        return this;
+    }
     @ThriftField(value=2, name="MyStringField", requiredness=Requiredness.NONE)
     public String getMyStringField() { return myStringField; }
 
-    private final test.fixtures.basic_swift_bean.MyDataItem myDataField;
-
+    @ThriftField
+    public MyStruct1 setMyStringField(String myStringField) {
+        this.myStringField = myStringField;
+        return this;
+    }
     @ThriftField(value=3, name="MyDataField", requiredness=Requiredness.NONE)
     public test.fixtures.basic_swift_bean.MyDataItem getMyDataField() { return myDataField; }
 
-    private final long major;
-
+    @ThriftField
+    public MyStruct1 setMyDataField(test.fixtures.basic_swift_bean.MyDataItem myDataField) {
+        this.myDataField = myDataField;
+        return this;
+    }
     @ThriftField(value=4, name="major", requiredness=Requiredness.NONE, idlAnnotations = { @ThriftIdlAnnotation(key = "cpp.name", value = "majorVer") })
     public long getMajor() { return major; }
+
+    @ThriftField
+    public MyStruct1 setMajor(long major) {
+        this.major = major;
+        return this;
+    }
 
     @Override
     public String toString() {
@@ -119,7 +83,8 @@ public final class MyStruct1 {
             Objects.equals(myIntField, other.myIntField) &&
             Objects.equals(myStringField, other.myStringField) &&
             Objects.equals(myDataField, other.myDataField) &&
-            Objects.equals(major, other.major);
+            Objects.equals(major, other.major) &&
+            true;
     }
 
     @Override
