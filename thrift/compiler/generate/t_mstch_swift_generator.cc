@@ -122,8 +122,7 @@ class t_mstch_swift_generator : public t_mstch_generator {
 
   mstch::map extend_service(const t_service& service) override {
     mstch::map result{
-        {"javaPackage", get_namespace_or_default(*service.get_program())},
-    };
+        {"javaPackage", get_namespace_or_default(*service.get_program())}};
     add_java_names(result, service.get_name());
     return result;
   }

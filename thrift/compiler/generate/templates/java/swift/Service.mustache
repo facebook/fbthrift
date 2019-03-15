@@ -27,10 +27,12 @@ import java.io.*;
 import java.util.*;
 
 @SwiftGenerated
-@ThriftService("{{service:javaCapitalName}}"){{! TODO t12384098: Java Swift services use wrong name in annotation }}
-public interface {{service:javaCapitalName}}{{#service:extends}} extends {{service:javaPackage}}.{{service:javaCapitalName}}{{/service:extends}} {
-    @ThriftService("{{service:javaCapitalName}}"){{! TODO t12384098: Java Swift services use wrong name in annotation }}
-    public interface Async{{#service:extends}} extends {{service:javaPackage}}.{{service:javaCapitalName}}.Async{{/service:extends}} {
+@ThriftService("{{service:javaCapitalName}}")
+public interface {{service:javaCapitalName}} extends java.io.Closable{{#service:extends}}, {{service:javaPackage}}.{{service:javaCapitalName}}{{/service:extends}} {
+    @ThriftService("{{service:javaCapitalName}}")
+    public interface Async extends java.io.Closable{{#service:extends}}, {{service:javaPackage}}.{{service:javaCapitalName}}.Async{{/service:extends}} {
+        @Override void close();
+
         {{#service:functions}}
         @ThriftMethod(value = "{{function:name}}"{{#function:oneway?}},
                       oneway = true{{/function:oneway?}}{{#function:exceptions}}{{#first?}},
@@ -44,6 +46,7 @@ public interface {{service:javaCapitalName}}{{#service:extends}} extends {{servi
         {{/last?}}
         {{/service:functions}}
     }
+    @Override void close();
     {{#service:functions}}
 
     @ThriftMethod(value = "{{function:name}}"{{#function:oneway?}},

@@ -16,9 +16,11 @@ import java.util.*;
 
 @SwiftGenerated
 @ThriftService("Raiser")
-public interface Raiser {
+public interface Raiser extends java.io.Closable {
     @ThriftService("Raiser")
-    public interface Async {
+    public interface Async extends java.io.Closable {
+        @Override void close();
+
         @ThriftMethod(value = "doBland")
         ListenableFuture<Void> doBland();
 
@@ -41,6 +43,7 @@ public interface Raiser {
                       })
         ListenableFuture<String> get500();
     }
+    @Override void close();
 
     @ThriftMethod(value = "doBland")
     void doBland() throws org.apache.thrift.TException;

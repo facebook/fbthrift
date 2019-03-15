@@ -16,12 +16,15 @@ import java.util.*;
 
 @SwiftGenerated
 @ThriftService("MyNode")
-public interface MyNode extends test.fixtures.inheritance.MyRoot {
+public interface MyNode extends java.io.Closable, test.fixtures.inheritance.MyRoot {
     @ThriftService("MyNode")
-    public interface Async extends test.fixtures.inheritance.MyRoot.Async {
+    public interface Async extends java.io.Closable, test.fixtures.inheritance.MyRoot.Async {
+        @Override void close();
+
         @ThriftMethod(value = "do_mid")
         ListenableFuture<Void> doMid();
     }
+    @Override void close();
 
     @ThriftMethod(value = "do_mid")
     void doMid() throws org.apache.thrift.TException;

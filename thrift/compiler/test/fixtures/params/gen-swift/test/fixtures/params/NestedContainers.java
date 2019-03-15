@@ -16,9 +16,11 @@ import java.util.*;
 
 @SwiftGenerated
 @ThriftService("NestedContainers")
-public interface NestedContainers {
+public interface NestedContainers extends java.io.Closable {
     @ThriftService("NestedContainers")
-    public interface Async {
+    public interface Async extends java.io.Closable {
+        @Override void close();
+
         @ThriftMethod(value = "mapList")
         ListenableFuture<Void> mapList(
             @ThriftField(value=1, name="foo", requiredness=Requiredness.NONE) final Map<Integer, List<Integer>> foo);
@@ -39,6 +41,7 @@ public interface NestedContainers {
         ListenableFuture<Void> turtles(
             @ThriftField(value=1, name="foo", requiredness=Requiredness.NONE) final List<List<Map<Integer, Map<Integer, Set<Integer>>>>> foo);
     }
+    @Override void close();
 
     @ThriftMethod(value = "mapList")
     void mapList(

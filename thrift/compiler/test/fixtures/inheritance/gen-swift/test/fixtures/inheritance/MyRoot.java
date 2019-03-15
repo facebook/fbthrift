@@ -16,12 +16,15 @@ import java.util.*;
 
 @SwiftGenerated
 @ThriftService("MyRoot")
-public interface MyRoot {
+public interface MyRoot extends java.io.Closable {
     @ThriftService("MyRoot")
-    public interface Async {
+    public interface Async extends java.io.Closable {
+        @Override void close();
+
         @ThriftMethod(value = "do_root")
         ListenableFuture<Void> doRoot();
     }
+    @Override void close();
 
     @ThriftMethod(value = "do_root")
     void doRoot() throws org.apache.thrift.TException;

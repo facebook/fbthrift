@@ -16,9 +16,11 @@ import java.util.*;
 
 @SwiftGenerated
 @ThriftService("MyService")
-public interface MyService {
+public interface MyService extends java.io.Closable {
     @ThriftService("MyService")
-    public interface Async {
+    public interface Async extends java.io.Closable {
+        @Override void close();
+
         @ThriftMethod(value = "ping")
         ListenableFuture<Void> ping();
 
@@ -44,6 +46,7 @@ public interface MyService {
             @ThriftField(value=1, name="id", requiredness=Requiredness.NONE) final long id,
             @ThriftField(value=2, name="data", requiredness=Requiredness.NONE) final String data);
     }
+    @Override void close();
 
     @ThriftMethod(value = "ping")
     void ping() throws org.apache.thrift.TException;

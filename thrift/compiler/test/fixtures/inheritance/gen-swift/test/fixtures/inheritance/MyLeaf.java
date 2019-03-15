@@ -16,12 +16,15 @@ import java.util.*;
 
 @SwiftGenerated
 @ThriftService("MyLeaf")
-public interface MyLeaf extends test.fixtures.inheritance.MyNode {
+public interface MyLeaf extends java.io.Closable, test.fixtures.inheritance.MyNode {
     @ThriftService("MyLeaf")
-    public interface Async extends test.fixtures.inheritance.MyNode.Async {
+    public interface Async extends java.io.Closable, test.fixtures.inheritance.MyNode.Async {
+        @Override void close();
+
         @ThriftMethod(value = "do_leaf")
         ListenableFuture<Void> doLeaf();
     }
+    @Override void close();
 
     @ThriftMethod(value = "do_leaf")
     void doLeaf() throws org.apache.thrift.TException;

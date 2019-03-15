@@ -16,15 +16,18 @@ import java.util.*;
 
 @SwiftGenerated
 @ThriftService("MyServicePrioParent")
-public interface MyServicePrioParent {
+public interface MyServicePrioParent extends java.io.Closable {
     @ThriftService("MyServicePrioParent")
-    public interface Async {
+    public interface Async extends java.io.Closable {
+        @Override void close();
+
         @ThriftMethod(value = "ping")
         ListenableFuture<Void> ping();
 
         @ThriftMethod(value = "pong")
         ListenableFuture<Void> pong();
     }
+    @Override void close();
 
     @ThriftMethod(value = "ping")
     void ping() throws org.apache.thrift.TException;
