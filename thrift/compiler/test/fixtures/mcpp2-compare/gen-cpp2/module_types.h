@@ -707,6 +707,10 @@ class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<M
     return {MyBinaryField2, __isset.MyBinaryField2};
   }
 
+  THRIFT_NOLINK ::apache::thrift::optional_field_ref<const std::string&&> MyBinaryField2_ref() const&& {
+    return {std::move(MyBinaryField2), __isset.MyBinaryField2};
+  }
+
   THRIFT_NOLINK ::apache::thrift::optional_field_ref<std::string&> MyBinaryField2_ref() & {
     return {MyBinaryField2, __isset.MyBinaryField2};
   }
@@ -3501,6 +3505,10 @@ class containerStruct final : private apache::thrift::detail::st::ComparisonOper
     return {opt_fieldA, __isset.opt_fieldA};
   }
 
+  THRIFT_NOLINK ::apache::thrift::optional_field_ref<const bool&&> opt_fieldA_ref() const&& {
+    return {std::move(opt_fieldA), __isset.opt_fieldA};
+  }
+
   THRIFT_NOLINK ::apache::thrift::optional_field_ref<bool&> opt_fieldA_ref() & {
     return {opt_fieldA, __isset.opt_fieldA};
   }
@@ -3545,6 +3553,10 @@ class containerStruct final : private apache::thrift::detail::st::ComparisonOper
     return {opt_fieldB, __isset.opt_fieldB};
   }
 
+  THRIFT_NOLINK ::apache::thrift::optional_field_ref<const std::map<std::string, bool>&&> opt_fieldB_ref() const&& {
+    return {std::move(opt_fieldB), __isset.opt_fieldB};
+  }
+
   THRIFT_NOLINK ::apache::thrift::optional_field_ref<std::map<std::string, bool>&> opt_fieldB_ref() & {
     return {opt_fieldB, __isset.opt_fieldB};
   }
@@ -3582,6 +3594,10 @@ class containerStruct final : private apache::thrift::detail::st::ComparisonOper
 
   THRIFT_NOLINK ::apache::thrift::optional_field_ref<const std::set<int32_t>&> opt_fieldC_ref() const& {
     return {opt_fieldC, __isset.opt_fieldC};
+  }
+
+  THRIFT_NOLINK ::apache::thrift::optional_field_ref<const std::set<int32_t>&&> opt_fieldC_ref() const&& {
+    return {std::move(opt_fieldC), __isset.opt_fieldC};
   }
 
   THRIFT_NOLINK ::apache::thrift::optional_field_ref<std::set<int32_t>&> opt_fieldC_ref() & {
@@ -3648,6 +3664,10 @@ class containerStruct final : private apache::thrift::detail::st::ComparisonOper
 
   THRIFT_NOLINK ::apache::thrift::optional_field_ref<const std::string&> opt_fieldE_ref() const& {
     return {opt_fieldE, __isset.opt_fieldE};
+  }
+
+  THRIFT_NOLINK ::apache::thrift::optional_field_ref<const std::string&&> opt_fieldE_ref() const&& {
+    return {std::move(opt_fieldE), __isset.opt_fieldE};
   }
 
   THRIFT_NOLINK ::apache::thrift::optional_field_ref<std::string&> opt_fieldE_ref() & {
@@ -3808,6 +3828,10 @@ class containerStruct final : private apache::thrift::detail::st::ComparisonOper
     return {opt_fieldR, __isset.opt_fieldR};
   }
 
+  THRIFT_NOLINK ::apache::thrift::optional_field_ref<const  ::some::valid::ns::MyEnumA&&> opt_fieldR_ref() const&& {
+    return {std::move(opt_fieldR), __isset.opt_fieldR};
+  }
+
   THRIFT_NOLINK ::apache::thrift::optional_field_ref< ::some::valid::ns::MyEnumA&> opt_fieldR_ref() & {
     return {opt_fieldR, __isset.opt_fieldR};
   }
@@ -3880,6 +3904,10 @@ class containerStruct final : private apache::thrift::detail::st::ComparisonOper
     return {opt_fieldV, __isset.opt_fieldV};
   }
 
+  THRIFT_NOLINK ::apache::thrift::optional_field_ref<const  ::some::valid::ns::MyStruct&&> opt_fieldV_ref() const&& {
+    return {std::move(opt_fieldV), __isset.opt_fieldV};
+  }
+
   THRIFT_NOLINK ::apache::thrift::optional_field_ref< ::some::valid::ns::MyStruct&> opt_fieldV_ref() & {
     return {opt_fieldV, __isset.opt_fieldV};
   }
@@ -3926,6 +3954,10 @@ class containerStruct final : private apache::thrift::detail::st::ComparisonOper
 
   THRIFT_NOLINK ::apache::thrift::optional_field_ref<const  ::some::valid::ns::ComplexUnion&> opt_fieldX_ref() const& {
     return {opt_fieldX, __isset.opt_fieldX};
+  }
+
+  THRIFT_NOLINK ::apache::thrift::optional_field_ref<const  ::some::valid::ns::ComplexUnion&&> opt_fieldX_ref() const&& {
+    return {std::move(opt_fieldX), __isset.opt_fieldX};
   }
 
   THRIFT_NOLINK ::apache::thrift::optional_field_ref< ::some::valid::ns::ComplexUnion&> opt_fieldX_ref() & {

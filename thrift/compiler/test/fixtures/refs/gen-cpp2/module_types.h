@@ -365,6 +365,10 @@ class MyField final : private apache::thrift::detail::st::ComparisonOperators<My
     return {opt_value, __isset.opt_value};
   }
 
+  THRIFT_NOLINK ::apache::thrift::optional_field_ref<const int64_t&&> opt_value_ref() const&& {
+    return {std::move(opt_value), __isset.opt_value};
+  }
+
   THRIFT_NOLINK ::apache::thrift::optional_field_ref<int64_t&> opt_value_ref() & {
     return {opt_value, __isset.opt_value};
   }
@@ -634,6 +638,10 @@ class RecursiveStruct final : private apache::thrift::detail::st::ComparisonOper
 
   THRIFT_NOLINK ::apache::thrift::optional_field_ref<const std::vector< ::cpp2::RecursiveStruct>&> mes_ref() const& {
     return {mes, __isset.mes};
+  }
+
+  THRIFT_NOLINK ::apache::thrift::optional_field_ref<const std::vector< ::cpp2::RecursiveStruct>&&> mes_ref() const&& {
+    return {std::move(mes), __isset.mes};
   }
 
   THRIFT_NOLINK ::apache::thrift::optional_field_ref<std::vector< ::cpp2::RecursiveStruct>&> mes_ref() & {

@@ -208,6 +208,10 @@ class Serious final : private apache::thrift::detail::st::ComparisonOperators<Se
     return {sonnet, __isset.sonnet};
   }
 
+  THRIFT_NOLINK ::apache::thrift::optional_field_ref<const std::string&&> sonnet_ref() const&& {
+    return {std::move(sonnet), __isset.sonnet};
+  }
+
   THRIFT_NOLINK ::apache::thrift::optional_field_ref<std::string&> sonnet_ref() & {
     return {sonnet, __isset.sonnet};
   }
