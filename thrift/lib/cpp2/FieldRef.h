@@ -214,8 +214,9 @@ class optional_field_ref {
 
   template <typename U = value_type>
   THRIFT_NOLINK value_type value_or(U&& default_value) const {
-    return is_set_ ? value_
-                   : static_cast<value_type>(std::forward<U>(default_value));
+    return is_set_
+        ? static_cast<value_type>(std::forward<reference_type>(value_))
+        : static_cast<value_type>(std::forward<U>(default_value));
   }
 
   // Returns a reference to the value without checking whether it is available.

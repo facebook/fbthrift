@@ -64,12 +64,20 @@ class TestStruct {
     return {name_, __isset.name};
   }
 
-  optional_field_ref<std::string&> opt_name() {
+  optional_field_ref<std::string&> opt_name() & {
     return {name_, __isset.name};
   }
 
-  optional_field_ref<const std::string&> opt_name() const {
+  optional_field_ref<std::string&&> opt_name() && {
+    return {std::move(name_), __isset.name};
+  }
+
+  optional_field_ref<const std::string&> opt_name() const& {
     return {name_, __isset.name};
+  }
+
+  optional_field_ref<const std::string&&> opt_name() const&& {
+    return {std::move(name_), __isset.name};
   }
 
   field_ref<IntAssignable&> int_assign() {
@@ -419,6 +427,9 @@ TEST(optional_field_ref_test, value_or) {
   EXPECT_EQ("bar", s.opt_name().value_or("foo"));
   s.opt_name().reset();
   EXPECT_EQ("", s.opt_name().value_or({}));
+  s.opt_name() = "bar";
+  EXPECT_EQ("bar", std::move(s).opt_name().value_or("foo"));
+  EXPECT_EQ("", s.opt_name().value_or("foo"));
 }
 
 TEST(optional_field_ref_test, bad_field_access) {
