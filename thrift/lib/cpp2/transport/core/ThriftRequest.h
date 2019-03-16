@@ -125,12 +125,16 @@ class ThriftRequestCore : public ResponseChannelRequest {
         kind_ == RpcKind::STREAMING_REQUEST_NO_RESPONSE;
   }
 
-  protocol::PROTOCOL_TYPES getProtoId() {
+  protocol::PROTOCOL_TYPES getProtoId() const {
     return static_cast<protocol::PROTOCOL_TYPES>(header_.getProtocolId());
   }
 
   Cpp2RequestContext* getRequestContext() {
     return &reqContext_;
+  }
+
+  const std::string& getMethodName() const {
+    return name_;
   }
 
   void sendReply(
