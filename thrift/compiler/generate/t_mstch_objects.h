@@ -411,7 +411,6 @@ class mstch_const_value : public mstch_base {
     register_methods(
         this,
         {
-            {"value:index_plus_one", &mstch_const_value::index_plus_one},
             {"value:bool?", &mstch_const_value::is_bool},
             {"value:double?", &mstch_const_value::is_double},
             {"value:integer?", &mstch_const_value::is_integer},
@@ -445,9 +444,6 @@ class mstch_const_value : public mstch_base {
     std::ostringstream oss;
     oss << std::setprecision(std::numeric_limits<double>::digits10) << d;
     return oss.str();
-  }
-  mstch::node index_plus_one() {
-    return std::to_string(index_ + 1);
   }
   mstch::node is_bool() {
     return type_ == cv::CV_BOOL;
@@ -704,10 +700,7 @@ class mstch_field : public mstch_base {
             {"field:key", &mstch_field::key},
             {"field:value", &mstch_field::value},
             {"field:type", &mstch_field::type},
-            {"field:next_field_key", &mstch_field::next_field_key},
-            {"field:next_field_type", &mstch_field::next_field_type},
             {"field:index", &mstch_field::index},
-            {"field:index_plus_one", &mstch_field::index_plus_one},
             {"field:required?", &mstch_field::is_required},
             {"field:optional?", &mstch_field::is_optional},
             {"field:optInReqOut?", &mstch_field::is_optInReqOut},
@@ -730,15 +723,8 @@ class mstch_field : public mstch_base {
   }
   mstch::node value();
   mstch::node type();
-  mstch::node next_field_key() {
-    return std::to_string(field_->get_next()->get_key());
-  }
-  mstch::node next_field_type();
   mstch::node index() {
     return std::to_string(index_);
-  }
-  mstch::node index_plus_one() {
-    return std::to_string(index_ + 1);
   }
   mstch::node is_required() {
     return field_->get_req() == t_field::e_req::T_REQUIRED;
@@ -817,14 +803,12 @@ class mstch_function : public mstch_base {
              &mstch_function::has_streamexceptions},
             {"function:args", &mstch_function::arg_list},
             {"function:comma", &mstch_function::has_args},
-            {"function:eb", &mstch_function::event_based},
             {"function:priority", &mstch_function::priority},
             {"function:args_without_streams",
              &mstch_function::arg_list_without_streams},
             {"function:any_streams?", &mstch_function::any_streams},
             {"function:returns_stream?", &mstch_function::returns_stream},
             {"function:takes_stream?", &mstch_function::takes_stream},
-            {"function:coroutine?", &mstch_function::coroutine},
         });
   }
   mstch::node taken_stream_type();
@@ -847,24 +831,11 @@ class mstch_function : public mstch_base {
     }
     return std::string();
   }
-  mstch::node event_based() {
-    if (function_->annotations_.count("thread") &&
-        function_->annotations_.at("thread") == "eb") {
-      return true;
-    }
-    if (cache_->parsed_options_.count("process_in_event_base") != 0) {
-      return true;
-    }
-    return false;
-  }
   mstch::node priority() {
     if (function_->annotations_.count("priority")) {
       return function_->annotations_.at("priority");
     }
     return std::string("NORMAL");
-  }
-  mstch::node coroutine() {
-    return bool(function_->annotations_.count("cpp.coroutine"));
   }
 
   mstch::node return_type();

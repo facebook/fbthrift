@@ -289,7 +289,16 @@ class mstch_cpp2_const_value : public mstch_const_value {
             generators,
             cache,
             pos,
-            index) {}
+            index) {
+    register_methods(
+        this,
+        {
+            {"value:index_plus_one", &mstch_cpp2_const_value::index_plus_one},
+        });
+  }
+  mstch::node index_plus_one() {
+    return std::to_string(index_ + 1);
+  }
 
  private:
   bool same_type_as_expected() const override {
@@ -436,7 +445,10 @@ class mstch_cpp2_field : public mstch_field {
     register_methods(
         this,
         {
+            {"field:index_plus_one", &mstch_cpp2_field::index_plus_one},
             {"field:cpp_name", &mstch_cpp2_field::cpp_name},
+            {"field:next_field_key", &mstch_cpp2_field::next_field_key},
+            {"field:next_field_type", &mstch_cpp2_field::next_field_type},
             {"field:cpp_ref?", &mstch_cpp2_field::cpp_ref},
             {"field:cpp_ref_unique?", &mstch_cpp2_field::cpp_ref_unique},
             {"field:cpp_ref_unique_either?",
@@ -448,6 +460,9 @@ class mstch_cpp2_field : public mstch_field {
             {"field:optionals?", &mstch_cpp2_field::optionals},
             {"field:terse_writes?", &mstch_cpp2_field::terse_writes},
         });
+  }
+  mstch::node index_plus_one() {
+    return std::to_string(index_ + 1);
   }
   mstch::node cpp_name() {
     return get_cpp_name(field_);
@@ -487,6 +502,15 @@ class mstch_cpp2_field : public mstch_field {
       }
     }
     return mstch::node();
+  }
+  mstch::node next_field_key() {
+    return std::to_string(field_->get_next()->get_key());
+  }
+  mstch::node next_field_type() {
+    return field_->get_next()
+        ? generators_->type_generator_->generate(
+              field_->get_next()->get_type(), generators_, cache_, pos_)
+        : mstch::node("");
   }
   mstch::node optionals() {
     return field_->get_req() == t_field::e_req::T_OPTIONAL &&
@@ -868,6 +892,8 @@ class mstch_cpp2_function : public mstch_function {
         {
             {"function:cache_key?", &mstch_cpp2_function::has_cache_key},
             {"function:cache_key_id", &mstch_cpp2_function::cache_key_id},
+            {"function:coroutine?", &mstch_cpp2_function::coroutine},
+            {"function:eb", &mstch_cpp2_function::event_based},
         });
   }
   mstch::node has_cache_key() {
@@ -876,6 +902,19 @@ class mstch_cpp2_function : public mstch_function {
   mstch::node cache_key_id() {
     auto field = get_cache_key_arg();
     return field ? field->get_key() : 0;
+  }
+  mstch::node coroutine() {
+    return bool(function_->annotations_.count("cpp.coroutine"));
+  }
+  mstch::node event_based() {
+    if (function_->annotations_.count("thread") &&
+        function_->annotations_.at("thread") == "eb") {
+      return true;
+    }
+    if (cache_->parsed_options_.count("process_in_event_base") != 0) {
+      return true;
+    }
+    return false;
   }
 
  private:
