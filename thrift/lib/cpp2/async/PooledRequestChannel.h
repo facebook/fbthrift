@@ -37,7 +37,7 @@ class PooledRequestChannel : public RequestChannel {
   static std::
       unique_ptr<PooledRequestChannel, folly::DelayedDestruction::Destructor>
       newSyncChannel(
-          std::shared_ptr<folly::IOExecutor> executor,
+          std::weak_ptr<folly::IOExecutor> executor,
           ImplCreator implCreator) {
     return {new PooledRequestChannel(
                 nullptr, std::move(executor), std::move(implCreator)),
@@ -48,7 +48,7 @@ class PooledRequestChannel : public RequestChannel {
       unique_ptr<PooledRequestChannel, folly::DelayedDestruction::Destructor>
       newChannel(
           folly::Executor* callbackExecutor,
-          std::shared_ptr<folly::IOExecutor> executor,
+          std::weak_ptr<folly::IOExecutor> executor,
           ImplCreator implCreator) {
     return {new PooledRequestChannel(
                 callbackExecutor, std::move(executor), std::move(implCreator)),
@@ -105,8 +105,6 @@ class PooledRequestChannel : public RequestChannel {
       std::shared_ptr<transport::THeader> header);
 
  private:
-  std::shared_ptr<folly::EventBase> getNextEventBase();
-
   PooledRequestChannel(
       folly::Executor* callbackExecutor,
       std::weak_ptr<folly::IOExecutor> executor,
@@ -120,7 +118,7 @@ class PooledRequestChannel : public RequestChannel {
   ImplCreator implCreator_;
 
   folly::Executor* callbackExecutor_{nullptr};
-  std::shared_ptr<folly::IOExecutor> executor_;
+  std::weak_ptr<folly::IOExecutor> executor_;
   std::atomic<size_t> nextEvbId_{0};
 
   folly::EventBaseLocal<Impl> impl_;

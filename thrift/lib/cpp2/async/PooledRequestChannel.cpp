@@ -23,8 +23,12 @@ namespace apache {
 namespace thrift {
 
 uint16_t PooledRequestChannel::getProtocolId() {
+  auto executor = executor_.lock();
+  if (!executor) {
+    throw std::logic_error("IO executor already destroyed.");
+  }
   folly::call_once(protocolIdInitFlag_, [&] {
-    auto evb = executor_->getEventBase();
+    auto evb = executor->getEventBase();
     evb->runImmediatelyOrRunInEventBaseThreadAndWait(
         [&] { protocolId_ = impl(*evb).getProtocolId(); });
   });
@@ -39,10 +43,13 @@ uint32_t PooledRequestChannel::sendRequestImpl(
     std::unique_ptr<ContextStack> ctx,
     std::unique_ptr<folly::IOBuf> buf,
     std::shared_ptr<transport::THeader> header) {
-  auto evb = executor_->getEventBase();
+  auto executor = executor_.lock();
+  if (!executor) {
+    throw std::logic_error("IO executor already destroyed.");
+  }
+  auto evb = executor->getEventBase();
 
   evb->runInEventBaseThread([this,
-                             evb,
                              keepAlive = getKeepAliveToken(evb),
                              options = std::move(options),
                              rpcKind,
@@ -52,28 +59,31 @@ uint32_t PooledRequestChannel::sendRequestImpl(
                              header = std::move(header)]() mutable {
     switch (rpcKind) {
       case RpcKind::SINGLE_REQUEST_NO_RESPONSE:
-        impl(*evb).sendOnewayRequest(
-            options,
-            std::move(cob),
-            std::move(ctx),
-            std::move(buf),
-            std::move(header));
+        impl(*keepAlive)
+            .sendOnewayRequest(
+                options,
+                std::move(cob),
+                std::move(ctx),
+                std::move(buf),
+                std::move(header));
         break;
       case RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE:
-        impl(*evb).sendRequest(
-            options,
-            std::move(cob),
-            std::move(ctx),
-            std::move(buf),
-            std::move(header));
+        impl(*keepAlive)
+            .sendRequest(
+                options,
+                std::move(cob),
+                std::move(ctx),
+                std::move(buf),
+                std::move(header));
         break;
       case RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE:
-        impl(*evb).sendStreamRequest(
-            options,
-            std::move(cob),
-            std::move(ctx),
-            std::move(buf),
-            std::move(header));
+        impl(*keepAlive)
+            .sendStreamRequest(
+                options,
+                std::move(cob),
+                std::move(ctx),
+                std::move(buf),
+                std::move(header));
         break;
       default:
         folly::assume_unreachable();

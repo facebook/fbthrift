@@ -85,6 +85,8 @@ class TestSetup : public testing::Test {
 
   folly::ScopedEventBaseThread evbThread_;
   folly::ScopedEventBaseThread executor_;
+  std::shared_ptr<folly::IOExecutor> ioThread_{
+      std::make_shared<folly::ScopedEventBaseThread>()};
 };
 
 } // namespace thrift

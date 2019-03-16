@@ -62,7 +62,7 @@ TestSetup::connectToServer(
   CHECK_GT(port, 0) << "Check if the server has started already";
   return PooledRequestChannel::newChannel(
       evbThread_.getEventBase(),
-      std::make_shared<folly::ScopedEventBaseThread>(),
+      ioThread_,
       [port, useRocketClient, onDetachable = std::move(onDetachable)](
           folly::EventBase& evb) mutable
       -> std::unique_ptr<ClientChannel, folly::DelayedDestruction::Destructor> {

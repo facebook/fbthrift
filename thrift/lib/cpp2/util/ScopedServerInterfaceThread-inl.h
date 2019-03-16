@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 #include <folly/Memory.h>
-#include <folly/io/async/ScopedEventBaseThread.h>
 #include <thrift/lib/cpp/async/TAsyncSocket.h>
 #include <thrift/lib/cpp2/async/HeaderClientChannel.h>
 #include <thrift/lib/cpp2/async/PooledRequestChannel.h>
@@ -25,8 +24,7 @@ namespace thrift {
 template <class AsyncClientT>
 std::unique_ptr<AsyncClientT> ScopedServerInterfaceThread::newClient() const {
   return std::make_unique<AsyncClientT>(PooledRequestChannel::newSyncChannel(
-      std::make_shared<folly::ScopedEventBaseThread>(),
-      [address = getAddress()](folly::EventBase& eb) {
+      ioExecutor_, [address = getAddress()](folly::EventBase& eb) {
         return HeaderClientChannel::newChannel(
             async::TAsyncSocket::newSocket(&eb, address));
       }));

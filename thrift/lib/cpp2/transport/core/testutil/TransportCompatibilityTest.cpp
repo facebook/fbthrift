@@ -229,9 +229,7 @@ void SampleServer<Service>::connectToServer(
     auto executor = std::make_shared<folly::ScopedEventBaseThread>();
     auto eventBase = executor->getEventBase();
     auto channel = PooledRequestChannel::newChannel(
-        eventBase,
-        std::move(executor),
-        [port = std::move(port_)](folly::EventBase& evb) {
+        eventBase, executor, [port = std::move(port_)](folly::EventBase& evb) {
           TAsyncSocket::UniquePtr socket(
               new TAsyncSocket(&evb, FLAGS_host, port));
           if (FLAGS_use_ssl) {

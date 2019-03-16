@@ -74,7 +74,7 @@ class ScopedServerInterfaceThread {
  private:
   std::shared_ptr<BaseThriftServer> ts_;
   util::ScopedServerThread sst_;
-
+  std::shared_ptr<folly::IOExecutor> ioExecutor_;
 };
 
 }}
