@@ -866,7 +866,8 @@ class mstch_function : public mstch_base {
     return std::string("NORMAL");
   }
   mstch::node coroutine() {
-    return function_->coroutine();
+    auto ann = function_->get_annotations();
+    return ann && ann->annotations_.count("cpp.coroutine");
   }
 
   mstch::node return_type();

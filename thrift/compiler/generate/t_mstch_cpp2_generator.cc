@@ -994,12 +994,11 @@ class mstch_cpp2_service : public mstch_service {
     return false;
   }
   mstch::node coroutines() {
-    for (auto const* function : service_->get_functions()) {
-      if (function->coroutine()) {
-        return true;
-      }
-    }
-    return false;
+    auto&& funs = service_->get_functions();
+    return std::any_of(funs.begin(), funs.end(), [](auto fun) {
+      auto ann = fun->get_annotations();
+      return ann && ann->annotations_.count("cpp.coroutine");
+    });
   }
 };
 

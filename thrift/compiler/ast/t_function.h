@@ -127,11 +127,6 @@ class t_function : public t_doc {
     return any_stream_params();
   }
 
-  bool coroutine() const {
-    return annotations_ != nullptr &&
-        annotations_->annotations_.count("cpp.coroutine") > 0;
-  }
-
   bool any_stream_params() const {
     auto& members = arglist_->get_members();
     return std::any_of(members.cbegin(), members.cend(), [](auto const& arg) {
