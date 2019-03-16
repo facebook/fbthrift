@@ -422,7 +422,7 @@ mstch::node mstch_const_value::const_struct() {
     }
   }
 
-  mstch::array a{};
+  mstch::array a;
   for (size_t i = 0; i < constants.size(); ++i) {
     auto pos = element_position(i, constants.size());
     a.push_back(generators_->const_generator_->generate(
@@ -611,7 +611,7 @@ mstch::node mstch_program::typedefs() {
 }
 
 mstch::node mstch_program::constants() {
-  mstch::array a{};
+  mstch::array a;
   const auto& container = program_->get_consts();
   for (size_t i = 0; i < container.size(); ++i) {
     auto pos = element_position(i, container.size());

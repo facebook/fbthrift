@@ -491,7 +491,7 @@ std::unique_ptr<std::string> t_mstch_generator::get_option(
 mstch::map t_mstch_generator::prepend_prefix(
     const std::string& prefix,
     mstch::map map) {
-  mstch::map res{};
+  mstch::map res;
   for (auto& pair : map) {
     res.emplace(prefix + ":" + pair.first, std::move(pair.second));
   }

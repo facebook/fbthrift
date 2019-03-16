@@ -302,7 +302,7 @@ class mstch_base : public mstch::object {
       std::shared_ptr<mstch_generators const> generators,
       std::shared_ptr<mstch_cache> cache,
       Args const&... args) {
-    mstch::array a{};
+    mstch::array a;
     for (size_t i = 0; i < container.size(); ++i) {
       auto pos = element_position(i, container.size());
       a.push_back(generator->generate(
@@ -319,7 +319,7 @@ class mstch_base : public mstch::object {
       std::string const& id,
       std::shared_ptr<mstch_generators const> generators,
       std::shared_ptr<mstch_cache> cache) {
-    mstch::array a{};
+    mstch::array a;
     for (size_t i = 0; i < container.size(); ++i) {
       auto pos = element_position(i, container.size());
       std::string elem_id = id + container[i]->get_name();

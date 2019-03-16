@@ -186,7 +186,7 @@ class t_mstch_generator : public t_generator {
   template <typename container>
   mstch::array dump_elems(const container& elems) {
     using T = typename container::value_type;
-    mstch::array result{};
+    mstch::array result;
     int32_t index = 0;
     for (auto itr = elems.begin(); itr != elems.end(); ++itr) {
       auto map =
@@ -209,7 +209,7 @@ class t_mstch_generator : public t_generator {
   std::unique_ptr<std::string> get_option(const std::string& key);
 
  private:
-  std::map<std::string, std::string> template_map_{};
+  std::map<std::string, std::string> template_map_;
   bool convert_delimiter_;
 
   void gen_template_map(
