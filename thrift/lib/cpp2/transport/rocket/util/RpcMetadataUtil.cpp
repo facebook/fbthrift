@@ -24,7 +24,7 @@
 
 namespace apache {
 namespace thrift {
-namespace util {
+namespace detail {
 
 RequestRpcMetadata makeRequestRpcMetadata(
     const RpcOptions& rpcOptions,
@@ -65,6 +65,6 @@ RequestRpcMetadata makeRequestRpcMetadata(
   return metadata;
 }
 
-} // namespace util
+} // namespace detail
 } // namespace thrift
 } // namespace apache

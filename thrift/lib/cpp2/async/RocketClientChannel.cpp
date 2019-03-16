@@ -161,7 +161,7 @@ void RocketClientChannel::sendThriftRequest(
   DestructorGuard dg(this);
 
   cb->context_ = folly::RequestContext::saveContext();
-  auto metadata = util::makeRequestRpcMetadata(
+  auto metadata = detail::makeRequestRpcMetadata(
       rpcOptions,
       kind,
       static_cast<ProtocolId>(protocolId_),

@@ -26,7 +26,7 @@ namespace thrift {
 
 class RpcOptions;
 
-namespace util {
+namespace detail {
 
 RequestRpcMetadata makeRequestRpcMetadata(
     const RpcOptions& rpcOptions,
@@ -36,6 +36,6 @@ RequestRpcMetadata makeRequestRpcMetadata(
     transport::THeader& header,
     const transport::THeader::StringToStringMap& persistentWriteHeaders);
 
-} // namespace util
+} // namespace detail
 } // namespace thrift
 } // namespace apache

@@ -411,7 +411,7 @@ void RSocketClientChannel::sendThriftRequest(
 
   cb->context_ = folly::RequestContext::saveContext();
   auto metadata =
-      std::make_unique<RequestRpcMetadata>(util::makeRequestRpcMetadata(
+      std::make_unique<RequestRpcMetadata>(detail::makeRequestRpcMetadata(
           rpcOptions,
           kind,
           static_cast<ProtocolId>(protocolId_),
