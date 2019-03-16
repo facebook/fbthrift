@@ -848,9 +848,8 @@ class mstch_function : public mstch_base {
     return std::string();
   }
   mstch::node event_based() {
-    auto const* strct = function_->get_annotations();
-    if (strct && strct->annotations_.count("thread") &&
-        strct->annotations_.at("thread") == "eb") {
+    if (function_->annotations_.count("thread") &&
+        function_->annotations_.at("thread") == "eb") {
       return true;
     }
     if (cache_->parsed_options_.count("process_in_event_base") != 0) {
@@ -859,15 +858,13 @@ class mstch_function : public mstch_base {
     return false;
   }
   mstch::node priority() {
-    auto const* strct = function_->get_annotations();
-    if (strct && strct->annotations_.count("priority")) {
-      return strct->annotations_.at("priority");
+    if (function_->annotations_.count("priority")) {
+      return function_->annotations_.at("priority");
     }
     return std::string("NORMAL");
   }
   mstch::node coroutine() {
-    auto ann = function_->get_annotations();
-    return ann && ann->annotations_.count("cpp.coroutine");
+    return bool(function_->annotations_.count("cpp.coroutine"));
   }
 
   mstch::node return_type();

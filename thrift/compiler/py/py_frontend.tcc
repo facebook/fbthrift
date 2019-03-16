@@ -271,9 +271,7 @@ BOOST_PYTHON_MODULE(frontend) {
           make_function(&t_function::get_returntype, policy_rir()))
       .add_property(
           "xceptions", make_function(&t_function::get_xceptions, policy_rir()))
-      .add_property(
-          "annotations",
-          make_function(&t_function::get_annotations, policy_rir()));
+      .add_property("annotations", &t_function::annotations_);
 
   indexPtrVec<t_function>("t_function_vec");
 

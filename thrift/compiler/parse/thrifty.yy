@@ -985,9 +985,12 @@ Function:
         std::unique_ptr<t_struct>(arglist),
         std::unique_ptr<t_struct>($8.first),
         std::unique_ptr<t_struct>($8.second),
-        std::unique_ptr<t_type>($9),
         $2
       );
+      if ($9) {
+        func->annotations_ = std::move($9->annotations_);
+      }
+      delete $9;
       $$ = func;
 
       if ($1) {

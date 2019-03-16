@@ -996,8 +996,7 @@ class mstch_cpp2_service : public mstch_service {
   mstch::node coroutines() {
     auto&& funs = service_->get_functions();
     return std::any_of(funs.begin(), funs.end(), [](auto fun) {
-      auto ann = fun->get_annotations();
-      return ann && ann->annotations_.count("cpp.coroutine");
+      return fun->annotations_.count("cpp.coroutine");
     });
   }
 };

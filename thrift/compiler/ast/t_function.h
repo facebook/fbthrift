@@ -33,7 +33,7 @@ namespace compiler {
  * struct.
  *
  */
-class t_function : public t_doc {
+class t_function : public t_annotated {
  public:
   /**
    * Constructor for t_function
@@ -52,14 +52,12 @@ class t_function : public t_doc {
       std::unique_ptr<t_struct> arglist,
       std::unique_ptr<t_struct> xceptions = nullptr,
       std::unique_ptr<t_struct> stream_xceptions = nullptr,
-      std::unique_ptr<t_type> annotations = nullptr,
       bool oneway = false)
       : returntype_(returntype),
         name_(name),
         arglist_(std::move(arglist)),
         xceptions_(std::move(xceptions)),
         stream_xceptions_(std::move(stream_xceptions)),
-        annotations_(std::move(annotations)),
         oneway_(oneway) {
     if (oneway_) {
       if (!xceptions_->get_members().empty()) {
@@ -111,10 +109,6 @@ class t_function : public t_doc {
     return stream_xceptions_.get();
   }
 
-  t_type* get_annotations() const {
-    return annotations_.get();
-  }
-
   bool is_oneway() const {
     return oneway_;
   }
@@ -140,7 +134,6 @@ class t_function : public t_doc {
   std::unique_ptr<t_struct> arglist_;
   std::unique_ptr<t_struct> xceptions_;
   std::unique_ptr<t_struct> stream_xceptions_;
-  std::unique_ptr<t_type> annotations_;
   bool oneway_;
 };
 

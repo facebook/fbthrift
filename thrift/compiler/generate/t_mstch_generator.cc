@@ -238,10 +238,7 @@ mstch::map t_mstch_generator::dump(const t_function& function) {
       {"returnType", dump(*function.get_returntype())},
       {"exceptions", dump_elems(function.get_xceptions()->get_members())},
       {"exceptions?", !function.get_xceptions()->get_members().empty()},
-      {"annotations",
-       function.get_annotations()
-           ? dump_elems(function.get_annotations()->annotations_)
-           : static_cast<mstch::node>(false)},
+      {"annotations", dump_elems(function.annotations_)},
       {"args", dump_elems(function.get_arglist()->get_members())},
   };
 

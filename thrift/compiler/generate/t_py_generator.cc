@@ -317,9 +317,6 @@ class t_py_generator : public t_concat_generator {
   std::string get_priority(
       const t_annotated* obj,
       std::string const& def = "NORMAL");
-  std::string get_priority(
-      const t_function* obj,
-      std::string const& def = "NORMAL");
 
  private:
   /**
@@ -3845,15 +3842,6 @@ std::string t_py_generator::get_priority(
     return obj->annotations_.at("priority");
   }
   return def;
-}
-
-/**
- * Gets the priority of a function
- */
-std::string t_py_generator::get_priority(
-    const t_function* func,
-    std::string const& def) {
-  return get_priority(func->get_annotations(), def);
 }
 
 THRIFT_REGISTER_GENERATOR(
