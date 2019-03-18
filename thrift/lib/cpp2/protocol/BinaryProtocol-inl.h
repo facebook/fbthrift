@@ -553,7 +553,9 @@ void BinaryProtocolReader::readStringBody(StrType& str, int32_t size) {
     return;
   }
 
-  str.reserve(size);
+  if (static_cast<int32_t>(in_.length()) < size) {
+    str.reserve(size); // only reserve for multi iter case below
+  }
   str.clear();
   size_t size_left = size;
   while (size_left > 0) {
