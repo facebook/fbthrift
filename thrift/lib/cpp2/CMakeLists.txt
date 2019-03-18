@@ -62,6 +62,7 @@ bypass_source_check("${rsocket-cpp2-SOURCES}")
 if(TARGET rsocket::ReactiveSocket)
   list(APPEND rsocket-cpp2-SOURCES
     async/RSocketClientChannel.cpp
+    transport/rocket/util/RpcMetadataUtil.cpp
   )
 endif()
 
