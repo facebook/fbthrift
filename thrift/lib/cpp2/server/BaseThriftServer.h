@@ -226,8 +226,7 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
   std::shared_ptr<apache::thrift::server::TServerObserver> observer_;
 
   std::string overloadedErrorCode_ = kOverloadedErrorCode;
-  IsOverloadedFunc isOverloaded_ = [](const transport::THeader*,
-                                      const std::string*) { return false; };
+  IsOverloadedFunc isOverloaded_;
   std::function<int64_t(const std::string&)> getLoad_;
 
   enum class InjectedFailure { NONE, ERROR, DROP, DISCONNECT };
@@ -394,7 +393,7 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
   }
 
   /**
-   * Get the maximum # of connections waiting in handler/task before overload.
+   * Get the maximum # of requests being processed in handler before overload.
    *
    * @return current setting.
    */
