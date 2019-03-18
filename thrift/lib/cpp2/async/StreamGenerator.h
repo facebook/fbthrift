@@ -21,15 +21,46 @@
 namespace apache {
 namespace thrift {
 
+namespace detail {
+template <typename Generator, typename Element>
+struct StreamGeneratorImpl {
+  static Stream<Element> create(
+      folly::Executor::KeepAlive<folly::SequencedExecutor>,
+      Generator&&) {
+    LOG(FATAL) << "Returned value should either be folly::Optional<T> or "
+                  "folly::SemiFuture<folly::Optional<T>>";
+  }
+};
+
+template <typename Generator, typename Element>
+struct StreamGeneratorImpl<Generator, folly::Optional<Element>> {
+  static Stream<Element> create(
+      folly::Executor::KeepAlive<folly::SequencedExecutor> executor,
+      Generator&& generator);
+};
+
+template <typename Generator, typename Element>
+struct StreamGeneratorImpl<
+    Generator,
+    folly::SemiFuture<folly::Optional<Element>>> {
+  static Stream<Element> create(
+      folly::Executor::KeepAlive<folly::SequencedExecutor> executor,
+      Generator&& generator);
+};
+} // namespace detail
+
 class StreamGenerator {
  public:
   template <
       typename Generator,
       typename Element =
-          typename folly::invoke_result_t<std::decay_t<Generator>&>::value_type>
-  static Stream<Element> create(
+          typename folly::invoke_result_t<std::decay_t<Generator>&>>
+  static auto create(
       folly::Executor::KeepAlive<folly::SequencedExecutor> executor,
-      Generator&& generator);
+      Generator&& generator) {
+    return detail::StreamGeneratorImpl<Generator, Element>::create(
+        executor, std::forward<Generator>(generator));
+  }
 
  private:
   StreamGenerator() = default;
