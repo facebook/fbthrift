@@ -143,15 +143,15 @@ void Cpp2Connection::setServerHeaders(
   }
 
   const auto& headers = request.getHeader()->getHeaders();
-  std::string loadHeader;
+  std::string loadHeaderFound;
   auto it = headers.find(Cpp2Connection::loadHeader);
   if (it != headers.end()) {
-    loadHeader = it->second;
+    loadHeaderFound = it->second;
   } else {
     return;
   }
 
-  auto load = getWorker()->getServer()->getLoad(loadHeader);
+  auto load = getWorker()->getServer()->getLoad(loadHeaderFound);
 
   request.getHeader()->setHeader(
       Cpp2Connection::loadHeader, folly::to<std::string>(load));
