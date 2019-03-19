@@ -46,7 +46,6 @@ constexpr folly::StringPiece kProcessLatencyHeader("process_latency_us");
 class Cpp2Connection : public ResponseChannel::Callback,
                        public wangle::ManagedConnection {
  public:
-  static const std::string loadHeader;
   /**
    * Constructor for Cpp2Connection.
    *

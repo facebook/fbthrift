@@ -345,7 +345,7 @@ TEST(ThriftServer, LoadHeaderTest) {
 
     void replyReceived(ClientReceiveState&& state) override {
       const auto& headers = state.header()->getHeaders();
-      auto loadIter = headers.find(Cpp2Connection::loadHeader);
+      auto loadIter = headers.find(THeader::QUERY_LOAD_HEADER);
       ASSERT_EQ(isLoadExpected_, loadIter != headers.end());
       if (isLoadExpected_) {
         auto load = loadIter->second;
@@ -370,14 +370,14 @@ TEST(ThriftServer, LoadHeaderTest) {
   {
     LOG(ERROR) << "========= empty load header ==========";
     RpcOptions emptyLoadOptions;
-    emptyLoadOptions.setWriteHeader(Cpp2Connection::loadHeader, "");
+    emptyLoadOptions.setWriteHeader(THeader::QUERY_LOAD_HEADER, "");
     client->voidResponse(emptyLoadOptions, std::make_unique<Callback>(true));
   }
 
   {
     LOG(ERROR) << "========= foo load header ==========";
     RpcOptions customLoadOptions;
-    customLoadOptions.setWriteHeader(Cpp2Connection::loadHeader, "foo");
+    customLoadOptions.setWriteHeader(THeader::QUERY_LOAD_HEADER, "foo");
     client->voidResponse(customLoadOptions, std::make_unique<Callback>(true));
   }
 
@@ -391,7 +391,7 @@ TEST(ThriftServer, LoadHeaderTest) {
           return true;
         });
     runner.getThriftServer().setGetLoad([](const std::string&) { return 1; });
-    customLoadOptions.setWriteHeader(Cpp2Connection::loadHeader, "foo");
+    customLoadOptions.setWriteHeader(THeader::QUERY_LOAD_HEADER, "foo");
     client->voidResponse(customLoadOptions, std::make_unique<Callback>(true));
   }
 

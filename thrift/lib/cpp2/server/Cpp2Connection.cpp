@@ -16,6 +16,7 @@
 
 #include <thrift/lib/cpp2/server/Cpp2Connection.h>
 
+#include <thrift/lib/cpp/transport/THeader.h>
 #include <thrift/lib/cpp2/GeneratedCodeHelper.h>
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
@@ -33,8 +34,6 @@ using namespace apache::thrift::concurrency;
 using namespace apache::thrift::async;
 using namespace std;
 using apache::thrift::TApplicationException;
-
-const std::string Cpp2Connection::loadHeader{"load"};
 
 Cpp2Connection::Cpp2Connection(
     const std::shared_ptr<TAsyncTransport>& transport,
@@ -144,7 +143,7 @@ void Cpp2Connection::setServerHeaders(
 
   const auto& headers = request.getHeader()->getHeaders();
   std::string loadHeaderFound;
-  auto it = headers.find(Cpp2Connection::loadHeader);
+  auto it = headers.find(THeader::QUERY_LOAD_HEADER);
   if (it != headers.end()) {
     loadHeaderFound = it->second;
   } else {
@@ -154,7 +153,7 @@ void Cpp2Connection::setServerHeaders(
   auto load = getWorker()->getServer()->getLoad(loadHeaderFound);
 
   request.getHeader()->setHeader(
-      Cpp2Connection::loadHeader, folly::to<std::string>(load));
+      THeader::QUERY_LOAD_HEADER, folly::to<std::string>(load));
 }
 
 void Cpp2Connection::requestTimeoutExpired() {

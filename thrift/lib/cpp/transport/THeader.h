@@ -347,6 +347,7 @@ class THeader {
   static const std::string PRIORITY_HEADER;
   static const std::string& CLIENT_TIMEOUT_HEADER;
   static const std::string QUEUE_TIMEOUT_HEADER;
+  static const std::string QUERY_LOAD_HEADER;
 
  protected:
   bool isFramed(CLIENT_TYPE clientType);

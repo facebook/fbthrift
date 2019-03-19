@@ -225,10 +225,10 @@ void ProxygenThriftServer::ThriftRequestHandler::sendReply(
 
   auto& headers = msg_->getHeaders();
 
-  if (headers.exists(Cpp2Connection::loadHeader)) {
-    auto& loadHeader = headers.getSingleOrEmpty(Cpp2Connection::loadHeader);
+  if (headers.exists(THeader::QUERY_LOAD_HEADER)) {
+    auto& loadHeader = headers.getSingleOrEmpty(THeader::QUERY_LOAD_HEADER);
     auto load = worker_->server_->getLoad(loadHeader);
-    response.header(Cpp2Connection::loadHeader, folly::to<std::string>(load));
+    response.header(THeader::QUERY_LOAD_HEADER, folly::to<std::string>(load));
   }
 
   response.body(std::move(buf)).sendWithEOM();

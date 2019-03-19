@@ -60,6 +60,7 @@ const string THeader::ID_VERSION = "1";
 const string THeader::PRIORITY_HEADER = "thrift_priority";
 const string& THeader::CLIENT_TIMEOUT_HEADER = *(new string("client_timeout"));
 const string THeader::QUEUE_TIMEOUT_HEADER = "queue_timeout";
+const string THeader::QUERY_LOAD_HEADER = "load";
 
 std::string getReadableChars(Cursor c, size_t limit) {
   size_t size = 0;
