@@ -21,10 +21,6 @@
 
 #import "TProtocol.h"
 
-@interface TRoot : NSObject
-
-@end
-
 @protocol TBase <NSObject>
 
 /**

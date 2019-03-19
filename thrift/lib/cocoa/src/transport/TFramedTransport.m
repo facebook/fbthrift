@@ -33,6 +33,10 @@
 
 - (id) initWithTransport:(id <TTransport>)transport
 {
+    self = [super init];
+    if (nil == self) {
+        return nil;
+    }
     mTransport = [transport retain_stub];
     readBuffer = nil;
     readOffset = 0;
@@ -52,7 +56,7 @@
 
 - (void)flush
 {
-    int len = [writeBuffer length];
+    int len = (int)[writeBuffer length];
     int data_len = len - HEADER_SIZE;
     if (data_len < 0)
         @throw [TTransportException exceptionWithReason:@"Framed transport buffer has no header"];
@@ -84,7 +88,7 @@
     }
     
     if (readBuffer != nil) {
-        int buffer_len = [readBuffer length];
+        NSUInteger buffer_len = [readBuffer length];
         if (buffer_len-readOffset >= len) {
             [readBuffer getBytes:buf range:NSMakeRange(readOffset,len)]; // copy data
             readOffset += len;
@@ -111,7 +115,7 @@
     if (readBuffer == nil) {
         readBuffer = [[NSMutableData alloc] initWithLength:size];
     } else {
-        int len = [readBuffer length];
+        NSUInteger len = [readBuffer length];
         if (len >= size) {
             [readBuffer setLength:size];
         } else {

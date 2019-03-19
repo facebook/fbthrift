@@ -49,7 +49,7 @@ static TBinaryProtocolFactory * gSharedFactory = nil;
 
 - (id) initWithTransport: (id <TTransport>) transport
 {
-  return [self initWithTransport: transport strictRead: NO strictWrite: YES];
+  return [self initWithTransport: transport strictRead: NO strictWrite: NO];
 }
 
 - (id) initWithTransport: (id <TTransport>) transport
@@ -413,8 +413,8 @@ static TBinaryProtocolFactory * gSharedFactory = nil;
   if (value != nil) {
     const char * utf8Bytes = [value UTF8String];
     size_t length = strlen(utf8Bytes);
-    [self writeI32: length];
-    [mTransport write: (uint8_t *) utf8Bytes offset: 0 length: length];
+    [self writeI32: (int32_t)length];
+    [mTransport write: (uint8_t *) utf8Bytes offset: 0 length: (unsigned int)length];
   } else {
     // instead of crashing when we get null, let's write out a zero
     // length string
@@ -425,8 +425,8 @@ static TBinaryProtocolFactory * gSharedFactory = nil;
 
 - (void) writeBinary: (NSData *) data
 {
-  [self writeI32: [data length]];
-  [mTransport write: [data bytes] offset: 0 length: [data length]];
+  [self writeI32: (int32_t)[data length]];
+  [mTransport write: [data bytes] offset: 0 length: (int32_t)[data length]];
 }
 
 - (void) writeFieldStop

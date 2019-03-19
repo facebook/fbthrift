@@ -69,4 +69,8 @@
 	[mBuffer release_stub];
 	[super dealloc_stub];
 }
+
+- (NSUInteger)getOffset {
+  return mOffset;
+}
 @end

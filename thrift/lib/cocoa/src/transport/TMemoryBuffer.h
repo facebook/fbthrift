@@ -26,4 +26,5 @@
 }
 - (id)initWithData:(NSData *)data;
 - (NSData *)getBuffer;
+- (NSUInteger)getOffset;
 @end
