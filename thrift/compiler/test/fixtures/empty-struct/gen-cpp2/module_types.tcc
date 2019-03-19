@@ -107,6 +107,15 @@ uint32_t Empty::write(Protocol_* prot_) const {
   return xfer;
 }
 
+extern template void Empty::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+extern template uint32_t Empty::write<>(apache::thrift::BinaryProtocolWriter*) const;
+extern template uint32_t Empty::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t Empty::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template void Empty::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+extern template uint32_t Empty::write<>(apache::thrift::CompactProtocolWriter*) const;
+extern template uint32_t Empty::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template uint32_t Empty::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
 } // cpp2
 namespace cpp2 {
 
@@ -173,5 +182,14 @@ uint32_t Nada::write(Protocol_* prot_) const {
   xfer += prot_->writeStructEnd();
   return xfer;
 }
+
+extern template void Nada::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+extern template uint32_t Nada::write<>(apache::thrift::BinaryProtocolWriter*) const;
+extern template uint32_t Nada::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t Nada::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template void Nada::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+extern template uint32_t Nada::write<>(apache::thrift::CompactProtocolWriter*) const;
+extern template uint32_t Nada::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template uint32_t Nada::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 } // cpp2

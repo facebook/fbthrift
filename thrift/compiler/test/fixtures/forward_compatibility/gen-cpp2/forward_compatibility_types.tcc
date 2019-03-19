@@ -159,6 +159,19 @@ uint32_t OldStructure::write(Protocol_* prot_) const {
   return xfer;
 }
 
+extern template void OldStructure::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+extern template uint32_t OldStructure::write<>(apache::thrift::BinaryProtocolWriter*) const;
+extern template uint32_t OldStructure::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t OldStructure::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template void OldStructure::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+extern template uint32_t OldStructure::write<>(apache::thrift::CompactProtocolWriter*) const;
+extern template uint32_t OldStructure::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template uint32_t OldStructure::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template void OldStructure::readNoXfer<>(apache::thrift::SimpleJSONProtocolReader*);
+extern template uint32_t OldStructure::write<>(apache::thrift::SimpleJSONProtocolWriter*) const;
+extern template uint32_t OldStructure::serializedSize<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
+extern template uint32_t OldStructure::serializedSizeZC<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
+
 } // cpp2
 namespace cpp2 {
 
@@ -258,6 +271,19 @@ uint32_t NewStructure::write(Protocol_* prot_) const {
   return xfer;
 }
 
+extern template void NewStructure::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+extern template uint32_t NewStructure::write<>(apache::thrift::BinaryProtocolWriter*) const;
+extern template uint32_t NewStructure::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t NewStructure::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template void NewStructure::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+extern template uint32_t NewStructure::write<>(apache::thrift::CompactProtocolWriter*) const;
+extern template uint32_t NewStructure::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template uint32_t NewStructure::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template void NewStructure::readNoXfer<>(apache::thrift::SimpleJSONProtocolReader*);
+extern template uint32_t NewStructure::write<>(apache::thrift::SimpleJSONProtocolWriter*) const;
+extern template uint32_t NewStructure::serializedSize<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
+extern template uint32_t NewStructure::serializedSizeZC<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
+
 } // cpp2
 namespace cpp2 {
 
@@ -356,6 +382,19 @@ uint32_t NewStructure2::write(Protocol_* prot_) const {
   xfer += prot_->writeStructEnd();
   return xfer;
 }
+
+extern template void NewStructure2::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+extern template uint32_t NewStructure2::write<>(apache::thrift::BinaryProtocolWriter*) const;
+extern template uint32_t NewStructure2::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t NewStructure2::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template void NewStructure2::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+extern template uint32_t NewStructure2::write<>(apache::thrift::CompactProtocolWriter*) const;
+extern template uint32_t NewStructure2::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template uint32_t NewStructure2::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template void NewStructure2::readNoXfer<>(apache::thrift::SimpleJSONProtocolReader*);
+extern template uint32_t NewStructure2::write<>(apache::thrift::SimpleJSONProtocolWriter*) const;
+extern template uint32_t NewStructure2::serializedSize<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
+extern template uint32_t NewStructure2::serializedSizeZC<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 
 } // cpp2
 namespace cpp2 {
@@ -514,6 +553,19 @@ uint32_t NewStructureNested::write(Protocol_* prot_) const {
   return xfer;
 }
 
+extern template void NewStructureNested::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+extern template uint32_t NewStructureNested::write<>(apache::thrift::BinaryProtocolWriter*) const;
+extern template uint32_t NewStructureNested::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t NewStructureNested::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template void NewStructureNested::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+extern template uint32_t NewStructureNested::write<>(apache::thrift::CompactProtocolWriter*) const;
+extern template uint32_t NewStructureNested::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template uint32_t NewStructureNested::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template void NewStructureNested::readNoXfer<>(apache::thrift::SimpleJSONProtocolReader*);
+extern template uint32_t NewStructureNested::write<>(apache::thrift::SimpleJSONProtocolWriter*) const;
+extern template uint32_t NewStructureNested::serializedSize<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
+extern template uint32_t NewStructureNested::serializedSizeZC<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
+
 } // cpp2
 namespace cpp2 {
 
@@ -611,5 +663,18 @@ uint32_t NewStructureNestedField::write(Protocol_* prot_) const {
   xfer += prot_->writeStructEnd();
   return xfer;
 }
+
+extern template void NewStructureNestedField::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+extern template uint32_t NewStructureNestedField::write<>(apache::thrift::BinaryProtocolWriter*) const;
+extern template uint32_t NewStructureNestedField::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t NewStructureNestedField::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template void NewStructureNestedField::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+extern template uint32_t NewStructureNestedField::write<>(apache::thrift::CompactProtocolWriter*) const;
+extern template uint32_t NewStructureNestedField::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template uint32_t NewStructureNestedField::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template void NewStructureNestedField::readNoXfer<>(apache::thrift::SimpleJSONProtocolReader*);
+extern template uint32_t NewStructureNestedField::write<>(apache::thrift::SimpleJSONProtocolWriter*) const;
+extern template uint32_t NewStructureNestedField::serializedSize<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
+extern template uint32_t NewStructureNestedField::serializedSizeZC<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 
 } // cpp2

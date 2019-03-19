@@ -505,4 +505,17 @@ uint32_t containerStruct2::write(Protocol_* prot_) const {
   return xfer;
 }
 
+extern template void containerStruct2::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+extern template uint32_t containerStruct2::write<>(apache::thrift::BinaryProtocolWriter*) const;
+extern template uint32_t containerStruct2::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t containerStruct2::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template void containerStruct2::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+extern template uint32_t containerStruct2::write<>(apache::thrift::CompactProtocolWriter*) const;
+extern template uint32_t containerStruct2::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template uint32_t containerStruct2::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template void containerStruct2::readNoXfer<>(apache::thrift::SimpleJSONProtocolReader*);
+extern template uint32_t containerStruct2::write<>(apache::thrift::SimpleJSONProtocolWriter*) const;
+extern template uint32_t containerStruct2::serializedSize<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
+extern template uint32_t containerStruct2::serializedSizeZC<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
+
 }} // extra::svc

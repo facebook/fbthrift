@@ -287,6 +287,15 @@ uint32_t ModuleA::write(Protocol_* prot_) const {
   return xfer;
 }
 
+extern template void ModuleA::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+extern template uint32_t ModuleA::write<>(apache::thrift::BinaryProtocolWriter*) const;
+extern template uint32_t ModuleA::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t ModuleA::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template void ModuleA::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+extern template uint32_t ModuleA::write<>(apache::thrift::CompactProtocolWriter*) const;
+extern template uint32_t ModuleA::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template uint32_t ModuleA::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
 }} // some::ns
 namespace some { namespace ns {
 
@@ -412,5 +421,14 @@ uint32_t ModuleB::write(Protocol_* prot_) const {
   xfer += prot_->writeStructEnd();
   return xfer;
 }
+
+extern template void ModuleB::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+extern template uint32_t ModuleB::write<>(apache::thrift::BinaryProtocolWriter*) const;
+extern template uint32_t ModuleB::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t ModuleB::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template void ModuleB::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+extern template uint32_t ModuleB::write<>(apache::thrift::CompactProtocolWriter*) const;
+extern template uint32_t ModuleB::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template uint32_t ModuleB::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 }} // some::ns

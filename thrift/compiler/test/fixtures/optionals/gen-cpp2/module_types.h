@@ -140,14 +140,6 @@ class Color final : private apache::thrift::detail::st::ComparisonOperators<Colo
 };
 
 void swap(Color& a, Color& b);
-extern template void Color::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
-extern template uint32_t Color::write<>(apache::thrift::BinaryProtocolWriter*) const;
-extern template uint32_t Color::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template uint32_t Color::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template void Color::readNoXfer<>(apache::thrift::CompactProtocolReader*);
-extern template uint32_t Color::write<>(apache::thrift::CompactProtocolWriter*) const;
-extern template uint32_t Color::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
-extern template uint32_t Color::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 template <class Protocol_>
 uint32_t Color::read(Protocol_* iprot) {
@@ -222,14 +214,6 @@ class Vehicle final : private apache::thrift::detail::st::ComparisonOperators<Ve
 };
 
 void swap(Vehicle& a, Vehicle& b);
-extern template void Vehicle::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
-extern template uint32_t Vehicle::write<>(apache::thrift::BinaryProtocolWriter*) const;
-extern template uint32_t Vehicle::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template uint32_t Vehicle::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template void Vehicle::readNoXfer<>(apache::thrift::CompactProtocolReader*);
-extern template uint32_t Vehicle::write<>(apache::thrift::CompactProtocolWriter*) const;
-extern template uint32_t Vehicle::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
-extern template uint32_t Vehicle::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 template <class Protocol_>
 uint32_t Vehicle::read(Protocol_* iprot) {
@@ -329,14 +313,6 @@ class Person final : private apache::thrift::detail::st::ComparisonOperators<Per
 };
 
 void swap(Person& a, Person& b);
-extern template void Person::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
-extern template uint32_t Person::write<>(apache::thrift::BinaryProtocolWriter*) const;
-extern template uint32_t Person::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template uint32_t Person::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template void Person::readNoXfer<>(apache::thrift::CompactProtocolReader*);
-extern template uint32_t Person::write<>(apache::thrift::CompactProtocolWriter*) const;
-extern template uint32_t Person::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
-extern template uint32_t Person::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 template <class Protocol_>
 uint32_t Person::read(Protocol_* iprot) {

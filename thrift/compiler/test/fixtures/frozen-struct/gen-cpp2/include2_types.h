@@ -107,14 +107,6 @@ class IncludedB final : private apache::thrift::detail::st::ComparisonOperators<
 };
 
 void swap(IncludedB& a, IncludedB& b);
-extern template void IncludedB::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
-extern template uint32_t IncludedB::write<>(apache::thrift::BinaryProtocolWriter*) const;
-extern template uint32_t IncludedB::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template uint32_t IncludedB::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template void IncludedB::readNoXfer<>(apache::thrift::CompactProtocolReader*);
-extern template uint32_t IncludedB::write<>(apache::thrift::CompactProtocolWriter*) const;
-extern template uint32_t IncludedB::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
-extern template uint32_t IncludedB::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 template <class Protocol_>
 uint32_t IncludedB::read(Protocol_* iprot) {

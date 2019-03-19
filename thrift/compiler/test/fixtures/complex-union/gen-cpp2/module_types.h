@@ -495,14 +495,6 @@ class ComplexUnion final : private apache::thrift::detail::st::ComparisonOperato
 };
 
 void swap(ComplexUnion& a, ComplexUnion& b);
-extern template void ComplexUnion::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
-extern template uint32_t ComplexUnion::write<>(apache::thrift::BinaryProtocolWriter*) const;
-extern template uint32_t ComplexUnion::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template uint32_t ComplexUnion::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template void ComplexUnion::readNoXfer<>(apache::thrift::CompactProtocolReader*);
-extern template uint32_t ComplexUnion::write<>(apache::thrift::CompactProtocolWriter*) const;
-extern template uint32_t ComplexUnion::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
-extern template uint32_t ComplexUnion::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 template <class Protocol_>
 uint32_t ComplexUnion::read(Protocol_* iprot) {
@@ -742,14 +734,6 @@ class VirtualComplexUnion : private apache::thrift::detail::st::ComparisonOperat
 };
 
 void swap(VirtualComplexUnion& a, VirtualComplexUnion& b);
-extern template void VirtualComplexUnion::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
-extern template uint32_t VirtualComplexUnion::write<>(apache::thrift::BinaryProtocolWriter*) const;
-extern template uint32_t VirtualComplexUnion::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template uint32_t VirtualComplexUnion::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template void VirtualComplexUnion::readNoXfer<>(apache::thrift::CompactProtocolReader*);
-extern template uint32_t VirtualComplexUnion::write<>(apache::thrift::CompactProtocolWriter*) const;
-extern template uint32_t VirtualComplexUnion::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
-extern template uint32_t VirtualComplexUnion::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 template <class Protocol_>
 uint32_t VirtualComplexUnion::read(Protocol_* iprot) {

@@ -100,4 +100,13 @@ uint32_t FooEx::write(Protocol_* prot_) const {
   return xfer;
 }
 
+extern template void FooEx::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+extern template uint32_t FooEx::write<>(apache::thrift::BinaryProtocolWriter*) const;
+extern template uint32_t FooEx::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t FooEx::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template void FooEx::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+extern template uint32_t FooEx::write<>(apache::thrift::CompactProtocolWriter*) const;
+extern template uint32_t FooEx::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template uint32_t FooEx::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
 } // cpp2

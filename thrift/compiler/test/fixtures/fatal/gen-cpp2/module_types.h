@@ -569,14 +569,6 @@ class union1 final : private apache::thrift::detail::st::ComparisonOperators<uni
 };
 
 void swap(union1& a, union1& b);
-extern template void union1::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
-extern template uint32_t union1::write<>(apache::thrift::BinaryProtocolWriter*) const;
-extern template uint32_t union1::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template uint32_t union1::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template void union1::readNoXfer<>(apache::thrift::CompactProtocolReader*);
-extern template uint32_t union1::write<>(apache::thrift::CompactProtocolWriter*) const;
-extern template uint32_t union1::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
-extern template uint32_t union1::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 template <class Protocol_>
 uint32_t union1::read(Protocol_* iprot) {
@@ -897,14 +889,6 @@ class union2 final : private apache::thrift::detail::st::ComparisonOperators<uni
 };
 
 void swap(union2& a, union2& b);
-extern template void union2::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
-extern template uint32_t union2::write<>(apache::thrift::BinaryProtocolWriter*) const;
-extern template uint32_t union2::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template uint32_t union2::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template void union2::readNoXfer<>(apache::thrift::CompactProtocolReader*);
-extern template uint32_t union2::write<>(apache::thrift::CompactProtocolWriter*) const;
-extern template uint32_t union2::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
-extern template uint32_t union2::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 template <class Protocol_>
 uint32_t union2::read(Protocol_* iprot) {
@@ -1225,14 +1209,6 @@ class union3 final : private apache::thrift::detail::st::ComparisonOperators<uni
 };
 
 void swap(union3& a, union3& b);
-extern template void union3::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
-extern template uint32_t union3::write<>(apache::thrift::BinaryProtocolWriter*) const;
-extern template uint32_t union3::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template uint32_t union3::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template void union3::readNoXfer<>(apache::thrift::CompactProtocolReader*);
-extern template uint32_t union3::write<>(apache::thrift::CompactProtocolWriter*) const;
-extern template uint32_t union3::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
-extern template uint32_t union3::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 template <class Protocol_>
 uint32_t union3::read(Protocol_* iprot) {
@@ -1321,14 +1297,6 @@ class structA final : private apache::thrift::detail::st::ComparisonOperators<st
 };
 
 void swap(structA& a, structA& b);
-extern template void structA::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
-extern template uint32_t structA::write<>(apache::thrift::BinaryProtocolWriter*) const;
-extern template uint32_t structA::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template uint32_t structA::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template void structA::readNoXfer<>(apache::thrift::CompactProtocolReader*);
-extern template uint32_t structA::write<>(apache::thrift::CompactProtocolWriter*) const;
-extern template uint32_t structA::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
-extern template uint32_t structA::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 template <class Protocol_>
 uint32_t structA::read(Protocol_* iprot) {
@@ -1711,14 +1679,6 @@ class unionA final : private apache::thrift::detail::st::ComparisonOperators<uni
 };
 
 void swap(unionA& a, unionA& b);
-extern template void unionA::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
-extern template uint32_t unionA::write<>(apache::thrift::BinaryProtocolWriter*) const;
-extern template uint32_t unionA::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template uint32_t unionA::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template void unionA::readNoXfer<>(apache::thrift::CompactProtocolReader*);
-extern template uint32_t unionA::write<>(apache::thrift::CompactProtocolWriter*) const;
-extern template uint32_t unionA::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
-extern template uint32_t unionA::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 template <class Protocol_>
 uint32_t unionA::read(Protocol_* iprot) {
@@ -1803,14 +1763,6 @@ class structB final : private apache::thrift::detail::st::ComparisonOperators<st
 };
 
 void swap(structB& a, structB& b);
-extern template void structB::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
-extern template uint32_t structB::write<>(apache::thrift::BinaryProtocolWriter*) const;
-extern template uint32_t structB::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template uint32_t structB::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template void structB::readNoXfer<>(apache::thrift::CompactProtocolReader*);
-extern template uint32_t structB::write<>(apache::thrift::CompactProtocolWriter*) const;
-extern template uint32_t structB::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
-extern template uint32_t structB::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 template <class Protocol_>
 uint32_t structB::read(Protocol_* iprot) {
@@ -2354,14 +2306,6 @@ class structC final : private apache::thrift::detail::st::ComparisonOperators<st
 };
 
 void swap(structC& a, structC& b);
-extern template void structC::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
-extern template uint32_t structC::write<>(apache::thrift::BinaryProtocolWriter*) const;
-extern template uint32_t structC::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template uint32_t structC::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template void structC::readNoXfer<>(apache::thrift::CompactProtocolReader*);
-extern template uint32_t structC::write<>(apache::thrift::CompactProtocolWriter*) const;
-extern template uint32_t structC::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
-extern template uint32_t structC::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 template <class Protocol_>
 uint32_t structC::read(Protocol_* iprot) {
@@ -2547,14 +2491,6 @@ class struct1 final : private apache::thrift::detail::st::ComparisonOperators<st
 };
 
 void swap(struct1& a, struct1& b);
-extern template void struct1::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
-extern template uint32_t struct1::write<>(apache::thrift::BinaryProtocolWriter*) const;
-extern template uint32_t struct1::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template uint32_t struct1::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template void struct1::readNoXfer<>(apache::thrift::CompactProtocolReader*);
-extern template uint32_t struct1::write<>(apache::thrift::CompactProtocolWriter*) const;
-extern template uint32_t struct1::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
-extern template uint32_t struct1::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 template <class Protocol_>
 uint32_t struct1::read(Protocol_* iprot) {
@@ -2728,14 +2664,6 @@ class struct2 final : private apache::thrift::detail::st::ComparisonOperators<st
 };
 
 void swap(struct2& a, struct2& b);
-extern template void struct2::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
-extern template uint32_t struct2::write<>(apache::thrift::BinaryProtocolWriter*) const;
-extern template uint32_t struct2::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template uint32_t struct2::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template void struct2::readNoXfer<>(apache::thrift::CompactProtocolReader*);
-extern template uint32_t struct2::write<>(apache::thrift::CompactProtocolWriter*) const;
-extern template uint32_t struct2::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
-extern template uint32_t struct2::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 template <class Protocol_>
 uint32_t struct2::read(Protocol_* iprot) {
@@ -3085,14 +3013,6 @@ class struct3 final : private apache::thrift::detail::st::ComparisonOperators<st
 };
 
 void swap(struct3& a, struct3& b);
-extern template void struct3::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
-extern template uint32_t struct3::write<>(apache::thrift::BinaryProtocolWriter*) const;
-extern template uint32_t struct3::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template uint32_t struct3::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template void struct3::readNoXfer<>(apache::thrift::CompactProtocolReader*);
-extern template uint32_t struct3::write<>(apache::thrift::CompactProtocolWriter*) const;
-extern template uint32_t struct3::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
-extern template uint32_t struct3::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 template <class Protocol_>
 uint32_t struct3::read(Protocol_* iprot) {
@@ -3217,14 +3137,6 @@ class struct4 final : private apache::thrift::detail::st::ComparisonOperators<st
 };
 
 void swap(struct4& a, struct4& b);
-extern template void struct4::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
-extern template uint32_t struct4::write<>(apache::thrift::BinaryProtocolWriter*) const;
-extern template uint32_t struct4::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template uint32_t struct4::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template void struct4::readNoXfer<>(apache::thrift::CompactProtocolReader*);
-extern template uint32_t struct4::write<>(apache::thrift::CompactProtocolWriter*) const;
-extern template uint32_t struct4::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
-extern template uint32_t struct4::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 template <class Protocol_>
 uint32_t struct4::read(Protocol_* iprot) {
@@ -3379,14 +3291,6 @@ class struct5 final : private apache::thrift::detail::st::ComparisonOperators<st
 };
 
 void swap(struct5& a, struct5& b);
-extern template void struct5::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
-extern template uint32_t struct5::write<>(apache::thrift::BinaryProtocolWriter*) const;
-extern template uint32_t struct5::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template uint32_t struct5::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template void struct5::readNoXfer<>(apache::thrift::CompactProtocolReader*);
-extern template uint32_t struct5::write<>(apache::thrift::CompactProtocolWriter*) const;
-extern template uint32_t struct5::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
-extern template uint32_t struct5::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 template <class Protocol_>
 uint32_t struct5::read(Protocol_* iprot) {
@@ -3457,14 +3361,6 @@ class struct_binary final : private apache::thrift::detail::st::ComparisonOperat
 };
 
 void swap(struct_binary& a, struct_binary& b);
-extern template void struct_binary::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
-extern template uint32_t struct_binary::write<>(apache::thrift::BinaryProtocolWriter*) const;
-extern template uint32_t struct_binary::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template uint32_t struct_binary::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template void struct_binary::readNoXfer<>(apache::thrift::CompactProtocolReader*);
-extern template uint32_t struct_binary::write<>(apache::thrift::CompactProtocolWriter*) const;
-extern template uint32_t struct_binary::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
-extern template uint32_t struct_binary::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 template <class Protocol_>
 uint32_t struct_binary::read(Protocol_* iprot) {
@@ -3563,14 +3459,6 @@ class dep_A_struct final : private apache::thrift::detail::st::ComparisonOperato
 };
 
 void swap(dep_A_struct& a, dep_A_struct& b);
-extern template void dep_A_struct::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
-extern template uint32_t dep_A_struct::write<>(apache::thrift::BinaryProtocolWriter*) const;
-extern template uint32_t dep_A_struct::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template uint32_t dep_A_struct::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template void dep_A_struct::readNoXfer<>(apache::thrift::CompactProtocolReader*);
-extern template uint32_t dep_A_struct::write<>(apache::thrift::CompactProtocolWriter*) const;
-extern template uint32_t dep_A_struct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
-extern template uint32_t dep_A_struct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 template <class Protocol_>
 uint32_t dep_A_struct::read(Protocol_* iprot) {
@@ -3669,14 +3557,6 @@ class dep_B_struct final : private apache::thrift::detail::st::ComparisonOperato
 };
 
 void swap(dep_B_struct& a, dep_B_struct& b);
-extern template void dep_B_struct::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
-extern template uint32_t dep_B_struct::write<>(apache::thrift::BinaryProtocolWriter*) const;
-extern template uint32_t dep_B_struct::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template uint32_t dep_B_struct::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template void dep_B_struct::readNoXfer<>(apache::thrift::CompactProtocolReader*);
-extern template uint32_t dep_B_struct::write<>(apache::thrift::CompactProtocolWriter*) const;
-extern template uint32_t dep_B_struct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
-extern template uint32_t dep_B_struct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 template <class Protocol_>
 uint32_t dep_B_struct::read(Protocol_* iprot) {
@@ -3743,14 +3623,6 @@ class annotated final : private apache::thrift::detail::st::ComparisonOperators<
 };
 
 void swap(annotated& a, annotated& b);
-extern template void annotated::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
-extern template uint32_t annotated::write<>(apache::thrift::BinaryProtocolWriter*) const;
-extern template uint32_t annotated::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template uint32_t annotated::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template void annotated::readNoXfer<>(apache::thrift::CompactProtocolReader*);
-extern template uint32_t annotated::write<>(apache::thrift::CompactProtocolWriter*) const;
-extern template uint32_t annotated::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
-extern template uint32_t annotated::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 template <class Protocol_>
 uint32_t annotated::read(Protocol_* iprot) {
@@ -5209,14 +5081,6 @@ class union_with_special_names final : private apache::thrift::detail::st::Compa
 };
 
 void swap(union_with_special_names& a, union_with_special_names& b);
-extern template void union_with_special_names::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
-extern template uint32_t union_with_special_names::write<>(apache::thrift::BinaryProtocolWriter*) const;
-extern template uint32_t union_with_special_names::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template uint32_t union_with_special_names::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template void union_with_special_names::readNoXfer<>(apache::thrift::CompactProtocolReader*);
-extern template uint32_t union_with_special_names::write<>(apache::thrift::CompactProtocolWriter*) const;
-extern template uint32_t union_with_special_names::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
-extern template uint32_t union_with_special_names::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 template <class Protocol_>
 uint32_t union_with_special_names::read(Protocol_* iprot) {
@@ -5769,14 +5633,6 @@ class struct_with_special_names final : private apache::thrift::detail::st::Comp
 };
 
 void swap(struct_with_special_names& a, struct_with_special_names& b);
-extern template void struct_with_special_names::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
-extern template uint32_t struct_with_special_names::write<>(apache::thrift::BinaryProtocolWriter*) const;
-extern template uint32_t struct_with_special_names::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template uint32_t struct_with_special_names::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template void struct_with_special_names::readNoXfer<>(apache::thrift::CompactProtocolReader*);
-extern template uint32_t struct_with_special_names::write<>(apache::thrift::CompactProtocolWriter*) const;
-extern template uint32_t struct_with_special_names::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
-extern template uint32_t struct_with_special_names::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 template <class Protocol_>
 uint32_t struct_with_special_names::read(Protocol_* iprot) {
@@ -5919,14 +5775,6 @@ class struct_with_indirections final : private apache::thrift::detail::st::Compa
 };
 
 void swap(struct_with_indirections& a, struct_with_indirections& b);
-extern template void struct_with_indirections::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
-extern template uint32_t struct_with_indirections::write<>(apache::thrift::BinaryProtocolWriter*) const;
-extern template uint32_t struct_with_indirections::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template uint32_t struct_with_indirections::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template void struct_with_indirections::readNoXfer<>(apache::thrift::CompactProtocolReader*);
-extern template uint32_t struct_with_indirections::write<>(apache::thrift::CompactProtocolWriter*) const;
-extern template uint32_t struct_with_indirections::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
-extern template uint32_t struct_with_indirections::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 template <class Protocol_>
 uint32_t struct_with_indirections::read(Protocol_* iprot) {

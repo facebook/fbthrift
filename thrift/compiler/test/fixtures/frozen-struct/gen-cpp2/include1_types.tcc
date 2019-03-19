@@ -157,4 +157,13 @@ uint32_t IncludedA::write(Protocol_* prot_) const {
   return xfer;
 }
 
+extern template void IncludedA::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+extern template uint32_t IncludedA::write<>(apache::thrift::BinaryProtocolWriter*) const;
+extern template uint32_t IncludedA::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t IncludedA::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template void IncludedA::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+extern template uint32_t IncludedA::write<>(apache::thrift::CompactProtocolWriter*) const;
+extern template uint32_t IncludedA::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template uint32_t IncludedA::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
 }} // some::ns

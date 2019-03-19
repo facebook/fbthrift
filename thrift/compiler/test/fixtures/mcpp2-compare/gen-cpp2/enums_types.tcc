@@ -175,4 +175,17 @@ uint32_t SomeStruct::write(Protocol_* prot_) const {
   return xfer;
 }
 
+extern template void SomeStruct::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+extern template uint32_t SomeStruct::write<>(apache::thrift::BinaryProtocolWriter*) const;
+extern template uint32_t SomeStruct::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t SomeStruct::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template void SomeStruct::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+extern template uint32_t SomeStruct::write<>(apache::thrift::CompactProtocolWriter*) const;
+extern template uint32_t SomeStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template uint32_t SomeStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template void SomeStruct::readNoXfer<>(apache::thrift::SimpleJSONProtocolReader*);
+extern template uint32_t SomeStruct::write<>(apache::thrift::SimpleJSONProtocolWriter*) const;
+extern template uint32_t SomeStruct::serializedSize<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
+extern template uint32_t SomeStruct::serializedSizeZC<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
+
 }}} // facebook::ns::qwerty

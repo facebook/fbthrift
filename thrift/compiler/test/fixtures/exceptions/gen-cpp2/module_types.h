@@ -70,14 +70,6 @@ class Banal final : private apache::thrift::detail::st::ComparisonOperators<Bana
 };
 
 void swap(Banal& a, Banal& b);
-extern template void Banal::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
-extern template uint32_t Banal::write<>(apache::thrift::BinaryProtocolWriter*) const;
-extern template uint32_t Banal::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template uint32_t Banal::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template void Banal::readNoXfer<>(apache::thrift::CompactProtocolReader*);
-extern template uint32_t Banal::write<>(apache::thrift::CompactProtocolWriter*) const;
-extern template uint32_t Banal::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
-extern template uint32_t Banal::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 template <class Protocol_>
 uint32_t Banal::read(Protocol_* iprot) {
@@ -152,14 +144,6 @@ class Fiery final : private apache::thrift::detail::st::ComparisonOperators<Fier
 };
 
 void swap(Fiery& a, Fiery& b);
-extern template void Fiery::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
-extern template uint32_t Fiery::write<>(apache::thrift::BinaryProtocolWriter*) const;
-extern template uint32_t Fiery::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template uint32_t Fiery::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template void Fiery::readNoXfer<>(apache::thrift::CompactProtocolReader*);
-extern template uint32_t Fiery::write<>(apache::thrift::CompactProtocolWriter*) const;
-extern template uint32_t Fiery::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
-extern template uint32_t Fiery::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 template <class Protocol_>
 uint32_t Fiery::read(Protocol_* iprot) {
@@ -257,14 +241,6 @@ class Serious final : private apache::thrift::detail::st::ComparisonOperators<Se
 };
 
 void swap(Serious& a, Serious& b);
-extern template void Serious::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
-extern template uint32_t Serious::write<>(apache::thrift::BinaryProtocolWriter*) const;
-extern template uint32_t Serious::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template uint32_t Serious::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template void Serious::readNoXfer<>(apache::thrift::CompactProtocolReader*);
-extern template uint32_t Serious::write<>(apache::thrift::CompactProtocolWriter*) const;
-extern template uint32_t Serious::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
-extern template uint32_t Serious::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 template <class Protocol_>
 uint32_t Serious::read(Protocol_* iprot) {

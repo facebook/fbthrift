@@ -129,14 +129,6 @@ class A final : private apache::thrift::detail::st::ComparisonOperators<A> {
 };
 
 void swap(A& a, A& b);
-extern template void A::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
-extern template uint32_t A::write<>(apache::thrift::BinaryProtocolWriter*) const;
-extern template uint32_t A::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template uint32_t A::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template void A::readNoXfer<>(apache::thrift::CompactProtocolReader*);
-extern template uint32_t A::write<>(apache::thrift::CompactProtocolWriter*) const;
-extern template uint32_t A::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
-extern template uint32_t A::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 template <class Protocol_>
 uint32_t A::read(Protocol_* iprot) {

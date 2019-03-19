@@ -85,14 +85,6 @@ class House final : private apache::thrift::detail::st::ComparisonOperators<Hous
 };
 
 void swap(House& a, House& b);
-extern template void House::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
-extern template uint32_t House::write<>(apache::thrift::BinaryProtocolWriter*) const;
-extern template uint32_t House::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template uint32_t House::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template void House::readNoXfer<>(apache::thrift::CompactProtocolReader*);
-extern template uint32_t House::write<>(apache::thrift::CompactProtocolWriter*) const;
-extern template uint32_t House::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
-extern template uint32_t House::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 template <class Protocol_>
 uint32_t House::read(Protocol_* iprot) {
@@ -150,14 +142,6 @@ class Field final : private apache::thrift::detail::st::ComparisonOperators<Fiel
 };
 
 void swap(Field& a, Field& b);
-extern template void Field::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
-extern template uint32_t Field::write<>(apache::thrift::BinaryProtocolWriter*) const;
-extern template uint32_t Field::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template uint32_t Field::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template void Field::readNoXfer<>(apache::thrift::CompactProtocolReader*);
-extern template uint32_t Field::write<>(apache::thrift::CompactProtocolWriter*) const;
-extern template uint32_t Field::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
-extern template uint32_t Field::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 template <class Protocol_>
 uint32_t Field::read(Protocol_* iprot) {
