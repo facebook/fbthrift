@@ -62,7 +62,6 @@ bypass_source_check("${rsocket-cpp2-SOURCES}")
 if(TARGET rsocket::ReactiveSocket)
   list(APPEND rsocket-cpp2-SOURCES
     async/RSocketClientChannel.cpp
-    transport/rocket/util/RpcMetadataUtil.cpp
   )
 endif()
 
@@ -89,6 +88,7 @@ add_library(
   server/Cpp2Worker.cpp
   server/ThriftServer.cpp
   server/peeking/TLSHelper.cpp
+  transport/core/RpcMetadataUtil.cpp
   transport/core/ThriftProcessor.cpp
   transport/core/ThriftClient.cpp
   transport/core/ThriftClientCallback.cpp

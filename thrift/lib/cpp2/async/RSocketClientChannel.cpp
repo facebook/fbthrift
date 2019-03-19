@@ -23,7 +23,7 @@
 #include <rsocket/transports/tcp/TcpDuplexConnection.h>
 #include <thrift/lib/cpp2/async/ResponseChannel.h>
 #include <thrift/lib/cpp2/transport/core/EnvelopeUtil.h>
-#include <thrift/lib/cpp2/transport/rocket/util/RpcMetadataUtil.h>
+#include <thrift/lib/cpp2/transport/core/RpcMetadataUtil.h>
 #include <thrift/lib/cpp2/transport/rsocket/YarplStreamImpl.h>
 #include <thrift/lib/cpp2/transport/rsocket/gen-cpp2/Config_types.h>
 

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include <thrift/lib/cpp2/transport/rocket/util/RpcMetadataUtil.h>
+#include <thrift/lib/cpp2/transport/core/RpcMetadataUtil.h>
 
 #include <chrono>
 
