@@ -109,7 +109,6 @@ StreamGeneratorImpl<Generator, folly::SemiFuture<folly::Optional<Element>>>::
               int64_t requested,
               folly::Future<bool> prevBatch) mutable {
             std::vector<folly::Future<folly::Optional<Element>>> v;
-            bool done = false;
             while (requested-- > 0) {
               auto f = generator();
               v.push_back(std::move(f).via(executor));
