@@ -27,7 +27,7 @@ enum <%^enum:cpp_is_unscoped%>class <%/enum:cpp_is_unscoped%><%enum:name%><%#enu
 <%/last?%><%!
   %><%/enum:values%><%!
 %>}<% > common/semicolon_newline%>
-using _<%enum:name%>_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<<%enum:name%>, <%enum:name%>>;
+using _<%enum:name%>_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<<%enum:name%>>;
 extern const _<%enum:name%>_EnumMapFactory::ValuesToNamesMapType _<%enum:name%>_VALUES_TO_NAMES;
 extern const _<%enum:name%>_EnumMapFactory::NamesToValuesMapType _<%enum:name%>_NAMES_TO_VALUES;
 

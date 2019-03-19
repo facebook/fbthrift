@@ -20,7 +20,7 @@ enum class TypedEnum : short {
   VAL2 = 1
 };
 
-using _TypedEnum_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<TypedEnum, TypedEnum>;
+using _TypedEnum_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<TypedEnum>;
 extern const _TypedEnum_EnumMapFactory::ValuesToNamesMapType _TypedEnum_VALUES_TO_NAMES;
 extern const _TypedEnum_EnumMapFactory::NamesToValuesMapType _TypedEnum_NAMES_TO_VALUES;
 

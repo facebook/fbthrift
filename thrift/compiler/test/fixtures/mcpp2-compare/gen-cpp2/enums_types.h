@@ -19,7 +19,7 @@ enum class AnEnumA {
   FIELDA = 0
 };
 
-using _AnEnumA_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<AnEnumA, AnEnumA>;
+using _AnEnumA_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<AnEnumA>;
 extern const _AnEnumA_EnumMapFactory::ValuesToNamesMapType _AnEnumA_VALUES_TO_NAMES;
 extern const _AnEnumA_EnumMapFactory::NamesToValuesMapType _AnEnumA_NAMES_TO_VALUES;
 
@@ -30,7 +30,7 @@ enum class AnEnumB {
   FIELDB = 2
 };
 
-using _AnEnumB_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<AnEnumB, AnEnumB>;
+using _AnEnumB_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<AnEnumB>;
 extern const _AnEnumB_EnumMapFactory::ValuesToNamesMapType _AnEnumB_VALUES_TO_NAMES;
 extern const _AnEnumB_EnumMapFactory::NamesToValuesMapType _AnEnumB_NAMES_TO_VALUES;
 
@@ -40,7 +40,7 @@ enum class AnEnumC {
   FIELDC = 0
 };
 
-using _AnEnumC_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<AnEnumC, AnEnumC>;
+using _AnEnumC_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<AnEnumC>;
 extern const _AnEnumC_EnumMapFactory::ValuesToNamesMapType _AnEnumC_VALUES_TO_NAMES;
 extern const _AnEnumC_EnumMapFactory::NamesToValuesMapType _AnEnumC_NAMES_TO_VALUES;
 
@@ -50,7 +50,7 @@ enum class AnEnumD {
   FIELDD = 0
 };
 
-using _AnEnumD_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<AnEnumD, AnEnumD>;
+using _AnEnumD_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<AnEnumD>;
 extern const _AnEnumD_EnumMapFactory::ValuesToNamesMapType _AnEnumD_VALUES_TO_NAMES;
 extern const _AnEnumD_EnumMapFactory::NamesToValuesMapType _AnEnumD_NAMES_TO_VALUES;
 
@@ -60,7 +60,7 @@ enum class AnEnumE {
   FIELDA = 0
 };
 
-using _AnEnumE_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<AnEnumE, AnEnumE>;
+using _AnEnumE_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<AnEnumE>;
 extern const _AnEnumE_EnumMapFactory::ValuesToNamesMapType _AnEnumE_VALUES_TO_NAMES;
 extern const _AnEnumE_EnumMapFactory::NamesToValuesMapType _AnEnumE_NAMES_TO_VALUES;
 

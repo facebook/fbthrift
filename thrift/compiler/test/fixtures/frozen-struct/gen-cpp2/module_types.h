@@ -21,7 +21,7 @@ enum class EnumB {
   EMPTY = 1
 };
 
-using _EnumB_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<EnumB, EnumB>;
+using _EnumB_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<EnumB>;
 extern const _EnumB_EnumMapFactory::ValuesToNamesMapType _EnumB_VALUES_TO_NAMES;
 extern const _EnumB_EnumMapFactory::NamesToValuesMapType _EnumB_NAMES_TO_VALUES;
 

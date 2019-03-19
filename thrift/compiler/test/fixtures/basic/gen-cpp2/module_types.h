@@ -21,7 +21,7 @@ enum class MyEnum {
   REALM = 2
 };
 
-using _MyEnum_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<MyEnum, MyEnum>;
+using _MyEnum_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<MyEnum>;
 extern const _MyEnum_EnumMapFactory::ValuesToNamesMapType _MyEnum_VALUES_TO_NAMES;
 extern const _MyEnum_EnumMapFactory::NamesToValuesMapType _MyEnum_NAMES_TO_VALUES;
 

@@ -19,7 +19,7 @@ enum class B {
   HELLO = 0
 };
 
-using _B_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<B, B>;
+using _B_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<B>;
 extern const _B_EnumMapFactory::ValuesToNamesMapType _B_VALUES_TO_NAMES;
 extern const _B_EnumMapFactory::NamesToValuesMapType _B_NAMES_TO_VALUES;
 

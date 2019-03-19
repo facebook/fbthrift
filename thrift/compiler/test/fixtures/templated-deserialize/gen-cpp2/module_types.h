@@ -21,7 +21,7 @@ enum class MyEnumA {
   fieldC = 4
 };
 
-using _MyEnumA_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<MyEnumA, MyEnumA>;
+using _MyEnumA_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<MyEnumA>;
 extern const _MyEnumA_EnumMapFactory::ValuesToNamesMapType _MyEnumA_VALUES_TO_NAMES;
 extern const _MyEnumA_EnumMapFactory::NamesToValuesMapType _MyEnumA_NAMES_TO_VALUES;
 

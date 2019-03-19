@@ -21,7 +21,7 @@ enum class AnEnum {
   FIELDB = 4
 };
 
-using _AnEnum_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<AnEnum, AnEnum>;
+using _AnEnum_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<AnEnum>;
 extern const _AnEnum_EnumMapFactory::ValuesToNamesMapType _AnEnum_VALUES_TO_NAMES;
 extern const _AnEnum_EnumMapFactory::NamesToValuesMapType _AnEnum_NAMES_TO_VALUES;
 

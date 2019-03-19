@@ -24,7 +24,7 @@ enum class enum1 {
   field2 = 2
 };
 
-using _enum1_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<enum1, enum1>;
+using _enum1_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<enum1>;
 extern const _enum1_EnumMapFactory::ValuesToNamesMapType _enum1_VALUES_TO_NAMES;
 extern const _enum1_EnumMapFactory::NamesToValuesMapType _enum1_NAMES_TO_VALUES;
 
@@ -36,7 +36,7 @@ enum class enum2 {
   field2_2 = 2
 };
 
-using _enum2_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<enum2, enum2>;
+using _enum2_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<enum2>;
 extern const _enum2_EnumMapFactory::ValuesToNamesMapType _enum2_VALUES_TO_NAMES;
 extern const _enum2_EnumMapFactory::NamesToValuesMapType _enum2_NAMES_TO_VALUES;
 
@@ -48,7 +48,7 @@ enum class enum3 {
   field2_3 = 2
 };
 
-using _enum3_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<enum3, enum3>;
+using _enum3_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<enum3>;
 extern const _enum3_EnumMapFactory::ValuesToNamesMapType _enum3_VALUES_TO_NAMES;
 extern const _enum3_EnumMapFactory::NamesToValuesMapType _enum3_NAMES_TO_VALUES;
 
@@ -85,7 +85,7 @@ enum class enum_with_special_names {
   fields = 27
 };
 
-using _enum_with_special_names_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<enum_with_special_names, enum_with_special_names>;
+using _enum_with_special_names_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<enum_with_special_names>;
 extern const _enum_with_special_names_EnumMapFactory::ValuesToNamesMapType _enum_with_special_names_VALUES_TO_NAMES;
 extern const _enum_with_special_names_EnumMapFactory::NamesToValuesMapType _enum_with_special_names_NAMES_TO_VALUES;
 
