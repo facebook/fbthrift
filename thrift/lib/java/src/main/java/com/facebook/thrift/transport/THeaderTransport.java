@@ -114,7 +114,7 @@ public class THeaderTransport extends TFramedTransport {
   private int seqId = 0;
   private int flags = 0;
 
-  private final Boolean[] supportedClients;
+  private final boolean[] supportedClients;
 
   private final List<Transforms> writeTransforms;
   private List<Integer> readTransforms;
@@ -135,7 +135,7 @@ public class THeaderTransport extends TFramedTransport {
     writeTransforms = new ArrayList<Transforms>();
 
     // Always supported headers
-    supportedClients = new Boolean[numClientTypes];
+    supportedClients = new boolean[numClientTypes];
     supportedClients[ClientTypes.HEADERS.getValue()] = true;
     writeHeaders = new HashMap<String, String>();
     writePersistentHeaders = new HashMap<String, String>();
@@ -733,6 +733,15 @@ public class THeaderTransport extends TFramedTransport {
     @Override
     public TTransport getTransport(TTransport base) {
       return new THeaderTransport(base, clientTypes);
+    }
+  }
+
+  @Override
+  public int getBytesRemainingInBuffer() {
+    if (supportedClients[ClientTypes.UNFRAMED_DEPRECATED.getValue()]) {
+      return transport_.getBytesRemainingInBuffer();
+    } else {
+      return super.getBytesRemainingInBuffer();
     }
   }
 }

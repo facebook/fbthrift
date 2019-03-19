@@ -37,13 +37,13 @@ import com.facebook.thrift.server.TServer;
 import com.facebook.thrift.server.example.TSimpleServer;
 import com.facebook.thrift.transport.TFramedTransport;
 import com.facebook.thrift.transport.THeaderTransport;
+import com.facebook.thrift.transport.THeaderTransport.ClientTypes;
 import com.facebook.thrift.transport.TMemoryBuffer;
 import com.facebook.thrift.transport.TNonblockingServerSocket;
 import com.facebook.thrift.transport.TServerSocket;
 import com.facebook.thrift.transport.TSocket;
 import com.facebook.thrift.transport.TTransport;
 import com.facebook.thrift.transport.TTransportException;
-import com.facebook.thrift.transport.TTransportFactory;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.util.ArrayList;
@@ -85,11 +85,13 @@ public class THeaderJava extends junit.framework.TestCase {
     private ThriftTest.Processor testProcessor;
     TProcessorFactory pFactory;
 
-    public ServerThread(ServerType serverType) throws IOException, TException {
-      this(serverType, new TestEventHandler());
+    public ServerThread(ServerType serverType, boolean allowUnframed)
+        throws IOException, TException {
+      this(serverType, new TestEventHandler(), allowUnframed);
     }
 
-    public ServerThread(ServerType serverType, TProcessorEventHandler eventHandler)
+    public ServerThread(
+        ServerType serverType, TProcessorEventHandler eventHandler, boolean allowUnframed)
         throws IOException, TException {
       // processor
       TestHandler testHandler = new TestHandler();
@@ -103,6 +105,9 @@ public class THeaderJava extends junit.framework.TestCase {
       // Protocol factory
       List<THeaderTransport.ClientTypes> clientTypes =
           new ArrayList<THeaderTransport.ClientTypes>();
+      if (allowUnframed) {
+        clientTypes.add(ClientTypes.UNFRAMED_DEPRECATED);
+      }
       tTransportFactory = new THeaderTransport.Factory(clientTypes);
       tProtocolFactory = new THeaderProtocol.Factory();
 
@@ -135,8 +140,7 @@ public class THeaderJava extends junit.framework.TestCase {
     private void makeSimple() throws IOException, TTransportException {
       // Simple Server
       serverEngine =
-          new TSimpleServer(
-              pFactory, makeServerSocket(), new TTransportFactory(), tProtocolFactory);
+          new TSimpleServer(pFactory, makeServerSocket(), tTransportFactory, tProtocolFactory);
     }
 
     private void makeNonblocking() throws TTransportException {
@@ -499,7 +503,7 @@ public class THeaderJava extends junit.framework.TestCase {
 
   @Test
   public void testUserExceptionHandler() throws Exception {
-    ServerThread st = new ServerThread(ServerType.SIMPLE, new UserExceptionHandler());
+    ServerThread st = new ServerThread(ServerType.SIMPLE, new UserExceptionHandler(), false);
     Thread r = new Thread(st);
     r.start();
 
@@ -529,7 +533,7 @@ public class THeaderJava extends junit.framework.TestCase {
   public void doServerClient(
       ServerType serverType, boolean unframed, boolean framed, boolean header)
       throws TException, IOException, InterruptedException {
-    ServerThread st = new ServerThread(serverType);
+    ServerThread st = new ServerThread(serverType, unframed);
     Thread r = new Thread(st);
     r.start();
     doTransports(unframed, framed, header);
