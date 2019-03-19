@@ -18,8 +18,11 @@
 
 #include <stdint.h>
 
+#include <atomic>
+#include <chrono>
 #include <memory>
 #include <string>
+#include <utility>
 
 #include <glog/logging.h>
 
@@ -61,9 +64,10 @@ class ThriftRequestCore : public ResponseChannelRequest {
       std::unique_ptr<RequestRpcMetadata> metadata,
       std::shared_ptr<Cpp2ConnContext> connContext)
       : serverConfigs_(serverConfigs),
-        name_(metadata->name),
-        kind_(metadata->kind),
-        seqId_(metadata->seqId),
+        name_(std::move(metadata)->name_ref().value_or({})),
+        kind_(metadata->kind_ref().value_or(
+            RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE)),
+        seqId_(metadata->seqId_ref().value_or(0)),
         active_(true),
         connContext_(
             connContext ? std::move(connContext)
@@ -71,42 +75,37 @@ class ThriftRequestCore : public ResponseChannelRequest {
         reqContext_(connContext_.get(), &header_),
         queueTimeout_(serverConfigs_),
         taskTimeout_(serverConfigs_) {
-    header_.setProtocolId(static_cast<int16_t>(metadata->protocol));
-    header_.setSequenceNumber(metadata->seqId);
-    if (metadata->__isset.clientTimeoutMs) {
-      header_.setClientTimeout(
-          std::chrono::milliseconds(metadata->clientTimeoutMs));
+    // Note that method name, RPC kind, and serialization protocol are validated
+    // outside the ThriftRequestCore constructor.
+    header_.setProtocolId(static_cast<int16_t>(
+        metadata->protocol_ref().value_or(ProtocolId::BINARY)));
+    header_.setSequenceNumber(seqId_);
+
+    if (auto clientTimeoutMs = metadata->clientTimeoutMs_ref()) {
+      clientTimeout_ = std::chrono::milliseconds(*clientTimeoutMs);
+      header_.setClientTimeout(clientTimeout_);
     }
-    if (metadata->__isset.queueTimeoutMs) {
-      header_.setClientQueueTimeout(
-          std::chrono::milliseconds(metadata->queueTimeoutMs));
+    if (auto queueTimeoutMs = metadata->queueTimeoutMs_ref()) {
+      clientQueueTimeout_ = std::chrono::milliseconds(*queueTimeoutMs);
+      header_.setClientQueueTimeout(clientQueueTimeout_);
     }
-    if (metadata->__isset.priority) {
-      header_.setCallPriority(
-          static_cast<concurrency::PRIORITY>(metadata->priority));
+    if (auto priority = metadata->priority_ref()) {
+      header_.setCallPriority(static_cast<concurrency::PRIORITY>(*priority));
     }
-    if (metadata->__isset.otherMetadata) {
-      header_.setReadHeaders(std::move(metadata->otherMetadata));
+    if (auto otherMetadata = metadata->otherMetadata_ref()) {
+      header_.setReadHeaders(std::move(*otherMetadata));
     }
+
     reqContext_.setMessageBeginSize(0);
-    reqContext_.setMethodName(metadata->name);
-    reqContext_.setProtoSeqId(metadata->seqId);
+    reqContext_.setMethodName(name_);
+    reqContext_.setProtoSeqId(seqId_);
 
-    auto observer = serverConfigs_.getObserver();
-    if (observer) {
+    if (auto observer = serverConfigs_.getObserver()) {
       observer->receivedRequest();
-    }
-
-    if (metadata->__isset.queueTimeoutMs) {
-      clientQueueTimeout_ = std::chrono::milliseconds(metadata->queueTimeoutMs);
-    }
-    if (metadata->__isset.clientTimeoutMs) {
-      clientTimeout_ = std::chrono::milliseconds(metadata->clientTimeoutMs);
     }
   }
 
   ~ThriftRequestCore() override {
-    // Cancel the timers before getting destroyed
     cancelTimeout();
   }
 
@@ -246,15 +245,13 @@ class ThriftRequestCore : public ResponseChannelRequest {
 
   std::unique_ptr<ResponseRpcMetadata> createMetadata() {
     auto metadata = std::make_unique<ResponseRpcMetadata>();
-    metadata->seqId = seqId_;
-    metadata->__isset.seqId = true;
-    metadata->otherMetadata = header_.releaseWriteHeaders();
-    auto* eh = header_.getExtraWriteHeaders();
-    if (eh) {
-      metadata->otherMetadata.insert(eh->begin(), eh->end());
+    metadata->seqId_ref() = seqId_;
+    auto writeHeaders = header_.releaseWriteHeaders();
+    if (auto* eh = header_.getExtraWriteHeaders()) {
+      writeHeaders.insert(eh->begin(), eh->end());
     }
-    if (!metadata->otherMetadata.empty()) {
-      metadata->__isset.otherMetadata = true;
+    if (!writeHeaders.empty()) {
+      metadata->otherMetadata_ref() = std::move(writeHeaders);
     }
     return metadata;
   }
@@ -370,9 +367,9 @@ class ThriftRequestCore : public ResponseChannelRequest {
   const apache::thrift::server::ServerConfigs& serverConfigs_;
 
  private:
-  std::string name_;
-  RpcKind kind_;
-  int32_t seqId_;
+  const std::string name_;
+  const RpcKind kind_;
+  const int32_t seqId_;
   std::atomic<bool> active_;
   transport::THeader header_;
   std::shared_ptr<Cpp2ConnContext> connContext_;
