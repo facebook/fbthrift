@@ -87,7 +87,7 @@ public final class Constants {
         .add()
         .build();
 
-    public static final double longDoubleValue = 0.000026;
+    public static final double longDoubleValue = 2.59961000990301e-05;
 
     public static final int myInt = 1337;
 
@@ -137,11 +137,11 @@ public final class Constants {
 
     public static final test.fixtures.constants.Union2 u_2_6 = ;
 
-    public static final double x = 1.0;
+    public static final double x = 1;
 
     public static final double y = 1000000.0;
 
-    public static final double z = 1000000000.0;
+    public static final double z = 1000000000;
 
     public static final short zero16 = 0;
 
@@ -149,9 +149,9 @@ public final class Constants {
 
     public static final long zero64 = 0L;
 
-    public static final double zeroDoubleValue = 0.0;
+    public static final double zeroDoubleValue = 0;
 
     public static final byte zero_byte = 0;
 
-    public static final double zero_dot_zero = 0.0;
+    public static final double zero_dot_zero = 0;
 }
