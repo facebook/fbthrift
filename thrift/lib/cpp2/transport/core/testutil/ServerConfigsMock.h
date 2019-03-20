@@ -57,6 +57,11 @@ class ServerConfigsMock : public ServerConfigs {
     return streamExpireTime_;
   }
 
+  int64_t getLoad(const std::string& /* counter */, bool /* check_custom */)
+      const override {
+    return 123;
+  }
+
  public:
   uint64_t maxResponseSize_{0};
   std::chrono::milliseconds queueTimeout_{std::chrono::milliseconds(500)};

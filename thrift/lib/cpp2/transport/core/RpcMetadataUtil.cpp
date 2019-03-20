@@ -17,6 +17,11 @@
 #include <thrift/lib/cpp2/transport/core/RpcMetadataUtil.h>
 
 #include <chrono>
+#include <map>
+#include <string>
+#include <utility>
+
+#include <folly/Conv.h>
 
 #include <thrift/lib/cpp/transport/THeader.h>
 #include <thrift/lib/cpp2/async/RequestChannel.h>
@@ -34,6 +39,7 @@ RequestRpcMetadata makeRequestRpcMetadata(
     transport::THeader& header,
     const transport::THeader::StringToStringMap& persistentWriteHeaders) {
   RequestRpcMetadata metadata;
+  uint64_t flags = 0;
   metadata.protocol_ref() = protocolId;
   metadata.kind_ref() = kind;
   if (rpcOptions.getTimeout() > std::chrono::milliseconds::zero()) {
@@ -58,11 +64,38 @@ RequestRpcMetadata makeRequestRpcMetadata(
   }
   writeHeaders.insert(
       persistentWriteHeaders.begin(), persistentWriteHeaders.end());
+
+  // If server load was requested via THeader, use QUERY_SERVER_LOAD flag
+  // instead.
+  auto loadIt = writeHeaders.find(transport::THeader::QUERY_LOAD_HEADER);
+  if (loadIt != writeHeaders.end()) {
+    flags |= static_cast<uint64_t>(RequestRpcMetadataFlags::QUERY_SERVER_LOAD);
+    writeHeaders.erase(loadIt);
+  }
+
   if (!writeHeaders.empty()) {
     metadata.otherMetadata_ref() = std::move(writeHeaders);
   }
 
+  if (flags) {
+    metadata.flags_ref() = flags;
+  }
+
   return metadata;
+}
+
+void fillTHeaderFromResponseRpcMetadata(
+    ResponseRpcMetadata& responseMetadata,
+    transport::THeader& header) {
+  std::map<std::string, std::string> otherMetadata;
+  if (responseMetadata.otherMetadata_ref()) {
+    otherMetadata = std::move(*responseMetadata.otherMetadata_ref());
+  }
+  if (auto load = responseMetadata.load_ref()) {
+    otherMetadata[transport::THeader::QUERY_LOAD_HEADER] =
+        folly::to<std::string>(*load);
+  }
+  header.setReadHeaders(std::move(otherMetadata));
 }
 
 } // namespace detail

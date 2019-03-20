@@ -112,6 +112,10 @@ TEST_P(RSCompatibilityTest, RequestResponse_Header) {
   compatibilityTest_->TestRequestResponse_Header();
 }
 
+TEST_P(RSCompatibilityTest, RequestResponse_Header_Load) {
+  compatibilityTest_->TestRequestResponse_Header_Load();
+}
+
 TEST_P(RSCompatibilityTest, RequestResponse_Header_ExpectedException) {
   compatibilityTest_->TestRequestResponse_Header_ExpectedException();
 }

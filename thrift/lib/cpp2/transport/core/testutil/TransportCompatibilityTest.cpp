@@ -13,9 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+#include <folly/Conv.h>
 #include <folly/portability/GFlags.h>
-#include <glog/logging.h>
 #include <folly/portability/GTest.h>
+
+#include <glog/logging.h>
 
 #include <folly/ScopeGuard.h>
 #include <folly/io/async/EventBase.h>
@@ -24,6 +26,7 @@
 #include <thrift/lib/cpp/async/TAsyncSSLSocket.h>
 #include <thrift/lib/cpp/async/TAsyncSocket.h>
 #include <thrift/lib/cpp/async/TAsyncTransport.h>
+#include <thrift/lib/cpp/transport/THeader.h>
 #include <thrift/lib/cpp2/async/HTTPClientChannel.h>
 #include <thrift/lib/cpp2/async/HeaderClientChannel.h>
 #include <thrift/lib/cpp2/async/PooledRequestChannel.h>
@@ -130,6 +133,12 @@ void SampleServer<Service>::setupServer() {
   server_->setNumIOWorkerThreads(numIOThreads_);
   server_->setNumCPUWorkerThreads(numWorkerThreads_);
   server_->setProcessorFactory(cpp2PFac);
+  server_->setGetLoad([](const auto& counter) {
+    if (counter == THeader::QUERY_LOAD_HEADER) {
+      return 123;
+    }
+    return -1;
+  });
 }
 
 template <typename Service>
@@ -502,6 +511,21 @@ void TransportCompatibilityTest::TestRequestResponse_Header() {
       auto& waited = future.wait(folly::Duration(100));
       EXPECT_TRUE(waited.isReady());
     }
+  });
+}
+
+void TransportCompatibilityTest::TestRequestResponse_Header_Load() {
+  connectToServer([](std::unique_ptr<TestServiceAsyncClient> client) {
+    RpcOptions rpcOptions;
+    rpcOptions.setWriteHeader("header_from_client", "2");
+    rpcOptions.setWriteHeader(THeader::QUERY_LOAD_HEADER, {});
+    auto resultAndHeaders = client->header_future_headers(rpcOptions).get();
+    const auto readHeaders =
+        std::move(resultAndHeaders.second)->releaseHeaders();
+    EXPECT_NE(readHeaders.end(), readHeaders.find("header_from_server"));
+    const auto loadIt = readHeaders.find(THeader::QUERY_LOAD_HEADER);
+    ASSERT_NE(readHeaders.end(), loadIt);
+    EXPECT_EQ(123, folly::to<int64_t>(loadIt->second));
   });
 }
 

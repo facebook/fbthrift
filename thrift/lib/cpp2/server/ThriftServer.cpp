@@ -605,11 +605,11 @@ bool ThriftServer::isOverloaded(
   return false;
 }
 
-int64_t ThriftServer::getRequestLoad() {
+int64_t ThriftServer::getRequestLoad() const {
   return getActiveRequests();
 }
 
-std::string ThriftServer::getLoadInfo(int64_t load) {
+std::string ThriftServer::getLoadInfo(int64_t load) const {
   auto ioGroup = getIOGroupSafe();
   auto workerFactory = ioGroup != nullptr
       ? std::dynamic_pointer_cast<folly::NamedThreadFactory>(

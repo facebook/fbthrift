@@ -20,6 +20,8 @@
 
 #include <folly/io/async/Request.h>
 
+#include <thrift/lib/cpp2/transport/core/RpcMetadataUtil.h>
+
 namespace apache {
 namespace thrift {
 
@@ -71,9 +73,7 @@ void ThriftClientCallback::onThriftResponse(
     active_ = false;
     auto tHeader = std::make_unique<transport::THeader>();
     tHeader->setClientType(THRIFT_HTTP_CLIENT_TYPE);
-    if (metadata->__isset.otherMetadata) {
-      tHeader->setReadHeaders(std::move(metadata->otherMetadata));
-    }
+    detail::fillTHeaderFromResponseRpcMetadata(*metadata, *tHeader);
     folly::RequestContextScopeGuard rctx(cb_->context_);
     cb_->replyReceived(ClientReceiveState(
         protoId_, std::move(payload), std::move(tHeader), std::move(ctx_)));
@@ -91,11 +91,8 @@ void ThriftClientCallback::onThriftResponse(
     active_ = false;
     auto tHeader = std::make_unique<transport::THeader>();
     tHeader->setClientType(THRIFT_HTTP_CLIENT_TYPE);
-    if (metadata->__isset.otherMetadata) {
-      tHeader->setReadHeaders(std::move(metadata->otherMetadata));
-    }
+    detail::fillTHeaderFromResponseRpcMetadata(*metadata, *tHeader);
     folly::RequestContextScopeGuard rctx(cb_->context_);
-
     ClientReceiveState crs(
         protoId_,
         ResponseAndSemiStream<

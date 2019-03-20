@@ -92,6 +92,7 @@ class TransportCompatibilityTest {
   void TestRequestResponse_UnexpectedException();
   void TestRequestResponse_Timeout();
   void TestRequestResponse_Header();
+  void TestRequestResponse_Header_Load();
   void TestRequestResponse_Header_ExpectedException();
   void TestRequestResponse_Header_UnexpectedException();
   void TestRequestResponse_Saturation();

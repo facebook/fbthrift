@@ -135,9 +135,8 @@ bool BaseThriftServer::getTaskExpireTimeForRequest(
   return queueTimeout != taskTimeout;
 }
 
-int64_t BaseThriftServer::getLoad(
-    const std::string& counter,
-    bool check_custom) {
+int64_t BaseThriftServer::getLoad(const std::string& counter, bool check_custom)
+    const {
   if (check_custom && getLoad_) {
     return getLoad_(counter);
   }
@@ -151,11 +150,11 @@ int64_t BaseThriftServer::getLoad(
   return reqload;
 }
 
-int64_t BaseThriftServer::getRequestLoad() {
+int64_t BaseThriftServer::getRequestLoad() const {
   return activeRequests_;
 }
 
-std::string BaseThriftServer::getLoadInfo(int64_t load) {
+std::string BaseThriftServer::getLoadInfo(int64_t load) const {
   std::stringstream stream;
   stream << "Load is: " << load << "% requests";
   return stream.str();

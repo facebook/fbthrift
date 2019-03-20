@@ -36,6 +36,10 @@ RequestRpcMetadata makeRequestRpcMetadata(
     transport::THeader& header,
     const transport::THeader::StringToStringMap& persistentWriteHeaders);
 
+void fillTHeaderFromResponseRpcMetadata(
+    ResponseRpcMetadata& responseMetadata,
+    transport::THeader& header);
+
 } // namespace detail
 } // namespace thrift
 } // namespace apache

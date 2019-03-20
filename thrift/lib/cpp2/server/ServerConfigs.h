@@ -18,6 +18,7 @@
 #define SERVER_CONFIGS_H_ 1
 
 #include <chrono>
+#include <string>
 
 #include <thrift/lib/cpp/server/TServerObserver.h>
 
@@ -58,6 +59,11 @@ class ServerConfigs {
 
   // @see BaseThriftServer::getStreamExpireTime function.
   virtual std::chrono::milliseconds getStreamExpireTime() const = 0;
+
+  // @see BaseThriftServer::getLoad function.
+  virtual int64_t getLoad(
+      const std::string& counter = "",
+      bool check_custom = true) const = 0;
 };
 } // namespace server
 } // namespace thrift

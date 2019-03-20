@@ -69,6 +69,7 @@ class ThriftRequestCore : public ResponseChannelRequest {
             RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE)),
         seqId_(metadata->seqId_ref().value_or(0)),
         active_(true),
+        requestFlags_(metadata->flags_ref().value_or(0)),
         connContext_(
             connContext ? std::move(connContext)
                         : std::make_shared<Cpp2ConnContext>()),
@@ -216,7 +217,7 @@ class ThriftRequestCore : public ResponseChannelRequest {
       std::unique_ptr<folly::IOBuf> buf,
       apache::thrift::MessageChannel::SendCallback* cb = nullptr) {
     if (checkResponseSize(*buf)) {
-      sendThriftResponse(createMetadata(), std::move(buf));
+      sendThriftResponse(makeResponseRpcMetadata(), std::move(buf));
     } else {
       sendResponseTooBigEx(cb);
     }
@@ -228,7 +229,7 @@ class ThriftRequestCore : public ResponseChannelRequest {
       apache::thrift::MessageChannel::SendCallback* cb = nullptr) {
     if (checkResponseSize(*buf)) {
       sendStreamThriftResponse(
-          createMetadata(), std::move(buf), std::move(stream));
+          makeResponseRpcMetadata(), std::move(buf), std::move(stream));
     } else {
       sendResponseTooBigEx(cb);
     }
@@ -243,9 +244,16 @@ class ThriftRequestCore : public ResponseChannelRequest {
         cb);
   }
 
-  std::unique_ptr<ResponseRpcMetadata> createMetadata() {
+  std::unique_ptr<ResponseRpcMetadata> makeResponseRpcMetadata() {
     auto metadata = std::make_unique<ResponseRpcMetadata>();
     metadata->seqId_ref() = seqId_;
+
+    if (requestFlags_ &
+        static_cast<uint64_t>(RequestRpcMetadataFlags::QUERY_SERVER_LOAD)) {
+      metadata->load_ref() =
+          serverConfigs_.getLoad(transport::THeader::QUERY_LOAD_HEADER);
+    }
+
     auto writeHeaders = header_.releaseWriteHeaders();
     if (auto* eh = header_.getExtraWriteHeaders()) {
       writeHeaders.insert(eh->begin(), eh->end());
@@ -253,6 +261,7 @@ class ThriftRequestCore : public ResponseChannelRequest {
     if (!writeHeaders.empty()) {
       metadata->otherMetadata_ref() = std::move(writeHeaders);
     }
+
     return metadata;
   }
 
@@ -284,11 +293,12 @@ class ThriftRequestCore : public ResponseChannelRequest {
       switch (kind_) {
         case RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE:
         case RpcKind::STREAMING_REQUEST_SINGLE_RESPONSE:
-          sendThriftResponse(createMetadata(), std::move(exbuf));
+          sendThriftResponse(makeResponseRpcMetadata(), std::move(exbuf));
           break;
         case RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE:
         case RpcKind::STREAMING_REQUEST_STREAMING_RESPONSE:
-          sendStreamThriftResponse(createMetadata(), std::move(exbuf), {});
+          sendStreamThriftResponse(
+              makeResponseRpcMetadata(), std::move(exbuf), {});
           break;
         default: // Don't send error back for one-way.
           break;
@@ -372,6 +382,7 @@ class ThriftRequestCore : public ResponseChannelRequest {
   const int32_t seqId_;
   std::atomic<bool> active_;
   transport::THeader header_;
+  const uint64_t requestFlags_{0};
   std::shared_ptr<Cpp2ConnContext> connContext_;
   Cpp2RequestContext reqContext_;
 

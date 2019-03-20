@@ -44,6 +44,11 @@ enum RpcPriority {
   N_PRIORITIES = 5,
 }
 
+enum RequestRpcMetadataFlags {
+  UNKNOWN = 0x0,
+  QUERY_SERVER_LOAD = 0x1,
+}
+
 // RPC metadata sent from the client to the server.  The lifetime of
 // objects of this type starts at the call to the generated client
 // code, and ends at the generated server code.
@@ -89,6 +94,7 @@ struct RequestRpcMetadata {
   10: optional string url;
   // The CRC32C of the RPC message.
   11: optional i32 (cpp.type = "std::uint32_t") crc32c;
+  12: optional i64 (cpp.type = "std::uint64_t") flags;
 }
 
 // RPC metadata sent from the server to the client.  The lifetime of
@@ -109,4 +115,7 @@ struct ResponseRpcMetadata {
   // Any frequently used key-value pair in this map should be replaced
   // by a field in this struct.
   3: optional map<string, string> otherMetadata;
+  // Server load. Returned to client if QUERY_SERVER_LOAD was set in request's
+  // flags.
+  4: optional i64 load;
 }

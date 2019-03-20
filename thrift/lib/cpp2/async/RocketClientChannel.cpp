@@ -303,10 +303,8 @@ void RocketClientChannel::sendSingleRequestSingleResponse(
           ResponseRpcMetadata responseMetadata;
           try {
             deserializeMetadata(responseMetadata, *response.value().metadata());
-            if (responseMetadata.otherMetadata_ref().has_value()) {
-              tHeader->setReadHeaders(
-                  std::move(responseMetadata.otherMetadata_ref().value()));
-            }
+            detail::fillTHeaderFromResponseRpcMetadata(
+                responseMetadata, *tHeader);
           } catch (const std::exception& e) {
             FB_LOG_EVERY_MS(ERROR, 10000)
                 << "Exception on deserializing metadata: "
