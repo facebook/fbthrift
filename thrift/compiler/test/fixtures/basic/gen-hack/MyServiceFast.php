@@ -1437,6 +1437,7 @@ class MyServiceFast_ping_args implements \IThriftStruct, \IThriftShapishStruct {
   );
   const int STRUCTURAL_ID = 957977401221134810;
 
+  <<__Rx>>
   public function __construct(  ) {
   }
 
@@ -1473,6 +1474,7 @@ class MyServiceFast_ping_result implements \IThriftStruct {
   };
   const int STRUCTURAL_ID = 957977401221134810;
 
+  <<__Rx>>
   public function __construct(  ) {
   }
 
@@ -1503,6 +1505,7 @@ class MyServiceFast_getRandomData_args implements \IThriftStruct, \IThriftShapis
   );
   const int STRUCTURAL_ID = 957977401221134810;
 
+  <<__Rx>>
   public function __construct(  ) {
   }
 
@@ -1545,6 +1548,7 @@ class MyServiceFast_getRandomData_result implements \IThriftStruct {
   const int STRUCTURAL_ID = 1365128170602685579;
   public ?string $success;
 
+  <<__Rx>>
   public function __construct(?string $success = null  ) {
   }
 
@@ -1585,6 +1589,7 @@ class MyServiceFast_hasDataById_args implements \IThriftStruct, \IThriftShapishS
   const int STRUCTURAL_ID = 3807211151619655933;
   public int $id;
 
+  <<__Rx>>
   public function __construct(?int $id = null  ) {
     if ($id === null) {
       $this->id = 0;
@@ -1637,6 +1642,7 @@ class MyServiceFast_hasDataById_result implements \IThriftStruct {
   const int STRUCTURAL_ID = 8594383818423018844;
   public ?bool $success;
 
+  <<__Rx>>
   public function __construct(?bool $success = null  ) {
   }
 
@@ -1677,6 +1683,7 @@ class MyServiceFast_getDataById_args implements \IThriftStruct, \IThriftShapishS
   const int STRUCTURAL_ID = 3807211151619655933;
   public int $id;
 
+  <<__Rx>>
   public function __construct(?int $id = null  ) {
     if ($id === null) {
       $this->id = 0;
@@ -1729,6 +1736,7 @@ class MyServiceFast_getDataById_result implements \IThriftStruct {
   const int STRUCTURAL_ID = 1365128170602685579;
   public ?string $success;
 
+  <<__Rx>>
   public function __construct(?string $success = null  ) {
   }
 
@@ -1776,6 +1784,7 @@ class MyServiceFast_putDataById_args implements \IThriftStruct, \IThriftShapishS
   public int $id;
   public string $data;
 
+  <<__Rx>>
   public function __construct(?int $id = null, ?string $data = null  ) {
     if ($id === null) {
       $this->id = 0;
@@ -1832,6 +1841,7 @@ class MyServiceFast_putDataById_result implements \IThriftStruct {
   };
   const int STRUCTURAL_ID = 957977401221134810;
 
+  <<__Rx>>
   public function __construct(  ) {
   }
 
@@ -1876,6 +1886,7 @@ class MyServiceFast_lobDataById_args implements \IThriftStruct, \IThriftShapishS
   public int $id;
   public string $data;
 
+  <<__Rx>>
   public function __construct(?int $id = null, ?string $data = null  ) {
     if ($id === null) {
       $this->id = 0;

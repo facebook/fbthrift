@@ -115,6 +115,7 @@ class ComplexUnion implements \IThriftStruct, \IThriftUnion<ComplexUnionEnum> {
   public ?string $stringRef;
   protected ComplexUnionEnum $_type = ComplexUnionEnum::_EMPTY_;
 
+  <<__Rx>>
   public function __construct(?int $intValue = null, ?string $stringValue = null, ?Vector<int> $intListValue = null, ?Vector<string> $stringListValue = null, ?Map<int, string> $typedefValue = null, ?string $stringRef = null  ) {
     $this->_type = ComplexUnionEnum::_EMPTY_;
     if ($intValue !== null) {
@@ -340,6 +341,7 @@ class VirtualComplexUnion implements \IThriftStruct, \IThriftUnion<VirtualComple
   public ?string $thingTwo;
   protected VirtualComplexUnionEnum $_type = VirtualComplexUnionEnum::_EMPTY_;
 
+  <<__Rx>>
   public function __construct(?string $thingOne = null, ?string $thingTwo = null  ) {
     $this->_type = VirtualComplexUnionEnum::_EMPTY_;
     if ($thingOne !== null) {

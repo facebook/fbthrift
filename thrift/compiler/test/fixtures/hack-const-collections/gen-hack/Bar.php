@@ -397,6 +397,7 @@ class Bar_baz_args implements \IThriftStruct {
   public ?Foo $d;
   public int $e;
 
+  <<__Rx>>
   public function __construct(?ConstSet<int> $a = null, ?ConstVector<ConstMap<int, ConstSet<string>>> $b = null, ?int $c = null, ?Foo $d = null, ?int $e = null  ) {
     if ($a === null) {
       $this->a = Set {};
@@ -442,6 +443,7 @@ class Bar_baz_result implements \IThriftStruct {
   const int STRUCTURAL_ID = 1365128170602685579;
   public ?string $success;
 
+  <<__Rx>>
   public function __construct(?string $success = null  ) {
   }
 

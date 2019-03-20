@@ -312,6 +312,7 @@ class MyServicePrioChild_pang_args implements \IThriftStruct, \IThriftShapishStr
   );
   const int STRUCTURAL_ID = 957977401221134810;
 
+  <<__Rx>>
   public function __construct(  ) {
   }
 
@@ -348,6 +349,7 @@ class MyServicePrioChild_pang_result implements \IThriftStruct {
   };
   const int STRUCTURAL_ID = 957977401221134810;
 
+  <<__Rx>>
   public function __construct(  ) {
   }
 

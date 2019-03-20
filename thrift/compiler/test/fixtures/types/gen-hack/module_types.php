@@ -59,6 +59,7 @@ class decorated_struct implements \IThriftStruct {
    */
   public string $field;
 
+  <<__Rx>>
   public function __construct(?string $field = null  ) {
     if ($field === null) {
       $this->field = '';
@@ -226,6 +227,7 @@ class ContainerStruct implements \IThriftStruct {
    */
   public Map<int, string> $fieldH;
 
+  <<__Rx>>
   public function __construct(?Vector<int> $fieldA = null, ?Vector<int> $fieldB = null, ?Vector<int> $fieldC = null, ?Vector<int> $fieldD = null, ?Vector<int> $fieldE = null, ?Set<int> $fieldF = null, ?Map<int, string> $fieldG = null, ?Map<int, string> $fieldH = null  ) {
     if ($fieldA === null) {
       $this->fieldA = Vector {};
@@ -422,6 +424,7 @@ class CppTypeStruct implements \IThriftStruct {
    */
   public Vector<int> $fieldA;
 
+  <<__Rx>>
   public function __construct(?Vector<int> $fieldA = null  ) {
     if ($fieldA === null) {
       $this->fieldA = Vector {};
@@ -483,6 +486,7 @@ class VirtualStruct implements \IThriftStruct {
    */
   public int $MyIntField;
 
+  <<__Rx>>
   public function __construct(?int $MyIntField = null  ) {
     if ($MyIntField === null) {
       $this->MyIntField = 0;
@@ -544,6 +548,7 @@ class MyStructWithForwardRefEnum implements \IThriftStruct {
    */
   public ?MyForwardRefEnum $b;
 
+  <<__Rx>>
   public function __construct(?MyForwardRefEnum $a = null, ?MyForwardRefEnum $b = null  ) {
     if ($a === null) {
       $this->a = MyForwardRefEnum::NONZERO;
@@ -609,6 +614,7 @@ class TrivialNumeric implements \IThriftStruct {
    */
   public bool $b;
 
+  <<__Rx>>
   public function __construct(?int $a = null, ?bool $b = null  ) {
     if ($a === null) {
       $this->a = 0;
@@ -682,6 +688,7 @@ class TrivialNestedWithDefault implements \IThriftStruct {
    */
   public ?TrivialNumeric $n;
 
+  <<__Rx>>
   public function __construct(?int $z = null, ?TrivialNumeric $n = null  ) {
     if ($z === null) {
       $this->z = 4;
@@ -762,6 +769,7 @@ class ComplexString implements \IThriftStruct {
    */
   public Map<string, int> $b;
 
+  <<__Rx>>
   public function __construct(?string $a = null, ?Map<string, int> $b = null  ) {
     if ($a === null) {
       $this->a = '';
@@ -842,6 +850,7 @@ class ComplexNestedWithDefault implements \IThriftStruct {
    */
   public ?ComplexString $n;
 
+  <<__Rx>>
   public function __construct(?string $z = null, ?ComplexString $n = null  ) {
     if ($z === null) {
       $this->z = "4";
@@ -938,6 +947,7 @@ class MinPadding implements \IThriftStruct {
    */
   public int $tiny;
 
+  <<__Rx>>
   public function __construct(?int $small = null, ?int $big = null, ?int $medium = null, ?int $biggish = null, ?int $tiny = null  ) {
     if ($small === null) {
       $this->small = 0;
@@ -1080,6 +1090,7 @@ class MyStruct implements \IThriftStruct {
    */
   public ?MyDataItem $data;
 
+  <<__Rx>>
   public function __construct(?int $MyIntField = null, ?string $MyStringField = null, ?int $majorVer = null, ?MyDataItem $data = null  ) {
     if ($MyIntField === null) {
       $this->MyIntField = 0;
@@ -1142,6 +1153,7 @@ class MyDataItem implements \IThriftStruct {
   };
   const int STRUCTURAL_ID = 957977401221134810;
 
+  <<__Rx>>
   public function __construct(  ) {
   }
 
@@ -1183,6 +1195,7 @@ class Renaming implements \IThriftStruct {
    */
   public int $foo;
 
+  <<__Rx>>
   public function __construct(?int $foo = null  ) {
     if ($foo === null) {
       $this->foo = 0;

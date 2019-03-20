@@ -72,6 +72,7 @@ class MyThriftStruct implements \IThriftStruct {
     return $this->baz;
   }
 
+  <<__Rx>>
   public function __construct(?string $foo = null, ?string $bar = null, ?string $baz = null  ) {
     if ($foo === null) {
       $this->foo = '';
@@ -149,6 +150,7 @@ class MySecondThriftStruct implements \IThriftStruct {
     return $this->baz;
   }
 
+  <<__Rx>>
   public function __construct(?\test\fixtures\jsenum\MyThriftEnum $foo = null, ?\test\fixtures\jsenum\MyThriftStruct $bar = null, ?int $baz = null  ) {
     $this->foo = $foo;
     $this->bar = $bar;
@@ -208,6 +210,7 @@ class UnionTesting implements \IThriftStruct, \IThriftUnion<\test\fixtures\jsenu
   public ?int $bar;
   protected \test\fixtures\jsenum\UnionTestingEnum $_type = \test\fixtures\jsenum\UnionTestingEnum::_EMPTY_;
 
+  <<__Rx>>
   public function __construct(?string $foo = null, ?int $bar = null  ) {
     $this->_type = \test\fixtures\jsenum\UnionTestingEnum::_EMPTY_;
     if ($foo !== null) {

@@ -72,6 +72,7 @@ class Internship implements \IThriftStruct {
    */
   public ?Company $employer;
 
+  <<__Rx>>
   public function __construct(?int $weeks = null, ?string $title = null, ?Company $employer = null  ) {
     if ($weeks === null) {
       $this->weeks = 0;
@@ -125,6 +126,7 @@ class Range implements \IThriftStruct {
    */
   public int $max;
 
+  <<__Rx>>
   public function __construct(?int $min = null, ?int $max = null  ) {
     if ($min === null) {
       $this->min = 0;

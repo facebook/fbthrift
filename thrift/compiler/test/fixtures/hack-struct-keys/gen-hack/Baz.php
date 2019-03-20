@@ -264,6 +264,7 @@ class Baz_qux_args implements \IThriftStruct {
   public Vector<Bar> $b;
   public Map<arraykey, string> $c;
 
+  <<__Rx>>
   public function __construct(?Set<arraykey> $a = null, ?Vector<Bar> $b = null, ?Map<arraykey, string> $c = null  ) {
     if ($a === null) {
       $this->a = Set {};
@@ -303,6 +304,7 @@ class Baz_qux_result implements \IThriftStruct {
   const int STRUCTURAL_ID = 1365128170602685579;
   public ?string $success;
 
+  <<__Rx>>
   public function __construct(?string $success = null  ) {
   }
 

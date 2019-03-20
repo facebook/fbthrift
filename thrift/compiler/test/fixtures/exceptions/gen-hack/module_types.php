@@ -19,6 +19,7 @@ class Banal extends \TException implements \IThriftStruct {
   };
   const int STRUCTURAL_ID = 957977401221134810;
 
+  <<__Rx>>
   public function __construct(  ) {
     parent::__construct();
   }
@@ -52,6 +53,7 @@ class Fiery extends \TException implements \IThriftStruct {
    */
   public string $message;
 
+  <<__Rx>>
   public function __construct(?string $message = null  ) {
     parent::__construct();
     if ($message === null) {
@@ -90,6 +92,7 @@ class Serious extends \TException implements \IThriftStruct {
    */
   public ?string $sonnet;
 
+  <<__Rx>>
   public function __construct(?string $sonnet = null  ) {
     parent::__construct();
     $this->sonnet = $sonnet;

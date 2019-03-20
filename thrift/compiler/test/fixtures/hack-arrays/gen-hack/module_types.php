@@ -63,6 +63,7 @@ class Foo implements \IThriftStruct {
    */
   public dict<string, vec<keyset<int>>> $b;
 
+  <<__Rx>>
   public function __construct(?vec<string> $a = null, ?dict<string, vec<keyset<int>>> $b = null  ) {
     if ($a === null) {
       $this->a = vec[];

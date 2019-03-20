@@ -2650,22 +2650,21 @@ void t_hack_generator::_generate_php_struct_definition(
 
   out << "\n";
 
+  out << indent() << "<<__Rx>>\n";
+  out << indent() << "public function __construct(";
   if (map_construct_) {
     if (strict_types_) {
       // Generate constructor from Map
-      out << indent() << "public function __construct("
-          << (const_collections_ ? "Const" : "")
+      out << (const_collections_ ? "Const" : "")
           << "Map<string, mixed> $vals = Map {}) {\n";
     } else {
       // Generate constructor from KeyedContainer
-      out << indent()
-          << "public function __construct(@\\HH\\KeyedContainer<string, mixed> $vals = "
-          << array_keyword_ << "[]) {\n";
+      out << "@\\HH\\KeyedContainer<string, mixed> $vals = " << array_keyword_
+          << "[]) {\n";
     }
     out << indent()
         << "  // UNSAFE_BLOCK $vals is not type safe :(, and we don't cast structs (yet)\n";
   } else {
-    out << indent() << "public function __construct(";
     bool first = true;
     for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
       if (!first) {

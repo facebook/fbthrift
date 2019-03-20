@@ -70,6 +70,7 @@ class BarStruct implements \IThriftStruct, \IThriftShapishStruct {
    */
   public Set<FooEnum> $s;
 
+  <<__Rx>>
   public function __construct(?Map<FooEnum, FooEnum> $e = null, ?Set<FooEnum> $s = null  ) {
     if ($e === null) {
       $this->e = Map {};

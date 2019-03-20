@@ -69,6 +69,7 @@ class Color implements \IThriftStruct {
    */
   public float $alpha;
 
+  <<__Rx>>
   public function __construct(?float $red = null, ?float $green = null, ?float $blue = null, ?float $alpha = null  ) {
     if ($red === null) {
       $this->red = 0.0;
@@ -162,6 +163,7 @@ class Vehicle implements \IThriftStruct {
    */
   public bool $hasAC;
 
+  <<__Rx>>
   public function __construct(?Color $color = null, ?string $licensePlate = null, ?string $description = null, ?string $name = null, ?bool $hasAC = null  ) {
     $this->color = $color;
     $this->licensePlate = $licensePlate;
@@ -316,6 +318,7 @@ class Person implements \IThriftStruct {
    */
   public ?Vector<Vehicle> $vehicles;
 
+  <<__Rx>>
   public function __construct(?int $id = null, ?string $name = null, ?int $age = null, ?string $address = null, ?Color $favoriteColor = null, ?Set<int> $friends = null, ?int $bestFriend = null, ?Map<Animal, string> $petNames = null, ?Animal $afraidOfAnimal = null, ?Vector<Vehicle> $vehicles = null  ) {
     if ($id === null) {
       $this->id = 0;

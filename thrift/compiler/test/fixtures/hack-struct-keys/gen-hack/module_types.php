@@ -29,6 +29,7 @@ class Foo implements \IThriftStruct {
    */
   public int $fiels;
 
+  <<__Rx>>
   public function __construct(?int $fiels = null  ) {
     if ($fiels === null) {
       $this->fiels = 0;
@@ -92,6 +93,7 @@ class Bar implements \IThriftStruct {
    */
   public Map<arraykey, int> $b;
 
+  <<__Rx>>
   public function __construct(?Set<arraykey> $a = null, ?Map<arraykey, int> $b = null  ) {
     if ($a === null) {
       $this->a = Set {};

@@ -36,6 +36,7 @@ class OldStructure implements \IThriftStruct {
    */
   public Map<int, float> $features;
 
+  <<__Rx>>
   public function __construct(?Map<int, float> $features = null  ) {
     if ($features === null) {
       $this->features = Map {};
@@ -166,6 +167,7 @@ class NewStructure implements \IThriftStruct {
    */
   public Map<int, float> $features;
 
+  <<__Rx>>
   public function __construct(?Map<int, float> $features = null  ) {
     if ($features === null) {
       $this->features = Map {};
@@ -296,6 +298,7 @@ class NewStructure2 implements \IThriftStruct {
    */
   public Map<int, float> $features;
 
+  <<__Rx>>
   public function __construct(?Map<int, float> $features = null  ) {
     if ($features === null) {
       $this->features = Map {};
@@ -483,6 +486,7 @@ class NewStructureNested implements \IThriftStruct {
    */
   public Set<arraykey> $s;
 
+  <<__Rx>>
   public function __construct(?Vector<Map<int, float>> $lst = null, ?Map<int, Map<int, float>> $mp = null, ?Set<arraykey> $s = null  ) {
     if ($lst === null) {
       $this->lst = Vector {};
@@ -788,6 +792,7 @@ class NewStructureNestedField implements \IThriftStruct {
    */
   public ?NewStructureNested $f;
 
+  <<__Rx>>
   public function __construct(?NewStructureNested $f = null  ) {
     $this->f = $f;
   }

@@ -79,6 +79,7 @@ class Internship implements \IThriftStruct {
    */
   public ?Company $employer;
 
+  <<__Rx>>
   public function __construct(?int $weeks = null, ?string $title = null, ?Company $employer = null  ) {
     if ($weeks === null) {
       $this->weeks = 0;
@@ -123,6 +124,7 @@ class UnEnumStruct implements \IThriftStruct {
    */
   public ?City $city;
 
+  <<__Rx>>
   public function __construct(?City $city = null  ) {
     if ($city === null) {
       $this->city = City::coerce(-1);
@@ -170,6 +172,7 @@ class Range implements \IThriftStruct {
    */
   public int $max;
 
+  <<__Rx>>
   public function __construct(?int $min = null, ?int $max = null  ) {
     if ($min === null) {
       $this->min = 0;
@@ -222,6 +225,7 @@ class struct1 implements \IThriftStruct {
    */
   public string $b;
 
+  <<__Rx>>
   public function __construct(?int $a = null, ?string $b = null  ) {
     if ($a === null) {
       $this->a = 1234567;
@@ -300,6 +304,7 @@ class struct2 implements \IThriftStruct {
    */
   public Vector<int> $d;
 
+  <<__Rx>>
   public function __construct(?int $a = null, ?string $b = null, ?struct1 $c = null, ?Vector<int> $d = null  ) {
     if ($a === null) {
       $this->a = 0;
@@ -369,6 +374,7 @@ class struct3 implements \IThriftStruct {
    */
   public ?struct2 $c;
 
+  <<__Rx>>
   public function __construct(?string $a = null, ?int $b = null, ?struct2 $c = null  ) {
     if ($a === null) {
       $this->a = '';
@@ -431,6 +437,7 @@ class union1 implements \IThriftStruct, \IThriftUnion<union1Enum> {
   public ?float $d;
   protected union1Enum $_type = union1Enum::_EMPTY_;
 
+  <<__Rx>>
   public function __construct(?int $i = null, ?float $d = null  ) {
     $this->_type = union1Enum::_EMPTY_;
     if ($i !== null) {
@@ -551,6 +558,7 @@ class union2 implements \IThriftStruct, \IThriftUnion<union2Enum> {
   public ?union1 $u;
   protected union2Enum $_type = union2Enum::_EMPTY_;
 
+  <<__Rx>>
   public function __construct(?int $i = null, ?float $d = null, ?struct1 $s = null, ?union1 $u = null  ) {
     $this->_type = union2Enum::_EMPTY_;
     if ($i !== null) {

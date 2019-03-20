@@ -397,6 +397,7 @@ class Bar_baz_args implements \IThriftStruct {
   public ?Foo $d;
   public ?int $e;
 
+  <<__Rx>>
   public function __construct(@\HH\KeyedContainer<string, mixed> $vals = darray[]) {
     // UNSAFE_BLOCK $vals is not type safe :(, and we don't cast structs (yet)
     $this->a = idx($vals, 'a', null);
@@ -427,6 +428,7 @@ class Bar_baz_result implements \IThriftStruct {
   const int STRUCTURAL_ID = 1365128170602685579;
   public ?string $success;
 
+  <<__Rx>>
   public function __construct(@\HH\KeyedContainer<string, mixed> $vals = darray[]) {
     // UNSAFE_BLOCK $vals is not type safe :(, and we don't cast structs (yet)
   }

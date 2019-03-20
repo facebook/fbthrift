@@ -83,6 +83,7 @@ class Foo implements \IThriftStruct {
    */
   public bool $d;
 
+  <<__Rx>>
   public function __construct(?ConstVector<string> $a = null, ?ConstMap<string, ConstVector<ConstSet<int>>> $b = null, ?int $c = null, ?bool $d = null  ) {
     if ($a === null) {
       $this->a = Vector {};
@@ -131,6 +132,7 @@ class Baz extends \TException implements \IThriftStruct {
    */
   public string $message;
 
+  <<__Rx>>
   public function __construct(?string $message = null  ) {
     parent::__construct();
     if ($message === null) {

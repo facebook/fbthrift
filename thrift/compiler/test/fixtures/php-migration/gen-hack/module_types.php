@@ -83,6 +83,7 @@ class Foo implements \IThriftStruct {
    */
   public ?bool $d;
 
+  <<__Rx>>
   public function __construct(@\HH\KeyedContainer<string, mixed> $vals = darray[]) {
     // UNSAFE_BLOCK $vals is not type safe :(, and we don't cast structs (yet)
     $this->a = idx($vals, 'a', null);
@@ -158,6 +159,7 @@ class Baz extends \TException implements \IThriftStruct {
    */
   public int $code;
 
+  <<__Rx>>
   public function __construct(@\HH\KeyedContainer<string, mixed> $vals = darray[]) {
     // UNSAFE_BLOCK $vals is not type safe :(, and we don't cast structs (yet)
     parent::__construct();

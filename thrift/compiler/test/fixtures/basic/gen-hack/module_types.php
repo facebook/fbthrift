@@ -89,6 +89,7 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
    */
   public ?MyEnum $myEnum;
 
+  <<__Rx>>
   public function __construct(?int $MyIntField = null, ?string $MyStringField = null, ?MyDataItem $MyDataField = null, ?int $major = null, ?MyEnum $myEnum = null  ) {
     if ($MyIntField === null) {
       $this->MyIntField = 0;
@@ -180,6 +181,7 @@ class MyDataItem implements \IThriftStruct, \IThriftShapishStruct {
   );
   const int STRUCTURAL_ID = 957977401221134810;
 
+  <<__Rx>>
   public function __construct(  ) {
   }
 

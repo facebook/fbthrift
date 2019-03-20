@@ -1300,6 +1300,7 @@ class NestedContainers_mapList_args implements \IThriftStruct, \IThriftShapishSt
   const int STRUCTURAL_ID = 860610040470759468;
   public Map<int, Vector<int>> $foo;
 
+  <<__Rx>>
   public function __construct(?Map<int, Vector<int>> $foo = null  ) {
     if ($foo === null) {
       $this->foo = Map {};
@@ -1339,6 +1340,7 @@ class NestedContainers_mapList_result implements \IThriftStruct {
   };
   const int STRUCTURAL_ID = 957977401221134810;
 
+  <<__Rx>>
   public function __construct(  ) {
   }
 
@@ -1381,6 +1383,7 @@ class NestedContainers_mapSet_args implements \IThriftStruct, \IThriftShapishStr
   const int STRUCTURAL_ID = 860610040470759468;
   public Map<int, Set<int>> $foo;
 
+  <<__Rx>>
   public function __construct(?Map<int, Set<int>> $foo = null  ) {
     if ($foo === null) {
       $this->foo = Map {};
@@ -1420,6 +1423,7 @@ class NestedContainers_mapSet_result implements \IThriftStruct {
   };
   const int STRUCTURAL_ID = 957977401221134810;
 
+  <<__Rx>>
   public function __construct(  ) {
   }
 
@@ -1462,6 +1466,7 @@ class NestedContainers_listMap_args implements \IThriftStruct, \IThriftShapishSt
   const int STRUCTURAL_ID = 860610040470759468;
   public Vector<Map<int, int>> $foo;
 
+  <<__Rx>>
   public function __construct(?Vector<Map<int, int>> $foo = null  ) {
     if ($foo === null) {
       $this->foo = Vector {};
@@ -1501,6 +1506,7 @@ class NestedContainers_listMap_result implements \IThriftStruct {
   };
   const int STRUCTURAL_ID = 957977401221134810;
 
+  <<__Rx>>
   public function __construct(  ) {
   }
 
@@ -1539,6 +1545,7 @@ class NestedContainers_listSet_args implements \IThriftStruct, \IThriftShapishSt
   const int STRUCTURAL_ID = 860610040470759468;
   public Vector<Set<int>> $foo;
 
+  <<__Rx>>
   public function __construct(?Vector<Set<int>> $foo = null  ) {
     if ($foo === null) {
       $this->foo = Vector {};
@@ -1578,6 +1585,7 @@ class NestedContainers_listSet_result implements \IThriftStruct {
   };
   const int STRUCTURAL_ID = 957977401221134810;
 
+  <<__Rx>>
   public function __construct(  ) {
   }
 
@@ -1639,6 +1647,7 @@ class NestedContainers_turtles_args implements \IThriftStruct, \IThriftShapishSt
   const int STRUCTURAL_ID = 860610040470759468;
   public Vector<Vector<Map<int, Map<int, Set<int>>>>> $foo;
 
+  <<__Rx>>
   public function __construct(?Vector<Vector<Map<int, Map<int, Set<int>>>>> $foo = null  ) {
     if ($foo === null) {
       $this->foo = Vector {};
@@ -1693,6 +1702,7 @@ class NestedContainers_turtles_result implements \IThriftStruct {
   };
   const int STRUCTURAL_ID = 957977401221134810;
 
+  <<__Rx>>
   public function __construct(  ) {
   }
 

@@ -550,6 +550,7 @@ class MyServicePrioParent_ping_args implements \IThriftStruct, \IThriftShapishSt
   );
   const int STRUCTURAL_ID = 957977401221134810;
 
+  <<__Rx>>
   public function __construct(  ) {
   }
 
@@ -586,6 +587,7 @@ class MyServicePrioParent_ping_result implements \IThriftStruct {
   };
   const int STRUCTURAL_ID = 957977401221134810;
 
+  <<__Rx>>
   public function __construct(  ) {
   }
 
@@ -616,6 +618,7 @@ class MyServicePrioParent_pong_args implements \IThriftStruct, \IThriftShapishSt
   );
   const int STRUCTURAL_ID = 957977401221134810;
 
+  <<__Rx>>
   public function __construct(  ) {
   }
 
@@ -652,6 +655,7 @@ class MyServicePrioParent_pong_result implements \IThriftStruct {
   };
   const int STRUCTURAL_ID = 957977401221134810;
 
+  <<__Rx>>
   public function __construct(  ) {
   }
 

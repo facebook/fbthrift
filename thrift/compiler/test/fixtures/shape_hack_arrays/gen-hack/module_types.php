@@ -53,6 +53,7 @@ class A implements \IThriftStruct, \IThriftShapishStruct {
    */
   public dict<string, string> $map_of_string_to_string;
 
+  <<__Rx>>
   public function __construct(?string $a = null, ?dict<string, string> $map_of_string_to_string = null  ) {
     if ($a === null) {
       $this->a = '';
@@ -380,6 +381,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
    */
   public vec<dict<string, vec<A>>> $list_of_map_of_string_to_list_of_A;
 
+  <<__Rx>>
   public function __construct(?dict<string, string> $map_of_string_to_string = null, ?dict<string, int> $map_of_string_to_i32 = null, ?dict<string, A> $map_of_string_to_A = null, ?dict<string, B> $map_of_string_to_self = null, ?dict<string, vec<A>> $map_of_string_to_list_of_A = null, ?dict<string, dict<string, int>> $map_of_string_to_map_of_string_to_i32 = null, ?dict<string, dict<string, A>> $map_of_string_to_map_of_string_to_A = null, ?vec<string> $list_of_string = null, ?vec<dict<string, A>> $list_of_map_of_string_to_A = null, ?vec<B> $list_of_self = null, ?vec<vec<B>> $list_of_list_of_self = null, ?vec<dict<string, vec<A>>> $list_of_map_of_string_to_list_of_A = null  ) {
     if ($map_of_string_to_string === null) {
       $this->map_of_string_to_string = dict[];
@@ -897,6 +899,7 @@ class C implements \IThriftStruct, \IThriftShapishStruct {
    */
   public ?vec<dict<string, vec<A>>> $list_of_map_of_string_to_list_of_A;
 
+  <<__Rx>>
   public function __construct(?dict<string, string> $map_of_string_to_string = null, ?dict<string, int> $map_of_string_to_i32 = null, ?dict<string, A> $map_of_string_to_A = null, ?dict<string, B> $map_of_string_to_self = null, ?dict<string, vec<A>> $map_of_string_to_list_of_A = null, ?dict<string, dict<string, int>> $map_of_string_to_map_of_string_to_i32 = null, ?dict<string, dict<string, A>> $map_of_string_to_map_of_string_to_A = null, ?vec<string> $list_of_string = null, ?vec<dict<string, A>> $list_of_map_of_string_to_A = null, ?vec<B> $list_of_self = null, ?vec<vec<B>> $list_of_list_of_self = null, ?vec<dict<string, vec<A>>> $list_of_map_of_string_to_list_of_A = null  ) {
     $this->map_of_string_to_string = $map_of_string_to_string;
     $this->map_of_string_to_i32 = $map_of_string_to_i32;
