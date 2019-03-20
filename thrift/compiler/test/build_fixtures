@@ -114,11 +114,12 @@ for name, index in zip(fixture_names, range(len(fixture_names))):
             extra = "include_prefix=" + path
             join = "," if ":" in args[0] else ":"
             args[0] = args[0] + join + extra
-        if ("cpp2" in args[0] or "schema" in args[0]):
-            # do not recurse in py generators. This is a hack because there is a
-            # bug in the python generator that appears hard to fix. This is a
-            # workaround. In future, we will use mstch, and the mstch
-            # generator does not have this issue.
+        if ("cpp2" in args[0] or "schema" in args[0] or "swift" in args[0]):
+            # TODO: (yuhanhao) T41937765 When use generators that use
+            # `t_mstch_objects` in recursive mode, if included thrift file
+            # contains const structs or const union, generater will attempt to
+            # de-reference a nullptr in `mstch_const_value::const_struct()`.
+            # This is a hack before this is resolved.
             base_args.remove('-r')
         processes.append(run_subprocess(base_args + args, cwd=cwd))
 

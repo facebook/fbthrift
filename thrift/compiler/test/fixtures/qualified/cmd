@@ -1,4 +1,6 @@
 hs src/module2.thrift
 mstch_cpp2 src/module2.thrift
+mstch_swift src/module0.thrift
+mstch_swift src/module1.thrift
 mstch_swift src/module2.thrift
 mstch_py3 src/module2.thrift

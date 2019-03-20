@@ -129,7 +129,7 @@ class CompilerTest(unittest.TestCase):
 
             # Do not recurse in py generators due to a bug in the py generator
             # Remove once migration to mustache is done
-            if ("cpp2" == lang) or ("schema" == lang) or ("mstch_cpp2" == lang):
+            if ("cpp2" == lang) or ("schema" == lang) or ("mstch_cpp2" == lang) or ("mstch_swift" == lang):
                 args.remove('-r')
 
             # Run thrift compiler and generate files

@@ -4,6 +4,9 @@ py src/service.thrift
 android_lite src/module.thrift
 cocoa:import_path=thrift src/service.thrift
 mstch_swift src/service.thrift
+mstch_swift src/module.thrift
+mstch_swift src/includes.thrift
+mstch_swift src/transitive.thrift
 mstch_cpp2 src/service.thrift
 mstch_cpp2 src/matching_module_name.thrift
 mstch_cpp2 src/module.thrift
