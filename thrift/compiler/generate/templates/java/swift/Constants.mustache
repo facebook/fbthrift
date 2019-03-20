@@ -26,8 +26,8 @@ import java.util.*;
 @SwiftGenerated
 public final class Constants {
     private Constants() {}
-    {{#program:sortedConstants}}
+    {{#program:constants}}
 
     public static final {{#constant:type}}{{> Type}}{{/constant:type}} {{constant:name}} = {{#constant:type}}{{#constant:value}}{{> ConstantValue}}{{/constant:value}}{{/constant:type}};
-    {{/program:sortedConstants}}
+    {{/program:constants}}
 }

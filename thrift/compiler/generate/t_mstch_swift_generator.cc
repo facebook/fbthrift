@@ -158,34 +158,10 @@ class mstch_swift_program : public mstch_program {
         this,
         {
             {"program:javaPackage", &mstch_swift_program::java_package},
-            {"program:sortedConstants", &mstch_swift_program::sorted_constants},
         });
   }
   mstch::node java_package() {
     return swift_context_->get_namespace_or_default(*program_);
-  }
-  mstch::node sorted_constants() {
-    auto constants = program_->get_consts();
-    std::sort(
-        constants.begin(),
-        constants.end(),
-        [](const t_const* x, const t_const* y) {
-          return std::less<std::string>{}(x->get_name(), y->get_name());
-        });
-
-    mstch::array a;
-    for (size_t i = 0; i < constants.size(); ++i) {
-      auto pos = element_position(i, constants.size());
-      a.push_back(generators_->const_generator_->generate(
-          constants[i],
-          generators_,
-          cache_,
-          pos,
-          i,
-          constants[i],
-          constants[i]->get_type()));
-    }
-    return a;
   }
 
  private:
