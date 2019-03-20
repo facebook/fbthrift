@@ -1,4 +1,4 @@
-from __future__ import print_function
+#!/usr/bin/env python3
 
 import difflib
 import os
@@ -11,18 +11,22 @@ import tempfile
 import traceback
 import unittest
 
-skip_py_generate = os.getenv('THRIFT_COMPILER_TEST_SKIP_PY_GENERATE')
-thrift = os.getenv('THRIFT_COMPILER_BIN')
-fixtures_root_dir = os.getenv('THRIFT_FIXTURES_DIR')
-templates_dir = os.getenv('THRIFT_TEMPLATES_DIR')
+
+skip_py_generate = os.getenv("THRIFT_COMPILER_TEST_SKIP_PY_GENERATE")
+thrift = os.getenv("THRIFT_COMPILER_BIN")
+fixtures_root_dir = os.getenv("THRIFT_FIXTURES_DIR")
+templates_dir = os.getenv("THRIFT_TEMPLATES_DIR")
+
 
 def read_file(path):
-    with open(path, 'r') as f:
+    with open(path, "r") as f:
         return f.read()
 
+
 def read_lines(path):
-    with open(path, 'r') as f:
+    with open(path, "r") as f:
         return f.readlines()
+
 
 def read_directory_filenames(path):
     files = []
@@ -30,10 +34,12 @@ def read_directory_filenames(path):
         files.append(filename)
     return files
 
+
 def gen_find_recursive_files(path):
     for root, _, files in os.walk(path):
         for f in files:
             yield os.path.relpath(os.path.join(root, f), path)
+
 
 def cp_dir(source_dir, dest_dir):
     for src in gen_find_recursive_files(source_dir):
@@ -46,15 +52,18 @@ def cp_dir(source_dir, dest_dir):
 
         shutil.copy2(source_full_path, dest_full_path)
 
+
 class CompilerTest(unittest.TestCase):
 
-    MSG = " ".join([
-        "One or more fixtures are out of sync with the thrift compiler.",
-        "To sync them, build thrift and then run:",
-        "`thrift/compiler/test/build_fixtures <build-dir>`, where",
-        "<build-dir> is a path where the program `thrift/compiler/thrift`",
-        "may be found.",
-    ])
+    MSG = " ".join(
+        [
+            "One or more fixtures are out of sync with the thrift compiler.",
+            "To sync them, build thrift and then run:",
+            "`thrift/compiler/test/build_fixtures <build-dir>`, where",
+            "<build-dir> is a path where the program `thrift/compiler/thrift`",
+            "may be found.",
+        ]
+    )
 
     def compare_code(self, path1, path2):
         gens = list(gen_find_recursive_files(path1))
@@ -72,9 +81,11 @@ class CompilerTest(unittest.TestCase):
 
                 msg = ["Difference found in " + gen + ":"]
                 for line in difflib.unified_diff(
-                        geng.splitlines(), genf.splitlines(),
-                        geng_path, genf_path,
-                        lineterm="",
+                    geng.splitlines(),
+                    genf.splitlines(),
+                    geng_path,
+                    genf_path,
+                    lineterm="",
                 ):
                     msg.append(line)
                 self.fail("\n".join(msg))
@@ -92,17 +103,17 @@ class CompilerTest(unittest.TestCase):
     def runTest(self, name):
         fixture_dir = os.path.join(fixtures_root_dir, name)
         # Copy source *.thrift files to temporary folder for relative code gen
-        cp_dir(os.path.join(fixture_dir, 'src'), os.path.join(self.tmp, 'src'))
+        cp_dir(os.path.join(fixture_dir, "src"), os.path.join(self.tmp, "src"))
 
         languages = set()
-        for cmd in read_lines(os.path.join(fixture_dir, 'cmd')):
+        for cmd in read_lines(os.path.join(fixture_dir, "cmd")):
             # Skip commented out commands
-            if cmd[0] == '#':
+            if cmd[0] == "#":
                 continue
 
             args = shlex.split(cmd.strip())
             # Get cmd language
-            lang = args[0].rsplit(':', 1)[0] if ":" in args[0] else args[0]
+            lang = args[0].rsplit(":", 1)[0] if ":" in args[0] else args[0]
 
             # Skip in cmake test. Python generator doesn't work
             if skip_py_generate == "True":
@@ -121,16 +132,24 @@ class CompilerTest(unittest.TestCase):
 
             # Generate arguments to run binary
             args = [
-                thrift, '-r',
-                '--templates', templates_dir,
-                '--gen', args[0],
-                args[1]
+                thrift,
+                "-r",
+                "--templates",
+                templates_dir,
+                "--gen",
+                args[0],
+                args[1],
             ]
 
             # Do not recurse in py generators due to a bug in the py generator
             # Remove once migration to mustache is done
-            if ("cpp2" == lang) or ("schema" == lang) or ("mstch_cpp2" == lang) or ("mstch_swift" == lang):
-                args.remove('-r')
+            if (
+                ("cpp2" == lang)
+                or ("schema" == lang)
+                or ("mstch_cpp2" == lang)
+                or ("mstch_swift" == lang)
+            ):
+                args.remove("-r")
 
             # Run thrift compiler and generate files
             subprocess.check_call(args, cwd=self.tmp, close_fds=True)
@@ -138,19 +157,22 @@ class CompilerTest(unittest.TestCase):
         # Compare generated code to fixture code
         for lang in languages:
             # Edit lang to find correct directory
-            lang = lang.rsplit('_', 1)[0] if "android_lite" in lang else lang
-            lang = lang.rsplit('_', 1)[1] if "mstch_" in lang else lang
-            lang = 'py' if lang == 'pyi' else lang
+            lang = lang.rsplit("_", 1)[0] if "android_lite" in lang else lang
+            lang = lang.rsplit("_", 1)[1] if "mstch_" in lang else lang
+            lang = "py" if lang == "pyi" else lang
 
-            gen_code = os.path.join(self.tmp, 'gen-' + lang)
-            fixture_code = os.path.join(fixture_dir, 'gen-' + lang)
+            gen_code = os.path.join(self.tmp, "gen-" + lang)
+            fixture_code = os.path.join(fixture_dir, "gen-" + lang)
             self.compare_code(gen_code, fixture_code)
+
 
 def add_fixture(klazz, name):
     def test_method(self):
         self.runTest(name)
-    test_method.__name__ = str('test_' + re.sub('[^0-9a-zA-Z]', '_', name))
+
+    test_method.__name__ = str("test_" + re.sub("[^0-9a-zA-Z]", "_", name))
     setattr(klazz, test_method.__name__, test_method)
+
 
 fixtureNames = read_directory_filenames(fixtures_root_dir)
 for name in fixtureNames:
