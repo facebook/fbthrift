@@ -24,6 +24,49 @@
 namespace {
 using namespace std;
 
+class swift_generator_context {
+ public:
+  swift_generator_context(
+      bool legacy_extend_runtime_exception,
+      bool legacy_generate_beans,
+      std::unique_ptr<std::string> default_package,
+      std::string namespace_identifier)
+      : legacy_extend_runtime_exception_(legacy_extend_runtime_exception),
+        legacy_generate_beans_(legacy_generate_beans),
+        default_package_(std::move(default_package)),
+        namespace_identifier_(std::move(namespace_identifier)) {}
+
+  /**
+   * Gets the swift namespace, or, if it doesn't exist, uses the default.
+   * If no default specified, throws runtime error
+   */
+  std::string get_namespace_or_default(const t_program& prog) {
+    const auto& prog_namespace = prog.get_namespace(namespace_identifier_);
+    if (prog_namespace != "") {
+      return prog_namespace;
+    } else if (default_package_) {
+      return *(default_package_);
+    } else {
+      throw std::runtime_error{"No namespace '" + namespace_identifier_ +
+                               "' in " + prog.get_name()};
+    }
+  }
+
+  bool is_extend_runtime_exception() {
+    return legacy_extend_runtime_exception_;
+  }
+
+  bool is_mutable_bean() {
+    return legacy_generate_beans_;
+  }
+
+ private:
+  const bool legacy_extend_runtime_exception_;
+  const bool legacy_generate_beans_;
+  std::unique_ptr<std::string> default_package_;
+  const std::string namespace_identifier_;
+};
+
 class t_mstch_swift_generator : public t_mstch_generator {
  public:
   t_mstch_swift_generator(
@@ -36,39 +79,18 @@ class t_mstch_swift_generator : public t_mstch_generator {
             std::move(context),
             "java/swift",
             parsed_options),
-        default_package_(get_option("default_package")),
-        legacy_extend_runtime_exception_(
-            get_option("legacy_extend_runtime_exception") ? true : false),
-        legacy_generate_beans_(
-            get_option("legacy_generate_beans") ? true : false),
-        namespace_identifier_(
-            get_option("use_java_namespace") ? "java" : "java.swift") {
+        swift_context_{
+            has_option("legacy_extend_runtime_exception"),
+            has_option("legacy_generate_beans"),
+            get_option("default_package"),
+            has_option("use_java_namespace") ? "java" : "java.swift"} {
     out_dir_base_ = "gen-swift";
   }
 
   void generate_program() override;
 
- protected:
-  std::unique_ptr<std::string> default_package_;
-  const bool legacy_extend_runtime_exception_;
-  const bool legacy_generate_beans_;
-  const std::string namespace_identifier_;
-
-  /**
-   * Gets the swift namespace, or, if it doesn't exist, uses the default.
-   * If no default specified, throws runtime error
-   */
-  std::string get_namespace_or_default(const t_program& prog) {
-    const auto& prog_namespace = prog.get_namespace(namespace_identifier_);
-    if (prog_namespace != "") {
-      return prog_namespace;
-    } else if (default_package_) {
-      return *default_package_;
-    } else {
-      throw std::runtime_error{"No namespace '" + namespace_identifier_ +
-                               "' in " + prog.get_name()};
-    }
-  }
+ private:
+  swift_generator_context swift_context_;
 
   /*
    * Generate multiple Java items according to the given template. Writes
@@ -80,7 +102,7 @@ class t_mstch_swift_generator : public t_mstch_generator {
       const std::vector<T*>& items) {
     for (const T* item : items) {
       auto package_dir = boost::filesystem::path{java::package_to_path(
-          get_namespace_or_default(*item->get_program()))};
+          swift_context_.get_namespace_or_default(*item->get_program()))};
       auto filename = java::mangle_java_name(item->get_name(), true) + ".java";
       render_to_file(*item, tpl_path, package_dir / filename);
     }
@@ -92,7 +114,7 @@ class t_mstch_swift_generator : public t_mstch_generator {
       return;
     }
     auto package_dir = boost::filesystem::path{
-        java::package_to_path(get_namespace_or_default(prog))};
+        java::package_to_path(swift_context_.get_namespace_or_default(prog))};
     render_to_file(prog, "Constants", package_dir / "Constants.java");
   }
 
@@ -106,23 +128,26 @@ class t_mstch_swift_generator : public t_mstch_generator {
           return std::less<std::string>{}(x->get_name(), y->get_name());
         });
     return mstch::map{
-        {"javaPackage", get_namespace_or_default(program)},
+        {"javaPackage", swift_context_.get_namespace_or_default(program)},
         {"sortedConstants", dump_elems(constants)},
     };
   }
 
   mstch::map extend_struct(const t_struct& strct) override {
     mstch::map result{
-        {"javaPackage", get_namespace_or_default(*strct.get_program())},
-        {"extendRuntimeException?", legacy_extend_runtime_exception_},
-        {"asBean?", legacy_generate_beans_}};
+        {"javaPackage",
+         swift_context_.get_namespace_or_default(*strct.get_program())},
+        {"extendRuntimeException?",
+         swift_context_.is_extend_runtime_exception()},
+        {"asBean?", swift_context_.is_mutable_bean()}};
     add_java_names(result, strct.get_name());
     return result;
   }
 
   mstch::map extend_service(const t_service& service) override {
     mstch::map result{
-        {"javaPackage", get_namespace_or_default(*service.get_program())}};
+        {"javaPackage",
+         swift_context_.get_namespace_or_default(*service.get_program())}};
     add_java_names(result, service.get_name());
     return result;
   }
@@ -141,7 +166,8 @@ class t_mstch_swift_generator : public t_mstch_generator {
 
   mstch::map extend_enum(const t_enum& enm) override {
     mstch::map result{
-        {"javaPackage", get_namespace_or_default(*enm.get_program())},
+        {"javaPackage",
+         swift_context_.get_namespace_or_default(*enm.get_program())},
     };
     add_java_names(result, enm.get_name());
     return result;

@@ -206,6 +206,7 @@ class t_mstch_generator : public t_generator {
     }
   }
 
+  bool has_option(const std::string& key);
   std::unique_ptr<std::string> get_option(const std::string& key);
 
  private:
