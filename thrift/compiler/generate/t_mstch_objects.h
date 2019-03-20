@@ -109,6 +109,19 @@ class field_generator {
       int32_t index = 0) const;
 };
 
+class annotation_generator {
+ public:
+  annotation_generator() = default;
+  virtual ~annotation_generator() = default;
+  virtual std::shared_ptr<mstch_base> generate(
+      const std::string& key,
+      const std::string& val,
+      std::shared_ptr<mstch_generators const> generators,
+      std::shared_ptr<mstch_cache> cache,
+      ELEMENT_POSITION pos = ELEMENT_POSITION::NONE,
+      int32_t index = 0) const;
+};
+
 class struct_generator {
  public:
   struct_generator() = default;
@@ -191,6 +204,7 @@ class mstch_generators {
         const_value_generator_(std::make_unique<const_value_generator>()),
         type_generator_(std::make_unique<type_generator>()),
         field_generator_(std::make_unique<field_generator>()),
+        annotation_generator_(std::make_unique<annotation_generator>()),
         struct_generator_(std::make_unique<struct_generator>()),
         function_generator_(std::make_unique<function_generator>()),
         service_generator_(std::make_unique<service_generator>()),
@@ -217,6 +231,10 @@ class mstch_generators {
 
   void set_field_generator(std::unique_ptr<field_generator> g) {
     field_generator_ = std::move(g);
+  }
+
+  void set_annotation_generator(std::unique_ptr<annotation_generator> g) {
+    annotation_generator_ = std::move(g);
   }
 
   void set_struct_generator(std::unique_ptr<struct_generator> g) {
@@ -248,6 +266,7 @@ class mstch_generators {
   std::unique_ptr<const_value_generator> const_value_generator_;
   std::unique_ptr<type_generator> type_generator_;
   std::unique_ptr<field_generator> field_generator_;
+  std::unique_ptr<annotation_generator> annotation_generator_;
   std::unique_ptr<struct_generator> struct_generator_;
   std::unique_ptr<function_generator> function_generator_;
   std::unique_ptr<service_generator> service_generator_;
@@ -704,6 +723,7 @@ class mstch_field : public mstch_base {
             {"field:required?", &mstch_field::is_required},
             {"field:optional?", &mstch_field::is_optional},
             {"field:optInReqOut?", &mstch_field::is_optInReqOut},
+            {"field:annotations", &mstch_field::annotations},
         });
   }
   bool has_annotation(std::string const& name) {
@@ -735,9 +755,43 @@ class mstch_field : public mstch_base {
   mstch::node is_optInReqOut() {
     return field_->get_req() == t_field::e_req::T_OPT_IN_REQ_OUT;
   }
+  mstch::node annotations();
 
  protected:
   t_field const* field_;
+  int32_t index_;
+};
+
+class mstch_annotation : public mstch_base {
+ public:
+  mstch_annotation(
+      const std::string& key,
+      const std::string& val,
+      std::shared_ptr<mstch_generators const> generators,
+      std::shared_ptr<mstch_cache> cache,
+      ELEMENT_POSITION pos,
+      int32_t index)
+      : mstch_base(generators, cache, pos),
+        key_(key),
+        val_(val),
+        index_(index) {
+    register_methods(
+        this,
+        {
+            {"annotation:key", &mstch_annotation::key},
+            {"annotation:value", &mstch_annotation::value},
+        });
+  }
+  mstch::node key() {
+    return key_;
+  }
+  mstch::node value() {
+    return val_;
+  }
+
+ protected:
+  const std::string key_;
+  const std::string val_;
   int32_t index_;
 };
 
