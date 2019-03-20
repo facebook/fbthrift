@@ -1,5 +1,7 @@
 namespace cpp2 py3.simple
 
+typedef binary (cpp2.type = "std::unique_ptr<folly::IOBuf>") IOBufPtr
+
 enum AnEnum {
   None = 0 (py3.name = "NOTSET"),
   ONE = 1,
@@ -17,6 +19,10 @@ enum Flags {
 
 exception SimpleException {
   1: i16 err_code
+}
+
+struct OptionalRefStruct {
+  1: optional IOBufPtr optional_blob
 }
 
 struct SimpleStruct {

@@ -415,6 +415,184 @@ cdef class SimpleException(thrift.py3.exceptions.Error):
 
 
 
+cdef cOptionalRefStruct _OptionalRefStruct_defaults = cOptionalRefStruct()
+
+cdef class OptionalRefStruct(thrift.py3.types.Struct):
+
+    def __init__(
+        OptionalRefStruct self, *,
+        __iobuf.IOBuf optional_blob=None
+    ):
+        self._cpp_obj = move(OptionalRefStruct._make_instance(
+          NULL,
+          NULL,
+          optional_blob,
+        ))
+
+    def __call__(
+        OptionalRefStruct self,
+        optional_blob=__NOTSET
+    ):
+        ___NOTSET = __NOTSET  # Cheaper for larger structs
+        cdef bint[1] __isNOTSET  # so make_instance is typed
+
+        changes = False
+        if optional_blob is ___NOTSET:
+            __isNOTSET[0] = True
+            optional_blob = None
+        else:
+            __isNOTSET[0] = False
+            changes = True
+
+
+        if not changes:
+            return self
+
+        if optional_blob is not None:
+            if not isinstance(optional_blob, __iobuf.IOBuf):
+                raise TypeError(f'optional_blob is not a { __iobuf.IOBuf !r}.')
+
+        inst = <OptionalRefStruct>OptionalRefStruct.__new__(OptionalRefStruct)
+        inst._cpp_obj = move(OptionalRefStruct._make_instance(
+          self._cpp_obj.get(),
+          __isNOTSET,
+          optional_blob,
+        ))
+        return inst
+
+    @staticmethod
+    cdef unique_ptr[cOptionalRefStruct] _make_instance(
+        cOptionalRefStruct* base_instance,
+        bint* __isNOTSET,
+        __iobuf.IOBuf optional_blob 
+    ) except *:
+        cdef unique_ptr[cOptionalRefStruct] c_inst
+        if base_instance:
+            c_inst = make_unique[cOptionalRefStruct](deref(base_instance))
+        else:
+            c_inst = make_unique[cOptionalRefStruct]()
+
+        if base_instance:
+            # Convert None's to default value. (or unset)
+            if not __isNOTSET[0] and optional_blob is None:
+                deref(c_inst).__isset.optional_blob = False
+                deref(c_inst).optional_blob.reset()
+                pass
+
+        if optional_blob is not None:
+            deref(c_inst).optional_blob = (<__iobuf.IOBuf?>optional_blob).c_clone()
+            deref(c_inst).__isset.optional_blob = True
+        # in C++ you don't have to call move(), but this doesn't translate
+        # into a C++ return statement, so you do here
+        return move_unique(c_inst)
+
+    def __iter__(self):
+        yield 'optional_blob', self.optional_blob
+
+    def __bool__(self):
+        return (deref(self._cpp_obj).__isset.optional_blob and <bint>(deref(self._cpp_obj).optional_blob))
+
+    @staticmethod
+    cdef create(shared_ptr[cOptionalRefStruct] cpp_obj):
+        inst = <OptionalRefStruct>OptionalRefStruct.__new__(OptionalRefStruct)
+        inst._cpp_obj = move_shared(cpp_obj)
+        return inst
+
+    @property
+    def optional_blob(self):
+        if not deref(self._cpp_obj).__isset.optional_blob:
+            return None
+
+        if self.__field_optional_blob is None:
+            if not deref(self._cpp_obj).optional_blob:
+                return None
+            self.__field_optional_blob = __iobuf.IOBuf.create(deref(self._cpp_obj).optional_blob.get(), self)
+        return self.__field_optional_blob
+
+
+    def __hash__(OptionalRefStruct self):
+        if not self.__hash:
+            self.__hash = hash((
+            self.optional_blob,
+            ))
+        return self.__hash
+
+    def __repr__(OptionalRefStruct self):
+        return f'OptionalRefStruct(optional_blob={repr(self.optional_blob)})'
+    def __copy__(OptionalRefStruct self):
+        cdef shared_ptr[cOptionalRefStruct] cpp_obj = make_shared[cOptionalRefStruct](
+            deref(self._cpp_obj)
+        )
+        return OptionalRefStruct.create(move_shared(cpp_obj))
+
+    def __richcmp__(self, other, op):
+        cdef int cop = op
+        if not (
+                isinstance(self, OptionalRefStruct) and
+                isinstance(other, OptionalRefStruct)):
+            if cop == Py_EQ:  # different types are never equal
+                return False
+            elif cop == Py_NE:  # different types are always notequal
+                return True
+            else:
+                return NotImplemented
+
+        cdef cOptionalRefStruct* cself = (<OptionalRefStruct>self)._cpp_obj.get()
+        cdef cOptionalRefStruct* cother = (<OptionalRefStruct>other)._cpp_obj.get()
+        if cop == Py_EQ:
+            return deref(cself) == deref(cother)
+        elif cop == Py_NE:
+            return not (deref(cself) == deref(cother))
+        elif cop == Py_LT:
+            return deref(cself) < deref(cother)
+        elif cop == Py_LE:
+            return deref(cself) <= deref(cother)
+        elif cop == Py_GT:
+            return deref(cself) > deref(cother)
+        elif cop == Py_GE:
+            return deref(cself) >= deref(cother)
+        else:
+            return NotImplemented
+
+    cdef __iobuf.IOBuf _serialize(OptionalRefStruct self, proto):
+        cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
+        cdef cOptionalRefStruct* cpp_obj = self._cpp_obj.get()
+        if proto is __Protocol.COMPACT:
+            with nogil:
+                serializer.CompactSerialize[cOptionalRefStruct](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.BINARY:
+            with nogil:
+                serializer.BinarySerialize[cOptionalRefStruct](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.JSON:
+            with nogil:
+                serializer.JSONSerialize[cOptionalRefStruct](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.COMPACT_JSON:
+            with nogil:
+                serializer.CompactJSONSerialize[cOptionalRefStruct](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
+        return __iobuf.from_unique_ptr(queue.move())
+
+    cdef uint32_t _deserialize(OptionalRefStruct self, const __iobuf.cIOBuf* buf, proto) except? 0:
+        cdef uint32_t needed
+        self._cpp_obj = make_shared[cOptionalRefStruct]()
+        cdef cOptionalRefStruct* cpp_obj = self._cpp_obj.get()
+        if proto is __Protocol.COMPACT:
+            with nogil:
+                needed = serializer.CompactDeserialize[cOptionalRefStruct](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.BINARY:
+            with nogil:
+                needed = serializer.BinaryDeserialize[cOptionalRefStruct](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.JSON:
+            with nogil:
+                needed = serializer.JSONDeserialize[cOptionalRefStruct](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.COMPACT_JSON:
+            with nogil:
+                needed = serializer.CompactJSONDeserialize[cOptionalRefStruct](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
+        return needed
+
+    def __reduce__(self):
+        return (deserialize, (OptionalRefStruct, serialize(self)))
+
+
 cdef cSimpleStruct _SimpleStruct_defaults = cSimpleStruct()
 
 cdef class SimpleStruct(thrift.py3.types.Struct):
@@ -5102,4 +5280,5 @@ WORD_LIST = List__string.create(constant_shared_ptr(cWORD_LIST()))
 SOME_MAP = List__Map__i32_double.create(constant_shared_ptr(cSOME_MAP()))
 DIGITS = Set__i32.create(constant_shared_ptr(cDIGITS()))
 A_CONST_MAP = Map__string_SimpleStruct.create(constant_shared_ptr(cA_CONST_MAP()))
+IOBufPtr = __iobuf.IOBuf
 foo_bar = bytes

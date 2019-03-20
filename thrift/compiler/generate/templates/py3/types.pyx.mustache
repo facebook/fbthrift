@@ -292,8 +292,11 @@ cdef class {{struct:name}}({{> types/PythonStructClass}}):
             }}{{/field:follyOptional?}}{{!
             }}{{^field:follyOptional?}}{{!
             }}{{^field:hasDefaultValue?}}{{!
+            }}{{#field:isset?}}{{#field:reference?}}({{/field:reference?}}{{/field:isset?}}{{!
             }}{{#field:isset?}}deref(self._cpp_obj).__isset.{{field:name}}{{/field:isset?}}{{!
+            }}{{#field:isset?}}{{#field:reference?}} and {{/field:reference?}}{{/field:isset?}}{{!
             }}{{#field:reference?}}<bint>(deref(self._cpp_obj).{{field:name}}){{/field:reference?}}{{!
+            }}{{#field:isset?}}{{#field:reference?}}){{/field:reference?}}{{/field:isset?}}{{!
             }}{{/field:hasDefaultValue?}}{{!
             }}{{/field:follyOptional?}}{{!
             }}{{^last?}} or {{/last?}}{{/struct:fields}}{{!

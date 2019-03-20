@@ -62,6 +62,8 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::py3:
     # Forward Declaration
     cdef cppclass cSimpleException "::py3::simple::SimpleException"(cTException)
     # Forward Declaration
+    cdef cppclass cOptionalRefStruct "::py3::simple::OptionalRefStruct"
+    # Forward Declaration
     cdef cppclass cSimpleStruct "::py3::simple::SimpleStruct"
     # Forward Declaration
     cdef cppclass cComplexStruct "::py3::simple::ComplexStruct"
@@ -80,6 +82,20 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "::py3::simple":
         bint operator>=(cSimpleException&)
         int16_t err_code
         cSimpleException__isset __isset
+
+    cdef cppclass cOptionalRefStruct__isset "::py3::simple::OptionalRefStruct::__isset":
+        bint optional_blob
+
+    cdef cppclass cOptionalRefStruct "::py3::simple::OptionalRefStruct":
+        cOptionalRefStruct() except +
+        cOptionalRefStruct(const cOptionalRefStruct&) except +
+        bint operator==(cOptionalRefStruct&)
+        bint operator<(cOptionalRefStruct&)
+        bint operator>(cOptionalRefStruct&)
+        bint operator<=(cOptionalRefStruct&)
+        bint operator>=(cOptionalRefStruct&)
+        unique_ptr[__iobuf.cIOBuf] optional_blob
+        cOptionalRefStruct__isset __isset
 
     cdef cppclass cSimpleStruct__isset "::py3::simple::SimpleStruct::__isset":
         bint is_on
@@ -145,6 +161,9 @@ cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[cSimpleException] move(unique_ptr[cSimpleException])
     cdef shared_ptr[cSimpleException] move_shared "std::move"(shared_ptr[cSimpleException])
     cdef unique_ptr[cSimpleException] move_unique "std::move"(unique_ptr[cSimpleException])
+    cdef shared_ptr[cOptionalRefStruct] move(unique_ptr[cOptionalRefStruct])
+    cdef shared_ptr[cOptionalRefStruct] move_shared "std::move"(shared_ptr[cOptionalRefStruct])
+    cdef unique_ptr[cOptionalRefStruct] move_unique "std::move"(unique_ptr[cOptionalRefStruct])
     cdef shared_ptr[cSimpleStruct] move(unique_ptr[cSimpleStruct])
     cdef shared_ptr[cSimpleStruct] move_shared "std::move"(shared_ptr[cSimpleStruct])
     cdef unique_ptr[cSimpleStruct] move_unique "std::move"(unique_ptr[cSimpleStruct])
@@ -154,6 +173,7 @@ cdef extern from "<utility>" namespace "std" nogil:
 
 cdef extern from "<memory>" namespace "std" nogil:
     cdef shared_ptr[const cSimpleException] const_pointer_cast "std::const_pointer_cast<const ::py3::simple::SimpleException>"(shared_ptr[cSimpleException])
+    cdef shared_ptr[const cOptionalRefStruct] const_pointer_cast "std::const_pointer_cast<const ::py3::simple::OptionalRefStruct>"(shared_ptr[cOptionalRefStruct])
     cdef shared_ptr[const cSimpleStruct] const_pointer_cast "std::const_pointer_cast<const ::py3::simple::SimpleStruct>"(shared_ptr[cSimpleStruct])
     cdef shared_ptr[const cComplexStruct] const_pointer_cast "std::const_pointer_cast<const ::py3::simple::ComplexStruct>"(shared_ptr[cComplexStruct])
 
@@ -175,6 +195,26 @@ cdef class SimpleException(thrift.py3.exceptions.Error):
 
     @staticmethod
     cdef create(shared_ptr[cSimpleException])
+
+# Forward Definition of the cython struct
+cdef class OptionalRefStruct(thrift.py3.types.Struct)
+
+
+cdef class OptionalRefStruct(thrift.py3.types.Struct):
+    cdef object __hash
+    cdef object __weakref__
+    cdef shared_ptr[cOptionalRefStruct] _cpp_obj
+    cdef __iobuf.IOBuf __field_optional_blob
+
+    @staticmethod
+    cdef unique_ptr[cOptionalRefStruct] _make_instance(
+        cOptionalRefStruct* base_instance,
+        bint* __isNOTSET,
+        __iobuf.IOBuf optional_blob
+    ) except *
+
+    @staticmethod
+    cdef create(shared_ptr[cOptionalRefStruct])
 
 # Forward Definition of the cython struct
 cdef class SimpleStruct(thrift.py3.types.Struct)
