@@ -14,19 +14,19 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-}}{{#type:void?}}void{{/type:void?}}{{!
-}}{{#type:bool?}}boolean{{/type:bool?}}{{!
-}}{{#type:byte?}}byte{{/type:byte?}}{{!
-}}{{#type:i16?}}short{{/type:i16?}}{{!
-}}{{#type:i32?}}int{{/type:i32?}}{{!
-}}{{#type:i64?}}long{{/type:i64?}}{{!
-}}{{#type:double?}}double{{/type:double?}}{{!
-}}{{#type:float?}}float{{/type:float?}}{{!
-
 }}{{#type:typedef?}}{{!
     }}{{#type:typedefType}}{{> Type}}{{/type:typedefType}}{{!
 }}{{/type:typedef?}}{{!
-
-}}{{^type:primitive?}}{{^type:typedef?}}{{!
-    }}{{> BoxedType}}{{!
-}}{{/type:typedef?}}{{/type:primitive?}}
+}}{{^type:typedef?}}{{!
+    }}{{#type:void?}}void{{/type:void?}}{{!
+    }}{{#type:bool?}}boolean{{/type:bool?}}{{!
+    }}{{#type:byte?}}byte{{/type:byte?}}{{!
+    }}{{#type:i16?}}short{{/type:i16?}}{{!
+    }}{{#type:i32?}}int{{/type:i32?}}{{!
+    }}{{#type:i64?}}long{{/type:i64?}}{{!
+    }}{{#type:double?}}double{{/type:double?}}{{!
+    }}{{#type:float?}}float{{/type:float?}}{{!
+    }}{{^type:primitive?}}{{^type:typedef?}}{{!
+        }}{{> BoxedType}}{{!
+    }}{{/type:typedef?}}{{/type:primitive?}}{{!
+}}{{/type:typedef?}}

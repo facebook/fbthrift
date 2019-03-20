@@ -14,37 +14,38 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-}}{{#type:void?}}Void{{/type:void?}}{{!
-}}{{#type:bool?}}Boolean{{/type:bool?}}{{!
-}}{{#type:byte?}}Byte{{/type:byte?}}{{!
-}}{{#type:i16?}}Short{{/type:i16?}}{{!
-}}{{#type:i32?}}Integer{{/type:i32?}}{{!
-}}{{#type:i64?}}Long{{/type:i64?}}{{!
-}}{{#type:double?}}Double{{/type:double?}}{{!
-}}{{#type:float?}}Float{{/type:float?}}{{!
-}}{{#type:string?}}String{{/type:string?}}{{!
-}}{{#type:binary?}}byte[]{{/type:binary?}}{{!
-
 }}{{#type:typedef?}}{{!
     }}{{#type:typedefType}}{{> BoxedType}}{{/type:typedefType}}{{!
 }}{{/type:typedef?}}{{!
+}}{{^type:typedef?}}{{!
+    }}{{#type:void?}}Void{{/type:void?}}{{!
+    }}{{#type:bool?}}Boolean{{/type:bool?}}{{!
+    }}{{#type:byte?}}Byte{{/type:byte?}}{{!
+    }}{{#type:i16?}}Short{{/type:i16?}}{{!
+    }}{{#type:i32?}}Integer{{/type:i32?}}{{!
+    }}{{#type:i64?}}Long{{/type:i64?}}{{!
+    }}{{#type:double?}}Double{{/type:double?}}{{!
+    }}{{#type:float?}}Float{{/type:float?}}{{!
+    }}{{#type:string?}}String{{/type:string?}}{{!
+    }}{{#type:binary?}}byte[]{{/type:binary?}}{{!
 
-}}{{#type:map?}}{{!
-    }}Map<{{#type:keyType}}{{> BoxedType}}{{/type:keyType}}, {{#type:valueType}}{{> BoxedType}}{{/type:valueType}}>{{!
-}}{{/type:map?}}{{!
+    }}{{#type:map?}}{{!
+        }}Map<{{#type:keyType}}{{> BoxedType}}{{/type:keyType}}, {{#type:valueType}}{{> BoxedType}}{{/type:valueType}}>{{!
+    }}{{/type:map?}}{{!
 
-}}{{#type:list?}}{{!
-    }}List<{{#type:listElemType}}{{> BoxedType}}{{/type:listElemType}}>{{!
-}}{{/type:list?}}{{!
+    }}{{#type:list?}}{{!
+        }}List<{{#type:listElemType}}{{> BoxedType}}{{/type:listElemType}}>{{!
+    }}{{/type:list?}}{{!
 
-}}{{#type:set?}}{{!
-    }}Set<{{#type:setElemType}}{{> BoxedType}}{{/type:setElemType}}>{{!
-}}{{/type:set?}}{{!
+    }}{{#type:set?}}{{!
+        }}Set<{{#type:setElemType}}{{> BoxedType}}{{/type:setElemType}}>{{!
+    }}{{/type:set?}}{{!
 
-}}{{#type:struct?}}{{!
-    }}{{#type:struct}}{{struct:javaPackage}}.{{struct:javaCapitalName}}{{/type:struct}}{{!
-}}{{/type:struct?}}{{!
+    }}{{#type:struct?}}{{!
+        }}{{#type:struct}}{{struct:javaPackage}}.{{struct:javaCapitalName}}{{/type:struct}}{{!
+    }}{{/type:struct?}}{{!
 
-}}{{#type:enum?}}{{!
-    }}{{#type:enum}}{{enum:javaPackage}}.{{enum:javaCapitalName}}{{/type:enum}}{{!
-}}{{/type:enum?}}
+    }}{{#type:enum?}}{{!
+        }}{{#type:enum}}{{enum:javaPackage}}.{{enum:javaCapitalName}}{{/type:enum}}{{!
+    }}{{/type:enum?}}{{!
+}}{{/type:typedef?}}
