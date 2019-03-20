@@ -1,4 +1,6 @@
 /*
+ * Copyright 2019-present Facebook, Inc.
+ *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -16,43 +18,40 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 #import <Foundation/Foundation.h>
 
 #import "TProtocol.h"
 
-/** The following two types are defined and used to conform to the [makeImmutable] API defined below.
-    An instance of TBaseStruct that was [makeImmutable] will convert the mutable containers that it holds.
-    for example:
-      NSMutableArray -> NSArray
-      NSMutableDictionary -> NSDictionary */
+/** The following two types are defined and used to conform to the
+   [makeImmutable] API defined below. An instance of TBaseStruct that was
+   [makeImmutable] will convert the mutable containers that it holds. for
+   example: NSMutableArray -> NSArray NSMutableDictionary -> NSDictionary */
 typedef NSMutableArray TBaseStructArray;
 typedef NSMutableDictionary TBaseStructDictionary;
 typedef NSMutableSet TBaseStructSet;
 
-@interface TBaseStruct : NSObject <NSCopying, NSMutableCopying>
+@interface TBaseStruct : NSObject<NSCopying, NSMutableCopying>
 
 /**
  * convert this instance to immutable
  *
  * @return YES in case the object is immutable.
  */
-- (BOOL) makeImmutable;
+- (BOOL)makeImmutable;
 
 /**
  * check whether this instance is immutable
  */
-- (BOOL) isImmutable;
+- (BOOL)isImmutable;
 
 /**
  * check whether this instance is mutable
  */
-- (BOOL) isMutable;
+- (BOOL)isMutable;
 
 /**
  * throw an exception in case this instance is immutable.
  */
-- (void) throwExceptionIfImmutable;
+- (void)throwExceptionIfImmutable;
 
 @end
-

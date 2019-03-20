@@ -1,4 +1,6 @@
 /*
+ * Copyright 2019-present Facebook, Inc.
+ *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -16,7 +18,6 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 #import "TException.h"
 #import "TProtocol.h"
 
@@ -39,11 +40,10 @@ enum {
   int mType;
 }
 
-+ (TApplicationException *) read: (id <TProtocol>) protocol;
++ (TApplicationException*)read:(id<TProtocol>)protocol;
 
-- (void) write: (id <TProtocol>) protocol;
+- (void)write:(id<TProtocol>)protocol;
 
-+ (TApplicationException *) exceptionWithType: (int) type
-                                       reason: (NSString *) message;
++ (TApplicationException*)exceptionWithType:(int)type reason:(NSString*)message;
 
 @end

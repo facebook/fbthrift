@@ -18,56 +18,61 @@
  */
 
 #import "TMemoryBuffer.h"
-#import "TTransportException.h"
 #import "TObjective-C.h"
+#import "TTransportException.h"
 
 #define GARBAGE_BUFFER_SIZE 4096 // 4KiB
 
 @implementation TMemoryBuffer
 - (id)init {
-	if (self = [super init]) {
-		mBuffer = [[NSMutableData alloc] init];
-		mOffset = 0;
-	}
-	return self;
+  if (self = [super init]) {
+    mBuffer = [[NSMutableData alloc] init];
+    mOffset = 0;
+  }
+  return self;
 }
 
-- (id)initWithData:(NSData *)data {
-	if (self = [super init]) {
-		mBuffer = [data mutableCopy];
-		mOffset = 0;
-	}
-	return self;
+- (id)initWithData:(NSData*)data {
+  if (self = [super init]) {
+    mBuffer = [data mutableCopy];
+    mOffset = 0;
+  }
+  return self;
 }
 
-- (int)readAll:(uint8_t *)buf offset:(int)off length:(int)len {
-	if ([mBuffer length] - mOffset < len) {
-		@throw [TTransportException exceptionWithReason:@"Not enough bytes remain in buffer"];
-	}
-	[mBuffer getBytes:buf range:NSMakeRange(mOffset, len)];
-	mOffset += len;
-	if (mOffset >= GARBAGE_BUFFER_SIZE) {
-		[mBuffer replaceBytesInRange:NSMakeRange(0, mOffset) withBytes:NULL length:0];
-		mOffset = 0;
-	}
-	return len;
+- (int)readAll:(uint8_t*)buf offset:(int)off length:(int)len {
+  if ([mBuffer length] - mOffset < len) {
+    @throw [TTransportException
+        exceptionWithReason:@"Not enough bytes remain in buffer"];
+  }
+  [mBuffer getBytes:buf range:NSMakeRange(mOffset, len)];
+  mOffset += len;
+  if (mOffset >= GARBAGE_BUFFER_SIZE) {
+    [mBuffer replaceBytesInRange:NSMakeRange(0, mOffset)
+                       withBytes:NULL
+                          length:0];
+    mOffset = 0;
+  }
+  return len;
 }
 
-- (void)write:(const uint8_t *)data offset:(unsigned int)offset length:(unsigned int)length {
-	[mBuffer appendBytes:data+offset length:length];
+- (void)write:(const uint8_t*)data
+       offset:(unsigned int)offset
+       length:(unsigned int)length {
+  [mBuffer appendBytes:data + offset length:length];
 }
 
 - (void)flush {
-	// noop
+  // noop
 }
 
-- (NSData *)getBuffer {
-	return [[mBuffer copy] autorelease_stub];
+- (NSData*)getBuffer {
+  return [[mBuffer copy] autorelease_stub];
 }
 
 - (void)dealloc {
-	[mBuffer release_stub];
-	[super dealloc_stub];
+  [mBuffer release_stub];
+  [super dealloc_stub];
 }
 
 - (NSUInteger)getOffset {

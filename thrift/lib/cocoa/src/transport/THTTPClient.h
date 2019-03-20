@@ -1,4 +1,6 @@
 /*
+ * Copyright 2019-present Facebook, Inc.
+ *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -16,27 +18,25 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 #import <Foundation/Foundation.h>
 #import "TTransport.h"
 
-@interface THTTPClient : NSObject <TTransport> {
-  NSURL * mURL;
-  NSMutableURLRequest * mRequest;
-  NSMutableData * mRequestData;
-  NSData * mResponseData;
+@interface THTTPClient : NSObject<TTransport> {
+  NSURL* mURL;
+  NSMutableURLRequest* mRequest;
+  NSMutableData* mRequestData;
+  NSData* mResponseData;
   int mResponseDataOffset;
-  NSString * mUserAgent;
+  NSString* mUserAgent;
   int mTimeout;
 }
 
-- (id) initWithURL: (NSURL *) aURL;
+- (id)initWithURL:(NSURL*)aURL;
 
-- (id) initWithURL: (NSURL *) aURL
-         userAgent: (NSString *) userAgent
-           timeout: (int) timeout;
+- (id)initWithURL:(NSURL*)aURL
+        userAgent:(NSString*)userAgent
+          timeout:(int)timeout;
 
-- (void) setURL: (NSURL *) aURL;
+- (void)setURL:(NSURL*)aURL;
 
 @end
-

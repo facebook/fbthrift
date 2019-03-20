@@ -18,49 +18,42 @@
  */
 
 #import "THTTPClient.h"
-#import "TTransportException.h"
 #import "TObjective-C.h"
+#import "TTransportException.h"
 
 @implementation THTTPClient
 
-
-- (void) setupRequest
-{
+- (void)setupRequest {
   if (mRequest != nil) {
     [mRequest release_stub];
   }
 
   // set up our request object that we'll use for each request
-  mRequest = [[NSMutableURLRequest alloc] initWithURL: mURL];
-  [mRequest setHTTPMethod: @"POST"];
-  [mRequest setValue: @"application/x-thrift" forHTTPHeaderField: @"Content-Type"];
-  [mRequest setValue: @"application/x-thrift" forHTTPHeaderField: @"Accept"];
+  mRequest = [[NSMutableURLRequest alloc] initWithURL:mURL];
+  [mRequest setHTTPMethod:@"POST"];
+  [mRequest setValue:@"application/x-thrift"
+      forHTTPHeaderField:@"Content-Type"];
+  [mRequest setValue:@"application/x-thrift" forHTTPHeaderField:@"Accept"];
 
-  NSString * userAgent = mUserAgent;
+  NSString* userAgent = mUserAgent;
   if (!userAgent) {
     userAgent = @"Cocoa/THTTPClient";
   }
-  [mRequest setValue: userAgent forHTTPHeaderField: @"User-Agent"];
+  [mRequest setValue:userAgent forHTTPHeaderField:@"User-Agent"];
 
-  [mRequest setCachePolicy: NSURLRequestReloadIgnoringCacheData];
+  [mRequest setCachePolicy:NSURLRequestReloadIgnoringCacheData];
   if (mTimeout) {
-    [mRequest setTimeoutInterval: mTimeout];
+    [mRequest setTimeoutInterval:mTimeout];
   }
 }
 
-
-- (id) initWithURL: (NSURL *) aURL
-{
-  return [self initWithURL: aURL
-                 userAgent: nil
-                   timeout: 0];
+- (id)initWithURL:(NSURL*)aURL {
+  return [self initWithURL:aURL userAgent:nil timeout:0];
 }
 
-
-- (id) initWithURL: (NSURL *) aURL
-         userAgent: (NSString *) userAgent
-           timeout: (int) timeout
-{
+- (id)initWithURL:(NSURL*)aURL
+        userAgent:(NSString*)userAgent
+          timeout:(int)timeout {
   self = [super init];
   if (!self) {
     return nil;
@@ -75,14 +68,12 @@
   [self setupRequest];
 
   // create our request data buffer
-  mRequestData = [[NSMutableData alloc] initWithCapacity: 1024];
+  mRequestData = [[NSMutableData alloc] initWithCapacity:1024];
 
   return self;
 }
 
-
-- (void) setURL: (NSURL *) aURL
-{
+- (void)setURL:(NSURL*)aURL {
   [aURL retain_stub];
   [mURL release_stub];
   mURL = aURL;
@@ -90,9 +81,7 @@
   [self setupRequest];
 }
 
-
-- (void) dealloc
-{
+- (void)dealloc {
   [mURL release_stub];
   [mUserAgent release_stub];
   [mRequest release_stub];
@@ -101,54 +90,55 @@
   [super dealloc_stub];
 }
 
-
-- (int) readAll: (uint8_t *) buf offset: (int) off length: (int) len
-{
+- (int)readAll:(uint8_t*)buf offset:(int)off length:(int)len {
   NSRange r;
   r.location = mResponseDataOffset;
   r.length = len;
 
-  [mResponseData getBytes: buf+off range: r];
+  [mResponseData getBytes:buf + off range:r];
   mResponseDataOffset += len;
 
   return len;
 }
 
-
-- (void) write: (const uint8_t *) data offset: (unsigned int) offset length: (unsigned int) length
-{
-  [mRequestData appendBytes: data+offset length: length];
+- (void)write:(const uint8_t*)data
+       offset:(unsigned int)offset
+       length:(unsigned int)length {
+  [mRequestData appendBytes:data + offset length:length];
 }
 
-
-- (void) flush
-{
-  [mRequest setHTTPBody: mRequestData]; // not sure if it copies the data
+- (void)flush {
+  [mRequest setHTTPBody:mRequestData]; // not sure if it copies the data
 
   // make the HTTP request
-  NSURLResponse * response;
-  NSError * error;
-  NSData * responseData =
-    [NSURLConnection sendSynchronousRequest: mRequest returningResponse: &response error: &error];
+  NSURLResponse* response;
+  NSError* error;
+  NSData* responseData = [NSURLConnection sendSynchronousRequest:mRequest
+                                               returningResponse:&response
+                                                           error:&error];
 
-  [mRequestData setLength: 0];
+  [mRequestData setLength:0];
 
   if (responseData == nil) {
-    @throw [TTransportException exceptionWithName: @"TTransportException"
-                                reason: @"Could not make HTTP request"
-                                error: error];
+    @throw [TTransportException exceptionWithName:@"TTransportException"
+                                           reason:@"Could not make HTTP request"
+                                            error:error];
   }
-  if (![response isKindOfClass: [NSHTTPURLResponse class]]) {
-    @throw [TTransportException exceptionWithName: @"TTransportException"
-                                           reason: [NSString stringWithFormat: @"Unexpected NSURLResponse type: %@",
-                                                    NSStringFromClass([response class])]];
+  if (![response isKindOfClass:[NSHTTPURLResponse class]]) {
+    @throw [TTransportException
+        exceptionWithName:@"TTransportException"
+                   reason:[NSString stringWithFormat:
+                                        @"Unexpected NSURLResponse type: %@",
+                                        NSStringFromClass([response class])]];
   }
 
-  NSHTTPURLResponse * httpResponse = (NSHTTPURLResponse *) response;
+  NSHTTPURLResponse* httpResponse = (NSHTTPURLResponse*)response;
   if ([httpResponse statusCode] != 200) {
-    @throw [TTransportException exceptionWithName: @"TTransportException"
-                                           reason: [NSString stringWithFormat: @"Bad response from HTTP server: %@",
-                                                    @([httpResponse statusCode])]];
+    @throw [TTransportException
+        exceptionWithName:@"TTransportException"
+                   reason:[NSString stringWithFormat:
+                                        @"Bad response from HTTP server: %@",
+                                        @([httpResponse statusCode])]];
   }
 
   // phew!
@@ -156,6 +146,5 @@
   mResponseData = [responseData retain_stub];
   mResponseDataOffset = 0;
 }
-
 
 @end

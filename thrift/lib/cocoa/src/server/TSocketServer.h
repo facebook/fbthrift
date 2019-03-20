@@ -1,4 +1,6 @@
 /*
+ * Copyright 2019-present Facebook, Inc.
+ *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -16,10 +18,9 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 #import <Foundation/Foundation.h>
-#import "TProtocolFactory.h"
 #import "TProcessorFactory.h"
+#import "TProtocolFactory.h"
 
 #if !TARGET_OS_IPHONE
 #import <CoreServices/CoreServices.h>
@@ -27,23 +28,20 @@
 #import <CFNetwork/CFNetwork.h>
 #endif
 
-extern NSString * const kTSocketServer_ClientConnectionFinishedForProcessorNotification;
-extern NSString * const kTSocketServer_ProcessorKey;
-extern NSString * const kTSockerServer_TransportKey;
-
+extern NSString* const
+    kTSocketServer_ClientConnectionFinishedForProcessorNotification;
+extern NSString* const kTSocketServer_ProcessorKey;
+extern NSString* const kTSockerServer_TransportKey;
 
 @interface TSocketServer : NSObject {
-  NSFileHandle * mSocketFileHandle;
-  id <TProtocolFactory> mInputProtocolFactory;
-  id <TProtocolFactory> mOutputProtocolFactory;
-  id <TProcessorFactory> mProcessorFactory;
+  NSFileHandle* mSocketFileHandle;
+  id<TProtocolFactory> mInputProtocolFactory;
+  id<TProtocolFactory> mOutputProtocolFactory;
+  id<TProcessorFactory> mProcessorFactory;
 }
 
-- (id) initWithPort: (int) port
-    protocolFactory: (id <TProtocolFactory>) protocolFactory
-   processorFactory: (id <TProcessorFactory>) processorFactory;
+- (id)initWithPort:(int)port
+     protocolFactory:(id<TProtocolFactory>)protocolFactory
+    processorFactory:(id<TProcessorFactory>)processorFactory;
 
 @end
-
-
-

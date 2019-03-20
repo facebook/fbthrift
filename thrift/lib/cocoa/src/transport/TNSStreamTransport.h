@@ -1,4 +1,6 @@
 /*
+ * Copyright 2019-present Facebook, Inc.
+ *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -16,23 +18,19 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 #import <Foundation/Foundation.h>
 #import "TTransport.h"
 
-@interface TNSStreamTransport : NSObject <TTransport> {
-  NSInputStream * mInput;
-  NSOutputStream * mOutput;
+@interface TNSStreamTransport : NSObject<TTransport> {
+  NSInputStream* mInput;
+  NSOutputStream* mOutput;
 }
 
-- (id) initWithInputStream: (NSInputStream *) input
-              outputStream: (NSOutputStream *) output;
+- (id)initWithInputStream:(NSInputStream*)input
+             outputStream:(NSOutputStream*)output;
 
-- (id) initWithInputStream: (NSInputStream *) input;
+- (id)initWithInputStream:(NSInputStream*)input;
 
-- (id) initWithOutputStream: (NSOutputStream *) output;
+- (id)initWithOutputStream:(NSOutputStream*)output;
 
 @end
-
-
-

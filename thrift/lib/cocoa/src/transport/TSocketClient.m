@@ -25,63 +25,66 @@
 #import <CFNetwork/CFNetwork.h>
 #endif
 
-@interface TSocketClient ()
-{
-    NSInputStream * inputStream;
-	NSOutputStream * outputStream;
+@interface TSocketClient () {
+  NSInputStream* inputStream;
+  NSOutputStream* outputStream;
 }
 @end
 
 @implementation TSocketClient
 
-- (id) initWithHostname: (NSString *) hostname
-                   port: (int) port
-{
-	inputStream = NULL;
-	outputStream = NULL;
-	CFReadStreamRef readStream = NULL;
-	CFWriteStreamRef writeStream = NULL;
-	CFStreamCreatePairWithSocketToHost(kCFAllocatorDefault, (bridge_stub CFStringRef)hostname, port, &readStream, &writeStream);
-	if (readStream && writeStream) {
-		CFReadStreamSetProperty(readStream, kCFStreamPropertyShouldCloseNativeSocket, kCFBooleanTrue);
-		CFWriteStreamSetProperty(writeStream, kCFStreamPropertyShouldCloseNativeSocket, kCFBooleanTrue);
-		
-		inputStream = (bridge_stub NSInputStream *)readStream;
-		[inputStream retain_stub];
-		[inputStream setDelegate:self];
-		[inputStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
-		[inputStream open];
-		
-		outputStream = (bridge_stub NSOutputStream *)writeStream;
-		[outputStream retain_stub];
-		[outputStream setDelegate:self];
-		[outputStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
-		[outputStream open];
-        CFRelease(readStream);
-        CFRelease(writeStream);
-	}
-	
-	self = [super initWithInputStream: inputStream outputStream: outputStream];
-	
-	return self;
+- (id)initWithHostname:(NSString*)hostname port:(int)port {
+  inputStream = NULL;
+  outputStream = NULL;
+  CFReadStreamRef readStream = NULL;
+  CFWriteStreamRef writeStream = NULL;
+  CFStreamCreatePairWithSocketToHost(
+      kCFAllocatorDefault,
+      (bridge_stub CFStringRef)hostname,
+      port,
+      &readStream,
+      &writeStream);
+  if (readStream && writeStream) {
+    CFReadStreamSetProperty(
+        readStream, kCFStreamPropertyShouldCloseNativeSocket, kCFBooleanTrue);
+    CFWriteStreamSetProperty(
+        writeStream, kCFStreamPropertyShouldCloseNativeSocket, kCFBooleanTrue);
+
+    inputStream = (bridge_stub NSInputStream*)readStream;
+    [inputStream retain_stub];
+    [inputStream setDelegate:self];
+    [inputStream scheduleInRunLoop:[NSRunLoop currentRunLoop]
+                           forMode:NSDefaultRunLoopMode];
+    [inputStream open];
+
+    outputStream = (bridge_stub NSOutputStream*)writeStream;
+    [outputStream retain_stub];
+    [outputStream setDelegate:self];
+    [outputStream scheduleInRunLoop:[NSRunLoop currentRunLoop]
+                            forMode:NSDefaultRunLoopMode];
+    [outputStream open];
+    CFRelease(readStream);
+    CFRelease(writeStream);
+  }
+
+  self = [super initWithInputStream:inputStream outputStream:outputStream];
+
+  return self;
 }
 
--(void)dealloc
-{
-    [inputStream close];
-    [inputStream removeFromRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
-    [inputStream setDelegate:nil];
-    [inputStream release_stub];
-    
-    [outputStream close];
-    [outputStream removeFromRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
-    [outputStream setDelegate:nil];
-    [outputStream release_stub];
-    [super dealloc_stub];
-}
+- (void)dealloc {
+  [inputStream close];
+  [inputStream removeFromRunLoop:[NSRunLoop currentRunLoop]
+                         forMode:NSDefaultRunLoopMode];
+  [inputStream setDelegate:nil];
+  [inputStream release_stub];
 
+  [outputStream close];
+  [outputStream removeFromRunLoop:[NSRunLoop currentRunLoop]
+                          forMode:NSDefaultRunLoopMode];
+  [outputStream setDelegate:nil];
+  [outputStream release_stub];
+  [super dealloc_stub];
+}
 
 @end
-
-
-

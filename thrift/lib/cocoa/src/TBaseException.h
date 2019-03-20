@@ -1,4 +1,6 @@
 /*
+ * Copyright 2019-present Facebook, Inc.
+ *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -16,35 +18,32 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 #import <Foundation/Foundation.h>
 
 #import "TProtocol.h"
 
-@interface TBaseException : NSException <NSCopying, NSMutableCopying>
+@interface TBaseException : NSException<NSCopying, NSMutableCopying>
 
 /**
  * convert this instance to immutable
  *
  * @return YES in case the object is immutable.
  */
-- (BOOL) makeImmutable;
+- (BOOL)makeImmutable;
 
 /**
  * check whether this instance is immutable
  */
-- (BOOL) isImmutable;
+- (BOOL)isImmutable;
 
 /**
  * check whether this instance is mutable
  */
-- (BOOL) isMutable;
+- (BOOL)isMutable;
 
 /**
  * throw an exception in case this instance is immutable.
  */
-- (void) throwExceptionIfImmutable;
+- (void)throwExceptionIfImmutable;
 
 @end
-
-

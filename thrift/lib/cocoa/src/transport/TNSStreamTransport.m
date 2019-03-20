@@ -18,72 +18,66 @@
  */
 
 #import "TNSStreamTransport.h"
-#import "TTransportException.h"
 #import "TObjective-C.h"
-
+#import "TTransportException.h"
 
 @implementation TNSStreamTransport
 
-- (id) initWithInputStream: (NSInputStream *) input
-              outputStream: (NSOutputStream *) output
-{
+- (id)initWithInputStream:(NSInputStream*)input
+             outputStream:(NSOutputStream*)output {
   self = [super init];
   mInput = [input retain_stub];
   mOutput = [output retain_stub];
   return self;
 }
 
-- (id) initWithInputStream: (NSInputStream *) input
-{
-  return [self initWithInputStream: input outputStream: nil];
+- (id)initWithInputStream:(NSInputStream*)input {
+  return [self initWithInputStream:input outputStream:nil];
 }
 
-- (id) initWithOutputStream: (NSOutputStream *) output
-{
-  return [self initWithInputStream: nil outputStream: output];
+- (id)initWithOutputStream:(NSOutputStream*)output {
+  return [self initWithInputStream:nil outputStream:output];
 }
 
-- (void) dealloc
-{
+- (void)dealloc {
   [mInput release_stub];
   [mOutput release_stub];
   [super dealloc_stub];
 }
 
-
-- (int) readAll: (uint8_t *) buf offset: (int) off length: (int) len
-{
+- (int)readAll:(uint8_t*)buf offset:(int)off length:(int)len {
   int got = 0;
   NSInteger ret = 0;
   while (got < len) {
-    ret = [mInput read: buf+off+got maxLength: len-got];
+    ret = [mInput read:buf + off + got maxLength:len - got];
     if (ret <= 0) {
-      @throw [TTransportException exceptionWithReason: @"Cannot read. Remote side has closed."];
+      @throw [TTransportException
+          exceptionWithReason:@"Cannot read. Remote side has closed."];
     }
     got += ret;
   }
   return got;
 }
 
-
-- (void) write: (const uint8_t *) data offset: (unsigned int) offset length: (unsigned int) length
-{
+- (void)write:(const uint8_t*)data
+       offset:(unsigned int)offset
+       length:(unsigned int)length {
   int got = 0;
   NSInteger result = 0;
   while (got < length) {
-    result = [mOutput write: data+offset+got maxLength: length-got];
+    result = [mOutput write:data + offset + got maxLength:length - got];
     if (result == -1) {
-      @throw [TTransportException exceptionWithReason: @"Error writing to transport output stream."
-                                                error: [mOutput streamError]];
+      @throw [TTransportException
+          exceptionWithReason:@"Error writing to transport output stream."
+                        error:[mOutput streamError]];
     } else if (result == 0) {
-      @throw [TTransportException exceptionWithReason: @"End of output stream."];
+      @throw [TTransportException exceptionWithReason:@"End of output stream."];
     }
     got += result;
   }
 }
 
-- (void) flush
-{
+- (void)flush {
   // no flush for you!
 }
 

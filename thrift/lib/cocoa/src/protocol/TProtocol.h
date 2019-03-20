@@ -1,4 +1,6 @@
 /*
+ * Copyright 2019-present Facebook, Inc.
+ *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -16,11 +18,9 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 #import <Foundation/Foundation.h>
 
 #import "TTransport.h"
-
 
 enum {
   TMessageType_CALL = 1,
@@ -30,119 +30,107 @@ enum {
 };
 
 enum {
-  TType_STOP   = 0,
-  TType_VOID   = 1,
-  TType_BOOL   = 2,
-  TType_BYTE   = 3,
+  TType_STOP = 0,
+  TType_VOID = 1,
+  TType_BOOL = 2,
+  TType_BYTE = 3,
   TType_DOUBLE = 4,
-  TType_I16    = 6,
-  TType_I32    = 8,
-  TType_I64    = 10,
+  TType_I16 = 6,
+  TType_I32 = 8,
+  TType_I64 = 10,
   TType_STRING = 11,
   TType_STRUCT = 12,
-  TType_MAP    = 13,
-  TType_SET    = 14,
-  TType_LIST   = 15
+  TType_MAP = 13,
+  TType_SET = 14,
+  TType_LIST = 15
 };
 
+@protocol TProtocol<NSObject>
 
-@protocol TProtocol <NSObject>
+- (id<TTransport>)transport;
 
-- (id <TTransport>) transport;
+- (void)readMessageBeginReturningName:(NSString**)name
+                                 type:(int*)type
+                           sequenceID:(int*)sequenceID;
+- (void)readMessageEnd;
 
-- (void) readMessageBeginReturningName: (NSString **) name
-                                  type: (int *) type
-                            sequenceID: (int *) sequenceID;
-- (void) readMessageEnd;
+- (void)readStructBeginReturningName:(NSString**)name;
+- (void)readStructEnd;
 
-- (void) readStructBeginReturningName: (NSString **) name;
-- (void) readStructEnd;
+- (void)readFieldBeginReturningName:(NSString**)name
+                               type:(int*)fieldType
+                            fieldID:(int*)fieldID;
+- (void)readFieldEnd;
 
-- (void) readFieldBeginReturningName: (NSString **) name
-                                type: (int *) fieldType
-                             fieldID: (int *) fieldID;
-- (void) readFieldEnd;
+- (NSString*)readString;
 
-- (NSString *) readString;
+- (BOOL)readBool;
 
-- (BOOL) readBool;
+- (unsigned char)readByte;
 
-- (unsigned char) readByte;
+- (short)readI16;
 
-- (short) readI16;
+- (int32_t)readI32;
 
-- (int32_t) readI32;
+- (int64_t)readI64;
 
-- (int64_t) readI64;
+- (double)readDouble;
 
-- (double) readDouble;
+- (NSData*)readBinary;
 
-- (NSData *) readBinary;
+- (void)readMapBeginReturningKeyType:(int*)keyType
+                           valueType:(int*)valueType
+                                size:(int*)size;
+- (void)readMapEnd;
 
-- (void) readMapBeginReturningKeyType: (int *) keyType
-                            valueType: (int *) valueType
-                                 size: (int *) size;
-- (void) readMapEnd;
+- (void)readSetBeginReturningElementType:(int*)elementType size:(int*)size;
+- (void)readSetEnd;
 
+- (void)readListBeginReturningElementType:(int*)elementType size:(int*)size;
+- (void)readListEnd;
 
-- (void) readSetBeginReturningElementType: (int *) elementType
-                                     size: (int *) size;
-- (void) readSetEnd;
+- (void)writeMessageBeginWithName:(NSString*)name
+                             type:(int)messageType
+                       sequenceID:(int)sequenceID;
+- (void)writeMessageEnd;
 
+- (void)writeStructBeginWithName:(NSString*)name;
+- (void)writeStructEnd;
 
-- (void) readListBeginReturningElementType: (int *) elementType
-                                      size: (int *) size;
-- (void) readListEnd;
+- (void)writeFieldBeginWithName:(NSString*)name
+                           type:(int)fieldType
+                        fieldID:(int)fieldID;
 
+- (void)writeI32:(int32_t)value;
 
-- (void) writeMessageBeginWithName: (NSString *) name
-                              type: (int) messageType
-                        sequenceID: (int) sequenceID;
-- (void) writeMessageEnd;
+- (void)writeI64:(int64_t)value;
 
-- (void) writeStructBeginWithName: (NSString *) name;
-- (void) writeStructEnd;
+- (void)writeI16:(short)value;
 
-- (void) writeFieldBeginWithName: (NSString *) name
-                            type: (int) fieldType
-                         fieldID: (int) fieldID;
+- (void)writeByte:(uint8_t)value;
 
-- (void) writeI32: (int32_t) value;
+- (void)writeString:(NSString*)value;
 
-- (void) writeI64: (int64_t) value;
+- (void)writeDouble:(double)value;
 
-- (void) writeI16: (short) value;
+- (void)writeBool:(BOOL)value;
 
-- (void) writeByte: (uint8_t) value;
+- (void)writeBinary:(NSData*)data;
 
-- (void) writeString: (NSString *) value;
+- (void)writeFieldStop;
 
-- (void) writeDouble: (double) value;
+- (void)writeFieldEnd;
 
-- (void) writeBool: (BOOL) value;
+- (void)writeMapBeginWithKeyType:(int)keyType
+                       valueType:(int)valueType
+                            size:(int)size;
+- (void)writeMapEnd;
 
-- (void) writeBinary: (NSData *) data;
+- (void)writeSetBeginWithElementType:(int)elementType size:(int)size;
+- (void)writeSetEnd;
 
-- (void) writeFieldStop;
+- (void)writeListBeginWithElementType:(int)elementType size:(int)size;
 
-- (void) writeFieldEnd;
-
-- (void) writeMapBeginWithKeyType: (int) keyType
-                        valueType: (int) valueType
-                             size: (int) size;
-- (void) writeMapEnd;
-
-
-- (void) writeSetBeginWithElementType: (int) elementType
-                                 size: (int) size;
-- (void) writeSetEnd;
-
-
-- (void) writeListBeginWithElementType: (int) elementType
-                                  size: (int) size;
-
-- (void) writeListEnd;
-
+- (void)writeListEnd;
 
 @end
-

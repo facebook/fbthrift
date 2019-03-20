@@ -1,4 +1,6 @@
 /*
+ * Copyright 2019-present Facebook, Inc.
+ *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -16,12 +18,11 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 #import <Foundation/Foundation.h>
 #import "TProcessor.h"
 
-@protocol TProcessorFactory <NSObject>
+@protocol TProcessorFactory<NSObject>
 
-- (id<TProcessor>) processorForTransport: (id<TTransport>) transport;
+- (id<TProcessor>)processorForTransport:(id<TTransport>)transport;
 
 @end

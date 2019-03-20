@@ -17,35 +17,27 @@
  * under the License.
  */
 
-
 #import "TSharedProcessorFactory.h"
 #import "TObjective-C.h"
 
-
 @implementation TSharedProcessorFactory
 
-
-- (id) initWithSharedProcessor: (id<TProcessor>) sharedProcessor
-{
+- (id)initWithSharedProcessor:(id<TProcessor>)sharedProcessor {
   self = [super init];
   if (!self) {
     return nil;
   }
-  
+
   mSharedProcessor = [sharedProcessor retain_stub];
   return self;
 }
 
-
-- (void) dealloc
-{
+- (void)dealloc {
   [mSharedProcessor release_stub];
   [super dealloc_stub];
 }
 
-
-- (id<TProcessor>) processorForTransport: (id<TTransport>) transport
-{
+- (id<TProcessor>)processorForTransport:(id<TTransport>)transport {
   return [[mSharedProcessor retain_stub] autorelease_stub];
 }
 

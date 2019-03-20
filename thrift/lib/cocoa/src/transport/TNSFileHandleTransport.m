@@ -17,24 +17,18 @@
  * under the License.
  */
 
-
 #import "TNSFileHandleTransport.h"
-#import "TTransportException.h"
 #import "TObjective-C.h"
-
+#import "TTransportException.h"
 
 @implementation TNSFileHandleTransport
 
-- (id) initWithFileHandle: (NSFileHandle *) fileHandle
-{
-  return [self initWithInputFileHandle: fileHandle
-                      outputFileHandle: fileHandle];
+- (id)initWithFileHandle:(NSFileHandle*)fileHandle {
+  return [self initWithInputFileHandle:fileHandle outputFileHandle:fileHandle];
 }
 
-
-- (id) initWithInputFileHandle: (NSFileHandle *) inputFileHandle
-              outputFileHandle: (NSFileHandle *) outputFileHandle
-{
+- (id)initWithInputFileHandle:(NSFileHandle*)inputFileHandle
+             outputFileHandle:(NSFileHandle*)outputFileHandle {
   self = [super init];
 
   mInputFileHandle = [inputFileHandle retain_stub];
@@ -43,51 +37,50 @@
   return self;
 }
 
-
-- (void) dealloc {
+- (void)dealloc {
   [mInputFileHandle release_stub];
   [mOutputFileHandle release_stub];
   [super dealloc_stub];
 }
 
-
-- (int) readAll: (uint8_t *) buf offset: (int) off length: (int) len
-{
+- (int)readAll:(uint8_t*)buf offset:(int)off length:(int)len {
   int got = 0;
   while (got < len) {
-    NSData * d = [mInputFileHandle readDataOfLength: len-got];
+    NSData* d = [mInputFileHandle readDataOfLength:len - got];
     if ([d length] == 0) {
-      @throw [TTransportException exceptionWithName: @"TTransportException"
-                                  reason: @"Cannot read. No more data."];
+      @throw
+          [TTransportException exceptionWithName:@"TTransportException"
+                                          reason:@"Cannot read. No more data."];
     }
-    [d getBytes: buf+got];
+    [d getBytes:buf + got];
     got += [d length];
   }
   return got;
 }
 
-
-- (void) write: (const uint8_t *) data offset: (unsigned int) offset length: (unsigned int) length
-{
-  void *pos = (void *) data + offset;
-  NSData * dataObject = [[NSData alloc] initWithBytesNoCopy: pos // data+offset
-                                                     length: length
-                                               freeWhenDone: NO];
+- (void)write:(const uint8_t*)data
+       offset:(unsigned int)offset
+       length:(unsigned int)length {
+  void* pos = (void*)data + offset;
+  NSData* dataObject = [[NSData alloc] initWithBytesNoCopy:pos // data+offset
+                                                    length:length
+                                              freeWhenDone:NO];
 
   @try {
-    [mOutputFileHandle writeData: dataObject];
-  } @catch (NSException * e) {
-    @throw [TTransportException exceptionWithName: @"TTransportException"
-                                           reason: [NSString stringWithFormat: @"%s: Unable to write data: %@", __PRETTY_FUNCTION__, e]];
+    [mOutputFileHandle writeData:dataObject];
+  } @catch (NSException* e) {
+    @throw [TTransportException
+        exceptionWithName:@"TTransportException"
+                   reason:[NSString
+                              stringWithFormat:@"%s: Unable to write data: %@",
+                                               __PRETTY_FUNCTION__,
+                                               e]];
   }
 
   [dataObject release_stub];
 }
 
-
-- (void) flush
-{
-
+- (void)flush {
 }
 
 @end

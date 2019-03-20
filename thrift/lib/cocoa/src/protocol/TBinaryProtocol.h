@@ -1,4 +1,6 @@
 /*
+ * Copyright 2019-present Facebook, Inc.
+ *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -16,36 +18,34 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 #import "TProtocol.h"
-#import "TTransport.h"
 #import "TProtocolFactory.h"
+#import "TTransport.h"
 
-
-@interface TBinaryProtocol : NSObject <TProtocol> {
-  id <TTransport> mTransport;
+@interface TBinaryProtocol : NSObject<TProtocol> {
+  id<TTransport> mTransport;
   BOOL mStrictRead;
   BOOL mStrictWrite;
   int32_t mMessageSizeLimit;
 }
 
-- (id) initWithTransport: (id <TTransport>) transport;
+- (id)initWithTransport:(id<TTransport>)transport;
 
-- (id) initWithTransport: (id <TTransport>) transport
-              strictRead: (BOOL) strictRead
-             strictWrite: (BOOL) strictWrite;
+- (id)initWithTransport:(id<TTransport>)transport
+             strictRead:(BOOL)strictRead
+            strictWrite:(BOOL)strictWrite;
 
-- (int32_t) messageSizeLimit;
-- (void) setMessageSizeLimit: (int32_t) sizeLimit;
+- (int32_t)messageSizeLimit;
+- (void)setMessageSizeLimit:(int32_t)sizeLimit;
 
-@end;
+@end
+;
 
-
-@interface TBinaryProtocolFactory : NSObject <TProtocolFactory> {
+@interface TBinaryProtocolFactory : NSObject<TProtocolFactory> {
 }
 
-+ (TBinaryProtocolFactory *) sharedFactory;
++ (TBinaryProtocolFactory*)sharedFactory;
 
-- (TBinaryProtocol *) newProtocolOnTransport: (id <TTransport>) transport;
+- (TBinaryProtocol*)newProtocolOnTransport:(id<TTransport>)transport;
 
 @end

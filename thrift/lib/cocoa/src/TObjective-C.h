@@ -1,4 +1,6 @@
 /*
+ * Copyright 2019-present Facebook, Inc.
+ *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -16,10 +18,9 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 /*
- * TObjective-C.h is for supporting coexistence of both the ARC (Automatic 
- * Reference Counting) mode and the Non-ARC mode of Objective-C 
+ * TObjective-C.h is for supporting coexistence of both the ARC (Automatic
+ * Reference Counting) mode and the Non-ARC mode of Objective-C
  * in the same source code.
  *
  *                  2011/11/14  HIRANO Satoshi (AIST, Japan)
@@ -45,7 +46,7 @@
  *    Use NSAutoreleasePool like this:
  *        #if __has_feature(objc_arc)
  *          @autoreleasepool {
- *              // code 
+ *              // code
  *          }
  *        #else
  *          NSAutoReleasePool *pool = [[NSAutoReleasePool alloc] init...
@@ -53,7 +54,6 @@
  *          [pool release];
  *        #endif
  */
-
 
 #if !defined(retain_stub)
 #if __has_feature(objc_arc)

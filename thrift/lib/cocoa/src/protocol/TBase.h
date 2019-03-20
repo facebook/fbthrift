@@ -1,4 +1,6 @@
 /*
+ * Copyright 2019-present Facebook, Inc.
+ *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -16,26 +18,24 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 #import <Foundation/Foundation.h>
 
 #import "TProtocol.h"
 
-@protocol TBase <NSObject>
+@protocol TBase<NSObject>
 
 /**
  * De-serialize object from the given input protocol
  *
- * @param input protocol used for reading 
+ * @param input protocol used for reading
  */
-- (void) read: (id <TProtocol>) inProtocol;
+- (void)read:(id<TProtocol>)inProtocol;
 
 /**
  * Serialize object to the given protocol
  *
  * @param buf output protocol used for writing
  */
-- (void) write: (id <TProtocol>) outProtocol;
+- (void)write:(id<TProtocol>)outProtocol;
 
 @end
-

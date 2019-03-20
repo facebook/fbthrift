@@ -1,4 +1,6 @@
 /*
+ * Copyright 2019-present Facebook, Inc.
+ *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -16,21 +18,16 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 #import <Foundation/Foundation.h>
 #import "TNSStreamTransport.h"
 
-@interface TSocketClient : TNSStreamTransport 
+@interface TSocketClient : TNSStreamTransport
 #if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_6)
-<NSStreamDelegate>
+                           <NSStreamDelegate>
 #endif
 {
 }
 
-- (id) initWithHostname: (NSString *) hostname
-                   port: (int) port;
+- (id)initWithHostname:(NSString*)hostname port:(int)port;
 
 @end
-
-
-

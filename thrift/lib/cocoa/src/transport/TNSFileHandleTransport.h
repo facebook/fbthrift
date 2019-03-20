@@ -1,4 +1,6 @@
 /*
+ * Copyright 2019-present Facebook, Inc.
+ *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -16,20 +18,17 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
-
 #import <Foundation/Foundation.h>
 #import "TTransport.h"
 
-@interface TNSFileHandleTransport : NSObject <TTransport> {
-  NSFileHandle * mInputFileHandle;
-  NSFileHandle * mOutputFileHandle;
+@interface TNSFileHandleTransport : NSObject<TTransport> {
+  NSFileHandle* mInputFileHandle;
+  NSFileHandle* mOutputFileHandle;
 }
 
-- (id) initWithFileHandle: (NSFileHandle *) fileHandle;
+- (id)initWithFileHandle:(NSFileHandle*)fileHandle;
 
-- (id) initWithInputFileHandle: (NSFileHandle *) inputFileHandle
-              outputFileHandle: (NSFileHandle *) outputFileHandle;
-
+- (id)initWithInputFileHandle:(NSFileHandle*)inputFileHandle
+             outputFileHandle:(NSFileHandle*)outputFileHandle;
 
 @end
