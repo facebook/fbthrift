@@ -15,9 +15,9 @@ import java.util.*;
 public final class Constants {
     private Constants() {}
 
-    public static final test.fixtures.module2.Struct c2 = ;
+    public static final test.fixtures.module2.Struct C2 = new test.fixtures.module2.Struct.Builder().set(test.fixtures.module0.Constants.C0).set(test.fixtures.module1.Constants.C1).build();
 
-    public static final test.fixtures.module2.Struct c3 = ;
+    public static final test.fixtures.module2.Struct C3 = test.fixtures.module2.Constants.C2;
 
-    public static final test.fixtures.module2.Struct c4 = ;
+    public static final test.fixtures.module2.Struct C4 = test.fixtures.module2.Constants.C2;
 }

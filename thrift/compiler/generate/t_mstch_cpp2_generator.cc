@@ -1049,7 +1049,8 @@ class mstch_cpp2_const : public mstch_const {
       std::shared_ptr<mstch_generators const> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos,
-      int32_t index)
+      int32_t index,
+      const std::string& field_name)
       : mstch_const(
             cnst,
             current_const,
@@ -1057,7 +1058,8 @@ class mstch_cpp2_const : public mstch_const {
             generators,
             cache,
             pos,
-            index) {
+            index,
+            field_name) {
     register_methods(
         this,
         {
@@ -1312,9 +1314,17 @@ class const_cpp2_generator : public const_generator {
       ELEMENT_POSITION pos = ELEMENT_POSITION::NONE,
       int32_t index = 0,
       t_const const* current_const = nullptr,
-      t_type const* expected_type = nullptr) const override {
+      t_type const* expected_type = nullptr,
+      const std::string& field_name = std::string()) const override {
     return std::make_shared<mstch_cpp2_const>(
-        cnst, current_const, expected_type, generators, cache, pos, index);
+        cnst,
+        current_const,
+        expected_type,
+        generators,
+        cache,
+        pos,
+        index,
+        field_name);
   }
 };
 

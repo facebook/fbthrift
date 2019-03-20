@@ -34,3 +34,13 @@ union MyUnion2 {
   1: MyUnion1 u,
   2: MyStruct1 s,
 }
+
+const MyStruct1 ms = {
+  "MyIntField": 42,
+  "MyStringField": "Meaning_of_life",
+  "MyDataField": {
+    "field1": 1,
+    "field2": 2,
+  },
+  "major": 32,
+}

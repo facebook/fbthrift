@@ -14,4 +14,15 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-}}set{{field:javaCapitalName}}
+}}
+{{! TODO: It is technically impossible to have constants if structs are created
+          in mutable bean style.
+}}
+new {{> BoxedType}}{{^struct:asBean?}}.Builder(){{/struct:asBean?}}{{!
+}}{{#value:const_struct}}{{!
+  }}{{#constant:type}}{{!
+    }}{{#constant:value}}.set{{constant:javaCapitalName}}({{> ConstantValue}}){{!
+    }}{{/constant:value}}{{!
+  }}{{/constant:type}}{{!
+}}{{/value:const_struct}}{{!
+}}{{^struct:asBean?}}.build(){{/struct:asBean?}}

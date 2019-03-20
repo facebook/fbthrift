@@ -15,11 +15,11 @@ import java.util.*;
 public final class Constants {
     private Constants() {}
 
-    public static final int myInt = 1337;
+    public static final int MyInt = 1337;
 
-    public static final String name = "Mark Zuckerberg";
+    public static final String Name = "Mark Zuckerberg";
 
-    public static final List<Map<String, Integer>> states = ImmutableList.<Map<String, Integer>>builder()
+    public static final List<Map<String, Integer>> States = ImmutableList.<Map<String, Integer>>builder()
         .add(ImmutableMap.<String, Integer>builder()
         .put("San Diego", 3211000)
         .put("Sacramento", 479600)
@@ -31,35 +31,35 @@ public final class Constants {
         .build())
         .build();
 
-    public static final double x = 1;
+    public static final double X = 1;
 
-    public static final double y = 1000000.0;
+    public static final double Y = 1000000.0;
 
-    public static final double z = 1000000000;
+    public static final double Z = 1000000000;
 
-    public static final test.fixtures.lazy_constants.Internship instagram = ;
+    public static final test.fixtures.lazy_constants.Internship Instagram = new test.fixtures.lazy_constants.Internship.Builder().set(12).set("Software Engineer").set(test.fixtures.lazy_constants.Company.fromInteger(3)).build();
 
-    public static final List<test.fixtures.lazy_constants.Range> kRanges = ImmutableList.<test.fixtures.lazy_constants.Range>builder()
-        .add()
-        .add()
+    public static final List<test.fixtures.lazy_constants.Range> KRanges = ImmutableList.<test.fixtures.lazy_constants.Range>builder()
+        .add(new test.fixtures.lazy_constants.Range.Builder().set(1).set(2).build())
+        .add(new test.fixtures.lazy_constants.Range.Builder().set(5).set(6).build())
         .build();
 
-    public static final List<test.fixtures.lazy_constants.Internship> internList = ImmutableList.<test.fixtures.lazy_constants.Internship>builder()
-        .add()
-        .add()
+    public static final List<test.fixtures.lazy_constants.Internship> InternList = ImmutableList.<test.fixtures.lazy_constants.Internship>builder()
+        .add(test.fixtures.lazy_constants.Constants.Instagram)
+        .add(new test.fixtures.lazy_constants.Internship.Builder().set(10).set("Sales Intern").set(test.fixtures.lazy_constants.Company.fromInteger(0)).build())
         .build();
 
-    public static final String apostrophe = "'";
+    public static final String Apostrophe = "'";
 
-    public static final String tripleApostrophe = "'''";
+    public static final String TripleApostrophe = "'''";
 
-    public static final String quotationMark = "\"";
+    public static final String QuotationMark = "\"";
 
-    public static final String backslash = "\\";
+    public static final String Backslash = "\\";
 
-    public static final String escaped_a = "\u0061";
+    public static final String EscapedA = "\u0061";
 
-    public static final Map<String, Integer> char2ascii = ImmutableMap.<String, Integer>builder()
+    public static final Map<String, Integer> Char2ascii = ImmutableMap.<String, Integer>builder()
         .put("'", 39)
         .put("\"", 34)
         .put("\\", 92)

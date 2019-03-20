@@ -15,11 +15,11 @@ import java.util.*;
 public final class Constants {
     private Constants() {}
 
-    public static final int myInt = 1337;
+    public static final int MyInt = 1337;
 
-    public static final String name = "Mark Zuckerberg";
+    public static final String Name = "Mark Zuckerberg";
 
-    public static final List<Map<String, Integer>> states = ImmutableList.<Map<String, Integer>>builder()
+    public static final List<Map<String, Integer>> States = ImmutableList.<Map<String, Integer>>builder()
         .add(ImmutableMap.<String, Integer>builder()
         .put("San Diego", 3211000)
         .put("Sacramento", 479600)
@@ -31,72 +31,80 @@ public final class Constants {
         .build())
         .build();
 
-    public static final double x = 1;
+    public static final double X = 1;
 
-    public static final double y = 1000000.0;
+    public static final double Y = 1000000.0;
 
-    public static final double z = 1000000000;
+    public static final double Z = 1000000000;
 
-    public static final double zeroDoubleValue = 0;
+    public static final double ZeroDoubleValue = 0;
 
-    public static final double longDoubleValue = 2.59961000990301e-05;
+    public static final double LongDoubleValue = 2.59961000990301e-05;
 
-    public static final test.fixtures.constants.Internship instagram = ;
+    public static final test.fixtures.constants.Internship Instagram = new test.fixtures.constants.Internship.Builder().set(12).set("Software Engineer").set(test.fixtures.constants.Company.fromInteger(3)).build();
 
-    public static final List<test.fixtures.constants.Range> kRanges = ImmutableList.<test.fixtures.constants.Range>builder()
-        .add()
-        .add()
+    public static final List<test.fixtures.constants.Range> KRanges = ImmutableList.<test.fixtures.constants.Range>builder()
+        .add(new test.fixtures.constants.Range.Builder().set(1).set(2).build())
+        .add(new test.fixtures.constants.Range.Builder().set(5).set(6).build())
         .build();
 
-    public static final List<test.fixtures.constants.Internship> internList = ImmutableList.<test.fixtures.constants.Internship>builder()
-        .add()
-        .add()
+    public static final List<test.fixtures.constants.Internship> InternList = ImmutableList.<test.fixtures.constants.Internship>builder()
+        .add(test.fixtures.constants.Constants.Instagram)
+        .add(new test.fixtures.constants.Internship.Builder().set(10).set("Sales Intern").set(test.fixtures.constants.Company.fromInteger(0)).build())
         .build();
 
-    public static final test.fixtures.constants.Struct1 pod_0 = ;
+    public static final test.fixtures.constants.Struct1 Pod0 = new test.fixtures.constants.Struct1.Builder().build();
 
-    public static final test.fixtures.constants.Struct1 pod_1 = ;
+    public static final test.fixtures.constants.Struct1 Pod1 = new test.fixtures.constants.Struct1.Builder().set(10).set("foo").build();
 
-    public static final test.fixtures.constants.Struct2 pod_2 = ;
+    public static final test.fixtures.constants.Struct2 Pod2 = new test.fixtures.constants.Struct2.Builder().set(98).set("gaz").set(new test.fixtures.constants.Struct1.Builder().set(12).set("bar").build()).set(ImmutableList.<Integer>builder()
+        .add(11)
+        .add(22)
+        .add(33)
+        .build()).build();
 
-    public static final test.fixtures.constants.Struct3 pod_3 = ;
+    public static final test.fixtures.constants.Struct3 Pod3 = new test.fixtures.constants.Struct3.Builder().set("abc").set(456).set(new test.fixtures.constants.Struct2.Builder().set(888).set(new test.fixtures.constants.Struct1.Builder().set("gaz").build()).set(ImmutableList.<Integer>builder()
+        .add(1)
+        .add(2)
+        .add(3)
+        .build()).build()).build();
 
-    public static final test.fixtures.constants.Union1 u_1_1 = ;
+    public static final test.fixtures.constants.Union1 U11 = new test.fixtures.constants.Union1(97);
 
-    public static final test.fixtures.constants.Union1 u_1_2 = ;
+    public static final test.fixtures.constants.Union1 U12 = new test.fixtures.constants.Union1(5.6);
 
-    public static final test.fixtures.constants.Union1 u_1_3 = ;
+    public static final test.fixtures.constants.Union1 U13 = new test.fixtures.constants.Union1();
 
-    public static final test.fixtures.constants.Union2 u_2_1 = ;
+    public static final test.fixtures.constants.Union2 U21 = new test.fixtures.constants.Union2(51);
 
-    public static final test.fixtures.constants.Union2 u_2_2 = ;
+    public static final test.fixtures.constants.Union2 U22 = new test.fixtures.constants.Union2(6.7);
 
-    public static final test.fixtures.constants.Union2 u_2_3 = ;
+    public static final test.fixtures.constants.Union2 U23 = new test.fixtures.constants.Union2(new test.fixtures.constants.Struct1.Builder().set(8).set("abacabb").build());
 
-    public static final test.fixtures.constants.Union2 u_2_4 = ;
+    public static final test.fixtures.constants.Union2 U24 = new test.fixtures.constants.Union2(new test.fixtures.constants.Union1(43));
 
-    public static final test.fixtures.constants.Union2 u_2_5 = ;
+    public static final test.fixtures.constants.Union2 U25 = new test.fixtures.constants.Union2(new test.fixtures.constants.Union1(9.8));
 
-    public static final test.fixtures.constants.Union2 u_2_6 = ;
+    public static final test.fixtures.constants.Union2 U26 = new test.fixtures.constants.Union2(new test.fixtures.constants.Union1());
 
-    public static final String apostrophe = "'";
+    public static final String Apostrophe = "'";
 
-    public static final String tripleApostrophe = "'''";
+    public static final String TripleApostrophe = "'''";
 
-    public static final String quotationMark = "\"";
+    public static final String QuotationMark = "\"";
 
-    public static final String backslash = "\\";
+    public static final String Backslash = "\\";
 
-    public static final String escaped_a = "\u0061";
+    public static final String EscapedA = "\u0061";
 
-    public static final Map<String, Integer> char2ascii = ImmutableMap.<String, Integer>builder()
+    public static final Map<String, Integer> Char2ascii = ImmutableMap.<String, Integer>builder()
         .put("'", 39)
         .put("\"", 34)
         .put("\\", 92)
         .put("\u0061", 97)
         .build();
 
-    public static final List<String> escaped_strings = ImmutableList.<String>builder()
+    public static final List<String> EscapedStrings = ImmutableList.<String>builder()
         .add("\u0061")
         .add("\u00ab")
         .add("\u006a")
@@ -115,43 +123,43 @@ public final class Constants {
         .add("zzz\u00a6yyy")
         .build();
 
-    public static final boolean false_c = false;
+    public static final boolean FalseC = false;
 
-    public static final boolean true_c = true;
+    public static final boolean TrueC = true;
 
-    public static final byte zero_byte = 0;
+    public static final byte ZeroByte = 0;
 
-    public static final short zero16 = 0;
+    public static final short Zero16 = 0;
 
-    public static final int zero32 = 0;
+    public static final int Zero32 = 0;
 
-    public static final long zero64 = 0L;
+    public static final long Zero64 = 0L;
 
-    public static final double zero_dot_zero = 0;
+    public static final double ZeroDotZero = 0;
 
-    public static final String empty_string = "";
+    public static final String EmptyString = "";
 
-    public static final List<Integer> empty_int_list = ImmutableList.<Integer>builder()
+    public static final List<Integer> EmptyIntList = ImmutableList.<Integer>builder()
         .build();
 
-    public static final List<String> empty_string_list = ImmutableList.<String>builder()
+    public static final List<String> EmptyStringList = ImmutableList.<String>builder()
         .build();
 
-    public static final Set<Integer> empty_int_set = ImmutableSet.<Integer>builder()
+    public static final Set<Integer> EmptyIntSet = ImmutableSet.<Integer>builder()
         .build();
 
-    public static final Set<String> empty_string_set = ImmutableSet.<String>builder()
+    public static final Set<String> EmptyStringSet = ImmutableSet.<String>builder()
         .build();
 
-    public static final Map<Integer, Integer> empty_int_int_map = ImmutableMap.<Integer, Integer>builder()
+    public static final Map<Integer, Integer> EmptyIntIntMap = ImmutableMap.<Integer, Integer>builder()
         .build();
 
-    public static final Map<Integer, String> empty_int_string_map = ImmutableMap.<Integer, String>builder()
+    public static final Map<Integer, String> EmptyIntStringMap = ImmutableMap.<Integer, String>builder()
         .build();
 
-    public static final Map<String, Integer> empty_string_int_map = ImmutableMap.<String, Integer>builder()
+    public static final Map<String, Integer> EmptyStringIntMap = ImmutableMap.<String, Integer>builder()
         .build();
 
-    public static final Map<String, String> empty_string_string_map = ImmutableMap.<String, String>builder()
+    public static final Map<String, String> EmptyStringStringMap = ImmutableMap.<String, String>builder()
         .build();
 }

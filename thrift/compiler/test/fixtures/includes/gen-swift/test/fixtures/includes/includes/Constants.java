@@ -15,7 +15,7 @@ import java.util.*;
 public final class Constants {
     private Constants() {}
 
-    public static final test.fixtures.includes.includes.Included ExampleIncluded = ;
+    public static final test.fixtures.includes.includes.Included ExampleIncluded = new test.fixtures.includes.includes.Included.Builder().set(2L).set(test.fixtures.includes.transitive.Constants.ExampleFoo).build();
 
     public static final long IncludedConstant = 42L;
 }

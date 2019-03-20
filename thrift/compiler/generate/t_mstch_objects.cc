@@ -132,9 +132,17 @@ std::shared_ptr<mstch_base> const_generator::generate(
     ELEMENT_POSITION pos,
     int32_t index,
     t_const const* current_const,
-    t_type const* expected_type) const {
+    t_type const* expected_type,
+    const std::string& field_name) const {
   return std::make_shared<mstch_const>(
-      cnst, current_const, expected_type, generators, cache, pos, index);
+      cnst,
+      current_const,
+      expected_type,
+      generators,
+      cache,
+      pos,
+      index,
+      field_name);
 }
 
 std::shared_ptr<mstch_base> program_generator::generate(
@@ -419,6 +427,9 @@ mstch::node mstch_const_value::map_elems() {
 mstch::node mstch_const_value::const_struct() {
   std::vector<t_const*> constants;
   std::vector<int32_t> idx;
+  std::vector<std::string> field_names;
+  mstch::array a;
+
   if (const_value_->get_ttype()->is_struct() ||
       const_value_->get_ttype()->is_xception()) {
     auto const* strct =
@@ -430,10 +441,11 @@ mstch::node mstch_const_value::const_struct() {
           "",
           member.second->clone()));
       idx.push_back(strct->get_member(member.first->get_string())->get_key());
+      field_names.push_back(
+          strct->get_member(member.first->get_string())->get_name());
     }
   }
 
-  mstch::array a;
   for (size_t i = 0; i < constants.size(); ++i) {
     auto pos = element_position(i, constants.size());
     a.push_back(generators_->const_generator_->generate(
@@ -443,7 +455,8 @@ mstch::node mstch_const_value::const_struct() {
         pos,
         idx[i],
         current_const_,
-        constants[i]->get_type()));
+        constants[i]->get_type(),
+        field_names[i]));
   }
   return a;
 }

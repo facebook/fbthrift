@@ -14,4 +14,11 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-}}set{{field:javaCapitalName}}
+}}
+new {{> BoxedType}}({{!
+}}{{#value:const_struct}}{{!
+}}{{#constant:type}}{{!
+  }}{{#constant:value}}{{> ConstantValue}}{{/constant:value}}{{!
+}}{{/constant:type}}{{!
+}}{{/value:const_struct}}{{!
+}})

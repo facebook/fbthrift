@@ -87,5 +87,22 @@
   Typedef Constants
 }}{{#type:typedef?}}{{#type:typedefType}}{{> ConstantValue}}{{/type:typedefType}}{{/type:typedef?}}{{!
 
-  Enum constants
-}}{{#type:enum?}}{{> BoxedType}}.fromInteger({{value:integerValue}}){{/type:enum?}}
+  Enum Constants
+}}{{#type:enum?}}{{> BoxedType}}.fromInteger({{value:integerValue}}){{/type:enum?}}{{!
+
+  Struct Constants
+}}{{#type:struct?}}{{!
+  }}{{#type:struct}}{{!
+    }}{{#value:referenceable?}}{{!
+      }}{{#value:owning_const}}{{!
+        }}{{#constant:program}}{{!
+          }}{{program:javaPackage}}.Constants.{{constant:javaCapitalName}}{{!
+        }}{{/constant:program}}{{!
+      }}{{/value:owning_const}}{{!
+    }}{{/value:referenceable?}}{{!
+    }}{{^value:referenceable?}}{{!
+      }}{{#struct:plain?}}{{> ConstantStruct}}{{/struct:plain?}}{{!
+      }}{{#struct:union?}}{{> ConstantUnion}}{{/struct:union?}}{{!
+    }}{{/value:referenceable?}}{{!
+  }}{{/type:struct}}{{!
+}}{{/type:struct?}}

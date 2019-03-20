@@ -324,6 +324,37 @@ class mstch_swift_enum_value : public mstch_enum_value {
   }
 };
 
+class mstch_swift_const : public mstch_const {
+ public:
+  mstch_swift_const(
+      t_const const* cnst,
+      t_const const* current_const,
+      t_type const* expected_type,
+      std::shared_ptr<mstch_generators const> generators,
+      std::shared_ptr<mstch_cache> cache,
+      ELEMENT_POSITION const pos,
+      int32_t index,
+      const std::string& field_name)
+      : mstch_const(
+            cnst,
+            current_const,
+            expected_type,
+            generators,
+            cache,
+            pos,
+            index,
+            field_name) {
+    register_methods(
+        this,
+        {
+            {"constant:javaCapitalName", &mstch_swift_const::java_capital_name},
+        });
+  }
+  mstch::node java_capital_name() {
+    return java::mangle_java_name(cnst_->get_name(), true);
+  }
+};
+
 class mstch_swift_const_value : public mstch_const_value {
  public:
   mstch_swift_const_value(
@@ -350,6 +381,10 @@ class mstch_swift_const_value : public mstch_const_value {
   }
   mstch::node quote_java_string() {
     return java::quote_java_string(const_value_->get_string());
+  }
+
+  bool same_type_as_expected() const override {
+    return true;
   }
 };
 
@@ -513,6 +548,31 @@ class type_swift_generator : public type_generator {
   }
 };
 
+class const_swift_generator : public const_generator {
+ public:
+  const_swift_generator() = default;
+  ~const_swift_generator() override = default;
+  std::shared_ptr<mstch_base> generate(
+      t_const const* cnst,
+      std::shared_ptr<mstch_generators const> generators,
+      std::shared_ptr<mstch_cache> cache,
+      ELEMENT_POSITION pos = ELEMENT_POSITION::NONE,
+      int32_t index = 0,
+      t_const const* current_const = nullptr,
+      t_type const* expected_type = nullptr,
+      const std::string& field_name = std::string()) const override {
+    return std::make_shared<mstch_swift_const>(
+        cnst,
+        current_const,
+        expected_type,
+        generators,
+        cache,
+        pos,
+        index,
+        field_name);
+  }
+};
+
 class const_value_swift_generator : public const_value_generator {
  public:
   const_value_swift_generator() = default;
@@ -585,6 +645,7 @@ void t_mstch_swift_generator::set_mstch_generators() {
   generators_->set_enum_value_generator(
       std::make_unique<enum_value_swift_generator>());
   generators_->set_type_generator(std::make_unique<type_swift_generator>());
+  generators_->set_const_generator(std::make_unique<const_swift_generator>());
   generators_->set_const_value_generator(
       std::make_unique<const_value_swift_generator>());
 }

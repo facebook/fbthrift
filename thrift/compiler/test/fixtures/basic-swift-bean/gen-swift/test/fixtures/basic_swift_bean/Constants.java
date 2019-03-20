@@ -5,7 +5,7 @@
  *  @generated
  */
 
-package test.fixtures.includes.transitive;
+package test.fixtures.basic_swift_bean;
 
 import com.facebook.swift.codec.*;
 import com.google.common.collect.*;
@@ -15,5 +15,5 @@ import java.util.*;
 public final class Constants {
     private Constants() {}
 
-    public static final test.fixtures.includes.transitive.Foo ExampleFoo = new test.fixtures.includes.transitive.Foo.Builder().set(2L).build();
+    public static final test.fixtures.basic_swift_bean.MyStruct1 Ms = new test.fixtures.basic_swift_bean.MyStruct1.set(42L).set("Meaning_of_life").set(new test.fixtures.basic_swift_bean.MyDataItem.set(1).set(2)).set(32L);
 }
