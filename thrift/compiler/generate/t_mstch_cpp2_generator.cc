@@ -399,8 +399,6 @@ class mstch_cpp2_type : public mstch_type {
   mstch::node cpp_indirection() {
     if (resolved_type_->annotations_.count("cpp.indirection")) {
       return resolved_type_->annotations_.at("cpp.indirection");
-    } else if (resolved_type_->annotations_.count("cpp2.indirection")) {
-      return resolved_type_->annotations_.at("cpp2.indirection");
     }
     return std::string();
   }
