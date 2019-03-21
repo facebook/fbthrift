@@ -315,6 +315,20 @@ void TccStructTraits< ::apache::thrift::fixtures::types::Renaming>::translateFie
     _ftype = apache::thrift::protocol::T_I64;
   }
 }
+void TccStructTraits< ::apache::thrift::fixtures::types::AnnotatedTypes>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "binary_field") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
+  else if (_fname == "list_field") {
+    fid = 2;
+    _ftype = apache::thrift::protocol::T_LIST;
+  }
+}
 
 } // namespace detail
 } // namespace thrift
@@ -1168,5 +1182,60 @@ template void Renaming::readNoXfer<>(apache::thrift::CompactProtocolReader*);
 template uint32_t Renaming::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t Renaming::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t Renaming::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+}}}} // apache::thrift::fixtures::types
+namespace apache { namespace thrift { namespace fixtures { namespace types {
+
+AnnotatedTypes::AnnotatedTypes(apache::thrift::FragileConstructor,  ::apache::thrift::fixtures::types::TBinary binary_field__arg,  ::apache::thrift::fixtures::types::SomeListOfTypeMap list_field__arg) :
+    binary_field(std::move(binary_field__arg)),
+    list_field(std::move(list_field__arg)) {
+  __isset.binary_field = true;
+  __isset.list_field = true;
+}
+
+void AnnotatedTypes::__clear() {
+  // clear all fields
+  binary_field = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
+  list_field.clear();
+  __isset = {};
+}
+
+bool AnnotatedTypes::operator==(const AnnotatedTypes& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  if (!apache::thrift::StringTraits<std::string>::isEqual(lhs.binary_field, rhs.binary_field)) {
+    return false;
+  }
+  if (!(lhs.list_field == rhs.list_field)) {
+    return false;
+  }
+  return true;
+}
+
+const  ::apache::thrift::fixtures::types::SomeListOfTypeMap& AnnotatedTypes::get_list_field() const& {
+  return list_field;
+}
+
+ ::apache::thrift::fixtures::types::SomeListOfTypeMap AnnotatedTypes::get_list_field() && {
+  return std::move(list_field);
+}
+
+
+void swap(AnnotatedTypes& a, AnnotatedTypes& b) {
+  using ::std::swap;
+  swap(a.binary_field, b.binary_field);
+  swap(a.list_field, b.list_field);
+  swap(a.__isset, b.__isset);
+}
+
+template void AnnotatedTypes::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+template uint32_t AnnotatedTypes::write<>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t AnnotatedTypes::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t AnnotatedTypes::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+template void AnnotatedTypes::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+template uint32_t AnnotatedTypes::write<>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t AnnotatedTypes::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t AnnotatedTypes::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 }}}} // apache::thrift::fixtures::types

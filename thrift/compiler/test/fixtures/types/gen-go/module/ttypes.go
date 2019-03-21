@@ -2061,3 +2061,166 @@ func (p *Renaming) String() string {
   return fmt.Sprintf("Renaming(%+v)", *p)
 }
 
+// Attributes:
+//  - BinaryField
+//  - ListField
+type AnnotatedTypes struct {
+  BinaryField []byte `thrift:"binary_field,1" db:"binary_field" json:"binary_field"`
+  ListField include0.SomeListOfTypeMap `thrift:"list_field,2" db:"list_field" json:"list_field"`
+}
+
+func NewAnnotatedTypes() *AnnotatedTypes {
+  return &AnnotatedTypes{}
+}
+
+
+func (p *AnnotatedTypes) GetBinaryField() []byte {
+  return p.BinaryField
+}
+
+func (p *AnnotatedTypes) GetListField() include0.SomeListOfTypeMap {
+  return p.ListField
+}
+func (p *AnnotatedTypes) Read(iprot thrift.Protocol) error {
+  if _, err := iprot.ReadStructBegin(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
+  }
+
+
+  for {
+    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
+    if err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
+    }
+    if fieldTypeId == thrift.STOP { break; }
+    switch fieldId {
+    case 1:
+      if err := p.ReadField1(iprot); err != nil {
+        return err
+      }
+    case 2:
+      if err := p.ReadField2(iprot); err != nil {
+        return err
+      }
+    default:
+      if err := iprot.Skip(fieldTypeId); err != nil {
+        return err
+      }
+    }
+    if err := iprot.ReadFieldEnd(); err != nil {
+      return err
+    }
+  }
+  if err := iprot.ReadStructEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+  }
+  return nil
+}
+
+func (p *AnnotatedTypes)  ReadField1(iprot thrift.Protocol) error {
+  if v, err := iprot.ReadBinary(); err != nil {
+  return thrift.PrependError("error reading field 1: ", err)
+} else {
+  temp := TBinary(v)
+  p.BinaryField = temp
+}
+  return nil
+}
+
+func (p *AnnotatedTypes)  ReadField2(iprot thrift.Protocol) error {
+  _, size, err := iprot.ReadListBegin()
+  if err != nil {
+    return thrift.PrependError("error reading list begin: ", err)
+  }
+  tSlice := make(include0.SomeListOfTypeMap, 0, size)
+  p.ListField =  tSlice
+  for i := 0; i < size; i ++ {
+    _, _, size, err := iprot.ReadMapBegin()
+    if err != nil {
+      return thrift.PrependError("error reading map begin: ", err)
+    }
+    tMap := make(include0.SomeMap, size)
+    _elem14 :=  tMap
+    for i := 0; i < size; i ++ {
+var _key15 int32
+      if v, err := iprot.ReadI32(); err != nil {
+      return thrift.PrependError("error reading field 0: ", err)
+} else {
+      _key15 = v
+}
+var _val16 string
+      if v, err := iprot.ReadString(); err != nil {
+      return thrift.PrependError("error reading field 0: ", err)
+} else {
+      _val16 = v
+}
+      _elem14[_key15] = _val16
+    }
+    if err := iprot.ReadMapEnd(); err != nil {
+      return thrift.PrependError("error reading map end: ", err)
+    }
+    p.ListField = append(p.ListField, _elem14)
+  }
+  if err := iprot.ReadListEnd(); err != nil {
+    return thrift.PrependError("error reading list end: ", err)
+  }
+  return nil
+}
+
+func (p *AnnotatedTypes) Write(oprot thrift.Protocol) error {
+  if err := oprot.WriteStructBegin("AnnotatedTypes"); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
+  if err := p.writeField1(oprot); err != nil { return err }
+  if err := p.writeField2(oprot); err != nil { return err }
+  if err := oprot.WriteFieldStop(); err != nil {
+    return thrift.PrependError("write field stop error: ", err) }
+  if err := oprot.WriteStructEnd(); err != nil {
+    return thrift.PrependError("write struct stop error: ", err) }
+  return nil
+}
+
+func (p *AnnotatedTypes) writeField1(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("binary_field", thrift.STRING, 1); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 1:binary_field: ", p), err) }
+  if err := oprot.WriteBinary(p.BinaryField); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.binary_field (1) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 1:binary_field: ", p), err) }
+  return err
+}
+
+func (p *AnnotatedTypes) writeField2(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("list_field", thrift.LIST, 2); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 2:list_field: ", p), err) }
+  if err := oprot.WriteListBegin(thrift.MAP, len(p.ListField)); err != nil {
+    return thrift.PrependError("error writing list begin: ", err)
+  }
+  for _, v := range p.ListField {
+    if err := oprot.WriteMapBegin(thrift.I32, thrift.STRING, len(v)); err != nil {
+      return thrift.PrependError("error writing map begin: ", err)
+    }
+    for k, v := range v {
+      if err := oprot.WriteI32(int32(k)); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T. (0) field write error: ", p), err) }
+      if err := oprot.WriteString(string(v)); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T. (0) field write error: ", p), err) }
+    }
+    if err := oprot.WriteMapEnd(); err != nil {
+      return thrift.PrependError("error writing map end: ", err)
+    }
+  }
+  if err := oprot.WriteListEnd(); err != nil {
+    return thrift.PrependError("error writing list end: ", err)
+  }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 2:list_field: ", p), err) }
+  return err
+}
+
+func (p *AnnotatedTypes) String() string {
+  if p == nil {
+    return "<nil>"
+  }
+  return fmt.Sprintf("AnnotatedTypes(%+v)", *p)
+}
+

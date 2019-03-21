@@ -138,6 +138,13 @@ struct TccStructTraits< ::apache::thrift::fixtures::types::Renaming> {
       int16_t& fid,
       apache::thrift::protocol::TType& _ftype);
 };
+template <>
+struct TccStructTraits< ::apache::thrift::fixtures::types::AnnotatedTypes> {
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
+};
 
 } // namespace detail
 } // namespace thrift
@@ -2065,5 +2072,141 @@ extern template void Renaming::readNoXfer<>(apache::thrift::CompactProtocolReade
 extern template uint32_t Renaming::write<>(apache::thrift::CompactProtocolWriter*) const;
 extern template uint32_t Renaming::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t Renaming::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+}}}} // apache::thrift::fixtures::types
+namespace apache { namespace thrift { namespace fixtures { namespace types {
+
+template <class Protocol_>
+void AnnotatedTypes::readNoXfer(Protocol_* iprot) {
+  apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
+
+  _readState.readStructBegin(iprot);
+
+  using apache::thrift::TProtocolException;
+
+
+  if (UNLIKELY(!_readState.advanceToNextField(
+          iprot,
+          0,
+          1,
+          apache::thrift::protocol::T_STRING))) {
+    goto _loop;
+  }
+_readField_binary_field:
+  {
+    iprot->readBinary(this->binary_field);
+    this->__isset.binary_field = true;
+  }
+
+  if (UNLIKELY(!_readState.advanceToNextField(
+          iprot,
+          1,
+          2,
+          apache::thrift::protocol::T_LIST))) {
+    goto _loop;
+  }
+_readField_list_field:
+  {
+    this->list_field =  ::apache::thrift::fixtures::types::SomeListOfTypeMap();
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::string>>,  ::apache::thrift::fixtures::types::SomeListOfTypeMap>::read(*iprot, this->list_field);
+    this->__isset.list_field = true;
+  }
+
+  if (UNLIKELY(!_readState.advanceToNextField(
+          iprot,
+          2,
+          0,
+          apache::thrift::protocol::T_STOP))) {
+    goto _loop;
+  }
+
+_end:
+  _readState.readStructEnd(iprot);
+
+  return;
+
+_loop:
+  if (_readState.fieldType == apache::thrift::protocol::T_STOP) {
+    goto _end;
+  }
+  if (iprot->kUsesFieldNames()) {
+    apache::thrift::detail::TccStructTraits<AnnotatedTypes>::translateFieldName(_readState.fieldName(), _readState.fieldId, _readState.fieldType);
+  }
+
+  switch (_readState.fieldId) {
+    case 1:
+    {
+      if (LIKELY(_readState.fieldType == apache::thrift::protocol::T_STRING)) {
+        goto _readField_binary_field;
+      } else {
+        goto _skip;
+      }
+    }
+    case 2:
+    {
+      if (LIKELY(_readState.fieldType == apache::thrift::protocol::T_LIST)) {
+        goto _readField_list_field;
+      } else {
+        goto _skip;
+      }
+    }
+    default:
+    {
+_skip:
+      iprot->skip(_readState.fieldType);
+      _readState.readFieldEnd(iprot);
+      _readState.readFieldBeginNoInline(iprot);
+      goto _loop;
+    }
+  }
+}
+
+template <class Protocol_>
+uint32_t AnnotatedTypes::serializedSize(Protocol_ const* prot_) const {
+  uint32_t xfer = 0;
+  xfer += prot_->serializedStructSize("AnnotatedTypes");
+  xfer += prot_->serializedFieldSize("binary_field", apache::thrift::protocol::T_STRING, 1);
+  xfer += prot_->serializedSizeBinary(this->binary_field);
+  xfer += prot_->serializedFieldSize("list_field", apache::thrift::protocol::T_LIST, 2);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::string>>,  ::apache::thrift::fixtures::types::SomeListOfTypeMap>::serializedSize<false>(*prot_, this->list_field);
+  xfer += prot_->serializedSizeStop();
+  return xfer;
+}
+
+template <class Protocol_>
+uint32_t AnnotatedTypes::serializedSizeZC(Protocol_ const* prot_) const {
+  uint32_t xfer = 0;
+  xfer += prot_->serializedStructSize("AnnotatedTypes");
+  xfer += prot_->serializedFieldSize("binary_field", apache::thrift::protocol::T_STRING, 1);
+  xfer += prot_->serializedSizeZCBinary(this->binary_field);
+  xfer += prot_->serializedFieldSize("list_field", apache::thrift::protocol::T_LIST, 2);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::string>>,  ::apache::thrift::fixtures::types::SomeListOfTypeMap>::serializedSize<false>(*prot_, this->list_field);
+  xfer += prot_->serializedSizeStop();
+  return xfer;
+}
+
+template <class Protocol_>
+uint32_t AnnotatedTypes::write(Protocol_* prot_) const {
+  uint32_t xfer = 0;
+  xfer += prot_->writeStructBegin("AnnotatedTypes");
+  xfer += prot_->writeFieldBegin("binary_field", apache::thrift::protocol::T_STRING, 1);
+  xfer += prot_->writeBinary(this->binary_field);
+  xfer += prot_->writeFieldEnd();
+  xfer += prot_->writeFieldBegin("list_field", apache::thrift::protocol::T_LIST, 2);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::string>>,  ::apache::thrift::fixtures::types::SomeListOfTypeMap>::write(*prot_, this->list_field);
+  xfer += prot_->writeFieldEnd();
+  xfer += prot_->writeFieldStop();
+  xfer += prot_->writeStructEnd();
+  return xfer;
+}
+
+extern template void AnnotatedTypes::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+extern template uint32_t AnnotatedTypes::write<>(apache::thrift::BinaryProtocolWriter*) const;
+extern template uint32_t AnnotatedTypes::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t AnnotatedTypes::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template void AnnotatedTypes::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+extern template uint32_t AnnotatedTypes::write<>(apache::thrift::CompactProtocolWriter*) const;
+extern template uint32_t AnnotatedTypes::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template uint32_t AnnotatedTypes::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 }}}} // apache::thrift::fixtures::types

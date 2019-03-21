@@ -96,3 +96,8 @@ struct MyDataItem {} (cpp2.noncomparable)
 struct Renaming {
   1: i64 foo (cpp.name = 'bar'),
 }
+
+struct AnnotatedTypes {
+  1: TBinary (noop_annotation) binary_field,
+  2: include.SomeListOfTypeMap list_field,
+}

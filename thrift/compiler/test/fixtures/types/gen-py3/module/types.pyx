@@ -3174,6 +3174,199 @@ cdef class Renaming(thrift.py3.types.Struct):
         return (deserialize, (Renaming, serialize(self)))
 
 
+cdef cAnnotatedTypes _AnnotatedTypes_defaults = cAnnotatedTypes()
+
+cdef class AnnotatedTypes(thrift.py3.types.Struct):
+
+    def __init__(
+        AnnotatedTypes self, *,
+        bytes binary_field=None,
+        list_field=None
+    ):
+        self._cpp_obj = move(AnnotatedTypes._make_instance(
+          NULL,
+          NULL,
+          binary_field,
+          list_field,
+        ))
+
+    def __call__(
+        AnnotatedTypes self,
+        binary_field=__NOTSET,
+        list_field=__NOTSET
+    ):
+        ___NOTSET = __NOTSET  # Cheaper for larger structs
+        cdef bint[2] __isNOTSET  # so make_instance is typed
+
+        changes = False
+        if binary_field is ___NOTSET:
+            __isNOTSET[0] = True
+            binary_field = None
+        else:
+            __isNOTSET[0] = False
+            changes = True
+
+        if list_field is ___NOTSET:
+            __isNOTSET[1] = True
+            list_field = None
+        else:
+            __isNOTSET[1] = False
+            changes = True
+
+
+        if not changes:
+            return self
+
+        if binary_field is not None:
+            if not isinstance(binary_field, bytes):
+                raise TypeError(f'binary_field is not a { bytes !r}.')
+
+        inst = <AnnotatedTypes>AnnotatedTypes.__new__(AnnotatedTypes)
+        inst._cpp_obj = move(AnnotatedTypes._make_instance(
+          self._cpp_obj.get(),
+          __isNOTSET,
+          binary_field,
+          list_field,
+        ))
+        return inst
+
+    @staticmethod
+    cdef unique_ptr[cAnnotatedTypes] _make_instance(
+        cAnnotatedTypes* base_instance,
+        bint* __isNOTSET,
+        bytes binary_field ,
+        object list_field 
+    ) except *:
+        cdef unique_ptr[cAnnotatedTypes] c_inst
+        if base_instance:
+            c_inst = make_unique[cAnnotatedTypes](deref(base_instance))
+        else:
+            c_inst = make_unique[cAnnotatedTypes]()
+
+        if base_instance:
+            # Convert None's to default value. (or unset)
+            if not __isNOTSET[0] and binary_field is None:
+                deref(c_inst).binary_field = _AnnotatedTypes_defaults.binary_field
+                deref(c_inst).__isset.binary_field = False
+                pass
+
+            if not __isNOTSET[1] and list_field is None:
+                deref(c_inst).list_field = _AnnotatedTypes_defaults.list_field
+                deref(c_inst).__isset.list_field = False
+                pass
+
+        if binary_field is not None:
+            deref(c_inst).binary_field = thrift.py3.types.move(thrift.py3.types.bytes_to_string(binary_field))
+            deref(c_inst).__isset.binary_field = True
+        if list_field is not None:
+            deref(c_inst).list_field = deref(List__std_unordered_map__Map__i32_string(list_field)._cpp_obj)
+            deref(c_inst).__isset.list_field = True
+        # in C++ you don't have to call move(), but this doesn't translate
+        # into a C++ return statement, so you do here
+        return move_unique(c_inst)
+
+    def __iter__(self):
+        yield 'binary_field', self.binary_field
+        yield 'list_field', self.list_field
+
+    def __bool__(self):
+        return True
+
+    @staticmethod
+    cdef create(shared_ptr[cAnnotatedTypes] cpp_obj):
+        inst = <AnnotatedTypes>AnnotatedTypes.__new__(AnnotatedTypes)
+        inst._cpp_obj = move_shared(cpp_obj)
+        return inst
+
+    @property
+    def binary_field(self):
+
+        return deref(self._cpp_obj).binary_field
+
+    @property
+    def list_field(self):
+
+        if self.__field_list_field is None:
+            self.__field_list_field = List__std_unordered_map__Map__i32_string.create(reference_shared_ptr_list_field(self._cpp_obj, deref(self._cpp_obj).list_field))
+        return self.__field_list_field
+
+
+    def __hash__(AnnotatedTypes self):
+        if not self.__hash:
+            self.__hash = hash((
+            self.binary_field,
+            self.list_field,
+            ))
+        return self.__hash
+
+    def __repr__(AnnotatedTypes self):
+        return f'AnnotatedTypes(binary_field={repr(self.binary_field)}, list_field={repr(self.list_field)})'
+    def __copy__(AnnotatedTypes self):
+        cdef shared_ptr[cAnnotatedTypes] cpp_obj = make_shared[cAnnotatedTypes](
+            deref(self._cpp_obj)
+        )
+        return AnnotatedTypes.create(move_shared(cpp_obj))
+
+    def __richcmp__(self, other, op):
+        cdef int cop = op
+        if not (
+                isinstance(self, AnnotatedTypes) and
+                isinstance(other, AnnotatedTypes)):
+            if cop == Py_EQ:  # different types are never equal
+                return False
+            elif cop == Py_NE:  # different types are always notequal
+                return True
+            else:
+                return NotImplemented
+
+        cdef cAnnotatedTypes* cself = (<AnnotatedTypes>self)._cpp_obj.get()
+        cdef cAnnotatedTypes* cother = (<AnnotatedTypes>other)._cpp_obj.get()
+        if cop == Py_EQ:
+            return deref(cself) == deref(cother)
+        elif cop == Py_NE:
+            return not (deref(cself) == deref(cother))
+        else:
+            return NotImplemented
+
+    cdef __iobuf.IOBuf _serialize(AnnotatedTypes self, proto):
+        cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
+        cdef cAnnotatedTypes* cpp_obj = self._cpp_obj.get()
+        if proto is __Protocol.COMPACT:
+            with nogil:
+                serializer.CompactSerialize[cAnnotatedTypes](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.BINARY:
+            with nogil:
+                serializer.BinarySerialize[cAnnotatedTypes](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.JSON:
+            with nogil:
+                serializer.JSONSerialize[cAnnotatedTypes](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.COMPACT_JSON:
+            with nogil:
+                serializer.CompactJSONSerialize[cAnnotatedTypes](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
+        return __iobuf.from_unique_ptr(queue.move())
+
+    cdef uint32_t _deserialize(AnnotatedTypes self, const __iobuf.cIOBuf* buf, proto) except? 0:
+        cdef uint32_t needed
+        self._cpp_obj = make_shared[cAnnotatedTypes]()
+        cdef cAnnotatedTypes* cpp_obj = self._cpp_obj.get()
+        if proto is __Protocol.COMPACT:
+            with nogil:
+                needed = serializer.CompactDeserialize[cAnnotatedTypes](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.BINARY:
+            with nogil:
+                needed = serializer.BinaryDeserialize[cAnnotatedTypes](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.JSON:
+            with nogil:
+                needed = serializer.JSONDeserialize[cAnnotatedTypes](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.COMPACT_JSON:
+            with nogil:
+                needed = serializer.CompactJSONDeserialize[cAnnotatedTypes](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
+        return needed
+
+    def __reduce__(self):
+        return (deserialize, (AnnotatedTypes, serialize(self)))
+
+
 cdef class std_unordered_map__Map__i32_string:
     def __init__(self, items=None):
         if isinstance(items, std_unordered_map__Map__i32_string):
@@ -5080,5 +5273,182 @@ cdef class Map__string_i32:
 
 
 Mapping.register(Map__string_i32)
+
+cdef class List__std_unordered_map__Map__i32_string:
+    def __init__(self, items=None):
+        if isinstance(items, List__std_unordered_map__Map__i32_string):
+            self._cpp_obj = (<List__std_unordered_map__Map__i32_string> items)._cpp_obj
+        else:
+            self._cpp_obj = List__std_unordered_map__Map__i32_string._make_instance(items)
+
+    @staticmethod
+    cdef create(shared_ptr[vector[std_unordered_map[int32_t,string]]] c_items):
+        inst = <List__std_unordered_map__Map__i32_string>List__std_unordered_map__Map__i32_string.__new__(List__std_unordered_map__Map__i32_string)
+        inst._cpp_obj = move_shared(c_items)
+        return inst
+
+    def __copy__(List__std_unordered_map__Map__i32_string self):
+        cdef shared_ptr[vector[std_unordered_map[int32_t,string]]] cpp_obj = make_shared[vector[std_unordered_map[int32_t,string]]](
+            deref(self._cpp_obj)
+        )
+        return List__std_unordered_map__Map__i32_string.create(move_shared(cpp_obj))
+
+    @staticmethod
+    cdef shared_ptr[vector[std_unordered_map[int32_t,string]]] _make_instance(object items) except *:
+        cdef shared_ptr[vector[std_unordered_map[int32_t,string]]] c_inst = make_shared[vector[std_unordered_map[int32_t,string]]]()
+        if items is not None:
+            for item in items:
+                if item is None:
+                    raise TypeError("None is not of the type _typing.Mapping[int, str]")
+                if not isinstance(item, std_unordered_map__Map__i32_string):
+                    item = std_unordered_map__Map__i32_string(item)
+                deref(c_inst).push_back(deref((<std_unordered_map__Map__i32_string>item)._cpp_obj))
+        return c_inst
+
+    def __add__(object self, object other):
+        return type(self)(itertools.chain(self, other))
+
+    def __getitem__(self, object index_obj):
+        cdef shared_ptr[vector[std_unordered_map[int32_t,string]]] c_inst
+        cdef shared_ptr[std_unordered_map[int32_t,string]] citem
+        if isinstance(index_obj, slice):
+            c_inst = make_shared[vector[std_unordered_map[int32_t,string]]]()
+            sz = deref(self._cpp_obj).size()
+            for index in range(*index_obj.indices(sz)):
+                deref(c_inst).push_back(deref(self._cpp_obj)[index])
+            return List__std_unordered_map__Map__i32_string.create(move_shared(c_inst))
+        else:
+            index = <int?>index_obj
+            size = len(self)
+            # Convert a negative index
+            if index < 0:
+                index = size + index
+            if index >= size or index < 0:
+                raise IndexError('list index out of range')
+            citem = reference_shared_ptr_List__std_unordered_map__Map__i32_string(self._cpp_obj, deref(self._cpp_obj)[index])
+            return std_unordered_map__Map__i32_string.create(citem)
+
+    def __len__(self):
+        return deref(self._cpp_obj).size()
+
+    def __eq__(self, other):
+        return thrift.py3.types.list_compare(self, other, Py_EQ)
+
+    def __ne__(self, other):
+        return not thrift.py3.types.list_compare(self, other, Py_EQ)
+
+    def __lt__(self, other):
+        return thrift.py3.types.list_compare(self, other, Py_LT)
+
+    def __gt__(self, other):
+        return thrift.py3.types.list_compare(other, self, Py_LT)
+
+    def __le__(self, other):
+        result = thrift.py3.types.list_compare(other, self, Py_LT)
+        return not result if result is not NotImplemented else NotImplemented
+
+    def __ge__(self, other):
+        result = thrift.py3.types.list_compare(self, other, Py_LT)
+        return not result if result is not NotImplemented else NotImplemented
+
+    def __hash__(self):
+        if not self.__hash:
+            self.__hash = hash(tuple(self))
+        return self.__hash
+
+    def __contains__(self, item):
+        if not self or item is None:
+            return False
+        try:
+            if not isinstance(item, std_unordered_map__Map__i32_string):
+                item = std_unordered_map__Map__i32_string(item)
+        except Exception:
+            return False
+        if not isinstance(item, std_unordered_map__Map__i32_string):
+            return False
+        return std_libcpp.find[vector[std_unordered_map[int32_t,string]].iterator, std_unordered_map[int32_t,string]](deref(self._cpp_obj).begin(), deref(self._cpp_obj).end(), deref((<std_unordered_map__Map__i32_string>item)._cpp_obj)) != deref(self._cpp_obj).end()
+
+    def __iter__(self):
+        if not self:
+            return
+        cdef shared_ptr[std_unordered_map[int32_t,string]] citem
+        cdef vector[std_unordered_map[int32_t,string]].iterator loc = deref(self._cpp_obj).begin()
+        while loc != deref(self._cpp_obj).end():
+            citem = reference_shared_ptr_List__std_unordered_map__Map__i32_string(self._cpp_obj, deref(loc))
+            yield std_unordered_map__Map__i32_string.create(citem)
+            inc(loc)
+
+    def __repr__(self):
+        if not self:
+            return 'i[]'
+        return f'i[{", ".join(map(repr, self))}]'
+
+    def __reversed__(self):
+        if not self:
+            return
+        cdef shared_ptr[std_unordered_map[int32_t,string]] citem
+        cdef vector[std_unordered_map[int32_t,string]].reverse_iterator loc = deref(self._cpp_obj).rbegin()
+        while loc != deref(self._cpp_obj).rend():
+            citem = reference_shared_ptr_List__std_unordered_map__Map__i32_string(self._cpp_obj, deref(loc))
+            yield std_unordered_map__Map__i32_string.create(citem)
+            inc(loc)
+
+    def index(self, item, start not None=__NOTSET, stop not None=__NOTSET):
+        err = ValueError(f'{item} is not in list')
+        if not self or item is None:
+            raise err
+        offset_begin = offset_end = 0
+        if stop is not __NOTSET or start is not __NOTSET:
+            # Like self[start:stop].index(item)
+            size = len(self)
+            stop = stop if stop is not __NOTSET else size
+            start = start if start is not __NOTSET else 0
+            # Convert stop to a negative position.
+            if stop > 0:
+                stop = min(stop - size, 0)
+            if stop <= -size:
+                raise err  # List would be empty
+            offset_end = -stop
+            # Convert start to always be positive
+            if start < 0:
+                start = max(size + start, 0)
+            if start >= size:
+                raise err  # past end of list
+            offset_begin = start
+
+        try:
+            if not isinstance(item, std_unordered_map__Map__i32_string):
+                item = std_unordered_map__Map__i32_string(item)
+        except Exception:
+            raise err from None
+        if not isinstance(item, std_unordered_map__Map__i32_string):
+            raise err
+        cdef vector[std_unordered_map[int32_t,string]].iterator end = std_libcpp.prev(deref(self._cpp_obj).end(), <int64_t>offset_end)
+        cdef vector[std_unordered_map[int32_t,string]].iterator loc = std_libcpp.find[vector[std_unordered_map[int32_t,string]].iterator, std_unordered_map[int32_t,string]](
+            std_libcpp.next(deref(self._cpp_obj).begin(), <int64_t>offset_begin),
+            end,
+            deref((<std_unordered_map__Map__i32_string>item)._cpp_obj)        )
+        if loc != end:
+            return <int64_t> std_libcpp.distance(deref(self._cpp_obj).begin(), loc)
+        raise err
+
+    def count(self, item):
+        if not self or item is None:
+            return 0
+        try:
+            if not isinstance(item, std_unordered_map__Map__i32_string):
+                item = std_unordered_map__Map__i32_string(item)
+        except Exception:
+            return 0
+        if not isinstance(item, std_unordered_map__Map__i32_string):
+            return 0
+        return <int64_t> std_libcpp.count[vector[std_unordered_map[int32_t,string]].iterator, std_unordered_map[int32_t,string]](
+            deref(self._cpp_obj).begin(), deref(self._cpp_obj).end(), deref((<std_unordered_map__Map__i32_string>item)._cpp_obj))
+
+    def __reduce__(self):
+        return (List__std_unordered_map__Map__i32_string, (list(self), ))
+
+
+Sequence.register(List__std_unordered_map__Map__i32_string)
 
 TBinary = bytes

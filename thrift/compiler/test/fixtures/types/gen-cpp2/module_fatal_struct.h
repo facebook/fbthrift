@@ -43,6 +43,8 @@ struct apache_thrift_fixtures_types_module__struct_unique_data_member_getters_li
   FATAL_DATA_MEMBER_GETTER(majorVer, majorVer);
   FATAL_DATA_MEMBER_GETTER(data, data);
   FATAL_DATA_MEMBER_GETTER(bar, bar);
+  FATAL_DATA_MEMBER_GETTER(binary_field, binary_field);
+  FATAL_DATA_MEMBER_GETTER(list_field, list_field);
 };
 
 struct apache_thrift_fixtures_types_module__struct_unique_member_pod_list {
@@ -182,6 +184,18 @@ struct apache_thrift_fixtures_types_module__struct_unique_member_pod_list {
 
   struct apache_thrift_fixtures_types_module_struct_member_pod_bar {
     T_apache_thrift_fixtures_types_module_struct_member_pod bar;
+  };
+
+  template <typename T_apache_thrift_fixtures_types_module_struct_member_pod>
+
+  struct apache_thrift_fixtures_types_module_struct_member_pod_binary_field {
+    T_apache_thrift_fixtures_types_module_struct_member_pod binary_field;
+  };
+
+  template <typename T_apache_thrift_fixtures_types_module_struct_member_pod>
+
+  struct apache_thrift_fixtures_types_module_struct_member_pod_list_field {
+    T_apache_thrift_fixtures_types_module_struct_member_pod list_field;
   };
 
 };
@@ -1151,6 +1165,67 @@ struct Renaming_apache_thrift_fixtures_types_module__struct_unique_member_info_l
   >;
 };
 
+class AnnotatedTypes_apache_thrift_fixtures_types_module__struct_unique_annotations {
+  class AnnotatedTypes_apache_thrift_fixtures_types_module__struct_unique_annotations_members {
+    class AnnotatedTypes_apache_thrift_fixtures_types_module__struct_unique_annotations_members_binary_field {
+      public:
+      using keys = void;
+      using values = void;
+      using map = ::fatal::list<
+      >;
+    };
+
+    class AnnotatedTypes_apache_thrift_fixtures_types_module__struct_unique_annotations_members_list_field {
+      public:
+      using keys = void;
+      using values = void;
+      using map = ::fatal::list<
+      >;
+    };
+    public:
+    using binary_field = ::apache::thrift::reflected_annotations<AnnotatedTypes_apache_thrift_fixtures_types_module__struct_unique_annotations_members_binary_field>;
+    using list_field = ::apache::thrift::reflected_annotations<AnnotatedTypes_apache_thrift_fixtures_types_module__struct_unique_annotations_members_list_field>;
+  };
+
+  class annotations {
+    public:
+    using keys = void;
+    using values = void;
+    using map = ::fatal::list<
+    >;
+  };
+  public:
+  using keys = annotations::keys;
+  using values = annotations::values;
+  using map = annotations::map;
+  using members = AnnotatedTypes_apache_thrift_fixtures_types_module__struct_unique_annotations_members;
+};
+
+struct AnnotatedTypes_apache_thrift_fixtures_types_module__struct_unique_member_info_list {
+  using binary_field = ::apache::thrift::reflected_struct_data_member<
+    thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__unique_strings_list::binary_field,
+     ::apache::thrift::fixtures::types::TBinary,
+    1,
+    ::apache::thrift::optionality::required_of_writer,
+    thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__struct_unique_data_member_getters_list::binary_field,
+    ::apache::thrift::type_class::binary,
+    thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__struct_unique_member_pod_list::apache_thrift_fixtures_types_module_struct_member_pod_binary_field,
+    ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::AnnotatedTypes_apache_thrift_fixtures_types_module__struct_unique_annotations::members::binary_field>,
+    AnnotatedTypes
+  >;
+  using list_field = ::apache::thrift::reflected_struct_data_member<
+    thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__unique_strings_list::list_field,
+     ::apache::thrift::fixtures::types::SomeListOfTypeMap,
+    2,
+    ::apache::thrift::optionality::required_of_writer,
+    thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__struct_unique_data_member_getters_list::list_field,
+    ::apache::thrift::type_class::list<::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::string>>,
+    thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__struct_unique_member_pod_list::apache_thrift_fixtures_types_module_struct_member_pod_list_field,
+    ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::AnnotatedTypes_apache_thrift_fixtures_types_module__struct_unique_annotations::members::list_field>,
+    AnnotatedTypes
+  >;
+};
+
 } // thrift_fatal_impl_detail
 THRIFT_REGISTER_STRUCT_TRAITS(
   decorated_struct,
@@ -1350,6 +1425,21 @@ THRIFT_REGISTER_STRUCT_TRAITS(
     module_tags::module,
     ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::Renaming_apache_thrift_fixtures_types_module__struct_unique_annotations>,
     static_cast<::apache::thrift::legacy_type_id_t>(10718802463879262636ull)
+  >
+);
+THRIFT_REGISTER_STRUCT_TRAITS(
+  AnnotatedTypes,
+  thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__unique_strings_list::AnnotatedTypes,
+  thrift_fatal_impl_detail::AnnotatedTypes_apache_thrift_fixtures_types_module__struct_unique_member_info_list,
+  ::fatal::list<
+      thrift_fatal_impl_detail::AnnotatedTypes_apache_thrift_fixtures_types_module__struct_unique_member_info_list::binary_field,
+      thrift_fatal_impl_detail::AnnotatedTypes_apache_thrift_fixtures_types_module__struct_unique_member_info_list::list_field
+  >,
+  thrift_fatal_impl_detail::AnnotatedTypes_apache_thrift_fixtures_types_module__struct_unique_annotations::members,
+  ::apache::thrift::detail::type_common_metadata_impl<
+    module_tags::module,
+    ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::AnnotatedTypes_apache_thrift_fixtures_types_module__struct_unique_annotations>,
+    static_cast<::apache::thrift::legacy_type_id_t>(17983424159904177676ull)
   >
 );
 

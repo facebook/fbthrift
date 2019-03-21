@@ -331,6 +331,8 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::apac
     cdef cppclass cMyDataItem "::apache::thrift::fixtures::types::MyDataItem"
     # Forward Declaration
     cdef cppclass cRenaming "::apache::thrift::fixtures::types::Renaming"
+    # Forward Declaration
+    cdef cppclass cAnnotatedTypes "::apache::thrift::fixtures::types::AnnotatedTypes"
 
 cdef extern from "src/gen-cpp2/module_types.h" namespace "::apache::thrift::fixtures::types":
     cdef cppclass cdecorated_struct__isset "::apache::thrift::fixtures::types::decorated_struct::__isset":
@@ -538,6 +540,18 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "::apache::thrift::fixt
         int64_t foo "bar"
         cRenaming__isset __isset
 
+    cdef cppclass cAnnotatedTypes__isset "::apache::thrift::fixtures::types::AnnotatedTypes::__isset":
+        bint binary_field
+        bint list_field
+
+    cdef cppclass cAnnotatedTypes "::apache::thrift::fixtures::types::AnnotatedTypes":
+        cAnnotatedTypes() except +
+        cAnnotatedTypes(const cAnnotatedTypes&) except +
+        bint operator==(cAnnotatedTypes&)
+        string binary_field
+        vector[std_unordered_map[int32_t,string]] list_field
+        cAnnotatedTypes__isset __isset
+
     cdef shared_ptr[vector[int32_t]] reference_shared_ptr_fieldA "thrift::py3::reference_shared_ptr<std::vector<int32_t>>"(shared_ptr[cContainerStruct]&, vector[int32_t]&)
     cdef shared_ptr[std_list[int32_t]] reference_shared_ptr_fieldB "thrift::py3::reference_shared_ptr<std::list<int32_t>>"(shared_ptr[cContainerStruct]&, std_list[int32_t]&)
     cdef shared_ptr[std_deque[int32_t]] reference_shared_ptr_fieldC "thrift::py3::reference_shared_ptr<std::deque<int32_t>>"(shared_ptr[cContainerStruct]&, std_deque[int32_t]&)
@@ -551,6 +565,7 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "::apache::thrift::fixt
     cdef shared_ptr[cmap[string,int32_t]] reference_shared_ptr_b "thrift::py3::reference_shared_ptr<std::map<std::string,int32_t>>"(shared_ptr[cComplexString]&, cmap[string,int32_t]&)
     cdef shared_ptr[cComplexString] reference_shared_ptr_n "thrift::py3::reference_shared_ptr<::apache::thrift::fixtures::types::ComplexString>"(shared_ptr[cComplexNestedWithDefault]&, cComplexString&)
     cdef shared_ptr[cMyDataItem] reference_shared_ptr_data "thrift::py3::reference_shared_ptr<::apache::thrift::fixtures::types::MyDataItem>"(shared_ptr[cMyStruct]&, cMyDataItem&)
+    cdef shared_ptr[vector[std_unordered_map[int32_t,string]]] reference_shared_ptr_list_field "thrift::py3::reference_shared_ptr<std::vector<std::unordered_map<int32_t,std::string>>>"(shared_ptr[cAnnotatedTypes]&, vector[std_unordered_map[int32_t,string]]&)
 
 cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[cdecorated_struct] move(unique_ptr[cdecorated_struct])
@@ -592,6 +607,9 @@ cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[cRenaming] move(unique_ptr[cRenaming])
     cdef shared_ptr[cRenaming] move_shared "std::move"(shared_ptr[cRenaming])
     cdef unique_ptr[cRenaming] move_unique "std::move"(unique_ptr[cRenaming])
+    cdef shared_ptr[cAnnotatedTypes] move(unique_ptr[cAnnotatedTypes])
+    cdef shared_ptr[cAnnotatedTypes] move_shared "std::move"(shared_ptr[cAnnotatedTypes])
+    cdef unique_ptr[cAnnotatedTypes] move_unique "std::move"(unique_ptr[cAnnotatedTypes])
 
 cdef extern from "<memory>" namespace "std" nogil:
     cdef shared_ptr[const cdecorated_struct] const_pointer_cast "std::const_pointer_cast<const ::apache::thrift::fixtures::types::decorated_struct>"(shared_ptr[cdecorated_struct])
@@ -607,6 +625,7 @@ cdef extern from "<memory>" namespace "std" nogil:
     cdef shared_ptr[const cMyStruct] const_pointer_cast "std::const_pointer_cast<const ::apache::thrift::fixtures::types::MyStruct>"(shared_ptr[cMyStruct])
     cdef shared_ptr[const cMyDataItem] const_pointer_cast "std::const_pointer_cast<const ::apache::thrift::fixtures::types::MyDataItem>"(shared_ptr[cMyDataItem])
     cdef shared_ptr[const cRenaming] const_pointer_cast "std::const_pointer_cast<const ::apache::thrift::fixtures::types::Renaming>"(shared_ptr[cRenaming])
+    cdef shared_ptr[const cAnnotatedTypes] const_pointer_cast "std::const_pointer_cast<const ::apache::thrift::fixtures::types::AnnotatedTypes>"(shared_ptr[cAnnotatedTypes])
 
 # Forward Definition of the cython struct
 cdef class decorated_struct(thrift.py3.types.Struct)
@@ -888,6 +907,27 @@ cdef class Renaming(thrift.py3.types.Struct):
     @staticmethod
     cdef create(shared_ptr[cRenaming])
 
+# Forward Definition of the cython struct
+cdef class AnnotatedTypes(thrift.py3.types.Struct)
+
+
+cdef class AnnotatedTypes(thrift.py3.types.Struct):
+    cdef object __hash
+    cdef object __weakref__
+    cdef shared_ptr[cAnnotatedTypes] _cpp_obj
+    cdef List__std_unordered_map__Map__i32_string __field_list_field
+
+    @staticmethod
+    cdef unique_ptr[cAnnotatedTypes] _make_instance(
+        cAnnotatedTypes* base_instance,
+        bint* __isNOTSET,
+        bytes binary_field,
+        object list_field
+    ) except *
+
+    @staticmethod
+    cdef create(shared_ptr[cAnnotatedTypes])
+
 
 cdef class std_unordered_map__Map__i32_string:
     cdef object __hash
@@ -997,6 +1037,15 @@ cdef class Map__string_i32:
     @staticmethod
     cdef shared_ptr[cmap[string,int32_t]] _make_instance(object items) except *
 
+cdef class List__std_unordered_map__Map__i32_string:
+    cdef object __hash
+    cdef object __weakref__
+    cdef shared_ptr[vector[std_unordered_map[int32_t,string]]] _cpp_obj
+    @staticmethod
+    cdef create(shared_ptr[vector[std_unordered_map[int32_t,string]]])
+    @staticmethod
+    cdef shared_ptr[vector[std_unordered_map[int32_t,string]]] _make_instance(object items) except *
+
 cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[std_unordered_map[int32_t,string]] move "std::move"(unique_ptr[std_unordered_map[int32_t,string]])
     cdef shared_ptr[std_unordered_map[int32_t,string]] move_shared "std::move"(shared_ptr[std_unordered_map[int32_t,string]])
@@ -1022,8 +1071,11 @@ cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[std_list_int32_t] move_shared "std::move"(shared_ptr[std_list_int32_t])
     cdef shared_ptr[cmap[string,int32_t]] move "std::move"(unique_ptr[cmap[string,int32_t]])
     cdef shared_ptr[cmap[string,int32_t]] move_shared "std::move"(shared_ptr[cmap[string,int32_t]])
+    cdef shared_ptr[vector[std_unordered_map[int32_t,string]]] move "std::move"(unique_ptr[vector[std_unordered_map[int32_t,string]]])
+    cdef shared_ptr[vector[std_unordered_map[int32_t,string]]] move_shared "std::move"(shared_ptr[vector[std_unordered_map[int32_t,string]]])
 cdef extern from "<utility>" nogil:
     pass  
+    shared_ptr[std_unordered_map[int32_t,string]] reference_shared_ptr_List__std_unordered_map__Map__i32_string "thrift::py3::reference_shared_ptr<std::unordered_map<int32_t,std::string>>"(...)
 cdef extern from "<memory>" namespace "std" nogil:
     cdef shared_ptr[const std_unordered_map[int32_t,string]] const_pointer_cast "std::const_pointer_cast<const std::unordered_map<int32_t,std::string>>"(shared_ptr[std_unordered_map[int32_t,string]])
     cdef shared_ptr[const vector[int64_t]] const_pointer_cast "std::const_pointer_cast<const std::vector<int64_t>>"(shared_ptr[vector[int64_t]])
@@ -1037,4 +1089,5 @@ cdef extern from "<memory>" namespace "std" nogil:
     cdef shared_ptr[const folly_sorted_vector_map[int32_t,string]] const_pointer_cast "std::const_pointer_cast<const folly::sorted_vector_map<int32_t,std::string>>"(shared_ptr[folly_sorted_vector_map[int32_t,string]])
     cdef shared_ptr[const std_list_int32_t] const_pointer_cast "std::const_pointer_cast<const std::list<int32_t>>"(shared_ptr[std_list_int32_t])
     cdef shared_ptr[const cmap[string,int32_t]] const_pointer_cast "std::const_pointer_cast<const std::map<std::string,int32_t>>"(shared_ptr[cmap[string,int32_t]])
+    cdef shared_ptr[const vector[std_unordered_map[int32_t,string]]] const_pointer_cast "std::const_pointer_cast<const std::vector<std::unordered_map<int32_t,std::string>>>"(shared_ptr[vector[std_unordered_map[int32_t,string]]])
 

@@ -1222,3 +1222,99 @@ class Renaming implements \IThriftStruct {
 
 }
 
+/**
+ * Original thrift struct:-
+ * AnnotatedTypes
+ */
+class AnnotatedTypes implements \IThriftStruct {
+  use \ThriftSerializationTrait;
+
+  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
+    1 => dict[
+      'var' => 'binary_field',
+      'type' => \TType::STRING,
+      ],
+    2 => dict[
+      'var' => 'list_field',
+      'type' => \TType::LST,
+      'etype' => \TType::MAP,
+      'elem' => dict[
+        'type' => \TType::MAP,
+        'ktype' => \TType::I32,
+        'vtype' => \TType::STRING,
+        'key' => dict[
+          'type' => \TType::I32,
+        ],
+        'val' => dict[
+          'type' => \TType::STRING,
+          ],
+          'format' => 'collection',
+        ],
+        'format' => 'collection',
+      ],
+    ];
+  public static Map<string, int> $_TFIELDMAP = Map {
+    'binary_field' => 1,
+    'list_field' => 2,
+  };
+  const int STRUCTURAL_ID = 7799859984459418183;
+  /**
+   * Original thrift field:-
+   * 1: string binary_field
+   */
+  public string $binary_field;
+  /**
+   * Original thrift field:-
+   * 2: list<map<i32, string>> list_field
+   */
+  public Vector<Map<int, string>> $list_field;
+
+  <<__Rx>>
+  public function __construct(?string $binary_field = null, ?Vector<Map<int, string>> $list_field = null  ) {
+    if ($binary_field === null) {
+      $this->binary_field = '';
+    } else {
+      $this->binary_field = $binary_field;
+    }
+    if ($list_field === null) {
+      $this->list_field = Vector {};
+    } else {
+      $this->list_field = $list_field;
+    }
+  }
+
+  public function getName(): string {
+    return 'AnnotatedTypes';
+  }
+
+  public function readFromJson(string $jsonText): void {
+    $parsed = json_decode($jsonText, true);
+
+    if ($parsed === null || !is_array($parsed)) {
+      throw new \TProtocolException("Cannot parse the given json string.");
+    }
+
+    if (idx($parsed, 'binary_field') !== null) {
+      $this->binary_field = $parsed['binary_field'];
+    }    
+    if (idx($parsed, 'list_field') !== null) {
+      $_json3 = $parsed['list_field'];
+      $_container4 = Vector {};
+      foreach($_json3 as $_key1 => $_value2) {
+        $_elem5 = Map {};
+        $_json9 = $_value2;
+        $_container10 = Map {};
+        foreach($_json9 as $_key7 => $_value8) {
+          $_value11 = '';
+          $_value11 = $_value8;
+          $_container10[$_key7] = $_value11;
+        }
+        $_elem5 = $_container10;
+        $_container4 []= $_elem5;
+      }
+      $this->list_field = $_container4;
+    }    
+  }
+
+}
+

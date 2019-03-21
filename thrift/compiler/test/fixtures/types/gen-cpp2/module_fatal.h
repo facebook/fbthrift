@@ -18,6 +18,7 @@ namespace apache { namespace thrift { namespace fixtures { namespace types {
 namespace thrift_fatal_impl_detail {
 
 struct apache_thrift_fixtures_types_module__unique_strings_list {
+  using AnnotatedTypes = ::fatal::sequence<char, 'A', 'n', 'n', 'o', 't', 'a', 't', 'e', 'd', 'T', 'y', 'p', 'e', 's'>;
   using ComplexNestedWithDefault = ::fatal::sequence<char, 'C', 'o', 'm', 'p', 'l', 'e', 'x', 'N', 'e', 's', 't', 'e', 'd', 'W', 'i', 't', 'h', 'D', 'e', 'f', 'a', 'u', 'l', 't'>;
   using ComplexString = ::fatal::sequence<char, 'C', 'o', 'm', 'p', 'l', 'e', 'x', 'S', 't', 'r', 'i', 'n', 'g'>;
   using ContainerStruct = ::fatal::sequence<char, 'C', 'o', 'n', 't', 'a', 'i', 'n', 'e', 'r', 'S', 't', 'r', 'u', 'c', 't'>;
@@ -42,6 +43,7 @@ struct apache_thrift_fixtures_types_module__unique_strings_list {
   using bar = ::fatal::sequence<char, 'b', 'a', 'r'>;
   using big = ::fatal::sequence<char, 'b', 'i', 'g'>;
   using biggish = ::fatal::sequence<char, 'b', 'i', 'g', 'g', 'i', 's', 'h'>;
+  using binary_field = ::fatal::sequence<char, 'b', 'i', 'n', 'a', 'r', 'y', '_', 'f', 'i', 'e', 'l', 'd'>;
   using binary_keyed_map = ::fatal::sequence<char, 'b', 'i', 'n', 'a', 'r', 'y', '_', 'k', 'e', 'y', 'e', 'd', '_', 'm', 'a', 'p'>;
   using bounce_map = ::fatal::sequence<char, 'b', 'o', 'u', 'n', 'c', 'e', '_', 'm', 'a', 'p'>;
   using cpp = ::fatal::sequence<char, 'c', 'p', 'p'>;
@@ -67,6 +69,7 @@ struct apache_thrift_fixtures_types_module__unique_strings_list {
   using has_bitwise_ops = ::fatal::sequence<char, 'h', 'a', 's', '_', 'b', 'i', 't', 'w', 'i', 's', 'e', '_', 'o', 'p', 's'>;
   using hello = ::fatal::sequence<char, 'h', 'e', 'l', 'l', 'o'>;
   using is_unscoped = ::fatal::sequence<char, 'i', 's', '_', 'u', 'n', 's', 'c', 'o', 'p', 'e', 'd'>;
+  using list_field = ::fatal::sequence<char, 'l', 'i', 's', 't', '_', 'f', 'i', 'e', 'l', 'd'>;
   using m = ::fatal::sequence<char, 'm'>;
   using majorVer = ::fatal::sequence<char, 'm', 'a', 'j', 'o', 'r', 'V', 'e', 'r'>;
   using medium = ::fatal::sequence<char, 'm', 'e', 'd', 'i', 'u', 'm'>;
@@ -114,6 +117,7 @@ class module_tags {
     using MyStruct = thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__unique_strings_list::MyStruct;
     using MyDataItem = thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__unique_strings_list::MyDataItem;
     using Renaming = thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__unique_strings_list::Renaming;
+    using AnnotatedTypes = thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__unique_strings_list::AnnotatedTypes;
   };
 
   struct apache_thrift_fixtures_types_module__unique_constants_list {
@@ -167,7 +171,8 @@ THRIFT_REGISTER_REFLECTION_METADATA(
     ::fatal::pair<MinPadding, thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__unique_strings_list::MinPadding>,
     ::fatal::pair<MyStruct, thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__unique_strings_list::MyStruct>,
     ::fatal::pair<MyDataItem, thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__unique_strings_list::MyDataItem>,
-    ::fatal::pair<Renaming, thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__unique_strings_list::Renaming>
+    ::fatal::pair<Renaming, thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__unique_strings_list::Renaming>,
+    ::fatal::pair<AnnotatedTypes, thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__unique_strings_list::AnnotatedTypes>
   >,
   // constants
   ::fatal::list<

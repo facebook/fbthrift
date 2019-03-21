@@ -177,6 +177,7 @@ class MinPadding;
 class MyStruct;
 class MyDataItem;
 class Renaming;
+class AnnotatedTypes;
 }}}} // apache::thrift::fixtures::types
 // END forward_declare
 // BEGIN typedefs
@@ -1347,6 +1348,92 @@ void swap(Renaming& a, Renaming& b);
 
 template <class Protocol_>
 uint32_t Renaming::read(Protocol_* iprot) {
+  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
+  readNoXfer(iprot);
+  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
+}
+
+}}}} // apache::thrift::fixtures::types
+namespace apache { namespace thrift { namespace fixtures { namespace types {
+class AnnotatedTypes final : private apache::thrift::detail::st::ComparisonOperators<AnnotatedTypes> {
+ public:
+
+  AnnotatedTypes() {}
+  // FragileConstructor for use in initialization lists only.
+  AnnotatedTypes(apache::thrift::FragileConstructor,  ::apache::thrift::fixtures::types::TBinary binary_field__arg,  ::apache::thrift::fixtures::types::SomeListOfTypeMap list_field__arg);
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
+    binary_field = arg.extract();
+    __isset.binary_field = true;
+  }
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
+    list_field = arg.extract();
+    __isset.list_field = true;
+  }
+
+  AnnotatedTypes(AnnotatedTypes&&) = default;
+
+  AnnotatedTypes(const AnnotatedTypes&) = default;
+
+  AnnotatedTypes& operator=(AnnotatedTypes&&) = default;
+
+  AnnotatedTypes& operator=(const AnnotatedTypes&) = default;
+  void __clear();
+   ::apache::thrift::fixtures::types::TBinary binary_field;
+   ::apache::thrift::fixtures::types::SomeListOfTypeMap list_field;
+
+  struct __isset {
+    bool binary_field;
+    bool list_field;
+  } __isset = {};
+  bool operator==(const AnnotatedTypes& rhs) const;
+  bool operator<(const AnnotatedTypes& rhs) const;
+
+  const  ::apache::thrift::fixtures::types::TBinary& get_binary_field() const& {
+    return binary_field;
+  }
+
+   ::apache::thrift::fixtures::types::TBinary get_binary_field() && {
+    return std::move(binary_field);
+  }
+
+  template <typename T_AnnotatedTypes_binary_field_struct_setter =  ::apache::thrift::fixtures::types::TBinary>
+   ::apache::thrift::fixtures::types::TBinary& set_binary_field(T_AnnotatedTypes_binary_field_struct_setter&& binary_field_) {
+    binary_field = std::forward<T_AnnotatedTypes_binary_field_struct_setter>(binary_field_);
+    __isset.binary_field = true;
+    return binary_field;
+  }
+  const  ::apache::thrift::fixtures::types::SomeListOfTypeMap& get_list_field() const&;
+   ::apache::thrift::fixtures::types::SomeListOfTypeMap get_list_field() &&;
+
+  template <typename T_AnnotatedTypes_list_field_struct_setter =  ::apache::thrift::fixtures::types::SomeListOfTypeMap>
+   ::apache::thrift::fixtures::types::SomeListOfTypeMap& set_list_field(T_AnnotatedTypes_list_field_struct_setter&& list_field_) {
+    list_field = std::forward<T_AnnotatedTypes_list_field_struct_setter>(list_field_);
+    __isset.list_field = true;
+    return list_field;
+  }
+
+  template <class Protocol_>
+  uint32_t read(Protocol_* iprot);
+  template <class Protocol_>
+  uint32_t serializedSize(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t serializedSizeZC(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t write(Protocol_* prot_) const;
+
+ private:
+  template <class Protocol_>
+  void readNoXfer(Protocol_* iprot);
+
+  friend class ::apache::thrift::Cpp2Ops< AnnotatedTypes >;
+};
+
+void swap(AnnotatedTypes& a, AnnotatedTypes& b);
+
+template <class Protocol_>
+uint32_t AnnotatedTypes::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
   readNoXfer(iprot);
   return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
