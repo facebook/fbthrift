@@ -1306,7 +1306,13 @@ FieldType:
         if (!$$) {
           $$ = driver.scope_cache->get_type(driver.program->get_name() + "." + $1);
         }
-        if ($$ == NULL || $2 != NULL) {
+        // Create typedef in case we have annotations on the type.
+        if ($$ != nullptr && $2 != nullptr) {
+          $$ = new t_typedef(const_cast<t_program*>($$->get_program()), $$, $$->get_name(), driver.scope_cache);
+          $$->annotations_ = $2->annotations_;
+          delete $2;
+        }
+        if ($$ == nullptr) {
           /*
            * Either this type isn't yet declared, or it's never
              declared.  Either way allow it and we'll figure it out

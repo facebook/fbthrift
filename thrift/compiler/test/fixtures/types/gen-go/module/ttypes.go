@@ -2065,7 +2065,7 @@ func (p *Renaming) String() string {
 //  - BinaryField
 //  - ListField
 type AnnotatedTypes struct {
-  BinaryField []byte `thrift:"binary_field,1" db:"binary_field" json:"binary_field"`
+  BinaryField TBinary `thrift:"binary_field,1" db:"binary_field" json:"binary_field"`
   ListField include0.SomeListOfTypeMap `thrift:"list_field,2" db:"list_field" json:"list_field"`
 }
 
@@ -2074,7 +2074,7 @@ func NewAnnotatedTypes() *AnnotatedTypes {
 }
 
 
-func (p *AnnotatedTypes) GetBinaryField() []byte {
+func (p *AnnotatedTypes) GetBinaryField() TBinary {
   return p.BinaryField
 }
 

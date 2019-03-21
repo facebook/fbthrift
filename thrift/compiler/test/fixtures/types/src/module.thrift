@@ -99,5 +99,5 @@ struct Renaming {
 
 struct AnnotatedTypes {
   1: TBinary (noop_annotation) binary_field,
-  2: include.SomeListOfTypeMap list_field,
+  2: include.SomeListOfTypeMap (noop_annotation) list_field,
 }
