@@ -30,7 +30,13 @@ include_directories(${THRIFT_HOME})
 include_directories(${THRIFT_BUILD})
 
 # Set directory of the Find$x.cmake files to properly include dependencies
-set(CMAKE_MODULE_PATH "${THRIFT_HOME}/thrift/cmake" ${CMAKE_MODULE_PATH})
+set(CMAKE_MODULE_PATH
+  "${THRIFT_HOME}/thrift/cmake"
+  # for in-fbsource builds
+  "${CMAKE_CURRENT_SOURCE_DIR}/../opensource/fbcode_builder/CMake"
+  # For shipit-transformed builds
+  "${THRIFT_HOME}/build/fbcode_builder/CMake"
+  ${CMAKE_MODULE_PATH})
 
 # Find required dependencies
 find_package(OpenSSL REQUIRED)
@@ -91,7 +97,7 @@ endif(compiler_only OR build_all)
 
 # Find required dependencies for thrift/lib
 if(lib_only OR build_all)
-  find_package(GFlags REQUIRED)
+  find_package(Gflags REQUIRED)
   find_package(Glog REQUIRED)
   find_package(folly CONFIG REQUIRED)
   find_package(yarpl CONFIG)
