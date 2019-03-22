@@ -179,11 +179,11 @@ void ThriftRocketServerHandler::handleRequestCommon(
 
   auto data = std::move(payload).data();
   const bool validMetadata = isMetadataValid(*metadata);
-  const bool validChecksum = validMetadata && metadata->crc32c_ref() &&
-      *metadata->crc32c_ref() == checksum::crc32c(*data);
+  const bool badChecksum = validMetadata && metadata->crc32c_ref() &&
+      (*metadata->crc32c_ref() != checksum::crc32c(*data));
   auto request = makeRequest(std::move(metadata));
 
-  if (validMetadata && validChecksum) {
+  if (validMetadata && !badChecksum) {
     const auto protocolId = request->getProtoId();
     auto* const cpp2ReqCtx = request->getRequestContext();
     cpp2Processor_->process(
