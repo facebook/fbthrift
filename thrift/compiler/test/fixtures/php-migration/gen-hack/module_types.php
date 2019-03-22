@@ -85,12 +85,15 @@ class Foo implements \IThriftStruct {
 
   <<__Rx>>
   public function __construct(@\HH\KeyedContainer<string, mixed> $vals = darray[]) {
-    // UNSAFE_BLOCK $vals is not type safe :(, and we don't cast structs (yet)
+    /* HH_FIXME[4110] previously hidden by unsafe */
     $this->a = idx($vals, 'a', null);
     if (C\contains_key($vals, 'b')) {
+      /* HH_FIXME[4110] previously hidden by unsafe */
       $this->b = idx($vals, 'b', null);
     }
+    /* HH_FIXME[4110] previously hidden by unsafe */
     $this->c = idx($vals, 'c', 7);
+    /* HH_FIXME[4110] previously hidden by unsafe */
     $this->d = idx($vals, 'd', false);
   }
 
@@ -161,16 +164,52 @@ class Baz extends \TException implements \IThriftStruct {
 
   <<__Rx>>
   public function __construct(@\HH\KeyedContainer<string, mixed> $vals = darray[]) {
-    // UNSAFE_BLOCK $vals is not type safe :(, and we don't cast structs (yet)
     parent::__construct();
     $this->message = (string)idx($vals, 'message', '');
+    /* HH_FIXME[4110] previously hidden by unsafe */
     $this->some_field = idx($vals, 'some_field', null);
+    /* HH_FIXME[4110] previously hidden by unsafe */
     $this->some_container = idx($vals, 'some_container', null);
     $this->code = (int)idx($vals, 'code', 0);
   }
 
   public function getName(): string {
     return 'Baz';
+  }
+
+}
+
+/**
+ * Original thrift exception:-
+ * OptBaz
+ */
+class OptBaz extends \TException implements \IThriftStruct {
+  use \ThriftSerializationTrait;
+
+  public static darray<int, darray<string, mixed>> $_TSPEC = darray[
+    1 => darray[
+      'var' => 'message',
+      'type' => \TType::STRING,
+      ],
+    ];
+  public static Map<string, int> $_TFIELDMAP = Map {
+    'message' => 1,
+  };
+  const int STRUCTURAL_ID = 546500496397478593;
+  /**
+   * Original thrift field:-
+   * 1: string message
+   */
+  public string $message;
+
+  <<__Rx>>
+  public function __construct(@\HH\KeyedContainer<string, mixed> $vals = darray[]) {
+    parent::__construct();
+    $this->message = (string)idx($vals, 'message', '');
+  }
+
+  public function getName(): string {
+    return 'OptBaz';
   }
 
 }

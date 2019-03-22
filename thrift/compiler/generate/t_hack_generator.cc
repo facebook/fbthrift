@@ -2662,8 +2662,6 @@ void t_hack_generator::_generate_php_struct_definition(
       out << "@\\HH\\KeyedContainer<string, mixed> $vals = " << array_keyword_
           << "[]) {\n";
     }
-    out << indent()
-        << "  // UNSAFE_BLOCK $vals is not type safe :(, and we don't cast structs (yet)\n";
   } else {
     bool first = true;
     for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
@@ -2728,21 +2726,35 @@ void t_hack_generator::_generate_php_struct_definition(
       }
 
       if (strict_types_) {
+        out << indent()
+            << "/* HH_FIXME[4088] Sketchy null check previously hidden by unsafe */\n";
+        if (t->is_container() || t->is_enum()) {
+          out << indent()
+              << "/* HH_FIXME[4110] mixed vs default conflict previously hidden by unsafe */\n";
+        }
         out << indent() << "$this->" << (*m_iter)->get_name() << " = " << cast
             << "($vals->get('" << (*m_iter)->get_name() << "') ?: " << dval
             << ");\n";
       } else {
-        if ((*m_iter)->get_req() == t_field::T_OPTIONAL &&
-            (*m_iter)->get_value() == nullptr) {
+        bool needs_optional_check =
+            (*m_iter)->get_req() == t_field::T_OPTIONAL &&
+            (*m_iter)->get_value() == nullptr &&
+            !(is_exception && is_base_exception_property(*m_iter));
+
+        if (needs_optional_check) {
           out << indent() << "if (C\\contains_key($vals, '"
               << (*m_iter)->get_name() << "')) {\n";
           indent_up();
         }
+
+        if (cast == "") {
+          out << indent()
+              << "/* HH_FIXME[4110] previously hidden by unsafe */\n";
+        }
         out << indent() << "$this->" << (*m_iter)->get_name() << " = " << cast
             << "idx($vals, '" << (*m_iter)->get_name() << "', " << dval
             << ");\n";
-        if ((*m_iter)->get_req() == t_field::T_OPTIONAL &&
-            (*m_iter)->get_value() == nullptr) {
+        if (needs_optional_check) {
           indent_down();
           out << indent() << "}\n";
         }

@@ -21,3 +21,7 @@ exception Baz {
  3: set<string> some_container;
  4: i32 code;
 }
+
+exception OptBaz {
+  1: optional string message;
+}

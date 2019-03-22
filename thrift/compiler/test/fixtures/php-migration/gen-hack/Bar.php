@@ -399,11 +399,15 @@ class Bar_baz_args implements \IThriftStruct {
 
   <<__Rx>>
   public function __construct(@\HH\KeyedContainer<string, mixed> $vals = darray[]) {
-    // UNSAFE_BLOCK $vals is not type safe :(, and we don't cast structs (yet)
+    /* HH_FIXME[4110] previously hidden by unsafe */
     $this->a = idx($vals, 'a', null);
+    /* HH_FIXME[4110] previously hidden by unsafe */
     $this->b = idx($vals, 'b', null);
+    /* HH_FIXME[4110] previously hidden by unsafe */
     $this->c = idx($vals, 'c', null);
+    /* HH_FIXME[4110] previously hidden by unsafe */
     $this->d = idx($vals, 'd', null);
+    /* HH_FIXME[4110] previously hidden by unsafe */
     $this->e = idx($vals, 'e', 4);
   }
 
@@ -430,7 +434,6 @@ class Bar_baz_result implements \IThriftStruct {
 
   <<__Rx>>
   public function __construct(@\HH\KeyedContainer<string, mixed> $vals = darray[]) {
-    // UNSAFE_BLOCK $vals is not type safe :(, and we don't cast structs (yet)
   }
 
   public function getName(): string {
