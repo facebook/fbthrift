@@ -53,32 +53,47 @@ There are several key goals for these components:
 ## Building
 
 ### Dependencies
+
 Please install the following dependencies before building Facebook Thrift:
 
 **System**:
-[Flex](https://www.gnu.org/software/flex),
 [Bison 3.1 or later](https://www.gnu.org/software/bison),
 [Boost](https://www.boost.org),
+[CMake](https://cmake.org),
+[Flex](https://www.gnu.org/software/flex),
 [OpenSSLv1.0.2g](https://www.openssl.org),
 [PThreads](https://computing.llnl.gov/tutorials/pthreads),
-[Zlib](https://zlib.net).
+[Zlib](https://zlib.net)
 
-**External**: [Double Conversion](https://github.com/google/double-conversion), [GFlags](https://github.com/gflags/gflags), [GLog](https://github.com/google/glog), [Mstch](https://github.com/no1msd/mstch)
+**External**:
+[Double Conversion](https://github.com/google/double-conversion),
+[GFlags](https://github.com/gflags/gflags),
+[GLog](https://github.com/google/glog),
+[Mstch](https://github.com/no1msd/mstch)
 
-**Facebook**: [Fizz](https://github.com/facebookincubator/fizz), [Folly](https://github.com/facebook/folly), [Wangle](https://github.com/facebook/wangle), [Zstd](https://github.com/facebook/zstd)
+**Facebook**:
+[Fizz](https://github.com/facebookincubator/fizz),
+[Folly](https://github.com/facebook/folly),
+[Wangle](https://github.com/facebook/wangle),
+[Zstd](https://github.com/facebook/zstd)
 
 ### Build
+
     git clone https://github.com/facebook/fbthrift
     cd build
     cmake .. # Add -DOPENSSL_ROOT_DIR for macOS. Usually in /usr/local/ssl
-    make # or make -j $(nproc), or make install.
+    make # or cmake --build .
 
 This will create:
-  * thrift/bin/thrift1: The Thrift compiler binary to generate client and server code.
-  * thrift/lib/libthriftcpp2.so: Runtime library for clients and servers.
+
+* `thrift/bin/thrift1`: The Thrift compiler binary to generate client and
+  server code.
+* `thrift/lib/libthriftcpp2.so`: Runtime library for clients and servers.
 
 ### Thrift Files
-When using thrift and the CMake build system, include: `ThriftLibrary.cmake` in your project. This includes the following macro to help when building Thrift files:
+
+When using thrift and the CMake build system, include: `ThriftLibrary.cmake` in
+your project. This includes the following macro to help building Thrift files:
 
     thrift_library(
       #file_name
@@ -89,11 +104,15 @@ When using thrift and the CMake build system, include: `ThriftLibrary.cmake` in 
       #output_path
     )
 
-This generates a library called: `file_name-language`. That is, for `Test.thrift` compiled as cpp2, it will generate the library `Test-cpp2`. This should be added as a dependency to any `*.h` or `*.cpp` file that contains an include to generated code.
+This generates a library called `file_name-<language>`. That is, for 
+`Test.thrift` compiled as cpp2, it will generate the library `Test-cpp2`.
+ This should be added as a dependency to any source or header file that contains
+an include to generated code.
 
 ---
 
 ## C++ Static Reflection
+
 Information regarding C++ Static Reflection support can be found under the [static reflection library directory](thrift/lib/cpp2/reflection/), in the corresponding [`README` file](thrift/lib/cpp2/reflection/README.md).
 
 ---
