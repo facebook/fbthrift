@@ -2379,15 +2379,6 @@ class struct1 final : private apache::thrift::detail::st::ComparisonOperators<st
   bool operator==(const struct1& rhs) const;
   bool operator<(const struct1& rhs) const;
 
-  int32_t get_field0() const {
-    return field0;
-  }
-
-  int32_t& set_field0(int32_t field0_) {
-    field0 = field0_;
-    return field0;
-  }
-
   THRIFT_NOLINK ::apache::thrift::optional_field_ref<const std::string&> field1_ref() const& {
     return {field1, __isset.field1};
   }
@@ -2402,6 +2393,31 @@ class struct1 final : private apache::thrift::detail::st::ComparisonOperators<st
 
   THRIFT_NOLINK ::apache::thrift::optional_field_ref<std::string&&> field1_ref() && {
     return {std::move(field1), __isset.field1};
+  }
+
+  THRIFT_NOLINK ::apache::thrift::optional_field_ref<const  ::test_cpp2::cpp_reflection::union1&> field4_ref() const& {
+    return {field4, __isset.field4};
+  }
+
+  THRIFT_NOLINK ::apache::thrift::optional_field_ref<const  ::test_cpp2::cpp_reflection::union1&&> field4_ref() const&& {
+    return {std::move(field4), __isset.field4};
+  }
+
+  THRIFT_NOLINK ::apache::thrift::optional_field_ref< ::test_cpp2::cpp_reflection::union1&> field4_ref() & {
+    return {field4, __isset.field4};
+  }
+
+  THRIFT_NOLINK ::apache::thrift::optional_field_ref< ::test_cpp2::cpp_reflection::union1&&> field4_ref() && {
+    return {std::move(field4), __isset.field4};
+  }
+
+  int32_t get_field0() const {
+    return field0;
+  }
+
+  int32_t& set_field0(int32_t field0_) {
+    field0 = field0_;
+    return field0;
   }
 
   const std::string* get_field1() const& {
@@ -2437,22 +2453,6 @@ class struct1 final : private apache::thrift::detail::st::ComparisonOperators<st
    ::test_cpp2::cpp_reflection::enum2& set_field3( ::test_cpp2::cpp_reflection::enum2 field3_) {
     field3 = field3_;
     return field3;
-  }
-
-  THRIFT_NOLINK ::apache::thrift::optional_field_ref<const  ::test_cpp2::cpp_reflection::union1&> field4_ref() const& {
-    return {field4, __isset.field4};
-  }
-
-  THRIFT_NOLINK ::apache::thrift::optional_field_ref<const  ::test_cpp2::cpp_reflection::union1&&> field4_ref() const&& {
-    return {std::move(field4), __isset.field4};
-  }
-
-  THRIFT_NOLINK ::apache::thrift::optional_field_ref< ::test_cpp2::cpp_reflection::union1&> field4_ref() & {
-    return {field4, __isset.field4};
-  }
-
-  THRIFT_NOLINK ::apache::thrift::optional_field_ref< ::test_cpp2::cpp_reflection::union1&&> field4_ref() && {
-    return {std::move(field4), __isset.field4};
   }
   const  ::test_cpp2::cpp_reflection::union1* get_field4() const&;
    ::test_cpp2::cpp_reflection::union1* get_field4() &;
@@ -3069,15 +3069,6 @@ class struct4 final : private apache::thrift::detail::st::ComparisonOperators<st
   bool operator==(const struct4& rhs) const;
   bool operator<(const struct4& rhs) const;
 
-  int32_t get_field0() const {
-    return field0;
-  }
-
-  int32_t& set_field0(int32_t field0_) {
-    field0 = field0_;
-    return field0;
-  }
-
   THRIFT_NOLINK ::apache::thrift::optional_field_ref<const std::string&> field1_ref() const& {
     return {field1, __isset.field1};
   }
@@ -3092,6 +3083,15 @@ class struct4 final : private apache::thrift::detail::st::ComparisonOperators<st
 
   THRIFT_NOLINK ::apache::thrift::optional_field_ref<std::string&&> field1_ref() && {
     return {std::move(field1), __isset.field1};
+  }
+
+  int32_t get_field0() const {
+    return field0;
+  }
+
+  int32_t& set_field0(int32_t field0_) {
+    field0 = field0_;
+    return field0;
   }
 
   const std::string* get_field1() const& {
@@ -3205,15 +3205,6 @@ class struct5 final : private apache::thrift::detail::st::ComparisonOperators<st
   bool operator==(const struct5& rhs) const;
   bool operator<(const struct5& rhs) const;
 
-  int32_t get_field0() const {
-    return field0;
-  }
-
-  int32_t& set_field0(int32_t field0_) {
-    field0 = field0_;
-    return field0;
-  }
-
   THRIFT_NOLINK ::apache::thrift::optional_field_ref<const std::string&> field1_ref() const& {
     return {field1, __isset.field1};
   }
@@ -3228,6 +3219,15 @@ class struct5 final : private apache::thrift::detail::st::ComparisonOperators<st
 
   THRIFT_NOLINK ::apache::thrift::optional_field_ref<std::string&&> field1_ref() && {
     return {std::move(field1), __isset.field1};
+  }
+
+  int32_t get_field0() const {
+    return field0;
+  }
+
+  int32_t& set_field0(int32_t field0_) {
+    field0 = field0_;
+    return field0;
   }
 
   const std::string* get_field1() const& {

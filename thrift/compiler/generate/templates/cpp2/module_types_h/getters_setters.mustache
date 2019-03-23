@@ -15,24 +15,6 @@
   limitations under the License.
 
 %><%#struct:fields%><%#field:type%><%^field:cpp_ref?%>
-<%#field:optional?%>
-
-  THRIFT_NOLINK ::apache::thrift::optional_field_ref<const <% > types/type%>&> <%field:cpp_name%>_ref() const& {
-    return {<%field:cpp_name%>, __isset.<%field:cpp_name%>};
-  }
-
-  THRIFT_NOLINK ::apache::thrift::optional_field_ref<const <% > types/type%>&&> <%field:cpp_name%>_ref() const&& {
-    return {std::move(<%field:cpp_name%>), __isset.<%field:cpp_name%>};
-  }
-
-  THRIFT_NOLINK ::apache::thrift::optional_field_ref<<% > types/type%>&> <%field:cpp_name%>_ref() & {
-    return {<%field:cpp_name%>, __isset.<%field:cpp_name%>};
-  }
-
-  THRIFT_NOLINK ::apache::thrift::optional_field_ref<<% > types/type%>&&> <%field:cpp_name%>_ref() && {
-    return {std::move(<%field:cpp_name%>), __isset.<%field:cpp_name%>};
-  }
-<%/field:optional?%>
 <%#type:resolves_to_base_or_enum?%>
 
 <%^type:string_or_binary?%>

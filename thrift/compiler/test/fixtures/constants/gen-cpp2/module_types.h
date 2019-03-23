@@ -186,6 +186,22 @@ class Internship final : private apache::thrift::detail::st::ComparisonOperators
   bool operator==(const Internship& rhs) const;
   bool operator<(const Internship& rhs) const;
 
+  THRIFT_NOLINK ::apache::thrift::optional_field_ref<const  ::cpp2::Company&> employer_ref() const& {
+    return {employer, __isset.employer};
+  }
+
+  THRIFT_NOLINK ::apache::thrift::optional_field_ref<const  ::cpp2::Company&&> employer_ref() const&& {
+    return {std::move(employer), __isset.employer};
+  }
+
+  THRIFT_NOLINK ::apache::thrift::optional_field_ref< ::cpp2::Company&> employer_ref() & {
+    return {employer, __isset.employer};
+  }
+
+  THRIFT_NOLINK ::apache::thrift::optional_field_ref< ::cpp2::Company&&> employer_ref() && {
+    return {std::move(employer), __isset.employer};
+  }
+
   int32_t get_weeks() const {
     return weeks;
   }
@@ -208,22 +224,6 @@ class Internship final : private apache::thrift::detail::st::ComparisonOperators
     title = std::forward<T_Internship_title_struct_setter>(title_);
     __isset.title = true;
     return title;
-  }
-
-  THRIFT_NOLINK ::apache::thrift::optional_field_ref<const  ::cpp2::Company&> employer_ref() const& {
-    return {employer, __isset.employer};
-  }
-
-  THRIFT_NOLINK ::apache::thrift::optional_field_ref<const  ::cpp2::Company&&> employer_ref() const&& {
-    return {std::move(employer), __isset.employer};
-  }
-
-  THRIFT_NOLINK ::apache::thrift::optional_field_ref< ::cpp2::Company&> employer_ref() & {
-    return {employer, __isset.employer};
-  }
-
-  THRIFT_NOLINK ::apache::thrift::optional_field_ref< ::cpp2::Company&&> employer_ref() && {
-    return {std::move(employer), __isset.employer};
   }
 
   const  ::cpp2::Company* get_employer() const& {
