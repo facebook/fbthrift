@@ -167,8 +167,8 @@ TEST_P(RSCompatibilityTest, RequestResponse_ResponseSizeTooBig) {
   compatibilityTest_->TestRequestResponse_ResponseSizeTooBig();
 }
 
-TEST_P(RSCompatibilityTest, RequestResponse_RequestChecksumming) {
-  compatibilityTest_->TestRequestResponse_RequestChecksumming();
+TEST_P(RSCompatibilityTest, RequestResponse_Checksumming) {
+  compatibilityTest_->TestRequestResponse_Checksumming();
 }
 
 TEST_P(RSCompatibilityTest, Oneway_Simple) {

@@ -16,6 +16,7 @@
 
 #include <gtest/gtest.h>
 
+#include <thrift/lib/cpp2/transport/core/testutil/TAsyncSocketIntercepted.h>
 #include <thrift/lib/cpp2/transport/rsocket/test/util/TestServiceMock.h>
 #include <thrift/lib/cpp2/transport/rsocket/test/util/TestUtil.h>
 
@@ -72,9 +73,13 @@ class StreamingTest
 
   void connectToServer(
       folly::Function<void(std::unique_ptr<StreamServiceAsyncClient>)> callMe,
-      folly::Function<void()> onDetachable = nullptr) {
+      folly::Function<void()> onDetachable = nullptr,
+      folly::Function<void(TAsyncSocketIntercepted&)> socketSetup = nullptr) {
     auto channel = connectToServer(
-        port_, std::move(onDetachable), GetParam().useRocketClient);
+        port_,
+        std::move(onDetachable),
+        GetParam().useRocketClient,
+        std::move(socketSetup));
     callMe(std::make_unique<StreamServiceAsyncClient>(std::move(channel)));
   }
 
@@ -169,50 +174,56 @@ TEST_P(StreamingTest, CallbackSimpleStream) {
 }
 
 TEST_P(StreamingTest, ChecksummingRequest) {
-  connectToServer([this](std::unique_ptr<StreamServiceAsyncClient> client) {
-    static const int kSize = 32 << 10;
-    std::string asString(kSize, 'a');
-    std::unique_ptr<folly::IOBuf> payload = folly::IOBuf::copyBuffer(asString);
+  auto corruptionParams = std::make_shared<TAsyncSocketIntercepted::Params>();
+  connectToServer(
+      [this,
+       corruptionParams](std::unique_ptr<StreamServiceAsyncClient> client) {
+        enum class CorruptionType : int {
+          NONE = 0,
+          REQUESTS = 1,
+          RESPONSES = 2,
+        };
 
-    // First, once "normally"
-    auto futureRet1 = client->future_requestWithBlob(*payload);
-    auto stream1 = std::move(futureRet1).get();
-    auto result1 = std::move(stream1).via(&executor_);
-    auto subscription1 = std::move(result1).subscribe(
-        [](auto) { FAIL() << "Should be empty "; },
-        [](auto ex) { FAIL() << "Should not call onError: " << ex.what(); });
-    std::move(subscription1).join();
+        auto setCorruption = [&](CorruptionType corruptionType) {
+          evbThread_.getEventBase()->runInEventBaseThreadAndWait([&]() {
+            corruptionParams->corruptLastWriteByte_ =
+                corruptionType == CorruptionType::REQUESTS;
+            corruptionParams->corruptLastReadByteMinSize_ = 30;
+            corruptionParams->corruptLastReadByte_ =
+                corruptionType == CorruptionType::RESPONSES;
+          });
+        };
 
-    // Corrupt an "inflight" request.
-    // We rely on IOBuf sharing and crc/serialization being on this
-    // thread, before net thread can send, and then corrupt the buffer.
-    auto evbPaused = std::make_shared<folly::Baton<>>();
-    auto evbMayResume = std::make_shared<folly::Baton<>>();
-    executor_.add([=]() {
-      evbPaused->post();
-      evbMayResume->wait();
-    });
-    evbPaused->wait(); // Pause evbase/sending.
-    payload = folly::IOBuf::copyBuffer(asString);
-    folly::IOBuf* rawPtr = payload.get();
-    auto futureRet2 = client->future_requestWithBlob(*payload);
-    rawPtr->writableData()[0] = 'b';
-    evbMayResume->post(); // Unpause
+        static const int kSize = 32 << 10;
+        std::string asString(kSize, 'a');
+        std::unique_ptr<folly::IOBuf> payload =
+            folly::IOBuf::copyBuffer(asString);
 
-    bool didThrow = false;
-    try {
-      auto stream2 = std::move(futureRet2).get();
-      auto result2 = std::move(stream2).via(&executor_);
-      auto subscription2 = std::move(result2).subscribe(
-          [](auto) { FAIL() << "Should be empty "; },
-          [](auto ex) { FAIL() << "Should not call onError: " << ex.what(); });
-      std::move(subscription2).join();
-    } catch (TApplicationException& ex) {
-      EXPECT_EQ(TApplicationException::CHECKSUM_MISMATCH, ex.getType());
-      didThrow = true;
-    }
-    EXPECT_TRUE(didThrow);
-  });
+        for (CorruptionType testType :
+             {CorruptionType::NONE, CorruptionType::REQUESTS}) {
+          setCorruption(testType);
+          bool didThrow = false;
+          try {
+            auto futureRet = client->future_requestWithBlob(*payload);
+            auto stream = std::move(futureRet).get();
+            auto result = std::move(stream).via(&executor_);
+            auto subscription = std::move(result).subscribe(
+                [](auto) { FAIL() << "Should be empty "; },
+                [](auto ex) {
+                  FAIL() << "Should not call onError: " << ex.what();
+                });
+            std::move(subscription).join();
+          } catch (TApplicationException& ex) {
+            EXPECT_EQ(TApplicationException::CHECKSUM_MISMATCH, ex.getType());
+            didThrow = true;
+          }
+          EXPECT_EQ(testType != CorruptionType::NONE, didThrow);
+        }
+
+        setCorruption(CorruptionType::NONE);
+      },
+      nullptr,
+      [=](TAsyncSocketIntercepted& sock) { sock.setParams(corruptionParams); });
 }
 
 TEST_P(StreamingTest, DefaultStreamImplementation) {

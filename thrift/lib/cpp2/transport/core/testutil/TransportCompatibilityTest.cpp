@@ -35,6 +35,7 @@
 #include <thrift/lib/cpp2/transport/core/ThriftClient.h>
 #include <thrift/lib/cpp2/transport/core/ThriftClientCallback.h>
 #include <thrift/lib/cpp2/transport/core/testutil/MockCallback.h>
+#include <thrift/lib/cpp2/transport/core/testutil/TAsyncSocketIntercepted.h>
 #include <thrift/lib/cpp2/transport/core/testutil/TransportCompatibilityTest.h>
 #include <thrift/lib/cpp2/transport/core/testutil/gen-cpp2/TestService.h>
 #include <thrift/lib/cpp2/transport/util/ConnectionManager.h>
@@ -197,16 +198,17 @@ void SampleServer<Service>::connectToServer(
   ASSERT_GT(port_, 0) << "Check if the server has started already";
   if (transport == "header") {
     auto addr = folly::SocketAddress(FLAGS_host, port_);
-    TAsyncSocket::UniquePtr sock(
-        new TAsyncSocket(folly::EventBaseManager::get()->getEventBase(), addr));
+    TAsyncSocket::UniquePtr sock(new TAsyncSocketIntercepted(
+        folly::EventBaseManager::get()->getEventBase(), addr));
     auto chan = HeaderClientChannel::newChannel(std::move(sock));
     chan->setProtocolId(apache::thrift::protocol::T_COMPACT_PROTOCOL);
     callMe(std::move(chan), nullptr);
   } else if (transport == "rsocket") {
     std::shared_ptr<RSocketClientChannel> channel;
     evbThread_.getEventBase()->runInEventBaseThreadAndWait([&]() {
-      channel = RSocketClientChannel::newChannel(TAsyncSocket::UniquePtr(
-          new TAsyncSocket(evbThread_.getEventBase(), FLAGS_host, port_)));
+      channel = RSocketClientChannel::newChannel(
+          TAsyncSocket::UniquePtr(new TAsyncSocketIntercepted(
+              evbThread_.getEventBase(), FLAGS_host, port_)));
     });
     auto channelPtr = channel.get();
     std::shared_ptr<RSocketClientChannel> destroyInEvbChannel(
@@ -220,8 +222,9 @@ void SampleServer<Service>::connectToServer(
   } else if (transport == "rocket") {
     std::shared_ptr<RocketClientChannel> channel;
     evbThread_.getEventBase()->runInEventBaseThreadAndWait([&]() {
-      channel = RocketClientChannel::newChannel(TAsyncSocket::UniquePtr(
-          new TAsyncSocket(evbThread_.getEventBase(), FLAGS_host, port_)));
+      channel = RocketClientChannel::newChannel(
+          TAsyncSocket::UniquePtr(new TAsyncSocketIntercepted(
+              evbThread_.getEventBase(), FLAGS_host, port_)));
     });
     auto channelPtr = channel.get();
     std::shared_ptr<RocketClientChannel> destroyInEvbChannel(
@@ -240,7 +243,7 @@ void SampleServer<Service>::connectToServer(
     auto channel = PooledRequestChannel::newChannel(
         eventBase, executor, [port = std::move(port_)](folly::EventBase& evb) {
           TAsyncSocket::UniquePtr socket(
-              new TAsyncSocket(&evb, FLAGS_host, port));
+              new TAsyncSocketIntercepted(&evb, FLAGS_host, port));
           if (FLAGS_use_ssl) {
             auto sslContext = std::make_shared<folly::SSLContext>();
             sslContext->setAdvertisedNextProtocols({"h2", "http"});
@@ -711,44 +714,51 @@ void TransportCompatibilityTest::TestRequestResponse_ResponseSizeTooBig() {
   });
 }
 
-void TransportCompatibilityTest::TestRequestResponse_RequestChecksumming() {
+void TransportCompatibilityTest::TestRequestResponse_Checksumming() {
   connectToServer([this](std::unique_ptr<TestServiceAsyncClient> client) {
-    EXPECT_CALL(*handler_.get(), echo_(_));
+    enum class CorruptionType : int {
+      NONE = 0,
+      REQUESTS = 1,
+      RESPONSES = 2,
+    };
+    EXPECT_CALL(*handler_.get(), echo_(_)).Times(1);
 
-    // Large enough for IOBuf buffer sharing path.
-    static const int kSize = 32 << 10;
-    std::string asString(kSize, 'a');
+    auto setCorruption = [&](CorruptionType corruptionType) {
+      auto channel = static_cast<ClientChannel*>(client->getChannel());
+      channel->getEventBase()->runInEventBaseThreadAndWait([&]() {
+        auto p = std::make_shared<TAsyncSocketIntercepted::Params>();
+        p->corruptLastWriteByte_ = corruptionType == CorruptionType::REQUESTS;
+        p->corruptLastReadByte_ = corruptionType == CorruptionType::RESPONSES;
+        p->corruptLastReadByteMinSize_ = 1 << 10;
+        dynamic_cast<TAsyncSocketIntercepted*>(channel->getTransport())
+            ->setParams(p);
+      });
+    };
 
-    // First make sure it works without corruption.
-    std::unique_ptr<folly::IOBuf> payload = folly::IOBuf::copyBuffer(asString);
-    std::string ret = client->future_echo(*payload).get();
-    EXPECT_EQ(asString, ret);
+    for (CorruptionType testType :
+         {CorruptionType::NONE, CorruptionType::REQUESTS}) {
+      static const int kSize = 32 << 10;
+      std::string asString(kSize, 'a');
+      std::unique_ptr<folly::IOBuf> payload =
+          folly::IOBuf::copyBuffer(asString);
+      setCorruption(testType);
 
-    // Corrupt an "inflight" request.
-    // We rely on IOBuf sharing and crc/serialization being on this
-    // thread, before evbase can send, and then corrupt the buffer.
-    auto evbPaused = std::make_shared<folly::Baton<>>();
-    auto evbMayResume = std::make_shared<folly::Baton<>>();
-    auto channel = static_cast<ClientChannel*>(client->getChannel());
-    channel->getEventBase()->add([=]() {
-      evbPaused->post();
-      evbMayResume->wait();
-    });
-    evbPaused->wait(); // Pause evbase/sending.
-    payload = folly::IOBuf::copyBuffer(asString);
-    folly::IOBuf* rawPtr = payload.get();
-    auto echoFuture = client->future_echo(*payload);
-    rawPtr->writableData()[0] = 'b';
-    evbMayResume->post(); // Unpause
+      auto future = client->future_echo(*payload);
 
-    bool didThrow = false;
-    try {
-      auto res = std::move(echoFuture).get();
-    } catch (TApplicationException& ex) {
-      EXPECT_EQ(TApplicationException::CHECKSUM_MISMATCH, ex.getType());
-      didThrow = true;
+      if (testType == CorruptionType::NONE) {
+        EXPECT_EQ(asString, std::move(future).get());
+      } else {
+        bool didThrow = false;
+        try {
+          auto res = std::move(future).get();
+        } catch (TApplicationException& ex) {
+          EXPECT_EQ(TApplicationException::CHECKSUM_MISMATCH, ex.getType());
+          didThrow = true;
+        }
+        EXPECT_TRUE(didThrow);
+      }
     }
-    EXPECT_TRUE(didThrow);
+    setCorruption(CorruptionType::NONE);
   });
 }
 
@@ -854,32 +864,30 @@ void TransportCompatibilityTest::TestOneway_Checksumming() {
   connectToServer([this](std::unique_ptr<TestServiceAsyncClient> client) {
     EXPECT_CALL(*handler_.get(), onewayLogBlob_(_));
 
-    static const int kSize = 32 << 10; // > IOBuf buf sharing thresh
-    std::string asString(kSize, 'a');
+    auto setCorruption = [&](bool val) {
+      auto channel = static_cast<ClientChannel*>(client->getChannel());
+      channel->getEventBase()->runInEventBaseThreadAndWait([&]() {
+        auto p = std::make_shared<TAsyncSocketIntercepted::Params>();
+        p->corruptLastWriteByte_ = val;
+        dynamic_cast<TAsyncSocketIntercepted*>(channel->getTransport())
+            ->setParams(p);
+      });
+    };
 
-    // Without corruption
-    auto payload = folly::IOBuf::copyBuffer(asString);
-    client->future_onewayLogBlob(*payload).get();
+    for (bool shouldCorrupt : {false, true}) {
+      static const int kSize = 32 << 10; // > IOBuf buf sharing thresh
+      std::string asString(kSize, 'a');
 
-    // With corruption
-    auto evbPaused = std::make_shared<folly::Baton<>>();
-    auto evbMayResume = std::make_shared<folly::Baton<>>();
-    auto channel = static_cast<ClientChannel*>(client->getChannel());
-    channel->getEventBase()->add([&]() {
-      evbPaused->post();
-      evbMayResume->wait();
-    });
-    evbPaused->wait(); // Pause evbase/sending.
-    payload = folly::IOBuf::copyBuffer(asString);
-    folly::IOBuf* rawPtr = payload.get();
-    auto logFuture = client->future_onewayLogBlob(*payload);
-    rawPtr->writableData()[0] = 'b';
-    evbMayResume->post(); // Unpause
-    std::move(logFuture).get();
-    // Unlike request/response case, no exception is thrown here for
-    // a one-way RPC.
-    /* sleep override */
-    std::this_thread::sleep_for(std::chrono::milliseconds(200));
+      setCorruption(shouldCorrupt);
+
+      auto payload = folly::IOBuf::copyBuffer(asString);
+      client->future_onewayLogBlob(*payload).get();
+      // Unlike request/response case, no exception is thrown here for
+      // a one-way RPC.
+      /* sleep override */
+      std::this_thread::sleep_for(std::chrono::milliseconds(200));
+    }
+    setCorruption(false);
   });
 }
 

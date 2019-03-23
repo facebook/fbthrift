@@ -99,7 +99,7 @@ class TransportCompatibilityTest {
   void TestRequestResponse_Connection_CloseNow();
   void TestRequestResponse_ServerQueueTimeout();
   void TestRequestResponse_ResponseSizeTooBig();
-  void TestRequestResponse_RequestChecksumming();
+  void TestRequestResponse_Checksumming();
 
   void TestOneway_Simple();
   void TestOneway_WithDelay();

@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 #include <thrift/lib/cpp2/transport/rsocket/test/util/TestUtil.h>
-
 #include <thrift/lib/cpp2/async/RSocketClientChannel.h>
 #include <thrift/lib/cpp2/async/RocketClientChannel.h>
+#include <thrift/lib/cpp2/transport/core/testutil/TAsyncSocketIntercepted.h>
 
 DECLARE_int32(num_client_connections);
 DECLARE_string(transport); // ConnectionManager depends on this flag.
@@ -58,16 +58,22 @@ std::unique_ptr<PooledRequestChannel, folly::DelayedDestruction::Destructor>
 TestSetup::connectToServer(
     uint16_t port,
     folly::Function<void()> onDetachable,
-    bool useRocketClient) {
+    bool useRocketClient,
+    folly::Function<void(TAsyncSocketIntercepted&)> socketSetup) {
   CHECK_GT(port, 0) << "Check if the server has started already";
   return PooledRequestChannel::newChannel(
       evbThread_.getEventBase(),
       ioThread_,
-      [port, useRocketClient, onDetachable = std::move(onDetachable)](
-          folly::EventBase& evb) mutable
+      [port,
+       useRocketClient,
+       onDetachable = std::move(onDetachable),
+       socketSetup = std::move(socketSetup)](folly::EventBase& evb) mutable
       -> std::unique_ptr<ClientChannel, folly::DelayedDestruction::Destructor> {
-        auto socket =
-            TAsyncSocket::UniquePtr(new TAsyncSocket(&evb, "::1", port));
+        auto socket = TAsyncSocket::UniquePtr(
+            new TAsyncSocketIntercepted(&evb, "::1", port));
+        if (socketSetup) {
+          socketSetup(*static_cast<TAsyncSocketIntercepted*>(socket.get()));
+        }
 
         auto channel = [&]() -> std::unique_ptr<
                                  ClientChannel,

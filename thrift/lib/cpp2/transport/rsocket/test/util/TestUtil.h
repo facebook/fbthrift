@@ -25,6 +25,7 @@
 #include <thrift/lib/cpp2/transport/core/ThriftClient.h>
 #include <thrift/lib/cpp2/transport/core/testutil/FakeServerObserver.h>
 #include <thrift/lib/cpp2/transport/core/testutil/MockCallback.h>
+#include <thrift/lib/cpp2/transport/core/testutil/TAsyncSocketIntercepted.h>
 #include <thrift/lib/cpp2/transport/rsocket/YarplStreamImpl.h>
 #include <thrift/lib/cpp2/transport/rsocket/server/RSRoutingHandler.h>
 #include <thrift/lib/cpp2/transport/rsocket/test/util/TestServiceMock.h>
@@ -75,7 +76,8 @@ class TestSetup : public testing::Test {
   connectToServer(
       uint16_t port,
       folly::Function<void()> onDetachable = nullptr,
-      bool useRocketClient = false);
+      bool useRocketClient = false,
+      folly::Function<void(TAsyncSocketIntercepted&)> socketSetup = nullptr);
 
  protected:
   std::shared_ptr<FakeServerObserver> observer_;
