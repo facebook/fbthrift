@@ -142,11 +142,11 @@ class ThriftRequestCore : public ResponseChannelRequest {
       apache::thrift::MessageChannel::SendCallback* cb = nullptr) final {
     if (active_.exchange(false)) {
       cancelTimeout();
-      sendReplyInternal(std::move(buf), cb);
-
-      auto observer = serverConfigs_.getObserver();
-      if (observer) {
-        observer->sentReply();
+      if (!isOneway()) {
+        sendReplyInternal(std::move(buf), cb);
+        if (auto observer = serverConfigs_.getObserver()) {
+          observer->sentReply();
+        }
       }
     }
   }
