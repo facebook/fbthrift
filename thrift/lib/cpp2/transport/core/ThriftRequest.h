@@ -139,11 +139,11 @@ class ThriftRequestCore : public ResponseChannelRequest {
 
   void sendReply(
       std::unique_ptr<folly::IOBuf>&& buf,
-      apache::thrift::MessageChannel::SendCallback* cb = nullptr) final {
+      apache::thrift::MessageChannel::SendCallback* = nullptr) final {
     if (active_.exchange(false)) {
       cancelTimeout();
       if (!isOneway()) {
-        sendReplyInternal(std::move(buf), cb);
+        sendReplyInternal(std::move(buf));
         if (auto observer = serverConfigs_.getObserver()) {
           observer->sentReply();
         }
@@ -155,11 +155,10 @@ class ThriftRequestCore : public ResponseChannelRequest {
       ResponseAndSemiStream<
           std::unique_ptr<folly::IOBuf>,
           std::unique_ptr<folly::IOBuf>>&& result,
-      MessageChannel::SendCallback* cb) final {
+      MessageChannel::SendCallback* = nullptr) final {
     if (active_.exchange(false)) {
       cancelTimeout();
-      sendReplyInternal(
-          std::move(result.response), std::move(result.stream), cb);
+      sendReplyInternal(std::move(result.response), std::move(result.stream));
 
       auto observer = serverConfigs_.getObserver();
       if (observer) {
@@ -171,10 +170,10 @@ class ThriftRequestCore : public ResponseChannelRequest {
   void sendErrorWrapped(
       folly::exception_wrapper ew,
       std::string exCode,
-      apache::thrift::MessageChannel::SendCallback* cb = nullptr) final {
+      apache::thrift::MessageChannel::SendCallback* = nullptr) final {
     if (active_.exchange(false)) {
       cancelTimeout();
-      sendErrorWrappedInternal(std::move(ew), exCode, cb);
+      sendErrorWrappedInternal(std::move(ew), exCode);
     }
   }
 
@@ -213,35 +212,31 @@ class ThriftRequestCore : public ResponseChannelRequest {
   }
 
  private:
-  void sendReplyInternal(
-      std::unique_ptr<folly::IOBuf> buf,
-      apache::thrift::MessageChannel::SendCallback* cb = nullptr) {
+  void sendReplyInternal(std::unique_ptr<folly::IOBuf> buf) {
     if (checkResponseSize(*buf)) {
       sendThriftResponse(makeResponseRpcMetadata(), std::move(buf));
     } else {
-      sendResponseTooBigEx(cb);
+      sendResponseTooBigEx();
     }
   }
 
   void sendReplyInternal(
       std::unique_ptr<folly::IOBuf> buf,
-      apache::thrift::SemiStream<std::unique_ptr<folly::IOBuf>> stream,
-      apache::thrift::MessageChannel::SendCallback* cb = nullptr) {
+      apache::thrift::SemiStream<std::unique_ptr<folly::IOBuf>> stream) {
     if (checkResponseSize(*buf)) {
       sendStreamThriftResponse(
           makeResponseRpcMetadata(), std::move(buf), std::move(stream));
     } else {
-      sendResponseTooBigEx(cb);
+      sendResponseTooBigEx();
     }
   }
 
-  void sendResponseTooBigEx(apache::thrift::MessageChannel::SendCallback* cb) {
+  void sendResponseTooBigEx() {
     sendErrorWrappedInternal(
         folly::make_exception_wrapper<TApplicationException>(
             TApplicationException::TApplicationExceptionType::INTERNAL_ERROR,
             "Response size too big"),
-        kResponseTooBigErrorCode,
-        cb);
+        kResponseTooBigErrorCode);
   }
 
   std::unique_ptr<ResponseRpcMetadata> makeResponseRpcMetadata() {
@@ -267,8 +262,7 @@ class ThriftRequestCore : public ResponseChannelRequest {
 
   void sendErrorWrappedInternal(
       folly::exception_wrapper ew,
-      const std::string& exCode,
-      apache::thrift::MessageChannel::SendCallback* /*cb*/) {
+      const std::string& exCode) {
     DCHECK(ew.is_compatible_with<TApplicationException>());
     header_.setHeader("ex", exCode);
     ew.with_exception([&](TApplicationException& tae) {
@@ -286,7 +280,7 @@ class ThriftRequestCore : public ResponseChannelRequest {
       if (tae.getType() ==
               TApplicationException::TApplicationExceptionType::UNKNOWN &&
           !checkResponseSize(*exbuf)) {
-        sendResponseTooBigEx(nullptr);
+        sendResponseTooBigEx();
         return;
       }
 
@@ -340,8 +334,7 @@ class ThriftRequestCore : public ResponseChannelRequest {
             TApplicationException(
                 TApplicationException::TApplicationExceptionType::TIMEOUT,
                 "Queue Timeout"),
-            kTaskExpiredErrorCode,
-            nullptr);
+            kTaskExpiredErrorCode);
       }
     }
     friend class ThriftRequestCore;
@@ -363,8 +356,7 @@ class ThriftRequestCore : public ResponseChannelRequest {
             TApplicationException(
                 TApplicationException::TApplicationExceptionType::TIMEOUT,
                 "Task expired"),
-            kTaskExpiredErrorCode,
-            nullptr);
+            kTaskExpiredErrorCode);
       }
     }
     friend class ThriftRequestCore;
