@@ -202,8 +202,8 @@ void ExtraServiceAsyncProcessor::process_throws_function3(std::unique_ptr<apache
   ExtraService_throws_function3_pargs args;
   bool uarg_param1{0};
   args.get<0>().value = &uarg_param1;
-  auto uarg_param2 = std::make_unique<std::string>();
-  args.get<1>().value = uarg_param2.get();
+  std::string uarg_param2;
+  args.get<1>().value = &uarg_param2;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ExtraService.throws_function3", ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
@@ -333,10 +333,10 @@ void ExtraServiceAsyncProcessor::process_oneway_void_ret_map_setlist_param(std::
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   ExtraService_oneway_void_ret_map_setlist_param_pargs args;
-  auto uarg_param1 = std::make_unique<std::map<std::string, int64_t>>();
-  args.get<0>().value = uarg_param1.get();
-  auto uarg_param2 = std::make_unique<std::set<std::vector<std::string>>>();
-  args.get<1>().value = uarg_param2.get();
+  std::map<std::string, int64_t> uarg_param1;
+  args.get<0>().value = &uarg_param1;
+  std::set<std::vector<std::string>> uarg_param2;
+  args.get<1>().value = &uarg_param2;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ExtraService.oneway_void_ret_map_setlist_param", ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
@@ -363,8 +363,8 @@ void ExtraServiceAsyncProcessor::process_oneway_void_ret_struct_param(std::uniqu
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   ExtraService_oneway_void_ret_struct_param_pargs args;
-  auto uarg_param1 = std::make_unique< ::some::valid::ns::MyStruct>();
-  args.get<0>().value = uarg_param1.get();
+   ::some::valid::ns::MyStruct uarg_param1;
+  args.get<0>().value = &uarg_param1;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ExtraService.oneway_void_ret_struct_param", ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
@@ -391,8 +391,8 @@ void ExtraServiceAsyncProcessor::process_oneway_void_ret_listunion_param(std::un
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   ExtraService_oneway_void_ret_listunion_param_pargs args;
-  auto uarg_param1 = std::make_unique<std::vector< ::some::valid::ns::ComplexUnion>>();
-  args.get<0>().value = uarg_param1.get();
+  std::vector< ::some::valid::ns::ComplexUnion> uarg_param1;
+  args.get<0>().value = &uarg_param1;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ExtraService.oneway_void_ret_listunion_param", ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());

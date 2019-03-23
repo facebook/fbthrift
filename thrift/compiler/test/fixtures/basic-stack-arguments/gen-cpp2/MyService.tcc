@@ -146,8 +146,8 @@ void MyServiceAsyncProcessor::process_putDataById(std::unique_ptr<apache::thrift
   MyService_putDataById_pargs args;
   int64_t uarg_id{0};
   args.get<0>().value = &uarg_id;
-  auto uarg_data = std::make_unique<std::string>();
-  args.get<1>().value = uarg_data.get();
+  std::string uarg_data;
+  args.get<1>().value = &uarg_data;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "MyService.putDataById", ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
@@ -200,8 +200,8 @@ void MyServiceAsyncProcessor::process_lobDataById(std::unique_ptr<apache::thrift
   MyService_lobDataById_pargs args;
   int64_t uarg_id{0};
   args.get<0>().value = &uarg_id;
-  auto uarg_data = std::make_unique<std::string>();
-  args.get<1>().value = uarg_data.get();
+  std::string uarg_data;
+  args.get<1>().value = &uarg_data;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "MyService.lobDataById", ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());

@@ -123,8 +123,8 @@ void MyServiceFastAsyncProcessor::process_putDataById(std::unique_ptr<apache::th
   MyServiceFast_putDataById_pargs args;
   int64_t uarg_id{0};
   args.get<0>().value = &uarg_id;
-  auto uarg_data = std::make_unique<std::string>();
-  args.get<1>().value = uarg_data.get();
+  std::string uarg_data;
+  args.get<1>().value = &uarg_data;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "MyServiceFast.putDataById", ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
@@ -175,8 +175,8 @@ void MyServiceFastAsyncProcessor::process_lobDataById(std::unique_ptr<apache::th
   MyServiceFast_lobDataById_pargs args;
   int64_t uarg_id{0};
   args.get<0>().value = &uarg_id;
-  auto uarg_data = std::make_unique<std::string>();
-  args.get<1>().value = uarg_data.get();
+  std::string uarg_data;
+  args.get<1>().value = &uarg_data;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "MyServiceFast.lobDataById", ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
