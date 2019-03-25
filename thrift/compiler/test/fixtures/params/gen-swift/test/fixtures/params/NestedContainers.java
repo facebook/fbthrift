@@ -16,9 +16,9 @@ import java.util.*;
 
 @SwiftGenerated
 @ThriftService("NestedContainers")
-public interface NestedContainers extends java.io.Closable {
+public interface NestedContainers extends java.io.Closeable {
     @ThriftService("NestedContainers")
-    public interface Async extends java.io.Closable {
+    public interface Async extends java.io.Closeable {
         @Override void close();
 
         @ThriftMethod(value = "mapList")

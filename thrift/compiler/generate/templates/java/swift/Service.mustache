@@ -28,9 +28,9 @@ import java.util.*;
 
 @SwiftGenerated
 @ThriftService("{{service:javaCapitalName}}")
-public interface {{service:javaCapitalName}} extends java.io.Closable{{#service:extends}}, {{service:javaPackage}}.{{service:javaCapitalName}}{{/service:extends}} {
+public interface {{service:javaCapitalName}} extends java.io.Closeable{{#service:extends}}, {{service:javaPackage}}.{{service:javaCapitalName}}{{/service:extends}} {
     @ThriftService("{{service:javaCapitalName}}")
-    public interface Async extends java.io.Closable{{#service:extends}}, {{service:javaPackage}}.{{service:javaCapitalName}}.Async{{/service:extends}} {
+    public interface Async extends java.io.Closeable{{#service:extends}}, {{service:javaPackage}}.{{service:javaCapitalName}}.Async{{/service:extends}} {
         @Override void close();
 
         {{#service:functions}}

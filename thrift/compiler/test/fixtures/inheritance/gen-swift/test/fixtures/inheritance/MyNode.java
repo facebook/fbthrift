@@ -16,9 +16,9 @@ import java.util.*;
 
 @SwiftGenerated
 @ThriftService("MyNode")
-public interface MyNode extends java.io.Closable, test.fixtures.inheritance.MyRoot {
+public interface MyNode extends java.io.Closeable, test.fixtures.inheritance.MyRoot {
     @ThriftService("MyNode")
-    public interface Async extends java.io.Closable, test.fixtures.inheritance.MyRoot.Async {
+    public interface Async extends java.io.Closeable, test.fixtures.inheritance.MyRoot.Async {
         @Override void close();
 
         @ThriftMethod(value = "do_mid")

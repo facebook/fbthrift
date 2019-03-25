@@ -16,9 +16,9 @@ import java.util.*;
 
 @SwiftGenerated
 @ThriftService("Raiser")
-public interface Raiser extends java.io.Closable {
+public interface Raiser extends java.io.Closeable {
     @ThriftService("Raiser")
-    public interface Async extends java.io.Closable {
+    public interface Async extends java.io.Closeable {
         @Override void close();
 
         @ThriftMethod(value = "doBland")

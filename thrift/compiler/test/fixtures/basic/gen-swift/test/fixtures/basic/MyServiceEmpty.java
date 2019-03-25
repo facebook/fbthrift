@@ -16,9 +16,9 @@ import java.util.*;
 
 @SwiftGenerated
 @ThriftService("MyServiceEmpty")
-public interface MyServiceEmpty extends java.io.Closable {
+public interface MyServiceEmpty extends java.io.Closeable {
     @ThriftService("MyServiceEmpty")
-    public interface Async extends java.io.Closable {
+    public interface Async extends java.io.Closeable {
         @Override void close();
 
     }

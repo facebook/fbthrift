@@ -16,9 +16,9 @@ import java.util.*;
 
 @SwiftGenerated
 @ThriftService("MyRoot")
-public interface MyRoot extends java.io.Closable {
+public interface MyRoot extends java.io.Closeable {
     @ThriftService("MyRoot")
-    public interface Async extends java.io.Closable {
+    public interface Async extends java.io.Closeable {
         @Override void close();
 
         @ThriftMethod(value = "do_root")

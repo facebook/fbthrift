@@ -16,9 +16,9 @@ import java.util.*;
 
 @SwiftGenerated
 @ThriftService("MyLeaf")
-public interface MyLeaf extends java.io.Closable, test.fixtures.inheritance.MyNode {
+public interface MyLeaf extends java.io.Closeable, test.fixtures.inheritance.MyNode {
     @ThriftService("MyLeaf")
-    public interface Async extends java.io.Closable, test.fixtures.inheritance.MyNode.Async {
+    public interface Async extends java.io.Closeable, test.fixtures.inheritance.MyNode.Async {
         @Override void close();
 
         @ThriftMethod(value = "do_leaf")

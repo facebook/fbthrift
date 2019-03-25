@@ -16,9 +16,9 @@ import java.util.*;
 
 @SwiftGenerated
 @ThriftService("MyServiceFast")
-public interface MyServiceFast extends java.io.Closable {
+public interface MyServiceFast extends java.io.Closeable {
     @ThriftService("MyServiceFast")
-    public interface Async extends java.io.Closable {
+    public interface Async extends java.io.Closeable {
         @Override void close();
 
         @ThriftMethod(value = "ping")
