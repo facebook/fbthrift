@@ -87,10 +87,40 @@ std::unique_ptr<ResponseRpcMetadata> deserializeMetadata(
 }
 } // namespace
 
+rocket::SetupFrame RocketClientChannel::makeSetupFrame(
+    SetupParameters setupParams) {
+  CompactProtocolWriter compactProtocolWriter;
+  folly::IOBufQueue paramQueue;
+  compactProtocolWriter.setOutput(&paramQueue);
+  setupParams.write(&compactProtocolWriter);
+
+  // Serialize RocketClient's major/minor version (which is separate from the
+  // rsocket protocol major/minor version) into setup metadata.
+  auto buf = folly::IOBuf::createCombined(
+      sizeof(int32_t) + setupParams.serializedSize(&compactProtocolWriter));
+  folly::IOBufQueue queue;
+  queue.append(std::move(buf));
+  folly::io::QueueAppender appender(&queue, /* do not grow */ 0);
+  // Serialize RocketClient's major/minor version (which is separate from the
+  // rsocket protocol major/minor version) into setup metadata.
+  appender.writeBE<uint16_t>(0); // Thrift RocketClient major version
+  appender.writeBE<uint16_t>(1); // Thrift RocketClient minor version
+  // Append serialized setup parameters to setup frame metadata
+  appender.insert(paramQueue.move());
+
+  return rocket::SetupFrame(
+      rocket::Payload::makeFromMetadataAndData(queue.move(), {}));
+}
+
 RocketClientChannel::RocketClientChannel(
-    async::TAsyncTransport::UniquePtr socket)
+    async::TAsyncTransport::UniquePtr socket,
+    SetupParameters setupParams)
     : evb_(socket->getEventBase()),
-      rclient_(rocket::RocketClient::create(*evb_, std::move(socket))) {}
+      rclient_(rocket::RocketClient::create(
+          *evb_,
+          std::move(socket),
+          std::make_unique<rocket::SetupFrame>(
+              makeSetupFrame(std::move(setupParams))))) {}
 
 RocketClientChannel::~RocketClientChannel() {
   unsetOnDetachable();
@@ -99,8 +129,10 @@ RocketClientChannel::~RocketClientChannel() {
 }
 
 RocketClientChannel::Ptr RocketClientChannel::newChannel(
-    async::TAsyncTransport::UniquePtr socket) {
-  return RocketClientChannel::Ptr(new RocketClientChannel(std::move(socket)));
+    async::TAsyncTransport::UniquePtr socket,
+    SetupParameters setupParams) {
+  return RocketClientChannel::Ptr(
+      new RocketClientChannel(std::move(socket), std::move(setupParams)));
 }
 
 uint32_t RocketClientChannel::sendRequest(

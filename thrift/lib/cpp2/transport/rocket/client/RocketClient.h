@@ -37,6 +37,7 @@
 #include <thrift/lib/cpp2/transport/rocket/client/RequestContext.h>
 #include <thrift/lib/cpp2/transport/rocket/client/RequestContextQueue.h>
 #include <thrift/lib/cpp2/transport/rocket/client/RocketClientFlowable.h>
+#include <thrift/lib/cpp2/transport/rocket/framing/Frames.h>
 #include <thrift/lib/cpp2/transport/rocket/framing/Parser.h>
 
 namespace folly {
@@ -66,7 +67,8 @@ class RocketClient : public folly::DelayedDestruction,
 
   static std::shared_ptr<RocketClient> create(
       folly::EventBase& evb,
-      folly::AsyncTransportWrapper::UniquePtr socket);
+      folly::AsyncTransportWrapper::UniquePtr socket,
+      std::unique_ptr<SetupFrame> setupFrame);
 
   // Main send*Sync() API. Must be called on the EventBase's FiberManager.
   Payload sendRequestResponseSync(
@@ -163,7 +165,7 @@ class RocketClient : public folly::DelayedDestruction,
   folly::AsyncTransportWrapper::UniquePtr socket_;
   folly::Function<void()> onDetachable_;
   StreamId nextStreamId_{1};
-  bool setupFrameSent_{false};
+  std::unique_ptr<SetupFrame> setupFrame_;
   enum class ConnectionState : uint8_t {
     CONNECTED,
     CLOSED,
@@ -206,7 +208,8 @@ class RocketClient : public folly::DelayedDestruction,
 
   RocketClient(
       folly::EventBase& evb,
-      folly::AsyncTransportWrapper::UniquePtr socket);
+      folly::AsyncTransportWrapper::UniquePtr socket,
+      std::unique_ptr<SetupFrame> setupFrame);
 
   void sendRequestNSync(StreamId streamId, int32_t n);
   void sendCancelSync(StreamId streamId);

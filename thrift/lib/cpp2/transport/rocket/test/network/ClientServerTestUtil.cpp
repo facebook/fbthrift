@@ -44,6 +44,7 @@
 #include <yarpl/Single.h>
 
 #include <thrift/lib/cpp2/async/Stream.h>
+#include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 #include <thrift/lib/cpp2/transport/rocket/Types.h>
 #include <thrift/lib/cpp2/transport/rocket/client/RocketClient.h>
 #include <thrift/lib/cpp2/transport/rocket/server/RocketServerConnection.h>
@@ -51,6 +52,7 @@
 #include <thrift/lib/cpp2/transport/rocket/server/RocketServerHandler.h>
 #include <thrift/lib/cpp2/transport/rocket/server/RocketServerStreamSubscriber.h>
 #include <thrift/lib/cpp2/transport/rsocket/YarplStreamImpl.h>
+#include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
 
 using namespace rsocket;
 using namespace yarpl::flowable;
@@ -202,6 +204,31 @@ RsocketTestServerResponder::handleRequestStream(
 }
 } // namespace
 
+rocket::SetupFrame RocketTestClient::makeTestSetupFrame() {
+  SetupParameters setupParams;
+  setupParams.userSetupParams_ref() = "setup_data";
+  CompactProtocolWriter compactProtocolWriter;
+  folly::IOBufQueue paramQueue;
+  compactProtocolWriter.setOutput(&paramQueue);
+  setupParams.write(&compactProtocolWriter);
+
+  // Serialize RocketClient's major/minor version (which is separate from the
+  // rsocket protocol major/minor version) into setup metadata.
+  auto buf = folly::IOBuf::createCombined(
+      sizeof(int32_t) + setupParams.serializedSize(&compactProtocolWriter));
+  folly::IOBufQueue queue;
+  queue.append(std::move(buf));
+  folly::io::QueueAppender appender(&queue, /* do not grow */ 0);
+  // Serialize RocketClient's major/minor version (which is separate from the
+  // rsocket protocol major/minor version) into setup metadata.
+  appender.writeBE<uint16_t>(0); // Thrift RocketClient major version
+  appender.writeBE<uint16_t>(1); // Thrift RocketClient minor version
+  // Append serialized setup parameters to setup frame metadata
+  appender.insert(paramQueue.move());
+  return rocket::SetupFrame(
+      rocket::Payload::makeFromMetadataAndData(queue.move(), {}));
+}
+
 RsocketTestServer::RsocketTestServer() {
   TcpConnectionAcceptor::Options opts;
   opts.address = folly::SocketAddress("::1", 0 /* bind to any port */);
@@ -307,7 +334,10 @@ void RocketTestClient::connect() {
   evb_.runInEventBaseThreadAndWait([this] {
     folly::AsyncSocket::UniquePtr socket(
         new folly::AsyncSocket(&evb_, serverAddr_));
-    client_ = RocketClient::create(evb_, std::move(socket));
+    client_ = RocketClient::create(
+        evb_,
+        std::move(socket),
+        std::make_unique<rocket::SetupFrame>(makeTestSetupFrame()));
   });
 }
 

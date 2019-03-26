@@ -27,6 +27,7 @@
 #include <thrift/lib/cpp2/async/SemiStream.h>
 #include <thrift/lib/cpp2/async/Stream.h>
 #include <thrift/lib/cpp2/transport/rocket/Types.h>
+#include <thrift/lib/cpp2/transport/rocket/framing/Frames.h>
 
 namespace folly {
 class EventBase;
@@ -82,6 +83,8 @@ class RocketTestClient {
       RocketClientWriteCallback* writeCallback = nullptr);
 
   folly::Try<SemiStream<Payload>> sendRequestStreamSync(Payload request);
+
+  rocket::SetupFrame makeTestSetupFrame();
 
   void reconnect();
 

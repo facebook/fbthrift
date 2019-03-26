@@ -147,28 +147,6 @@ void RequestContext::onWriteSuccess() noexcept {
   }
 }
 
-namespace detail {
-SetupFrame makeSetupFrame() {
-  folly::IOBufQueue queue;
-
-  // Serialize RocketClient's major/minor version (which is separate from the
-  // rsocket protocol major/minor version) into setup metadata.
-  auto buf = folly::IOBuf::createCombined(sizeof(int32_t));
-  queue.append(std::move(buf));
-  folly::io::QueueAppender appender(&queue, /* do not grow */ 0);
-  appender.writeBE<uint16_t>(0); // Thrift RocketClient major version
-  appender.writeBE<uint16_t>(1); // Thrift RocketClient minor version
-
-  // Append serialized setup parameters to setup frame metadata
-  CompactProtocolWriter compactProtocolWriter;
-  compactProtocolWriter.setOutput(&queue);
-  RSocketSetupParameters setupParams;
-  setupParams.write(&compactProtocolWriter);
-
-  return SetupFrame(Payload::makeFromMetadataAndData(queue.move(), {}));
-}
-} // namespace detail
-
 } // namespace rocket
 } // namespace thrift
 } // namespace apache

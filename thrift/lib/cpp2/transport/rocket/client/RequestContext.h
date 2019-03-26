@@ -31,6 +31,7 @@
 #include <thrift/lib/cpp2/transport/rocket/framing/FrameType.h>
 #include <thrift/lib/cpp2/transport/rocket/framing/Frames.h>
 #include <thrift/lib/cpp2/transport/rocket/framing/Serializer.h>
+#include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
 
 namespace folly {
 namespace io {
@@ -43,10 +44,6 @@ namespace thrift {
 namespace rocket {
 
 class RocketClientWriteCallback;
-
-namespace detail {
-SetupFrame makeSetupFrame();
-} // namespace detail
 
 class RequestContextQueue;
 
@@ -66,13 +63,13 @@ class RequestContext {
   RequestContext(
       Frame&& frame,
       RequestContextQueue& queue,
-      bool setupFrameNeeded,
+      SetupFrame* setupFrame = nullptr,
       RocketClientWriteCallback* writeCallback = nullptr)
       : queue_(queue),
         streamId_(frame.streamId()),
         frameType_(Frame::frameType()),
         writeCallback_(writeCallback) {
-    serialize(std::forward<Frame>(frame), setupFrameNeeded);
+    serialize(std::forward<Frame>(frame), setupFrame);
   }
 
   RequestContext(const RequestContext&) = delete;
@@ -134,10 +131,10 @@ class RequestContext {
   RocketClientWriteCallback* const writeCallback_;
 
   template <class Frame>
-  void serialize(Frame&& frame, bool setupFrameNeeded) {
+  void serialize(Frame&& frame, SetupFrame* setupFrame) {
     Serializer writer;
-    if (setupFrameNeeded) {
-      detail::makeSetupFrame().serialize(writer);
+    if (setupFrame != nullptr) {
+      std::move(*setupFrame).serialize(writer);
     }
     std::forward<Frame>(frame).serialize(writer);
 

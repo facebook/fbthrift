@@ -239,7 +239,10 @@ TYPED_TEST(RocketNetworkTest, RocketClientEventBaseDestruction) {
   folly::AsyncSocket::UniquePtr socket(new folly::AsyncSocket(
       evb.get(),
       folly::SocketAddress("::1", this->server_->getListeningPort())));
-  auto client = RocketClient::create(*evb, std::move(socket));
+  auto client = RocketClient::create(
+      *evb,
+      std::move(socket),
+      std::make_unique<SetupFrame>(this->client_->makeTestSetupFrame()));
   EXPECT_NE(nullptr, client->getTransportWrapper());
 
   evb.reset();

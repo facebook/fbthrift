@@ -69,10 +69,12 @@ class OnEventBaseDestructionCallback
 
 RocketClient::RocketClient(
     folly::EventBase& evb,
-    folly::AsyncTransportWrapper::UniquePtr socket)
+    folly::AsyncTransportWrapper::UniquePtr socket,
+    std::unique_ptr<SetupFrame> setupFrame)
     : evb_(&evb),
       fm_(&folly::fibers::getFiberManager(*evb_)),
       socket_(std::move(socket)),
+      setupFrame_(std::move(setupFrame)),
       parser_(*this),
       writeLoopCallback_(*this),
       eventBaseDestructionCallback_(
@@ -94,9 +96,10 @@ RocketClient::~RocketClient() {
 
 std::shared_ptr<RocketClient> RocketClient::create(
     folly::EventBase& evb,
-    folly::AsyncTransportWrapper::UniquePtr socket) {
+    folly::AsyncTransportWrapper::UniquePtr socket,
+    std::unique_ptr<SetupFrame> setupFrame) {
   return std::shared_ptr<RocketClient>(
-      new RocketClient(evb, std::move(socket)),
+      new RocketClient(evb, std::move(socket), std::move(setupFrame)),
       DelayedDestruction::Destructor());
 }
 
@@ -177,10 +180,11 @@ Payload RocketClient::sendRequestResponseSync(
     Payload&& request,
     std::chrono::milliseconds timeout,
     RocketClientWriteCallback* writeCallback) {
+  auto setupFrame = std::move(setupFrame_);
   RequestContext ctx(
       RequestResponseFrame(makeStreamId(), std::move(request)),
       queue_,
-      !std::exchange(setupFrameSent_, true) /* setupFrameNeeded */,
+      setupFrame.get(),
       writeCallback);
   scheduleWrite(ctx);
   return ctx.waitForResponse(timeout);
@@ -189,10 +193,11 @@ Payload RocketClient::sendRequestResponseSync(
 void RocketClient::sendRequestFnfSync(
     Payload&& request,
     RocketClientWriteCallback* writeCallback) {
+  auto setupFrame = std::move(setupFrame_);
   RequestContext ctx(
       RequestFnfFrame(makeStreamId(), std::move(request)),
       queue_,
-      !std::exchange(setupFrameSent_, true) /* setupFrameNeeded */,
+      setupFrame.get(),
       writeCallback);
   scheduleWrite(ctx);
   return ctx.waitForWriteToComplete();
@@ -219,25 +224,24 @@ void RocketClient::sendRequestNSync(StreamId streamId, int32_t n) {
   }
 
   if (stream->requestStreamPayload) {
+    auto setupFrame = std::move(setupFrame_);
     RequestContext ctx(
         RequestStreamFrame(
             streamId, std::move(*stream->requestStreamPayload), n),
         queue_,
-        !std::exchange(setupFrameSent_, true) /* setupFrameNeeded */);
+        setupFrame.get());
     stream->requestStreamPayload.reset();
     scheduleWrite(ctx);
     return ctx.waitForWriteToComplete();
   }
 
-  RequestContext ctx(
-      RequestNFrame(streamId, n), queue_, false /* setupFrameNeeded */);
+  RequestContext ctx(RequestNFrame(streamId, n), queue_);
   scheduleWrite(ctx);
   return ctx.waitForWriteToComplete();
 }
 
 void RocketClient::sendCancelSync(StreamId streamId) {
-  RequestContext ctx(
-      CancelFrame(streamId), queue_, false /* setupFrameNeeded */);
+  RequestContext ctx(CancelFrame(streamId), queue_);
   SCOPE_EXIT {
     freeStream(streamId);
   };

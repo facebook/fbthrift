@@ -119,3 +119,9 @@ struct ResponseRpcMetadata {
   // flags.
   4: optional i64 load;
 }
+
+// Setup parameters sent from the client to the server at the time
+// of initial connection.
+struct SetupParameters {
+  1: optional binary userSetupParams;
+}

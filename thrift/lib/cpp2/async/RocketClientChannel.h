@@ -28,6 +28,7 @@
 
 #include <thrift/lib/cpp/async/TAsyncTransport.h>
 #include <thrift/lib/cpp2/async/ClientChannel.h>
+#include <thrift/lib/cpp2/transport/rocket/framing/Frames.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
 
 namespace folly {
@@ -57,7 +58,9 @@ class RocketClientChannel final : public ClientChannel {
   using Ptr = std::
       unique_ptr<RocketClientChannel, folly::DelayedDestruction::Destructor>;
 
-  static Ptr newChannel(async::TAsyncTransport::UniquePtr socket);
+  static Ptr newChannel(
+      async::TAsyncTransport::UniquePtr socket,
+      SetupParameters setupParams = SetupParameters());
 
   uint32_t sendRequest(
       RpcOptions& rpcOptions,
@@ -173,7 +176,9 @@ class RocketClientChannel final : public ClientChannel {
         }
       })};
 
-  explicit RocketClientChannel(async::TAsyncTransport::UniquePtr socket);
+  RocketClientChannel(
+      async::TAsyncTransport::UniquePtr socket,
+      SetupParameters setupParams);
 
   RocketClientChannel(const RocketClientChannel&) = delete;
   RocketClientChannel& operator=(const RocketClientChannel&) = delete;
@@ -211,6 +216,8 @@ class RocketClientChannel final : public ClientChannel {
     DCHECK(evb_);
     return folly::fibers::getFiberManager(*evb_);
   }
+
+  rocket::SetupFrame makeSetupFrame(SetupParameters setupParams);
 
  public:
   // Helper class that gives special handling to the first payload on the
