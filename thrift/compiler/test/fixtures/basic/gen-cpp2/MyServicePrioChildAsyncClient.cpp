@@ -38,7 +38,7 @@ void MyServicePrioChildAsyncClient::pangT(Protocol_* prot, bool useSync, apache:
   MyServicePrioChild_pang_pargs args;
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
-  apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), "pang", writer, sizer, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, useSync);
+  apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), std::move(ctx), std::move(header), channel_.get(), "pang", writer, sizer, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, useSync);
   headerAndReqContext->reqContext.setRequestHeader(nullptr);
 }
 

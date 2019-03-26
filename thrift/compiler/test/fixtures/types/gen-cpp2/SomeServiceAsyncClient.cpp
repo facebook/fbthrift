@@ -41,7 +41,7 @@ void SomeServiceAsyncClient::bounce_mapT(Protocol_* prot, bool useSync, apache::
   args.get<0>().value = const_cast< ::apache::thrift::fixtures::types::SomeMap*>(&m);
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
-  apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), "bounce_map", writer, sizer, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, useSync);
+  apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), std::move(ctx), std::move(header), channel_.get(), "bounce_map", writer, sizer, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, useSync);
   headerAndReqContext->reqContext.setRequestHeader(nullptr);
 }
 
@@ -63,7 +63,7 @@ void SomeServiceAsyncClient::binary_keyed_mapT(Protocol_* prot, bool useSync, ap
   args.get<0>().value = const_cast<std::vector<int64_t>*>(&r);
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
-  apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), "binary_keyed_map", writer, sizer, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, useSync);
+  apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), std::move(ctx), std::move(header), channel_.get(), "binary_keyed_map", writer, sizer, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, useSync);
   headerAndReqContext->reqContext.setRequestHeader(nullptr);
 }
 

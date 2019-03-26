@@ -47,7 +47,7 @@ void NestedContainersAsyncClient::mapListT(Protocol_* prot, bool useSync, apache
   args.get<0>().value = const_cast<std::map<int32_t, std::vector<int32_t>>*>(&foo);
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
-  apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), "mapList", writer, sizer, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, useSync);
+  apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), std::move(ctx), std::move(header), channel_.get(), "mapList", writer, sizer, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, useSync);
   headerAndReqContext->reqContext.setRequestHeader(nullptr);
 }
 
@@ -69,7 +69,7 @@ void NestedContainersAsyncClient::mapSetT(Protocol_* prot, bool useSync, apache:
   args.get<0>().value = const_cast<std::map<int32_t, std::set<int32_t>>*>(&foo);
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
-  apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), "mapSet", writer, sizer, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, useSync);
+  apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), std::move(ctx), std::move(header), channel_.get(), "mapSet", writer, sizer, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, useSync);
   headerAndReqContext->reqContext.setRequestHeader(nullptr);
 }
 
@@ -91,7 +91,7 @@ void NestedContainersAsyncClient::listMapT(Protocol_* prot, bool useSync, apache
   args.get<0>().value = const_cast<std::vector<std::map<int32_t, int32_t>>*>(&foo);
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
-  apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), "listMap", writer, sizer, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, useSync);
+  apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), std::move(ctx), std::move(header), channel_.get(), "listMap", writer, sizer, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, useSync);
   headerAndReqContext->reqContext.setRequestHeader(nullptr);
 }
 
@@ -113,7 +113,7 @@ void NestedContainersAsyncClient::listSetT(Protocol_* prot, bool useSync, apache
   args.get<0>().value = const_cast<std::vector<std::set<int32_t>>*>(&foo);
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
-  apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), "listSet", writer, sizer, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, useSync);
+  apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), std::move(ctx), std::move(header), channel_.get(), "listSet", writer, sizer, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, useSync);
   headerAndReqContext->reqContext.setRequestHeader(nullptr);
 }
 
@@ -135,7 +135,7 @@ void NestedContainersAsyncClient::turtlesT(Protocol_* prot, bool useSync, apache
   args.get<0>().value = const_cast<std::vector<std::vector<std::map<int32_t, std::map<int32_t, std::set<int32_t>>>>>*>(&foo);
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
-  apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), "turtles", writer, sizer, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, useSync);
+  apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), std::move(ctx), std::move(header), channel_.get(), "turtles", writer, sizer, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, useSync);
   headerAndReqContext->reqContext.setRequestHeader(nullptr);
 }
 

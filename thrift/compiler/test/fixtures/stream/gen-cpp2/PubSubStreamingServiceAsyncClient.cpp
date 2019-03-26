@@ -78,7 +78,7 @@ void PubSubStreamingServiceAsyncClient::returnstreamT(Protocol_* prot, bool useS
   args.get<1>().value = &i32_to;
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
-  apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), "returnstream", writer, sizer, apache::thrift::RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE, useSync);
+  apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), std::move(ctx), std::move(header), channel_.get(), "returnstream", writer, sizer, apache::thrift::RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE, useSync);
   headerAndReqContext->reqContext.setRequestHeader(nullptr);
 }
 
@@ -101,7 +101,7 @@ void PubSubStreamingServiceAsyncClient::takesstreamT(Protocol_* prot, bool useSy
   #error Service functions don't allow stream input yet
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
-  apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), "takesstream", writer, sizer, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, useSync);
+  apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), std::move(ctx), std::move(header), channel_.get(), "takesstream", writer, sizer, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, useSync);
   headerAndReqContext->reqContext.setRequestHeader(nullptr);
 }
 
@@ -124,7 +124,7 @@ void PubSubStreamingServiceAsyncClient::differentT(Protocol_* prot, bool useSync
   #error Service functions don't allow stream input yet
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
-  apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), "different", writer, sizer, apache::thrift::RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE, useSync);
+  apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), std::move(ctx), std::move(header), channel_.get(), "different", writer, sizer, apache::thrift::RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE, useSync);
   headerAndReqContext->reqContext.setRequestHeader(nullptr);
 }
 
@@ -146,7 +146,7 @@ void PubSubStreamingServiceAsyncClient::normalthrowsT(Protocol_* prot, bool useS
   #error Service functions don't allow stream input yet
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
-  apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), "normalthrows", writer, sizer, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, useSync);
+  apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), std::move(ctx), std::move(header), channel_.get(), "normalthrows", writer, sizer, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, useSync);
   headerAndReqContext->reqContext.setRequestHeader(nullptr);
 }
 
@@ -168,7 +168,7 @@ void PubSubStreamingServiceAsyncClient::streamthrowsT(Protocol_* prot, bool useS
   args.get<0>().value = &foo;
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
-  apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), "streamthrows", writer, sizer, apache::thrift::RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE, useSync);
+  apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), std::move(ctx), std::move(header), channel_.get(), "streamthrows", writer, sizer, apache::thrift::RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE, useSync);
   headerAndReqContext->reqContext.setRequestHeader(nullptr);
 }
 
@@ -190,7 +190,7 @@ void PubSubStreamingServiceAsyncClient::boththrowsT(Protocol_* prot, bool useSyn
   args.get<0>().value = &foo;
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
-  apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), "boththrows", writer, sizer, apache::thrift::RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE, useSync);
+  apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), std::move(ctx), std::move(header), channel_.get(), "boththrows", writer, sizer, apache::thrift::RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE, useSync);
   headerAndReqContext->reqContext.setRequestHeader(nullptr);
 }
 
@@ -212,7 +212,7 @@ void PubSubStreamingServiceAsyncClient::responseandstreamthrowsT(Protocol_* prot
   args.get<0>().value = &foo;
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
-  apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), "responseandstreamthrows", writer, sizer, apache::thrift::RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE, useSync);
+  apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), std::move(ctx), std::move(header), channel_.get(), "responseandstreamthrows", writer, sizer, apache::thrift::RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE, useSync);
   headerAndReqContext->reqContext.setRequestHeader(nullptr);
 }
 
