@@ -59,13 +59,16 @@ class BazRest {
   }
 
   public function qux(\HH\KeyedContainer<string, mixed> $request): string {
-    // UNSAFE_BLOCK $request is not type safe :(, and we don't cast structs (yet)
     $a =  idx($request, 'a');
+    /* HH_FIXME[4107] */ /* HH_FIXME[2049] Previously hidden by unsafe */
     $a = json_decode($a, true);
     $b =  idx($request, 'b');
+    /* HH_FIXME[4107] */ /* HH_FIXME[2049] Previously hidden by unsafe */
     $b = json_decode($b, true);
     $c =  idx($request, 'c');
+    /* HH_FIXME[4107] */ /* HH_FIXME[2049] Previously hidden by unsafe */
     $c = json_decode($c, true);
+    /* HH_FIXME[4053] Previously hidden by unsafe */
     return $this->impl_->qux($a, $b, $c);
   }
 

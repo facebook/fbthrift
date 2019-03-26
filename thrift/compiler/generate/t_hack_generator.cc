@@ -3923,8 +3923,6 @@ void t_hack_generator::generate_service_rest(t_service* tservice, bool mangle) {
                        << type_to_typehint((*f_iter)->get_returntype())
                        << " {\n";
     indent_up();
-    indent(f_service_)
-        << "// UNSAFE_BLOCK $request is not type safe :(, and we don't cast structs (yet)\n";
     const vector<t_field*>& args = (*f_iter)->get_arglist()->get_members();
     vector<t_field*>::const_iterator a_iter;
     for (a_iter = args.begin(); a_iter != args.end(); ++a_iter) {
@@ -3943,19 +3941,26 @@ void t_hack_generator::generate_service_rest(t_service* tservice, bool mangle) {
         f_service_ << indent() << "$" << (*a_iter)->get_name()
                    << " = explode(',', $" << (*a_iter)->get_name() << ");\n";
       } else if (atype->is_container()) {
+        f_service_
+            << indent()
+            << "/* HH_FIXME[4107] */ /* HH_FIXME[2049] Previously hidden by unsafe */\n";
         f_service_ << indent() << "$" << (*a_iter)->get_name()
                    << " = json_decode($" << (*a_iter)->get_name()
                    << ", true);\n";
       } else if (atype->is_struct() || atype->is_xception()) {
-        f_service_ << indent() << "if ($" << (*a_iter)->get_name()
-                   << " !== null) {\n"
-                   << indent() << "  $" << (*a_iter)->get_name() << " = new "
-                   << hack_name(atype) << "(json_decode($"
-                   << (*a_iter)->get_name() << ", true));\n"
-                   << indent() << "}\n";
+        f_service_
+            << indent() << "if ($" << (*a_iter)->get_name() << " !== null) {\n"
+            << indent()
+            << "  /* HH_FIXME[4107] */ /* HH_FIXME[2049] Previously hidden by unsafe */\n"
+            << indent() << "  $" << (*a_iter)->get_name() << " = new "
+            << hack_name(atype) << "(json_decode($" << (*a_iter)->get_name()
+            << ", true));\n"
+            << indent() << "}\n";
       }
     }
 
+    f_service_ << indent()
+               << "/* HH_FIXME[4053] Previously hidden by unsafe */\n";
     f_service_ << indent();
     if (!(*f_iter)->get_returntype()->is_void()) {
       f_service_ << "return ";
