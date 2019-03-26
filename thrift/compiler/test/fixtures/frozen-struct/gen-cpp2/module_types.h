@@ -82,6 +82,7 @@ class ModuleA final : private apache::thrift::detail::st::ComparisonOperators<Mo
   ModuleA();
 
   // FragileConstructor for use in initialization lists only.
+  [[deprecated("This constructor is deprecated")]]
   ModuleA(apache::thrift::FragileConstructor, int32_t i32Field__arg, std::string strField__arg, std::vector<int16_t> listField__arg, std::map<std::string, int32_t> mapField__arg,  ::some::ns::IncludedA inclAField__arg,  ::some::ns::IncludedB inclBField__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
@@ -238,6 +239,7 @@ class ModuleB final : private apache::thrift::detail::st::ComparisonOperators<Mo
       i32Field(0),
       inclEnumB(static_cast< ::some::ns::EnumB>(0)) {}
   // FragileConstructor for use in initialization lists only.
+  [[deprecated("This constructor is deprecated")]]
   ModuleB(apache::thrift::FragileConstructor, int32_t i32Field__arg,  ::some::ns::EnumB inclEnumB__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {

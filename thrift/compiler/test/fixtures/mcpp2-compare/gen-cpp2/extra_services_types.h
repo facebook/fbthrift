@@ -37,6 +37,7 @@ class containerStruct2 final : private apache::thrift::detail::st::ComparisonOpe
   containerStruct2();
 
   // FragileConstructor for use in initialization lists only.
+  [[deprecated("This constructor is deprecated")]]
   containerStruct2(apache::thrift::FragileConstructor, bool fieldA__arg, bool req_fieldA__arg, bool opt_fieldA__arg, std::map<std::string, bool> fieldB__arg, std::map<std::string, bool> req_fieldB__arg, std::map<std::string, bool> opt_fieldB__arg, std::set<int32_t> fieldC__arg, std::set<int32_t> req_fieldC__arg, std::set<int32_t> opt_fieldC__arg, std::string fieldD__arg, std::string fieldE__arg, std::string req_fieldE__arg, std::string opt_fieldE__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {

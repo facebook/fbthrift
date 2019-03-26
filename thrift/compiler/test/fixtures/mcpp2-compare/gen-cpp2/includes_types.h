@@ -85,6 +85,7 @@ class AStruct final : private apache::thrift::detail::st::ComparisonOperators<AS
   AStruct() :
       FieldA(0) {}
   // FragileConstructor for use in initialization lists only.
+  [[deprecated("This constructor is deprecated")]]
   AStruct(apache::thrift::FragileConstructor, int32_t FieldA__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
@@ -151,6 +152,7 @@ class AStructB final : private apache::thrift::detail::st::ComparisonOperators<A
   AStructB() :
       FieldA(std::make_shared< ::a::different::ns::AStruct>()) {}
   // FragileConstructor for use in initialization lists only.
+  [[deprecated("This constructor is deprecated")]]
   AStructB(apache::thrift::FragileConstructor, std::shared_ptr<const  ::a::different::ns::AStruct> FieldA__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {

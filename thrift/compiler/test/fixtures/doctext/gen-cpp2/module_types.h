@@ -79,6 +79,7 @@ class A final : private apache::thrift::detail::st::ComparisonOperators<A> {
   A() :
       useless_field(0) {}
   // FragileConstructor for use in initialization lists only.
+  [[deprecated("This constructor is deprecated")]]
   A(apache::thrift::FragileConstructor, int32_t useless_field__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {

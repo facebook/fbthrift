@@ -35,6 +35,7 @@ class ReflectionStruct final : private apache::thrift::detail::st::ComparisonOpe
   ReflectionStruct() :
       fieldA(5) {}
   // FragileConstructor for use in initialization lists only.
+  [[deprecated("This constructor is deprecated")]]
   ReflectionStruct(apache::thrift::FragileConstructor, int32_t fieldA__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {

@@ -35,6 +35,7 @@ class IncludedB final : private apache::thrift::detail::st::ComparisonOperators<
   IncludedB() :
       i32Field(0) {}
   // FragileConstructor for use in initialization lists only.
+  [[deprecated("This constructor is deprecated")]]
   IncludedB(apache::thrift::FragileConstructor, int32_t i32Field__arg, std::string strField__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {

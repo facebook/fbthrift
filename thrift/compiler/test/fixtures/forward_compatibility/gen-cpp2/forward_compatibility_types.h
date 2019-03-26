@@ -46,6 +46,7 @@ class OldStructure final : private apache::thrift::detail::st::ComparisonOperato
 
   OldStructure() {}
   // FragileConstructor for use in initialization lists only.
+  [[deprecated("This constructor is deprecated")]]
   OldStructure(apache::thrift::FragileConstructor, std::map<int16_t, double> features__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
@@ -110,6 +111,7 @@ class NewStructure final : private apache::thrift::detail::st::ComparisonOperato
 
   NewStructure() {}
   // FragileConstructor for use in initialization lists only.
+  [[deprecated("This constructor is deprecated")]]
   NewStructure(apache::thrift::FragileConstructor, std::map<int16_t, double> features__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
@@ -174,6 +176,7 @@ class NewStructure2 final : private apache::thrift::detail::st::ComparisonOperat
 
   NewStructure2() {}
   // FragileConstructor for use in initialization lists only.
+  [[deprecated("This constructor is deprecated")]]
   NewStructure2(apache::thrift::FragileConstructor,  ::cpp2::FloatFeatures features__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
@@ -238,6 +241,7 @@ class NewStructureNested final : private apache::thrift::detail::st::ComparisonO
 
   NewStructureNested() {}
   // FragileConstructor for use in initialization lists only.
+  [[deprecated("This constructor is deprecated")]]
   NewStructureNested(apache::thrift::FragileConstructor, std::vector< ::cpp2::FloatFeatures> lst__arg, std::map<int16_t,  ::cpp2::FloatFeatures> mp__arg, std::set< ::cpp2::FloatFeatures> s__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
@@ -334,6 +338,7 @@ class NewStructureNestedField final : private apache::thrift::detail::st::Compar
 
   NewStructureNestedField() {}
   // FragileConstructor for use in initialization lists only.
+  [[deprecated("This constructor is deprecated")]]
   NewStructureNestedField(apache::thrift::FragileConstructor,  ::cpp2::NewStructureNested f__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {

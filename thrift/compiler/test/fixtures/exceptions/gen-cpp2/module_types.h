@@ -36,6 +36,7 @@ class Banal final : private apache::thrift::detail::st::ComparisonOperators<Bana
 
   Banal() {}
   // FragileConstructor for use in initialization lists only.
+  [[deprecated("This constructor is deprecated")]]
   Banal(apache::thrift::FragileConstructor);
 
   Banal(Banal&&) = default;
@@ -91,6 +92,7 @@ class Fiery final : private apache::thrift::detail::st::ComparisonOperators<Fier
   explicit Fiery(std::string&& __message) :
       message(std::move(__message)) {}
   // FragileConstructor for use in initialization lists only.
+  [[deprecated("This constructor is deprecated")]]
   Fiery(apache::thrift::FragileConstructor, std::string message__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
@@ -165,6 +167,7 @@ class Serious final : private apache::thrift::detail::st::ComparisonOperators<Se
   explicit Serious(std::string&& __message) :
       sonnet(std::move(__message)) {}
   // FragileConstructor for use in initialization lists only.
+  [[deprecated("This constructor is deprecated")]]
   Serious(apache::thrift::FragileConstructor, std::string sonnet__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {

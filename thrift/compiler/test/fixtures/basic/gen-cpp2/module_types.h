@@ -82,6 +82,7 @@ class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<M
   MyStruct();
 
   // FragileConstructor for use in initialization lists only.
+  [[deprecated("This constructor is deprecated")]]
   MyStruct(apache::thrift::FragileConstructor, int64_t MyIntField__arg, std::string MyStringField__arg,  ::cpp2::MyDataItem MyDataField__arg, int64_t majorVer__arg,  ::cpp2::MyEnum myEnum__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
@@ -222,6 +223,7 @@ class MyDataItem final : private apache::thrift::detail::st::ComparisonOperators
 
   MyDataItem() {}
   // FragileConstructor for use in initialization lists only.
+  [[deprecated("This constructor is deprecated")]]
   MyDataItem(apache::thrift::FragileConstructor);
 
   MyDataItem(MyDataItem&&) = default;

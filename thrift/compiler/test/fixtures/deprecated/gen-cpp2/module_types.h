@@ -40,6 +40,7 @@ class House final : private apache::thrift::detail::st::ComparisonOperators<Hous
   House() :
       id(0) {}
   // FragileConstructor for use in initialization lists only.
+  [[deprecated("This constructor is deprecated")]]
   House(apache::thrift::FragileConstructor,  ::cpp2::ColorID id__arg, std::string houseName__arg, std::set< ::cpp2::ColorID> houseColors__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
@@ -102,6 +103,7 @@ class Field final : private apache::thrift::detail::st::ComparisonOperators<Fiel
       id(0),
       fieldType(5) {}
   // FragileConstructor for use in initialization lists only.
+  [[deprecated("This constructor is deprecated")]]
   Field(apache::thrift::FragileConstructor,  ::cpp2::ColorID id__arg, int32_t fieldType__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {

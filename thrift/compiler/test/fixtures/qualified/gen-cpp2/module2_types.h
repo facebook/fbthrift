@@ -37,6 +37,7 @@ class Struct final : private apache::thrift::detail::st::ComparisonOperators<Str
 
   Struct() {}
   // FragileConstructor for use in initialization lists only.
+  [[deprecated("This constructor is deprecated")]]
   Struct(apache::thrift::FragileConstructor,  ::module0::Struct first__arg,  ::module1::Struct second__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
@@ -118,6 +119,7 @@ class BigStruct final : private apache::thrift::detail::st::ComparisonOperators<
   BigStruct() :
       id(0) {}
   // FragileConstructor for use in initialization lists only.
+  [[deprecated("This constructor is deprecated")]]
   BigStruct(apache::thrift::FragileConstructor,  ::module2::Struct s__arg, int32_t id__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {

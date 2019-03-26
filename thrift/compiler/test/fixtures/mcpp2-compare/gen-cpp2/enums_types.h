@@ -204,6 +204,7 @@ class SomeStruct final : private apache::thrift::detail::st::ComparisonOperators
   SomeStruct() :
       fieldA(0) {}
   // FragileConstructor for use in initialization lists only.
+  [[deprecated("This constructor is deprecated")]]
   SomeStruct(apache::thrift::FragileConstructor, int32_t fieldA__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {

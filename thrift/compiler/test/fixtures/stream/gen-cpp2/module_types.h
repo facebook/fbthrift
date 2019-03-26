@@ -34,6 +34,7 @@ class FooEx final : private apache::thrift::detail::st::ComparisonOperators<FooE
 
   FooEx() {}
   // FragileConstructor for use in initialization lists only.
+  [[deprecated("This constructor is deprecated")]]
   FooEx(apache::thrift::FragileConstructor);
 
   FooEx(FooEx&&) = default;

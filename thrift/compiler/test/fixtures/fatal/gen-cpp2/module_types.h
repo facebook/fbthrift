@@ -1225,6 +1225,7 @@ class structA final : private apache::thrift::detail::st::ComparisonOperators<st
   structA() :
       a(0) {}
   // FragileConstructor for use in initialization lists only.
+  [[deprecated("This constructor is deprecated")]]
   structA(apache::thrift::FragileConstructor, int32_t a__arg, std::string b__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
@@ -1696,6 +1697,7 @@ class structB final : private apache::thrift::detail::st::ComparisonOperators<st
       c(0),
       d(0) {}
   // FragileConstructor for use in initialization lists only.
+  [[deprecated("This constructor is deprecated")]]
   structB(apache::thrift::FragileConstructor, double c__arg, bool d__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
@@ -1779,6 +1781,7 @@ class structC final : private apache::thrift::detail::st::ComparisonOperators<st
   structC();
 
   // FragileConstructor for use in initialization lists only.
+  [[deprecated("This constructor is deprecated")]]
   structC(apache::thrift::FragileConstructor, int32_t a__arg, std::string b__arg, double c__arg, bool d__arg,  ::test_cpp2::cpp_reflection::enum1 e__arg,  ::test_cpp2::cpp_reflection::enum2 f__arg,  ::test_cpp2::cpp_reflection::union1 g__arg,  ::test_cpp2::cpp_reflection::unionA h__arg,  ::test_cpp2::cpp_reflection::unionA i__arg, std::vector<int32_t> j__arg, std::vector<int32_t> j1__arg, std::vector< ::test_cpp2::cpp_reflection::enum1> j2__arg, std::vector< ::test_cpp2::cpp_reflection::structA> j3__arg, std::set<int32_t> k__arg, std::set<int32_t> k1__arg, std::set< ::test_cpp2::cpp_reflection::enum2> k2__arg, std::set< ::test_cpp2::cpp_reflection::structB> k3__arg, std::map<int32_t, int32_t> l__arg, std::map<int32_t, int32_t> l1__arg, std::map<int32_t,  ::test_cpp2::cpp_reflection::enum1> l2__arg, std::map<int32_t,  ::test_cpp2::cpp_reflection::structB> l3__arg, std::map< ::test_cpp2::cpp_reflection::enum1, int32_t> m1__arg, std::map< ::test_cpp2::cpp_reflection::enum1,  ::test_cpp2::cpp_reflection::enum2> m2__arg, std::map< ::test_cpp2::cpp_reflection::enum1,  ::test_cpp2::cpp_reflection::structB> m3__arg, std::map<std::string, int32_t> n1__arg, std::map<std::string,  ::test_cpp2::cpp_reflection::enum1> n2__arg, std::map<std::string,  ::test_cpp2::cpp_reflection::structB> n3__arg, std::map< ::test_cpp2::cpp_reflection::structA, int32_t> o1__arg, std::map< ::test_cpp2::cpp_reflection::structA,  ::test_cpp2::cpp_reflection::enum1> o2__arg, std::map< ::test_cpp2::cpp_reflection::structA,  ::test_cpp2::cpp_reflection::structB> o3__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
@@ -2322,6 +2325,7 @@ class struct1 final : private apache::thrift::detail::st::ComparisonOperators<st
   struct1();
 
   // FragileConstructor for use in initialization lists only.
+  [[deprecated("This constructor is deprecated")]]
   struct1(apache::thrift::FragileConstructor, int32_t field0__arg, std::string field1__arg,  ::test_cpp2::cpp_reflection::enum1 field2__arg,  ::test_cpp2::cpp_reflection::enum2 field3__arg,  ::test_cpp2::cpp_reflection::union1 field4__arg,  ::test_cpp2::cpp_reflection::union2 field5__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
@@ -2507,6 +2511,7 @@ class struct2 final : private apache::thrift::detail::st::ComparisonOperators<st
   struct2();
 
   // FragileConstructor for use in initialization lists only.
+  [[deprecated("This constructor is deprecated")]]
   struct2(apache::thrift::FragileConstructor, int32_t fieldA__arg, std::string fieldB__arg,  ::test_cpp2::cpp_reflection::enum1 fieldC__arg,  ::test_cpp2::cpp_reflection::enum2 fieldD__arg,  ::test_cpp2::cpp_reflection::union1 fieldE__arg,  ::test_cpp2::cpp_reflection::union2 fieldF__arg,  ::test_cpp2::cpp_reflection::struct1 fieldG__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
@@ -2680,6 +2685,7 @@ class struct3 final : private apache::thrift::detail::st::ComparisonOperators<st
   struct3();
 
   // FragileConstructor for use in initialization lists only.
+  [[deprecated("This constructor is deprecated")]]
   struct3(apache::thrift::FragileConstructor, int32_t fieldA__arg, std::string fieldB__arg,  ::test_cpp2::cpp_reflection::enum1 fieldC__arg,  ::test_cpp2::cpp_reflection::enum2 fieldD__arg,  ::test_cpp2::cpp_reflection::union1 fieldE__arg,  ::test_cpp2::cpp_reflection::union2 fieldF__arg,  ::test_cpp2::cpp_reflection::struct1 fieldG__arg,  ::test_cpp2::cpp_reflection::union2 fieldH__arg, std::vector<int32_t> fieldI__arg, std::vector<std::string> fieldJ__arg, std::vector<std::string> fieldK__arg, std::vector< ::test_cpp2::cpp_reflection::structA> fieldL__arg, std::set<int32_t> fieldM__arg, std::set<std::string> fieldN__arg, std::set<std::string> fieldO__arg, std::set< ::test_cpp2::cpp_reflection::structB> fieldP__arg, std::map<std::string,  ::test_cpp2::cpp_reflection::structA> fieldQ__arg, std::map<std::string,  ::test_cpp2::cpp_reflection::structB> fieldR__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
@@ -3031,6 +3037,7 @@ class struct4 final : private apache::thrift::detail::st::ComparisonOperators<st
       field2( ::test_cpp2::cpp_reflection::enum1::field0),
       field3(std::make_unique< ::test_cpp2::cpp_reflection::structA>()) {}
   // FragileConstructor for use in initialization lists only.
+  [[deprecated("This constructor is deprecated")]]
   struct4(apache::thrift::FragileConstructor, int32_t field0__arg, std::string field1__arg,  ::test_cpp2::cpp_reflection::enum1 field2__arg, std::unique_ptr< ::test_cpp2::cpp_reflection::structA> field3__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
@@ -3153,6 +3160,7 @@ class struct5 final : private apache::thrift::detail::st::ComparisonOperators<st
   struct5();
 
   // FragileConstructor for use in initialization lists only.
+  [[deprecated("This constructor is deprecated")]]
   struct5(apache::thrift::FragileConstructor, int32_t field0__arg, std::string field1__arg,  ::test_cpp2::cpp_reflection::enum1 field2__arg,  ::test_cpp2::cpp_reflection::structA field3__arg,  ::test_cpp2::cpp_reflection::structB field4__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
@@ -3306,6 +3314,7 @@ class struct_binary final : private apache::thrift::detail::st::ComparisonOperat
 
   struct_binary() {}
   // FragileConstructor for use in initialization lists only.
+  [[deprecated("This constructor is deprecated")]]
   struct_binary(apache::thrift::FragileConstructor, std::string bi__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
@@ -3377,6 +3386,7 @@ class dep_A_struct final : private apache::thrift::detail::st::ComparisonOperato
   dep_A_struct() :
       i_a(0) {}
   // FragileConstructor for use in initialization lists only.
+  [[deprecated("This constructor is deprecated")]]
   dep_A_struct(apache::thrift::FragileConstructor,  ::test_cpp2::cpp_reflection::dep_B_struct b__arg,  ::test_cpp2::cpp_reflection::dep_C_struct c__arg, int32_t i_a__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
@@ -3475,6 +3485,7 @@ class dep_B_struct final : private apache::thrift::detail::st::ComparisonOperato
   dep_B_struct() :
       i_a(0) {}
   // FragileConstructor for use in initialization lists only.
+  [[deprecated("This constructor is deprecated")]]
   dep_B_struct(apache::thrift::FragileConstructor,  ::test_cpp2::cpp_reflection::dep_B_struct b__arg,  ::test_cpp2::cpp_reflection::dep_C_struct c__arg, int32_t i_a__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
@@ -3573,6 +3584,7 @@ class annotated final : private apache::thrift::detail::st::ComparisonOperators<
   annotated() :
       a(0) {}
   // FragileConstructor for use in initialization lists only.
+  [[deprecated("This constructor is deprecated")]]
   annotated(apache::thrift::FragileConstructor, int32_t a__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
@@ -5124,6 +5136,7 @@ class struct_with_special_names final : private apache::thrift::detail::st::Comp
       field(0),
       fields(0) {}
   // FragileConstructor for use in initialization lists only.
+  [[deprecated("This constructor is deprecated")]]
   struct_with_special_names(apache::thrift::FragileConstructor, int32_t get__arg, int32_t getter__arg, int32_t lists__arg, int32_t maps__arg, int32_t name__arg, int32_t name_to_value__arg, int32_t names__arg, int32_t prefix_tree__arg, int32_t sets__arg, int32_t setter__arg, int32_t str__arg, int32_t strings__arg, int32_t type__arg, int32_t value__arg, int32_t value_to_name__arg, int32_t values__arg, int32_t id__arg, int32_t ids__arg, int32_t descriptor__arg, int32_t descriptors__arg, int32_t key__arg, int32_t keys__arg, int32_t annotation__arg, int32_t annotations__arg, int32_t member__arg, int32_t members__arg, int32_t field__arg, int32_t fields__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
@@ -5649,6 +5662,7 @@ class struct_with_indirections final : private apache::thrift::detail::st::Compa
   struct_with_indirections();
 
   // FragileConstructor for use in initialization lists only.
+  [[deprecated("This constructor is deprecated")]]
   struct_with_indirections(apache::thrift::FragileConstructor, int32_t real__arg,  ::test_cpp2::cpp_reflection::FakeI32 fake__arg,  ::test_cpp2::cpp_reflection::HasANumber number__arg,  ::test_cpp2::cpp_reflection::HasAResult result__arg,  ::test_cpp2::cpp_reflection::HasAPhrase phrase__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {

@@ -318,6 +318,7 @@ class MyField final : private apache::thrift::detail::st::ComparisonOperators<My
       value(0),
       req_value(0) {}
   // FragileConstructor for use in initialization lists only.
+  [[deprecated("This constructor is deprecated")]]
   MyField(apache::thrift::FragileConstructor, int64_t opt_value__arg, int64_t value__arg, int64_t req_value__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
@@ -437,6 +438,7 @@ class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<M
       ref(std::make_unique< ::cpp2::MyField>()),
       req_ref(std::make_unique< ::cpp2::MyField>()) {}
   // FragileConstructor for use in initialization lists only.
+  [[deprecated("This constructor is deprecated")]]
   MyStruct(apache::thrift::FragileConstructor, std::unique_ptr< ::cpp2::MyField> opt_ref__arg, std::unique_ptr< ::cpp2::MyField> ref__arg, std::unique_ptr< ::cpp2::MyField> req_ref__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
@@ -497,6 +499,7 @@ class StructWithUnion final : private apache::thrift::detail::st::ComparisonOper
       u(std::make_unique< ::cpp2::MyUnion>()),
       aDouble(0) {}
   // FragileConstructor for use in initialization lists only.
+  [[deprecated("This constructor is deprecated")]]
   StructWithUnion(apache::thrift::FragileConstructor, std::unique_ptr< ::cpp2::MyUnion> u__arg, double aDouble__arg,  ::cpp2::MyField f__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
@@ -581,6 +584,7 @@ class RecursiveStruct final : private apache::thrift::detail::st::ComparisonOper
 
   RecursiveStruct() {}
   // FragileConstructor for use in initialization lists only.
+  [[deprecated("This constructor is deprecated")]]
   RecursiveStruct(apache::thrift::FragileConstructor, std::vector< ::cpp2::RecursiveStruct> mes__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
@@ -663,6 +667,7 @@ class StructWithContainers final : private apache::thrift::detail::st::Compariso
   StructWithContainers();
 
   // FragileConstructor for use in initialization lists only.
+  [[deprecated("This constructor is deprecated")]]
   StructWithContainers(apache::thrift::FragileConstructor, std::unique_ptr<std::vector<int32_t>> list_ref__arg, std::unique_ptr<std::set<int32_t>> set_ref__arg, std::unique_ptr<std::map<int32_t, int32_t>> map_ref__arg, std::unique_ptr<std::vector<int32_t>> list_ref_unique__arg, std::shared_ptr<std::set<int32_t>> set_ref_shared__arg, std::shared_ptr<const std::vector<int32_t>> list_ref_shared_const__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
@@ -741,6 +746,7 @@ class StructWithSharedConst final : private apache::thrift::detail::st::Comparis
       shared_const(std::make_shared< ::cpp2::MyField>()),
       req_shared_const(std::make_shared< ::cpp2::MyField>()) {}
   // FragileConstructor for use in initialization lists only.
+  [[deprecated("This constructor is deprecated")]]
   StructWithSharedConst(apache::thrift::FragileConstructor, std::shared_ptr<const  ::cpp2::MyField> opt_shared_const__arg, std::shared_ptr<const  ::cpp2::MyField> shared_const__arg, std::shared_ptr<const  ::cpp2::MyField> req_shared_const__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
@@ -801,6 +807,7 @@ class Empty final : private apache::thrift::detail::st::ComparisonOperators<Empt
 
   Empty() {}
   // FragileConstructor for use in initialization lists only.
+  [[deprecated("This constructor is deprecated")]]
   Empty(apache::thrift::FragileConstructor);
 
   Empty(Empty&&) = default;
@@ -848,6 +855,7 @@ class StructWithRef final : private apache::thrift::detail::st::ComparisonOperat
       def_field(std::make_unique< ::cpp2::Empty>()),
       req_field(std::make_unique< ::cpp2::Empty>()) {}
   // FragileConstructor for use in initialization lists only.
+  [[deprecated("This constructor is deprecated")]]
   StructWithRef(apache::thrift::FragileConstructor, std::unique_ptr< ::cpp2::Empty> def_field__arg, std::unique_ptr< ::cpp2::Empty> opt_field__arg, std::unique_ptr< ::cpp2::Empty> req_field__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
@@ -908,6 +916,7 @@ class StructWithRefTypeUnique final : private apache::thrift::detail::st::Compar
       def_field(std::make_unique< ::cpp2::Empty>()),
       req_field(std::make_unique< ::cpp2::Empty>()) {}
   // FragileConstructor for use in initialization lists only.
+  [[deprecated("This constructor is deprecated")]]
   StructWithRefTypeUnique(apache::thrift::FragileConstructor, std::unique_ptr< ::cpp2::Empty> def_field__arg, std::unique_ptr< ::cpp2::Empty> opt_field__arg, std::unique_ptr< ::cpp2::Empty> req_field__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
@@ -968,6 +977,7 @@ class StructWithRefTypeShared final : private apache::thrift::detail::st::Compar
       def_field(std::make_shared< ::cpp2::Empty>()),
       req_field(std::make_shared< ::cpp2::Empty>()) {}
   // FragileConstructor for use in initialization lists only.
+  [[deprecated("This constructor is deprecated")]]
   StructWithRefTypeShared(apache::thrift::FragileConstructor, std::shared_ptr< ::cpp2::Empty> def_field__arg, std::shared_ptr< ::cpp2::Empty> opt_field__arg, std::shared_ptr< ::cpp2::Empty> req_field__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
@@ -1030,6 +1040,7 @@ class StructWithRefTypeSharedConst final : private apache::thrift::detail::st::C
       def_field(std::make_shared< ::cpp2::Empty>()),
       req_field(std::make_shared< ::cpp2::Empty>()) {}
   // FragileConstructor for use in initialization lists only.
+  [[deprecated("This constructor is deprecated")]]
   StructWithRefTypeSharedConst(apache::thrift::FragileConstructor, std::shared_ptr<const  ::cpp2::Empty> def_field__arg, std::shared_ptr<const  ::cpp2::Empty> opt_field__arg, std::shared_ptr<const  ::cpp2::Empty> req_field__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
@@ -1091,6 +1102,7 @@ class StructWithRefAndAnnotCppNoexceptMoveCtor final : private apache::thrift::d
   StructWithRefAndAnnotCppNoexceptMoveCtor() :
       def_field(std::make_unique< ::cpp2::Empty>()) {}
   // FragileConstructor for use in initialization lists only.
+  [[deprecated("This constructor is deprecated")]]
   StructWithRefAndAnnotCppNoexceptMoveCtor(apache::thrift::FragileConstructor, std::unique_ptr< ::cpp2::Empty> def_field__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {

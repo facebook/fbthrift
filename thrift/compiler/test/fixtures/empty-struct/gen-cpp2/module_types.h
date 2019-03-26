@@ -35,6 +35,7 @@ class Empty final : private apache::thrift::detail::st::ComparisonOperators<Empt
 
   Empty() {}
   // FragileConstructor for use in initialization lists only.
+  [[deprecated("This constructor is deprecated")]]
   Empty(apache::thrift::FragileConstructor);
 
   Empty(Empty&&) = default;

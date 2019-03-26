@@ -41,6 +41,7 @@ class Included final : private apache::thrift::detail::st::ComparisonOperators<I
       MyIntField(0LL),
       MyTransitiveField(::apache::thrift::detail::make_constant< ::cpp2::Foo>(::apache::thrift::detail::wrap_argument<1>(2LL))) {}
   // FragileConstructor for use in initialization lists only.
+  [[deprecated("This constructor is deprecated")]]
   Included(apache::thrift::FragileConstructor, int64_t MyIntField__arg,  ::cpp2::Foo MyTransitiveField__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {

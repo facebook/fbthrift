@@ -151,6 +151,7 @@ class Internship final : private apache::thrift::detail::st::ComparisonOperators
       weeks(0),
       employer( ::cpp2::Company::FACEBOOK) {}
   // FragileConstructor for use in initialization lists only.
+  [[deprecated("This constructor is deprecated")]]
   Internship(apache::thrift::FragileConstructor, int32_t weeks__arg, std::string title__arg,  ::cpp2::Company employer__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
@@ -274,6 +275,7 @@ class UnEnumStruct final : private apache::thrift::detail::st::ComparisonOperato
   UnEnumStruct() :
       city(static_cast< ::cpp2::City>(-1)) {}
   // FragileConstructor for use in initialization lists only.
+  [[deprecated("This constructor is deprecated")]]
   UnEnumStruct(apache::thrift::FragileConstructor,  ::cpp2::City city__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
@@ -341,6 +343,7 @@ class Range final : private apache::thrift::detail::st::ComparisonOperators<Rang
       min(0),
       max(0) {}
   // FragileConstructor for use in initialization lists only.
+  [[deprecated("This constructor is deprecated")]]
   Range(apache::thrift::FragileConstructor, int32_t min__arg, int32_t max__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
@@ -416,6 +419,7 @@ class struct1 final : private apache::thrift::detail::st::ComparisonOperators<st
       a(1234567),
       b(apache::thrift::StringTraits< std::string>::fromStringLiteral("<uninitialized>")) {}
   // FragileConstructor for use in initialization lists only.
+  [[deprecated("This constructor is deprecated")]]
   struct1(apache::thrift::FragileConstructor, int32_t a__arg, std::string b__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
@@ -504,6 +508,7 @@ class struct2 final : private apache::thrift::detail::st::ComparisonOperators<st
   struct2() :
       a(0) {}
   // FragileConstructor for use in initialization lists only.
+  [[deprecated("This constructor is deprecated")]]
   struct2(apache::thrift::FragileConstructor, int32_t a__arg, std::string b__arg,  ::cpp2::struct1 c__arg, std::vector<int32_t> d__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
@@ -624,6 +629,7 @@ class struct3 final : private apache::thrift::detail::st::ComparisonOperators<st
   struct3() :
       b(0) {}
   // FragileConstructor for use in initialization lists only.
+  [[deprecated("This constructor is deprecated")]]
   struct3(apache::thrift::FragileConstructor, std::string a__arg, int32_t b__arg,  ::cpp2::struct2 c__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {

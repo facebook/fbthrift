@@ -37,6 +37,7 @@ class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<M
       MyIncludedField(::apache::thrift::detail::make_constant< ::cpp2::Included>(::apache::thrift::detail::wrap_argument<1>(2LL), ::apache::thrift::detail::wrap_argument<2>(::apache::thrift::detail::make_constant< ::cpp2::Foo>(::apache::thrift::detail::wrap_argument<1>(2LL))))),
       MyIncludedInt(42LL) {}
   // FragileConstructor for use in initialization lists only.
+  [[deprecated("This constructor is deprecated")]]
   MyStruct(apache::thrift::FragileConstructor,  ::cpp2::Included MyIncludedField__arg,  ::cpp2::Included MyOtherIncludedField__arg,  ::cpp2::IncludedInt64 MyIncludedInt__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {

@@ -121,6 +121,7 @@ class <%struct:name%> <%!
       <%struct:message%>(std::move(__message)) {}
 <%/struct:message%><%/struct:exception?%>
   // FragileConstructor for use in initialization lists only.
+  [[deprecated("This constructor is deprecated")]]
   <%struct:name%>(apache::thrift::FragileConstructor<% > module_types_h/fragile_ctor_param_list%>);
 <% > module_types_h/struct_tag_set_field%>
 <%#struct:cpp_noexcept_move_ctor%>

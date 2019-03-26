@@ -203,6 +203,7 @@ class decorated_struct final : private apache::thrift::detail::st::ComparisonOpe
 
   decorated_struct() {}
   // FragileConstructor for use in initialization lists only.
+  [[deprecated("This constructor is deprecated")]]
   decorated_struct(apache::thrift::FragileConstructor, std::string field__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
@@ -274,6 +275,7 @@ class ContainerStruct final : private apache::thrift::detail::st::ComparisonOper
   ContainerStruct();
 
   // FragileConstructor for use in initialization lists only.
+  [[deprecated("This constructor is deprecated")]]
   ContainerStruct(apache::thrift::FragileConstructor, std::vector<int32_t> fieldA__arg, std::list<int32_t> fieldB__arg, std::deque<int32_t> fieldC__arg, folly::fbvector<int32_t> fieldD__arg, folly::small_vector<int32_t> fieldE__arg, folly::sorted_vector_set<int32_t> fieldF__arg, folly::sorted_vector_map<int32_t, std::string> fieldG__arg,  ::apache::thrift::fixtures::types::SomeMap fieldH__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<12, _T> arg) {
@@ -453,6 +455,7 @@ class CppTypeStruct final : private apache::thrift::detail::st::ComparisonOperat
 
   CppTypeStruct() {}
   // FragileConstructor for use in initialization lists only.
+  [[deprecated("This constructor is deprecated")]]
   CppTypeStruct(apache::thrift::FragileConstructor, std::list<int32_t> fieldA__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
@@ -518,6 +521,7 @@ class VirtualStruct : private apache::thrift::detail::st::ComparisonOperators<Vi
   VirtualStruct() :
       MyIntField(0) {}
   // FragileConstructor for use in initialization lists only.
+  [[deprecated("This constructor is deprecated")]]
   VirtualStruct(apache::thrift::FragileConstructor, int64_t MyIntField__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
@@ -588,6 +592,7 @@ class MyStructWithForwardRefEnum final : private apache::thrift::detail::st::Com
       a( ::apache::thrift::fixtures::types::MyForwardRefEnum::NONZERO),
       b( ::apache::thrift::fixtures::types::MyForwardRefEnum::NONZERO) {}
   // FragileConstructor for use in initialization lists only.
+  [[deprecated("This constructor is deprecated")]]
   MyStructWithForwardRefEnum(apache::thrift::FragileConstructor,  ::apache::thrift::fixtures::types::MyForwardRefEnum a__arg,  ::apache::thrift::fixtures::types::MyForwardRefEnum b__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
@@ -672,6 +677,7 @@ class TrivialNumeric final : private apache::thrift::detail::st::ComparisonOpera
       a(0),
       b(0) {}
   // FragileConstructor for use in initialization lists only.
+  [[deprecated("This constructor is deprecated")]]
   TrivialNumeric(apache::thrift::FragileConstructor, int32_t a__arg, bool b__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
@@ -756,6 +762,7 @@ class TrivialNestedWithDefault final : private apache::thrift::detail::st::Compa
       z(4),
       n(::apache::thrift::detail::make_constant< ::apache::thrift::fixtures::types::TrivialNumeric>(::apache::thrift::detail::wrap_argument<1>(3), ::apache::thrift::detail::wrap_argument<2>(true))) {}
   // FragileConstructor for use in initialization lists only.
+  [[deprecated("This constructor is deprecated")]]
   TrivialNestedWithDefault(apache::thrift::FragileConstructor, int32_t z__arg,  ::apache::thrift::fixtures::types::TrivialNumeric n__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
@@ -837,6 +844,7 @@ class ComplexString final : private apache::thrift::detail::st::ComparisonOperat
 
   ComplexString() {}
   // FragileConstructor for use in initialization lists only.
+  [[deprecated("This constructor is deprecated")]]
   ComplexString(apache::thrift::FragileConstructor, std::string a__arg, std::map<std::string, int32_t> b__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
@@ -925,6 +933,7 @@ class ComplexNestedWithDefault final : private apache::thrift::detail::st::Compa
       z(apache::thrift::StringTraits< std::string>::fromStringLiteral("4")),
       n(::apache::thrift::detail::make_constant< ::apache::thrift::fixtures::types::ComplexString>(::apache::thrift::detail::wrap_argument<1>(apache::thrift::StringTraits< std::string>::fromStringLiteral("3")), ::apache::thrift::detail::wrap_argument<2>(std::initializer_list<std::pair<const std::string, int32_t>>{{apache::thrift::StringTraits< std::string>::fromStringLiteral("a"), 3}}))) {}
   // FragileConstructor for use in initialization lists only.
+  [[deprecated("This constructor is deprecated")]]
   ComplexNestedWithDefault(apache::thrift::FragileConstructor, std::string z__arg,  ::apache::thrift::fixtures::types::ComplexString n__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
@@ -1016,6 +1025,7 @@ class MinPadding final : private apache::thrift::detail::st::ComparisonOperators
       small(0),
       tiny(0) {}
   // FragileConstructor for use in initialization lists only.
+  [[deprecated("This constructor is deprecated")]]
   MinPadding(apache::thrift::FragileConstructor, int8_t small__arg, int64_t big__arg, int16_t medium__arg, int32_t biggish__arg, int8_t tiny__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
@@ -1133,6 +1143,7 @@ class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<M
       MyIntField(0),
       majorVer(0) {}
   // FragileConstructor for use in initialization lists only.
+  [[deprecated("This constructor is deprecated")]]
   MyStruct(apache::thrift::FragileConstructor, int64_t MyIntField__arg, std::string MyStringField__arg, int64_t majorVer__arg,  ::apache::thrift::fixtures::types::MyDataItem data__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
@@ -1251,6 +1262,7 @@ class MyDataItem final : private apache::thrift::detail::st::ComparisonOperators
 
   MyDataItem() {}
   // FragileConstructor for use in initialization lists only.
+  [[deprecated("This constructor is deprecated")]]
   MyDataItem(apache::thrift::FragileConstructor);
 
   MyDataItem(MyDataItem&&) = default;
@@ -1295,6 +1307,7 @@ class Renaming final : private apache::thrift::detail::st::ComparisonOperators<R
   Renaming() :
       bar(0) {}
   // FragileConstructor for use in initialization lists only.
+  [[deprecated("This constructor is deprecated")]]
   Renaming(apache::thrift::FragileConstructor, int64_t bar__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
@@ -1360,6 +1373,7 @@ class AnnotatedTypes final : private apache::thrift::detail::st::ComparisonOpera
 
   AnnotatedTypes() {}
   // FragileConstructor for use in initialization lists only.
+  [[deprecated("This constructor is deprecated")]]
   AnnotatedTypes(apache::thrift::FragileConstructor,  ::apache::thrift::fixtures::types::TBinary binary_field__arg,  ::apache::thrift::fixtures::types::SomeListOfTypeMap list_field__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
