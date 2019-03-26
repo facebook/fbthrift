@@ -555,7 +555,7 @@ void clientSendT(
             std::move(callback),
             std::move(ctx),
             queue.move(),
-            header);
+            std::move(header));
         break;
       case RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE:
         channel->sendRequest(
@@ -563,7 +563,7 @@ void clientSendT(
             std::move(callback),
             std::move(ctx),
             queue.move(),
-            header);
+            std::move(header));
         break;
       case RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE:
         channel->sendStreamRequest(
@@ -571,7 +571,7 @@ void clientSendT(
             std::move(callback),
             std::move(ctx),
             queue.move(),
-            header);
+            std::move(header));
         break;
       default:
         folly::assume_unreachable();
@@ -586,7 +586,7 @@ void clientSendT(
                                   callback = std::move(callback),
                                   ctx = std::move(ctx),
                                   queue = queue.move(),
-                                  header]() mutable {
+                                  header = std::move(header)]() mutable {
           // Calling asyncComplete before sending because
           // sendOnewayRequest moves from ctx and clears it.
           ctx->asyncComplete();
@@ -595,7 +595,7 @@ void clientSendT(
               std::move(callback),
               std::move(ctx),
               std::move(queue),
-              header);
+              std::move(header));
         });
         break;
       case RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE:
@@ -604,13 +604,13 @@ void clientSendT(
                                   callback = std::move(callback),
                                   ctx = std::move(ctx),
                                   queue = queue.move(),
-                                  header]() mutable {
+                                  header = std::move(header)]() mutable {
           channel->sendRequest(
               rpcOptions,
               std::move(callback),
               std::move(ctx),
               std::move(queue),
-              header);
+              std::move(header));
         });
         break;
       case RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE:
@@ -619,13 +619,13 @@ void clientSendT(
                                   callback = std::move(callback),
                                   ctx = std::move(ctx),
                                   queue = queue.move(),
-                                  header]() mutable {
+                                  header = std::move(header)]() mutable {
           channel->sendStreamRequest(
               rpcOptions,
               std::move(callback),
               std::move(ctx),
               std::move(queue),
-              header);
+              std::move(header));
         });
         break;
       default:
