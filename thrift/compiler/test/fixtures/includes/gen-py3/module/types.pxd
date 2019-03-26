@@ -39,6 +39,7 @@ cdef extern from "gen-cpp2/module_types.h" namespace "::cpp2":
         cMyStruct() except +
         cMyStruct(const cMyStruct&) except +
         bint operator==(cMyStruct&)
+        bint operator!=(cMyStruct&)
         bint operator<(cMyStruct&)
         bint operator>(cMyStruct&)
         bint operator<=(cMyStruct&)

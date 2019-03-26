@@ -261,6 +261,7 @@ cdef extern from * nogil:
 cdef extern from "src/gen-cpp2/module_types.h" namespace "::apache::thrift::fixtures::types":
     cdef cppclass chas_bitwise_ops "::apache::thrift::fixtures::types::has_bitwise_ops":
         bint operator==(chas_bitwise_ops&)
+        bint operator!=(chas_bitwise_ops&)
     chas_bitwise_ops has_bitwise_ops__none "::apache::thrift::fixtures::types::has_bitwise_ops::none"
     chas_bitwise_ops has_bitwise_ops__zero "::apache::thrift::fixtures::types::has_bitwise_ops::zero"
     chas_bitwise_ops has_bitwise_ops__one "::apache::thrift::fixtures::types::has_bitwise_ops::one"
@@ -268,10 +269,12 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "::apache::thrift::fixt
     chas_bitwise_ops has_bitwise_ops__three "::apache::thrift::fixtures::types::has_bitwise_ops::three"
     cdef cppclass cis_unscoped "::apache::thrift::fixtures::types::is_unscoped":
         bint operator==(cis_unscoped&)
+        bint operator!=(cis_unscoped&)
     cis_unscoped is_unscoped__hello "::apache::thrift::fixtures::types::is_unscoped::hello"
     cis_unscoped is_unscoped__world "::apache::thrift::fixtures::types::is_unscoped::world"
     cdef cppclass cMyForwardRefEnum "::apache::thrift::fixtures::types::MyForwardRefEnum":
         bint operator==(cMyForwardRefEnum&)
+        bint operator!=(cMyForwardRefEnum&)
     cMyForwardRefEnum MyForwardRefEnum__ZERO "::apache::thrift::fixtures::types::MyForwardRefEnum::ZERO"
     cMyForwardRefEnum MyForwardRefEnum__NONZERO "::apache::thrift::fixtures::types::MyForwardRefEnum::NONZERO"
 
@@ -342,6 +345,7 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "::apache::thrift::fixt
         cdecorated_struct() except +
         cdecorated_struct(const cdecorated_struct&) except +
         bint operator==(cdecorated_struct&)
+        bint operator!=(cdecorated_struct&)
         bint operator<(cdecorated_struct&)
         bint operator>(cdecorated_struct&)
         bint operator<=(cdecorated_struct&)
@@ -363,6 +367,7 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "::apache::thrift::fixt
         cContainerStruct() except +
         cContainerStruct(const cContainerStruct&) except +
         bint operator==(cContainerStruct&)
+        bint operator!=(cContainerStruct&)
         vector[int32_t] fieldA
         std_list[int32_t] fieldB
         std_deque[int32_t] fieldC
@@ -380,6 +385,7 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "::apache::thrift::fixt
         cCppTypeStruct() except +
         cCppTypeStruct(const cCppTypeStruct&) except +
         bint operator==(cCppTypeStruct&)
+        bint operator!=(cCppTypeStruct&)
         bint operator<(cCppTypeStruct&)
         bint operator>(cCppTypeStruct&)
         bint operator<=(cCppTypeStruct&)
@@ -394,6 +400,7 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "::apache::thrift::fixt
         cVirtualStruct() except +
         cVirtualStruct(const cVirtualStruct&) except +
         bint operator==(cVirtualStruct&)
+        bint operator!=(cVirtualStruct&)
         bint operator<(cVirtualStruct&)
         bint operator>(cVirtualStruct&)
         bint operator<=(cVirtualStruct&)
@@ -409,6 +416,7 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "::apache::thrift::fixt
         cMyStructWithForwardRefEnum() except +
         cMyStructWithForwardRefEnum(const cMyStructWithForwardRefEnum&) except +
         bint operator==(cMyStructWithForwardRefEnum&)
+        bint operator!=(cMyStructWithForwardRefEnum&)
         bint operator<(cMyStructWithForwardRefEnum&)
         bint operator>(cMyStructWithForwardRefEnum&)
         bint operator<=(cMyStructWithForwardRefEnum&)
@@ -425,6 +433,7 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "::apache::thrift::fixt
         cTrivialNumeric() except +
         cTrivialNumeric(const cTrivialNumeric&) except +
         bint operator==(cTrivialNumeric&)
+        bint operator!=(cTrivialNumeric&)
         bint operator<(cTrivialNumeric&)
         bint operator>(cTrivialNumeric&)
         bint operator<=(cTrivialNumeric&)
@@ -441,6 +450,7 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "::apache::thrift::fixt
         cTrivialNestedWithDefault() except +
         cTrivialNestedWithDefault(const cTrivialNestedWithDefault&) except +
         bint operator==(cTrivialNestedWithDefault&)
+        bint operator!=(cTrivialNestedWithDefault&)
         bint operator<(cTrivialNestedWithDefault&)
         bint operator>(cTrivialNestedWithDefault&)
         bint operator<=(cTrivialNestedWithDefault&)
@@ -457,6 +467,7 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "::apache::thrift::fixt
         cComplexString() except +
         cComplexString(const cComplexString&) except +
         bint operator==(cComplexString&)
+        bint operator!=(cComplexString&)
         bint operator<(cComplexString&)
         bint operator>(cComplexString&)
         bint operator<=(cComplexString&)
@@ -473,6 +484,7 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "::apache::thrift::fixt
         cComplexNestedWithDefault() except +
         cComplexNestedWithDefault(const cComplexNestedWithDefault&) except +
         bint operator==(cComplexNestedWithDefault&)
+        bint operator!=(cComplexNestedWithDefault&)
         bint operator<(cComplexNestedWithDefault&)
         bint operator>(cComplexNestedWithDefault&)
         bint operator<=(cComplexNestedWithDefault&)
@@ -492,6 +504,7 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "::apache::thrift::fixt
         cMinPadding() except +
         cMinPadding(const cMinPadding&) except +
         bint operator==(cMinPadding&)
+        bint operator!=(cMinPadding&)
         bint operator<(cMinPadding&)
         bint operator>(cMinPadding&)
         bint operator<=(cMinPadding&)
@@ -533,6 +546,7 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "::apache::thrift::fixt
         cRenaming() except +
         cRenaming(const cRenaming&) except +
         bint operator==(cRenaming&)
+        bint operator!=(cRenaming&)
         bint operator<(cRenaming&)
         bint operator>(cRenaming&)
         bint operator<=(cRenaming&)
@@ -548,6 +562,7 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "::apache::thrift::fixt
         cAnnotatedTypes() except +
         cAnnotatedTypes(const cAnnotatedTypes&) except +
         bint operator==(cAnnotatedTypes&)
+        bint operator!=(cAnnotatedTypes&)
         string binary_field
         vector[std_unordered_map[int32_t,string]] list_field
         cAnnotatedTypes__isset __isset

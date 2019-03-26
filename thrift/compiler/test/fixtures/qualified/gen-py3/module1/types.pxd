@@ -24,6 +24,7 @@ from folly.optional cimport cOptional
 cdef extern from "gen-cpp2/module1_types.h" namespace "::module1":
     cdef cppclass cEnum "::module1::Enum":
         bint operator==(cEnum&)
+        bint operator!=(cEnum&)
     cEnum Enum__ONE "::module1::Enum::ONE"
     cEnum Enum__TWO "::module1::Enum::TWO"
     cEnum Enum__THREE "::module1::Enum::THREE"
@@ -52,6 +53,7 @@ cdef extern from "gen-cpp2/module1_types.h" namespace "::module1":
         cStruct() except +
         cStruct(const cStruct&) except +
         bint operator==(cStruct&)
+        bint operator!=(cStruct&)
         bint operator<(cStruct&)
         bint operator>(cStruct&)
         bint operator<=(cStruct&)

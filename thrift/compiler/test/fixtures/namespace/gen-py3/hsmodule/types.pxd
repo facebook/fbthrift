@@ -36,6 +36,7 @@ cdef extern from "gen-cpp2/hsmodule_types.h" namespace "::cpp2":
         cHsFoo() except +
         cHsFoo(const cHsFoo&) except +
         bint operator==(cHsFoo&)
+        bint operator!=(cHsFoo&)
         bint operator<(cHsFoo&)
         bint operator>(cHsFoo&)
         bint operator<=(cHsFoo&)

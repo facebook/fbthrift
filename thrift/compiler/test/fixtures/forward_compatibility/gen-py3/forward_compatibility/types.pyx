@@ -157,7 +157,7 @@ cdef class OldStructure(thrift.py3.types.Struct):
         if cop == Py_EQ:
             return deref(cself) == deref(cother)
         elif cop == Py_NE:
-            return not (deref(cself) == deref(cother))
+            return deref(cself) != deref(cother)
         elif cop == Py_LT:
             return deref(cself) < deref(cother)
         elif cop == Py_LE:
@@ -327,7 +327,7 @@ cdef class NewStructure(thrift.py3.types.Struct):
         if cop == Py_EQ:
             return deref(cself) == deref(cother)
         elif cop == Py_NE:
-            return not (deref(cself) == deref(cother))
+            return deref(cself) != deref(cother)
         elif cop == Py_LT:
             return deref(cself) < deref(cother)
         elif cop == Py_LE:
@@ -497,7 +497,7 @@ cdef class NewStructure2(thrift.py3.types.Struct):
         if cop == Py_EQ:
             return deref(cself) == deref(cother)
         elif cop == Py_NE:
-            return not (deref(cself) == deref(cother))
+            return deref(cself) != deref(cother)
         elif cop == Py_LT:
             return deref(cself) < deref(cother)
         elif cop == Py_LE:
@@ -725,7 +725,7 @@ cdef class NewStructureNested(thrift.py3.types.Struct):
         if cop == Py_EQ:
             return deref(cself) == deref(cother)
         elif cop == Py_NE:
-            return not (deref(cself) == deref(cother))
+            return deref(cself) != deref(cother)
         elif cop == Py_LT:
             return deref(cself) < deref(cother)
         elif cop == Py_LE:
@@ -899,7 +899,7 @@ cdef class NewStructureNestedField(thrift.py3.types.Struct):
         if cop == Py_EQ:
             return deref(cself) == deref(cother)
         elif cop == Py_NE:
-            return not (deref(cself) == deref(cother))
+            return deref(cself) != deref(cother)
         elif cop == Py_LT:
             return deref(cself) < deref(cother)
         elif cop == Py_LE:

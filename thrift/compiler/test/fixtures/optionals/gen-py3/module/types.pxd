@@ -24,6 +24,7 @@ from folly.optional cimport cOptional
 cdef extern from "src/gen-cpp2/module_types.h" namespace "::cpp2":
     cdef cppclass cAnimal "::cpp2::Animal":
         bint operator==(cAnimal&)
+        bint operator!=(cAnimal&)
     cAnimal Animal__DOG "::cpp2::Animal::DOG"
     cAnimal Animal__CAT "::cpp2::Animal::CAT"
     cAnimal Animal__TARANTULA "::cpp2::Animal::TARANTULA"
@@ -58,6 +59,7 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "::cpp2":
         cColor() except +
         cColor(const cColor&) except +
         bint operator==(cColor&)
+        bint operator!=(cColor&)
         bint operator<(cColor&)
         bint operator>(cColor&)
         bint operator<=(cColor&)
@@ -79,6 +81,7 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "::cpp2":
         cVehicle() except +
         cVehicle(const cVehicle&) except +
         bint operator==(cVehicle&)
+        bint operator!=(cVehicle&)
         bint operator<(cVehicle&)
         bint operator>(cVehicle&)
         bint operator<=(cVehicle&)
@@ -106,6 +109,7 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "::cpp2":
         cPerson() except +
         cPerson(const cPerson&) except +
         bint operator==(cPerson&)
+        bint operator!=(cPerson&)
         bint operator<(cPerson&)
         bint operator>(cPerson&)
         bint operator<=(cPerson&)

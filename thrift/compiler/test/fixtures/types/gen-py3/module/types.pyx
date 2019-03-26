@@ -476,7 +476,7 @@ cdef class decorated_struct(thrift.py3.types.Struct):
         if cop == Py_EQ:
             return deref(cself) == deref(cother)
         elif cop == Py_NE:
-            return not (deref(cself) == deref(cother))
+            return deref(cself) != deref(cother)
         elif cop == Py_LT:
             return deref(cself) < deref(cother)
         elif cop == Py_LE:
@@ -849,7 +849,7 @@ cdef class ContainerStruct(thrift.py3.types.Struct):
         if cop == Py_EQ:
             return deref(cself) == deref(cother)
         elif cop == Py_NE:
-            return not (deref(cself) == deref(cother))
+            return deref(cself) != deref(cother)
         else:
             return NotImplemented
 
@@ -1011,7 +1011,7 @@ cdef class CppTypeStruct(thrift.py3.types.Struct):
         if cop == Py_EQ:
             return deref(cself) == deref(cother)
         elif cop == Py_NE:
-            return not (deref(cself) == deref(cother))
+            return deref(cself) != deref(cother)
         elif cop == Py_LT:
             return deref(cself) < deref(cother)
         elif cop == Py_LE:
@@ -1189,7 +1189,7 @@ cdef class VirtualStruct(thrift.py3.types.Struct):
         if cop == Py_EQ:
             return deref(cself) == deref(cother)
         elif cop == Py_NE:
-            return not (deref(cself) == deref(cother))
+            return deref(cself) != deref(cother)
         elif cop == Py_LT:
             return deref(cself) < deref(cother)
         elif cop == Py_LE:
@@ -1392,7 +1392,7 @@ cdef class MyStructWithForwardRefEnum(thrift.py3.types.Struct):
         if cop == Py_EQ:
             return deref(cself) == deref(cother)
         elif cop == Py_NE:
-            return not (deref(cself) == deref(cother))
+            return deref(cself) != deref(cother)
         elif cop == Py_LT:
             return deref(cself) < deref(cother)
         elif cop == Py_LE:
@@ -1601,7 +1601,7 @@ cdef class TrivialNumeric(thrift.py3.types.Struct):
         if cop == Py_EQ:
             return deref(cself) == deref(cother)
         elif cop == Py_NE:
-            return not (deref(cself) == deref(cother))
+            return deref(cself) != deref(cother)
         elif cop == Py_LT:
             return deref(cself) < deref(cother)
         elif cop == Py_LE:
@@ -1812,7 +1812,7 @@ cdef class TrivialNestedWithDefault(thrift.py3.types.Struct):
         if cop == Py_EQ:
             return deref(cself) == deref(cother)
         elif cop == Py_NE:
-            return not (deref(cself) == deref(cother))
+            return deref(cself) != deref(cother)
         elif cop == Py_LT:
             return deref(cself) < deref(cother)
         elif cop == Py_LE:
@@ -2013,7 +2013,7 @@ cdef class ComplexString(thrift.py3.types.Struct):
         if cop == Py_EQ:
             return deref(cself) == deref(cother)
         elif cop == Py_NE:
-            return not (deref(cself) == deref(cother))
+            return deref(cself) != deref(cother)
         elif cop == Py_LT:
             return deref(cself) < deref(cother)
         elif cop == Py_LE:
@@ -2218,7 +2218,7 @@ cdef class ComplexNestedWithDefault(thrift.py3.types.Struct):
         if cop == Py_EQ:
             return deref(cself) == deref(cother)
         elif cop == Py_NE:
-            return not (deref(cself) == deref(cother))
+            return deref(cself) != deref(cother)
         elif cop == Py_LT:
             return deref(cself) < deref(cother)
         elif cop == Py_LE:
@@ -2539,7 +2539,7 @@ cdef class MinPadding(thrift.py3.types.Struct):
         if cop == Py_EQ:
             return deref(cself) == deref(cother)
         elif cop == Py_NE:
-            return not (deref(cself) == deref(cother))
+            return deref(cself) != deref(cother)
         elif cop == Py_LT:
             return deref(cself) < deref(cother)
         elif cop == Py_LE:
@@ -3123,7 +3123,7 @@ cdef class Renaming(thrift.py3.types.Struct):
         if cop == Py_EQ:
             return deref(cself) == deref(cother)
         elif cop == Py_NE:
-            return not (deref(cself) == deref(cother))
+            return deref(cself) != deref(cother)
         elif cop == Py_LT:
             return deref(cself) < deref(cother)
         elif cop == Py_LE:
@@ -3324,7 +3324,7 @@ cdef class AnnotatedTypes(thrift.py3.types.Struct):
         if cop == Py_EQ:
             return deref(cself) == deref(cother)
         elif cop == Py_NE:
-            return not (deref(cself) == deref(cother))
+            return deref(cself) != deref(cother)
         else:
             return NotImplemented
 

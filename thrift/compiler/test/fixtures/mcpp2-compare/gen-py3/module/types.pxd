@@ -275,21 +275,25 @@ cdef extern from *:
 cdef extern from "src/gen-cpp2/module_types.h" namespace "::some::valid::ns":
     cdef cppclass cMyEnumA "::some::valid::ns::MyEnumA":
         bint operator==(cMyEnumA&)
+        bint operator!=(cMyEnumA&)
     cMyEnumA MyEnumA__fieldA "::some::valid::ns::MyEnumA::fieldA"
     cMyEnumA MyEnumA__fieldB "::some::valid::ns::MyEnumA::fieldB"
     cMyEnumA MyEnumA__fieldC "::some::valid::ns::MyEnumA::fieldC"
     cdef cppclass cAnnotatedEnum "::some::valid::ns::AnnotatedEnum":
         bint operator==(cAnnotatedEnum&)
+        bint operator!=(cAnnotatedEnum&)
     cAnnotatedEnum AnnotatedEnum__FIELDA "::some::valid::ns::AnnotatedEnum::FIELDA"
     cAnnotatedEnum AnnotatedEnum__FIELDB "::some::valid::ns::AnnotatedEnum::FIELDB"
     cAnnotatedEnum AnnotatedEnum__FIELDC "::some::valid::ns::AnnotatedEnum::FIELDC"
     cdef cppclass cAnnotatedEnum2 "::some::valid::ns::AnnotatedEnum2":
         bint operator==(cAnnotatedEnum2&)
+        bint operator!=(cAnnotatedEnum2&)
     cAnnotatedEnum2 AnnotatedEnum2__FIELDA "::some::valid::ns::AnnotatedEnum2::FIELDA"
     cAnnotatedEnum2 AnnotatedEnum2__FIELDB "::some::valid::ns::AnnotatedEnum2::FIELDB"
     cAnnotatedEnum2 AnnotatedEnum2__FIELDC "::some::valid::ns::AnnotatedEnum2::FIELDC"
     cdef cppclass cMyEnumB "::some::valid::ns::MyEnumB":
         bint operator==(cMyEnumB&)
+        bint operator!=(cMyEnumB&)
     cMyEnumB MyEnumB__AField "::some::valid::ns::MyEnumB::AField"
 
 
@@ -370,6 +374,7 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "::some::valid::ns":
         cEmpty() except +
         cEmpty(const cEmpty&) except +
         bint operator==(cEmpty&)
+        bint operator!=(cEmpty&)
         bint operator<(cEmpty&)
         bint operator>(cEmpty&)
         bint operator<=(cEmpty&)
@@ -383,6 +388,7 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "::some::valid::ns":
         cASimpleStruct() except +
         cASimpleStruct(const cASimpleStruct&) except +
         bint operator==(cASimpleStruct&)
+        bint operator!=(cASimpleStruct&)
         int64_t boolField
         cASimpleStruct__isset __isset
 
@@ -393,6 +399,7 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "::some::valid::ns":
         cASimpleStructNoexcept() except +
         cASimpleStructNoexcept(const cASimpleStructNoexcept&) except +
         bint operator==(cASimpleStructNoexcept&)
+        bint operator!=(cASimpleStructNoexcept&)
         bint operator<(cASimpleStructNoexcept&)
         bint operator>(cASimpleStructNoexcept&)
         bint operator<=(cASimpleStructNoexcept&)
@@ -415,6 +422,7 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "::some::valid::ns":
         cMyStruct() except +
         cMyStruct(const cMyStruct&) except +
         bint operator==(cMyStruct&)
+        bint operator!=(cMyStruct&)
         bint operator<(cMyStruct&)
         bint operator>(cMyStruct&)
         bint operator<=(cMyStruct&)
@@ -439,6 +447,7 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "::some::valid::ns":
         cSimpleUnion() except +
         cSimpleUnion(const cSimpleUnion&) except +
         bint operator==(cSimpleUnion&)
+        bint operator!=(cSimpleUnion&)
         bint operator<(cSimpleUnion&)
         bint operator>(cSimpleUnion&)
         bint operator<=(cSimpleUnion&)
@@ -483,6 +492,7 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "::some::valid::ns":
         cComplexUnion() except +
         cComplexUnion(const cComplexUnion&) except +
         bint operator==(cComplexUnion&)
+        bint operator!=(cComplexUnion&)
         bint operator<(cComplexUnion&)
         bint operator>(cComplexUnion&)
         bint operator<=(cComplexUnion&)
@@ -564,6 +574,7 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "::some::valid::ns":
         cAnException() except +
         cAnException(const cAnException&) except +
         bint operator==(cAnException&)
+        bint operator!=(cAnException&)
         bint operator<(cAnException&)
         bint operator>(cAnException&)
         bint operator<=(cAnException&)
@@ -594,6 +605,7 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "::some::valid::ns":
         cAnotherException() except +
         cAnotherException(const cAnotherException&) except +
         bint operator==(cAnotherException&)
+        bint operator!=(cAnotherException&)
         bint operator<(cAnotherException&)
         bint operator>(cAnotherException&)
         bint operator<=(cAnotherException&)
@@ -655,6 +667,7 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "::some::valid::ns":
         ccontainerStruct() except +
         ccontainerStruct(const ccontainerStruct&) except +
         bint operator==(ccontainerStruct&)
+        bint operator!=(ccontainerStruct&)
         bint operator<(ccontainerStruct&)
         bint operator>(ccontainerStruct&)
         bint operator<=(ccontainerStruct&)
@@ -717,6 +730,7 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "::some::valid::ns":
         cMyIncludedStruct() except +
         cMyIncludedStruct(const cMyIncludedStruct&) except +
         bint operator==(cMyIncludedStruct&)
+        bint operator!=(cMyIncludedStruct&)
         bint operator<(cMyIncludedStruct&)
         bint operator>(cMyIncludedStruct&)
         bint operator<=(cMyIncludedStruct&)
@@ -773,6 +787,7 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "::some::valid::ns":
         cAnnotatedStruct() except +
         cAnnotatedStruct(const cAnnotatedStruct&) except +
         bint operator==(cAnnotatedStruct&)
+        bint operator!=(cAnnotatedStruct&)
         ccontainerStruct no_annotation
         unique_ptr[ccontainerStruct] cpp_unique_ref
         unique_ptr[ccontainerStruct] cpp2_unique_ref
@@ -823,6 +838,7 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "::some::valid::ns":
         cComplexContainerStruct() except +
         cComplexContainerStruct(const cComplexContainerStruct&) except +
         bint operator==(cComplexContainerStruct&)
+        bint operator!=(cComplexContainerStruct&)
         bint operator<(cComplexContainerStruct&)
         bint operator>(cComplexContainerStruct&)
         bint operator<=(cComplexContainerStruct&)
@@ -839,6 +855,7 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "::some::valid::ns":
         cFloatStruct() except +
         cFloatStruct(const cFloatStruct&) except +
         bint operator==(cFloatStruct&)
+        bint operator!=(cFloatStruct&)
         bint operator<(cFloatStruct&)
         bint operator>(cFloatStruct&)
         bint operator<=(cFloatStruct&)
@@ -856,6 +873,7 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "::some::valid::ns":
         cFloatUnion() except +
         cFloatUnion(const cFloatUnion&) except +
         bint operator==(cFloatUnion&)
+        bint operator!=(cFloatUnion&)
         bint operator<(cFloatUnion&)
         bint operator>(cFloatUnion&)
         bint operator<=(cFloatUnion&)
@@ -873,6 +891,7 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "::some::valid::ns":
         cAllRequiredNoExceptMoveCtrStruct() except +
         cAllRequiredNoExceptMoveCtrStruct(const cAllRequiredNoExceptMoveCtrStruct&) except +
         bint operator==(cAllRequiredNoExceptMoveCtrStruct&)
+        bint operator!=(cAllRequiredNoExceptMoveCtrStruct&)
         bint operator<(cAllRequiredNoExceptMoveCtrStruct&)
         bint operator>(cAllRequiredNoExceptMoveCtrStruct&)
         bint operator<=(cAllRequiredNoExceptMoveCtrStruct&)

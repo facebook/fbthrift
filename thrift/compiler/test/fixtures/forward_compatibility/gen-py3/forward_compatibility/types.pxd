@@ -44,6 +44,7 @@ cdef extern from "src/gen-cpp2/forward_compatibility_types.h" namespace "::cpp2"
         cOldStructure() except +
         cOldStructure(const cOldStructure&) except +
         bint operator==(cOldStructure&)
+        bint operator!=(cOldStructure&)
         bint operator<(cOldStructure&)
         bint operator>(cOldStructure&)
         bint operator<=(cOldStructure&)
@@ -58,6 +59,7 @@ cdef extern from "src/gen-cpp2/forward_compatibility_types.h" namespace "::cpp2"
         cNewStructure() except +
         cNewStructure(const cNewStructure&) except +
         bint operator==(cNewStructure&)
+        bint operator!=(cNewStructure&)
         bint operator<(cNewStructure&)
         bint operator>(cNewStructure&)
         bint operator<=(cNewStructure&)
@@ -72,6 +74,7 @@ cdef extern from "src/gen-cpp2/forward_compatibility_types.h" namespace "::cpp2"
         cNewStructure2() except +
         cNewStructure2(const cNewStructure2&) except +
         bint operator==(cNewStructure2&)
+        bint operator!=(cNewStructure2&)
         bint operator<(cNewStructure2&)
         bint operator>(cNewStructure2&)
         bint operator<=(cNewStructure2&)
@@ -88,6 +91,7 @@ cdef extern from "src/gen-cpp2/forward_compatibility_types.h" namespace "::cpp2"
         cNewStructureNested() except +
         cNewStructureNested(const cNewStructureNested&) except +
         bint operator==(cNewStructureNested&)
+        bint operator!=(cNewStructureNested&)
         bint operator<(cNewStructureNested&)
         bint operator>(cNewStructureNested&)
         bint operator<=(cNewStructureNested&)
@@ -104,6 +108,7 @@ cdef extern from "src/gen-cpp2/forward_compatibility_types.h" namespace "::cpp2"
         cNewStructureNestedField() except +
         cNewStructureNestedField(const cNewStructureNestedField&) except +
         bint operator==(cNewStructureNestedField&)
+        bint operator!=(cNewStructureNestedField&)
         bint operator<(cNewStructureNestedField&)
         bint operator>(cNewStructureNestedField&)
         bint operator<=(cNewStructureNestedField&)

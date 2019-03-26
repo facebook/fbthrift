@@ -26,6 +26,7 @@ cdef extern from "folly/sorted_vector_types.h":
 cdef extern from "gen-cpp2/includes_types.h" namespace "::a::different::ns":
     cdef cppclass cAnEnum "::a::different::ns::AnEnum":
         bint operator==(cAnEnum&)
+        bint operator!=(cAnEnum&)
     cAnEnum AnEnum__FIELDA "::a::different::ns::AnEnum::FIELDA"
     cAnEnum AnEnum__FIELDB "::a::different::ns::AnEnum::FIELDB"
 
@@ -54,6 +55,7 @@ cdef extern from "gen-cpp2/includes_types.h" namespace "::a::different::ns":
         cAStruct() except +
         cAStruct(const cAStruct&) except +
         bint operator==(cAStruct&)
+        bint operator!=(cAStruct&)
         bint operator<(cAStruct&)
         bint operator>(cAStruct&)
         bint operator<=(cAStruct&)
@@ -68,6 +70,7 @@ cdef extern from "gen-cpp2/includes_types.h" namespace "::a::different::ns":
         cAStructB() except +
         cAStructB(const cAStructB&) except +
         bint operator==(cAStructB&)
+        bint operator!=(cAStructB&)
         bint operator<(cAStructB&)
         bint operator>(cAStructB&)
         bint operator<=(cAStructB&)

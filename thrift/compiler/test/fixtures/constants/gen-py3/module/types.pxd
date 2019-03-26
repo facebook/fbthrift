@@ -24,14 +24,17 @@ from folly.optional cimport cOptional
 cdef extern from "src/gen-cpp2/module_types.h" namespace "::cpp2":
     cdef cppclass cEmptyEnum "::cpp2::EmptyEnum":
         bint operator==(cEmptyEnum&)
+        bint operator!=(cEmptyEnum&)
     cdef cppclass cCity "::cpp2::City":
         bint operator==(cCity&)
+        bint operator!=(cCity&)
     cCity City__NYC "::cpp2::City::NYC"
     cCity City__MPK "::cpp2::City::MPK"
     cCity City__SEA "::cpp2::City::SEA"
     cCity City__LON "::cpp2::City::LON"
     cdef cppclass cCompany "::cpp2::Company":
         bint operator==(cCompany&)
+        bint operator!=(cCompany&)
     cCompany Company__FACEBOOK "::cpp2::Company::FACEBOOK"
     cCompany Company__WHATSAPP "::cpp2::Company::WHATSAPP"
     cCompany Company__OCULUS "::cpp2::Company::OCULUS"
@@ -94,6 +97,7 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "::cpp2":
         cInternship() except +
         cInternship(const cInternship&) except +
         bint operator==(cInternship&)
+        bint operator!=(cInternship&)
         bint operator<(cInternship&)
         bint operator>(cInternship&)
         bint operator<=(cInternship&)
@@ -110,6 +114,7 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "::cpp2":
         cUnEnumStruct() except +
         cUnEnumStruct(const cUnEnumStruct&) except +
         bint operator==(cUnEnumStruct&)
+        bint operator!=(cUnEnumStruct&)
         bint operator<(cUnEnumStruct&)
         bint operator>(cUnEnumStruct&)
         bint operator<=(cUnEnumStruct&)
@@ -125,6 +130,7 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "::cpp2":
         cRange() except +
         cRange(const cRange&) except +
         bint operator==(cRange&)
+        bint operator!=(cRange&)
         bint operator<(cRange&)
         bint operator>(cRange&)
         bint operator<=(cRange&)
@@ -141,6 +147,7 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "::cpp2":
         cstruct1() except +
         cstruct1(const cstruct1&) except +
         bint operator==(cstruct1&)
+        bint operator!=(cstruct1&)
         bint operator<(cstruct1&)
         bint operator>(cstruct1&)
         bint operator<=(cstruct1&)
@@ -159,6 +166,7 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "::cpp2":
         cstruct2() except +
         cstruct2(const cstruct2&) except +
         bint operator==(cstruct2&)
+        bint operator!=(cstruct2&)
         bint operator<(cstruct2&)
         bint operator>(cstruct2&)
         bint operator<=(cstruct2&)
@@ -178,6 +186,7 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "::cpp2":
         cstruct3() except +
         cstruct3(const cstruct3&) except +
         bint operator==(cstruct3&)
+        bint operator!=(cstruct3&)
         bint operator<(cstruct3&)
         bint operator>(cstruct3&)
         bint operator<=(cstruct3&)
@@ -196,6 +205,7 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "::cpp2":
         cunion1() except +
         cunion1(const cunion1&) except +
         bint operator==(cunion1&)
+        bint operator!=(cunion1&)
         bint operator<(cunion1&)
         bint operator>(cunion1&)
         bint operator<=(cunion1&)
@@ -217,6 +227,7 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "::cpp2":
         cunion2() except +
         cunion2(const cunion2&) except +
         bint operator==(cunion2&)
+        bint operator!=(cunion2&)
         bint operator<(cunion2&)
         bint operator>(cunion2&)
         bint operator<=(cunion2&)

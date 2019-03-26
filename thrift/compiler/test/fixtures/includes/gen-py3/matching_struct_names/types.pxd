@@ -39,6 +39,7 @@ cdef extern from "src/gen-cpp2/matching_struct_names_types.h" namespace "::cpp2"
         cMyStruct() except +
         cMyStruct(const cMyStruct&) except +
         bint operator==(cMyStruct&)
+        bint operator!=(cMyStruct&)
         bint operator<(cMyStruct&)
         bint operator>(cMyStruct&)
         bint operator<=(cMyStruct&)
@@ -56,6 +57,7 @@ cdef extern from "src/gen-cpp2/matching_struct_names_types.h" namespace "::cpp2"
         cCombo() except +
         cCombo(const cCombo&) except +
         bint operator==(cCombo&)
+        bint operator!=(cCombo&)
         bint operator<(cCombo&)
         bint operator>(cCombo&)
         bint operator<=(cCombo&)

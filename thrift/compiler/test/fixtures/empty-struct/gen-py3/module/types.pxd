@@ -38,6 +38,7 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "::cpp2":
         cEmpty() except +
         cEmpty(const cEmpty&) except +
         bint operator==(cEmpty&)
+        bint operator!=(cEmpty&)
         bint operator<(cEmpty&)
         bint operator>(cEmpty&)
         bint operator<=(cEmpty&)
@@ -51,6 +52,7 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "::cpp2":
         cNada() except +
         cNada(const cNada&) except +
         bint operator==(cNada&)
+        bint operator!=(cNada&)
         bint operator<(cNada&)
         bint operator>(cNada&)
         bint operator<=(cNada&)

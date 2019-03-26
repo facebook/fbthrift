@@ -36,6 +36,7 @@ cdef extern from "gen-cpp2/transitive_types.h" namespace "::cpp2":
         cFoo() except +
         cFoo(const cFoo&) except +
         bint operator==(cFoo&)
+        bint operator!=(cFoo&)
         bint operator<(cFoo&)
         bint operator>(cFoo&)
         bint operator<=(cFoo&)

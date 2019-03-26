@@ -44,6 +44,7 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "::cpp2":
         cComplexUnion() except +
         cComplexUnion(const cComplexUnion&) except +
         bint operator==(cComplexUnion&)
+        bint operator!=(cComplexUnion&)
         bint operator<(cComplexUnion&)
         bint operator>(cComplexUnion&)
         bint operator<=(cComplexUnion&)
@@ -71,6 +72,7 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "::cpp2":
         cVirtualComplexUnion() except +
         cVirtualComplexUnion(const cVirtualComplexUnion&) except +
         bint operator==(cVirtualComplexUnion&)
+        bint operator!=(cVirtualComplexUnion&)
         bint operator<(cVirtualComplexUnion&)
         bint operator>(cVirtualComplexUnion&)
         bint operator<=(cVirtualComplexUnion&)

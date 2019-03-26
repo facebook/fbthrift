@@ -26,6 +26,7 @@ cdef extern from *:
 cdef extern from "src/gen-cpp2/module_types.h" namespace "::py3::simple":
     cdef cppclass cAnEnum "::py3::simple::AnEnum":
         bint operator==(cAnEnum&)
+        bint operator!=(cAnEnum&)
     cAnEnum AnEnum__NOTSET "::py3::simple::AnEnum::None"
     cAnEnum AnEnum__ONE "::py3::simple::AnEnum::ONE"
     cAnEnum AnEnum__TWO "::py3::simple::AnEnum::TWO"
@@ -33,6 +34,7 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "::py3::simple":
     cAnEnum AnEnum__FOUR "::py3::simple::AnEnum::FOUR"
     cdef cppclass cFlags "::py3::simple::Flags":
         bint operator==(cFlags&)
+        bint operator!=(cFlags&)
     cFlags Flags__flag_A "::py3::simple::Flags::flag_A"
     cFlags Flags__flag_B "::py3::simple::Flags::flag_B"
     cFlags Flags__flag_C "::py3::simple::Flags::flag_C"
@@ -76,6 +78,7 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "::py3::simple":
         cSimpleException() except +
         cSimpleException(const cSimpleException&) except +
         bint operator==(cSimpleException&)
+        bint operator!=(cSimpleException&)
         bint operator<(cSimpleException&)
         bint operator>(cSimpleException&)
         bint operator<=(cSimpleException&)
@@ -90,6 +93,7 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "::py3::simple":
         cOptionalRefStruct() except +
         cOptionalRefStruct(const cOptionalRefStruct&) except +
         bint operator==(cOptionalRefStruct&)
+        bint operator!=(cOptionalRefStruct&)
         bint operator<(cOptionalRefStruct&)
         bint operator>(cOptionalRefStruct&)
         bint operator<=(cOptionalRefStruct&)
@@ -110,6 +114,7 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "::py3::simple":
         cSimpleStruct() except +
         cSimpleStruct(const cSimpleStruct&) except +
         bint operator==(cSimpleStruct&)
+        bint operator!=(cSimpleStruct&)
         bint operator<(cSimpleStruct&)
         bint operator>(cSimpleStruct&)
         bint operator<=(cSimpleStruct&)
@@ -138,6 +143,7 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "::py3::simple":
         cComplexStruct() except +
         cComplexStruct(const cComplexStruct&) except +
         bint operator==(cComplexStruct&)
+        bint operator!=(cComplexStruct&)
         bint operator<(cComplexStruct&)
         bint operator>(cComplexStruct&)
         bint operator<=(cComplexStruct&)

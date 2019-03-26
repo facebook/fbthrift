@@ -40,6 +40,7 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "::cpp2":
         cBanal() except +
         cBanal(const cBanal&) except +
         bint operator==(cBanal&)
+        bint operator!=(cBanal&)
         bint operator<(cBanal&)
         bint operator>(cBanal&)
         bint operator<=(cBanal&)
@@ -53,6 +54,7 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "::cpp2":
         cFiery() except +
         cFiery(const cFiery&) except +
         bint operator==(cFiery&)
+        bint operator!=(cFiery&)
         bint operator<(cFiery&)
         bint operator>(cFiery&)
         bint operator<=(cFiery&)
@@ -67,6 +69,7 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "::cpp2":
         cSerious() except +
         cSerious(const cSerious&) except +
         bint operator==(cSerious&)
+        bint operator!=(cSerious&)
         bint operator<(cSerious&)
         bint operator>(cSerious&)
         bint operator<=(cSerious&)

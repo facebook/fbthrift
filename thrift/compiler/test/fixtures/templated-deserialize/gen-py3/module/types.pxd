@@ -30,6 +30,7 @@ cdef extern from *:
 cdef extern from "src/gen-cpp2/module_types.h" namespace "::cpp2":
     cdef cppclass cMyEnumA "::cpp2::MyEnumA":
         bint operator==(cMyEnumA&)
+        bint operator!=(cMyEnumA&)
     cMyEnumA MyEnumA__fieldA "::cpp2::MyEnumA::fieldA"
     cMyEnumA MyEnumA__fieldB "::cpp2::MyEnumA::fieldB"
     cMyEnumA MyEnumA__fieldC "::cpp2::MyEnumA::fieldC"
@@ -60,6 +61,7 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "::cpp2":
         cSmallStruct() except +
         cSmallStruct(const cSmallStruct&) except +
         bint operator==(cSmallStruct&)
+        bint operator!=(cSmallStruct&)
         bint operator<(cSmallStruct&)
         bint operator>(cSmallStruct&)
         bint operator<=(cSmallStruct&)
@@ -96,6 +98,7 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "::cpp2":
         ccontainerStruct() except +
         ccontainerStruct(const ccontainerStruct&) except +
         bint operator==(ccontainerStruct&)
+        bint operator!=(ccontainerStruct&)
         bint operator<(ccontainerStruct&)
         bint operator>(ccontainerStruct&)
         bint operator<=(ccontainerStruct&)

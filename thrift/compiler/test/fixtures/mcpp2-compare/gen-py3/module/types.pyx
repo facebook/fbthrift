@@ -1000,7 +1000,7 @@ cdef class Empty(thrift.py3.types.Struct):
         if cop == Py_EQ:
             return deref(cself) == deref(cother)
         elif cop == Py_NE:
-            return not (deref(cself) == deref(cother))
+            return deref(cself) != deref(cother)
         elif cop == Py_LT:
             return deref(cself) < deref(cother)
         elif cop == Py_LE:
@@ -1178,7 +1178,7 @@ cdef class ASimpleStruct(thrift.py3.types.Struct):
         if cop == Py_EQ:
             return deref(cself) == deref(cother)
         elif cop == Py_NE:
-            return not (deref(cself) == deref(cother))
+            return deref(cself) != deref(cother)
         else:
             return NotImplemented
 
@@ -1348,7 +1348,7 @@ cdef class ASimpleStructNoexcept(thrift.py3.types.Struct):
         if cop == Py_EQ:
             return deref(cself) == deref(cother)
         elif cop == Py_NE:
-            return not (deref(cself) == deref(cother))
+            return deref(cself) != deref(cother)
         elif cop == Py_LT:
             return deref(cself) < deref(cother)
         elif cop == Py_LE:
@@ -1770,7 +1770,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
         if cop == Py_EQ:
             return deref(cself) == deref(cother)
         elif cop == Py_NE:
-            return not (deref(cself) == deref(cother))
+            return deref(cself) != deref(cother)
         elif cop == Py_LT:
             return deref(cself) < deref(cother)
         elif cop == Py_LE:
@@ -1950,7 +1950,7 @@ cdef class SimpleUnion(thrift.py3.types.Union):
         if cop == Py_EQ:
             return deref(cself) == deref(cother)
         elif cop == Py_NE:
-            return not (deref(cself) == deref(cother))
+            return deref(cself) != deref(cother)
         elif cop == Py_LT:
             return deref(cself) < deref(cother)
         elif cop == Py_LE:
@@ -2632,7 +2632,7 @@ cdef class ComplexUnion(thrift.py3.types.Union):
         if cop == Py_EQ:
             return deref(cself) == deref(cother)
         elif cop == Py_NE:
-            return not (deref(cself) == deref(cother))
+            return deref(cself) != deref(cother)
         elif cop == Py_LT:
             return deref(cself) < deref(cother)
         elif cop == Py_LE:
@@ -2966,7 +2966,7 @@ cdef class AnException(thrift.py3.exceptions.Error):
         if cop == Py_EQ:
             return deref(cself) == deref(cother)
         elif cop == Py_NE:
-            return not (deref(cself) == deref(cother))
+            return deref(cself) != deref(cother)
         elif cop == Py_LT:
             return deref(cself) < deref(cother)
         elif cop == Py_LE:
@@ -3095,7 +3095,7 @@ cdef class AnotherException(thrift.py3.exceptions.Error):
         if cop == Py_EQ:
             return deref(cself) == deref(cother)
         elif cop == Py_NE:
-            return not (deref(cself) == deref(cother))
+            return deref(cself) != deref(cother)
         elif cop == Py_LT:
             return deref(cself) < deref(cother)
         elif cop == Py_LE:
@@ -4591,7 +4591,7 @@ cdef class containerStruct(thrift.py3.types.Struct):
         if cop == Py_EQ:
             return deref(cself) == deref(cother)
         elif cop == Py_NE:
-            return not (deref(cself) == deref(cother))
+            return deref(cself) != deref(cother)
         elif cop == Py_LT:
             return deref(cself) < deref(cother)
         elif cop == Py_LE:
@@ -4867,7 +4867,7 @@ cdef class MyIncludedStruct(thrift.py3.types.Struct):
         if cop == Py_EQ:
             return deref(cself) == deref(cother)
         elif cop == Py_NE:
-            return not (deref(cself) == deref(cother))
+            return deref(cself) != deref(cother)
         elif cop == Py_LT:
             return deref(cself) < deref(cother)
         elif cop == Py_LE:
@@ -6272,7 +6272,7 @@ cdef class AnnotatedStruct(thrift.py3.types.Struct):
         if cop == Py_EQ:
             return deref(cself) == deref(cother)
         elif cop == Py_NE:
-            return not (deref(cself) == deref(cother))
+            return deref(cself) != deref(cother)
         else:
             return NotImplemented
 
@@ -6463,7 +6463,7 @@ cdef class ComplexContainerStruct(thrift.py3.types.Struct):
         if cop == Py_EQ:
             return deref(cself) == deref(cother)
         elif cop == Py_NE:
-            return not (deref(cself) == deref(cother))
+            return deref(cself) != deref(cother)
         elif cop == Py_LT:
             return deref(cself) < deref(cother)
         elif cop == Py_LE:
@@ -6674,7 +6674,7 @@ cdef class FloatStruct(thrift.py3.types.Struct):
         if cop == Py_EQ:
             return deref(cself) == deref(cother)
         elif cop == Py_NE:
-            return not (deref(cself) == deref(cother))
+            return deref(cself) != deref(cother)
         elif cop == Py_LT:
             return deref(cself) < deref(cother)
         elif cop == Py_LE:
@@ -6874,7 +6874,7 @@ cdef class FloatUnion(thrift.py3.types.Union):
         if cop == Py_EQ:
             return deref(cself) == deref(cother)
         elif cop == Py_NE:
-            return not (deref(cself) == deref(cother))
+            return deref(cself) != deref(cother)
         elif cop == Py_LT:
             return deref(cself) < deref(cother)
         elif cop == Py_LE:
@@ -7053,7 +7053,7 @@ cdef class AllRequiredNoExceptMoveCtrStruct(thrift.py3.types.Struct):
         if cop == Py_EQ:
             return deref(cself) == deref(cother)
         elif cop == Py_NE:
-            return not (deref(cself) == deref(cother))
+            return deref(cself) != deref(cother)
         elif cop == Py_LT:
             return deref(cself) < deref(cother)
         elif cop == Py_LE:

@@ -743,7 +743,7 @@ cdef class Internship(thrift.py3.types.Struct):
         if cop == Py_EQ:
             return deref(cself) == deref(cother)
         elif cop == Py_NE:
-            return not (deref(cself) == deref(cother))
+            return deref(cself) != deref(cother)
         elif cop == Py_LT:
             return deref(cself) < deref(cother)
         elif cop == Py_LE:
@@ -915,7 +915,7 @@ cdef class UnEnumStruct(thrift.py3.types.Struct):
         if cop == Py_EQ:
             return deref(cself) == deref(cother)
         elif cop == Py_NE:
-            return not (deref(cself) == deref(cother))
+            return deref(cself) != deref(cother)
         elif cop == Py_LT:
             return deref(cself) < deref(cother)
         elif cop == Py_LE:
@@ -1128,7 +1128,7 @@ cdef class Range(thrift.py3.types.Struct):
         if cop == Py_EQ:
             return deref(cself) == deref(cother)
         elif cop == Py_NE:
-            return not (deref(cself) == deref(cother))
+            return deref(cself) != deref(cother)
         elif cop == Py_LT:
             return deref(cself) < deref(cother)
         elif cop == Py_LE:
@@ -1337,7 +1337,7 @@ cdef class struct1(thrift.py3.types.Struct):
         if cop == Py_EQ:
             return deref(cself) == deref(cother)
         elif cop == Py_NE:
-            return not (deref(cself) == deref(cother))
+            return deref(cself) != deref(cother)
         elif cop == Py_LT:
             return deref(cself) < deref(cother)
         elif cop == Py_LE:
@@ -1608,7 +1608,7 @@ cdef class struct2(thrift.py3.types.Struct):
         if cop == Py_EQ:
             return deref(cself) == deref(cother)
         elif cop == Py_NE:
-            return not (deref(cself) == deref(cother))
+            return deref(cself) != deref(cother)
         elif cop == Py_LT:
             return deref(cself) < deref(cother)
         elif cop == Py_LE:
@@ -1850,7 +1850,7 @@ cdef class struct3(thrift.py3.types.Struct):
         if cop == Py_EQ:
             return deref(cself) == deref(cother)
         elif cop == Py_NE:
-            return not (deref(cself) == deref(cother))
+            return deref(cself) != deref(cother)
         elif cop == Py_LT:
             return deref(cself) < deref(cother)
         elif cop == Py_LE:
@@ -2044,7 +2044,7 @@ cdef class union1(thrift.py3.types.Union):
         if cop == Py_EQ:
             return deref(cself) == deref(cother)
         elif cop == Py_NE:
-            return not (deref(cself) == deref(cother))
+            return deref(cself) != deref(cother)
         elif cop == Py_LT:
             return deref(cself) < deref(cother)
         elif cop == Py_LE:
@@ -2276,7 +2276,7 @@ cdef class union2(thrift.py3.types.Union):
         if cop == Py_EQ:
             return deref(cself) == deref(cother)
         elif cop == Py_NE:
-            return not (deref(cself) == deref(cother))
+            return deref(cself) != deref(cother)
         elif cop == Py_LT:
             return deref(cself) < deref(cother)
         elif cop == Py_LE:

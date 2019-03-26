@@ -107,7 +107,7 @@ cdef class Banal(thrift.py3.exceptions.Error):
         if cop == Py_EQ:
             return deref(cself) == deref(cother)
         elif cop == Py_NE:
-            return not (deref(cself) == deref(cother))
+            return deref(cself) != deref(cother)
         elif cop == Py_LT:
             return deref(cself) < deref(cother)
         elif cop == Py_LE:
@@ -202,7 +202,7 @@ cdef class Fiery(thrift.py3.exceptions.Error):
         if cop == Py_EQ:
             return deref(cself) == deref(cother)
         elif cop == Py_NE:
-            return not (deref(cself) == deref(cother))
+            return deref(cself) != deref(cother)
         elif cop == Py_LT:
             return deref(cself) < deref(cother)
         elif cop == Py_LE:
@@ -298,7 +298,7 @@ cdef class Serious(thrift.py3.exceptions.Error):
         if cop == Py_EQ:
             return deref(cself) == deref(cother)
         elif cop == Py_NE:
-            return not (deref(cself) == deref(cother))
+            return deref(cself) != deref(cother)
         elif cop == Py_LT:
             return deref(cself) < deref(cother)
         elif cop == Py_LE:

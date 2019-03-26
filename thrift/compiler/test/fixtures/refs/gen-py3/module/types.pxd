@@ -24,6 +24,7 @@ from folly.optional cimport cOptional
 cdef extern from "src/gen-cpp2/module_types.h" namespace "::cpp2":
     cdef cppclass cTypedEnum "::cpp2::TypedEnum":
         bint operator==(cTypedEnum&)
+        bint operator!=(cTypedEnum&)
     cTypedEnum TypedEnum__VAL1 "::cpp2::TypedEnum::VAL1"
     cTypedEnum TypedEnum__VAL2 "::cpp2::TypedEnum::VAL2"
 
@@ -76,6 +77,7 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "::cpp2":
         cMyUnion() except +
         cMyUnion(const cMyUnion&) except +
         bint operator==(cMyUnion&)
+        bint operator!=(cMyUnion&)
         bint operator<(cMyUnion&)
         bint operator>(cMyUnion&)
         bint operator<=(cMyUnion&)
@@ -95,6 +97,7 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "::cpp2":
         cMyField() except +
         cMyField(const cMyField&) except +
         bint operator==(cMyField&)
+        bint operator!=(cMyField&)
         bint operator<(cMyField&)
         bint operator>(cMyField&)
         bint operator<=(cMyField&)
@@ -113,6 +116,7 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "::cpp2":
         cMyStruct() except +
         cMyStruct(const cMyStruct&) except +
         bint operator==(cMyStruct&)
+        bint operator!=(cMyStruct&)
         bint operator<(cMyStruct&)
         bint operator>(cMyStruct&)
         bint operator<=(cMyStruct&)
@@ -131,6 +135,7 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "::cpp2":
         cStructWithUnion() except +
         cStructWithUnion(const cStructWithUnion&) except +
         bint operator==(cStructWithUnion&)
+        bint operator!=(cStructWithUnion&)
         bint operator<(cStructWithUnion&)
         bint operator>(cStructWithUnion&)
         bint operator<=(cStructWithUnion&)
@@ -147,6 +152,7 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "::cpp2":
         cRecursiveStruct() except +
         cRecursiveStruct(const cRecursiveStruct&) except +
         bint operator==(cRecursiveStruct&)
+        bint operator!=(cRecursiveStruct&)
         bint operator<(cRecursiveStruct&)
         bint operator>(cRecursiveStruct&)
         bint operator<=(cRecursiveStruct&)
@@ -166,6 +172,7 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "::cpp2":
         cStructWithContainers() except +
         cStructWithContainers(const cStructWithContainers&) except +
         bint operator==(cStructWithContainers&)
+        bint operator!=(cStructWithContainers&)
         bint operator<(cStructWithContainers&)
         bint operator>(cStructWithContainers&)
         bint operator<=(cStructWithContainers&)
@@ -187,6 +194,7 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "::cpp2":
         cStructWithSharedConst() except +
         cStructWithSharedConst(const cStructWithSharedConst&) except +
         bint operator==(cStructWithSharedConst&)
+        bint operator!=(cStructWithSharedConst&)
         bint operator<(cStructWithSharedConst&)
         bint operator>(cStructWithSharedConst&)
         bint operator<=(cStructWithSharedConst&)
@@ -203,6 +211,7 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "::cpp2":
         cEmpty() except +
         cEmpty(const cEmpty&) except +
         bint operator==(cEmpty&)
+        bint operator!=(cEmpty&)
         bint operator<(cEmpty&)
         bint operator>(cEmpty&)
         bint operator<=(cEmpty&)
@@ -218,6 +227,7 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "::cpp2":
         cStructWithRef() except +
         cStructWithRef(const cStructWithRef&) except +
         bint operator==(cStructWithRef&)
+        bint operator!=(cStructWithRef&)
         bint operator<(cStructWithRef&)
         bint operator>(cStructWithRef&)
         bint operator<=(cStructWithRef&)
@@ -236,6 +246,7 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "::cpp2":
         cStructWithRefTypeUnique() except +
         cStructWithRefTypeUnique(const cStructWithRefTypeUnique&) except +
         bint operator==(cStructWithRefTypeUnique&)
+        bint operator!=(cStructWithRefTypeUnique&)
         bint operator<(cStructWithRefTypeUnique&)
         bint operator>(cStructWithRefTypeUnique&)
         bint operator<=(cStructWithRefTypeUnique&)
@@ -254,6 +265,7 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "::cpp2":
         cStructWithRefTypeShared() except +
         cStructWithRefTypeShared(const cStructWithRefTypeShared&) except +
         bint operator==(cStructWithRefTypeShared&)
+        bint operator!=(cStructWithRefTypeShared&)
         bint operator<(cStructWithRefTypeShared&)
         bint operator>(cStructWithRefTypeShared&)
         bint operator<=(cStructWithRefTypeShared&)
@@ -272,6 +284,7 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "::cpp2":
         cStructWithRefTypeSharedConst() except +
         cStructWithRefTypeSharedConst(const cStructWithRefTypeSharedConst&) except +
         bint operator==(cStructWithRefTypeSharedConst&)
+        bint operator!=(cStructWithRefTypeSharedConst&)
         bint operator<(cStructWithRefTypeSharedConst&)
         bint operator>(cStructWithRefTypeSharedConst&)
         bint operator<=(cStructWithRefTypeSharedConst&)
@@ -288,6 +301,7 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "::cpp2":
         cStructWithRefAndAnnotCppNoexceptMoveCtor() except +
         cStructWithRefAndAnnotCppNoexceptMoveCtor(const cStructWithRefAndAnnotCppNoexceptMoveCtor&) except +
         bint operator==(cStructWithRefAndAnnotCppNoexceptMoveCtor&)
+        bint operator!=(cStructWithRefAndAnnotCppNoexceptMoveCtor&)
         bint operator<(cStructWithRefAndAnnotCppNoexceptMoveCtor&)
         bint operator>(cStructWithRefAndAnnotCppNoexceptMoveCtor&)
         bint operator<=(cStructWithRefAndAnnotCppNoexceptMoveCtor&)

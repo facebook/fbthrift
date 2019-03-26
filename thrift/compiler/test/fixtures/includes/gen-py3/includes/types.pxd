@@ -38,6 +38,7 @@ cdef extern from "gen-cpp2/includes_types.h" namespace "::cpp2":
         cIncluded() except +
         cIncluded(const cIncluded&) except +
         bint operator==(cIncluded&)
+        bint operator!=(cIncluded&)
         bint operator<(cIncluded&)
         bint operator>(cIncluded&)
         bint operator<=(cIncluded&)
