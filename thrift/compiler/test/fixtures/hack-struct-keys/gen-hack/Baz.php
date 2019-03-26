@@ -51,6 +51,26 @@ interface BazClientIf extends \IThriftSyncIf {
   public function qux(Set<arraykey> $a, \HH\KeyedContainer<int, Bar> $b, \HH\KeyedContainer<arraykey, string> $c): Awaitable<string>;
 }
 
+class BazRest {
+  protected BazIf $impl_;
+
+  public function __construct(BazIf $impl) {
+    $this->impl_ = $impl;
+  }
+
+  public function qux(\HH\KeyedContainer<string, mixed> $request): string {
+    // UNSAFE_BLOCK $request is not type safe :(, and we don't cast structs (yet)
+    $a =  idx($request, 'a');
+    $a = json_decode($a, true);
+    $b =  idx($request, 'b');
+    $b = json_decode($b, true);
+    $c =  idx($request, 'c');
+    $c = json_decode($c, true);
+    return $this->impl_->qux($a, $b, $c);
+  }
+
+}
+
 /**
  * Original thrift service:-
  * Baz
