@@ -25,7 +25,6 @@
 
 namespace folly {
 class AsyncTransportWrapper;
-class IOBuf;
 } // namespace folly
 
 namespace apache {
@@ -78,9 +77,8 @@ class ThriftRocketServerHandler : public RocketServerHandler {
   const std::shared_ptr<Cpp2Worker> worker_;
   const std::shared_ptr<AsyncProcessor> cpp2Processor_;
   const std::shared_ptr<concurrency::ThreadManager> threadManager_;
-  server::ServerConfigs* const serverConfigs_;
+  server::ServerConfigs& serverConfigs_;
   const folly::SocketAddress clientAddress_;
-  const folly::AsyncTransportWrapper* const transport_;
   const std::shared_ptr<Cpp2ConnContext> connContext_;
 
   using MakeRequestFunc = folly::FunctionRef<std::unique_ptr<ThriftRequestCore>(

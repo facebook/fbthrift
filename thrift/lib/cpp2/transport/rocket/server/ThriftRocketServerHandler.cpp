@@ -69,12 +69,11 @@ ThriftRocketServerHandler::ThriftRocketServerHandler(
     : worker_(std::move(worker)),
       cpp2Processor_(worker_->getServer()->getCpp2Processor()),
       threadManager_(worker_->getServer()->getThreadManager()),
-      serverConfigs_(worker_->getServer()),
+      serverConfigs_(*worker_->getServer()),
       clientAddress_(clientAddress),
-      transport_(transport),
       connContext_(std::make_shared<Cpp2ConnContext>(
           &clientAddress_,
-          transport_,
+          transport,
           nullptr, /* eventBaseManager */
           nullptr, /* duplexChannel */
           nullptr, /* x509PeerCert */
@@ -123,7 +122,7 @@ void ThriftRocketServerHandler::handleRequestResponseFrame(
   auto makeRequestResponse = [&](std::unique_ptr<RequestRpcMetadata> md) {
     return std::make_unique<ThriftServerRequestResponse>(
         *worker_->getEventBase(),
-        *serverConfigs_,
+        serverConfigs_,
         std::move(md),
         connContext_,
         std::move(context));
@@ -138,7 +137,7 @@ void ThriftRocketServerHandler::handleRequestFnfFrame(
   auto makeRequestFnf = [&](std::unique_ptr<RequestRpcMetadata> md) {
     return std::make_unique<ThriftServerRequestFnf>(
         *worker_->getEventBase(),
-        *serverConfigs_,
+        serverConfigs_,
         std::move(md),
         connContext_,
         std::move(context),
@@ -154,7 +153,7 @@ void ThriftRocketServerHandler::handleRequestStreamFrame(
   auto makeRequestStream = [&](std::unique_ptr<RequestRpcMetadata> md) {
     return std::make_unique<ThriftServerRequestStream>(
         *worker_->getEventBase(),
-        *serverConfigs_,
+        serverConfigs_,
         std::move(md),
         connContext_,
         std::move(subscriber),
