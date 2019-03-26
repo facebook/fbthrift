@@ -164,6 +164,17 @@ cdef class ThriftServer:
     def get_ssl_handshake_worker_threads(self):
         return self.server.get().getNumSSLHandshakeWorkerThreads()
 
+    def get_ssl_policy(self):
+        cdef cSSLPolicy cPolicy = self.server.get().getSSLPolicy()
+        if cPolicy == SSLPolicy__DISABLED:
+            return SSLPolicy.DISABLED
+        elif cPolicy == SSLPolicy__PERMITTED:
+            return SSLPolicy.PERMITTED
+        elif cPolicy == SSLPolicy__REQUIRED:
+            return SSLPolicy.REQUIRED
+        else:
+            raise RuntimeError("Unknown SSLPolicy defined.")
+
     def set_ssl_policy(self, policy):
         cdef cSSLPolicy cPolicy
         if policy == SSLPolicy.DISABLED:
@@ -172,6 +183,8 @@ cdef class ThriftServer:
             cPolicy = SSLPolicy__PERMITTED
         elif policy == SSLPolicy.REQUIRED:
             cPolicy = SSLPolicy__REQUIRED
+        else:
+            raise RuntimeError("Unknown SSLPolicy defined.")
         self.server.get().setSSLPolicy(cPolicy)
 
     def stop(self):

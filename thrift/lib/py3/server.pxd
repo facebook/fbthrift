@@ -68,6 +68,7 @@ cdef extern from "thrift/lib/cpp2/server/ThriftServer.h" \
         void addRoutingHandler(unique_ptr[cTransportRoutingHandler]) nogil
         void serve() nogil except +
         void stop() nogil except +
+        cSSLPolicy getSSLPolicy() nogil
         void setSSLPolicy(cSSLPolicy policy) nogil
         void setServerEventHandler(shared_ptr[Py3ServerEventHandler] handler) nogil
         int32_t getActiveRequests()
