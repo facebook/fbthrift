@@ -368,12 +368,21 @@ mstch::map t_mstch_py3_generator::extend_type(const t_type& type) {
 }
 
 mstch::map t_mstch_py3_generator::extend_struct(const t_struct& stct) {
+  std::string message;
+  if (stct.annotations_.count("message")) {
+    message = stct.annotations_.at("message");
+  } else {
+    message = std::string();
+  }
+
   mstch::map result{
       {"size", std::to_string(stct.get_members().size())},
       {"is_struct_orderable?", is_struct_orderable(stct)},
       {"is_always_set?", is_always_set(stct)},
       {"cpp_noncomparable",
        bool(stct.annotations_.count("cpp2.noncomparable"))},
+      {"exception_message?", bool(stct.annotations_.count("message"))},
+      {"exception_message", message},
   };
   return result;
 } // namespace

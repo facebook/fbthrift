@@ -30,6 +30,11 @@ exception HardError {
     2: required i32 code
 } (message="errortext")
 
+exception UnfriendlyError {
+    1: string errortext
+    2: required i32 code
+}
+
 enum Color {
   red = 0,
   blue = 1,

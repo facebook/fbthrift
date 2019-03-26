@@ -2941,6 +2941,12 @@ cdef class AnException(thrift.py3.exceptions.Error):
     def __hash__(AnException self):
         return super().__hash__()
 
+    def __str__(AnException self):
+        field = self.message2
+        if field is None:
+            return str(field)
+        return field
+
     def __repr__(AnException self):
         return f'AnException(code={repr(self.code)}, req_code={repr(self.req_code)}, message2={repr(self.message2)}, req_message={repr(self.req_message)}, exception_list={repr(self.exception_list)}, exception_set={repr(self.exception_set)}, exception_map={repr(self.exception_map)}, req_exception_map={repr(self.req_exception_map)}, enum_field={repr(self.enum_field)}, enum_container={repr(self.enum_container)}, a_struct={repr(self.a_struct)}, a_set_struct={repr(self.a_set_struct)}, a_union_list={repr(self.a_union_list)}, union_typedef={repr(self.union_typedef)}, a_union_typedef_list={repr(self.a_union_typedef_list)})'
     def __copy__(AnException self):

@@ -177,6 +177,12 @@ cdef class Fiery(thrift.py3.exceptions.Error):
     def __hash__(Fiery self):
         return super().__hash__()
 
+    def __str__(Fiery self):
+        field = self.message
+        if field is None:
+            return str(field)
+        return field
+
     def __repr__(Fiery self):
         return f'Fiery(message={repr(self.message)})'
     def __copy__(Fiery self):
@@ -272,6 +278,12 @@ cdef class Serious(thrift.py3.exceptions.Error):
 
     def __hash__(Serious self):
         return super().__hash__()
+
+    def __str__(Serious self):
+        field = self.sonnet
+        if field is None:
+            return str(field)
+        return field
 
     def __repr__(Serious self):
         return f'Serious(sonnet={repr(self.sonnet)})'

@@ -367,6 +367,17 @@ cdef class {{struct:name}}({{> types/PythonStructClass}}):
         return True
     {{/struct:cpp_noncomparable}}
 
+    {{#struct:exception?}}
+    {{#struct:exception_message?}}
+    def __str__({{struct:name}} self):
+        field = self.{{struct:exception_message}}
+        if field is None:
+            {{! optional field, stringify }}
+            return str(field)
+        return field
+
+    {{/struct:exception_message?}}
+    {{/struct:exception?}}
     def __repr__({{struct:name}} self):
         return f'{{struct:name}}({{#struct:fields}}{{field:name}}={repr(self.{{field:name}})}{{^last?}}, {{/last?}}{{/struct:fields}})'
 {{/struct:union?}}{{!

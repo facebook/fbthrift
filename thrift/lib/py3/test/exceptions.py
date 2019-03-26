@@ -1,24 +1,32 @@
 #!/usr/bin/env python3
 import unittest
 
-from testing.types import UnusedError, HardError, SimpleError, Color
+from testing.types import UnusedError, HardError, SimpleError, Color, UnfriendlyError
 from .exception_helper import simulate_UnusedError, simulate_HardError
 from thrift.py3 import Error
 
 
 class ExceptionTests(unittest.TestCase):
-
     def test_hashability(self) -> None:
         hash(UnusedError())
 
     def test_creation_optional_from_c(self) -> None:
-        msg = 'this is what happened'
+        msg = "this is what happened"
         x = simulate_UnusedError(msg)
         self.assertIsInstance(x, UnusedError)
         self.assertIn(msg, str(x))
         self.assertIn(msg, x.args)
         self.assertEqual(msg, x.message)
         self.assertEqual(UnusedError(*x.args), x)  # type: ignore
+
+    def test_exception_message_annotation(self) -> None:
+        x = UnusedError("something broke")
+        self.assertEqual(x.message, str(x))
+        y = HardError("WAT!", 22)
+        self.assertEqual(y.errortext, str(y))
+        z = UnfriendlyError("WAT!", 22)
+        self.assertNotEqual(z.errortext, str(z))
+        self.assertNotEqual(str(y), str(z))
 
     def test_creation_optional_from_python(self) -> None:
         msg = "something broke"
