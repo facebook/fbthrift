@@ -52,8 +52,8 @@ typedef std::function<void(
     const folly::SocketAddress*)>
     GetHeaderHandlerFunc;
 
-typedef folly::Function<bool(const transport::THeader*, const std::string*)>
-    IsOverloadedFunc;
+using IsOverloadedFunc =
+    folly::Function<bool(const transport::THeader*, const std::string*) const>;
 
 template <typename T>
 class ThriftServerAsyncProcessorFactory : public AsyncProcessorFactory {
@@ -449,10 +449,6 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
       AttributeSource source = AttributeSource::OVERRIDE) {
     useClientTimeout_.set(useClientTimeout, source);
   }
-
-  virtual bool isOverloaded(
-      const apache::thrift::transport::THeader* header = nullptr,
-      const std::string* method = nullptr) = 0;
 
   // Get load of the server.
   int64_t getLoad(const std::string& counter = "", bool check_custom = true)

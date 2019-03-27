@@ -136,8 +136,7 @@ void ProxygenThriftServer::ThriftRequestHandler::onEOM() noexcept {
       connCtx_.get(), header_.get());
 
   request_ = new ProxygenRequest(this, header_, connCtx_, reqCtx_);
-  auto req =
-      std::unique_ptr<apache::thrift::ResponseChannelRequest>(request_);
+  auto req = std::unique_ptr<apache::thrift::ResponseChannelRequest>(request_);
   auto protoId = static_cast<apache::thrift::protocol::PROTOCOL_TYPES>(
       header_->getProtocolId());
   if (!apache::thrift::detail::ap::deserializeMessageBegin(
@@ -295,7 +294,7 @@ void ProxygenThriftServer::ThriftRequestHandler::TaskTimeout::
 
 bool ProxygenThriftServer::isOverloaded(
     const THeader* header,
-    const std::string* method) {
+    const std::string* method) const {
   if (UNLIKELY(isOverloaded_ && isOverloaded_(header, method))) {
     return true;
   }

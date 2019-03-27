@@ -16,11 +16,18 @@
 
 #pragma once
 
+#include <string>
+
 #include <thrift/lib/cpp2/server/ServerConfigs.h>
 #include <thrift/lib/cpp2/transport/core/testutil/FakeServerObserver.h>
 
 namespace apache {
 namespace thrift {
+
+namespace transport {
+class THeader;
+} // namespace transport
+
 namespace server {
 
 // Use instance of this class, instead of ThriftServer, in the unit tests of
@@ -60,6 +67,11 @@ class ServerConfigsMock : public ServerConfigs {
   int64_t getLoad(const std::string& /* counter */, bool /* check_custom */)
       const override {
     return 123;
+  }
+
+  bool isOverloaded(const transport::THeader*, const std::string*)
+      const override {
+    return false;
   }
 
  public:

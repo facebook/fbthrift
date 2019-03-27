@@ -24,6 +24,11 @@
 
 namespace apache {
 namespace thrift {
+
+namespace transport {
+class THeader;
+} // namespace transport
+
 namespace server {
 
 /**
@@ -64,7 +69,13 @@ class ServerConfigs {
   virtual int64_t getLoad(
       const std::string& counter = "",
       bool check_custom = true) const = 0;
+
+  // @see ThriftServer::isOverloaded function.
+  virtual bool isOverloaded(
+      const transport::THeader* header,
+      const std::string* method) const = 0;
 };
+
 } // namespace server
 } // namespace thrift
 } // namespace apache

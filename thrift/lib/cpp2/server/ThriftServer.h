@@ -289,7 +289,7 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
 
   bool isOverloaded(
       const apache::thrift::transport::THeader* header = nullptr,
-      const std::string* = nullptr) override;
+      const std::string* = nullptr) const override;
 
   int64_t getRequestLoad() const override;
   std::string getLoadInfo(int64_t load) const override;
