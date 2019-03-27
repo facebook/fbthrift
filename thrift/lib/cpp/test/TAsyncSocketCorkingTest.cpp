@@ -46,10 +46,8 @@ class AcceptCallback : public AsyncServerSocket::AcceptCallback {
   explicit AcceptCallback(const std::function<void(int)>& fn) : fn_(fn) {}
 
   void connectionAccepted(
-      folly::NetworkSocket fdNetworkSocket,
+      int fd,
       const folly::SocketAddress&) noexcept override {
-    int fd = fdNetworkSocket.toFd();
-
     fn_(fd);
   }
   void acceptError(const std::exception& ex) noexcept override {
