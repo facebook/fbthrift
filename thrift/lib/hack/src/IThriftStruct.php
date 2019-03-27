@@ -17,6 +17,7 @@
 interface IThriftStruct {
   abstract const int STRUCTURAL_ID;
 
+  <<__Rx>>
   public function __construct();
   public function getName(): string;
   public function read(TProtocol $input): int;
