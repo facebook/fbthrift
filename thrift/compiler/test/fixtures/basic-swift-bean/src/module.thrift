@@ -25,6 +25,16 @@ struct MyDataItem {
   2: i32 field2,
 }
 
+union ListUnion {
+  2: list<i64> intListValue;
+  3: list<string> stringListValue;
+}
+
+union DataUnion {
+  1: binary binaryData,
+  2: string stringData,
+}
+
 union MyUnion1 {
   1: i32 i
   2: double d

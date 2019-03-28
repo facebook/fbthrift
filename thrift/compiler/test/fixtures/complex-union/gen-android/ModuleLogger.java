@@ -109,6 +109,131 @@ public class ModuleLogger {
         break;
       }
       
+      case ListUnion: {
+        if (this.mMap.size() < 1) {
+          throw new TProtocolException(TProtocolException.MISSING_REQUIRED_FIELD, "Cannot write a union with no set value!");
+        } else if (this.mMap.size() > 1) {
+          throw new TProtocolException(TProtocolException.INVALID_DATA, "Cannot write a union with more than one set value!");
+        }
+        oprot.writeStructBegin(new TStruct("ListUnion"));
+        switch (mMap.keySet().iterator().next().id) {
+        case 2: {
+          writeFieldBegin(oprot, Module.ListUnion_intListValue);
+          List<Long> var0 = (List<Long>) mMap.get(Module.ListUnion_intListValue);
+          oprot.writeListBegin(new TList(TType.I64, var0.size()));
+          for (long iter0 : var0) {
+            oprot.writeI64(iter0);
+          }
+          oprot.writeListEnd();
+          oprot.writeFieldEnd();
+          break;
+        }
+      
+        case 3: {
+          writeFieldBegin(oprot, Module.ListUnion_stringListValue);
+          List<String> var0 = (List<String>) mMap.get(Module.ListUnion_stringListValue);
+          oprot.writeListBegin(new TList(TType.STRING, var0.size()));
+          for (String iter0 : var0) {
+            oprot.writeString(iter0);
+          }
+          oprot.writeListEnd();
+          oprot.writeFieldEnd();
+          break;
+        }
+      
+        }
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
+        break;
+      }
+      
+      case DataUnion: {
+        if (this.mMap.size() < 1) {
+          throw new TProtocolException(TProtocolException.MISSING_REQUIRED_FIELD, "Cannot write a union with no set value!");
+        } else if (this.mMap.size() > 1) {
+          throw new TProtocolException(TProtocolException.INVALID_DATA, "Cannot write a union with more than one set value!");
+        }
+        oprot.writeStructBegin(new TStruct("DataUnion"));
+        switch (mMap.keySet().iterator().next().id) {
+        case 1: {
+          writeFieldBegin(oprot, Module.DataUnion_binaryData);
+          oprot.writeString((Binary) mMap.get(Module.DataUnion_binaryData));
+          oprot.writeFieldEnd();
+          break;
+        }
+      
+        case 2: {
+          writeFieldBegin(oprot, Module.DataUnion_stringData);
+          oprot.writeString((String) mMap.get(Module.DataUnion_stringData));
+          oprot.writeFieldEnd();
+          break;
+        }
+      
+        }
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
+        break;
+      }
+      
+      case Val: {
+        oprot.writeStructBegin(new TStruct("Val"));
+        if (mMap.containsKey(Module.Val_strVal) && mMap.get(Module.Val_strVal) != null) {
+          writeFieldBegin(oprot, Module.Val_strVal);
+          oprot.writeString((String) mMap.get(Module.Val_strVal));
+          oprot.writeFieldEnd();
+        }
+      
+        if (mMap.containsKey(Module.Val_intVal) && mMap.get(Module.Val_intVal) != null) {
+          writeFieldBegin(oprot, Module.Val_intVal);
+          oprot.writeI32((int) mMap.get(Module.Val_intVal));
+          oprot.writeFieldEnd();
+        }
+      
+        if (mMap.containsKey(Module.Val_typedefValue) && mMap.get(Module.Val_typedefValue) != null) {
+          writeFieldBegin(oprot, Module.Val_typedefValue);
+          Map<Short,String> var0 = (Map<Short,String>) mMap.get(Module.Val_typedefValue);
+          oprot.writeMapBegin(new TMap(TType.I16, TType.STRING, var0.size()));
+          for (Map.Entry<Short, String> iter0 : var0.entrySet()) {
+            oprot.writeI16(iter0.getKey());
+            oprot.writeString(iter0.getValue());
+          }
+          oprot.writeMapEnd();
+          oprot.writeFieldEnd();
+        }
+      
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
+        break;
+      }
+      
+      case ValUnion: {
+        if (this.mMap.size() < 1) {
+          throw new TProtocolException(TProtocolException.MISSING_REQUIRED_FIELD, "Cannot write a union with no set value!");
+        } else if (this.mMap.size() > 1) {
+          throw new TProtocolException(TProtocolException.INVALID_DATA, "Cannot write a union with more than one set value!");
+        }
+        oprot.writeStructBegin(new TStruct("ValUnion"));
+        switch (mMap.keySet().iterator().next().id) {
+        case 1: {
+          writeFieldBegin(oprot, Module.ValUnion_v1);
+          ((ModuleLogger) mMap.get(Module.ValUnion_v1)).write(oprot);
+          oprot.writeFieldEnd();
+          break;
+        }
+      
+        case 2: {
+          writeFieldBegin(oprot, Module.ValUnion_v2);
+          ((ModuleLogger) mMap.get(Module.ValUnion_v2)).write(oprot);
+          oprot.writeFieldEnd();
+          break;
+        }
+      
+        }
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
+        break;
+      }
+      
       case VirtualComplexUnion: {
         if (this.mMap.size() < 1) {
           throw new TProtocolException(TProtocolException.MISSING_REQUIRED_FIELD, "Cannot write a union with no set value!");

@@ -11,6 +11,27 @@ union ComplexUnion {
   14: string stringRef (cpp2.ref = "true");
 }
 
+union ListUnion {
+  2: list<i64> intListValue;
+  3: list<string> stringListValue;
+}
+
+union DataUnion {
+  1: binary binaryData,
+  2: string stringData,
+}
+
+struct Val {
+  1: string strVal;
+  2: i32 intVal;
+  9: containerTypedef typedefValue;
+}
+
+union ValUnion {
+  1: Val v1,
+  2: Val v2,
+}
+
 union VirtualComplexUnion {
   1: string thingOne;
   2: string thingTwo;

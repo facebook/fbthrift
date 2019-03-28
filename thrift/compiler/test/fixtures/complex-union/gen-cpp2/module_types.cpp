@@ -47,6 +47,66 @@ void TccStructTraits< ::cpp2::ComplexUnion>::translateFieldName(
     _ftype = apache::thrift::protocol::T_STRING;
   }
 }
+void TccStructTraits< ::cpp2::ListUnion>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "intListValue") {
+    fid = 2;
+    _ftype = apache::thrift::protocol::T_LIST;
+  }
+  else if (_fname == "stringListValue") {
+    fid = 3;
+    _ftype = apache::thrift::protocol::T_LIST;
+  }
+}
+void TccStructTraits< ::cpp2::DataUnion>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "binaryData") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
+  else if (_fname == "stringData") {
+    fid = 2;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
+}
+void TccStructTraits< ::cpp2::Val>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "strVal") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
+  else if (_fname == "intVal") {
+    fid = 2;
+    _ftype = apache::thrift::protocol::T_I32;
+  }
+  else if (_fname == "typedefValue") {
+    fid = 9;
+    _ftype = apache::thrift::protocol::T_MAP;
+  }
+}
+void TccStructTraits< ::cpp2::ValUnion>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "v1") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_STRUCT;
+  }
+  else if (_fname == "v2") {
+    fid = 2;
+    _ftype = apache::thrift::protocol::T_STRUCT;
+  }
+}
 void TccStructTraits< ::cpp2::VirtualComplexUnion>::translateFieldName(
     FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
     FOLLY_MAYBE_UNUSED int16_t& fid,
@@ -184,6 +244,312 @@ template void ComplexUnion::readNoXfer<>(apache::thrift::CompactProtocolReader*)
 template uint32_t ComplexUnion::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t ComplexUnion::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t ComplexUnion::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+} // cpp2
+namespace cpp2 {
+
+void ListUnion::__clear() {
+  // clear all fields
+  if (type_ == Type::__EMPTY__) { return; }
+  switch(type_) {
+    case Type::intListValue:
+    {
+      destruct(value_.intListValue);
+      break;
+    }
+    case Type::stringListValue:
+    {
+      destruct(value_.stringListValue);
+      break;
+    }
+    default:
+    {
+      assert(false);
+      break;
+    }
+  }
+  type_ = Type::__EMPTY__;
+}
+
+bool ListUnion::operator==(const ListUnion& rhs) const {
+  if (type_ != rhs.type_) { return false; }
+  switch(type_) {
+    case Type::intListValue:
+    {
+      return value_.intListValue == rhs.value_.intListValue;
+    }
+    case Type::stringListValue:
+    {
+      return value_.stringListValue == rhs.value_.stringListValue;
+    }
+    default:
+    {
+      return true;
+    }
+  }
+}
+
+bool ListUnion::operator<(const ListUnion& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  if (lhs.type_ != rhs.type_) {
+    return lhs.type_ < rhs.type_;
+  }
+  switch (lhs.type_) {
+    case Type::intListValue:
+      return lhs.value_.intListValue < rhs.value_.intListValue;
+    case Type::stringListValue:
+      return lhs.value_.stringListValue < rhs.value_.stringListValue;
+    default:
+      return false;
+  }
+}
+
+void swap(ListUnion& a, ListUnion& b) {
+  ListUnion temp(std::move(a));
+  a = std::move(b);
+  b = std::move(temp);
+}
+
+template void ListUnion::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+template uint32_t ListUnion::write<>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t ListUnion::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t ListUnion::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+template void ListUnion::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+template uint32_t ListUnion::write<>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t ListUnion::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t ListUnion::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+} // cpp2
+namespace cpp2 {
+
+void DataUnion::__clear() {
+  // clear all fields
+  if (type_ == Type::__EMPTY__) { return; }
+  switch(type_) {
+    case Type::binaryData:
+    {
+      destruct(value_.binaryData);
+      break;
+    }
+    case Type::stringData:
+    {
+      destruct(value_.stringData);
+      break;
+    }
+    default:
+    {
+      assert(false);
+      break;
+    }
+  }
+  type_ = Type::__EMPTY__;
+}
+
+bool DataUnion::operator==(const DataUnion& rhs) const {
+  if (type_ != rhs.type_) { return false; }
+  switch(type_) {
+    case Type::binaryData:
+    {
+      return value_.binaryData == rhs.value_.binaryData;
+    }
+    case Type::stringData:
+    {
+      return value_.stringData == rhs.value_.stringData;
+    }
+    default:
+    {
+      return true;
+    }
+  }
+}
+
+bool DataUnion::operator<(const DataUnion& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  if (lhs.type_ != rhs.type_) {
+    return lhs.type_ < rhs.type_;
+  }
+  switch (lhs.type_) {
+    case Type::binaryData:
+      return lhs.value_.binaryData < rhs.value_.binaryData;
+    case Type::stringData:
+      return lhs.value_.stringData < rhs.value_.stringData;
+    default:
+      return false;
+  }
+}
+
+void swap(DataUnion& a, DataUnion& b) {
+  DataUnion temp(std::move(a));
+  a = std::move(b);
+  b = std::move(temp);
+}
+
+template void DataUnion::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+template uint32_t DataUnion::write<>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t DataUnion::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t DataUnion::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+template void DataUnion::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+template uint32_t DataUnion::write<>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t DataUnion::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t DataUnion::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+} // cpp2
+namespace cpp2 {
+
+Val::Val(apache::thrift::FragileConstructor, std::string strVal__arg, int32_t intVal__arg,  ::cpp2::containerTypedef typedefValue__arg) :
+    strVal(std::move(strVal__arg)),
+    intVal(std::move(intVal__arg)),
+    typedefValue(std::move(typedefValue__arg)) {
+  __isset.strVal = true;
+  __isset.intVal = true;
+  __isset.typedefValue = true;
+}
+
+void Val::__clear() {
+  // clear all fields
+  strVal = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
+  intVal = 0;
+  typedefValue.clear();
+  __isset = {};
+}
+
+bool Val::operator==(const Val& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  if (!(lhs.strVal == rhs.strVal)) {
+    return false;
+  }
+  if (!(lhs.intVal == rhs.intVal)) {
+    return false;
+  }
+  if (!(lhs.typedefValue == rhs.typedefValue)) {
+    return false;
+  }
+  return true;
+}
+
+bool Val::operator<(const Val& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  if (!(lhs.strVal == rhs.strVal)) {
+    return lhs.strVal < rhs.strVal;
+  }
+  if (!(lhs.intVal == rhs.intVal)) {
+    return lhs.intVal < rhs.intVal;
+  }
+  if (!(lhs.typedefValue == rhs.typedefValue)) {
+    return lhs.typedefValue < rhs.typedefValue;
+  }
+  return false;
+}
+
+const  ::cpp2::containerTypedef& Val::get_typedefValue() const& {
+  return typedefValue;
+}
+
+ ::cpp2::containerTypedef Val::get_typedefValue() && {
+  return std::move(typedefValue);
+}
+
+
+void swap(Val& a, Val& b) {
+  using ::std::swap;
+  swap(a.strVal, b.strVal);
+  swap(a.intVal, b.intVal);
+  swap(a.typedefValue, b.typedefValue);
+  swap(a.__isset, b.__isset);
+}
+
+template void Val::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+template uint32_t Val::write<>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t Val::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t Val::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+template void Val::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+template uint32_t Val::write<>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t Val::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t Val::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+} // cpp2
+namespace cpp2 {
+
+void ValUnion::__clear() {
+  // clear all fields
+  if (type_ == Type::__EMPTY__) { return; }
+  switch(type_) {
+    case Type::v1:
+    {
+      destruct(value_.v1);
+      break;
+    }
+    case Type::v2:
+    {
+      destruct(value_.v2);
+      break;
+    }
+    default:
+    {
+      assert(false);
+      break;
+    }
+  }
+  type_ = Type::__EMPTY__;
+}
+
+bool ValUnion::operator==(const ValUnion& rhs) const {
+  if (type_ != rhs.type_) { return false; }
+  switch(type_) {
+    case Type::v1:
+    {
+      return value_.v1 == rhs.value_.v1;
+    }
+    case Type::v2:
+    {
+      return value_.v2 == rhs.value_.v2;
+    }
+    default:
+    {
+      return true;
+    }
+  }
+}
+
+bool ValUnion::operator<(const ValUnion& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  if (lhs.type_ != rhs.type_) {
+    return lhs.type_ < rhs.type_;
+  }
+  switch (lhs.type_) {
+    case Type::v1:
+      return lhs.value_.v1 < rhs.value_.v1;
+    case Type::v2:
+      return lhs.value_.v2 < rhs.value_.v2;
+    default:
+      return false;
+  }
+}
+
+void swap(ValUnion& a, ValUnion& b) {
+  ValUnion temp(std::move(a));
+  a = std::move(b);
+  b = std::move(temp);
+}
+
+template void ValUnion::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+template uint32_t ValUnion::write<>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t ValUnion::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t ValUnion::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+template void ValUnion::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+template uint32_t ValUnion::write<>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t ValUnion::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t ValUnion::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 } // cpp2
 namespace cpp2 {

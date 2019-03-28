@@ -299,6 +299,484 @@ class ComplexUnion implements \IThriftStruct, \IThriftUnion<ComplexUnionEnum> {
 
 }
 
+enum ListUnionEnum: int {
+  _EMPTY_ = 0;
+  intListValue = 2;
+  stringListValue = 3;
+}
+
+/**
+ * Original thrift struct:-
+ * ListUnion
+ */
+class ListUnion implements \IThriftStruct, \IThriftUnion<ListUnionEnum> {
+  use \ThriftUnionSerializationTrait;
+
+  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
+    2 => dict[
+      'var' => 'intListValue',
+      'union' => true,
+      'type' => \TType::LST,
+      'etype' => \TType::I64,
+      'elem' => dict[
+        'type' => \TType::I64,
+        ],
+        'format' => 'collection',
+      ],
+    3 => dict[
+      'var' => 'stringListValue',
+      'union' => true,
+      'type' => \TType::LST,
+      'etype' => \TType::STRING,
+      'elem' => dict[
+        'type' => \TType::STRING,
+        ],
+        'format' => 'collection',
+      ],
+    ];
+  public static Map<string, int> $_TFIELDMAP = Map {
+    'intListValue' => 2,
+    'stringListValue' => 3,
+  };
+  const int STRUCTURAL_ID = 3965946011249022525;
+  /**
+   * Original thrift field:-
+   * 2: list<i64> intListValue
+   */
+  public ?Vector<int> $intListValue;
+  /**
+   * Original thrift field:-
+   * 3: list<string> stringListValue
+   */
+  public ?Vector<string> $stringListValue;
+  protected ListUnionEnum $_type = ListUnionEnum::_EMPTY_;
+
+  <<__Rx>>
+  public function __construct(?Vector<int> $intListValue = null, ?Vector<string> $stringListValue = null  ) {
+    $this->_type = ListUnionEnum::_EMPTY_;
+    if ($intListValue !== null) {
+      $this->intListValue = $intListValue;
+      $this->_type = ListUnionEnum::intListValue;
+    }
+    if ($stringListValue !== null) {
+      $this->stringListValue = $stringListValue;
+      $this->_type = ListUnionEnum::stringListValue;
+    }
+  }
+
+  public function getName(): string {
+    return 'ListUnion';
+  }
+
+  public function getType(): ListUnionEnum {
+    return $this->_type;
+  }
+
+  public function set_intListValue(Vector<int> $intListValue): this {
+    $this->_type = ListUnionEnum::intListValue;
+    $this->intListValue = $intListValue;
+    return $this;
+  }
+
+  public function get_intListValue(): Vector<int> {
+    invariant(
+      $this->_type === ListUnionEnum::intListValue,
+      'get_intListValue called on an instance of ListUnion whose current type is %s',
+      $this->_type,
+    );
+    return \nullthrows($this->intListValue);
+  }
+
+  public function set_stringListValue(Vector<string> $stringListValue): this {
+    $this->_type = ListUnionEnum::stringListValue;
+    $this->stringListValue = $stringListValue;
+    return $this;
+  }
+
+  public function get_stringListValue(): Vector<string> {
+    invariant(
+      $this->_type === ListUnionEnum::stringListValue,
+      'get_stringListValue called on an instance of ListUnion whose current type is %s',
+      $this->_type,
+    );
+    return \nullthrows($this->stringListValue);
+  }
+
+  public function readFromJson(string $jsonText): void {
+    $this->_type = ListUnionEnum::_EMPTY_;
+    $parsed = json_decode($jsonText, true);
+
+    if ($parsed === null || !is_array($parsed)) {
+      throw new \TProtocolException("Cannot parse the given json string.");
+    }
+
+    if (idx($parsed, 'intListValue') !== null) {
+      $_json3 = $parsed['intListValue'];
+      $_container4 = Vector {};
+      foreach($_json3 as $_key1 => $_value2) {
+        $_elem5 = 0;
+        $_elem5 = $_value2;
+        $_container4 []= $_elem5;
+      }
+      $this->intListValue = $_container4;
+      $this->_type = ListUnionEnum::intListValue;
+    }    
+    if (idx($parsed, 'stringListValue') !== null) {
+      $_json9 = $parsed['stringListValue'];
+      $_container10 = Vector {};
+      foreach($_json9 as $_key7 => $_value8) {
+        $_elem11 = '';
+        $_elem11 = $_value8;
+        $_container10 []= $_elem11;
+      }
+      $this->stringListValue = $_container10;
+      $this->_type = ListUnionEnum::stringListValue;
+    }    
+  }
+
+}
+
+enum DataUnionEnum: int {
+  _EMPTY_ = 0;
+  binaryData = 1;
+  stringData = 2;
+}
+
+/**
+ * Original thrift struct:-
+ * DataUnion
+ */
+class DataUnion implements \IThriftStruct, \IThriftUnion<DataUnionEnum> {
+  use \ThriftUnionSerializationTrait;
+
+  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
+    1 => dict[
+      'var' => 'binaryData',
+      'union' => true,
+      'type' => \TType::STRING,
+      ],
+    2 => dict[
+      'var' => 'stringData',
+      'union' => true,
+      'type' => \TType::STRING,
+      ],
+    ];
+  public static Map<string, int> $_TFIELDMAP = Map {
+    'binaryData' => 1,
+    'stringData' => 2,
+  };
+  const int STRUCTURAL_ID = 4138034353479042532;
+  /**
+   * Original thrift field:-
+   * 1: string binaryData
+   */
+  public ?string $binaryData;
+  /**
+   * Original thrift field:-
+   * 2: string stringData
+   */
+  public ?string $stringData;
+  protected DataUnionEnum $_type = DataUnionEnum::_EMPTY_;
+
+  <<__Rx>>
+  public function __construct(?string $binaryData = null, ?string $stringData = null  ) {
+    $this->_type = DataUnionEnum::_EMPTY_;
+    if ($binaryData !== null) {
+      $this->binaryData = $binaryData;
+      $this->_type = DataUnionEnum::binaryData;
+    }
+    if ($stringData !== null) {
+      $this->stringData = $stringData;
+      $this->_type = DataUnionEnum::stringData;
+    }
+  }
+
+  public function getName(): string {
+    return 'DataUnion';
+  }
+
+  public function getType(): DataUnionEnum {
+    return $this->_type;
+  }
+
+  public function set_binaryData(string $binaryData): this {
+    $this->_type = DataUnionEnum::binaryData;
+    $this->binaryData = $binaryData;
+    return $this;
+  }
+
+  public function get_binaryData(): string {
+    invariant(
+      $this->_type === DataUnionEnum::binaryData,
+      'get_binaryData called on an instance of DataUnion whose current type is %s',
+      $this->_type,
+    );
+    return \nullthrows($this->binaryData);
+  }
+
+  public function set_stringData(string $stringData): this {
+    $this->_type = DataUnionEnum::stringData;
+    $this->stringData = $stringData;
+    return $this;
+  }
+
+  public function get_stringData(): string {
+    invariant(
+      $this->_type === DataUnionEnum::stringData,
+      'get_stringData called on an instance of DataUnion whose current type is %s',
+      $this->_type,
+    );
+    return \nullthrows($this->stringData);
+  }
+
+  public function readFromJson(string $jsonText): void {
+    $this->_type = DataUnionEnum::_EMPTY_;
+    $parsed = json_decode($jsonText, true);
+
+    if ($parsed === null || !is_array($parsed)) {
+      throw new \TProtocolException("Cannot parse the given json string.");
+    }
+
+    if (idx($parsed, 'binaryData') !== null) {
+      $this->binaryData = $parsed['binaryData'];
+      $this->_type = DataUnionEnum::binaryData;
+    }    
+    if (idx($parsed, 'stringData') !== null) {
+      $this->stringData = $parsed['stringData'];
+      $this->_type = DataUnionEnum::stringData;
+    }    
+  }
+
+}
+
+/**
+ * Original thrift struct:-
+ * Val
+ */
+class Val implements \IThriftStruct {
+  use \ThriftSerializationTrait;
+
+  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
+    1 => dict[
+      'var' => 'strVal',
+      'type' => \TType::STRING,
+      ],
+    2 => dict[
+      'var' => 'intVal',
+      'type' => \TType::I32,
+      ],
+    9 => dict[
+      'var' => 'typedefValue',
+      'type' => \TType::MAP,
+      'ktype' => \TType::I16,
+      'vtype' => \TType::STRING,
+      'key' => dict[
+        'type' => \TType::I16,
+      ],
+      'val' => dict[
+        'type' => \TType::STRING,
+        ],
+        'format' => 'collection',
+      ],
+    ];
+  public static Map<string, int> $_TFIELDMAP = Map {
+    'strVal' => 1,
+    'intVal' => 2,
+    'typedefValue' => 9,
+  };
+  const int STRUCTURAL_ID = 7250696402099336501;
+  /**
+   * Original thrift field:-
+   * 1: string strVal
+   */
+  public string $strVal;
+  /**
+   * Original thrift field:-
+   * 2: i32 intVal
+   */
+  public int $intVal;
+  /**
+   * Original thrift field:-
+   * 9: map<i16, string> typedefValue
+   */
+  public Map<int, string> $typedefValue;
+
+  <<__Rx>>
+  public function __construct(?string $strVal = null, ?int $intVal = null, ?Map<int, string> $typedefValue = null  ) {
+    if ($strVal === null) {
+      $this->strVal = '';
+    } else {
+      $this->strVal = $strVal;
+    }
+    if ($intVal === null) {
+      $this->intVal = 0;
+    } else {
+      $this->intVal = $intVal;
+    }
+    if ($typedefValue === null) {
+      $this->typedefValue = Map {};
+    } else {
+      $this->typedefValue = $typedefValue;
+    }
+  }
+
+  public function getName(): string {
+    return 'Val';
+  }
+
+  public function readFromJson(string $jsonText): void {
+    $parsed = json_decode($jsonText, true);
+
+    if ($parsed === null || !is_array($parsed)) {
+      throw new \TProtocolException("Cannot parse the given json string.");
+    }
+
+    if (idx($parsed, 'strVal') !== null) {
+      $this->strVal = $parsed['strVal'];
+    }    
+    if (idx($parsed, 'intVal') !== null) {
+      $_tmp0 = (int)$parsed['intVal'];
+      if ($_tmp0 > 0x7fffffff) {
+        throw new \TProtocolException("number exceeds limit in field");
+      } else {
+        $this->intVal = (int)$_tmp0;
+      }
+    }    
+    if (idx($parsed, 'typedefValue') !== null) {
+      $_json4 = $parsed['typedefValue'];
+      $_container5 = Map {};
+      foreach($_json4 as $_key2 => $_value3) {
+        $_value6 = '';
+        $_value6 = $_value3;
+        $_container5[$_key2] = $_value6;
+      }
+      $this->typedefValue = $_container5;
+    }    
+  }
+
+}
+
+enum ValUnionEnum: int {
+  _EMPTY_ = 0;
+  v1 = 1;
+  v2 = 2;
+}
+
+/**
+ * Original thrift struct:-
+ * ValUnion
+ */
+class ValUnion implements \IThriftStruct, \IThriftUnion<ValUnionEnum> {
+  use \ThriftUnionSerializationTrait;
+
+  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
+    1 => dict[
+      'var' => 'v1',
+      'union' => true,
+      'type' => \TType::STRUCT,
+      'class' => 'Val',
+      ],
+    2 => dict[
+      'var' => 'v2',
+      'union' => true,
+      'type' => \TType::STRUCT,
+      'class' => 'Val',
+      ],
+    ];
+  public static Map<string, int> $_TFIELDMAP = Map {
+    'v1' => 1,
+    'v2' => 2,
+  };
+  const int STRUCTURAL_ID = 7355268417298249876;
+  /**
+   * Original thrift field:-
+   * 1: struct module.Val v1
+   */
+  public ?Val $v1;
+  /**
+   * Original thrift field:-
+   * 2: struct module.Val v2
+   */
+  public ?Val $v2;
+  protected ValUnionEnum $_type = ValUnionEnum::_EMPTY_;
+
+  <<__Rx>>
+  public function __construct(?Val $v1 = null, ?Val $v2 = null  ) {
+    $this->_type = ValUnionEnum::_EMPTY_;
+    if ($v1 !== null) {
+      $this->v1 = $v1;
+      $this->_type = ValUnionEnum::v1;
+    }
+    if ($v2 !== null) {
+      $this->v2 = $v2;
+      $this->_type = ValUnionEnum::v2;
+    }
+  }
+
+  public function getName(): string {
+    return 'ValUnion';
+  }
+
+  public function getType(): ValUnionEnum {
+    return $this->_type;
+  }
+
+  public function set_v1(Val $v1): this {
+    $this->_type = ValUnionEnum::v1;
+    $this->v1 = $v1;
+    return $this;
+  }
+
+  public function get_v1(): Val {
+    invariant(
+      $this->_type === ValUnionEnum::v1,
+      'get_v1 called on an instance of ValUnion whose current type is %s',
+      $this->_type,
+    );
+    return \nullthrows($this->v1);
+  }
+
+  public function set_v2(Val $v2): this {
+    $this->_type = ValUnionEnum::v2;
+    $this->v2 = $v2;
+    return $this;
+  }
+
+  public function get_v2(): Val {
+    invariant(
+      $this->_type === ValUnionEnum::v2,
+      'get_v2 called on an instance of ValUnion whose current type is %s',
+      $this->_type,
+    );
+    return \nullthrows($this->v2);
+  }
+
+  public function readFromJson(string $jsonText): void {
+    $this->_type = ValUnionEnum::_EMPTY_;
+    $parsed = json_decode($jsonText, true);
+
+    if ($parsed === null || !is_array($parsed)) {
+      throw new \TProtocolException("Cannot parse the given json string.");
+    }
+
+    if (idx($parsed, 'v1') !== null) {
+      $_tmp0 = json_encode($parsed['v1']);
+      $_tmp1 = new Val();
+      $_tmp1->readFromJson($_tmp0);
+      $this->v1 = $_tmp1;
+      $this->_type = ValUnionEnum::v1;
+    }    
+    if (idx($parsed, 'v2') !== null) {
+      $_tmp2 = json_encode($parsed['v2']);
+      $_tmp3 = new Val();
+      $_tmp3->readFromJson($_tmp2);
+      $this->v2 = $_tmp3;
+      $this->_type = ValUnionEnum::v2;
+    }    
+  }
+
+}
+
 enum VirtualComplexUnionEnum: int {
   _EMPTY_ = 0;
   thingOne = 1;
