@@ -14,40 +14,39 @@
  * limitations under the License.
  */
 #include <thrift/lib/cpp2/async/RequestChannel.h>
+#include <folly/fibers/Baton.h>
+#include <folly/fibers/Fiber.h>
 
 namespace apache {
 namespace thrift {
 
 namespace {
-class ClientSyncEventBaseCallback final : public RequestCallback {
+class ClientSyncBatonCallback final : public RequestCallback {
  public:
-  ClientSyncEventBaseCallback(
+  ClientSyncBatonCallback(
       std::unique_ptr<RequestCallback> cb,
-      folly::EventBase* eb)
-      : cb_(std::move(cb)), eb_(eb) {}
+      folly::fibers::Baton& doneBaton)
+      : cb_(std::move(cb)), doneBaton_(doneBaton) {}
 
   void requestSent() override {
     cb_->requestSent();
     if (static_cast<ClientSyncCallback*>(cb_.get())->isOneway()) {
-      assert(eb_);
-      eb_->terminateLoopSoon();
+      doneBaton_.post();
     }
   }
   void replyReceived(ClientReceiveState&& rs) override {
-    assert(eb_);
     cb_->replyReceived(std::move(rs));
-    eb_->terminateLoopSoon();
+    doneBaton_.post();
   }
   void requestError(ClientReceiveState&& rs) override {
     assert(rs.isException());
-    assert(eb_);
     cb_->requestError(std::move(rs));
-    eb_->terminateLoopSoon();
+    doneBaton_.post();
   }
 
  private:
   std::unique_ptr<RequestCallback> cb_;
-  folly::EventBase* eb_;
+  folly::fibers::Baton& doneBaton_;
 };
 } // namespace
 
@@ -61,48 +60,61 @@ uint32_t RequestChannel::sendRequestSync(
   apache::thrift::RpcKind kind =
       static_cast<ClientSyncCallback&>(*cb).rpcKind();
   auto eb = getEventBase();
-  CHECK(eb->isInEventBaseThread());
-  auto scb = std::make_unique<ClientSyncEventBaseCallback>(std::move(cb), eb);
-  switch (kind) {
-    case apache::thrift::RpcKind::SINGLE_REQUEST_NO_RESPONSE: {
-      auto ret = sendOnewayRequest(
-          options,
-          std::move(scb),
-          std::move(ctx),
-          std::move(buf),
-          std::move(header));
-      eb->loopForever();
-      return ret;
+  // We intentionally only support sync_* calls from the EventBase thread.
+  eb->checkIsInEventBaseThread();
+
+  folly::fibers::Baton baton;
+  uint32_t retval = 0;
+  auto scb = std::make_unique<ClientSyncBatonCallback>(std::move(cb), baton);
+
+  folly::exception_wrapper ew;
+  baton.wait([&, onFiber = folly::fibers::onFiber()]() {
+    try {
+      switch (kind) {
+        case RpcKind::SINGLE_REQUEST_NO_RESPONSE:
+          retval = sendOnewayRequest(
+              options,
+              std::move(scb),
+              std::move(ctx),
+              std::move(buf),
+              std::move(header));
+          break;
+        case RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE:
+          retval = sendRequest(
+              options,
+              std::move(scb),
+              std::move(ctx),
+              std::move(buf),
+              std::move(header));
+          break;
+        case RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE:
+          retval = sendStreamRequest(
+              options,
+              std::move(scb),
+              std::move(ctx),
+              std::move(buf),
+              std::move(header));
+          break;
+        default:
+          folly::assume_unreachable();
+      }
+    } catch (const std::exception& e) {
+      ew = folly::exception_wrapper(std::current_exception(), e);
+      baton.post();
+    } catch (...) {
+      ew = folly::exception_wrapper(std::current_exception());
+      baton.post();
     }
-    case apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE: {
-      auto ret = sendRequest(
-          options,
-          std::move(scb),
-          std::move(ctx),
-          std::move(buf),
-          std::move(header));
-      eb->loopForever();
-      return ret;
+    if (!onFiber) {
+      while (!baton.ready()) {
+        eb->drive();
+      }
     }
-    case apache::thrift::RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE: {
-      auto ret = sendStreamRequest(
-          options,
-          std::move(scb),
-          std::move(ctx),
-          std::move(buf),
-          std::move(header));
-      eb->loopForever();
-      return ret;
-    }
-    default:
-      break;
+  });
+  if (ew) {
+    ew.throw_exception();
   }
-  scb->requestError(ClientReceiveState(
-      folly::make_exception_wrapper<transport::TTransportException>(
-          "Unsupported RpcKind value"),
-      std::move(ctx)));
-  eb->loopForever();
-  return 0;
+  return retval;
 }
 
 uint32_t RequestChannel::sendStreamRequest(

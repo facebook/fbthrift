@@ -539,7 +539,11 @@ void clientSendT(
 
   if (sync) {
     channel->sendRequestSync(
-        rpcOptions, std::move(callback), std::move(ctx), queue.move(), header);
+        rpcOptions,
+        std::move(callback),
+        std::move(ctx),
+        queue.move(),
+        std::move(header));
     return;
   }
 

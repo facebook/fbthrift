@@ -13,10 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+#include <folly/fibers/Fiber.h>
+#include <folly/fibers/FiberManagerMap.h>
+#include <folly/portability/GTest.h>
 #include <thrift/lib/cpp2/test/gen-cpp2/TestService.h>
 #include <thrift/lib/cpp2/util/ScopedServerInterfaceThread.h>
-
-#include <folly/portability/GTest.h>
+#include <chrono>
+#include <condition_variable>
 
 using namespace std;
 using namespace std::chrono;
@@ -146,4 +149,126 @@ TEST_F(ThriftClientTest, SyncRpcOptionsTimeout) {
   EXPECT_EQ(channelTimeout.count(), channel->getTimeout());
   EXPECT_GE(dur, rpcTimeout);
   EXPECT_LT(dur, channelTimeout);
+}
+
+TEST_F(ThriftClientTest, SyncCallRequestResponse) {
+  class Handler : public TestServiceSvIf {
+   public:
+    void sendResponse(std::string& _return, int64_t size) override {
+      _return = to<string>(size);
+    }
+  };
+  auto handler = make_shared<Handler>();
+  ScopedServerInterfaceThread runner(handler);
+
+  EventBase eb;
+  auto client = runner.newClient<TestServiceAsyncClient>(&eb);
+
+  auto doSyncRPC = [&]() {
+    std::string res;
+    client->sync_sendResponse(res, 123);
+    EXPECT_EQ(res, "123");
+  };
+
+  // First test from evbase thread
+  doSyncRPC();
+
+  // Now try from fibers
+  auto doSomeFibers = [&](EventBase& eb) {
+    folly::fibers::Baton b1, b2, b3, b4;
+    auto& fm = folly::fibers::getFiberManager(eb);
+    fm.addTask([&]() {
+      b3.wait();
+      b4.wait();
+      doSyncRPC();
+      eb.terminateLoopSoon();
+    });
+    fm.addTask([&]() {
+      b1.wait();
+      doSyncRPC();
+      b3.post();
+    });
+    fm.addTask([&]() {
+      b2.wait();
+      doSyncRPC();
+      b4.post();
+    });
+    fm.addTask([&]() {
+      doSyncRPC();
+      b1.post();
+    });
+    fm.addTask([&]() {
+      doSyncRPC();
+      b2.post();
+    });
+    eb.loop();
+  };
+  doSomeFibers(eb);
+}
+
+TEST_F(ThriftClientTest, SyncCallOneWay) {
+  class Handler : public TestServiceSvIf {
+   public:
+    void noResponse(int64_t) override {
+      std::lock_guard<std::mutex> l(lock_);
+      ++numCalls_;
+      condvar_.notify_all();
+    }
+    int32_t numCalls() const {
+      std::lock_guard<std::mutex> l(lock_);
+      return numCalls_;
+    }
+    void waitUntilNumCalls(int32_t goal) {
+      std::unique_lock<std::mutex> l(lock_);
+      auto deadline = std::chrono::system_clock::now() + 200ms;
+      condvar_.wait_until(l, deadline, [&] { return numCalls_ == goal; });
+      EXPECT_EQ(numCalls_, goal);
+    }
+
+   private:
+    mutable std::mutex lock_;
+    std::condition_variable condvar_;
+    int32_t numCalls_{0};
+  };
+  auto handler = make_shared<Handler>();
+  ScopedServerInterfaceThread runner(handler);
+
+  EventBase eb;
+  auto client = runner.newClient<TestServiceAsyncClient>(&eb);
+
+  auto doSyncRPC = [&]() { client->sync_noResponse(123); };
+
+  // First test from evbase thread
+  doSyncRPC();
+
+  // Now try from fibers
+  folly::fibers::Baton b1, b2, b3, b4;
+  auto& fm = folly::fibers::getFiberManager(eb);
+  fm.addTask([&]() {
+    b3.wait();
+    b4.wait();
+    doSyncRPC();
+    eb.terminateLoopSoon();
+  });
+  fm.addTask([&]() {
+    b1.wait();
+    doSyncRPC();
+    b3.post();
+  });
+  fm.addTask([&]() {
+    b2.wait();
+    doSyncRPC();
+    b4.post();
+  });
+  fm.addTask([&]() {
+    doSyncRPC();
+    b1.post();
+  });
+  fm.addTask([&]() {
+    doSyncRPC();
+    b2.post();
+  });
+  eb.loop();
+
+  handler->waitUntilNumCalls(6);
 }
