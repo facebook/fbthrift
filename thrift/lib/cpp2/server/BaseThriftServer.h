@@ -847,7 +847,7 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
     overloadedErrorCode_ = errorCode;
   }
 
-  const std::string& getOverloadedErrorCode() {
+  const std::string& getOverloadedErrorCode() const override {
     return overloadedErrorCode_;
   }
 

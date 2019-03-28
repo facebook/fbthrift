@@ -19,6 +19,7 @@
 #include <string>
 
 #include <thrift/lib/cpp/transport/THeader.h>
+#include <thrift/lib/cpp2/async/ResponseChannel.h>
 #include <thrift/lib/cpp2/server/ServerConfigs.h>
 #include <thrift/lib/cpp2/transport/core/testutil/FakeServerObserver.h>
 
@@ -63,6 +64,10 @@ class ServerConfigsMock : public ServerConfigs {
   int64_t getLoad(const std::string& /* counter */, bool /* check_custom */)
       const override {
     return 123;
+  }
+
+  const std::string& getOverloadedErrorCode() const {
+    return kOverloadedErrorCode;
   }
 
   bool isOverloaded(

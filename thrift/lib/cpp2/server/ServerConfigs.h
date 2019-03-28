@@ -14,8 +14,7 @@
  * limitations under the License.
  */
 
-#ifndef SERVER_CONFIGS_H_
-#define SERVER_CONFIGS_H_ 1
+#pragma once
 
 #include <chrono>
 #include <string>
@@ -67,6 +66,9 @@ class ServerConfigs {
       const std::string& counter = "",
       bool check_custom = true) const = 0;
 
+  // @see @BaseThriftServer::getOverloadedErrorCode function.
+  virtual const std::string& getOverloadedErrorCode() const = 0;
+
   // @see ThriftServer::isOverloaded function.
   virtual bool isOverloaded(
       const transport::THeader::StringToStringMap* readHeaders,
@@ -76,5 +78,3 @@ class ServerConfigs {
 } // namespace server
 } // namespace thrift
 } // namespace apache
-
-#endif // #ifndef THRIFT_SERVER_H_
