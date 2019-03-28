@@ -86,7 +86,7 @@ void Client::runSynchronously(
             stats.responseCount++;
             stats.success++;
           })
-          .onError([this](folly::exception_wrapper&& /* ew */) {
+          .thenError([this](folly::exception_wrapper&& /* ew */) {
             auto& stats = this->stats_;
             stats.responseCount++;
             stats.errors++;
