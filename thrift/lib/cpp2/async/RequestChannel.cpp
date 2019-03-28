@@ -20,6 +20,105 @@
 namespace apache {
 namespace thrift {
 
+void RequestChannel::sendRequestAsync(
+    apache::thrift::RpcOptions& rpcOptions,
+    std::unique_ptr<apache::thrift::RequestCallback> callback,
+    std::unique_ptr<apache::thrift::ContextStack> ctx,
+    std::unique_ptr<folly::IOBuf> buf,
+    std::shared_ptr<apache::thrift::transport::THeader> header,
+    RpcKind kind) {
+  auto eb = getEventBase();
+  if (!eb || eb->isInEventBaseThread()) {
+    switch (kind) {
+      case RpcKind::SINGLE_REQUEST_NO_RESPONSE:
+        // Calling asyncComplete before sending because
+        // sendOnewayRequest moves from ctx and clears it.
+        ctx->asyncComplete();
+        sendOnewayRequest(
+            rpcOptions,
+            std::move(callback),
+            std::move(ctx),
+            std::move(buf),
+            std::move(header));
+        break;
+      case RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE:
+        sendRequest(
+            rpcOptions,
+            std::move(callback),
+            std::move(ctx),
+            std::move(buf),
+            std::move(header));
+        break;
+      case RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE:
+        sendStreamRequest(
+            rpcOptions,
+            std::move(callback),
+            std::move(ctx),
+            std::move(buf),
+            std::move(header));
+        break;
+      default:
+        folly::assume_unreachable();
+        break;
+    }
+
+  } else {
+    switch (kind) {
+      case RpcKind::SINGLE_REQUEST_NO_RESPONSE:
+        eb->runInEventBaseThread([this,
+                                  rpcOptions,
+                                  callback = std::move(callback),
+                                  ctx = std::move(ctx),
+                                  buf = std::move(buf),
+                                  header = std::move(header)]() mutable {
+          // Calling asyncComplete before sending because
+          // sendOnewayRequest moves from ctx and clears it.
+          ctx->asyncComplete();
+          sendOnewayRequest(
+              rpcOptions,
+              std::move(callback),
+              std::move(ctx),
+              std::move(buf),
+              std::move(header));
+        });
+        break;
+      case RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE:
+        eb->runInEventBaseThread([this,
+                                  rpcOptions,
+                                  callback = std::move(callback),
+                                  ctx = std::move(ctx),
+                                  buf = std::move(buf),
+                                  header = std::move(header)]() mutable {
+          sendRequest(
+              rpcOptions,
+              std::move(callback),
+              std::move(ctx),
+              std::move(buf),
+              std::move(header));
+        });
+        break;
+      case RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE:
+        eb->runInEventBaseThread([this,
+                                  rpcOptions,
+                                  callback = std::move(callback),
+                                  ctx = std::move(ctx),
+                                  buf = std::move(buf),
+                                  header = std::move(header)]() mutable {
+          sendStreamRequest(
+              rpcOptions,
+              std::move(callback),
+              std::move(ctx),
+              std::move(buf),
+              std::move(header));
+        });
+        break;
+      default:
+        folly::assume_unreachable();
+        break;
+    }
+  }
+}
+
 namespace {
 class ClientSyncBatonCallback final : public RequestCallback {
  public:

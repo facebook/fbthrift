@@ -374,6 +374,13 @@ class RequestChannel : virtual public folly::DelayedDestruction {
       std::unique_ptr<folly::IOBuf>,
       std::shared_ptr<apache::thrift::transport::THeader>);
 
+  void sendRequestAsync(
+      apache::thrift::RpcOptions&,
+      std::unique_ptr<apache::thrift::RequestCallback>,
+      std::unique_ptr<apache::thrift::ContextStack>,
+      std::unique_ptr<folly::IOBuf>,
+      std::shared_ptr<apache::thrift::transport::THeader>,
+      RpcKind kind);
   /**
    * ReplyCallback will be invoked when the reply to this request is
    * received.  TRequestChannel is responsible for associating requests with
@@ -547,96 +554,13 @@ void clientSendT(
     return;
   }
 
-  auto eb = channel->getEventBase();
-  if (!eb || eb->isInEventBaseThread()) {
-    switch (kind) {
-      case RpcKind::SINGLE_REQUEST_NO_RESPONSE:
-        // Calling asyncComplete before sending because
-        // sendOnewayRequest moves from ctx and clears it.
-        ctx->asyncComplete();
-        channel->sendOnewayRequest(
-            rpcOptions,
-            std::move(callback),
-            std::move(ctx),
-            queue.move(),
-            std::move(header));
-        break;
-      case RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE:
-        channel->sendRequest(
-            rpcOptions,
-            std::move(callback),
-            std::move(ctx),
-            queue.move(),
-            std::move(header));
-        break;
-      case RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE:
-        channel->sendStreamRequest(
-            rpcOptions,
-            std::move(callback),
-            std::move(ctx),
-            queue.move(),
-            std::move(header));
-        break;
-      default:
-        folly::assume_unreachable();
-        break;
-    }
-
-  } else {
-    switch (kind) {
-      case RpcKind::SINGLE_REQUEST_NO_RESPONSE:
-        eb->runInEventBaseThread([channel,
-                                  rpcOptions,
-                                  callback = std::move(callback),
-                                  ctx = std::move(ctx),
-                                  queue = queue.move(),
-                                  header = std::move(header)]() mutable {
-          // Calling asyncComplete before sending because
-          // sendOnewayRequest moves from ctx and clears it.
-          ctx->asyncComplete();
-          channel->sendOnewayRequest(
-              rpcOptions,
-              std::move(callback),
-              std::move(ctx),
-              std::move(queue),
-              std::move(header));
-        });
-        break;
-      case RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE:
-        eb->runInEventBaseThread([channel,
-                                  rpcOptions,
-                                  callback = std::move(callback),
-                                  ctx = std::move(ctx),
-                                  queue = queue.move(),
-                                  header = std::move(header)]() mutable {
-          channel->sendRequest(
-              rpcOptions,
-              std::move(callback),
-              std::move(ctx),
-              std::move(queue),
-              std::move(header));
-        });
-        break;
-      case RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE:
-        eb->runInEventBaseThread([channel,
-                                  rpcOptions,
-                                  callback = std::move(callback),
-                                  ctx = std::move(ctx),
-                                  queue = queue.move(),
-                                  header = std::move(header)]() mutable {
-          channel->sendStreamRequest(
-              rpcOptions,
-              std::move(callback),
-              std::move(ctx),
-              std::move(queue),
-              std::move(header));
-        });
-        break;
-      default:
-        folly::assume_unreachable();
-        break;
-    }
-  }
+  channel->sendRequestAsync(
+      rpcOptions,
+      std::move(callback),
+      std::move(ctx),
+      queue.move(),
+      std::move(header),
+      kind);
 }
 } // namespace thrift
 } // namespace apache
