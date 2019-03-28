@@ -386,7 +386,7 @@ TEST(ThriftServer, LoadHeaderTest) {
     RpcOptions customLoadOptions;
     // force overloaded
     runner.getThriftServer().setIsOverloaded(
-        [](const THeader*, const string* method) {
+        [](const auto*, const string* method) {
           EXPECT_EQ("voidResponse", *method);
           return true;
         });
@@ -439,7 +439,7 @@ TEST(ThriftServer, LatencyHeader_ServerOverloaded) {
 
   // force overloaded
   runner.getThriftServer().setIsOverloaded(
-      [](const THeader*, const string* method) {
+      [](const auto*, const string* method) {
         EXPECT_EQ("voidResponse", *method);
         return true;
       });

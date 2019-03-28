@@ -288,7 +288,7 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
   }
 
   bool isOverloaded(
-      const apache::thrift::transport::THeader* header = nullptr,
+      const transport::THeader::StringToStringMap* readHeaders = nullptr,
       const std::string* = nullptr) const override;
 
   int64_t getRequestLoad() const override;

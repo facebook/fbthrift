@@ -21,13 +21,10 @@
 #include <string>
 
 #include <thrift/lib/cpp/server/TServerObserver.h>
+#include <thrift/lib/cpp/transport/THeader.h>
 
 namespace apache {
 namespace thrift {
-
-namespace transport {
-class THeader;
-} // namespace transport
 
 namespace server {
 
@@ -72,7 +69,7 @@ class ServerConfigs {
 
   // @see ThriftServer::isOverloaded function.
   virtual bool isOverloaded(
-      const transport::THeader* header,
+      const transport::THeader::StringToStringMap* readHeaders,
       const std::string* method) const = 0;
 };
 

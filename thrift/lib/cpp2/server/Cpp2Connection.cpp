@@ -297,7 +297,7 @@ void Cpp2Connection::requestReceived(unique_ptr<ResponseChannelRequest>&& req) {
       hreq->getHeader()->getProtocolId());
   auto methodName =
       apache::thrift::detail::ap::deserializeMethodName(req, protoId);
-  if (server->isOverloaded(hreq->getHeader(), &methodName)) {
+  if (server->isOverloaded(&hreq->getHeader()->getHeaders(), &methodName)) {
     killRequest(
         *req,
         TApplicationException::TApplicationExceptionType::LOADSHEDDING,

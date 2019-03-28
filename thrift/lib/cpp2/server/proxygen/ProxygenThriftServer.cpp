@@ -293,9 +293,9 @@ void ProxygenThriftServer::ThriftRequestHandler::TaskTimeout::
 }
 
 bool ProxygenThriftServer::isOverloaded(
-    const THeader* header,
+    const transport::THeader::StringToStringMap* headers,
     const std::string* method) const {
-  if (UNLIKELY(isOverloaded_ && isOverloaded_(header, method))) {
+  if (UNLIKELY(isOverloaded_ && isOverloaded_(headers, method))) {
     return true;
   }
 

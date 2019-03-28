@@ -262,7 +262,7 @@ class ProxygenThriftServer : public BaseThriftServer,
   };
 
   bool isOverloaded(
-      const apache::thrift::transport::THeader* header = nullptr,
+      const transport::THeader::StringToStringMap* readHeaders = nullptr,
       const std::string* method = nullptr) const override;
 
   /**

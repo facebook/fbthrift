@@ -591,9 +591,9 @@ TLSCredProcessor& ThriftServer::getCredProcessor() {
 }
 
 bool ThriftServer::isOverloaded(
-    const THeader* header,
+    const transport::THeader::StringToStringMap* readHeaders,
     const std::string* method) const {
-  if (UNLIKELY(isOverloaded_ && isOverloaded_(header, method))) {
+  if (UNLIKELY(isOverloaded_ && isOverloaded_(readHeaders, method))) {
     return true;
   }
 

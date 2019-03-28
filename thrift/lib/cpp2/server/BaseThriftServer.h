@@ -52,8 +52,9 @@ typedef std::function<void(
     const folly::SocketAddress*)>
     GetHeaderHandlerFunc;
 
-using IsOverloadedFunc =
-    folly::Function<bool(const transport::THeader*, const std::string*) const>;
+using IsOverloadedFunc = folly::Function<bool(
+    const transport::THeader::StringToStringMap*,
+    const std::string*) const>;
 
 template <typename T>
 class ThriftServerAsyncProcessorFactory : public AsyncProcessorFactory {
