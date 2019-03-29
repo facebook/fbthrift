@@ -19,6 +19,7 @@
 
 package com.facebook.thrift;
 
+import com.facebook.thrift.TClientIf;
 import com.facebook.thrift.protocol.TMessage;
 import com.facebook.thrift.protocol.TMessageType;
 import com.facebook.thrift.protocol.TProtocol;
@@ -27,7 +28,7 @@ import com.facebook.thrift.protocol.TProtocol;
  * A TServiceClient is used to communicate with a TService implementation across protocols and
  * transports.
  */
-public abstract class TServiceClient {
+public abstract class TServiceClient implements TClientIf {
   public TServiceClient(TProtocol prot) {
     this(prot, prot);
   }
