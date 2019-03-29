@@ -11,6 +11,7 @@
 #include <folly/io/IOBufQueue.h>
 #include <thrift/lib/cpp/TApplicationException.h>
 #include <thrift/lib/cpp/transport/THeader.h>
+#include <thrift/lib/cpp2/gen/client_cpp.h>
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 #include <thrift/lib/cpp2/server/Cpp2ConnContext.h>
@@ -33,13 +34,7 @@ typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, apache:
 
 template <typename Protocol_>
 void service1AsyncClient::method1T(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
-  struct HeaderAndReqContext {
-    HeaderAndReqContext() : header(apache::thrift::transport::THeader::ALLOW_BIG_FRAMES) {}
-
-    apache::thrift::transport::THeader header;
-    apache::thrift::Cpp2ClientRequestContext reqContext;
-  };
-  auto headerAndReqContext = std::make_shared<HeaderAndReqContext>();
+  auto headerAndReqContext = std::make_shared<apache::thrift::detail::ac::HeaderAndReqContext>();
   std::shared_ptr<apache::thrift::transport::THeader> header(headerAndReqContext, &headerAndReqContext->header);
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
@@ -54,13 +49,7 @@ void service1AsyncClient::method1T(Protocol_* prot, bool useSync, apache::thrift
 
 template <typename Protocol_>
 void service1AsyncClient::method2T(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t x, const  ::test_cpp2::cpp_reflection::struct1& y, double z) {
-  struct HeaderAndReqContext {
-    HeaderAndReqContext() : header(apache::thrift::transport::THeader::ALLOW_BIG_FRAMES) {}
-
-    apache::thrift::transport::THeader header;
-    apache::thrift::Cpp2ClientRequestContext reqContext;
-  };
-  auto headerAndReqContext = std::make_shared<HeaderAndReqContext>();
+  auto headerAndReqContext = std::make_shared<apache::thrift::detail::ac::HeaderAndReqContext>();
   std::shared_ptr<apache::thrift::transport::THeader> header(headerAndReqContext, &headerAndReqContext->header);
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
@@ -78,13 +67,7 @@ void service1AsyncClient::method2T(Protocol_* prot, bool useSync, apache::thrift
 
 template <typename Protocol_>
 void service1AsyncClient::method3T(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
-  struct HeaderAndReqContext {
-    HeaderAndReqContext() : header(apache::thrift::transport::THeader::ALLOW_BIG_FRAMES) {}
-
-    apache::thrift::transport::THeader header;
-    apache::thrift::Cpp2ClientRequestContext reqContext;
-  };
-  auto headerAndReqContext = std::make_shared<HeaderAndReqContext>();
+  auto headerAndReqContext = std::make_shared<apache::thrift::detail::ac::HeaderAndReqContext>();
   std::shared_ptr<apache::thrift::transport::THeader> header(headerAndReqContext, &headerAndReqContext->header);
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
@@ -99,13 +82,7 @@ void service1AsyncClient::method3T(Protocol_* prot, bool useSync, apache::thrift
 
 template <typename Protocol_>
 void service1AsyncClient::method4T(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t i, const  ::test_cpp2::cpp_reflection::struct1& j, double k) {
-  struct HeaderAndReqContext {
-    HeaderAndReqContext() : header(apache::thrift::transport::THeader::ALLOW_BIG_FRAMES) {}
-
-    apache::thrift::transport::THeader header;
-    apache::thrift::Cpp2ClientRequestContext reqContext;
-  };
-  auto headerAndReqContext = std::make_shared<HeaderAndReqContext>();
+  auto headerAndReqContext = std::make_shared<apache::thrift::detail::ac::HeaderAndReqContext>();
   std::shared_ptr<apache::thrift::transport::THeader> header(headerAndReqContext, &headerAndReqContext->header);
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
@@ -123,13 +100,7 @@ void service1AsyncClient::method4T(Protocol_* prot, bool useSync, apache::thrift
 
 template <typename Protocol_>
 void service1AsyncClient::method5T(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
-  struct HeaderAndReqContext {
-    HeaderAndReqContext() : header(apache::thrift::transport::THeader::ALLOW_BIG_FRAMES) {}
-
-    apache::thrift::transport::THeader header;
-    apache::thrift::Cpp2ClientRequestContext reqContext;
-  };
-  auto headerAndReqContext = std::make_shared<HeaderAndReqContext>();
+  auto headerAndReqContext = std::make_shared<apache::thrift::detail::ac::HeaderAndReqContext>();
   std::shared_ptr<apache::thrift::transport::THeader> header(headerAndReqContext, &headerAndReqContext->header);
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
@@ -144,13 +115,7 @@ void service1AsyncClient::method5T(Protocol_* prot, bool useSync, apache::thrift
 
 template <typename Protocol_>
 void service1AsyncClient::method6T(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t l, const  ::test_cpp2::cpp_reflection::struct1& m, double n) {
-  struct HeaderAndReqContext {
-    HeaderAndReqContext() : header(apache::thrift::transport::THeader::ALLOW_BIG_FRAMES) {}
-
-    apache::thrift::transport::THeader header;
-    apache::thrift::Cpp2ClientRequestContext reqContext;
-  };
-  auto headerAndReqContext = std::make_shared<HeaderAndReqContext>();
+  auto headerAndReqContext = std::make_shared<apache::thrift::detail::ac::HeaderAndReqContext>();
   std::shared_ptr<apache::thrift::transport::THeader> header(headerAndReqContext, &headerAndReqContext->header);
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());

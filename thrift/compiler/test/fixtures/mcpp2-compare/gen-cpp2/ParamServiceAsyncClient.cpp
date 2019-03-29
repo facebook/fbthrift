@@ -11,6 +11,7 @@
 #include <folly/io/IOBufQueue.h>
 #include <thrift/lib/cpp/TApplicationException.h>
 #include <thrift/lib/cpp/transport/THeader.h>
+#include <thrift/lib/cpp2/gen/client_cpp.h>
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 #include <thrift/lib/cpp2/server/Cpp2ConnContext.h>
@@ -79,13 +80,7 @@ typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, apache:
 
 template <typename Protocol_>
 void ParamServiceAsyncClient::void_ret_i16_paramT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int16_t param1) {
-  struct HeaderAndReqContext {
-    HeaderAndReqContext() : header(apache::thrift::transport::THeader::ALLOW_BIG_FRAMES) {}
-
-    apache::thrift::transport::THeader header;
-    apache::thrift::Cpp2ClientRequestContext reqContext;
-  };
-  auto headerAndReqContext = std::make_shared<HeaderAndReqContext>();
+  auto headerAndReqContext = std::make_shared<apache::thrift::detail::ac::HeaderAndReqContext>();
   std::shared_ptr<apache::thrift::transport::THeader> header(headerAndReqContext, &headerAndReqContext->header);
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
@@ -101,13 +96,7 @@ void ParamServiceAsyncClient::void_ret_i16_paramT(Protocol_* prot, bool useSync,
 
 template <typename Protocol_>
 void ParamServiceAsyncClient::void_ret_byte_i16_paramT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int8_t param1, int16_t param2) {
-  struct HeaderAndReqContext {
-    HeaderAndReqContext() : header(apache::thrift::transport::THeader::ALLOW_BIG_FRAMES) {}
-
-    apache::thrift::transport::THeader header;
-    apache::thrift::Cpp2ClientRequestContext reqContext;
-  };
-  auto headerAndReqContext = std::make_shared<HeaderAndReqContext>();
+  auto headerAndReqContext = std::make_shared<apache::thrift::detail::ac::HeaderAndReqContext>();
   std::shared_ptr<apache::thrift::transport::THeader> header(headerAndReqContext, &headerAndReqContext->header);
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
@@ -124,13 +113,7 @@ void ParamServiceAsyncClient::void_ret_byte_i16_paramT(Protocol_* prot, bool use
 
 template <typename Protocol_>
 void ParamServiceAsyncClient::void_ret_map_paramT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const std::map<std::string, int64_t>& param1) {
-  struct HeaderAndReqContext {
-    HeaderAndReqContext() : header(apache::thrift::transport::THeader::ALLOW_BIG_FRAMES) {}
-
-    apache::thrift::transport::THeader header;
-    apache::thrift::Cpp2ClientRequestContext reqContext;
-  };
-  auto headerAndReqContext = std::make_shared<HeaderAndReqContext>();
+  auto headerAndReqContext = std::make_shared<apache::thrift::detail::ac::HeaderAndReqContext>();
   std::shared_ptr<apache::thrift::transport::THeader> header(headerAndReqContext, &headerAndReqContext->header);
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
@@ -146,13 +129,7 @@ void ParamServiceAsyncClient::void_ret_map_paramT(Protocol_* prot, bool useSync,
 
 template <typename Protocol_>
 void ParamServiceAsyncClient::void_ret_map_setlist_paramT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const std::map<std::string, int64_t>& param1, const std::set<std::vector<std::string>>& param2) {
-  struct HeaderAndReqContext {
-    HeaderAndReqContext() : header(apache::thrift::transport::THeader::ALLOW_BIG_FRAMES) {}
-
-    apache::thrift::transport::THeader header;
-    apache::thrift::Cpp2ClientRequestContext reqContext;
-  };
-  auto headerAndReqContext = std::make_shared<HeaderAndReqContext>();
+  auto headerAndReqContext = std::make_shared<apache::thrift::detail::ac::HeaderAndReqContext>();
   std::shared_ptr<apache::thrift::transport::THeader> header(headerAndReqContext, &headerAndReqContext->header);
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
@@ -169,13 +146,7 @@ void ParamServiceAsyncClient::void_ret_map_setlist_paramT(Protocol_* prot, bool 
 
 template <typename Protocol_>
 void ParamServiceAsyncClient::void_ret_map_typedef_paramT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback,  ::some::valid::ns::simpleTypeDef param1) {
-  struct HeaderAndReqContext {
-    HeaderAndReqContext() : header(apache::thrift::transport::THeader::ALLOW_BIG_FRAMES) {}
-
-    apache::thrift::transport::THeader header;
-    apache::thrift::Cpp2ClientRequestContext reqContext;
-  };
-  auto headerAndReqContext = std::make_shared<HeaderAndReqContext>();
+  auto headerAndReqContext = std::make_shared<apache::thrift::detail::ac::HeaderAndReqContext>();
   std::shared_ptr<apache::thrift::transport::THeader> header(headerAndReqContext, &headerAndReqContext->header);
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
@@ -191,13 +162,7 @@ void ParamServiceAsyncClient::void_ret_map_typedef_paramT(Protocol_* prot, bool 
 
 template <typename Protocol_>
 void ParamServiceAsyncClient::void_ret_enum_paramT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback,  ::some::valid::ns::MyEnumA param1) {
-  struct HeaderAndReqContext {
-    HeaderAndReqContext() : header(apache::thrift::transport::THeader::ALLOW_BIG_FRAMES) {}
-
-    apache::thrift::transport::THeader header;
-    apache::thrift::Cpp2ClientRequestContext reqContext;
-  };
-  auto headerAndReqContext = std::make_shared<HeaderAndReqContext>();
+  auto headerAndReqContext = std::make_shared<apache::thrift::detail::ac::HeaderAndReqContext>();
   std::shared_ptr<apache::thrift::transport::THeader> header(headerAndReqContext, &headerAndReqContext->header);
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
@@ -213,13 +178,7 @@ void ParamServiceAsyncClient::void_ret_enum_paramT(Protocol_* prot, bool useSync
 
 template <typename Protocol_>
 void ParamServiceAsyncClient::void_ret_struct_paramT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const  ::some::valid::ns::MyStruct& param1) {
-  struct HeaderAndReqContext {
-    HeaderAndReqContext() : header(apache::thrift::transport::THeader::ALLOW_BIG_FRAMES) {}
-
-    apache::thrift::transport::THeader header;
-    apache::thrift::Cpp2ClientRequestContext reqContext;
-  };
-  auto headerAndReqContext = std::make_shared<HeaderAndReqContext>();
+  auto headerAndReqContext = std::make_shared<apache::thrift::detail::ac::HeaderAndReqContext>();
   std::shared_ptr<apache::thrift::transport::THeader> header(headerAndReqContext, &headerAndReqContext->header);
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
@@ -235,13 +194,7 @@ void ParamServiceAsyncClient::void_ret_struct_paramT(Protocol_* prot, bool useSy
 
 template <typename Protocol_>
 void ParamServiceAsyncClient::void_ret_listunion_paramT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const std::vector< ::some::valid::ns::ComplexUnion>& param1) {
-  struct HeaderAndReqContext {
-    HeaderAndReqContext() : header(apache::thrift::transport::THeader::ALLOW_BIG_FRAMES) {}
-
-    apache::thrift::transport::THeader header;
-    apache::thrift::Cpp2ClientRequestContext reqContext;
-  };
-  auto headerAndReqContext = std::make_shared<HeaderAndReqContext>();
+  auto headerAndReqContext = std::make_shared<apache::thrift::detail::ac::HeaderAndReqContext>();
   std::shared_ptr<apache::thrift::transport::THeader> header(headerAndReqContext, &headerAndReqContext->header);
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
@@ -257,13 +210,7 @@ void ParamServiceAsyncClient::void_ret_listunion_paramT(Protocol_* prot, bool us
 
 template <typename Protocol_>
 void ParamServiceAsyncClient::bool_ret_i32_i64_paramT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t param1, int64_t param2) {
-  struct HeaderAndReqContext {
-    HeaderAndReqContext() : header(apache::thrift::transport::THeader::ALLOW_BIG_FRAMES) {}
-
-    apache::thrift::transport::THeader header;
-    apache::thrift::Cpp2ClientRequestContext reqContext;
-  };
-  auto headerAndReqContext = std::make_shared<HeaderAndReqContext>();
+  auto headerAndReqContext = std::make_shared<apache::thrift::detail::ac::HeaderAndReqContext>();
   std::shared_ptr<apache::thrift::transport::THeader> header(headerAndReqContext, &headerAndReqContext->header);
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
@@ -280,13 +227,7 @@ void ParamServiceAsyncClient::bool_ret_i32_i64_paramT(Protocol_* prot, bool useS
 
 template <typename Protocol_>
 void ParamServiceAsyncClient::bool_ret_map_paramT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const std::map<std::string, int64_t>& param1) {
-  struct HeaderAndReqContext {
-    HeaderAndReqContext() : header(apache::thrift::transport::THeader::ALLOW_BIG_FRAMES) {}
-
-    apache::thrift::transport::THeader header;
-    apache::thrift::Cpp2ClientRequestContext reqContext;
-  };
-  auto headerAndReqContext = std::make_shared<HeaderAndReqContext>();
+  auto headerAndReqContext = std::make_shared<apache::thrift::detail::ac::HeaderAndReqContext>();
   std::shared_ptr<apache::thrift::transport::THeader> header(headerAndReqContext, &headerAndReqContext->header);
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
@@ -302,13 +243,7 @@ void ParamServiceAsyncClient::bool_ret_map_paramT(Protocol_* prot, bool useSync,
 
 template <typename Protocol_>
 void ParamServiceAsyncClient::bool_ret_union_paramT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const  ::some::valid::ns::ComplexUnion& param1) {
-  struct HeaderAndReqContext {
-    HeaderAndReqContext() : header(apache::thrift::transport::THeader::ALLOW_BIG_FRAMES) {}
-
-    apache::thrift::transport::THeader header;
-    apache::thrift::Cpp2ClientRequestContext reqContext;
-  };
-  auto headerAndReqContext = std::make_shared<HeaderAndReqContext>();
+  auto headerAndReqContext = std::make_shared<apache::thrift::detail::ac::HeaderAndReqContext>();
   std::shared_ptr<apache::thrift::transport::THeader> header(headerAndReqContext, &headerAndReqContext->header);
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
@@ -324,13 +259,7 @@ void ParamServiceAsyncClient::bool_ret_union_paramT(Protocol_* prot, bool useSyn
 
 template <typename Protocol_>
 void ParamServiceAsyncClient::i64_ret_float_double_paramT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, float param1, double param2) {
-  struct HeaderAndReqContext {
-    HeaderAndReqContext() : header(apache::thrift::transport::THeader::ALLOW_BIG_FRAMES) {}
-
-    apache::thrift::transport::THeader header;
-    apache::thrift::Cpp2ClientRequestContext reqContext;
-  };
-  auto headerAndReqContext = std::make_shared<HeaderAndReqContext>();
+  auto headerAndReqContext = std::make_shared<apache::thrift::detail::ac::HeaderAndReqContext>();
   std::shared_ptr<apache::thrift::transport::THeader> header(headerAndReqContext, &headerAndReqContext->header);
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
@@ -347,13 +276,7 @@ void ParamServiceAsyncClient::i64_ret_float_double_paramT(Protocol_* prot, bool 
 
 template <typename Protocol_>
 void ParamServiceAsyncClient::i64_ret_string_typedef_paramT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const std::string& param1, const std::set< ::some::valid::ns::mostComplexTypeDef>& param2) {
-  struct HeaderAndReqContext {
-    HeaderAndReqContext() : header(apache::thrift::transport::THeader::ALLOW_BIG_FRAMES) {}
-
-    apache::thrift::transport::THeader header;
-    apache::thrift::Cpp2ClientRequestContext reqContext;
-  };
-  auto headerAndReqContext = std::make_shared<HeaderAndReqContext>();
+  auto headerAndReqContext = std::make_shared<apache::thrift::detail::ac::HeaderAndReqContext>();
   std::shared_ptr<apache::thrift::transport::THeader> header(headerAndReqContext, &headerAndReqContext->header);
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
@@ -370,13 +293,7 @@ void ParamServiceAsyncClient::i64_ret_string_typedef_paramT(Protocol_* prot, boo
 
 template <typename Protocol_>
 void ParamServiceAsyncClient::i64_ret_i32_i32_i32_i32_i32_paramT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t param1, int32_t param2, int32_t param3, int32_t param4, int32_t param5) {
-  struct HeaderAndReqContext {
-    HeaderAndReqContext() : header(apache::thrift::transport::THeader::ALLOW_BIG_FRAMES) {}
-
-    apache::thrift::transport::THeader header;
-    apache::thrift::Cpp2ClientRequestContext reqContext;
-  };
-  auto headerAndReqContext = std::make_shared<HeaderAndReqContext>();
+  auto headerAndReqContext = std::make_shared<apache::thrift::detail::ac::HeaderAndReqContext>();
   std::shared_ptr<apache::thrift::transport::THeader> header(headerAndReqContext, &headerAndReqContext->header);
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
@@ -396,13 +313,7 @@ void ParamServiceAsyncClient::i64_ret_i32_i32_i32_i32_i32_paramT(Protocol_* prot
 
 template <typename Protocol_>
 void ParamServiceAsyncClient::double_ret_setstruct_paramT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const std::set< ::some::valid::ns::MyStruct>& param1) {
-  struct HeaderAndReqContext {
-    HeaderAndReqContext() : header(apache::thrift::transport::THeader::ALLOW_BIG_FRAMES) {}
-
-    apache::thrift::transport::THeader header;
-    apache::thrift::Cpp2ClientRequestContext reqContext;
-  };
-  auto headerAndReqContext = std::make_shared<HeaderAndReqContext>();
+  auto headerAndReqContext = std::make_shared<apache::thrift::detail::ac::HeaderAndReqContext>();
   std::shared_ptr<apache::thrift::transport::THeader> header(headerAndReqContext, &headerAndReqContext->header);
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
@@ -418,13 +329,7 @@ void ParamServiceAsyncClient::double_ret_setstruct_paramT(Protocol_* prot, bool 
 
 template <typename Protocol_>
 void ParamServiceAsyncClient::string_ret_string_paramT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const std::string& param1) {
-  struct HeaderAndReqContext {
-    HeaderAndReqContext() : header(apache::thrift::transport::THeader::ALLOW_BIG_FRAMES) {}
-
-    apache::thrift::transport::THeader header;
-    apache::thrift::Cpp2ClientRequestContext reqContext;
-  };
-  auto headerAndReqContext = std::make_shared<HeaderAndReqContext>();
+  auto headerAndReqContext = std::make_shared<apache::thrift::detail::ac::HeaderAndReqContext>();
   std::shared_ptr<apache::thrift::transport::THeader> header(headerAndReqContext, &headerAndReqContext->header);
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
@@ -440,13 +345,7 @@ void ParamServiceAsyncClient::string_ret_string_paramT(Protocol_* prot, bool use
 
 template <typename Protocol_>
 void ParamServiceAsyncClient::binary_ret_binary_paramT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const std::string& param1) {
-  struct HeaderAndReqContext {
-    HeaderAndReqContext() : header(apache::thrift::transport::THeader::ALLOW_BIG_FRAMES) {}
-
-    apache::thrift::transport::THeader header;
-    apache::thrift::Cpp2ClientRequestContext reqContext;
-  };
-  auto headerAndReqContext = std::make_shared<HeaderAndReqContext>();
+  auto headerAndReqContext = std::make_shared<apache::thrift::detail::ac::HeaderAndReqContext>();
   std::shared_ptr<apache::thrift::transport::THeader> header(headerAndReqContext, &headerAndReqContext->header);
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
@@ -462,13 +361,7 @@ void ParamServiceAsyncClient::binary_ret_binary_paramT(Protocol_* prot, bool use
 
 template <typename Protocol_>
 void ParamServiceAsyncClient::map_ret_bool_paramT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, bool param1) {
-  struct HeaderAndReqContext {
-    HeaderAndReqContext() : header(apache::thrift::transport::THeader::ALLOW_BIG_FRAMES) {}
-
-    apache::thrift::transport::THeader header;
-    apache::thrift::Cpp2ClientRequestContext reqContext;
-  };
-  auto headerAndReqContext = std::make_shared<HeaderAndReqContext>();
+  auto headerAndReqContext = std::make_shared<apache::thrift::detail::ac::HeaderAndReqContext>();
   std::shared_ptr<apache::thrift::transport::THeader> header(headerAndReqContext, &headerAndReqContext->header);
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
@@ -484,13 +377,7 @@ void ParamServiceAsyncClient::map_ret_bool_paramT(Protocol_* prot, bool useSync,
 
 template <typename Protocol_>
 void ParamServiceAsyncClient::list_ret_map_setlist_paramT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const std::map<int32_t, std::vector<std::string>>& param1, const std::vector<std::string>& param2) {
-  struct HeaderAndReqContext {
-    HeaderAndReqContext() : header(apache::thrift::transport::THeader::ALLOW_BIG_FRAMES) {}
-
-    apache::thrift::transport::THeader header;
-    apache::thrift::Cpp2ClientRequestContext reqContext;
-  };
-  auto headerAndReqContext = std::make_shared<HeaderAndReqContext>();
+  auto headerAndReqContext = std::make_shared<apache::thrift::detail::ac::HeaderAndReqContext>();
   std::shared_ptr<apache::thrift::transport::THeader> header(headerAndReqContext, &headerAndReqContext->header);
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
@@ -507,13 +394,7 @@ void ParamServiceAsyncClient::list_ret_map_setlist_paramT(Protocol_* prot, bool 
 
 template <typename Protocol_>
 void ParamServiceAsyncClient::mapsetlistmapliststring_ret_listlistlist_paramT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const std::vector<std::vector<std::vector<std::vector<int32_t>>>>& param1) {
-  struct HeaderAndReqContext {
-    HeaderAndReqContext() : header(apache::thrift::transport::THeader::ALLOW_BIG_FRAMES) {}
-
-    apache::thrift::transport::THeader header;
-    apache::thrift::Cpp2ClientRequestContext reqContext;
-  };
-  auto headerAndReqContext = std::make_shared<HeaderAndReqContext>();
+  auto headerAndReqContext = std::make_shared<apache::thrift::detail::ac::HeaderAndReqContext>();
   std::shared_ptr<apache::thrift::transport::THeader> header(headerAndReqContext, &headerAndReqContext->header);
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
@@ -529,13 +410,7 @@ void ParamServiceAsyncClient::mapsetlistmapliststring_ret_listlistlist_paramT(Pr
 
 template <typename Protocol_>
 void ParamServiceAsyncClient::typedef_ret_i32_paramT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t param1) {
-  struct HeaderAndReqContext {
-    HeaderAndReqContext() : header(apache::thrift::transport::THeader::ALLOW_BIG_FRAMES) {}
-
-    apache::thrift::transport::THeader header;
-    apache::thrift::Cpp2ClientRequestContext reqContext;
-  };
-  auto headerAndReqContext = std::make_shared<HeaderAndReqContext>();
+  auto headerAndReqContext = std::make_shared<apache::thrift::detail::ac::HeaderAndReqContext>();
   std::shared_ptr<apache::thrift::transport::THeader> header(headerAndReqContext, &headerAndReqContext->header);
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
@@ -551,13 +426,7 @@ void ParamServiceAsyncClient::typedef_ret_i32_paramT(Protocol_* prot, bool useSy
 
 template <typename Protocol_>
 void ParamServiceAsyncClient::listtypedef_ret_typedef_paramT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const  ::some::valid::ns::complexStructTypeDef& param1) {
-  struct HeaderAndReqContext {
-    HeaderAndReqContext() : header(apache::thrift::transport::THeader::ALLOW_BIG_FRAMES) {}
-
-    apache::thrift::transport::THeader header;
-    apache::thrift::Cpp2ClientRequestContext reqContext;
-  };
-  auto headerAndReqContext = std::make_shared<HeaderAndReqContext>();
+  auto headerAndReqContext = std::make_shared<apache::thrift::detail::ac::HeaderAndReqContext>();
   std::shared_ptr<apache::thrift::transport::THeader> header(headerAndReqContext, &headerAndReqContext->header);
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
@@ -573,13 +442,7 @@ void ParamServiceAsyncClient::listtypedef_ret_typedef_paramT(Protocol_* prot, bo
 
 template <typename Protocol_>
 void ParamServiceAsyncClient::enum_ret_double_paramT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, double param1) {
-  struct HeaderAndReqContext {
-    HeaderAndReqContext() : header(apache::thrift::transport::THeader::ALLOW_BIG_FRAMES) {}
-
-    apache::thrift::transport::THeader header;
-    apache::thrift::Cpp2ClientRequestContext reqContext;
-  };
-  auto headerAndReqContext = std::make_shared<HeaderAndReqContext>();
+  auto headerAndReqContext = std::make_shared<apache::thrift::detail::ac::HeaderAndReqContext>();
   std::shared_ptr<apache::thrift::transport::THeader> header(headerAndReqContext, &headerAndReqContext->header);
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
@@ -595,13 +458,7 @@ void ParamServiceAsyncClient::enum_ret_double_paramT(Protocol_* prot, bool useSy
 
 template <typename Protocol_>
 void ParamServiceAsyncClient::enum_ret_double_enum_paramT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, double param1,  ::some::valid::ns::MyEnumA param2) {
-  struct HeaderAndReqContext {
-    HeaderAndReqContext() : header(apache::thrift::transport::THeader::ALLOW_BIG_FRAMES) {}
-
-    apache::thrift::transport::THeader header;
-    apache::thrift::Cpp2ClientRequestContext reqContext;
-  };
-  auto headerAndReqContext = std::make_shared<HeaderAndReqContext>();
+  auto headerAndReqContext = std::make_shared<apache::thrift::detail::ac::HeaderAndReqContext>();
   std::shared_ptr<apache::thrift::transport::THeader> header(headerAndReqContext, &headerAndReqContext->header);
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
@@ -618,13 +475,7 @@ void ParamServiceAsyncClient::enum_ret_double_enum_paramT(Protocol_* prot, bool 
 
 template <typename Protocol_>
 void ParamServiceAsyncClient::listenum_ret_map_paramT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const std::map<std::string, int64_t>& param1) {
-  struct HeaderAndReqContext {
-    HeaderAndReqContext() : header(apache::thrift::transport::THeader::ALLOW_BIG_FRAMES) {}
-
-    apache::thrift::transport::THeader header;
-    apache::thrift::Cpp2ClientRequestContext reqContext;
-  };
-  auto headerAndReqContext = std::make_shared<HeaderAndReqContext>();
+  auto headerAndReqContext = std::make_shared<apache::thrift::detail::ac::HeaderAndReqContext>();
   std::shared_ptr<apache::thrift::transport::THeader> header(headerAndReqContext, &headerAndReqContext->header);
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
@@ -640,13 +491,7 @@ void ParamServiceAsyncClient::listenum_ret_map_paramT(Protocol_* prot, bool useS
 
 template <typename Protocol_>
 void ParamServiceAsyncClient::struct_ret_i16_paramT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int16_t param1) {
-  struct HeaderAndReqContext {
-    HeaderAndReqContext() : header(apache::thrift::transport::THeader::ALLOW_BIG_FRAMES) {}
-
-    apache::thrift::transport::THeader header;
-    apache::thrift::Cpp2ClientRequestContext reqContext;
-  };
-  auto headerAndReqContext = std::make_shared<HeaderAndReqContext>();
+  auto headerAndReqContext = std::make_shared<apache::thrift::detail::ac::HeaderAndReqContext>();
   std::shared_ptr<apache::thrift::transport::THeader> header(headerAndReqContext, &headerAndReqContext->header);
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
@@ -662,13 +507,7 @@ void ParamServiceAsyncClient::struct_ret_i16_paramT(Protocol_* prot, bool useSyn
 
 template <typename Protocol_>
 void ParamServiceAsyncClient::setstruct_ret_set_paramT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const std::set<std::string>& param1) {
-  struct HeaderAndReqContext {
-    HeaderAndReqContext() : header(apache::thrift::transport::THeader::ALLOW_BIG_FRAMES) {}
-
-    apache::thrift::transport::THeader header;
-    apache::thrift::Cpp2ClientRequestContext reqContext;
-  };
-  auto headerAndReqContext = std::make_shared<HeaderAndReqContext>();
+  auto headerAndReqContext = std::make_shared<apache::thrift::detail::ac::HeaderAndReqContext>();
   std::shared_ptr<apache::thrift::transport::THeader> header(headerAndReqContext, &headerAndReqContext->header);
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
@@ -684,13 +523,7 @@ void ParamServiceAsyncClient::setstruct_ret_set_paramT(Protocol_* prot, bool use
 
 template <typename Protocol_>
 void ParamServiceAsyncClient::union_ret_i32_i32_paramT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t param1, int32_t param2) {
-  struct HeaderAndReqContext {
-    HeaderAndReqContext() : header(apache::thrift::transport::THeader::ALLOW_BIG_FRAMES) {}
-
-    apache::thrift::transport::THeader header;
-    apache::thrift::Cpp2ClientRequestContext reqContext;
-  };
-  auto headerAndReqContext = std::make_shared<HeaderAndReqContext>();
+  auto headerAndReqContext = std::make_shared<apache::thrift::detail::ac::HeaderAndReqContext>();
   std::shared_ptr<apache::thrift::transport::THeader> header(headerAndReqContext, &headerAndReqContext->header);
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
@@ -707,13 +540,7 @@ void ParamServiceAsyncClient::union_ret_i32_i32_paramT(Protocol_* prot, bool use
 
 template <typename Protocol_>
 void ParamServiceAsyncClient::listunion_string_paramT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const std::string& param1) {
-  struct HeaderAndReqContext {
-    HeaderAndReqContext() : header(apache::thrift::transport::THeader::ALLOW_BIG_FRAMES) {}
-
-    apache::thrift::transport::THeader header;
-    apache::thrift::Cpp2ClientRequestContext reqContext;
-  };
-  auto headerAndReqContext = std::make_shared<HeaderAndReqContext>();
+  auto headerAndReqContext = std::make_shared<apache::thrift::detail::ac::HeaderAndReqContext>();
   std::shared_ptr<apache::thrift::transport::THeader> header(headerAndReqContext, &headerAndReqContext->header);
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
