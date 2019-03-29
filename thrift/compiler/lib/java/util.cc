@@ -21,6 +21,8 @@
 
 #include <thrift/compiler/lib/java/util.h>
 
+#include <cctype>
+
 namespace apache {
 namespace thrift {
 namespace compiler {
