@@ -14,7 +14,7 @@ namespace java.swift org.apache.thrift.dynamic
 cpp_include "thrift/lib/thrift/SerializableDynamic.h"
 
 union Dynamic {
-  1: bool boolean;
+  1: bool boolean (java.swift.name = "_boolean");
   2: i64 integer;
   3: double doubl;
   4: binary str;
