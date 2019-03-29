@@ -42,10 +42,12 @@ target_compile_definitions(
  compiler_base
  PRIVATE -DTHRIFTY_HH="${COMPILER_DIR}/thrifty.hh"
 )
-target_compile_options(
- compiler_base
- PUBLIC "-Wno-deprecated-register"
-)
+if (NOT MSVC)
+  target_compile_options(
+    compiler_base
+    PUBLIC "-Wno-deprecated-register"
+  )
+endif()
 target_link_libraries(
   compiler_base
 
@@ -127,6 +129,7 @@ target_link_libraries(
   compiler_ast
   compiler_base
   ${GENERATE_LINKED}
+  ${Boost_LIBRARIES}
 )
 # Force compiler_generators linking (compiler will optimize it out otherwise)
 if(MSVC)
