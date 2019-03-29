@@ -40,7 +40,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
    * 
    * @see MyEnum
    */
-  public int myEnum;
+  public MyEnum myEnum;
   public static final int MYINTFIELD = 1;
   public static final int MYSTRINGFIELD = 2;
   public static final int MYDATAFIELD = 3;
@@ -82,7 +82,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
     String MyStringField,
     MyDataItem MyDataField,
     long major,
-    int myEnum)
+    MyEnum myEnum)
   {
     this();
     this.MyIntField = MyIntField;
@@ -219,7 +219,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
    * 
    * @see MyEnum
    */
-  public int  getMyEnum() {
+  public MyEnum  getMyEnum() {
     return this.myEnum;
   }
 
@@ -227,7 +227,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
    * 
    * @see MyEnum
    */
-  public MyStruct setMyEnum(int myEnum) {
+  public MyStruct setMyEnum(MyEnum myEnum) {
     this.myEnum = myEnum;
     setMyEnumIsSet(true);
     return this;
@@ -284,7 +284,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
       if (value == null) {
         unsetMyEnum();
       } else {
-        setMyEnum((Integer)value);
+        setMyEnum((MyEnum)value);
       }
       break;
 
@@ -500,7 +500,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
           break;
         case MYENUM:
           if (field.type == TType.I32) {
-            this.myEnum = iprot.readI32();
+            this.myEnum = MyEnum.findByValue(iprot.readI32());
             setMyEnumIsSet(true);
           } else { 
             TProtocolUtil.skip(iprot, field.type);
@@ -540,7 +540,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
     oprot.writeI64(this.major);
     oprot.writeFieldEnd();
     oprot.writeFieldBegin(MY_ENUM_FIELD_DESC);
-    oprot.writeI32(this.myEnum);
+    oprot.writeI32(this.myEnum.getValue());
     oprot.writeFieldEnd();
     oprot.writeFieldStop();
     oprot.writeStructEnd();
@@ -625,7 +625,7 @@ String space = prettyPrint ? " " : "";
   public void validate() throws TException {
     // check for required fields
     // check that fields of type enum have valid values
-    if (isSetMyEnum() && !MyEnum.VALID_VALUES.contains(myEnum)){
+    if (isSetMyEnum() && !MyEnum.VALID_VALUES.contains(myEnum.getValue())){
       throw new TProtocolException("The field 'myEnum' has been assigned the invalid value " + myEnum);
     }
   }
