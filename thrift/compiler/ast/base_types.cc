@@ -38,15 +38,6 @@ t_type* binary_type() {
   return &type;
 }
 
-t_type* slist_type() {
-  static t_base_type type = [] {
-    static t_base_type tmp_type{"string", t_base_type::TYPE_STRING};
-    tmp_type.set_string_list(true);
-    return tmp_type;
-  }();
-  return &type;
-}
-
 t_type* bool_type() {
   static t_base_type type{"bool", t_base_type::TYPE_BOOL};
   return &type;

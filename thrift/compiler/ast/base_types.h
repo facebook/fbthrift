@@ -29,7 +29,6 @@ namespace compiler {
 t_type* void_type();
 t_type* string_type();
 t_type* binary_type();
-t_type* slist_type();
 t_type* bool_type();
 t_type* byte_type();
 t_type* i16_type();

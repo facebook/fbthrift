@@ -52,7 +52,7 @@ class t_base_type : public t_type {
   };
 
   t_base_type(std::string name, t_base base)
-      : t_type(name), base_(base), string_list_(false), binary_(false) {}
+      : t_type(name), base_(base), binary_(false) {}
 
   t_base get_base() const {
     return base_;
@@ -100,14 +100,6 @@ class t_base_type : public t_type {
 
   bool is_floating_point() const override {
     return base_ == TYPE_DOUBLE || base_ == TYPE_FLOAT;
-  }
-
-  void set_string_list(bool val) {
-    string_list_ = val;
-  }
-
-  bool is_string_list() const {
-    return (base_ == TYPE_STRING) && string_list_;
   }
 
   void set_binary(bool val) {
@@ -166,7 +158,6 @@ class t_base_type : public t_type {
  private:
   t_base base_;
 
-  bool string_list_;
   bool binary_;
 };
 

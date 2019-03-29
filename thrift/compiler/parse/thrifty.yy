@@ -1375,11 +1375,6 @@ SimpleBaseType:
       driver.debug("BaseType -> tok_binary");
       $$ = binary_type();
     }
-| tok_slist
-    {
-      driver.debug("BaseType -> tok_slist");
-      $$ = slist_type();
-    }
 | tok_bool
     {
       driver.debug("BaseType -> tok_bool");

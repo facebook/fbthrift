@@ -3937,10 +3937,7 @@ void t_hack_generator::generate_service_rest(t_service* tservice, bool mangle) {
         f_service_ << indent() << "$" << (*a_iter)->get_name() << " = " << cast
                    << " idx($request, '" << (*a_iter)->get_name() << "');\n";
       }
-      if (atype->is_string() && ((t_base_type*)atype)->is_string_list()) {
-        f_service_ << indent() << "$" << (*a_iter)->get_name()
-                   << " = explode(',', $" << (*a_iter)->get_name() << ");\n";
-      } else if (atype->is_container()) {
+      if (atype->is_container()) {
         f_service_
             << indent()
             << "/* HH_FIXME[4107] */ /* HH_FIXME[2049] Previously hidden by unsafe */\n";

@@ -168,7 +168,6 @@ st_identifier ([a-zA-Z-][\.a-zA-Z_0-9-]*)
 "float"              { return apache::thrift::yy::parser::make_tok_float();                }
 "string"             { return apache::thrift::yy::parser::make_tok_string();               }
 "binary"             { return apache::thrift::yy::parser::make_tok_binary();               }
-"slist"              { return apache::thrift::yy::parser::make_tok_slist();                }
 "map"                { return apache::thrift::yy::parser::make_tok_map();                  }
 "hash_map"           { return apache::thrift::yy::parser::make_tok_hash_map();             }
 "list"               { return apache::thrift::yy::parser::make_tok_list();                 }

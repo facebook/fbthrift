@@ -2262,12 +2262,7 @@ void t_php_generator::generate_service_rest(t_service* tservice, bool mangle) {
           indent() << "$" << (*a_iter)->get_name() << " = isset(" << req
                    << ") ? " << cast << req << " : null;" << endl;
       }
-      if (atype->is_string() &&
-          ((t_base_type*)atype)->is_string_list()) {
-        f_service_ <<
-          indent() << "$" << (*a_iter)->get_name() << " = explode(',', $"
-                   << (*a_iter)->get_name() << ");" << endl;
-      } else if (atype->is_map() || atype->is_list()) {
+      if (atype->is_map() || atype->is_list()) {
         f_service_ <<
           indent() << "$" << (*a_iter)->get_name() << " = json_decode($"
                    << (*a_iter)->get_name() << ", true);" << endl;
