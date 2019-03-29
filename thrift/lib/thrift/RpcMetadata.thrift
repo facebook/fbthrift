@@ -118,6 +118,8 @@ struct ResponseRpcMetadata {
   // Server load. Returned to client if QUERY_SERVER_LOAD was set in request's
   // flags.
   4: optional i64 load;
+  // The CRC32C of the RPC response.
+  5: optional i32 (cpp.type = "std::uint32_t") crc32c;
 }
 
 // Setup parameters sent from the client to the server at the time

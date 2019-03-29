@@ -472,6 +472,12 @@ folly::exception_wrapper recv_wrapped_helper(
   MessageType mtype;
   ctx->preRead();
   try {
+    if (state.header()->getCrc32c().has_value() &&
+        checksum::crc32c(*state.buf()) != *state.header()->getCrc32c()) {
+      return folly::make_exception_wrapper<TApplicationException>(
+          TApplicationException::TApplicationExceptionType::CHECKSUM_MISMATCH,
+          "corrupted response");
+    }
     prot->readMessageBegin(fname, mtype, protoSeqId);
     if (mtype == T_EXCEPTION) {
       TApplicationException x;

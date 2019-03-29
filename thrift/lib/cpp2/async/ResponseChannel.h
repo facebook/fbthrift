@@ -84,15 +84,21 @@ class ResponseChannelRequest {
     return false;
   }
 
+  virtual bool isReplyChecksumNeeded() const {
+    return false;
+  }
+
   virtual void sendReply(
       std::unique_ptr<folly::IOBuf>&&,
-      MessageChannel::SendCallback* cb = nullptr) = 0;
+      MessageChannel::SendCallback* cb = nullptr,
+      folly::Optional<uint32_t> crc32 = folly::none) = 0;
 
   virtual void sendStreamReply(
       ResponseAndSemiStream<
           std::unique_ptr<folly::IOBuf>,
           std::unique_ptr<folly::IOBuf>>&&,
-      MessageChannel::SendCallback* = nullptr) {
+      MessageChannel::SendCallback* = nullptr,
+      folly::Optional<uint32_t> = folly::none) {
     throw std::logic_error("unimplemented");
   }
 

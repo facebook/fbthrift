@@ -183,7 +183,6 @@ TEST_P(StreamingTest, ChecksummingRequest) {
           REQUESTS = 1,
           RESPONSES = 2,
         };
-
         auto setCorruption = [&](CorruptionType corruptionType) {
           evbThread_.getEventBase()->runInEventBaseThreadAndWait([&]() {
             corruptionParams->corruptLastWriteByte_ =
@@ -199,8 +198,9 @@ TEST_P(StreamingTest, ChecksummingRequest) {
         std::unique_ptr<folly::IOBuf> payload =
             folly::IOBuf::copyBuffer(asString);
 
-        for (CorruptionType testType :
-             {CorruptionType::NONE, CorruptionType::REQUESTS}) {
+        for (CorruptionType testType : {CorruptionType::NONE,
+                                        CorruptionType::REQUESTS,
+                                        CorruptionType::RESPONSES}) {
           setCorruption(testType);
           bool didThrow = false;
           try {

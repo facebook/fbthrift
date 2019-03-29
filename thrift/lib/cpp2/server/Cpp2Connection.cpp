@@ -438,7 +438,8 @@ void Cpp2Connection::Cpp2Request::setServerHeaders() {
 
 void Cpp2Connection::Cpp2Request::sendReply(
     std::unique_ptr<folly::IOBuf>&& buf,
-    MessageChannel::SendCallback* sendCallback) {
+    MessageChannel::SendCallback* sendCallback,
+    folly::Optional<uint32_t>) {
   if (req_->isActive()) {
     setServerHeaders();
     markProcessEnd();

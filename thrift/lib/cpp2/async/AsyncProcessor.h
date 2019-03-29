@@ -31,6 +31,7 @@
 #include <thrift/lib/cpp2/async/ResponseChannel.h>
 #include <thrift/lib/cpp2/protocol/Protocol.h>
 #include <thrift/lib/cpp2/server/Cpp2ConnContext.h>
+#include <thrift/lib/cpp2/util/Checksum.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
 #include <wangle/deprecated/rx/Observer.h>
 
@@ -454,6 +455,18 @@ class HandlerCallbackBase {
     ewp_ = other.ewp_;
   }
 
+  folly::Optional<uint32_t> checksumIfNeeded(folly::IOBufQueue& queue) {
+    folly::Optional<uint32_t> crc32c;
+    if (req_->isReplyChecksumNeeded() && !queue.empty()) {
+      std::unique_ptr<folly::IOBuf> iobuf(queue.move());
+      if (iobuf) {
+        crc32c = checksum::crc32c(*iobuf);
+        queue.append(std::move(iobuf));
+      }
+    }
+    return crc32c;
+  }
+
   virtual void transform(folly::IOBufQueue& queue) {
     // Do any compression or other transforms in this thread, the same thread
     // that serialization happens on.
@@ -497,13 +510,14 @@ class HandlerCallbackBase {
   }
 
   void sendReply(folly::IOBufQueue queue) {
+    folly::Optional<uint32_t> crc32c = checksumIfNeeded(queue);
     transform(queue);
     if (getEventBase()->isInEventBaseThread()) {
-      req_->sendReply(queue.move());
+      req_->sendReply(queue.move(), nullptr, crc32c);
     } else {
       getEventBase()->runInEventBaseThread(
-          [req = std::move(req_), queue = std::move(queue)]() mutable {
-            req->sendReply(queue.move());
+          [req = std::move(req_), queue = std::move(queue), crc32c]() mutable {
+            req->sendReply(queue.move(), nullptr, crc32c);
           });
     }
   }
@@ -946,16 +960,17 @@ class StreamingHandlerCallback
       folly::IOBufQueue queue,
       const std::string& key,
       const std::string& value) {
+    folly::Optional<uint32_t> crc32c = checksumIfNeeded(queue);
     transform(queue);
     if (getEventBase()->isInEventBaseThread()) {
       reqCtx_->setHeader(key, value);
-      req_->sendReply(queue.move());
+      req_->sendReply(queue.move(), nullptr, crc32c);
     } else {
       auto req_raw = req_.get();
       getEventBase()->runInEventBaseThread(
           [=, queue = std::move(queue)]() mutable {
             reqCtx_->setHeader(key, value);
-            req_raw->sendReply(queue.move());
+            req_raw->sendReply(queue.move(), nullptr, crc32c);
           });
     }
   }

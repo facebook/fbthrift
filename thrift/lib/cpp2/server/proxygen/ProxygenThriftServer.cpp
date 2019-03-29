@@ -176,7 +176,8 @@ void ProxygenThriftServer::ThriftRequestHandler::onError(
 
 void ProxygenThriftServer::ThriftRequestHandler::sendReply(
     std::unique_ptr<folly::IOBuf>&& buf, // && from ResponseChannel.h
-    apache::thrift::MessageChannel::SendCallback* cb) {
+    apache::thrift::MessageChannel::SendCallback* cb,
+    folly::Optional<uint32_t>) {
   queueTimeout_.cancelTimeout();
   taskTimeout_.cancelTimeout();
 

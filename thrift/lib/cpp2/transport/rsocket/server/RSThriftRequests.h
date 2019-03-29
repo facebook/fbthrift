@@ -86,6 +86,10 @@ class RSSingleRequest final : public ThriftRequestCore {
 
   folly::EventBase* getEventBase() noexcept override;
 
+  bool isReplyChecksumNeeded() const override {
+    return true;
+  }
+
  private:
   folly::EventBase* evb_;
   std::shared_ptr<yarpl::single::SingleObserver<rsocket::Payload>>
@@ -117,6 +121,10 @@ class RSStreamRequest final : public ThriftRequestCore {
           stream) noexcept override;
 
   folly::EventBase* getEventBase() noexcept override;
+
+  bool isReplyChecksumNeeded() const override {
+    return true;
+  }
 
  protected:
   folly::EventBase* evb_;

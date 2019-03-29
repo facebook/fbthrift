@@ -721,7 +721,7 @@ void TransportCompatibilityTest::TestRequestResponse_Checksumming() {
       REQUESTS = 1,
       RESPONSES = 2,
     };
-    EXPECT_CALL(*handler_.get(), echo_(_)).Times(1);
+    EXPECT_CALL(*handler_.get(), echo_(_)).Times(2);
 
     auto setCorruption = [&](CorruptionType corruptionType) {
       auto channel = static_cast<ClientChannel*>(client->getChannel());
@@ -735,8 +735,9 @@ void TransportCompatibilityTest::TestRequestResponse_Checksumming() {
       });
     };
 
-    for (CorruptionType testType :
-         {CorruptionType::NONE, CorruptionType::REQUESTS}) {
+    for (CorruptionType testType : {CorruptionType::NONE,
+                                    CorruptionType::REQUESTS,
+                                    CorruptionType::RESPONSES}) {
       static const int kSize = 32 << 10;
       std::string asString(kSize, 'a');
       std::unique_ptr<folly::IOBuf> payload =

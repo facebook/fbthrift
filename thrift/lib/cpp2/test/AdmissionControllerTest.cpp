@@ -46,8 +46,10 @@ class DummyRequest : public ResponseChannelRequest {
   bool isOneway() const override {
     return false;
   }
-  void sendReply(std::unique_ptr<folly::IOBuf>&&, MessageChannel::SendCallback*)
-      override {}
+  void sendReply(
+      std::unique_ptr<folly::IOBuf>&&,
+      MessageChannel::SendCallback*,
+      folly::Optional<uint32_t>) override {}
 
   void sendErrorWrapped(
       folly::exception_wrapper,

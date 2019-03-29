@@ -157,7 +157,8 @@ class Cpp2Connection : public ResponseChannel::Callback,
 
     void sendReply(
         std::unique_ptr<folly::IOBuf>&& buf,
-        MessageChannel::SendCallback* notUsed = nullptr) override;
+        MessageChannel::SendCallback* notUsed = nullptr,
+        folly::Optional<uint32_t> crc32c = folly::none) override;
     void sendErrorWrapped(
         folly::exception_wrapper ew,
         std::string exCode,

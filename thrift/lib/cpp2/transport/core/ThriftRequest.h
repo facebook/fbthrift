@@ -139,11 +139,16 @@ class ThriftRequestCore : public ResponseChannelRequest {
 
   void sendReply(
       std::unique_ptr<folly::IOBuf>&& buf,
-      apache::thrift::MessageChannel::SendCallback* = nullptr) final {
+      apache::thrift::MessageChannel::SendCallback*,
+      folly::Optional<uint32_t> crc32c) override final {
     if (active_.exchange(false)) {
       cancelTimeout();
       if (!isOneway()) {
-        sendReplyInternal(std::move(buf));
+        auto metadata = makeResponseRpcMetadata();
+        if (crc32c) {
+          metadata->crc32c_ref() = *crc32c;
+        }
+        sendReplyInternal(std::move(metadata), std::move(buf));
         if (auto observer = serverConfigs_.getObserver()) {
           observer->sentReply();
         }
@@ -155,10 +160,18 @@ class ThriftRequestCore : public ResponseChannelRequest {
       ResponseAndSemiStream<
           std::unique_ptr<folly::IOBuf>,
           std::unique_ptr<folly::IOBuf>>&& result,
-      MessageChannel::SendCallback* = nullptr) final {
+      MessageChannel::SendCallback*,
+      folly::Optional<uint32_t> crc32c) override final {
     if (active_.exchange(false)) {
       cancelTimeout();
-      sendReplyInternal(std::move(result.response), std::move(result.stream));
+      auto metadata = makeResponseRpcMetadata();
+      if (crc32c) {
+        metadata->crc32c_ref() = *crc32c;
+      }
+      sendReplyInternal(
+          std::move(metadata),
+          std::move(result.response),
+          std::move(result.stream));
 
       auto observer = serverConfigs_.getObserver();
       if (observer) {
@@ -212,20 +225,23 @@ class ThriftRequestCore : public ResponseChannelRequest {
   }
 
  private:
-  void sendReplyInternal(std::unique_ptr<folly::IOBuf> buf) {
+  void sendReplyInternal(
+      std::unique_ptr<ResponseRpcMetadata> metadata,
+      std::unique_ptr<folly::IOBuf> buf) {
     if (checkResponseSize(*buf)) {
-      sendThriftResponse(makeResponseRpcMetadata(), std::move(buf));
+      sendThriftResponse(std::move(metadata), std::move(buf));
     } else {
       sendResponseTooBigEx();
     }
   }
 
   void sendReplyInternal(
+      std::unique_ptr<ResponseRpcMetadata> metadata,
       std::unique_ptr<folly::IOBuf> buf,
       apache::thrift::SemiStream<std::unique_ptr<folly::IOBuf>> stream) {
     if (checkResponseSize(*buf)) {
       sendStreamThriftResponse(
-          makeResponseRpcMetadata(), std::move(buf), std::move(stream));
+          std::move(metadata), std::move(buf), std::move(stream));
     } else {
       sendResponseTooBigEx();
     }

@@ -145,7 +145,8 @@ class HeaderServerChannel : public ServerChannel,
 
     void sendReply(
         std::unique_ptr<folly::IOBuf>&&,
-        MessageChannel::SendCallback* cb = nullptr) override;
+        MessageChannel::SendCallback* cb = nullptr,
+        folly::Optional<uint32_t> crc32 = folly::none) override;
 
     void serializeAndSendError(
         apache::thrift::transport::THeader& header,

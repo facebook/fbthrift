@@ -128,7 +128,8 @@ class ProxygenThriftServer : public BaseThriftServer,
 
     void sendReply(
         std::unique_ptr<folly::IOBuf>&&, // && from ResponseChannel.h
-        apache::thrift::MessageChannel::SendCallback* cb = nullptr) override;
+        apache::thrift::MessageChannel::SendCallback* cb = nullptr,
+        folly::Optional<uint32_t> crc32c = folly::none) override;
 
     void sendErrorWrapped(
         folly::exception_wrapper ex,
@@ -185,7 +186,8 @@ class ProxygenThriftServer : public BaseThriftServer,
 
       void sendReply(
           std::unique_ptr<folly::IOBuf>&& buf, // && from ResponseChannel.h
-          apache::thrift::MessageChannel::SendCallback* cb = nullptr) override {
+          apache::thrift::MessageChannel::SendCallback* cb = nullptr,
+          folly::Optional<uint32_t> = folly::none) override {
         if (handler_) {
           handler_->sendReply(std::move(buf), cb);
         }

@@ -218,7 +218,8 @@ HeaderServerChannel::HeaderRequest::HeaderRequest(
  */
 void HeaderServerChannel::HeaderRequest::sendReply(
     unique_ptr<IOBuf>&& buf,
-    MessageChannel::SendCallback* cb) {
+    MessageChannel::SendCallback* cb,
+    folly::Optional<uint32_t>) {
   // This method is only called and active_ is only touched in evb, so
   // it is safe to use this flag from both timeout and normal responses.
   auto& header = active_ ? header_ : timeoutHeader_;

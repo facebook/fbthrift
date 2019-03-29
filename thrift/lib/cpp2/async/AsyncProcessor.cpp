@@ -29,18 +29,19 @@ thread_local RequestParams ServerInterface::requestParams_;
 void HandlerCallbackBase::sendReply(
     folly::IOBufQueue queue,
     apache::thrift::Stream<folly::IOBufQueue>&& stream) {
+  folly::Optional<uint32_t> crc32c = checksumIfNeeded(queue);
   transform(queue);
   auto stream_ =
       std::move(stream).map([](auto&& value) mutable { return value.move(); });
   if (getEventBase()->isInEventBaseThread()) {
-    req_->sendStreamReply({queue.move(), std::move(stream_)});
+    req_->sendStreamReply({queue.move(), std::move(stream_)}, nullptr, crc32c);
   } else {
-    getEventBase()->runInEventBaseThread(
-        [req = std::move(req_),
-         queue = std::move(queue),
-         stream = std::move(stream_)]() mutable {
-          req->sendStreamReply({queue.move(), std::move(stream)});
-        });
+    getEventBase()->runInEventBaseThread([req = std::move(req_),
+                                          queue = std::move(queue),
+                                          stream = std::move(stream_),
+                                          crc32c]() mutable {
+      req->sendStreamReply({queue.move(), std::move(stream)}, nullptr, crc32c);
+    });
   }
 }
 
