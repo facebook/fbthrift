@@ -47,6 +47,12 @@ if (NOT MSVC)
     compiler_base
     PUBLIC "-Wno-deprecated-register"
   )
+  # Some versions of flex emit `register` storage qualifiers,
+  # so let's just suppress that warning.
+  target_compile_options(
+    compiler_base
+    PRIVATE "-Wno-register"
+  )
 endif()
 target_link_libraries(
   compiler_base
