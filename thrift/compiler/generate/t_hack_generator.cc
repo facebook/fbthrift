@@ -1943,7 +1943,7 @@ void t_hack_generator::generate_php_struct_shape_json_conversion(
     indent(out) << "foreach (/* HH_IGNORE_ERROR[4110] */ " << shape_data
                 << " as " << k << " => " << v << ") {\n";
     if (!shape_unsafe_json_) {
-      if (val_type->is_string()) {
+      if (val_type->is_string_or_binary()) {
         indent(out) << "  if (!is_string(" << v << ")) {\n";
         indent(out) << "    return null;\n";
         indent(out) << "  }\n";
@@ -2016,7 +2016,7 @@ void t_hack_generator::generate_php_struct_shape_json_conversion(
         indent(out) << "  return null;\n";
         indent(out) << "}\n";
       } else {
-        if (key_type->is_string()) {
+        if (key_type->is_string_or_binary()) {
           indent(out) << "if (!is_string(" << k << ")) {\n";
           indent(out) << "  return null;\n";
           indent(out) << "}\n";
@@ -2135,8 +2135,7 @@ void t_hack_generator::generate_php_struct_shape_methods(
       bool stringify_map_keys = false;
       if (t->is_map() && shape_arraykeys_) {
         t_type* key_type = ((t_map*)t)->get_key_type();
-        if (key_type->is_base_type() &&
-            ((t_base_type*)key_type)->get_base() == t_base_type::TYPE_STRING) {
+        if (key_type->is_base_type() && key_type->is_string_or_binary()) {
           stringify_map_keys = true;
         }
       }
@@ -2193,8 +2192,7 @@ void t_hack_generator::generate_php_struct_shape_methods(
               if (val_type->is_map() && shape_arraykeys_) {
                 t_type* key_type = ((t_map*)val_type)->get_key_type();
                 if (key_type->is_base_type() &&
-                    ((t_base_type*)key_type)->get_base() ==
-                        t_base_type::TYPE_STRING) {
+                    key_type->is_string_or_binary()) {
                   stringify_map_keys = true;
                 }
               }
@@ -3828,8 +3826,8 @@ string t_hack_generator::type_to_param_typehint(t_type* ttype, bool nullable) {
 
 bool t_hack_generator::is_type_arraykey(t_type* type) {
   type = type->get_true_type();
-  return type->is_string() || type->is_any_int() || type->is_binary() ||
-      type->is_byte() || type->is_enum();
+  return type->is_string_or_binary() || type->is_any_int() || type->is_byte() ||
+      type->is_enum();
 }
 
 /**

@@ -121,10 +121,8 @@ class t_csharp_generator : public t_oop_generator
         ttype = ((t_typedef*)ttype)->get_type();
       }
 
-      return ttype->is_container() ||
-        ttype->is_struct() ||
-        ttype->is_xception() ||
-        ttype->is_string();
+      return ttype->is_container() || ttype->is_struct() ||
+          ttype->is_xception() || ttype->is_string_or_binary();
     }
 
   private:

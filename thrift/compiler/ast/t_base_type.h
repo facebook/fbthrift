@@ -1,4 +1,6 @@
 /*
+ * Copyright 2019-present Facebook, Inc.
+ *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -16,7 +18,6 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 #ifndef T_BASE_TYPE_H
 #define T_BASE_TYPE_H
 
@@ -63,7 +64,7 @@ class t_base_type : public t_type {
   }
 
   bool is_string() const override {
-    return base_ == TYPE_STRING;
+    return base_ == TYPE_STRING && !binary_;
   }
 
   bool is_bool() const override {
@@ -108,6 +109,10 @@ class t_base_type : public t_type {
 
   bool is_binary() const override {
     return (base_ == TYPE_STRING) && binary_;
+  }
+
+  bool is_string_or_binary() const override {
+    return base_ == TYPE_STRING;
   }
 
   bool is_base_type() const override {

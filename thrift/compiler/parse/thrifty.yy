@@ -902,7 +902,7 @@ Xception:
         }
 
         auto field = $$->get_field_named(v.c_str());
-        if (!field->get_type()->is_string()) {
+        if (!field->get_type()->is_string_or_binary()) {
           driver.failure("member specified as exception 'message' should be of type "
                          "STRING, '%s' in '%s' is not", v.c_str(), $3.c_str());
         }

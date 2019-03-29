@@ -250,11 +250,8 @@ class t_cocoa_generator : public t_oop_generator {
   bool type_can_be_null(t_type* ttype) {
     ttype = ttype->get_true_type();
 
-    return
-      ttype->is_container() ||
-      ttype->is_struct() ||
-      ttype->is_xception() ||
-      ttype->is_string();
+    return ttype->is_container() || ttype->is_struct() ||
+        ttype->is_xception() || ttype->is_string_or_binary();
   }
 
  private:
@@ -1150,7 +1147,7 @@ void t_cocoa_generator::generate_cocoa_struct_reader(ofstream& out,
         // is now retaining it
         if (type_can_be_null((*f_iter)->get_type())) {
           // deserialized strings are autorelease, so don't release them
-          if (!((*f_iter)->get_type()->get_true_type()->is_string())) {
+          if (!((*f_iter)->get_type()->get_true_type()->is_string_or_binary())) {
             indent(out) << "[fieldValue release_stub];" << endl;
           }
         }
@@ -1553,7 +1550,8 @@ void t_cocoa_generator::generate_cocoa_struct_toDict(ofstream& out,
        ttype = ttype->get_true_type();
      }
 
-     const bool check_for_null = ttype->is_struct() || ttype->is_string() || ttype->is_container();
+     const bool check_for_null = ttype->is_struct() ||
+         ttype->is_string_or_binary() || ttype->is_container();
 
      if (check_for_null) {
        out << indent() << "if (" << field_name << ") {" << endl;
@@ -1563,7 +1561,7 @@ void t_cocoa_generator::generate_cocoa_struct_toDict(ofstream& out,
      if (ttype->is_struct()) {
        out << indent() <<  ret_equals << "[" << field_name << " toDict];" << endl;
      }
-     else if (ttype->is_string()) {
+     else if (ttype->is_string_or_binary()) {
        out << indent() <<  ret_equals << field_name << ";" << endl;
      }
      else if (ttype->is_base_type() || ttype->is_enum()) {
@@ -1639,7 +1637,8 @@ void t_cocoa_generator::generate_cocoa_struct_mutableCopyWithZone(ofstream& out,
        ttype = ttype->get_true_type();
      }
 
-     const bool check_for_null = ttype->is_struct() || ttype->is_string() || ttype->is_container();
+     const bool check_for_null = ttype->is_struct() ||
+         ttype->is_string_or_binary() || ttype->is_container();
 
      if (check_for_null) {
        out << indent() << "if (" << field_name << ") {" << endl;
@@ -1653,7 +1652,7 @@ void t_cocoa_generator::generate_cocoa_struct_mutableCopyWithZone(ofstream& out,
                        << " mutableCopyWithZone:zone];"
                        << endl;
      }
-     else if (ttype->is_string() || ttype->is_base_type() || ttype->is_enum()) {
+     else if (ttype->is_string_or_binary() || ttype->is_base_type() || ttype->is_enum()) {
        out << indent() << "newCopy->" << field_name
                        << " = "
                        << "self->" << field_name
@@ -2391,13 +2390,13 @@ void t_cocoa_generator::generate_deserialize_map_element(ofstream& out,
     " forKey: " << containerize(keyType, key) << "];" << endl;
 
   if (type_can_be_null(keyType)) {
-    if (!(keyType->get_true_type()->is_string())) {
+    if (!(keyType->get_true_type()->is_string_or_binary())) {
       indent(out) << "[" << containerize(keyType, key) << " release_stub];" << endl;
     }
   }
 
   if (type_can_be_null(valType)) {
-    if (!(valType->get_true_type()->is_string())) {
+    if (!(valType->get_true_type()->is_string_or_binary())) {
       indent(out) << "[" << containerize(valType, val) << " release_stub];" << endl;
     }
   }
@@ -2420,7 +2419,7 @@ void t_cocoa_generator::generate_deserialize_set_element(ofstream& out,
 
   if (type_can_be_null(type)) {
     // deserialized strings are autorelease, so don't release them
-    if (!(type->get_true_type()->is_string())) {
+    if (!(type->get_true_type()->is_string_or_binary())) {
       indent(out) << "[" << containerize(type, elem) << " release_stub];" << endl;
     }
   }
@@ -2442,7 +2441,7 @@ void t_cocoa_generator::generate_deserialize_list_element(ofstream& out,
     "[" << fieldName << " addObject: " << containerize(type, elem) << "];" << endl;
 
   if (type_can_be_null(type)) {
-    if (!(type->get_true_type()->is_string())) {
+    if (!(type->get_true_type()->is_string_or_binary())) {
       indent(out) << "[" << containerize(type, elem) << " release_stub];" << endl;
     }
   }

@@ -133,8 +133,8 @@ mstch::map t_mstch_generator::dump(const t_type& orig_type) {
       {"annotations", dump_elems(type.annotations_)},
 
       {"void?", type.is_void()},
-      {"string?", type.is_string() && !type.is_binary()},
-      {"binary?", type.is_string() && type.is_binary()},
+      {"string?", type.is_string()},
+      {"binary?", type.is_binary()},
       {"bool?", type.is_bool()},
       {"byte?", type.is_byte()},
       {"i16?", type.is_i16()},

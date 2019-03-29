@@ -1938,7 +1938,7 @@ void t_hs_generator::generate_deserialize_type(ofstream &out,
 
   } else if (type->is_base_type()) {
     t_base_type::t_base tbase = ((t_base_type*)type)->get_base();
-    if (tbase == t_base_type::TYPE_STRING && !((t_base_type*)type)->is_binary()) {
+    if (type->is_string()) {
       if (use_string_)
         out << "LT.unpack $ ";
       else if (use_strict_text_)
@@ -2028,7 +2028,7 @@ void t_hs_generator::generate_serialize_type(ofstream &out,
     if (type->is_base_type()) {
       t_base_type::t_base tbase = ((t_base_type*)type)->get_base();
       out << type_to_constructor(type) << " ";
-      if (tbase == t_base_type::TYPE_STRING && !((t_base_type*)type)->is_binary()) {
+      if (type->is_string()) {
         out << "$ Encoding.encodeUtf8 ";
         if (use_string_)
           out << "$ LT.pack ";

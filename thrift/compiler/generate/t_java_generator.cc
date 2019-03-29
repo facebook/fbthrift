@@ -1621,7 +1621,7 @@ void t_java_generator::generate_reflection_getters(ostringstream& out, t_type* t
   indent(out) << "case " << upcase_string(field_name) << ":" << endl;
   indent_up();
 
-  if (type->is_base_type() && !type->is_string()) {
+  if (type->is_base_type() && !type->is_string_or_binary()) {
     t_base_type* base_type = (t_base_type*)type;
 
     indent(out) << "return new " << type_name(type, true, false) << "(" << (base_type->is_bool() ? "is" : "get") << cap_name << "());" << endl << endl;
@@ -1910,14 +1910,14 @@ void t_java_generator::generate_java_struct_tostring(ofstream& out,
       indent_up();
     }
 
-    if (ftype->is_base_type() && ((t_base_type*)ftype)->is_binary()) {
+    if (ftype->is_base_type() && ftype->is_binary()) {
       indent(out) << "  int __" << fname << "_size = Math.min(" << field_getter << ".length, 128);" << endl;
       indent(out) << "  for (int i = 0; i < __" << fname << "_size; i++) {" << endl;
       indent(out) << "    if (i != 0) sb.append(\" \");" << endl;
       indent(out) << "    sb.append(Integer.toHexString(" << field_getter << "[i]).length() > 1 ? Integer.toHexString(" << field_getter << "[i]).substring(Integer.toHexString(" << field_getter << "[i]).length() - 2).toUpperCase() : \"0\" + Integer.toHexString(" << field_getter << "[i]).toUpperCase());" <<endl;
       indent(out) << "  }" << endl;
       indent(out) << "  if (" << field_getter << ".length > 128) sb.append(\" ...\");" << endl;
-    } else if(ftype->is_enum()) {
+    } else if (ftype->is_enum()) {
       indent(out) << "String " << fname << "_name = " << get_enum_class_name(ftype) << ".VALUES_TO_NAMES.get(" << field_getter << ");"<< endl;
       indent(out) << "if (" << fname << "_name != null) {" << endl;
       indent(out) << "  sb.append(" << fname << "_name);" << endl;
@@ -3786,7 +3786,7 @@ bool t_java_generator::type_has_naked_binary(t_type* type) {
   type = type->get_true_type();
 
   if (type->is_base_type()) {
-    return ((t_base_type*)type)->is_binary();
+    return type->is_binary();
   } else if (type->is_enum()) {
     return false;
   } else if (type->is_struct() || type->is_xception()) {

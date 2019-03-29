@@ -390,7 +390,7 @@ class CppGenerator(t_generator.Generator):
 
         if ttype.is_void:
             return '::apache::thrift::type_class::nothing'
-        elif ttype.is_base_type and ttype.as_base_type.is_binary:
+        elif ttype.is_binary:
             return '::apache::thrift::type_class::binary'
         elif ttype.is_string:
             return '::apache::thrift::type_class::string'

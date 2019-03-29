@@ -83,6 +83,7 @@ BOOST_PYTHON_MODULE(frontend) {
           .add_property("is_void", &t_type::is_void)
           .add_property("is_base_type", &t_type::is_base_type)
           .add_property("is_string", &t_type::is_string)
+          .add_property("is_binary", &t_type::is_binary)
           .add_property("is_bool", &t_type::is_bool)
           .add_property("is_floating_point", &t_type::is_floating_point)
           .add_property("is_typedef", &t_type::is_typedef)

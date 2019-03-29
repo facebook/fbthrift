@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Facebook, Inc.
+ * Copyright 2016-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 #include <sstream>
 #include <string>
 #include <fstream>
@@ -566,7 +565,7 @@ void t_android_lite_generator::output_write(t_type* ttype, const string value,
     string java_name = base_type_name((t_base_type *) ttype);
     // Edge case: all the methods are named `writeFoo` for primitive type `foo`
     // except `byte[]`, which pairs with `writeBinary`.
-    if (((t_base_type*)ttype)->is_binary()) {
+    if (ttype->is_binary()) {
       java_name = "Binary";
     }
     if (needs_cast) {

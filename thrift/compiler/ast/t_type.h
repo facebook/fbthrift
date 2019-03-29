@@ -169,6 +169,9 @@ class t_type : public t_annotated {
   virtual bool is_binary() const {
     return false;
   }
+  virtual bool is_string_or_binary() const {
+    return false;
+  }
 
   /**
    * Create a unique hash number based on t_type's properties.

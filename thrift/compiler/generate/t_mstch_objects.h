@@ -621,10 +621,10 @@ class mstch_type : public mstch_base {
     return resolved_type_->is_void();
   }
   mstch::node is_string() {
-    return resolved_type_->is_string() && !resolved_type_->is_binary();
+    return resolved_type_->is_string();
   }
   mstch::node is_binary() {
-    return resolved_type_->is_string() && resolved_type_->is_binary();
+    return resolved_type_->is_binary();
   }
   mstch::node is_bool() {
     return resolved_type_->is_bool();

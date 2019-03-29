@@ -378,8 +378,9 @@ class mstch_cpp2_type : public mstch_type {
     if (resolved_type_->is_pubsub_stream()) {
       return false;
     }
-    return resolved_type_->is_container() || resolved_type_->is_string() ||
-        resolved_type_->is_struct() || resolved_type_->is_xception();
+    return resolved_type_->is_container() ||
+        resolved_type_->is_string_or_binary() || resolved_type_->is_struct() ||
+        resolved_type_->is_xception();
   }
   mstch::node cpp_type() {
     return cpp2::get_cpp_type(type_);
@@ -388,7 +389,7 @@ class mstch_cpp2_type : public mstch_type {
     return cpp2::get_cpp_type(resolved_type_);
   }
   mstch::node is_string_or_binary() {
-    return resolved_type_->is_string() || resolved_type_->is_binary();
+    return resolved_type_->is_string_or_binary();
   }
   mstch::node forward_compatibility() {
     return resolved_type_->annotations_.count("forward_compatibility") != 0;
@@ -613,8 +614,8 @@ class mstch_cpp2_struct : public mstch_struct {
         continue;
       }
       const t_type* type = field->get_type()->get_true_type();
-      if ((type->is_base_type() && !type->is_string()) ||
-          (type->is_string() && field->get_value() != nullptr) ||
+      if ((type->is_base_type() && !type->is_string_or_binary()) ||
+          (type->is_string_or_binary() && field->get_value() != nullptr) ||
           (type->is_container() && field->get_value() != nullptr &&
            !field->get_value()->is_empty()) ||
           (type->is_struct() &&
@@ -752,7 +753,7 @@ class mstch_cpp2_struct : public mstch_struct {
     }
     for (auto const* field : strct_->get_members()) {
       auto const* resolved_typedef = field->get_type()->get_true_type();
-      if (cpp2::is_cpp_ref(field) || resolved_typedef->is_string() ||
+      if (cpp2::is_cpp_ref(field) || resolved_typedef->is_string_or_binary() ||
           resolved_typedef->is_container()) {
         return true;
       }
@@ -921,7 +922,7 @@ class mstch_cpp2_function : public mstch_function {
     for (auto* arg : function_->get_arglist()->get_members()) {
       auto iter = arg->annotations_.find("cpp.cache");
       if (iter != arg->annotations_.end()) {
-        if (!arg->get_type()->is_string()) {
+        if (!arg->get_type()->is_string_or_binary()) {
           printf(
               "Cache annotation is only allowed on string types, "
               "got '%s' for argument '%s' in function '%s' at line %d",

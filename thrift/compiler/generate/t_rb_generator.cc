@@ -521,7 +521,7 @@ void t_rb_generator::generate_rb_simple_exception_constructor(std::ofstream& out
   if (members.size() == 1) {
     vector<t_field*>::const_iterator m_iter = members.begin();
 
-    if ((*m_iter)->get_type()->is_string()) {
+    if ((*m_iter)->get_type()->is_string_or_binary()) {
       string name = (*m_iter)->get_name();
 
       indent(out) << "def initialize(message=nil)" << endl;
