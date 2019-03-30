@@ -25,27 +25,27 @@ public final class Struct1 {
         this.a = a;
         this.b = b;
     }
-
+    
     public static class Builder {
         private int a;
-
+    
         public Builder setA(int a) {
             this.a = a;
             return this;
         }
         private String b;
-
+    
         public Builder setB(String b) {
             this.b = b;
             return this;
         }
-
+    
         public Builder() { }
         public Builder(Struct1 other) {
             this.a = other.a;
             this.b = other.b;
         }
-
+    
         public Struct1 build() {
             return new Struct1 (
                 this.a,
@@ -53,17 +53,17 @@ public final class Struct1 {
             );
         }
     }
-
+    
     private final int a;
-
-    @ThriftField(value=1, name="a", requiredness=Requiredness.NONE)
-    public int getA() { return a; }
-
     private final String b;
 
+    
+    @ThriftField(value=1, name="a", requiredness=Requiredness.NONE)
+    public int getA() { return a; }
+        
     @ThriftField(value=2, name="b", requiredness=Requiredness.NONE)
     public String getB() { return b; }
-
+    
     @Override
     public String toString() {
         return toStringHelper(this)
@@ -71,7 +71,7 @@ public final class Struct1 {
             .add("b", b)
             .toString();
     }
-
+    
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -80,14 +80,15 @@ public final class Struct1 {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-
+    
         Struct1 other = (Struct1)o;
-
+    
         return
             Objects.equals(a, other.a) &&
-            Objects.equals(b, other.b);
+            Objects.equals(b, other.b) &&
+            true;
     }
-
+    
     @Override
     public int hashCode() {
         return Arrays.deepHashCode(new Object[] {
@@ -95,4 +96,5 @@ public final class Struct1 {
             b
         });
     }
+    
 }

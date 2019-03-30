@@ -29,9 +29,10 @@ import java.util.*;
 public final class {{struct:javaCapitalName}} extends {{#struct:extendRuntimeException?}}RuntimeException{{/struct:extendRuntimeException?}}{{^struct:extendRuntimeException?}}Exception{{/struct:extendRuntimeException?}} {
     private static final long serialVersionUID = 1L;
 
-{{> ThriftConstructor}}
+    {{> struct/ThriftConstructor}}
 
-{{> StructBuilder}}
+    {{> struct/StructBuilder}}
+
     {{#struct:fields}}
 
     private final {{> FieldType}} {{field:javaName}};

@@ -25,39 +25,43 @@ public final class MyStruct1 {
     private test.fixtures.basic_swift_bean.MyDataItem myDataField;
     private long major;
 
+    
     @ThriftField(value=1, name="MyIntField", requiredness=Requiredness.NONE)
     public long getMyIntField() { return myIntField; }
-
+    
     @ThriftField
     public MyStruct1 setMyIntField(long myIntField) {
         this.myIntField = myIntField;
         return this;
     }
+        
     @ThriftField(value=2, name="MyStringField", requiredness=Requiredness.NONE)
     public String getMyStringField() { return myStringField; }
-
+    
     @ThriftField
     public MyStruct1 setMyStringField(String myStringField) {
         this.myStringField = myStringField;
         return this;
     }
+        
     @ThriftField(value=3, name="MyDataField", requiredness=Requiredness.NONE)
     public test.fixtures.basic_swift_bean.MyDataItem getMyDataField() { return myDataField; }
-
+    
     @ThriftField
     public MyStruct1 setMyDataField(test.fixtures.basic_swift_bean.MyDataItem myDataField) {
         this.myDataField = myDataField;
         return this;
     }
+        
     @ThriftField(value=4, name="major", requiredness=Requiredness.NONE, idlAnnotations = { @ThriftIdlAnnotation(key = "cpp.name", value = "majorVer") })
     public long getMajor() { return major; }
-
+    
     @ThriftField
     public MyStruct1 setMajor(long major) {
         this.major = major;
         return this;
     }
-
+    
     @Override
     public String toString() {
         return toStringHelper(this)
@@ -67,7 +71,7 @@ public final class MyStruct1 {
             .add("major", major)
             .toString();
     }
-
+    
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -76,9 +80,9 @@ public final class MyStruct1 {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-
+    
         MyStruct1 other = (MyStruct1)o;
-
+    
         return
             Objects.equals(myIntField, other.myIntField) &&
             Objects.equals(myStringField, other.myStringField) &&
@@ -86,7 +90,7 @@ public final class MyStruct1 {
             Objects.equals(major, other.major) &&
             true;
     }
-
+    
     @Override
     public int hashCode() {
         return Arrays.deepHashCode(new Object[] {
@@ -96,4 +100,5 @@ public final class MyStruct1 {
             major
         });
     }
+    
 }

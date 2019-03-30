@@ -29,33 +29,33 @@ public final class Color {
         this.blue = blue;
         this.alpha = alpha;
     }
-
+    
     public static class Builder {
         private double red;
-
+    
         public Builder setRed(double red) {
             this.red = red;
             return this;
         }
         private double green;
-
+    
         public Builder setGreen(double green) {
             this.green = green;
             return this;
         }
         private double blue;
-
+    
         public Builder setBlue(double blue) {
             this.blue = blue;
             return this;
         }
         private double alpha;
-
+    
         public Builder setAlpha(double alpha) {
             this.alpha = alpha;
             return this;
         }
-
+    
         public Builder() { }
         public Builder(Color other) {
             this.red = other.red;
@@ -63,7 +63,7 @@ public final class Color {
             this.blue = other.blue;
             this.alpha = other.alpha;
         }
-
+    
         public Color build() {
             return new Color (
                 this.red,
@@ -73,27 +73,25 @@ public final class Color {
             );
         }
     }
-
+    
     private final double red;
-
-    @ThriftField(value=1, name="red", requiredness=Requiredness.NONE)
-    public double getRed() { return red; }
-
     private final double green;
-
-    @ThriftField(value=2, name="green", requiredness=Requiredness.NONE)
-    public double getGreen() { return green; }
-
     private final double blue;
-
-    @ThriftField(value=3, name="blue", requiredness=Requiredness.NONE)
-    public double getBlue() { return blue; }
-
     private final double alpha;
 
+    
+    @ThriftField(value=1, name="red", requiredness=Requiredness.NONE)
+    public double getRed() { return red; }
+        
+    @ThriftField(value=2, name="green", requiredness=Requiredness.NONE)
+    public double getGreen() { return green; }
+        
+    @ThriftField(value=3, name="blue", requiredness=Requiredness.NONE)
+    public double getBlue() { return blue; }
+        
     @ThriftField(value=4, name="alpha", requiredness=Requiredness.NONE)
     public double getAlpha() { return alpha; }
-
+    
     @Override
     public String toString() {
         return toStringHelper(this)
@@ -103,7 +101,7 @@ public final class Color {
             .add("alpha", alpha)
             .toString();
     }
-
+    
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -112,16 +110,17 @@ public final class Color {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-
+    
         Color other = (Color)o;
-
+    
         return
             Objects.equals(red, other.red) &&
             Objects.equals(green, other.green) &&
             Objects.equals(blue, other.blue) &&
-            Objects.equals(alpha, other.alpha);
+            Objects.equals(alpha, other.alpha) &&
+            true;
     }
-
+    
     @Override
     public int hashCode() {
         return Arrays.deepHashCode(new Object[] {
@@ -131,4 +130,5 @@ public final class Color {
             alpha
         });
     }
+    
 }

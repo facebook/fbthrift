@@ -23,23 +23,25 @@ public final class MyDataItem {
     private int field1;
     private int field2;
 
+    
     @ThriftField(value=1, name="field1", requiredness=Requiredness.NONE)
     public int getField1() { return field1; }
-
+    
     @ThriftField
     public MyDataItem setField1(int field1) {
         this.field1 = field1;
         return this;
     }
+        
     @ThriftField(value=2, name="field2", requiredness=Requiredness.NONE)
     public int getField2() { return field2; }
-
+    
     @ThriftField
     public MyDataItem setField2(int field2) {
         this.field2 = field2;
         return this;
     }
-
+    
     @Override
     public String toString() {
         return toStringHelper(this)
@@ -47,7 +49,7 @@ public final class MyDataItem {
             .add("field2", field2)
             .toString();
     }
-
+    
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -56,15 +58,15 @@ public final class MyDataItem {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-
+    
         MyDataItem other = (MyDataItem)o;
-
+    
         return
             Objects.equals(field1, other.field1) &&
             Objects.equals(field2, other.field2) &&
             true;
     }
-
+    
     @Override
     public int hashCode() {
         return Arrays.deepHashCode(new Object[] {
@@ -72,4 +74,5 @@ public final class MyDataItem {
             field2
         });
     }
+    
 }

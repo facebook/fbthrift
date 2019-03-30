@@ -21,25 +21,27 @@ public final class MyDataItem {
     public MyDataItem(
     ) {
     }
-
+    
     public static class Builder {
-
+    
         public Builder() { }
         public Builder(MyDataItem other) {
         }
-
+    
         public MyDataItem build() {
             return new MyDataItem (
             );
         }
     }
+    
+
 
     @Override
     public String toString() {
         return toStringHelper(this)
             .toString();
     }
-
+    
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -48,16 +50,17 @@ public final class MyDataItem {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-
+    
         MyDataItem other = (MyDataItem)o;
-
+    
         return
             true;
     }
-
+    
     @Override
     public int hashCode() {
         return Arrays.deepHashCode(new Object[] {
         });
     }
+    
 }

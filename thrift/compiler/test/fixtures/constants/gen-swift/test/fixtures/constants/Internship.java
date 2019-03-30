@@ -27,34 +27,34 @@ public final class Internship {
         this.title = title;
         this.employer = employer;
     }
-
+    
     public static class Builder {
         private int weeks;
-
+    
         public Builder setWeeks(int weeks) {
             this.weeks = weeks;
             return this;
         }
         private String title;
-
+    
         public Builder setTitle(String title) {
             this.title = title;
             return this;
         }
         private test.fixtures.constants.Company employer;
-
+    
         public Builder setEmployer(test.fixtures.constants.Company employer) {
             this.employer = employer;
             return this;
         }
-
+    
         public Builder() { }
         public Builder(Internship other) {
             this.weeks = other.weeks;
             this.title = other.title;
             this.employer = other.employer;
         }
-
+    
         public Internship build() {
             return new Internship (
                 this.weeks,
@@ -63,22 +63,21 @@ public final class Internship {
             );
         }
     }
-
+    
     private final int weeks;
-
-    @ThriftField(value=1, name="weeks", requiredness=Requiredness.REQUIRED)
-    public int getWeeks() { return weeks; }
-
     private final String title;
-
-    @ThriftField(value=2, name="title", requiredness=Requiredness.NONE)
-    public String getTitle() { return title; }
-
     private final test.fixtures.constants.Company employer;
 
+    
+    @ThriftField(value=1, name="weeks", requiredness=Requiredness.REQUIRED)
+    public int getWeeks() { return weeks; }
+        
+    @ThriftField(value=2, name="title", requiredness=Requiredness.NONE)
+    public String getTitle() { return title; }
+        
     @ThriftField(value=3, name="employer", requiredness=Requiredness.OPTIONAL)
     public test.fixtures.constants.Company getEmployer() { return employer; }
-
+    
     @Override
     public String toString() {
         return toStringHelper(this)
@@ -87,7 +86,7 @@ public final class Internship {
             .add("employer", employer)
             .toString();
     }
-
+    
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -96,15 +95,16 @@ public final class Internship {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-
+    
         Internship other = (Internship)o;
-
+    
         return
             Objects.equals(weeks, other.weeks) &&
             Objects.equals(title, other.title) &&
-            Objects.equals(employer, other.employer);
+            Objects.equals(employer, other.employer) &&
+            true;
     }
-
+    
     @Override
     public int hashCode() {
         return Arrays.deepHashCode(new Object[] {
@@ -113,4 +113,5 @@ public final class Internship {
             employer
         });
     }
+    
 }

@@ -25,27 +25,27 @@ public final class BigStruct {
         this.s = s;
         this.id = id;
     }
-
+    
     public static class Builder {
         private test.fixtures.module2.Struct s;
-
+    
         public Builder setS(test.fixtures.module2.Struct s) {
             this.s = s;
             return this;
         }
         private int id;
-
+    
         public Builder setId(int id) {
             this.id = id;
             return this;
         }
-
+    
         public Builder() { }
         public Builder(BigStruct other) {
             this.s = other.s;
             this.id = other.id;
         }
-
+    
         public BigStruct build() {
             return new BigStruct (
                 this.s,
@@ -53,17 +53,17 @@ public final class BigStruct {
             );
         }
     }
-
+    
     private final test.fixtures.module2.Struct s;
-
-    @ThriftField(value=1, name="s", requiredness=Requiredness.NONE)
-    public test.fixtures.module2.Struct getS() { return s; }
-
     private final int id;
 
+    
+    @ThriftField(value=1, name="s", requiredness=Requiredness.NONE)
+    public test.fixtures.module2.Struct getS() { return s; }
+        
     @ThriftField(value=2, name="id", requiredness=Requiredness.NONE)
     public int getId() { return id; }
-
+    
     @Override
     public String toString() {
         return toStringHelper(this)
@@ -71,7 +71,7 @@ public final class BigStruct {
             .add("id", id)
             .toString();
     }
-
+    
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -80,14 +80,15 @@ public final class BigStruct {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-
+    
         BigStruct other = (BigStruct)o;
-
+    
         return
             Objects.equals(s, other.s) &&
-            Objects.equals(id, other.id);
+            Objects.equals(id, other.id) &&
+            true;
     }
-
+    
     @Override
     public int hashCode() {
         return Arrays.deepHashCode(new Object[] {
@@ -95,4 +96,5 @@ public final class BigStruct {
             id
         });
     }
+    
 }

@@ -15,14 +15,29 @@
   limitations under the License.
 
 }}
-    @ThriftConstructor
-    public {{struct:javaCapitalName}}(
-        {{#struct:fields}}
-        {{> ThriftFieldAnnotation}} final {{> FieldType}} {{field:javaName}}{{^last?}},{{/last?}}
-        {{/struct:fields}}
-    ) {
-        {{#struct:fields}}
+public static class Builder {
+    {{#struct:fields}}
+    private {{> FieldType}} {{field:javaName}};
+
+    public Builder {{> SetterName}}({{> FieldType}} {{field:javaName}}) {
         this.{{field:javaName}} = {{field:javaName}};
+        return this;
+    }
+    {{/struct:fields}}
+
+    public Builder() { }
+    public Builder({{struct:javaCapitalName}} other) {
+        {{#struct:fields}}
+        this.{{field:javaName}} = other.{{field:javaName}};
         {{/struct:fields}}
     }
+
+    public {{struct:javaCapitalName}} build() {
+        return new {{struct:javaCapitalName}} (
+            {{#struct:fields}}
+            this.{{field:javaName}}{{^last?}},{{/last?}}
+            {{/struct:fields}}
+        );
+    }
+}
 {{! terminate with newline }}

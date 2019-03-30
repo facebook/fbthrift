@@ -21,16 +21,17 @@ public final class Banal extends RuntimeException {
     public Banal(
     ) {
     }
-
+    
     public static class Builder {
-
+    
         public Builder() { }
         public Builder(Banal other) {
         }
-
+    
         public Banal build() {
             return new Banal (
             );
         }
     }
+    
 }

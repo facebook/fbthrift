@@ -29,33 +29,33 @@ public final class Struct2 {
         this.c = c;
         this.d = d;
     }
-
+    
     public static class Builder {
         private int a;
-
+    
         public Builder setA(int a) {
             this.a = a;
             return this;
         }
         private String b;
-
+    
         public Builder setB(String b) {
             this.b = b;
             return this;
         }
         private test.fixtures.constants.Struct1 c;
-
+    
         public Builder setC(test.fixtures.constants.Struct1 c) {
             this.c = c;
             return this;
         }
         private List<Integer> d;
-
+    
         public Builder setD(List<Integer> d) {
             this.d = d;
             return this;
         }
-
+    
         public Builder() { }
         public Builder(Struct2 other) {
             this.a = other.a;
@@ -63,7 +63,7 @@ public final class Struct2 {
             this.c = other.c;
             this.d = other.d;
         }
-
+    
         public Struct2 build() {
             return new Struct2 (
                 this.a,
@@ -73,27 +73,25 @@ public final class Struct2 {
             );
         }
     }
-
+    
     private final int a;
-
-    @ThriftField(value=1, name="a", requiredness=Requiredness.NONE)
-    public int getA() { return a; }
-
     private final String b;
-
-    @ThriftField(value=2, name="b", requiredness=Requiredness.NONE)
-    public String getB() { return b; }
-
     private final test.fixtures.constants.Struct1 c;
-
-    @ThriftField(value=3, name="c", requiredness=Requiredness.NONE)
-    public test.fixtures.constants.Struct1 getC() { return c; }
-
     private final List<Integer> d;
 
+    
+    @ThriftField(value=1, name="a", requiredness=Requiredness.NONE)
+    public int getA() { return a; }
+        
+    @ThriftField(value=2, name="b", requiredness=Requiredness.NONE)
+    public String getB() { return b; }
+        
+    @ThriftField(value=3, name="c", requiredness=Requiredness.NONE)
+    public test.fixtures.constants.Struct1 getC() { return c; }
+        
     @ThriftField(value=4, name="d", requiredness=Requiredness.NONE)
     public List<Integer> getD() { return d; }
-
+    
     @Override
     public String toString() {
         return toStringHelper(this)
@@ -103,7 +101,7 @@ public final class Struct2 {
             .add("d", d)
             .toString();
     }
-
+    
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -112,16 +110,17 @@ public final class Struct2 {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-
+    
         Struct2 other = (Struct2)o;
-
+    
         return
             Objects.equals(a, other.a) &&
             Objects.equals(b, other.b) &&
             Objects.equals(c, other.c) &&
-            Objects.equals(d, other.d);
+            Objects.equals(d, other.d) &&
+            true;
     }
-
+    
     @Override
     public int hashCode() {
         return Arrays.deepHashCode(new Object[] {
@@ -131,4 +130,5 @@ public final class Struct2 {
             d
         });
     }
+    
 }

@@ -25,27 +25,27 @@ public final class Included {
         this.myIntField = myIntField;
         this.myTransitiveField = myTransitiveField;
     }
-
+    
     public static class Builder {
         private long myIntField;
-
+    
         public Builder setMyIntField(long myIntField) {
             this.myIntField = myIntField;
             return this;
         }
         private test.fixtures.includes.transitive.Foo myTransitiveField;
-
+    
         public Builder setMyTransitiveField(test.fixtures.includes.transitive.Foo myTransitiveField) {
             this.myTransitiveField = myTransitiveField;
             return this;
         }
-
+    
         public Builder() { }
         public Builder(Included other) {
             this.myIntField = other.myIntField;
             this.myTransitiveField = other.myTransitiveField;
         }
-
+    
         public Included build() {
             return new Included (
                 this.myIntField,
@@ -53,17 +53,17 @@ public final class Included {
             );
         }
     }
-
+    
     private final long myIntField;
-
-    @ThriftField(value=1, name="MyIntField", requiredness=Requiredness.NONE)
-    public long getMyIntField() { return myIntField; }
-
     private final test.fixtures.includes.transitive.Foo myTransitiveField;
 
+    
+    @ThriftField(value=1, name="MyIntField", requiredness=Requiredness.NONE)
+    public long getMyIntField() { return myIntField; }
+        
     @ThriftField(value=2, name="MyTransitiveField", requiredness=Requiredness.NONE)
     public test.fixtures.includes.transitive.Foo getMyTransitiveField() { return myTransitiveField; }
-
+    
     @Override
     public String toString() {
         return toStringHelper(this)
@@ -71,7 +71,7 @@ public final class Included {
             .add("myTransitiveField", myTransitiveField)
             .toString();
     }
-
+    
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -80,14 +80,15 @@ public final class Included {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-
+    
         Included other = (Included)o;
-
+    
         return
             Objects.equals(myIntField, other.myIntField) &&
-            Objects.equals(myTransitiveField, other.myTransitiveField);
+            Objects.equals(myTransitiveField, other.myTransitiveField) &&
+            true;
     }
-
+    
     @Override
     public int hashCode() {
         return Arrays.deepHashCode(new Object[] {
@@ -95,4 +96,5 @@ public final class Included {
             myTransitiveField
         });
     }
+    
 }

@@ -25,27 +25,27 @@ public final class Range {
         this.min = min;
         this.max = max;
     }
-
+    
     public static class Builder {
         private int min;
-
+    
         public Builder setMin(int min) {
             this.min = min;
             return this;
         }
         private int max;
-
+    
         public Builder setMax(int max) {
             this.max = max;
             return this;
         }
-
+    
         public Builder() { }
         public Builder(Range other) {
             this.min = other.min;
             this.max = other.max;
         }
-
+    
         public Range build() {
             return new Range (
                 this.min,
@@ -53,17 +53,17 @@ public final class Range {
             );
         }
     }
-
+    
     private final int min;
-
-    @ThriftField(value=1, name="min", requiredness=Requiredness.REQUIRED)
-    public int getMin() { return min; }
-
     private final int max;
 
+    
+    @ThriftField(value=1, name="min", requiredness=Requiredness.REQUIRED)
+    public int getMin() { return min; }
+        
     @ThriftField(value=2, name="max", requiredness=Requiredness.REQUIRED)
     public int getMax() { return max; }
-
+    
     @Override
     public String toString() {
         return toStringHelper(this)
@@ -71,7 +71,7 @@ public final class Range {
             .add("max", max)
             .toString();
     }
-
+    
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -80,14 +80,15 @@ public final class Range {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-
+    
         Range other = (Range)o;
-
+    
         return
             Objects.equals(min, other.min) &&
-            Objects.equals(max, other.max);
+            Objects.equals(max, other.max) &&
+            true;
     }
-
+    
     @Override
     public int hashCode() {
         return Arrays.deepHashCode(new Object[] {
@@ -95,4 +96,5 @@ public final class Range {
             max
         });
     }
+    
 }

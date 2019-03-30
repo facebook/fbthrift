@@ -27,34 +27,34 @@ public final class Val {
         this.intVal = intVal;
         this.typedefValue = typedefValue;
     }
-
+    
     public static class Builder {
         private String strVal;
-
+    
         public Builder setStrVal(String strVal) {
             this.strVal = strVal;
             return this;
         }
         private int intVal;
-
+    
         public Builder setIntVal(int intVal) {
             this.intVal = intVal;
             return this;
         }
         private Map<Short, String> typedefValue;
-
+    
         public Builder setTypedefValue(Map<Short, String> typedefValue) {
             this.typedefValue = typedefValue;
             return this;
         }
-
+    
         public Builder() { }
         public Builder(Val other) {
             this.strVal = other.strVal;
             this.intVal = other.intVal;
             this.typedefValue = other.typedefValue;
         }
-
+    
         public Val build() {
             return new Val (
                 this.strVal,
@@ -63,22 +63,21 @@ public final class Val {
             );
         }
     }
-
+    
     private final String strVal;
-
-    @ThriftField(value=1, name="strVal", requiredness=Requiredness.NONE)
-    public String getStrVal() { return strVal; }
-
     private final int intVal;
-
-    @ThriftField(value=2, name="intVal", requiredness=Requiredness.NONE)
-    public int getIntVal() { return intVal; }
-
     private final Map<Short, String> typedefValue;
 
+    
+    @ThriftField(value=1, name="strVal", requiredness=Requiredness.NONE)
+    public String getStrVal() { return strVal; }
+        
+    @ThriftField(value=2, name="intVal", requiredness=Requiredness.NONE)
+    public int getIntVal() { return intVal; }
+        
     @ThriftField(value=9, name="typedefValue", requiredness=Requiredness.NONE)
     public Map<Short, String> getTypedefValue() { return typedefValue; }
-
+    
     @Override
     public String toString() {
         return toStringHelper(this)
@@ -87,7 +86,7 @@ public final class Val {
             .add("typedefValue", typedefValue)
             .toString();
     }
-
+    
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -96,15 +95,16 @@ public final class Val {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-
+    
         Val other = (Val)o;
-
+    
         return
             Objects.equals(strVal, other.strVal) &&
             Objects.equals(intVal, other.intVal) &&
-            Objects.equals(typedefValue, other.typedefValue);
+            Objects.equals(typedefValue, other.typedefValue) &&
+            true;
     }
-
+    
     @Override
     public int hashCode() {
         return Arrays.deepHashCode(new Object[] {
@@ -113,4 +113,5 @@ public final class Val {
             typedefValue
         });
     }
+    
 }

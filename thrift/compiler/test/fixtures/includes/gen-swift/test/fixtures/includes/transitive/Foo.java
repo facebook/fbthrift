@@ -23,39 +23,40 @@ public final class Foo {
     ) {
         this.a = a;
     }
-
+    
     public static class Builder {
         private long a;
-
+    
         public Builder setA(long a) {
             this.a = a;
             return this;
         }
-
+    
         public Builder() { }
         public Builder(Foo other) {
             this.a = other.a;
         }
-
+    
         public Foo build() {
             return new Foo (
                 this.a
             );
         }
     }
-
+    
     private final long a;
 
+    
     @ThriftField(value=1, name="a", requiredness=Requiredness.NONE)
     public long getA() { return a; }
-
+    
     @Override
     public String toString() {
         return toStringHelper(this)
             .add("a", a)
             .toString();
     }
-
+    
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -64,17 +65,19 @@ public final class Foo {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-
+    
         Foo other = (Foo)o;
-
+    
         return
-            Objects.equals(a, other.a);
+            Objects.equals(a, other.a) &&
+            true;
     }
-
+    
     @Override
     public int hashCode() {
         return Arrays.deepHashCode(new Object[] {
             a
         });
     }
+    
 }

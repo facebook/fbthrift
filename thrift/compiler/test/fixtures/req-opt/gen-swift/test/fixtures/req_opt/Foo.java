@@ -29,33 +29,33 @@ public final class Foo {
         this.myBools = myBools;
         this.myNumbers = myNumbers;
     }
-
+    
     public static class Builder {
         private int myInteger;
-
+    
         public Builder setMyInteger(int myInteger) {
             this.myInteger = myInteger;
             return this;
         }
         private String myString;
-
+    
         public Builder setMyString(String myString) {
             this.myString = myString;
             return this;
         }
         private List<Boolean> myBools;
-
+    
         public Builder setMyBools(List<Boolean> myBools) {
             this.myBools = myBools;
             return this;
         }
         private List<Integer> myNumbers;
-
+    
         public Builder setMyNumbers(List<Integer> myNumbers) {
             this.myNumbers = myNumbers;
             return this;
         }
-
+    
         public Builder() { }
         public Builder(Foo other) {
             this.myInteger = other.myInteger;
@@ -63,7 +63,7 @@ public final class Foo {
             this.myBools = other.myBools;
             this.myNumbers = other.myNumbers;
         }
-
+    
         public Foo build() {
             return new Foo (
                 this.myInteger,
@@ -73,27 +73,25 @@ public final class Foo {
             );
         }
     }
-
+    
     private final int myInteger;
-
-    @ThriftField(value=1, name="myInteger", requiredness=Requiredness.REQUIRED)
-    public int getMyInteger() { return myInteger; }
-
     private final String myString;
-
-    @ThriftField(value=2, name="myString", requiredness=Requiredness.OPTIONAL)
-    public String getMyString() { return myString; }
-
     private final List<Boolean> myBools;
-
-    @ThriftField(value=3, name="myBools", requiredness=Requiredness.NONE)
-    public List<Boolean> getMyBools() { return myBools; }
-
     private final List<Integer> myNumbers;
 
+    
+    @ThriftField(value=1, name="myInteger", requiredness=Requiredness.REQUIRED)
+    public int getMyInteger() { return myInteger; }
+        
+    @ThriftField(value=2, name="myString", requiredness=Requiredness.OPTIONAL)
+    public String getMyString() { return myString; }
+        
+    @ThriftField(value=3, name="myBools", requiredness=Requiredness.NONE)
+    public List<Boolean> getMyBools() { return myBools; }
+        
     @ThriftField(value=4, name="myNumbers", requiredness=Requiredness.REQUIRED)
     public List<Integer> getMyNumbers() { return myNumbers; }
-
+    
     @Override
     public String toString() {
         return toStringHelper(this)
@@ -103,7 +101,7 @@ public final class Foo {
             .add("myNumbers", myNumbers)
             .toString();
     }
-
+    
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -112,16 +110,17 @@ public final class Foo {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-
+    
         Foo other = (Foo)o;
-
+    
         return
             Objects.equals(myInteger, other.myInteger) &&
             Objects.equals(myString, other.myString) &&
             Objects.equals(myBools, other.myBools) &&
-            Objects.equals(myNumbers, other.myNumbers);
+            Objects.equals(myNumbers, other.myNumbers) &&
+            true;
     }
-
+    
     @Override
     public int hashCode() {
         return Arrays.deepHashCode(new Object[] {
@@ -131,4 +130,5 @@ public final class Foo {
             myNumbers
         });
     }
+    
 }

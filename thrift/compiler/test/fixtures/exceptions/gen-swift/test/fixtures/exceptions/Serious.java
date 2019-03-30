@@ -23,26 +23,27 @@ public final class Serious extends RuntimeException {
     ) {
         this.sonnet = sonnet;
     }
-
+    
     public static class Builder {
         private String sonnet;
-
+    
         public Builder setSonnet(String sonnet) {
             this.sonnet = sonnet;
             return this;
         }
-
+    
         public Builder() { }
         public Builder(Serious other) {
             this.sonnet = other.sonnet;
         }
-
+    
         public Serious build() {
             return new Serious (
                 this.sonnet
             );
         }
     }
+    
 
     private final String sonnet;
 

@@ -23,26 +23,27 @@ public final class Fiery extends RuntimeException {
     ) {
         this.message = message;
     }
-
+    
     public static class Builder {
         private String message;
-
+    
         public Builder setMessage(String message) {
             this.message = message;
             return this;
         }
-
+    
         public Builder() { }
         public Builder(Fiery other) {
             this.message = other.message;
         }
-
+    
         public Fiery build() {
             return new Fiery (
                 this.message
             );
         }
     }
+    
 
     private final String message;
 

@@ -31,39 +31,39 @@ public final class MyStruct {
         this.major = major;
         this.myEnum = myEnum;
     }
-
+    
     public static class Builder {
         private long myIntField;
-
+    
         public Builder setMyIntField(long myIntField) {
             this.myIntField = myIntField;
             return this;
         }
         private String myStringField;
-
+    
         public Builder setMyStringField(String myStringField) {
             this.myStringField = myStringField;
             return this;
         }
         private test.fixtures.basic.MyDataItem myDataField;
-
+    
         public Builder setMyDataField(test.fixtures.basic.MyDataItem myDataField) {
             this.myDataField = myDataField;
             return this;
         }
         private long major;
-
+    
         public Builder setMajor(long major) {
             this.major = major;
             return this;
         }
         private test.fixtures.basic.MyEnum myEnum;
-
+    
         public Builder setMyEnum(test.fixtures.basic.MyEnum myEnum) {
             this.myEnum = myEnum;
             return this;
         }
-
+    
         public Builder() { }
         public Builder(MyStruct other) {
             this.myIntField = other.myIntField;
@@ -72,7 +72,7 @@ public final class MyStruct {
             this.major = other.major;
             this.myEnum = other.myEnum;
         }
-
+    
         public MyStruct build() {
             return new MyStruct (
                 this.myIntField,
@@ -83,32 +83,29 @@ public final class MyStruct {
             );
         }
     }
-
+    
     private final long myIntField;
-
-    @ThriftField(value=1, name="MyIntField", requiredness=Requiredness.NONE)
-    public long getMyIntField() { return myIntField; }
-
     private final String myStringField;
-
-    @ThriftField(value=2, name="MyStringField", requiredness=Requiredness.NONE)
-    public String getMyStringField() { return myStringField; }
-
     private final test.fixtures.basic.MyDataItem myDataField;
-
-    @ThriftField(value=3, name="MyDataField", requiredness=Requiredness.NONE)
-    public test.fixtures.basic.MyDataItem getMyDataField() { return myDataField; }
-
     private final long major;
-
-    @ThriftField(value=4, name="major", requiredness=Requiredness.NONE, idlAnnotations = { @ThriftIdlAnnotation(key = "cpp.name", value = "majorVer") })
-    public long getMajor() { return major; }
-
     private final test.fixtures.basic.MyEnum myEnum;
 
+    
+    @ThriftField(value=1, name="MyIntField", requiredness=Requiredness.NONE)
+    public long getMyIntField() { return myIntField; }
+        
+    @ThriftField(value=2, name="MyStringField", requiredness=Requiredness.NONE)
+    public String getMyStringField() { return myStringField; }
+        
+    @ThriftField(value=3, name="MyDataField", requiredness=Requiredness.NONE)
+    public test.fixtures.basic.MyDataItem getMyDataField() { return myDataField; }
+        
+    @ThriftField(value=4, name="major", requiredness=Requiredness.NONE, idlAnnotations = { @ThriftIdlAnnotation(key = "cpp.name", value = "majorVer") })
+    public long getMajor() { return major; }
+        
     @ThriftField(value=5, name="myEnum", requiredness=Requiredness.NONE)
     public test.fixtures.basic.MyEnum getMyEnum() { return myEnum; }
-
+    
     @Override
     public String toString() {
         return toStringHelper(this)
@@ -119,7 +116,7 @@ public final class MyStruct {
             .add("myEnum", myEnum)
             .toString();
     }
-
+    
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -128,17 +125,18 @@ public final class MyStruct {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-
+    
         MyStruct other = (MyStruct)o;
-
+    
         return
             Objects.equals(myIntField, other.myIntField) &&
             Objects.equals(myStringField, other.myStringField) &&
             Objects.equals(myDataField, other.myDataField) &&
             Objects.equals(major, other.major) &&
-            Objects.equals(myEnum, other.myEnum);
+            Objects.equals(myEnum, other.myEnum) &&
+            true;
     }
-
+    
     @Override
     public int hashCode() {
         return Arrays.deepHashCode(new Object[] {
@@ -149,4 +147,5 @@ public final class MyStruct {
             myEnum
         });
     }
+    
 }

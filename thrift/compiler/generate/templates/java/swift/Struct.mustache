@@ -29,54 +29,22 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 @SwiftGenerated
 @ThriftStruct("{{struct:name}}")
 public final class {{struct:javaCapitalName}} {
-{{> ThriftConstructor}}
+    {{> struct/ThriftConstructor}}
 
-{{> StructBuilder}}
+    {{> struct/StructBuilder}}
+
     {{#struct:fields}}
-
     private final {{> FieldType}} {{field:javaName}};
-
-    {{> ThriftFieldAnnotation}}
-
-    public {{> FieldType}} {{> GetterName}}() { return {{field:javaName}}; }
     {{/struct:fields}}
 
-    @Override
-    public String toString() {
-        return toStringHelper(this)
-            {{#struct:fields}}
-            .add("{{field:javaName}}", {{field:javaName}})
-            {{/struct:fields}}
-            .toString();
-    }
+    {{#struct:fields}}
+    {{> struct/FieldGetter}}
+    {{/struct:fields}}
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
+    {{> struct/StructToString}}
 
-        {{struct:javaCapitalName}} other = ({{struct:javaCapitalName}})o;
+    {{> struct/StructEquals}}
 
-        return
-            {{#struct:fields}}
-            {{#field:type}}{{#type:binary?}}Arrays{{/type:binary?}}{{^type:binary?}}Objects{{/type:binary?}}{{/field:type}}{{!
-            }}.equals({{field:javaName}}, other.{{field:javaName}}){{^last?}} &&{{/last?}}{{#last?}};{{/last?}}
-            {{/struct:fields}}
-            {{^struct:fields}}
-            true;
-            {{/struct:fields}}
-    }
+    {{> struct/StructHashCode}}
 
-    @Override
-    public int hashCode() {
-        return Arrays.deepHashCode(new Object[] {
-            {{#struct:fields}}
-            {{field:javaName}}{{^last?}},{{/last?}}
-            {{/struct:fields}}
-        });
-    }
 }

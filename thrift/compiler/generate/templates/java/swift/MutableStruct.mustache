@@ -37,51 +37,15 @@ public final class {{struct:javaCapitalName}} {
     {{/struct:fields}}
 
     {{#struct:fields}}
-    {{> ThriftFieldAnnotation}}
+    {{> struct/FieldGetter}}
 
-    public {{> FieldType}} {{> GetterName}}() { return {{field:javaName}}; }
-
-    @ThriftField
-    public {{struct:javaCapitalName}} {{> SetterName}}({{> FieldType}} {{field:javaName}}) {
-        this.{{field:javaName}} = {{field:javaName}};
-        return this;
-    }
+    {{> struct/FieldSetter}}
     {{/struct:fields}}
 
-    @Override
-    public String toString() {
-        return toStringHelper(this)
-            {{#struct:fields}}
-            .add("{{field:javaName}}", {{field:javaName}})
-            {{/struct:fields}}
-            .toString();
-    }
+    {{> struct/StructToString}}
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
+    {{> struct/StructEquals}}
 
-        {{struct:javaCapitalName}} other = ({{struct:javaCapitalName}})o;
+    {{> struct/StructHashCode}}
 
-        return
-            {{#struct:fields}}
-            {{#field:type}}{{#type:binary?}}Arrays{{/type:binary?}}{{^type:binary?}}Objects{{/type:binary?}}{{/field:type}}{{!
-            }}.equals({{field:javaName}}, other.{{field:javaName}}) &&
-            {{/struct:fields}}
-            true;
-    }
-
-    @Override
-    public int hashCode() {
-        return Arrays.deepHashCode(new Object[] {
-            {{#struct:fields}}
-            {{field:javaName}}{{^last?}},{{/last?}}
-            {{/struct:fields}}
-        });
-    }
 }

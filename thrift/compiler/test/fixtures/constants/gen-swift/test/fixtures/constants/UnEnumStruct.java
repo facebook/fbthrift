@@ -23,39 +23,40 @@ public final class UnEnumStruct {
     ) {
         this.city = city;
     }
-
+    
     public static class Builder {
         private test.fixtures.constants.City city;
-
+    
         public Builder setCity(test.fixtures.constants.City city) {
             this.city = city;
             return this;
         }
-
+    
         public Builder() { }
         public Builder(UnEnumStruct other) {
             this.city = other.city;
         }
-
+    
         public UnEnumStruct build() {
             return new UnEnumStruct (
                 this.city
             );
         }
     }
-
+    
     private final test.fixtures.constants.City city;
 
+    
     @ThriftField(value=1, name="city", requiredness=Requiredness.NONE)
     public test.fixtures.constants.City getCity() { return city; }
-
+    
     @Override
     public String toString() {
         return toStringHelper(this)
             .add("city", city)
             .toString();
     }
-
+    
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -64,17 +65,19 @@ public final class UnEnumStruct {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-
+    
         UnEnumStruct other = (UnEnumStruct)o;
-
+    
         return
-            Objects.equals(city, other.city);
+            Objects.equals(city, other.city) &&
+            true;
     }
-
+    
     @Override
     public int hashCode() {
         return Arrays.deepHashCode(new Object[] {
             city
         });
     }
+    
 }
