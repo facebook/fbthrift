@@ -162,6 +162,10 @@ class CompactProtocolReaderWithRefill : public VirtualCompactReader {
     readStringImpl(str);
   }
 
+  inline void readBinary(detail::SkipNoopString& str) override {
+    readStringImpl(str);
+  }
+
   inline void readBinary(std::unique_ptr<folly::IOBuf>& str) override {
     readBinaryIOBufImpl(str);
   }
@@ -386,6 +390,10 @@ class BinaryProtocolReaderWithRefill : public VirtualBinaryReader {
   }
 
   inline void readBinary(folly::fbstring& str) override {
+    readStringImpl(str);
+  }
+
+  inline void readBinary(detail::SkipNoopString& str) override {
     readStringImpl(str);
   }
 

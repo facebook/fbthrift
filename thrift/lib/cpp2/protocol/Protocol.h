@@ -80,6 +80,14 @@ typedef apache::thrift::protocol::PROTOCOL_TYPES ProtocolType;
  */
 enum MessageType { T_CALL = 1, T_REPLY = 2, T_EXCEPTION = 3, T_ONEWAY = 4 };
 
+namespace detail {
+struct SkipNoopString {
+  void append(char const*, size_t) {}
+  void clear() {}
+  void reserve(size_t) {}
+};
+} // namespace detail
+
 /**
  * Helper template for implementing Protocol::skip().
  *
@@ -124,7 +132,7 @@ void skip(Protocol_& prot, TType arg_type) {
       return;
     }
     case TType::T_STRING: {
-      std::string str;
+      detail::SkipNoopString str;
       prot.readBinary(str);
       return;
     }
