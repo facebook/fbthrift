@@ -43,7 +43,13 @@ class TCompactProtocolT
   static const int8_t  VERSION_MASK = 0x1f; // 0001 1111
 
  protected:
-  static const int8_t  TYPE_MASK = 0xE0;
+  // Normally we can define static const data members of integral
+  // type here.  However there appears to be a gcc issue when the
+  // high bit is set (http://gcc.gnu.org/bugzilla/show_bug.cgi?id=49896)
+  // unless we cast to a value that fits in an int8_t (0x82 and 0xE0 are
+  // uint8_t)
+
+  static const int8_t  TYPE_MASK = static_cast<int8_t>(0xE0);
   static const int32_t TYPE_SHIFT_AMOUNT = 5;
 
   Transport_* trans_;
