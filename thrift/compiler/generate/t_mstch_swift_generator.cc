@@ -366,7 +366,7 @@ class mstch_swift_const : public mstch_const {
         });
   }
   mstch::node java_capital_name() {
-    return java::mangle_java_name(cnst_->get_name(), true);
+    return java::mangle_java_constant_name(cnst_->get_name());
   }
 };
 
