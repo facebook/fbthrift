@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Facebook, Inc.
+ * Copyright 2016-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 #include <ctime>
 #include <sys/types.h>
 
@@ -352,6 +351,7 @@ string t_st_generator::render_const_value(t_type* type, t_const_value* value) {
     t_base_type::t_base tbase = ((t_base_type*)type)->get_base();
     switch (tbase) {
     case t_base_type::TYPE_STRING:
+    case t_base_type::TYPE_BINARY:
       out << "'" << value->get_string() << "'";
       break;
     case t_base_type::TYPE_BOOL:
@@ -1033,6 +1033,7 @@ string t_st_generator::type_to_enum(t_type* type) {
     case t_base_type::TYPE_VOID:
       throw "NO T_VOID CONSTRUCT";
     case t_base_type::TYPE_STRING:
+    case t_base_type::TYPE_BINARY:
       return "TType string";
     case t_base_type::TYPE_BOOL:
       return "TType bool";

@@ -568,6 +568,7 @@ class t_d_generator : public t_oop_generator {
       t_base_type::t_base tbase = ((t_base_type*)type)->get_base();
       switch (tbase) {
       case t_base_type::TYPE_STRING:
+      case t_base_type::TYPE_BINARY:
         out << '"' << get_escaped_string(value) << '"';
         break;
       case t_base_type::TYPE_BOOL:
@@ -692,6 +693,7 @@ class t_d_generator : public t_oop_generator {
       case t_base_type::TYPE_VOID:
         return "void";
       case t_base_type::TYPE_STRING:
+      case t_base_type::TYPE_BINARY:
         return "string";
       case t_base_type::TYPE_BOOL:
         return "bool";

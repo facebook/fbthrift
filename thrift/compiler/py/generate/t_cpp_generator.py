@@ -78,6 +78,7 @@ class CppGenerator(t_generator.Generator):
     _base_to_cpp_typename = {
         t_base.void: 'void',
         t_base.string: 'std::string',
+        t_base.binary: 'std::string',
         t_base.bool: 'bool',
         t_base.byte: 'int8_t',
         t_base.i16: 'int16_t',

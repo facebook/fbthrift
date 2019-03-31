@@ -1260,7 +1260,7 @@ class AnnotatedTypes implements \IThriftStruct {
   const int STRUCTURAL_ID = 7799859984459418183;
   /**
    * Original thrift field:-
-   * 1: string binary_field
+   * 1: binary binary_field
    */
   public string $binary_field;
   /**

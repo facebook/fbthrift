@@ -2219,11 +2219,10 @@ void t_cocoa_generator::generate_deserialize_field(ofstream& out,
         throw "compiler error: cannot serialize void field in a struct: " +
           tfield->get_name();
       case t_base_type::TYPE_STRING:
-        if (((t_base_type*)type)->is_binary()) {
-          out << "readBinary];";
-        } else {
-          out << "readString];";
-        }
+        out << "readString];";
+        break;
+      case t_base_type::TYPE_BINARY:
+        out << "readBinary];";
         break;
       case t_base_type::TYPE_BOOL:
         out << "readBool];";
@@ -2484,11 +2483,10 @@ void t_cocoa_generator::generate_serialize_field(ofstream& out,
         throw
           "compiler error: cannot serialize void field in a struct: " + fieldName;
       case t_base_type::TYPE_STRING:
-        if (((t_base_type*)type)->is_binary()) {
-          out << "writeBinary: " << fieldName << "];";
-        } else {
-          out << "writeString: " << fieldName << "];";
-        }
+        out << "writeString: " << fieldName << "];";
+        break;
+      case t_base_type::TYPE_BINARY:
+        out << "writeBinary: " << fieldName << "];";
         break;
       case t_base_type::TYPE_BOOL:
         out << "writeBool: " << fieldName << "];";
@@ -2729,11 +2727,9 @@ string t_cocoa_generator::base_type_name(t_base_type* type) {
   case t_base_type::TYPE_VOID:
     return "void";
   case t_base_type::TYPE_STRING:
-    if (type->is_binary()) {
-      return "NSData *";
-    } else {
-      return "NSString *";
-    }
+    return "NSString *";
+  case t_base_type::TYPE_BINARY:
+    return "NSData *";
   case t_base_type::TYPE_BOOL:
     return "BOOL";
   case t_base_type::TYPE_BYTE:
@@ -2865,10 +2861,9 @@ string t_cocoa_generator::render_const_value(
     t_base_type::t_base tbase = ((t_base_type*)type)->get_base();
     switch (tbase) {
     case t_base_type::TYPE_STRING:
+    case t_base_type::TYPE_BINARY:
       // We must handle binary constant but the syntax of IDL defines
       // nothing about binary constant.
-      //   if ((t_base_type*)type)->is_binary())
-      //      // binary code
       render << "@\"" << get_escaped_string(value) << '"';
       break;
     case t_base_type::TYPE_BOOL:
@@ -3127,6 +3122,7 @@ string t_cocoa_generator::type_to_enum(t_type* type) {
       case t_base_type::TYPE_VOID:
         throw "NO T_VOID CONSTRUCT";
       case t_base_type::TYPE_STRING:
+      case t_base_type::TYPE_BINARY:
         return "TType_STRING";
       case t_base_type::TYPE_BOOL:
         return "TType_BOOL";
@@ -3158,7 +3154,6 @@ string t_cocoa_generator::type_to_enum(t_type* type) {
   throw "INVALID TYPE IN type_to_enum: " + type->get_name();
 }
 
-
 /**
  * Returns a format string specifier for the supplied parse type.
  */
@@ -3171,6 +3166,7 @@ string t_cocoa_generator::format_string_for_type(t_type* type) {
       case t_base_type::TYPE_VOID:
         throw "NO T_VOID CONSTRUCT";
       case t_base_type::TYPE_STRING:
+      case t_base_type::TYPE_BINARY:
         return "\\\"%@\\\"";
       case t_base_type::TYPE_BOOL:
         return "%i";

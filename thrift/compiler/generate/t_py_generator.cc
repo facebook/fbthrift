@@ -434,6 +434,7 @@ void t_py_generator::generate_json_field(
     switch (tbase) {
       case t_base_type::TYPE_VOID:
       case t_base_type::TYPE_STRING:
+      case t_base_type::TYPE_BINARY:
       case t_base_type::TYPE_BOOL:
         break;
       case t_base_type::TYPE_BYTE:
@@ -632,6 +633,7 @@ void t_py_generator::generate_json_map_key(
     bool generate_assignment = true;
     switch (tbase) {
       case t_base_type::TYPE_STRING:
+      case t_base_type::TYPE_BINARY:
         break;
       case t_base_type::TYPE_BOOL:
         indent(out) << "if " << raw_key << " == 'true':" << endl;
@@ -1059,6 +1061,7 @@ string t_py_generator::render_const_value(
     t_base_type::t_base tbase = ((t_base_type*)type)->get_base();
     switch (tbase) {
       case t_base_type::TYPE_STRING:
+      case t_base_type::TYPE_BINARY:
         out << render_string(value->get_string());
         break;
       case t_base_type::TYPE_BOOL:
@@ -3153,12 +3156,11 @@ void t_py_generator::generate_deserialize_field(
             throw "compiler error: cannot serialize void field in a struct: " +
                 name;
           case t_base_type::TYPE_STRING:
-            if (((t_base_type*)type)->is_binary()) {
-              out << "readString()";
-            } else {
-              out << "readString().decode('utf-8') "
-                  << "if UTF8STRINGS else iprot.readString()";
-            }
+            out << "readString().decode('utf-8') "
+                << "if UTF8STRINGS else iprot.readString()";
+            break;
+          case t_base_type::TYPE_BINARY:
+            out << "readString()";
             break;
           case t_base_type::TYPE_BOOL:
             out << "readBool()";
@@ -3417,13 +3419,12 @@ void t_py_generator::generate_serialize_field(
           throw "compiler error: cannot serialize void field in a struct: " +
               name;
         case t_base_type::TYPE_STRING:
-          if (((t_base_type*)type)->is_binary()) {
-            out << "writeString(" << name << ")";
-          } else {
-            out << "writeString(" << name << ".encode('utf-8')) "
-                << "if UTF8STRINGS and not isinstance(" << name << ", bytes) "
-                << "else oprot.writeString(" << name << ")";
-          }
+          out << "writeString(" << name << ".encode('utf-8')) "
+              << "if UTF8STRINGS and not isinstance(" << name << ", bytes) "
+              << "else oprot.writeString(" << name << ")";
+          break;
+        case t_base_type::TYPE_BINARY:
+          out << "writeString(" << name << ")";
           break;
         case t_base_type::TYPE_BOOL:
           out << "writeBool(" << name << ")";
@@ -3761,6 +3762,7 @@ string t_py_generator::type_to_enum(t_type* type) {
       case t_base_type::TYPE_VOID:
         throw "NO T_VOID CONSTRUCT";
       case t_base_type::TYPE_STRING:
+      case t_base_type::TYPE_BINARY:
         return "TType.STRING";
       case t_base_type::TYPE_BOOL:
         return "TType.BOOL";
@@ -3799,10 +3801,9 @@ string t_py_generator::type_to_spec_args(t_type* ttype) {
   if (ttype->is_base_type()) {
     t_base_type::t_base tbase = ((t_base_type*)ttype)->get_base();
     if (tbase == t_base_type::TYPE_STRING) {
-      if (((t_base_type*)ttype)->is_binary()) {
-        return "False";
-      }
       return "True";
+    } else if (tbase == t_base_type::TYPE_BINARY) {
+      return "False";
     }
     return "None";
   } else if (ttype->is_enum()) {

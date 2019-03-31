@@ -388,7 +388,8 @@ string t_java_generator::render_const_value(
   if (type->is_base_type()) {
     t_base_type::t_base tbase = ((t_base_type*)type)->get_base();
     switch (tbase) {
-    case t_base_type::TYPE_STRING: {
+    case t_base_type::TYPE_STRING:
+    case t_base_type::TYPE_BINARY: {
       render << '"';
       auto &rawValue = value->get_string();
       for (std::string::size_type i = 0; i < rawValue.size(); ) {
@@ -2023,19 +2024,34 @@ std::string t_java_generator::get_java_type_string(t_type* type) {
     return get_java_type_string(((t_typedef*)type)->get_type());
   } else if (type->is_base_type()) {
     switch (((t_base_type*)type)->get_base()) {
-      case t_base_type::TYPE_VOID   : return      "TType.VOID";
-      case t_base_type::TYPE_STRING : return    "TType.STRING";
-      case t_base_type::TYPE_BOOL   : return      "TType.BOOL";
-      case t_base_type::TYPE_BYTE   : return      "TType.BYTE";
-      case t_base_type::TYPE_I16    : return       "TType.I16";
-      case t_base_type::TYPE_I32    : return       "TType.I32";
-      case t_base_type::TYPE_I64    : return       "TType.I64";
-      case t_base_type::TYPE_DOUBLE : return    "TType.DOUBLE";
-      case t_base_type::TYPE_FLOAT  : return     "TType.FLOAT";
-      default : throw std::runtime_error("Unknown thrift type \"" + type->get_name() + "\" passed to t_java_generator::get_java_type_string!"); // This should never happen!
+      case t_base_type::TYPE_VOID:
+        return "TType.VOID";
+      case t_base_type::TYPE_STRING:
+      case t_base_type::TYPE_BINARY:
+        return "TType.STRING";
+      case t_base_type::TYPE_BOOL:
+        return "TType.BOOL";
+      case t_base_type::TYPE_BYTE:
+        return "TType.BYTE";
+      case t_base_type::TYPE_I16:
+        return "TType.I16";
+      case t_base_type::TYPE_I32:
+        return "TType.I32";
+      case t_base_type::TYPE_I64:
+        return "TType.I64";
+      case t_base_type::TYPE_DOUBLE:
+        return "TType.DOUBLE";
+      case t_base_type::TYPE_FLOAT:
+        return "TType.FLOAT";
+      default:
+        throw std::runtime_error(
+            "Unknown thrift type \"" + type->get_name() +
+            "\" passed to t_java_generator::get_java_type_string!");
     }
   } else {
-    throw std::runtime_error("Unknown thrift type \"" + type->get_name() + "\" passed to t_java_generator::get_java_type_string!"); // This should never happen!
+    throw std::runtime_error(
+        "Unknown thrift type \"" + type->get_name() +
+        "\" passed to t_java_generator::get_java_type_string!");
   }
 }
 
@@ -2890,11 +2906,10 @@ void t_java_generator::generate_deserialize_field(ofstream& out,
         throw "compiler error: cannot serialize void field in a struct: " +
           name;
       case t_base_type::TYPE_STRING:
-        if (((t_base_type*)type)->is_binary()) {
-          out << "readBinary();";
-        } else {
-          out << "readString();";
-        }
+        out << "readString();";
+        break;
+      case t_base_type::TYPE_BINARY:
+        out << "readBinary();";
         break;
       case t_base_type::TYPE_BOOL:
         out << "readBool();";
@@ -3126,11 +3141,10 @@ void t_java_generator::generate_serialize_field(ofstream& out,
         throw
           "compiler error: cannot serialize void field in a struct: " + name;
       case t_base_type::TYPE_STRING:
-        if (((t_base_type*)type)->is_binary()) {
-          out << "writeBinary(" << name << ");";
-        } else {
-          out << "writeString(" << name << ");";
-        }
+        out << "writeString(" << name << ");";
+        break;
+      case t_base_type::TYPE_BINARY:
+        out << "writeBinary(" << name << ");";
         break;
       case t_base_type::TYPE_BOOL:
         out << "writeBool(" << name << ");";
@@ -3362,11 +3376,9 @@ string t_java_generator::base_type_name(t_base_type* type,
   case t_base_type::TYPE_VOID:
     return "void";
   case t_base_type::TYPE_STRING:
-    if (type->is_binary()) {
-      return "byte[]";
-    } else {
-      return "String";
-    }
+    return "String";
+  case t_base_type::TYPE_BINARY:
+    return "byte[]";
   case t_base_type::TYPE_BOOL:
     return (in_container ? "Boolean" : "boolean");
   case t_base_type::TYPE_BYTE:
@@ -3405,6 +3417,7 @@ string t_java_generator::declare_field(t_field* tfield, bool init) {
       case t_base_type::TYPE_VOID:
         throw "NO T_VOID CONSTRUCT";
       case t_base_type::TYPE_STRING:
+      case t_base_type::TYPE_BINARY:
         result += " = null";
         break;
       case t_base_type::TYPE_BOOL:
@@ -3551,6 +3564,7 @@ string t_java_generator::type_to_enum(t_type* type) {
     case t_base_type::TYPE_VOID:
       throw "NO T_VOID CONSTRUCT";
     case t_base_type::TYPE_STRING:
+    case t_base_type::TYPE_BINARY:
       return "TType.STRING";
     case t_base_type::TYPE_BOOL:
       return "TType.BOOL";

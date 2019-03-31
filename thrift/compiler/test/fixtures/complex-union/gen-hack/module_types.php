@@ -468,7 +468,7 @@ class DataUnion implements \IThriftStruct, \IThriftUnion<DataUnionEnum> {
   const int STRUCTURAL_ID = 4138034353479042532;
   /**
    * Original thrift field:-
-   * 1: string binaryData
+   * 1: binary binaryData
    */
   public ?string $binaryData;
   /**

@@ -233,6 +233,7 @@ void parsing_driver::validate_const_rec(
     t_base_type::t_base tbase = ((t_base_type*)type)->get_base();
     switch (tbase) {
       case t_base_type::TYPE_STRING:
+      case t_base_type::TYPE_BINARY:
         if (value->get_type() != t_const_value::CV_STRING) {
           throw std::string(
               "type error: const \"" + name + "\" was declared as string");

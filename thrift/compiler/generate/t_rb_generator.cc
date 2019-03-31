@@ -1,4 +1,6 @@
 /*
+ * Copyright 2019-present Facebook, Inc.
+ *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -16,7 +18,6 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 #include <string>
 #include <fstream>
 #include <iostream>
@@ -375,6 +376,7 @@ string t_rb_generator::render_const_value(
     t_base_type::t_base tbase = ((t_base_type*)type)->get_base();
     switch (tbase) {
     case t_base_type::TYPE_STRING:
+    case t_base_type::TYPE_BINARY:
       out << "%q\"" << value->get_string() << '"';
       break;
     case t_base_type::TYPE_BOOL:
@@ -1059,6 +1061,7 @@ string t_rb_generator::type_to_enum(t_type* type) {
     case t_base_type::TYPE_VOID:
       throw "NO T_VOID CONSTRUCT";
     case t_base_type::TYPE_STRING:
+    case t_base_type::TYPE_BINARY:
       return "::Thrift::Types::STRING";
     case t_base_type::TYPE_BOOL:
       return "::Thrift::Types::BOOL";

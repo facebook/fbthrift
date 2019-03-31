@@ -50,10 +50,10 @@ class t_base_type : public t_type {
     TYPE_I64 = int(TypeValue::TYPE_I64),
     TYPE_DOUBLE = int(TypeValue::TYPE_DOUBLE),
     TYPE_FLOAT = int(TypeValue::TYPE_FLOAT),
+    TYPE_BINARY = int(TypeValue::TYPE_BINARY),
   };
 
-  t_base_type(std::string name, t_base base)
-      : t_type(name), base_(base), binary_(false) {}
+  t_base_type(std::string name, t_base base) : t_type(name), base_(base) {}
 
   t_base get_base() const {
     return base_;
@@ -64,7 +64,7 @@ class t_base_type : public t_type {
   }
 
   bool is_string() const override {
-    return base_ == TYPE_STRING && !binary_;
+    return base_ == TYPE_STRING;
   }
 
   bool is_bool() const override {
@@ -103,16 +103,12 @@ class t_base_type : public t_type {
     return base_ == TYPE_DOUBLE || base_ == TYPE_FLOAT;
   }
 
-  void set_binary(bool val) {
-    binary_ = val;
-  }
-
   bool is_binary() const override {
-    return (base_ == TYPE_STRING) && binary_;
+    return base_ == TYPE_BINARY;
   }
 
   bool is_string_or_binary() const override {
-    return base_ == TYPE_STRING;
+    return base_ == TYPE_STRING || base_ == TYPE_BINARY;
   }
 
   bool is_base_type() const override {
@@ -139,6 +135,8 @@ class t_base_type : public t_type {
         return "double";
       case TYPE_FLOAT:
         return "float";
+      case TYPE_BINARY:
+        return "binary";
       default:
         return "(unknown)";
     }
@@ -162,8 +160,6 @@ class t_base_type : public t_type {
 
  private:
   t_base base_;
-
-  bool binary_;
 };
 
 } // namespace compiler

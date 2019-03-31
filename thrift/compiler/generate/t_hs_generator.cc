@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Facebook, Inc.
+ * Copyright 2016-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 #include <stdlib.h>
 #include <sys/types.h>
 #include <cctype>
@@ -536,6 +535,7 @@ string t_hs_generator::render_const_value(
     switch (tbase) {
 
     case t_base_type::TYPE_STRING:
+    case t_base_type::TYPE_BINARY:
       out << '"' << get_escaped_string(value) << '"';
       break;
 
@@ -2199,15 +2199,25 @@ string t_hs_generator::type_to_enum(t_type* type) {
   if (type->is_base_type()) {
     t_base_type::t_base tbase = ((t_base_type*)type)->get_base();
     switch (tbase) {
-      case t_base_type::TYPE_VOID:   return "Types.T_VOID";
-    case t_base_type::TYPE_STRING: return "Types.T_STRING";
-    case t_base_type::TYPE_BOOL:   return "Types.T_BOOL";
-    case t_base_type::TYPE_BYTE:   return "Types.T_BYTE";
-    case t_base_type::TYPE_I16:    return "Types.T_I16";
-    case t_base_type::TYPE_I32:    return "Types.T_I32";
-    case t_base_type::TYPE_I64:    return "Types.T_I64";
-    case t_base_type::TYPE_FLOAT:  return "Types.T_FLOAT";
-    case t_base_type::TYPE_DOUBLE: return "Types.T_DOUBLE";
+      case t_base_type::TYPE_VOID:
+        return "Types.T_VOID";
+      case t_base_type::TYPE_STRING:
+      case t_base_type::TYPE_BINARY:
+        return "Types.T_STRING";
+      case t_base_type::TYPE_BOOL:
+        return "Types.T_BOOL";
+      case t_base_type::TYPE_BYTE:
+        return "Types.T_BYTE";
+      case t_base_type::TYPE_I16:
+        return "Types.T_I16";
+      case t_base_type::TYPE_I32:
+        return "Types.T_I32";
+      case t_base_type::TYPE_I64:
+        return "Types.T_I64";
+      case t_base_type::TYPE_FLOAT:
+        return "Types.T_FLOAT";
+      case t_base_type::TYPE_DOUBLE:
+        return "Types.T_DOUBLE";
     }
 
   } else if (type->is_enum()) {
@@ -2243,15 +2253,20 @@ string t_hs_generator::type_to_default(t_type* type) {
   if (type->is_base_type()) {
     t_base_type::t_base tbase = ((t_base_type*)type)->get_base();
     switch (tbase) {
-    case t_base_type::TYPE_VOID:   return "error \"No default value for type T_VOID\"";
-    case t_base_type::TYPE_STRING: return "\"\"";
-    case t_base_type::TYPE_BOOL:   return "False";
-    case t_base_type::TYPE_BYTE:   return "0";
-    case t_base_type::TYPE_I16:    return "0";
-    case t_base_type::TYPE_I32:    return "0";
-    case t_base_type::TYPE_I64:    return "0";
-    case t_base_type::TYPE_FLOAT:  return "0";
-    case t_base_type::TYPE_DOUBLE: return "0";
+      case t_base_type::TYPE_VOID:
+        return "error \"No default value for type T_VOID\"";
+      case t_base_type::TYPE_STRING:
+      case t_base_type::TYPE_BINARY:
+        return "\"\"";
+      case t_base_type::TYPE_BOOL:
+        return "False";
+      case t_base_type::TYPE_BYTE:
+      case t_base_type::TYPE_I16:
+      case t_base_type::TYPE_I32:
+      case t_base_type::TYPE_I64:
+      case t_base_type::TYPE_FLOAT:
+      case t_base_type::TYPE_DOUBLE:
+        return "0";
     }
 
   } else if (type->is_enum()) {
@@ -2286,23 +2301,32 @@ string t_hs_generator::render_hs_type(t_type* type, bool needs_parens) {
   if (type->is_base_type()) {
     t_base_type::t_base tbase = ((t_base_type*)type)->get_base();
     switch (tbase) {
-    case t_base_type::TYPE_VOID:   return "()";
-    case t_base_type::TYPE_STRING:
-      if (((t_base_type*)type)->is_binary())
+      case t_base_type::TYPE_VOID:
+        return "()";
+      case t_base_type::TYPE_STRING:
+        if (use_string_) {
+          return "String";
+        } else if (use_strict_text_) {
+          return "T.Text";
+        } else {
+          return "LT.Text";
+        }
+      case t_base_type::TYPE_BINARY:
         return "BS.ByteString";
-      else if (use_string_)
-        return "String";
-      else if (use_strict_text_)
-        return "T.Text";
-      else
-        return "LT.Text";
-    case t_base_type::TYPE_BOOL:   return "Bool";
-    case t_base_type::TYPE_BYTE:   return use_int_ ? "Int.Int" : "Int.Int8";
-    case t_base_type::TYPE_I16:    return use_int_ ? "Int.Int" : "Int.Int16";
-    case t_base_type::TYPE_I32:    return use_int_ ? "Int.Int" : "Int.Int32";
-    case t_base_type::TYPE_I64:    return use_int_ ? "Int.Int" : "Int.Int64";
-    case t_base_type::TYPE_FLOAT:  return "Float";
-    case t_base_type::TYPE_DOUBLE: return "Double";
+      case t_base_type::TYPE_BOOL:
+        return "Bool";
+      case t_base_type::TYPE_BYTE:
+        return use_int_ ? "Int.Int" : "Int.Int8";
+      case t_base_type::TYPE_I16:
+        return use_int_ ? "Int.Int" : "Int.Int16";
+      case t_base_type::TYPE_I32:
+        return use_int_ ? "Int.Int" : "Int.Int32";
+      case t_base_type::TYPE_I64:
+        return use_int_ ? "Int.Int" : "Int.Int64";
+      case t_base_type::TYPE_FLOAT:
+        return "Float";
+      case t_base_type::TYPE_DOUBLE:
+        return "Double";
     }
 
   } else if (type->is_enum()) {
@@ -2344,15 +2368,25 @@ string t_hs_generator::type_to_constructor(t_type* type) {
   if (type->is_base_type()) {
     t_base_type::t_base tbase = ((t_base_type*)type)->get_base();
     switch (tbase) {
-    case t_base_type::TYPE_VOID:   throw "invalid type: T_VOID";
-    case t_base_type::TYPE_STRING: return "Types.TString";
-    case t_base_type::TYPE_BOOL:   return "Types.TBool";
-    case t_base_type::TYPE_BYTE:   return "Types.TByte";
-    case t_base_type::TYPE_I16:    return "Types.TI16";
-    case t_base_type::TYPE_I32:    return "Types.TI32";
-    case t_base_type::TYPE_I64:    return "Types.TI64";
-    case t_base_type::TYPE_FLOAT:  return "Types.TFloat";
-    case t_base_type::TYPE_DOUBLE: return "Types.TDouble";
+      case t_base_type::TYPE_VOID:
+        throw std::runtime_error("invalid type: T_VOID");
+      case t_base_type::TYPE_STRING:
+      case t_base_type::TYPE_BINARY:
+        return "Types.TString";
+      case t_base_type::TYPE_BOOL:
+        return "Types.TBool";
+      case t_base_type::TYPE_BYTE:
+        return "Types.TByte";
+      case t_base_type::TYPE_I16:
+        return "Types.TI16";
+      case t_base_type::TYPE_I32:
+        return "Types.TI32";
+      case t_base_type::TYPE_I64:
+        return "Types.TI64";
+      case t_base_type::TYPE_FLOAT:
+        return "Types.TFloat";
+      case t_base_type::TYPE_DOUBLE:
+        return "Types.TDouble";
     }
 
   } else if (type->is_enum()) {

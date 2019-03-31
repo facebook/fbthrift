@@ -712,10 +712,12 @@ void t_hack_generator::generate_json_field(
     string number_limit = "";
     switch (tbase) {
       case t_base_type::TYPE_VOID:
-        break;
       case t_base_type::TYPE_STRING:
-        break;
+      case t_base_type::TYPE_BINARY:
       case t_base_type::TYPE_BOOL:
+      case t_base_type::TYPE_I64:
+      case t_base_type::TYPE_DOUBLE:
+      case t_base_type::TYPE_FLOAT:
         break;
       case t_base_type::TYPE_BYTE:
         number_limit = "0x7f";
@@ -728,12 +730,6 @@ void t_hack_generator::generate_json_field(
       case t_base_type::TYPE_I32:
         number_limit = "0x7fffffff";
         typeConversionString = "(int)";
-        break;
-      case t_base_type::TYPE_I64:
-        break;
-      case t_base_type::TYPE_DOUBLE:
-        break;
-      case t_base_type::TYPE_FLOAT:
         break;
       default:
         throw "compiler error: no PHP reader for base type " +
@@ -1225,6 +1221,7 @@ string t_hack_generator::render_const_value(
     t_base_type::t_base tbase = ((t_base_type*)type)->get_base();
     switch (tbase) {
       case t_base_type::TYPE_STRING:
+      case t_base_type::TYPE_BINARY:
         out << render_string(value->get_string());
         break;
       case t_base_type::TYPE_BOOL:
@@ -1419,6 +1416,7 @@ string t_hack_generator::render_default_value(t_type* type) {
     t_base_type::t_base tbase = ((t_base_type*)type)->get_base();
     switch (tbase) {
       case t_base_type::TYPE_STRING:
+      case t_base_type::TYPE_BINARY:
         dval = "''";
         break;
       case t_base_type::TYPE_BOOL:
@@ -1877,6 +1875,7 @@ void t_hack_generator::generate_php_struct_shape_json_conversion(
     if (!shape_unsafe_json_) {
       switch (((t_base_type*)t)->get_base()) {
         case t_base_type::TYPE_STRING:
+        case t_base_type::TYPE_BINARY:
           indent(out) << "if (!is_string(" << shape_data << ")";
           if (nullable) {
             out << " && !is_null(" << shape_data << ")";
@@ -3717,6 +3716,7 @@ t_hack_generator::type_to_typehint(t_type* ttype, bool nullable, bool shape) {
       case t_base_type::TYPE_VOID:
         return "void";
       case t_base_type::TYPE_STRING:
+      case t_base_type::TYPE_BINARY:
         return "string";
       case t_base_type::TYPE_BOOL:
         return "bool";
@@ -4542,6 +4542,7 @@ void t_hack_generator::generate_deserialize_field(
             throw "compiler error: cannot serialize void field in a struct: " +
                 name;
           case t_base_type::TYPE_STRING:
+          case t_base_type::TYPE_BINARY:
             out << "readString(&$" << name << ");";
             break;
           case t_base_type::TYPE_BOOL:
@@ -4812,6 +4813,7 @@ void t_hack_generator::generate_serialize_field(
           throw "compiler error: cannot serialize void field in a struct: " +
               name;
         case t_base_type::TYPE_STRING:
+        case t_base_type::TYPE_BINARY:
           out << "writeString($" << name << ");";
           break;
         case t_base_type::TYPE_BOOL:
@@ -4993,6 +4995,7 @@ string t_hack_generator::declare_field(
         case t_base_type::TYPE_VOID:
           break;
         case t_base_type::TYPE_STRING:
+        case t_base_type::TYPE_BINARY:
           result += " = ''";
           break;
         case t_base_type::TYPE_BOOL:
@@ -5131,6 +5134,7 @@ string t_hack_generator::type_to_cast(t_type* type) {
       case t_base_type::TYPE_FLOAT:
         return "(float)";
       case t_base_type::TYPE_STRING:
+      case t_base_type::TYPE_BINARY:
         return "(string)";
       default:
         return "";
@@ -5153,6 +5157,7 @@ string t_hack_generator::type_to_enum(t_type* type) {
       case t_base_type::TYPE_VOID:
         throw "NO T_VOID CONSTRUCT";
       case t_base_type::TYPE_STRING:
+      case t_base_type::TYPE_BINARY:
         return "\\TType::STRING";
       case t_base_type::TYPE_BOOL:
         return "\\TType::BOOL";

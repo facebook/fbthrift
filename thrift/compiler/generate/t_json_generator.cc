@@ -207,6 +207,7 @@ string t_json_generator::type_to_string(t_type* type) {
     case t_base_type::TYPE_VOID:
       return "VOID";
     case t_base_type::TYPE_STRING:
+    case t_base_type::TYPE_BINARY:
       return "STRING";
     case t_base_type::TYPE_BOOL:
       return "BOOL";

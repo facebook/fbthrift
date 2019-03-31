@@ -56,6 +56,7 @@ struct t_types {
     TYPE_PROGRAM,
     TYPE_FLOAT,
     TYPE_STREAM,
+    TYPE_BINARY,
   };
 
   static constexpr size_t kTypeBits = 5;

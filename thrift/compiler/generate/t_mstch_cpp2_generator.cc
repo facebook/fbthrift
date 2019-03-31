@@ -787,6 +787,7 @@ class mstch_cpp2_struct : public mstch_struct {
       case t_types::TypeValue::TYPE_I64:
       case t_types::TypeValue::TYPE_DOUBLE:
       case t_types::TypeValue::TYPE_STRING:
+      case t_types::TypeValue::TYPE_BINARY:
       case t_types::TypeValue::TYPE_LIST:
       case t_types::TypeValue::TYPE_SET:
       case t_types::TypeValue::TYPE_MAP:

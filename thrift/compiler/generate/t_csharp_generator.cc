@@ -1,4 +1,6 @@
 /*
+ * Copyright 2019-present Facebook, Inc.
+ *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -16,7 +18,6 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 #include <string>
 #include <fstream>
 #include <iostream>
@@ -370,6 +371,7 @@ std::string t_csharp_generator::render_const_value(
     t_base_type::t_base tbase = ((t_base_type*)type)->get_base();
     switch (tbase) {
       case t_base_type::TYPE_STRING:
+      case t_base_type::TYPE_BINARY:
         render << "\"" + value->get_string() + "\"";
         break;
       case t_base_type::TYPE_BOOL:
@@ -1252,11 +1254,10 @@ void t_csharp_generator::generate_deserialize_field(ofstream& out, t_field* tfie
         case t_base_type::TYPE_VOID:
           throw "compiler error: cannot serialize void field in a struct: " + name;
         case t_base_type::TYPE_STRING:
-          if (((t_base_type*)type)->is_binary()) {
-             out << "ReadBinary();";
-          } else {
-            out << "ReadString();";
-          }
+          out << "ReadString();";
+          break;
+        case t_base_type::TYPE_BINARY:
+          out << "ReadBinary();";
           break;
         case t_base_type::TYPE_BOOL:
           out << "ReadBool();";
@@ -1418,11 +1419,11 @@ void t_csharp_generator::generate_serialize_field(ofstream& out, t_field* tfield
         case t_base_type::TYPE_VOID:
           throw "compiler error: cannot serialize void field in a struct: " + name;
         case t_base_type::TYPE_STRING:
-          if (((t_base_type*)type)->is_binary()) {
-            out << "WriteBinary(";
-          } else {
-            out << "WriteString(";
-          }
+          out << "WriteString(";
+          out << name << ");";
+          break;
+        case t_base_type::TYPE_BINARY:
+          out << "WriteBinary(";
           out << name << ");";
           break;
         case t_base_type::TYPE_BOOL:
@@ -1607,11 +1608,9 @@ string t_csharp_generator::base_type_name(
     case t_base_type::TYPE_VOID:
       return "void";
     case t_base_type::TYPE_STRING:
-      if (tbase->is_binary()) {
-        return "byte[]";
-      } else {
-        return "string";
-      }
+      return "string";
+    case t_base_type::TYPE_BINARY:
+      return "byte[]";
     case t_base_type::TYPE_BOOL:
       return "bool";
     case t_base_type::TYPE_BYTE:
@@ -1648,6 +1647,7 @@ string t_csharp_generator::declare_field(t_field* tfield, bool init) {
         case t_base_type::TYPE_VOID:
           throw "NO T_VOID CONSTRUCT";
         case t_base_type::TYPE_STRING:
+        case t_base_type::TYPE_BINARY:
           result += " = null";
           break;
         case t_base_type::TYPE_BOOL:
@@ -1709,6 +1709,7 @@ string t_csharp_generator::type_to_enum(t_type* type) {
       case t_base_type::TYPE_VOID:
         throw "NO T_VOID CONSTRUCT";
       case t_base_type::TYPE_STRING:
+      case t_base_type::TYPE_BINARY:
         return "TType.String";
       case t_base_type::TYPE_BOOL:
         return "TType.Bool";

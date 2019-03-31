@@ -450,10 +450,12 @@ void t_php_generator::generate_json_field(ofstream& out,
     string number_limit = "";
     switch (tbase) {
       case t_base_type::TYPE_VOID:
-        break;
       case t_base_type::TYPE_STRING:
-        break;
+      case t_base_type::TYPE_BINARY:
       case t_base_type::TYPE_BOOL:
+      case t_base_type::TYPE_I64:
+      case t_base_type::TYPE_DOUBLE:
+      case t_base_type::TYPE_FLOAT:
         break;
       case t_base_type::TYPE_BYTE:
         number_limit = "0x7f";
@@ -466,12 +468,6 @@ void t_php_generator::generate_json_field(ofstream& out,
       case t_base_type::TYPE_I32:
         number_limit = "0x7fffffff";
         typeConversionString = "(int)";
-        break;
-      case t_base_type::TYPE_I64:
-        break;
-      case t_base_type::TYPE_DOUBLE:
-        break;
-      case t_base_type::TYPE_FLOAT:
         break;
       default:
         throw "compiler error: no PHP reader for base type "
@@ -962,6 +958,7 @@ string t_php_generator::render_const_value(
     t_base_type::t_base tbase = ((t_base_type*)type)->get_base();
     switch (tbase) {
     case t_base_type::TYPE_STRING:
+    case t_base_type::TYPE_BINARY:
       out << render_string(value->get_string());
       break;
     case t_base_type::TYPE_BOOL:
@@ -2791,6 +2788,7 @@ void t_php_generator::generate_deserialize_field(ofstream& out,
             throw "compiler error: cannot serialize void field in a struct: " +
               name;
           case t_base_type::TYPE_STRING:
+          case t_base_type::TYPE_BINARY:
             out <<
               indent() << "$len = unpack('N', " << itrans << "->readAll(4));" << endl <<
               indent() << "$len = $len[1];" << endl <<
@@ -2872,6 +2870,7 @@ void t_php_generator::generate_deserialize_field(ofstream& out,
             throw "compiler error: cannot serialize void field in a struct: " +
               name;
           case t_base_type::TYPE_STRING:
+          case t_base_type::TYPE_BINARY:
             out << "readString($" << name << ");";
             break;
           case t_base_type::TYPE_BOOL:
@@ -3130,6 +3129,7 @@ void t_php_generator::generate_serialize_field(ofstream& out,
           throw
             "compiler error: cannot serialize void field in a struct: " + name;
         case t_base_type::TYPE_STRING:
+        case t_base_type::TYPE_BINARY:
           out <<
             indent() << "$output .= pack('N', strlen($" << name << "));" << endl <<
             indent() << "$output .= $" << name << ";" << endl;
@@ -3181,6 +3181,7 @@ void t_php_generator::generate_serialize_field(ofstream& out,
           throw
             "compiler error: cannot serialize void field in a struct: " + name;
         case t_base_type::TYPE_STRING:
+        case t_base_type::TYPE_BINARY:
           out << "writeString($" << name << ");";
           break;
         case t_base_type::TYPE_BOOL:
@@ -3385,6 +3386,7 @@ string t_php_generator::declare_field(t_field* tfield, bool init,
       case t_base_type::TYPE_VOID:
         break;
       case t_base_type::TYPE_STRING:
+      case t_base_type::TYPE_BINARY:
         result += " = ''";
         break;
       case t_base_type::TYPE_BOOL:
@@ -3486,6 +3488,7 @@ string t_php_generator::type_to_cast(t_type* type) {
     case t_base_type::TYPE_FLOAT:
       return "(double)";
     case t_base_type::TYPE_STRING:
+    case t_base_type::TYPE_BINARY:
       return "(string)";
     default:
       return "";
@@ -3508,6 +3511,7 @@ string t_php_generator ::type_to_enum(t_type* type) {
     case t_base_type::TYPE_VOID:
       throw "NO T_VOID CONSTRUCT";
     case t_base_type::TYPE_STRING:
+    case t_base_type::TYPE_BINARY:
       return "TType::STRING";
     case t_base_type::TYPE_BOOL:
       return "TType::BOOL";

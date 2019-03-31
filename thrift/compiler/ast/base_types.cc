@@ -30,11 +30,8 @@ t_type* string_type() {
 }
 
 t_type* binary_type() {
-  static t_base_type type = [] {
-    static t_base_type tmp_type{"string", t_base_type::TYPE_STRING};
-    tmp_type.set_binary(true);
-    return tmp_type;
-  }();
+  // NOTE: thrift compiler used to treat both string and binary as string.
+  static t_base_type type{"string", t_base_type::TYPE_BINARY};
   return &type;
 }
 

@@ -1,4 +1,6 @@
 /*
+ * Copyright 2019-present Facebook, Inc.
+ *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -16,7 +18,6 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 #ifndef PY_FRONTEND_TCC_
 #define PY_FRONTEND_TCC_
 
@@ -48,6 +49,7 @@ BOOST_PYTHON_MODULE(frontend) {
   enum_<t_types::TypeValue>("TypeValue")
       .value("TYPE_VOID", t_type::TypeValue::TYPE_VOID)
       .value("TYPE_STRING", t_type::TypeValue::TYPE_STRING)
+      .value("TYPE_BINARY", t_type::TypeValue::TYPE_BINARY)
       .value("TYPE_BOOL", t_type::TypeValue::TYPE_BOOL)
       .value("TYPE_BYTE", t_type::TypeValue::TYPE_BYTE)
       .value("TYPE_I16", t_type::TypeValue::TYPE_I16)
@@ -128,6 +130,7 @@ BOOST_PYTHON_MODULE(frontend) {
   enum_<t_base_type::t_base>("t_base")
       .value("void", t_base_type::TYPE_VOID)
       .value("string", t_base_type::TYPE_STRING)
+      .value("binary", t_base_type::TYPE_BINARY)
       .value("bool", t_base_type::TYPE_BOOL)
       .value("byte", t_base_type::TYPE_BYTE)
       .value("i16", t_base_type::TYPE_I16)

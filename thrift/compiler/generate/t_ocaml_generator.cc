@@ -1,4 +1,6 @@
 /*
+ * Copyright 2019-present Facebook, Inc.
+ *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -16,7 +18,6 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 #include <string>
 #include <fstream>
 #include <iostream>
@@ -368,6 +369,7 @@ string t_ocaml_generator::render_const_value(t_type* type, t_const_value* value)
     t_base_type::t_base tbase = ((t_base_type*)type)->get_base();
     switch (tbase) {
     case t_base_type::TYPE_STRING:
+    case t_base_type::TYPE_BINARY:
       out << "\"" << value->get_string() << "\"";
       break;
     case t_base_type::TYPE_BOOL:
@@ -1215,6 +1217,7 @@ void t_ocaml_generator::generate_deserialize_type(ofstream &out,
     case t_base_type::TYPE_VOID:
       throw "compiler error: cannot serialize void field in a struct";
     case t_base_type::TYPE_STRING:
+    case t_base_type::TYPE_BINARY:
       out << "readString";
       break;
     case t_base_type::TYPE_BOOL:
@@ -1366,6 +1369,7 @@ void t_ocaml_generator::generate_serialize_field(ofstream &out,
         throw
           "compiler error: cannot serialize void field in a struct: " + name;
       case t_base_type::TYPE_STRING:
+      case t_base_type::TYPE_BINARY:
         out << "writeString(" << name << ")";
         break;
       case t_base_type::TYPE_BOOL:
@@ -1584,6 +1588,7 @@ string t_ocaml_generator::type_to_enum(t_type* type) {
     case t_base_type::TYPE_VOID:
       return "Protocol.T_VOID";
     case t_base_type::TYPE_STRING:
+    case t_base_type::TYPE_BINARY:
       return "Protocol.T_STRING";
     case t_base_type::TYPE_BOOL:
       return "Protocol.T_BOOL";
@@ -1627,6 +1632,7 @@ string t_ocaml_generator::render_ocaml_type(t_type* type) {
     case t_base_type::TYPE_VOID:
       return "unit";
     case t_base_type::TYPE_STRING:
+    case t_base_type::TYPE_BINARY:
       return "string";
     case t_base_type::TYPE_BOOL:
       return "bool";

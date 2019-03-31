@@ -382,12 +382,12 @@ bool t_go_generator::omit_initialization(t_field* tfield) {
         throw "";
 
       case t_base_type::TYPE_STRING:
-        if (((t_base_type*)type)->is_binary()) {
-          //[]byte are always inline
-          return false;
-        }
         // strings are pointers if has no default
         return value->get_string().empty();
+
+      case t_base_type::TYPE_BINARY:
+        //[]byte are always inline
+        return false;
 
       case t_base_type::TYPE_BOOL:
       case t_base_type::TYPE_BYTE:
@@ -443,12 +443,12 @@ bool t_go_generator::is_pointer_field(
         throw "";
 
       case t_base_type::TYPE_STRING:
-        if (((t_base_type*)type)->is_binary()) {
-          //[]byte are always inline
-          return false;
-        }
         // strings are pointers if has no default
         return !has_default;
+
+      case t_base_type::TYPE_BINARY:
+        //[]byte are always inline
+        return false;
 
       case t_base_type::TYPE_BOOL:
       case t_base_type::TYPE_BYTE:
@@ -1074,14 +1074,11 @@ string t_go_generator::render_const_value(
 
     switch (tbase) {
       case t_base_type::TYPE_STRING:
-        if (((t_base_type*)type)->is_binary()) {
-          out << "[]byte(\"" << get_escaped_string(value) << "\")";
-        } else {
-          out << '"' << get_escaped_string(value) << '"';
-        }
-
+        out << '"' << get_escaped_string(value) << '"';
         break;
-
+      case t_base_type::TYPE_BINARY:
+        out << "[]byte(\"" << get_escaped_string(value) << "\")";
+        break;
       case t_base_type::TYPE_BOOL:
         out << (value->get_integer() > 0 ? "true" : "false");
         break;
@@ -1468,8 +1465,7 @@ void t_go_generator::generate_isset_helpers(
           << "() bool {" << endl;
       indent_up();
       t_type* ttype = (*f_iter)->get_type()->get_true_type();
-      bool is_byteslice =
-          ttype->is_base_type() && ((t_base_type*)ttype)->is_binary();
+      bool is_byteslice = ttype->is_base_type() && ttype->is_binary();
       bool compare_to_nil_only = ttype->is_set() || ttype->is_list() ||
           ttype->is_map() || (is_byteslice && !(*f_iter)->get_value());
       if (is_pointer_field(*f_iter) || compare_to_nil_only) {
@@ -2771,13 +2767,12 @@ void t_go_generator::generate_service_remote(t_service* tservice) {
             break;
 
           case t_base_type::TYPE_STRING:
-            if (((t_base_type*)the_type2)->is_binary()) {
-              f_remote << indent() << "argvalue" << i << " := []byte(flag.Arg("
-                       << flagArg << "))" << endl;
-            } else {
-              f_remote << indent() << "argvalue" << i << " := flag.Arg("
-                       << flagArg << ")" << endl;
-            }
+            f_remote << indent() << "argvalue" << i << " := flag.Arg("
+                     << flagArg << ")" << endl;
+            break;
+          case t_base_type::TYPE_BINARY:
+            f_remote << indent() << "argvalue" << i << " := []byte(flag.Arg("
+                     << flagArg << "))" << endl;
             break;
 
           case t_base_type::TYPE_BOOL:
@@ -2957,6 +2952,7 @@ void t_go_generator::generate_service_remote(t_service* tservice) {
             break;
 
           case t_base_type::TYPE_STRING:
+          case t_base_type::TYPE_BINARY:
           case t_base_type::TYPE_BOOL:
           case t_base_type::TYPE_BYTE:
           case t_base_type::TYPE_I16:
@@ -3386,12 +3382,15 @@ void t_go_generator::generate_deserialize_field(
               name;
 
         case t_base_type::TYPE_STRING:
-          if (((t_base_type*)type)->is_binary() && !inkey) {
+          out << "ReadString()";
+          break;
+
+        case t_base_type::TYPE_BINARY:
+          if (!inkey) {
             out << "ReadBinary()";
           } else {
             out << "ReadString()";
           }
-
           break;
 
         case t_base_type::TYPE_BOOL:
@@ -3437,7 +3436,7 @@ void t_go_generator::generate_deserialize_field(
     out << "} else {" << endl;
     string wrap;
 
-    if (((t_base_type*)type)->is_binary() && inkey) {
+    if (type->is_binary() && inkey) {
       wrap = "";
     } else if (type->is_enum() || orig_type->is_typedef()) {
       wrap = publicize(type_name(orig_type));
@@ -3678,12 +3677,15 @@ void t_go_generator::generate_serialize_field(
               name;
 
         case t_base_type::TYPE_STRING:
-          if (((t_base_type*)type)->is_binary() && !inkey) {
+          out << "WriteString(string(" << name << "))";
+          break;
+
+        case t_base_type::TYPE_BINARY:
+          if (!inkey) {
             out << "WriteBinary(" << name << ")";
           } else {
             out << "WriteString(string(" << name << "))";
           }
-
           break;
 
         case t_base_type::TYPE_BOOL:
@@ -4088,11 +4090,10 @@ string t_go_generator::type_to_enum(t_type* type) {
         throw "NO T_VOID CONSTRUCT";
 
       case t_base_type::TYPE_STRING:
-        /* this is wrong, binary is still a string type internally
-        if (((t_base_type*)type)->is_binary()) {
-            return "thrift.BINARY";
-        }
-        */
+        return "thrift.STRING";
+
+      case t_base_type::TYPE_BINARY:
+        // binary is still a string type internally
         return "thrift.STRING";
 
       case t_base_type::TYPE_BOOL:
@@ -4190,11 +4191,10 @@ string t_go_generator::type_to_go_type_with_opt(
         throw "";
 
       case t_base_type::TYPE_STRING:
-        if (((t_base_type*)type)->is_binary()) {
-          return maybe_pointer + "[]byte";
-        }
-
         return maybe_pointer + "string";
+
+      case t_base_type::TYPE_BINARY:
+        return maybe_pointer + "[]byte";
 
       case t_base_type::TYPE_BOOL:
         return maybe_pointer + "bool";
