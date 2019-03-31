@@ -209,7 +209,6 @@ st_identifier ([a-zA-Z-][\.a-zA-Z_0-9-]*)
 "def"                { thrift_reserved_keyword(driver, yytext); }
 "default"            { thrift_reserved_keyword(driver, yytext); }
 "del"                { thrift_reserved_keyword(driver, yytext); }
-"delete"             { thrift_reserved_keyword(driver, yytext); }
 "do"                 { thrift_reserved_keyword(driver, yytext); }
 "elif"               { thrift_reserved_keyword(driver, yytext); }
 "else"               { thrift_reserved_keyword(driver, yytext); }
