@@ -184,6 +184,8 @@ class mstch_swift_struct : public mstch_struct {
             {"struct:javaPackage", &mstch_swift_struct::java_package},
             {"struct:extendRuntimeException?",
              &mstch_swift_struct::is_extend_runtime_exception},
+            {"struct:unionFieldTypeUnique?",
+             &mstch_swift_struct::is_union_field_type_unique},
             {"struct:asBean?", &mstch_swift_struct::is_as_bean},
             {"struct:javaCapitalName", &mstch_swift_struct::java_capital_name},
         });
@@ -193,6 +195,19 @@ class mstch_swift_struct : public mstch_struct {
   }
   mstch::node is_extend_runtime_exception() {
     return swift_context_->is_extend_runtime_exception();
+  }
+  mstch::node is_union_field_type_unique() {
+    std::set<std::string> field_types;
+    for (const auto* field : strct_->get_members()) {
+      auto type_name = field->get_type()->get_full_name();
+      std::string type_with_erasure = type_name.substr(0, type_name.find('<'));
+      if (field_types.find(type_with_erasure) != field_types.end()) {
+        return false;
+      } else {
+        field_types.insert(type_with_erasure);
+      }
+    }
+    return true;
   }
   mstch::node is_as_bean() {
     return swift_context_->is_mutable_bean();

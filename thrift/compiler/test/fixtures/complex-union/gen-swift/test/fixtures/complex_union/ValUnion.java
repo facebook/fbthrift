@@ -17,20 +17,22 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 @SwiftGenerated
 @ThriftUnion("ValUnion")
 public final class ValUnion {
-    private final Object value;
-    private final int id;
-    private final String name;
-
-
+    private Object value;
+    private int id;
+    private String name;
+    
     @ThriftConstructor
-    public ValUnion(final test.fixtures.complex_union.Val v1) {
+    public ValUnion() {
+    }
+    
+    @ThriftField
+    public void setV1(final test.fixtures.complex_union.Val v1) {
         this.value = v1;
         this.id = 1;
         this.name = "v1";
     }
-
-    @ThriftConstructor
-    public ValUnion(final test.fixtures.complex_union.Val v2) {
+    @ThriftField
+    public void setV2(final test.fixtures.complex_union.Val v2) {
         this.value = v2;
         this.id = 2;
         this.name = "v2";
@@ -77,5 +79,30 @@ public final class ValUnion {
             .add("name", name)
             .add("type", value == null ? "<null>" : value.getClass().getSimpleName())
             .toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        ValUnion other = (ValUnion)o;
+
+        return Objects.equals(this.id, other.id)
+                && Objects.equals(this.value, other.value)
+                && Objects.equals(this.name, other.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Arrays.deepHashCode(new Object[] {
+            id,
+            value,
+            name
+        });
     }
 }

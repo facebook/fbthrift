@@ -29,24 +29,24 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 @SwiftGenerated
 @ThriftUnion("{{struct:name}}")
 public final class {{struct:javaCapitalName}} {
-    private final Object value;
-    private final int id;
-    private final String name;
+    {{> union/UnionConstructor}}
 
-    {{#struct:fields}}
-
-    @ThriftConstructor
-    public {{struct:javaCapitalName}}(final {{> FieldType}} {{field:javaName}}) {
-        this.value = {{field:javaName}};
-        this.id = {{field:key}};
-        this.name = "{{field:name}}";
-    }
-    {{/struct:fields}}
+    {{#struct:asBean?}}{{!
+      If union is generating in mutable bean style, we need to provide setters.
+      }}{{> union/UnionSetter}}{{!
+    }}{{/struct:asBean?}}
+    {{^struct:asBean?}}{{!
+      }}{{^struct:unionFieldTypeUnique?}}{{!
+        If union fields are not unique, we cannot generate thrift constructors,
+        therefore setters are needed.
+        }}{{> union/UnionSetter}}{{!
+      }}{{/struct:unionFieldTypeUnique?}}{{!
+    }}{{/struct:asBean?}}
     {{#struct:fields}}
 
     {{> ThriftFieldAnnotation}}
 
-    public {{#field:type}}{{> Type}} {{#type:bool?}}is{{/type:bool?}}{{^type:bool?}}get{{/type:bool?}}{{/field:type}}{{field:javaCapitalName}}() {
+    public {{#field:type}}{{> Type}}{{/field:type}} {{> GetterName}}() {
         if (this.id != {{field:key}}) {
             throw new IllegalStateException("Not a {{field:name}} element!");
         }
@@ -75,5 +75,30 @@ public final class {{struct:javaCapitalName}} {
             .add("name", name)
             .add("type", value == null ? "<null>" : value.getClass().getSimpleName())
             .toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        {{struct:javaCapitalName}} other = ({{struct:javaCapitalName}})o;
+
+        return Objects.equals(this.id, other.id)
+                && Objects.equals(this.value, other.value)
+                && Objects.equals(this.name, other.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Arrays.deepHashCode(new Object[] {
+            id,
+            value,
+            name
+        });
     }
 }

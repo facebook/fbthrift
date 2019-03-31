@@ -17,20 +17,36 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 @SwiftGenerated
 @ThriftUnion("MyUnion2")
 public final class MyUnion2 {
-    private final Object value;
-    private final int id;
-    private final String name;
-
-
+    private Object value;
+    private int id;
+    private String name;
+    
+    @ThriftConstructor
+    public MyUnion2() {
+    }
+    
     @ThriftConstructor
     public MyUnion2(final test.fixtures.basic_swift_bean.MyUnion1 u) {
         this.value = u;
         this.id = 1;
         this.name = "u";
     }
-
+    
     @ThriftConstructor
     public MyUnion2(final test.fixtures.basic_swift_bean.MyStruct1 s) {
+        this.value = s;
+        this.id = 2;
+        this.name = "s";
+    }
+    
+    @ThriftField
+    public void setU(final test.fixtures.basic_swift_bean.MyUnion1 u) {
+        this.value = u;
+        this.id = 1;
+        this.name = "u";
+    }
+    @ThriftField
+    public void setS(final test.fixtures.basic_swift_bean.MyStruct1 s) {
         this.value = s;
         this.id = 2;
         this.name = "s";
@@ -77,5 +93,30 @@ public final class MyUnion2 {
             .add("name", name)
             .add("type", value == null ? "<null>" : value.getClass().getSimpleName())
             .toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        MyUnion2 other = (MyUnion2)o;
+
+        return Objects.equals(this.id, other.id)
+                && Objects.equals(this.value, other.value)
+                && Objects.equals(this.name, other.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Arrays.deepHashCode(new Object[] {
+            id,
+            value,
+            name
+        });
     }
 }

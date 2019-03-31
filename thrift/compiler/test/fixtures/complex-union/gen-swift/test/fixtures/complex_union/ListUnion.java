@@ -17,20 +17,22 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 @SwiftGenerated
 @ThriftUnion("ListUnion")
 public final class ListUnion {
-    private final Object value;
-    private final int id;
-    private final String name;
-
-
+    private Object value;
+    private int id;
+    private String name;
+    
     @ThriftConstructor
-    public ListUnion(final List<Long> intListValue) {
+    public ListUnion() {
+    }
+    
+    @ThriftField
+    public void setIntListValue(final List<Long> intListValue) {
         this.value = intListValue;
         this.id = 2;
         this.name = "intListValue";
     }
-
-    @ThriftConstructor
-    public ListUnion(final List<String> stringListValue) {
+    @ThriftField
+    public void setStringListValue(final List<String> stringListValue) {
         this.value = stringListValue;
         this.id = 3;
         this.name = "stringListValue";
@@ -77,5 +79,30 @@ public final class ListUnion {
             .add("name", name)
             .add("type", value == null ? "<null>" : value.getClass().getSimpleName())
             .toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        ListUnion other = (ListUnion)o;
+
+        return Objects.equals(this.id, other.id)
+                && Objects.equals(this.value, other.value)
+                && Objects.equals(this.name, other.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Arrays.deepHashCode(new Object[] {
+            id,
+            value,
+            name
+        });
     }
 }

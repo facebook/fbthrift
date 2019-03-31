@@ -17,24 +17,28 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 @SwiftGenerated
 @ThriftUnion("union1")
 public final class Union1 {
-    private final Object value;
-    private final int id;
-    private final String name;
-
-
+    private Object value;
+    private int id;
+    private String name;
+    
+    @ThriftConstructor
+    public Union1() {
+    }
+    
     @ThriftConstructor
     public Union1(final int i) {
         this.value = i;
         this.id = 1;
         this.name = "i";
     }
-
+    
     @ThriftConstructor
     public Union1(final double d) {
         this.value = d;
         this.id = 2;
         this.name = "d";
     }
+    
 
     @ThriftField(value=1, name="i", requiredness=Requiredness.NONE)
     public int getI() {
@@ -77,5 +81,30 @@ public final class Union1 {
             .add("name", name)
             .add("type", value == null ? "<null>" : value.getClass().getSimpleName())
             .toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        Union1 other = (Union1)o;
+
+        return Objects.equals(this.id, other.id)
+                && Objects.equals(this.value, other.value)
+                && Objects.equals(this.name, other.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Arrays.deepHashCode(new Object[] {
+            id,
+            value,
+            name
+        });
     }
 }

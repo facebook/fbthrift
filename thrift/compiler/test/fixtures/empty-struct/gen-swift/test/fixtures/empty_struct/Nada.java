@@ -17,10 +17,14 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 @SwiftGenerated
 @ThriftUnion("Nada")
 public final class Nada {
-    private final Object value;
-    private final int id;
-    private final String name;
-
+    private Object value;
+    private int id;
+    private String name;
+    
+    @ThriftConstructor
+    public Nada() {
+    }
+    
 
     @ThriftUnionId
     public int getThriftId() {
@@ -39,5 +43,30 @@ public final class Nada {
             .add("name", name)
             .add("type", value == null ? "<null>" : value.getClass().getSimpleName())
             .toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        Nada other = (Nada)o;
+
+        return Objects.equals(this.id, other.id)
+                && Objects.equals(this.value, other.value)
+                && Objects.equals(this.name, other.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Arrays.deepHashCode(new Object[] {
+            id,
+            value,
+            name
+        });
     }
 }

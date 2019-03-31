@@ -17,20 +17,36 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 @SwiftGenerated
 @ThriftUnion("DataUnion")
 public final class DataUnion {
-    private final Object value;
-    private final int id;
-    private final String name;
-
-
+    private Object value;
+    private int id;
+    private String name;
+    
+    @ThriftConstructor
+    public DataUnion() {
+    }
+    
     @ThriftConstructor
     public DataUnion(final byte[] binaryData) {
         this.value = binaryData;
         this.id = 1;
         this.name = "binaryData";
     }
-
+    
     @ThriftConstructor
     public DataUnion(final String stringData) {
+        this.value = stringData;
+        this.id = 2;
+        this.name = "stringData";
+    }
+    
+    @ThriftField
+    public void setBinaryData(final byte[] binaryData) {
+        this.value = binaryData;
+        this.id = 1;
+        this.name = "binaryData";
+    }
+    @ThriftField
+    public void setStringData(final String stringData) {
         this.value = stringData;
         this.id = 2;
         this.name = "stringData";
@@ -77,5 +93,30 @@ public final class DataUnion {
             .add("name", name)
             .add("type", value == null ? "<null>" : value.getClass().getSimpleName())
             .toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        DataUnion other = (DataUnion)o;
+
+        return Objects.equals(this.id, other.id)
+                && Objects.equals(this.value, other.value)
+                && Objects.equals(this.name, other.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Arrays.deepHashCode(new Object[] {
+            id,
+            value,
+            name
+        });
     }
 }

@@ -17,20 +17,22 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 @SwiftGenerated
 @ThriftUnion("VirtualComplexUnion")
 public final class VirtualComplexUnion {
-    private final Object value;
-    private final int id;
-    private final String name;
-
-
+    private Object value;
+    private int id;
+    private String name;
+    
     @ThriftConstructor
-    public VirtualComplexUnion(final String thingOne) {
+    public VirtualComplexUnion() {
+    }
+    
+    @ThriftField
+    public void setThingOne(final String thingOne) {
         this.value = thingOne;
         this.id = 1;
         this.name = "thingOne";
     }
-
-    @ThriftConstructor
-    public VirtualComplexUnion(final String thingTwo) {
+    @ThriftField
+    public void setThingTwo(final String thingTwo) {
         this.value = thingTwo;
         this.id = 2;
         this.name = "thingTwo";
@@ -77,5 +79,30 @@ public final class VirtualComplexUnion {
             .add("name", name)
             .add("type", value == null ? "<null>" : value.getClass().getSimpleName())
             .toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        VirtualComplexUnion other = (VirtualComplexUnion)o;
+
+        return Objects.equals(this.id, other.id)
+                && Objects.equals(this.value, other.value)
+                && Objects.equals(this.name, other.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Arrays.deepHashCode(new Object[] {
+            id,
+            value,
+            name
+        });
     }
 }

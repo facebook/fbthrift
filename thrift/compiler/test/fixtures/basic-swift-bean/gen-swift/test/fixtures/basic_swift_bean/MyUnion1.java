@@ -17,20 +17,36 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 @SwiftGenerated
 @ThriftUnion("MyUnion1")
 public final class MyUnion1 {
-    private final Object value;
-    private final int id;
-    private final String name;
-
-
+    private Object value;
+    private int id;
+    private String name;
+    
+    @ThriftConstructor
+    public MyUnion1() {
+    }
+    
     @ThriftConstructor
     public MyUnion1(final int i) {
         this.value = i;
         this.id = 1;
         this.name = "i";
     }
-
+    
     @ThriftConstructor
     public MyUnion1(final double d) {
+        this.value = d;
+        this.id = 2;
+        this.name = "d";
+    }
+    
+    @ThriftField
+    public void setI(final int i) {
+        this.value = i;
+        this.id = 1;
+        this.name = "i";
+    }
+    @ThriftField
+    public void setD(final double d) {
         this.value = d;
         this.id = 2;
         this.name = "d";
@@ -77,5 +93,30 @@ public final class MyUnion1 {
             .add("name", name)
             .add("type", value == null ? "<null>" : value.getClass().getSimpleName())
             .toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        MyUnion1 other = (MyUnion1)o;
+
+        return Objects.equals(this.id, other.id)
+                && Objects.equals(this.value, other.value)
+                && Objects.equals(this.name, other.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Arrays.deepHashCode(new Object[] {
+            id,
+            value,
+            name
+        });
     }
 }
