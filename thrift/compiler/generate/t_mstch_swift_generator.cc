@@ -94,6 +94,14 @@ class swift_generator_context {
   const std::string const_name_identifier_;
 };
 
+template <typename Node>
+const std::string get_java_swift_name(const Node* node) {
+  auto name = node->annotations_.find("java.swift.name");
+  return name != node->annotations_.end()
+      ? name->second
+      : java::mangle_java_name(node->get_name(), false);
+}
+
 class t_mstch_swift_generator : public t_mstch_generator {
  public:
   t_mstch_swift_generator(
@@ -322,7 +330,7 @@ class mstch_swift_field : public mstch_field {
         });
   }
   mstch::node java_name() {
-    return java::mangle_java_name(field_->get_name(), false);
+    return get_java_swift_name(field_);
   }
   mstch::node java_capital_name() {
     return java::mangle_java_name(field_->get_name(), true);
