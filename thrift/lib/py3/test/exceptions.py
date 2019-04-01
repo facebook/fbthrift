@@ -20,11 +20,11 @@ class ExceptionTests(unittest.TestCase):
         self.assertEqual(UnusedError(*x.args), x)  # type: ignore
 
     def test_exception_message_annotation(self) -> None:
-        x = UnusedError("something broke")
+        x = UnusedError(message="something broke")
         self.assertEqual(x.message, str(x))
-        y = HardError("WAT!", 22)
+        y = HardError("WAT!", 22)  # type: ignore
         self.assertEqual(y.errortext, str(y))
-        z = UnfriendlyError("WAT!", 22)
+        z = UnfriendlyError("WAT!", 22)  # type: ignore
         self.assertNotEqual(z.errortext, str(z))
         self.assertNotEqual(str(y), str(z))
 
