@@ -41,9 +41,9 @@ public final class Constants {
 
     public static final double LONG_DOUBLE_VALUE = 2.59961000990301e-05;
 
-    public static final String FOO = "foo""foo";
+    public static final String FOO = "foo";
 
-    public static final int BAR = 4242;
+    public static final int BAR = 42;
 
     public static final test.fixtures.constants.Internship INSTAGRAM = new test.fixtures.constants.Internship.Builder().set(12).set("Software Engineer").set(test.fixtures.constants.Company.fromInteger(3)).build();
 

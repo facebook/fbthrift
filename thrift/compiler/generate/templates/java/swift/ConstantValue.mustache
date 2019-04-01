@@ -25,84 +25,86 @@
   'Map Constants' for an example.
 
 
-  Integer constants
-}}{{#type:byte?}}{{value:integerValue}}{{/type:byte?}}{{!
-}}{{#type:i16?}}{{value:integerValue}}{{/type:i16?}}{{!
-}}{{#type:i32?}}{{value:integerValue}}{{/type:i32?}}{{!
-}}{{#type:i64?}}{{value:integerValue}}L{{/type:i64?}}{{!
+}}{{#type:typedef?}}{{!
+}}{{#type:typedefType}}{{> ConstantValue}}{{/type:typedefType}}{{!
+}}{{/type:typedef?}}{{!
+}}{{^type:typedef?}}{{!
+    Integer constants
+  }}{{#type:byte?}}{{value:integerValue}}{{/type:byte?}}{{!
+  }}{{#type:i16?}}{{value:integerValue}}{{/type:i16?}}{{!
+  }}{{#type:i32?}}{{value:integerValue}}{{/type:i32?}}{{!
+  }}{{#type:i64?}}{{value:integerValue}}L{{/type:i64?}}{{!
 
-  Boolean constants
-}}{{#type:bool?}}{{!
-  }}{{#value:nonzero?}}true{{/value:nonzero?}}{{!
-  }}{{^value:nonzero?}}false{{/value:nonzero?}}{{!
-}}{{/type:bool?}}{{!
+    Boolean constants
+  }}{{#type:bool?}}{{!
+    }}{{#value:nonzero?}}true{{/value:nonzero?}}{{!
+    }}{{^value:nonzero?}}false{{/value:nonzero?}}{{!
+  }}{{/type:bool?}}{{!
 
-  Floating point constants
-}}{{#type:double?}}{{!
-  }}{{#value:double?}}{{value:doubleValue}}{{/value:double?}}{{!
-  }}{{#value:integer?}}{{value:integerValue}}.0{{/value:integer?}}{{!
-}}{{/type:double?}}{{!
-}}{{#type:float?}}{{!
-  }}{{#value:double?}}{{value:doubleValue}}{{/value:double?}}{{!
-  }}{{#value:integer?}}{{value:integerValue}}.0{{/value:integer?}}{{!
-}}{{/type:float?}}{{!
+    Floating point constants
+  }}{{#type:double?}}{{!
+    }}{{#value:double?}}{{value:doubleValue}}{{/value:double?}}{{!
+    }}{{#value:integer?}}{{value:integerValue}}.0{{/value:integer?}}{{!
+  }}{{/type:double?}}{{!
+  }}{{#type:float?}}{{!
+    }}{{#value:double?}}{{value:doubleValue}}{{/value:double?}}{{!
+    }}{{#value:integer?}}{{value:integerValue}}.0{{/value:integer?}}{{!
+  }}{{/type:float?}}{{!
 
-  String constants
-}}{{#type:string?}}{{value:quotedString}}{{/type:string?}}{{!
+    String constants
+  }}{{#type:string?}}{{value:quotedString}}{{/type:string?}}{{!
 
-  Map constants
-}}{{#type:map?}}{{!
+    Map constants
+  }}{{#type:map?}}{{!
 
-    }}ImmutableMap.<{{#type:keyType}}{{> BoxedType}}{{/type:keyType}}, {{#type:valueType}}{{> BoxedType}}{{/type:valueType}}>builder()
+      }}ImmutableMap.<{{#type:keyType}}{{> BoxedType}}{{/type:keyType}}, {{#type:valueType}}{{> BoxedType}}{{/type:valueType}}>builder()
         {{#value:mapElements}}
         .put({{#element:key}}{{#type:keyType}}{{> ConstantValue}}{{/type:keyType}}{{/element:key}}, {{!
         }}{{#element:value}}{{#type:valueType}}{{> ConstantValue}}{{/type:valueType}}{{/element:value}})
         {{/value:mapElements}}
         .build(){{!
 
-}}{{/type:map?}}{{!
+  }}{{/type:map?}}{{!
 
-  List constants
-}}{{#type:list?}}{{!
+    List constants
+  }}{{#type:list?}}{{!
 
-    }}ImmutableList.<{{#type:listElemType}}{{> BoxedType}}{{/type:listElemType}}>builder()
+      }}ImmutableList.<{{#type:listElemType}}{{> BoxedType}}{{/type:listElemType}}>builder()
         {{#value:listElements}}
         .add({{#type:listElemType}}{{> ConstantValue}}{{/type:listElemType}})
         {{/value:listElements}}
         .build(){{!
 
-}}{{/type:list?}}{{!
+  }}{{/type:list?}}{{!
 
-  Set constants
-}}{{#type:set?}}{{!
+    Set constants
+  }}{{#type:set?}}{{!
 
-    }}ImmutableSet.<{{#type:setElemType}}{{> BoxedType}}{{/type:setElemType}}>builder()
+      }}ImmutableSet.<{{#type:setElemType}}{{> BoxedType}}{{/type:setElemType}}>builder()
         {{#value:listElements}}
         .add({{#type:setElemType}}{{> ConstantValue}}{{/type:setElemType}})
         {{/value:listElements}}
         .build(){{!
 
-}}{{/type:set?}}{{!
+  }}{{/type:set?}}{{!
 
-  Typedef Constants
-}}{{#type:typedef?}}{{#type:typedefType}}{{> ConstantValue}}{{/type:typedefType}}{{/type:typedef?}}{{!
+    Enum Constants
+  }}{{#type:enum?}}{{> BoxedType}}.fromInteger({{value:integerValue}}){{/type:enum?}}{{!
 
-  Enum Constants
-}}{{#type:enum?}}{{> BoxedType}}.fromInteger({{value:integerValue}}){{/type:enum?}}{{!
-
-  Struct Constants
-}}{{#type:struct?}}{{!
-  }}{{#type:struct}}{{!
-    }}{{#value:referenceable?}}{{!
-      }}{{#value:owning_const}}{{!
-        }}{{#constant:program}}{{!
-          }}{{program:javaPackage}}.Constants.{{constant:javaCapitalName}}{{!
-        }}{{/constant:program}}{{!
-      }}{{/value:owning_const}}{{!
-    }}{{/value:referenceable?}}{{!
-    }}{{^value:referenceable?}}{{!
-      }}{{#struct:plain?}}{{> ConstantStruct}}{{/struct:plain?}}{{!
-      }}{{#struct:union?}}{{> ConstantUnion}}{{/struct:union?}}{{!
-    }}{{/value:referenceable?}}{{!
-  }}{{/type:struct}}{{!
-}}{{/type:struct?}}
+    Struct Constants
+  }}{{#type:struct?}}{{!
+    }}{{#type:struct}}{{!
+      }}{{#value:referenceable?}}{{!
+        }}{{#value:owning_const}}{{!
+          }}{{#constant:program}}{{!
+            }}{{program:javaPackage}}.Constants.{{constant:javaCapitalName}}{{!
+          }}{{/constant:program}}{{!
+        }}{{/value:owning_const}}{{!
+      }}{{/value:referenceable?}}{{!
+      }}{{^value:referenceable?}}{{!
+        }}{{#struct:plain?}}{{> ConstantStruct}}{{/struct:plain?}}{{!
+        }}{{#struct:union?}}{{> ConstantUnion}}{{/struct:union?}}{{!
+      }}{{/value:referenceable?}}{{!
+    }}{{/type:struct}}{{!
+  }}{{/type:struct?}}{{!
+}}{{/type:typedef?}}
