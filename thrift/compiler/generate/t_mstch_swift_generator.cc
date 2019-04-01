@@ -282,6 +282,7 @@ class mstch_swift_field : public mstch_field {
         {
             {"field:javaName", &mstch_swift_field::java_name},
             {"field:javaCapitalName", &mstch_swift_field::java_capital_name},
+            {"field:javaDefaultValue", &mstch_swift_field::java_default_value},
         });
   }
   mstch::node java_name() {
@@ -289,6 +290,29 @@ class mstch_swift_field : public mstch_field {
   }
   mstch::node java_capital_name() {
     return java::mangle_java_name(field_->get_name(), true);
+  }
+  mstch::node java_default_value() {
+    return default_value_for_type(field_->get_type());
+  }
+
+  std::string default_value_for_type(const t_type* type) {
+    if (type->is_typedef()) {
+      auto typedef_type = dynamic_cast<const t_typedef*>(type)->get_type();
+      return default_value_for_type(typedef_type);
+    } else {
+      if (type->is_byte() || type->is_i16() || type->is_i32()) {
+        return "0";
+      } else if (type->is_i64()) {
+        return "0L";
+      } else if (type->is_float()) {
+        return "0.f";
+      } else if (type->is_double()) {
+        return "0.";
+      } else if (type->is_bool()) {
+        return "false";
+      }
+      return "null";
+    }
   }
 };
 

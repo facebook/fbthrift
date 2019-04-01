@@ -28,6 +28,12 @@ public final class MyStruct {
         this.myIncludedInt = myIncludedInt;
     }
     
+    protected MyStruct() {
+      this.myIncludedField = null;
+      this.myOtherIncludedField = null;
+      this.myIncludedInt = 0L;
+    }
+    
     public static class Builder {
         private test.fixtures.includes.includes.Included myIncludedField;
     

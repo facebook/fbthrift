@@ -24,6 +24,10 @@ public final class Foo {
         this.a = a;
     }
     
+    protected Foo() {
+      this.a = 0L;
+    }
+    
     public static class Builder {
         private long a;
     

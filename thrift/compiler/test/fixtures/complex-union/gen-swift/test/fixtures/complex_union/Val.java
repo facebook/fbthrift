@@ -28,6 +28,12 @@ public final class Val {
         this.typedefValue = typedefValue;
     }
     
+    protected Val() {
+      this.strVal = null;
+      this.intVal = 0;
+      this.typedefValue = null;
+    }
+    
     public static class Builder {
         private String strVal;
     

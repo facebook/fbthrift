@@ -26,6 +26,11 @@ public final class Range {
         this.max = max;
     }
     
+    protected Range() {
+      this.min = 0;
+      this.max = 0;
+    }
+    
     public static class Builder {
         private int min;
     

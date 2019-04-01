@@ -24,6 +24,10 @@ public final class Fiery extends RuntimeException {
         this.message = message;
     }
     
+    protected Fiery() {
+      this.message = null;
+    }
+    
     public static class Builder {
         private String message;
     

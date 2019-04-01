@@ -25,4 +25,10 @@ public {{struct:javaCapitalName}}(
     this.{{field:javaName}} = {{field:javaName}};
     {{/struct:fields}}
 }
+
+{{#struct:fields?}}{{^struct:asBean?}}protected {{struct:javaCapitalName}}() {
+  {{#struct:fields}}
+  this.{{field:javaName}} = {{field:javaDefaultValue}};
+  {{/struct:fields}}
+}{{/struct:asBean?}}{{/struct:fields?}}
 {{! terminate with newline }}

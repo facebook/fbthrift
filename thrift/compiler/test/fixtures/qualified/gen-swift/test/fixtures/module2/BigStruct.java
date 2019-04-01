@@ -26,6 +26,11 @@ public final class BigStruct {
         this.id = id;
     }
     
+    protected BigStruct() {
+      this.s = null;
+      this.id = 0;
+    }
+    
     public static class Builder {
         private test.fixtures.module2.Struct s;
     

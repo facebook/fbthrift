@@ -28,6 +28,12 @@ public final class Struct3 {
         this.c = c;
     }
     
+    protected Struct3() {
+      this.a = null;
+      this.b = 0;
+      this.c = null;
+    }
+    
     public static class Builder {
         private String a;
     

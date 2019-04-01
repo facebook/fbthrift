@@ -30,6 +30,13 @@ public final class Foo {
         this.myNumbers = myNumbers;
     }
     
+    protected Foo() {
+      this.myInteger = 0;
+      this.myString = null;
+      this.myBools = null;
+      this.myNumbers = null;
+    }
+    
     public static class Builder {
         private int myInteger;
     

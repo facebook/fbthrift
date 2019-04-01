@@ -32,6 +32,14 @@ public final class MyStruct {
         this.myEnum = myEnum;
     }
     
+    protected MyStruct() {
+      this.myIntField = 0L;
+      this.myStringField = null;
+      this.myDataField = null;
+      this.major = 0L;
+      this.myEnum = null;
+    }
+    
     public static class Builder {
         private long myIntField;
     

@@ -30,6 +30,13 @@ public final class Struct2 {
         this.d = d;
     }
     
+    protected Struct2() {
+      this.a = 0;
+      this.b = null;
+      this.c = null;
+      this.d = null;
+    }
+    
     public static class Builder {
         private int a;
     

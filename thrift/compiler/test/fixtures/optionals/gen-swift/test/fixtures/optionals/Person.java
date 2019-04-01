@@ -42,6 +42,19 @@ public final class Person {
         this.vehicles = vehicles;
     }
     
+    protected Person() {
+      this.id = 0L;
+      this.name = null;
+      this.age = 0;
+      this.address = null;
+      this.favoriteColor = null;
+      this.friends = null;
+      this.bestFriend = 0L;
+      this.petNames = null;
+      this.afraidOfAnimal = null;
+      this.vehicles = null;
+    }
+    
     public static class Builder {
         private long id;
     

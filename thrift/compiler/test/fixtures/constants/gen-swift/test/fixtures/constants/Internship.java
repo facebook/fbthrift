@@ -28,6 +28,12 @@ public final class Internship {
         this.employer = employer;
     }
     
+    protected Internship() {
+      this.weeks = 0;
+      this.title = null;
+      this.employer = null;
+    }
+    
     public static class Builder {
         private int weeks;
     

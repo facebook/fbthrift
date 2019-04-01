@@ -26,6 +26,11 @@ public final class Struct {
         this.second = second;
     }
     
+    protected Struct() {
+      this.first = null;
+      this.second = null;
+    }
+    
     public static class Builder {
         private test.fixtures.module0.Struct first;
     

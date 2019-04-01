@@ -24,6 +24,10 @@ public final class A {
         this.a = a;
     }
     
+    protected A() {
+      this.a = null;
+    }
+    
     public static class Builder {
         private String a;
     

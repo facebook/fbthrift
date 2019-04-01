@@ -26,6 +26,11 @@ public final class Included {
         this.myTransitiveField = myTransitiveField;
     }
     
+    protected Included() {
+      this.myIntField = 0L;
+      this.myTransitiveField = null;
+    }
+    
     public static class Builder {
         private long myIntField;
     

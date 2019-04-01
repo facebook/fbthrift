@@ -32,6 +32,14 @@ public final class Vehicle {
         this.hasAC = hasAC;
     }
     
+    protected Vehicle() {
+      this.color = null;
+      this.licensePlate = null;
+      this.description = null;
+      this.name = null;
+      this.hasAC = false;
+    }
+    
     public static class Builder {
         private test.fixtures.optionals.Color color;
     

@@ -22,6 +22,8 @@ public final class Banal extends RuntimeException {
     ) {
     }
     
+    
+    
     public static class Builder {
     
         public Builder() { }

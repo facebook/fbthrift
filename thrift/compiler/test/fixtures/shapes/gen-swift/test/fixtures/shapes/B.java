@@ -98,6 +98,47 @@ public final class B {
         this.mapOfStringToListOfI32WithDefaultValue = mapOfStringToListOfI32WithDefaultValue;
     }
     
+    protected B() {
+      this.justAnA = null;
+      this.setOfI32 = null;
+      this.listOfI32 = null;
+      this.listOfString = null;
+      this.mapOfStringToI32 = null;
+      this.mapOfStringToA = null;
+      this.mapOfStringToListOfI32 = null;
+      this.mapOfStringToListOfA = null;
+      this.mapOfStringToSetOfI32 = null;
+      this.mapOfStringToMapOfStringToI32 = null;
+      this.mapOfStringToMapOfStringToA = null;
+      this.listOfSetOfI32 = null;
+      this.listOfMapOfStringToListOfA = null;
+      this.listOfMapOfStringToA = null;
+      this.listOfSelf = null;
+      this.mapOfStringToSelf = null;
+      this.justAnEnum = null;
+      this.justAUnion = null;
+      this.optionalJustAnA = null;
+      this.optionalSetOfI32 = null;
+      this.optionalListOfI32 = null;
+      this.optionalListOfString = null;
+      this.optionalMapOfStringToI32 = null;
+      this.optionalMapOfStringToA = null;
+      this.optionalMapOfStringToListOfI32 = null;
+      this.optionalMapOfStringToListOfA = null;
+      this.optionalMapOfStringToSetOfI32 = null;
+      this.optionalEnum = null;
+      this.requiredEnumWithDefault = null;
+      this.stringWithDefaultValue = null;
+      this.i32WithDefaultValue = 0;
+      this.doubleWithDefaultValue = 0.;
+      this.enumWithDefaultValue = null;
+      this.aWithDefaultValue = null;
+      this.setOfI32WithDefaultValue = null;
+      this.mapOfI32ToStringWithDefaultValue = null;
+      this.listOfStringWithDefaultValue = null;
+      this.mapOfStringToListOfI32WithDefaultValue = null;
+    }
+    
     public static class Builder {
         private test.fixtures.shapes.A justAnA;
     

@@ -30,6 +30,13 @@ public final class Color {
         this.alpha = alpha;
     }
     
+    protected Color() {
+      this.red = 0.;
+      this.green = 0.;
+      this.blue = 0.;
+      this.alpha = 0.;
+    }
+    
     public static class Builder {
         private double red;
     

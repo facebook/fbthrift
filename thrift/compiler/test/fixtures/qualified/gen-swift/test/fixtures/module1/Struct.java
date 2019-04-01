@@ -26,6 +26,11 @@ public final class Struct {
         this.second = second;
     }
     
+    protected Struct() {
+      this.first = 0;
+      this.second = null;
+    }
+    
     public static class Builder {
         private int first;
     

@@ -24,6 +24,10 @@ public final class Serious extends RuntimeException {
         this.sonnet = sonnet;
     }
     
+    protected Serious() {
+      this.sonnet = null;
+    }
+    
     public static class Builder {
         private String sonnet;
     

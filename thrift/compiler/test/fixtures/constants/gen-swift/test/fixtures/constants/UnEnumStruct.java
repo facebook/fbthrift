@@ -24,6 +24,10 @@ public final class UnEnumStruct {
         this.city = city;
     }
     
+    protected UnEnumStruct() {
+      this.city = null;
+    }
+    
     public static class Builder {
         private test.fixtures.constants.City city;
     
