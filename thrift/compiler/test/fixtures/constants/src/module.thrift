@@ -1,4 +1,5 @@
 namespace java.swift test.fixtures.constants
+namespace java.swift.constants test.fixtures.constants.ModuleConstants
 
 const i32 myInt = 1337;
 const string name = "Mark Zuckerberg";

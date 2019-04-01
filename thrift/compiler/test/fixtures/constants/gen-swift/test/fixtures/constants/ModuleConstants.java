@@ -12,8 +12,8 @@ import com.google.common.collect.*;
 import java.util.*;
 
 @SwiftGenerated
-public final class Constants {
-    private Constants() {}
+public final class ModuleConstants {
+    private ModuleConstants() {}
 
     public static final int MY_INT = 1337;
 

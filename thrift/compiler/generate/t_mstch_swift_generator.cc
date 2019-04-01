@@ -31,11 +31,13 @@ class swift_generator_context {
       bool legacy_extend_runtime_exception,
       bool legacy_generate_beans,
       std::unique_ptr<std::string> default_package,
-      std::string namespace_identifier)
+      std::string namespace_identifier,
+      std::string const_name_identifier)
       : legacy_extend_runtime_exception_(legacy_extend_runtime_exception),
         legacy_generate_beans_(legacy_generate_beans),
         default_package_(std::move(default_package)),
-        namespace_identifier_(std::move(namespace_identifier)) {}
+        namespace_identifier_(std::move(namespace_identifier)),
+        const_name_identifier_(std::move(const_name_identifier)) {}
 
   /**
    * Gets the swift namespace, or, if it doesn't exist, uses the default.
@@ -53,6 +55,29 @@ class swift_generator_context {
     }
   }
 
+  std::string get_constants_class_name(const t_program& prog) {
+    const auto& constant_name = prog.get_namespace(const_name_identifier_);
+    if (constant_name == "") {
+      return "Constants";
+    } else {
+      auto java_name_space = get_namespace_or_default(prog);
+      std::string java_class_name;
+      if (constant_name.rfind(java_name_space) == 0) {
+        java_class_name = constant_name.substr(java_name_space.length() + 1);
+      } else {
+        java_class_name = constant_name;
+      }
+
+      if (java_class_name == "" ||
+          java_class_name.find(".") != std::string::npos) {
+        throw std::runtime_error{"Java Constants Class Name `" +
+                                 java_class_name + "` is not well formatted."};
+      }
+
+      return java_class_name;
+    }
+  }
+
   bool is_extend_runtime_exception() {
     return legacy_extend_runtime_exception_;
   }
@@ -66,6 +91,7 @@ class swift_generator_context {
   const bool legacy_generate_beans_;
   std::unique_ptr<std::string> default_package_;
   const std::string namespace_identifier_;
+  const std::string const_name_identifier_;
 };
 
 class t_mstch_swift_generator : public t_mstch_generator {
@@ -84,7 +110,10 @@ class t_mstch_swift_generator : public t_mstch_generator {
             has_option("legacy_extend_runtime_exception"),
             has_option("legacy_generate_beans"),
             get_option("default_package"),
-            has_option("use_java_namespace") ? "java" : "java.swift")) {
+            has_option("use_java_namespace") ? "java" : "java.swift",
+            get_option("const_name_identifier") == nullptr
+                ? std::string("java.swift.constants")
+                : *get_option("const_name_identifier"))) {
     out_dir_base_ = "gen-swift";
   }
 
@@ -139,8 +168,10 @@ class t_mstch_swift_generator : public t_mstch_generator {
     }
     auto package_dir = boost::filesystem::path{java::package_to_path(
         swift_context_->get_namespace_or_default(*program))};
+    auto constant_file_name =
+        swift_context_->get_constants_class_name(*program) + ".java";
     render_to_file(
-        cache_->programs_[id], "Constants", package_dir / "Constants.java");
+        cache_->programs_[id], "Constants", package_dir / constant_file_name);
   }
 };
 
@@ -158,10 +189,15 @@ class mstch_swift_program : public mstch_program {
         this,
         {
             {"program:javaPackage", &mstch_swift_program::java_package},
+            {"program:constantClassName",
+             &mstch_swift_program::constant_class_name},
         });
   }
   mstch::node java_package() {
     return swift_context_->get_namespace_or_default(*program_);
+  }
+  mstch::node constant_class_name() {
+    return swift_context_->get_constants_class_name(*program_);
   }
 
  private:
