@@ -34,6 +34,10 @@ constexpr double const module_constants::zeroDoubleValue_;
 
 constexpr double const module_constants::longDoubleValue_;
 
+constexpr char const * const module_constants::foo_;
+
+constexpr  ::cpp2::MyIntIdentifier const module_constants::bar_;
+
  ::cpp2::Internship const& module_constants::instagram() {
   static folly::Indestructible< ::cpp2::Internship> const instance(::apache::thrift::detail::make_constant< ::cpp2::Internship>(::apache::thrift::detail::wrap_argument<1>(12), ::apache::thrift::detail::wrap_argument<2>(apache::thrift::StringTraits< std::string>::fromStringLiteral("Software Engineer")), ::apache::thrift::detail::wrap_argument<3>( ::cpp2::Company::INSTAGRAM)));
   return *instance;

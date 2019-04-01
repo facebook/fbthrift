@@ -123,6 +123,14 @@ func CompanyFromString(s string) (Company, error) {
 
 func CompanyPtr(v Company) *Company { return &v }
 
+type MyStringIdentifier = string
+
+func MyStringIdentifierPtr(v MyStringIdentifier) *MyStringIdentifier { return &v }
+
+type MyIntIdentifier = int32
+
+func MyIntIdentifierPtr(v MyIntIdentifier) *MyIntIdentifier { return &v }
+
 // Attributes:
 //  - Weeks
 //  - Title

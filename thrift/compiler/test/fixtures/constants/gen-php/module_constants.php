@@ -82,6 +82,22 @@ class module_CONSTANTS {
     return self::$__longDoubleValue;
   }
 
+  private static $__foo = null;
+  public static function foo() {
+    if (self::$__foo == null) {
+      self::$__foo = "foo";
+    }
+    return self::$__foo;
+  }
+
+  private static $__bar = null;
+  public static function bar() {
+    if (self::$__bar == null) {
+      self::$__bar = 42;
+    }
+    return self::$__bar;
+  }
+
   private static $__instagram = null;
   public static function instagram() {
     if (self::$__instagram == null) {
@@ -526,6 +542,8 @@ class module_CONSTANTS {
         "z" => 1e+09,
         "zeroDoubleValue" => 0,
         "longDoubleValue" => 2.59961e-05,
+        "foo" => "foo",
+        "bar" => 42,
         "instagram" => new Internship(array(
           "weeks" => 12,
           "title" => "Software Engineer",

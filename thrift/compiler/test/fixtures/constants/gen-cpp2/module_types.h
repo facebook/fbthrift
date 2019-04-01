@@ -139,7 +139,11 @@ class union2;
 } // cpp2
 // END forward_declare
 // BEGIN typedefs
+namespace cpp2 {
+typedef std::string MyStringIdentifier;
+typedef int32_t MyIntIdentifier;
 
+} // cpp2
 // END typedefs
 // BEGIN hash_and_equal_to
 // END hash_and_equal_to

@@ -62,6 +62,22 @@ struct module_constants {
     return longDoubleValue_;
   }
 
+  // consider using folly::StringPiece instead of std::string whenever possible
+  // to referencing this statically allocated string constant, in order to
+  // prevent unnecessary allocations
+
+  static constexpr char const * const foo_ = "foo";
+
+  static constexpr char const * foo() {
+    return foo_;
+  }
+
+  static constexpr  ::cpp2::MyIntIdentifier const bar_ = 42;
+
+  static constexpr  ::cpp2::MyIntIdentifier bar() {
+    return bar_;
+  }
+
   static  ::cpp2::Internship const& instagram();
 
   static std::vector< ::cpp2::Range> const& kRanges();

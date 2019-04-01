@@ -34,6 +34,12 @@ struct Internship {
   3: optional Company employer;
 }
 
+typedef string MyStringIdentifier
+typedef i32 MyIntIdentifier
+
+const MyStringIdentifier foo = "foo"
+const MyIntIdentifier bar = 42
+
 const Internship instagram = {
   "weeks": 12,
   "title": "Software Engineer",

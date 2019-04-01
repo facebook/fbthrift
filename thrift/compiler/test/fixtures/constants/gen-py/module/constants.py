@@ -41,6 +41,10 @@ zeroDoubleValue = 0
 
 longDoubleValue = 2.59961e-05
 
+foo = "foo"
+
+bar = 42
+
 instagram = Internship(**{
   "weeks" : 12,
   "title" : "Software Engineer",

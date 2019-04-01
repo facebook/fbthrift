@@ -27,6 +27,8 @@ const Y = 1000000
 const Z = 1e+09
 const ZeroDoubleValue = 0
 const LongDoubleValue = 2.59961e-05
+var Foo MyStringIdentifier
+var Bar MyIntIdentifier
 var Instagram *Internship
 var KRanges []*Range
 var InternList []*Internship
@@ -79,6 +81,10 @@ States = []map[string]int32{
     "Albany": 98400,
   },
 }
+
+Foo = "foo"
+
+Bar = 42
 
 Instagram = &Internship{
   Weeks: 12,

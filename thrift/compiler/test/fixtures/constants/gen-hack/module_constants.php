@@ -114,6 +114,30 @@ class module_CONSTANTS {
 
   /**
    * Original thrift constant:-
+   * string foo
+   */
+  private static ?string $__foo = null;
+  public static function foo(): string {
+    if (self::$__foo === null) {
+      self::$__foo = "foo";
+    }
+    return self::$__foo;
+  }
+
+  /**
+   * Original thrift constant:-
+   * i32 bar
+   */
+  private static ?int $__bar = null;
+  public static function bar(): int {
+    if (self::$__bar === null) {
+      self::$__bar = 42;
+    }
+    return self::$__bar;
+  }
+
+  /**
+   * Original thrift constant:-
    * struct module.Internship instagram
    */
   private static ?Internship $__instagram = null;
@@ -742,6 +766,8 @@ class module_CONSTANTS {
         "z" => 1e+09,
         "zeroDoubleValue" => 0.0,
         "longDoubleValue" => 2.59961e-05,
+        "foo" => "foo",
+        "bar" => 42,
         "instagram" => new Internship(
           12,
           "Software Engineer",

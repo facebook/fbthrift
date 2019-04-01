@@ -41,6 +41,10 @@ public class ModuleConstants {
 
   public static final double longDoubleValue = 2.59961e-05;
 
+  public static final String foo = "foo";
+
+  public static final int bar = 42;
+
   public static final ModuleLogger instagram = new ModuleLogger(Module.EventType.Internship);
   static {
     instagram.addProperty(Module.Internship_weeks, 12);
