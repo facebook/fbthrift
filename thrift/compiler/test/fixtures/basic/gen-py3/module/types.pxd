@@ -53,6 +53,7 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "::cpp2":
         bint MyDataField
         bint major "majorVer"
         bint myEnum
+        bint package
 
     cdef cppclass cMyStruct "::cpp2::MyStruct":
         cMyStruct() except +
@@ -68,6 +69,7 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "::cpp2":
         cMyDataItem MyDataField
         int64_t major "majorVer"
         cMyEnum myEnum
+        string package
         cMyStruct__isset __isset
 
     cdef cppclass cMyDataItem__isset "::cpp2::MyDataItem::__isset":
@@ -116,7 +118,8 @@ cdef class MyStruct(thrift.py3.types.Struct):
         str MyStringField,
         MyDataItem MyDataField,
         object major,
-        MyEnum myEnum
+        MyEnum myEnum,
+        str package
     ) except *
 
     @staticmethod

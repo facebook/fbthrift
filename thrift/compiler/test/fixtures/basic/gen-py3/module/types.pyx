@@ -153,7 +153,8 @@ cdef class MyStruct(thrift.py3.types.Struct):
         str MyStringField=None,
         MyDataItem MyDataField=None,
         major=None,
-        MyEnum myEnum=None
+        MyEnum myEnum=None,
+        str package=None
     ):
         if MyIntField is not None:
             if not isinstance(MyIntField, int):
@@ -173,6 +174,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
           MyDataField,
           major,
           myEnum,
+          package,
         ))
 
     def __call__(
@@ -181,10 +183,11 @@ cdef class MyStruct(thrift.py3.types.Struct):
         MyStringField=__NOTSET,
         MyDataField=__NOTSET,
         major=__NOTSET,
-        myEnum=__NOTSET
+        myEnum=__NOTSET,
+        package=__NOTSET
     ):
         ___NOTSET = __NOTSET  # Cheaper for larger structs
-        cdef bint[5] __isNOTSET  # so make_instance is typed
+        cdef bint[6] __isNOTSET  # so make_instance is typed
 
         changes = False
         if MyIntField is ___NOTSET:
@@ -222,6 +225,13 @@ cdef class MyStruct(thrift.py3.types.Struct):
             __isNOTSET[4] = False
             changes = True
 
+        if package is ___NOTSET:
+            __isNOTSET[5] = True
+            package = None
+        else:
+            __isNOTSET[5] = False
+            changes = True
+
 
         if not changes:
             return self
@@ -248,6 +258,10 @@ cdef class MyStruct(thrift.py3.types.Struct):
             if not isinstance(myEnum, MyEnum):
                 raise TypeError(f'field myEnum value: { myEnum !r} is not of the enum type { MyEnum }.')
 
+        if package is not None:
+            if not isinstance(package, str):
+                raise TypeError(f'package is not a { str !r}.')
+
         inst = <MyStruct>MyStruct.__new__(MyStruct)
         inst._cpp_obj = move(MyStruct._make_instance(
           self._cpp_obj.get(),
@@ -257,6 +271,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
           MyDataField,
           major,
           myEnum,
+          package,
         ))
         return inst
 
@@ -268,7 +283,8 @@ cdef class MyStruct(thrift.py3.types.Struct):
         str MyStringField ,
         MyDataItem MyDataField ,
         object major ,
-        MyEnum myEnum 
+        MyEnum myEnum ,
+        str package 
     ) except *:
         cdef unique_ptr[cMyStruct] c_inst
         if base_instance:
@@ -303,6 +319,11 @@ cdef class MyStruct(thrift.py3.types.Struct):
                 deref(c_inst).__isset.myEnum = False
                 pass
 
+            if not __isNOTSET[5] and package is None:
+                deref(c_inst).package = _MyStruct_defaults.package
+                deref(c_inst).__isset.package = False
+                pass
+
         if MyIntField is not None:
             deref(c_inst).MyIntField = MyIntField
             deref(c_inst).__isset.MyIntField = True
@@ -318,6 +339,9 @@ cdef class MyStruct(thrift.py3.types.Struct):
         if myEnum is not None:
             deref(c_inst).myEnum = MyEnum_to_cpp(myEnum)
             deref(c_inst).__isset.myEnum = True
+        if package is not None:
+            deref(c_inst).package = thrift.py3.types.move(thrift.py3.types.bytes_to_string(package.encode('utf-8')))
+            deref(c_inst).__isset.package = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
         return move_unique(c_inst)
@@ -328,6 +352,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
         yield 'MyDataField', self.MyDataField
         yield 'major', self.major
         yield 'myEnum', self.myEnum
+        yield 'package', self.package
 
     def __bool__(self):
         return True
@@ -365,6 +390,11 @@ cdef class MyStruct(thrift.py3.types.Struct):
 
         return translate_cpp_enum_to_python(MyEnum, <int>(deref(self._cpp_obj).myEnum))
 
+    @property
+    def package(self):
+
+        return (<bytes>deref(self._cpp_obj).package).decode('UTF-8')
+
 
     def __hash__(MyStruct self):
         if not self.__hash:
@@ -374,11 +404,12 @@ cdef class MyStruct(thrift.py3.types.Struct):
             self.MyDataField,
             self.major,
             self.myEnum,
+            self.package,
             ))
         return self.__hash
 
     def __repr__(MyStruct self):
-        return f'MyStruct(MyIntField={repr(self.MyIntField)}, MyStringField={repr(self.MyStringField)}, MyDataField={repr(self.MyDataField)}, major={repr(self.major)}, myEnum={repr(self.myEnum)})'
+        return f'MyStruct(MyIntField={repr(self.MyIntField)}, MyStringField={repr(self.MyStringField)}, MyDataField={repr(self.MyDataField)}, major={repr(self.major)}, myEnum={repr(self.myEnum)}, package={repr(self.package)})'
     def __copy__(MyStruct self):
         cdef shared_ptr[cMyStruct] cpp_obj = make_shared[cMyStruct](
             deref(self._cpp_obj)

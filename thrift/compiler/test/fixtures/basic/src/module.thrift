@@ -14,6 +14,8 @@ struct MyStruct {
   # glibc has macros with this name, Thrift should be able to prevent collisions
   4: i64 major (cpp.name = "majorVer"),
   5: MyEnum myEnum,
+  # package is a reserved keyword in Java, Thrift should be able to handle this
+  6: string package (java.swift.name = "_package"),
 }
 
 struct MyDataItem {}

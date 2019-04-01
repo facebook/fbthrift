@@ -23,13 +23,15 @@ public final class MyStruct {
         @ThriftField(value=2, name="MyStringField", requiredness=Requiredness.NONE) final String myStringField,
         @ThriftField(value=3, name="MyDataField", requiredness=Requiredness.NONE) final test.fixtures.basic.MyDataItem myDataField,
         @ThriftField(value=4, name="major", requiredness=Requiredness.NONE, idlAnnotations = { @ThriftIdlAnnotation(key = "cpp.name", value = "majorVer") }) final long major,
-        @ThriftField(value=5, name="myEnum", requiredness=Requiredness.NONE) final test.fixtures.basic.MyEnum myEnum
+        @ThriftField(value=5, name="myEnum", requiredness=Requiredness.NONE) final test.fixtures.basic.MyEnum myEnum,
+        @ThriftField(value=6, name="package", requiredness=Requiredness.NONE, idlAnnotations = { @ThriftIdlAnnotation(key = "java.swift.name", value = "_package") }) final String package
     ) {
         this.myIntField = myIntField;
         this.myStringField = myStringField;
         this.myDataField = myDataField;
         this.major = major;
         this.myEnum = myEnum;
+        this.package = package;
     }
     
     protected MyStruct() {
@@ -38,6 +40,7 @@ public final class MyStruct {
       this.myDataField = null;
       this.major = 0L;
       this.myEnum = null;
+      this.package = null;
     }
     
     public static class Builder {
@@ -71,6 +74,12 @@ public final class MyStruct {
             this.myEnum = myEnum;
             return this;
         }
+        private String package;
+    
+        public Builder setPackage(String package) {
+            this.package = package;
+            return this;
+        }
     
         public Builder() { }
         public Builder(MyStruct other) {
@@ -79,6 +88,7 @@ public final class MyStruct {
             this.myDataField = other.myDataField;
             this.major = other.major;
             this.myEnum = other.myEnum;
+            this.package = other.package;
         }
     
         public MyStruct build() {
@@ -87,7 +97,8 @@ public final class MyStruct {
                 this.myStringField,
                 this.myDataField,
                 this.major,
-                this.myEnum
+                this.myEnum,
+                this.package
             );
         }
     }
@@ -97,6 +108,7 @@ public final class MyStruct {
     private final test.fixtures.basic.MyDataItem myDataField;
     private final long major;
     private final test.fixtures.basic.MyEnum myEnum;
+    private final String package;
 
     
     @ThriftField(value=1, name="MyIntField", requiredness=Requiredness.NONE)
@@ -113,6 +125,9 @@ public final class MyStruct {
         
     @ThriftField(value=5, name="myEnum", requiredness=Requiredness.NONE)
     public test.fixtures.basic.MyEnum getMyEnum() { return myEnum; }
+        
+    @ThriftField(value=6, name="package", requiredness=Requiredness.NONE, idlAnnotations = { @ThriftIdlAnnotation(key = "java.swift.name", value = "_package") })
+    public String getPackage() { return package; }
     
     @Override
     public String toString() {
@@ -122,6 +137,7 @@ public final class MyStruct {
             .add("myDataField", myDataField)
             .add("major", major)
             .add("myEnum", myEnum)
+            .add("package", package)
             .toString();
     }
     
@@ -142,6 +158,7 @@ public final class MyStruct {
             Objects.equals(myDataField, other.myDataField) &&
             Objects.equals(major, other.major) &&
             Objects.equals(myEnum, other.myEnum) &&
+            Objects.equals(package, other.package) &&
             true;
     }
     
@@ -152,7 +169,8 @@ public final class MyStruct {
             myStringField,
             myDataField,
             major,
-            myEnum
+            myEnum,
+            package
         });
     }
     

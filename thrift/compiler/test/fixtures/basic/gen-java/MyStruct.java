@@ -31,6 +31,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
   private static final TField MY_DATA_FIELD_FIELD_DESC = new TField("MyDataField", TType.STRUCT, (short)3);
   private static final TField MAJOR_FIELD_DESC = new TField("major", TType.I64, (short)4);
   private static final TField MY_ENUM_FIELD_DESC = new TField("myEnum", TType.I32, (short)5);
+  private static final TField PACKAGE_FIELD_DESC = new TField("package", TType.STRING, (short)6);
 
   public long MyIntField;
   public String MyStringField;
@@ -41,11 +42,13 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
    * @see MyEnum
    */
   public int myEnum;
+  public String package;
   public static final int MYINTFIELD = 1;
   public static final int MYSTRINGFIELD = 2;
   public static final int MYDATAFIELD = 3;
   public static final int MAJOR = 4;
   public static final int MYENUM = 5;
+  public static final int PACKAGE = 6;
   public static boolean DEFAULT_PRETTY_PRINT = true;
 
   // isset id assignments
@@ -67,6 +70,8 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
         new FieldValueMetaData(TType.I64)));
     tmpMetaDataMap.put(MYENUM, new FieldMetaData("myEnum", TFieldRequirementType.DEFAULT, 
         new FieldValueMetaData(TType.I32)));
+    tmpMetaDataMap.put(PACKAGE, new FieldMetaData("package", TFieldRequirementType.DEFAULT, 
+        new FieldValueMetaData(TType.STRING)));
     metaDataMap = Collections.unmodifiableMap(tmpMetaDataMap);
   }
 
@@ -82,7 +87,8 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
     String MyStringField,
     MyDataItem MyDataField,
     long major,
-    int myEnum)
+    int myEnum,
+    String package)
   {
     this();
     this.MyIntField = MyIntField;
@@ -93,6 +99,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
     setMajorIsSet(true);
     this.myEnum = myEnum;
     setMyEnumIsSet(true);
+    this.package = package;
   }
 
   /**
@@ -110,6 +117,9 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
     }
     this.major = TBaseHelper.deepCopy(other.major);
     this.myEnum = TBaseHelper.deepCopy(other.myEnum);
+    if (other.isSetPackage()) {
+      this.package = TBaseHelper.deepCopy(other.package);
+    }
   }
 
   public MyStruct deepCopy() {
@@ -246,6 +256,30 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
     __isset_bit_vector.set(__MYENUM_ISSET_ID, value);
   }
 
+  public String  getPackage() {
+    return this.package;
+  }
+
+  public MyStruct setPackage(String package) {
+    this.package = package;
+    return this;
+  }
+
+  public void unsetPackage() {
+    this.package = null;
+  }
+
+  // Returns true if field package is set (has been assigned a value) and false otherwise
+  public boolean isSetPackage() {
+    return this.package != null;
+  }
+
+  public void setPackageIsSet(boolean value) {
+    if (!value) {
+      this.package = null;
+    }
+  }
+
   public void setFieldValue(int fieldID, Object value) {
     switch (fieldID) {
     case MYINTFIELD:
@@ -288,6 +322,14 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
       }
       break;
 
+    case PACKAGE:
+      if (value == null) {
+        unsetPackage();
+      } else {
+        setPackage((String)value);
+      }
+      break;
+
     default:
       throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
     }
@@ -310,6 +352,9 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
     case MYENUM:
       return getMyEnum();
 
+    case PACKAGE:
+      return getPackage();
+
     default:
       throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
     }
@@ -328,6 +373,8 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
       return isSetMajor();
     case MYENUM:
       return isSetMyEnum();
+    case PACKAGE:
+      return isSetPackage();
     default:
       throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
     }
@@ -393,6 +440,15 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
         return false;
     }
 
+    boolean this_present_package = true && this.isSetPackage();
+    boolean that_present_package = true && that.isSetPackage();
+    if (this_present_package || that_present_package) {
+      if (!(this_present_package && that_present_package))
+        return false;
+      if (!TBaseHelper.equalsNobinary(this.package, that.package))
+        return false;
+    }
+
     return true;
   }
 
@@ -453,6 +509,14 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
     if (lastComparison != 0) {
       return lastComparison;
     }
+    lastComparison = Boolean.valueOf(isSetPackage()).compareTo(other.isSetPackage());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    lastComparison = TBaseHelper.compareTo(package, other.package);
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
     return 0;
   }
 
@@ -506,6 +570,13 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
             TProtocolUtil.skip(iprot, field.type);
           }
           break;
+        case PACKAGE:
+          if (field.type == TType.STRING) {
+            this.package = iprot.readString();
+          } else { 
+            TProtocolUtil.skip(iprot, field.type);
+          }
+          break;
         default:
           TProtocolUtil.skip(iprot, field.type);
           break;
@@ -542,6 +613,11 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
     oprot.writeFieldBegin(MY_ENUM_FIELD_DESC);
     oprot.writeI32(this.myEnum);
     oprot.writeFieldEnd();
+    if (this.package != null) {
+      oprot.writeFieldBegin(PACKAGE_FIELD_DESC);
+      oprot.writeString(this.package);
+      oprot.writeFieldEnd();
+    }
     oprot.writeFieldStop();
     oprot.writeStructEnd();
   }
@@ -615,6 +691,17 @@ String space = prettyPrint ? " " : "";
     sb.append(this. getMyEnum());
     if (myEnum_name != null) {
       sb.append(")");
+    }
+    first = false;
+    if (!first) sb.append("," + newLine);
+    sb.append(indentStr);
+    sb.append("package");
+    sb.append(space);
+    sb.append(":").append(space);
+    if (this. getPackage() == null) {
+      sb.append("null");
+    } else {
+      sb.append(TBaseHelper.toString(this. getPackage(), indent + 1, prettyPrint));
     }
     first = false;
     sb.append(newLine + TBaseHelper.reduceIndent(indentStr));

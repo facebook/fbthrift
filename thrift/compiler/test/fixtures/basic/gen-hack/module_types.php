@@ -46,6 +46,10 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
       'type' => \TType::I32,
       'enum' => 'MyEnum',
       ],
+    6 => dict[
+      'var' => 'package',
+      'type' => \TType::STRING,
+      ],
     ];
   public static Map<string, int> $_TFIELDMAP = Map {
     'MyIntField' => 1,
@@ -53,6 +57,7 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
     'MyDataField' => 3,
     'major' => 4,
     'myEnum' => 5,
+    'package' => 6,
   };
   const type TShape = shape(
     'MyIntField' => int,
@@ -60,9 +65,10 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
     ?'MyDataField' => ?MyDataItem::TShape,
     'major' => int,
     ?'myEnum' => ?MyEnum,
+    'package' => string,
     ...
   );
-  const int STRUCTURAL_ID = 6402813204152193102;
+  const int STRUCTURAL_ID = 8466070421711649449;
   /**
    * Original thrift field:-
    * 1: i64 MyIntField
@@ -88,9 +94,14 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
    * 5: enum module.MyEnum myEnum
    */
   public ?MyEnum $myEnum;
+  /**
+   * Original thrift field:-
+   * 6: string package
+   */
+  public string $package;
 
   <<__Rx>>
-  public function __construct(?int $MyIntField = null, ?string $MyStringField = null, ?MyDataItem $MyDataField = null, ?int $major = null, ?MyEnum $myEnum = null  ) {
+  public function __construct(?int $MyIntField = null, ?string $MyStringField = null, ?MyDataItem $MyDataField = null, ?int $major = null, ?MyEnum $myEnum = null, ?string $package = null  ) {
     if ($MyIntField === null) {
       $this->MyIntField = 0;
     } else {
@@ -108,6 +119,11 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
       $this->major = $major;
     }
     $this->myEnum = $myEnum;
+    if ($package === null) {
+      $this->package = '';
+    } else {
+      $this->package = $package;
+    }
   }
 
   public function getName(): string {
@@ -125,6 +141,7 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
     if (Shapes::idx($shape, 'myEnum') !== null) {
       $me->myEnum = $shape['myEnum'];
     }
+    $me->package = $shape['package'];
     return $me;
   }
 
@@ -135,6 +152,7 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
       'MyDataField' => $this->MyDataField?->__toShape(),
       'major' => $this->major,
       'myEnum' => $this->myEnum,
+      'package' => $this->package,
     );
   }
   public function readFromJson(string $jsonText): void {
@@ -161,6 +179,9 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
     }    
     if (idx($parsed, 'myEnum') !== null) {
       $this->myEnum = MyEnum::coerce($parsed['myEnum']);    }    
+    if (idx($parsed, 'package') !== null) {
+      $this->package = $parsed['package'];
+    }    
   }
 
 }

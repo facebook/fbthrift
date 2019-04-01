@@ -127,6 +127,19 @@ _readField_myEnum:
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
           5,
+          6,
+          apache::thrift::protocol::T_STRING))) {
+    goto _loop;
+  }
+_readField_package:
+  {
+    iprot->readString(this->package);
+    this->__isset.package = true;
+  }
+
+  if (UNLIKELY(!_readState.advanceToNextField(
+          iprot,
+          6,
           0,
           apache::thrift::protocol::T_STOP))) {
     goto _loop;
@@ -186,6 +199,14 @@ _loop:
         goto _skip;
       }
     }
+    case 6:
+    {
+      if (LIKELY(_readState.fieldType == apache::thrift::protocol::T_STRING)) {
+        goto _readField_package;
+      } else {
+        goto _skip;
+      }
+    }
     default:
     {
 _skip:
@@ -211,6 +232,8 @@ uint32_t MyStruct::serializedSize(Protocol_ const* prot_) const {
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::serializedSize<false>(*prot_, this->majorVer);
   xfer += prot_->serializedFieldSize("myEnum", apache::thrift::protocol::T_I32, 5);
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::cpp2::MyEnum>::serializedSize<false>(*prot_, this->myEnum);
+  xfer += prot_->serializedFieldSize("package", apache::thrift::protocol::T_STRING, 6);
+  xfer += prot_->serializedSizeString(this->package);
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -229,6 +252,8 @@ uint32_t MyStruct::serializedSizeZC(Protocol_ const* prot_) const {
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::serializedSize<false>(*prot_, this->majorVer);
   xfer += prot_->serializedFieldSize("myEnum", apache::thrift::protocol::T_I32, 5);
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::cpp2::MyEnum>::serializedSize<false>(*prot_, this->myEnum);
+  xfer += prot_->serializedFieldSize("package", apache::thrift::protocol::T_STRING, 6);
+  xfer += prot_->serializedSizeString(this->package);
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -251,6 +276,9 @@ uint32_t MyStruct::write(Protocol_* prot_) const {
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldBegin("myEnum", apache::thrift::protocol::T_I32, 5);
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::cpp2::MyEnum>::write(*prot_, this->myEnum);
+  xfer += prot_->writeFieldEnd();
+  xfer += prot_->writeFieldBegin("package", apache::thrift::protocol::T_STRING, 6);
+  xfer += prot_->writeString(this->package);
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldStop();
   xfer += prot_->writeStructEnd();

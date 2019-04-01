@@ -74,6 +74,10 @@ void TccStructTraits< ::cpp2::MyStruct>::translateFieldName(
     fid = 5;
     _ftype = apache::thrift::protocol::T_I32;
   }
+  else if (_fname == "package") {
+    fid = 6;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
 }
 void TccStructTraits< ::cpp2::MyDataItem>::translateFieldName(
     FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
@@ -96,17 +100,19 @@ MyStruct::MyStruct() :
 
 MyStruct::~MyStruct() {}
 
-MyStruct::MyStruct(apache::thrift::FragileConstructor, int64_t MyIntField__arg, std::string MyStringField__arg,  ::cpp2::MyDataItem MyDataField__arg, int64_t majorVer__arg,  ::cpp2::MyEnum myEnum__arg) :
+MyStruct::MyStruct(apache::thrift::FragileConstructor, int64_t MyIntField__arg, std::string MyStringField__arg,  ::cpp2::MyDataItem MyDataField__arg, int64_t majorVer__arg,  ::cpp2::MyEnum myEnum__arg, std::string package__arg) :
     MyIntField(std::move(MyIntField__arg)),
     MyStringField(std::move(MyStringField__arg)),
     MyDataField(std::move(MyDataField__arg)),
     majorVer(std::move(majorVer__arg)),
-    myEnum(std::move(myEnum__arg)) {
+    myEnum(std::move(myEnum__arg)),
+    package(std::move(package__arg)) {
   __isset.MyIntField = true;
   __isset.MyStringField = true;
   __isset.MyDataField = true;
   __isset.majorVer = true;
   __isset.myEnum = true;
+  __isset.package = true;
 }
 
 void MyStruct::__clear() {
@@ -115,6 +121,7 @@ void MyStruct::__clear() {
   MyStringField = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
   majorVer = 0;
   myEnum =  ::cpp2::MyEnum::MyValue1;
+  package = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
   __isset = {};
 }
 
@@ -135,6 +142,9 @@ bool MyStruct::operator==(const MyStruct& rhs) const {
     return false;
   }
   if (!(lhs.myEnum == rhs.myEnum)) {
+    return false;
+  }
+  if (!(lhs.package == rhs.package)) {
     return false;
   }
   return true;
@@ -159,6 +169,9 @@ bool MyStruct::operator<(const MyStruct& rhs) const {
   if (!(lhs.myEnum == rhs.myEnum)) {
     return lhs.myEnum < rhs.myEnum;
   }
+  if (!(lhs.package == rhs.package)) {
+    return lhs.package < rhs.package;
+  }
   return false;
 }
 
@@ -178,6 +191,7 @@ void swap(MyStruct& a, MyStruct& b) {
   swap(a.MyDataField, b.MyDataField);
   swap(a.majorVer, b.majorVer);
   swap(a.myEnum, b.myEnum);
+  swap(a.package, b.package);
   swap(a.__isset, b.__isset);
 }
 

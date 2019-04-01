@@ -60,6 +60,7 @@ class MyStruct:
    - MyDataField
    - major
    - myEnum
+   - package
   """
 
   thrift_spec = None
@@ -110,6 +111,11 @@ class MyStruct:
           self.myEnum = iprot.readI32()
         else:
           iprot.skip(ftype)
+      elif fid == 6:
+        if ftype == TType.STRING:
+          self.package = iprot.readString().decode('utf-8') if UTF8STRINGS else iprot.readString()
+        else:
+          iprot.skip(ftype)
       else:
         iprot.skip(ftype)
       iprot.readFieldEnd()
@@ -147,6 +153,10 @@ class MyStruct:
       oprot.writeFieldBegin('myEnum', TType.I32, 5)
       oprot.writeI32(self.myEnum)
       oprot.writeFieldEnd()
+    if self.package != None:
+      oprot.writeFieldBegin('package', TType.STRING, 6)
+      oprot.writeString(self.package.encode('utf-8')) if UTF8STRINGS and not isinstance(self.package, bytes) else oprot.writeString(self.package)
+      oprot.writeFieldEnd()
     oprot.writeFieldStop()
     oprot.writeStructEnd()
 
@@ -167,6 +177,8 @@ class MyStruct:
       self.myEnum = json_obj['myEnum']
       if not self.myEnum in MyEnum._VALUES_TO_NAMES:
         raise TProtocolException(TProtocolException.INVALID_DATA, 'Integer value ''%s'' is not a recognized value of enum type MyEnum' % self.myEnum)
+    if 'package' in json_obj and json_obj['package'] is not None:
+      self.package = json_obj['package']
 
   def __repr__(self):
     L = []
@@ -191,6 +203,10 @@ class MyStruct:
       value = pprint.pformat(self.myEnum, indent=0)
       value = padding.join(value.splitlines(True))
       L.append('    myEnum=%s' % (value))
+    if self.package is not None:
+      value = pprint.pformat(self.package, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    package=%s' % (value))
     return "%s(%s)" % (self.__class__.__name__, "\n" + ",\n".join(L) if L else '')
 
   def __eq__(self, other):
@@ -280,6 +296,7 @@ MyStruct.thrift_spec = (
   (3, TType.STRUCT, 'MyDataField', [MyDataItem, MyDataItem.thrift_spec, False], None, 2, ), # 3
   (4, TType.I64, 'major', None, None, 2, ), # 4
   (5, TType.I32, 'myEnum', MyEnum, None, 2, ), # 5
+  (6, TType.STRING, 'package', True, None, 2, ), # 6
 )
 
 MyStruct.thrift_struct_annotations = {
@@ -288,14 +305,18 @@ MyStruct.thrift_field_annotations = {
   4: {
     "cpp.name": """majorVer""",
   },
+  6: {
+    "java.swift.name": """_package""",
+  },
 }
 
-def MyStruct__init__(self, MyIntField=None, MyStringField=None, MyDataField=None, major=None, myEnum=None,):
+def MyStruct__init__(self, MyIntField=None, MyStringField=None, MyDataField=None, major=None, myEnum=None, package=None,):
   self.MyIntField = MyIntField
   self.MyStringField = MyStringField
   self.MyDataField = MyDataField
   self.major = major
   self.myEnum = myEnum
+  self.package = package
 
 MyStruct.__init__ = MyStruct__init__
 
@@ -305,6 +326,7 @@ def MyStruct__setstate__(self, state):
   state.setdefault('MyDataField', None)
   state.setdefault('major', None)
   state.setdefault('myEnum', None)
+  state.setdefault('package', None)
   self.__dict__ = state
 
 MyStruct.__getstate__ = lambda self: self.__dict__.copy()

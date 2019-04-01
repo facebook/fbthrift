@@ -83,7 +83,7 @@ class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<M
 
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  MyStruct(apache::thrift::FragileConstructor, int64_t MyIntField__arg, std::string MyStringField__arg,  ::cpp2::MyDataItem MyDataField__arg, int64_t majorVer__arg,  ::cpp2::MyEnum myEnum__arg);
+  MyStruct(apache::thrift::FragileConstructor, int64_t MyIntField__arg, std::string MyStringField__arg,  ::cpp2::MyDataItem MyDataField__arg, int64_t majorVer__arg,  ::cpp2::MyEnum myEnum__arg, std::string package__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
     MyIntField = arg.extract();
@@ -109,6 +109,11 @@ class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<M
     myEnum = arg.extract();
     __isset.myEnum = true;
   }
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<6, _T> arg) {
+    package = arg.extract();
+    __isset.package = true;
+  }
 
   MyStruct(MyStruct&&) = default;
 
@@ -126,6 +131,7 @@ class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<M
    ::cpp2::MyDataItem MyDataField;
   int64_t majorVer;
    ::cpp2::MyEnum myEnum;
+  std::string package;
 
   struct __isset {
     bool MyIntField;
@@ -133,6 +139,7 @@ class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<M
     bool MyDataField;
     bool majorVer;
     bool myEnum;
+    bool package;
   } __isset = {};
   bool operator==(const MyStruct& rhs) const;
   bool operator<(const MyStruct& rhs) const;
@@ -189,6 +196,21 @@ class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<M
     myEnum = myEnum_;
     __isset.myEnum = true;
     return myEnum;
+  }
+
+  const std::string& get_package() const& {
+    return package;
+  }
+
+  std::string get_package() && {
+    return std::move(package);
+  }
+
+  template <typename T_MyStruct_package_struct_setter = std::string>
+  std::string& set_package(T_MyStruct_package_struct_setter&& package_) {
+    package = std::forward<T_MyStruct_package_struct_setter>(package_);
+    __isset.package = true;
+    return package;
   }
 
   template <class Protocol_>
