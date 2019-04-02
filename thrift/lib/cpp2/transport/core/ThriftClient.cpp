@@ -107,7 +107,7 @@ void ThriftClient::setHTTPUrl(const std::string& url) {
   httpUrl_ = url;
 }
 
-uint32_t ThriftClient::sendRequestSync(
+void ThriftClient::sendRequestSync(
     RpcOptions& rpcOptions,
     std::unique_ptr<RequestCallback> cb,
     std::unique_ptr<ContextStack> ctx,
@@ -125,7 +125,7 @@ uint32_t ThriftClient::sendRequestSync(
   bool oneway = kind == RpcKind::SINGLE_REQUEST_NO_RESPONSE;
   auto scb =
       std::make_unique<WaitableRequestCallback>(std::move(cb), baton, oneway);
-  int result = sendRequestHelper(
+  sendRequestHelper(
       rpcOptions,
       kind,
       std::move(scb),
@@ -134,7 +134,6 @@ uint32_t ThriftClient::sendRequestSync(
       std::move(header),
       connectionEvb);
   baton.wait();
-  return result;
 }
 
 uint32_t ThriftClient::sendRequest(

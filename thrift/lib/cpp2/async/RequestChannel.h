@@ -367,7 +367,7 @@ class RequestChannel : virtual public folly::DelayedDestruction {
    *
    * cb must not be null.
    */
-  virtual uint32_t sendRequestSync(
+  virtual void sendRequestSync(
       RpcOptions&,
       std::unique_ptr<RequestCallback>,
       std::unique_ptr<apache::thrift::ContextStack>,

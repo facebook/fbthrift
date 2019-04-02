@@ -87,7 +87,7 @@ class ThriftClient : public ClientChannel {
 
   // begin RequestChannel methods
 
-  uint32_t sendRequestSync(
+  void sendRequestSync(
       RpcOptions& rpcOptions,
       std::unique_ptr<RequestCallback> cb,
       std::unique_ptr<apache::thrift::ContextStack> ctx,

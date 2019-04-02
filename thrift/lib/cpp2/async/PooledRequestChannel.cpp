@@ -212,7 +212,7 @@ uint32_t PooledRequestChannel::sendStreamRequest(
   return 0;
 }
 
-uint32_t PooledRequestChannel::sendRequestSync(
+void PooledRequestChannel::sendRequestSync(
     RpcOptions& options,
     std::unique_ptr<RequestCallback> cob,
     std::unique_ptr<ContextStack> ctx,
@@ -232,7 +232,6 @@ uint32_t PooledRequestChannel::sendRequestSync(
       std::move(buf),
       std::move(header));
   std::move(future).get();
-  return 0;
 }
 
 PooledRequestChannel::Impl& PooledRequestChannel::impl(folly::EventBase& evb) {

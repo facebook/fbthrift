@@ -149,7 +149,7 @@ class ClientSyncBatonCallback final : public RequestCallback {
 };
 } // namespace
 
-uint32_t RequestChannel::sendRequestSync(
+void RequestChannel::sendRequestSync(
     RpcOptions& options,
     std::unique_ptr<RequestCallback> cb,
     std::unique_ptr<apache::thrift::ContextStack> ctx,
@@ -163,7 +163,6 @@ uint32_t RequestChannel::sendRequestSync(
   eb->checkIsInEventBaseThread();
 
   folly::fibers::Baton baton;
-  uint32_t retval = 0;
   auto scb = std::make_unique<ClientSyncBatonCallback>(std::move(cb), baton);
 
   folly::exception_wrapper ew;
@@ -171,7 +170,7 @@ uint32_t RequestChannel::sendRequestSync(
     try {
       switch (kind) {
         case RpcKind::SINGLE_REQUEST_NO_RESPONSE:
-          retval = sendOnewayRequest(
+          sendOnewayRequest(
               options,
               std::move(scb),
               std::move(ctx),
@@ -179,7 +178,7 @@ uint32_t RequestChannel::sendRequestSync(
               std::move(header));
           break;
         case RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE:
-          retval = sendRequest(
+          sendRequest(
               options,
               std::move(scb),
               std::move(ctx),
@@ -187,7 +186,7 @@ uint32_t RequestChannel::sendRequestSync(
               std::move(header));
           break;
         case RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE:
-          retval = sendStreamRequest(
+          sendStreamRequest(
               options,
               std::move(scb),
               std::move(ctx),
@@ -213,7 +212,6 @@ uint32_t RequestChannel::sendRequestSync(
   if (ew) {
     ew.throw_exception();
   }
-  return retval;
 }
 
 uint32_t RequestChannel::sendStreamRequest(
