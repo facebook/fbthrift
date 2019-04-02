@@ -48,9 +48,9 @@ public final class Serious extends RuntimeException {
         }
     }
     
-
     private final String sonnet;
 
+    
     @ThriftField(value=1, name="sonnet", requiredness=Requiredness.OPTIONAL)
     public String getSonnet() { return sonnet; }
-}
+    }

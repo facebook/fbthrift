@@ -36,4 +36,5 @@ public final class Banal extends RuntimeException {
         }
     }
     
+
 }

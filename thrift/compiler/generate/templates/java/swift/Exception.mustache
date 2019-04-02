@@ -34,11 +34,10 @@ public final class {{struct:javaCapitalName}} extends {{#struct:extendRuntimeExc
     {{> struct/StructBuilder}}
 
     {{#struct:fields}}
-
     private final {{> FieldType}} {{field:javaName}};
+    {{/struct:fields}}
 
-    {{> ThriftFieldAnnotation}}
-
-    public {{> FieldType}} {{#field:type}}{{#type:bool?}}is{{/type:bool?}}{{^type:bool?}}get{{/type:bool?}}{{/field:type}}{{field:javaCapitalName}}() { return {{field:javaName}}; }
+    {{#struct:fields}}
+    {{> struct/FieldGetter}}
     {{/struct:fields}}
 }

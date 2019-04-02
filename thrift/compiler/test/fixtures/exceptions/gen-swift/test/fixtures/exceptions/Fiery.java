@@ -48,9 +48,9 @@ public final class Fiery extends RuntimeException {
         }
     }
     
-
     private final String message;
 
+    
     @ThriftField(value=1, name="message", requiredness=Requiredness.REQUIRED)
     public String getMessage() { return message; }
-}
+    }
