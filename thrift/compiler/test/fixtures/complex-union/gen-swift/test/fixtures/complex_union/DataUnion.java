@@ -18,7 +18,7 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 @ThriftUnion("DataUnion")
 public final class DataUnion {
     private Object value;
-    private int id;
+    private short id;
     private String name;
     
     @ThriftConstructor
@@ -65,7 +65,7 @@ public final class DataUnion {
     }
 
     @ThriftUnionId
-    public int getThriftId() {
+    public short getThriftId() {
         return this.id;
     }
 
