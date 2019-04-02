@@ -45,6 +45,11 @@ union MyUnion2 {
   2: MyStruct1 s,
 }
 
+exception MyException {
+  1: i32 errorCode,
+  2: string message,
+}
+
 const MyStruct1 ms = {
   "MyIntField": 42,
   "MyStringField": "Meaning_of_life",

@@ -15,5 +15,5 @@
   limitations under the License.
 
 }}{{#struct:union?}}{{> Union}}{{/struct:union?}}{{!
-}}{{#struct:exception?}}{{> Exception}}{{/struct:exception?}}{{!
+}}{{#struct:exception?}}{{#struct:asBean?}}{{> MutableException}}{{/struct:asBean?}}{{^struct:asBean?}}{{> Exception}}{{/struct:asBean?}}{{/struct:exception?}}{{!
 }}{{#struct:plain?}}{{#struct:asBean?}}{{> MutableStruct}}{{/struct:asBean?}}{{^struct:asBean?}}{{> Struct}}{{/struct:asBean?}}{{/struct:plain?}}
