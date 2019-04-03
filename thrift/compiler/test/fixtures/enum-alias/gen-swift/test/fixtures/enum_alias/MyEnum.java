@@ -32,8 +32,6 @@ public enum MyEnum {
             return MY_VALUE1;
         case 1:
             return MY_VALUE2;
-        case 1:
-            return MY_VALUE2_DUP;
         default:
             return null;
         }

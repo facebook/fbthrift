@@ -374,6 +374,7 @@ class mstch_swift_enum : public mstch_enum {
         {
             {"enum:javaPackage", &mstch_swift_enum::java_package},
             {"enum:javaCapitalName", &mstch_swift_enum::java_capital_name},
+            {"enum:dedupedValues", &mstch_swift_enum::deduped_values},
         });
   }
   mstch::node java_package() {
@@ -381,6 +382,25 @@ class mstch_swift_enum : public mstch_enum {
   }
   mstch::node java_capital_name() {
     return java::mangle_java_name(enm_->get_name(), true);
+  }
+  mstch::node deduped_values() {
+    std::map<int32_t, t_enum_value*> enum_value_to_name;
+    for (t_enum_value* enum_value : enm_->get_enum_values()) {
+      if (enum_value_to_name.find(enum_value->get_value()) ==
+          enum_value_to_name.end()) {
+        enum_value_to_name.emplace(enum_value->get_value(), enum_value);
+      }
+    }
+
+    std::vector<t_enum_value*> deduped_enum_values;
+    for (auto val : enum_value_to_name) {
+      deduped_enum_values.push_back(val.second);
+    }
+    return generate_elements(
+        deduped_enum_values,
+        generators_->enum_value_generator_.get(),
+        generators_,
+        cache_);
   }
 
  private:

@@ -45,10 +45,10 @@ public enum {{enum:javaCapitalName}} {
 
     public static {{enum:javaCapitalName}} fromInteger(int n) {
         switch (n) {
-        {{#enum:values}}
+        {{#enum:dedupedValues}}
         case {{enumValue:value}}:
             return {{enumValue:javaConstantName}};
-        {{/enum:values}}
+        {{/enum:dedupedValues}}
         default:
             return null;
         }
