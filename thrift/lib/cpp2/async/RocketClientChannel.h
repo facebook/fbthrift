@@ -77,11 +77,18 @@ class RocketClientChannel final : public ClientChannel {
       std::shared_ptr<transport::THeader> header) override;
 
   uint32_t sendStreamRequest(
-      RpcOptions&,
-      std::unique_ptr<RequestCallback>,
-      std::unique_ptr<ContextStack>,
-      std::unique_ptr<folly::IOBuf>,
-      std::shared_ptr<transport::THeader>) override;
+      RpcOptions& rpcOptions,
+      std::unique_ptr<RequestCallback> cb,
+      std::unique_ptr<ContextStack> ctx,
+      std::unique_ptr<folly::IOBuf> buf,
+      std::shared_ptr<transport::THeader> header) override;
+
+  void sendRequestSync(
+      RpcOptions& rpcOptions,
+      std::unique_ptr<RequestCallback> cb,
+      std::unique_ptr<ContextStack> ctx,
+      std::unique_ptr<folly::IOBuf> buf,
+      std::shared_ptr<transport::THeader> header) override;
 
   folly::EventBase* getEventBase() const override {
     return evb_;
@@ -123,6 +130,8 @@ class RocketClientChannel final : public ClientChannel {
   void setCloseCallback(CloseCallback* closeCallback) override;
 
  private:
+  enum class SendRequestCalledFrom { Fiber, Thread };
+
   static constexpr std::chrono::milliseconds kDefaultRpcTimeout{500};
 
   folly::EventBase* evb_{nullptr};
@@ -191,19 +200,22 @@ class RocketClientChannel final : public ClientChannel {
       std::unique_ptr<RequestCallback> cb,
       std::unique_ptr<ContextStack> ctx,
       std::unique_ptr<folly::IOBuf> buf,
-      std::shared_ptr<apache::thrift::transport::THeader> header);
+      std::shared_ptr<apache::thrift::transport::THeader> header,
+      SendRequestCalledFrom callingContext);
 
   void sendSingleRequestNoResponse(
       const RequestRpcMetadata& metadata,
       std::unique_ptr<ContextStack> ctx,
       std::unique_ptr<folly::IOBuf> buf,
-      std::unique_ptr<RequestCallback> cb);
+      std::unique_ptr<RequestCallback> cb,
+      SendRequestCalledFrom callingContext);
 
   void sendSingleRequestSingleResponse(
       const RequestRpcMetadata& metadata,
       std::unique_ptr<ContextStack> ctx,
       std::unique_ptr<folly::IOBuf> buf,
-      std::unique_ptr<RequestCallback> cb);
+      std::unique_ptr<RequestCallback> cb,
+      SendRequestCalledFrom callingContext);
 
   void sendSingleRequestStreamResponse(
       const RequestRpcMetadata& metadata,

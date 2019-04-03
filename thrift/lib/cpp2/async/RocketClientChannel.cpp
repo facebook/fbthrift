@@ -23,6 +23,8 @@
 #include <folly/GLog.h>
 #include <folly/Likely.h>
 #include <folly/Memory.h>
+#include <folly/Try.h>
+#include <folly/fibers/FiberManager.h>
 #include <folly/io/IOBuf.h>
 #include <folly/io/IOBufQueue.h>
 #include <folly/io/async/EventBase.h>
@@ -147,7 +149,8 @@ uint32_t RocketClientChannel::sendRequest(
       std::move(cb),
       std::move(ctx),
       std::move(buf),
-      std::move(header));
+      std::move(header),
+      SendRequestCalledFrom::Thread);
   return 0;
 }
 
@@ -163,7 +166,8 @@ uint32_t RocketClientChannel::sendOnewayRequest(
       std::move(cb),
       std::move(ctx),
       std::move(buf),
-      std::move(header));
+      std::move(header),
+      SendRequestCalledFrom::Thread);
   return ResponseChannel::ONEWAY_REQUEST_ID;
 }
 
@@ -179,8 +183,36 @@ uint32_t RocketClientChannel::sendStreamRequest(
       std::move(cb),
       std::move(ctx),
       std::move(buf),
-      std::move(header));
+      std::move(header),
+      SendRequestCalledFrom::Thread);
   return 0;
+}
+
+void RocketClientChannel::sendRequestSync(
+    RpcOptions& rpcOptions,
+    std::unique_ptr<RequestCallback> cb,
+    std::unique_ptr<ContextStack> ctx,
+    std::unique_ptr<folly::IOBuf> buf,
+    std::shared_ptr<transport::THeader> header) {
+  if (folly::fibers::onFiber()) {
+    DCHECK(dynamic_cast<ClientSyncCallback*>(cb.get()));
+    const auto kind = static_cast<ClientSyncCallback&>(*cb).rpcKind();
+    sendThriftRequest(
+        rpcOptions,
+        kind,
+        std::move(cb),
+        std::move(ctx),
+        std::move(buf),
+        std::move(header),
+        SendRequestCalledFrom::Fiber);
+  } else {
+    RequestChannel::sendRequestSync(
+        rpcOptions,
+        std::move(cb),
+        std::move(ctx),
+        std::move(buf),
+        std::move(header));
+  }
 }
 
 void RocketClientChannel::sendThriftRequest(
@@ -189,7 +221,8 @@ void RocketClientChannel::sendThriftRequest(
     std::unique_ptr<RequestCallback> cb,
     std::unique_ptr<ContextStack> ctx,
     std::unique_ptr<folly::IOBuf> buf,
-    std::shared_ptr<transport::THeader> header) {
+    std::shared_ptr<transport::THeader> header,
+    SendRequestCalledFrom callingContext) {
   DestructorGuard dg(this);
 
   cb->context_ = folly::RequestContext::saveContext();
@@ -238,12 +271,20 @@ void RocketClientChannel::sendThriftRequest(
   switch (kind) {
     case RpcKind::SINGLE_REQUEST_NO_RESPONSE:
       sendSingleRequestNoResponse(
-          metadata, std::move(ctx), std::move(buf), std::move(cb));
+          metadata,
+          std::move(ctx),
+          std::move(buf),
+          std::move(cb),
+          callingContext);
       break;
 
     case RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE:
       sendSingleRequestSingleResponse(
-          metadata, std::move(ctx), std::move(buf), std::move(cb));
+          metadata,
+          std::move(ctx),
+          std::move(buf),
+          std::move(cb),
+          callingContext);
       break;
 
     case RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE:
@@ -264,11 +305,11 @@ void RocketClientChannel::sendSingleRequestNoResponse(
     const RequestRpcMetadata& metadata,
     std::unique_ptr<ContextStack> ctx,
     std::unique_ptr<folly::IOBuf> buf,
-    std::unique_ptr<RequestCallback> cb) {
+    std::unique_ptr<RequestCallback> cb,
+    SendRequestCalledFrom callingContext) {
   auto& cbRef = *cb;
-  auto& fm = getFiberManager();
 
-  fm.addTaskFinally(
+  auto sendRequestFunc =
       [&cbRef,
        rclient = rclient_,
        requestPayload = rocket::Payload::makeFromMetadataAndData(
@@ -276,32 +317,39 @@ void RocketClientChannel::sendSingleRequestNoResponse(
         OnWriteSuccess writeCallback(cbRef);
         return rclient->sendRequestFnfSync(
             std::move(requestPayload), &writeCallback);
-      },
-      [cb = std::move(cb),
-       ctx = std::move(ctx),
-       inflightWeak = folly::to_weak_ptr(inflightState_)](
-          folly::Try<void>&& result) mutable {
-        if (auto inflightState = inflightWeak.lock()) {
-          inflightState->decPendingRequests();
-        }
-        if (result.hasException()) {
-          folly::RequestContextScopeGuard rctx(cb->context_);
-          cb->requestError(ClientReceiveState(
-              std::move(result.exception()),
-              folly::to_shared_ptr(std::move(ctx))));
-        }
-      });
+      };
+
+  auto finallyFunc = [cb = std::move(cb),
+                      ctx = std::move(ctx),
+                      inflightWeak = folly::to_weak_ptr(inflightState_)](
+                         folly::Try<void>&& result) mutable {
+    if (auto inflightState = inflightWeak.lock()) {
+      inflightState->decPendingRequests();
+    }
+    if (result.hasException()) {
+      folly::RequestContextScopeGuard rctx(cb->context_);
+      cb->requestError(ClientReceiveState(
+          std::move(result.exception()), folly::to_shared_ptr(std::move(ctx))));
+    }
+  };
+
+  if (callingContext == SendRequestCalledFrom::Fiber) {
+    finallyFunc(folly::makeTryWith(std::move(sendRequestFunc)));
+  } else {
+    auto& fm = getFiberManager();
+    fm.addTaskFinally(std::move(sendRequestFunc), std::move(finallyFunc));
+  }
 }
 
 void RocketClientChannel::sendSingleRequestSingleResponse(
     const RequestRpcMetadata& metadata,
     std::unique_ptr<ContextStack> ctx,
     std::unique_ptr<folly::IOBuf> buf,
-    std::unique_ptr<RequestCallback> cb) {
+    std::unique_ptr<RequestCallback> cb,
+    SendRequestCalledFrom callingContext) {
   auto& cbRef = *cb;
-  auto& fm = getFiberManager();
 
-  fm.addTaskFinally(
+  auto sendRequestFunc =
       [&cbRef,
        timeout =
            std::chrono::milliseconds(metadata.clientTimeoutMs_ref().value()),
@@ -311,49 +359,55 @@ void RocketClientChannel::sendSingleRequestSingleResponse(
         OnWriteSuccess writeCallback(cbRef);
         return rclient->sendRequestResponseSync(
             std::move(requestPayload), timeout, &writeCallback);
-      },
-      [ctx = std::move(ctx),
-       cb = std::move(cb),
-       protocolId = protocolId_,
-       inflightWeak = folly::to_weak_ptr(inflightState_)](
-          folly::Try<rocket::Payload>&& response) mutable {
-        folly::RequestContextScopeGuard rctx(cb->context_);
+      };
 
-        if (auto inflightState = inflightWeak.lock()) {
-          inflightState->decPendingRequests();
-        }
-        if (UNLIKELY(response.hasException())) {
-          cb->requestError(ClientReceiveState(
-              std::move(response.exception()), std::move(ctx)));
-          return;
-        }
+  auto finallyFunc = [ctx = std::move(ctx),
+                      cb = std::move(cb),
+                      protocolId = protocolId_,
+                      inflightWeak = folly::to_weak_ptr(inflightState_)](
+                         folly::Try<rocket::Payload>&& response) mutable {
+    folly::RequestContextScopeGuard rctx(cb->context_);
 
-        auto tHeader = std::make_unique<transport::THeader>();
-        tHeader->setClientType(THRIFT_HTTP_CLIENT_TYPE);
+    if (auto inflightState = inflightWeak.lock()) {
+      inflightState->decPendingRequests();
+    }
+    if (UNLIKELY(response.hasException())) {
+      cb->requestError(
+          ClientReceiveState(std::move(response.exception()), std::move(ctx)));
+      return;
+    }
 
-        if (response.value().hasNonemptyMetadata()) {
-          ResponseRpcMetadata responseMetadata;
-          try {
-            deserializeMetadata(responseMetadata, *response.value().metadata());
-            detail::fillTHeaderFromResponseRpcMetadata(
-                responseMetadata, *tHeader);
-          } catch (const std::exception& e) {
-            FB_LOG_EVERY_MS(ERROR, 10000)
-                << "Exception on deserializing metadata: "
-                << folly::exceptionStr(e);
-            cb->requestError(ClientReceiveState(
-                folly::exception_wrapper(std::current_exception(), e),
-                std::move(ctx)));
-            return;
-          }
-        }
+    auto tHeader = std::make_unique<transport::THeader>();
+    tHeader->setClientType(THRIFT_HTTP_CLIENT_TYPE);
 
-        cb->replyReceived(ClientReceiveState(
-            protocolId,
-            std::move(response.value()).data(),
-            std::move(tHeader),
+    if (response.value().hasNonemptyMetadata()) {
+      ResponseRpcMetadata responseMetadata;
+      try {
+        deserializeMetadata(responseMetadata, *response.value().metadata());
+        detail::fillTHeaderFromResponseRpcMetadata(responseMetadata, *tHeader);
+      } catch (const std::exception& e) {
+        FB_LOG_EVERY_MS(ERROR, 10000) << "Exception on deserializing metadata: "
+                                      << folly::exceptionStr(e);
+        cb->requestError(ClientReceiveState(
+            folly::exception_wrapper(std::current_exception(), e),
             std::move(ctx)));
-      });
+        return;
+      }
+    }
+
+    cb->replyReceived(ClientReceiveState(
+        protocolId,
+        std::move(response.value()).data(),
+        std::move(tHeader),
+        std::move(ctx)));
+  };
+
+  if (callingContext == SendRequestCalledFrom::Fiber) {
+    finallyFunc(folly::makeTryWith(std::move(sendRequestFunc)));
+  } else {
+    auto& fm = getFiberManager();
+    fm.addTaskFinally(std::move(sendRequestFunc), std::move(finallyFunc));
+  }
 }
 
 void RocketClientChannel::sendSingleRequestStreamResponse(
