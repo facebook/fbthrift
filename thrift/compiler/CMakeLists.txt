@@ -104,16 +104,7 @@ endif(MSVC)
 
 set(TEMPLATE_DIRS
   generate/templates/cpp2
-  generate/templates/cpp2/common
-  generate/templates/cpp2/module_types_cpp
-  generate/templates/cpp2/module_types_h
-  generate/templates/cpp2/module_types_tcc
-  generate/templates/cpp2/service_client_cpp
-  generate/templates/cpp2/service_common
-  generate/templates/cpp2/service_cpp
-  generate/templates/cpp2/service_h
-  generate/templates/cpp2/service_tcc
-  generate/templates/cpp2/types
+  generate/templates/py3
 )
 foreach(dir ${TEMPLATE_DIRS})
   install(DIRECTORY ${dir} DESTINATION ${TEMPLATES_INSTALL_DIR}
