@@ -320,8 +320,12 @@ class HandlerCallbackBase {
     // req must be deleted in the eb
     if (req_) {
       DCHECK(eb_);
-      eb_->runInEventBaseThread(
-          [req = std::move(req_)]() mutable { req.reset(); });
+      if (eb_->inRunningEventBaseThread()) {
+        req_.reset();
+      } else {
+        eb_->runInEventBaseThread(
+            [req = std::move(req_)]() mutable { req.reset(); });
+      }
     }
   }
 
