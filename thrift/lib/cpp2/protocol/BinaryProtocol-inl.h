@@ -184,11 +184,13 @@ uint32_t BinaryProtocolWriter::writeBinary(const folly::IOBuf& str) {
     TProtocolException::throwExceededSizeLimit();
   }
   uint32_t result = writeI32((int32_t)size);
-  auto clone = str.clone();
-  if (sharing_ != SHARE_EXTERNAL_BUFFER) {
+  if (sharing_ != SHARE_EXTERNAL_BUFFER && !str.isManaged()) {
+    auto clone = str.clone();
     clone->makeManaged();
+    out_.insert(std::move(clone));
+  } else {
+    out_.insert(str);
   }
-  out_.insert(std::move(clone));
   return result + size;
 }
 
