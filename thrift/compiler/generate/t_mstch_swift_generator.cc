@@ -460,12 +460,20 @@ class mstch_swift_const_value : public mstch_const_value {
         this,
         {
             {"value:quotedString", &mstch_swift_const_value::quote_java_string},
+            {"value:javaEnumValueName",
+             &mstch_swift_const_value::java_enum_value_name},
         });
   }
   mstch::node quote_java_string() {
     return java::quote_java_string(const_value_->get_string());
   }
-
+  mstch::node java_enum_value_name() {
+    if (type_ == cv::CV_INTEGER && const_value_->is_enum()) {
+      return java::mangle_java_constant_name(
+          const_value_->get_enum_value()->get_name());
+    }
+    return mstch::node();
+  }
   bool same_type_as_expected() const override {
     return true;
   }

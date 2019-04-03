@@ -89,7 +89,7 @@
   }}{{/type:set?}}{{!
 
     Enum Constants
-  }}{{#type:enum?}}{{> BoxedType}}.fromInteger({{value:integerValue}}){{/type:enum?}}{{!
+  }}{{#type:enum?}}{{> BoxedType}}.{{value:javaEnumValueName}}{{/type:enum?}}{{!
 
     Struct Constants
   }}{{#type:struct?}}{{!

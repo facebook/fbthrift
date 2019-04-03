@@ -45,7 +45,7 @@ public final class ModuleConstants {
 
     public static final int BAR = 42;
 
-    public static final test.fixtures.constants.Internship INSTAGRAM = new test.fixtures.constants.Internship.Builder().set(12).set("Software Engineer").set(test.fixtures.constants.Company.fromInteger(3)).build();
+    public static final test.fixtures.constants.Internship INSTAGRAM = new test.fixtures.constants.Internship.Builder().set(12).set("Software Engineer").set(test.fixtures.constants.Company.INSTAGRAM).build();
 
     public static final List<test.fixtures.constants.Range> K_RANGES = ImmutableList.<test.fixtures.constants.Range>builder()
         .add(new test.fixtures.constants.Range.Builder().set(1).set(2).build())
@@ -54,7 +54,7 @@ public final class ModuleConstants {
 
     public static final List<test.fixtures.constants.Internship> INTERN_LIST = ImmutableList.<test.fixtures.constants.Internship>builder()
         .add(test.fixtures.constants.Constants.INSTAGRAM)
-        .add(new test.fixtures.constants.Internship.Builder().set(10).set("Sales Intern").set(test.fixtures.constants.Company.fromInteger(0)).build())
+        .add(new test.fixtures.constants.Internship.Builder().set(10).set("Sales Intern").set(test.fixtures.constants.Company.FACEBOOK).build())
         .build();
 
     public static final test.fixtures.constants.Struct1 POD_0 = new test.fixtures.constants.Struct1.Builder().build();
