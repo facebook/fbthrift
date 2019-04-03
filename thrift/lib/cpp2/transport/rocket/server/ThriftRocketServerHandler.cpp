@@ -128,7 +128,8 @@ void ThriftRocketServerHandler::handleRequestResponseFrame(
         std::move(context));
   };
 
-  handleRequestCommon(std::move(frame.payload()), makeRequestResponse);
+  handleRequestCommon(
+      std::move(frame.payload()), std::move(makeRequestResponse));
 }
 
 void ThriftRocketServerHandler::handleRequestFnfFrame(
@@ -144,7 +145,7 @@ void ThriftRocketServerHandler::handleRequestFnfFrame(
         [keepAlive = cpp2Processor_] {});
   };
 
-  handleRequestCommon(std::move(frame.payload()), makeRequestFnf);
+  handleRequestCommon(std::move(frame.payload()), std::move(makeRequestFnf));
 }
 
 void ThriftRocketServerHandler::handleRequestStreamFrame(
@@ -160,12 +161,13 @@ void ThriftRocketServerHandler::handleRequestStreamFrame(
         cpp2Processor_);
   };
 
-  handleRequestCommon(std::move(frame.payload()), makeRequestStream);
+  handleRequestCommon(std::move(frame.payload()), std::move(makeRequestStream));
 }
 
+template <class F>
 void ThriftRocketServerHandler::handleRequestCommon(
     Payload&& payload,
-    MakeRequestFunc makeRequest) {
+    F&& makeRequest) {
   std::unique_ptr<RequestRpcMetadata> metadata;
   try {
     metadata = deserializeMetadata(*payload.metadata());

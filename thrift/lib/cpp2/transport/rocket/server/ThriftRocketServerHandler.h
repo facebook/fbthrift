@@ -81,10 +81,8 @@ class ThriftRocketServerHandler : public RocketServerHandler {
   const folly::SocketAddress clientAddress_;
   const std::shared_ptr<Cpp2ConnContext> connContext_;
 
-  using MakeRequestFunc = folly::FunctionRef<std::unique_ptr<ThriftRequestCore>(
-      std::unique_ptr<RequestRpcMetadata>)>;
-
-  void handleRequestCommon(Payload&& payload, MakeRequestFunc makeRequest);
+  template <class F>
+  void handleRequestCommon(Payload&& payload, F&& makeRequest);
 
   FOLLY_NOINLINE void handleRequestWithBadMetadata(
       std::unique_ptr<ThriftRequestCore> request);
