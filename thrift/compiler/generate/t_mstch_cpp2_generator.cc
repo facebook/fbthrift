@@ -1535,7 +1535,7 @@ mstch::node t_mstch_cpp2_generator::include_prefix(
       return include_prefix + "/gen-cpp2/";
     }
   }
-  if (prefix[0] == '/') {
+  if (boost::filesystem::path(prefix).has_root_directory()) {
     return include_prefix + "/gen-cpp2/";
   }
   return prefix + "gen-cpp2/";

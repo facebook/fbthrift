@@ -80,7 +80,7 @@ class json_experimental_program : public mstch_program {
   mstch::node include_prefix() {
     auto prefix = program_->get_include_prefix();
     if (!prefix.empty()) {
-      if (prefix[0] == '/') {
+      if (boost::filesystem::path(prefix).has_root_directory()) {
         return cache_->parsed_options_["include_prefix"];
       }
       return prefix;

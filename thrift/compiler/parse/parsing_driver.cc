@@ -190,10 +190,10 @@ void parsing_driver::parse_file() {
 
 std::string parsing_driver::include_file(const std::string& filename) {
   // Absolute path? Just try that
-  if (filename[0] == '/') {
-    boost::filesystem::path abspath{filename};
+  boost::filesystem::path path{filename};
+  if (path.has_root_directory()) {
     try {
-      abspath = boost::filesystem::canonical(abspath);
+      auto abspath = boost::filesystem::canonical(path);
       return abspath.string();
     } catch (const boost::filesystem::filesystem_error& e) {
       failure("Could not find file: %s. Error: %s", filename.c_str(), e.what());
