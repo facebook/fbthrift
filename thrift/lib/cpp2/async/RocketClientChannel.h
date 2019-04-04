@@ -88,7 +88,8 @@ class RocketClientChannel final : public ClientChannel {
       std::unique_ptr<RequestCallback> cb,
       std::unique_ptr<ContextStack> ctx,
       std::unique_ptr<folly::IOBuf> buf,
-      std::shared_ptr<transport::THeader> header) override;
+      std::shared_ptr<transport::THeader> header,
+      RpcKind kind) override;
 
   folly::EventBase* getEventBase() const override {
     return evb_;

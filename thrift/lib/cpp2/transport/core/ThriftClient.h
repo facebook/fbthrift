@@ -92,7 +92,8 @@ class ThriftClient : public ClientChannel {
       std::unique_ptr<RequestCallback> cb,
       std::unique_ptr<apache::thrift::ContextStack> ctx,
       std::unique_ptr<folly::IOBuf> buf,
-      std::shared_ptr<apache::thrift::transport::THeader> header) override;
+      std::shared_ptr<apache::thrift::transport::THeader> header,
+      RpcKind kind) override;
 
   uint32_t sendRequest(
       RpcOptions& rpcOptions,

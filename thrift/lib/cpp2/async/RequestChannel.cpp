@@ -124,12 +124,13 @@ class ClientSyncBatonCallback final : public RequestCallback {
  public:
   ClientSyncBatonCallback(
       std::unique_ptr<RequestCallback> cb,
-      folly::fibers::Baton& doneBaton)
-      : cb_(std::move(cb)), doneBaton_(doneBaton) {}
+      folly::fibers::Baton& doneBaton,
+      RpcKind kind)
+      : cb_(std::move(cb)), doneBaton_(doneBaton), kind_(kind) {}
 
   void requestSent() override {
     cb_->requestSent();
-    if (static_cast<ClientSyncCallback*>(cb_.get())->isOneway()) {
+    if (kind_ == RpcKind::SINGLE_REQUEST_NO_RESPONSE) {
       doneBaton_.post();
     }
   }
@@ -146,6 +147,7 @@ class ClientSyncBatonCallback final : public RequestCallback {
  private:
   std::unique_ptr<RequestCallback> cb_;
   folly::fibers::Baton& doneBaton_;
+  RpcKind kind_;
 };
 } // namespace
 
@@ -154,16 +156,15 @@ void RequestChannel::sendRequestSync(
     std::unique_ptr<RequestCallback> cb,
     std::unique_ptr<apache::thrift::ContextStack> ctx,
     std::unique_ptr<folly::IOBuf> buf,
-    std::shared_ptr<apache::thrift::transport::THeader> header) {
-  DCHECK(dynamic_cast<ClientSyncCallback*>(cb.get()));
-  apache::thrift::RpcKind kind =
-      static_cast<ClientSyncCallback&>(*cb).rpcKind();
+    std::shared_ptr<apache::thrift::transport::THeader> header,
+    RpcKind kind) {
   auto eb = getEventBase();
   // We intentionally only support sync_* calls from the EventBase thread.
   eb->checkIsInEventBaseThread();
 
   folly::fibers::Baton baton;
-  auto scb = std::make_unique<ClientSyncBatonCallback>(std::move(cb), baton);
+  auto scb =
+      std::make_unique<ClientSyncBatonCallback>(std::move(cb), baton, kind);
 
   folly::exception_wrapper ew;
   baton.wait([&, onFiber = folly::fibers::onFiber()]() {

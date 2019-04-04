@@ -193,10 +193,9 @@ void RocketClientChannel::sendRequestSync(
     std::unique_ptr<RequestCallback> cb,
     std::unique_ptr<ContextStack> ctx,
     std::unique_ptr<folly::IOBuf> buf,
-    std::shared_ptr<transport::THeader> header) {
+    std::shared_ptr<transport::THeader> header,
+    RpcKind kind) {
   if (folly::fibers::onFiber()) {
-    DCHECK(dynamic_cast<ClientSyncCallback*>(cb.get()));
-    const auto kind = static_cast<ClientSyncCallback&>(*cb).rpcKind();
     sendThriftRequest(
         rpcOptions,
         kind,
@@ -211,7 +210,8 @@ void RocketClientChannel::sendRequestSync(
         std::move(cb),
         std::move(ctx),
         std::move(buf),
-        std::move(header));
+        std::move(header),
+        kind);
   }
 }
 

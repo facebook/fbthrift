@@ -372,7 +372,8 @@ class RequestChannel : virtual public folly::DelayedDestruction {
       std::unique_ptr<RequestCallback>,
       std::unique_ptr<apache::thrift::ContextStack>,
       std::unique_ptr<folly::IOBuf>,
-      std::shared_ptr<apache::thrift::transport::THeader>);
+      std::shared_ptr<apache::thrift::transport::THeader>,
+      RpcKind kind);
 
   void sendRequestAsync(
       apache::thrift::RpcOptions&,
@@ -550,7 +551,8 @@ void clientSendT(
         std::move(callback),
         std::move(ctx),
         queue.move(),
-        std::move(header));
+        std::move(header),
+        kind);
     return;
   }
 

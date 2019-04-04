@@ -217,11 +217,10 @@ void PooledRequestChannel::sendRequestSync(
     std::unique_ptr<RequestCallback> cob,
     std::unique_ptr<ContextStack> ctx,
     std::unique_ptr<folly::IOBuf> buf,
-    std::shared_ptr<transport::THeader> header) {
+    std::shared_ptr<transport::THeader> header,
+    RpcKind kind) {
   folly::Promise<folly::Unit> promise;
   auto future = promise.getSemiFuture();
-  DCHECK(typeid(ClientSyncCallback) == typeid(*cob));
-  RpcKind kind = static_cast<ClientSyncCallback&>(*cob).rpcKind();
   cob =
       std::make_unique<SyncRequestCallback>(std::move(cob), std::move(promise));
   sendRequestImpl(

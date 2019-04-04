@@ -112,7 +112,8 @@ void ThriftClient::sendRequestSync(
     std::unique_ptr<RequestCallback> cb,
     std::unique_ptr<ContextStack> ctx,
     std::unique_ptr<IOBuf> buf,
-    std::shared_ptr<THeader> header) {
+    std::shared_ptr<THeader> header,
+    RpcKind kind) {
   // Synchronous calls may be made from any thread except the one used
   // by the underlying connection.  That thread is used to handle the
   // callback and to release this thread that will be waiting on
@@ -120,8 +121,6 @@ void ThriftClient::sendRequestSync(
   EventBase* connectionEvb = connection_->getEventBase();
   DCHECK(!connectionEvb->inRunningEventBaseThread());
   folly::Baton<> baton;
-  DCHECK(dynamic_cast<ClientSyncCallback*>(cb.get()));
-  auto kind = static_cast<ClientSyncCallback&>(*cb).rpcKind();
   bool oneway = kind == RpcKind::SINGLE_REQUEST_NO_RESPONSE;
   auto scb =
       std::make_unique<WaitableRequestCallback>(std::move(cb), baton, oneway);
