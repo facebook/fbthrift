@@ -196,10 +196,8 @@ using t_structpair = std::pair<t_struct*, t_struct*>;
  * Complex type keywords
  */
 %token tok_map
-%token tok_hash_map
 %token tok_list
 %token tok_set
-%token tok_hash_set
 %token tok_stream
 
 /**
@@ -234,9 +232,7 @@ using t_structpair = std::pair<t_struct*, t_struct*>;
 %type<t_type*>          ContainerType
 %type<t_type*>          SimpleContainerType
 %type<t_type*>          MapType
-%type<t_type*>          HashMapType
 %type<t_type*>          SetType
-%type<t_type*>          HashSetType
 %type<t_type*>          ListType
 %type<t_type*>          StreamType
 
@@ -1427,19 +1423,9 @@ SimpleContainerType:
       driver.debug("SimpleContainerType -> MapType");
       $$ = $1;
     }
-|  HashMapType
-    {
-      driver.debug("SimpleContainerType -> HashMapType");
-      $$ = $1;
-    }
 | SetType
     {
       driver.debug("SimpleContainerType -> SetType");
-      $$ = $1;
-    }
-| HashSetType
-    {
-      driver.debug("SimpleContainerType -> HashSetType");
       $$ = $1;
     }
 | ListType
@@ -1460,25 +1446,11 @@ MapType:
       $$ = new t_map($3, $5, false);
     }
 
-HashMapType:
-  tok_hash_map "<" FieldType "," FieldType ">"
-    {
-      driver.debug("HashMapType -> tok_hash_map<FieldType, FieldType>");
-      $$ = new t_map($3, $5, true);
-    }
-
 SetType:
   tok_set "<" FieldType ">"
     {
       driver.debug("SetType -> tok_set<FieldType>");
       $$ = new t_set($3, false);
-    }
-
-HashSetType:
-  tok_hash_set "<" FieldType ">"
-    {
-      driver.debug("HashSetType -> tok_hash_set<FieldType>");
-      $$ = new t_set($3, true);
     }
 
 ListType:
