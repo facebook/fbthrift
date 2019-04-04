@@ -51,6 +51,11 @@ public class ModuleConstants {
     instagram.addProperty(Module.Internship_title, "Software Engineer");
     instagram.addProperty(Module.Internship_employer, ModuleEnum.Company_INSTAGRAM);
   }
+  public static final ModuleLogger partial_const = new ModuleLogger(Module.EventType.Internship);
+  static {
+    partial_const.addProperty(Module.Internship_weeks, 8);
+    partial_const.addProperty(Module.Internship_title, "Some Job");
+  }
   public static final List<ModuleLogger> kRanges = new ArrayList<ModuleLogger>();
   static {
     ModuleLogger tmp2 = new ModuleLogger(Module.EventType.Range);

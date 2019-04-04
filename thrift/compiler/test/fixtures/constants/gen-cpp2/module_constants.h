@@ -80,6 +80,8 @@ struct module_constants {
 
   static  ::cpp2::Internship const& instagram();
 
+  static  ::cpp2::Internship const& partial_const();
+
   static std::vector< ::cpp2::Range> const& kRanges();
 
   static std::vector< ::cpp2::Internship> const& internList();

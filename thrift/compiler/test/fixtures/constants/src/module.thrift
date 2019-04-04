@@ -47,6 +47,11 @@ const Internship instagram = {
   "employer": Company.INSTAGRAM
 };
 
+const Internship partial_const = {
+  "weeks": 8,
+  "title": "Some Job",
+}
+
 struct UnEnumStruct {
   1: City city = -1, # thrift-compiler should emit a warning
 }

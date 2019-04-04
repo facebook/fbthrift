@@ -51,6 +51,11 @@ instagram = Internship(**{
   "employer" :   3,
 })
 
+partial_const = Internship(**{
+  "weeks" : 8,
+  "title" : "Some Job",
+})
+
 kRanges = [
   Range(**{
     "min" : 1,

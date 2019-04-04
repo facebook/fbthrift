@@ -4181,6 +4181,7 @@ longDoubleValue = 0.000026
 foo = cfoo().decode('UTF-8')
 bar = 42
 instagram = Internship.create(constant_shared_ptr(cinstagram()))
+partial_const = Internship.create(constant_shared_ptr(cpartial_const()))
 kRanges = List__Range.create(constant_shared_ptr(ckRanges()))
 internList = List__Internship.create(constant_shared_ptr(cinternList()))
 pod_0 = struct1.create(constant_shared_ptr(cpod_0()))

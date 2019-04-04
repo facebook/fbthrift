@@ -154,6 +154,22 @@ class module_CONSTANTS {
 
   /**
    * Original thrift constant:-
+   * struct module.Internship partial_const
+   */
+  private static ?Internship $__partial_const = null;
+  public static function partial_const(): Internship {
+    if (self::$__partial_const === null) {
+      self::$__partial_const = new Internship(
+        8,
+        "Some Job",
+        null,
+      );
+    }
+    return self::$__partial_const;
+  }
+
+  /**
+   * Original thrift constant:-
    * list<struct module.Range> kRanges
    */
   private static ?Vector<Range> $__kRanges = null;
@@ -772,6 +788,11 @@ class module_CONSTANTS {
           12,
           "Software Engineer",
           Company::INSTAGRAM,
+        ),
+        "partial_const" => new Internship(
+          8,
+          "Some Job",
+          null,
         ),
         "kRanges" => Vector {
           new Range(

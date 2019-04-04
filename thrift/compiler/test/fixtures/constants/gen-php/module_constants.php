@@ -110,6 +110,17 @@ class module_CONSTANTS {
     return self::$__instagram;
   }
 
+  private static $__partial_const = null;
+  public static function partial_const() {
+    if (self::$__partial_const == null) {
+      self::$__partial_const = new Internship(array(
+        "weeks" => 8,
+        "title" => "Some Job",
+      ));
+    }
+    return self::$__partial_const;
+  }
+
   private static $__kRanges = null;
   public static function kRanges() {
     if (self::$__kRanges == null) {
@@ -548,6 +559,10 @@ class module_CONSTANTS {
           "weeks" => 12,
           "title" => "Software Engineer",
           "employer" =>           3,
+        )),
+        "partial_const" => new Internship(array(
+          "weeks" => 8,
+          "title" => "Some Job",
         )),
         "kRanges" => array(
           new Range(array(

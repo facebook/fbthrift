@@ -617,6 +617,7 @@ cdef extern from "src/gen-cpp2/module_constants.h" namespace "::cpp2":
     cdef const char* cfoo "::cpp2::module_constants::foo"()
     cdef int32_t cbar "::cpp2::module_constants::bar"
     cdef cInternship cinstagram "::cpp2::module_constants::instagram"()
+    cdef cInternship cpartial_const "::cpp2::module_constants::partial_const"()
     cdef vector[cRange] ckRanges "::cpp2::module_constants::kRanges"()
     cdef vector[cInternship] cinternList "::cpp2::module_constants::internList"()
     cdef cstruct1 cpod_0 "::cpp2::module_constants::pod_0"()

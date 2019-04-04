@@ -43,6 +43,11 @@ constexpr  ::cpp2::MyIntIdentifier const module_constants::bar_;
   return *instance;
 }
 
+ ::cpp2::Internship const& module_constants::partial_const() {
+  static folly::Indestructible< ::cpp2::Internship> const instance(::apache::thrift::detail::make_constant< ::cpp2::Internship>(::apache::thrift::detail::wrap_argument<1>(8), ::apache::thrift::detail::wrap_argument<2>(apache::thrift::StringTraits< std::string>::fromStringLiteral("Some Job"))));
+  return *instance;
+}
+
 std::vector< ::cpp2::Range> const& module_constants::kRanges() {
   static folly::Indestructible<std::vector< ::cpp2::Range>> const instance(std::initializer_list< ::cpp2::Range>{::apache::thrift::detail::make_constant< ::cpp2::Range>(::apache::thrift::detail::wrap_argument<1>(1), ::apache::thrift::detail::wrap_argument<2>(2)),
   ::apache::thrift::detail::make_constant< ::cpp2::Range>(::apache::thrift::detail::wrap_argument<1>(5), ::apache::thrift::detail::wrap_argument<2>(6))});

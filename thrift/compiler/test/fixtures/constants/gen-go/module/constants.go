@@ -30,6 +30,7 @@ const LongDoubleValue = 2.59961e-05
 var Foo MyStringIdentifier
 var Bar MyIntIdentifier
 var Instagram *Internship
+var PartialConst *Internship
 var KRanges []*Range
 var InternList []*Internship
 var Pod_0 *Struct1
@@ -90,6 +91,11 @@ Instagram = &Internship{
   Weeks: 12,
   Title: "Software Engineer",
   Employer:   3,
+}
+
+PartialConst = &Internship{
+  Weeks: 8,
+  Title: "Some Job",
 }
 
 KRanges = []*Range{

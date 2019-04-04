@@ -47,6 +47,8 @@ public final class ModuleConstants {
 
     public static final test.fixtures.constants.Internship INSTAGRAM = new test.fixtures.constants.Internship.Builder().set(12).set("Software Engineer").set(test.fixtures.constants.Company.INSTAGRAM).build();
 
+    public static final test.fixtures.constants.Internship PARTIAL_CONST = new test.fixtures.constants.Internship.Builder().set(8).set("Some Job").build();
+
     public static final List<test.fixtures.constants.Range> K_RANGES = ImmutableList.<test.fixtures.constants.Range>builder()
         .add(new test.fixtures.constants.Range.Builder().set(1).set(2).build())
         .add(new test.fixtures.constants.Range.Builder().set(5).set(6).build())
