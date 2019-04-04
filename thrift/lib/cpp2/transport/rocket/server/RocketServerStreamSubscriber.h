@@ -35,6 +35,7 @@ namespace thrift {
 namespace rocket {
 
 class RocketServerFrameContext;
+class RocketServerConnection;
 
 class RocketServerStreamSubscriber
     : public yarpl::flowable::Subscriber<Payload> {

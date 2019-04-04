@@ -63,6 +63,7 @@ class RsocketTestServer {
 
   uint16_t getListeningPort() const;
   void shutdown();
+  void setExpectedRemainingStreams(size_t) {}
 
  private:
   std::unique_ptr<rsocket::RSocketServer> rsocketServer_;
@@ -105,6 +106,7 @@ class RocketTestServer {
   ~RocketTestServer();
 
   uint16_t getListeningPort() const;
+  void setExpectedRemainingStreams(size_t n);
 
  private:
   folly::ScopedEventBaseThread ioThread_;

@@ -81,6 +81,10 @@ class RocketServerConnection
     return evb_;
   }
 
+  size_t getNumStreams() const {
+    return streams_.size();
+  }
+
  private:
   // Note that attachEventBase()/detachEventBase() are not supported in server
   // code

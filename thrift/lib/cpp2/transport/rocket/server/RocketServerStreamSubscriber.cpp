@@ -27,6 +27,7 @@
 #include <thrift/lib/cpp2/transport/rocket/Types.h>
 #include <thrift/lib/cpp2/transport/rocket/framing/ErrorCode.h>
 #include <thrift/lib/cpp2/transport/rocket/framing/Flags.h>
+#include <thrift/lib/cpp2/transport/rocket/server/RocketServerConnection.h>
 #include <thrift/lib/cpp2/transport/rocket/server/RocketServerFrameContext.h>
 
 #include <yarpl/flowable/Subscription.h>
@@ -70,6 +71,7 @@ void RocketServerStreamSubscriber::onComplete() {
     context_->sendPayload(
         Payload::makeFromData(std::unique_ptr<folly::IOBuf>{}),
         Flags::none().complete(true));
+    context_->freeStream();
   }
 }
 
@@ -85,6 +87,7 @@ void RocketServerStreamSubscriber::onError(folly::exception_wrapper ew) {
     context_->sendError(
         RocketException(ErrorCode::APPLICATION_ERROR, ew.what()));
   }
+  context_->freeStream();
 }
 
 void RocketServerStreamSubscriber::request(uint32_t n) {

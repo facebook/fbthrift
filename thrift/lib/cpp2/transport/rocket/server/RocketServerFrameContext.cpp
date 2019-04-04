@@ -108,6 +108,10 @@ void RocketServerFrameContext::onRequestFrame(RequestFrame&& frame) && {
   std::move(*this).onFullFrame(std::forward<RequestFrame>(frame));
 }
 
+void RocketServerFrameContext::freeStream() {
+  connection_->streams_.erase(streamId_);
+}
+
 namespace detail {
 
 class OnPayloadVisitor : public boost::static_visitor<void> {

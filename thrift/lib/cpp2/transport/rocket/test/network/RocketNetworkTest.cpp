@@ -269,6 +269,10 @@ TYPED_TEST(RocketNetworkTest, RequestFnfBasic) {
  */
 TYPED_TEST(RocketNetworkTest, RequestStreamBasic) {
   this->withClient([this](RocketTestClient& client) {
+    // stream should closed properly in this test so 0 stream should maintain
+    // on server when the connection is closed
+    this->server_->setExpectedRemainingStreams(0);
+
     constexpr size_t kNumRequestedPayloads = 200;
     constexpr folly::StringPiece kMetadata("metadata");
     const auto data =

@@ -59,6 +59,8 @@ class RocketServerFrameContext {
     return streamId_;
   }
 
+  void freeStream();
+
   RocketServerConnection& connection() {
     DCHECK(connection_);
     return *connection_;

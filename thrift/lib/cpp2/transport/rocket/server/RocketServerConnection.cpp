@@ -93,6 +93,10 @@ void RocketServerConnection::closeIfNeeded() {
   // closeIfNeeded(). Such recursive calls should be no-ops.
   state_ = ConnectionState::CLOSED;
 
+  if (auto* manager = getConnectionManager()) {
+    manager->removeConnection(this);
+  }
+
   for (auto it = streams_.begin(); it != streams_.end();) {
     auto& subscriber = *it->second;
     subscriber.cancel();
@@ -103,9 +107,7 @@ void RocketServerConnection::closeIfNeeded() {
     batchWriteLoopCallback_.cancelLoopCallback();
     flushPendingWrites();
   }
-  if (auto* manager = getConnectionManager()) {
-    manager->removeConnection(this);
-  }
+
   socket_.reset();
   destroy();
 }

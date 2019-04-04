@@ -383,14 +383,25 @@ class RocketTestServerAcceptor final : public wangle::Acceptor {
     ++connections_;
   }
 
-  void onConnectionRemoved(const wangle::ManagedConnection*) override {
+  void onConnectionRemoved(const wangle::ManagedConnection* conn) override {
+    if (expectedRemainingStreams_ != folly::none) {
+      if (auto rconn = dynamic_cast<const RocketServerConnection*>(conn)) {
+        EXPECT_EQ(expectedRemainingStreams_, rconn->getNumStreams());
+      }
+    }
+
     --connections_;
+  }
+
+  void setExpectedRemainingStreams(size_t size) {
+    expectedRemainingStreams_ = size;
   }
 
  private:
   const std::shared_ptr<RocketServerHandler> frameHandler_;
   std::promise<void> shutdownPromise_;
   size_t connections_{0};
+  folly::Optional<size_t> expectedRemainingStreams_ = folly::none;
 };
 
 class RocketTestServerHandler : public RocketServerHandler {
@@ -475,6 +486,13 @@ void RocketTestServer::stop() {
 
 uint16_t RocketTestServer::getListeningPort() const {
   return listeningSocket_->getAddress().getPort();
+}
+
+void RocketTestServer::setExpectedRemainingStreams(size_t n) {
+  if (auto acceptor =
+          dynamic_cast<RocketTestServerAcceptor*>(acceptor_.get())) {
+    acceptor->setExpectedRemainingStreams(n);
+  }
 }
 
 } // namespace test
