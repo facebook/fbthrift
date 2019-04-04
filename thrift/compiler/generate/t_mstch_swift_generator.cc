@@ -451,10 +451,14 @@ class mstch_swift_const : public mstch_const {
         this,
         {
             {"constant:javaCapitalName", &mstch_swift_const::java_capital_name},
+            {"constant:javaFieldName", &mstch_swift_const::java_field_name},
         });
   }
   mstch::node java_capital_name() {
     return java::mangle_java_constant_name(cnst_->get_name());
+  }
+  mstch::node java_field_name() {
+    return java::mangle_java_name(field_name_, true);
   }
 };
 

@@ -15,7 +15,7 @@ import java.util.*;
 public final class Constants {
     private Constants() {}
 
-    public static final test.fixtures.module0.Struct C0 = new test.fixtures.module0.Struct.Builder().set(101).set("module0_str").build();
+    public static final test.fixtures.module0.Struct C0 = new test.fixtures.module0.Struct.Builder().setFirst(101).setSecond("module0_str").build();
 
     public static final List<test.fixtures.module0.Enum> E0S = ImmutableList.<test.fixtures.module0.Enum>builder()
         .add(test.fixtures.module0.Enum.ONE)

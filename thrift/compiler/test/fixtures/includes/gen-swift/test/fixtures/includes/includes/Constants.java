@@ -15,7 +15,7 @@ import java.util.*;
 public final class Constants {
     private Constants() {}
 
-    public static final test.fixtures.includes.includes.Included EXAMPLE_INCLUDED = new test.fixtures.includes.includes.Included.Builder().set(2L).set(test.fixtures.includes.transitive.Constants.EXAMPLE_FOO).build();
+    public static final test.fixtures.includes.includes.Included EXAMPLE_INCLUDED = new test.fixtures.includes.includes.Included.Builder().setMyIntField(2L).setMyTransitiveField(test.fixtures.includes.transitive.Constants.EXAMPLE_FOO).build();
 
     public static final long INCLUDED_CONSTANT = 42L;
 }

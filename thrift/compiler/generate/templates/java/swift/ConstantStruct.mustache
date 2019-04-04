@@ -21,7 +21,7 @@
 new {{> BoxedType}}{{^struct:asBean?}}.Builder(){{/struct:asBean?}}{{!
 }}{{#value:const_struct}}{{!
   }}{{#constant:type}}{{!
-    }}{{#constant:value}}.set{{constant:javaCapitalName}}({{> ConstantValue}}){{!
+    }}{{#constant:value}}.set{{constant:javaFieldName}}({{> ConstantValue}}){{!
     }}{{/constant:value}}{{!
   }}{{/constant:type}}{{!
 }}{{/value:const_struct}}{{!

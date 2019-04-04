@@ -15,5 +15,5 @@ import java.util.*;
 public final class Constants {
     private Constants() {}
 
-    public static final test.fixtures.includes.transitive.Foo EXAMPLE_FOO = new test.fixtures.includes.transitive.Foo.Builder().set(2L).build();
+    public static final test.fixtures.includes.transitive.Foo EXAMPLE_FOO = new test.fixtures.includes.transitive.Foo.Builder().setA(2L).build();
 }

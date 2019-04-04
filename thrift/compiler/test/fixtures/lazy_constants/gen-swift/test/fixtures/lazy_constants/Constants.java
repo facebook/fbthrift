@@ -37,16 +37,16 @@ public final class Constants {
 
     public static final double Z = 1000000000;
 
-    public static final test.fixtures.lazy_constants.Internship INSTAGRAM = new test.fixtures.lazy_constants.Internship.Builder().set(12).set("Software Engineer").set(test.fixtures.lazy_constants.Company.INSTAGRAM).build();
+    public static final test.fixtures.lazy_constants.Internship INSTAGRAM = new test.fixtures.lazy_constants.Internship.Builder().setWeeks(12).setTitle("Software Engineer").setEmployer(test.fixtures.lazy_constants.Company.INSTAGRAM).build();
 
     public static final List<test.fixtures.lazy_constants.Range> K_RANGES = ImmutableList.<test.fixtures.lazy_constants.Range>builder()
-        .add(new test.fixtures.lazy_constants.Range.Builder().set(1).set(2).build())
-        .add(new test.fixtures.lazy_constants.Range.Builder().set(5).set(6).build())
+        .add(new test.fixtures.lazy_constants.Range.Builder().setMin(1).setMax(2).build())
+        .add(new test.fixtures.lazy_constants.Range.Builder().setMin(5).setMax(6).build())
         .build();
 
     public static final List<test.fixtures.lazy_constants.Internship> INTERN_LIST = ImmutableList.<test.fixtures.lazy_constants.Internship>builder()
         .add(test.fixtures.lazy_constants.Constants.INSTAGRAM)
-        .add(new test.fixtures.lazy_constants.Internship.Builder().set(10).set("Sales Intern").set(test.fixtures.lazy_constants.Company.FACEBOOK).build())
+        .add(new test.fixtures.lazy_constants.Internship.Builder().setWeeks(10).setTitle("Sales Intern").setEmployer(test.fixtures.lazy_constants.Company.FACEBOOK).build())
         .build();
 
     public static final String APOSTROPHE = "'";

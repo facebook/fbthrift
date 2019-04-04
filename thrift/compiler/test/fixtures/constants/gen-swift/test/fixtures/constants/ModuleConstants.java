@@ -45,31 +45,31 @@ public final class ModuleConstants {
 
     public static final int BAR = 42;
 
-    public static final test.fixtures.constants.Internship INSTAGRAM = new test.fixtures.constants.Internship.Builder().set(12).set("Software Engineer").set(test.fixtures.constants.Company.INSTAGRAM).build();
+    public static final test.fixtures.constants.Internship INSTAGRAM = new test.fixtures.constants.Internship.Builder().setWeeks(12).setTitle("Software Engineer").setEmployer(test.fixtures.constants.Company.INSTAGRAM).build();
 
-    public static final test.fixtures.constants.Internship PARTIAL_CONST = new test.fixtures.constants.Internship.Builder().set(8).set("Some Job").build();
+    public static final test.fixtures.constants.Internship PARTIAL_CONST = new test.fixtures.constants.Internship.Builder().setWeeks(8).setTitle("Some Job").build();
 
     public static final List<test.fixtures.constants.Range> K_RANGES = ImmutableList.<test.fixtures.constants.Range>builder()
-        .add(new test.fixtures.constants.Range.Builder().set(1).set(2).build())
-        .add(new test.fixtures.constants.Range.Builder().set(5).set(6).build())
+        .add(new test.fixtures.constants.Range.Builder().setMin(1).setMax(2).build())
+        .add(new test.fixtures.constants.Range.Builder().setMin(5).setMax(6).build())
         .build();
 
     public static final List<test.fixtures.constants.Internship> INTERN_LIST = ImmutableList.<test.fixtures.constants.Internship>builder()
         .add(test.fixtures.constants.Constants.INSTAGRAM)
-        .add(new test.fixtures.constants.Internship.Builder().set(10).set("Sales Intern").set(test.fixtures.constants.Company.FACEBOOK).build())
+        .add(new test.fixtures.constants.Internship.Builder().setWeeks(10).setTitle("Sales Intern").setEmployer(test.fixtures.constants.Company.FACEBOOK).build())
         .build();
 
     public static final test.fixtures.constants.Struct1 POD_0 = new test.fixtures.constants.Struct1.Builder().build();
 
-    public static final test.fixtures.constants.Struct1 POD_1 = new test.fixtures.constants.Struct1.Builder().set(10).set("foo").build();
+    public static final test.fixtures.constants.Struct1 POD_1 = new test.fixtures.constants.Struct1.Builder().setA(10).setB("foo").build();
 
-    public static final test.fixtures.constants.Struct2 POD_2 = new test.fixtures.constants.Struct2.Builder().set(98).set("gaz").set(new test.fixtures.constants.Struct1.Builder().set(12).set("bar").build()).set(ImmutableList.<Integer>builder()
+    public static final test.fixtures.constants.Struct2 POD_2 = new test.fixtures.constants.Struct2.Builder().setA(98).setB("gaz").setC(new test.fixtures.constants.Struct1.Builder().setA(12).setB("bar").build()).setD(ImmutableList.<Integer>builder()
         .add(11)
         .add(22)
         .add(33)
         .build()).build();
 
-    public static final test.fixtures.constants.Struct3 POD_3 = new test.fixtures.constants.Struct3.Builder().set("abc").set(456).set(new test.fixtures.constants.Struct2.Builder().set(888).set(new test.fixtures.constants.Struct1.Builder().set("gaz").build()).set(ImmutableList.<Integer>builder()
+    public static final test.fixtures.constants.Struct3 POD_3 = new test.fixtures.constants.Struct3.Builder().setA("abc").setB(456).setC(new test.fixtures.constants.Struct2.Builder().setA(888).setC(new test.fixtures.constants.Struct1.Builder().setB("gaz").build()).setD(ImmutableList.<Integer>builder()
         .add(1)
         .add(2)
         .add(3)
@@ -85,7 +85,7 @@ public final class ModuleConstants {
 
     public static final test.fixtures.constants.Union2 U_2_2 = new test.fixtures.constants.Union2(6.7);
 
-    public static final test.fixtures.constants.Union2 U_2_3 = new test.fixtures.constants.Union2(new test.fixtures.constants.Struct1.Builder().set(8).set("abacabb").build());
+    public static final test.fixtures.constants.Union2 U_2_3 = new test.fixtures.constants.Union2(new test.fixtures.constants.Struct1.Builder().setA(8).setB("abacabb").build());
 
     public static final test.fixtures.constants.Union2 U_2_4 = new test.fixtures.constants.Union2(new test.fixtures.constants.Union1(43));
 

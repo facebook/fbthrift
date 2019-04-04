@@ -15,5 +15,5 @@ import java.util.*;
 public final class Constants {
     private Constants() {}
 
-    public static final test.fixtures.basic_swift_bean.MyStruct1 MS = new test.fixtures.basic_swift_bean.MyStruct1.set(42L).set("Meaning_of_life").set(new test.fixtures.basic_swift_bean.MyDataItem.set(1).set(2)).set(32L);
+    public static final test.fixtures.basic_swift_bean.MyStruct1 MS = new test.fixtures.basic_swift_bean.MyStruct1.setMyIntField(42L).setMyStringField("Meaning_of_life").setMyDataField(new test.fixtures.basic_swift_bean.MyDataItem.setField1(1).setField2(2)).setMajor(32L);
 }
