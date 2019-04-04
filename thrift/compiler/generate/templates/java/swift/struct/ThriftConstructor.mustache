@@ -15,6 +15,12 @@
   limitations under the License.
 
 }}
+{{#struct:asBean?}}
+@ThriftConstructor
+public {{struct:javaCapitalName}}() {
+}
+{{/struct:asBean?}}
+{{^struct:asBean?}}
 @ThriftConstructor
 public {{struct:javaCapitalName}}(
     {{#struct:fields}}
@@ -26,9 +32,10 @@ public {{struct:javaCapitalName}}(
     {{/struct:fields}}
 }
 
-{{#struct:fields?}}{{^struct:asBean?}}protected {{struct:javaCapitalName}}() {
+{{#struct:fields?}}protected {{struct:javaCapitalName}}() {
   {{#struct:fields}}
   this.{{field:javaName}} = {{field:javaDefaultValue}};
   {{/struct:fields}}
-}{{/struct:asBean?}}{{/struct:fields?}}
+}{{/struct:fields?}}
+{{/struct:asBean?}}
 {{! terminate with newline }}

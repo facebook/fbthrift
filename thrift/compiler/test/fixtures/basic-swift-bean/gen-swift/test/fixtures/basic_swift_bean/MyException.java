@@ -18,15 +18,8 @@ public final class MyException extends Exception {
     private static final long serialVersionUID = 1L;
 
     @ThriftConstructor
-    public MyException(
-        @ThriftField(value=1, name="errorCode", requiredness=Requiredness.NONE) final int errorCode,
-        @ThriftField(value=2, name="message", requiredness=Requiredness.NONE) final String message
-    ) {
-        this.errorCode = errorCode;
-        this.message = message;
+    public MyException() {
     }
-    
-    
     
     private int errorCode;
     private String message;
