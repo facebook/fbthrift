@@ -264,7 +264,7 @@ void ThreadManager::ImplT<SemType>::stopImpl(bool joinArg) {
     if (joinArg) {
       state_ = ThreadManager::JOINING;
       removeWorkerImpl(intendedWorkerCount_, true);
-      assert(tasks_.isEmpty());
+      assert(tasks_.empty());
     } else {
       state_ = ThreadManager::STOPPING;
       removeWorkerImpl(intendedWorkerCount_);
@@ -272,7 +272,8 @@ void ThreadManager::ImplT<SemType>::stopImpl(bool joinArg) {
       // all of the tasks.
       totalTaskCount_ -= tasks_.size();
       std::unique_ptr<Task> task;
-      while (tasks_.read(task)) { }
+      while (tasks_.try_dequeue(task)) {
+      }
     }
     state_ = ThreadManager::STOPPED;
     monitor_.notifyAll();
@@ -310,7 +311,8 @@ void ThreadManager::ImplT<SemType>::removeWorkerImpl(size_t value, bool afterTas
     // Insert nullptr tasks onto the tasks queue to ask workers to exit
     // after all current tasks are completed
     for (size_t n = 0; n < value; ++n) {
-      tasks_.write(nullptr);
+      auto const qpriority = tasks_.priorities() / 2; // median priority
+      tasks_.at_priority(qpriority).enqueue(nullptr);
       ++totalTaskCount_;
     }
     monitor_.notifyAll();
@@ -378,7 +380,8 @@ void ThreadManager::ImplT<SemType>::add(
 
   auto task = std::make_unique<Task>(
       std::move(value), std::chrono::milliseconds{expiration});
-  tasks_.writeWithPriority(std::move(task), priority);
+  auto const qpriority = std::min(tasks_.priorities() - 1, priority);
+  tasks_.at_priority(qpriority).enqueue(std::move(task));
 
   ++totalTaskCount_;
 
@@ -406,7 +409,8 @@ bool ThreadManager::ImplT<SemType>::tryAdd(
   auto task = std::make_unique<Task>(std::move(value),
                                        std::chrono::milliseconds{0});
 
-  tasks_.writeWithPriority(std::move(task), priority);
+  auto const qpriority = std::min(tasks_.priorities() - 1, priority);
+  tasks_.at_priority(qpriority).enqueue(std::move(task));
 
   ++totalTaskCount_;
 
@@ -439,7 +443,7 @@ std::shared_ptr<Runnable> ThreadManager::ImplT<SemType>::removeNextPending() {
   }
 
   std::unique_ptr<Task> task;
-  if (tasks_.read(task)) {
+  if (tasks_.try_dequeue(task)) {
     std::shared_ptr<Runnable> r = task->getRunnable();
     --totalTaskCount_;
     return r;
@@ -479,7 +483,7 @@ ThreadManager::ImplT<SemType>::waitOnTask() {
   std::unique_ptr<Task> task;
 
   // Fast path - if tasks are ready, get one
-  if (tasks_.read(task)) {
+  if (tasks_.try_dequeue(task)) {
     --totalTaskCount_;
     return task;
   }
@@ -494,7 +498,7 @@ ThreadManager::ImplT<SemType>::waitOnTask() {
   ++idleCount_;
   --totalTaskCount_;
   g.release();
-  while (!tasks_.read(task)) {
+  while (!tasks_.try_dequeue(task)) {
     waitSem_.wait();
     if (shouldStop()) {
       Guard f(mutex_);

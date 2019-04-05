@@ -22,12 +22,12 @@
 #include <folly/DefaultKeepAliveExecutor.h>
 #include <folly/PriorityMPMCQueue.h>
 #include <folly/ThreadLocal.h>
+#include <folly/concurrency/PriorityUnboundedQueueSet.h>
 #include <folly/executors/Codel.h>
 #include <folly/io/async/Request.h>
 #include <folly/synchronization/LifoSem.h>
 #include <folly/synchronization/SmallLocks.h>
 #include <thrift/lib/cpp/concurrency/Monitor.h>
-#include <thrift/lib/cpp/concurrency/PriorityUMPMCQueue.h>
 
 namespace apache { namespace thrift { namespace concurrency {
 
@@ -271,7 +271,8 @@ class ThreadManager::ImplT : public ThreadManager,
   ThreadManager::STATE state_;
   shared_ptr<ThreadFactory> threadFactory_;
 
-  PriorityUMPMCQueue<std::unique_ptr<Task>> tasks_;
+  folly::PriorityUMPMCQueueSet<std::unique_ptr<Task>, /* MayBlock = */ false>
+      tasks_;
 
   Mutex mutex_;
   // monitor_ is signaled on any of the following events:
