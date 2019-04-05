@@ -31,13 +31,13 @@ states = [
   },
 ]
 
-x = 1
+x = 1.00000
 
 y = 1000000
 
-z = 1e+09
+z = 1.00000e+09
 
-zeroDoubleValue = 0
+zeroDoubleValue = 0.00000
 
 longDoubleValue = 2.59961e-05
 
@@ -123,7 +123,7 @@ u_1_1 = union1(**{
 })
 
 u_1_2 = union1(**{
-  "d" : 5.6,
+  "d" : 5.60000,
 })
 
 u_1_3 = union1(**{
@@ -134,7 +134,7 @@ u_2_1 = union2(**{
 })
 
 u_2_2 = union2(**{
-  "d" : 6.7,
+  "d" : 6.70000,
 })
 
 u_2_3 = union2(**{
@@ -152,7 +152,7 @@ u_2_4 = union2(**{
 
 u_2_5 = union2(**{
   "u" : union1(**{
-    "d" : 9.8,
+    "d" : 9.80000,
   }),
 })
 
@@ -209,7 +209,7 @@ zero32 = 0
 
 zero64 = 0
 
-zero_dot_zero = 0
+zero_dot_zero = 0.00000
 
 empty_string = ""
 
