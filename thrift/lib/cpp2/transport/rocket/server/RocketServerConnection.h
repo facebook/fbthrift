@@ -141,7 +141,8 @@ class RocketServerConnection
 
   void closeIfNeeded();
   void flushPendingWrites() {
-    socket_->writeChain(this, std::move(bufferedWrites_));
+    auto writes = std::move(bufferedWrites_);
+    socket_->writeChain(this, std::move(writes));
   }
 
   void timeoutExpired() noexcept final;
