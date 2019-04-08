@@ -230,6 +230,7 @@ TEST_F(ThriftClientTest, SyncCallOneWay) {
     std::condition_variable condvar_;
     int32_t numCalls_{0};
   };
+
   auto handler = make_shared<Handler>();
   ScopedServerInterfaceThread runner(handler);
 
@@ -266,6 +267,145 @@ TEST_F(ThriftClientTest, SyncCallOneWay) {
   });
   fm.addTask([&]() {
     doSyncRPC();
+    b2.post();
+  });
+  eb.loop();
+
+  handler->waitUntilNumCalls(6);
+}
+
+TEST_F(ThriftClientTest, FutureCallRequestResponse) {
+  class Handler : public TestServiceSvIf {
+   public:
+    Future<unique_ptr<string>> future_sendResponse(int64_t size) override {
+      return makeFuture(make_unique<string>(to<string>(size)));
+    }
+  };
+  auto handler = make_shared<Handler>();
+  ScopedServerInterfaceThread runner(handler);
+
+  EventBase eb;
+  auto client = runner.newClient<TestServiceAsyncClient>(&eb);
+
+  auto doFutureSyncRPC = [&]() {
+    std::string res;
+    auto f = client->future_sendResponse(123);
+    if (!folly::fibers::onFiber()) {
+      while (!f.isReady()) {
+        eb.drive();
+      }
+    }
+    auto r = f.wait().getTry();
+    ASSERT_TRUE(r.hasValue());
+    res = r.value();
+    EXPECT_EQ(res, "123");
+  };
+
+  // First test from evbase thread
+  doFutureSyncRPC();
+
+  // Now try from fibers
+  auto doSomeFibers = [&](EventBase& eb) {
+    folly::fibers::Baton b1, b2, b3, b4;
+    auto& fm = folly::fibers::getFiberManager(eb);
+    fm.addTask([&]() {
+      b3.wait();
+      b4.wait();
+      doFutureSyncRPC();
+      eb.terminateLoopSoon();
+    });
+    fm.addTask([&]() {
+      b1.wait();
+      doFutureSyncRPC();
+      b3.post();
+    });
+    fm.addTask([&]() {
+      b2.wait();
+      doFutureSyncRPC();
+      b4.post();
+    });
+    fm.addTask([&]() {
+      doFutureSyncRPC();
+      b1.post();
+    });
+    fm.addTask([&]() {
+      doFutureSyncRPC();
+      b2.post();
+    });
+    eb.loop();
+  };
+  doSomeFibers(eb);
+}
+
+TEST_F(ThriftClientTest, FutureCallOneWay) {
+  class Handler : public TestServiceSvIf {
+   public:
+    void noResponse(int64_t) override {
+      std::lock_guard<std::mutex> l(lock_);
+      ++numCalls_;
+      condvar_.notify_all();
+    }
+    int32_t numCalls() const {
+      std::lock_guard<std::mutex> l(lock_);
+      return numCalls_;
+    }
+    void waitUntilNumCalls(int32_t goal) {
+      std::unique_lock<std::mutex> l(lock_);
+      auto deadline = std::chrono::system_clock::now() + 200ms;
+      condvar_.wait_until(l, deadline, [&] { return numCalls_ == goal; });
+      EXPECT_EQ(numCalls_, goal);
+    }
+
+   private:
+    mutable std::mutex lock_;
+    std::condition_variable condvar_;
+    int32_t numCalls_{0};
+  };
+  auto handler = make_shared<Handler>();
+  ScopedServerInterfaceThread runner(handler);
+
+  EventBase eb;
+  auto client = runner.newClient<TestServiceAsyncClient>(&eb);
+
+  auto doFutureSyncRPC = [&]() {
+    auto f = client->future_noResponse(123);
+    if (!folly::fibers::onFiber()) {
+      while (!f.isReady()) {
+        eb.drive();
+      }
+    }
+    auto r = std::move(f).wait().getTry();
+    EXPECT_TRUE(r.hasValue());
+  };
+
+  // First test from evbase thread
+  doFutureSyncRPC();
+
+  // Now try from fibers
+  folly::fibers::Baton b1, b2, b3, b4;
+  auto& fm = folly::fibers::getFiberManager(eb);
+  fm.addTask([&]() {
+    b3.wait();
+    b4.wait();
+    doFutureSyncRPC();
+    eb.terminateLoopSoon();
+  });
+  fm.addTask([&]() {
+    b1.wait();
+    doFutureSyncRPC();
+    b3.post();
+  });
+  fm.addTask([&]() {
+    b2.wait();
+    doFutureSyncRPC();
+    b4.post();
+  });
+  fm.addTask([&]() {
+    doFutureSyncRPC();
+    b1.post();
+  });
+  fm.addTask([&]() {
+    doFutureSyncRPC();
     b2.post();
   });
   eb.loop();
