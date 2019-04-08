@@ -132,7 +132,9 @@ func (t *HeaderTransport) PersistentHeaders() map[string]string {
 }
 
 func (t *HeaderTransport) ClearPersistentHeaders() {
-	t.persistentWriteInfoHeaders = map[string]string{}
+	if len(t.persistentWriteInfoHeaders) != 0 {
+		t.persistentWriteInfoHeaders = map[string]string{}
+	}
 }
 
 func (t *HeaderTransport) SetHeader(key, value string) {
@@ -153,7 +155,9 @@ func (t *HeaderTransport) Headers() map[string]string {
 }
 
 func (t *HeaderTransport) ClearHeaders() {
-	t.writeInfoHeaders = map[string]string{}
+	if len(t.writeInfoHeaders) != 0 {
+		t.writeInfoHeaders = map[string]string{}
+	}
 }
 
 func (t *HeaderTransport) ReadHeader(key string) (string, bool) {
@@ -334,6 +338,10 @@ func (t *HeaderTransport) RemainingBytes() uint64 {
 }
 
 func applyTransforms(buf *bytes.Buffer, transforms []TransformID) (*bytes.Buffer, error) {
+	if len(transforms) == 0 {
+		return buf, nil
+	}
+
 	tmpbuf := bytes.NewBuffer(nil)
 	for _, trans := range transforms {
 		switch trans {

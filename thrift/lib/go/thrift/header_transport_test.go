@@ -366,3 +366,27 @@ func TestHeaderTransportRWMultiple(t *testing.T) {
 	testRWOnce(t, 2, GetStatusCallData, trans)
 	testRWOnce(t, 3, GetStatusReplyData, trans)
 }
+
+func BenchmarkHeaderFlush(b *testing.B) {
+	data := []byte("ASDF")
+
+	for n := 0; n < b.N; n++ {
+		tmb := NewMemoryBuffer()
+		trans1 := NewHeaderTransport(tmb)
+
+		trans1.SetIdentity("localhost")
+		trans1.SetHeader("thrift_protocol", "compact")
+		trans1.SetHeader("thrift_transport", "header")
+		trans1.SetHeader("preferred_cheese", "cheddar")
+		trans1.SetPersistentHeader("preferred_cheese", "gouda")
+
+		_, err := trans1.Write(data)
+		err = trans1.Flush()
+
+		if err != nil {
+			b.Fatalf("failed to flush, %s", err)
+		}
+
+		trans1.Close()
+	}
+}
