@@ -30,7 +30,13 @@ need to be moved to the called function.
 }}{{#type:double?}}{{field:name}}{{/type:double?}}{{!
 }}{{#type:float?}}{{field:name}}{{/type:float?}}{{!
 }}{{#type:string?}}{{field:name}} = std::move({{field:name}}){{/type:string?}}{{!
-}}{{#type:binary?}}{{field:name}} = std::move({{field:name}}){{/type:binary?}}{{!
+}}{{#type:binary?}}{{field:name}} = {{!
+    }}{{^type:iobufRef?}}std::move({{field:name}}){{/type:iobufRef?}}{{!
+    }}{{#type:iobufRef?}}{{!
+        }}{{#program:stack_arguments?}}{{field:name}}->clone(){{/program:stack_arguments?}}{{!
+        }}{{^program:stack_arguments?}}std::move({{field:name}}){{/program:stack_arguments?}}{{!
+    }}{{/type:iobufRef?}}{{!
+}}{{/type:binary?}}{{!
 }}{{#type:struct?}}{{field:name}} = std::move({{field:name}}){{/type:struct?}}{{!
 }}{{#type:list?}}{{field:name}} = std::move({{field:name}}){{/type:list?}}{{!
 }}{{#type:set?}}{{field:name}} = std::move({{field:name}}){{/type:set?}}{{!

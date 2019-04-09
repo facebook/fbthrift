@@ -11,6 +11,7 @@ from testing.clients import TestingService
 from stack_args.services import StackServiceInterface
 from stack_args.clients import StackService
 from stack_args.types import simple
+from folly.iobuf import IOBuf
 from thrift.py3 import (
     ThriftServer,
     get_client,
@@ -273,6 +274,21 @@ class StackHandler(StackServiceInterface):
         if smpl.val != 10:
             raise Exception("WRONG")
 
+    async def get_iobuf(self) -> IOBuf:
+        return IOBuf(b'abc')
+
+    async def take_iobuf(self, iobuf: IOBuf) -> None:
+        if bytes(iobuf) != b'cba':
+            raise Exception("WRONG")
+
+    # currently unsupported by cpp backend:
+    # async def get_iobuf_ptr(self) -> IOBuf:
+    #     return IOBuf(b'xyz')
+
+    async def take_iobuf_ptr(self, iobuf_ptr: IOBuf) -> None:
+        if bytes(iobuf_ptr) != b'zyx':
+            raise Exception("WRONG")
+
 
 class ClientStackServerTests(unittest.TestCase):
     """
@@ -291,5 +307,10 @@ class ClientStackServerTests(unittest.TestCase):
                     )
                     self.assertEqual(66, (await client.get_simple()).val)
                     await client.take_simple(simple(val=10))
+                    self.assertEqual(b'abc', bytes(await client.get_iobuf()))
+                    await client.take_iobuf(IOBuf(b'cba'))
+                    # currently unsupported by cpp backend:
+                    # self.assertEqual(b'xyz', (await client.get_iobuf_ptr()))
+                    await client.take_iobuf_ptr(IOBuf(b'zyx'))
 
         loop.run_until_complete(inner_test())
