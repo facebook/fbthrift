@@ -167,7 +167,9 @@ void RequestChannel::sendRequestSync(
       std::make_unique<ClientSyncBatonCallback>(std::move(cb), baton, kind);
 
   folly::exception_wrapper ew;
-  baton.wait([&, onFiber = folly::fibers::onFiber()]() {
+  auto const onFiber = folly::fibers::onFiber();
+  auto const inEventBase = eb->inRunningEventBaseThread();
+  baton.wait([&, onFiber, inEventBase] {
     try {
       switch (kind) {
         case RpcKind::SINGLE_REQUEST_NO_RESPONSE:
@@ -204,7 +206,7 @@ void RequestChannel::sendRequestSync(
       ew = folly::exception_wrapper(std::current_exception());
       baton.post();
     }
-    if (!onFiber) {
+    if (!onFiber || !inEventBase) {
       while (!baton.ready()) {
         eb->drive();
       }
