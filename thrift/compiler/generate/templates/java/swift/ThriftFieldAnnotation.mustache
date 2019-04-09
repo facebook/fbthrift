@@ -20,5 +20,4 @@
 }}{{#first?}}, idlAnnotations = { {{/first?}}{{!
 }}@ThriftIdlAnnotation(key = "{{annotation:key}}", value = "{{annotation:value}}"){{^last?}}, {{/last?}}{{!
 }}{{#last?}} }{{/last?}}{{!
-
-}}{{/field:annotations}})
+}}{{/field:annotations}}{{#field:recursive?}}, isRecursive=Recursiveness.TRUE{{/field:recursive?}})

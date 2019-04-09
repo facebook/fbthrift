@@ -327,6 +327,7 @@ class mstch_swift_field : public mstch_field {
             {"field:javaName", &mstch_swift_field::java_name},
             {"field:javaCapitalName", &mstch_swift_field::java_capital_name},
             {"field:javaDefaultValue", &mstch_swift_field::java_default_value},
+            {"field:recursive?", &mstch_swift_field::is_recursive_reference},
         });
   }
   mstch::node java_name() {
@@ -337,6 +338,10 @@ class mstch_swift_field : public mstch_field {
   }
   mstch::node java_default_value() {
     return default_value_for_type(field_->get_type());
+  }
+  mstch::node is_recursive_reference() {
+    return field_->annotations_.count("swift.recursive_reference") &&
+        field_->annotations_.at("swift.recursive_reference") == "true";
   }
 
   std::string default_value_for_type(const t_type* type) {
