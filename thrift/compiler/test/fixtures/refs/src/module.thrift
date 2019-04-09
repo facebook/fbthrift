@@ -1,3 +1,5 @@
+namespace java.swift test.fixtures.refs
+
 union MyUnion {
   1: i32 anInteger,
   2: string aString,
@@ -22,7 +24,7 @@ struct StructWithUnion {
 }
 
 struct RecursiveStruct {
-  1: optional list<RecursiveStruct> mes,
+  1: optional list<RecursiveStruct> mes (swift.recursive_reference = "true"),
 }
 
 struct StructWithContainers {
