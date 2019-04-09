@@ -35,23 +35,24 @@ std::unique_ptr<folly::IOBuf> serializeMetadata(
   return queue.move();
 }
 
-std::unique_ptr<RequestRpcMetadata> deserializeMetadata(
-    const folly::IOBuf& buffer) {
-  CompactProtocolReader reader;
-  auto metadata = std::make_unique<RequestRpcMetadata>();
+bool deserializeMetadata(
+    const folly::IOBuf& buffer,
+    RequestRpcMetadata& metadata) {
   try {
+    CompactProtocolReader reader;
     reader.setInput(&buffer);
-    metadata->read(&reader);
-    DCHECK(metadata->__isset.kind);
-    DCHECK(metadata->__isset.seqId);
+    metadata.read(&reader);
+    DCHECK(metadata.__isset.kind);
+    DCHECK(metadata.__isset.seqId);
+    return true;
   } catch (const std::exception& e) {
     LOG(ERROR) << "Exception on deserializing metadata: "
                << folly::exceptionStr(e);
     // Return an invalid metadata object instead of potentially valid partially
     // deserialized one.
-    metadata->__isset.kind = false;
+    metadata.__isset.kind = false;
+    return false;
   }
-  return metadata;
 }
 } // namespace detail
 
@@ -208,7 +209,7 @@ std::shared_ptr<yarpl::flowable::Flowable<rsocket::Payload>> toFlowableInternal(
 
 RSOneWayRequest::RSOneWayRequest(
     const apache::thrift::server::ServerConfigs& serverConfigs,
-    std::unique_ptr<RequestRpcMetadata> metadata,
+    RequestRpcMetadata&& metadata,
     std::shared_ptr<Cpp2ConnContext> connContext,
     folly::EventBase* evb,
     folly::Function<void(RSOneWayRequest*)> onDestroy)
@@ -253,7 +254,7 @@ void RSOneWayRequest::cancel() {
 
 RSSingleRequest::RSSingleRequest(
     const apache::thrift::server::ServerConfigs& serverConfigs,
-    std::unique_ptr<RequestRpcMetadata> metadata,
+    RequestRpcMetadata&& metadata,
     std::shared_ptr<Cpp2ConnContext> connContext,
     folly::EventBase* evb,
     std::shared_ptr<yarpl::single::SingleObserver<rsocket::Payload>>
@@ -292,7 +293,7 @@ folly::EventBase* RSSingleRequest::getEventBase() noexcept {
 
 RSStreamRequest::RSStreamRequest(
     const apache::thrift::server::ServerConfigs& serverConfigs,
-    std::unique_ptr<RequestRpcMetadata> metadata,
+    RequestRpcMetadata&& metadata,
     std::shared_ptr<Cpp2ConnContext> connContext,
     folly::EventBase* evb,
     std::shared_ptr<yarpl::flowable::Subscriber<rsocket::Payload>> subscriber)

@@ -101,13 +101,13 @@ void RSResponder::handleRequestResponse(
     StreamId,
     std::shared_ptr<yarpl::single::SingleObserver<Payload>> response) noexcept {
   DCHECK(request.metadata);
-  auto metadata = detail::deserializeMetadata(*request.metadata);
-
   ParseStatus parseStatus = PARSED_OK;
-  if (!(metadata->__isset.protocol && metadata->__isset.name &&
-        metadata->__isset.kind && metadata->__isset.seqId)) {
+  RequestRpcMetadata metadata;
+  if (!(detail::deserializeMetadata(*request.metadata, metadata) &&
+        metadata.__isset.protocol && metadata.__isset.name &&
+        metadata.__isset.kind && metadata.__isset.seqId)) {
     parseStatus = PARSED_METADATA_ERROR;
-  } else if (auto crc32c = metadata->crc32c_ref()) {
+  } else if (auto crc32c = metadata.crc32c_ref()) {
     if (*crc32c != checksum::crc32c(*request.data)) {
       parseStatus = PARSED_CHECKSUM_MISMATCH;
     }
@@ -126,13 +126,13 @@ void RSResponder::handleRequestResponse(
 
 void RSResponder::handleFireAndForget(Payload request, StreamId) {
   DCHECK(request.metadata);
-  auto metadata = detail::deserializeMetadata(*request.metadata);
-
   ParseStatus parseStatus = PARSED_OK;
-  if (!(metadata->__isset.protocol && metadata->__isset.name &&
-        metadata->__isset.kind && metadata->__isset.seqId)) {
+  RequestRpcMetadata metadata;
+  if (!(detail::deserializeMetadata(*request.metadata, metadata) &&
+        metadata.__isset.protocol && metadata.__isset.name &&
+        metadata.__isset.kind && metadata.__isset.seqId)) {
     parseStatus = PARSED_METADATA_ERROR;
-  } else if (auto crc32c = metadata->crc32c_ref()) {
+  } else if (auto crc32c = metadata.crc32c_ref()) {
     if (*crc32c != checksum::crc32c(*request.data)) {
       parseStatus = PARSED_CHECKSUM_MISMATCH;
     }
@@ -160,14 +160,13 @@ void RSResponder::handleRequestStream(
     StreamId,
     std::shared_ptr<yarpl::flowable::Subscriber<Payload>> response) noexcept {
   DCHECK(request.metadata);
-  auto metadata = detail::deserializeMetadata(*request.metadata);
-  request.metadata.reset();
-
   ParseStatus parseStatus = PARSED_OK;
-  if (!(metadata->__isset.protocol && metadata->__isset.name &&
-        metadata->__isset.kind && metadata->__isset.seqId)) {
+  RequestRpcMetadata metadata;
+  if (!(detail::deserializeMetadata(*request.metadata, metadata) &&
+        metadata.__isset.protocol && metadata.__isset.name &&
+        metadata.__isset.kind && metadata.__isset.seqId)) {
     parseStatus = PARSED_METADATA_ERROR;
-  } else if (auto crc32c = metadata->crc32c_ref()) {
+  } else if (auto crc32c = metadata.crc32c_ref()) {
     if (*crc32c != checksum::crc32c(*request.data)) {
       parseStatus = PARSED_CHECKSUM_MISMATCH;
     }

@@ -204,7 +204,7 @@ std::shared_ptr<yarpl::flowable::Flowable<Payload>> toFlowable(
 ThriftServerRequestResponse::ThriftServerRequestResponse(
     folly::EventBase& evb,
     const server::ServerConfigs& serverConfigs,
-    std::unique_ptr<RequestRpcMetadata> metadata,
+    RequestRpcMetadata&& metadata,
     std::shared_ptr<Cpp2ConnContext> connContext,
     RocketServerFrameContext&& context)
     : ThriftRequestCore(
@@ -236,7 +236,7 @@ void ThriftServerRequestResponse::sendStreamThriftResponse(
 ThriftServerRequestFnf::ThriftServerRequestFnf(
     folly::EventBase& evb,
     const server::ServerConfigs& serverConfigs,
-    std::unique_ptr<RequestRpcMetadata> metadata,
+    RequestRpcMetadata&& metadata,
     std::shared_ptr<Cpp2ConnContext> connContext,
     RocketServerFrameContext&& context,
     folly::Function<void()> onComplete)
@@ -272,7 +272,7 @@ void ThriftServerRequestFnf::sendStreamThriftResponse(
 ThriftServerRequestStream::ThriftServerRequestStream(
     folly::EventBase& evb,
     const server::ServerConfigs& serverConfigs,
-    std::unique_ptr<RequestRpcMetadata> metadata,
+    RequestRpcMetadata&& metadata,
     std::shared_ptr<Cpp2ConnContext> connContext,
     std::shared_ptr<RocketServerStreamSubscriber> subscriber,
     std::shared_ptr<AsyncProcessor> cpp2Processor)

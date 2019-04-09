@@ -30,15 +30,16 @@ std::unique_ptr<folly::IOBuf> serializeMetadata(
 
 // Deserializes metadata returning an invalid object with the kind field unset
 // on error.
-std::unique_ptr<RequestRpcMetadata> deserializeMetadata(
-    const folly::IOBuf& buffer);
+bool deserializeMetadata(
+    const folly::IOBuf& buffer,
+    RequestRpcMetadata& metadata);
 } // namespace detail
 
 class RSOneWayRequest final : public ThriftRequestCore {
  public:
   RSOneWayRequest(
       const apache::thrift::server::ServerConfigs& serverConfigs,
-      std::unique_ptr<RequestRpcMetadata> metadata,
+      RequestRpcMetadata&& metadata,
       std::shared_ptr<Cpp2ConnContext> connContext,
       folly::EventBase* evb,
       folly::Function<void(RSOneWayRequest*)> onDestroy);
@@ -68,7 +69,7 @@ class RSSingleRequest final : public ThriftRequestCore {
  public:
   RSSingleRequest(
       const apache::thrift::server::ServerConfigs& serverConfigs,
-      std::unique_ptr<RequestRpcMetadata> metadata,
+      RequestRpcMetadata&& metadata,
       std::shared_ptr<Cpp2ConnContext> connContext,
       folly::EventBase* evb,
       std::shared_ptr<yarpl::single::SingleObserver<rsocket::Payload>>
@@ -100,7 +101,7 @@ class RSStreamRequest final : public ThriftRequestCore {
  public:
   RSStreamRequest(
       const apache::thrift::server::ServerConfigs& serverConfigs,
-      std::unique_ptr<RequestRpcMetadata> metadata,
+      RequestRpcMetadata&& metadata,
       std::shared_ptr<Cpp2ConnContext> connContext,
       folly::EventBase* evb,
       std::shared_ptr<yarpl::flowable::Subscriber<rsocket::Payload>>

@@ -47,13 +47,19 @@ namespace thrift {
 namespace rocket {
 
 namespace {
-std::unique_ptr<RequestRpcMetadata> deserializeMetadata(
-    const folly::IOBuf& buffer) {
-  CompactProtocolReader reader;
-  auto metadata = std::make_unique<RequestRpcMetadata>();
-  reader.setInput(&buffer);
-  metadata->read(&reader);
-  return metadata;
+bool deserializeMetadata(
+    const folly::IOBuf& buffer,
+    RequestRpcMetadata& metadata) {
+  try {
+    CompactProtocolReader reader;
+    reader.setInput(&buffer);
+    metadata.read(&reader);
+    return true;
+  } catch (const std::exception& ex) {
+    FB_LOG_EVERY_MS(ERROR, 10000)
+        << "Exception on deserializing metadata: " << folly::exceptionStr(ex);
+    return false;
+  }
 }
 
 bool isMetadataValid(const RequestRpcMetadata& metadata) {
@@ -119,7 +125,7 @@ void ThriftRocketServerHandler::handleSetupFrame(
 void ThriftRocketServerHandler::handleRequestResponseFrame(
     RequestResponseFrame&& frame,
     RocketServerFrameContext&& context) {
-  auto makeRequestResponse = [&](std::unique_ptr<RequestRpcMetadata> md) {
+  auto makeRequestResponse = [&](RequestRpcMetadata&& md) {
     return std::make_unique<ThriftServerRequestResponse>(
         *worker_->getEventBase(),
         serverConfigs_,
@@ -135,7 +141,7 @@ void ThriftRocketServerHandler::handleRequestResponseFrame(
 void ThriftRocketServerHandler::handleRequestFnfFrame(
     RequestFnfFrame&& frame,
     RocketServerFrameContext&& context) {
-  auto makeRequestFnf = [&](std::unique_ptr<RequestRpcMetadata> md) {
+  auto makeRequestFnf = [&](RequestRpcMetadata&& md) {
     return std::make_unique<ThriftServerRequestFnf>(
         *worker_->getEventBase(),
         serverConfigs_,
@@ -151,7 +157,7 @@ void ThriftRocketServerHandler::handleRequestFnfFrame(
 void ThriftRocketServerHandler::handleRequestStreamFrame(
     RequestStreamFrame&& frame,
     std::shared_ptr<RocketServerStreamSubscriber> subscriber) {
-  auto makeRequestStream = [&](std::unique_ptr<RequestRpcMetadata> md) {
+  auto makeRequestStream = [&](RequestRpcMetadata&& md) {
     return std::make_unique<ThriftServerRequestStream>(
         *worker_->getEventBase(),
         serverConfigs_,
@@ -168,20 +174,13 @@ template <class F>
 void ThriftRocketServerHandler::handleRequestCommon(
     Payload&& payload,
     F&& makeRequest) {
-  std::unique_ptr<RequestRpcMetadata> metadata;
-  try {
-    metadata = deserializeMetadata(*payload.metadata());
-  } catch (const std::exception& ex) {
-    FB_LOG_EVERY_MS(ERROR, 10000)
-        << "Exception on deserializing metadata: " << folly::exceptionStr(ex);
-    // Fall through. validMetadata will be false and request will be failed.
-    metadata = std::make_unique<RequestRpcMetadata>();
-  }
+  RequestRpcMetadata metadata;
+  bool parseOk = deserializeMetadata(*payload.metadata(), metadata);
 
   auto data = std::move(payload).data();
-  const bool validMetadata = isMetadataValid(*metadata);
-  const bool badChecksum = validMetadata && metadata->crc32c_ref() &&
-      (*metadata->crc32c_ref() != checksum::crc32c(*data));
+  const bool validMetadata = parseOk && isMetadataValid(metadata);
+  const bool badChecksum = validMetadata && metadata.crc32c_ref() &&
+      (*metadata.crc32c_ref() != checksum::crc32c(*data));
   auto request = makeRequest(std::move(metadata));
 
   if (validMetadata && !badChecksum) {

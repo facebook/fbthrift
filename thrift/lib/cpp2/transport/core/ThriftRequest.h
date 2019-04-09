@@ -63,13 +63,22 @@ class ThriftRequestCore : public ResponseChannelRequest {
       const apache::thrift::server::ServerConfigs& serverConfigs,
       std::unique_ptr<RequestRpcMetadata> metadata,
       std::shared_ptr<Cpp2ConnContext> connContext)
+      : ThriftRequestCore(
+            serverConfigs,
+            std::move(*metadata),
+            std::shared_ptr<Cpp2ConnContext>(std::move(connContext))) {}
+
+  ThriftRequestCore(
+      const apache::thrift::server::ServerConfigs& serverConfigs,
+      RequestRpcMetadata&& metadata,
+      std::shared_ptr<Cpp2ConnContext> connContext)
       : serverConfigs_(serverConfigs),
-        name_(std::move(metadata)->name_ref().value_or({})),
-        kind_(metadata->kind_ref().value_or(
+        name_(std::move(metadata).name_ref().value_or({})),
+        kind_(metadata.kind_ref().value_or(
             RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE)),
-        seqId_(metadata->seqId_ref().value_or(0)),
+        seqId_(metadata.seqId_ref().value_or(0)),
         active_(true),
-        requestFlags_(metadata->flags_ref().value_or(0)),
+        requestFlags_(metadata.flags_ref().value_or(0)),
         connContext_(
             connContext ? std::move(connContext)
                         : std::make_shared<Cpp2ConnContext>()),
@@ -79,21 +88,21 @@ class ThriftRequestCore : public ResponseChannelRequest {
     // Note that method name, RPC kind, and serialization protocol are validated
     // outside the ThriftRequestCore constructor.
     header_.setProtocolId(static_cast<int16_t>(
-        metadata->protocol_ref().value_or(ProtocolId::BINARY)));
+        metadata.protocol_ref().value_or(ProtocolId::BINARY)));
     header_.setSequenceNumber(seqId_);
 
-    if (auto clientTimeoutMs = metadata->clientTimeoutMs_ref()) {
+    if (auto clientTimeoutMs = metadata.clientTimeoutMs_ref()) {
       clientTimeout_ = std::chrono::milliseconds(*clientTimeoutMs);
       header_.setClientTimeout(clientTimeout_);
     }
-    if (auto queueTimeoutMs = metadata->queueTimeoutMs_ref()) {
+    if (auto queueTimeoutMs = metadata.queueTimeoutMs_ref()) {
       clientQueueTimeout_ = std::chrono::milliseconds(*queueTimeoutMs);
       header_.setClientQueueTimeout(clientQueueTimeout_);
     }
-    if (auto priority = metadata->priority_ref()) {
+    if (auto priority = metadata.priority_ref()) {
       header_.setCallPriority(static_cast<concurrency::PRIORITY>(*priority));
     }
-    if (auto otherMetadata = metadata->otherMetadata_ref()) {
+    if (auto otherMetadata = metadata.otherMetadata_ref()) {
       header_.setReadHeaders(std::move(*otherMetadata));
     }
 
