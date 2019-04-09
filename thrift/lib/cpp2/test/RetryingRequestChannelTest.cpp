@@ -15,9 +15,11 @@
  */
 #include <thrift/lib/cpp2/async/RetryingRequestChannel.h>
 #include <folly/io/async/EventBase.h>
+#include <folly/io/async/ScopedEventBaseThread.h>
 #include <folly/io/async/test/ScopedBoundPort.h>
 #include <thrift/lib/cpp/async/TAsyncSocket.h>
 #include <thrift/lib/cpp2/async/HeaderClientChannel.h>
+#include <thrift/lib/cpp2/async/PooledRequestChannel.h>
 #include <thrift/lib/cpp2/async/ReconnectingRequestChannel.h>
 #include <thrift/lib/cpp2/test/gen-cpp2/TestService.h>
 #include <thrift/lib/cpp2/util/ScopedServerInterfaceThread.h>
@@ -34,6 +36,10 @@ using apache::thrift::transport::TTransportException;
 class TestServiceServerMock : public TestServiceSvIf {
  public:
   MOCK_METHOD1(echoInt, int32_t(int32_t));
+  MOCK_METHOD1(
+      semifuture_echoRequest,
+      folly::SemiFuture<std::unique_ptr<std::string>>(
+          std::unique_ptr<std::string>));
 };
 
 class RetryingRequestChannelTest : public Test {
@@ -107,4 +113,35 @@ TEST_F(RetryingRequestChannelTest, retry) {
 
   EXPECT_EQ(client.sync_echoInt(2), 2);
   EXPECT_EQ(client.sync_echoInt(3), 3);
+}
+
+TEST_F(RetryingRequestChannelTest, shutdown) {
+  auto evbThread = std::make_shared<folly::ScopedEventBaseThread>();
+
+  auto channel = PooledRequestChannel::newSyncChannel(
+      evbThread, [&](folly::EventBase& evb) {
+        auto headerChannel = HeaderClientChannel::newChannel(
+            TAsyncSocket::newSocket(&evb, up_addr));
+        headerChannel->setTimeout(1000);
+        return RetryingRequestChannel::newChannel(
+            evb, 2, std::move(headerChannel));
+      });
+
+  TestServiceAsyncClient client(std::move(channel));
+
+  folly::Promise<std::unique_ptr<std::string>> promise;
+
+  EXPECT_CALL(*handler, semifuture_echoRequest(_))
+      .WillOnce(InvokeWithoutArgs([&] { return promise.getFuture(); }))
+      .WillOnce(InvokeWithoutArgs([] {
+        return folly::makeSemiFuture(std::make_unique<std::string>("Expected"));
+      }));
+
+  auto sf = client.semifuture_echoRequest("");
+
+  evbThread.reset();
+
+  EXPECT_EQ("Expected", std::move(sf).get());
+
+  promise.setValue(std::make_unique<std::string>("Slow"));
 }

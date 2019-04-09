@@ -24,6 +24,7 @@ class RetryingRequestChannel::RequestCallback
     : public apache::thrift::RequestCallback {
  public:
   RequestCallback(
+      folly::Executor::KeepAlive<> ka,
       RetryingRequestChannel::ImplPtr impl,
       int retriesLeft,
       apache::thrift::RpcOptions options,
@@ -37,7 +38,11 @@ class RetryingRequestChannel::RequestCallback
         cob_(std::move(cob)),
         ctx_(std::move(ctx)),
         buf_(std::move(buf)),
-        header_(std::move(header)) {}
+        header_(std::move(header)) {
+    if (retriesLeft_) {
+      ka_ = std::move(ka);
+    }
+  }
 
   void requestSent() override {
     cob_->requestSent();
@@ -77,6 +82,7 @@ class RetryingRequestChannel::RequestCallback
     auto fakeCtx =
         std::make_unique<apache::thrift::ContextStack>(ctx_->getMethod());
     auto cob = std::make_unique<RequestCallback>(
+        std::move(ka_),
         std::move(impl_),
         retriesLeft_ - 1,
         options_,
@@ -93,6 +99,7 @@ class RetryingRequestChannel::RequestCallback
         std::move(header_));
   }
 
+  folly::Executor::KeepAlive<> ka_;
   RetryingRequestChannel::ImplPtr impl_;
   int retriesLeft_;
   apache::thrift::RpcOptions options_;
@@ -111,6 +118,7 @@ uint32_t RetryingRequestChannel::sendRequest(
   auto fakeCtx =
       std::make_unique<apache::thrift::ContextStack>(ctx->getMethod());
   cob = std::make_unique<RequestCallback>(
+      folly::getKeepAliveToken(evb_),
       impl_,
       numRetries_,
       options,
