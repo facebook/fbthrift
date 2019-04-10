@@ -101,15 +101,14 @@ void SingleRpcChannel::sendThriftResponse(
 }
 
 void SingleRpcChannel::sendThriftRequest(
-    std::unique_ptr<RequestRpcMetadata> metadata,
+    RequestRpcMetadata&& metadata,
     std::unique_ptr<IOBuf> payload,
     std::unique_ptr<ThriftClientCallback> callback) noexcept {
   DCHECK(evb_->isInEventBaseThread());
-  DCHECK(metadata);
-  DCHECK(metadata->__isset.kind);
+  DCHECK(metadata.__isset.kind);
   DCHECK(
-      metadata->kind == RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE ||
-      metadata->kind == RpcKind::SINGLE_REQUEST_NO_RESPONSE);
+      metadata.kind == RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE ||
+      metadata.kind == RpcKind::SINGLE_REQUEST_NO_RESPONSE);
   DCHECK(payload);
   DCHECK(callback);
   VLOG(4) << "sendThriftRequest:" << std::endl
@@ -127,35 +126,35 @@ void SingleRpcChannel::sendThriftRequest(
   }
   HTTPMessage msg;
   msg.setMethod(HTTPMethod::POST);
-  msg.setURL(metadata->url);
+  msg.setURL(metadata.url);
   auto& msgHeaders = msg.getHeaders();
-  msgHeaders.set(HTTPHeaderCode::HTTP_HEADER_HOST, metadata->host);
+  msgHeaders.set(HTTPHeaderCode::HTTP_HEADER_HOST, metadata.host);
   msgHeaders.set(HTTPHeaderCode::HTTP_HEADER_USER_AGENT, "C++/THttpClient");
   msgHeaders.set(
       HTTPHeaderCode::HTTP_HEADER_CONTENT_TYPE, "application/x-thrift");
-  if (metadata->__isset.clientTimeoutMs) {
-    DCHECK(metadata->clientTimeoutMs > 0);
+  if (metadata.__isset.clientTimeoutMs) {
+    DCHECK(metadata.clientTimeoutMs > 0);
     httpTransaction_->setIdleTimeout(
-        std::chrono::milliseconds(metadata->clientTimeoutMs));
+        std::chrono::milliseconds(metadata.clientTimeoutMs));
   }
 
-  if (metadata->__isset.clientTimeoutMs) {
-    metadata->otherMetadata[transport::THeader::CLIENT_TIMEOUT_HEADER] =
-        folly::to<string>(metadata->clientTimeoutMs);
+  if (metadata.__isset.clientTimeoutMs) {
+    metadata.otherMetadata[transport::THeader::CLIENT_TIMEOUT_HEADER] =
+        folly::to<string>(metadata.clientTimeoutMs);
   }
-  if (metadata->__isset.queueTimeoutMs) {
-    DCHECK(metadata->queueTimeoutMs > 0);
-    metadata->otherMetadata[transport::THeader::QUEUE_TIMEOUT_HEADER] =
-        folly::to<string>(metadata->queueTimeoutMs);
+  if (metadata.__isset.queueTimeoutMs) {
+    DCHECK(metadata.queueTimeoutMs > 0);
+    metadata.otherMetadata[transport::THeader::QUEUE_TIMEOUT_HEADER] =
+        folly::to<string>(metadata.queueTimeoutMs);
   }
-  if (metadata->__isset.priority) {
-    metadata->otherMetadata[transport::THeader::PRIORITY_HEADER] =
-        folly::to<string>(metadata->priority);
+  if (metadata.__isset.priority) {
+    metadata.otherMetadata[transport::THeader::PRIORITY_HEADER] =
+        folly::to<string>(metadata.priority);
   }
-  if (metadata->__isset.kind) {
-    metadata->otherMetadata[RPC_KIND.str()] = folly::to<string>(metadata->kind);
+  if (metadata.__isset.kind) {
+    metadata.otherMetadata[RPC_KIND.str()] = folly::to<string>(metadata.kind);
   }
-  encodeHeaders(std::move(metadata->otherMetadata), msg);
+  encodeHeaders(std::move(metadata.otherMetadata), msg);
   httpTransaction_->sendHeaders(msg);
 
   httpTransaction_->sendBody(std::move(payload));
@@ -166,7 +165,7 @@ void SingleRpcChannel::sendThriftRequest(
   // "onThriftRequestSent()".  This is safe because "callback_" will
   // be eventually moved to this same thread to call either
   // "onThriftResponse()" or "onThriftError()".
-  if (metadata->kind == RpcKind::SINGLE_REQUEST_NO_RESPONSE) {
+  if (metadata.kind == RpcKind::SINGLE_REQUEST_NO_RESPONSE) {
     callbackEvb->runInEventBaseThread(
         [cb = std::move(callback)]() mutable { cb->onThriftRequestSent(); });
   } else {
@@ -247,20 +246,19 @@ void SingleRpcChannel::onThriftRequest() noexcept {
     sendThriftErrorResponse("Proxygen stream has no body");
     return;
   }
-  auto metadata = std::make_unique<RequestRpcMetadata>();
-  if (!EnvelopeUtil::stripEnvelope(metadata.get(), contents_)) {
+  RequestRpcMetadata metadata;
+  if (!EnvelopeUtil::stripEnvelope(&metadata, contents_)) {
     sendThriftErrorResponse("Invalid envelope: see logs for error");
     return;
   }
   // Default Single Request Single Response
-  metadata->kind = RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE;
-  metadata->__isset.kind = true;
-  extractHeaderInfo(metadata.get());
+  metadata.set_kind(RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE);
+  extractHeaderInfo(&metadata);
 
-  DCHECK(metadata->__isset.protocol);
-  DCHECK(metadata->__isset.name);
-  DCHECK(metadata->__isset.kind);
-  if (metadata->kind == RpcKind::SINGLE_REQUEST_NO_RESPONSE) {
+  DCHECK(metadata.__isset.protocol);
+  DCHECK(metadata.__isset.name);
+  DCHECK(metadata.__isset.kind);
+  if (*metadata.kind_ref() == RpcKind::SINGLE_REQUEST_NO_RESPONSE) {
     // Send a dummy response for the oneway call since we need to do
     // this with HTTP2.
     ResponseRpcMetadata responseMetadata;
@@ -268,8 +266,7 @@ void SingleRpcChannel::onThriftRequest() noexcept {
     sendThriftResponse(std::move(responseMetadata), std::move(payload));
     receivedThriftRPC_ = true;
   }
-  metadata->seqId = 0;
-  metadata->__isset.seqId = true;
+  metadata.set_seqId(0);
   auto connContext =
       std::make_unique<Cpp2ConnContext>(&headers_->getClientAddress());
   processor_->onThriftRequest(

@@ -48,13 +48,12 @@ void InMemoryChannel::sendThriftResponse(
 }
 
 void InMemoryChannel::sendThriftRequest(
-    std::unique_ptr<RequestRpcMetadata> metadata,
+    RequestRpcMetadata&& metadata,
     std::unique_ptr<IOBuf> payload,
     std::unique_ptr<ThriftClientCallback> callback) noexcept {
   CHECK(evb_->isInEventBaseThread());
-  CHECK(metadata);
   CHECK(payload);
-  if (!EnvelopeUtil::stripEnvelope(metadata.get(), payload)) {
+  if (!EnvelopeUtil::stripEnvelope(&metadata, payload)) {
     LOG(ERROR) << "Unexpected problem stripping envelope";
     auto evb = callback->getEventBase();
     evb->runInEventBaseThread([cb = std::move(callback)]() mutable {
@@ -63,14 +62,13 @@ void InMemoryChannel::sendThriftRequest(
     });
     return;
   }
-  CHECK(metadata->__isset.kind);
-  if (metadata->kind == RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE ||
-      metadata->kind == RpcKind::STREAMING_REQUEST_SINGLE_RESPONSE) {
+  CHECK(metadata.kind_ref());
+  if (*metadata.kind_ref() == RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE ||
+      *metadata.kind_ref() == RpcKind::STREAMING_REQUEST_SINGLE_RESPONSE) {
     CHECK(callback);
     callback_ = std::move(callback);
   }
-  metadata->seqId = 0;
-  metadata->__isset.seqId = true;
+  metadata.set_seqId(0);
   processor_->onThriftRequest(
       std::move(metadata), std::move(payload), shared_from_this());
 }

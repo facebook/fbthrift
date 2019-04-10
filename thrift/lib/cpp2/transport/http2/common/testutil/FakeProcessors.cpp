@@ -25,7 +25,7 @@ using folly::EventBase;
 using folly::IOBuf;
 
 void EchoProcessor::onThriftRequest(
-    std::unique_ptr<RequestRpcMetadata> metadata,
+    RequestRpcMetadata&& metadata,
     std::unique_ptr<folly::IOBuf> payload,
     std::shared_ptr<ThriftChannelIf> channel,
     std::unique_ptr<Cpp2ConnContext> /* connContext */) noexcept {
@@ -39,22 +39,19 @@ void EchoProcessor::onThriftRequest(
 }
 
 void EchoProcessor::onThriftRequestHelper(
-    std::unique_ptr<RequestRpcMetadata> requestMetadata,
+    RequestRpcMetadata&& requestMetadata,
     std::unique_ptr<folly::IOBuf> payload,
     std::shared_ptr<ThriftChannelIf> channel) noexcept {
-  CHECK(requestMetadata);
   CHECK(payload);
   CHECK(channel);
   ResponseRpcMetadata responseMetadata;
-  if (requestMetadata->__isset.seqId) {
-    responseMetadata.seqId = requestMetadata->seqId;
-    responseMetadata.__isset.seqId = true;
+  if (auto seqId = requestMetadata.seqId_ref()) {
+    responseMetadata.set_seqId(*seqId);
   }
-  if (requestMetadata->__isset.otherMetadata) {
-    responseMetadata.otherMetadata = std::move(requestMetadata->otherMetadata);
+  if (auto otherMetadata = requestMetadata.otherMetadata_ref()) {
+    responseMetadata.otherMetadata_ref() = std::move(*otherMetadata);
   }
-  (responseMetadata.otherMetadata)[key_] = value_;
-  responseMetadata.__isset.otherMetadata = true;
+  (*responseMetadata.otherMetadata_ref())[key_] = value_;
   auto iobuf = IOBuf::copyBuffer(trailer_);
   payload->prependChain(std::move(iobuf));
   channel->sendThriftResponse(std::move(responseMetadata), std::move(payload));

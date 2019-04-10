@@ -37,22 +37,21 @@ ThriftProcessor::ThriftProcessor(
     : serverConfigs_(serverConfigs) {}
 
 void ThriftProcessor::onThriftRequest(
-    std::unique_ptr<RequestRpcMetadata> metadata,
+    RequestRpcMetadata&& metadata,
     std::unique_ptr<IOBuf> payload,
     std::shared_ptr<ThriftChannelIf> channel,
     std::unique_ptr<Cpp2ConnContext> connContext) noexcept {
-  DCHECK(metadata);
   DCHECK(payload);
   DCHECK(channel);
   DCHECK(tm_);
   DCHECK(cpp2Processor_);
 
   bool invalidMetadata =
-      !(metadata->__isset.protocol && metadata->__isset.name &&
-        metadata->__isset.kind && metadata->__isset.seqId);
+      !(metadata.protocol_ref() && metadata.name_ref() && metadata.kind_ref() &&
+        metadata.seqId_ref());
 
-  bool invalidChecksum = metadata->crc32c_ref() &&
-      *metadata->crc32c_ref() != apache::thrift::checksum::crc32c(*payload);
+  bool invalidChecksum = metadata.crc32c_ref() &&
+      *metadata.crc32c_ref() != apache::thrift::checksum::crc32c(*payload);
 
   auto request = std::make_unique<ThriftRequest>(
       serverConfigs_, channel, std::move(metadata), std::move(connContext));

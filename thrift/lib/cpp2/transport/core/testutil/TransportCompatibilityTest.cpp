@@ -923,12 +923,12 @@ void TransportCompatibilityTest::TestBadPayload() {
     auto cb = std::make_unique<MockCallback>(true, false);
     auto channel = static_cast<ClientChannel*>(client->getChannel());
     channel->getEventBase()->runInEventBaseThreadAndWait([&]() {
-      auto metadata = std::make_unique<RequestRpcMetadata>();
-      metadata->set_clientTimeoutMs(10000);
-      metadata->set_kind(RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE);
-      metadata->set_name("name");
-      metadata->set_seqId(0);
-      metadata->set_protocol(ProtocolId::BINARY);
+      RequestRpcMetadata metadata;
+      metadata.set_clientTimeoutMs(10000);
+      metadata.set_kind(RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE);
+      metadata.set_name("name");
+      metadata.set_seqId(0);
+      metadata.set_protocol(ProtocolId::BINARY);
 
       // Put a bad payload!
       auto payload = std::make_unique<folly::IOBuf>();

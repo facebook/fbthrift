@@ -57,7 +57,7 @@ class CoreTestFixture : public testing::Test {
   // Receive the deserialized integer that results from 'sumTwoNumbers'
   static int32_t deserializeSumTwoNumbers(folly::IOBuf* buf);
 
-  static std::unique_ptr<RequestRpcMetadata> makeMetadata(
+  static RequestRpcMetadata makeMetadata(
       std::string name,
       int32_t seqId = 0,
       RpcKind kind = RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE);

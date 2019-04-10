@@ -185,7 +185,7 @@ class ThriftClient : public ClientChannel {
   // channels.
   static void getChannelAndSendThriftRequest(
       ClientConnectionIf* connection,
-      std::unique_ptr<RequestRpcMetadata> metadata,
+      RequestRpcMetadata&& metadata,
       std::unique_ptr<folly::IOBuf> payload,
       std::unique_ptr<ThriftClientCallback> callback) noexcept;
 };

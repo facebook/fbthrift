@@ -90,17 +90,13 @@ int32_t CoreTestFixture::deserializeSumTwoNumbers(folly::IOBuf* buf) {
   return result;
 }
 
-std::unique_ptr<RequestRpcMetadata>
+RequestRpcMetadata
 CoreTestFixture::makeMetadata(std::string name, int32_t seqId, RpcKind kind) {
-  auto metadata = std::make_unique<RequestRpcMetadata>();
-  metadata->protocol = ProtocolId::COMPACT;
-  metadata->__isset.protocol = true;
-  metadata->name = name;
-  metadata->__isset.name = true;
-  metadata->seqId = seqId;
-  metadata->__isset.seqId = true;
-  metadata->kind = kind;
-  metadata->__isset.kind = true;
+  RequestRpcMetadata metadata;
+  metadata.set_protocol(ProtocolId::COMPACT);
+  metadata.set_name(name);
+  metadata.set_seqId(seqId);
+  metadata.set_kind(kind);
   return metadata;
 }
 

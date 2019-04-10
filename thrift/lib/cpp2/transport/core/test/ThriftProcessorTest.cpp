@@ -36,9 +36,9 @@ TEST_F(CoreTestFixture, SumTwoNumbers) {
   EXPECT_CALL(service_, sumTwoNumbers_(x, y));
 
   runInEventBaseThread([&]() mutable {
-    auto metadata = std::make_unique<RequestRpcMetadata>();
+    RequestRpcMetadata metadata;
     folly::IOBufQueue request;
-    serializeSumTwoNumbers(x, y, false, &request, metadata.get());
+    serializeSumTwoNumbers(x, y, false, &request, &metadata);
     auto channel = std::shared_ptr<ThriftChannelIf>(channel_);
     processor_.onThriftRequest(std::move(metadata), request.move(), channel);
   });
@@ -81,10 +81,10 @@ TEST_F(CoreTestFixture, BadMetadata) {
   runInEventBaseThread([&]() mutable {
     auto metadata = makeMetadata("headers");
     folly::IOBufQueue request;
-    serializeSumTwoNumbers(5, 10, false, &request, metadata.get());
+    serializeSumTwoNumbers(5, 10, false, &request, &metadata);
     auto channel = std::shared_ptr<ThriftChannelIf>(channel_);
 
-    metadata->__isset.kind = false; // make sure there is an error
+    metadata.__isset.kind = false; // make sure there is an error
 
     processor_.onThriftRequest(std::move(metadata), request.move(), channel);
   });

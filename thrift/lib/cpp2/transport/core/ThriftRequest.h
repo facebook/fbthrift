@@ -52,24 +52,6 @@ class ThriftRequestCore : public ResponseChannelRequest {
  public:
   ThriftRequestCore(
       const apache::thrift::server::ServerConfigs& serverConfigs,
-      std::unique_ptr<RequestRpcMetadata> metadata,
-      std::unique_ptr<Cpp2ConnContext> connContext)
-      : ThriftRequestCore(
-            serverConfigs,
-            std::move(metadata),
-            std::shared_ptr<Cpp2ConnContext>(std::move(connContext))) {}
-
-  ThriftRequestCore(
-      const apache::thrift::server::ServerConfigs& serverConfigs,
-      std::unique_ptr<RequestRpcMetadata> metadata,
-      std::shared_ptr<Cpp2ConnContext> connContext)
-      : ThriftRequestCore(
-            serverConfigs,
-            std::move(*metadata),
-            std::shared_ptr<Cpp2ConnContext>(std::move(connContext))) {}
-
-  ThriftRequestCore(
-      const apache::thrift::server::ServerConfigs& serverConfigs,
       RequestRpcMetadata&& metadata,
       std::shared_ptr<Cpp2ConnContext> connContext)
       : serverConfigs_(serverConfigs),
@@ -414,7 +396,7 @@ class ThriftRequest final : public ThriftRequestCore {
   ThriftRequest(
       const apache::thrift::server::ServerConfigs& serverConfigs,
       std::shared_ptr<ThriftChannelIf> channel,
-      std::unique_ptr<RequestRpcMetadata> metadata,
+      RequestRpcMetadata&& metadata,
       std::unique_ptr<Cpp2ConnContext> connContext)
       : ThriftRequestCore(
             serverConfigs,

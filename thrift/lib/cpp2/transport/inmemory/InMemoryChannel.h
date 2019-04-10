@@ -33,7 +33,7 @@ class InMemoryChannel : public ThriftChannelIf {
       std::unique_ptr<folly::IOBuf> payload) noexcept override;
 
   void sendThriftRequest(
-      std::unique_ptr<RequestRpcMetadata> metadata,
+      RequestRpcMetadata&& metadata,
       std::unique_ptr<folly::IOBuf> payload,
       std::unique_ptr<ThriftClientCallback> callback) noexcept override;
 

@@ -59,7 +59,7 @@ class ThriftProcessor {
   // (non-streaming) responses, and to manage stream objects for RPCs
   // with streaming.
   virtual void onThriftRequest(
-      std::unique_ptr<RequestRpcMetadata> metadata,
+      RequestRpcMetadata&& metadata,
       std::unique_ptr<folly::IOBuf> payload,
       std::shared_ptr<ThriftChannelIf> channel,
       std::unique_ptr<Cpp2ConnContext> connContext = nullptr) noexcept;

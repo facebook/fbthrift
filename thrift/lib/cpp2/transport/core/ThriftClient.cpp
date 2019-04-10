@@ -261,14 +261,14 @@ uint32_t ThriftClient::sendRequestHelper(
                                                      callback = std::move(
                                                          callback)]() mutable {
     getChannelAndSendThriftRequest(
-        conn.get(), std::move(metadata), std::move(buf), std::move(callback));
+        conn.get(), std::move(*metadata), std::move(buf), std::move(callback));
   });
   return 0;
 }
 
 void ThriftClient::getChannelAndSendThriftRequest(
     ClientConnectionIf* connection,
-    std::unique_ptr<RequestRpcMetadata> metadata,
+    RequestRpcMetadata&& metadata,
     std::unique_ptr<IOBuf> payload,
     std::unique_ptr<ThriftClientCallback> callback) noexcept {
   DCHECK(connection->getEventBase()->isInEventBaseThread());
