@@ -33,7 +33,7 @@ public final class LegacyStruct {
         return this;
     }
         
-    @ThriftField(value=-1, name="bad", requiredness=Requiredness.NONE)
+    @ThriftField(value=-1, name="bad", isLegacyId=true, requiredness=Requiredness.NONE)
     public int getBad() { return bad; }
     
     @ThriftField

@@ -14,7 +14,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-}}@ThriftField(value={{field:key}}, name="{{field:name}}", requiredness={{> Requiredness}}{{!
+}}@ThriftField(value={{field:key}}, name="{{field:name}}", {{#field:negativeId?}}isLegacyId=true, {{/field:negativeId?}}requiredness={{> Requiredness}}{{!
 }}{{#field:annotations}}{{!
 
 }}{{#first?}}, idlAnnotations = { {{/first?}}{{!

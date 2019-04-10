@@ -24,12 +24,12 @@ public interface LegacyService extends java.io.Closeable {
         @ThriftMethod(value = "getPoints")
         ListenableFuture<Map<String, List<Integer>>> getPoints(
             @ThriftField(value=1, name="key", requiredness=Requiredness.NONE) final Set<String> key,
-            @ThriftField(value=-1, name="legacyStuff", requiredness=Requiredness.NONE) final long legacyStuff);
+            @ThriftField(value=-1, isLegacyId=true, name="legacyStuff", requiredness=Requiredness.NONE) final long legacyStuff);
     }
     @Override void close();
 
     @ThriftMethod(value = "getPoints")
     Map<String, List<Integer>> getPoints(
         @ThriftField(value=1, name="key", requiredness=Requiredness.NONE) final Set<String> key,
-        @ThriftField(value=-1, name="legacyStuff", requiredness=Requiredness.NONE) final long legacyStuff) throws org.apache.thrift.TException;
+        @ThriftField(value=-1, isLegacyId=true, name="legacyStuff", requiredness=Requiredness.NONE) final long legacyStuff) throws org.apache.thrift.TException;
 }
