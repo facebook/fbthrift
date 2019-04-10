@@ -170,6 +170,11 @@ void ProxygenThriftServer::ThriftRequestHandler::onError(
     ProxygenError err) noexcept {
   LOG(ERROR) << "Proxygen error=" << err;
 
+  if (request_) {
+    request_->clearHandler();
+    request_ = nullptr;
+  }
+
   // TODO(ckwalsh) Expose proxygen errors as a counter somewhere
   delete this;
 }
