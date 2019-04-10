@@ -254,7 +254,14 @@ class mstch_swift_struct : public mstch_struct {
     return true;
   }
   mstch::node is_as_bean() {
-    return swift_context_->is_mutable_bean();
+    // TODO: (yuhanhao) T42599140 remove usage of legacy_generate_beans_.
+    // TODO: (yuhanhao) T42892877 in the long run, we should make sure this
+    // annotation:
+    // - only applies to structs
+    // - cannot have consts
+    return swift_context_->is_mutable_bean() ||
+        (strct_->annotations_.count("java.swift.mutable") &&
+         strct_->annotations_.at("java.swift.mutable") == "true");
   }
   mstch::node java_capital_name() {
     return java::mangle_java_name(strct_->get_name(), true);

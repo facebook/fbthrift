@@ -1,1 +1,1 @@
-mstch_swift:legacy_generate_beans=1 src/module.thrift
+mstch_swift src/module.thrift

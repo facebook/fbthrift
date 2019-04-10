@@ -13,17 +13,17 @@ struct MyStruct1 {
   3: MyDataItem MyDataField,
   # glibc has macros with this name, Thrift should be able to prevent collisions
   4: i64 major (cpp.name = "majorVer"),
-}
+} (java.swift.mutable = "true")
 
 struct MyStruct2 {
   1: MyStruct1 myStruct1,
   2: string myString,
-}
+} (java.swift.mutable = "true")
 
 struct MyDataItem {
   1: i32 field1,
   2: i32 field2,
-}
+} (java.swift.mutable = "true")
 
 struct LegacyStruct {
   1: i32 normal,
@@ -33,27 +33,27 @@ struct LegacyStruct {
 union ListUnion {
   2: list<i64> intListValue;
   3: list<string> stringListValue;
-}
+} (java.swift.mutable = "true")
 
 union DataUnion {
   1: binary binaryData,
   2: string stringData,
-}
+} (java.swift.mutable = "true")
 
 union MyUnion1 {
   1: i32 i
   2: double d
-}
+} (java.swift.mutable = "true")
 
 union MyUnion2 {
   1: MyUnion1 u,
   2: MyStruct1 s,
-}
+} (java.swift.mutable = "true")
 
 exception MyException {
   1: i32 errorCode,
   2: string message,
-}
+} (java.swift.mutable = "true")
 
 const MyStruct1 ms = {
   "MyIntField": 42,
