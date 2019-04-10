@@ -201,7 +201,8 @@ class RequestStreamFrame {
         initialRequestN_(initialRequestN),
         payload_(std::move(payload)) {
     if (initialRequestN_ <= 0) {
-      folly::throw_exception<std::logic_error>("initialRequestN MUST be > 0");
+      folly::throw_exception<std::logic_error>(
+          "RequestStreamFrame's initialRequestN MUST be > 0");
     }
   }
 
@@ -231,6 +232,80 @@ class RequestStreamFrame {
   const Payload& payload() const noexcept {
     return payload_;
   }
+  Payload& payload() noexcept {
+    return payload_;
+  }
+
+  void serialize(Serializer& writer) &&;
+
+ private:
+  StreamId streamId_;
+  int32_t initialRequestN_;
+  Flags flags_{Flags::none()};
+  Payload payload_;
+
+  void serializeIntoSingleFrame(Serializer& writer) &&;
+  FOLLY_NOINLINE void serializeInFragmentsSlow(Serializer& writer) &&;
+};
+
+class RequestChannelFrame {
+ public:
+  explicit RequestChannelFrame(std::unique_ptr<folly::IOBuf> frame);
+
+  RequestChannelFrame(
+      StreamId streamId,
+      Flags flags,
+      folly::io::Cursor& cursor,
+      std::unique_ptr<folly::IOBuf> underlyingBuffer);
+
+  RequestChannelFrame(
+      StreamId streamId,
+      Payload&& payload,
+      int32_t initialRequestN)
+      : streamId_(streamId),
+        initialRequestN_(initialRequestN),
+        payload_(std::move(payload)) {
+    if (initialRequestN_ <= 0) {
+      folly::throw_exception<std::logic_error>(
+          "RequestChannelFrame's initialRequestN MUST be > 0");
+    }
+  }
+
+  static constexpr FrameType frameType() {
+    return FrameType::REQUEST_CHANNEL;
+  }
+
+  static constexpr size_t frameHeaderSize() {
+    return 10;
+  }
+
+  StreamId streamId() const noexcept {
+    return streamId_;
+  }
+
+  bool hasFollows() const noexcept {
+    return flags_.follows();
+  }
+  void setHasFollows(bool hasFollows) noexcept {
+    flags_.follows(hasFollows);
+  }
+
+  bool hasComplete() const noexcept {
+    return flags_.complete();
+  }
+
+  void setHasComplete(bool hasComplete) noexcept {
+    flags_.complete(hasComplete);
+  }
+
+  int32_t initialRequestN() const noexcept {
+    return initialRequestN_;
+  }
+
+  const Payload& payload() const noexcept {
+    return payload_;
+  }
+
   Payload& payload() noexcept {
     return payload_;
   }

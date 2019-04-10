@@ -281,6 +281,43 @@ void RequestStreamFrame::serializeIntoSingleFrame(Serializer& writer) && {
   DCHECK_EQ(Serializer::kBytesForFrameOrMetadataLength + frameSize, nwritten);
 }
 
+void RequestChannelFrame::serialize(Serializer& writer) && {
+  if (UNLIKELY(payload().metadataAndDataSize() > kMaxFragmentedPayloadSize)) {
+    return std::move(*this).serializeInFragmentsSlow(writer);
+  }
+  std::move(*this).serializeIntoSingleFrame(writer);
+}
+
+void RequestChannelFrame::serializeIntoSingleFrame(Serializer& writer) && {
+  /**
+   *  0                   1                   2                   3
+   *  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+   * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   * |                           Stream ID                           |
+   * +-----------+-+-+-+-+-----------+-------------------------------+
+   * |Frame Type |0|M|F|C|  Flags    |
+   * +-------------------------------+-------------------------------+
+   * |0|                    Initial Request N                        |
+   * +---------------------------------------------------------------+
+   *                        Metadata & Request Data
+   */
+  // Excludes room for frame length
+  const auto frameSize = frameHeaderSize() + payload().serializedSize();
+  auto nwritten = writer.writeFrameOrMetadataSize(frameSize);
+
+  nwritten += writer.write(streamId());
+  nwritten += writer.writeFrameTypeAndFlags(
+      frameType(),
+      Flags::none()
+          .metadata(payload_.hasNonemptyMetadata())
+          .follows(hasFollows())
+          .complete(hasComplete()));
+  nwritten += writer.writeBE<uint32_t>(initialRequestN());
+  nwritten += writer.writePayload(std::move(payload()));
+
+  DCHECK_EQ(Serializer::kBytesForFrameOrMetadataLength + frameSize, nwritten);
+}
+
 void RequestNFrame::serialize(Serializer& writer) && {
   /**
    *  0                   1                   2                   3
@@ -408,6 +445,12 @@ FOLLY_NOINLINE void RequestFnfFrame::serializeInFragmentsSlow(
 FOLLY_NOINLINE void RequestStreamFrame::serializeInFragmentsSlow(
     Serializer& writer) && {
   serializeInFragmentsSlowCommon(std::move(*this), Flags::none(), writer);
+}
+
+FOLLY_NOINLINE void RequestChannelFrame::serializeInFragmentsSlow(
+    Serializer& writer) && {
+  serializeInFragmentsSlowCommon(
+      std::move(*this), Flags::none().complete(hasComplete()), writer);
 }
 
 FOLLY_NOINLINE void PayloadFrame::serializeInFragmentsSlow(
@@ -539,6 +582,37 @@ RequestStreamFrame::RequestStreamFrame(std::unique_ptr<folly::IOBuf> _frame)
 }
 
 RequestStreamFrame::RequestStreamFrame(
+    StreamId streamId,
+    Flags flags,
+    folly::io::Cursor& cursor,
+    std::unique_ptr<folly::IOBuf> underlyingBuffer)
+    : streamId_(streamId),
+      flags_(flags),
+      payload_(Payload::makeFromData(std::move(underlyingBuffer))) {
+  initialRequestN_ = cursor.readBE<int32_t>();
+  readPayloadCommon(*this, flags_.metadata(), cursor);
+}
+
+RequestChannelFrame::RequestChannelFrame(std::unique_ptr<folly::IOBuf> _frame)
+    : payload_(Payload::makeFromData(std::move(_frame))) {
+  // Trick to avoid the default-constructed IOBuf. See expanded comment in
+  // PayloadFrame constructor.
+  auto* frame = payload_.data();
+  folly::io::Cursor cursor(frame);
+  DCHECK(!frame->isChained());
+
+  streamId_ = readStreamId(cursor);
+
+  FrameType type;
+  std::tie(type, flags_) = readFrameTypeAndFlags(cursor);
+  DCHECK(frameType() == type);
+
+  initialRequestN_ = cursor.readBE<int32_t>();
+
+  readPayloadCommon(*this, flags_.metadata(), cursor);
+}
+
+RequestChannelFrame::RequestChannelFrame(
     StreamId streamId,
     Flags flags,
     folly::io::Cursor& cursor,

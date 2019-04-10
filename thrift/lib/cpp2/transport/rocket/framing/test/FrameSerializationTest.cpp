@@ -174,6 +174,27 @@ TEST(FrameSerialization, RequestStreamSanity) {
   validate(serializeAndDeserialize(std::move(frame)));
 }
 
+TEST(FrameSerialization, RequestChannelSanity) {
+  RequestChannelFrame frame(
+      kTestStreamId,
+      Payload::makeFromMetadataAndData(kMetadata, kData),
+      123456789 /* initialRequestN */);
+  frame.setHasComplete(true);
+
+  auto validate = [](const RequestChannelFrame& f) {
+    EXPECT_EQ(kTestStreamId, f.streamId());
+    EXPECT_FALSE(f.hasFollows());
+    EXPECT_EQ(123456789, f.initialRequestN());
+    EXPECT_TRUE(f.payload().metadata());
+    EXPECT_EQ(kMetadata, getRange(*f.payload().metadata()));
+    EXPECT_EQ(kData, getRange(*f.payload().data()));
+    EXPECT_TRUE(f.hasComplete());
+  };
+
+  validate(frame);
+  validate(serializeAndDeserialize(std::move(frame)));
+}
+
 TEST(FrameSerialization, RequestNSanity) {
   RequestNFrame frame(kTestStreamId, std::numeric_limits<int32_t>::max());
 
@@ -444,6 +465,52 @@ TEST(FrameSerialization, RequestStreamLargeData) {
     EXPECT_TRUE(f.payload().hasNonemptyMetadata());
     EXPECT_EQ(kMetadata, getRange(*f.payload().metadata()));
     EXPECT_TRUE(folly::IOBufEqualTo()(data, *f.payload().data()));
+  };
+
+  validate(frame);
+  validate(serializeAndDeserializeFragmented(std::move(frame)));
+}
+
+TEST(FrameSerialization, RequestChannelLargeMetadata) {
+  constexpr folly::StringPiece kData{"data"};
+  const auto metadata = makeLargeIOBuf();
+
+  RequestChannelFrame frame(
+      kTestStreamId,
+      Payload::makeFromMetadataAndData(
+          metadata.clone(), folly::IOBuf::copyBuffer(kData)),
+      123 /* initialRequestN */);
+  frame.setHasComplete(true);
+
+  auto validate = [=](const RequestChannelFrame& f) {
+    EXPECT_EQ(kTestStreamId, f.streamId());
+    EXPECT_TRUE(f.payload().hasNonemptyMetadata());
+    EXPECT_TRUE(folly::IOBufEqualTo()(metadata, *f.payload().metadata()));
+    EXPECT_EQ(kData, getRange(*f.payload().data()));
+    EXPECT_TRUE(f.hasComplete());
+  };
+
+  validate(frame);
+  validate(serializeAndDeserializeFragmented(std::move(frame)));
+}
+
+TEST(FrameSerialization, RequestChannelLargeData) {
+  constexpr folly::StringPiece kMetadata{"metadata"};
+  const auto data = makeLargeIOBuf();
+
+  RequestChannelFrame frame(
+      kTestStreamId,
+      Payload::makeFromMetadataAndData(
+          folly::IOBuf::copyBuffer(kMetadata), data.clone()),
+      123 /* initialRequestN */);
+  frame.setHasComplete(true);
+
+  auto validate = [=](const RequestChannelFrame& f) {
+    EXPECT_EQ(kTestStreamId, f.streamId());
+    EXPECT_TRUE(f.payload().hasNonemptyMetadata());
+    EXPECT_EQ(kMetadata, getRange(*f.payload().metadata()));
+    EXPECT_TRUE(folly::IOBufEqualTo()(data, *f.payload().data()));
+    EXPECT_TRUE(f.hasComplete());
   };
 
   validate(frame);

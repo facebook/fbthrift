@@ -32,7 +32,7 @@ enum class FrameType : uint8_t {
   REQUEST_RESPONSE = 0x04,
   REQUEST_FNF = 0x05,
   REQUEST_STREAM = 0x06,
-  // REQUEST_CHANNEL = 0x07,
+  REQUEST_CHANNEL = 0x07,
   REQUEST_N = 0x08,
   CANCEL = 0x09,
   PAYLOAD = 0x0A,

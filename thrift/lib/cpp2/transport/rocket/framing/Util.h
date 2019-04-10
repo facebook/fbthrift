@@ -58,6 +58,7 @@ inline std::pair<FrameType, Flags> readFrameTypeAndFlags(
     case FrameType::REQUEST_RESPONSE:
     case FrameType::REQUEST_FNF:
     case FrameType::REQUEST_STREAM:
+    case FrameType::REQUEST_CHANNEL:
     case FrameType::REQUEST_N:
     case FrameType::CANCEL:
     case FrameType::PAYLOAD:
