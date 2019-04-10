@@ -29,7 +29,7 @@ public final class MyField {
     }
     
     protected MyField() {
-      this.optValue = 0L;
+      this.optValue = null;
       this.value = 0L;
       this.reqValue = 0L;
     }

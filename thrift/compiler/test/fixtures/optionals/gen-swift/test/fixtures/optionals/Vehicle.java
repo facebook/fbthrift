@@ -37,7 +37,7 @@ public final class Vehicle {
       this.licensePlate = null;
       this.description = null;
       this.name = null;
-      this.hasAC = false;
+      this.hasAC = null;
     }
     
     public static class Builder {

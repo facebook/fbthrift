@@ -45,11 +45,11 @@ public final class Person {
     protected Person() {
       this.id = 0L;
       this.name = null;
-      this.age = 0;
+      this.age = null;
       this.address = null;
       this.favoriteColor = null;
       this.friends = null;
-      this.bestFriend = 0L;
+      this.bestFriend = null;
       this.petNames = null;
       this.afraidOfAnimal = null;
       this.vehicles = null;

@@ -337,13 +337,18 @@ class mstch_swift_field : public mstch_field {
     return java::mangle_java_name(field_->get_name(), true);
   }
   mstch::node java_default_value() {
-    return default_value_for_type(field_->get_type());
+    return default_value_for_field(field_);
   }
   mstch::node is_recursive_reference() {
     return field_->annotations_.count("swift.recursive_reference") &&
         field_->annotations_.at("swift.recursive_reference") == "true";
   }
-
+  std::string default_value_for_field(const t_field* field) {
+    if (field_->get_req() == t_field::e_req::T_OPTIONAL) {
+      return "null";
+    }
+    return default_value_for_type(field->get_type());
+  }
   std::string default_value_for_type(const t_type* type) {
     if (type->is_typedef()) {
       auto typedef_type = dynamic_cast<const t_typedef*>(type)->get_type();
