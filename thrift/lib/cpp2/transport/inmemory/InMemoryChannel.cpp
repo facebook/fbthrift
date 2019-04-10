@@ -38,13 +38,12 @@ void InMemoryChannel::sendThriftResponse(
     std::unique_ptr<IOBuf> payload) noexcept {
   CHECK(evb_->isInEventBaseThread());
   CHECK(callback_);
-  auto metadatap = std::make_unique<ResponseRpcMetadata>(std::move(metadata));
   auto evb = callback_->getEventBase();
   evb->runInEventBaseThread([evbCallback = std::move(callback_),
-                             evbMetadatap = std::move(metadatap),
+                             evbMetadata = std::move(metadata),
                              evbPayload = std::move(payload)]() mutable {
     evbCallback->onThriftResponse(
-        std::move(evbMetadatap), std::move(evbPayload));
+        std::move(evbMetadata), std::move(evbPayload));
   });
 }
 

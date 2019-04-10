@@ -45,19 +45,19 @@ void EchoProcessor::onThriftRequestHelper(
   CHECK(requestMetadata);
   CHECK(payload);
   CHECK(channel);
-  auto responseMetadata = std::make_unique<ResponseRpcMetadata>();
+  ResponseRpcMetadata responseMetadata;
   if (requestMetadata->__isset.seqId) {
-    responseMetadata->seqId = requestMetadata->seqId;
-    responseMetadata->__isset.seqId = true;
+    responseMetadata.seqId = requestMetadata->seqId;
+    responseMetadata.__isset.seqId = true;
   }
   if (requestMetadata->__isset.otherMetadata) {
-    responseMetadata->otherMetadata = std::move(requestMetadata->otherMetadata);
+    responseMetadata.otherMetadata = std::move(requestMetadata->otherMetadata);
   }
-  (responseMetadata->otherMetadata)[key_] = value_;
-  responseMetadata->__isset.otherMetadata = true;
+  (responseMetadata.otherMetadata)[key_] = value_;
+  responseMetadata.__isset.otherMetadata = true;
   auto iobuf = IOBuf::copyBuffer(trailer_);
   payload->prependChain(std::move(iobuf));
-  channel->sendThriftResponse(std::move(*responseMetadata), std::move(payload));
+  channel->sendThriftResponse(std::move(responseMetadata), std::move(payload));
 }
 
 } // namespace thrift

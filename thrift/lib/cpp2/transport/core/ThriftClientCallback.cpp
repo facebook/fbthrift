@@ -64,16 +64,15 @@ void ThriftClientCallback::onThriftRequestSent() {
 }
 
 void ThriftClientCallback::onThriftResponse(
-    std::unique_ptr<ResponseRpcMetadata> metadata,
+    ResponseRpcMetadata&& metadata,
     std::unique_ptr<IOBuf> payload) noexcept {
-  DCHECK(metadata);
   DCHECK(evb_->isInEventBaseThread());
   cancelTimeout();
   if (active_) {
     active_ = false;
     auto tHeader = std::make_unique<transport::THeader>();
     tHeader->setClientType(THRIFT_HTTP_CLIENT_TYPE);
-    detail::fillTHeaderFromResponseRpcMetadata(*metadata, *tHeader);
+    detail::fillTHeaderFromResponseRpcMetadata(metadata, *tHeader);
     folly::RequestContextScopeGuard rctx(cb_->context_);
     cb_->replyReceived(ClientReceiveState(
         protoId_, std::move(payload), std::move(tHeader), std::move(ctx_)));
@@ -81,17 +80,16 @@ void ThriftClientCallback::onThriftResponse(
 }
 
 void ThriftClientCallback::onThriftResponse(
-    std::unique_ptr<ResponseRpcMetadata> metadata,
+    ResponseRpcMetadata&& metadata,
     std::unique_ptr<IOBuf> payload,
     Stream<std::unique_ptr<folly::IOBuf>> stream) noexcept {
-  DCHECK(metadata);
   DCHECK(evb_->isInEventBaseThread());
   cancelTimeout();
   if (active_) {
     active_ = false;
     auto tHeader = std::make_unique<transport::THeader>();
     tHeader->setClientType(THRIFT_HTTP_CLIENT_TYPE);
-    detail::fillTHeaderFromResponseRpcMetadata(*metadata, *tHeader);
+    detail::fillTHeaderFromResponseRpcMetadata(metadata, *tHeader);
     folly::RequestContextScopeGuard rctx(cb_->context_);
     ClientReceiveState crs(
         protoId_,

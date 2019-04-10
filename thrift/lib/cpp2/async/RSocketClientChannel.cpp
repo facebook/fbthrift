@@ -36,21 +36,20 @@ using namespace yarpl::flowable;
 namespace {
 // Deserializes metadata returning an invalid object with the protocol field
 // unset on error.
-std::unique_ptr<ResponseRpcMetadata> deserializeMetadata(
+void deserializeMetadata(
+    ResponseRpcMetadata& metadata,
     const folly::IOBuf& buffer) {
-  CompactProtocolReader reader;
-  auto responseMetadata = std::make_unique<ResponseRpcMetadata>();
   try {
+    CompactProtocolReader reader;
     reader.setInput(&buffer);
-    responseMetadata->read(&reader);
+    metadata.read(&reader);
   } catch (const std::exception& e) {
     LOG(ERROR) << "Exception on deserializing metadata: "
                << folly::exceptionStr(e);
     // Return an invalid metadata object instead of potentially valid partially
     // deserialized one.
-    responseMetadata->__isset.protocol = false;
+    metadata.__isset.protocol = false;
   }
-  return responseMetadata;
 }
 } // namespace
 
@@ -260,10 +259,11 @@ class CountedSingleObserver : public SingleObserver<Payload> {
 
   void onSuccess(Payload payload) override {
     if (auto callback = std::move(callback_)) {
-      callback->onThriftResponse(
-          payload.metadata ? deserializeMetadata(*payload.metadata)
-                           : std::make_unique<ResponseRpcMetadata>(),
-          std::move(payload.data));
+      ResponseRpcMetadata metadata;
+      if (payload.metadata) {
+        deserializeMetadata(metadata, *payload.metadata);
+      }
+      callback->onThriftResponse(std::move(metadata), std::move(payload.data));
     }
   }
 
@@ -558,9 +558,12 @@ void RSocketClientChannel::sendSingleRequestStreamResponse(
                         TIMED_OUT);
               });
         }
+        ResponseRpcMetadata metadata;
+        if (result.first.metadata) {
+          deserializeMetadata(metadata, *result.first.metadata);
+        }
         cb->onThriftResponse(
-            result.first.metadata ? deserializeMetadata(*result.first.metadata)
-                                  : std::make_unique<ResponseRpcMetadata>(),
+            std::move(metadata),
             std::move(result.first.data),
             toStream(std::move(flowable), evb_));
       },

@@ -80,13 +80,6 @@ void deserializeMetadata(
   reader.setInput(&buffer);
   dest.read(&reader);
 }
-
-std::unique_ptr<ResponseRpcMetadata> deserializeMetadata(
-    const folly::IOBuf& buffer) {
-  auto responseMetadata = std::make_unique<ResponseRpcMetadata>();
-  deserializeMetadata(*responseMetadata, buffer);
-  return responseMetadata;
-}
 } // namespace
 
 rocket::SetupFrame RocketClientChannel::makeSetupFrame(
@@ -612,11 +605,11 @@ void RocketClientChannel::TakeFirst::onNormalFirstResponse(
     });
   }
 
-  std::unique_ptr<ResponseRpcMetadata> metadata;
+  ResponseRpcMetadata metadata;
   try {
-    metadata = firstPayload.hasNonemptyMetadata()
-        ? deserializeMetadata(*firstPayload.metadata())
-        : std::make_unique<ResponseRpcMetadata>();
+    if (firstPayload.hasNonemptyMetadata()) {
+      deserializeMetadata(metadata, *firstPayload.metadata());
+    }
   } catch (const std::exception& ex) {
     FB_LOG_EVERY_MS(ERROR, 10000)
         << "Exception on deserializing metadata: " << folly::exceptionStr(ex);

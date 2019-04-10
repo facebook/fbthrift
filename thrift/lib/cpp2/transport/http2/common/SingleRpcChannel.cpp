@@ -313,12 +313,12 @@ void SingleRpcChannel::onThriftResponse() noexcept {
     return;
   }
   auto evb = callback_->getEventBase();
-  auto metadata = std::make_unique<ResponseRpcMetadata>();
+  ResponseRpcMetadata metadata;
   map<string, string> headers;
   decodeHeaders(*headers_, headers);
   if (!headers.empty()) {
-    metadata->otherMetadata = std::move(headers);
-    metadata->__isset.otherMetadata = true;
+    metadata.otherMetadata = std::move(headers);
+    metadata.__isset.otherMetadata = true;
   }
 
   // We don't need to set any of the other fields in metadata currently.

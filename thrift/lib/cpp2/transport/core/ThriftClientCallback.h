@@ -56,11 +56,11 @@ class ThriftClientCallback final : public folly::HHWheelTimer::Callback {
   // Calls must be scheduled on the event base obtained from
   // "getEventBase()".
   void onThriftResponse(
-      std::unique_ptr<ResponseRpcMetadata> metadata,
+      ResponseRpcMetadata&& metadata,
       std::unique_ptr<folly::IOBuf> payload) noexcept;
 
   void onThriftResponse(
-      std::unique_ptr<ResponseRpcMetadata> metadata,
+      ResponseRpcMetadata&& metadata,
       std::unique_ptr<folly::IOBuf> payload,
       Stream<std::unique_ptr<folly::IOBuf>> stream) noexcept;
 
