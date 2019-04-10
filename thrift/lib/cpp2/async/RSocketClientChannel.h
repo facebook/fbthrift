@@ -179,20 +179,20 @@ class RSocketClientChannel final : public ClientChannel,
       std::shared_ptr<apache::thrift::transport::THeader> header) noexcept;
 
   void sendSingleRequestNoResponse(
-      std::unique_ptr<RequestRpcMetadata> metadata,
+      const RequestRpcMetadata& metadata,
       std::unique_ptr<ContextStack> ctx,
       std::unique_ptr<folly::IOBuf> buf,
       std::unique_ptr<RequestCallback> cb) noexcept;
 
   void sendSingleRequestSingleResponse(
-      std::unique_ptr<RequestRpcMetadata> metadata,
+      const RequestRpcMetadata& metadata,
       std::unique_ptr<ContextStack> ctx,
       std::unique_ptr<folly::IOBuf> buf,
       std::unique_ptr<RequestCallback> cb) noexcept;
 
   void sendSingleRequestStreamResponse(
       RpcOptions& rpcOptions,
-      std::unique_ptr<RequestRpcMetadata> metadata,
+      const RequestRpcMetadata& metadata,
       std::unique_ptr<ContextStack> ctx,
       std::unique_ptr<folly::IOBuf> buf,
       std::unique_ptr<RequestCallback> cb) noexcept;

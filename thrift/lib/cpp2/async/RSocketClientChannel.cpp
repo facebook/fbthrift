@@ -410,19 +410,18 @@ void RSocketClientChannel::sendThriftRequest(
   DestructorGuard dg(this);
 
   cb->context_ = folly::RequestContext::saveContext();
-  auto metadata =
-      std::make_unique<RequestRpcMetadata>(detail::makeRequestRpcMetadata(
-          rpcOptions,
-          kind,
-          static_cast<ProtocolId>(protocolId_),
-          timeout_,
-          *header,
-          getPersistentWriteHeaders()));
+  auto metadata = detail::makeRequestRpcMetadata(
+      rpcOptions,
+      kind,
+      static_cast<ProtocolId>(protocolId_),
+      timeout_,
+      *header,
+      getPersistentWriteHeaders());
 
-  if (!EnvelopeUtil::stripEnvelope(metadata.get(), buf) ||
-      !(metadata->kind == RpcKind::SINGLE_REQUEST_NO_RESPONSE ||
-        metadata->kind == RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE ||
-        metadata->kind == RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE)) {
+  if (!EnvelopeUtil::stripEnvelope(&metadata, buf) ||
+      !(metadata.kind == RpcKind::SINGLE_REQUEST_NO_RESPONSE ||
+        metadata.kind == RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE ||
+        metadata.kind == RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE)) {
     folly::RequestContextScopeGuard rctx(cb->context_);
     cb->requestError(ClientReceiveState(
         folly::make_exception_wrapper<TTransportException>(
@@ -431,8 +430,8 @@ void RSocketClientChannel::sendThriftRequest(
         std::move(ctx)));
     return;
   }
-  metadata->set_seqId(0);
-  DCHECK(metadata->__isset.kind);
+  metadata.set_seqId(0);
+  DCHECK(metadata.__isset.kind);
 
   if (!connectionStatus_->isConnected()) {
     folly::RequestContextScopeGuard rctx(cb->context_);
@@ -458,22 +457,18 @@ void RSocketClientChannel::sendThriftRequest(
     return;
   }
 
-  switch (metadata->kind) {
+  switch (metadata.kind) {
     case RpcKind::SINGLE_REQUEST_NO_RESPONSE:
       sendSingleRequestNoResponse(
-          std::move(metadata), std::move(ctx), std::move(buf), std::move(cb));
+          metadata, std::move(ctx), std::move(buf), std::move(cb));
       break;
     case RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE:
       sendSingleRequestSingleResponse(
-          std::move(metadata), std::move(ctx), std::move(buf), std::move(cb));
+          metadata, std::move(ctx), std::move(buf), std::move(cb));
       break;
     case RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE:
       sendSingleRequestStreamResponse(
-          rpcOptions,
-          std::move(metadata),
-          std::move(ctx),
-          std::move(buf),
-          std::move(cb));
+          rpcOptions, metadata, std::move(ctx), std::move(buf), std::move(cb));
       break;
     default:
       folly::assume_unreachable();
@@ -485,7 +480,7 @@ uint16_t RSocketClientChannel::getProtocolId() {
 }
 
 void RSocketClientChannel::sendSingleRequestNoResponse(
-    std::unique_ptr<RequestRpcMetadata> metadata,
+    const RequestRpcMetadata& metadata,
     std::unique_ptr<ContextStack> ctx,
     std::unique_ptr<folly::IOBuf> buf,
     std::unique_ptr<RequestCallback> cb) noexcept {
@@ -495,7 +490,7 @@ void RSocketClientChannel::sendSingleRequestNoResponse(
   callback->sendQueued();
 
   stateMachine_->fireAndForget(
-      Payload(std::move(buf), serializeMetadata(*metadata)));
+      Payload(std::move(buf), serializeMetadata(metadata)));
 
   callback->messageSent();
 
@@ -503,7 +498,7 @@ void RSocketClientChannel::sendSingleRequestNoResponse(
 }
 
 void RSocketClientChannel::sendSingleRequestSingleResponse(
-    std::unique_ptr<RequestRpcMetadata> metadata,
+    const RequestRpcMetadata& metadata,
     std::unique_ptr<ContextStack> ctx,
     std::unique_ptr<folly::IOBuf> buf,
     std::unique_ptr<RequestCallback> cb) noexcept {
@@ -512,22 +507,22 @@ void RSocketClientChannel::sendSingleRequestSingleResponse(
       std::move(cb),
       std::move(ctx),
       protocolId_,
-      std::chrono::milliseconds(metadata->clientTimeoutMs));
+      std::chrono::milliseconds(metadata.clientTimeoutMs));
 
   auto singleObserver = std::make_shared<CountedSingleObserver>(
       std::move(callback), folly::to_weak_ptr(channelCounters_));
 
   // As we send clientTimeoutMs, queueTimeoutMs and priority values using
   // RequestRpcMetadata object, there is no need for RSocket to put them to
-  // metadata->otherMetadata map.
+  // metadata.otherMetadata map.
   stateMachine_->requestResponse(
-      Payload(std::move(buf), serializeMetadata(*metadata)),
+      Payload(std::move(buf), serializeMetadata(metadata)),
       std::move(singleObserver));
 }
 
 void RSocketClientChannel::sendSingleRequestStreamResponse(
     RpcOptions& rpcOptions,
-    std::unique_ptr<RequestRpcMetadata> metadata,
+    const RequestRpcMetadata& metadata,
     std::unique_ptr<ContextStack> ctx,
     std::unique_ptr<folly::IOBuf> buf,
     std::unique_ptr<RequestCallback> cb) noexcept {
@@ -536,7 +531,7 @@ void RSocketClientChannel::sendSingleRequestStreamResponse(
       std::move(cb),
       std::move(ctx),
       protocolId_,
-      std::chrono::milliseconds(metadata->clientTimeoutMs));
+      std::chrono::milliseconds(metadata.clientTimeoutMs));
 
   auto takeFirst = std::make_shared<detail::TakeFirst>(
       // onRequestSent
@@ -592,7 +587,7 @@ void RSocketClientChannel::sendSingleRequestStreamResponse(
   });
 
   stateMachine_->requestStream(
-      Payload(std::move(buf), serializeMetadata(*metadata)),
+      Payload(std::move(buf), serializeMetadata(metadata)),
       std::move(takeFirst));
 }
 
