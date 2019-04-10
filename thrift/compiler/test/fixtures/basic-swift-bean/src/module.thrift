@@ -25,6 +25,11 @@ struct MyDataItem {
   2: i32 field2,
 }
 
+struct LegacyStruct {
+  1: i32 normal,
+  -1: i32 bad,
+}
+
 union ListUnion {
   2: list<i64> intListValue;
   3: list<string> stringListValue;
@@ -58,4 +63,8 @@ const MyStruct1 ms = {
     "field2": 2,
   },
   "major": 32,
+}
+
+service legacy_service {
+  map<string, list<i32>> getPoints(1: set<string> key, -1: i64 legacyStuff);
 }
