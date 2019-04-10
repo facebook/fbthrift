@@ -29,7 +29,7 @@ class InMemoryChannel : public ThriftChannelIf {
   virtual ~InMemoryChannel() override = default;
 
   void sendThriftResponse(
-      std::unique_ptr<ResponseRpcMetadata> metadata,
+      ResponseRpcMetadata&& metadata,
       std::unique_ptr<folly::IOBuf> payload) noexcept override;
 
   void sendThriftRequest(
@@ -38,7 +38,7 @@ class InMemoryChannel : public ThriftChannelIf {
       std::unique_ptr<ThriftClientCallback> callback) noexcept override;
 
   void sendStreamThriftResponse(
-      std::unique_ptr<ResponseRpcMetadata>,
+      ResponseRpcMetadata&&,
       std::unique_ptr<folly::IOBuf>,
       apache::thrift::SemiStream<
           std::unique_ptr<folly::IOBuf>>) noexcept override {

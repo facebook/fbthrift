@@ -155,7 +155,7 @@ class ThriftRequestCore : public ResponseChannelRequest {
       if (!isOneway()) {
         auto metadata = makeResponseRpcMetadata();
         if (crc32c) {
-          metadata->crc32c_ref() = *crc32c;
+          metadata.crc32c_ref() = *crc32c;
         }
         sendReplyInternal(std::move(metadata), std::move(buf));
         if (auto observer = serverConfigs_.getObserver()) {
@@ -175,7 +175,7 @@ class ThriftRequestCore : public ResponseChannelRequest {
       cancelTimeout();
       auto metadata = makeResponseRpcMetadata();
       if (crc32c) {
-        metadata->crc32c_ref() = *crc32c;
+        metadata.crc32c_ref() = *crc32c;
       }
       sendReplyInternal(
           std::move(metadata),
@@ -201,11 +201,11 @@ class ThriftRequestCore : public ResponseChannelRequest {
 
  protected:
   virtual void sendThriftResponse(
-      std::unique_ptr<ResponseRpcMetadata> metadata,
+      ResponseRpcMetadata&& metadata,
       std::unique_ptr<folly::IOBuf> response) noexcept = 0;
 
   virtual void sendStreamThriftResponse(
-      std::unique_ptr<ResponseRpcMetadata> metadata,
+      ResponseRpcMetadata&& metadata,
       std::unique_ptr<folly::IOBuf> response,
       apache::thrift::SemiStream<std::unique_ptr<folly::IOBuf>>
           stream) noexcept = 0;
@@ -235,7 +235,7 @@ class ThriftRequestCore : public ResponseChannelRequest {
 
  private:
   void sendReplyInternal(
-      std::unique_ptr<ResponseRpcMetadata> metadata,
+      ResponseRpcMetadata&& metadata,
       std::unique_ptr<folly::IOBuf> buf) {
     if (checkResponseSize(*buf)) {
       sendThriftResponse(std::move(metadata), std::move(buf));
@@ -245,7 +245,7 @@ class ThriftRequestCore : public ResponseChannelRequest {
   }
 
   void sendReplyInternal(
-      std::unique_ptr<ResponseRpcMetadata> metadata,
+      ResponseRpcMetadata&& metadata,
       std::unique_ptr<folly::IOBuf> buf,
       apache::thrift::SemiStream<std::unique_ptr<folly::IOBuf>> stream) {
     if (checkResponseSize(*buf)) {
@@ -264,13 +264,13 @@ class ThriftRequestCore : public ResponseChannelRequest {
         kResponseTooBigErrorCode);
   }
 
-  std::unique_ptr<ResponseRpcMetadata> makeResponseRpcMetadata() {
-    auto metadata = std::make_unique<ResponseRpcMetadata>();
-    metadata->seqId_ref() = seqId_;
+  ResponseRpcMetadata makeResponseRpcMetadata() {
+    ResponseRpcMetadata metadata;
+    metadata.seqId_ref() = seqId_;
 
     if (requestFlags_ &
         static_cast<uint64_t>(RequestRpcMetadataFlags::QUERY_SERVER_LOAD)) {
-      metadata->load_ref() =
+      metadata.load_ref() =
           serverConfigs_.getLoad(transport::THeader::QUERY_LOAD_HEADER);
     }
 
@@ -279,7 +279,7 @@ class ThriftRequestCore : public ResponseChannelRequest {
       writeHeaders.insert(eh->begin(), eh->end());
     }
     if (!writeHeaders.empty()) {
-      metadata->otherMetadata_ref() = std::move(writeHeaders);
+      metadata.otherMetadata_ref() = std::move(writeHeaders);
     }
 
     return metadata;
@@ -426,13 +426,13 @@ class ThriftRequest final : public ThriftRequestCore {
 
  private:
   void sendThriftResponse(
-      std::unique_ptr<ResponseRpcMetadata> metadata,
+      ResponseRpcMetadata&& metadata,
       std::unique_ptr<folly::IOBuf> response) noexcept override {
     channel_->sendThriftResponse(std::move(metadata), std::move(response));
   }
 
   void sendStreamThriftResponse(
-      std::unique_ptr<ResponseRpcMetadata> metadata,
+      ResponseRpcMetadata&& metadata,
       std::unique_ptr<folly::IOBuf> response,
       apache::thrift::SemiStream<std::unique_ptr<folly::IOBuf>>
           stream) noexcept override {

@@ -85,7 +85,7 @@ class H2Channel : public ThriftChannelIf {
   }
 
   void sendStreamThriftResponse(
-      std::unique_ptr<ResponseRpcMetadata>,
+      ResponseRpcMetadata&&,
       std::unique_ptr<folly::IOBuf>,
       apache::thrift::SemiStream<
           std::unique_ptr<folly::IOBuf>>) noexcept override {

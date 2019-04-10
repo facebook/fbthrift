@@ -52,11 +52,11 @@ class ThriftServerRequestResponse final : public ThriftRequestCore {
       RocketServerFrameContext&& context);
 
   void sendThriftResponse(
-      std::unique_ptr<ResponseRpcMetadata>,
+      ResponseRpcMetadata&&,
       std::unique_ptr<folly::IOBuf>) noexcept override;
 
   void sendStreamThriftResponse(
-      std::unique_ptr<ResponseRpcMetadata>,
+      ResponseRpcMetadata&&,
       std::unique_ptr<folly::IOBuf>,
       SemiStream<std::unique_ptr<folly::IOBuf>>) noexcept override;
 
@@ -92,11 +92,11 @@ class ThriftServerRequestFnf final : public ThriftRequestCore {
   ~ThriftServerRequestFnf() override;
 
   void sendThriftResponse(
-      std::unique_ptr<ResponseRpcMetadata>,
+      ResponseRpcMetadata&&,
       std::unique_ptr<folly::IOBuf>) noexcept override;
 
   void sendStreamThriftResponse(
-      std::unique_ptr<ResponseRpcMetadata>,
+      ResponseRpcMetadata&&,
       std::unique_ptr<folly::IOBuf>,
       SemiStream<std::unique_ptr<folly::IOBuf>>) noexcept override;
 
@@ -123,11 +123,11 @@ class ThriftServerRequestStream final : public ThriftRequestCore {
       std::shared_ptr<AsyncProcessor> cpp2Processor);
 
   void sendThriftResponse(
-      std::unique_ptr<ResponseRpcMetadata>,
+      ResponseRpcMetadata&&,
       std::unique_ptr<folly::IOBuf>) noexcept override;
 
   void sendStreamThriftResponse(
-      std::unique_ptr<ResponseRpcMetadata>,
+      ResponseRpcMetadata&&,
       std::unique_ptr<folly::IOBuf>,
       SemiStream<std::unique_ptr<folly::IOBuf>>) noexcept override;
 

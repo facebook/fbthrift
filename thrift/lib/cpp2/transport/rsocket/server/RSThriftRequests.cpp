@@ -229,13 +229,13 @@ RSOneWayRequest::~RSOneWayRequest() {
 }
 
 void RSOneWayRequest::sendThriftResponse(
-    std::unique_ptr<ResponseRpcMetadata>,
+    ResponseRpcMetadata&&,
     std::unique_ptr<folly::IOBuf>) noexcept {
   LOG(FATAL) << "No response is allowed";
 }
 
 void RSOneWayRequest::sendStreamThriftResponse(
-    std::unique_ptr<ResponseRpcMetadata>,
+    ResponseRpcMetadata&&,
     std::unique_ptr<folly::IOBuf>,
     apache::thrift::SemiStream<std::unique_ptr<folly::IOBuf>>) noexcept {
   LOG(FATAL) << "Server should not call this function.";
@@ -269,19 +269,18 @@ RSSingleRequest::RSSingleRequest(
 }
 
 void RSSingleRequest::sendThriftResponse(
-    std::unique_ptr<ResponseRpcMetadata> metadata,
+    ResponseRpcMetadata&& metadata,
     std::unique_ptr<folly::IOBuf> buf) noexcept {
   DCHECK(evb_->isInEventBaseThread()) << "Should be called in IO thread";
-  DCHECK(metadata);
 
   singleObserver_->onSubscribe(yarpl::single::SingleSubscriptions::empty());
   singleObserver_->onSuccess(
-      rsocket::Payload(std::move(buf), detail::serializeMetadata(*metadata)));
+      rsocket::Payload(std::move(buf), detail::serializeMetadata(metadata)));
   singleObserver_ = nullptr;
 }
 
 void RSSingleRequest::sendStreamThriftResponse(
-    std::unique_ptr<ResponseRpcMetadata>,
+    ResponseRpcMetadata&&,
     std::unique_ptr<folly::IOBuf>,
     apache::thrift::SemiStream<std::unique_ptr<folly::IOBuf>>) noexcept {
   LOG(FATAL) << "Server should not call this function.";
@@ -307,17 +306,17 @@ RSStreamRequest::RSStreamRequest(
 }
 
 void RSStreamRequest::sendThriftResponse(
-    std::unique_ptr<ResponseRpcMetadata>,
+    ResponseRpcMetadata&&,
     std::unique_ptr<folly::IOBuf>) noexcept {
   LOG(FATAL) << "Server should not call this function.";
 }
 
 void RSStreamRequest::sendStreamThriftResponse(
-    std::unique_ptr<ResponseRpcMetadata> metadata,
+    ResponseRpcMetadata&& metadata,
     std::unique_ptr<folly::IOBuf> buf,
     apache::thrift::SemiStream<std::unique_ptr<folly::IOBuf>> stream) noexcept {
   auto response =
-      rsocket::Payload(std::move(buf), detail::serializeMetadata(*metadata));
+      rsocket::Payload(std::move(buf), detail::serializeMetadata(metadata));
   if (stream) {
     auto timeout = serverConfigs_.getStreamExpireTime();
     toFlowableInternal(std::move(stream), evb_, std::move(response), timeout)

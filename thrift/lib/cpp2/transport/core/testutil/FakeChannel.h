@@ -35,7 +35,7 @@ class FakeChannel : public ThriftChannelIf {
   ~FakeChannel() override = default;
 
   void sendThriftResponse(
-      std::unique_ptr<ResponseRpcMetadata> metadata,
+      ResponseRpcMetadata&& metadata,
       std::unique_ptr<folly::IOBuf> payload) noexcept override {
     metadata_ = std::move(metadata);
     payload_ = std::move(payload);
@@ -52,7 +52,7 @@ class FakeChannel : public ThriftChannelIf {
   }
 
   void sendStreamThriftResponse(
-      std::unique_ptr<ResponseRpcMetadata> /*metadata*/,
+      ResponseRpcMetadata&& /*metadata*/,
       std::unique_ptr<folly::IOBuf> /*response*/,
       apache::thrift::SemiStream<
           std::unique_ptr<folly::IOBuf>> /*stream*/) noexcept override {
@@ -64,7 +64,7 @@ class FakeChannel : public ThriftChannelIf {
   }
 
   ResponseRpcMetadata* getMetadata() {
-    return metadata_.get();
+    return &metadata_;
   }
 
   folly::IOBuf* getPayloadBuf() {
@@ -72,7 +72,7 @@ class FakeChannel : public ThriftChannelIf {
   }
 
  private:
-  std::unique_ptr<ResponseRpcMetadata> metadata_;
+  ResponseRpcMetadata metadata_;
   std::unique_ptr<folly::IOBuf> payload_;
   folly::Executor::KeepAlive<folly::EventBase> evb_;
 };

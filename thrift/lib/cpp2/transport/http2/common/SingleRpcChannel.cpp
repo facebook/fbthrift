@@ -82,17 +82,16 @@ SingleRpcChannel::~SingleRpcChannel() {
 }
 
 void SingleRpcChannel::sendThriftResponse(
-    std::unique_ptr<ResponseRpcMetadata> metadata,
+    ResponseRpcMetadata&& metadata,
     std::unique_ptr<IOBuf> payload) noexcept {
-  DCHECK(metadata);
   DCHECK(evb_->isInEventBaseThread());
   VLOG(4) << "sendThriftResponse:" << std::endl
           << IOBufPrinter::printHexFolly(payload.get(), true);
   if (responseHandler_) {
     HTTPMessage msg;
     msg.setStatusCode(200);
-    if (metadata->__isset.otherMetadata) {
-      encodeHeaders(std::move(metadata->otherMetadata), msg);
+    if (metadata.__isset.otherMetadata) {
+      encodeHeaders(std::move(metadata.otherMetadata), msg);
     }
     responseHandler_->sendHeaders(msg);
     responseHandler_->sendBody(std::move(payload));
@@ -264,7 +263,7 @@ void SingleRpcChannel::onThriftRequest() noexcept {
   if (metadata->kind == RpcKind::SINGLE_REQUEST_NO_RESPONSE) {
     // Send a dummy response for the oneway call since we need to do
     // this with HTTP2.
-    auto responseMetadata = std::make_unique<ResponseRpcMetadata>();
+    ResponseRpcMetadata responseMetadata;
     auto payload = IOBuf::createCombined(0);
     sendThriftResponse(std::move(responseMetadata), std::move(payload));
     receivedThriftRPC_ = true;
@@ -390,9 +389,9 @@ void SingleRpcChannel::sendThriftErrorResponse(
     const string& message,
     ProtocolId protoId,
     const string& name) noexcept {
-  auto responseMetadata = std::make_unique<ResponseRpcMetadata>();
-  responseMetadata->protocol = protoId;
-  responseMetadata->__isset.protocol = true;
+  ResponseRpcMetadata responseMetadata;
+  responseMetadata.protocol = protoId;
+  responseMetadata.__isset.protocol = true;
   // Not setting the "ex" header since these errors do not fit into any
   // of the existing error categories.
   TApplicationException tae(message);

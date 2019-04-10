@@ -57,7 +57,7 @@ void EchoProcessor::onThriftRequestHelper(
   responseMetadata->__isset.otherMetadata = true;
   auto iobuf = IOBuf::copyBuffer(trailer_);
   payload->prependChain(std::move(iobuf));
-  channel->sendThriftResponse(std::move(responseMetadata), std::move(payload));
+  channel->sendThriftResponse(std::move(*responseMetadata), std::move(payload));
 }
 
 } // namespace thrift

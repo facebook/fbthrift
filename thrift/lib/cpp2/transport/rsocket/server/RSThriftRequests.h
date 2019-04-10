@@ -49,11 +49,11 @@ class RSOneWayRequest final : public ThriftRequestCore {
   void cancel() override;
 
   void sendThriftResponse(
-      std::unique_ptr<ResponseRpcMetadata>,
+      ResponseRpcMetadata&&,
       std::unique_ptr<folly::IOBuf>) noexcept override;
 
   void sendStreamThriftResponse(
-      std::unique_ptr<ResponseRpcMetadata>,
+      ResponseRpcMetadata&&,
       std::unique_ptr<folly::IOBuf>,
       apache::thrift::SemiStream<
           std::unique_ptr<folly::IOBuf>>) noexcept override;
@@ -76,11 +76,11 @@ class RSSingleRequest final : public ThriftRequestCore {
           singleObserver);
 
   void sendThriftResponse(
-      std::unique_ptr<ResponseRpcMetadata>,
+      ResponseRpcMetadata&&,
       std::unique_ptr<folly::IOBuf>) noexcept override;
 
   void sendStreamThriftResponse(
-      std::unique_ptr<ResponseRpcMetadata>,
+      ResponseRpcMetadata&&,
       std::unique_ptr<folly::IOBuf>,
       apache::thrift::SemiStream<
           std::unique_ptr<folly::IOBuf>>) noexcept override;
@@ -112,11 +112,11 @@ class RSStreamRequest final : public ThriftRequestCore {
   }
 
   void sendThriftResponse(
-      std::unique_ptr<ResponseRpcMetadata> metadata,
+      ResponseRpcMetadata&& metadata,
       std::unique_ptr<folly::IOBuf> response) noexcept override;
 
   void sendStreamThriftResponse(
-      std::unique_ptr<ResponseRpcMetadata> metadata,
+      ResponseRpcMetadata&& metadata,
       std::unique_ptr<folly::IOBuf> response,
       apache::thrift::SemiStream<std::unique_ptr<folly::IOBuf>>
           stream) noexcept override;

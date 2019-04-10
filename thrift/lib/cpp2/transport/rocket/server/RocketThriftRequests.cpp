@@ -217,17 +217,16 @@ ThriftServerRequestResponse::ThriftServerRequestResponse(
 }
 
 void ThriftServerRequestResponse::sendThriftResponse(
-    std::unique_ptr<ResponseRpcMetadata> metadata,
+    ResponseRpcMetadata&& metadata,
     std::unique_ptr<folly::IOBuf> data) noexcept {
-  CHECK(metadata);
   auto responsePayload = Payload::makeFromMetadataAndData(
-      serializeMetadata(*metadata), std::move(data));
+      serializeMetadata(metadata), std::move(data));
   std::move(context_).sendPayload(
       std::move(responsePayload), Flags::none().next(true).complete(true));
 }
 
 void ThriftServerRequestResponse::sendStreamThriftResponse(
-    std::unique_ptr<ResponseRpcMetadata>,
+    ResponseRpcMetadata&&,
     std::unique_ptr<folly::IOBuf>,
     SemiStream<std::unique_ptr<folly::IOBuf>>) noexcept {
   LOG(FATAL) << "Single-response requests cannot send stream responses";
@@ -257,13 +256,13 @@ ThriftServerRequestFnf::~ThriftServerRequestFnf() {
 }
 
 void ThriftServerRequestFnf::sendThriftResponse(
-    std::unique_ptr<ResponseRpcMetadata>,
+    ResponseRpcMetadata&&,
     std::unique_ptr<folly::IOBuf>) noexcept {
   LOG(FATAL) << "One-way requests cannot send responses";
 }
 
 void ThriftServerRequestFnf::sendStreamThriftResponse(
-    std::unique_ptr<ResponseRpcMetadata>,
+    ResponseRpcMetadata&&,
     std::unique_ptr<folly::IOBuf>,
     SemiStream<std::unique_ptr<folly::IOBuf>>) noexcept {
   LOG(FATAL) << "One-way requests cannot send stream responses";
@@ -287,17 +286,17 @@ ThriftServerRequestStream::ThriftServerRequestStream(
 }
 
 void ThriftServerRequestStream::sendThriftResponse(
-    std::unique_ptr<ResponseRpcMetadata>,
+    ResponseRpcMetadata&&,
     std::unique_ptr<folly::IOBuf>) noexcept {
   LOG(FATAL) << "Stream requests must respond via sendStreamThriftResponse";
 }
 
 void ThriftServerRequestStream::sendStreamThriftResponse(
-    std::unique_ptr<ResponseRpcMetadata> metadata,
+    ResponseRpcMetadata&& metadata,
     std::unique_ptr<folly::IOBuf> data,
     SemiStream<std::unique_ptr<folly::IOBuf>> stream) noexcept {
   auto response = Payload::makeFromMetadataAndData(
-      serializeMetadata(*metadata), std::move(data));
+      serializeMetadata(metadata), std::move(data));
 
   if (stream) {
     const auto timeout = serverConfigs_.getStreamExpireTime();

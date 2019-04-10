@@ -37,7 +37,7 @@ class SingleRpcChannel : public H2Channel {
   virtual ~SingleRpcChannel() override;
 
   void sendThriftResponse(
-      std::unique_ptr<ResponseRpcMetadata> metadata,
+      ResponseRpcMetadata&& metadata,
       std::unique_ptr<folly::IOBuf> payload) noexcept override;
 
   virtual void sendThriftRequest(

@@ -62,12 +62,12 @@ class ThriftChannelIf : public std::enable_shared_from_this<ThriftChannelIf> {
   // Calls must be scheduled on the event base obtained from
   // "getEventBase()".
   virtual void sendThriftResponse(
-      std::unique_ptr<ResponseRpcMetadata> metadata,
+      ResponseRpcMetadata&& metadata,
       std::unique_ptr<folly::IOBuf> payload) noexcept = 0;
 
   // Stream response
   virtual void sendStreamThriftResponse(
-      std::unique_ptr<ResponseRpcMetadata> metadata,
+      ResponseRpcMetadata&& metadata,
       std::unique_ptr<folly::IOBuf> response,
       apache::thrift::SemiStream<std::unique_ptr<folly::IOBuf>>
           stream) noexcept = 0;
