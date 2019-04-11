@@ -19,9 +19,9 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 public final class StructWithSharedConst {
     @ThriftConstructor
     public StructWithSharedConst(
-        @ThriftField(value=1, name="opt_shared_const", requiredness=Requiredness.OPTIONAL, idlAnnotations = { @ThriftIdlAnnotation(key = "cpp.ref_type", value = "shared_const"), @ThriftIdlAnnotation(key = "cpp2.ref_type", value = "shared_const") }) final test.fixtures.refs.MyField optSharedConst,
-        @ThriftField(value=2, name="shared_const", requiredness=Requiredness.NONE, idlAnnotations = { @ThriftIdlAnnotation(key = "cpp.ref_type", value = "shared_const"), @ThriftIdlAnnotation(key = "cpp2.ref_type", value = "shared_const") }) final test.fixtures.refs.MyField sharedConst,
-        @ThriftField(value=3, name="req_shared_const", requiredness=Requiredness.REQUIRED, idlAnnotations = { @ThriftIdlAnnotation(key = "cpp.ref_type", value = "shared_const"), @ThriftIdlAnnotation(key = "cpp2.ref_type", value = "shared_const") }) final test.fixtures.refs.MyField reqSharedConst
+        @ThriftField(value=1, name="opt_shared_const", requiredness=Requiredness.OPTIONAL) final test.fixtures.refs.MyField optSharedConst,
+        @ThriftField(value=2, name="shared_const", requiredness=Requiredness.NONE) final test.fixtures.refs.MyField sharedConst,
+        @ThriftField(value=3, name="req_shared_const", requiredness=Requiredness.REQUIRED) final test.fixtures.refs.MyField reqSharedConst
     ) {
         this.optSharedConst = optSharedConst;
         this.sharedConst = sharedConst;
@@ -75,13 +75,13 @@ public final class StructWithSharedConst {
     private final test.fixtures.refs.MyField reqSharedConst;
 
     
-    @ThriftField(value=1, name="opt_shared_const", requiredness=Requiredness.OPTIONAL, idlAnnotations = { @ThriftIdlAnnotation(key = "cpp.ref_type", value = "shared_const"), @ThriftIdlAnnotation(key = "cpp2.ref_type", value = "shared_const") })
+    @ThriftField(value=1, name="opt_shared_const", requiredness=Requiredness.OPTIONAL)
     public test.fixtures.refs.MyField getOptSharedConst() { return optSharedConst; }
         
-    @ThriftField(value=2, name="shared_const", requiredness=Requiredness.NONE, idlAnnotations = { @ThriftIdlAnnotation(key = "cpp.ref_type", value = "shared_const"), @ThriftIdlAnnotation(key = "cpp2.ref_type", value = "shared_const") })
+    @ThriftField(value=2, name="shared_const", requiredness=Requiredness.NONE)
     public test.fixtures.refs.MyField getSharedConst() { return sharedConst; }
         
-    @ThriftField(value=3, name="req_shared_const", requiredness=Requiredness.REQUIRED, idlAnnotations = { @ThriftIdlAnnotation(key = "cpp.ref_type", value = "shared_const"), @ThriftIdlAnnotation(key = "cpp2.ref_type", value = "shared_const") })
+    @ThriftField(value=3, name="req_shared_const", requiredness=Requiredness.REQUIRED)
     public test.fixtures.refs.MyField getReqSharedConst() { return reqSharedConst; }
     
     @Override

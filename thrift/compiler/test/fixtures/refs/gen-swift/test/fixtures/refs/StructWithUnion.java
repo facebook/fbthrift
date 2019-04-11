@@ -19,7 +19,7 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 public final class StructWithUnion {
     @ThriftConstructor
     public StructWithUnion(
-        @ThriftField(value=1, name="u", requiredness=Requiredness.NONE, idlAnnotations = { @ThriftIdlAnnotation(key = "cpp.ref", value = "true") }) final test.fixtures.refs.MyUnion u,
+        @ThriftField(value=1, name="u", requiredness=Requiredness.NONE) final test.fixtures.refs.MyUnion u,
         @ThriftField(value=2, name="aDouble", requiredness=Requiredness.NONE) final double aDouble,
         @ThriftField(value=3, name="f", requiredness=Requiredness.NONE) final test.fixtures.refs.MyField f
     ) {
@@ -75,7 +75,7 @@ public final class StructWithUnion {
     private final test.fixtures.refs.MyField f;
 
     
-    @ThriftField(value=1, name="u", requiredness=Requiredness.NONE, idlAnnotations = { @ThriftIdlAnnotation(key = "cpp.ref", value = "true") })
+    @ThriftField(value=1, name="u", requiredness=Requiredness.NONE)
     public test.fixtures.refs.MyUnion getU() { return u; }
         
     @ThriftField(value=2, name="aDouble", requiredness=Requiredness.NONE)

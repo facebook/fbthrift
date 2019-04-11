@@ -19,7 +19,7 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 public final class StructWithRefAndAnnotCppNoexceptMoveCtor {
     @ThriftConstructor
     public StructWithRefAndAnnotCppNoexceptMoveCtor(
-        @ThriftField(value=1, name="def_field", requiredness=Requiredness.NONE, idlAnnotations = { @ThriftIdlAnnotation(key = "cpp.ref", value = "1") }) final test.fixtures.refs.Empty defField
+        @ThriftField(value=1, name="def_field", requiredness=Requiredness.NONE) final test.fixtures.refs.Empty defField
     ) {
         this.defField = defField;
     }
@@ -51,7 +51,7 @@ public final class StructWithRefAndAnnotCppNoexceptMoveCtor {
     private final test.fixtures.refs.Empty defField;
 
     
-    @ThriftField(value=1, name="def_field", requiredness=Requiredness.NONE, idlAnnotations = { @ThriftIdlAnnotation(key = "cpp.ref", value = "1") })
+    @ThriftField(value=1, name="def_field", requiredness=Requiredness.NONE)
     public test.fixtures.refs.Empty getDefField() { return defField; }
     
     @Override

@@ -19,12 +19,12 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 public final class StructWithContainers {
     @ThriftConstructor
     public StructWithContainers(
-        @ThriftField(value=1, name="list_ref", requiredness=Requiredness.NONE, idlAnnotations = { @ThriftIdlAnnotation(key = "cpp.ref", value = "true"), @ThriftIdlAnnotation(key = "cpp2.ref", value = "true") }) final List<Integer> listRef,
-        @ThriftField(value=2, name="set_ref", requiredness=Requiredness.NONE, idlAnnotations = { @ThriftIdlAnnotation(key = "cpp.ref", value = "true"), @ThriftIdlAnnotation(key = "cpp2.ref", value = "true") }) final Set<Integer> setRef,
-        @ThriftField(value=3, name="map_ref", requiredness=Requiredness.NONE, idlAnnotations = { @ThriftIdlAnnotation(key = "cpp.ref", value = "true"), @ThriftIdlAnnotation(key = "cpp2.ref", value = "true") }) final Map<Integer, Integer> mapRef,
-        @ThriftField(value=4, name="list_ref_unique", requiredness=Requiredness.NONE, idlAnnotations = { @ThriftIdlAnnotation(key = "cpp.ref_type", value = "unique"), @ThriftIdlAnnotation(key = "cpp2.ref_type", value = "unique") }) final List<Integer> listRefUnique,
-        @ThriftField(value=5, name="set_ref_shared", requiredness=Requiredness.NONE, idlAnnotations = { @ThriftIdlAnnotation(key = "cpp.ref_type", value = "shared"), @ThriftIdlAnnotation(key = "cpp2.ref_type", value = "shared") }) final Set<Integer> setRefShared,
-        @ThriftField(value=6, name="list_ref_shared_const", requiredness=Requiredness.NONE, idlAnnotations = { @ThriftIdlAnnotation(key = "cpp.ref_type", value = "shared_const"), @ThriftIdlAnnotation(key = "cpp2.ref_type", value = "shared_const") }) final List<Integer> listRefSharedConst
+        @ThriftField(value=1, name="list_ref", requiredness=Requiredness.NONE) final List<Integer> listRef,
+        @ThriftField(value=2, name="set_ref", requiredness=Requiredness.NONE) final Set<Integer> setRef,
+        @ThriftField(value=3, name="map_ref", requiredness=Requiredness.NONE) final Map<Integer, Integer> mapRef,
+        @ThriftField(value=4, name="list_ref_unique", requiredness=Requiredness.NONE) final List<Integer> listRefUnique,
+        @ThriftField(value=5, name="set_ref_shared", requiredness=Requiredness.NONE) final Set<Integer> setRefShared,
+        @ThriftField(value=6, name="list_ref_shared_const", requiredness=Requiredness.NONE) final List<Integer> listRefSharedConst
     ) {
         this.listRef = listRef;
         this.setRef = setRef;
@@ -111,22 +111,22 @@ public final class StructWithContainers {
     private final List<Integer> listRefSharedConst;
 
     
-    @ThriftField(value=1, name="list_ref", requiredness=Requiredness.NONE, idlAnnotations = { @ThriftIdlAnnotation(key = "cpp.ref", value = "true"), @ThriftIdlAnnotation(key = "cpp2.ref", value = "true") })
+    @ThriftField(value=1, name="list_ref", requiredness=Requiredness.NONE)
     public List<Integer> getListRef() { return listRef; }
         
-    @ThriftField(value=2, name="set_ref", requiredness=Requiredness.NONE, idlAnnotations = { @ThriftIdlAnnotation(key = "cpp.ref", value = "true"), @ThriftIdlAnnotation(key = "cpp2.ref", value = "true") })
+    @ThriftField(value=2, name="set_ref", requiredness=Requiredness.NONE)
     public Set<Integer> getSetRef() { return setRef; }
         
-    @ThriftField(value=3, name="map_ref", requiredness=Requiredness.NONE, idlAnnotations = { @ThriftIdlAnnotation(key = "cpp.ref", value = "true"), @ThriftIdlAnnotation(key = "cpp2.ref", value = "true") })
+    @ThriftField(value=3, name="map_ref", requiredness=Requiredness.NONE)
     public Map<Integer, Integer> getMapRef() { return mapRef; }
         
-    @ThriftField(value=4, name="list_ref_unique", requiredness=Requiredness.NONE, idlAnnotations = { @ThriftIdlAnnotation(key = "cpp.ref_type", value = "unique"), @ThriftIdlAnnotation(key = "cpp2.ref_type", value = "unique") })
+    @ThriftField(value=4, name="list_ref_unique", requiredness=Requiredness.NONE)
     public List<Integer> getListRefUnique() { return listRefUnique; }
         
-    @ThriftField(value=5, name="set_ref_shared", requiredness=Requiredness.NONE, idlAnnotations = { @ThriftIdlAnnotation(key = "cpp.ref_type", value = "shared"), @ThriftIdlAnnotation(key = "cpp2.ref_type", value = "shared") })
+    @ThriftField(value=5, name="set_ref_shared", requiredness=Requiredness.NONE)
     public Set<Integer> getSetRefShared() { return setRefShared; }
         
-    @ThriftField(value=6, name="list_ref_shared_const", requiredness=Requiredness.NONE, idlAnnotations = { @ThriftIdlAnnotation(key = "cpp.ref_type", value = "shared_const"), @ThriftIdlAnnotation(key = "cpp2.ref_type", value = "shared_const") })
+    @ThriftField(value=6, name="list_ref_shared_const", requiredness=Requiredness.NONE)
     public List<Integer> getListRefSharedConst() { return listRefSharedConst; }
     
     @Override

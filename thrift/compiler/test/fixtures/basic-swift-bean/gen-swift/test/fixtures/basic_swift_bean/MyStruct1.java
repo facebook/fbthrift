@@ -53,7 +53,7 @@ public final class MyStruct1 {
         return this;
     }
         
-    @ThriftField(value=4, name="major", requiredness=Requiredness.NONE, idlAnnotations = { @ThriftIdlAnnotation(key = "cpp.name", value = "majorVer") })
+    @ThriftField(value=4, name="major", requiredness=Requiredness.NONE)
     public long getMajor() { return major; }
     
     @ThriftField

@@ -19,9 +19,9 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 public final class StructWithRefTypeUnique {
     @ThriftConstructor
     public StructWithRefTypeUnique(
-        @ThriftField(value=1, name="def_field", requiredness=Requiredness.NONE, idlAnnotations = { @ThriftIdlAnnotation(key = "cpp.ref_type", value = "unique") }) final test.fixtures.refs.Empty defField,
-        @ThriftField(value=2, name="opt_field", requiredness=Requiredness.OPTIONAL, idlAnnotations = { @ThriftIdlAnnotation(key = "cpp.ref_type", value = "unique") }) final test.fixtures.refs.Empty optField,
-        @ThriftField(value=3, name="req_field", requiredness=Requiredness.REQUIRED, idlAnnotations = { @ThriftIdlAnnotation(key = "cpp.ref_type", value = "unique") }) final test.fixtures.refs.Empty reqField
+        @ThriftField(value=1, name="def_field", requiredness=Requiredness.NONE) final test.fixtures.refs.Empty defField,
+        @ThriftField(value=2, name="opt_field", requiredness=Requiredness.OPTIONAL) final test.fixtures.refs.Empty optField,
+        @ThriftField(value=3, name="req_field", requiredness=Requiredness.REQUIRED) final test.fixtures.refs.Empty reqField
     ) {
         this.defField = defField;
         this.optField = optField;
@@ -75,13 +75,13 @@ public final class StructWithRefTypeUnique {
     private final test.fixtures.refs.Empty reqField;
 
     
-    @ThriftField(value=1, name="def_field", requiredness=Requiredness.NONE, idlAnnotations = { @ThriftIdlAnnotation(key = "cpp.ref_type", value = "unique") })
+    @ThriftField(value=1, name="def_field", requiredness=Requiredness.NONE)
     public test.fixtures.refs.Empty getDefField() { return defField; }
         
-    @ThriftField(value=2, name="opt_field", requiredness=Requiredness.OPTIONAL, idlAnnotations = { @ThriftIdlAnnotation(key = "cpp.ref_type", value = "unique") })
+    @ThriftField(value=2, name="opt_field", requiredness=Requiredness.OPTIONAL)
     public test.fixtures.refs.Empty getOptField() { return optField; }
         
-    @ThriftField(value=3, name="req_field", requiredness=Requiredness.REQUIRED, idlAnnotations = { @ThriftIdlAnnotation(key = "cpp.ref_type", value = "unique") })
+    @ThriftField(value=3, name="req_field", requiredness=Requiredness.REQUIRED)
     public test.fixtures.refs.Empty getReqField() { return reqField; }
     
     @Override

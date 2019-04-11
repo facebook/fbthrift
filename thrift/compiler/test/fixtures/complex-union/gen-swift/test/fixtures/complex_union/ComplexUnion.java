@@ -122,7 +122,7 @@ public final class ComplexUnion {
         return this.id == 9;
     }
 
-    @ThriftField(value=14, name="stringRef", requiredness=Requiredness.NONE, idlAnnotations = { @ThriftIdlAnnotation(key = "cpp2.ref", value = "true") })
+    @ThriftField(value=14, name="stringRef", requiredness=Requiredness.NONE)
     public String getStringRef() {
         if (this.id != 14) {
             throw new IllegalStateException("Not a stringRef element!");

@@ -19,7 +19,7 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 public final class RecursiveStruct {
     @ThriftConstructor
     public RecursiveStruct(
-        @ThriftField(value=1, name="mes", requiredness=Requiredness.OPTIONAL, idlAnnotations = { @ThriftIdlAnnotation(key = "swift.recursive_reference", value = "true") }, isRecursive=Recursiveness.TRUE) final List<test.fixtures.refs.RecursiveStruct> mes
+        @ThriftField(value=1, name="mes", requiredness=Requiredness.OPTIONAL, isRecursive=Recursiveness.TRUE) final List<test.fixtures.refs.RecursiveStruct> mes
     ) {
         this.mes = mes;
     }
@@ -51,7 +51,7 @@ public final class RecursiveStruct {
     private final List<test.fixtures.refs.RecursiveStruct> mes;
 
     
-    @ThriftField(value=1, name="mes", requiredness=Requiredness.OPTIONAL, idlAnnotations = { @ThriftIdlAnnotation(key = "swift.recursive_reference", value = "true") }, isRecursive=Recursiveness.TRUE)
+    @ThriftField(value=1, name="mes", requiredness=Requiredness.OPTIONAL, isRecursive=Recursiveness.TRUE)
     public List<test.fixtures.refs.RecursiveStruct> getMes() { return mes; }
     
     @Override

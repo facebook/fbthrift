@@ -22,9 +22,9 @@ public final class MyStruct {
         @ThriftField(value=1, name="MyIntField", requiredness=Requiredness.NONE) final long myIntField,
         @ThriftField(value=2, name="MyStringField", requiredness=Requiredness.NONE) final String myStringField,
         @ThriftField(value=3, name="MyDataField", requiredness=Requiredness.NONE) final test.fixtures.basic.MyDataItem myDataField,
-        @ThriftField(value=4, name="major", requiredness=Requiredness.NONE, idlAnnotations = { @ThriftIdlAnnotation(key = "cpp.name", value = "majorVer") }) final long major,
+        @ThriftField(value=4, name="major", requiredness=Requiredness.NONE) final long major,
         @ThriftField(value=5, name="myEnum", requiredness=Requiredness.NONE) final test.fixtures.basic.MyEnum myEnum,
-        @ThriftField(value=6, name="package", requiredness=Requiredness.NONE, idlAnnotations = { @ThriftIdlAnnotation(key = "java.swift.name", value = "_package") }) final String _package
+        @ThriftField(value=6, name="package", requiredness=Requiredness.NONE) final String _package
     ) {
         this.myIntField = myIntField;
         this.myStringField = myStringField;
@@ -120,13 +120,13 @@ public final class MyStruct {
     @ThriftField(value=3, name="MyDataField", requiredness=Requiredness.NONE)
     public test.fixtures.basic.MyDataItem getMyDataField() { return myDataField; }
         
-    @ThriftField(value=4, name="major", requiredness=Requiredness.NONE, idlAnnotations = { @ThriftIdlAnnotation(key = "cpp.name", value = "majorVer") })
+    @ThriftField(value=4, name="major", requiredness=Requiredness.NONE)
     public long getMajor() { return major; }
         
     @ThriftField(value=5, name="myEnum", requiredness=Requiredness.NONE)
     public test.fixtures.basic.MyEnum getMyEnum() { return myEnum; }
         
-    @ThriftField(value=6, name="package", requiredness=Requiredness.NONE, idlAnnotations = { @ThriftIdlAnnotation(key = "java.swift.name", value = "_package") })
+    @ThriftField(value=6, name="package", requiredness=Requiredness.NONE)
     public String getPackage() { return _package; }
     
     @Override

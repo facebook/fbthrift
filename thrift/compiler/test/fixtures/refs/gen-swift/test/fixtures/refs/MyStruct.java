@@ -19,9 +19,9 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 public final class MyStruct {
     @ThriftConstructor
     public MyStruct(
-        @ThriftField(value=1, name="opt_ref", requiredness=Requiredness.OPTIONAL, idlAnnotations = { @ThriftIdlAnnotation(key = "cpp.ref", value = "true"), @ThriftIdlAnnotation(key = "cpp2.ref", value = "true") }) final test.fixtures.refs.MyField optRef,
-        @ThriftField(value=2, name="ref", requiredness=Requiredness.NONE, idlAnnotations = { @ThriftIdlAnnotation(key = "cpp.ref", value = "true"), @ThriftIdlAnnotation(key = "cpp2.ref", value = "true") }) final test.fixtures.refs.MyField ref,
-        @ThriftField(value=3, name="req_ref", requiredness=Requiredness.REQUIRED, idlAnnotations = { @ThriftIdlAnnotation(key = "cpp.ref", value = "true"), @ThriftIdlAnnotation(key = "cpp2.ref", value = "true") }) final test.fixtures.refs.MyField reqRef
+        @ThriftField(value=1, name="opt_ref", requiredness=Requiredness.OPTIONAL) final test.fixtures.refs.MyField optRef,
+        @ThriftField(value=2, name="ref", requiredness=Requiredness.NONE) final test.fixtures.refs.MyField ref,
+        @ThriftField(value=3, name="req_ref", requiredness=Requiredness.REQUIRED) final test.fixtures.refs.MyField reqRef
     ) {
         this.optRef = optRef;
         this.ref = ref;
@@ -75,13 +75,13 @@ public final class MyStruct {
     private final test.fixtures.refs.MyField reqRef;
 
     
-    @ThriftField(value=1, name="opt_ref", requiredness=Requiredness.OPTIONAL, idlAnnotations = { @ThriftIdlAnnotation(key = "cpp.ref", value = "true"), @ThriftIdlAnnotation(key = "cpp2.ref", value = "true") })
+    @ThriftField(value=1, name="opt_ref", requiredness=Requiredness.OPTIONAL)
     public test.fixtures.refs.MyField getOptRef() { return optRef; }
         
-    @ThriftField(value=2, name="ref", requiredness=Requiredness.NONE, idlAnnotations = { @ThriftIdlAnnotation(key = "cpp.ref", value = "true"), @ThriftIdlAnnotation(key = "cpp2.ref", value = "true") })
+    @ThriftField(value=2, name="ref", requiredness=Requiredness.NONE)
     public test.fixtures.refs.MyField getRef() { return ref; }
         
-    @ThriftField(value=3, name="req_ref", requiredness=Requiredness.REQUIRED, idlAnnotations = { @ThriftIdlAnnotation(key = "cpp.ref", value = "true"), @ThriftIdlAnnotation(key = "cpp2.ref", value = "true") })
+    @ThriftField(value=3, name="req_ref", requiredness=Requiredness.REQUIRED)
     public test.fixtures.refs.MyField getReqRef() { return reqRef; }
     
     @Override
