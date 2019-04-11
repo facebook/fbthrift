@@ -61,18 +61,14 @@ void CoreTestFixture::serializeSumTwoNumbers(
   auto writer = std::make_unique<apache::thrift::CompactProtocolWriter>();
   writer->setOutput(request);
   args.write(writer.get());
-  metadata->protocol = ProtocolId::COMPACT;
-  metadata->__isset.protocol = true;
+  metadata->protocol_ref() = ProtocolId::COMPACT;
   if (wrongMethodName) {
-    metadata->name = "wrongMethodName";
+    metadata->name_ref() = "wrongMethodName";
   } else {
-    metadata->name = "sumTwoNumbers";
+    metadata->name_ref() = "sumTwoNumbers";
   }
-  metadata->__isset.name = true;
-  metadata->kind = RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE;
-  metadata->__isset.kind = true;
-  metadata->seqId = 0;
-  metadata->__isset.seqId = true;
+  metadata->kind_ref() = RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE;
+  metadata->seqId_ref() = 0;
 }
 
 int32_t CoreTestFixture::deserializeSumTwoNumbers(folly::IOBuf* buf) {
@@ -93,10 +89,10 @@ int32_t CoreTestFixture::deserializeSumTwoNumbers(folly::IOBuf* buf) {
 RequestRpcMetadata
 CoreTestFixture::makeMetadata(std::string name, int32_t seqId, RpcKind kind) {
   RequestRpcMetadata metadata;
-  metadata.set_protocol(ProtocolId::COMPACT);
-  metadata.set_name(name);
-  metadata.set_seqId(seqId);
-  metadata.set_kind(kind);
+  metadata.protocol_ref() = ProtocolId::COMPACT;
+  metadata.name_ref() = name;
+  metadata.seqId_ref() = seqId;
+  metadata.kind_ref() = kind;
   return metadata;
 }
 

@@ -190,31 +190,25 @@ std::unique_ptr<RequestRpcMetadata> ThriftClient::createRequestRpcMetadata(
     apache::thrift::ProtocolId protocolId,
     THeader* header) {
   auto metadata = std::make_unique<RequestRpcMetadata>();
-  metadata->protocol = protocolId;
-  metadata->__isset.protocol = true;
-  metadata->kind = kind;
-  metadata->__isset.kind = true;
+  metadata->protocol_ref() = protocolId;
+  metadata->kind_ref() = kind;
   if (!httpHost_.empty()) {
-    metadata->host = httpHost_;
-    metadata->__isset.host = true;
+    metadata->host_ref() = httpHost_;
   }
   if (!httpUrl_.empty()) {
-    metadata->url = httpUrl_;
-    metadata->__isset.url = true;
+    metadata->url_ref() = httpUrl_;
   }
   if (rpcOptions.getTimeout() > std::chrono::milliseconds(0)) {
-    metadata->clientTimeoutMs = rpcOptions.getTimeout().count();
+    metadata->clientTimeoutMs_ref() = rpcOptions.getTimeout().count();
   } else {
-    metadata->clientTimeoutMs = kDefaultRpcTimeout.count();
+    metadata->clientTimeoutMs_ref() = kDefaultRpcTimeout.count();
   }
-  metadata->__isset.clientTimeoutMs = true;
   if (rpcOptions.getQueueTimeout() > std::chrono::milliseconds(0)) {
-    metadata->queueTimeoutMs = rpcOptions.getQueueTimeout().count();
-    metadata->__isset.queueTimeoutMs = true;
+    metadata->queueTimeoutMs_ref() = rpcOptions.getQueueTimeout().count();
   }
   if (rpcOptions.getPriority() < concurrency::N_PRIORITIES) {
-    metadata->priority = static_cast<RpcPriority>(rpcOptions.getPriority());
-    metadata->__isset.priority = true;
+    metadata->priority_ref() =
+        static_cast<RpcPriority>(rpcOptions.getPriority());
   }
   if (header->getCrc32c().hasValue()) {
     metadata->crc32c_ref() = header->getCrc32c().value();

@@ -26,6 +26,13 @@ namespace thrift {
 
 using namespace rsocket;
 
+namespace {
+bool isValidMetadata(const RequestRpcMetadata& metadata) {
+  return metadata.protocol_ref() && metadata.name_ref() &&
+      metadata.kind_ref() && metadata.seqId_ref();
+}
+} // namespace
+
 RSResponder::RSResponder(
     std::shared_ptr<Cpp2Worker> worker,
     const folly::SocketAddress& clientAddress,
@@ -104,8 +111,7 @@ void RSResponder::handleRequestResponse(
   ParseStatus parseStatus = PARSED_OK;
   RequestRpcMetadata metadata;
   if (!(detail::deserializeMetadata(*request.metadata, metadata) &&
-        metadata.__isset.protocol && metadata.__isset.name &&
-        metadata.__isset.kind && metadata.__isset.seqId)) {
+        isValidMetadata(metadata))) {
     parseStatus = PARSED_METADATA_ERROR;
   } else if (auto crc32c = metadata.crc32c_ref()) {
     if (*crc32c != checksum::crc32c(*request.data)) {
@@ -129,8 +135,7 @@ void RSResponder::handleFireAndForget(Payload request, StreamId) {
   ParseStatus parseStatus = PARSED_OK;
   RequestRpcMetadata metadata;
   if (!(detail::deserializeMetadata(*request.metadata, metadata) &&
-        metadata.__isset.protocol && metadata.__isset.name &&
-        metadata.__isset.kind && metadata.__isset.seqId)) {
+        isValidMetadata(metadata))) {
     parseStatus = PARSED_METADATA_ERROR;
   } else if (auto crc32c = metadata.crc32c_ref()) {
     if (*crc32c != checksum::crc32c(*request.data)) {
@@ -163,8 +168,7 @@ void RSResponder::handleRequestStream(
   ParseStatus parseStatus = PARSED_OK;
   RequestRpcMetadata metadata;
   if (!(detail::deserializeMetadata(*request.metadata, metadata) &&
-        metadata.__isset.protocol && metadata.__isset.name &&
-        metadata.__isset.kind && metadata.__isset.seqId)) {
+        isValidMetadata(metadata))) {
     parseStatus = PARSED_METADATA_ERROR;
   } else if (auto crc32c = metadata.crc32c_ref()) {
     if (*crc32c != checksum::crc32c(*request.data)) {

@@ -90,8 +90,8 @@ void SingleRpcChannel::sendThriftResponse(
   if (responseHandler_) {
     HTTPMessage msg;
     msg.setStatusCode(200);
-    if (metadata.__isset.otherMetadata) {
-      encodeHeaders(std::move(metadata.otherMetadata), msg);
+    if (auto otherMetadata = metadata.otherMetadata_ref()) {
+      encodeHeaders(std::move(*otherMetadata), msg);
     }
     responseHandler_->sendHeaders(msg);
     responseHandler_->sendBody(std::move(payload));
@@ -105,7 +105,7 @@ void SingleRpcChannel::sendThriftRequest(
     std::unique_ptr<IOBuf> payload,
     std::unique_ptr<ThriftClientCallback> callback) noexcept {
   DCHECK(evb_->isInEventBaseThread());
-  DCHECK(metadata.__isset.kind);
+  DCHECK(metadata.kind_ref());
   DCHECK(
       metadata.kind == RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE ||
       metadata.kind == RpcKind::SINGLE_REQUEST_NO_RESPONSE);
@@ -132,27 +132,27 @@ void SingleRpcChannel::sendThriftRequest(
   msgHeaders.set(HTTPHeaderCode::HTTP_HEADER_USER_AGENT, "C++/THttpClient");
   msgHeaders.set(
       HTTPHeaderCode::HTTP_HEADER_CONTENT_TYPE, "application/x-thrift");
-  if (metadata.__isset.clientTimeoutMs) {
-    DCHECK(metadata.clientTimeoutMs > 0);
+  if (auto clientTimeoutMs = metadata.clientTimeoutMs_ref()) {
+    DCHECK(*clientTimeoutMs > 0);
     httpTransaction_->setIdleTimeout(
-        std::chrono::milliseconds(metadata.clientTimeoutMs));
+        std::chrono::milliseconds(*clientTimeoutMs));
   }
 
-  if (metadata.__isset.clientTimeoutMs) {
+  if (auto clientTimeoutMs = metadata.clientTimeoutMs_ref()) {
     metadata.otherMetadata[transport::THeader::CLIENT_TIMEOUT_HEADER] =
-        folly::to<string>(metadata.clientTimeoutMs);
+        folly::to<string>(*clientTimeoutMs);
   }
-  if (metadata.__isset.queueTimeoutMs) {
-    DCHECK(metadata.queueTimeoutMs > 0);
+  if (auto queueTimeoutMs = metadata.queueTimeoutMs_ref()) {
+    DCHECK(*queueTimeoutMs > 0);
     metadata.otherMetadata[transport::THeader::QUEUE_TIMEOUT_HEADER] =
-        folly::to<string>(metadata.queueTimeoutMs);
+        folly::to<string>(*queueTimeoutMs);
   }
-  if (metadata.__isset.priority) {
+  if (auto priority = metadata.priority_ref()) {
     metadata.otherMetadata[transport::THeader::PRIORITY_HEADER] =
-        folly::to<string>(metadata.priority);
+        folly::to<string>(*priority);
   }
-  if (metadata.__isset.kind) {
-    metadata.otherMetadata[RPC_KIND.str()] = folly::to<string>(metadata.kind);
+  if (auto kind = metadata.kind_ref()) {
+    metadata.otherMetadata[RPC_KIND.str()] = folly::to<string>(*kind);
   }
   encodeHeaders(std::move(metadata.otherMetadata), msg);
   httpTransaction_->sendHeaders(msg);
@@ -252,12 +252,12 @@ void SingleRpcChannel::onThriftRequest() noexcept {
     return;
   }
   // Default Single Request Single Response
-  metadata.set_kind(RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE);
+  metadata.kind_ref() = RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE;
   extractHeaderInfo(&metadata);
 
-  DCHECK(metadata.__isset.protocol);
-  DCHECK(metadata.__isset.name);
-  DCHECK(metadata.__isset.kind);
+  DCHECK(metadata.protocol_ref());
+  DCHECK(metadata.name_ref());
+  DCHECK(metadata.kind_ref());
   if (*metadata.kind_ref() == RpcKind::SINGLE_REQUEST_NO_RESPONSE) {
     // Send a dummy response for the oneway call since we need to do
     // this with HTTP2.
@@ -266,7 +266,7 @@ void SingleRpcChannel::onThriftRequest() noexcept {
     sendThriftResponse(std::move(responseMetadata), std::move(payload));
     receivedThriftRPC_ = true;
   }
-  metadata.set_seqId(0);
+  metadata.seqId_ref() = 0;
   auto connContext =
       std::make_unique<Cpp2ConnContext>(&headers_->getClientAddress());
   processor_->onThriftRequest(
@@ -314,8 +314,7 @@ void SingleRpcChannel::onThriftResponse() noexcept {
   map<string, string> headers;
   decodeHeaders(*headers_, headers);
   if (!headers.empty()) {
-    metadata.otherMetadata = std::move(headers);
-    metadata.__isset.otherMetadata = true;
+    metadata.otherMetadata_ref() = std::move(headers);
   }
 
   // We don't need to set any of the other fields in metadata currently.
@@ -334,8 +333,7 @@ void SingleRpcChannel::extractHeaderInfo(
   auto iter = headers.find(transport::THeader::CLIENT_TIMEOUT_HEADER);
   if (iter != headers.end()) {
     try {
-      metadata->clientTimeoutMs = folly::to<int64_t>(iter->second);
-      metadata->__isset.clientTimeoutMs = true;
+      metadata->clientTimeoutMs_ref() = folly::to<int64_t>(iter->second);
     } catch (const std::range_error&) {
       LOG(INFO) << "Bad client timeout " << iter->second;
     }
@@ -344,8 +342,7 @@ void SingleRpcChannel::extractHeaderInfo(
   iter = headers.find(transport::THeader::QUEUE_TIMEOUT_HEADER);
   if (iter != headers.end()) {
     try {
-      metadata->queueTimeoutMs = folly::to<int64_t>(iter->second);
-      metadata->__isset.queueTimeoutMs = true;
+      metadata->queueTimeoutMs_ref() = folly::to<int64_t>(iter->second);
     } catch (const std::range_error&) {
       LOG(INFO) << "Bad client timeout " << iter->second;
     }
@@ -356,8 +353,7 @@ void SingleRpcChannel::extractHeaderInfo(
     try {
       auto pr = static_cast<RpcPriority>(folly::to<int32_t>(iter->second));
       if (pr < RpcPriority::N_PRIORITIES) {
-        metadata->priority = pr;
-        metadata->__isset.priority = true;
+        metadata->priority_ref() = pr;
       } else {
         LOG(INFO) << "Too large value for method priority " << iter->second;
       }
@@ -369,16 +365,15 @@ void SingleRpcChannel::extractHeaderInfo(
   iter = headers.find(RPC_KIND.str());
   if (iter != headers.end()) {
     try {
-      metadata->kind = static_cast<RpcKind>(folly::to<int32_t>(iter->second));
-      metadata->__isset.kind = true;
+      metadata->kind_ref() =
+          static_cast<RpcKind>(folly::to<int32_t>(iter->second));
     } catch (const std::range_error&) {
       LOG(INFO) << "Bad Request Kind " << iter->second;
     }
     headers.erase(iter);
   }
   if (!headers.empty()) {
-    metadata->otherMetadata = std::move(headers);
-    metadata->__isset.otherMetadata = true;
+    metadata->otherMetadata_ref() = std::move(headers);
   }
 }
 
@@ -387,8 +382,7 @@ void SingleRpcChannel::sendThriftErrorResponse(
     ProtocolId protoId,
     const string& name) noexcept {
   ResponseRpcMetadata responseMetadata;
-  responseMetadata.protocol = protoId;
-  responseMetadata.__isset.protocol = true;
+  responseMetadata.protocol_ref() = protoId;
   // Not setting the "ex" header since these errors do not fit into any
   // of the existing error categories.
   TApplicationException tae(message);

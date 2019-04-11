@@ -48,7 +48,7 @@ void deserializeMetadata(
                << folly::exceptionStr(e);
     // Return an invalid metadata object instead of potentially valid partially
     // deserialized one.
-    metadata.__isset.protocol = false;
+    metadata.protocol_ref().reset();
   }
 }
 } // namespace
@@ -430,8 +430,8 @@ void RSocketClientChannel::sendThriftRequest(
         std::move(ctx)));
     return;
   }
-  metadata.set_seqId(0);
-  DCHECK(metadata.__isset.kind);
+  metadata.seqId_ref() = 0;
+  DCHECK(metadata.kind_ref());
 
   if (!connectionStatus_->isConnected()) {
     folly::RequestContextScopeGuard rctx(cb->context_);

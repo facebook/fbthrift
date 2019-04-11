@@ -127,9 +127,7 @@ TEST(YarplStreamImplTest, EncodeDecode) {
 
   Message mIn;
   mIn.set_message("Test Message");
-  mIn.__isset.message = true;
   mIn.set_timestamp(2015);
-  mIn.__isset.timestamp = true;
 
   auto flowable = Flowable<>::justN({mIn});
   auto inStream = toStream(std::move(flowable), evbThread.getEventBase());

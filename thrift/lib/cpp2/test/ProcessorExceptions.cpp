@@ -71,8 +71,7 @@ int32_t call_return42(std::function<void(MyArgs2&)> isset_cb) {
   SampleService2AsyncClient client(HeaderClientChannel::newChannel(socket));
 
   Inner2 inner;
-  inner.i = 7;
-  inner.__isset.i = true;
+  inner.i_ref() = 7;
   MyArgs2 args;
   args.s = "qwerty";
   args.l = {1,2,3};

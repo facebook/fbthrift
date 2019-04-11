@@ -42,15 +42,15 @@ bool deserializeMetadata(
     CompactProtocolReader reader;
     reader.setInput(&buffer);
     metadata.read(&reader);
-    DCHECK(metadata.__isset.kind);
-    DCHECK(metadata.__isset.seqId);
+    DCHECK(metadata.kind_ref());
+    DCHECK(metadata.seqId_ref());
     return true;
   } catch (const std::exception& e) {
     LOG(ERROR) << "Exception on deserializing metadata: "
                << folly::exceptionStr(e);
     // Return an invalid metadata object instead of potentially valid partially
     // deserialized one.
-    metadata.__isset.kind = false;
+    metadata.kind_ref().reset();
     return false;
   }
 }
