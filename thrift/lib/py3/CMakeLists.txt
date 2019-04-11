@@ -87,4 +87,10 @@ endforeach()
 
 include_directories(${PYTHON_INCLUDE_DIRS})
 
+# Install Folly Python Bindings using Python setuptools
+install(CODE "
+  execute_process(COMMAND
+  python3 ${CMAKE_CURRENT_SOURCE_DIR}/setup.py install
+  WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/cybld)")
+
 add_subdirectory(test)
