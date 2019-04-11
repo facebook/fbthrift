@@ -124,16 +124,16 @@ func (p *MyServicePrioChildThreadsafeClient) recvPang() (err error) {
     return
   }
   if mTypeId == thrift.EXCEPTION {
-    error44 := thrift.NewApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
-    var error45 error
-    error45, err = error44.Read(iprot)
+    error46 := thrift.NewApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
+    var error47 error
+    error47, err = error46.Read(iprot)
     if err != nil {
       return
     }
     if err = iprot.ReadMessageEnd(); err != nil {
       return
     }
-    err = error45
+    err = error47
     return
   }
   if mTypeId != thrift.REPLY {
@@ -156,9 +156,9 @@ type MyServicePrioChildProcessor struct {
 }
 
 func NewMyServicePrioChildProcessor(handler MyServicePrioChild) *MyServicePrioChildProcessor {
-  self46 := &MyServicePrioChildProcessor{NewMyServicePrioParentProcessor(handler)}
-  self46.AddToProcessorMap("pang", &myServicePrioChildProcessorPang{handler:handler})
-  return self46
+  self48 := &MyServicePrioChildProcessor{NewMyServicePrioParentProcessor(handler)}
+  self48.AddToProcessorMap("pang", &myServicePrioChildProcessorPang{handler:handler})
+  return self48
 }
 
 type myServicePrioChildProcessorPang struct {

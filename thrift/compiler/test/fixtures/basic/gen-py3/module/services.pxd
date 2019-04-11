@@ -15,6 +15,7 @@ cdef class MyServiceInterface(ServiceInterface):
     cdef public bint _pass_context_getDataById
     cdef public bint _pass_context_putDataById
     cdef public bint _pass_context_lobDataById
+    cdef public bint _pass_context_doNothing
     pass
 
 cdef class MyServiceFastInterface(ServiceInterface):

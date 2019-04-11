@@ -108,16 +108,16 @@ public class MyServicePrioChild {
       super(protocolFactory, clientManager, transport);
     }
 
-    public void pang(AsyncMethodCallback resultHandler88) throws TException {
+    public void pang(AsyncMethodCallback resultHandler94) throws TException {
       checkReady();
-      pang_call method_call = new pang_call(resultHandler88, this, ___protocolFactory, ___transport);
+      pang_call method_call = new pang_call(resultHandler94, this, ___protocolFactory, ___transport);
       this.___currentMethod = method_call;
       ___manager.call(method_call);
     }
 
     public static class pang_call extends TAsyncMethodCall {
-      public pang_call(AsyncMethodCallback resultHandler89, TAsyncClient client85, TProtocolFactory protocolFactory86, TNonblockingTransport transport87) throws TException {
-        super(client85, protocolFactory86, transport87, resultHandler89, false);
+      public pang_call(AsyncMethodCallback resultHandler95, TAsyncClient client91, TProtocolFactory protocolFactory92, TNonblockingTransport transport93) throws TException {
+        super(client91, protocolFactory92, transport93, resultHandler95, false);
       }
 
       public void write_args(TProtocol prot) throws TException {

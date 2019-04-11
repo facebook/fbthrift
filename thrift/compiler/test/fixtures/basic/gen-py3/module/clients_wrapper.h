@@ -58,6 +58,8 @@ class MyServiceClientWrapper {
       apache::thrift::RpcOptions& rpcOptions,
       int64_t arg_id,
       std::string arg_data);
+    folly::Future<folly::Unit> doNothing(
+      apache::thrift::RpcOptions& rpcOptions);
 };
 
 

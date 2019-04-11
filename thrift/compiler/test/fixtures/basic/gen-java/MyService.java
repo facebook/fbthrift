@@ -40,6 +40,8 @@ public class MyService {
 
     public void lobDataById(long id, String data) throws TException;
 
+    public void doNothing() throws TException;
+
   }
 
   public interface AsyncIface {
@@ -55,6 +57,8 @@ public class MyService {
     public void putDataById(long id, String data, AsyncMethodCallback resultHandler) throws TException;
 
     public void lobDataById(long id, String data, AsyncMethodCallback resultHandler) throws TException;
+
+    public void doNothing(AsyncMethodCallback resultHandler) throws TException;
 
   }
 
@@ -327,6 +331,47 @@ public class MyService {
       return;
     }
 
+    public void doNothing() throws TException
+    {
+      ContextStack ctx = getContextStack("MyService.doNothing", null);
+      this.setContextStack(ctx);
+      send_doNothing();
+      recv_doNothing();
+    }
+
+    public void send_doNothing() throws TException
+    {
+      ContextStack ctx = this.getContextStack();
+      super.preWrite(ctx, "MyService.doNothing", null);
+      oprot_.writeMessageBegin(new TMessage("doNothing", TMessageType.CALL, seqid_));
+      doNothing_args args = new doNothing_args();
+      args.write(oprot_);
+      oprot_.writeMessageEnd();
+      oprot_.getTransport().flush();
+      super.postWrite(ctx, "MyService.doNothing", args);
+      return;
+    }
+
+    public void recv_doNothing() throws TException
+    {
+      ContextStack ctx = super.getContextStack();
+      long bytes;
+      TMessageType mtype;
+      super.preRead(ctx, "MyService.doNothing");
+      TMessage msg = iprot_.readMessageBegin();
+      if (msg.type == TMessageType.EXCEPTION) {
+        TApplicationException x = TApplicationException.read(iprot_);
+        iprot_.readMessageEnd();
+        throw x;
+      }
+      doNothing_result result = new doNothing_result();
+      result.read(iprot_);
+      iprot_.readMessageEnd();
+      super.postRead(ctx, "MyService.doNothing", result);
+
+      return;
+    }
+
   }
   public static class AsyncClient extends TAsyncClient implements AsyncIface {
     public static class Factory implements TAsyncClientFactory<AsyncClient> {
@@ -345,16 +390,16 @@ public class MyService {
       super(protocolFactory, clientManager, transport);
     }
 
-    public void ping(AsyncMethodCallback resultHandler9) throws TException {
+    public void ping(AsyncMethodCallback resultHandler10) throws TException {
       checkReady();
-      ping_call method_call = new ping_call(resultHandler9, this, ___protocolFactory, ___transport);
+      ping_call method_call = new ping_call(resultHandler10, this, ___protocolFactory, ___transport);
       this.___currentMethod = method_call;
       ___manager.call(method_call);
     }
 
     public static class ping_call extends TAsyncMethodCall {
-      public ping_call(AsyncMethodCallback resultHandler10, TAsyncClient client6, TProtocolFactory protocolFactory7, TNonblockingTransport transport8) throws TException {
-        super(client6, protocolFactory7, transport8, resultHandler10, false);
+      public ping_call(AsyncMethodCallback resultHandler11, TAsyncClient client7, TProtocolFactory protocolFactory8, TNonblockingTransport transport9) throws TException {
+        super(client7, protocolFactory8, transport9, resultHandler11, false);
       }
 
       public void write_args(TProtocol prot) throws TException {
@@ -374,16 +419,16 @@ public class MyService {
       }
     }
 
-    public void getRandomData(AsyncMethodCallback resultHandler14) throws TException {
+    public void getRandomData(AsyncMethodCallback resultHandler15) throws TException {
       checkReady();
-      getRandomData_call method_call = new getRandomData_call(resultHandler14, this, ___protocolFactory, ___transport);
+      getRandomData_call method_call = new getRandomData_call(resultHandler15, this, ___protocolFactory, ___transport);
       this.___currentMethod = method_call;
       ___manager.call(method_call);
     }
 
     public static class getRandomData_call extends TAsyncMethodCall {
-      public getRandomData_call(AsyncMethodCallback resultHandler15, TAsyncClient client11, TProtocolFactory protocolFactory12, TNonblockingTransport transport13) throws TException {
-        super(client11, protocolFactory12, transport13, resultHandler15, false);
+      public getRandomData_call(AsyncMethodCallback resultHandler16, TAsyncClient client12, TProtocolFactory protocolFactory13, TNonblockingTransport transport14) throws TException {
+        super(client12, protocolFactory13, transport14, resultHandler16, false);
       }
 
       public void write_args(TProtocol prot) throws TException {
@@ -403,17 +448,17 @@ public class MyService {
       }
     }
 
-    public void hasDataById(long id, AsyncMethodCallback resultHandler19) throws TException {
+    public void hasDataById(long id, AsyncMethodCallback resultHandler20) throws TException {
       checkReady();
-      hasDataById_call method_call = new hasDataById_call(id, resultHandler19, this, ___protocolFactory, ___transport);
+      hasDataById_call method_call = new hasDataById_call(id, resultHandler20, this, ___protocolFactory, ___transport);
       this.___currentMethod = method_call;
       ___manager.call(method_call);
     }
 
     public static class hasDataById_call extends TAsyncMethodCall {
       private long id;
-      public hasDataById_call(long id, AsyncMethodCallback resultHandler20, TAsyncClient client16, TProtocolFactory protocolFactory17, TNonblockingTransport transport18) throws TException {
-        super(client16, protocolFactory17, transport18, resultHandler20, false);
+      public hasDataById_call(long id, AsyncMethodCallback resultHandler21, TAsyncClient client17, TProtocolFactory protocolFactory18, TNonblockingTransport transport19) throws TException {
+        super(client17, protocolFactory18, transport19, resultHandler21, false);
         this.id = id;
       }
 
@@ -435,17 +480,17 @@ public class MyService {
       }
     }
 
-    public void getDataById(long id, AsyncMethodCallback resultHandler24) throws TException {
+    public void getDataById(long id, AsyncMethodCallback resultHandler25) throws TException {
       checkReady();
-      getDataById_call method_call = new getDataById_call(id, resultHandler24, this, ___protocolFactory, ___transport);
+      getDataById_call method_call = new getDataById_call(id, resultHandler25, this, ___protocolFactory, ___transport);
       this.___currentMethod = method_call;
       ___manager.call(method_call);
     }
 
     public static class getDataById_call extends TAsyncMethodCall {
       private long id;
-      public getDataById_call(long id, AsyncMethodCallback resultHandler25, TAsyncClient client21, TProtocolFactory protocolFactory22, TNonblockingTransport transport23) throws TException {
-        super(client21, protocolFactory22, transport23, resultHandler25, false);
+      public getDataById_call(long id, AsyncMethodCallback resultHandler26, TAsyncClient client22, TProtocolFactory protocolFactory23, TNonblockingTransport transport24) throws TException {
+        super(client22, protocolFactory23, transport24, resultHandler26, false);
         this.id = id;
       }
 
@@ -467,9 +512,9 @@ public class MyService {
       }
     }
 
-    public void putDataById(long id, String data, AsyncMethodCallback resultHandler29) throws TException {
+    public void putDataById(long id, String data, AsyncMethodCallback resultHandler30) throws TException {
       checkReady();
-      putDataById_call method_call = new putDataById_call(id, data, resultHandler29, this, ___protocolFactory, ___transport);
+      putDataById_call method_call = new putDataById_call(id, data, resultHandler30, this, ___protocolFactory, ___transport);
       this.___currentMethod = method_call;
       ___manager.call(method_call);
     }
@@ -477,8 +522,8 @@ public class MyService {
     public static class putDataById_call extends TAsyncMethodCall {
       private long id;
       private String data;
-      public putDataById_call(long id, String data, AsyncMethodCallback resultHandler30, TAsyncClient client26, TProtocolFactory protocolFactory27, TNonblockingTransport transport28) throws TException {
-        super(client26, protocolFactory27, transport28, resultHandler30, false);
+      public putDataById_call(long id, String data, AsyncMethodCallback resultHandler31, TAsyncClient client27, TProtocolFactory protocolFactory28, TNonblockingTransport transport29) throws TException {
+        super(client27, protocolFactory28, transport29, resultHandler31, false);
         this.id = id;
         this.data = data;
       }
@@ -502,9 +547,9 @@ public class MyService {
       }
     }
 
-    public void lobDataById(long id, String data, AsyncMethodCallback resultHandler34) throws TException {
+    public void lobDataById(long id, String data, AsyncMethodCallback resultHandler35) throws TException {
       checkReady();
-      lobDataById_call method_call = new lobDataById_call(id, data, resultHandler34, this, ___protocolFactory, ___transport);
+      lobDataById_call method_call = new lobDataById_call(id, data, resultHandler35, this, ___protocolFactory, ___transport);
       this.___currentMethod = method_call;
       ___manager.call(method_call);
     }
@@ -512,8 +557,8 @@ public class MyService {
     public static class lobDataById_call extends TAsyncMethodCall {
       private long id;
       private String data;
-      public lobDataById_call(long id, String data, AsyncMethodCallback resultHandler35, TAsyncClient client31, TProtocolFactory protocolFactory32, TNonblockingTransport transport33) throws TException {
-        super(client31, protocolFactory32, transport33, resultHandler35, true);
+      public lobDataById_call(long id, String data, AsyncMethodCallback resultHandler36, TAsyncClient client32, TProtocolFactory protocolFactory33, TNonblockingTransport transport34) throws TException {
+        super(client32, protocolFactory33, transport34, resultHandler36, true);
         this.id = id;
         this.data = data;
       }
@@ -536,6 +581,35 @@ public class MyService {
       }
     }
 
+    public void doNothing(AsyncMethodCallback resultHandler40) throws TException {
+      checkReady();
+      doNothing_call method_call = new doNothing_call(resultHandler40, this, ___protocolFactory, ___transport);
+      this.___currentMethod = method_call;
+      ___manager.call(method_call);
+    }
+
+    public static class doNothing_call extends TAsyncMethodCall {
+      public doNothing_call(AsyncMethodCallback resultHandler41, TAsyncClient client37, TProtocolFactory protocolFactory38, TNonblockingTransport transport39) throws TException {
+        super(client37, protocolFactory38, transport39, resultHandler41, false);
+      }
+
+      public void write_args(TProtocol prot) throws TException {
+        prot.writeMessageBegin(new TMessage("doNothing", TMessageType.CALL, 0));
+        doNothing_args args = new doNothing_args();
+        args.write(prot);
+        prot.writeMessageEnd();
+      }
+
+      public void getResult() throws TException {
+        if (getState() != State.RESPONSE_READ) {
+          throw new IllegalStateException("Method call not finished!");
+        }
+        TMemoryInputTransport memoryTransport = new TMemoryInputTransport(getFrameBuffer().array());
+        TProtocol prot = super.client.getProtocolFactory().getProtocol(memoryTransport);
+        (new Client(prot)).recv_doNothing();
+      }
+    }
+
   }
 
   public static class Processor implements TProcessor {
@@ -550,6 +624,7 @@ public class MyService {
       processMap_.put("getDataById", new getDataById());
       processMap_.put("putDataById", new putDataById());
       processMap_.put("lobDataById", new lobDataById());
+      processMap_.put("doNothing", new doNothing());
     }
 
     protected static interface ProcessFunction {
@@ -700,6 +775,27 @@ public class MyService {
         iface_.lobDataById(args.id, args.data);
         return;
       }
+    }
+
+    private class doNothing implements ProcessFunction {
+      public void process(int seqid, TProtocol iprot, TProtocol oprot, TConnectionContext server_ctx) throws TException
+      {
+        Object handler_ctx = event_handler_.getContext("MyService.doNothing", server_ctx);
+        doNothing_args args = new doNothing_args();
+        event_handler_.preRead(handler_ctx, "MyService.doNothing");
+        args.read(iprot);
+        iprot.readMessageEnd();
+        event_handler_.postRead(handler_ctx, "MyService.doNothing", args);
+        doNothing_result result = new doNothing_result();
+        iface_.doNothing();
+        event_handler_.preWrite(handler_ctx, "MyService.doNothing", result);
+        oprot.writeMessageBegin(new TMessage("doNothing", TMessageType.REPLY, seqid));
+        result.write(oprot);
+        oprot.writeMessageEnd();
+        oprot.getTransport().flush();
+        event_handler_.postWrite(handler_ctx, "MyService.doNothing", result);
+      }
+
     }
 
   }
@@ -3233,6 +3329,319 @@ String space = prettyPrint ? " " : "";
         sb.append(TBaseHelper.toString(this. getData(), indent + 1, prettyPrint));
       }
       first = false;
+      sb.append(newLine + TBaseHelper.reduceIndent(indentStr));
+      sb.append(")");
+      return sb.toString();
+    }
+
+    public void validate() throws TException {
+      // check for required fields
+      // check that fields of type enum have valid values
+    }
+
+  }
+
+  public static class doNothing_args implements TBase, java.io.Serializable, Cloneable, Comparable<doNothing_args>   {
+    private static final TStruct STRUCT_DESC = new TStruct("doNothing_args");
+
+    public static boolean DEFAULT_PRETTY_PRINT = true;
+    public static final Map<Integer, FieldMetaData> metaDataMap;
+    static {
+      Map<Integer, FieldMetaData> tmpMetaDataMap = new HashMap<Integer, FieldMetaData>();
+      metaDataMap = Collections.unmodifiableMap(tmpMetaDataMap);
+    }
+
+    static {
+      FieldMetaData.addStructMetaDataMap(doNothing_args.class, metaDataMap);
+    }
+
+    public doNothing_args() {
+    }
+
+    /**
+     * Performs a deep copy on <i>other</i>.
+     */
+    public doNothing_args(doNothing_args other) {
+    }
+
+    public doNothing_args deepCopy() {
+      return new doNothing_args(this);
+    }
+
+    @Deprecated
+    public doNothing_args clone() {
+      return new doNothing_args(this);
+    }
+
+    public void setFieldValue(int fieldID, Object value) {
+      switch (fieldID) {
+      default:
+        throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
+      }
+    }
+
+    public Object getFieldValue(int fieldID) {
+      switch (fieldID) {
+      default:
+        throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
+      }
+    }
+
+    // Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise
+    public boolean isSet(int fieldID) {
+      switch (fieldID) {
+      default:
+        throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
+      }
+    }
+
+    @Override
+    public boolean equals(Object that) {
+      if (that == null)
+        return false;
+      if (that instanceof doNothing_args)
+        return this.equals((doNothing_args)that);
+      return false;
+    }
+
+    public boolean equals(doNothing_args that) {
+      if (that == null)
+        return false;
+      if (this == that)
+        return true;
+
+      return true;
+    }
+
+    @Override
+    public int hashCode() {
+      return 0;
+    }
+
+    @Override
+    public int compareTo(doNothing_args other) {
+      if (other == null) {
+        // See java.lang.Comparable docs
+        throw new NullPointerException();
+      }
+
+      if (other == this) {
+        return 0;
+      }
+      int lastComparison = 0;
+
+      return 0;
+    }
+
+    public void read(TProtocol iprot) throws TException {
+      TField field;
+      iprot.readStructBegin(metaDataMap);
+      while (true)
+      {
+        field = iprot.readFieldBegin();
+        if (field.type == TType.STOP) { 
+          break;
+        }
+        switch (field.id)
+        {
+          default:
+            TProtocolUtil.skip(iprot, field.type);
+            break;
+        }
+        iprot.readFieldEnd();
+      }
+      iprot.readStructEnd();
+
+
+      // check for required fields of primitive type, which can't be checked in the validate method
+      validate();
+    }
+
+    public void write(TProtocol oprot) throws TException {
+      validate();
+
+      oprot.writeStructBegin(STRUCT_DESC);
+      oprot.writeFieldStop();
+      oprot.writeStructEnd();
+    }
+
+    @Override
+    public String toString() {
+      return toString(DEFAULT_PRETTY_PRINT);
+    }
+
+    @Override
+    public String toString(boolean prettyPrint) {
+      return toString(1, prettyPrint);
+    }
+
+    @Override
+    public String toString(int indent, boolean prettyPrint) {
+      String indentStr = prettyPrint ? TBaseHelper.getIndentedString(indent) : "";
+      String newLine = prettyPrint ? "\n" : "";
+String space = prettyPrint ? " " : "";
+      StringBuilder sb = new StringBuilder("doNothing_args");
+      sb.append(space);
+      sb.append("(");
+      sb.append(newLine);
+      boolean first = true;
+
+      sb.append(newLine + TBaseHelper.reduceIndent(indentStr));
+      sb.append(")");
+      return sb.toString();
+    }
+
+    public void validate() throws TException {
+      // check for required fields
+      // check that fields of type enum have valid values
+    }
+
+  }
+
+  public static class doNothing_result implements TBase, java.io.Serializable, Cloneable, Comparable<doNothing_result>   {
+    private static final TStruct STRUCT_DESC = new TStruct("doNothing_result");
+
+    public static boolean DEFAULT_PRETTY_PRINT = true;
+    public static final Map<Integer, FieldMetaData> metaDataMap;
+    static {
+      Map<Integer, FieldMetaData> tmpMetaDataMap = new HashMap<Integer, FieldMetaData>();
+      metaDataMap = Collections.unmodifiableMap(tmpMetaDataMap);
+    }
+
+    static {
+      FieldMetaData.addStructMetaDataMap(doNothing_result.class, metaDataMap);
+    }
+
+    public doNothing_result() {
+    }
+
+    /**
+     * Performs a deep copy on <i>other</i>.
+     */
+    public doNothing_result(doNothing_result other) {
+    }
+
+    public doNothing_result deepCopy() {
+      return new doNothing_result(this);
+    }
+
+    @Deprecated
+    public doNothing_result clone() {
+      return new doNothing_result(this);
+    }
+
+    public void setFieldValue(int fieldID, Object value) {
+      switch (fieldID) {
+      default:
+        throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
+      }
+    }
+
+    public Object getFieldValue(int fieldID) {
+      switch (fieldID) {
+      default:
+        throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
+      }
+    }
+
+    // Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise
+    public boolean isSet(int fieldID) {
+      switch (fieldID) {
+      default:
+        throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
+      }
+    }
+
+    @Override
+    public boolean equals(Object that) {
+      if (that == null)
+        return false;
+      if (that instanceof doNothing_result)
+        return this.equals((doNothing_result)that);
+      return false;
+    }
+
+    public boolean equals(doNothing_result that) {
+      if (that == null)
+        return false;
+      if (this == that)
+        return true;
+
+      return true;
+    }
+
+    @Override
+    public int hashCode() {
+      return 0;
+    }
+
+    @Override
+    public int compareTo(doNothing_result other) {
+      if (other == null) {
+        // See java.lang.Comparable docs
+        throw new NullPointerException();
+      }
+
+      if (other == this) {
+        return 0;
+      }
+      int lastComparison = 0;
+
+      return 0;
+    }
+
+    public void read(TProtocol iprot) throws TException {
+      TField field;
+      iprot.readStructBegin(metaDataMap);
+      while (true)
+      {
+        field = iprot.readFieldBegin();
+        if (field.type == TType.STOP) { 
+          break;
+        }
+        switch (field.id)
+        {
+          default:
+            TProtocolUtil.skip(iprot, field.type);
+            break;
+        }
+        iprot.readFieldEnd();
+      }
+      iprot.readStructEnd();
+
+
+      // check for required fields of primitive type, which can't be checked in the validate method
+      validate();
+    }
+
+    public void write(TProtocol oprot) throws TException {
+      oprot.writeStructBegin(STRUCT_DESC);
+
+      oprot.writeFieldStop();
+      oprot.writeStructEnd();
+    }
+
+    @Override
+    public String toString() {
+      return toString(DEFAULT_PRETTY_PRINT);
+    }
+
+    @Override
+    public String toString(boolean prettyPrint) {
+      return toString(1, prettyPrint);
+    }
+
+    @Override
+    public String toString(int indent, boolean prettyPrint) {
+      String indentStr = prettyPrint ? TBaseHelper.getIndentedString(indent) : "";
+      String newLine = prettyPrint ? "\n" : "";
+String space = prettyPrint ? " " : "";
+      StringBuilder sb = new StringBuilder("doNothing_result");
+      sb.append(space);
+      sb.append("(");
+      sb.append(newLine);
+      boolean first = true;
+
       sb.append(newLine + TBaseHelper.reduceIndent(indentStr));
       sb.append(")");
       return sb.toString();

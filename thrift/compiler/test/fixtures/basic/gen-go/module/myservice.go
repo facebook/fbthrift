@@ -36,6 +36,7 @@ type MyService interface {
   //  - Id
   //  - Data
   LobDataById(id int64, data string) (err error)
+  DoNothing() (err error)
 }
 
 type MyServiceClient struct {
@@ -161,6 +162,19 @@ func (p *MyServiceClient) LobDataById(id int64, data string) (err error) {
   err = p.CC.SendMsg("lobDataById", &args, thrift.ONEWAY)
   if err != nil { return }
   return
+}
+
+func (p *MyServiceClient) DoNothing() (err error) {
+  var args MyServiceDoNothingArgs
+  err = p.CC.SendMsg("doNothing", &args, thrift.CALL)
+  if err != nil { return }
+  return p.recvDoNothing()
+}
+
+
+func (p *MyServiceClient) recvDoNothing() (err error) {
+  var result MyServiceDoNothingResult
+  return p.CC.RecvMsg("doNothing", &result)
 }
 
 
@@ -610,6 +624,80 @@ func (p *MyServiceThreadsafeClient) sendLobDataById(id int64, data string)(err e
   return oprot.Flush()
 }
 
+func (p *MyServiceThreadsafeClient) DoNothing() (err error) {
+  p.Mu.Lock()
+  defer p.Mu.Unlock()
+  if err = p.sendDoNothing(); err != nil { return }
+  return p.recvDoNothing()
+}
+
+func (p *MyServiceThreadsafeClient) sendDoNothing()(err error) {
+  oprot := p.OutputProtocol
+  if oprot == nil {
+    oprot = p.ProtocolFactory.GetProtocol(p.Transport)
+    p.OutputProtocol = oprot
+  }
+  p.SeqId++
+  if err = oprot.WriteMessageBegin("doNothing", thrift.CALL, p.SeqId); err != nil {
+      return
+  }
+  args := MyServiceDoNothingArgs{
+  }
+  if err = args.Write(oprot); err != nil {
+      return
+  }
+  if err = oprot.WriteMessageEnd(); err != nil {
+      return
+  }
+  return oprot.Flush()
+}
+
+
+func (p *MyServiceThreadsafeClient) recvDoNothing() (err error) {
+  iprot := p.InputProtocol
+  if iprot == nil {
+    iprot = p.ProtocolFactory.GetProtocol(p.Transport)
+    p.InputProtocol = iprot
+  }
+  method, mTypeId, seqId, err := iprot.ReadMessageBegin()
+  if err != nil {
+    return
+  }
+  if method != "doNothing" {
+    err = thrift.NewApplicationException(thrift.WRONG_METHOD_NAME, "doNothing failed: wrong method name")
+    return
+  }
+  if p.SeqId != seqId {
+    err = thrift.NewApplicationException(thrift.BAD_SEQUENCE_ID, "doNothing failed: out of sequence response")
+    return
+  }
+  if mTypeId == thrift.EXCEPTION {
+    error10 := thrift.NewApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
+    var error11 error
+    error11, err = error10.Read(iprot)
+    if err != nil {
+      return
+    }
+    if err = iprot.ReadMessageEnd(); err != nil {
+      return
+    }
+    err = error11
+    return
+  }
+  if mTypeId != thrift.REPLY {
+    err = thrift.NewApplicationException(thrift.INVALID_MESSAGE_TYPE_EXCEPTION, "doNothing failed: invalid message type")
+    return
+  }
+  result := MyServiceDoNothingResult{}
+  if err = result.Read(iprot); err != nil {
+    return
+  }
+  if err = iprot.ReadMessageEnd(); err != nil {
+    return
+  }
+  return
+}
+
 
 type MyServiceProcessor struct {
   processorMap map[string]thrift.ProcessorFunction
@@ -632,14 +720,15 @@ func (p *MyServiceProcessor) ProcessorMap() map[string]thrift.ProcessorFunction 
 }
 
 func NewMyServiceProcessor(handler MyService) *MyServiceProcessor {
-  self10 := &MyServiceProcessor{handler:handler, processorMap:make(map[string]thrift.ProcessorFunction)}
-  self10.processorMap["ping"] = &myServiceProcessorPing{handler:handler}
-  self10.processorMap["getRandomData"] = &myServiceProcessorGetRandomData{handler:handler}
-  self10.processorMap["hasDataById"] = &myServiceProcessorHasDataById{handler:handler}
-  self10.processorMap["getDataById"] = &myServiceProcessorGetDataById{handler:handler}
-  self10.processorMap["putDataById"] = &myServiceProcessorPutDataById{handler:handler}
-  self10.processorMap["lobDataById"] = &myServiceProcessorLobDataById{handler:handler}
-  return self10
+  self12 := &MyServiceProcessor{handler:handler, processorMap:make(map[string]thrift.ProcessorFunction)}
+  self12.processorMap["ping"] = &myServiceProcessorPing{handler:handler}
+  self12.processorMap["getRandomData"] = &myServiceProcessorGetRandomData{handler:handler}
+  self12.processorMap["hasDataById"] = &myServiceProcessorHasDataById{handler:handler}
+  self12.processorMap["getDataById"] = &myServiceProcessorGetDataById{handler:handler}
+  self12.processorMap["putDataById"] = &myServiceProcessorPutDataById{handler:handler}
+  self12.processorMap["lobDataById"] = &myServiceProcessorLobDataById{handler:handler}
+  self12.processorMap["doNothing"] = &myServiceProcessorDoNothing{handler:handler}
+  return self12
 }
 
 type myServiceProcessorPing struct {
@@ -931,6 +1020,53 @@ func (p *myServiceProcessorLobDataById) Run(argStruct thrift.Struct) (thrift.Wri
     }
   }
   return nil, nil
+}
+
+type myServiceProcessorDoNothing struct {
+  handler MyService
+}
+
+func (p *myServiceProcessorDoNothing) Read(iprot thrift.Protocol) (thrift.Struct, thrift.Exception) {
+  args := MyServiceDoNothingArgs{}
+  if err := args.Read(iprot); err != nil {
+    return nil, err
+  }
+  iprot.ReadMessageEnd()
+  return &args, nil
+}
+
+func (p *myServiceProcessorDoNothing) Write(seqId int32, result thrift.WritableStruct, oprot thrift.Protocol) (err thrift.Exception) {
+  var err2 error
+  messageType := thrift.REPLY
+  switch result.(type) {
+  case thrift.ApplicationException:
+    messageType = thrift.EXCEPTION
+  }
+  if err2 = oprot.WriteMessageBegin("doNothing", messageType, seqId); err2 != nil {
+    err = err2
+  }
+  if err2 = result.Write(oprot); err == nil && err2 != nil {
+    err = err2
+  }
+  if err2 = oprot.WriteMessageEnd(); err == nil && err2 != nil {
+    err = err2
+  }
+  if err2 = oprot.Flush(); err == nil && err2 != nil {
+    err = err2
+  }
+  return err
+}
+
+func (p *myServiceProcessorDoNothing) Run(argStruct thrift.Struct) (thrift.WritableStruct, thrift.ApplicationException) {
+  var result MyServiceDoNothingResult
+  if err := p.handler.DoNothing(); err != nil {
+    switch err.(type) {
+    default:
+      x := thrift.NewApplicationException(thrift.INTERNAL_ERROR, "Internal error processing doNothing: " + err.Error())
+      return x, x
+    }
+  }
+  return &result, nil
 }
 
 
@@ -1809,6 +1945,106 @@ func (p *MyServiceLobDataByIdArgs) String() string {
     return "<nil>"
   }
   return fmt.Sprintf("MyServiceLobDataByIdArgs(%+v)", *p)
+}
+
+type MyServiceDoNothingArgs struct {
+  thrift.IRequest
+}
+
+func NewMyServiceDoNothingArgs() *MyServiceDoNothingArgs {
+  return &MyServiceDoNothingArgs{}
+}
+
+func (p *MyServiceDoNothingArgs) Read(iprot thrift.Protocol) error {
+  if _, err := iprot.ReadStructBegin(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
+  }
+
+
+  for {
+    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
+    if err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
+    }
+    if fieldTypeId == thrift.STOP { break; }
+    if err := iprot.Skip(fieldTypeId); err != nil {
+      return err
+    }
+    if err := iprot.ReadFieldEnd(); err != nil {
+      return err
+    }
+  }
+  if err := iprot.ReadStructEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+  }
+  return nil
+}
+
+func (p *MyServiceDoNothingArgs) Write(oprot thrift.Protocol) error {
+  if err := oprot.WriteStructBegin("doNothing_args"); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
+  if err := oprot.WriteFieldStop(); err != nil {
+    return thrift.PrependError("write field stop error: ", err) }
+  if err := oprot.WriteStructEnd(); err != nil {
+    return thrift.PrependError("write struct stop error: ", err) }
+  return nil
+}
+
+func (p *MyServiceDoNothingArgs) String() string {
+  if p == nil {
+    return "<nil>"
+  }
+  return fmt.Sprintf("MyServiceDoNothingArgs(%+v)", *p)
+}
+
+type MyServiceDoNothingResult struct {
+  thrift.IResponse
+}
+
+func NewMyServiceDoNothingResult() *MyServiceDoNothingResult {
+  return &MyServiceDoNothingResult{}
+}
+
+func (p *MyServiceDoNothingResult) Read(iprot thrift.Protocol) error {
+  if _, err := iprot.ReadStructBegin(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
+  }
+
+
+  for {
+    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
+    if err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
+    }
+    if fieldTypeId == thrift.STOP { break; }
+    if err := iprot.Skip(fieldTypeId); err != nil {
+      return err
+    }
+    if err := iprot.ReadFieldEnd(); err != nil {
+      return err
+    }
+  }
+  if err := iprot.ReadStructEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+  }
+  return nil
+}
+
+func (p *MyServiceDoNothingResult) Write(oprot thrift.Protocol) error {
+  if err := oprot.WriteStructBegin("doNothing_result"); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
+  if err := oprot.WriteFieldStop(); err != nil {
+    return thrift.PrependError("write field stop error: ", err) }
+  if err := oprot.WriteStructEnd(); err != nil {
+    return thrift.PrependError("write struct stop error: ", err) }
+  return nil
+}
+
+func (p *MyServiceDoNothingResult) String() string {
+  if p == nil {
+    return "<nil>"
+  }
+  return fmt.Sprintf("MyServiceDoNothingResult(%+v)", *p)
 }
 
 

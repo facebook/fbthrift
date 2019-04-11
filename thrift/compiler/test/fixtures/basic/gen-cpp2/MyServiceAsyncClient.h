@@ -164,6 +164,29 @@ class MyServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   template <typename Protocol_>
   void lobDataByIdT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int64_t id, const std::string& data);
  public:
+  virtual void doNothing(std::unique_ptr<apache::thrift::RequestCallback> callback);
+  virtual void doNothing(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
+ private:
+  virtual void doNothingImpl(bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
+ public:
+  virtual void sync_doNothing();
+  virtual void sync_doNothing(apache::thrift::RpcOptions& rpcOptions);
+  virtual folly::Future<folly::Unit> future_doNothing();
+  virtual folly::SemiFuture<folly::Unit> semifuture_doNothing();
+  virtual folly::Future<folly::Unit> future_doNothing(apache::thrift::RpcOptions& rpcOptions);
+  virtual folly::SemiFuture<folly::Unit> semifuture_doNothing(apache::thrift::RpcOptions& rpcOptions);
+  virtual folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_doNothing(apache::thrift::RpcOptions& rpcOptions);
+  virtual folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_doNothing(apache::thrift::RpcOptions& rpcOptions);
+  virtual void doNothing(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback);
+  static folly::exception_wrapper recv_wrapped_doNothing(::apache::thrift::ClientReceiveState& state);
+  static void recv_doNothing(::apache::thrift::ClientReceiveState& state);
+  // Mock friendly virtual instance method
+  virtual void recv_instance_doNothing(::apache::thrift::ClientReceiveState& state);
+  virtual folly::exception_wrapper recv_instance_wrapped_doNothing(::apache::thrift::ClientReceiveState& state);
+ private:
+  template <typename Protocol_>
+  void doNothingT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
+ public:
 };
 
 } // cpp2

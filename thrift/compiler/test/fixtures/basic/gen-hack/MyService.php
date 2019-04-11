@@ -54,6 +54,13 @@ interface MyServiceAsyncIf extends \IThriftAsyncIf {
    *               2: string data);
    */
   public function lobDataById(int $id, string $data): Awaitable<void>;
+
+  /**
+   * Original thrift definition:-
+   * void
+   *   doNothing();
+   */
+  public function doNothing(): Awaitable<void>;
 }
 
 /**
@@ -104,6 +111,13 @@ interface MyServiceIf extends \IThriftSyncIf {
    *               2: string data);
    */
   public function lobDataById(int $id, string $data): void;
+
+  /**
+   * Original thrift definition:-
+   * void
+   *   doNothing();
+   */
+  public function doNothing(): void;
 }
 
 /**
@@ -154,6 +168,13 @@ interface MyServiceClientIf extends \IThriftSyncIf {
    *               2: string data);
    */
   public function lobDataById(int $id, string $data): Awaitable<void>;
+
+  /**
+   * Original thrift definition:-
+   * void
+   *   doNothing();
+   */
+  public function doNothing(): Awaitable<void>;
 }
 
 /**
@@ -697,6 +718,100 @@ return;
     return $currentseqid;
   }
 
+  protected function sendImpl_doNothing(): int {
+    $currentseqid = $this->getNextSequenceID();
+    $args = new MyService_doNothing_args(
+    );
+    try {
+      $this->eventHandler_->preSend('doNothing', $args, $currentseqid);
+      if ($this->output_ is \TBinaryProtocolAccelerated)
+      {
+        \thrift_protocol_write_binary($this->output_, 'doNothing', \TMessageType::CALL, $args, $currentseqid, $this->output_->isStrictWrite(), false);
+      }
+      else if ($this->output_ is \TCompactProtocolAccelerated)
+      {
+        \thrift_protocol_write_compact($this->output_, 'doNothing', \TMessageType::CALL, $args, $currentseqid, false);
+      }
+      else
+      {
+        $this->output_->writeMessageBegin('doNothing', \TMessageType::CALL, $currentseqid);
+        $args->write($this->output_);
+        $this->output_->writeMessageEnd();
+        $this->output_->getTransport()->flush();
+      }
+    } catch (\THandlerShortCircuitException $ex) {
+      switch ($ex->resultType) {
+        case \THandlerShortCircuitException::R_EXPECTED_EX:
+        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
+          $this->eventHandler_->sendError('doNothing', $args, $currentseqid, $ex->result);
+          throw $ex->result;
+        case \THandlerShortCircuitException::R_SUCCESS:
+        default:
+          $this->eventHandler_->postSend('doNothing', $args, $currentseqid);
+          return $currentseqid;
+      }
+    } catch (\Exception $ex) {
+      $this->eventHandler_->sendError('doNothing', $args, $currentseqid, $ex);
+      throw $ex;
+    }
+    $this->eventHandler_->postSend('doNothing', $args, $currentseqid);
+    return $currentseqid;
+  }
+
+  protected function recvImpl_doNothing(?int $expectedsequenceid = null): void {
+    try {
+      $this->eventHandler_->preRecv('doNothing', $expectedsequenceid);
+      if ($this->input_ is \TBinaryProtocolAccelerated) {
+        $result = \thrift_protocol_read_binary($this->input_, 'MyService_doNothing_result', $this->input_->isStrictRead());
+      } else if ($this->input_ is \TCompactProtocolAccelerated)
+      {
+        $result = \thrift_protocol_read_compact($this->input_, 'MyService_doNothing_result');
+      }
+      else
+      {
+        $rseqid = 0;
+        $fname = '';
+        $mtype = 0;
+
+        $this->input_->readMessageBegin(
+          inout $fname,
+          inout $mtype,
+          inout $rseqid,
+        );
+        if ($mtype == \TMessageType::EXCEPTION) {
+          $x = new \TApplicationException();
+          $x->read($this->input_);
+          $this->input_->readMessageEnd();
+          throw $x;
+        }
+        $result = new MyService_doNothing_result();
+        $result->read($this->input_);
+        $this->input_->readMessageEnd();
+        if ($expectedsequenceid !== null && ($rseqid != $expectedsequenceid)) {
+          throw new \TProtocolException("doNothing failed: sequence id is out of order");
+        }
+      }
+    } catch (\THandlerShortCircuitException $ex) {
+      switch ($ex->resultType) {
+        case \THandlerShortCircuitException::R_EXPECTED_EX:
+          $this->eventHandler_->recvException('doNothing', $expectedsequenceid, $ex->result);
+          throw $ex->result;
+        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
+          $this->eventHandler_->recvError('doNothing', $expectedsequenceid, $ex->result);
+          throw $ex->result;
+        case \THandlerShortCircuitException::R_SUCCESS:
+        default:
+          $this->eventHandler_->postRecv('doNothing', $expectedsequenceid, $ex->result);
+          return;
+      }
+    } catch (\Exception $ex) {
+      $this->eventHandler_->recvError('doNothing', $expectedsequenceid, $ex);
+      throw $ex;
+    }
+          $this->eventHandler_->postRecv('doNothing', $expectedsequenceid, null);
+return;
+  }
+
 }
 
 class MyServiceAsyncClient extends \ThriftClientBase implements MyServiceAsyncIf {
@@ -766,6 +881,17 @@ class MyServiceAsyncClient extends \ThriftClientBase implements MyServiceAsyncIf
    */
   public async function lobDataById(int $id, string $data): Awaitable<void> {
     $currentseqid = $this->sendImpl_lobDataById($id, $data);
+  }
+
+  /**
+   * Original thrift definition:-
+   * void
+   *   doNothing();
+   */
+  public async function doNothing(): Awaitable<void> {
+    $currentseqid = $this->sendImpl_doNothing();
+    await $this->asyncHandler_->genWait($currentseqid);
+    $this->recvImpl_doNothing($currentseqid);
   }
 
 }
@@ -879,6 +1005,24 @@ class MyServiceClient extends \ThriftClientBase implements MyServiceClientIf {
     $currentseqid = $this->sendImpl_lobDataById($id, $data);
   }
 
+  /**
+   * Original thrift definition:-
+   * void
+   *   doNothing();
+   */
+  public async function doNothing(): Awaitable<void> {
+    $currentseqid = $this->sendImpl_doNothing();
+    await $this->asyncHandler_->genWait($currentseqid);
+    $this->recvImpl_doNothing($currentseqid);
+  }
+
+  <<__Deprecated('use doNothing')>>
+  public async function gen_doNothing(): Awaitable<void> {
+    $currentseqid = $this->sendImpl_doNothing();
+    await $this->asyncHandler_->genWait($currentseqid);
+    $this->recvImpl_doNothing($currentseqid);
+  }
+
   /* send and recv functions */
   public function send_ping(): int {
     return $this->sendImpl_ping();
@@ -912,6 +1056,12 @@ class MyServiceClient extends \ThriftClientBase implements MyServiceClientIf {
   }
   public function send_lobDataById(int $id, string $data): int {
     return $this->sendImpl_lobDataById($id, $data);
+  }
+  public function send_doNothing(): int {
+    return $this->sendImpl_doNothing();
+  }
+  public function recv_doNothing(?int $expectedsequenceid = null): void {
+    $this->recvImpl_doNothing($expectedsequenceid);
   }
 }
 
@@ -1162,6 +1312,50 @@ abstract class MyServiceAsyncProcessorBase extends ThriftAsyncProcessor {
       $result = new \TApplicationException($ex->getMessage()."\n".$ex->getTraceAsString());
     }
     return;
+  }
+  protected async function process_doNothing(int $seqid, \TProtocol $input, \TProtocol $output): Awaitable<void> {
+    $handler_ctx = $this->eventHandler_->getHandlerContext('doNothing');
+    $reply_type = \TMessageType::REPLY;
+
+    $this->eventHandler_->preRead($handler_ctx, 'doNothing', dict[]);
+
+    if ($input is \TBinaryProtocolAccelerated) {
+      $args = \thrift_protocol_read_binary_struct($input, 'MyService_doNothing_args');
+    } else if ($input is \TCompactProtocolAccelerated) {
+      $args = \thrift_protocol_read_compact_struct($input, 'MyService_doNothing_args');
+    } else {
+      $args = new MyService_doNothing_args();
+      $args->read($input);
+    }
+    $input->readMessageEnd();
+    $this->eventHandler_->postRead($handler_ctx, 'doNothing', $args);
+    $result = new MyService_doNothing_result();
+    try {
+      $this->eventHandler_->preExec($handler_ctx, 'doNothing', $args);
+      await $this->handler->doNothing();
+      $this->eventHandler_->postExec($handler_ctx, 'doNothing', $result);
+    } catch (\Exception $ex) {
+      $reply_type = \TMessageType::EXCEPTION;
+      $this->eventHandler_->handlerError($handler_ctx, 'doNothing', $ex);
+      $result = new \TApplicationException($ex->getMessage()."\n".$ex->getTraceAsString());
+    }
+    $this->eventHandler_->preWrite($handler_ctx, 'doNothing', $result);
+    if ($output is \TBinaryProtocolAccelerated)
+    {
+      \thrift_protocol_write_binary($output, 'doNothing', $reply_type, $result, $seqid, $output->isStrictWrite());
+    }
+    else if ($output is \TCompactProtocolAccelerated)
+    {
+      \thrift_protocol_write_compact($output, 'doNothing', $reply_type, $result, $seqid);
+    }
+    else
+    {
+      $output->writeMessageBegin("doNothing", $reply_type, $seqid);
+      $result->write($output);
+      $output->writeMessageEnd();
+      $output->getTransport()->flush();
+    }
+    $this->eventHandler_->postWrite($handler_ctx, 'doNothing', $result);
   }
 }
 class MyServiceAsyncProcessor extends MyServiceAsyncProcessorBase {
@@ -1415,6 +1609,50 @@ abstract class MyServiceSyncProcessorBase extends ThriftSyncProcessor {
       $result = new \TApplicationException($ex->getMessage()."\n".$ex->getTraceAsString());
     }
     return;
+  }
+  protected function process_doNothing(int $seqid, \TProtocol $input, \TProtocol $output): void {
+    $handler_ctx = $this->eventHandler_->getHandlerContext('doNothing');
+    $reply_type = \TMessageType::REPLY;
+
+    $this->eventHandler_->preRead($handler_ctx, 'doNothing', dict[]);
+
+    if ($input is \TBinaryProtocolAccelerated) {
+      $args = \thrift_protocol_read_binary_struct($input, 'MyService_doNothing_args');
+    } else if ($input is \TCompactProtocolAccelerated) {
+      $args = \thrift_protocol_read_compact_struct($input, 'MyService_doNothing_args');
+    } else {
+      $args = new MyService_doNothing_args();
+      $args->read($input);
+    }
+    $input->readMessageEnd();
+    $this->eventHandler_->postRead($handler_ctx, 'doNothing', $args);
+    $result = new MyService_doNothing_result();
+    try {
+      $this->eventHandler_->preExec($handler_ctx, 'doNothing', $args);
+      $this->handler->doNothing();
+      $this->eventHandler_->postExec($handler_ctx, 'doNothing', $result);
+    } catch (\Exception $ex) {
+      $reply_type = \TMessageType::EXCEPTION;
+      $this->eventHandler_->handlerError($handler_ctx, 'doNothing', $ex);
+      $result = new \TApplicationException($ex->getMessage()."\n".$ex->getTraceAsString());
+    }
+    $this->eventHandler_->preWrite($handler_ctx, 'doNothing', $result);
+    if ($output is \TBinaryProtocolAccelerated)
+    {
+      \thrift_protocol_write_binary($output, 'doNothing', $reply_type, $result, $seqid, $output->isStrictWrite());
+    }
+    else if ($output is \TCompactProtocolAccelerated)
+    {
+      \thrift_protocol_write_compact($output, 'doNothing', $reply_type, $result, $seqid);
+    }
+    else
+    {
+      $output->writeMessageBegin("doNothing", $reply_type, $seqid);
+      $result->write($output);
+      $output->writeMessageEnd();
+      $output->getTransport()->flush();
+    }
+    $this->eventHandler_->postWrite($handler_ctx, 'doNothing', $result);
   }
 }
 class MyServiceSyncProcessor extends MyServiceSyncProcessorBase {
@@ -1930,6 +2168,74 @@ class MyService_lobDataById_args implements \IThriftStruct, \IThriftShapishStruc
     if (idx($parsed, 'data') !== null) {
       $this->data = $parsed['data'];
     }    
+  }
+
+}
+
+class MyService_doNothing_args implements \IThriftStruct, \IThriftShapishStruct {
+  use \ThriftSerializationTrait;
+
+  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
+    ];
+  public static Map<string, int> $_TFIELDMAP = Map {
+  };
+  const type TShape = shape(
+    ...
+  );
+  const int STRUCTURAL_ID = 957977401221134810;
+
+  <<__Rx>>
+  public function __construct(  ) {
+  }
+
+  public function getName(): string {
+    return 'MyService_doNothing_args';
+  }
+
+  public static function __fromShape(self::TShape $shape): this {
+    $me = new static();
+    return $me;
+  }
+
+  public function __toShape(): self::TShape {
+    return shape(
+    );
+  }
+  public function readFromJson(string $jsonText): void {
+    $parsed = json_decode($jsonText, true);
+
+    if ($parsed === null || !is_array($parsed)) {
+      throw new \TProtocolException("Cannot parse the given json string.");
+    }
+
+  }
+
+}
+
+class MyService_doNothing_result implements \IThriftStruct {
+  use \ThriftSerializationTrait;
+
+  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
+    ];
+  public static Map<string, int> $_TFIELDMAP = Map {
+  };
+  const int STRUCTURAL_ID = 957977401221134810;
+
+  <<__Rx>>
+  public function __construct(  ) {
+  }
+
+  public function getName(): string {
+    return 'MyService_doNothing_result';
+  }
+
+  public function readFromJson(string $jsonText): void {
+    $parsed = json_decode($jsonText, true);
+
+    if ($parsed === null || !is_array($parsed)) {
+      throw new \TProtocolException("Cannot parse the given json string.");
+    }
+
   }
 
 }

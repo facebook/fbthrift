@@ -146,6 +146,23 @@ data = std::move(data)    ]() mutable {
   return future;
 }
 
+folly::Future<folly::Unit> MyServiceWrapper::future_doNothing() {
+  folly::Promise<folly::Unit> promise;
+  auto future = promise.getFuture();
+  auto ctx = getConnectionContext();
+  folly::via(
+    this->executor,
+    [this, ctx,
+     promise = std::move(promise)    ]() mutable {
+        call_cy_MyService_doNothing(
+            this->if_object,
+            ctx,
+            std::move(promise)        );
+    });
+
+  return future;
+}
+
 std::shared_ptr<apache::thrift::ServerInterface> MyServiceInterface(PyObject *if_object, folly::Executor *exc) {
   return std::make_shared<MyServiceWrapper>(if_object, exc);
 }

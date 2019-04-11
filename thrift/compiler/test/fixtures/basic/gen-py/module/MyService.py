@@ -74,6 +74,9 @@ class Iface:
     """
     pass
 
+  def doNothing(self, ):
+    pass
+
 
 class ContextIface:
   def ping(self, handler_ctx, ):
@@ -110,6 +113,9 @@ class ContextIface:
      - id
      - data
     """
+    pass
+
+  def doNothing(self, handler_ctx, ):
     pass
 
 
@@ -1213,6 +1219,156 @@ def lobDataById_args__setstate__(self, state):
 lobDataById_args.__getstate__ = lambda self: self.__dict__.copy()
 lobDataById_args.__setstate__ = lobDataById_args__setstate__
 
+class doNothing_args:
+
+  thrift_spec = None
+  thrift_field_annotations = None
+  thrift_struct_annotations = None
+  @staticmethod
+  def isUnion():
+    return False
+
+  def read(self, iprot):
+    if (isinstance(iprot, TBinaryProtocol.TBinaryProtocolAccelerated) or (isinstance(iprot, THeaderProtocol.THeaderProtocolAccelerate) and iprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_BINARY_PROTOCOL)) and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None and fastproto is not None:
+      fastproto.decode(self, iprot.trans, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=0)
+      self.checkRequired()
+      return
+    if (isinstance(iprot, TCompactProtocol.TCompactProtocolAccelerated) or (isinstance(iprot, THeaderProtocol.THeaderProtocolAccelerate) and iprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_COMPACT_PROTOCOL)) and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None and fastproto is not None:
+      fastproto.decode(self, iprot.trans, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=2)
+      self.checkRequired()
+      return
+    iprot.readStructBegin()
+    while True:
+      (fname, ftype, fid) = iprot.readFieldBegin()
+      if ftype == TType.STOP:
+        break
+      else:
+        iprot.skip(ftype)
+      iprot.readFieldEnd()
+    iprot.readStructEnd()
+    self.checkRequired()
+
+  def checkRequired(self):
+    return
+
+  def write(self, oprot):
+    if (isinstance(oprot, TBinaryProtocol.TBinaryProtocolAccelerated) or (isinstance(oprot, THeaderProtocol.THeaderProtocolAccelerate) and oprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_BINARY_PROTOCOL)) and self.thrift_spec is not None and fastproto is not None:
+      oprot.trans.write(fastproto.encode(self, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=0))
+      return
+    if (isinstance(oprot, TCompactProtocol.TCompactProtocolAccelerated) or (isinstance(oprot, THeaderProtocol.THeaderProtocolAccelerate) and oprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_COMPACT_PROTOCOL)) and self.thrift_spec is not None and fastproto is not None:
+      oprot.trans.write(fastproto.encode(self, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=2))
+      return
+    oprot.writeStructBegin('doNothing_args')
+    oprot.writeFieldStop()
+    oprot.writeStructEnd()
+
+  def readFromJson(self, json, is_text=True):
+    json_obj = json
+    if is_text:
+      json_obj = loads(json)
+
+  def __repr__(self):
+    L = []
+    padding = ' ' * 4
+    return "%s(%s)" % (self.__class__.__name__, "\n" + ",\n".join(L) if L else '')
+
+  def __eq__(self, other):
+    if not isinstance(other, self.__class__):
+      return False
+
+    return self.__dict__ == other.__dict__ 
+
+  def __ne__(self, other):
+    return not (self == other)
+
+  # Override the __hash__ function for Python3 - t10434117
+  if not six.PY2:
+    __hash__ = object.__hash__
+
+all_structs.append(doNothing_args)
+doNothing_args.thrift_spec = (
+)
+
+doNothing_args.thrift_struct_annotations = {
+}
+doNothing_args.thrift_field_annotations = {
+}
+
+class doNothing_result:
+
+  thrift_spec = None
+  thrift_field_annotations = None
+  thrift_struct_annotations = None
+  @staticmethod
+  def isUnion():
+    return False
+
+  def read(self, iprot):
+    if (isinstance(iprot, TBinaryProtocol.TBinaryProtocolAccelerated) or (isinstance(iprot, THeaderProtocol.THeaderProtocolAccelerate) and iprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_BINARY_PROTOCOL)) and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None and fastproto is not None:
+      fastproto.decode(self, iprot.trans, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=0)
+      self.checkRequired()
+      return
+    if (isinstance(iprot, TCompactProtocol.TCompactProtocolAccelerated) or (isinstance(iprot, THeaderProtocol.THeaderProtocolAccelerate) and iprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_COMPACT_PROTOCOL)) and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None and fastproto is not None:
+      fastproto.decode(self, iprot.trans, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=2)
+      self.checkRequired()
+      return
+    iprot.readStructBegin()
+    while True:
+      (fname, ftype, fid) = iprot.readFieldBegin()
+      if ftype == TType.STOP:
+        break
+      else:
+        iprot.skip(ftype)
+      iprot.readFieldEnd()
+    iprot.readStructEnd()
+    self.checkRequired()
+
+  def checkRequired(self):
+    return
+
+  def write(self, oprot):
+    if (isinstance(oprot, TBinaryProtocol.TBinaryProtocolAccelerated) or (isinstance(oprot, THeaderProtocol.THeaderProtocolAccelerate) and oprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_BINARY_PROTOCOL)) and self.thrift_spec is not None and fastproto is not None:
+      oprot.trans.write(fastproto.encode(self, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=0))
+      return
+    if (isinstance(oprot, TCompactProtocol.TCompactProtocolAccelerated) or (isinstance(oprot, THeaderProtocol.THeaderProtocolAccelerate) and oprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_COMPACT_PROTOCOL)) and self.thrift_spec is not None and fastproto is not None:
+      oprot.trans.write(fastproto.encode(self, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=2))
+      return
+    oprot.writeStructBegin('doNothing_result')
+    oprot.writeFieldStop()
+    oprot.writeStructEnd()
+
+  def readFromJson(self, json, is_text=True):
+    json_obj = json
+    if is_text:
+      json_obj = loads(json)
+
+  def __repr__(self):
+    L = []
+    padding = ' ' * 4
+    return "%s(%s)" % (self.__class__.__name__, "\n" + ",\n".join(L) if L else '')
+
+  def __eq__(self, other):
+    if not isinstance(other, self.__class__):
+      return False
+
+    return self.__dict__ == other.__dict__ 
+
+  def __ne__(self, other):
+    return not (self == other)
+
+  # Override the __hash__ function for Python3 - t10434117
+  if not six.PY2:
+    __hash__ = object.__hash__
+
+all_structs.append(doNothing_result)
+doNothing_result.thrift_spec = (
+)
+
+doNothing_result.thrift_struct_annotations = {
+}
+doNothing_result.thrift_field_annotations = {
+}
+
 class Client(Iface):
   def __enter__(self):
     return self
@@ -1382,6 +1538,29 @@ class Client(Iface):
     args.write(self._oprot)
     self._oprot.writeMessageEnd()
     self._oprot.trans.onewayFlush()
+  def doNothing(self, ):
+    self.send_doNothing()
+    self.recv_doNothing()
+
+  def send_doNothing(self, ):
+    self._oprot.writeMessageBegin('doNothing', TMessageType.CALL, self._seqid)
+    args = doNothing_args()
+    args.write(self._oprot)
+    self._oprot.writeMessageEnd()
+    self._oprot.trans.flush()
+
+  def recv_doNothing(self, ):
+    (fname, mtype, rseqid) = self._iprot.readMessageBegin()
+    if mtype == TMessageType.EXCEPTION:
+      x = TApplicationException()
+      x.read(self._iprot)
+      self._iprot.readMessageEnd()
+      raise x
+    result = doNothing_result()
+    result.read(self._iprot)
+    self._iprot.readMessageEnd()
+    return
+
 
 class Processor(Iface, TProcessor):
   _onewayMethods = ("lobDataById",)
@@ -1403,6 +1582,8 @@ class Processor(Iface, TProcessor):
     self._priorityMap["putDataById"] = TPriority.NORMAL
     self._processMap["lobDataById"] = Processor.process_lobDataById
     self._priorityMap["lobDataById"] = TPriority.NORMAL
+    self._processMap["doNothing"] = Processor.process_doNothing
+    self._priorityMap["doNothing"] = TPriority.NORMAL
 
   def onewayMethods(self):
     l = []
@@ -1476,6 +1657,17 @@ class Processor(Iface, TProcessor):
       self._event_handler.handlerError(handler_ctx, 'lobDataById', ex)
       result = Thrift.TApplicationException(message=str(ex))
 
+  @process_method(doNothing_args, oneway=False)
+  def process_doNothing(self, args, handler_ctx):
+    result = doNothing_result()
+    try:
+      self._handler.doNothing()
+    except:
+      ex = sys.exc_info()[1]
+      self._event_handler.handlerError(handler_ctx, 'doNothing', ex)
+      result = Thrift.TApplicationException(message=str(ex))
+    return result
+
 Iface._processor_type = Processor
 
 class ContextProcessor(ContextIface, TProcessor):
@@ -1498,6 +1690,8 @@ class ContextProcessor(ContextIface, TProcessor):
     self._priorityMap["putDataById"] = TPriority.NORMAL
     self._processMap["lobDataById"] = ContextProcessor.process_lobDataById
     self._priorityMap["lobDataById"] = TPriority.NORMAL
+    self._processMap["doNothing"] = ContextProcessor.process_doNothing
+    self._priorityMap["doNothing"] = TPriority.NORMAL
 
   def onewayMethods(self):
     l = []
@@ -1570,6 +1764,17 @@ class ContextProcessor(ContextIface, TProcessor):
       ex = sys.exc_info()[1]
       self._event_handler.handlerError(handler_ctx, 'lobDataById', ex)
       result = Thrift.TApplicationException(message=str(ex))
+
+  @process_method(doNothing_args, oneway=False)
+  def process_doNothing(self, args, handler_ctx):
+    result = doNothing_result()
+    try:
+      self._handler.doNothing(handler_ctx)
+    except:
+      ex = sys.exc_info()[1]
+      self._event_handler.handlerError(handler_ctx, 'doNothing', ex)
+      result = Thrift.TApplicationException(message=str(ex))
+    return result
 
 ContextIface._processor_type = ContextProcessor
 

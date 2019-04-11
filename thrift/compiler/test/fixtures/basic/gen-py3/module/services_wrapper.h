@@ -41,6 +41,7 @@ class MyServiceWrapper : virtual public MyServiceSvIf {
         int64_t id,
         std::unique_ptr<std::string> data
     ) override;
+    folly::Future<folly::Unit> future_doNothing() override;
 };
 
 std::shared_ptr<apache::thrift::ServerInterface> MyServiceInterface(PyObject *if_object, folly::Executor *exc);

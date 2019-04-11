@@ -125,6 +125,19 @@ cdef void MyService_lobDataById_callback(
         except Exception as ex:
             pyfuture.set_exception(ex.with_traceback(None))
 
+cdef void MyService_doNothing_callback(
+    cFollyTry[cFollyUnit]&& result,
+    PyObject* userdata
+):
+    client, pyfuture, options = <object> userdata  
+    if result.hasException():
+        pyfuture.set_exception(create_py_exception(result.exception(), <__RpcOptions>options))
+    else:
+        try:
+            pyfuture.set_result(None)
+        except Exception as ex:
+            pyfuture.set_exception(ex.with_traceback(None))
+
 cdef void MyServiceFast_ping_callback(
     cFollyTry[cFollyUnit]&& result,
     PyObject* userdata
@@ -464,6 +477,26 @@ cdef class MyService(thrift.py3.client.Client):
                 data.encode('UTF-8'),
             ),
             MyService_lobDataById_callback,
+            <PyObject *> __userdata
+        )
+        return asyncio_shield(__future)
+
+    @cython.always_allow_keywords(True)
+    def doNothing(
+            MyService self,
+            __RpcOptions rpc_options=None
+    ):
+        if rpc_options is None:
+            rpc_options = <__RpcOptions>__RpcOptions.__new__(__RpcOptions)
+        self._check_connect_future()
+        __loop = asyncio_get_event_loop()
+        __future = __loop.create_future()
+        __userdata = (self, __future, rpc_options)
+        bridgeFutureWith[cFollyUnit](
+            self._executor,
+            deref(self._module_MyService_client).doNothing(rpc_options._cpp_obj, 
+            ),
+            MyService_doNothing_callback,
             <PyObject *> __userdata
         )
         return asyncio_shield(__future)

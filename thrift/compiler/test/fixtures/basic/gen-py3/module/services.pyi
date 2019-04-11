@@ -121,6 +121,22 @@ class MyServiceInterface(
         id: int,
         data: str
     ) -> None: ...
+
+    @staticmethod
+    def pass_context_doNothing(
+        fn: _typing.Callable[
+                [_MyServiceInterfaceT, RequestContext],
+                _typing.Coroutine[_typing.Any, _typing.Any, None]
+        ]
+    ) -> _typing.Callable[
+        [_MyServiceInterfaceT],
+        _typing.Coroutine[_typing.Any, _typing.Any, None]
+    ]: ...
+
+    @abstractmethod
+    async def doNothing(
+        self
+    ) -> None: ...
     pass
 
 

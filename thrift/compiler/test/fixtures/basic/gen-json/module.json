@@ -136,11 +136,19 @@
             }
           ],
           "throws" : []
+        },
+        "MyService.doNothing" : {
+          "return_type" : {
+            "type_enum" : "VOID",
+            "spec_args" : null
+          },
+          "args" : [],
+          "throws" : []
         }
       }
     },
     "MyServiceFast" : {
-      "lineno" : 32,
+      "lineno" : 33,
       "functions" : {
         "MyServiceFast.ping" : {
           "return_type" : {
@@ -221,13 +229,13 @@
       }
     },
     "MyServiceEmpty" : {
-      "lineno" : 41,
+      "lineno" : 42,
       "functions" : {
 
       }
     },
     "MyServicePrioParent" : {
-      "lineno" : 44,
+      "lineno" : 45,
       "functions" : {
         "MyServicePrioParent.ping" : {
           "return_type" : {
@@ -252,7 +260,7 @@
         "type_enum" : "SERVICE",
         "spec_args" : "MyServicePrioParent"
       },
-      "lineno" : 49,
+      "lineno" : 50,
       "functions" : {
         "MyServicePrioChild.pang" : {
           "return_type" : {

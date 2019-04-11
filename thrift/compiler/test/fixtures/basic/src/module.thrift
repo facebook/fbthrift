@@ -27,6 +27,7 @@ service MyService {
   string getDataById(1: i64 id)
   void putDataById(1: i64 id, 2: string data)
   oneway void lobDataById(1: i64 id, 2: string data)
+  void doNothing()
 }
 
 service MyServiceFast {

@@ -171,16 +171,16 @@ public class MyServicePrioParent {
       super(protocolFactory, clientManager, transport);
     }
 
-    public void ping(AsyncMethodCallback resultHandler77) throws TException {
+    public void ping(AsyncMethodCallback resultHandler83) throws TException {
       checkReady();
-      ping_call method_call = new ping_call(resultHandler77, this, ___protocolFactory, ___transport);
+      ping_call method_call = new ping_call(resultHandler83, this, ___protocolFactory, ___transport);
       this.___currentMethod = method_call;
       ___manager.call(method_call);
     }
 
     public static class ping_call extends TAsyncMethodCall {
-      public ping_call(AsyncMethodCallback resultHandler78, TAsyncClient client74, TProtocolFactory protocolFactory75, TNonblockingTransport transport76) throws TException {
-        super(client74, protocolFactory75, transport76, resultHandler78, false);
+      public ping_call(AsyncMethodCallback resultHandler84, TAsyncClient client80, TProtocolFactory protocolFactory81, TNonblockingTransport transport82) throws TException {
+        super(client80, protocolFactory81, transport82, resultHandler84, false);
       }
 
       public void write_args(TProtocol prot) throws TException {
@@ -200,16 +200,16 @@ public class MyServicePrioParent {
       }
     }
 
-    public void pong(AsyncMethodCallback resultHandler82) throws TException {
+    public void pong(AsyncMethodCallback resultHandler88) throws TException {
       checkReady();
-      pong_call method_call = new pong_call(resultHandler82, this, ___protocolFactory, ___transport);
+      pong_call method_call = new pong_call(resultHandler88, this, ___protocolFactory, ___transport);
       this.___currentMethod = method_call;
       ___manager.call(method_call);
     }
 
     public static class pong_call extends TAsyncMethodCall {
-      public pong_call(AsyncMethodCallback resultHandler83, TAsyncClient client79, TProtocolFactory protocolFactory80, TNonblockingTransport transport81) throws TException {
-        super(client79, protocolFactory80, transport81, resultHandler83, false);
+      public pong_call(AsyncMethodCallback resultHandler89, TAsyncClient client85, TProtocolFactory protocolFactory86, TNonblockingTransport transport87) throws TException {
+        super(client85, protocolFactory86, transport87, resultHandler89, false);
       }
 
       public void write_args(TProtocol prot) throws TException {

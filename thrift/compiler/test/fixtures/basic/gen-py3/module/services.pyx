@@ -153,6 +153,14 @@ cdef class MyServiceInterface(
             id,
             data):
         raise NotImplementedError("async def lobDataById is not implemented")
+
+    @staticmethod
+    def pass_context_doNothing(fn):
+        return pass_context(fn)
+
+    async def doNothing(
+            self):
+        raise NotImplementedError("async def doNothing is not implemented")
 cdef object _MyServiceFast_annotations = _py_types.MappingProxyType({
 })
 
@@ -588,6 +596,51 @@ async def MyService_lobDataById_coro(
     except Exception as ex:
         print(
             "Unexpected error in service handler lobDataById:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(c_unit)
+
+cdef api void call_cy_MyService_doNothing(
+    object self,
+    Cpp2RequestContext* ctx,
+    cFollyPromise[cFollyUnit] cPromise
+):
+    cdef MyServiceInterface __iface
+    __iface = self
+    __promise = Promise_cFollyUnit.create(move_promise_cFollyUnit(cPromise))
+    __context = None
+    if __iface._pass_context_doNothing:
+        __context = RequestContext.create(ctx)
+    asyncio.get_event_loop().create_task(
+        MyService_doNothing_coro(
+            self,
+            __context,
+            __promise
+        )
+    )
+
+async def MyService_doNothing_coro(
+    object self,
+    object ctx,
+    Promise_cFollyUnit promise
+):
+    try:
+        if ctx is not None:
+            result = await self.doNothing(ctx,)
+        else:
+            result = await self.doNothing()
+    except __ApplicationError as ex:
+        # If the handler raised an ApplicationError convert it to a C++ one
+        promise.cPromise.setException(cTApplicationException(
+            ex.type.value, ex.message.encode('UTF-8')
+        ))
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler doNothing:",
             file=sys.stderr)
         traceback.print_exc()
         promise.cPromise.setException(cTApplicationException(

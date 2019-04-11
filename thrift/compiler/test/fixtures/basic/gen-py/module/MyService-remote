@@ -48,6 +48,7 @@ FUNCTIONS = {
     'getDataById': Function('getDataById', 'MyService', 'string', [('i64', 'id', 'i64')]),
     'putDataById': Function('putDataById', 'MyService', 'void', [('i64', 'id', 'i64'), ('string', 'data', 'string')]),
     'lobDataById': Function('lobDataById', 'MyService', None, [('i64', 'id', 'i64'), ('string', 'data', 'string')]),
+    'doNothing': Function('doNothing', 'MyService', 'void', []),
 }
 
 SERVICE_NAMES = ['MyService', ]

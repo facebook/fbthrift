@@ -133,6 +133,20 @@ MyServiceClientWrapper::lobDataById(
   return _future;
 }
 
+folly::Future<folly::Unit>
+MyServiceClientWrapper::doNothing(
+    apache::thrift::RpcOptions& rpcOptions) {
+  folly::Promise<folly::Unit> _promise;
+  auto _future = _promise.getFuture();
+  auto callback = std::make_unique<::thrift::py3::FutureCallback<folly::Unit>>(
+    std::move(_promise), rpcOptions, async_client->recv_wrapped_doNothing, channel_);
+  async_client->doNothing(
+    rpcOptions,
+    std::move(callback)
+  );
+  return _future;
+}
+
 
 MyServiceFastClientWrapper::MyServiceFastClientWrapper(
     std::shared_ptr<::cpp2::MyServiceFastAsyncClient> async_client,

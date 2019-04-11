@@ -97,8 +97,8 @@ func (p *MyServiceEmptyProcessor) ProcessorMap() map[string]thrift.ProcessorFunc
 }
 
 func NewMyServiceEmptyProcessor(handler MyServiceEmpty) *MyServiceEmptyProcessor {
-  self36 := &MyServiceEmptyProcessor{handler:handler, processorMap:make(map[string]thrift.ProcessorFunction)}
-  return self36
+  self38 := &MyServiceEmptyProcessor{handler:handler, processorMap:make(map[string]thrift.ProcessorFunction)}
+  return self38
 }
 
 

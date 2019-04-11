@@ -152,16 +152,16 @@ func (p *MyServicePrioParentThreadsafeClient) recvPing() (err error) {
     return
   }
   if mTypeId == thrift.EXCEPTION {
-    error38 := thrift.NewApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
-    var error39 error
-    error39, err = error38.Read(iprot)
+    error40 := thrift.NewApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
+    var error41 error
+    error41, err = error40.Read(iprot)
     if err != nil {
       return
     }
     if err = iprot.ReadMessageEnd(); err != nil {
       return
     }
-    err = error39
+    err = error41
     return
   }
   if mTypeId != thrift.REPLY {
@@ -226,16 +226,16 @@ func (p *MyServicePrioParentThreadsafeClient) recvPong() (err error) {
     return
   }
   if mTypeId == thrift.EXCEPTION {
-    error40 := thrift.NewApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
-    var error41 error
-    error41, err = error40.Read(iprot)
+    error42 := thrift.NewApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
+    var error43 error
+    error43, err = error42.Read(iprot)
     if err != nil {
       return
     }
     if err = iprot.ReadMessageEnd(); err != nil {
       return
     }
-    err = error41
+    err = error43
     return
   }
   if mTypeId != thrift.REPLY {
@@ -274,10 +274,10 @@ func (p *MyServicePrioParentProcessor) ProcessorMap() map[string]thrift.Processo
 }
 
 func NewMyServicePrioParentProcessor(handler MyServicePrioParent) *MyServicePrioParentProcessor {
-  self42 := &MyServicePrioParentProcessor{handler:handler, processorMap:make(map[string]thrift.ProcessorFunction)}
-  self42.processorMap["ping"] = &myServicePrioParentProcessorPing{handler:handler}
-  self42.processorMap["pong"] = &myServicePrioParentProcessorPong{handler:handler}
-  return self42
+  self44 := &MyServicePrioParentProcessor{handler:handler, processorMap:make(map[string]thrift.ProcessorFunction)}
+  self44.processorMap["ping"] = &myServicePrioParentProcessorPing{handler:handler}
+  self44.processorMap["pong"] = &myServicePrioParentProcessorPong{handler:handler}
+  return self44
 }
 
 type myServicePrioParentProcessorPing struct {

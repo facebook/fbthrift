@@ -66,6 +66,11 @@ class MyService(thrift.py3.client.Client):
         rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
     ) -> None: ...
 
+    async def doNothing(
+        self,
+        rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
+    ) -> None: ...
+
 
 
 _MyServiceFastT = _typing.TypeVar('_MyServiceFastT', bound='MyServiceFast')

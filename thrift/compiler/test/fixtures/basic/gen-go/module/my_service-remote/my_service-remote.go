@@ -27,6 +27,7 @@ func Usage() {
   fmt.Fprintln(os.Stderr, "  string getDataById(i64 id)")
   fmt.Fprintln(os.Stderr, "  void putDataById(i64 id, string data)")
   fmt.Fprintln(os.Stderr, "  void lobDataById(i64 id, string data)")
+  fmt.Fprintln(os.Stderr, "  void doNothing()")
   fmt.Fprintln(os.Stderr)
   os.Exit(0)
 }
@@ -142,8 +143,8 @@ func main() {
       fmt.Fprintln(os.Stderr, "HasDataById requires 1 args")
       flag.Usage()
     }
-    argvalue0, err12 := (strconv.ParseInt(flag.Arg(1), 10, 64))
-    if err12 != nil {
+    argvalue0, err14 := (strconv.ParseInt(flag.Arg(1), 10, 64))
+    if err14 != nil {
       Usage()
       return
     }
@@ -156,8 +157,8 @@ func main() {
       fmt.Fprintln(os.Stderr, "GetDataById requires 1 args")
       flag.Usage()
     }
-    argvalue0, err13 := (strconv.ParseInt(flag.Arg(1), 10, 64))
-    if err13 != nil {
+    argvalue0, err15 := (strconv.ParseInt(flag.Arg(1), 10, 64))
+    if err15 != nil {
       Usage()
       return
     }
@@ -170,8 +171,8 @@ func main() {
       fmt.Fprintln(os.Stderr, "PutDataById requires 2 args")
       flag.Usage()
     }
-    argvalue0, err14 := (strconv.ParseInt(flag.Arg(1), 10, 64))
-    if err14 != nil {
+    argvalue0, err16 := (strconv.ParseInt(flag.Arg(1), 10, 64))
+    if err16 != nil {
       Usage()
       return
     }
@@ -186,8 +187,8 @@ func main() {
       fmt.Fprintln(os.Stderr, "LobDataById requires 2 args")
       flag.Usage()
     }
-    argvalue0, err16 := (strconv.ParseInt(flag.Arg(1), 10, 64))
-    if err16 != nil {
+    argvalue0, err18 := (strconv.ParseInt(flag.Arg(1), 10, 64))
+    if err18 != nil {
       Usage()
       return
     }
@@ -195,6 +196,14 @@ func main() {
     argvalue1 := flag.Arg(2)
     value1 := argvalue1
     fmt.Print(client.LobDataById(value0, value1))
+    fmt.Print("\n")
+    break
+  case "doNothing":
+    if flag.NArg() - 1 != 0 {
+      fmt.Fprintln(os.Stderr, "DoNothing requires 0 args")
+      flag.Usage()
+    }
+    fmt.Print(client.DoNothing())
     fmt.Print("\n")
     break
   case "":

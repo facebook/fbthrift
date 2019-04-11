@@ -345,16 +345,16 @@ public class MyServiceFast {
       super(protocolFactory, clientManager, transport);
     }
 
-    public void ping(AsyncMethodCallback resultHandler45) throws TException {
+    public void ping(AsyncMethodCallback resultHandler51) throws TException {
       checkReady();
-      ping_call method_call = new ping_call(resultHandler45, this, ___protocolFactory, ___transport);
+      ping_call method_call = new ping_call(resultHandler51, this, ___protocolFactory, ___transport);
       this.___currentMethod = method_call;
       ___manager.call(method_call);
     }
 
     public static class ping_call extends TAsyncMethodCall {
-      public ping_call(AsyncMethodCallback resultHandler46, TAsyncClient client42, TProtocolFactory protocolFactory43, TNonblockingTransport transport44) throws TException {
-        super(client42, protocolFactory43, transport44, resultHandler46, false);
+      public ping_call(AsyncMethodCallback resultHandler52, TAsyncClient client48, TProtocolFactory protocolFactory49, TNonblockingTransport transport50) throws TException {
+        super(client48, protocolFactory49, transport50, resultHandler52, false);
       }
 
       public void write_args(TProtocol prot) throws TException {
@@ -374,16 +374,16 @@ public class MyServiceFast {
       }
     }
 
-    public void getRandomData(AsyncMethodCallback resultHandler50) throws TException {
+    public void getRandomData(AsyncMethodCallback resultHandler56) throws TException {
       checkReady();
-      getRandomData_call method_call = new getRandomData_call(resultHandler50, this, ___protocolFactory, ___transport);
+      getRandomData_call method_call = new getRandomData_call(resultHandler56, this, ___protocolFactory, ___transport);
       this.___currentMethod = method_call;
       ___manager.call(method_call);
     }
 
     public static class getRandomData_call extends TAsyncMethodCall {
-      public getRandomData_call(AsyncMethodCallback resultHandler51, TAsyncClient client47, TProtocolFactory protocolFactory48, TNonblockingTransport transport49) throws TException {
-        super(client47, protocolFactory48, transport49, resultHandler51, false);
+      public getRandomData_call(AsyncMethodCallback resultHandler57, TAsyncClient client53, TProtocolFactory protocolFactory54, TNonblockingTransport transport55) throws TException {
+        super(client53, protocolFactory54, transport55, resultHandler57, false);
       }
 
       public void write_args(TProtocol prot) throws TException {
@@ -403,17 +403,17 @@ public class MyServiceFast {
       }
     }
 
-    public void hasDataById(long id, AsyncMethodCallback resultHandler55) throws TException {
+    public void hasDataById(long id, AsyncMethodCallback resultHandler61) throws TException {
       checkReady();
-      hasDataById_call method_call = new hasDataById_call(id, resultHandler55, this, ___protocolFactory, ___transport);
+      hasDataById_call method_call = new hasDataById_call(id, resultHandler61, this, ___protocolFactory, ___transport);
       this.___currentMethod = method_call;
       ___manager.call(method_call);
     }
 
     public static class hasDataById_call extends TAsyncMethodCall {
       private long id;
-      public hasDataById_call(long id, AsyncMethodCallback resultHandler56, TAsyncClient client52, TProtocolFactory protocolFactory53, TNonblockingTransport transport54) throws TException {
-        super(client52, protocolFactory53, transport54, resultHandler56, false);
+      public hasDataById_call(long id, AsyncMethodCallback resultHandler62, TAsyncClient client58, TProtocolFactory protocolFactory59, TNonblockingTransport transport60) throws TException {
+        super(client58, protocolFactory59, transport60, resultHandler62, false);
         this.id = id;
       }
 
@@ -435,17 +435,17 @@ public class MyServiceFast {
       }
     }
 
-    public void getDataById(long id, AsyncMethodCallback resultHandler60) throws TException {
+    public void getDataById(long id, AsyncMethodCallback resultHandler66) throws TException {
       checkReady();
-      getDataById_call method_call = new getDataById_call(id, resultHandler60, this, ___protocolFactory, ___transport);
+      getDataById_call method_call = new getDataById_call(id, resultHandler66, this, ___protocolFactory, ___transport);
       this.___currentMethod = method_call;
       ___manager.call(method_call);
     }
 
     public static class getDataById_call extends TAsyncMethodCall {
       private long id;
-      public getDataById_call(long id, AsyncMethodCallback resultHandler61, TAsyncClient client57, TProtocolFactory protocolFactory58, TNonblockingTransport transport59) throws TException {
-        super(client57, protocolFactory58, transport59, resultHandler61, false);
+      public getDataById_call(long id, AsyncMethodCallback resultHandler67, TAsyncClient client63, TProtocolFactory protocolFactory64, TNonblockingTransport transport65) throws TException {
+        super(client63, protocolFactory64, transport65, resultHandler67, false);
         this.id = id;
       }
 
@@ -467,9 +467,9 @@ public class MyServiceFast {
       }
     }
 
-    public void putDataById(long id, String data, AsyncMethodCallback resultHandler65) throws TException {
+    public void putDataById(long id, String data, AsyncMethodCallback resultHandler71) throws TException {
       checkReady();
-      putDataById_call method_call = new putDataById_call(id, data, resultHandler65, this, ___protocolFactory, ___transport);
+      putDataById_call method_call = new putDataById_call(id, data, resultHandler71, this, ___protocolFactory, ___transport);
       this.___currentMethod = method_call;
       ___manager.call(method_call);
     }
@@ -477,8 +477,8 @@ public class MyServiceFast {
     public static class putDataById_call extends TAsyncMethodCall {
       private long id;
       private String data;
-      public putDataById_call(long id, String data, AsyncMethodCallback resultHandler66, TAsyncClient client62, TProtocolFactory protocolFactory63, TNonblockingTransport transport64) throws TException {
-        super(client62, protocolFactory63, transport64, resultHandler66, false);
+      public putDataById_call(long id, String data, AsyncMethodCallback resultHandler72, TAsyncClient client68, TProtocolFactory protocolFactory69, TNonblockingTransport transport70) throws TException {
+        super(client68, protocolFactory69, transport70, resultHandler72, false);
         this.id = id;
         this.data = data;
       }
@@ -502,9 +502,9 @@ public class MyServiceFast {
       }
     }
 
-    public void lobDataById(long id, String data, AsyncMethodCallback resultHandler70) throws TException {
+    public void lobDataById(long id, String data, AsyncMethodCallback resultHandler76) throws TException {
       checkReady();
-      lobDataById_call method_call = new lobDataById_call(id, data, resultHandler70, this, ___protocolFactory, ___transport);
+      lobDataById_call method_call = new lobDataById_call(id, data, resultHandler76, this, ___protocolFactory, ___transport);
       this.___currentMethod = method_call;
       ___manager.call(method_call);
     }
@@ -512,8 +512,8 @@ public class MyServiceFast {
     public static class lobDataById_call extends TAsyncMethodCall {
       private long id;
       private String data;
-      public lobDataById_call(long id, String data, AsyncMethodCallback resultHandler71, TAsyncClient client67, TProtocolFactory protocolFactory68, TNonblockingTransport transport69) throws TException {
-        super(client67, protocolFactory68, transport69, resultHandler71, true);
+      public lobDataById_call(long id, String data, AsyncMethodCallback resultHandler77, TAsyncClient client73, TProtocolFactory protocolFactory74, TNonblockingTransport transport75) throws TException {
+        super(client73, protocolFactory74, transport75, resultHandler77, true);
         this.id = id;
         this.data = data;
       }

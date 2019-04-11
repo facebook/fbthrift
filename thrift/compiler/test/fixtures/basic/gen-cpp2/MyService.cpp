@@ -120,6 +120,23 @@ void MyServiceSvIf::async_tm_lobDataById(std::unique_ptr<apache::thrift::Handler
   apache::thrift::detail::si::async_tm_oneway(this, std::move(callback), [&] { return future_lobDataById(id, std::move(data)); });
 }
 
+void MyServiceSvIf::doNothing() {
+  apache::thrift::detail::si::throw_app_exn_unimplemented("doNothing");
+}
+
+folly::SemiFuture<folly::Unit> MyServiceSvIf::semifuture_doNothing() {
+  return apache::thrift::detail::si::semifuture([&] { return doNothing(); });
+}
+
+folly::Future<folly::Unit> MyServiceSvIf::future_doNothing() {
+  return apache::thrift::detail::si::future(semifuture_doNothing(), getThreadManager());
+}
+
+
+void MyServiceSvIf::async_tm_doNothing(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) {
+  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_doNothing(); });
+}
+
 void MyServiceSvNull::ping() {
   return;
 }
@@ -137,6 +154,10 @@ void MyServiceSvNull::putDataById(int64_t /*id*/, std::unique_ptr<std::string> /
 }
 
 void MyServiceSvNull::lobDataById(int64_t /*id*/, std::unique_ptr<std::string> /*data*/) {
+  return;
+}
+
+void MyServiceSvNull::doNothing() {
   return;
 }
 
@@ -171,6 +192,7 @@ const MyServiceAsyncProcessor::BinaryProtocolProcessMap MyServiceAsyncProcessor:
   {"getDataById", &MyServiceAsyncProcessor::_processInThread_getDataById<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
   {"putDataById", &MyServiceAsyncProcessor::_processInThread_putDataById<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
   {"lobDataById", &MyServiceAsyncProcessor::_processInThread_lobDataById<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
+  {"doNothing", &MyServiceAsyncProcessor::_processInThread_doNothing<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
 };
 
 const MyServiceAsyncProcessor::CompactProtocolProcessMap& MyServiceAsyncProcessor::getCompactProtocolProcessMap() {
@@ -184,6 +206,7 @@ const MyServiceAsyncProcessor::CompactProtocolProcessMap MyServiceAsyncProcessor
   {"getDataById", &MyServiceAsyncProcessor::_processInThread_getDataById<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
   {"putDataById", &MyServiceAsyncProcessor::_processInThread_putDataById<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
   {"lobDataById", &MyServiceAsyncProcessor::_processInThread_lobDataById<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
+  {"doNothing", &MyServiceAsyncProcessor::_processInThread_doNothing<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
 };
 
 } // cpp2

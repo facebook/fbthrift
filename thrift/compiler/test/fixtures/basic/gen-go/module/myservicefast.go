@@ -241,16 +241,16 @@ func (p *MyServiceFastThreadsafeClient) recvPing() (err error) {
     return
   }
   if mTypeId == thrift.EXCEPTION {
-    error18 := thrift.NewApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
-    var error19 error
-    error19, err = error18.Read(iprot)
+    error20 := thrift.NewApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
+    var error21 error
+    error21, err = error20.Read(iprot)
     if err != nil {
       return
     }
     if err = iprot.ReadMessageEnd(); err != nil {
       return
     }
-    err = error19
+    err = error21
     return
   }
   if mTypeId != thrift.REPLY {
@@ -315,16 +315,16 @@ func (p *MyServiceFastThreadsafeClient) recvGetRandomData() (value string, err e
     return
   }
   if mTypeId == thrift.EXCEPTION {
-    error20 := thrift.NewApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
-    var error21 error
-    error21, err = error20.Read(iprot)
+    error22 := thrift.NewApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
+    var error23 error
+    error23, err = error22.Read(iprot)
     if err != nil {
       return
     }
     if err = iprot.ReadMessageEnd(); err != nil {
       return
     }
-    err = error21
+    err = error23
     return
   }
   if mTypeId != thrift.REPLY {
@@ -393,16 +393,16 @@ func (p *MyServiceFastThreadsafeClient) recvHasDataById() (value bool, err error
     return
   }
   if mTypeId == thrift.EXCEPTION {
-    error22 := thrift.NewApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
-    var error23 error
-    error23, err = error22.Read(iprot)
+    error24 := thrift.NewApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
+    var error25 error
+    error25, err = error24.Read(iprot)
     if err != nil {
       return
     }
     if err = iprot.ReadMessageEnd(); err != nil {
       return
     }
-    err = error23
+    err = error25
     return
   }
   if mTypeId != thrift.REPLY {
@@ -471,16 +471,16 @@ func (p *MyServiceFastThreadsafeClient) recvGetDataById() (value string, err err
     return
   }
   if mTypeId == thrift.EXCEPTION {
-    error24 := thrift.NewApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
-    var error25 error
-    error25, err = error24.Read(iprot)
+    error26 := thrift.NewApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
+    var error27 error
+    error27, err = error26.Read(iprot)
     if err != nil {
       return
     }
     if err = iprot.ReadMessageEnd(); err != nil {
       return
     }
-    err = error25
+    err = error27
     return
   }
   if mTypeId != thrift.REPLY {
@@ -551,16 +551,16 @@ func (p *MyServiceFastThreadsafeClient) recvPutDataById() (err error) {
     return
   }
   if mTypeId == thrift.EXCEPTION {
-    error26 := thrift.NewApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
-    var error27 error
-    error27, err = error26.Read(iprot)
+    error28 := thrift.NewApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
+    var error29 error
+    error29, err = error28.Read(iprot)
     if err != nil {
       return
     }
     if err = iprot.ReadMessageEnd(); err != nil {
       return
     }
-    err = error27
+    err = error29
     return
   }
   if mTypeId != thrift.REPLY {
@@ -632,14 +632,14 @@ func (p *MyServiceFastProcessor) ProcessorMap() map[string]thrift.ProcessorFunct
 }
 
 func NewMyServiceFastProcessor(handler MyServiceFast) *MyServiceFastProcessor {
-  self28 := &MyServiceFastProcessor{handler:handler, processorMap:make(map[string]thrift.ProcessorFunction)}
-  self28.processorMap["ping"] = &myServiceFastProcessorPing{handler:handler}
-  self28.processorMap["getRandomData"] = &myServiceFastProcessorGetRandomData{handler:handler}
-  self28.processorMap["hasDataById"] = &myServiceFastProcessorHasDataById{handler:handler}
-  self28.processorMap["getDataById"] = &myServiceFastProcessorGetDataById{handler:handler}
-  self28.processorMap["putDataById"] = &myServiceFastProcessorPutDataById{handler:handler}
-  self28.processorMap["lobDataById"] = &myServiceFastProcessorLobDataById{handler:handler}
-  return self28
+  self30 := &MyServiceFastProcessor{handler:handler, processorMap:make(map[string]thrift.ProcessorFunction)}
+  self30.processorMap["ping"] = &myServiceFastProcessorPing{handler:handler}
+  self30.processorMap["getRandomData"] = &myServiceFastProcessorGetRandomData{handler:handler}
+  self30.processorMap["hasDataById"] = &myServiceFastProcessorHasDataById{handler:handler}
+  self30.processorMap["getDataById"] = &myServiceFastProcessorGetDataById{handler:handler}
+  self30.processorMap["putDataById"] = &myServiceFastProcessorPutDataById{handler:handler}
+  self30.processorMap["lobDataById"] = &myServiceFastProcessorLobDataById{handler:handler}
+  return self30
 }
 
 type myServiceFastProcessorPing struct {

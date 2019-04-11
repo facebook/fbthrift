@@ -45,6 +45,9 @@ public interface MyService extends java.io.Closeable {
         ListenableFuture<Void> lobDataById(
             @ThriftField(value=1, name="id", requiredness=Requiredness.NONE) final long id,
             @ThriftField(value=2, name="data", requiredness=Requiredness.NONE) final String data);
+
+        @ThriftMethod(value = "doNothing")
+        ListenableFuture<Void> doNothing();
     }
     @Override void close();
 
@@ -72,4 +75,7 @@ public interface MyService extends java.io.Closeable {
     void lobDataById(
         @ThriftField(value=1, name="id", requiredness=Requiredness.NONE) final long id,
         @ThriftField(value=2, name="data", requiredness=Requiredness.NONE) final String data) throws org.apache.thrift.TException;
+
+    @ThriftMethod(value = "doNothing")
+    void doNothing() throws org.apache.thrift.TException;
 }
