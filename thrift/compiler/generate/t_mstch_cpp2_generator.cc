@@ -894,6 +894,7 @@ class mstch_cpp2_function : public mstch_function {
             {"function:cache_key_id", &mstch_cpp2_function::cache_key_id},
             {"function:coroutine?", &mstch_cpp2_function::coroutine},
             {"function:eb", &mstch_cpp2_function::event_based},
+            {"function:cpp_name", &mstch_cpp2_function::cpp_name},
         });
   }
   mstch::node has_cache_key() {
@@ -915,6 +916,9 @@ class mstch_cpp2_function : public mstch_function {
       return true;
     }
     return false;
+  }
+  mstch::node cpp_name() {
+    return get_cpp_name(function_);
   }
 
  private:

@@ -30,8 +30,8 @@ typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, apache:
 typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, apache::thrift::protocol::T_I64, int64_t*>, apache::thrift::FieldData<2, apache::thrift::protocol::T_STRING, std::string*>> MyService_putDataById_pargs;
 typedef apache::thrift::ThriftPresult<true> MyService_putDataById_presult;
 typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, apache::thrift::protocol::T_I64, int64_t*>, apache::thrift::FieldData<2, apache::thrift::protocol::T_STRING, std::string*>> MyService_lobDataById_pargs;
-typedef apache::thrift::ThriftPresult<false> MyService_doNothing_pargs;
-typedef apache::thrift::ThriftPresult<true> MyService_doNothing_presult;
+typedef apache::thrift::ThriftPresult<false> MyService_cppDoNothing_pargs;
+typedef apache::thrift::ThriftPresult<true> MyService_cppDoNothing_presult;
 
 template <typename Protocol_>
 void MyServiceAsyncClient::pingT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
@@ -130,14 +130,14 @@ void MyServiceAsyncClient::lobDataByIdT(Protocol_* prot, bool useSync, apache::t
 }
 
 template <typename Protocol_>
-void MyServiceAsyncClient::doNothingT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
+void MyServiceAsyncClient::cppDoNothingT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
   auto headerAndReqContext = std::make_shared<apache::thrift::detail::ac::HeaderAndReqContext>();
   std::shared_ptr<apache::thrift::transport::THeader> header(headerAndReqContext, &headerAndReqContext->header);
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
   headerAndReqContext->reqContext.setRequestHeader(header.get());
   std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "MyService.doNothing", &headerAndReqContext->reqContext);
-  MyService_doNothing_pargs args;
+  MyService_cppDoNothing_pargs args;
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
   apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), std::move(ctx), std::move(header), channel_.get(), "doNothing", writer, sizer, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, useSync);
@@ -923,27 +923,27 @@ void MyServiceAsyncClient::lobDataById(folly::Function<void (::apache::thrift::C
   lobDataById(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), id, data);
 }
 
-void MyServiceAsyncClient::doNothing(std::unique_ptr<apache::thrift::RequestCallback> callback) {
+void MyServiceAsyncClient::cppDoNothing(std::unique_ptr<apache::thrift::RequestCallback> callback) {
   ::apache::thrift::RpcOptions rpcOptions;
-  doNothingImpl(false, rpcOptions, std::move(callback));
+  cppDoNothingImpl(false, rpcOptions, std::move(callback));
 }
 
-void MyServiceAsyncClient::doNothing(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
-  doNothingImpl(false, rpcOptions, std::move(callback));
+void MyServiceAsyncClient::cppDoNothing(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
+  cppDoNothingImpl(false, rpcOptions, std::move(callback));
 }
 
-void MyServiceAsyncClient::doNothingImpl(bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
+void MyServiceAsyncClient::cppDoNothingImpl(bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
   switch(getChannel()->getProtocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
       apache::thrift::BinaryProtocolWriter writer;
-      doNothingT(&writer, useSync, rpcOptions, std::move(callback));
+      cppDoNothingT(&writer, useSync, rpcOptions, std::move(callback));
       break;
     }
     case apache::thrift::protocol::T_COMPACT_PROTOCOL:
     {
       apache::thrift::CompactProtocolWriter writer;
-      doNothingT(&writer, useSync, rpcOptions, std::move(callback));
+      cppDoNothingT(&writer, useSync, rpcOptions, std::move(callback));
       break;
     }
     default:
@@ -953,16 +953,16 @@ void MyServiceAsyncClient::doNothingImpl(bool useSync, apache::thrift::RpcOption
   }
 }
 
-void MyServiceAsyncClient::sync_doNothing() {
+void MyServiceAsyncClient::sync_cppDoNothing() {
   ::apache::thrift::RpcOptions rpcOptions;
-  sync_doNothing(rpcOptions);
+  sync_cppDoNothing(rpcOptions);
 }
 
-void MyServiceAsyncClient::sync_doNothing(apache::thrift::RpcOptions& rpcOptions) {
+void MyServiceAsyncClient::sync_cppDoNothing(apache::thrift::RpcOptions& rpcOptions) {
   apache::thrift::ClientReceiveState _returnState;
   auto callback = std::make_unique<apache::thrift::ClientSyncCallback>(
       &_returnState, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE);
-  doNothingImpl(true, rpcOptions, std::move(callback));
+  cppDoNothingImpl(true, rpcOptions, std::move(callback));
   SCOPE_EXIT {
     if (_returnState.header() && !_returnState.header()->getHeaders().empty()) {
       rpcOptions.setReadHeaders(_returnState.header()->releaseHeaders());
@@ -972,54 +972,54 @@ void MyServiceAsyncClient::sync_doNothing(apache::thrift::RpcOptions& rpcOptions
     assert(!!_returnState.exception());
     _returnState.exception().throw_exception();
   }
-  recv_doNothing(_returnState);
+  recv_cppDoNothing(_returnState);
 }
 
-folly::Future<folly::Unit> MyServiceAsyncClient::future_doNothing() {
+folly::Future<folly::Unit> MyServiceAsyncClient::future_cppDoNothing() {
   ::apache::thrift::RpcOptions rpcOptions;
-  return future_doNothing(rpcOptions);
+  return future_cppDoNothing(rpcOptions);
 }
 
-folly::SemiFuture<folly::Unit> MyServiceAsyncClient::semifuture_doNothing() {
+folly::SemiFuture<folly::Unit> MyServiceAsyncClient::semifuture_cppDoNothing() {
   ::apache::thrift::RpcOptions rpcOptions;
-  return semifuture_doNothing(rpcOptions);
+  return semifuture_cppDoNothing(rpcOptions);
 }
 
-folly::Future<folly::Unit> MyServiceAsyncClient::future_doNothing(apache::thrift::RpcOptions& rpcOptions) {
+folly::Future<folly::Unit> MyServiceAsyncClient::future_cppDoNothing(apache::thrift::RpcOptions& rpcOptions) {
   folly::Promise<folly::Unit> _promise;
   auto _future = _promise.getFuture();
-  auto callback = std::make_unique<apache::thrift::FutureCallback<folly::Unit>>(std::move(_promise), recv_wrapped_doNothing, channel_);
-  doNothing(rpcOptions, std::move(callback));
+  auto callback = std::make_unique<apache::thrift::FutureCallback<folly::Unit>>(std::move(_promise), recv_wrapped_cppDoNothing, channel_);
+  cppDoNothing(rpcOptions, std::move(callback));
   return _future;
 }
 
-folly::SemiFuture<folly::Unit> MyServiceAsyncClient::semifuture_doNothing(apache::thrift::RpcOptions& rpcOptions) {
-  auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_doNothing, channel_);
+folly::SemiFuture<folly::Unit> MyServiceAsyncClient::semifuture_cppDoNothing(apache::thrift::RpcOptions& rpcOptions) {
+  auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_cppDoNothing, channel_);
   auto callback = std::move(callbackAndFuture.first);
-  doNothing(rpcOptions, std::move(callback));
+  cppDoNothing(rpcOptions, std::move(callback));
   return std::move(callbackAndFuture.second);
 }
 
-folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> MyServiceAsyncClient::header_future_doNothing(apache::thrift::RpcOptions& rpcOptions) {
+folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> MyServiceAsyncClient::header_future_cppDoNothing(apache::thrift::RpcOptions& rpcOptions) {
   folly::Promise<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> _promise;
   auto _future = _promise.getFuture();
-  auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<folly::Unit>>(std::move(_promise), recv_wrapped_doNothing, channel_);
-  doNothing(rpcOptions, std::move(callback));
+  auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<folly::Unit>>(std::move(_promise), recv_wrapped_cppDoNothing, channel_);
+  cppDoNothing(rpcOptions, std::move(callback));
   return _future;
 }
 
-folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> MyServiceAsyncClient::header_semifuture_doNothing(apache::thrift::RpcOptions& rpcOptions) {
-  auto callbackAndFuture = makeHeaderSemiFutureCallback(recv_wrapped_doNothing, channel_);
+folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> MyServiceAsyncClient::header_semifuture_cppDoNothing(apache::thrift::RpcOptions& rpcOptions) {
+  auto callbackAndFuture = makeHeaderSemiFutureCallback(recv_wrapped_cppDoNothing, channel_);
   auto callback = std::move(callbackAndFuture.first);
-  doNothing(rpcOptions, std::move(callback));
+  cppDoNothing(rpcOptions, std::move(callback));
   return std::move(callbackAndFuture.second);
 }
 
-void MyServiceAsyncClient::doNothing(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
-  doNothing(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
+void MyServiceAsyncClient::cppDoNothing(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
+  cppDoNothing(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
 
-folly::exception_wrapper MyServiceAsyncClient::recv_wrapped_doNothing(::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper MyServiceAsyncClient::recv_wrapped_cppDoNothing(::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
   }
@@ -1027,7 +1027,7 @@ folly::exception_wrapper MyServiceAsyncClient::recv_wrapped_doNothing(::apache::
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
 
-  using result = MyService_doNothing_presult;
+  using result = MyService_cppDoNothing_presult;
   constexpr auto const fname = "doNothing";
   switch (state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
@@ -1049,19 +1049,19 @@ folly::exception_wrapper MyServiceAsyncClient::recv_wrapped_doNothing(::apache::
   return folly::make_exception_wrapper<apache::thrift::TApplicationException>("Could not find Protocol");
 }
 
-void MyServiceAsyncClient::recv_doNothing(::apache::thrift::ClientReceiveState& state) {
-  auto ew = recv_wrapped_doNothing(state);
+void MyServiceAsyncClient::recv_cppDoNothing(::apache::thrift::ClientReceiveState& state) {
+  auto ew = recv_wrapped_cppDoNothing(state);
   if (ew) {
     ew.throw_exception();
   }
 }
 
-void MyServiceAsyncClient::recv_instance_doNothing(::apache::thrift::ClientReceiveState& state) {
-  recv_doNothing(state);
+void MyServiceAsyncClient::recv_instance_cppDoNothing(::apache::thrift::ClientReceiveState& state) {
+  recv_cppDoNothing(state);
 }
 
-folly::exception_wrapper MyServiceAsyncClient::recv_instance_wrapped_doNothing(::apache::thrift::ClientReceiveState& state) {
-  return recv_wrapped_doNothing(state);
+folly::exception_wrapper MyServiceAsyncClient::recv_instance_wrapped_cppDoNothing(::apache::thrift::ClientReceiveState& state) {
+  return recv_wrapped_cppDoNothing(state);
 }
 
 } // cpp2

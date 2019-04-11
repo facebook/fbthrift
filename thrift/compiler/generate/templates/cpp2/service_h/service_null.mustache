@@ -18,10 +18,10 @@
  public:
 <%#service:functions%><%#function:returnType%><%^function:eb%><%^type:deprecated_stream?%>
 <%^type:resolves_to_complex_return?%>
-  <% > types/type%> <%function:name%>(<% > service_common/function_param_list_commented_out%>) override;
+  <% > types/type%> <%function:cpp_name%>(<% > service_common/function_param_list_commented_out%>) override;
 <%/type:resolves_to_complex_return?%>
 <%#type:resolves_to_complex_return?%>
-  void <%function:name%>(<% > types/type%>& /*_return*/<%function:comma%><% > service_common/function_param_list_commented_out%>) override;
+  void <%function:cpp_name%>(<% > types/type%>& /*_return*/<%function:comma%><% > service_common/function_param_list_commented_out%>) override;
 <%/type:resolves_to_complex_return?%>
 <%/type:deprecated_stream?%><%/function:eb%><%/function:returnType%><%/service:functions%>
 };

@@ -15,16 +15,16 @@
   limitations under the License.
 
 %><%#type:deprecated_stream?%><%#type:streamElemType%>
-wangle::ObservablePtr<<% > types/type%>> <%service:name%>AsyncClient::observable_<%function:name%>(<% > service_common/function_param_list_const%>) {
+wangle::ObservablePtr<<% > types/type%>> <%service:name%>AsyncClient::observable_<%function:cpp_name%>(<% > service_common/function_param_list_const%>) {
   ::apache::thrift::RpcOptions rpcOptions;
-  return observable_<%function:name%>(rpcOptions<%function:comma%><% > service_common/param_list%>);
+  return observable_<%function:cpp_name%>(rpcOptions<%function:comma%><% > service_common/param_list%>);
 }
 
-wangle::ObservablePtr<<% > types/type%>> <%service:name%>AsyncClient::observable_<%function:name%>(apache::thrift::RpcOptions& rpcOptions<%function:comma%><% > service_common/function_param_list_const%>) {
+wangle::ObservablePtr<<% > types/type%>> <%service:name%>AsyncClient::observable_<%function:cpp_name%>(apache::thrift::RpcOptions& rpcOptions<%function:comma%><% > service_common/function_param_list_const%>) {
   auto _subj = std::make_shared<wangle::Subject<<% > types/type%>>>();
-  <%function:name%>(rpcOptions, std::make_unique<apache::thrift::FunctionReplyCallback>(
+  <%function:cpp_name%>(rpcOptions, std::make_unique<apache::thrift::FunctionReplyCallback>(
         [_subj](apache::thrift::ClientReceiveState&& state) mutable {
-          apache::thrift::clientCallbackToObservable(state, recv_wrapped_<%function:name%>, _subj);
+          apache::thrift::clientCallbackToObservable(state, recv_wrapped_<%function:cpp_name%>, _subj);
         })<%function:comma%><% > service_common/param_list%>);
   return _subj;
 }

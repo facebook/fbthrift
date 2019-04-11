@@ -16,7 +16,7 @@
 
 %><%#service:functions%><%#function:returnType%><%^function:eb%><%^type:deprecated_stream?%>
 <%^type:resolves_to_complex_return?%>
-<% > types/type%> <%service:name%>SvNull::<%function:name%>(<% > service_common/function_param_list_commented_out%>) {
+<% > types/type%> <%service:name%>SvNull::<%function:cpp_name%>(<% > service_common/function_param_list_commented_out%>) {
 <%#type:void?%>
   return;
 <%/type:void?%>
@@ -32,7 +32,7 @@
 }
 <%/type:resolves_to_complex_return?%>
 <%#type:resolves_to_complex_return?%>
-void <%service:name%>SvNull::<%function:name%>(<% > types/type%>& /*_return*/<%function:comma%><% > service_common/function_param_list_commented_out%>) {}
+void <%service:name%>SvNull::<%function:cpp_name%>(<% > types/type%>& /*_return*/<%function:comma%><% > service_common/function_param_list_commented_out%>) {}
 <%/type:resolves_to_complex_return?%>
 
 <%/type:deprecated_stream?%><%/function:eb%><%/function:returnType%><%/service:functions%>

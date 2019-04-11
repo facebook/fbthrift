@@ -15,11 +15,11 @@
   limitations under the License.
 
 %><%^function:takes_stream?%>
-typedef apache::thrift::ThriftPresult<false<% > service_tcc/field_data_params%>> <%service:name%>_<%function:name%>_pargs;
+typedef apache::thrift::ThriftPresult<false<% > service_tcc/field_data_params%>> <%service:name%>_<%function:cpp_name%>_pargs;
 <%/function:takes_stream?%>
 <%#function:takes_stream?%>
 typedef apache::thrift::ThriftPResultStream<
     apache::thrift::ThriftPresult<false<% > service_tcc/field_data_params%>>,
     apache::thrift::ThriftPresult<true<%#function:takenStreamType%><%#type:streamElemType%><% > service_tcc/field_data_return%><%/type:streamElemType%><%/function:takenStreamType%>>
-    > <%service:name%>_<%function:name%>_pargs;
+    > <%service:name%>_<%function:cpp_name%>_pargs;
 <%/function:takes_stream?%>

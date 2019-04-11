@@ -27,12 +27,15 @@
 #include <thrift/lib/cpp/util/EnumUtils.h>
 #include <thrift/lib/cpp2/protocol/Serializer.h>
 #include <thrift/lib/cpp2/reflection/internal/test_helpers.h>
+#include <thrift/lib/cpp2/util/ScopedServerInterfaceThread.h>
+#include <thrift/test/gen-cpp2/MyService.h>
 #include <thrift/test/gen-cpp2/cpp_name_fatal_struct.h>
 #include <thrift/test/gen-cpp2/cpp_name_types.h>
 
 #include <folly/portability/GTest.h>
 
 using apache::thrift::SimpleJSONSerializer;
+using namespace apache::thrift;
 using namespace apache::thrift::test;
 
 TEST(cpp_name_test, rename) {
@@ -70,4 +73,69 @@ TEST(cpp_name_test, reflection) {
 TEST(cpp_name_test, enum_value) {
   EXPECT_EQ(static_cast<int>(MyEnum::REALM), 1);
   EXPECT_STREQ(apache::thrift::util::enumName(MyEnum::REALM), "DOMAIN");
+}
+
+// Make sure the server code uses the renamed method.  If the following code
+// compiles, that should be sufficient to verify this.
+class MyServiceImpl : public MyServiceSvIf {
+ public:
+  int getCallCount() {
+    return callCount_;
+  }
+
+  void cppDoNothing() override {
+    callCount_++;
+  }
+
+  folly::Future<folly::Unit> future_cppDoNothing() override {
+    callCount_++;
+    return folly::Future<folly::Unit>();
+  }
+
+  void async_tm_cppDoNothing(
+      std::unique_ptr<apache::thrift::HandlerCallback<void>> callback)
+      override {
+    callCount_++;
+    callback->done();
+  }
+
+  folly::SemiFuture<folly::Unit> semifuture_cppDoNothing() override {
+    callCount_++;
+    return folly::SemiFuture<folly::Unit>();
+  }
+
+#if FOLLY_HAS_COROUTINES
+  folly::coro::Task<void> co_cppDoNothing() override {
+    callCount_++;
+    co_return;
+  }
+#endif // FOLLY_HAS_COROUTINES
+
+ private:
+  int callCount_ = 0;
+};
+
+// Make sure the null implementation function can be called.
+TEST(cpp_name_test, null_service) {
+  MyServiceSvNull service;
+  service.cppDoNothing();
+}
+
+// Make sure all the variations of the function name compile. This function
+// doesn't actually need to be called - it just needs to compile.
+void verifyCompiles(MyServiceAsyncClient* client) {
+  client->cppDoNothing(std::unique_ptr<apache::thrift::RequestCallback>());
+  client->future_cppDoNothing();
+  client->sync_cppDoNothing();
+  client->semifuture_cppDoNothing();
+}
+
+TEST(cpp_name_test, send_request) {
+  auto server = std::make_shared<MyServiceImpl>();
+  ScopedServerInterfaceThread runner(server);
+  auto eb = folly::EventBaseManager::get()->getEventBase();
+  auto client = runner.newClient<MyServiceAsyncClient>(eb);
+
+  client->sync_cppDoNothing();
+  EXPECT_EQ(server->getCallCount(), 1);
 }
