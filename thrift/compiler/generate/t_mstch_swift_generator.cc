@@ -29,34 +29,25 @@ class swift_generator_context {
  public:
   swift_generator_context(
       bool legacy_extend_runtime_exception,
-      bool legacy_generate_beans,
-      std::unique_ptr<std::string> default_package,
-      std::string namespace_identifier,
-      std::string const_name_identifier)
+      bool legacy_generate_beans)
       : legacy_extend_runtime_exception_(legacy_extend_runtime_exception),
-        legacy_generate_beans_(legacy_generate_beans),
-        default_package_(std::move(default_package)),
-        namespace_identifier_(std::move(namespace_identifier)),
-        const_name_identifier_(std::move(const_name_identifier)) {}
+        legacy_generate_beans_(legacy_generate_beans) {}
 
   /**
-   * Gets the swift namespace, or, if it doesn't exist, uses the default.
-   * If no default specified, throws runtime error
+   * Gets the swift namespace, throws a runtime error if not found.
    */
   std::string get_namespace_or_default(const t_program& prog) {
-    const auto& prog_namespace = prog.get_namespace(namespace_identifier_);
+    const auto& prog_namespace = prog.get_namespace("java.swift");
     if (prog_namespace != "") {
       return prog_namespace;
-    } else if (default_package_) {
-      return *(default_package_);
     } else {
-      throw std::runtime_error{"No namespace '" + namespace_identifier_ +
-                               "' in " + prog.get_name()};
+      throw std::runtime_error{"No namespace 'java.swift' in " +
+                               prog.get_name()};
     }
   }
 
   std::string get_constants_class_name(const t_program& prog) {
-    const auto& constant_name = prog.get_namespace(const_name_identifier_);
+    const auto& constant_name = prog.get_namespace("java.swift.constants");
     if (constant_name == "") {
       return "Constants";
     } else {
@@ -89,9 +80,6 @@ class swift_generator_context {
  private:
   const bool legacy_extend_runtime_exception_;
   const bool legacy_generate_beans_;
-  std::unique_ptr<std::string> default_package_;
-  const std::string namespace_identifier_;
-  const std::string const_name_identifier_;
 };
 
 template <typename Node>
@@ -116,12 +104,7 @@ class t_mstch_swift_generator : public t_mstch_generator {
             parsed_options),
         swift_context_(std::make_shared<swift_generator_context>(
             has_option("legacy_extend_runtime_exception"),
-            has_option("legacy_generate_beans"),
-            get_option("default_package"),
-            has_option("use_java_namespace") ? "java" : "java.swift",
-            get_option("const_name_identifier") == nullptr
-                ? std::string("java.swift.constants")
-                : *get_option("const_name_identifier"))) {
+            has_option("legacy_generate_beans"))) {
     out_dir_base_ = "gen-swift";
   }
 
