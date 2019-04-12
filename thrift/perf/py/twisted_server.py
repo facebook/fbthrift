@@ -17,6 +17,7 @@
 # specific language governing permissions and limitations
 # under the License.
 #
+from __future__ import print_function
 from __future__ import absolute_import
 
 import optparse
@@ -69,7 +70,7 @@ def main():
     server_factory = ThriftServerFactory(processor, proto_factory)
     reactor.listenTCP(options.port, server_factory)
 
-    print 'Serving requests on port %d...' % (options.port,)
+    print('Serving requests on port %d...' % (options.port,))
     reactor.run()
 
 

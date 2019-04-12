@@ -17,6 +17,7 @@
 # specific language governing permissions and limitations
 # under the License.
 #
+from __future__ import print_function
 from __future__ import absolute_import
 
 import optparse
@@ -73,27 +74,27 @@ def main():
                                            CLIENT_TYPE.UNFRAMED_DEPRECATED,
                                            CLIENT_TYPE.HTTP_SERVER])
         if options.servertype == 'TCppServer':
-            print 'C++ ThriftServer, Header transport, backwards compatible ' \
-                  'with all other types'
+            print('C++ ThriftServer, Header transport, backwards compatible ' \
+                  'with all other types')
         elif options.servertype == 'TNonblockingServer':
-            print 'Header transport, backwards compatible with framed'
+            print('Header transport, backwards compatible with framed')
         else:
-            print 'Header transport, backwards compatible with ' + \
-                'unframed, framed, http'
+            print('Header transport, backwards compatible with ' + \
+                'unframed, framed, http')
     else:
         if options.servertype == 'TCppServer':
             if not options.header:
                 op.error('TCppServer cannot be used without header')
         if options.servertype == 'TNonblockingServer':
-            print 'Framed transport'
+            print('Framed transport')
         else:
-            print 'Unframed transport'
+            print('Unframed transport')
         pfactory = TBinaryProtocolAcceleratedFactory()
 
     if options.servertype == 'TCppServer':
         server = TCppServer.TCppServer(processor)
         server.setPort(options.port)
-        print 'Worker threads: ' + str(options.workers)
+        print('Worker threads: ' + str(options.workers))
         server.setNumIOWorkerThreads(options.workers)
     else:
         transport = TSocket.TServerSocket(options.port)
@@ -102,7 +103,7 @@ def main():
             server = TNonblockingServer.TNonblockingServer(processor, transport,
                                 pfactory, maxQueueSize=options.max_queue_size)
         elif options.servertype == "TGeventServer":
-            print 'Worker processes: ' + str(options.workers)
+            print('Worker processes: ' + str(options.workers))
             # Gevent makes its own server transport.
             server = TGeventServer.TGeventServer(options.port,
                                                  processor, None,
@@ -113,8 +114,8 @@ def main():
             ServerClass = getattr(TServer, options.servertype)
             server = ServerClass(processor, transport, tfactory, pfactory)
 
-    print 'Serving ' + options.servertype + \
-        ' requests on port %d...' % (options.port,)
+    print('Serving ' + options.servertype + \
+        ' requests on port %d...' % (options.port,))
     server.serve()
 
 if __name__ == '__main__':
