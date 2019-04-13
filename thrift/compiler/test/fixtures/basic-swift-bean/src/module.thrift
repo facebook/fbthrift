@@ -28,7 +28,7 @@ struct MyDataItem {
 struct LegacyStruct {
   1: i32 normal,
   -1: i32 bad,
-}
+} (java.swift.mutable = "true")
 
 union ListUnion {
   2: list<i64> intListValue;
