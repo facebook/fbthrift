@@ -723,7 +723,7 @@ cdef class EmptyService(thrift.py3.client.Client):
         self._module_EmptyService_client.reset()
 
     def __dealloc__(EmptyService self):
-        if self._connect_future.done() and not self._connect_future.exception():
+        if self._connect_future and self._connect_future.done() and not self._connect_future.exception():
             print(f'thrift-py3 client: {self!r} was not cleaned up, use the async context manager', file=sys.stderr)
             if self._module_EmptyService_client:
                 deref(self._module_EmptyService_client).disconnect().get()
@@ -808,7 +808,7 @@ cdef class ReturnService(thrift.py3.client.Client):
         self._module_ReturnService_client.reset()
 
     def __dealloc__(ReturnService self):
-        if self._connect_future.done() and not self._connect_future.exception():
+        if self._connect_future and self._connect_future.done() and not self._connect_future.exception():
             print(f'thrift-py3 client: {self!r} was not cleaned up, use the async context manager', file=sys.stderr)
             if self._module_ReturnService_client:
                 deref(self._module_ReturnService_client).disconnect().get()
@@ -1325,7 +1325,7 @@ cdef class ParamService(thrift.py3.client.Client):
         self._module_ParamService_client.reset()
 
     def __dealloc__(ParamService self):
-        if self._connect_future.done() and not self._connect_future.exception():
+        if self._connect_future and self._connect_future.done() and not self._connect_future.exception():
             print(f'thrift-py3 client: {self!r} was not cleaned up, use the async context manager', file=sys.stderr)
             if self._module_ParamService_client:
                 deref(self._module_ParamService_client).disconnect().get()

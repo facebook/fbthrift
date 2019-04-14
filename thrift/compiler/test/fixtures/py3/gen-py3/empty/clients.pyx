@@ -69,7 +69,7 @@ cdef class NullService(thrift.py3.client.Client):
         self._empty_NullService_client.reset()
 
     def __dealloc__(NullService self):
-        if self._connect_future.done() and not self._connect_future.exception():
+        if self._connect_future and self._connect_future.done() and not self._connect_future.exception():
             print(f'thrift-py3 client: {self!r} was not cleaned up, use the async context manager', file=sys.stderr)
             if self._empty_NullService_client:
                 deref(self._empty_NullService_client).disconnect().get()

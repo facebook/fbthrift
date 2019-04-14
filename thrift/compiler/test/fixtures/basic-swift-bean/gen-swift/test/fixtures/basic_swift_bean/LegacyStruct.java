@@ -18,29 +18,56 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 @ThriftStruct("LegacyStruct")
 public final class LegacyStruct {
     @ThriftConstructor
-    public LegacyStruct() {}
-
-    private int normal;
-    private int bad;
+    public LegacyStruct(
+        @ThriftField(value=1, name="normal", requiredness=Requiredness.NONE) final int normal,
+        @ThriftField(value=-1, name="bad", isLegacyId=true, requiredness=Requiredness.NONE) final int bad
+    ) {
+        this.normal = normal;
+        this.bad = bad;
+    }
+    
+    protected LegacyStruct() {
+      this.normal = 0;
+      this.bad = 0;
+    }
+    
+    public static class Builder {
+        private int normal;
+    
+        public Builder setNormal(int normal) {
+            this.normal = normal;
+            return this;
+        }
+        private int bad;
+    
+        public Builder setBad(int bad) {
+            this.bad = bad;
+            return this;
+        }
+    
+        public Builder() { }
+        public Builder(LegacyStruct other) {
+            this.normal = other.normal;
+            this.bad = other.bad;
+        }
+    
+        public LegacyStruct build() {
+            return new LegacyStruct (
+                this.normal,
+                this.bad
+            );
+        }
+    }
+    
+    private final int normal;
+    private final int bad;
 
     
     @ThriftField(value=1, name="normal", requiredness=Requiredness.NONE)
     public int getNormal() { return normal; }
-    
-    @ThriftField
-    public LegacyStruct setNormal(int normal) {
-        this.normal = normal;
-        return this;
-    }
         
     @ThriftField(value=-1, name="bad", isLegacyId=true, requiredness=Requiredness.NONE)
     public int getBad() { return bad; }
-    
-    @ThriftField
-    public LegacyStruct setBad(int bad) {
-        this.bad = bad;
-        return this;
-    }
     
     @Override
     public String toString() {

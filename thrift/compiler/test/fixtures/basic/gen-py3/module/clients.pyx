@@ -281,7 +281,7 @@ cdef class MyService(thrift.py3.client.Client):
         self._module_MyService_client.reset()
 
     def __dealloc__(MyService self):
-        if self._connect_future.done() and not self._connect_future.exception():
+        if self._connect_future and self._connect_future.done() and not self._connect_future.exception():
             print(f'thrift-py3 client: {self!r} was not cleaned up, use the async context manager', file=sys.stderr)
             if self._module_MyService_client:
                 deref(self._module_MyService_client).disconnect().get()
@@ -534,7 +534,7 @@ cdef class MyServiceFast(thrift.py3.client.Client):
         self._module_MyServiceFast_client.reset()
 
     def __dealloc__(MyServiceFast self):
-        if self._connect_future.done() and not self._connect_future.exception():
+        if self._connect_future and self._connect_future.done() and not self._connect_future.exception():
             print(f'thrift-py3 client: {self!r} was not cleaned up, use the async context manager', file=sys.stderr)
             if self._module_MyServiceFast_client:
                 deref(self._module_MyServiceFast_client).disconnect().get()
@@ -767,7 +767,7 @@ cdef class MyServiceEmpty(thrift.py3.client.Client):
         self._module_MyServiceEmpty_client.reset()
 
     def __dealloc__(MyServiceEmpty self):
-        if self._connect_future.done() and not self._connect_future.exception():
+        if self._connect_future and self._connect_future.done() and not self._connect_future.exception():
             print(f'thrift-py3 client: {self!r} was not cleaned up, use the async context manager', file=sys.stderr)
             if self._module_MyServiceEmpty_client:
                 deref(self._module_MyServiceEmpty_client).disconnect().get()
@@ -853,7 +853,7 @@ cdef class MyServicePrioParent(thrift.py3.client.Client):
         self._module_MyServicePrioParent_client.reset()
 
     def __dealloc__(MyServicePrioParent self):
-        if self._connect_future.done() and not self._connect_future.exception():
+        if self._connect_future and self._connect_future.done() and not self._connect_future.exception():
             print(f'thrift-py3 client: {self!r} was not cleaned up, use the async context manager', file=sys.stderr)
             if self._module_MyServicePrioParent_client:
                 deref(self._module_MyServicePrioParent_client).disconnect().get()
@@ -980,7 +980,7 @@ cdef class MyServicePrioChild(MyServicePrioParent):
         MyServicePrioParent._module_MyServicePrioParent_reset_client(self)
 
     def __dealloc__(MyServicePrioChild self):
-        if self._connect_future.done() and not self._connect_future.exception():
+        if self._connect_future and self._connect_future.done() and not self._connect_future.exception():
             print(f'thrift-py3 client: {self!r} was not cleaned up, use the async context manager', file=sys.stderr)
             if self._module_MyServicePrioChild_client:
                 deref(self._module_MyServicePrioChild_client).disconnect().get()

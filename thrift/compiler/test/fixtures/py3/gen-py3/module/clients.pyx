@@ -619,7 +619,7 @@ cdef class SimpleService(thrift.py3.client.Client):
         self._module_SimpleService_client.reset()
 
     def __dealloc__(SimpleService self):
-        if self._connect_future.done() and not self._connect_future.exception():
+        if self._connect_future and self._connect_future.done() and not self._connect_future.exception():
             print(f'thrift-py3 client: {self!r} was not cleaned up, use the async context manager', file=sys.stderr)
             if self._module_SimpleService_client:
                 deref(self._module_SimpleService_client).disconnect().get()
@@ -1652,7 +1652,7 @@ cdef class DerivedService(SimpleService):
         SimpleService._module_SimpleService_reset_client(self)
 
     def __dealloc__(DerivedService self):
-        if self._connect_future.done() and not self._connect_future.exception():
+        if self._connect_future and self._connect_future.done() and not self._connect_future.exception():
             print(f'thrift-py3 client: {self!r} was not cleaned up, use the async context manager', file=sys.stderr)
             if self._module_DerivedService_client:
                 deref(self._module_DerivedService_client).disconnect().get()
@@ -1759,7 +1759,7 @@ cdef class RederivedService(DerivedService):
         DerivedService._module_DerivedService_reset_client(self)
 
     def __dealloc__(RederivedService self):
-        if self._connect_future.done() and not self._connect_future.exception():
+        if self._connect_future and self._connect_future.done() and not self._connect_future.exception():
             print(f'thrift-py3 client: {self!r} was not cleaned up, use the async context manager', file=sys.stderr)
             if self._module_RederivedService_client:
                 deref(self._module_RederivedService_client).disconnect().get()
