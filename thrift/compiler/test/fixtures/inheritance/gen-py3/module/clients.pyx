@@ -110,7 +110,7 @@ cdef class MyRoot(thrift.py3.client.Client):
         self._module_MyRoot_client.reset()
 
     def __dealloc__(MyRoot self):
-        if self._connect_future.done() and not self._connect_future.exception():
+        if self._connect_future and self._connect_future.done() and not self._connect_future.exception():
             print(f'thrift-py3 client: {self!r} was not cleaned up, use the async context manager', file=sys.stderr)
             if self._module_MyRoot_client:
                 deref(self._module_MyRoot_client).disconnect().get()
@@ -217,7 +217,7 @@ cdef class MyNode(MyRoot):
         MyRoot._module_MyRoot_reset_client(self)
 
     def __dealloc__(MyNode self):
-        if self._connect_future.done() and not self._connect_future.exception():
+        if self._connect_future and self._connect_future.done() and not self._connect_future.exception():
             print(f'thrift-py3 client: {self!r} was not cleaned up, use the async context manager', file=sys.stderr)
             if self._module_MyNode_client:
                 deref(self._module_MyNode_client).disconnect().get()
@@ -324,7 +324,7 @@ cdef class MyLeaf(MyNode):
         MyNode._module_MyNode_reset_client(self)
 
     def __dealloc__(MyLeaf self):
-        if self._connect_future.done() and not self._connect_future.exception():
+        if self._connect_future and self._connect_future.done() and not self._connect_future.exception():
             print(f'thrift-py3 client: {self!r} was not cleaned up, use the async context manager', file=sys.stderr)
             if self._module_MyLeaf_client:
                 deref(self._module_MyLeaf_client).disconnect().get()

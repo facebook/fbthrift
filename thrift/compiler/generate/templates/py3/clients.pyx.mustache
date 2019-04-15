@@ -121,7 +121,7 @@ cdef class {{service:name}}({{#service:extends}}{{#service:externalProgram?}}{{!
 {{/service:extends}}
 
     def __dealloc__({{service:name}} self):
-        if self._connect_future.done() and not self._connect_future.exception():
+        if self._connect_future and self._connect_future.done() and not self._connect_future.exception():
             print(f'thrift-py3 client: {self!r} was not cleaned up, use the async context manager', file=sys.stderr)
             if self._{{program:name}}_{{service:name}}_client:
                 deref(self._{{program:name}}_{{service:name}}_client).disconnect().get()
