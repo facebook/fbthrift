@@ -188,12 +188,10 @@ folly::coro::AsyncGenerator<T&&> SemiStream<T>::toAsyncGenerator(
           ele.emplaceException(std::current_exception());
         }
       }
-    }
-    ele.throwIfFailed();
-
-    // folly::Try can be empty, !hasValue() && !hasException() which marked as
-    // the end of a stream
-    if (!ele.hasValue()) {
+      ele.throwIfFailed();
+    } else {
+      // folly::Try can be empty, !hasValue() && !hasException() which marked as
+      // the end of a stream
       co_return;
     }
 

@@ -232,6 +232,7 @@ TEST(StreamGeneratorFutureTest, CoroGeneratorWithError) {
 
   int expected_i = 0;
   SemiStream<int> semi = SemiStream<int>(std::move(stream));
+  bool getError = false;
   folly::coro::blockingWait([&]() mutable -> folly::coro::Task<void> {
     try {
       auto gen = toAsyncGenerator<int>(std::move(semi), 100);
@@ -243,9 +244,11 @@ TEST(StreamGeneratorFutureTest, CoroGeneratorWithError) {
         co_await(++it);
       }
     } catch (const std::exception& e) {
+      getError = true;
       EXPECT_EQ(errorMsg, e.what());
     }
   }());
+  EXPECT_TRUE(getError);
 }
 
 TEST(StreamGeneratorFutureTest, CoroGeneratorWithCancel) {
