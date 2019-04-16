@@ -5,6 +5,6 @@
  *  @generated
  */
 
-#include "src/gen-cpp2/module2_data.h"
+#include "thrift/compiler/test/fixtures/qualified/gen-cpp2/module2_data.h"
 
 

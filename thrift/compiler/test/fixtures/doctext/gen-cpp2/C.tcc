@@ -6,7 +6,7 @@
  */
 #pragma once
 
-#include "src/gen-cpp2/C.h"
+#include "thrift/compiler/test/fixtures/doctext/gen-cpp2/C.h"
 
 #include <folly/io/IOBuf.h>
 #include <folly/io/IOBufQueue.h>

@@ -13,6 +13,6 @@
  * VirtualProtocol) to read/write thrift structs.
  */
 
-#include "src/gen-cpp2/MyServicePrioChild.tcc"
-#include "src/gen-cpp2/module_types_custom_protocol.h"
-#include "src/gen-cpp2/MyServicePrioParent_custom_protocol.h"
+#include "thrift/compiler/test/fixtures/basic/gen-cpp2/MyServicePrioChild.tcc"
+#include "thrift/compiler/test/fixtures/basic/gen-cpp2/module_types_custom_protocol.h"
+#include "thrift/compiler/test/fixtures/basic/gen-cpp2/MyServicePrioParent_custom_protocol.h"

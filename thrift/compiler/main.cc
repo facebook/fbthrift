@@ -334,6 +334,47 @@ static bool generate(
   return true;
 }
 
+static string get_include_path(
+    const vector<string>& generator_strings,
+    const string& input_filename) {
+  string include_prefix;
+  for (const auto& generator_string : generator_strings) {
+    if (generator_string.find("cpp") == string::npos) {
+      continue;
+    } else {
+      auto const colon_pos = generator_string.find(':');
+      if (colon_pos == std::string::npos) {
+        continue;
+      }
+      auto const lang_name = generator_string.substr(0, colon_pos);
+      if (lang_name != "cpp2" && lang_name != "mstch_cpp2") {
+        continue;
+      }
+
+      auto const lang_args = generator_string.substr(colon_pos + 1);
+      std::vector<std::string> parts;
+      boost::algorithm::split(
+          parts, lang_args, [](const char& c) { return c == ','; });
+      for (auto const& part : parts) {
+        auto const equal_pos = part.find('=');
+        auto const arg_name = part.substr(0, equal_pos);
+        if (arg_name.find("include_prefix") != string::npos) {
+          include_prefix = part.substr(equal_pos + 1);
+        }
+      }
+    }
+  }
+
+  // infer cpp include prefix from the filename passed in if none specified.
+  if (include_prefix == "") {
+    if (input_filename.rfind("/") != string::npos) {
+      include_prefix = input_filename.substr(0, input_filename.rfind("/"));
+    }
+  }
+
+  return include_prefix;
+}
+
 /**
  * Parse it up.. then spit it back out, in pretty much every language. Alright
  * not that many languages, but the cool ones that we care about.
@@ -502,15 +543,8 @@ int main(int argc, char** argv) {
 
   std::string input_file = compute_absolute_path(arguments[i]);
 
-  // Compute the cpp include prefix.
-  // infer this from the filename passed in
   string input_filename = arguments[i];
-  string include_prefix;
-
-  string::size_type last_slash = string::npos;
-  if ((last_slash = input_filename.rfind("/")) != string::npos) {
-    include_prefix = input_filename.substr(0, last_slash);
-  }
+  string include_prefix = get_include_path(generator_strings, input_filename);
 
   g_stage = "parse";
 

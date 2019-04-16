@@ -8,7 +8,7 @@
 
 #include <thrift/lib/cpp2/protocol/Protocol.h>
 
-#include "src/gen-cpp2/module_types.h"
+#include "thrift/compiler/test/fixtures/types/gen-cpp2/module_types.h"
 
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 

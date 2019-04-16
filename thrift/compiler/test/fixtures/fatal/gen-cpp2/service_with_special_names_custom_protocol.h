@@ -13,7 +13,7 @@
  * VirtualProtocol) to read/write thrift structs.
  */
 
-#include "src/gen-cpp2/service_with_special_names.tcc"
-#include "src/gen-cpp2/module_types_custom_protocol.h"
+#include "thrift/compiler/test/fixtures/fatal/gen-cpp2/service_with_special_names.tcc"
+#include "thrift/compiler/test/fixtures/fatal/gen-cpp2/module_types_custom_protocol.h"
 #include "thrift/compiler/test/fixtures/fatal/gen-cpp2/reflection_dep_B_types_custom_protocol.h"
 #include "thrift/compiler/test/fixtures/fatal/gen-cpp2/reflection_dep_C_types_custom_protocol.h"

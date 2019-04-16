@@ -5,7 +5,7 @@
  *  @generated
  */
 
-#include "src/gen-cpp2/CAsyncClient.h"
+#include "thrift/compiler/test/fixtures/doctext/gen-cpp2/CAsyncClient.h"
 
 #include <folly/io/IOBuf.h>
 #include <folly/io/IOBufQueue.h>

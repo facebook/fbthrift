@@ -11,8 +11,8 @@
 #include <thrift/lib/cpp2/ServiceIncludes.h>
 #include <thrift/lib/cpp2/async/FutureRequest.h>
 #include <thrift/lib/cpp2/async/HeaderChannel.h>
-#include "src/gen-cpp2/ExtraServiceAsyncClient.h"
-#include "src/gen-cpp2/extra_services_types.h"
+#include "thrift/compiler/test/fixtures/mcpp2-compare/gen-cpp2/ExtraServiceAsyncClient.h"
+#include "thrift/compiler/test/fixtures/mcpp2-compare/gen-cpp2/extra_services_types.h"
 #include "thrift/compiler/test/fixtures/mcpp2-compare/gen-cpp2/ParamService.h"
 #include "thrift/compiler/test/fixtures/mcpp2-compare/gen-cpp2/module_types.h"
 

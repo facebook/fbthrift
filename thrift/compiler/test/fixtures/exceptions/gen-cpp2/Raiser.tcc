@@ -6,7 +6,7 @@
  */
 #pragma once
 
-#include "src/gen-cpp2/Raiser.h"
+#include "thrift/compiler/test/fixtures/exceptions/gen-cpp2/Raiser.h"
 
 #include <folly/io/IOBuf.h>
 #include <folly/io/IOBufQueue.h>

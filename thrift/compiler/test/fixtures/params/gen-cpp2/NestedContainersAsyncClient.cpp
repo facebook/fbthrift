@@ -5,7 +5,7 @@
  *  @generated
  */
 
-#include "src/gen-cpp2/NestedContainersAsyncClient.h"
+#include "thrift/compiler/test/fixtures/params/gen-cpp2/NestedContainersAsyncClient.h"
 
 #include <folly/io/IOBuf.h>
 #include <folly/io/IOBufQueue.h>

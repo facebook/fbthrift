@@ -10,7 +10,7 @@
 #include <cstddef>
 #include <thrift/lib/cpp/Thrift.h>
 
-#include "src/gen-cpp2/module_types.h"
+#include "thrift/compiler/test/fixtures/refs/gen-cpp2/module_types.h"
 
 namespace cpp2 {
 

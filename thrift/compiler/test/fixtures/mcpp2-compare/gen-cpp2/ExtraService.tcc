@@ -6,7 +6,7 @@
  */
 #pragma once
 
-#include "src/gen-cpp2/ExtraService.h"
+#include "thrift/compiler/test/fixtures/mcpp2-compare/gen-cpp2/ExtraService.h"
 
 #include <folly/io/IOBuf.h>
 #include <folly/io/IOBufQueue.h>

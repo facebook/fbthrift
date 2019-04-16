@@ -5,7 +5,7 @@
  *  @generated
  */
 
-#include "src/gen-cpp2/MyServiceAsyncClient.h"
+#include "thrift/compiler/test/fixtures/coroutines/gen-cpp2/MyServiceAsyncClient.h"
 
 #include <folly/io/IOBuf.h>
 #include <folly/io/IOBufQueue.h>

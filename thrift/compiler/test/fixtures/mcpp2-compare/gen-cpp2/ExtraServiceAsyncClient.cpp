@@ -5,7 +5,7 @@
  *  @generated
  */
 
-#include "src/gen-cpp2/ExtraServiceAsyncClient.h"
+#include "thrift/compiler/test/fixtures/mcpp2-compare/gen-cpp2/ExtraServiceAsyncClient.h"
 
 #include <folly/io/IOBuf.h>
 #include <folly/io/IOBufQueue.h>

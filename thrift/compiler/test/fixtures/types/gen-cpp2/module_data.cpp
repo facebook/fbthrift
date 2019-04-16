@@ -5,7 +5,7 @@
  *  @generated
  */
 
-#include "src/gen-cpp2/module_data.h"
+#include "thrift/compiler/test/fixtures/types/gen-cpp2/module_data.h"
 
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 

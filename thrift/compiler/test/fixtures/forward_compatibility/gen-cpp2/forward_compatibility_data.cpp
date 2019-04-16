@@ -5,6 +5,6 @@
  *  @generated
  */
 
-#include "src/gen-cpp2/forward_compatibility_data.h"
+#include "thrift/compiler/test/fixtures/forward_compatibility/gen-cpp2/forward_compatibility_data.h"
 
 

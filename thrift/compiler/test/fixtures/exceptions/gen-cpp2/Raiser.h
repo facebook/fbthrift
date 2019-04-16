@@ -11,8 +11,8 @@
 #include <thrift/lib/cpp2/ServiceIncludes.h>
 #include <thrift/lib/cpp2/async/FutureRequest.h>
 #include <thrift/lib/cpp2/async/HeaderChannel.h>
-#include "src/gen-cpp2/RaiserAsyncClient.h"
-#include "src/gen-cpp2/module_types.h"
+#include "thrift/compiler/test/fixtures/exceptions/gen-cpp2/RaiserAsyncClient.h"
+#include "thrift/compiler/test/fixtures/exceptions/gen-cpp2/module_types.h"
 
 namespace folly {
   class IOBuf;

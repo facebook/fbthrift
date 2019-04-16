@@ -5,6 +5,6 @@
  *  @generated
  */
 
-#include "src/gen-cpp2/service_data.h"
+#include "thrift/compiler/test/fixtures/includes/gen-cpp2/service_data.h"
 
 

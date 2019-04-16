@@ -5,7 +5,7 @@
  *  @generated
  */
 
-#include "src/gen-cpp2/include2_constants.h"
+#include "thrift/compiler/test/fixtures/frozen-struct/gen-cpp2/include2_constants.h"
 
 #include <folly/Indestructible.h>
 

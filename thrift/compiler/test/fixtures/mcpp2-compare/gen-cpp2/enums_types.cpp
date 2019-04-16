@@ -4,13 +4,13 @@
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  *  @generated
  */
-#include "src/gen-cpp2/enums_types.h"
-#include "src/gen-cpp2/enums_types.tcc"
+#include "thrift/compiler/test/fixtures/mcpp2-compare/gen-cpp2/enums_types.h"
+#include "thrift/compiler/test/fixtures/mcpp2-compare/gen-cpp2/enums_types.tcc"
 
 #include <algorithm>
 #include <folly/Indestructible.h>
 
-#include "src/gen-cpp2/enums_data.h"
+#include "thrift/compiler/test/fixtures/mcpp2-compare/gen-cpp2/enums_data.h"
 
 namespace facebook { namespace ns { namespace qwerty {
 

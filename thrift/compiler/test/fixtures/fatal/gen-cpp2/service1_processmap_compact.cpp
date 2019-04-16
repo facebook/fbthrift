@@ -5,8 +5,8 @@
  *  @generated
  */
 
-#include "src/gen-cpp2/service1.h"
-#include "src/gen-cpp2/service1.tcc"
+#include "thrift/compiler/test/fixtures/fatal/gen-cpp2/service1.h"
+#include "thrift/compiler/test/fixtures/fatal/gen-cpp2/service1.tcc"
 
 namespace test_cpp2 { namespace cpp_reflection {
 }} // test_cpp2::cpp_reflection

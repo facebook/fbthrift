@@ -5,8 +5,8 @@
  *  @generated
  */
 
-#include "src/gen-cpp2/NestedContainers.h"
-#include "src/gen-cpp2/NestedContainers.tcc"
+#include "thrift/compiler/test/fixtures/params/gen-cpp2/NestedContainers.h"
+#include "thrift/compiler/test/fixtures/params/gen-cpp2/NestedContainers.tcc"
 
 namespace cpp2 {
 } // cpp2

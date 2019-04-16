@@ -6,7 +6,7 @@
  */
 #pragma once
 
-#include "src/gen-cpp2/service1.h"
+#include "thrift/compiler/test/fixtures/fatal/gen-cpp2/service1.h"
 
 #include <folly/io/IOBuf.h>
 #include <folly/io/IOBufQueue.h>

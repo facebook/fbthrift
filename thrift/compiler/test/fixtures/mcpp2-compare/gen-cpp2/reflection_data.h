@@ -10,6 +10,6 @@
 #include <cstddef>
 #include <thrift/lib/cpp/Thrift.h>
 
-#include "src/gen-cpp2/reflection_types.h"
+#include "thrift/compiler/test/fixtures/mcpp2-compare/gen-cpp2/reflection_types.h"
 
 

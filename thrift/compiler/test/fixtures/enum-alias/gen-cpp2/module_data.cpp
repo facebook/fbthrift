@@ -5,7 +5,7 @@
  *  @generated
  */
 
-#include "src/gen-cpp2/module_data.h"
+#include "thrift/compiler/test/fixtures/enum-alias/gen-cpp2/module_data.h"
 
 namespace cpp2 {
 

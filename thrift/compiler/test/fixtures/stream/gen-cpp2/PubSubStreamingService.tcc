@@ -6,7 +6,7 @@
  */
 #pragma once
 
-#include "src/gen-cpp2/PubSubStreamingService.h"
+#include "thrift/compiler/test/fixtures/stream/gen-cpp2/PubSubStreamingService.h"
 
 #include <folly/io/IOBuf.h>
 #include <folly/io/IOBufQueue.h>

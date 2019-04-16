@@ -5,7 +5,7 @@
  *  @generated
  */
 
-#include "src/gen-cpp2/ParamServiceAsyncClient.h"
+#include "thrift/compiler/test/fixtures/mcpp2-compare/gen-cpp2/ParamServiceAsyncClient.h"
 
 #include <folly/io/IOBuf.h>
 #include <folly/io/IOBufQueue.h>

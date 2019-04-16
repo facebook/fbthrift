@@ -5,7 +5,7 @@
  *  @generated
  */
 
-#include "src/gen-cpp2/MyRootAsyncClient.h"
+#include "thrift/compiler/test/fixtures/inheritance/gen-cpp2/MyRootAsyncClient.h"
 
 #include <folly/io/IOBuf.h>
 #include <folly/io/IOBufQueue.h>

@@ -5,7 +5,7 @@
  *  @generated
  */
 
-#include "src/gen-cpp2/module_data.h"
+#include "thrift/compiler/test/fixtures/frozen-struct/gen-cpp2/module_data.h"
 
 namespace some { namespace ns {
 

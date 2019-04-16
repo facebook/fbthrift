@@ -5,6 +5,6 @@
  *  @generated
  */
 
-#include "src/gen-cpp2/reflection_data.h"
+#include "thrift/compiler/test/fixtures/mcpp2-compare/gen-cpp2/reflection_data.h"
 
 

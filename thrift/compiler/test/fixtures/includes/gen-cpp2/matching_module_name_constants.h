@@ -8,7 +8,7 @@
 
 #include <thrift/lib/cpp2/protocol/Protocol.h>
 
-#include "src/gen-cpp2/matching_module_name_types.h"
+#include "thrift/compiler/test/fixtures/includes/gen-cpp2/matching_module_name_types.h"
 
 namespace matching_module_name {
 

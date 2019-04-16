@@ -5,7 +5,7 @@
  *  @generated
  */
 
-#include "src/gen-cpp2/PubSubStreamingServiceAsyncClient.h"
+#include "thrift/compiler/test/fixtures/stream/gen-cpp2/PubSubStreamingServiceAsyncClient.h"
 
 #include <folly/io/IOBuf.h>
 #include <folly/io/IOBufQueue.h>

@@ -5,8 +5,8 @@
  *  @generated
  */
 
-#include "src/gen-cpp2/C.h"
-#include "src/gen-cpp2/C.tcc"
+#include "thrift/compiler/test/fixtures/doctext/gen-cpp2/C.h"
+#include "thrift/compiler/test/fixtures/doctext/gen-cpp2/C.tcc"
 
 namespace cpp2 {
 } // cpp2

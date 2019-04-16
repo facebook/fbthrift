@@ -5,8 +5,8 @@
  *  @generated
  */
 
-#include "src/gen-cpp2/MyServiceEmpty.h"
-#include "src/gen-cpp2/MyServiceEmpty.tcc"
+#include "thrift/compiler/test/fixtures/basic/gen-cpp2/MyServiceEmpty.h"
+#include "thrift/compiler/test/fixtures/basic/gen-cpp2/MyServiceEmpty.tcc"
 
 namespace cpp2 {
 } // cpp2

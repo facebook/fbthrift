@@ -11,8 +11,8 @@
 #include <thrift/lib/cpp2/ServiceIncludes.h>
 #include <thrift/lib/cpp2/async/FutureRequest.h>
 #include <thrift/lib/cpp2/async/HeaderChannel.h>
-#include "src/gen-cpp2/MyServiceAsyncClient.h"
-#include "src/gen-cpp2/service_types.h"
+#include "thrift/compiler/test/fixtures/includes/gen-cpp2/MyServiceAsyncClient.h"
+#include "thrift/compiler/test/fixtures/includes/gen-cpp2/service_types.h"
 #include "thrift/compiler/test/fixtures/includes/gen-cpp2/module_types.h"
 #include "thrift/compiler/test/fixtures/includes/gen-cpp2/includes_types.h"
 

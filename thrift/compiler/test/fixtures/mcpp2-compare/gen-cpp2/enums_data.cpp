@@ -5,7 +5,7 @@
  *  @generated
  */
 
-#include "src/gen-cpp2/enums_data.h"
+#include "thrift/compiler/test/fixtures/mcpp2-compare/gen-cpp2/enums_data.h"
 
 namespace facebook { namespace ns { namespace qwerty {
 

@@ -6,7 +6,7 @@
  */
 #pragma once
 
-#include "src/gen-cpp2/MyService.h"
+#include "thrift/compiler/test/fixtures/basic-stack-arguments/gen-cpp2/MyService.h"
 
 #include <folly/io/IOBuf.h>
 #include <folly/io/IOBufQueue.h>

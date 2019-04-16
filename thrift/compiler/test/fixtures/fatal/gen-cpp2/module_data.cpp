@@ -5,7 +5,7 @@
  *  @generated
  */
 
-#include "src/gen-cpp2/module_data.h"
+#include "thrift/compiler/test/fixtures/fatal/gen-cpp2/module_data.h"
 
 namespace test_cpp2 { namespace cpp_reflection {
 

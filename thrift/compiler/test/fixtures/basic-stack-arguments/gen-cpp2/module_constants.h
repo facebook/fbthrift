@@ -8,7 +8,7 @@
 
 #include <thrift/lib/cpp2/protocol/Protocol.h>
 
-#include "src/gen-cpp2/module_types.h"
+#include "thrift/compiler/test/fixtures/basic-stack-arguments/gen-cpp2/module_types.h"
 
 namespace cpp2 {
 

@@ -14,7 +14,7 @@
  * VirtualProtocol) to read/write thrift structs.
  */
 
-#include "src/gen-cpp2/module2_types.tcc"
+#include "thrift/compiler/test/fixtures/qualified/gen-cpp2/module2_types.tcc"
 
 #include "thrift/compiler/test/fixtures/qualified/gen-cpp2/module0_types_custom_protocol.h"
 #include "thrift/compiler/test/fixtures/qualified/gen-cpp2/module1_types_custom_protocol.h"

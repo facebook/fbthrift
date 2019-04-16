@@ -6,7 +6,7 @@
  */
 #pragma once
 
-#include "src/gen-cpp2/MyRoot.h"
+#include "thrift/compiler/test/fixtures/inheritance/gen-cpp2/MyRoot.h"
 
 #include <folly/io/IOBuf.h>
 #include <folly/io/IOBufQueue.h>

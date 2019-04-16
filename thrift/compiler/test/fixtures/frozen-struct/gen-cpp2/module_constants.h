@@ -8,7 +8,7 @@
 
 #include <thrift/lib/cpp2/protocol/Protocol.h>
 
-#include "src/gen-cpp2/module_types.h"
+#include "thrift/compiler/test/fixtures/frozen-struct/gen-cpp2/module_types.h"
 
 namespace some { namespace ns {
 

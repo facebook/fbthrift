@@ -5,8 +5,8 @@
  *  @generated
  */
 
-#include "src/gen-cpp2/PubSubStreamingService.h"
-#include "src/gen-cpp2/PubSubStreamingService.tcc"
+#include "thrift/compiler/test/fixtures/stream/gen-cpp2/PubSubStreamingService.h"
+#include "thrift/compiler/test/fixtures/stream/gen-cpp2/PubSubStreamingService.tcc"
 
 namespace cpp2 {
 } // cpp2

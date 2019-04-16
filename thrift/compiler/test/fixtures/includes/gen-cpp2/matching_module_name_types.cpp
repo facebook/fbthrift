@@ -4,13 +4,13 @@
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  *  @generated
  */
-#include "src/gen-cpp2/matching_module_name_types.h"
-#include "src/gen-cpp2/matching_module_name_types.tcc"
+#include "thrift/compiler/test/fixtures/includes/gen-cpp2/matching_module_name_types.h"
+#include "thrift/compiler/test/fixtures/includes/gen-cpp2/matching_module_name_types.tcc"
 
 #include <algorithm>
 #include <folly/Indestructible.h>
 
-#include "src/gen-cpp2/matching_module_name_data.h"
+#include "thrift/compiler/test/fixtures/includes/gen-cpp2/matching_module_name_data.h"
 
 
 namespace apache {

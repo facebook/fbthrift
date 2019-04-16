@@ -6,7 +6,7 @@
  */
 #pragma once
 
-#include "src/gen-cpp2/service_types.h"
+#include "thrift/compiler/test/fixtures/includes/gen-cpp2/service_types.h"
 
 #include <thrift/lib/cpp2/GeneratedSerializationCodeHelper.h>
 #include <thrift/lib/cpp2/gen/module_types_tcc.h>

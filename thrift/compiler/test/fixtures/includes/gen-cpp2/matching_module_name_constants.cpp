@@ -5,7 +5,7 @@
  *  @generated
  */
 
-#include "src/gen-cpp2/matching_module_name_constants.h"
+#include "thrift/compiler/test/fixtures/includes/gen-cpp2/matching_module_name_constants.h"
 
 #include <folly/Indestructible.h>
 

@@ -11,9 +11,9 @@
 #include <thrift/lib/cpp2/ServiceIncludes.h>
 #include <thrift/lib/cpp2/async/FutureRequest.h>
 #include <thrift/lib/cpp2/async/HeaderChannel.h>
-#include "src/gen-cpp2/MyLeafAsyncClient.h"
-#include "src/gen-cpp2/module_types.h"
-#include "src/gen-cpp2/MyNode.h"
+#include "thrift/compiler/test/fixtures/inheritance/gen-cpp2/MyLeafAsyncClient.h"
+#include "thrift/compiler/test/fixtures/inheritance/gen-cpp2/module_types.h"
+#include "thrift/compiler/test/fixtures/inheritance/gen-cpp2/MyNode.h"
 
 namespace folly {
   class IOBuf;

@@ -5,8 +5,8 @@
  *  @generated
  */
 
-#include "src/gen-cpp2/MyServiceFast.h"
-#include "src/gen-cpp2/MyServiceFast.tcc"
+#include "thrift/compiler/test/fixtures/basic-stack-arguments/gen-cpp2/MyServiceFast.h"
+#include "thrift/compiler/test/fixtures/basic-stack-arguments/gen-cpp2/MyServiceFast.tcc"
 
 namespace cpp2 {
 } // cpp2

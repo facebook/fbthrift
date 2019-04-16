@@ -5,8 +5,8 @@
  *  @generated
  */
 
-#include "src/gen-cpp2/MyServicePrioParent.h"
-#include "src/gen-cpp2/MyServicePrioParent.tcc"
+#include "thrift/compiler/test/fixtures/basic/gen-cpp2/MyServicePrioParent.h"
+#include "thrift/compiler/test/fixtures/basic/gen-cpp2/MyServicePrioParent.tcc"
 
 namespace cpp2 {
 } // cpp2

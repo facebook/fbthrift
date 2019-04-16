@@ -5,8 +5,8 @@
  *  @generated
  */
 
-#include "src/gen-cpp2/MyRoot.h"
-#include "src/gen-cpp2/MyRoot.tcc"
+#include "thrift/compiler/test/fixtures/inheritance/gen-cpp2/MyRoot.h"
+#include "thrift/compiler/test/fixtures/inheritance/gen-cpp2/MyRoot.tcc"
 
 namespace cpp2 {
 } // cpp2

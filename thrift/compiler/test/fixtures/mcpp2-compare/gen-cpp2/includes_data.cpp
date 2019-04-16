@@ -5,7 +5,7 @@
  *  @generated
  */
 
-#include "src/gen-cpp2/includes_data.h"
+#include "thrift/compiler/test/fixtures/mcpp2-compare/gen-cpp2/includes_data.h"
 
 namespace a { namespace different { namespace ns {
 

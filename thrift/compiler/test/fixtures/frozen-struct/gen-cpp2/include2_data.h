@@ -10,6 +10,6 @@
 #include <cstddef>
 #include <thrift/lib/cpp/Thrift.h>
 
-#include "src/gen-cpp2/include2_types.h"
+#include "thrift/compiler/test/fixtures/frozen-struct/gen-cpp2/include2_types.h"
 
 

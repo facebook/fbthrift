@@ -4,13 +4,13 @@
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  *  @generated
  */
-#include "src/gen-cpp2/forward_compatibility_types.h"
-#include "src/gen-cpp2/forward_compatibility_types.tcc"
+#include "thrift/compiler/test/fixtures/forward_compatibility/gen-cpp2/forward_compatibility_types.h"
+#include "thrift/compiler/test/fixtures/forward_compatibility/gen-cpp2/forward_compatibility_types.tcc"
 
 #include <algorithm>
 #include <folly/Indestructible.h>
 
-#include "src/gen-cpp2/forward_compatibility_data.h"
+#include "thrift/compiler/test/fixtures/forward_compatibility/gen-cpp2/forward_compatibility_data.h"
 
 
 namespace apache {
