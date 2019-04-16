@@ -17,8 +17,15 @@
 #pragma once
 
 #include <cassert>
+#include <deque>
+#include <memory>
+#include <mutex>
 
+#include <folly/ScopeGuard.h>
+#include <folly/Synchronized.h>
+#include <folly/Try.h>
 #include <folly/executors/SerialExecutor.h>
+#include <folly/fibers/Semaphore.h>
 
 namespace apache {
 namespace thrift {
@@ -42,6 +49,7 @@ SemiStream<folly::invoke_result_t<F, T&&>> SemiStream<T>::map(
              std::forward<F>(mf)(std::move(valuePtr->value)));
        },
        std::forward<EF>(ef)});
+  result.executor_ = std::move(executor_);
   return result;
 }
 
@@ -68,5 +76,144 @@ Stream<T> SemiStream<T>::via(folly::Executor* executor) && {
   return std::move(*this).via(
       folly::SerialExecutor::create(folly::getKeepAliveToken(executor)));
 }
+
+#if FOLLY_HAS_COROUTINES
+template <typename T>
+folly::coro::AsyncGenerator<T&&> SemiStream<T>::toAsyncGenerator(
+    SemiStream<T> stream,
+    int64_t bufferSize) {
+  struct SharedState {
+    explicit SharedState(int64_t size) : size_(size) {}
+    folly::Synchronized<
+        std::deque<folly::Try<std::unique_ptr<detail::ValueIf>>>,
+        std::mutex>
+        buffer_;
+    const int64_t size_;
+    folly::fibers::Semaphore sem_{0};
+    bool terminated_{false};
+    std::unique_ptr<SubscriptionIf> subscription_;
+  };
+
+  class Subscriber : public SubscriberIf<std::unique_ptr<detail::ValueIf>> {
+   public:
+    explicit Subscriber(std::shared_ptr<SharedState> sharedState)
+        : sharedState_(sharedState) {}
+    void onSubscribe(std::unique_ptr<SubscriptionIf> subscription) override {
+      sharedState_->subscription_ = std::move(subscription);
+      sharedState_->subscription_->request(sharedState_->size_);
+    }
+
+    void onNext(std::unique_ptr<detail::ValueIf>&& v) override {
+      if (sharedState_->terminated_) {
+        return;
+      }
+
+      sharedState_->buffer_->emplace_back(std::move(v));
+      sharedState_->sem_.signal();
+    }
+
+    void onError(folly::exception_wrapper error) override {
+      if (sharedState_->terminated_) {
+        return;
+      }
+
+      sharedState_->subscription_.reset();
+      sharedState_->terminated_ = true;
+      sharedState_->buffer_->emplace_back(std::move(error));
+      sharedState_->sem_.signal();
+    }
+
+    void onComplete() override {
+      if (sharedState_->terminated_) {
+        return;
+      }
+
+      sharedState_->subscription_.reset();
+      sharedState_->terminated_ = true;
+      sharedState_->buffer_->emplace_back(
+          folly::Try<std::unique_ptr<detail::ValueIf>>());
+      sharedState_->sem_.signal();
+    }
+
+   private:
+    std::shared_ptr<SharedState> sharedState_;
+  };
+
+  std::shared_ptr<SharedState> sharedState =
+      std::make_shared<SharedState>(bufferSize);
+
+  std::move(*(stream.impl_))
+      .subscribe(std::make_unique<Subscriber>(sharedState));
+  SCOPE_EXIT {
+    // Cancel the stream on exit.
+    stream.executor_->add(
+        [keepAlive = folly::getKeepAliveToken(stream.executor_),
+         sharedStateWeak = std::weak_ptr<SharedState>(sharedState)]() {
+          if (auto sharedState = sharedStateWeak.lock()) {
+            if (!sharedState->terminated_) {
+              sharedState->terminated_ = true;
+              sharedState->subscription_->cancel();
+            }
+          }
+        });
+  };
+
+  int64_t counter = 0;
+  // application buffer
+  std::deque<folly::Try<std::unique_ptr<detail::ValueIf>>> appBuffer;
+  while (true) {
+    co_await sharedState->sem_.co_wait();
+
+    if (appBuffer.size() == 0) {
+      auto buffer = sharedState->buffer_.lock();
+      std::swap(*buffer, appBuffer);
+    }
+
+    auto& ele = appBuffer.front();
+    SCOPE_EXIT {
+      appBuffer.pop_front();
+    };
+
+    if (ele.hasValue() || ele.hasException()) {
+      for (auto& mapFunc : stream.mapFuncs_) {
+        try {
+          if (ele.hasValue()) {
+            ele.emplace(mapFunc.first(std::move(ele.value())));
+          } else {
+            ele.emplaceException(mapFunc.second(std::move(ele.exception())));
+          }
+        } catch (const std::exception& ex) {
+          ele.emplaceException(std::current_exception(), ex);
+        } catch (...) {
+          ele.emplaceException(std::current_exception());
+        }
+      }
+    }
+    ele.throwIfFailed();
+
+    // folly::Try can be empty, !hasValue() && !hasException() which marked as
+    // the end of a stream
+    if (!ele.hasValue()) {
+      co_return;
+    }
+
+    counter++;
+    // check if needed to request more
+    if (counter > sharedState->size_ / 2) {
+      stream.executor_->add([sharedState, counter] {
+        if (!sharedState->terminated_) {
+          sharedState->subscription_->request(counter);
+        }
+      });
+      counter = 0;
+    }
+
+    assert(dynamic_cast<detail::Value<T>*>(ele.value().get()));
+    auto* valuePtr = static_cast<detail::Value<T>*>(ele.value().get());
+    co_yield std::move(valuePtr->value);
+  }
+}
+#endif
+
 } // namespace thrift
 } // namespace apache

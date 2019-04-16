@@ -16,6 +16,12 @@
 
 #pragma once
 
+#include <folly/Portability.h>
+
+#if FOLLY_HAS_COROUTINES
+#include <folly/experimental/coro/AsyncGenerator.h>
+#endif
+
 #include <folly/ExceptionWrapper.h>
 #include <thrift/lib/cpp2/async/Stream.h>
 
@@ -27,7 +33,8 @@ class SemiStream {
  public:
   SemiStream() {}
 
-  /* implicit */ SemiStream(Stream<T> stream) : impl_(std::move(stream.impl_)) {
+  /* implicit */ SemiStream(Stream<T> stream)
+      : impl_(std::move(stream.impl_)), executor_(stream.executor_) {
     if (impl_) {
       impl_ = std::move(*impl_).subscribeVia(stream.executor_);
     }
@@ -49,6 +56,12 @@ class SemiStream {
   Stream<T> via(folly::SequencedExecutor*) &&;
   Stream<T> via(folly::Executor*) &&;
 
+#if FOLLY_HAS_COROUTINES
+  static folly::coro::AsyncGenerator<T&&> toAsyncGenerator(
+      SemiStream<T> stream,
+      int64_t bufferSize);
+#endif
+
  private:
   template <typename U>
   friend class SemiStream;
@@ -58,6 +71,7 @@ class SemiStream {
       folly::Function<detail::StreamImplIf::Value(detail::StreamImplIf::Value)>,
       folly::Function<folly::exception_wrapper(folly::exception_wrapper&&)>>>
       mapFuncs_;
+  folly::SequencedExecutor* executor_{nullptr};
 };
 
 template <typename Response, typename StreamElement>
@@ -68,6 +82,15 @@ struct ResponseAndSemiStream {
   Response response;
   SemiStream<StreamElement> stream;
 };
+
+#if FOLLY_HAS_COROUTINES
+template <typename T>
+folly::coro::AsyncGenerator<T&&> toAsyncGenerator(
+    SemiStream<T> stream,
+    int64_t bufferSize) {
+  return SemiStream<T>::toAsyncGenerator(std::move(stream), bufferSize);
+}
+#endif
 } // namespace thrift
 } // namespace apache
 
