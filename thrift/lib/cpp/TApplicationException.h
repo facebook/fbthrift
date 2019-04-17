@@ -24,10 +24,11 @@
 #include <thrift/lib/cpp/Thrift.h>
 #include <thrift/lib/cpp/protocol/TProtocol.h>
 
-namespace apache { namespace thrift {
+namespace apache {
+namespace thrift {
 
 namespace protocol {
-  class TProtocol;
+class TProtocol;
 }
 
 /**
@@ -38,7 +39,6 @@ namespace protocol {
  */
 class TApplicationException : public TException {
  public:
-
   /**
    * Error codes for the various types of exceptions.
    */
@@ -60,20 +60,18 @@ class TApplicationException : public TException {
     CHECKSUM_MISMATCH = 14,
   };
 
-  TApplicationException() :
-    type_(UNKNOWN) {}
+  TApplicationException() : type_(UNKNOWN) {}
 
-  explicit TApplicationException(TApplicationExceptionType type) :
-    type_(type) {}
+  explicit TApplicationException(TApplicationExceptionType type)
+      : type_(type) {}
 
-  explicit TApplicationException(const std::string& message) :
-    message_(message),
-    type_(UNKNOWN) {}
+  explicit TApplicationException(const std::string& message)
+      : message_(message), type_(UNKNOWN) {}
 
-  TApplicationException(TApplicationExceptionType type,
-                        const std::string& message) :
-    message_(message),
-    type_(type) {}
+  TApplicationException(
+      TApplicationExceptionType type,
+      const std::string& message)
+      : message_(message), type_(type) {}
 
   ~TApplicationException() throw() override {}
 
@@ -154,25 +152,25 @@ class TApplicationException : public TException {
         break;
       }
       switch (fid) {
-      case 1:
-        if (ftype == apache::thrift::protocol::T_STRING) {
-          xfer += iprot->readString(message_);
-        } else {
+        case 1:
+          if (ftype == apache::thrift::protocol::T_STRING) {
+            xfer += iprot->readString(message_);
+          } else {
+            xfer += iprot->skip(ftype);
+          }
+          break;
+        case 2:
+          if (ftype == apache::thrift::protocol::T_I32) {
+            int32_t type;
+            xfer += iprot->readI32(type);
+            type_ = static_cast<TApplicationExceptionType>(type);
+          } else {
+            xfer += iprot->skip(ftype);
+          }
+          break;
+        default:
           xfer += iprot->skip(ftype);
-        }
-        break;
-      case 2:
-        if (ftype == apache::thrift::protocol::T_I32) {
-          int32_t type;
-          xfer += iprot->readI32(type);
-          type_ = static_cast<TApplicationExceptionType>(type);
-        } else {
-          xfer += iprot->skip(ftype);
-        }
-        break;
-      default:
-        xfer += iprot->skip(ftype);
-        break;
+          break;
       }
       xfer += iprot->readFieldEnd();
     }
@@ -227,14 +225,11 @@ class TApplicationException : public TException {
   uint32_t write(Protocol_* prot_) const {
     uint32_t xfer = 0;
     xfer += prot_->writeStructBegin("TApplicationException");
-    xfer += prot_->writeFieldBegin("message_",
-                                   apache::thrift::protocol::T_STRING,
-                                   1);
+    xfer += prot_->writeFieldBegin(
+        "message_", apache::thrift::protocol::T_STRING, 1);
     xfer += prot_->writeString(message_);
     xfer += prot_->writeFieldEnd();
-    xfer += prot_->writeFieldBegin("type_",
-                                   apache::thrift::protocol::T_I32,
-                                   2);
+    xfer += prot_->writeFieldBegin("type_", apache::thrift::protocol::T_I32, 2);
     xfer += prot_->writeI32(static_cast<int32_t>(type_));
     xfer += prot_->writeFieldEnd();
     xfer += prot_->writeFieldStop();
@@ -246,13 +241,11 @@ class TApplicationException : public TException {
   uint32_t serializedSize(Protocol_* prot_) const {
     uint32_t xref = 0;
     xref += prot_->serializedStructSize("TApplicationException");
-    xref += prot_->serializedFieldSize("message_",
-                                       apache::thrift::protocol::T_STRING,
-                                       1);
+    xref += prot_->serializedFieldSize(
+        "message_", apache::thrift::protocol::T_STRING, 1);
     xref += prot_->serializedSizeString(message_);
-    xref += prot_->serializedFieldSize("type_",
-                                       apache::thrift::protocol::T_I32,
-                                       2);
+    xref +=
+        prot_->serializedFieldSize("type_", apache::thrift::protocol::T_I32, 2);
     xref += prot_->serializedSizeI32(static_cast<int32_t>(type_));
     xref += prot_->serializedSizeStop();
     return xref;
@@ -262,28 +255,26 @@ class TApplicationException : public TException {
   uint32_t serializedSizeZC(Protocol_* prot_) const {
     uint32_t xref = 0;
     xref += prot_->serializedStructSize("TApplicationException");
-    xref += prot_->serializedFieldSize("message_",
-                                       apache::thrift::protocol::T_STRING,
-                                       1);
+    xref += prot_->serializedFieldSize(
+        "message_", apache::thrift::protocol::T_STRING, 1);
     xref += prot_->serializedSizeString(message_);
-    xref += prot_->serializedFieldSize("type_",
-                                       apache::thrift::protocol::T_I32,
-                                       2);
+    xref +=
+        prot_->serializedFieldSize("type_", apache::thrift::protocol::T_I32, 2);
     xref += prot_->serializedSizeI32(static_cast<int32_t>(type_));
     xref += prot_->serializedSizeStop();
     return xref;
   }
 
-protected:
+ protected:
   std::string message_;
 
   /**
    * Error code
    */
   TApplicationExceptionType type_;
-
 };
 
-}} // apache::thrift
+} // namespace thrift
+} // namespace apache
 
 #endif // #ifndef _THRIFT_TAPPLICATIONEXCEPTION_H_

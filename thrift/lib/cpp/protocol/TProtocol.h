@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Facebook, Inc.
+ * Copyright 2014-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,30 +13,35 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 #ifndef THRIFT_PROTOCOL_TPROTOCOL_H_
 #define THRIFT_PROTOCOL_TPROTOCOL_H_ 1
 
 #include <folly/portability/Sockets.h>
-#include <thrift/lib/cpp/transport/TTransport.h>
-#include <thrift/lib/cpp/protocol/TType.h>
 #include <thrift/lib/cpp/protocol/TProtocolException.h>
+#include <thrift/lib/cpp/protocol/TType.h>
+#include <thrift/lib/cpp/transport/TTransport.h>
 #include <thrift/lib/cpp/util/BitwiseCast.h>
 
 #include <memory>
 
 #include <sys/types.h>
-#include <string>
 #include <map>
+#include <string>
 #include <vector>
 
 #include <folly/FBString.h>
 
-namespace apache { namespace thrift { namespace reflection {
-  class Schema;
-}}} // apache::thrift::protocol
+namespace apache {
+namespace thrift {
+namespace reflection {
+class Schema;
+}
+} // namespace thrift
+} // namespace apache
 
-namespace apache { namespace thrift { namespace protocol {
+namespace apache {
+namespace thrift {
+namespace protocol {
 
 using apache::thrift::transport::TTransport;
 
@@ -44,13 +49,7 @@ using apache::thrift::transport::TTransport;
  * Enumerated definition of the message types that the Thrift protocol
  * supports.
  */
-enum TMessageType {
-  T_CALL       = 1,
-  T_REPLY      = 2,
-  T_EXCEPTION  = 3,
-  T_ONEWAY     = 4
-};
-
+enum TMessageType { T_CALL = 1, T_REPLY = 2, T_EXCEPTION = 3, T_ONEWAY = 4 };
 
 /**
  * Helper template for implementing TProtocol::skip().
@@ -60,48 +59,39 @@ enum TMessageType {
 template <class Protocol_>
 uint32_t skip(Protocol_& prot, TType arg_type) {
   switch (arg_type) {
-  case T_BOOL:
-    {
+    case T_BOOL: {
       bool boolv;
       return prot.readBool(boolv);
     }
-  case T_BYTE:
-    {
+    case T_BYTE: {
       int8_t bytev = 0;
       return prot.readByte(bytev);
     }
-  case T_I16:
-    {
+    case T_I16: {
       int16_t i16;
       return prot.readI16(i16);
     }
-  case T_I32:
-    {
+    case T_I32: {
       int32_t i32;
       return prot.readI32(i32);
     }
-  case T_I64:
-    {
+    case T_I64: {
       int64_t i64;
       return prot.readI64(i64);
     }
-  case T_DOUBLE:
-    {
+    case T_DOUBLE: {
       double dub;
       return prot.readDouble(dub);
     }
-  case T_FLOAT:
-    {
+    case T_FLOAT: {
       float flt;
       return prot.readFloat(flt);
     }
-  case T_STRING:
-    {
+    case T_STRING: {
       std::string str;
       return prot.readBinary(str);
     }
-  case T_STRUCT:
-    {
+    case T_STRUCT: {
       uint32_t result = 0;
       std::string name;
       int16_t fid;
@@ -118,8 +108,7 @@ uint32_t skip(Protocol_& prot, TType arg_type) {
       result += prot.readStructEnd();
       return result;
     }
-  case T_MAP:
-    {
+    case T_MAP: {
       uint32_t result = 0;
       TType keyType;
       TType valType;
@@ -140,8 +129,7 @@ uint32_t skip(Protocol_& prot, TType arg_type) {
       result += prot.readMapEnd();
       return result;
     }
-  case T_SET:
-    {
+    case T_SET: {
       uint32_t result = 0;
       TType elemType;
       uint32_t i, size;
@@ -159,8 +147,7 @@ uint32_t skip(Protocol_& prot, TType arg_type) {
       result += prot.readSetEnd();
       return result;
     }
-  case T_LIST:
-    {
+    case T_LIST: {
       uint32_t result = 0;
       TType elemType;
       uint32_t i, size;
@@ -178,8 +165,8 @@ uint32_t skip(Protocol_& prot, TType arg_type) {
       result += prot.readListEnd();
       return result;
     }
-  default:
-    return 0;
+    default:
+      return 0;
   }
 }
 
@@ -276,9 +263,9 @@ class TProtocol {
     return setVersion_virt(version);
   }
 
-  virtual ::apache::thrift::reflection::Schema * getSchema_virt() = 0;
+  virtual ::apache::thrift::reflection::Schema* getSchema_virt() = 0;
 
-  ::apache::thrift::reflection::Schema * getSchema() {
+  ::apache::thrift::reflection::Schema* getSchema() {
     T_VIRTUAL_CALL();
     return getSchema_virt();
   }
@@ -287,38 +274,42 @@ class TProtocol {
    * Writing functions.
    */
 
-  virtual uint32_t writeMessageBegin_virt(const std::string& name,
-                                          const TMessageType messageType,
-                                          const int32_t seqid) = 0;
+  virtual uint32_t writeMessageBegin_virt(
+      const std::string& name,
+      const TMessageType messageType,
+      const int32_t seqid) = 0;
 
   virtual uint32_t writeMessageEnd_virt() = 0;
-
 
   virtual uint32_t writeStructBegin_virt(const char* name) = 0;
 
   virtual uint32_t writeStructEnd_virt() = 0;
 
-  virtual uint32_t writeFieldBegin_virt(const char* name,
-                                        const TType fieldType,
-                                        const int16_t fieldId) = 0;
+  virtual uint32_t writeFieldBegin_virt(
+      const char* name,
+      const TType fieldType,
+      const int16_t fieldId) = 0;
 
   virtual uint32_t writeFieldEnd_virt() = 0;
 
   virtual uint32_t writeFieldStop_virt() = 0;
 
-  virtual uint32_t writeMapBegin_virt(const TType keyType,
-                                      const TType valType,
-                                      const uint32_t size) = 0;
+  virtual uint32_t writeMapBegin_virt(
+      const TType keyType,
+      const TType valType,
+      const uint32_t size) = 0;
 
   virtual uint32_t writeMapEnd_virt() = 0;
 
-  virtual uint32_t writeListBegin_virt(const TType elemType,
-                                       const uint32_t size) = 0;
+  virtual uint32_t writeListBegin_virt(
+      const TType elemType,
+      const uint32_t size) = 0;
 
   virtual uint32_t writeListEnd_virt() = 0;
 
-  virtual uint32_t writeSetBegin_virt(const TType elemType,
-                                      const uint32_t size) = 0;
+  virtual uint32_t writeSetBegin_virt(
+      const TType elemType,
+      const uint32_t size) = 0;
 
   virtual uint32_t writeSetEnd_virt() = 0;
 
@@ -340,9 +331,10 @@ class TProtocol {
 
   virtual uint32_t writeBinary_virt(const std::string& str) = 0;
 
-  uint32_t writeMessageBegin(const std::string& name,
-                             const TMessageType messageType,
-                             const int32_t seqid) {
+  uint32_t writeMessageBegin(
+      const std::string& name,
+      const TMessageType messageType,
+      const int32_t seqid) {
     T_VIRTUAL_CALL();
     return writeMessageBegin_virt(name, messageType, seqid);
   }
@@ -351,7 +343,6 @@ class TProtocol {
     T_VIRTUAL_CALL();
     return writeMessageEnd_virt();
   }
-
 
   uint32_t writeStructBegin(const char* name) {
     T_VIRTUAL_CALL();
@@ -363,9 +354,10 @@ class TProtocol {
     return writeStructEnd_virt();
   }
 
-  uint32_t writeFieldBegin(const char* name,
-                           const TType fieldType,
-                           const int16_t fieldId) {
+  uint32_t writeFieldBegin(
+      const char* name,
+      const TType fieldType,
+      const int16_t fieldId) {
     T_VIRTUAL_CALL();
     return writeFieldBegin_virt(name, fieldType, fieldId);
   }
@@ -380,9 +372,8 @@ class TProtocol {
     return writeFieldStop_virt();
   }
 
-  uint32_t writeMapBegin(const TType keyType,
-                         const TType valType,
-                         const uint32_t size) {
+  uint32_t
+  writeMapBegin(const TType keyType, const TType valType, const uint32_t size) {
     T_VIRTUAL_CALL();
     return writeMapBegin_virt(keyType, valType, size);
   }
@@ -471,9 +462,10 @@ class TProtocol {
    * Reading functions
    */
 
-  virtual uint32_t readMessageBegin_virt(std::string& name,
-                                         TMessageType& messageType,
-                                         int32_t& seqid) = 0;
+  virtual uint32_t readMessageBegin_virt(
+      std::string& name,
+      TMessageType& messageType,
+      int32_t& seqid) = 0;
 
   virtual uint32_t readMessageEnd_virt() = 0;
 
@@ -483,32 +475,32 @@ class TProtocol {
 
   virtual uint32_t readStructEnd_virt() = 0;
 
-  virtual uint32_t readFieldBegin_virt(std::string& name,
-                                       TType& fieldType,
-                                       int16_t& fieldId) = 0;
+  virtual uint32_t readFieldBegin_virt(
+      std::string& name,
+      TType& fieldType,
+      int16_t& fieldId) = 0;
 
   virtual uint32_t readFieldEnd_virt() = 0;
 
-  virtual uint32_t readMapBegin_virt(TType& keyType,
-                                     TType& valType,
-                                     uint32_t& size,
-                                     bool& sizeUnknown) = 0;
+  virtual uint32_t readMapBegin_virt(
+      TType& keyType,
+      TType& valType,
+      uint32_t& size,
+      bool& sizeUnknown) = 0;
 
   virtual bool peekMap_virt() = 0;
 
   virtual uint32_t readMapEnd_virt() = 0;
 
-  virtual uint32_t readListBegin_virt(TType& elemType,
-                                      uint32_t& size,
-                                      bool& sizeUnknown) = 0;
+  virtual uint32_t
+  readListBegin_virt(TType& elemType, uint32_t& size, bool& sizeUnknown) = 0;
 
   virtual bool peekList_virt() = 0;
 
   virtual uint32_t readListEnd_virt() = 0;
 
-  virtual uint32_t readSetBegin_virt(TType& elemType,
-                                     uint32_t& size,
-                                     bool& sizeUnknown) = 0;
+  virtual uint32_t
+  readSetBegin_virt(TType& elemType, uint32_t& size, bool& sizeUnknown) = 0;
 
   virtual bool peekSet_virt() = 0;
 
@@ -534,9 +526,10 @@ class TProtocol {
 
   virtual uint32_t readBinary_virt(std::string& str) = 0;
 
-  uint32_t readMessageBegin(std::string& name,
-                            TMessageType& messageType,
-                            int32_t& seqid) {
+  uint32_t readMessageBegin(
+      std::string& name,
+      TMessageType& messageType,
+      int32_t& seqid) {
     T_VIRTUAL_CALL();
     return readMessageBegin_virt(name, messageType, seqid);
   }
@@ -561,9 +554,8 @@ class TProtocol {
     return readStructEnd_virt();
   }
 
-  uint32_t readFieldBegin(std::string& name,
-                          TType& fieldType,
-                          int16_t& fieldId) {
+  uint32_t
+  readFieldBegin(std::string& name, TType& fieldType, int16_t& fieldId) {
     T_VIRTUAL_CALL();
     return readFieldBegin_virt(name, fieldType, fieldId);
   }
@@ -573,8 +565,11 @@ class TProtocol {
     return readFieldEnd_virt();
   }
 
-  uint32_t readMapBegin(TType& keyType, TType& valType, uint32_t& size,
-                        bool& sizeUnknown) {
+  uint32_t readMapBegin(
+      TType& keyType,
+      TType& valType,
+      uint32_t& size,
+      bool& sizeUnknown) {
     T_VIRTUAL_CALL();
     return readMapBegin_virt(keyType, valType, size, sizeUnknown);
   }
@@ -723,9 +718,7 @@ class TProtocol {
   }
 
  protected:
-  explicit TProtocol(std::shared_ptr<TTransport> ptrans):
-    ptrans_(ptrans) {
-  }
+  explicit TProtocol(std::shared_ptr<TTransport> ptrans) : ptrans_(ptrans) {}
 
   /**
    * Construct a TProtocol using a raw TTransport pointer.
@@ -733,9 +726,8 @@ class TProtocol {
    * It is the callers responsibility to ensure that the TTransport remains
    * valid for the lifetime of the TProtocol object.
    */
-  explicit TProtocol(TTransport* ptrans):
-    ptrans_(ptrans, [](TTransport*) {}) {
-  }
+  explicit TProtocol(TTransport* ptrans)
+      : ptrans_(ptrans, [](TTransport*) {}) {}
 
   std::shared_ptr<TTransport> ptrans_;
 
@@ -752,7 +744,8 @@ class TProtocolFactory {
 
   virtual ~TProtocolFactory() {}
 
-  virtual std::shared_ptr<TProtocol> getProtocol(std::shared_ptr<TTransport> trans) = 0;
+  virtual std::shared_ptr<TProtocol> getProtocol(
+      std::shared_ptr<TTransport> trans) = 0;
 };
 
 /**
@@ -762,8 +755,8 @@ class TProtocolFactory {
  * TProtocolPair.first = Input Protocol
  * TProtocolPair.second = Output Protocol
  */
-typedef std::pair<std::shared_ptr<TProtocol>,
-                  std::shared_ptr<TProtocol> > TProtocolPair;
+typedef std::pair<std::shared_ptr<TProtocol>, std::shared_ptr<TProtocol>>
+    TProtocolPair;
 
 class TDuplexProtocolFactory {
  public:
@@ -793,12 +786,13 @@ class TSingleProtocolFactory : public TDuplexProtocolFactory {
     factory_.reset(new Factory_());
   }
 
-  explicit TSingleProtocolFactory(std::shared_ptr<Factory_> factory) :
-      factory_(factory) {}
+  explicit TSingleProtocolFactory(std::shared_ptr<Factory_> factory)
+      : factory_(factory) {}
 
   TProtocolPair getProtocol(transport::TTransportPair transports) override {
-    return std::make_pair(factory_->getProtocol(transports.first),
-                          factory_->getProtocol(transports.second));
+    return std::make_pair(
+        factory_->getProtocol(transports.first),
+        factory_->getProtocol(transports.second));
   }
 
   std::shared_ptr<TProtocolFactory> getInputProtocolFactory() override {
@@ -810,7 +804,6 @@ class TSingleProtocolFactory : public TDuplexProtocolFactory {
   }
 
  private:
-
   std::shared_ptr<Factory_> factory_;
 };
 
@@ -821,14 +814,14 @@ class TSingleProtocolFactory : public TDuplexProtocolFactory {
 class TDualProtocolFactory : public TDuplexProtocolFactory {
  public:
   TDualProtocolFactory(
-    std::shared_ptr<TProtocolFactory> inputFactory,
-    std::shared_ptr<TProtocolFactory> outputFactory) :
-      inputFactory_(inputFactory),
-      outputFactory_(outputFactory) {}
+      std::shared_ptr<TProtocolFactory> inputFactory,
+      std::shared_ptr<TProtocolFactory> outputFactory)
+      : inputFactory_(inputFactory), outputFactory_(outputFactory) {}
 
   TProtocolPair getProtocol(transport::TTransportPair transports) override {
-    return std::make_pair(inputFactory_->getProtocol(transports.first),
-                          outputFactory_->getProtocol(transports.second));
+    return std::make_pair(
+        inputFactory_->getProtocol(transports.first),
+        outputFactory_->getProtocol(transports.second));
   }
 
   std::shared_ptr<TProtocolFactory> getInputProtocolFactory() override {
@@ -840,7 +833,6 @@ class TDualProtocolFactory : public TDuplexProtocolFactory {
   }
 
  private:
-
   std::shared_ptr<TProtocolFactory> inputFactory_;
   std::shared_ptr<TProtocolFactory> outputFactory_;
 };
@@ -851,9 +843,10 @@ class TDualProtocolFactory : public TDuplexProtocolFactory {
  * This class does nothing, and should never be instantiated.
  * It is used only by the generator code.
  */
-class TDummyProtocol : public TProtocol {
-};
+class TDummyProtocol : public TProtocol {};
 
-}}} // apache::thrift::protocol
+} // namespace protocol
+} // namespace thrift
+} // namespace apache
 
 #endif // #define _THRIFT_PROTOCOL_TPROTOCOL_H_ 1

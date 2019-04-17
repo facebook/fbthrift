@@ -1,4 +1,6 @@
 /*
+ * Copyright 2019-present Facebook, Inc.
+ *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -16,7 +18,6 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 #ifndef THRIFT_PROTOCOL_TJSONPROTOCOL_H_
 #define THRIFT_PROTOCOL_TJSONPROTOCOL_H_ 1
 
@@ -24,7 +25,9 @@
 
 #include <stack>
 
-namespace apache { namespace thrift { namespace protocol {
+namespace apache {
+namespace thrift {
+namespace protocol {
 
 // Forward declaration
 class TJSONContext;
@@ -93,7 +96,7 @@ class TJSONContext;
  *
  */
 class TJSONProtocol : public TVirtualProtocol<TJSONProtocol> {
- public :
+ public:
   static const uint8_t kJSONObjectStart;
   static const uint8_t kJSONObjectEnd;
   static const uint8_t kJSONArrayStart;
@@ -135,32 +138,29 @@ class TJSONProtocol : public TVirtualProtocol<TJSONProtocol> {
   static const std::string kTypeNameSet;
 
  private:
-  const std::string &getTypeNameForTypeID(TType typeID);
+  const std::string& getTypeNameForTypeID(TType typeID);
 
-  TType getTypeIDForTypeName(const std::string &name);
+  TType getTypeIDForTypeName(const std::string& name);
 
  public:
-
   explicit TJSONProtocol(std::shared_ptr<TTransport> ptrans);
-  explicit TJSONProtocol(TTransport *ptrans);
+  explicit TJSONProtocol(TTransport* ptrans);
 
   ~TJSONProtocol() override;
 
  private:
-
   void pushContext(std::shared_ptr<TJSONContext> c);
 
   void popContext();
 
  protected:
-
   uint32_t writeJSONEscapeChar(uint8_t ch);
 
   uint32_t writeJSONChar(uint8_t ch);
 
-  uint32_t writeJSONString(const std::string &str);
+  uint32_t writeJSONString(const std::string& str);
 
-  uint32_t writeJSONBase64(const std::string &str);
+  uint32_t writeJSONBase64(const std::string& str);
 
   template <typename NumberType>
   uint32_t writeJSONInteger(NumberType num);
@@ -170,7 +170,7 @@ class TJSONProtocol : public TVirtualProtocol<TJSONProtocol> {
   template <typename NumberType>
   uint32_t writeJSONDouble(NumberType num);
 
-  uint32_t writeJSONObjectStart() ;
+  uint32_t writeJSONObjectStart();
 
   uint32_t writeJSONObjectEnd();
 
@@ -184,21 +184,21 @@ class TJSONProtocol : public TVirtualProtocol<TJSONProtocol> {
 
   uint32_t readJSONSyntaxChar(uint8_t ch);
 
-  uint32_t readJSONEscapeChar(uint8_t *out);
+  uint32_t readJSONEscapeChar(uint8_t* out);
 
-  uint32_t readJSONString(std::string &str, bool skipContext = false);
+  uint32_t readJSONString(std::string& str, bool skipContext = false);
 
-  uint32_t readJSONBase64(std::string &str);
+  uint32_t readJSONBase64(std::string& str);
 
-  uint32_t readJSONNumericChars(std::string &str);
-
-  template <typename NumberType>
-  uint32_t readJSONInteger(NumberType &num);
-
-  uint32_t readJSONBool(bool &value);
+  uint32_t readJSONNumericChars(std::string& str);
 
   template <typename NumberType>
-  uint32_t readJSONDouble(NumberType &num);
+  uint32_t readJSONInteger(NumberType& num);
+
+  uint32_t readJSONBool(bool& value);
+
+  template <typename NumberType>
+  uint32_t readJSONDouble(NumberType& num);
 
   uint32_t readJSONObjectStart();
 
@@ -209,75 +209,74 @@ class TJSONProtocol : public TVirtualProtocol<TJSONProtocol> {
   uint32_t readJSONArrayEnd();
 
  public:
-
   /**
    * Writing functions.
    */
 
-   uint32_t writeMessageBegin(const std::string& name,
-                              const TMessageType messageType,
-                              const int32_t seqid);
+  uint32_t writeMessageBegin(
+      const std::string& name,
+      const TMessageType messageType,
+      const int32_t seqid);
 
-   uint32_t writeMessageEnd();
+  uint32_t writeMessageEnd();
 
-   uint32_t writeStructBegin(const char* name);
+  uint32_t writeStructBegin(const char* name);
 
-   uint32_t writeStructEnd();
+  uint32_t writeStructEnd();
 
-   uint32_t writeFieldBegin(const char* name,
-                            const TType fieldType,
-                            const int16_t fieldId);
+  uint32_t writeFieldBegin(
+      const char* name,
+      const TType fieldType,
+      const int16_t fieldId);
 
-   uint32_t writeFieldEnd();
+  uint32_t writeFieldEnd();
 
-   uint32_t writeFieldStop();
+  uint32_t writeFieldStop();
 
-   uint32_t writeMapBegin(const TType keyType,
-                          const TType valType,
-                          const uint32_t size);
+  uint32_t
+  writeMapBegin(const TType keyType, const TType valType, const uint32_t size);
 
-   uint32_t writeMapEnd();
+  uint32_t writeMapEnd();
 
-   uint32_t writeListBegin(const TType elemType,
-                           const uint32_t size);
+  uint32_t writeListBegin(const TType elemType, const uint32_t size);
 
-   uint32_t writeListEnd();
+  uint32_t writeListEnd();
 
-   uint32_t writeSetBegin(const TType elemType,
-                          const uint32_t size);
+  uint32_t writeSetBegin(const TType elemType, const uint32_t size);
 
-   uint32_t writeSetEnd();
+  uint32_t writeSetEnd();
 
-   uint32_t writeBool(const bool value);
+  uint32_t writeBool(const bool value);
 
-   uint32_t writeByte(const int8_t byte);
+  uint32_t writeByte(const int8_t byte);
 
-   uint32_t writeI16(const int16_t i16);
+  uint32_t writeI16(const int16_t i16);
 
-   uint32_t writeI32(const int32_t i32);
+  uint32_t writeI32(const int32_t i32);
 
-   uint32_t writeI64(const int64_t i64);
+  uint32_t writeI64(const int64_t i64);
 
-   uint32_t writeDouble(const double dub);
+  uint32_t writeDouble(const double dub);
 
-   uint32_t writeFloat(const float flt);
+  uint32_t writeFloat(const float flt);
 
-   uint32_t writeString(const std::string& str);
+  uint32_t writeString(const std::string& str);
 
-   template <class StrType>
-   uint32_t writeString(const StrType& str) {
-     return writeString(std::string(str.data(), str.size()));
-   }
+  template <class StrType>
+  uint32_t writeString(const StrType& str) {
+    return writeString(std::string(str.data(), str.size()));
+  }
 
-   uint32_t writeBinary(const std::string& str);
+  uint32_t writeBinary(const std::string& str);
 
   /**
    * Reading functions
    */
 
-  uint32_t readMessageBegin(std::string& name,
-                            TMessageType& messageType,
-                            int32_t& seqid);
+  uint32_t readMessageBegin(
+      std::string& name,
+      TMessageType& messageType,
+      int32_t& seqid);
 
   uint32_t readMessageEnd();
 
@@ -285,28 +284,24 @@ class TJSONProtocol : public TVirtualProtocol<TJSONProtocol> {
 
   uint32_t readStructEnd();
 
-  uint32_t readFieldBegin(std::string& name,
-                          TType& fieldType,
-                          int16_t& fieldId);
+  uint32_t
+  readFieldBegin(std::string& name, TType& fieldType, int16_t& fieldId);
 
   uint32_t readFieldEnd();
 
-  uint32_t readMapBegin(TType& keyType,
-                        TType& valType,
-                        uint32_t& size,
-                        bool& sizeUnknown);
+  uint32_t readMapBegin(
+      TType& keyType,
+      TType& valType,
+      uint32_t& size,
+      bool& sizeUnknown);
 
   uint32_t readMapEnd();
 
-  uint32_t readListBegin(TType& elemType,
-                         uint32_t& size,
-                         bool& sizeUnknown);
+  uint32_t readListBegin(TType& elemType, uint32_t& size, bool& sizeUnknown);
 
   uint32_t readListEnd();
 
-  uint32_t readSetBegin(TType& elemType,
-                        uint32_t& size,
-                        bool& sizeUnknown);
+  uint32_t readSetBegin(TType& elemType, uint32_t& size, bool& sizeUnknown);
 
   uint32_t readSetEnd();
 
@@ -336,14 +331,9 @@ class TJSONProtocol : public TVirtualProtocol<TJSONProtocol> {
   }
 
   class LookaheadReader {
-
    public:
-
-    explicit LookaheadReader(TTransport &trans) :
-      trans_(&trans),
-      hasPeeked_(false),
-      hasPut_(false) {
-    }
+    explicit LookaheadReader(TTransport& trans)
+        : trans_(&trans), hasPeeked_(false), hasPut_(false) {}
 
     uint8_t read() {
       if (hasPut_) {
@@ -393,7 +383,7 @@ class TJSONProtocol : public TVirtualProtocol<TJSONProtocol> {
     }
 
    private:
-    TTransport *trans_;
+    TTransport* trans_;
     bool hasPeeked_;
     uint8_t peeked_;
     bool hasPut_;
@@ -403,12 +393,12 @@ class TJSONProtocol : public TVirtualProtocol<TJSONProtocol> {
  private:
   TTransport* trans_;
 
-  std::stack<std::shared_ptr<TJSONContext> > contexts_;
+  std::stack<std::shared_ptr<TJSONContext>> contexts_;
   std::shared_ptr<TJSONContext> context_;
   bool allowDecodeUTF8_;
+
  protected:
   LookaheadReader reader_;
-
 };
 
 /**
@@ -426,8 +416,9 @@ class TJSONProtocolFactory : public TProtocolFactory {
   }
 };
 
-}}} // apache::thrift::protocol
-
+} // namespace protocol
+} // namespace thrift
+} // namespace apache
 
 // TODO(dreiss): Move part of ThriftJSONString into a .cpp file and remove this.
 #include <thrift/lib/cpp/transport/TBufferTransports.h>

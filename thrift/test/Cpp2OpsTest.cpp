@@ -18,8 +18,8 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-#include <glog/logging.h>
 #include <folly/portability/GTest.h>
+#include <glog/logging.h>
 
 #include <folly/io/IOBuf.h>
 #include <folly/io/IOBufQueue.h>
@@ -27,11 +27,12 @@
 #include <thrift/test/gen-cpp2/Cpp2OpsNative_constants.h>
 #include <thrift/test/gen-cpp2/Cpp2OpsNative_types.h>
 
-namespace thrift { namespace test { namespace cpp2ops {
+namespace thrift {
+namespace test {
+namespace cpp2ops {
 
 template <class T>
-class Cpp2OpsTest : public testing::Test {
-};
+class Cpp2OpsTest : public testing::Test {};
 
 TYPED_TEST_CASE_P(Cpp2OpsTest);
 
@@ -47,17 +48,14 @@ TYPED_TEST_P(Cpp2OpsTest, Simple) {
 
     // This is mainly to test that it compiles...
     EXPECT_NE(
-        0,
-        apache::thrift::Cpp2Ops<TypeParam>::serializedSize(&writer, &obj));
+        0, apache::thrift::Cpp2Ops<TypeParam>::serializedSize(&writer, &obj));
     EXPECT_NE(
-        0,
-        apache::thrift::Cpp2Ops<TypeParam>::serializedSizeZC(
-            &writer, &obj));
+        0, apache::thrift::Cpp2Ops<TypeParam>::serializedSizeZC(&writer, &obj));
 
     folly::IOBufQueue queue;
     writer.setOutput(&queue);
 
-    size =  apache::thrift::Cpp2Ops<TypeParam>::write(&writer, &obj);
+    size = apache::thrift::Cpp2Ops<TypeParam>::write(&writer, &obj);
     EXPECT_NE(0, size);
     buf = queue.move();
   }
@@ -80,9 +78,11 @@ REGISTER_TYPED_TEST_CASE_P(Cpp2OpsTest, Simple);
 typedef testing::Types<cpp2::Native> Types;
 INSTANTIATE_TYPED_TEST_CASE_P(Cpp2OpsTest, Cpp2OpsTest, Types);
 
-}}}  // namespaces
+} // namespace cpp2ops
+} // namespace test
+} // namespace thrift
 
-int main(int argc, char *argv[]) {
+int main(int argc, char* argv[]) {
   testing::InitGoogleTest(&argc, argv);
   gflags::ParseCommandLineFlags(&argc, &argv, true);
   return RUN_ALL_TESTS();

@@ -34,7 +34,8 @@
 
 #include <thrift/lib/cpp2/protocol/Cpp2Ops.tcc>
 
-namespace apache { namespace thrift {
+namespace apache {
+namespace thrift {
 
 namespace detail {
 
@@ -42,8 +43,8 @@ template <int N, int Size, class F, class Tuple>
 struct ForEachImpl {
   static uint32_t forEach(Tuple&& tuple, F&& f) {
     uint32_t res = f(std::get<N>(tuple), N);
-    res += ForEachImpl<N+1, Size, F, Tuple>::
-        forEach(std::forward<Tuple>(tuple), std::forward<F>(f));
+    res += ForEachImpl<N + 1, Size, F, Tuple>::forEach(
+        std::forward<Tuple>(tuple), std::forward<F>(f));
     return res;
   }
 };
@@ -54,11 +55,13 @@ struct ForEachImpl<Size, Size, F, Tuple> {
   }
 };
 
-template <int N=0, class F, class Tuple>
+template <int N = 0, class F, class Tuple>
 uint32_t forEach(Tuple&& tuple, F&& f) {
-  return ForEachImpl<N, std::tuple_size<
-      typename std::remove_reference<Tuple>::type>::value, F, Tuple>::
-      forEach(std::forward<Tuple>(tuple), std::forward<F>(f));
+  return ForEachImpl<
+      N,
+      std::tuple_size<typename std::remove_reference<Tuple>::type>::value,
+      F,
+      Tuple>::forEach(std::forward<Tuple>(tuple), std::forward<F>(f));
 }
 
 template <int N, int Size, class F, class Tuple>
@@ -103,6 +106,7 @@ struct Writer {
     xfer += prot_->writeFieldEnd();
     return xfer;
   }
+
  private:
   Protocol* prot_;
   const IsSet& isset_;
@@ -127,6 +131,7 @@ struct Sizer {
     xfer += Ops::serializedSize(prot_, &ex);
     return xfer;
   }
+
  private:
   Protocol* prot_;
   const IsSet& isset_;
@@ -151,6 +156,7 @@ struct SizerZC {
     xfer += Ops::serializedSizeZC(prot_, &ex);
     return xfer;
   }
+
  private:
   Protocol* prot_;
   const IsSet& isset_;
@@ -158,9 +164,17 @@ struct SizerZC {
 
 template <typename Protocol, typename IsSet>
 struct Reader {
-  Reader(Protocol* prot, IsSet& isset, int16_t fid, protocol::TType ftype, bool& success)
-    : prot_(prot), isset_(isset), fid_(fid), ftype_(ftype), success_(success)
-  {}
+  Reader(
+      Protocol* prot,
+      IsSet& isset,
+      int16_t fid,
+      protocol::TType ftype,
+      bool& success)
+      : prot_(prot),
+        isset_(isset),
+        fid_(fid),
+        ftype_(ftype),
+        success_(success) {}
   template <typename FieldData>
   void operator()(FieldData& fieldData, int index) {
     using Ops = Cpp2Ops<typename FieldData::ref_type>;
@@ -179,6 +193,7 @@ struct Reader {
     isset_.setIsSet(index);
     Ops::read(prot_, &ex);
   }
+
  private:
   Protocol* prot_;
   IsSet& isset_;
@@ -188,26 +203,37 @@ struct Reader {
 };
 
 template <typename T>
-T& maybe_remove_pointer(T& x) { return x; }
+T& maybe_remove_pointer(T& x) {
+  return x;
+}
 
 template <typename T>
-T& maybe_remove_pointer(T* x) { return *x; }
+T& maybe_remove_pointer(T* x) {
+  return *x;
+}
 
 template <bool hasIsSet, size_t count>
 struct IsSetHelper {
-  void setIsSet(size_t /*index*/, bool /*value*/ = true) { }
-  bool getIsSet(size_t /*index*/) const { return true; }
+  void setIsSet(size_t /*index*/, bool /*value*/ = true) {}
+  bool getIsSet(size_t /*index*/) const {
+    return true;
+  }
 };
 
 template <size_t count>
 struct IsSetHelper<true, count> {
-  void setIsSet(size_t index, bool value = true) { isset_[index] = value; }
-  bool getIsSet(size_t index) const { return isset_[index]; }
+  void setIsSet(size_t index, bool value = true) {
+    isset_[index] = value;
+  }
+  bool getIsSet(size_t index) const {
+    return isset_[index];
+  }
+
  private:
   std::array<bool, count> isset_ = {};
 };
 
-}
+} // namespace detail
 
 template <int16_t Fid, protocol::TType Ttype, typename T>
 struct FieldData {
@@ -216,8 +242,12 @@ struct FieldData {
   typedef T type;
   typedef typename std::remove_pointer<T>::type ref_type;
   T value;
-  ref_type& ref() { return detail::maybe_remove_pointer(value); }
-  const ref_type& ref() const { return detail::maybe_remove_pointer(value); }
+  ref_type& ref() {
+    return detail::maybe_remove_pointer(value);
+  }
+  const ref_type& ref() const {
+    return detail::maybe_remove_pointer(value);
+  }
 };
 
 template <bool hasIsSet, typename... Field>
@@ -231,19 +261,29 @@ class ThriftPresult : private std::tuple<Field...>,
  public:
   using size = std::tuple_size<Fields>;
 
-  CurIsSetHelper& isSet() { return *this; }
-  const CurIsSetHelper& isSet() const { return *this; }
-  Fields& fields() { return *this; }
-  const Fields& fields() const { return *this; }
+  CurIsSetHelper& isSet() {
+    return *this;
+  }
+  const CurIsSetHelper& isSet() const {
+    return *this;
+  }
+  Fields& fields() {
+    return *this;
+  }
+  const Fields& fields() const {
+    return *this;
+  }
 
   // returns lvalue ref to the appropriate FieldData
   template <size_t index>
-  auto get() -> decltype(std::get<index>(this->fields()))
-  { return std::get<index>(this->fields()); }
+  auto get() -> decltype(std::get<index>(this->fields())) {
+    return std::get<index>(this->fields());
+  }
 
   template <size_t index>
-  auto get() const -> decltype(std::get<index>(this->fields()))
-  { return std::get<index>(this->fields()); }
+  auto get() const -> decltype(std::get<index>(this->fields())) {
+    return std::get<index>(this->fields());
+  }
 
   template <class Protocol>
   uint32_t read(Protocol* prot) {
@@ -278,8 +318,8 @@ class ThriftPresult : private std::tuple<Field...>,
   uint32_t serializedSize(Protocol* prot) const {
     uint32_t xfer = 0;
     xfer += prot->serializedStructSize("");
-    xfer += detail::forEach(fields(),
-        detail::Sizer<Protocol, CurIsSetHelper>(prot, isSet()));
+    xfer += detail::forEach(
+        fields(), detail::Sizer<Protocol, CurIsSetHelper>(prot, isSet()));
     xfer += prot->serializedSizeStop();
     return xfer;
   }
@@ -288,8 +328,8 @@ class ThriftPresult : private std::tuple<Field...>,
   uint32_t serializedSizeZC(Protocol* prot) const {
     uint32_t xfer = 0;
     xfer += prot->serializedStructSize("");
-    xfer += detail::forEach(fields(),
-        detail::SizerZC<Protocol, CurIsSetHelper>(prot, isSet()));
+    xfer += detail::forEach(
+        fields(), detail::SizerZC<Protocol, CurIsSetHelper>(prot, isSet()));
     xfer += prot->serializedSizeStop();
     return xfer;
   }
@@ -298,8 +338,8 @@ class ThriftPresult : private std::tuple<Field...>,
   uint32_t write(Protocol* prot) const {
     uint32_t xfer = 0;
     xfer += prot->writeStructBegin("");
-    xfer += detail::forEach(fields(),
-        detail::Writer<Protocol, CurIsSetHelper>(prot, isSet()));
+    xfer += detail::forEach(
+        fields(), detail::Writer<Protocol, CurIsSetHelper>(prot, isSet()));
     xfer += prot->writeFieldStop();
     xfer += prot->writeStructEnd();
     return xfer;
@@ -553,13 +593,13 @@ folly::exception_wrapper recv_wrapped(
 } // namespace detail
 
 //  AsyncProcessor helpers
-namespace detail { namespace ap {
+namespace detail {
+namespace ap {
 
 //  Everything templated on only protocol goes here. The corresponding .cpp file
 //  explicitly instantiates this struct for each supported protocol.
 template <typename ProtocolReader, typename ProtocolWriter>
 struct helper {
-
   static folly::IOBufQueue write_exn(
       const char* method,
       ProtocolWriter* prot,
@@ -575,7 +615,6 @@ struct helper {
       Cpp2RequestContext* ctx,
       folly::EventBase* eb,
       int32_t protoSeqId);
-
 };
 
 template <typename ProtocolReader>
@@ -640,8 +679,7 @@ template <class ProtocolReader, class Processor>
 void process_pmap(
     Processor* proc,
     const typename GeneratedAsyncProcessor::ProcessMap<
-        GeneratedAsyncProcessor::ProcessFunc<
-            Processor, ProtocolReader>>& pmap,
+        GeneratedAsyncProcessor::ProcessFunc<Processor, ProtocolReader>>& pmap,
     std::unique_ptr<ResponseChannelRequest> req,
     std::unique_ptr<folly::IOBuf> buf,
     Cpp2RequestContext* ctx,
@@ -650,8 +688,15 @@ void process_pmap(
   const auto& fname = ctx->getMethodName();
   auto pfn = pmap.find(fname);
   if (pfn == pmap.end()) {
-    process_missing<ProtocolReader>(proc, fname, std::move(req),
-        std::move(buf), ctx, eb, tm, ctx->getProtoSeqId());
+    process_missing<ProtocolReader>(
+        proc,
+        fname,
+        std::move(req),
+        std::move(buf),
+        ctx,
+        eb,
+        tm,
+        ctx->getProtoSeqId());
     return;
   }
 
@@ -807,7 +852,8 @@ apache::thrift::SemiStream<T> decode_stream(
 } // namespace detail
 
 //  ServerInterface helpers
-namespace detail { namespace si {
+namespace detail {
+namespace si {
 
 template <typename F>
 using ret = typename std::result_of<F()>::type;
@@ -820,9 +866,13 @@ using fut_ret_drop = typename folly::drop_unit<fut_ret<F>>::type;
 template <typename T>
 struct action_traits_impl;
 template <typename C, typename A>
-struct action_traits_impl<void(C::*)(A&) const> { using arg_type = A; };
+struct action_traits_impl<void (C::*)(A&) const> {
+  using arg_type = A;
+};
 template <typename C, typename A>
-struct action_traits_impl<void(C::*)(A&)> { using arg_type = A; };
+struct action_traits_impl<void (C::*)(A&)> {
+  using arg_type = A;
+};
 template <typename F>
 using action_traits = action_traits_impl<decltype(&F::operator())>;
 template <typename F>
@@ -844,8 +894,7 @@ folly::SemiFuture<ret_lift<F>> semifuture(F&& f) {
 }
 
 template <class F>
-arg<F>
-returning(F&& f) {
+arg<F> returning(F&& f) {
   arg<F> ret;
   f(ret);
   return ret;
@@ -857,8 +906,7 @@ folly::SemiFuture<arg<F>> semifuture_returning(F&& f) {
 }
 
 template <class F>
-std::unique_ptr<arg<F>>
-returning_uptr(F&& f) {
+std::unique_ptr<arg<F>> returning_uptr(F&& f) {
   auto ret = std::make_unique<arg<F>>();
   f(*ret);
   return ret;
@@ -871,28 +919,26 @@ folly::SemiFuture<std::unique_ptr<arg<F>>> semifuture_returning_uptr(F&& f) {
 
 using CallbackBase = HandlerCallbackBase;
 using CallbackBasePtr = std::unique_ptr<CallbackBase>;
-template <class R> using Callback = HandlerCallback<fut_ret_drop<R>>;
-template <class R> using CallbackPtr = std::unique_ptr<Callback<R>>;
+template <class R>
+using Callback = HandlerCallback<fut_ret_drop<R>>;
+template <class R>
+using CallbackPtr = std::unique_ptr<Callback<R>>;
 
-inline
-void
-async_tm_prep(ServerInterface* si, CallbackBase* callback) {
+inline void async_tm_prep(ServerInterface* si, CallbackBase* callback) {
   si->setEventBase(callback->getEventBase());
   si->setThreadManager(callback->getThreadManager());
   si->setConnectionContext(callback->getConnectionContext());
 }
 
 template <class F>
-void
-async_tm_oneway(ServerInterface* si, CallbackBasePtr callback, F&& f) {
+void async_tm_oneway(ServerInterface* si, CallbackBasePtr callback, F&& f) {
   async_tm_prep(si, callback.get());
   folly::makeFutureWith(std::forward<F>(f))
       .thenValue([cb = std::move(callback)](auto&&) {});
 }
 
 template <class F>
-void
-async_tm(ServerInterface* si, CallbackPtr<F> callback, F&& f) {
+void async_tm(ServerInterface* si, CallbackPtr<F> callback, F&& f) {
   async_tm_prep(si, callback.get());
   folly::makeFutureWith(std::forward<F>(f))
       .thenTry(
@@ -902,26 +948,27 @@ async_tm(ServerInterface* si, CallbackPtr<F> callback, F&& f) {
 }
 
 template <class F>
-void
-async_eb_oneway(ServerInterface* si, CallbackBasePtr callback, F&& f) {
+void async_eb_oneway(ServerInterface* si, CallbackBasePtr callback, F&& f) {
   auto callbackp = callback.get();
   callbackp->runFuncInQueue(
-      [ si, callback = std::move(callback), f = std::forward<F>(f) ]() mutable {
+      [si, callback = std::move(callback), f = std::forward<F>(f)]() mutable {
         async_tm_oneway(si, std::move(callback), std::move(f));
-      }, true);
+      },
+      true);
 }
 
 template <class F>
-void
-async_eb(ServerInterface* si, CallbackPtr<F> callback, F&& f) {
+void async_eb(ServerInterface* si, CallbackPtr<F> callback, F&& f) {
   auto callbackp = callback.get();
   callbackp->runFuncInQueue(
-      [ si, callback = std::move(callback), f = std::forward<F>(f) ]() mutable {
+      [si, callback = std::move(callback), f = std::forward<F>(f)]() mutable {
         async_tm(si, std::move(callback), std::move(f));
       });
 }
 
 [[noreturn]] void throw_app_exn_unimplemented(char const* name);
-}} // detail::si
+} // namespace si
+} // namespace detail
 
-}} // apache::thrift
+} // namespace thrift
+} // namespace apache

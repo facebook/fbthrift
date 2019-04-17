@@ -27,7 +27,9 @@
 
 #include <string>
 
-namespace apache { namespace thrift { namespace protocol {
+namespace apache {
+namespace thrift {
+namespace protocol {
 
 /**
  * Class to encapsulate all the possible types of protocol errors that may
@@ -39,35 +41,29 @@ namespace apache { namespace thrift { namespace protocol {
  */
 class TProtocolException : public apache::thrift::TLibraryException {
  public:
-
   /**
    * Error codes for the various types of exceptions.
    */
-  enum TProtocolExceptionType
-  { UNKNOWN = 0
-  , INVALID_DATA = 1
-  , NEGATIVE_SIZE = 2
-  , SIZE_LIMIT = 3
-  , BAD_VERSION = 4
-  , NOT_IMPLEMENTED = 5
-  , MISSING_REQUIRED_FIELD = 6
+  enum TProtocolExceptionType {
+    UNKNOWN = 0,
+    INVALID_DATA = 1,
+    NEGATIVE_SIZE = 2,
+    SIZE_LIMIT = 3,
+    BAD_VERSION = 4,
+    NOT_IMPLEMENTED = 5,
+    MISSING_REQUIRED_FIELD = 6
   };
 
-  TProtocolException() :
-    apache::thrift::TLibraryException(),
-    type_(UNKNOWN) {}
+  TProtocolException() : apache::thrift::TLibraryException(), type_(UNKNOWN) {}
 
-  explicit TProtocolException(TProtocolExceptionType type) :
-    apache::thrift::TLibraryException(),
-    type_(type) {}
+  explicit TProtocolException(TProtocolExceptionType type)
+      : apache::thrift::TLibraryException(), type_(type) {}
 
-  explicit TProtocolException(const std::string& message) :
-    apache::thrift::TLibraryException(message),
-    type_(UNKNOWN) {}
+  explicit TProtocolException(const std::string& message)
+      : apache::thrift::TLibraryException(message), type_(UNKNOWN) {}
 
-  TProtocolException(TProtocolExceptionType type, const std::string& message) :
-    apache::thrift::TLibraryException(message),
-    type_(type) {}
+  TProtocolException(TProtocolExceptionType type, const std::string& message)
+      : apache::thrift::TLibraryException(message), type_(type) {}
 
   ~TProtocolException() throw() override {}
 
@@ -84,15 +80,22 @@ class TProtocolException : public apache::thrift::TLibraryException {
   const char* what() const throw() override {
     if (message_.empty()) {
       switch (type_) {
-        case UNKNOWN         : return "TProtocolException: Unknown protocol exception";
-        case INVALID_DATA    : return "TProtocolException: Invalid data";
-        case NEGATIVE_SIZE   : return "TProtocolException: Negative size";
-        case SIZE_LIMIT      : return "TProtocolException: Exceeded size limit";
-        case BAD_VERSION     : return "TProtocolException: Invalid version";
-        case NOT_IMPLEMENTED : return "TProtocolException: Not implemented";
-        case MISSING_REQUIRED_FIELD :
+        case UNKNOWN:
+          return "TProtocolException: Unknown protocol exception";
+        case INVALID_DATA:
+          return "TProtocolException: Invalid data";
+        case NEGATIVE_SIZE:
+          return "TProtocolException: Negative size";
+        case SIZE_LIMIT:
+          return "TProtocolException: Exceeded size limit";
+        case BAD_VERSION:
+          return "TProtocolException: Invalid version";
+        case NOT_IMPLEMENTED:
+          return "TProtocolException: Not implemented";
+        case MISSING_REQUIRED_FIELD:
           return "TProtocolException: Missing required field";
-        default              : return "TProtocolException: (Invalid exception type)";
+        default:
+          return "TProtocolException: (Invalid exception type)";
       }
     } else {
       return message_.c_str();
@@ -114,9 +117,10 @@ class TProtocolException : public apache::thrift::TLibraryException {
    * Error code
    */
   TProtocolExceptionType type_;
-
 };
 
-}}} // apache::thrift::protocol
+} // namespace protocol
+} // namespace thrift
+} // namespace apache
 
 #endif // #ifndef _THRIFT_PROTOCOL_TPROTOCOLEXCEPTION_H_

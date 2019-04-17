@@ -1,4 +1,6 @@
 /*
+ * Copyright 2019-present Facebook, Inc.
+ *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -16,7 +18,6 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 #include <thrift/lib/cpp2/protocol/Serializer.h>
 
 namespace apache {
@@ -34,7 +35,9 @@ serializeError(int protId, TApplicationException obj, folly::IOBuf* buf) {
           CompactProtocolReader,
           CompactProtocolWriter>(obj, std::move(buf));
     }
-    default: { LOG(ERROR) << "Invalid protocol from client"; }
+    default: {
+      LOG(ERROR) << "Invalid protocol from client";
+    }
   }
 
   return nullptr;
@@ -54,7 +57,9 @@ std::unique_ptr<folly::IOBuf> serializeError(
       return serializeErrorProtocol<CompactProtocolWriter>(
           obj, fname, protoSeqId);
     }
-    default: { LOG(ERROR) << "Invalid protocol from client"; }
+    default: {
+      LOG(ERROR) << "Invalid protocol from client";
+    }
   }
 
   return nullptr;

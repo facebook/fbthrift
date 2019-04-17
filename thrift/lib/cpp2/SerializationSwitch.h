@@ -54,6 +54,6 @@ template <typename Protocol, typename Args>
 uint32_t serializedExceptionBodySizeZC(Protocol* prot, const Args* args) {
   return args->serializedSizeZC(prot);
 }
-}
-}
-} // apache::thrift::detail
+} // namespace detail
+} // namespace thrift
+} // namespace apache

@@ -27,13 +27,15 @@
 
 #include <cstdint>
 
-namespace apache { namespace thrift {
+namespace apache {
+namespace thrift {
 
 enum FragileConstructor {
   FRAGILE,
 };
 
-namespace detail { namespace st {
+namespace detail {
+namespace st {
 
 /**
  *  Like boost::totally_ordered, but does not cause boost functions always to
@@ -41,13 +43,22 @@ namespace detail { namespace st {
  */
 template <typename T>
 struct ComparisonOperators {
-  friend bool operator !=(const T& x, const T& y) { return !(x == y); }
-  friend bool operator > (const T& x, const T& y) { return y < x; }
-  friend bool operator <=(const T& x, const T& y) { return !(y < x); }
-  friend bool operator >=(const T& x, const T& y) { return !(x < y); }
+  friend bool operator!=(const T& x, const T& y) {
+    return !(x == y);
+  }
+  friend bool operator>(const T& x, const T& y) {
+    return y < x;
+  }
+  friend bool operator<=(const T& x, const T& y) {
+    return !(y < x);
+  }
+  friend bool operator>=(const T& x, const T& y) {
+    return !(x < y);
+  }
 };
 
-}}
+} // namespace st
+} // namespace detail
 
 namespace detail {
 
@@ -61,10 +72,12 @@ struct enum_hash {
 
 template <typename T>
 struct enum_equal_to {
-  bool operator()(T t0, T t1) const { return t0 == t1; }
+  bool operator()(T t0, T t1) const {
+    return t0 == t1;
+  }
 };
 
-}
+} // namespace detail
 
 namespace detail {
 
@@ -73,25 +86,26 @@ namespace detail {
 // For more context, see http://ericniebler.com/2013/08/07/
 // - Universal References and the Copy Constructor
 template <typename, typename...>
-struct is_safe_overload { using type = std::true_type; };
+struct is_safe_overload {
+  using type = std::true_type;
+};
 template <typename Class, typename T>
 struct is_safe_overload<Class, T> {
   using type = std::integral_constant<
-    bool,
-    !std::is_same<
-      Class,
-      typename std::remove_cv<typename std::remove_reference<T>::type>::type
-    >::value
-  >;
+      bool,
+      !std::is_same<
+          Class,
+          typename std::remove_cv<
+              typename std::remove_reference<T>::type>::type>::value>;
 };
 
-} // detail
+} // namespace detail
 
 template <typename Class, typename... Args>
 using safe_overload_t = typename std::enable_if<
-  detail::is_safe_overload<Class, Args...>::type::value
->::type;
+    detail::is_safe_overload<Class, Args...>::type::value>::type;
 
-}} // apache::thrift
+} // namespace thrift
+} // namespace apache
 
 #endif // #ifndef THRIFT_CPP2_H_

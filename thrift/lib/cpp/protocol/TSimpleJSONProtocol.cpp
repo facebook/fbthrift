@@ -24,30 +24,27 @@
 using namespace apache::thrift::transport;
 using namespace apache::thrift::reflection;
 
-namespace apache { namespace thrift { namespace protocol {
+namespace apache {
+namespace thrift {
+namespace protocol {
 
-TSimpleJSONProtocol::TSimpleJSONProtocol(std::shared_ptr<TTransport> ptrans):
-                            TVirtualProtocol<TSimpleJSONProtocol,
-                                             TJSONProtocol>(ptrans),
-                                                 nextType_(nullptr),
-                                                     numSkipped_(0) {
-}
+TSimpleJSONProtocol::TSimpleJSONProtocol(std::shared_ptr<TTransport> ptrans)
+    : TVirtualProtocol<TSimpleJSONProtocol, TJSONProtocol>(ptrans),
+      nextType_(nullptr),
+      numSkipped_(0) {}
 
-TSimpleJSONProtocol::TSimpleJSONProtocol(TTransport *ptrans):
-                            TVirtualProtocol<TSimpleJSONProtocol,
-                                             TJSONProtocol>(ptrans),
-                                                 nextType_(nullptr),
-                                                     numSkipped_(0) {
-}
-
+TSimpleJSONProtocol::TSimpleJSONProtocol(TTransport* ptrans)
+    : TVirtualProtocol<TSimpleJSONProtocol, TJSONProtocol>(ptrans),
+      nextType_(nullptr),
+      numSkipped_(0) {}
 
 TSimpleJSONProtocol::~TSimpleJSONProtocol() {}
 
-  /**
-   * Writing functions.
-   */
+/**
+ * Writing functions.
+ */
 
-Schema * TSimpleJSONProtocol::getSchema() {
+Schema* TSimpleJSONProtocol::getSchema() {
   return &schema_;
 }
 
@@ -57,7 +54,6 @@ uint32_t TSimpleJSONProtocol::writeFieldBegin(
     const int16_t /*fieldId*/) {
   return writeJSONString(name);
 }
-
 
 uint32_t TSimpleJSONProtocol::writeFieldEnd() {
   return 0;
@@ -69,7 +65,6 @@ uint32_t TSimpleJSONProtocol::writeMapBegin(
     const uint32_t /*size*/) {
   return writeJSONObjectStart();
 }
-
 
 uint32_t TSimpleJSONProtocol::writeMapEnd() {
   return writeJSONObjectEnd();
@@ -87,31 +82,29 @@ uint32_t TSimpleJSONProtocol::writeSetBegin(
   return writeJSONArrayStart();
 }
 
-
 uint32_t TSimpleJSONProtocol::writeBool(const bool value) {
   return writeJSONBool(value);
 }
 
-  /**
-   * Reading functions
-   */
-
+/**
+ * Reading functions
+ */
 
 void TSimpleJSONProtocol::setNextStructType(uint64_t reflection_id) {
   nextType_ = getDataTypeFromTypeNum(reflection_id);
 }
 
 uint32_t TSimpleJSONProtocol::readStructBegin(std::string& name) {
-  uint32_t result = TVirtualProtocol<TSimpleJSONProtocol,TJSONProtocol>::
-                                    readStructBegin(name);
+  uint32_t result =
+      TVirtualProtocol<TSimpleJSONProtocol, TJSONProtocol>::readStructBegin(
+          name);
   enterType();
   return result;
 }
 
-
 uint32_t TSimpleJSONProtocol::readStructEnd() {
-  uint32_t result = TVirtualProtocol<TSimpleJSONProtocol,TJSONProtocol>::
-                                     readStructEnd();
+  uint32_t result =
+      TVirtualProtocol<TSimpleJSONProtocol, TJSONProtocol>::readStructEnd();
   exitType();
   return result;
 }
@@ -138,10 +131,11 @@ uint32_t TSimpleJSONProtocol::readFieldBegin(
   result += readJSONString(tmpStr);
 
   if (currentType != nullptr) {
-    if (! currentType->__isset.fields) {
-      throw TProtocolException(TProtocolException::INVALID_DATA,
-                                   "Expected a struct type, but "
-                                   "actually not a struct");
+    if (!currentType->__isset.fields) {
+      throw TProtocolException(
+          TProtocolException::INVALID_DATA,
+          "Expected a struct type, but "
+          "actually not a struct");
     }
 
     auto& fields = currentType->fields;
@@ -186,15 +180,15 @@ uint32_t TSimpleJSONProtocol::readFieldBegin(
   return result + getNumSkippedChars();
 }
 
-
 uint32_t TSimpleJSONProtocol::readFieldEnd() {
   return 0;
 }
 
-uint32_t TSimpleJSONProtocol::readMapBegin(TType& keyType,
-                                    TType& valType,
-                                    uint32_t& size,
-                                    bool& sizeUnknown) {
+uint32_t TSimpleJSONProtocol::readMapBegin(
+    TType& keyType,
+    TType& valType,
+    uint32_t& size,
+    bool& sizeUnknown) {
   enterType();
 
   auto currentType = getCurrentDataType();
@@ -219,12 +213,10 @@ uint32_t TSimpleJSONProtocol::readMapBegin(TType& keyType,
   return readJSONObjectStart();
 }
 
-
 bool TSimpleJSONProtocol::peekMap() {
   skipWhitespace();
   return reader_.peek() != kJSONObjectEnd;
 }
-
 
 uint32_t TSimpleJSONProtocol::readMapEnd() {
   uint32_t result = getNumSkippedChars() + readJSONObjectEnd();
@@ -232,10 +224,10 @@ uint32_t TSimpleJSONProtocol::readMapEnd() {
   return result;
 }
 
-
-uint32_t TSimpleJSONProtocol::readListBegin(TType& elemType,
-                                   uint32_t& size,
-                                   bool& sizeUnknown) {
+uint32_t TSimpleJSONProtocol::readListBegin(
+    TType& elemType,
+    uint32_t& size,
+    bool& sizeUnknown) {
   enterType();
 
   auto currentType = getCurrentDataType();
@@ -258,29 +250,25 @@ uint32_t TSimpleJSONProtocol::readListBegin(TType& elemType,
     }
 
     return readJSONArrayStart();
-
   }
 }
-
 
 bool TSimpleJSONProtocol::peekList() {
   skipWhitespace();
   return reader_.peek() != kJSONArrayEnd;
 }
 
-
 uint32_t TSimpleJSONProtocol::readListEnd() {
   uint32_t result = getNumSkippedChars();
-  result += TVirtualProtocol<TSimpleJSONProtocol,TJSONProtocol>::
-                            readListEnd();
+  result += TVirtualProtocol<TSimpleJSONProtocol, TJSONProtocol>::readListEnd();
   exitType();
   return result;
 }
 
-
-uint32_t TSimpleJSONProtocol::readSetBegin(TType& elemType,
-                                  uint32_t& size,
-                                  bool& sizeUnknown) {
+uint32_t TSimpleJSONProtocol::readSetBegin(
+    TType& elemType,
+    uint32_t& size,
+    bool& sizeUnknown) {
   enterType();
 
   auto currentType = getCurrentDataType();
@@ -301,17 +289,14 @@ uint32_t TSimpleJSONProtocol::readSetBegin(TType& elemType,
   return readJSONArrayStart();
 }
 
-
 bool TSimpleJSONProtocol::peekSet() {
   skipWhitespace();
   return reader_.peek() != kJSONArrayEnd;
 }
 
-
 uint32_t TSimpleJSONProtocol::readSetEnd() {
   uint32_t result = getNumSkippedChars();
-  result += TVirtualProtocol<TSimpleJSONProtocol,TJSONProtocol>::
-                             readSetEnd();
+  result += TVirtualProtocol<TSimpleJSONProtocol, TJSONProtocol>::readSetEnd();
   exitType();
   return result;
 }
@@ -323,25 +308,39 @@ uint32_t TSimpleJSONProtocol::readBool(bool& value) {
 TType TSimpleJSONProtocol::getTypeIdFromTypeNum(int64_t fieldType) {
   Type type = getType(fieldType);
   switch (type) {
-    case Type::TYPE_VOID:   return T_VOID;
-    case Type::TYPE_STRING: return T_STRING;
-    case Type::TYPE_BOOL:   return T_BOOL;
-    case Type::TYPE_BYTE:   return T_BYTE;
-    case Type::TYPE_I16:    return T_I16;
-    case Type::TYPE_I32:    return T_I32;
-    case Type::TYPE_I64:    return T_I64;
-    case Type::TYPE_DOUBLE: return T_DOUBLE;
-    case Type::TYPE_FLOAT:  return T_FLOAT;
-    case Type::TYPE_LIST:   return T_LIST;
-    case Type::TYPE_SET:    return T_SET;
-    case Type::TYPE_MAP:    return T_MAP;
-    case Type::TYPE_STRUCT: return T_STRUCT;
-    case Type::TYPE_ENUM:   return T_I32;
+    case Type::TYPE_VOID:
+      return T_VOID;
+    case Type::TYPE_STRING:
+      return T_STRING;
+    case Type::TYPE_BOOL:
+      return T_BOOL;
+    case Type::TYPE_BYTE:
+      return T_BYTE;
+    case Type::TYPE_I16:
+      return T_I16;
+    case Type::TYPE_I32:
+      return T_I32;
+    case Type::TYPE_I64:
+      return T_I64;
+    case Type::TYPE_DOUBLE:
+      return T_DOUBLE;
+    case Type::TYPE_FLOAT:
+      return T_FLOAT;
+    case Type::TYPE_LIST:
+      return T_LIST;
+    case Type::TYPE_SET:
+      return T_SET;
+    case Type::TYPE_MAP:
+      return T_MAP;
+    case Type::TYPE_STRUCT:
+      return T_STRUCT;
+    case Type::TYPE_ENUM:
+      return T_I32;
     case Type::TYPE_SERVICE:
     case Type::TYPE_PROGRAM:
     default:
-      throw TProtocolException(TProtocolException::NOT_IMPLEMENTED,
-                               "Unrecognized type");
+      throw TProtocolException(
+          TProtocolException::NOT_IMPLEMENTED, "Unrecognized type");
   }
 }
 
@@ -356,8 +355,7 @@ TType TSimpleJSONProtocol::guessTypeIdFromFirstByte() {
   skipWhitespace();
   uint8_t byte = reader_.peek();
 
-  if (byte == kJSONObjectEnd ||
-      byte == kJSONArrayEnd) {
+  if (byte == kJSONObjectEnd || byte == kJSONArrayEnd) {
     return T_STOP;
   } else if (byte == kJSONStringDelimiter) {
     return T_STRING;
@@ -365,26 +363,17 @@ TType TSimpleJSONProtocol::guessTypeIdFromFirstByte() {
     return T_STRUCT;
   } else if (byte == kJSONArrayStart) {
     return T_LIST;
-  } else if (byte == kJSONTrue[0] ||
-             byte == kJSONFalse[0]) {
+  } else if (byte == kJSONTrue[0] || byte == kJSONFalse[0]) {
     return T_BOOL;
-  } else if (byte == '+' ||
-             byte == '-' ||
-             byte == '.' ||
-             byte == '0' ||
-             byte == '1' ||
-             byte == '2' ||
-             byte == '3' ||
-             byte == '4' ||
-             byte == '5' ||
-             byte == '6' ||
-             byte == '7' ||
-             byte == '8' ||
-             byte == '9') {
-        return T_DOUBLE;
+  } else if (
+      byte == '+' || byte == '-' || byte == '.' || byte == '0' || byte == '1' ||
+      byte == '2' || byte == '3' || byte == '4' || byte == '5' || byte == '6' ||
+      byte == '7' || byte == '8' || byte == '9') {
+    return T_DOUBLE;
   } else {
-    throw TProtocolException(TProtocolException::NOT_IMPLEMENTED,
-                "Unrecognized byte: " + std::string((char *)&byte, 1));
+    throw TProtocolException(
+        TProtocolException::NOT_IMPLEMENTED,
+        "Unrecognized byte: " + std::string((char*)&byte, 1));
   }
 }
 
@@ -392,19 +381,18 @@ DataType* TSimpleJSONProtocol::getDataTypeFromTypeNum(int64_t typeNum) {
   auto ite = schema_.dataTypes.find(typeNum);
 
   if (ite == schema_.dataTypes.cend()) {
-    throw TProtocolException(TProtocolException::INVALID_DATA,
-                             "Type id not found, schema is corrupted");
+    throw TProtocolException(
+        TProtocolException::INVALID_DATA,
+        "Type id not found, schema is corrupted");
   }
 
   return &(ite->second);
 }
 
-
 void TSimpleJSONProtocol::enterType() {
   typeStack_.push(nextType_);
   nextType_ = nullptr;
 }
-
 
 void TSimpleJSONProtocol::exitType() {
   auto lastType = getCurrentDataType();
@@ -415,15 +403,17 @@ void TSimpleJSONProtocol::exitType() {
   if (currentType == nullptr) {
     nextType_ = nullptr;
 
-  } else if (currentType->__isset.mapKeyType &&
-             isCompoundType(currentType->mapKeyType) &&
-             (!currentType->__isset.valueType ||
-              !isCompoundType(currentType->valueType) ||
-              lastType == getDataTypeFromTypeNum(currentType->valueType))) {
+  } else if (
+      currentType->__isset.mapKeyType &&
+      isCompoundType(currentType->mapKeyType) &&
+      (!currentType->__isset.valueType ||
+       !isCompoundType(currentType->valueType) ||
+       lastType == getDataTypeFromTypeNum(currentType->valueType))) {
     nextType_ = getDataTypeFromTypeNum(currentType->mapKeyType);
 
-  } else if (currentType->__isset.valueType &&
-             isCompoundType(currentType->valueType)) {
+  } else if (
+      currentType->__isset.valueType &&
+      isCompoundType(currentType->valueType)) {
     nextType_ = getDataTypeFromTypeNum(currentType->valueType);
 
   } else {
@@ -432,7 +422,7 @@ void TSimpleJSONProtocol::exitType() {
 }
 
 // returns nullptr when the struct is to be skipped
-const DataType * TSimpleJSONProtocol::getCurrentDataType() {
+const DataType* TSimpleJSONProtocol::getCurrentDataType() {
   if (!typeStack_.empty()) {
     return typeStack_.top();
   } else {
@@ -454,4 +444,6 @@ bool TSimpleJSONProtocol::isCompoundType(int64_t fieldType) {
   return !isBaseType(getType(fieldType));
 }
 
-}}} // apache::thrift::protocol
+} // namespace protocol
+} // namespace thrift
+} // namespace apache

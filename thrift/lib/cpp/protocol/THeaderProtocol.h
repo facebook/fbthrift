@@ -1,4 +1,6 @@
 /*
+ * Copyright 2019-present Facebook, Inc.
+ *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -16,7 +18,6 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 #ifndef THRIFT_PROTOCOL_THEADERPROTOCOL_H_
 #define THRIFT_PROTOCOL_THEADERPROTOCOL_H_ 1
 
@@ -29,45 +30,47 @@
 
 #include <bitset>
 
-namespace apache { namespace thrift { namespace protocol {
+namespace apache {
+namespace thrift {
+namespace protocol {
 
 /**
  * The header protocol for thrift. Reads unframed, framed, header format,
  * and http
  *
  */
-class THeaderProtocol
-  : public TVirtualProtocol<THeaderProtocol> {
+class THeaderProtocol : public TVirtualProtocol<THeaderProtocol> {
  public:
-  explicit THeaderProtocol(const std::shared_ptr<TTransport>& trans,
-                           std::bitset<CLIENT_TYPES_LEN>* clientTypes = nullptr,
-                           uint16_t protoId = T_COMPACT_PROTOCOL,
-                           int8_t protoVersion = -1) :
-      TVirtualProtocol<THeaderProtocol>(getTransportWrapper(trans,
-                                                            clientTypes))
-      , trans_(std::dynamic_pointer_cast<transport::THeaderTransport,
-                                         TTransport>(this->getTransport()))
-      , protoId_(protoId)
-      , protoVersion_(protoVersion)
-  {
+  explicit THeaderProtocol(
+      const std::shared_ptr<TTransport>& trans,
+      std::bitset<CLIENT_TYPES_LEN>* clientTypes = nullptr,
+      uint16_t protoId = T_COMPACT_PROTOCOL,
+      int8_t protoVersion = -1)
+      : TVirtualProtocol<THeaderProtocol>(
+            getTransportWrapper(trans, clientTypes)),
+        trans_(
+            std::dynamic_pointer_cast<transport::THeaderTransport, TTransport>(
+                this->getTransport())),
+        protoId_(protoId),
+        protoVersion_(protoVersion) {
     trans_->setProtocolId(protoId);
     trans_->setProtocolVersion(protoVersion);
     resetProtocol();
   }
 
-  THeaderProtocol(const std::shared_ptr<TTransport>& inTrans,
-                  const std::shared_ptr<TTransport>& outTrans,
-                  std::bitset<CLIENT_TYPES_LEN>* clientTypes = nullptr,
-                  uint16_t protoId = T_COMPACT_PROTOCOL,
-                  int8_t protoVersion = -1) :
-      TVirtualProtocol<THeaderProtocol>(getInOutTransportWrapper(inTrans,
-                                                                 outTrans,
-                                                                 clientTypes))
-      , trans_(std::dynamic_pointer_cast<transport::THeaderTransport,
-                                         TTransport>(this->getTransport()))
-      , protoId_(protoId)
-      , protoVersion_(protoVersion)
-  {
+  THeaderProtocol(
+      const std::shared_ptr<TTransport>& inTrans,
+      const std::shared_ptr<TTransport>& outTrans,
+      std::bitset<CLIENT_TYPES_LEN>* clientTypes = nullptr,
+      uint16_t protoId = T_COMPACT_PROTOCOL,
+      int8_t protoVersion = -1)
+      : TVirtualProtocol<THeaderProtocol>(
+            getInOutTransportWrapper(inTrans, outTrans, clientTypes)),
+        trans_(
+            std::dynamic_pointer_cast<transport::THeaderTransport, TTransport>(
+                this->getTransport())),
+        protoId_(protoId),
+        protoVersion_(protoVersion) {
     trans_->setProtocolId(protoId);
     trans_->setProtocolVersion(protoVersion);
     resetProtocol();
@@ -79,19 +82,19 @@ class THeaderProtocol
    * The caller is responsible for ensuring that the transport remains valid
    * for the lifetime of the protocol.
    */
-  THeaderProtocol(TTransport* trans,
-                  std::bitset<CLIENT_TYPES_LEN>* clientTypes,
-                  uint16_t protoId = T_COMPACT_PROTOCOL,
-                  int8_t protoVersion = -1) :
-      TVirtualProtocol<THeaderProtocol>(
-          getTransportWrapper(
-              std::shared_ptr<TTransport>(trans, [](TTransport*) {}),
-              clientTypes))
-      , trans_(std::dynamic_pointer_cast<transport::THeaderTransport,
-                                         TTransport>(this->getTransport()))
-      , protoId_(protoId)
-      , protoVersion_(protoVersion)
-  {
+  THeaderProtocol(
+      TTransport* trans,
+      std::bitset<CLIENT_TYPES_LEN>* clientTypes,
+      uint16_t protoId = T_COMPACT_PROTOCOL,
+      int8_t protoVersion = -1)
+      : TVirtualProtocol<THeaderProtocol>(getTransportWrapper(
+            std::shared_ptr<TTransport>(trans, [](TTransport*) {}),
+            clientTypes)),
+        trans_(
+            std::dynamic_pointer_cast<transport::THeaderTransport, TTransport>(
+                this->getTransport())),
+        protoId_(protoId),
+        protoVersion_(protoVersion) {
     trans_->setProtocolId(protoId);
     trans_->setProtocolVersion(protoVersion);
     resetProtocol();
@@ -167,28 +170,28 @@ class THeaderProtocol
    * Writing functions.
    */
 
-  /*ol*/ uint32_t writeMessageBegin(const std::string& name,
-                                    const TMessageType messageType,
-                                    const int32_t seqId);
+  /*ol*/ uint32_t writeMessageBegin(
+      const std::string& name,
+      const TMessageType messageType,
+      const int32_t seqId);
 
   /*ol*/ uint32_t writeMessageEnd();
-
 
   uint32_t writeStructBegin(const char* name);
 
   uint32_t writeStructEnd();
 
-  uint32_t writeFieldBegin(const char* name,
-                           const TType fieldType,
-                           const int16_t fieldId);
+  uint32_t writeFieldBegin(
+      const char* name,
+      const TType fieldType,
+      const int16_t fieldId);
 
   uint32_t writeFieldEnd();
 
   uint32_t writeFieldStop();
 
-  uint32_t writeMapBegin(const TType keyType,
-                         const TType valType,
-                         const uint32_t size);
+  uint32_t
+  writeMapBegin(const TType keyType, const TType valType, const uint32_t size);
 
   uint32_t writeMapEnd();
 
@@ -214,12 +217,12 @@ class THeaderProtocol
 
   uint32_t writeFloat(const float flt);
 
-  template<typename StrType>
+  template <typename StrType>
   uint32_t writeString(const StrType& str) {
     return proto_->writeString(str);
   }
 
-  template<typename StrType>
+  template <typename StrType>
   uint32_t writeBinary(const StrType& str) {
     return proto_->writeBinary(str);
   }
@@ -228,10 +231,10 @@ class THeaderProtocol
    * Reading functions
    */
 
-
-  /*ol*/ uint32_t readMessageBegin(std::string& name,
-                                   TMessageType& messageType,
-                                   int32_t& seqId);
+  /*ol*/ uint32_t readMessageBegin(
+      std::string& name,
+      TMessageType& messageType,
+      int32_t& seqId);
 
   /*ol*/ uint32_t readMessageEnd();
 
@@ -239,16 +242,16 @@ class THeaderProtocol
 
   uint32_t readStructEnd();
 
-  uint32_t readFieldBegin(std::string& name,
-                          TType& fieldType,
-                          int16_t& fieldId);
+  uint32_t
+  readFieldBegin(std::string& name, TType& fieldType, int16_t& fieldId);
 
   uint32_t readFieldEnd();
 
-  uint32_t readMapBegin(TType& keyType,
-                        TType& valType,
-                        uint32_t& size,
-                        bool& sizeUnknown);
+  uint32_t readMapBegin(
+      TType& keyType,
+      TType& valType,
+      uint32_t& size,
+      bool& sizeUnknown);
 
   uint32_t readMapEnd();
 
@@ -262,7 +265,7 @@ class THeaderProtocol
 
   uint32_t readBool(bool& value);
   // Provide the default readBool() implementation for std::vector<bool>
-  using TVirtualProtocol< THeaderProtocol >::readBool;
+  using TVirtualProtocol<THeaderProtocol>::readBool;
 
   uint32_t readByte(int8_t& byte);
 
@@ -276,40 +279,38 @@ class THeaderProtocol
 
   uint32_t readFloat(float& flt);
 
-  template<typename StrType>
+  template <typename StrType>
   uint32_t readString(StrType& str) {
     return proto_->readString(str);
   }
 
-  template<typename StrType>
+  template <typename StrType>
   uint32_t readBinary(StrType& binary) {
     return proto_->readBinary(binary);
   }
 
  protected:
   std::shared_ptr<TTransport> getTransportWrapper(
-    const std::shared_ptr<TTransport>& trans,
-    std::bitset<CLIENT_TYPES_LEN>* clientTypes) {
+      const std::shared_ptr<TTransport>& trans,
+      std::bitset<CLIENT_TYPES_LEN>* clientTypes) {
     if (dynamic_cast<transport::THeaderTransport*>(trans.get()) != nullptr) {
       return trans;
     } else {
       return std::shared_ptr<transport::THeaderTransport>(
-        new transport::THeaderTransport(trans, clientTypes));
+          new transport::THeaderTransport(trans, clientTypes));
     }
   }
 
   std::shared_ptr<TTransport> getInOutTransportWrapper(
-    const std::shared_ptr<TTransport>& inTrans,
-    const std::shared_ptr<TTransport>& outTrans,
-    std::bitset<CLIENT_TYPES_LEN>* clientTypes) {
-    assert(dynamic_cast<transport::THeaderTransport*>(inTrans.get()) ==
-              nullptr &&
-           dynamic_cast<transport::THeaderTransport*>(outTrans.get()) ==
-              nullptr);
+      const std::shared_ptr<TTransport>& inTrans,
+      const std::shared_ptr<TTransport>& outTrans,
+      std::bitset<CLIENT_TYPES_LEN>* clientTypes) {
+    assert(
+        dynamic_cast<transport::THeaderTransport*>(inTrans.get()) == nullptr &&
+        dynamic_cast<transport::THeaderTransport*>(outTrans.get()) == nullptr);
 
     return std::shared_ptr<transport::THeaderTransport>(
-      new transport::THeaderTransport(inTrans, outTrans, clientTypes)
-    );
+        new transport::THeaderTransport(inTrans, outTrans, clientTypes));
   }
 
   std::shared_ptr<transport::THeaderTransport> trans_;
@@ -324,9 +325,10 @@ class THeaderProtocol
  */
 class THeaderProtocolFactory : public TDuplexProtocolFactory {
  public:
-  explicit THeaderProtocolFactory(uint16_t protoId = T_COMPACT_PROTOCOL,
-                                  int8_t protoVersion = -1,
-                                  bool disableIdentity = false) {
+  explicit THeaderProtocolFactory(
+      uint16_t protoId = T_COMPACT_PROTOCOL,
+      int8_t protoVersion = -1,
+      bool disableIdentity = false) {
     protoId_ = protoId;
     protoVersion_ = protoVersion;
     setIdentity_ = disableIdentity;
@@ -351,12 +353,10 @@ class THeaderProtocolFactory : public TDuplexProtocolFactory {
 
   virtual TProtocolPair getProtocol(
       std::shared_ptr<transport::TTransport> trans) {
-    THeaderProtocol* prot = new THeaderProtocol(trans,
-                                                &clientTypes_,
-                                                protoId_,
-                                                protoVersion_);
+    THeaderProtocol* prot =
+        new THeaderProtocol(trans, &clientTypes_, protoId_, protoVersion_);
 
-    if(setIdentity_) {
+    if (setIdentity_) {
       prot->setIdentity(identity_);
     }
 
@@ -369,13 +369,14 @@ class THeaderProtocolFactory : public TDuplexProtocolFactory {
   }
 
   TProtocolPair getProtocol(transport::TTransportPair transports) override {
-    THeaderProtocol* prot = new THeaderProtocol(transports.first,
-                                                transports.second,
-                                                &clientTypes_,
-                                                protoId_,
-                                                protoVersion_);
+    THeaderProtocol* prot = new THeaderProtocol(
+        transports.first,
+        transports.second,
+        &clientTypes_,
+        protoId_,
+        protoVersion_);
 
-    if(setIdentity_) {
+    if (setIdentity_) {
       prot->setIdentity(identity_);
     }
 
@@ -399,6 +400,8 @@ class THeaderProtocolFactory : public TDuplexProtocolFactory {
   std::string identity_;
 };
 
-}}} // apache::thrift::protocol
+} // namespace protocol
+} // namespace thrift
+} // namespace apache
 
 #endif // #ifndef THRIFT_PROTOCOL_THEADERPROTOCOL_H_

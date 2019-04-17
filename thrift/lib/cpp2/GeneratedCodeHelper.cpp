@@ -25,7 +25,8 @@ using namespace apache::thrift::async;
 using namespace apache::thrift::protocol;
 using namespace apache::thrift::transport;
 
-namespace apache { namespace thrift {
+namespace apache {
+namespace thrift {
 
 namespace detail {
 namespace ac {
@@ -36,7 +37,8 @@ namespace ac {
 } // namespace ac
 } // namespace detail
 
-namespace detail { namespace ap {
+namespace detail {
+namespace ap {
 
 template <typename ProtocolReader, typename ProtocolWriter>
 IOBufQueue helper<ProtocolReader, ProtocolWriter>::write_exn(
@@ -94,8 +96,7 @@ template struct helper<BinaryProtocolReader, BinaryProtocolWriter>;
 template struct helper<CompactProtocolReader, CompactProtocolWriter>;
 
 template <class ProtocolReader>
-static
-bool deserializeMessageBegin(
+static bool deserializeMessageBegin(
     std::unique_ptr<ResponseChannelRequest>& req,
     folly::IOBuf* buf,
     Cpp2RequestContext* ctx,
@@ -112,8 +113,7 @@ bool deserializeMessageBegin(
     ctx->setMessageBeginSize(iprot.getCurrentPosition().getCurrentPosition());
   } catch (const TException& ex) {
     LOG(ERROR) << "received invalid message from client: " << ex.what();
-    auto type =
-        TApplicationException::TApplicationExceptionType::UNKNOWN;
+    auto type = TApplicationException::TApplicationExceptionType::UNKNOWN;
     const char* msg = "invalid message from client";
     h::process_exn(fn, type, msg, std::move(req), ctx, eb, protoSeqId);
     return false;
@@ -140,11 +140,9 @@ bool deserializeMessageBegin(
     folly::EventBase* eb) {
   switch (protType) {
     case protocol::T_BINARY_PROTOCOL:
-      return deserializeMessageBegin<BinaryProtocolReader>(
-          req, buf, ctx, eb);
+      return deserializeMessageBegin<BinaryProtocolReader>(req, buf, ctx, eb);
     case protocol::T_COMPACT_PROTOCOL:
-      return deserializeMessageBegin<CompactProtocolReader>(
-          req, buf, ctx, eb);
+      return deserializeMessageBegin<CompactProtocolReader>(req, buf, ctx, eb);
     default:
       LOG(ERROR) << "invalid protType: " << protType;
       return false;
@@ -181,8 +179,7 @@ std::string deserializeMethodName(
 }
 
 template <class ProtocolReader>
-static
-Optional<string> get_cache_key(
+static Optional<string> get_cache_key(
     const IOBuf* buf,
     const unordered_map<string, int16_t>& cache_key_map) {
   string fname;
@@ -215,16 +212,16 @@ Optional<string> get_cache_key(
       iprot.readFieldEnd();
     }
     return none;
-  } catch( const exception& e) {
+  } catch (const exception& e) {
     LOG(ERROR) << "Caught an exception parsing buffer:" << e.what();
     return none;
   }
 }
 
 Optional<string> get_cache_key(
-  const IOBuf* buf,
-  const PROTOCOL_TYPES protType,
-  const unordered_map<string, int16_t>& cache_key_map) {
+    const IOBuf* buf,
+    const PROTOCOL_TYPES protType,
+    const unordered_map<string, int16_t>& cache_key_map) {
   switch (protType) {
     case T_BINARY_PROTOCOL:
       return get_cache_key<BinaryProtocolReader>(buf, cache_key_map);
@@ -236,8 +233,7 @@ Optional<string> get_cache_key(
 }
 
 template <class ProtocolReader>
-static
-bool is_oneway_method(
+static bool is_oneway_method(
     const IOBuf* buf,
     const unordered_set<string>& oneways) {
   string fname;
@@ -249,7 +245,7 @@ bool is_oneway_method(
     iprot.readMessageBegin(fname, mtype, protoSeqId);
     auto it = oneways.find(fname);
     return it != oneways.end();
-  } catch(const TException& ex) {
+  } catch (const TException& ex) {
     LOG(ERROR) << "received invalid message from client: " << ex.what();
     return false;
   }
@@ -271,7 +267,8 @@ bool is_oneway_method(
   }
 }
 
-}}
+} // namespace ap
+} // namespace detail
 
 namespace detail {
 namespace si {
@@ -279,7 +276,8 @@ namespace si {
   throw TApplicationException(
       folly::sformat("Function {} is unimplemented", name));
 }
-}
-}
+} // namespace si
+} // namespace detail
 
-}}
+} // namespace thrift
+} // namespace apache
