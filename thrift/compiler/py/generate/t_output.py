@@ -181,10 +181,19 @@ class DummyOutput(Output):
     def __init__(self):
         pass
 
+    def __exit__(self, type, value, traceback):
+        pass
+
     def _write(self, lines):
         pass
 
     def _write_line_contents_impl(self, line):
+        pass
+
+    def indent(self, amount):
+        pass
+
+    def unindent(self, amount):
         pass
 
     def force_newline(self):

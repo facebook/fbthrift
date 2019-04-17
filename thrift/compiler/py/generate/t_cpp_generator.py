@@ -43,6 +43,7 @@ from thrift_compiler.generate.t_cpp_context import (
 )
 from thrift_compiler.generate.t_output_aggregator import get_global_scope
 from thrift_compiler.generate.t_output_aggregator import out
+from thrift_compiler.generate.t_output import DummyOutput
 from thrift_compiler.generate.t_output import IndentedOutput
 
 # Same as map.get, but works for almost-dictionary-like types
@@ -1097,10 +1098,13 @@ class CppGenerator(t_generator.Generator):
     # FATAL REFLECTION CODE - end
     # ==========================================================================
 
-    def _make_context(self, filename):
+    def _make_context(self, filename, output="actual"):
         'Convenience method to get the context and outputs for some file pair'
         # open files and instantiate outputs
-        output_h = self._write_to(filename + '.h')
+        if output == "actual":
+            output_h = self._write_to(filename + '.h')
+        else:
+            output_h = DummyOutput()
 
         header_path = self._with_include_prefix(self._program, filename)
 
