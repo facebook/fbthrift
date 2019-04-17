@@ -171,7 +171,6 @@ class mstch_cpp2_enum : public mstch_enum {
             {"enum:cpp_enum_type", &mstch_cpp2_enum::cpp_enum_type},
             {"enum:cpp_declare_bitwise_ops",
              &mstch_cpp2_enum::cpp_declare_bitwise_ops},
-            {"enum:struct_list", &mstch_cpp2_enum::struct_list},
             {"enum:has_zero", &mstch_cpp2_enum::has_zero},
         });
   }
@@ -234,15 +233,6 @@ class mstch_cpp2_enum : public mstch_enum {
       return enm_->annotations_.at("cpp2.declare_bitwise_ops");
     }
     return std::string();
-  }
-  mstch::node struct_list() {
-    mstch::array a;
-    for (const auto* strct : enm_->get_program()->get_objects()) {
-      mstch::map m;
-      m.emplace("struct_name", strct->get_name());
-      a.push_back(m);
-    }
-    return a;
   }
   mstch::node has_zero() {
     auto* enm_value = enm_->find_value(0);
@@ -562,7 +552,6 @@ class mstch_cpp2_struct : public mstch_struct {
              &mstch_cpp2_struct::cpp_noexcept_move_ctor},
             {"struct:virtual", &mstch_cpp2_struct::cpp_virtual},
             {"struct:message", &mstch_cpp2_struct::message},
-            {"struct:struct_list", &mstch_cpp2_struct::struct_list},
             {"struct:isset_fields?", &mstch_cpp2_struct::has_isset_fields},
             {"struct:isset_fields", &mstch_cpp2_struct::isset_fields},
             {"struct:optionals?", &mstch_cpp2_struct::optionals},
@@ -698,15 +687,6 @@ class mstch_cpp2_struct : public mstch_struct {
       return strct_->annotations_.at("message");
     }
     return std::string();
-  }
-  mstch::node struct_list() {
-    mstch::array a;
-    for (const auto* strct : strct_->get_program()->get_objects()) {
-      mstch::map m;
-      m.emplace("struct_name", strct->get_name());
-      a.push_back(m);
-    }
-    return a;
   }
   mstch::node has_isset_fields() {
     if (cache_->parsed_options_.count("optionals") != 0) {
