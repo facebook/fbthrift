@@ -6,7 +6,7 @@
  */
 #pragma once
 
-#include  "thrift/compiler/test/fixtures/types/gen-cpp2/include_fatal_types.h"
+#include "thrift/compiler/test/fixtures/types/gen-cpp2/include_fatal_types.h"
 
 #include "thrift/compiler/test/fixtures/types/gen-cpp2/module_fatal_enum.h"
 #include "thrift/compiler/test/fixtures/types/gen-cpp2/module_fatal_union.h"
