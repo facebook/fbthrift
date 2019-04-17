@@ -2624,105 +2624,43 @@ class annotated_test_cpp2_cpp_reflection_module__struct_unique_annotations {
       using map = ::fatal::list<
         ::apache::thrift::annotation<
           keys::m_b_false,
-          values::m_b_false,
-          ::std::false_type
+          values::m_b_false
         >,
         ::apache::thrift::annotation<
           keys::m_b_true,
-          values::m_b_true,
-          ::std::true_type
+          values::m_b_true
         >,
         ::apache::thrift::annotation<
           keys::m_int,
-          values::m_int,
-          ::std::integral_constant< ::std::uintmax_t, 10>
+          values::m_int
         >,
         ::apache::thrift::annotation<
           keys::m_int_list,
-          values::m_int_list,
-          ::fatal::list<
-            ::std::integral_constant< ::std::intmax_t, -1>,
-            ::std::integral_constant< ::std::uintmax_t, 2>,
-            ::std::integral_constant< ::std::uintmax_t, 3>
-          >
+          values::m_int_list
         >,
         ::apache::thrift::annotation<
           keys::m_int_map,
-          values::m_int_map,
-          ::fatal::list<
-            ::fatal::pair<
-              ::fatal::sequence<char, 'a'>,
-              ::std::integral_constant< ::std::uintmax_t, 1>
-            >,
-            ::fatal::pair<
-              ::fatal::sequence<char, 'b'>,
-              ::std::integral_constant< ::std::intmax_t, -2>
-            >,
-            ::fatal::pair<
-              ::fatal::sequence<char, 'c'>,
-              ::std::integral_constant< ::std::intmax_t, -3>
-            >
-          >
+          values::m_int_map
         >,
         ::apache::thrift::annotation<
           keys::m_mixed_list,
-          values::m_mixed_list,
-          ::fatal::list<
-            ::fatal::sequence<char, 'a'>,
-            ::std::integral_constant< ::std::uintmax_t, 1>,
-            ::fatal::sequence<char, 'b'>,
-            ::std::integral_constant< ::std::uintmax_t, 2>
-          >
+          values::m_mixed_list
         >,
         ::apache::thrift::annotation<
           keys::m_mixed_map,
-          values::m_mixed_map,
-          ::fatal::list<
-            ::fatal::pair<
-              ::fatal::sequence<char, 'a'>,
-              ::std::integral_constant< ::std::intmax_t, -2>
-            >,
-            ::fatal::pair<
-              ::fatal::sequence<char, 'b'>,
-              ::fatal::sequence<char, 'B'>
-            >,
-            ::fatal::pair<
-              ::fatal::sequence<char, 'c'>,
-              ::std::integral_constant< ::std::uintmax_t, 3>
-            >
-          >
+          values::m_mixed_map
         >,
         ::apache::thrift::annotation<
           keys::m_str_list,
-          values::m_str_list,
-          ::fatal::list<
-            ::fatal::sequence<char, 'a'>,
-            ::fatal::sequence<char, 'b'>,
-            ::fatal::sequence<char, 'c'>
-          >
+          values::m_str_list
         >,
         ::apache::thrift::annotation<
           keys::m_str_map,
-          values::m_str_map,
-          ::fatal::list<
-            ::fatal::pair<
-              ::fatal::sequence<char, 'a'>,
-              ::fatal::sequence<char, 'A'>
-            >,
-            ::fatal::pair<
-              ::fatal::sequence<char, 'b'>,
-              ::fatal::sequence<char, 'B'>
-            >,
-            ::fatal::pair<
-              ::fatal::sequence<char, 'c'>,
-              ::fatal::sequence<char, 'C'>
-            >
-          >
+          values::m_str_map
         >,
         ::apache::thrift::annotation<
           keys::m_string,
-          values::m_string,
-          ::fatal::sequence<char, 'h', 'e', 'l', 'l', 'o'>
+          values::m_string
         >
       >;
     };
@@ -2763,105 +2701,43 @@ class annotated_test_cpp2_cpp_reflection_module__struct_unique_annotations {
     using map = ::fatal::list<
       ::apache::thrift::annotation<
         keys::s_b_false,
-        values::s_b_false,
-        ::std::false_type
+        values::s_b_false
       >,
       ::apache::thrift::annotation<
         keys::s_b_true,
-        values::s_b_true,
-        ::std::true_type
+        values::s_b_true
       >,
       ::apache::thrift::annotation<
         keys::s_int,
-        values::s_int,
-        ::std::integral_constant< ::std::uintmax_t, 10>
+        values::s_int
       >,
       ::apache::thrift::annotation<
         keys::s_int_list,
-        values::s_int_list,
-        ::fatal::list<
-          ::std::integral_constant< ::std::intmax_t, -1>,
-          ::std::integral_constant< ::std::uintmax_t, 2>,
-          ::std::integral_constant< ::std::uintmax_t, 3>
-        >
+        values::s_int_list
       >,
       ::apache::thrift::annotation<
         keys::s_int_map,
-        values::s_int_map,
-        ::fatal::list<
-          ::fatal::pair<
-            ::fatal::sequence<char, 'a'>,
-            ::std::integral_constant< ::std::uintmax_t, 1>
-          >,
-          ::fatal::pair<
-            ::fatal::sequence<char, 'b'>,
-            ::std::integral_constant< ::std::intmax_t, -2>
-          >,
-          ::fatal::pair<
-            ::fatal::sequence<char, 'c'>,
-            ::std::integral_constant< ::std::intmax_t, -3>
-          >
-        >
+        values::s_int_map
       >,
       ::apache::thrift::annotation<
         keys::s_mixed_list,
-        values::s_mixed_list,
-        ::fatal::list<
-          ::fatal::sequence<char, 'a'>,
-          ::std::integral_constant< ::std::uintmax_t, 1>,
-          ::fatal::sequence<char, 'b'>,
-          ::std::integral_constant< ::std::uintmax_t, 2>
-        >
+        values::s_mixed_list
       >,
       ::apache::thrift::annotation<
         keys::s_mixed_map,
-        values::s_mixed_map,
-        ::fatal::list<
-          ::fatal::pair<
-            ::fatal::sequence<char, 'a'>,
-            ::std::integral_constant< ::std::intmax_t, -2>
-          >,
-          ::fatal::pair<
-            ::fatal::sequence<char, 'b'>,
-            ::fatal::sequence<char, 'B'>
-          >,
-          ::fatal::pair<
-            ::fatal::sequence<char, 'c'>,
-            ::std::integral_constant< ::std::uintmax_t, 3>
-          >
-        >
+        values::s_mixed_map
       >,
       ::apache::thrift::annotation<
         keys::s_str_list,
-        values::s_str_list,
-        ::fatal::list<
-          ::fatal::sequence<char, 'a'>,
-          ::fatal::sequence<char, 'b'>,
-          ::fatal::sequence<char, 'c'>
-        >
+        values::s_str_list
       >,
       ::apache::thrift::annotation<
         keys::s_str_map,
-        values::s_str_map,
-        ::fatal::list<
-          ::fatal::pair<
-            ::fatal::sequence<char, 'a'>,
-            ::fatal::sequence<char, 'A'>
-          >,
-          ::fatal::pair<
-            ::fatal::sequence<char, 'b'>,
-            ::fatal::sequence<char, 'B'>
-          >,
-          ::fatal::pair<
-            ::fatal::sequence<char, 'c'>,
-            ::fatal::sequence<char, 'C'>
-          >
-        >
+        values::s_str_map
       >,
       ::apache::thrift::annotation<
         keys::s_string,
-        values::s_string,
-        ::fatal::sequence<char, 'h', 'e', 'l', 'l', 'o'>
+        values::s_string
       >
     >;
   };

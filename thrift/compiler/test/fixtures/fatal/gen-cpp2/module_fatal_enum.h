@@ -276,21 +276,7 @@ struct enum3_enum_traits {
         >,
         ::apache::thrift::annotation<
           keys::field_structured_annotation,
-          values::field_structured_annotation,
-          ::fatal::list<
-            ::fatal::pair<
-              ::fatal::sequence<char, 'a'>,
-              ::fatal::sequence<char, 'f', 'o', 'o'>
-            >,
-            ::fatal::pair<
-              ::fatal::sequence<char, 'b'>,
-              ::std::integral_constant< ::std::uintmax_t, 567>
-            >,
-            ::fatal::pair<
-              ::fatal::sequence<char, 'c'>,
-              ::std::true_type
-            >
-          >
+          values::field_structured_annotation
         >
       >;
     };

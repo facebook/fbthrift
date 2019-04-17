@@ -127,8 +127,7 @@ struct has_bitwise_ops_enum_traits {
     using map = ::fatal::list<
       ::apache::thrift::annotation<
         keys::cpp_declare_bitwise_ops,
-        values::cpp_declare_bitwise_ops,
-        ::std::integral_constant< ::std::uintmax_t, 1>
+        values::cpp_declare_bitwise_ops
       >
     >;
   };
@@ -219,8 +218,7 @@ struct is_unscoped_enum_traits {
     using map = ::fatal::list<
       ::apache::thrift::annotation<
         keys::cpp_deprecated_enum_unscoped,
-        values::cpp_deprecated_enum_unscoped,
-        ::std::integral_constant< ::std::uintmax_t, 1>
+        values::cpp_deprecated_enum_unscoped
       >
     >;
   };

@@ -230,13 +230,11 @@ class decorated_struct_apache_thrift_fixtures_types_module__struct_unique_annota
     using map = ::fatal::list<
       ::apache::thrift::annotation<
         keys::cpp_declare_equal_to,
-        values::cpp_declare_equal_to,
-        ::std::integral_constant< ::std::uintmax_t, 1>
+        values::cpp_declare_equal_to
       >,
       ::apache::thrift::annotation<
         keys::cpp_declare_hash,
-        values::cpp_declare_hash,
-        ::std::integral_constant< ::std::uintmax_t, 1>
+        values::cpp_declare_hash
       >
     >;
   };
@@ -511,8 +509,7 @@ class VirtualStruct_apache_thrift_fixtures_types_module__struct_unique_annotatio
     using map = ::fatal::list<
       ::apache::thrift::annotation<
         keys::cpp_virtual,
-        values::cpp_virtual,
-        ::std::integral_constant< ::std::uintmax_t, 1>
+        values::cpp_virtual
       >
     >;
   };
@@ -906,8 +903,7 @@ class MinPadding_apache_thrift_fixtures_types_module__struct_unique_annotations 
     using map = ::fatal::list<
       ::apache::thrift::annotation<
         keys::cpp_minimize_padding,
-        values::cpp_minimize_padding,
-        ::std::integral_constant< ::std::uintmax_t, 1>
+        values::cpp_minimize_padding
       >
     >;
   };
@@ -1031,8 +1027,7 @@ class MyStruct_apache_thrift_fixtures_types_module__struct_unique_annotations {
     using map = ::fatal::list<
       ::apache::thrift::annotation<
         keys::cpp2_noncomparable,
-        values::cpp2_noncomparable,
-        ::std::integral_constant< ::std::uintmax_t, 1>
+        values::cpp2_noncomparable
       >
     >;
   };
@@ -1110,8 +1105,7 @@ class MyDataItem_apache_thrift_fixtures_types_module__struct_unique_annotations 
     using map = ::fatal::list<
       ::apache::thrift::annotation<
         keys::cpp2_noncomparable,
-        values::cpp2_noncomparable,
-        ::std::integral_constant< ::std::uintmax_t, 1>
+        values::cpp2_noncomparable
       >
     >;
   };
