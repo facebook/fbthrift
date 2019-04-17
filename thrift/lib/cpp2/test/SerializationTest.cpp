@@ -516,3 +516,38 @@ TEST(SerializationTest, UnsignedIntMap) {
 
   EXPECT_EQ(out, s);
 }
+
+template <class Serializer, class ProtocolWriter>
+void testSerializedSizeZC() {
+  for (size_t testSize : {10, 5000}) {
+    TestStructIOBuf s;
+    s.buf = folly::IOBuf(IOBuf::CREATE, testSize);
+    s.i = 0x7fffffff;
+    memset(s.buf.writableTail(), 'a', testSize);
+    s.buf.append(testSize);
+    folly::IOBufQueue q;
+    Serializer::serialize(s, &q);
+    auto iob = q.move();
+    size_t realSize = iob->computeChainDataLength();
+    size_t realSizeNotIncludingTestSizedIOB = 0;
+    for (auto& p : *iob) {
+      if (p.size() != testSize) {
+        realSizeNotIncludingTestSizedIOB += p.size();
+      }
+    }
+    ProtocolWriter w;
+    EXPECT_GE(s.serializedSize(&w), realSize);
+    EXPECT_GE(s.serializedSizeZC(&w), realSizeNotIncludingTestSizedIOB);
+    if (testSize <= 4 << 10) { // Less than MAX_PACK_COPY
+      EXPECT_GE(s.serializedSizeZC(&w), realSize);
+    }
+  }
+}
+
+TEST(SerializationTest, BinarySerializedSizeZC) {
+  testSerializedSizeZC<BinarySerializer, BinaryProtocolWriter>();
+}
+
+TEST(SerializationTest, CompactSerializedSizeZC) {
+  testSerializedSizeZC<CompactSerializer, CompactProtocolWriter>();
+}

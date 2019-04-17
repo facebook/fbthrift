@@ -456,15 +456,15 @@ uint32_t CompactProtocolWriter::serializedSizeZCBinary(
 }
 
 uint32_t CompactProtocolWriter::serializedSizeZCBinary(
-    std::unique_ptr<IOBuf> const& /*v*/) const {
-  // size only
-  return serializedSizeI32();
+    std::unique_ptr<IOBuf> const& v) const {
+  return v ? serializedSizeZCBinary(*v) : 0;
 }
 
-uint32_t CompactProtocolWriter::serializedSizeZCBinary(
-    IOBuf const& /*v*/) const {
-  // size only
-  return serializedSizeI32();
+uint32_t CompactProtocolWriter::serializedSizeZCBinary(IOBuf const& v) const {
+  size_t size = v.computeChainDataLength();
+  return (size > folly::IOBufQueue::kMaxPackCopy)
+      ? serializedSizeI32() // too big to pack: size only
+      : size + serializedSizeI32(); // size + packed data
 }
 
 /**

@@ -110,9 +110,16 @@ class BinaryProtocolWriter {
       const std::unique_ptr<folly::IOBuf>& data);
 
   /**
-   * Functions that return the serialized size
+   * Functions that return the [estimated] serialized size
+   * Notes:
+   * * Serialized size estimates for Binary protocol are generally accurate,
+   *   but this is not the case for other protocols, e.g. Compact.
+   *   Don't use these values as more than an estimate.
+   *
+   * * ZC versions are the preallocated estimate if any IOBufs are shared (i.e.
+   *   there are IOBuf fields, and their sizes aren't too small to be packed),
+   *   and won't count in the ZC estimate.
    */
-
   inline uint32_t serializedMessageSize(const std::string& name) const;
   inline uint32_t
   serializedFieldSize(const char* name, TType fieldType, int16_t fieldId) const;

@@ -170,8 +170,19 @@ class CompactProtocolWriter {
 
   /**
    * Functions that return the serialized size
+   *
+   * Notes:
+   *  * Serialized size is intended to be an upper bound, rather than an exact
+   *    value, since we don't want to unnecessarily pay varint encoding costs.
+   *    Don't use rely on these values as more than an estimate.
+   *
+   *  * ZC versions are the preallocated estimate if any IOBufs are shared (i.e.
+   *    there are IOBuf fields, and their sizes aren't too small to be packed),
+   *    and won't count in the ZC estimate.
+   *
+   *    Note that we still may not pre-allocate ideally for the IOBuf case,
+   *    since the IOBuf might be in the middle of the serialized stream.
    */
-
   inline uint32_t serializedMessageSize(const std::string& name) const;
   inline uint32_t
   serializedFieldSize(const char* name, TType fieldType, int16_t fieldId) const;

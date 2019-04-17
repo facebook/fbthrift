@@ -335,14 +335,16 @@ uint32_t BinaryProtocolWriter::serializedSizeZCBinary(
   return serializedSizeBinary(v);
 }
 uint32_t BinaryProtocolWriter::serializedSizeZCBinary(
-    std::unique_ptr<folly::IOBuf> const&) const {
-  // size only
-  return serializedSizeI32();
+    std::unique_ptr<folly::IOBuf> const& v) const {
+  return v ? serializedSizeZCBinary(*v) : 0;
 }
+
 uint32_t BinaryProtocolWriter::serializedSizeZCBinary(
-    folly::IOBuf const&) const {
-  // size only
-  return serializedSizeI32();
+    folly::IOBuf const& v) const {
+  size_t size = v.computeChainDataLength();
+  return (size > folly::IOBufQueue::kMaxPackCopy)
+      ? serializedSizeI32() // too big to pack: size only
+      : size + serializedSizeI32(); // size + packed data
 }
 
 uint32_t BinaryProtocolWriter::serializedSizeSerializedData(
