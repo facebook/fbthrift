@@ -144,6 +144,7 @@ class t_mstch_cpp2_generator : public t_mstch_generator {
 
  private:
   void set_mstch_generators();
+  void generate_reflection(t_program const* program);
   void generate_constants(t_program const* program);
   void generate_structs(t_program const* program);
   void generate_service(t_service const* service);
@@ -1393,6 +1394,10 @@ void t_mstch_cpp2_generator::generate_program() {
   auto const* program = get_program();
   set_mstch_generators();
 
+  if (cache_->parsed_options_.count("reflection")) {
+    generate_reflection(program);
+  }
+
   generate_structs(program);
   generate_constants(program);
   for (const auto* service : program->get_services()) {
@@ -1430,6 +1435,18 @@ void t_mstch_cpp2_generator::generate_constants(t_program const* program) {
       cache_->programs_[id], "module_constants.h", name + "_constants.h");
   render_to_file(
       cache_->programs_[id], "module_constants.cpp", name + "_constants.cpp");
+}
+
+void t_mstch_cpp2_generator::generate_reflection(t_program const* program) {
+  auto name = program->get_name();
+  const auto& id = program->get_path();
+  if (!cache_->programs_.count(id)) {
+    cache_->programs_[id] =
+        generators_->program_generator_->generate(program, generators_, cache_);
+  }
+
+  render_to_file(
+      cache_->programs_[id], "module_fatal_types.h", name + "_fatal_types.h");
 }
 
 void t_mstch_cpp2_generator::generate_structs(t_program const* program) {
