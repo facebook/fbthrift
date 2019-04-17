@@ -6,8 +6,8 @@
  */
 #pragma once
 
-#include  "thrift/compiler/test/fixtures/fatal/gen-cpp2/reflection_dep_B_fatal_all.h"
-#include  "thrift/compiler/test/fixtures/fatal/gen-cpp2/reflection_dep_C_fatal_all.h"
+#include "thrift/compiler/test/fixtures/fatal/gen-cpp2/reflection_dep_B_fatal_all.h"
+#include "thrift/compiler/test/fixtures/fatal/gen-cpp2/reflection_dep_C_fatal_all.h"
 
 #include "thrift/compiler/test/fixtures/fatal/gen-cpp2/module_types.h"
 
