@@ -254,20 +254,6 @@ class CppGenerator(t_generator.Generator):
         items['constant'] = self._generate_fatal_constant(program)
         items['service'] = self._generate_fatal_service(program)
 
-        # Combo include: all
-        with self._make_context(name + '_fatal_all') as context_cmb_all, \
-                get_global_scope(CppPrimitiveFactory, context_cmb_all) as sg:
-            for dep in self._program.includes:
-                sg('#include  "{0}_fatal_all.h"'
-                   .format(self._with_include_prefix(dep, dep.name)))
-            sg()
-            sg('#include "{0}_types.h"'.format(
-                self._with_include_prefix(self._program, name)))
-            sg()
-            for what in ['types', 'constant', 'service']:
-                sg('#include "{0}"'.format(self._with_include_prefix(
-                    self._program, name + '_fatal_' + what + '.h')))
-
         # Unique Compile-time Strings
         with sns.namespace(self.fatal_detail_ns).scope as detail:
             with detail.cls('struct {0}'.format(str_class)).scope as cstr:
