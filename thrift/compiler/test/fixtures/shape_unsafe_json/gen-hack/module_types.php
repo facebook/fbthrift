@@ -17,11 +17,20 @@ class A implements \IThriftStruct, \IThriftShapishStruct {
     1 => dict[
       'var' => 'a',
       'type' => \TType::STRING,
-      ],
-    ];
+    ],
+  ];
   public static Map<string, int> $_TFIELDMAP = Map {
     'a' => 1,
   };
+  const dict<int, dict<string, mixed>> SPEC = dict[
+    1 => dict[
+      'var' => 'a',
+      'type' => \TType::STRING,
+    ],
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'a' => 1,
+  ];
   const type TShape = shape(
     'a' => string,
     ...
@@ -71,34 +80,34 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
       'var' => 'just_an_A',
       'type' => \TType::STRUCT,
       'class' => 'A',
-      ],
+    ],
     2 => dict[
       'var' => 'set_of_i32',
       'type' => \TType::SET,
       'etype' => \TType::I32,
       'elem' => dict[
         'type' => \TType::I32,
-        ],
-        'format' => 'collection',
       ],
+      'format' => 'collection',
+    ],
     3 => dict[
       'var' => 'list_of_i32',
       'type' => \TType::LST,
       'etype' => \TType::I32,
       'elem' => dict[
         'type' => \TType::I32,
-        ],
-        'format' => 'collection',
       ],
+      'format' => 'collection',
+    ],
     4 => dict[
       'var' => 'list_of_string',
       'type' => \TType::LST,
       'etype' => \TType::STRING,
       'elem' => dict[
         'type' => \TType::STRING,
-        ],
-        'format' => 'collection',
       ],
+      'format' => 'collection',
+    ],
     5 => dict[
       'var' => 'map_of_string_to_i32',
       'type' => \TType::MAP,
@@ -109,9 +118,9 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
       ],
       'val' => dict[
         'type' => \TType::I32,
-        ],
-        'format' => 'collection',
       ],
+      'format' => 'collection',
+    ],
     6 => dict[
       'var' => 'map_of_string_to_A',
       'type' => \TType::MAP,
@@ -123,9 +132,9 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
       'val' => dict[
         'type' => \TType::STRUCT,
         'class' => 'A',
-        ],
-        'format' => 'collection',
       ],
+      'format' => 'collection',
+    ],
     7 => dict[
       'var' => 'map_of_string_to_list_of_i32',
       'type' => \TType::MAP,
@@ -139,11 +148,11 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
         'etype' => \TType::I32,
         'elem' => dict[
           'type' => \TType::I32,
-          ],
-          'format' => 'collection',
         ],
         'format' => 'collection',
       ],
+      'format' => 'collection',
+    ],
     8 => dict[
       'var' => 'map_of_string_to_list_of_A',
       'type' => \TType::MAP,
@@ -158,11 +167,11 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
         'elem' => dict[
           'type' => \TType::STRUCT,
           'class' => 'A',
-          ],
-          'format' => 'collection',
         ],
         'format' => 'collection',
       ],
+      'format' => 'collection',
+    ],
     9 => dict[
       'var' => 'map_of_string_to_set_of_i32',
       'type' => \TType::MAP,
@@ -176,11 +185,11 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
         'etype' => \TType::I32,
         'elem' => dict[
           'type' => \TType::I32,
-          ],
-          'format' => 'collection',
         ],
         'format' => 'collection',
       ],
+      'format' => 'collection',
+    ],
     10 => dict[
       'var' => 'map_of_string_to_map_of_string_to_i32',
       'type' => \TType::MAP,
@@ -198,11 +207,11 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
         ],
         'val' => dict[
           'type' => \TType::I32,
-          ],
-          'format' => 'collection',
         ],
         'format' => 'collection',
       ],
+      'format' => 'collection',
+    ],
     11 => dict[
       'var' => 'map_of_string_to_map_of_string_to_A',
       'type' => \TType::MAP,
@@ -221,11 +230,11 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
         'val' => dict[
           'type' => \TType::STRUCT,
           'class' => 'A',
-          ],
-          'format' => 'collection',
         ],
         'format' => 'collection',
       ],
+      'format' => 'collection',
+    ],
     12 => dict[
       'var' => 'list_of_set_of_i32',
       'type' => \TType::LST,
@@ -235,11 +244,11 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
         'etype' => \TType::I32,
         'elem' => dict[
           'type' => \TType::I32,
-          ],
-          'format' => 'collection',
         ],
         'format' => 'collection',
       ],
+      'format' => 'collection',
+    ],
     13 => dict[
       'var' => 'list_of_map_of_string_to_list_of_A',
       'type' => \TType::LST,
@@ -257,13 +266,13 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
           'elem' => dict[
             'type' => \TType::STRUCT,
             'class' => 'A',
-            ],
-            'format' => 'collection',
           ],
           'format' => 'collection',
         ],
         'format' => 'collection',
       ],
+      'format' => 'collection',
+    ],
     14 => dict[
       'var' => 'list_of_map_of_string_to_A',
       'type' => \TType::LST,
@@ -278,11 +287,11 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
         'val' => dict[
           'type' => \TType::STRUCT,
           'class' => 'A',
-          ],
-          'format' => 'collection',
         ],
         'format' => 'collection',
       ],
+      'format' => 'collection',
+    ],
     15 => dict[
       'var' => 'list_of_self',
       'type' => \TType::LST,
@@ -290,9 +299,9 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
       'elem' => dict[
         'type' => \TType::STRUCT,
         'class' => 'B',
-        ],
-        'format' => 'collection',
       ],
+      'format' => 'collection',
+    ],
     16 => dict[
       'var' => 'map_of_string_to_self',
       'type' => \TType::MAP,
@@ -304,41 +313,41 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
       'val' => dict[
         'type' => \TType::STRUCT,
         'class' => 'B',
-        ],
-        'format' => 'collection',
       ],
+      'format' => 'collection',
+    ],
     51 => dict[
       'var' => 'optional_just_an_A',
       'type' => \TType::STRUCT,
       'class' => 'A',
-      ],
+    ],
     52 => dict[
       'var' => 'optional_set_of_i32',
       'type' => \TType::SET,
       'etype' => \TType::I32,
       'elem' => dict[
         'type' => \TType::I32,
-        ],
-        'format' => 'collection',
       ],
+      'format' => 'collection',
+    ],
     53 => dict[
       'var' => 'optional_list_of_i32',
       'type' => \TType::LST,
       'etype' => \TType::I32,
       'elem' => dict[
         'type' => \TType::I32,
-        ],
-        'format' => 'collection',
       ],
+      'format' => 'collection',
+    ],
     54 => dict[
       'var' => 'optional_list_of_string',
       'type' => \TType::LST,
       'etype' => \TType::STRING,
       'elem' => dict[
         'type' => \TType::STRING,
-        ],
-        'format' => 'collection',
       ],
+      'format' => 'collection',
+    ],
     55 => dict[
       'var' => 'optional_map_of_string_to_i32',
       'type' => \TType::MAP,
@@ -349,9 +358,9 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
       ],
       'val' => dict[
         'type' => \TType::I32,
-        ],
-        'format' => 'collection',
       ],
+      'format' => 'collection',
+    ],
     56 => dict[
       'var' => 'optional_map_of_string_to_A',
       'type' => \TType::MAP,
@@ -363,9 +372,9 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
       'val' => dict[
         'type' => \TType::STRUCT,
         'class' => 'A',
-        ],
-        'format' => 'collection',
       ],
+      'format' => 'collection',
+    ],
     57 => dict[
       'var' => 'optional_map_of_string_to_list_of_i32',
       'type' => \TType::MAP,
@@ -379,11 +388,11 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
         'etype' => \TType::I32,
         'elem' => dict[
           'type' => \TType::I32,
-          ],
-          'format' => 'collection',
         ],
         'format' => 'collection',
       ],
+      'format' => 'collection',
+    ],
     58 => dict[
       'var' => 'optional_map_of_string_to_list_of_A',
       'type' => \TType::MAP,
@@ -398,11 +407,11 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
         'elem' => dict[
           'type' => \TType::STRUCT,
           'class' => 'A',
-          ],
-          'format' => 'collection',
         ],
         'format' => 'collection',
       ],
+      'format' => 'collection',
+    ],
     59 => dict[
       'var' => 'optional_map_of_string_to_set_of_i32',
       'type' => \TType::MAP,
@@ -416,12 +425,12 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
         'etype' => \TType::I32,
         'elem' => dict[
           'type' => \TType::I32,
-          ],
-          'format' => 'collection',
         ],
         'format' => 'collection',
       ],
-    ];
+      'format' => 'collection',
+    ],
+  ];
   public static Map<string, int> $_TFIELDMAP = Map {
     'just_an_A' => 1,
     'set_of_i32' => 2,
@@ -449,6 +458,389 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     'optional_map_of_string_to_list_of_A' => 58,
     'optional_map_of_string_to_set_of_i32' => 59,
   };
+  const dict<int, dict<string, mixed>> SPEC = dict[
+    1 => dict[
+      'var' => 'just_an_A',
+      'type' => \TType::STRUCT,
+      'class' => 'A',
+    ],
+    2 => dict[
+      'var' => 'set_of_i32',
+      'type' => \TType::SET,
+      'etype' => \TType::I32,
+      'elem' => dict[
+        'type' => \TType::I32,
+      ],
+      'format' => 'collection',
+    ],
+    3 => dict[
+      'var' => 'list_of_i32',
+      'type' => \TType::LST,
+      'etype' => \TType::I32,
+      'elem' => dict[
+        'type' => \TType::I32,
+      ],
+      'format' => 'collection',
+    ],
+    4 => dict[
+      'var' => 'list_of_string',
+      'type' => \TType::LST,
+      'etype' => \TType::STRING,
+      'elem' => dict[
+        'type' => \TType::STRING,
+      ],
+      'format' => 'collection',
+    ],
+    5 => dict[
+      'var' => 'map_of_string_to_i32',
+      'type' => \TType::MAP,
+      'ktype' => \TType::STRING,
+      'vtype' => \TType::I32,
+      'key' => dict[
+        'type' => \TType::STRING,
+      ],
+      'val' => dict[
+        'type' => \TType::I32,
+      ],
+      'format' => 'collection',
+    ],
+    6 => dict[
+      'var' => 'map_of_string_to_A',
+      'type' => \TType::MAP,
+      'ktype' => \TType::STRING,
+      'vtype' => \TType::STRUCT,
+      'key' => dict[
+        'type' => \TType::STRING,
+      ],
+      'val' => dict[
+        'type' => \TType::STRUCT,
+        'class' => 'A',
+      ],
+      'format' => 'collection',
+    ],
+    7 => dict[
+      'var' => 'map_of_string_to_list_of_i32',
+      'type' => \TType::MAP,
+      'ktype' => \TType::STRING,
+      'vtype' => \TType::LST,
+      'key' => dict[
+        'type' => \TType::STRING,
+      ],
+      'val' => dict[
+        'type' => \TType::LST,
+        'etype' => \TType::I32,
+        'elem' => dict[
+          'type' => \TType::I32,
+        ],
+        'format' => 'collection',
+      ],
+      'format' => 'collection',
+    ],
+    8 => dict[
+      'var' => 'map_of_string_to_list_of_A',
+      'type' => \TType::MAP,
+      'ktype' => \TType::STRING,
+      'vtype' => \TType::LST,
+      'key' => dict[
+        'type' => \TType::STRING,
+      ],
+      'val' => dict[
+        'type' => \TType::LST,
+        'etype' => \TType::STRUCT,
+        'elem' => dict[
+          'type' => \TType::STRUCT,
+          'class' => 'A',
+        ],
+        'format' => 'collection',
+      ],
+      'format' => 'collection',
+    ],
+    9 => dict[
+      'var' => 'map_of_string_to_set_of_i32',
+      'type' => \TType::MAP,
+      'ktype' => \TType::STRING,
+      'vtype' => \TType::SET,
+      'key' => dict[
+        'type' => \TType::STRING,
+      ],
+      'val' => dict[
+        'type' => \TType::SET,
+        'etype' => \TType::I32,
+        'elem' => dict[
+          'type' => \TType::I32,
+        ],
+        'format' => 'collection',
+      ],
+      'format' => 'collection',
+    ],
+    10 => dict[
+      'var' => 'map_of_string_to_map_of_string_to_i32',
+      'type' => \TType::MAP,
+      'ktype' => \TType::STRING,
+      'vtype' => \TType::MAP,
+      'key' => dict[
+        'type' => \TType::STRING,
+      ],
+      'val' => dict[
+        'type' => \TType::MAP,
+        'ktype' => \TType::STRING,
+        'vtype' => \TType::I32,
+        'key' => dict[
+          'type' => \TType::STRING,
+        ],
+        'val' => dict[
+          'type' => \TType::I32,
+        ],
+        'format' => 'collection',
+      ],
+      'format' => 'collection',
+    ],
+    11 => dict[
+      'var' => 'map_of_string_to_map_of_string_to_A',
+      'type' => \TType::MAP,
+      'ktype' => \TType::STRING,
+      'vtype' => \TType::MAP,
+      'key' => dict[
+        'type' => \TType::STRING,
+      ],
+      'val' => dict[
+        'type' => \TType::MAP,
+        'ktype' => \TType::STRING,
+        'vtype' => \TType::STRUCT,
+        'key' => dict[
+          'type' => \TType::STRING,
+        ],
+        'val' => dict[
+          'type' => \TType::STRUCT,
+          'class' => 'A',
+        ],
+        'format' => 'collection',
+      ],
+      'format' => 'collection',
+    ],
+    12 => dict[
+      'var' => 'list_of_set_of_i32',
+      'type' => \TType::LST,
+      'etype' => \TType::SET,
+      'elem' => dict[
+        'type' => \TType::SET,
+        'etype' => \TType::I32,
+        'elem' => dict[
+          'type' => \TType::I32,
+        ],
+        'format' => 'collection',
+      ],
+      'format' => 'collection',
+    ],
+    13 => dict[
+      'var' => 'list_of_map_of_string_to_list_of_A',
+      'type' => \TType::LST,
+      'etype' => \TType::MAP,
+      'elem' => dict[
+        'type' => \TType::MAP,
+        'ktype' => \TType::STRING,
+        'vtype' => \TType::LST,
+        'key' => dict[
+          'type' => \TType::STRING,
+        ],
+        'val' => dict[
+          'type' => \TType::LST,
+          'etype' => \TType::STRUCT,
+          'elem' => dict[
+            'type' => \TType::STRUCT,
+            'class' => 'A',
+          ],
+          'format' => 'collection',
+        ],
+        'format' => 'collection',
+      ],
+      'format' => 'collection',
+    ],
+    14 => dict[
+      'var' => 'list_of_map_of_string_to_A',
+      'type' => \TType::LST,
+      'etype' => \TType::MAP,
+      'elem' => dict[
+        'type' => \TType::MAP,
+        'ktype' => \TType::STRING,
+        'vtype' => \TType::STRUCT,
+        'key' => dict[
+          'type' => \TType::STRING,
+        ],
+        'val' => dict[
+          'type' => \TType::STRUCT,
+          'class' => 'A',
+        ],
+        'format' => 'collection',
+      ],
+      'format' => 'collection',
+    ],
+    15 => dict[
+      'var' => 'list_of_self',
+      'type' => \TType::LST,
+      'etype' => \TType::STRUCT,
+      'elem' => dict[
+        'type' => \TType::STRUCT,
+        'class' => 'B',
+      ],
+      'format' => 'collection',
+    ],
+    16 => dict[
+      'var' => 'map_of_string_to_self',
+      'type' => \TType::MAP,
+      'ktype' => \TType::STRING,
+      'vtype' => \TType::STRUCT,
+      'key' => dict[
+        'type' => \TType::STRING,
+      ],
+      'val' => dict[
+        'type' => \TType::STRUCT,
+        'class' => 'B',
+      ],
+      'format' => 'collection',
+    ],
+    51 => dict[
+      'var' => 'optional_just_an_A',
+      'type' => \TType::STRUCT,
+      'class' => 'A',
+    ],
+    52 => dict[
+      'var' => 'optional_set_of_i32',
+      'type' => \TType::SET,
+      'etype' => \TType::I32,
+      'elem' => dict[
+        'type' => \TType::I32,
+      ],
+      'format' => 'collection',
+    ],
+    53 => dict[
+      'var' => 'optional_list_of_i32',
+      'type' => \TType::LST,
+      'etype' => \TType::I32,
+      'elem' => dict[
+        'type' => \TType::I32,
+      ],
+      'format' => 'collection',
+    ],
+    54 => dict[
+      'var' => 'optional_list_of_string',
+      'type' => \TType::LST,
+      'etype' => \TType::STRING,
+      'elem' => dict[
+        'type' => \TType::STRING,
+      ],
+      'format' => 'collection',
+    ],
+    55 => dict[
+      'var' => 'optional_map_of_string_to_i32',
+      'type' => \TType::MAP,
+      'ktype' => \TType::STRING,
+      'vtype' => \TType::I32,
+      'key' => dict[
+        'type' => \TType::STRING,
+      ],
+      'val' => dict[
+        'type' => \TType::I32,
+      ],
+      'format' => 'collection',
+    ],
+    56 => dict[
+      'var' => 'optional_map_of_string_to_A',
+      'type' => \TType::MAP,
+      'ktype' => \TType::STRING,
+      'vtype' => \TType::STRUCT,
+      'key' => dict[
+        'type' => \TType::STRING,
+      ],
+      'val' => dict[
+        'type' => \TType::STRUCT,
+        'class' => 'A',
+      ],
+      'format' => 'collection',
+    ],
+    57 => dict[
+      'var' => 'optional_map_of_string_to_list_of_i32',
+      'type' => \TType::MAP,
+      'ktype' => \TType::STRING,
+      'vtype' => \TType::LST,
+      'key' => dict[
+        'type' => \TType::STRING,
+      ],
+      'val' => dict[
+        'type' => \TType::LST,
+        'etype' => \TType::I32,
+        'elem' => dict[
+          'type' => \TType::I32,
+        ],
+        'format' => 'collection',
+      ],
+      'format' => 'collection',
+    ],
+    58 => dict[
+      'var' => 'optional_map_of_string_to_list_of_A',
+      'type' => \TType::MAP,
+      'ktype' => \TType::STRING,
+      'vtype' => \TType::LST,
+      'key' => dict[
+        'type' => \TType::STRING,
+      ],
+      'val' => dict[
+        'type' => \TType::LST,
+        'etype' => \TType::STRUCT,
+        'elem' => dict[
+          'type' => \TType::STRUCT,
+          'class' => 'A',
+        ],
+        'format' => 'collection',
+      ],
+      'format' => 'collection',
+    ],
+    59 => dict[
+      'var' => 'optional_map_of_string_to_set_of_i32',
+      'type' => \TType::MAP,
+      'ktype' => \TType::STRING,
+      'vtype' => \TType::SET,
+      'key' => dict[
+        'type' => \TType::STRING,
+      ],
+      'val' => dict[
+        'type' => \TType::SET,
+        'etype' => \TType::I32,
+        'elem' => dict[
+          'type' => \TType::I32,
+        ],
+        'format' => 'collection',
+      ],
+      'format' => 'collection',
+    ],
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'just_an_A' => 1,
+    'set_of_i32' => 2,
+    'list_of_i32' => 3,
+    'list_of_string' => 4,
+    'map_of_string_to_i32' => 5,
+    'map_of_string_to_A' => 6,
+    'map_of_string_to_list_of_i32' => 7,
+    'map_of_string_to_list_of_A' => 8,
+    'map_of_string_to_set_of_i32' => 9,
+    'map_of_string_to_map_of_string_to_i32' => 10,
+    'map_of_string_to_map_of_string_to_A' => 11,
+    'list_of_set_of_i32' => 12,
+    'list_of_map_of_string_to_list_of_A' => 13,
+    'list_of_map_of_string_to_A' => 14,
+    'list_of_self' => 15,
+    'map_of_string_to_self' => 16,
+    'optional_just_an_A' => 51,
+    'optional_set_of_i32' => 52,
+    'optional_list_of_i32' => 53,
+    'optional_list_of_string' => 54,
+    'optional_map_of_string_to_i32' => 55,
+    'optional_map_of_string_to_A' => 56,
+    'optional_map_of_string_to_list_of_i32' => 57,
+    'optional_map_of_string_to_list_of_A' => 58,
+    'optional_map_of_string_to_set_of_i32' => 59,
+  ];
   const type TShape = shape(
     ?'just_an_A' => ?A::TShape,
     'set_of_i32' => dict<int, bool>,

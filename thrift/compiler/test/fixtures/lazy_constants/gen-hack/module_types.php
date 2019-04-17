@@ -39,22 +39,42 @@ class Internship implements \IThriftStruct {
     1 => dict[
       'var' => 'weeks',
       'type' => \TType::I32,
-      ],
+    ],
     2 => dict[
       'var' => 'title',
       'type' => \TType::STRING,
-      ],
+    ],
     3 => dict[
       'var' => 'employer',
       'type' => \TType::I32,
       'enum' => 'Company',
-      ],
-    ];
+    ],
+  ];
   public static Map<string, int> $_TFIELDMAP = Map {
     'weeks' => 1,
     'title' => 2,
     'employer' => 3,
   };
+  const dict<int, dict<string, mixed>> SPEC = dict[
+    1 => dict[
+      'var' => 'weeks',
+      'type' => \TType::I32,
+    ],
+    2 => dict[
+      'var' => 'title',
+      'type' => \TType::STRING,
+    ],
+    3 => dict[
+      'var' => 'employer',
+      'type' => \TType::I32,
+      'enum' => 'Company',
+    ],
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'weeks' => 1,
+    'title' => 2,
+    'employer' => 3,
+  ];
   const int STRUCTURAL_ID = 749038867953722654;
   /**
    * Original thrift field:-
@@ -104,16 +124,30 @@ class Range implements \IThriftStruct {
     1 => dict[
       'var' => 'min',
       'type' => \TType::I32,
-      ],
+    ],
     2 => dict[
       'var' => 'max',
       'type' => \TType::I32,
-      ],
-    ];
+    ],
+  ];
   public static Map<string, int> $_TFIELDMAP = Map {
     'min' => 1,
     'max' => 2,
   };
+  const dict<int, dict<string, mixed>> SPEC = dict[
+    1 => dict[
+      'var' => 'min',
+      'type' => \TType::I32,
+    ],
+    2 => dict[
+      'var' => 'max',
+      'type' => \TType::I32,
+    ],
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'min' => 1,
+    'max' => 2,
+  ];
   const int STRUCTURAL_ID = 6850388386457434767;
   /**
    * Original thrift field:-

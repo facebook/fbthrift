@@ -1284,15 +1284,38 @@ class NestedContainers_mapList_args implements \IThriftStruct, \IThriftShapishSt
         'etype' => \TType::I32,
         'elem' => dict[
           'type' => \TType::I32,
-          ],
-          'format' => 'collection',
         ],
         'format' => 'collection',
       ],
-    ];
+      'format' => 'collection',
+    ],
+  ];
   public static Map<string, int> $_TFIELDMAP = Map {
     'foo' => 1,
   };
+  const dict<int, dict<string, mixed>> SPEC = dict[
+    1 => dict[
+      'var' => 'foo',
+      'type' => \TType::MAP,
+      'ktype' => \TType::I32,
+      'vtype' => \TType::LST,
+      'key' => dict[
+        'type' => \TType::I32,
+      ],
+      'val' => dict[
+        'type' => \TType::LST,
+        'etype' => \TType::I32,
+        'elem' => dict[
+          'type' => \TType::I32,
+        ],
+        'format' => 'collection',
+      ],
+      'format' => 'collection',
+    ],
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'foo' => 1,
+  ];
   const type TShape = shape(
     'foo' => dict<int, vec<int>>,
     ...
@@ -1335,9 +1358,13 @@ class NestedContainers_mapList_result implements \IThriftStruct {
   use \ThriftSerializationTrait;
 
   public static dict<int, dict<string, mixed>> $_TSPEC = dict[
-    ];
+  ];
   public static Map<string, int> $_TFIELDMAP = Map {
   };
+  const dict<int, dict<string, mixed>> SPEC = dict[
+  ];
+  const dict<string, int> FIELDMAP = dict[
+  ];
   const int STRUCTURAL_ID = 957977401221134810;
 
   <<__Rx>>
@@ -1367,15 +1394,38 @@ class NestedContainers_mapSet_args implements \IThriftStruct, \IThriftShapishStr
         'etype' => \TType::I32,
         'elem' => dict[
           'type' => \TType::I32,
-          ],
-          'format' => 'collection',
         ],
         'format' => 'collection',
       ],
-    ];
+      'format' => 'collection',
+    ],
+  ];
   public static Map<string, int> $_TFIELDMAP = Map {
     'foo' => 1,
   };
+  const dict<int, dict<string, mixed>> SPEC = dict[
+    1 => dict[
+      'var' => 'foo',
+      'type' => \TType::MAP,
+      'ktype' => \TType::I32,
+      'vtype' => \TType::SET,
+      'key' => dict[
+        'type' => \TType::I32,
+      ],
+      'val' => dict[
+        'type' => \TType::SET,
+        'etype' => \TType::I32,
+        'elem' => dict[
+          'type' => \TType::I32,
+        ],
+        'format' => 'collection',
+      ],
+      'format' => 'collection',
+    ],
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'foo' => 1,
+  ];
   const type TShape = shape(
     'foo' => dict<int, dict<int, bool>>,
     ...
@@ -1418,9 +1468,13 @@ class NestedContainers_mapSet_result implements \IThriftStruct {
   use \ThriftSerializationTrait;
 
   public static dict<int, dict<string, mixed>> $_TSPEC = dict[
-    ];
+  ];
   public static Map<string, int> $_TFIELDMAP = Map {
   };
+  const dict<int, dict<string, mixed>> SPEC = dict[
+  ];
+  const dict<string, int> FIELDMAP = dict[
+  ];
   const int STRUCTURAL_ID = 957977401221134810;
 
   <<__Rx>>
@@ -1450,15 +1504,38 @@ class NestedContainers_listMap_args implements \IThriftStruct, \IThriftShapishSt
         ],
         'val' => dict[
           'type' => \TType::I32,
-          ],
-          'format' => 'collection',
         ],
         'format' => 'collection',
       ],
-    ];
+      'format' => 'collection',
+    ],
+  ];
   public static Map<string, int> $_TFIELDMAP = Map {
     'foo' => 1,
   };
+  const dict<int, dict<string, mixed>> SPEC = dict[
+    1 => dict[
+      'var' => 'foo',
+      'type' => \TType::LST,
+      'etype' => \TType::MAP,
+      'elem' => dict[
+        'type' => \TType::MAP,
+        'ktype' => \TType::I32,
+        'vtype' => \TType::I32,
+        'key' => dict[
+          'type' => \TType::I32,
+        ],
+        'val' => dict[
+          'type' => \TType::I32,
+        ],
+        'format' => 'collection',
+      ],
+      'format' => 'collection',
+    ],
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'foo' => 1,
+  ];
   const type TShape = shape(
     'foo' => vec<dict<int, int>>,
     ...
@@ -1501,9 +1578,13 @@ class NestedContainers_listMap_result implements \IThriftStruct {
   use \ThriftSerializationTrait;
 
   public static dict<int, dict<string, mixed>> $_TSPEC = dict[
-    ];
+  ];
   public static Map<string, int> $_TFIELDMAP = Map {
   };
+  const dict<int, dict<string, mixed>> SPEC = dict[
+  ];
+  const dict<string, int> FIELDMAP = dict[
+  ];
   const int STRUCTURAL_ID = 957977401221134810;
 
   <<__Rx>>
@@ -1529,15 +1610,34 @@ class NestedContainers_listSet_args implements \IThriftStruct, \IThriftShapishSt
         'etype' => \TType::I32,
         'elem' => dict[
           'type' => \TType::I32,
-          ],
-          'format' => 'collection',
         ],
         'format' => 'collection',
       ],
-    ];
+      'format' => 'collection',
+    ],
+  ];
   public static Map<string, int> $_TFIELDMAP = Map {
     'foo' => 1,
   };
+  const dict<int, dict<string, mixed>> SPEC = dict[
+    1 => dict[
+      'var' => 'foo',
+      'type' => \TType::LST,
+      'etype' => \TType::SET,
+      'elem' => dict[
+        'type' => \TType::SET,
+        'etype' => \TType::I32,
+        'elem' => dict[
+          'type' => \TType::I32,
+        ],
+        'format' => 'collection',
+      ],
+      'format' => 'collection',
+    ],
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'foo' => 1,
+  ];
   const type TShape = shape(
     'foo' => vec<dict<int, bool>>,
     ...
@@ -1580,9 +1680,13 @@ class NestedContainers_listSet_result implements \IThriftStruct {
   use \ThriftSerializationTrait;
 
   public static dict<int, dict<string, mixed>> $_TSPEC = dict[
-    ];
+  ];
   public static Map<string, int> $_TFIELDMAP = Map {
   };
+  const dict<int, dict<string, mixed>> SPEC = dict[
+  ];
+  const dict<string, int> FIELDMAP = dict[
+  ];
   const int STRUCTURAL_ID = 957977401221134810;
 
   <<__Rx>>
@@ -1625,8 +1729,6 @@ class NestedContainers_turtles_args implements \IThriftStruct, \IThriftShapishSt
               'etype' => \TType::I32,
               'elem' => dict[
                 'type' => \TType::I32,
-                ],
-                'format' => 'collection',
               ],
               'format' => 'collection',
             ],
@@ -1636,10 +1738,54 @@ class NestedContainers_turtles_args implements \IThriftStruct, \IThriftShapishSt
         ],
         'format' => 'collection',
       ],
-    ];
+      'format' => 'collection',
+    ],
+  ];
   public static Map<string, int> $_TFIELDMAP = Map {
     'foo' => 1,
   };
+  const dict<int, dict<string, mixed>> SPEC = dict[
+    1 => dict[
+      'var' => 'foo',
+      'type' => \TType::LST,
+      'etype' => \TType::LST,
+      'elem' => dict[
+        'type' => \TType::LST,
+        'etype' => \TType::MAP,
+        'elem' => dict[
+          'type' => \TType::MAP,
+          'ktype' => \TType::I32,
+          'vtype' => \TType::MAP,
+          'key' => dict[
+            'type' => \TType::I32,
+          ],
+          'val' => dict[
+            'type' => \TType::MAP,
+            'ktype' => \TType::I32,
+            'vtype' => \TType::SET,
+            'key' => dict[
+              'type' => \TType::I32,
+            ],
+            'val' => dict[
+              'type' => \TType::SET,
+              'etype' => \TType::I32,
+              'elem' => dict[
+                'type' => \TType::I32,
+              ],
+              'format' => 'collection',
+            ],
+            'format' => 'collection',
+          ],
+          'format' => 'collection',
+        ],
+        'format' => 'collection',
+      ],
+      'format' => 'collection',
+    ],
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'foo' => 1,
+  ];
   const type TShape = shape(
     'foo' => vec<vec<dict<int, dict<int, dict<int, bool>>>>>,
     ...
@@ -1697,9 +1843,13 @@ class NestedContainers_turtles_result implements \IThriftStruct {
   use \ThriftSerializationTrait;
 
   public static dict<int, dict<string, mixed>> $_TSPEC = dict[
-    ];
+  ];
   public static Map<string, int> $_TFIELDMAP = Map {
   };
+  const dict<int, dict<string, mixed>> SPEC = dict[
+  ];
+  const dict<string, int> FIELDMAP = dict[
+  ];
   const int STRUCTURAL_ID = 957977401221134810;
 
   <<__Rx>>

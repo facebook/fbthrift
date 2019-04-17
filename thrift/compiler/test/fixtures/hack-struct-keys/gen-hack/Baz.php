@@ -249,9 +249,9 @@ class Baz_qux_args implements \IThriftStruct {
       'elem' => dict[
         'type' => \TType::STRUCT,
         'class' => 'Foo',
-        ],
-        'format' => 'collection',
       ],
+      'format' => 'collection',
+    ],
     2 => dict[
       'var' => 'b',
       'type' => \TType::LST,
@@ -259,9 +259,9 @@ class Baz_qux_args implements \IThriftStruct {
       'elem' => dict[
         'type' => \TType::STRUCT,
         'class' => 'Bar',
-        ],
-        'format' => 'collection',
       ],
+      'format' => 'collection',
+    ],
     3 => dict[
       'var' => 'c',
       'type' => \TType::MAP,
@@ -273,15 +273,56 @@ class Baz_qux_args implements \IThriftStruct {
       ],
       'val' => dict[
         'type' => \TType::STRING,
-        ],
-        'format' => 'collection',
       ],
-    ];
+      'format' => 'collection',
+    ],
+  ];
   public static Map<string, int> $_TFIELDMAP = Map {
     'a' => 1,
     'b' => 2,
     'c' => 3,
   };
+  const dict<int, dict<string, mixed>> SPEC = dict[
+    1 => dict[
+      'var' => 'a',
+      'type' => \TType::SET,
+      'etype' => \TType::STRUCT,
+      'elem' => dict[
+        'type' => \TType::STRUCT,
+        'class' => 'Foo',
+      ],
+      'format' => 'collection',
+    ],
+    2 => dict[
+      'var' => 'b',
+      'type' => \TType::LST,
+      'etype' => \TType::STRUCT,
+      'elem' => dict[
+        'type' => \TType::STRUCT,
+        'class' => 'Bar',
+      ],
+      'format' => 'collection',
+    ],
+    3 => dict[
+      'var' => 'c',
+      'type' => \TType::MAP,
+      'ktype' => \TType::STRUCT,
+      'vtype' => \TType::STRING,
+      'key' => dict[
+        'type' => \TType::STRUCT,
+        'class' => 'Foo',
+      ],
+      'val' => dict[
+        'type' => \TType::STRING,
+      ],
+      'format' => 'collection',
+    ],
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'a' => 1,
+    'b' => 2,
+    'c' => 3,
+  ];
   const int STRUCTURAL_ID = 1160460043765273624;
   public Set<arraykey> $a;
   public Vector<Bar> $b;
@@ -319,11 +360,20 @@ class Baz_qux_result implements \IThriftStruct {
     0 => dict[
       'var' => 'success',
       'type' => \TType::STRING,
-      ],
-    ];
+    ],
+  ];
   public static Map<string, int> $_TFIELDMAP = Map {
     'success' => 0,
   };
+  const dict<int, dict<string, mixed>> SPEC = dict[
+    0 => dict[
+      'var' => 'success',
+      'type' => \TType::STRING,
+    ],
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'success' => 0,
+  ];
   const int STRUCTURAL_ID = 1365128170602685579;
   public ?string $success;
 

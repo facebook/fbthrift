@@ -27,30 +27,30 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
     1 => dict[
       'var' => 'MyIntField',
       'type' => \TType::I64,
-      ],
+    ],
     2 => dict[
       'var' => 'MyStringField',
       'type' => \TType::STRING,
-      ],
+    ],
     3 => dict[
       'var' => 'MyDataField',
       'type' => \TType::STRUCT,
       'class' => 'MyDataItem',
-      ],
+    ],
     4 => dict[
       'var' => 'major',
       'type' => \TType::I64,
-      ],
+    ],
     5 => dict[
       'var' => 'myEnum',
       'type' => \TType::I32,
       'enum' => 'MyEnum',
-      ],
+    ],
     6 => dict[
       'var' => 'package',
       'type' => \TType::STRING,
-      ],
-    ];
+    ],
+  ];
   public static Map<string, int> $_TFIELDMAP = Map {
     'MyIntField' => 1,
     'MyStringField' => 2,
@@ -59,6 +59,42 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
     'myEnum' => 5,
     'package' => 6,
   };
+  const dict<int, dict<string, mixed>> SPEC = dict[
+    1 => dict[
+      'var' => 'MyIntField',
+      'type' => \TType::I64,
+    ],
+    2 => dict[
+      'var' => 'MyStringField',
+      'type' => \TType::STRING,
+    ],
+    3 => dict[
+      'var' => 'MyDataField',
+      'type' => \TType::STRUCT,
+      'class' => 'MyDataItem',
+    ],
+    4 => dict[
+      'var' => 'major',
+      'type' => \TType::I64,
+    ],
+    5 => dict[
+      'var' => 'myEnum',
+      'type' => \TType::I32,
+      'enum' => 'MyEnum',
+    ],
+    6 => dict[
+      'var' => 'package',
+      'type' => \TType::STRING,
+    ],
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'MyIntField' => 1,
+    'MyStringField' => 2,
+    'MyDataField' => 3,
+    'major' => 4,
+    'myEnum' => 5,
+    'package' => 6,
+  ];
   const type TShape = shape(
     'MyIntField' => int,
     'MyStringField' => string,
@@ -194,9 +230,13 @@ class MyDataItem implements \IThriftStruct, \IThriftShapishStruct {
   use \ThriftSerializationTrait;
 
   public static dict<int, dict<string, mixed>> $_TSPEC = dict[
-    ];
+  ];
   public static Map<string, int> $_TFIELDMAP = Map {
   };
+  const dict<int, dict<string, mixed>> SPEC = dict[
+  ];
+  const dict<string, int> FIELDMAP = dict[
+  ];
   const type TShape = shape(
     ...
   );

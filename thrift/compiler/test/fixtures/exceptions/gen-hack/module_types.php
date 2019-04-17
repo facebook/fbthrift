@@ -14,9 +14,13 @@ class Banal extends \TException implements \IThriftStruct {
   use \ThriftSerializationTrait;
 
   public static dict<int, dict<string, mixed>> $_TSPEC = dict[
-    ];
+  ];
   public static Map<string, int> $_TFIELDMAP = Map {
   };
+  const dict<int, dict<string, mixed>> SPEC = dict[
+  ];
+  const dict<string, int> FIELDMAP = dict[
+  ];
   const int STRUCTURAL_ID = 957977401221134810;
 
   <<__Rx>>
@@ -41,11 +45,20 @@ class Fiery extends \TException implements \IThriftStruct {
     1 => dict[
       'var' => 'message',
       'type' => \TType::STRING,
-      ],
-    ];
+    ],
+  ];
   public static Map<string, int> $_TFIELDMAP = Map {
     'message' => 1,
   };
+  const dict<int, dict<string, mixed>> SPEC = dict[
+    1 => dict[
+      'var' => 'message',
+      'type' => \TType::STRING,
+    ],
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'message' => 1,
+  ];
   const int STRUCTURAL_ID = 1438368398389181198;
   /**
    * Original thrift field:-
@@ -80,11 +93,20 @@ class Serious extends \TException implements \IThriftStruct {
     1 => dict[
       'var' => 'sonnet',
       'type' => \TType::STRING,
-      ],
-    ];
+    ],
+  ];
   public static Map<string, int> $_TFIELDMAP = Map {
     'sonnet' => 1,
   };
+  const dict<int, dict<string, mixed>> SPEC = dict[
+    1 => dict[
+      'var' => 'sonnet',
+      'type' => \TType::STRING,
+    ],
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'sonnet' => 1,
+  ];
   const int STRUCTURAL_ID = 7572301088987666687;
   /**
    * Original thrift field:-

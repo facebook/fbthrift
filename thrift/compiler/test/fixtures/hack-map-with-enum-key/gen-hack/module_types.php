@@ -35,9 +35,9 @@ class BarStruct implements \IThriftStruct, \IThriftShapishStruct {
       'val' => darray[
         'type' => \TType::I32,
         'enum' => 'FooEnum',
-        ],
-        'format' => 'collection',
       ],
+      'format' => 'collection',
+    ],
     2 => darray[
       'var' => 's',
       'type' => \TType::SET,
@@ -45,14 +45,45 @@ class BarStruct implements \IThriftStruct, \IThriftShapishStruct {
       'elem' => darray[
         'type' => \TType::I32,
         'enum' => 'FooEnum',
-        ],
-        'format' => 'collection',
       ],
-    ];
+      'format' => 'collection',
+    ],
+  ];
   public static Map<string, int> $_TFIELDMAP = Map {
     'e' => 1,
     's' => 2,
   };
+  const dict<int, dict<string, mixed>> SPEC = dict[
+    1 => dict[
+      'var' => 'e',
+      'type' => \TType::MAP,
+      'ktype' => \TType::I32,
+      'vtype' => \TType::I32,
+      'key' => dict[
+        'type' => \TType::I32,
+        'enum' => 'FooEnum',
+      ],
+      'val' => dict[
+        'type' => \TType::I32,
+        'enum' => 'FooEnum',
+      ],
+      'format' => 'collection',
+    ],
+    2 => dict[
+      'var' => 's',
+      'type' => \TType::SET,
+      'etype' => \TType::I32,
+      'elem' => dict[
+        'type' => \TType::I32,
+        'enum' => 'FooEnum',
+      ],
+      'format' => 'collection',
+    ],
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'e' => 1,
+    's' => 2,
+  ];
   const type TShape = shape(
     'e' => darray<FooEnum, FooEnum>,
     's' => darray<FooEnum, bool>,

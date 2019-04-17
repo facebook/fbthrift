@@ -28,12 +28,12 @@ class ComplexUnion implements \IThriftStruct, \IThriftUnion<ComplexUnionEnum> {
       'var' => 'intValue',
       'union' => true,
       'type' => \TType::I64,
-      ],
+    ],
     5 => dict[
       'var' => 'stringValue',
       'union' => true,
       'type' => \TType::STRING,
-      ],
+    ],
     2 => dict[
       'var' => 'intListValue',
       'union' => true,
@@ -41,9 +41,9 @@ class ComplexUnion implements \IThriftStruct, \IThriftUnion<ComplexUnionEnum> {
       'etype' => \TType::I64,
       'elem' => dict[
         'type' => \TType::I64,
-        ],
-        'format' => 'collection',
       ],
+      'format' => 'collection',
+    ],
     3 => dict[
       'var' => 'stringListValue',
       'union' => true,
@@ -51,9 +51,9 @@ class ComplexUnion implements \IThriftStruct, \IThriftUnion<ComplexUnionEnum> {
       'etype' => \TType::STRING,
       'elem' => dict[
         'type' => \TType::STRING,
-        ],
-        'format' => 'collection',
       ],
+      'format' => 'collection',
+    ],
     9 => dict[
       'var' => 'typedefValue',
       'union' => true,
@@ -65,15 +65,15 @@ class ComplexUnion implements \IThriftStruct, \IThriftUnion<ComplexUnionEnum> {
       ],
       'val' => dict[
         'type' => \TType::STRING,
-        ],
-        'format' => 'collection',
       ],
+      'format' => 'collection',
+    ],
     14 => dict[
       'var' => 'stringRef',
       'union' => true,
       'type' => \TType::STRING,
-      ],
-    ];
+    ],
+  ];
   public static Map<string, int> $_TFIELDMAP = Map {
     'intValue' => 1,
     'stringValue' => 5,
@@ -82,6 +82,65 @@ class ComplexUnion implements \IThriftStruct, \IThriftUnion<ComplexUnionEnum> {
     'typedefValue' => 9,
     'stringRef' => 14,
   };
+  const dict<int, dict<string, mixed>> SPEC = dict[
+    1 => dict[
+      'var' => 'intValue',
+      'union' => true,
+      'type' => \TType::I64,
+    ],
+    5 => dict[
+      'var' => 'stringValue',
+      'union' => true,
+      'type' => \TType::STRING,
+    ],
+    2 => dict[
+      'var' => 'intListValue',
+      'union' => true,
+      'type' => \TType::LST,
+      'etype' => \TType::I64,
+      'elem' => dict[
+        'type' => \TType::I64,
+      ],
+      'format' => 'collection',
+    ],
+    3 => dict[
+      'var' => 'stringListValue',
+      'union' => true,
+      'type' => \TType::LST,
+      'etype' => \TType::STRING,
+      'elem' => dict[
+        'type' => \TType::STRING,
+      ],
+      'format' => 'collection',
+    ],
+    9 => dict[
+      'var' => 'typedefValue',
+      'union' => true,
+      'type' => \TType::MAP,
+      'ktype' => \TType::I16,
+      'vtype' => \TType::STRING,
+      'key' => dict[
+        'type' => \TType::I16,
+      ],
+      'val' => dict[
+        'type' => \TType::STRING,
+      ],
+      'format' => 'collection',
+    ],
+    14 => dict[
+      'var' => 'stringRef',
+      'union' => true,
+      'type' => \TType::STRING,
+    ],
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'intValue' => 1,
+    'stringValue' => 5,
+    'intListValue' => 2,
+    'stringListValue' => 3,
+    'typedefValue' => 9,
+    'stringRef' => 14,
+  ];
   const int STRUCTURAL_ID = 1260275021738383280;
   /**
    * Original thrift field:-
@@ -320,9 +379,9 @@ class ListUnion implements \IThriftStruct, \IThriftUnion<ListUnionEnum> {
       'etype' => \TType::I64,
       'elem' => dict[
         'type' => \TType::I64,
-        ],
-        'format' => 'collection',
       ],
+      'format' => 'collection',
+    ],
     3 => dict[
       'var' => 'stringListValue',
       'union' => true,
@@ -330,14 +389,40 @@ class ListUnion implements \IThriftStruct, \IThriftUnion<ListUnionEnum> {
       'etype' => \TType::STRING,
       'elem' => dict[
         'type' => \TType::STRING,
-        ],
-        'format' => 'collection',
       ],
-    ];
+      'format' => 'collection',
+    ],
+  ];
   public static Map<string, int> $_TFIELDMAP = Map {
     'intListValue' => 2,
     'stringListValue' => 3,
   };
+  const dict<int, dict<string, mixed>> SPEC = dict[
+    2 => dict[
+      'var' => 'intListValue',
+      'union' => true,
+      'type' => \TType::LST,
+      'etype' => \TType::I64,
+      'elem' => dict[
+        'type' => \TType::I64,
+      ],
+      'format' => 'collection',
+    ],
+    3 => dict[
+      'var' => 'stringListValue',
+      'union' => true,
+      'type' => \TType::LST,
+      'etype' => \TType::STRING,
+      'elem' => dict[
+        'type' => \TType::STRING,
+      ],
+      'format' => 'collection',
+    ],
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'intListValue' => 2,
+    'stringListValue' => 3,
+  ];
   const int STRUCTURAL_ID = 3965946011249022525;
   /**
    * Original thrift field:-
@@ -454,17 +539,33 @@ class DataUnion implements \IThriftStruct, \IThriftUnion<DataUnionEnum> {
       'var' => 'binaryData',
       'union' => true,
       'type' => \TType::STRING,
-      ],
+    ],
     2 => dict[
       'var' => 'stringData',
       'union' => true,
       'type' => \TType::STRING,
-      ],
-    ];
+    ],
+  ];
   public static Map<string, int> $_TFIELDMAP = Map {
     'binaryData' => 1,
     'stringData' => 2,
   };
+  const dict<int, dict<string, mixed>> SPEC = dict[
+    1 => dict[
+      'var' => 'binaryData',
+      'union' => true,
+      'type' => \TType::STRING,
+    ],
+    2 => dict[
+      'var' => 'stringData',
+      'union' => true,
+      'type' => \TType::STRING,
+    ],
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'binaryData' => 1,
+    'stringData' => 2,
+  ];
   const int STRUCTURAL_ID = 4138034353479042532;
   /**
    * Original thrift field:-
@@ -560,11 +661,11 @@ class Val implements \IThriftStruct {
     1 => dict[
       'var' => 'strVal',
       'type' => \TType::STRING,
-      ],
+    ],
     2 => dict[
       'var' => 'intVal',
       'type' => \TType::I32,
-      ],
+    ],
     9 => dict[
       'var' => 'typedefValue',
       'type' => \TType::MAP,
@@ -575,15 +676,43 @@ class Val implements \IThriftStruct {
       ],
       'val' => dict[
         'type' => \TType::STRING,
-        ],
-        'format' => 'collection',
       ],
-    ];
+      'format' => 'collection',
+    ],
+  ];
   public static Map<string, int> $_TFIELDMAP = Map {
     'strVal' => 1,
     'intVal' => 2,
     'typedefValue' => 9,
   };
+  const dict<int, dict<string, mixed>> SPEC = dict[
+    1 => dict[
+      'var' => 'strVal',
+      'type' => \TType::STRING,
+    ],
+    2 => dict[
+      'var' => 'intVal',
+      'type' => \TType::I32,
+    ],
+    9 => dict[
+      'var' => 'typedefValue',
+      'type' => \TType::MAP,
+      'ktype' => \TType::I16,
+      'vtype' => \TType::STRING,
+      'key' => dict[
+        'type' => \TType::I16,
+      ],
+      'val' => dict[
+        'type' => \TType::STRING,
+      ],
+      'format' => 'collection',
+    ],
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'strVal' => 1,
+    'intVal' => 2,
+    'typedefValue' => 9,
+  ];
   const int STRUCTURAL_ID = 7250696402099336501;
   /**
    * Original thrift field:-
@@ -675,18 +804,36 @@ class ValUnion implements \IThriftStruct, \IThriftUnion<ValUnionEnum> {
       'union' => true,
       'type' => \TType::STRUCT,
       'class' => 'Val',
-      ],
+    ],
     2 => dict[
       'var' => 'v2',
       'union' => true,
       'type' => \TType::STRUCT,
       'class' => 'Val',
-      ],
-    ];
+    ],
+  ];
   public static Map<string, int> $_TFIELDMAP = Map {
     'v1' => 1,
     'v2' => 2,
   };
+  const dict<int, dict<string, mixed>> SPEC = dict[
+    1 => dict[
+      'var' => 'v1',
+      'union' => true,
+      'type' => \TType::STRUCT,
+      'class' => 'Val',
+    ],
+    2 => dict[
+      'var' => 'v2',
+      'union' => true,
+      'type' => \TType::STRUCT,
+      'class' => 'Val',
+    ],
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'v1' => 1,
+    'v2' => 2,
+  ];
   const int STRUCTURAL_ID = 7355268417298249876;
   /**
    * Original thrift field:-
@@ -795,17 +942,33 @@ class VirtualComplexUnion implements \IThriftStruct, \IThriftUnion<VirtualComple
       'var' => 'thingOne',
       'union' => true,
       'type' => \TType::STRING,
-      ],
+    ],
     2 => dict[
       'var' => 'thingTwo',
       'union' => true,
       'type' => \TType::STRING,
-      ],
-    ];
+    ],
+  ];
   public static Map<string, int> $_TFIELDMAP = Map {
     'thingOne' => 1,
     'thingTwo' => 2,
   };
+  const dict<int, dict<string, mixed>> SPEC = dict[
+    1 => dict[
+      'var' => 'thingOne',
+      'union' => true,
+      'type' => \TType::STRING,
+    ],
+    2 => dict[
+      'var' => 'thingTwo',
+      'union' => true,
+      'type' => \TType::STRING,
+    ],
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'thingOne' => 1,
+    'thingTwo' => 2,
+  ];
   const int STRUCTURAL_ID = 8657642278595798833;
   /**
    * Original thrift field:-

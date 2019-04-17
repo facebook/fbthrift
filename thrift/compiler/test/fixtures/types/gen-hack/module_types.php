@@ -47,11 +47,20 @@ class decorated_struct implements \IThriftStruct {
     1 => dict[
       'var' => 'field',
       'type' => \TType::STRING,
-      ],
-    ];
+    ],
+  ];
   public static Map<string, int> $_TFIELDMAP = Map {
     'field' => 1,
   };
+  const dict<int, dict<string, mixed>> SPEC = dict[
+    1 => dict[
+      'var' => 'field',
+      'type' => \TType::STRING,
+    ],
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'field' => 1,
+  ];
   const int STRUCTURAL_ID = 6158382972310209096;
   /**
    * Original thrift field:-
@@ -100,54 +109,54 @@ class ContainerStruct implements \IThriftStruct {
       'etype' => \TType::I32,
       'elem' => dict[
         'type' => \TType::I32,
-        ],
-        'format' => 'collection',
       ],
+      'format' => 'collection',
+    ],
     2 => dict[
       'var' => 'fieldB',
       'type' => \TType::LST,
       'etype' => \TType::I32,
       'elem' => dict[
         'type' => \TType::I32,
-        ],
-        'format' => 'collection',
       ],
+      'format' => 'collection',
+    ],
     3 => dict[
       'var' => 'fieldC',
       'type' => \TType::LST,
       'etype' => \TType::I32,
       'elem' => dict[
         'type' => \TType::I32,
-        ],
-        'format' => 'collection',
       ],
+      'format' => 'collection',
+    ],
     4 => dict[
       'var' => 'fieldD',
       'type' => \TType::LST,
       'etype' => \TType::I32,
       'elem' => dict[
         'type' => \TType::I32,
-        ],
-        'format' => 'collection',
       ],
+      'format' => 'collection',
+    ],
     5 => dict[
       'var' => 'fieldE',
       'type' => \TType::LST,
       'etype' => \TType::I32,
       'elem' => dict[
         'type' => \TType::I32,
-        ],
-        'format' => 'collection',
       ],
+      'format' => 'collection',
+    ],
     6 => dict[
       'var' => 'fieldF',
       'type' => \TType::SET,
       'etype' => \TType::I32,
       'elem' => dict[
         'type' => \TType::I32,
-        ],
-        'format' => 'collection',
       ],
+      'format' => 'collection',
+    ],
     7 => dict[
       'var' => 'fieldG',
       'type' => \TType::MAP,
@@ -158,9 +167,9 @@ class ContainerStruct implements \IThriftStruct {
       ],
       'val' => dict[
         'type' => \TType::STRING,
-        ],
-        'format' => 'collection',
       ],
+      'format' => 'collection',
+    ],
     8 => dict[
       'var' => 'fieldH',
       'type' => \TType::MAP,
@@ -171,10 +180,10 @@ class ContainerStruct implements \IThriftStruct {
       ],
       'val' => dict[
         'type' => \TType::STRING,
-        ],
-        'format' => 'collection',
       ],
-    ];
+      'format' => 'collection',
+    ],
+  ];
   public static Map<string, int> $_TFIELDMAP = Map {
     'fieldA' => 12,
     'fieldB' => 2,
@@ -185,6 +194,98 @@ class ContainerStruct implements \IThriftStruct {
     'fieldG' => 7,
     'fieldH' => 8,
   };
+  const dict<int, dict<string, mixed>> SPEC = dict[
+    12 => dict[
+      'var' => 'fieldA',
+      'type' => \TType::LST,
+      'etype' => \TType::I32,
+      'elem' => dict[
+        'type' => \TType::I32,
+      ],
+      'format' => 'collection',
+    ],
+    2 => dict[
+      'var' => 'fieldB',
+      'type' => \TType::LST,
+      'etype' => \TType::I32,
+      'elem' => dict[
+        'type' => \TType::I32,
+      ],
+      'format' => 'collection',
+    ],
+    3 => dict[
+      'var' => 'fieldC',
+      'type' => \TType::LST,
+      'etype' => \TType::I32,
+      'elem' => dict[
+        'type' => \TType::I32,
+      ],
+      'format' => 'collection',
+    ],
+    4 => dict[
+      'var' => 'fieldD',
+      'type' => \TType::LST,
+      'etype' => \TType::I32,
+      'elem' => dict[
+        'type' => \TType::I32,
+      ],
+      'format' => 'collection',
+    ],
+    5 => dict[
+      'var' => 'fieldE',
+      'type' => \TType::LST,
+      'etype' => \TType::I32,
+      'elem' => dict[
+        'type' => \TType::I32,
+      ],
+      'format' => 'collection',
+    ],
+    6 => dict[
+      'var' => 'fieldF',
+      'type' => \TType::SET,
+      'etype' => \TType::I32,
+      'elem' => dict[
+        'type' => \TType::I32,
+      ],
+      'format' => 'collection',
+    ],
+    7 => dict[
+      'var' => 'fieldG',
+      'type' => \TType::MAP,
+      'ktype' => \TType::I32,
+      'vtype' => \TType::STRING,
+      'key' => dict[
+        'type' => \TType::I32,
+      ],
+      'val' => dict[
+        'type' => \TType::STRING,
+      ],
+      'format' => 'collection',
+    ],
+    8 => dict[
+      'var' => 'fieldH',
+      'type' => \TType::MAP,
+      'ktype' => \TType::I32,
+      'vtype' => \TType::STRING,
+      'key' => dict[
+        'type' => \TType::I32,
+      ],
+      'val' => dict[
+        'type' => \TType::STRING,
+      ],
+      'format' => 'collection',
+    ],
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'fieldA' => 12,
+    'fieldB' => 2,
+    'fieldC' => 3,
+    'fieldD' => 4,
+    'fieldE' => 5,
+    'fieldF' => 6,
+    'fieldG' => 7,
+    'fieldH' => 8,
+  ];
   const int STRUCTURAL_ID = 2901459969892394021;
   /**
    * Original thrift field:-
@@ -410,13 +511,27 @@ class CppTypeStruct implements \IThriftStruct {
       'etype' => \TType::I32,
       'elem' => dict[
         'type' => \TType::I32,
-        ],
-        'format' => 'collection',
       ],
-    ];
+      'format' => 'collection',
+    ],
+  ];
   public static Map<string, int> $_TFIELDMAP = Map {
     'fieldA' => 1,
   };
+  const dict<int, dict<string, mixed>> SPEC = dict[
+    1 => dict[
+      'var' => 'fieldA',
+      'type' => \TType::LST,
+      'etype' => \TType::I32,
+      'elem' => dict[
+        'type' => \TType::I32,
+      ],
+      'format' => 'collection',
+    ],
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'fieldA' => 1,
+  ];
   const int STRUCTURAL_ID = 9369458949141941;
   /**
    * Original thrift field:-
@@ -474,11 +589,20 @@ class VirtualStruct implements \IThriftStruct {
     1 => dict[
       'var' => 'MyIntField',
       'type' => \TType::I64,
-      ],
-    ];
+    ],
+  ];
   public static Map<string, int> $_TFIELDMAP = Map {
     'MyIntField' => 1,
   };
+  const dict<int, dict<string, mixed>> SPEC = dict[
+    1 => dict[
+      'var' => 'MyIntField',
+      'type' => \TType::I64,
+    ],
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'MyIntField' => 1,
+  ];
   const int STRUCTURAL_ID = 7014352813131039231;
   /**
    * Original thrift field:-
@@ -525,17 +649,33 @@ class MyStructWithForwardRefEnum implements \IThriftStruct {
       'var' => 'a',
       'type' => \TType::I32,
       'enum' => 'MyForwardRefEnum',
-      ],
+    ],
     2 => dict[
       'var' => 'b',
       'type' => \TType::I32,
       'enum' => 'MyForwardRefEnum',
-      ],
-    ];
+    ],
+  ];
   public static Map<string, int> $_TFIELDMAP = Map {
     'a' => 1,
     'b' => 2,
   };
+  const dict<int, dict<string, mixed>> SPEC = dict[
+    1 => dict[
+      'var' => 'a',
+      'type' => \TType::I32,
+      'enum' => 'MyForwardRefEnum',
+    ],
+    2 => dict[
+      'var' => 'b',
+      'type' => \TType::I32,
+      'enum' => 'MyForwardRefEnum',
+    ],
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'a' => 1,
+    'b' => 2,
+  ];
   const int STRUCTURAL_ID = 6098225215594902198;
   /**
    * Original thrift field:-
@@ -592,16 +732,30 @@ class TrivialNumeric implements \IThriftStruct {
     1 => dict[
       'var' => 'a',
       'type' => \TType::I32,
-      ],
+    ],
     2 => dict[
       'var' => 'b',
       'type' => \TType::BOOL,
-      ],
-    ];
+    ],
+  ];
   public static Map<string, int> $_TFIELDMAP = Map {
     'a' => 1,
     'b' => 2,
   };
+  const dict<int, dict<string, mixed>> SPEC = dict[
+    1 => dict[
+      'var' => 'a',
+      'type' => \TType::I32,
+    ],
+    2 => dict[
+      'var' => 'b',
+      'type' => \TType::BOOL,
+    ],
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'a' => 1,
+    'b' => 2,
+  ];
   const int STRUCTURAL_ID = 3920068475021763685;
   /**
    * Original thrift field:-
@@ -665,17 +819,32 @@ class TrivialNestedWithDefault implements \IThriftStruct {
     1 => dict[
       'var' => 'z',
       'type' => \TType::I32,
-      ],
+    ],
     2 => dict[
       'var' => 'n',
       'type' => \TType::STRUCT,
       'class' => 'TrivialNumeric',
-      ],
-    ];
+    ],
+  ];
   public static Map<string, int> $_TFIELDMAP = Map {
     'z' => 1,
     'n' => 2,
   };
+  const dict<int, dict<string, mixed>> SPEC = dict[
+    1 => dict[
+      'var' => 'z',
+      'type' => \TType::I32,
+    ],
+    2 => dict[
+      'var' => 'n',
+      'type' => \TType::STRUCT,
+      'class' => 'TrivialNumeric',
+    ],
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'z' => 1,
+    'n' => 2,
+  ];
   const int STRUCTURAL_ID = 5012136746274172257;
   /**
    * Original thrift field:-
@@ -738,7 +907,7 @@ class ComplexString implements \IThriftStruct {
     1 => dict[
       'var' => 'a',
       'type' => \TType::STRING,
-      ],
+    ],
     2 => dict[
       'var' => 'b',
       'type' => \TType::MAP,
@@ -749,14 +918,37 @@ class ComplexString implements \IThriftStruct {
       ],
       'val' => dict[
         'type' => \TType::I32,
-        ],
-        'format' => 'collection',
       ],
-    ];
+      'format' => 'collection',
+    ],
+  ];
   public static Map<string, int> $_TFIELDMAP = Map {
     'a' => 1,
     'b' => 2,
   };
+  const dict<int, dict<string, mixed>> SPEC = dict[
+    1 => dict[
+      'var' => 'a',
+      'type' => \TType::STRING,
+    ],
+    2 => dict[
+      'var' => 'b',
+      'type' => \TType::MAP,
+      'ktype' => \TType::STRING,
+      'vtype' => \TType::I32,
+      'key' => dict[
+        'type' => \TType::STRING,
+      ],
+      'val' => dict[
+        'type' => \TType::I32,
+      ],
+      'format' => 'collection',
+    ],
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'a' => 1,
+    'b' => 2,
+  ];
   const int STRUCTURAL_ID = 5460740530481786095;
   /**
    * Original thrift field:-
@@ -827,17 +1019,32 @@ class ComplexNestedWithDefault implements \IThriftStruct {
     1 => dict[
       'var' => 'z',
       'type' => \TType::STRING,
-      ],
+    ],
     2 => dict[
       'var' => 'n',
       'type' => \TType::STRUCT,
       'class' => 'ComplexString',
-      ],
-    ];
+    ],
+  ];
   public static Map<string, int> $_TFIELDMAP = Map {
     'z' => 1,
     'n' => 2,
   };
+  const dict<int, dict<string, mixed>> SPEC = dict[
+    1 => dict[
+      'var' => 'z',
+      'type' => \TType::STRING,
+    ],
+    2 => dict[
+      'var' => 'n',
+      'type' => \TType::STRUCT,
+      'class' => 'ComplexString',
+    ],
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'z' => 1,
+    'n' => 2,
+  ];
   const int STRUCTURAL_ID = 2913723608362321564;
   /**
    * Original thrift field:-
@@ -895,24 +1102,24 @@ class MinPadding implements \IThriftStruct {
     1 => dict[
       'var' => 'small',
       'type' => \TType::BYTE,
-      ],
+    ],
     2 => dict[
       'var' => 'big',
       'type' => \TType::I64,
-      ],
+    ],
     3 => dict[
       'var' => 'medium',
       'type' => \TType::I16,
-      ],
+    ],
     4 => dict[
       'var' => 'biggish',
       'type' => \TType::I32,
-      ],
+    ],
     5 => dict[
       'var' => 'tiny',
       'type' => \TType::BYTE,
-      ],
-    ];
+    ],
+  ];
   public static Map<string, int> $_TFIELDMAP = Map {
     'small' => 1,
     'big' => 2,
@@ -920,6 +1127,35 @@ class MinPadding implements \IThriftStruct {
     'biggish' => 4,
     'tiny' => 5,
   };
+  const dict<int, dict<string, mixed>> SPEC = dict[
+    1 => dict[
+      'var' => 'small',
+      'type' => \TType::BYTE,
+    ],
+    2 => dict[
+      'var' => 'big',
+      'type' => \TType::I64,
+    ],
+    3 => dict[
+      'var' => 'medium',
+      'type' => \TType::I16,
+    ],
+    4 => dict[
+      'var' => 'biggish',
+      'type' => \TType::I32,
+    ],
+    5 => dict[
+      'var' => 'tiny',
+      'type' => \TType::BYTE,
+    ],
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'small' => 1,
+    'big' => 2,
+    'medium' => 3,
+    'biggish' => 4,
+    'tiny' => 5,
+  ];
   const int STRUCTURAL_ID = 723753448680843528;
   /**
    * Original thrift field:-
@@ -1047,27 +1283,52 @@ class MyStruct implements \IThriftStruct {
     1 => dict[
       'var' => 'MyIntField',
       'type' => \TType::I64,
-      ],
+    ],
     2 => dict[
       'var' => 'MyStringField',
       'type' => \TType::STRING,
-      ],
+    ],
     3 => dict[
       'var' => 'majorVer',
       'type' => \TType::I64,
-      ],
+    ],
     4 => dict[
       'var' => 'data',
       'type' => \TType::STRUCT,
       'class' => 'MyDataItem',
-      ],
-    ];
+    ],
+  ];
   public static Map<string, int> $_TFIELDMAP = Map {
     'MyIntField' => 1,
     'MyStringField' => 2,
     'majorVer' => 3,
     'data' => 4,
   };
+  const dict<int, dict<string, mixed>> SPEC = dict[
+    1 => dict[
+      'var' => 'MyIntField',
+      'type' => \TType::I64,
+    ],
+    2 => dict[
+      'var' => 'MyStringField',
+      'type' => \TType::STRING,
+    ],
+    3 => dict[
+      'var' => 'majorVer',
+      'type' => \TType::I64,
+    ],
+    4 => dict[
+      'var' => 'data',
+      'type' => \TType::STRUCT,
+      'class' => 'MyDataItem',
+    ],
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'MyIntField' => 1,
+    'MyStringField' => 2,
+    'majorVer' => 3,
+    'data' => 4,
+  ];
   const int STRUCTURAL_ID = 2472338421128341558;
   /**
    * Original thrift field:-
@@ -1148,9 +1409,13 @@ class MyDataItem implements \IThriftStruct {
   use \ThriftSerializationTrait;
 
   public static dict<int, dict<string, mixed>> $_TSPEC = dict[
-    ];
+  ];
   public static Map<string, int> $_TFIELDMAP = Map {
   };
+  const dict<int, dict<string, mixed>> SPEC = dict[
+  ];
+  const dict<string, int> FIELDMAP = dict[
+  ];
   const int STRUCTURAL_ID = 957977401221134810;
 
   <<__Rx>>
@@ -1183,11 +1448,20 @@ class Renaming implements \IThriftStruct {
     1 => dict[
       'var' => 'foo',
       'type' => \TType::I64,
-      ],
-    ];
+    ],
+  ];
   public static Map<string, int> $_TFIELDMAP = Map {
     'foo' => 1,
   };
+  const dict<int, dict<string, mixed>> SPEC = dict[
+    1 => dict[
+      'var' => 'foo',
+      'type' => \TType::I64,
+    ],
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'foo' => 1,
+  ];
   const int STRUCTURAL_ID = 2811793053530639830;
   /**
    * Original thrift field:-
@@ -1233,7 +1507,7 @@ class AnnotatedTypes implements \IThriftStruct {
     1 => dict[
       'var' => 'binary_field',
       'type' => \TType::STRING,
-      ],
+    ],
     2 => dict[
       'var' => 'list_field',
       'type' => \TType::LST,
@@ -1247,16 +1521,44 @@ class AnnotatedTypes implements \IThriftStruct {
         ],
         'val' => dict[
           'type' => \TType::STRING,
-          ],
-          'format' => 'collection',
         ],
         'format' => 'collection',
       ],
-    ];
+      'format' => 'collection',
+    ],
+  ];
   public static Map<string, int> $_TFIELDMAP = Map {
     'binary_field' => 1,
     'list_field' => 2,
   };
+  const dict<int, dict<string, mixed>> SPEC = dict[
+    1 => dict[
+      'var' => 'binary_field',
+      'type' => \TType::STRING,
+    ],
+    2 => dict[
+      'var' => 'list_field',
+      'type' => \TType::LST,
+      'etype' => \TType::MAP,
+      'elem' => dict[
+        'type' => \TType::MAP,
+        'ktype' => \TType::I32,
+        'vtype' => \TType::STRING,
+        'key' => dict[
+          'type' => \TType::I32,
+        ],
+        'val' => dict[
+          'type' => \TType::STRING,
+        ],
+        'format' => 'collection',
+      ],
+      'format' => 'collection',
+    ],
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'binary_field' => 1,
+    'list_field' => 2,
+  ];
   const int STRUCTURAL_ID = 7799859984459418183;
   /**
    * Original thrift field:-

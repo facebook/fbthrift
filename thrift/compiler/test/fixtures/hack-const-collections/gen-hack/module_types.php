@@ -20,9 +20,9 @@ class Foo implements \IThriftStruct {
       'etype' => \TType::STRING,
       'elem' => dict[
         'type' => \TType::STRING,
-        ],
-        'format' => 'collection',
       ],
+      'format' => 'collection',
+    ],
     2 => dict[
       'var' => 'b',
       'type' => \TType::MAP,
@@ -39,28 +39,76 @@ class Foo implements \IThriftStruct {
           'etype' => \TType::I32,
           'elem' => dict[
             'type' => \TType::I32,
-            ],
-            'format' => 'collection',
           ],
           'format' => 'collection',
         ],
         'format' => 'collection',
       ],
+      'format' => 'collection',
+    ],
     3 => dict[
       'var' => 'c',
       'type' => \TType::I64,
-      ],
+    ],
     4 => dict[
       'var' => 'd',
       'type' => \TType::BOOL,
-      ],
-    ];
+    ],
+  ];
   public static ConstMap<string, int> $_TFIELDMAP = Map {
     'a' => 1,
     'b' => 2,
     'c' => 3,
     'd' => 4,
   };
+  const dict<int, dict<string, mixed>> SPEC = dict[
+    1 => dict[
+      'var' => 'a',
+      'type' => \TType::LST,
+      'etype' => \TType::STRING,
+      'elem' => dict[
+        'type' => \TType::STRING,
+      ],
+      'format' => 'collection',
+    ],
+    2 => dict[
+      'var' => 'b',
+      'type' => \TType::MAP,
+      'ktype' => \TType::STRING,
+      'vtype' => \TType::LST,
+      'key' => dict[
+        'type' => \TType::STRING,
+      ],
+      'val' => dict[
+        'type' => \TType::LST,
+        'etype' => \TType::SET,
+        'elem' => dict[
+          'type' => \TType::SET,
+          'etype' => \TType::I32,
+          'elem' => dict[
+            'type' => \TType::I32,
+          ],
+          'format' => 'collection',
+        ],
+        'format' => 'collection',
+      ],
+      'format' => 'collection',
+    ],
+    3 => dict[
+      'var' => 'c',
+      'type' => \TType::I64,
+    ],
+    4 => dict[
+      'var' => 'd',
+      'type' => \TType::BOOL,
+    ],
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'a' => 1,
+    'b' => 2,
+    'c' => 3,
+    'd' => 4,
+  ];
   const int STRUCTURAL_ID = 3946809642153193229;
   /**
    * Original thrift field:-
@@ -120,11 +168,20 @@ class Baz extends \TException implements \IThriftStruct {
     1 => dict[
       'var' => 'message',
       'type' => \TType::STRING,
-      ],
-    ];
+    ],
+  ];
   public static ConstMap<string, int> $_TFIELDMAP = Map {
     'message' => 1,
   };
+  const dict<int, dict<string, mixed>> SPEC = dict[
+    1 => dict[
+      'var' => 'message',
+      'type' => \TType::STRING,
+    ],
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'message' => 1,
+  ];
   const int STRUCTURAL_ID = 2427562471238739676;
   /**
    * Original thrift field:-

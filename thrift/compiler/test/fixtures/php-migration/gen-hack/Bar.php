@@ -343,9 +343,9 @@ class Bar_baz_args implements \IThriftStruct {
       'etype' => \TType::I32,
       'elem' => darray[
         'type' => \TType::I32,
-        ],
-        'format' => 'array',
       ],
+      'format' => 'array',
+    ],
     2 => darray[
       'var' => 'b',
       'type' => \TType::LST,
@@ -362,27 +362,27 @@ class Bar_baz_args implements \IThriftStruct {
           'etype' => \TType::STRING,
           'elem' => darray[
             'type' => \TType::STRING,
-            ],
-            'format' => 'array',
           ],
           'format' => 'array',
         ],
         'format' => 'array',
       ],
+      'format' => 'array',
+    ],
     3 => darray[
       'var' => 'c',
       'type' => \TType::I64,
-      ],
+    ],
     4 => darray[
       'var' => 'd',
       'type' => \TType::STRUCT,
       'class' => 'Foo',
-      ],
+    ],
     5 => darray[
       'var' => 'e',
       'type' => \TType::I64,
-      ],
-    ];
+    ],
+  ];
   public static Map<string, int> $_TFIELDMAP = Map {
     'a' => 1,
     'b' => 2,
@@ -390,6 +390,60 @@ class Bar_baz_args implements \IThriftStruct {
     'd' => 4,
     'e' => 5,
   };
+  const dict<int, dict<string, mixed>> SPEC = dict[
+    1 => dict[
+      'var' => 'a',
+      'type' => \TType::SET,
+      'etype' => \TType::I32,
+      'elem' => dict[
+        'type' => \TType::I32,
+      ],
+      'format' => 'array',
+    ],
+    2 => dict[
+      'var' => 'b',
+      'type' => \TType::LST,
+      'etype' => \TType::MAP,
+      'elem' => dict[
+        'type' => \TType::MAP,
+        'ktype' => \TType::I32,
+        'vtype' => \TType::SET,
+        'key' => dict[
+          'type' => \TType::I32,
+        ],
+        'val' => dict[
+          'type' => \TType::SET,
+          'etype' => \TType::STRING,
+          'elem' => dict[
+            'type' => \TType::STRING,
+          ],
+          'format' => 'array',
+        ],
+        'format' => 'array',
+      ],
+      'format' => 'array',
+    ],
+    3 => dict[
+      'var' => 'c',
+      'type' => \TType::I64,
+    ],
+    4 => dict[
+      'var' => 'd',
+      'type' => \TType::STRUCT,
+      'class' => 'Foo',
+    ],
+    5 => dict[
+      'var' => 'e',
+      'type' => \TType::I64,
+    ],
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'a' => 1,
+    'b' => 2,
+    'c' => 3,
+    'd' => 4,
+    'e' => 5,
+  ];
   const int STRUCTURAL_ID = 7865027497865509792;
   public ?darray<int, bool> $a;
   public ?varray<darray<int, darray<string, bool>>> $b;
@@ -424,11 +478,20 @@ class Bar_baz_result implements \IThriftStruct {
     0 => darray[
       'var' => 'success',
       'type' => \TType::STRING,
-      ],
-    ];
+    ],
+  ];
   public static Map<string, int> $_TFIELDMAP = Map {
     'success' => 0,
   };
+  const dict<int, dict<string, mixed>> SPEC = dict[
+    0 => dict[
+      'var' => 'success',
+      'type' => \TType::STRING,
+    ],
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'success' => 0,
+  ];
   const int STRUCTURAL_ID = 1365128170602685579;
   public ?string $success;
 

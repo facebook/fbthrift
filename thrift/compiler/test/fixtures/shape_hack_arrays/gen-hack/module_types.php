@@ -17,7 +17,7 @@ class A implements \IThriftStruct, \IThriftShapishStruct {
     1 => dict[
       'var' => 'a',
       'type' => \TType::STRING,
-      ],
+    ],
     2 => dict[
       'var' => 'map_of_string_to_string',
       'type' => \TType::MAP,
@@ -28,14 +28,37 @@ class A implements \IThriftStruct, \IThriftShapishStruct {
       ],
       'val' => dict[
         'type' => \TType::STRING,
-        ],
-        'format' => 'harray',
       ],
-    ];
+      'format' => 'harray',
+    ],
+  ];
   public static Map<string, int> $_TFIELDMAP = Map {
     'a' => 1,
     'map_of_string_to_string' => 2,
   };
+  const dict<int, dict<string, mixed>> SPEC = dict[
+    1 => dict[
+      'var' => 'a',
+      'type' => \TType::STRING,
+    ],
+    2 => dict[
+      'var' => 'map_of_string_to_string',
+      'type' => \TType::MAP,
+      'ktype' => \TType::STRING,
+      'vtype' => \TType::STRING,
+      'key' => dict[
+        'type' => \TType::STRING,
+      ],
+      'val' => dict[
+        'type' => \TType::STRING,
+      ],
+      'format' => 'harray',
+    ],
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'a' => 1,
+    'map_of_string_to_string' => 2,
+  ];
   const type TShape = shape(
     'a' => string,
     'map_of_string_to_string' => dict<string, string>,
@@ -104,9 +127,9 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
       ],
       'val' => dict[
         'type' => \TType::STRING,
-        ],
-        'format' => 'harray',
       ],
+      'format' => 'harray',
+    ],
     2 => dict[
       'var' => 'map_of_string_to_i32',
       'type' => \TType::MAP,
@@ -117,9 +140,9 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
       ],
       'val' => dict[
         'type' => \TType::I32,
-        ],
-        'format' => 'harray',
       ],
+      'format' => 'harray',
+    ],
     3 => dict[
       'var' => 'map_of_string_to_A',
       'type' => \TType::MAP,
@@ -131,9 +154,9 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
       'val' => dict[
         'type' => \TType::STRUCT,
         'class' => 'A',
-        ],
-        'format' => 'harray',
       ],
+      'format' => 'harray',
+    ],
     4 => dict[
       'var' => 'map_of_string_to_self',
       'type' => \TType::MAP,
@@ -145,9 +168,9 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
       'val' => dict[
         'type' => \TType::STRUCT,
         'class' => 'B',
-        ],
-        'format' => 'harray',
       ],
+      'format' => 'harray',
+    ],
     5 => dict[
       'var' => 'map_of_string_to_list_of_A',
       'type' => \TType::MAP,
@@ -162,11 +185,11 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
         'elem' => dict[
           'type' => \TType::STRUCT,
           'class' => 'A',
-          ],
-          'format' => 'harray',
         ],
         'format' => 'harray',
       ],
+      'format' => 'harray',
+    ],
     6 => dict[
       'var' => 'map_of_string_to_map_of_string_to_i32',
       'type' => \TType::MAP,
@@ -184,11 +207,11 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
         ],
         'val' => dict[
           'type' => \TType::I32,
-          ],
-          'format' => 'harray',
         ],
         'format' => 'harray',
       ],
+      'format' => 'harray',
+    ],
     7 => dict[
       'var' => 'map_of_string_to_map_of_string_to_A',
       'type' => \TType::MAP,
@@ -207,20 +230,20 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
         'val' => dict[
           'type' => \TType::STRUCT,
           'class' => 'A',
-          ],
-          'format' => 'harray',
         ],
         'format' => 'harray',
       ],
+      'format' => 'harray',
+    ],
     8 => dict[
       'var' => 'list_of_string',
       'type' => \TType::LST,
       'etype' => \TType::STRING,
       'elem' => dict[
         'type' => \TType::STRING,
-        ],
-        'format' => 'harray',
       ],
+      'format' => 'harray',
+    ],
     9 => dict[
       'var' => 'list_of_map_of_string_to_A',
       'type' => \TType::LST,
@@ -235,11 +258,11 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
         'val' => dict[
           'type' => \TType::STRUCT,
           'class' => 'A',
-          ],
-          'format' => 'harray',
         ],
         'format' => 'harray',
       ],
+      'format' => 'harray',
+    ],
     10 => dict[
       'var' => 'list_of_self',
       'type' => \TType::LST,
@@ -247,9 +270,9 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
       'elem' => dict[
         'type' => \TType::STRUCT,
         'class' => 'B',
-        ],
-        'format' => 'harray',
       ],
+      'format' => 'harray',
+    ],
     11 => dict[
       'var' => 'list_of_list_of_self',
       'type' => \TType::LST,
@@ -260,11 +283,11 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
         'elem' => dict[
           'type' => \TType::STRUCT,
           'class' => 'B',
-          ],
-          'format' => 'harray',
         ],
         'format' => 'harray',
       ],
+      'format' => 'harray',
+    ],
     12 => dict[
       'var' => 'list_of_map_of_string_to_list_of_A',
       'type' => \TType::LST,
@@ -282,14 +305,14 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
           'elem' => dict[
             'type' => \TType::STRUCT,
             'class' => 'A',
-            ],
-            'format' => 'harray',
           ],
           'format' => 'harray',
         ],
         'format' => 'harray',
       ],
-    ];
+      'format' => 'harray',
+    ],
+  ];
   public static Map<string, int> $_TFIELDMAP = Map {
     'map_of_string_to_string' => 1,
     'map_of_string_to_i32' => 2,
@@ -304,6 +327,217 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     'list_of_list_of_self' => 11,
     'list_of_map_of_string_to_list_of_A' => 12,
   };
+  const dict<int, dict<string, mixed>> SPEC = dict[
+    1 => dict[
+      'var' => 'map_of_string_to_string',
+      'type' => \TType::MAP,
+      'ktype' => \TType::STRING,
+      'vtype' => \TType::STRING,
+      'key' => dict[
+        'type' => \TType::STRING,
+      ],
+      'val' => dict[
+        'type' => \TType::STRING,
+      ],
+      'format' => 'harray',
+    ],
+    2 => dict[
+      'var' => 'map_of_string_to_i32',
+      'type' => \TType::MAP,
+      'ktype' => \TType::STRING,
+      'vtype' => \TType::I32,
+      'key' => dict[
+        'type' => \TType::STRING,
+      ],
+      'val' => dict[
+        'type' => \TType::I32,
+      ],
+      'format' => 'harray',
+    ],
+    3 => dict[
+      'var' => 'map_of_string_to_A',
+      'type' => \TType::MAP,
+      'ktype' => \TType::STRING,
+      'vtype' => \TType::STRUCT,
+      'key' => dict[
+        'type' => \TType::STRING,
+      ],
+      'val' => dict[
+        'type' => \TType::STRUCT,
+        'class' => 'A',
+      ],
+      'format' => 'harray',
+    ],
+    4 => dict[
+      'var' => 'map_of_string_to_self',
+      'type' => \TType::MAP,
+      'ktype' => \TType::STRING,
+      'vtype' => \TType::STRUCT,
+      'key' => dict[
+        'type' => \TType::STRING,
+      ],
+      'val' => dict[
+        'type' => \TType::STRUCT,
+        'class' => 'B',
+      ],
+      'format' => 'harray',
+    ],
+    5 => dict[
+      'var' => 'map_of_string_to_list_of_A',
+      'type' => \TType::MAP,
+      'ktype' => \TType::STRING,
+      'vtype' => \TType::LST,
+      'key' => dict[
+        'type' => \TType::STRING,
+      ],
+      'val' => dict[
+        'type' => \TType::LST,
+        'etype' => \TType::STRUCT,
+        'elem' => dict[
+          'type' => \TType::STRUCT,
+          'class' => 'A',
+        ],
+        'format' => 'harray',
+      ],
+      'format' => 'harray',
+    ],
+    6 => dict[
+      'var' => 'map_of_string_to_map_of_string_to_i32',
+      'type' => \TType::MAP,
+      'ktype' => \TType::STRING,
+      'vtype' => \TType::MAP,
+      'key' => dict[
+        'type' => \TType::STRING,
+      ],
+      'val' => dict[
+        'type' => \TType::MAP,
+        'ktype' => \TType::STRING,
+        'vtype' => \TType::I32,
+        'key' => dict[
+          'type' => \TType::STRING,
+        ],
+        'val' => dict[
+          'type' => \TType::I32,
+        ],
+        'format' => 'harray',
+      ],
+      'format' => 'harray',
+    ],
+    7 => dict[
+      'var' => 'map_of_string_to_map_of_string_to_A',
+      'type' => \TType::MAP,
+      'ktype' => \TType::STRING,
+      'vtype' => \TType::MAP,
+      'key' => dict[
+        'type' => \TType::STRING,
+      ],
+      'val' => dict[
+        'type' => \TType::MAP,
+        'ktype' => \TType::STRING,
+        'vtype' => \TType::STRUCT,
+        'key' => dict[
+          'type' => \TType::STRING,
+        ],
+        'val' => dict[
+          'type' => \TType::STRUCT,
+          'class' => 'A',
+        ],
+        'format' => 'harray',
+      ],
+      'format' => 'harray',
+    ],
+    8 => dict[
+      'var' => 'list_of_string',
+      'type' => \TType::LST,
+      'etype' => \TType::STRING,
+      'elem' => dict[
+        'type' => \TType::STRING,
+      ],
+      'format' => 'harray',
+    ],
+    9 => dict[
+      'var' => 'list_of_map_of_string_to_A',
+      'type' => \TType::LST,
+      'etype' => \TType::MAP,
+      'elem' => dict[
+        'type' => \TType::MAP,
+        'ktype' => \TType::STRING,
+        'vtype' => \TType::STRUCT,
+        'key' => dict[
+          'type' => \TType::STRING,
+        ],
+        'val' => dict[
+          'type' => \TType::STRUCT,
+          'class' => 'A',
+        ],
+        'format' => 'harray',
+      ],
+      'format' => 'harray',
+    ],
+    10 => dict[
+      'var' => 'list_of_self',
+      'type' => \TType::LST,
+      'etype' => \TType::STRUCT,
+      'elem' => dict[
+        'type' => \TType::STRUCT,
+        'class' => 'B',
+      ],
+      'format' => 'harray',
+    ],
+    11 => dict[
+      'var' => 'list_of_list_of_self',
+      'type' => \TType::LST,
+      'etype' => \TType::LST,
+      'elem' => dict[
+        'type' => \TType::LST,
+        'etype' => \TType::STRUCT,
+        'elem' => dict[
+          'type' => \TType::STRUCT,
+          'class' => 'B',
+        ],
+        'format' => 'harray',
+      ],
+      'format' => 'harray',
+    ],
+    12 => dict[
+      'var' => 'list_of_map_of_string_to_list_of_A',
+      'type' => \TType::LST,
+      'etype' => \TType::MAP,
+      'elem' => dict[
+        'type' => \TType::MAP,
+        'ktype' => \TType::STRING,
+        'vtype' => \TType::LST,
+        'key' => dict[
+          'type' => \TType::STRING,
+        ],
+        'val' => dict[
+          'type' => \TType::LST,
+          'etype' => \TType::STRUCT,
+          'elem' => dict[
+            'type' => \TType::STRUCT,
+            'class' => 'A',
+          ],
+          'format' => 'harray',
+        ],
+        'format' => 'harray',
+      ],
+      'format' => 'harray',
+    ],
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'map_of_string_to_string' => 1,
+    'map_of_string_to_i32' => 2,
+    'map_of_string_to_A' => 3,
+    'map_of_string_to_self' => 4,
+    'map_of_string_to_list_of_A' => 5,
+    'map_of_string_to_map_of_string_to_i32' => 6,
+    'map_of_string_to_map_of_string_to_A' => 7,
+    'list_of_string' => 8,
+    'list_of_map_of_string_to_A' => 9,
+    'list_of_self' => 10,
+    'list_of_list_of_self' => 11,
+    'list_of_map_of_string_to_list_of_A' => 12,
+  ];
   const type TShape = shape(
     'map_of_string_to_string' => dict<string, string>,
     'map_of_string_to_i32' => dict<string, int>,
@@ -622,9 +856,9 @@ class C implements \IThriftStruct, \IThriftShapishStruct {
       ],
       'val' => dict[
         'type' => \TType::STRING,
-        ],
-        'format' => 'harray',
       ],
+      'format' => 'harray',
+    ],
     2 => dict[
       'var' => 'map_of_string_to_i32',
       'type' => \TType::MAP,
@@ -635,9 +869,9 @@ class C implements \IThriftStruct, \IThriftShapishStruct {
       ],
       'val' => dict[
         'type' => \TType::I32,
-        ],
-        'format' => 'harray',
       ],
+      'format' => 'harray',
+    ],
     3 => dict[
       'var' => 'map_of_string_to_A',
       'type' => \TType::MAP,
@@ -649,9 +883,9 @@ class C implements \IThriftStruct, \IThriftShapishStruct {
       'val' => dict[
         'type' => \TType::STRUCT,
         'class' => 'A',
-        ],
-        'format' => 'harray',
       ],
+      'format' => 'harray',
+    ],
     4 => dict[
       'var' => 'map_of_string_to_self',
       'type' => \TType::MAP,
@@ -663,9 +897,9 @@ class C implements \IThriftStruct, \IThriftShapishStruct {
       'val' => dict[
         'type' => \TType::STRUCT,
         'class' => 'B',
-        ],
-        'format' => 'harray',
       ],
+      'format' => 'harray',
+    ],
     5 => dict[
       'var' => 'map_of_string_to_list_of_A',
       'type' => \TType::MAP,
@@ -680,11 +914,11 @@ class C implements \IThriftStruct, \IThriftShapishStruct {
         'elem' => dict[
           'type' => \TType::STRUCT,
           'class' => 'A',
-          ],
-          'format' => 'harray',
         ],
         'format' => 'harray',
       ],
+      'format' => 'harray',
+    ],
     6 => dict[
       'var' => 'map_of_string_to_map_of_string_to_i32',
       'type' => \TType::MAP,
@@ -702,11 +936,11 @@ class C implements \IThriftStruct, \IThriftShapishStruct {
         ],
         'val' => dict[
           'type' => \TType::I32,
-          ],
-          'format' => 'harray',
         ],
         'format' => 'harray',
       ],
+      'format' => 'harray',
+    ],
     7 => dict[
       'var' => 'map_of_string_to_map_of_string_to_A',
       'type' => \TType::MAP,
@@ -725,20 +959,20 @@ class C implements \IThriftStruct, \IThriftShapishStruct {
         'val' => dict[
           'type' => \TType::STRUCT,
           'class' => 'A',
-          ],
-          'format' => 'harray',
         ],
         'format' => 'harray',
       ],
+      'format' => 'harray',
+    ],
     8 => dict[
       'var' => 'list_of_string',
       'type' => \TType::LST,
       'etype' => \TType::STRING,
       'elem' => dict[
         'type' => \TType::STRING,
-        ],
-        'format' => 'harray',
       ],
+      'format' => 'harray',
+    ],
     9 => dict[
       'var' => 'list_of_map_of_string_to_A',
       'type' => \TType::LST,
@@ -753,11 +987,11 @@ class C implements \IThriftStruct, \IThriftShapishStruct {
         'val' => dict[
           'type' => \TType::STRUCT,
           'class' => 'A',
-          ],
-          'format' => 'harray',
         ],
         'format' => 'harray',
       ],
+      'format' => 'harray',
+    ],
     10 => dict[
       'var' => 'list_of_self',
       'type' => \TType::LST,
@@ -765,9 +999,9 @@ class C implements \IThriftStruct, \IThriftShapishStruct {
       'elem' => dict[
         'type' => \TType::STRUCT,
         'class' => 'B',
-        ],
-        'format' => 'harray',
       ],
+      'format' => 'harray',
+    ],
     11 => dict[
       'var' => 'list_of_list_of_self',
       'type' => \TType::LST,
@@ -778,11 +1012,11 @@ class C implements \IThriftStruct, \IThriftShapishStruct {
         'elem' => dict[
           'type' => \TType::STRUCT,
           'class' => 'B',
-          ],
-          'format' => 'harray',
         ],
         'format' => 'harray',
       ],
+      'format' => 'harray',
+    ],
     12 => dict[
       'var' => 'list_of_map_of_string_to_list_of_A',
       'type' => \TType::LST,
@@ -800,14 +1034,14 @@ class C implements \IThriftStruct, \IThriftShapishStruct {
           'elem' => dict[
             'type' => \TType::STRUCT,
             'class' => 'A',
-            ],
-            'format' => 'harray',
           ],
           'format' => 'harray',
         ],
         'format' => 'harray',
       ],
-    ];
+      'format' => 'harray',
+    ],
+  ];
   public static Map<string, int> $_TFIELDMAP = Map {
     'map_of_string_to_string' => 1,
     'map_of_string_to_i32' => 2,
@@ -822,6 +1056,217 @@ class C implements \IThriftStruct, \IThriftShapishStruct {
     'list_of_list_of_self' => 11,
     'list_of_map_of_string_to_list_of_A' => 12,
   };
+  const dict<int, dict<string, mixed>> SPEC = dict[
+    1 => dict[
+      'var' => 'map_of_string_to_string',
+      'type' => \TType::MAP,
+      'ktype' => \TType::STRING,
+      'vtype' => \TType::STRING,
+      'key' => dict[
+        'type' => \TType::STRING,
+      ],
+      'val' => dict[
+        'type' => \TType::STRING,
+      ],
+      'format' => 'harray',
+    ],
+    2 => dict[
+      'var' => 'map_of_string_to_i32',
+      'type' => \TType::MAP,
+      'ktype' => \TType::STRING,
+      'vtype' => \TType::I32,
+      'key' => dict[
+        'type' => \TType::STRING,
+      ],
+      'val' => dict[
+        'type' => \TType::I32,
+      ],
+      'format' => 'harray',
+    ],
+    3 => dict[
+      'var' => 'map_of_string_to_A',
+      'type' => \TType::MAP,
+      'ktype' => \TType::STRING,
+      'vtype' => \TType::STRUCT,
+      'key' => dict[
+        'type' => \TType::STRING,
+      ],
+      'val' => dict[
+        'type' => \TType::STRUCT,
+        'class' => 'A',
+      ],
+      'format' => 'harray',
+    ],
+    4 => dict[
+      'var' => 'map_of_string_to_self',
+      'type' => \TType::MAP,
+      'ktype' => \TType::STRING,
+      'vtype' => \TType::STRUCT,
+      'key' => dict[
+        'type' => \TType::STRING,
+      ],
+      'val' => dict[
+        'type' => \TType::STRUCT,
+        'class' => 'B',
+      ],
+      'format' => 'harray',
+    ],
+    5 => dict[
+      'var' => 'map_of_string_to_list_of_A',
+      'type' => \TType::MAP,
+      'ktype' => \TType::STRING,
+      'vtype' => \TType::LST,
+      'key' => dict[
+        'type' => \TType::STRING,
+      ],
+      'val' => dict[
+        'type' => \TType::LST,
+        'etype' => \TType::STRUCT,
+        'elem' => dict[
+          'type' => \TType::STRUCT,
+          'class' => 'A',
+        ],
+        'format' => 'harray',
+      ],
+      'format' => 'harray',
+    ],
+    6 => dict[
+      'var' => 'map_of_string_to_map_of_string_to_i32',
+      'type' => \TType::MAP,
+      'ktype' => \TType::STRING,
+      'vtype' => \TType::MAP,
+      'key' => dict[
+        'type' => \TType::STRING,
+      ],
+      'val' => dict[
+        'type' => \TType::MAP,
+        'ktype' => \TType::STRING,
+        'vtype' => \TType::I32,
+        'key' => dict[
+          'type' => \TType::STRING,
+        ],
+        'val' => dict[
+          'type' => \TType::I32,
+        ],
+        'format' => 'harray',
+      ],
+      'format' => 'harray',
+    ],
+    7 => dict[
+      'var' => 'map_of_string_to_map_of_string_to_A',
+      'type' => \TType::MAP,
+      'ktype' => \TType::STRING,
+      'vtype' => \TType::MAP,
+      'key' => dict[
+        'type' => \TType::STRING,
+      ],
+      'val' => dict[
+        'type' => \TType::MAP,
+        'ktype' => \TType::STRING,
+        'vtype' => \TType::STRUCT,
+        'key' => dict[
+          'type' => \TType::STRING,
+        ],
+        'val' => dict[
+          'type' => \TType::STRUCT,
+          'class' => 'A',
+        ],
+        'format' => 'harray',
+      ],
+      'format' => 'harray',
+    ],
+    8 => dict[
+      'var' => 'list_of_string',
+      'type' => \TType::LST,
+      'etype' => \TType::STRING,
+      'elem' => dict[
+        'type' => \TType::STRING,
+      ],
+      'format' => 'harray',
+    ],
+    9 => dict[
+      'var' => 'list_of_map_of_string_to_A',
+      'type' => \TType::LST,
+      'etype' => \TType::MAP,
+      'elem' => dict[
+        'type' => \TType::MAP,
+        'ktype' => \TType::STRING,
+        'vtype' => \TType::STRUCT,
+        'key' => dict[
+          'type' => \TType::STRING,
+        ],
+        'val' => dict[
+          'type' => \TType::STRUCT,
+          'class' => 'A',
+        ],
+        'format' => 'harray',
+      ],
+      'format' => 'harray',
+    ],
+    10 => dict[
+      'var' => 'list_of_self',
+      'type' => \TType::LST,
+      'etype' => \TType::STRUCT,
+      'elem' => dict[
+        'type' => \TType::STRUCT,
+        'class' => 'B',
+      ],
+      'format' => 'harray',
+    ],
+    11 => dict[
+      'var' => 'list_of_list_of_self',
+      'type' => \TType::LST,
+      'etype' => \TType::LST,
+      'elem' => dict[
+        'type' => \TType::LST,
+        'etype' => \TType::STRUCT,
+        'elem' => dict[
+          'type' => \TType::STRUCT,
+          'class' => 'B',
+        ],
+        'format' => 'harray',
+      ],
+      'format' => 'harray',
+    ],
+    12 => dict[
+      'var' => 'list_of_map_of_string_to_list_of_A',
+      'type' => \TType::LST,
+      'etype' => \TType::MAP,
+      'elem' => dict[
+        'type' => \TType::MAP,
+        'ktype' => \TType::STRING,
+        'vtype' => \TType::LST,
+        'key' => dict[
+          'type' => \TType::STRING,
+        ],
+        'val' => dict[
+          'type' => \TType::LST,
+          'etype' => \TType::STRUCT,
+          'elem' => dict[
+            'type' => \TType::STRUCT,
+            'class' => 'A',
+          ],
+          'format' => 'harray',
+        ],
+        'format' => 'harray',
+      ],
+      'format' => 'harray',
+    ],
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'map_of_string_to_string' => 1,
+    'map_of_string_to_i32' => 2,
+    'map_of_string_to_A' => 3,
+    'map_of_string_to_self' => 4,
+    'map_of_string_to_list_of_A' => 5,
+    'map_of_string_to_map_of_string_to_i32' => 6,
+    'map_of_string_to_map_of_string_to_A' => 7,
+    'list_of_string' => 8,
+    'list_of_map_of_string_to_A' => 9,
+    'list_of_self' => 10,
+    'list_of_list_of_self' => 11,
+    'list_of_map_of_string_to_list_of_A' => 12,
+  ];
   const type TShape = shape(
     ?'map_of_string_to_string' => ?dict<string, string>,
     ?'map_of_string_to_i32' => ?dict<string, int>,

@@ -374,13 +374,31 @@ class SomeService_bounce_map_args implements \IThriftStruct {
       ],
       'val' => dict[
         'type' => \TType::STRING,
-        ],
-        'format' => 'collection',
       ],
-    ];
+      'format' => 'collection',
+    ],
+  ];
   public static Map<string, int> $_TFIELDMAP = Map {
     'm' => 1,
   };
+  const dict<int, dict<string, mixed>> SPEC = dict[
+    1 => dict[
+      'var' => 'm',
+      'type' => \TType::MAP,
+      'ktype' => \TType::I32,
+      'vtype' => \TType::STRING,
+      'key' => dict[
+        'type' => \TType::I32,
+      ],
+      'val' => dict[
+        'type' => \TType::STRING,
+      ],
+      'format' => 'collection',
+    ],
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'm' => 1,
+  ];
   const int STRUCTURAL_ID = 1590329293490505564;
   public Map<int, string> $m;
 
@@ -432,13 +450,31 @@ class SomeService_bounce_map_result implements \IThriftStruct {
       ],
       'val' => dict[
         'type' => \TType::STRING,
-        ],
-        'format' => 'collection',
       ],
-    ];
+      'format' => 'collection',
+    ],
+  ];
   public static Map<string, int> $_TFIELDMAP = Map {
     'success' => 0,
   };
+  const dict<int, dict<string, mixed>> SPEC = dict[
+    0 => dict[
+      'var' => 'success',
+      'type' => \TType::MAP,
+      'ktype' => \TType::I32,
+      'vtype' => \TType::STRING,
+      'key' => dict[
+        'type' => \TType::I32,
+      ],
+      'val' => dict[
+        'type' => \TType::STRING,
+      ],
+      'format' => 'collection',
+    ],
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'success' => 0,
+  ];
   const int STRUCTURAL_ID = 390979496709511735;
   public ?Map<int, string> $success;
 
@@ -481,13 +517,27 @@ class SomeService_binary_keyed_map_args implements \IThriftStruct {
       'etype' => \TType::I64,
       'elem' => dict[
         'type' => \TType::I64,
-        ],
-        'format' => 'collection',
       ],
-    ];
+      'format' => 'collection',
+    ],
+  ];
   public static Map<string, int> $_TFIELDMAP = Map {
     'r' => 1,
   };
+  const dict<int, dict<string, mixed>> SPEC = dict[
+    1 => dict[
+      'var' => 'r',
+      'type' => \TType::LST,
+      'etype' => \TType::I64,
+      'elem' => dict[
+        'type' => \TType::I64,
+      ],
+      'format' => 'collection',
+    ],
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'r' => 1,
+  ];
   const int STRUCTURAL_ID = 4817436577562933873;
   public Vector<int> $r;
 
@@ -539,13 +589,31 @@ class SomeService_binary_keyed_map_result implements \IThriftStruct {
       ],
       'val' => dict[
         'type' => \TType::I64,
-        ],
-        'format' => 'collection',
       ],
-    ];
+      'format' => 'collection',
+    ],
+  ];
   public static Map<string, int> $_TFIELDMAP = Map {
     'success' => 0,
   };
+  const dict<int, dict<string, mixed>> SPEC = dict[
+    0 => dict[
+      'var' => 'success',
+      'type' => \TType::MAP,
+      'ktype' => \TType::STRING,
+      'vtype' => \TType::I64,
+      'key' => dict[
+        'type' => \TType::STRING,
+      ],
+      'val' => dict[
+        'type' => \TType::I64,
+      ],
+      'format' => 'collection',
+    ],
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'success' => 0,
+  ];
   const int STRUCTURAL_ID = 5594803499509360192;
   public ?Map<string, int> $success;
 

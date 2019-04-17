@@ -26,17 +26,32 @@ class MyException1 extends \TException implements \IThriftStruct {
     1 => dict[
       'var' => 'message',
       'type' => \TType::STRING,
-      ],
+    ],
     2 => dict[
       'var' => 'code',
       'type' => \TType::I32,
       'enum' => 'MyEnum',
-      ],
-    ];
+    ],
+  ];
   public static Map<string, int> $_TFIELDMAP = Map {
     'message' => 1,
     'code' => 2,
   };
+  const dict<int, dict<string, mixed>> SPEC = dict[
+    1 => dict[
+      'var' => 'message',
+      'type' => \TType::STRING,
+    ],
+    2 => dict[
+      'var' => 'code',
+      'type' => \TType::I32,
+      'enum' => 'MyEnum',
+    ],
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'message' => 1,
+    'code' => 2,
+  ];
   const int STRUCTURAL_ID = 7711048519845400283;
   /**
    * Original thrift field:-
@@ -83,17 +98,32 @@ class MyException2 extends \TException implements \IThriftStruct {
     1 => dict[
       'var' => 'message',
       'type' => \TType::STRING,
-      ],
+    ],
     2 => dict[
       'var' => 'code',
       'type' => \TType::I32,
       'enum' => 'MyEnum',
-      ],
-    ];
+    ],
+  ];
   public static Map<string, int> $_TFIELDMAP = Map {
     'message' => 1,
     'code' => 2,
   };
+  const dict<int, dict<string, mixed>> SPEC = dict[
+    1 => dict[
+      'var' => 'message',
+      'type' => \TType::STRING,
+    ],
+    2 => dict[
+      'var' => 'code',
+      'type' => \TType::I32,
+      'enum' => 'MyEnum',
+    ],
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'message' => 1,
+    'code' => 2,
+  ];
   const int STRUCTURAL_ID = 3067783023341493113;
   /**
    * Original thrift field:-
@@ -140,17 +170,32 @@ class MyException3 extends \TException implements \IThriftStruct {
     1 => dict[
       'var' => 'message',
       'type' => \TType::STRING,
-      ],
+    ],
     2 => dict[
       'var' => 'code',
       'type' => \TType::I32,
       'enum' => 'MyEnum',
-      ],
-    ];
+    ],
+  ];
   public static Map<string, int> $_TFIELDMAP = Map {
     'message' => 1,
     'code' => 2,
   };
+  const dict<int, dict<string, mixed>> SPEC = dict[
+    1 => dict[
+      'var' => 'message',
+      'type' => \TType::STRING,
+    ],
+    2 => dict[
+      'var' => 'code',
+      'type' => \TType::I32,
+      'enum' => 'MyEnum',
+    ],
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'message' => 1,
+    'code' => 2,
+  ];
   const int STRUCTURAL_ID = 3517193566312570591;
   /**
    * Original thrift field:-
@@ -197,17 +242,32 @@ class MyException4 extends \TException implements \IThriftStruct {
     1 => dict[
       'var' => 'message',
       'type' => \TType::STRING,
-      ],
+    ],
     2 => dict[
       'var' => 'code',
       'type' => \TType::I32,
       'enum' => 'MyEnum',
-      ],
-    ];
+    ],
+  ];
   public static Map<string, int> $_TFIELDMAP = Map {
     'message' => 1,
     'code' => 2,
   };
+  const dict<int, dict<string, mixed>> SPEC = dict[
+    1 => dict[
+      'var' => 'message',
+      'type' => \TType::STRING,
+    ],
+    2 => dict[
+      'var' => 'code',
+      'type' => \TType::I32,
+      'enum' => 'MyEnum',
+    ],
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'message' => 1,
+    'code' => 2,
+  ];
   const int STRUCTURAL_ID = 3517193566312570591;
   /**
    * Original thrift field:-
@@ -254,16 +314,30 @@ class MyException5 extends \TException implements \IThriftStruct {
     1 => dict[
       'var' => 'message',
       'type' => \TType::STRING,
-      ],
+    ],
     2 => dict[
       'var' => 'code',
       'type' => \TType::I64,
-      ],
-    ];
+    ],
+  ];
   public static Map<string, int> $_TFIELDMAP = Map {
     'message' => 1,
     'code' => 2,
   };
+  const dict<int, dict<string, mixed>> SPEC = dict[
+    1 => dict[
+      'var' => 'message',
+      'type' => \TType::STRING,
+    ],
+    2 => dict[
+      'var' => 'code',
+      'type' => \TType::I64,
+    ],
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'message' => 1,
+    'code' => 2,
+  ];
   const int STRUCTURAL_ID = 7335721753390449361;
   /**
    * Original thrift field:-
