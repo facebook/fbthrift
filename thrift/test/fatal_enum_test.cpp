@@ -266,20 +266,12 @@ TEST(fatal_enum, field_annotations) {
     field1::map
   >();
   EXPECT_SAME<
-    fatal::list<
-      apache::thrift::annotation<field_annotation, some_other_text>,
-      apache::thrift::annotation<
-        field_structured_annotation,
-        field_structured_annotation_text,
-        fatal::list<
-          fatal::pair<a, foo>,
-          fatal::pair<b, std::integral_constant<std::uintmax_t, 567>>,
-          fatal::pair<c, std::true_type>
-        >
-      >
-    >,
-    field2::map
-  >();
+      fatal::list<
+          apache::thrift::annotation<field_annotation, some_other_text>,
+          apache::thrift::annotation<
+              field_structured_annotation,
+              field_structured_annotation_text>>,
+      field2::map>();
 }
 
 } // namespace cpp_reflection {

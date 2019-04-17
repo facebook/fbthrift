@@ -605,61 +605,25 @@ using hello = fatal::sequence<char, 'h', 'e', 'l', 'l', 'o'>;
 TEST(fatal_struct, structured_annotations) {
   using info = apache::thrift::reflect_struct<annotated>::annotations;
 
-  using i3 = std::integral_constant<std::intmax_t, -3>;
-  using i2 = std::integral_constant<std::intmax_t, -2>;
-  using i1 = std::integral_constant<std::intmax_t, -1>;
-  using u1 = std::integral_constant<std::uintmax_t, 1>;
-  using u2 = std::integral_constant<std::uintmax_t, 2>;
-  using u3 = std::integral_constant<std::uintmax_t, 3>;
-  using u10 = std::integral_constant<std::uintmax_t, 10>;
-
-  using bf = apache::thrift::annotation<
-    annotated_s_b_false, annotated_v_s_b_false, std::false_type
-  >;
-  using bt = apache::thrift::annotation<
-    annotated_s_b_true, annotated_v_s_b_true, std::true_type
-  >;
-  using i = apache::thrift::annotation<
-    annotated_s_int, annotated_v_s_int, u10
-  >;
-  using s = apache::thrift::annotation<
-    annotated_s_string, annotated_v_s_string, str::hello
-  >;
-  using il = apache::thrift::annotation<
-    annotated_s_int_list, annotated_v_s_int_list, fatal::list<i1, u2, u3>
-  >;
-  using sl = apache::thrift::annotation<
-    annotated_s_str_list, annotated_v_s_str_list,
-    fatal::list<str::a, str::b, str::c>
-  >;
-  using ml = apache::thrift::annotation<
-    annotated_s_mixed_list, annotated_v_s_mixed_list,
-    fatal::list<str::a, u1, str::b, u2>
-  >;
-  using im = apache::thrift::annotation<
-    annotated_s_int_map, annotated_v_s_int_map,
-    fatal::list<
-      fatal::pair<str::a, u1>,
-      fatal::pair<str::b, i2>,
-      fatal::pair<str::c, i3>
-    >
-  >;
-  using sm = apache::thrift::annotation<
-    annotated_s_str_map, annotated_v_s_str_map,
-    fatal::list<
-      fatal::pair<str::a, str::A>,
-      fatal::pair<str::b, str::B>,
-      fatal::pair<str::c, str::C>
-    >
-  >;
-  using mm = apache::thrift::annotation<
-    annotated_s_mixed_map, annotated_v_s_mixed_map,
-    fatal::list<
-      fatal::pair<str::a, i2>,
-      fatal::pair<str::b, str::B>,
-      fatal::pair<str::c, u3>
-    >
-  >;
+  using bf =
+      apache::thrift::annotation<annotated_s_b_false, annotated_v_s_b_false>;
+  using bt =
+      apache::thrift::annotation<annotated_s_b_true, annotated_v_s_b_true>;
+  using i = apache::thrift::annotation<annotated_s_int, annotated_v_s_int>;
+  using s =
+      apache::thrift::annotation<annotated_s_string, annotated_v_s_string>;
+  using il =
+      apache::thrift::annotation<annotated_s_int_list, annotated_v_s_int_list>;
+  using sl =
+      apache::thrift::annotation<annotated_s_str_list, annotated_v_s_str_list>;
+  using ml = apache::thrift::
+      annotation<annotated_s_mixed_list, annotated_v_s_mixed_list>;
+  using im =
+      apache::thrift::annotation<annotated_s_int_map, annotated_v_s_int_map>;
+  using sm =
+      apache::thrift::annotation<annotated_s_str_map, annotated_v_s_str_map>;
+  using mm = apache::thrift::
+      annotation<annotated_s_mixed_map, annotated_v_s_mixed_map>;
 
   EXPECT_SAME<bf, fatal::get<info::map, info::keys::s_b_false>>();
   EXPECT_SAME<bt, fatal::get<info::map, info::keys::s_b_true>>();
@@ -698,64 +662,28 @@ FATAL_S(annotated_v_m_str_map, "{\"a\": \"A\", \"b\": \"B\", \"c\": \"C\"}");
 FATAL_S(annotated_v_m_mixed_map, "{\"a\": -2, \"b\": \"B\", \"c\": 3}");
 
 TEST(fatal_struct, structured_member_annotations) {
-  using info = apache::thrift::reflect_struct<annotated>
-    ::members_annotations::a;
+  using info =
+      apache::thrift::reflect_struct<annotated>::members_annotations::a;
 
-  using i3 = std::integral_constant<std::intmax_t, -3>;
-  using i2 = std::integral_constant<std::intmax_t, -2>;
-  using i1 = std::integral_constant<std::intmax_t, -1>;
-  using u1 = std::integral_constant<std::uintmax_t, 1>;
-  using u2 = std::integral_constant<std::uintmax_t, 2>;
-  using u3 = std::integral_constant<std::uintmax_t, 3>;
-  using u10 = std::integral_constant<std::uintmax_t, 10>;
-
-  using bf = apache::thrift::annotation<
-    annotated_m_b_false, annotated_v_m_b_false, std::false_type
-  >;
-  using bt = apache::thrift::annotation<
-    annotated_m_b_true, annotated_v_m_b_true, std::true_type
-  >;
-  using i = apache::thrift::annotation<
-    annotated_m_int, annotated_v_m_int, u10
-  >;
-  using s = apache::thrift::annotation<
-    annotated_m_string, annotated_v_m_string, str::hello
-  >;
-  using il = apache::thrift::annotation<
-    annotated_m_int_list, annotated_v_m_int_list, fatal::list<i1, u2, u3>
-  >;
-  using sl = apache::thrift::annotation<
-    annotated_m_str_list, annotated_v_m_str_list,
-    fatal::list<str::a, str::b, str::c>
-  >;
-  using ml = apache::thrift::annotation<
-    annotated_m_mixed_list, annotated_v_m_mixed_list,
-    fatal::list<str::a, u1, str::b, u2>
-  >;
-  using im = apache::thrift::annotation<
-    annotated_m_int_map, annotated_v_m_int_map,
-    fatal::list<
-      fatal::pair<str::a, u1>,
-      fatal::pair<str::b, i2>,
-      fatal::pair<str::c, i3>
-    >
-  >;
-  using sm = apache::thrift::annotation<
-    annotated_m_str_map, annotated_v_m_str_map,
-    fatal::list<
-      fatal::pair<str::a, str::A>,
-      fatal::pair<str::b, str::B>,
-      fatal::pair<str::c, str::C>
-    >
-  >;
-  using mm = apache::thrift::annotation<
-    annotated_m_mixed_map, annotated_v_m_mixed_map,
-    fatal::list<
-      fatal::pair<str::a, i2>,
-      fatal::pair<str::b, str::B>,
-      fatal::pair<str::c, u3>
-    >
-  >;
+  using bf =
+      apache::thrift::annotation<annotated_m_b_false, annotated_v_m_b_false>;
+  using bt =
+      apache::thrift::annotation<annotated_m_b_true, annotated_v_m_b_true>;
+  using i = apache::thrift::annotation<annotated_m_int, annotated_v_m_int>;
+  using s =
+      apache::thrift::annotation<annotated_m_string, annotated_v_m_string>;
+  using il =
+      apache::thrift::annotation<annotated_m_int_list, annotated_v_m_int_list>;
+  using sl =
+      apache::thrift::annotation<annotated_m_str_list, annotated_v_m_str_list>;
+  using ml = apache::thrift::
+      annotation<annotated_m_mixed_list, annotated_v_m_mixed_list>;
+  using im =
+      apache::thrift::annotation<annotated_m_int_map, annotated_v_m_int_map>;
+  using sm =
+      apache::thrift::annotation<annotated_m_str_map, annotated_v_m_str_map>;
+  using mm = apache::thrift::
+      annotation<annotated_m_mixed_map, annotated_v_m_mixed_map>;
 
   EXPECT_SAME<bf, fatal::get<info::map, info::keys::m_b_false>>();
   EXPECT_SAME<bt, fatal::get<info::map, info::keys::m_b_true>>();

@@ -551,7 +551,7 @@ using try_reflect_module_tag = typename detail::
  *
  * @author: Marcelo Juchem <marcelo@fb.com>
  */
-template <typename Key, typename Value, typename Structured = void>
+template <typename Key, typename Value>
 struct annotation {
   /**
    * Represents the annotation key as a compile-time string, in the form of a
@@ -568,58 +568,6 @@ struct annotation {
    * @author: Marcelo Juchem <marcelo@fb.com>
    */
   using value = Value;
-
-  /**
-   * The structured annotation value, if it represents a valid JSON subset,
-   * otherwise it's `void`, representing a non-structured annotation.
-   *
-   * A valid JSON subset includes only integrals, booleans, strings, lists and
-   * dictionaries. No floating point numbers are supported.
-   *
-   * Dictionary keys will be laid out in sorted order.
-   *
-   * Example:
-   *
-   *  using info = reflect_struct<Foo>::annotations;
-   *  using a = fatal::get<info::map, info::keys::a>;
-   *
-   *  // yields `void`
-   *  using result1 = a::structured;
-   *
-   *  using b = fatal::get<info::map, info::keys::b>;
-   *
-   *  // yields `fatal::list<
-   *  //  fatal::pair<
-   *  //    fatal::sequence<char, 'b', 'a', 'r'>,
-   *  //    std::true_type
-   *  //  >,
-   *  //  fatal::pair<
-   *  //    fatal::sequence<char, 'f', 'o', 'o'>,
-   *  //    std::integral_constant<std::uintmax_t, 10>
-   *  //  >,
-   *  //  fatal::pair<
-   *  //    fatal::sequence<char, 'v', 'a', 'l', 'i', 'd'>,
-   *  //    fatal::sequence<char, 'f', 'o', 'r', 'm', 'a', 't'>
-   *  //  >,
-   *  //  fatal::pair<
-   *  //    fatal::sequence<char, 'x'>,
-   *  //    fatal::list<
-   *  //      std::integral_constant<std::intmax_t, -5>,
-   *  //      std::integral_constant<std::uintmax_t, 0>,
-   *  //      std::integral_constant<std::uintmax_t, 5>
-   *  //    >
-   *  //  >
-   *  // >`
-   *  using result2 = b::structured;
-   *
-   *  using c = fatal::get<info::map, info::keys::c>;
-   *
-   *  // yields `fatal::sequence<char, 'h', 'e', 'l', 'l', 'o'>`
-   *  using result3 = c::structured;
-   *
-   * @author: Marcelo Juchem <marcelo@fb.com>
-   */
-  using structured = Structured;
 };
 
 /**
