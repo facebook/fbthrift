@@ -28,10 +28,6 @@ enum enum3 {
   field1_3 = 1 (
     field_annotation = "field annotated",
   ),
-  field2_3 = 2 (
-    field_structured_annotation = '{"a": "foo", "b": 567, "c": true}',
-    field_annotation = "some other text",
-  ),
 } (
   one.here = "with some value associated",
   another.there = ".",

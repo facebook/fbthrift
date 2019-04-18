@@ -44,8 +44,7 @@ extern const _enum2_EnumMapFactory::NamesToValuesMapType _enum2_NAMES_TO_VALUES;
 
 enum class enum3 {
   field0_3 = 0,
-  field1_3 = 1,
-  field2_3 = 2
+  field1_3 = 1
 };
 
 using _enum3_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<enum3>;
@@ -155,7 +154,7 @@ template <> struct TEnumDataStorage< ::test_cpp2::cpp_reflection::enum3>;
 template <> struct TEnumTraits< ::test_cpp2::cpp_reflection::enum3> {
   using type =  ::test_cpp2::cpp_reflection::enum3;
 
-  static constexpr std::size_t const size = 3;
+  static constexpr std::size_t const size = 2;
   static folly::Range<type const*> const values;
   static folly::Range<folly::StringPiece const*> const names;
 
@@ -163,7 +162,7 @@ template <> struct TEnumTraits< ::test_cpp2::cpp_reflection::enum3> {
   static bool findValue(char const* name, type* out);
 
   static constexpr type min() { return type::field0_3; }
-  static constexpr type max() { return type::field2_3; }
+  static constexpr type max() { return type::field1_3; }
 };
 
 

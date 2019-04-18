@@ -59,7 +59,6 @@ struct test_cpp2_cpp_reflection_module__unique_strings_list {
   using field1_3 = ::fatal::sequence<char, 'f', 'i', 'e', 'l', 'd', '1', '_', '3'>;
   using field2 = ::fatal::sequence<char, 'f', 'i', 'e', 'l', 'd', '2'>;
   using field2_2 = ::fatal::sequence<char, 'f', 'i', 'e', 'l', 'd', '2', '_', '2'>;
-  using field2_3 = ::fatal::sequence<char, 'f', 'i', 'e', 'l', 'd', '2', '_', '3'>;
   using field3 = ::fatal::sequence<char, 'f', 'i', 'e', 'l', 'd', '3'>;
   using field4 = ::fatal::sequence<char, 'f', 'i', 'e', 'l', 'd', '4'>;
   using field5 = ::fatal::sequence<char, 'f', 'i', 'e', 'l', 'd', '5'>;
@@ -82,7 +81,6 @@ struct test_cpp2_cpp_reflection_module__unique_strings_list {
   using fieldQ = ::fatal::sequence<char, 'f', 'i', 'e', 'l', 'd', 'Q'>;
   using fieldR = ::fatal::sequence<char, 'f', 'i', 'e', 'l', 'd', 'R'>;
   using field_annotation = ::fatal::sequence<char, 'f', 'i', 'e', 'l', 'd', '_', 'a', 'n', 'n', 'o', 't', 'a', 't', 'i', 'o', 'n'>;
-  using field_structured_annotation = ::fatal::sequence<char, 'f', 'i', 'e', 'l', 'd', '_', 's', 't', 'r', 'u', 'c', 't', 'u', 'r', 'e', 'd', '_', 'a', 'n', 'n', 'o', 't', 'a', 't', 'i', 'o', 'n'>;
   using fields = ::fatal::sequence<char, 'f', 'i', 'e', 'l', 'd', 's'>;
   using g = ::fatal::sequence<char, 'g'>;
   using get = ::fatal::sequence<char, 'g', 'e', 't'>;

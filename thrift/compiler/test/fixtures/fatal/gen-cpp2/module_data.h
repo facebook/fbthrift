@@ -66,16 +66,14 @@ namespace test_cpp2 { namespace cpp_reflection {
 
 struct _enum3EnumDataStorage {
   using type = enum3;
-  static constexpr const std::size_t size = 3;
-  static constexpr const std::array<enum3, 3> values = {{
+  static constexpr const std::size_t size = 2;
+  static constexpr const std::array<enum3, 2> values = {{
     enum3::field0_3,
     enum3::field1_3,
-    enum3::field2_3,
   }};
-  static constexpr const std::array<folly::StringPiece, 3> names = {{
+  static constexpr const std::array<folly::StringPiece, 2> names = {{
     "field0_3",
     "field1_3",
-    "field2_3",
   }};
 };
 

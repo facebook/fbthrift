@@ -592,16 +592,6 @@ FATAL_S(annotated_v_s_int_map, "{\"a\": 1, \"b\": -2, \"c\": -3}");
 FATAL_S(annotated_v_s_str_map, "{\"a\": \"A\", \"b\": \"B\", \"c\": \"C\"}");
 FATAL_S(annotated_v_s_mixed_map, "{\"a\": -2, \"b\": \"B\", \"c\": 3}");
 
-namespace str {
-using a = fatal::sequence<char, 'a'>;
-using b = fatal::sequence<char, 'b'>;
-using c = fatal::sequence<char, 'c'>;
-using A = fatal::sequence<char, 'A'>;
-using B = fatal::sequence<char, 'B'>;
-using C = fatal::sequence<char, 'C'>;
-using hello = fatal::sequence<char, 'h', 'e', 'l', 'l', 'o'>;
-} // namespace str {
-
 TEST(fatal_struct, structured_annotations) {
   using info = apache::thrift::reflect_struct<annotated>::annotations;
 
