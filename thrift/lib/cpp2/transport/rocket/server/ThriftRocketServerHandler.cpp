@@ -175,15 +175,23 @@ void ThriftRocketServerHandler::handleRequestCommon(
     Payload&& payload,
     F&& makeRequest) {
   RequestRpcMetadata metadata;
-  bool parseOk = deserializeMetadata(*payload.metadata(), metadata);
+  const bool parseOk = deserializeMetadata(*payload.metadata(), metadata);
 
   auto data = std::move(payload).data();
   const bool validMetadata = parseOk && isMetadataValid(metadata);
   const bool badChecksum = validMetadata && metadata.crc32c_ref() &&
       (*metadata.crc32c_ref() != checksum::crc32c(*data));
-  auto request = makeRequest(std::move(metadata));
 
   if (validMetadata && !badChecksum) {
+    if (UNLIKELY(serverConfigs_.isOverloaded(
+            metadata.otherMetadata_ref() ? &*metadata.otherMetadata_ref()
+                                         : nullptr,
+            &*metadata.name_ref()))) {
+      handleRequestOverloadedServer(makeRequest(std::move(metadata)));
+      return;
+    }
+
+    auto request = makeRequest(std::move(metadata));
     const auto protocolId = request->getProtoId();
     auto* const cpp2ReqCtx = request->getRequestContext();
     cpp2Processor_->process(
@@ -194,9 +202,9 @@ void ThriftRocketServerHandler::handleRequestCommon(
         worker_->getEventBase(),
         threadManager_.get());
   } else if (!validMetadata) {
-    handleRequestWithBadMetadata(std::move(request));
+    handleRequestWithBadMetadata(makeRequest(std::move(metadata)));
   } else {
-    handleRequestWithBadChecksum(std::move(request));
+    handleRequestWithBadChecksum(makeRequest(std::move(metadata)));
   }
 }
 
@@ -215,6 +223,14 @@ void ThriftRocketServerHandler::handleRequestWithBadChecksum(
       folly::make_exception_wrapper<TApplicationException>(
           TApplicationException::CHECKSUM_MISMATCH, "Checksum mismatch"),
       "Corrupted request");
+}
+
+void ThriftRocketServerHandler::handleRequestOverloadedServer(
+    std::unique_ptr<ThriftRequestCore> request) {
+  request->sendErrorWrapped(
+      folly::make_exception_wrapper<TApplicationException>(
+          TApplicationException::LOADSHEDDING, "Loadshedding request"),
+      serverConfigs_.getOverloadedErrorCode());
 }
 
 } // namespace rocket

@@ -82,6 +82,7 @@ add_library(
   async/PcapLoggingHandler.cpp
   async/RequestChannel.cpp
   async/ResponseChannel.cpp
+  async/RocketClientChannel.cpp
   FieldRef.cpp
   server/BaseThriftServer.cpp
   server/Cpp2Connection.cpp
@@ -92,6 +93,24 @@ add_library(
   transport/core/ThriftProcessor.cpp
   transport/core/ThriftClient.cpp
   transport/core/ThriftClientCallback.cpp
+  transport/rocket/Types.cpp
+  transport/rocket/client/RequestContext.cpp
+  transport/rocket/client/RequestContextQueue.cpp
+  transport/rocket/client/RocketClient.cpp
+  transport/rocket/client/RocketClientFlowable.cpp
+  transport/rocket/framing/ErrorCode.cpp
+  transport/rocket/framing/Frames.cpp
+  transport/rocket/framing/Serializer.cpp
+  transport/rocket/framing/Util.cpp
+  transport/rocket/server/RocketServerConnection.cpp
+  transport/rocket/server/RocketServerFrameContext.cpp
+  transport/rocket/server/RocketServerStreamSubscriber.cpp
+  transport/rocket/server/RocketThriftRequests.cpp
+  transport/rocket/server/ThriftRocketServerHandler.cpp
+  transport/rsocket/server/ManagedRSocketConnection.cpp
+  transport/rsocket/server/RSResponder.cpp
+  transport/rsocket/server/RSRoutingHandler.cpp
+  transport/rsocket/server/RSThriftRequests.cpp
   util/Checksum.cpp
   util/ScopedServerInterfaceThread.cpp
   util/ScopedServerThread.cpp

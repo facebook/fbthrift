@@ -39,6 +39,7 @@
 #include <thrift/lib/cpp2/async/HTTPClientChannel.h>
 #include <thrift/lib/cpp2/async/HeaderClientChannel.h>
 #include <thrift/lib/cpp2/async/RequestChannel.h>
+#include <thrift/lib/cpp2/async/RocketClientChannel.h>
 #include <thrift/lib/cpp2/server/Cpp2Connection.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
 #include <thrift/lib/cpp2/test/gen-cpp2/TestService.h>
@@ -335,7 +336,9 @@ TEST(ThriftServer, HeaderTest) {
   }
 }
 
-TEST(ThriftServer, LoadHeaderTest) {
+namespace {
+template <class MakeClientFunc>
+void doLoadHeaderTest(MakeClientFunc&& makeClient) {
   class Callback : public RequestCallback {
    public:
     explicit Callback(bool isLoadExpected) : isLoadExpected_(isLoadExpected) {}
@@ -360,7 +363,7 @@ TEST(ThriftServer, LoadHeaderTest) {
 
   ScopedServerInterfaceThread runner(std::make_shared<TestInterface>());
   folly::EventBase base;
-  auto client = runner.newClient<TestServiceAsyncClient>(&base);
+  auto client = makeClient(runner, &base);
 
   {
     LOG(ERROR) << "========= no load header ==========";
@@ -397,6 +400,22 @@ TEST(ThriftServer, LoadHeaderTest) {
 
   base.loop();
 }
+} // namespace
+
+TEST(ThriftServer, LoadHeaderTest_HeaderClientChannel) {
+  doLoadHeaderTest([](auto& runner, auto* evb) {
+    return runner.template newClient<TestServiceAsyncClient>(evb);
+  });
+}
+
+TEST(ThriftServer, LoadHeaderTest_RocketClientChannel) {
+  doLoadHeaderTest([](auto& runner, auto* evb) {
+    return runner.template newClient<TestServiceAsyncClient>(
+        evb, [](auto socket) mutable {
+          return RocketClientChannel::newChannel(std::move(socket));
+        });
+  });
+}
 
 enum LatencyHeaderStatus {
   EXPECTED,
@@ -432,10 +451,12 @@ TEST(ThriftServer, LatencyHeader_LoggingDisabled) {
       rpcOptions.getReadHeaders(), LatencyHeaderStatus::NOT_EXPECTED);
 }
 
-TEST(ThriftServer, LatencyHeader_ServerOverloaded) {
+namespace {
+template <class MakeClientFunc>
+void doServerOverloadedTest(MakeClientFunc&& makeClient) {
   ScopedServerInterfaceThread runner(std::make_shared<TestInterface>());
   folly::EventBase base;
-  auto client = runner.newClient<TestServiceAsyncClient>(&base);
+  auto client = makeClient(runner, &base);
 
   // force overloaded
   runner.getThriftServer().setIsOverloaded(
@@ -451,6 +472,22 @@ TEST(ThriftServer, LatencyHeader_ServerOverloaded) {
   // Latency headers are NOT set, when server is overloaded
   validateLatencyHeaders(
       rpcOptions.getReadHeaders(), LatencyHeaderStatus::NOT_EXPECTED);
+}
+} // namespace
+
+TEST(ThriftServer, LatencyHeader_ServerOverloaded_HeaderClientChannel) {
+  doServerOverloadedTest([](auto& runner, auto* evb) {
+    return runner.template newClient<TestServiceAsyncClient>(evb);
+  });
+}
+
+TEST(ThriftServer, LatencyHeader_ServerOverloaded_RocketClientChannel) {
+  doServerOverloadedTest([](auto& runner, auto* evb) {
+    return runner.template newClient<TestServiceAsyncClient>(
+        evb, [](auto socket) mutable {
+          return RocketClientChannel::newChannel(std::move(socket));
+        });
+  });
 }
 
 TEST(ThriftServer, LatencyHeader_ClientTimeout) {
@@ -659,27 +696,25 @@ TEST(ThriftServer, ConnectionIdleTimeoutTest) {
   base.loop();
 }
 
-namespace {
-class Callback : public RequestCallback {
-  void requestSent() override {
-    ADD_FAILURE();
-  }
-  void replyReceived(ClientReceiveState&&) override {
-    ADD_FAILURE();
-  }
-  void requestError(ClientReceiveState&& state) override {
-    EXPECT_TRUE(state.exception());
-    auto ex =
-        state.exception()
-            .get_exception<apache::thrift::transport::TTransportException>();
-    ASSERT_TRUE(ex);
-    EXPECT_THAT(
-        ex->what(), testing::StartsWith("transport is closed in write()"));
-  }
-};
-} // namespace
-
 TEST(ThriftServer, BadSendTest) {
+  class Callback : public RequestCallback {
+    void requestSent() override {
+      ADD_FAILURE();
+    }
+    void replyReceived(ClientReceiveState&&) override {
+      ADD_FAILURE();
+    }
+    void requestError(ClientReceiveState&& state) override {
+      EXPECT_TRUE(state.exception());
+      auto ex =
+          state.exception()
+              .get_exception<apache::thrift::transport::TTransportException>();
+      ASSERT_TRUE(ex);
+      EXPECT_THAT(
+          ex->what(), testing::StartsWith("transport is closed in write()"));
+    }
+  };
+
   TestThriftServerFactory<TestInterface> factory;
   ScopedServerThread sst(factory.create());
   folly::EventBase base;

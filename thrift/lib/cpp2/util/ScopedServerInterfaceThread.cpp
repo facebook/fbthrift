@@ -17,14 +17,17 @@
 #include <thrift/lib/cpp2/util/ScopedServerInterfaceThread.h>
 
 #include <folly/SocketAddress.h>
+
 #include <thrift/lib/cpp2/server/BaseThriftServer.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
+#include <thrift/lib/cpp2/transport/rsocket/server/RSRoutingHandler.h>
 
 using namespace std;
 using namespace folly;
 using namespace apache::thrift::concurrency;
 
-namespace apache { namespace thrift {
+namespace apache {
+namespace thrift {
 
 ScopedServerInterfaceThread::ScopedServerInterfaceThread(
     shared_ptr<AsyncProcessorFactory> apf,
@@ -39,6 +42,8 @@ ScopedServerInterfaceThread::ScopedServerInterfaceThread(
   ts->setProcessorFactory(move(apf));
   ts->setNumIOWorkerThreads(1);
   ts->setThreadManager(tm);
+  ts->enableRocketServer(true);
+  ts->addRoutingHandler(std::make_unique<RSRoutingHandler>());
   if (configCb) {
     configCb(*ts);
   }
@@ -80,4 +85,5 @@ uint16_t ScopedServerInterfaceThread::getPort() const {
   return getAddress().getPort();
 }
 
-}}
+} // namespace thrift
+} // namespace apache

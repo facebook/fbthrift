@@ -14,20 +14,29 @@
  * limitations under the License.
  */
 
-#ifndef THRIFT_UTIL_SCOPEDSERVEREVENTBASETHREAD_H
-#define THRIFT_UTIL_SCOPEDSERVEREVENTBASETHREAD_H
+#pragma once
+
+#include <memory>
 
 #include <folly/Function.h>
 #include <folly/SocketAddress.h>
 #include <folly/io/async/EventBase.h>
-#include <thrift/lib/cpp2/util/ScopedServerThread.h>
-#include <memory>
 
-namespace apache { namespace thrift {
+#include <thrift/lib/cpp/async/TAsyncSocket.h>
+#include <thrift/lib/cpp2/async/ClientChannel.h>
+#include <thrift/lib/cpp2/async/HeaderClientChannel.h>
+#include <thrift/lib/cpp2/util/ScopedServerThread.h>
+
+namespace apache {
+namespace thrift {
 
 class AsyncProcessorFactory;
 class BaseThriftServer;
 class ThriftServer;
+
+namespace async {
+class TAsyncSocket;
+} // namespace async
 
 /**
  * ScopedServerInterfaceThread spawns a thrift cpp2 server in a new thread.
@@ -37,6 +46,9 @@ class ThriftServer;
 class ScopedServerInterfaceThread {
  public:
   using ServerConfigCb = folly::Function<void(ThriftServer&)>;
+  using MakeChannelFunc =
+      folly::Function<ClientChannel::Ptr(async::TAsyncSocket::UniquePtr)>;
+
   ScopedServerInterfaceThread(
       std::shared_ptr<AsyncProcessorFactory> apf,
       folly::SocketAddress const& addr,
@@ -55,7 +67,12 @@ class ScopedServerInterfaceThread {
   uint16_t getPort() const;
 
   template <class AsyncClientT>
-  std::unique_ptr<AsyncClientT> newClient() const;
+  std::unique_ptr<AsyncClientT> newClient(
+      folly::Executor* callbackExecutor = nullptr,
+      MakeChannelFunc channelFunc = [](auto socket) mutable {
+        return HeaderClientChannel::newChannel(std::move(socket));
+      }) const;
+
   /**
    * DEPRECATED
    *
@@ -77,8 +94,7 @@ class ScopedServerInterfaceThread {
   std::shared_ptr<folly::IOExecutor> ioExecutor_;
 };
 
-}}
+} // namespace thrift
+} // namespace apache
 
 #include <thrift/lib/cpp2/util/ScopedServerInterfaceThread-inl.h>
-
-#endif
