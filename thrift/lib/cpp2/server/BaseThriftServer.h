@@ -413,7 +413,7 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
     maxRequests_.set(maxRequests, source);
   }
 
-  uint64_t getMaxResponseSize() const override {
+  uint64_t getMaxResponseSize() const final {
     return maxResponseSize_.get();
   }
 
@@ -464,7 +464,7 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
   }
 
   const std::shared_ptr<apache::thrift::server::TServerObserver>& getObserver()
-      const override {
+      const final {
     return observer_;
   }
 
@@ -592,7 +592,7 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    *
    * @return number of IO worker threads
    */
-  size_t getNumIOWorkerThreads() const override {
+  size_t getNumIOWorkerThreads() const final {
     return nWorkers_.get();
   }
 
@@ -747,7 +747,7 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    * If there is no request for the stream for the given time period, then the
    * stream will create timeout error.
    */
-  std::chrono::milliseconds getStreamExpireTime() const override {
+  std::chrono::milliseconds getStreamExpireTime() const final {
     return streamExpireTime_.get();
   }
 
@@ -821,7 +821,7 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
       std::chrono::milliseconds clientQueueTimeoutMs,
       std::chrono::milliseconds clientTimeoutMs,
       std::chrono::milliseconds& queueTimeout,
-      std::chrono::milliseconds& taskTimeout) const override;
+      std::chrono::milliseconds& taskTimeout) const final;
 
   /**
    * Set the listen backlog. Refer to the comment on listenBacklog_ member for
@@ -847,7 +847,7 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
     overloadedErrorCode_ = errorCode;
   }
 
-  const std::string& getOverloadedErrorCode() const override {
+  const std::string& getOverloadedErrorCode() const final {
     return overloadedErrorCode_;
   }
 

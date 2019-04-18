@@ -265,7 +265,7 @@ class ProxygenThriftServer : public BaseThriftServer,
 
   bool isOverloaded(
       const transport::THeader::StringToStringMap* readHeaders = nullptr,
-      const std::string* method = nullptr) const override;
+      const std::string* method = nullptr) const final;
 
   /**
    * Get the number of connections dropped by the AsyncServerSocket
