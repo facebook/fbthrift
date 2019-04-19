@@ -34,6 +34,8 @@ SOFTWARE.
 #include "token.hpp"
 #include "utils.hpp"
 
+namespace apache {
+namespace thrift {
 namespace mstch {
 
 class template_type {
@@ -62,3 +64,5 @@ class template_type {
 };
 
 } // namespace mstch
+} // namespace thrift
+} // namespace apache

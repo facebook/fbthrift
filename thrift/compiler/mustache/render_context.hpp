@@ -38,6 +38,8 @@ SOFTWARE.
 #include "state/render_state.hpp"
 #include "template_type.hpp"
 
+namespace apache {
+namespace thrift {
 namespace mstch {
 
 class render_context {
@@ -80,3 +82,5 @@ class render_context {
 };
 
 } // namespace mstch
+} // namespace thrift
+} // namespace apache

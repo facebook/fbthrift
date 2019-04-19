@@ -30,6 +30,8 @@ SOFTWARE.
 
 #include <boost/variant/apply_visitor.hpp>
 
+namespace apache {
+namespace thrift {
 namespace mstch {
 
 using citer = std::string::const_iterator;
@@ -47,3 +49,5 @@ auto visit(Args&&... args)
 }
 
 } // namespace mstch
+} // namespace thrift
+} // namespace apache

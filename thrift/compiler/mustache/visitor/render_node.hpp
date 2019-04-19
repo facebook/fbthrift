@@ -35,6 +35,8 @@ SOFTWARE.
 #include "render_context.hpp"
 #include "utils.hpp"
 
+namespace apache {
+namespace thrift {
 namespace mstch {
 
 class render_node : public boost::static_visitor<std::string> {
@@ -63,8 +65,9 @@ class render_node : public boost::static_visitor<std::string> {
   }
 
   std::string operator()(const lambda& value) const {
-    template_type interpreted{value(
-        [this](const mstch::node& n) { return visit(render_node(m_ctx), n); })};
+    template_type interpreted{value([this](const mstch::node& n) {
+      return mstch::visit(render_node(m_ctx), n);
+    })};
     auto rendered = render_context::push(m_ctx).render(interpreted);
     return (m_flag == flag::escape_html) ? html_escape(rendered) : rendered;
   }
@@ -79,3 +82,5 @@ class render_node : public boost::static_visitor<std::string> {
 };
 
 } // namespace mstch
+} // namespace thrift
+} // namespace apache

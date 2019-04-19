@@ -33,6 +33,8 @@ SOFTWARE.
 #include "has_token.hpp"
 #include "mstch/mstch.hpp"
 
+namespace apache {
+namespace thrift {
 namespace mstch {
 
 class get_token : public boost::static_visitor<const mstch::node&> {
@@ -59,3 +61,5 @@ class get_token : public boost::static_visitor<const mstch::node&> {
 };
 
 } // namespace mstch
+} // namespace thrift
+} // namespace apache

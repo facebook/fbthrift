@@ -30,9 +30,9 @@ SOFTWARE.
 #include "state/outside_section.hpp"
 #include "visitor/get_token.hpp"
 
-using namespace mstch;
+using namespace apache::thrift::mstch;
 
-const mstch::node render_context::null_node;
+const node render_context::null_node;
 
 render_context::push::push(render_context& context, const mstch::node& node)
     : m_context(context) {
@@ -58,21 +58,21 @@ render_context::render_context(
   m_state.push(std::unique_ptr<render_state>(new outside_section));
 }
 
-const mstch::node& render_context::find_node(
+const node& render_context::find_node(
     const std::string& token,
-    std::list<node const*> current_nodes) {
+    std::list<mstch::node const*> current_nodes) {
   if (token != "." && token.find('.') != std::string::npos)
     return find_node(
         token.substr(token.rfind('.') + 1),
         {&find_node(token.substr(0, token.rfind('.')), current_nodes)});
   else
     for (auto& node : current_nodes)
-      if (visit(has_token(token), *node))
-        return visit(get_token(token, *node), *node);
+      if (mstch::visit(has_token(token), *node))
+        return mstch::visit(get_token(token, *node), *node);
   return null_node;
 }
 
-const mstch::node& render_context::get_node(const std::string& token) {
+const node& render_context::get_node(const std::string& token) {
   return find_node(token, m_node_ptrs);
 }
 

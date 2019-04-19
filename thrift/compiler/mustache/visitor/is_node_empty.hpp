@@ -32,6 +32,8 @@ SOFTWARE.
 
 #include "mstch/mstch.hpp"
 
+namespace apache {
+namespace thrift {
 namespace mstch {
 
 class is_node_empty : public boost::static_visitor<bool> {
@@ -67,3 +69,5 @@ class is_node_empty : public boost::static_visitor<bool> {
 };
 
 } // namespace mstch
+} // namespace thrift
+} // namespace apache

@@ -31,7 +31,7 @@ SOFTWARE.
 #include "mstch/mstch.hpp"
 #include "render_context.hpp"
 
-using namespace mstch;
+using namespace apache::thrift::mstch;
 
 std::function<std::string(const std::string&)> mstch::config::escape;
 

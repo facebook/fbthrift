@@ -32,6 +32,8 @@ SOFTWARE.
 
 #include "token.hpp"
 
+namespace apache {
+namespace thrift {
 namespace mstch {
 
 class render_context;
@@ -43,3 +45,5 @@ class render_state {
 };
 
 } // namespace mstch
+} // namespace thrift
+} // namespace apache

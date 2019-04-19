@@ -30,6 +30,8 @@ SOFTWARE.
 
 #include "render_state.hpp"
 
+namespace apache {
+namespace thrift {
 namespace mstch {
 
 class outside_section : public render_state {
@@ -38,3 +40,5 @@ class outside_section : public render_state {
 };
 
 } // namespace mstch
+} // namespace thrift
+} // namespace apache

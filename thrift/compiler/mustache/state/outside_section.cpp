@@ -32,7 +32,7 @@ SOFTWARE.
 #include "render_context.hpp"
 #include "visitor/render_node.hpp"
 
-using namespace mstch;
+using namespace apache::thrift::mstch;
 
 std::string outside_section::render(render_context& ctx, const token& token) {
   using flag = render_node::flag;
@@ -44,10 +44,11 @@ std::string outside_section::render(render_context& ctx, const token& token) {
       ctx.set_state<in_section>(in_section::type::inverted, token);
       break;
     case token::type::variable:
-      return visit(
+      return mstch::visit(
           render_node(ctx, flag::escape_html), ctx.get_node(token.name()));
     case token::type::unescaped_variable:
-      return visit(render_node(ctx, flag::none), ctx.get_node(token.name()));
+      return mstch::visit(
+          render_node(ctx, flag::none), ctx.get_node(token.name()));
     case token::type::text:
       return token.raw();
     case token::type::partial:

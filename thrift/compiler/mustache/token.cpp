@@ -29,7 +29,7 @@ SOFTWARE.
 #include "token.hpp"
 #include "utils.hpp"
 
-using namespace mstch;
+using namespace apache::thrift::mstch;
 
 token::type token::token_info(char c) {
   switch (c) {

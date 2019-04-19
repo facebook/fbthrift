@@ -30,6 +30,8 @@ SOFTWARE.
 
 #include <string>
 
+namespace apache {
+namespace thrift {
 namespace mstch {
 
 using delim_type = std::pair<std::string, std::string>;
@@ -88,3 +90,5 @@ class token {
 };
 
 } // namespace mstch
+} // namespace thrift
+} // namespace apache

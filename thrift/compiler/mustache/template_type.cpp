@@ -28,7 +28,7 @@ SOFTWARE.
 */
 #include "template_type.hpp"
 
-using namespace mstch;
+using namespace apache::thrift::mstch;
 
 template_type::template_type(const std::string& str, const delim_type& delims)
     : m_open(delims.first), m_close(delims.second) {

@@ -36,6 +36,8 @@ SOFTWARE.
 
 #include <boost/variant.hpp>
 
+namespace apache {
+namespace thrift {
 namespace mstch {
 
 struct config {
@@ -141,3 +143,5 @@ std::string render(
         std::map<std::string, std::string>());
 
 } // namespace mstch
+} // namespace thrift
+} // namespace apache

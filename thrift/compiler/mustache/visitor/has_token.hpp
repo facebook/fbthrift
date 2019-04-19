@@ -32,6 +32,8 @@ SOFTWARE.
 
 #include "mstch/mstch.hpp"
 
+namespace apache {
+namespace thrift {
 namespace mstch {
 
 class has_token : public boost::static_visitor<bool> {
@@ -56,3 +58,5 @@ class has_token : public boost::static_visitor<bool> {
 };
 
 } // namespace mstch
+} // namespace thrift
+} // namespace apache

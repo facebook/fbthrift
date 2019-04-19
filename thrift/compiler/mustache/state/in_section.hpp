@@ -34,6 +34,8 @@ SOFTWARE.
 #include "render_state.hpp"
 #include "template_type.hpp"
 
+namespace apache {
+namespace thrift {
 namespace mstch {
 
 class in_section : public render_state {
@@ -50,3 +52,5 @@ class in_section : public render_state {
 };
 
 } // namespace mstch
+} // namespace thrift
+} // namespace apache
