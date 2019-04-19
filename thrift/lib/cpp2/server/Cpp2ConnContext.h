@@ -58,7 +58,10 @@ class Cpp2ConnContext : public apache::thrift::server::TConnectionContext {
     }
     if (transport) {
       transport->getLocalAddress(&localAddress_);
-      peerCert_ = transport->getPeerCert();
+      auto cert = transport->getPeerCertificate();
+      if (cert) {
+        peerCert_ = cert->getX509();
+      }
       securityProtocol_ = transport->getSecurityProtocol();
     }
 
