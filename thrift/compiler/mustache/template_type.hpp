@@ -31,8 +31,8 @@ SOFTWARE.
 #include <string>
 #include <vector>
 
-#include "token.hpp"
-#include "utils.hpp"
+#include "thrift/compiler/mustache/token.hpp"
+#include "thrift/compiler/mustache/utils.hpp"
 
 namespace apache {
 namespace thrift {

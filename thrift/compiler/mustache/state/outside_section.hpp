@@ -28,7 +28,7 @@ SOFTWARE.
 */
 #pragma once
 
-#include "render_state.hpp"
+#include "thrift/compiler/mustache/state/render_state.hpp"
 
 namespace apache {
 namespace thrift {

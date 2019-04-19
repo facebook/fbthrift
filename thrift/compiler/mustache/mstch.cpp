@@ -26,12 +26,10 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
-#include <iostream>
+#include "thrift/compiler/mustache/mstch.hpp"
+#include "thrift/compiler/mustache/render_context.hpp"
 
-#include "mstch/mstch.hpp"
-#include "render_context.hpp"
-
-using namespace apache::thrift::mstch;
+using namespace apache::thrift;
 
 std::function<std::string(const std::string&)> mstch::config::escape;
 

@@ -30,7 +30,7 @@ SOFTWARE.
 
 #include <boost/variant/static_visitor.hpp>
 
-#include "mstch/mstch.hpp"
+#include "thrift/compiler/mustache/mstch.hpp"
 
 namespace apache {
 namespace thrift {

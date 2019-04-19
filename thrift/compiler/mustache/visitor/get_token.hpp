@@ -30,8 +30,8 @@ SOFTWARE.
 
 #include <boost/variant/static_visitor.hpp>
 
-#include "has_token.hpp"
-#include "mstch/mstch.hpp"
+#include "thrift/compiler/mustache/mstch.hpp"
+#include "thrift/compiler/mustache/visitor/has_token.hpp"
 
 namespace apache {
 namespace thrift {

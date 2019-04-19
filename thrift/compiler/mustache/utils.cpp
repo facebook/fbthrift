@@ -26,8 +26,10 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
-#include "utils.hpp"
-#include "mstch/mstch.hpp"
+#include "thrift/compiler/mustache/utils.hpp"
+#include "thrift/compiler/mustache/mstch.hpp"
+
+using namespace apache::thrift;
 
 mstch::citer mstch::first_not_ws(mstch::citer begin, mstch::citer end) {
   for (auto it = begin; it != end; ++it)
