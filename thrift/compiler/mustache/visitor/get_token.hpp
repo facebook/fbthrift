@@ -28,57 +28,36 @@ SOFTWARE.
 */
 #pragma once
 
-#include <sstream>
 #include <boost/variant/static_visitor.hpp>
 
-#include "render_context.hpp"
 #include "mstch/mstch.hpp"
-#include "utils.hpp"
+#include "has_token.hpp"
 
 namespace mstch {
 
-class render_node: public boost::static_visitor<std::string> {
+class get_token: public boost::static_visitor<const mstch::node&> {
  public:
-  enum class flag { none, escape_html };
-  render_node(render_context& ctx, flag p_flag = flag::none):
-      m_ctx(ctx), m_flag(p_flag)
+  get_token(const std::string& token, const mstch::node& node):
+      m_token(token), m_node(node)
   {
   }
 
   template<class T>
-  std::string operator()(const T&) const {
-    return "";
+  const mstch::node& operator()(const T&) const {
+    return m_node;
   }
 
-  std::string operator()(const int& value) const {
-    return std::to_string(value);
+  const mstch::node& operator()(const map& map) const {
+    return map.at(m_token);
   }
 
-  std::string operator()(const double& value) const {
-    std::stringstream ss;
-    ss << value;
-    return ss.str();
-  }
-
-  std::string operator()(const bool& value) const {
-    return value ? "true" : "false";
-  }
-
-  std::string operator()(const lambda& value) const {
-    template_type interpreted{value([this](const mstch::node& n) {
-      return visit(render_node(m_ctx), n);
-    })};
-    auto rendered = render_context::push(m_ctx).render(interpreted);
-    return (m_flag == flag::escape_html) ? html_escape(rendered) : rendered;
-  }
-
-  std::string operator()(const std::string& value) const {
-    return (m_flag == flag::escape_html) ? html_escape(value) : value;
+  const mstch::node& operator()(const std::shared_ptr<object>& object) const {
+    return object->at(m_token);
   }
 
  private:
-  render_context& m_ctx;
-  flag m_flag;
+  const std::string& m_token;
+  const mstch::node& m_node;
 };
 
 }
