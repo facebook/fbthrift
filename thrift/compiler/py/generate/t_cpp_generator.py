@@ -252,7 +252,7 @@ class CppGenerator(t_generator.Generator):
         items['enum'] = self._generate_fatal_enum(program)
         items['union'] = self._generate_fatal_union(program)
         items['struct'] = self._generate_fatal_struct(program)
-        items['constant'] = self._generate_fatal_constant(program)
+        items['constant'] = self._dump_fatal_constant(program)
         items['service'] = self._generate_fatal_service(program)
 
         # Unique Compile-time Strings
@@ -1003,22 +1003,19 @@ class CppGenerator(t_generator.Generator):
 
         return (order, result)
 
-    def _generate_fatal_constant(self, program):
+    def _dump_fatal_constant(self, program):
         name = self._program.name
         ns = self._get_original_namespace()
 
-        with self._make_context(name + '_fatal_constant') as context, \
+        with self._make_context(name + '_fatal_constant', "dummy") as context, \
                 get_global_scope(CppPrimitiveFactory, context) as sg:
-            sg('#include "{0}"'.format(self._with_include_prefix(
-                self._program, name + '_fatal_types.h')))
-            sg()
             if len(ns) > 0:
                 with sg.namespace(ns).scope as sns:
-                    return self._generate_fatal_constant_impl(sns, program)
+                    return self._dump_fatal_constant_impl(sns, program)
             else:
-                return self._generate_fatal_constant_impl(sg, program)
+                return self._dump_fatal_constant_impl(sg, program)
 
-    def _generate_fatal_constant_impl(self, sns, program):
+    def _dump_fatal_constant_impl(self, sns, program):
         result = []
         for i in program.consts:
             string_ref = self._set_fatal_string(i.name)
