@@ -1,0 +1,261 @@
+/*
+ * Copyright 2019-present Facebook, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+#include <gtest/gtest.h>
+
+#include <thrift/compiler/mustache/mstch.hpp>
+
+using namespace apache::thrift;
+// Mustache-free templates should render as-is.
+TEST(InterpolationTEST, NoInterpolation) {
+  EXPECT_EQ(
+      "Hello from {Mustache}!\n",
+      mstch::render("Hello from {Mustache}!\n", mstch::node()));
+}
+// Unadorned tags should interpolate content into the template.
+TEST(InterpolationTEST, BasicInterpolation) {
+  EXPECT_EQ(
+      "Hello, world!\n",
+      mstch::render(
+          "Hello, {{subject}}!\n",
+          mstch::map{{"subject", std::string("world")}}));
+}
+// Basic interpolation should be HTML escaped.
+TEST(InterpolationTEST, HTMLEscaping) {
+  EXPECT_EQ(
+      "These characters should be HTML escaped: &amp; &quot; &lt; &gt;\n",
+      mstch::render(
+          "These characters should be HTML escaped: {{forbidden}}\n",
+          mstch::map{{"forbidden", std::string("& \" < >")}}));
+}
+// Triple mustaches should interpolate without HTML escaping.
+TEST(InterpolationTEST, TripleMustache) {
+  EXPECT_EQ(
+      "These characters should not be HTML escaped: & \" < >\n",
+      mstch::render(
+          "These characters should not be HTML escaped: {{{forbidden}}}\n",
+          mstch::map{{"forbidden", std::string("& \" < >")}}));
+}
+// Ampersand should interpolate without HTML escaping.
+TEST(InterpolationTEST, Ampersand) {
+  EXPECT_EQ(
+      "These characters should not be HTML escaped: & \" < >\n",
+      mstch::render(
+          "These characters should not be HTML escaped: {{&forbidden}}\n",
+          mstch::map{{"forbidden", std::string("& \" < >")}}));
+}
+// Integers should interpolate seamlessly.
+TEST(InterpolationTEST, BasicIntegerInterpolation) {
+  EXPECT_EQ(
+      "\"85 miles an hour!\"",
+      mstch::render("\"{{mph}} miles an hour!\"", mstch::map{{"mph", 85}}));
+}
+// Integers should interpolate seamlessly.
+TEST(InterpolationTEST, TripleMustacheIntegerInterpolation) {
+  EXPECT_EQ(
+      "\"85 miles an hour!\"",
+      mstch::render("\"{{{mph}}} miles an hour!\"", mstch::map{{"mph", 85}}));
+}
+// Integers should interpolate seamlessly.
+TEST(InterpolationTEST, AmpersandIntegerInterpolation) {
+  EXPECT_EQ(
+      "\"85 miles an hour!\"",
+      mstch::render("\"{{&mph}} miles an hour!\"", mstch::map{{"mph", 85}}));
+}
+// Decimals should interpolate seamlessly with proper significance.
+TEST(InterpolationTEST, BasicDecimalInterpolation) {
+  EXPECT_EQ(
+      "\"1.21 jiggawatts!\"",
+      mstch::render("\"{{power}} jiggawatts!\"", mstch::map{{"power", 1.21}}));
+}
+// Decimals should interpolate seamlessly with proper significance.
+TEST(InterpolationTEST, TripleMustacheDecimalInterpolation) {
+  EXPECT_EQ(
+      "\"1.21 jiggawatts!\"",
+      mstch::render(
+          "\"{{{power}}} jiggawatts!\"", mstch::map{{"power", 1.21}}));
+}
+// Decimals should interpolate seamlessly with proper significance.
+TEST(InterpolationTEST, AmpersandDecimalInterpolation) {
+  EXPECT_EQ(
+      "\"1.21 jiggawatts!\"",
+      mstch::render("\"{{&power}} jiggawatts!\"", mstch::map{{"power", 1.21}}));
+}
+// Failed context lookups should default to empty strings.
+TEST(InterpolationTEST, BasicContextMissInterpolation) {
+  EXPECT_EQ(
+      "I () be seen!", mstch::render("I ({{cannot}}) be seen!", mstch::node()));
+}
+// Failed context lookups should default to empty strings.
+TEST(InterpolationTEST, TripleMustacheContextMissInterpolation) {
+  EXPECT_EQ(
+      "I () be seen!",
+      mstch::render("I ({{{cannot}}}) be seen!", mstch::node()));
+}
+// Failed context lookups should default to empty strings.
+TEST(InterpolationTEST, AmpersandContextMissInterpolation) {
+  EXPECT_EQ(
+      "I () be seen!",
+      mstch::render("I ({{&cannot}}) be seen!", mstch::node()));
+}
+// Dotted names should be considered a form of shorthand for sections.
+TEST(InterpolationTEST, DottedNamesBasicInterpolation) {
+  EXPECT_EQ(
+      "\"Joe\" == \"Joe\"",
+      mstch::render(
+          "\"{{person.name}}\" == \"{{#person}}{{name}}{{/person}}\"",
+          mstch::map{{"person", mstch::map{{"name", std::string("Joe")}}}}));
+}
+// Dotted names should be considered a form of shorthand for sections.
+TEST(InterpolationTEST, DottedNamesTripleMustacheInterpolation) {
+  EXPECT_EQ(
+      "\"Joe\" == \"Joe\"",
+      mstch::render(
+          "\"{{{person.name}}}\" == \"{{#person}}{{{name}}}{{/person}}\"",
+          mstch::map{{"person", mstch::map{{"name", std::string("Joe")}}}}));
+}
+// Dotted names should be considered a form of shorthand for sections.
+TEST(InterpolationTEST, DottedNamesAmpersandInterpolation) {
+  EXPECT_EQ(
+      "\"Joe\" == \"Joe\"",
+      mstch::render(
+          "\"{{&person.name}}\" == \"{{#person}}{{&name}}{{/person}}\"",
+          mstch::map{{"person", mstch::map{{"name", std::string("Joe")}}}}));
+}
+// Dotted names should be functional to any level of nesting.
+TEST(InterpolationTEST, DottedNamesArbitraryDepth) {
+  EXPECT_EQ(
+      "\"Phil\" == \"Phil\"",
+      mstch::render(
+          "\"{{a.b.c.d.e.name}}\" == \"Phil\"",
+          mstch::map{
+              {"a",
+               mstch::map{
+                   {"b",
+                    mstch::map{
+                        {"c",
+                         mstch::map{
+                             {"d",
+                              mstch::map{{"e",
+                                          mstch::map{{"name",
+                                                      std::string(
+                                                          "Phil")}}}}}}}}}}}}));
+}
+// Any falsey value prior to the last part of the name should yield ''.
+TEST(InterpolationTEST, DottedNamesBrokenChains) {
+  EXPECT_EQ(
+      "\"\" == \"\"",
+      mstch::render("\"{{a.b.c}}\" == \"\"", mstch::map{{"a", mstch::node()}}));
+}
+// Each part of a dotted name should resolve only against its parent.
+TEST(InterpolationTEST, DottedNamesBrokenChainResolution) {
+  EXPECT_EQ(
+      "\"\" == \"\"",
+      mstch::render(
+          "\"{{a.b.c.name}}\" == \"\"",
+          mstch::map{{"a", mstch::map{{"b", mstch::node()}}},
+                     {"c", mstch::map{{"name", std::string("Jim")}}}}));
+}
+// The first part of a dotted name should resolve as any other name.
+TEST(InterpolationTEST, DottedNamesInitialResolution) {
+  EXPECT_EQ(
+      "\"Phil\" == \"Phil\"",
+      mstch::render(
+          "\"{{#a}}{{b.c.d.e.name}}{{/a}}\" == \"Phil\"",
+          mstch::map{
+              {"a",
+               mstch::map{
+                   {"b",
+                    mstch::map{
+                        {"c",
+                         mstch::map{
+                             {"d",
+                              mstch::map{
+                                  {"e",
+                                   mstch::map{
+                                       {"name", std::string("Phil")}}}}}}}}}}},
+              {"b",
+               mstch::map{
+                   {"c",
+                    mstch::map{
+                        {"d",
+                         mstch::map{
+                             {"e",
+                              mstch::map{
+                                  {"name", std::string("Wrong")}}}}}}}}}}));
+}
+// Interpolation should not alter surrounding whitespace.
+TEST(InterpolationTEST, InterpolationSurroundingWhitespace) {
+  EXPECT_EQ(
+      "| --- |",
+      mstch::render(
+          "| {{string}} |", mstch::map{{"string", std::string("---")}}));
+}
+// Interpolation should not alter surrounding whitespace.
+TEST(InterpolationTEST, TripleMustacheSurroundingWhitespace) {
+  EXPECT_EQ(
+      "| --- |",
+      mstch::render(
+          "| {{{string}}} |", mstch::map{{"string", std::string("---")}}));
+}
+// Interpolation should not alter surrounding whitespace.
+TEST(InterpolationTEST, AmpersandSurroundingWhitespace) {
+  EXPECT_EQ(
+      "| --- |",
+      mstch::render(
+          "| {{&string}} |", mstch::map{{"string", std::string("---")}}));
+}
+// Standalone interpolation should not alter surrounding whitespace.
+TEST(InterpolationTEST, InterpolationStandalone) {
+  EXPECT_EQ(
+      "  ---\\n",
+      mstch::render(
+          "  {{string}}\\n", mstch::map{{"string", std::string("---")}}));
+}
+// Standalone interpolation should not alter surrounding whitespace.
+TEST(InterpolationTEST, TripleMustacheStandalone) {
+  EXPECT_EQ(
+      "  ---\\n",
+      mstch::render(
+          "  {{{string}}}\\n", mstch::map{{"string", std::string("---")}}));
+}
+// Standalone interpolation should not alter surrounding whitespace.
+TEST(InterpolationTEST, AmpersandStandalone) {
+  EXPECT_EQ(
+      "  ---\\n",
+      mstch::render(
+          "  {{&string}}\\n", mstch::map{{"string", std::string("---")}}));
+}
+// Superfluous in-tag whitespace should be ignored.
+TEST(InterpolationTEST, InterpolationWithPadding) {
+  EXPECT_EQ(
+      "|---|",
+      mstch::render(
+          "|{{ string }}|", mstch::map{{"string", std::string("---")}}));
+}
+// Superfluous in-tag whitespace should be ignored.
+TEST(InterpolationTEST, TripleMustacheWithPadding) {
+  EXPECT_EQ(
+      "|---|",
+      mstch::render(
+          "|{{{ string }}}|", mstch::map{{"string", std::string("---")}}));
+}
+// Superfluous in-tag whitespace should be ignored.
+TEST(InterpolationTEST, AmpersandWithPadding) {
+  EXPECT_EQ(
+      "|---|",
+      mstch::render(
+          "|{{& string }}|", mstch::map{{"string", std::string("---")}}));
+}
