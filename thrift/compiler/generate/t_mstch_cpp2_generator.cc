@@ -1434,6 +1434,10 @@ void t_mstch_cpp2_generator::generate_reflection(t_program const* program) {
       cache_->programs_[id],
       "module_fatal_constant.h",
       name + "_fatal_constant.h");
+  render_to_file(
+      cache_->programs_[id],
+      "module_fatal_service.h",
+      name + "_fatal_service.h");
 }
 
 void t_mstch_cpp2_generator::generate_structs(t_program const* program) {
