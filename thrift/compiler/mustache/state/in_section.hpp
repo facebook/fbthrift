@@ -36,7 +36,7 @@ SOFTWARE.
 
 namespace mstch {
 
-class in_section: public render_state {
+class in_section : public render_state {
  public:
   enum class type { inverted, normal };
   in_section(type type, const token& start_token);
@@ -49,4 +49,4 @@ class in_section: public render_state {
   int m_skipped_openings;
 };
 
-}
+} // namespace mstch

@@ -30,16 +30,14 @@ SOFTWARE.
 
 using namespace mstch;
 
-template_type::template_type(const std::string& str, const delim_type& delims):
-    m_open(delims.first), m_close(delims.second)
-{
+template_type::template_type(const std::string& str, const delim_type& delims)
+    : m_open(delims.first), m_close(delims.second) {
   tokenize(str);
   strip_whitespace();
 }
 
-template_type::template_type(const std::string& str):
-    m_open("{{"), m_close("}}")
-{
+template_type::template_type(const std::string& str)
+    : m_open("{{"), m_close("}}") {
   tokenize(str);
   strip_whitespace();
 }
@@ -61,8 +59,8 @@ void template_type::tokenize(const std::string& tmp) {
 
   for (std::size_t cur_pos = 0; cur_pos < tmp.size();) {
     auto open_pos = tmp.find(m_open, cur_pos);
-    auto close_pos = tmp.find(
-        m_close, open_pos == npos ? open_pos : open_pos + 1);
+    auto close_pos =
+        tmp.find(m_close, open_pos == npos ? open_pos : open_pos + 1);
 
     if (close_pos != npos && open_pos != npos) {
       if (*(beg + open_pos + m_open.size()) == '{' &&
@@ -72,7 +70,8 @@ void template_type::tokenize(const std::string& tmp) {
       process_text(beg + cur_pos, beg + open_pos);
       cur_pos = close_pos + m_close.size();
       m_tokens.push_back({{beg + open_pos, beg + close_pos + m_close.size()},
-          m_open.size(), m_close.size()});
+                          m_open.size(),
+                          m_close.size()});
 
       if (cur_pos == tmp.size()) {
         m_tokens.push_back({{""}});
@@ -80,8 +79,7 @@ void template_type::tokenize(const std::string& tmp) {
       }
 
       if (*(beg + open_pos + m_open.size()) == '=' &&
-          *(beg + close_pos - 1) == '=')
-      {
+          *(beg + close_pos - 1) == '=') {
         auto tok_beg = beg + open_pos + m_open.size() + 1;
         auto tok_end = beg + close_pos - 1;
         auto front_skip = first_not_ws(tok_beg, tok_end);
@@ -113,7 +111,8 @@ void template_type::strip_whitespace() {
         store_prefixes(line_begin);
 
         auto c = line_begin;
-        for (bool end = false; !end; (*c).ws_only() ? c = m_tokens.erase(c) : ++c)
+        for (bool end = false; !end;
+             (*c).ws_only() ? c = m_tokens.erase(c) : ++c)
           if ((end = (*c).eol()))
             it = c - 1;
       }
@@ -126,7 +125,7 @@ void template_type::strip_whitespace() {
 
 void template_type::store_prefixes(std::vector<token>::iterator beg) {
   for (auto cur = beg; !(*cur).eol(); ++cur)
-    if ((*cur).token_type() == token::type::partial &&
-        cur != beg && (*(cur - 1)).ws_only())
+    if ((*cur).token_type() == token::type::partial && cur != beg &&
+        (*(cur - 1)).ws_only())
       (*cur).partial_prefix((*(cur - 1)).raw());
 }

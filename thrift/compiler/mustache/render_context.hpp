@@ -31,8 +31,8 @@ SOFTWARE.
 #include <deque>
 #include <list>
 #include <sstream>
-#include <string>
 #include <stack>
+#include <string>
 
 #include "mstch/mstch.hpp"
 #include "state/render_state.hpp"
@@ -47,6 +47,7 @@ class render_context {
     push(render_context& context, const mstch::node& node = {});
     ~push();
     std::string render(const template_type& templt);
+
    private:
     render_context& m_context;
   };
@@ -56,13 +57,15 @@ class render_context {
       const std::map<std::string, template_type>& partials);
   const mstch::node& get_node(const std::string& token);
   std::string render(
-      const template_type& templt, const std::string& prefix = "");
+      const template_type& templt,
+      const std::string& prefix = "");
   std::string render_partial(
-      const std::string& partial_name, const std::string& prefix);
-  template<class T, class... Args>
-  void set_state(Args&& ... args) {
-    m_state.top() = std::unique_ptr<render_state>(
-        new T(std::forward<Args>(args)...));
+      const std::string& partial_name,
+      const std::string& prefix);
+  template <class T, class... Args>
+  void set_state(Args&&... args) {
+    m_state.top() =
+        std::unique_ptr<render_state>(new T(std::forward<Args>(args)...));
   }
 
  private:
@@ -76,4 +79,4 @@ class render_context {
   std::stack<std::unique_ptr<render_state>> m_state;
 };
 
-}
+} // namespace mstch

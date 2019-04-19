@@ -30,19 +30,17 @@ SOFTWARE.
 
 #include <boost/variant/static_visitor.hpp>
 
-#include "mstch/mstch.hpp"
 #include "has_token.hpp"
+#include "mstch/mstch.hpp"
 
 namespace mstch {
 
-class get_token: public boost::static_visitor<const mstch::node&> {
+class get_token : public boost::static_visitor<const mstch::node&> {
  public:
-  get_token(const std::string& token, const mstch::node& node):
-      m_token(token), m_node(node)
-  {
-  }
+  get_token(const std::string& token, const mstch::node& node)
+      : m_token(token), m_node(node) {}
 
-  template<class T>
+  template <class T>
   const mstch::node& operator()(const T&) const {
     return m_node;
   }
@@ -60,4 +58,4 @@ class get_token: public boost::static_visitor<const mstch::node&> {
   const mstch::node& m_node;
 };
 
-}
+} // namespace mstch

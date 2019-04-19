@@ -34,12 +34,11 @@ SOFTWARE.
 
 namespace mstch {
 
-class has_token: public boost::static_visitor<bool> {
+class has_token : public boost::static_visitor<bool> {
  public:
-  has_token(const std::string& token): m_token(token) {
-  }
+  has_token(const std::string& token) : m_token(token) {}
 
-  template<class T>
+  template <class T>
   bool operator()(const T&) const {
     return m_token == ".";
   }
@@ -56,4 +55,4 @@ class has_token: public boost::static_visitor<bool> {
   const std::string& m_token;
 };
 
-}
+} // namespace mstch

@@ -34,9 +34,9 @@ SOFTWARE.
 
 namespace mstch {
 
-class is_node_empty: public boost::static_visitor<bool> {
+class is_node_empty : public boost::static_visitor<bool> {
  public:
-  template<class T>
+  template <class T>
   bool operator()(const T&) const {
     return false;
   }
@@ -66,4 +66,4 @@ class is_node_empty: public boost::static_visitor<bool> {
   }
 };
 
-}
+} // namespace mstch
