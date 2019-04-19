@@ -41,7 +41,7 @@ namespace mstch {
 class template_type {
  public:
   template_type() = default;
-  template_type(const std::string& str);
+  /* implicit */ template_type(const std::string& str);
   template_type(const std::string& str, const delim_type& delims);
   std::vector<token>::const_iterator begin() const {
     return m_tokens.begin();

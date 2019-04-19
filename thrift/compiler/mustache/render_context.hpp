@@ -46,7 +46,7 @@ class render_context {
  public:
   class push {
    public:
-    push(render_context& context, const mstch::node& node = {});
+    /* implicit */ push(render_context& context, const mstch::node& node = {});
     ~push();
     std::string render(const template_type& templt);
 

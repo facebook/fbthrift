@@ -54,7 +54,7 @@ class object_t {
     return cache[name];
   }
 
-  bool has(const std::string name) const {
+  bool has(const std::string& name) const {
     return methods.count(name) != 0;
   }
 
@@ -99,13 +99,17 @@ template <class N>
 class lambda_t {
  public:
   template <class F>
-  lambda_t(F f, typename std::enable_if<is_fun<F, N>::no_args>::type* = 0)
+  /* implicit */ lambda_t(
+      F f,
+      typename std::enable_if<is_fun<F, N>::no_args>::type* = 0)
       : fun([f](node_renderer<N> renderer, const std::string&) {
           return renderer(f());
         }) {}
 
   template <class F>
-  lambda_t(F f, typename std::enable_if<is_fun<F, N>::has_args>::type* = 0)
+  /* implicit */ lambda_t(
+      F f,
+      typename std::enable_if<is_fun<F, N>::has_args>::type* = 0)
       : fun([f](node_renderer<N> renderer, const std::string& text) {
           return renderer(f(text));
         }) {}
