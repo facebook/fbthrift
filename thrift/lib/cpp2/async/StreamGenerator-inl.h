@@ -17,6 +17,10 @@
 #pragma once
 
 #include <folly/Optional.h>
+#if FOLLY_HAS_COROUTINES
+#include <folly/experimental/coro/AsyncGenerator.h>
+#include <folly/experimental/coro/Task.h>
+#endif
 #include <folly/futures/Future.h>
 #include <folly/futures/helpers.h>
 #include <thrift/lib/cpp2/transport/rsocket/YarplStreamImpl.h>
@@ -147,6 +151,39 @@ StreamGeneratorImpl<Generator, folly::SemiFuture<folly::Optional<Element>>>::
 
   return toStream(std::move(flowable), std::move(executor));
 }
+
+#if FOLLY_HAS_COROUTINES
+template <typename Generator, typename Element>
+Stream<std::decay_t<Element>>
+StreamGeneratorImpl<Generator, folly::coro::AsyncGenerator<Element>>::create(
+    folly::Executor::KeepAlive<folly::SequencedExecutor> executor,
+    Generator&& generator) {
+  auto f = [started = false,
+            g = generator(),
+            iter = typename folly::coro::AsyncGenerator<
+                Element>::async_iterator()]() mutable
+      -> folly::coro::Task<folly::Optional<std::decay_t<Element>>> {
+    if (!started) {
+      iter = co_await g.begin();
+      started = true;
+    } else {
+      co_await(++iter);
+    }
+    folly::Optional<std::decay_t<Element>> res;
+    if (iter != g.end()) {
+      res = *iter;
+    }
+    co_return res;
+  };
+  return StreamGenerator::create(
+      std::move(executor),
+      [f = std::move(f)]() mutable
+      -> folly::SemiFuture<folly::Optional<std::decay_t<Element>>> {
+        return f().semi();
+      });
+}
+#endif
+
 } // namespace detail
 
 } // namespace thrift

@@ -15,8 +15,13 @@
  */
 
 #pragma once
+#include <folly/Portability.h>
 
 #include <thrift/lib/cpp2/async/Stream.h>
+
+#if FOLLY_HAS_COROUTINES
+#include <folly/experimental/coro/AsyncGenerator.h>
+#endif
 
 namespace apache {
 namespace thrift {
@@ -47,6 +52,15 @@ struct StreamGeneratorImpl<
       folly::Executor::KeepAlive<folly::SequencedExecutor> executor,
       Generator&& generator);
 };
+
+#if FOLLY_HAS_COROUTINES
+template <typename Generator, typename Element>
+struct StreamGeneratorImpl<Generator, folly::coro::AsyncGenerator<Element>> {
+  static Stream<std::decay_t<Element>> create(
+      folly::Executor::KeepAlive<folly::SequencedExecutor> executor,
+      Generator&& generator);
+};
+#endif
 } // namespace detail
 
 class StreamGenerator {

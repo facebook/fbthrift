@@ -18,6 +18,7 @@
 #include <thrift/lib/cpp2/async/SemiStream.h>
 #include <thrift/lib/cpp2/async/StreamGenerator.h>
 
+#include <folly/Conv.h>
 #if FOLLY_HAS_COROUTINES
 #include <folly/experimental/coro/BlockingWait.h>
 #endif
@@ -289,6 +290,86 @@ TEST(StreamGeneratorFutureTest, CoroGeneratorWithCancel) {
     EXPECT_GT(length, val + 1);
     // exit coroutine early will send cancel to the stream
   }());
+}
+
+TEST(StreamGeneratorFutureTest, AsyncGeneratorToStreamPrimitiveType) {
+  folly::ScopedEventBaseThread th;
+  int length = 5;
+  int i = 0;
+
+  Stream<int> stream = StreamGenerator::create(
+      folly::getKeepAliveToken(th.getEventBase()),
+      [&]() -> folly::coro::AsyncGenerator<int> {
+        for (int i = 0; i < length; i++) {
+          co_yield i;
+        }
+      });
+
+  int expected_i = 0;
+  std::move(stream)
+      .subscribe(
+          [&](int i) { EXPECT_EQ(expected_i++, i); },
+          [](folly::exception_wrapper) { CHECK(false) << "on Error"; },
+          [&] { EXPECT_EQ(expected_i, length); },
+          2)
+      .futureJoin()
+      .get();
+}
+
+TEST(StreamGeneratorFutureTest, AsyncGeneratorToStream) {
+  folly::ScopedEventBaseThread th;
+  int length = 5;
+  int i = 0;
+
+  Stream<std::string> stream = StreamGenerator::create(
+      folly::getKeepAliveToken(th.getEventBase()),
+      [&]() -> folly::coro::AsyncGenerator<std::string&&> {
+        for (int i = 0; i < length; i++) {
+          co_yield folly::to<std::string>(i);
+        }
+      });
+
+  int expected_i = 0;
+  std::move(stream)
+      .subscribe(
+          [&](std::string i) { EXPECT_EQ(expected_i++, folly::to<int>(i)); },
+          [](folly::exception_wrapper) { CHECK(false) << "on Error"; },
+          [&] { EXPECT_EQ(expected_i, length); },
+          2)
+      .futureJoin()
+      .get();
+}
+
+TEST(StreamGeneratorFutureTest, AsyncGeneratorToStream2) {
+  folly::ScopedEventBaseThread th;
+  folly::ScopedEventBaseThread pth;
+  int length = 5;
+  std::vector<folly::Promise<int>> vp(length);
+
+  int i = 0;
+  Stream<int> stream = StreamGenerator::create(
+      folly::getKeepAliveToken(th.getEventBase()),
+      [&]() -> folly::coro::AsyncGenerator<int> {
+        while (i < length) {
+          co_yield co_await vp[i++].getSemiFuture();
+        }
+      });
+
+  // intentionally let promised fullfilled in reverse order, but the result
+  // should come back to stream in order
+  for (int i = length - 1; i >= 0; i--) {
+    pth.add([&vp, i]() { vp[i].setValue(i); });
+  }
+
+  int expected_i = 0;
+  std::move(stream)
+      .subscribe(
+          [&](int i) { EXPECT_EQ(expected_i++, i); },
+          [](folly::exception_wrapper) { CHECK(false) << "on Error"; },
+          [&] { EXPECT_EQ(expected_i, length); },
+          2)
+      .futureJoin()
+      .get();
 }
 #endif
 
