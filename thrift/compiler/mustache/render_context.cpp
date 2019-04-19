@@ -60,15 +60,18 @@ render_context::render_context(
 
 const node& render_context::find_node(
     const std::string& token,
-    std::list<mstch::node const*> current_nodes) {
-  if (token != "." && token.find('.') != std::string::npos)
+    std::list<node const*> current_nodes) {
+  if (token != "." && token.find('.') != std::string::npos) {
     return find_node(
         token.substr(token.rfind('.') + 1),
         {&find_node(token.substr(0, token.rfind('.')), current_nodes)});
-  else
-    for (auto& node : current_nodes)
-      if (mstch::visit(has_token(token), *node))
+  } else {
+    for (auto& node : current_nodes) {
+      if (mstch::visit(has_token(token), *node)) {
         return mstch::visit(get_token(token, *node), *node);
+      }
+    }
+  }
   return null_node;
 }
 
@@ -82,8 +85,9 @@ std::string render_context::render(
   std::string output;
   bool prev_eol = true;
   for (auto& token : templt) {
-    if (prev_eol && prefix.length() != 0)
+    if (prev_eol && prefix.length() != 0) {
       output += m_state.top()->render(*this, {prefix});
+    }
     output += m_state.top()->render(*this, token);
     prev_eol = token.eol();
   }

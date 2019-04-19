@@ -43,14 +43,16 @@ template_type::template_type(const std::string& str)
 }
 
 void template_type::process_text(citer begin, citer end) {
-  if (begin == end)
+  if (begin == end) {
     return;
+  }
   auto start = begin;
-  for (auto it = begin; it != end; ++it)
+  for (auto it = begin; it != end; ++it) {
     if (*it == '\n' || it == end - 1) {
       m_tokens.push_back({{start, it + 1}});
       start = it + 1;
     }
+  }
 }
 
 void template_type::tokenize(const std::string& tmp) {
@@ -64,8 +66,9 @@ void template_type::tokenize(const std::string& tmp) {
 
     if (close_pos != npos && open_pos != npos) {
       if (*(beg + open_pos + m_open.size()) == '{' &&
-          *(beg + close_pos + m_close.size()) == '}')
+          *(beg + close_pos + m_close.size()) == '}') {
         ++close_pos;
+      }
 
       process_text(beg + cur_pos, beg + open_pos);
       cur_pos = close_pos + m_close.size();
@@ -101,10 +104,11 @@ void template_type::strip_whitespace() {
   for (auto it = m_tokens.begin(); it != m_tokens.end(); ++it) {
     auto type = (*it).token_type();
     if (type != token::type::text && type != token::type::variable &&
-        type != token::type::unescaped_variable)
+        type != token::type::unescaped_variable) {
       has_tag = true;
-    else if (!(*it).ws_only())
+    } else if (!(*it).ws_only()) {
       non_space = true;
+    }
 
     if ((*it).eol()) {
       if (has_tag && !non_space) {
@@ -112,9 +116,11 @@ void template_type::strip_whitespace() {
 
         auto c = line_begin;
         for (bool end = false; !end;
-             (*c).ws_only() ? c = m_tokens.erase(c) : ++c)
-          if ((end = (*c).eol()))
+             (*c).ws_only() ? c = m_tokens.erase(c) : ++c) {
+          if ((end = (*c).eol())) {
             it = c - 1;
+          }
+        }
       }
 
       non_space = has_tag = false;
@@ -124,8 +130,10 @@ void template_type::strip_whitespace() {
 }
 
 void template_type::store_prefixes(std::vector<token>::iterator beg) {
-  for (auto cur = beg; !(*cur).eol(); ++cur)
+  for (auto cur = beg; !(*cur).eol(); ++cur) {
     if ((*cur).token_type() == token::type::partial && cur != beg &&
-        (*(cur - 1)).ws_only())
+        (*(cur - 1)).ws_only()) {
       (*cur).partial_prefix((*(cur - 1)).raw());
+    }
+  }
 }

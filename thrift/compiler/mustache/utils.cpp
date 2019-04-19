@@ -32,16 +32,20 @@ SOFTWARE.
 using namespace apache::thrift;
 
 mstch::citer mstch::first_not_ws(mstch::citer begin, mstch::citer end) {
-  for (auto it = begin; it != end; ++it)
-    if (*it != ' ')
+  for (auto it = begin; it != end; ++it) {
+    if (*it != ' ') {
       return it;
+    }
+  }
   return end;
 }
 
 mstch::citer mstch::first_not_ws(mstch::criter begin, mstch::criter end) {
-  for (auto rit = begin; rit != end; ++rit)
-    if (*rit != ' ')
+  for (auto rit = begin; rit != end; ++rit) {
+    if (*rit != ' ') {
       return --(rit.base());
+    }
+  }
   return --(end.base());
 }
 
@@ -50,8 +54,9 @@ mstch::criter mstch::reverse(mstch::citer it) {
 }
 
 std::string mstch::html_escape(const std::string& str) {
-  if (mstch::config::escape)
+  if (mstch::config::escape) {
     return mstch::config::escape(str);
+  }
 
   std::string out;
   citer start = str.begin();
@@ -61,7 +66,7 @@ std::string mstch::html_escape(const std::string& str) {
     start = it + 1;
   };
 
-  for (auto it = str.begin(); it != str.end(); ++it)
+  for (auto it = str.begin(); it != str.end(); ++it) {
     switch (*it) {
       case '&':
         add_escape("&amp;", it);
@@ -84,6 +89,7 @@ std::string mstch::html_escape(const std::string& str) {
       default:
         break;
     }
+  }
 
   return out + std::string{start, str.end()};
 }
