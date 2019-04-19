@@ -32,8 +32,8 @@ struct _enum1EnumDataStorage {
 }} // test_cpp2::cpp_reflection
 namespace apache { namespace thrift {
 
-template <> struct TEnumDataStorage< ::test_cpp2::cpp_reflection::enum1> {
-  using storage_type =  ::test_cpp2::cpp_reflection::_enum1EnumDataStorage;
+template <> struct TEnumDataStorage<::test_cpp2::cpp_reflection::enum1> {
+  using storage_type = ::test_cpp2::cpp_reflection::_enum1EnumDataStorage;
 };
 
 }} // apache::thrift
@@ -57,8 +57,8 @@ struct _enum2EnumDataStorage {
 }} // test_cpp2::cpp_reflection
 namespace apache { namespace thrift {
 
-template <> struct TEnumDataStorage< ::test_cpp2::cpp_reflection::enum2> {
-  using storage_type =  ::test_cpp2::cpp_reflection::_enum2EnumDataStorage;
+template <> struct TEnumDataStorage<::test_cpp2::cpp_reflection::enum2> {
+  using storage_type = ::test_cpp2::cpp_reflection::_enum2EnumDataStorage;
 };
 
 }} // apache::thrift
@@ -80,8 +80,8 @@ struct _enum3EnumDataStorage {
 }} // test_cpp2::cpp_reflection
 namespace apache { namespace thrift {
 
-template <> struct TEnumDataStorage< ::test_cpp2::cpp_reflection::enum3> {
-  using storage_type =  ::test_cpp2::cpp_reflection::_enum3EnumDataStorage;
+template <> struct TEnumDataStorage<::test_cpp2::cpp_reflection::enum3> {
+  using storage_type = ::test_cpp2::cpp_reflection::_enum3EnumDataStorage;
 };
 
 }} // apache::thrift
@@ -155,8 +155,8 @@ struct _enum_with_special_namesEnumDataStorage {
 }} // test_cpp2::cpp_reflection
 namespace apache { namespace thrift {
 
-template <> struct TEnumDataStorage< ::test_cpp2::cpp_reflection::enum_with_special_names> {
-  using storage_type =  ::test_cpp2::cpp_reflection::_enum_with_special_namesEnumDataStorage;
+template <> struct TEnumDataStorage<::test_cpp2::cpp_reflection::enum_with_special_names> {
+  using storage_type = ::test_cpp2::cpp_reflection::_enum_with_special_namesEnumDataStorage;
 };
 
 }} // apache::thrift

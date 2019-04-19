@@ -58,105 +58,105 @@ namespace thrift {
 namespace detail {
 
 template <>
-struct TccStructTraits< ::some::valid::ns::Empty> {
+struct TccStructTraits<::some::valid::ns::Empty> {
   static void translateFieldName(
       folly::StringPiece _fname,
       int16_t& fid,
       apache::thrift::protocol::TType& _ftype);
 };
 template <>
-struct TccStructTraits< ::some::valid::ns::ASimpleStruct> {
+struct TccStructTraits<::some::valid::ns::ASimpleStruct> {
   static void translateFieldName(
       folly::StringPiece _fname,
       int16_t& fid,
       apache::thrift::protocol::TType& _ftype);
 };
 template <>
-struct TccStructTraits< ::some::valid::ns::ASimpleStructNoexcept> {
+struct TccStructTraits<::some::valid::ns::ASimpleStructNoexcept> {
   static void translateFieldName(
       folly::StringPiece _fname,
       int16_t& fid,
       apache::thrift::protocol::TType& _ftype);
 };
 template <>
-struct TccStructTraits< ::some::valid::ns::MyStruct> {
+struct TccStructTraits<::some::valid::ns::MyStruct> {
   static void translateFieldName(
       folly::StringPiece _fname,
       int16_t& fid,
       apache::thrift::protocol::TType& _ftype);
 };
 template <>
-struct TccStructTraits< ::some::valid::ns::SimpleUnion> {
+struct TccStructTraits<::some::valid::ns::SimpleUnion> {
   static void translateFieldName(
       folly::StringPiece _fname,
       int16_t& fid,
       apache::thrift::protocol::TType& _ftype);
 };
 template <>
-struct TccStructTraits< ::some::valid::ns::ComplexUnion> {
+struct TccStructTraits<::some::valid::ns::ComplexUnion> {
   static void translateFieldName(
       folly::StringPiece _fname,
       int16_t& fid,
       apache::thrift::protocol::TType& _ftype);
 };
 template <>
-struct TccStructTraits< ::some::valid::ns::AnException> {
+struct TccStructTraits<::some::valid::ns::AnException> {
   static void translateFieldName(
       folly::StringPiece _fname,
       int16_t& fid,
       apache::thrift::protocol::TType& _ftype);
 };
 template <>
-struct TccStructTraits< ::some::valid::ns::AnotherException> {
+struct TccStructTraits<::some::valid::ns::AnotherException> {
   static void translateFieldName(
       folly::StringPiece _fname,
       int16_t& fid,
       apache::thrift::protocol::TType& _ftype);
 };
 template <>
-struct TccStructTraits< ::some::valid::ns::containerStruct> {
+struct TccStructTraits<::some::valid::ns::containerStruct> {
   static void translateFieldName(
       folly::StringPiece _fname,
       int16_t& fid,
       apache::thrift::protocol::TType& _ftype);
 };
 template <>
-struct TccStructTraits< ::some::valid::ns::MyIncludedStruct> {
+struct TccStructTraits<::some::valid::ns::MyIncludedStruct> {
   static void translateFieldName(
       folly::StringPiece _fname,
       int16_t& fid,
       apache::thrift::protocol::TType& _ftype);
 };
 template <>
-struct TccStructTraits< ::some::valid::ns::AnnotatedStruct> {
+struct TccStructTraits<::some::valid::ns::AnnotatedStruct> {
   static void translateFieldName(
       folly::StringPiece _fname,
       int16_t& fid,
       apache::thrift::protocol::TType& _ftype);
 };
 template <>
-struct TccStructTraits< ::some::valid::ns::ComplexContainerStruct> {
+struct TccStructTraits<::some::valid::ns::ComplexContainerStruct> {
   static void translateFieldName(
       folly::StringPiece _fname,
       int16_t& fid,
       apache::thrift::protocol::TType& _ftype);
 };
 template <>
-struct TccStructTraits< ::some::valid::ns::FloatStruct> {
+struct TccStructTraits<::some::valid::ns::FloatStruct> {
   static void translateFieldName(
       folly::StringPiece _fname,
       int16_t& fid,
       apache::thrift::protocol::TType& _ftype);
 };
 template <>
-struct TccStructTraits< ::some::valid::ns::FloatUnion> {
+struct TccStructTraits<::some::valid::ns::FloatUnion> {
   static void translateFieldName(
       folly::StringPiece _fname,
       int16_t& fid,
       apache::thrift::protocol::TType& _ftype);
 };
 template <>
-struct TccStructTraits< ::some::valid::ns::AllRequiredNoExceptMoveCtrStruct> {
+struct TccStructTraits<::some::valid::ns::AllRequiredNoExceptMoveCtrStruct> {
   static void translateFieldName(
       folly::StringPiece _fname,
       int16_t& fid,

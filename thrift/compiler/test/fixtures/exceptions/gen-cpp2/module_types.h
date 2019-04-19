@@ -60,7 +60,7 @@ class Banal final : private apache::thrift::detail::st::ComparisonOperators<Bana
   uint32_t write(Protocol_* prot_) const;
 
   const char* what() const noexcept override {
-    return " ::cpp2::Banal";
+    return "::cpp2::Banal";
   }
 
  private:

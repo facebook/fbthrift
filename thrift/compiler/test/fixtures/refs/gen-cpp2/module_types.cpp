@@ -23,20 +23,20 @@ namespace std {
 } // std
 namespace apache { namespace thrift {
 
-constexpr std::size_t const TEnumTraits< ::cpp2::TypedEnum>::size;
-folly::Range< ::cpp2::TypedEnum const*> const TEnumTraits< ::cpp2::TypedEnum>::values = folly::range( ::cpp2::_TypedEnumEnumDataStorage::values);
-folly::Range<folly::StringPiece const*> const TEnumTraits< ::cpp2::TypedEnum>::names = folly::range( ::cpp2::_TypedEnumEnumDataStorage::names);
+constexpr std::size_t const TEnumTraits<::cpp2::TypedEnum>::size;
+folly::Range<::cpp2::TypedEnum const*> const TEnumTraits<::cpp2::TypedEnum>::values = folly::range(::cpp2::_TypedEnumEnumDataStorage::values);
+folly::Range<folly::StringPiece const*> const TEnumTraits<::cpp2::TypedEnum>::names = folly::range(::cpp2::_TypedEnumEnumDataStorage::names);
 
-char const* TEnumTraits< ::cpp2::TypedEnum>::findName(type value) {
-  using factory =  ::cpp2::_TypedEnum_EnumMapFactory;
+char const* TEnumTraits<::cpp2::TypedEnum>::findName(type value) {
+  using factory = ::cpp2::_TypedEnum_EnumMapFactory;
   static folly::Indestructible<factory::ValuesToNamesMapType> const map{
       factory::makeValuesToNamesMap()};
   auto found = map->find(value);
   return found == map->end() ? nullptr : found->second;
 }
 
-bool TEnumTraits< ::cpp2::TypedEnum>::findValue(char const* name, type* out) {
-  using factory =  ::cpp2::_TypedEnum_EnumMapFactory;
+bool TEnumTraits<::cpp2::TypedEnum>::findValue(char const* name, type* out) {
+  using factory = ::cpp2::_TypedEnum_EnumMapFactory;
   static folly::Indestructible<factory::NamesToValuesMapType> const map{
       factory::makeNamesToValuesMap()};
   auto found = map->find(name);
@@ -49,7 +49,7 @@ namespace apache {
 namespace thrift {
 namespace detail {
 
-void TccStructTraits< ::cpp2::MyUnion>::translateFieldName(
+void TccStructTraits<::cpp2::MyUnion>::translateFieldName(
     FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
     FOLLY_MAYBE_UNUSED int16_t& fid,
     FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
@@ -63,7 +63,7 @@ void TccStructTraits< ::cpp2::MyUnion>::translateFieldName(
     _ftype = apache::thrift::protocol::T_STRING;
   }
 }
-void TccStructTraits< ::cpp2::MyField>::translateFieldName(
+void TccStructTraits<::cpp2::MyField>::translateFieldName(
     FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
     FOLLY_MAYBE_UNUSED int16_t& fid,
     FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
@@ -81,7 +81,7 @@ void TccStructTraits< ::cpp2::MyField>::translateFieldName(
     _ftype = apache::thrift::protocol::T_I64;
   }
 }
-void TccStructTraits< ::cpp2::MyStruct>::translateFieldName(
+void TccStructTraits<::cpp2::MyStruct>::translateFieldName(
     FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
     FOLLY_MAYBE_UNUSED int16_t& fid,
     FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
@@ -99,7 +99,7 @@ void TccStructTraits< ::cpp2::MyStruct>::translateFieldName(
     _ftype = apache::thrift::protocol::T_STRUCT;
   }
 }
-void TccStructTraits< ::cpp2::StructWithUnion>::translateFieldName(
+void TccStructTraits<::cpp2::StructWithUnion>::translateFieldName(
     FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
     FOLLY_MAYBE_UNUSED int16_t& fid,
     FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
@@ -117,7 +117,7 @@ void TccStructTraits< ::cpp2::StructWithUnion>::translateFieldName(
     _ftype = apache::thrift::protocol::T_STRUCT;
   }
 }
-void TccStructTraits< ::cpp2::RecursiveStruct>::translateFieldName(
+void TccStructTraits<::cpp2::RecursiveStruct>::translateFieldName(
     FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
     FOLLY_MAYBE_UNUSED int16_t& fid,
     FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
@@ -127,7 +127,7 @@ void TccStructTraits< ::cpp2::RecursiveStruct>::translateFieldName(
     _ftype = apache::thrift::protocol::T_LIST;
   }
 }
-void TccStructTraits< ::cpp2::StructWithContainers>::translateFieldName(
+void TccStructTraits<::cpp2::StructWithContainers>::translateFieldName(
     FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
     FOLLY_MAYBE_UNUSED int16_t& fid,
     FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
@@ -157,7 +157,7 @@ void TccStructTraits< ::cpp2::StructWithContainers>::translateFieldName(
     _ftype = apache::thrift::protocol::T_LIST;
   }
 }
-void TccStructTraits< ::cpp2::StructWithSharedConst>::translateFieldName(
+void TccStructTraits<::cpp2::StructWithSharedConst>::translateFieldName(
     FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
     FOLLY_MAYBE_UNUSED int16_t& fid,
     FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
@@ -175,31 +175,13 @@ void TccStructTraits< ::cpp2::StructWithSharedConst>::translateFieldName(
     _ftype = apache::thrift::protocol::T_STRUCT;
   }
 }
-void TccStructTraits< ::cpp2::Empty>::translateFieldName(
+void TccStructTraits<::cpp2::Empty>::translateFieldName(
     FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
     FOLLY_MAYBE_UNUSED int16_t& fid,
     FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
   if (false) {}
 }
-void TccStructTraits< ::cpp2::StructWithRef>::translateFieldName(
-    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
-    FOLLY_MAYBE_UNUSED int16_t& fid,
-    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-  else if (_fname == "def_field") {
-    fid = 1;
-    _ftype = apache::thrift::protocol::T_STRUCT;
-  }
-  else if (_fname == "opt_field") {
-    fid = 2;
-    _ftype = apache::thrift::protocol::T_STRUCT;
-  }
-  else if (_fname == "req_field") {
-    fid = 3;
-    _ftype = apache::thrift::protocol::T_STRUCT;
-  }
-}
-void TccStructTraits< ::cpp2::StructWithRefTypeUnique>::translateFieldName(
+void TccStructTraits<::cpp2::StructWithRef>::translateFieldName(
     FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
     FOLLY_MAYBE_UNUSED int16_t& fid,
     FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
@@ -217,7 +199,7 @@ void TccStructTraits< ::cpp2::StructWithRefTypeUnique>::translateFieldName(
     _ftype = apache::thrift::protocol::T_STRUCT;
   }
 }
-void TccStructTraits< ::cpp2::StructWithRefTypeShared>::translateFieldName(
+void TccStructTraits<::cpp2::StructWithRefTypeUnique>::translateFieldName(
     FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
     FOLLY_MAYBE_UNUSED int16_t& fid,
     FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
@@ -235,7 +217,7 @@ void TccStructTraits< ::cpp2::StructWithRefTypeShared>::translateFieldName(
     _ftype = apache::thrift::protocol::T_STRUCT;
   }
 }
-void TccStructTraits< ::cpp2::StructWithRefTypeSharedConst>::translateFieldName(
+void TccStructTraits<::cpp2::StructWithRefTypeShared>::translateFieldName(
     FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
     FOLLY_MAYBE_UNUSED int16_t& fid,
     FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
@@ -253,7 +235,25 @@ void TccStructTraits< ::cpp2::StructWithRefTypeSharedConst>::translateFieldName(
     _ftype = apache::thrift::protocol::T_STRUCT;
   }
 }
-void TccStructTraits< ::cpp2::StructWithRefAndAnnotCppNoexceptMoveCtor>::translateFieldName(
+void TccStructTraits<::cpp2::StructWithRefTypeSharedConst>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "def_field") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_STRUCT;
+  }
+  else if (_fname == "opt_field") {
+    fid = 2;
+    _ftype = apache::thrift::protocol::T_STRUCT;
+  }
+  else if (_fname == "req_field") {
+    fid = 3;
+    _ftype = apache::thrift::protocol::T_STRUCT;
+  }
+}
+void TccStructTraits<::cpp2::StructWithRefAndAnnotCppNoexceptMoveCtor>::translateFieldName(
     FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
     FOLLY_MAYBE_UNUSED int16_t& fid,
     FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {

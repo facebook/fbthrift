@@ -21,42 +21,42 @@ namespace thrift {
 namespace detail {
 
 template <>
-struct TccStructTraits< ::cpp2::ComplexUnion> {
+struct TccStructTraits<::cpp2::ComplexUnion> {
   static void translateFieldName(
       folly::StringPiece _fname,
       int16_t& fid,
       apache::thrift::protocol::TType& _ftype);
 };
 template <>
-struct TccStructTraits< ::cpp2::ListUnion> {
+struct TccStructTraits<::cpp2::ListUnion> {
   static void translateFieldName(
       folly::StringPiece _fname,
       int16_t& fid,
       apache::thrift::protocol::TType& _ftype);
 };
 template <>
-struct TccStructTraits< ::cpp2::DataUnion> {
+struct TccStructTraits<::cpp2::DataUnion> {
   static void translateFieldName(
       folly::StringPiece _fname,
       int16_t& fid,
       apache::thrift::protocol::TType& _ftype);
 };
 template <>
-struct TccStructTraits< ::cpp2::Val> {
+struct TccStructTraits<::cpp2::Val> {
   static void translateFieldName(
       folly::StringPiece _fname,
       int16_t& fid,
       apache::thrift::protocol::TType& _ftype);
 };
 template <>
-struct TccStructTraits< ::cpp2::ValUnion> {
+struct TccStructTraits<::cpp2::ValUnion> {
   static void translateFieldName(
       folly::StringPiece _fname,
       int16_t& fid,
       apache::thrift::protocol::TType& _ftype);
 };
 template <>
-struct TccStructTraits< ::cpp2::VirtualComplexUnion> {
+struct TccStructTraits<::cpp2::VirtualComplexUnion> {
   static void translateFieldName(
       folly::StringPiece _fname,
       int16_t& fid,

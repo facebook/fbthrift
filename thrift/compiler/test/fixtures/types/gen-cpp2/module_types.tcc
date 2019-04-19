@@ -48,98 +48,98 @@ namespace thrift {
 namespace detail {
 
 template <>
-struct TccStructTraits< ::apache::thrift::fixtures::types::decorated_struct> {
+struct TccStructTraits<::apache::thrift::fixtures::types::decorated_struct> {
   static void translateFieldName(
       folly::StringPiece _fname,
       int16_t& fid,
       apache::thrift::protocol::TType& _ftype);
 };
 template <>
-struct TccStructTraits< ::apache::thrift::fixtures::types::ContainerStruct> {
+struct TccStructTraits<::apache::thrift::fixtures::types::ContainerStruct> {
   static void translateFieldName(
       folly::StringPiece _fname,
       int16_t& fid,
       apache::thrift::protocol::TType& _ftype);
 };
 template <>
-struct TccStructTraits< ::apache::thrift::fixtures::types::CppTypeStruct> {
+struct TccStructTraits<::apache::thrift::fixtures::types::CppTypeStruct> {
   static void translateFieldName(
       folly::StringPiece _fname,
       int16_t& fid,
       apache::thrift::protocol::TType& _ftype);
 };
 template <>
-struct TccStructTraits< ::apache::thrift::fixtures::types::VirtualStruct> {
+struct TccStructTraits<::apache::thrift::fixtures::types::VirtualStruct> {
   static void translateFieldName(
       folly::StringPiece _fname,
       int16_t& fid,
       apache::thrift::protocol::TType& _ftype);
 };
 template <>
-struct TccStructTraits< ::apache::thrift::fixtures::types::MyStructWithForwardRefEnum> {
+struct TccStructTraits<::apache::thrift::fixtures::types::MyStructWithForwardRefEnum> {
   static void translateFieldName(
       folly::StringPiece _fname,
       int16_t& fid,
       apache::thrift::protocol::TType& _ftype);
 };
 template <>
-struct TccStructTraits< ::apache::thrift::fixtures::types::TrivialNumeric> {
+struct TccStructTraits<::apache::thrift::fixtures::types::TrivialNumeric> {
   static void translateFieldName(
       folly::StringPiece _fname,
       int16_t& fid,
       apache::thrift::protocol::TType& _ftype);
 };
 template <>
-struct TccStructTraits< ::apache::thrift::fixtures::types::TrivialNestedWithDefault> {
+struct TccStructTraits<::apache::thrift::fixtures::types::TrivialNestedWithDefault> {
   static void translateFieldName(
       folly::StringPiece _fname,
       int16_t& fid,
       apache::thrift::protocol::TType& _ftype);
 };
 template <>
-struct TccStructTraits< ::apache::thrift::fixtures::types::ComplexString> {
+struct TccStructTraits<::apache::thrift::fixtures::types::ComplexString> {
   static void translateFieldName(
       folly::StringPiece _fname,
       int16_t& fid,
       apache::thrift::protocol::TType& _ftype);
 };
 template <>
-struct TccStructTraits< ::apache::thrift::fixtures::types::ComplexNestedWithDefault> {
+struct TccStructTraits<::apache::thrift::fixtures::types::ComplexNestedWithDefault> {
   static void translateFieldName(
       folly::StringPiece _fname,
       int16_t& fid,
       apache::thrift::protocol::TType& _ftype);
 };
 template <>
-struct TccStructTraits< ::apache::thrift::fixtures::types::MinPadding> {
+struct TccStructTraits<::apache::thrift::fixtures::types::MinPadding> {
   static void translateFieldName(
       folly::StringPiece _fname,
       int16_t& fid,
       apache::thrift::protocol::TType& _ftype);
 };
 template <>
-struct TccStructTraits< ::apache::thrift::fixtures::types::MyStruct> {
+struct TccStructTraits<::apache::thrift::fixtures::types::MyStruct> {
   static void translateFieldName(
       folly::StringPiece _fname,
       int16_t& fid,
       apache::thrift::protocol::TType& _ftype);
 };
 template <>
-struct TccStructTraits< ::apache::thrift::fixtures::types::MyDataItem> {
+struct TccStructTraits<::apache::thrift::fixtures::types::MyDataItem> {
   static void translateFieldName(
       folly::StringPiece _fname,
       int16_t& fid,
       apache::thrift::protocol::TType& _ftype);
 };
 template <>
-struct TccStructTraits< ::apache::thrift::fixtures::types::Renaming> {
+struct TccStructTraits<::apache::thrift::fixtures::types::Renaming> {
   static void translateFieldName(
       folly::StringPiece _fname,
       int16_t& fid,
       apache::thrift::protocol::TType& _ftype);
 };
 template <>
-struct TccStructTraits< ::apache::thrift::fixtures::types::AnnotatedTypes> {
+struct TccStructTraits<::apache::thrift::fixtures::types::AnnotatedTypes> {
   static void translateFieldName(
       folly::StringPiece _fname,
       int16_t& fid,

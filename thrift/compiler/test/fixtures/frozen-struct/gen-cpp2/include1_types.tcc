@@ -21,7 +21,7 @@ namespace thrift {
 namespace detail {
 
 template <>
-struct TccStructTraits< ::some::ns::IncludedA> {
+struct TccStructTraits<::some::ns::IncludedA> {
   static void translateFieldName(
       folly::StringPiece _fname,
       int16_t& fid,

@@ -29,8 +29,8 @@ extern const _B_EnumMapFactory::NamesToValuesMapType _B_NAMES_TO_VALUES;
 namespace std {
 
 
-template<> struct hash<typename  ::cpp2::B> : public apache::thrift::detail::enum_hash<typename  ::cpp2::B> {};
-template<> struct equal_to<typename  ::cpp2::B> : public apache::thrift::detail::enum_equal_to<typename  ::cpp2::B> {};
+template<> struct hash<typename ::cpp2::B> : public apache::thrift::detail::enum_hash<typename ::cpp2::B> {};
+template<> struct equal_to<typename ::cpp2::B> : public apache::thrift::detail::enum_equal_to<typename ::cpp2::B> {};
 
 
 } // std
@@ -38,10 +38,10 @@ template<> struct equal_to<typename  ::cpp2::B> : public apache::thrift::detail:
 namespace apache { namespace thrift {
 
 
-template <> struct TEnumDataStorage< ::cpp2::B>;
+template <> struct TEnumDataStorage<::cpp2::B>;
 
-template <> struct TEnumTraits< ::cpp2::B> {
-  using type =  ::cpp2::B;
+template <> struct TEnumTraits<::cpp2::B> {
+  using type = ::cpp2::B;
 
   static constexpr std::size_t const size = 1;
   static folly::Range<type const*> const values;

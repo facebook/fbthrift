@@ -94,20 +94,20 @@ extern const _enum_with_special_names_EnumMapFactory::NamesToValuesMapType _enum
 namespace std {
 
 
-template<> struct hash<typename  ::test_cpp2::cpp_reflection::enum1> : public apache::thrift::detail::enum_hash<typename  ::test_cpp2::cpp_reflection::enum1> {};
-template<> struct equal_to<typename  ::test_cpp2::cpp_reflection::enum1> : public apache::thrift::detail::enum_equal_to<typename  ::test_cpp2::cpp_reflection::enum1> {};
+template<> struct hash<typename ::test_cpp2::cpp_reflection::enum1> : public apache::thrift::detail::enum_hash<typename ::test_cpp2::cpp_reflection::enum1> {};
+template<> struct equal_to<typename ::test_cpp2::cpp_reflection::enum1> : public apache::thrift::detail::enum_equal_to<typename ::test_cpp2::cpp_reflection::enum1> {};
 
 
-template<> struct hash<typename  ::test_cpp2::cpp_reflection::enum2> : public apache::thrift::detail::enum_hash<typename  ::test_cpp2::cpp_reflection::enum2> {};
-template<> struct equal_to<typename  ::test_cpp2::cpp_reflection::enum2> : public apache::thrift::detail::enum_equal_to<typename  ::test_cpp2::cpp_reflection::enum2> {};
+template<> struct hash<typename ::test_cpp2::cpp_reflection::enum2> : public apache::thrift::detail::enum_hash<typename ::test_cpp2::cpp_reflection::enum2> {};
+template<> struct equal_to<typename ::test_cpp2::cpp_reflection::enum2> : public apache::thrift::detail::enum_equal_to<typename ::test_cpp2::cpp_reflection::enum2> {};
 
 
-template<> struct hash<typename  ::test_cpp2::cpp_reflection::enum3> : public apache::thrift::detail::enum_hash<typename  ::test_cpp2::cpp_reflection::enum3> {};
-template<> struct equal_to<typename  ::test_cpp2::cpp_reflection::enum3> : public apache::thrift::detail::enum_equal_to<typename  ::test_cpp2::cpp_reflection::enum3> {};
+template<> struct hash<typename ::test_cpp2::cpp_reflection::enum3> : public apache::thrift::detail::enum_hash<typename ::test_cpp2::cpp_reflection::enum3> {};
+template<> struct equal_to<typename ::test_cpp2::cpp_reflection::enum3> : public apache::thrift::detail::enum_equal_to<typename ::test_cpp2::cpp_reflection::enum3> {};
 
 
-template<> struct hash<typename  ::test_cpp2::cpp_reflection::enum_with_special_names> : public apache::thrift::detail::enum_hash<typename  ::test_cpp2::cpp_reflection::enum_with_special_names> {};
-template<> struct equal_to<typename  ::test_cpp2::cpp_reflection::enum_with_special_names> : public apache::thrift::detail::enum_equal_to<typename  ::test_cpp2::cpp_reflection::enum_with_special_names> {};
+template<> struct hash<typename ::test_cpp2::cpp_reflection::enum_with_special_names> : public apache::thrift::detail::enum_hash<typename ::test_cpp2::cpp_reflection::enum_with_special_names> {};
+template<> struct equal_to<typename ::test_cpp2::cpp_reflection::enum_with_special_names> : public apache::thrift::detail::enum_equal_to<typename ::test_cpp2::cpp_reflection::enum_with_special_names> {};
 
 
 } // std
@@ -115,10 +115,10 @@ template<> struct equal_to<typename  ::test_cpp2::cpp_reflection::enum_with_spec
 namespace apache { namespace thrift {
 
 
-template <> struct TEnumDataStorage< ::test_cpp2::cpp_reflection::enum1>;
+template <> struct TEnumDataStorage<::test_cpp2::cpp_reflection::enum1>;
 
-template <> struct TEnumTraits< ::test_cpp2::cpp_reflection::enum1> {
-  using type =  ::test_cpp2::cpp_reflection::enum1;
+template <> struct TEnumTraits<::test_cpp2::cpp_reflection::enum1> {
+  using type = ::test_cpp2::cpp_reflection::enum1;
 
   static constexpr std::size_t const size = 3;
   static folly::Range<type const*> const values;
@@ -132,10 +132,10 @@ template <> struct TEnumTraits< ::test_cpp2::cpp_reflection::enum1> {
 };
 
 
-template <> struct TEnumDataStorage< ::test_cpp2::cpp_reflection::enum2>;
+template <> struct TEnumDataStorage<::test_cpp2::cpp_reflection::enum2>;
 
-template <> struct TEnumTraits< ::test_cpp2::cpp_reflection::enum2> {
-  using type =  ::test_cpp2::cpp_reflection::enum2;
+template <> struct TEnumTraits<::test_cpp2::cpp_reflection::enum2> {
+  using type = ::test_cpp2::cpp_reflection::enum2;
 
   static constexpr std::size_t const size = 3;
   static folly::Range<type const*> const values;
@@ -149,10 +149,10 @@ template <> struct TEnumTraits< ::test_cpp2::cpp_reflection::enum2> {
 };
 
 
-template <> struct TEnumDataStorage< ::test_cpp2::cpp_reflection::enum3>;
+template <> struct TEnumDataStorage<::test_cpp2::cpp_reflection::enum3>;
 
-template <> struct TEnumTraits< ::test_cpp2::cpp_reflection::enum3> {
-  using type =  ::test_cpp2::cpp_reflection::enum3;
+template <> struct TEnumTraits<::test_cpp2::cpp_reflection::enum3> {
+  using type = ::test_cpp2::cpp_reflection::enum3;
 
   static constexpr std::size_t const size = 2;
   static folly::Range<type const*> const values;
@@ -166,10 +166,10 @@ template <> struct TEnumTraits< ::test_cpp2::cpp_reflection::enum3> {
 };
 
 
-template <> struct TEnumDataStorage< ::test_cpp2::cpp_reflection::enum_with_special_names>;
+template <> struct TEnumDataStorage<::test_cpp2::cpp_reflection::enum_with_special_names>;
 
-template <> struct TEnumTraits< ::test_cpp2::cpp_reflection::enum_with_special_names> {
-  using type =  ::test_cpp2::cpp_reflection::enum_with_special_names;
+template <> struct TEnumTraits<::test_cpp2::cpp_reflection::enum_with_special_names> {
+  using type = ::test_cpp2::cpp_reflection::enum_with_special_names;
 
   static constexpr std::size_t const size = 28;
   static folly::Range<type const*> const values;

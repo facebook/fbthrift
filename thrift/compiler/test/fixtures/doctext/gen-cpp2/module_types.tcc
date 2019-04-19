@@ -30,7 +30,7 @@ namespace thrift {
 namespace detail {
 
 template <>
-struct TccStructTraits< ::cpp2::A> {
+struct TccStructTraits<::cpp2::A> {
   static void translateFieldName(
       folly::StringPiece _fname,
       int16_t& fid,

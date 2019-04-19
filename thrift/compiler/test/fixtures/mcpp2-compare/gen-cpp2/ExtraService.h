@@ -63,7 +63,7 @@ class ExtraServiceSvAsyncIf {
 
 class ExtraServiceAsyncProcessor;
 
-class ExtraServiceSvIf : public ExtraServiceSvAsyncIf, virtual public  ::some::valid::ns::ParamServiceSvIf {
+class ExtraServiceSvIf : public ExtraServiceSvAsyncIf, virtual public ::some::valid::ns::ParamServiceSvIf {
  public:
   typedef ExtraServiceAsyncProcessor ProcessorType;
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
@@ -105,14 +105,14 @@ class ExtraServiceSvIf : public ExtraServiceSvAsyncIf, virtual public  ::some::v
   void async_eb_oneway_void_ret_listunion_param(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback, const std::vector< ::some::valid::ns::ComplexUnion>& param1) override;
 };
 
-class ExtraServiceSvNull : public ExtraServiceSvIf, virtual public  ::some::valid::ns::ParamServiceSvIf {
+class ExtraServiceSvNull : public ExtraServiceSvIf, virtual public ::some::valid::ns::ParamServiceSvIf {
  public:
 };
 
-class ExtraServiceAsyncProcessor : public  ::some::valid::ns::ParamServiceAsyncProcessor {
+class ExtraServiceAsyncProcessor : public ::some::valid::ns::ParamServiceAsyncProcessor {
  public:
   const char* getServiceName() override;
-  using BaseAsyncProcessor =  ::some::valid::ns::ParamServiceAsyncProcessor;
+  using BaseAsyncProcessor = ::some::valid::ns::ParamServiceAsyncProcessor;
  protected:
   ExtraServiceSvIf* iface_;
   folly::Optional<std::string> getCacheKey(folly::IOBuf* buf, apache::thrift::protocol::PROTOCOL_TYPES protType) override;
@@ -172,7 +172,7 @@ class ExtraServiceAsyncProcessor : public  ::some::valid::ns::ParamServiceAsyncP
   void process_oneway_void_ret_listunion_param(std::unique_ptr<apache::thrift::ResponseChannelRequest> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot,apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
  public:
   ExtraServiceAsyncProcessor(ExtraServiceSvIf* iface) :
-       ::some::valid::ns::ParamServiceAsyncProcessor(iface),
+      ::some::valid::ns::ParamServiceAsyncProcessor(iface),
       iface_(iface) {}
 
   virtual ~ExtraServiceAsyncProcessor() {}

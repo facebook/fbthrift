@@ -30,14 +30,14 @@ namespace thrift {
 namespace detail {
 
 template <>
-struct TccStructTraits< ::cpp2::SmallStruct> {
+struct TccStructTraits<::cpp2::SmallStruct> {
   static void translateFieldName(
       folly::StringPiece _fname,
       int16_t& fid,
       apache::thrift::protocol::TType& _ftype);
 };
 template <>
-struct TccStructTraits< ::cpp2::containerStruct> {
+struct TccStructTraits<::cpp2::containerStruct> {
   static void translateFieldName(
       folly::StringPiece _fname,
       int16_t& fid,

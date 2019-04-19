@@ -32,8 +32,8 @@ struct _MyEnumAEnumDataStorage {
 }}} // some::valid::ns
 namespace apache { namespace thrift {
 
-template <> struct TEnumDataStorage< ::some::valid::ns::MyEnumA> {
-  using storage_type =  ::some::valid::ns::_MyEnumAEnumDataStorage;
+template <> struct TEnumDataStorage<::some::valid::ns::MyEnumA> {
+  using storage_type = ::some::valid::ns::_MyEnumAEnumDataStorage;
 };
 
 }} // apache::thrift
@@ -57,8 +57,8 @@ struct _AnnotatedEnumEnumDataStorage {
 }}} // some::valid::ns
 namespace apache { namespace thrift {
 
-template <> struct TEnumDataStorage< ::some::valid::ns::AnnotatedEnum> {
-  using storage_type =  ::some::valid::ns::_AnnotatedEnumEnumDataStorage;
+template <> struct TEnumDataStorage<::some::valid::ns::AnnotatedEnum> {
+  using storage_type = ::some::valid::ns::_AnnotatedEnumEnumDataStorage;
 };
 
 }} // apache::thrift
@@ -82,8 +82,8 @@ struct _AnnotatedEnum2EnumDataStorage {
 }}} // some::valid::ns
 namespace apache { namespace thrift {
 
-template <> struct TEnumDataStorage< ::some::valid::ns::AnnotatedEnum2> {
-  using storage_type =  ::some::valid::ns::_AnnotatedEnum2EnumDataStorage;
+template <> struct TEnumDataStorage<::some::valid::ns::AnnotatedEnum2> {
+  using storage_type = ::some::valid::ns::_AnnotatedEnum2EnumDataStorage;
 };
 
 }} // apache::thrift
@@ -103,8 +103,8 @@ struct _MyEnumBEnumDataStorage {
 }}} // some::valid::ns
 namespace apache { namespace thrift {
 
-template <> struct TEnumDataStorage< ::some::valid::ns::MyEnumB> {
-  using storage_type =  ::some::valid::ns::_MyEnumBEnumDataStorage;
+template <> struct TEnumDataStorage<::some::valid::ns::MyEnumB> {
+  using storage_type = ::some::valid::ns::_MyEnumBEnumDataStorage;
 };
 
 }} // apache::thrift

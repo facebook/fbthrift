@@ -38,7 +38,7 @@ class MyServicePrioChildSvAsyncIf {
 
 class MyServicePrioChildAsyncProcessor;
 
-class MyServicePrioChildSvIf : public MyServicePrioChildSvAsyncIf, virtual public  ::cpp2::MyServicePrioParentSvIf {
+class MyServicePrioChildSvIf : public MyServicePrioChildSvAsyncIf, virtual public ::cpp2::MyServicePrioParentSvIf {
  public:
   typedef MyServicePrioChildAsyncProcessor ProcessorType;
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
@@ -48,15 +48,15 @@ class MyServicePrioChildSvIf : public MyServicePrioChildSvAsyncIf, virtual publi
   void async_tm_pang(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) override;
 };
 
-class MyServicePrioChildSvNull : public MyServicePrioChildSvIf, virtual public  ::cpp2::MyServicePrioParentSvIf {
+class MyServicePrioChildSvNull : public MyServicePrioChildSvIf, virtual public ::cpp2::MyServicePrioParentSvIf {
  public:
   void pang() override;
 };
 
-class MyServicePrioChildAsyncProcessor : public  ::cpp2::MyServicePrioParentAsyncProcessor {
+class MyServicePrioChildAsyncProcessor : public ::cpp2::MyServicePrioParentAsyncProcessor {
  public:
   const char* getServiceName() override;
-  using BaseAsyncProcessor =  ::cpp2::MyServicePrioParentAsyncProcessor;
+  using BaseAsyncProcessor = ::cpp2::MyServicePrioParentAsyncProcessor;
  protected:
   MyServicePrioChildSvIf* iface_;
   folly::Optional<std::string> getCacheKey(folly::IOBuf* buf, apache::thrift::protocol::PROTOCOL_TYPES protType) override;
@@ -90,7 +90,7 @@ class MyServicePrioChildAsyncProcessor : public  ::cpp2::MyServicePrioParentAsyn
   static void throw_wrapped_pang(std::unique_ptr<apache::thrift::ResponseChannelRequest> req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
  public:
   MyServicePrioChildAsyncProcessor(MyServicePrioChildSvIf* iface) :
-       ::cpp2::MyServicePrioParentAsyncProcessor(iface),
+      ::cpp2::MyServicePrioParentAsyncProcessor(iface),
       iface_(iface) {}
 
   virtual ~MyServicePrioChildAsyncProcessor() {}

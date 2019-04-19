@@ -36,8 +36,8 @@ struct _has_bitwise_opsEnumDataStorage {
 }}}} // apache::thrift::fixtures::types
 namespace apache { namespace thrift {
 
-template <> struct TEnumDataStorage< ::apache::thrift::fixtures::types::has_bitwise_ops> {
-  using storage_type =  ::apache::thrift::fixtures::types::_has_bitwise_opsEnumDataStorage;
+template <> struct TEnumDataStorage<::apache::thrift::fixtures::types::has_bitwise_ops> {
+  using storage_type = ::apache::thrift::fixtures::types::_has_bitwise_opsEnumDataStorage;
 };
 
 }} // apache::thrift
@@ -59,8 +59,8 @@ struct _is_unscopedEnumDataStorage {
 }}}} // apache::thrift::fixtures::types
 namespace apache { namespace thrift {
 
-template <> struct TEnumDataStorage< ::apache::thrift::fixtures::types::is_unscoped> {
-  using storage_type =  ::apache::thrift::fixtures::types::_is_unscopedEnumDataStorage;
+template <> struct TEnumDataStorage<::apache::thrift::fixtures::types::is_unscoped> {
+  using storage_type = ::apache::thrift::fixtures::types::_is_unscopedEnumDataStorage;
 };
 
 }} // apache::thrift
@@ -82,8 +82,8 @@ struct _MyForwardRefEnumEnumDataStorage {
 }}}} // apache::thrift::fixtures::types
 namespace apache { namespace thrift {
 
-template <> struct TEnumDataStorage< ::apache::thrift::fixtures::types::MyForwardRefEnum> {
-  using storage_type =  ::apache::thrift::fixtures::types::_MyForwardRefEnumEnumDataStorage;
+template <> struct TEnumDataStorage<::apache::thrift::fixtures::types::MyForwardRefEnum> {
+  using storage_type = ::apache::thrift::fixtures::types::_MyForwardRefEnumEnumDataStorage;
 };
 
 }} // apache::thrift

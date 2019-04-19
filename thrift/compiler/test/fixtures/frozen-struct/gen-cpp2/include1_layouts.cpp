@@ -8,25 +8,25 @@
 
 namespace apache { namespace thrift { namespace frozen {
 
-FROZEN_CTOR( ::some::ns::IncludedA,
+FROZEN_CTOR(::some::ns::IncludedA,
   FROZEN_CTOR_FIELD(i32Field, 1)
   FROZEN_CTOR_FIELD(strField, 2))
-FROZEN_MAXIMIZE( ::some::ns::IncludedA,
+FROZEN_MAXIMIZE(::some::ns::IncludedA,
   FROZEN_MAXIMIZE_FIELD(i32Field)
   FROZEN_MAXIMIZE_FIELD(strField))
-FROZEN_LAYOUT( ::some::ns::IncludedA,
+FROZEN_LAYOUT(::some::ns::IncludedA,
   FROZEN_LAYOUT_FIELD(i32Field)
   FROZEN_LAYOUT_FIELD(strField))
-FROZEN_FREEZE( ::some::ns::IncludedA,
+FROZEN_FREEZE(::some::ns::IncludedA,
   FROZEN_FREEZE_FIELD(i32Field)
   FROZEN_FREEZE_FIELD(strField))
-FROZEN_THAW( ::some::ns::IncludedA,
+FROZEN_THAW(::some::ns::IncludedA,
   FROZEN_THAW_FIELD(i32Field)
   FROZEN_THAW_FIELD(strField))
-FROZEN_DEBUG( ::some::ns::IncludedA,
+FROZEN_DEBUG(::some::ns::IncludedA,
   FROZEN_DEBUG_FIELD(i32Field)
   FROZEN_DEBUG_FIELD(strField))
-FROZEN_CLEAR( ::some::ns::IncludedA,
+FROZEN_CLEAR(::some::ns::IncludedA,
   FROZEN_CLEAR_FIELD(i32Field)
   FROZEN_CLEAR_FIELD(strField))
 

@@ -129,20 +129,20 @@ extern const _MyEnumB_EnumMapFactory::NamesToValuesMapType _MyEnumB_NAMES_TO_VAL
 namespace std {
 
 
-template<> struct hash<typename  ::some::valid::ns::MyEnumA> : public apache::thrift::detail::enum_hash<typename  ::some::valid::ns::MyEnumA> {};
-template<> struct equal_to<typename  ::some::valid::ns::MyEnumA> : public apache::thrift::detail::enum_equal_to<typename  ::some::valid::ns::MyEnumA> {};
+template<> struct hash<typename ::some::valid::ns::MyEnumA> : public apache::thrift::detail::enum_hash<typename ::some::valid::ns::MyEnumA> {};
+template<> struct equal_to<typename ::some::valid::ns::MyEnumA> : public apache::thrift::detail::enum_equal_to<typename ::some::valid::ns::MyEnumA> {};
 
 
-template<> struct hash<typename  ::some::valid::ns::AnnotatedEnum> : public apache::thrift::detail::enum_hash<typename  ::some::valid::ns::AnnotatedEnum> {};
-template<> struct equal_to<typename  ::some::valid::ns::AnnotatedEnum> : public apache::thrift::detail::enum_equal_to<typename  ::some::valid::ns::AnnotatedEnum> {};
+template<> struct hash<typename ::some::valid::ns::AnnotatedEnum> : public apache::thrift::detail::enum_hash<typename ::some::valid::ns::AnnotatedEnum> {};
+template<> struct equal_to<typename ::some::valid::ns::AnnotatedEnum> : public apache::thrift::detail::enum_equal_to<typename ::some::valid::ns::AnnotatedEnum> {};
 
 
-template<> struct hash<typename  ::some::valid::ns::AnnotatedEnum2> : public apache::thrift::detail::enum_hash<typename  ::some::valid::ns::AnnotatedEnum2> {};
-template<> struct equal_to<typename  ::some::valid::ns::AnnotatedEnum2> : public apache::thrift::detail::enum_equal_to<typename  ::some::valid::ns::AnnotatedEnum2> {};
+template<> struct hash<typename ::some::valid::ns::AnnotatedEnum2> : public apache::thrift::detail::enum_hash<typename ::some::valid::ns::AnnotatedEnum2> {};
+template<> struct equal_to<typename ::some::valid::ns::AnnotatedEnum2> : public apache::thrift::detail::enum_equal_to<typename ::some::valid::ns::AnnotatedEnum2> {};
 
 
-template<> struct hash<typename  ::some::valid::ns::MyEnumB> : public apache::thrift::detail::enum_hash<typename  ::some::valid::ns::MyEnumB> {};
-template<> struct equal_to<typename  ::some::valid::ns::MyEnumB> : public apache::thrift::detail::enum_equal_to<typename  ::some::valid::ns::MyEnumB> {};
+template<> struct hash<typename ::some::valid::ns::MyEnumB> : public apache::thrift::detail::enum_hash<typename ::some::valid::ns::MyEnumB> {};
+template<> struct equal_to<typename ::some::valid::ns::MyEnumB> : public apache::thrift::detail::enum_equal_to<typename ::some::valid::ns::MyEnumB> {};
 
 
 } // std
@@ -150,10 +150,10 @@ template<> struct equal_to<typename  ::some::valid::ns::MyEnumB> : public apache
 namespace apache { namespace thrift {
 
 
-template <> struct TEnumDataStorage< ::some::valid::ns::MyEnumA>;
+template <> struct TEnumDataStorage<::some::valid::ns::MyEnumA>;
 
-template <> struct TEnumTraits< ::some::valid::ns::MyEnumA> {
-  using type =  ::some::valid::ns::MyEnumA;
+template <> struct TEnumTraits<::some::valid::ns::MyEnumA> {
+  using type = ::some::valid::ns::MyEnumA;
 
   static constexpr std::size_t const size = 3;
   static folly::Range<type const*> const values;
@@ -167,27 +167,10 @@ template <> struct TEnumTraits< ::some::valid::ns::MyEnumA> {
 };
 
 
-template <> struct TEnumDataStorage< ::some::valid::ns::AnnotatedEnum>;
+template <> struct TEnumDataStorage<::some::valid::ns::AnnotatedEnum>;
 
-template <> struct TEnumTraits< ::some::valid::ns::AnnotatedEnum> {
-  using type =  ::some::valid::ns::AnnotatedEnum;
-
-  static constexpr std::size_t const size = 3;
-  static folly::Range<type const*> const values;
-  static folly::Range<folly::StringPiece const*> const names;
-
-  static char const* findName(type value);
-  static bool findValue(char const* name, type* out);
-
-  static constexpr type min() { return type::FIELDA; }
-  static constexpr type max() { return type::FIELDC; }
-};
-
-
-template <> struct TEnumDataStorage< ::some::valid::ns::AnnotatedEnum2>;
-
-template <> struct TEnumTraits< ::some::valid::ns::AnnotatedEnum2> {
-  using type =  ::some::valid::ns::AnnotatedEnum2;
+template <> struct TEnumTraits<::some::valid::ns::AnnotatedEnum> {
+  using type = ::some::valid::ns::AnnotatedEnum;
 
   static constexpr std::size_t const size = 3;
   static folly::Range<type const*> const values;
@@ -201,10 +184,27 @@ template <> struct TEnumTraits< ::some::valid::ns::AnnotatedEnum2> {
 };
 
 
-template <> struct TEnumDataStorage< ::some::valid::ns::MyEnumB>;
+template <> struct TEnumDataStorage<::some::valid::ns::AnnotatedEnum2>;
 
-template <> struct TEnumTraits< ::some::valid::ns::MyEnumB> {
-  using type =  ::some::valid::ns::MyEnumB;
+template <> struct TEnumTraits<::some::valid::ns::AnnotatedEnum2> {
+  using type = ::some::valid::ns::AnnotatedEnum2;
+
+  static constexpr std::size_t const size = 3;
+  static folly::Range<type const*> const values;
+  static folly::Range<folly::StringPiece const*> const names;
+
+  static char const* findName(type value);
+  static bool findValue(char const* name, type* out);
+
+  static constexpr type min() { return type::FIELDA; }
+  static constexpr type max() { return type::FIELDC; }
+};
+
+
+template <> struct TEnumDataStorage<::some::valid::ns::MyEnumB>;
+
+template <> struct TEnumTraits<::some::valid::ns::MyEnumB> {
+  using type = ::some::valid::ns::MyEnumB;
 
   static constexpr std::size_t const size = 1;
   static folly::Range<type const*> const values;
@@ -318,25 +318,25 @@ typedef std::unique_ptr<folly::IOBuf> IOBufPtr;
 // BEGIN hash_and_equal_to
 namespace std {
 
-template<> struct hash<typename  ::some::valid::ns::MyIncludedStruct> {
-  size_t operator()(const  ::some::valid::ns::MyIncludedStruct&) const;
+template<> struct hash<typename ::some::valid::ns::MyIncludedStruct> {
+  size_t operator()(const ::some::valid::ns::MyIncludedStruct&) const;
 };
-template<> struct equal_to<typename  ::some::valid::ns::MyIncludedStruct> {
-  bool operator()(const  ::some::valid::ns::MyIncludedStruct&,const  ::some::valid::ns::MyIncludedStruct&) const;
-};
-
-template<> struct hash<typename  ::some::valid::ns::AnnotatedStruct> {
-  size_t operator()(const  ::some::valid::ns::AnnotatedStruct&) const;
-};
-template<> struct equal_to<typename  ::some::valid::ns::AnnotatedStruct> {
-  bool operator()(const  ::some::valid::ns::AnnotatedStruct&,const  ::some::valid::ns::AnnotatedStruct&) const;
+template<> struct equal_to<typename ::some::valid::ns::MyIncludedStruct> {
+  bool operator()(const ::some::valid::ns::MyIncludedStruct&,const ::some::valid::ns::MyIncludedStruct&) const;
 };
 
-template<> struct hash<typename  ::some::valid::ns::HashedTypedef> {
-  size_t operator()(const  ::some::valid::ns::HashedTypedef&) const;
+template<> struct hash<typename ::some::valid::ns::AnnotatedStruct> {
+  size_t operator()(const ::some::valid::ns::AnnotatedStruct&) const;
 };
-template<> struct equal_to<typename  ::some::valid::ns::HashedTypedef> {
-  bool operator()(const  ::some::valid::ns::HashedTypedef&,const  ::some::valid::ns::HashedTypedef&) const;
+template<> struct equal_to<typename ::some::valid::ns::AnnotatedStruct> {
+  bool operator()(const ::some::valid::ns::AnnotatedStruct&,const ::some::valid::ns::AnnotatedStruct&) const;
+};
+
+template<> struct hash<typename ::some::valid::ns::HashedTypedef> {
+  size_t operator()(const ::some::valid::ns::HashedTypedef&) const;
+};
+template<> struct equal_to<typename ::some::valid::ns::HashedTypedef> {
+  bool operator()(const ::some::valid::ns::HashedTypedef&,const ::some::valid::ns::HashedTypedef&) const;
 };
 } // std
 // END hash_and_equal_to
@@ -3042,7 +3042,7 @@ class AnotherException : private apache::thrift::detail::st::ComparisonOperators
   uint32_t write(Protocol_* prot_) const;
 
   const char* what() const noexcept override {
-    return " ::some::valid::ns::AnotherException";
+    return "::some::valid::ns::AnotherException";
   }
 
  private:

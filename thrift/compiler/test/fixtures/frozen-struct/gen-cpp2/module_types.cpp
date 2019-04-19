@@ -23,20 +23,20 @@ namespace std {
 } // std
 namespace apache { namespace thrift {
 
-constexpr std::size_t const TEnumTraits< ::some::ns::EnumB>::size;
-folly::Range< ::some::ns::EnumB const*> const TEnumTraits< ::some::ns::EnumB>::values = folly::range( ::some::ns::_EnumBEnumDataStorage::values);
-folly::Range<folly::StringPiece const*> const TEnumTraits< ::some::ns::EnumB>::names = folly::range( ::some::ns::_EnumBEnumDataStorage::names);
+constexpr std::size_t const TEnumTraits<::some::ns::EnumB>::size;
+folly::Range<::some::ns::EnumB const*> const TEnumTraits<::some::ns::EnumB>::values = folly::range(::some::ns::_EnumBEnumDataStorage::values);
+folly::Range<folly::StringPiece const*> const TEnumTraits<::some::ns::EnumB>::names = folly::range(::some::ns::_EnumBEnumDataStorage::names);
 
-char const* TEnumTraits< ::some::ns::EnumB>::findName(type value) {
-  using factory =  ::some::ns::_EnumB_EnumMapFactory;
+char const* TEnumTraits<::some::ns::EnumB>::findName(type value) {
+  using factory = ::some::ns::_EnumB_EnumMapFactory;
   static folly::Indestructible<factory::ValuesToNamesMapType> const map{
       factory::makeValuesToNamesMap()};
   auto found = map->find(value);
   return found == map->end() ? nullptr : found->second;
 }
 
-bool TEnumTraits< ::some::ns::EnumB>::findValue(char const* name, type* out) {
-  using factory =  ::some::ns::_EnumB_EnumMapFactory;
+bool TEnumTraits<::some::ns::EnumB>::findValue(char const* name, type* out) {
+  using factory = ::some::ns::_EnumB_EnumMapFactory;
   static folly::Indestructible<factory::NamesToValuesMapType> const map{
       factory::makeNamesToValuesMap()};
   auto found = map->find(name);
@@ -49,7 +49,7 @@ namespace apache {
 namespace thrift {
 namespace detail {
 
-void TccStructTraits< ::some::ns::ModuleA>::translateFieldName(
+void TccStructTraits<::some::ns::ModuleA>::translateFieldName(
     FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
     FOLLY_MAYBE_UNUSED int16_t& fid,
     FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
@@ -79,7 +79,7 @@ void TccStructTraits< ::some::ns::ModuleA>::translateFieldName(
     _ftype = apache::thrift::protocol::T_STRUCT;
   }
 }
-void TccStructTraits< ::some::ns::ModuleB>::translateFieldName(
+void TccStructTraits<::some::ns::ModuleB>::translateFieldName(
     FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
     FOLLY_MAYBE_UNUSED int16_t& fid,
     FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {

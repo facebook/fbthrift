@@ -23,20 +23,20 @@ namespace std {
 } // std
 namespace apache { namespace thrift {
 
-constexpr std::size_t const TEnumTraits< ::cpp2::MyEnum>::size;
-folly::Range< ::cpp2::MyEnum const*> const TEnumTraits< ::cpp2::MyEnum>::values = folly::range( ::cpp2::_MyEnumEnumDataStorage::values);
-folly::Range<folly::StringPiece const*> const TEnumTraits< ::cpp2::MyEnum>::names = folly::range( ::cpp2::_MyEnumEnumDataStorage::names);
+constexpr std::size_t const TEnumTraits<::cpp2::MyEnum>::size;
+folly::Range<::cpp2::MyEnum const*> const TEnumTraits<::cpp2::MyEnum>::values = folly::range(::cpp2::_MyEnumEnumDataStorage::values);
+folly::Range<folly::StringPiece const*> const TEnumTraits<::cpp2::MyEnum>::names = folly::range(::cpp2::_MyEnumEnumDataStorage::names);
 
-char const* TEnumTraits< ::cpp2::MyEnum>::findName(type value) {
-  using factory =  ::cpp2::_MyEnum_EnumMapFactory;
+char const* TEnumTraits<::cpp2::MyEnum>::findName(type value) {
+  using factory = ::cpp2::_MyEnum_EnumMapFactory;
   static folly::Indestructible<factory::ValuesToNamesMapType> const map{
       factory::makeValuesToNamesMap()};
   auto found = map->find(value);
   return found == map->end() ? nullptr : found->second;
 }
 
-bool TEnumTraits< ::cpp2::MyEnum>::findValue(char const* name, type* out) {
-  using factory =  ::cpp2::_MyEnum_EnumMapFactory;
+bool TEnumTraits<::cpp2::MyEnum>::findValue(char const* name, type* out) {
+  using factory = ::cpp2::_MyEnum_EnumMapFactory;
   static folly::Indestructible<factory::NamesToValuesMapType> const map{
       factory::makeNamesToValuesMap()};
   auto found = map->find(name);
@@ -49,7 +49,7 @@ namespace apache {
 namespace thrift {
 namespace detail {
 
-void TccStructTraits< ::cpp2::MyStruct>::translateFieldName(
+void TccStructTraits<::cpp2::MyStruct>::translateFieldName(
     FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
     FOLLY_MAYBE_UNUSED int16_t& fid,
     FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
@@ -79,7 +79,7 @@ void TccStructTraits< ::cpp2::MyStruct>::translateFieldName(
     _ftype = apache::thrift::protocol::T_STRING;
   }
 }
-void TccStructTraits< ::cpp2::MyDataItem>::translateFieldName(
+void TccStructTraits<::cpp2::MyDataItem>::translateFieldName(
     FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
     FOLLY_MAYBE_UNUSED int16_t& fid,
     FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {

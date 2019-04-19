@@ -30,8 +30,8 @@ struct _AnEnumEnumDataStorage {
 }}} // a::different::ns
 namespace apache { namespace thrift {
 
-template <> struct TEnumDataStorage< ::a::different::ns::AnEnum> {
-  using storage_type =  ::a::different::ns::_AnEnumEnumDataStorage;
+template <> struct TEnumDataStorage<::a::different::ns::AnEnum> {
+  using storage_type = ::a::different::ns::_AnEnumEnumDataStorage;
 };
 
 }} // apache::thrift

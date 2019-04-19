@@ -22,35 +22,35 @@ namespace thrift {
 namespace detail {
 
 template <>
-struct TccStructTraits< ::cpp2::OldStructure> {
+struct TccStructTraits<::cpp2::OldStructure> {
   static void translateFieldName(
       folly::StringPiece _fname,
       int16_t& fid,
       apache::thrift::protocol::TType& _ftype);
 };
 template <>
-struct TccStructTraits< ::cpp2::NewStructure> {
+struct TccStructTraits<::cpp2::NewStructure> {
   static void translateFieldName(
       folly::StringPiece _fname,
       int16_t& fid,
       apache::thrift::protocol::TType& _ftype);
 };
 template <>
-struct TccStructTraits< ::cpp2::NewStructure2> {
+struct TccStructTraits<::cpp2::NewStructure2> {
   static void translateFieldName(
       folly::StringPiece _fname,
       int16_t& fid,
       apache::thrift::protocol::TType& _ftype);
 };
 template <>
-struct TccStructTraits< ::cpp2::NewStructureNested> {
+struct TccStructTraits<::cpp2::NewStructureNested> {
   static void translateFieldName(
       folly::StringPiece _fname,
       int16_t& fid,
       apache::thrift::protocol::TType& _ftype);
 };
 template <>
-struct TccStructTraits< ::cpp2::NewStructureNestedField> {
+struct TccStructTraits<::cpp2::NewStructureNestedField> {
   static void translateFieldName(
       folly::StringPiece _fname,
       int16_t& fid,

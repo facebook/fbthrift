@@ -22,7 +22,7 @@ namespace thrift {
 namespace detail {
 
 template <>
-struct TccStructTraits< ::extra::svc::containerStruct2> {
+struct TccStructTraits<::extra::svc::containerStruct2> {
   static void translateFieldName(
       folly::StringPiece _fname,
       int16_t& fid,

@@ -26,8 +26,8 @@ struct _EmptyEnumEnumDataStorage {
 } // cpp2
 namespace apache { namespace thrift {
 
-template <> struct TEnumDataStorage< ::cpp2::EmptyEnum> {
-  using storage_type =  ::cpp2::_EmptyEnumEnumDataStorage;
+template <> struct TEnumDataStorage<::cpp2::EmptyEnum> {
+  using storage_type = ::cpp2::_EmptyEnumEnumDataStorage;
 };
 
 }} // apache::thrift
@@ -53,8 +53,8 @@ struct _CityEnumDataStorage {
 } // cpp2
 namespace apache { namespace thrift {
 
-template <> struct TEnumDataStorage< ::cpp2::City> {
-  using storage_type =  ::cpp2::_CityEnumDataStorage;
+template <> struct TEnumDataStorage<::cpp2::City> {
+  using storage_type = ::cpp2::_CityEnumDataStorage;
 };
 
 }} // apache::thrift
@@ -80,8 +80,8 @@ struct _CompanyEnumDataStorage {
 } // cpp2
 namespace apache { namespace thrift {
 
-template <> struct TEnumDataStorage< ::cpp2::Company> {
-  using storage_type =  ::cpp2::_CompanyEnumDataStorage;
+template <> struct TEnumDataStorage<::cpp2::Company> {
+  using storage_type = ::cpp2::_CompanyEnumDataStorage;
 };
 
 }} // apache::thrift

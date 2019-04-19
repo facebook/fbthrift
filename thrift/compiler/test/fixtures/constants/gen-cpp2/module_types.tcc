@@ -48,56 +48,56 @@ namespace thrift {
 namespace detail {
 
 template <>
-struct TccStructTraits< ::cpp2::Internship> {
+struct TccStructTraits<::cpp2::Internship> {
   static void translateFieldName(
       folly::StringPiece _fname,
       int16_t& fid,
       apache::thrift::protocol::TType& _ftype);
 };
 template <>
-struct TccStructTraits< ::cpp2::UnEnumStruct> {
+struct TccStructTraits<::cpp2::UnEnumStruct> {
   static void translateFieldName(
       folly::StringPiece _fname,
       int16_t& fid,
       apache::thrift::protocol::TType& _ftype);
 };
 template <>
-struct TccStructTraits< ::cpp2::Range> {
+struct TccStructTraits<::cpp2::Range> {
   static void translateFieldName(
       folly::StringPiece _fname,
       int16_t& fid,
       apache::thrift::protocol::TType& _ftype);
 };
 template <>
-struct TccStructTraits< ::cpp2::struct1> {
+struct TccStructTraits<::cpp2::struct1> {
   static void translateFieldName(
       folly::StringPiece _fname,
       int16_t& fid,
       apache::thrift::protocol::TType& _ftype);
 };
 template <>
-struct TccStructTraits< ::cpp2::struct2> {
+struct TccStructTraits<::cpp2::struct2> {
   static void translateFieldName(
       folly::StringPiece _fname,
       int16_t& fid,
       apache::thrift::protocol::TType& _ftype);
 };
 template <>
-struct TccStructTraits< ::cpp2::struct3> {
+struct TccStructTraits<::cpp2::struct3> {
   static void translateFieldName(
       folly::StringPiece _fname,
       int16_t& fid,
       apache::thrift::protocol::TType& _ftype);
 };
 template <>
-struct TccStructTraits< ::cpp2::union1> {
+struct TccStructTraits<::cpp2::union1> {
   static void translateFieldName(
       folly::StringPiece _fname,
       int16_t& fid,
       apache::thrift::protocol::TType& _ftype);
 };
 template <>
-struct TccStructTraits< ::cpp2::union2> {
+struct TccStructTraits<::cpp2::union2> {
   static void translateFieldName(
       folly::StringPiece _fname,
       int16_t& fid,

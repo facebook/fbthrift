@@ -21,14 +21,14 @@ namespace thrift {
 namespace detail {
 
 template <>
-struct TccStructTraits< ::cpp2::Empty> {
+struct TccStructTraits<::cpp2::Empty> {
   static void translateFieldName(
       folly::StringPiece _fname,
       int16_t& fid,
       apache::thrift::protocol::TType& _ftype);
 };
 template <>
-struct TccStructTraits< ::cpp2::Nada> {
+struct TccStructTraits<::cpp2::Nada> {
   static void translateFieldName(
       folly::StringPiece _fname,
       int16_t& fid,

@@ -28,8 +28,8 @@ struct _BEnumDataStorage {
 } // cpp2
 namespace apache { namespace thrift {
 
-template <> struct TEnumDataStorage< ::cpp2::B> {
-  using storage_type =  ::cpp2::_BEnumDataStorage;
+template <> struct TEnumDataStorage<::cpp2::B> {
+  using storage_type = ::cpp2::_BEnumDataStorage;
 };
 
 }} // apache::thrift

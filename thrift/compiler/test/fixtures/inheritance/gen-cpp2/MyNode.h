@@ -38,7 +38,7 @@ class MyNodeSvAsyncIf {
 
 class MyNodeAsyncProcessor;
 
-class MyNodeSvIf : public MyNodeSvAsyncIf, virtual public  ::cpp2::MyRootSvIf {
+class MyNodeSvIf : public MyNodeSvAsyncIf, virtual public ::cpp2::MyRootSvIf {
  public:
   typedef MyNodeAsyncProcessor ProcessorType;
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
@@ -48,15 +48,15 @@ class MyNodeSvIf : public MyNodeSvAsyncIf, virtual public  ::cpp2::MyRootSvIf {
   void async_tm_do_mid(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) override;
 };
 
-class MyNodeSvNull : public MyNodeSvIf, virtual public  ::cpp2::MyRootSvIf {
+class MyNodeSvNull : public MyNodeSvIf, virtual public ::cpp2::MyRootSvIf {
  public:
   void do_mid() override;
 };
 
-class MyNodeAsyncProcessor : public  ::cpp2::MyRootAsyncProcessor {
+class MyNodeAsyncProcessor : public ::cpp2::MyRootAsyncProcessor {
  public:
   const char* getServiceName() override;
-  using BaseAsyncProcessor =  ::cpp2::MyRootAsyncProcessor;
+  using BaseAsyncProcessor = ::cpp2::MyRootAsyncProcessor;
  protected:
   MyNodeSvIf* iface_;
   folly::Optional<std::string> getCacheKey(folly::IOBuf* buf, apache::thrift::protocol::PROTOCOL_TYPES protType) override;
@@ -90,7 +90,7 @@ class MyNodeAsyncProcessor : public  ::cpp2::MyRootAsyncProcessor {
   static void throw_wrapped_do_mid(std::unique_ptr<apache::thrift::ResponseChannelRequest> req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
  public:
   MyNodeAsyncProcessor(MyNodeSvIf* iface) :
-       ::cpp2::MyRootAsyncProcessor(iface),
+      ::cpp2::MyRootAsyncProcessor(iface),
       iface_(iface) {}
 
   virtual ~MyNodeAsyncProcessor() {}

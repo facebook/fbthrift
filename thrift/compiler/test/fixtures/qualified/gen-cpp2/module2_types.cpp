@@ -17,7 +17,7 @@ namespace apache {
 namespace thrift {
 namespace detail {
 
-void TccStructTraits< ::module2::Struct>::translateFieldName(
+void TccStructTraits<::module2::Struct>::translateFieldName(
     FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
     FOLLY_MAYBE_UNUSED int16_t& fid,
     FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
@@ -31,7 +31,7 @@ void TccStructTraits< ::module2::Struct>::translateFieldName(
     _ftype = apache::thrift::protocol::T_STRUCT;
   }
 }
-void TccStructTraits< ::module2::BigStruct>::translateFieldName(
+void TccStructTraits<::module2::BigStruct>::translateFieldName(
     FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
     FOLLY_MAYBE_UNUSED int16_t& fid,
     FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {

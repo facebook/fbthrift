@@ -30,21 +30,21 @@ namespace thrift {
 namespace detail {
 
 template <>
-struct TccStructTraits< ::cpp2::Color> {
+struct TccStructTraits<::cpp2::Color> {
   static void translateFieldName(
       folly::StringPiece _fname,
       int16_t& fid,
       apache::thrift::protocol::TType& _ftype);
 };
 template <>
-struct TccStructTraits< ::cpp2::Vehicle> {
+struct TccStructTraits<::cpp2::Vehicle> {
   static void translateFieldName(
       folly::StringPiece _fname,
       int16_t& fid,
       apache::thrift::protocol::TType& _ftype);
 };
 template <>
-struct TccStructTraits< ::cpp2::Person> {
+struct TccStructTraits<::cpp2::Person> {
   static void translateFieldName(
       folly::StringPiece _fname,
       int16_t& fid,

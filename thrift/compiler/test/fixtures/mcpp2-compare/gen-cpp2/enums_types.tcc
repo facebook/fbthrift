@@ -67,7 +67,7 @@ namespace thrift {
 namespace detail {
 
 template <>
-struct TccStructTraits< ::facebook::ns::qwerty::SomeStruct> {
+struct TccStructTraits<::facebook::ns::qwerty::SomeStruct> {
   static void translateFieldName(
       folly::StringPiece _fname,
       int16_t& fid,

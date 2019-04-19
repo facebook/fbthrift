@@ -87,16 +87,16 @@ extern const _MyForwardRefEnum_EnumMapFactory::NamesToValuesMapType _MyForwardRe
 namespace std {
 
 
-template<> struct hash<typename  ::apache::thrift::fixtures::types::has_bitwise_ops> : public apache::thrift::detail::enum_hash<typename  ::apache::thrift::fixtures::types::has_bitwise_ops> {};
-template<> struct equal_to<typename  ::apache::thrift::fixtures::types::has_bitwise_ops> : public apache::thrift::detail::enum_equal_to<typename  ::apache::thrift::fixtures::types::has_bitwise_ops> {};
+template<> struct hash<typename ::apache::thrift::fixtures::types::has_bitwise_ops> : public apache::thrift::detail::enum_hash<typename ::apache::thrift::fixtures::types::has_bitwise_ops> {};
+template<> struct equal_to<typename ::apache::thrift::fixtures::types::has_bitwise_ops> : public apache::thrift::detail::enum_equal_to<typename ::apache::thrift::fixtures::types::has_bitwise_ops> {};
 
 
-template<> struct hash<typename  ::apache::thrift::fixtures::types::is_unscoped> : public apache::thrift::detail::enum_hash<typename  ::apache::thrift::fixtures::types::is_unscoped> {};
-template<> struct equal_to<typename  ::apache::thrift::fixtures::types::is_unscoped> : public apache::thrift::detail::enum_equal_to<typename  ::apache::thrift::fixtures::types::is_unscoped> {};
+template<> struct hash<typename ::apache::thrift::fixtures::types::is_unscoped> : public apache::thrift::detail::enum_hash<typename ::apache::thrift::fixtures::types::is_unscoped> {};
+template<> struct equal_to<typename ::apache::thrift::fixtures::types::is_unscoped> : public apache::thrift::detail::enum_equal_to<typename ::apache::thrift::fixtures::types::is_unscoped> {};
 
 
-template<> struct hash<typename  ::apache::thrift::fixtures::types::MyForwardRefEnum> : public apache::thrift::detail::enum_hash<typename  ::apache::thrift::fixtures::types::MyForwardRefEnum> {};
-template<> struct equal_to<typename  ::apache::thrift::fixtures::types::MyForwardRefEnum> : public apache::thrift::detail::enum_equal_to<typename  ::apache::thrift::fixtures::types::MyForwardRefEnum> {};
+template<> struct hash<typename ::apache::thrift::fixtures::types::MyForwardRefEnum> : public apache::thrift::detail::enum_hash<typename ::apache::thrift::fixtures::types::MyForwardRefEnum> {};
+template<> struct equal_to<typename ::apache::thrift::fixtures::types::MyForwardRefEnum> : public apache::thrift::detail::enum_equal_to<typename ::apache::thrift::fixtures::types::MyForwardRefEnum> {};
 
 
 } // std
@@ -104,10 +104,10 @@ template<> struct equal_to<typename  ::apache::thrift::fixtures::types::MyForwar
 namespace apache { namespace thrift {
 
 
-template <> struct TEnumDataStorage< ::apache::thrift::fixtures::types::has_bitwise_ops>;
+template <> struct TEnumDataStorage<::apache::thrift::fixtures::types::has_bitwise_ops>;
 
-template <> struct TEnumTraits< ::apache::thrift::fixtures::types::has_bitwise_ops> {
-  using type =  ::apache::thrift::fixtures::types::has_bitwise_ops;
+template <> struct TEnumTraits<::apache::thrift::fixtures::types::has_bitwise_ops> {
+  using type = ::apache::thrift::fixtures::types::has_bitwise_ops;
 
   static constexpr std::size_t const size = 5;
   static folly::Range<type const*> const values;
@@ -121,10 +121,10 @@ template <> struct TEnumTraits< ::apache::thrift::fixtures::types::has_bitwise_o
 };
 
 
-template <> struct TEnumDataStorage< ::apache::thrift::fixtures::types::is_unscoped>;
+template <> struct TEnumDataStorage<::apache::thrift::fixtures::types::is_unscoped>;
 
-template <> struct TEnumTraits< ::apache::thrift::fixtures::types::is_unscoped> {
-  using type =  ::apache::thrift::fixtures::types::is_unscoped;
+template <> struct TEnumTraits<::apache::thrift::fixtures::types::is_unscoped> {
+  using type = ::apache::thrift::fixtures::types::is_unscoped;
 
   static constexpr std::size_t const size = 2;
   static folly::Range<type const*> const values;
@@ -138,10 +138,10 @@ template <> struct TEnumTraits< ::apache::thrift::fixtures::types::is_unscoped> 
 };
 
 
-template <> struct TEnumDataStorage< ::apache::thrift::fixtures::types::MyForwardRefEnum>;
+template <> struct TEnumDataStorage<::apache::thrift::fixtures::types::MyForwardRefEnum>;
 
-template <> struct TEnumTraits< ::apache::thrift::fixtures::types::MyForwardRefEnum> {
-  using type =  ::apache::thrift::fixtures::types::MyForwardRefEnum;
+template <> struct TEnumTraits<::apache::thrift::fixtures::types::MyForwardRefEnum> {
+  using type = ::apache::thrift::fixtures::types::MyForwardRefEnum;
 
   static constexpr std::size_t const size = 2;
   static folly::Range<type const*> const values;
@@ -189,11 +189,11 @@ typedef std::string TBinary;
 // BEGIN hash_and_equal_to
 namespace std {
 
-template<> struct hash<typename  ::apache::thrift::fixtures::types::decorated_struct> {
-  size_t operator()(const  ::apache::thrift::fixtures::types::decorated_struct&) const;
+template<> struct hash<typename ::apache::thrift::fixtures::types::decorated_struct> {
+  size_t operator()(const ::apache::thrift::fixtures::types::decorated_struct&) const;
 };
-template<> struct equal_to<typename  ::apache::thrift::fixtures::types::decorated_struct> {
-  bool operator()(const  ::apache::thrift::fixtures::types::decorated_struct&,const  ::apache::thrift::fixtures::types::decorated_struct&) const;
+template<> struct equal_to<typename ::apache::thrift::fixtures::types::decorated_struct> {
+  bool operator()(const ::apache::thrift::fixtures::types::decorated_struct&,const ::apache::thrift::fixtures::types::decorated_struct&) const;
 };
 } // std
 // END hash_and_equal_to

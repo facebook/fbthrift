@@ -32,8 +32,8 @@ extern const _Animal_EnumMapFactory::NamesToValuesMapType _Animal_NAMES_TO_VALUE
 namespace std {
 
 
-template<> struct hash<typename  ::cpp2::Animal> : public apache::thrift::detail::enum_hash<typename  ::cpp2::Animal> {};
-template<> struct equal_to<typename  ::cpp2::Animal> : public apache::thrift::detail::enum_equal_to<typename  ::cpp2::Animal> {};
+template<> struct hash<typename ::cpp2::Animal> : public apache::thrift::detail::enum_hash<typename ::cpp2::Animal> {};
+template<> struct equal_to<typename ::cpp2::Animal> : public apache::thrift::detail::enum_equal_to<typename ::cpp2::Animal> {};
 
 
 } // std
@@ -41,10 +41,10 @@ template<> struct equal_to<typename  ::cpp2::Animal> : public apache::thrift::de
 namespace apache { namespace thrift {
 
 
-template <> struct TEnumDataStorage< ::cpp2::Animal>;
+template <> struct TEnumDataStorage<::cpp2::Animal>;
 
-template <> struct TEnumTraits< ::cpp2::Animal> {
-  using type =  ::cpp2::Animal;
+template <> struct TEnumTraits<::cpp2::Animal> {
+  using type = ::cpp2::Animal;
 
   static constexpr std::size_t const size = 3;
   static folly::Range<type const*> const values;

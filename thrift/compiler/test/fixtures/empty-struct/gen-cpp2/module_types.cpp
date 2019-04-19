@@ -17,13 +17,13 @@ namespace apache {
 namespace thrift {
 namespace detail {
 
-void TccStructTraits< ::cpp2::Empty>::translateFieldName(
+void TccStructTraits<::cpp2::Empty>::translateFieldName(
     FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
     FOLLY_MAYBE_UNUSED int16_t& fid,
     FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
   if (false) {}
 }
-void TccStructTraits< ::cpp2::Nada>::translateFieldName(
+void TccStructTraits<::cpp2::Nada>::translateFieldName(
     FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
     FOLLY_MAYBE_UNUSED int16_t& fid,
     FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {

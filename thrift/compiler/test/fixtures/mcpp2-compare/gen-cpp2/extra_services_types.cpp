@@ -17,7 +17,7 @@ namespace apache {
 namespace thrift {
 namespace detail {
 
-void TccStructTraits< ::extra::svc::containerStruct2>::translateFieldName(
+void TccStructTraits<::extra::svc::containerStruct2>::translateFieldName(
     FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
     FOLLY_MAYBE_UNUSED int16_t& fid,
     FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {

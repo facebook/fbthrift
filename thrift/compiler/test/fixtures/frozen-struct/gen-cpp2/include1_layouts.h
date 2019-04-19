@@ -10,7 +10,7 @@
 #include "thrift/compiler/test/fixtures/frozen-struct/gen-cpp2/include1_types.h"
 namespace apache { namespace thrift { namespace frozen {
 
-FROZEN_TYPE( ::some::ns::IncludedA,
+FROZEN_TYPE(::some::ns::IncludedA,
   FROZEN_FIELD(i32Field, 1, int32_t)
   FROZEN_FIELD(strField, 2, std::string)
   FROZEN_VIEW(

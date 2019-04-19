@@ -23,20 +23,20 @@ namespace std {
 } // std
 namespace apache { namespace thrift {
 
-constexpr std::size_t const TEnumTraits< ::cpp2::B>::size;
-folly::Range< ::cpp2::B const*> const TEnumTraits< ::cpp2::B>::values = folly::range( ::cpp2::_BEnumDataStorage::values);
-folly::Range<folly::StringPiece const*> const TEnumTraits< ::cpp2::B>::names = folly::range( ::cpp2::_BEnumDataStorage::names);
+constexpr std::size_t const TEnumTraits<::cpp2::B>::size;
+folly::Range<::cpp2::B const*> const TEnumTraits<::cpp2::B>::values = folly::range(::cpp2::_BEnumDataStorage::values);
+folly::Range<folly::StringPiece const*> const TEnumTraits<::cpp2::B>::names = folly::range(::cpp2::_BEnumDataStorage::names);
 
-char const* TEnumTraits< ::cpp2::B>::findName(type value) {
-  using factory =  ::cpp2::_B_EnumMapFactory;
+char const* TEnumTraits<::cpp2::B>::findName(type value) {
+  using factory = ::cpp2::_B_EnumMapFactory;
   static folly::Indestructible<factory::ValuesToNamesMapType> const map{
       factory::makeValuesToNamesMap()};
   auto found = map->find(value);
   return found == map->end() ? nullptr : found->second;
 }
 
-bool TEnumTraits< ::cpp2::B>::findValue(char const* name, type* out) {
-  using factory =  ::cpp2::_B_EnumMapFactory;
+bool TEnumTraits<::cpp2::B>::findValue(char const* name, type* out) {
+  using factory = ::cpp2::_B_EnumMapFactory;
   static folly::Indestructible<factory::NamesToValuesMapType> const map{
       factory::makeNamesToValuesMap()};
   auto found = map->find(name);
@@ -49,7 +49,7 @@ namespace apache {
 namespace thrift {
 namespace detail {
 
-void TccStructTraits< ::cpp2::A>::translateFieldName(
+void TccStructTraits<::cpp2::A>::translateFieldName(
     FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
     FOLLY_MAYBE_UNUSED int16_t& fid,
     FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {

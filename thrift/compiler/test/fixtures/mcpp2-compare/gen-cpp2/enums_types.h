@@ -70,24 +70,24 @@ extern const _AnEnumE_EnumMapFactory::NamesToValuesMapType _AnEnumE_NAMES_TO_VAL
 namespace std {
 
 
-template<> struct hash<typename  ::facebook::ns::qwerty::AnEnumA> : public apache::thrift::detail::enum_hash<typename  ::facebook::ns::qwerty::AnEnumA> {};
-template<> struct equal_to<typename  ::facebook::ns::qwerty::AnEnumA> : public apache::thrift::detail::enum_equal_to<typename  ::facebook::ns::qwerty::AnEnumA> {};
+template<> struct hash<typename ::facebook::ns::qwerty::AnEnumA> : public apache::thrift::detail::enum_hash<typename ::facebook::ns::qwerty::AnEnumA> {};
+template<> struct equal_to<typename ::facebook::ns::qwerty::AnEnumA> : public apache::thrift::detail::enum_equal_to<typename ::facebook::ns::qwerty::AnEnumA> {};
 
 
-template<> struct hash<typename  ::facebook::ns::qwerty::AnEnumB> : public apache::thrift::detail::enum_hash<typename  ::facebook::ns::qwerty::AnEnumB> {};
-template<> struct equal_to<typename  ::facebook::ns::qwerty::AnEnumB> : public apache::thrift::detail::enum_equal_to<typename  ::facebook::ns::qwerty::AnEnumB> {};
+template<> struct hash<typename ::facebook::ns::qwerty::AnEnumB> : public apache::thrift::detail::enum_hash<typename ::facebook::ns::qwerty::AnEnumB> {};
+template<> struct equal_to<typename ::facebook::ns::qwerty::AnEnumB> : public apache::thrift::detail::enum_equal_to<typename ::facebook::ns::qwerty::AnEnumB> {};
 
 
-template<> struct hash<typename  ::facebook::ns::qwerty::AnEnumC> : public apache::thrift::detail::enum_hash<typename  ::facebook::ns::qwerty::AnEnumC> {};
-template<> struct equal_to<typename  ::facebook::ns::qwerty::AnEnumC> : public apache::thrift::detail::enum_equal_to<typename  ::facebook::ns::qwerty::AnEnumC> {};
+template<> struct hash<typename ::facebook::ns::qwerty::AnEnumC> : public apache::thrift::detail::enum_hash<typename ::facebook::ns::qwerty::AnEnumC> {};
+template<> struct equal_to<typename ::facebook::ns::qwerty::AnEnumC> : public apache::thrift::detail::enum_equal_to<typename ::facebook::ns::qwerty::AnEnumC> {};
 
 
-template<> struct hash<typename  ::facebook::ns::qwerty::AnEnumD> : public apache::thrift::detail::enum_hash<typename  ::facebook::ns::qwerty::AnEnumD> {};
-template<> struct equal_to<typename  ::facebook::ns::qwerty::AnEnumD> : public apache::thrift::detail::enum_equal_to<typename  ::facebook::ns::qwerty::AnEnumD> {};
+template<> struct hash<typename ::facebook::ns::qwerty::AnEnumD> : public apache::thrift::detail::enum_hash<typename ::facebook::ns::qwerty::AnEnumD> {};
+template<> struct equal_to<typename ::facebook::ns::qwerty::AnEnumD> : public apache::thrift::detail::enum_equal_to<typename ::facebook::ns::qwerty::AnEnumD> {};
 
 
-template<> struct hash<typename  ::facebook::ns::qwerty::AnEnumE> : public apache::thrift::detail::enum_hash<typename  ::facebook::ns::qwerty::AnEnumE> {};
-template<> struct equal_to<typename  ::facebook::ns::qwerty::AnEnumE> : public apache::thrift::detail::enum_equal_to<typename  ::facebook::ns::qwerty::AnEnumE> {};
+template<> struct hash<typename ::facebook::ns::qwerty::AnEnumE> : public apache::thrift::detail::enum_hash<typename ::facebook::ns::qwerty::AnEnumE> {};
+template<> struct equal_to<typename ::facebook::ns::qwerty::AnEnumE> : public apache::thrift::detail::enum_equal_to<typename ::facebook::ns::qwerty::AnEnumE> {};
 
 
 } // std
@@ -95,10 +95,10 @@ template<> struct equal_to<typename  ::facebook::ns::qwerty::AnEnumE> : public a
 namespace apache { namespace thrift {
 
 
-template <> struct TEnumDataStorage< ::facebook::ns::qwerty::AnEnumA>;
+template <> struct TEnumDataStorage<::facebook::ns::qwerty::AnEnumA>;
 
-template <> struct TEnumTraits< ::facebook::ns::qwerty::AnEnumA> {
-  using type =  ::facebook::ns::qwerty::AnEnumA;
+template <> struct TEnumTraits<::facebook::ns::qwerty::AnEnumA> {
+  using type = ::facebook::ns::qwerty::AnEnumA;
 
   static constexpr std::size_t const size = 1;
   static folly::Range<type const*> const values;
@@ -112,10 +112,10 @@ template <> struct TEnumTraits< ::facebook::ns::qwerty::AnEnumA> {
 };
 
 
-template <> struct TEnumDataStorage< ::facebook::ns::qwerty::AnEnumB>;
+template <> struct TEnumDataStorage<::facebook::ns::qwerty::AnEnumB>;
 
-template <> struct TEnumTraits< ::facebook::ns::qwerty::AnEnumB> {
-  using type =  ::facebook::ns::qwerty::AnEnumB;
+template <> struct TEnumTraits<::facebook::ns::qwerty::AnEnumB> {
+  using type = ::facebook::ns::qwerty::AnEnumB;
 
   static constexpr std::size_t const size = 2;
   static folly::Range<type const*> const values;
@@ -129,10 +129,10 @@ template <> struct TEnumTraits< ::facebook::ns::qwerty::AnEnumB> {
 };
 
 
-template <> struct TEnumDataStorage< ::facebook::ns::qwerty::AnEnumC>;
+template <> struct TEnumDataStorage<::facebook::ns::qwerty::AnEnumC>;
 
-template <> struct TEnumTraits< ::facebook::ns::qwerty::AnEnumC> {
-  using type =  ::facebook::ns::qwerty::AnEnumC;
+template <> struct TEnumTraits<::facebook::ns::qwerty::AnEnumC> {
+  using type = ::facebook::ns::qwerty::AnEnumC;
 
   static constexpr std::size_t const size = 1;
   static folly::Range<type const*> const values;
@@ -146,10 +146,10 @@ template <> struct TEnumTraits< ::facebook::ns::qwerty::AnEnumC> {
 };
 
 
-template <> struct TEnumDataStorage< ::facebook::ns::qwerty::AnEnumD>;
+template <> struct TEnumDataStorage<::facebook::ns::qwerty::AnEnumD>;
 
-template <> struct TEnumTraits< ::facebook::ns::qwerty::AnEnumD> {
-  using type =  ::facebook::ns::qwerty::AnEnumD;
+template <> struct TEnumTraits<::facebook::ns::qwerty::AnEnumD> {
+  using type = ::facebook::ns::qwerty::AnEnumD;
 
   static constexpr std::size_t const size = 1;
   static folly::Range<type const*> const values;
@@ -163,10 +163,10 @@ template <> struct TEnumTraits< ::facebook::ns::qwerty::AnEnumD> {
 };
 
 
-template <> struct TEnumDataStorage< ::facebook::ns::qwerty::AnEnumE>;
+template <> struct TEnumDataStorage<::facebook::ns::qwerty::AnEnumE>;
 
-template <> struct TEnumTraits< ::facebook::ns::qwerty::AnEnumE> {
-  using type =  ::facebook::ns::qwerty::AnEnumE;
+template <> struct TEnumTraits<::facebook::ns::qwerty::AnEnumE> {
+  using type = ::facebook::ns::qwerty::AnEnumE;
 
   static constexpr std::size_t const size = 1;
   static folly::Range<type const*> const values;

@@ -53,16 +53,16 @@ extern const _Company_EnumMapFactory::NamesToValuesMapType _Company_NAMES_TO_VAL
 namespace std {
 
 
-template<> struct hash<typename  ::cpp2::EmptyEnum> : public apache::thrift::detail::enum_hash<typename  ::cpp2::EmptyEnum> {};
-template<> struct equal_to<typename  ::cpp2::EmptyEnum> : public apache::thrift::detail::enum_equal_to<typename  ::cpp2::EmptyEnum> {};
+template<> struct hash<typename ::cpp2::EmptyEnum> : public apache::thrift::detail::enum_hash<typename ::cpp2::EmptyEnum> {};
+template<> struct equal_to<typename ::cpp2::EmptyEnum> : public apache::thrift::detail::enum_equal_to<typename ::cpp2::EmptyEnum> {};
 
 
-template<> struct hash<typename  ::cpp2::City> : public apache::thrift::detail::enum_hash<typename  ::cpp2::City> {};
-template<> struct equal_to<typename  ::cpp2::City> : public apache::thrift::detail::enum_equal_to<typename  ::cpp2::City> {};
+template<> struct hash<typename ::cpp2::City> : public apache::thrift::detail::enum_hash<typename ::cpp2::City> {};
+template<> struct equal_to<typename ::cpp2::City> : public apache::thrift::detail::enum_equal_to<typename ::cpp2::City> {};
 
 
-template<> struct hash<typename  ::cpp2::Company> : public apache::thrift::detail::enum_hash<typename  ::cpp2::Company> {};
-template<> struct equal_to<typename  ::cpp2::Company> : public apache::thrift::detail::enum_equal_to<typename  ::cpp2::Company> {};
+template<> struct hash<typename ::cpp2::Company> : public apache::thrift::detail::enum_hash<typename ::cpp2::Company> {};
+template<> struct equal_to<typename ::cpp2::Company> : public apache::thrift::detail::enum_equal_to<typename ::cpp2::Company> {};
 
 
 } // std
@@ -70,10 +70,10 @@ template<> struct equal_to<typename  ::cpp2::Company> : public apache::thrift::d
 namespace apache { namespace thrift {
 
 
-template <> struct TEnumDataStorage< ::cpp2::EmptyEnum>;
+template <> struct TEnumDataStorage<::cpp2::EmptyEnum>;
 
-template <> struct TEnumTraits< ::cpp2::EmptyEnum> {
-  using type =  ::cpp2::EmptyEnum;
+template <> struct TEnumTraits<::cpp2::EmptyEnum> {
+  using type = ::cpp2::EmptyEnum;
 
   static constexpr std::size_t const size = 0;
   static folly::Range<type const*> const values;
@@ -85,10 +85,10 @@ template <> struct TEnumTraits< ::cpp2::EmptyEnum> {
 };
 
 
-template <> struct TEnumDataStorage< ::cpp2::City>;
+template <> struct TEnumDataStorage<::cpp2::City>;
 
-template <> struct TEnumTraits< ::cpp2::City> {
-  using type =  ::cpp2::City;
+template <> struct TEnumTraits<::cpp2::City> {
+  using type = ::cpp2::City;
 
   static constexpr std::size_t const size = 4;
   static folly::Range<type const*> const values;
@@ -102,10 +102,10 @@ template <> struct TEnumTraits< ::cpp2::City> {
 };
 
 
-template <> struct TEnumDataStorage< ::cpp2::Company>;
+template <> struct TEnumDataStorage<::cpp2::Company>;
 
-template <> struct TEnumTraits< ::cpp2::Company> {
-  using type =  ::cpp2::Company;
+template <> struct TEnumTraits<::cpp2::Company> {
+  using type = ::cpp2::Company;
 
   static constexpr std::size_t const size = 4;
   static folly::Range<type const*> const values;

@@ -23,20 +23,20 @@ namespace std {
 } // std
 namespace apache { namespace thrift {
 
-constexpr std::size_t const TEnumTraits< ::a::different::ns::AnEnum>::size;
-folly::Range< ::a::different::ns::AnEnum const*> const TEnumTraits< ::a::different::ns::AnEnum>::values = folly::range( ::a::different::ns::_AnEnumEnumDataStorage::values);
-folly::Range<folly::StringPiece const*> const TEnumTraits< ::a::different::ns::AnEnum>::names = folly::range( ::a::different::ns::_AnEnumEnumDataStorage::names);
+constexpr std::size_t const TEnumTraits<::a::different::ns::AnEnum>::size;
+folly::Range<::a::different::ns::AnEnum const*> const TEnumTraits<::a::different::ns::AnEnum>::values = folly::range(::a::different::ns::_AnEnumEnumDataStorage::values);
+folly::Range<folly::StringPiece const*> const TEnumTraits<::a::different::ns::AnEnum>::names = folly::range(::a::different::ns::_AnEnumEnumDataStorage::names);
 
-char const* TEnumTraits< ::a::different::ns::AnEnum>::findName(type value) {
-  using factory =  ::a::different::ns::_AnEnum_EnumMapFactory;
+char const* TEnumTraits<::a::different::ns::AnEnum>::findName(type value) {
+  using factory = ::a::different::ns::_AnEnum_EnumMapFactory;
   static folly::Indestructible<factory::ValuesToNamesMapType> const map{
       factory::makeValuesToNamesMap()};
   auto found = map->find(value);
   return found == map->end() ? nullptr : found->second;
 }
 
-bool TEnumTraits< ::a::different::ns::AnEnum>::findValue(char const* name, type* out) {
-  using factory =  ::a::different::ns::_AnEnum_EnumMapFactory;
+bool TEnumTraits<::a::different::ns::AnEnum>::findValue(char const* name, type* out) {
+  using factory = ::a::different::ns::_AnEnum_EnumMapFactory;
   static folly::Indestructible<factory::NamesToValuesMapType> const map{
       factory::makeNamesToValuesMap()};
   auto found = map->find(name);
@@ -49,7 +49,7 @@ namespace apache {
 namespace thrift {
 namespace detail {
 
-void TccStructTraits< ::a::different::ns::AStruct>::translateFieldName(
+void TccStructTraits<::a::different::ns::AStruct>::translateFieldName(
     FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
     FOLLY_MAYBE_UNUSED int16_t& fid,
     FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
@@ -59,7 +59,7 @@ void TccStructTraits< ::a::different::ns::AStruct>::translateFieldName(
     _ftype = apache::thrift::protocol::T_I32;
   }
 }
-void TccStructTraits< ::a::different::ns::AStructB>::translateFieldName(
+void TccStructTraits<::a::different::ns::AStructB>::translateFieldName(
     FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
     FOLLY_MAYBE_UNUSED int16_t& fid,
     FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {

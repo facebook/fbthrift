@@ -30,8 +30,8 @@ struct _TypedEnumEnumDataStorage {
 } // cpp2
 namespace apache { namespace thrift {
 
-template <> struct TEnumDataStorage< ::cpp2::TypedEnum> {
-  using storage_type =  ::cpp2::_TypedEnumEnumDataStorage;
+template <> struct TEnumDataStorage<::cpp2::TypedEnum> {
+  using storage_type = ::cpp2::_TypedEnumEnumDataStorage;
 };
 
 }} // apache::thrift

@@ -27,9 +27,9 @@ namespace apache { namespace thrift {
 
 namespace extra { namespace svc {
 
-class ExtraServiceAsyncClient : public  ::some::valid::ns::ParamServiceAsyncClient {
+class ExtraServiceAsyncClient : public ::some::valid::ns::ParamServiceAsyncClient {
  public:
-  using  ::some::valid::ns::ParamServiceAsyncClient::ParamServiceAsyncClient;
+  using ::some::valid::ns::ParamServiceAsyncClient::ParamServiceAsyncClient;
 
   char const* getServiceName() const noexcept override {
     return "ExtraService";

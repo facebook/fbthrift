@@ -23,20 +23,20 @@ namespace std {
 } // std
 namespace apache { namespace thrift {
 
-constexpr std::size_t const TEnumTraits< ::apache::thrift::fixtures::types::has_bitwise_ops>::size;
-folly::Range< ::apache::thrift::fixtures::types::has_bitwise_ops const*> const TEnumTraits< ::apache::thrift::fixtures::types::has_bitwise_ops>::values = folly::range( ::apache::thrift::fixtures::types::_has_bitwise_opsEnumDataStorage::values);
-folly::Range<folly::StringPiece const*> const TEnumTraits< ::apache::thrift::fixtures::types::has_bitwise_ops>::names = folly::range( ::apache::thrift::fixtures::types::_has_bitwise_opsEnumDataStorage::names);
+constexpr std::size_t const TEnumTraits<::apache::thrift::fixtures::types::has_bitwise_ops>::size;
+folly::Range<::apache::thrift::fixtures::types::has_bitwise_ops const*> const TEnumTraits<::apache::thrift::fixtures::types::has_bitwise_ops>::values = folly::range(::apache::thrift::fixtures::types::_has_bitwise_opsEnumDataStorage::values);
+folly::Range<folly::StringPiece const*> const TEnumTraits<::apache::thrift::fixtures::types::has_bitwise_ops>::names = folly::range(::apache::thrift::fixtures::types::_has_bitwise_opsEnumDataStorage::names);
 
-char const* TEnumTraits< ::apache::thrift::fixtures::types::has_bitwise_ops>::findName(type value) {
-  using factory =  ::apache::thrift::fixtures::types::_has_bitwise_ops_EnumMapFactory;
+char const* TEnumTraits<::apache::thrift::fixtures::types::has_bitwise_ops>::findName(type value) {
+  using factory = ::apache::thrift::fixtures::types::_has_bitwise_ops_EnumMapFactory;
   static folly::Indestructible<factory::ValuesToNamesMapType> const map{
       factory::makeValuesToNamesMap()};
   auto found = map->find(value);
   return found == map->end() ? nullptr : found->second;
 }
 
-bool TEnumTraits< ::apache::thrift::fixtures::types::has_bitwise_ops>::findValue(char const* name, type* out) {
-  using factory =  ::apache::thrift::fixtures::types::_has_bitwise_ops_EnumMapFactory;
+bool TEnumTraits<::apache::thrift::fixtures::types::has_bitwise_ops>::findValue(char const* name, type* out) {
+  using factory = ::apache::thrift::fixtures::types::_has_bitwise_ops_EnumMapFactory;
   static folly::Indestructible<factory::NamesToValuesMapType> const map{
       factory::makeNamesToValuesMap()};
   auto found = map->find(name);
@@ -55,20 +55,20 @@ namespace std {
 } // std
 namespace apache { namespace thrift {
 
-constexpr std::size_t const TEnumTraits< ::apache::thrift::fixtures::types::is_unscoped>::size;
-folly::Range< ::apache::thrift::fixtures::types::is_unscoped const*> const TEnumTraits< ::apache::thrift::fixtures::types::is_unscoped>::values = folly::range( ::apache::thrift::fixtures::types::_is_unscopedEnumDataStorage::values);
-folly::Range<folly::StringPiece const*> const TEnumTraits< ::apache::thrift::fixtures::types::is_unscoped>::names = folly::range( ::apache::thrift::fixtures::types::_is_unscopedEnumDataStorage::names);
+constexpr std::size_t const TEnumTraits<::apache::thrift::fixtures::types::is_unscoped>::size;
+folly::Range<::apache::thrift::fixtures::types::is_unscoped const*> const TEnumTraits<::apache::thrift::fixtures::types::is_unscoped>::values = folly::range(::apache::thrift::fixtures::types::_is_unscopedEnumDataStorage::values);
+folly::Range<folly::StringPiece const*> const TEnumTraits<::apache::thrift::fixtures::types::is_unscoped>::names = folly::range(::apache::thrift::fixtures::types::_is_unscopedEnumDataStorage::names);
 
-char const* TEnumTraits< ::apache::thrift::fixtures::types::is_unscoped>::findName(type value) {
-  using factory =  ::apache::thrift::fixtures::types::_is_unscoped_EnumMapFactory;
+char const* TEnumTraits<::apache::thrift::fixtures::types::is_unscoped>::findName(type value) {
+  using factory = ::apache::thrift::fixtures::types::_is_unscoped_EnumMapFactory;
   static folly::Indestructible<factory::ValuesToNamesMapType> const map{
       factory::makeValuesToNamesMap()};
   auto found = map->find(value);
   return found == map->end() ? nullptr : found->second;
 }
 
-bool TEnumTraits< ::apache::thrift::fixtures::types::is_unscoped>::findValue(char const* name, type* out) {
-  using factory =  ::apache::thrift::fixtures::types::_is_unscoped_EnumMapFactory;
+bool TEnumTraits<::apache::thrift::fixtures::types::is_unscoped>::findValue(char const* name, type* out) {
+  using factory = ::apache::thrift::fixtures::types::_is_unscoped_EnumMapFactory;
   static folly::Indestructible<factory::NamesToValuesMapType> const map{
       factory::makeNamesToValuesMap()};
   auto found = map->find(name);
@@ -87,20 +87,20 @@ namespace std {
 } // std
 namespace apache { namespace thrift {
 
-constexpr std::size_t const TEnumTraits< ::apache::thrift::fixtures::types::MyForwardRefEnum>::size;
-folly::Range< ::apache::thrift::fixtures::types::MyForwardRefEnum const*> const TEnumTraits< ::apache::thrift::fixtures::types::MyForwardRefEnum>::values = folly::range( ::apache::thrift::fixtures::types::_MyForwardRefEnumEnumDataStorage::values);
-folly::Range<folly::StringPiece const*> const TEnumTraits< ::apache::thrift::fixtures::types::MyForwardRefEnum>::names = folly::range( ::apache::thrift::fixtures::types::_MyForwardRefEnumEnumDataStorage::names);
+constexpr std::size_t const TEnumTraits<::apache::thrift::fixtures::types::MyForwardRefEnum>::size;
+folly::Range<::apache::thrift::fixtures::types::MyForwardRefEnum const*> const TEnumTraits<::apache::thrift::fixtures::types::MyForwardRefEnum>::values = folly::range(::apache::thrift::fixtures::types::_MyForwardRefEnumEnumDataStorage::values);
+folly::Range<folly::StringPiece const*> const TEnumTraits<::apache::thrift::fixtures::types::MyForwardRefEnum>::names = folly::range(::apache::thrift::fixtures::types::_MyForwardRefEnumEnumDataStorage::names);
 
-char const* TEnumTraits< ::apache::thrift::fixtures::types::MyForwardRefEnum>::findName(type value) {
-  using factory =  ::apache::thrift::fixtures::types::_MyForwardRefEnum_EnumMapFactory;
+char const* TEnumTraits<::apache::thrift::fixtures::types::MyForwardRefEnum>::findName(type value) {
+  using factory = ::apache::thrift::fixtures::types::_MyForwardRefEnum_EnumMapFactory;
   static folly::Indestructible<factory::ValuesToNamesMapType> const map{
       factory::makeValuesToNamesMap()};
   auto found = map->find(value);
   return found == map->end() ? nullptr : found->second;
 }
 
-bool TEnumTraits< ::apache::thrift::fixtures::types::MyForwardRefEnum>::findValue(char const* name, type* out) {
-  using factory =  ::apache::thrift::fixtures::types::_MyForwardRefEnum_EnumMapFactory;
+bool TEnumTraits<::apache::thrift::fixtures::types::MyForwardRefEnum>::findValue(char const* name, type* out) {
+  using factory = ::apache::thrift::fixtures::types::_MyForwardRefEnum_EnumMapFactory;
   static folly::Indestructible<factory::NamesToValuesMapType> const map{
       factory::makeNamesToValuesMap()};
   auto found = map->find(name);
@@ -113,7 +113,7 @@ namespace apache {
 namespace thrift {
 namespace detail {
 
-void TccStructTraits< ::apache::thrift::fixtures::types::decorated_struct>::translateFieldName(
+void TccStructTraits<::apache::thrift::fixtures::types::decorated_struct>::translateFieldName(
     FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
     FOLLY_MAYBE_UNUSED int16_t& fid,
     FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
@@ -123,7 +123,7 @@ void TccStructTraits< ::apache::thrift::fixtures::types::decorated_struct>::tran
     _ftype = apache::thrift::protocol::T_STRING;
   }
 }
-void TccStructTraits< ::apache::thrift::fixtures::types::ContainerStruct>::translateFieldName(
+void TccStructTraits<::apache::thrift::fixtures::types::ContainerStruct>::translateFieldName(
     FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
     FOLLY_MAYBE_UNUSED int16_t& fid,
     FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
@@ -161,7 +161,7 @@ void TccStructTraits< ::apache::thrift::fixtures::types::ContainerStruct>::trans
     _ftype = apache::thrift::protocol::T_MAP;
   }
 }
-void TccStructTraits< ::apache::thrift::fixtures::types::CppTypeStruct>::translateFieldName(
+void TccStructTraits<::apache::thrift::fixtures::types::CppTypeStruct>::translateFieldName(
     FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
     FOLLY_MAYBE_UNUSED int16_t& fid,
     FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
@@ -171,7 +171,7 @@ void TccStructTraits< ::apache::thrift::fixtures::types::CppTypeStruct>::transla
     _ftype = apache::thrift::protocol::T_LIST;
   }
 }
-void TccStructTraits< ::apache::thrift::fixtures::types::VirtualStruct>::translateFieldName(
+void TccStructTraits<::apache::thrift::fixtures::types::VirtualStruct>::translateFieldName(
     FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
     FOLLY_MAYBE_UNUSED int16_t& fid,
     FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
@@ -181,7 +181,7 @@ void TccStructTraits< ::apache::thrift::fixtures::types::VirtualStruct>::transla
     _ftype = apache::thrift::protocol::T_I64;
   }
 }
-void TccStructTraits< ::apache::thrift::fixtures::types::MyStructWithForwardRefEnum>::translateFieldName(
+void TccStructTraits<::apache::thrift::fixtures::types::MyStructWithForwardRefEnum>::translateFieldName(
     FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
     FOLLY_MAYBE_UNUSED int16_t& fid,
     FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
@@ -195,7 +195,7 @@ void TccStructTraits< ::apache::thrift::fixtures::types::MyStructWithForwardRefE
     _ftype = apache::thrift::protocol::T_I32;
   }
 }
-void TccStructTraits< ::apache::thrift::fixtures::types::TrivialNumeric>::translateFieldName(
+void TccStructTraits<::apache::thrift::fixtures::types::TrivialNumeric>::translateFieldName(
     FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
     FOLLY_MAYBE_UNUSED int16_t& fid,
     FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
@@ -209,7 +209,7 @@ void TccStructTraits< ::apache::thrift::fixtures::types::TrivialNumeric>::transl
     _ftype = apache::thrift::protocol::T_BOOL;
   }
 }
-void TccStructTraits< ::apache::thrift::fixtures::types::TrivialNestedWithDefault>::translateFieldName(
+void TccStructTraits<::apache::thrift::fixtures::types::TrivialNestedWithDefault>::translateFieldName(
     FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
     FOLLY_MAYBE_UNUSED int16_t& fid,
     FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
@@ -223,7 +223,7 @@ void TccStructTraits< ::apache::thrift::fixtures::types::TrivialNestedWithDefaul
     _ftype = apache::thrift::protocol::T_STRUCT;
   }
 }
-void TccStructTraits< ::apache::thrift::fixtures::types::ComplexString>::translateFieldName(
+void TccStructTraits<::apache::thrift::fixtures::types::ComplexString>::translateFieldName(
     FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
     FOLLY_MAYBE_UNUSED int16_t& fid,
     FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
@@ -237,7 +237,7 @@ void TccStructTraits< ::apache::thrift::fixtures::types::ComplexString>::transla
     _ftype = apache::thrift::protocol::T_MAP;
   }
 }
-void TccStructTraits< ::apache::thrift::fixtures::types::ComplexNestedWithDefault>::translateFieldName(
+void TccStructTraits<::apache::thrift::fixtures::types::ComplexNestedWithDefault>::translateFieldName(
     FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
     FOLLY_MAYBE_UNUSED int16_t& fid,
     FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
@@ -251,7 +251,7 @@ void TccStructTraits< ::apache::thrift::fixtures::types::ComplexNestedWithDefaul
     _ftype = apache::thrift::protocol::T_STRUCT;
   }
 }
-void TccStructTraits< ::apache::thrift::fixtures::types::MinPadding>::translateFieldName(
+void TccStructTraits<::apache::thrift::fixtures::types::MinPadding>::translateFieldName(
     FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
     FOLLY_MAYBE_UNUSED int16_t& fid,
     FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
@@ -277,7 +277,7 @@ void TccStructTraits< ::apache::thrift::fixtures::types::MinPadding>::translateF
     _ftype = apache::thrift::protocol::T_BYTE;
   }
 }
-void TccStructTraits< ::apache::thrift::fixtures::types::MyStruct>::translateFieldName(
+void TccStructTraits<::apache::thrift::fixtures::types::MyStruct>::translateFieldName(
     FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
     FOLLY_MAYBE_UNUSED int16_t& fid,
     FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
@@ -299,13 +299,13 @@ void TccStructTraits< ::apache::thrift::fixtures::types::MyStruct>::translateFie
     _ftype = apache::thrift::protocol::T_STRUCT;
   }
 }
-void TccStructTraits< ::apache::thrift::fixtures::types::MyDataItem>::translateFieldName(
+void TccStructTraits<::apache::thrift::fixtures::types::MyDataItem>::translateFieldName(
     FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
     FOLLY_MAYBE_UNUSED int16_t& fid,
     FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
   if (false) {}
 }
-void TccStructTraits< ::apache::thrift::fixtures::types::Renaming>::translateFieldName(
+void TccStructTraits<::apache::thrift::fixtures::types::Renaming>::translateFieldName(
     FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
     FOLLY_MAYBE_UNUSED int16_t& fid,
     FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
@@ -315,7 +315,7 @@ void TccStructTraits< ::apache::thrift::fixtures::types::Renaming>::translateFie
     _ftype = apache::thrift::protocol::T_I64;
   }
 }
-void TccStructTraits< ::apache::thrift::fixtures::types::AnnotatedTypes>::translateFieldName(
+void TccStructTraits<::apache::thrift::fixtures::types::AnnotatedTypes>::translateFieldName(
     FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
     FOLLY_MAYBE_UNUSED int16_t& fid,
     FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {

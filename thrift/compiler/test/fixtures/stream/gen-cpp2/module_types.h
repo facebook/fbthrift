@@ -58,7 +58,7 @@ class FooEx final : private apache::thrift::detail::st::ComparisonOperators<FooE
   uint32_t write(Protocol_* prot_) const;
 
   const char* what() const noexcept override {
-    return " ::cpp2::FooEx";
+    return "::cpp2::FooEx";
   }
 
  private:

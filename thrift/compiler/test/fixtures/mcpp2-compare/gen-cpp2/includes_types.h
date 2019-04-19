@@ -31,8 +31,8 @@ extern const _AnEnum_EnumMapFactory::NamesToValuesMapType _AnEnum_NAMES_TO_VALUE
 namespace std {
 
 
-template<> struct hash<typename  ::a::different::ns::AnEnum> : public apache::thrift::detail::enum_hash<typename  ::a::different::ns::AnEnum> {};
-template<> struct equal_to<typename  ::a::different::ns::AnEnum> : public apache::thrift::detail::enum_equal_to<typename  ::a::different::ns::AnEnum> {};
+template<> struct hash<typename ::a::different::ns::AnEnum> : public apache::thrift::detail::enum_hash<typename ::a::different::ns::AnEnum> {};
+template<> struct equal_to<typename ::a::different::ns::AnEnum> : public apache::thrift::detail::enum_equal_to<typename ::a::different::ns::AnEnum> {};
 
 
 } // std
@@ -40,10 +40,10 @@ template<> struct equal_to<typename  ::a::different::ns::AnEnum> : public apache
 namespace apache { namespace thrift {
 
 
-template <> struct TEnumDataStorage< ::a::different::ns::AnEnum>;
+template <> struct TEnumDataStorage<::a::different::ns::AnEnum>;
 
-template <> struct TEnumTraits< ::a::different::ns::AnEnum> {
-  using type =  ::a::different::ns::AnEnum;
+template <> struct TEnumTraits<::a::different::ns::AnEnum> {
+  using type = ::a::different::ns::AnEnum;
 
   static constexpr std::size_t const size = 2;
   static folly::Range<type const*> const values;

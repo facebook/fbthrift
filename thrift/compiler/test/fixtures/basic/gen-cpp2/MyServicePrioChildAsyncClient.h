@@ -26,9 +26,9 @@ namespace apache { namespace thrift {
 
 namespace cpp2 {
 
-class MyServicePrioChildAsyncClient : public  ::cpp2::MyServicePrioParentAsyncClient {
+class MyServicePrioChildAsyncClient : public ::cpp2::MyServicePrioParentAsyncClient {
  public:
-  using  ::cpp2::MyServicePrioParentAsyncClient::MyServicePrioParentAsyncClient;
+  using ::cpp2::MyServicePrioParentAsyncClient::MyServicePrioParentAsyncClient;
 
   char const* getServiceName() const noexcept override {
     return "MyServicePrioChild";

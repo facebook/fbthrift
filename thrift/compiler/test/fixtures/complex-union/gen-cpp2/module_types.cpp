@@ -17,7 +17,7 @@ namespace apache {
 namespace thrift {
 namespace detail {
 
-void TccStructTraits< ::cpp2::ComplexUnion>::translateFieldName(
+void TccStructTraits<::cpp2::ComplexUnion>::translateFieldName(
     FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
     FOLLY_MAYBE_UNUSED int16_t& fid,
     FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
@@ -47,7 +47,7 @@ void TccStructTraits< ::cpp2::ComplexUnion>::translateFieldName(
     _ftype = apache::thrift::protocol::T_STRING;
   }
 }
-void TccStructTraits< ::cpp2::ListUnion>::translateFieldName(
+void TccStructTraits<::cpp2::ListUnion>::translateFieldName(
     FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
     FOLLY_MAYBE_UNUSED int16_t& fid,
     FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
@@ -61,7 +61,7 @@ void TccStructTraits< ::cpp2::ListUnion>::translateFieldName(
     _ftype = apache::thrift::protocol::T_LIST;
   }
 }
-void TccStructTraits< ::cpp2::DataUnion>::translateFieldName(
+void TccStructTraits<::cpp2::DataUnion>::translateFieldName(
     FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
     FOLLY_MAYBE_UNUSED int16_t& fid,
     FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
@@ -75,7 +75,7 @@ void TccStructTraits< ::cpp2::DataUnion>::translateFieldName(
     _ftype = apache::thrift::protocol::T_STRING;
   }
 }
-void TccStructTraits< ::cpp2::Val>::translateFieldName(
+void TccStructTraits<::cpp2::Val>::translateFieldName(
     FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
     FOLLY_MAYBE_UNUSED int16_t& fid,
     FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
@@ -93,7 +93,7 @@ void TccStructTraits< ::cpp2::Val>::translateFieldName(
     _ftype = apache::thrift::protocol::T_MAP;
   }
 }
-void TccStructTraits< ::cpp2::ValUnion>::translateFieldName(
+void TccStructTraits<::cpp2::ValUnion>::translateFieldName(
     FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
     FOLLY_MAYBE_UNUSED int16_t& fid,
     FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
@@ -107,7 +107,7 @@ void TccStructTraits< ::cpp2::ValUnion>::translateFieldName(
     _ftype = apache::thrift::protocol::T_STRUCT;
   }
 }
-void TccStructTraits< ::cpp2::VirtualComplexUnion>::translateFieldName(
+void TccStructTraits<::cpp2::VirtualComplexUnion>::translateFieldName(
     FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
     FOLLY_MAYBE_UNUSED int16_t& fid,
     FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
