@@ -207,8 +207,8 @@ TEST_F(ThriftServerExceptionTest, banal_with_exception_ptr) {
   auto client = runner.newClient<RaiserAsyncClient>(&eb);
 
   auto banal_s = string{"apache::thrift::test::Banal"};
-  auto banal_w_guess = sformat("{0}:  ::{0}", banal_s);
-  auto banal_w_known = sformat(" ::{0}", banal_s);
+  auto banal_w_guess = sformat("{0}: ::{0}", banal_s);
+  auto banal_w_known = sformat("::{0}", banal_s);
 
   EXPECT_TRUE(exn(client->future_doBland(), [&](const AppExn& e) {
       EXPECT_EQ(banal_w_guess, string(e.what()));
@@ -245,8 +245,8 @@ TEST_F(ThriftServerExceptionTest, fiery_with_exception_ptr) {
   auto client = runner.newClient<RaiserAsyncClient>(&eb);
 
   auto fiery_s = string{"apache::thrift::test::Fiery"};
-  auto fiery_w_guess = sformat("{0}:  ::{0}", fiery_s);
-  auto fiery_w_known = sformat(" ::{0}", fiery_s);
+  auto fiery_w_guess = sformat("{0}: ::{0}", fiery_s);
+  auto fiery_w_known = sformat("::{0}", fiery_s);
 
   EXPECT_TRUE(exn(client->future_doBland(), [&](const AppExn& e) {
       EXPECT_EQ(fiery_w_guess, string(e.what()));
@@ -326,8 +326,8 @@ TEST_F(ThriftServerExceptionTest, banal_with_exception_wrapper) {
   auto client = runner.newClient<RaiserAsyncClient>(&eb);
 
   auto banal_s = string{"apache::thrift::test::Banal"};
-  auto banal_w_guess = sformat("{0}:  ::{0}", banal_s);
-  auto banal_w_known = sformat(" ::{0}", banal_s);
+  auto banal_w_guess = sformat("{0}: ::{0}", banal_s);
+  auto banal_w_known = sformat("::{0}", banal_s);
 
   EXPECT_TRUE(exn(client->future_doBland(), [&](const AppExn& e) {
       EXPECT_EQ(banal_w_guess, string(e.what()));
@@ -364,8 +364,8 @@ TEST_F(ThriftServerExceptionTest, fiery_with_exception_wrapper) {
   auto client = runner.newClient<RaiserAsyncClient>(&eb);
 
   auto fiery_s = string{"apache::thrift::test::Fiery"};
-  auto fiery_w_guess = sformat("{0}:  ::{0}", fiery_s);
-  auto fiery_w_known = sformat(" ::{0}", fiery_s);
+  auto fiery_w_guess = sformat("{0}: ::{0}", fiery_s);
+  auto fiery_w_known = sformat("::{0}", fiery_s);
 
   EXPECT_TRUE(exn(client->future_doBland(), [&](const AppExn& e) {
       EXPECT_EQ(fiery_w_guess, string(e.what()));

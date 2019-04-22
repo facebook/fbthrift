@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Facebook, Inc.
+ * Copyright 2015-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 #include <thrift/lib/cpp2/test/gen-cpp2/Raiser.h>
 #include <thrift/lib/cpp2/util/ScopedServerInterfaceThread.h>
 
@@ -72,7 +71,7 @@ TEST_F(ThriftServerFutureExceptionTest, fiery_return) {
 
   EXPECT_TRUE(exn(client->future_doRaise(), [&](const Fiery& e) {
       EXPECT_EQ("rofl", e.message);
-      EXPECT_EQ(" ::apache::thrift::test::Fiery", string(e.what()));
+      EXPECT_EQ("::apache::thrift::test::Fiery", string(e.what()));
   }));
 }
 
@@ -86,7 +85,7 @@ TEST_F(ThriftServerFutureExceptionTest, fiery_throw) {
 
   EXPECT_TRUE(exn(client->future_doRaise(), [&](const Fiery& e) {
       EXPECT_EQ("rofl", e.message);
-      EXPECT_EQ(" ::apache::thrift::test::Fiery", string(e.what()));
+      EXPECT_EQ("::apache::thrift::test::Fiery", string(e.what()));
   }));
 }
 

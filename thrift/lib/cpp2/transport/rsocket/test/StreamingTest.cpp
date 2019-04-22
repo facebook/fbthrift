@@ -559,7 +559,7 @@ TEST_P(StreamingTest, StreamThrowsNonspecifiedException) {
                   EXPECT_TRUE(ew.is_compatible_with<TApplicationException>());
                   EXPECT_TRUE(ew.with_exception([](TApplicationException& ex) {
                     EXPECT_STREQ(
-                        "testutil::testservice::SecondEx:  ::testutil::testservice::SecondEx",
+                        "testutil::testservice::SecondEx: ::testutil::testservice::SecondEx",
                         ex.what());
                   }));
                 });
