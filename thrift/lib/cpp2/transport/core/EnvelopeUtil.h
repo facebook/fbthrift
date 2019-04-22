@@ -59,7 +59,7 @@ class EnvelopeUtil {
           metadata->protocol = ProtocolId::BINARY;
           reader.setInput(payload.get());
           reader.readMessageBegin(metadata->name, mtype, seqId);
-          sz = reader.getCurrentPosition().getCurrentPosition();
+          sz = reader.getCursorPosition();
           break;
         }
         case 0x82: {
@@ -67,7 +67,7 @@ class EnvelopeUtil {
           CompactProtocolReader reader;
           reader.setInput(payload.get());
           reader.readMessageBegin(metadata->name, mtype, seqId);
-          sz = reader.getCurrentPosition().getCurrentPosition();
+          sz = reader.getCursorPosition();
           break;
         }
         // TODO: Add Frozen2 case.

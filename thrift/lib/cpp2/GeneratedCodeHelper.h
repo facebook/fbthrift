@@ -287,7 +287,7 @@ class ThriftPresult : private std::tuple<Field...>,
 
   template <class Protocol>
   uint32_t read(Protocol* prot) {
-    auto xfer = prot->getCurrentPosition().getCurrentPosition();
+    auto xfer = prot->getCursorPosition();
     std::string fname;
     apache::thrift::protocol::TType ftype;
     int16_t fid;
@@ -311,7 +311,7 @@ class ThriftPresult : private std::tuple<Field...>,
     }
     prot->readStructEnd();
 
-    return prot->getCurrentPosition().getCurrentPosition() - xfer;
+    return prot->getCursorPosition() - xfer;
   }
 
   template <class Protocol>

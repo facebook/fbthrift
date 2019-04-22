@@ -77,7 +77,8 @@ class VirtualReaderBase {
   virtual void readBinary(std::unique_ptr<folly::IOBuf>& str) = 0;
   virtual void readBinary(folly::IOBuf& str) = 0;
   virtual void skip(TType type) = 0;
-  virtual const folly::io::Cursor& getCurrentPosition() const = 0;
+  virtual const folly::io::Cursor& getCursor() const = 0;
+  virtual size_t getCursorPosition() const = 0;
   virtual uint32_t readFromPositionAndAppend(
       folly::io::Cursor& cursor,
       std::unique_ptr<folly::IOBuf>& ser) = 0;
@@ -293,8 +294,11 @@ class VirtualReader : public VirtualReaderBase {
   void skip(TType type) override {
     protocol_.skip(type);
   }
-  const folly::io::Cursor& getCurrentPosition() const override {
-    return protocol_.getCurrentPosition();
+  const folly::io::Cursor& getCursor() const override {
+    return protocol_.getCursor();
+  }
+  size_t getCursorPosition() const override {
+    return protocol_.getCursorPosition();
   }
   uint32_t readFromPositionAndAppend(
       folly::io::Cursor& cursor,

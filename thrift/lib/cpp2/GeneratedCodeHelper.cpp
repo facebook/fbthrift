@@ -110,7 +110,7 @@ static bool deserializeMessageBegin(
   iprot.setInput(buf);
   try {
     iprot.readMessageBegin(fname, mtype, protoSeqId);
-    ctx->setMessageBeginSize(iprot.getCurrentPosition().getCurrentPosition());
+    ctx->setMessageBeginSize(iprot.getCursorPosition());
   } catch (const TException& ex) {
     LOG(ERROR) << "received invalid message from client: " << ex.what();
     auto type = TApplicationException::TApplicationExceptionType::UNKNOWN;

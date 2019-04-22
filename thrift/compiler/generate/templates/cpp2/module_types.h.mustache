@@ -229,9 +229,9 @@ void swap(<%struct:name%>& a, <%struct:name%>& b);
 
 template <class Protocol_>
 uint32_t <%struct:name%>::read(Protocol_* iprot) {
-  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
+  auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
-  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
+  return iprot->getCursorPosition() - _xferStart;
 }
 
 <% > common/namespace_cpp2_end%>

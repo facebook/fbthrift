@@ -379,9 +379,9 @@ void swap(Empty& a, Empty& b);
 
 template <class Protocol_>
 uint32_t Empty::read(Protocol_* iprot) {
-  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
+  auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
-  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
+  return iprot->getCursorPosition() - _xferStart;
 }
 
 }}} // some::valid::ns
@@ -446,9 +446,9 @@ void swap(ASimpleStruct& a, ASimpleStruct& b);
 
 template <class Protocol_>
 uint32_t ASimpleStruct::read(Protocol_* iprot) {
-  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
+  auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
-  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
+  return iprot->getCursorPosition() - _xferStart;
 }
 
 }}} // some::valid::ns
@@ -513,9 +513,9 @@ void swap(ASimpleStructNoexcept& a, ASimpleStructNoexcept& b);
 
 template <class Protocol_>
 uint32_t ASimpleStructNoexcept::read(Protocol_* iprot) {
-  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
+  auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
-  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
+  return iprot->getCursorPosition() - _xferStart;
 }
 
 }}} // some::valid::ns
@@ -755,9 +755,9 @@ void swap(MyStruct& a, MyStruct& b);
 
 template <class Protocol_>
 uint32_t MyStruct::read(Protocol_* iprot) {
-  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
+  auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
-  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
+  return iprot->getCursorPosition() - _xferStart;
 }
 
 }}} // some::valid::ns
@@ -980,9 +980,9 @@ void swap(SimpleUnion& a, SimpleUnion& b);
 
 template <class Protocol_>
 uint32_t SimpleUnion::read(Protocol_* iprot) {
-  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
+  auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
-  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
+  return iprot->getCursorPosition() - _xferStart;
 }
 
 }}} // some::valid::ns
@@ -2636,9 +2636,9 @@ void swap(ComplexUnion& a, ComplexUnion& b);
 
 template <class Protocol_>
 uint32_t ComplexUnion::read(Protocol_* iprot) {
-  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
+  auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
-  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
+  return iprot->getCursorPosition() - _xferStart;
 }
 
 }}} // some::valid::ns
@@ -2945,9 +2945,9 @@ void swap(AnException& a, AnException& b);
 
 template <class Protocol_>
 uint32_t AnException::read(Protocol_* iprot) {
-  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
+  auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
-  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
+  return iprot->getCursorPosition() - _xferStart;
 }
 
 }}} // some::valid::ns
@@ -3056,9 +3056,9 @@ void swap(AnotherException& a, AnotherException& b);
 
 template <class Protocol_>
 uint32_t AnotherException::read(Protocol_* iprot) {
-  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
+  auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
-  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
+  return iprot->getCursorPosition() - _xferStart;
 }
 
 }}} // some::valid::ns
@@ -3991,9 +3991,9 @@ void swap(containerStruct& a, containerStruct& b);
 
 template <class Protocol_>
 uint32_t containerStruct::read(Protocol_* iprot) {
-  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
+  auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
-  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
+  return iprot->getCursorPosition() - _xferStart;
 }
 
 }}} // some::valid::ns
@@ -4091,9 +4091,9 @@ void swap(MyIncludedStruct& a, MyIncludedStruct& b);
 
 template <class Protocol_>
 uint32_t MyIncludedStruct::read(Protocol_* iprot) {
-  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
+  auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
-  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
+  return iprot->getCursorPosition() - _xferStart;
 }
 
 }}} // some::valid::ns
@@ -4609,9 +4609,9 @@ void swap(AnnotatedStruct& a, AnnotatedStruct& b);
 
 template <class Protocol_>
 uint32_t AnnotatedStruct::read(Protocol_* iprot) {
-  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
+  auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
-  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
+  return iprot->getCursorPosition() - _xferStart;
 }
 
 }}} // some::valid::ns
@@ -4690,9 +4690,9 @@ void swap(ComplexContainerStruct& a, ComplexContainerStruct& b);
 
 template <class Protocol_>
 uint32_t ComplexContainerStruct::read(Protocol_* iprot) {
-  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
+  auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
-  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
+  return iprot->getCursorPosition() - _xferStart;
 }
 
 }}} // some::valid::ns
@@ -4775,9 +4775,9 @@ void swap(FloatStruct& a, FloatStruct& b);
 
 template <class Protocol_>
 uint32_t FloatStruct::read(Protocol_* iprot) {
-  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
+  auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
-  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
+  return iprot->getCursorPosition() - _xferStart;
 }
 
 }}} // some::valid::ns
@@ -4985,9 +4985,9 @@ void swap(FloatUnion& a, FloatUnion& b);
 
 template <class Protocol_>
 uint32_t FloatUnion::read(Protocol_* iprot) {
-  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
+  auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
-  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
+  return iprot->getCursorPosition() - _xferStart;
 }
 
 }}} // some::valid::ns
@@ -5046,9 +5046,9 @@ void swap(AllRequiredNoExceptMoveCtrStruct& a, AllRequiredNoExceptMoveCtrStruct&
 
 template <class Protocol_>
 uint32_t AllRequiredNoExceptMoveCtrStruct::read(Protocol_* iprot) {
-  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
+  auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
-  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
+  return iprot->getCursorPosition() - _xferStart;
 }
 
 }}} // some::valid::ns

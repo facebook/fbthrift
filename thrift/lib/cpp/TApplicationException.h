@@ -181,7 +181,7 @@ class TApplicationException : public TException {
 
   template <class Protocol_>
   uint32_t read(Protocol_* iprot) {
-    uint32_t xfer = iprot->getCurrentPosition().getCurrentPosition();
+    uint32_t xfer = iprot->getCursorPosition();
     std::string fname;
     apache::thrift::protocol::TType ftype;
     int16_t fid;
@@ -218,7 +218,7 @@ class TApplicationException : public TException {
     }
 
     iprot->readStructEnd();
-    return iprot->getCurrentPosition().getCurrentPosition() - xfer;
+    return iprot->getCursorPosition() - xfer;
   }
 
   template <class Protocol_>

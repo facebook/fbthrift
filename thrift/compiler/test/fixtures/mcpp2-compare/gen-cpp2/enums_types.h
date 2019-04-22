@@ -258,9 +258,9 @@ void swap(SomeStruct& a, SomeStruct& b);
 
 template <class Protocol_>
 uint32_t SomeStruct::read(Protocol_* iprot) {
-  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
+  auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
-  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
+  return iprot->getCursorPosition() - _xferStart;
 }
 
 }}} // facebook::ns::qwerty

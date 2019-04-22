@@ -206,8 +206,12 @@ class JSONProtocolReaderCommon {
 
   inline uint32_t skip(TType type);
 
-  const folly::io::Cursor& getCurrentPosition() const {
+  const folly::io::Cursor& getCursor() const {
     return in_;
+  }
+
+  size_t getCursorPosition() const {
+    return in_.getCurrentPosition();
   }
 
   inline uint32_t readFromPositionAndAppend(

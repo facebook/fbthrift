@@ -1244,9 +1244,9 @@ struct protocol_methods<type_class::structure, Struct> {
 
 template <typename Type, typename Protocol>
 std::size_t serializer_read(Type& out, Protocol& protocol) {
-  auto xferStart = protocol.getCurrentPosition().getCurrentPosition();
+  auto xferStart = protocol.getCursorPosition();
   protocol_methods<reflect_type_class<Type>, Type>::read(protocol, out);
-  return protocol.getCurrentPosition().getCurrentPosition() - xferStart;
+  return protocol.getCursorPosition() - xferStart;
 }
 
 template <typename Type, typename Protocol>

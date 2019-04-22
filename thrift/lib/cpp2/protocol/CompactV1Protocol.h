@@ -130,7 +130,8 @@ class CompactV1ProtocolReader : protected CompactProtocolReader {
   using CompactProtocolReader::readString;
   using CompactProtocolReader::skip;
 
-  using CompactProtocolReader::getCurrentPosition;
+  using CompactProtocolReader::getCursor;
+  using CompactProtocolReader::getCursorPosition;
   using CompactProtocolReader::readFromPositionAndAppend;
 };
 

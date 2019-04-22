@@ -268,8 +268,12 @@ class BinaryProtocolReader {
     apache::thrift::skip(*this, type);
   }
 
-  const Cursor& getCurrentPosition() const {
+  const Cursor& getCursor() const {
     return in_;
+  }
+
+  size_t getCursorPosition() const {
+    return in_.getCurrentPosition();
   }
 
   inline uint32_t readFromPositionAndAppend(

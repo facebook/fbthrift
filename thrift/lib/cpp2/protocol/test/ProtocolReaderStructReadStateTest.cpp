@@ -114,7 +114,7 @@ void testAdvanceToNextFieldSuccess() {
   }
   EXPECT_TRUE(state.advanceToNextField(&reader, 16381, 0, T_STOP));
   state.readStructEnd(&reader);
-  EXPECT_TRUE(reader.getCurrentPosition().isAtEnd());
+  EXPECT_TRUE(reader.getCursor().isAtEnd());
 }
 
 template <class ProtocolReader>
@@ -169,7 +169,7 @@ void testAdvanceToNextFieldFail() {
   EXPECT_FALSE(state.advanceToNextField(&reader, 16381, 123, T_STRING));
   EXPECT_EQ(state.fieldType, T_STOP);
   state.readStructEnd(&reader);
-  EXPECT_TRUE(reader.getCurrentPosition().isAtEnd());
+  EXPECT_TRUE(reader.getCursor().isAtEnd());
 }
 
 TEST(BinaryProtocol, advanceToNextFieldSuccess) {

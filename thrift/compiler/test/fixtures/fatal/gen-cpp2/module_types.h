@@ -571,9 +571,9 @@ void swap(union1& a, union1& b);
 
 template <class Protocol_>
 uint32_t union1::read(Protocol_* iprot) {
-  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
+  auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
-  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
+  return iprot->getCursorPosition() - _xferStart;
 }
 
 }} // test_cpp2::cpp_reflection
@@ -891,9 +891,9 @@ void swap(union2& a, union2& b);
 
 template <class Protocol_>
 uint32_t union2::read(Protocol_* iprot) {
-  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
+  auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
-  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
+  return iprot->getCursorPosition() - _xferStart;
 }
 
 }} // test_cpp2::cpp_reflection
@@ -1211,9 +1211,9 @@ void swap(union3& a, union3& b);
 
 template <class Protocol_>
 uint32_t union3::read(Protocol_* iprot) {
-  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
+  auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
-  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
+  return iprot->getCursorPosition() - _xferStart;
 }
 
 }} // test_cpp2::cpp_reflection
@@ -1300,9 +1300,9 @@ void swap(structA& a, structA& b);
 
 template <class Protocol_>
 uint32_t structA::read(Protocol_* iprot) {
-  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
+  auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
-  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
+  return iprot->getCursorPosition() - _xferStart;
 }
 
 }} // test_cpp2::cpp_reflection
@@ -1682,9 +1682,9 @@ void swap(unionA& a, unionA& b);
 
 template <class Protocol_>
 uint32_t unionA::read(Protocol_* iprot) {
-  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
+  auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
-  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
+  return iprot->getCursorPosition() - _xferStart;
 }
 
 }} // test_cpp2::cpp_reflection
@@ -1767,9 +1767,9 @@ void swap(structB& a, structB& b);
 
 template <class Protocol_>
 uint32_t structB::read(Protocol_* iprot) {
-  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
+  auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
-  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
+  return iprot->getCursorPosition() - _xferStart;
 }
 
 }} // test_cpp2::cpp_reflection
@@ -2311,9 +2311,9 @@ void swap(structC& a, structC& b);
 
 template <class Protocol_>
 uint32_t structC::read(Protocol_* iprot) {
-  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
+  auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
-  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
+  return iprot->getCursorPosition() - _xferStart;
 }
 
 }} // test_cpp2::cpp_reflection
@@ -2497,9 +2497,9 @@ void swap(struct1& a, struct1& b);
 
 template <class Protocol_>
 uint32_t struct1::read(Protocol_* iprot) {
-  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
+  auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
-  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
+  return iprot->getCursorPosition() - _xferStart;
 }
 
 }} // test_cpp2::cpp_reflection
@@ -2671,9 +2671,9 @@ void swap(struct2& a, struct2& b);
 
 template <class Protocol_>
 uint32_t struct2::read(Protocol_* iprot) {
-  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
+  auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
-  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
+  return iprot->getCursorPosition() - _xferStart;
 }
 
 }} // test_cpp2::cpp_reflection
@@ -3021,9 +3021,9 @@ void swap(struct3& a, struct3& b);
 
 template <class Protocol_>
 uint32_t struct3::read(Protocol_* iprot) {
-  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
+  auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
-  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
+  return iprot->getCursorPosition() - _xferStart;
 }
 
 }} // test_cpp2::cpp_reflection
@@ -3146,9 +3146,9 @@ void swap(struct4& a, struct4& b);
 
 template <class Protocol_>
 uint32_t struct4::read(Protocol_* iprot) {
-  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
+  auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
-  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
+  return iprot->getCursorPosition() - _xferStart;
 }
 
 }} // test_cpp2::cpp_reflection
@@ -3301,9 +3301,9 @@ void swap(struct5& a, struct5& b);
 
 template <class Protocol_>
 uint32_t struct5::read(Protocol_* iprot) {
-  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
+  auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
-  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
+  return iprot->getCursorPosition() - _xferStart;
 }
 
 }} // test_cpp2::cpp_reflection
@@ -3372,9 +3372,9 @@ void swap(struct_binary& a, struct_binary& b);
 
 template <class Protocol_>
 uint32_t struct_binary::read(Protocol_* iprot) {
-  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
+  auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
-  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
+  return iprot->getCursorPosition() - _xferStart;
 }
 
 }} // test_cpp2::cpp_reflection
@@ -3471,9 +3471,9 @@ void swap(dep_A_struct& a, dep_A_struct& b);
 
 template <class Protocol_>
 uint32_t dep_A_struct::read(Protocol_* iprot) {
-  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
+  auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
-  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
+  return iprot->getCursorPosition() - _xferStart;
 }
 
 }} // test_cpp2::cpp_reflection
@@ -3570,9 +3570,9 @@ void swap(dep_B_struct& a, dep_B_struct& b);
 
 template <class Protocol_>
 uint32_t dep_B_struct::read(Protocol_* iprot) {
-  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
+  auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
-  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
+  return iprot->getCursorPosition() - _xferStart;
 }
 
 }} // test_cpp2::cpp_reflection
@@ -3637,9 +3637,9 @@ void swap(annotated& a, annotated& b);
 
 template <class Protocol_>
 uint32_t annotated::read(Protocol_* iprot) {
-  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
+  auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
-  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
+  return iprot->getCursorPosition() - _xferStart;
 }
 
 }} // test_cpp2::cpp_reflection
@@ -5095,9 +5095,9 @@ void swap(union_with_special_names& a, union_with_special_names& b);
 
 template <class Protocol_>
 uint32_t union_with_special_names::read(Protocol_* iprot) {
-  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
+  auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
-  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
+  return iprot->getCursorPosition() - _xferStart;
 }
 
 }} // test_cpp2::cpp_reflection
@@ -5648,9 +5648,9 @@ void swap(struct_with_special_names& a, struct_with_special_names& b);
 
 template <class Protocol_>
 uint32_t struct_with_special_names::read(Protocol_* iprot) {
-  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
+  auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
-  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
+  return iprot->getCursorPosition() - _xferStart;
 }
 
 }} // test_cpp2::cpp_reflection
@@ -5791,9 +5791,9 @@ void swap(struct_with_indirections& a, struct_with_indirections& b);
 
 template <class Protocol_>
 uint32_t struct_with_indirections::read(Protocol_* iprot) {
-  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
+  auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
-  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
+  return iprot->getCursorPosition() - _xferStart;
 }
 
 }} // test_cpp2::cpp_reflection

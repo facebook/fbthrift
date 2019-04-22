@@ -262,9 +262,9 @@ void swap(decorated_struct& a, decorated_struct& b);
 
 template <class Protocol_>
 uint32_t decorated_struct::read(Protocol_* iprot) {
-  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
+  auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
-  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
+  return iprot->getCursorPosition() - _xferStart;
 }
 
 }}}} // apache::thrift::fixtures::types
@@ -443,9 +443,9 @@ void swap(ContainerStruct& a, ContainerStruct& b);
 
 template <class Protocol_>
 uint32_t ContainerStruct::read(Protocol_* iprot) {
-  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
+  auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
-  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
+  return iprot->getCursorPosition() - _xferStart;
 }
 
 }}}} // apache::thrift::fixtures::types
@@ -508,9 +508,9 @@ void swap(CppTypeStruct& a, CppTypeStruct& b);
 
 template <class Protocol_>
 uint32_t CppTypeStruct::read(Protocol_* iprot) {
-  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
+  auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
-  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
+  return iprot->getCursorPosition() - _xferStart;
 }
 
 }}}} // apache::thrift::fixtures::types
@@ -578,9 +578,9 @@ void swap(VirtualStruct& a, VirtualStruct& b);
 
 template <class Protocol_>
 uint32_t VirtualStruct::read(Protocol_* iprot) {
-  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
+  auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
-  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
+  return iprot->getCursorPosition() - _xferStart;
 }
 
 }}}} // apache::thrift::fixtures::types
@@ -663,9 +663,9 @@ void swap(MyStructWithForwardRefEnum& a, MyStructWithForwardRefEnum& b);
 
 template <class Protocol_>
 uint32_t MyStructWithForwardRefEnum::read(Protocol_* iprot) {
-  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
+  auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
-  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
+  return iprot->getCursorPosition() - _xferStart;
 }
 
 }}}} // apache::thrift::fixtures::types
@@ -748,9 +748,9 @@ void swap(TrivialNumeric& a, TrivialNumeric& b);
 
 template <class Protocol_>
 uint32_t TrivialNumeric::read(Protocol_* iprot) {
-  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
+  auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
-  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
+  return iprot->getCursorPosition() - _xferStart;
 }
 
 }}}} // apache::thrift::fixtures::types
@@ -832,9 +832,9 @@ void swap(TrivialNestedWithDefault& a, TrivialNestedWithDefault& b);
 
 template <class Protocol_>
 uint32_t TrivialNestedWithDefault::read(Protocol_* iprot) {
-  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
+  auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
-  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
+  return iprot->getCursorPosition() - _xferStart;
 }
 
 }}}} // apache::thrift::fixtures::types
@@ -919,9 +919,9 @@ void swap(ComplexString& a, ComplexString& b);
 
 template <class Protocol_>
 uint32_t ComplexString::read(Protocol_* iprot) {
-  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
+  auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
-  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
+  return iprot->getCursorPosition() - _xferStart;
 }
 
 }}}} // apache::thrift::fixtures::types
@@ -1008,9 +1008,9 @@ void swap(ComplexNestedWithDefault& a, ComplexNestedWithDefault& b);
 
 template <class Protocol_>
 uint32_t ComplexNestedWithDefault::read(Protocol_* iprot) {
-  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
+  auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
-  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
+  return iprot->getCursorPosition() - _xferStart;
 }
 
 }}}} // apache::thrift::fixtures::types
@@ -1129,9 +1129,9 @@ void swap(MinPadding& a, MinPadding& b);
 
 template <class Protocol_>
 uint32_t MinPadding::read(Protocol_* iprot) {
-  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
+  auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
-  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
+  return iprot->getCursorPosition() - _xferStart;
 }
 
 }}}} // apache::thrift::fixtures::types
@@ -1250,9 +1250,9 @@ void swap(MyStruct& a, MyStruct& b);
 
 template <class Protocol_>
 uint32_t MyStruct::read(Protocol_* iprot) {
-  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
+  auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
-  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
+  return iprot->getCursorPosition() - _xferStart;
 }
 
 }}}} // apache::thrift::fixtures::types
@@ -1294,9 +1294,9 @@ void swap(MyDataItem& a, MyDataItem& b);
 
 template <class Protocol_>
 uint32_t MyDataItem::read(Protocol_* iprot) {
-  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
+  auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
-  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
+  return iprot->getCursorPosition() - _xferStart;
 }
 
 }}}} // apache::thrift::fixtures::types
@@ -1361,9 +1361,9 @@ void swap(Renaming& a, Renaming& b);
 
 template <class Protocol_>
 uint32_t Renaming::read(Protocol_* iprot) {
-  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
+  auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
-  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
+  return iprot->getCursorPosition() - _xferStart;
 }
 
 }}}} // apache::thrift::fixtures::types
@@ -1448,9 +1448,9 @@ void swap(AnnotatedTypes& a, AnnotatedTypes& b);
 
 template <class Protocol_>
 uint32_t AnnotatedTypes::read(Protocol_* iprot) {
-  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
+  auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
-  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
+  return iprot->getCursorPosition() - _xferStart;
 }
 
 }}}} // apache::thrift::fixtures::types

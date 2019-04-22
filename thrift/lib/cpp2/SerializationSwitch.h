@@ -25,9 +25,9 @@ namespace detail {
 
 template <typename Protocol, typename Args>
 uint32_t deserializeRequestBody(Protocol* prot, Args* args) {
-  auto xferStart = prot->getCurrentPosition().getCurrentPosition();
+  auto xferStart = prot->getCursorPosition();
   ::apache::thrift::Cpp2Ops<Args>::read(prot, args);
-  return prot->getCurrentPosition().getCurrentPosition() - xferStart;
+  return prot->getCursorPosition() - xferStart;
 }
 
 template <typename Protocol, typename Args>

@@ -48,7 +48,7 @@ struct Serializer {
     // if you don't need to support thrift1-compatibility types
     apache::thrift::Cpp2Ops<T>::read(&reader, &obj);
 
-    return reader.getCurrentPosition();
+    return reader.getCursor();
   }
   template <class T>
   static size_t deserialize(

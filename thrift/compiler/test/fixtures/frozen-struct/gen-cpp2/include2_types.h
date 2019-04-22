@@ -111,9 +111,9 @@ void swap(IncludedB& a, IncludedB& b);
 
 template <class Protocol_>
 uint32_t IncludedB::read(Protocol_* iprot) {
-  auto _xferStart = iprot->getCurrentPosition().getCurrentPosition();
+  auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
-  return iprot->getCurrentPosition().getCurrentPosition() - _xferStart;
+  return iprot->getCursorPosition() - _xferStart;
 }
 
 }} // some::ns
