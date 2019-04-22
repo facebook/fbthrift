@@ -1101,6 +1101,7 @@ class mstch_cpp2_program : public mstch_program {
             {"program:json?", &mstch_cpp2_program::json},
             {"program:optionals?", &mstch_cpp2_program::optionals},
             {"program:coroutines?", &mstch_cpp2_program::coroutines},
+            {"program:nimble?", &mstch_cpp2_program::nimble},
         });
   }
   std::string get_program_namespace(t_program const* program) override {
@@ -1179,6 +1180,9 @@ class mstch_cpp2_program : public mstch_program {
   }
   mstch::node coroutines() {
     return cache_->parsed_options_.count("coroutines") != 0;
+  }
+  mstch::node nimble() {
+    return cache_->parsed_options_.count("nimble") != 0;
   }
 };
 

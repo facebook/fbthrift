@@ -28,6 +28,9 @@
 <%#program:json?%>
 #include <thrift/lib/cpp2/protocol/SimpleJSONProtocol.h>
 <%/program:json?%>
+<%#program:nimble?%>
+#include <thrift/lib/cpp2/protocol/NimbleProtocol.h>
+<%/program:nimble?%>
 
 <% > module_types_tcc/declare_enums%>
 <% > module_types_tcc/tcc_struct_traits%>
@@ -37,7 +40,6 @@
 
 
 <%^struct:union?%>
-<% > module_types_tcc/container_setters%>
 <% > module_types_tcc/deserialize_struct%>
 
 <% > module_types_tcc/serialize_struct%>
@@ -63,6 +65,12 @@ extern template uint32_t <%struct:name%>::write<>(apache::thrift::SimpleJSONProt
 extern template uint32_t <%struct:name%>::serializedSize<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 extern template uint32_t <%struct:name%>::serializedSizeZC<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 <%/program:json?%>
+<%#program:nimble?%>
+extern template void <%struct:name%>::readNoXfer<>(apache::thrift::NimbleProtocolReader*);
+extern template uint32_t <%struct:name%>::write<>(apache::thrift::NimbleProtocolWriter*) const;
+extern template uint32_t <%struct:name%>::serializedSize<>(apache::thrift::NimbleProtocolWriter const*) const;
+extern template uint32_t <%struct:name%>::serializedSizeZC<>(apache::thrift::NimbleProtocolWriter const*) const;
+<%/program:nimble?%>
 
 <% > common/namespace_cpp2_end%>
 

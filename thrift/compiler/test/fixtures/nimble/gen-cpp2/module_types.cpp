@@ -141,5 +141,9 @@ template void BasicTypes::readNoXfer<>(apache::thrift::CompactProtocolReader*);
 template uint32_t BasicTypes::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t BasicTypes::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t BasicTypes::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+template void BasicTypes::readNoXfer<>(apache::thrift::NimbleProtocolReader*);
+template uint32_t BasicTypes::write<>(apache::thrift::NimbleProtocolWriter*) const;
+template uint32_t BasicTypes::serializedSize<>(apache::thrift::NimbleProtocolWriter const*) const;
+template uint32_t BasicTypes::serializedSizeZC<>(apache::thrift::NimbleProtocolWriter const*) const;
 
 } // cpp2

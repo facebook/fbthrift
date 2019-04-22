@@ -88,6 +88,12 @@ template uint32_t <%struct:name%>::write<>(apache::thrift::SimpleJSONProtocolWri
 template uint32_t <%struct:name%>::serializedSize<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 template uint32_t <%struct:name%>::serializedSizeZC<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 <%/program:json?%>
+<%#program:nimble?%>
+template void <%struct:name%>::readNoXfer<>(apache::thrift::NimbleProtocolReader*);
+template uint32_t <%struct:name%>::write<>(apache::thrift::NimbleProtocolWriter*) const;
+template uint32_t <%struct:name%>::serializedSize<>(apache::thrift::NimbleProtocolWriter const*) const;
+template uint32_t <%struct:name%>::serializedSizeZC<>(apache::thrift::NimbleProtocolWriter const*) const;
+<%/program:nimble?%>
 
 <% > common/namespace_cpp2_end%>
 

@@ -14,6 +14,7 @@
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 #include <thrift/lib/cpp2/protocol/ProtocolReaderStructReadState.h>
+#include <thrift/lib/cpp2/protocol/NimbleProtocol.h>
 
 
 namespace apache {
@@ -123,7 +124,7 @@ _loop:
   switch (_readState.fieldId) {
     case 1:
     {
-      if (LIKELY(_readState.fieldType == apache::thrift::protocol::T_I32)) {
+      if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_I32))) {
         goto _readField_first;
       } else {
         goto _skip;
@@ -131,7 +132,7 @@ _loop:
     }
     case 2:
     {
-      if (LIKELY(_readState.fieldType == apache::thrift::protocol::T_I32)) {
+      if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_I32))) {
         goto _readField_second;
       } else {
         goto _skip;
@@ -139,7 +140,7 @@ _loop:
     }
     case 3:
     {
-      if (LIKELY(_readState.fieldType == apache::thrift::protocol::T_I64)) {
+      if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_I64))) {
         goto _readField_third;
       } else {
         goto _skip;
@@ -147,7 +148,7 @@ _loop:
     }
     case 4:
     {
-      if (LIKELY(_readState.fieldType == apache::thrift::protocol::T_BOOL)) {
+      if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_BOOL))) {
         goto _readField_isTrue;
       } else {
         goto _skip;
@@ -237,5 +238,9 @@ extern template void BasicTypes::readNoXfer<>(apache::thrift::CompactProtocolRea
 extern template uint32_t BasicTypes::write<>(apache::thrift::CompactProtocolWriter*) const;
 extern template uint32_t BasicTypes::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t BasicTypes::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template void BasicTypes::readNoXfer<>(apache::thrift::NimbleProtocolReader*);
+extern template uint32_t BasicTypes::write<>(apache::thrift::NimbleProtocolWriter*) const;
+extern template uint32_t BasicTypes::serializedSize<>(apache::thrift::NimbleProtocolWriter const*) const;
+extern template uint32_t BasicTypes::serializedSizeZC<>(apache::thrift::NimbleProtocolWriter const*) const;
 
 } // cpp2
