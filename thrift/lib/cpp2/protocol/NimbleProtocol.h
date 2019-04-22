@@ -21,6 +21,7 @@
 #include <thrift/facebook/nimble/Encoder.h>
 #include <thrift/facebook/nimble/NimbleTypes.h>
 #include <thrift/lib/cpp/protocol/TProtocol.h>
+#include <thrift/lib/cpp/util/BitwiseCast.h>
 #include <thrift/lib/cpp2/protocol/Protocol.h>
 
 namespace apache {
@@ -166,6 +167,8 @@ class NimbleProtocolWriter {
   void encode(uint16_t input);
   void encode(uint32_t input);
   void encode(uint64_t input);
+  void encode(double input);
+  void encode(float input);
   void encodeStop();
 };
 
@@ -238,6 +241,8 @@ class NimbleProtocolReader {
   void decode(uint16_t& value);
   void decode(uint32_t& value);
   void decode(uint64_t& value);
+  void decode(double& value);
+  void decode(float& value);
 
   struct StructReadState {
     int16_t fieldId;

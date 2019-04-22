@@ -78,6 +78,16 @@ inline uint32_t NimbleProtocolWriter::writeI64(int64_t i64) {
   return 0;
 }
 
+inline uint32_t NimbleProtocolWriter::writeDouble(double dub) {
+  encode(dub);
+  return 0;
+}
+
+inline uint32_t NimbleProtocolWriter::writeFloat(float flt) {
+  encode(flt);
+  return 0;
+}
+
 /**
  * Functions that return the serialized size
  */
@@ -220,6 +230,14 @@ inline void NimbleProtocolReader::readI32(int32_t& i32) {
 }
 inline void NimbleProtocolReader::readI64(int64_t& i64) {
   decode(i64);
+}
+
+inline void NimbleProtocolReader::readDouble(double& dub) {
+  decode(dub);
+}
+
+inline void NimbleProtocolReader::readFloat(float& flt) {
+  decode(flt);
 }
 
 inline void NimbleProtocolReader::skip(TType type) {

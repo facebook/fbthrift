@@ -65,6 +65,21 @@ void NimbleProtocolWriter::encode(uint64_t input) {
   encoder_.encodeContentChunk(lower);
   encoder_.encodeContentChunk(higher);
 }
+void NimbleProtocolWriter::encode(double input) {
+  static_assert(sizeof(double) == sizeof(uint64_t), "");
+  static_assert(std::numeric_limits<double>::is_iec559, "");
+
+  uint64_t bits = bitwise_cast<uint64_t>(input);
+  encode(bits);
+}
+
+void NimbleProtocolWriter::encode(float input) {
+  static_assert(sizeof(float) == sizeof(uint32_t), "");
+  static_assert(std::numeric_limits<float>::is_iec559, "");
+
+  uint32_t bits = bitwise_cast<uint32_t>(input);
+  encode(bits);
+}
 
 void NimbleProtocolWriter::encodeStop() {
   encoder_.encodeFieldChunk(0);
@@ -108,6 +123,24 @@ void NimbleProtocolReader::decode(uint64_t& value) {
   auto lower = decoder_.nextContentChunk();
   auto higher = decoder_.nextContentChunk();
   value = static_cast<uint64_t>(higher) << 32 | lower;
+}
+
+void NimbleProtocolReader::decode(double& value) {
+  static_assert(sizeof(double) == sizeof(uint64_t), "");
+  static_assert(std::numeric_limits<double>::is_iec559, "");
+
+  auto lower = decoder_.nextContentChunk();
+  auto higher = decoder_.nextContentChunk();
+  uint64_t bits = static_cast<uint64_t>(higher) << 32 | lower;
+  value = bitwise_cast<double>(bits);
+}
+
+void NimbleProtocolReader::decode(float& value) {
+  static_assert(sizeof(float) == sizeof(uint32_t), "");
+  static_assert(std::numeric_limits<float>::is_iec559, "");
+
+  uint32_t bits = decoder_.nextContentChunk();
+  value = bitwise_cast<float>(bits);
 }
 } // namespace thrift
 } // namespace apache
