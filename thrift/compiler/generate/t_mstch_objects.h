@@ -399,6 +399,7 @@ class mstch_enum : public mstch_base {
         {
             {"enum:name", &mstch_enum::name},
             {"enum:values", &mstch_enum::values},
+            {"enum:dedupedValues", &mstch_enum::deduped_values},
         });
   }
 
@@ -406,6 +407,9 @@ class mstch_enum : public mstch_base {
     return enm_->get_name();
   }
   mstch::node values();
+  // TODO: once `thrift.duplicate_values` is completed deprecated, we can then
+  // cut this method and migrate all of its usage to `mstch_enum::values`
+  mstch::node deduped_values();
 
  protected:
   t_enum const* enm_;
