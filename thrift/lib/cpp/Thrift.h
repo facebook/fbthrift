@@ -25,7 +25,7 @@
 #include <thrift/lib/cpp/thrift_config.h>
 
 #ifdef THRIFT_PLATFORM_CONFIG
-# include THRIFT_PLATFORM_CONFIG
+#include THRIFT_PLATFORM_CONFIG
 #endif
 
 #include <assert.h>
@@ -49,7 +49,8 @@
 
 #include <thrift/lib/cpp/TLogging.h>
 
-namespace apache { namespace thrift {
+namespace apache {
+namespace thrift {
 
 struct ltstr {
   bool operator()(const char* s1, const char* s2) const {
@@ -127,17 +128,17 @@ struct TEnumMapFactory {
   }
 };
 
-}
+} // namespace detail
 
 class TOutput {
  public:
   TOutput() : f_(&errorTimeWrapper) {}
 
-  inline void setOutputFunction(void (*function)(const char *)){
+  inline void setOutputFunction(void (*function)(const char*)) {
     f_ = function;
   }
 
-  inline void operator()(const char *message){
+  inline void operator()(const char* message) {
     f_(message);
   }
 
@@ -145,12 +146,12 @@ class TOutput {
   // just the string version, otherwise errno could be corrupted
   // if there is some problem allocating memory when constructing
   // the string.
-  void perror(const char *message, int errno_copy);
-  inline void perror(const std::string &message, int errno_copy) {
+  void perror(const char* message, int errno_copy);
+  inline void perror(const std::string& message, int errno_copy) {
     perror(message.c_str(), errno_copy);
   }
 
-  void printf(const char *message, ...);
+  void printf(const char* message, ...);
 
   inline static void errorTimeWrapper(const char* msg) {
     time_t now;
@@ -165,7 +166,7 @@ class TOutput {
   static std::string strerror_s(int errno_copy);
 
  private:
-  void (*f_)(const char *);
+  void (*f_)(const char*);
 };
 
 extern TOutput GlobalOutput;
@@ -175,12 +176,16 @@ extern TOutput GlobalOutput;
  * Should never be instantiated, only caught.
  */
 class TException : public std::exception {
-public:
+ public:
   TException() {}
   TException(TException&&) noexcept {}
   TException(const TException&) {}
-  TException& operator=(const TException&) { return *this; }
-  TException& operator=(TException&&) { return *this; }
+  TException& operator=(const TException&) {
+    return *this;
+  }
+  TException& operator=(TException&&) {
+    return *this;
+  }
 };
 
 /**
@@ -192,8 +197,7 @@ class TLibraryException : public TException {
  public:
   TLibraryException() {}
 
-  explicit TLibraryException(const std::string& message) :
-    message_(message) {}
+  explicit TLibraryException(const std::string& message) : message_(message) {}
 
   TLibraryException(const char* message, int errnoValue);
 
@@ -209,18 +213,19 @@ class TLibraryException : public TException {
 
  protected:
   std::string message_;
-
 };
 
 #if T_GLOBAL_DEBUG_VIRTUAL > 1
 void profile_virtual_call(const std::type_info& info);
-void profile_generic_protocol(const std::type_info& template_type,
-                              const std::type_info& prot_type);
-void profile_print_info(FILE *f);
+void profile_generic_protocol(
+    const std::type_info& template_type,
+    const std::type_info& prot_type);
+void profile_print_info(FILE* f);
 void profile_print_info();
 void profile_write_pprof(FILE* gen_calls_f, FILE* virtual_calls_f);
 #endif
 
-}} // apache::thrift
+} // namespace thrift
+} // namespace apache
 
 #endif // #ifndef THRIFT_THRIFT_H_

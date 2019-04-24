@@ -24,7 +24,9 @@
 
 #include <thrift/lib/cpp/protocol/TProtocol.h>
 
-namespace apache { namespace thrift { namespace protocol {
+namespace apache {
+namespace thrift {
+namespace protocol {
 
 /**
  * Helper class that provides default implementations of TProtocol methods.
@@ -40,11 +42,12 @@ namespace apache { namespace thrift { namespace protocol {
 class TProtocolDefaults : public TProtocol {
  public:
   [[noreturn]] void setVersion(const int8_t /*version*/) {
-    throw TProtocolException(TProtocolException::NOT_IMPLEMENTED,
-                             "this protocol does not support setVersion (yet)");
+    throw TProtocolException(
+        TProtocolException::NOT_IMPLEMENTED,
+        "this protocol does not support setVersion (yet)");
   }
 
-  ::apache::thrift::reflection::Schema * getSchema() {
+  ::apache::thrift::reflection::Schema* getSchema() {
     return nullptr;
   }
 
@@ -64,7 +67,8 @@ class TProtocolDefaults : public TProtocol {
   }
 
   [[noreturn]] void setNextStructType(uint64_t /*reflection_id*/) {
-    throw TProtocolException(TProtocolException::NOT_IMPLEMENTED,
+    throw TProtocolException(
+        TProtocolException::NOT_IMPLEMENTED,
         "this protocol does not support setting struct type (yet).");
   }
 
@@ -381,7 +385,7 @@ class TProtocolDefaults : public TProtocol {
  *
  * @author David Reiss <dreiss@facebook.com>
  */
-template <class Protocol_, class Super_=TProtocolDefaults>
+template <class Protocol_, class Super_ = TProtocolDefaults>
 class TVirtualProtocol : public Super_ {
  public:
   void setVersion_virt(const int8_t version) override {
@@ -396,11 +400,12 @@ class TVirtualProtocol : public Super_ {
    * Writing functions.
    */
 
-  uint32_t writeMessageBegin_virt(const std::string& name,
-                                  const TMessageType messageType,
-                                  const int32_t seqid) override {
-    return static_cast<Protocol_*>(this)->writeMessageBegin(name, messageType,
-                                                            seqid);
+  uint32_t writeMessageBegin_virt(
+      const std::string& name,
+      const TMessageType messageType,
+      const int32_t seqid) override {
+    return static_cast<Protocol_*>(this)->writeMessageBegin(
+        name, messageType, seqid);
   }
 
   uint32_t writeMessageEnd_virt() override {
@@ -415,11 +420,12 @@ class TVirtualProtocol : public Super_ {
     return static_cast<Protocol_*>(this)->writeStructEnd();
   }
 
-  uint32_t writeFieldBegin_virt(const char* name,
-                                const TType fieldType,
-                                const int16_t fieldId) override {
-    return static_cast<Protocol_*>(this)->writeFieldBegin(name, fieldType,
-                                                          fieldId);
+  uint32_t writeFieldBegin_virt(
+      const char* name,
+      const TType fieldType,
+      const int16_t fieldId) override {
+    return static_cast<Protocol_*>(this)->writeFieldBegin(
+        name, fieldType, fieldId);
   }
 
   uint32_t writeFieldEnd_virt() override {
@@ -430,9 +436,10 @@ class TVirtualProtocol : public Super_ {
     return static_cast<Protocol_*>(this)->writeFieldStop();
   }
 
-  uint32_t writeMapBegin_virt(const TType keyType,
-                              const TType valType,
-                              const uint32_t size) override {
+  uint32_t writeMapBegin_virt(
+      const TType keyType,
+      const TType valType,
+      const uint32_t size) override {
     return static_cast<Protocol_*>(this)->writeMapBegin(keyType, valType, size);
   }
 
@@ -440,8 +447,8 @@ class TVirtualProtocol : public Super_ {
     return static_cast<Protocol_*>(this)->writeMapEnd();
   }
 
-  uint32_t writeListBegin_virt(const TType elemType,
-                               const uint32_t size) override {
+  uint32_t writeListBegin_virt(const TType elemType, const uint32_t size)
+      override {
     return static_cast<Protocol_*>(this)->writeListBegin(elemType, size);
   }
 
@@ -449,8 +456,8 @@ class TVirtualProtocol : public Super_ {
     return static_cast<Protocol_*>(this)->writeListEnd();
   }
 
-  uint32_t writeSetBegin_virt(const TType elemType,
-                              const uint32_t size) override {
+  uint32_t writeSetBegin_virt(const TType elemType, const uint32_t size)
+      override {
     return static_cast<Protocol_*>(this)->writeSetBegin(elemType, size);
   }
 
@@ -498,11 +505,12 @@ class TVirtualProtocol : public Super_ {
    * Reading functions
    */
 
-  uint32_t readMessageBegin_virt(std::string& name,
-                                 TMessageType& messageType,
-                                 int32_t& seqid) override {
-    return static_cast<Protocol_*>(this)->readMessageBegin(name, messageType,
-                                                           seqid);
+  uint32_t readMessageBegin_virt(
+      std::string& name,
+      TMessageType& messageType,
+      int32_t& seqid) override {
+    return static_cast<Protocol_*>(this)->readMessageBegin(
+        name, messageType, seqid);
   }
 
   uint32_t readMessageEnd_virt() override {
@@ -521,23 +529,25 @@ class TVirtualProtocol : public Super_ {
     return static_cast<Protocol_*>(this)->readStructEnd();
   }
 
-  uint32_t readFieldBegin_virt(std::string& name,
-                               TType& fieldType,
-                               int16_t& fieldId) override {
-    return static_cast<Protocol_*>(this)->readFieldBegin(name, fieldType,
-                                                         fieldId);
+  uint32_t readFieldBegin_virt(
+      std::string& name,
+      TType& fieldType,
+      int16_t& fieldId) override {
+    return static_cast<Protocol_*>(this)->readFieldBegin(
+        name, fieldType, fieldId);
   }
 
   uint32_t readFieldEnd_virt() override {
     return static_cast<Protocol_*>(this)->readFieldEnd();
   }
 
-  uint32_t readMapBegin_virt(TType& keyType,
-                             TType& valType,
-                             uint32_t& size,
-                             bool& sizeUnknown) override {
-    return static_cast<Protocol_*>(this)->readMapBegin(keyType, valType, size,
-                                                       sizeUnknown);
+  uint32_t readMapBegin_virt(
+      TType& keyType,
+      TType& valType,
+      uint32_t& size,
+      bool& sizeUnknown) override {
+    return static_cast<Protocol_*>(this)->readMapBegin(
+        keyType, valType, size, sizeUnknown);
   }
 
   bool peekMap_virt() override {
@@ -548,11 +558,10 @@ class TVirtualProtocol : public Super_ {
     return static_cast<Protocol_*>(this)->readMapEnd();
   }
 
-  uint32_t readListBegin_virt(TType& elemType,
-                              uint32_t& size,
-                              bool& sizeUnkown) override {
-    return static_cast<Protocol_*>(this)->readListBegin(elemType, size,
-                                                        sizeUnkown);
+  uint32_t readListBegin_virt(TType& elemType, uint32_t& size, bool& sizeUnkown)
+      override {
+    return static_cast<Protocol_*>(this)->readListBegin(
+        elemType, size, sizeUnkown);
   }
 
   bool peekList_virt() override {
@@ -563,12 +572,10 @@ class TVirtualProtocol : public Super_ {
     return static_cast<Protocol_*>(this)->readListEnd();
   }
 
-  uint32_t readSetBegin_virt(TType& elemType,
-                             uint32_t& size,
-                             bool& sizeUnknown) override {
-    return static_cast<Protocol_*>(this)->readSetBegin(elemType,
-                                                       size,
-                                                       sizeUnknown);
+  uint32_t readSetBegin_virt(TType& elemType, uint32_t& size, bool& sizeUnknown)
+      override {
+    return static_cast<Protocol_*>(this)->readSetBegin(
+        elemType, size, sizeUnknown);
   }
 
   bool peekSet_virt() override {
@@ -661,6 +668,8 @@ class TVirtualProtocol : public Super_ {
   explicit TVirtualProtocol(transport::TTransport* ptrans) : Super_(ptrans) {}
 };
 
-}}} // apache::thrift::protocol
+} // namespace protocol
+} // namespace thrift
+} // namespace apache
 
 #endif // #define _THRIFT_PROTOCOL_TVIRTUALPROTOCOL_H_ 1

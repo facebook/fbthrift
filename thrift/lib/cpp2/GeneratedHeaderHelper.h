@@ -19,8 +19,8 @@ namespace folly {
 class IOBufQueue;
 namespace io {
 class QueueAppender;
-} // io
-} // folly
+} // namespace io
+} // namespace folly
 
 namespace apache {
 namespace thrift {
@@ -31,5 +31,5 @@ class BinaryProtocolWriter;
 class CompactProtocolReader;
 class CompactProtocolWriter;
 
-} // thrift
-} // apache
+} // namespace thrift
+} // namespace apache

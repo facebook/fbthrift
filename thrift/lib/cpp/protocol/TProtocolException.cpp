@@ -18,7 +18,9 @@
 
 #include <folly/Format.h>
 
-namespace apache { namespace thrift { namespace protocol {
+namespace apache {
+namespace thrift {
+namespace protocol {
 
 [[noreturn]] void TProtocolException::throwUnionMissingStop() {
   throw TProtocolException(
@@ -65,4 +67,6 @@ namespace apache { namespace thrift { namespace protocol {
           "Encountered invalid field/element type ({}) during skipping",
           static_cast<uint8_t>(type)));
 }
-}}}
+} // namespace protocol
+} // namespace thrift
+} // namespace apache

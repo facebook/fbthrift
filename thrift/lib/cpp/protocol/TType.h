@@ -17,7 +17,9 @@
 
 #include <stdint.h>
 
-namespace apache { namespace thrift { namespace protocol {
+namespace apache {
+namespace thrift {
+namespace protocol {
 
 /**
  * Enumerated definition of the types that the Thrift protocol supports.
@@ -25,26 +27,28 @@ namespace apache { namespace thrift { namespace protocol {
  * the end of a sequence of fields.
  */
 enum TType : uint8_t {
-  T_STOP       = 0,
-  T_VOID       = 1,
-  T_BOOL       = 2,
-  T_BYTE       = 3,
-  T_I08        = 3,
-  T_I16        = 6,
-  T_I32        = 8,
-  T_U64        = 9,
-  T_I64        = 10,
-  T_DOUBLE     = 4,
-  T_STRING     = 11,
-  T_UTF7       = 11,
-  T_STRUCT     = 12,
-  T_MAP        = 13,
-  T_SET        = 14,
-  T_LIST       = 15,
-  T_UTF8       = 16,
-  T_UTF16      = 17,
-  T_STREAM     = 18,
-  T_FLOAT      = 19,
+  T_STOP = 0,
+  T_VOID = 1,
+  T_BOOL = 2,
+  T_BYTE = 3,
+  T_I08 = 3,
+  T_I16 = 6,
+  T_I32 = 8,
+  T_U64 = 9,
+  T_I64 = 10,
+  T_DOUBLE = 4,
+  T_STRING = 11,
+  T_UTF7 = 11,
+  T_STRUCT = 12,
+  T_MAP = 13,
+  T_SET = 14,
+  T_LIST = 15,
+  T_UTF8 = 16,
+  T_UTF16 = 17,
+  T_STREAM = 18,
+  T_FLOAT = 19,
 };
 
-}}}
+} // namespace protocol
+} // namespace thrift
+} // namespace apache

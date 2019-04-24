@@ -16,7 +16,8 @@
 
 #pragma once
 
-namespace apache { namespace thrift {
+namespace apache {
+namespace thrift {
 
 /**
  * The type class of a type as declared in a .thrift file.
@@ -28,77 +29,77 @@ namespace apache { namespace thrift {
  * custom types with the `cpp.type` and `cpp.template` annotations.
  */
 namespace type_class {
-  /**
-   * A sentinel type-class indicating that the actual type-class is unknown.
-   */
-  struct unknown {};
+/**
+ * A sentinel type-class indicating that the actual type-class is unknown.
+ */
+struct unknown {};
 
-  /**
-   * Represents types with no actual data representation. Most commonly `void`.
-   */
-  struct nothing {};
+/**
+ * Represents types with no actual data representation. Most commonly `void`.
+ */
+struct nothing {};
 
-  /**
-   * Represents all signed and unsigned integral types, including `bool`.
-   */
-  struct integral {};
+/**
+ * Represents all signed and unsigned integral types, including `bool`.
+ */
+struct integral {};
 
-  /**
-   * Represents all floating point types.
-   */
-  struct floating_point {};
+/**
+ * Represents all floating point types.
+ */
+struct floating_point {};
 
-  /**
-   * Represents opaque binary data.
-   */
-  struct binary {};
+/**
+ * Represents opaque binary data.
+ */
+struct binary {};
 
-  /**
-   * Represents all known string implementations.
-   */
-  struct string {};
+/**
+ * Represents all known string implementations.
+ */
+struct string {};
 
-  /**
-   * Represents an enum.
-   */
-  struct enumeration {};
+/**
+ * Represents an enum.
+ */
+struct enumeration {};
 
-  /**
-   * Represents an class or structure.
-   */
-  struct structure {};
+/**
+ * Represents an class or structure.
+ */
+struct structure {};
 
-  /**
-   * Represents a variant (or union, as the Thrift IDL grammar goes).
-   */
-  struct variant {};
+/**
+ * Represents a variant (or union, as the Thrift IDL grammar goes).
+ */
+struct variant {};
 
-  /**
-   * Represents all list implementations.
-   */
-  template <typename ValueTypeClass>
-  struct list {};
+/**
+ * Represents all list implementations.
+ */
+template <typename ValueTypeClass>
+struct list {};
 
-  /**
-   * Represents all set implementations.
-   */
-  template <typename ValueTypeClass>
-  struct set {};
+/**
+ * Represents all set implementations.
+ */
+template <typename ValueTypeClass>
+struct set {};
 
-  /**
-   * Represents all map implementations.
-   */
-  template <typename KeyTypeClass, typename MappedTypeClass>
-  struct map {};
+/**
+ * Represents all map implementations.
+ */
+template <typename KeyTypeClass, typename MappedTypeClass>
+struct map {};
 
-  /**
-   * Represents all map implementations, which are forward compatible.
-   * It is a temporary struct for migration only.
-   * TODO(@denpluplus, by 11/4/2017) Remove.
-   */
-  template <typename KeyTypeClass, typename MappedTypeClass>
-  struct map_forward_compatibility {};
-} // type_class
+/**
+ * Represents all map implementations, which are forward compatible.
+ * It is a temporary struct for migration only.
+ * TODO(@denpluplus, by 11/4/2017) Remove.
+ */
+template <typename KeyTypeClass, typename MappedTypeClass>
+struct map_forward_compatibility {};
+} // namespace type_class
 
 namespace detail {
 /*
@@ -107,4 +108,5 @@ namespace detail {
 template <typename TypeClass, typename Indirection>
 struct indirection_tag;
 } // namespace detail
-}}
+} // namespace thrift
+} // namespace apache

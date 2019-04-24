@@ -81,7 +81,7 @@ inline auto reserve_if_possible(T* t, std::uint32_t size)
   t->reserve(size + 1);
 }
 
-inline void reserve_if_possible(...){}
+inline void reserve_if_possible(...) {}
 
 template <typename T>
 using presorted_constructible_from_vector_value_type = std::is_constructible<
@@ -649,8 +649,9 @@ struct protocol_methods<type_class::map<KeyClass, MappedClass>, Type> {
     } else {
       // CompactProtocol does not transmit key/mapped types if
       // the map is empty
-      if (map_size > 0 && (key_methods::ttype_value != rpt_key_type ||
-                           mapped_methods::ttype_value != rpt_mapped_type)) {
+      if (map_size > 0 &&
+          (key_methods::ttype_value != rpt_key_type ||
+           mapped_methods::ttype_value != rpt_mapped_type)) {
         protocol::TProtocolException::throwReportedTypeMismatch();
       }
       auto const kreader = [&protocol](auto& key) {
@@ -985,7 +986,7 @@ struct protocol_methods<type_class::structure, Type> {
     }
   }
 };
-}
-}
-}
-} // namespace apache::thrift::detail::pm
+} // namespace pm
+} // namespace detail
+} // namespace thrift
+} // namespace apache

@@ -1,4 +1,6 @@
 /*
+ * Copyright 2019-present Facebook, Inc.
+ *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -16,18 +18,18 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 #include <thrift/lib/cpp/Thrift.h>
 #include <stdarg.h>
 #include <stdio.h>
 
 #include <folly/String.h>
 
-namespace apache { namespace thrift {
+namespace apache {
+namespace thrift {
 
 TOutput GlobalOutput;
 
-void TOutput::printf(const char *message, ...) {
+void TOutput::printf(const char* message, ...) {
   // Try to reduce heap usage, even if printf is called rarely.
   static const int STACK_BUF_SIZE = 256;
   char stack_buf[STACK_BUF_SIZE];
@@ -42,7 +44,7 @@ void TOutput::printf(const char *message, ...) {
     return;
   }
 
-  char *heap_buf = (char*)malloc((need+1) * sizeof(char));
+  char* heap_buf = (char*)malloc((need + 1) * sizeof(char));
   if (heap_buf == nullptr) {
     // Malloc failed.  We might as well print the stack buffer.
     f_(stack_buf);
@@ -50,7 +52,7 @@ void TOutput::printf(const char *message, ...) {
   }
 
   va_start(ap, message);
-  int rval = vsnprintf(heap_buf, need+1, message, ap);
+  int rval = vsnprintf(heap_buf, need + 1, message, ap);
   va_end(ap);
   // TODO(shigin): inform user
   if (rval != -1) {
@@ -59,7 +61,7 @@ void TOutput::printf(const char *message, ...) {
   free(heap_buf);
 }
 
-void TOutput::perror(const char *message, int errno_copy) {
+void TOutput::perror(const char* message, int errno_copy) {
   std::string out = message + strerror_s(errno_copy);
   f_(out.c_str());
 }
@@ -72,4 +74,5 @@ TLibraryException::TLibraryException(const char* message, int errnoValue) {
   message_ = std::string(message) + ": " + TOutput::strerror_s(errnoValue);
 }
 
-}} // apache::thrift
+} // namespace thrift
+} // namespace apache

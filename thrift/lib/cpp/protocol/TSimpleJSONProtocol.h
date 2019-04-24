@@ -1,4 +1,6 @@
 /*
+ * Copyright 2019-present Facebook, Inc.
+ *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -16,7 +18,6 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 #ifndef THRIFT_PROTOCOL_TSIMPLEJSONPROTOCOL_H_
 #define THRIFT_PROTOCOL_TSIMPLEJSONPROTOCOL_H_ 1
 
@@ -27,7 +28,9 @@
 #include <stack>
 #include <string>
 
-namespace apache { namespace thrift { namespace protocol {
+namespace apache {
+namespace thrift {
+namespace protocol {
 
 /*
  * TSimpleJSONProtocol overrides parts of the regular JSON serialization to
@@ -35,33 +38,31 @@ namespace apache { namespace thrift { namespace protocol {
  * Namely, spitting only field names without verbose field type output
  */
 
-class TSimpleJSONProtocol : public TVirtualProtocol<TSimpleJSONProtocol,
-                                                    TJSONProtocol>{
-
+class TSimpleJSONProtocol
+    : public TVirtualProtocol<TSimpleJSONProtocol, TJSONProtocol> {
  public:
-
   explicit TSimpleJSONProtocol(std::shared_ptr<TTransport> ptrans);
 
-  explicit TSimpleJSONProtocol(TTransport *ptrans);
+  explicit TSimpleJSONProtocol(TTransport* ptrans);
 
   ~TSimpleJSONProtocol() override;
 
  public:
-
-  ::apache::thrift::reflection::Schema * getSchema();
+  ::apache::thrift::reflection::Schema* getSchema();
 
   /**
    * Writing functions.
    */
 
-  uint32_t writeFieldBegin(const char* name,
-                           const TType fieldType,
-                           const int16_t fieldId);
+  uint32_t writeFieldBegin(
+      const char* name,
+      const TType fieldType,
+      const int16_t fieldId);
 
   uint32_t writeFieldEnd();
 
-  uint32_t writeMapBegin(const TType keyType, const TType valType,
-                         const uint32_t size);
+  uint32_t
+  writeMapBegin(const TType keyType, const TType valType, const uint32_t size);
 
   uint32_t writeMapEnd();
 
@@ -81,32 +82,28 @@ class TSimpleJSONProtocol : public TVirtualProtocol<TSimpleJSONProtocol,
 
   uint32_t readStructEnd();
 
-  uint32_t readFieldBegin(std::string& name,
-                          TType& fieldType,
-                          int16_t& fieldId);
+  uint32_t
+  readFieldBegin(std::string& name, TType& fieldType, int16_t& fieldId);
 
   uint32_t readFieldEnd();
 
-  uint32_t readMapBegin(TType& keyType,
-                        TType& valType,
-                        uint32_t& size,
-                        bool& sizeUnknown);
+  uint32_t readMapBegin(
+      TType& keyType,
+      TType& valType,
+      uint32_t& size,
+      bool& sizeUnknown);
 
   bool peekMap();
 
   uint32_t readMapEnd();
 
-  uint32_t readListBegin(TType& elemType,
-                         uint32_t& size,
-                         bool& sizeUnknown);
+  uint32_t readListBegin(TType& elemType, uint32_t& size, bool& sizeUnknown);
 
   bool peekList();
 
   uint32_t readListEnd();
 
-  uint32_t readSetBegin(TType& elemType,
-                        uint32_t& size,
-                        bool& sizeUnknown);
+  uint32_t readSetBegin(TType& elemType, uint32_t& size, bool& sizeUnknown);
 
   bool peekSet();
 
@@ -118,24 +115,23 @@ class TSimpleJSONProtocol : public TVirtualProtocol<TSimpleJSONProtocol,
   using TVirtualProtocol<TSimpleJSONProtocol, TJSONProtocol>::readBool;
 
  private:
-
   ::apache::thrift::reflection::Schema schema_;
 
-  std::stack<const ::apache::thrift::reflection::DataType *> typeStack_;
+  std::stack<const ::apache::thrift::reflection::DataType*> typeStack_;
 
-  const ::apache::thrift::reflection::DataType * nextType_;
+  const ::apache::thrift::reflection::DataType* nextType_;
 
   uint32_t numSkipped_;
 
  private:
-  ::apache::thrift::reflection::DataType *getDataTypeFromTypeNum(int64_t num);
+  ::apache::thrift::reflection::DataType* getDataTypeFromTypeNum(int64_t num);
 
   TType getTypeIdFromTypeNum(int64_t typeNum);
   TType guessTypeIdFromFirstByte();
 
   void enterType();
   void exitType();
-  const ::apache::thrift::reflection::DataType * getCurrentDataType();
+  const ::apache::thrift::reflection::DataType* getCurrentDataType();
 
   bool isCompoundType(int64_t typeNum);
 
@@ -158,6 +154,8 @@ class TSimpleJSONProtocolFactory : public TProtocolFactory {
   }
 };
 
-}}} // apache::thrift::protocol
+} // namespace protocol
+} // namespace thrift
+} // namespace apache
 
 #endif // #define THRIFT_PROTOCOL_TSIMPLEJSONPROTOCOL_H_ 1

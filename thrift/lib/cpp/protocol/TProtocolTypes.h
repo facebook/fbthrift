@@ -17,7 +17,9 @@
 #ifndef THRIFT_PROTOCOL_TPROTOCOLTYPES_H_
 #define THRIFT_PROTOCOL_TPROTOCOLTYPES_H_ 1
 
-namespace apache { namespace thrift { namespace protocol {
+namespace apache {
+namespace thrift {
+namespace protocol {
 
 enum PROTOCOL_TYPES {
   T_BINARY_PROTOCOL = 0,
@@ -29,6 +31,8 @@ enum PROTOCOL_TYPES {
   // The frozen2 protocol is deprecated, but we don't want reuse its ID.
   // T_FROZEN2_PROTOCOL = 6,
 };
-}}} // apache::thrift::protocol
+}
+} // namespace thrift
+} // namespace apache
 
 #endif // #define _THRIFT_PROTOCOL_TPROTOCOLTYPES_H_ 1

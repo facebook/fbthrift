@@ -1,4 +1,6 @@
 /*
+ * Copyright 2019-present Facebook, Inc.
+ *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -20,21 +22,21 @@
 #define THRIFT_PROTOCOL_THEADERPROTOCOL_CPP_ 1
 
 #include <thrift/lib/cpp/protocol/THeaderProtocol.h>
+#include <thrift/lib/cpp/TApplicationException.h>
 #include <thrift/lib/cpp/protocol/TBinaryProtocol.h>
 #include <thrift/lib/cpp/protocol/TCompactProtocol.h>
 #include <thrift/lib/cpp/protocol/TJSONProtocol.h>
-#include <thrift/lib/cpp/TApplicationException.h>
 
 #include <limits>
 
-
 using apache::thrift::transport::THeaderTransport;
 
-namespace apache { namespace thrift { namespace protocol {
+namespace apache {
+namespace thrift {
+namespace protocol {
 
 void THeaderProtocol::resetProtocol() {
-  if (proto_ &&
-      protoId_ == trans_->getProtocolId() &&
+  if (proto_ && protoId_ == trans_->getProtocolId() &&
       protoVersion_ == trans_->getProtocolVersion()) {
     return;
   }
@@ -44,12 +46,12 @@ void THeaderProtocol::resetProtocol() {
   switch (protoId_) {
     case T_BINARY_PROTOCOL:
       proto_ = std::shared_ptr<TProtocol>(
-        new TBinaryProtocolT<THeaderTransport>(trans_));
+          new TBinaryProtocolT<THeaderTransport>(trans_));
       break;
 
     case T_COMPACT_PROTOCOL:
       proto_ = std::shared_ptr<TProtocol>(
-        new TCompactProtocolT<THeaderTransport>(trans_));
+          new TCompactProtocolT<THeaderTransport>(trans_));
       break;
 
     case T_JSON_PROTOCOL:
@@ -57,8 +59,9 @@ void THeaderProtocol::resetProtocol() {
       break;
 
     default:
-      throw TApplicationException(TApplicationException::INVALID_PROTOCOL,
-                                  "Unknown protocol requested");
+      throw TApplicationException(
+          TApplicationException::INVALID_PROTOCOL,
+          "Unknown protocol requested");
   }
 
   protoVersion_ = trans_->getProtocolVersion();
@@ -67,9 +70,10 @@ void THeaderProtocol::resetProtocol() {
   }
 }
 
-uint32_t THeaderProtocol::writeMessageBegin(const std::string& name,
-                                            const TMessageType messageType,
-                                            const int32_t seqId) {
+uint32_t THeaderProtocol::writeMessageBegin(
+    const std::string& name,
+    const TMessageType messageType,
+    const int32_t seqId) {
   resetProtocol(); // Reset in case we changed protocols
   return proto_->writeMessageBegin(name, messageType, seqId);
 }
@@ -86,9 +90,10 @@ uint32_t THeaderProtocol::writeStructEnd() {
   return proto_->writeStructEnd();
 }
 
-uint32_t THeaderProtocol::writeFieldBegin(const char* name,
-                                          const TType fieldType,
-                                          const int16_t fieldId) {
+uint32_t THeaderProtocol::writeFieldBegin(
+    const char* name,
+    const TType fieldType,
+    const int16_t fieldId) {
   return proto_->writeFieldBegin(name, fieldType, fieldId);
 }
 
@@ -100,9 +105,10 @@ uint32_t THeaderProtocol::writeFieldStop() {
   return proto_->writeFieldStop();
 }
 
-uint32_t THeaderProtocol::writeMapBegin(const TType keyType,
-                                        const TType valType,
-                                        const uint32_t size) {
+uint32_t THeaderProtocol::writeMapBegin(
+    const TType keyType,
+    const TType valType,
+    const uint32_t size) {
   return proto_->writeMapBegin(keyType, valType, size);
 }
 
@@ -110,8 +116,9 @@ uint32_t THeaderProtocol::writeMapEnd() {
   return proto_->writeMapEnd();
 }
 
-uint32_t THeaderProtocol::writeListBegin(const TType elemType,
-                                         const uint32_t size) {
+uint32_t THeaderProtocol::writeListBegin(
+    const TType elemType,
+    const uint32_t size) {
   return proto_->writeListBegin(elemType, size);
 }
 
@@ -119,8 +126,9 @@ uint32_t THeaderProtocol::writeListEnd() {
   return proto_->writeListEnd();
 }
 
-uint32_t THeaderProtocol::writeSetBegin(const TType elemType,
-                                        const uint32_t size) {
+uint32_t THeaderProtocol::writeSetBegin(
+    const TType elemType,
+    const uint32_t size) {
   return proto_->writeSetBegin(elemType, size);
 }
 
@@ -160,9 +168,10 @@ uint32_t THeaderProtocol::writeFloat(const float flt) {
  * Reading functions
  */
 
-uint32_t THeaderProtocol::readMessageBegin(std::string& name,
-                                           TMessageType& messageType,
-                                           int32_t& seqId) {
+uint32_t THeaderProtocol::readMessageBegin(
+    std::string& name,
+    TMessageType& messageType,
+    int32_t& seqId) {
   // Read the next frame, and change protocols if needed
   try {
     trans_->resetProtocol();
@@ -188,9 +197,10 @@ uint32_t THeaderProtocol::readStructEnd() {
   return proto_->readStructEnd();
 }
 
-uint32_t THeaderProtocol::readFieldBegin(std::string& name,
-                                         TType& fieldType,
-                                         int16_t& fieldId) {
+uint32_t THeaderProtocol::readFieldBegin(
+    std::string& name,
+    TType& fieldType,
+    int16_t& fieldId) {
   return proto_->readFieldBegin(name, fieldType, fieldId);
 }
 
@@ -198,10 +208,11 @@ uint32_t THeaderProtocol::readFieldEnd() {
   return proto_->readFieldEnd();
 }
 
-uint32_t THeaderProtocol::readMapBegin(TType& keyType,
-                                       TType& valType,
-                                       uint32_t& size,
-                                       bool& sizeUnknown) {
+uint32_t THeaderProtocol::readMapBegin(
+    TType& keyType,
+    TType& valType,
+    uint32_t& size,
+    bool& sizeUnknown) {
   return proto_->readMapBegin(keyType, valType, size, sizeUnknown);
 }
 
@@ -209,9 +220,10 @@ uint32_t THeaderProtocol::readMapEnd() {
   return proto_->readMapEnd();
 }
 
-uint32_t THeaderProtocol::readListBegin(TType& elemType,
-                                        uint32_t& size,
-                                        bool& sizeUnknown) {
+uint32_t THeaderProtocol::readListBegin(
+    TType& elemType,
+    uint32_t& size,
+    bool& sizeUnknown) {
   return proto_->readListBegin(elemType, size, sizeUnknown);
 }
 
@@ -219,9 +231,10 @@ uint32_t THeaderProtocol::readListEnd() {
   return proto_->readListEnd();
 }
 
-uint32_t THeaderProtocol::readSetBegin(TType& elemType,
-                                       uint32_t& size,
-                                       bool& sizeUnknown) {
+uint32_t THeaderProtocol::readSetBegin(
+    TType& elemType,
+    uint32_t& size,
+    bool& sizeUnknown) {
   return proto_->readSetBegin(elemType, size, sizeUnknown);
 }
 
@@ -257,6 +270,8 @@ uint32_t THeaderProtocol::readFloat(float& flt) {
   return proto_->readFloat(flt);
 }
 
-}}} // apache::thrift::protocol
+} // namespace protocol
+} // namespace thrift
+} // namespace apache
 
 #endif // #ifndef THRIFT_PROTOCOL_THEADERPROTOCOL_CPP_

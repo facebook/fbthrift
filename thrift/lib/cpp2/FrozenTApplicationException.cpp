@@ -62,6 +62,6 @@ void Layout<TApplicationException>::thaw(ViewPosition self, T& out) const {
   out.setType(
       static_cast<TApplicationException::TApplicationExceptionType>(type));
 }
-}
-}
-} // apache::thrift::frozen
+} // namespace frozen
+} // namespace thrift
+} // namespace apache
