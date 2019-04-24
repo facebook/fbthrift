@@ -204,8 +204,6 @@ class JSONProtocolReaderCommon {
   inline void readBinary(std::unique_ptr<folly::IOBuf>& str);
   inline void readBinary(folly::IOBuf& str);
 
-  inline void skip(TType type);
-
   const folly::io::Cursor& getCursor() const {
     return in_;
   }

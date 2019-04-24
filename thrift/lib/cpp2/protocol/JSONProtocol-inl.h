@@ -387,5 +387,9 @@ bool JSONProtocolReader::peekList() {
   return false;
 }
 
+void JSONProtocolReader::skip(TType type) {
+  apache::thrift::skip(*this, type);
+}
+
 } // namespace thrift
 } // namespace apache

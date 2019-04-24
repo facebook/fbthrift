@@ -434,48 +434,6 @@ void JSONProtocolReaderCommon::readBinary(folly::IOBuf& str) {
   str.appendChain(folly::IOBuf::copyBuffer(tmp));
 }
 
-void JSONProtocolReaderCommon::skip(TType /*type*/) {
-  bool keyish;
-  ensureAndReadContext(keyish);
-  readWhitespace();
-  auto ch = peekCharSafe();
-  if (ch == detail::json::kJSONObjectStart) {
-    beginContext(ContextType::MAP);
-    while (true) {
-      skipWhitespace();
-      if (peekCharSafe() == detail::json::kJSONObjectEnd) {
-        break;
-      }
-      skip(TType::T_VOID);
-      skip(TType::T_VOID);
-    }
-    endContext();
-  } else if (ch == detail::json::kJSONArrayStart) {
-    beginContext(ContextType::ARRAY);
-    while (true) {
-      skipWhitespace();
-      if (peekCharSafe() == detail::json::kJSONArrayEnd) {
-        break;
-      }
-      skip(TType::T_VOID);
-    }
-    endContext();
-  } else if (ch == detail::json::kJSONStringDelimiter) {
-    std::string tmp;
-    readJSONVal(tmp);
-  } else if (ch == '-' || ch == '+' || (ch >= '0' && ch <= '9')) {
-    double tmp;
-    readJSONVal(tmp);
-  } else if (ch == 't' || ch == 'f') {
-    bool tmp;
-    readJSONVal(tmp);
-  } else if (ch == 'n') {
-    readJSONNull();
-  } else {
-    throwInvalidFieldStart(ch);
-  }
-}
-
 uint32_t JSONProtocolReaderCommon::readFromPositionAndAppend(
     folly::io::Cursor& snapshot,
     std::unique_ptr<folly::IOBuf>& ser) {

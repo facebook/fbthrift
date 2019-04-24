@@ -110,6 +110,8 @@ class JSONProtocolReader : public JSONProtocolReaderCommon {
   inline bool peekSet();
   inline bool peekList();
 
+  inline void skip(TType type);
+
  private:
   [[noreturn]] static void throwUnrecognizableAsBoolean(int8_t byte);
 };
