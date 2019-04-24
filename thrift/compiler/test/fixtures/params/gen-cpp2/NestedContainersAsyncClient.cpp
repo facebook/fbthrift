@@ -37,7 +37,7 @@ void NestedContainersAsyncClient::mapListT(Protocol_* prot, bool useSync, apache
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
   headerAndReqContext->reqContext.setRequestHeader(header.get());
-  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "NestedContainers.mapList", &headerAndReqContext->reqContext);
+  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("NestedContainers.mapList"), &headerAndReqContext->reqContext);
   NestedContainers_mapList_pargs args;
   args.get<0>().value = const_cast<std::map<int32_t, std::vector<int32_t>>*>(&foo);
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
@@ -53,7 +53,7 @@ void NestedContainersAsyncClient::mapSetT(Protocol_* prot, bool useSync, apache:
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
   headerAndReqContext->reqContext.setRequestHeader(header.get());
-  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "NestedContainers.mapSet", &headerAndReqContext->reqContext);
+  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("NestedContainers.mapSet"), &headerAndReqContext->reqContext);
   NestedContainers_mapSet_pargs args;
   args.get<0>().value = const_cast<std::map<int32_t, std::set<int32_t>>*>(&foo);
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
@@ -69,7 +69,7 @@ void NestedContainersAsyncClient::listMapT(Protocol_* prot, bool useSync, apache
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
   headerAndReqContext->reqContext.setRequestHeader(header.get());
-  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "NestedContainers.listMap", &headerAndReqContext->reqContext);
+  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("NestedContainers.listMap"), &headerAndReqContext->reqContext);
   NestedContainers_listMap_pargs args;
   args.get<0>().value = const_cast<std::vector<std::map<int32_t, int32_t>>*>(&foo);
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
@@ -85,7 +85,7 @@ void NestedContainersAsyncClient::listSetT(Protocol_* prot, bool useSync, apache
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
   headerAndReqContext->reqContext.setRequestHeader(header.get());
-  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "NestedContainers.listSet", &headerAndReqContext->reqContext);
+  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("NestedContainers.listSet"), &headerAndReqContext->reqContext);
   NestedContainers_listSet_pargs args;
   args.get<0>().value = const_cast<std::vector<std::set<int32_t>>*>(&foo);
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
@@ -101,7 +101,7 @@ void NestedContainersAsyncClient::turtlesT(Protocol_* prot, bool useSync, apache
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
   headerAndReqContext->reqContext.setRequestHeader(header.get());
-  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "NestedContainers.turtles", &headerAndReqContext->reqContext);
+  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("NestedContainers.turtles"), &headerAndReqContext->reqContext);
   NestedContainers_turtles_pargs args;
   args.get<0>().value = const_cast<std::vector<std::vector<std::map<int32_t, std::map<int32_t, std::set<int32_t>>>>>*>(&foo);
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };

@@ -85,7 +85,7 @@ void service_with_special_namesAsyncProcessor::process_get(std::unique_ptr<apach
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   service_with_special_names_get_pargs args;
-  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "service_with_special_names.get", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("service_with_special_names.get"), ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
@@ -137,7 +137,7 @@ void service_with_special_namesAsyncProcessor::process_getter(std::unique_ptr<ap
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   service_with_special_names_getter_pargs args;
-  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "service_with_special_names.getter", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("service_with_special_names.getter"), ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
@@ -189,7 +189,7 @@ void service_with_special_namesAsyncProcessor::process_lists(std::unique_ptr<apa
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   service_with_special_names_lists_pargs args;
-  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "service_with_special_names.lists", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("service_with_special_names.lists"), ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
@@ -241,7 +241,7 @@ void service_with_special_namesAsyncProcessor::process_maps(std::unique_ptr<apac
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   service_with_special_names_maps_pargs args;
-  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "service_with_special_names.maps", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("service_with_special_names.maps"), ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
@@ -293,7 +293,7 @@ void service_with_special_namesAsyncProcessor::process_name(std::unique_ptr<apac
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   service_with_special_names_name_pargs args;
-  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "service_with_special_names.name", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("service_with_special_names.name"), ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
@@ -345,7 +345,7 @@ void service_with_special_namesAsyncProcessor::process_name_to_value(std::unique
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   service_with_special_names_name_to_value_pargs args;
-  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "service_with_special_names.name_to_value", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("service_with_special_names.name_to_value"), ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
@@ -397,7 +397,7 @@ void service_with_special_namesAsyncProcessor::process_names(std::unique_ptr<apa
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   service_with_special_names_names_pargs args;
-  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "service_with_special_names.names", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("service_with_special_names.names"), ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
@@ -449,7 +449,7 @@ void service_with_special_namesAsyncProcessor::process_prefix_tree(std::unique_p
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   service_with_special_names_prefix_tree_pargs args;
-  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "service_with_special_names.prefix_tree", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("service_with_special_names.prefix_tree"), ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
@@ -501,7 +501,7 @@ void service_with_special_namesAsyncProcessor::process_sets(std::unique_ptr<apac
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   service_with_special_names_sets_pargs args;
-  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "service_with_special_names.sets", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("service_with_special_names.sets"), ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
@@ -553,7 +553,7 @@ void service_with_special_namesAsyncProcessor::process_setter(std::unique_ptr<ap
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   service_with_special_names_setter_pargs args;
-  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "service_with_special_names.setter", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("service_with_special_names.setter"), ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
@@ -605,7 +605,7 @@ void service_with_special_namesAsyncProcessor::process_str(std::unique_ptr<apach
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   service_with_special_names_str_pargs args;
-  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "service_with_special_names.str", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("service_with_special_names.str"), ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
@@ -657,7 +657,7 @@ void service_with_special_namesAsyncProcessor::process_strings(std::unique_ptr<a
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   service_with_special_names_strings_pargs args;
-  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "service_with_special_names.strings", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("service_with_special_names.strings"), ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
@@ -709,7 +709,7 @@ void service_with_special_namesAsyncProcessor::process_type(std::unique_ptr<apac
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   service_with_special_names_type_pargs args;
-  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "service_with_special_names.type", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("service_with_special_names.type"), ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
@@ -761,7 +761,7 @@ void service_with_special_namesAsyncProcessor::process_value(std::unique_ptr<apa
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   service_with_special_names_value_pargs args;
-  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "service_with_special_names.value", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("service_with_special_names.value"), ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
@@ -813,7 +813,7 @@ void service_with_special_namesAsyncProcessor::process_value_to_name(std::unique
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   service_with_special_names_value_to_name_pargs args;
-  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "service_with_special_names.value_to_name", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("service_with_special_names.value_to_name"), ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
@@ -865,7 +865,7 @@ void service_with_special_namesAsyncProcessor::process_values(std::unique_ptr<ap
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   service_with_special_names_values_pargs args;
-  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "service_with_special_names.values", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("service_with_special_names.values"), ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
@@ -917,7 +917,7 @@ void service_with_special_namesAsyncProcessor::process_id(std::unique_ptr<apache
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   service_with_special_names_id_pargs args;
-  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "service_with_special_names.id", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("service_with_special_names.id"), ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
@@ -969,7 +969,7 @@ void service_with_special_namesAsyncProcessor::process_ids(std::unique_ptr<apach
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   service_with_special_names_ids_pargs args;
-  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "service_with_special_names.ids", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("service_with_special_names.ids"), ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
@@ -1021,7 +1021,7 @@ void service_with_special_namesAsyncProcessor::process_descriptor(std::unique_pt
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   service_with_special_names_descriptor_pargs args;
-  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "service_with_special_names.descriptor", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("service_with_special_names.descriptor"), ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
@@ -1073,7 +1073,7 @@ void service_with_special_namesAsyncProcessor::process_descriptors(std::unique_p
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   service_with_special_names_descriptors_pargs args;
-  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "service_with_special_names.descriptors", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("service_with_special_names.descriptors"), ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
@@ -1125,7 +1125,7 @@ void service_with_special_namesAsyncProcessor::process_key(std::unique_ptr<apach
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   service_with_special_names_key_pargs args;
-  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "service_with_special_names.key", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("service_with_special_names.key"), ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
@@ -1177,7 +1177,7 @@ void service_with_special_namesAsyncProcessor::process_keys(std::unique_ptr<apac
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   service_with_special_names_keys_pargs args;
-  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "service_with_special_names.keys", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("service_with_special_names.keys"), ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
@@ -1229,7 +1229,7 @@ void service_with_special_namesAsyncProcessor::process_annotation(std::unique_pt
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   service_with_special_names_annotation_pargs args;
-  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "service_with_special_names.annotation", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("service_with_special_names.annotation"), ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
@@ -1281,7 +1281,7 @@ void service_with_special_namesAsyncProcessor::process_annotations(std::unique_p
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   service_with_special_names_annotations_pargs args;
-  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "service_with_special_names.annotations", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("service_with_special_names.annotations"), ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
@@ -1333,7 +1333,7 @@ void service_with_special_namesAsyncProcessor::process_member(std::unique_ptr<ap
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   service_with_special_names_member_pargs args;
-  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "service_with_special_names.member", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("service_with_special_names.member"), ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
@@ -1385,7 +1385,7 @@ void service_with_special_namesAsyncProcessor::process_members(std::unique_ptr<a
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   service_with_special_names_members_pargs args;
-  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "service_with_special_names.members", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("service_with_special_names.members"), ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
@@ -1437,7 +1437,7 @@ void service_with_special_namesAsyncProcessor::process_field(std::unique_ptr<apa
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   service_with_special_names_field_pargs args;
-  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "service_with_special_names.field", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("service_with_special_names.field"), ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
@@ -1489,7 +1489,7 @@ void service_with_special_namesAsyncProcessor::process_fields(std::unique_ptr<ap
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   service_with_special_names_fields_pargs args;
-  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "service_with_special_names.fields", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("service_with_special_names.fields"), ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }

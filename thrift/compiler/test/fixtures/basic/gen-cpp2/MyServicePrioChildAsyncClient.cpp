@@ -29,7 +29,7 @@ void MyServicePrioChildAsyncClient::pangT(Protocol_* prot, bool useSync, apache:
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
   headerAndReqContext->reqContext.setRequestHeader(header.get());
-  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "MyServicePrioChild.pang", &headerAndReqContext->reqContext);
+  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("MyServicePrioChild.pang"), &headerAndReqContext->reqContext);
   MyServicePrioChild_pang_pargs args;
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };

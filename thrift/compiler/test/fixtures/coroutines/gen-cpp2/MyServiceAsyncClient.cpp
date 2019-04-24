@@ -37,7 +37,7 @@ void MyServiceAsyncClient::pingT(Protocol_* prot, bool useSync, apache::thrift::
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
   headerAndReqContext->reqContext.setRequestHeader(header.get());
-  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "MyService.ping", &headerAndReqContext->reqContext);
+  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("MyService.ping"), &headerAndReqContext->reqContext);
   MyService_ping_pargs args;
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
@@ -52,7 +52,7 @@ void MyServiceAsyncClient::getRandomDataT(Protocol_* prot, bool useSync, apache:
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
   headerAndReqContext->reqContext.setRequestHeader(header.get());
-  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "MyService.getRandomData", &headerAndReqContext->reqContext);
+  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("MyService.getRandomData"), &headerAndReqContext->reqContext);
   MyService_getRandomData_pargs args;
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
@@ -67,7 +67,7 @@ void MyServiceAsyncClient::hasDataByIdT(Protocol_* prot, bool useSync, apache::t
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
   headerAndReqContext->reqContext.setRequestHeader(header.get());
-  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "MyService.hasDataById", &headerAndReqContext->reqContext);
+  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("MyService.hasDataById"), &headerAndReqContext->reqContext);
   MyService_hasDataById_pargs args;
   args.get<0>().value = &id;
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
@@ -83,7 +83,7 @@ void MyServiceAsyncClient::getDataByIdT(Protocol_* prot, bool useSync, apache::t
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
   headerAndReqContext->reqContext.setRequestHeader(header.get());
-  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "MyService.getDataById", &headerAndReqContext->reqContext);
+  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("MyService.getDataById"), &headerAndReqContext->reqContext);
   MyService_getDataById_pargs args;
   args.get<0>().value = &id;
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
@@ -99,7 +99,7 @@ void MyServiceAsyncClient::putDataByIdT(Protocol_* prot, bool useSync, apache::t
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
   headerAndReqContext->reqContext.setRequestHeader(header.get());
-  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "MyService.putDataById", &headerAndReqContext->reqContext);
+  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("MyService.putDataById"), &headerAndReqContext->reqContext);
   MyService_putDataById_pargs args;
   args.get<0>().value = &id;
   args.get<1>().value = const_cast<std::string*>(&data);

@@ -67,7 +67,7 @@ void PubSubStreamingServiceAsyncClient::returnstreamT(Protocol_* prot, bool useS
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
   headerAndReqContext->reqContext.setRequestHeader(header.get());
-  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "PubSubStreamingService.returnstream", &headerAndReqContext->reqContext);
+  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("PubSubStreamingService.returnstream"), &headerAndReqContext->reqContext);
   PubSubStreamingService_returnstream_pargs args;
   args.get<0>().value = &i32_from;
   args.get<1>().value = &i32_to;
@@ -84,7 +84,7 @@ void PubSubStreamingServiceAsyncClient::takesstreamT(Protocol_* prot, bool useSy
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
   headerAndReqContext->reqContext.setRequestHeader(header.get());
-  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "PubSubStreamingService.takesstream", &headerAndReqContext->reqContext);
+  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("PubSubStreamingService.takesstream"), &headerAndReqContext->reqContext);
   PubSubStreamingService_takesstream_pargs::FieldsType args;
   args.get<0>().value = &other_param;
   #error Service functions don't allow stream input yet
@@ -101,7 +101,7 @@ void PubSubStreamingServiceAsyncClient::differentT(Protocol_* prot, bool useSync
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
   headerAndReqContext->reqContext.setRequestHeader(header.get());
-  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "PubSubStreamingService.different", &headerAndReqContext->reqContext);
+  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("PubSubStreamingService.different"), &headerAndReqContext->reqContext);
   PubSubStreamingService_different_pargs::FieldsType args;
   args.get<0>().value = &firstparam;
   #error Service functions don't allow stream input yet
@@ -118,7 +118,7 @@ void PubSubStreamingServiceAsyncClient::normalthrowsT(Protocol_* prot, bool useS
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
   headerAndReqContext->reqContext.setRequestHeader(header.get());
-  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "PubSubStreamingService.normalthrows", &headerAndReqContext->reqContext);
+  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("PubSubStreamingService.normalthrows"), &headerAndReqContext->reqContext);
   PubSubStreamingService_normalthrows_pargs::FieldsType args;
   #error Service functions don't allow stream input yet
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
@@ -134,7 +134,7 @@ void PubSubStreamingServiceAsyncClient::streamthrowsT(Protocol_* prot, bool useS
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
   headerAndReqContext->reqContext.setRequestHeader(header.get());
-  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "PubSubStreamingService.streamthrows", &headerAndReqContext->reqContext);
+  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("PubSubStreamingService.streamthrows"), &headerAndReqContext->reqContext);
   PubSubStreamingService_streamthrows_pargs args;
   args.get<0>().value = &foo;
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
@@ -150,7 +150,7 @@ void PubSubStreamingServiceAsyncClient::boththrowsT(Protocol_* prot, bool useSyn
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
   headerAndReqContext->reqContext.setRequestHeader(header.get());
-  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "PubSubStreamingService.boththrows", &headerAndReqContext->reqContext);
+  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("PubSubStreamingService.boththrows"), &headerAndReqContext->reqContext);
   PubSubStreamingService_boththrows_pargs args;
   args.get<0>().value = &foo;
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
@@ -166,7 +166,7 @@ void PubSubStreamingServiceAsyncClient::responseandstreamthrowsT(Protocol_* prot
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
   headerAndReqContext->reqContext.setRequestHeader(header.get());
-  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "PubSubStreamingService.responseandstreamthrows", &headerAndReqContext->reqContext);
+  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("PubSubStreamingService.responseandstreamthrows"), &headerAndReqContext->reqContext);
   PubSubStreamingService_responseandstreamthrows_pargs args;
   args.get<0>().value = &foo;
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };

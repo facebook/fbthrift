@@ -35,7 +35,7 @@ void RaiserAsyncClient::doBlandT(Protocol_* prot, bool useSync, apache::thrift::
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
   headerAndReqContext->reqContext.setRequestHeader(header.get());
-  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "Raiser.doBland", &headerAndReqContext->reqContext);
+  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("Raiser.doBland"), &headerAndReqContext->reqContext);
   Raiser_doBland_pargs args;
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
@@ -50,7 +50,7 @@ void RaiserAsyncClient::doRaiseT(Protocol_* prot, bool useSync, apache::thrift::
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
   headerAndReqContext->reqContext.setRequestHeader(header.get());
-  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "Raiser.doRaise", &headerAndReqContext->reqContext);
+  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("Raiser.doRaise"), &headerAndReqContext->reqContext);
   Raiser_doRaise_pargs args;
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
@@ -65,7 +65,7 @@ void RaiserAsyncClient::get200T(Protocol_* prot, bool useSync, apache::thrift::R
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
   headerAndReqContext->reqContext.setRequestHeader(header.get());
-  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "Raiser.get200", &headerAndReqContext->reqContext);
+  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("Raiser.get200"), &headerAndReqContext->reqContext);
   Raiser_get200_pargs args;
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
@@ -80,7 +80,7 @@ void RaiserAsyncClient::get500T(Protocol_* prot, bool useSync, apache::thrift::R
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
   headerAndReqContext->reqContext.setRequestHeader(header.get());
-  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "Raiser.get500", &headerAndReqContext->reqContext);
+  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("Raiser.get500"), &headerAndReqContext->reqContext);
   Raiser_get500_pargs args;
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };

@@ -31,7 +31,7 @@ void SomeServiceAsyncClient::bounce_mapT(Protocol_* prot, bool useSync, apache::
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
   headerAndReqContext->reqContext.setRequestHeader(header.get());
-  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "SomeService.bounce_map", &headerAndReqContext->reqContext);
+  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("SomeService.bounce_map"), &headerAndReqContext->reqContext);
   SomeService_bounce_map_pargs args;
   args.get<0>().value = const_cast< ::apache::thrift::fixtures::types::SomeMap*>(&m);
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
@@ -47,7 +47,7 @@ void SomeServiceAsyncClient::binary_keyed_mapT(Protocol_* prot, bool useSync, ap
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
   headerAndReqContext->reqContext.setRequestHeader(header.get());
-  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "SomeService.binary_keyed_map", &headerAndReqContext->reqContext);
+  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("SomeService.binary_keyed_map"), &headerAndReqContext->reqContext);
   SomeService_binary_keyed_map_pargs args;
   args.get<0>().value = const_cast<std::vector<int64_t>*>(&r);
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };

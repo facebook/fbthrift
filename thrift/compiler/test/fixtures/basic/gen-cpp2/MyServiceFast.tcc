@@ -35,7 +35,7 @@ void MyServiceFastAsyncProcessor::process_ping(std::unique_ptr<apache::thrift::R
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   MyServiceFast_ping_pargs args;
-  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "MyServiceFast.ping", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("MyServiceFast.ping"), ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
@@ -76,7 +76,7 @@ void MyServiceFastAsyncProcessor::process_getRandomData(std::unique_ptr<apache::
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   MyServiceFast_getRandomData_pargs args;
-  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "MyServiceFast.getRandomData", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("MyServiceFast.getRandomData"), ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
@@ -121,7 +121,7 @@ void MyServiceFastAsyncProcessor::process_hasDataById(std::unique_ptr<apache::th
   MyServiceFast_hasDataById_pargs args;
   int64_t uarg_id{0};
   args.get<0>().value = &uarg_id;
-  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "MyServiceFast.hasDataById", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("MyServiceFast.hasDataById"), ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
@@ -166,7 +166,7 @@ void MyServiceFastAsyncProcessor::process_getDataById(std::unique_ptr<apache::th
   MyServiceFast_getDataById_pargs args;
   int64_t uarg_id{0};
   args.get<0>().value = &uarg_id;
-  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "MyServiceFast.getDataById", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("MyServiceFast.getDataById"), ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
@@ -213,7 +213,7 @@ void MyServiceFastAsyncProcessor::process_putDataById(std::unique_ptr<apache::th
   args.get<0>().value = &uarg_id;
   auto uarg_data = std::make_unique<std::string>();
   args.get<1>().value = uarg_data.get();
-  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "MyServiceFast.putDataById", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("MyServiceFast.putDataById"), ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
@@ -265,7 +265,7 @@ void MyServiceFastAsyncProcessor::process_lobDataById(std::unique_ptr<apache::th
   args.get<0>().value = &uarg_id;
   auto uarg_data = std::make_unique<std::string>();
   args.get<1>().value = uarg_data.get();
-  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "MyServiceFast.lobDataById", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("MyServiceFast.lobDataById"), ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }

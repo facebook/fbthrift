@@ -33,7 +33,7 @@ void MyServiceFastAsyncProcessor::process_hasDataById(std::unique_ptr<apache::th
   MyServiceFast_hasDataById_pargs args;
   int64_t uarg_id{0};
   args.get<0>().value = &uarg_id;
-  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "MyServiceFast.hasDataById", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("MyServiceFast.hasDataById"), ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
@@ -78,7 +78,7 @@ void MyServiceFastAsyncProcessor::process_getDataById(std::unique_ptr<apache::th
   MyServiceFast_getDataById_pargs args;
   int64_t uarg_id{0};
   args.get<0>().value = &uarg_id;
-  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "MyServiceFast.getDataById", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("MyServiceFast.getDataById"), ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
@@ -125,7 +125,7 @@ void MyServiceFastAsyncProcessor::process_putDataById(std::unique_ptr<apache::th
   args.get<0>().value = &uarg_id;
   std::string uarg_data;
   args.get<1>().value = &uarg_data;
-  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "MyServiceFast.putDataById", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("MyServiceFast.putDataById"), ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
@@ -177,7 +177,7 @@ void MyServiceFastAsyncProcessor::process_lobDataById(std::unique_ptr<apache::th
   args.get<0>().value = &uarg_id;
   std::string uarg_data;
   args.get<1>().value = &uarg_data;
-  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "MyServiceFast.lobDataById", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("MyServiceFast.lobDataById"), ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }

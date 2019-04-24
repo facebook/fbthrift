@@ -27,39 +27,43 @@ namespace thrift {
 
 class ContextStack {
   friend class EventHandlerBase;
-
  public:
-  explicit ContextStack(const char* method)
-      : ctxs_(), handlers_(), method_(method) {}
+  class NameWrapper;
+
+  explicit ContextStack(NameWrapper&& method) : method_(std::move(method)) {}
 
   ContextStack(
       const std::shared_ptr<
           std::vector<std::shared_ptr<TProcessorEventHandler>>>& handlers,
-      const char* serviceName,
-      const char* method,
+      NameWrapper&& serviceName,
+      NameWrapper&& method,
       TConnectionContext* connectionContext)
-      : ctxs_(),
-        handlers_(handlers),
-        serviceName_(serviceName),
-        method_(method) {
+      : handlers_(handlers),
+        serviceName_(std::move(serviceName)),
+        method_(std::move(method)) {
     ctxs_.reserve(handlers->size());
     for (const auto& handler : *handlers) {
-      ctxs_.push_back(
-          handler->getServiceContext(serviceName, method, connectionContext));
+      ctxs_.push_back(handler->getServiceContext(
+          serviceName_.name(), method_.name(), connectionContext));
     }
   }
 
   ContextStack(
       const std::shared_ptr<
           std::vector<std::shared_ptr<TProcessorEventHandler>>>& handlers,
-      const char* method,
+      NameWrapper&& method,
       TConnectionContext* connectionContext)
-      : ctxs_(), handlers_(handlers), method_(method) {
+      : handlers_(handlers), method_(std::move(method)) {
     ctxs_.reserve(handlers->size());
     for (const auto& handler : *handlers) {
-      ctxs_.push_back(handler->getContext(method, connectionContext));
+      ctxs_.push_back(handler->getContext(method_.name(), connectionContext));
     }
   }
+
+  ContextStack(ContextStack&&) = delete;
+  ContextStack& operator=(ContextStack&&) = delete;
+  ContextStack(const ContextStack&) = delete;
+  ContextStack& operator=(const ContextStack&) = delete;
 
   ~ContextStack() {
     if (handlers_) {
@@ -68,6 +72,53 @@ class ContextStack {
       }
     }
   }
+
+  // NameWrapper allows us to hold either a static cstr without
+  // copying (e.g. a compiler const) or a cstr copied to std::string.
+  // This way, we can avoid copying in the common case in generated code.
+  class NameWrapper {
+    enum StaticOp { STATIC };
+
+   public:
+    NameWrapper() : cstr_("") {}
+    /* implicit */
+    NameWrapper(const char* n) : storage_(n), cstr_(storage_.c_str()) {}
+    static NameWrapper makeFromStatic(const char* n) {
+      return NameWrapper(STATIC, n);
+    }
+    const char* name() {
+      return cstr_;
+    }
+    NameWrapper(const NameWrapper&) = delete;
+    NameWrapper& operator=(const NameWrapper&) = delete;
+    NameWrapper(NameWrapper&& other) noexcept {
+      if (other.storage_.empty()) {
+        cstr_ = other.cstr_;
+      } else {
+        storage_ = other.storage_;
+        cstr_ = storage_.c_str();
+      }
+    }
+    NameWrapper& operator=(NameWrapper&& other) noexcept {
+      if (&other != this) {
+        if (other.storage_.empty()) {
+          storage_.clear();
+          cstr_ = other.cstr_;
+        } else {
+          storage_ = other.storage_;
+          cstr_ = storage_.c_str();
+        }
+      }
+      return *this;
+    }
+
+   private:
+    NameWrapper(StaticOp, const char* n) {
+      cstr_ = n;
+    }
+    std::string storage_;
+    const char* cstr_;
+  };
 
   void preWrite();
 
@@ -92,19 +143,19 @@ class ContextStack {
   void asyncComplete();
 
   const char* getServiceName() {
-    return serviceName_.c_str();
+    return serviceName_.name();
   }
 
   const char* getMethod() {
-    return method_.c_str();
+    return method_.name();
   }
 
  private:
   std::vector<void*> ctxs_;
   std::shared_ptr<std::vector<std::shared_ptr<TProcessorEventHandler>>>
       handlers_;
-  std::string serviceName_;
-  std::string method_;
+  NameWrapper serviceName_;
+  NameWrapper method_;
 };
 
 } // namespace thrift

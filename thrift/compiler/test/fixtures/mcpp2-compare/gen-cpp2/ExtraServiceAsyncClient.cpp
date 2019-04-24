@@ -40,7 +40,7 @@ void ExtraServiceAsyncClient::simple_functionT(Protocol_* prot, bool useSync, ap
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
   headerAndReqContext->reqContext.setRequestHeader(header.get());
-  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "ExtraService.simple_function", &headerAndReqContext->reqContext);
+  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("ExtraService.simple_function"), &headerAndReqContext->reqContext);
   ExtraService_simple_function_pargs args;
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
@@ -55,7 +55,7 @@ void ExtraServiceAsyncClient::throws_functionT(Protocol_* prot, bool useSync, ap
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
   headerAndReqContext->reqContext.setRequestHeader(header.get());
-  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "ExtraService.throws_function", &headerAndReqContext->reqContext);
+  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("ExtraService.throws_function"), &headerAndReqContext->reqContext);
   ExtraService_throws_function_pargs args;
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
@@ -70,7 +70,7 @@ void ExtraServiceAsyncClient::throws_function2T(Protocol_* prot, bool useSync, a
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
   headerAndReqContext->reqContext.setRequestHeader(header.get());
-  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "ExtraService.throws_function2", &headerAndReqContext->reqContext);
+  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("ExtraService.throws_function2"), &headerAndReqContext->reqContext);
   ExtraService_throws_function2_pargs args;
   args.get<0>().value = &param1;
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
@@ -86,7 +86,7 @@ void ExtraServiceAsyncClient::throws_function3T(Protocol_* prot, bool useSync, a
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
   headerAndReqContext->reqContext.setRequestHeader(header.get());
-  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "ExtraService.throws_function3", &headerAndReqContext->reqContext);
+  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("ExtraService.throws_function3"), &headerAndReqContext->reqContext);
   ExtraService_throws_function3_pargs args;
   args.get<0>().value = &param1;
   args.get<1>().value = const_cast<std::string*>(&param2);
@@ -103,7 +103,7 @@ void ExtraServiceAsyncClient::oneway_void_retT(Protocol_* prot, bool useSync, ap
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
   headerAndReqContext->reqContext.setRequestHeader(header.get());
-  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "ExtraService.oneway_void_ret", &headerAndReqContext->reqContext);
+  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("ExtraService.oneway_void_ret"), &headerAndReqContext->reqContext);
   ExtraService_oneway_void_ret_pargs args;
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
@@ -118,7 +118,7 @@ void ExtraServiceAsyncClient::oneway_void_ret_i32_i32_i32_i32_i32_paramT(Protoco
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
   headerAndReqContext->reqContext.setRequestHeader(header.get());
-  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "ExtraService.oneway_void_ret_i32_i32_i32_i32_i32_param", &headerAndReqContext->reqContext);
+  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("ExtraService.oneway_void_ret_i32_i32_i32_i32_i32_param"), &headerAndReqContext->reqContext);
   ExtraService_oneway_void_ret_i32_i32_i32_i32_i32_param_pargs args;
   args.get<0>().value = &param1;
   args.get<1>().value = &param2;
@@ -138,7 +138,7 @@ void ExtraServiceAsyncClient::oneway_void_ret_map_setlist_paramT(Protocol_* prot
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
   headerAndReqContext->reqContext.setRequestHeader(header.get());
-  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "ExtraService.oneway_void_ret_map_setlist_param", &headerAndReqContext->reqContext);
+  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("ExtraService.oneway_void_ret_map_setlist_param"), &headerAndReqContext->reqContext);
   ExtraService_oneway_void_ret_map_setlist_param_pargs args;
   args.get<0>().value = const_cast<std::map<std::string, int64_t>*>(&param1);
   args.get<1>().value = const_cast<std::set<std::vector<std::string>>*>(&param2);
@@ -155,7 +155,7 @@ void ExtraServiceAsyncClient::oneway_void_ret_struct_paramT(Protocol_* prot, boo
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
   headerAndReqContext->reqContext.setRequestHeader(header.get());
-  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "ExtraService.oneway_void_ret_struct_param", &headerAndReqContext->reqContext);
+  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("ExtraService.oneway_void_ret_struct_param"), &headerAndReqContext->reqContext);
   ExtraService_oneway_void_ret_struct_param_pargs args;
   args.get<0>().value = const_cast< ::some::valid::ns::MyStruct*>(&param1);
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
@@ -171,7 +171,7 @@ void ExtraServiceAsyncClient::oneway_void_ret_listunion_paramT(Protocol_* prot, 
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
   headerAndReqContext->reqContext.setRequestHeader(header.get());
-  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "ExtraService.oneway_void_ret_listunion_param", &headerAndReqContext->reqContext);
+  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("ExtraService.oneway_void_ret_listunion_param"), &headerAndReqContext->reqContext);
   ExtraService_oneway_void_ret_listunion_param_pargs args;
   args.get<0>().value = const_cast<std::vector< ::some::valid::ns::ComplexUnion>*>(&param1);
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };

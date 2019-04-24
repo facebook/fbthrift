@@ -71,7 +71,7 @@ void PubSubStreamingServiceAsyncProcessor::process_returnstream(std::unique_ptr<
   args.get<0>().value = &uarg_i32_from;
   int32_t uarg_i32_to{0};
   args.get<1>().value = &uarg_i32_to;
-  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "PubSubStreamingService.returnstream", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("PubSubStreamingService.returnstream"), ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
@@ -131,7 +131,7 @@ void PubSubStreamingServiceAsyncProcessor::process_takesstream(std::unique_ptr<a
   PubSubStreamingService_takesstream_pargs::FieldsType args;
   int32_t uarg_other_param{0};
   args.get<0>().value = &uarg_other_param;
-  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "PubSubStreamingService.takesstream", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("PubSubStreamingService.takesstream"), ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
@@ -186,7 +186,7 @@ void PubSubStreamingServiceAsyncProcessor::process_different(std::unique_ptr<apa
   PubSubStreamingService_different_pargs::FieldsType args;
   int64_t uarg_firstparam{0};
   args.get<0>().value = &uarg_firstparam;
-  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "PubSubStreamingService.different", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("PubSubStreamingService.different"), ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
@@ -247,7 +247,7 @@ void PubSubStreamingServiceAsyncProcessor::process_normalthrows(std::unique_ptr<
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   PubSubStreamingService_normalthrows_pargs::FieldsType args;
-  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "PubSubStreamingService.normalthrows", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("PubSubStreamingService.normalthrows"), ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
@@ -313,7 +313,7 @@ void PubSubStreamingServiceAsyncProcessor::process_streamthrows(std::unique_ptr<
   PubSubStreamingService_streamthrows_pargs args;
   int32_t uarg_foo{0};
   args.get<0>().value = &uarg_foo;
-  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "PubSubStreamingService.streamthrows", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("PubSubStreamingService.streamthrows"), ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
@@ -379,7 +379,7 @@ void PubSubStreamingServiceAsyncProcessor::process_boththrows(std::unique_ptr<ap
   PubSubStreamingService_boththrows_pargs args;
   int32_t uarg_foo{0};
   args.get<0>().value = &uarg_foo;
-  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "PubSubStreamingService.boththrows", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("PubSubStreamingService.boththrows"), ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
@@ -456,7 +456,7 @@ void PubSubStreamingServiceAsyncProcessor::process_responseandstreamthrows(std::
   PubSubStreamingService_responseandstreamthrows_pargs args;
   int32_t uarg_foo{0};
   args.get<0>().value = &uarg_foo;
-  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "PubSubStreamingService.responseandstreamthrows", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("PubSubStreamingService.responseandstreamthrows"), ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }

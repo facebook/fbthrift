@@ -31,7 +31,7 @@ void MyRootAsyncProcessor::process_do_root(std::unique_ptr<apache::thrift::Respo
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   MyRoot_do_root_pargs args;
-  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "MyRoot.do_root", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("MyRoot.do_root"), ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }

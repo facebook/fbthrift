@@ -33,7 +33,7 @@ void MyServicePrioParentAsyncProcessor::process_ping(std::unique_ptr<apache::thr
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   MyServicePrioParent_ping_pargs args;
-  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "MyServicePrioParent.ping", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("MyServicePrioParent.ping"), ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
@@ -83,7 +83,7 @@ void MyServicePrioParentAsyncProcessor::process_pong(std::unique_ptr<apache::thr
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   MyServicePrioParent_pong_pargs args;
-  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "MyServicePrioParent.pong", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("MyServicePrioParent.pong"), ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }

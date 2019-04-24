@@ -35,7 +35,7 @@ void SomeServiceAsyncProcessor::process_bounce_map(std::unique_ptr<apache::thrif
   SomeService_bounce_map_pargs args;
   auto uarg_m = std::make_unique< ::apache::thrift::fixtures::types::SomeMap>();
   args.get<0>().value = uarg_m.get();
-  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "SomeService.bounce_map", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("SomeService.bounce_map"), ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
@@ -89,7 +89,7 @@ void SomeServiceAsyncProcessor::process_binary_keyed_map(std::unique_ptr<apache:
   SomeService_binary_keyed_map_pargs args;
   auto uarg_r = std::make_unique<std::vector<int64_t>>();
   args.get<0>().value = uarg_r.get();
-  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "SomeService.binary_keyed_map", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("SomeService.binary_keyed_map"), ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }

@@ -85,7 +85,7 @@ void ParamServiceAsyncClient::void_ret_i16_paramT(Protocol_* prot, bool useSync,
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
   headerAndReqContext->reqContext.setRequestHeader(header.get());
-  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "ParamService.void_ret_i16_param", &headerAndReqContext->reqContext);
+  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("ParamService.void_ret_i16_param"), &headerAndReqContext->reqContext);
   ParamService_void_ret_i16_param_pargs args;
   args.get<0>().value = &param1;
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
@@ -101,7 +101,7 @@ void ParamServiceAsyncClient::void_ret_byte_i16_paramT(Protocol_* prot, bool use
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
   headerAndReqContext->reqContext.setRequestHeader(header.get());
-  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "ParamService.void_ret_byte_i16_param", &headerAndReqContext->reqContext);
+  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("ParamService.void_ret_byte_i16_param"), &headerAndReqContext->reqContext);
   ParamService_void_ret_byte_i16_param_pargs args;
   args.get<0>().value = &param1;
   args.get<1>().value = &param2;
@@ -118,7 +118,7 @@ void ParamServiceAsyncClient::void_ret_map_paramT(Protocol_* prot, bool useSync,
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
   headerAndReqContext->reqContext.setRequestHeader(header.get());
-  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "ParamService.void_ret_map_param", &headerAndReqContext->reqContext);
+  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("ParamService.void_ret_map_param"), &headerAndReqContext->reqContext);
   ParamService_void_ret_map_param_pargs args;
   args.get<0>().value = const_cast<std::map<std::string, int64_t>*>(&param1);
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
@@ -134,7 +134,7 @@ void ParamServiceAsyncClient::void_ret_map_setlist_paramT(Protocol_* prot, bool 
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
   headerAndReqContext->reqContext.setRequestHeader(header.get());
-  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "ParamService.void_ret_map_setlist_param", &headerAndReqContext->reqContext);
+  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("ParamService.void_ret_map_setlist_param"), &headerAndReqContext->reqContext);
   ParamService_void_ret_map_setlist_param_pargs args;
   args.get<0>().value = const_cast<std::map<std::string, int64_t>*>(&param1);
   args.get<1>().value = const_cast<std::set<std::vector<std::string>>*>(&param2);
@@ -151,7 +151,7 @@ void ParamServiceAsyncClient::void_ret_map_typedef_paramT(Protocol_* prot, bool 
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
   headerAndReqContext->reqContext.setRequestHeader(header.get());
-  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "ParamService.void_ret_map_typedef_param", &headerAndReqContext->reqContext);
+  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("ParamService.void_ret_map_typedef_param"), &headerAndReqContext->reqContext);
   ParamService_void_ret_map_typedef_param_pargs args;
   args.get<0>().value = &param1;
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
@@ -167,7 +167,7 @@ void ParamServiceAsyncClient::void_ret_enum_paramT(Protocol_* prot, bool useSync
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
   headerAndReqContext->reqContext.setRequestHeader(header.get());
-  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "ParamService.void_ret_enum_param", &headerAndReqContext->reqContext);
+  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("ParamService.void_ret_enum_param"), &headerAndReqContext->reqContext);
   ParamService_void_ret_enum_param_pargs args;
   args.get<0>().value = &param1;
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
@@ -183,7 +183,7 @@ void ParamServiceAsyncClient::void_ret_struct_paramT(Protocol_* prot, bool useSy
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
   headerAndReqContext->reqContext.setRequestHeader(header.get());
-  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "ParamService.void_ret_struct_param", &headerAndReqContext->reqContext);
+  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("ParamService.void_ret_struct_param"), &headerAndReqContext->reqContext);
   ParamService_void_ret_struct_param_pargs args;
   args.get<0>().value = const_cast< ::some::valid::ns::MyStruct*>(&param1);
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
@@ -199,7 +199,7 @@ void ParamServiceAsyncClient::void_ret_listunion_paramT(Protocol_* prot, bool us
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
   headerAndReqContext->reqContext.setRequestHeader(header.get());
-  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "ParamService.void_ret_listunion_param", &headerAndReqContext->reqContext);
+  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("ParamService.void_ret_listunion_param"), &headerAndReqContext->reqContext);
   ParamService_void_ret_listunion_param_pargs args;
   args.get<0>().value = const_cast<std::vector< ::some::valid::ns::ComplexUnion>*>(&param1);
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
@@ -215,7 +215,7 @@ void ParamServiceAsyncClient::bool_ret_i32_i64_paramT(Protocol_* prot, bool useS
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
   headerAndReqContext->reqContext.setRequestHeader(header.get());
-  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "ParamService.bool_ret_i32_i64_param", &headerAndReqContext->reqContext);
+  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("ParamService.bool_ret_i32_i64_param"), &headerAndReqContext->reqContext);
   ParamService_bool_ret_i32_i64_param_pargs args;
   args.get<0>().value = &param1;
   args.get<1>().value = &param2;
@@ -232,7 +232,7 @@ void ParamServiceAsyncClient::bool_ret_map_paramT(Protocol_* prot, bool useSync,
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
   headerAndReqContext->reqContext.setRequestHeader(header.get());
-  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "ParamService.bool_ret_map_param", &headerAndReqContext->reqContext);
+  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("ParamService.bool_ret_map_param"), &headerAndReqContext->reqContext);
   ParamService_bool_ret_map_param_pargs args;
   args.get<0>().value = const_cast<std::map<std::string, int64_t>*>(&param1);
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
@@ -248,7 +248,7 @@ void ParamServiceAsyncClient::bool_ret_union_paramT(Protocol_* prot, bool useSyn
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
   headerAndReqContext->reqContext.setRequestHeader(header.get());
-  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "ParamService.bool_ret_union_param", &headerAndReqContext->reqContext);
+  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("ParamService.bool_ret_union_param"), &headerAndReqContext->reqContext);
   ParamService_bool_ret_union_param_pargs args;
   args.get<0>().value = const_cast< ::some::valid::ns::ComplexUnion*>(&param1);
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
@@ -264,7 +264,7 @@ void ParamServiceAsyncClient::i64_ret_float_double_paramT(Protocol_* prot, bool 
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
   headerAndReqContext->reqContext.setRequestHeader(header.get());
-  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "ParamService.i64_ret_float_double_param", &headerAndReqContext->reqContext);
+  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("ParamService.i64_ret_float_double_param"), &headerAndReqContext->reqContext);
   ParamService_i64_ret_float_double_param_pargs args;
   args.get<0>().value = &param1;
   args.get<1>().value = &param2;
@@ -281,7 +281,7 @@ void ParamServiceAsyncClient::i64_ret_string_typedef_paramT(Protocol_* prot, boo
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
   headerAndReqContext->reqContext.setRequestHeader(header.get());
-  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "ParamService.i64_ret_string_typedef_param", &headerAndReqContext->reqContext);
+  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("ParamService.i64_ret_string_typedef_param"), &headerAndReqContext->reqContext);
   ParamService_i64_ret_string_typedef_param_pargs args;
   args.get<0>().value = const_cast<std::string*>(&param1);
   args.get<1>().value = const_cast<std::set< ::some::valid::ns::mostComplexTypeDef>*>(&param2);
@@ -298,7 +298,7 @@ void ParamServiceAsyncClient::i64_ret_i32_i32_i32_i32_i32_paramT(Protocol_* prot
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
   headerAndReqContext->reqContext.setRequestHeader(header.get());
-  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "ParamService.i64_ret_i32_i32_i32_i32_i32_param", &headerAndReqContext->reqContext);
+  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("ParamService.i64_ret_i32_i32_i32_i32_i32_param"), &headerAndReqContext->reqContext);
   ParamService_i64_ret_i32_i32_i32_i32_i32_param_pargs args;
   args.get<0>().value = &param1;
   args.get<1>().value = &param2;
@@ -318,7 +318,7 @@ void ParamServiceAsyncClient::double_ret_setstruct_paramT(Protocol_* prot, bool 
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
   headerAndReqContext->reqContext.setRequestHeader(header.get());
-  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "ParamService.double_ret_setstruct_param", &headerAndReqContext->reqContext);
+  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("ParamService.double_ret_setstruct_param"), &headerAndReqContext->reqContext);
   ParamService_double_ret_setstruct_param_pargs args;
   args.get<0>().value = const_cast<std::set< ::some::valid::ns::MyStruct>*>(&param1);
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
@@ -334,7 +334,7 @@ void ParamServiceAsyncClient::string_ret_string_paramT(Protocol_* prot, bool use
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
   headerAndReqContext->reqContext.setRequestHeader(header.get());
-  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "ParamService.string_ret_string_param", &headerAndReqContext->reqContext);
+  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("ParamService.string_ret_string_param"), &headerAndReqContext->reqContext);
   ParamService_string_ret_string_param_pargs args;
   args.get<0>().value = const_cast<std::string*>(&param1);
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
@@ -350,7 +350,7 @@ void ParamServiceAsyncClient::binary_ret_binary_paramT(Protocol_* prot, bool use
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
   headerAndReqContext->reqContext.setRequestHeader(header.get());
-  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "ParamService.binary_ret_binary_param", &headerAndReqContext->reqContext);
+  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("ParamService.binary_ret_binary_param"), &headerAndReqContext->reqContext);
   ParamService_binary_ret_binary_param_pargs args;
   args.get<0>().value = const_cast<std::string*>(&param1);
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
@@ -366,7 +366,7 @@ void ParamServiceAsyncClient::map_ret_bool_paramT(Protocol_* prot, bool useSync,
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
   headerAndReqContext->reqContext.setRequestHeader(header.get());
-  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "ParamService.map_ret_bool_param", &headerAndReqContext->reqContext);
+  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("ParamService.map_ret_bool_param"), &headerAndReqContext->reqContext);
   ParamService_map_ret_bool_param_pargs args;
   args.get<0>().value = &param1;
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
@@ -382,7 +382,7 @@ void ParamServiceAsyncClient::list_ret_map_setlist_paramT(Protocol_* prot, bool 
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
   headerAndReqContext->reqContext.setRequestHeader(header.get());
-  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "ParamService.list_ret_map_setlist_param", &headerAndReqContext->reqContext);
+  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("ParamService.list_ret_map_setlist_param"), &headerAndReqContext->reqContext);
   ParamService_list_ret_map_setlist_param_pargs args;
   args.get<0>().value = const_cast<std::map<int32_t, std::vector<std::string>>*>(&param1);
   args.get<1>().value = const_cast<std::vector<std::string>*>(&param2);
@@ -399,7 +399,7 @@ void ParamServiceAsyncClient::mapsetlistmapliststring_ret_listlistlist_paramT(Pr
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
   headerAndReqContext->reqContext.setRequestHeader(header.get());
-  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "ParamService.mapsetlistmapliststring_ret_listlistlist_param", &headerAndReqContext->reqContext);
+  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("ParamService.mapsetlistmapliststring_ret_listlistlist_param"), &headerAndReqContext->reqContext);
   ParamService_mapsetlistmapliststring_ret_listlistlist_param_pargs args;
   args.get<0>().value = const_cast<std::vector<std::vector<std::vector<std::vector<int32_t>>>>*>(&param1);
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
@@ -415,7 +415,7 @@ void ParamServiceAsyncClient::typedef_ret_i32_paramT(Protocol_* prot, bool useSy
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
   headerAndReqContext->reqContext.setRequestHeader(header.get());
-  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "ParamService.typedef_ret_i32_param", &headerAndReqContext->reqContext);
+  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("ParamService.typedef_ret_i32_param"), &headerAndReqContext->reqContext);
   ParamService_typedef_ret_i32_param_pargs args;
   args.get<0>().value = &param1;
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
@@ -431,7 +431,7 @@ void ParamServiceAsyncClient::listtypedef_ret_typedef_paramT(Protocol_* prot, bo
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
   headerAndReqContext->reqContext.setRequestHeader(header.get());
-  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "ParamService.listtypedef_ret_typedef_param", &headerAndReqContext->reqContext);
+  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("ParamService.listtypedef_ret_typedef_param"), &headerAndReqContext->reqContext);
   ParamService_listtypedef_ret_typedef_param_pargs args;
   args.get<0>().value = const_cast< ::some::valid::ns::complexStructTypeDef*>(&param1);
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
@@ -447,7 +447,7 @@ void ParamServiceAsyncClient::enum_ret_double_paramT(Protocol_* prot, bool useSy
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
   headerAndReqContext->reqContext.setRequestHeader(header.get());
-  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "ParamService.enum_ret_double_param", &headerAndReqContext->reqContext);
+  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("ParamService.enum_ret_double_param"), &headerAndReqContext->reqContext);
   ParamService_enum_ret_double_param_pargs args;
   args.get<0>().value = &param1;
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
@@ -463,7 +463,7 @@ void ParamServiceAsyncClient::enum_ret_double_enum_paramT(Protocol_* prot, bool 
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
   headerAndReqContext->reqContext.setRequestHeader(header.get());
-  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "ParamService.enum_ret_double_enum_param", &headerAndReqContext->reqContext);
+  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("ParamService.enum_ret_double_enum_param"), &headerAndReqContext->reqContext);
   ParamService_enum_ret_double_enum_param_pargs args;
   args.get<0>().value = &param1;
   args.get<1>().value = &param2;
@@ -480,7 +480,7 @@ void ParamServiceAsyncClient::listenum_ret_map_paramT(Protocol_* prot, bool useS
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
   headerAndReqContext->reqContext.setRequestHeader(header.get());
-  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "ParamService.listenum_ret_map_param", &headerAndReqContext->reqContext);
+  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("ParamService.listenum_ret_map_param"), &headerAndReqContext->reqContext);
   ParamService_listenum_ret_map_param_pargs args;
   args.get<0>().value = const_cast<std::map<std::string, int64_t>*>(&param1);
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
@@ -496,7 +496,7 @@ void ParamServiceAsyncClient::struct_ret_i16_paramT(Protocol_* prot, bool useSyn
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
   headerAndReqContext->reqContext.setRequestHeader(header.get());
-  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "ParamService.struct_ret_i16_param", &headerAndReqContext->reqContext);
+  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("ParamService.struct_ret_i16_param"), &headerAndReqContext->reqContext);
   ParamService_struct_ret_i16_param_pargs args;
   args.get<0>().value = &param1;
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
@@ -512,7 +512,7 @@ void ParamServiceAsyncClient::setstruct_ret_set_paramT(Protocol_* prot, bool use
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
   headerAndReqContext->reqContext.setRequestHeader(header.get());
-  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "ParamService.setstruct_ret_set_param", &headerAndReqContext->reqContext);
+  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("ParamService.setstruct_ret_set_param"), &headerAndReqContext->reqContext);
   ParamService_setstruct_ret_set_param_pargs args;
   args.get<0>().value = const_cast<std::set<std::string>*>(&param1);
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
@@ -528,7 +528,7 @@ void ParamServiceAsyncClient::union_ret_i32_i32_paramT(Protocol_* prot, bool use
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
   headerAndReqContext->reqContext.setRequestHeader(header.get());
-  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "ParamService.union_ret_i32_i32_param", &headerAndReqContext->reqContext);
+  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("ParamService.union_ret_i32_i32_param"), &headerAndReqContext->reqContext);
   ParamService_union_ret_i32_i32_param_pargs args;
   args.get<0>().value = &param1;
   args.get<1>().value = &param2;
@@ -545,7 +545,7 @@ void ParamServiceAsyncClient::listunion_string_paramT(Protocol_* prot, bool useS
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
   headerAndReqContext->reqContext.setRequestHeader(header.get());
-  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "ParamService.listunion_string_param", &headerAndReqContext->reqContext);
+  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("ParamService.listunion_string_param"), &headerAndReqContext->reqContext);
   ParamService_listunion_string_param_pargs args;
   args.get<0>().value = const_cast<std::string*>(&param1);
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };

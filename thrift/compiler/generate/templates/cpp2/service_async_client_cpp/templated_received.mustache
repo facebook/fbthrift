@@ -22,7 +22,7 @@ void <%service:name%>AsyncClient::<%function:cpp_name%>T(Protocol_* prot, bool u
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
   headerAndReqContext->reqContext.setRequestHeader(header.get());
-  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "<%service:name%>.<%function:name%>", &headerAndReqContext->reqContext);
+  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("<%service:name%>.<%function:name%>"), &headerAndReqContext->reqContext);
 <%#function:takes_stream?%>
   <%service:name%>_<%function:cpp_name%>_pargs::FieldsType args;
 <%/function:takes_stream?%>

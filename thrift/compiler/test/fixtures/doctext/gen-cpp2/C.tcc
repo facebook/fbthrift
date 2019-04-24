@@ -31,7 +31,7 @@ void CAsyncProcessor::process_f(std::unique_ptr<apache::thrift::ResponseChannelR
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   C_f_pargs args;
-  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "C.f", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("C.f"), ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }

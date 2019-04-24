@@ -66,7 +66,7 @@ void ReturnServiceAsyncProcessor::process_noReturn(std::unique_ptr<apache::thrif
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   ReturnService_noReturn_pargs args;
-  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ReturnService.noReturn", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("ReturnService.noReturn"), ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
@@ -112,7 +112,7 @@ void ReturnServiceAsyncProcessor::process_boolReturn(std::unique_ptr<apache::thr
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   ReturnService_boolReturn_pargs args;
-  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ReturnService.boolReturn", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("ReturnService.boolReturn"), ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
@@ -164,7 +164,7 @@ void ReturnServiceAsyncProcessor::process_i16Return(std::unique_ptr<apache::thri
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   ReturnService_i16Return_pargs args;
-  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ReturnService.i16Return", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("ReturnService.i16Return"), ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
@@ -216,7 +216,7 @@ void ReturnServiceAsyncProcessor::process_i32Return(std::unique_ptr<apache::thri
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   ReturnService_i32Return_pargs args;
-  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ReturnService.i32Return", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("ReturnService.i32Return"), ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
@@ -268,7 +268,7 @@ void ReturnServiceAsyncProcessor::process_i64Return(std::unique_ptr<apache::thri
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   ReturnService_i64Return_pargs args;
-  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ReturnService.i64Return", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("ReturnService.i64Return"), ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
@@ -320,7 +320,7 @@ void ReturnServiceAsyncProcessor::process_floatReturn(std::unique_ptr<apache::th
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   ReturnService_floatReturn_pargs args;
-  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ReturnService.floatReturn", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("ReturnService.floatReturn"), ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
@@ -372,7 +372,7 @@ void ReturnServiceAsyncProcessor::process_doubleReturn(std::unique_ptr<apache::t
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   ReturnService_doubleReturn_pargs args;
-  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ReturnService.doubleReturn", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("ReturnService.doubleReturn"), ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
@@ -419,7 +419,7 @@ void ReturnServiceAsyncProcessor::process_stringReturn(std::unique_ptr<apache::t
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   ReturnService_stringReturn_pargs args;
-  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ReturnService.stringReturn", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("ReturnService.stringReturn"), ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
@@ -467,7 +467,7 @@ void ReturnServiceAsyncProcessor::process_binaryReturn(std::unique_ptr<apache::t
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   ReturnService_binaryReturn_pargs args;
-  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ReturnService.binaryReturn", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("ReturnService.binaryReturn"), ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
@@ -519,7 +519,7 @@ void ReturnServiceAsyncProcessor::process_mapReturn(std::unique_ptr<apache::thri
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   ReturnService_mapReturn_pargs args;
-  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ReturnService.mapReturn", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("ReturnService.mapReturn"), ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
@@ -571,7 +571,7 @@ void ReturnServiceAsyncProcessor::process_simpleTypedefReturn(std::unique_ptr<ap
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   ReturnService_simpleTypedefReturn_pargs args;
-  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ReturnService.simpleTypedefReturn", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("ReturnService.simpleTypedefReturn"), ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
@@ -623,7 +623,7 @@ void ReturnServiceAsyncProcessor::process_complexTypedefReturn(std::unique_ptr<a
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   ReturnService_complexTypedefReturn_pargs args;
-  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ReturnService.complexTypedefReturn", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("ReturnService.complexTypedefReturn"), ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
@@ -675,7 +675,7 @@ void ReturnServiceAsyncProcessor::process_list_mostComplexTypedefReturn(std::uni
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   ReturnService_list_mostComplexTypedefReturn_pargs args;
-  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ReturnService.list_mostComplexTypedefReturn", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("ReturnService.list_mostComplexTypedefReturn"), ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
@@ -722,7 +722,7 @@ void ReturnServiceAsyncProcessor::process_enumReturn(std::unique_ptr<apache::thr
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   ReturnService_enumReturn_pargs args;
-  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ReturnService.enumReturn", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("ReturnService.enumReturn"), ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
@@ -765,7 +765,7 @@ void ReturnServiceAsyncProcessor::process_list_EnumReturn(std::unique_ptr<apache
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   ReturnService_list_EnumReturn_pargs args;
-  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ReturnService.list_EnumReturn", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("ReturnService.list_EnumReturn"), ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
@@ -813,7 +813,7 @@ void ReturnServiceAsyncProcessor::process_structReturn(std::unique_ptr<apache::t
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   ReturnService_structReturn_pargs args;
-  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ReturnService.structReturn", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("ReturnService.structReturn"), ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
@@ -865,7 +865,7 @@ void ReturnServiceAsyncProcessor::process_set_StructReturn(std::unique_ptr<apach
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   ReturnService_set_StructReturn_pargs args;
-  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ReturnService.set_StructReturn", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("ReturnService.set_StructReturn"), ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
@@ -912,7 +912,7 @@ void ReturnServiceAsyncProcessor::process_unionReturn(std::unique_ptr<apache::th
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   ReturnService_unionReturn_pargs args;
-  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ReturnService.unionReturn", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("ReturnService.unionReturn"), ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
@@ -960,7 +960,7 @@ void ReturnServiceAsyncProcessor::process_list_UnionReturn(std::unique_ptr<apach
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   ReturnService_list_UnionReturn_pargs args;
-  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ReturnService.list_UnionReturn", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("ReturnService.list_UnionReturn"), ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
@@ -1009,7 +1009,7 @@ void ReturnServiceAsyncProcessor::process_readDataEb(std::unique_ptr<apache::thr
   ReturnService_readDataEb_pargs args;
   int64_t uarg_size{0};
   args.get<0>().value = &uarg_size;
-  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ReturnService.readDataEb", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("ReturnService.readDataEb"), ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
@@ -1059,7 +1059,7 @@ void ReturnServiceAsyncProcessor::process_readData(std::unique_ptr<apache::thrif
   ReturnService_readData_pargs args;
   int64_t uarg_size{0};
   args.get<0>().value = &uarg_size;
-  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ReturnService.readData", ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("ReturnService.readData"), ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }

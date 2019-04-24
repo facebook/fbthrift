@@ -31,7 +31,7 @@ void MyServiceAsyncClient::queryT(Protocol_* prot, bool useSync, apache::thrift:
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
   headerAndReqContext->reqContext.setRequestHeader(header.get());
-  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "MyService.query", &headerAndReqContext->reqContext);
+  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("MyService.query"), &headerAndReqContext->reqContext);
   MyService_query_pargs args;
   args.get<0>().value = const_cast< ::cpp2::MyStruct*>(&s);
   args.get<1>().value = const_cast< ::cpp2::Included*>(&i);
@@ -48,7 +48,7 @@ void MyServiceAsyncClient::has_arg_docsT(Protocol_* prot, bool useSync, apache::
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
   headerAndReqContext->reqContext.setRequestHeader(header.get());
-  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "MyService.has_arg_docs", &headerAndReqContext->reqContext);
+  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("MyService.has_arg_docs"), &headerAndReqContext->reqContext);
   MyService_has_arg_docs_pargs args;
   args.get<0>().value = const_cast< ::cpp2::MyStruct*>(&s);
   args.get<1>().value = const_cast< ::cpp2::Included*>(&i);
