@@ -1,4 +1,6 @@
 /*
+ * Copyright 2019-present Facebook, Inc.
+ *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -16,7 +18,6 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 #ifndef THRIFT_CLONEABLE_IOBUF_H_
 #define THRIFT_CLONEABLE_IOBUF_H_
 
@@ -50,7 +51,6 @@ public:
 
   explicit CloneableUniquePtr(const Base& other)
     : std::unique_ptr<T, Deleter>(other ? other->clone() : nullptr) {
-    LOG(INFO) << "Clone";
   }
   CloneableUniquePtr(const CloneableUniquePtr<T, Deleter>& other)
     : std::unique_ptr<T, Deleter>(other ? other->clone() : nullptr) {
