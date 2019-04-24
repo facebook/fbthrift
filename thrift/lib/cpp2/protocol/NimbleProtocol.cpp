@@ -20,6 +20,7 @@
  */
 #include <thrift/lib/cpp2/protocol/NimbleProtocol.h>
 #include <folly/container/Array.h>
+#include <folly/lang/Bits.h>
 
 namespace apache {
 namespace thrift {
@@ -79,6 +80,19 @@ void NimbleProtocolWriter::encode(float input) {
 
   uint32_t bits = bitwise_cast<uint32_t>(input);
   encode(bits);
+}
+
+void NimbleProtocolWriter::encode(folly::StringPiece input) {
+  encoder_.encodeContentChunk(input.size());
+  encoder_.encodeBinary(input.data(), input.size());
+}
+
+void NimbleProtocolWriter::encode(folly::ByteRange input) {
+  // Note: this matches CompactProtocol in that it doesn't support input length
+  // greater than UINT32_MAX
+  // TODO: caller set string_limit
+  encoder_.encodeContentChunk(input.size());
+  encoder_.encodeBinary(input.data(), input.size());
 }
 
 void NimbleProtocolWriter::encodeStop() {

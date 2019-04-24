@@ -37,6 +37,7 @@ inline uint32_t NimbleProtocolWriter::writeStructBegin(const char* /*name*/) {
 }
 
 inline uint32_t NimbleProtocolWriter::writeStructEnd() {
+  encodeStop();
   return 0;
 }
 
@@ -85,6 +86,21 @@ inline uint32_t NimbleProtocolWriter::writeDouble(double dub) {
 
 inline uint32_t NimbleProtocolWriter::writeFloat(float flt) {
   encode(flt);
+  return 0;
+}
+
+inline uint32_t NimbleProtocolWriter::writeString(folly::StringPiece str) {
+  encode(str);
+  return 0;
+}
+
+inline uint32_t NimbleProtocolWriter::writeBinary(folly::StringPiece str) {
+  encode(str);
+  return 0;
+}
+
+inline uint32_t NimbleProtocolWriter::writeBinary(folly::ByteRange str) {
+  encode(str);
   return 0;
 }
 
@@ -238,6 +254,22 @@ inline void NimbleProtocolReader::readDouble(double& dub) {
 
 inline void NimbleProtocolReader::readFloat(float& flt) {
   decode(flt);
+}
+
+template <typename StrType>
+inline void NimbleProtocolReader::readString(StrType& str) {
+  // Note: this matches CompactProtocol in that it doesn't support input length
+  // greater than UINT32_MAX
+  uint32_t size = decoder_.nextContentChunk();
+  str.resize(size);
+  if (size > 0) {
+    decoder_.nextBinary(&str[0], size);
+  }
+}
+
+template <typename StrType>
+inline void NimbleProtocolReader::readBinary(StrType& str) {
+  readString(str);
 }
 
 inline void NimbleProtocolReader::skip(TType type) {

@@ -169,6 +169,8 @@ class NimbleProtocolWriter {
   void encode(uint64_t input);
   void encode(double input);
   void encode(float input);
+  void encode(folly::StringPiece input);
+  void encode(folly::ByteRange input);
   void encodeStop();
 };
 
