@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Facebook, Inc.
+ * Copyright 2016-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 #pragma once
 
 #include <map>
@@ -41,6 +40,9 @@ class t_annotated : public t_doc {
  * Placeholder struct to return key and value of an annotation during parsing.
  */
 struct t_annotation {
+  t_annotation() = default;
+  t_annotation(const std::string& key_, const std::string& val_)
+      : key(key_), val(val_) {}
   std::string key;
   std::string val;
 };

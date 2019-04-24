@@ -79,14 +79,13 @@ std::shared_ptr<mstch_base> field_generator::generate(
 }
 
 std::shared_ptr<mstch_base> annotation_generator::generate(
-    const std::string& key,
-    const std::string& val,
+    const t_annotation& annotation,
     std::shared_ptr<mstch_generators const> generators,
     std::shared_ptr<mstch_cache> cache,
     ELEMENT_POSITION pos,
     int32_t index) const {
   return std::make_shared<mstch_annotation>(
-      key, val, generators, cache, pos, index);
+      annotation.key, annotation.val, generators, cache, pos, index);
 }
 
 std::shared_ptr<mstch_base> struct_generator::generate(
@@ -492,17 +491,15 @@ mstch::node mstch_field::type() {
 }
 
 mstch::node mstch_field::annotations() {
-  mstch::array a;
-  const auto& annotations = field_->annotations_;
-  int idx = 0;
-
-  for (const auto& itr : annotations) {
-    auto pos = element_position(idx, annotations.size());
-    a.push_back(generators_->annotation_generator_->generate(
-        itr.first, itr.second, generators_, cache_, pos, idx));
-    ++idx;
+  std::vector<t_annotation> annotations;
+  for (const auto& itr : field_->annotations_) {
+    annotations.emplace_back(itr.first, itr.second);
   }
-  return a;
+  return generate_elements(
+      annotations,
+      generators_->annotation_generator_.get(),
+      generators_,
+      cache_);
 }
 
 mstch::node mstch_struct::fields() {

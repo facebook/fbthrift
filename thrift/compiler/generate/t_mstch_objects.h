@@ -114,8 +114,7 @@ class annotation_generator {
   annotation_generator() = default;
   virtual ~annotation_generator() = default;
   virtual std::shared_ptr<mstch_base> generate(
-      const std::string& key,
-      const std::string& val,
+      const t_annotation& annotation,
       std::shared_ptr<mstch_generators const> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos = ELEMENT_POSITION::NONE,
