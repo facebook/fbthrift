@@ -362,122 +362,118 @@ uint32_t JSONProtocolWriterCommon::writeJSONDouble(T dbl) {
  * Public reading functions
  */
 
-uint32_t JSONProtocolReaderCommon::readMessageBegin(
+void JSONProtocolReaderCommon::readMessageBegin(
     std::string& name,
     MessageType& messageType,
     int32_t& seqid) {
-  auto ret = ensureAndBeginContext(ContextType::ARRAY);
+  ensureAndBeginContext(ContextType::ARRAY);
   int64_t tmpVal;
-  ret += readI64(tmpVal);
+  readI64(tmpVal);
   if (tmpVal != detail::json::kThriftVersion1) {
     throwBadVersion();
   }
-  ret += readString(name);
-  ret += readI64(tmpVal);
+  readString(name);
+  readI64(tmpVal);
   messageType = (MessageType)tmpVal;
-  ret += readI32(seqid);
-  return ret;
+  readI32(seqid);
 }
 
-uint32_t JSONProtocolReaderCommon::readMessageEnd() {
-  return endContext();
+void JSONProtocolReaderCommon::readMessageEnd() {
+  endContext();
 }
 
-uint32_t JSONProtocolReaderCommon::readByte(int8_t& byte) {
-  return readInContext<int8_t>(byte);
+void JSONProtocolReaderCommon::readByte(int8_t& byte) {
+  readInContext<int8_t>(byte);
 }
 
-uint32_t JSONProtocolReaderCommon::readI16(int16_t& i16) {
-  return readInContext<int16_t>(i16);
+void JSONProtocolReaderCommon::readI16(int16_t& i16) {
+  readInContext<int16_t>(i16);
 }
 
-uint32_t JSONProtocolReaderCommon::readI32(int32_t& i32) {
-  return readInContext<int32_t>(i32);
+void JSONProtocolReaderCommon::readI32(int32_t& i32) {
+  readInContext<int32_t>(i32);
 }
 
-uint32_t JSONProtocolReaderCommon::readI64(int64_t& i64) {
-  return readInContext<int64_t>(i64);
+void JSONProtocolReaderCommon::readI64(int64_t& i64) {
+  readInContext<int64_t>(i64);
 }
 
-uint32_t JSONProtocolReaderCommon::readDouble(double& dub) {
-  return readInContext<double>(dub);
+void JSONProtocolReaderCommon::readDouble(double& dub) {
+  readInContext<double>(dub);
 }
 
-uint32_t JSONProtocolReaderCommon::readFloat(float& flt) {
-  return readInContext<float>(flt);
-}
-
-template <typename StrType>
-uint32_t JSONProtocolReaderCommon::readString(StrType& str) {
-  return readInContext<StrType>(str);
+void JSONProtocolReaderCommon::readFloat(float& flt) {
+  readInContext<float>(flt);
 }
 
 template <typename StrType>
-uint32_t JSONProtocolReaderCommon::readBinary(StrType& str) {
+void JSONProtocolReaderCommon::readString(StrType& str) {
+  readInContext<StrType>(str);
+}
+
+template <typename StrType>
+void JSONProtocolReaderCommon::readBinary(StrType& str) {
   bool keyish;
-  auto ret = ensureAndReadContext(keyish);
-  return ret + readJSONBase64(str);
+  ensureAndReadContext(keyish);
+  readJSONBase64(str);
 }
 
-uint32_t JSONProtocolReaderCommon::readBinary(
-    std::unique_ptr<folly::IOBuf>& str) {
+void JSONProtocolReaderCommon::readBinary(std::unique_ptr<folly::IOBuf>& str) {
   std::string tmp;
   bool keyish;
-  auto ret = ensureAndReadContext(keyish);
-  ret += readJSONBase64(tmp);
+  ensureAndReadContext(keyish);
+  readJSONBase64(tmp);
   str = folly::IOBuf::copyBuffer(tmp);
-  return ret;
 }
 
-uint32_t JSONProtocolReaderCommon::readBinary(folly::IOBuf& str) {
+void JSONProtocolReaderCommon::readBinary(folly::IOBuf& str) {
   std::string tmp;
   bool keyish;
-  auto ret = ensureAndReadContext(keyish);
-  ret += readJSONBase64(tmp);
+  ensureAndReadContext(keyish);
+  readJSONBase64(tmp);
   str.appendChain(folly::IOBuf::copyBuffer(tmp));
-  return ret;
 }
 
-uint32_t JSONProtocolReaderCommon::skip(TType /*type*/) {
+void JSONProtocolReaderCommon::skip(TType /*type*/) {
   bool keyish;
-  auto ret = ensureAndReadContext(keyish);
-  ret += readWhitespace();
+  ensureAndReadContext(keyish);
+  readWhitespace();
   auto ch = peekCharSafe();
   if (ch == detail::json::kJSONObjectStart) {
-    ret += beginContext(ContextType::MAP);
+    beginContext(ContextType::MAP);
     while (true) {
       skipWhitespace();
       if (peekCharSafe() == detail::json::kJSONObjectEnd) {
         break;
       }
-      ret += skip(TType::T_VOID);
-      ret += skip(TType::T_VOID);
+      skip(TType::T_VOID);
+      skip(TType::T_VOID);
     }
-    return ret + endContext();
+    endContext();
   } else if (ch == detail::json::kJSONArrayStart) {
-    ret += beginContext(ContextType::ARRAY);
+    beginContext(ContextType::ARRAY);
     while (true) {
       skipWhitespace();
       if (peekCharSafe() == detail::json::kJSONArrayEnd) {
         break;
       }
-      ret += skip(TType::T_VOID);
+      skip(TType::T_VOID);
     }
-    return ret + endContext();
+    endContext();
   } else if (ch == detail::json::kJSONStringDelimiter) {
     std::string tmp;
-    return ret + readJSONVal(tmp);
+    readJSONVal(tmp);
   } else if (ch == '-' || ch == '+' || (ch >= '0' && ch <= '9')) {
     double tmp;
-    return ret + readJSONVal(tmp);
+    readJSONVal(tmp);
   } else if (ch == 't' || ch == 'f') {
     bool tmp;
-    return ret + readJSONVal(tmp);
+    readJSONVal(tmp);
   } else if (ch == 'n') {
-    return ret + readJSONNull();
+    readJSONNull();
+  } else {
+    throwInvalidFieldStart(ch);
   }
-
-  throwInvalidFieldStart(ch);
 }
 
 uint32_t JSONProtocolReaderCommon::readFromPositionAndAppend(
@@ -568,48 +564,48 @@ void JSONProtocolReaderCommon::ensureAndSkipContext() {
   }
 }
 
-uint32_t JSONProtocolReaderCommon::ensureAndReadContext(bool& keyish) {
+void JSONProtocolReaderCommon::ensureAndReadContext(bool& keyish) {
   ensureAndSkipContext();
   keyish = keyish_;
-  auto ret = skippedChars_;
   skippedChars_ = 0;
   skippedIsUnread_ = false;
-  return ret;
 }
 
-uint32_t JSONProtocolReaderCommon::ensureAndBeginContext(ContextType type) {
+void JSONProtocolReaderCommon::ensureAndBeginContext(ContextType type) {
   bool keyish;
-  auto ret = ensureAndReadContext(keyish);
+  ensureAndReadContext(keyish);
   // perhaps handle keyish == true?  I think for backwards compat we want to
   // be able to handle non-string keys, even if it isn't valid JSON
-  return ret + beginContext(type);
+  beginContext(type);
 }
 
-uint32_t JSONProtocolReaderCommon::beginContext(ContextType type) {
+void JSONProtocolReaderCommon::beginContext(ContextType type) {
   context.push_back({type, 0});
   switch (type) {
     case ContextType::MAP:
-      return ensureChar(detail::json::kJSONObjectStart);
+      ensureChar(detail::json::kJSONObjectStart);
+      return;
     case ContextType::ARRAY:
-      return ensureChar(detail::json::kJSONArrayStart);
+      ensureChar(detail::json::kJSONArrayStart);
+      return;
   }
   CHECK(false);
-  return 0;
 }
 
-uint32_t JSONProtocolReaderCommon::endContext() {
+void JSONProtocolReaderCommon::endContext() {
   DCHECK(!context.empty());
 
   auto type = context.back().type;
   context.pop_back();
   switch (type) {
     case ContextType::MAP:
-      return ensureChar(detail::json::kJSONObjectEnd);
+      ensureChar(detail::json::kJSONObjectEnd);
+      return;
     case ContextType::ARRAY:
-      return ensureChar(detail::json::kJSONArrayEnd);
+      ensureChar(detail::json::kJSONArrayEnd);
+      return;
   }
   CHECK(false);
-  return 0;
 }
 
 template <typename T>
@@ -622,78 +618,75 @@ T JSONProtocolReaderCommon::castIntegral(folly::StringPiece val) {
 }
 
 template <typename T>
-uint32_t JSONProtocolReaderCommon::readInContext(T& val) {
+void JSONProtocolReaderCommon::readInContext(T& val) {
   bool keyish;
-  auto ret = ensureAndReadContext(keyish);
+  ensureAndReadContext(keyish);
   if (keyish) {
-    return ret + readJSONKey(val);
+    readJSONKey(val);
   } else {
-    return ret + readJSONVal(val);
+    readJSONVal(val);
   }
 }
 
-uint32_t JSONProtocolReaderCommon::readJSONKey(std::string& key) {
-  return readJSONString(key);
+void JSONProtocolReaderCommon::readJSONKey(std::string& key) {
+  readJSONString(key);
 }
 
-uint32_t JSONProtocolReaderCommon::readJSONKey(folly::fbstring& key) {
-  return readJSONString(key);
+void JSONProtocolReaderCommon::readJSONKey(folly::fbstring& key) {
+  readJSONString(key);
 }
 
-uint32_t JSONProtocolReaderCommon::readJSONKey(bool& key) {
+void JSONProtocolReaderCommon::readJSONKey(bool& key) {
   std::string s;
-  auto ret = readJSONString(s);
+  readJSONString(s);
   key = JSONtoBool(s);
-  return ret;
 }
 
 template <typename T>
-uint32_t JSONProtocolReaderCommon::readJSONKey(T& key) {
+void JSONProtocolReaderCommon::readJSONKey(T& key) {
   std::string s;
-  auto ret = readJSONString(s);
+  readJSONString(s);
   key = castIntegral<T>(s);
-  return ret;
 }
 
 template <typename T>
-uint32_t JSONProtocolReaderCommon::readJSONIntegral(T& val) {
+void JSONProtocolReaderCommon::readJSONIntegral(T& val) {
   std::string serialized;
-  auto ret = readNumericalChars(serialized);
+  readNumericalChars(serialized);
   val = castIntegral<T>(serialized);
-  return ret;
 }
 
-uint32_t JSONProtocolReaderCommon::readNumericalChars(std::string& val) {
-  return readWhitespace() +
-      readWhile(
-             [](uint8_t ch) {
-               return (ch >= '0' && ch <= '9') || ch == '+' || ch == '-' ||
-                   ch == '.' || ch == 'E' || ch == 'e';
-             },
-             val);
+void JSONProtocolReaderCommon::readNumericalChars(std::string& val) {
+  readWhitespace();
+  readWhile(
+      [](uint8_t ch) {
+        return (ch >= '0' && ch <= '9') || ch == '+' || ch == '-' ||
+            ch == '.' || ch == 'E' || ch == 'e';
+      },
+      val);
 }
 
-uint32_t JSONProtocolReaderCommon::readJSONVal(int8_t& val) {
-  return readJSONIntegral<int8_t>(val);
+void JSONProtocolReaderCommon::readJSONVal(int8_t& val) {
+  readJSONIntegral<int8_t>(val);
 }
 
-uint32_t JSONProtocolReaderCommon::readJSONVal(int16_t& val) {
-  return readJSONIntegral<int16_t>(val);
+void JSONProtocolReaderCommon::readJSONVal(int16_t& val) {
+  readJSONIntegral<int16_t>(val);
 }
 
-uint32_t JSONProtocolReaderCommon::readJSONVal(int32_t& val) {
-  return readJSONIntegral<int32_t>(val);
+void JSONProtocolReaderCommon::readJSONVal(int32_t& val) {
+  readJSONIntegral<int32_t>(val);
 }
 
-uint32_t JSONProtocolReaderCommon::readJSONVal(int64_t& val) {
-  return readJSONIntegral<int64_t>(val);
+void JSONProtocolReaderCommon::readJSONVal(int64_t& val) {
+  readJSONIntegral<int64_t>(val);
 }
 
-uint32_t JSONProtocolReaderCommon::readJSONVal(double& val) {
-  auto ret = readWhitespace();
+void JSONProtocolReaderCommon::readJSONVal(double& val) {
+  readWhitespace();
   if (peekCharSafe() == detail::json::kJSONStringDelimiter) {
     std::string str;
-    ret += readJSONString(str);
+    readJSONString(str);
     if (str == detail::json::kThriftNan) {
       val = HUGE_VAL / HUGE_VAL; // generates NaN
     } else if (str == detail::json::kThriftNegativeNan) {
@@ -705,29 +698,27 @@ uint32_t JSONProtocolReaderCommon::readJSONVal(double& val) {
     } else {
       throwUnrecognizableAsFloatingPoint(str);
     }
-    return ret;
+    return;
   }
   std::string s;
-  ret += readNumericalChars(s);
+  readNumericalChars(s);
   try {
     val = folly::to<double>(s);
   } catch (const std::exception&) {
     throwUnrecognizableAsFloatingPoint(s);
   }
-  return ret;
 }
 
-uint32_t JSONProtocolReaderCommon::readJSONVal(float& val) {
+void JSONProtocolReaderCommon::readJSONVal(float& val) {
   double d;
-  auto ret = readJSONVal(d);
+  readJSONVal(d);
   val = float(d);
-  return ret;
 }
 
 template <typename Str>
-typename std::enable_if<detail::is_string<Str>::value, uint32_t>::type
+typename std::enable_if<detail::is_string<Str>::value>::type
 JSONProtocolReaderCommon::readJSONVal(Str& val) {
-  return readJSONString(val);
+  readJSONString(val);
 }
 
 bool JSONProtocolReaderCommon::JSONtoBool(const std::string& s) {
@@ -741,58 +732,53 @@ bool JSONProtocolReaderCommon::JSONtoBool(const std::string& s) {
   return false;
 }
 
-uint32_t JSONProtocolReaderCommon::readJSONVal(bool& val) {
+void JSONProtocolReaderCommon::readJSONVal(bool& val) {
   std::string s;
-  auto ret = readJSONKeyword(s);
+  readJSONKeyword(s);
   val = JSONtoBool(s);
-  return ret;
 }
 
-uint32_t JSONProtocolReaderCommon::readJSONNull() {
+void JSONProtocolReaderCommon::readJSONNull() {
   std::string s;
-  auto ret = readJSONKeyword(s);
+  readJSONKeyword(s);
   if (s != "null") {
     throwUnrecognizableAsAny(s);
   }
-  return ret;
 }
 
-uint32_t JSONProtocolReaderCommon::readJSONKeyword(std::string& kw) {
-  return readWhitespace() +
-      readWhile([](int8_t ch) { return ch >= 'a' && ch <= 'z'; }, kw);
+void JSONProtocolReaderCommon::readJSONKeyword(std::string& kw) {
+  readWhitespace();
+  readWhile([](int8_t ch) { return ch >= 'a' && ch <= 'z'; }, kw);
 }
 
-uint32_t JSONProtocolReaderCommon::readJSONEscapeChar(uint8_t& out) {
+void JSONProtocolReaderCommon::readJSONEscapeChar(uint8_t& out) {
   uint8_t b1, b2;
   ensureCharNoWhitespace(detail::json::kJSONZeroChar);
   ensureCharNoWhitespace(detail::json::kJSONZeroChar);
   b1 = in_.read<uint8_t>();
   b2 = in_.read<uint8_t>();
   out = (hexVal(b1) << 4) + hexVal(b2);
-  return 4;
 }
 
 template <typename StrType>
-uint32_t JSONProtocolReaderCommon::readJSONString(StrType& val) {
-  auto ret = ensureChar(detail::json::kJSONStringDelimiter);
+void JSONProtocolReaderCommon::readJSONString(StrType& val) {
+  ensureChar(detail::json::kJSONStringDelimiter);
 
   std::string json = "\"";
   val.clear();
   while (true) {
     auto ch = in_.read<uint8_t>();
-    ret++;
     if (ch == detail::json::kJSONStringDelimiter) {
       break;
     }
     if (ch == detail::json::kJSONBackslash) {
       ch = in_.read<uint8_t>();
-      ret++;
       if (ch == detail::json::kJSONEscapeChar) {
         if (allowDecodeUTF8_) {
           json += "\\u";
           continue;
         } else {
-          ret += readJSONEscapeChar(ch);
+          readJSONEscapeChar(ch);
         }
       } else {
         size_t pos = kEscapeChars().find_first_of(ch);
@@ -825,14 +811,12 @@ uint32_t JSONProtocolReaderCommon::readJSONString(StrType& val) {
       throwUnrecognizableAsString(json, e);
     }
   }
-
-  return ret;
 }
 
 template <typename StrType>
-uint32_t JSONProtocolReaderCommon::readJSONBase64(StrType& str) {
+void JSONProtocolReaderCommon::readJSONBase64(StrType& str) {
   std::string tmp;
-  uint32_t ret = readJSONString(tmp);
+  readJSONString(tmp);
   uint8_t* b = (uint8_t*)tmp.c_str();
   uint32_t len = tmp.length();
   str.clear();
@@ -848,7 +832,6 @@ uint32_t JSONProtocolReaderCommon::readJSONBase64(StrType& str) {
     base64_decode(b, len);
     str.append((const char*)b, len - 1);
   }
-  return ret;
 }
 
 // Return the integer value of a hex character ch.

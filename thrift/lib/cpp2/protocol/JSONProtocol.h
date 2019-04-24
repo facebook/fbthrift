@@ -93,19 +93,19 @@ class JSONProtocolReader : public JSONProtocolReaderCommon {
     return false;
   }
 
-  inline uint32_t readStructBegin(std::string& name);
-  inline uint32_t readStructEnd();
-  inline uint32_t
+  inline void readStructBegin(std::string& name);
+  inline void readStructEnd();
+  inline void
   readFieldBegin(std::string& name, TType& fieldType, int16_t& fieldId);
-  inline uint32_t readFieldEnd();
-  inline uint32_t readMapBegin(TType& keyType, TType& valType, uint32_t& size);
-  inline uint32_t readMapEnd();
-  inline uint32_t readListBegin(TType& elemType, uint32_t& size);
-  inline uint32_t readListEnd();
-  inline uint32_t readSetBegin(TType& elemType, uint32_t& size);
-  inline uint32_t readSetEnd();
-  inline uint32_t readBool(bool& value);
-  inline uint32_t readBool(std::vector<bool>::reference value);
+  inline void readFieldEnd();
+  inline void readMapBegin(TType& keyType, TType& valType, uint32_t& size);
+  inline void readMapEnd();
+  inline void readListBegin(TType& elemType, uint32_t& size);
+  inline void readListEnd();
+  inline void readSetBegin(TType& elemType, uint32_t& size);
+  inline void readSetEnd();
+  inline void readBool(bool& value);
+  inline void readBool(std::vector<bool>::reference value);
   inline bool peekMap();
   inline bool peekSet();
   inline bool peekList();

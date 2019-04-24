@@ -286,19 +286,15 @@ uint32_t JSONProtocolWriter::serializedSizeBool(bool /*val*/) const {
  * Public reading functions
  */
 
-uint32_t JSONProtocolReader::readStructBegin(std::string& /*name*/) {
-  uint32_t ret = 0;
-  ret += ensureAndBeginContext(ContextType::MAP);
-  return ret;
+void JSONProtocolReader::readStructBegin(std::string& /*name*/) {
+  ensureAndBeginContext(ContextType::MAP);
 }
 
-uint32_t JSONProtocolReader::readStructEnd() {
-  uint32_t ret = 0;
-  ret += endContext();
-  return ret;
+void JSONProtocolReader::readStructEnd() {
+  endContext();
 }
 
-uint32_t JSONProtocolReader::readFieldBegin(
+void JSONProtocolReader::readFieldBegin(
     std::string& /*name*/,
     TType& fieldType,
     int16_t& fieldId) {
@@ -307,90 +303,76 @@ uint32_t JSONProtocolReader::readFieldBegin(
   if (peek == detail::json::kJSONObjectEnd) {
     fieldType = TType::T_STOP;
     fieldId = 0;
-    return 0;
+    return;
   }
-  uint32_t ret = 0;
-  ret += readI16(fieldId);
-  ret += ensureAndBeginContext(ContextType::MAP);
+  readI16(fieldId);
+  ensureAndBeginContext(ContextType::MAP);
   std::string fieldTypeS;
-  ret += readString(fieldTypeS);
+  readString(fieldTypeS);
   fieldType = detail::json::getTypeIDForTypeName(fieldTypeS);
-  return ret;
 }
 
-uint32_t JSONProtocolReader::readFieldEnd() {
-  uint32_t ret = 0;
-  ret += endContext();
-  return ret;
+void JSONProtocolReader::readFieldEnd() {
+  endContext();
 }
 
-uint32_t JSONProtocolReader::readMapBegin(
+void JSONProtocolReader::readMapBegin(
     TType& keyType,
     TType& valType,
     uint32_t& size) {
-  uint32_t ret = 0;
-  ret += ensureAndBeginContext(ContextType::ARRAY);
+  ensureAndBeginContext(ContextType::ARRAY);
   std::string keyTypeS;
-  ret += readString(keyTypeS);
+  readString(keyTypeS);
   keyType = detail::json::getTypeIDForTypeName(keyTypeS);
   std::string valTypeS;
-  ret += readString(valTypeS);
+  readString(valTypeS);
   valType = detail::json::getTypeIDForTypeName(valTypeS);
   int64_t sizeRead = 0;
-  ret += readI64(sizeRead);
+  readI64(sizeRead);
   size = detail::json::clampSize(sizeRead);
-  ret += ensureAndBeginContext(ContextType::MAP);
-  return ret;
+  ensureAndBeginContext(ContextType::MAP);
 }
 
-uint32_t JSONProtocolReader::readMapEnd() {
-  uint32_t ret = 0;
-  ret += endContext();
-  ret += endContext();
-  return ret;
+void JSONProtocolReader::readMapEnd() {
+  endContext();
+  endContext();
 }
 
-uint32_t JSONProtocolReader::readListBegin(TType& elemType, uint32_t& size) {
-  uint32_t ret = 0;
-  ret += ensureAndBeginContext(ContextType::ARRAY);
+void JSONProtocolReader::readListBegin(TType& elemType, uint32_t& size) {
+  ensureAndBeginContext(ContextType::ARRAY);
   std::string elemTypeS;
-  ret += readString(elemTypeS);
+  readString(elemTypeS);
   elemType = detail::json::getTypeIDForTypeName(elemTypeS);
   int64_t sizeRead = 0;
-  ret += readI64(sizeRead);
+  readI64(sizeRead);
   size = detail::json::clampSize(sizeRead);
-  return ret;
 }
 
-uint32_t JSONProtocolReader::readListEnd() {
-  uint32_t ret = 0;
-  ret += endContext();
-  return ret;
+void JSONProtocolReader::readListEnd() {
+  endContext();
 }
 
-uint32_t JSONProtocolReader::readSetBegin(TType& elemType, uint32_t& size) {
-  return readListBegin(elemType, size);
+void JSONProtocolReader::readSetBegin(TType& elemType, uint32_t& size) {
+  readListBegin(elemType, size);
 }
 
-uint32_t JSONProtocolReader::readSetEnd() {
-  return readListEnd();
+void JSONProtocolReader::readSetEnd() {
+  readListEnd();
 }
 
-uint32_t JSONProtocolReader::readBool(bool& value) {
+void JSONProtocolReader::readBool(bool& value) {
   int8_t tmp = false;
-  auto ret = readInContext<int8_t>(tmp);
+  readInContext<int8_t>(tmp);
   if (tmp < 0 || tmp > 1) {
     throwUnrecognizableAsBoolean(tmp);
   }
   value = bool(tmp);
-  return ret;
 }
 
-uint32_t JSONProtocolReader::readBool(std::vector<bool>::reference value) {
+void JSONProtocolReader::readBool(std::vector<bool>::reference value) {
   bool tmp = false;
-  auto ret = readBool(tmp);
+  readBool(tmp);
   value = tmp;
-  return ret;
 }
 
 bool JSONProtocolReader::peekMap() {

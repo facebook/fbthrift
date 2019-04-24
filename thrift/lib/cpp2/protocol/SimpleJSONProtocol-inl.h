@@ -167,87 +167,82 @@ uint32_t SimpleJSONProtocolWriter::serializedSizeBool(bool /*val*/) const {
  * Public reading functions
  */
 
-uint32_t SimpleJSONProtocolReader::readStructBegin(std::string& /*name*/) {
-  return ensureAndBeginContext(ContextType::MAP);
+void SimpleJSONProtocolReader::readStructBegin(std::string& /*name*/) {
+  ensureAndBeginContext(ContextType::MAP);
 }
 
-uint32_t SimpleJSONProtocolReader::readStructEnd() {
-  return endContext();
+void SimpleJSONProtocolReader::readStructEnd() {
+  endContext();
 }
 
-uint32_t SimpleJSONProtocolReader::readFieldBegin(
+void SimpleJSONProtocolReader::readFieldBegin(
     std::string& name,
     TType& fieldType,
     int16_t& fieldId) {
   if (!peekMap()) {
     fieldType = TType::T_STOP;
     fieldId = 0;
-    return 0;
+    return;
   }
   fieldId = std::numeric_limits<int16_t>::min();
   fieldType = TType::T_VOID;
-  auto ret = readString(name);
+  readString(name);
   ensureAndSkipContext();
   skipWhitespace();
   auto peek = *in_.peek().first;
   if (peek == 'n') {
     bool tmp;
-    ret += ensureAndReadContext(tmp);
-    ret += readWhitespace();
-    ret += readJSONNull();
-    ret += readFieldBegin(name, fieldType, fieldId);
+    ensureAndReadContext(tmp);
+    readWhitespace();
+    readJSONNull();
+    readFieldBegin(name, fieldType, fieldId);
   }
-  return ret;
 }
 
-uint32_t SimpleJSONProtocolReader::readFieldEnd() {
-  return 0;
-}
+void SimpleJSONProtocolReader::readFieldEnd() {}
 
-uint32_t SimpleJSONProtocolReader::readMapBegin(
+void SimpleJSONProtocolReader::readMapBegin(
     TType& /*keyType*/,
     TType& /*valType*/,
     uint32_t& size) {
   size = std::numeric_limits<uint32_t>::max();
-  return ensureAndBeginContext(ContextType::MAP);
+  ensureAndBeginContext(ContextType::MAP);
 }
 
-uint32_t SimpleJSONProtocolReader::readMapEnd() {
-  return endContext();
+void SimpleJSONProtocolReader::readMapEnd() {
+  endContext();
 }
 
-uint32_t SimpleJSONProtocolReader::readListBegin(
+void SimpleJSONProtocolReader::readListBegin(
     TType& /*elemType*/,
     uint32_t& size) {
   size = std::numeric_limits<uint32_t>::max();
-  return ensureAndBeginContext(ContextType::ARRAY);
+  ensureAndBeginContext(ContextType::ARRAY);
 }
 
-uint32_t SimpleJSONProtocolReader::readListEnd() {
-  return endContext();
+void SimpleJSONProtocolReader::readListEnd() {
+  endContext();
 }
 
-uint32_t SimpleJSONProtocolReader::readSetBegin(
+void SimpleJSONProtocolReader::readSetBegin(
     TType& /*elemType*/,
     uint32_t& size) {
   size = std::numeric_limits<uint32_t>::max();
-  return ensureAndBeginContext(ContextType::ARRAY);
+  ensureAndBeginContext(ContextType::ARRAY);
 }
 
-uint32_t SimpleJSONProtocolReader::readSetEnd() {
-  return endContext();
+void SimpleJSONProtocolReader::readSetEnd() {
+  endContext();
 }
 
-uint32_t SimpleJSONProtocolReader::readBool(bool& value) {
-  return readInContext<bool>(value);
+void SimpleJSONProtocolReader::readBool(bool& value) {
+  readInContext<bool>(value);
 }
 
-uint32_t SimpleJSONProtocolReader::readBool(
-    std::vector<bool>::reference value) {
+void SimpleJSONProtocolReader::readBool(std::vector<bool>::reference value) {
   bool tmp = false;
-  auto ret = readInContext<bool>(tmp);
+  readInContext<bool>(tmp);
   value = tmp;
-  return ret;
 }
 
 bool SimpleJSONProtocolReader::peekMap() {

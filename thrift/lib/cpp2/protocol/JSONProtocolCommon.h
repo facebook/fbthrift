@@ -188,23 +188,23 @@ class JSONProtocolReaderCommon {
     in_.reset(buf);
   }
 
-  inline uint32_t
+  inline void
   readMessageBegin(std::string& name, MessageType& messageType, int32_t& seqid);
-  inline uint32_t readMessageEnd();
-  inline uint32_t readByte(int8_t& byte);
-  inline uint32_t readI16(int16_t& i16);
-  inline uint32_t readI32(int32_t& i32);
-  inline uint32_t readI64(int64_t& i64);
-  inline uint32_t readDouble(double& dub);
-  inline uint32_t readFloat(float& flt);
+  inline void readMessageEnd();
+  inline void readByte(int8_t& byte);
+  inline void readI16(int16_t& i16);
+  inline void readI32(int32_t& i32);
+  inline void readI64(int64_t& i64);
+  inline void readDouble(double& dub);
+  inline void readFloat(float& flt);
   template <typename StrType>
-  inline uint32_t readString(StrType& str);
+  inline void readString(StrType& str);
   template <typename StrType>
-  inline uint32_t readBinary(StrType& str);
-  inline uint32_t readBinary(std::unique_ptr<folly::IOBuf>& str);
-  inline uint32_t readBinary(folly::IOBuf& str);
+  inline void readBinary(StrType& str);
+  inline void readBinary(std::unique_ptr<folly::IOBuf>& str);
+  inline void readBinary(folly::IOBuf& str);
 
-  inline uint32_t skip(TType type);
+  inline void skip(TType type);
 
   const folly::io::Cursor& getCursor() const {
     return in_;
@@ -237,41 +237,41 @@ class JSONProtocolReaderCommon {
   // of bytes skipped.  Calling skip a second (or third...) time in a row
   // without calling read has no effect.
   inline void ensureAndSkipContext();
-  inline uint32_t ensureAndReadContext(bool& keyish);
-  inline uint32_t beginContext(ContextType type);
-  inline uint32_t ensureAndBeginContext(ContextType type);
-  inline uint32_t endContext();
+  inline void ensureAndReadContext(bool& keyish);
+  inline void beginContext(ContextType type);
+  inline void ensureAndBeginContext(ContextType type);
+  inline void endContext();
 
   template <typename T>
   static T castIntegral(folly::StringPiece val);
   template <typename T>
-  uint32_t readInContext(T& val);
-  inline uint32_t readJSONKey(std::string& key);
-  inline uint32_t readJSONKey(folly::fbstring& key);
-  inline uint32_t readJSONKey(bool& key);
+  void readInContext(T& val);
+  inline void readJSONKey(std::string& key);
+  inline void readJSONKey(folly::fbstring& key);
+  inline void readJSONKey(bool& key);
   template <typename T>
-  uint32_t readJSONKey(T& key);
+  void readJSONKey(T& key);
   template <typename T>
-  uint32_t readJSONIntegral(T& val);
-  inline uint32_t readNumericalChars(std::string& val);
-  inline uint32_t readJSONVal(int8_t& val);
-  inline uint32_t readJSONVal(int16_t& val);
-  inline uint32_t readJSONVal(int32_t& val);
-  inline uint32_t readJSONVal(int64_t& val);
-  inline uint32_t readJSONVal(double& val);
-  inline uint32_t readJSONVal(float& val);
+  void readJSONIntegral(T& val);
+  inline void readNumericalChars(std::string& val);
+  inline void readJSONVal(int8_t& val);
+  inline void readJSONVal(int16_t& val);
+  inline void readJSONVal(int32_t& val);
+  inline void readJSONVal(int64_t& val);
+  inline void readJSONVal(double& val);
+  inline void readJSONVal(float& val);
   template <typename Str>
-  inline typename std::enable_if<detail::is_string<Str>::value, uint32_t>::type
+  inline typename std::enable_if<detail::is_string<Str>::value>::type
   readJSONVal(Str& val);
   inline bool JSONtoBool(const std::string& s);
-  inline uint32_t readJSONVal(bool& val);
-  inline uint32_t readJSONNull();
-  inline uint32_t readJSONKeyword(std::string& kw);
-  inline uint32_t readJSONEscapeChar(uint8_t& out);
+  inline void readJSONVal(bool& val);
+  inline void readJSONNull();
+  inline void readJSONKeyword(std::string& kw);
+  inline void readJSONEscapeChar(uint8_t& out);
   template <typename StrType>
-  uint32_t readJSONString(StrType& val);
+  void readJSONString(StrType& val);
   template <typename StrType>
-  uint32_t readJSONBase64(StrType& s);
+  void readJSONBase64(StrType& s);
 
   // This string's characters must match up with the elements in kEscapeCharVals
   // I don't have '/' on this list even though it appears on www.json.org --
