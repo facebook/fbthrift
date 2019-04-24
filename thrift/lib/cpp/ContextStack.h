@@ -77,14 +77,14 @@ class ContextStack {
   // copying (e.g. a compiler const) or a cstr copied to std::string.
   // This way, we can avoid copying in the common case in generated code.
   class NameWrapper {
-    enum StaticOp { STATIC };
+    enum StaticOp { STATIC_OP };
 
    public:
     NameWrapper() : cstr_("") {}
     /* implicit */
     NameWrapper(const char* n) : storage_(n), cstr_(storage_.c_str()) {}
     static NameWrapper makeFromStatic(const char* n) {
-      return NameWrapper(STATIC, n);
+      return NameWrapper(STATIC_OP, n);
     }
     const char* name() {
       return cstr_;
