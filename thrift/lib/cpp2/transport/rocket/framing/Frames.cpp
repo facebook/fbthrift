@@ -404,6 +404,69 @@ void PayloadFrame::serializeIntoSingleFrame(Serializer& writer) && {
   DCHECK_EQ(Serializer::kBytesForFrameOrMetadataLength + frameSize, nwritten);
 }
 
+std::unique_ptr<folly::IOBuf> PayloadFrame::serialize() && {
+  constexpr size_t kRsocketOverheadMax = 3 + 6 + 3;
+  if (LIKELY(
+          payload_.metadataAndDataSize() <= kMaxFragmentedPayloadSize &&
+          payload_.hasNonemptyMetadata() &&
+          payload_.metadata()->headroom() >= kRsocketOverheadMax)) {
+    // Use headroom in the metadata struct for rsocket header.
+    return std::move(*this).serializeUsingMetadataHeadroom();
+  }
+  Serializer writer;
+  std::move(*this).serialize(writer);
+  return std::move(writer).move();
+}
+
+std::unique_ptr<folly::IOBuf>
+PayloadFrame::serializeUsingMetadataHeadroom() && {
+  // We can assume here that we have non-zero metadata with adequate
+  // headroom for the rsocket header.
+  std::unique_ptr<folly::IOBuf> data = std::move(payload_).data();
+  std::unique_ptr<folly::IOBuf> metadata = std::move(payload_.metadata());
+  size_t dataLen = data ? data->computeChainDataLength() : 0;
+  DCHECK(metadata.get());
+  size_t metadataLen = metadata->computeChainDataLength();
+  DCHECK(metadataLen > 0);
+
+  constexpr size_t rsocketLen = // 12 bytes
+      (2 * Serializer::kBytesForFrameOrMetadataLength) + frameHeaderSize();
+  DCHECK(metadata->headroom() >= rsocketLen);
+
+  // Write 12-byte rsocket header directly into the metadata headroom.
+  HeaderSerializer writer(metadata->writableData() - rsocketLen, rsocketLen);
+  const size_t frameSize = frameHeaderSize() + dataLen + metadataLen +
+      Serializer::kBytesForFrameOrMetadataLength;
+  writer.writeFrameOrMetadataSize(frameSize);
+  writer.write(streamId());
+  writer.writeFrameTypeAndFlags(
+      frameType(),
+      Flags::none()
+          .metadata(true)
+          .follows(hasFollows())
+          .complete(hasComplete())
+          .next(hasNext()));
+  writer.writeFrameOrMetadataSize(metadataLen);
+  DCHECK_EQ(writer.result().size(), rsocketLen);
+  metadata->prepend(rsocketLen);
+
+  // Append data to metadata, packing into the metadata buf
+  // if under threshold (short iovecs better).
+  folly::IOBuf* tail = metadata->prev();
+  if (dataLen <= tail->tailroom() &&
+      dataLen <= folly::IOBufQueue::kMaxPackCopy) {
+    for (; data; data = data->pop()) {
+      size_t n = data->length();
+      DCHECK_GE(tail->tailroom(), n);
+      memcpy(tail->writableTail(), data->data(), n);
+      tail->append(n);
+    }
+  } else {
+    tail->appendChain(std::move(data));
+  }
+  return metadata;
+}
+
 void ErrorFrame::serialize(Serializer& writer) && {
   /**
    *  0                   1                   2                   3

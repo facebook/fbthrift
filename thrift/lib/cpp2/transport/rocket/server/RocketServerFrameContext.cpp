@@ -59,9 +59,8 @@ void RocketServerFrameContext::sendPayload(Payload&& payload, Flags flags) {
   DCHECK(connection_);
   DCHECK(flags.next() || flags.complete());
 
-  Serializer writer;
-  PayloadFrame(streamId_, std::move(payload), flags).serialize(writer);
-  connection_->send(std::move(writer).move());
+  auto buf = PayloadFrame(streamId_, std::move(payload), flags).serialize();
+  connection_->send(std::move(buf));
 }
 
 void RocketServerFrameContext::sendError(RocketException&& rex) {

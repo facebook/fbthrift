@@ -42,7 +42,15 @@ namespace {
 std::unique_ptr<folly::IOBuf> serializeMetadata(
     const ResponseRpcMetadata& responseMetadata) {
   CompactProtocolWriter writer;
+  // Default is to leave some headroom for rsocket headers
+  size_t serSize = responseMetadata.serializedSizeZC(&writer);
+  constexpr size_t kHeadroomBytes = 16;
+  constexpr size_t kMinAllocBytes = 1024;
+  auto buf =
+      folly::IOBuf::create(std::max(kHeadroomBytes + serSize, kMinAllocBytes));
+  buf->advance(kHeadroomBytes);
   folly::IOBufQueue queue;
+  queue.append(std::move(buf));
   writer.setOutput(&queue);
   responseMetadata.write(&writer);
   return queue.move();

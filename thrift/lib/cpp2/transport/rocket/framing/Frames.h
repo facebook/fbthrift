@@ -427,6 +427,7 @@ class PayloadFrame {
     return flags_.next();
   }
 
+  std::unique_ptr<folly::IOBuf> serialize() &&;
   void serialize(Serializer& writer) &&;
 
  private:
@@ -435,6 +436,7 @@ class PayloadFrame {
   Payload payload_;
 
   void serializeIntoSingleFrame(Serializer& writer) &&;
+  std::unique_ptr<folly::IOBuf> serializeUsingMetadataHeadroom() &&;
   FOLLY_NOINLINE void serializeInFragmentsSlow(Serializer& writer) &&;
 };
 

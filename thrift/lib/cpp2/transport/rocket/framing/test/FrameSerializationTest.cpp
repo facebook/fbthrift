@@ -517,6 +517,50 @@ TEST(FrameSerialization, RequestChannelLargeData) {
   validate(serializeAndDeserializeFragmented(std::move(frame)));
 }
 
+TEST(FrameSerialization, PayloadFrameSerializeAPI) {
+  auto validate = [](std::unique_ptr<folly::IOBuf> md,
+                     std::unique_ptr<folly::IOBuf> data) {
+    folly::IOBufEqualTo eq;
+    PayloadFrame frame1(
+        kTestStreamId,
+        Payload::makeFromMetadataAndData(md->clone(), data->clone()),
+        Flags::none().follows(true).complete(true).next(true));
+    PayloadFrame frame2(
+        kTestStreamId,
+        Payload::makeFromMetadataAndData(md->clone(), data->clone()),
+        Flags::none().follows(true).complete(true).next(true));
+    auto altApi = std::move(frame1).serialize();
+    Serializer writer;
+    std::move(frame2).serialize(writer);
+    auto regApi = std::move(writer).move();
+    EXPECT_TRUE(eq(altApi, regApi));
+  };
+
+  // Base, No headroom in metadata.
+  validate(
+      folly::IOBuf::wrapBuffer(kMetadata), folly::IOBuf::wrapBuffer(kData));
+  // Base, with headroom.
+  validate(
+      folly::IOBuf::wrapBuffer(kMetadata)->cloneCoalescedWithHeadroomTailroom(
+          16, 256),
+      folly::IOBuf::wrapBuffer(kData));
+
+  // Bigger metadata, no headroom.
+  constexpr size_t kBigish = 8 << 10;
+  auto bigIOB = folly::IOBuf::create(kBigish);
+  bigIOB->append(kBigish);
+  validate(std::move(bigIOB), folly::IOBuf::wrapBuffer(kData));
+
+  // Bigger metadata, with headroom.
+  auto bigIOBWithHeadroom = folly::IOBuf::create(kBigish);
+  bigIOBWithHeadroom->advance(16);
+  bigIOBWithHeadroom->append(kBigish - 16);
+  validate(std::move(bigIOBWithHeadroom), folly::IOBuf::wrapBuffer(kData));
+
+  // Empty metadata
+  validate(std::make_unique<folly::IOBuf>(), folly::IOBuf::wrapBuffer(kData));
+}
+
 } // namespace rocket
 } // namespace thrift
 } // namespace apache
