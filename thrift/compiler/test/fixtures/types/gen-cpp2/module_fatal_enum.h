@@ -132,6 +132,7 @@ struct has_bitwise_ops_enum_traits {
     >;
   };
 
+
   static char const *to_string(type e, char const *fallback) {
     switch (e) {
       case type::none: return "none";
@@ -222,6 +223,7 @@ struct is_unscoped_enum_traits {
       >
     >;
   };
+
 
   static char const *to_string(type e, char const *fallback) {
     switch (e) {
@@ -318,5 +320,4 @@ FATAL_REGISTER_ENUM_TRAITS(
     static_cast<::apache::thrift::legacy_type_id_t>(11057525912578401640ull)
   >
 );
-
 }}}} // apache::thrift::fixtures::types

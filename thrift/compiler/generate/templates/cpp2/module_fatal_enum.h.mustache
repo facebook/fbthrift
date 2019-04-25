@@ -1,0 +1,149 @@
+<%!
+
+  Copyright 2016 Facebook, Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+%><% > Autogen%>
+#pragma once
+
+#include "<%program:include_prefix%><%program:name%>_types.h"
+#include "<%program:include_prefix%><%program:name%>_fatal.h"
+
+#include <fatal/type/enum.h>
+
+#include <type_traits>
+
+<% > common/namespace_cpp2_begin%>
+
+
+<%#program:enums%>
+namespace thrift_fatal_impl_detail {
+
+struct <%enum:name%>_enum_traits {
+  using type = <% > common/namespace_cpp2%><%enum:name%>;
+  using name = thrift_fatal_impl_detail::<% > fatal/fatal_prefix%>__unique_strings_list::<%enum:name%>;
+
+  struct <%enum:name%>__struct_unique_strings_list {
+    <%#enum:values%>
+    using <%enumValue:cpp_name%> = thrift_fatal_impl_detail::<% > fatal/fatal_prefix%>__unique_strings_list::<%enumValue:cpp_name%>;
+    <%/enum:values%>
+  };
+
+  <%#enum:values%>
+  struct <%enum:name%>__struct_enum_members_<%enumValue:cpp_name%> {
+    using name = <%enum:name%>__struct_unique_strings_list::<%enumValue:cpp_name%>;
+    using value = std::integral_constant<type, type::<%enumValue:cpp_name%>>;
+
+    <%#enumValue:fatal_annotations?%>
+    class annotations {
+      struct annotations__unique_annotations_keys {
+        <%#enumValue:fatal_annotations%>
+        using <%annotation:safe_key%> = thrift_fatal_impl_detail::<% > fatal/fatal_prefix%>__unique_strings_list::<%annotation:safe_key%>;
+        <%/enumValue:fatal_annotations%>
+      };
+
+      struct annotations__unique_annotations_values {
+        <%#enumValue:fatal_annotations%>
+        using <%annotation:safe_key%> = <%annotation:fatal_string%>;
+        <%/enumValue:fatal_annotations%>
+      };
+
+      public:
+      using keys = annotations__unique_annotations_keys;
+      using values = annotations__unique_annotations_values;
+      using map = ::fatal::list<
+        <%#enumValue:fatal_annotations%>
+        ::apache::thrift::annotation<
+          keys::<%annotation:safe_key%>,
+          values::<%annotation:safe_key%>
+        ><%^last?%>,<%/last?%>
+        <%/enumValue:fatal_annotations%>
+      >;
+    };
+    <%/enumValue:fatal_annotations?%>
+    <%^enumValue:fatal_annotations?%>
+    <% > fatal/fatal_empty_annotation%>
+    <%/enumValue:fatal_annotations?%>
+
+  };
+
+  <%/enum:values%>
+  struct <%enum:name%>__struct_enum_members {
+    <%#enum:values%>
+    using <%enumValue:cpp_name%> = <%enum:name%>__struct_enum_members_<%enumValue:cpp_name%>;
+    <%/enum:values%>
+  };
+
+  using member = <%enum:name%>__struct_enum_members;
+
+  using fields = ::fatal::list<
+      <%#enum:values%>
+      member::<%enumValue:cpp_name%><%^last?%>,<%/last?%>
+      <%/enum:values%>
+  >;
+
+  <%#enum:fatal_annotations?%>
+  class annotations {
+    struct annotations__unique_annotations_keys {
+      <%#enum:fatal_annotations%>
+      using <%annotation:safe_key%> = thrift_fatal_impl_detail::<% > fatal/fatal_prefix%>__unique_strings_list::<%annotation:safe_key%>;
+      <%/enum:fatal_annotations%>
+    };
+
+    struct annotations__unique_annotations_values {
+      <%#enum:fatal_annotations%>
+      using <%annotation:safe_key%> = <%annotation:fatal_string%>;
+      <%/enum:fatal_annotations%>
+    };
+
+    public:
+    using keys = annotations__unique_annotations_keys;
+    using values = annotations__unique_annotations_values;
+    using map = ::fatal::list<
+      <%#enum:fatal_annotations%>
+      ::apache::thrift::annotation<
+        keys::<%annotation:safe_key%>,
+        values::<%annotation:safe_key%>
+      ><%^last?%>,<%/last?%>
+      <%/enum:fatal_annotations%>
+    >;
+  };
+  <%/enum:fatal_annotations?%>
+  <%^enum:fatal_annotations?%>
+  <% > fatal/fatal_empty_annotation%>
+  <%/enum:fatal_annotations?%>
+
+
+  static char const *to_string(type e, char const *fallback) {
+    switch (e) {
+      <%#enum:dedupedValues%>
+      case type::<%enumValue:cpp_name%>: return "<%enumValue:cpp_name%>";
+      <%/enum:dedupedValues%>
+      default: return fallback;
+    }
+  }
+};
+
+} // thrift_fatal_impl_detail
+
+FATAL_REGISTER_ENUM_TRAITS(
+  <% > common/namespace_cpp2%>thrift_fatal_impl_detail::<%enum:name%>_enum_traits,
+  ::apache::thrift::detail::type_common_metadata_impl<
+    <%program:name%>_tags::module,
+    ::apache::thrift::reflected_annotations<<% > common/namespace_cpp2%>thrift_fatal_impl_detail::<%enum:name%>_enum_traits::annotations>,
+    static_cast<::apache::thrift::legacy_type_id_t>(<%enum:legacy_type_id%>ull)
+  >
+);
+<%/program:enums%>
+<% > common/namespace_cpp2_end%>

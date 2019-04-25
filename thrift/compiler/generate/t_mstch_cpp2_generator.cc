@@ -122,6 +122,19 @@ const std::string& get_cpp_name(const Node* node) {
   return name != node->annotations_.end() ? name->second : node->get_name();
 }
 
+std::vector<t_annotation> get_fatal_annotations(
+    std::map<std::string, std::string> annotations) {
+  std::vector<t_annotation> fatal_annotations;
+  for (const auto& iter : annotations) {
+    if (is_annotation_blacklisted_in_fatal(iter.first)) {
+      continue;
+    }
+    fatal_annotations.emplace_back(iter.first, iter.second);
+  }
+
+  return fatal_annotations;
+}
+
 std::string get_fatal_string_short_id(const std::string& key) {
   return boost::algorithm::replace_all_copy(key, ".", "_");
 }
@@ -241,6 +254,10 @@ class mstch_cpp2_enum : public mstch_enum {
             {"enum:cpp_declare_bitwise_ops",
              &mstch_cpp2_enum::cpp_declare_bitwise_ops},
             {"enum:has_zero", &mstch_cpp2_enum::has_zero},
+            {"enum:fatal_annotations?",
+             &mstch_cpp2_enum::has_fatal_annotations},
+            {"enum:fatal_annotations", &mstch_cpp2_enum::fatal_annotations},
+            {"enum:legacy_type_id", &mstch_cpp2_enum::get_legacy_type_id},
         });
   }
   mstch::node is_empty() {
@@ -311,6 +328,19 @@ class mstch_cpp2_enum : public mstch_enum {
     }
     return mstch::node();
   }
+  mstch::node has_fatal_annotations() {
+    return get_fatal_annotations(enm_->annotations_).size() > 0;
+  }
+  mstch::node fatal_annotations() {
+    return generate_elements(
+        get_fatal_annotations(enm_->annotations_),
+        generators_->annotation_generator_.get(),
+        generators_,
+        cache_);
+  }
+  mstch::node get_legacy_type_id() {
+    return std::to_string(enm_->get_type_id());
+  }
 };
 
 class mstch_cpp2_enum_value : public mstch_enum_value {
@@ -325,10 +355,24 @@ class mstch_cpp2_enum_value : public mstch_enum_value {
         this,
         {
             {"enumValue:cpp_name", &mstch_cpp2_enum_value::cpp_name},
+            {"enumValue:fatal_annotations?",
+             &mstch_cpp2_enum_value::has_fatal_annotations},
+            {"enumValue:fatal_annotations",
+             &mstch_cpp2_enum_value::fatal_annotations},
         });
   }
   mstch::node cpp_name() {
     return get_cpp_name(enm_value_);
+  }
+  mstch::node has_fatal_annotations() {
+    return get_fatal_annotations(enm_value_->annotations_).size() > 0;
+  }
+  mstch::node fatal_annotations() {
+    return generate_elements(
+        get_fatal_annotations(enm_value_->annotations_),
+        generators_->annotation_generator_.get(),
+        generators_,
+        cache_);
   }
 };
 
@@ -1094,6 +1138,31 @@ class mstch_cpp2_service : public mstch_service {
   }
 };
 
+class mstch_cpp2_annotation : public mstch_annotation {
+ public:
+  mstch_cpp2_annotation(
+      const std::string& key,
+      const std::string& val,
+      std::shared_ptr<mstch_generators const> generators,
+      std::shared_ptr<mstch_cache> cache,
+      ELEMENT_POSITION pos,
+      int32_t index)
+      : mstch_annotation(key, val, generators, cache, pos, index) {
+    register_methods(
+        this,
+        {
+            {"annotation:safe_key", &mstch_cpp2_annotation::safe_key},
+            {"annotation:fatal_string", &mstch_cpp2_annotation::fatal_string},
+        });
+  }
+  mstch::node safe_key() {
+    return get_fatal_string_short_id(key_);
+  }
+  mstch::node fatal_string() {
+    return render_fatal_string(val_);
+  }
+};
+
 class mstch_cpp2_const : public mstch_const {
  public:
   mstch_cpp2_const(
@@ -1545,6 +1614,21 @@ class service_cpp2_generator : public service_generator {
   }
 };
 
+class annotation_cpp2_generator : public annotation_generator {
+ public:
+  annotation_cpp2_generator() = default;
+  ~annotation_cpp2_generator() override = default;
+  std::shared_ptr<mstch_base> generate(
+      t_annotation const& keyval,
+      std::shared_ptr<mstch_generators const> generators,
+      std::shared_ptr<mstch_cache> cache,
+      ELEMENT_POSITION pos = ELEMENT_POSITION::NONE,
+      int32_t index = 0) const override {
+    return std::make_shared<mstch_cpp2_annotation>(
+        keyval.key, keyval.val, generators, cache, pos, index);
+  }
+};
+
 class const_cpp2_generator : public const_generator {
  public:
   const_cpp2_generator() = default;
@@ -1657,6 +1741,8 @@ void t_mstch_cpp2_generator::set_mstch_generators() {
   generators_->set_const_generator(std::make_unique<const_cpp2_generator>());
   generators_->set_const_value_generator(
       std::make_unique<const_value_cpp2_generator>());
+  generators_->set_annotation_generator(
+      std::make_unique<annotation_cpp2_generator>());
   generators_->set_program_generator(
       std::make_unique<program_cpp2_generator>());
 }
@@ -1691,6 +1777,8 @@ void t_mstch_cpp2_generator::generate_reflection(t_program const* program) {
   // Unique Compile-time Strings, Metadata tags and Metadata registration
   render_to_file(cache_->programs_[id], "module_fatal.h", name + "_fatal.h");
 
+  render_to_file(
+      cache_->programs_[id], "module_fatal_enum.h", name + "_fatal_enum.h");
   render_to_file(
       cache_->programs_[id],
       "module_fatal_constant.h",

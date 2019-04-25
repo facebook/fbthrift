@@ -233,7 +233,6 @@ class CppGenerator(t_generator.Generator):
         self.fatal_str_uid = []
         self._fatal_type_dependencies = None
 
-        self._generate_fatal_enum(program)
         self._generate_fatal_union(program)
         self._generate_fatal_struct(program)
 
@@ -394,39 +393,7 @@ class CppGenerator(t_generator.Generator):
             .format(indent, legacyid))
         scope('{0}>'.format(indent))
 
-    def _generate_fatal_enum(self, program):
-        name = self._program.name
-        ns = self._get_original_namespace()
-
-        with self._make_context(name + '_fatal_enum') as context, \
-                get_global_scope(CppPrimitiveFactory, context) as sg:
-            sg('#include "{0}"'.format(self._with_include_prefix(
-                self._program, name + '_types.h')))
-
-            sg('#include "{0}"'.format(self._fatal_header()))
-
-            sg()
-            sg('#include <fatal/type/enum.h>')
-            sg()
-            sg('#include <type_traits>')
-            sg()
-            if len(ns) > 0:
-                with sg.namespace(ns).scope as sns:
-                    return self._generate_fatal_enum_impl(sns, program)
-            else:
-                return self._generate_fatal_enum_impl(sg, program)
-
-    def _generate_fatal_enum_impl(self, sns, program):
-        result = {}
-        order = []
-        for i in program.enums:
-            self._generate_fatal_enum_traits(i.name, i.name, i.enum_values, sns,
-                i.annotations, i.type_id)
-            string_ref = self._set_fatal_string(i.name)
-            result[i.name] = (i.name, string_ref, string_ref)
-            order.append(i.name)
-        return (order, result)
-
+    # TODO: still used in generating fatal_union
     def _generate_fatal_enum_traits(self, name, scoped_name, members, scope,
       annotations, legacyid, guaranteed_unique=False):
         scoped_ns = self._get_scoped_original_namespace()

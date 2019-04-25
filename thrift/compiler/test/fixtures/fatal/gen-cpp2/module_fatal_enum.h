@@ -248,6 +248,7 @@ struct enum3_enum_traits {
         >
       >;
     };
+
   };
 
   struct enum3__struct_enum_members {
@@ -311,6 +312,7 @@ struct enum3_enum_traits {
       >
     >;
   };
+
 
   static char const *to_string(type e, char const *fallback) {
     switch (e) {
@@ -849,5 +851,4 @@ FATAL_REGISTER_ENUM_TRAITS(
     static_cast<::apache::thrift::legacy_type_id_t>(958943865626138984ull)
   >
 );
-
 }} // test_cpp2::cpp_reflection
