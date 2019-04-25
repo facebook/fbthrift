@@ -212,24 +212,13 @@ class CppGenerator(t_generator.Generator):
         name = self._program.name
         ns = self._get_original_namespace()
         self.fatal_detail_ns = 'thrift_fatal_impl_detail'
-        with self._make_context(name + '_fatal') as context, \
+        with self._make_context(name + '_fatal', 'dummy') as context, \
                 get_global_scope(CppPrimitiveFactory, context) as sg:
-            sg('#include <thrift/lib/cpp2/reflection/reflection.h>')
-            sg()
-            sg('#include <fatal/type/list.h>')
-            sg('#include <fatal/type/pair.h>')
-            sg('#include <fatal/type/sequence.h>')
-            sg()
-            sg('#include "{0}"'.format(self._with_include_prefix(
-                self._program, name + '_types.h')))
-
             if len(ns) > 0:
                 with sg.namespace(ns).scope as sns:
                     self._generate_fatal_impl(sns, program)
             else:
                 self._generate_fatal_impl(sg, program)
-            sg('#include "{0}_fatal_types.h"'.format(
-                self._with_include_prefix(self._program, name)))
 
     def _generate_fatal_impl(self, sns, program):
         name = self._program.name
@@ -244,72 +233,9 @@ class CppGenerator(t_generator.Generator):
         self.fatal_str_uid = []
         self._fatal_type_dependencies = None
 
-        name_id = self._set_fatal_string(name)
-
-        order = ['language', 'enum', 'union', 'struct', 'constant', 'service']
-        items = {}
-        items['language'] = self._generate_fatal_language(program)
-        items['enum'] = self._generate_fatal_enum(program)
-        items['union'] = self._generate_fatal_union(program)
-        items['struct'] = self._generate_fatal_struct(program)
-        items['constant'] = self._dump_fatal_constant(program)
-        items['service'] = self._dump_fatal_service(program)
-
-        # Unique Compile-time Strings
-        with sns.namespace(self.fatal_detail_ns).scope as detail:
-            with detail.cls('struct {0}'.format(str_class)).scope as cstr:
-                for i in sorted(self.fatal_str_map):
-                    cstr('using {0} = {1};'.format(
-                        self.fatal_str_map[i],
-                        self._render_fatal_string(i)))
-
-        # Metadata tags
-        sns('class {0}_tags {1}'.format(name, '{')).scope
-        nname = {}
-        for o in order:
-            nname[o] = '{0}_{1}__unique_{2}s_list'.format(safe_ns, name, o)
-            eorder = items[o][0]
-            entries = items[o][1]
-            sns('  struct {0} {1}'.format(nname[o], '{'))
-            for i in eorder:
-                if type(entries) == list:
-                    sns('    using {0} = {1};'.format(
-                        self._get_fatal_string_short_id(i[0]), i[1]))
-                elif type(entries) == dict:
-                    sns('    using {0} = {1};'.format(
-                        self._get_fatal_string_short_id(entries[i][0]),
-                        entries[i][1]))
-            sns('  };')
-            sns()
-        sns('public:')
-        sns('  struct module {0}'.format('{};'))
-        sns()
-        for o in order:
-            sns('  using {0}s = {1};'.format(o, nname[o]))
-        sns()
-        sns('  using strings = {0};'.format(self.fatal_str_map_id))
-        sns('};')
-        sns()
-
-        # Metadata registration
-        sns('THRIFT_REGISTER_REFLECTION_METADATA(')
-        sns('  {0},'.format(self.fatal_tag))
-        sns('  {0},'.format(name_id))
-        for item_idx, o in enumerate(order):
-            eorder = items[o][0]
-            entries = items[o][1]
-            sns('  // {0}s'.format(o))
-            sns('  ::fatal::list<')
-            for idx, i in enumerate(eorder):
-                if type(entries) == list:
-                    sns('    {0}{1}'.format(
-                        i[2], ',' if idx + 1 < len(entries) else ''))
-                elif type(entries) == dict:
-                    sns('    ::fatal::pair<{0}, {1}>{2}'
-                        .format(i, entries[i][2],
-                                ',' if idx + 1 < len(entries) else ''))
-            sns('  >{0}'.format(',' if item_idx + 1 < len(items) else ''))
-        sns(');')
+        self._generate_fatal_enum(program)
+        self._generate_fatal_union(program)
+        self._generate_fatal_struct(program)
 
     def _get_fatal_string_short_id(self, s):
         return self.fatal_str_map[s]
@@ -447,7 +373,6 @@ class CppGenerator(t_generator.Generator):
                 aclass('using keys = void;')
                 aclass('using values = void;')
             aclass('using map = ::fatal::list<')
-            import json
             for idx, i in enumerate(annotation_keys):
                 identifier = self._get_fatal_string_short_id(i)
                 aclass('  ::apache::thrift::annotation<')
@@ -468,20 +393,6 @@ class CppGenerator(t_generator.Generator):
         scope('{0}  static_cast<::apache::thrift::legacy_type_id_t>({1}ull)'
             .format(indent, legacyid))
         scope('{0}>'.format(indent))
-
-    def _generate_fatal_language(self, program):
-        replacement = {'cpp': '::', 'cpp2': '::', 'php': '_'}
-        order = []
-        result = {}
-        for i in program.namespaces:
-            language = i.key()
-            ns = self._program.get_namespace(language)
-            if language in replacement:
-                ns = ns.replace('.', replacement[language])
-            lang_id = self._set_fatal_string(language)
-            result[lang_id] = (language, lang_id, self._set_fatal_string(ns))
-            order.append(lang_id)
-        return (order, result)
 
     def _generate_fatal_enum(self, program):
         name = self._program.name
@@ -1002,49 +913,6 @@ class CppGenerator(t_generator.Generator):
                 detail(');')
 
         return (order, result)
-
-    def _dump_fatal_constant(self, program):
-        name = self._program.name
-        ns = self._get_original_namespace()
-
-        with self._make_context(name + '_fatal_constant', "dummy") as context, \
-                get_global_scope(CppPrimitiveFactory, context) as sg:
-            if len(ns) > 0:
-                with sg.namespace(ns).scope as sns:
-                    return self._dump_fatal_constant_impl(sns, program)
-            else:
-                return self._dump_fatal_constant_impl(sg, program)
-
-    def _dump_fatal_constant_impl(self, sns, program):
-        result = []
-        for i in program.consts:
-            string_ref = self._set_fatal_string(i.name)
-            result.append((i.name, string_ref, string_ref))
-        return (result, result)
-
-    def _dump_fatal_service(self, program):
-        name = self._program.name
-        ns = self._get_original_namespace()
-        with self._make_context(name + '_fatal_service', 'dummy') as context, \
-                get_global_scope(CppPrimitiveFactory, context) as sg:
-            if len(ns) > 0:
-                with sg.namespace(ns).scope as sns:
-                    return self._dump_fatal_service_impl(sns, program)
-            else:
-                return self._dump_fatal_service_impl(sg, program)
-
-    def _dump_fatal_service_impl(self, sns, program):
-        with sns.namespace(self.fatal_detail_ns).scope:
-            for s in program.services:
-                for m in s.functions:
-                    self._set_fatal_string(m.name)
-                    for a in m.arglist.members:
-                        self._set_fatal_string(a.name)
-        result = []
-        for i in program.services:
-            string_ref = self._set_fatal_string(i.name)
-            result.append((i.name, string_ref, string_ref))
-        return (result, result)
 
     # ==========================================================================
     # FATAL REFLECTION CODE - end

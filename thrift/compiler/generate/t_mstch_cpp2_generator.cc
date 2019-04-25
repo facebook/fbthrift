@@ -18,6 +18,7 @@
 #include <memory>
 #include <vector>
 
+#include <boost/algorithm/string/replace.hpp>
 #include <thrift/compiler/generate/common.h>
 #include <thrift/compiler/generate/t_mstch_generator.h>
 #include <thrift/compiler/generate/t_mstch_objects.h>
@@ -57,6 +58,23 @@ bool is_cpp_ref_unique_either(const t_field* f) {
       (f->annotations_.count("cpp2.ref_type") &&
        f->annotations_.at("cpp2.ref_type") == "unique") ||
       cpp2::is_implicit_ref(f->get_type());
+}
+
+bool is_annotation_blacklisted_in_fatal(const std::string& key) {
+  const static std::set<std::string> black_list{
+      "cpp.methods",
+      "cpp.name",
+      "cpp.ref",
+      "cpp.ref_type",
+      "cpp.template",
+      "cpp.type",
+      "cpp2.methods",
+      "cpp2.ref",
+      "cpp2.ref_type",
+      "cpp2.template",
+      "cpp2.type",
+  };
+  return black_list.find(key) != black_list.end();
 }
 
 bool same_types(const t_type* a, const t_type* b) {
@@ -102,6 +120,57 @@ template <typename Node>
 const std::string& get_cpp_name(const Node* node) {
   auto name = node->annotations_.find("cpp.name");
   return name != node->annotations_.end() ? name->second : node->get_name();
+}
+
+std::string get_fatal_string_short_id(const std::string& key) {
+  return boost::algorithm::replace_all_copy(key, ".", "_");
+}
+
+std::string get_fatal_namesoace_name_short_id(
+    const std::string& lang,
+    const std::string& ns) {
+  std::string replacement = lang == "cpp" || lang == "cpp2" ? "__" : "_";
+  std::string result = boost::algorithm::replace_all_copy(ns, ".", replacement);
+  if (lang == "php_path") {
+    return boost::algorithm::replace_all_copy(ns, "/", "_");
+  }
+  return result;
+}
+
+std::string get_fatal_namesoace(
+    const std::string& lang,
+    const std::string& ns) {
+  if (lang == "cpp" || lang == "cpp2") {
+    return boost::algorithm::replace_all_copy(ns, ".", "::");
+  } else if (lang == "php") {
+    return boost::algorithm::replace_all_copy(ns, ".", "_");
+  }
+  return ns;
+}
+
+std::string render_fatal_string(const std::string& normal_string) {
+  const static std::map<char, std::string> substition{
+      {'\0', "\\0"},
+      {'\n', "\\n"},
+      {'\r', "\\r"},
+      {'\t', "\\t"},
+      {'\'', "\\\'"},
+      {'\\', "\\\\"},
+  };
+  std::ostringstream res;
+  res << "::fatal::sequence<char";
+  for (const char& c : normal_string) {
+    res << ", '";
+    auto found = substition.find(c);
+    if (found != substition.end()) {
+      res << found->second;
+    } else {
+      res << c;
+    }
+    res << "'";
+  }
+  res << ">";
+  return res.str();
 }
 
 class cpp2_generator_context {
@@ -1102,10 +1171,98 @@ class mstch_cpp2_program : public mstch_program {
             {"program:optionals?", &mstch_cpp2_program::optionals},
             {"program:coroutines?", &mstch_cpp2_program::coroutines},
             {"program:nimble?", &mstch_cpp2_program::nimble},
+            {"program:fatal_languages", &mstch_cpp2_program::fatal_languages},
+            {"program:fatal_enums", &mstch_cpp2_program::fatal_enums},
+            {"program:fatal_unions", &mstch_cpp2_program::fatal_unions},
+            {"program:fatal_structs", &mstch_cpp2_program::fatal_structs},
+            {"program:fatal_constants", &mstch_cpp2_program::fatal_constants},
+            {"program:fatal_services", &mstch_cpp2_program::fatal_services},
+            {"program:fatal_identifiers",
+             &mstch_cpp2_program::fatal_identifiers},
         });
   }
   std::string get_program_namespace(t_program const* program) override {
     return t_mstch_cpp2_generator::get_cpp2_namespace(program);
+  }
+
+  std::vector<const t_typedef*> alias_to_struct() {
+    std::vector<const t_typedef*> result;
+    for (const t_typedef* i : program_->get_typedefs()) {
+      const t_type* alias = i->get_type();
+      if (alias->is_typedef() && alias->annotations_.count("cpp.type")) {
+        const t_type* ttype = i->get_type()->get_true_type();
+        if (ttype->is_struct() || ttype->is_xception()) {
+          result.push_back(i);
+        }
+      }
+    }
+    return result;
+  }
+  template <typename Node>
+  void collect_fatal_string_annotated(
+      std::map<std::string, std::string>& fatal_strings,
+      const Node* node) {
+    // TODO: extra copy
+    auto cpp_name = get_cpp_name(node);
+    fatal_strings.emplace(get_fatal_string_short_id(cpp_name), cpp_name);
+    for (const auto& a : node->annotations_) {
+      if (!is_annotation_blacklisted_in_fatal(a.first)) {
+        fatal_strings.emplace(get_fatal_string_short_id(a.first), a.first);
+      }
+    }
+  }
+  std::vector<std::string> get_fatal_enum_names() {
+    std::vector<std::string> result;
+    for (const auto* enm : program_->get_enums()) {
+      result.push_back(get_fatal_string_short_id(enm->get_name()));
+    }
+    return result;
+  }
+  std::vector<std::string> get_fatal_union_names() {
+    std::vector<std::string> result;
+    for (const auto* obj : program_->get_objects()) {
+      if (obj->is_union()) {
+        result.push_back(get_fatal_string_short_id(obj->get_name()));
+      }
+    }
+    return result;
+  }
+  std::vector<std::string> get_fatal_struct_names() {
+    std::vector<std::string> result;
+    for (const auto* obj : program_->get_objects()) {
+      if (!obj->is_union()) {
+        result.push_back(get_fatal_string_short_id(obj->get_name()));
+      }
+    }
+    // typedefs resolve to struct
+    for (const t_typedef* i : alias_to_struct()) {
+      result.push_back(get_fatal_string_short_id(i->get_name()));
+    }
+    return result;
+  }
+  std::vector<std::string> get_fatal_constant_names() {
+    std::vector<std::string> result;
+    for (const auto* cnst : program_->get_consts()) {
+      result.push_back(get_fatal_string_short_id(cnst->get_name()));
+    }
+    return result;
+  }
+  std::vector<std::string> get_fatal_service_names() {
+    std::vector<std::string> result;
+    for (const auto* service : program_->get_services()) {
+      result.push_back(get_fatal_string_short_id(service->get_name()));
+    }
+    return result;
+  }
+  mstch::node to_fatal_string_array(const std::vector<std::string>&& vec) {
+    mstch::array a;
+    for (size_t i = 0; i < vec.size(); i++) {
+      a.push_back(mstch::map{
+          {"fatal_string:name", vec.at(i)},
+          {"last?", i == vec.size() - 1},
+      });
+    }
+    return mstch::map{{"fatal_strings:items", a}};
   }
 
   mstch::node namespace_cpp2() {
@@ -1183,6 +1340,102 @@ class mstch_cpp2_program : public mstch_program {
   }
   mstch::node nimble() {
     return cache_->parsed_options_.count("nimble") != 0;
+  }
+  mstch::node fatal_languages() {
+    mstch::array a;
+    size_t size = program_->get_namespaces().size();
+    size_t idx = 0;
+    for (const auto& pair : program_->get_namespaces()) {
+      a.push_back(mstch::map{
+          {"language:safe_name", get_fatal_string_short_id(pair.first)},
+          {"language:safe_namespace",
+           get_fatal_namesoace_name_short_id(pair.first, pair.second)},
+          {"last?", idx == size - 1},
+      });
+      ++idx;
+    }
+    return mstch::map{{"fatal_languages:items", a}};
+  }
+  mstch::node fatal_enums() {
+    return to_fatal_string_array(get_fatal_enum_names());
+  }
+  mstch::node fatal_unions() {
+    return to_fatal_string_array(get_fatal_union_names());
+  }
+  mstch::node fatal_structs() {
+    return to_fatal_string_array(get_fatal_struct_names());
+  }
+  mstch::node fatal_constants() {
+    return to_fatal_string_array(get_fatal_constant_names());
+  }
+  mstch::node fatal_services() {
+    return to_fatal_string_array(get_fatal_service_names());
+  }
+  mstch::node fatal_identifiers() {
+    std::map<std::string, std::string> unique_names;
+    unique_names.emplace(
+        get_fatal_string_short_id(program_->get_name()), program_->get_name());
+    // languages and namespaces
+    for (const auto& pair : program_->get_namespaces()) {
+      unique_names.emplace(get_fatal_string_short_id(pair.first), pair.first);
+      unique_names.emplace(
+          get_fatal_namesoace_name_short_id(pair.first, pair.second),
+          get_fatal_namesoace(pair.first, pair.second));
+    }
+    // enums
+    for (const auto* enm : program_->get_enums()) {
+      collect_fatal_string_annotated(unique_names, enm);
+      unique_names.emplace(
+          get_fatal_string_short_id(enm->get_name()), enm->get_name());
+      for (const auto& i : enm->get_enum_values()) {
+        collect_fatal_string_annotated(unique_names, i);
+      }
+    }
+    // structs, unions and exceptions
+    for (const auto* obj : program_->get_objects()) {
+      if (obj->is_union()) {
+        // When generating <program_name>_fatal_union.h, we will generate
+        // <union_name>_Type_enum_traits
+        unique_names.emplace("Type", "Type");
+      }
+      collect_fatal_string_annotated(unique_names, obj);
+      for (const auto& m : obj->get_members()) {
+        collect_fatal_string_annotated(unique_names, m);
+      }
+    }
+    // consts
+    for (const auto* cnst : program_->get_consts()) {
+      unique_names.emplace(
+          get_fatal_string_short_id(cnst->get_name()), cnst->get_name());
+    }
+    // services
+    for (const auto* service : program_->get_services()) {
+      // function annotations are not currently included.
+      unique_names.emplace(
+          get_fatal_string_short_id(service->get_name()), service->get_name());
+      for (const auto* f : service->get_functions()) {
+        unique_names.emplace(
+            get_fatal_string_short_id(f->get_name()), f->get_name());
+        for (const auto* p : f->get_arglist()->get_members()) {
+          unique_names.emplace(
+              get_fatal_string_short_id(p->get_name()), p->get_name());
+        }
+      }
+    }
+    // typedefs resolve to struct
+    for (const t_typedef* i : alias_to_struct()) {
+      unique_names.emplace(
+          get_fatal_string_short_id(i->get_name()), i->get_name());
+    }
+
+    mstch::array a;
+    for (const auto& name : unique_names) {
+      a.push_back(mstch::map{
+          {"identifier:name", name.first},
+          {"identifier:fatal_string", render_fatal_string(name.second)},
+      });
+    }
+    return a;
   }
 };
 
@@ -1429,10 +1682,14 @@ void t_mstch_cpp2_generator::generate_reflection(t_program const* program) {
         generators_->program_generator_->generate(program, generators_, cache_);
   }
 
+  // Combo include: all
   render_to_file(
       cache_->programs_[id], "module_fatal_all.h", name + "_fatal_all.h");
+  // Combo include: types
   render_to_file(
       cache_->programs_[id], "module_fatal_types.h", name + "_fatal_types.h");
+  // Unique Compile-time Strings, Metadata tags and Metadata registration
+  render_to_file(cache_->programs_[id], "module_fatal.h", name + "_fatal.h");
 
   render_to_file(
       cache_->programs_[id],

@@ -1,0 +1,122 @@
+<%!
+
+  Copyright 2016 Facebook, Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+%><% > Autogen%>
+#pragma once
+
+#include <thrift/lib/cpp2/reflection/reflection.h>
+
+#include <fatal/type/list.h>
+#include <fatal/type/pair.h>
+#include <fatal/type/sequence.h>
+
+#include "<%program:include_prefix%><%program:name%>_types.h"
+<% > common/namespace_cpp2_begin%>
+
+
+namespace thrift_fatal_impl_detail {
+
+struct <% > fatal/fatal_prefix%>__unique_strings_list {
+  <%#program:fatal_identifiers%>
+  using <%identifier:name%> = <%identifier:fatal_string%>;
+  <%/program:fatal_identifiers%>
+};
+
+} // thrift_fatal_impl_detail
+class <%program:name%>_tags {
+  struct <% > fatal/fatal_prefix%>__unique_languages_list {
+    <%#program:fatal_languages%><%#fatal_languages:items%>
+    using <%language:safe_name%> = thrift_fatal_impl_detail::<% > fatal/fatal_prefix%>__unique_strings_list::<%language:safe_name%>;
+    <%/fatal_languages:items%><%/program:fatal_languages%>
+  };
+
+  struct <% > fatal/fatal_prefix%>__unique_enums_list {
+    <%#program:fatal_enums%><% > fatal/fatal_using_string_declaration%><%/program:fatal_enums%>
+  };
+
+  struct <% > fatal/fatal_prefix%>__unique_unions_list {
+    <%#program:fatal_unions%><% > fatal/fatal_using_string_declaration%><%/program:fatal_unions%>
+  };
+
+  struct <% > fatal/fatal_prefix%>__unique_structs_list {
+    <%#program:fatal_structs%><% > fatal/fatal_using_string_declaration%><%/program:fatal_structs%>
+  };
+
+  struct <% > fatal/fatal_prefix%>__unique_constants_list {
+    <%#program:fatal_constants%><% > fatal/fatal_using_string_declaration%><%/program:fatal_constants%>
+  };
+
+  struct <% > fatal/fatal_prefix%>__unique_services_list {
+    <%#program:fatal_services%><% > fatal/fatal_using_string_declaration%><%/program:fatal_services%>
+  };
+
+public:
+  struct module {};
+
+  using languages = <% > fatal/fatal_prefix%>__unique_languages_list;
+  using enums = <% > fatal/fatal_prefix%>__unique_enums_list;
+  using unions = <% > fatal/fatal_prefix%>__unique_unions_list;
+  using structs = <% > fatal/fatal_prefix%>__unique_structs_list;
+  using constants = <% > fatal/fatal_prefix%>__unique_constants_list;
+  using services = <% > fatal/fatal_prefix%>__unique_services_list;
+
+  using strings = thrift_fatal_impl_detail::<% > fatal/fatal_prefix%>__unique_strings_list;
+};
+
+THRIFT_REGISTER_REFLECTION_METADATA(
+  <%program:name%>_tags::module,
+  thrift_fatal_impl_detail::<% > fatal/fatal_prefix%>__unique_strings_list::<%program:name%>,
+  // languages
+  ::fatal::list<
+    <%#program:fatal_languages%><%#fatal_languages:items%>
+    ::fatal::pair<thrift_fatal_impl_detail::<% > fatal/fatal_prefix%>__unique_strings_list::<%language:safe_name%>, thrift_fatal_impl_detail::<% > fatal/fatal_prefix%>__unique_strings_list::<%language:safe_namespace%>><%^last?%>,<%/last?%>
+    <%/fatal_languages:items%><%/program:fatal_languages%>
+  >,
+  // enums
+  ::fatal::list<
+    <%#program:fatal_enums%><%#fatal_strings:items%>
+    ::fatal::pair<<%fatal_string:name%>, thrift_fatal_impl_detail::<% > fatal/fatal_prefix%>__unique_strings_list::<%fatal_string:name%>><%^last?%>,<%/last?%>
+    <%/fatal_strings:items%><%/program:fatal_enums%>
+  >,
+  // unions
+  ::fatal::list<
+    <%#program:fatal_unions%><%#fatal_strings:items%>
+    ::fatal::pair<<%fatal_string:name%>, thrift_fatal_impl_detail::<% > fatal/fatal_prefix%>__unique_strings_list::<%fatal_string:name%>><%^last?%>,<%/last?%>
+    <%/fatal_strings:items%><%/program:fatal_unions%>
+  >,
+  // structs
+  ::fatal::list<
+    <%#program:fatal_structs%><%#fatal_strings:items%>
+    ::fatal::pair<<%fatal_string:name%>, thrift_fatal_impl_detail::<% > fatal/fatal_prefix%>__unique_strings_list::<%fatal_string:name%>><%^last?%>,<%/last?%>
+    <%/fatal_strings:items%><%/program:fatal_structs%>
+  >,
+  // constants
+  ::fatal::list<
+    <%#program:fatal_constants%><%#fatal_strings:items%>
+    thrift_fatal_impl_detail::<% > fatal/fatal_prefix%>__unique_strings_list::<%fatal_string:name%><%^last?%>,<%/last?%>
+    <%/fatal_strings:items%><%/program:fatal_constants%>
+  >,
+  // services
+  ::fatal::list<
+    <%#program:fatal_services%><%#fatal_strings:items%>
+    thrift_fatal_impl_detail::<% > fatal/fatal_prefix%>__unique_strings_list::<%fatal_string:name%><%^last?%>,<%/last?%>
+    <%/fatal_strings:items%><%/program:fatal_services%>
+  >
+);
+
+<% > common/namespace_cpp2_end%>
+
+#include "<%program:include_prefix%><%program:name%>_fatal_types.h"
