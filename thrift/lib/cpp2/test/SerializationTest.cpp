@@ -16,9 +16,10 @@
 #include <folly/portability/GTest.h>
 
 #include <memory>
-#include <folly/Format.h>
-#include <thrift/lib/cpp2/test/gen-cpp2/TestService.h>
+
+#include <fmt/core.h>
 #include <thrift/lib/cpp2/protocol/Serializer.h>
+#include <thrift/lib/cpp2/test/gen-cpp2/TestService.h>
 
 using namespace std;
 using namespace folly;
@@ -216,7 +217,7 @@ TestStructRecursive makeTestStructRecursive(size_t levels) {
   unique_ptr<TestStructRecursive> s;
   for (size_t i = levels; i > 0; --i) {
     auto t = make_unique<TestStructRecursive>();
-    t->tag = sformat("level-{}", i);
+    t->tag = fmt::format("level-{}", i);
     t->cdr = std::move(s);
     s = std::move(t);
   }

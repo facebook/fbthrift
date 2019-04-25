@@ -21,7 +21,6 @@
 #include <folly/portability/GTest.h>
 
 #include <folly/ExceptionWrapper.h>
-#include <folly/Format.h>
 #include <folly/Range.h>
 #include <folly/SocketAddress.h>
 #include <folly/Try.h>

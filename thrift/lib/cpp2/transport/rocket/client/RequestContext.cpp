@@ -18,7 +18,7 @@
 
 #include <glog/logging.h>
 
-#include <folly/Format.h>
+#include <fmt/core.h>
 #include <folly/Likely.h>
 #include <folly/Range.h>
 #include <folly/io/IOBuf.h>
@@ -58,7 +58,7 @@ void RequestContext::waitForWriteToComplete() {
     case State::WRITE_SCHEDULED:
     case State::WRITE_SENDING:
     case State::WRITE_SENT:
-      LOG(FATAL) << folly::sformat(
+      LOG(FATAL) << fmt::format(
           "Returned from Baton::wait() with unexpected state {} in {}",
           static_cast<int>(state_),
           __func__);
@@ -97,7 +97,7 @@ Payload RequestContext::waitForResponse(std::chrono::milliseconds timeout) {
     case State::WRITE_NOT_SCHEDULED:
     case State::WRITE_SCHEDULED:
     case State::WRITE_SENDING:
-      LOG(FATAL) << folly::sformat(
+      LOG(FATAL) << fmt::format(
           "Returned from Baton::wait() with unexpected state {} in {}",
           static_cast<int>(state_),
           __func__);

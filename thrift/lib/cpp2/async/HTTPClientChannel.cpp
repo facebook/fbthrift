@@ -18,7 +18,7 @@
 
 #include <utility>
 
-#include <folly/Format.h>
+#include <fmt/core.h>
 #include <proxygen/lib/http/HTTPCommonHeaders.h>
 #include <proxygen/lib/http/HTTPMethod.h>
 #include <proxygen/lib/http/codec/HTTP1xCodec.h>
@@ -446,7 +446,7 @@ void HTTPClientChannel::HTTPTransactionCallback::onEOM() noexcept {
   if (!oneway_ && cb_) {
     if (!body_) {
       requestError(folly::make_exception_wrapper<
-                   transport::TTransportException>(folly::sformat(
+                   transport::TTransportException>(fmt::format(
           "Empty HTTP response, {}",
           (msg_ ? folly::to<std::string>(
                       msg_->getStatusCode(), ", ", msg_->getStatusMessage())

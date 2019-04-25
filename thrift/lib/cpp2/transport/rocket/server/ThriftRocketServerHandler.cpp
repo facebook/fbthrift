@@ -19,6 +19,7 @@
 #include <memory>
 #include <utility>
 
+#include <fmt/core.h>
 #include <folly/ExceptionString.h>
 #include <folly/ExceptionWrapper.h>
 #include <folly/GLog.h>
@@ -116,7 +117,7 @@ void ThriftRocketServerHandler::handleSetupFrame(
   } catch (const std::exception& e) {
     return connection.close(folly::make_exception_wrapper<RocketException>(
         ErrorCode::INVALID_SETUP,
-        folly::sformat(
+        fmt::format(
             "Error deserializing SETUP payload: {}",
             folly::exceptionStr(e).toStdString())));
   }

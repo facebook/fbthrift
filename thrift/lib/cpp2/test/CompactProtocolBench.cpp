@@ -20,11 +20,12 @@
 
 #include <iostream>
 #include <vector>
+
+#include <fmt/core.h>
+#include <folly/Benchmark.h>
+#include <folly/Optional.h>
 #include <folly/portability/GFlags.h>
 #include <glog/logging.h>
-#include <folly/Benchmark.h>
-#include <folly/Format.h>
-#include <folly/Optional.h>
 #include <thrift/lib/cpp2/protocol/Serializer.h>
 
 using namespace std;
@@ -48,7 +49,7 @@ Deep makeDeep(size_t triplesz) {
     for (size_t j = 0; j < triplesz; ++j) {
       Deep2 data2;
       for (size_t k = 0; k < triplesz; ++k) {
-        data2.datas.push_back(sformat("omg[{}, {}, {}]", i, j, k));
+        data2.datas.push_back(fmt::format("omg[{}, {}, {}]", i, j, k));
       }
       data1.deeps.push_back(move(data2));
     }

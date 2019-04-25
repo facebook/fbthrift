@@ -19,8 +19,8 @@
 #include <memory>
 #include <utility>
 
+#include <fmt/core.h>
 #include <folly/ExceptionWrapper.h>
-#include <folly/Format.h>
 #include <folly/Likely.h>
 #include <folly/MapUtil.h>
 #include <folly/ScopeGuard.h>
@@ -188,7 +188,7 @@ void RocketServerConnection::handleFrame(std::unique_ptr<folly::IOBuf> frame) {
       if (it == partialFrames_.end()) {
         return close(folly::make_exception_wrapper<RocketException>(
             ErrorCode::INVALID,
-            folly::sformat(
+            fmt::format(
                 "Unexpected PAYLOAD frame received on stream {}",
                 static_cast<uint32_t>(streamId))));
       }
@@ -211,7 +211,7 @@ void RocketServerConnection::handleFrame(std::unique_ptr<folly::IOBuf> frame) {
     default:
       close(folly::make_exception_wrapper<RocketException>(
           ErrorCode::INVALID,
-          folly::sformat(
+          fmt::format(
               "Received unhandleable frame type ({})",
               static_cast<uint8_t>(frameType))));
   }
@@ -273,7 +273,7 @@ void RocketServerConnection::writeErr(
     size_t bytesWritten,
     const folly::AsyncSocketException& ex) noexcept {
   DestructorGuard dg(this);
-  close(folly::make_exception_wrapper<std::runtime_error>(folly::sformat(
+  close(folly::make_exception_wrapper<std::runtime_error>(fmt::format(
       "Failed to write to remote endpoint. Wrote {} bytes."
       " AsyncSocketException: {}",
       bytesWritten,

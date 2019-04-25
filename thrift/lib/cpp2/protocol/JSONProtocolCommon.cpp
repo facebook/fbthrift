@@ -18,7 +18,7 @@
 
 #include <type_traits>
 
-#include <folly/Format.h>
+#include <fmt/core.h>
 
 namespace {
 
@@ -158,10 +158,11 @@ static inline folly::StringPiece sp(char const& ch) {
     [[noreturn]] void JSONProtocolReaderCommon::throwUnexpectedChar(
         char const ch,
         char const expected) {
-  constexpr auto fmt =
-      "expected '{}' (hex 0x{:02x}), read '{:c}' (hex 0x{:02x})";
-  auto const msg = folly::sformat(fmt, expected, expected, ch, ch);
-  throw TProtocolException(TProtocolException::INVALID_DATA, msg);
+      auto const msg = fmt::format(
+          "expected '{0}' (hex {0:#02x}), read '{1}' (hex {1:#02x})",
+          expected,
+          ch);
+      throw TProtocolException(TProtocolException::INVALID_DATA, msg);
 }
 
 [[noreturn]] void JSONProtocolReaderCommon::throwInvalidEscapeChar(

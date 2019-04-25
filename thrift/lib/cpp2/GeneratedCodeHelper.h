@@ -18,7 +18,7 @@
 #include <type_traits>
 #include <utility>
 
-#include <folly/Format.h>
+#include <fmt/core.h>
 #include <folly/Traits.h>
 #include <folly/futures/Future.h>
 #include <folly/io/Cursor.h>
@@ -644,7 +644,7 @@ process_missing(
   using h = helper_r<ProtocolReader>;
   const char* fn = "process";
   auto type = TApplicationException::TApplicationExceptionType::UNKNOWN_METHOD;
-  const auto msg = folly::sformat("Method name {} not found", fname);
+  const auto msg = fmt::format("Method name {} not found", fname);
   return h::process_exn(fn, type, msg, std::move(req), ctx, eb, protoSeqId);
 }
 

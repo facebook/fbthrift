@@ -15,7 +15,7 @@
  */
 #include <thrift/lib/cpp2/test/util/TestInterface.h>
 
-#include <folly/Format.h>
+#include <fmt/core.h>
 #include <folly/io/Cursor.h>
 
 const std::string kEchoSuffix(45, 'c');
@@ -25,7 +25,7 @@ void TestInterface::sendResponse(std::string& _return, int64_t size) {
     usleep(size);
   }
 
-  _return = folly::format("test{0}", size).str();
+  _return = fmt::format("test{0}", size);
 }
 
 void TestInterface::noResponse(int64_t size) { usleep(size); }

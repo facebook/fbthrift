@@ -21,7 +21,7 @@
 #ifndef CPP2_PROTOCOL_DEBUGPROTOCOL_H_
 #define CPP2_PROTOCOL_DEBUGPROTOCOL_H_
 
-#include <folly/Format.h>
+#include <fmt/core.h>
 #include <folly/io/Cursor.h>
 #include <folly/io/IOBuf.h>
 #include <thrift/lib/cpp2/Thrift.h>
@@ -128,10 +128,8 @@ class DebugProtocolWriter {
   }
 
   template <class... Args>
-  void writePlain(Args&&... args) {
-    const auto& fmt = folly::format(std::forward<Args>(args)...);
-    auto cb = [this](folly::StringPiece sp) { this->writeRaw(sp); };
-    fmt(cb);
+  void writePlain(const Args&... args) {
+    writeRaw(fmt::format(args...));
   }
 
   void writeIndent() {

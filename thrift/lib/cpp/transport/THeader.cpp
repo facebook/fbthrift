@@ -16,9 +16,9 @@
 
 #include <thrift/lib/cpp/transport/THeader.h>
 
+#include <fmt/core.h>
 #include <folly/Conv.h>
 #include <folly/ExceptionString.h>
-#include <folly/Format.h>
 #include <folly/String.h>
 #include <folly/compression/Compression.h>
 #include <folly/io/Cursor.h>
@@ -555,7 +555,7 @@ unique_ptr<IOBuf> THeader::untransform(
       default:
         throw TApplicationException(
             TApplicationException::MISSING_RESULT,
-            folly::sformat("Unknown transform: {}", transId));
+            fmt::format("Unknown transform: {}", transId));
     }
   }
 
@@ -617,7 +617,7 @@ unique_ptr<IOBuf> THeader::transform(
       default:
         throw TTransportException(
             TTransportException::CORRUPTED_DATA,
-            folly::sformat("Unknown transform: {}", transId));
+            fmt::format("Unknown transform: {}", transId));
     }
     ++it;
   }

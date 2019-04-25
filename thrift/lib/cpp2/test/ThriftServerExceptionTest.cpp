@@ -16,6 +16,7 @@
 #include <thrift/lib/cpp2/test/gen-cpp2/Raiser.h>
 #include <thrift/lib/cpp2/util/ScopedServerInterfaceThread.h>
 
+#include <fmt/core.h>
 #include <folly/portability/GTest.h>
 
 using namespace std;
@@ -166,7 +167,7 @@ TEST_F(ThriftServerExceptionTest, bland_with_exception_ptr) {
   auto client = runner.newClient<RaiserAsyncClient>(&eb);
 
   auto lulz_s = string{"lulz"};
-  auto lulz_w = sformat("lulz: {}", message);
+  auto lulz_w = fmt::format("lulz: {}", message);
 
   EXPECT_TRUE(exn(client->future_doBland(), [&](const AppExn& e) {
       EXPECT_EQ(AppExn::TApplicationExceptionType::UNKNOWN, e.getType());
@@ -207,8 +208,8 @@ TEST_F(ThriftServerExceptionTest, banal_with_exception_ptr) {
   auto client = runner.newClient<RaiserAsyncClient>(&eb);
 
   auto banal_s = string{"apache::thrift::test::Banal"};
-  auto banal_w_guess = sformat("{0}: ::{0}", banal_s);
-  auto banal_w_known = sformat("::{0}", banal_s);
+  auto banal_w_guess = fmt::format("{0}: ::{0}", banal_s);
+  auto banal_w_known = fmt::format("::{0}", banal_s);
 
   EXPECT_TRUE(exn(client->future_doBland(), [&](const AppExn& e) {
       EXPECT_EQ(banal_w_guess, string(e.what()));
@@ -245,8 +246,8 @@ TEST_F(ThriftServerExceptionTest, fiery_with_exception_ptr) {
   auto client = runner.newClient<RaiserAsyncClient>(&eb);
 
   auto fiery_s = string{"apache::thrift::test::Fiery"};
-  auto fiery_w_guess = sformat("{0}: ::{0}", fiery_s);
-  auto fiery_w_known = sformat("::{0}", fiery_s);
+  auto fiery_w_guess = fmt::format("{0}: ::{0}", fiery_s);
+  auto fiery_w_known = fmt::format("::{0}", fiery_s);
 
   EXPECT_TRUE(exn(client->future_doBland(), [&](const AppExn& e) {
       EXPECT_EQ(fiery_w_guess, string(e.what()));
@@ -285,7 +286,7 @@ TEST_F(ThriftServerExceptionTest, bland_with_exception_wrapper) {
   auto client = runner.newClient<RaiserAsyncClient>(&eb);
 
   auto lulz_s = string{"lulz"};
-  auto lulz_w = sformat("lulz: {}", message);
+  auto lulz_w = fmt::format("lulz: {}", message);
 
   EXPECT_TRUE(exn(client->future_doBland(), [&](const AppExn& e) {
       EXPECT_EQ(AppExn::TApplicationExceptionType::UNKNOWN, e.getType());
@@ -326,8 +327,8 @@ TEST_F(ThriftServerExceptionTest, banal_with_exception_wrapper) {
   auto client = runner.newClient<RaiserAsyncClient>(&eb);
 
   auto banal_s = string{"apache::thrift::test::Banal"};
-  auto banal_w_guess = sformat("{0}: ::{0}", banal_s);
-  auto banal_w_known = sformat("::{0}", banal_s);
+  auto banal_w_guess = fmt::format("{0}: ::{0}", banal_s);
+  auto banal_w_known = fmt::format("::{0}", banal_s);
 
   EXPECT_TRUE(exn(client->future_doBland(), [&](const AppExn& e) {
       EXPECT_EQ(banal_w_guess, string(e.what()));
@@ -364,8 +365,8 @@ TEST_F(ThriftServerExceptionTest, fiery_with_exception_wrapper) {
   auto client = runner.newClient<RaiserAsyncClient>(&eb);
 
   auto fiery_s = string{"apache::thrift::test::Fiery"};
-  auto fiery_w_guess = sformat("{0}: ::{0}", fiery_s);
-  auto fiery_w_known = sformat("::{0}", fiery_s);
+  auto fiery_w_guess = fmt::format("{0}: ::{0}", fiery_s);
+  auto fiery_w_known = fmt::format("::{0}", fiery_s);
 
   EXPECT_TRUE(exn(client->future_doBland(), [&](const AppExn& e) {
       EXPECT_EQ(fiery_w_guess, string(e.what()));

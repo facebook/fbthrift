@@ -274,7 +274,7 @@ namespace detail {
 namespace si {
 [[noreturn]] void throw_app_exn_unimplemented(char const* const name) {
   throw TApplicationException(
-      folly::sformat("Function {} is unimplemented", name));
+      fmt::format("Function {} is unimplemented", name));
 }
 } // namespace si
 } // namespace detail

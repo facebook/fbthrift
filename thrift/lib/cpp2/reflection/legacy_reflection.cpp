@@ -16,7 +16,6 @@
 
 #include <thrift/lib/cpp2/reflection/legacy_reflection.h>
 
-#include <folly/Format.h>
 #include <folly/lang/Bits.h>
 #include <folly/ssl/OpenSSLHash.h>
 

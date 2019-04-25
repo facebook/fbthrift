@@ -22,8 +22,8 @@
 
 #include <glog/logging.h>
 
+#include <fmt/core.h>
 #include <folly/CPortability.h>
-#include <folly/Format.h>
 #include <folly/Likely.h>
 #include <folly/Range.h>
 #include <folly/Utility.h>
@@ -543,7 +543,7 @@ SetupFrame::SetupFrame(std::unique_ptr<folly::IOBuf> _frame)
   const auto minorVersion = cursor.readBE<uint16_t>();
 
   if (majorVersion != 1 || minorVersion != 0) {
-    throw std::runtime_error(folly::sformat(
+    throw std::runtime_error(fmt::format(
         "SETUP frame received with unsupported version {}.{}",
         majorVersion,
         minorVersion));

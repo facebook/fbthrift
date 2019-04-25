@@ -13,6 +13,7 @@ target_include_directories(
 target_link_libraries(
   thrift-core
   PUBLIC
+    fmt::fmt
     Folly::folly
 )
 

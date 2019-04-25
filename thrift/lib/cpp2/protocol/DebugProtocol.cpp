@@ -71,7 +71,7 @@ std::string fieldTypeName(TType type) {
     case TType::T_STREAM:
       return "stream";
     default:
-      return folly::format("unknown({})", int(type)).str();
+      return fmt::format("unknown({})", int(type));
   }
 }
 

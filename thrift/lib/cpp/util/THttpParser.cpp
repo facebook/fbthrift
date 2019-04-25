@@ -18,7 +18,7 @@
 
 #include <thrift/lib/cpp/transport/TTransportException.h>
 
-#include <folly/Format.h>
+#include <fmt/core.h>
 #include <folly/String.h>
 
 #include <cstdlib>
@@ -336,7 +336,7 @@ void THttpClientParser::parseHeaderLine(folly::StringPiece header) {
 
 bool THttpClientParser::parseStatusLine(folly::StringPiece status) {
   auto const badStatus = [&] {
-    return TTransportException(folly::sformat("Bad Status: {}", status));
+    return TTransportException(fmt::format("Bad Status: {}", status));
   };
 
   // Skip over the "HTTP/<version>" string.

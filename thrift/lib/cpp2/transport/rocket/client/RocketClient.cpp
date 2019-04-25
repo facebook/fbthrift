@@ -21,10 +21,10 @@
 #include <string>
 #include <utility>
 
+#include <fmt/core.h>
 #include <folly/Conv.h>
 #include <folly/CppAttributes.h>
 #include <folly/ExceptionWrapper.h>
-#include <folly/Format.h>
 #include <folly/GLog.h>
 #include <folly/Likely.h>
 #include <folly/Try.h>
@@ -346,7 +346,7 @@ void RocketClient::writeErr(
 
   queue_.markNextSendingAsSent();
 
-  close(folly::make_exception_wrapper<std::runtime_error>(folly::sformat(
+  close(folly::make_exception_wrapper<std::runtime_error>(fmt::format(
       "Failed to write to remote endpoint. Wrote {} bytes."
       " AsyncSocketException: {}",
       bytesWritten,
