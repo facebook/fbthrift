@@ -307,7 +307,7 @@ class MyServicePrioChild_pang_args implements \IThriftStruct, \IThriftShapishStr
   ];
   public static Map<string, int> $_TFIELDMAP = Map {
   };
-  const dict<int, dict<string, mixed>> SPEC = dict[
+  const dict<int, this::TFieldSpec> SPEC = dict[
   ];
   const dict<string, int> FIELDMAP = dict[
   ];
@@ -351,7 +351,7 @@ class MyServicePrioChild_pang_result implements \IThriftStruct {
   ];
   public static Map<string, int> $_TFIELDMAP = Map {
   };
-  const dict<int, dict<string, mixed>> SPEC = dict[
+  const dict<int, this::TFieldSpec> SPEC = dict[
   ];
   const dict<string, int> FIELDMAP = dict[
   ];

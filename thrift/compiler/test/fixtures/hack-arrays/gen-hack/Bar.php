@@ -252,39 +252,39 @@ class Bar_baz_args implements \IThriftStruct {
     'a' => 1,
     'b' => 2,
   };
-  const dict<int, dict<string, mixed>> SPEC = dict[
-    1 => dict[
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    1 => shape(
       'var' => 'a',
       'type' => \TType::SET,
       'etype' => \TType::I32,
-      'elem' => dict[
+      'elem' => shape(
         'type' => \TType::I32,
-      ],
+      ),
       'format' => 'harray',
-    ],
-    2 => dict[
+    ),
+    2 => shape(
       'var' => 'b',
       'type' => \TType::LST,
       'etype' => \TType::MAP,
-      'elem' => dict[
+      'elem' => shape(
         'type' => \TType::MAP,
         'ktype' => \TType::I32,
         'vtype' => \TType::SET,
-        'key' => dict[
+        'key' => shape(
           'type' => \TType::I32,
-        ],
-        'val' => dict[
+        ),
+        'val' => shape(
           'type' => \TType::SET,
           'etype' => \TType::STRING,
-          'elem' => dict[
+          'elem' => shape(
             'type' => \TType::STRING,
-          ],
+          ),
           'format' => 'harray',
-        ],
+        ),
         'format' => 'harray',
-      ],
+      ),
       'format' => 'harray',
-    ],
+    ),
   ];
   const dict<string, int> FIELDMAP = dict[
     'a' => 1,
@@ -326,11 +326,11 @@ class Bar_baz_result implements \IThriftStruct {
   public static Map<string, int> $_TFIELDMAP = Map {
     'success' => 0,
   };
-  const dict<int, dict<string, mixed>> SPEC = dict[
-    0 => dict[
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    0 => shape(
       'var' => 'success',
       'type' => \TType::STRING,
-    ],
+    ),
   ];
   const dict<string, int> FIELDMAP = dict[
     'success' => 0,

@@ -59,33 +59,33 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
     'myEnum' => 5,
     'package' => 6,
   };
-  const dict<int, dict<string, mixed>> SPEC = dict[
-    1 => dict[
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    1 => shape(
       'var' => 'MyIntField',
       'type' => \TType::I64,
-    ],
-    2 => dict[
+    ),
+    2 => shape(
       'var' => 'MyStringField',
       'type' => \TType::STRING,
-    ],
-    3 => dict[
+    ),
+    3 => shape(
       'var' => 'MyDataField',
       'type' => \TType::STRUCT,
       'class' => 'MyDataItem',
-    ],
-    4 => dict[
+    ),
+    4 => shape(
       'var' => 'major',
       'type' => \TType::I64,
-    ],
-    5 => dict[
+    ),
+    5 => shape(
       'var' => 'myEnum',
       'type' => \TType::I32,
       'enum' => 'MyEnum',
-    ],
-    6 => dict[
+    ),
+    6 => shape(
       'var' => 'package',
       'type' => \TType::STRING,
-    ],
+    ),
   ];
   const dict<string, int> FIELDMAP = dict[
     'MyIntField' => 1,
@@ -233,7 +233,7 @@ class MyDataItem implements \IThriftStruct, \IThriftShapishStruct {
   ];
   public static Map<string, int> $_TFIELDMAP = Map {
   };
-  const dict<int, dict<string, mixed>> SPEC = dict[
+  const dict<int, this::TFieldSpec> SPEC = dict[
   ];
   const dict<string, int> FIELDMAP = dict[
   ];

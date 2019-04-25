@@ -390,52 +390,52 @@ class Bar_baz_args implements \IThriftStruct {
     'd' => 4,
     'e' => 5,
   };
-  const dict<int, dict<string, mixed>> SPEC = dict[
-    1 => dict[
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    1 => shape(
       'var' => 'a',
       'type' => \TType::SET,
       'etype' => \TType::I32,
-      'elem' => dict[
+      'elem' => shape(
         'type' => \TType::I32,
-      ],
+      ),
       'format' => 'collection',
-    ],
-    2 => dict[
+    ),
+    2 => shape(
       'var' => 'b',
       'type' => \TType::LST,
       'etype' => \TType::MAP,
-      'elem' => dict[
+      'elem' => shape(
         'type' => \TType::MAP,
         'ktype' => \TType::I32,
         'vtype' => \TType::SET,
-        'key' => dict[
+        'key' => shape(
           'type' => \TType::I32,
-        ],
-        'val' => dict[
+        ),
+        'val' => shape(
           'type' => \TType::SET,
           'etype' => \TType::STRING,
-          'elem' => dict[
+          'elem' => shape(
             'type' => \TType::STRING,
-          ],
+          ),
           'format' => 'collection',
-        ],
+        ),
         'format' => 'collection',
-      ],
+      ),
       'format' => 'collection',
-    ],
-    3 => dict[
+    ),
+    3 => shape(
       'var' => 'c',
       'type' => \TType::I64,
-    ],
-    4 => dict[
+    ),
+    4 => shape(
       'var' => 'd',
       'type' => \TType::STRUCT,
       'class' => 'Foo',
-    ],
-    5 => dict[
+    ),
+    5 => shape(
       'var' => 'e',
       'type' => \TType::I64,
-    ],
+    ),
   ];
   const dict<string, int> FIELDMAP = dict[
     'a' => 1,
@@ -494,11 +494,11 @@ class Bar_baz_result implements \IThriftStruct {
   public static ConstMap<string, int> $_TFIELDMAP = Map {
     'success' => 0,
   };
-  const dict<int, dict<string, mixed>> SPEC = dict[
-    0 => dict[
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    0 => shape(
       'var' => 'success',
       'type' => \TType::STRING,
-    ],
+    ),
   ];
   const dict<string, int> FIELDMAP = dict[
     'success' => 0,

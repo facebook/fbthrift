@@ -166,7 +166,9 @@ class t_hack_generator : public t_oop_generator {
   void generate_php_type_spec(
       std::ofstream& out,
       t_type* t,
-      std::string array_keyword);
+      std::string array_keyword,
+      std::string open_brace,
+      std::string close_brace);
   void generate_php_struct_spec(std::ofstream& out, t_struct* tstruct);
   void generate_php_struct_struct_trait(std::ofstream& out, t_struct* tstruct);
   void generate_php_structural_id(
@@ -1506,7 +1508,9 @@ void t_hack_generator::generate_php_struct(
 void t_hack_generator::generate_php_type_spec(
     ofstream& out,
     t_type* t,
-    std::string array_keyword) {
+    std::string array_keyword,
+    std::string open_brace,
+    std::string close_brace) {
   t = t->get_true_type();
   indent(out) << "'type' => " << type_to_enum(t) << ",\n";
 
@@ -1522,16 +1526,16 @@ void t_hack_generator::generate_php_type_spec(
     t_type* vtype = ((t_map*)t)->get_val_type()->get_true_type();
     indent(out) << "'ktype' => " << type_to_enum(ktype) << ",\n";
     indent(out) << "'vtype' => " << type_to_enum(vtype) << ",\n";
-    indent(out) << "'key' => " << array_keyword << "[\n";
+    indent(out) << "'key' => " << array_keyword << open_brace << "\n";
     indent_up();
-    generate_php_type_spec(out, ktype, array_keyword);
+    generate_php_type_spec(out, ktype, array_keyword, open_brace, close_brace);
     indent_down();
-    indent(out) << "],\n";
-    indent(out) << "'val' => " << array_keyword << "[\n";
+    indent(out) << close_brace << ",\n";
+    indent(out) << "'val' => " << array_keyword << open_brace << "\n";
     indent_up();
-    generate_php_type_spec(out, vtype, array_keyword);
+    generate_php_type_spec(out, vtype, array_keyword, open_brace, close_brace);
     indent_down();
-    indent(out) << "],\n";
+    indent(out) << close_brace << ",\n";
     if (arrays_) {
       indent(out) << "'format' => 'harray',\n";
     } else if (no_use_hack_collections_) {
@@ -1542,11 +1546,11 @@ void t_hack_generator::generate_php_type_spec(
   } else if (t->is_list()) {
     t_type* etype = ((t_list*)t)->get_elem_type()->get_true_type();
     indent(out) << "'etype' => " << type_to_enum(etype) << ",\n";
-    indent(out) << "'elem' => " << array_keyword << "[\n";
+    indent(out) << "'elem' => " << array_keyword << open_brace << "\n";
     indent_up();
-    generate_php_type_spec(out, etype, array_keyword);
+    generate_php_type_spec(out, etype, array_keyword, open_brace, close_brace);
     indent_down();
-    indent(out) << "],\n";
+    indent(out) << close_brace << ",\n";
     if (arrays_) {
       indent(out) << "'format' => 'harray',\n";
     } else if (no_use_hack_collections_) {
@@ -1557,11 +1561,11 @@ void t_hack_generator::generate_php_type_spec(
   } else if (t->is_set()) {
     t_type* etype = ((t_set*)t)->get_elem_type()->get_true_type();
     indent(out) << "'etype' => " << type_to_enum(etype) << ",\n";
-    indent(out) << "'elem' => " << array_keyword << "[\n";
+    indent(out) << "'elem' => " << array_keyword << open_brace << "\n";
     indent_up();
-    generate_php_type_spec(out, etype, array_keyword);
+    generate_php_type_spec(out, etype, array_keyword, open_brace, close_brace);
     indent_down();
-    indent(out) << "],\n";
+    indent(out) << close_brace << ",\n";
     if (arrays_) {
       indent(out) << "'format' => 'harray',\n";
     } else if (arraysets_) {
@@ -1584,11 +1588,14 @@ void t_hack_generator::generate_php_struct_spec(
   const vector<t_field*>& members = tstruct->get_members();
   vector<t_field*>::const_iterator m_iter;
 
-  auto emit_spec = [&](std::string array_keyword) {
+  auto emit_spec = [&](std::string array_keyword,
+                       std::string open_brace,
+                       std::string close_brace) {
     indent_up();
     for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
       t_type* t = (*m_iter)->get_type()->get_true_type();
-      indent(out) << (*m_iter)->get_key() << " => " << array_keyword << "[\n";
+      indent(out) << (*m_iter)->get_key() << " => " << array_keyword
+                  << open_brace << "\n";
       indent_up();
       out << indent() << "'var' => '" << (*m_iter)->get_name() << "',\n";
       if (tstruct->is_union()) {
@@ -1599,9 +1606,9 @@ void t_hack_generator::generate_php_struct_spec(
         // key on all fields.
         out << indent() << "'union' => true,\n";
       }
-      generate_php_type_spec(out, t, array_keyword);
+      generate_php_type_spec(out, t, array_keyword, open_brace, close_brace);
       indent_down();
-      indent(out) << "],\n";
+      indent(out) << close_brace << ",\n";
     }
     indent_down();
   };
@@ -1620,7 +1627,7 @@ void t_hack_generator::generate_php_struct_spec(
               << generate_array_typehint(
                      "int", generate_array_typehint("string", "mixed"))
               << " $_TSPEC = " << array_keyword_ << "[\n";
-  emit_spec(array_keyword_);
+  emit_spec(array_keyword_, "[", "]");
   indent(out) << "];\n";
 
   // TODO(T43133648) delete $_TFIELDMAP
@@ -1629,8 +1636,8 @@ void t_hack_generator::generate_php_struct_spec(
   emit_fieldmap();
   indent(out) << "};\n";
 
-  indent(out) << "const dict<int, dict<string, mixed>> SPEC = dict[\n";
-  emit_spec("dict");
+  indent(out) << "const dict<int, this::TFieldSpec> SPEC = dict[\n";
+  emit_spec("shape", "(", ")");
   indent(out) << "];\n";
 
   indent(out) << "const dict<string, int> FIELDMAP = dict[\n";

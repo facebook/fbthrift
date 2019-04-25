@@ -52,11 +52,11 @@ class decorated_struct implements \IThriftStruct {
   public static Map<string, int> $_TFIELDMAP = Map {
     'field' => 1,
   };
-  const dict<int, dict<string, mixed>> SPEC = dict[
-    1 => dict[
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    1 => shape(
       'var' => 'field',
       'type' => \TType::STRING,
-    ],
+    ),
   ];
   const dict<string, int> FIELDMAP = dict[
     'field' => 1,
@@ -194,87 +194,87 @@ class ContainerStruct implements \IThriftStruct {
     'fieldG' => 7,
     'fieldH' => 8,
   };
-  const dict<int, dict<string, mixed>> SPEC = dict[
-    12 => dict[
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    12 => shape(
       'var' => 'fieldA',
       'type' => \TType::LST,
       'etype' => \TType::I32,
-      'elem' => dict[
+      'elem' => shape(
         'type' => \TType::I32,
-      ],
+      ),
       'format' => 'collection',
-    ],
-    2 => dict[
+    ),
+    2 => shape(
       'var' => 'fieldB',
       'type' => \TType::LST,
       'etype' => \TType::I32,
-      'elem' => dict[
+      'elem' => shape(
         'type' => \TType::I32,
-      ],
+      ),
       'format' => 'collection',
-    ],
-    3 => dict[
+    ),
+    3 => shape(
       'var' => 'fieldC',
       'type' => \TType::LST,
       'etype' => \TType::I32,
-      'elem' => dict[
+      'elem' => shape(
         'type' => \TType::I32,
-      ],
+      ),
       'format' => 'collection',
-    ],
-    4 => dict[
+    ),
+    4 => shape(
       'var' => 'fieldD',
       'type' => \TType::LST,
       'etype' => \TType::I32,
-      'elem' => dict[
+      'elem' => shape(
         'type' => \TType::I32,
-      ],
+      ),
       'format' => 'collection',
-    ],
-    5 => dict[
+    ),
+    5 => shape(
       'var' => 'fieldE',
       'type' => \TType::LST,
       'etype' => \TType::I32,
-      'elem' => dict[
+      'elem' => shape(
         'type' => \TType::I32,
-      ],
+      ),
       'format' => 'collection',
-    ],
-    6 => dict[
+    ),
+    6 => shape(
       'var' => 'fieldF',
       'type' => \TType::SET,
       'etype' => \TType::I32,
-      'elem' => dict[
+      'elem' => shape(
         'type' => \TType::I32,
-      ],
+      ),
       'format' => 'collection',
-    ],
-    7 => dict[
+    ),
+    7 => shape(
       'var' => 'fieldG',
       'type' => \TType::MAP,
       'ktype' => \TType::I32,
       'vtype' => \TType::STRING,
-      'key' => dict[
+      'key' => shape(
         'type' => \TType::I32,
-      ],
-      'val' => dict[
+      ),
+      'val' => shape(
         'type' => \TType::STRING,
-      ],
+      ),
       'format' => 'collection',
-    ],
-    8 => dict[
+    ),
+    8 => shape(
       'var' => 'fieldH',
       'type' => \TType::MAP,
       'ktype' => \TType::I32,
       'vtype' => \TType::STRING,
-      'key' => dict[
+      'key' => shape(
         'type' => \TType::I32,
-      ],
-      'val' => dict[
+      ),
+      'val' => shape(
         'type' => \TType::STRING,
-      ],
+      ),
       'format' => 'collection',
-    ],
+    ),
   ];
   const dict<string, int> FIELDMAP = dict[
     'fieldA' => 12,
@@ -518,16 +518,16 @@ class CppTypeStruct implements \IThriftStruct {
   public static Map<string, int> $_TFIELDMAP = Map {
     'fieldA' => 1,
   };
-  const dict<int, dict<string, mixed>> SPEC = dict[
-    1 => dict[
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    1 => shape(
       'var' => 'fieldA',
       'type' => \TType::LST,
       'etype' => \TType::I32,
-      'elem' => dict[
+      'elem' => shape(
         'type' => \TType::I32,
-      ],
+      ),
       'format' => 'collection',
-    ],
+    ),
   ];
   const dict<string, int> FIELDMAP = dict[
     'fieldA' => 1,
@@ -594,11 +594,11 @@ class VirtualStruct implements \IThriftStruct {
   public static Map<string, int> $_TFIELDMAP = Map {
     'MyIntField' => 1,
   };
-  const dict<int, dict<string, mixed>> SPEC = dict[
-    1 => dict[
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    1 => shape(
       'var' => 'MyIntField',
       'type' => \TType::I64,
-    ],
+    ),
   ];
   const dict<string, int> FIELDMAP = dict[
     'MyIntField' => 1,
@@ -660,17 +660,17 @@ class MyStructWithForwardRefEnum implements \IThriftStruct {
     'a' => 1,
     'b' => 2,
   };
-  const dict<int, dict<string, mixed>> SPEC = dict[
-    1 => dict[
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    1 => shape(
       'var' => 'a',
       'type' => \TType::I32,
       'enum' => 'MyForwardRefEnum',
-    ],
-    2 => dict[
+    ),
+    2 => shape(
       'var' => 'b',
       'type' => \TType::I32,
       'enum' => 'MyForwardRefEnum',
-    ],
+    ),
   ];
   const dict<string, int> FIELDMAP = dict[
     'a' => 1,
@@ -742,15 +742,15 @@ class TrivialNumeric implements \IThriftStruct {
     'a' => 1,
     'b' => 2,
   };
-  const dict<int, dict<string, mixed>> SPEC = dict[
-    1 => dict[
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    1 => shape(
       'var' => 'a',
       'type' => \TType::I32,
-    ],
-    2 => dict[
+    ),
+    2 => shape(
       'var' => 'b',
       'type' => \TType::BOOL,
-    ],
+    ),
   ];
   const dict<string, int> FIELDMAP = dict[
     'a' => 1,
@@ -830,16 +830,16 @@ class TrivialNestedWithDefault implements \IThriftStruct {
     'z' => 1,
     'n' => 2,
   };
-  const dict<int, dict<string, mixed>> SPEC = dict[
-    1 => dict[
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    1 => shape(
       'var' => 'z',
       'type' => \TType::I32,
-    ],
-    2 => dict[
+    ),
+    2 => shape(
       'var' => 'n',
       'type' => \TType::STRUCT,
       'class' => 'TrivialNumeric',
-    ],
+    ),
   ];
   const dict<string, int> FIELDMAP = dict[
     'z' => 1,
@@ -926,24 +926,24 @@ class ComplexString implements \IThriftStruct {
     'a' => 1,
     'b' => 2,
   };
-  const dict<int, dict<string, mixed>> SPEC = dict[
-    1 => dict[
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    1 => shape(
       'var' => 'a',
       'type' => \TType::STRING,
-    ],
-    2 => dict[
+    ),
+    2 => shape(
       'var' => 'b',
       'type' => \TType::MAP,
       'ktype' => \TType::STRING,
       'vtype' => \TType::I32,
-      'key' => dict[
+      'key' => shape(
         'type' => \TType::STRING,
-      ],
-      'val' => dict[
+      ),
+      'val' => shape(
         'type' => \TType::I32,
-      ],
+      ),
       'format' => 'collection',
-    ],
+    ),
   ];
   const dict<string, int> FIELDMAP = dict[
     'a' => 1,
@@ -1030,16 +1030,16 @@ class ComplexNestedWithDefault implements \IThriftStruct {
     'z' => 1,
     'n' => 2,
   };
-  const dict<int, dict<string, mixed>> SPEC = dict[
-    1 => dict[
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    1 => shape(
       'var' => 'z',
       'type' => \TType::STRING,
-    ],
-    2 => dict[
+    ),
+    2 => shape(
       'var' => 'n',
       'type' => \TType::STRUCT,
       'class' => 'ComplexString',
-    ],
+    ),
   ];
   const dict<string, int> FIELDMAP = dict[
     'z' => 1,
@@ -1127,27 +1127,27 @@ class MinPadding implements \IThriftStruct {
     'biggish' => 4,
     'tiny' => 5,
   };
-  const dict<int, dict<string, mixed>> SPEC = dict[
-    1 => dict[
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    1 => shape(
       'var' => 'small',
       'type' => \TType::BYTE,
-    ],
-    2 => dict[
+    ),
+    2 => shape(
       'var' => 'big',
       'type' => \TType::I64,
-    ],
-    3 => dict[
+    ),
+    3 => shape(
       'var' => 'medium',
       'type' => \TType::I16,
-    ],
-    4 => dict[
+    ),
+    4 => shape(
       'var' => 'biggish',
       'type' => \TType::I32,
-    ],
-    5 => dict[
+    ),
+    5 => shape(
       'var' => 'tiny',
       'type' => \TType::BYTE,
-    ],
+    ),
   ];
   const dict<string, int> FIELDMAP = dict[
     'small' => 1,
@@ -1304,24 +1304,24 @@ class MyStruct implements \IThriftStruct {
     'majorVer' => 3,
     'data' => 4,
   };
-  const dict<int, dict<string, mixed>> SPEC = dict[
-    1 => dict[
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    1 => shape(
       'var' => 'MyIntField',
       'type' => \TType::I64,
-    ],
-    2 => dict[
+    ),
+    2 => shape(
       'var' => 'MyStringField',
       'type' => \TType::STRING,
-    ],
-    3 => dict[
+    ),
+    3 => shape(
       'var' => 'majorVer',
       'type' => \TType::I64,
-    ],
-    4 => dict[
+    ),
+    4 => shape(
       'var' => 'data',
       'type' => \TType::STRUCT,
       'class' => 'MyDataItem',
-    ],
+    ),
   ];
   const dict<string, int> FIELDMAP = dict[
     'MyIntField' => 1,
@@ -1412,7 +1412,7 @@ class MyDataItem implements \IThriftStruct {
   ];
   public static Map<string, int> $_TFIELDMAP = Map {
   };
-  const dict<int, dict<string, mixed>> SPEC = dict[
+  const dict<int, this::TFieldSpec> SPEC = dict[
   ];
   const dict<string, int> FIELDMAP = dict[
   ];
@@ -1453,11 +1453,11 @@ class Renaming implements \IThriftStruct {
   public static Map<string, int> $_TFIELDMAP = Map {
     'foo' => 1,
   };
-  const dict<int, dict<string, mixed>> SPEC = dict[
-    1 => dict[
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    1 => shape(
       'var' => 'foo',
       'type' => \TType::I64,
-    ],
+    ),
   ];
   const dict<string, int> FIELDMAP = dict[
     'foo' => 1,
@@ -1531,29 +1531,29 @@ class AnnotatedTypes implements \IThriftStruct {
     'binary_field' => 1,
     'list_field' => 2,
   };
-  const dict<int, dict<string, mixed>> SPEC = dict[
-    1 => dict[
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    1 => shape(
       'var' => 'binary_field',
       'type' => \TType::STRING,
-    ],
-    2 => dict[
+    ),
+    2 => shape(
       'var' => 'list_field',
       'type' => \TType::LST,
       'etype' => \TType::MAP,
-      'elem' => dict[
+      'elem' => shape(
         'type' => \TType::MAP,
         'ktype' => \TType::I32,
         'vtype' => \TType::STRING,
-        'key' => dict[
+        'key' => shape(
           'type' => \TType::I32,
-        ],
-        'val' => dict[
+        ),
+        'val' => shape(
           'type' => \TType::STRING,
-        ],
+        ),
         'format' => 'collection',
-      ],
+      ),
       'format' => 'collection',
-    ],
+    ),
   ];
   const dict<string, int> FIELDMAP = dict[
     'binary_field' => 1,

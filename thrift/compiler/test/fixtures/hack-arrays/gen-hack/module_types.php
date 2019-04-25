@@ -51,39 +51,39 @@ class Foo implements \IThriftStruct {
     'a' => 1,
     'b' => 2,
   };
-  const dict<int, dict<string, mixed>> SPEC = dict[
-    1 => dict[
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    1 => shape(
       'var' => 'a',
       'type' => \TType::LST,
       'etype' => \TType::STRING,
-      'elem' => dict[
+      'elem' => shape(
         'type' => \TType::STRING,
-      ],
+      ),
       'format' => 'harray',
-    ],
-    2 => dict[
+    ),
+    2 => shape(
       'var' => 'b',
       'type' => \TType::MAP,
       'ktype' => \TType::STRING,
       'vtype' => \TType::LST,
-      'key' => dict[
+      'key' => shape(
         'type' => \TType::STRING,
-      ],
-      'val' => dict[
+      ),
+      'val' => shape(
         'type' => \TType::LST,
         'etype' => \TType::SET,
-        'elem' => dict[
+        'elem' => shape(
           'type' => \TType::SET,
           'etype' => \TType::I32,
-          'elem' => dict[
+          'elem' => shape(
             'type' => \TType::I32,
-          ],
+          ),
           'format' => 'harray',
-        ],
+        ),
         'format' => 'harray',
-      ],
+      ),
       'format' => 'harray',
-    ],
+    ),
   ];
   const dict<string, int> FIELDMAP = dict[
     'a' => 1,

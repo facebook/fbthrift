@@ -1670,7 +1670,7 @@ class MyService_ping_args implements \IThriftStruct, \IThriftShapishStruct {
   ];
   public static Map<string, int> $_TFIELDMAP = Map {
   };
-  const dict<int, dict<string, mixed>> SPEC = dict[
+  const dict<int, this::TFieldSpec> SPEC = dict[
   ];
   const dict<string, int> FIELDMAP = dict[
   ];
@@ -1714,7 +1714,7 @@ class MyService_ping_result implements \IThriftStruct {
   ];
   public static Map<string, int> $_TFIELDMAP = Map {
   };
-  const dict<int, dict<string, mixed>> SPEC = dict[
+  const dict<int, this::TFieldSpec> SPEC = dict[
   ];
   const dict<string, int> FIELDMAP = dict[
   ];
@@ -1746,7 +1746,7 @@ class MyService_getRandomData_args implements \IThriftStruct, \IThriftShapishStr
   ];
   public static Map<string, int> $_TFIELDMAP = Map {
   };
-  const dict<int, dict<string, mixed>> SPEC = dict[
+  const dict<int, this::TFieldSpec> SPEC = dict[
   ];
   const dict<string, int> FIELDMAP = dict[
   ];
@@ -1795,11 +1795,11 @@ class MyService_getRandomData_result implements \IThriftStruct {
   public static Map<string, int> $_TFIELDMAP = Map {
     'success' => 0,
   };
-  const dict<int, dict<string, mixed>> SPEC = dict[
-    0 => dict[
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    0 => shape(
       'var' => 'success',
       'type' => \TType::STRING,
-    ],
+    ),
   ];
   const dict<string, int> FIELDMAP = dict[
     'success' => 0,
@@ -1841,11 +1841,11 @@ class MyService_hasDataById_args implements \IThriftStruct, \IThriftShapishStruc
   public static Map<string, int> $_TFIELDMAP = Map {
     'id' => 1,
   };
-  const dict<int, dict<string, mixed>> SPEC = dict[
-    1 => dict[
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    1 => shape(
       'var' => 'id',
       'type' => \TType::I64,
-    ],
+    ),
   ];
   const dict<string, int> FIELDMAP = dict[
     'id' => 1,
@@ -1907,11 +1907,11 @@ class MyService_hasDataById_result implements \IThriftStruct {
   public static Map<string, int> $_TFIELDMAP = Map {
     'success' => 0,
   };
-  const dict<int, dict<string, mixed>> SPEC = dict[
-    0 => dict[
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    0 => shape(
       'var' => 'success',
       'type' => \TType::BOOL,
-    ],
+    ),
   ];
   const dict<string, int> FIELDMAP = dict[
     'success' => 0,
@@ -1953,11 +1953,11 @@ class MyService_getDataById_args implements \IThriftStruct, \IThriftShapishStruc
   public static Map<string, int> $_TFIELDMAP = Map {
     'id' => 1,
   };
-  const dict<int, dict<string, mixed>> SPEC = dict[
-    1 => dict[
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    1 => shape(
       'var' => 'id',
       'type' => \TType::I64,
-    ],
+    ),
   ];
   const dict<string, int> FIELDMAP = dict[
     'id' => 1,
@@ -2019,11 +2019,11 @@ class MyService_getDataById_result implements \IThriftStruct {
   public static Map<string, int> $_TFIELDMAP = Map {
     'success' => 0,
   };
-  const dict<int, dict<string, mixed>> SPEC = dict[
-    0 => dict[
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    0 => shape(
       'var' => 'success',
       'type' => \TType::STRING,
-    ],
+    ),
   ];
   const dict<string, int> FIELDMAP = dict[
     'success' => 0,
@@ -2070,15 +2070,15 @@ class MyService_putDataById_args implements \IThriftStruct, \IThriftShapishStruc
     'id' => 1,
     'data' => 2,
   };
-  const dict<int, dict<string, mixed>> SPEC = dict[
-    1 => dict[
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    1 => shape(
       'var' => 'id',
       'type' => \TType::I64,
-    ],
-    2 => dict[
+    ),
+    2 => shape(
       'var' => 'data',
       'type' => \TType::STRING,
-    ],
+    ),
   ];
   const dict<string, int> FIELDMAP = dict[
     'id' => 1,
@@ -2148,7 +2148,7 @@ class MyService_putDataById_result implements \IThriftStruct {
   ];
   public static Map<string, int> $_TFIELDMAP = Map {
   };
-  const dict<int, dict<string, mixed>> SPEC = dict[
+  const dict<int, this::TFieldSpec> SPEC = dict[
   ];
   const dict<string, int> FIELDMAP = dict[
   ];
@@ -2190,15 +2190,15 @@ class MyService_lobDataById_args implements \IThriftStruct, \IThriftShapishStruc
     'id' => 1,
     'data' => 2,
   };
-  const dict<int, dict<string, mixed>> SPEC = dict[
-    1 => dict[
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    1 => shape(
       'var' => 'id',
       'type' => \TType::I64,
-    ],
-    2 => dict[
+    ),
+    2 => shape(
       'var' => 'data',
       'type' => \TType::STRING,
-    ],
+    ),
   ];
   const dict<string, int> FIELDMAP = dict[
     'id' => 1,
@@ -2268,7 +2268,7 @@ class MyService_doNothing_args implements \IThriftStruct, \IThriftShapishStruct 
   ];
   public static Map<string, int> $_TFIELDMAP = Map {
   };
-  const dict<int, dict<string, mixed>> SPEC = dict[
+  const dict<int, this::TFieldSpec> SPEC = dict[
   ];
   const dict<string, int> FIELDMAP = dict[
   ];
@@ -2312,7 +2312,7 @@ class MyService_doNothing_result implements \IThriftStruct {
   ];
   public static Map<string, int> $_TFIELDMAP = Map {
   };
-  const dict<int, dict<string, mixed>> SPEC = dict[
+  const dict<int, this::TFieldSpec> SPEC = dict[
   ];
   const dict<string, int> FIELDMAP = dict[
   ];

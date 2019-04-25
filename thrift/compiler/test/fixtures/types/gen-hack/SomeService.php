@@ -381,20 +381,20 @@ class SomeService_bounce_map_args implements \IThriftStruct {
   public static Map<string, int> $_TFIELDMAP = Map {
     'm' => 1,
   };
-  const dict<int, dict<string, mixed>> SPEC = dict[
-    1 => dict[
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    1 => shape(
       'var' => 'm',
       'type' => \TType::MAP,
       'ktype' => \TType::I32,
       'vtype' => \TType::STRING,
-      'key' => dict[
+      'key' => shape(
         'type' => \TType::I32,
-      ],
-      'val' => dict[
+      ),
+      'val' => shape(
         'type' => \TType::STRING,
-      ],
+      ),
       'format' => 'collection',
-    ],
+    ),
   ];
   const dict<string, int> FIELDMAP = dict[
     'm' => 1,
@@ -457,20 +457,20 @@ class SomeService_bounce_map_result implements \IThriftStruct {
   public static Map<string, int> $_TFIELDMAP = Map {
     'success' => 0,
   };
-  const dict<int, dict<string, mixed>> SPEC = dict[
-    0 => dict[
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    0 => shape(
       'var' => 'success',
       'type' => \TType::MAP,
       'ktype' => \TType::I32,
       'vtype' => \TType::STRING,
-      'key' => dict[
+      'key' => shape(
         'type' => \TType::I32,
-      ],
-      'val' => dict[
+      ),
+      'val' => shape(
         'type' => \TType::STRING,
-      ],
+      ),
       'format' => 'collection',
-    ],
+    ),
   ];
   const dict<string, int> FIELDMAP = dict[
     'success' => 0,
@@ -524,16 +524,16 @@ class SomeService_binary_keyed_map_args implements \IThriftStruct {
   public static Map<string, int> $_TFIELDMAP = Map {
     'r' => 1,
   };
-  const dict<int, dict<string, mixed>> SPEC = dict[
-    1 => dict[
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    1 => shape(
       'var' => 'r',
       'type' => \TType::LST,
       'etype' => \TType::I64,
-      'elem' => dict[
+      'elem' => shape(
         'type' => \TType::I64,
-      ],
+      ),
       'format' => 'collection',
-    ],
+    ),
   ];
   const dict<string, int> FIELDMAP = dict[
     'r' => 1,
@@ -596,20 +596,20 @@ class SomeService_binary_keyed_map_result implements \IThriftStruct {
   public static Map<string, int> $_TFIELDMAP = Map {
     'success' => 0,
   };
-  const dict<int, dict<string, mixed>> SPEC = dict[
-    0 => dict[
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    0 => shape(
       'var' => 'success',
       'type' => \TType::MAP,
       'ktype' => \TType::STRING,
       'vtype' => \TType::I64,
-      'key' => dict[
+      'key' => shape(
         'type' => \TType::STRING,
-      ],
-      'val' => dict[
+      ),
+      'val' => shape(
         'type' => \TType::I64,
-      ],
+      ),
       'format' => 'collection',
-    ],
+    ),
   ];
   const dict<string, int> FIELDMAP = dict[
     'success' => 0,

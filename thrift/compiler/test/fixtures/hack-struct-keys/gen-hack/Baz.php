@@ -282,41 +282,41 @@ class Baz_qux_args implements \IThriftStruct {
     'b' => 2,
     'c' => 3,
   };
-  const dict<int, dict<string, mixed>> SPEC = dict[
-    1 => dict[
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    1 => shape(
       'var' => 'a',
       'type' => \TType::SET,
       'etype' => \TType::STRUCT,
-      'elem' => dict[
+      'elem' => shape(
         'type' => \TType::STRUCT,
         'class' => 'Foo',
-      ],
+      ),
       'format' => 'collection',
-    ],
-    2 => dict[
+    ),
+    2 => shape(
       'var' => 'b',
       'type' => \TType::LST,
       'etype' => \TType::STRUCT,
-      'elem' => dict[
+      'elem' => shape(
         'type' => \TType::STRUCT,
         'class' => 'Bar',
-      ],
+      ),
       'format' => 'collection',
-    ],
-    3 => dict[
+    ),
+    3 => shape(
       'var' => 'c',
       'type' => \TType::MAP,
       'ktype' => \TType::STRUCT,
       'vtype' => \TType::STRING,
-      'key' => dict[
+      'key' => shape(
         'type' => \TType::STRUCT,
         'class' => 'Foo',
-      ],
-      'val' => dict[
+      ),
+      'val' => shape(
         'type' => \TType::STRING,
-      ],
+      ),
       'format' => 'collection',
-    ],
+    ),
   ];
   const dict<string, int> FIELDMAP = dict[
     'a' => 1,
@@ -365,11 +365,11 @@ class Baz_qux_result implements \IThriftStruct {
   public static Map<string, int> $_TFIELDMAP = Map {
     'success' => 0,
   };
-  const dict<int, dict<string, mixed>> SPEC = dict[
-    0 => dict[
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    0 => shape(
       'var' => 'success',
       'type' => \TType::STRING,
-    ],
+    ),
   ];
   const dict<string, int> FIELDMAP = dict[
     'success' => 0,

@@ -17,7 +17,7 @@ class Banal extends \TException implements \IThriftStruct {
   ];
   public static Map<string, int> $_TFIELDMAP = Map {
   };
-  const dict<int, dict<string, mixed>> SPEC = dict[
+  const dict<int, this::TFieldSpec> SPEC = dict[
   ];
   const dict<string, int> FIELDMAP = dict[
   ];
@@ -50,11 +50,11 @@ class Fiery extends \TException implements \IThriftStruct {
   public static Map<string, int> $_TFIELDMAP = Map {
     'message' => 1,
   };
-  const dict<int, dict<string, mixed>> SPEC = dict[
-    1 => dict[
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    1 => shape(
       'var' => 'message',
       'type' => \TType::STRING,
-    ],
+    ),
   ];
   const dict<string, int> FIELDMAP = dict[
     'message' => 1,
@@ -98,11 +98,11 @@ class Serious extends \TException implements \IThriftStruct {
   public static Map<string, int> $_TFIELDMAP = Map {
     'sonnet' => 1,
   };
-  const dict<int, dict<string, mixed>> SPEC = dict[
-    1 => dict[
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    1 => shape(
       'var' => 'sonnet',
       'type' => \TType::STRING,
-    ],
+    ),
   ];
   const dict<string, int> FIELDMAP = dict[
     'sonnet' => 1,

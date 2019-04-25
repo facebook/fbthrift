@@ -725,7 +725,7 @@ class Raiser_doBland_args implements \IThriftStruct {
   ];
   public static Map<string, int> $_TFIELDMAP = Map {
   };
-  const dict<int, dict<string, mixed>> SPEC = dict[
+  const dict<int, this::TFieldSpec> SPEC = dict[
   ];
   const dict<string, int> FIELDMAP = dict[
   ];
@@ -748,7 +748,7 @@ class Raiser_doBland_result implements \IThriftStruct {
   ];
   public static Map<string, int> $_TFIELDMAP = Map {
   };
-  const dict<int, dict<string, mixed>> SPEC = dict[
+  const dict<int, this::TFieldSpec> SPEC = dict[
   ];
   const dict<string, int> FIELDMAP = dict[
   ];
@@ -771,7 +771,7 @@ class Raiser_doRaise_args implements \IThriftStruct {
   ];
   public static Map<string, int> $_TFIELDMAP = Map {
   };
-  const dict<int, dict<string, mixed>> SPEC = dict[
+  const dict<int, this::TFieldSpec> SPEC = dict[
   ];
   const dict<string, int> FIELDMAP = dict[
   ];
@@ -812,22 +812,22 @@ class Raiser_doRaise_result implements \IThriftStruct {
     'f' => 2,
     's' => 3,
   };
-  const dict<int, dict<string, mixed>> SPEC = dict[
-    1 => dict[
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    1 => shape(
       'var' => 'b',
       'type' => \TType::STRUCT,
       'class' => 'Banal',
-    ],
-    2 => dict[
+    ),
+    2 => shape(
       'var' => 'f',
       'type' => \TType::STRUCT,
       'class' => 'Fiery',
-    ],
-    3 => dict[
+    ),
+    3 => shape(
       'var' => 's',
       'type' => \TType::STRUCT,
       'class' => 'Serious',
-    ],
+    ),
   ];
   const dict<string, int> FIELDMAP = dict[
     'b' => 1,
@@ -856,7 +856,7 @@ class Raiser_get200_args implements \IThriftStruct {
   ];
   public static Map<string, int> $_TFIELDMAP = Map {
   };
-  const dict<int, dict<string, mixed>> SPEC = dict[
+  const dict<int, this::TFieldSpec> SPEC = dict[
   ];
   const dict<string, int> FIELDMAP = dict[
   ];
@@ -884,11 +884,11 @@ class Raiser_get200_result implements \IThriftStruct {
   public static Map<string, int> $_TFIELDMAP = Map {
     'success' => 0,
   };
-  const dict<int, dict<string, mixed>> SPEC = dict[
-    0 => dict[
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    0 => shape(
       'var' => 'success',
       'type' => \TType::STRING,
-    ],
+    ),
   ];
   const dict<string, int> FIELDMAP = dict[
     'success' => 0,
@@ -913,7 +913,7 @@ class Raiser_get500_args implements \IThriftStruct {
   ];
   public static Map<string, int> $_TFIELDMAP = Map {
   };
-  const dict<int, dict<string, mixed>> SPEC = dict[
+  const dict<int, this::TFieldSpec> SPEC = dict[
   ];
   const dict<string, int> FIELDMAP = dict[
   ];
@@ -959,26 +959,26 @@ class Raiser_get500_result implements \IThriftStruct {
     'b' => 2,
     's' => 3,
   };
-  const dict<int, dict<string, mixed>> SPEC = dict[
-    0 => dict[
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    0 => shape(
       'var' => 'success',
       'type' => \TType::STRING,
-    ],
-    1 => dict[
+    ),
+    1 => shape(
       'var' => 'f',
       'type' => \TType::STRUCT,
       'class' => 'Fiery',
-    ],
-    2 => dict[
+    ),
+    2 => shape(
       'var' => 'b',
       'type' => \TType::STRUCT,
       'class' => 'Banal',
-    ],
-    3 => dict[
+    ),
+    3 => shape(
       'var' => 's',
       'type' => \TType::STRUCT,
       'class' => 'Serious',
-    ],
+    ),
   ];
   const dict<string, int> FIELDMAP = dict[
     'success' => 0,

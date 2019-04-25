@@ -61,47 +61,47 @@ class Foo implements \IThriftStruct {
     'c' => 3,
     'd' => 4,
   };
-  const dict<int, dict<string, mixed>> SPEC = dict[
-    1 => dict[
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    1 => shape(
       'var' => 'a',
       'type' => \TType::LST,
       'etype' => \TType::STRING,
-      'elem' => dict[
+      'elem' => shape(
         'type' => \TType::STRING,
-      ],
+      ),
       'format' => 'array',
-    ],
-    2 => dict[
+    ),
+    2 => shape(
       'var' => 'b',
       'type' => \TType::MAP,
       'ktype' => \TType::STRING,
       'vtype' => \TType::LST,
-      'key' => dict[
+      'key' => shape(
         'type' => \TType::STRING,
-      ],
-      'val' => dict[
+      ),
+      'val' => shape(
         'type' => \TType::LST,
         'etype' => \TType::SET,
-        'elem' => dict[
+        'elem' => shape(
           'type' => \TType::SET,
           'etype' => \TType::I32,
-          'elem' => dict[
+          'elem' => shape(
             'type' => \TType::I32,
-          ],
+          ),
           'format' => 'array',
-        ],
+        ),
         'format' => 'array',
-      ],
+      ),
       'format' => 'array',
-    ],
-    3 => dict[
+    ),
+    3 => shape(
       'var' => 'c',
       'type' => \TType::I64,
-    ],
-    4 => dict[
+    ),
+    4 => shape(
       'var' => 'd',
       'type' => \TType::BOOL,
-    ],
+    ),
   ];
   const dict<string, int> FIELDMAP = dict[
     'a' => 1,
@@ -188,29 +188,29 @@ class Baz extends \TException implements \IThriftStruct {
     'some_container' => 3,
     'code' => 4,
   };
-  const dict<int, dict<string, mixed>> SPEC = dict[
-    1 => dict[
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    1 => shape(
       'var' => 'message',
       'type' => \TType::STRING,
-    ],
-    2 => dict[
+    ),
+    2 => shape(
       'var' => 'some_field',
       'type' => \TType::STRUCT,
       'class' => 'Foo',
-    ],
-    3 => dict[
+    ),
+    3 => shape(
       'var' => 'some_container',
       'type' => \TType::SET,
       'etype' => \TType::STRING,
-      'elem' => dict[
+      'elem' => shape(
         'type' => \TType::STRING,
-      ],
+      ),
       'format' => 'array',
-    ],
-    4 => dict[
+    ),
+    4 => shape(
       'var' => 'code',
       'type' => \TType::I32,
-    ],
+    ),
   ];
   const dict<string, int> FIELDMAP = dict[
     'message' => 1,
@@ -273,11 +273,11 @@ class OptBaz extends \TException implements \IThriftStruct {
   public static Map<string, int> $_TFIELDMAP = Map {
     'message' => 1,
   };
-  const dict<int, dict<string, mixed>> SPEC = dict[
-    1 => dict[
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    1 => shape(
       'var' => 'message',
       'type' => \TType::STRING,
-    ],
+    ),
   ];
   const dict<string, int> FIELDMAP = dict[
     'message' => 1,

@@ -37,16 +37,16 @@ class MyException1 extends \TException implements \IThriftStruct {
     'message' => 1,
     'code' => 2,
   };
-  const dict<int, dict<string, mixed>> SPEC = dict[
-    1 => dict[
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    1 => shape(
       'var' => 'message',
       'type' => \TType::STRING,
-    ],
-    2 => dict[
+    ),
+    2 => shape(
       'var' => 'code',
       'type' => \TType::I32,
       'enum' => 'MyEnum',
-    ],
+    ),
   ];
   const dict<string, int> FIELDMAP = dict[
     'message' => 1,
@@ -109,16 +109,16 @@ class MyException2 extends \TException implements \IThriftStruct {
     'message' => 1,
     'code' => 2,
   };
-  const dict<int, dict<string, mixed>> SPEC = dict[
-    1 => dict[
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    1 => shape(
       'var' => 'message',
       'type' => \TType::STRING,
-    ],
-    2 => dict[
+    ),
+    2 => shape(
       'var' => 'code',
       'type' => \TType::I32,
       'enum' => 'MyEnum',
-    ],
+    ),
   ];
   const dict<string, int> FIELDMAP = dict[
     'message' => 1,
@@ -181,16 +181,16 @@ class MyException3 extends \TException implements \IThriftStruct {
     'message' => 1,
     'code' => 2,
   };
-  const dict<int, dict<string, mixed>> SPEC = dict[
-    1 => dict[
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    1 => shape(
       'var' => 'message',
       'type' => \TType::STRING,
-    ],
-    2 => dict[
+    ),
+    2 => shape(
       'var' => 'code',
       'type' => \TType::I32,
       'enum' => 'MyEnum',
-    ],
+    ),
   ];
   const dict<string, int> FIELDMAP = dict[
     'message' => 1,
@@ -253,16 +253,16 @@ class MyException4 extends \TException implements \IThriftStruct {
     'message' => 1,
     'code' => 2,
   };
-  const dict<int, dict<string, mixed>> SPEC = dict[
-    1 => dict[
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    1 => shape(
       'var' => 'message',
       'type' => \TType::STRING,
-    ],
-    2 => dict[
+    ),
+    2 => shape(
       'var' => 'code',
       'type' => \TType::I32,
       'enum' => 'MyEnum',
-    ],
+    ),
   ];
   const dict<string, int> FIELDMAP = dict[
     'message' => 1,
@@ -324,15 +324,15 @@ class MyException5 extends \TException implements \IThriftStruct {
     'message' => 1,
     'code' => 2,
   };
-  const dict<int, dict<string, mixed>> SPEC = dict[
-    1 => dict[
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    1 => shape(
       'var' => 'message',
       'type' => \TType::STRING,
-    ],
-    2 => dict[
+    ),
+    2 => shape(
       'var' => 'code',
       'type' => \TType::I64,
-    ],
+    ),
   ];
   const dict<string, int> FIELDMAP = dict[
     'message' => 1,

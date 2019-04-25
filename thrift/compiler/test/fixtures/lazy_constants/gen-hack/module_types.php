@@ -55,20 +55,20 @@ class Internship implements \IThriftStruct {
     'title' => 2,
     'employer' => 3,
   };
-  const dict<int, dict<string, mixed>> SPEC = dict[
-    1 => dict[
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    1 => shape(
       'var' => 'weeks',
       'type' => \TType::I32,
-    ],
-    2 => dict[
+    ),
+    2 => shape(
       'var' => 'title',
       'type' => \TType::STRING,
-    ],
-    3 => dict[
+    ),
+    3 => shape(
       'var' => 'employer',
       'type' => \TType::I32,
       'enum' => 'Company',
-    ],
+    ),
   ];
   const dict<string, int> FIELDMAP = dict[
     'weeks' => 1,
@@ -134,15 +134,15 @@ class Range implements \IThriftStruct {
     'min' => 1,
     'max' => 2,
   };
-  const dict<int, dict<string, mixed>> SPEC = dict[
-    1 => dict[
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    1 => shape(
       'var' => 'min',
       'type' => \TType::I32,
-    ],
-    2 => dict[
+    ),
+    2 => shape(
       'var' => 'max',
       'type' => \TType::I32,
-    ],
+    ),
   ];
   const dict<string, int> FIELDMAP = dict[
     'min' => 1,

@@ -22,11 +22,11 @@ class Foo implements \IThriftStruct {
   public static Map<string, int> $_TFIELDMAP = Map {
     'fiels' => 1,
   };
-  const dict<int, dict<string, mixed>> SPEC = dict[
-    1 => dict[
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    1 => shape(
       'var' => 'fiels',
       'type' => \TType::I32,
-    ],
+    ),
   ];
   const dict<string, int> FIELDMAP = dict[
     'fiels' => 1,
@@ -90,31 +90,31 @@ class Bar implements \IThriftStruct {
     'a' => 1,
     'b' => 2,
   };
-  const dict<int, dict<string, mixed>> SPEC = dict[
-    1 => dict[
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    1 => shape(
       'var' => 'a',
       'type' => \TType::SET,
       'etype' => \TType::STRUCT,
-      'elem' => dict[
+      'elem' => shape(
         'type' => \TType::STRUCT,
         'class' => 'Foo',
-      ],
+      ),
       'format' => 'collection',
-    ],
-    2 => dict[
+    ),
+    2 => shape(
       'var' => 'b',
       'type' => \TType::MAP,
       'ktype' => \TType::STRUCT,
       'vtype' => \TType::I32,
-      'key' => dict[
+      'key' => shape(
         'type' => \TType::STRUCT,
         'class' => 'Foo',
-      ],
-      'val' => dict[
+      ),
+      'val' => shape(
         'type' => \TType::I32,
-      ],
+      ),
       'format' => 'collection',
-    ],
+    ),
   ];
   const dict<string, int> FIELDMAP = dict[
     'a' => 1,

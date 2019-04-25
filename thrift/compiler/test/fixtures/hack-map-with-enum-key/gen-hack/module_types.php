@@ -53,32 +53,32 @@ class BarStruct implements \IThriftStruct, \IThriftShapishStruct {
     'e' => 1,
     's' => 2,
   };
-  const dict<int, dict<string, mixed>> SPEC = dict[
-    1 => dict[
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    1 => shape(
       'var' => 'e',
       'type' => \TType::MAP,
       'ktype' => \TType::I32,
       'vtype' => \TType::I32,
-      'key' => dict[
+      'key' => shape(
         'type' => \TType::I32,
         'enum' => 'FooEnum',
-      ],
-      'val' => dict[
+      ),
+      'val' => shape(
         'type' => \TType::I32,
         'enum' => 'FooEnum',
-      ],
+      ),
       'format' => 'collection',
-    ],
-    2 => dict[
+    ),
+    2 => shape(
       'var' => 's',
       'type' => \TType::SET,
       'etype' => \TType::I32,
-      'elem' => dict[
+      'elem' => shape(
         'type' => \TType::I32,
         'enum' => 'FooEnum',
-      ],
+      ),
       'format' => 'collection',
-    ],
+    ),
   ];
   const dict<string, int> FIELDMAP = dict[
     'e' => 1,

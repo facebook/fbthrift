@@ -47,23 +47,23 @@ class Color implements \IThriftStruct {
     'blue' => 3,
     'alpha' => 4,
   };
-  const dict<int, dict<string, mixed>> SPEC = dict[
-    1 => dict[
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    1 => shape(
       'var' => 'red',
       'type' => \TType::DOUBLE,
-    ],
-    2 => dict[
+    ),
+    2 => shape(
       'var' => 'green',
       'type' => \TType::DOUBLE,
-    ],
-    3 => dict[
+    ),
+    3 => shape(
       'var' => 'blue',
       'type' => \TType::DOUBLE,
-    ],
-    4 => dict[
+    ),
+    4 => shape(
       'var' => 'alpha',
       'type' => \TType::DOUBLE,
-    ],
+    ),
   ];
   const dict<string, int> FIELDMAP = dict[
     'red' => 1,
@@ -160,28 +160,28 @@ class Vehicle implements \IThriftStruct {
     'name' => 4,
     'hasAC' => 5,
   };
-  const dict<int, dict<string, mixed>> SPEC = dict[
-    1 => dict[
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    1 => shape(
       'var' => 'color',
       'type' => \TType::STRUCT,
       'class' => 'Color',
-    ],
-    2 => dict[
+    ),
+    2 => shape(
       'var' => 'licensePlate',
       'type' => \TType::STRING,
-    ],
-    3 => dict[
+    ),
+    3 => shape(
       'var' => 'description',
       'type' => \TType::STRING,
-    ],
-    4 => dict[
+    ),
+    4 => shape(
       'var' => 'name',
       'type' => \TType::STRING,
-    ],
-    5 => dict[
+    ),
+    5 => shape(
       'var' => 'hasAC',
       'type' => \TType::BOOL,
-    ],
+    ),
   ];
   const dict<string, int> FIELDMAP = dict[
     'color' => 1,
@@ -320,70 +320,70 @@ class Person implements \IThriftStruct {
     'afraidOfAnimal' => 9,
     'vehicles' => 10,
   };
-  const dict<int, dict<string, mixed>> SPEC = dict[
-    1 => dict[
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    1 => shape(
       'var' => 'id',
       'type' => \TType::I64,
-    ],
-    2 => dict[
+    ),
+    2 => shape(
       'var' => 'name',
       'type' => \TType::STRING,
-    ],
-    3 => dict[
+    ),
+    3 => shape(
       'var' => 'age',
       'type' => \TType::I16,
-    ],
-    4 => dict[
+    ),
+    4 => shape(
       'var' => 'address',
       'type' => \TType::STRING,
-    ],
-    5 => dict[
+    ),
+    5 => shape(
       'var' => 'favoriteColor',
       'type' => \TType::STRUCT,
       'class' => 'Color',
-    ],
-    6 => dict[
+    ),
+    6 => shape(
       'var' => 'friends',
       'type' => \TType::SET,
       'etype' => \TType::I64,
-      'elem' => dict[
+      'elem' => shape(
         'type' => \TType::I64,
-      ],
+      ),
       'format' => 'collection',
-    ],
-    7 => dict[
+    ),
+    7 => shape(
       'var' => 'bestFriend',
       'type' => \TType::I64,
-    ],
-    8 => dict[
+    ),
+    8 => shape(
       'var' => 'petNames',
       'type' => \TType::MAP,
       'ktype' => \TType::I32,
       'vtype' => \TType::STRING,
-      'key' => dict[
+      'key' => shape(
         'type' => \TType::I32,
         'enum' => 'Animal',
-      ],
-      'val' => dict[
+      ),
+      'val' => shape(
         'type' => \TType::STRING,
-      ],
+      ),
       'format' => 'collection',
-    ],
-    9 => dict[
+    ),
+    9 => shape(
       'var' => 'afraidOfAnimal',
       'type' => \TType::I32,
       'enum' => 'Animal',
-    ],
-    10 => dict[
+    ),
+    10 => shape(
       'var' => 'vehicles',
       'type' => \TType::LST,
       'etype' => \TType::STRUCT,
-      'elem' => dict[
+      'elem' => shape(
         'type' => \TType::STRUCT,
         'class' => 'Vehicle',
-      ],
+      ),
       'format' => 'collection',
-    ],
+    ),
   ];
   const dict<string, int> FIELDMAP = dict[
     'id' => 1,

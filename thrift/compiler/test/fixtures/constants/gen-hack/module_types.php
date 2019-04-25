@@ -62,20 +62,20 @@ class Internship implements \IThriftStruct {
     'title' => 2,
     'employer' => 3,
   };
-  const dict<int, dict<string, mixed>> SPEC = dict[
-    1 => dict[
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    1 => shape(
       'var' => 'weeks',
       'type' => \TType::I32,
-    ],
-    2 => dict[
+    ),
+    2 => shape(
       'var' => 'title',
       'type' => \TType::STRING,
-    ],
-    3 => dict[
+    ),
+    3 => shape(
       'var' => 'employer',
       'type' => \TType::I32,
       'enum' => 'Company',
-    ],
+    ),
   ];
   const dict<string, int> FIELDMAP = dict[
     'weeks' => 1,
@@ -137,12 +137,12 @@ class UnEnumStruct implements \IThriftStruct {
   public static Map<string, int> $_TFIELDMAP = Map {
     'city' => 1,
   };
-  const dict<int, dict<string, mixed>> SPEC = dict[
-    1 => dict[
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    1 => shape(
       'var' => 'city',
       'type' => \TType::I32,
       'enum' => 'City',
-    ],
+    ),
   ];
   const dict<string, int> FIELDMAP = dict[
     'city' => 1,
@@ -190,15 +190,15 @@ class Range implements \IThriftStruct {
     'min' => 1,
     'max' => 2,
   };
-  const dict<int, dict<string, mixed>> SPEC = dict[
-    1 => dict[
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    1 => shape(
       'var' => 'min',
       'type' => \TType::I32,
-    ],
-    2 => dict[
+    ),
+    2 => shape(
       'var' => 'max',
       'type' => \TType::I32,
-    ],
+    ),
   ];
   const dict<string, int> FIELDMAP = dict[
     'min' => 1,
@@ -257,15 +257,15 @@ class struct1 implements \IThriftStruct {
     'a' => 1,
     'b' => 2,
   };
-  const dict<int, dict<string, mixed>> SPEC = dict[
-    1 => dict[
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    1 => shape(
       'var' => 'a',
       'type' => \TType::I32,
-    ],
-    2 => dict[
+    ),
+    2 => shape(
       'var' => 'b',
       'type' => \TType::STRING,
-    ],
+    ),
   ];
   const dict<string, int> FIELDMAP = dict[
     'a' => 1,
@@ -340,29 +340,29 @@ class struct2 implements \IThriftStruct {
     'c' => 3,
     'd' => 4,
   };
-  const dict<int, dict<string, mixed>> SPEC = dict[
-    1 => dict[
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    1 => shape(
       'var' => 'a',
       'type' => \TType::I32,
-    ],
-    2 => dict[
+    ),
+    2 => shape(
       'var' => 'b',
       'type' => \TType::STRING,
-    ],
-    3 => dict[
+    ),
+    3 => shape(
       'var' => 'c',
       'type' => \TType::STRUCT,
       'class' => 'struct1',
-    ],
-    4 => dict[
+    ),
+    4 => shape(
       'var' => 'd',
       'type' => \TType::LST,
       'etype' => \TType::I32,
-      'elem' => dict[
+      'elem' => shape(
         'type' => \TType::I32,
-      ],
+      ),
       'format' => 'collection',
-    ],
+    ),
   ];
   const dict<string, int> FIELDMAP = dict[
     'a' => 1,
@@ -445,20 +445,20 @@ class struct3 implements \IThriftStruct {
     'b' => 2,
     'c' => 3,
   };
-  const dict<int, dict<string, mixed>> SPEC = dict[
-    1 => dict[
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    1 => shape(
       'var' => 'a',
       'type' => \TType::STRING,
-    ],
-    2 => dict[
+    ),
+    2 => shape(
       'var' => 'b',
       'type' => \TType::I32,
-    ],
-    3 => dict[
+    ),
+    3 => shape(
       'var' => 'c',
       'type' => \TType::STRUCT,
       'class' => 'struct2',
-    ],
+    ),
   ];
   const dict<string, int> FIELDMAP = dict[
     'a' => 1,
@@ -532,17 +532,17 @@ class union1 implements \IThriftStruct, \IThriftUnion<union1Enum> {
     'i' => 1,
     'd' => 2,
   };
-  const dict<int, dict<string, mixed>> SPEC = dict[
-    1 => dict[
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    1 => shape(
       'var' => 'i',
       'union' => true,
       'type' => \TType::I32,
-    ],
-    2 => dict[
+    ),
+    2 => shape(
       'var' => 'd',
       'union' => true,
       'type' => \TType::DOUBLE,
-    ],
+    ),
   ];
   const dict<string, int> FIELDMAP = dict[
     'i' => 1,
@@ -659,29 +659,29 @@ class union2 implements \IThriftStruct, \IThriftUnion<union2Enum> {
     's' => 3,
     'u' => 4,
   };
-  const dict<int, dict<string, mixed>> SPEC = dict[
-    1 => dict[
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    1 => shape(
       'var' => 'i',
       'union' => true,
       'type' => \TType::I32,
-    ],
-    2 => dict[
+    ),
+    2 => shape(
       'var' => 'd',
       'union' => true,
       'type' => \TType::DOUBLE,
-    ],
-    3 => dict[
+    ),
+    3 => shape(
       'var' => 's',
       'union' => true,
       'type' => \TType::STRUCT,
       'class' => 'struct1',
-    ],
-    4 => dict[
+    ),
+    4 => shape(
       'var' => 'u',
       'union' => true,
       'type' => \TType::STRUCT,
       'class' => 'union1',
-    ],
+    ),
   ];
   const dict<string, int> FIELDMAP = dict[
     'i' => 1,

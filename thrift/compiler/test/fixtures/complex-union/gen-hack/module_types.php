@@ -82,56 +82,56 @@ class ComplexUnion implements \IThriftStruct, \IThriftUnion<ComplexUnionEnum> {
     'typedefValue' => 9,
     'stringRef' => 14,
   };
-  const dict<int, dict<string, mixed>> SPEC = dict[
-    1 => dict[
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    1 => shape(
       'var' => 'intValue',
       'union' => true,
       'type' => \TType::I64,
-    ],
-    5 => dict[
+    ),
+    5 => shape(
       'var' => 'stringValue',
       'union' => true,
       'type' => \TType::STRING,
-    ],
-    2 => dict[
+    ),
+    2 => shape(
       'var' => 'intListValue',
       'union' => true,
       'type' => \TType::LST,
       'etype' => \TType::I64,
-      'elem' => dict[
+      'elem' => shape(
         'type' => \TType::I64,
-      ],
+      ),
       'format' => 'collection',
-    ],
-    3 => dict[
+    ),
+    3 => shape(
       'var' => 'stringListValue',
       'union' => true,
       'type' => \TType::LST,
       'etype' => \TType::STRING,
-      'elem' => dict[
+      'elem' => shape(
         'type' => \TType::STRING,
-      ],
+      ),
       'format' => 'collection',
-    ],
-    9 => dict[
+    ),
+    9 => shape(
       'var' => 'typedefValue',
       'union' => true,
       'type' => \TType::MAP,
       'ktype' => \TType::I16,
       'vtype' => \TType::STRING,
-      'key' => dict[
+      'key' => shape(
         'type' => \TType::I16,
-      ],
-      'val' => dict[
+      ),
+      'val' => shape(
         'type' => \TType::STRING,
-      ],
+      ),
       'format' => 'collection',
-    ],
-    14 => dict[
+    ),
+    14 => shape(
       'var' => 'stringRef',
       'union' => true,
       'type' => \TType::STRING,
-    ],
+    ),
   ];
   const dict<string, int> FIELDMAP = dict[
     'intValue' => 1,
@@ -397,27 +397,27 @@ class ListUnion implements \IThriftStruct, \IThriftUnion<ListUnionEnum> {
     'intListValue' => 2,
     'stringListValue' => 3,
   };
-  const dict<int, dict<string, mixed>> SPEC = dict[
-    2 => dict[
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    2 => shape(
       'var' => 'intListValue',
       'union' => true,
       'type' => \TType::LST,
       'etype' => \TType::I64,
-      'elem' => dict[
+      'elem' => shape(
         'type' => \TType::I64,
-      ],
+      ),
       'format' => 'collection',
-    ],
-    3 => dict[
+    ),
+    3 => shape(
       'var' => 'stringListValue',
       'union' => true,
       'type' => \TType::LST,
       'etype' => \TType::STRING,
-      'elem' => dict[
+      'elem' => shape(
         'type' => \TType::STRING,
-      ],
+      ),
       'format' => 'collection',
-    ],
+    ),
   ];
   const dict<string, int> FIELDMAP = dict[
     'intListValue' => 2,
@@ -550,17 +550,17 @@ class DataUnion implements \IThriftStruct, \IThriftUnion<DataUnionEnum> {
     'binaryData' => 1,
     'stringData' => 2,
   };
-  const dict<int, dict<string, mixed>> SPEC = dict[
-    1 => dict[
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    1 => shape(
       'var' => 'binaryData',
       'union' => true,
       'type' => \TType::STRING,
-    ],
-    2 => dict[
+    ),
+    2 => shape(
       'var' => 'stringData',
       'union' => true,
       'type' => \TType::STRING,
-    ],
+    ),
   ];
   const dict<string, int> FIELDMAP = dict[
     'binaryData' => 1,
@@ -685,28 +685,28 @@ class Val implements \IThriftStruct {
     'intVal' => 2,
     'typedefValue' => 9,
   };
-  const dict<int, dict<string, mixed>> SPEC = dict[
-    1 => dict[
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    1 => shape(
       'var' => 'strVal',
       'type' => \TType::STRING,
-    ],
-    2 => dict[
+    ),
+    2 => shape(
       'var' => 'intVal',
       'type' => \TType::I32,
-    ],
-    9 => dict[
+    ),
+    9 => shape(
       'var' => 'typedefValue',
       'type' => \TType::MAP,
       'ktype' => \TType::I16,
       'vtype' => \TType::STRING,
-      'key' => dict[
+      'key' => shape(
         'type' => \TType::I16,
-      ],
-      'val' => dict[
+      ),
+      'val' => shape(
         'type' => \TType::STRING,
-      ],
+      ),
       'format' => 'collection',
-    ],
+    ),
   ];
   const dict<string, int> FIELDMAP = dict[
     'strVal' => 1,
@@ -816,19 +816,19 @@ class ValUnion implements \IThriftStruct, \IThriftUnion<ValUnionEnum> {
     'v1' => 1,
     'v2' => 2,
   };
-  const dict<int, dict<string, mixed>> SPEC = dict[
-    1 => dict[
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    1 => shape(
       'var' => 'v1',
       'union' => true,
       'type' => \TType::STRUCT,
       'class' => 'Val',
-    ],
-    2 => dict[
+    ),
+    2 => shape(
       'var' => 'v2',
       'union' => true,
       'type' => \TType::STRUCT,
       'class' => 'Val',
-    ],
+    ),
   ];
   const dict<string, int> FIELDMAP = dict[
     'v1' => 1,
@@ -953,17 +953,17 @@ class VirtualComplexUnion implements \IThriftStruct, \IThriftUnion<VirtualComple
     'thingOne' => 1,
     'thingTwo' => 2,
   };
-  const dict<int, dict<string, mixed>> SPEC = dict[
-    1 => dict[
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    1 => shape(
       'var' => 'thingOne',
       'union' => true,
       'type' => \TType::STRING,
-    ],
-    2 => dict[
+    ),
+    2 => shape(
       'var' => 'thingTwo',
       'union' => true,
       'type' => \TType::STRING,
-    ],
+    ),
   ];
   const dict<string, int> FIELDMAP = dict[
     'thingOne' => 1,

@@ -43,17 +43,17 @@ class Union implements \IThriftStruct, \IThriftUnion<\test\fixtures\UnionEnum>, 
     'intValue' => 1,
     'stringValue' => 5,
   };
-  const dict<int, dict<string, mixed>> SPEC = dict[
-    1 => dict[
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    1 => shape(
       'var' => 'intValue',
       'union' => true,
       'type' => \TType::I64,
-    ],
-    5 => dict[
+    ),
+    5 => shape(
       'var' => 'stringValue',
       'union' => true,
       'type' => \TType::STRING,
-    ],
+    ),
   ];
   const dict<string, int> FIELDMAP = dict[
     'intValue' => 1,
@@ -230,11 +230,11 @@ class A implements \IThriftStruct, \IThriftShapishStruct {
   public static Map<string, int> $_TFIELDMAP = Map {
     'a' => 1,
   };
-  const dict<int, dict<string, mixed>> SPEC = dict[
-    1 => dict[
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    1 => shape(
       'var' => 'a',
       'type' => \TType::STRING,
-    ],
+    ),
   ];
   const dict<string, int> FIELDMAP = dict[
     'a' => 1,
@@ -818,452 +818,452 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     'list_of_string_with_default_value' => 87,
     'map_of_string_to_list_of_i32_with_default_value' => 88,
   };
-  const dict<int, dict<string, mixed>> SPEC = dict[
-    1 => dict[
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    1 => shape(
       'var' => 'just_an_A',
       'type' => \TType::STRUCT,
       'class' => '\test\fixtures\A',
-    ],
-    2 => dict[
+    ),
+    2 => shape(
       'var' => 'set_of_i32',
       'type' => \TType::SET,
       'etype' => \TType::I32,
-      'elem' => dict[
+      'elem' => shape(
         'type' => \TType::I32,
-      ],
+      ),
       'format' => 'collection',
-    ],
-    3 => dict[
+    ),
+    3 => shape(
       'var' => 'list_of_i32',
       'type' => \TType::LST,
       'etype' => \TType::I32,
-      'elem' => dict[
+      'elem' => shape(
         'type' => \TType::I32,
-      ],
+      ),
       'format' => 'collection',
-    ],
-    4 => dict[
+    ),
+    4 => shape(
       'var' => 'list_of_string',
       'type' => \TType::LST,
       'etype' => \TType::STRING,
-      'elem' => dict[
+      'elem' => shape(
         'type' => \TType::STRING,
-      ],
+      ),
       'format' => 'collection',
-    ],
-    5 => dict[
+    ),
+    5 => shape(
       'var' => 'map_of_string_to_i32',
       'type' => \TType::MAP,
       'ktype' => \TType::STRING,
       'vtype' => \TType::I32,
-      'key' => dict[
+      'key' => shape(
         'type' => \TType::STRING,
-      ],
-      'val' => dict[
+      ),
+      'val' => shape(
         'type' => \TType::I32,
-      ],
+      ),
       'format' => 'collection',
-    ],
-    6 => dict[
+    ),
+    6 => shape(
       'var' => 'map_of_string_to_A',
       'type' => \TType::MAP,
       'ktype' => \TType::STRING,
       'vtype' => \TType::STRUCT,
-      'key' => dict[
+      'key' => shape(
         'type' => \TType::STRING,
-      ],
-      'val' => dict[
+      ),
+      'val' => shape(
         'type' => \TType::STRUCT,
         'class' => '\test\fixtures\A',
-      ],
+      ),
       'format' => 'collection',
-    ],
-    7 => dict[
+    ),
+    7 => shape(
       'var' => 'map_of_string_to_list_of_i32',
       'type' => \TType::MAP,
       'ktype' => \TType::STRING,
       'vtype' => \TType::LST,
-      'key' => dict[
+      'key' => shape(
         'type' => \TType::STRING,
-      ],
-      'val' => dict[
+      ),
+      'val' => shape(
         'type' => \TType::LST,
         'etype' => \TType::I32,
-        'elem' => dict[
+        'elem' => shape(
           'type' => \TType::I32,
-        ],
+        ),
         'format' => 'collection',
-      ],
+      ),
       'format' => 'collection',
-    ],
-    8 => dict[
+    ),
+    8 => shape(
       'var' => 'map_of_string_to_list_of_A',
       'type' => \TType::MAP,
       'ktype' => \TType::STRING,
       'vtype' => \TType::LST,
-      'key' => dict[
+      'key' => shape(
         'type' => \TType::STRING,
-      ],
-      'val' => dict[
+      ),
+      'val' => shape(
         'type' => \TType::LST,
         'etype' => \TType::STRUCT,
-        'elem' => dict[
+        'elem' => shape(
           'type' => \TType::STRUCT,
           'class' => '\test\fixtures\A',
-        ],
+        ),
         'format' => 'collection',
-      ],
+      ),
       'format' => 'collection',
-    ],
-    9 => dict[
+    ),
+    9 => shape(
       'var' => 'map_of_string_to_set_of_i32',
       'type' => \TType::MAP,
       'ktype' => \TType::STRING,
       'vtype' => \TType::SET,
-      'key' => dict[
+      'key' => shape(
         'type' => \TType::STRING,
-      ],
-      'val' => dict[
+      ),
+      'val' => shape(
         'type' => \TType::SET,
         'etype' => \TType::I32,
-        'elem' => dict[
+        'elem' => shape(
           'type' => \TType::I32,
-        ],
+        ),
         'format' => 'collection',
-      ],
+      ),
       'format' => 'collection',
-    ],
-    10 => dict[
+    ),
+    10 => shape(
       'var' => 'map_of_string_to_map_of_string_to_i32',
       'type' => \TType::MAP,
       'ktype' => \TType::STRING,
       'vtype' => \TType::MAP,
-      'key' => dict[
+      'key' => shape(
         'type' => \TType::STRING,
-      ],
-      'val' => dict[
+      ),
+      'val' => shape(
         'type' => \TType::MAP,
         'ktype' => \TType::STRING,
         'vtype' => \TType::I32,
-        'key' => dict[
+        'key' => shape(
           'type' => \TType::STRING,
-        ],
-        'val' => dict[
+        ),
+        'val' => shape(
           'type' => \TType::I32,
-        ],
+        ),
         'format' => 'collection',
-      ],
+      ),
       'format' => 'collection',
-    ],
-    11 => dict[
+    ),
+    11 => shape(
       'var' => 'map_of_string_to_map_of_string_to_A',
       'type' => \TType::MAP,
       'ktype' => \TType::STRING,
       'vtype' => \TType::MAP,
-      'key' => dict[
+      'key' => shape(
         'type' => \TType::STRING,
-      ],
-      'val' => dict[
+      ),
+      'val' => shape(
         'type' => \TType::MAP,
         'ktype' => \TType::STRING,
         'vtype' => \TType::STRUCT,
-        'key' => dict[
+        'key' => shape(
           'type' => \TType::STRING,
-        ],
-        'val' => dict[
+        ),
+        'val' => shape(
           'type' => \TType::STRUCT,
           'class' => '\test\fixtures\A',
-        ],
+        ),
         'format' => 'collection',
-      ],
+      ),
       'format' => 'collection',
-    ],
-    12 => dict[
+    ),
+    12 => shape(
       'var' => 'list_of_set_of_i32',
       'type' => \TType::LST,
       'etype' => \TType::SET,
-      'elem' => dict[
+      'elem' => shape(
         'type' => \TType::SET,
         'etype' => \TType::I32,
-        'elem' => dict[
+        'elem' => shape(
           'type' => \TType::I32,
-        ],
+        ),
         'format' => 'collection',
-      ],
+      ),
       'format' => 'collection',
-    ],
-    13 => dict[
+    ),
+    13 => shape(
       'var' => 'list_of_map_of_string_to_list_of_A',
       'type' => \TType::LST,
       'etype' => \TType::MAP,
-      'elem' => dict[
+      'elem' => shape(
         'type' => \TType::MAP,
         'ktype' => \TType::STRING,
         'vtype' => \TType::LST,
-        'key' => dict[
+        'key' => shape(
           'type' => \TType::STRING,
-        ],
-        'val' => dict[
+        ),
+        'val' => shape(
           'type' => \TType::LST,
           'etype' => \TType::STRUCT,
-          'elem' => dict[
+          'elem' => shape(
             'type' => \TType::STRUCT,
             'class' => '\test\fixtures\A',
-          ],
+          ),
           'format' => 'collection',
-        ],
+        ),
         'format' => 'collection',
-      ],
+      ),
       'format' => 'collection',
-    ],
-    14 => dict[
+    ),
+    14 => shape(
       'var' => 'list_of_map_of_string_to_A',
       'type' => \TType::LST,
       'etype' => \TType::MAP,
-      'elem' => dict[
+      'elem' => shape(
         'type' => \TType::MAP,
         'ktype' => \TType::STRING,
         'vtype' => \TType::STRUCT,
-        'key' => dict[
+        'key' => shape(
           'type' => \TType::STRING,
-        ],
-        'val' => dict[
+        ),
+        'val' => shape(
           'type' => \TType::STRUCT,
           'class' => '\test\fixtures\A',
-        ],
+        ),
         'format' => 'collection',
-      ],
+      ),
       'format' => 'collection',
-    ],
-    15 => dict[
+    ),
+    15 => shape(
       'var' => 'list_of_self',
       'type' => \TType::LST,
       'etype' => \TType::STRUCT,
-      'elem' => dict[
+      'elem' => shape(
         'type' => \TType::STRUCT,
         'class' => '\test\fixtures\B',
-      ],
+      ),
       'format' => 'collection',
-    ],
-    16 => dict[
+    ),
+    16 => shape(
       'var' => 'map_of_string_to_self',
       'type' => \TType::MAP,
       'ktype' => \TType::STRING,
       'vtype' => \TType::STRUCT,
-      'key' => dict[
+      'key' => shape(
         'type' => \TType::STRING,
-      ],
-      'val' => dict[
+      ),
+      'val' => shape(
         'type' => \TType::STRUCT,
         'class' => '\test\fixtures\B',
-      ],
+      ),
       'format' => 'collection',
-    ],
-    17 => dict[
+    ),
+    17 => shape(
       'var' => 'just_an_enum',
       'type' => \TType::I32,
       'enum' => '\test\fixtures\Enum',
-    ],
-    18 => dict[
+    ),
+    18 => shape(
       'var' => 'just_a_union',
       'type' => \TType::STRUCT,
       'class' => '\test\fixtures\Union',
-    ],
-    51 => dict[
+    ),
+    51 => shape(
       'var' => 'optional_just_an_A',
       'type' => \TType::STRUCT,
       'class' => '\test\fixtures\A',
-    ],
-    52 => dict[
+    ),
+    52 => shape(
       'var' => 'optional_set_of_i32',
       'type' => \TType::SET,
       'etype' => \TType::I32,
-      'elem' => dict[
+      'elem' => shape(
         'type' => \TType::I32,
-      ],
+      ),
       'format' => 'collection',
-    ],
-    53 => dict[
+    ),
+    53 => shape(
       'var' => 'optional_list_of_i32',
       'type' => \TType::LST,
       'etype' => \TType::I32,
-      'elem' => dict[
+      'elem' => shape(
         'type' => \TType::I32,
-      ],
+      ),
       'format' => 'collection',
-    ],
-    54 => dict[
+    ),
+    54 => shape(
       'var' => 'optional_list_of_string',
       'type' => \TType::LST,
       'etype' => \TType::STRING,
-      'elem' => dict[
+      'elem' => shape(
         'type' => \TType::STRING,
-      ],
+      ),
       'format' => 'collection',
-    ],
-    55 => dict[
+    ),
+    55 => shape(
       'var' => 'optional_map_of_string_to_i32',
       'type' => \TType::MAP,
       'ktype' => \TType::STRING,
       'vtype' => \TType::I32,
-      'key' => dict[
+      'key' => shape(
         'type' => \TType::STRING,
-      ],
-      'val' => dict[
+      ),
+      'val' => shape(
         'type' => \TType::I32,
-      ],
+      ),
       'format' => 'collection',
-    ],
-    56 => dict[
+    ),
+    56 => shape(
       'var' => 'optional_map_of_string_to_A',
       'type' => \TType::MAP,
       'ktype' => \TType::STRING,
       'vtype' => \TType::STRUCT,
-      'key' => dict[
+      'key' => shape(
         'type' => \TType::STRING,
-      ],
-      'val' => dict[
+      ),
+      'val' => shape(
         'type' => \TType::STRUCT,
         'class' => '\test\fixtures\A',
-      ],
+      ),
       'format' => 'collection',
-    ],
-    57 => dict[
+    ),
+    57 => shape(
       'var' => 'optional_map_of_string_to_list_of_i32',
       'type' => \TType::MAP,
       'ktype' => \TType::STRING,
       'vtype' => \TType::LST,
-      'key' => dict[
+      'key' => shape(
         'type' => \TType::STRING,
-      ],
-      'val' => dict[
+      ),
+      'val' => shape(
         'type' => \TType::LST,
         'etype' => \TType::I32,
-        'elem' => dict[
+        'elem' => shape(
           'type' => \TType::I32,
-        ],
+        ),
         'format' => 'collection',
-      ],
+      ),
       'format' => 'collection',
-    ],
-    58 => dict[
+    ),
+    58 => shape(
       'var' => 'optional_map_of_string_to_list_of_A',
       'type' => \TType::MAP,
       'ktype' => \TType::STRING,
       'vtype' => \TType::LST,
-      'key' => dict[
+      'key' => shape(
         'type' => \TType::STRING,
-      ],
-      'val' => dict[
+      ),
+      'val' => shape(
         'type' => \TType::LST,
         'etype' => \TType::STRUCT,
-        'elem' => dict[
+        'elem' => shape(
           'type' => \TType::STRUCT,
           'class' => '\test\fixtures\A',
-        ],
+        ),
         'format' => 'collection',
-      ],
+      ),
       'format' => 'collection',
-    ],
-    59 => dict[
+    ),
+    59 => shape(
       'var' => 'optional_map_of_string_to_set_of_i32',
       'type' => \TType::MAP,
       'ktype' => \TType::STRING,
       'vtype' => \TType::SET,
-      'key' => dict[
+      'key' => shape(
         'type' => \TType::STRING,
-      ],
-      'val' => dict[
+      ),
+      'val' => shape(
         'type' => \TType::SET,
         'etype' => \TType::I32,
-        'elem' => dict[
+        'elem' => shape(
           'type' => \TType::I32,
-        ],
+        ),
         'format' => 'collection',
-      ],
+      ),
       'format' => 'collection',
-    ],
-    60 => dict[
+    ),
+    60 => shape(
       'var' => 'optional_enum',
       'type' => \TType::I32,
       'enum' => '\test\fixtures\Enum',
-    ],
-    70 => dict[
+    ),
+    70 => shape(
       'var' => 'required_enum_with_default',
       'type' => \TType::I32,
       'enum' => '\test\fixtures\Enum',
-    ],
-    80 => dict[
+    ),
+    80 => shape(
       'var' => 'string_with_default_value',
       'type' => \TType::STRING,
-    ],
-    81 => dict[
+    ),
+    81 => shape(
       'var' => 'i32_with_default_value',
       'type' => \TType::I32,
-    ],
-    82 => dict[
+    ),
+    82 => shape(
       'var' => 'double_with_default_value',
       'type' => \TType::DOUBLE,
-    ],
-    83 => dict[
+    ),
+    83 => shape(
       'var' => 'enum_with_default_value',
       'type' => \TType::I32,
       'enum' => '\test\fixtures\Enum',
-    ],
-    84 => dict[
+    ),
+    84 => shape(
       'var' => 'A_with_default_value',
       'type' => \TType::STRUCT,
       'class' => '\test\fixtures\A',
-    ],
-    85 => dict[
+    ),
+    85 => shape(
       'var' => 'set_of_i32_with_default_value',
       'type' => \TType::SET,
       'etype' => \TType::I32,
-      'elem' => dict[
+      'elem' => shape(
         'type' => \TType::I32,
-      ],
+      ),
       'format' => 'collection',
-    ],
-    86 => dict[
+    ),
+    86 => shape(
       'var' => 'map_of_i32_to_string_with_default_value',
       'type' => \TType::MAP,
       'ktype' => \TType::I32,
       'vtype' => \TType::STRING,
-      'key' => dict[
+      'key' => shape(
         'type' => \TType::I32,
-      ],
-      'val' => dict[
+      ),
+      'val' => shape(
         'type' => \TType::STRING,
-      ],
+      ),
       'format' => 'collection',
-    ],
-    87 => dict[
+    ),
+    87 => shape(
       'var' => 'list_of_string_with_default_value',
       'type' => \TType::LST,
       'etype' => \TType::STRING,
-      'elem' => dict[
+      'elem' => shape(
         'type' => \TType::STRING,
-      ],
+      ),
       'format' => 'collection',
-    ],
-    88 => dict[
+    ),
+    88 => shape(
       'var' => 'map_of_string_to_list_of_i32_with_default_value',
       'type' => \TType::MAP,
       'ktype' => \TType::STRING,
       'vtype' => \TType::LST,
-      'key' => dict[
+      'key' => shape(
         'type' => \TType::STRING,
-      ],
-      'val' => dict[
+      ),
+      'val' => shape(
         'type' => \TType::LST,
         'etype' => \TType::I32,
-        'elem' => dict[
+        'elem' => shape(
           'type' => \TType::I32,
-        ],
+        ),
         'format' => 'collection',
-      ],
+      ),
       'format' => 'collection',
-    ],
+    ),
   ];
   const dict<string, int> FIELDMAP = dict[
     'just_an_A' => 1,

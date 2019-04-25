@@ -46,19 +46,19 @@ class MyThriftStruct implements \IThriftStruct {
     'bar' => 2,
     'baz' => 3,
   };
-  const dict<int, dict<string, mixed>> SPEC = dict[
-    1 => dict[
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    1 => shape(
       'var' => 'foo',
       'type' => \TType::STRING,
-    ],
-    2 => dict[
+    ),
+    2 => shape(
       'var' => 'bar',
       'type' => \TType::STRING,
-    ],
-    3 => dict[
+    ),
+    3 => shape(
       'var' => 'baz',
       'type' => \TType::STRING,
-    ],
+    ),
   ];
   const dict<string, int> FIELDMAP = dict[
     'foo' => 1,
@@ -144,21 +144,21 @@ class MySecondThriftStruct implements \IThriftStruct {
     'bar' => 2,
     'baz' => 3,
   };
-  const dict<int, dict<string, mixed>> SPEC = dict[
-    1 => dict[
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    1 => shape(
       'var' => 'foo',
       'type' => \TType::I32,
       'enum' => '\test\fixtures\jsenum\MyThriftEnum',
-    ],
-    2 => dict[
+    ),
+    2 => shape(
       'var' => 'bar',
       'type' => \TType::STRUCT,
       'class' => '\test\fixtures\jsenum\MyThriftStruct',
-    ],
-    3 => dict[
+    ),
+    3 => shape(
       'var' => 'baz',
       'type' => \TType::I64,
-    ],
+    ),
   ];
   const dict<string, int> FIELDMAP = dict[
     'foo' => 1,
@@ -237,17 +237,17 @@ class UnionTesting implements \IThriftStruct, \IThriftUnion<\test\fixtures\jsenu
     'foo' => 1,
     'bar' => 3,
   };
-  const dict<int, dict<string, mixed>> SPEC = dict[
-    1 => dict[
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    1 => shape(
       'var' => 'foo',
       'union' => true,
       'type' => \TType::STRING,
-    ],
-    3 => dict[
+    ),
+    3 => shape(
       'var' => 'bar',
       'union' => true,
       'type' => \TType::I64,
-    ],
+    ),
   ];
   const dict<string, int> FIELDMAP = dict[
     'foo' => 1,

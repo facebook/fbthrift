@@ -29,20 +29,20 @@ class OldStructure implements \IThriftStruct {
   public static Map<string, int> $_TFIELDMAP = Map {
     'features' => 1,
   };
-  const dict<int, dict<string, mixed>> SPEC = dict[
-    1 => dict[
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    1 => shape(
       'var' => 'features',
       'type' => \TType::MAP,
       'ktype' => \TType::I16,
       'vtype' => \TType::DOUBLE,
-      'key' => dict[
+      'key' => shape(
         'type' => \TType::I16,
-      ],
-      'val' => dict[
+      ),
+      'val' => shape(
         'type' => \TType::DOUBLE,
-      ],
+      ),
       'format' => 'collection',
-    ],
+    ),
   ];
   const dict<string, int> FIELDMAP = dict[
     'features' => 1,
@@ -178,20 +178,20 @@ class NewStructure implements \IThriftStruct {
   public static Map<string, int> $_TFIELDMAP = Map {
     'features' => 1,
   };
-  const dict<int, dict<string, mixed>> SPEC = dict[
-    1 => dict[
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    1 => shape(
       'var' => 'features',
       'type' => \TType::MAP,
       'ktype' => \TType::I16,
       'vtype' => \TType::DOUBLE,
-      'key' => dict[
+      'key' => shape(
         'type' => \TType::I16,
-      ],
-      'val' => dict[
+      ),
+      'val' => shape(
         'type' => \TType::DOUBLE,
-      ],
+      ),
       'format' => 'collection',
-    ],
+    ),
   ];
   const dict<string, int> FIELDMAP = dict[
     'features' => 1,
@@ -327,20 +327,20 @@ class NewStructure2 implements \IThriftStruct {
   public static Map<string, int> $_TFIELDMAP = Map {
     'features' => 1,
   };
-  const dict<int, dict<string, mixed>> SPEC = dict[
-    1 => dict[
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    1 => shape(
       'var' => 'features',
       'type' => \TType::MAP,
       'ktype' => \TType::I16,
       'vtype' => \TType::FLOAT,
-      'key' => dict[
+      'key' => shape(
         'type' => \TType::I16,
-      ],
-      'val' => dict[
+      ),
+      'val' => shape(
         'type' => \TType::FLOAT,
-      ],
+      ),
       'format' => 'collection',
-    ],
+    ),
   ];
   const dict<string, int> FIELDMAP = dict[
     'features' => 1,
@@ -523,65 +523,65 @@ class NewStructureNested implements \IThriftStruct {
     'mp' => 2,
     's' => 3,
   };
-  const dict<int, dict<string, mixed>> SPEC = dict[
-    1 => dict[
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    1 => shape(
       'var' => 'lst',
       'type' => \TType::LST,
       'etype' => \TType::MAP,
-      'elem' => dict[
+      'elem' => shape(
         'type' => \TType::MAP,
         'ktype' => \TType::I16,
         'vtype' => \TType::FLOAT,
-        'key' => dict[
+        'key' => shape(
           'type' => \TType::I16,
-        ],
-        'val' => dict[
+        ),
+        'val' => shape(
           'type' => \TType::FLOAT,
-        ],
+        ),
         'format' => 'collection',
-      ],
+      ),
       'format' => 'collection',
-    ],
-    2 => dict[
+    ),
+    2 => shape(
       'var' => 'mp',
       'type' => \TType::MAP,
       'ktype' => \TType::I16,
       'vtype' => \TType::MAP,
-      'key' => dict[
+      'key' => shape(
         'type' => \TType::I16,
-      ],
-      'val' => dict[
+      ),
+      'val' => shape(
         'type' => \TType::MAP,
         'ktype' => \TType::I16,
         'vtype' => \TType::FLOAT,
-        'key' => dict[
+        'key' => shape(
           'type' => \TType::I16,
-        ],
-        'val' => dict[
+        ),
+        'val' => shape(
           'type' => \TType::FLOAT,
-        ],
+        ),
         'format' => 'collection',
-      ],
+      ),
       'format' => 'collection',
-    ],
-    3 => dict[
+    ),
+    3 => shape(
       'var' => 's',
       'type' => \TType::SET,
       'etype' => \TType::MAP,
-      'elem' => dict[
+      'elem' => shape(
         'type' => \TType::MAP,
         'ktype' => \TType::I16,
         'vtype' => \TType::FLOAT,
-        'key' => dict[
+        'key' => shape(
           'type' => \TType::I16,
-        ],
-        'val' => dict[
+        ),
+        'val' => shape(
           'type' => \TType::FLOAT,
-        ],
+        ),
         'format' => 'collection',
-      ],
+      ),
       'format' => 'collection',
-    ],
+    ),
   ];
   const dict<string, int> FIELDMAP = dict[
     'lst' => 1,
@@ -904,12 +904,12 @@ class NewStructureNestedField implements \IThriftStruct {
   public static Map<string, int> $_TFIELDMAP = Map {
     'f' => 1,
   };
-  const dict<int, dict<string, mixed>> SPEC = dict[
-    1 => dict[
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    1 => shape(
       'var' => 'f',
       'type' => \TType::STRUCT,
       'class' => 'NewStructureNested',
-    ],
+    ),
   ];
   const dict<string, int> FIELDMAP = dict[
     'f' => 1,
