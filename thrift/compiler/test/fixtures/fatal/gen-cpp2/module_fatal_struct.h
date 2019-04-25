@@ -123,18 +123,6 @@ struct struct_with_indirections_test_cpp2_cpp_reflection_module__struct_unique_i
       return std::forward<T__thrift__arg__>(__thrift__arg__).number;
     }
   };
-
-  struct result {
-    template <typename T__thrift__arg__>
-    static auto val(T__thrift__arg__ &&__thrift__arg__) {
-      return std::forward<T__thrift__arg__>(__thrift__arg__).foo().result();
-    }
-    template <typename T__thrift__arg__>
-    static auto &&ref(T__thrift__arg__ &&__thrift__arg__) {
-      return std::forward<T__thrift__arg__>(__thrift__arg__).foo().result();
-    }
-  };
-
   struct phrase {
     template <typename T__thrift__arg__>
     static auto val(T__thrift__arg__ &&__thrift__arg__) {
@@ -143,6 +131,16 @@ struct struct_with_indirections_test_cpp2_cpp_reflection_module__struct_unique_i
     template <typename T__thrift__arg__>
     static auto &&ref(T__thrift__arg__ &&__thrift__arg__) {
       return std::forward<T__thrift__arg__>(__thrift__arg__).phrase;
+    }
+  };
+  struct result {
+    template <typename T__thrift__arg__>
+    static auto val(T__thrift__arg__ &&__thrift__arg__) {
+      return std::forward<T__thrift__arg__>(__thrift__arg__).foo().result();
+    }
+    template <typename T__thrift__arg__>
+    static auto &&ref(T__thrift__arg__ &&__thrift__arg__) {
+      return std::forward<T__thrift__arg__>(__thrift__arg__).foo().result();
     }
   };
 };
@@ -701,6 +699,7 @@ class structA_test_cpp2_cpp_reflection_module__struct_unique_annotations {
       using map = ::fatal::list<
       >;
     };
+
     public:
     using a = ::apache::thrift::reflected_annotations<structA_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_a>;
     using b = ::apache::thrift::reflected_annotations<structA_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_b>;
@@ -780,6 +779,7 @@ class structB_test_cpp2_cpp_reflection_module__struct_unique_annotations {
         >
       >;
     };
+
     public:
     using c = ::apache::thrift::reflected_annotations<structB_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_c>;
     using d = ::apache::thrift::reflected_annotations<structB_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_d>;
@@ -816,6 +816,7 @@ class structB_test_cpp2_cpp_reflection_module__struct_unique_annotations {
       >
     >;
   };
+
   public:
   using keys = annotations::keys;
   using values = annotations::values;
@@ -1089,6 +1090,7 @@ class structC_test_cpp2_cpp_reflection_module__struct_unique_annotations {
       using map = ::fatal::list<
       >;
     };
+
     public:
     using a = ::apache::thrift::reflected_annotations<structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_a>;
     using b = ::apache::thrift::reflected_annotations<structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_b>;
@@ -1518,6 +1520,7 @@ class struct1_test_cpp2_cpp_reflection_module__struct_unique_annotations {
       using map = ::fatal::list<
       >;
     };
+
     public:
     using field0 = ::apache::thrift::reflected_annotations<struct1_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_field0>;
     using field1 = ::apache::thrift::reflected_annotations<struct1_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_field1>;
@@ -1667,6 +1670,7 @@ class struct2_test_cpp2_cpp_reflection_module__struct_unique_annotations {
       using map = ::fatal::list<
       >;
     };
+
     public:
     using fieldA = ::apache::thrift::reflected_annotations<struct2_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldA>;
     using fieldB = ::apache::thrift::reflected_annotations<struct2_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldB>;
@@ -1916,6 +1920,7 @@ class struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations {
       using map = ::fatal::list<
       >;
     };
+
     public:
     using fieldA = ::apache::thrift::reflected_annotations<struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldA>;
     using fieldB = ::apache::thrift::reflected_annotations<struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldB>;
@@ -2185,6 +2190,7 @@ class struct4_test_cpp2_cpp_reflection_module__struct_unique_annotations {
       using map = ::fatal::list<
       >;
     };
+
     public:
     using field0 = ::apache::thrift::reflected_annotations<struct4_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_field0>;
     using field1 = ::apache::thrift::reflected_annotations<struct4_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_field1>;
@@ -2306,6 +2312,7 @@ class struct5_test_cpp2_cpp_reflection_module__struct_unique_annotations {
       using map = ::fatal::list<
       >;
     };
+
     public:
     using field0 = ::apache::thrift::reflected_annotations<struct5_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_field0>;
     using field1 = ::apache::thrift::reflected_annotations<struct5_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_field1>;
@@ -2395,6 +2402,7 @@ class struct_binary_test_cpp2_cpp_reflection_module__struct_unique_annotations {
       using map = ::fatal::list<
       >;
     };
+
     public:
     using bi = ::apache::thrift::reflected_annotations<struct_binary_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_bi>;
   };
@@ -2452,6 +2460,7 @@ class dep_A_struct_test_cpp2_cpp_reflection_module__struct_unique_annotations {
       using map = ::fatal::list<
       >;
     };
+
     public:
     using b = ::apache::thrift::reflected_annotations<dep_A_struct_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_b>;
     using c = ::apache::thrift::reflected_annotations<dep_A_struct_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_c>;
@@ -2533,6 +2542,7 @@ class dep_B_struct_test_cpp2_cpp_reflection_module__struct_unique_annotations {
       using map = ::fatal::list<
       >;
     };
+
     public:
     using b = ::apache::thrift::reflected_annotations<dep_B_struct_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_b>;
     using c = ::apache::thrift::reflected_annotations<dep_B_struct_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_c>;
@@ -2664,6 +2674,7 @@ class annotated_test_cpp2_cpp_reflection_module__struct_unique_annotations {
         >
       >;
     };
+
     public:
     using a = ::apache::thrift::reflected_annotations<annotated_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_a>;
   };
@@ -2741,6 +2752,7 @@ class annotated_test_cpp2_cpp_reflection_module__struct_unique_annotations {
       >
     >;
   };
+
   public:
   using keys = annotations::keys;
   using values = annotations::values;
@@ -2987,6 +2999,7 @@ class struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_a
       using map = ::fatal::list<
       >;
     };
+
     public:
     using get = ::apache::thrift::reflected_annotations<struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_get>;
     using getter = ::apache::thrift::reflected_annotations<struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_getter>;
@@ -3384,6 +3397,7 @@ class struct_with_indirections_test_cpp2_cpp_reflection_module__struct_unique_an
       using map = ::fatal::list<
       >;
     };
+
     public:
     using real = ::apache::thrift::reflected_annotations<struct_with_indirections_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_real>;
     using fake = ::apache::thrift::reflected_annotations<struct_with_indirections_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fake>;
@@ -3478,6 +3492,7 @@ struct struct_with_indirections_test_cpp2_cpp_reflection_module__struct_unique_m
     struct_with_indirections
   >;
 };
+
 
 struct my_structA_test_cpp2_cpp_reflection_module__struct_unique_member_info_list {
   using a = ::apache::thrift::reflected_struct_data_member<
@@ -3805,7 +3820,6 @@ THRIFT_REGISTER_STRUCT_TRAITS(
 
 }} // test_cpp2::cpp_reflection
 namespace apache { namespace thrift { namespace detail {
-
 THRIFT_REGISTER_STRUCT_TRAITS(
    ::test_cpp2::cpp_reflection::my_structA,
    ::test_cpp2::cpp_reflection::thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::my_structA,
@@ -3816,10 +3830,9 @@ THRIFT_REGISTER_STRUCT_TRAITS(
   >,
    ::test_cpp2::cpp_reflection::thrift_fatal_impl_detail::structA_test_cpp2_cpp_reflection_module__struct_unique_annotations::members,
   ::apache::thrift::detail::type_common_metadata_impl<
-     ::test_cpp2::cpp_reflection::module_tags::module,
+    ::test_cpp2::cpp_reflection::module_tags::module,
     ::apache::thrift::reflected_annotations< ::test_cpp2::cpp_reflection::thrift_fatal_impl_detail::structA_test_cpp2_cpp_reflection_module__struct_unique_annotations>,
     static_cast<::apache::thrift::legacy_type_id_t>(9663308154247018828ull)
   >
 );
-
 }}} // apache::thrift::detail

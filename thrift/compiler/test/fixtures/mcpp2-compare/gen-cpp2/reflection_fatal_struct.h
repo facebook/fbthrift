@@ -22,6 +22,7 @@ struct cpp2_reflection__struct_unique_data_member_getters_list {
   FATAL_DATA_MEMBER_GETTER(fieldA, fieldA);
 };
 
+
 struct cpp2_reflection__struct_unique_member_pod_list {
   template <typename T_cpp2_reflection_struct_member_pod>
 
@@ -40,6 +41,7 @@ class ReflectionStruct_cpp2_reflection__struct_unique_annotations {
       using map = ::fatal::list<
       >;
     };
+
     public:
     using fieldA = ::apache::thrift::reflected_annotations<ReflectionStruct_cpp2_reflection__struct_unique_annotations_members_fieldA>;
   };
@@ -72,6 +74,8 @@ struct ReflectionStruct_cpp2_reflection__struct_unique_member_info_list {
   >;
 };
 
+
+
 } // thrift_fatal_impl_detail
 THRIFT_REGISTER_STRUCT_TRAITS(
   ReflectionStruct,
@@ -90,5 +94,4 @@ THRIFT_REGISTER_STRUCT_TRAITS(
 
 } // cpp2
 namespace apache { namespace thrift { namespace detail {
-
 }}} // apache::thrift::detail

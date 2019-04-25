@@ -616,6 +616,8 @@ class mstch_cpp2_field : public mstch_field {
             {"field:fatal_annotations?",
              &mstch_cpp2_field::has_fatal_annotations},
             {"field:fatal_annotations", &mstch_cpp2_field::fatal_annotations},
+            {"field:fatal_required_qualifier",
+             &mstch_cpp2_field::fatal_required_qualifier},
         });
   }
   mstch::node index_plus_one() {
@@ -692,6 +694,18 @@ class mstch_cpp2_field : public mstch_field {
         generators_->annotation_generator_.get(),
         generators_,
         cache_);
+  }
+  mstch::node fatal_required_qualifier() {
+    switch (field_->get_req()) {
+      case t_field::e_req::T_REQUIRED:
+        return std::string("required");
+      case t_field::e_req::T_OPTIONAL:
+        return std::string("optional");
+      case t_field::e_req::T_OPT_IN_REQ_OUT:
+        return std::string("required_of_writer");
+      default:
+        throw runtime_error("unknown required qualifier");
+    }
   }
 };
 
@@ -1329,6 +1343,13 @@ class mstch_cpp2_program : public mstch_program {
             {"program:fatal_services", &mstch_cpp2_program::fatal_services},
             {"program:fatal_identifiers",
              &mstch_cpp2_program::fatal_identifiers},
+            {"program:fatal_data_member",
+             &mstch_cpp2_program::fatal_data_member},
+            {"program:indirection_recursive?",
+             &mstch_cpp2_program::has_indirection_recursive},
+            {"program:indirection", &mstch_cpp2_program::indirection},
+            {"program:aliases_to_struct",
+             &mstch_cpp2_program::aliases_to_struct},
         });
   }
   std::string get_program_namespace(t_program const* program) override {
@@ -1472,6 +1493,8 @@ class mstch_cpp2_program : public mstch_program {
     return cache_->parsed_options_.count("frozen2") != 0;
   }
   mstch::node has_indirection() {
+    // NOTE: this can be problematic, since typedef can be from an imported
+    // thrift file.
     for (auto const* typedf : program_->get_typedefs()) {
       if (typedf->get_type()->annotations_.count("cpp.indirection")) {
         return true;
@@ -1584,6 +1607,100 @@ class mstch_cpp2_program : public mstch_program {
           {"identifier:name", name.first},
           {"identifier:fatal_string", render_fatal_string(name.second)},
       });
+    }
+    return a;
+  }
+  mstch::node fatal_data_member() {
+    std::vector<std::string> v;
+    for (const t_struct* s : program_->get_objects()) {
+      if (!s->is_union()) {
+        for (const t_field* f : s->get_members()) {
+          auto cpp_name = get_cpp_name(f);
+          if (std::find(v.begin(), v.end(), cpp_name) == v.end()) {
+            v.push_back(cpp_name);
+          }
+        }
+      }
+    }
+    mstch::array a;
+    for (const auto& s : v) {
+      a.push_back(s);
+    }
+    return a;
+  }
+  mstch::node has_indirection_recursive() {
+    for (const t_struct* s : program_->get_objects()) {
+      if (s->is_union()) {
+        continue;
+      }
+      for (const t_field* f : s->get_members()) {
+        if (!f->get_type()->is_typedef()) {
+          continue;
+        }
+        const auto* true_type = f->get_type()->get_true_type();
+        if (true_type->annotations_.count("cpp.indirection")) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+  mstch::node indirection() {
+    std::map<std::string, std::map<std::string, std::string>> indirections;
+    for (const t_struct* s : program_->get_objects()) {
+      if (s->is_union()) {
+        continue;
+      }
+      for (const t_field* f : s->get_members()) {
+        if (!f->get_type()->is_typedef()) {
+          continue;
+        }
+        const auto* true_type = f->get_type()->get_true_type();
+        if (true_type->annotations_.count("cpp.indirection")) {
+          if (indirections.count(s->get_name()) > 0) {
+            indirections.at(s->get_name())
+                .emplace(
+                    get_cpp_name(f),
+                    true_type->annotations_.at("cpp.indirection"));
+          } else {
+            indirections.emplace(
+                s->get_name(),
+                std::map<std::string, std::string>{
+                    {get_cpp_name(f),
+                     true_type->annotations_.at("cpp.indirection")}});
+          }
+        }
+      }
+    }
+    mstch::array result;
+    for (const auto& indirection : indirections) {
+      mstch::array per_struct;
+      for (const auto& itr : indirection.second) {
+        per_struct.push_back(
+            mstch::map{{"indirection:field_name", itr.first},
+                       {"indirection:indirection_name", itr.second}});
+      }
+      result.push_back(
+          mstch::map{{"indirection:struct_name", indirection.first},
+                     {"indirection:indirection_fields", per_struct}});
+    }
+    return result;
+  }
+  mstch::node aliases_to_struct() {
+    mstch::array a;
+    for (const t_typedef* i : program_->get_typedefs()) {
+      const t_type* alias = i->get_type();
+      if (alias->is_typedef() && alias->annotations_.count("cpp.type")) {
+        const t_type* ttype = i->get_type()->get_true_type();
+        if (ttype->is_struct() || ttype->is_xception()) {
+          a.push_back(mstch::map{{"alias:name", i->get_name()},
+                                 {"alias:struct",
+                                  generators_->struct_generator_->generate(
+                                      dynamic_cast<const t_struct*>(ttype),
+                                      generators_,
+                                      cache_)}});
+        }
+      }
     }
     return a;
   }
@@ -1862,6 +1979,8 @@ void t_mstch_cpp2_generator::generate_reflection(t_program const* program) {
       cache_->programs_[id], "module_fatal_enum.h", name + "_fatal_enum.h");
   render_to_file(
       cache_->programs_[id], "module_fatal_union.h", name + "_fatal_union.h");
+  render_to_file(
+      cache_->programs_[id], "module_fatal_struct.h", name + "_fatal_struct.h");
   render_to_file(
       cache_->programs_[id],
       "module_fatal_constant.h",

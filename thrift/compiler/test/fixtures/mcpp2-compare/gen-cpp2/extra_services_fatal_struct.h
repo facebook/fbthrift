@@ -35,6 +35,7 @@ struct extra_svc_extra_services__struct_unique_data_member_getters_list {
   FATAL_DATA_MEMBER_GETTER(opt_fieldE, opt_fieldE);
 };
 
+
 struct extra_svc_extra_services__struct_unique_member_pod_list {
   template <typename T_extra_svc_extra_services_struct_member_pod>
 
@@ -221,6 +222,7 @@ class containerStruct2_extra_svc_extra_services__struct_unique_annotations {
       using map = ::fatal::list<
       >;
     };
+
     public:
     using fieldA = ::apache::thrift::reflected_annotations<containerStruct2_extra_svc_extra_services__struct_unique_annotations_members_fieldA>;
     using req_fieldA = ::apache::thrift::reflected_annotations<containerStruct2_extra_svc_extra_services__struct_unique_annotations_members_req_fieldA>;
@@ -397,6 +399,8 @@ struct containerStruct2_extra_svc_extra_services__struct_unique_member_info_list
   >;
 };
 
+
+
 } // thrift_fatal_impl_detail
 THRIFT_REGISTER_STRUCT_TRAITS(
   containerStruct2,
@@ -427,5 +431,4 @@ THRIFT_REGISTER_STRUCT_TRAITS(
 
 }} // extra::svc
 namespace apache { namespace thrift { namespace detail {
-
 }}} // apache::thrift::detail

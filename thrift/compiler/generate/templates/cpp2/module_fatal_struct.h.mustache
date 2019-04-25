@@ -1,0 +1,244 @@
+<%!
+
+  Copyright 2017-present Facebook, Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+%>
+<% > Autogen%>
+#pragma once
+
+<%#program:thrift_includes%>
+#include  "<%program:include_prefix%><%program:name%>_fatal_types.h"
+<%/program:thrift_includes%>
+
+#include "<%program:include_prefix%><%program:name%>_types.h"
+
+#include "<%program:include_prefix%><%program:name%>_fatal.h"
+
+#include <fatal/type/traits.h>
+#include <fatal/type/list.h>
+
+<% > common/namespace_cpp2_begin%>
+
+
+namespace thrift_fatal_impl_detail {
+
+struct <% > fatal/fatal_prefix%>__struct_unique_data_member_getters_list {
+  <%#program:fatal_data_member%>
+  FATAL_DATA_MEMBER_GETTER(<% . %>, <% . %>);
+  <%/program:fatal_data_member%>
+};
+
+<%#program:indirection_recursive?%><%#program:indirection%>
+struct <%indirection:struct_name%>_<% > fatal/fatal_prefix%>__struct_unique_indirections_list {
+  <%#indirection:indirection_fields%>
+  struct <%indirection:field_name%> {
+    template <typename T__thrift__arg__>
+    static auto val(T__thrift__arg__ &&__thrift__arg__) {
+      return std::forward<T__thrift__arg__>(__thrift__arg__)<%indirection:indirection_name%>;
+    }
+    template <typename T__thrift__arg__>
+    static auto &&ref(T__thrift__arg__ &&__thrift__arg__) {
+      return std::forward<T__thrift__arg__>(__thrift__arg__)<%indirection:indirection_name%>;
+    }
+  };
+  <%/indirection:indirection_fields%>
+};
+<%/program:indirection%><%/program:indirection_recursive?%>
+
+struct <% > fatal/fatal_prefix%>__struct_unique_member_pod_list {
+  <%#program:fatal_data_member%>
+  template <typename T_<% > fatal/fatal_prefix%>_struct_member_pod>
+
+  struct <% > fatal/fatal_prefix%>_struct_member_pod_<% . %> {
+    T_<% > fatal/fatal_prefix%>_struct_member_pod <% . %>;
+  };
+  <%^last?%>
+
+  <%/last?%>
+  <%/program:fatal_data_member%>
+};
+
+<%#program:structs%><%^struct:union?%>
+class <%struct:name%>_<% > fatal/fatal_prefix%>__struct_unique_annotations {
+  class <%struct:name%>_<% > fatal/fatal_prefix%>__struct_unique_annotations_members {
+    <%#struct:fields%>
+    class <%struct:name%>_<% > fatal/fatal_prefix%>__struct_unique_annotations_members_<%field:cpp_name%> {
+      <%#field:fatal_annotations?%>
+      struct <%struct:name%>_<% > fatal/fatal_prefix%>__struct_unique_annotations_members_<%field:cpp_name%>__unique_annotations_keys {
+        <%#field:fatal_annotations%>
+        using <%annotation:safe_key%> = thrift_fatal_impl_detail::<% > fatal/fatal_prefix%>__unique_strings_list::<%annotation:safe_key%>;
+        <%/field:fatal_annotations%>
+      };
+
+      struct <%struct:name%>_<% > fatal/fatal_prefix%>__struct_unique_annotations_members_<%field:cpp_name%>__unique_annotations_values {
+        <%#field:fatal_annotations%>
+        using <%annotation:safe_key%> = <%annotation:fatal_string%>;
+        <%/field:fatal_annotations%>
+      };
+
+      public:
+      using keys = <%struct:name%>_<% > fatal/fatal_prefix%>__struct_unique_annotations_members_<%field:cpp_name%>__unique_annotations_keys;
+      using values = <%struct:name%>_<% > fatal/fatal_prefix%>__struct_unique_annotations_members_<%field:cpp_name%>__unique_annotations_values;
+      using map = ::fatal::list<
+        <%#field:fatal_annotations%>
+        ::apache::thrift::annotation<
+          keys::<%annotation:safe_key%>,
+          values::<%annotation:safe_key%>
+        ><%^last?%>,<%/last?%>
+        <%/field:fatal_annotations%>
+      >;
+      <%/field:fatal_annotations?%>
+      <%^field:fatal_annotations?%>
+      public:
+      using keys = void;
+      using values = void;
+      using map = ::fatal::list<
+      >;
+      <%/field:fatal_annotations?%>
+    };
+
+    <%/struct:fields%>
+    public:
+    <%#struct:fields%>
+    using <%field:cpp_name%> = ::apache::thrift::reflected_annotations<<%struct:name%>_<% > fatal/fatal_prefix%>__struct_unique_annotations_members_<%field:cpp_name%>>;
+    <%/struct:fields%>
+  };
+
+  <%#struct:fatal_annotations?%>
+  class annotations {
+    struct annotations__unique_annotations_keys {
+      <%#struct:fatal_annotations%>
+      using <%annotation:safe_key%> = thrift_fatal_impl_detail::<% > fatal/fatal_prefix%>__unique_strings_list::<%annotation:safe_key%>;
+      <%/struct:fatal_annotations%>
+    };
+
+    struct annotations__unique_annotations_values {
+      <%#struct:fatal_annotations%>
+      using <%annotation:safe_key%> = <%annotation:fatal_string%>;
+      <%/struct:fatal_annotations%>
+    };
+
+    public:
+    using keys = annotations__unique_annotations_keys;
+    using values = annotations__unique_annotations_values;
+    using map = ::fatal::list<
+      <%#struct:fatal_annotations%>
+      ::apache::thrift::annotation<
+        keys::<%annotation:safe_key%>,
+        values::<%annotation:safe_key%>
+      ><%^last?%>,<%/last?%>
+      <%/struct:fatal_annotations%>
+    >;
+  };
+  <%/struct:fatal_annotations?%>
+  <%^struct:fatal_annotations?%>
+  <% > fatal/fatal_empty_annotation%>
+  <%/struct:fatal_annotations?%>
+
+  public:
+  using keys = annotations::keys;
+  using values = annotations::values;
+  using map = annotations::map;
+  using members = <%struct:name%>_<% > fatal/fatal_prefix%>__struct_unique_annotations_members;
+};
+
+struct <%struct:name%>_<% > fatal/fatal_prefix%>__struct_unique_member_info_list {
+  <%#struct:fields%>
+  using <%field:cpp_name%> = ::apache::thrift::reflected_struct_data_member<
+    thrift_fatal_impl_detail::<% > fatal/fatal_prefix%>__unique_strings_list::<%field:cpp_name%>,
+    <%#field:type%><% > types/type%><%/field:type%>,
+    <%field:key%>,
+    ::apache::thrift::optionality::<%field:fatal_required_qualifier%>,
+    <%#field:type%><%#type:cpp_indirection%>
+    ::apache::thrift::detail::chained_data_member_getter<
+      thrift_fatal_impl_detail::<% > fatal/fatal_prefix%>__struct_unique_data_member_getters_list::<%field:cpp_name%>,
+      ::apache::thrift::detail::reflection_indirection_getter<
+        thrift_fatal_impl_detail::<%struct:name%>_<% > fatal/fatal_prefix%>__struct_unique_indirections_list::<%field:cpp_name%>
+      >
+    >,
+    <%/type:cpp_indirection%><%/field:type%>
+    <%#field:type%><%^type:cpp_indirection%>
+    thrift_fatal_impl_detail::<% > fatal/fatal_prefix%>__struct_unique_data_member_getters_list::<%field:cpp_name%>,
+    <%/type:cpp_indirection%><%/field:type%>
+    <%#field:type%><%type:fatal_type_class%><%/field:type%>,
+    thrift_fatal_impl_detail::<% > fatal/fatal_prefix%>__struct_unique_member_pod_list::<% > fatal/fatal_prefix%>_struct_member_pod_<%field:cpp_name%>,
+    ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::<%struct:name%>_<% > fatal/fatal_prefix%>__struct_unique_annotations::members::<%field:cpp_name%>>,
+    <%struct:name%>
+  >;
+  <%/struct:fields%>
+};
+
+<%/struct:union?%><%/program:structs%>
+
+<%#program:aliases_to_struct%>
+struct <%alias:name%>_<% > fatal/fatal_prefix%>__struct_unique_member_info_list {
+  <%#alias:struct%><%#struct:fields%>
+  using <%field:cpp_name%> = ::apache::thrift::reflected_struct_data_member<
+    thrift_fatal_impl_detail::<% > fatal/fatal_prefix%>__unique_strings_list::<%field:cpp_name%>,
+    decltype(static_cast<<%alias:name%> *>(nullptr)-><%field:cpp_name%>),
+    <%field:key%>,
+    ::apache::thrift::optionality::required,
+    thrift_fatal_impl_detail::<% > fatal/fatal_prefix%>__struct_unique_data_member_getters_list::<%field:cpp_name%>,
+    <%#field:type%><%type:fatal_type_class%><%/field:type%>,
+    thrift_fatal_impl_detail::<% > fatal/fatal_prefix%>__struct_unique_member_pod_list::<% > fatal/fatal_prefix%>_struct_member_pod_<%field:cpp_name%>,
+    ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::<%struct:name%>_<% > fatal/fatal_prefix%>__struct_unique_annotations::members::<%field:cpp_name%>>,
+    <%alias:name%>
+  >;
+  <%/struct:fields%><%/alias:struct%>
+};
+<%/program:aliases_to_struct%>
+
+} // thrift_fatal_impl_detail
+<%#program:structs%><%^struct:union?%>
+THRIFT_REGISTER_STRUCT_TRAITS(
+  <%struct:name%>,
+  thrift_fatal_impl_detail::<% > fatal/fatal_prefix%>__unique_strings_list::<%struct:name%>,
+  thrift_fatal_impl_detail::<%struct:name%>_<% > fatal/fatal_prefix%>__struct_unique_member_info_list,
+  ::fatal::list<
+      <%#struct:fields%>
+      thrift_fatal_impl_detail::<%struct:name%>_<% > fatal/fatal_prefix%>__struct_unique_member_info_list::<%field:cpp_name%><%^last?%>,<%/last?%>
+      <%/struct:fields%>
+  >,
+  thrift_fatal_impl_detail::<%struct:name%>_<% > fatal/fatal_prefix%>__struct_unique_annotations::members,
+  ::apache::thrift::detail::type_common_metadata_impl<
+    <%program:name%>_tags::module,
+    ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::<%struct:name%>_<% > fatal/fatal_prefix%>__struct_unique_annotations>,
+    static_cast<::apache::thrift::legacy_type_id_t>(<%struct:legacy_type_id%>ull)
+  >
+);
+<%/struct:union?%><%/program:structs%>
+
+<% > common/namespace_cpp2_end%>
+
+namespace apache { namespace thrift { namespace detail {
+<%#program:aliases_to_struct%>
+THRIFT_REGISTER_STRUCT_TRAITS(
+   <% > common/namespace_cpp2%><%alias:name%>,
+   <% > common/namespace_cpp2%>thrift_fatal_impl_detail::<% > fatal/fatal_prefix%>__unique_strings_list::<%alias:name%>,
+   <% > common/namespace_cpp2%>thrift_fatal_impl_detail::<%alias:name%>_<% > fatal/fatal_prefix%>__struct_unique_member_info_list,
+  ::fatal::list<
+       <%#alias:struct%><%#struct:fields%>
+       <% > common/namespace_cpp2%>thrift_fatal_impl_detail::<%alias:name%>_<% > fatal/fatal_prefix%>__struct_unique_member_info_list::<%field:cpp_name%><%^last?%>,<%/last?%>
+       <%/struct:fields%><%/alias:struct%>
+  >,
+   <% > common/namespace_cpp2%>thrift_fatal_impl_detail::<%#alias:struct%><%struct:name%><%/alias:struct%>_<% > fatal/fatal_prefix%>__struct_unique_annotations::members,
+  ::apache::thrift::detail::type_common_metadata_impl<
+    <% > common/namespace_cpp2%><%program:name%>_tags::module,
+    ::apache::thrift::reflected_annotations< <% > common/namespace_cpp2%>thrift_fatal_impl_detail::<%#alias:struct%><%struct:name%><%/alias:struct%>_<% > fatal/fatal_prefix%>__struct_unique_annotations>,
+    static_cast<::apache::thrift::legacy_type_id_t>(<%#alias:struct%><%struct:legacy_type_id%><%/alias:struct%>ull)
+  >
+);
+<%/program:aliases_to_struct%>
+}}} // apache::thrift::detail
