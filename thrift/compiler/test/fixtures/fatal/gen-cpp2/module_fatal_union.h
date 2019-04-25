@@ -1171,6 +1171,7 @@ class unionA_variant_traits {
     >;
   };
 
+
   static id get_id(type const &variant) {
     return variant.getType();
   }
@@ -2612,7 +2613,6 @@ class union_with_special_names_variant_traits {
 };
 
 } // thrift_fatal_impl_detail
-
 FATAL_REGISTER_VARIANT_TRAITS(
   ::test_cpp2::cpp_reflection::thrift_fatal_impl_detail::union1_variant_traits,
   ::apache::thrift::detail::type_common_metadata_impl<
@@ -2653,5 +2653,4 @@ FATAL_REGISTER_VARIANT_TRAITS(
     static_cast<::apache::thrift::legacy_type_id_t>(7581402120603624460ull)
   >
 );
-
 }} // test_cpp2::cpp_reflection

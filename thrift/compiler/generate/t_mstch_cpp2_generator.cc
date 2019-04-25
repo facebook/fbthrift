@@ -451,6 +451,7 @@ class mstch_cpp2_type : public mstch_type {
             {"type:forward_compatibility?",
              &mstch_cpp2_type::forward_compatibility},
             {"type:no_getters_setters?", &mstch_cpp2_type::no_getters_setters},
+            {"type:fatal_type_class", &mstch_cpp2_type::fatal_type_class},
         });
   }
   std::string get_type_namespace(t_program const* program) override {
@@ -534,6 +535,56 @@ class mstch_cpp2_type : public mstch_type {
   mstch::node no_getters_setters() {
     return cache_->parsed_options_.count("no_getters_setters") != 0;
   }
+  mstch::node fatal_type_class() {
+    return get_fatal_type_class(resolved_type_);
+  }
+  std::string get_fatal_type_class(const t_type* ttype) {
+    if (ttype->is_typedef()) {
+      return get_fatal_type_class(
+          dynamic_cast<t_typedef const*>(ttype)->get_type());
+    }
+
+    if (ttype->is_void()) {
+      return "::apache::thrift::type_class::nothing";
+    } else if (ttype->is_binary()) {
+      return "::apache::thrift::type_class::binary";
+    } else if (ttype->is_string()) {
+      return "::apache::thrift::type_class::string";
+    } else if (ttype->is_floating_point()) {
+      return "::apache::thrift::type_class::floating_point";
+    } else if (ttype->is_base_type()) {
+      return "::apache::thrift::type_class::integral";
+    } else if (ttype->is_enum()) {
+      return "::apache::thrift::type_class::enumeration";
+    } else if (ttype->is_list()) {
+      return "::apache::thrift::type_class::list<" +
+          get_fatal_type_class(
+                 dynamic_cast<const t_list*>(ttype)->get_elem_type()) +
+          ">";
+    } else if (ttype->is_map()) {
+      return "::apache::thrift::type_class::map<" +
+          get_fatal_type_class(
+                 dynamic_cast<const t_map*>(ttype)->get_key_type()) +
+          ", " +
+          get_fatal_type_class(
+                 dynamic_cast<const t_map*>(ttype)->get_val_type()) +
+          ">";
+    } else if (ttype->is_set()) {
+      return "::apache::thrift::type_class::set<" +
+          get_fatal_type_class(
+                 dynamic_cast<const t_set*>(ttype)->get_elem_type()) +
+          ">";
+    } else if (ttype->is_struct()) {
+      if (dynamic_cast<const t_struct*>(ttype)->is_union()) {
+        return "::apache::thrift::type_class::variant";
+      } else {
+        return "::apache::thrift::type_class::structure";
+      }
+    } else {
+      // TODO: stream is not supported
+      return "::apache::thrift::type_class::unknown";
+    }
+  }
 };
 
 class mstch_cpp2_field : public mstch_field {
@@ -562,6 +613,9 @@ class mstch_cpp2_field : public mstch_field {
             {"field:enum_has_value", &mstch_cpp2_field::enum_has_value},
             {"field:optionals?", &mstch_cpp2_field::optionals},
             {"field:terse_writes?", &mstch_cpp2_field::terse_writes},
+            {"field:fatal_annotations?",
+             &mstch_cpp2_field::has_fatal_annotations},
+            {"field:fatal_annotations", &mstch_cpp2_field::fatal_annotations},
         });
   }
   mstch::node index_plus_one() {
@@ -629,6 +683,16 @@ class mstch_cpp2_field : public mstch_field {
         (is_cpp_ref_unique_either(field_) ||
          (!t->is_struct() && !t->is_xception()));
   }
+  mstch::node has_fatal_annotations() {
+    return get_fatal_annotations(field_->annotations_).size() > 0;
+  }
+  mstch::node fatal_annotations() {
+    return generate_elements(
+        get_fatal_annotations(field_->annotations_),
+        generators_->annotation_generator_.get(),
+        generators_,
+        cache_);
+  }
 };
 
 class mstch_cpp2_struct : public mstch_struct {
@@ -671,6 +735,10 @@ class mstch_cpp2_struct : public mstch_struct {
             {"struct:is_large?", &mstch_cpp2_struct::is_large},
             {"struct:no_getters_setters?",
              &mstch_cpp2_struct::no_getters_setters},
+            {"struct:fatal_annotations?",
+             &mstch_cpp2_struct::has_fatal_annotations},
+            {"struct:fatal_annotations", &mstch_cpp2_struct::fatal_annotations},
+            {"struct:legacy_type_id", &mstch_cpp2_struct::get_legacy_type_id},
         });
   }
   mstch::node getters_setters() {
@@ -856,6 +924,19 @@ class mstch_cpp2_struct : public mstch_struct {
   }
   mstch::node no_getters_setters() {
     return cache_->parsed_options_.count("no_getters_setters") != 0;
+  }
+  mstch::node has_fatal_annotations() {
+    return get_fatal_annotations(strct_->annotations_).size() > 0;
+  }
+  mstch::node fatal_annotations() {
+    return generate_elements(
+        get_fatal_annotations(strct_->annotations_),
+        generators_->annotation_generator_.get(),
+        generators_,
+        cache_);
+  }
+  mstch::node get_legacy_type_id() {
+    return std::to_string(strct_->get_type_id());
   }
 
  protected:
@@ -1779,6 +1860,8 @@ void t_mstch_cpp2_generator::generate_reflection(t_program const* program) {
 
   render_to_file(
       cache_->programs_[id], "module_fatal_enum.h", name + "_fatal_enum.h");
+  render_to_file(
+      cache_->programs_[id], "module_fatal_union.h", name + "_fatal_union.h");
   render_to_file(
       cache_->programs_[id],
       "module_fatal_constant.h",
