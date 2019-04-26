@@ -17,17 +17,11 @@
 
 #include <cstdint>
 
+#include <folly/Portability.h>
+
 namespace apache {
 namespace thrift {
 namespace compiler {
-
-inline constexpr bool kIsBigEndian() {
-#ifdef _WIN32
-  return false;
-#else
-  return __BYTE_ORDER__ != __ORDER_LITTLE_ENDIAN__;
-#endif
-}
 
 /*
  * Use system specific byte swap functions
@@ -44,7 +38,7 @@ inline uint64_t bswap(const uint64_t b) {
  * Convert a number from any platform to little Endian form.
  */
 inline uint64_t bswap_host_to_little_endian(const uint64_t b) {
-  return kIsBigEndian() ? bswap(b) : b;
+  return folly::kIsBigEndian ? bswap(b) : b;
 }
 
 } // namespace compiler
