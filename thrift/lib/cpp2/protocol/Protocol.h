@@ -88,6 +88,10 @@ struct SkipNoopString {
 };
 } // namespace detail
 
+/* forward declaration */
+template <class Protocol_>
+void skip_n(Protocol_& prot, uint32_t n, std::initializer_list<TType> types);
+
 /**
  * Helper template for implementing Protocol::skip().
  *
@@ -155,37 +159,42 @@ void skip(Protocol_& prot, TType arg_type) {
     case TType::T_MAP: {
       TType keyType;
       TType valType;
-      uint32_t i, size;
+      uint32_t size;
       prot.readMapBegin(keyType, valType, size);
-      for (i = 0; i < size; i++) {
-        apache::thrift::skip(prot, keyType);
-        apache::thrift::skip(prot, valType);
-      }
+      skip_n(prot, size, {keyType, valType});
       prot.readMapEnd();
       return;
     }
     case TType::T_SET: {
       TType elemType;
-      uint32_t i, size;
+      uint32_t size;
       prot.readSetBegin(elemType, size);
-      for (i = 0; i < size; i++) {
-        apache::thrift::skip(prot, elemType);
-      }
+      skip_n(prot, size, {elemType});
       prot.readSetEnd();
       return;
     }
     case TType::T_LIST: {
       TType elemType;
-      uint32_t i, size;
+      uint32_t size;
       prot.readListBegin(elemType, size);
-      for (i = 0; i < size; i++) {
-        apache::thrift::skip(prot, elemType);
-      }
+      skip_n(prot, size, {elemType});
       prot.readListEnd();
       return;
     }
     default: {
       TProtocolException::throwInvalidSkipType(arg_type);
+    }
+  }
+}
+
+/*
+ * Skip n tuples - used for skpping lists, sets, maps.
+ */
+template <class Protocol_>
+void skip_n(Protocol_& prot, uint32_t n, std::initializer_list<TType> types) {
+  for (uint32_t i = 0; i < n; i++) {
+    for (auto type : types) {
+      apache::thrift::skip(prot, type);
     }
   }
 }

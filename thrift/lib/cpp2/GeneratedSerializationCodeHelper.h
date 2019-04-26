@@ -32,6 +32,7 @@
 #include <thrift/lib/cpp/protocol/TType.h>
 #include <thrift/lib/cpp2/TypeClass.h>
 #include <thrift/lib/cpp2/protocol/Cpp2Ops.h>
+#include <thrift/lib/cpp2/protocol/Protocol.h>
 
 /**
  * Specializations of `protocol_methods` encapsulate a collection of
@@ -413,20 +414,22 @@ struct protocol_methods<type_class::list<ElemClass>, Type> {
       // (if it did set reported_type to something known)
       if (reported_type != protocol::T_STOP &&
           reported_type != elem_methods::ttype_value) {
-        protocol::TProtocolException::throwReportedTypeMismatch();
-      }
-      for (std::uint32_t i = 0; protocol.peekList(); ++i) {
-        // TODO: Grow this better (e.g. 1.5x each time)
-        out.resize(i + 1);
-        elem_methods::read(protocol, out[i]);
+        apache::thrift::skip_n(protocol, list_size, {reported_type});
+      } else {
+        for (std::uint32_t i = 0; protocol.peekList(); ++i) {
+          // TODO: Grow this better (e.g. 1.5x each time)
+          out.resize(i + 1);
+          elem_methods::read(protocol, out[i]);
+        }
       }
     } else {
       if (reported_type != elem_methods::ttype_value) {
-        protocol::TProtocolException::throwReportedTypeMismatch();
-      }
-      out.resize(list_size);
-      for (auto&& elem : out) {
-        elem_methods::read(protocol, elem);
+        apache::thrift::skip_n(protocol, list_size, {reported_type});
+      } else {
+        out.resize(list_size);
+        for (auto&& elem : out) {
+          elem_methods::read(protocol, elem);
+        }
       }
     }
     protocol.readListEnd();
@@ -492,17 +495,19 @@ struct protocol_methods<type_class::list<ElemClass>, std::list<Type>> {
       // (if it did set reported_type to something known)
       if (reported_type != protocol::T_STOP &&
           reported_type != elem_methods::ttype_value) {
-        protocol::TProtocolException::throwReportedTypeMismatch();
-      }
-      while (protocol.peekList()) {
-        consume_elem(protocol, out);
+        apache::thrift::skip_n(protocol, list_size, {reported_type});
+      } else {
+        while (protocol.peekList()) {
+          consume_elem(protocol, out);
+        }
       }
     } else {
       if (reported_type != elem_methods::ttype_value) {
-        protocol::TProtocolException::throwReportedTypeMismatch();
-      }
-      while (list_size--) {
-        consume_elem(protocol, out);
+        apache::thrift::skip_n(protocol, list_size, {reported_type});
+      } else {
+        while (list_size--) {
+          consume_elem(protocol, out);
+        }
       }
     }
     protocol.readListEnd();
@@ -571,12 +576,13 @@ struct protocol_methods<type_class::set<ElemClass>, Type> {
       }
     } else {
       if (reported_type != elem_methods::ttype_value) {
-        protocol::TProtocolException::throwReportedTypeMismatch();
+        apache::thrift::skip_n(protocol, set_size, {reported_type});
+      } else {
+        auto const vreader = [&protocol](auto& value) {
+          elem_methods::read(protocol, value);
+        };
+        deserialize_known_length_set(out, set_size, vreader);
       }
-      auto const vreader = [&protocol](auto& value) {
-        elem_methods::read(protocol, value);
-      };
-      deserialize_known_length_set(out, set_size, vreader);
     }
     protocol.readSetEnd();
   }
@@ -652,15 +658,17 @@ struct protocol_methods<type_class::map<KeyClass, MappedClass>, Type> {
       if (map_size > 0 &&
           (key_methods::ttype_value != rpt_key_type ||
            mapped_methods::ttype_value != rpt_mapped_type)) {
-        protocol::TProtocolException::throwReportedTypeMismatch();
+        apache::thrift::skip_n(
+            protocol, map_size, {rpt_key_type, rpt_mapped_type});
+      } else {
+        auto const kreader = [&protocol](auto& key) {
+          key_methods::read(protocol, key);
+        };
+        auto const vreader = [&protocol](auto& value) {
+          mapped_methods::read(protocol, value);
+        };
+        deserialize_known_length_map(out, map_size, kreader, vreader);
       }
-      auto const kreader = [&protocol](auto& key) {
-        key_methods::read(protocol, key);
-      };
-      auto const vreader = [&protocol](auto& value) {
-        mapped_methods::read(protocol, value);
-      };
-      deserialize_known_length_map(out, map_size, kreader, vreader);
     }
     protocol.readMapEnd();
   }
