@@ -99,10 +99,6 @@ bool record_genfiles = false;
   fprintf(stderr, "                Many options will not require values.\n");
   fprintf(stderr, "  --record-genfiles FILE\n");
   fprintf(stderr, "              Save the list of generated files to FILE\n");
-  fprintf(stderr, "  --python-compiler FILE\n");
-  fprintf(
-      stderr,
-      "              Path to the python implementation of the thrift compiler\n");
   fprintf(stderr, "\n");
   fprintf(stderr, "Available generators (and options):\n");
 
@@ -120,124 +116,10 @@ bool record_genfiles = false;
   exit(1);
 }
 
-static bool python_generator(
-    std::string& options,
-    const std::string& user_python_compiler,
-    std::vector<std::string>& arguments) {
-  // Attempt to call the new python compiler if we can find it
-  string path = arguments[0];
-  size_t last = path.find_last_of("/");
-  if (last != string::npos) {
-    ifstream ifile;
-    auto dirname = path.substr(0, last + 1);
-    std::string pycompiler;
-    std::vector<std::string> pycompilers;
-    if (!user_python_compiler.empty()) {
-      pycompilers.push_back(user_python_compiler);
-    }
-    pycompilers.insert(
-        pycompilers.end(),
-        {
-            dirname + "py/thrift.lpar",
-            dirname + "../py/thrift.lpar",
-            dirname + "py/thrift.par",
-            dirname + "../py/thrift.par",
-            dirname + "py/thrift.xar",
-            dirname + "../py/thrift.xar",
-            dirname + "py/thrift.pex",
-            dirname + "../py/thrift.pex",
-        });
-    for (const auto& comp : pycompilers) {
-      pycompiler = comp;
-      ifile.open(pycompiler.c_str());
-      if (ifile)
-        break;
-    }
-    int ret = 0;
-    if (ifile) {
-      // Convert arguments to argv
-      std::vector<char*> argv(arguments.size() + 1);
-      for (size_t i = 0; i < arguments.size(); ++i) {
-        if (arguments[i][0] == '-' && arguments[i] != "-I" &&
-            arguments[i] != "-o") {
-          arguments[i].insert(0, "-");
-        }
-        argv[i] = const_cast<char*>(arguments[i].c_str());
-      }
-      argv[arguments.size()] = nullptr;
-      ret = execv(pycompiler.c_str(), argv.data());
-    }
-    if (!ifile || ret < 0) {
-      pwarning(
-          1,
-          "Unable to get a generator for \"%s\" ret: %d.\n",
-          options.c_str(),
-          ret);
-    }
-  }
-  return true;
-}
-
-static void filter_py_cpp2_reflection_lang_argument(std::string& lang) {
-  std::set<std::string> const passthrough = {
-      "include_prefix",
-  };
-
-  auto const colon_pos = lang.find(':');
-  if (colon_pos == std::string::npos) {
-    return;
-  }
-  auto const lang_name = lang.substr(0, colon_pos);
-  if (lang_name != "cpp2" && lang_name != "mstch_cpp2") {
-    return;
-  }
-
-  auto const lang_args = lang.substr(colon_pos + 1);
-  std::vector<std::string> parts;
-  boost::algorithm::split(
-      parts, lang_args, [](auto const c) { return c == ','; });
-  std::vector<std::string> out_args;
-  for (auto const& part : parts) {
-    auto const equal_pos = part.find('=');
-    auto const arg_name = part.substr(0, equal_pos);
-    if (passthrough.count(arg_name) != 0) {
-      out_args.push_back(part);
-    }
-  }
-  std::string out = "cpp2";
-  if (!out_args.empty()) {
-    out += ":";
-    out += boost::algorithm::join(out_args, ",");
-  }
-  lang = out;
-}
-
-// remove all arguments which py cpp2 reflection generator does not know
-static void filter_py_cpp2_reflection_arguments(
-    std::vector<std::string>& arguments) {
-  for (auto i = size_t(0); i < arguments.size(); ++i) {
-    auto const& arg = arguments[i];
-    if (arg != "-gen" && arg != "--gen") {
-      continue;
-    }
-
-    if (i + 1 >= arguments.size()) {
-      std::cerr << boost::algorithm::join(arguments, " ") << std::endl;
-    }
-    assert(i + 1 < arguments.size());
-    filter_py_cpp2_reflection_lang_argument(arguments[++i]);
-  }
-}
-
 static bool generate_cpp2(
     t_program* program,
     t_generation_context context,
-    std::string& gen_string,
-    const std::string& user_python_compiler,
-    std::vector<std::string>& arguments) {
-  bool gen_py_cpp2_reflection =
-      gen_string.find("reflection") != std::string::npos;
-
+    std::string& gen_string) {
   t_generator* generator =
       t_generator_registry::get_generator(program, context, gen_string);
   if (generator) {
@@ -251,12 +133,6 @@ static bool generate_cpp2(
     delete generator;
   }
 
-  if (gen_py_cpp2_reflection) {
-    auto py_cpp2_reflection_arguments = arguments;
-    filter_py_cpp2_reflection_arguments(py_cpp2_reflection_arguments);
-    python_generator(
-        gen_string, user_python_compiler, py_cpp2_reflection_arguments);
-  }
   return true;
 }
 
@@ -267,9 +143,7 @@ static bool generate(
     t_program* program,
     t_generation_context context,
     vector<string>& generator_strings,
-    std::set<std::string>& already_generated,
-    const std::string& user_python_compiler,
-    std::vector<std::string>& arguments) {
+    std::set<std::string>& already_generated) {
   // Oooohh, recursive code generation, hot!!
   if (gen_recurse) {
     const vector<t_program*>& includes = program->get_included_programs();
@@ -278,13 +152,7 @@ static bool generate(
         continue;
       }
 
-      if (!generate(
-              include,
-              context,
-              generator_strings,
-              already_generated,
-              user_python_compiler,
-              arguments)) {
+      if (!generate(include, context, generator_strings, already_generated)) {
         return false;
       } else {
         already_generated.insert(include->get_path());
@@ -304,8 +172,7 @@ static bool generate(
       auto pos = gen_string.find(":");
       std::string lang = gen_string.substr(0, pos);
       if (lang.find("cpp2") != std::string::npos) {
-        generate_cpp2(
-            program, context, gen_string, user_python_compiler, arguments);
+        generate_cpp2(program, context, gen_string);
         continue;
       }
 
@@ -390,7 +257,6 @@ int main(int argc, char** argv) {
     usage();
   }
 
-  std::string user_python_compiler;
   vector<std::string> generator_strings;
 
   g_stage = "arguments";
@@ -511,18 +377,6 @@ int main(int argc, char** argv) {
         return -1;
       }
       continue;
-    } else if (arguments[i] == "-python-compiler") {
-      if (i + 1 == arguments.size() - 1) {
-        fprintf(
-            stderr,
-            "No path was given for the python compiler between "
-            "%s and '%s'\n",
-            arguments[i].c_str(),
-            arguments[i + 1].c_str());
-        usage();
-      }
-      user_python_compiler = arguments[++i];
-      continue;
     } else {
       fprintf(stderr, "!!! Unrecognized option: %s\n", arguments[i].c_str());
       usage();
@@ -591,9 +445,7 @@ int main(int argc, char** argv) {
         program_bundle->get_root_program(),
         generation_context,
         generator_strings,
-        already_generated,
-        user_python_compiler,
-        arguments);
+        already_generated);
   } catch (const std::exception& e) {
     std::cerr << e.what() << std::endl;
     return 1;
