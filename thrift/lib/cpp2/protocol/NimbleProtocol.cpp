@@ -25,6 +25,8 @@
 namespace apache {
 namespace thrift {
 
+using namespace detail::nimble;
+
 void NimbleProtocolWriter::encode(bool input) {
   encoder_.encodeContentChunk(input);
 }
@@ -83,20 +85,23 @@ void NimbleProtocolWriter::encode(float input) {
 }
 
 void NimbleProtocolWriter::encode(folly::StringPiece input) {
-  encoder_.encodeContentChunk(input.size());
-  encoder_.encodeBinary(input.data(), input.size());
+  encode(folly::ByteRange(input));
 }
 
 void NimbleProtocolWriter::encode(folly::ByteRange input) {
-  // Note: this matches CompactProtocol in that it doesn't support input length
-  // greater than UINT32_MAX
+  // TODO: handle string longer than 2**28
   // TODO: caller set string_limit
-  encoder_.encodeContentChunk(input.size());
+  // To use the short size encoding, we need the high bit of the resulting
+  // chunk to be 0, and so must fit in 31 bits, including the shift for the
+  // metadata.
+  if (input.size() >= (1U << (31 - kComplexMetadataBits))) {
+    throw std::runtime_error("Not implemented yet");
+  }
+  encoder_.encodeFieldChunk(
+      input.size() << kComplexMetadataBits |
+      ComplexType::STRINGY << kFieldChunkHintBits |
+      NimbleFieldChunkHint::COMPLEX_TYPE);
   encoder_.encodeBinary(input.data(), input.size());
-}
-
-void NimbleProtocolWriter::encodeStop() {
-  encoder_.encodeFieldChunk(0);
 }
 
 void NimbleProtocolReader::decode(bool& value) {

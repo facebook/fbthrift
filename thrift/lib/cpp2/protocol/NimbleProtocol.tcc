@@ -21,11 +21,13 @@
 namespace apache {
 namespace thrift {
 
+using namespace detail::nimble;
+
 inline uint32_t NimbleProtocolWriter::writeMessageBegin(
     const std::string& /*name*/,
     MessageType /*messageType*/,
     int32_t /*seqid*/) {
-  throw std::logic_error{"Method not implemented."};
+  return 0;
 }
 
 inline uint32_t NimbleProtocolWriter::writeMessageEnd() {
@@ -37,7 +39,7 @@ inline uint32_t NimbleProtocolWriter::writeStructBegin(const char* /*name*/) {
 }
 
 inline uint32_t NimbleProtocolWriter::writeStructEnd() {
-  encodeStop();
+  encoder_.encodeFieldChunk(0);
   return 0;
 }
 
@@ -45,8 +47,8 @@ inline uint32_t NimbleProtocolWriter::writeFieldBegin(
     const char* /*name*/,
     TType fieldType,
     int16_t fieldId) {
-  auto contentSize = detail::nimble::ttypeToContentSize(fieldType, encodeSize_);
-  encoder_.encodeFieldChunk(fieldId << 2 | contentSize);
+  auto fieldChunkHint = ttypeToNimbleFieldChunkHint(fieldType);
+  encoder_.encodeFieldChunk(fieldId << kFieldChunkHintBits | fieldChunkHint);
   return 0;
 }
 
@@ -258,9 +260,20 @@ inline void NimbleProtocolReader::readFloat(float& flt) {
 
 template <typename StrType>
 inline void NimbleProtocolReader::readString(StrType& str) {
-  // Note: this matches CompactProtocol in that it doesn't support input length
-  // greater than UINT32_MAX
-  uint32_t size = decoder_.nextContentChunk();
+  uint32_t nextFieldChunk = decoder_.nextFieldChunk();
+  // sanity check
+  if ((nextFieldChunk & 3) != NimbleFieldChunkHint::COMPLEX_TYPE ||
+      (nextFieldChunk >> kFieldChunkHintBits & 1) != ComplexType::STRINGY) {
+    // TODO: skip bad content field
+    throw std::runtime_error("Not implemented yet (data is malformated)");
+  }
+
+  // TODO: handle string length greater than 2**28
+  if (nextFieldChunk & 1U << 31) {
+    throw std::runtime_error("Not implemented yet");
+  }
+
+  uint32_t size = nextFieldChunk >> kComplexMetadataBits;
   str.resize(size);
   if (size > 0) {
     decoder_.nextBinary(&str[0], size);
@@ -273,19 +286,19 @@ inline void NimbleProtocolReader::readBinary(StrType& str) {
 }
 
 inline void NimbleProtocolReader::skip(TType type) {
-  auto contentSize = detail::nimble::ttypeToContentSize(type, encodeSize_);
-  switch (contentSize) {
-    case detail::nimble::ONE_CHUNK:
+  auto fieldChunkHint = ttypeToNimbleFieldChunkHint(type);
+  switch (fieldChunkHint) {
+    case ONE_CHUNK_TYPE:
       decoder_.nextContentChunk();
       break;
-    case detail::nimble::TWO_CHUNKS:
+    case TWO_CHUNKS_TYPE:
       for (int i = 0; i < 2; ++i) {
         decoder_.nextContentChunk();
       }
       break;
-    case detail::nimble::VAR_BYTES:
-    case detail::nimble::VAR_FIELDS:
+    case COMPLEX_METADATA:
       // TODO: handle these cases
+      throw std::runtime_error("Not implemented yet");
       break;
     default:
       folly::assume_unreachable();
@@ -297,15 +310,21 @@ bool NimbleProtocolReader::advanceToNextField(
     int32_t /*nextFieldId*/,
     TType /*nextFieldType*/,
     StructReadState& state) {
-  auto fieldIdAndSize = decoder_.nextFieldChunk();
-  if (fieldIdAndSize == 0) {
+  uint32_t fieldChunk = decoder_.nextFieldChunk();
+  if (fieldChunk == 0) {
     state.fieldType = TType::T_STOP;
-  } else {
-    state.fieldId = fieldIdAndSize >> 2;
-    state.contentSize =
-        static_cast<detail::nimble::NimbleContentSize>(fieldIdAndSize & 3);
-    state.fieldType = TType::T_VOID; // just to make fieldType non-zero
+    return false;
   }
+
+  auto fieldChunkHint = static_cast<NimbleFieldChunkHint>(fieldChunk & 3);
+  // sanity check
+  if (UNLIKELY(fieldChunkHint == NimbleFieldChunkHint::COMPLEX_TYPE)) {
+    // TODO: data is malformated, handle this case
+    throw std::runtime_error("Bad data encountered while deserializing");
+  }
+  state.fieldChunkHint = fieldChunkHint;
+  state.fieldId = fieldChunk >> kFieldChunkHintBits;
+  state.fieldType = TType::T_VOID; // just to make fieldType non-zero
   return false;
 }
 
@@ -314,9 +333,8 @@ bool NimbleProtocolReader::isCompatibleWithType(
     StructReadState& state) {
   // store the expected TType in case we need to skip
   state.fieldType = expectedFieldType;
-  auto expectedContentSize =
-      detail::nimble::ttypeToContentSize(expectedFieldType, encodeSize_);
-  return state.contentSize == expectedContentSize;
+  auto expectedFieldChunkHint = ttypeToNimbleFieldChunkHint(expectedFieldType);
+  return state.fieldChunkHint == expectedFieldChunkHint;
 }
 
 } // namespace thrift

@@ -33,29 +33,26 @@ namespace detail {
 namespace nimble {
 
 /*
- * This method maps TType to NimbleContentSize enum.
+ * This method maps TType to NimbleFieldChunkHint enum.
  */
-inline NimbleContentSize ttypeToContentSize(TType fieldType, bool encodeSize) {
+inline NimbleFieldChunkHint ttypeToNimbleFieldChunkHint(TType fieldType) {
   switch (fieldType) {
-    case TType::T_STOP:
     case TType::T_BOOL:
     case TType::T_BYTE: // same enum value as TType::T_I08
     case TType::T_I16:
     case TType::T_I32:
     case TType::T_FLOAT:
-      return NimbleContentSize::ONE_CHUNK;
+      return NimbleFieldChunkHint::ONE_CHUNK_TYPE;
     case TType::T_U64:
     case TType::T_I64:
     case TType::T_DOUBLE:
-      return NimbleContentSize::TWO_CHUNKS;
+      return NimbleFieldChunkHint::TWO_CHUNKS_TYPE;
     case TType::T_STRING: // same enum value as TType::T_UTF7
-      return NimbleContentSize::VAR_BYTES;
     case TType::T_LIST:
     case TType::T_SET:
     case TType::T_MAP:
     case TType::T_STRUCT:
-      return encodeSize ? NimbleContentSize::VAR_BYTES
-                        : NimbleContentSize::VAR_FIELDS;
+      return NimbleFieldChunkHint::COMPLEX_METADATA;
     default:
       folly::assume_unreachable();
   }
@@ -68,8 +65,6 @@ class NimbleProtocolReader;
 class NimbleProtocolWriter {
  public:
   using ProtocolReader = NimbleProtocolReader;
-
-  NimbleProtocolWriter() : encodeSize_(false) {}
 
   uint32_t writeMessageBegin(
       const std::string& name,
@@ -141,18 +136,7 @@ class NimbleProtocolWriter {
     return encoder_.finalize();
   }
 
-  /*
-   * Set the instance variable which decides whether or not size information
-   * for collections and structs is encoded and sent on the wire.
-   */
-  void setEncodeSize(bool encodeSize) {
-    encodeSize_ = encodeSize;
-  }
-
  private:
-  // TODO: deciding on a mechanism to encode size information so that we can
-  // skip fields if they are corrupted/not needed.
-  bool encodeSize_;
   /*
    * The encoder that manipulates the underlying field and content streams.
    */
@@ -171,7 +155,6 @@ class NimbleProtocolWriter {
   void encode(float input);
   void encode(folly::StringPiece input);
   void encode(folly::ByteRange input);
-  void encodeStop();
 };
 
 class NimbleProtocolReader {
@@ -179,11 +162,16 @@ class NimbleProtocolReader {
   using ProtocolWriter = NimbleProtocolWriter;
 
   explicit NimbleProtocolReader(std::unique_ptr<folly::IOBuf> buf)
-      : decoder_(std::move(buf)), encodeSize_(false) {}
+      : decoder_(std::move(buf)) {}
 
   static constexpr bool kUsesFieldNames() {
     return false;
   }
+
+  static constexpr bool kOmitsContainerSizes() {
+    return false;
+  }
+
   /**
    * Reading functions
    */
@@ -249,7 +237,7 @@ class NimbleProtocolReader {
   struct StructReadState {
     int16_t fieldId;
     apache::thrift::protocol::TType fieldType;
-    detail::nimble::NimbleContentSize contentSize;
+    detail::nimble::NimbleFieldChunkHint fieldChunkHint;
 
     void readStructBegin(NimbleProtocolReader* /*iprot*/) {}
 
@@ -296,7 +284,6 @@ class NimbleProtocolReader {
 
  private:
   detail::Decoder decoder_;
-  bool encodeSize_;
 };
 
 namespace detail {
