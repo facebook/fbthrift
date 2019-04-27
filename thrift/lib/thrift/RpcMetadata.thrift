@@ -122,8 +122,8 @@ struct ResponseRpcMetadata {
   5: optional i32 (cpp.type = "std::uint32_t") crc32c;
 }
 
-// Setup parameters sent from the client to the server at the time
+// Setup metadata sent from the client to the server at the time
 // of initial connection.
-struct SetupParameters {
-  1: optional binary userSetupParams;
+struct RequestSetupMetadata {
+  1: optional binary userSetupParams
 }

@@ -205,17 +205,17 @@ RsocketTestServerResponder::handleRequestStream(
 } // namespace
 
 rocket::SetupFrame RocketTestClient::makeTestSetupFrame() {
-  SetupParameters setupParams;
-  setupParams.userSetupParams_ref() = "setup_data";
+  RequestSetupMetadata meta;
+  meta.userSetupParams_ref() = "setup_data";
   CompactProtocolWriter compactProtocolWriter;
   folly::IOBufQueue paramQueue;
   compactProtocolWriter.setOutput(&paramQueue);
-  setupParams.write(&compactProtocolWriter);
+  meta.write(&compactProtocolWriter);
 
   // Serialize RocketClient's major/minor version (which is separate from the
   // rsocket protocol major/minor version) into setup metadata.
   auto buf = folly::IOBuf::createCombined(
-      sizeof(int32_t) + setupParams.serializedSize(&compactProtocolWriter));
+      sizeof(int32_t) + meta.serializedSize(&compactProtocolWriter));
   folly::IOBufQueue queue;
   queue.append(std::move(buf));
   folly::io::QueueAppender appender(&queue, /* do not grow */ 0);

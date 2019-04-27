@@ -60,7 +60,7 @@ class RocketClientChannel final : public ClientChannel {
 
   static Ptr newChannel(
       async::TAsyncTransport::UniquePtr socket,
-      SetupParameters setupParams = SetupParameters());
+      RequestSetupMetadata meta = RequestSetupMetadata());
 
   uint32_t sendRequest(
       RpcOptions& rpcOptions,
@@ -188,7 +188,7 @@ class RocketClientChannel final : public ClientChannel {
 
   RocketClientChannel(
       async::TAsyncTransport::UniquePtr socket,
-      SetupParameters setupParams);
+      RequestSetupMetadata meta);
 
   RocketClientChannel(const RocketClientChannel&) = delete;
   RocketClientChannel& operator=(const RocketClientChannel&) = delete;
@@ -230,7 +230,7 @@ class RocketClientChannel final : public ClientChannel {
     return folly::fibers::getFiberManager(*evb_);
   }
 
-  rocket::SetupFrame makeSetupFrame(SetupParameters setupParams);
+  rocket::SetupFrame makeSetupFrame(RequestSetupMetadata meta);
 
  public:
   // Helper class that gives special handling to the first payload on the

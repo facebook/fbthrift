@@ -83,16 +83,16 @@ void deserializeMetadata(
 } // namespace
 
 rocket::SetupFrame RocketClientChannel::makeSetupFrame(
-    SetupParameters setupParams) {
+    RequestSetupMetadata meta) {
   CompactProtocolWriter compactProtocolWriter;
   folly::IOBufQueue paramQueue;
   compactProtocolWriter.setOutput(&paramQueue);
-  setupParams.write(&compactProtocolWriter);
+  meta.write(&compactProtocolWriter);
 
   // Serialize RocketClient's major/minor version (which is separate from the
   // rsocket protocol major/minor version) into setup metadata.
   auto buf = folly::IOBuf::createCombined(
-      sizeof(int32_t) + setupParams.serializedSize(&compactProtocolWriter));
+      sizeof(int32_t) + meta.serializedSize(&compactProtocolWriter));
   folly::IOBufQueue queue;
   queue.append(std::move(buf));
   folly::io::QueueAppender appender(&queue, /* do not grow */ 0);
@@ -109,13 +109,13 @@ rocket::SetupFrame RocketClientChannel::makeSetupFrame(
 
 RocketClientChannel::RocketClientChannel(
     async::TAsyncTransport::UniquePtr socket,
-    SetupParameters setupParams)
+    RequestSetupMetadata meta)
     : evb_(socket->getEventBase()),
       rclient_(rocket::RocketClient::create(
           *evb_,
           std::move(socket),
           std::make_unique<rocket::SetupFrame>(
-              makeSetupFrame(std::move(setupParams))))) {}
+              makeSetupFrame(std::move(meta))))) {}
 
 RocketClientChannel::~RocketClientChannel() {
   unsetOnDetachable();
@@ -125,9 +125,9 @@ RocketClientChannel::~RocketClientChannel() {
 
 RocketClientChannel::Ptr RocketClientChannel::newChannel(
     async::TAsyncTransport::UniquePtr socket,
-    SetupParameters setupParams) {
+    RequestSetupMetadata meta) {
   return RocketClientChannel::Ptr(
-      new RocketClientChannel(std::move(socket), std::move(setupParams)));
+      new RocketClientChannel(std::move(socket), std::move(meta)));
 }
 
 uint32_t RocketClientChannel::sendRequest(
