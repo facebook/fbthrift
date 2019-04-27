@@ -17,6 +17,8 @@
 namespace cpp2 apache.thrift
 namespace java.swift org.apache.thrift
 
+cpp_include "thrift/lib/thrift/RpcMetadata_extra.h"
+
 enum ProtocolId {
   // The values must match those in thrift/lib/cpp/protocol/TProtocolTypes.h
   BINARY = 0,
@@ -125,5 +127,6 @@ struct ResponseRpcMetadata {
 // Setup metadata sent from the client to the server at the time
 // of initial connection.
 struct RequestSetupMetadata {
-  1: optional binary userSetupParams
+  1: optional map<string, binary>
+      (cpp.template = "apache::thrift::MetadataOpaqueMap") opaque;
 }

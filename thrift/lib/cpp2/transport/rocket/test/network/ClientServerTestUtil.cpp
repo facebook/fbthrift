@@ -206,7 +206,8 @@ RsocketTestServerResponder::handleRequestStream(
 
 rocket::SetupFrame RocketTestClient::makeTestSetupFrame() {
   RequestSetupMetadata meta;
-  meta.userSetupParams_ref() = "setup_data";
+  meta.opaque_ref() = {};
+  *meta.opaque_ref() = {{"rando_key", "setup_data"}};
   CompactProtocolWriter compactProtocolWriter;
   folly::IOBufQueue paramQueue;
   compactProtocolWriter.setOutput(&paramQueue);
