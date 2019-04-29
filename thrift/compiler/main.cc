@@ -116,26 +116,6 @@ bool record_genfiles = false;
   exit(1);
 }
 
-static bool generate_cpp2(
-    t_program* program,
-    t_generation_context context,
-    std::string& gen_string) {
-  t_generator* generator =
-      t_generator_registry::get_generator(program, context, gen_string);
-  if (generator) {
-    pverbose("Generating \"%s\"\n", gen_string.c_str());
-    generator->generate_program();
-    if (record_genfiles) {
-      for (const std::string& s : generator->get_genfiles()) {
-        genfile_file << s << "\n";
-      }
-    }
-    delete generator;
-  }
-
-  return true;
-}
-
 /**
  * Generate code
  */
@@ -171,10 +151,6 @@ static bool generate(
     for (auto gen_string : generator_strings) {
       auto pos = gen_string.find(":");
       std::string lang = gen_string.substr(0, pos);
-      if (lang.find("cpp2") != std::string::npos) {
-        generate_cpp2(program, context, gen_string);
-        continue;
-      }
 
       t_generator* generator =
           t_generator_registry::get_generator(program, context, gen_string);
