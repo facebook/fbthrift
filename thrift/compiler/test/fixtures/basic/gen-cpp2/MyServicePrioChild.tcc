@@ -31,7 +31,7 @@ void MyServicePrioChildAsyncProcessor::process_pang(std::unique_ptr<apache::thri
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   MyServicePrioChild_pang_pargs args;
-  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("MyServicePrioChild.pang"), ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "MyServicePrioChild.pang", ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }

@@ -37,7 +37,7 @@ void MyServiceAsyncProcessor::process_query(std::unique_ptr<apache::thrift::Resp
   args.get<0>().value = uarg_s.get();
   auto uarg_i = std::make_unique< ::cpp2::Included>();
   args.get<1>().value = uarg_i.get();
-  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("MyService.query"), ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "MyService.query", ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
@@ -91,7 +91,7 @@ void MyServiceAsyncProcessor::process_has_arg_docs(std::unique_ptr<apache::thrif
   args.get<0>().value = uarg_s.get();
   auto uarg_i = std::make_unique< ::cpp2::Included>();
   args.get<1>().value = uarg_i.get();
-  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("MyService.has_arg_docs"), ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "MyService.has_arg_docs", ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }

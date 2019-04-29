@@ -84,7 +84,7 @@ void ParamServiceAsyncProcessor::process_void_ret_i16_param(std::unique_ptr<apac
   ParamService_void_ret_i16_param_pargs args;
   int16_t uarg_param1{0};
   args.get<0>().value = &uarg_param1;
-  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("ParamService.void_ret_i16_param"), ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.void_ret_i16_param", ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
@@ -134,7 +134,7 @@ void ParamServiceAsyncProcessor::process_void_ret_byte_i16_param(std::unique_ptr
   args.get<0>().value = &uarg_param1;
   int16_t uarg_param2{0};
   args.get<1>().value = &uarg_param2;
-  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("ParamService.void_ret_byte_i16_param"), ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.void_ret_byte_i16_param", ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
@@ -186,7 +186,7 @@ void ParamServiceAsyncProcessor::process_void_ret_map_param(std::unique_ptr<apac
   ParamService_void_ret_map_param_pargs args;
   auto uarg_param1 = std::make_unique<std::map<std::string, int64_t>>();
   args.get<0>().value = uarg_param1.get();
-  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("ParamService.void_ret_map_param"), ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.void_ret_map_param", ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
@@ -240,7 +240,7 @@ void ParamServiceAsyncProcessor::process_void_ret_map_setlist_param(std::unique_
   args.get<0>().value = uarg_param1.get();
   auto uarg_param2 = std::make_unique<std::set<std::vector<std::string>>>();
   args.get<1>().value = uarg_param2.get();
-  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("ParamService.void_ret_map_setlist_param"), ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.void_ret_map_setlist_param", ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
@@ -292,7 +292,7 @@ void ParamServiceAsyncProcessor::process_void_ret_map_typedef_param(std::unique_
   ParamService_void_ret_map_typedef_param_pargs args;
    ::some::valid::ns::simpleTypeDef uarg_param1{0};
   args.get<0>().value = &uarg_param1;
-  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("ParamService.void_ret_map_typedef_param"), ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.void_ret_map_typedef_param", ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
@@ -344,7 +344,7 @@ void ParamServiceAsyncProcessor::process_void_ret_enum_param(std::unique_ptr<apa
   ParamService_void_ret_enum_param_pargs args;
    ::some::valid::ns::MyEnumA uarg_param1{static_cast< ::some::valid::ns::MyEnumA>(0)};
   args.get<0>().value = &uarg_param1;
-  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("ParamService.void_ret_enum_param"), ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.void_ret_enum_param", ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
@@ -396,7 +396,7 @@ void ParamServiceAsyncProcessor::process_void_ret_struct_param(std::unique_ptr<a
   ParamService_void_ret_struct_param_pargs args;
   auto uarg_param1 = std::make_unique< ::some::valid::ns::MyStruct>();
   args.get<0>().value = uarg_param1.get();
-  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("ParamService.void_ret_struct_param"), ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.void_ret_struct_param", ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
@@ -448,7 +448,7 @@ void ParamServiceAsyncProcessor::process_void_ret_listunion_param(std::unique_pt
   ParamService_void_ret_listunion_param_pargs args;
   auto uarg_param1 = std::make_unique<std::vector< ::some::valid::ns::ComplexUnion>>();
   args.get<0>().value = uarg_param1.get();
-  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("ParamService.void_ret_listunion_param"), ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.void_ret_listunion_param", ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
@@ -502,7 +502,7 @@ void ParamServiceAsyncProcessor::process_bool_ret_i32_i64_param(std::unique_ptr<
   args.get<0>().value = &uarg_param1;
   int64_t uarg_param2{0};
   args.get<1>().value = &uarg_param2;
-  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("ParamService.bool_ret_i32_i64_param"), ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.bool_ret_i32_i64_param", ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
@@ -556,7 +556,7 @@ void ParamServiceAsyncProcessor::process_bool_ret_map_param(std::unique_ptr<apac
   ParamService_bool_ret_map_param_pargs args;
   auto uarg_param1 = std::make_unique<std::map<std::string, int64_t>>();
   args.get<0>().value = uarg_param1.get();
-  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("ParamService.bool_ret_map_param"), ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.bool_ret_map_param", ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
@@ -610,7 +610,7 @@ void ParamServiceAsyncProcessor::process_bool_ret_union_param(std::unique_ptr<ap
   ParamService_bool_ret_union_param_pargs args;
   auto uarg_param1 = std::make_unique< ::some::valid::ns::ComplexUnion>();
   args.get<0>().value = uarg_param1.get();
-  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("ParamService.bool_ret_union_param"), ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.bool_ret_union_param", ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
@@ -666,7 +666,7 @@ void ParamServiceAsyncProcessor::process_i64_ret_float_double_param(std::unique_
   args.get<0>().value = &uarg_param1;
   double uarg_param2{0};
   args.get<1>().value = &uarg_param2;
-  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("ParamService.i64_ret_float_double_param"), ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.i64_ret_float_double_param", ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
@@ -722,7 +722,7 @@ void ParamServiceAsyncProcessor::process_i64_ret_string_typedef_param(std::uniqu
   args.get<0>().value = uarg_param1.get();
   auto uarg_param2 = std::make_unique<std::set< ::some::valid::ns::mostComplexTypeDef>>();
   args.get<1>().value = uarg_param2.get();
-  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("ParamService.i64_ret_string_typedef_param"), ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.i64_ret_string_typedef_param", ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
@@ -779,7 +779,7 @@ void ParamServiceAsyncProcessor::process_i64_ret_i32_i32_i32_i32_i32_param(std::
   args.get<3>().value = &uarg_param4;
   int32_t uarg_param5{0};
   args.get<4>().value = &uarg_param5;
-  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("ParamService.i64_ret_i32_i32_i32_i32_i32_param"), ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.i64_ret_i32_i32_i32_i32_i32_param", ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
@@ -829,7 +829,7 @@ void ParamServiceAsyncProcessor::process_double_ret_setstruct_param(std::unique_
   ParamService_double_ret_setstruct_param_pargs args;
   auto uarg_param1 = std::make_unique<std::set< ::some::valid::ns::MyStruct>>();
   args.get<0>().value = uarg_param1.get();
-  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("ParamService.double_ret_setstruct_param"), ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.double_ret_setstruct_param", ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
@@ -883,7 +883,7 @@ void ParamServiceAsyncProcessor::process_string_ret_string_param(std::unique_ptr
   ParamService_string_ret_string_param_pargs args;
   auto uarg_param1 = std::make_unique<std::string>();
   args.get<0>().value = uarg_param1.get();
-  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("ParamService.string_ret_string_param"), ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.string_ret_string_param", ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
@@ -937,7 +937,7 @@ void ParamServiceAsyncProcessor::process_binary_ret_binary_param(std::unique_ptr
   ParamService_binary_ret_binary_param_pargs args;
   auto uarg_param1 = std::make_unique<std::string>();
   args.get<0>().value = uarg_param1.get();
-  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("ParamService.binary_ret_binary_param"), ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.binary_ret_binary_param", ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
@@ -991,7 +991,7 @@ void ParamServiceAsyncProcessor::process_map_ret_bool_param(std::unique_ptr<apac
   ParamService_map_ret_bool_param_pargs args;
   bool uarg_param1{0};
   args.get<0>().value = &uarg_param1;
-  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("ParamService.map_ret_bool_param"), ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.map_ret_bool_param", ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
@@ -1047,7 +1047,7 @@ void ParamServiceAsyncProcessor::process_list_ret_map_setlist_param(std::unique_
   args.get<0>().value = uarg_param1.get();
   auto uarg_param2 = std::make_unique<std::vector<std::string>>();
   args.get<1>().value = uarg_param2.get();
-  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("ParamService.list_ret_map_setlist_param"), ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.list_ret_map_setlist_param", ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
@@ -1101,7 +1101,7 @@ void ParamServiceAsyncProcessor::process_mapsetlistmapliststring_ret_listlistlis
   ParamService_mapsetlistmapliststring_ret_listlistlist_param_pargs args;
   auto uarg_param1 = std::make_unique<std::vector<std::vector<std::vector<std::vector<int32_t>>>>>();
   args.get<0>().value = uarg_param1.get();
-  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("ParamService.mapsetlistmapliststring_ret_listlistlist_param"), ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.mapsetlistmapliststring_ret_listlistlist_param", ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
@@ -1155,7 +1155,7 @@ void ParamServiceAsyncProcessor::process_typedef_ret_i32_param(std::unique_ptr<a
   ParamService_typedef_ret_i32_param_pargs args;
   int32_t uarg_param1{0};
   args.get<0>().value = &uarg_param1;
-  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("ParamService.typedef_ret_i32_param"), ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.typedef_ret_i32_param", ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
@@ -1204,7 +1204,7 @@ void ParamServiceAsyncProcessor::process_listtypedef_ret_typedef_param(std::uniq
   ParamService_listtypedef_ret_typedef_param_pargs args;
   auto uarg_param1 = std::make_unique< ::some::valid::ns::complexStructTypeDef>();
   args.get<0>().value = uarg_param1.get();
-  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("ParamService.listtypedef_ret_typedef_param"), ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.listtypedef_ret_typedef_param", ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
@@ -1254,7 +1254,7 @@ void ParamServiceAsyncProcessor::process_enum_ret_double_param(std::unique_ptr<a
   ParamService_enum_ret_double_param_pargs args;
   double uarg_param1{0};
   args.get<0>().value = &uarg_param1;
-  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("ParamService.enum_ret_double_param"), ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.enum_ret_double_param", ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
@@ -1310,7 +1310,7 @@ void ParamServiceAsyncProcessor::process_enum_ret_double_enum_param(std::unique_
   args.get<0>().value = &uarg_param1;
    ::some::valid::ns::MyEnumA uarg_param2{static_cast< ::some::valid::ns::MyEnumA>(0)};
   args.get<1>().value = &uarg_param2;
-  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("ParamService.enum_ret_double_enum_param"), ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.enum_ret_double_enum_param", ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
@@ -1364,7 +1364,7 @@ void ParamServiceAsyncProcessor::process_listenum_ret_map_param(std::unique_ptr<
   ParamService_listenum_ret_map_param_pargs args;
   auto uarg_param1 = std::make_unique<std::map<std::string, int64_t>>();
   args.get<0>().value = uarg_param1.get();
-  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("ParamService.listenum_ret_map_param"), ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.listenum_ret_map_param", ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
@@ -1413,7 +1413,7 @@ void ParamServiceAsyncProcessor::process_struct_ret_i16_param(std::unique_ptr<ap
   ParamService_struct_ret_i16_param_pargs args;
   int16_t uarg_param1{0};
   args.get<0>().value = &uarg_param1;
-  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("ParamService.struct_ret_i16_param"), ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.struct_ret_i16_param", ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
@@ -1463,7 +1463,7 @@ void ParamServiceAsyncProcessor::process_setstruct_ret_set_param(std::unique_ptr
   ParamService_setstruct_ret_set_param_pargs args;
   auto uarg_param1 = std::make_unique<std::set<std::string>>();
   args.get<0>().value = uarg_param1.get();
-  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("ParamService.setstruct_ret_set_param"), ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.setstruct_ret_set_param", ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
@@ -1519,7 +1519,7 @@ void ParamServiceAsyncProcessor::process_union_ret_i32_i32_param(std::unique_ptr
   args.get<0>().value = &uarg_param1;
   int32_t uarg_param2{0};
   args.get<1>().value = &uarg_param2;
-  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("ParamService.union_ret_i32_i32_param"), ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.union_ret_i32_i32_param", ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
@@ -1573,7 +1573,7 @@ void ParamServiceAsyncProcessor::process_listunion_string_param(std::unique_ptr<
   ParamService_listunion_string_param_pargs args;
   auto uarg_param1 = std::make_unique<std::string>();
   args.get<0>().value = uarg_param1.get();
-  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("ParamService.listunion_string_param"), ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.listunion_string_param", ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }

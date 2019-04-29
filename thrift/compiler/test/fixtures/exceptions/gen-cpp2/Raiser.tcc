@@ -37,7 +37,7 @@ void RaiserAsyncProcessor::process_doBland(std::unique_ptr<apache::thrift::Respo
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   Raiser_doBland_pargs args;
-  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("Raiser.doBland"), ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "Raiser.doBland", ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
@@ -87,7 +87,7 @@ void RaiserAsyncProcessor::process_doRaise(std::unique_ptr<apache::thrift::Respo
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   Raiser_doRaise_pargs args;
-  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("Raiser.doRaise"), ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "Raiser.doRaise", ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
@@ -160,7 +160,7 @@ void RaiserAsyncProcessor::process_get200(std::unique_ptr<apache::thrift::Respon
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   Raiser_get200_pargs args;
-  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("Raiser.get200"), ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "Raiser.get200", ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
@@ -212,7 +212,7 @@ void RaiserAsyncProcessor::process_get500(std::unique_ptr<apache::thrift::Respon
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   Raiser_get500_pargs args;
-  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("Raiser.get500"), ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "Raiser.get500", ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }

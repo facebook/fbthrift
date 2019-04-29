@@ -37,7 +37,7 @@ void ExtraServiceAsyncProcessor::process_simple_function(std::unique_ptr<apache:
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   ExtraService_simple_function_pargs args;
-  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("ExtraService.simple_function"), ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ExtraService.simple_function", ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
@@ -80,7 +80,7 @@ void ExtraServiceAsyncProcessor::process_throws_function(std::unique_ptr<apache:
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   ExtraService_throws_function_pargs args;
-  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("ExtraService.throws_function"), ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ExtraService.throws_function", ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
@@ -140,7 +140,7 @@ void ExtraServiceAsyncProcessor::process_throws_function2(std::unique_ptr<apache
   ExtraService_throws_function2_pargs args;
   bool uarg_param1{0};
   args.get<0>().value = &uarg_param1;
-  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("ExtraService.throws_function2"), ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ExtraService.throws_function2", ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
@@ -204,7 +204,7 @@ void ExtraServiceAsyncProcessor::process_throws_function3(std::unique_ptr<apache
   args.get<0>().value = &uarg_param1;
   std::string uarg_param2;
   args.get<1>().value = &uarg_param2;
-  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("ExtraService.throws_function3"), ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ExtraService.throws_function3", ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
@@ -271,7 +271,7 @@ void ExtraServiceAsyncProcessor::process_oneway_void_ret(std::unique_ptr<apache:
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   ExtraService_oneway_void_ret_pargs args;
-  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("ExtraService.oneway_void_ret"), ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ExtraService.oneway_void_ret", ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
@@ -307,7 +307,7 @@ void ExtraServiceAsyncProcessor::process_oneway_void_ret_i32_i32_i32_i32_i32_par
   args.get<3>().value = &uarg_param4;
   int32_t uarg_param5{0};
   args.get<4>().value = &uarg_param5;
-  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("ExtraService.oneway_void_ret_i32_i32_i32_i32_i32_param"), ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ExtraService.oneway_void_ret_i32_i32_i32_i32_i32_param", ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
@@ -337,7 +337,7 @@ void ExtraServiceAsyncProcessor::process_oneway_void_ret_map_setlist_param(std::
   args.get<0>().value = &uarg_param1;
   std::set<std::vector<std::string>> uarg_param2;
   args.get<1>().value = &uarg_param2;
-  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("ExtraService.oneway_void_ret_map_setlist_param"), ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ExtraService.oneway_void_ret_map_setlist_param", ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
@@ -365,7 +365,7 @@ void ExtraServiceAsyncProcessor::process_oneway_void_ret_struct_param(std::uniqu
   ExtraService_oneway_void_ret_struct_param_pargs args;
    ::some::valid::ns::MyStruct uarg_param1;
   args.get<0>().value = &uarg_param1;
-  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("ExtraService.oneway_void_ret_struct_param"), ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ExtraService.oneway_void_ret_struct_param", ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
@@ -393,7 +393,7 @@ void ExtraServiceAsyncProcessor::process_oneway_void_ret_listunion_param(std::un
   ExtraService_oneway_void_ret_listunion_param_pargs args;
   std::vector< ::some::valid::ns::ComplexUnion> uarg_param1;
   args.get<0>().value = &uarg_param1;
-  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("ExtraService.oneway_void_ret_listunion_param"), ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ExtraService.oneway_void_ret_listunion_param", ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }

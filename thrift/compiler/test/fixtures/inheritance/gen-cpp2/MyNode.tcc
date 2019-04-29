@@ -31,7 +31,7 @@ void MyNodeAsyncProcessor::process_do_mid(std::unique_ptr<apache::thrift::Respon
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   MyNode_do_mid_pargs args;
-  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("MyNode.do_mid"), ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "MyNode.do_mid", ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }

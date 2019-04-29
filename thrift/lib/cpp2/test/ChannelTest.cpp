@@ -1200,24 +1200,3 @@ TEST(Channel, SetKeepRegisteredForClose) {
 
   close(lfd);
 }
-
-TEST(Channel, ContextStackNameWrapperBasics) {
-  const char *sname = "mycontextstack12345";
-  using NameWrapper = ContextStack::NameWrapper;
-  std::string asstr(sname);
-  NameWrapper nw1{asstr.c_str()};
-  NameWrapper nw2 = NameWrapper::makeFromStatic(sname);
-  NameWrapper nw3 = NameWrapper::makeFromStatic(asstr.c_str());
-  EXPECT_TRUE(strcmp(nw1.name(), sname) == 0);
-  EXPECT_TRUE(strcmp(nw2.name(), sname) == 0);
-  EXPECT_TRUE(strcmp(nw3.name(), sname) == 0);
-  asstr[1] = 'z';
-  EXPECT_TRUE(strcmp(nw3.name(), sname) != 0);
-  NameWrapper nw4(std::move(nw1));
-  NameWrapper nw5(std::move(nw2));
-  NameWrapper nw6(std::move(nw3));
-  EXPECT_TRUE(strcmp(nw4.name(), sname) == 0);
-  EXPECT_TRUE(strcmp(nw5.name(), sname) == 0);
-  asstr[1] = 'y';
-  EXPECT_TRUE(strcmp(nw6.name(), sname) == 0);
-}

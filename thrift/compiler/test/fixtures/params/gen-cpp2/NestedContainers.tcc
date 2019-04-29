@@ -41,7 +41,7 @@ void NestedContainersAsyncProcessor::process_mapList(std::unique_ptr<apache::thr
   NestedContainers_mapList_pargs args;
   auto uarg_foo = std::make_unique<std::map<int32_t, std::vector<int32_t>>>();
   args.get<0>().value = uarg_foo.get();
-  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("NestedContainers.mapList"), ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "NestedContainers.mapList", ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
@@ -93,7 +93,7 @@ void NestedContainersAsyncProcessor::process_mapSet(std::unique_ptr<apache::thri
   NestedContainers_mapSet_pargs args;
   auto uarg_foo = std::make_unique<std::map<int32_t, std::set<int32_t>>>();
   args.get<0>().value = uarg_foo.get();
-  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("NestedContainers.mapSet"), ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "NestedContainers.mapSet", ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
@@ -145,7 +145,7 @@ void NestedContainersAsyncProcessor::process_listMap(std::unique_ptr<apache::thr
   NestedContainers_listMap_pargs args;
   auto uarg_foo = std::make_unique<std::vector<std::map<int32_t, int32_t>>>();
   args.get<0>().value = uarg_foo.get();
-  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("NestedContainers.listMap"), ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "NestedContainers.listMap", ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
@@ -197,7 +197,7 @@ void NestedContainersAsyncProcessor::process_listSet(std::unique_ptr<apache::thr
   NestedContainers_listSet_pargs args;
   auto uarg_foo = std::make_unique<std::vector<std::set<int32_t>>>();
   args.get<0>().value = uarg_foo.get();
-  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("NestedContainers.listSet"), ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "NestedContainers.listSet", ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
@@ -249,7 +249,7 @@ void NestedContainersAsyncProcessor::process_turtles(std::unique_ptr<apache::thr
   NestedContainers_turtles_pargs args;
   auto uarg_foo = std::make_unique<std::vector<std::vector<std::map<int32_t, std::map<int32_t, std::set<int32_t>>>>>>();
   args.get<0>().value = uarg_foo.get();
-  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(apache::thrift::ContextStack::NameWrapper::makeFromStatic(this->getServiceName()), apache::thrift::ContextStack::NameWrapper::makeFromStatic("NestedContainers.turtles"), ctx));
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "NestedContainers.turtles", ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }

@@ -63,14 +63,11 @@ class EventHandlerBase {
 
  protected:
   std::unique_ptr<ContextStack> getContextStack(
-      ContextStack::NameWrapper&& service_name,
-      ContextStack::NameWrapper&& fn_name,
+      const char* service_name,
+      const char* fn_name,
       server::TConnectionContext* connectionContext) {
     return std::make_unique<ContextStack>(
-        handlers_,
-        std::move(service_name),
-        std::move(fn_name),
-        connectionContext);
+        handlers_, service_name, fn_name, connectionContext);
   }
 
  public:
