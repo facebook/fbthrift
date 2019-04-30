@@ -22,9 +22,9 @@ void <%struct:name%>::readNoXfer(Protocol_* iprot) {
 
   using apache::thrift::TProtocolException;
 
-<%#struct:fields%><%#field:required?%>
+<%#program:enforce_required?%><%#struct:fields%><%#field:required?%>
   bool isset_<%field:cpp_name%> = false;
-<%/field:required?%><%/struct:fields%>
+<%/field:required?%><%/struct:fields%><%/program:enforce_required?%>
 
 <%#struct:fields?%>
 <%#struct:fields%>
@@ -80,11 +80,11 @@ _readField_<%field:cpp_name%>:
 _end:
   _readState.readStructEnd(iprot);
 
-  <%#struct:fields%><%#field:required?%>
+  <%#program:enforce_required?%><%#struct:fields%><%#field:required?%>
   if (!isset_<%field:cpp_name%>) {
     TProtocolException::throwMissingRequiredField("<%field:name%>", "<%struct:name%>");
   }
-  <%/field:required?%><%/struct:fields%>
+  <%/field:required?%><%/struct:fields%><%/program:enforce_required?%>
   return;
 
 _loop:

@@ -71,9 +71,9 @@ this-><%field:cpp_name%> = std::move(ptr);<%!
 %><%/type:struct?%><%!
 %><%/field:optionals?%><%/field:cpp_ref?%><%!
 
-%><%#field:required?%>
+%><%#program:enforce_required?%><%#field:required?%>
 isset_<%field:cpp_name%> = true;<%!
-%><%/field:required?%><%!
+%><%/field:required?%><%/program:enforce_required?%><%!
 %><%^field:required?%><%^struct:optionals?%><%^field:cpp_ref?%>
 this->__isset.<%field:cpp_name%> = true;<%!
 %><%/field:cpp_ref?%><%/struct:optionals?%><%/field:required?%>

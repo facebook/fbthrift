@@ -2211,8 +2211,6 @@ void struct1::readNoXfer(Protocol_* iprot) {
 
   using apache::thrift::TProtocolException;
 
-  bool isset_field0 = false;
-  bool isset_field3 = false;
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -2224,7 +2222,6 @@ void struct1::readNoXfer(Protocol_* iprot) {
 _readField_field0:
   {
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::read(*iprot, this->field0);
-    isset_field0 = true;
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -2263,7 +2260,6 @@ _readField_field2:
 _readField_field3:
   {
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::test_cpp2::cpp_reflection::enum2>::read(*iprot, this->field3);
-    isset_field3 = true;
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -2303,12 +2299,6 @@ _readField_field5:
 _end:
   _readState.readStructEnd(iprot);
 
-  if (!isset_field0) {
-    TProtocolException::throwMissingRequiredField("field0", "struct1");
-  }
-  if (!isset_field3) {
-    TProtocolException::throwMissingRequiredField("field3", "struct1");
-  }
   return;
 
 _loop:
@@ -3346,7 +3336,6 @@ void struct4::readNoXfer(Protocol_* iprot) {
 
   using apache::thrift::TProtocolException;
 
-  bool isset_field0 = false;
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -3358,7 +3347,6 @@ void struct4::readNoXfer(Protocol_* iprot) {
 _readField_field0:
   {
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::read(*iprot, this->field0);
-    isset_field0 = true;
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -3412,9 +3400,6 @@ _readField_field3:
 _end:
   _readState.readStructEnd(iprot);
 
-  if (!isset_field0) {
-    TProtocolException::throwMissingRequiredField("field0", "struct4");
-  }
   return;
 
 _loop:
@@ -3567,7 +3552,6 @@ void struct5::readNoXfer(Protocol_* iprot) {
 
   using apache::thrift::TProtocolException;
 
-  bool isset_field0 = false;
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -3579,7 +3563,6 @@ void struct5::readNoXfer(Protocol_* iprot) {
 _readField_field0:
   {
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::read(*iprot, this->field0);
-    isset_field0 = true;
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -3645,9 +3628,6 @@ _readField_field4:
 _end:
   _readState.readStructEnd(iprot);
 
-  if (!isset_field0) {
-    TProtocolException::throwMissingRequiredField("field0", "struct5");
-  }
   return;
 
 _loop:

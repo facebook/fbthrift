@@ -269,7 +269,6 @@ void MyField::readNoXfer(Protocol_* iprot) {
 
   using apache::thrift::TProtocolException;
 
-  bool isset_req_value = false;
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -307,7 +306,6 @@ _readField_value:
 _readField_req_value:
   {
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::read(*iprot, this->req_value);
-    isset_req_value = true;
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -321,9 +319,6 @@ _readField_req_value:
 _end:
   _readState.readStructEnd(iprot);
 
-  if (!isset_req_value) {
-    TProtocolException::throwMissingRequiredField("req_value", "MyField");
-  }
   return;
 
 _loop:
@@ -442,7 +437,6 @@ void MyStruct::readNoXfer(Protocol_* iprot) {
 
   using apache::thrift::TProtocolException;
 
-  bool isset_req_ref = false;
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -484,7 +478,6 @@ _readField_req_ref:
     std::unique_ptr< ::cpp2::MyField> ptr = std::make_unique< ::cpp2::MyField>();
     ::apache::thrift::Cpp2Ops<  ::cpp2::MyField>::read(iprot, ptr.get());
     this->req_ref = std::move(ptr);
-    isset_req_ref = true;
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -498,9 +491,6 @@ _readField_req_ref:
 _end:
   _readState.readStructEnd(iprot);
 
-  if (!isset_req_ref) {
-    TProtocolException::throwMissingRequiredField("req_ref", "MyStruct");
-  }
   return;
 
 _loop:
@@ -1334,7 +1324,6 @@ void StructWithSharedConst::readNoXfer(Protocol_* iprot) {
 
   using apache::thrift::TProtocolException;
 
-  bool isset_req_shared_const = false;
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -1376,7 +1365,6 @@ _readField_req_shared_const:
     std::unique_ptr< ::cpp2::MyField> ptr = std::make_unique< ::cpp2::MyField>();
     ::apache::thrift::Cpp2Ops<  ::cpp2::MyField>::read(iprot, ptr.get());
     this->req_shared_const = std::move(ptr);
-    isset_req_shared_const = true;
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -1390,9 +1378,6 @@ _readField_req_shared_const:
 _end:
   _readState.readStructEnd(iprot);
 
-  if (!isset_req_shared_const) {
-    TProtocolException::throwMissingRequiredField("req_shared_const", "StructWithSharedConst");
-  }
   return;
 
 _loop:
@@ -1646,7 +1631,6 @@ void StructWithRef::readNoXfer(Protocol_* iprot) {
 
   using apache::thrift::TProtocolException;
 
-  bool isset_req_field = false;
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -1688,7 +1672,6 @@ _readField_req_field:
     std::unique_ptr< ::cpp2::Empty> ptr = std::make_unique< ::cpp2::Empty>();
     ::apache::thrift::Cpp2Ops<  ::cpp2::Empty>::read(iprot, ptr.get());
     this->req_field = std::move(ptr);
-    isset_req_field = true;
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -1702,9 +1685,6 @@ _readField_req_field:
 _end:
   _readState.readStructEnd(iprot);
 
-  if (!isset_req_field) {
-    TProtocolException::throwMissingRequiredField("req_field", "StructWithRef");
-  }
   return;
 
 _loop:
@@ -1880,7 +1860,6 @@ void StructWithRefTypeUnique::readNoXfer(Protocol_* iprot) {
 
   using apache::thrift::TProtocolException;
 
-  bool isset_req_field = false;
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -1922,7 +1901,6 @@ _readField_req_field:
     std::unique_ptr< ::cpp2::Empty> ptr = std::make_unique< ::cpp2::Empty>();
     ::apache::thrift::Cpp2Ops<  ::cpp2::Empty>::read(iprot, ptr.get());
     this->req_field = std::move(ptr);
-    isset_req_field = true;
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -1936,9 +1914,6 @@ _readField_req_field:
 _end:
   _readState.readStructEnd(iprot);
 
-  if (!isset_req_field) {
-    TProtocolException::throwMissingRequiredField("req_field", "StructWithRefTypeUnique");
-  }
   return;
 
 _loop:
@@ -2114,7 +2089,6 @@ void StructWithRefTypeShared::readNoXfer(Protocol_* iprot) {
 
   using apache::thrift::TProtocolException;
 
-  bool isset_req_field = false;
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -2156,7 +2130,6 @@ _readField_req_field:
     std::unique_ptr< ::cpp2::Empty> ptr = std::make_unique< ::cpp2::Empty>();
     ::apache::thrift::Cpp2Ops<  ::cpp2::Empty>::read(iprot, ptr.get());
     this->req_field = std::move(ptr);
-    isset_req_field = true;
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -2170,9 +2143,6 @@ _readField_req_field:
 _end:
   _readState.readStructEnd(iprot);
 
-  if (!isset_req_field) {
-    TProtocolException::throwMissingRequiredField("req_field", "StructWithRefTypeShared");
-  }
   return;
 
 _loop:
@@ -2348,7 +2318,6 @@ void StructWithRefTypeSharedConst::readNoXfer(Protocol_* iprot) {
 
   using apache::thrift::TProtocolException;
 
-  bool isset_req_field = false;
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -2390,7 +2359,6 @@ _readField_req_field:
     std::unique_ptr< ::cpp2::Empty> ptr = std::make_unique< ::cpp2::Empty>();
     ::apache::thrift::Cpp2Ops<  ::cpp2::Empty>::read(iprot, ptr.get());
     this->req_field = std::move(ptr);
-    isset_req_field = true;
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -2404,9 +2372,6 @@ _readField_req_field:
 _end:
   _readState.readStructEnd(iprot);
 
-  if (!isset_req_field) {
-    TProtocolException::throwMissingRequiredField("req_field", "StructWithRefTypeSharedConst");
-  }
   return;
 
 _loop:

@@ -43,10 +43,6 @@ void containerStruct2::readNoXfer(Protocol_* iprot) {
 
   using apache::thrift::TProtocolException;
 
-  bool isset_req_fieldA = false;
-  bool isset_req_fieldB = false;
-  bool isset_req_fieldC = false;
-  bool isset_req_fieldE = false;
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -70,7 +66,6 @@ _readField_fieldA:
 _readField_req_fieldA:
   {
     iprot->readBool(this->req_fieldA);
-    isset_req_fieldA = true;
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -110,7 +105,6 @@ _readField_req_fieldB:
   {
     this->req_fieldB = std::map<std::string, bool>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>, std::map<std::string, bool>>::read(*iprot, this->req_fieldB);
-    isset_req_fieldB = true;
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -150,7 +144,6 @@ _readField_req_fieldC:
   {
     this->req_fieldC = std::set<int32_t>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, std::set<int32_t>>::read(*iprot, this->req_fieldC);
-    isset_req_fieldC = true;
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -200,7 +193,6 @@ _readField_fieldE:
 _readField_req_fieldE:
   {
     iprot->readString(this->req_fieldE);
-    isset_req_fieldE = true;
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -227,18 +219,6 @@ _readField_opt_fieldE:
 _end:
   _readState.readStructEnd(iprot);
 
-  if (!isset_req_fieldA) {
-    TProtocolException::throwMissingRequiredField("req_fieldA", "containerStruct2");
-  }
-  if (!isset_req_fieldB) {
-    TProtocolException::throwMissingRequiredField("req_fieldB", "containerStruct2");
-  }
-  if (!isset_req_fieldC) {
-    TProtocolException::throwMissingRequiredField("req_fieldC", "containerStruct2");
-  }
-  if (!isset_req_fieldE) {
-    TProtocolException::throwMissingRequiredField("req_fieldE", "containerStruct2");
-  }
   return;
 
 _loop:

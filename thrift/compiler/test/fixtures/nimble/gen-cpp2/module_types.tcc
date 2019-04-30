@@ -43,7 +43,6 @@ void BasicTypes::readNoXfer(Protocol_* iprot) {
 
   using apache::thrift::TProtocolException;
 
-  bool isset_first = false;
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -55,7 +54,6 @@ void BasicTypes::readNoXfer(Protocol_* iprot) {
 _readField_first:
   {
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::read(*iprot, this->first);
-    isset_first = true;
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -108,9 +106,6 @@ _readField_isTrue:
 _end:
   _readState.readStructEnd(iprot);
 
-  if (!isset_first) {
-    TProtocolException::throwMissingRequiredField("first", "BasicTypes");
-  }
   return;
 
 _loop:

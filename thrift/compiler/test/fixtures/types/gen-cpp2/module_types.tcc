@@ -1469,11 +1469,6 @@ void MinPadding::readNoXfer(Protocol_* iprot) {
 
   using apache::thrift::TProtocolException;
 
-  bool isset_small = false;
-  bool isset_big = false;
-  bool isset_medium = false;
-  bool isset_biggish = false;
-  bool isset_tiny = false;
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -1485,7 +1480,6 @@ void MinPadding::readNoXfer(Protocol_* iprot) {
 _readField_small:
   {
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int8_t>::read(*iprot, this->small);
-    isset_small = true;
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -1498,7 +1492,6 @@ _readField_small:
 _readField_big:
   {
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::read(*iprot, this->big);
-    isset_big = true;
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -1511,7 +1504,6 @@ _readField_big:
 _readField_medium:
   {
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int16_t>::read(*iprot, this->medium);
-    isset_medium = true;
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -1524,7 +1516,6 @@ _readField_medium:
 _readField_biggish:
   {
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::read(*iprot, this->biggish);
-    isset_biggish = true;
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -1537,7 +1528,6 @@ _readField_biggish:
 _readField_tiny:
   {
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int8_t>::read(*iprot, this->tiny);
-    isset_tiny = true;
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -1551,21 +1541,6 @@ _readField_tiny:
 _end:
   _readState.readStructEnd(iprot);
 
-  if (!isset_small) {
-    TProtocolException::throwMissingRequiredField("small", "MinPadding");
-  }
-  if (!isset_big) {
-    TProtocolException::throwMissingRequiredField("big", "MinPadding");
-  }
-  if (!isset_medium) {
-    TProtocolException::throwMissingRequiredField("medium", "MinPadding");
-  }
-  if (!isset_biggish) {
-    TProtocolException::throwMissingRequiredField("biggish", "MinPadding");
-  }
-  if (!isset_tiny) {
-    TProtocolException::throwMissingRequiredField("tiny", "MinPadding");
-  }
   return;
 
 _loop:

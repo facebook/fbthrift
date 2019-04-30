@@ -134,7 +134,6 @@ void Fiery::readNoXfer(Protocol_* iprot) {
 
   using apache::thrift::TProtocolException;
 
-  bool isset_message = false;
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -146,7 +145,6 @@ void Fiery::readNoXfer(Protocol_* iprot) {
 _readField_message:
   {
     iprot->readString(this->message);
-    isset_message = true;
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -160,9 +158,6 @@ _readField_message:
 _end:
   _readState.readStructEnd(iprot);
 
-  if (!isset_message) {
-    TProtocolException::throwMissingRequiredField("message", "Fiery");
-  }
   return;
 
 _loop:

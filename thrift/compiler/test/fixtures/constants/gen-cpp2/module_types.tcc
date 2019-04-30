@@ -118,7 +118,6 @@ void Internship::readNoXfer(Protocol_* iprot) {
 
   using apache::thrift::TProtocolException;
 
-  bool isset_weeks = false;
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -130,7 +129,6 @@ void Internship::readNoXfer(Protocol_* iprot) {
 _readField_weeks:
   {
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::read(*iprot, this->weeks);
-    isset_weeks = true;
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -170,9 +168,6 @@ _readField_employer:
 _end:
   _readState.readStructEnd(iprot);
 
-  if (!isset_weeks) {
-    TProtocolException::throwMissingRequiredField("weeks", "Internship");
-  }
   return;
 
 _loop:
@@ -398,8 +393,6 @@ void Range::readNoXfer(Protocol_* iprot) {
 
   using apache::thrift::TProtocolException;
 
-  bool isset_min = false;
-  bool isset_max = false;
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -411,7 +404,6 @@ void Range::readNoXfer(Protocol_* iprot) {
 _readField_min:
   {
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::read(*iprot, this->min);
-    isset_min = true;
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -424,7 +416,6 @@ _readField_min:
 _readField_max:
   {
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::read(*iprot, this->max);
-    isset_max = true;
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -438,12 +429,6 @@ _readField_max:
 _end:
   _readState.readStructEnd(iprot);
 
-  if (!isset_min) {
-    TProtocolException::throwMissingRequiredField("min", "Range");
-  }
-  if (!isset_max) {
-    TProtocolException::throwMissingRequiredField("max", "Range");
-  }
   return;
 
 _loop:

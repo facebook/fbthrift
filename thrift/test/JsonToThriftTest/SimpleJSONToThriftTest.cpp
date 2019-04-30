@@ -380,18 +380,14 @@ TEST(SimpleJSONToThriftTest, MissingField) {
 }
 
 TEST(SimpleJSONToThriftTest, BoundaryCase) {
-  // jsonSimpleT2 is to test whether the generated code throw exeption
-  // if the required field doesn't have value : field c's value is
-  // missing
+  // jsonSimpleT2 is to test that the generated code does NOT throw exeption
+  // if the required field doesn't have value, since required is being
+  // deprecated.
   string jsonSimpleT(
       "{\"a\":true,\"d\":32,\"e\":64,\"b\":8,"
       "\"f\":0.99,\"g\":\"Hello\"}");
   mySimpleStruct thriftSimpleObj;
-  try {
-    deserializeJSON(thriftSimpleObj, jsonSimpleT);
-    ADD_FAILURE();
-  } catch (apache::thrift::TException& e) {
-  }
+  deserializeJSON(thriftSimpleObj, jsonSimpleT);
 
   string jsonByteTW("{\"a\":128}");
   myByteStruct thriftByteObjW;
@@ -459,8 +455,9 @@ TEST(SimpleJSONToThriftTest, ComplexTypeMissingRequiredFieldInMember) {
   myComplexStruct thriftComplexObj;
   try {
     deserializeJSON(thriftComplexObj, jsonComplexT);
-    ADD_FAILURE();
   } catch (apache::thrift::TException& e) {
+    // We don't enforce required anymore, thus shouldn't throw.
+    ADD_FAILURE();
   }
 }
 

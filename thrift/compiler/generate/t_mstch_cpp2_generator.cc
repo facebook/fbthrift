@@ -1350,6 +1350,8 @@ class mstch_cpp2_program : public mstch_program {
             {"program:indirection", &mstch_cpp2_program::indirection},
             {"program:aliases_to_struct",
              &mstch_cpp2_program::aliases_to_struct},
+            {"program:enforce_required?",
+             &mstch_cpp2_program::enforce_required},
         });
   }
   std::string get_program_namespace(t_program const* program) override {
@@ -1703,6 +1705,9 @@ class mstch_cpp2_program : public mstch_program {
       }
     }
     return a;
+  }
+  mstch::node enforce_required() {
+    return cache_->parsed_options_.count("deprecated_enforce_required") != 0;
   }
 };
 

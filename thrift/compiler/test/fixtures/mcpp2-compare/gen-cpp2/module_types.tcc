@@ -493,7 +493,6 @@ void MyStruct::readNoXfer(Protocol_* iprot) {
 
   using apache::thrift::TProtocolException;
 
-  bool isset_MyBinaryField3 = false;
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -583,7 +582,6 @@ _readField_MyBinaryField2:
 _readField_MyBinaryField3:
   {
     iprot->readBinary(this->MyBinaryField3);
-    isset_MyBinaryField3 = true;
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -625,9 +623,6 @@ _readField_MyMapEnumAndInt:
 _end:
   _readState.readStructEnd(iprot);
 
-  if (!isset_MyBinaryField3) {
-    TProtocolException::throwMissingRequiredField("MyBinaryField3", "MyStruct");
-  }
   return;
 
 _loop:
@@ -1919,9 +1914,6 @@ void AnException::readNoXfer(Protocol_* iprot) {
 
   using apache::thrift::TProtocolException;
 
-  bool isset_req_code = false;
-  bool isset_req_message = false;
-  bool isset_req_exception_map = false;
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -1946,7 +1938,6 @@ _readField_code:
 _readField_req_code:
   {
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::read(*iprot, this->req_code);
-    isset_req_code = true;
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -1972,7 +1963,6 @@ _readField_message2:
 _readField_req_message:
   {
     iprot->readString(this->req_message);
-    isset_req_message = true;
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -2028,7 +2018,6 @@ _readField_req_exception_map:
   {
     this->req_exception_map = std::map<std::string, int32_t>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>, std::map<std::string, int32_t>>::read(*iprot, this->req_exception_map);
-    isset_req_exception_map = true;
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -2138,15 +2127,6 @@ _readField_a_union_typedef_list:
 _end:
   _readState.readStructEnd(iprot);
 
-  if (!isset_req_code) {
-    TProtocolException::throwMissingRequiredField("req_code", "AnException");
-  }
-  if (!isset_req_message) {
-    TProtocolException::throwMissingRequiredField("req_message", "AnException");
-  }
-  if (!isset_req_exception_map) {
-    TProtocolException::throwMissingRequiredField("req_exception_map", "AnException");
-  }
   return;
 
 _loop:
@@ -2509,7 +2489,6 @@ void AnotherException::readNoXfer(Protocol_* iprot) {
 
   using apache::thrift::TProtocolException;
 
-  bool isset_req_code = false;
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -2534,7 +2513,6 @@ _readField_code:
 _readField_req_code:
   {
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::read(*iprot, this->req_code);
-    isset_req_code = true;
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -2561,9 +2539,6 @@ _readField_message:
 _end:
   _readState.readStructEnd(iprot);
 
-  if (!isset_req_code) {
-    TProtocolException::throwMissingRequiredField("req_code", "AnotherException");
-  }
   return;
 
 _loop:
@@ -2692,13 +2667,6 @@ void containerStruct::readNoXfer(Protocol_* iprot) {
 
   using apache::thrift::TProtocolException;
 
-  bool isset_req_fieldA = false;
-  bool isset_req_fieldB = false;
-  bool isset_req_fieldC = false;
-  bool isset_req_fieldE = false;
-  bool isset_req_fieldR = false;
-  bool isset_req_fieldV = false;
-  bool isset_req_fieldX = false;
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -2723,7 +2691,6 @@ _readField_fieldA:
 _readField_req_fieldA:
   {
     iprot->readBool(this->req_fieldA);
-    isset_req_fieldA = true;
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -2764,7 +2731,6 @@ _readField_req_fieldB:
   {
     this->req_fieldB = std::map<std::string, bool>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>, std::map<std::string, bool>>::read(*iprot, this->req_fieldB);
-    isset_req_fieldB = true;
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -2806,7 +2772,6 @@ _readField_req_fieldC:
   {
     this->req_fieldC = std::set<int32_t>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, std::set<int32_t>>::read(*iprot, this->req_fieldC);
-    isset_req_fieldC = true;
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -2859,7 +2824,6 @@ _readField_fieldE:
 _readField_req_fieldE:
   {
     iprot->readString(this->req_fieldE);
-    isset_req_fieldE = true;
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -3063,7 +3027,6 @@ _readField_fieldR:
 _readField_req_fieldR:
   {
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::some::valid::ns::MyEnumA>::read(*iprot, this->req_fieldR);
-    isset_req_fieldR = true;
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -3143,7 +3106,6 @@ _readField_fieldV:
 _readField_req_fieldV:
   {
     ::apache::thrift::Cpp2Ops<  ::some::valid::ns::MyStruct>::read(iprot, &this->req_fieldV);
-    isset_req_fieldV = true;
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -3196,7 +3158,6 @@ _readField_fieldX:
 _readField_req_fieldX:
   {
     ::apache::thrift::Cpp2Ops<  ::some::valid::ns::ComplexUnion>::read(iprot, &this->req_fieldX);
-    isset_req_fieldX = true;
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -3332,27 +3293,6 @@ _readField_fieldSD:
 _end:
   _readState.readStructEnd(iprot);
 
-  if (!isset_req_fieldA) {
-    TProtocolException::throwMissingRequiredField("req_fieldA", "containerStruct");
-  }
-  if (!isset_req_fieldB) {
-    TProtocolException::throwMissingRequiredField("req_fieldB", "containerStruct");
-  }
-  if (!isset_req_fieldC) {
-    TProtocolException::throwMissingRequiredField("req_fieldC", "containerStruct");
-  }
-  if (!isset_req_fieldE) {
-    TProtocolException::throwMissingRequiredField("req_fieldE", "containerStruct");
-  }
-  if (!isset_req_fieldR) {
-    TProtocolException::throwMissingRequiredField("req_fieldR", "containerStruct");
-  }
-  if (!isset_req_fieldV) {
-    TProtocolException::throwMissingRequiredField("req_fieldV", "containerStruct");
-  }
-  if (!isset_req_fieldX) {
-    TProtocolException::throwMissingRequiredField("req_fieldX", "containerStruct");
-  }
   return;
 
 _loop:
@@ -4336,7 +4276,6 @@ void MyIncludedStruct::readNoXfer(Protocol_* iprot) {
 
   using apache::thrift::TProtocolException;
 
-  bool isset_ARequiredField = false;
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -4388,7 +4327,6 @@ _readField_ARefField:
 _readField_ARequiredField:
   {
     ::apache::thrift::Cpp2Ops<  ::some::valid::ns::AStruct>::read(iprot, &this->ARequiredField);
-    isset_ARequiredField = true;
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -4402,9 +4340,6 @@ _readField_ARequiredField:
 _end:
   _readState.readStructEnd(iprot);
 
-  if (!isset_ARequiredField) {
-    TProtocolException::throwMissingRequiredField("ARequiredField", "MyIncludedStruct");
-  }
   return;
 
 _loop:
@@ -4567,12 +4502,6 @@ void AnnotatedStruct::readNoXfer(Protocol_* iprot) {
 
   using apache::thrift::TProtocolException;
 
-  bool isset_req_cpp_unique_ref = false;
-  bool isset_req_cpp2_unique_ref = false;
-  bool isset_req_container_with_ref = false;
-  bool isset_req_ref_type_shared = false;
-  bool isset_req_ref_type_const = false;
-  bool isset_req_ref_type_unique = false;
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -4641,7 +4570,6 @@ _readField_req_cpp_unique_ref:
     std::unique_ptr< ::some::valid::ns::containerStruct> ptr = std::make_unique< ::some::valid::ns::containerStruct>();
     ::apache::thrift::Cpp2Ops<  ::some::valid::ns::containerStruct>::read(iprot, ptr.get());
     this->req_cpp_unique_ref = std::move(ptr);
-    isset_req_cpp_unique_ref = true;
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -4656,7 +4584,6 @@ _readField_req_cpp2_unique_ref:
     std::unique_ptr< ::some::valid::ns::containerStruct> ptr = std::make_unique< ::some::valid::ns::containerStruct>();
     ::apache::thrift::Cpp2Ops<  ::some::valid::ns::containerStruct>::read(iprot, ptr.get());
     this->req_cpp2_unique_ref = std::move(ptr);
-    isset_req_cpp2_unique_ref = true;
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -4671,7 +4598,6 @@ _readField_req_container_with_ref:
     std::unique_ptr<std::vector<std::string>> ptr = std::make_unique<std::vector<std::string>>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::string>, std::vector<std::string>>::read(*iprot, *ptr);
     this->req_container_with_ref = std::move(ptr);
-    isset_req_container_with_ref = true;
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -4770,7 +4696,6 @@ _readField_req_ref_type_shared:
     std::unique_ptr< ::some::valid::ns::containerStruct> ptr = std::make_unique< ::some::valid::ns::containerStruct>();
     ::apache::thrift::Cpp2Ops<  ::some::valid::ns::containerStruct>::read(iprot, ptr.get());
     this->req_ref_type_shared = std::move(ptr);
-    isset_req_ref_type_shared = true;
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -4785,7 +4710,6 @@ _readField_req_ref_type_const:
     std::unique_ptr< ::some::valid::ns::containerStruct> ptr = std::make_unique< ::some::valid::ns::containerStruct>();
     ::apache::thrift::Cpp2Ops<  ::some::valid::ns::containerStruct>::read(iprot, ptr.get());
     this->req_ref_type_const = std::move(ptr);
-    isset_req_ref_type_const = true;
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -4800,7 +4724,6 @@ _readField_req_ref_type_unique:
     std::unique_ptr<std::vector<std::string>> ptr = std::make_unique<std::vector<std::string>>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::string>, std::vector<std::string>>::read(*iprot, *ptr);
     this->req_ref_type_unique = std::move(ptr);
-    isset_req_ref_type_unique = true;
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -5143,24 +5066,6 @@ _readField_struct_struct:
 _end:
   _readState.readStructEnd(iprot);
 
-  if (!isset_req_cpp_unique_ref) {
-    TProtocolException::throwMissingRequiredField("req_cpp_unique_ref", "AnnotatedStruct");
-  }
-  if (!isset_req_cpp2_unique_ref) {
-    TProtocolException::throwMissingRequiredField("req_cpp2_unique_ref", "AnnotatedStruct");
-  }
-  if (!isset_req_container_with_ref) {
-    TProtocolException::throwMissingRequiredField("req_container_with_ref", "AnnotatedStruct");
-  }
-  if (!isset_req_ref_type_shared) {
-    TProtocolException::throwMissingRequiredField("req_ref_type_shared", "AnnotatedStruct");
-  }
-  if (!isset_req_ref_type_const) {
-    TProtocolException::throwMissingRequiredField("req_ref_type_const", "AnnotatedStruct");
-  }
-  if (!isset_req_ref_type_unique) {
-    TProtocolException::throwMissingRequiredField("req_ref_type_unique", "AnnotatedStruct");
-  }
   return;
 
 _loop:
@@ -6802,7 +6707,6 @@ void AllRequiredNoExceptMoveCtrStruct::readNoXfer(Protocol_* iprot) {
 
   using apache::thrift::TProtocolException;
 
-  bool isset_intField = false;
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -6814,7 +6718,6 @@ void AllRequiredNoExceptMoveCtrStruct::readNoXfer(Protocol_* iprot) {
 _readField_intField:
   {
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::read(*iprot, this->intField);
-    isset_intField = true;
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -6828,9 +6731,6 @@ _readField_intField:
 _end:
   _readState.readStructEnd(iprot);
 
-  if (!isset_intField) {
-    TProtocolException::throwMissingRequiredField("intField", "AllRequiredNoExceptMoveCtrStruct");
-  }
   return;
 
 _loop:
