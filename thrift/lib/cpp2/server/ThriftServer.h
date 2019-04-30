@@ -291,7 +291,6 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
       const transport::THeader::StringToStringMap* readHeaders = nullptr,
       const std::string* = nullptr) const final;
 
-  int64_t getRequestLoad() const override;
   std::string getLoadInfo(int64_t load) const override;
 
   void setAcceptExecutor(std::shared_ptr<folly::IOThreadPoolExecutor> pool) {

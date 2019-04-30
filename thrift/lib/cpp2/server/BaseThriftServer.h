@@ -433,7 +433,6 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
   // Get load of the server.
   int64_t getLoad(const std::string& counter = "", bool check_custom = true)
       const final;
-  virtual int64_t getRequestLoad() const;
   virtual std::string getLoadInfo(int64_t load) const;
 
   void setObserver(

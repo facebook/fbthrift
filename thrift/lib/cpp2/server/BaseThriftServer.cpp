@@ -141,17 +141,13 @@ int64_t BaseThriftServer::getLoad(const std::string& counter, bool check_custom)
     return getLoad_(counter);
   }
 
-  auto reqload = getRequestLoad();
+  const auto activeRequests = getActiveRequests();
 
   if (VLOG_IS_ON(1)) {
-    FB_LOG_EVERY_MS(INFO, 1000 * 10) << getLoadInfo(reqload);
+    FB_LOG_EVERY_MS(INFO, 1000 * 10) << getLoadInfo(activeRequests);
   }
 
-  return reqload;
-}
-
-int64_t BaseThriftServer::getRequestLoad() const {
-  return getActiveRequests();
+  return activeRequests;
 }
 
 std::string BaseThriftServer::getLoadInfo(int64_t load) const {

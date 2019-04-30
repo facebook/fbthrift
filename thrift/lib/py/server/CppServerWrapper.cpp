@@ -755,7 +755,6 @@ BOOST_PYTHON_MODULE(CppServerWrapper) {
       .def("getMaxConnections", &CppServerWrapper::getMaxConnections)
 
       .def("getLoad", &CppServerWrapper::getLoad)
-      .def("getRequestLoad", &CppServerWrapper::getRequestLoad)
       .def("getActiveRequests", &CppServerWrapper::getActiveRequests)
       .def("getThreadManager", &CppServerWrapper::getThreadManagerHelper);
 
