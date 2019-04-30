@@ -28,7 +28,7 @@ namespace thrift {
 
 InMemoryConnection::InMemoryConnection(
     std::shared_ptr<AsyncProcessorFactory> pFac,
-    const apache::thrift::server::ServerConfigs& serverConfigs) {
+    server::ServerConfigs& serverConfigs) {
   CHECK_GT(FLAGS_thrift_num_cpu_threads, 0);
   threadManager_ = PriorityThreadManager::newPriorityThreadManager(
       FLAGS_thrift_num_cpu_threads);

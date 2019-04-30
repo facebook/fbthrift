@@ -151,7 +151,7 @@ int64_t BaseThriftServer::getLoad(const std::string& counter, bool check_custom)
 }
 
 int64_t BaseThriftServer::getRequestLoad() const {
-  return activeRequests_;
+  return getActiveRequests();
 }
 
 std::string BaseThriftServer::getLoadInfo(int64_t load) const {

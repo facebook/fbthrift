@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include <atomic>
 #include <chrono>
 #include <string>
 
@@ -73,6 +74,21 @@ class ServerConfigs {
   virtual bool isOverloaded(
       const transport::THeader::StringToStringMap* readHeaders,
       const std::string* method) const = 0;
+
+  void incActiveRequests() {
+    ++activeRequests_;
+  }
+
+  void decActiveRequests() {
+    --activeRequests_;
+  }
+
+  int32_t getActiveRequests() const {
+    return activeRequests_.load(std::memory_order_relaxed);
+  }
+
+ private:
+  std::atomic<int32_t> activeRequests_{0};
 };
 
 } // namespace server

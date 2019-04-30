@@ -51,7 +51,7 @@ namespace thrift {
 class ThriftRequestCore : public ResponseChannelRequest {
  public:
   ThriftRequestCore(
-      const apache::thrift::server::ServerConfigs& serverConfigs,
+      server::ServerConfigs& serverConfigs,
       RequestRpcMetadata&& metadata,
       std::shared_ptr<Cpp2ConnContext> connContext)
       : serverConfigs_(serverConfigs),
@@ -95,10 +95,13 @@ class ThriftRequestCore : public ResponseChannelRequest {
     if (auto observer = serverConfigs_.getObserver()) {
       observer->receivedRequest();
     }
+
+    serverConfigs_.incActiveRequests();
   }
 
   ~ThriftRequestCore() override {
     cancelTimeout();
+    serverConfigs_.decActiveRequests();
   }
 
   bool isActive() const final {
@@ -327,8 +330,8 @@ class ThriftRequestCore : public ResponseChannelRequest {
   class QueueTimeout : public folly::HHWheelTimer::Callback {
     ThriftRequestCore* request_;
     bool canceled_{false};
-    const apache::thrift::server::ServerConfigs& serverConfigs_;
-    QueueTimeout(const apache::thrift::server::ServerConfigs& serverConfigs)
+    const server::ServerConfigs& serverConfigs_;
+    QueueTimeout(const server::ServerConfigs& serverConfigs)
         : serverConfigs_(serverConfigs) {}
     void timeoutExpired() noexcept override {
       if (!canceled_ && !request_->reqContext_.getStartedProcessing() &&
@@ -349,8 +352,8 @@ class ThriftRequestCore : public ResponseChannelRequest {
   class TaskTimeout : public folly::HHWheelTimer::Callback {
     ThriftRequestCore* request_;
     bool canceled_{false};
-    const apache::thrift::server::ServerConfigs& serverConfigs_;
-    TaskTimeout(const apache::thrift::server::ServerConfigs& serverConfigs)
+    const server::ServerConfigs& serverConfigs_;
+    TaskTimeout(const server::ServerConfigs& serverConfigs)
         : serverConfigs_(serverConfigs) {}
     void timeoutExpired() noexcept override {
       if (!canceled_ && request_->active_.exchange(false) &&
@@ -373,7 +376,7 @@ class ThriftRequestCore : public ResponseChannelRequest {
   friend class ThriftProcessor;
 
  protected:
-  const apache::thrift::server::ServerConfigs& serverConfigs_;
+  server::ServerConfigs& serverConfigs_;
 
  private:
   const std::string name_;
@@ -394,7 +397,7 @@ class ThriftRequestCore : public ResponseChannelRequest {
 class ThriftRequest final : public ThriftRequestCore {
  public:
   ThriftRequest(
-      const apache::thrift::server::ServerConfigs& serverConfigs,
+      server::ServerConfigs& serverConfigs,
       std::shared_ptr<ThriftChannelIf> channel,
       RequestRpcMetadata&& metadata,
       std::unique_ptr<Cpp2ConnContext> connContext)

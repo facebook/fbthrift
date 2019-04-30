@@ -202,9 +202,6 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
   // transformed response, headers not included. 0 (default) means no limit.
   ServerAttribute<uint64_t> maxResponseSize_{0};
 
-  // Track # of active requests for this server
-  std::atomic<int32_t> activeRequests_{0};
-
   // Admission strategy use for accepting new requests
   ServerAttribute<std::shared_ptr<AdmissionStrategy>> admissionStrategy_;
 
@@ -421,24 +418,6 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
       uint64_t size,
       AttributeSource source = AttributeSource::OVERRIDE) {
     maxResponseSize_.set(size, source);
-  }
-
-  /**
-   * NOTE: low hanging perf fruit. In a test this was roughly a 10%
-   * regression at 2 million QPS (noops). High performance servers can override
-   * this with a noop at the expense of poor load metrics. To my knowledge
-   * no current thrift server does even close to this QPS.
-   */
-  void incActiveRequests(int32_t numRequests = 1) {
-    activeRequests_.fetch_add(numRequests, std::memory_order_relaxed);
-  }
-
-  void decActiveRequests(int32_t numRequests = 1) {
-    activeRequests_.fetch_sub(numRequests, std::memory_order_relaxed);
-  }
-
-  int32_t getActiveRequests() const {
-    return activeRequests_.load(std::memory_order_relaxed);
   }
 
   bool getUseClientTimeout() const {

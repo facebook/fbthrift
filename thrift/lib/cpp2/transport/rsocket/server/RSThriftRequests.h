@@ -38,7 +38,7 @@ bool deserializeMetadata(
 class RSOneWayRequest final : public ThriftRequestCore {
  public:
   RSOneWayRequest(
-      const apache::thrift::server::ServerConfigs& serverConfigs,
+      server::ServerConfigs& serverConfigs,
       RequestRpcMetadata&& metadata,
       std::shared_ptr<Cpp2ConnContext> connContext,
       folly::EventBase* evb,
@@ -68,7 +68,7 @@ class RSOneWayRequest final : public ThriftRequestCore {
 class RSSingleRequest final : public ThriftRequestCore {
  public:
   RSSingleRequest(
-      const apache::thrift::server::ServerConfigs& serverConfigs,
+      server::ServerConfigs& serverConfigs,
       RequestRpcMetadata&& metadata,
       std::shared_ptr<Cpp2ConnContext> connContext,
       folly::EventBase* evb,
@@ -100,7 +100,7 @@ class RSSingleRequest final : public ThriftRequestCore {
 class RSStreamRequest final : public ThriftRequestCore {
  public:
   RSStreamRequest(
-      const apache::thrift::server::ServerConfigs& serverConfigs,
+      server::ServerConfigs& serverConfigs,
       RequestRpcMetadata&& metadata,
       std::shared_ptr<Cpp2ConnContext> connContext,
       folly::EventBase* evb,

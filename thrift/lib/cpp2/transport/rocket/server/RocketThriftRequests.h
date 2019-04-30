@@ -46,7 +46,7 @@ class ThriftServerRequestResponse final : public ThriftRequestCore {
  public:
   ThriftServerRequestResponse(
       folly::EventBase& evb,
-      const server::ServerConfigs& serverConfigs,
+      server::ServerConfigs& serverConfigs,
       RequestRpcMetadata&& metadata,
       std::shared_ptr<Cpp2ConnContext> connContext,
       RocketServerFrameContext&& context);
@@ -83,7 +83,7 @@ class ThriftServerRequestFnf final : public ThriftRequestCore {
  public:
   ThriftServerRequestFnf(
       folly::EventBase& evb,
-      const server::ServerConfigs& serverConfigs,
+      server::ServerConfigs& serverConfigs,
       RequestRpcMetadata&& metadata,
       std::shared_ptr<Cpp2ConnContext> connContext,
       RocketServerFrameContext&& context,
@@ -116,7 +116,7 @@ class ThriftServerRequestStream final : public ThriftRequestCore {
  public:
   ThriftServerRequestStream(
       folly::EventBase& evb,
-      const server::ServerConfigs& serverConfigs,
+      server::ServerConfigs& serverConfigs,
       RequestRpcMetadata&& metadata,
       std::shared_ptr<Cpp2ConnContext> connContext,
       std::shared_ptr<RocketServerStreamSubscriber> subscriber,

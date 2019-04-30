@@ -42,8 +42,7 @@ namespace thrift {
  */
 class ThriftProcessor {
  public:
-  explicit ThriftProcessor(
-      const apache::thrift::server::ServerConfigs& serverConfigs);
+  explicit ThriftProcessor(server::ServerConfigs& serverConfigs);
 
   virtual ~ThriftProcessor() = default;
 
@@ -77,7 +76,7 @@ class ThriftProcessor {
   // Object of the generated AsyncProcessor subclass.
   std::unique_ptr<AsyncProcessor> cpp2Processor_;
   // To access server specific fields.
-  const apache::thrift::server::ServerConfigs& serverConfigs_;
+  server::ServerConfigs& serverConfigs_;
   // Thread manager that is used to run thrift handlers.
   // Owned by the server initialization code.
   apache::thrift::concurrency::ThreadManager* tm_;

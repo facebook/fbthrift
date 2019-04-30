@@ -36,7 +36,7 @@ class EchoProcessor : public ThriftProcessor {
   // payload data that is sent back, as well as the event base in
   // which to schedule the callbacks.
   EchoProcessor(
-      const apache::thrift::server::ServerConfigs& serverConfigs,
+      server::ServerConfigs& serverConfigs,
       const std::string& key,
       const std::string& value,
       const std::string& trailer,
