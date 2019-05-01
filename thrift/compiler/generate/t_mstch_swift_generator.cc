@@ -164,6 +164,13 @@ class t_mstch_swift_generator : public t_mstch_generator {
     render_to_file(
         cache_->programs_[id], "Constants", package_dir / constant_file_name);
   }
+
+  void generate_placeholder(const t_program* program) {
+    auto package_dir = boost::filesystem::path{java::package_to_path(
+        swift_context_->get_namespace_or_default(*program))};
+    auto placeholder_file_name = ".generated_" + program->get_name();
+    write_output(package_dir / placeholder_file_name, "");
+  }
 };
 
 class mstch_swift_program : public mstch_program {
@@ -727,6 +734,7 @@ void t_mstch_swift_generator::generate_program() {
       get_program()->get_enums(),
       "Enum");
   generate_constants(get_program());
+  generate_placeholder(get_program());
 }
 
 void t_mstch_swift_generator::set_mstch_generators() {
