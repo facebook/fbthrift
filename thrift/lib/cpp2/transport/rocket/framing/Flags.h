@@ -67,7 +67,7 @@ class Flags {
   THRIFT_ROCKET_CREATE_GETTER_SETTER(follows, Bits::FOLLOWS)
   THRIFT_ROCKET_CREATE_GETTER_SETTER(resumeToken, Bits::RESUME_TOKEN)
   THRIFT_ROCKET_CREATE_GETTER_SETTER(metadata, Bits::METADATA)
-  THRIFT_ROCKET_CREATE_GETTER_SETTER(ignore, Bits::IGNORE)
+  THRIFT_ROCKET_CREATE_GETTER_SETTER(ignore, Bits::IGNORE_)
 
 #undef THRIFT_ROCKET_CREATE_GETTER_SETTER
 
@@ -84,7 +84,7 @@ class Flags {
     FOLLOWS = 1 << 7,
     RESUME_TOKEN = 1 << 7,
     METADATA = 1 << 8,
-    IGNORE = 1 << 9,
+    IGNORE_ = 1 << 9,
   };
   Bits flags_{Bits::NONE};
 
