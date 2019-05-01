@@ -60,6 +60,40 @@ inline uint32_t NimbleProtocolWriter::writeFieldStop() {
   return 0;
 }
 
+inline uint32_t NimbleProtocolWriter::writeMapBegin(
+    TType keyType,
+    TType valType,
+    uint32_t size) {
+  // TODO: set container limit and check size within limit
+  // TODO: handle map size greater than 2**24
+  // To use the short size encoding, we need the high bit of the resulting
+  // chunk to be 0, and so must fit in 31 bits, including the shift for the
+  // metadata.
+  if (size >= (1U << (31 - kStructyTypeMetadataBits))) {
+    throw std::runtime_error("Not implemented yet");
+  }
+
+  StructyType structyType = getStructyTypeFromMap(keyType, valType);
+
+  // The lowest two bits of this fieldChunk is a fieldChunkHint (11) meaning
+  // that this is a complex type. The third lowest bit (0) denotes that this is
+  // a structy type rather than a stringy type. The next 4 bits encode the
+  // specific type of the structy field, e.g. map from 1-chunk items to 1-chunk
+  // items, map from 2-chunk items to complex items, etc.
+  encoder_.encodeFieldChunk(
+      (size << kStructyTypeMetadataBits) |
+      (structyType << kComplexMetadataBits) |
+      (ComplexType::STRUCTY << kFieldChunkHintBits) |
+      NimbleFieldChunkHint::COMPLEX_TYPE);
+  return 0;
+}
+
+inline uint32_t NimbleProtocolWriter::writeMapEnd() {
+  // this 0 field chunk marks the end of the map
+  encoder_.encodeFieldChunk(0);
+  return 0;
+}
+
 inline uint32_t NimbleProtocolWriter::writeBool(bool value) {
   encode(value);
   return 0;
@@ -231,6 +265,53 @@ inline void NimbleProtocolReader::readFieldBegin(
     TType& /*fieldType*/,
     int16_t& /*fieldId*/) {}
 inline void NimbleProtocolReader::readFieldEnd() {}
+
+inline void NimbleProtocolReader::readMapBegin(
+    TType& /*keyType*/,
+    TType& /*valType*/,
+    uint32_t& size) {
+  uint32_t nextFieldChunk = decoder_.nextFieldChunk();
+  // sanity check
+  if (UNLIKELY(
+          (nextFieldChunk & 3) != NimbleFieldChunkHint::COMPLEX_TYPE ||
+          (nextFieldChunk >> kFieldChunkHintBits & 1) !=
+              ComplexType::STRUCTY)) {
+    // TODO: handle (skip) malformed data
+    throw std::runtime_error("Not implemented yet. Skip malformed data");
+  }
+
+  // TODO: the structy type is encoded in the 4-7th lowest bits
+  // StructyType structyType =
+  //     static_cast<StructyType>(nextFieldChunk >> kComplexMetadataBits & 0xf);
+
+  // TODO: handle map size greater than 2**24
+  if (nextFieldChunk & (1U << 31)) {
+    throw std::runtime_error("Not implemented yet");
+  }
+  size = nextFieldChunk >> kStructyTypeMetadataBits;
+}
+
+inline void NimbleProtocolReader::readMapEnd() {
+  // To consume the fieldChunk 0 which marks the end of the map
+  uint32_t fieldChunk = decoder_.nextFieldChunk();
+  if (UNLIKELY(fieldChunk != 0)) {
+    // TODO: handle malformed data (skip?)
+    throw std::runtime_error("Data is malformed");
+  }
+}
+
+inline void NimbleProtocolReader::readListBegin(
+    TType& /*elemType*/,
+    uint32_t& /*size*/) {}
+
+inline void NimbleProtocolReader::readListEnd() {}
+
+inline void NimbleProtocolReader::readSetBegin(
+    TType& /*elemType*/,
+    uint32_t& /*size*/) {}
+
+inline void NimbleProtocolReader::readSetEnd() {}
+
 inline void NimbleProtocolReader::readBool(bool& value) {
   decode(value);
 }
@@ -262,10 +343,12 @@ template <typename StrType>
 inline void NimbleProtocolReader::readString(StrType& str) {
   uint32_t nextFieldChunk = decoder_.nextFieldChunk();
   // sanity check
-  if ((nextFieldChunk & 3) != NimbleFieldChunkHint::COMPLEX_TYPE ||
-      (nextFieldChunk >> kFieldChunkHintBits & 1) != ComplexType::STRINGY) {
+  if (UNLIKELY(
+          (nextFieldChunk & 3) != NimbleFieldChunkHint::COMPLEX_TYPE ||
+          (nextFieldChunk >> kFieldChunkHintBits & 1) !=
+              ComplexType::STRINGY)) {
     // TODO: skip bad content field
-    throw std::runtime_error("Not implemented yet (data is malformated)");
+    throw std::runtime_error("Not implemented yet (data is malformed)");
   }
 
   // TODO: handle string length greater than 2**28
@@ -274,9 +357,14 @@ inline void NimbleProtocolReader::readString(StrType& str) {
   }
 
   uint32_t size = nextFieldChunk >> kComplexMetadataBits;
-  str.resize(size);
+  // TODO: the following is a temporary workaround to keep apache::thrift::skip
+  // working. Need to implement nimble specific skipping logic.
+  str.reserve(size);
+  str.clear();
   if (size > 0) {
-    decoder_.nextBinary(&str[0], size);
+    auto buf = std::unique_ptr<char[]>(new char[size]);
+    decoder_.nextBinary(buf.get(), size);
+    str.append(buf.get(), size);
   }
 }
 
@@ -319,7 +407,7 @@ bool NimbleProtocolReader::advanceToNextField(
   auto fieldChunkHint = static_cast<NimbleFieldChunkHint>(fieldChunk & 3);
   // sanity check
   if (UNLIKELY(fieldChunkHint == NimbleFieldChunkHint::COMPLEX_TYPE)) {
-    // TODO: data is malformated, handle this case
+    // TODO: data is malformed, handle this case
     throw std::runtime_error("Bad data encountered while deserializing");
   }
   state.fieldChunkHint = fieldChunkHint;

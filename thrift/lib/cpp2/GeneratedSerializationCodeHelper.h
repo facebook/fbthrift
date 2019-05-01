@@ -655,7 +655,7 @@ struct protocol_methods<type_class::map<KeyClass, MappedClass>, Type> {
     } else {
       // CompactProtocol does not transmit key/mapped types if
       // the map is empty
-      if (map_size > 0 &&
+      if (!protocol.kOmitsContainerElemTypes() && map_size > 0 &&
           (key_methods::ttype_value != rpt_key_type ||
            mapped_methods::ttype_value != rpt_mapped_type)) {
         apache::thrift::skip_n(

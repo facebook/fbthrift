@@ -29,37 +29,6 @@ namespace thrift {
 
 using folly::io::Cursor;
 
-namespace detail {
-namespace nimble {
-
-/*
- * This method maps TType to NimbleFieldChunkHint enum.
- */
-inline NimbleFieldChunkHint ttypeToNimbleFieldChunkHint(TType fieldType) {
-  switch (fieldType) {
-    case TType::T_BOOL:
-    case TType::T_BYTE: // same enum value as TType::T_I08
-    case TType::T_I16:
-    case TType::T_I32:
-    case TType::T_FLOAT:
-      return NimbleFieldChunkHint::ONE_CHUNK_TYPE;
-    case TType::T_U64:
-    case TType::T_I64:
-    case TType::T_DOUBLE:
-      return NimbleFieldChunkHint::TWO_CHUNKS_TYPE;
-    case TType::T_STRING: // same enum value as TType::T_UTF7
-    case TType::T_LIST:
-    case TType::T_SET:
-    case TType::T_MAP:
-    case TType::T_STRUCT:
-      return NimbleFieldChunkHint::COMPLEX_METADATA;
-    default:
-      folly::assume_unreachable();
-  }
-}
-} // namespace nimble
-} // namespace detail
-
 class NimbleProtocolReader;
 
 class NimbleProtocolWriter {
@@ -170,6 +139,10 @@ class NimbleProtocolReader {
 
   static constexpr bool kOmitsContainerSizes() {
     return false;
+  }
+
+  static constexpr bool kOmitsContainerElemTypes() {
+    return true;
   }
 
   /**

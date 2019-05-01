@@ -246,7 +246,7 @@ uint32_t readFloatingPoint(Protocol_& prot, TType arg_type, T& value) {
  *
  * TProtocol objects should not be shared across multiple encoding contexts,
  * as they may need to maintain internal state in some protocols (i.e. XML).
- * Note that is is acceptable for the TProtocol module to do its own internal
+ * Note that it is acceptable for the TProtocol module to do its own internal
  * buffered reads/writes to the underlying TTransport where appropriate (i.e.
  * when parsing an input XML stream, reading should be batched rather than
  * looking ahead character by character for a close tag).

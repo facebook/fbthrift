@@ -93,6 +93,10 @@ class JSONProtocolReader : public JSONProtocolReaderCommon {
     return false;
   }
 
+  static constexpr bool kOmitsContainerElemTypes() {
+    return false;
+  }
+
   inline void readStructBegin(std::string& name);
   inline void readStructEnd();
   inline void
