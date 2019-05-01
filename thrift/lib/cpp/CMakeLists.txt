@@ -50,6 +50,7 @@ add_dependencies(protocol reflection-cpp2-target)
 target_link_libraries(
   protocol
   PUBLIC
+    fmt::fmt
     Folly::folly
     ${GLOG_LIBRARIES}
 )
