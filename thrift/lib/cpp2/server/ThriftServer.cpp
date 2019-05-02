@@ -360,6 +360,10 @@ void ThriftServer::setupThreadManager() {
         PriorityThreadManager::newPriorityThreadManager(
             numThreads, true /*stats*/));
     threadManager->enableCodel(getEnableCodel());
+    // If a thread factory has been specified, use it.
+    if (threadFactory_) {
+      threadManager->threadFactory(threadFactory_);
+    }
     auto poolThreadName = getCPUWorkerThreadName();
     if (!poolThreadName.empty()) {
       threadManager->setNamePrefix(poolThreadName);

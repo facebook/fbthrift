@@ -20,6 +20,7 @@
 #include <chrono>
 #include <cstdlib>
 #include <map>
+#include <memory>
 #include <mutex>
 #include <vector>
 
@@ -218,6 +219,9 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
   std::mutex threadManagerMutex_;
   std::shared_ptr<apache::thrift::concurrency::ThreadManager> threadManager_;
 
+  // If set, the thread factory that should be used to create worker threads.
+  std::shared_ptr<concurrency::ThreadFactory> threadFactory_;
+
   std::shared_ptr<server::TServerEventHandler> eventHandler_;
 
   // Notification of various server events
@@ -299,6 +303,18 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    */
   bool configMutable() {
     return configMutable_;
+  }
+
+  /**
+   * Set the ThreadFactory that will be used to create worker threads for the
+   * service.  If not set, a default factory will be used.  Must be called
+   * before the thread manager is started.
+   */
+  void setThreadFactory(
+      std::shared_ptr<concurrency::ThreadFactory> threadFactory) {
+    CHECK(configMutable());
+    CHECK(!threadManager_);
+    threadFactory_ = std::move(threadFactory);
   }
 
   /**
