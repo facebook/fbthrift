@@ -26,10 +26,10 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
-#include "thrift/compiler/mustache/state/in_section.hpp"
-#include "thrift/compiler/mustache/state/outside_section.hpp"
-#include "thrift/compiler/mustache/visitor/is_node_empty.hpp"
-#include "thrift/compiler/mustache/visitor/render_section.hpp"
+#include "thrift/compiler/mustache/state/in_section.h"
+#include "thrift/compiler/mustache/state/outside_section.h"
+#include "thrift/compiler/mustache/visitor/is_node_empty.h"
+#include "thrift/compiler/mustache/visitor/render_section.h"
 
 using namespace apache::thrift::mstch;
 

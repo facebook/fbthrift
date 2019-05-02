@@ -28,36 +28,39 @@ SOFTWARE.
 */
 #pragma once
 
-#include <boost/variant/static_visitor.hpp>
+#include <string>
+#include <vector>
 
-#include "thrift/compiler/mustache/mstch.hpp"
-#include "thrift/compiler/mustache/visitor/has_token.hpp"
+#include "thrift/compiler/mustache/token.h"
+#include "thrift/compiler/mustache/utils.h"
 
 namespace apache {
 namespace thrift {
 namespace mstch {
 
-class get_token : public boost::static_visitor<const mstch::node&> {
+class template_type {
  public:
-  get_token(const std::string& token, const mstch::node& node)
-      : m_token(token), m_node(node) {}
-
-  template <class T>
-  const mstch::node& operator()(const T&) const {
-    return m_node;
+  template_type() = default;
+  /* implicit */ template_type(const std::string& str);
+  template_type(const std::string& str, const delim_type& delims);
+  std::vector<token>::const_iterator begin() const {
+    return m_tokens.begin();
   }
-
-  const mstch::node& operator()(const map& map) const {
-    return map.at(m_token);
+  std::vector<token>::const_iterator end() const {
+    return m_tokens.end();
   }
-
-  const mstch::node& operator()(const std::shared_ptr<object>& object) const {
-    return object->at(m_token);
+  void operator<<(const token& token) {
+    m_tokens.push_back(token);
   }
 
  private:
-  const std::string& m_token;
-  const mstch::node& m_node;
+  std::vector<token> m_tokens;
+  std::string m_open;
+  std::string m_close;
+  void strip_whitespace();
+  void process_text(citer beg, citer end);
+  void tokenize(const std::string& tmp);
+  void store_prefixes(std::vector<token>::iterator beg);
 };
 
 } // namespace mstch

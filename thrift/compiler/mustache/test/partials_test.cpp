@@ -15,7 +15,7 @@
  */
 #include <gtest/gtest.h>
 
-#include <thrift/compiler/mustache/mstch.hpp>
+#include <thrift/compiler/mustache/mstch.h>
 
 using namespace apache::thrift;
 // The greater-than operator should expand to the named partial.

@@ -28,57 +28,33 @@ SOFTWARE.
 */
 #pragma once
 
-#include <deque>
-#include <list>
-#include <sstream>
-#include <stack>
-#include <string>
+#include <boost/variant/static_visitor.hpp>
 
-#include "thrift/compiler/mustache/mstch.hpp"
-#include "thrift/compiler/mustache/state/render_state.hpp"
-#include "thrift/compiler/mustache/template_type.hpp"
+#include "thrift/compiler/mustache/mstch.h"
 
 namespace apache {
 namespace thrift {
 namespace mstch {
 
-class render_context {
+class has_token : public boost::static_visitor<bool> {
  public:
-  class push {
-   public:
-    /* implicit */ push(render_context& context, const mstch::node& node = {});
-    ~push();
-    std::string render(const template_type& templt);
+  has_token(const std::string& token) : m_token(token) {}
 
-   private:
-    render_context& m_context;
-  };
+  template <class T>
+  bool operator()(const T&) const {
+    return m_token == ".";
+  }
 
-  render_context(
-      const mstch::node& node,
-      const std::map<std::string, template_type>& partials);
-  const mstch::node& get_node(const std::string& token);
-  std::string render(
-      const template_type& templt,
-      const std::string& prefix = "");
-  std::string render_partial(
-      const std::string& partial_name,
-      const std::string& prefix);
-  template <class T, class... Args>
-  void set_state(Args&&... args) {
-    m_state.top() =
-        std::unique_ptr<render_state>(new T(std::forward<Args>(args)...));
+  bool operator()(const map& map) const {
+    return map.count(m_token) == 1;
+  }
+
+  bool operator()(const std::shared_ptr<object>& object) const {
+    return object->has(m_token);
   }
 
  private:
-  static const mstch::node null_node;
-  const mstch::node& find_node(
-      const std::string& token,
-      std::list<node const*> current_nodes);
-  std::map<std::string, template_type> m_partials;
-  std::deque<mstch::node> m_nodes;
-  std::list<const mstch::node*> m_node_ptrs;
-  std::stack<std::unique_ptr<render_state>> m_state;
+  const std::string& m_token;
 };
 
 } // namespace mstch

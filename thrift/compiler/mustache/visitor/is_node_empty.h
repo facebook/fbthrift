@@ -28,20 +28,44 @@ SOFTWARE.
 */
 #pragma once
 
-#include <memory>
+#include <boost/variant/static_visitor.hpp>
 
-#include "thrift/compiler/mustache/token.hpp"
+#include "thrift/compiler/mustache/mstch.h"
 
 namespace apache {
 namespace thrift {
 namespace mstch {
 
-class render_context;
-
-class render_state {
+class is_node_empty : public boost::static_visitor<bool> {
  public:
-  virtual ~render_state() {}
-  virtual std::string render(render_context& context, const token& token) = 0;
+  template <class T>
+  bool operator()(const T&) const {
+    return false;
+  }
+
+  bool operator()(const std::nullptr_t&) const {
+    return true;
+  }
+
+  bool operator()(const int& value) const {
+    return value == 0;
+  }
+
+  bool operator()(const double& value) const {
+    return value == 0;
+  }
+
+  bool operator()(const bool& value) const {
+    return !value;
+  }
+
+  bool operator()(const std::string& value) const {
+    return value == "";
+  }
+
+  bool operator()(const array& array) const {
+    return array.size() == 0;
+  }
 };
 
 } // namespace mstch

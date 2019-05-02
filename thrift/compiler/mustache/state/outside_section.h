@@ -28,39 +28,15 @@ SOFTWARE.
 */
 #pragma once
 
-#include <string>
-#include <vector>
-
-#include "thrift/compiler/mustache/token.hpp"
-#include "thrift/compiler/mustache/utils.hpp"
+#include "thrift/compiler/mustache/state/render_state.h"
 
 namespace apache {
 namespace thrift {
 namespace mstch {
 
-class template_type {
+class outside_section : public render_state {
  public:
-  template_type() = default;
-  /* implicit */ template_type(const std::string& str);
-  template_type(const std::string& str, const delim_type& delims);
-  std::vector<token>::const_iterator begin() const {
-    return m_tokens.begin();
-  }
-  std::vector<token>::const_iterator end() const {
-    return m_tokens.end();
-  }
-  void operator<<(const token& token) {
-    m_tokens.push_back(token);
-  }
-
- private:
-  std::vector<token> m_tokens;
-  std::string m_open;
-  std::string m_close;
-  void strip_whitespace();
-  void process_text(citer beg, citer end);
-  void tokenize(const std::string& tmp);
-  void store_prefixes(std::vector<token>::iterator beg);
+  std::string render(render_context& context, const token& token) override;
 };
 
 } // namespace mstch

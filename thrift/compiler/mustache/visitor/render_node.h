@@ -29,43 +29,56 @@ SOFTWARE.
 #pragma once
 
 #include <boost/variant/static_visitor.hpp>
+#include <sstream>
 
-#include "thrift/compiler/mustache/mstch.hpp"
+#include "thrift/compiler/mustache/mstch.h"
+#include "thrift/compiler/mustache/render_context.h"
+#include "thrift/compiler/mustache/utils.h"
 
 namespace apache {
 namespace thrift {
 namespace mstch {
 
-class is_node_empty : public boost::static_visitor<bool> {
+class render_node : public boost::static_visitor<std::string> {
  public:
+  enum class flag { none, escape_html };
+  render_node(render_context& ctx, flag p_flag = flag::none)
+      : m_ctx(ctx), m_flag(p_flag) {}
+
   template <class T>
-  bool operator()(const T&) const {
-    return false;
+  std::string operator()(const T&) const {
+    return "";
   }
 
-  bool operator()(const std::nullptr_t&) const {
-    return true;
+  std::string operator()(const int& value) const {
+    return std::to_string(value);
   }
 
-  bool operator()(const int& value) const {
-    return value == 0;
+  std::string operator()(const double& value) const {
+    std::stringstream ss;
+    ss << value;
+    return ss.str();
   }
 
-  bool operator()(const double& value) const {
-    return value == 0;
+  std::string operator()(const bool& value) const {
+    return value ? "true" : "false";
   }
 
-  bool operator()(const bool& value) const {
-    return !value;
+  std::string operator()(const lambda& value) const {
+    template_type interpreted{value([this](const mstch::node& n) {
+      return mstch::visit(render_node(m_ctx), n);
+    })};
+    auto rendered = render_context::push(m_ctx).render(interpreted);
+    return (m_flag == flag::escape_html) ? html_escape(rendered) : rendered;
   }
 
-  bool operator()(const std::string& value) const {
-    return value == "";
+  std::string operator()(const std::string& value) const {
+    return (m_flag == flag::escape_html) ? html_escape(value) : value;
   }
 
-  bool operator()(const array& array) const {
-    return array.size() == 0;
-  }
+ private:
+  render_context& m_ctx;
+  flag m_flag;
 };
 
 } // namespace mstch

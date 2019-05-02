@@ -31,8 +31,8 @@ SOFTWARE.
 #include <sstream>
 #include <vector>
 
-#include "thrift/compiler/mustache/state/render_state.hpp"
-#include "thrift/compiler/mustache/template_type.hpp"
+#include "thrift/compiler/mustache/state/render_state.h"
+#include "thrift/compiler/mustache/template_type.h"
 
 namespace apache {
 namespace thrift {

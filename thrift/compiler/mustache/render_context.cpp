@@ -26,9 +26,9 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
-#include "thrift/compiler/mustache/render_context.hpp"
-#include "thrift/compiler/mustache/state/outside_section.hpp"
-#include "thrift/compiler/mustache/visitor/get_token.hpp"
+#include "thrift/compiler/mustache/render_context.h"
+#include "thrift/compiler/mustache/state/outside_section.h"
+#include "thrift/compiler/mustache/visitor/get_token.h"
 
 using namespace apache::thrift::mstch;
 
