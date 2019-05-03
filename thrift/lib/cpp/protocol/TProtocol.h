@@ -165,8 +165,9 @@ uint32_t skip(Protocol_& prot, TType arg_type) {
       result += prot.readListEnd();
       return result;
     }
-    default:
-      return 0;
+    default: {
+      TProtocolException::throwInvalidSkipType(arg_type);
+    }
   }
 }
 
