@@ -21,7 +21,7 @@
 
 namespace cpp2 apache.thrift.test
 
-cpp_include "thrift/test/WrappedType.h"
+cpp_include "thrift/test/structs_extra.h"
 
 struct Basic {
   1: i32 def_field,
