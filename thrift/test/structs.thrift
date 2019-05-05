@@ -59,3 +59,8 @@ struct IOBufIndirection {
   3: binary (cpp.type = "WrappedType<folly::IOBuf>",
              cpp.indirection = ".rawAccessor()") baz
 }
+
+struct HasSmallSortedVector {
+  1: set<i32> (cpp.template = "SmallSortedVectorSet") set_field,
+  2: map<i32, i32> (cpp.template = "SmallSortedVectorMap") map_field,
+}

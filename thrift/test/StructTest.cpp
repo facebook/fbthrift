@@ -18,6 +18,7 @@
 #include <thrift/test/gen-cpp2/structs_types.h>
 
 #include <folly/portability/GTest.h>
+#include <thrift/lib/cpp2/protocol/Serializer.h>
 
 using namespace apache::thrift::test;
 using namespace folly;
@@ -472,4 +473,22 @@ TEST_F(StructTest, custom_indirection) {
   a.bar.raw = "test2";
   IOBufIndirection b = a;
   EXPECT_EQ(a, b);
+}
+
+TEST_F(StructTest, small_sorted_vector) {
+  using Set = SmallSortedVectorSet<int32_t>;
+  using Map = SmallSortedVectorMap<int32_t, int32_t>;
+  using serializer = apache::thrift::BinarySerializer;
+  using Type = HasSmallSortedVector;
+  EXPECT_TRUE((std::is_same<decltype(Type::set_field), Set>::value));
+  EXPECT_TRUE((std::is_same<decltype(Type::map_field), Map>::value));
+
+  Type o;
+  o.set_field.insert({1, 3, 5});
+  o.map_field.insert({{1, 4}, {3, 12}, {5, 20}});
+  auto a = serializer::deserialize<HasSmallSortedVector>(
+      serializer::serialize<std::string>(o));
+  EXPECT_EQ(o, a);
+  EXPECT_EQ(o.set_field, a.set_field);
+  EXPECT_EQ(o.map_field, a.map_field);
 }

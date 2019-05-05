@@ -86,11 +86,17 @@ inline auto reserve_if_possible(T* t, std::uint32_t size)
 
 inline void reserve_if_possible(...) {}
 
+template <typename Void, typename T>
+struct presorted_constructible_from_vector_value_type_ : std::false_type {};
 template <typename T>
-using presorted_constructible_from_vector_value_type = std::is_constructible<
-    T,
-    folly::presorted_t,
-    std::vector<typename T::value_type>&&>;
+struct presorted_constructible_from_vector_value_type_<
+    folly::void_t<decltype(
+        T(folly::presorted,
+          typename T::container_type(typename T::size_type())))>,
+    T> : std::true_type {};
+template <typename T>
+struct presorted_constructible_from_vector_value_type
+    : presorted_constructible_from_vector_value_type_<void, T> {};
 
 FOLLY_CREATE_MEMBER_INVOKE_TRAITS(emplace_hint_traits, emplace_hint);
 
@@ -118,7 +124,8 @@ deserialize_known_length_map(
   }
 
   bool sorted = true;
-  std::vector<typename Map::value_type> tmp(map_size);
+  typename Map::container_type tmp(
+      static_cast<typename Map::size_type>(map_size));
   kr(tmp[0].first);
   mr(tmp[0].second);
   for (size_t i = 1; i < map_size; ++i) {
@@ -183,7 +190,8 @@ deserialize_known_length_set(
   }
 
   bool sorted = true;
-  std::vector<typename Set::value_type> tmp(set_size);
+  typename Set::container_type tmp(
+      static_cast<typename Set::size_type>(set_size));
   vr(tmp[0]);
   for (size_t i = 1; i < set_size; ++i) {
     vr(tmp[i]);
