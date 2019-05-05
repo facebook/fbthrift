@@ -77,14 +77,11 @@ namespace pm {
 template <typename T>
 inline auto reserve_if_possible(T* t, std::uint32_t size)
     -> decltype(t->reserve(size), void()) {
-#if defined(__GLIBCXX__) && (!defined(_GLIBCXX_RELEASE) || _GLIBCXX_RELEASE < 7)
   // Workaround for libstdc++ < 7, resize to `size + 1` to avoid an extra
   // rehash: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=71181.
   // TODO: Remove once libstdc++ < 7 is not supported any longer.
-  t->reserve(size + 1);
-#else
-  t->reserve(size);
-#endif
+  std::uint32_t extra = folly::kIsGlibcxx && folly::kGlibcxxVer < 7 ? 1 : 0;
+  t->reserve(size + extra);
 }
 
 inline void reserve_if_possible(...) {}
