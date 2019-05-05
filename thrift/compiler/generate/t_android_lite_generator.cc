@@ -25,6 +25,10 @@
 
 using namespace std;
 
+namespace apache {
+namespace thrift {
+namespace compiler {
+
 /**
  * Android code generator. Legacy versions of Android have a strict limit on
  * the number of methods allowed per executable (65,536, or 2^16). The standard
@@ -911,3 +915,7 @@ THRIFT_REGISTER_GENERATOR(
     android_lite,
     "Android",
     "    annotate:        Generate annotations that help the linter.\n");
+
+} // namespace compiler
+} // namespace thrift
+} // namespace apache

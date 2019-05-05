@@ -29,8 +29,13 @@
 #include <thrift/compiler/ast/base_types.h>
 #include <thrift/compiler/generate/t_oop_generator.h>
 #include <sstream>
+
 using namespace std;
 using namespace apache::thrift;
+
+namespace apache {
+namespace thrift {
+namespace compiler {
 
 /**
  * OCaml code generator.
@@ -1668,3 +1673,7 @@ string t_ocaml_generator::render_ocaml_type(t_type* type) {
 }
 
 THRIFT_REGISTER_GENERATOR(ocaml, "OCaml", "");
+
+} // namespace compiler
+} // namespace thrift
+} // namespace apache

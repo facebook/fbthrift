@@ -18,6 +18,10 @@
 
 using namespace std;
 
+namespace apache {
+namespace thrift {
+namespace compiler {
+
 std::shared_ptr<mstch_base> enum_value_generator::generate(
     t_enum_value const* enum_value,
     std::shared_ptr<mstch_generators const> generators,
@@ -674,3 +678,7 @@ mstch::node mstch_program::constants() {
   }
   return a;
 }
+
+} // namespace compiler
+} // namespace thrift
+} // namespace apache

@@ -32,8 +32,13 @@
 #include <boost/filesystem.hpp>
 
 #include <thrift/compiler/ast/base_types.h>
+
 using namespace std;
 using namespace apache::thrift;
+
+namespace apache {
+namespace thrift {
+namespace compiler {
 
 /**
  * Prepares for file generation by opening up the necessary file output
@@ -3971,3 +3976,7 @@ THRIFT_REGISTER_GENERATOR(
     "    beans:           Generate bean-style output files.\n"
     "    nocamel:         Do not use CamelCase field accessors with beans.\n"
     "    hashcode:        Generate quality hashCode methods.\n");
+
+} // namespace compiler
+} // namespace thrift
+} // namespace apache

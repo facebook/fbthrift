@@ -24,15 +24,11 @@
 
 #include <thrift/compiler/generate/t_oop_generator.h>
 
-using std::map;
-using std::ofstream;
-using std::ostream;
-using std::ostringstream;
-using std::set;
-using std::string;
-using std::vector;
-
 using namespace std;
+
+namespace apache {
+namespace thrift {
+namespace compiler {
 
 /*
  * If the name of an identifier in the object model
@@ -813,3 +809,7 @@ class t_d_generator : public t_oop_generator {
 };
 
 THRIFT_REGISTER_GENERATOR(d, "D", "");
+
+} // namespace compiler
+} // namespace thrift
+} // namespace apache

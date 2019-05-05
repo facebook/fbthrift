@@ -22,8 +22,11 @@
 #include <thrift/compiler/generate/t_mstch_generator.h>
 #include <thrift/compiler/generate/t_mstch_objects.h>
 
-namespace {
 using namespace std;
+
+namespace apache {
+namespace thrift {
+namespace compiler {
 
 class swift_generator_context {
  public:
@@ -756,6 +759,9 @@ void t_mstch_swift_generator::set_mstch_generators() {
   generators_->set_const_value_generator(
       std::make_unique<const_value_swift_generator>());
 }
-} // namespace
 
 THRIFT_REGISTER_GENERATOR(mstch_swift, "Java Swift", "");
+
+} // namespace compiler
+} // namespace thrift
+} // namespace apache

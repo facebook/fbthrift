@@ -18,6 +18,10 @@
 #include <string>
 #include <vector>
 
+namespace apache {
+namespace thrift {
+namespace compiler {
+
 std::vector<std::string> split_namespace(const std::string& s) {
   std::string token = ".";
   std::size_t last_match = 0;
@@ -35,3 +39,6 @@ std::vector<std::string> split_namespace(const std::string& s) {
 
   return output;
 }
+} // namespace compiler
+} // namespace thrift
+} // namespace apache

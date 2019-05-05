@@ -22,9 +22,11 @@
 #include <thrift/compiler/generate/common.h>
 #include <thrift/compiler/generate/t_mstch_generator.h>
 
-namespace {
-
 using namespace std;
+
+namespace apache {
+namespace thrift {
+namespace compiler {
 
 // Reserved Python keywords that are not blocked by thrift grammar - note that
 // this is actually a longer list than what t_py_generator checks, but may
@@ -385,4 +387,6 @@ THRIFT_REGISTER_GENERATOR(
     mstch_pyi,
     "Legacy Python type information",
     "    no arguments\n");
-} // namespace
+} // namespace compiler
+} // namespace thrift
+} // namespace apache

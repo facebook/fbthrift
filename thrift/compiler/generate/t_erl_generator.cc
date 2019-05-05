@@ -34,6 +34,10 @@
 
 using namespace std;
 
+namespace apache {
+namespace thrift {
+namespace compiler {
+
 /**
  * Erlang code generator.
  *
@@ -939,3 +943,7 @@ std::string t_erl_generator::type_module(t_type* ttype) {
 }
 
 THRIFT_REGISTER_GENERATOR(erl, "Erlang", "");
+
+} // namespace compiler
+} // namespace thrift
+} // namespace apache

@@ -29,6 +29,10 @@
 
 #include <algorithm>
 
+namespace apache {
+namespace thrift {
+namespace compiler {
+
 /**
  * Class with utility methods shared across common object oriented languages.
  * Specifically, most of this stuff is for C++/Java.
@@ -77,4 +81,7 @@ class t_oop_generator : public t_concat_generator {
   }
 };
 
+} // namespace compiler
+} // namespace thrift
+} // namespace apache
 #endif

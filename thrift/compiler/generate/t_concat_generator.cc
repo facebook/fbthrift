@@ -27,6 +27,10 @@
 
 using namespace std;
 
+namespace apache {
+namespace thrift {
+namespace compiler {
+
 /**
  * Top level program generation function. Calls the generator subclass methods
  * for preparing file streams etc. then iterates over all the parts of the
@@ -180,3 +184,7 @@ void t_concat_generator::validate_union_members(const t_struct* tstruct) {
     }
   }
 }
+
+} // namespace compiler
+} // namespace thrift
+} // namespace apache

@@ -18,7 +18,15 @@
 #include <string>
 #include <vector>
 
+namespace apache {
+namespace thrift {
+namespace compiler {
+
 /**
  * Split a namespace string using '.' as a token
  */
 std::vector<std::string> split_namespace(const std::string& s);
+
+} // namespace compiler
+} // namespace thrift
+} // namespace apache

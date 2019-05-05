@@ -18,6 +18,10 @@
 
 using namespace std;
 
+namespace apache {
+namespace thrift {
+namespace compiler {
+
 void t_generator_registry::register_generator(t_generator_factory* factory) {
   gen_map_t& the_map = get_generator_map();
   if (the_map.find(factory->get_short_name()) != the_map.end()) {
@@ -82,3 +86,7 @@ t_generator_factory::t_generator_factory(
       documentation_(documentation) {
   t_generator_registry::register_generator(this);
 }
+
+} // namespace compiler
+} // namespace thrift
+} // namespace apache

@@ -20,6 +20,10 @@
 
 #include <thrift/compiler/generate/common.h>
 
+namespace apache {
+namespace thrift {
+namespace compiler {
+
 TEST(GenerateCommon, SplitNamespace) {
   const std::vector<std::string> namespaces{
       "",
@@ -42,3 +46,7 @@ TEST(GenerateCommon, SplitNamespace) {
 
   EXPECT_EQ(expected, splits);
 }
+
+} // namespace compiler
+} // namespace thrift
+} // namespace apache

@@ -42,16 +42,11 @@
 #include <clocale>
 #include <sstream>
 
-using std::endl;
-using std::map;
-using std::ofstream;
-using std::ostringstream;
-using std::pair;
-using std::set;
-using std::string;
-using std::stringstream;
-using std::unordered_map;
-using std::vector;
+using namespace std;
+
+namespace apache {
+namespace thrift {
+namespace compiler {
 
 // static const string endl = "\n"; // avoid ostream << std::endl flushes
 
@@ -4283,3 +4278,7 @@ THRIFT_REGISTER_GENERATOR(
         ")\n"
         "    package=         Package name (default: inferred from thrift file name)\n"
         "    use_context      Generate code with context on all thrift server handlers\n");
+
+} // namespace compiler
+} // namespace thrift
+} // namespace apache

@@ -31,15 +31,12 @@
 #include <thrift/compiler/generate/t_oop_generator.h>
 #include <sstream>
 
-using std::map;
-using std::ofstream;
-using std::ostringstream;
-using std::string;
-using std::stringstream;
-using std::vector;
-
 using namespace std;
 using namespace apache::thrift;
+
+namespace apache {
+namespace thrift {
+namespace compiler {
 
 // static const string endl = "\n";  // avoid ostream << std::endl flushes
 static const string kFieldPrefix = "__thrift_";
@@ -3339,3 +3336,7 @@ THRIFT_REGISTER_GENERATOR(
     "    nullability:     Use annotations to ensure required fields are present.\n"
     "    validate_required:\n"
     "                     Throws exception if any required field is not set.\n");
+
+} // namespace compiler
+} // namespace thrift
+} // namespace apache

@@ -30,6 +30,10 @@
 using namespace std;
 using namespace apache::thrift;
 
+namespace apache {
+namespace thrift {
+namespace compiler {
+
 /**
  * Hack code generator.
  *
@@ -5244,3 +5248,7 @@ THRIFT_REGISTER_GENERATOR(
     "    const_collections Use ConstCollection objects rather than their mutable counterparts.\n"
     "    enum_extratype   Generate explicit types for Hack enums: 'type FooType = Foo'.\n"
     "    enum_transparenttype Use transparent typing for Hack enums: 'enum FooBar: int as int'.\n");
+
+} // namespace compiler
+} // namespace thrift
+} // namespace apache

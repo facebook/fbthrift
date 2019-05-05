@@ -26,10 +26,9 @@
 
 #include <thrift/compiler/ast/t_program.h>
 
-// TODO: Remove this once all generators are moved into the namespace.
-namespace {
-using namespace apache::thrift::compiler;
-} // namespace
+namespace apache {
+namespace thrift {
+namespace compiler {
 
 // version.h
 #define THRIFT_VERSION "facebook"
@@ -231,5 +230,9 @@ class t_generator_registry {
               doc) {}                                               \
   };                                                                \
   static t_##language##_generator_factory_impl _registerer
+
+} // namespace compiler
+} // namespace thrift
+} // namespace apache
 
 #endif // T_GENERATOR_H

@@ -26,6 +26,10 @@
 #include <thrift/compiler/generate/t_generator.h>
 #include <thrift/compiler/generate/t_mstch_objects.h>
 
+namespace apache {
+namespace thrift {
+namespace compiler {
+
 class t_mstch_generator : public t_generator {
  public:
   t_mstch_generator(
@@ -236,3 +240,7 @@ class t_mstch_generator : public t_generator {
   std::shared_ptr<mstch_generators> generators_;
   std::shared_ptr<mstch_cache> cache_;
 };
+
+} // namespace compiler
+} // namespace thrift
+} // namespace apache

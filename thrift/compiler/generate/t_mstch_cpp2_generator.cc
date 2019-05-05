@@ -24,9 +24,11 @@
 #include <thrift/compiler/generate/t_mstch_objects.h>
 #include <thrift/compiler/lib/cpp2/util.h>
 
-namespace {
-
 using namespace std;
+
+namespace apache {
+namespace thrift {
+namespace compiler {
 
 std::string const& map_find_first(
     std::map<std::string, std::string> const& m,
@@ -2108,6 +2110,9 @@ mstch::node t_mstch_cpp2_generator::include_prefix(
   }
   return prefix + "gen-cpp2/";
 }
-} // namespace
 
 THRIFT_REGISTER_GENERATOR(mstch_cpp2, "cpp2", "");
+
+} // namespace compiler
+} // namespace thrift
+} // namespace apache

@@ -30,8 +30,13 @@
 #include <thrift/compiler/ast/base_types.h>
 #include <thrift/compiler/generate/t_oop_generator.h>
 #include <sstream>
+
 using namespace std;
 using namespace apache::thrift;
+
+namespace apache {
+namespace thrift {
+namespace compiler {
 
 /**
  * PERL code generator.
@@ -1785,3 +1790,7 @@ string t_perl_generator ::type_to_enum(t_type* type) {
 }
 
 THRIFT_REGISTER_GENERATOR(perl, "Perl", "");
+
+} // namespace compiler
+} // namespace thrift
+} // namespace apache

@@ -20,6 +20,10 @@
 
 #include <thrift/compiler/ast/t_program.h>
 
+namespace apache {
+namespace thrift {
+namespace compiler {
+
 /**
  * String concatenation based generators.
  * This is the older way of generating code, new generators should use
@@ -360,4 +364,7 @@ class t_concat_generator : public t_generator {
   int tmp_;
 };
 
+} // namespace compiler
+} // namespace thrift
+} // namespace apache
 #endif // T_CONCAT_GENERATOR_H

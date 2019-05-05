@@ -27,10 +27,13 @@
 #include <thrift/compiler/common.h>
 #include <thrift/compiler/generate/t_generator.h>
 
-namespace {
-
 using namespace std;
 
+namespace apache {
+namespace thrift {
+namespace compiler {
+
+namespace {
 bool is_last_char(const string& data, char c) {
   return !data.empty() && data.back() == c;
 }
@@ -40,7 +43,6 @@ void chomp_last_char(string* data, char c) {
     data->pop_back();
   }
 }
-
 } // namespace
 
 t_mstch_generator::t_mstch_generator(
@@ -508,3 +510,7 @@ void t_mstch_generator::render_to_file(
     const boost::filesystem::path& path) {
   write_output(path, render(template_name, context));
 }
+
+} // namespace compiler
+} // namespace thrift
+} // namespace apache

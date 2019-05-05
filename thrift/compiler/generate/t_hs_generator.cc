@@ -27,14 +27,11 @@
 #include <thrift/compiler/generate/common.h>
 #include <thrift/compiler/generate/t_oop_generator.h>
 
-using std::endl;
-using std::map;
-using std::ofstream;
-using std::ostringstream;
-using std::pair;
-using std::string;
-using std::stringstream;
-using std::vector;
+using namespace std;
+
+namespace apache {
+namespace thrift {
+namespace compiler {
 
 static const string nl = "\n"; // avoid ostream << std::endl flushes
 
@@ -2370,3 +2367,7 @@ string t_hs_generator::type_to_constructor(t_type* type) {
 }
 
 THRIFT_REGISTER_GENERATOR(hs, "Haskell", "");
+
+} // namespace compiler
+} // namespace thrift
+} // namespace apache

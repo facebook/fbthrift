@@ -17,6 +17,10 @@
 
 using namespace std;
 
+namespace apache {
+namespace thrift {
+namespace compiler {
+
 class t_mstch_html_generator : public t_mstch_generator {
  public:
   t_mstch_html_generator(
@@ -43,3 +47,7 @@ void t_mstch_html_generator::generate_program() {
 }
 
 THRIFT_REGISTER_GENERATOR(mstch_html, "HTML", "");
+
+} // namespace compiler
+} // namespace thrift
+} // namespace apache

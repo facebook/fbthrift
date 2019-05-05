@@ -29,6 +29,10 @@
 
 using namespace std;
 using namespace apache::thrift;
+
+namespace apache {
+namespace thrift {
+namespace compiler {
 /**
  * PHP code generator.
  *
@@ -3491,3 +3495,7 @@ THRIFT_REGISTER_GENERATOR(
     "    mangledsvcs      Generate services with namespace mangling.\n"
     "    unmangledsvcs    Generate services without namespace mangling.\n"
     "    lazy_constants   Generate lazy initialization code for global constants.\n");
+
+} // namespace compiler
+} // namespace thrift
+} // namespace apache

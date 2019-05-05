@@ -34,6 +34,10 @@
 using namespace std;
 using namespace apache::thrift;
 
+namespace apache {
+namespace thrift {
+namespace compiler {
+
 class t_csharp_generator : public t_oop_generator {
  public:
   t_csharp_generator(
@@ -1779,3 +1783,7 @@ string t_csharp_generator::type_to_enum(t_type* type) {
 }
 
 THRIFT_REGISTER_GENERATOR(csharp, "C#", "");
+
+} // namespace compiler
+} // namespace thrift
+} // namespace apache

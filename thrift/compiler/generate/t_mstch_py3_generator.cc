@@ -24,9 +24,11 @@
 #include <thrift/compiler/generate/t_mstch_generator.h>
 #include <thrift/compiler/lib/cpp2/util.h>
 
-namespace {
-
 using namespace std;
+
+namespace apache {
+namespace thrift {
+namespace compiler {
 
 // Reserved Cython / Python keywords that are not blocked by thrift grammer
 static const std::unordered_set<string> KEYWORDS = {
@@ -859,4 +861,7 @@ THRIFT_REGISTER_GENERATOR(
     mstch_py3,
     "Python 3",
     "    include_prefix:  Use full include paths in generated files.\n");
-} // namespace
+
+} // namespace compiler
+} // namespace thrift
+} // namespace apache

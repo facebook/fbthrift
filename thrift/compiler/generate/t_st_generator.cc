@@ -26,7 +26,12 @@
 #include <boost/filesystem.hpp>
 
 #include <thrift/compiler/generate/t_oop_generator.h>
+
 using namespace std;
+
+namespace apache {
+namespace thrift {
+namespace compiler {
 
 /**
  * Smalltalk code generator.
@@ -1124,3 +1129,7 @@ string t_st_generator::type_to_enum(t_type* type) {
 }
 
 THRIFT_REGISTER_GENERATOR(st, "Smalltalk", "");
+
+} // namespace compiler
+} // namespace thrift
+} // namespace apache

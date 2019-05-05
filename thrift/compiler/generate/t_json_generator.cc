@@ -30,7 +30,12 @@
 #include <thrift/compiler/generate/t_generator.h>
 #include <thrift/compiler/util.h>
 #include <sstream>
+
 using namespace std;
+
+namespace apache {
+namespace thrift {
+namespace compiler {
 
 /**
  * JSON code generator
@@ -623,3 +628,7 @@ bool t_json_generator::should_resolve_to_true_type(const t_type* ttype) {
 }
 
 THRIFT_REGISTER_GENERATOR(json, "JSON", "");
+
+} // namespace compiler
+} // namespace thrift
+} // namespace apache

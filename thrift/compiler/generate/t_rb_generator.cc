@@ -32,8 +32,13 @@
 
 #include <thrift/compiler/ast/base_types.h>
 #include <thrift/compiler/generate/t_oop_generator.h>
+
 using namespace std;
 using namespace apache::thrift;
+
+namespace apache {
+namespace thrift {
+namespace compiler {
 
 /**
  * Ruby code generator.
@@ -1159,3 +1164,7 @@ void t_rb_generator::generate_rb_struct_required_validator(
 }
 
 THRIFT_REGISTER_GENERATOR(rb, "Ruby", "");
+
+} // namespace compiler
+} // namespace thrift
+} // namespace apache

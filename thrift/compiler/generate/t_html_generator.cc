@@ -30,7 +30,12 @@
 
 #include <thrift/compiler/generate/t_concat_generator.h>
 #include <thrift/compiler/generate/t_generator.h>
+
 using namespace std;
+
+namespace apache {
+namespace thrift {
+namespace compiler {
 
 /**
  * HTML code generator
@@ -635,3 +640,7 @@ void t_html_generator::generate_service(t_service* tservice) {
 }
 
 THRIFT_REGISTER_GENERATOR(html, "HTML", "");
+
+} // namespace compiler
+} // namespace thrift
+} // namespace apache

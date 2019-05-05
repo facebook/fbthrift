@@ -34,6 +34,10 @@
 using namespace std;
 using namespace apache::thrift;
 
+namespace apache {
+namespace thrift {
+namespace compiler {
+
 // All other Python keywords (as of 2.7) are reserved by the Thrift
 // compiler.
 static const char* py_reserved_keywords[] = {
@@ -2652,7 +2656,8 @@ void t_py_generator::generate_service_remote(t_service* tservice) {
         }
         f_remote << "('" << thrift_type_name((*it)->get_type()) << "', '"
                  << (*it)->get_name() << "', '"
-                 << thrift_type_name((*it)->get_type()->get_true_type()) << "')";
+                 << thrift_type_name((*it)->get_type()->get_true_type())
+                 << "')";
       }
       f_remote << "]),\n";
     }
@@ -3857,3 +3862,7 @@ THRIFT_REGISTER_GENERATOR(
     "    twisted:         Generate Twisted-friendly RPC services.\n"
     "    asyncio:         Generate asyncio-friendly RPC services.\n"
     "    utf8strings:     Encode/decode strings using utf8 in the generated code.\n");
+
+} // namespace compiler
+} // namespace thrift
+} // namespace apache

@@ -22,7 +22,9 @@
 #include <thrift/compiler/generate/t_mstch_generator.h>
 #include <thrift/compiler/generate/t_mstch_objects.h>
 
-namespace {
+namespace apache {
+namespace thrift {
+namespace compiler {
 
 class t_json_experimental_generator : public t_mstch_generator {
  public:
@@ -404,6 +406,9 @@ void t_json_experimental_generator::set_mstch_generators() {
   generators_->set_function_generator(
       std::make_unique<function_json_experimental_generator>());
 }
-} // anonymous namespace
 
 THRIFT_REGISTER_GENERATOR(json_experimental, "JSON_EXPERIMENTAL", "");
+
+} // namespace compiler
+} // namespace thrift
+} // namespace apache

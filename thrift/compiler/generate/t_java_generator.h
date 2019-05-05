@@ -29,8 +29,11 @@
 #include <string>
 #include <vector>
 
-
 #include <thrift/compiler/generate/t_oop_generator.h>
+
+namespace apache {
+namespace thrift {
+namespace compiler {
 
 /**
  * Java code generator.
@@ -327,5 +330,9 @@ class t_java_generator : public t_oop_generator {
   bool nocamel_style_;
   bool gen_hash_code_;
 };
+
+} // namespace compiler
+} // namespace thrift
+} // namespace apache
 
 #endif

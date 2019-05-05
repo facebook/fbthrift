@@ -47,6 +47,7 @@
 #include <thrift/compiler/parse/parsing_driver.h>
 
 using namespace std;
+using namespace apache::thrift::compiler;
 
 /**
  * Flags to control code generation

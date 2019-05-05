@@ -34,6 +34,10 @@
 using namespace std;
 using namespace apache::thrift;
 
+namespace apache {
+namespace thrift {
+namespace compiler {
+
 /**
  * JS code generator.
  */
@@ -1839,3 +1843,7 @@ THRIFT_REGISTER_GENERATOR(
     "Javascript",
     "    jquery:          Generate jQuery compatible code.\n"
     "    node:            Generate node.js compatible code.\n");
+
+} // namespace compiler
+} // namespace thrift
+} // namespace apache

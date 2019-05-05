@@ -22,6 +22,10 @@
 
 #include <thrift/compiler/generate/t_generator.h>
 
+namespace apache {
+namespace thrift {
+namespace compiler {
+
 class mstch_base;
 class mstch_generators;
 
@@ -1091,3 +1095,7 @@ class mstch_program : public mstch_base {
  protected:
   t_program const* program_;
 };
+
+} // namespace compiler
+} // namespace thrift
+} // namespace apache
