@@ -160,9 +160,9 @@ std::string t_concat_generator::generate_structural_id(
       reinterpret_cast<const unsigned char*>(hashable_keys_list.data()),
       hashable_keys_list.size(),
       u.buf);
-  const uint64_t hash = (
-      apache::thrift::compiler::bswap_host_to_little_endian(u.val) &
-      0x7FFFFFFFFFFFFFFFull); // 63 bits
+  const uint64_t hash =
+      (apache::thrift::compiler::bswap_host_to_little_endian(u.val) &
+       0x7FFFFFFFFFFFFFFFull); // 63 bits
 
   // Generate a readable number.
   char structural_id[21];

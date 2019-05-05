@@ -18,20 +18,19 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-#include <string>
 #include <fstream>
 #include <iostream>
-#include <vector>
 #include <map>
+#include <string>
+#include <vector>
 
 #include <boost/filesystem.hpp>
 
-#include <sstream>
-#include <thrift/compiler/generate/t_generator.h>
 #include <thrift/compiler/generate/t_concat_generator.h>
+#include <thrift/compiler/generate/t_generator.h>
 #include <thrift/compiler/util.h>
+#include <sstream>
 using namespace std;
-
 
 /**
  * JSON code generator
@@ -61,11 +60,11 @@ class t_json_generator : public t_concat_generator {
   void generate_service(t_service* tservice) override;
   void generate_xception(t_struct* txception) override;
 
-  void   print_type       (t_type* ttype);
-  void   print_const_value(const t_const_value* tvalue);
-  void   print_const_key  (t_const_value* tvalue);
+  void print_type(t_type* ttype);
+  void print_const_value(const t_const_value* tvalue);
+  void print_const_key(t_const_value* tvalue);
   void print_lineno(int lineno);
-  string type_to_string   (t_type* type);
+  string type_to_string(t_type* type);
   string type_to_spec_args(t_type* ttype);
 
   bool should_resolve_to_true_type(const t_type* ttype);
@@ -92,7 +91,7 @@ void t_json_generator::generate_program() {
        pos = mangled_module_name.find('.')) {
     fname += '/';
     fname += mangled_module_name.substr(0, pos);
-    mangled_module_name.erase(0, pos+1);
+    mangled_module_name.erase(0, pos + 1);
     boost::filesystem::create_directory(fname);
   }
 
@@ -204,25 +203,25 @@ string t_json_generator::type_to_string(t_type* type) {
   if (type->is_base_type()) {
     t_base_type::t_base tbase = ((t_base_type*)type)->get_base();
     switch (tbase) {
-    case t_base_type::TYPE_VOID:
-      return "VOID";
-    case t_base_type::TYPE_STRING:
-    case t_base_type::TYPE_BINARY:
-      return "STRING";
-    case t_base_type::TYPE_BOOL:
-      return "BOOL";
-    case t_base_type::TYPE_BYTE:
-      return "BYTE";
-    case t_base_type::TYPE_I16:
-      return "I16";
-    case t_base_type::TYPE_I32:
-      return "I32";
-    case t_base_type::TYPE_I64:
-      return "I64";
-    case t_base_type::TYPE_DOUBLE:
-      return "DOUBLE";
-    case t_base_type::TYPE_FLOAT:
-      return "FLOAT";
+      case t_base_type::TYPE_VOID:
+        return "VOID";
+      case t_base_type::TYPE_STRING:
+      case t_base_type::TYPE_BINARY:
+        return "STRING";
+      case t_base_type::TYPE_BOOL:
+        return "BOOL";
+      case t_base_type::TYPE_BYTE:
+        return "BYTE";
+      case t_base_type::TYPE_I16:
+        return "I16";
+      case t_base_type::TYPE_I32:
+        return "I32";
+      case t_base_type::TYPE_I64:
+        return "I64";
+      case t_base_type::TYPE_DOUBLE:
+        return "DOUBLE";
+      case t_base_type::TYPE_FLOAT:
+        return "FLOAT";
     }
   } else if (type->is_enum()) {
     return "ENUM";
@@ -268,21 +267,19 @@ string t_json_generator::type_to_spec_args(t_type* ttype) {
     }
     return "\"" + module + ttype->get_name() + "\"";
   } else if (ttype->is_map()) {
-    return "{ \"key_type\" : { \"type_enum\" : \""
-      + type_to_string(((t_map*)ttype)->get_key_type())
-      + "\", \"spec_args\" : "
-      + type_to_spec_args(((t_map*)ttype)->get_key_type())
-      + " }, \"val_type\" : { \"type_enum\" : \""
-      + type_to_string(((t_map*)ttype)->get_val_type())
-      + "\", \"spec_args\" : "
-      + type_to_spec_args(((t_map*)ttype)->get_val_type())
-      + "} } ";
+    return "{ \"key_type\" : { \"type_enum\" : \"" +
+        type_to_string(((t_map*)ttype)->get_key_type()) +
+        "\", \"spec_args\" : " +
+        type_to_spec_args(((t_map*)ttype)->get_key_type()) +
+        " }, \"val_type\" : { \"type_enum\" : \"" +
+        type_to_string(((t_map*)ttype)->get_val_type()) +
+        "\", \"spec_args\" : " +
+        type_to_spec_args(((t_map*)ttype)->get_val_type()) + "} } ";
   } else if (ttype->is_set()) {
-    return "{ \"type_enum\" : \""
-      + type_to_string(((t_set*)ttype)->get_elem_type())
-      + "\", \"spec_args\" : "
-      + type_to_spec_args(((t_set*)ttype)->get_elem_type())
-      + "} ";
+    return "{ \"type_enum\" : \"" +
+        type_to_string(((t_set*)ttype)->get_elem_type()) +
+        "\", \"spec_args\" : " +
+        type_to_spec_args(((t_set*)ttype)->get_elem_type()) + "} ";
   } else if (ttype->is_list()) {
     return "{ \"type_enum\" : \"" +
         type_to_string(((t_list*)ttype)->get_elem_type()) +
@@ -297,8 +294,8 @@ string t_json_generator::type_to_spec_args(t_type* ttype) {
  * Prints out the provided type spec
  */
 void t_json_generator::print_type(t_type* ttype) {
-  indent(f_out_) << "\"type_enum\" : \""
-    << type_to_string(ttype) << "\"," << endl;
+  indent(f_out_) << "\"type_enum\" : \"" << type_to_string(ttype) << "\","
+                 << endl;
   indent(f_out_) << "\"spec_args\" : " << type_to_spec_args(ttype);
 }
 
@@ -320,12 +317,11 @@ void t_json_generator::print_const_key(t_const_value* tvalue) {
       break;
     case t_const_value::CV_MAP:
     case t_const_value::CV_LIST:
-    default:
-      {
-        std::ostringstream msg;
-        msg << "INVALID TYPE IN print_const_key: " << tvalue->get_type();
-        throw msg.str();
-      }
+    default: {
+      std::ostringstream msg;
+      msg << "INVALID TYPE IN print_const_key: " << tvalue->get_type();
+      throw msg.str();
+    }
   }
 }
 
@@ -335,23 +331,22 @@ void t_json_generator::print_const_key(t_const_value* tvalue) {
 void t_json_generator::print_const_value(const t_const_value* tvalue) {
   bool first = true;
   switch (tvalue->get_type()) {
-  case t_const_value::CV_INTEGER:
-    f_out_ << tvalue->get_integer();
-    break;
-  case t_const_value::CV_DOUBLE:
-    f_out_ << tvalue->get_double();
-    break;
-  case t_const_value::CV_STRING:
-    json_quote_ascii(f_out_, tvalue->get_string());
-    break;
-  case t_const_value::CV_BOOL:
-    f_out_ << (tvalue->get_bool() ? "true" : "false");
-    break;
-  case t_const_value::CV_MAP:
-    {
+    case t_const_value::CV_INTEGER:
+      f_out_ << tvalue->get_integer();
+      break;
+    case t_const_value::CV_DOUBLE:
+      f_out_ << tvalue->get_double();
+      break;
+    case t_const_value::CV_STRING:
+      json_quote_ascii(f_out_, tvalue->get_string());
+      break;
+    case t_const_value::CV_BOOL:
+      f_out_ << (tvalue->get_bool() ? "true" : "false");
+      break;
+    case t_const_value::CV_MAP: {
       f_out_ << "{ ";
       const vector<pair<t_const_value*, t_const_value*>>& map_elems =
-        tvalue->get_map();
+          tvalue->get_map();
       vector<pair<t_const_value*, t_const_value*>>::const_iterator map_iter;
       for (map_iter = map_elems.begin(); map_iter != map_elems.end();
            map_iter++) {
@@ -364,12 +359,11 @@ void t_json_generator::print_const_value(const t_const_value* tvalue) {
         print_const_value(map_iter->second);
       }
       f_out_ << " }";
-    }
-    break;
-  case t_const_value::CV_LIST:
-    {
+    } break;
+    case t_const_value::CV_LIST: {
       f_out_ << "[ ";
-      vector<t_const_value*> list_elems = tvalue->get_list();;
+      vector<t_const_value*> list_elems = tvalue->get_list();
+      ;
       vector<t_const_value*>::iterator list_iter;
       for (list_iter = list_elems.begin(); list_iter != list_elems.end();
            list_iter++) {
@@ -380,11 +374,10 @@ void t_json_generator::print_const_value(const t_const_value* tvalue) {
         print_const_value(*list_iter);
       }
       f_out_ << " ]";
-    }
-    break;
-  default:
-    f_out_ << "UNKNOWN";
-    break;
+    } break;
+    default:
+      f_out_ << "UNKNOWN";
+      break;
   }
 }
 
@@ -424,8 +417,8 @@ void t_json_generator::generate_enum(t_enum* tenum) {
     if (val_iter != values.begin()) {
       f_out_ << "," << endl;
     }
-    indent(f_out_) << "\"" << (*val_iter)->get_name() << "\"" << " : "
-      << (*val_iter)->get_value();
+    indent(f_out_) << "\"" << (*val_iter)->get_name() << "\""
+                   << " : " << (*val_iter)->get_value();
   }
   f_out_ << endl;
   indent_down();
@@ -446,7 +439,6 @@ void t_json_generator::generate_consts(vector<t_const*> consts) {
     generate_const(*c_iter);
   }
 }
-
 
 /**
  * Generates a constant value
@@ -476,23 +468,25 @@ void t_json_generator::generate_struct(t_struct* tstruct) {
   indent_up();
   print_lineno(tstruct->get_lineno());
   indent(f_out_) << "\"is_exception\" : "
-    << (tstruct->is_xception() ? "true" : "false") << "," << endl;
+                 << (tstruct->is_xception() ? "true" : "false") << "," << endl;
   indent(f_out_) << "\"is_union\" : "
-    << (tstruct->is_union() ? "true" : "false") << "," << endl;
+                 << (tstruct->is_union() ? "true" : "false") << "," << endl;
 
   vector<t_field*> members = tstruct->get_members();
   vector<t_field*>::iterator mem_iter = members.begin();
   indent(f_out_) << "\"fields\" : {" << endl;
   indent_up();
-  for ( ; mem_iter != members.end(); mem_iter++) {
+  for (; mem_iter != members.end(); mem_iter++) {
     if (mem_iter != members.begin()) {
       f_out_ << "," << endl;
     }
     indent(f_out_) << "\"" << (*mem_iter)->get_name() << "\" : {" << endl;
     indent_up();
     print_type((*mem_iter)->get_type());
-    f_out_ << "," << endl << indent() <<  "\"required\" : "
-      << ((*mem_iter)->get_req() != t_field::T_OPTIONAL ? "true" : "false");
+    f_out_ << "," << endl
+           << indent() << "\"required\" : "
+           << ((*mem_iter)->get_req() != t_field::T_OPTIONAL ? "true"
+                                                             : "false");
     const t_const_value* default_val = (*mem_iter)->get_value();
     if (default_val != nullptr) {
       f_out_ << "," << endl << indent() << "\"default_value\" : ";
@@ -547,13 +541,13 @@ void t_json_generator::generate_service(t_service* tservice) {
   print_lineno(tservice->get_lineno());
   f_out_ << indent() << "\"functions\" : {" << endl;
   indent_up();
-  for ( ; fn_iter != functions.end(); fn_iter++) {
+  for (; fn_iter != functions.end(); fn_iter++) {
     if (fn_iter != functions.begin()) {
       f_out_ << "," << endl;
     }
     string fn_name = (*fn_iter)->get_name();
-    indent(f_out_) << "\"" << service_name_ << "." << fn_name
-      << "\" : {" << endl;
+    indent(f_out_) << "\"" << service_name_ << "." << fn_name << "\" : {"
+                   << endl;
     indent_up();
     indent(f_out_) << "\"return_type\" : {" << endl;
     indent_up();
@@ -568,7 +562,7 @@ void t_json_generator::generate_service(t_service* tservice) {
     if (arg_iter != args.end()) {
       f_out_ << endl;
       indent_up();
-      for ( ; arg_iter != args.end(); arg_iter++) {
+      for (; arg_iter != args.end(); arg_iter++) {
         if (arg_iter != args.begin()) {
           f_out_ << "," << endl;
         }
@@ -595,7 +589,7 @@ void t_json_generator::generate_service(t_service* tservice) {
     if (ex_iter != excepts.end()) {
       f_out_ << endl;
       indent_up();
-      for ( ; ex_iter != excepts.end(); ex_iter++) {
+      for (; ex_iter != excepts.end(); ex_iter++) {
         if (ex_iter != excepts.begin()) {
           f_out_ << "," << endl;
         }

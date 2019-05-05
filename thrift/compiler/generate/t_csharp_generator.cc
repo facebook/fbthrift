@@ -18,9 +18,9 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-#include <string>
 #include <fstream>
 #include <iostream>
+#include <string>
 #include <vector>
 
 #include <stdlib.h>
@@ -34,104 +34,151 @@
 using namespace std;
 using namespace apache::thrift;
 
-class t_csharp_generator : public t_oop_generator
-{
-  public:
-   t_csharp_generator(
-       t_program* program,
-       t_generation_context context,
-       const std::map<std::string, std::string>& /* parsed_options */,
-       const std::string& /* option_string */)
-       : t_oop_generator(program, std::move(context)) {
-     out_dir_base_ = "gen-csharp";
+class t_csharp_generator : public t_oop_generator {
+ public:
+  t_csharp_generator(
+      t_program* program,
+      t_generation_context context,
+      const std::map<std::string, std::string>& /* parsed_options */,
+      const std::string& /* option_string */)
+      : t_oop_generator(program, std::move(context)) {
+    out_dir_base_ = "gen-csharp";
+  }
+  void init_generator() override;
+  void close_generator() override;
+
+  void generate_consts(std::vector<t_const*> consts) override;
+
+  void generate_typedef(t_typedef* ttypedef) override;
+  void generate_enum(t_enum* tenum) override;
+  void generate_struct(t_struct* tstruct) override;
+  void generate_xception(t_struct* txception) override;
+  void generate_service(t_service* tservice) override;
+  void generate_property(ofstream& out, t_field* tfield, bool isPublic);
+  bool print_const_value(
+      std::ofstream& out,
+      std::string name,
+      t_type* type,
+      const t_const_value* value,
+      bool in_static,
+      bool defval = false,
+      bool needtype = false);
+  std::string render_const_value(
+      std::ofstream& out,
+      std::string name,
+      t_type* type,
+      const t_const_value* value);
+  void print_const_constructor(
+      std::ofstream& out,
+      std::vector<t_const*> consts);
+  void print_const_def_value(
+      std::ofstream& out,
+      std::string name,
+      t_type* type,
+      const t_const_value* value);
+
+  void generate_csharp_struct(t_struct* tstruct, bool is_exception);
+  void generate_csharp_struct_definition(
+      std::ofstream& out,
+      t_struct* tstruct,
+      bool is_xception = false,
+      bool in_class = false,
+      bool is_result = false);
+  void generate_csharp_struct_reader(std::ofstream& out, t_struct* tstruct);
+  void generate_csharp_struct_result_writer(
+      std::ofstream& out,
+      t_struct* tstruct);
+  void generate_csharp_struct_writer(std::ofstream& out, t_struct* tstruct);
+  void generate_csharp_struct_tostring(std::ofstream& out, t_struct* tstruct);
+
+  void generate_function_helpers(t_function* tfunction);
+  void generate_service_interface(t_service* tservice);
+  void generate_service_helpers(t_service* tservice);
+  void generate_service_client(t_service* tservice);
+  void generate_service_server(t_service* tservice);
+  void generate_process_function(t_service* tservice, t_function* function);
+
+  void generate_deserialize_field(
+      std::ofstream& out,
+      t_field* tfield,
+      std::string prefix = "");
+  void generate_deserialize_struct(
+      std::ofstream& out,
+      t_struct* tstruct,
+      std::string prefix = "");
+  void generate_deserialize_container(
+      std::ofstream& out,
+      t_type* ttype,
+      std::string prefix = "");
+  void generate_deserialize_set_element(
+      std::ofstream& out,
+      t_set* tset,
+      std::string prefix = "");
+  void generate_deserialize_map_element(
+      std::ofstream& out,
+      t_map* tmap,
+      std::string prefix = "");
+  void generate_deserialize_list_element(
+      std::ofstream& out,
+      t_list* list,
+      std::string prefix = "");
+  void generate_serialize_field(
+      std::ofstream& out,
+      t_field* tfield,
+      std::string prefix = "");
+  void generate_serialize_struct(
+      std::ofstream& out,
+      t_struct* tstruct,
+      std::string prefix = "");
+  void generate_serialize_container(
+      std::ofstream& out,
+      t_type* ttype,
+      std::string prefix = "");
+  void generate_serialize_map_element(
+      std::ofstream& out,
+      t_map* tmap,
+      std::string iter,
+      std::string map);
+  void generate_serialize_set_element(
+      std::ofstream& out,
+      t_set* tmap,
+      std::string iter);
+  void generate_serialize_list_element(
+      std::ofstream& out,
+      t_list* tlist,
+      std::string iter);
+
+  void start_csharp_namespace(std::ofstream& out);
+  void end_csharp_namespace(std::ofstream& out);
+
+  std::string csharp_type_usings();
+  std::string csharp_thrift_usings();
+
+  std::string
+  type_name(t_type* ttype, bool in_countainer = false, bool in_init = false);
+  std::string base_type_name(t_base_type* tbase, bool in_container = false);
+  std::string declare_field(t_field* tfield, bool init = false);
+  std::string function_signature(
+      t_function* tfunction,
+      std::string prefix = "");
+  std::string argument_list(t_struct* tstruct);
+  std::string type_to_enum(t_type* ttype);
+  std::string prop_name(t_field* tfield);
+
+  bool type_can_be_null(t_type* ttype) {
+    while (ttype->is_typedef()) {
+      ttype = ((t_typedef*)ttype)->get_type();
     }
-    void init_generator() override;
-    void close_generator() override;
 
-    void generate_consts(std::vector<t_const*> consts) override;
+    return ttype->is_container() || ttype->is_struct() ||
+        ttype->is_xception() || ttype->is_string_or_binary();
+  }
 
-    void generate_typedef(t_typedef* ttypedef) override;
-    void generate_enum(t_enum* tenum) override;
-    void generate_struct(t_struct* tstruct) override;
-    void generate_xception(t_struct* txception) override;
-    void generate_service(t_service* tservice) override;
-    void generate_property(ofstream& out, t_field* tfield, bool isPublic);
-    bool print_const_value(
-        std::ofstream& out,
-        std::string name,
-        t_type* type,
-        const t_const_value* value,
-        bool in_static,
-        bool defval=false,
-        bool needtype=false);
-    std::string render_const_value(
-        std::ofstream& out,
-        std::string name,
-        t_type* type,
-        const t_const_value* value);
-    void print_const_constructor(std::ofstream& out, std::vector<t_const*> consts);
-    void print_const_def_value(
-        std::ofstream& out,
-        std::string name,
-        t_type* type,
-        const t_const_value* value);
-
-    void generate_csharp_struct(t_struct* tstruct, bool is_exception);
-    void generate_csharp_struct_definition(std::ofstream& out, t_struct* tstruct, bool is_xception=false, bool in_class=false, bool is_result=false);
-    void generate_csharp_struct_reader(std::ofstream& out, t_struct* tstruct);
-    void generate_csharp_struct_result_writer(std::ofstream& out, t_struct* tstruct);
-    void generate_csharp_struct_writer(std::ofstream& out, t_struct* tstruct);
-    void generate_csharp_struct_tostring(std::ofstream& out, t_struct* tstruct);
-
-    void generate_function_helpers(t_function* tfunction);
-    void generate_service_interface (t_service* tservice);
-    void generate_service_helpers (t_service* tservice);
-    void generate_service_client (t_service* tservice);
-    void generate_service_server (t_service* tservice);
-    void generate_process_function (t_service* tservice, t_function* function);
-
-    void generate_deserialize_field (std::ofstream& out, t_field* tfield, std::string prefix="");
-    void generate_deserialize_struct (std::ofstream& out, t_struct* tstruct, std::string prefix="");
-    void generate_deserialize_container (std::ofstream& out, t_type* ttype, std::string prefix="");
-    void generate_deserialize_set_element (std::ofstream& out, t_set* tset, std::string prefix="");
-    void generate_deserialize_map_element (std::ofstream& out, t_map* tmap, std::string prefix="");
-    void generate_deserialize_list_element (std::ofstream& out, t_list* list, std::string prefix="");
-    void generate_serialize_field (std::ofstream& out, t_field* tfield, std::string prefix="");
-    void generate_serialize_struct (std::ofstream& out, t_struct* tstruct, std::string prefix="");
-    void generate_serialize_container (std::ofstream& out, t_type* ttype, std::string prefix="");
-    void generate_serialize_map_element (std::ofstream& out, t_map* tmap, std::string iter, std::string map);
-    void generate_serialize_set_element (std::ofstream& out, t_set* tmap, std::string iter);
-    void generate_serialize_list_element (std::ofstream& out, t_list* tlist, std::string iter);
-
-    void start_csharp_namespace (std::ofstream& out);
-    void end_csharp_namespace (std::ofstream& out);
-
-    std::string csharp_type_usings();
-    std::string csharp_thrift_usings();
-
-    std::string type_name(t_type* ttype, bool in_countainer=false, bool in_init=false);
-    std::string base_type_name(t_base_type* tbase, bool in_container=false);
-    std::string declare_field(t_field* tfield, bool init=false);
-    std::string function_signature(t_function* tfunction, std::string prefix="");
-    std::string argument_list(t_struct* tstruct);
-    std::string type_to_enum(t_type* ttype);
-    std::string prop_name(t_field* tfield);
-
-    bool type_can_be_null(t_type* ttype) {
-      while (ttype->is_typedef()) {
-        ttype = ((t_typedef*)ttype)->get_type();
-      }
-
-      return ttype->is_container() || ttype->is_struct() ||
-          ttype->is_xception() || ttype->is_string_or_binary();
-    }
-
-  private:
-    std::string namespace_name_;
-    std::ofstream f_service_;
-    std::string namespace_dir_;
+ private:
+  std::string namespace_name_;
+  std::ofstream f_service_;
+  std::string namespace_dir_;
 };
-
 
 void t_csharp_generator::init_generator() {
   boost::filesystem::create_directory(get_out_dir());
@@ -156,8 +203,7 @@ void t_csharp_generator::init_generator() {
 
 void t_csharp_generator::start_csharp_namespace(ofstream& out) {
   if (!namespace_name_.empty()) {
-    out <<
-      "namespace " << namespace_name_ << "\n";
+    out << "namespace " << namespace_name_ << "\n";
     scope_up(out);
   }
 }
@@ -169,49 +215,37 @@ void t_csharp_generator::end_csharp_namespace(ofstream& out) {
 }
 
 string t_csharp_generator::csharp_type_usings() {
-  return string() +
-    "using System;\n" +
-    "using System.Collections;\n" +
-    "using System.Collections.Generic;\n" +
-    "using System.Text;\n" +
-    "using System.IO;\n" +
-    "using Thrift;\n" +
-    "using Thrift.Collections;\n";
+  return string() + "using System;\n" + "using System.Collections;\n" +
+      "using System.Collections.Generic;\n" + "using System.Text;\n" +
+      "using System.IO;\n" + "using Thrift;\n" + "using Thrift.Collections;\n";
 }
 
 string t_csharp_generator::csharp_thrift_usings() {
-  return string() +
-    "using Thrift.Protocol;\n" +
-    "using Thrift.Transport;\n";
+  return string() + "using Thrift.Protocol;\n" + "using Thrift.Transport;\n";
 }
 
-void t_csharp_generator::close_generator() { }
+void t_csharp_generator::close_generator() {}
 void t_csharp_generator::generate_typedef(t_typedef* /* ttypedef */) {}
 
 void t_csharp_generator::generate_enum(t_enum* tenum) {
-  string f_enum_name = namespace_dir_+"/" + (tenum->get_name())+".cs";
+  string f_enum_name = namespace_dir_ + "/" + (tenum->get_name()) + ".cs";
   ofstream f_enum;
   f_enum.open(f_enum_name.c_str());
   record_genfile(f_enum_name);
 
-  f_enum <<
-    autogen_comment() << endl;
+  f_enum << autogen_comment() << endl;
 
   start_csharp_namespace(f_enum);
 
-  indent(f_enum) <<
-    "public enum " << tenum->get_name() << "\n";
+  indent(f_enum) << "public enum " << tenum->get_name() << "\n";
   scope_up(f_enum);
 
   vector<t_enum_value*> constants = tenum->get_enum_values();
   vector<t_enum_value*>::iterator c_iter;
-  for (c_iter = constants.begin(); c_iter != constants.end(); ++c_iter)
-  {
+  for (c_iter = constants.begin(); c_iter != constants.end(); ++c_iter) {
     int32_t value = (*c_iter)->get_value();
 
-    indent(f_enum) <<
-      (*c_iter)->get_name() <<
-      " = " << value << "," << endl;
+    indent(f_enum) << (*c_iter)->get_name() << " = " << value << "," << endl;
   }
 
   scope_down(f_enum);
@@ -222,7 +256,7 @@ void t_csharp_generator::generate_enum(t_enum* tenum) {
 }
 
 void t_csharp_generator::generate_consts(std::vector<t_const*> consts) {
-  if (consts.empty()){
+  if (consts.empty()) {
     return;
   }
   string f_consts_name = namespace_dir_ + "/Constants.cs";
@@ -230,20 +264,22 @@ void t_csharp_generator::generate_consts(std::vector<t_const*> consts) {
   f_consts.open(f_consts_name.c_str());
   record_genfile(f_consts_name);
 
-  f_consts <<
-    autogen_comment() <<
-    csharp_type_usings() << endl;
+  f_consts << autogen_comment() << csharp_type_usings() << endl;
 
   start_csharp_namespace(f_consts);
 
-  indent(f_consts) <<
-    "public class Constants" << endl;
+  indent(f_consts) << "public class Constants" << endl;
   scope_up(f_consts);
 
   vector<t_const*>::iterator c_iter;
   bool need_static_constructor = false;
   for (c_iter = consts.begin(); c_iter != consts.end(); ++c_iter) {
-    if (print_const_value(f_consts, (*c_iter)->get_name(), (*c_iter)->get_type(), (*c_iter)->get_value(), false)) {
+    if (print_const_value(
+            f_consts,
+            (*c_iter)->get_name(),
+            (*c_iter)->get_type(),
+            (*c_iter)->get_value(),
+            false)) {
       need_static_constructor = true;
     }
   }
@@ -275,10 +311,12 @@ void t_csharp_generator::print_const_def_value(
         }
       }
       if (field_type == nullptr) {
-        throw "type error: " + type->get_name() + " has no field " + v_iter->first->get_string();
+        throw "type error: " + type->get_name() + " has no field " +
+            v_iter->first->get_string();
       }
       string val = render_const_value(out, name, field_type, v_iter->second);
-      indent(out) << name << "." << v_iter->first->get_string() << " = " << val << ";" << endl;
+      indent(out) << name << "." << v_iter->first->get_string() << " = " << val
+                  << ";" << endl;
     }
   } else if (type->is_map()) {
     t_type* ktype = ((t_map*)type)->get_key_type();
@@ -288,7 +326,8 @@ void t_csharp_generator::print_const_def_value(
     for (v_iter = val.begin(); v_iter != val.end(); ++v_iter) {
       string key = render_const_value(out, name, ktype, v_iter->first);
       string val = render_const_value(out, name, vtype, v_iter->second);
-      indent(out) << name << "[" << key << "]" << " = " << val << ";" << endl;
+      indent(out) << name << "[" << key << "]"
+                  << " = " << val << ";" << endl;
     }
   } else if (type->is_list() || type->is_set()) {
     t_type* etype;
@@ -307,7 +346,9 @@ void t_csharp_generator::print_const_def_value(
   }
 }
 
-void t_csharp_generator::print_const_constructor(std::ofstream& out, std::vector<t_const*> consts) {
+void t_csharp_generator::print_const_constructor(
+    std::ofstream& out,
+    std::vector<t_const*> consts) {
   indent(out) << "static Constants()" << endl;
   scope_up(out);
   vector<t_const*>::iterator c_iter;
@@ -321,8 +362,8 @@ void t_csharp_generator::print_const_constructor(std::ofstream& out, std::vector
   scope_down(out);
 }
 
-
-//it seems like all that methods that call this are using in_static to be the opposite of what it would imply
+// it seems like all that methods that call this are using in_static to be the
+// opposite of what it would imply
 bool t_csharp_generator::print_const_value(
     std::ofstream& out,
     string name,
@@ -334,16 +375,15 @@ bool t_csharp_generator::print_const_value(
   indent(out);
   bool need_static_construction = !in_static;
   if (!defval || needtype) {
-    out <<
-      (in_static ? "" : "public static ") <<
-      type_name(type) << " ";
+    out << (in_static ? "" : "public static ") << type_name(type) << " ";
   }
   if (type->is_base_type()) {
     string v2 = render_const_value(out, name, type, value);
     out << name << " = " << v2 << ";" << endl;
     need_static_construction = false;
   } else if (type->is_enum()) {
-    out << name << " = (" << type_name(type, false, true) << ")" << value->get_integer() << ";" << endl;
+    out << name << " = (" << type_name(type, false, true) << ")"
+        << value->get_integer() << ";" << endl;
     need_static_construction = false;
   } else if (type->is_struct() || type->is_xception()) {
     out << name << " = new " << type_name(type) << "();" << endl;
@@ -391,8 +431,8 @@ std::string t_csharp_generator::render_const_value(
         }
         break;
       default:
-        throw std::string("compiler error: no const of base type ")
-          + t_base_type::t_base_name(tbase);
+        throw std::string("compiler error: no const of base type ") +
+            t_base_type::t_base_name(tbase);
     }
   } else if (type->is_enum()) {
     render << "(" << type->get_name() << ")" << value->get_integer();
@@ -413,34 +453,40 @@ void t_csharp_generator::generate_xception(t_struct* txception) {
   generate_csharp_struct(txception, true);
 }
 
-void t_csharp_generator::generate_csharp_struct(t_struct* tstruct, bool is_exception) {
+void t_csharp_generator::generate_csharp_struct(
+    t_struct* tstruct,
+    bool is_exception) {
   string f_struct_name = namespace_dir_ + "/" + (tstruct->get_name()) + ".cs";
   ofstream f_struct;
 
   f_struct.open(f_struct_name.c_str());
   record_genfile(f_struct_name);
 
-  f_struct <<
-    autogen_comment() <<
-    csharp_type_usings() <<
-    csharp_thrift_usings();
+  f_struct << autogen_comment() << csharp_type_usings()
+           << csharp_thrift_usings();
 
   generate_csharp_struct_definition(f_struct, tstruct, is_exception);
 
   f_struct.close();
 }
 
-void t_csharp_generator::generate_csharp_struct_definition(ofstream &out, t_struct* tstruct, bool is_exception, bool in_class, bool is_result) {
-
+void t_csharp_generator::generate_csharp_struct_definition(
+    ofstream& out,
+    t_struct* tstruct,
+    bool is_exception,
+    bool in_class,
+    bool is_result) {
   if (!in_class) {
     start_csharp_namespace(out);
   }
 
   out << endl;
   indent(out) << "[Serializable]" << endl;
-  bool is_final = (tstruct->annotations_.find("final") != tstruct->annotations_.end());
+  bool is_final =
+      (tstruct->annotations_.find("final") != tstruct->annotations_.end());
 
-  indent(out) << "public " << (is_final ? "sealed " : "") << "partial class " << tstruct->get_name() << " : ";
+  indent(out) << "public " << (is_final ? "sealed " : "") << "partial class "
+              << tstruct->get_name() << " : ";
 
   if (is_exception) {
     out << "Exception, ";
@@ -454,10 +500,9 @@ void t_csharp_generator::generate_csharp_struct_definition(ofstream &out, t_stru
   const vector<t_field*>& members = tstruct->get_members();
   vector<t_field*>::const_iterator m_iter;
 
-  //make private members with public Properties
+  // make private members with public Properties
   for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
-    indent(out) <<
-      "private " << declare_field(*m_iter, false) << endl;
+    indent(out) << "private " << declare_field(*m_iter, false) << endl;
   }
   out << endl;
 
@@ -466,23 +511,20 @@ void t_csharp_generator::generate_csharp_struct_definition(ofstream &out, t_stru
   }
 
   if (members.size() > 0) {
-    out <<
-      endl <<
-      indent() << "public Isset __isset;" << endl <<
-      indent() << "[Serializable]" << endl <<
-      indent() << "public struct Isset {" << endl;
+    out << endl
+        << indent() << "public Isset __isset;" << endl
+        << indent() << "[Serializable]" << endl
+        << indent() << "public struct Isset {" << endl;
     indent_up();
     for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
-      indent(out) <<
-        "public bool " << (*m_iter)->get_name() << ";" << endl;
+      indent(out) << "public bool " << (*m_iter)->get_name() << ";" << endl;
     }
 
     indent_down();
     indent(out) << "}" << endl << endl;
   }
 
-  indent(out) <<
-    "public " << tstruct->get_name() << "() {" << endl;
+  indent(out) << "public " << tstruct->get_name() << "() {" << endl;
   indent_up();
   for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
     t_type* t = (*m_iter)->get_type();
@@ -490,7 +532,13 @@ void t_csharp_generator::generate_csharp_struct_definition(ofstream &out, t_stru
       t = ((t_typedef*)t)->get_type();
     }
     if ((*m_iter)->get_value() != nullptr) {
-      print_const_value(out, "this." + (*m_iter)->get_name(), t, (*m_iter)->get_value(), true, true);
+      print_const_value(
+          out,
+          "this." + (*m_iter)->get_name(),
+          t,
+          (*m_iter)->get_value(),
+          true,
+          true);
     }
   }
 
@@ -507,67 +555,57 @@ void t_csharp_generator::generate_csharp_struct_definition(ofstream &out, t_stru
   scope_down(out);
   out << endl;
 
-  if (!in_class)
-  {
+  if (!in_class) {
     end_csharp_namespace(out);
   }
 }
 
-void t_csharp_generator::generate_csharp_struct_reader(ofstream& out, t_struct* tstruct) {
-  indent(out) <<
-    "public void Read (TProtocol iprot)" << endl;
+void t_csharp_generator::generate_csharp_struct_reader(
+    ofstream& out,
+    t_struct* tstruct) {
+  indent(out) << "public void Read (TProtocol iprot)" << endl;
   scope_up(out);
 
   const vector<t_field*>& fields = tstruct->get_members();
   vector<t_field*>::const_iterator f_iter;
 
-  indent(out) <<
-    "TField field;" << endl <<
-    indent() << "iprot.ReadStructBegin();" << endl;
+  indent(out) << "TField field;" << endl
+              << indent() << "iprot.ReadStructBegin();" << endl;
 
-  indent(out) <<
-    "while (true)" << endl;
+  indent(out) << "while (true)" << endl;
   scope_up(out);
 
-  indent(out) <<
-    "field = iprot.ReadFieldBegin();" << endl;
+  indent(out) << "field = iprot.ReadFieldBegin();" << endl;
 
-  indent(out) <<
-    "if (field.Type == TType.Stop) { " << endl;
+  indent(out) << "if (field.Type == TType.Stop) { " << endl;
   indent_up();
-  indent(out) <<
-    "break;" << endl;
+  indent(out) << "break;" << endl;
   indent_down();
-  indent(out) <<
-    "}" << endl;
+  indent(out) << "}" << endl;
 
-  indent(out) <<
-    "switch (field.ID)" << endl;
+  indent(out) << "switch (field.ID)" << endl;
 
   scope_up(out);
 
   for (f_iter = fields.begin(); f_iter != fields.end(); ++f_iter) {
-    indent(out) <<
-      "case " << (*f_iter)->get_key() << ":" << endl;
+    indent(out) << "case " << (*f_iter)->get_key() << ":" << endl;
     indent_up();
-    indent(out) <<
-      "if (field.Type == " << type_to_enum((*f_iter)->get_type()) << ") {" << endl;
+    indent(out) << "if (field.Type == " << type_to_enum((*f_iter)->get_type())
+                << ") {" << endl;
     indent_up();
 
     generate_deserialize_field(out, *f_iter, "this.");
-    indent(out) <<
-      "this.__isset." << (*f_iter)->get_name() << " = true;" << endl;
+    indent(out) << "this.__isset." << (*f_iter)->get_name() << " = true;"
+                << endl;
     indent_down();
-    out <<
-      indent() << "} else { " << endl <<
-      indent() << "  TProtocolUtil.Skip(iprot, field.Type);" << endl <<
-      indent() << "}" << endl <<
-      indent() << "break;" << endl;
+    out << indent() << "} else { " << endl
+        << indent() << "  TProtocolUtil.Skip(iprot, field.Type);" << endl
+        << indent() << "}" << endl
+        << indent() << "break;" << endl;
     indent_down();
   }
 
-  indent(out) <<
-    "default: " << endl;
+  indent(out) << "default: " << endl;
   indent_up();
   indent(out) << "TProtocolUtil.Skip(iprot, field.Type);" << endl;
   indent(out) << "break;" << endl;
@@ -575,93 +613,80 @@ void t_csharp_generator::generate_csharp_struct_reader(ofstream& out, t_struct* 
 
   scope_down(out);
 
-  indent(out) <<
-    "iprot.ReadFieldEnd();" << endl;
+  indent(out) << "iprot.ReadFieldEnd();" << endl;
 
   scope_down(out);
 
-  indent(out) <<
-    "iprot.ReadStructEnd();" << endl;
+  indent(out) << "iprot.ReadStructEnd();" << endl;
 
   indent_down();
 
   indent(out) << "}" << endl << endl;
-
 }
 
-void t_csharp_generator::generate_csharp_struct_writer(ofstream& out, t_struct* tstruct) {
-  out <<
-    indent() << "public void Write(TProtocol oprot) {" << endl;
+void t_csharp_generator::generate_csharp_struct_writer(
+    ofstream& out,
+    t_struct* tstruct) {
+  out << indent() << "public void Write(TProtocol oprot) {" << endl;
   indent_up();
 
   string name = tstruct->get_name();
   const vector<t_field*>& fields = tstruct->get_sorted_members();
   vector<t_field*>::const_iterator f_iter;
 
-  indent(out) <<
-    "TStruct struc = new TStruct(\"" << name << "\");" << endl;
-  indent(out) <<
-    "oprot.WriteStructBegin(struc);" << endl;
+  indent(out) << "TStruct struc = new TStruct(\"" << name << "\");" << endl;
+  indent(out) << "oprot.WriteStructBegin(struc);" << endl;
 
   if (fields.size() > 0) {
     indent(out) << "TField field = new TField();" << endl;
     for (f_iter = fields.begin(); f_iter != fields.end(); ++f_iter) {
       bool null_allowed = type_can_be_null((*f_iter)->get_type());
       if (null_allowed) {
-        indent(out) <<
-          "if (this." << (*f_iter)->get_name() << " != null && __isset." << (*f_iter)->get_name() << ") {" << endl;
+        indent(out) << "if (this." << (*f_iter)->get_name()
+                    << " != null && __isset." << (*f_iter)->get_name() << ") {"
+                    << endl;
         indent_up();
-      }
-      else
-      {
-        indent(out) <<
-          "if (__isset." << (*f_iter)->get_name() << ") {" << endl;
+      } else {
+        indent(out) << "if (__isset." << (*f_iter)->get_name() << ") {" << endl;
         indent_up();
       }
 
-      indent(out) <<
-        "field.Name = \"" << (*f_iter)->get_name() << "\";" << endl;
-      indent(out) <<
-        "field.Type = " << type_to_enum((*f_iter)->get_type()) << ";" << endl;
-      indent(out) <<
-        "field.ID = " << (*f_iter)->get_key() << ";" << endl;
-      indent(out) <<
-        "oprot.WriteFieldBegin(field);" << endl;
+      indent(out) << "field.Name = \"" << (*f_iter)->get_name() << "\";"
+                  << endl;
+      indent(out) << "field.Type = " << type_to_enum((*f_iter)->get_type())
+                  << ";" << endl;
+      indent(out) << "field.ID = " << (*f_iter)->get_key() << ";" << endl;
+      indent(out) << "oprot.WriteFieldBegin(field);" << endl;
 
       generate_serialize_field(out, *f_iter, "this.");
 
-      indent(out) <<
-        "oprot.WriteFieldEnd();" << endl;
+      indent(out) << "oprot.WriteFieldEnd();" << endl;
 
       indent_down();
       indent(out) << "}" << endl;
     }
   }
 
-  indent(out) <<
-    "oprot.WriteFieldStop();" << endl;
-  indent(out) <<
-    "oprot.WriteStructEnd();" << endl;
+  indent(out) << "oprot.WriteFieldStop();" << endl;
+  indent(out) << "oprot.WriteStructEnd();" << endl;
 
   indent_down();
 
-  indent(out) <<
-    "}" << endl << endl;
+  indent(out) << "}" << endl << endl;
 }
 
-void t_csharp_generator::generate_csharp_struct_result_writer(ofstream& out, t_struct* tstruct) {
-  indent(out) <<
-    "public void Write(TProtocol oprot) {" << endl;
+void t_csharp_generator::generate_csharp_struct_result_writer(
+    ofstream& out,
+    t_struct* tstruct) {
+  indent(out) << "public void Write(TProtocol oprot) {" << endl;
   indent_up();
 
   string name = tstruct->get_name();
   const vector<t_field*>& fields = tstruct->get_sorted_members();
   vector<t_field*>::const_iterator f_iter;
 
-  indent(out) <<
-    "TStruct struc = new TStruct(\"" << name << "\");" << endl;
-  indent(out) <<
-    "oprot.WriteStructBegin(struc);" << endl;
+  indent(out) << "TStruct struc = new TStruct(\"" << name << "\");" << endl;
+  indent(out) << "oprot.WriteStructBegin(struc);" << endl;
 
   if (fields.size() > 0) {
     indent(out) << "TField field = new TField();" << endl;
@@ -669,37 +694,31 @@ void t_csharp_generator::generate_csharp_struct_result_writer(ofstream& out, t_s
     for (f_iter = fields.begin(); f_iter != fields.end(); ++f_iter) {
       if (first) {
         first = false;
-        out <<
-          endl << indent() << "if ";
+        out << endl << indent() << "if ";
       } else {
-        out <<
-          " else if ";
+        out << " else if ";
       }
 
-      out <<
-        "(this.__isset." << (*f_iter)->get_name() << ") {" << endl;
+      out << "(this.__isset." << (*f_iter)->get_name() << ") {" << endl;
       indent_up();
 
       bool null_allowed = type_can_be_null((*f_iter)->get_type());
       if (null_allowed) {
-        indent(out) <<
-          "if (this." << (*f_iter)->get_name() << " != null) {" << endl;
+        indent(out) << "if (this." << (*f_iter)->get_name() << " != null) {"
+                    << endl;
         indent_up();
       }
 
-      indent(out) <<
-        "field.Name = \"" << (*f_iter)->get_name() << "\";" << endl;
-      indent(out) <<
-        "field.Type = " << type_to_enum((*f_iter)->get_type()) << ";" << endl;
-      indent(out) <<
-        "field.ID = " << (*f_iter)->get_key() << ";" << endl;
-      indent(out) <<
-        "oprot.WriteFieldBegin(field);" << endl;
+      indent(out) << "field.Name = \"" << (*f_iter)->get_name() << "\";"
+                  << endl;
+      indent(out) << "field.Type = " << type_to_enum((*f_iter)->get_type())
+                  << ";" << endl;
+      indent(out) << "field.ID = " << (*f_iter)->get_key() << ";" << endl;
+      indent(out) << "oprot.WriteFieldBegin(field);" << endl;
 
       generate_serialize_field(out, *f_iter, "this.");
 
-      indent(out) <<
-        "oprot.WriteFieldEnd();" << endl;
+      indent(out) << "oprot.WriteFieldEnd();" << endl;
 
       if (null_allowed) {
         indent_down();
@@ -711,24 +730,23 @@ void t_csharp_generator::generate_csharp_struct_result_writer(ofstream& out, t_s
     }
   }
 
-  out <<
-    endl <<
-    indent() << "oprot.WriteFieldStop();" << endl <<
-    indent() << "oprot.WriteStructEnd();" << endl;
+  out << endl
+      << indent() << "oprot.WriteFieldStop();" << endl
+      << indent() << "oprot.WriteStructEnd();" << endl;
 
   indent_down();
 
-  indent(out) <<
-    "}" << endl << endl;
+  indent(out) << "}" << endl << endl;
 }
 
-void t_csharp_generator::generate_csharp_struct_tostring(ofstream& out, t_struct* tstruct) {
-  indent(out) <<
-    "public override string ToString() {" << endl;
+void t_csharp_generator::generate_csharp_struct_tostring(
+    ofstream& out,
+    t_struct* tstruct) {
+  indent(out) << "public override string ToString() {" << endl;
   indent_up();
 
-  indent(out) <<
-    "StringBuilder sb = new StringBuilder(\"" << tstruct->get_name() << "(\");" << endl;
+  indent(out) << "StringBuilder sb = new StringBuilder(\""
+              << tstruct->get_name() << "(\");" << endl;
 
   const vector<t_field*>& fields = tstruct->get_members();
   vector<t_field*>::const_iterator f_iter;
@@ -738,26 +756,25 @@ void t_csharp_generator::generate_csharp_struct_tostring(ofstream& out, t_struct
   for (f_iter = fields.begin(); f_iter != fields.end(); ++f_iter) {
     if (first) {
       first = false;
-      indent(out) <<
-        "sb.Append(\"" << (*f_iter)->get_name() << ": \");" << endl;
+      indent(out) << "sb.Append(\"" << (*f_iter)->get_name() << ": \");"
+                  << endl;
     } else {
-      indent(out) <<
-        "sb.Append(\"," << (*f_iter)->get_name() << ": \");" << endl;
+      indent(out) << "sb.Append(\"," << (*f_iter)->get_name() << ": \");"
+                  << endl;
     }
     t_type* ttype = (*f_iter)->get_type();
     if (ttype->is_xception() || ttype->is_struct()) {
-      indent(out) <<
-        "sb.Append(this." << (*f_iter)->get_name() << "== null ? \"<null>\" : "<< "this." << (*f_iter)->get_name() << ".ToString());" << endl;
+      indent(out) << "sb.Append(this." << (*f_iter)->get_name()
+                  << "== null ? \"<null>\" : "
+                  << "this." << (*f_iter)->get_name() << ".ToString());"
+                  << endl;
     } else {
-      indent(out) <<
-        "sb.Append(this." << (*f_iter)->get_name() << ");" << endl;
+      indent(out) << "sb.Append(this." << (*f_iter)->get_name() << ");" << endl;
     }
   }
 
-  indent(out) <<
-    "sb.Append(\")\");" << endl;
-  indent(out) <<
-    "return sb.ToString();" << endl;
+  indent(out) << "sb.Append(\")\");" << endl;
+  indent(out) << "return sb.ToString();" << endl;
 
   indent_down();
   indent(out) << "}" << endl << endl;
@@ -768,15 +785,12 @@ void t_csharp_generator::generate_service(t_service* tservice) {
   f_service_.open(f_service_name.c_str());
   record_genfile(f_service_name);
 
-  f_service_ <<
-    autogen_comment() <<
-    csharp_type_usings() <<
-    csharp_thrift_usings();
+  f_service_ << autogen_comment() << csharp_type_usings()
+             << csharp_thrift_usings();
 
   start_csharp_namespace(f_service_);
 
-  indent(f_service_) <<
-    "public class " << service_name_ << " {" << endl;
+  indent(f_service_) << "public class " << service_name_ << " {" << endl;
   indent_up();
 
   generate_service_interface(tservice);
@@ -786,8 +800,7 @@ void t_csharp_generator::generate_service(t_service* tservice) {
 
   indent_down();
 
-  indent(f_service_) <<
-    "}" << endl;
+  indent(f_service_) << "}" << endl;
   end_csharp_namespace(f_service_);
   f_service_.close();
 }
@@ -800,19 +813,16 @@ void t_csharp_generator::generate_service_interface(t_service* tservice) {
     extends_iface = " : " + extends + ".Iface";
   }
 
-  indent(f_service_) <<
-    "public interface Iface" << extends_iface << " {" << endl;
+  indent(f_service_) << "public interface Iface" << extends_iface << " {"
+                     << endl;
   indent_up();
   vector<t_function*> functions = tservice->get_functions();
   vector<t_function*>::iterator f_iter;
-  for (f_iter = functions.begin(); f_iter != functions.end(); ++f_iter)
-  {
-    indent(f_service_) <<
-      function_signature(*f_iter) << ";" << endl;
+  for (f_iter = functions.begin(); f_iter != functions.end(); ++f_iter) {
+    indent(f_service_) << function_signature(*f_iter) << ";" << endl;
   }
   indent_down();
-  f_service_ <<
-    indent() << "}" << endl << endl;
+  f_service_ << indent() << "}" << endl << endl;
 }
 
 void t_csharp_generator::generate_service_helpers(t_service* tservice) {
@@ -834,17 +844,16 @@ void t_csharp_generator::generate_service_client(t_service* tservice) {
     extends_client = extends + ".Client, ";
   }
 
-  indent(f_service_) <<
-    "public class Client : " << extends_client << "Iface {" << endl;
+  indent(f_service_) << "public class Client : " << extends_client << "Iface {"
+                     << endl;
   indent_up();
-  indent(f_service_) <<
-    "public Client(TProtocol prot) : this(prot, prot)" << endl;
+  indent(f_service_) << "public Client(TProtocol prot) : this(prot, prot)"
+                     << endl;
   scope_up(f_service_);
   scope_down(f_service_);
   f_service_ << endl;
 
-  indent(f_service_) <<
-    "public Client(TProtocol iprot, TProtocol oprot)";
+  indent(f_service_) << "public Client(TProtocol iprot, TProtocol oprot)";
   if (!extends.empty()) {
     f_service_ << " : base(iprot, oprot)";
   }
@@ -852,19 +861,18 @@ void t_csharp_generator::generate_service_client(t_service* tservice) {
 
   scope_up(f_service_);
   if (extends.empty()) {
-    f_service_ <<
-      indent() << "iprot_ = iprot;" << endl <<
-      indent() << "oprot_ = oprot;" << endl;
+    f_service_ << indent() << "iprot_ = iprot;" << endl
+               << indent() << "oprot_ = oprot;" << endl;
   }
   scope_down(f_service_);
 
   f_service_ << endl;
 
   if (extends.empty()) {
-    f_service_ <<
-      indent() << "protected TProtocol iprot_;" << endl <<
-      indent() << "protected TProtocol oprot_;" << endl <<
-      indent() << "protected int seqid_;" << endl << endl;
+    f_service_ << indent() << "protected TProtocol iprot_;" << endl
+               << indent() << "protected TProtocol oprot_;" << endl
+               << indent() << "protected int seqid_;" << endl
+               << endl;
 
     f_service_ << indent() << "public TProtocol InputProtocol" << endl;
     scope_up(f_service_);
@@ -883,11 +891,9 @@ void t_csharp_generator::generate_service_client(t_service* tservice) {
   for (f_iter = functions.begin(); f_iter != functions.end(); ++f_iter) {
     string funname = (*f_iter)->get_name();
 
-    indent(f_service_) <<
-      "public " << function_signature(*f_iter) << endl;
+    indent(f_service_) << "public " << function_signature(*f_iter) << endl;
     scope_up(f_service_);
-    indent(f_service_) <<
-      "send_" << funname << "(";
+    indent(f_service_) << "send_" << funname << "(";
 
     t_struct* arg_struct = (*f_iter)->get_arglist();
 
@@ -909,8 +915,7 @@ void t_csharp_generator::generate_service_client(t_service* tservice) {
       if (!(*f_iter)->get_returntype()->is_void()) {
         f_service_ << "return ";
       }
-      f_service_ <<
-        "recv_" << funname << "();" << endl;
+      f_service_ << "recv_" << funname << "();" << endl;
     }
     scope_down(f_service_);
     f_service_ << endl;
@@ -922,23 +927,23 @@ void t_csharp_generator::generate_service_client(t_service* tservice) {
 
     string argsname = (*f_iter)->get_name() + "_args";
 
-    indent(f_service_) <<
-      "public " << function_signature(&send_function) << endl;
+    indent(f_service_) << "public " << function_signature(&send_function)
+                       << endl;
     scope_up(f_service_);
 
-    f_service_ <<
-      indent() << "oprot_.WriteMessageBegin(new TMessage(\"" << funname << "\", TMessageType.Call, seqid_));" << endl <<
-      indent() << argsname << " args = new " << argsname << "();" << endl;
+    f_service_ << indent() << "oprot_.WriteMessageBegin(new TMessage(\""
+               << funname << "\", TMessageType.Call, seqid_));" << endl
+               << indent() << argsname << " args = new " << argsname << "();"
+               << endl;
 
     for (fld_iter = fields.begin(); fld_iter != fields.end(); ++fld_iter) {
-      f_service_ <<
-        indent() << "args." << prop_name(*fld_iter) << " = " << (*fld_iter)->get_name() << ";" << endl;
+      f_service_ << indent() << "args." << prop_name(*fld_iter) << " = "
+                 << (*fld_iter)->get_name() << ";" << endl;
     }
 
-    f_service_ <<
-      indent() << "args.Write(oprot_);" << endl <<
-      indent() << "oprot_.WriteMessageEnd();" << endl <<
-      indent() << "oprot_.Transport.Flush();" << endl;
+    f_service_ << indent() << "args.Write(oprot_);" << endl
+               << indent() << "oprot_.WriteMessageEnd();" << endl
+               << indent() << "oprot_.Transport.Flush();" << endl;
 
     scope_down(f_service_);
     f_service_ << endl;
@@ -956,45 +961,49 @@ void t_csharp_generator::generate_service_client(t_service* tservice) {
                          << endl;
       scope_up(f_service_);
 
-      f_service_ <<
-        indent() << "TMessage msg = iprot_.ReadMessageBegin();" << endl <<
-        indent() << "if (msg.Type == TMessageType.Exception) {" << endl;
+      f_service_ << indent() << "TMessage msg = iprot_.ReadMessageBegin();"
+                 << endl
+                 << indent() << "if (msg.Type == TMessageType.Exception) {"
+                 << endl;
       indent_up();
-      f_service_ <<
-        indent() << "TApplicationException x = TApplicationException.Read(iprot_);" << endl <<
-        indent() << "iprot_.ReadMessageEnd();" << endl <<
-        indent() << "throw x;" << endl;
+      f_service_
+          << indent()
+          << "TApplicationException x = TApplicationException.Read(iprot_);"
+          << endl
+          << indent() << "iprot_.ReadMessageEnd();" << endl
+          << indent() << "throw x;" << endl;
       indent_down();
-      f_service_ <<
-        indent() << "}" << endl <<
-        indent() << resultname << " result = new " << resultname << "();" << endl <<
-        indent() << "result.Read(iprot_);" << endl <<
-        indent() << "iprot_.ReadMessageEnd();" << endl;
+      f_service_ << indent() << "}" << endl
+                 << indent() << resultname << " result = new " << resultname
+                 << "();" << endl
+                 << indent() << "result.Read(iprot_);" << endl
+                 << indent() << "iprot_.ReadMessageEnd();" << endl;
 
       if (!(*f_iter)->get_returntype()->is_void()) {
-        f_service_ <<
-          indent() << "if (result.__isset.success) {" << endl <<
-          indent() << "  return result.Success;" << endl <<
-          indent() << "}" << endl;
+        f_service_ << indent() << "if (result.__isset.success) {" << endl
+                   << indent() << "  return result.Success;" << endl
+                   << indent() << "}" << endl;
       }
 
-      t_struct *xs = (*f_iter)->get_xceptions();
+      t_struct* xs = (*f_iter)->get_xceptions();
 
       const std::vector<t_field*>& xceptions = xs->get_members();
       vector<t_field*>::const_iterator x_iter;
       for (x_iter = xceptions.begin(); x_iter != xceptions.end(); ++x_iter) {
-        f_service_ <<
-          indent() << "if (result.__isset." << (*x_iter)->get_name() << ") {" << endl <<
-          indent() << "  throw result." << prop_name(*x_iter) << ";" << endl <<
-          indent() << "}" << endl;
+        f_service_ << indent() << "if (result.__isset." << (*x_iter)->get_name()
+                   << ") {" << endl
+                   << indent() << "  throw result." << prop_name(*x_iter) << ";"
+                   << endl
+                   << indent() << "}" << endl;
       }
 
       if ((*f_iter)->get_returntype()->is_void()) {
-        indent(f_service_) <<
-          "return;" << endl;
+        indent(f_service_) << "return;" << endl;
       } else {
-        f_service_ <<
-          indent() << "throw new TApplicationException(TApplicationException.ExceptionType.MissingResult, \"" << (*f_iter)->get_name() << " failed: unknown result\");" << endl;
+        f_service_
+            << indent()
+            << "throw new TApplicationException(TApplicationException.ExceptionType.MissingResult, \""
+            << (*f_iter)->get_name() << " failed: unknown result\");" << endl;
       }
 
       scope_down(f_service_);
@@ -1003,8 +1012,7 @@ void t_csharp_generator::generate_service_client(t_service* tservice) {
   }
 
   indent_down();
-  indent(f_service_) <<
-    "}" << endl;
+  indent(f_service_) << "}" << endl;
 }
 
 void t_csharp_generator::generate_service_server(t_service* tservice) {
@@ -1018,98 +1026,95 @@ void t_csharp_generator::generate_service_server(t_service* tservice) {
     extends_processor = extends + ".Processor, ";
   }
 
-  indent(f_service_) <<
-    "public class Processor : " << extends_processor << "TProcessor {" << endl;
+  indent(f_service_) << "public class Processor : " << extends_processor
+                     << "TProcessor {" << endl;
   indent_up();
 
-  indent(f_service_) <<
-    "public Processor(Iface iface)" ;
+  indent(f_service_) << "public Processor(Iface iface)";
   if (!extends.empty()) {
     f_service_ << " : base(iface)";
   }
   f_service_ << endl;
   scope_up(f_service_);
-  f_service_ <<
-    indent() << "iface_ = iface;" << endl;
+  f_service_ << indent() << "iface_ = iface;" << endl;
 
   for (f_iter = functions.begin(); f_iter != functions.end(); ++f_iter) {
-    f_service_ <<
-      indent() << "processMap_[\"" << (*f_iter)->get_name() << "\"] = " << (*f_iter)->get_name() << "_Process;" << endl;
+    f_service_ << indent() << "processMap_[\"" << (*f_iter)->get_name()
+               << "\"] = " << (*f_iter)->get_name() << "_Process;" << endl;
   }
 
   scope_down(f_service_);
   f_service_ << endl;
 
   if (extends.empty()) {
-    f_service_ <<
-      indent() << "protected delegate void ProcessFunction(int seqid, TProtocol iprot, TProtocol oprot);" << endl;
+    f_service_
+        << indent()
+        << "protected delegate void ProcessFunction(int seqid, TProtocol iprot, TProtocol oprot);"
+        << endl;
   }
 
-  f_service_ <<
-    indent() << "private Iface iface_;" << endl;
+  f_service_ << indent() << "private Iface iface_;" << endl;
 
   if (extends.empty()) {
-    f_service_ <<
-      indent() << "protected Dictionary<string, ProcessFunction> processMap_ = new Dictionary<string, ProcessFunction>();" << endl;
+    f_service_
+        << indent()
+        << "protected Dictionary<string, ProcessFunction> processMap_ = new Dictionary<string, ProcessFunction>();"
+        << endl;
   }
 
   f_service_ << endl;
 
   if (extends.empty()) {
-    indent(f_service_) <<
-      "public bool Process(TProtocol iprot, TProtocol oprot)" << endl;
-  }
-  else
-  {
-    indent(f_service_) <<
-      "public new bool Process(TProtocol iprot, TProtocol oprot)" << endl;
+    indent(f_service_)
+        << "public bool Process(TProtocol iprot, TProtocol oprot)" << endl;
+  } else {
+    indent(f_service_)
+        << "public new bool Process(TProtocol iprot, TProtocol oprot)" << endl;
   }
   scope_up(f_service_);
 
-  f_service_ <<  indent() << "try" << endl;
+  f_service_ << indent() << "try" << endl;
   scope_up(f_service_);
 
-  f_service_ <<
-    indent() << "TMessage msg = iprot.ReadMessageBegin();" << endl;
+  f_service_ << indent() << "TMessage msg = iprot.ReadMessageBegin();" << endl;
 
-  f_service_ <<
-    indent() << "ProcessFunction fn;" << endl <<
-    indent() << "processMap_.TryGetValue(msg.Name, out fn);" << endl <<
-    indent() << "if (fn == null) {" << endl <<
-    indent() << "  TProtocolUtil.Skip(iprot, TType.Struct);" << endl <<
-    indent() << "  iprot.ReadMessageEnd();" << endl <<
-    indent() << "  TApplicationException x = new TApplicationException (TApplicationException.ExceptionType.UnknownMethod, \"Invalid method name: '\" + msg.Name + \"'\");" << endl <<
-    indent() << "  oprot.WriteMessageBegin(new TMessage(msg.Name, TMessageType.Exception, msg.SeqID));" << endl <<
-    indent() << "  x.Write(oprot);" << endl <<
-    indent() << "  oprot.WriteMessageEnd();" << endl <<
-    indent() << "  oprot.Transport.Flush();" << endl <<
-    indent() << "  return true;" << endl <<
-    indent() << "}" << endl <<
-    indent() << "fn(msg.SeqID, iprot, oprot);" << endl;
+  f_service_
+      << indent() << "ProcessFunction fn;" << endl
+      << indent() << "processMap_.TryGetValue(msg.Name, out fn);" << endl
+      << indent() << "if (fn == null) {" << endl
+      << indent() << "  TProtocolUtil.Skip(iprot, TType.Struct);" << endl
+      << indent() << "  iprot.ReadMessageEnd();" << endl
+      << indent()
+      << "  TApplicationException x = new TApplicationException (TApplicationException.ExceptionType.UnknownMethod, \"Invalid method name: '\" + msg.Name + \"'\");"
+      << endl
+      << indent()
+      << "  oprot.WriteMessageBegin(new TMessage(msg.Name, TMessageType.Exception, msg.SeqID));"
+      << endl
+      << indent() << "  x.Write(oprot);" << endl
+      << indent() << "  oprot.WriteMessageEnd();" << endl
+      << indent() << "  oprot.Transport.Flush();" << endl
+      << indent() << "  return true;" << endl
+      << indent() << "}" << endl
+      << indent() << "fn(msg.SeqID, iprot, oprot);" << endl;
 
   scope_down(f_service_);
 
-  f_service_ <<
-    indent() << "catch (IOException)" << endl;
+  f_service_ << indent() << "catch (IOException)" << endl;
   scope_up(f_service_);
-  f_service_ <<
-    indent() << "return false;" << endl;
+  f_service_ << indent() << "return false;" << endl;
   scope_down(f_service_);
 
-  f_service_ <<
-    indent() << "return true;" << endl;
+  f_service_ << indent() << "return true;" << endl;
 
   scope_down(f_service_);
   f_service_ << endl;
 
-  for (f_iter = functions.begin(); f_iter != functions.end(); ++f_iter)
-  {
+  for (f_iter = functions.begin(); f_iter != functions.end(); ++f_iter) {
     generate_process_function(tservice, *f_iter);
   }
 
   indent_down();
-  indent(f_service_) <<
-    "}" << endl << endl;
+  indent(f_service_) << "}" << endl << endl;
 }
 
 void t_csharp_generator::generate_function_helpers(t_function* tfunction) {
@@ -1124,7 +1129,7 @@ void t_csharp_generator::generate_function_helpers(t_function* tfunction) {
     result.append(std::move(success));
   }
 
-  t_struct *xs = tfunction->get_xceptions();
+  t_struct* xs = tfunction->get_xceptions();
   auto fields = xs->get_members();
   vector<t_field*>::const_iterator f_iter;
   for (f_iter = fields.begin(); f_iter != fields.end(); ++f_iter) {
@@ -1135,31 +1140,32 @@ void t_csharp_generator::generate_function_helpers(t_function* tfunction) {
 }
 
 void t_csharp_generator::generate_process_function(
-    t_service* /* tservice */, t_function* tfunction) {
-  indent(f_service_) <<
-    "public void " << tfunction->get_name() << "_Process(int seqid, TProtocol iprot, TProtocol oprot)" << endl;
+    t_service* /* tservice */,
+    t_function* tfunction) {
+  indent(f_service_) << "public void " << tfunction->get_name()
+                     << "_Process(int seqid, TProtocol iprot, TProtocol oprot)"
+                     << endl;
   scope_up(f_service_);
 
   string argsname = tfunction->get_name() + "_args";
   string resultname = tfunction->get_name() + "_result";
 
-  f_service_ <<
-    indent() << argsname << " args = new " << argsname << "();" << endl <<
-    indent() << "args.Read(iprot);" << endl <<
-    indent() << "iprot.ReadMessageEnd();" << endl;
+  f_service_ << indent() << argsname << " args = new " << argsname << "();"
+             << endl
+             << indent() << "args.Read(iprot);" << endl
+             << indent() << "iprot.ReadMessageEnd();" << endl;
 
   t_struct* xs = tfunction->get_xceptions();
   const std::vector<t_field*>& xceptions = xs->get_members();
   vector<t_field*>::const_iterator x_iter;
 
   if (!tfunction->is_oneway()) {
-    f_service_ <<
-      indent() << resultname << " result = new " << resultname << "();" << endl;
+    f_service_ << indent() << resultname << " result = new " << resultname
+               << "();" << endl;
   }
 
   if (xceptions.size() > 0) {
-    f_service_ <<
-      indent() << "try {" << endl;
+    f_service_ << indent() << "try {" << endl;
     indent_up();
   }
 
@@ -1171,8 +1177,7 @@ void t_csharp_generator::generate_process_function(
   if (!tfunction->is_oneway() && !tfunction->get_returntype()->is_void()) {
     f_service_ << "result.Success = ";
   }
-  f_service_ <<
-    "iface_." << tfunction->get_name() << "(";
+  f_service_ << "iface_." << tfunction->get_name() << "(";
   bool first = true;
   for (f_iter = fields.begin(); f_iter != fields.end(); ++f_iter) {
     if (first) {
@@ -1188,11 +1193,12 @@ void t_csharp_generator::generate_process_function(
     indent_down();
     f_service_ << indent() << "}";
     for (x_iter = xceptions.begin(); x_iter != xceptions.end(); ++x_iter) {
-      f_service_ << " catch (" << type_name((*x_iter)->get_type(), false, false) << " " << (*x_iter)->get_name() << ") {" << endl;
+      f_service_ << " catch (" << type_name((*x_iter)->get_type(), false, false)
+                 << " " << (*x_iter)->get_name() << ") {" << endl;
       if (!tfunction->is_oneway()) {
         indent_up();
-        f_service_ <<
-          indent() << "result." << prop_name(*x_iter) << " = " << (*x_iter)->get_name() << ";" << endl;
+        f_service_ << indent() << "result." << prop_name(*x_iter) << " = "
+                   << (*x_iter)->get_name() << ";" << endl;
         indent_down();
         f_service_ << indent() << "}";
       } else {
@@ -1203,32 +1209,36 @@ void t_csharp_generator::generate_process_function(
   }
 
   if (tfunction->is_oneway()) {
-    f_service_ <<
-      indent() << "return;" << endl;
+    f_service_ << indent() << "return;" << endl;
     scope_down(f_service_);
 
     return;
   }
 
-  f_service_ <<
-    indent() << "oprot.WriteMessageBegin(new TMessage(\"" << tfunction->get_name() << "\", TMessageType.Reply, seqid)); " << endl <<
-    indent() << "result.Write(oprot);" << endl <<
-    indent() << "oprot.WriteMessageEnd();" << endl <<
-    indent() << "oprot.Transport.Flush();" << endl;
+  f_service_ << indent() << "oprot.WriteMessageBegin(new TMessage(\""
+             << tfunction->get_name() << "\", TMessageType.Reply, seqid)); "
+             << endl
+             << indent() << "result.Write(oprot);" << endl
+             << indent() << "oprot.WriteMessageEnd();" << endl
+             << indent() << "oprot.Transport.Flush();" << endl;
 
   scope_down(f_service_);
 
   f_service_ << endl;
 }
 
-void t_csharp_generator::generate_deserialize_field(ofstream& out, t_field* tfield, string prefix) {
+void t_csharp_generator::generate_deserialize_field(
+    ofstream& out,
+    t_field* tfield,
+    string prefix) {
   t_type* type = tfield->get_type();
-  while(type->is_typedef()) {
+  while (type->is_typedef()) {
     type = ((t_typedef*)type)->get_type();
   }
 
   if (type->is_void()) {
-    throw "CANNOT GENERATE DESERIALIZE CODE FOR void TYPE: " + prefix + tfield->get_name();
+    throw "CANNOT GENERATE DESERIALIZE CODE FOR void TYPE: " + prefix +
+        tfield->get_name();
   }
 
   string name = prefix + tfield->get_name();
@@ -1238,11 +1248,9 @@ void t_csharp_generator::generate_deserialize_field(ofstream& out, t_field* tfie
   } else if (type->is_container()) {
     generate_deserialize_container(out, type, name);
   } else if (type->is_base_type() || type->is_enum()) {
-    indent(out) <<
-      name << " = ";
+    indent(out) << name << " = ";
 
-    if (type->is_enum())
-    {
+    if (type->is_enum()) {
       out << "(" << type_name(type, false, true) << ")";
     }
 
@@ -1252,7 +1260,8 @@ void t_csharp_generator::generate_deserialize_field(ofstream& out, t_field* tfie
       t_base_type::t_base tbase = ((t_base_type*)type)->get_base();
       switch (tbase) {
         case t_base_type::TYPE_VOID:
-          throw "compiler error: cannot serialize void field in a struct: " + name;
+          throw "compiler error: cannot serialize void field in a struct: " +
+              name;
         case t_base_type::TYPE_STRING:
           out << "ReadString();";
           break;
@@ -1278,25 +1287,33 @@ void t_csharp_generator::generate_deserialize_field(ofstream& out, t_field* tfie
           out << "ReadDouble();";
           break;
         default:
-          throw std::string("compiler error: no C# name for base type ")
-            + t_base_type::t_base_name(tbase);
+          throw std::string("compiler error: no C# name for base type ") +
+              t_base_type::t_base_name(tbase);
       }
     } else if (type->is_enum()) {
       out << "ReadI32();";
     }
     out << endl;
   } else {
-    printf("DO NOT KNOW HOW TO DESERIALIZE FIELD '%s' TYPE '%s'\n", tfield->get_name().c_str(), type_name(type).c_str());
+    printf(
+        "DO NOT KNOW HOW TO DESERIALIZE FIELD '%s' TYPE '%s'\n",
+        tfield->get_name().c_str(),
+        type_name(type).c_str());
   }
 }
 
-void t_csharp_generator::generate_deserialize_struct(ofstream& out, t_struct* tstruct, string prefix) {
-  out <<
-    indent() << prefix << " = new " << type_name(tstruct) << "();" << endl <<
-    indent() << prefix << ".Read(iprot);" << endl;
+void t_csharp_generator::generate_deserialize_struct(
+    ofstream& out,
+    t_struct* tstruct,
+    string prefix) {
+  out << indent() << prefix << " = new " << type_name(tstruct) << "();" << endl
+      << indent() << prefix << ".Read(iprot);" << endl;
 }
 
-void t_csharp_generator::generate_deserialize_container(ofstream& out, t_type* ttype, string prefix) {
+void t_csharp_generator::generate_deserialize_container(
+    ofstream& out,
+    t_type* ttype,
+    string prefix) {
   scope_up(out);
 
   string obj;
@@ -1309,22 +1326,20 @@ void t_csharp_generator::generate_deserialize_container(ofstream& out, t_type* t
     obj = tmp("_list");
   }
 
-  indent(out) <<
-    prefix << " = new " << type_name(ttype, false, true) << "();" <<endl;
+  indent(out) << prefix << " = new " << type_name(ttype, false, true) << "();"
+              << endl;
   if (ttype->is_map()) {
-    out <<
-      indent() << "TMap " << obj << " = iprot.ReadMapBegin();" << endl;
+    out << indent() << "TMap " << obj << " = iprot.ReadMapBegin();" << endl;
   } else if (ttype->is_set()) {
-    out <<
-      indent() << "TSet " << obj << " = iprot.ReadSetBegin();" << endl;
+    out << indent() << "TSet " << obj << " = iprot.ReadSetBegin();" << endl;
   } else if (ttype->is_list()) {
-    out <<
-      indent() << "TList " << obj << " = iprot.ReadListBegin();" << endl;
+    out << indent() << "TList " << obj << " = iprot.ReadListBegin();" << endl;
   }
 
   string i = tmp("_i");
-  indent(out) <<
-    "for( int " << i << " = 0; " << i << " < " << obj << ".Count" << "; " << "++" << i << ")" << endl;
+  indent(out) << "for( int " << i << " = 0; " << i << " < " << obj << ".Count"
+              << "; "
+              << "++" << i << ")" << endl;
   scope_up(out);
 
   if (ttype->is_map()) {
@@ -1348,76 +1363,83 @@ void t_csharp_generator::generate_deserialize_container(ofstream& out, t_type* t
   scope_down(out);
 }
 
-void t_csharp_generator::generate_deserialize_map_element(ofstream& out, t_map* tmap, string prefix) {
+void t_csharp_generator::generate_deserialize_map_element(
+    ofstream& out,
+    t_map* tmap,
+    string prefix) {
   string key = tmp("_key");
   string val = tmp("_val");
 
   t_field fkey(tmap->get_key_type(), key);
   t_field fval(tmap->get_val_type(), val);
 
-  indent(out) <<
-    declare_field(&fkey) << endl;
-  indent(out) <<
-    declare_field(&fval) << endl;
+  indent(out) << declare_field(&fkey) << endl;
+  indent(out) << declare_field(&fval) << endl;
 
   generate_deserialize_field(out, &fkey);
   generate_deserialize_field(out, &fval);
 
-  indent(out) <<
-    prefix << "[" << key << "] = " << val << ";" << endl;
+  indent(out) << prefix << "[" << key << "] = " << val << ";" << endl;
 }
 
-void t_csharp_generator::generate_deserialize_set_element(ofstream& out, t_set* tset, string prefix) {
+void t_csharp_generator::generate_deserialize_set_element(
+    ofstream& out,
+    t_set* tset,
+    string prefix) {
   string elem = tmp("_elem");
   t_field felem(tset->get_elem_type(), elem);
 
-  indent(out) <<
-    declare_field(&felem, true) << endl;
+  indent(out) << declare_field(&felem, true) << endl;
 
   generate_deserialize_field(out, &felem);
 
-  indent(out) <<
-    prefix << ".Add(" << elem << ");" << endl;
+  indent(out) << prefix << ".Add(" << elem << ");" << endl;
 }
 
-void t_csharp_generator::generate_deserialize_list_element(ofstream& out, t_list* tlist, string prefix) {
+void t_csharp_generator::generate_deserialize_list_element(
+    ofstream& out,
+    t_list* tlist,
+    string prefix) {
   string elem = tmp("_elem");
   t_field felem(tlist->get_elem_type(), elem);
 
-  indent(out) <<
-    declare_field(&felem, true) << endl;
+  indent(out) << declare_field(&felem, true) << endl;
 
   generate_deserialize_field(out, &felem);
 
-  indent(out) <<
-    prefix << ".Add(" << elem << ");" << endl;
+  indent(out) << prefix << ".Add(" << elem << ");" << endl;
 }
 
-void t_csharp_generator::generate_serialize_field(ofstream& out, t_field* tfield, string prefix) {
+void t_csharp_generator::generate_serialize_field(
+    ofstream& out,
+    t_field* tfield,
+    string prefix) {
   t_type* type = tfield->get_type();
   while (type->is_typedef()) {
     type = ((t_typedef*)type)->get_type();
   }
 
   if (type->is_void()) {
-    throw "CANNOT GENERATE SERIALIZE CODE FOR void TYPE: " + prefix + tfield->get_name();
+    throw "CANNOT GENERATE SERIALIZE CODE FOR void TYPE: " + prefix +
+        tfield->get_name();
   }
 
   if (type->is_struct() || type->is_xception()) {
-    generate_serialize_struct(out, (t_struct*)type, prefix + tfield->get_name());
+    generate_serialize_struct(
+        out, (t_struct*)type, prefix + tfield->get_name());
   } else if (type->is_container()) {
     generate_serialize_container(out, type, prefix + tfield->get_name());
   } else if (type->is_base_type() || type->is_enum()) {
     string name = prefix + tfield->get_name();
-    indent(out) <<
-      "oprot.";
+    indent(out) << "oprot.";
 
     if (type->is_base_type()) {
       t_base_type::t_base tbase = ((t_base_type*)type)->get_base();
 
-      switch(tbase) {
+      switch (tbase) {
         case t_base_type::TYPE_VOID:
-          throw "compiler error: cannot serialize void field in a struct: " + name;
+          throw "compiler error: cannot serialize void field in a struct: " +
+              name;
         case t_base_type::TYPE_STRING:
           out << "WriteString(";
           out << name << ");";
@@ -1445,15 +1467,16 @@ void t_csharp_generator::generate_serialize_field(ofstream& out, t_field* tfield
           out << "WriteDouble(" << name << ");";
           break;
         default:
-          throw std::string("compiler error: no C# name for base type ")
-            + t_base_type::t_base_name(tbase);
+          throw std::string("compiler error: no C# name for base type ") +
+              t_base_type::t_base_name(tbase);
       }
     } else if (type->is_enum()) {
       out << "WriteI32((int)" << name << ");";
     }
     out << endl;
   } else {
-    printf("DO NOT KNOW HOW TO SERIALIZE '%s%s' TYPE '%s'\n",
+    printf(
+        "DO NOT KNOW HOW TO SERIALIZE '%s%s' TYPE '%s'\n",
         prefix.c_str(),
         tfield->get_name().c_str(),
         type_name(type).c_str());
@@ -1461,51 +1484,43 @@ void t_csharp_generator::generate_serialize_field(ofstream& out, t_field* tfield
 }
 
 void t_csharp_generator::generate_serialize_struct(
-    ofstream& out, t_struct* /* tstruct */, string prefix) {
-  out <<
-    indent() << prefix << ".Write(oprot);" << endl;
+    ofstream& out,
+    t_struct* /* tstruct */,
+    string prefix) {
+  out << indent() << prefix << ".Write(oprot);" << endl;
 }
 
-void t_csharp_generator::generate_serialize_container(ofstream& out, t_type* ttype, string prefix) {
+void t_csharp_generator::generate_serialize_container(
+    ofstream& out,
+    t_type* ttype,
+    string prefix) {
   scope_up(out);
 
   if (ttype->is_map()) {
-    indent(out) <<
-      "oprot.WriteMapBegin(new TMap(" <<
-      type_to_enum(((t_map*)ttype)->get_key_type()) << ", " <<
-      type_to_enum(((t_map*)ttype)->get_val_type()) << ", " <<
-      prefix << ".Count));" << endl;
+    indent(out) << "oprot.WriteMapBegin(new TMap("
+                << type_to_enum(((t_map*)ttype)->get_key_type()) << ", "
+                << type_to_enum(((t_map*)ttype)->get_val_type()) << ", "
+                << prefix << ".Count));" << endl;
   } else if (ttype->is_set()) {
-    indent(out) <<
-      "oprot.WriteSetBegin(new TSet(" <<
-      type_to_enum(((t_set*)ttype)->get_elem_type()) << ", " <<
-      prefix << ".Count));" << endl;
+    indent(out) << "oprot.WriteSetBegin(new TSet("
+                << type_to_enum(((t_set*)ttype)->get_elem_type()) << ", "
+                << prefix << ".Count));" << endl;
   } else if (ttype->is_list()) {
-    indent(out) <<
-      "oprot.WriteListBegin(new TList(" <<
-      type_to_enum(((t_list*)ttype)->get_elem_type()) << ", " <<
-      prefix << ".Count));" << endl;
+    indent(out) << "oprot.WriteListBegin(new TList("
+                << type_to_enum(((t_list*)ttype)->get_elem_type()) << ", "
+                << prefix << ".Count));" << endl;
   }
 
   string iter = tmp("_iter");
   if (ttype->is_map()) {
-    indent(out) <<
-      "foreach (" <<
-      type_name(((t_map*)ttype)->get_key_type()) << " " << iter <<
-      " in " <<
-      prefix << ".Keys)";
+    indent(out) << "foreach (" << type_name(((t_map*)ttype)->get_key_type())
+                << " " << iter << " in " << prefix << ".Keys)";
   } else if (ttype->is_set()) {
-    indent(out) <<
-      "foreach (" <<
-      type_name(((t_set*)ttype)->get_elem_type()) << " " << iter <<
-      " in " <<
-      prefix << ")";
+    indent(out) << "foreach (" << type_name(((t_set*)ttype)->get_elem_type())
+                << " " << iter << " in " << prefix << ")";
   } else if (ttype->is_list()) {
-    indent(out) <<
-      "foreach (" <<
-      type_name(((t_list*)ttype)->get_elem_type()) << " " << iter <<
-      " in " <<
-      prefix << ")";
+    indent(out) << "foreach (" << type_name(((t_list*)ttype)->get_elem_type())
+                << " " << iter << " in " << prefix << ")";
   }
 
   out << endl;
@@ -1531,48 +1546,64 @@ void t_csharp_generator::generate_serialize_container(ofstream& out, t_type* tty
   scope_down(out);
 }
 
-void t_csharp_generator::generate_serialize_map_element(ofstream& out, t_map* tmap, string iter, string map) {
+void t_csharp_generator::generate_serialize_map_element(
+    ofstream& out,
+    t_map* tmap,
+    string iter,
+    string map) {
   t_field kfield(tmap->get_key_type(), iter);
   generate_serialize_field(out, &kfield, "");
   t_field vfield(tmap->get_val_type(), map + "[" + iter + "]");
   generate_serialize_field(out, &vfield, "");
 }
 
-void t_csharp_generator::generate_serialize_set_element(ofstream& out, t_set* tset, string iter) {
+void t_csharp_generator::generate_serialize_set_element(
+    ofstream& out,
+    t_set* tset,
+    string iter) {
   t_field efield(tset->get_elem_type(), iter);
   generate_serialize_field(out, &efield, "");
 }
 
-void t_csharp_generator::generate_serialize_list_element(ofstream& out, t_list* tlist, string iter) {
+void t_csharp_generator::generate_serialize_list_element(
+    ofstream& out,
+    t_list* tlist,
+    string iter) {
   t_field efield(tlist->get_elem_type(), iter);
   generate_serialize_field(out, &efield, "");
 }
 
-void t_csharp_generator::generate_property(ofstream& out, t_field* tfield, bool isPublic) {
-    indent(out) << (isPublic ? "public " : "private ") << type_name(tfield->get_type())
-                << " " << prop_name(tfield) << endl;
-    scope_up(out);
-    indent(out) << "get" << endl;
-    scope_up(out);
-    indent(out) << "return " << tfield->get_name() << ";" << endl;
-    scope_down(out);
-    indent(out) << "set" << endl;
-    scope_up(out);
-    indent(out) << "__isset." << tfield->get_name() << " = true;" << endl;
-    indent(out) << "this." << tfield->get_name() << " = value;" << endl;
-    scope_down(out);
-    scope_down(out);
-    out << endl;
+void t_csharp_generator::generate_property(
+    ofstream& out,
+    t_field* tfield,
+    bool isPublic) {
+  indent(out) << (isPublic ? "public " : "private ")
+              << type_name(tfield->get_type()) << " " << prop_name(tfield)
+              << endl;
+  scope_up(out);
+  indent(out) << "get" << endl;
+  scope_up(out);
+  indent(out) << "return " << tfield->get_name() << ";" << endl;
+  scope_down(out);
+  indent(out) << "set" << endl;
+  scope_up(out);
+  indent(out) << "__isset." << tfield->get_name() << " = true;" << endl;
+  indent(out) << "this." << tfield->get_name() << " = value;" << endl;
+  scope_down(out);
+  scope_down(out);
+  out << endl;
 }
 
 std::string t_csharp_generator::prop_name(t_field* tfield) {
-    string name (tfield->get_name());
-    name[0] = toupper(name[0]);
-    return name;
+  string name(tfield->get_name());
+  name[0] = toupper(name[0]);
+  return name;
 }
 
 string t_csharp_generator::type_name(
-    t_type* ttype, bool in_container, bool /* in_init */) {
+    t_type* ttype,
+    bool in_container,
+    bool /* in_init */) {
   while (ttype->is_typedef()) {
     ttype = ((t_typedef*)ttype)->get_type();
   }
@@ -1580,14 +1611,14 @@ string t_csharp_generator::type_name(
   if (ttype->is_base_type()) {
     return base_type_name((t_base_type*)ttype, in_container);
   } else if (ttype->is_map()) {
-    t_map *tmap = (t_map*) ttype;
-    return "Dictionary<" + type_name(tmap->get_key_type(), true) +
-      ", " + type_name(tmap->get_val_type(), true) + ">";
+    t_map* tmap = (t_map*)ttype;
+    return "Dictionary<" + type_name(tmap->get_key_type(), true) + ", " +
+        type_name(tmap->get_val_type(), true) + ">";
   } else if (ttype->is_set()) {
-    t_set* tset = (t_set*) ttype;
+    t_set* tset = (t_set*)ttype;
     return "THashSet<" + type_name(tset->get_elem_type(), true) + ">";
   } else if (ttype->is_list()) {
-    t_list* tlist = (t_list*) ttype;
+    t_list* tlist = (t_list*)ttype;
     return "List<" + type_name(tlist->get_elem_type(), true) + ">";
   }
 
@@ -1603,7 +1634,8 @@ string t_csharp_generator::type_name(
 }
 
 string t_csharp_generator::base_type_name(
-    t_base_type* tbase, bool /* in_container */) {
+    t_base_type* tbase,
+    bool /* in_container */) {
   switch (tbase->get_base()) {
     case t_base_type::TYPE_VOID:
       return "void";
@@ -1626,8 +1658,8 @@ string t_csharp_generator::base_type_name(
     case t_base_type::TYPE_DOUBLE:
       return "double";
     default:
-      throw std::string("compiler error: no C# name for base type ")
-        + t_base_type::t_base_name(tbase->get_base());
+      throw std::string("compiler error: no C# name for base type ") +
+          t_base_type::t_base_name(tbase->get_base());
   }
 }
 
@@ -1640,7 +1672,9 @@ string t_csharp_generator::declare_field(t_field* tfield, bool init) {
     }
     if (ttype->is_base_type() && tfield->get_value() != nullptr) {
       ofstream dummy;
-      result += " = " + render_const_value(dummy, tfield->get_name(), ttype, tfield->get_value());
+      result += " = " +
+          render_const_value(
+                    dummy, tfield->get_name(), ttype, tfield->get_value());
     } else if (ttype->is_base_type()) {
       t_base_type::t_base tbase = ((t_base_type*)ttype)->get_base();
       switch (tbase) {
@@ -1677,9 +1711,12 @@ string t_csharp_generator::declare_field(t_field* tfield, bool init) {
   return result + ";";
 }
 
-string t_csharp_generator::function_signature(t_function* tfunction, string prefix) {
+string t_csharp_generator::function_signature(
+    t_function* tfunction,
+    string prefix) {
   t_type* ttype = tfunction->get_returntype();
-  return type_name(ttype) + " " + prefix + tfunction->get_name() + "(" + argument_list(tfunction->get_arglist()) + ")";
+  return type_name(ttype) + " " + prefix + tfunction->get_name() + "(" +
+      argument_list(tfunction->get_arglist()) + ")";
 }
 
 string t_csharp_generator::argument_list(t_struct* tstruct) {
@@ -1740,6 +1777,5 @@ string t_csharp_generator::type_to_enum(t_type* type) {
 
   throw "INVALID TYPE IN type_to_enum: " + type->get_name();
 }
-
 
 THRIFT_REGISTER_GENERATOR(csharp, "C#", "");
