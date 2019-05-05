@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Facebook, Inc.
+ * Copyright 2016-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 #include <string>
 #include <vector>
 
@@ -42,50 +41,4 @@ TEST(GenerateCommon, SplitNamespace) {
   }
 
   EXPECT_EQ(expected, splits);
-}
-
-TEST(GenerateCommon, EscapeQuotes) {
-  std::vector<std::string> quotedstrings{
-      R"(no quotes)",
-      R"("quotes")",
-      R"({"a": 1, "b": -2, "c": -3})",
-  };
-
-  const std::vector<std::string> expected{
-      R"(no quotes)",
-      R"(\"quotes\")",
-      R"({\"a\": 1, \"b\": -2, \"c\": -3})",
-  };
-
-  std::vector<std::string> escaped;
-  for (auto& s : quotedstrings) {
-    escape_quotes_cpp(s);
-    escaped.push_back(s);
-  }
-
-  EXPECT_EQ(expected, escaped);
-}
-
-TEST(GenerateCommon, TrimWhitespace) {
-  std::vector<std::string> whitespaces{
-      "    ",
-      "   left",
-      "right ",
-      "   both spaces ",
-  };
-
-  const std::vector<std::string> expected{
-      "",
-      "left",
-      "right",
-      "both spaces",
-  };
-
-  std::vector<std::string> trimmed;
-  for (auto& s : whitespaces) {
-    trim_whitespace(s);
-    trimmed.push_back(s);
-  }
-
-  EXPECT_EQ(expected, trimmed);
 }
