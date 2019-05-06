@@ -30,7 +30,9 @@ std::unique_ptr<folly::IOBuf> serializeMetadata(
     const ResponseRpcMetadata& responseMetadata) {
   CompactProtocolWriter writer;
   folly::IOBufQueue queue;
-  writer.setOutput(&queue);
+  // Metadata is usually small, don't use the 16KB default.
+  constexpr size_t kQueueGrowthSize = 1024;
+  writer.setOutput(&queue, kQueueGrowthSize);
   responseMetadata.write(&writer);
   return queue.move();
 }
