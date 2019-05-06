@@ -159,7 +159,7 @@ StreamGeneratorImpl<Generator, folly::coro::AsyncGenerator<Element>>::create(
     folly::Executor::KeepAlive<folly::SequencedExecutor> executor,
     Generator&& generator) {
   auto f = [started = false,
-            g = generator(),
+            g = folly::coro::co_invoke(std::forward<Generator>(generator)),
             iter = typename folly::coro::AsyncGenerator<
                 Element>::async_iterator()]() mutable
       -> folly::coro::Task<folly::Optional<std::decay_t<Element>>> {
@@ -167,6 +167,7 @@ StreamGeneratorImpl<Generator, folly::coro::AsyncGenerator<Element>>::create(
       iter = co_await g.begin();
       started = true;
     } else {
+      DCHECK(iter != g.end());
       co_await(++iter);
     }
     folly::Optional<std::decay_t<Element>> res;

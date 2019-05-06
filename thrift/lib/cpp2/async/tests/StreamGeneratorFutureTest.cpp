@@ -371,6 +371,34 @@ TEST(StreamGeneratorFutureTest, AsyncGeneratorToStream2) {
       .futureJoin()
       .get();
 }
+
+TEST(StreamGeneratorFutureTest, lambdaGaptureVariable) {
+  folly::ScopedEventBaseThread th;
+  std::string t = "test";
+  Stream<std::string> stream = StreamGenerator::create(
+      folly::getKeepAliveToken(th.getEventBase()),
+      [&, t = std::move(t) ]() mutable
+      -> folly::coro::AsyncGenerator<std::string&&> {
+        co_yield std::move(t);
+        co_return;
+      });
+
+  int expected_i = 0;
+  std::string result;
+  std::move(stream)
+      .subscribe(
+          [&](std::string t) { result = t; },
+          [](folly::exception_wrapper ex) {
+            CHECK(false) << "on Error " << ex.what();
+          },
+          [&] {},
+          2)
+      .futureJoin()
+      .get();
+
+  EXPECT_EQ("test", result);
+}
+
 #endif
 
 } // namespace thrift
