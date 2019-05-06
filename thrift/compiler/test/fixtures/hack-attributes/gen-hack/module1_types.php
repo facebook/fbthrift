@@ -127,12 +127,12 @@ class MySecondThriftStruct implements \IThriftStruct {
     1 => dict[
       'var' => 'foo',
       'type' => \TType::I32,
-      'enum' => '\test\fixtures\jsenum\MyThriftEnum',
+      'enum' => \test\fixtures\jsenum\MyThriftEnum::class,
     ],
     2 => dict[
       'var' => 'bar',
       'type' => \TType::STRUCT,
-      'class' => '\test\fixtures\jsenum\MyThriftStruct',
+      'class' => \test\fixtures\jsenum\MyThriftStruct::class,
     ],
     3 => dict[
       'var' => 'baz',
@@ -148,12 +148,12 @@ class MySecondThriftStruct implements \IThriftStruct {
     1 => shape(
       'var' => 'foo',
       'type' => \TType::I32,
-      'enum' => '\test\fixtures\jsenum\MyThriftEnum',
+      'enum' => \test\fixtures\jsenum\MyThriftEnum::class,
     ),
     2 => shape(
       'var' => 'bar',
       'type' => \TType::STRUCT,
-      'class' => '\test\fixtures\jsenum\MyThriftStruct',
+      'class' => \test\fixtures\jsenum\MyThriftStruct::class,
     ),
     3 => shape(
       'var' => 'baz',

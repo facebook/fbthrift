@@ -79,7 +79,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     1 => dict[
       'var' => 'just_an_A',
       'type' => \TType::STRUCT,
-      'class' => 'A',
+      'class' => A::class,
     ],
     2 => dict[
       'var' => 'set_of_i32',
@@ -131,7 +131,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
       ],
       'val' => dict[
         'type' => \TType::STRUCT,
-        'class' => 'A',
+        'class' => A::class,
       ],
       'format' => 'collection',
     ],
@@ -166,7 +166,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
         'etype' => \TType::STRUCT,
         'elem' => dict[
           'type' => \TType::STRUCT,
-          'class' => 'A',
+          'class' => A::class,
         ],
         'format' => 'collection',
       ],
@@ -229,7 +229,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
         ],
         'val' => dict[
           'type' => \TType::STRUCT,
-          'class' => 'A',
+          'class' => A::class,
         ],
         'format' => 'collection',
       ],
@@ -265,7 +265,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
           'etype' => \TType::STRUCT,
           'elem' => dict[
             'type' => \TType::STRUCT,
-            'class' => 'A',
+            'class' => A::class,
           ],
           'format' => 'collection',
         ],
@@ -286,7 +286,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
         ],
         'val' => dict[
           'type' => \TType::STRUCT,
-          'class' => 'A',
+          'class' => A::class,
         ],
         'format' => 'collection',
       ],
@@ -298,7 +298,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
       'etype' => \TType::STRUCT,
       'elem' => dict[
         'type' => \TType::STRUCT,
-        'class' => 'B',
+        'class' => B::class,
       ],
       'format' => 'collection',
     ],
@@ -312,14 +312,14 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
       ],
       'val' => dict[
         'type' => \TType::STRUCT,
-        'class' => 'B',
+        'class' => B::class,
       ],
       'format' => 'collection',
     ],
     51 => dict[
       'var' => 'optional_just_an_A',
       'type' => \TType::STRUCT,
-      'class' => 'A',
+      'class' => A::class,
     ],
     52 => dict[
       'var' => 'optional_set_of_i32',
@@ -371,7 +371,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
       ],
       'val' => dict[
         'type' => \TType::STRUCT,
-        'class' => 'A',
+        'class' => A::class,
       ],
       'format' => 'collection',
     ],
@@ -406,7 +406,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
         'etype' => \TType::STRUCT,
         'elem' => dict[
           'type' => \TType::STRUCT,
-          'class' => 'A',
+          'class' => A::class,
         ],
         'format' => 'collection',
       ],
@@ -462,7 +462,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     1 => shape(
       'var' => 'just_an_A',
       'type' => \TType::STRUCT,
-      'class' => 'A',
+      'class' => A::class,
     ),
     2 => shape(
       'var' => 'set_of_i32',
@@ -514,7 +514,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
       ),
       'val' => shape(
         'type' => \TType::STRUCT,
-        'class' => 'A',
+        'class' => A::class,
       ),
       'format' => 'collection',
     ),
@@ -549,7 +549,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
         'etype' => \TType::STRUCT,
         'elem' => shape(
           'type' => \TType::STRUCT,
-          'class' => 'A',
+          'class' => A::class,
         ),
         'format' => 'collection',
       ),
@@ -612,7 +612,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
         ),
         'val' => shape(
           'type' => \TType::STRUCT,
-          'class' => 'A',
+          'class' => A::class,
         ),
         'format' => 'collection',
       ),
@@ -648,7 +648,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
           'etype' => \TType::STRUCT,
           'elem' => shape(
             'type' => \TType::STRUCT,
-            'class' => 'A',
+            'class' => A::class,
           ),
           'format' => 'collection',
         ),
@@ -669,7 +669,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
         ),
         'val' => shape(
           'type' => \TType::STRUCT,
-          'class' => 'A',
+          'class' => A::class,
         ),
         'format' => 'collection',
       ),
@@ -681,7 +681,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
       'etype' => \TType::STRUCT,
       'elem' => shape(
         'type' => \TType::STRUCT,
-        'class' => 'B',
+        'class' => B::class,
       ),
       'format' => 'collection',
     ),
@@ -695,14 +695,14 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
       ),
       'val' => shape(
         'type' => \TType::STRUCT,
-        'class' => 'B',
+        'class' => B::class,
       ),
       'format' => 'collection',
     ),
     51 => shape(
       'var' => 'optional_just_an_A',
       'type' => \TType::STRUCT,
-      'class' => 'A',
+      'class' => A::class,
     ),
     52 => shape(
       'var' => 'optional_set_of_i32',
@@ -754,7 +754,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
       ),
       'val' => shape(
         'type' => \TType::STRUCT,
-        'class' => 'A',
+        'class' => A::class,
       ),
       'format' => 'collection',
     ),
@@ -789,7 +789,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
         'etype' => \TType::STRUCT,
         'elem' => shape(
           'type' => \TType::STRUCT,
-          'class' => 'A',
+          'class' => A::class,
         ),
         'format' => 'collection',
       ),

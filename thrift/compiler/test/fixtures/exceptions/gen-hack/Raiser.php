@@ -794,17 +794,17 @@ class Raiser_doRaise_result implements \IThriftStruct {
     1 => dict[
       'var' => 'b',
       'type' => \TType::STRUCT,
-      'class' => 'Banal',
+      'class' => Banal::class,
     ],
     2 => dict[
       'var' => 'f',
       'type' => \TType::STRUCT,
-      'class' => 'Fiery',
+      'class' => Fiery::class,
     ],
     3 => dict[
       'var' => 's',
       'type' => \TType::STRUCT,
-      'class' => 'Serious',
+      'class' => Serious::class,
     ],
   ];
   public static Map<string, int> $_TFIELDMAP = Map {
@@ -816,17 +816,17 @@ class Raiser_doRaise_result implements \IThriftStruct {
     1 => shape(
       'var' => 'b',
       'type' => \TType::STRUCT,
-      'class' => 'Banal',
+      'class' => Banal::class,
     ),
     2 => shape(
       'var' => 'f',
       'type' => \TType::STRUCT,
-      'class' => 'Fiery',
+      'class' => Fiery::class,
     ),
     3 => shape(
       'var' => 's',
       'type' => \TType::STRUCT,
-      'class' => 'Serious',
+      'class' => Serious::class,
     ),
   ];
   const dict<string, int> FIELDMAP = dict[
@@ -940,17 +940,17 @@ class Raiser_get500_result implements \IThriftStruct {
     1 => dict[
       'var' => 'f',
       'type' => \TType::STRUCT,
-      'class' => 'Fiery',
+      'class' => Fiery::class,
     ],
     2 => dict[
       'var' => 'b',
       'type' => \TType::STRUCT,
-      'class' => 'Banal',
+      'class' => Banal::class,
     ],
     3 => dict[
       'var' => 's',
       'type' => \TType::STRUCT,
-      'class' => 'Serious',
+      'class' => Serious::class,
     ],
   ];
   public static Map<string, int> $_TFIELDMAP = Map {
@@ -967,17 +967,17 @@ class Raiser_get500_result implements \IThriftStruct {
     1 => shape(
       'var' => 'f',
       'type' => \TType::STRUCT,
-      'class' => 'Fiery',
+      'class' => Fiery::class,
     ),
     2 => shape(
       'var' => 'b',
       'type' => \TType::STRUCT,
-      'class' => 'Banal',
+      'class' => Banal::class,
     ),
     3 => shape(
       'var' => 's',
       'type' => \TType::STRUCT,
-      'class' => 'Serious',
+      'class' => Serious::class,
     ),
   ];
   const dict<string, int> FIELDMAP = dict[

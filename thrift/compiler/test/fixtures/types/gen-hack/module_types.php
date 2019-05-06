@@ -648,12 +648,12 @@ class MyStructWithForwardRefEnum implements \IThriftStruct {
     1 => dict[
       'var' => 'a',
       'type' => \TType::I32,
-      'enum' => 'MyForwardRefEnum',
+      'enum' => MyForwardRefEnum::class,
     ],
     2 => dict[
       'var' => 'b',
       'type' => \TType::I32,
-      'enum' => 'MyForwardRefEnum',
+      'enum' => MyForwardRefEnum::class,
     ],
   ];
   public static Map<string, int> $_TFIELDMAP = Map {
@@ -664,12 +664,12 @@ class MyStructWithForwardRefEnum implements \IThriftStruct {
     1 => shape(
       'var' => 'a',
       'type' => \TType::I32,
-      'enum' => 'MyForwardRefEnum',
+      'enum' => MyForwardRefEnum::class,
     ),
     2 => shape(
       'var' => 'b',
       'type' => \TType::I32,
-      'enum' => 'MyForwardRefEnum',
+      'enum' => MyForwardRefEnum::class,
     ),
   ];
   const dict<string, int> FIELDMAP = dict[
@@ -823,7 +823,7 @@ class TrivialNestedWithDefault implements \IThriftStruct {
     2 => dict[
       'var' => 'n',
       'type' => \TType::STRUCT,
-      'class' => 'TrivialNumeric',
+      'class' => TrivialNumeric::class,
     ],
   ];
   public static Map<string, int> $_TFIELDMAP = Map {
@@ -838,7 +838,7 @@ class TrivialNestedWithDefault implements \IThriftStruct {
     2 => shape(
       'var' => 'n',
       'type' => \TType::STRUCT,
-      'class' => 'TrivialNumeric',
+      'class' => TrivialNumeric::class,
     ),
   ];
   const dict<string, int> FIELDMAP = dict[
@@ -1023,7 +1023,7 @@ class ComplexNestedWithDefault implements \IThriftStruct {
     2 => dict[
       'var' => 'n',
       'type' => \TType::STRUCT,
-      'class' => 'ComplexString',
+      'class' => ComplexString::class,
     ],
   ];
   public static Map<string, int> $_TFIELDMAP = Map {
@@ -1038,7 +1038,7 @@ class ComplexNestedWithDefault implements \IThriftStruct {
     2 => shape(
       'var' => 'n',
       'type' => \TType::STRUCT,
-      'class' => 'ComplexString',
+      'class' => ComplexString::class,
     ),
   ];
   const dict<string, int> FIELDMAP = dict[
@@ -1295,7 +1295,7 @@ class MyStruct implements \IThriftStruct {
     4 => dict[
       'var' => 'data',
       'type' => \TType::STRUCT,
-      'class' => 'MyDataItem',
+      'class' => MyDataItem::class,
     ],
   ];
   public static Map<string, int> $_TFIELDMAP = Map {
@@ -1320,7 +1320,7 @@ class MyStruct implements \IThriftStruct {
     4 => shape(
       'var' => 'data',
       'type' => \TType::STRUCT,
-      'class' => 'MyDataItem',
+      'class' => MyDataItem::class,
     ),
   ];
   const dict<string, int> FIELDMAP = dict[

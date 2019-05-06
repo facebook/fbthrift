@@ -35,7 +35,7 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
     3 => dict[
       'var' => 'MyDataField',
       'type' => \TType::STRUCT,
-      'class' => 'MyDataItem',
+      'class' => MyDataItem::class,
     ],
     4 => dict[
       'var' => 'major',
@@ -44,7 +44,7 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
     5 => dict[
       'var' => 'myEnum',
       'type' => \TType::I32,
-      'enum' => 'MyEnum',
+      'enum' => MyEnum::class,
     ],
     6 => dict[
       'var' => 'package',
@@ -71,7 +71,7 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
     3 => shape(
       'var' => 'MyDataField',
       'type' => \TType::STRUCT,
-      'class' => 'MyDataItem',
+      'class' => MyDataItem::class,
     ),
     4 => shape(
       'var' => 'major',
@@ -80,7 +80,7 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
     5 => shape(
       'var' => 'myEnum',
       'type' => \TType::I32,
-      'enum' => 'MyEnum',
+      'enum' => MyEnum::class,
     ),
     6 => shape(
       'var' => 'package',

@@ -30,11 +30,11 @@ class BarStruct implements \IThriftStruct, \IThriftShapishStruct {
       'vtype' => \TType::I32,
       'key' => darray[
         'type' => \TType::I32,
-        'enum' => 'FooEnum',
+        'enum' => FooEnum::class,
       ],
       'val' => darray[
         'type' => \TType::I32,
-        'enum' => 'FooEnum',
+        'enum' => FooEnum::class,
       ],
       'format' => 'collection',
     ],
@@ -44,7 +44,7 @@ class BarStruct implements \IThriftStruct, \IThriftShapishStruct {
       'etype' => \TType::I32,
       'elem' => darray[
         'type' => \TType::I32,
-        'enum' => 'FooEnum',
+        'enum' => FooEnum::class,
       ],
       'format' => 'collection',
     ],
@@ -61,11 +61,11 @@ class BarStruct implements \IThriftStruct, \IThriftShapishStruct {
       'vtype' => \TType::I32,
       'key' => shape(
         'type' => \TType::I32,
-        'enum' => 'FooEnum',
+        'enum' => FooEnum::class,
       ),
       'val' => shape(
         'type' => \TType::I32,
-        'enum' => 'FooEnum',
+        'enum' => FooEnum::class,
       ),
       'format' => 'collection',
     ),
@@ -75,7 +75,7 @@ class BarStruct implements \IThriftStruct, \IThriftShapishStruct {
       'etype' => \TType::I32,
       'elem' => shape(
         'type' => \TType::I32,
-        'enum' => 'FooEnum',
+        'enum' => FooEnum::class,
       ),
       'format' => 'collection',
     ),

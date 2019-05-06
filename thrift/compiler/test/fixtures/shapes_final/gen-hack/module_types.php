@@ -335,7 +335,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     1 => dict[
       'var' => 'just_an_A',
       'type' => \TType::STRUCT,
-      'class' => '\test\fixtures\A',
+      'class' => \test\fixtures\A::class,
     ],
     2 => dict[
       'var' => 'set_of_i32',
@@ -387,7 +387,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
       ],
       'val' => dict[
         'type' => \TType::STRUCT,
-        'class' => '\test\fixtures\A',
+        'class' => \test\fixtures\A::class,
       ],
       'format' => 'collection',
     ],
@@ -422,7 +422,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
         'etype' => \TType::STRUCT,
         'elem' => dict[
           'type' => \TType::STRUCT,
-          'class' => '\test\fixtures\A',
+          'class' => \test\fixtures\A::class,
         ],
         'format' => 'collection',
       ],
@@ -485,7 +485,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
         ],
         'val' => dict[
           'type' => \TType::STRUCT,
-          'class' => '\test\fixtures\A',
+          'class' => \test\fixtures\A::class,
         ],
         'format' => 'collection',
       ],
@@ -521,7 +521,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
           'etype' => \TType::STRUCT,
           'elem' => dict[
             'type' => \TType::STRUCT,
-            'class' => '\test\fixtures\A',
+            'class' => \test\fixtures\A::class,
           ],
           'format' => 'collection',
         ],
@@ -542,7 +542,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
         ],
         'val' => dict[
           'type' => \TType::STRUCT,
-          'class' => '\test\fixtures\A',
+          'class' => \test\fixtures\A::class,
         ],
         'format' => 'collection',
       ],
@@ -554,7 +554,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
       'etype' => \TType::STRUCT,
       'elem' => dict[
         'type' => \TType::STRUCT,
-        'class' => '\test\fixtures\B',
+        'class' => \test\fixtures\B::class,
       ],
       'format' => 'collection',
     ],
@@ -568,24 +568,24 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
       ],
       'val' => dict[
         'type' => \TType::STRUCT,
-        'class' => '\test\fixtures\B',
+        'class' => \test\fixtures\B::class,
       ],
       'format' => 'collection',
     ],
     17 => dict[
       'var' => 'just_an_enum',
       'type' => \TType::I32,
-      'enum' => '\test\fixtures\Enum',
+      'enum' => \test\fixtures\Enum::class,
     ],
     18 => dict[
       'var' => 'just_a_union',
       'type' => \TType::STRUCT,
-      'class' => '\test\fixtures\Union',
+      'class' => \test\fixtures\Union::class,
     ],
     51 => dict[
       'var' => 'optional_just_an_A',
       'type' => \TType::STRUCT,
-      'class' => '\test\fixtures\A',
+      'class' => \test\fixtures\A::class,
     ],
     52 => dict[
       'var' => 'optional_set_of_i32',
@@ -637,7 +637,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
       ],
       'val' => dict[
         'type' => \TType::STRUCT,
-        'class' => '\test\fixtures\A',
+        'class' => \test\fixtures\A::class,
       ],
       'format' => 'collection',
     ],
@@ -672,7 +672,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
         'etype' => \TType::STRUCT,
         'elem' => dict[
           'type' => \TType::STRUCT,
-          'class' => '\test\fixtures\A',
+          'class' => \test\fixtures\A::class,
         ],
         'format' => 'collection',
       ],
@@ -699,12 +699,12 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     60 => dict[
       'var' => 'optional_enum',
       'type' => \TType::I32,
-      'enum' => '\test\fixtures\Enum',
+      'enum' => \test\fixtures\Enum::class,
     ],
     70 => dict[
       'var' => 'required_enum_with_default',
       'type' => \TType::I32,
-      'enum' => '\test\fixtures\Enum',
+      'enum' => \test\fixtures\Enum::class,
     ],
     80 => dict[
       'var' => 'string_with_default_value',
@@ -721,12 +721,12 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     83 => dict[
       'var' => 'enum_with_default_value',
       'type' => \TType::I32,
-      'enum' => '\test\fixtures\Enum',
+      'enum' => \test\fixtures\Enum::class,
     ],
     84 => dict[
       'var' => 'A_with_default_value',
       'type' => \TType::STRUCT,
-      'class' => '\test\fixtures\A',
+      'class' => \test\fixtures\A::class,
     ],
     85 => dict[
       'var' => 'set_of_i32_with_default_value',
@@ -822,7 +822,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     1 => shape(
       'var' => 'just_an_A',
       'type' => \TType::STRUCT,
-      'class' => '\test\fixtures\A',
+      'class' => \test\fixtures\A::class,
     ),
     2 => shape(
       'var' => 'set_of_i32',
@@ -874,7 +874,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
       ),
       'val' => shape(
         'type' => \TType::STRUCT,
-        'class' => '\test\fixtures\A',
+        'class' => \test\fixtures\A::class,
       ),
       'format' => 'collection',
     ),
@@ -909,7 +909,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
         'etype' => \TType::STRUCT,
         'elem' => shape(
           'type' => \TType::STRUCT,
-          'class' => '\test\fixtures\A',
+          'class' => \test\fixtures\A::class,
         ),
         'format' => 'collection',
       ),
@@ -972,7 +972,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
         ),
         'val' => shape(
           'type' => \TType::STRUCT,
-          'class' => '\test\fixtures\A',
+          'class' => \test\fixtures\A::class,
         ),
         'format' => 'collection',
       ),
@@ -1008,7 +1008,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
           'etype' => \TType::STRUCT,
           'elem' => shape(
             'type' => \TType::STRUCT,
-            'class' => '\test\fixtures\A',
+            'class' => \test\fixtures\A::class,
           ),
           'format' => 'collection',
         ),
@@ -1029,7 +1029,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
         ),
         'val' => shape(
           'type' => \TType::STRUCT,
-          'class' => '\test\fixtures\A',
+          'class' => \test\fixtures\A::class,
         ),
         'format' => 'collection',
       ),
@@ -1041,7 +1041,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
       'etype' => \TType::STRUCT,
       'elem' => shape(
         'type' => \TType::STRUCT,
-        'class' => '\test\fixtures\B',
+        'class' => \test\fixtures\B::class,
       ),
       'format' => 'collection',
     ),
@@ -1055,24 +1055,24 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
       ),
       'val' => shape(
         'type' => \TType::STRUCT,
-        'class' => '\test\fixtures\B',
+        'class' => \test\fixtures\B::class,
       ),
       'format' => 'collection',
     ),
     17 => shape(
       'var' => 'just_an_enum',
       'type' => \TType::I32,
-      'enum' => '\test\fixtures\Enum',
+      'enum' => \test\fixtures\Enum::class,
     ),
     18 => shape(
       'var' => 'just_a_union',
       'type' => \TType::STRUCT,
-      'class' => '\test\fixtures\Union',
+      'class' => \test\fixtures\Union::class,
     ),
     51 => shape(
       'var' => 'optional_just_an_A',
       'type' => \TType::STRUCT,
-      'class' => '\test\fixtures\A',
+      'class' => \test\fixtures\A::class,
     ),
     52 => shape(
       'var' => 'optional_set_of_i32',
@@ -1124,7 +1124,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
       ),
       'val' => shape(
         'type' => \TType::STRUCT,
-        'class' => '\test\fixtures\A',
+        'class' => \test\fixtures\A::class,
       ),
       'format' => 'collection',
     ),
@@ -1159,7 +1159,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
         'etype' => \TType::STRUCT,
         'elem' => shape(
           'type' => \TType::STRUCT,
-          'class' => '\test\fixtures\A',
+          'class' => \test\fixtures\A::class,
         ),
         'format' => 'collection',
       ),
@@ -1186,12 +1186,12 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     60 => shape(
       'var' => 'optional_enum',
       'type' => \TType::I32,
-      'enum' => '\test\fixtures\Enum',
+      'enum' => \test\fixtures\Enum::class,
     ),
     70 => shape(
       'var' => 'required_enum_with_default',
       'type' => \TType::I32,
-      'enum' => '\test\fixtures\Enum',
+      'enum' => \test\fixtures\Enum::class,
     ),
     80 => shape(
       'var' => 'string_with_default_value',
@@ -1208,12 +1208,12 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     83 => shape(
       'var' => 'enum_with_default_value',
       'type' => \TType::I32,
-      'enum' => '\test\fixtures\Enum',
+      'enum' => \test\fixtures\Enum::class,
     ),
     84 => shape(
       'var' => 'A_with_default_value',
       'type' => \TType::STRUCT,
-      'class' => '\test\fixtures\A',
+      'class' => \test\fixtures\A::class,
     ),
     85 => shape(
       'var' => 'set_of_i32_with_default_value',

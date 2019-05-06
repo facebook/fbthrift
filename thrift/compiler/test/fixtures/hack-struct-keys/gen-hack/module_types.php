@@ -67,7 +67,7 @@ class Bar implements \IThriftStruct {
       'etype' => \TType::STRUCT,
       'elem' => dict[
         'type' => \TType::STRUCT,
-        'class' => 'Foo',
+        'class' => Foo::class,
       ],
       'format' => 'collection',
     ],
@@ -78,7 +78,7 @@ class Bar implements \IThriftStruct {
       'vtype' => \TType::I32,
       'key' => dict[
         'type' => \TType::STRUCT,
-        'class' => 'Foo',
+        'class' => Foo::class,
       ],
       'val' => dict[
         'type' => \TType::I32,
@@ -97,7 +97,7 @@ class Bar implements \IThriftStruct {
       'etype' => \TType::STRUCT,
       'elem' => shape(
         'type' => \TType::STRUCT,
-        'class' => 'Foo',
+        'class' => Foo::class,
       ),
       'format' => 'collection',
     ),
@@ -108,7 +108,7 @@ class Bar implements \IThriftStruct {
       'vtype' => \TType::I32,
       'key' => shape(
         'type' => \TType::STRUCT,
-        'class' => 'Foo',
+        'class' => Foo::class,
       ),
       'val' => shape(
         'type' => \TType::I32,

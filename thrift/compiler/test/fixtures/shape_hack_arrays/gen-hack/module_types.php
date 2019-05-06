@@ -153,7 +153,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
       ],
       'val' => dict[
         'type' => \TType::STRUCT,
-        'class' => 'A',
+        'class' => A::class,
       ],
       'format' => 'harray',
     ],
@@ -167,7 +167,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
       ],
       'val' => dict[
         'type' => \TType::STRUCT,
-        'class' => 'B',
+        'class' => B::class,
       ],
       'format' => 'harray',
     ],
@@ -184,7 +184,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
         'etype' => \TType::STRUCT,
         'elem' => dict[
           'type' => \TType::STRUCT,
-          'class' => 'A',
+          'class' => A::class,
         ],
         'format' => 'harray',
       ],
@@ -229,7 +229,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
         ],
         'val' => dict[
           'type' => \TType::STRUCT,
-          'class' => 'A',
+          'class' => A::class,
         ],
         'format' => 'harray',
       ],
@@ -257,7 +257,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
         ],
         'val' => dict[
           'type' => \TType::STRUCT,
-          'class' => 'A',
+          'class' => A::class,
         ],
         'format' => 'harray',
       ],
@@ -269,7 +269,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
       'etype' => \TType::STRUCT,
       'elem' => dict[
         'type' => \TType::STRUCT,
-        'class' => 'B',
+        'class' => B::class,
       ],
       'format' => 'harray',
     ],
@@ -282,7 +282,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
         'etype' => \TType::STRUCT,
         'elem' => dict[
           'type' => \TType::STRUCT,
-          'class' => 'B',
+          'class' => B::class,
         ],
         'format' => 'harray',
       ],
@@ -304,7 +304,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
           'etype' => \TType::STRUCT,
           'elem' => dict[
             'type' => \TType::STRUCT,
-            'class' => 'A',
+            'class' => A::class,
           ],
           'format' => 'harray',
         ],
@@ -364,7 +364,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
       ),
       'val' => shape(
         'type' => \TType::STRUCT,
-        'class' => 'A',
+        'class' => A::class,
       ),
       'format' => 'harray',
     ),
@@ -378,7 +378,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
       ),
       'val' => shape(
         'type' => \TType::STRUCT,
-        'class' => 'B',
+        'class' => B::class,
       ),
       'format' => 'harray',
     ),
@@ -395,7 +395,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
         'etype' => \TType::STRUCT,
         'elem' => shape(
           'type' => \TType::STRUCT,
-          'class' => 'A',
+          'class' => A::class,
         ),
         'format' => 'harray',
       ),
@@ -440,7 +440,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
         ),
         'val' => shape(
           'type' => \TType::STRUCT,
-          'class' => 'A',
+          'class' => A::class,
         ),
         'format' => 'harray',
       ),
@@ -468,7 +468,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
         ),
         'val' => shape(
           'type' => \TType::STRUCT,
-          'class' => 'A',
+          'class' => A::class,
         ),
         'format' => 'harray',
       ),
@@ -480,7 +480,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
       'etype' => \TType::STRUCT,
       'elem' => shape(
         'type' => \TType::STRUCT,
-        'class' => 'B',
+        'class' => B::class,
       ),
       'format' => 'harray',
     ),
@@ -493,7 +493,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
         'etype' => \TType::STRUCT,
         'elem' => shape(
           'type' => \TType::STRUCT,
-          'class' => 'B',
+          'class' => B::class,
         ),
         'format' => 'harray',
       ),
@@ -515,7 +515,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
           'etype' => \TType::STRUCT,
           'elem' => shape(
             'type' => \TType::STRUCT,
-            'class' => 'A',
+            'class' => A::class,
           ),
           'format' => 'harray',
         ),
@@ -882,7 +882,7 @@ class C implements \IThriftStruct, \IThriftShapishStruct {
       ],
       'val' => dict[
         'type' => \TType::STRUCT,
-        'class' => 'A',
+        'class' => A::class,
       ],
       'format' => 'harray',
     ],
@@ -896,7 +896,7 @@ class C implements \IThriftStruct, \IThriftShapishStruct {
       ],
       'val' => dict[
         'type' => \TType::STRUCT,
-        'class' => 'B',
+        'class' => B::class,
       ],
       'format' => 'harray',
     ],
@@ -913,7 +913,7 @@ class C implements \IThriftStruct, \IThriftShapishStruct {
         'etype' => \TType::STRUCT,
         'elem' => dict[
           'type' => \TType::STRUCT,
-          'class' => 'A',
+          'class' => A::class,
         ],
         'format' => 'harray',
       ],
@@ -958,7 +958,7 @@ class C implements \IThriftStruct, \IThriftShapishStruct {
         ],
         'val' => dict[
           'type' => \TType::STRUCT,
-          'class' => 'A',
+          'class' => A::class,
         ],
         'format' => 'harray',
       ],
@@ -986,7 +986,7 @@ class C implements \IThriftStruct, \IThriftShapishStruct {
         ],
         'val' => dict[
           'type' => \TType::STRUCT,
-          'class' => 'A',
+          'class' => A::class,
         ],
         'format' => 'harray',
       ],
@@ -998,7 +998,7 @@ class C implements \IThriftStruct, \IThriftShapishStruct {
       'etype' => \TType::STRUCT,
       'elem' => dict[
         'type' => \TType::STRUCT,
-        'class' => 'B',
+        'class' => B::class,
       ],
       'format' => 'harray',
     ],
@@ -1011,7 +1011,7 @@ class C implements \IThriftStruct, \IThriftShapishStruct {
         'etype' => \TType::STRUCT,
         'elem' => dict[
           'type' => \TType::STRUCT,
-          'class' => 'B',
+          'class' => B::class,
         ],
         'format' => 'harray',
       ],
@@ -1033,7 +1033,7 @@ class C implements \IThriftStruct, \IThriftShapishStruct {
           'etype' => \TType::STRUCT,
           'elem' => dict[
             'type' => \TType::STRUCT,
-            'class' => 'A',
+            'class' => A::class,
           ],
           'format' => 'harray',
         ],
@@ -1093,7 +1093,7 @@ class C implements \IThriftStruct, \IThriftShapishStruct {
       ),
       'val' => shape(
         'type' => \TType::STRUCT,
-        'class' => 'A',
+        'class' => A::class,
       ),
       'format' => 'harray',
     ),
@@ -1107,7 +1107,7 @@ class C implements \IThriftStruct, \IThriftShapishStruct {
       ),
       'val' => shape(
         'type' => \TType::STRUCT,
-        'class' => 'B',
+        'class' => B::class,
       ),
       'format' => 'harray',
     ),
@@ -1124,7 +1124,7 @@ class C implements \IThriftStruct, \IThriftShapishStruct {
         'etype' => \TType::STRUCT,
         'elem' => shape(
           'type' => \TType::STRUCT,
-          'class' => 'A',
+          'class' => A::class,
         ),
         'format' => 'harray',
       ),
@@ -1169,7 +1169,7 @@ class C implements \IThriftStruct, \IThriftShapishStruct {
         ),
         'val' => shape(
           'type' => \TType::STRUCT,
-          'class' => 'A',
+          'class' => A::class,
         ),
         'format' => 'harray',
       ),
@@ -1197,7 +1197,7 @@ class C implements \IThriftStruct, \IThriftShapishStruct {
         ),
         'val' => shape(
           'type' => \TType::STRUCT,
-          'class' => 'A',
+          'class' => A::class,
         ),
         'format' => 'harray',
       ),
@@ -1209,7 +1209,7 @@ class C implements \IThriftStruct, \IThriftShapishStruct {
       'etype' => \TType::STRUCT,
       'elem' => shape(
         'type' => \TType::STRUCT,
-        'class' => 'B',
+        'class' => B::class,
       ),
       'format' => 'harray',
     ),
@@ -1222,7 +1222,7 @@ class C implements \IThriftStruct, \IThriftShapishStruct {
         'etype' => \TType::STRUCT,
         'elem' => shape(
           'type' => \TType::STRUCT,
-          'class' => 'B',
+          'class' => B::class,
         ),
         'format' => 'harray',
       ),
@@ -1244,7 +1244,7 @@ class C implements \IThriftStruct, \IThriftShapishStruct {
           'etype' => \TType::STRUCT,
           'elem' => shape(
             'type' => \TType::STRUCT,
-            'class' => 'A',
+            'class' => A::class,
           ),
           'format' => 'harray',
         ),

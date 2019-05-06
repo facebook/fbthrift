@@ -248,7 +248,7 @@ class Baz_qux_args implements \IThriftStruct {
       'etype' => \TType::STRUCT,
       'elem' => dict[
         'type' => \TType::STRUCT,
-        'class' => 'Foo',
+        'class' => Foo::class,
       ],
       'format' => 'collection',
     ],
@@ -258,7 +258,7 @@ class Baz_qux_args implements \IThriftStruct {
       'etype' => \TType::STRUCT,
       'elem' => dict[
         'type' => \TType::STRUCT,
-        'class' => 'Bar',
+        'class' => Bar::class,
       ],
       'format' => 'collection',
     ],
@@ -269,7 +269,7 @@ class Baz_qux_args implements \IThriftStruct {
       'vtype' => \TType::STRING,
       'key' => dict[
         'type' => \TType::STRUCT,
-        'class' => 'Foo',
+        'class' => Foo::class,
       ],
       'val' => dict[
         'type' => \TType::STRING,
@@ -289,7 +289,7 @@ class Baz_qux_args implements \IThriftStruct {
       'etype' => \TType::STRUCT,
       'elem' => shape(
         'type' => \TType::STRUCT,
-        'class' => 'Foo',
+        'class' => Foo::class,
       ),
       'format' => 'collection',
     ),
@@ -299,7 +299,7 @@ class Baz_qux_args implements \IThriftStruct {
       'etype' => \TType::STRUCT,
       'elem' => shape(
         'type' => \TType::STRUCT,
-        'class' => 'Bar',
+        'class' => Bar::class,
       ),
       'format' => 'collection',
     ),
@@ -310,7 +310,7 @@ class Baz_qux_args implements \IThriftStruct {
       'vtype' => \TType::STRING,
       'key' => shape(
         'type' => \TType::STRUCT,
-        'class' => 'Foo',
+        'class' => Foo::class,
       ),
       'val' => shape(
         'type' => \TType::STRING,

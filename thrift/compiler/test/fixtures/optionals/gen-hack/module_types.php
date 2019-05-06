@@ -134,7 +134,7 @@ class Vehicle implements \IThriftStruct {
     1 => dict[
       'var' => 'color',
       'type' => \TType::STRUCT,
-      'class' => 'Color',
+      'class' => Color::class,
     ],
     2 => dict[
       'var' => 'licensePlate',
@@ -164,7 +164,7 @@ class Vehicle implements \IThriftStruct {
     1 => shape(
       'var' => 'color',
       'type' => \TType::STRUCT,
-      'class' => 'Color',
+      'class' => Color::class,
     ),
     2 => shape(
       'var' => 'licensePlate',
@@ -263,7 +263,7 @@ class Person implements \IThriftStruct {
     5 => dict[
       'var' => 'favoriteColor',
       'type' => \TType::STRUCT,
-      'class' => 'Color',
+      'class' => Color::class,
     ],
     6 => dict[
       'var' => 'friends',
@@ -285,7 +285,7 @@ class Person implements \IThriftStruct {
       'vtype' => \TType::STRING,
       'key' => dict[
         'type' => \TType::I32,
-        'enum' => 'Animal',
+        'enum' => Animal::class,
       ],
       'val' => dict[
         'type' => \TType::STRING,
@@ -295,7 +295,7 @@ class Person implements \IThriftStruct {
     9 => dict[
       'var' => 'afraidOfAnimal',
       'type' => \TType::I32,
-      'enum' => 'Animal',
+      'enum' => Animal::class,
     ],
     10 => dict[
       'var' => 'vehicles',
@@ -303,7 +303,7 @@ class Person implements \IThriftStruct {
       'etype' => \TType::STRUCT,
       'elem' => dict[
         'type' => \TType::STRUCT,
-        'class' => 'Vehicle',
+        'class' => Vehicle::class,
       ],
       'format' => 'collection',
     ],
@@ -340,7 +340,7 @@ class Person implements \IThriftStruct {
     5 => shape(
       'var' => 'favoriteColor',
       'type' => \TType::STRUCT,
-      'class' => 'Color',
+      'class' => Color::class,
     ),
     6 => shape(
       'var' => 'friends',
@@ -362,7 +362,7 @@ class Person implements \IThriftStruct {
       'vtype' => \TType::STRING,
       'key' => shape(
         'type' => \TType::I32,
-        'enum' => 'Animal',
+        'enum' => Animal::class,
       ),
       'val' => shape(
         'type' => \TType::STRING,
@@ -372,7 +372,7 @@ class Person implements \IThriftStruct {
     9 => shape(
       'var' => 'afraidOfAnimal',
       'type' => \TType::I32,
-      'enum' => 'Animal',
+      'enum' => Animal::class,
     ),
     10 => shape(
       'var' => 'vehicles',
@@ -380,7 +380,7 @@ class Person implements \IThriftStruct {
       'etype' => \TType::STRUCT,
       'elem' => shape(
         'type' => \TType::STRUCT,
-        'class' => 'Vehicle',
+        'class' => Vehicle::class,
       ),
       'format' => 'collection',
     ),

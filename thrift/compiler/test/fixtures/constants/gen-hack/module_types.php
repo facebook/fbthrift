@@ -54,7 +54,7 @@ class Internship implements \IThriftStruct {
     3 => dict[
       'var' => 'employer',
       'type' => \TType::I32,
-      'enum' => 'Company',
+      'enum' => Company::class,
     ],
   ];
   public static Map<string, int> $_TFIELDMAP = Map {
@@ -74,7 +74,7 @@ class Internship implements \IThriftStruct {
     3 => shape(
       'var' => 'employer',
       'type' => \TType::I32,
-      'enum' => 'Company',
+      'enum' => Company::class,
     ),
   ];
   const dict<string, int> FIELDMAP = dict[
@@ -131,7 +131,7 @@ class UnEnumStruct implements \IThriftStruct {
     1 => dict[
       'var' => 'city',
       'type' => \TType::I32,
-      'enum' => 'City',
+      'enum' => City::class,
     ],
   ];
   public static Map<string, int> $_TFIELDMAP = Map {
@@ -141,7 +141,7 @@ class UnEnumStruct implements \IThriftStruct {
     1 => shape(
       'var' => 'city',
       'type' => \TType::I32,
-      'enum' => 'City',
+      'enum' => City::class,
     ),
   ];
   const dict<string, int> FIELDMAP = dict[
@@ -322,7 +322,7 @@ class struct2 implements \IThriftStruct {
     3 => dict[
       'var' => 'c',
       'type' => \TType::STRUCT,
-      'class' => 'struct1',
+      'class' => struct1::class,
     ],
     4 => dict[
       'var' => 'd',
@@ -352,7 +352,7 @@ class struct2 implements \IThriftStruct {
     3 => shape(
       'var' => 'c',
       'type' => \TType::STRUCT,
-      'class' => 'struct1',
+      'class' => struct1::class,
     ),
     4 => shape(
       'var' => 'd',
@@ -437,7 +437,7 @@ class struct3 implements \IThriftStruct {
     3 => dict[
       'var' => 'c',
       'type' => \TType::STRUCT,
-      'class' => 'struct2',
+      'class' => struct2::class,
     ],
   ];
   public static Map<string, int> $_TFIELDMAP = Map {
@@ -457,7 +457,7 @@ class struct3 implements \IThriftStruct {
     3 => shape(
       'var' => 'c',
       'type' => \TType::STRUCT,
-      'class' => 'struct2',
+      'class' => struct2::class,
     ),
   ];
   const dict<string, int> FIELDMAP = dict[
@@ -644,13 +644,13 @@ class union2 implements \IThriftStruct, \IThriftUnion<union2Enum> {
       'var' => 's',
       'union' => true,
       'type' => \TType::STRUCT,
-      'class' => 'struct1',
+      'class' => struct1::class,
     ],
     4 => dict[
       'var' => 'u',
       'union' => true,
       'type' => \TType::STRUCT,
-      'class' => 'union1',
+      'class' => union1::class,
     ],
   ];
   public static Map<string, int> $_TFIELDMAP = Map {
@@ -674,13 +674,13 @@ class union2 implements \IThriftStruct, \IThriftUnion<union2Enum> {
       'var' => 's',
       'union' => true,
       'type' => \TType::STRUCT,
-      'class' => 'struct1',
+      'class' => struct1::class,
     ),
     4 => shape(
       'var' => 'u',
       'union' => true,
       'type' => \TType::STRUCT,
-      'class' => 'union1',
+      'class' => union1::class,
     ),
   ];
   const dict<string, int> FIELDMAP = dict[

@@ -166,7 +166,7 @@ class Baz extends \TException implements \IThriftStruct {
     2 => darray[
       'var' => 'some_field',
       'type' => \TType::STRUCT,
-      'class' => 'Foo',
+      'class' => Foo::class,
     ],
     3 => darray[
       'var' => 'some_container',
@@ -196,7 +196,7 @@ class Baz extends \TException implements \IThriftStruct {
     2 => shape(
       'var' => 'some_field',
       'type' => \TType::STRUCT,
-      'class' => 'Foo',
+      'class' => Foo::class,
     ),
     3 => shape(
       'var' => 'some_container',

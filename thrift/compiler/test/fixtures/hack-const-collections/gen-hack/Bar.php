@@ -376,7 +376,7 @@ class Bar_baz_args implements \IThriftStruct {
     4 => dict[
       'var' => 'd',
       'type' => \TType::STRUCT,
-      'class' => 'Foo',
+      'class' => Foo::class,
     ],
     5 => dict[
       'var' => 'e',
@@ -430,7 +430,7 @@ class Bar_baz_args implements \IThriftStruct {
     4 => shape(
       'var' => 'd',
       'type' => \TType::STRUCT,
-      'class' => 'Foo',
+      'class' => Foo::class,
     ),
     5 => shape(
       'var' => 'e',

@@ -803,13 +803,13 @@ class ValUnion implements \IThriftStruct, \IThriftUnion<ValUnionEnum> {
       'var' => 'v1',
       'union' => true,
       'type' => \TType::STRUCT,
-      'class' => 'Val',
+      'class' => Val::class,
     ],
     2 => dict[
       'var' => 'v2',
       'union' => true,
       'type' => \TType::STRUCT,
-      'class' => 'Val',
+      'class' => Val::class,
     ],
   ];
   public static Map<string, int> $_TFIELDMAP = Map {
@@ -821,13 +821,13 @@ class ValUnion implements \IThriftStruct, \IThriftUnion<ValUnionEnum> {
       'var' => 'v1',
       'union' => true,
       'type' => \TType::STRUCT,
-      'class' => 'Val',
+      'class' => Val::class,
     ),
     2 => shape(
       'var' => 'v2',
       'union' => true,
       'type' => \TType::STRUCT,
-      'class' => 'Val',
+      'class' => Val::class,
     ),
   ];
   const dict<string, int> FIELDMAP = dict[

@@ -47,7 +47,7 @@ class Internship implements \IThriftStruct {
     3 => dict[
       'var' => 'employer',
       'type' => \TType::I32,
-      'enum' => 'Company',
+      'enum' => Company::class,
     ],
   ];
   public static Map<string, int> $_TFIELDMAP = Map {
@@ -67,7 +67,7 @@ class Internship implements \IThriftStruct {
     3 => shape(
       'var' => 'employer',
       'type' => \TType::I32,
-      'enum' => 'Company',
+      'enum' => Company::class,
     ),
   ];
   const dict<string, int> FIELDMAP = dict[

@@ -898,7 +898,7 @@ class NewStructureNestedField implements \IThriftStruct {
     1 => dict[
       'var' => 'f',
       'type' => \TType::STRUCT,
-      'class' => 'NewStructureNested',
+      'class' => NewStructureNested::class,
     ],
   ];
   public static Map<string, int> $_TFIELDMAP = Map {
@@ -908,7 +908,7 @@ class NewStructureNestedField implements \IThriftStruct {
     1 => shape(
       'var' => 'f',
       'type' => \TType::STRUCT,
-      'class' => 'NewStructureNested',
+      'class' => NewStructureNested::class,
     ),
   ];
   const dict<string, int> FIELDMAP = dict[

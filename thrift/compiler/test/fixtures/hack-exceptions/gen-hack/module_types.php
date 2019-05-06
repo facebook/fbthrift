@@ -30,7 +30,7 @@ class MyException1 extends \TException implements \IThriftStruct {
     2 => dict[
       'var' => 'code',
       'type' => \TType::I32,
-      'enum' => 'MyEnum',
+      'enum' => MyEnum::class,
     ],
   ];
   public static Map<string, int> $_TFIELDMAP = Map {
@@ -45,7 +45,7 @@ class MyException1 extends \TException implements \IThriftStruct {
     2 => shape(
       'var' => 'code',
       'type' => \TType::I32,
-      'enum' => 'MyEnum',
+      'enum' => MyEnum::class,
     ),
   ];
   const dict<string, int> FIELDMAP = dict[
@@ -102,7 +102,7 @@ class MyException2 extends \TException implements \IThriftStruct {
     2 => dict[
       'var' => 'code',
       'type' => \TType::I32,
-      'enum' => 'MyEnum',
+      'enum' => MyEnum::class,
     ],
   ];
   public static Map<string, int> $_TFIELDMAP = Map {
@@ -117,7 +117,7 @@ class MyException2 extends \TException implements \IThriftStruct {
     2 => shape(
       'var' => 'code',
       'type' => \TType::I32,
-      'enum' => 'MyEnum',
+      'enum' => MyEnum::class,
     ),
   ];
   const dict<string, int> FIELDMAP = dict[
@@ -174,7 +174,7 @@ class MyException3 extends \TException implements \IThriftStruct {
     2 => dict[
       'var' => 'code',
       'type' => \TType::I32,
-      'enum' => 'MyEnum',
+      'enum' => MyEnum::class,
     ],
   ];
   public static Map<string, int> $_TFIELDMAP = Map {
@@ -189,7 +189,7 @@ class MyException3 extends \TException implements \IThriftStruct {
     2 => shape(
       'var' => 'code',
       'type' => \TType::I32,
-      'enum' => 'MyEnum',
+      'enum' => MyEnum::class,
     ),
   ];
   const dict<string, int> FIELDMAP = dict[
@@ -246,7 +246,7 @@ class MyException4 extends \TException implements \IThriftStruct {
     2 => dict[
       'var' => 'code',
       'type' => \TType::I32,
-      'enum' => 'MyEnum',
+      'enum' => MyEnum::class,
     ],
   ];
   public static Map<string, int> $_TFIELDMAP = Map {
@@ -261,7 +261,7 @@ class MyException4 extends \TException implements \IThriftStruct {
     2 => shape(
       'var' => 'code',
       'type' => \TType::I32,
-      'enum' => 'MyEnum',
+      'enum' => MyEnum::class,
     ),
   ];
   const dict<string, int> FIELDMAP = dict[
