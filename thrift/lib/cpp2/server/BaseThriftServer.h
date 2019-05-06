@@ -923,6 +923,12 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
   std::shared_ptr<AdmissionStrategy> getAdmissionStrategy() const {
     return admissionStrategy_.get();
   }
+
+  /**
+   * Reflect setup metadata sent from the client on connection establishment.
+   */
+  void onConnectionSetup(
+      std::unique_ptr<RequestSetupMetadata> setupMetadata) override;
 };
 } // namespace thrift
 } // namespace apache

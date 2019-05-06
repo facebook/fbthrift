@@ -111,9 +111,10 @@ void ThriftRocketServerHandler::handleSetupFrame(
   try {
     CompactProtocolReader reader;
     reader.setInput(cursor);
-    RSocketSetupParameters thriftSetupParams;
+    auto meta = std::make_unique<RequestSetupMetadata>();
     // Throws on read error
-    thriftSetupParams.read(&reader);
+    meta->read(&reader);
+    serverConfigs_.onConnectionSetup(std::move(meta));
   } catch (const std::exception& e) {
     return connection.close(folly::make_exception_wrapper<RocketException>(
         ErrorCode::INVALID_SETUP,

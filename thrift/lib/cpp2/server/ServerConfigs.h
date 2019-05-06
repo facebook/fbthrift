@@ -22,6 +22,7 @@
 
 #include <thrift/lib/cpp/server/TServerObserver.h>
 #include <thrift/lib/cpp/transport/THeader.h>
+#include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
 
 namespace apache {
 namespace thrift {
@@ -74,6 +75,13 @@ class ServerConfigs {
   virtual bool isOverloaded(
       const transport::THeader::StringToStringMap* readHeaders,
       const std::string* method) const = 0;
+
+  /**
+   * Add ability for ThriftServer to receive setup parameters from client on
+   * connection establishment.
+   */
+  virtual void onConnectionSetup(
+      std::unique_ptr<RequestSetupMetadata> setupMetadata) = 0;
 
   void incActiveRequests() {
     ++activeRequests_;

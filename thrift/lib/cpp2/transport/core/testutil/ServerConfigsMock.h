@@ -76,6 +76,13 @@ class ServerConfigsMock : public ServerConfigs {
     return false;
   }
 
+  void onConnectionSetup(
+      std::unique_ptr<RequestSetupMetadata> /*setupMetadata*/) override {
+    // TODO: honor the setup metadata sent from the client on connection
+    // establishment
+    return;
+  }
+
  public:
   uint64_t maxResponseSize_{0};
   std::chrono::milliseconds queueTimeout_{std::chrono::milliseconds(500)};

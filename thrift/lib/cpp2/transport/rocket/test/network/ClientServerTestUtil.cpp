@@ -407,7 +407,23 @@ class RocketTestServerAcceptor final : public wangle::Acceptor {
 
 class RocketTestServerHandler : public RocketServerHandler {
  public:
-  void handleSetupFrame(SetupFrame&&, RocketServerFrameContext&&) final {}
+  void handleSetupFrame(SetupFrame&& frame, RocketServerFrameContext&&) final {
+    folly::io::Cursor cursor(frame.payload().metadata().get());
+    // Validate Thrift major/minor version
+    int16_t majorVersion;
+    int16_t minorVersion;
+    const bool success = cursor.tryReadBE<int16_t>(majorVersion) &&
+        cursor.tryReadBE<int16_t>(minorVersion);
+    EXPECT_TRUE(success);
+    EXPECT_EQ(0, majorVersion);
+    EXPECT_EQ(1, minorVersion);
+    // Validate RequestSetupMetadata
+    CompactProtocolReader reader;
+    reader.setInput(cursor);
+    auto meta = std::make_unique<RequestSetupMetadata>();
+    meta->read(&reader);
+    EXPECT_EQ(meta->opaque["rando_key"], "setup_data");
+  }
 
   void handleRequestResponseFrame(
       RequestResponseFrame&& frame,
