@@ -31,9 +31,11 @@ template <typename Generator, typename Element>
 struct StreamGeneratorImpl {
   static Stream<Element> create(
       folly::Executor::KeepAlive<folly::SequencedExecutor>,
-      Generator&&) {
-    LOG(FATAL) << "Returned value should either be folly::Optional<T> or "
-                  "folly::SemiFuture<folly::Optional<T>>";
+      Generator&&,
+      int64_t) {
+    LOG(FATAL) << "Returned value should either be folly::Optional<T>, "
+                  "folly::SemiFuture<folly::Optional<T>> or"
+                  " folly::coro::AsyncGenerator<T?(&|&&)>";
   }
 };
 
@@ -41,7 +43,8 @@ template <typename Generator, typename Element>
 struct StreamGeneratorImpl<Generator, folly::Optional<Element>> {
   static Stream<Element> create(
       folly::Executor::KeepAlive<folly::SequencedExecutor> executor,
-      Generator&& generator);
+      Generator&& generator,
+      int64_t maxBatchSize);
 };
 
 template <typename Generator, typename Element>
@@ -50,7 +53,8 @@ struct StreamGeneratorImpl<
     folly::SemiFuture<folly::Optional<Element>>> {
   static Stream<Element> create(
       folly::Executor::KeepAlive<folly::SequencedExecutor> executor,
-      Generator&& generator);
+      Generator&& generator,
+      int64_t maxBatchSize);
 };
 
 #if FOLLY_HAS_COROUTINES
@@ -58,7 +62,8 @@ template <typename Generator, typename Element>
 struct StreamGeneratorImpl<Generator, folly::coro::AsyncGenerator<Element>> {
   static Stream<std::decay_t<Element>> create(
       folly::Executor::KeepAlive<folly::SequencedExecutor> executor,
-      Generator&& generator);
+      Generator&& generator,
+      int64_t maxBatchSize);
 };
 #endif
 } // namespace detail
@@ -71,10 +76,12 @@ class StreamGenerator {
           typename folly::invoke_result_t<std::decay_t<Generator>&>>
   static auto create(
       folly::Executor::KeepAlive<folly::SequencedExecutor> executor,
-      Generator&& generator) {
+      Generator&& generator,
+      int64_t maxBatchSize = StreamGenerator::kDefaultBatchSize) {
     return detail::StreamGeneratorImpl<Generator, Element>::create(
-        executor, std::forward<Generator>(generator));
+        executor, std::forward<Generator>(generator), maxBatchSize);
   }
+  static constexpr auto kDefaultBatchSize = 100;
 
  private:
   StreamGenerator() = default;

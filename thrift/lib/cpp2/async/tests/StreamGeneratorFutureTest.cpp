@@ -86,6 +86,145 @@ TEST(StreamGeneratorFutureTest, FutureBasic) {
       .get();
 }
 
+TEST(StreamGeneratorFutureTest, FutureLongStreamSmallFanout) {
+  folly::ScopedEventBaseThread th;
+  folly::ScopedEventBaseThread pth;
+  int length = 100;
+  std::vector<folly::Promise<folly::Optional<int>>> vp(length);
+
+  int i = 0;
+  Stream<int> stream = StreamGenerator::create(
+      folly::getKeepAliveToken(th.getEventBase()),
+      [&]() -> folly::SemiFuture<folly::Optional<int>> {
+        if (i < length) {
+          return vp[i++].getSemiFuture();
+        }
+
+        return makeSemiFuture(folly::Optional<int>(folly::none));
+      },
+      10);
+
+  // future fullfilled with intervals
+  for (int i = 0; i < length; i++) {
+    pth.add([&, i]() {
+      pth.getEventBase()->schedule(
+          [&, i]() mutable { vp[i].setValue(i); },
+          std::chrono::milliseconds(i));
+    });
+  }
+
+  int expected_i = 0;
+  std::move(stream)
+      .subscribe(
+          [&](int i) { EXPECT_EQ(expected_i++, i); },
+          [](folly::exception_wrapper) { CHECK(false) << "on Error"; },
+          [&] { EXPECT_EQ(expected_i, length); },
+          50)
+      .futureJoin()
+      .get();
+  EXPECT_EQ(expected_i, length);
+}
+
+TEST(StreamGeneratorFutureTest, FutureThrow) {
+  folly::ScopedEventBaseThread th;
+  folly::ScopedEventBaseThread pth;
+  int length = 10;
+  std::vector<folly::Promise<folly::Optional<int>>> vp(length);
+
+  int i = 0;
+  std::string errorMsg = "error message";
+  Stream<int> stream = StreamGenerator::create(
+      folly::getKeepAliveToken(th.getEventBase()),
+      [&]() -> folly::SemiFuture<folly::Optional<int>> {
+        if (i < length) {
+          return vp[i++].getSemiFuture();
+        }
+        throw std::runtime_error(errorMsg);
+      });
+
+  for (int i = 0; i < length; i++) {
+    pth.add([&vp, i]() { vp[i].setValue(i); });
+  }
+
+  int expected_i = 0;
+  bool onError = false;
+  std::move(stream)
+      .subscribe(
+          [&](int i) { EXPECT_EQ(expected_i++, i); },
+          [&](folly::exception_wrapper ew) {
+            onError = true;
+            EXPECT_EQ(errorMsg, ew.get_exception()->what());
+          },
+          [] {},
+          3)
+      .futureJoin()
+      .get();
+
+  EXPECT_TRUE(onError);
+}
+
+TEST(StreamGeneratorFutureTest, FutureNoFlowControl) {
+  folly::ScopedEventBaseThread th;
+  folly::ScopedEventBaseThread pth;
+  int length = 5;
+  std::vector<folly::Promise<folly::Optional<int>>> vp(length);
+
+  int i = 0;
+  Stream<int> stream = StreamGenerator::create(
+      folly::getKeepAliveToken(th.getEventBase()),
+      [&]() -> folly::SemiFuture<folly::Optional<int>> {
+        if (i < length) {
+          return vp[i++].getSemiFuture();
+        }
+
+        return makeSemiFuture(folly::Optional<int>(folly::none));
+      });
+
+  for (int i = 0; i < length; i++) {
+    pth.add([&vp, i]() { vp[i].setValue(i); });
+  }
+
+  int expected_i = 0;
+  std::move(stream)
+      .subscribe(
+          [&](int i) { EXPECT_EQ(expected_i++, i); },
+          [](folly::exception_wrapper) { CHECK(false) << "on Error"; },
+          [&] { EXPECT_EQ(expected_i, length); },
+          Stream<int>::kNoFlowControl)
+      .futureJoin()
+      .get();
+}
+
+// rely on client's cancel signal to stop the stream
+TEST(StreamGeneratorFutureTest, FutureNoFlowControlNoEnd) {
+  folly::ScopedEventBaseThread th;
+
+  Stream<int> stream = StreamGenerator::create(
+      folly::getKeepAliveToken(th.getEventBase()),
+      [i = 0]() mutable -> folly::SemiFuture<folly::Optional<int>> {
+        return makeSemiFuture(folly::Optional<int>(i++));
+      },
+      10);
+
+  int expected_i = 0;
+  int target = 101;
+  folly::Baton<> b;
+  auto subscription = std::move(stream).subscribe(
+      [&](int i) {
+        if (expected_i == target) {
+          b.post();
+        }
+        EXPECT_EQ(expected_i++, i);
+      },
+      [](folly::exception_wrapper) { CHECK(false) << "on Error"; },
+      [&] {},
+      Stream<int>::kNoFlowControl);
+  b.wait();
+  subscription.cancel();
+  std::move(subscription).join();
+  EXPECT_GE(expected_i, target);
+}
+
 #if FOLLY_HAS_COROUTINES
 TEST(StreamGeneratorFutureTest, CoroGeneratorBasic) {
   folly::ScopedEventBaseThread th;
@@ -253,43 +392,45 @@ TEST(StreamGeneratorFutureTest, CoroGeneratorWithError) {
 }
 
 TEST(StreamGeneratorFutureTest, CoroGeneratorWithCancel) {
-  folly::ScopedEventBaseThread th;
-  folly::ScopedEventBaseThread pth;
   int length = 10;
   std::vector<folly::Promise<folly::Optional<int>>> vp(length);
-
   int i = 0;
-  Stream<int> stream = StreamGenerator::create(
-      folly::getKeepAliveToken(th.getEventBase()),
-      [&]() -> folly::SemiFuture<folly::Optional<int>> {
-        if (i < length) {
-          return vp[i++].getSemiFuture();
-        }
 
-        return makeSemiFuture(folly::Optional<int>(folly::none));
-      });
+  {
+    folly::ScopedEventBaseThread th;
+    folly::ScopedEventBaseThread pth;
+    Stream<int> stream = StreamGenerator::create(
+        folly::getKeepAliveToken(th.getEventBase()),
+        [&]() -> folly::SemiFuture<folly::Optional<int>> {
+          if (i < length) {
+            return vp[i++].getSemiFuture();
+          }
 
-  // intentionally let promised fullfilled in reverse order, but the result
-  // should come back to stream in order
-  for (int i = length - 1; i >= 0; i--) {
-    pth.add([&vp, i]() { vp[i].setValue(i); });
-  }
+          return makeSemiFuture(folly::Optional<int>(folly::none));
+        });
 
-  int expected_i = 0;
-  SemiStream<int> semi = SemiStream<int>(std::move(stream));
-  folly::coro::blockingWait([&]() mutable -> folly::coro::Task<void> {
-    auto gen = toAsyncGenerator<int>(std::move(semi), 5);
-    auto it = co_await gen.begin();
-    int val = 0;
-    while (it != gen.end()) {
-      val = *it;
-      EXPECT_EQ(expected_i++, val);
-      co_await(++it);
-      break;
+    // intentionally let promised fullfilled in reverse order, but the result
+    // should come back to stream in order
+    for (int i = length - 1; i >= 0; i--) {
+      pth.add([&vp, i]() { vp[i].setValue(i); });
     }
-    EXPECT_GT(length, val + 1);
-    // exit coroutine early will send cancel to the stream
-  }());
+
+    int expected_i = 0;
+    SemiStream<int> semi = SemiStream<int>(std::move(stream));
+    folly::coro::blockingWait([&]() mutable -> folly::coro::Task<void> {
+      auto gen = toAsyncGenerator<int>(std::move(semi), 5);
+      auto it = co_await gen.begin();
+      int val = 0;
+      while (it != gen.end()) {
+        val = *it;
+        EXPECT_EQ(expected_i++, val);
+        co_await(++it);
+        break;
+      }
+      EXPECT_GT(length, val + 1);
+      // exit coroutine early will send cancel to the stream
+    }());
+  }
 }
 
 TEST(StreamGeneratorFutureTest, AsyncGeneratorToStreamPrimitiveType) {
@@ -397,6 +538,36 @@ TEST(StreamGeneratorFutureTest, lambdaGaptureVariable) {
       .get();
 
   EXPECT_EQ("test", result);
+}
+
+TEST(StreamGeneratorFutureTest, ShouldNotHaveCoAwaitMoreThanOnce) {
+  folly::ScopedEventBaseThread th;
+  folly::ScopedEventBaseThread pth;
+  int length = 5;
+  std::vector<folly::Promise<int>> vp(length);
+
+  int i = 0;
+  Stream<int> stream = StreamGenerator::create(
+      folly::getKeepAliveToken(th.getEventBase()),
+      [&]() -> folly::coro::AsyncGenerator<int> {
+        while (i < length) {
+          co_yield co_await vp[i++].getSemiFuture();
+        }
+      });
+
+  int expected_i = 0;
+  auto subscription = std::move(stream).subscribe(
+      [&](int i) { EXPECT_EQ(expected_i++, i); },
+      [](folly::exception_wrapper) { CHECK(false) << "on Error"; },
+      [&] { EXPECT_EQ(expected_i, length); },
+      5);
+  // subscribe before fullfill future, expecting co_await on the future will
+  // happen before setValue()
+  for (int i = 0; i < length; i++) {
+    pth.add([&vp, i]() { vp[i].setValue(i); });
+  }
+
+  std::move(subscription).futureJoin().get();
 }
 
 #endif
