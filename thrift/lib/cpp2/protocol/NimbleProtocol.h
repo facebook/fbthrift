@@ -47,6 +47,7 @@ class NimbleProtocolWriter {
   uint32_t writeFieldStop();
   uint32_t writeMapBegin(TType keyType, TType valType, uint32_t size);
   uint32_t writeMapEnd();
+  uint32_t writeCollectionBegin(TType elemType, uint32_t size);
   uint32_t writeListBegin(TType elemType, uint32_t size);
   uint32_t writeListEnd();
   uint32_t writeSetBegin(TType elemType, uint32_t size);

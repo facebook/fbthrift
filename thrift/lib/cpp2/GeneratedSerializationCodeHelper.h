@@ -422,7 +422,8 @@ struct protocol_methods<type_class::list<ElemClass>, Type> {
       // list size unknown, SimpleJSON protocol won't know type, either
       // so let's just hope that it spits out something that makes sense
       // (if it did set reported_type to something known)
-      if (reported_type != protocol::T_STOP &&
+      if (!protocol.kOmitsContainerElemTypes() &&
+          reported_type != protocol::T_STOP &&
           reported_type != elem_methods::ttype_value) {
         apache::thrift::skip_n(protocol, list_size, {reported_type});
       } else {
@@ -433,7 +434,8 @@ struct protocol_methods<type_class::list<ElemClass>, Type> {
         }
       }
     } else {
-      if (reported_type != elem_methods::ttype_value) {
+      if (!protocol.kOmitsContainerElemTypes() &&
+          reported_type != elem_methods::ttype_value) {
         apache::thrift::skip_n(protocol, list_size, {reported_type});
       } else {
         out.resize(list_size);
@@ -503,7 +505,8 @@ struct protocol_methods<type_class::list<ElemClass>, std::list<Type>> {
       // list size unknown, SimpleJSON protocol won't know type, either
       // so let's just hope that it spits out something that makes sense
       // (if it did set reported_type to something known)
-      if (reported_type != protocol::T_STOP &&
+      if (!protocol.kOmitsContainerElemTypes() &&
+          reported_type != protocol::T_STOP &&
           reported_type != elem_methods::ttype_value) {
         apache::thrift::skip_n(protocol, list_size, {reported_type});
       } else {
@@ -512,7 +515,8 @@ struct protocol_methods<type_class::list<ElemClass>, std::list<Type>> {
         }
       }
     } else {
-      if (reported_type != elem_methods::ttype_value) {
+      if (!protocol.kOmitsContainerElemTypes() &&
+          reported_type != elem_methods::ttype_value) {
         apache::thrift::skip_n(protocol, list_size, {reported_type});
       } else {
         while (list_size--) {
@@ -585,7 +589,8 @@ struct protocol_methods<type_class::set<ElemClass>, Type> {
         consume_elem(protocol, out);
       }
     } else {
-      if (reported_type != elem_methods::ttype_value) {
+      if (!protocol.kOmitsContainerElemTypes() &&
+          reported_type != elem_methods::ttype_value) {
         apache::thrift::skip_n(protocol, set_size, {reported_type});
       } else {
         auto const vreader = [&protocol](auto& value) {

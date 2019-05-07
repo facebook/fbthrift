@@ -94,6 +94,49 @@ inline uint32_t NimbleProtocolWriter::writeMapEnd() {
   return 0;
 }
 
+inline uint32_t NimbleProtocolWriter::writeCollectionBegin(
+    TType elemType,
+    uint32_t size) {
+  // TODO: handle list size greater than 2**24
+  // To use the short size encoding, we need the high bit of the resulting
+  // chunk to be 0, and so must fit in 31 bits, including the shift for the
+  // metadata.
+  if (size >= (1U << (31 - kStructyTypeMetadataBits))) {
+    throw std::runtime_error("Not implemented yet");
+  }
+  StructyType structyType = getStructyTypeFromListOrSet(elemType);
+  // The lowest two bits of the fieldChunk is a fieldChunkHint (11) indicating
+  // that this is a complex type. The thrid lowest bit (0) denotes a structy
+  // type. The next 4 bits encode the specific type of the structy field.
+  encoder_.encodeFieldChunk(
+      size << kStructyTypeMetadataBits | structyType << kComplexMetadataBits |
+      ComplexType::STRUCTY << kFieldChunkHintBits |
+      NimbleFieldChunkHint::COMPLEX_TYPE);
+  return 0;
+}
+
+inline uint32_t NimbleProtocolWriter::writeListBegin(
+    TType elemType,
+    uint32_t size) {
+  return writeCollectionBegin(elemType, size);
+}
+
+inline uint32_t NimbleProtocolWriter::writeListEnd() {
+  // this 0 field chunk marks the end of the list
+  encoder_.encodeFieldChunk(0);
+  return 0;
+}
+
+inline uint32_t NimbleProtocolWriter::writeSetBegin(
+    TType elemType,
+    uint32_t size) {
+  return writeCollectionBegin(elemType, size);
+}
+
+inline uint32_t NimbleProtocolWriter::writeSetEnd() {
+  return writeListEnd();
+}
+
 inline uint32_t NimbleProtocolWriter::writeBool(bool value) {
   encode(value);
   return 0;
@@ -302,15 +345,42 @@ inline void NimbleProtocolReader::readMapEnd() {
 
 inline void NimbleProtocolReader::readListBegin(
     TType& /*elemType*/,
-    uint32_t& /*size*/) {}
+    uint32_t& size) {
+  uint32_t nextFieldChunk = decoder_.nextFieldChunk();
+  // sanity check
+  if (UNLIKELY(
+          (nextFieldChunk & 3) != NimbleFieldChunkHint::COMPLEX_TYPE ||
+          (nextFieldChunk >> kFieldChunkHintBits & 1) !=
+              ComplexType::STRUCTY)) {
+    // TODO: handle (skip) malformated data
+    return;
+  }
 
-inline void NimbleProtocolReader::readListEnd() {}
+  // TODO: handle map size greater than 2**24
+  if (nextFieldChunk & (1U << 31)) {
+    throw std::runtime_error("Not implemented yet");
+  }
+  size = nextFieldChunk >> kStructyTypeMetadataBits;
+}
+
+inline void NimbleProtocolReader::readListEnd() {
+  // To consume the fieldChunk 0 which marks the end of the list
+  uint32_t fieldChunk = decoder_.nextFieldChunk();
+  if (UNLIKELY(fieldChunk != 0)) {
+    // TODO: handle malformed data (skip?)
+    throw std::runtime_error("Data is malformed");
+  }
+}
 
 inline void NimbleProtocolReader::readSetBegin(
-    TType& /*elemType*/,
-    uint32_t& /*size*/) {}
+    TType& elemType,
+    uint32_t& size) {
+  readListBegin(elemType, size);
+}
 
-inline void NimbleProtocolReader::readSetEnd() {}
+inline void NimbleProtocolReader::readSetEnd() {
+  readListEnd();
+}
 
 inline void NimbleProtocolReader::readBool(bool& value) {
   decode(value);
