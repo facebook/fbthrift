@@ -60,7 +60,8 @@ struct StreamGeneratorImpl<
 #if FOLLY_HAS_COROUTINES
 template <typename Generator, typename Element>
 struct StreamGeneratorImpl<Generator, folly::coro::AsyncGenerator<Element>> {
-  static Stream<std::decay_t<Element>> create(
+  static Stream<typename folly::coro::AsyncGenerator<Element>::value_type>
+  create(
       folly::Executor::KeepAlive<folly::SequencedExecutor> executor,
       Generator&& generator,
       int64_t maxBatchSize);

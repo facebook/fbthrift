@@ -433,7 +433,7 @@ TEST(StreamGeneratorFutureTest, CoroGeneratorWithCancel) {
   }
 }
 
-TEST(StreamGeneratorFutureTest, AsyncGeneratorToStreamPrimitiveType) {
+TEST(StreamGeneratorFutureTest, CoroAsyncGeneratorIntType) {
   folly::ScopedEventBaseThread th;
   int length = 5;
   int i = 0;
@@ -457,7 +457,7 @@ TEST(StreamGeneratorFutureTest, AsyncGeneratorToStreamPrimitiveType) {
       .get();
 }
 
-TEST(StreamGeneratorFutureTest, AsyncGeneratorToStream) {
+TEST(StreamGeneratorFutureTest, CoroAsyncGeneratorStringType) {
   folly::ScopedEventBaseThread th;
   int length = 5;
   int i = 0;
@@ -481,7 +481,7 @@ TEST(StreamGeneratorFutureTest, AsyncGeneratorToStream) {
       .get();
 }
 
-TEST(StreamGeneratorFutureTest, AsyncGeneratorToStream2) {
+TEST(StreamGeneratorFutureTest, CoroAsyncGeneratorReverseFullfill) {
   folly::ScopedEventBaseThread th;
   folly::ScopedEventBaseThread pth;
   int length = 5;
@@ -513,7 +513,7 @@ TEST(StreamGeneratorFutureTest, AsyncGeneratorToStream2) {
       .get();
 }
 
-TEST(StreamGeneratorFutureTest, lambdaGaptureVariable) {
+TEST(StreamGeneratorFutureTest, CoroAsyncGeneratorLambdaGaptureVariable) {
   folly::ScopedEventBaseThread th;
   std::string t = "test";
   Stream<std::string> stream = StreamGenerator::create(
@@ -568,6 +568,77 @@ TEST(StreamGeneratorFutureTest, ShouldNotHaveCoAwaitMoreThanOnce) {
   }
 
   std::move(subscription).futureJoin().get();
+}
+
+TEST(StreamGeneratorFutureTest, CoroAsyncGeneratorMap) {
+  folly::ScopedEventBaseThread th;
+  folly::ScopedEventBaseThread pth;
+  int length = 5;
+  std::vector<folly::Promise<std::string>> vp(length);
+
+  int i = 0;
+  Stream<int> stream =
+      StreamGenerator::create(
+          folly::getKeepAliveToken(th.getEventBase()),
+          [&]() -> folly::coro::AsyncGenerator<std::string&&> {
+            while (i < length) {
+              co_yield co_await vp[i++].getSemiFuture();
+            }
+          })
+          .map([](std::string s) { return folly::to<int>(s); });
+
+  for (int i = 0; i < length; i++) {
+    pth.add([&vp, i]() { vp[i].setValue(folly::to<std::string>(i)); });
+  }
+
+  int expected_i = 0;
+  std::move(stream)
+      .subscribe(
+          [&](int i) { EXPECT_EQ(expected_i++, i); },
+          [](folly::exception_wrapper) { CHECK(false) << "on Error"; },
+          [&] { EXPECT_EQ(expected_i, length); },
+          2)
+      .futureJoin()
+      .get();
+}
+
+TEST(StreamGeneratorFutureTest, CoroAsyncGeneratorError) {
+  folly::ScopedEventBaseThread th;
+  folly::ScopedEventBaseThread pth;
+  int length = 5;
+  std::vector<folly::Promise<std::string>> vp(length);
+
+  int i = 0;
+  std::string errorMsg = "error message";
+  Stream<int> stream =
+      StreamGenerator::create(
+          folly::getKeepAliveToken(th.getEventBase()),
+          [&]() -> folly::coro::AsyncGenerator<std::string&&> {
+            while (i < length) {
+              co_yield co_await vp[i++].getSemiFuture();
+            }
+            throw std::runtime_error(errorMsg);
+          })
+          .map([](std::string s) { return folly::to<int>(s); });
+
+  for (int i = 0; i < length; i++) {
+    pth.add([&vp, i]() { vp[i].setValue(folly::to<std::string>(i)); });
+  }
+
+  int expected_i = 0;
+  bool getException = false;
+  std::move(stream)
+      .subscribe(
+          [&](int i) { EXPECT_EQ(expected_i++, i); },
+          [&](folly::exception_wrapper ex) {
+            getException = true;
+            EXPECT_EQ(errorMsg, ex.get_exception()->what());
+          },
+          [&] { EXPECT_EQ(expected_i, length); },
+          2)
+      .futureJoin()
+      .get();
+  EXPECT_TRUE(getException);
 }
 
 #endif
