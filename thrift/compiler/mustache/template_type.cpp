@@ -28,7 +28,9 @@ SOFTWARE.
 */
 #include "thrift/compiler/mustache/template_type.h"
 
-using namespace apache::thrift::mstch;
+namespace apache {
+namespace thrift {
+namespace mstch {
 
 template_type::template_type(const std::string& str, const delim_type& delims)
     : m_open(delims.first), m_close(delims.second) {
@@ -137,3 +139,7 @@ void template_type::store_prefixes(std::vector<token>::iterator beg) {
     }
   }
 }
+
+} // namespace mstch
+} // namespace thrift
+} // namespace apache

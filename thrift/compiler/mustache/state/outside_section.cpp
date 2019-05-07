@@ -31,7 +31,9 @@ SOFTWARE.
 #include "thrift/compiler/mustache/state/in_section.h"
 #include "thrift/compiler/mustache/visitor/render_node.h"
 
-using namespace apache::thrift::mstch;
+namespace apache {
+namespace thrift {
+namespace mstch {
 
 std::string outside_section::render(render_context& ctx, const token& token) {
   using flag = render_node::flag;
@@ -43,11 +45,10 @@ std::string outside_section::render(render_context& ctx, const token& token) {
       ctx.set_state<in_section>(in_section::type::inverted, token);
       break;
     case token::type::variable:
-      return mstch::visit(
+      return visit(
           render_node(ctx, flag::escape_html), ctx.get_node(token.name()));
     case token::type::unescaped_variable:
-      return mstch::visit(
-          render_node(ctx, flag::none), ctx.get_node(token.name()));
+      return visit(render_node(ctx, flag::none), ctx.get_node(token.name()));
     case token::type::text:
       return token.raw();
     case token::type::partial:
@@ -57,3 +58,7 @@ std::string outside_section::render(render_context& ctx, const token& token) {
   }
   return "";
 }
+
+} // namespace mstch
+} // namespace thrift
+} // namespace apache

@@ -29,6 +29,8 @@ SOFTWARE.
 #pragma once
 
 #include <boost/variant/apply_visitor.hpp>
+#include <string>
+#include <utility>
 
 namespace apache {
 namespace thrift {

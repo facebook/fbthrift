@@ -29,11 +29,13 @@ SOFTWARE.
 #include "thrift/compiler/mustache/mstch.h"
 #include "thrift/compiler/mustache/render_context.h"
 
-using namespace apache::thrift;
+namespace apache {
+namespace thrift {
+namespace mstch {
 
-std::function<std::string(const std::string&)> mstch::config::escape;
+std::function<std::string(const std::string&)> config::escape;
 
-std::string mstch::render(
+std::string render(
     const std::string& tmplt,
     const node& root,
     const std::map<std::string, std::string>& partials) {
@@ -44,3 +46,7 @@ std::string mstch::render(
 
   return render_context(root, partial_templates).render(tmplt);
 }
+
+} // namespace mstch
+} // namespace thrift
+} // namespace apache

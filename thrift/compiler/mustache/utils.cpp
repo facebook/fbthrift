@@ -29,9 +29,11 @@ SOFTWARE.
 #include "thrift/compiler/mustache/utils.h"
 #include "thrift/compiler/mustache/mstch.h"
 
-using namespace apache::thrift;
+namespace apache {
+namespace thrift {
+namespace mstch {
 
-mstch::citer mstch::first_not_ws(mstch::citer begin, mstch::citer end) {
+citer first_not_ws(citer begin, citer end) {
   for (auto it = begin; it != end; ++it) {
     if (*it != ' ') {
       return it;
@@ -40,7 +42,7 @@ mstch::citer mstch::first_not_ws(mstch::citer begin, mstch::citer end) {
   return end;
 }
 
-mstch::citer mstch::first_not_ws(mstch::criter begin, mstch::criter end) {
+citer first_not_ws(criter begin, criter end) {
   for (auto rit = begin; rit != end; ++rit) {
     if (*rit != ' ') {
       return --(rit.base());
@@ -49,13 +51,13 @@ mstch::citer mstch::first_not_ws(mstch::criter begin, mstch::criter end) {
   return --(end.base());
 }
 
-mstch::criter mstch::reverse(mstch::citer it) {
-  return std::reverse_iterator<mstch::citer>(it);
+criter reverse(citer it) {
+  return std::reverse_iterator<citer>(it);
 }
 
-std::string mstch::html_escape(const std::string& str) {
-  if (mstch::config::escape) {
-    return mstch::config::escape(str);
+std::string html_escape(const std::string& str) {
+  if (config::escape) {
+    return config::escape(str);
   }
 
   std::string out;
@@ -93,3 +95,7 @@ std::string mstch::html_escape(const std::string& str) {
 
   return out + std::string{start, str.end()};
 }
+
+} // namespace mstch
+} // namespace thrift
+} // namespace apache

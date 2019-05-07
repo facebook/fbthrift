@@ -30,11 +30,13 @@ SOFTWARE.
 #include "thrift/compiler/mustache/state/outside_section.h"
 #include "thrift/compiler/mustache/visitor/get_token.h"
 
-using namespace apache::thrift::mstch;
+namespace apache {
+namespace thrift {
+namespace mstch {
 
 const node render_context::null_node;
 
-render_context::push::push(render_context& context, const mstch::node& node)
+render_context::push::push(render_context& context, const node& node)
     : m_context(context) {
   context.m_nodes.emplace_front(node);
   context.m_node_ptrs.emplace_front(&node);
@@ -52,7 +54,7 @@ std::string render_context::push::render(const template_type& templt) {
 }
 
 render_context::render_context(
-    const mstch::node& node,
+    const node& node,
     const std::map<std::string, template_type>& partials)
     : m_partials(partials), m_nodes(1, node), m_node_ptrs(1, &node) {
   m_state.push(std::unique_ptr<render_state>(new outside_section));
@@ -67,8 +69,8 @@ const node& render_context::find_node(
         {&find_node(token.substr(0, token.rfind('.')), current_nodes)});
   } else {
     for (auto& node : current_nodes) {
-      if (mstch::visit(has_token(token), *node)) {
-        return mstch::visit(get_token(token, *node), *node);
+      if (visit(has_token(token), *node)) {
+        return visit(get_token(token, *node), *node);
       }
     }
   }
@@ -101,3 +103,7 @@ std::string render_context::render_partial(
       ? render(m_partials.at(partial_name), prefix)
       : "";
 }
+
+} // namespace mstch
+} // namespace thrift
+} // namespace apache

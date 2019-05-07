@@ -58,12 +58,10 @@ class render_section : public boost::static_visitor<std::string> {
     std::string section_str;
     for (auto& token : m_section)
       section_str += token.raw();
-    template_type interpreted{fun(
-                                  [this](const mstch::node& n) {
-                                    return mstch::visit(render_node(m_ctx), n);
-                                  },
-                                  section_str),
-                              m_delims};
+    template_type interpreted{
+        fun([this](const node& n) { return visit(render_node(m_ctx), n); },
+            section_str),
+        m_delims};
     return render_context::push(m_ctx).render(interpreted);
   }
 
@@ -73,7 +71,7 @@ class render_section : public boost::static_visitor<std::string> {
       return render_context::push(m_ctx, array).render(m_section);
     else
       for (auto& item : array)
-        out += mstch::visit(
+        out += visit(
             render_section(m_ctx, m_section, m_delims, flag::keep_array), item);
     return out;
   }
