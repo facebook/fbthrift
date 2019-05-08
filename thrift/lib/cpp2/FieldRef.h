@@ -237,5 +237,15 @@ class optional_field_ref {
   detail::is_set_t<value_type>& is_set_;
 };
 
+template <typename T1, typename T2>
+bool operator==(optional_field_ref<T1> a, optional_field_ref<T2> b) {
+  return a && b ? *a == *b : a.has_value() == b.has_value();
+}
+
+template <typename T1, typename T2>
+bool operator!=(optional_field_ref<T1> a, optional_field_ref<T2> b) {
+  return !(a == b);
+}
+
 } // namespace thrift
 } // namespace apache
